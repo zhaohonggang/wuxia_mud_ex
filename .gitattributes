@@ -1,0 +1,5 @@
+# World data files are parsed by the ELIAS/UCL parser at runtime, which
+# requires LF line endings. Force LF on checkout regardless of core.autocrlf.
+data/** text eol=lf
+*.ucl text eol=lf
+*.help text eol=lf
