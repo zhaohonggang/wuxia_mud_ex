@@ -22,24 +22,18 @@ config :ex_venture, Web.Endpoint,
   check_origin: false,
   watchers: [
     node: [
-      "./node_modules/.bin/yarn",
-      "run",
-      "build:js:watch",
-      cd: Path.expand("../assets", __DIR__)
-    ],
-    node: [
-      "./node_modules/.bin/yarn",
-      "run",
-      "build:css:watch",
-      cd: Path.expand("../assets", __DIR__)
-    ],
-    node: [
-      "./node_modules/.bin/yarn",
-      "run",
-      "build:static:watch",
+      "dev-poll-watch.js",
       cd: Path.expand("../assets", __DIR__)
     ]
   ]
+
+# The dev environment may run inside a container with the source bind-mounted
+# from Windows (9p), where inotify events do not propagate. Use the polling
+# backend so browser auto-reload keeps working.
+config :phoenix_live_reload,
+  dirs: ["lib", "priv/gettext", "priv/static", "assets/css", "assets/js", "assets/static"],
+  backend: :fs_poll,
+  backend_opts: [interval: 700]
 
 # Watch static and templates for browser reloading.
 config :ex_venture, Web.Endpoint,

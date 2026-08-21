@@ -1,0 +1,23 @@
+# Dev image: same toolchain as the production Dockerfile (Elixir 1.11 / OTP 23 /
+# Alpine 3.12) plus the extra tools needed for live development:
+#   - git            : git-based deps (stein_storage)
+#   - make/gcc/musl  : native compilation
+#   - inotify-tools  : phoenix_live_reload file events (hot reload)
+#   - nodejs + yarn  : asset watchers configured in config/dev.exs (Node 12 era)
+FROM hexpm/elixir:1.11.1-erlang-23.0.2-alpine-3.12.1
+
+RUN apk add --no-cache \
+    bash \
+    ca-certificates \
+    git \
+    make \
+    gcc \
+    musl-dev \
+    inotify-tools \
+    nodejs \
+    npm \
+    yarn
+
+WORKDIR /app
+
+CMD ["sh"]

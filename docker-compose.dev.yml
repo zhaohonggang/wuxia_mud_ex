@@ -1,0 +1,126 @@
+# =============================================================================
+# Development-only compose file (hot-reload friendly). DO NOT use in production.
+# Production release flow lives in docker-compose.yml / Dockerfile.
+#
+# Usage:
+#   docker compose -f docker-compose.dev.yml up -d db      # start database
+#   docker compose -f docker-compose.dev.yml run --rm setup # deps.get + ecto.setup
+#   docker compose -f docker-compose.dev.yml up app         # phx.server (foreground)
+# Or simply: dev_start.bat
+# =============================================================================
+
+name: wuxia_mud_dev
+
+# Shared base for the one-shot setup container and the long-running app container
+x-app-base: &app-base
+  build:
+    context: .
+    dockerfile: Dockerfile.dev
+  image: wuxia-mud-dev:1.11.1-otp-23-alpine3.12
+  working_dir: /app
+  environment: &app-env
+    MIX_ENV: dev
+    # Overrides .env (Vapor loads Dotenv first, real env vars take precedence)
+    DATABASE_URL: postgresql://postgres:postgres@db:5432/ex_venture_dev
+    POOL_SIZE: "15"
+    SECRET_KEY_BASE: "nSUzQ0L9DLDjAacQZKnG11NAZf+26wU75zVGKq4FxUgRRMeorJA7Os2giqvBINiN"
+    PORT: "4000"
+    HOST: localhost
+    URL_PORT: "4000"
+    URL_SCHEME: http
+    DEPLOY_ENV: development
+  volumes:
+    # Live source sync: Ctrl+S in VS Code is visible inside the container instantly
+    - .:/app
+    # Heavy, generated artifacts stay on the Linux VM filesystem (native IO speed,
+    # not throttled by the Windows bind mount) => max compile throughput
+    - app_deps:/app/deps
+    - app_build:/app/_build
+    - app_node_modules:/app/assets/node_modules
+    - app_mix_home:/root/.mix
+    - app_hex_cache:/root/.hex
+  depends_on:
+    db:
+      condition: service_healthy
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL 12 (matches README requirement and prod compose), alpine flavor
+  # ---------------------------------------------------------------------------
+  db:
+    image: postgres:12-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ex_venture_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    # Light tuning for a beefy dev host (80GB RAM) - harmless but snappy
+    command:
+      - postgres
+      - -c
+      - shared_buffers=1GB
+      - -c
+      - effective_cache_size=4GB
+      - -c
+      - maintenance_work_mem=256MB
+      - -c
+      - max_wal_size=2GB
+    ports:
+      # Host 5432 is taken by a local PostgreSQL instance, so expose on 15432
+      - "127.0.0.1:15432:5432" # host access for psql / GUI clients
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ex_venture_dev"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  # ---------------------------------------------------------------------------
+  # One-shot bootstrap: mix deps.get -> yarn install -> ecto.setup (seed once)
+  # ---------------------------------------------------------------------------
+  setup:
+    <<: *app-base
+    restart: "no"
+    command:
+      - sh
+      - -ec
+      - |
+        echo "==> [0/3] ensuring hex + rebar"
+        mix local.hex --force
+        mix local.rebar --force
+
+        echo "==> [1/3] mix deps.get"
+        mix deps.get
+
+        echo "==> [2/3] frontend deps (yarn)"
+        command -v yarn >/dev/null 2>&1 || npm install -g yarn@1.22.19
+        (cd assets && yarn install)
+
+        echo "==> [3/3] ecto.create + migrate (+ seed on first run only)"
+        if [ -f /root/.mix/.exventure_seeded ]; then
+          mix ecto.migrate
+        else
+          mix ecto.setup
+          touch /root/.mix/.exventure_seeded
+        fi
+
+        echo "==> Setup complete."
+
+  # ---------------------------------------------------------------------------
+  # Phoenix web server (foreground) + Kalevala telnet listener (:4646)
+  # ---------------------------------------------------------------------------
+  app:
+    <<: *app-base
+    command: mix phx.server
+    ports:
+      - "4000:4000" # web client: http://localhost:4000
+      - "4646:4646" # game telnet port
+
+volumes:
+  postgres_data:
+  app_deps:
+  app_build:
+  app_node_modules:
+  app_mix_home:
+  app_hex_cache:
