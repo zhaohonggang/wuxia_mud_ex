@@ -18,7 +18,7 @@ brains "villager" {
           data = {
             channel_name = "rooms:${room_id}"
             delay = 500
-            text = "Welcome, ${character.name}!"
+            text = "欢迎，${character.name}！ Welcome, ${character.name}!"
           }
         }
       ]
@@ -46,7 +46,7 @@ brains "wandering_villager" {
               type = "actions/say"
               data = {
                 channel_name = "${channel_name}"
-                text = "Hello!"
+                text = "你好！ Hello!"
               }
             }
           ]

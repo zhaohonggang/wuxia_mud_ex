@@ -8,7 +8,7 @@ zones "global" {
 # Weapons
 
 items "axe" {
-  name = "Axe"
+  name = "斧头 Axe"
   description = "A single bladed axe with a long metal handle."
 
   verbs = [

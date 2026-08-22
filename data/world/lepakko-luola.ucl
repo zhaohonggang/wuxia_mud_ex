@@ -1,10 +1,10 @@
 zones "lepakko-luola" {
-  name = "Lepakko Luola"
+  name = "蝙蝠洞 Lepakko Luola"
 }
 
 rooms "cave-outside" {
-  name = "Cave Entrance"
-  description = "A rock juts up out of the ground and an entrance to a cave can be seen."
+  name = "洞穴入口 Cave Entrance"
+  description = "一块岩石从地面隆起，可以看到一个洞穴入口。A rock juts up out of the ground and an entrance to a cave can be seen."
 
   x = 0
   y = 0
@@ -19,8 +19,8 @@ room_exits "cave-outside" {
 }
 
 rooms "cave-entrance" {
-  name = "Cave Entrance"
-  description = "The walls of the cave are slightly damp."
+  name = "洞口之内 Cave Entrance"
+  description = "洞穴的岩壁微微泛潮。The walls of the cave are slightly damp."
 
   x = 0
   y = 0

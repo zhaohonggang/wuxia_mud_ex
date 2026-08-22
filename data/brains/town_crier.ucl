@@ -16,7 +16,7 @@ brains "generic_hello" {
           delay = 500
           data = {
             channel_name = "${channel_name}"
-            text = "Hello, ${character.name}!"
+            text = "你好，${character.name}！ Hello, ${character.name}!"
           }
         },
         {
@@ -24,7 +24,7 @@ brains "generic_hello" {
           delay = 750
           data = {
             channel_name = "${channel_name}"
-            text = "How are you?"
+            text = "最近怎么样？ How are you?"
           }
         }
       ]
@@ -59,7 +59,7 @@ brains "town_crier_conversation" {
               type = "actions/say"
               data = {
                 channel_name = "characters:${character.id}"
-                text = "Hello, are you here to find out about our {color foreground=\"white\"}bandit{/color} problem?"
+                text = "你好，你是来打听我们那个{color foreground=\"white\"}强盗{/color}麻烦的吗？ Hello, are you here to find out about our {color foreground=\"white\"}bandit{/color} problem?"
               }
             },
             {
@@ -94,7 +94,7 @@ brains "town_crier_conversation" {
               type = "actions/say"
               data = {
                 channel_name = "characters:${character.id}"
-                text = "Great. Before you head off and face the bandits. I would like you to prove your worth as an adventurer."
+                text = "好极了。在你动身去会那帮强盗之前，我要先看看你有没有当冒险者的本事。 Great. Before you head off and face the bandits. I would like you to prove your worth as an adventurer."
               }
             },
             {
@@ -122,7 +122,7 @@ brains "town_crier_conversation" {
               type = "actions/say"
               data = {
                 channel_name = "characters:${character.id}"
-                text = "I don't know about that, but I can help you with bandits"
+                text = "这个我不太清楚，不过强盗的事我能帮你。 I don't know about that, but I can help you with bandits"
               }
             }
           ]
@@ -158,7 +158,7 @@ brains "town_crier" {
               type = "actions/say"
               data = {
                 channel_name = "${channel_name}"
-                text = "I have a quest for you."
+                text = "我有一个任务要交给你。 I have a quest for you."
               }
             }
           ]
@@ -187,7 +187,7 @@ brains "town_crier" {
           type = "actions/emote"
           data = {
             channel_name = "${channel_name}"
-            text = "*again*"
+            text = "*又来* *again*"
           }
         }
       ]
@@ -214,7 +214,7 @@ brains "town_crier" {
           type = "actions/emote"
           data = {
             channel_name = "${channel_name}"
-            text = "hides behind a desk"
+            text = "躲到了桌子后面 hides behind a desk"
           }
         },
         {
@@ -241,7 +241,7 @@ brains "town_crier" {
           data = {
             channel_name = "rooms:${room_id}"
             delay = 500
-            text = "Welcome, ${character.name}!"
+            text = "欢迎，${character.name}！ Welcome, ${character.name}!"
           }
         }
       ]

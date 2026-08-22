@@ -1,6 +1,6 @@
 verbs "drop" {
   icon = "drop"
-  text = "Drop"
+  text = "丢弃 Drop"
   send = "drop ${id}"
 
   conditions = {
@@ -12,7 +12,7 @@ verbs "drop" {
 
 verbs "get" {
   icon = "grab"
-  text = "Get"
+  text = "获取 Get"
   send = "get ${id}"
 
   conditions = {
@@ -24,7 +24,7 @@ verbs "get" {
 
 verbs "look" {
   icon = "magnifying-glass"
-  text = "Look"
+  text = "查看 Look"
   send = "look ${object}"
 
   conditions = {}

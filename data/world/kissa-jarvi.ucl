@@ -1,10 +1,10 @@
 zones "kissa-jarvi" {
-  name = "Kissa Järvi"
+  name = "基萨湖 Kissa Järvi"
 }
 
 rooms "gates" {
-  name = "The Gates to Sammatti"
-  description = "You are in front of the gates to Sammatti."
+  name = "萨玛蒂之门 The Gates to Sammatti"
+  description = "你正站在通往萨玛蒂的大门前面。You are in front of the gates to Sammatti."
 
   x = 1
   y = 3
@@ -13,8 +13,8 @@ rooms "gates" {
   features = [
     {
       keyword = "lake edge"
-      short = "The lake edge creeps close to the entrance."
-      long = "The lake edge creeps close to the entrance."
+      short = "湖岸悄然逼近入口。The lake edge creeps close to the entrance."
+      long = "湖岸悄然逼近入口。The lake edge creeps close to the entrance."
     }
   ]
 }
@@ -27,8 +27,8 @@ room_exits "gates" {
 }
 
 rooms "path-1" {
-  name = "Kissa Path"
-  description = "A dirt road leading away from Sammatti."
+  name = "基萨小径 Kissa Path"
+  description = "一条远离萨玛蒂的土路。A dirt road leading away from Sammatti."
 
   map_color = "brown"
   map_icon = "trail"
@@ -53,8 +53,8 @@ room_exits "path-1" {
 }
 
 rooms "path-2" {
-  name = "Kissa Path"
-  description = "A dirt road leading away from Sammatti."
+  name = "基萨小径 Kissa Path"
+  description = "一条远离萨玛蒂的土路。A dirt road leading away from Sammatti."
 
   map_color = "brown"
   map_icon = "trail"
@@ -90,8 +90,8 @@ room_characters "path-2" {
 }
 
 rooms "path-3" {
-  name = "Kissa Path"
-  description = "A dirt road leading away from Sammatti."
+  name = "基萨小径 Kissa Path"
+  description = "一条远离萨玛蒂的土路。A dirt road leading away from Sammatti."
 
   map_color = "brown"
   map_icon = "trail"
@@ -126,8 +126,8 @@ room_characters "path-3" {
 }
 
 rooms "path-4" {
-  name = "Kissa Path"
-  description = "A dirt road leading away from Sammatti."
+  name = "基萨小径 Kissa Path"
+  description = "一条远离萨玛蒂的土路。A dirt road leading away from Sammatti."
 
   map_color = "brown"
   map_icon = "trail"
@@ -151,8 +151,9 @@ room_exits "path-4" {
 }
 
 rooms "lake-1" {
-  name = "Kissa Järvi"
-  description = "A long shallow lake."
+  name = "基萨湖 Kissa Järvi"
+  description = "一片狭长而浅的湖泊。A long shallow lake."
+
   map_color = "blue"
   map_icon = "drop"
 
@@ -175,8 +176,9 @@ room_exits "lake-1" {
 }
 
 rooms "lake-2" {
-  name = "Kissa Järvi"
-  description = "A long shallow lake."
+  name = "基萨湖 Kissa Järvi"
+  description = "一片狭长而浅的湖泊。A long shallow lake."
+
   map_color = "blue"
   map_icon = "drop"
 
@@ -200,8 +202,9 @@ room_exits "lake-2" {
 }
 
 rooms "lake-3" {
-  name = "Kissa Järvi"
-  description = "A long shallow lake."
+  name = "基萨湖 Kissa Järvi"
+  description = "一片狭长而浅的湖泊。A long shallow lake."
+
   map_color = "blue"
   map_icon = "drop"
 
@@ -224,8 +227,9 @@ room_exits "lake-3" {
 }
 
 rooms "lake-4" {
-  name = "Kissa Järvi"
-  description = "A long shallow lake."
+  name = "基萨湖 Kissa Järvi"
+  description = "一片狭长而浅的湖泊。A long shallow lake."
+
   map_color = "blue"
   map_icon = "drop"
 
@@ -250,8 +254,9 @@ room_exits "lake-4" {
 }
 
 rooms "lake-5" {
-  name = "Kissa Järvi"
-  description = "A long shallow lake."
+  name = "基萨湖 Kissa Järvi"
+  description = "一片狭长而浅的湖泊。A long shallow lake."
+
   map_color = "blue"
   map_icon = "drop"
 
@@ -275,8 +280,9 @@ room_exits "lake-5" {
 }
 
 rooms "lake-6" {
-  name = "Kissa Järvi"
-  description = "A long shallow lake."
+  name = "基萨湖 Kissa Järvi"
+  description = "一片狭长而浅的湖泊。A long shallow lake."
+
   map_color = "blue"
   map_icon = "drop"
 
@@ -300,27 +306,27 @@ room_exits "lake-6" {
 
 features "water" {
   keyword = "water"
-  short = "The water shimmers in the sunlight."
-  long = "The water shimmers in the sunlight."
+  short = "湖水在阳光下波光粼粼。The water shimmers in the sunlight."
+  long = "湖水在阳光下波光粼粼。The water shimmers in the sunlight."
 }
 
 features "stones" {
   keyword = "stones"
-  short = "Small stones liter the pathway."
-  long = "Small stones liter the pathway."
+  short = "小石子散落在小径上。Small stones liter the pathway."
+  long = "小石子散落在小径上。Small stones liter the pathway."
 }
 
 characters "wolf" {
-  name = "Wolf"
-  description = "A grey wolf."
+  name = "灰狼 Wolf"
+  description = "一头灰色的狼。A grey wolf."
 }
 
 characters "bobcat" {
-  name = "Bobcat"
-  description = "A large grey cat with a stubby tail."
+  name = "猞猁 Bobcat"
+  description = "一只尾巴短粗的灰色大猫。A large grey cat with a stubby tail."
 }
 
 characters "pike" {
-  name = "Pike"
-  description = "A long slender slivery fish."
+  name = "狗鱼 Pike"
+  description = "一条细长的银白色鱼。A long slender slivery fish."
 }

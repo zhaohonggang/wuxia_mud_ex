@@ -1,14 +1,14 @@
 emotes "smile" {
   command = "smile"
-  text = "smiles at everyone."
+  text = "向大家微笑。 smiles at everyone."
 }
 
 emotes "frown" {
   command = "frown"
-  text = "frowns at everyone."
+  text = "对大家皱起眉头。 frowns at everyone."
 }
 
 emotes "wave" {
   command = "wave"
-  text = "waves to everyone."
+  text = "向大家挥手致意。 waves to everyone."
 }
