@@ -116,12 +116,12 @@ defmodule Kantele.Combat.Skills.LiuxiNeigong.Powerup do
       character
       |> put_meta_of(vitals, combat)
 
-    conn
-    conn = Broadcast.publish(
-      conn,
-      "$N微一凝神，运起柳溪内功，周身衣袂无风自动，隐隐有溪流潺潺之声。\n",
-      n1: character.name
-    )
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N微一凝神，运起柳溪内功，周身衣袂无风自动，隐隐有溪流潺潺之声。\n",
+        n1: character.name
+      )
 
     # 定时自投递（同上，绕开房间路由）
     Process.send_after(
