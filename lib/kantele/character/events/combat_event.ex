@@ -124,6 +124,16 @@ defmodule Kantele.Character.CombatEvent do
             {same_room, gone} =
               Enum.split_with(enemies, &(Map.get(&1, :room_id) == character.room_id))
 
+            Enum.each(gone, fn gone_enemy ->
+              if Process.alive?(gone_enemy.pid) do
+                send(gone_enemy.pid, %Event{
+                  from_pid: self(),
+                  topic: "combat/enemy-left",
+                  data: %{id: character.id}
+                })
+              end
+            end)
+
             character = put_combat(character, %{combat | enemies: same_room})
 
             Enum.each(gone, fn gone_enemy ->

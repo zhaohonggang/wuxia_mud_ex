@@ -7,16 +7,26 @@ defmodule Kantele.Character.MoveEvent do
   alias Kantele.Character.MoveView
 
   def commit(conn, %{data: event}) do
+    character = conn.character
+    old_room = character.room_id
+
+    conn = notify_enemies_left(conn, character)
+
+    # 先更新自身 room_id 再排队移动事件：
+    # 移动事件携带的角色快照（Private.character）必须带新房间号，
+    # 否则目标房间存档的玩家 room_id 是旧值，战斗同房校验会误判
+    character = %{character | room_id: event.to}
+
     conn =
-      notify_enemies_left(conn, conn.character)
+      conn
+      |> put_character(character)
+      |> move(:from, old_room, MoveView, "leave", %{})
+      |> move(:to, event.to, MoveView, "enter", %{})
+      |> unsubscribe("rooms:#{old_room}", [], &unsubscribe_error/2)
+      |> subscribe("rooms:#{event.to}", [], &subscribe_error/2)
+      |> event("room/look")
 
     conn
-    |> move(:from, event.from, MoveView, "leave", %{})
-    |> move(:to, event.to, MoveView, "enter", %{})
-    |> put_character(%{conn.character | room_id: event.to})
-    |> unsubscribe("rooms:#{event.from}", [], &unsubscribe_error/2)
-    |> subscribe("rooms:#{event.to}", [], &subscribe_error/2)
-    |> event("room/look")
   end
 
   # 离开房间时通知自己的敌人移除自己（对应 LPC clean_up_enemy 的环境校验）

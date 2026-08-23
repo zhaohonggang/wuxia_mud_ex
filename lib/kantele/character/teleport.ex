@@ -17,9 +17,9 @@ defmodule Kantele.Character.Teleport do
     from = latest.room_id
 
     conn
+    |> put_character(%{latest | room_id: to_room_id})
     |> move(:from, from, MoveView, "leave", %{})
     |> move(:to, to_room_id, MoveView, "enter", %{})
-    |> put_character(%{latest | room_id: to_room_id})
     |> unsubscribe("rooms:#{from}", [], &MoveEvent.unsubscribe_error/2)
     |> subscribe("rooms:#{to_room_id}", [], &MoveEvent.subscribe_error/2)
     |> event("room/look")
