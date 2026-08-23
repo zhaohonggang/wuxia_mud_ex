@@ -72,31 +72,46 @@ defmodule Kantele.Character.CombatEvent do
   def start(conn, %{data: %{enemy: enemy, initiator_id: initiator_id}}) do
     character = conn.character
 
-    if dead?(character) or enemy.id == character.id do
-      conn
-    else
-      {combat, new_fight?} = Combat.add_enemy(character.meta.combat, enemy)
-      character = put_combat(character, combat)
+    cond do
+      enemy.id == character.id ->
+        conn
 
-      conn =
-        case initiator_id == character.id do
-          true ->
-            Broadcast.publish(conn, "$N对著$n一声大喝，蓦地直冲过来！\n",
-              n1: character.name,
-              n2: enemy.name
-            )
+      dead?(character) ->
+        # 我已是尸体：显式拒绝，让攻击者把我从敌人列表移除
+        send(
+          enemy.pid,
+          %Event{
+            from_pid: self(),
+            topic: "combat/reject-dead",
+            data: %{id: character.id, name: character.name}
+          }
+        )
 
-          false ->
-            render(conn, CommandView, "under-attack", %{name: enemy.name})
+        conn
+
+      true ->
+        {combat, new_fight?} = Combat.add_enemy(character.meta.combat, enemy)
+        character = put_combat(character, combat)
+
+        conn =
+          case initiator_id == character.id do
+            true ->
+              Broadcast.publish(conn, "$N对著$n一声大喝，蓦地直冲过来！\n",
+                n1: character.name,
+                n2: enemy.name
+              )
+
+            false ->
+              render(conn, CommandView, "under-attack", %{name: enemy.name})
+          end
+
+        conn = put_character(conn, character)
+
+        if new_fight? do
+          schedule_self("combat/tick", %{}, @tick_interval)
         end
 
-      conn = put_character(conn, character)
-
-      if new_fight? do
-        schedule_self("combat/tick", %{}, @tick_interval)
-      end
-
-      conn
+        conn
     end
   end
 
@@ -401,6 +416,14 @@ defmodule Kantele.Character.CombatEvent do
 
   def yield(conn, %{data: %{id: id}}) do
     drop_enemy(conn, id)
+  end
+
+  # ---- 目标是尸体：拒绝开战 ----
+
+  def reject_dead(conn, %{data: %{id: id, name: name}}) do
+    drop_enemy(conn, id)
+    |> render(CommandView, "text", %{text: "#{name}已经倒下了。\n"})
+    |> prompt(CommandView, "prompt", %{})
   end
 
   # ---- buff 到期 ----

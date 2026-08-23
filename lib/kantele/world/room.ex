@@ -501,7 +501,11 @@ defmodule Kantele.World.Room.CombatEvent do
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
 
-  defp dead?(%{meta: %{combat: %{dead: true}}}), do: true
+  # 房间上下文中的角色是 Trimmed 版本（无 combat 标记），
+  # 尸体判定依赖 die 时写入的 status 文案
+  defp dead?(%{status: status}) when is_binary(status),
+    do: String.contains?(status, "尸体")
+
   defp dead?(_), do: false
 
   defp players_in_room(context) do
