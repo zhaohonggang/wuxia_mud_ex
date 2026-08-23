@@ -218,7 +218,7 @@ characters "yezhu" {
     int = 5
     combat_exp = 200
     skills = {
-      unarmed = 5
+      unarmed = 60
       dodge = 1
       parry = 1
     }
