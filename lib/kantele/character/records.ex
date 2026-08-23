@@ -158,16 +158,32 @@ defmodule Kantele.Character.Records do
   defp ensure_record(character_name) do
     case find_character(character_name) do
       nil ->
-        :error
+        # telnet 直接登录的角色尚无档案：首次保存时自动建档
+        changeset = Character.create_changeset(%Character{}, %{name: character_name})
+
+        case Repo.insert(changeset) do
+          {:ok, character} ->
+            {:ok, insert_metadata(character.id)}
+
+          {:error, _changeset} ->
+            case find_character(character_name) do
+              nil ->
+                :error
+
+              character ->
+                {:ok, insert_metadata(character.id)}
+            end
+        end
 
       character ->
-        case Repo.get_by(Metadata, character_id: character.id) do
-          nil ->
-            {:ok, Repo.insert!(Metadata.changeset(%Metadata{}, %{character_id: character.id}))}
+        {:ok, insert_metadata(character.id)}
+    end
+  end
 
-          metadata ->
-            {:ok, metadata}
-        end
+  defp insert_metadata(character_id) do
+    case Repo.get_by(Metadata, character_id: character_id) do
+      nil -> Repo.insert!(Metadata.changeset(%Metadata{}, %{character_id: character_id}))
+      metadata -> metadata
     end
   end
 
