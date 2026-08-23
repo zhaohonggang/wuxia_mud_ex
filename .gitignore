@@ -38,3 +38,5 @@ npm-debug.log
 
 # Visual Studio local artifacts
 .vs/
+
+# 本地诊断产物.boar_dump.log.smoke_server.log
