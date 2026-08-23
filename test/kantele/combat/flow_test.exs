@@ -160,12 +160,12 @@ defmodule Kantele.Combat.FlowTest do
     assert current_vitals(final_boar).qi < current_vitals(final_boar).max_qi or all_text =~ "结果"
   end
 
-  test "death：气血归零触发尸体文案、奖励通知与重生传送" do
+  test "death：气血归零触发尸体文案、奖励通知与原地装死" do
     a = player()
     initial_boar = boar(vitals: [qi: 8, max_qi: 150])
 
-    {_all_text, moved, conn, _final_boar, rounds} =
-      exchange_rounds(a, initial_boar, fn _ch -> false end, 40)
+    {_all_text, conn, final_boar, rounds} =
+      exchange_rounds(a, initial_boar, fn ch -> ch.status =~ "尸体" end, 40)
 
     # 击杀奖励消息是死亡结算的权威信号
     assert_receive %Event{topic: "combat/enemy-died", data: data}, @recv_timeout
@@ -173,8 +173,9 @@ defmodule Kantele.Combat.FlowTest do
     assert data.potential >= 2
     assert rounds >= 1
 
-    # NPC 死亡走虚空停尸 + 定时重生（Movement :to 事件入队）
-    assert moved
+    # NPC 原地装死：状态文案变为尸体，dead 标志停掉大脑/心跳
+    assert final_boar.meta.combat.dead
+    assert final_boar.status =~ "尸体"
   end
 
   # victim 持续承受 attacker 的 incoming，累积全部战况文案

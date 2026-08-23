@@ -43,7 +43,6 @@ defmodule Kantele.Character.CombatEvent do
   @tick_interval 1000
   @regen_interval 15_000
   @respawn_delay 60_000
-  @nether_room "liuxi:rooms:nether"
 
   # ---- 自我定时：直接 Process.send_after，绕开房间路由 ----
 
@@ -297,23 +296,28 @@ defmodule Kantele.Character.CombatEvent do
       send(enemy.pid, %Event{from_pid: self(), topic: topic, data: data})
     end)
 
-    character =
-      character
-      |> put_vitals(Vitals.new())
-      |> put_combat(Combat.new())
+    if npc?(character) do
+      # NPC 原地“装死”：dead 标志停掉大脑与心跳，60 秒后原地复活。
+      # 不做跨房间瞬移——多次房间频道退订/订阅在特定时序下会以 :error
+      # 崩掉 foreman，并在房间存档里堆积重复角色条目。
+      character =
+        character
+        |> Map.put(:status, "#{character.name}的尸体躺在地上。")
+        |> put_combat(%Combat{dead: true})
 
-    conn = put_character(conn, character)
+      conn = put_character(conn, character)
+      schedule_self("combat/respawn", %{}, @respawn_delay)
 
-    destination = death_destination(character)
-    conn = Teleport.teleport(conn, destination)
+      conn
+    else
+      # 玩家：满血传回出生点
+      character =
+        character
+        |> put_vitals(Vitals.new())
+        |> put_combat(Combat.new())
 
-    case npc?(character) do
-      true ->
-        schedule_self("combat/respawn", %{}, @respawn_delay)
-        conn
-
-      false ->
-        render(conn, CommandView, "revive", %{})
+      conn = put_character(conn, character)
+      Teleport.teleport(conn, starting_room_id())
     end
   end
 
@@ -323,11 +327,7 @@ defmodule Kantele.Character.CombatEvent do
 
   defp npc?(_), do: false
 
-  defp death_destination(%{meta: %{combat_config: %{spawn_room_id: id}}})
-       when is_binary(id),
-       do: @nether_room
 
-  defp death_destination(_character), do: starting_room_id()
 
   def respawn(conn, _event) do
     character = conn.character
@@ -336,16 +336,16 @@ defmodule Kantele.Character.CombatEvent do
       nil ->
         conn
 
-      room_id ->
+      _room_id ->
         character =
           character
+          |> Map.put(:status, "#{character.name} is here.")
           |> put_vitals(Vitals.new())
           |> put_combat(Combat.new())
 
         conn
         |> put_character(character)
         |> Broadcast.publish(Messages.revive_msg(), n1: character.name)
-        |> Teleport.teleport(room_id)
     end
   end
 

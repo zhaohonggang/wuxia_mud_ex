@@ -1,0 +1,1052 @@
+﻿[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:inn", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:inn", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:inn", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:inn", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:blacksmith", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:inn", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[debug] QUERY OK source="users" db=1.5ms queue=0.1ms idle=1587.0ms
+SELECT u0."id", u0."token", u0."role", u0."username", u0."email", u0."password_hash", u0."email_verification_token", u0."email_verified_at", u0."password_reset_token", u0."password_reset_expires_at", u0."avatar_key", u0."avatar_extension", u0."inserted_at", u0."updated_at" FROM "users" AS u0 WHERE (u0."token" = $1) [<<234, 78, 173, 22, 220, 77, 69, 219, 133, 143, 23, 106, 94, 113, 227, 172>>]
+[info] state=set duration=34.750 status=200 params={} path=/ method=GET format=html controller=Web.PageController action=index
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[debug] QUERY OK source="users" db=0.8ms idle=1345.6ms
+SELECT u0."id", u0."token", u0."role", u0."username", u0."email", u0."password_hash", u0."email_verification_token", u0."email_verified_at", u0."password_reset_token", u0."password_reset_expires_at", u0."avatar_key", u0."avatar_extension", u0."inserted_at", u0."updated_at" FROM "users" AS u0 WHERE (u0."token" = $1) [<<234, 78, 173, 22, 220, 77, 69, 219, 133, 143, 23, 106, 94, 113, 227, 172>>]
+[debug] QUERY OK source="characters" db=2.0ms queue=0.1ms idle=1348.1ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 LEFT OUTER JOIN "playable_characters" AS p1 ON p1."character_id" = c0."id" WHERE (p1."user_id" = $1) [2]
+[info] state=set duration=8.536 status=200 params={} path=/client method=GET format=html controller=Web.PageController action=client
+[debug] QUERY OK source="characters" db=1.2ms queue=0.1ms idle=1784.1ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 WHERE (c0."id" = $1) [1]
+[debug] QUERY OK source="characters" db=0.6ms idle=1787.7ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 WHERE (c0."name" = $1) LIMIT 1 ["grant"]
+[debug] QUERY OK source="character_metadata" db=1.7ms idle=788.6ms
+SELECT c0."id", c0."character_id", c0."str", c0."dex", c0."con", c0."int", c0."combat_exp", c0."potential", c0."max_neili", c0."skills", c0."mapped", c0."performs", c0."inserted_at", c0."updated_at" FROM "character_metadata" AS c0 WHERE (c0."character_id" = $1) [1]
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛実rant锛?Welcome, grant!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Received - "west"
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:blacksmith", "delay" => 500, "text" => "娆㈣繋锛実rant锛?Welcome, grant!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Received - "north"
+[info] Delaying Kantele.Character.CombatEngageAction for 0ms with %{}
+[info] Processing Kantele.Character.CombatEngageAction, 0 left in the queue.
+[info] Received - "north"
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Received - "kill 閲庣尓"
+[debug] QUERY OK source="characters" db=3.0ms idle=1358.1ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 WHERE (c0."name" = $1) LIMIT 1 ["grant"]
+[debug] QUERY OK source="character_metadata" db=1.0ms idle=1361.4ms
+SELECT c0."id", c0."character_id", c0."str", c0."dex", c0."con", c0."int", c0."combat_exp", c0."potential", c0."max_neili", c0."skills", c0."mapped", c0."performs", c0."inserted_at", c0."updated_at" FROM "character_metadata" AS c0 WHERE (c0."character_id" = $1) [1]
+[debug] QUERY OK db=2.2ms queue=0.6ms idle=1362.6ms
+INSERT INTO "character_metadata" ("character_id","combat_exp","con","dex","int","mapped","max_neili","performs","potential","skills","str","inserted_at","updated_at") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING "id" [1, 0, 20, 20, 20, %{}, 200, [], 100, %{}, 20, ~N[2026-08-23 22:42:09], ~N[2026-08-23 22:42:09]]
+[debug] QUERY OK db=1.5ms queue=0.3ms idle=1365.7ms
+UPDATE "character_metadata" SET "combat_exp" = $1, "potential" = $2, "skills" = $3, "updated_at" = $4 WHERE "id" = $5 [1020, 110, %{"dodge" => 60, "force" => 20, "parry" => 60, "sword" => 60, "unarmed" => 60}, ~N[2026-08-23 22:42:09], 2]
+[error] GenServer #PID<0.875.0> terminating
+** (CaseClauseError) no case clause matching: :error
+    (kalevala 0.1.0) lib/kalevala/character/foreman/channel.ex:19: Kalevala.Character.Foreman.Channel.handle_channel_change/3
+    (elixir 1.11.1) lib/enum.ex:2181: Enum."-reduce/3-lists^foldl/2-0-"/3
+    (kalevala 0.1.0) lib/kalevala/character/foreman.ex:161: Kalevala.Character.Foreman.handle_conn/2
+    (stdlib 3.13) gen_server.erl:680: :gen_server.try_dispatch/4
+    (stdlib 3.13) gen_server.erl:756: :gen_server.handle_msg/6
+    (stdlib 3.13) proc_lib.erl:226: :proc_lib.init_p_do_apply/3
+Last message: %Kalevala.Event{acting_character: nil, data: %{attacker: %{id: "878672e3", name: "grant", pid: #PID<0.966.0>, room_id: "liuxi:guangchang"}, fighter: %Kantele.Combat.Fighter{applies: %{armor: 0, attack: 0, damage: 0, defense: 0, dodge: 0, parry: 0, unarmed_damage: 0}, attack_skill: "unarmed", busy: 0, combat_exp: 1000, con: 20, dex: 20, id: "878672e3", int: 20, jiali: 0, mapped: %{}, name: "grant", neili: 200, no_kill: false, pid: #PID<0.966.0>, room_id: "liuxi:guangchang", skills: %{"dodge" => 60, "force" => 20, "parry" => 60, "sword" => 60, "unarmed" => 60}, str: 20, weapon_name: nil}, jiali_paid: 0}, from_pid: #PID<0.966.0>, metadata: %Kalevala.Event.Metadata{end_time: nil, start_time: nil}, topic: "combat/incoming"}
+State: %Kalevala.Character.Foreman{action_queue: [], callback_module: Kalevala.Character.Foreman.NonPlayer, character: %Kalevala.Character{brain: %Kalevala.Brain{root: %Kalevala.Brain.NullNode{}, state: %Kalevala.Brain.State{values: []}}, description: "涓€澶寸崰鐗欏闇茬殑閲庣尓锛屾鍝煎摟鍝煎摟鍦版嫳鐫€鍦熴€傛柊鎵嬬粌鎵嬬殑濂藉璞°€?, id: "3923db17", inventory: [], meta: %Kantele.Character.NonPlayerMeta{combat: %Kantele.Character.Combat{buffs: [], busy: 0, dead: false, enemies: [%{id: "878672e3", name: "grant", pid: #PID<0.966.0>, room_id: "liuxi:guangchang"}], equipped: %{}, jiali: 0, temp: %{armor: 0, attack: 0, damage: 3, defense: 0, dodge: 0, parry: 0, unarmed_damage: 3}}, combat_config: %Kantele.Character.NPCConfig{apply: %{armor: 0, attack: 0, damage: 3, defense: 0, dodge: 0, parry: 0, unarmed_damage: 0}, attitude: nil, no_kill: false, spawn_room_id: "liuxi:guangchang"}, initial_events: [], stats: %Kantele.Character.Stats{combat_exp: 200, con: 10, dex: 10, int: 5, mapped: %{}, performs: #MapSet<[]>, potential: 0, skills: %{"dodge" => 1, "parry" => 1, "unarmed" => 5}, str: 10}, vitals: %Kantele.Character.Vitals{base_jing: 60, base_neili: 0, base_qi: 80, jing: 60, max_jing: 60, max_neili: 0, max_qi: 59, neili: 0, qi: 6}, zone_id: "liuxi"}, name: "閲庣尓", pid: #PID<0.875.0>, room_id: "liuxi:guangchang", status: nil}, communication_module: Kantele.Communication, controller: Kantele.Character.SpawnController, private: %Kalevala.Character.Foreman.NonPlayer{quit_view: {Kantele.Character.QuitView, "disconnected"}}, processing_action: nil, session: %{}, supervisor_name: {:global, {Kalevala.World.CharacterSupervisor, "liuxi"}}}
+[info] Character starting - 3923db17
+[warn] Character channel already registered, reusing - 3923db17
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Character starting - 273d86cd
+[info] Character starting - ed5e277a
+[info] Character starting - ef1f6504
+[info] Character starting - a1e30e6a
+[info] Character starting - 985c407c
+[info] Character starting - dad60edf
+[info] Character starting - d69806ce
+[info] Character starting - bec4f587
+[info] Character starting - b7177f17
+[info] Signing in "dumpuser"
+[debug] QUERY OK source="characters" db=1.4ms idle=1943.7ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 WHERE (c0."name" = $1) LIMIT 1 ["鎺㈠憳"]
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾帰鍛橈紒 Welcome, 鎺㈠憳!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Received - "w"
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:blacksmith", "delay" => 500, "text" => "娆㈣繋锛屾帰鍛橈紒 Welcome, 鎺㈠憳!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Received - "n"
+[info] Delaying Kantele.Character.CombatEngageAction for 0ms with %{}
+[info] Processing Kantele.Character.CombatEngageAction, 0 left in the queue.
+[info] Received - "n"
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Received - "kill 閲庣尓"
+[debug] QUERY OK source="characters" db=2.9ms idle=1998.5ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 WHERE (c0."name" = $1) LIMIT 1 ["鎺㈠憳"]
+[debug] QUERY OK db=1.9ms queue=0.6ms idle=1001.9ms
+INSERT INTO "characters" ("name","inserted_at","updated_at") VALUES ($1,$2,$3) RETURNING "id" ["鎺㈠憳", ~N[2026-08-23 22:47:42], ~N[2026-08-23 22:47:42]]
+[debug] QUERY OK source="character_metadata" db=0.9ms idle=1004.8ms
+SELECT c0."id", c0."character_id", c0."str", c0."dex", c0."con", c0."int", c0."combat_exp", c0."potential", c0."max_neili", c0."skills", c0."mapped", c0."performs", c0."inserted_at", c0."updated_at" FROM "character_metadata" AS c0 WHERE (c0."character_id" = $1) [2]
+[debug] QUERY OK db=2.5ms queue=0.5ms idle=1006.1ms
+INSERT INTO "character_metadata" ("character_id","combat_exp","con","dex","int","mapped","max_neili","performs","potential","skills","str","inserted_at","updated_at") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING "id" [2, 0, 20, 20, 20, %{}, 200, [], 100, %{}, 20, ~N[2026-08-23 22:47:42], ~N[2026-08-23 22:47:42]]
+[error] GenServer #PID<0.990.0> terminating
+** (CaseClauseError) no case clause matching: :error
+    (kalevala 0.1.0) lib/kalevala/character/foreman/channel.ex:19: Kalevala.Character.Foreman.Channel.handle_channel_change/3
+    (elixir 1.11.1) lib/enum.ex:2181: Enum."-reduce/3-lists^foldl/2-0-"/3
+    (kalevala 0.1.0) lib/kalevala/character/foreman.ex:161: Kalevala.Character.Foreman.handle_conn/2
+    (stdlib 3.13) gen_server.erl:680: :gen_server.try_dispatch/4
+    (stdlib 3.13) gen_server.erl:756: :gen_server.handle_msg/6
+    (stdlib 3.13) proc_lib.erl:226: :proc_lib.init_p_do_apply/3
+Last message: %Kalevala.Event{acting_character: nil, data: %{attacker: %{id: "07e014f0", name: "鎺㈠憳", pid: #PID<0.1001.0>, room_id: "liuxi:guangchang"}, fighter: %Kantele.Combat.Fighter{applies: %{armor: 0, attack: 0, damage: 0, defense: 0, dodge: 0, parry: 0, unarmed_damage: 0}, attack_skill: "unarmed", busy: 0, combat_exp: 1000, con: 20, dex: 20, id: "07e014f0", int: 20, jiali: 0, mapped: %{}, name: "鎺㈠憳", neili: 200, no_kill: false, pid: #PID<0.1001.0>, room_id: "liuxi:guangchang", skills: %{"dodge" => 60, "force" => 20, "parry" => 60, "sword" => 60, "unarmed" => 60}, str: 20, weapon_name: nil}, jiali_paid: 0}, from_pid: #PID<0.1001.0>, metadata: %Kalevala.Event.Metadata{end_time: nil, start_time: nil}, topic: "combat/incoming"}
+State: %Kalevala.Character.Foreman{action_queue: [], callback_module: Kalevala.Character.Foreman.NonPlayer, character: %Kalevala.Character{brain: %Kalevala.Brain{root: %Kalevala.Brain.NullNode{}, state: %Kalevala.Brain.State{values: []}}, description: "涓€澶寸崰鐗欏闇茬殑閲庣尓锛屾鍝煎摟鍝煎摟鍦版嫳鐫€鍦熴€傛柊鎵嬬粌鎵嬬殑濂藉璞°€?, id: "985c407c", inventory: [], meta: %Kantele.Character.NonPlayerMeta{combat: %Kantele.Character.Combat{buffs: [], busy: 0, dead: false, enemies: [%{id: "07e014f0", name: "鎺㈠憳", pid: #PID<0.1001.0>, room_id: "liuxi:guangchang"}], equipped: %{}, jiali: 0, temp: %{armor: 0, attack: 0, damage: 3, defense: 0, dodge: 0, parry: 0, unarmed_damage: 3}}, combat_config: %Kantele.Character.NPCConfig{apply: %{armor: 0, attack: 0, damage: 3, defense: 0, dodge: 0, parry: 0, unarmed_damage: 0}, attitude: nil, no_kill: false, spawn_room_id: "liuxi:guangchang"}, initial_events: [], stats: %Kantele.Character.Stats{combat_exp: 200, con: 10, dex: 10, int: 5, mapped: %{}, performs: #MapSet<[]>, potential: 0, skills: %{"dodge" => 1, "parry" => 1, "unarmed" => 5}, str: 10}, vitals: %Kantele.Character.Vitals{base_jing: 60, base_neili: 0, base_qi: 80, jing: 60, max_jing: 60, max_neili: 0, max_qi: 27, neili: 0, qi: 6}, zone_id: "liuxi"}, name: "閲庣尓", pid: #PID<0.990.0>, room_id: "liuxi:guangchang", status: nil}, communication_module: Kantele.Communication, controller: Kantele.Character.SpawnController, private: %Kalevala.Character.Foreman.NonPlayer{quit_view: {Kantele.Character.QuitView, "disconnected"}}, processing_action: nil, session: %{}, supervisor_name: {:global, {Kalevala.World.CharacterSupervisor, "liuxi"}}}
+[info] Character starting - 985c407c
+[warn] Character channel already registered, reusing - 985c407c
+[debug] QUERY OK db=23.4ms queue=1.0ms idle=1010.2ms
+UPDATE "character_metadata" SET "combat_exp" = $1, "potential" = $2, "skills" = $3, "updated_at" = $4 WHERE "id" = $5 [1020, 110, %{"dodge" => 60, "force" => 20, "parry" => 60, "sword" => 60, "unarmed" => 60}, ~N[2026-08-23 22:47:42], 3]
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Character starting - 476f0867
+[info] Character starting - 84b6a92c
+[info] Character starting - d3a591bf
+[info] Character starting - 7060b0f9
+[info] Character starting - 560ed0c9
+[info] Character starting - 4448e717
+[info] Character starting - eae7a46b
+[info] Character starting - 21582ae9
+[info] Character starting - 6793c14b
+[info] Signing in "dumpuser"
+docker : warning: variable "i" is unused (if the variable is not meant to be used, prefix it with an underscore)
+所在位置 行:1 字符: 1
++ docker logs --since 60m wuxia_mud_dev-app-1 2>&1 | Out-File -Encoding ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (warning: variab... an underscore):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  boar_dump:45: BoarDump.Scenario.run/1
+
+warning: redefining module BoarDump.Scenario (current version defined in memory)
+  boar_dump:1
+
+warning: variable "i" is unused (if the variable is not meant to be used, prefix it with an underscore)
+  boar_dump:45: BoarDump.Scenario.run/1
+
+[debug] QUERY OK source="characters" db=1.0ms idle=1796.2ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 WHERE (c0."name" = $1) LIMIT 1 ["鎺㈠憳"]
+[debug] QUERY OK source="character_metadata" db=1.0ms idle=1797.7ms
+SELECT c0."id", c0."character_id", c0."str", c0."dex", c0."con", c0."int", c0."combat_exp", c0."potential", c0."max_neili", c0."skills", c0."mapped", c0."performs", c0."inserted_at", c0."updated_at" FROM "character_metadata" AS c0 WHERE (c0."character_id" = $1) [2]
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾帰鍛橈紒 Welcome, 鎺㈠憳!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Received - "w"
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:blacksmith", "delay" => 500, "text" => "娆㈣繋锛屾帰鍛橈紒 Welcome, 鎺㈠憳!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Received - "n"
+[info] Delaying Kantele.Character.CombatEngageAction for 0ms with %{}
+[info] Processing Kantele.Character.CombatEngageAction, 0 left in the queue.
+[info] Received - "n"
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Received - "kill 閲庣尓"
+[debug] QUERY OK source="characters" db=1.4ms idle=1849.9ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 WHERE (c0."name" = $1) LIMIT 1 ["鎺㈠憳"]
+[debug] QUERY OK source="character_metadata" db=0.9ms idle=1851.7ms
+SELECT c0."id", c0."character_id", c0."str", c0."dex", c0."con", c0."int", c0."combat_exp", c0."potential", c0."max_neili", c0."skills", c0."mapped", c0."performs", c0."inserted_at", c0."updated_at" FROM "character_metadata" AS c0 WHERE (c0."character_id" = $1) [2]
+[debug] QUERY OK db=2.7ms queue=0.6ms idle=1853.0ms
+UPDATE "character_metadata" SET "combat_exp" = $1, "potential" = $2, "skills" = $3, "updated_at" = $4 WHERE "id" = $5 [1040, 120, %{dodge: 60, force: 20, parry: 60, sword: 60, unarmed: 60}, ~N[2026-08-23 22:48:19], 3]
+[error] GenServer #PID<0.1113.0> terminating
+** (CaseClauseError) no case clause matching: :error
+    (kalevala 0.1.0) lib/kalevala/character/foreman/channel.ex:19: Kalevala.Character.Foreman.Channel.handle_channel_change/3
+    (elixir 1.11.1) lib/enum.ex:2181: Enum."-reduce/3-lists^foldl/2-0-"/3
+    (kalevala 0.1.0) lib/kalevala/character/foreman.ex:161: Kalevala.Character.Foreman.handle_conn/2
+    (stdlib 3.13) gen_server.erl:680: :gen_server.try_dispatch/4
+    (stdlib 3.13) gen_server.erl:756: :gen_server.handle_msg/6
+    (stdlib 3.13) proc_lib.erl:226: :proc_lib.init_p_do_apply/3
+Last message: %Kalevala.Event{acting_character: nil, data: %{attacker: %{id: "4a04b0de", name: "鎺㈠憳", pid: #PID<0.1125.0>, room_id: "liuxi:guangchang"}, fighter: %Kantele.Combat.Fighter{applies: %{armor: 0, attack: 0, damage: 0, defense: 0, dodge: 0, parry: 0, unarmed_damage: 0}, attack_skill: "unarmed", busy: 0, combat_exp: 1020, con: 20, dex: 20, id: "4a04b0de", int: 20, jiali: 0, mapped: %{}, name: "鎺㈠憳", neili: 200, no_kill: false, pid: #PID<0.1125.0>, room_id: "liuxi:guangchang", skills: %{dodge: 60, force: 20, parry: 60, sword: 60, unarmed: 60}, str: 20, weapon_name: nil}, jiali_paid: 0}, from_pid: #PID<0.1125.0>, metadata: %Kalevala.Event.Metadata{end_time: nil, start_time: nil}, topic: "combat/incoming"}
+State: %Kalevala.Character.Foreman{action_queue: [], callback_module: Kalevala.Character.Foreman.NonPlayer, character: %Kalevala.Character{brain: %Kalevala.Brain{root: %Kalevala.Brain.NullNode{}, state: %Kalevala.Brain.State{values: []}}, description: "涓€澶寸崰鐗欏闇茬殑閲庣尓锛屾鍝煎摟鍝煎摟鍦版嫳鐫€鍦熴€傛柊鎵嬬粌鎵嬬殑濂藉璞°€?, id: "560ed0c9", inventory: [], meta: %Kantele.Character.NonPlayerMeta{combat: %Kantele.Character.Combat{buffs: [], busy: 0, dead: false, enemies: [%{id: "4a04b0de", name: "鎺㈠憳", pid: #PID<0.1125.0>, room_id: "liuxi:guangchang"}], equipped: %{}, jiali: 0, temp: %{armor: 0, attack: 0, damage: 3, defense: 0, dodge: 0, parry: 0, unarmed_damage: 3}}, combat_config: %Kantele.Character.NPCConfig{apply: %{armor: 0, attack: 0, damage: 3, defense: 0, dodge: 0, parry: 0, unarmed_damage: 0}, attitude: nil, no_kill: false, spawn_room_id: "liuxi:guangchang"}, initial_events: [], stats: %Kantele.Character.Stats{combat_exp: 200, con: 10, dex: 10, int: 5, mapped: %{}, performs: #MapSet<[]>, potential: 0, skills: %{"dodge" => 1, "parry" => 1, "unarmed" => 5}, str: 10}, vitals: %Kantele.Character.Vitals{base_jing: 60, base_neili: 0, base_qi: 80, jing: 60, max_jing: 60, max_neili: 0, max_qi: 41, neili: 0, qi: 4}, zone_id: "liuxi"}, name: "閲庣尓", pid: #PID<0.1113.0>, room_id: "liuxi:guangchang", status: nil}, communication_module: Kantele.Communication, controller: Kantele.Character.SpawnController, private: %Kalevala.Character.Foreman.NonPlayer{quit_view: {Kantele.Character.QuitView, "disconnected"}}, processing_action: nil, session: %{}, supervisor_name: {:global, {Kalevala.World.CharacterSupervisor, "liuxi"}}}
+[info] Character starting - 560ed0c9
+[warn] Character channel already registered, reusing - 560ed0c9
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:inn", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:inn", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] SIGTERM received - shutting down
+
+[info] Polling file changes every 700ms...
+[info] Telnet Listener Started
+[info] Zone starting - global
+[info] Zone starting - kissa-jarvi
+[info] Zone starting - lepakko-luola
+[info] Zone starting - liuxi
+[info] Zone starting - sammatti
+[info] Room starting - sammatti:blacksmith
+[info] Room starting - sammatti:guild_hall
+[info] Room starting - sammatti:inn
+[info] Room starting - sammatti:inn_upstairs
+[info] Room starting - sammatti:main-street-1
+[info] Room starting - sammatti:main-street-2
+[info] Room starting - sammatti:main-street-3
+[info] Room starting - sammatti:marketplace
+[info] Room starting - sammatti:park-1
+[info] Room starting - sammatti:park-2
+[info] Room starting - sammatti:park-3
+[info] Room starting - sammatti:residence-1
+[info] Room starting - sammatti:residence-2
+[info] Room starting - sammatti:town-hall
+[info] Room starting - sammatti:town_square
+[info] Room starting - sammatti:well
+[info] Room starting - liuxi:guangchang
+[info] Room starting - liuxi:lianwuchang
+[info] Room starting - liuxi:nether
+[info] Room starting - liuxi:shanlu
+[info] Room starting - liuxi:tiepupu
+[info] Room starting - lepakko-luola:cave-entrance
+[info] Room starting - lepakko-luola:cave-outside
+[info] Room starting - kissa-jarvi:gates
+[info] Running Web.Endpoint with cowboy 2.8.0 at 0.0.0.0:4000 (http)
+[info] Room starting - kissa-jarvi:lake-1
+[info] Room starting - kissa-jarvi:lake-2
+[info] Room starting - kissa-jarvi:lake-3
+[info] Room starting - kissa-jarvi:lake-4
+[info] Room starting - kissa-jarvi:lake-5
+[info] Room starting - kissa-jarvi:lake-6
+[info] Room starting - kissa-jarvi:path-1
+[info] Room starting - kissa-jarvi:path-2
+[info] Room starting - kissa-jarvi:path-3
+[info] Room starting - kissa-jarvi:path-4
+[info] Character starting - 354f79a6
+[info] Character starting - 6875aab1
+[info] Character starting - 6e6a1a9c
+[info] Character starting - 3ef552d1
+[info] Character starting - fb01a9bc
+[info] Character starting - a53f1113
+[info] Character starting - d47a89ac
+[info] Character starting - ceaa41a0
+[info] Character starting - 806dff4b
+[info] Access Web.Endpoint at http://localhost:4000
+[poll-watch] watching: js, css, static
+warning: variable "i" is unused (if the variable is not meant to be used, prefix it with an underscore)
+  boar_dump:45: BoarDump.Scenario.run/1
+
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:blacksmith", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Character starting - 4eb0cd4d
+[info] Character starting - fb8c1bc4
+[info] Character starting - dcd1dd17
+[info] Character starting - bc48532e
+[info] Character starting - d6cd807e
+[info] Character starting - 321fe6d1
+[info] Character starting - d03dc423
+[info] Character starting - a94effd3
+[info] Character starting - fa49c0c4
+[info] Signing in "dumpuser"
+[debug] QUERY OK source="characters" db=16.1ms decode=2.3ms queue=1.3ms idle=1554.9ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 WHERE (c0."name" = $1) LIMIT 1 ["鎺㈠憳"]
+[debug] QUERY OK source="character_metadata" db=0.7ms queue=0.9ms idle=1584.3ms
+SELECT c0."id", c0."character_id", c0."str", c0."dex", c0."con", c0."int", c0."combat_exp", c0."potential", c0."max_neili", c0."skills", c0."mapped", c0."performs", c0."inserted_at", c0."updated_at" FROM "character_metadata" AS c0 WHERE (c0."character_id" = $1) [2]
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾帰鍛橈紒 Welcome, 鎺㈠憳!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Received - "w"
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:blacksmith", "delay" => 500, "text" => "娆㈣繋锛屾帰鍛橈紒 Welcome, 鎺㈠憳!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Received - "n"
+[info] Delaying Kantele.Character.CombatEngageAction for 0ms with %{}
+[info] Processing Kantele.Character.CombatEngageAction, 0 left in the queue.
+[info] Received - "n"
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:blacksmith", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Received - "kill 閲庣尓"
+[debug] QUERY OK source="characters" db=0.8ms idle=1570.0ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 WHERE (c0."name" = $1) LIMIT 1 ["鎺㈠憳"]
+[debug] QUERY OK source="character_metadata" db=1.0ms idle=1571.1ms
+SELECT c0."id", c0."character_id", c0."str", c0."dex", c0."con", c0."int", c0."combat_exp", c0."potential", c0."max_neili", c0."skills", c0."mapped", c0."performs", c0."inserted_at", c0."updated_at" FROM "character_metadata" AS c0 WHERE (c0."character_id" = $1) [2]
+[debug] QUERY OK db=3.4ms queue=1.9ms idle=711.7ms
+UPDATE "character_metadata" SET "combat_exp" = $1, "potential" = $2, "skills" = $3, "updated_at" = $4 WHERE "id" = $5 [1060, 130, %{dodge: 60, force: 20, parry: 60, sword: 60, unarmed: 60}, ~N[2026-08-23 22:51:35], 3]
+[error] GenServer #PID<0.835.0> terminating
+** (CaseClauseError) no case clause matching: :error
+    (kalevala 0.1.0) lib/kalevala/character/foreman/channel.ex:19: Kalevala.Character.Foreman.Channel.handle_channel_change/3
+    (elixir 1.11.1) lib/enum.ex:2181: Enum."-reduce/3-lists^foldl/2-0-"/3
+    (kalevala 0.1.0) lib/kalevala/character/foreman.ex:161: Kalevala.Character.Foreman.handle_conn/2
+    (stdlib 3.13) gen_server.erl:680: :gen_server.try_dispatch/4
+    (stdlib 3.13) gen_server.erl:756: :gen_server.handle_msg/6
+    (stdlib 3.13) proc_lib.erl:226: :proc_lib.init_p_do_apply/3
+Last message: %Kalevala.Event{acting_character: nil, data: %{attacker: %{id: "2dbf2cb2", name: "鎺㈠憳", pid: #PID<0.846.0>, room_id: "liuxi:guangchang"}, fighter: %Kantele.Combat.Fighter{applies: %{armor: 0, attack: 0, damage: 0, defense: 0, dodge: 0, parry: 0, unarmed_damage: 0}, attack_skill: "unarmed", busy: 0, combat_exp: 1040, con: 20, dex: 20, id: "2dbf2cb2", int: 20, jiali: 0, mapped: %{}, name: "鎺㈠憳", neili: 200, no_kill: false, pid: #PID<0.846.0>, room_id: "liuxi:guangchang", skills: %{dodge: 60, force: 20, parry: 60, sword: 60, unarmed: 60}, str: 20, weapon_name: nil}, jiali_paid: 0}, from_pid: #PID<0.846.0>, metadata: %Kalevala.Event.Metadata{end_time: nil, start_time: nil}, topic: "combat/incoming"}
+State: %Kalevala.Character.Foreman{action_queue: [], callback_module: Kalevala.Character.Foreman.NonPlayer, character: %Kalevala.Character{brain: %Kalevala.Brain{root: %Kalevala.Brain.NullNode{}, state: %Kalevala.Brain.State{values: []}}, description: "涓€澶寸崰鐗欏闇茬殑閲庣尓锛屾鍝煎摟鍝煎摟鍦版嫳鐫€鍦熴€傛柊鎵嬬粌鎵嬬殑濂藉璞°€?, id: "d6cd807e", inventory: [], meta: %Kantele.Character.NonPlayerMeta{combat: %Kantele.Character.Combat{buffs: [], busy: 0, dead: false, enemies: [%{id: "2dbf2cb2", name: "鎺㈠憳", pid: #PID<0.846.0>, room_id: "liuxi:guangchang"}], equipped: %{}, jiali: 0, temp: %{armor: 0, attack: 0, damage: 3, defense: 0, dodge: 0, parry: 0, unarmed_damage: 3}}, combat_config: %Kantele.Character.NPCConfig{apply: %{armor: 0, attack: 0, damage: 3, defense: 0, dodge: 0, parry: 0, unarmed_damage: 0}, attitude: nil, no_kill: false, spawn_room_id: "liuxi:guangchang"}, initial_events: [], stats: %Kantele.Character.Stats{combat_exp: 200, con: 10, dex: 10, int: 5, mapped: %{}, performs: #MapSet<[]>, potential: 0, skills: %{"dodge" => 1, "parry" => 1, "unarmed" => 60}, str: 10}, vitals: %Kantele.Character.Vitals{base_jing: 60, base_neili: 0, base_qi: 80, jing: 60, max_jing: 60, max_neili: 0, max_qi: 62, neili: 0, qi: 7}, zone_id: "liuxi"}, name: "閲庣尓", pid: #PID<0.835.0>, room_id: "liuxi:guangchang", status: nil}, communication_module: Kantele.Communication, controller: Kantele.Character.SpawnController, private: %Kalevala.Character.Foreman.NonPlayer{quit_view: {Kantele.Character.QuitView, "disconnected"}}, processing_action: nil, session: %{}, supervisor_name: {:global, {Kalevala.World.CharacterSupervisor, "liuxi"}}}
+[info] Character starting - d6cd807e
+[warn] Character channel already registered, reusing - d6cd807e
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Character starting - fa240e03
+[info] Character starting - b7ad2f0e
+[info] Character starting - db15148d
+[info] Character starting - f81b6973
+[info] Character starting - 4e5f760c
+[info] Character starting - 0d2393db
+[info] Character starting - 323d249c
+[info] Character starting - f48387e2
+[info] Character starting - 8f3d1685
+[info] Signing in "dumpuser"
+[debug] QUERY OK source="characters" db=1.6ms queue=0.2ms idle=217.0ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 WHERE (c0."name" = $1) LIMIT 1 ["鎺㈠憳"]
+[debug] QUERY OK source="character_metadata" db=2.8ms idle=219.3ms
+SELECT c0."id", c0."character_id", c0."str", c0."dex", c0."con", c0."int", c0."combat_exp", c0."potential", c0."max_neili", c0."skills", c0."mapped", c0."performs", c0."inserted_at", c0."updated_at" FROM "character_metadata" AS c0 WHERE (c0."character_id" = $1) [2]
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾帰鍛橈紒 Welcome, 鎺㈠憳!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Received - "w"
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:blacksmith", "delay" => 500, "text" => "娆㈣繋锛屾帰鍛橈紒 Welcome, 鎺㈠憳!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+warning: redefining module BoarDump.Scenario (current version defined in memory)
+[info] Received - "n"
+[info] Delaying Kantele.Character.CombatEngageAction for 0ms with %{}
+[info] Processing Kantele.Character.CombatEngageAction, 0 left in the queue.
+[info] Received - "n"
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Received - "kill 閲庣尓"
+[debug] QUERY OK source="characters" db=1.2ms queue=0.1ms idle=1403.0ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 WHERE (c0."name" = $1) LIMIT 1 ["鎺㈠憳"]
+[debug] QUERY OK source="character_metadata" db=4.3ms idle=1404.9ms
+SELECT c0."id", c0."character_id", c0."str", c0."dex", c0."con", c0."int", c0."combat_exp", c0."potential", c0."max_neili", c0."skills", c0."mapped", c0."performs", c0."inserted_at", c0."updated_at" FROM "character_metadata" AS c0 WHERE (c0."character_id" = $1) [2]
+[debug] QUERY OK db=4.8ms queue=2.5ms idle=1409.9ms
+UPDATE "character_metadata" SET "combat_exp" = $1, "potential" = $2, "skills" = $3, "updated_at" = $4 WHERE "id" = $5 [1080, 140, %{dodge: 60, force: 20, parry: 60, sword: 60, unarmed: 60}, ~N[2026-08-23 22:52:19], 3]
+[error] GenServer #PID<0.988.0> terminating
+** (CaseClauseError) no case clause matching: :error
+    (kalevala 0.1.0) lib/kalevala/character/foreman/channel.ex:19: Kalevala.Character.Foreman.Channel.handle_channel_change/3
+    (elixir 1.11.1) lib/enum.ex:2181: Enum."-reduce/3-lists^foldl/2-0-"/3
+    (kalevala 0.1.0) lib/kalevala/character/foreman.ex:161: Kalevala.Character.Foreman.handle_conn/2
+    (stdlib 3.13) gen_server.erl:680: :gen_server.try_dispatch/4
+    (stdlib 3.13) gen_server.erl:756: :gen_server.handle_msg/6
+    (stdlib 3.13) proc_lib.erl:226: :proc_lib.init_p_do_apply/3
+Last message: %Kalevala.Event{acting_character: nil, data: %{attacker: %{id: "4af90a44", name: "鎺㈠憳", pid: #PID<0.980.0>, room_id: "liuxi:guangchang"}, fighter: %Kantele.Combat.Fighter{applies: %{armor: 0, attack: 0, damage: 0, defense: 0, dodge: 0, parry: 0, unarmed_damage: 0}, attack_skill: "unarmed", busy: 0, combat_exp: 1060, con: 20, dex: 20, id: "4af90a44", int: 20, jiali: 0, mapped: %{}, name: "鎺㈠憳", neili: 200, no_kill: false, pid: #PID<0.980.0>, room_id: "liuxi:guangchang", skills: %{dodge: 60, force: 20, parry: 60, sword: 60, unarmed: 60}, str: 20, weapon_name: nil}, jiali_paid: 0}, from_pid: #PID<0.980.0>, metadata: %Kalevala.Event.Metadata{end_time: nil, start_time: nil}, topic: "combat/incoming"}
+State: %Kalevala.Character.Foreman{action_queue: [], callback_module: Kalevala.Character.Foreman.NonPlayer, character: %Kalevala.Character{brain: %Kalevala.Brain{root: %Kalevala.Brain.NullNode{}, state: %Kalevala.Brain.State{values: []}}, description: "涓€澶寸崰鐗欏闇茬殑閲庣尓锛屾鍝煎摟鍝煎摟鍦版嫳鐫€鍦熴€傛柊鎵嬬粌鎵嬬殑濂藉璞°€?, id: "4e5f760c", inventory: [], meta: %Kantele.Character.NonPlayerMeta{combat: %Kantele.Character.Combat{buffs: [], busy: 0, dead: false, enemies: [%{id: "4af90a44", name: "鎺㈠憳", pid: #PID<0.980.0>, room_id: "liuxi:guangchang"}], equipped: %{}, jiali: 0, temp: %{armor: 0, attack: 0, damage: 3, defense: 0, dodge: 0, parry: 0, unarmed_damage: 3}}, combat_config: %Kantele.Character.NPCConfig{apply: %{armor: 0, attack: 0, damage: 3, defense: 0, dodge: 0, parry: 0, unarmed_damage: 0}, attitude: nil, no_kill: false, spawn_room_id: "liuxi:guangchang"}, initial_events: [], stats: %Kantele.Character.Stats{combat_exp: 200, con: 10, dex: 10, int: 5, mapped: %{}, performs: #MapSet<[]>, potential: 0, skills: %{"dodge" => 1, "parry" => 1, "unarmed" => 60}, str: 10}, vitals: %Kantele.Character.Vitals{base_jing: 60, base_neili: 0, base_qi: 80, jing: 60, max_jing: 60, max_neili: 0, max_qi: 30, neili: 0, qi: 5}, zone_id: "liuxi"}, name: "閲庣尓", pid: #PID<0.988.0>, room_id: "liuxi:guangchang", status: nil}, communication_module: Kantele.Communication, controller: Kantele.Character.SpawnController, private: %Kalevala.Character.Foreman.NonPlayer{quit_view: {Kantele.Character.QuitView, "disconnected"}}, processing_action: nil, session: %{}, supervisor_name: {:global, {Kalevala.World.CharacterSupervisor, "liuxi"}}}
+[info] Character starting - 4e5f760c
+[warn] Character channel already registered, reusing - 4e5f760c
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[debug] QUERY OK source="users" db=1.4ms queue=1.7ms idle=1584.5ms
+SELECT u0."id", u0."token", u0."role", u0."username", u0."email", u0."password_hash", u0."email_verification_token", u0."email_verified_at", u0."password_reset_token", u0."password_reset_expires_at", u0."avatar_key", u0."avatar_extension", u0."inserted_at", u0."updated_at" FROM "users" AS u0 WHERE (u0."token" = $1) [<<234, 78, 173, 22, 220, 77, 69, 219, 133, 143, 23, 106, 94, 113, 227, 172>>]
+[info] state=set duration=255.797 status=200 params={} path=/ method=GET format=html controller=Web.PageController action=index
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[debug] QUERY OK source="users" db=3.0ms queue=0.1ms idle=1404.8ms
+SELECT u0."id", u0."token", u0."role", u0."username", u0."email", u0."password_hash", u0."email_verification_token", u0."email_verified_at", u0."password_reset_token", u0."password_reset_expires_at", u0."avatar_key", u0."avatar_extension", u0."inserted_at", u0."updated_at" FROM "users" AS u0 WHERE (u0."token" = $1) [<<234, 78, 173, 22, 220, 77, 69, 219, 133, 143, 23, 106, 94, 113, 227, 172>>]
+[debug] QUERY OK source="characters" db=1.4ms queue=1.3ms idle=1422.1ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 LEFT OUTER JOIN "playable_characters" AS p1 ON p1."character_id" = c0."id" WHERE (p1."user_id" = $1) [2]
+[info] state=set duration=30.251 status=200 params={} path=/client method=GET format=html controller=Web.PageController action=client
+[debug] QUERY OK source="characters" db=1.2ms queue=1.3ms idle=1863.2ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 WHERE (c0."id" = $1) [1]
+[debug] QUERY OK source="characters" db=4.5ms queue=0.1ms idle=1869.5ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 WHERE (c0."name" = $1) LIMIT 1 ["grant"]
+[debug] QUERY OK source="character_metadata" db=4.1ms queue=0.1ms idle=1874.5ms
+SELECT c0."id", c0."character_id", c0."str", c0."dex", c0."con", c0."int", c0."combat_exp", c0."potential", c0."max_neili", c0."skills", c0."mapped", c0."performs", c0."inserted_at", c0."updated_at" FROM "character_metadata" AS c0 WHERE (c0."character_id" = $1) [1]
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛実rant锛?Welcome, grant!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Received - "west"
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:blacksmith", "delay" => 500, "text" => "娆㈣繋锛実rant锛?Welcome, grant!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Received - "north"
+[info] Delaying Kantele.Character.CombatEngageAction for 0ms with %{}
+[info] Processing Kantele.Character.CombatEngageAction, 0 left in the queue.
+[info] Received - "north"
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:inn", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Received - "kill 閲庣尓"
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[debug] QUERY OK source="characters" db=1.0ms queue=0.2ms idle=1534.8ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 WHERE (c0."name" = $1) LIMIT 1 ["grant"]
+[debug] QUERY OK source="character_metadata" db=3.6ms idle=1536.4ms
+SELECT c0."id", c0."character_id", c0."str", c0."dex", c0."con", c0."int", c0."combat_exp", c0."potential", c0."max_neili", c0."skills", c0."mapped", c0."performs", c0."inserted_at", c0."updated_at" FROM "character_metadata" AS c0 WHERE (c0."character_id" = $1) [1]
+[error] GenServer #PID<0.1126.0> terminating
+** (CaseClauseError) no case clause matching: :error
+    (kalevala 0.1.0) lib/kalevala/character/foreman/channel.ex:19: Kalevala.Character.Foreman.Channel.handle_channel_change/3
+    (elixir 1.11.1) lib/enum.ex:2181: Enum."-reduce/3-lists^foldl/2-0-"/3
+    (kalevala 0.1.0) lib/kalevala/character/foreman.ex:161: Kalevala.Character.Foreman.handle_conn/2
+    (stdlib 3.13) gen_server.erl:680: :gen_server.try_dispatch/4
+    (stdlib 3.13) gen_server.erl:756: :gen_server.handle_msg/6
+    (stdlib 3.13) proc_lib.erl:226: :proc_lib.init_p_do_apply/3
+Last message: %Kalevala.Event{acting_character: nil, data: %{attacker: %{id: "0a438330", name: "grant", pid: #PID<0.1149.0>, room_id: "liuxi:guangchang"}, fighter: %Kantele.Combat.Fighter{applies: %{armor: 0, attack: 0, damage: 0, defense: 0, dodge: 0, parry: 0, unarmed_damage: 0}, attack_skill: "unarmed", busy: 0, combat_exp: 1020, con: 20, dex: 20, id: "0a438330", int: 20, jiali: 0, mapped: %{}, name: "grant", neili: 200, no_kill: false, pid: #PID<0.1149.0>, room_id: "liuxi:guangchang", skills: %{dodge: 60, force: 20, parry: 60, sword: 60, unarmed: 60}, str: 20, weapon_name: nil}, jiali_paid: 0}, from_pid: #PID<0.1149.0>, metadata: %Kalevala.Event.Metadata{end_time: nil, start_time: nil}, topic: "combat/incoming"}
+State: %Kalevala.Character.Foreman{action_queue: [], callback_module: Kalevala.Character.Foreman.NonPlayer, character: %Kalevala.Character{brain: %Kalevala.Brain{root: %Kalevala.Brain.NullNode{}, state: %Kalevala.Brain.State{values: []}}, description: "涓€澶寸崰鐗欏闇茬殑閲庣尓锛屾鍝煎摟鍝煎摟鍦版嫳鐫€鍦熴€傛柊鎵嬬粌鎵嬬殑濂藉璞°€?, id: "4e5f760c", inventory: [], meta: %Kantele.Character.NonPlayerMeta{combat: %Kantele.Character.Combat{buffs: [], busy: 0, dead: false, enemies: [%{id: "0a438330", name: "grant", pid: #PID<0.1149.0>, room_id: "liuxi:guangchang"}], equipped: %{}, jiali: 0, temp: %{armor: 0, attack: 0, damage: 3, defense: 0, dodge: 0, parry: 0, unarmed_damage: 3}}, combat_config: %Kantele.Character.NPCConfig{apply: %{armor: 0, attack: 0, damage: 3, defense: 0, dodge: 0, parry: 0, unarmed_damage: 0}, attitude: nil, no_kill: false, spawn_room_id: "liuxi:guangchang"}, initial_events: [], stats: %Kantele.Character.Stats{combat_exp: 200, con: 10, dex: 10, int: 5, mapped: %{}, performs: #MapSet<[]>, potential: 0, skills: %{"dodge" => 1, "parry" => 1, "unarmed" => 60}, str: 10}, vitals: %Kantele.Character.Vitals{base_jing: 60, base_neili: 0, base_qi: 80, jing: 60, max_jing: 60, max_neili: 0, max_qi: 31, neili: 0, qi: 9}, zone_id: "liuxi"}, name: "閲庣尓", pid: #PID<0.1126.0>, room_id: "liuxi:guangchang", status: nil}, communication_module: Kantele.Communication, controller: Kantele.Character.SpawnController, private: %Kalevala.Character.Foreman.NonPlayer{quit_view: {Kantele.Character.QuitView, "disconnected"}}, processing_action: nil, session: %{}, supervisor_name: {:global, {Kalevala.World.CharacterSupervisor, "liuxi"}}}
+[info] Character starting - 4e5f760c
+[warn] Character channel already registered, reusing - 4e5f760c
+[debug] QUERY OK db=34.8ms idle=1540.7ms
+UPDATE "character_metadata" SET "combat_exp" = $1, "potential" = $2, "skills" = $3, "updated_at" = $4 WHERE "id" = $5 [1040, 120, %{dodge: 60, force: 20, parry: 60, sword: 60, unarmed: 60}, ~N[2026-08-23 22:55:21], 2]
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:inn", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.SayAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "delay" => 500, "text" => "娆㈣繋锛屾潙姘?Villager锛?Welcome, 鏉戞皯 Villager!"}
+[info] Processing Kantele.Character.SayAction, 0 left in the queue.
+[info] Received - "look around"
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Received - "kill 閲庣尓"
+[debug] QUERY OK source="characters" db=3.6ms queue=0.2ms idle=1932.0ms
+SELECT c0."id", c0."name", c0."inserted_at", c0."updated_at" FROM "characters" AS c0 WHERE (c0."name" = $1) LIMIT 1 ["grant"]
+[debug] QUERY OK source="character_metadata" db=1.6ms idle=1936.4ms
+  boar_dump:1
+
+warning: variable "i" is unused (if the variable is not meant to be used, prefix it with an underscore)
+  boar_dump:45: BoarDump.Scenario.run/1
+
+SELECT c0."id", c0."character_id", c0."str", c0."dex", c0."con", c0."int", c0."combat_exp", c0."potential", c0."max_neili", c0."skills", c0."mapped", c0."performs", c0."inserted_at", c0."updated_at" FROM "character_metadata" AS c0 WHERE (c0."character_id" = $1) [1]
+[debug] QUERY OK db=6.9ms queue=2.9ms idle=1938.8ms
+UPDATE "character_metadata" SET "combat_exp" = $1, "potential" = $2, "skills" = $3, "updated_at" = $4 WHERE "id" = $5 [1060, 130, %{dodge: 60, force: 20, parry: 60, sword: 60, unarmed: 60}, ~N[2026-08-23 22:58:56], 2]
+[error] GenServer #PID<0.1156.0> terminating
+** (CaseClauseError) no case clause matching: :error
+    (kalevala 0.1.0) lib/kalevala/character/foreman/channel.ex:19: Kalevala.Character.Foreman.Channel.handle_channel_change/3
+    (elixir 1.11.1) lib/enum.ex:2181: Enum."-reduce/3-lists^foldl/2-0-"/3
+    (kalevala 0.1.0) lib/kalevala/character/foreman.ex:161: Kalevala.Character.Foreman.handle_conn/2
+    (stdlib 3.13) gen_server.erl:680: :gen_server.try_dispatch/4
+    (stdlib 3.13) gen_server.erl:756: :gen_server.handle_msg/6
+    (stdlib 3.13) proc_lib.erl:226: :proc_lib.init_p_do_apply/3
+Last message: %Kalevala.Event{acting_character: nil, data: %{attacker: %{id: "0a438330", name: "grant", pid: #PID<0.1149.0>, room_id: "liuxi:guangchang"}, fighter: %Kantele.Combat.Fighter{applies: %{armor: 0, attack: 0, damage: 0, defense: 0, dodge: 0, parry: 0, unarmed_damage: 0}, attack_skill: "unarmed", busy: 0, combat_exp: 1040, con: 20, dex: 20, id: "0a438330", int: 20, jiali: 0, mapped: %{}, name: "grant", neili: 200, no_kill: false, pid: #PID<0.1149.0>, room_id: "liuxi:guangchang", skills: %{dodge: 60, force: 20, parry: 60, sword: 60, unarmed: 60}, str: 20, weapon_name: nil}, jiali_paid: 0}, from_pid: #PID<0.1149.0>, metadata: %Kalevala.Event.Metadata{end_time: nil, start_time: nil}, topic: "combat/incoming"}
+State: %Kalevala.Character.Foreman{action_queue: [], callback_module: Kalevala.Character.Foreman.NonPlayer, character: %Kalevala.Character{brain: %Kalevala.Brain{root: %Kalevala.Brain.NullNode{}, state: %Kalevala.Brain.State{values: []}}, description: "涓€澶寸崰鐗欏闇茬殑閲庣尓锛屾鍝煎摟鍝煎摟鍦版嫳鐫€鍦熴€傛柊鎵嬬粌鎵嬬殑濂藉璞°€?, id: "4e5f760c", inventory: [], meta: %Kantele.Character.NonPlayerMeta{combat: %Kantele.Character.Combat{buffs: [], busy: 0, dead: false, enemies: [%{id: "0a438330", name: "grant", pid: #PID<0.1149.0>, room_id: "liuxi:guangchang"}], equipped: %{}, jiali: 0, temp: %{armor: 0, attack: 0, damage: 3, defense: 0, dodge: 0, parry: 0, unarmed_damage: 3}}, combat_config: %Kantele.Character.NPCConfig{apply: %{armor: 0, attack: 0, damage: 3, defense: 0, dodge: 0, parry: 0, unarmed_damage: 0}, attitude: nil, no_kill: false, spawn_room_id: "liuxi:guangchang"}, initial_events: [], stats: %Kantele.Character.Stats{combat_exp: 200, con: 10, dex: 10, int: 5, mapped: %{}, performs: #MapSet<[]>, potential: 0, skills: %{"dodge" => 1, "parry" => 1, "unarmed" => 60}, str: 10}, vitals: %Kantele.Character.Vitals{base_jing: 60, base_neili: 0, base_qi: 80, jing: 60, max_jing: 60, max_neili: 0, max_qi: 60, neili: 0, qi: 9}, zone_id: "liuxi"}, name: "閲庣尓", pid: #PID<0.1156.0>, room_id: "liuxi:guangchang", status: nil}, communication_module: Kantele.Communication, controller: Kantele.Character.SpawnController, private: %Kalevala.Character.Foreman.NonPlayer{quit_view: {Kantele.Character.QuitView, "disconnected"}}, processing_action: nil, session: %{}, supervisor_name: {:global, {Kalevala.World.CharacterSupervisor, "liuxi"}}}
+[info] Character starting - 4e5f760c
+[warn] Character channel already registered, reusing - 4e5f760c
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Received - "look around"
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.EmoteAction for 0ms with %{"channel_name" => "rooms:sammatti:town_square", "text" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}
+[info] Processing Kantele.Character.EmoteAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "looking", "message" => "鐜【鍥涘懆锛屾兂鎵句釜浜鸿亰鑱娿€?looks around for someone to talk to."}, "minimum_delay" => 90000, "random_delay" => 180000, "topic" => "characters/emote"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
+[info] Delaying Kantele.Character.WanderAction for 0ms with %{}
+[info] Processing Kantele.Character.WanderAction, 1 left in the queue.
+[info] Delaying Kantele.Character.DelayEventAction for 0ms with %{"data" => %{"id" => "wander"}, "minimum_delay" => 18000, "random_delay" => 18000, "topic" => "characters/move"}
+[info] Processing Kantele.Character.DelayEventAction, 0 left in the queue.
