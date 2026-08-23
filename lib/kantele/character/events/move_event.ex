@@ -7,6 +7,9 @@ defmodule Kantele.Character.MoveEvent do
   alias Kantele.Character.MoveView
 
   def commit(conn, %{data: event}) do
+    conn =
+      notify_enemies_left(conn, conn.character)
+
     conn
     |> move(:from, event.from, MoveView, "leave", %{})
     |> move(:to, event.to, MoveView, "enter", %{})
@@ -14,6 +17,29 @@ defmodule Kantele.Character.MoveEvent do
     |> unsubscribe("rooms:#{event.from}", [], &unsubscribe_error/2)
     |> subscribe("rooms:#{event.to}", [], &subscribe_error/2)
     |> event("room/look")
+  end
+
+  # 离开房间时通知自己的敌人移除自己（对应 LPC clean_up_enemy 的环境校验）
+  defp notify_enemies_left(conn, character) do
+    combat = character.meta.combat
+
+    case combat do
+      %Kantele.Character.Combat{} ->
+        Enum.each(combat.enemies, fn enemy ->
+          if Process.alive?(enemy.pid) do
+            send(enemy.pid, %Kalevala.Event{
+              from_pid: self(),
+              topic: "combat/enemy-left",
+              data: %{id: character.id}
+            })
+          end
+        end)
+
+      _ ->
+        :ok
+    end
+
+    conn
   end
 
   def abort(conn, %{data: event}) do

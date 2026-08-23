@@ -90,10 +90,15 @@ defmodule Kantele.Character.LoginController do
   end
 
   defp process_character(conn, character_name) do
+    name = String.trim(character_name)
+
     character =
-      character_name
-      |> String.trim()
+      name
       |> build_character()
+      |> Kantele.Character.Records.apply_to_character(Kantele.Character.Records.load(name))
+
+    # 启动自然回复循环（foreman 自投递）
+    Kantele.Character.CombatEvent.kick_regen()
 
     conn
     |> put_session(:login_state, :authenticated)
@@ -139,14 +144,9 @@ defmodule Kantele.Character.LoginController do
         }
       ],
       meta: %Kantele.Character.PlayerMeta{
-        vitals: %Kantele.Character.Vitals{
-          health_points: 25,
-          max_health_points: 25,
-          skill_points: 17,
-          max_skill_points: 17,
-          endurance_points: 30,
-          max_endurance_points: 30
-        }
+        vitals: Kantele.Character.Vitals.new(),
+        stats: Kantele.Character.Stats.new(),
+        combat: Kantele.Character.Combat.new()
       }
     }
   end

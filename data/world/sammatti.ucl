@@ -190,6 +190,7 @@ room_exits "blacksmith" {
   room_id = rooms.blacksmith.id
 
   east = rooms.town_square.id
+  north = "liuxi.rooms.shanlu.id"
 }
 
 room_characters "blacksmith" {

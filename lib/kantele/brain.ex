@@ -36,9 +36,20 @@ defmodule Kantele.Brain do
   end
 
   def process(brain, brains) when brain != nil do
-    %Kalevala.Brain{
-      root: parse_node(brain, brains)
-    }
+    root = parse_node(brain, brains)
+
+    # 条件选择器失败时会向下游返回 :error（Kalevala clean_state 无法处理），
+    # 包一层 sequence 吸收错误，保证任何 brain 结构都安全
+    root =
+      case root do
+        %Kalevala.Brain.ConditionalSelector{} ->
+          %Kalevala.Brain.Sequence{nodes: [root]}
+
+        other ->
+          other
+      end
+
+    %Kalevala.Brain{root: root}
   end
 
   def process(_, _brains) do
@@ -171,6 +182,14 @@ defmodule Kantele.Brain do
   def parse_action("flee", action, _brains) do
     %Kalevala.Brain.Action{
       type: Kantele.Character.FleeAction,
+      data: %{},
+      delay: Map.get(action, :delay, 0)
+    }
+  end
+
+  def parse_action("combat-engage", action, _brains) do
+    %Kalevala.Brain.Action{
+      type: Kantele.Character.CombatEngageAction,
       data: %{},
       delay: Map.get(action, :delay, 0)
     }

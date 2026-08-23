@@ -139,6 +139,12 @@ defmodule Kantele.World.Room.Events do
       event("context/lookup", :call)
     end
 
+    module(CombatEvent) do
+      event("combat/attack", :call)
+      event("combat/aggressive", :call)
+      event("skills/learn", :call)
+    end
+
     module(ForwardEvent) do
       event("characters/emote", :call)
       event("characters/move", :call)
@@ -361,6 +367,147 @@ defmodule Kantele.World.Room.NotifyEvent do
   def call(context, event) do
     Enum.reduce(context.characters, context, fn character, context ->
       event(context, character.pid, event.from_pid, event.topic, event.data)
+    end)
+  end
+end
+
+defmodule Kantele.World.Room.CombatEvent do
+  @moduledoc """
+  房间侧战斗解析（对应 combatd.c 的环境职责）
+
+  - `combat/attack`：按名字找到目标，向双方发 `combat/start`
+  - `combat/strike`：校验双方同场后跑命中管线，广播文案并结算受击方
+  - `combat/aggressive`：aggressive NPC 挑选在场玩家开战
+  - `skills/learn`：找到师父 NPC 并转发授艺请求
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CharacterView
+  alias Kantele.Character.CommandView
+
+  def call(context, event) do
+    attacker = Enum.find(context.characters, &(&1.pid == event.from_pid))
+
+    case attacker do
+      nil -> context
+      attacker -> dispatch(context, event, attacker)
+    end
+  end
+
+  # ---- 开战请求 ----
+
+  defp dispatch(context, %{topic: "combat/attack", data: %{name: name}}, attacker) do
+    target =
+      Enum.find(context.characters, fn character ->
+        character.pid != attacker.pid &&
+          Kalevala.Character.matches?(character, name)
+      end)
+
+    cond do
+      is_nil(name) or name == "" ->
+        render(context, attacker.pid, CommandView, "text", %{text: "你要跟谁动手？\n"})
+
+      is_nil(target) ->
+        render(
+          context,
+          attacker.pid,
+          CharacterView,
+          "not-found",
+          %{name: name}
+        )
+
+      dead?(target) or dead?(attacker) ->
+        render(
+          context,
+          attacker.pid,
+          CommandView,
+          "text",
+          %{text: "对方已经倒下了，刀剑无眼，何必赶尽杀绝。\n"}
+        )
+
+      true ->
+        engage(context, attacker, target)
+    end
+  end
+
+  # ---- aggressive NPC ----
+
+  defp dispatch(context, %{topic: "combat/aggressive"}, npc) do
+    cond do
+      dead?(npc) ->
+        context
+
+      true ->
+        players = players_in_room(context)
+
+        case players do
+          [] ->
+            context
+
+          players ->
+            victim = Enum.random(players)
+            engage(context, npc, victim)
+        end
+    end
+  end
+
+  # ---- 学习 ----
+
+  defp dispatch(context, %{topic: "skills/learn"} = event, student) do
+    teacher =
+      Enum.find(context.characters, fn character ->
+        character.pid != student.pid &&
+          Kalevala.Character.matches?(character, event.data.name)
+      end)
+
+    case teacher do
+      nil ->
+        render(
+          context,
+          student.pid,
+          CommandView,
+          "text",
+          %{text: "这里没有这个人。\n"}
+        )
+
+      teacher ->
+        # 学生属性由命令层随事件携带（房间上下文中的角色是 Trimmed 版本）
+        event(context, teacher.pid, student.pid, "skills/teach", %{
+          skill: event.data.skill,
+          student_stats: event.data.student_stats,
+          reply_to: student.pid
+        })
+    end
+  end
+
+  defp dispatch(context, _event, _attacker), do: context
+
+  # ---- 双方入场 ----
+
+  defp engage(context, initiator, target) do
+    context
+    |> start_combat(target, initiator)
+    |> start_combat(initiator, target)
+  end
+
+  defp start_combat(context, character, initiator) do
+    event(context, character.pid, self(), "combat/start", %{
+      enemy: ref(initiator),
+      initiator_id: initiator.id
+    })
+  end
+
+  defp ref(character), do: %{id: character.id, pid: character.pid, name: character.name}
+
+  defp dead?(%{meta: %{combat: %{dead: true}}}), do: true
+  defp dead?(_), do: false
+
+  defp players_in_room(context) do
+    player_ids = MapSet.new(Kantele.Character.Presence.characters(), & &1.id)
+
+    Enum.filter(context.characters, fn character ->
+      dead?(character) == false and MapSet.member?(player_ids, character.id)
     end)
   end
 end

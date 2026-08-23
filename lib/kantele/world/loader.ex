@@ -195,6 +195,21 @@ defmodule Kantele.World.Loader do
   Parse character data
 
   ID is the zone's id concatenated with the character's key
+
+  支持可选的 `combat {}` 块描述武侠战斗属性：
+
+      characters "heihu" {
+        name = "黑虎"
+        combat = {
+          attitude = "aggressive"
+          max_qi = 900
+          str = 30
+          combat_exp = 8000
+          skills = { unarmed = 80, dodge = 70 }
+          map_skill = { sword = "liuxin-jian" }
+          apply = { attack = 45, damage = 35, armor = 20 }
+        }
+      }
   """
   def parse_character(zone, key, character_data, brains) do
     character = %Character{
@@ -205,18 +220,96 @@ defmodule Kantele.World.Loader do
       meta: %Kantele.Character.NonPlayerMeta{
         zone_id: zone.id,
         initial_events: parse_initial_events(character_data),
-        vitals: %Kantele.Character.Vitals{
-          health_points: 25,
-          max_health_points: 25,
-          skill_points: 17,
-          max_skill_points: 17,
-          endurance_points: 30,
-          max_endurance_points: 30
-        }
+        vitals: npc_vitals(Map.get(character_data, :combat)),
+        stats: npc_stats(Map.get(character_data, :combat)),
+        combat_config: npc_combat_config(Map.get(character_data, :combat)),
+        combat: Kantele.Character.Combat.new()
       }
     }
 
+    character = attach_npc_applies(character, Map.get(character_data, :combat))
+
     {key, character}
+  end
+
+  defp npc_vitals(nil), do: Kantele.Character.Vitals.new()
+
+  defp npc_vitals(combat) do
+    base = Kantele.Character.Vitals.new()
+
+    %Kantele.Character.Vitals{
+      qi: Map.get(combat, :max_qi, base.qi),
+      max_qi: Map.get(combat, :max_qi, base.max_qi),
+      jing: Map.get(combat, :max_jing, base.jing),
+      max_jing: Map.get(combat, :max_jing, base.max_jing),
+      neili: Map.get(combat, :max_neili, base.neili),
+      max_neili: Map.get(combat, :max_neili, base.max_neili)
+    }
+  end
+
+  defp npc_stats(nil), do: Kantele.Character.Stats.new()
+
+  defp npc_stats(combat) do
+    %Kantele.Character.Stats{
+      str: Map.get(combat, :str, 20),
+      dex: Map.get(combat, :dex, 20),
+      con: Map.get(combat, :con, 20),
+      int: Map.get(combat, :int, 20),
+      combat_exp: Map.get(combat, :combat_exp, 0),
+      potential: Map.get(combat, :potential, 0),
+      skills: skill_keys(Map.get(combat, :skills, %{})),
+      mapped: skill_keys(Map.get(combat, :map_skill, %{})),
+      performs: MapSet.new()
+    }
+  end
+
+  # UCL 键名不支持横线，约定用下划线书写（liuxin_jian -> liuxin-jian）
+  defp skill_keys(map) do
+    Enum.into(map, %{}, fn {key, value} ->
+      {String.replace(to_string(key), "_", "-"), value}
+    end)
+  end
+
+  defp npc_combat_config(combat) when combat != nil do
+    %Kantele.Character.NPCConfig{
+      attitude: Map.get(combat, :attitude),
+      no_kill: Map.get(combat, :no_kill) in [true, "true"],
+      spawn_room_id: nil,
+      apply: Kantele.Character.Combat.new().temp
+      |> Map.merge(stringify_apply(Map.get(combat, :apply, %{})))
+    }
+  end
+
+  defp npc_combat_config(_), do: Kantele.Character.NPCConfig.new()
+
+  defp attach_npc_applies(character, combat) when combat != nil do
+    apply = stringify_apply(Map.get(combat, :apply, %{}))
+
+    # 空手攻击读取 unarmed_damage：未单独配置时沿用 damage（LPC NPC 惯例）
+    apply =
+      case Map.get(apply, :damage) do
+        nil -> apply
+        dmg -> Map.put_new(apply, :unarmed_damage, dmg)
+      end
+
+    combat_state = Kantele.Character.Combat.apply_temp(character.meta.combat, apply)
+    meta = Map.put(character.meta, :combat, combat_state)
+
+    %{character | meta: meta}
+  end
+
+  defp attach_npc_applies(character, _), do: character
+
+  defp stringify_map(map) do
+    Enum.into(map, %{}, fn {key, value} -> {to_string(key), value} end)
+  end
+
+  defp stringify_apply(apply) do
+    apply
+    |> stringify_map()
+    |> Enum.into(%{}, fn {key, value} ->
+      {String.to_atom(key), value}
+    end)
   end
 
   defp parse_initial_events(%{initial_events: initial_events}) do
@@ -235,6 +328,8 @@ defmodule Kantele.World.Loader do
   Parse item data
 
   ID is the zone's id concatenated with the item's key
+
+  支持可选的 `meta = {}` 块描述战斗属性（damage/skill_type/armor/value）
   """
   def parse_item(zone, key, item_data, verbs) do
     item_verbs =
@@ -250,10 +345,21 @@ defmodule Kantele.World.Loader do
       description: item_data.description,
       verbs: item_verbs,
       callback_module: Kantele.World.Item,
-      meta: %Kantele.World.Item.Meta{}
+      meta: parse_item_meta(Map.get(item_data, :meta))
     }
 
     {key, item}
+  end
+
+  defp parse_item_meta(nil), do: %Kantele.World.Item.Meta{}
+
+  defp parse_item_meta(meta) do
+    %Kantele.World.Item.Meta{
+      damage: Map.get(meta, :damage),
+      skill_type: Map.get(meta, :skill_type),
+      armor: Map.get(meta, :armor),
+      value: Map.get(meta, :value)
+    }
   end
 
   @doc """
@@ -322,11 +428,26 @@ defmodule Kantele.World.Loader do
 
           {_key, character} = Enum.find(zone.characters, &match_character(&1, character_id))
 
+          meta = character.meta
+          combat_config = Map.get(meta, :combat_config)
+
+          combat_config =
+            case combat_config do
+              %Kantele.Character.NPCConfig{} ->
+                %{combat_config | spawn_room_id: room_id}
+
+              _ ->
+                combat_config
+            end
+
+          meta = %{meta | combat_config: combat_config}
+
           %Character{
             character
             | id: "#{room_id}:#{character.id}:#{index}",
               name: Map.get(character_data, :name, character.name),
-              room_id: room_id
+              room_id: room_id,
+              meta: meta
           }
         end)
       end)

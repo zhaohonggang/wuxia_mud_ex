@@ -17,19 +17,16 @@ defmodule Kantele.Character.InfoView do
     ~i"""
     {table}
       {row}
-        {cell}Eric The Alchemist{/cell}
+        {cell}气 气血{/cell}
+        {cell}{hp}#{vitals.qi}/#{vitals.max_qi}{/hp}{/cell}
       {/row}
       {row}
-        {cell}HP{/cell}
-        {cell}{hp}#{vitals.health_points}/#{vitals.max_health_points}{/hp}{/cell}
+        {cell}精 精力{/cell}
+        {cell}{sp}#{vitals.jing}/#{vitals.max_jing}{/sp}{/cell}
       {/row}
       {row}
-        {cell}SP{/cell}
-        {cell}{sp}#{vitals.skill_points}/#{vitals.max_skill_points}{/sp}{/cell}
-      {/row}
-      {row}
-        {cell}EP{/cell}
-        {cell}{ep}#{vitals.endurance_points}/#{vitals.max_endurance_points}{/ep}{/cell}
+        {cell}内力{/cell}
+        {cell}{ep}#{vitals.neili}/#{vitals.max_neili}{/ep}{/cell}
       {/row}
     {/table}
     """

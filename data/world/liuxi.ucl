@@ -1,0 +1,264 @@
+zones "liuxi" {
+  name = "柳溪镇 Liuxi"
+}
+
+# ---------------------------------------------------------------------------
+# 房间
+# ---------------------------------------------------------------------------
+
+rooms "shanlu" {
+  name = "山路 Mountain Path"
+  description = "一条蜿蜒的山路，杂草没膝。远处传来野兽的低吼，行人到此多半加快脚步。A winding mountain path. Tall weeds grow everywhere and the roar of wild beasts can be heard in the distance."
+
+  x = 0
+  y = 0
+  z = 0
+}
+
+room_exits "shanlu" {
+  room_id = rooms.shanlu.id
+
+  south = "sammatti.rooms.blacksmith.id"
+  north = rooms.guangchang.id
+}
+
+room_characters "shanlu" {
+  room_id = rooms.shanlu.id
+
+  characters = [
+    {
+      id = characters.heihu.id
+    }
+  ]
+}
+
+rooms "guangchang" {
+  name = "镇广场 Town Square"
+  description = "柳溪镇的中央广场，青石板铺就的地面被岁月磨得发亮。西边是练武场，东边是张记铁铺。The central square of Liuxi town, paved with time-worn flagstones. A practice yard lies west and a smithy east."
+
+  map_icon = "wooden-sign"
+
+  x = 0
+  y = 1
+  z = 0
+}
+
+room_characters "guangchang" {
+  room_id = rooms.guangchang.id
+
+  characters = [
+    {
+      id = characters.yezhu.id
+    }
+  ]
+}
+
+room_exits "guangchang" {
+  room_id = rooms.guangchang.id
+
+  south = rooms.shanlu.id
+  west = rooms.lianwuchang.id
+  east = rooms.tiepupu.id
+}
+
+rooms "lianwuchang" {
+  name = "练武场 Practice Yard"
+  description = "一片开阔的黄土场地，立着几个木桩，桩上刀痕累累。一位鹤发老者正在场边踱步。An open training ground lined with scarred wooden posts. A white-haired old man paces along its edge."
+
+  map_icon = "hammer"
+
+  x = -1
+  y = 1
+  z = 0
+}
+
+room_exits "lianwuchang" {
+  room_id = rooms.lianwuchang.id
+
+  east = rooms.guangchang.id
+}
+
+room_characters "lianwuchang" {
+  room_id = rooms.lianwuchang.id
+
+  characters = [
+    {
+      id = characters.wangshifu.id
+    }
+  ]
+}
+
+rooms "tiepupu" {
+  name = "张记铁铺 Zhang's Smithy"
+  description = "炉火通红的铁铺，墙上挂着几件成色的兵器。The forge of the Zhang family, its fire glowing red. A few weapons hang on the wall."
+
+  map_color = "yellow"
+  map_icon = "shop"
+
+  x = 1
+  y = 1
+  z = 0
+}
+
+room_exits "tiepupu" {
+  room_id = rooms.tiepupu.id
+
+  west = rooms.guangchang.id
+}
+
+room_items "tiepupu" {
+  room_id = rooms.tiepupu.id
+
+  items = [
+    {
+      id = items.changjian.id
+    },
+    {
+      id = items.bupao.id
+    }
+  ]
+}
+
+# 虚空：NPC 死亡后的停尸房，无出口，60 秒后回出生点重生
+rooms "nether" {
+  name = "虚空 Nether"
+  description = "一片混沌虚无的空间，你的尸体静静地躺在这里。"
+
+  x = 9
+  y = 9
+  z = 9
+}
+
+# ---------------------------------------------------------------------------
+# 物品
+# ---------------------------------------------------------------------------
+
+items "changjian" {
+  name = "长剑 Changjian"
+  description = "一柄制式长剑，剑身狭长，开锋犀利，是江湖中人最趁手的兵刃。"
+
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  meta = {
+    damage = 22
+    skill_type = "sword"
+    value = 300
+  }
+}
+
+items "bupao" {
+  name = "布袍 Bupao"
+  description = "一件青布长袍，浆洗得干干净净，聊胜于无的护身衣物。"
+
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+
+  meta = {
+    armor = 2
+    value = 50
+  }
+}
+
+# ---------------------------------------------------------------------------
+# NPC
+# ---------------------------------------------------------------------------
+
+characters "heihu" {
+  name = "黑虎"
+  description = "一只吊睛白额的猛虎，黄毛黑纹，双目如灯，伏在山路旁的草丛中，尾巴不耐烦地拍打着地面。"
+
+  brain = brains.heihu
+
+  combat = {
+    attitude = "aggressive"
+    no_kill = false
+    max_qi = 900
+    max_jing = 500
+    max_neili = 300
+    str = 30
+    dex = 26
+    con = 25
+    int = 12
+    combat_exp = 8000
+    skills = {
+      unarmed = 80
+      dodge = 70
+      parry = 50
+      force = 40
+    }
+    apply = {
+      attack = 45
+      damage = 35
+      armor = 20
+    }
+  }
+}
+
+characters "yezhu" {
+  name = "野猪"
+  description = "一头獠牙外露的野猪，正哼哧哼哧地拱着土。新手练手的好对象。"
+
+  combat = {
+    no_kill = false
+    max_qi = 80
+    max_jing = 60
+    max_neili = 0
+    str = 10
+    dex = 10
+    con = 10
+    int = 5
+    combat_exp = 200
+    skills = {
+      unarmed = 5
+      dodge = 1
+      parry = 1
+    }
+    apply = {
+      damage = 3
+    }
+  }
+}
+
+characters "wangshifu" {
+  name = "王重九"
+  description = "一位鹤发童颜的老者，青布长衫洗得发白，腰间悬着一柄旧剑。他平日在此授徒练武，剑法看似平实，实则已臻化境。"
+
+  combat = {
+    no_kill = true
+    max_qi = 2600
+    max_jing = 1800
+    max_neili = 2400
+    str = 26
+    dex = 25
+    con = 27
+    int = 30
+    combat_exp = 320000
+    skills = {
+      force = 120
+      liuxi_neigong = 110
+      dodge = 100
+      parry = 115
+      sword = 125
+      liuxin_jian = 120
+      unarmed = 90
+    }
+    map_skill = {
+      force = "liuxi-neigong"
+      sword = "liuxin-jian"
+      parry = "liuxin-jian"
+    }
+    apply = {
+      damage = 22
+      attack = 30
+    }
+  }
+}

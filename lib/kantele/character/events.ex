@@ -8,6 +8,7 @@ defmodule Kantele.Character.Events do
   alias Kalevala.Event.Message
   alias Kalevala.Event.Movement
   alias Kantele.Character.ChannelEvent
+  alias Kantele.Character.CombatEvent
   alias Kantele.Character.EmoteEvent
   alias Kantele.Character.SayEvent
   alias Kantele.Character.TellEvent
@@ -16,6 +17,21 @@ defmodule Kantele.Character.Events do
   scope(Kantele.Character) do
     module(DelayedEvent) do
       event("commands/delayed", :run)
+    end
+
+    module(CombatEvent) do
+      event("combat/start", :start)
+      event("combat/tick", :tick)
+      event("combat/incoming", :incoming)
+      event("combat/enemy-died", :enemy_died)
+      event("combat/enemy-left", :enemy_left)
+      event("combat/halt", :halt)
+      event("combat/yield", :yield)
+      event("combat/buff-expire", :buff_expire)
+      event("combat/respawn", :respawn)
+      event("vitals/regen", :regen)
+
+      event(Message, :echo, interested?: &CombatEvent.interested?/1)
     end
 
     module(EmoteEvent) do
@@ -43,6 +59,10 @@ defmodule Kantele.Character.Events do
     module(SayEvent) do
       event("say/send", :broadcast)
       event(Message, :echo, interested?: &SayEvent.interested?/1)
+    end
+
+    module(SkillsEvent) do
+      event("skills/learn-result", :learn_result)
     end
 
     module(TellEvent) do
@@ -81,6 +101,19 @@ defmodule Kantele.Character.NonPlayerEvents do
   alias Kalevala.Event.Movement
 
   scope(Kantele.Character) do
+    module(CombatEvent) do
+      event("combat/start", :start)
+      event("combat/tick", :tick)
+      event("combat/incoming", :incoming)
+      event("combat/enemy-died", :enemy_died)
+      event("combat/enemy-left", :enemy_left)
+      event("combat/halt", :halt)
+      event("combat/yield", :yield)
+      event("combat/buff-expire", :buff_expire)
+      event("combat/respawn", :respawn)
+      event("vitals/regen", :regen)
+    end
+
     module(FleeEvent) do
       event("room/flee", :run)
     end
@@ -89,6 +122,10 @@ defmodule Kantele.Character.NonPlayerEvents do
       event(Movement.Commit, :commit)
       event(Movement.Abort, :abort)
       event(Movement.Notice, :notice)
+    end
+
+    module(SkillsEvent) do
+      event("skills/teach", :teach)
     end
 
     module(WanderEvent) do

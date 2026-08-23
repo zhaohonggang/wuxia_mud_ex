@@ -34,7 +34,7 @@ defmodule Kantele.World do
 
   @impl true
   def init(_opts) do
-    config = Application.get_env(:kantele, :world, [])
+    config = Application.get_env(:ex_venture, :kantele_world, [])
     kickoff = Keyword.get(config, :kickoff, true)
 
     children = [

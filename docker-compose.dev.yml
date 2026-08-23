@@ -109,10 +109,11 @@ services:
 
   # ---------------------------------------------------------------------------
   # Phoenix web server (foreground) + Kalevala telnet listener (:4646)
+  # sname 开启 Erlang 分布，便于 e2e 脚本 remsh 进游戏节点做验收测试
   # ---------------------------------------------------------------------------
   app:
     <<: *app-base
-    command: mix phx.server
+    command: elixir --sname app -S mix phx.server
     ports:
       - "4000:4000" # web client: http://localhost:4000
       - "4646:4646" # game telnet port

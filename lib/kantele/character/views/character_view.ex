@@ -15,4 +15,8 @@ defmodule Kantele.Character.CharacterView do
       data: character.meta.vitals
     }
   end
+
+  def render("not-found", %{name: name}) do
+    ~i(这里没有 {color foreground="white"}#{name}{/color} 这个人。\n)
+  end
 end

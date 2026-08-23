@@ -30,6 +30,30 @@ verbs "look" {
   conditions = {}
 }
 
+verbs "wield" {
+  icon = "sword"
+  text = "装备 Wield"
+  send = "wield ${id}"
+
+  conditions = {
+    location = [
+      "inventory/self"
+    ]
+  }
+}
+
+verbs "unwield" {
+  icon = "shield"
+  text = "卸下 Unwield"
+  send = "unwield ${id}"
+
+  conditions = {
+    location = [
+      "inventory/self"
+    ]
+  }
+}
+
 # Leaving these below for inspiration
 
 # verbs "equip" {

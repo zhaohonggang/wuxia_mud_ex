@@ -19,6 +19,9 @@ config :ex_venture, ExVenture.Mailer, adapter: Bamboo.TestAdapter
 
 config :ex_venture, :listener, start: false
 
+# 单元测试不播种世界（战斗公式测试为纯函数；世界数据由 loader 测试按需加载）
+config :ex_venture, :kantele_world, kickoff: false
+
 # Print only warnings and errors during test
 config :logger, level: :warn
 

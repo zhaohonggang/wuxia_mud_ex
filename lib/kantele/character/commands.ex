@@ -23,6 +23,26 @@ defmodule Kantele.Character.Commands do
     parse("emotes", :list)
   end
 
+  module(EnableCommand) do
+    parse("enable", :run, fn command ->
+      command |> spaces() |> word(:usage) |> spaces() |> word(:skill)
+    end)
+  end
+
+  module(FightCommand) do
+    parse("kill", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+
+    parse("fight", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+  end
+
+  module(HaltCommand) do
+    parse("halt", :run)
+  end
+
   module(HelpCommand) do
     parse("help", :show, fn command ->
       command |> spaces() |> text(:topic)
@@ -51,6 +71,16 @@ defmodule Kantele.Character.Commands do
     parse("inventory", :run)
   end
 
+  module(LearnCommand) do
+    parse("learn", :run, fn command ->
+      command |> spaces() |> word(:skill) |> spaces() |> word(:name)
+    end)
+
+    parse("practice", :run, fn command ->
+      command |> spaces() |> word(:skill)
+    end)
+  end
+
   module(LookCommand) do
     parse("look", :run)
   end
@@ -68,6 +98,18 @@ defmodule Kantele.Character.Commands do
     parse("down", :down, aliases: ["d"])
   end
 
+  module(PerformCommand) do
+    parse("perform", :run, fn command ->
+      command |> spaces() |> text(:action)
+    end)
+  end
+
+  module(ExertCommand) do
+    parse("exert", :run, fn command ->
+      command |> spaces() |> word(:function)
+    end)
+  end
+
   module(QuitCommand) do
     parse("quit", :run)
   end
@@ -80,6 +122,28 @@ defmodule Kantele.Character.Commands do
   module(ReplyCommand) do
     parse("reply", :run, fn command ->
       command |> spaces() |> text(:text)
+    end)
+  end
+
+  module(ScoreCommand) do
+    parse("score", :run)
+  end
+
+  module(WieldCommand) do
+    parse("wield", :wield, fn command ->
+      command |> spaces() |> word(:item_name)
+    end)
+
+    parse("wear", :wear, fn command ->
+      command |> spaces() |> word(:item_name)
+    end)
+
+    parse("unwield", :unwield, fn command ->
+      command |> spaces() |> word(:item_name)
+    end)
+
+    parse("remove", :remove, fn command ->
+      command |> spaces() |> word(:item_name)
     end)
   end
 

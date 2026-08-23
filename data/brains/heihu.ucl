@@ -1,0 +1,14 @@
+brains "heihu" {
+  type = "conditional"
+  nodes = [
+    {
+      type = "conditions/room-enter"
+      data = {
+        self_trigger = false
+      }
+    },
+    {
+      type = "actions/combat-engage"
+    }
+  ]
+}
