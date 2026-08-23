@@ -122,7 +122,7 @@ defmodule Kantele.Character.CombatEvent do
           enemies ->
             # 只攻击仍在同一房间的敌人；异房的残留引用直接清除并通知对方
             {same_room, gone} =
-              Enum.split_with(enemies, &(&1.room_id == character.room_id))
+              Enum.split_with(enemies, &(Map.get(&1, :room_id) == character.room_id))
 
             character = put_combat(character, %{combat | enemies: same_room})
 
