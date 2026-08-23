@@ -35,6 +35,7 @@ defmodule Kantele.Character.CombatEvent do
   alias Kantele.Combat.Fighter
   alias Kantele.Combat.Messages
   alias Kantele.Character.Combat
+  alias Kantele.Character.CharacterView
   alias Kantele.Character.CommandView
   alias Kantele.Character.Teleport
   alias Kantele.Character.Vitals
@@ -119,8 +120,30 @@ defmodule Kantele.Character.CombatEvent do
             put_character(conn, put_combat(character, combat))
 
           enemies ->
-            enemy = Enum.random(enemies)
-            strike(conn, character, combat, enemy)
+            # 只攻击仍在同一房间的敌人；异房的残留引用直接清除并通知对方
+            {same_room, gone} =
+              Enum.split_with(enemies, &(&1.room_id == character.room_id))
+
+            character = put_combat(character, %{combat | enemies: same_room})
+
+            Enum.each(gone, fn gone_enemy ->
+              if Process.alive?(gone_enemy.pid) do
+                send(gone_enemy.pid, %Event{
+                  from_pid: self(),
+                  topic: "combat/enemy-left",
+                  data: %{id: character.id}
+                })
+              end
+            end)
+
+            case same_room do
+              [] ->
+                put_character(conn, character)
+
+              enemies ->
+                enemy = Enum.random(enemies)
+                strike(conn, character, character.meta.combat, enemy)
+            end
         end
     end
   end
@@ -175,6 +198,10 @@ defmodule Kantele.Character.CombatEvent do
       dead?(character) or not Process.alive?(attacker.pid) ->
         notify_left(conn, character, attacker)
 
+      # 攻击者已不在同一房间（死亡重生/逃跑后的残留心跳）：忽略并移除
+      Map.get(attacker, :room_id) != character.room_id ->
+        notify_left(conn, character, attacker)
+
       true ->
         resolve_incoming(conn, character, attacker, attacker_fighter, data)
     end
@@ -224,6 +251,7 @@ defmodule Kantele.Character.CombatEvent do
       conn
       |> Broadcast.publish("( $n#{status_text})\n", n2: character.name)
       |> put_character(character)
+      |> render(CharacterView, "vitals")
 
     config = combat_config(character)
 
@@ -399,13 +427,15 @@ defmodule Kantele.Character.CombatEvent do
 
     vitals = Vitals.regenerate(vitals, character.meta.stats, fighting?)
 
-    conn = put_character(conn, put_vitals(character, vitals))
-
     if injured?(vitals) do
       schedule_self("vitals/regen", %{}, @regen_interval)
     end
 
+    character = put_vitals(character, vitals)
+
     conn
+    |> put_character(character)
+    |> render(CharacterView, "vitals")
   end
 
   defp injured?(%Vitals{} = vitals) do
@@ -440,7 +470,8 @@ defmodule Kantele.Character.CombatEvent do
   defp dead?(%{meta: %{combat: %Combat{dead: dead}}}), do: dead
   defp dead?(_), do: false
 
-  defp ref(character), do: %{id: character.id, pid: character.pid, name: character.name}
+  defp ref(character),
+    do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
 
   defp combat_config(%{meta: %{combat_config: %{} = config}}), do: config
   defp combat_config(_), do: %{}

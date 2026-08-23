@@ -16,6 +16,13 @@ defmodule Kantele.Character.CharacterView do
     }
   end
 
+  def render("vitals", %{vitals: vitals}) do
+    %Event{
+      topic: "Character.Vitals",
+      data: vitals
+    }
+  end
+
   def render("not-found", %{name: name}) do
     ~i(这里没有 {color foreground="white"}#{name}{/color} 这个人。\n)
   end

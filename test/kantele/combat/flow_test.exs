@@ -78,7 +78,8 @@ defmodule Kantele.Combat.FlowTest do
     }
   end
 
-  defp ref(character), do: %{id: character.id, pid: character.pid, name: character.name}
+  defp ref(character),
+    do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
 
   defp engage(conn, _receiver, initiator) do
     CombatEvent.start(conn, %{
