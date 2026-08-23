@@ -80,7 +80,7 @@ defmodule Web.Endpoint do
           dispatch: [
             {:_,
              [
-               {"/socket", Kalevala.Websocket.Handler, websocket_config},
+               {"/socket", Web.SocketHandler, websocket_config},
                {:_, Phoenix.Endpoint.Cowboy2Handler, {Web.Endpoint, []}}
              ]}
           ]
