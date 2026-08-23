@@ -449,8 +449,11 @@ defmodule Kantele.Character.CombatEvent do
   end
 
   defp injured?(%Vitals{} = vitals) do
+    # 当前值未满 或 上限仍低于基础值（创伤未愈）都算需要回复
     vitals.qi < vitals.max_qi or vitals.jing < vitals.max_jing or
-      vitals.neili < vitals.max_neili
+      vitals.neili < vitals.max_neili or
+      vitals.max_qi < vitals.base_qi or vitals.max_jing < vitals.base_jing or
+      vitals.max_neili < vitals.base_neili
   end
 
   @doc "启动自然回复循环（登录/NPC 生成时调用）"

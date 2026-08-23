@@ -143,7 +143,11 @@ defmodule Kantele.Character.Records do
       performs: MapSet.new(metadata.performs)
     }
 
-    vitals = %{character.meta.vitals | max_neili: metadata.max_neili, neili: metadata.max_neili}
+    vitals =
+      character.meta.vitals
+      |> Map.put(:max_neili, metadata.max_neili)
+      |> Map.put(:base_neili, metadata.max_neili)
+      |> Map.put(:neili, metadata.max_neili)
 
     meta =
       character.meta

@@ -50,19 +50,34 @@ defmodule Kantele.Character.Vitals do
   """
 
   @derive Jason.Encoder
-  defstruct [:qi, :max_qi, :jing, :max_jing, :neili, :max_neili]
+  defstruct [
+    :qi,
+    :max_qi,
+    :base_qi,
+    :jing,
+    :max_jing,
+    :base_jing,
+    :neili,
+    :max_neili,
+    :base_neili
+  ]
 
   @doc """
   玩家默认体质：够在黑虎手下逃命几回合
+
+  `base_*` 为创伤不会跌破的下限，自然回复会把 max_* 缓慢回涨到 base
   """
   def new() do
     %__MODULE__{
       qi: 150,
       max_qi: 150,
+      base_qi: 150,
       jing: 120,
       max_jing: 120,
+      base_jing: 120,
       neili: 200,
-      max_neili: 200
+      max_neili: 200,
+      base_neili: 200
     }
   end
 
@@ -88,6 +103,8 @@ defmodule Kantele.Character.Vitals do
 
   @doc """
   自然回复：非战斗中缓慢恢复三条线（简化 heal_up/9）
+
+  创伤削减的 max_* 会缓慢向 base_* 回涨
   """
   def regenerate(%__MODULE__{} = vitals, stats, fighting?) do
     con = stats.con
@@ -96,6 +113,9 @@ defmodule Kantele.Character.Vitals do
     |> regen(:qi, div(con * 2 + 10, regen_scale(fighting?)), vitals.max_qi)
     |> regen(:jing, div(con + 5, regen_scale(fighting?)), vitals.max_jing)
     |> regen(:neili, div(con * 2 + force_bonus(stats), regen_scale(fighting?)), vitals.max_neili)
+    |> recover_max(:max_qi, :base_qi, max(div(con, 2), 1))
+    |> recover_max(:max_jing, :base_jing, max(div(con, 2), 1))
+    |> recover_max(:max_neili, :base_neili, max(div(con, 2), 1))
   end
 
   defp force_bonus(stats), do: div(Map.get(stats.skills, "force", 0), 3)
@@ -107,6 +127,22 @@ defmodule Kantele.Character.Vitals do
   defp regen(vitals, key, amount, max) do
     %{vitals | key => min(Map.get(vitals, key) + amount, max)}
   end
+
+  defp recover_max(vitals, max_key, base_key, amount) do
+    base = Map.get(vitals, base_key)
+
+    if is_integer(base) and base > 0 do
+      new_max = min(Map.get(vitals, max_key) + amount, base)
+      vitals = %{vitals | max_key => new_max}
+      clamp_current(vitals, max_key)
+    else
+      vitals
+    end
+  end
+
+  defp clamp_current(vitals, :max_qi), do: %{vitals | qi: min(vitals.qi, vitals.max_qi)}
+  defp clamp_current(vitals, :max_jing), do: %{vitals | jing: min(vitals.jing, vitals.max_jing)}
+  defp clamp_current(vitals, :max_neili), do: %{vitals | neili: min(vitals.neili, vitals.max_neili)}
 end
 
 defmodule Kantele.Character.Stats do
@@ -126,9 +162,10 @@ defmodule Kantele.Character.Stats do
       dex: 20,
       con: 20,
       int: 20,
-      combat_exp: 0,
+      combat_exp: 1000,
       potential: 100,
-      skills: %{"unarmed" => 1, "sword" => 1, "dodge" => 1, "parry" => 1, "force" => 1},
+      # 新手起步：基本技能够用（空手命中野猪级别的怪），特技靠拜师
+      skills: %{"unarmed" => 60, "sword" => 60, "dodge" => 60, "parry" => 60, "force" => 20},
       mapped: %{},
       performs: MapSet.new()
     }

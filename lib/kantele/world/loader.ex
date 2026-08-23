@@ -240,10 +240,13 @@ defmodule Kantele.World.Loader do
     %Kantele.Character.Vitals{
       qi: Map.get(combat, :max_qi, base.qi),
       max_qi: Map.get(combat, :max_qi, base.max_qi),
+      base_qi: Map.get(combat, :max_qi, base.max_qi),
       jing: Map.get(combat, :max_jing, base.jing),
       max_jing: Map.get(combat, :max_jing, base.max_jing),
+      base_jing: Map.get(combat, :max_jing, base.max_jing),
       neili: Map.get(combat, :max_neili, base.neili),
-      max_neili: Map.get(combat, :max_neili, base.max_neili)
+      max_neili: Map.get(combat, :max_neili, base.max_neili),
+      base_neili: Map.get(combat, :max_neili, base.max_neili)
     }
   end
 

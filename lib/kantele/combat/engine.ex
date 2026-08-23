@@ -250,8 +250,9 @@ defmodule Kantele.Combat.Engine do
     damage = div(base + rand(rng, base), 2)
     damage = damage + div(Map.get(round.action, "damage", 0) * damage, 100)
 
-    {damage_bonus, jiali_spent} = jiali_bonus(attacker)
-    damage_bonus = force_bonus(round, damage_bonus)
+    # LPC：damage_bonus 以基础膂力起底，再加力(jiali)/招式 force%
+    {jiali, jiali_spent} = jiali_bonus(attacker)
+    damage_bonus = force_bonus(round, attacker.str + jiali)
 
     damage =
       if damage_bonus > 0 do
@@ -260,10 +261,12 @@ defmodule Kantele.Combat.Engine do
         damage
       end
 
-    # 创伤 = 伤害减去 random(apply/armor)，随后各自封顶
+    # 创伤 = 伤害减去 random(apply/armor)，约 1/2 概率生效（LPC random(3)==1 等），
+    # 随后各自封顶
     armor = max(Map.get(victim.applies, :armor, 0), 0)
-    wounded = cap(damage - rand(rng, armor))
-    damage = cap(damage)
+
+    {wounded, damage} =
+      wound_split(damage - rand(rng, armor), damage, rng)
 
     # 攻击者根骨影响创伤（con 效果）
     wounded = wounded |> Kernel.-(div(wounded * (attacker.con - 10), 100)) |> max(0)
@@ -293,6 +296,16 @@ defmodule Kantele.Combat.Engine do
         jiali_spent: jiali_spent,
         segments: segments
     }
+  end
+
+  # 创伤概率门（LPC random(3)==1 或主动杀意下同样判定 ≈ 1/2）：掷中才结算创伤
+  defp wound_split(raw_wound, damage, _rng) when raw_wound < 1, do: {0, cap(damage)}
+
+  defp wound_split(raw_wound, damage, rng) do
+    case rand(rng, 2) do
+      0 -> {cap(raw_wound), cap(damage)}
+      _ -> {0, cap(damage)}
+    end
   end
 
   defp damage_key("unarmed"), do: :unarmed_damage

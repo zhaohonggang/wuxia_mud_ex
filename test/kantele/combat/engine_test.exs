@@ -141,13 +141,13 @@ defmodule Kantele.Combat.EngineTest do
       # rng 恒取最大：不闪避不招架，走完整伤害链
       #
       # base=22: damage=(22+21)/2=21；招式「基础挥砍」damage 6%：+1 => 22
-      # 护甲 random(2)=1: wounded=21；con20 减 10% => 19
-      # dex 卸力 random(100)=99 不触发
+      # 基础膂力 bonus 20：+(20+19)/3=13 => 35（创伤概率门 rand(3) 取大不触发）
+      # 护甲 random(2)=1: raw_wound=34 但门未过 => wounded=0；cap 后仍 35/0
       round = Engine.attack_round(attacker(), victim(), rng: max_rng())
 
       assert round.outcome == :hit
-      assert round.damage == 22
-      assert round.wounded == 19
+      assert round.damage == 35
+      assert round.wounded == 0
       assert round.jiali_spent == 0
     end
 
@@ -243,9 +243,9 @@ defmodule Kantele.Combat.EngineTest do
 
       # damage = (100000+99999)/2 = 99999; +招式6%(5999) => 105998
       # 力量 bonus 100 => +(100+99)/3=66 => 106064
-      # cap: (106064-400)/4+300 = 26699；con100 创伤 26699-24029=2670
-      assert round.damage == 26_699
-      assert round.wounded == 2670
+      # cap: (106064-400)/4+300 = 26716；创伤概率门未过 => wounded 0
+      assert round.damage == 26_716
+      assert round.wounded == 0
     end
   end
 
