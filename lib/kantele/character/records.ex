@@ -130,15 +130,33 @@ defmodule Kantele.Character.Records do
   @doc "把持久化记录合并进新建角色的 meta"
   def apply_to_character(character, nil), do: character
 
+  @default_skills %{
+    "unarmed" => 60,
+    "sword" => 60,
+    "dodge" => 60,
+    "parry" => 60,
+    "force" => 20
+  }
+
   def apply_to_character(character, {:ok, metadata}) do
+    # 保底合并：存档里的等级与默认值取较大者，
+    # 防止历史坏档（空 skills 等）把角色打回零级
+    skills =
+      Map.merge(@default_skills, atomize_keys(metadata.skills), fn
+        _key, default_lvl, loaded_lvl -> max(default_lvl, loaded_lvl)
+      end)
+
+    combat_exp = max(metadata.combat_exp, 0)
+    potential = max(metadata.potential, 100)
+
     stats = %Stats{
       str: metadata.str,
       dex: metadata.dex,
       con: metadata.con,
       int: metadata.int,
-      combat_exp: metadata.combat_exp,
-      potential: metadata.potential,
-      skills: atomize_keys(metadata.skills),
+      combat_exp: combat_exp,
+      potential: potential,
+      skills: skills,
       mapped: atomize_keys(metadata.mapped),
       performs: MapSet.new(metadata.performs)
     }
