@@ -284,6 +284,13 @@ defmodule Kantele.Character.CombatEvent do
         die(conn, character, attacker)
 
       Map.get(config, :no_kill, false) and vitals.qi * 3 <= vitals.max_qi ->
+        # 点到即止：双方各自脱离战斗（我只通知对方移除我，
+        # 对方收到 combat/yield 后也会移除我）
+        character =
+          put_combat(character, Combat.remove_enemy(character.meta.combat, attacker.id))
+
+        conn = put_character(conn, character)
+
         yield_to(conn, character, attacker)
 
       true ->

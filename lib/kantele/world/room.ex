@@ -401,7 +401,7 @@ defmodule Kantele.World.Room.CombatEvent do
     target =
       Enum.find(context.characters, fn character ->
         character.pid != attacker.pid &&
-          Kalevala.Character.matches?(character, name)
+          safe_matches?(character, name)
       end)
 
     cond do
@@ -458,7 +458,7 @@ defmodule Kantele.World.Room.CombatEvent do
     teacher =
       Enum.find(context.characters, fn character ->
         character.pid != student.pid &&
-          Kalevala.Character.matches?(character, event.data.name)
+          safe_matches?(character, event.data.name)
       end)
 
     case teacher do
@@ -480,6 +480,12 @@ defmodule Kantele.World.Room.CombatEvent do
         })
     end
   end
+
+  # 防御版匹配：名字缺失/异形时不崩溃
+  defp safe_matches?(character, keyword) when is_binary(keyword),
+    do: Kalevala.Character.matches?(character, keyword)
+
+  defp safe_matches?(_character, _other), do: false
 
   defp dispatch(context, _event, _attacker), do: context
 
