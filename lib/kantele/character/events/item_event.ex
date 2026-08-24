@@ -70,5 +70,13 @@ defmodule Kantele.Character.ItemEvent do
     |> put_character(%{conn.character | inventory: inventory})
     |> render(ItemView, "pickup-commit", %{item: item, item_instance: item_instance})
     |> prompt(CommandView, "prompt")
+    |> tap_save()
   end
+
+  defp tap_save(conn) do
+    Kantele.Character.Records.save(current_character(conn))
+    conn
+  end
+
+  defp current_character(conn), do: conn.private.update_character || conn.character
 end

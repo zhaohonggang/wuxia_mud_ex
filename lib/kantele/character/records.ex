@@ -24,6 +24,8 @@ defmodule ExVenture.Characters.Metadata do
     field(:skills, :map, default: %{})
     field(:mapped, :map, default: %{})
     field(:performs, {:array, :string}, default: [])
+    field(:inventory, {:array, :map}, default: [])
+    field(:equipment, :map, default: %{})
 
     timestamps()
   end
@@ -41,7 +43,9 @@ defmodule ExVenture.Characters.Metadata do
       :max_neili,
       :skills,
       :mapped,
-      :performs
+      :performs,
+      :inventory,
+      :equipment
     ])
     |> validate_required([:character_id])
     |> unique_constraint(:character_id)
@@ -99,7 +103,9 @@ defmodule Kantele.Character.Records do
           max_neili: meta.vitals.max_neili,
           skills: meta.stats.skills,
           mapped: meta.stats.mapped,
-          performs: MapSet.to_list(meta.stats.performs)
+          performs: MapSet.to_list(meta.stats.performs),
+          inventory: Enum.map(character.inventory, &%{item_id: &1.item_id}),
+          equipment: serialized_equipment(meta.combat.equipped)
         })
 
       case Repo.insert_or_update(metadata) do
@@ -126,6 +132,15 @@ defmodule Kantele.Character.Records do
   end
 
   def save(_character), do: :error
+
+  defp serialized_equipment(equipped) do
+    %{
+      "weapon" => Map.get(equipped, :weapon),
+      "armor" => Map.get(equipped, :armor)
+    }
+    |> Enum.reject(fn {_slot, snap} -> is_nil(snap) end)
+    |> Enum.into(%{})
+  end
 
   @doc "把持久化记录合并进新建角色的 meta"
   def apply_to_character(character, nil), do: character
@@ -167,13 +182,62 @@ defmodule Kantele.Character.Records do
       |> Map.put(:base_neili, metadata.max_neili)
       |> Map.put(:neili, metadata.max_neili)
 
+    inventory = restore_inventory(character.inventory, metadata.inventory)
+    combat = restore_equipment(Kantele.Character.Combat.new(), metadata.equipment)
+
     meta =
       character.meta
       |> Map.put(:stats, stats)
       |> Map.put(:vitals, vitals)
+      |> Map.put(:combat, combat)
 
-    %{character | meta: meta}
+    %{character | meta: meta, inventory: inventory}
   end
+
+  # 存档里有背包记录则按 item_id 重建实例；空记录保留默认新手物品
+  defp restore_inventory(default_inventory, []) do
+    default_inventory
+  end
+
+  defp restore_inventory(default_inventory, saved) when is_list(saved) do
+    now = DateTime.utc_now()
+
+    Enum.map(saved, fn entry ->
+      %Kalevala.World.Item.Instance{
+        id: Kantele.World.Item.Instance.generate_id(),
+        item_id: entry["item_id"],
+        created_at: now,
+        meta: %{}
+      }
+    end)
+  end
+
+  defp restore_inventory(default_inventory, _other), do: default_inventory
+
+  defp restore_equipment(combat, equipment) when is_map(equipment) do
+    weapon = weapon_snapshot(equipment["weapon"])
+    armor = armor_snapshot(equipment["armor"])
+
+    combat
+    |> maybe_equip(weapon, :weapon)
+    |> maybe_equip(armor, :armor)
+  end
+
+  defp maybe_equip(combat, nil, _slot), do: combat
+
+  defp maybe_equip(combat, snapshot, slot),
+    do: Kantele.Character.Combat.equip(combat, slot, snapshot)
+
+  # 存档里的快照是 string-key 的 JSON 对象，转回 atom-key 快照
+  defp weapon_snapshot(nil), do: nil
+
+  defp weapon_snapshot(%{"name" => name} = s),
+    do: %{name: name, skill_type: s["skill_type"] || "sword", damage: s["damage"] || 0}
+
+  defp armor_snapshot(nil), do: nil
+
+  defp armor_snapshot(%{"name" => name} = s),
+    do: %{name: name, armor: s["armor"] || 0}
 
   def apply_to_character(character, :error), do: character
 

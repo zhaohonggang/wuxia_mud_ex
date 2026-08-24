@@ -15,6 +15,12 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(DrinkCommand) do
+    parse("drink", :run)
+    parse("heal", :run)
+    parse("喝药", :run)
+  end
+
   module(EmoteCommand) do
     parse("emote", :broadcast, fn command ->
       command |> spaces() |> text(:text)
