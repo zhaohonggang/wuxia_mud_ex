@@ -279,9 +279,9 @@ defmodule Kantele.Character.Records do
 
   defp atomize_keys(nil), do: %{}
 
+  # 统一为字符串键（与 Stats.skill/2 的查找方式一致）
   defp atomize_keys(map) do
     Enum.into(map, %{}, fn {key, value} ->
-      key = if is_binary(key), do: String.to_atom(key), else: key
       {key, value}
     end)
   end
