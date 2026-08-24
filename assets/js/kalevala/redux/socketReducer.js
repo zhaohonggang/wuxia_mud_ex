@@ -2,7 +2,7 @@ import { Types } from "./actions";
 import { createReducer } from "./createReducer";
 import parseText, { NewLine } from "../parseText";
 
-const MAX_LINES = 500;
+const MAX_LINES = 5000;
 
 const INITIAL_STATE = {
   socket: null,
