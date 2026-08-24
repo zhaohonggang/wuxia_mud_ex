@@ -25,8 +25,14 @@ export class Socket {
       clearInterval(this.pingTimeout);
       this.startPing();
 
-      // 重连后需要手动重新登录（标准 MUD 行为）
-      // 不做自动重放，避免游戏命令被误当登录信息
+      this.retryDelay = 1000;
+
+      // 重连成功后冲刷离线期间排队的输入（不含登录重放）
+      let queue = this.queue;
+      this.queue = [];
+      queue.forEach((event, i) => {
+        setTimeout(() => this.rawSend(event), 300 + i * 200);
+      });
 
       if (this.onOpen) {
         this.onOpen(e);

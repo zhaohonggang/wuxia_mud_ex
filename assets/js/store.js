@@ -56,6 +56,7 @@ const eventTextHandlers = {
   "Inventory.PickupItem": dispatchEventText,
   "Login.Welcome": (dispatch) => {
     dispatch(Creators.loginActive());
+    dispatch(Creators.loginPrompt());
   },
   "Login.PromptCharacter": (dispatch, getState, event, { history }) => {
     history.push("/login/character");
@@ -65,6 +66,7 @@ const eventTextHandlers = {
 
     dispatch(KalevalaCreators.socketReceivedEvent({ topic: "system/display", data: text }, { history }));
     dispatch(Creators.loggedIn(data.character));
+    dispatch(Creators.worldEntered());
 
     history.push("/play");
   },

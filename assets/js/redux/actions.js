@@ -3,7 +3,9 @@ import { Creators as KalevalaCreators } from "../kalevala";
 export const Types = {
   CHANNEL_BROADCAST: "CHANNEL_BROADCAST",
   LOGIN_ACTIVE: "LOGIN_ACTIVE",
+  LOGIN_PROMPT: "LOGIN_PROMPT",
   LOGGED_IN: "LOGGED_IN",
+  WORLD_ENTERED: "WORLD_ENTERED",
   ROOM_CHARACTER_ENTERED: "ROOM_CHARACTER_ENTERED",
   ROOM_CHARACTER_LEFT: "ROOM_CHARACTER_LEFT",
 };
@@ -25,8 +27,14 @@ export const Creators = {
   loginActive: () => {
     return { type: Types.LOGIN_ACTIVE };
   },
+  loginPrompt: () => {
+    return { type: Types.LOGIN_PROMPT };
+  },
   loggedIn: (character) => {
     return { type: Types.LOGGED_IN, data: { character } };
+  },
+  worldEntered: () => {
+    return { type: Types.WORLD_ENTERED };
   },
   moveNorth: () => {
     return (dispatch) => {

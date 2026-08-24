@@ -8,6 +8,7 @@ import { CustomTagsContext, Keys, makeReduxSocket, Prompt, Terminal } from "./ka
 import { Channels, CharacterSelect, Inventory, Map, Room, Sidebar, SidebarSplit, Vitals } from "./components";
 import { customTags } from "./customTags";
 import { Creators, getLoginStatus } from "./redux";
+import { setSocket } from "./socketRef";
 import { makeStore } from "./store";
 
 const keys = new Keys();
@@ -51,6 +52,7 @@ let SocketProvider = class SocketProvider extends React.Component {
     const { history } = props;
 
     this.socket = makeReduxSocket("/socket", store, { history });
+    setSocket(this.socket);
     this.socket.join();
   }
 
@@ -87,14 +89,14 @@ const mapStateToProps = (state) => {
 
 ValidateLoggedIn = connect(mapStateToProps)(ValidateLoggedIn);
 
-const Client = () => {
+const Client = ({ characters }) => {
   return (
     <div className="relative h-full">
       <ValidateLoggedIn />
       <div className="flex flex-row h-full">
         <Sidebar side="left" width="w-1/4 max-w-xs">
           <h3 className="text-white text-3xl text-center pt-2">ExVenture</h3>
-          <Vitals />
+          <Vitals characters={characters} />
           <SidebarSplit />
           <Inventory />
         </Sidebar>
@@ -127,7 +129,7 @@ export class App extends React.Component {
           <SocketProvider>
             <Switch>
               <Route path="/play">
-                <Client />
+                <Client characters={characters} />
               </Route>
               <Route>
                 <CharacterSelect characters={characters} />
