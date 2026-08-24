@@ -51,6 +51,11 @@ defmodule Kantele.Character.Commands do
     parse("help", :index)
   end
 
+  module(CommandsCommand) do
+    parse("commands", :run)
+    parse("命令", :run)
+  end
+
   module(ItemCommand) do
     parse("drop", :drop, fn command ->
       command |> spaces() |> text(:item_name)
