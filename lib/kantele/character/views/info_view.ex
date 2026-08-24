@@ -11,42 +11,64 @@ defmodule Kantele.Character.InfoView do
     }
   end
 
-  def render("_display", assigns) do
-    vitals = assigns.vitals
+  def render("_display", a) do
+    v = a.vitals
 
     ~i"""
     {table}
       {row}
         {cell}气 气血{/cell}
-        {cell}{hp}#{vitals.qi}/#{vitals.max_qi}{/hp}{/cell}
+        {cell}{hp}#{v.qi}/#{v.max_qi}{/hp}{/cell}
       {/row}
       {row}
         {cell}精 精力{/cell}
-        {cell}{sp}#{vitals.jing}/#{vitals.max_jing}{/sp}{/cell}
+        {cell}{sp}#{v.jing}/#{v.max_jing}{/sp}{/cell}
       {/row}
       {row}
         {cell}内力{/cell}
-        {cell}{ep}#{vitals.neili}/#{vitals.max_neili}{/ep}{/cell}
+        {cell}{ep}#{v.neili}/#{v.max_neili}{/ep}{/cell}
       {/row}
     {/table}
     {table}
       {row}
         {cell}膂力{/cell}
-        {cell}#{assigns.str}{/cell}
+        {cell}#{a.str}{/cell}
         {cell}身法{/cell}
-        {cell}#{assigns.dex}{/cell}
+        {cell}#{a.dex}{/cell}
       {/row}
       {row}
         {cell}根骨{/cell}
-        {cell}#{assigns.con}{/cell}
+        {cell}#{a.con}{/cell}
         {cell}悟性{/cell}
-        {cell}#{assigns.int}{/cell}
+        {cell}#{a.int}{/cell}
       {/row}
       {row}
         {cell}实战经验{/cell}
-        {cell}#{assigns.combat_exp}{/cell}
+        {cell}#{a.combat_exp}{/cell}
         {cell}潜能{/cell}
-        {cell}#{assigns.potential}{/cell}
+        {cell}#{a.potential}{/cell}
+      {/row}
+    {/table}
+    {table}
+      {row}
+        {cell}基本内功{/cell}
+        {cell}#{a.force_level}{/cell}
+      {/row}
+      {row}
+        {cell}基本剑法{/cell}
+        {cell}#{a.sword_level}{/cell}
+      {/row}
+      {row}
+        {cell}轻功{/cell}
+        {cell}#{a.dodge_level}{/cell}
+      {/row}
+      {row}
+        {cell}招架{/cell}
+        {cell}#{a.parry_level}{/cell}
+      {/row}
+      {row}
+        {cell}基本拳脚{/cell}
+        {cell}#{a.unarmed_level}{/cell}
       {/row}
     {/table}
     """

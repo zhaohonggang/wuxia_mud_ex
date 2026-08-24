@@ -29,17 +29,22 @@ export class Socket {
       this.retryDelay = 1000;
       this.startPing();
 
-      // 重连成功：先自动重放 登录名/密码/角色名，
-      // 再补发离线期间键入的命令（顺序不能颠倒）
+      // 重连成功：严格串行——先重放 登录名/密码/角色名（400ms/条），
+      // 全部发完后再补发离线期间键入的命令（200ms/条）。
+      // 顺序不能颠倒，否则队列里的游戏命令会被 LoginController 当成账号信息
       let queue = this.queue;
       this.queue = [];
 
-      if (this.loginReplay.length > 0) {
-        setTimeout(() => this.replayLogin(), 200);
-      }
+      let delay = 300;
 
-      queue.forEach((event, i) => {
-        setTimeout(() => this.rawSend(event), 500 + i * 250);
+      this.loginReplay.forEach((event) => {
+        setTimeout(() => this.rawSend(event), delay);
+        delay += 400;
+      });
+
+      queue.forEach((event) => {
+        setTimeout(() => this.rawSend(event), delay);
+        delay += 200;
       });
 
       if (this.onOpen) {
@@ -120,15 +125,6 @@ export class Socket {
     }
   }
 
-  replayLogin() {
-    console.log("Replaying login sequence");
-
-    this.loginReplay.forEach((event, i) => {
-      setTimeout(() => {
-        this.rawSend(event);
-      }, i * 300);
-    });
-  }
 
   rawSend(event) {
     this.socket.send(JSON.stringify(event));
