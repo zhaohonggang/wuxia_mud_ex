@@ -4,8 +4,6 @@ export class Socket {
   constructor(path) {
     this.path = path;
     this.queue = [];
-    this.loginReplay = [];
-    this.loginCaptured = 0;
     this.reconnecting = false;
   }
 
@@ -24,28 +22,11 @@ export class Socket {
 
     this.socket.onopen = (e) => {
       console.log("Socket opened");
-
-      this.connecting = false;
-      this.retryDelay = 1000;
+      clearInterval(this.pingTimeout);
       this.startPing();
 
-      // 重连成功：严格串行——先重放 登录名/密码/角色名（400ms/条），
-      // 全部发完后再补发离线期间键入的命令（200ms/条）。
-      // 顺序不能颠倒，否则队列里的游戏命令会被 LoginController 当成账号信息
-      let queue = this.queue;
-      this.queue = [];
-
-      let delay = 300;
-
-      this.loginReplay.forEach((event) => {
-        setTimeout(() => this.rawSend(event), delay);
-        delay += 400;
-      });
-
-      queue.forEach((event) => {
-        setTimeout(() => this.rawSend(event), delay);
-        delay += 200;
-      });
+      // 重连后需要手动重新登录（标准 MUD 行为）
+      // 不做自动重放，避免游戏命令被误当登录信息
 
       if (this.onOpen) {
         this.onOpen(e);
@@ -95,35 +76,24 @@ export class Socket {
   // 重连成功后队列自动冲刷，随后自动重放登录序列
   send(event) {
     if (this.socket && this.socket.readyState == WebSocket.OPEN) {
-      this.captureLogin(event);
+
       this.socket.send(JSON.stringify(event));
       return;
     }
 
     // 离线：缓存输入
     if (this.socket == undefined || this.socket.readyState == WebSocket.CLOSED) {
-      this.captureLogin(event);
+
       this.queue.push(event);
       this.reconnect();
     } else {
       // CONNECTING：等 onopen 后统一冲刷
-      this.captureLogin(event);
+
       this.queue.push(event);
     }
   }
 
-  captureLogin(event) {
-    // 每条连接的前三条文本输入即 登录名/密码/角色名
-    if (
-      this.loginCaptured < 3 &&
-      event &&
-      event.topic == "system/send" &&
-      this.loginReplay.length < 3
-    ) {
-      this.loginReplay.push(event);
-      this.loginCaptured += 1;
-    }
-  }
+
 
 
   rawSend(event) {
