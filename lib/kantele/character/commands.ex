@@ -76,6 +76,21 @@ defmodule Kantele.Character.Commands do
     parse("inventory", :run)
   end
 
+
+  module(LookCommand) do
+    parse("look", :run)
+
+    # 单字母命令需带词边界断言，否则会前缀误吃 learn 等长命令
+    # （路由按注册顺序先到先得）
+    parse("l", :run, [],
+      fn combinator ->
+        combinator
+        |> lookahead_not(utf8_char([?a..?z, ?A..?Z]))
+      end
+    )
+  end
+
+
   module(LearnCommand) do
     parse("learn", :run, fn command ->
       command |> spaces() |> word(:skill) |> spaces() |> word(:name)
@@ -84,11 +99,6 @@ defmodule Kantele.Character.Commands do
     parse("practice", :run, fn command ->
       command |> spaces() |> word(:skill)
     end)
-  end
-
-  module(LookCommand) do
-    parse("look", :run)
-    parse("l", :run)
   end
 
   module(MapCommand) do

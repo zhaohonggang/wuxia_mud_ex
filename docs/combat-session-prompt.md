@@ -33,10 +33,10 @@
 | `feature/damage.c` | receive_damage/receive_wound/receive_curing(qi/jing/eff_*)、unconcious/die 流程 |
 | `inherit/skill/skill.c` | 技能基类契约与 NewRandom 加权选招 |
 | `kungfu/skill/banruo-zhang.c` | 特殊武技样板：action[] 招式表(force/attack/dodge/parry/damage/lvl/damage_type/skill_name 八字段)、valid_enable/valid_learn/practice_skill/query_action/perform_action_file |
-| `minimal_world/skill/liuxi-neigong/powerup.c` | exert 运功契约：int exert(me,target)，temp buff apply/attack+defense，start_call_out 定时移除 |
+| `d/minimal_world/skill/liuxi-neigong/powerup.c` | exert 运功契约：int exert(me,target)，temp buff apply/attack+defense，start_call_out 定时移除 |
 
 ### 验收夹具（用柳溪镇做端到端测试）
-`C:\files\git\mud\minimal_world\`——10 房间/6 NPC/6 物品的微型区域，README 有覆盖矩阵：
+`C:\files\git\mud\d\minimal_world\`——10 房间/6 NPC/6 物品的微型区域，README 有覆盖矩阵：
 - `npc/heihu.c`：aggressive 强敌（str/dex/max_qi/apply/attack 等）
 - `skill/liuxin-jian.c` + `liuxin-jian/liu.c`：剑法招式表 + 绝招 buff（can_perform 权限校验）
 - `skill/liuxi-neigong.c` + `powerup.c`：内功 exert
