@@ -46,6 +46,7 @@ const eventTextHandlers = {
     dispatch(Creators.channelBroadcast(channel_name, character, id, text));
   },
   "Character.Info": dispatchEventText,
+  "Commands.Index": dispatchEventText,
   "Character.Prompt": (dispatch, getState, event, { history }) => {
     const { text } = event;
     dispatch(KalevalaCreators.socketReceivedEvent({ topic: "system/display", data: text }, { history }));

@@ -88,6 +88,7 @@ defmodule Kantele.Character.Commands do
 
   module(LookCommand) do
     parse("look", :run)
+    parse("l", :run)
   end
 
   module(MapCommand) do

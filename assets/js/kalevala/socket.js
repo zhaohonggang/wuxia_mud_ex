@@ -26,6 +26,7 @@ export class Socket {
       console.log("Socket opened");
 
       this.connecting = false;
+      this.retryDelay = 1000;
       this.startPing();
 
       // 重连成功：先自动重放 登录名/密码/角色名，
@@ -46,12 +47,26 @@ export class Socket {
       }
     };
 
+    this.manualClose = false;
+    this.retryDelay = 1000;
+
     this.socket.onclose = (e) => {
       console.log("Socket closed");
       clearInterval(this.pingTimeout);
 
       if (this.onClose) {
         this.onClose(e);
+      }
+
+      // 断线后自动重连（1s 起步指数退避，封顶 10s；连接成功后归零）
+      if (!this.manualClose) {
+        let delay = Math.min((this.retryDelay || 1000) * 2, 10_000);
+        this.retryDelay = delay;
+        console.log(`Reconnecting in ${delay}ms`);
+        setTimeout(() => {
+          this.reconnecting = false;
+          this.connect();
+        }, delay);
       }
     };
 
