@@ -204,7 +204,7 @@ defmodule Kantele.Character.Records do
 
     Enum.map(saved, fn entry ->
       %Kalevala.World.Item.Instance{
-        id: Kantele.World.Item.Instance.generate_id(),
+        id: Kalevala.World.Item.Instance.generate_id(),
         item_id: entry["item_id"],
         created_at: now,
         meta: %{}
