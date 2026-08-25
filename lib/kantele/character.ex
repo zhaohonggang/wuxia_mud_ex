@@ -141,6 +141,22 @@ defmodule Kantele.Character.Vitals do
     |> recover_max(:max_neili, :base_neili, max(div(con, 2), 1))
   end
 
+  @doc """
+  根据当前内功等级重算内力上限（对应 LPC query_max_neili）
+
+  force 基础 + 特殊内功加成；每次打坐/练功后调用。
+  """
+  def recalculate_max_neili(%__MODULE__{} = vitals, stats) do
+    alias Kantele.Character.NeiliLimit
+
+    new_max = NeiliLimit.current(stats)
+
+    # 打坐可蓄力到 2×max，重算时夹住当前值不超新上限×2
+    neili = min(vitals.neili, new_max * 2)
+
+    %{vitals | max_neili: new_max, neili: neili}
+  end
+
   defp force_bonus(stats), do: div(Map.get(stats.skills, "force", 0), 3)
   defp regen_scale(true), do: 4
   defp regen_scale(false), do: 1

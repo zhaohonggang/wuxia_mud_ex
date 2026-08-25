@@ -64,6 +64,7 @@ defmodule Kantele.Character.PracticeCommand do
         vitals
         |> Kantele.Character.Vitals.damage(:qi, cost.qi)
         |> Map.put(:neili, max(vitals.neili - cost.neili, 0))
+        |> Kantele.Character.Vitals.recalculate_max_neili(stats)
 
       meta =
         character.meta

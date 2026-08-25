@@ -100,9 +100,12 @@ defmodule Kantele.Character.SkillsEvent do
     {stats, _gained?} = Stats.improve_skill(stats, skill)
     stats = maybe_unlock_perform(skill, stats)
 
+    vitals = Kantele.Character.Vitals.recalculate_max_neili(character.meta.vitals, stats)
+
     meta =
       character.meta
       |> Map.put(:stats, stats)
+      |> Map.put(:vitals, vitals)
       |> Map.put(:combat, character.meta.combat)
 
     character = %{character | meta: meta}

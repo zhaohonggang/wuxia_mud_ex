@@ -203,6 +203,7 @@ defmodule Kantele.Character.Records do
       |> Map.put(:max_neili, metadata.max_neili)
       |> Map.put(:base_neili, metadata.max_neili)
       |> Map.put(:neili, metadata.max_neili)
+      |> Kantele.Character.Vitals.recalculate_max_neili(stats)
 
     inventory = restore_inventory(character.inventory, metadata.inventory)
     combat = restore_equipment(Kantele.Character.Combat.new(), metadata.equipment)
