@@ -28,12 +28,29 @@
 - **NPC 行为树**：`data/brains/*.ucl` + `lib/kantele/brain.ex`
 - **Vitals 结构**：`lib/kantele/character.ex`（qi/jing/neili 各带 max/base 三值）——注意：jing 目前零消耗纯展示
 
+### 运行与测试环境（全部在 Docker 容器里，宿主机没有 Elixir，必读）
+
+- 容器：`wuxia_mud_dev-app-1`（应用，**Elixir 1.11.1 / OTP 23**，语法较老，别用新版本才有的特性）+ `wuxia_mud_dev-db-1`（PostgreSQL）。宿主机**没有** elixir/mix，所有 mix 命令都要 `docker exec` 进容器执行
+- **跑测试**（宿主机 PowerShell 直接执行）：
+
+  ```powershell
+  docker exec -w /app wuxia_mud_dev-app-1 sh -c "MIX_ENV=test mix test test/kantele"
+  ```
+
+  测试库固定连 `ex_venture_test`（config/test.exs 已 pin，**不会**碰 dev 库）。重置测试库：把上面命令换成 `MIX_ENV=test mix ecto.drop` / `ecto.create` / `ecto.migrate` 依次执行
+- **改了 Elixir 代码（lib/）后必须重启容器才生效**：`docker restart wuxia_mud_dev-app-1`（约 20~25 秒），然后 `curl http://localhost:4000/_health` 应返回 `"world":"ok"`
+- **改了前端 JS（assets/js）后**在容器内构建：`docker exec -w /app/assets wuxia_mud_dev-app-1 sh -c "node build.js"`（CSS 另跑 `npm run build:css`），然后浏览器 **Ctrl+F5** 强刷
+- **文件同步陷阱**：Windows 宿主机 → 容器的 bind mount 偶发延迟，源码改动可能晚几秒才进容器；若编译/测试行为与预期不符，用 `docker cp <宿主机文件> wuxia_mud_dev-app-1:/app/<容器内同路径>` 强制同步后再试
+- **看日志**：`docker logs --since 5m wuxia_mud_dev-app-1`；**查数据库**：`docker exec wuxia_mud_dev-db-1 psql -U postgres -d ex_venture_dev -c "SELECT ..."`（测试库换 `-d ex_venture_test`）
+- 容器内是 Alpine 的 BusyBox sh：grep/sed 是精简版（部分参数不支持）；从 PowerShell 嵌套引号调 `docker exec sh -c` 极易翻车——**复杂命令写成脚本文件 `docker cp` 进容器再执行**
+- 游戏入口：Web `http://localhost:4000/client/play`（网站账号 admin@example.com / password，进世界后再走 MUD 登录：grant → 任意密码 → grant），或 `telnet localhost:4646`
+
 ### 铁律（来自 mud 仓库经验，务必遵守）
 
 - 所有新建/修改文件：UTF-8 无 BOM、LF 行尾、末行留换行；Elixir 四空格缩进
 - 游戏文本用简体中文，风格对齐现有命令输出（如"你的内力不够。\n"）
 - **加载路径禁止包含 `../`**（驱动级限制的历史教训）；UCL 引用一律规范相对或全局 id
-- 每完成一项：跑 `MIX_ENV=test mix test test/kantele` 确认全绿再做下一项
+- 每完成一项：跑一次测试（命令见上节"跑测试"）确认全绿再做下一项；改了 lib/ 记得重启容器再验证
 
 ### 工作方式约定
 
@@ -51,7 +68,7 @@
 **背景**：`loader.ex` 的 `parse_item_meta` 目前只透传 damage/skill_type/armor/value。LPC 物品还有 weight/unit/material、食物药品的食用效果、秘籍类物品等字段。
 
 **建议做法**：
-- 先读 LPC 参照：`C:\files\git\mud\clone\obj\books\` 或 `inherit\book.c`（秘籍）、`clone\food\`（食物）确认字段名与语义
+- 先读 LPC 参照确认字段名与语义：秘籍物品在 `C:\files\git\mud\clone\book\*.c`（book-paper/silk/iron/bamboo/stone/blade-book），研习命令在 `cmds\skill\study.c`；食物在 `clone\food\`（注意：`clone\obj\books\` 与 `inherit\book.c` 并不存在）
 - Meta 增补：weight（重量）、unit（量词）、material、food（饱食度供给）、medicine（药效）、秘籍五元组（可研习的技能 id / 门槛等级 / 消耗等，以 LPC study 流程为准裁剪）
 - 只做解析与存储，消费端（吃书学技能、饥饿扣减）由后续任务接
 
@@ -71,12 +88,13 @@
 ### A6｜P5 limit 公式 → P3 打坐 → P4 吐纳（严格按此序）
 
 **背景**：这是主养成闭环。LPC 机制（`clone/user/user.c:387 query_neili_limit` 与 `cmds/skill/exercise.c`）：
-- 内力天花板 ≈ force基本内功等级/2×10 ＋最高一门特殊内功(基本/2＋等级)×10＋该内功 improve 贡献，再乘百分比加成（百分比部分本期可不做）
-- 打坐：耗气攒内力；当 neili ≥ 2×max_neili 时触发 max_neili+1，直到逼近天花板出现瓶颈提示
+- 内力天花板：LPC 是**取 max 而非相加**——基本线（force基本/2×10）与特殊线（(基本/2＋enable的特殊内功等级)×10＋该内功 improve 贡献）两者取较大者，再乘百分比加成（百分比部分本期可不做）。注意瓶颈检查（exercise.c）用的是 `query_current_neili_limit`：取 **enable 的那门**内功做加法式（基本/2×10＋特殊等级×10＋improve），硬天花板才取 valid_enable 里最高——只有一门内功时两者等价，实现按 current 语义做即可
+- 打坐：耗气攒内力（每跳 `add neili gain` 同时 `add qi -gain`）；结束后当 neili ≥ 2×max_neili 时判定：max_neili < current_limit 则 max_neili+1 并把 neili 压回 max_neili，否则提示"修为似乎已经达到瓶颈了"
+- 前置条件（exercise.c）：参数≥10、qi 足够、**精力 ≥70%**（`jing*100/max_jing < 70` 拒绝）、战斗中禁止、no_fight 房间默认禁打坐（与 A5 flags 联动）
 
 **建议做法**：
 1. 先做一个 limit 计算模块（输入 stats.skills 即可算天花板；柳溪内功的 `query_neili_improve` 贡献看 `combat/skills/liuxi_neigong.ex` 有无对应字段，没有就先计 0 并留钩子）
-2. 新增 `exercise/dazuo` 命令：参数为耗气量（≥10），busy 期间分批转化 qi→neili（每跳 gain≈1+force/5±随机，参照 LPC exercising/1），结束后判定是否 max_neili+1；到瓶颈给"修为已达瓶颈"文案
+2. 新增 `exercise/dazuo` 命令：参数为耗气量（≥10），busy 期间分批转化 qi→neili（每跳 gain 精确公式为 `1＋(force/5)/2＋random(force/5)`，LPC 另加房间 exercise_improve 可忽略，参照 LPC exercising/1），结束后判定是否 max_neili+1；到瓶颈给"修为已达瓶颈"文案
 3. `respirate/tuna` 同款循环作用于精力上限——注意 Kantele 的 jing 字段语义未定案，**本期建议只做内力线**，吐纳留占位说明即可（避免和将来 eff_* 改造打架）
 4. max_neili 增长后记得走 `Records.save` 持久化（该字段已在 character_metadata 里）
 5. 战斗中禁止打坐（对齐 LPC"战斗中不能练内功"）
@@ -89,7 +107,7 @@
 
 **建议做法**：
 - 在 D1 的 medicine/effect 基础上加 `stats_boost` 类 Meta（如 `%{str: 1}`），eat/drink 消费时应用上限校验（建议每维设软上限，数值可先拍脑袋 30，注明待调）
-- 动手前核实：现有 drink_command.ex / eat 路径在哪里应用物品效果
+- 动手前核实：现有 drink_command.ex / eat 路径在哪里应用物品效果——**核实结果：eat 命令目前不存在**（commands 目录只有 drink_command），本任务需一并新建 `eat` 命令（读物品、应用效果、消耗实例），路径可参照 drink_command 的结构
 
 **验收建议**：吃下测试丹药后 score 显示对应属性+1，重复吃到上限被拒。
 
@@ -99,7 +117,7 @@
 
 **建议做法**：
 - 在 `commands.ex` 的 parse 分发处加别名映射：北/南/西/东/上/下→方向移动；看→look；拿/捡→get；穿→wear；脱→remove；吃→eat；喝→drink；买→buy；给→give；问→ask；打坐→exercise；吐纳→respirate；学→learn；练→practice；杀/杀掉→kill；跑→flee 等（以 LPC 玩家习惯为准增删）
-- 注意与现有英文命令并存、别名优先级低于完整匹配
+- **注意 Router 是"先注册先匹配"，不存在"完整匹配优先"机制**：中文单字别名必须加 word boundary（`lookahead_not(utf8_char(...))`，参照现有单字母别名的做法）防止前缀误吞更长命令，且别名注册顺序放在对应长命令之后
 
 **验收建议**：`北`、`看 黑虎`、`打坐 50` 全部可用；`mix test` 相关 router 测试通过。
 
