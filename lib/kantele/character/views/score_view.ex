@@ -21,13 +21,17 @@ defmodule Kantele.Character.ScoreView do
 
     ratio = div(vitals.qi * 100, max(vitals.max_qi, 1))
 
-    skills =
-      Enum.map(assigns.skills, fn skill ->
+    skills_text =
+      assigns.skills
+      |> Enum.map(fn skill ->
+        base = "  #{skill.name}  #{skill.level} 级"
+
         case skill.mapped do
-          nil -> ~i(  {text}#{skill.name}{/text}  #{skill.level} 级)
-          mapped -> ~i(  {text}#{skill.name}{/text}  #{skill.level} 级（#{mapped}）)
+          nil -> base
+          mapped -> "#{base}（映射：#{mapped}）"
         end
       end)
+      |> Enum.intersperse("\n║ ")
 
     performs =
       case assigns.performs do
@@ -35,7 +39,7 @@ defmodule Kantele.Character.ScoreView do
         performs -> Enum.join(performs, "、")
       end
 
-    ~i"""
+    """
     ╔══════════════════════════════
     ║ {room-title}#{assigns.name}{/room-title}
     ╠══════════════════════════════
@@ -47,15 +51,11 @@ defmodule Kantele.Character.ScoreView do
     ║ 阅历 #{assigns.score}　威望 #{assigns.weiwang}　贡献 #{assigns.gongxian}
     ╠══════════════════════════════
     ║ 武学：
-    #{join(skills, "\n║ ")}
+    ║ #{skills_text}
     ║ 绝招：#{performs}
     ╚══════════════════════════════
     """
   end
-
-  defp join([], _separator), do: []
-  defp join([line], _separator), do: [line]
-  defp join([line | lines], separator), do: [line, separator | join(lines, separator)]
 
   def skill_title(name), do: skill_titles()[name] || name
 
