@@ -46,6 +46,13 @@ defmodule Kantele.Character.Commands do
     end)
 
     parse("emotes", :list)
+
+    # 表情名直用（数据在 data/emotes.ucl，新增表情需在此同步注册）
+    parse("smile", :smile)
+
+    parse("wave", :wave)
+
+    parse("frown", :frown)
   end
 
   module(EnableCommand) do
@@ -387,5 +394,7 @@ defmodule Kantele.Character.Commands do
     parse("world_status", :run)
   end
 
-  dynamic(EmoteCommand, :emote, [])
+  # 表情名直用已改为 EmoteCommand 里的显式 parse（smile/wave/frown）。
+  # 不再用 dynamic 路由：kalevala parse_dynamic_text 返回 3 元组，
+  # Router.parse/3 只匹配 4 元组，命中必 CaseClauseError 崩 foreman（断线）
 end

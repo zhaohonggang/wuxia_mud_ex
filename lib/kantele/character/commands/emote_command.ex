@@ -16,6 +16,25 @@ defmodule Kantele.Character.EmoteCommand do
     end
   end
 
+  # 表情名直用命令（smile/wave/frown）。
+  # 不走框架 dynamic 路由：kalevala 的 parse_dynamic_text 返回 3 元组，
+  # 而 Router.parse/3 只匹配 4 元组，走到那里必 CaseClauseError 崩 foreman
+  def smile(conn, _params), do: named(conn, "smile")
+
+  def wave(conn, _params), do: named(conn, "wave")
+
+  def frown(conn, _params), do: named(conn, "frown")
+
+  defp named(conn, command) do
+    case Emotes.get(command) do
+      {:ok, emote} ->
+        broadcast(conn, %{"text" => emote.text})
+
+      _ ->
+        conn
+    end
+  end
+
   def broadcast(conn, params) do
     params = Map.put(params, "channel_name", "rooms:#{conn.character.room_id}")
 
