@@ -331,6 +331,7 @@ characters "yezhu" {
 
   combat = {
     no_kill = false
+    respawn_delay = 15000
     max_qi = 80
     max_jing = 60
     max_neili = 0

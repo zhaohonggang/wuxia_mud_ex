@@ -42,7 +42,7 @@ defmodule Kantele.Character.CombatEvent do
 
   @tick_interval 1000
   @regen_interval 15_000
-  @respawn_delay 60_000
+  @default_respawn_delay 30_000
 
   # ---- 自我定时：直接 Process.send_after，绕开房间路由 ----
 
@@ -340,7 +340,8 @@ defmodule Kantele.Character.CombatEvent do
         |> put_combat(%Combat{dead: true})
 
       conn = put_character(conn, character)
-      schedule_self("combat/respawn", %{}, @respawn_delay)
+      respawn_ms = respawn_delay(character)
+      schedule_self("combat/respawn", %{}, respawn_ms)
 
       conn
     else
@@ -552,6 +553,12 @@ defmodule Kantele.Character.CombatEvent do
   defp combat_config(%{meta: %{combat_config: %{} = config}}), do: config
   defp combat_config(_), do: %{}
 
+  defp respawn_delay(character) do
+    case combat_config(character) do
+      %{respawn_delay: ms} when is_integer(ms) and ms > 0 -> ms
+      _ -> @default_respawn_delay
+    end
+  end
   defp starting_room_id() do
     Kantele.World.start_room_id()
   end

@@ -574,6 +574,7 @@ defmodule Kantele.World.Loader do
       attitude: Map.get(combat, :attitude),
       no_kill: Map.get(combat, :no_kill) in [true, "true"],
       spawn_room_id: nil,
+      respawn_delay: Map.get(combat, :respawn_delay),
       apply: Kantele.Character.Combat.new().temp
       |> Map.merge(stringify_apply(Map.get(combat, :apply, %{})))
     }

@@ -294,11 +294,12 @@ defmodule Kantele.Character.NPCConfig do
   defstruct [
     :attitude,
     :spawn_room_id,
+    :respawn_delay,
     no_kill: false,
     apply: %{}
   ]
 
-  def new(), do: %__MODULE__{apply: %{}, attitude: nil, no_kill: false, spawn_room_id: nil}
+  def new(), do: %__MODULE__{apply: %{}, attitude: nil, no_kill: false, spawn_room_id: nil, respawn_delay: nil}
 end
 
 defmodule Kantele.Character.InitialEvent do
