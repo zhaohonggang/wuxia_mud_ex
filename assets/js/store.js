@@ -54,6 +54,9 @@ const eventTextHandlers = {
   "Inventory.All": dispatchEventText,
   "Inventory.DropItem": dispatchEventText,
   "Inventory.PickupItem": dispatchEventText,
+  "Character.Score": dispatchEventText,
+  "Shop.List": dispatchEventText,
+  "Zone.MiniMap": dispatchEventText,
   "Login.Welcome": (dispatch) => {
     dispatch(Creators.loginActive());
     dispatch(Creators.loginPrompt());
