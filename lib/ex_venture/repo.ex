@@ -13,7 +13,9 @@ defmodule ExVenture.Repo do
 
     config =
       Keyword.merge(config,
-        url: vapor_config.database_url,
+        # config/<env>.exs 里已设置的 url 优先（如 test 固定连测试库），
+        # 否则回落到 Vapor（.env / 环境变量）
+        url: Keyword.get(config, :url, vapor_config.database_url),
         pool_size: vapor_config.pool_size
       )
 

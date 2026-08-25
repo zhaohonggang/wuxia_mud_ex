@@ -7,7 +7,12 @@ use Mix.Config
 #
 
 # Configure your database
-config :ex_venture, ExVenture.Repo, pool: Ecto.Adapters.SQL.Sandbox
+# 固定连测试库（Repo.init 会优先采用这里设置的 url）。
+# 注意：不要读 DATABASE_URL 环境变量——容器/compose 里该变量指向 dev 库，
+# 读了会让测试误连开发库
+config :ex_venture, ExVenture.Repo,
+  pool: Ecto.Adapters.SQL.Sandbox,
+  url: "postgresql://postgres:postgres@db/ex_venture_test"
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
