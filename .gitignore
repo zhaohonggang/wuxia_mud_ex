@@ -48,3 +48,5 @@ npm-debug.log
 .tmp_commands_check.exs
 .tmp_lines.txt
 .gitmsg
+
+# local smoke-test scratch.smoke_*
