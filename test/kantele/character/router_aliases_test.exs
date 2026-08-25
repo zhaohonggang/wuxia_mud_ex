@@ -94,7 +94,7 @@ defmodule Kantele.Character.RouterAliasesTest do
       "name" => "王重九"
     })
 
-    assert_command("练 liuxin-jian", Kantele.Character.LearnCommand, :run, %{
+    assert_command("练 liuxin-jian", Kantele.Character.PracticeCommand, :run, %{
       "skill" => "liuxin-jian"
     })
   end

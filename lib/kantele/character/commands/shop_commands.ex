@@ -23,17 +23,28 @@ end
 
 defmodule Kantele.Character.BuyCommand do
   @moduledoc """
-  购买物品：`buy <物品> [from 商人]` → v0 简化 `buy <物品>`
+  购买物品：`buy <物品> [x数量]`
 
-  商人报价由玩家侧校验铜钱后成交。
+  支持 xN 后缀一次购买多件（v0 库存无限）。
   """
 
   use Kalevala.Character.Command
 
   def run(conn, params) do
+    raw = params["item_name"] || ""
+    {item_name, quantity} = parse_quantity(raw)
+
     conn
-    |> event("shop/buy", %{item_name: params["item_name"], name: params["vendor"]})
+    |> assign(:pending_buy_quantity, quantity)
+    |> event("shop/buy", %{item_name: item_name, name: params["vendor"]})
     |> assign(:prompt, false)
+  end
+
+  defp parse_quantity(raw) do
+    case Regex.run(~r/^(.+?)\s*x(\d+)$/, String.trim(raw)) do
+      [_, name, n] -> {String.trim(name), String.to_integer(n)}
+      _ -> {raw, 1}
+    end
   end
 end
 

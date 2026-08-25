@@ -46,38 +46,44 @@ defmodule Kantele.Character.ShopEvent do
             price: price,
             buyer_id: buyer_id
           }
-        } = data
+        }
       ) do
     character = conn.character
+    quantity = Map.get(conn.assigns, :pending_buy_quantity, 1) || 1
 
     cond do
       buyer_id != character.id ->
         conn
 
-      (character.meta.coins || 0) < price ->
+      (character.meta.coins || 0) < price * quantity ->
         conn
-        |> render(CommandView, "text", %{text: "你身上的钱不够，#{item_name}要 #{price} 文。\n"})
+        |> render(CommandView, "text", %{text: "你身上的钱不够，#{item_name}要 #{price} 文×#{quantity}＝#{price * quantity} 文。\n"})
         |> prompt(CommandView, "prompt", %{})
 
       true ->
         case Items.get(item_id) do
           {:ok, _item} ->
-            instance = %Item.Instance{
-              id: Item.Instance.generate_id(),
-              item_id: item_id,
-              created_at: DateTime.utc_now()
-            }
+            instances =
+              for _ <- 1..quantity do
+                %Item.Instance{
+                  id: Item.Instance.generate_id(),
+                  item_id: item_id,
+                  created_at: DateTime.utc_now()
+                }
+              end
 
-            coins = character.meta.coins - price
-            character = %{character | inventory: [instance | character.inventory]}
+            coins = character.meta.coins - price * quantity
+            character = %{character | inventory: instances ++ character.inventory}
             character = Map.put(character, :meta, Map.put(character.meta, :coins, coins))
 
             Records.save(character)
 
+            qty_text = if quantity > 1, do: "（×#{quantity}）", else: ""
+
             conn
             |> put_character(character)
-            |> render(CommandView, "text", %{text: "你从#{vendor}手里买下#{item_name}，花了 #{
-              price
+            |> render(CommandView, "text", %{text: "你从#{vendor}手里买下#{item_name}#{qty_text}，花了 #{
+              price * quantity
             } 文铜钱。\n"})
             |> prompt(CommandView, "prompt", %{})
             |> render(Kantele.Character.CharacterView, "vitals")

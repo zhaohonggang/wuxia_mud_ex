@@ -178,12 +178,14 @@ defmodule Kantele.Character.Commands do
       command |> spaces() |> word(:skill) |> spaces() |> word(:name)
     end)
 
-    parse("practice", :run, fn command ->
-      command |> spaces() |> word(:skill)
-    end)
-
     parse("学", :run, fn command ->
       command |> spaces() |> word(:skill) |> spaces() |> word(:name)
+    end)
+  end
+
+  module(PracticeCommand) do
+    parse("practice", :run, fn command ->
+      command |> spaces() |> word(:skill)
     end)
 
     parse("练", :run, fn command ->
