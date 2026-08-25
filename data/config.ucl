@@ -1,3 +1,8 @@
 player {
   starting_room_id = sammatti.rooms.town_square.id
 }
+
+# 世界加载失败时是否向 general 频道广播公告（测试期默认开，正式运营可改 false）
+world {
+  broadcast_load_failures = true
+}

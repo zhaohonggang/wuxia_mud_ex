@@ -10,6 +10,7 @@ defmodule Kantele.Character.ReloadCommand do
   use Kalevala.Character.Command
 
   alias Kantele.Character.ReloadView
+  alias Kantele.World.Kickoff
 
   def recompile(conn, _params) do
     if Code.ensure_loaded?(Mix) do
@@ -24,8 +25,15 @@ defmodule Kantele.Character.ReloadCommand do
       IEx.Helpers.recompile()
     end
 
-    Kantele.World.Kickoff.reload()
+    case Kickoff.reload() do
+      :ok ->
+        render(conn, ReloadView, "reloaded")
 
-    render(conn, ReloadView, "reloaded")
+      {:error, last_load} ->
+        render(conn, ReloadView, "reload_failed", %{
+          error: last_load.error,
+          file: last_load.file
+        })
+    end
   end
 end

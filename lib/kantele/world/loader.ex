@@ -6,6 +6,7 @@ defmodule Kantele.World.Loader do
   alias Kalevala.Character
   alias Kalevala.World.Item
   alias Kalevala.World.Room.Feature
+  alias Kantele.World.LoaderError
   alias Kantele.World.Room
   alias Kantele.World.Zone
 
@@ -18,44 +19,129 @@ defmodule Kantele.World.Loader do
 
   @doc """
   Load zone files into Kalevala structs
+
+  任一数据文件出错都会抛 `Kantele.World.LoaderError`，并尽量附带出错的
+  文件路径，方便上层定位是哪个 .ucl 写坏了。
   """
   def load(paths \\ %{}) do
     paths = Map.merge(@paths, paths)
 
     world_data = load_folder(paths.world_path, ".ucl", &merge_world_data/1)
-    brain_data = Kantele.Brain.load_all(paths.brains_path)
-
-    verbs = parse_verbs(Elias.parse(File.read!(paths.verbs_path)))
+    brain_data = load_brains(paths.brains_path)
+    verbs = load_verbs(paths.verbs_path)
 
     context = %{
       verbs: verbs,
       brains: brain_data
     }
 
-    zones = Enum.map(world_data, &parse_zone(&1, context))
+    zones =
+      Enum.map(world_data, fn {key, zone_data} ->
+        parse_zone_with_context({key, zone_data}, context)
+      end)
 
     zones
-    |> Enum.map(&parse_exits(&1, world_data, zones))
-    |> Enum.map(&parse_characters(&1, world_data, zones))
-    |> Enum.map(&parse_items(&1, world_data, zones))
-    |> Enum.map(&zone_items_to_list/1)
-    |> Enum.map(&zone_rooms_to_list/1)
-    |> Enum.map(&generate_minimap/1)
+    |> Enum.map(&build_zone(&1, world_data, zones))
     |> parse_world()
   end
 
+  # ---- 文件级错误包装：读入/解析/构建出错时把文件路径挂进 LoaderError ----
+
   defp load_folder(path, file_extension, merge_fun) do
-    File.ls!(path)
+    ls!(path)
     |> Enum.filter(fn file ->
       String.ends_with?(file, file_extension)
     end)
-    |> Enum.map(fn file ->
-      File.read!(Path.join(path, file))
+    |> Enum.flat_map(fn file ->
+      load_data_file(Path.join(path, file), merge_fun)
     end)
-    |> Enum.map(&Elias.parse/1)
-    |> Enum.flat_map(merge_fun)
     |> Enum.into(%{})
   end
+
+  defp load_data_file(path, merge_fun) do
+    path
+    |> File.read!()
+    |> Elias.parse()
+    |> merge_fun.()
+  rescue
+    exception ->
+      reraise LoaderError,
+              [
+                message: "世界数据文件处理失败",
+                file: path,
+                reason: exception
+              ],
+              __STACKTRACE__
+  end
+
+  defp ls!(path) do
+    File.ls!(path)
+  rescue
+    exception ->
+      reraise LoaderError,
+              [message: "读取目录失败", file: path, reason: exception],
+              __STACKTRACE__
+  end
+
+  defp load_brains(path) do
+    Kantele.Brain.load_all(path)
+  rescue
+    exception ->
+      reraise LoaderError,
+              [message: "大脑配置加载失败", file: path, reason: exception],
+              __STACKTRACE__
+  end
+
+  defp load_verbs(path) do
+    path
+    |> File.read!()
+    |> Elias.parse()
+    |> parse_verbs()
+  rescue
+    exception ->
+      reraise LoaderError,
+              [message: "动词配置处理失败", file: path, reason: exception],
+              __STACKTRACE__
+  end
+
+  defp parse_zone_with_context(zone_data, context) do
+    parse_zone(zone_data, context)
+  rescue
+    exception ->
+      {key, _zone_data} = zone_data
+
+      reraise LoaderError,
+              [
+                message: "区域数据解析失败",
+                file: zone_file_path(to_string(key)),
+                reason: exception
+              ],
+              __STACKTRACE__
+  end
+
+  # 区域结构构建（exits/characters/items/minimap）逐区执行，出错归因到区域文件。
+  # 与原先分阶段 Enum.map 等价：各阶段只改动本区域的副本，不跨区域写状态。
+  defp build_zone(zone, world_data, zones) do
+    zone
+    |> parse_exits(world_data, zones)
+    |> parse_characters(world_data, zones)
+    |> parse_items(world_data, zones)
+    |> zone_items_to_list()
+    |> zone_rooms_to_list()
+    |> generate_minimap()
+  rescue
+    exception ->
+      reraise LoaderError,
+              [
+                message: "区域数据处理失败",
+                file: zone_file_path(zone.id),
+                reason: exception
+              ],
+              __STACKTRACE__
+  end
+
+  # 约定区域文件名与 zones key 一致（liuxi -> data/world/liuxi.ucl）
+  defp zone_file_path(zone_id), do: Path.join(@paths.world_path, "#{zone_id}.ucl")
 
   defp merge_world_data(zone_data) do
     [key] = Map.keys(zone_data.zones)
@@ -76,20 +162,29 @@ defmodule Kantele.World.Loader do
   Load help files
   """
   def load_help(path \\ @paths.help_path) do
-    File.ls!(path)
+    ls!(path)
     |> Enum.map(fn file ->
-      File.read!(Path.join(path, file))
+      load_help_file(Path.join(path, file))
     end)
-    |> Enum.map(fn text ->
-      [ucl, content] = String.split(text, "---")
+  end
 
-      help_topic =
-        ucl
-        |> Elias.parse()
-        |> Map.put(:content, String.trim(content))
+  defp load_help_file(path) do
+    [ucl, content] =
+      path
+      |> File.read!()
+      |> String.split("---")
 
-      struct(Kalevala.Help.HelpTopic, help_topic)
-    end)
+    help_topic =
+      ucl
+      |> Elias.parse()
+      |> Map.put(:content, String.trim(content))
+
+    struct(Kalevala.Help.HelpTopic, help_topic)
+  rescue
+    exception ->
+      reraise LoaderError,
+              [message: "帮助文件处理失败", file: path, reason: exception],
+              __STACKTRACE__
   end
 
   @doc """

@@ -213,5 +213,9 @@ defmodule Kantele.Character.Commands do
     parse("who", :run)
   end
 
+  module(WorldStatusCommand) do
+    parse("world_status", :run)
+  end
+
   dynamic(EmoteCommand, :emote, [])
 end

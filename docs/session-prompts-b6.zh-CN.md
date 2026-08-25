@@ -79,3 +79,9 @@ GenServer 的 continue 阶段抛异常 → Kickoff 进程崩溃 → 监督树重
 ## 六、完成后
 
 在本文件末尾追加一行实际做法摘要（采用了哪种回执通道、启动期选了哪种策略、与建议的差异点），供后续 session 了解现状。
+
+---
+
+> **2026-08-24 实际做法摘要**：回执通道采用 cast→同步 `GenServer.call`（`Kickoff.reload/1` 返回 `:ok | {:error, last_load}`，进程未运行/崩溃也兜底回错误，不向调用方抛出），`ReloadCommand` 按结果渲染成功/失败文案（含文件+截断后的原因摘要）；启动期选**硬失败**策略——首次启动（`start: true`）解析或编排失败时记日志后按原异常 reraise 崩溃交监督树重启，仅 reload 走软兜底。与建议差异：① `load_help()` 提前并入解析层（帮助解析失败同样零副作用）；② loader 的文件名归因已做（新增 `Kantele.World.LoaderError{message, file, reason}`，区域级错误按 zones key 约定映射回 `data/world/<zone>.ucl`）；③ 公告走新增的 `Kantele.Communication.announce/2`（无 conn 直接构造 `%Event{topic: Message}` 发布 general），消息挂虚拟角色"系统"并新增 `type: "announcement"` 走 `ChannelView "system"` 模板（data 里仍带角色对象，Web 端 channelReducer 读 id/name 不会炸）；④ 编排层兜底用 rescue+catch(:exit/:throw) 全收拢；⑤ 开关在 `data/config.ucl` 新增 `[world.broadcast_load_failures]`（Elias 把裸 true 解析成 `"true"`，代码两种都认；**改开关需重启进程生效**，Config 只在启动时读一次）。观测三件套齐备：`Kickoff.status/1`、游戏内 `world_status` 命令（未列入 commands 列表，与 reload 同属内部命令）、`GET /_health` 改返回 JSON `{status, world: ok|degraded|unknown, last_load_error}`。测试 `test/kantele/world/kickoff_test.exs` 用 Application env 注入 StubLoader 覆盖解析层/编排层失败、恢复、启动崩溃/成功及视图渲染。
+>
+> **2026-08-24 验收补充（review session）**：以上实现已在 Docker 环境实机验收**全部通过**（121→123 测试全绿；坏 ucl→reload 真实失败回执/公告/world_status//_health degraded 均验证，修复后恢复 ok）。验收中发现并修复一个 bug：`ChannelEvent.echo` 把公告虚拟角色 assign 进 conn.assigns 后，`prompt/4` 空参数渲染导致 `CommandView "prompt"` 的 `%{vitals} = character.meta` KeyError、**foreman 崩溃踢回登录界面**——修复为 prompt 显式传 `%{character: conn.character}`（channel_event.ex），并补回归测试 `test/kantele/character/channel_event_test.exs`。该修复同时解决了潜伏问题：此前普通频道消息后 prompt 显示的是**发言者**的 vitals（因所有角色初始 vitals 相同而未暴露）。环境注意：本仓库 `MIX_ENV=test` 仍从 `.env` 读 DATABASE_URL（Repo.init 不分环境），跑测试必须显式 `DATABASE_URL=postgresql://postgres:postgres@db/ex_venture_test MIX_ENV=test mix test`，否则会连到 dev 库（既污染测试结果，`ecto.drop` 更会威胁 dev 数据）。
