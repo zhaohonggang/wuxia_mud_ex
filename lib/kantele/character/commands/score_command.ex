@@ -40,6 +40,10 @@ defmodule Kantele.Character.ScoreCommand do
       int: stats.int,
       combat_exp: stats.combat_exp,
       potential: stats.potential,
+      coins: character.meta.coins || 0,
+      score: stats.score || 0,
+      weiwang: stats.weiwang || 0,
+      gongxian: stats.gongxian || 0,
       skills: skills,
       performs: performs
     })

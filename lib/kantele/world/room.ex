@@ -23,7 +23,8 @@ defmodule Kantele.World.Room do
     :y,
     :z,
     exits: [],
-    features: []
+    features: [],
+    flags: []
   ]
 
   @doc """
@@ -173,8 +174,178 @@ defmodule Kantele.World.Room.Events do
       event("tell/send", :call)
     end
 
+    module(ShopRequestEvent) do
+      event("shop/list", :call)
+      event("shop/buy", :call)
+    end
+
+    module(AskRequestEvent) do
+      event("characters/ask", :call)
+    end
+
+    module(ApprenticeRequestEvent) do
+      event("family/apprentice", :call)
+    end
+
     module(WhisperEvent) do
       event("whisper/send", :call)
+    end
+  end
+end
+
+defmodule Kantele.World.Room.NameMatch do
+  @moduledoc """
+  房间转发用角色名匹配：全名精确或首个词前缀
+
+  双语名（如"店小二 Xiaoer"）允许玩家只输入中文名"店小二"；
+  与 Kalevala.Character.matches?/2 的全名精确匹配不同。
+  """
+
+  def matches?(character, keyword) when is_binary(keyword) do
+    keyword = keyword |> String.downcase() |> String.trim()
+    name = character.name |> to_string() |> String.downcase()
+
+    name == keyword or String.starts_with?(name, "#{keyword} ")
+  end
+
+  def matches?(_character, _keyword), do: false
+end
+
+defmodule Kantele.World.Room.ShopRequestEvent do
+  @moduledoc """
+  商店请求转发（A10/N2）
+
+  把 `list`/`buy` 转给房间内的 NPC：指名则只找该角色，未指名则广播全场
+  非玩家，由带 goods 的商人应答（房间上下文角色被 Trimmed，无法直接看 meta）。
+  """
+
+  import Kalevala.World.Room.Context
+
+  def call(context, %{topic: topic, data: data} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case requester do
+      nil ->
+        context
+
+      requester ->
+        forward(context, topic, data, requester)
+    end
+  end
+
+  defp forward(context, topic, %{name: name}, requester) when is_binary(name) and name != "" do
+    Enum.reduce(context.characters, context, fn character, acc ->
+      if target?(character, requester) &&
+           Kantele.World.Room.NameMatch.matches?(character, name) do
+        event(acc, character.pid, self(), topic, %{
+          reply_to: requester.pid,
+          buyer_id: requester.id,
+          buyer_name: requester.name
+        })
+      else
+        acc
+      end
+    end)
+  end
+
+  defp forward(context, topic, data, requester) do
+    player_ids = MapSet.new(Kantele.Character.Presence.characters(), & &1.id)
+
+    Enum.reduce(context.characters, context, fn character, acc ->
+      if target?(character, requester) &&
+           not MapSet.member?(player_ids, character.id) do
+        event(acc, character.pid, self(), topic, %{
+          reply_to: requester.pid,
+          buyer_id: requester.id,
+          buyer_name: requester.name,
+          item_name: Map.get(data, :item_name)
+        })
+      else
+        acc
+      end
+    end)
+  end
+
+  defp target?(character, requester) do
+    character.pid != requester.pid and not dead?(character)
+  end
+
+  defp dead?(%{status: status}) when is_binary(status),
+    do: String.contains?(status, "尸体")
+
+  defp dead?(_), do: false
+end
+
+defmodule Kantele.World.Room.AskRequestEvent do
+  @moduledoc """
+  问询转发（A10/N4）：把 `问 <人> <关键词>` 转给对应 NPC
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+
+  def call(context, %{data: %{name: name, keyword: keyword}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case {requester, is_binary(name) and name != ""} do
+      {nil, _} ->
+        context
+
+      {requester, true} ->
+        Enum.reduce(context.characters, context, fn character, acc ->
+          if character.pid != requester.pid and
+               Kantele.World.Room.NameMatch.matches?(character, name) do
+            event(acc, character.pid, self(), "characters/ask", %{
+              reply_to: requester.pid,
+              asker_id: requester.id,
+              asker_name: requester.name,
+              keyword: keyword
+            })
+          else
+            acc
+          end
+        end)
+
+      {requester, false} ->
+        render(context, requester.pid, CommandView, "text", %{text: "你要问谁？\n"})
+    end
+  end
+end
+
+defmodule Kantele.World.Room.ApprenticeRequestEvent do
+  @moduledoc """
+  拜师转发（A11/N5）：把 `apprentice <人>` 转给对应 NPC，
+  是否收徒由 NPC 的 teach 配置决定（NPC 侧应答）。
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+
+  def call(context, %{data: %{name: name}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case {requester, is_binary(name) and name != ""} do
+      {nil, _} ->
+        context
+
+      {requester, true} ->
+        Enum.reduce(context.characters, context, fn character, acc ->
+          if character.pid != requester.pid and
+               Kantele.World.Room.NameMatch.matches?(character, name) do
+            event(acc, character.pid, self(), "family/apprentice", %{
+              reply_to: requester.pid,
+              student_id: requester.id,
+              student_name: requester.name
+            })
+          else
+            acc
+          end
+        end)
+
+      {requester, false} ->
+        render(context, requester.pid, CommandView, "text", %{text: "你要拜谁为师？\n"})
     end
   end
 end
@@ -313,7 +484,7 @@ defmodule Kantele.World.Room.SayEvent do
 
   defp find_local_character(context, name) do
     Enum.find(context.characters, fn character ->
-      Kalevala.Character.matches?(character, name)
+      Kantele.World.Room.NameMatch.matches?(character, name)
     end)
   end
 end
@@ -339,7 +510,7 @@ defmodule Kantele.World.Room.TellEvent do
 
   defp find_character(characters, name) do
     Enum.find(characters, fn character ->
-      Kalevala.Character.matches?(character, name)
+      Kantele.World.Room.NameMatch.matches?(character, name)
     end)
   end
 end
@@ -356,7 +527,7 @@ defmodule Kantele.World.Room.WhisperEvent do
 
   defp find_local_character(context, name) do
     Enum.find(context.characters, fn character ->
-      Kalevala.Character.matches?(character, name)
+      Kantele.World.Room.NameMatch.matches?(character, name)
     end)
   end
 end
@@ -405,6 +576,15 @@ defmodule Kantele.World.Room.CombatEvent do
       end)
 
     cond do
+      no_fight?(context) ->
+        render(
+          context,
+          attacker.pid,
+          CommandView,
+          "text",
+          %{text: "此处乃习武清修之地，不可动手。\n"}
+        )
+
       is_nil(name) or name == "" ->
         render(context, attacker.pid, CommandView, "text", %{text: "你要跟谁动手？\n"})
 
@@ -433,9 +613,13 @@ defmodule Kantele.World.Room.CombatEvent do
 
   # ---- aggressive NPC ----
 
-  defp dispatch(context, %{topic: "combat/aggressive"}, npc) do
+  defp dispatch(context, %{topic: "combat/aggressive"} = event, npc) do
     cond do
       dead?(npc) ->
+        context
+
+      no_fight?(context) ->
+        # 禁斗之地 aggressive NPC 也不主动开战
         context
 
       true ->
@@ -446,7 +630,12 @@ defmodule Kantele.World.Room.CombatEvent do
             context
 
           players ->
-            victim = Enum.random(players)
+            # 仇恨优先（A9/P11）：记仇目标在场则优先开战，否则随机
+            hated_ids = Map.get(event.data, :hated_ids, [])
+
+            victim =
+              Enum.find(players, &(&1.id in hated_ids)) || Enum.random(players)
+
             engage(context, npc, victim)
         end
     end
@@ -483,9 +672,17 @@ defmodule Kantele.World.Room.CombatEvent do
 
   # 防御版匹配：名字缺失/异形时不崩溃
   defp safe_matches?(character, keyword) when is_binary(keyword),
-    do: Kalevala.Character.matches?(character, keyword)
+    do: Kantele.World.Room.NameMatch.matches?(character, keyword)
 
   defp safe_matches?(_character, _other), do: false
+
+  # 房间是否禁止动手（flags 含 "no_fight"，A5/D2）
+  defp no_fight?(context) do
+    case context.data do
+      %{flags: flags} when is_list(flags) -> "no_fight" in flags
+      _ -> false
+    end
+  end
 
   defp dispatch(context, _event, _attacker), do: context
 

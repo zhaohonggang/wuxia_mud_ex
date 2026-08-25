@@ -5,7 +5,8 @@ defmodule Kantele.Character.ChannelEvent do
   alias Kantele.Character.CommandView
 
   def interested?(event) do
-    match?("general", event.data.channel_name)
+    # 系统公告（announcement）走任意频道都渲染；普通聊天仍限 general
+    event.data.type == "announcement" || match?("general", event.data.channel_name)
   end
 
   def echo(conn, event) do

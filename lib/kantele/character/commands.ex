@@ -19,6 +19,25 @@ defmodule Kantele.Character.Commands do
     parse("drink", :run)
     parse("heal", :run)
     parse("喝药", :run)
+
+    # 中文别名（A8/N1）：裸命令加词边界（后随字符须为空白/结尾）
+    parse("喝", :run, [],
+      fn command ->
+        command
+        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+      end
+    )
+  end
+
+  module(EatCommand) do
+    parse("eat", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+
+    # 带参中文别名靠必需空格自然分词（"吃东西"不会误触 eat）
+    parse("吃", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
   end
 
   module(EmoteCommand) do
@@ -41,6 +60,15 @@ defmodule Kantele.Character.Commands do
     end)
 
     parse("fight", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+
+    # 中文别名：杀掉 必须先于 杀 注册（先注册先匹配）
+    parse("杀掉", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+
+    parse("杀", :run, fn command ->
       command |> spaces() |> word(:name)
     end)
   end
@@ -70,6 +98,21 @@ defmodule Kantele.Character.Commands do
     parse("get", :get, fn command ->
       command |> spaces() |> text(:item_name)
     end)
+
+    # 中文别名（A8/N1）：拿/捡 → get
+    parse("拿", :get, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+
+    parse("捡", :get, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+  end
+
+  module(JialiCommand) do
+    parse("jiali", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
   end
 
   module(InfoCommand) do
@@ -94,6 +137,32 @@ defmodule Kantele.Character.Commands do
         |> lookahead_not(utf8_char([?a..?z, ?A..?Z]))
       end
     )
+
+    # 看：look 忽略参数，边界保证 "看书" 不误触（A8/N1）
+    parse("看", :run, [],
+      fn combinator ->
+        combinator
+        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+      end
+    )
+  end
+
+  module(ListCommand) do
+    parse("list", :run, fn command ->
+      command |> spaces() |> text(:name)
+    end)
+
+    parse("list", :bare)
+  end
+
+  module(BuyCommand) do
+    parse("buy", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+
+    parse("买", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
   end
 
 
@@ -103,6 +172,14 @@ defmodule Kantele.Character.Commands do
     end)
 
     parse("practice", :run, fn command ->
+      command |> spaces() |> word(:skill)
+    end)
+
+    parse("学", :run, fn command ->
+      command |> spaces() |> word(:skill) |> spaces() |> word(:name)
+    end)
+
+    parse("练", :run, fn command ->
       command |> spaces() |> word(:skill)
     end)
   end
@@ -118,6 +195,49 @@ defmodule Kantele.Character.Commands do
     parse("west", :west, aliases: ["w"])
     parse("up", :up, aliases: ["u"])
     parse("down", :down, aliases: ["d"])
+
+    # 中文方向别名（A8/N1）：单字加词边界，防止 "北上" 之类被吞成移动
+    parse("北", :north, [],
+      fn command ->
+        command
+        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+      end
+    )
+
+    parse("南", :south, [],
+      fn command ->
+        command
+        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+      end
+    )
+
+    parse("西", :west, [],
+      fn command ->
+        command
+        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+      end
+    )
+
+    parse("东", :east, [],
+      fn command ->
+        command
+        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+      end
+    )
+
+    parse("上", :up, [],
+      fn command ->
+        command
+        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+      end
+    )
+
+    parse("下", :down, [],
+      fn command ->
+        command
+        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+      end
+    )
   end
 
   module(PerformCommand) do
@@ -129,6 +249,20 @@ defmodule Kantele.Character.Commands do
   module(ExertCommand) do
     parse("exert", :run, fn command ->
       command |> spaces() |> word(:function)
+    end)
+  end
+
+  module(ExerciseCommand) do
+    parse("exercise", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("dazuo", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("打坐", :run, fn command ->
+      command |> spaces() |> text(:arg)
     end)
   end
 
@@ -165,6 +299,15 @@ defmodule Kantele.Character.Commands do
     end)
 
     parse("remove", :remove, fn command ->
+      command |> spaces() |> word(:item_name)
+    end)
+
+    # 中文别名（A8/N1）：穿 → wear、脱 → remove
+    parse("穿", :wear, fn command ->
+      command |> spaces() |> word(:item_name)
+    end)
+
+    parse("脱", :remove, fn command ->
       command |> spaces() |> word(:item_name)
     end)
   end
@@ -211,6 +354,33 @@ defmodule Kantele.Character.Commands do
 
   module(WhoCommand) do
     parse("who", :run)
+  end
+
+  module(AskCommand) do
+    parse("ask", :run, fn command ->
+      command |> spaces() |> word(:name) |> spaces() |> text(:keyword)
+    end)
+
+    parse("问", :run, fn command ->
+      command |> spaces() |> word(:name) |> spaces() |> text(:keyword)
+    end)
+  end
+
+  module(ApprenticeCommand) do
+    parse("apprentice", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+
+    parse("拜师", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+  end
+
+  module(PaiCommand) do
+    parse("pai", :run)
+
+    # 门派 单字"门"易误触，用全词
+    parse("门派", :run)
   end
 
   module(WorldStatusCommand) do

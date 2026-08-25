@@ -1,0 +1,29 @@
+﻿connected to app@f0988a0e8a69
+
+12:25:22.777 [debug] QUERY OK source="character_metadata" db=4.2ms queue=1.3ms idle=1412.1ms
+DELETE FROM "character_metadata" AS c0 WHERE (c0."character_id" IN (SELECT sc0."id" FROM "characters" AS sc0 WHERE (sc0."name" IN ('閾佽泲','闃跨')))) []
+
+12:25:22.781 [debug] QUERY OK source="characters" db=2.5ms queue=1.2ms idle=1418.2ms
+DELETE FROM "characters" AS c0 WHERE (c0."name" IN ('閾佽泲','闃跨')) []
+remote eval issue: {{:e2e_done, :ok}, []}
+[PASS] login
+[PASS] score-coins
+[PASS] walk-tiepupu
+[PASS] shop-list
+[PASS] buy-baozi
+[PASS] eat-baozi
+[PASS] ask-liuxi
+[PASS] walk-lianwuchang
+[PASS] no-fight-block
+[PASS] no-fight-en
+[PASS] apprentice
+[PASS] learn-neigong
+[PASS] enable-force
+[PASS] jiali-guard
+[PASS] dazuo-blocked
+[PASS] back-guangchang
+[PASS] dazuo-start
+[PASS] dazuo-finish
+[PASS] pai-info
+
+=== PHASE-A E2E ALL PASSED ===

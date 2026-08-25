@@ -108,6 +108,7 @@ defmodule Kantele.Character.LoginController do
     |> subscribe("rooms:#{character.room_id}", [], &MoveEvent.subscribe_error/2)
     |> register_and_subscribe_character_channel(character)
     |> subscribe("general", [], &ChannelEvent.subscribe_error/2)
+    |> subscribe("rumor", [], &ChannelEvent.subscribe_error/2)
     |> render(LoginView, "enter-world", %{})
     |> put_controller(CommandController)
     |> event("room/look", %{})
@@ -124,9 +125,7 @@ defmodule Kantele.Character.LoginController do
   end
 
   defp build_character(name) do
-    starting_room_id =
-      Kantele.Config.get([:player, :starting_room_id])
-      |> Kantele.World.dereference()
+    starting_room_id = Kantele.World.start_room_id()
 
     %Character{
       id: Character.generate_id(),
@@ -146,7 +145,8 @@ defmodule Kantele.Character.LoginController do
       meta: %Kantele.Character.PlayerMeta{
         vitals: Kantele.Character.Vitals.new(),
         stats: Kantele.Character.Stats.new(),
-        combat: Kantele.Character.Combat.new()
+        combat: Kantele.Character.Combat.new(),
+        coins: 100
       }
     }
   end

@@ -6,6 +6,7 @@ defmodule Kantele.World.Loader do
   alias Kalevala.Character
   alias Kalevala.World.Item
   alias Kalevala.World.Room.Feature
+  alias Kantele.Character.Stats
   alias Kantele.World.LoaderError
   alias Kantele.World.Room
   alias Kantele.World.Zone
@@ -258,11 +259,19 @@ defmodule Kantele.World.Loader do
       x: room_data.x,
       y: room_data.y,
       z: room_data.z,
+      flags: parse_flags(Map.get(room_data, :flags)),
       features: parse_features(room_data, zone_data)
     }
 
     {key, room}
   end
+
+  # 房间标志位（A5/D2）：no_fight/outdoors/water/startroom；
+  # outdoors/water 本期只存不用（供日后天气/溺水）
+  defp parse_flags(nil), do: []
+  defp parse_flags(flags) when is_list(flags), do: Enum.map(flags, &to_string/1)
+  defp parse_flags(flag) when is_binary(flag), do: [flag]
+  defp parse_flags(_), do: []
 
   def parse_features(%{features: features}, zone_data) when is_list(features) do
     Enum.map(features, fn feature ->
@@ -311,14 +320,21 @@ defmodule Kantele.World.Loader do
       id: "#{zone.id}:#{key}",
       name: character_data.name,
       description: character_data.description,
-      brain: Kantele.Brain.process(Map.get(character_data, :brain), brains),
+      brain:
+        character_data
+        |> build_brain(brains),
       meta: %Kantele.Character.NonPlayerMeta{
         zone_id: zone.id,
         initial_events: parse_initial_events(character_data),
         vitals: npc_vitals(Map.get(character_data, :combat)),
         stats: npc_stats(Map.get(character_data, :combat)),
         combat_config: npc_combat_config(Map.get(character_data, :combat)),
-        combat: Kantele.Character.Combat.new()
+        combat: Kantele.Character.Combat.new(),
+        goods: parse_goods(Map.get(character_data, :goods)),
+        inquiries: parse_inquiries(Map.get(character_data, :inquiries)),
+        teach: parse_teach(Map.get(character_data, :teach)),
+        turn_in: parse_turn_in(Map.get(character_data, :turn_in)),
+        loot: parse_goods(Map.get(character_data, :loot))
       }
     }
 
@@ -326,6 +342,187 @@ defmodule Kantele.World.Loader do
 
     {key, character}
   end
+
+  # 组装 NPC 大脑：原脑 + 可选闲聊节点（A10/N3 chat_chance/chats）
+  defp build_brain(character_data, brains) do
+    brain = Kantele.Brain.process(Map.get(character_data, :brain), brains)
+
+    case chat_node(Map.get(character_data, :chat_chance), Map.get(character_data, :chats)) do
+      nil ->
+        brain
+
+      node ->
+        %Kalevala.Brain{
+          root: %Kalevala.Brain.Sequence{
+            nodes: [node, brain.root]
+          }
+        }
+    end
+  end
+
+  # 概率闲聊：conditions/random 命中后从台词池随机说一条
+  defp chat_node(chance, chats)
+       when is_integer(chance) and chance > 0 and is_list(chats) and chats != [] do
+    %Kalevala.Brain.ConditionalSelector{
+      nodes: [
+        %Kalevala.Brain.Condition{
+          type: Kantele.Brain.Conditions.Random,
+          data: %{chance: chance}
+        },
+        %Kalevala.Brain.Action{
+          type: Kantele.Character.ChatAction,
+          data: %{lines: Enum.map(chats, &to_string/1)},
+          delay: 0
+        }
+      ]
+    }
+  end
+
+  defp chat_node(_, _), do: nil
+
+  # 商品表：UCL 写法与 room_items 一致（{ id = items.xxx.id } 对象数组），
+  # 先存原始引用串，待 parse_characters 阶段有 zones 上下文时再解引用
+  defp parse_goods(nil), do: nil
+
+  defp parse_goods(goods) when is_list(goods) do
+    Enum.map(goods, fn
+      %{id: ref} when is_binary(ref) -> ref
+      ref when is_binary(ref) -> ref
+      _ -> nil
+    end)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  defp parse_goods(_), do: nil
+
+  # 解引用商品引用（items.baozi.id -> "liuxi:baozi"；普通 id 原样保留）
+  defp resolve_goods(nil, _zone, _zones), do: nil
+
+  defp resolve_goods(goods, zone, zones) when is_list(goods) do
+    Enum.map(goods, fn
+      "items." <> _rest = ref ->
+        case safe_dereference(zones, zone, ref) do
+          {:ok, item_id} when is_binary(item_id) -> item_id
+          _ -> ref
+        end
+
+      id ->
+        id
+    end)
+  end
+
+  defp resolve_goods(goods, _zone, _zones), do: goods
+
+  defp safe_dereference(zones, zone, reference) do
+    {:ok, dereference(zones, zone, reference)}
+  rescue
+    _ -> :error
+  end
+
+  # 解引用任务交付物品（items.yupai.id -> "liuxi:yupai"）
+  defp resolve_turn_in(nil, _zone, _zones), do: nil
+
+  defp resolve_turn_in(turn_in, zone, zones) do
+    item =
+      case Map.get(turn_in, :item) do
+        "items." <> _rest ->
+          case safe_dereference(zones, zone, turn_in.item) do
+            {:ok, item_id} when is_binary(item_id) -> item_id
+            _ -> nil
+          end
+
+        item when is_binary(item) ->
+          item
+
+        _ ->
+          nil
+      end
+
+    %{turn_in | item: item}
+  end
+
+  # 问答表：%{关键词 => 回答}，键值统一字符串
+  defp parse_inquiries(nil), do: nil
+
+  defp parse_inquiries(inquiries) when is_map(inquiries) do
+    Enum.into(inquiries, %{}, fn {key, value} ->
+      {to_string(key), to_string(value)}
+    end)
+  end
+
+  defp parse_inquiries(_), do: nil
+
+  # 教学配置（A11/D4）：归一化字符串键，本期只解析落位供门派信息展示，
+  # 消费端校验等 b 期 learn 重构接入
+  defp parse_teach(nil), do: nil
+
+  defp parse_teach(teach) when is_map(teach) do
+    teach_skills =
+      case Map.get(teach, :teach_skills) do
+        skills when is_map(skills) ->
+          Enum.into(skills, %{}, fn {key, conf} ->
+            skill_id = String.replace(to_string(key), "_", "-")
+
+            conf =
+              case conf do
+                %{max: max, gongxian: gongxian} ->
+                  %{max: max, gongxian: gongxian}
+
+                %{max: max} ->
+                  %{max: max, gongxian: 0}
+
+                _ ->
+                  %{max: 0, gongxian: 0}
+              end
+
+            {skill_id, conf}
+          end)
+
+        _ ->
+          %{}
+      end
+
+    no_teach =
+      case Map.get(teach, :no_teach) do
+        list when is_list(list) -> Enum.map(list, &to_string/1)
+        _ -> []
+      end
+
+    %{
+      family: Map.get(teach, :family) && to_string(Map.get(teach, :family)),
+      teach_skills: teach_skills,
+      no_teach: no_teach
+    }
+  end
+
+  defp parse_teach(_), do: nil
+
+  # 任务交付（A11/N6 v0）：item 为引用串（items.yupai.id），延后到 parse_characters 解
+  defp parse_turn_in(nil), do: nil
+
+  defp parse_turn_in(turn_in) when is_map(turn_in) do
+    rewards =
+      case Map.get(turn_in, :rewards) do
+        rewards when is_map(rewards) -> rewards
+        _ -> %{}
+      end
+
+    %{
+      quest: Map.get(turn_in, :quest) && to_string(Map.get(turn_in, :quest)),
+      item: Map.get(turn_in, :item) && to_string(Map.get(turn_in, :item)),
+      prompt: Map.get(turn_in, :prompt) && to_string(Map.get(turn_in, :prompt)),
+      rumor: Map.get(turn_in, :rumor) && to_string(Map.get(turn_in, :rumor)),
+      rewards: %{
+        exp: Map.get(rewards, :exp) || 0,
+        potential: Map.get(rewards, :potential) || 0,
+        score: Map.get(rewards, :score) || 0,
+        weiwang: Map.get(rewards, :weiwang) || 0,
+        coins: Map.get(rewards, :coins) || 0
+      }
+    }
+  end
+
+  defp parse_turn_in(_), do: nil
 
   defp npc_vitals(nil), do: Kantele.Character.Vitals.new()
 
@@ -345,16 +542,20 @@ defmodule Kantele.World.Loader do
     }
   end
 
-  defp npc_stats(nil), do: Kantele.Character.Stats.new()
+  defp npc_stats(nil), do: Stats.new()
 
   defp npc_stats(combat) do
-    %Kantele.Character.Stats{
+    %Stats{
       str: Map.get(combat, :str, 20),
       dex: Map.get(combat, :dex, 20),
       con: Map.get(combat, :con, 20),
       int: Map.get(combat, :int, 20),
       combat_exp: Map.get(combat, :combat_exp, 0),
       potential: Map.get(combat, :potential, 0),
+      score: 0,
+      weiwang: 0,
+      gongxian: 0,
+      shen: 0,
       skills: skill_keys(Map.get(combat, :skills, %{})),
       mapped: skill_keys(Map.get(combat, :map_skill, %{})),
       performs: MapSet.new()
@@ -452,13 +653,43 @@ defmodule Kantele.World.Loader do
   defp parse_item_meta(nil), do: %Kantele.World.Item.Meta{}
 
   defp parse_item_meta(meta) do
-    %Kantele.World.Item.Meta{
-      damage: Map.get(meta, :damage),
-      skill_type: Map.get(meta, :skill_type),
-      armor: Map.get(meta, :armor),
-      value: Map.get(meta, :value)
+    # 注意不能用 %Item.Meta{}：本模块顶部 alias 的 Item 指 Kalevala.World.Item
+    meta =
+      %Kantele.World.Item.Meta{
+        damage: Map.get(meta, :damage),
+        skill_type: Map.get(meta, :skill_type),
+        armor: Map.get(meta, :armor),
+        value: Map.get(meta, :value),
+        weight: Map.get(meta, :weight),
+        unit: Map.get(meta, :unit),
+        material: Map.get(meta, :material),
+        food: Map.get(meta, :food),
+        medicine: parse_medicine(Map.get(meta, :medicine)),
+        book: parse_book(Map.get(meta, :book))
+      }
+
+    meta
+  end
+
+  # 药效原样透传（qi/jing/neili/stats 等键由消费端定义），非 map 一律丢弃
+  defp parse_medicine(nil), do: nil
+  defp parse_medicine(medicine) when is_map(medicine), do: medicine
+  defp parse_medicine(_), do: nil
+
+  defp parse_book(nil), do: nil
+
+  defp parse_book(book) when is_map(book) do
+    %Kantele.World.Item.Meta.Book{
+      skill: Map.get(book, :skill),
+      min_skill: Map.get(book, :min_skill),
+      max_skill: Map.get(book, :max_skill),
+      exp_required: Map.get(book, :exp_required),
+      jing_cost: Map.get(book, :jing_cost),
+      difficulty: Map.get(book, :difficulty)
     }
   end
+
+  defp parse_book(_), do: nil
 
   @doc """
   Parse exits for zones
@@ -539,6 +770,13 @@ defmodule Kantele.World.Loader do
             end
 
           meta = %{meta | combat_config: combat_config}
+
+          # 商品引用此时才有 zones 上下文可解（A10/N2）
+          meta = %{meta | goods: resolve_goods(Map.get(meta, :goods), zone, zones)}
+
+          # 任务交付物品引用同上（A11/N6）；掉落表同商品解引用
+          meta = %{meta | turn_in: resolve_turn_in(Map.get(meta, :turn_in), zone, zones)}
+          meta = %{meta | loot: resolve_goods(Map.get(meta, :loot), zone, zones)}
 
           %Character{
             character

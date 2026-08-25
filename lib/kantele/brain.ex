@@ -154,6 +154,25 @@ defmodule Kantele.Brain do
     }
   end
 
+  # 概率条件（A10/N3 chat_chance）
+  def parse_condition("random", %{data: data}, _brains) do
+    %Kalevala.Brain.Condition{
+      type: Kantele.Brain.Conditions.Random,
+      data: %{chance: parse_chance(data[:chance] || data["chance"])}
+    }
+  end
+
+  defp parse_chance(chance) when is_integer(chance), do: chance
+
+  defp parse_chance(chance) when is_binary(chance) do
+    case Integer.parse(chance) do
+      {value, _} -> value
+      _ -> 0
+    end
+  end
+
+  defp parse_chance(_), do: 0
+
   @doc """
   Process actions
   """
@@ -167,6 +186,21 @@ defmodule Kantele.Brain do
     %Kalevala.Brain.Action{
       type: Kantele.Character.SayAction,
       data: action.data,
+      delay: Map.get(action, :delay, 0)
+    }
+  end
+
+  # 闲聊（A10/N3）：data %{lines: [...]}，由 ChatAction 随机挑一条说出口
+  def parse_action("chat", action, _brains) do
+    lines =
+      case Map.get(action.data, :lines) do
+        lines when is_list(lines) -> Enum.map(lines, &to_string/1)
+        _ -> []
+      end
+
+    %Kalevala.Brain.Action{
+      type: Kantele.Character.ChatAction,
+      data: %{lines: lines},
       delay: Map.get(action, :delay, 0)
     }
   end

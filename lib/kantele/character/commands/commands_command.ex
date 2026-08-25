@@ -7,23 +7,31 @@ defmodule Kantele.Character.CommandsCommand do
 
   alias Kantele.Character.CommandsView
 
-  # 与 commands.ex 路由保持同步；recompile/reload/delay 为内部命令不列出
+  # 与 commands.ex 路由保持同步；recompile/reload/delay/world_status 为内部命令不列出
   @descriptions %{
     "channels" => "频道聊天（general）",
     "commands" => "本列表",
     "drop" => "丢弃物品",
+    "eat" => "吃东西：eat 物品",
     "emote" => "在房间表演动作",
     "emotes" => "可用动作列表",
     "enable" => "技能映射：enable 用法 特技",
     "exert" => "运功：exert powerup",
+    "exercise" => "打坐练内功：exercise 耗气量",
     "fight" => "开战（同 kill）",
     "get" => "拾取物品",
     "halt" => "停手脱离战斗",
     "help" => "帮助主题",
     "info" => "房间信息",
     "inventory" => "背包（简写 i/inv）",
+    "jiali" => "加力：jiali 0-N（0 关闭）",
     "kill" => "攻击目标",
     "learn" => "拜师学习：learn 技能 师父",
+    "list" => "查看商人货物：list [商人]",
+    "buy" => "购买：buy 物品",
+    "ask" => "问询：ask 某人 关键词",
+    "apprentice" => "拜师：apprentice 某人",
+    "pai" => "门派信息",
     "look" => "查看房间",
     "map" => "区域地图",
     "perform" => "绝招：perform 武功.招式",

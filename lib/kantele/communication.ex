@@ -11,7 +11,10 @@ defmodule Kantele.Communication do
 
   @impl true
   def initial_channels() do
-    [{"general", Kantele.Communication.BroadcastChannel, []}]
+    [
+      {"general", Kantele.Communication.BroadcastChannel, []},
+      {"rumor", Kantele.Communication.BroadcastChannel, []}
+    ]
   end
 
   @doc """

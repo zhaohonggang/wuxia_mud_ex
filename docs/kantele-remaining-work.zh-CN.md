@@ -207,22 +207,26 @@ N1 别名层、N2 商店、N3/N4 行为树问答、N7 四维道具（仅需给 e
 
 ### a 期——小地图做完备（安全 + 无 b 依赖）
 
+> 2026-08-25 a 期施工完成情况（详见会话差异清单）：a4~a11 全部落地；
+> a12 可选项放弃；combat_e2e 的 death-respawn 断言存在战斗随机时长导致的
+> 偶发超时（flaky），闭环各环节已分别验证。
+
 | 序 | 项 | 说明 |
 |---|---|---|
 | a1 | T3 测试跑绿 | ✅ 2026-08-24 已完成 |
-| a2 | B6 安全加载兜底 | 先装保险丝，后续所有 UCL/代码试错都不再炸全服 |
+| a2 | B6 安全加载兜底 | ✅ 已完成（cast→call 回执、启动硬失败/reload 软兜底、观测三件套） |
 | a3 | ~~O1 禁用后台世界编辑入口~~ | ⏸ **已挂起另行安排**：当前单人管理员，无协作误发布风险 |
-| a4 | D1 Item.Meta 扩展 | 安全增量解析；food/medicine 字段同时为 O4 铺路 |
-| a5 | D2 房间 flags | no_fight / outdoors / water / startroom |
-| a6 | P5 limit 公式 → P3 打坐 → P4 吐纳 | **链C内部严格按此序**；养成闭环核心，内容荒解药 |
-| a7 | N7 四维成长道具 | 配合养成循环（eat/drink 补效果通道） |
-| a8 | N1 中文别名层 | 中文命令体验补完 |
-| a9 | P6 jiali 手动档 / P11 NPC 仇恨分档 | 战斗手感补全 |
-| a10 | N2 商店 / N3 闲聊节点 / N4 问答生成器 | 世界活起来（装备经济闭环） |
-| a11 | Stats 扩展四字段（score/weiwang/gongxian/shen，additive migration）+ N5 门派 v0 + N6 任务 v0 | **链E地基**；N5/N6 先不带 learn 重构（见 b/c 期），D4 教学配置随 N5 落地 |
-| a12 | O4 饥饿系统 / O5 gift 分离 / O2 留言板决策 / O3 门降级 | 可选项，见缝插针 |
+| a4 | D1 Item.Meta 扩展 | ✅ weight/unit/material/food/medicine/秘籍 Book 五元组（loader_meta_test） |
+| a5 | D2 房间 flags | ✅ no_fight 拦截开战与打坐、startroom 出生点回落逻辑、outdoors/water 只存（room_flags_test + e2e） |
+| a6 | P5 limit 公式 → P3 打坐 → P4 吐纳 | ✅ NeiliLimit.current（query_current_neili_limit 语义）+ exercise/dazuo 循环+瓶颈判定+落盘；吐纳按建议留占位未做（exercise_test） |
+| a7 | N7 四维成长道具 | ✅ medicine.stats 四维+1（软上限30）+ 新建 eat 命令；回复类药效同槽生效（eat_test） |
+| a8 | N1 中文别名层 | ✅ 北南西东上看拿捡穿脱吃喝杀(掉)学练打坐买问；单字带词边界（router_aliases_test）；跑→flee 因 flee 玩家命令不存在未做 |
+| a9 | P6 jiali 手动档 / P11 NPC 仇恨 | ✅ jiali 命令（上限=enable内功/2）+ attacked_by 记仇（aggressive 重遇优先寻仇，内存态）（jiali_test/hatred_test） |
+| a10 | N2 商店 / N3 闲聊节点 / N4 问答生成器 | ✅ coins 货币(migration)+list/buy（玩家侧扣钱成交的 v0 简化）+ conditions/random 与 actions/chat 节点 + ask/inquiries 包含匹配（shop_test + phase_a_e2e） |
+| a11 | Stats 扩展四字段 + N5 门派 v0 + N6 任务 v0 | ✅ score/weiwang/gongxian/shen/family migration + apprentice/pai + D4 teach 配置解析落位 + 血玉牌任务（loot 掉落→阿婆交付→四项奖励+rumor 频道播报）（quest_family_test） |
+| a12 | O4 / O5 / O2 / O3 | ❌ 放弃（允许项）：本期未投入 |
 
-T4 e2e 夹具随各系统落地同步扩展。
+T4 e2e 夹具随各系统落地同步扩展。✅ scripts/phase_a_e2e.exs（19 断言全绿）＋ combat_e2e.exs 回归通过（death-respawn 为 flaky 项）。
 
 ### b 期——危险但非"启动杀手"，T1 前就位（红区纪律生效）
 

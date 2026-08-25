@@ -43,7 +43,8 @@ defmodule Kantele.Character.ScoreView do
     ║ 状态：#{Messages.eff_status_msg(ratio)}。
     ╠══════════════════════════════
     ║ 膂力 #{assigns.str}　身法 #{assigns.dex}　根骨 #{assigns.con}　悟性 #{assigns.int}
-    ║ 实战经验 #{assigns.combat_exp}　潜能 #{assigns.potential}
+    ║ 实战经验 #{assigns.combat_exp}　潜能 #{assigns.potential}　铜钱 #{assigns.coins}文
+    ║ 阅历 #{assigns.score}　威望 #{assigns.weiwang}　贡献 #{assigns.gongxian}
     ╠══════════════════════════════
     ║ 武学：
     #{join(skills, "\n║ ")}

@@ -21,6 +21,12 @@ defmodule ExVenture.Characters.Metadata do
     field(:combat_exp, :integer, default: 0)
     field(:potential, :integer, default: 100)
     field(:max_neili, :integer, default: 200)
+    field(:coins, :integer, default: 100)
+    field(:score, :integer, default: 0)
+    field(:weiwang, :integer, default: 0)
+    field(:gongxian, :integer, default: 0)
+    field(:shen, :integer, default: 0)
+    field(:family, :map, default: %{})
     field(:skills, :map, default: %{})
     field(:mapped, :map, default: %{})
     field(:performs, {:array, :string}, default: [])
@@ -41,6 +47,12 @@ defmodule ExVenture.Characters.Metadata do
       :combat_exp,
       :potential,
       :max_neili,
+      :coins,
+      :score,
+      :weiwang,
+      :gongxian,
+      :shen,
+      :family,
       :skills,
       :mapped,
       :performs,
@@ -92,21 +104,27 @@ defmodule Kantele.Character.Records do
     meta = character.meta
 
     with {:ok, record} <- ensure_record(name) do
-      metadata =
-        Metadata.changeset(record, %{
-          str: meta.stats.str,
-          dex: meta.stats.dex,
-          con: meta.stats.con,
-          int: meta.stats.int,
-          combat_exp: meta.stats.combat_exp,
-          potential: meta.stats.potential,
-          max_neili: meta.vitals.max_neili,
-          skills: meta.stats.skills,
-          mapped: meta.stats.mapped,
-          performs: MapSet.to_list(meta.stats.performs),
-          inventory: Enum.map(character.inventory, &%{item_id: &1.item_id}),
-          equipment: serialized_equipment(meta.combat.equipped)
-        })
+        metadata =
+          Metadata.changeset(record, %{
+            str: meta.stats.str,
+            dex: meta.stats.dex,
+            con: meta.stats.con,
+            int: meta.stats.int,
+            combat_exp: meta.stats.combat_exp,
+            potential: meta.stats.potential,
+            max_neili: meta.vitals.max_neili,
+            coins: meta.coins || 0,
+            score: meta.stats.score || 0,
+            weiwang: meta.stats.weiwang || 0,
+            gongxian: meta.stats.gongxian || 0,
+            shen: meta.stats.shen || 0,
+            family: serialize_family(meta.family),
+            skills: meta.stats.skills,
+            mapped: meta.stats.mapped,
+            performs: MapSet.to_list(meta.stats.performs),
+            inventory: Enum.map(character.inventory, &%{item_id: &1.item_id}),
+            equipment: serialized_equipment(meta.combat.equipped)
+          })
 
       case Repo.insert_or_update(metadata) do
         {:ok, _metadata} ->
@@ -171,6 +189,10 @@ defmodule Kantele.Character.Records do
       int: metadata.int,
       combat_exp: combat_exp,
       potential: potential,
+      score: max(metadata.score || 0, 0),
+      weiwang: max(metadata.weiwang || 0, 0),
+      gongxian: max(metadata.gongxian || 0, 0),
+      shen: metadata.shen || 0,
       skills: skills,
       mapped: atomize_keys(metadata.mapped),
       performs: MapSet.new(metadata.performs)
@@ -190,9 +212,33 @@ defmodule Kantele.Character.Records do
       |> Map.put(:stats, stats)
       |> Map.put(:vitals, vitals)
       |> Map.put(:combat, combat)
+      |> Map.put(:coins, max(metadata.coins || 0, 0))
+      |> Map.put(:family, restore_family(metadata.family))
 
     %{character | meta: meta, inventory: inventory}
   end
+
+  # 存档里的 family 是 string-key JSON，转回 atom-key 运行态
+  defp restore_family(family) when is_map(family) and map_size(family) > 0 do
+    %{
+      name: family["name"],
+      master_id: family["master_id"],
+      master_name: family["master_name"]
+    }
+  end
+
+  defp restore_family(_), do: nil
+
+  defp serialize_family(nil), do: %{}
+
+  defp serialize_family(%{} = family) do
+    case {Map.get(family, :name), Map.get(family, :master_id)} do
+      {nil, nil} -> %{}
+      _ -> %{name: Map.get(family, :name), master_id: Map.get(family, :master_id), master_name: Map.get(family, :master_name)}
+    end
+  end
+
+  defp serialize_family(_), do: %{}
 
   # 存档里有背包记录则按 item_id 重建实例；空记录保留默认新手物品
   defp restore_inventory(default_inventory, []) do

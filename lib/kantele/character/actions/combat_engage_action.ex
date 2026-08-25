@@ -10,8 +10,11 @@ defmodule Kantele.Character.CombatEngageAction do
 
   @impl true
   def run(conn, _data) do
+    # 携带仇恨名单（A9/P11）：房间优先对记仇目标开战，无则随机挑人
+    hated_ids = Kantele.Character.Combat.attacked_by_ids(conn.character.meta.combat)
+
     conn
-    |> event("combat/aggressive")
+    |> event("combat/aggressive", %{hated_ids: hated_ids})
     |> assign(:prompt, false)
   end
 

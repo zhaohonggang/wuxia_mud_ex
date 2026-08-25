@@ -54,6 +54,18 @@ verbs "unwield" {
   }
 }
 
+verbs "eat" {
+  icon = "utensils"
+  text = "食用 Eat"
+  send = "eat ${id}"
+
+  conditions = {
+    location = [
+      "inventory/self"
+    ]
+  }
+}
+
 # Leaving these below for inspiration
 
 # verbs "equip" {

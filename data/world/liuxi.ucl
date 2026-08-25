@@ -49,6 +49,9 @@ room_characters "guangchang" {
   characters = [
     {
       id = characters.yezhu.id
+    },
+    {
+      id = characters.apo.id
     }
   ]
 }
@@ -66,6 +69,12 @@ rooms "lianwuchang" {
   description = "一片开阔的黄土场地，立着几个木桩，桩上刀痕累累。一位鹤发老者正在场边踱步。An open training ground lined with scarred wooden posts. A white-haired old man paces along its edge."
 
   map_icon = "hammer"
+
+  # no_fight：习武清修之地禁斗（A5/D2）；outdoors/water 仅存不用
+  flags = [
+    "no_fight",
+    "outdoors"
+  ]
 
   x = -1
   y = 1
@@ -100,6 +109,16 @@ rooms "tiepupu" {
   z = 0
 }
 
+room_characters "tiepupu" {
+  room_id = rooms.tiepupu.id
+
+  characters = [
+    {
+      id = characters.xiaoer.id
+    }
+  ]
+}
+
 room_exits "tiepupu" {
   room_id = rooms.tiepupu.id
 
@@ -115,6 +134,23 @@ room_items "tiepupu" {
     },
     {
       id = items.bupao.id
+    },
+    {
+      id = items.peiyuan_dan.id
+    }
+  ]
+}
+
+# 镇广场摆放食物与秘籍各一件（A4 新字段验收物）
+room_items "guangchang" {
+  room_id = rooms.guangchang.id
+
+  items = [
+    {
+      id = items.baozi.id
+    },
+    {
+      id = items.jianpu.id
     }
   ]
 }
@@ -165,6 +201,79 @@ items "bupao" {
   meta = {
     armor = 2
     value = 50
+    weight = 1000
+    unit = "件"
+    material = "cloth"
+  }
+}
+
+# 食物：food 为饱食度供给（LPC food_supply），eat 命令消费端见 a7
+items "baozi" {
+  name = "包子 Baozi"
+  description = "一个香喷喷的肉包子，皮薄馅大，还冒着热气。"
+
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+  meta = {
+    value = 15
+    weight = 80
+    unit = "个"
+    material = "food"
+    food = 20
+  }
+}
+
+# 秘籍：book 五元组对应 LPC study 流程（本期只解析存储）
+items "jianpu" {
+  name = "入门剑谱 Jianpu"
+  description = "一册泛黄的剑谱抄本，画着最基础的持剑与出剑姿势。"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 200
+    weight = 50
+    unit = "本"
+    material = "paper"
+    book = {
+      skill = "sword"
+      min_skill = 0
+      max_skill = 30
+      exp_required = 0
+      jing_cost = 20
+      difficulty = 20
+    }
+  }
+}
+
+# 四维成长丹（A7/N7）：stats 永久+1，软上限 30
+items "peiyuan_dan" {
+  name = "培元丹 Peiyuan Dan"
+  description = "一枚龙眼大小的褐色药丸，药香清苦，据说常服能增益臂力。"
+
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+  meta = {
+    value = 100
+    weight = 10
+    unit = "颗"
+    medicine = {
+      qi = 50
+      stats = {
+        str = 1
+      }
+    }
   }
 }
 
@@ -177,6 +286,11 @@ characters "heihu" {
   description = "一只吊睛白额的猛虎，黄毛黑纹，双目如灯，伏在山路旁的草丛中，尾巴不耐烦地拍打着地面。"
 
   brain = brains.heihu
+
+  # 击杀掉落（A11/N6）：血玉牌（送还阿婆的任务物）
+  loot = [
+    { id = items.yupai.id }
+  ]
 
   combat = {
     attitude = "aggressive"
@@ -207,6 +321,14 @@ characters "yezhu" {
   name = "野猪"
   description = "一头獠牙外露的野猪，正哼哧哼哧地拱着土。新手练手的好对象。"
 
+  # 闲聊（A10/N3）：8% 概率在事件触发时哼哼一声
+  chat_chance = 8
+  chats = [
+    "野猪哼哧哼哧地拱了拱地。",
+    "野猪抬起头，警惕地望了一眼四周。",
+    "野猪在泥地里打了个滚，溅起一片泥点。"
+  ]
+
   combat = {
     no_kill = false
     max_qi = 80
@@ -228,10 +350,128 @@ characters "yezhu" {
   }
 }
 
+# 张记铁铺的伙计：商人 + 问询（A10/N2、N4）
+characters "xiaoer" {
+  name = "店小二 Xiaoer"
+  description = "张记铁铺的年轻伙计，围着油布围裙，一边擦着柜台一边招呼客人。"
+
+  goods = [
+    { id = items.baozi.id },
+    { id = items.peiyuan_dan.id },
+    { id = items.changjian.id },
+    { id = items.bupao.id }
+  ]
+
+  inquiries = {
+    柳溪 = "柳溪镇不大，东边是铁铺，西边是练武场，南门外山路直通山中。客官若是生面孔，可莫要往山里乱走。"
+    黑虎 = "山路那头有只吊睛黑虎，已伤了好几个过路人！官府贴了告示，谁能除了它，赏钱自然少不了。"
+    玉牌 = "玉牌？听说山上那畜生叼走了位过路小姐的玉牌，若客官能取回来，阿婆还等着呢。"
+  }
+
+  combat = {
+    no_kill = true
+    max_qi = 120
+    max_jing = 100
+    str = 12
+    dex = 14
+    con = 13
+    int = 15
+    combat_exp = 300
+    skills = {
+      unarmed = 30
+      dodge = 25
+    }
+  }
+}
+
+# 血玉牌：黑虎掉落的任务物（A11/N6 送还玉牌）
+items "yupai" {
+  name = "血玉牌 Yupai"
+  description = "一枚染了血迹的羊脂玉牌，背面刻着一个小小的「王」字，似是信物。"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 0
+    weight = 5
+    unit = "枚"
+    material = "jade"
+  }
+}
+
+# 镇广场的阿婆：任务交付 NPC（A11/N6 v0）
+characters "apo" {
+  name = "阿婆 Apo"
+  description = "一位佝偻着背的老婆婆，坐在广场边的石阶上，浑浊的眼睛望着南边山路的方向。"
+
+  turn_in = {
+    quest = "song-yupai"
+    item = items.yupai.id
+    prompt = "阿婆拉着你的手喃喃道：老婆子的孙女上月进山烧香，被那孽畜惊了马，人虽回来了，陪嫁的玉牌却丢在了山里……你若见着，务必替我讨回来。"
+    rumor = "听说柳溪镇来了位少年英雄，寻回了王家小姐遗落山中的血玉牌！"
+    rewards = {
+      exp = 200
+      potential = 50
+      score = 10
+      weiwang = 5
+      coins = 100
+    }
+  }
+
+  combat = {
+    no_kill = true
+    max_qi = 60
+    max_jing = 80
+    str = 5
+    dex = 5
+    con = 8
+    int = 20
+    combat_exp = 0
+    skills = {}
+  }
+}
+
 characters "wangshifu" {
   name = "王重九"
   description = "一位鹤发童颜的老者，青布长衫洗得发白，腰间悬着一柄旧剑。他平日在此授徒练武，剑法看似平实，实则已臻化境。"
 
+  # 教学配置（A11/D4）：本期只解析落位供门派信息展示，消费端等 b 期 learn 重构。
+  # 注意 Elias 块内赋值以换行分隔，不能写逗号
+  teach = {
+    family = "柳溪派"
+    teach_skills = {
+      sword = {
+        max = 40
+        gongxian = 2
+      }
+      force = {
+        max = 30
+        gongxian = 2
+      }
+      dodge = {
+        max = 35
+        gongxian = 1
+      }
+      parry = {
+        max = 35
+        gongxian = 1
+      }
+      liuxi_neigong = {
+        max = 30
+        gongxian = 3
+      }
+      liuxin_jian = {
+        max = 40
+        gongxian = 3
+      }
+    }
+    no_teach = [
+      "田伯光"
+    ]
+  }
   combat = {
     no_kill = true
     max_qi = 2600

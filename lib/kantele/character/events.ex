@@ -19,6 +19,23 @@ defmodule Kantele.Character.Events do
       event("commands/delayed", :run)
     end
 
+    module(ExerciseEvent) do
+      event("exercise/tick", :tick)
+    end
+
+    module(ShopEvent) do
+      event("shop/list-result", :list_result)
+      event("shop/buy-result", :buy_result)
+    end
+
+    module(QuestEvent) do
+      event("quest/turnin-request", :turnin_request)
+    end
+
+    module(FamilyEvent) do
+      event("family/result", :result)
+    end
+
     module(CombatEvent) do
       event("combat/start", :start)
       event("combat/tick", :tick)
@@ -128,6 +145,19 @@ defmodule Kantele.Character.NonPlayerEvents do
 
     module(SkillsEvent) do
       event("skills/teach", :teach)
+    end
+
+    module(NpcShopEvent) do
+      event("shop/list", :list)
+      event("shop/buy", :buy)
+    end
+
+    module(NpcAskEvent) do
+      event("characters/ask", :call)
+    end
+
+    module(NpcFamilyEvent) do
+      event("family/apprentice", :apprentice)
     end
 
     module(WanderEvent) do

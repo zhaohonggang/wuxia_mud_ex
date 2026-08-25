@@ -27,13 +27,23 @@ defmodule Kantele.Character.Combat do
             dead: false,
             buffs: [],
             equipped: %{},
-            temp: %{}
+            temp: %{},
+            attacked_by: MapSet.new()
 
   @applies_keys [:attack, :defense, :damage, :unarmed_damage, :dodge, :parry, :armor]
 
   def new() do
     %__MODULE__{temp: Map.new(@applies_keys, fn key -> {key, 0} end), equipped: %{}}
   end
+
+  @doc "记录仇恨来源（A9/P11：被打过的人记下来，内存态不落盘）"
+  def record_attacked_by(%__MODULE__{} = combat, id) do
+    %{combat | attacked_by: MapSet.put(combat.attacked_by, id)}
+  end
+
+  @doc "仇恨 id 列表（aggressive 重开战时优先找这些人）"
+  def attacked_by_ids(%__MODULE__{} = combat),
+    do: MapSet.to_list(combat.attacked_by)
 
   @doc "新敌人入列（去重），返回是否为新开战"
   def add_enemy(%__MODULE__{} = combat, enemy) do

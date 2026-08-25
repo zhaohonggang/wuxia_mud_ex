@@ -232,6 +232,11 @@ defmodule Kantele.Character.CombatEvent do
   end
 
   defp resolve_incoming(conn, character, attacker, attacker_fighter, _data) do
+    # 记仇（A9/P11）：把打过我的人记入 attacked_by，aggressive 重开战时优先寻仇
+    combat = Kantele.Character.Combat.record_attacked_by(character.meta.combat, attacker.id)
+    character = put_combat(character, combat)
+    conn = put_character(conn, character)
+
     victim_fighter = Fighter.from_character(character)
     round = Engine.attack_round(attacker_fighter, victim_fighter)
 
@@ -303,7 +308,14 @@ defmodule Kantele.Character.CombatEvent do
   defp die(conn, character, killer) do
     conn = Broadcast.publish(conn, Messages.death_msg(), n1: character.name)
 
-    reward = reward_for(character.meta.stats)
+    # 击杀奖励：经验/潜能之外顺带掉落少量铜钱（A10/N2）与门派贡献（A11/N5）
+    # 注意玩家死亡时 meta 为 PlayerMeta（无 loot 字段），需 Map.get 兼容
+    reward =
+      character.meta.stats
+      |> reward_for()
+      |> Map.put(:coins, coin_reward())
+      |> Map.put(:gongxian, 1)
+      |> Map.put(:drops, Map.get(character.meta, :loot) || [])
 
     Enum.each(character.meta.combat.enemies, fn enemy ->
       base = %{id: character.id, name: character.name}
@@ -339,7 +351,10 @@ defmodule Kantele.Character.CombatEvent do
         |> put_combat(Combat.new())
 
       conn = put_character(conn, character)
-      Teleport.teleport(conn, starting_room_id())
+
+      conn
+      |> render(CommandView, "revive")
+      |> Teleport.teleport(starting_room_id())
     end
   end
 
@@ -373,20 +388,38 @@ defmodule Kantele.Character.CombatEvent do
 
   # ---- 敌人变化 ----
 
-  def enemy_died(conn, %{data: %{id: id, exp: exp, potential: potential}}) do
+  def enemy_died(conn, %{data: %{id: id, exp: exp, potential: potential}} = data) do
     character = conn.character
     combat = Combat.remove_enemy(character.meta.combat, id)
+
+    # 门派贡献：拜师后击杀累积（A11/N5）；玩家才有关注点，NPC meta 防御兼容
+    gongxian_gain =
+      case Map.get(character.meta, :family) do
+        %{name: name} when is_binary(name) and name != "" -> Map.get(data, :gongxian) || 0
+        _ -> 0
+      end
 
     stats = %{
       character.meta.stats
       | combat_exp: character.meta.stats.combat_exp + (exp || 0),
-        potential: character.meta.stats.potential + (potential || 0)
+        potential: character.meta.stats.potential + (potential || 0),
+        gongxian: (character.meta.stats.gongxian || 0) + gongxian_gain
     }
 
-    character =
-      character
-      |> put_stats(stats)
-      |> put_combat(combat)
+    coins = (Map.get(character.meta, :coins) || 0) + (Map.get(data, :coins) || 0)
+    character = Map.put(character, :meta, Map.put(character.meta, :coins, coins))
+    character = put_stats(character, stats)
+
+    # 掉落物直接入包（v0 简化：不做尸体拾取）
+    drops = Enum.map(Map.get(data, :drops) || [], fn item_id ->
+      %Kalevala.World.Item.Instance{
+        id: Kalevala.World.Item.Instance.generate_id(),
+        item_id: item_id,
+        created_at: DateTime.utc_now()
+      }
+    end)
+
+    character = %{character | inventory: character.inventory ++ drops}
 
     Kantele.Character.Records.save(character)
 
@@ -520,14 +553,15 @@ defmodule Kantele.Character.CombatEvent do
   defp combat_config(_), do: %{}
 
   defp starting_room_id() do
-    Kantele.Config.get([:player, :starting_room_id])
-    |> Kantele.World.dereference()
+    Kantele.World.start_room_id()
   end
 
   defp reward_for(victim_stats) do
     exp = max(div(victim_stats.combat_exp, 10), 5)
     %{exp: exp, potential: max(div(exp, 2), 2)}
   end
+
+  defp coin_reward(), do: 5 + :rand.uniform(10)
 
   defp put_combat(character, combat),
     do: %{character | meta: Map.put(character.meta, :combat, combat)}
