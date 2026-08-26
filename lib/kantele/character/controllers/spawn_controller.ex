@@ -32,12 +32,16 @@ defmodule Kantele.Character.SpawnController do
 
   @impl true
   def event(conn, event) do
-    case dead?(conn.character) do
-      true ->
-        # 尸体不跑行为树，安静等待 respawn
+    cond do
+      dead?(conn.character) and event.topic == "combat/respawn" ->
+        # 尸体只放行自己的重生定时器，其余事件静默忽略
+        NonPlayerEvents.call(conn, event)
+
+      dead?(conn.character) ->
+        # 尸体不跑行为树
         conn
 
-      false ->
+      true ->
         conn.character.brain
         |> Brain.run(conn, event)
         |> NonPlayerEvents.call(event)
