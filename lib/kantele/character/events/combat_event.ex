@@ -235,8 +235,22 @@ defmodule Kantele.Character.CombatEvent do
   defp resolve_incoming(conn, character, attacker, attacker_fighter, _data) do
     # 记仇（A9/P11）：把打过我的人记入 attacked_by，aggressive 重开战时优先寻仇
     combat = Kantele.Character.Combat.record_attacked_by(character.meta.combat, attacker.id)
+
+    # 被动应战：挨打即入场。对方未走房间 engage（如复活窗口期的残留心跳）
+    # 时在此补上敌人并启动心跳，保证战斗闭环与死亡结算都有对象可发。
+    {combat, new_fight?} =
+      if Combat.enemy?(combat, attacker.id) do
+        {combat, false}
+      else
+        Combat.add_enemy(combat, ref(attacker))
+      end
+
     character = put_combat(character, combat)
     conn = put_character(conn, character)
+
+    if new_fight? do
+      schedule_self("combat/tick", %{}, @tick_interval)
+    end
 
     victim_fighter = Fighter.from_character(character)
     round = Engine.attack_round(attacker_fighter, victim_fighter)
@@ -318,6 +332,8 @@ defmodule Kantele.Character.CombatEvent do
       |> Map.put(:gongxian, 1)
       |> Map.put(:drops, Map.get(character.meta, :loot) || [])
 
+    enemy_ids = Enum.map(character.meta.combat.enemies, & &1.id)
+
     Enum.each(character.meta.combat.enemies, fn enemy ->
       base = %{id: character.id, name: character.name}
 
@@ -330,6 +346,16 @@ defmodule Kantele.Character.CombatEvent do
 
       send(enemy.pid, %Event{from_pid: self(), topic: topic, data: data})
     end)
+
+    # 击杀者不在敌人列表（被动挨打致死等单方面战斗）也要拿到结算，
+    # 否则奖励凭空消失
+    if killer.id not in enemy_ids and Process.alive?(killer.pid) do
+      send(killer.pid, %Event{
+        from_pid: self(),
+        topic: "combat/enemy-died",
+        data: Map.merge(%{id: character.id, name: character.name}, reward)
+      })
+    end
 
     if npc?(character) do
       # NPC 原地“装死”：dead 标志停掉大脑与心跳，60 秒后原地复活。
@@ -380,10 +406,24 @@ defmodule Kantele.Character.CombatEvent do
       _room_id ->
         StatusTracker.mark_alive(character.id)
 
+        # NPC 配置的气血上限存在 base_*（创伤只削当前值/max），
+        # 从 base 还原；不能用 Vitals.new()（那是玩家默认值）
+        v = character.meta.vitals
+
+        vitals = %Vitals{
+          v
+          | qi: v.base_qi,
+            max_qi: v.base_qi,
+            jing: v.base_jing,
+            max_jing: v.base_jing,
+            neili: v.base_neili,
+            max_neili: v.base_neili
+        }
+
         character =
           character
           |> Map.put(:status, "#{character.name} is here.")
-          |> put_vitals(Vitals.new())
+          |> put_vitals(vitals)
           |> put_combat(Combat.new())
 
         conn

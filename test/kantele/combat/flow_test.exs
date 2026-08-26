@@ -178,6 +178,85 @@ defmodule Kantele.Combat.FlowTest do
     assert final_boar.status =~ "尸体"
   end
 
+  test "被动挨打：未入战的防守方自动加敌人并启动心跳" do
+    a = player()
+    b = boar()
+
+    # b 从未收到 combat/start（复活窗口期残留心跳等单方面攻击）
+    refute Combat.enemy?(b.meta.combat, a.id)
+
+    f = Kantele.Combat.Fighter.from_character(a)
+
+    conn =
+      CombatEvent.incoming(build_conn(b), %{
+        topic: "combat/incoming",
+        data: %{attacker: ref(a), fighter: f}
+      })
+
+    assert Combat.enemy?(current_character(conn).meta.combat, a.id)
+    assert_receive %Event{topic: "combat/tick"}, @recv_timeout
+  end
+
+  test "单方面战斗致死：击杀者仍收到结算奖励" do
+    a = player()
+    initial_boar = boar(vitals: [qi: 8, max_qi: 150])
+
+    # 不走房间 engage，直接持续 incoming（复现复活窗口期单方面挨打）
+    final_boar = one_sided_beating(a, initial_boar, 40)
+
+    assert final_boar.meta.combat.dead
+
+    assert_receive %Event{topic: "combat/enemy-died", data: data}, @recv_timeout
+    assert data.exp >= 5
+    assert data.potential >= 2
+  end
+
+  test "respawn：从 base_* 还原配置气血而非玩家默认值" do
+    boar1 =
+      boar(
+        vitals: [
+          qi: 0,
+          max_qi: 27,
+          base_qi: 80,
+          jing: 60,
+          max_jing: 60,
+          base_jing: 60,
+          neili: 0,
+          max_neili: 0,
+          base_neili: 0
+        ]
+      )
+
+    conn = CombatEvent.respawn(build_conn(boar1), %{})
+    vitals = current_vitals(current_character(conn))
+
+    assert vitals.qi == 80
+    assert vitals.max_qi == 80
+  end
+
+  # 防守方从未 engage，只承受 attacker 的 incoming 直到死亡
+  defp one_sided_beating(attacker, victim, max_rounds) do
+    f = Kantele.Combat.Fighter.from_character(attacker)
+
+    do_one_sided(attacker, f, victim, max_rounds)
+  end
+
+  defp do_one_sided(_attacker, _f, victim, 0), do: victim
+
+  defp do_one_sided(attacker, f, victim, n) do
+    if victim.meta.combat.dead or current_vitals(victim).qi <= 0 do
+      victim
+    else
+      victim_conn =
+        CombatEvent.incoming(build_conn(victim), %{
+          topic: "combat/incoming",
+          data: %{attacker: ref(attacker), fighter: f}
+        })
+
+      do_one_sided(attacker, f, current_character(victim_conn), n - 1)
+    end
+  end
+
   # victim 持续承受 attacker 的 incoming，累积全部战况文案
   defp exchange_rounds(attacker, victim, pred, max_rounds) do
     attacker_conn = engage(build_conn(attacker), attacker, victim)
