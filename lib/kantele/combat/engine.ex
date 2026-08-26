@@ -52,7 +52,9 @@ defmodule Kantele.Combat.Fighter do
   @doc """
   从角色结构构建战斗快照（只依赖 meta：房间侧裁剪副本同样可用）
 
-  武器决定攻击技能类型（LPC reset_action：weapon->skill_type，否则 unarmed）
+  武器决定攻击技能类型（LPC reset_action：weapon->skill_type，否则 unarmed）。
+  技能等级按 LPC query_skill 展开为有效等级：基本 + enable 映射的特技，
+  攻/防/闪避判定全程使用有效等级（对照 combatd.c skill_power 的入参）。
   """
   def from_character(character) do
     stats = character.meta.stats
@@ -78,7 +80,7 @@ defmodule Kantele.Combat.Fighter do
       con: stats.con,
       int: stats.int,
       combat_exp: stats.combat_exp,
-      skills: stats.skills,
+      skills: effective_skills(stats),
       mapped: stats.mapped,
       applies: applies,
       busy: combat.busy,
@@ -88,6 +90,16 @@ defmodule Kantele.Combat.Fighter do
       attack_skill: attack_skill,
       weapon_name: weapon && Map.get(weapon, :name)
     }
+  end
+
+  # 有效等级展开：每个映射用法叠加特技等级（sword+liuxin-jian、parry+liuxin-jian、
+  # force+liuxi-neigong……）。无映射的 NPC 快照原样保留。
+  defp effective_skills(%{skills: skills, mapped: mapped}) do
+    Enum.reduce(mapped, skills, fn {usage, special_id}, acc ->
+      special = Map.get(acc, special_id, 0)
+
+      Map.update(acc, usage, special, &(&1 + special))
+    end)
   end
 
   defp no_kill?(%{meta: %{combat_config: %{no_kill: no_kill}}}) when not is_nil(no_kill),

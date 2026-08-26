@@ -257,9 +257,61 @@ defmodule Kantele.Combat.FlowTest do
     end
   end
 
+  describe "Fighter 快照有效等级（LPC query_skill）" do
+    test "enable 映射后判定等级 = 基本 + 特技" do
+      a =
+        player(
+          stats: [
+            skills: %{
+              "sword" => 30,
+              "parry" => 10,
+              "dodge" => 60,
+              "force" => 20,
+              "liuxin-jian" => 40
+            },
+            mapped: %{"sword" => "liuxin-jian", "parry" => "liuxin-jian"}
+          ]
+        )
+
+      f = Kantele.Combat.Fighter.from_character(a)
+
+      assert f.skills["sword"] == 70
+      assert f.skills["parry"] == 50
+      assert f.skills["dodge"] == 60
+    end
+
+    test "未映射的 NPC 等级保持原样" do
+      f = Kantele.Combat.Fighter.from_character(boar())
+
+      assert f.skills["unarmed"] == 20
+      assert f.skills["dodge"] == 1
+      assert f.mapped == %{}
+    end
+
+    test "有效等级放大攻击当量" do
+      plain =
+        player(stats: [skills: %{"unarmed" => 60, "dodge" => 60}, mapped: %{}])
+
+      mapped_sword =
+        player(
+          stats: [
+            skills: %{"sword" => 30, "liuxin-jian" => 40},
+            mapped: %{"sword" => "liuxin-jian"}
+          ]
+        )
+
+      f1 = Kantele.Combat.Fighter.from_character(plain)
+      f2 = Kantele.Combat.Fighter.from_character(mapped_sword)
+
+      ap1 = Kantele.Combat.Engine.skill_power(f1, f1.attack_skill, :attack)
+      ap2 = Kantele.Combat.Engine.skill_power(f2, f2.attack_skill, :attack)
+
+      assert ap2 > ap1
+    end
+  end
+
   # victim 持续承受 attacker 的 incoming，累积全部战况文案
-  defp exchange_rounds(attacker, victim, pred, max_rounds) do
-    attacker_conn = engage(build_conn(attacker), attacker, victim)
+  defp exchange_rounds(attacker, victim, pred, max_rounds) do    attacker_conn = engage(build_conn(attacker), attacker, victim)
     attacker1 = current_character(attacker_conn)
 
     victim_conn = engage(build_conn(victim), victim, attacker)
