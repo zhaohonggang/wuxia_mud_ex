@@ -230,16 +230,18 @@ T4 e2e 夹具随各系统落地同步扩展。✅ scripts/phase_a_e2e.exs（19 �
 
 ### b 期——危险但非"启动杀手"，T1 前就位（红区纪律生效）
 
+> 提示词文件：`docs/session-prompts-phase-b.zh-CN.md`（含六项任务详情与验收标准）。执行顺序：**b6 先行** → b1 → b2-b5 捆绑。
+
 | 序 | 项 | 危险性 | 缓解 |
 |---|---|---|---|
+| ⭐ b6 | D3 装备 UCL 字段 + B4 多槽位多键（**先行**） | equipped 持久化 JSON 格式变更（登录杀手簇） | 无需 DB 迁移；新旧双读兼容一版；e2e 加老存档登录用例。趁存档少、转换器灌入前退役风险；D3 解析复用 a4 loader_meta_test 模式 |
 | b1 | P2 潜能池 learned_points | character_metadata 加字段（schema 迁移） | 新字段默认 0 ≈ 旧行为；迁移先演练测试库 |
 | b2 | P1 learn 批量参数 | 同文件重写 | 与 b1-b5 捆绑一次改完 learn_command |
 | b3 | B2 jing 耗精激活 | 全员学习节奏变化 | config 开关默认关 |
 | b4 | B3 exp 上限门 | 可能集体卡级 | config 开关默认关 |
 | b5 | P10 valid_force 内功互斥 | 存量角色可能触发冲突拦截 | 只拦新增学习，不追溯已学 |
-| b6 | D3 装备 UCL 字段 + B4 多槽位多键 | equipped 持久化 JSON 格式变更（登录杀手簇） | 新旧双读兼容一版；e2e 加老存档登录用例 |
 
-捆绑理由（链B）：五项全挤在 learn/practice 校验链与成长货币上，拆开 = 反复重写。
+捆绑理由（链B）：b2-b5 四项全挤在 learn/practice 校验链与成长货币上，拆开 = 反复重写。b6 属独立装备簇（与 learn 簇仅在 records.ex 不同函数有接触，且无需 DB 迁移），顺序施工零冲突，故拆出先行。
 
 ### c 期——依赖 b 的安全收尾
 
