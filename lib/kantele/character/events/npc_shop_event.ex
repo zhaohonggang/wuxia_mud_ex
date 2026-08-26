@@ -100,6 +100,7 @@ defmodule Kantele.Character.NpcShopEvent do
           item_id: info.item_id,
           item_name: info.name,
           price: info.price,
+          quantity: Map.get(data, :quantity, 1),
           buyer_id: Map.get(data, :buyer_id),
           buyer_name: Map.get(data, :buyer_name)
         })

@@ -175,11 +175,11 @@ defmodule Kantele.Character.Commands do
 
   module(LearnCommand) do
     parse("learn", :run, fn command ->
-      command |> spaces() |> word(:skill) |> spaces() |> word(:name)
+      command |> spaces() |> word(:skill) |> spaces() |> text(:name)
     end)
 
     parse("学", :run, fn command ->
-      command |> spaces() |> word(:skill) |> spaces() |> word(:name)
+      command |> spaces() |> word(:skill) |> spaces() |> text(:name)
     end)
   end
 

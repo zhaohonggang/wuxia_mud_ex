@@ -261,7 +261,8 @@ defmodule Kantele.World.Room.ShopRequestEvent do
           reply_to: requester.pid,
           buyer_id: requester.id,
           buyer_name: requester.name,
-          item_name: Map.get(data, :item_name)
+          item_name: Map.get(data, :item_name),
+          quantity: Map.get(data, :quantity, 1)
         })
       else
         acc
@@ -678,6 +679,7 @@ defmodule Kantele.World.Room.CombatEvent do
         # 学生属性由命令层随事件携带（房间上下文中的角色是 Trimmed 版本）
         event(context, teacher.pid, student.pid, "skills/teach", %{
           skill: event.data.skill,
+          times: Map.get(event.data, :times, 1),
           student_stats: event.data.student_stats,
           reply_to: student.pid
         })

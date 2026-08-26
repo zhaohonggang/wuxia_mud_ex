@@ -1,22 +1,46 @@
 defmodule Kantele.Character.LearnCommand do
   @moduledoc """
-  学习命令：`learn <技能> <师父>`
+  学习命令：`learn <技能> <师父> [x次数]`
 
   流程：向房间发 `skills/learn`，房间找到师父 NPC 后转发
   `skills/teach`；由师父侧校验门槛并回执 `skills/learn-result`。
+  支持 xN 后缀一次请授多级（如 `learn sword 王重九 x10`），
+  实际级数受师生差距与潜能约束。次数随事件数据传递，
+  不放 conn.assigns（assigns 不跨 foreman 消息存活）。
   """
 
   use Kalevala.Character.Command
 
+  alias Kantele.Character.SkillsEvent
+
   def run(conn, params) do
+    {name, times} = parse_times(params["name"])
+
     # 房间上下文中的角色是 Trimmed 版本，学生属性需随事件自带
     conn
     |> event("skills/learn", %{
       skill: params["skill"],
-      name: params["name"],
+      name: name,
+      times: times,
       student_stats: conn.character.meta.stats
     })
     |> assign(:prompt, false)
+  end
+
+  # 容错处理：多余的 xN 词被丢弃，以最后一个为准（`王重九 x2 x2` → 2）
+  defp parse_times(name) do
+    {tokens, times} =
+      name
+      |> to_string()
+      |> String.split()
+      |> Enum.reduce({[], 1}, fn token, {acc, t} ->
+        case Regex.run(~r/^x(\d+)$/i, token) do
+          [_, n] -> {acc, String.to_integer(n)}
+          _ -> {[token | acc], t}
+        end
+      end)
+
+    {Enum.reverse(tokens) |> Enum.join(" "), min(times, SkillsEvent.max_times())}
   end
 end
 

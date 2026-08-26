@@ -45,11 +45,11 @@ defmodule Kantele.Character.ShopEvent do
             item_name: item_name,
             price: price,
             buyer_id: buyer_id
-          }
+          } = data
         }
       ) do
     character = conn.character
-    quantity = Map.get(conn.assigns, :pending_buy_quantity, 1) || 1
+    quantity = Map.get(data, :quantity, 1) || 1
 
     cond do
       buyer_id != character.id ->

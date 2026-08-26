@@ -17,6 +17,7 @@ defmodule Kantele.Character.SkillsEvent do
 
   @learn_cost 2
   @max_teachable_levels 100
+  @max_times 100
 
   @base_skills ~w(unarmed sword dodge parry force)
 
@@ -25,6 +26,7 @@ defmodule Kantele.Character.SkillsEvent do
   def teach(conn, %{data: %{skill: skill, student_stats: student_stats} = data}) do
     character = conn.character
     reply_to = Map.fetch!(data, :reply_to)
+    times = Map.get(data, :times, 1)
     module = Skills.get(skill)
     base_skill? = skill in @base_skills
 
@@ -46,13 +48,19 @@ defmodule Kantele.Character.SkillsEvent do
         conn
 
       base_skill? ->
-        grant(reply_to, character, skill)
+        grant(reply_to, character, skill, teachable(times, character.meta.stats, student_stats, skill))
         conn
 
       true ->
         case module.valid_learn(student_stats) do
           :ok ->
-            grant(reply_to, character, skill)
+            grant(
+              reply_to,
+              character,
+              skill,
+              teachable(times, character.meta.stats, student_stats, skill)
+            )
+
             conn
 
           {:error, message} ->
@@ -62,13 +70,30 @@ defmodule Kantele.Character.SkillsEvent do
     end
   end
 
-  defp grant(reply_to, teacher, skill) do
-    reply(reply_to, "#{teacher.name}细心指点你#{skill_title(skill)}的要诀。\n")
+  # 师生差距决定本次最多能授几级（学生侧潜能逐级校验）
+  defp teachable(requested, teacher_stats, student_stats, skill) do
+    gap = Stats.skill(teacher_stats, skill) - Stats.skill(student_stats, skill)
+    max(min(requested, gap), 0)
+  end
+
+  defp grant(reply_to, _teacher, _skill, times) when times < 1 do
+    reply(reply_to, "这一门功夫你已不弱于老夫，没什么可教的了。\n")
+  end
+
+  defp grant(reply_to, teacher, skill, times) do
+    text =
+      if times > 1 do
+        "#{teacher.name}细心指点你#{skill_title(skill)}的要诀，你连听了 #{times} 讲。\n"
+      else
+        "#{teacher.name}细心指点你#{skill_title(skill)}的要诀。\n"
+      end
+
+    reply(reply_to, text)
 
     send(reply_to, %Kalevala.Event{
       from_pid: self(),
       topic: "skills/learn-result",
-      data: %{skill: skill}
+      data: %{skill: skill, times: times}
     })
   end
 
@@ -93,35 +118,58 @@ defmodule Kantele.Character.SkillsEvent do
   def learn_result(conn, %{data: %{skill: skill}} = event) do
     character = conn.character
     cost = Map.get(event.data, :cost, @learn_cost)
+    times = Map.get(event.data, :times, 1)
 
     before_known? = Stats.perform_known?(character.meta.stats, "liuxin-jian/liu")
 
-    stats = %{character.meta.stats | potential: max(character.meta.stats.potential - cost, 0)}
-    {stats, _gained?} = Stats.improve_skill(stats, skill)
-    stats = maybe_unlock_perform(skill, stats)
+    {stats, learned} = learn_levels(character.meta.stats, skill, cost, times, 0)
 
-    vitals = Kantele.Character.Vitals.recalculate_max_neili(character.meta.vitals, stats)
+    if learned == 0 do
+      conn
+      |> render(CommandView, "text", %{text: "你的潜能不足，先去实战中磨练磨练吧。\n"})
+      |> prompt(CommandView, "prompt", %{})
+    else
+      stats = maybe_unlock_perform(skill, stats)
 
-    meta =
-      character.meta
-      |> Map.put(:stats, stats)
-      |> Map.put(:vitals, vitals)
-      |> Map.put(:combat, character.meta.combat)
+      vitals = Kantele.Character.Vitals.recalculate_max_neili(character.meta.vitals, stats)
 
-    character = %{character | meta: meta}
-    Records.save(character)
+      meta =
+        character.meta
+        |> Map.put(:stats, stats)
+        |> Map.put(:vitals, vitals)
+        |> Map.put(:combat, character.meta.combat)
 
-    extra =
-      case not before_known? and Stats.perform_known?(stats, "liuxin-jian/liu") do
-        true -> "剑意涌动之间，你领悟了绝招「柳浪闻莺」！（perform liuxin-jian.liu）\n"
-        false -> ""
-      end
+      character = %{character | meta: meta}
+      Records.save(character)
 
-    conn
-    |> put_character(character)
-    |> render(CommandView, "text", %{text: "你的#{skill_title(skill)}进步了！#{extra}"})
-    |> prompt(CommandView, "prompt", %{})
+      extra =
+        case not before_known? and Stats.perform_known?(stats, "liuxin-jian/liu") do
+          true -> "剑意涌动之间，你领悟了绝招「柳浪闻莺」！（perform liuxin-jian.liu）\n"
+          false -> ""
+        end
+
+      qty_text = if learned > 1, do: "（×#{learned}）", else: ""
+
+      conn
+      |> put_character(character)
+      |> render(CommandView, "text", %{
+        text: "你的#{skill_title(skill)}进步了！#{qty_text}#{extra}"
+      })
+      |> prompt(CommandView, "prompt", %{})
+    end
   end
+
+  # 逐级学习：潜能够就升一级扣一次，不够即停
+  defp learn_levels(stats, _skill, _cost, remaining, n) when remaining < 1,
+    do: {stats, n}
+
+  defp learn_levels(stats, skill, cost, remaining, n) when stats.potential >= cost do
+    stats = %{stats | potential: stats.potential - cost}
+    {stats, _gained?} = Stats.improve_skill(stats, skill)
+    learn_levels(stats, skill, cost, remaining - 1, n + 1)
+  end
+
+  defp learn_levels(stats, _skill, _cost, _remaining, n), do: {stats, n}
 
   defp maybe_unlock_perform("liuxin-jian", stats) do
     unlock_level = Kantele.Combat.Skills.LiuxinJian.perform_unlock_level()
@@ -143,4 +191,7 @@ defmodule Kantele.Character.SkillsEvent do
 
   @doc false
   def max_teachable_levels(), do: @max_teachable_levels
+
+  @doc false
+  def max_times(), do: @max_times
 end

@@ -26,7 +26,7 @@ defmodule Kantele.Character.CommandsCommand do
     "inventory" => "背包（简写 i/inv）",
     "jiali" => "加力：jiali 0-N（0 关闭）",
     "kill" => "攻击目标",
-    "learn" => "拜师学习：learn 技能 师父",
+    "learn" => "拜师学习：learn 技能 师父 [x次数]",
     "list" => "查看商人货物：list [商人]",
     "buy" => "购买：buy 物品",
     "ask" => "问询：ask 某人 关键词",

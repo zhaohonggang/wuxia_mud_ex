@@ -25,18 +25,20 @@ defmodule Kantele.Character.BuyCommand do
   @moduledoc """
   购买物品：`buy <物品> [x数量]`
 
-  支持 xN 后缀一次购买多件（v0 库存无限）。
+  支持 xN 后缀一次购买多件（v0 库存无限）。数量随事件数据传递，
+  不放 conn.assigns（assigns 不跨 foreman 消息存活）。
   """
 
   use Kalevala.Character.Command
+
+  @max_quantity 100
 
   def run(conn, params) do
     raw = params["item_name"] || ""
     {item_name, quantity} = parse_quantity(raw)
 
     conn
-    |> assign(:pending_buy_quantity, quantity)
-    |> event("shop/buy", %{item_name: item_name, name: params["vendor"]})
+    |> event("shop/buy", %{item_name: item_name, quantity: min(quantity, @max_quantity)})
     |> assign(:prompt, false)
   end
 
