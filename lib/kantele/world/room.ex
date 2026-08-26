@@ -7,6 +7,7 @@ defmodule Kantele.World.Room do
 
   alias Kalevala.Verb
   alias Kantele.Communication
+  alias Kantele.Character.Combat.StatusTracker
   alias Kantele.RoomChannel
   alias Kantele.World.Items
   alias Kantele.World.Room.Events
@@ -221,6 +222,8 @@ defmodule Kantele.World.Room.ShopRequestEvent do
 
   import Kalevala.World.Room.Context
 
+  alias Kantele.Character.Combat.StatusTracker
+
   def call(context, %{topic: topic, data: data} = _event) do
     requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
 
@@ -270,9 +273,11 @@ defmodule Kantele.World.Room.ShopRequestEvent do
     character.pid != requester.pid and not dead?(character)
   end
 
-  defp dead?(%{status: status}) when is_binary(status),
-    do: String.contains?(status, "尸体")
+  defp dead?(%{status: status, id: id}) when is_binary(status) do
+    String.contains?(status, "尸体") or StatusTracker.dead?(id)
+  end
 
+  defp dead?(%{id: id}), do: StatusTracker.dead?(id)
   defp dead?(_), do: false
 end
 
@@ -374,6 +379,7 @@ end
 defmodule Kantele.World.Room.LookEvent do
   import Kalevala.World.Room.Context
 
+  alias Kantele.Character.Combat.StatusTracker
   alias Kantele.Character.LookView
   alias Kantele.World.Items
   alias Kantele.World.ZoneCache
@@ -405,9 +411,11 @@ defmodule Kantele.World.Room.LookEvent do
     |> render(event.from_pid, LookView, "look.extra")
   end
 
-  defp dead?(%{status: status}) when is_binary(status),
-    do: String.contains?(status, "尸体")
+  defp dead?(%{status: status, id: id}) when is_binary(status) do
+    String.contains?(status, "尸体") or StatusTracker.dead?(id)
+  end
 
+  defp dead?(%{id: id}), do: StatusTracker.dead?(id)
   defp dead?(_), do: false
 end
 
@@ -560,6 +568,7 @@ defmodule Kantele.World.Room.CombatEvent do
   import Kalevala.World.Room.Context
 
   alias Kantele.Character.CharacterView
+  alias Kantele.Character.Combat.StatusTracker
   alias Kantele.Character.CommandView
 
   def call(context, event) do
@@ -711,9 +720,11 @@ defmodule Kantele.World.Room.CombatEvent do
 
   # 房间上下文中的角色是 Trimmed 版本（无 combat 标记），
   # 尸体判定依赖 die 时写入的 status 文案
-  defp dead?(%{status: status}) when is_binary(status),
-    do: String.contains?(status, "尸体")
+  defp dead?(%{status: status, id: id}) when is_binary(status) do
+    String.contains?(status, "尸体") or StatusTracker.dead?(id)
+  end
 
+  defp dead?(%{id: id}), do: StatusTracker.dead?(id)
   defp dead?(_), do: false
 
   defp players_in_room(context) do

@@ -35,6 +35,7 @@ defmodule Kantele.Character.CombatEvent do
   alias Kantele.Combat.Fighter
   alias Kantele.Combat.Messages
   alias Kantele.Character.Combat
+  alias Kantele.Character.Combat.StatusTracker
   alias Kantele.Character.CharacterView
   alias Kantele.Character.CommandView
   alias Kantele.Character.Teleport
@@ -339,6 +340,8 @@ defmodule Kantele.Character.CombatEvent do
         |> Map.put(:status, "#{character.name}的尸体躺在地上。")
         |> put_combat(%Combat{dead: true})
 
+      StatusTracker.mark_dead(character.id)
+
       conn = put_character(conn, character)
       respawn_ms = respawn_delay(character)
       schedule_self("combat/respawn", %{}, respawn_ms)
@@ -375,6 +378,8 @@ defmodule Kantele.Character.CombatEvent do
         conn
 
       _room_id ->
+        StatusTracker.mark_alive(character.id)
+
         character =
           character
           |> Map.put(:status, "#{character.name} is here.")

@@ -70,6 +70,7 @@ defmodule ExVenture.Application.KalevalaSupervisor do
       {Kantele.World, []},
       {Kantele.Character.Presence, []},
       {Kantele.Character.Emotes, [name: Kantele.Character.Emotes]},
+      {Kantele.Character.Combat.StatusTracker, []},
       {Kalevala.Character.Foreman.Supervisor, [name: Kantele.Character.Foreman.Supervisor]},
       telnet_listener(telnet_config)
     ]
