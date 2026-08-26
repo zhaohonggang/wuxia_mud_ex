@@ -94,7 +94,7 @@
 
 **建议做法**：
 1. 先做一个 limit 计算模块（输入 stats.skills 即可算天花板；柳溪内功的 `query_neili_improve` 贡献看 `combat/skills/liuxi_neigong.ex` 有无对应字段，没有就先计 0 并留钩子）
-2. 新增 `exercise/dazuo` 命令：参数为耗气量（≥10），busy 期间分批转化 qi→neili（每跳 gain 精确公式为 `1＋(force/5)/2＋random(force/5)`，LPC 另加房间 exercise_improve 可忽略，参照 LPC exercising/1），结束后判定是否 max_neili+1；到瓶颈给"修为已达瓶颈"文案
+2. 新增 `exercise/dazuo` 命令：参数为耗气量（≥10），busy 期间分批转化 qi→neili（每跳 gain 精确公式为 `1＋(force/5)/2＋random(force/5)`，LPC 另加房间 exercise_improve 可忽略，参照 LPC exercising/1），结束后判定是否 max_neili+1；到瓶颈给"修为已达瓶颈"文案。**前置门槛照抄 LPC**：战斗中禁止、须已 enable 内功、当前 jing ≥70% 上限才可开始（jing 只是门槛不消耗，唯一真实消耗是 qi）
 3. `respirate/tuna` 同款循环作用于精力上限——注意 Kantele 的 jing 字段语义未定案，**本期建议只做内力线**，吐纳留占位说明即可（避免和将来 eff_* 改造打架）
 4. max_neili 增长后记得走 `Records.save` 持久化（该字段已在 character_metadata 里）
 5. 战斗中禁止打坐（对齐 LPC"战斗中不能练内功"）
