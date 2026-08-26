@@ -434,14 +434,14 @@ defmodule Kantele.Character.CombatEvent do
 
   # ---- 敌人变化 ----
 
-  def enemy_died(conn, %{data: %{id: id, exp: exp, potential: potential}} = data) do
+  def enemy_died(conn, %{data: %{id: id, exp: exp, potential: potential} = reward}) do
     character = conn.character
     combat = Combat.remove_enemy(character.meta.combat, id)
 
     # 门派贡献：拜师后击杀累积（A11/N5）；玩家才有关注点，NPC meta 防御兼容
     gongxian_gain =
       case Map.get(character.meta, :family) do
-        %{name: name} when is_binary(name) and name != "" -> Map.get(data, :gongxian) || 0
+        %{name: name} when is_binary(name) and name != "" -> Map.get(reward, :gongxian) || 0
         _ -> 0
       end
 
@@ -452,12 +452,12 @@ defmodule Kantele.Character.CombatEvent do
         gongxian: (character.meta.stats.gongxian || 0) + gongxian_gain
     }
 
-    coins = (Map.get(character.meta, :coins) || 0) + (Map.get(data, :coins) || 0)
+    coins = (Map.get(character.meta, :coins) || 0) + (Map.get(reward, :coins) || 0)
     character = Map.put(character, :meta, Map.put(character.meta, :coins, coins))
     character = put_stats(character, stats)
 
     # 掉落物直接入包（v0 简化：不做尸体拾取）
-    drops = Enum.map(Map.get(data, :drops) || [], fn item_id ->
+    drops = Enum.map(Map.get(reward, :drops) || [], fn item_id ->
       %Kalevala.World.Item.Instance{
         id: Kalevala.World.Item.Instance.generate_id(),
         item_id: item_id,

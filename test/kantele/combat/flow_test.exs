@@ -310,6 +310,46 @@ defmodule Kantele.Combat.FlowTest do
     end
   end
 
+  describe "击杀结算" do
+    test "铜钱/门派贡献/掉落随 enemy-died 入账（读内层 data）" do
+      a = player()
+
+      conn =
+        CombatEvent.enemy_died(build_conn(a), %{
+          topic: "combat/enemy-died",
+          data: %{
+            id: "npc-x",
+            exp: 20,
+            potential: 10,
+            coins: 7,
+            gongxian: 1,
+            drops: ["liuxi:yupai"]
+          }
+        })
+
+      c = current_character(conn)
+
+      assert c.meta.stats.combat_exp == 1000 + 20
+      assert c.meta.stats.potential == 100 + 10
+      assert c.meta.stats.gongxian == 0
+      assert c.meta.coins == 7
+      assert Enum.any?(c.inventory, &(&1.item_id == "liuxi:yupai"))
+    end
+
+    test "拜师后门派贡献累积" do
+      a = player()
+      a = put_in(a.meta.family, %{name: "柳溪派"})
+
+      conn =
+        CombatEvent.enemy_died(build_conn(a), %{
+          topic: "combat/enemy-died",
+          data: %{id: "npc-x", exp: 5, potential: 2, gongxian: 3}
+        })
+
+      assert current_character(conn).meta.stats.gongxian == 3
+    end
+  end
+
   # victim 持续承受 attacker 的 incoming，累积全部战况文案
   defp exchange_rounds(attacker, victim, pred, max_rounds) do    attacker_conn = engage(build_conn(attacker), attacker, victim)
     attacker1 = current_character(attacker_conn)
