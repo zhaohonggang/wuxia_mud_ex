@@ -217,6 +217,7 @@ defmodule Kantele.Character.Stats do
     :int,
     :combat_exp,
     :potential,
+    :learned_points,
     :skills,
     :mapped,
     :performs,
@@ -234,6 +235,7 @@ defmodule Kantele.Character.Stats do
       int: 20,
       combat_exp: 1000,
       potential: 100,
+      learned_points: 0,
       score: 0,
       weiwang: 0,
       gongxian: 0,
@@ -264,6 +266,18 @@ defmodule Kantele.Character.Stats do
         skill(stats, usage) + skill(stats, special_id)
     end
   end
+
+  @doc """
+  可用潜能 = 总潜能 - 已消耗（对应 LPC `potential - learned_points`，learn.c:124）
+
+  learned_points 是累计已用点数；potential 是累计总获得。
+  """
+  def available_potential(%__MODULE__{} = stats),
+    do: max((stats.potential || 0) - (stats.learned_points || 0), 0)
+
+  @doc "记一笔潜能消耗（learn/practice 成功后调用），返回新 stats"
+  def spend_potential(%__MODULE__{} = stats, cost) when cost >= 0,
+    do: %{stats | learned_points: (stats.learned_points || 0) + cost}
 
   @doc """
   提升技能一级并返回 {new_stats, gained_level?}

@@ -11,11 +11,11 @@ defmodule Kantele.Character.SkillsEvent do
   import Kalevala.Character.Conn
 
   alias Kantele.Character.CommandView
+  alias Kantele.Character.LearnGate
   alias Kantele.Character.Records
   alias Kantele.Character.Stats
   alias Kantele.Combat.Skills
 
-  @learn_cost 2
   @max_teachable_levels 100
   @max_times 100
 
@@ -29,6 +29,8 @@ defmodule Kantele.Character.SkillsEvent do
     times = Map.get(data, :times, 1)
     module = Skills.get(skill)
     base_skill? = skill in @base_skills
+    # b2 捆绑门槛：潜能池(b1)/经验门(b4)/内功互斥(b5)，快照判定
+    gate = LearnGate.snapshot_gate(student_stats, skill)
 
     cond do
       is_nil(module) and not base_skill? ->
@@ -43,8 +45,9 @@ defmodule Kantele.Character.SkillsEvent do
         reply(reply_to, "这一门功夫你已不弱于老夫，没什么可教的了。\n")
         conn
 
-      student_stats.potential < @learn_cost ->
-        reply(reply_to, "你的潜能不足，先去实战中磨练磨练吧。\n")
+      gate != :ok ->
+        {:error, message} = gate
+        reply(reply_to, message)
         conn
 
       base_skill? ->
@@ -117,21 +120,24 @@ defmodule Kantele.Character.SkillsEvent do
 
   def learn_result(conn, %{data: %{skill: skill}} = event) do
     character = conn.character
-    cost = Map.get(event.data, :cost, @learn_cost)
     times = Map.get(event.data, :times, 1)
 
     before_known? = Stats.perform_known?(character.meta.stats, "liuxin-jian/liu")
 
-    {stats, learned} = learn_levels(character.meta.stats, skill, cost, times, 0)
+    vitals0 = character.meta.vitals
+    stats0 = character.meta.stats
+
+    {vitals, stats, learned} = learn_levels(vitals0, stats0, skill, times, 0)
 
     if learned == 0 do
+      {:halt, message} = halt_reason(vitals0, stats0, skill)
+
       conn
-      |> render(CommandView, "text", %{text: "你的潜能不足，先去实战中磨练磨练吧。\n"})
+      |> render(CommandView, "text", %{text: message})
       |> prompt(CommandView, "prompt", %{})
     else
       stats = maybe_unlock_perform(skill, stats)
-
-      vitals = Kantele.Character.Vitals.recalculate_max_neili(character.meta.vitals, stats)
+      vitals = Kantele.Character.Vitals.recalculate_max_neili(vitals, stats)
 
       meta =
         character.meta
@@ -149,27 +155,45 @@ defmodule Kantele.Character.SkillsEvent do
         end
 
       qty_text = if learned > 1, do: "（×#{learned}）", else: ""
+      tail = partial_text(learned, times)
 
       conn
       |> put_character(character)
       |> render(CommandView, "text", %{
-        text: "你的#{skill_title(skill)}进步了！#{qty_text}#{extra}"
+        text: "你的#{skill_title(skill)}进步了！#{qty_text}#{tail}#{extra}"
       })
       |> prompt(CommandView, "prompt", %{})
     end
   end
 
-  # 逐级学习：潜能够就升一级扣一次，不够即停
-  defp learn_levels(stats, _skill, _cost, remaining, n) when remaining < 1,
-    do: {stats, n}
+  # 逐级学习：潜能池(b1)/耗精(b3)/经验门(b4) 任一不过即停，已学部分保留
+  defp learn_levels(vitals, stats, _skill, remaining, n) when remaining < 1,
+    do: {vitals, stats, n}
 
-  defp learn_levels(stats, skill, cost, remaining, n) when stats.potential >= cost do
-    stats = %{stats | potential: stats.potential - cost}
-    {stats, _gained?} = Stats.improve_skill(stats, skill)
-    learn_levels(stats, skill, cost, remaining - 1, n + 1)
+  defp learn_levels(vitals, stats, skill, remaining, n) do
+    case LearnGate.level_gate(vitals, stats, skill) do
+      :ok ->
+        {vitals, stats} = LearnGate.pay_level(vitals, stats, skill)
+        {stats, _gained?} = Stats.improve_skill(stats, skill)
+        learn_levels(vitals, stats, skill, remaining - 1, n + 1)
+
+      {:halt, _message} ->
+        {vitals, stats, n}
+    end
   end
 
-  defp learn_levels(stats, _skill, _cost, _remaining, n), do: {stats, n}
+  # 全部没学成时给出具体原因（与 level_gate 同源）
+  defp halt_reason(vitals, stats, skill) do
+    case LearnGate.level_gate(vitals, stats, skill) do
+      {:halt, message} -> {:halt, message}
+      _ -> {:halt, "然而你今天太累了，无法再进行任何学习了。\n"}
+    end
+  end
+
+  defp partial_text(learned, times) when learned < times and learned > 0,
+    do: "\n但是你今天太累了，学习了 #{learned} 次以后只好先停下来。\n"
+
+  defp partial_text(_, _), do: ""
 
   defp maybe_unlock_perform("liuxin-jian", stats) do
     unlock_level = Kantele.Combat.Skills.LiuxinJian.perform_unlock_level()

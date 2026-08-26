@@ -666,7 +666,10 @@ defmodule Kantele.World.Loader do
         material: Map.get(meta, :material),
         food: Map.get(meta, :food),
         medicine: parse_medicine(Map.get(meta, :medicine)),
-        book: parse_book(Map.get(meta, :book))
+        book: parse_book(Map.get(meta, :book)),
+        armor_type: Kantele.World.Item.Meta.normalize_armor_type(Map.get(meta, :armor_type)),
+        weapon_prop: Kantele.World.Item.Meta.sanitize_prop(Map.get(meta, :weapon_prop)),
+        armor_prop: Kantele.World.Item.Meta.sanitize_prop(Map.get(meta, :armor_prop))
       }
 
     meta

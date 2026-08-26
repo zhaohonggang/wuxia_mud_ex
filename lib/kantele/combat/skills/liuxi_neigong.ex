@@ -13,6 +13,13 @@ defmodule Kantele.Combat.Skills.LiuxiNeigong do
   @impl true
   def valid_enable(usage), do: usage == "force"
 
+  @doc """
+  b5/P10 内功互斥：柳溪内功不接受任何其他内功共存
+  （learn.c:229-251 can_learn；通配 "*" 已由调用方短路处理）
+  """
+  @impl true
+  def valid_force(_other_skill_id), do: false
+
   @impl true
   def valid_learn(stats) do
     if Stats.skill(stats, "force") <= Stats.skill(stats, id()) do

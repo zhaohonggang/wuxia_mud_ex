@@ -52,6 +52,7 @@ defmodule Kantele.Character.PracticeCommand do
   use Kalevala.Character.Command
 
   alias Kantele.Character.CommandView
+  alias Kantele.Character.LearnGate
   alias Kantele.Character.Records
   alias Kantele.Character.Stats
   alias Kantele.Combat.Skills
@@ -79,9 +80,14 @@ defmodule Kantele.Character.PracticeCommand do
     vitals = character.meta.vitals
 
     with :ok <- module.valid_learn(stats),
+         :ok <- conflict_gate(stats, skill_id),
+         :ok <- exp_gate(stats, skill_id),
+         :ok <- check_jing(vitals),
          :ok <- check_vitals(vitals, cost),
-         {:ok, stats} <- spend_potential(stats) do
+         :ok <- check_available_potential(stats) do
       {stats, _gained?} = Stats.improve_skill(stats, skill_id)
+      # b1：潜能消耗记入 learned_points 池（可用潜能 = potential - learned_points）
+      stats = Stats.spend_potential(stats, LearnGate.learn_cost())
       {stats, extra} = maybe_unlock_perform(skill_id, stats)
 
       vitals =
@@ -109,19 +115,47 @@ defmodule Kantele.Character.PracticeCommand do
     end
   end
 
+  # b5：与已学内功互斥冲突
+  defp conflict_gate(stats, skill_id) do
+    case LearnGate.force_conflict(stats, skill_id) do
+      nil -> :ok
+      other -> {:error, LearnGate.conflict_message(other, skill_id)}
+    end
+  end
+
+  # b4：实战经验门（开关默认关闭）
+  defp exp_gate(stats, skill_id) do
+    if LearnGate.exp_gate_enabled?() and not LearnGate.can_improve?(stats, skill_id) do
+      {:error, "也许是缺乏实战经验，你的练习总没法进步。\n"}
+    else
+      :ok
+    end
+  end
+
+  # 练习需精神饱满（与打坐同款 70% 门槛；LPC practice.c 无此门，取统一值）
+  defp check_jing(%{jing: jing, max_jing: max_jing}) when max_jing > 0 do
+    if div(jing * 100, max_jing) < 70 do
+      {:error, "你现在精神不济，无法专心练习。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp check_jing(_vitals), do: :ok
+
+  defp check_available_potential(stats) do
+    if Stats.available_potential(stats) >= LearnGate.learn_cost() do
+      :ok
+    else
+      {:error, "你的潜能不足，先去实战中磨练磨练吧。\n"}
+    end
+  end
+
   defp check_vitals(vitals, cost) do
     cond do
       vitals.qi < cost.qi + 10 -> {:error, "你的体力太低了。\n"}
       vitals.neili < cost.neili -> {:error, "你的内力不够。\n"}
       true -> :ok
-    end
-  end
-
-  defp spend_potential(stats) do
-    if stats.potential >= 2 do
-      {:ok, %{stats | potential: stats.potential - 2}}
-    else
-      {:error, "你的潜能不足，先去实战中磨练吧。\n"}
     end
   end
 

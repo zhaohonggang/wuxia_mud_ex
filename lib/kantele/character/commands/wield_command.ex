@@ -2,101 +2,156 @@ defmodule Kantele.Character.WieldCommand do
   @moduledoc """
   装备命令：`wield <武器>` / `wear <护甲>` / `unwield <武器>` / `remove <护甲>`
 
-  装备快照写入 `meta.combat.equipped`，命中管线据此结算
-  武器伤害与护甲减免。
+  b6/B4 多槽位：wear 按物品的 armor_type 决定槽位
+  （cloth/head/feet/waist/...，同槽互斥），不同槽位可同时穿戴。
+  快照写入 `meta.combat.equipped`，命中管线据此结算武器伤害、
+  护甲减免与多键 prop 加成。
   """
 
   use Kalevala.Character.Command
 
   alias Kantele.Character.Combat
   alias Kantele.Character.CommandView
+  alias Kantele.World.Item.Meta
   alias Kantele.World.Items
 
-  def wield(conn, params), do: equip(conn, params, :weapon)
+  def wield(conn, params) do
+    equip_weapon(conn, params)
+  end
 
-  def wear(conn, params), do: equip(conn, params, :armor)
+  def wear(conn, params) do
+    equip_armor(conn, params)
+  end
 
-  def unwield(conn, params), do: unequip(conn, params, :weapon)
-
-  def remove(conn, params), do: unequip(conn, params, :armor)
-
-  defp equip(conn, %{"item_name" => item_name}, slot) do
+  def unwield(conn, %{"item_name" => item_name} = _params) do
     character = conn.character
-    item_instance = find_instance(character.inventory, item_name)
+    weapon_snap = Combat.weapon(character.meta.combat)
 
-    case item_instance && Items.get!(item_instance.item_id) do
-      nil ->
-        render_error(conn, "你的身上没有这样东西。\n")
+    cond do
+      weapon_snap != nil && snapshot_matches?(weapon_snap, item_name) ->
+        combat = Combat.unequip(character.meta.combat, :weapon)
 
-      item ->
-        value =
-          case slot do
-            :weapon -> Map.get(item.meta, :damage)
-            :armor -> Map.get(item.meta, :armor)
-          end
+        conn
+        |> put_character(%{character | meta: %{character.meta | combat: combat}})
+        |> render(CommandView, "text", %{text: "你卸下了#{Map.get(weapon_snap, :name)}。\n"})
+        |> prompt(CommandView, "prompt", %{})
 
-        cond do
-          is_nil(value) or value <= 0 ->
-            render_error(conn, "#{item.name}不能这样装备。\n")
-
-          true ->
-            snapshot =
-              case slot do
-                :weapon -> %{name: item.name, skill_type: Map.get(item.meta, :skill_type, "sword"), damage: value}
-                :armor -> %{name: item.name, armor: value}
-              end
-
-            combat =
-              character.meta.combat
-              |> Combat.unequip(slot)
-              |> Combat.equip(slot, snapshot)
-
-            verb =
-              case slot do
-                :weapon -> "你「唰」的一声抽出一柄#{item.name}握在手中。\n"
-                :armor -> "你穿上了一件#{item.name}。\n"
-              end
-
-            conn
-            |> put_character(%{character | meta: %{character.meta | combat: combat}})
-            |> render(CommandView, "text", %{text: verb})
-            |> prompt(CommandView, "prompt", %{})
-        end
+      true ->
+        render_error(conn, "你没有装备这样东西。\n")
     end
   end
 
-  defp unequip(conn, %{"item_name" => item_name}, slot) do
+  def remove(conn, %{"item_name" => item_name} = _params) do
     character = conn.character
-    item_instance = find_instance(character.inventory, item_name)
 
-    equipped_meta =
-      case slot do
-        :weapon -> Combat.weapon(character.meta.combat)
-        :armor -> get_in(character.meta.combat.equipped, [:armor])
-      end
+    slot =
+      Enum.find_value(character.meta.combat.equipped, fn
+        {:weapon, _snap} -> nil
+        {slot, snap} -> if snapshot_matches?(snap, item_name), do: slot
+      end)
 
-    matches? =
-      equipped_meta != nil and item_instance != nil and
-        Map.get(equipped_meta, :name) == item_name(Items, item_instance.item_id)
-
-    cond do
-      not matches? ->
+    case slot do
+      nil ->
         render_error(conn, "你没有装备这样东西。\n")
 
-      true ->
+      slot ->
+        snap = get_in(character.meta.combat.equipped, [slot])
         combat = Combat.unequip(character.meta.combat, slot)
 
         conn
         |> put_character(%{character | meta: %{character.meta | combat: combat}})
-        |> render(CommandView, "text", %{text: "你卸下了#{Map.get(equipped_meta, :name)}。\n"})
+        |> render(CommandView, "text", %{text: "你卸下了#{Map.get(snap, :name)}。\n"})
         |> prompt(CommandView, "prompt", %{})
     end
   end
 
-  defp item_name(Items, item_id) do
-    Items.get!(item_id).name
-  rescue
-    _ -> nil
+  # ---- 武器 ----
+
+  defp equip_weapon(conn, %{"item_name" => item_name}) do
+    character = conn.character
+
+    with_item(conn, character, item_name, fn item ->
+      damage = Map.get(item.meta, :damage)
+
+      cond do
+        is_nil(damage) or damage <= 0 ->
+          render_error(conn, "#{item.name}不能这样装备。\n")
+
+        true ->
+          snapshot = %{
+            name: item.name,
+            skill_type: Map.get(item.meta, :skill_type, "sword"),
+            damage: damage,
+            prop: Map.get(item.meta, :weapon_prop)
+          }
+
+          combat =
+            character.meta.combat
+            |> Combat.unequip(:weapon)
+            |> Combat.equip(:weapon, snapshot)
+
+          conn
+          |> put_character(%{character | meta: %{character.meta | combat: combat}})
+          |> render(CommandView, "text", %{text: "你「唰」的一声抽出一柄#{item.name}握在手中。\n"})
+          |> prompt(CommandView, "prompt", %{})
+      end
+    end)
+  end
+
+  # ---- 护甲（按 armor_type 槽位） ----
+
+  defp equip_armor(conn, %{"item_name" => item_name}) do
+    character = conn.character
+
+    with_item(conn, character, item_name, fn item ->
+      case armor_slot(item.meta) do
+        nil ->
+          render_error(conn, "#{item.name}不是可穿戴的护具。\n")
+
+        slot ->
+          if Combat.occupied?(character.meta.combat, slot) do
+            render_error(conn, "你已经穿戴了同类型的护具了。\n")
+          else
+            snapshot = %{
+              name: item.name,
+              armor: Map.get(item.meta, :armor) || 0,
+              prop: Map.get(item.meta, :armor_prop)
+            }
+
+            combat = Combat.equip(character.meta.combat, slot, snapshot)
+
+            conn
+            |> put_character(%{character | meta: %{character.meta | combat: combat}})
+            |> render(CommandView, "text", %{text: "你穿上了一件#{item.name}。\n"})
+            |> prompt(CommandView, "prompt", %{})
+          end
+      end
+    end)
+  end
+
+  # 槽位白名单固定，字符串→原子安全；nil 表示不可穿戴
+  defp armor_slot(meta) do
+    case Meta.normalize_armor_type(Map.get(meta, :armor_type)) do
+      nil -> nil
+      slot -> String.to_atom(slot)
+    end
+  end
+
+  # ---- 工具 ----
+
+  defp with_item(conn, character, item_name, callback) do
+    item_instance = find_instance(character.inventory, item_name)
+
+    case item_instance && Items.get!(item_instance.item_id) do
+      nil -> render_error(conn, "你的身上没有这样东西。\n")
+      item -> callback.(item)
+    end
+  end
+
+  # remove/unwield 支持中英文名匹配快照（快照存的是全名）
+  defp snapshot_matches?(snapshot, item_name) do
+    Kantele.World.Item.matches?(%{name: Map.get(snapshot, :name)}, item_name) or
+      Map.get(snapshot, :name) == String.trim(item_name)
   end
 
   defp find_instance(inventory, item_name) do

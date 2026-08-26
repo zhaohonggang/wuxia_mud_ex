@@ -32,6 +32,13 @@ defmodule Kantele.Character.Combat do
 
   @applies_keys [:attack, :defense, :damage, :unarmed_damage, :dodge, :parry, :armor]
 
+  # 护甲槽位白名单（对照 LPC equip.c 的 armor_type；cloth=衣袍，body 归一化为 cloth）
+  @armor_slots ~w(cloth head feet waist hands neck cloak finger)
+
+  def armor_slots(), do: @armor_slots
+
+  def applies_keys(), do: @applies_keys
+
   def new() do
     %__MODULE__{temp: Map.new(@applies_keys, fn key -> {key, 0} end), equipped: %{}}
   end
@@ -86,33 +93,41 @@ defmodule Kantele.Character.Combat do
     do: Enum.any?(combat.buffs, &(&1.key == key))
 
   @doc """
-  结算后的实际加成表：temp 加成 + 装备快照带来的武器伤害/护甲
+  结算后的实际加成表：temp 加成 + 全部已装备槽位的基础值与多键 prop 合并
 
-  `equipped` 中保存武器/护甲的元数据快照（wield/wear 时写入），
-  这样房间侧无需访问角色背包即可构建战斗数据
+  每个槽位快照：武器 `%{name, skill_type, damage, prop}`，
+  护甲 `%{name, armor, prop}`；prop 仅 @applies_keys 白名单键。
+  （b6/B4 多槽位：cloth/head/waist 等同时生效，对应 LPC 多部位护甲叠加）
   """
   def effective_applies(%__MODULE__{} = combat) do
-    weapon = Map.get(combat.equipped, :weapon)
-    armor = Map.get(combat.equipped, :armor)
-
-    combat.temp
-    |> Map.update(:damage, 0, &(&1 + equip_value(weapon, :damage)))
-    |> Map.update(:armor, 0, &(&1 + equip_value(armor, :armor)))
+    Enum.reduce(combat.equipped, combat.temp, fn {_slot, snap}, applies ->
+      applies
+      |> bump(:damage, Map.get(snap, :damage) || 0)
+      |> bump(:armor, Map.get(snap, :armor) || 0)
+      |> apply_snapshot_prop(Map.get(snap, :prop))
+    end)
   end
 
-  defp equip_value(nil, _key), do: 0
-  defp equip_value(meta, key), do: Map.get(meta, key, 0)
+  defp bump(applies, _key, 0), do: applies
+  defp bump(applies, key, value), do: Map.update(applies, key, value, &(&1 + value))
 
-  @doc "穿戴武器快照"
-  def equip(%__MODULE__{} = combat, :weapon, meta) do
-    put_in(combat.equipped[:weapon], meta)
+  defp apply_snapshot_prop(applies, nil), do: applies
+
+  defp apply_snapshot_prop(applies, prop) when is_map(prop) do
+    Enum.reduce(prop, applies, fn {key, value}, acc ->
+      Map.update(acc, key, value, &(&1 + value))
+    end)
   end
 
-  def equip(%__MODULE__{} = combat, :armor, meta) do
-    put_in(combat.equipped[:armor], meta)
+  @doc "穿戴到指定槽位（weapon 或 armor_slots 内的槽位；同槽互斥由命令层把关）"
+  def equip(%__MODULE__{} = combat, slot, meta) when is_atom(slot) do
+    put_in(combat.equipped[slot], meta)
   end
 
   def unequip(%__MODULE__{} = combat, slot), do: %{combat | equipped: Map.delete(combat.equipped, slot)}
+
+  @doc "槽位是否已被占用（同槽互斥，命令层调用）"
+  def occupied?(%__MODULE__{equipped: equipped}, slot), do: Map.has_key?(equipped, slot)
 
   @doc "武器快照（无则 nil）"
   def weapon(%__MODULE__{} = combat), do: Map.get(combat.equipped, :weapon)

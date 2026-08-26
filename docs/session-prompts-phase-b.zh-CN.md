@@ -231,3 +231,37 @@ LPC 机制（learn.c:189）：每次 learn 成功 `add("learned_points", 1)`。�
 ## 六、完成后
 
 在本文件末尾追加实际做法摘要（哪些校验链放了集中模块、b3/b4 开关默认值、装备槽位数量与 LPC 的差异），供 c 期衔接。
+
+---
+
+## 七、实施摘要（2026-08-26 实际做法）
+
+> 本期 b1-b6 全部完成，219 测试全绿。以下为落地差异记录。
+
+### 装备槽位（B6）
+
+- 槽位白名单：`cloth/head/feet/waist/hands/neck/cloak/finger`（`Combat.armor_slots/0`）。
+  **与文档示例的差异**：采用 LPC 实际出现过的 `cloth`（衣袍）而非通用 `body`；
+  `body` 在解析层归一化为 `cloth` 兼容（`Item.Meta.normalize_armor_type/1`）
+- 快照结构扩展：武器 `%{name, skill_type, damage, prop}`、护甲 `%{name, armor, prop}`；
+  prop 为白名单键 map（`Combat.applies_keys/0` 七键），白名单外的键在 loader 解析时丢弃
+- 存档双读：新格式每槽位一键；旧格式单层 `"armor"` 键归入 `:cloth` 槽位
+- 同槽互斥在命令层判定（`Combat.occupied?/2`），equip 本身允许覆盖
+
+### learn 校验链（B1-B5）
+
+- 集中模块：**`Kantele.Character.LearnGate`**——快照总闸 `snapshot_gate/2`
+  （师父侧）+ 单级闸 `level_gate/3` 与结算 `pay_level/3`（学生侧逐级）
+- **潜能经济保持每次 2 点**（LPC 是 1 点/次，沿用 Kantele 既有 `@learn_cost 2`，
+  差异已确认接受）；potential 字段不再减少，消耗累计进 learned_points
+- **开关默认值**：`:enable_jing_learn_cost => false`、`:enable_exp_gate => false`
+  （`Application.get_env(:ex_venture, ...)`，均未写入 config 文件，观察期后手动开启）
+- practice 的 jing ≥70% 门槛为自定统一值（与打坐一致），LPC practice.c 无此门
+- b5 始终启用（无开关）：`valid_force/1` callback 加入 Skill behaviour，
+  默认 true（无冲突）；柳溪内功覆写为 false（不接受任何其他内功共存）
+- learn xN 批量：中途潜能/精尽即停，文案"但是你今天太累了，学习了 N 次以后只好先停下来"
+
+### 迁移
+
+- `20260826120000_add_learned_points_to_character_metadata.exs`（integer default 0），
+  测试库与开发库均已执行

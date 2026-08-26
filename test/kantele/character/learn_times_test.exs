@@ -74,8 +74,8 @@ defmodule Kantele.Character.LearnTimesTest do
   end
 
   describe "学生侧批量学习" do
-    test "连学多级：潜能逐次扣、等级连升、文案带 ×N" do
-      # 潜能 8 可学 4 次（每次 2），请求 3 次
+    test "连学多级：记入 learned_points 池、等级连升、文案带 ×N" do
+      # 可用潜能 8（potential 8 - learned_points 0），请求 3 次 × 每级 2
       character = student_with_potential(8, 0)
 
       conn =
@@ -85,14 +85,18 @@ defmodule Kantele.Character.LearnTimesTest do
         })
 
       character = current_character(conn)
+      stats = character.meta.stats
 
-      assert Stats.skill(character.meta.stats, "sword") == 3
-      assert character.meta.stats.potential == 2
+      assert Stats.skill(stats, "sword") == 3
+      # b1：potential 不动，消耗累计到 learned_points；可用余额 8-6=2
+      assert stats.potential == 8
+      assert stats.learned_points == 6
+      assert Stats.available_potential(stats) == 2
       assert output_text(conn) =~ "×3"
     end
 
     test "潜能中途耗尽即停" do
-      # 潜能 5 只够 2 次（花 4），请求 5 次 → 学 2 级剩 1
+      # 可用 5 只够 2 级（花 4），请求 5 次 → 学 2 级剩 1
       character = student_with_potential(5, 0)
 
       conn =
@@ -102,9 +106,11 @@ defmodule Kantele.Character.LearnTimesTest do
         })
 
       character = current_character(conn)
+      stats = character.meta.stats
 
-      assert Stats.skill(character.meta.stats, "sword") == 2
-      assert character.meta.stats.potential == 1
+      assert Stats.skill(stats, "sword") == 2
+      assert stats.learned_points == 4
+      assert Stats.available_potential(stats) == 1
       assert output_text(conn) =~ "×2"
     end
   end

@@ -136,6 +136,12 @@ room_items "tiepupu" {
       id = items.bupao.id
     },
     {
+      id = items.douli.id
+    },
+    {
+      id = items.yaodai.id
+    },
+    {
       id = items.peiyuan_dan.id
     }
   ]
@@ -184,6 +190,10 @@ items "changjian" {
     damage = 22
     skill_type = "sword"
     value = 300
+    # b6/D3 多键武器加成：轻巧剑身出手更快（白名单键见 Combat.applies_keys）
+    weapon_prop = {
+      attack = 3
+    }
   }
 }
 
@@ -204,6 +214,61 @@ items "bupao" {
     weight = 1000
     unit = "件"
     material = "cloth"
+    # b6/D3：衣袍属 cloth 槽位（LPC armor_type），多键护甲加成
+    armor_type = "cloth"
+    armor_prop = {
+      defense = 4
+    }
+  }
+}
+
+# b6/D3 新增护具：头/腰两槽位，验证多槽位同时穿戴
+items "douli" {
+  name = "斗笠 Douli"
+  description = "一顶宽檐竹编斗笠，遮阳避雨，偶尔也能挡上一挡刀剑。"
+
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+
+  meta = {
+    armor = 3
+    value = 80
+    weight = 300
+    unit = "顶"
+    material = "bamboo"
+    armor_type = "head"
+    armor_prop = {
+      defense = 2
+      dodge = -1
+    }
+  }
+}
+
+items "yaodai" {
+  name = "束腰带 Yaodai"
+  description = "一条牛皮束腰带，勒紧了衣袍，行动也利索几分。"
+
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+
+  meta = {
+    armor = 2
+    value = 60
+    weight = 400
+    unit = "条"
+    material = "leather"
+    armor_type = "waist"
+    armor_prop = {
+      dodge = 3
+    }
   }
 }
 
@@ -360,7 +425,9 @@ characters "xiaoer" {
     { id = items.baozi.id },
     { id = items.peiyuan_dan.id },
     { id = items.changjian.id },
-    { id = items.bupao.id }
+    { id = items.bupao.id },
+    { id = items.douli.id },
+    { id = items.yaodai.id }
   ]
 
   inquiries = {

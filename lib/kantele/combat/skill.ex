@@ -36,6 +36,14 @@ defmodule Kantele.Combat.Skill do
   @doc "学习门槛校验（valid_learn/1）"
   @callback valid_learn(Stats.t()) :: :ok | {:error, String.t()}
 
+  @doc """
+  内功共存校验（valid_force/1，b5/P10）
+
+  入参为另一门内功的 skill id；返回自身是否接受与其共存。
+  `"*"` 为通配查询（learn.c:230 的短路语义）。默认无条件共存。
+  """
+  @callback valid_force(String.t()) :: boolean()
+
   @doc "练习一次的消耗（practice_skill 的 qi/neili 消耗）"
   @callback practice_cost() :: %{qi: non_neg_integer(), neili: non_neg_integer()}
 
@@ -61,6 +69,9 @@ defmodule Kantele.Combat.Skill do
       def valid_learn(_stats), do: :ok
 
       @doc false
+      def valid_force(_other), do: true
+
+      @doc false
       def practice_cost(), do: %{qi: 50, neili: 30}
 
       @doc false
@@ -69,7 +80,7 @@ defmodule Kantele.Combat.Skill do
       @doc false
       def exert_list(), do: %{}
 
-      defoverridable valid_learn: 1, practice_cost: 0, perform_list: 0, exert_list: 0
+      defoverridable valid_learn: 1, valid_force: 1, practice_cost: 0, perform_list: 0, exert_list: 0
     end
   end
 

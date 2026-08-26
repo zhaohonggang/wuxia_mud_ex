@@ -51,6 +51,12 @@ defmodule Kantele.World.Item.Meta do
   - `armor` 护甲值（对应 LPC armor_prop/armor）
   - `value` 价值
 
+  装备多槽位扩展（b6/D3+B4，对应 LPC equip.c armor_type 与 weapon_prop/armor_prop）：
+
+  - `armor_type` 槽位名（cloth/head/feet/waist/hands/neck/cloak/finger；body 归一化为 cloth）
+  - `weapon_prop` 多键武器加成（仅 @applies_keys 白名单键，如 `%{attack: 3}`）
+  - `armor_prop` 多键护甲加成（同上，如 `%{defense: 4, dodge: 2}`）
+
   通用/消耗品类扩展字段（A4/D1，对应 LPC set_weight/unit/material 等）：
 
   - `weight` 重量（整数，LPC 单位为克）
@@ -71,8 +77,57 @@ defmodule Kantele.World.Item.Meta do
     :material,
     :food,
     :medicine,
-    :book
+    :book,
+    :armor_type,
+    :weapon_prop,
+    :armor_prop
   ]
+
+  @doc """
+  归一化 armor_type：body→cloth 别名；白名单外/非字符串返回 nil
+  """
+  def normalize_armor_type(nil), do: nil
+
+  def normalize_armor_type(type) when is_binary(type) do
+    type = type |> String.downcase() |> String.trim()
+    type = if type == "body", do: "cloth", else: type
+
+    if type in Kantele.Character.Combat.armor_slots(), do: type
+  end
+
+  def normalize_armor_type(_), do: nil
+
+  @doc """
+  prop 白名单过滤：仅保留 applies_keys 内且值为整数的键；空表返回 nil
+
+  LPC prop 表可含技能类加成（sword+5 等），需 Fighter.skills 通道，
+  v0 不支持——白名单外的键丢弃。
+  """
+  def sanitize_prop(nil), do: nil
+
+  def sanitize_prop(prop) when is_map(prop) do
+    allowed = Kantele.Character.Combat.applies_keys()
+
+    filtered =
+      Enum.reduce(prop, %{}, fn {key, value}, acc ->
+        atom_key =
+          cond do
+            is_atom(key) -> key
+            is_binary(key) -> String.to_atom(key)
+            true -> nil
+          end
+
+        if atom_key in allowed and is_integer(value) do
+          Map.put(acc, atom_key, value)
+        else
+          acc
+        end
+      end)
+
+    if filtered == %{}, do: nil, else: filtered
+  end
+
+  def sanitize_prop(_), do: nil
 
   defimpl Kalevala.Meta.Trim do
     def trim(meta) do

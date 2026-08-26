@@ -20,6 +20,7 @@ defmodule ExVenture.Characters.Metadata do
     field(:int, :integer, default: 20)
     field(:combat_exp, :integer, default: 0)
     field(:potential, :integer, default: 100)
+    field(:learned_points, :integer, default: 0)
     field(:max_neili, :integer, default: 200)
     field(:coins, :integer, default: 100)
     field(:score, :integer, default: 0)
@@ -46,6 +47,7 @@ defmodule ExVenture.Characters.Metadata do
       :int,
       :combat_exp,
       :potential,
+      :learned_points,
       :max_neili,
       :coins,
       :score,
@@ -112,6 +114,7 @@ defmodule Kantele.Character.Records do
             int: meta.stats.int,
             combat_exp: meta.stats.combat_exp,
             potential: meta.stats.potential,
+            learned_points: meta.stats.learned_points || 0,
             max_neili: meta.vitals.max_neili,
             coins: meta.coins || 0,
             score: meta.stats.score || 0,
@@ -151,13 +154,46 @@ defmodule Kantele.Character.Records do
 
   def save(_character), do: :error
 
+  # b6/B4 多槽位序列化：每个槽位独立键（"weapon"/"cloth"/"head"/...），
+  # 快照含可选 prop 表（string-key JSON）
   defp serialized_equipment(equipped) do
-    %{
-      "weapon" => Map.get(equipped, :weapon),
-      "armor" => Map.get(equipped, :armor)
-    }
-    |> Enum.reject(fn {_slot, snap} -> is_nil(snap) end)
-    |> Enum.into(%{})
+    Enum.into(equipped, %{}, fn {slot, snap} ->
+      {to_string(slot), snapshot_to_json(snap)}
+    end)
+  end
+
+  defp snapshot_to_json(snap) do
+    json = %{"name" => Map.get(snap, :name)}
+
+    json =
+      case Map.get(snap, :skill_type) do
+        nil -> json
+        v -> Map.put(json, "skill_type", v)
+      end
+
+    json =
+      case Map.get(snap, :damage) do
+        nil -> json
+        v -> Map.put(json, "damage", v)
+      end
+
+    json =
+      case Map.get(snap, :armor) do
+        nil -> json
+        v -> Map.put(json, "armor", v)
+      end
+
+    case Map.get(snap, :prop) do
+      nil -> json
+      prop -> Map.put(json, "prop", stringify_keys(prop))
+    end
+  end
+
+  defp stringify_keys(prop) when is_map(prop) do
+    Enum.into(prop, %{}, fn
+      {key, value} when is_atom(key) -> {Atom.to_string(key), value}
+      {key, value} -> {key, value}
+    end)
   end
 
   @doc "把持久化记录合并进新建角色的 meta"
@@ -189,6 +225,7 @@ defmodule Kantele.Character.Records do
       int: metadata.int,
       combat_exp: combat_exp,
       potential: potential,
+      learned_points: max(metadata.learned_points || 0, 0),
       score: max(metadata.score || 0, 0),
       weiwang: max(metadata.weiwang || 0, 0),
       gongxian: max(metadata.gongxian || 0, 0),
@@ -261,13 +298,26 @@ defmodule Kantele.Character.Records do
 
   defp restore_inventory(default_inventory, _other), do: default_inventory
 
+  # b6/B4 双读兼容：
+  # - 新格式：每槽位一键（"weapon"/"cloth"/"head"/...）
+  # - 旧格式：单层 %{"weapon" => snap, "armor" => snap}，"armor" 无类型信息，
+  #   归入 cloth 槽位（袍类是历史唯一护甲）
   defp restore_equipment(combat, equipment) when is_map(equipment) do
-    weapon = weapon_snapshot(equipment["weapon"])
-    armor = armor_snapshot(equipment["armor"])
+    Enum.reduce(equipment, combat, fn {key, snap}, acc ->
+      cond do
+        key == "weapon" ->
+          maybe_equip(acc, weapon_snapshot(snap), :weapon)
 
-    combat
-    |> maybe_equip(weapon, :weapon)
-    |> maybe_equip(armor, :armor)
+        key == "armor" ->
+          maybe_equip(acc, armor_snapshot(snap), :cloth)
+
+        true ->
+          case Kantele.World.Item.Meta.normalize_armor_type(key) do
+            nil -> acc
+            slot -> maybe_equip(acc, armor_snapshot(snap), String.to_atom(slot))
+          end
+      end
+    end)
   end
 
   defp maybe_equip(combat, nil, _slot), do: combat
@@ -279,12 +329,27 @@ defmodule Kantele.Character.Records do
   defp weapon_snapshot(nil), do: nil
 
   defp weapon_snapshot(%{"name" => name} = s),
-    do: %{name: name, skill_type: s["skill_type"] || "sword", damage: s["damage"] || 0}
+    do: %{
+      name: name,
+      skill_type: s["skill_type"] || "sword",
+      damage: s["damage"] || 0,
+      prop: prop_from_json(s["prop"])
+    }
 
   defp armor_snapshot(nil), do: nil
 
   defp armor_snapshot(%{"name" => name} = s),
-    do: %{name: name, armor: s["armor"] || 0}
+    do: %{name: name, armor: s["armor"] || 0, prop: prop_from_json(s["prop"])}
+
+  defp prop_from_json(nil), do: nil
+
+  defp prop_from_json(prop) when is_map(prop) do
+    Enum.into(prop, %{}, fn {key, value} ->
+      {String.to_atom(key), value}
+    end)
+  end
+
+  defp prop_from_json(_), do: nil
 
   def apply_to_character(character, :error), do: character
 
