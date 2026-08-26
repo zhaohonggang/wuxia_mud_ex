@@ -387,7 +387,7 @@ defmodule Kantele.World.Room.LookEvent do
 
     characters =
       Enum.reject(context.characters, fn character ->
-        character.id == event.acting_character.id
+        character.id == event.acting_character.id or dead?(character)
       end)
 
     item_instances =
@@ -404,6 +404,11 @@ defmodule Kantele.World.Room.LookEvent do
     |> render(event.from_pid, LookView, "mini_map")
     |> render(event.from_pid, LookView, "look.extra")
   end
+
+  defp dead?(%{status: status}) when is_binary(status),
+    do: String.contains?(status, "尸体")
+
+  defp dead?(_), do: false
 end
 
 defmodule Kantele.World.Room.MapEvent do
