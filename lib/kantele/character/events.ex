@@ -44,6 +44,18 @@ defmodule Kantele.Character.Events do
       event("family/result", :result)
     end
 
+    module(GiveEvent) do
+      event("characters/give", :receive)
+      event("give/result", :result)
+    end
+
+    module(FollowEvent) do
+      event("follow/set-leader", :set_leader)
+      event("follow/register", :register)
+      event("follow/unregister", :unregister)
+      event("follow/move", :move)
+    end
+
     module(CombatEvent) do
       event("combat/start", :start)
       event("combat/tick", :tick)

@@ -112,4 +112,25 @@ defmodule Kantele.Character.RouterAliasesTest do
     assert_command("自动逃跑 30", Kantele.Character.WimpyCommand, :run, %{"arg" => "30"})
     assert_command("wimpy 40", Kantele.Character.WimpyCommand, :run, %{"arg" => "40"})
   end
+
+  test "Batch 5 路由：give/follow/recall/finger/hp 及中文别名" do
+    assert_command("give 包子 to 张三", Kantele.Character.GiveCommand, :run, %{
+      "rest" => "包子 to 张三"
+    })
+
+    assert_command("给 张三 包子", Kantele.Character.GiveCommand, :run, %{
+      "rest" => "张三 包子"
+    })
+
+    assert_command("follow 张三", Kantele.Character.FollowCommand, :run, %{"rest" => "张三"})
+    assert_command("跟随 none", Kantele.Character.FollowCommand, :run, %{"rest" => "none"})
+    assert_command("recall", Kantele.Character.RecallCommand, :run)
+    assert_command("回城", Kantele.Character.RecallCommand, :run)
+    assert_command("finger", Kantele.Character.FingerCommand, :list)
+    assert_command("finger 张三", Kantele.Character.FingerCommand, :run, %{"name" => "张三"})
+    assert_command("查找 张三", Kantele.Character.FingerCommand, :run, %{"name" => "张三"})
+    assert_command("hp", Kantele.Character.HpCommand, :run)
+    assert_command("气", Kantele.Character.HpCommand, :run)
+    assert parse("气功") == {:error, :unknown}
+  end
 end

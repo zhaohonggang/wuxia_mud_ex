@@ -5,9 +5,11 @@ defmodule Kantele.Character.PlayerMeta do
   - `coins` 铜钱（A10/N2 货币；运行态在 meta，落盘 character_metadata.coins）
   - `family` 师徒/门派 `%{name: "柳溪派", master_id: ..., master_name: ...}`（A11/N5 v0）
   - `wimpy` 自动逃跑阈值（0-80，0 关闭；cmds/usr/wimpy.c）
+  - `leader` 跟随对象 `%{id, name, pid}`（cmds/std/follow.c；运行态）
+  - `followers` 跟随者列表 `[%{id, name, pid}]`（运行态，不落盘）
   """
 
-  defstruct [:reply_to, :vitals, :stats, :combat, :coins, :family, :wimpy]
+  defstruct [:reply_to, :vitals, :stats, :combat, :coins, :family, :wimpy, :leader, followers: []]
 
   defimpl Kalevala.Meta.Trim do
     def trim(meta) do

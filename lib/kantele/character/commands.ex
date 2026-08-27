@@ -104,6 +104,55 @@ defmodule Kantele.Character.Commands do
     parse("投降", :run)
   end
 
+  module(GiveCommand) do
+    parse("give", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("给", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+  end
+
+  module(FollowCommand) do
+    parse("follow", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("跟随", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+  end
+
+  module(RecallCommand) do
+    parse("recall", :run)
+    parse("回城", :run)
+  end
+
+  module(FingerCommand) do
+    parse("finger", :run, fn command ->
+      command |> spaces() |> text(:name)
+    end)
+
+    parse("finger", :list)
+
+    parse("查找", :run, fn command ->
+      command |> spaces() |> text(:name)
+    end)
+
+    parse("查找", :list)
+  end
+
+  module(HpCommand) do
+    parse("hp", :run)
+    parse("气", :run, [],
+      fn command ->
+        command
+        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+      end
+    )
+  end
+
   module(HelpCommand) do
     parse("help", :show, fn command ->
       command |> spaces() |> text(:topic)

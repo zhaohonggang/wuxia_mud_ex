@@ -261,3 +261,76 @@ end)
 - e2e 覆盖率、已知未实现的 LPC 边缘功能
 
 供后续 d/h 期转换器/大世界搬运参考。
+
+---
+
+## 七、实际做法摘要（持续追加）
+
+### Batch 4（已完成，commit 787898d）
+
+**新增命令（3 个）：**
+
+| 命令 | 中文别名 | 逻辑 |
+|---|---|---|
+| `flee` | `逃跑` | 战斗中随机出口脱逃；复用已有 FleeEvent 机制（room/flee → RandomExitEvent 提供出口 → FleeEvent 随机选 → request_movement） |
+| `wimpy` | `自动逃跑` | 设置气血阈值 0-80，0 关闭；存 `character.meta.wimpy`（PlayerMeta 新增字段） |
+| `surrender` | `投降` | 战斗中脱战：清空敌人 + 各敌人发 `combat/halt`，扣 50 阅历（score，扣至 0 为止），调用 Records.save |
+
+**新增系统逻辑：**
+- `CombatEvent.apply_hit` 中新增 `check_wimpy/3`：受击结算后若 qi/max_qi 百分比低于 `meta.wimpy` 阈值，自动触发 `room/flee` 事件
+
+**偏离 LPC 的简化点：**
+- `flee`：省略守卫/负重对抗（LPC fp/gp 闪避对抗、force_power 撞开玩家、`success_flee` temp flag），直接随机出口
+- `surrender`：省略 `last_opponent->is_killing(me)` 拒绝逻辑（K 端无 is_killing 概念）
+- `wimpy`：Router 需参数分词（`text(:arg)`），裸 `wimpy` 无参形式在 Router 层不可用（与 `run` 同 arity 默认参数冲突）；实际 `run` 内部处理空字符串 → 显示当前设置，但需输入 `wimpy <空格>` 触发
+
+**配置开关：** 无新增。
+
+**测试：** 新增 flee_command_test / wimpy_command_test / surrender_command_test 共 14 断言 + router_aliases_test 追加 6 断言。全量 260 tests 通过。
+
+**已知未实现的 LPC 边缘功能：**
+- `flee` 不校验负重（over_encumbranced）、不做守卫阻挡判定
+- `wimpy` 自动逃跑不校验 no_fight 房间、不打印 "看来该找机会逃跑了" 与躲避语境（简化直接触发）
+
+### Batch 5（已完成）
+
+**新增命令（5 个）：**
+
+| 命令 | 中文别名 | 逻辑 |
+|---|---|---|
+| `give` | `给` | 赠送物品：`give 物品 to 人` / `give 人 物品` / `give all to 人` / `give 数量 物品 to 人`；房间解析目标 → 收受端入包回执 → 赠与端移除落盘（round-trip） |
+| `follow` | `跟随` | 跟随某人 / `follow none`；leader 移动时沿同出口自动跟随，双方互登记 |
+| `recall` | `回城` | 回当前区域（zone）起始房间（`startroom` flag，无则首房） |
+| `finger` | `查找` | 无参列在线玩家，带参查玩家资料（简化：无 jing 消耗/扫描冷却） |
+| `hp` | `气` | 展示精气/气血/内力/精力/食物/潜能（简化：仅自身，无 -m/-g 巫师参数） |
+
+**新增系统逻辑：**
+- `PlayerMeta` 新增 `:leader`（`%{id,name,pid}`）与 `followers: []`（`[%{id,name,pid}]`）字段
+- `Room.GiveRequestEvent`：`room/give` 目标按 NameMatch 解析，找不到即提示，找到则向目标发 `characters/give`
+- `Room.FollowRequestEvent`：`room/follow` 目标解析，双向发 `follow/register` + `follow/set-leader`
+- `GiveEvent`：收受端 `characters/give` 入包落盘并回执 `give/result`；赠与端 `give/result` 移除物品落盘
+- `FollowEvent`：`set-leader`/`register`/`unregister`/`move`（`follow/move` 执行 `request_movement`）
+- `MoveEvent.commit`：`notify_followers/2` —— leader 移动时对每个存活的 `meta.followers` 发 `follow/move`（带 exit_name）
+- 复用 `Kantele.Character.Teleport.teleport/2`（两段 Movement + 重订阅房间频道）做回城
+
+**偏离 LPC 的简化点：**
+- `give`：数量拆分（`give N 物品`）简化为整物转移；无 `no_accept`/`give_all` 限流/日志；装备判定按快照名（快照无 instance id）
+- `follow`：不做 LPC 的守卫/隔室/战斗掉队等复杂跟进规则，仅"leader 移动⟶followers 同出口移动"；followers 以 pid 存运行态（不落盘），靠 `Process.alive?` 兜底
+- `recall`：LPC 用地图坐标定点，Kantele 改用"区域起始房间"（`startroom` flag / 首房）；不做 outdoors/maze/area 限制
+- `finger`：去掉 jing 消耗与 10 秒扫描冷却，不做 -m 参数
+- `hp`：去掉怒气/死亡保护/-m/-g 明细
+
+**配置开关：** 无新增。
+
+**测试：** 新增 give/follow/recall/finger/hp 五个命令测试（31 断言）+ router_aliases_test 追加 Batch 5 别名断言。全量 292 tests 通过。
+
+**已知未实现的 LPC 边缘功能：**
+- `give` 拒绝逻辑（`no_accept`/是否收下）未实现，收受端无条件入包；living 物/riding 物使其不能给的判定省略
+- `follow` 不在战斗/警戒/负重等场景下自动断跟随，无 LPC 的"跟随对象隔房间自动跟上"之外的复杂行为
+- `recall` 无冷却、无金币消耗（LPC 本指令无消耗，仅认证）
+
+### Batch 6（待办）
+
+按批次清单：team/ride/title/nick/color/option/alias/save/suicide。建议单列里程碑，与用户确认后继续。
+
+

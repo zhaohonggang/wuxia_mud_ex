@@ -67,7 +67,13 @@ defmodule Kantele.Character.CommandsCommand do
     # Batch 4: 战斗/移动辅助
     "flee" => "逃跑（战斗中随机出口脱逃）",
     "wimpy" => "自动逃跑设置：wimpy 百分比（0 关闭）",
-    "surrender" => "投降（脱战，扣 50 阅历）"
+    "surrender" => "投降（脱战，扣 50 阅历）",
+    # Batch 5: 物品/跟随/回城/查人/状态
+    "give" => "赠送物品：give 物品 to 人或 give 人 物品",
+    "follow" => "跟随某人：follow 某人 / follow none",
+    "recall" => "回城（回到当前区域起始房间）",
+    "finger" => "查找玩家：finger [姓名]",
+    "hp" => "状态数值（精气/气血/内力等）"
   }
 
   def run(conn, _params) do
