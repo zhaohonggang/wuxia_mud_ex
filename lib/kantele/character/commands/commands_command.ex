@@ -42,6 +42,17 @@ defmodule Kantele.Character.CommandsCommand do
     "unwield" => "卸下武器",
     "wear" => "穿戴护甲",
     "wield" => "装备武器",
+    # 中文别名
+    "say" => "房间说话",
+    "general" => "频道喊话",
+    "tell" => "私聊玩家",
+    "reply" => "回复私聊",
+    "whisper" => "低声耳语",
+    "who" => "在线玩家列表",
+    "map" => "区域地图（同 map 命令）",
+    "smile" => "微笑表情",
+    "wave" => "挥手表情",
+    "frown" => "皱眉表情",
     # Batch 1: 技能进阶
     "skills" => "技能列表",
     "myskill" => "技能列表（同 skills）",
