@@ -73,7 +73,19 @@ defmodule Kantele.Character.CommandsCommand do
     "follow" => "跟随某人：follow 某人 / follow none",
     "recall" => "回城（回到当前区域起始房间）",
     "finger" => "查找玩家：finger [姓名]",
-    "hp" => "状态数值（精气/气血/内力等）"
+    "hp" => "状态数值（精气/气血/内力等）",
+    # Batch 6: 个性化/组队/坐骑
+    "save" => "手动存档（角色已实时自存）",
+    "nick" => "设置绰号：nick 绰号 / nick none",
+    "color" => "色彩对照表",
+    "option" => "个人选项：option [键] [值]",
+    "title" => "头衔：title [头衔] / title none",
+    "alias" => "自定义别名：alias 新动词 替换串",
+    "ride" => "上马：ride 坐骑",
+    "unride" => "下马",
+    "suicide" => "自杀（当前为占位，不删除档案）",
+    "team" => "组队：team with 人/accept/refuse/dismiss/kick/talk/list",
+    "tt" => "队伍会话（同 team talk）"
   }
 
   def run(conn, _params) do

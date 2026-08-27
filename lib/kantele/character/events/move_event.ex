@@ -12,6 +12,7 @@ defmodule Kantele.Character.MoveEvent do
 
     conn = notify_enemies_left(conn, character)
     notify_followers(character, event.exit_name)
+    notify_team(character, event.exit_name)
 
     # 先更新自身 room_id 再排队移动事件：
     # 移动事件携带的角色快照（Private.character）必须带新房间号，
@@ -46,6 +47,27 @@ defmodule Kantele.Character.MoveEvent do
   end
 
   defp notify_followers(_character, _exit_name), do: :ok
+
+  # 触发队伍成员沿同一出口移动（Batch 6 team）：队长移动时带队员
+  defp notify_team(character, exit_name) when is_binary(exit_name) and exit_name != "" do
+    case Map.get(character.meta, :team) do
+      %{members: members} ->
+        Enum.each(members, fn member ->
+          if is_map(member) && member.pid != character.pid && Process.alive?(member.pid) do
+            send(member.pid, %Kalevala.Event{
+              from_pid: self(),
+              topic: "follow/move",
+              data: %{exit_name: exit_name}
+            })
+          end
+        end)
+
+      _ ->
+        :ok
+    end
+  end
+
+  defp notify_team(_character, _exit_name), do: :ok
 
   # 离开房间时通知自己的敌人移除自己（对应 LPC clean_up_enemy 的环境校验）
   defp notify_enemies_left(conn, character) do

@@ -199,6 +199,11 @@ defmodule Kantele.World.Room.Events do
     module(WhisperEvent) do
       event("whisper/send", :call)
     end
+
+    module(TeamRequestEvent) do
+      event("team/invite", :call)
+      event("team/attack", :call)
+    end
   end
 end
 
@@ -449,6 +454,92 @@ defmodule Kantele.World.Room.FollowRequestEvent do
         end
     end
   end
+
+  defp find_target(context, requester, name) do
+    Enum.find(context.characters, fn character ->
+      character.pid != requester.pid and
+        Kantele.World.Room.NameMatch.matches?(character, name)
+    end)
+  end
+end
+
+defmodule Kantele.World.Room.TeamRequestEvent do
+  @moduledoc """
+  队伍房间转发（Batch 6）：
+
+  - `team/invite`：把组队邀请按名字解析到同房目标，向目标发 `team/invite-request`
+  - `team/attack`：队长全队攻击，为每位队员与目标建立战斗
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+
+  def call(context, %{data: %{name: target_name, team: team}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case {requester, is_binary(target_name) and target_name != ""} do
+      {nil, _} ->
+        context
+
+      {_requester, false} ->
+        context
+
+      {requester, true} ->
+        target =
+          Enum.find(context.characters, fn character ->
+            character.pid != requester.pid and
+              Kantele.World.Room.NameMatch.matches?(character, target_name)
+          end)
+
+        case target do
+          nil ->
+            context
+
+          target ->
+            Enum.reduce(team, context, fn member, acc ->
+              acc
+              |> start_combat(member, target)
+              |> start_combat(target, member)
+            end)
+        end
+    end
+  end
+
+  def call(context, %{data: %{name: name}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case {requester, is_binary(name) and name != ""} do
+      {nil, _} ->
+        context
+
+      {requester, false} ->
+        render(context, requester.pid, CommandView, "text", %{text: "你想和谁成为伙伴？\n"})
+
+      {requester, true} ->
+        case find_target(context, requester, name) do
+          nil ->
+            render(context, requester.pid, CommandView, "text", %{text: "这里没有 #{name}。\n"})
+
+          target ->
+            context
+            |> event(target.pid, self(), "team/invite-request", %{
+              leader: %{id: requester.id, pid: requester.pid, name: requester.name}
+            })
+            |> render(requester.pid, CommandView, "text", %{text: "你邀请#{target.name}加入你的队伍。\n"})
+        end
+    end
+  end
+
+  defp start_combat(context, initiator, target) do
+    event(context, target.pid, self(), "combat/start", %{
+      enemy: ref(initiator),
+      initiator_id: initiator.id
+    })
+  end
+
+  defp ref(character),
+    do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
 
   defp find_target(context, requester, name) do
     Enum.find(context.characters, fn character ->

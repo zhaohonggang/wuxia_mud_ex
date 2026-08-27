@@ -20,6 +20,9 @@ defmodule Kantele.Character.CommandController do
   def recv(conn, data) do
     Logger.info("Received - #{inspect(data)}")
 
+    {data, _expanded?} =
+      Kantele.Character.Aliases.expand(data, alias_map(conn))
+
     data = Tags.escape(data)
 
     case Commands.call(conn, data) do
@@ -66,5 +69,9 @@ defmodule Kantele.Character.CommandController do
       false ->
         super(conn, event)
     end
+  end
+
+  defp alias_map(conn) do
+    Map.get(conn.character.meta, :alias_commands, %{}) || %{}
   end
 end

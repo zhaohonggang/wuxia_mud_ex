@@ -34,6 +34,10 @@ defmodule ExVenture.Characters.Metadata do
     field(:performs, {:array, :string}, default: [])
     field(:inventory, {:array, :map}, default: [])
     field(:equipment, :map, default: %{})
+    field(:nickname, :string)
+    field(:title, :string, default: "")
+    field(:option, :map, default: %{})
+    field(:alias_commands, :map, default: %{})
 
     timestamps()
   end
@@ -61,7 +65,11 @@ defmodule ExVenture.Characters.Metadata do
       :mapped,
       :performs,
       :inventory,
-      :equipment
+      :equipment,
+      :nickname,
+      :title,
+      :option,
+      :alias_commands
     ])
     |> validate_required([:character_id])
     |> unique_constraint(:character_id)
@@ -129,7 +137,11 @@ defmodule Kantele.Character.Records do
             mapped: meta.stats.mapped,
             performs: MapSet.to_list(meta.stats.performs),
             inventory: Enum.map(character.inventory, &%{item_id: &1.item_id}),
-            equipment: serialized_equipment(meta.combat.equipped)
+            equipment: serialized_equipment(meta.combat.equipped),
+            nickname: meta.nickname,
+            title: meta.title || "",
+            option: meta.option || %{},
+            alias_commands: meta.alias_commands || %{}
           })
 
       case Repo.insert_or_update(metadata) do
@@ -257,6 +269,10 @@ defmodule Kantele.Character.Records do
       |> Map.put(:combat, combat)
       |> Map.put(:coins, max(metadata.coins || 0, 0))
       |> Map.put(:family, restore_family(metadata.family))
+      |> Map.put(:nickname, metadata.nickname)
+      |> Map.put(:title, metadata.title || "")
+      |> Map.put(:option, metadata.option || %{})
+      |> Map.put(:alias_commands, metadata.alias_commands || %{})
 
     %{character | meta: meta, inventory: inventory}
   end

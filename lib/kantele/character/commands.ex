@@ -542,6 +542,102 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  # ---- 个性化/组队/坐骑（Batch 6）----
+
+  module(SaveCommand) do
+    parse("save", :run)
+    parse("存档", :run)
+  end
+
+  module(NickCommand) do
+    parse("nick", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("昵称", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+  end
+
+  module(ColorCommand) do
+    parse("color", :run)
+    parse("颜色", :run)
+  end
+
+  module(OptionCommand) do
+    parse("option", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("选项", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+  end
+
+  module(TitleCommand) do
+    parse("title", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("头衔", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+  end
+
+  module(AliasCommand) do
+    parse("alias", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("别名", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+  end
+
+  module(RideCommand) do
+    parse("ride", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("qi", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("骑马", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+  end
+
+  module(UnrideCommand) do
+    parse("unride", :run)
+    parse("xia", :run)
+    parse("下马", :run)
+  end
+
+  module(SuicideCommand) do
+    parse("suicide", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("自杀", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+  end
+
+  module(TeamCommand) do
+    parse("team", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("组队", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("tt", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+  end
+
   # 表情名直用已改为 EmoteCommand 里的显式 parse（smile/wave/frown）。
   # 不再用 dynamic 路由：kalevala parse_dynamic_text 返回 3 元组，
   # Router.parse/3 只匹配 4 元组，命中必 CaseClauseError 崩 foreman（断线）

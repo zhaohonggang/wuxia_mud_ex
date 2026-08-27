@@ -7,9 +7,32 @@ defmodule Kantele.Character.PlayerMeta do
   - `wimpy` 自动逃跑阈值（0-80，0 关闭；cmds/usr/wimpy.c）
   - `leader` 跟随对象 `%{id, name, pid}`（cmds/std/follow.c；运行态）
   - `followers` 跟随者列表 `[%{id, name, pid}]`（运行态，不落盘）
+  - `nickname` 昵称（cmds/usr/nick.c；落盘 metadata.nickname）
+  - `title` 玩家头衔（cmds/usr/title.c 玩家展示层；落盘）
+  - `option` 界面选项位图 `%{"brief_room" => 1, ...}`（cmds/usr/option.c；落盘）
+  - `alias_commands` 自定义别名 `%{"sc" => "score", ...}`（cmds/usr/alias.c；落盘）
+  - `team` 队伍 `%{id, leader_pid, members: [%{id, name, pid}]}`（cmds/std/team.c；运行态）
+  - `riding` 座骑（运行态）：`%{instance_id, item_id, name}` 或缺省 nil（cmds/std/ride.c）
   """
 
-  defstruct [:reply_to, :vitals, :stats, :combat, :coins, :family, :wimpy, :leader, followers: []]
+  defstruct [
+    :reply_to,
+    :vitals,
+    :stats,
+    :combat,
+    :coins,
+    :family,
+    :wimpy,
+    :leader,
+    :nickname,
+    :title,
+    :option,
+    :alias_commands,
+    :team,
+    :riding,
+    :team_pending,
+    followers: []
+  ]
 
   defimpl Kalevala.Meta.Trim do
     def trim(meta) do

@@ -329,8 +329,51 @@ end)
 - `follow` 不在战斗/警戒/负重等场景下自动断跟随，无 LPC 的"跟随对象隔房间自动跟上"之外的复杂行为
 - `recall` 无冷却、无金币消耗（LPC 本指令无消耗，仅认证）
 
-### Batch 6（待办）
+### Batch 6（已完成）
 
-按批次清单：team/ride/title/nick/color/option/alias/save/suicide。建议单列里程碑，与用户确认后继续。
+**新增命令（9 个）：**
+
+| 命令 | 中文别名 | 逻辑 |
+|---|---|---|
+| `team` | `组队` | `team with <人>` 邀请（房间解析）/`accept`/`refuse`/`dismiss`（队长解散、队员离队）/`kick`/`talk`（或 `say`）队伍会话/`list` 名单/`form <阵法>` 阵形/`kill <人>` 全队攻击/`swear <名>` 结义（简化） |
+| `ride` | `骑马`（`qi`） | 骑上背包中 `meta` 带 `"ridable"=>true` 或 `"type"=>"mount"` 的物品；设运行态 `meta.riding`，物品留背包 |
+| `unride` | `下马`（`xia`） | 清除 `meta.riding` |
+| `title` | `头衔` | 玩家侧查看/设置/清除自定头衔（`title none` 清除，>30 字拒绝；LPC 巫师头衔池不实现） |
+| `nick` | `昵称` | 设置/清除绰号（`nick none` 清除，>30 字拒绝） |
+| `color` | `颜色` | 简化色彩对照表展示 |
+| `option` | `选项` | 个人设置位图：`option` 列、`option <键> <值>` 设、单键/`0` 删除（简化：仅存储展示，量消费留待界面重构） |
+| `alias` | `别名` | 玩家自定义命令别名：`alias <新> <替换>`，替换串支持 `$1`/`$2`…/`$*` 占位；`alias <新>` 删除；不能覆盖 `alias` 本身或系统已注册动词 |
+| `save` | `存档` | 手动触发 `Records.save`（角色已实时自存，此命令仅给安心感） |
+| `suicide` | `自杀` | **占位（Stub）**：`suicide` 警示、`suicide -f` 道别并断开连接，**不删除角色档案** |
+
+**新增系统逻辑：**
+- `PlayerMeta` 新增 `:nickname`/`:title`/`:option`/`:alias_commands`/`:team`/`:riding`/`:team_pending` 字段；`Records` Metadata 增加对应键、`save/1` 持久化新字段、`apply_to_character/1` 恢复（新增迁移列）
+- `Kantele.Character.Aliases.expand/2`：`CommandController.recv/2` 在 `Commands.call` 前解析开头动词，用 `alias_commands` 映射替换并代入占位符
+- `Kantele.Character.Team`：队伍纯数据 `%{id, leader_pid, members: [%{id,name,pid}], formation: nil}`（存 `meta.team` 运行态），成员间直接 pid 通信（`Process.alive?` 兜底）
+- `TeamCommand` 子命令分发；`TeamEvent` 角色侧事件（`invite-request`/`accept`/`refuse`/`declined`/`set`/`disband`/`kicked`/`member-left`/`talk`/`formation`/`swear`/`xp-share`）
+- `Room.TeamRequestEvent`：`team/invite` 房间内解析邀请目标；`team/attack` 由队长带队全队对目标开战（每个成员双向 `start_combat`）
+- `MoveEvent.commit`：新增 `notify_team/2` —— 队长移动时对队伍中存活成员沿同出口发 `follow/move` 自动跟随
+- `CombatEvent.enemy_died`：新增 `share_team_reward/3` —— 击杀者本队其余存活成员各获一半经验/潜能（发 `team/xp-share`）
+- `RideCommand` 依赖物品 `meta` 字符串键 `"ridable"`/`"type"`（注意与 `Kantele.World.Item.Meta` 结构体的原子键分离）
+
+**偏离 LPC 的简化点：**
+- `team`：不做 LPC 的满员/队伍名额、`team ob`/`team un`/队长转移、`kill` 之外的复杂命令；`swear` 即时结义不逐人投票、不落库（LEAGUE_D 同盟库不存在）；成员以 pid 存运行态不落盘
+- `ride`/`unride`：不做 LPC 的房间在场生物检定/守卫阻挡/重量对抗/移动速度加成，坐骑仅记录展示
+- `title`：省略巫师头衔池（`-c/-d/-g/-r/-l`），仅玩家自定一个头衔
+- `option`：仅存储展示，简到 `option <键> <值>`，选项消费（brief 叙述等）留待界面重构
+- `suicide`：占位，不做倒计时 `halt` 回旋窗口、管理密码校验、`UPDATE_D->remove_user` 连锁删除
+- `alias`：不做 LPC `COMMAND_D->find_command` 路径归属，仅以 `Commands.parse/1` 判断系统动词占用
+
+**配置开关：** 无新增。
+
+**测试：** 新增 save/nick/color/option/title/alias/ride(含 unride)/suicide/team 十个命令测试（共 60 断言）。全量 352 tests 通过。
+
+**已知未实现的 LPC 边缘功能：**
+- 队伍成员 pid 运行态不落库（重启即散队）；无队伍满员、经验分享比例、阵形实际战斗加成
+- 坐骑无移动速度/负重加成消费
+- `option` 的 brief/combat 等选项尚未在界面消费
+- `suicide` 不真正删除档案
+- `alias` 展开发生在 Router 解析前，被展开目标仍受 Router 动词边界约束；以 n/s/e/w/u/d 开头的别名动词会被方向前缀匹配截获（视同系统动词）
+- 裸动词（如裸 `team`/`suicide`/`nick`）因 `text(:rest)` 需至少一个参数，Router 层不可用（与 follow/wimpy 一致），实际需 `team <空格>` 或带子命令触发
 
 

@@ -56,6 +56,21 @@ defmodule Kantele.Character.Events do
       event("follow/move", :move)
     end
 
+    module(TeamEvent) do
+      event("team/invite-request", :invite_request)
+      event("team/accept", :accept)
+      event("team/refuse", :refuse)
+      event("team/declined", :declined)
+      event("team/set", :set_team)
+      event("team/disband", :disband)
+      event("team/kicked", :kicked)
+      event("team/member-left", :member_left)
+      event("team/talk", :talk)
+      event("team/formation", :formation)
+      event("team/swear", :swear)
+      event("team/xp-share", :xp_share)
+    end
+
     module(CombatEvent) do
       event("combat/start", :start)
       event("combat/tick", :tick)

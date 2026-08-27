@@ -492,11 +492,39 @@ defmodule Kantele.Character.CombatEvent do
     character = %{character | inventory: character.inventory ++ drops}
 
     Kantele.Character.Records.save(character)
+    share_team_reward(character, exp, potential)
 
     conn
     |> put_character(character)
     |> render(CommandView, "kill-reward", %{exp: exp, potential: potential})
     |> prompt(CommandView, "prompt", %{})
+  end
+
+  # 队伍击杀分享（Batch 6 team）：击杀者本队其余存活成员各获部分经验/潜能
+  defp share_team_reward(character, exp, potential) do
+    case Map.get(character.meta, :team) do
+      %{members: members} ->
+        others =
+          Enum.reject(members, fn member ->
+            not Process.alive?(member.pid) || member.pid == character.pid
+          end)
+
+        share_exp = div(exp || 0, 2)
+        share_pot = div(potential || 0, 2)
+
+        if share_exp > 0 or share_pot > 0 do
+          Enum.each(others, fn member ->
+            send(member.pid, %Kalevala.Event{
+              from_pid: self(),
+              topic: "team/xp-share",
+              data: %{exp: share_exp, potential: share_pot}
+            })
+          end)
+        end
+
+      _ ->
+        :ok
+    end
   end
 
   def enemy_left(conn, %{data: %{id: id}}) do
