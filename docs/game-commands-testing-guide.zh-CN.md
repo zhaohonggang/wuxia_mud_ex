@@ -122,11 +122,11 @@
 | 命令 | 中文 | 条件与消耗 |
 |---|---|---|
 | `apprentice <师父>` | `拜师` | 对方带门派教学配置（如练武场王重九）；成功后记入师门 |
-| `learn <技能> <师父>` | `学` | 已拜师对象在场；潜能 −2/级；徒弟不能超过师父该项等级 |
-| `practice <技能>` | `练` | 消耗气与内功（柳溪内功只能 learn 不能 practice） |
+| `learn <技能> <师父>` | `学` | 已拜师对象在场；潜能 −2/级 + 精力消耗（精 < 70% 中断）+ 经验 ≥ max(L²×10,200)；支持 `learn x5 <技能> <师父>` 批量学；learn xN 中任一次失败立即中断循环 |
+| `practice <技能>` | `练` | learned_points −1，精力 ≥ 70%，经验值 ≥ max(L²×10,200)；无模块的 base skill（如 sword）提示"没有这项武功"；支持 `practice x5 <技能>` 批量练 |
 | `enable <用法> <特技>` | — | 如 `enable force liuxi-neigong` 映射内功 |
-| `exert powerup` | — | 运功加攻，消耗内力；持续中重复施放会被拒 |
-| `exercise <耗气量>` / `dazuo` | `打坐` | 见第六节打坐条件 |
+| `exert powerup` | — | 运功加攻：消耗内力，临时提升攻击/防御，持续若干秒；持续中重复施放会被拒；无内功映射时提示"你不会这种运功方法" |
+| `exercise <耗气量>` / `dazuo` | `打坐` | 条件：参数≥10、非战斗中、已 enable 内功、精力≥70%、非 no_fight 房间；经验值 ≥ max(L²×10,200)（exp gate）；到天花板会提示需先升内功等级 |
 | `pai`（或 `门派`） | — | 门派信息：师承/贡献/阅历/威望/正邪 |
 
 ### 商店·任务·问询
@@ -227,11 +227,13 @@ wave            预期：挥手动作广播
 ```text
 apprentice 王重九    预期：「好，从今日起你便是柳溪派门下弟子」
 pai                 预期：门派：柳溪派 / 师父：王重九 / 贡献 0
-learn force 王重九   预期："你的基本内功进步了！"（潜能 -2）
+learn force 王重九   预期："你的基本内功进步了！"（潜能 -2，精力 -1）
+learn x5 force 王重九   预期：连续学5次，精<70%时中断；learned_points 累加
 learn liuxi-neigong 王重九   预期：学会柳溪内功
 enable force liuxi-neigong   预期：映射成功
 exert powerup        预期：运功 buff 生效；再输一次提示已在运功中
-practice sword       预期：消耗气/内力，剑法进步
+practice sword       预期：learned_points −1，剑法进步
+practice x3 sword    预期：连续练3次，精<70%时中断
 jiali 3              预期：若柳溪内功≤1级提示"最多加力 0 档"；学到 6 级后再设可成功
 ```
 
@@ -312,12 +314,22 @@ whisper 对方名 悄悄话  预期：仅房间内低语样式
 | 你身上的钱不够… | 铜钱低于售价 |
 | 你身上没有这样东西。 | eat/drop 找不到背包物品 |
 | 你是个文盲/谈何施展 之类门槛提示 | perform 技能等级未达标 |
+| 然而你今天太累了，无法再进行任何学习了。 | 精力不足（精 < jing_cost），learn 中断 |
+| 也许是缺乏实战经验，你对师父的回答总是无法领会。 | 经验值不够（exp gate），learn 被拒 |
+| 也许是缺乏实战经验，你的练习总没法进步。 | 经验值不够（exp gate），practice 被拒 |
+| 你发现自身所学的XX和XX冲突不已，根本没办法并存。 | 内功互斥（force_conflict），learn/practice 被拒 |
+| 你现在精神不济，无法专心练习。 | 精力不足（精 < 70%），practice 被拒 |
+| 没有这项武功。 | base skill（如 sword）无模块，practice 被拒 |
+| XX只能用学(learn)的来增加熟练度。 | 柳溪内功等只学不练的技能 |
+| 你的体力太低了。 | 气不够 practice 消耗 |
+| 你的内力不够。 | 内力不够 practice 消耗 |
+| 你的潜能不足，先去实战中磨练吧。 | available_potential < learn_cost |
 
 ---
 
 ## 六、已知限制与备注
 
-- `jing`（精力）目前只随根骨自然回复，无消耗途径（b 期 learn 耗精后才激活）。
+- `jing`（精力）随根骨自然回复；learn/practice 消耗精力（精 < 70% 中断）。
 - 死亡无惩罚：满血回出生点、装备背包保留。
 - `reload` 会终止并重建全部 NPC——正在进行的战斗会被打断，属预期行为。
 - 世界数据改动（data/*.ucl）后用 `reload` 生效；改 lib 代码需重启容器。
