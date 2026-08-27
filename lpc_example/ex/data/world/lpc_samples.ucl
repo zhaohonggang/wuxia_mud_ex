@@ -1,0 +1,321 @@
+# ============================================================================
+# lpc_samples.ucl —— 从 lpc_example/*.c 迁移的“世界数据型”内容
+#
+# 这些样本（武器/坐骑/纯物品/房间/普通NPC/任务物）本质是**数据**，
+# 可以直接落到 Kalevala 的 UCL 世界数据文件里，一个文件就够，
+# 无需改动底层框架。本文件把跨区域样本集中放一个测试区内，用清晰的
+# key 命名，便于对照原文。
+#
+# 对应原文（lpc_example 下）:
+#   - weapon/weapon_changjian.c    -> items "changjian"
+#   - mount/mount_ziliuma.c        -> characters "ziliuma" + 骑乘说明
+#   - item/item_shaolin_map.c      -> items "shaolin_map"（纯数据）
+#   - item/item_wudu_qianzhumiji.c -> items "qianzhumiji"（数据 + 注）
+#   - item/item_yinzhen.c          -> items "yinzhen"（数据 + 注）
+#   - room/room_qianting.c          -> rooms "qianting"（结构性部分）
+#   - npc/npc_xiaoer.c              -> characters "xiaoer"（数据性部分）
+#   - npc/npc_horseboss.c           -> characters "horseboss"（数据性部分）
+#   - quest/quest_song-yupai.c      -> 现有 turn_in 机制（见 apo）
+#
+# 说明：凡原文带“行为/交互”（init/add_action/input_to 等）的部分，
+# 本文件只保留其**数据骨架**；行为逻辑单独迁移为 lib/ 下的 Elixir 模块
+# （见 migrate-notes.md 的“须新增底层”一列）。
+# ============================================================================
+
+zones "lpc_samples" {
+  name = "LPC 迁移样本区 LPC Samples"
+}
+
+# ---------------------------------------------------------------------------
+# 房间（room/）
+# ---------------------------------------------------------------------------
+
+# room_qianting.c 只迁移静态三件套（short/long/exits/flags）。
+# 大门开合/推门/所有权等动态逻辑 -> lib/ex/room_gate.ex（待底层支持 flag 动词）。
+rooms "qianting" {
+  name = "前庭 Front Courtyard"
+  description = "这里似乎非常安静，倒是时不时听见鸟儿唧唧喳喳的叫。院中不少树木已然有遮天之势，肃穆非常。"
+
+  x = 0
+  y = 0
+  z = 0
+}
+
+room_exits "qianting" {
+  room_id = rooms.qianting.id
+
+  south = rooms.dayuan.id
+  east  = rooms.zuowei.id
+  west  = rooms.youwei.id
+}
+
+# room_qianting 结构引用的相邻房间（原文 __DIR__"dayuan/zuowei/youwei"，样本未带，仅作占位）
+rooms "dayuan"   { name = "大院"   description = "大院。".}
+rooms "zuowei"   { name = "左厢"   description = "左厢。".}
+rooms "youwei"   { name = "右厢"   description = "右厢。".}
+
+# 炼毒房（room_wudu_liandu.c）：数据结构 + 制作逻辑属行为，此处仅房间静态部分。
+rooms "wudu_liandu" {
+  name = "炼毒房 Poison Refinery"
+  description = "五毒的炼毒之所，四壁药架，炉火青碧，药气呛鼻。"
+
+  x = 1
+  y = 0
+  z = 0
+}
+
+# 奇缘（room_qiyuan2.c）：大型互动房间，随机事件/多分支逻辑属行为，此处仅静态部分。
+rooms "qiyuan2" {
+  name = "奇缘 Qi Yuan"
+  description = "一处奇异之所，机缘与凶险并存。"
+
+  x = 2
+  y = 0
+  z = 0
+}
+
+# ---------------------------------------------------------------------------
+# 普通 NPC（npc/）
+# ---------------------------------------------------------------------------
+
+# npc_xiaoer.c：数据性部分（name/long/combat 基础值）落地；
+#   - greeting（进门打招呼）
+#   - do_drop（丢尸体被赶）
+#   - do_exchange（积分兑换）
+#   - accept_object（收受物品）
+#   均属行为 -> lib/ex/room/xiaoer 之类模块（须新增底层交互钩子）。
+characters "xiaoer" {
+  name = "店小二 Xiaoer"
+  description = "这位店小二正笑咪咪地忙着，还不时拿起挂在脖子上的抹布擦脸。"
+
+  combat = {
+    no_kill = true
+    max_qi = 120
+    max_jing = 100
+    str = 12
+    dex = 14
+    con = 13
+    int = 15
+    combat_exp = 100
+    skills = {
+      unarmed = 30
+      dodge = 25
+    }
+  }
+}
+
+# npc_horseboss.c：宠物店老板，自带“生成宠物”交互向导（choose/input_to）
+#   —— 这是**行为**，数据部分只有名字/介绍/训练术等级。
+characters "horseboss" {
+  name = "老板 Boss"
+  description = "一个身着朴素的老板，是关东大风堂设在长安东郊提供各类坐骑的。在这里你可以选择(choose)自己称心如意的坐骑。"
+
+  combat = {
+    no_kill = true
+    max_qi = 600
+    max_jing = 500
+    str = 24
+    dex = 22
+    con = 22
+    int = 20
+    combat_exp = 200000
+    skills = {
+      unarmed = 60
+      dodge = 60
+      training = 400
+    }
+  }
+}
+
+# ---------------------------------------------------------------------------
+# 坐骑（mount/mount_ziliuma.c）
+# ---------------------------------------------------------------------------
+
+# 坐骑在 LPC 里是“野兽 NPC”（inherit NPC），可被骑。迁移为 characters 数据
+# 并加 ridable 标记。**骑乘消费端**（ride/unride 已实现，但 mount 是否按
+# NPC 处理、负重/移动加成）需底层确认 —— 见 migrate-notes。
+characters "ziliuma" {
+  name = "紫骝马"
+  description = "这是一匹紫骝宝马，日行千里，夜行八百。"
+
+  # 坐骑专属扩展字段（Kalevala 尚无；本文件给出约定，需底层解析）
+  ridable = true
+  unit = "匹"
+  race = "野兽"
+  gender = "雄性"
+
+  combat = {
+    no_kill = false
+    attitude = "peaceful"
+    max_qi = 300
+    max_jing = 100
+    str = 30
+    dex = 30
+    con = 30
+    int = 30
+    combat_exp = 50000
+    skills = {
+      unarmed = 50
+      dodge = 50
+    }
+    apply = {
+      attack = 50
+      armor = 15
+      damage = 25
+    }
+  }
+}
+
+# ---------------------------------------------------------------------------
+# 物品（item/）
+# ---------------------------------------------------------------------------
+
+# item_shaolin_map.c：纯数据（name/long/unit/material/value），可直接落地。
+# 原文是一整张 ASCII 地图 long 文案，此处保留名称与结构，省略地图长文。
+items "shaolin_map" {
+  name = "『少林旅游图』"
+  description = "一张详尽的少林寺旅游地图，标注了各处殿宇与武场位置。（原文为整幅 ASCII 图）"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 50
+    weight = 10
+    unit = "张"
+    material = "paper"
+  }
+}
+
+# item_wudu_qianzhumiji.c：数据部分（book/秘籍 + 不可出售）。yinzhen 同理。
+#   研读（yanjiu/du）多绝招解锁逻辑 -> lib/ex/...（行为）
+items "qianzhumiji" {
+  name = "千蛛万毒手秘笈"
+  description = "这是失传已久的千蛛万毒手秘笈下半部，你可以从中研究一些千蛛万毒手的绝招。"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 0
+    weight = 500
+    unit = "本"
+    material = "paper"
+    # LPC 无 sell；此处用 value=0 表示不可出售
+    book = {
+      skill = "qianzhu-wandushou"
+      min_skill = 0
+      max_skill = 999
+      exp_required = 0
+      jing_cost = 0
+      difficulty = 20
+    }
+  }
+}
+
+# item_yinzhen.c：银针（投掷兵器 + 针灸疗伤）
+items "yinzhen" {
+  name = "银针"
+  description = "这是一枚三寸长的银针，细而柔韧，多为医家刺穴疗伤之用。你可以试着用它来针灸(zhenjiu)疗伤。"
+
+  verbs = [
+    "get",
+    "drop",
+    "wield"
+  ]
+
+  meta = {
+    value = 0
+    weight = 200
+    unit = "枚"
+    material = "crimsonsteel"
+    damage = 30
+    skill_type = "throwing"
+    # 原文 init_throwing(30)；此处以 damage/skill_type 表达
+  }
+}
+
+# ---------------------------------------------------------------------------
+# 武器（weapon/weapon_changjian.c）：纯数据，单文件直落。
+# ---------------------------------------------------------------------------
+
+items "changjian" {
+  name = "长剑 Long Sword"
+  description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
+
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  meta = {
+    damage = 25
+    skill_type = "sword"
+    value = 200
+    weight = 5000
+    unit = "柄"
+    material = "steel"
+  }
+}
+
+# ---------------------------------------------------------------------------
+# 任务（quest/quest_song-yupai.c）：Kalevala 已有 turn_in 机制，
+# 由“交付 NPC + 掉落物”表达，无需单独 quest 文件。
+# ---------------------------------------------------------------------------
+
+items "yupai" {
+  name = "血玉牌 Yupai"
+  description = "一枚染了血迹的羊脂玉牌，背面刻着一个小小的「王」字，似是信物。"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 0
+    weight = 5
+    unit = "枚"
+    material = "jade"
+  }
+}
+
+characters "apo" {
+  name = "阿婆 Apo"
+  description = "送还玉牌任务的交付 NPC（对照 quest_song-yupai.c）。"
+
+  turn_in = {
+    quest = "song-yupai"
+    item = items.yupai.id
+    prompt = "你若见着我家孙女失落的玉牌，务必替我讨回来。"
+    rewards = {
+      exp = 200
+      potential = 50
+      score = 10
+    }
+  }
+}
+
+# 房间摆放（示意）：把上面的 NPC/物品摆进对应房间。
+room_characters "qianting" {
+  room_id = rooms.qianting.id
+  characters = [
+    { id = characters.xiaoer.id }
+  ]
+}
+
+room_items "qianting" {
+  room_id = rooms.qianting.id
+  items = [
+    { id = items.changjian.id },
+    { id = items.shaolin_map.id },
+    { id = items.qianzhumiji.id },
+    { id = items.yinzhen.id }
+  ]
+}
