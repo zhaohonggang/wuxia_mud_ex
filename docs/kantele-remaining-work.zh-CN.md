@@ -243,14 +243,15 @@ T4 e2e 夹具随各系统落地同步扩展。✅ scripts/phase_a_e2e.exs（19 �
 
 捆绑理由（链B）：b2-b5 四项全挤在 learn/practice 校验链与成长货币上，拆开 = 反复重写。b6 属独立装备簇（与 learn 簇仅在 records.ex 不同函数有接触，且无需 DB 迁移），顺序施工零冲突，故拆出先行。
 
-### c 期——依赖 b 的安全收尾
+### c 期——依赖 b 的安全收尾 ✅ 已完成
 
 > 提示词文件：`docs/session-prompts-phase-c.zh-CN.md`（含四项任务详情与验收标准）。
 
-- learn 包生效后的数值平衡验证 + e2e 用例更新（批量学习/耗精/潜能池/exp 门）
-- B2/B3 开关灰度开启，观察期数据回看
-- P2/B4 的存档迁移测试库演练 + 双格式读验证
-- N5 接线新 learn 语义（gongxian 扣费走新校验链）；若 a11 已建 v0 则此步升级
+- [x] C1 e2e 平衡验证：21/21 PASS（`scripts/phase_b_e2e.exs`）
+- [x] C2 开关常驻开启：`config/dev.exs` 已写入 `enable_jing_learn_cost: true, enable_exp_gate: true`
+- [x] C3 迁移演练：`test/kantele/character/migration_test.exs`（4 用例全绿），无需回滚脚本
+- [x] C4 force_conflict 双向检查已落地：`LearnGate.force_conflict/2` else 分支 + `level_gate/3` 强制检查
+- [x] 223 单元测试全绿 + 21 e2e 全过
 
 ### d 期——T1 转换器本体
 

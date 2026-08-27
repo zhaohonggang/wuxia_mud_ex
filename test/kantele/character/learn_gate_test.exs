@@ -92,10 +92,10 @@ defmodule Kantele.Character.LearnGateTest do
       refute Kantele.Combat.Skills.LiuxiNeigong.valid_force("any-other")
     end
 
-    test "非内功类技能无互斥检查" do
+    test "已学内功拒绝新技能（即使新技能非内功类）" do
       stats = Map.put(Stats.new(), :skills, %{"liuxi-neigong" => 30})
 
-      assert LearnGate.force_conflict(stats, "liuxin-jian") == nil
+      assert LearnGate.force_conflict(stats, "liuxin-jian") == "liuxi-neigong"
     end
 
     test "未习得其他内功时不冲突" do

@@ -69,15 +69,28 @@ defmodule Kantele.Character.LearnGate do
     with true <- new_module != nil,
          true <- new_module.valid_enable("force"),
          false <- new_module.valid_force("*") do
+      # 双向检查：新技能拒绝已学内功 OR 已学内功拒绝新技能
       Enum.find_value(Skills.all(), fn {other_id, other_module} ->
         learned? =
           other_id != skill_id and other_module.valid_enable("force") and
             Stats.skill(stats, other_id) > 0
 
-        if learned? and not other_module.valid_force(skill_id), do: other_id
+        if learned? and (not other_module.valid_force(skill_id) or
+                          not new_module.valid_force(other_id)),
+          do: other_id
       end)
     else
-      _ -> nil
+      # 非内功技能：仅检查已学 force 是否拒绝它
+      _ ->
+        if new_module != nil do
+          Enum.find_value(Skills.all(), fn {other_id, other_module} ->
+            learned? =
+              other_id != skill_id and other_module.valid_enable("force") and
+                Stats.skill(stats, other_id) > 0
+
+            if learned? and not other_module.valid_force(skill_id), do: other_id
+          end)
+        end
     end
   end
 
@@ -130,7 +143,10 @@ defmodule Kantele.Character.LearnGate do
         {:halt, "也许是缺乏实战经验，你无法继续领会更高深的境界。\n"}
 
       true ->
-        :ok
+        case force_conflict(stats, skill_id) do
+          nil -> :ok
+          other_id -> {:halt, conflict_message(other_id, skill_id)}
+        end
     end
   end
 

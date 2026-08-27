@@ -63,3 +63,8 @@ config :phoenix, :logger, false
 config :stein_storage,
   backend: :file,
   file_backend_folder: "uploads/"
+
+# C2 灰度：learn 耗精 + exp 门（b 期默认关，c 期常驻开启）
+config :ex_venture,
+  enable_jing_learn_cost: true,
+  enable_exp_gate: true

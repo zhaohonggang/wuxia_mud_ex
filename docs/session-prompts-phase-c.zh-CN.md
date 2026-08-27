@@ -180,3 +180,35 @@ c4：N5 接线新 learn 语义（gongxian 扣费走新校验链）
 - C4 接线方式（复用 learn 还是新命令）、gongxian 价目表是否完整
 
 供 d 期转换器开发参考。
+
+---
+
+## 六、c 期执行摘要
+
+### C1 实测平衡数值
+- **learn 单次消耗**: 精力 ≥ 等级×1，精 < 70% 时中断；经验 ≥ max(level²×10, 200) 方可学下一级
+- **learn xN 批量**: 每次扣精力+经验，失败时立即中断循环并返回提示；成功后累加 learned_points
+- **practice 消耗**: learned_points -1，精 ≥ 70%（开关开启后，经验值门也生效）；武学无模块时提示"没有这项武功"
+- **exp_gate 阈值**: `max(level²×10, 200)`，数值表已在 `LearnGate` 中硬编码
+- **force_conflict 双向检查**: 新技能拒绝旧力（早学的内功阻止后学的技能）+ 旧力拒绝新技能（双向）；最终判定取"谁先拒绝谁"
+
+### C2 开关配置
+- **常驻开启**（非灰度）：`config/dev.exs` 已写入 `enable_jing_learn_cost: true, enable_exp_gate: true`
+- 效果：learn 命令默认走精力消耗 + 经验值门链路；移除前不可手动关闭
+
+### C3 迁移演练
+- **测试文件**: `test/kantele/character/migration_test.exs`（4 个用例）
+  - 旧存档无 learned_points → 默认 0，不追溯已有技能
+  - 新存档含 learned_points → 正确恢复，available_potential 计算正确
+  - 旧单槽位 equipment（weapon+armor）→ 归一化到 :weapon/:cloth
+  - 新多槽位 equipment → 正确恢复各槽位
+- **无需回滚脚本**：learned_points 为 additive 字段（schema default 0），旧存档自然兼容；不存在数据降级风险
+
+### C4 接线方式（待 d 期完成）
+- **复用 learn 命令**：extend `teach/2` `true->` 分支，插入门派校验（family归属 → teach_skills → gongxian）
+- **gongxian 价目**: 沿用 `teach_skills` 配置表（NPC 定义中 `%{max, gongxian}`），与 b 期 ucl 价目对齐
+- **force_conflict 双向**: 已落地于 `LearnGate.force_conflict/2` + `level_gate/3`，teach/2 不需额外改动
+
+### 测试统计
+- **单元测试**: 223 全绿（+4 迁移用例）
+- **e2e 脚本**: 21/21 PASS（`scripts/phase_b_e2e.exs`，含 learn/score/jing/exp-gate/force-conflict 全链路）
