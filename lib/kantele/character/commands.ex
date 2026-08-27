@@ -84,6 +84,26 @@ defmodule Kantele.Character.Commands do
     parse("halt", :run)
   end
 
+  module(FleeCommand) do
+    parse("flee", :run)
+    parse("逃跑", :run)
+  end
+
+  module(WimpyCommand) do
+    parse("wimpy", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("自动逃跑", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+  end
+
+  module(SurrenderCommand) do
+    parse("surrender", :run)
+    parse("投降", :run)
+  end
+
   module(HelpCommand) do
     parse("help", :show, fn command ->
       command |> spaces() |> text(:topic)

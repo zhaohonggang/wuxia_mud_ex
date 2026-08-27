@@ -63,7 +63,11 @@ defmodule Kantele.Character.CommandsCommand do
     "tuna" => "吐纳（同 respirate）",
     "jingzuo" => "峨嵋静坐",
     "closed" => "闭关修行（大宗师）",
-    "study" => "研读秘籍：study 书籍 [次数]"
+    "study" => "研读秘籍：study 书籍 [次数]",
+    # Batch 4: 战斗/移动辅助
+    "flee" => "逃跑（战斗中随机出口脱逃）",
+    "wimpy" => "自动逃跑设置：wimpy 百分比（0 关闭）",
+    "surrender" => "投降（脱战，扣 50 阅历）"
   }
 
   def run(conn, _params) do

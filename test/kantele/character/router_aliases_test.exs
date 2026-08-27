@@ -103,4 +103,13 @@ defmodule Kantele.Character.RouterAliasesTest do
     assert_command("look", Kantele.Character.LookCommand, :run)
     assert_command("learn sword wang", Kantele.Character.LearnCommand, :run)
   end
+
+  test "逃跑/投降 → flee/surrender，自动逃跑 → wimpy" do
+    assert_command("逃跑", Kantele.Character.FleeCommand, :run)
+    assert_command("flee", Kantele.Character.FleeCommand, :run)
+    assert_command("投降", Kantele.Character.SurrenderCommand, :run)
+    assert_command("surrender", Kantele.Character.SurrenderCommand, :run)
+    assert_command("自动逃跑 30", Kantele.Character.WimpyCommand, :run, %{"arg" => "30"})
+    assert_command("wimpy 40", Kantele.Character.WimpyCommand, :run, %{"arg" => "40"})
+  end
 end

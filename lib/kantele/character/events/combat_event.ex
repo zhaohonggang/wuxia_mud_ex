@@ -299,22 +299,46 @@ defmodule Kantele.Character.CombatEvent do
 
     config = combat_config(character)
 
+    conn =
+      cond do
+        vitals.qi <= 0 ->
+          die(conn, character, attacker)
+
+        Map.get(config, :no_kill, false) and vitals.qi * 3 <= vitals.max_qi ->
+          # 点到即止：双方各自脱离战斗（我只通知对方移除我，
+          # 对方收到 combat/yield 后也会移除我）
+          character =
+            put_combat(character, Combat.remove_enemy(character.meta.combat, attacker.id))
+
+          conn = put_character(conn, character)
+
+          yield_to(conn, character, attacker)
+
+        true ->
+          conn
+      end
+
+    # wimpy 自动逃跑：气血低于阈值时触发（仅玩家生效）
+    check_wimpy(conn, character, ratio)
+  end
+
+  defp check_wimpy(conn, character, ratio) do
+    wimpy = Map.get(character.meta, :wimpy, 0)
+
     cond do
-      vitals.qi <= 0 ->
-        die(conn, character, attacker)
+      wimpy <= 0 ->
+        conn
 
-      Map.get(config, :no_kill, false) and vitals.qi * 3 <= vitals.max_qi ->
-        # 点到即止：双方各自脱离战斗（我只通知对方移除我，
-        # 对方收到 combat/yield 后也会移除我）
-        character =
-          put_combat(character, Combat.remove_enemy(character.meta.combat, attacker.id))
+      ratio > wimpy ->
+        conn
 
-        conn = put_character(conn, character)
-
-        yield_to(conn, character, attacker)
+      not Combat.fighting?(character.meta.combat) ->
+        conn
 
       true ->
-        conn
+        Broadcast.publish(conn, "看来该找机会逃跑了……\n", n1: character.name)
+        |> event("room/flee")
+        |> assign(:prompt, false)
     end
   end
 
