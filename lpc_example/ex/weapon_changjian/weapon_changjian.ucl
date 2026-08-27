@@ -1,0 +1,33 @@
+# 对应原文件: lpc_example/weapon/weapon_changjian.c (长剑, 22 行)
+#
+# 迁移判定: A —— 纯数据武器，**单文件直落**，无需底层改动。
+# 把 set_name / set_weight / unit / long / value / material / init_sword(25)
+# 全部落到 Kalevala 物品的 Item.Meta（damage + skill_type = sword）。
+
+items "changjian" {
+  name = "长剑"
+  description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
+
+  # LPC set("verbs") / add_action：作为兵刃只需 get/drop/wield/unwield
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  meta = {
+    # init_sword(25) -> damage
+    damage = 25
+    skill_type = "sword"
+
+    # 原文 set("value", 200)
+    value = 200
+    # set("weight", 5000)
+    weight = 5000
+    # set("unit", "柄")
+    unit = "柄"
+    # set("material", "steel")
+    material = "steel"
+  }
+}

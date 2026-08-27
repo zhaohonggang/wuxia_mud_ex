@@ -1,0 +1,29 @@
+# 对应原文件: lpc_example/item/item_yinzhen.c (银针, 226 行)
+#
+# 迁移判定: B/C —— **数据 + 行为**。纯数据可落 items 单文件；
+# 但 `zhenjiu`（针灸疗伤）动词内含大量技能/状态判断与伤害/治疗结算，
+# 需底层 `eff_qi` 双血条（见 feature_damage）与 start_busy/improve_skill。
+
+items "yinzhen" {
+  name = "银针"
+  description = "这是一枚三寸长的银针，细而柔韧，多为医家刺穴疗伤之用。你可以试着用它来针灸(zhenjiu)疗伤。"
+
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "zhenjiu"     # init() 里 add_action("do_heal","zhenjiu")
+  ]
+
+  meta = {
+    # init_throwing(30) -> 投掷兵器
+    damage = 30
+    skill_type = "throwing"
+
+    value = 0
+    weight = 200
+    unit = "枚"
+    # set("material","crimsonsteel")
+    material = "crimsonsteel"
+  }
+}

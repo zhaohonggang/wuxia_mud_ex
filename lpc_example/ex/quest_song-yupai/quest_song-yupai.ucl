@@ -1,0 +1,44 @@
+# 对应原文件: lpc_example/quest/quest_song-yupai.c (送还玉佩, 172 行)
+#
+# 迁移判定: A/B —— 任务本身是**数据 + 交给框架现有 turn_in 机制**。
+# Kalevala 已有 turn_in（交付物品->奖励）能力，故本任务可表达为：
+#   ① 信物物品（yupai）
+#   ② 交付 NPC（apo）的 turn_in 块
+#   ③ 附带的“传闻/谣言(waiting rumor)”channel 属增强，需 CHANNEL 模块（B 项）
+#
+# 原文 reduce 后真正带逻辑的部分:
+#   - NPC_OB 的 accept_object 覆盖（阿婆收玉佩 -> 发奖励 + 广播 rumor）
+#      -> turn_in 已覆盖“收物发奖”，谣言广播需额外钩子
+#   - register_information / ask_npc / ask_qob（打听线索）
+#      -> 属“带逻辑 ask”，当前 static inquiries 不够（见 class_wudang_zhang 项）
+
+items "yupai" {
+  name = "羊脂玉佩"
+  description = "一枚温润的羊脂玉佩，价值不菲。"
+
+  verbs = ["get", "drop"]
+
+  meta = {
+    value = 0
+    weight = 5
+    unit = "枚"
+    material = "jade"
+  }
+}
+
+characters "apo" {
+  name = "阿婆"
+
+  # 交付 NPC：收下 items.yupai 即完成任务并发放奖励
+  turn_in = {
+    quest = "song-yupai"
+    item = items.yupai.id
+    prompt = "你若见着我家孙女失落的玉牌，务必替我讨回来。"
+    rewards = {
+      exp = 500
+      potential = 300
+      score = 20
+      weiwang = 50
+    }
+  }
+}

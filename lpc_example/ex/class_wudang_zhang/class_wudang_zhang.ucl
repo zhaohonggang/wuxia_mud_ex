@@ -1,0 +1,52 @@
+# 对应原文件: lpc_example/class_npc/class_wudang_zhang.c (张三丰, 964 行)
+#
+# 迁移判定: C —— 数据 + 大量带逻辑行为。
+#   ① 数据半(set_skill 高等级技能/属性) -> characters 块
+#   ② 行为半:
+#      - 11+ 带前置条件的 ask_*（授技：鹤嘴劲/震字诀/真武剑/九阳真经…）
+#      - attempt_apprentice 收徒多条件判定
+#      - accept_object 收物 / 拒收
+#      - chat_msg_combat 战斗中随机动作
+#      -> 需底层“带逻辑问询”——现有 UCL inquiries 只支持 字符串->字符串
+
+characters "zhang" {
+  name = "张三丰"
+  description = "武当派开山祖师，仙风道骨，功力深不可测。"
+
+  # 门派归属与称号
+  family = {
+    name = "武当派"
+    title = "武当派开山祖师"
+  }
+
+  attitude = "friendly"
+
+  combat = {
+    max_qi = 5_000_000
+    max_jing = 3_000_000
+    str = 100
+    dex = 100
+    con = 100
+    int = 100
+    combat_exp = 9_000_000
+    skills = {
+      taiji-quan = 400
+      wudang-zhang = 400
+      wudang-jiuyang = 300
+      force = 200
+      unarmed = 200
+      dodge = 200
+      parry = 200
+      sword = 200
+    }
+  }
+
+  # 可静态 teach 的技能（张真人 teach_skill 教你武当功夫）
+  teach = {
+    skills = [
+      {skill = "taiji-quan"},
+      {skill = "wudang-zhang"},
+      {skill = "wudang-jiuyang"}
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+# 对应原文件: lpc_example/room/room_wudu_liandu.c (五毒炼毒房, 10828B)
+#
+# 迁移判定: C —— 静态房间 + 多阶段炼毒交互。
+#   ① 静态 rooms 块 -> 单文件可落
+#   ② 炼毒(多阶段: 数暗号/看时辰/下料/产出毒药+毒方图样) -> 需 room_verbs
+#      + 持久化炼毒进度
+
+rooms "wudu_liandu" {
+  name = "炼毒房"
+  description = "五毒的炼毒之所，四壁药架，炉火青碧，药气呛鼻。"
+
+  x = 1
+  y = 0
+  z = 0
+}

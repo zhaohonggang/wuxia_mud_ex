@@ -1,0 +1,24 @@
+# 对应原文件: lpc_example/item/item_shaolin_map.c (『少林旅游图』, 122 行)
+#
+# 迁移判定: A —— 纯数据物品，**单文件直落**，无需底层改动。
+# long 是一整幅 ASCII 少林地图（原文 lines 12-117），此处保留名称/结构，
+# 把地图长文放回 description（实际落地时应整段保留）。
+
+items "shaolin_map" {
+  name = "『少林旅游图』"
+
+  # 原文件 long 为整幅 ASCII 地图。迁移时把 lines 12-117 整段拷进这里即可。
+  description = "\n                 『少林旅游图』\n\n+----------------------+... (整幅 ASCII 地图，见原文件)\n"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 50
+    weight = 10
+    unit = "张"
+    material = "paper"
+  }
+}

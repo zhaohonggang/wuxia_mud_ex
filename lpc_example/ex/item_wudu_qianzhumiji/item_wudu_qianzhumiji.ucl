@@ -1,0 +1,35 @@
+# 对应原文件: lpc_example/item/item_wudu_qianzhumiji.c (千蛛万毒手秘笈, 11387B)
+#
+# 迁移判定: B/C —— **数据 + 行为**。数据(book 秘籍)可落 items 单文件；
+# 但“研读(research/du)逐个解锁绝招、随 skill 等级解锁”的进度逻辑需底层
+# InteractiveItem 支持持久化进度 + 与技能解锁联动。
+
+items "qianzhumiji" {
+  name = "千蛛万毒手秘笈"
+  description = "这是失传已久的千蛛万毒手秘笈下半部，你可以从中研究一些千蛛万毒手的绝招。"
+
+  verbs = [
+    "get",
+    "drop",
+    "yanjiu",    # 研究
+    "research",  # 研究（alias）
+    "du"         # 诵读（学到一定等级才可解锁下一绝招）
+  ]
+
+  meta = {
+    value = 0
+    weight = 500
+    unit = "本"
+    material = "paper"
+
+    # book: 学 qianzhu-wandushou
+    book = {
+      skill = "qianzhu-wandushou"
+      min_skill = 0
+      max_skill = 999
+      exp_required = 0
+      jing_cost = 0
+      difficulty = 20
+    }
+  }
+}

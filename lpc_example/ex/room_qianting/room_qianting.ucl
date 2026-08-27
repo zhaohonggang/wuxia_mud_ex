@@ -1,0 +1,31 @@
+# 对应原文件: lpc_example/room/room_qianting.c (盘龙居前庭, 190 行)
+#
+# 迁移判定: B/C —— 静态房间数据 + 大门状态机行为。
+#   ① 静态三件套(short/long/exits/flags/outdoors) -> rooms 块，单文件可落
+#   ② 大门 push/close、动态 north exit、10s线超时自动关、valid_leave 拦客
+#      -> 需 room_verbs 自定义动词 + 动态 exit + 定时器(reset/call_out)
+#
+# 静态部分：
+
+rooms "qianting" {
+  name = "前庭"
+  description = "这里似乎非常安静，倒是时不时听见鸟儿唧唧喳喳的叫。院中不少树木已然有遮天之势，肃穆非常。"
+
+  outdoors = true
+  no_sleep_room = true
+  # set("gate","close") 初始状态；默认关
+}
+
+room_exits "qianting" {
+  room_id = rooms.qianting.id
+  south = rooms.dayuan.id
+  east  = rooms.zuowei.id
+  west  = rooms.youwei.id
+  # north 是动态大门出口：仅在 gate=open 时存在（见 qianting.ex）
+}
+
+# 相邻房间占位（原文 __DIR__"dayuan/zuowei/youwei/zoudao"）
+rooms "dayuan" { name = "大院" description = "大院。" }
+rooms "zuowei" { name = "左厢" description = "左厢。" }
+rooms "youwei" { name = "右厢" description = "右厢。" }
+rooms "zoudao" { name = "走廊" description = "通向迎客厅的走廊。" }

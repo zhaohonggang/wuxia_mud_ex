@@ -1,0 +1,29 @@
+# 对应原文件: lpc_example/npc/npc_horseboss.c (宠物店老板, 13333B)
+#
+# 迁移判定: B/C —— 数据 + 多步交互向导。
+#   ① 数据(name/long/combat/training) -> characters 块
+#   ② 行为: 生成宠物向导(choose/input_to 多阶段) -> 需底层 input_to(多步输入) 机制
+#          卖兽经/教学 training 技能
+
+characters "horseboss" {
+  name = "老板"
+  description = "一个身着朴素的老板，是关东大风堂设在长安东郊提供各类坐骑的。在这里你可以选择(choose)自己称心如意的坐骑。"
+
+  attitude = "friendly"
+
+  combat = {
+    no_kill = true
+    max_qi = 600
+    max_jing = 500
+    str = 24
+    dex = 22
+    con = 22
+    int = 20
+    combat_exp = 200000
+    skills = {
+      unarmed = 60
+      dodge = 60
+      training = 400
+    }
+  }
+}

@@ -1,0 +1,26 @@
+id: "zhenwu_jian"
+name: "真武剑"
+base_name: "真武剑"
+type: "sword"
+unique: true
+material: "steel"
+weight: 8000
+value: 1000000
+no_sell: true
+no_drop: true
+no_give: true
+no_store: true
+skill_type: "sword"
+damage: 180
+rigidity: 300
+sharpness: 1
+require:
+  str: 25
+  dex: 25
+wield_msg: "$N抽出一把古色古香的长剑，剑身隐隐泛着紫气，正是武当镇派之宝——真武剑。\n"
+unwield_msg: "$N将手中的真武剑插回剑鞘，紫气顿敛。\n"
+long: "这是武当派镇派之宝真武剑，剑身细长，隐隐泛着紫气，传说是张三丰真人炼制的神兵利器。\n只有武当掌门嫡传弟子方可使用。\n"
+flags:
+  - "unique"
+  - "artifact"
+  - "zhenwu"

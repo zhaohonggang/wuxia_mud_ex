@@ -1,0 +1,14 @@
+# 对应原文件: lpc_example/room/room_qiyuan2.c (奇缘, 22443B)
+#
+# 迁移判定: C —— 大型互动房间，静态 + 随机多分支。
+#   ① 静态 rooms 块 -> 单文件可落
+#   ② 随机事件/多分支(look/zhao 触发) -> 需 room_heart_beat + 玩家状态查询
+
+rooms "qiyuan2" {
+  name = "奇缘"
+  description = "一处奇异之所，机缘与凶险并存。"
+
+  x = 2
+  y = 0
+  z = 0
+}

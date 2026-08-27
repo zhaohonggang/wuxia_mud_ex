@@ -1,0 +1,24 @@
+# 对应原文件: lpc_example/npc/npc_xiaoer.c (店小二, 380 行)
+#
+# 迁移判定: B/C —— 数据 + 行为。
+#   ① 数据(name/long/combat) -> characters 块，单文件可落
+#   ② 行为: accept_ask 随机应答、进门 greeting、accept_object(收钱/收尸)、
+#      do_drop(丢尸体被赶)、do_exchange(积分兑换丹药表)、heart_beat(清场)
+#      -> 需底层 accept_object/drop/exchange 钩子 + 随机应答
+
+characters "xiaoer" {
+  name = "店小二"
+  description = "这位店小二正笑咪咪地忙着，还不时拿起挂在脖子上的抹布擦脸。"
+
+  # set("gender","男性") / set("age",22)
+  gender = "男性"
+  age = 22
+  attitude = "friendly"
+
+  combat = {
+    no_kill = true
+    max_qi = 120
+    combat_exp = 100
+    # 原文未显式给技能；保留默认
+  }
+}

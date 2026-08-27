@@ -1,0 +1,42 @@
+# 对应原文件: lpc_example/mount/mount_ziliuma.c (紫骝马, 32 行)
+#
+# 迁移判定: A —— 坐骑是“野兽 NPC”数据，用 Kalevala `characters` 块即可
+# 单文件直落。唯一需确认项：`ridable` 字段目前框架尚无解析，见下注。
+# 加的映射:
+#   set("race","野兽")/set("gender","雄性") -> race/gender
+#   set("ridable",1)  -> ridable = true      (需 loader 解析)
+#   limbs / verbs(bite,hoof) -> 战斗招式的表达
+#   set_temp("apply/attack|armor|damage") -> combat.apply
+
+characters "ziliuma" {
+  name = "紫骝马"
+  description = "这是一匹紫骝宝马，日行千里，夜行八百。"
+
+  # 来源 set()
+  race = "野兽"
+  gender = "雄性"
+  age = 2 .. 4       # set("age", 2+random(3)) -> 范围由加载层随机
+  # set("ridable", 1)
+  ridable = true     # 注意: Kantele.Loader 目前不解析该字段, 需小改 loader
+  unit = "匹"
+
+  # 战斗属性（set("qi"/"max_qi"/"jing"/"max_jing"/"combat_exp"/"attitude"/"int"）
+  attitude = "peaceful"
+
+  combat = {
+    max_qi = 300
+    max_jing = 100
+    int = 30
+    combat_exp = 50000
+
+    skills = { }
+    limbs = ["头部", "腹部", "尾巴", "后腿", "前腿"]
+    verbs = ["bite", "hoof"]
+
+    apply = {
+      attack = 50     # set_temp("apply/attack")
+      armor = 15      # set_temp("apply/armor")
+      damage = 25     # set_temp("apply/damage")
+    }
+  }
+}
