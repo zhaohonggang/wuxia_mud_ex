@@ -23,6 +23,14 @@ defmodule Kantele.Character.Events do
       event("exercise/tick", :tick)
     end
 
+    module(RespirateEvent) do
+      event("respirate/tick", :tick)
+    end
+
+    module(JingzuoEvent) do
+      event("jingzuo/wakeup", :wakeup)
+    end
+
     module(ShopEvent) do
       event("shop/list-result", :list_result)
       event("shop/buy-result", :buy_result)

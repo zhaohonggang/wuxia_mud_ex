@@ -396,6 +396,83 @@ defmodule Kantele.Character.Commands do
     parse("world_status", :run)
   end
 
+  # ---- 技能进阶（Batch 1: LPC cmds/skill/） ----
+
+  module(SkillsCommand) do
+    parse("skills", :run)
+    parse("myskill", :run)
+    parse("技能", :run)
+    parse("我的技能", :run)
+  end
+
+  module(CheckskillCommand) do
+    parse("checkskill", :run, fn command ->
+      command |> spaces() |> text(:skill)
+    end)
+
+    parse("查技能", :run, fn command ->
+      command |> spaces() |> text(:skill)
+    end)
+  end
+
+  module(PrepareCommand) do
+    parse("prepare", :run, fn command ->
+      command |> spaces() |> text(:action)
+    end)
+
+    parse("备招", :run, fn command ->
+      command |> spaces() |> text(:action)
+    end)
+  end
+
+  # ---- 精力养成（Batch 2: LPC cmds/skill/） ----
+
+  module(RespirateCommand) do
+    parse("respirate", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("tuna", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("吐纳", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("炼精", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+  end
+
+  module(JingzuoCommand) do
+    parse("jingzuo", :run)
+    parse("静坐", :run)
+  end
+
+  module(ClosedCommand) do
+    parse("closed", :run)
+    parse("闭关", :run)
+  end
+
+  module(StudyCommand) do
+    parse("study", :run, fn command ->
+      command |> spaces() |> text(:parse)
+    end)
+
+    parse("yanjiu", :run, fn command ->
+      command |> spaces() |> text(:parse)
+    end)
+
+    parse("研习", :run, fn command ->
+      command |> spaces() |> text(:parse)
+    end)
+
+    parse("读书", :run, fn command ->
+      command |> spaces() |> text(:parse)
+    end)
+  end
+
   # 表情名直用已改为 EmoteCommand 里的显式 parse（smile/wave/frown）。
   # 不再用 dynamic 路由：kalevala parse_dynamic_text 返回 3 元组，
   # Router.parse/3 只匹配 4 元组，命中必 CaseClauseError 崩 foreman（断线）

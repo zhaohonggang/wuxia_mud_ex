@@ -41,7 +41,18 @@ defmodule Kantele.Character.CommandsCommand do
     "score" => "角色状态",
     "unwield" => "卸下武器",
     "wear" => "穿戴护甲",
-    "wield" => "装备武器"
+    "wield" => "装备武器",
+    # Batch 1: 技能进阶
+    "skills" => "技能列表",
+    "myskill" => "技能列表（同 skills）",
+    "checkskill" => "查技能详情：checkskill 技能名",
+    "prepare" => "组合拳术：prepare 指法 掌法",
+    # Batch 2: 精力养成
+    "respirate" => "吐纳炼精：respirate 耗精量",
+    "tuna" => "吐纳（同 respirate）",
+    "jingzuo" => "峨嵋静坐",
+    "closed" => "闭关修行（大宗师）",
+    "study" => "研读秘籍：study 书籍 [次数]"
   }
 
   def run(conn, _params) do

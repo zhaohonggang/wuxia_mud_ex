@@ -65,10 +65,11 @@ defmodule Kantele.Character.Vitals do
   @moduledoc """
   Character vital information
 
-  武侠风格的三条气血线：
+  武侠四条气血线：
 
   - `qi` 气血，归零即死亡
-  - `jing` 精力，影响行动
+  - `jing` 精力，影响行动（对应 LPC jing；learn/study 消耗）
+  - `jingli` 精力修为，由吐纳炼精提升（对应 LPC jingli；非回复线）
   - `neili` 内力，施展绝招/运功消耗
   """
 
@@ -80,6 +81,8 @@ defmodule Kantele.Character.Vitals do
     :jing,
     :max_jing,
     :base_jing,
+    :jingli,
+    :max_jingli,
     :neili,
     :max_neili,
     :base_neili
@@ -98,6 +101,8 @@ defmodule Kantele.Character.Vitals do
       jing: 120,
       max_jing: 120,
       base_jing: 120,
+      jingli: 0,
+      max_jingli: 0,
       neili: 200,
       max_neili: 200,
       base_neili: 200
@@ -113,6 +118,10 @@ defmodule Kantele.Character.Vitals do
 
   def damage(%__MODULE__{} = vitals, :jing, amount) when amount >= 0 do
     %{vitals | jing: max(vitals.jing - amount, 0)}
+  end
+
+  def damage(%__MODULE__{} = vitals, :jingli, amount) when amount >= 0 do
+    %{vitals | jingli: max(vitals.jingli - amount, 0)}
   end
 
   @doc """

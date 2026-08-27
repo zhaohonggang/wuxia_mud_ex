@@ -22,6 +22,7 @@ defmodule ExVenture.Characters.Metadata do
     field(:potential, :integer, default: 100)
     field(:learned_points, :integer, default: 0)
     field(:max_neili, :integer, default: 200)
+    field(:max_jingli, :integer, default: 0)
     field(:coins, :integer, default: 100)
     field(:score, :integer, default: 0)
     field(:weiwang, :integer, default: 0)
@@ -49,6 +50,7 @@ defmodule ExVenture.Characters.Metadata do
       :potential,
       :learned_points,
       :max_neili,
+      :max_jingli,
       :coins,
       :score,
       :weiwang,
@@ -116,6 +118,7 @@ defmodule Kantele.Character.Records do
             potential: meta.stats.potential,
             learned_points: meta.stats.learned_points || 0,
             max_neili: meta.vitals.max_neili,
+            max_jingli: meta.vitals.max_jingli || 0,
             coins: meta.coins || 0,
             score: meta.stats.score || 0,
             weiwang: meta.stats.weiwang || 0,
@@ -240,6 +243,8 @@ defmodule Kantele.Character.Records do
       |> Map.put(:max_neili, metadata.max_neili)
       |> Map.put(:base_neili, metadata.max_neili)
       |> Map.put(:neili, metadata.max_neili)
+      |> Map.put(:max_jingli, metadata.max_jingli || 0)
+      |> Map.put(:jingli, metadata.max_jingli || 0)
       |> Kantele.Character.Vitals.recalculate_max_neili(stats)
 
     inventory = restore_inventory(character.inventory, metadata.inventory)
