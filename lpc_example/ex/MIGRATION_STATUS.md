@@ -86,9 +86,12 @@
   复核。
 - **框架接入（未做）**：`daemon_combatd` 公式、`feature_attack`/`feature_damage`
   状态机等应并入 `lib/kantele/` 引擎层 —— 属框架开发阶段，超出本迁移范围。
-- **smoke 测试**：本次为 4 个新迁移补了 `smoke_test.exs`（char_npc 18、
-  pigroom 36、combatd 27、luban 28，全部 PASS）。旧迁移（taiji-quan 等）尚未
-  附测试，需要时可按相同模式补。
+- **smoke 测试**：已附测试的迁移（全部 PASS）：
+  inherit_char_npc(18)、inherit_room_pigroom(36)、daemon_combatd(27)、
+  system_npc_luban(28)、room_qiyuan2(38)、skill_taiji-quan(28)、
+  skill_dugu-jiujian(36)、class_generate_chinese(32)、condition_poison(20)。
+  其余旧迁移（feature_attack/feature_damage/poison_workshop 等强运行时耦合）
+  待按相同模式补，部分函数需框架接入后才能落地。
 
 ---
 
@@ -97,4 +100,6 @@
 1. 复核新增 4 个迁移（`inherit_char_npc`、`inherit_room_pigroom`、
    `daemon_combatd`、`system_npc_luban`）与 2 个修复（`feature_attack`、
    `room_qianting`）后，可提交/推送（等用户指示）。
-2. 若继续：为旧迁移补 `smoke_test.exs`，或开始将 C 级公式并入 `lib/kantele`。
+2. 若继续：为其余旧迁移补 `smoke_test.exs`（优先纯函数占比高的，如
+   `item_yinzhen`/`item_wudu_qianzhumiji` 的物品判定、`class_wudang_zhang` 武当
+   招式表、`feature_damage` 伤害公式），或开始将 C 级公式并入 `lib/kantele`。
