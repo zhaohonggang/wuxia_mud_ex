@@ -49,19 +49,23 @@ defmodule ExKantele.World.Feature.Attack do
           Combat.auto_fight(state, me, ob, "hatred")
           {:ok, state}
         end
+    else
       # Auto-fight: vendetta
-      elsif vendetta_mark = my["vendetta_mark"] and its["vendetta"][vendetta_mark] do
+      if vendetta_mark = my["vendetta_mark"] and its["vendetta"][vendetta_mark] do
         Combat.auto_fight(state, me, ob, "vendetta")
         {:ok, state}
-      # Auto-fight: aggressive
-      elsif not Player.is_player?(ob) and my["attitude"] == "aggressive" do
-        Combat.auto_fight(state, me, ob, "aggressive")
-        {:ok, state}
       else
-        {:ok, state}
+        # Auto-fight: aggressive
+        if not Player.is_player?(ob) and my["attitude"] == "aggressive" do
+          Combat.auto_fight(state, me, ob, "aggressive")
+          {:ok, state}
+        else
+          {:ok, state}
+        end
       end
     end
   end
+end
 
   # --- Getters ---
 
@@ -162,6 +166,7 @@ defmodule ExKantele.World.Feature.Attack do
             state = fight_ob(state, player, ob)
           end
     end
+  end
   end
 
   def want_kill(state, player, ob) do

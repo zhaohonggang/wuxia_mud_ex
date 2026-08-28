@@ -41,7 +41,7 @@ defmodule ExKantele.World.Room.Qianting do
     if state.gate == :open do
       {:error, "\u{5927}\u{95E8}\u{5F00}\u{7740}\u{5462}\u{FF0C}\u{4F60}\u{8FD8}\u{63A8}\u{4EC0}\u{4E48}\u{FF1F}"}
     else
-      new_state, msgs = _do_push(state, player, laopu)
+      {new_state, msgs} = _do_push(state, player, laopu)
       {:ok, new_state, msgs}
     end
   end
@@ -50,7 +50,7 @@ defmodule ExKantele.World.Room.Qianting do
     if state.gate == :close do
       {:error, "\u{5927}\u{95E8}\u{5173}\u{7740}\u{5462}\u{FF0C}\u{4F60}\u{8FD8}\u{518D}\u{518D}\u{5173}\u{4E00}\u{904E}\u{FF1F}"}
     else
-      new_state, msgs = _do_close(state, player, laopu, auto_close)
+      {new_state, msgs} = _do_close(state, player, laopu, auto_close)
       {:ok, new_state, msgs}
     end
   end
