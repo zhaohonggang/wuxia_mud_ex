@@ -70,7 +70,7 @@ defmodule ExKantele.Combat.Skills.DuguJiujian do
   @impl true
   def valid_learn(stats) do
     cond do
-      Stats.attribute(stats, "int") < 39 ->
+      stats.int < 39 ->
         {:error, "你的天资不足，无法理解独孤九剑的剑意。\n"}
 
       Stats.skill(stats, "sword") < 100 ->

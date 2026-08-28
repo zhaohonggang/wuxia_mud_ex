@@ -63,7 +63,7 @@ defmodule ExKantele.Combat.Skills.TaijiQuan do
   @impl true
   def valid_learn(stats) do
     cond do
-      Stats.attribute(stats, "int") < 26 -> {:error, "你先天悟性太差，难以领会太极拳的要诣。\n"}
+      stats.int < 26 -> {:error, "你先天悟性太差，难以领会太极拳的要诣。\n"}
       Stats.skill(stats, "force") < 180 -> {:error, "你的内功火候不够，无法学太极拳。\n"}
       Stats.skill(stats, "unarmed") < 100 -> {:error, "你的基本拳脚火候不够，无法学太极拳。\n"}
       Stats.skill(stats, "unarmed") < Stats.skill(stats, id()) -> {:error, "你的基本拳脚水平有限，无法领会更高深的太极拳。\n"}
