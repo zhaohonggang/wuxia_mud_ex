@@ -92,6 +92,10 @@ defmodule ExKantele.World.Room.Qiyuan do
     Enum.find_index(@numindex, &(&1 == s))
   end
 
+  defp coord_string(%Game{}, x, y) do
+    Enum.at(@lcase, x) <> Enum.at(@numindex, y)
+  end
+
   defp neighbors(bsize, i, j) do
     [{i - 1, j}, {i + 1, j}, {i, j - 1}, {i, j + 1}]
     |> Enum.filter(fn {ni, nj} -> ni >= 0 and ni < bsize and nj >= 0 and nj < bsize end)
@@ -328,24 +332,28 @@ defmodule ExKantele.World.Room.Qiyuan do
   end
 
   defp do_play_move(%Game{status: @playing_wuzi} = g, x, y) do
+    mv = coord_string(g, x, y)
+
     case wuzi_rule(g, x, y) do
       {:error, @pos_occupied} -> {g, {:error, "这个位置上已经有子了！"}}
-      {:ok, ng, true} -> {mark_played(ng), {:win, winner(g.turn)}}
-      {:ok, ng, false} -> {next_turn(mark_played(ng)), {:moved, ng.lastmove}}
+      {:ok, ng, true} -> {mark_played(ng, mv), {:win, winner(g.turn)}}
+      {:ok, ng, false} -> {next_turn(mark_played(ng, mv)), {:moved, mv}}
     end
   end
 
   defp do_play_move(g, x, y) do
+    mv = coord_string(g, x, y)
+
     case weiqi_rule(g, x, y) do
       {:error, @pos_occupied} -> {g, {:error, "这个位置上已经有子了！"}}
       {:error, @jie_banned} -> {g, {:error, "现在还没轮到你提劫！"}}
       {:error, @no_qi_banned} -> {g, {:error, "这个位置是禁入点！"}}
-      {:ok, ng} -> {next_turn(mark_played(ng)), {:moved, ng.lastmove}}
+      {:ok, ng} -> {next_turn(mark_played(ng, mv)), {:moved, mv}}
     end
   end
 
-  defp mark_played(%Game{} = g) do
-    %{g | started: true, undoable: false, lastlastmove: g.lastmove}
+  defp mark_played(%Game{} = g, move) do
+    %{g | started: true, undoable: false, lastlastmove: g.lastmove, lastmove: move}
   end
 
   defp winner("black"), do: "黑方"
