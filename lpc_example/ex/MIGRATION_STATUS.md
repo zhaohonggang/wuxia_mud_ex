@@ -89,17 +89,37 @@
 - **smoke 测试**：已附测试的迁移（全部 PASS）：
   inherit_char_npc(18)、inherit_room_pigroom(36)、daemon_combatd(27)、
   system_npc_luban(28)、room_qiyuan2(38)、skill_taiji-quan(28)、
-  skill_dugu-jiujian(36)、class_generate_chinese(32)、condition_poison(20)。
-  其余旧迁移（feature_attack/feature_damage/poison_workshop 等强运行时耦合）
-  待按相同模式补，部分函数需框架接入后才能落地。
+  skill_dugu-jiujian(36)、class_generate_chinese(32)、condition_poison(20)、
+  room_qianting(14)、feature_damage(38)、item_yinzhen(19)、
+  item_wudu_qianzhumiji(22)。
+  其余旧迁移（feature_attack/npc_xiaoer/npc_horseboss/room_wudu_liandu/
+  class_wudang_zhang 等强运行时耦合）待按相同模式补，部分函数需框架接入后才能落地。
+- **本批修复的模块 bug（随 smoke 测试发现）**：
+  - `feature_damage.ex`：`who and` → `who &&`（非布尔 map 上严格 `and` 抛
+    `BadBooleanError`）；`receive_wound` 丢弃不可变 `Player.put` 返回（qi 钳制）
+    → 累积进 `state`；补 `run_override/2`、`clear_enemies/2`、`check_player_escape/2`、
+    `delete_sleep_flags/2`、`find_valid_room/1`、`return/1`、`schedule_revive/2`、
+    `send_message/2` 等 defp 桩（均在不经测试的运行时路径）。注意
+    `process_death` 在 `run_override=false` 时会无条件自递归（潜在死循环 bug，未入测）。
+  - `item_wudu_qianzhumiji/qianzhumiji.ex`：`@techniques` 为关键字列表却用点号访问
+    → `get_technique` 返回 `Map.new(...)`；`extract_technique` 的兜底分支误传字面
+    `nil` 给 `next_locked_technique`（改为传 player），且每键匹配 `verb` 而非 `technique`。
+  - `item_yinzhen` 测试：容器 `System.monotonic_time(:second)` 可为很大的负数，
+    60s 冷却门误触发 → fixture 用 `monotonic - 1_000_000` 锚定"久远"的冷却时间戳。
+  - stub `Skill.has?` 返回原始值（`1`/`nil`）而非布尔 → 改为布尔。
+- **`room_qianting` 限制**：模块混用 `laopu.living`（map 字段，可用）与
+  `laopu.owner?`/`laopu.is_owner?`（LPC 式对象点调用，普通 map 上会崩），仅
+  map 安全面可测；对象分支需框架 `laopu` 对象，故只覆盖 14 条 map-safe 断言。
 
 ---
 
 ## 下一步建议
 
-1. 复核新增 4 个迁移（`inherit_char_npc`、`inherit_room_pigroom`、
-   `daemon_combatd`、`system_npc_luban`）与 2 个修复（`feature_attack`、
-   `room_qianting`）后，可提交/推送（等用户指示）。
-2. 若继续：为其余旧迁移补 `smoke_test.exs`（优先纯函数占比高的，如
-   `item_yinzhen`/`item_wudu_qianzhumiji` 的物品判定、`class_wudang_zhang` 武当
-   招式表、`feature_damage` 伤害公式），或开始将 C 级公式并入 `lib/kantele`。
+1. 本批（batch B/C）已补 4 个旧迁移的 smoke 覆盖：`room_qianting`(14)、
+   `feature_damage`(38)、`item_yinzhen`(19)、`item_wudu_qianzhumiji`(22)，连同
+   `test_support/exkantele_world_stubs.ex` 共享桩已全部 PASS，可提交/推送
+   （已推送）。
+2. 若继续补第二档（重运行时耦合、需更多桩/源码重构）：
+   `feature_attack`、`npc_xiaoer`、`npc_horseboss`、`room_wudu_liandu`
+   （`poison_workshop.ex` 的 `@recipes` 为 `defp` 私有）、`class_wudang_zhang`。
+3. 可选：写一个统一的 `test_runner.exs` 汇总跑所有 suite 断言数。

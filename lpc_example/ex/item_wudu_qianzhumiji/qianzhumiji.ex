@@ -79,7 +79,7 @@ defmodule ExKantele.World.Item.Qianzhumiji do
 
   def execute(_context, %{player: player, args: args}) do
     verb = extract_verb(args)
-    technique = extract_technique(args)
+    technique = extract_technique(player, args)
 
     with :ok <- check_literate(player),
          :ok <- check_verb(verb),
@@ -113,11 +113,11 @@ defmodule ExKantele.World.Item.Qianzhumiji do
     end
   end
 
-  defp extract_technique(args) do
+  defp extract_technique(player, args) do
     case args do
       %{technique: t} -> t
       %{target: t} -> t
-      _ -> next_locked_technique(nil)
+      _ -> next_locked_technique(player)
     end
   end
 
@@ -146,7 +146,7 @@ defmodule ExKantele.World.Item.Qianzhumiji do
   end
 
   defp get_technique(name) do
-    @techniques[name]
+    Map.new(@techniques[name])
   end
 
   defp next_locked_technique(player) do
@@ -224,5 +224,5 @@ defmodule ExKantele.World.Item.Qianzhumiji do
   end
 
   defp tech_name(%{name: name}), do: name
-  defp tech_name(name), do: @techniques[name].name
+  defp tech_name(name), do: get_technique(name).name
 end

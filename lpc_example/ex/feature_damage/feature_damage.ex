@@ -33,7 +33,7 @@ defmodule ExKantele.World.Feature.Damage do
   # --- Damage/Healing ---
 
   defp update_last_damage(state, who) do
-    if who and who != state.damage.last_damage_from do
+    if who && who != state.damage.last_damage_from do
       put_in(state, [:damage, :last_damage_from], who)
       |> put_in([:damage, :last_damage_name], Player.name(who))
     else
@@ -47,7 +47,7 @@ defmodule ExKantele.World.Feature.Damage do
       type not in ["jing", "qi"] -> {:error, "Damage type must be 'jing' or 'qi'"}
       true ->
         state = update_last_damage(state, who)
-        if who and damage > 150, do: Player.improve_craze(player, div(damage, 5))
+        if who && damage > 150, do: Player.improve_craze(player, div(damage, 5))
 
         current = Map.get(player, type, 0)
         new_val = max(0, current - damage)
@@ -61,14 +61,14 @@ defmodule ExKantele.World.Feature.Damage do
       type not in ["jing", "qi"] -> {:error, "Damage type must be 'jing' or 'qi'"}
       true ->
         state = update_last_damage(state, who)
-        if who and damage > 150, do: Player.improve_craze(player, div(damage, 3))
+        if who && damage > 150, do: Player.improve_craze(player, div(damage, 3))
 
         eff_val = Map.get(player, "eff_#{type}", 0)
         new_eff = max(0, eff_val - damage)
         state = Player.put(player, "eff_#{type}", new_eff)
 
         current = Map.get(player, type, 0)
-        if current > new_eff, do: Player.put(player, type, new_eff)
+        state = if current > new_eff, do: Player.put(state, type, new_eff), else: state
 
         Player.set_heart_beat(player, true)
         {:ok, state}
@@ -335,4 +335,15 @@ defmodule ExKantele.World.Feature.Damage do
 
     {:ok, 0}
   end
+
+  @doc "LPC APP_D->run_override/2: whether a registered app overrides default handling. Default: false."
+  defp run_override(_player, _fname), do: false
+
+  defp clear_enemies(state, _player), do: state
+  defp check_player_escape(state, _player), do: state
+  defp delete_sleep_flags(state, _player), do: state
+  defp find_valid_room(env), do: env
+  defp return(v), do: v
+  defp schedule_revive(_player, _delay), do: :ok
+  defp send_message(player, msg), do: Player.send_message(player, msg)
 end
