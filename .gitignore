@@ -39,7 +39,7 @@ npm-debug.log
 # Visual Studio local artifacts
 .vs/
 
-# ±¾µØÕï¶Ï²úÎï.boar_dump.log.smoke_server.log
+# ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï²ï¿½ï¿½ï¿½.boar_dump.log.smoke_server.log
 
 .boar_dump.log
 .smoke_server.log
@@ -50,3 +50,6 @@ npm-debug.log
 .gitmsg
 
 # local smoke-test scratch.smoke_*
+
+# stray compiled artifacts from standalone migration compile checks
+*.beam

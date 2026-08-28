@@ -3,17 +3,19 @@ defmodule ExKantele.Combat.Skills.DuguJiujian do
   对应原文件: lpc_example/skill/skill_dugu-jiujian.c (独孤九剑, 24971B)
 
   迁移判定: C —— 主体可落，但“无招双表”与多处横向钩子需底层：
-    B 可落: @actions 招式表 + pick_action
+    B 可落: @actions/@actions2 招式表 + pick_action、valid_enable、valid_learn、query_effect_parry
     C 需底层:
-      - action/action2 双表按玩家“无招”标记切换（现有 query_action/1 无标记）
-      - valid_damage / hit_ob / skill_improved / difficult_level
+      - action/action2 双表按玩家“无招”标记切换
+      - valid_damage / hit_ob / skill_improved / difficult_level / perform_action_file
       - valid_enable 依赖等级(>=30 才可 enable sword)
+      - practice_skill 恒为「总诀式」演练失败
   """
 
   use Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
 
+  # 招式表: action/force/attack/dodge/parry/damage/lvl/damage_type，与 LPC 一致
   @actions [
     %{"action" => "但见$N挺身而上，$w一旋，一招仿佛泰山剑法的「来鹤清泉」直刺$n的$l", "force" => 290, "attack" => 145, "dodge" => 95, "parry" => 105, "damage" => 160, "damage_type" => "刺伤"},
     %{"action" => "$N奇诡地向$n挥出「泉鸣芙蓉」、「鹤翔紫盖」、「石廪书声」、「天柱云气」及「雁回祝融」衡山五神剑", "force" => 410, "attack" => 135, "dodge" => 135, "parry" => 175, "damage" => 270, "damage_type" => "刺伤"},
@@ -41,7 +43,7 @@ defmodule ExKantele.Combat.Skills.DuguJiujian do
     %{"action" => "$N将$w随手一摆，但见$n自己向$w撞将上来，神剑之威，当真人所难测", "force" => 410, "attack" => 155, "dodge" => 185, "parry" => 195, "damage" => 280, "damage_type" => "刺伤"}
   ]
 
-  # action2：“无招”状态下的招式表
+  # action2：“无招”状态下的招式表（威力远超常招）
   @actions2 [
     %{"action" => "但见$N手中$w破空长吟，平平一剑刺向$n，毫无招式可言", "force" => 600, "attack" => 300, "dodge" => 300, "parry" => 300, "damage" => 460, "damage_type" => "刺伤"},
     %{"action" => "$N揉身欺近，轻描淡写间随意刺出一剑，简单之极，无招无式", "force" => 600, "attack" => 300, "dodge" => 300, "parry" => 300, "damage" => 460, "damage_type" => "刺伤"},
@@ -51,7 +53,7 @@ defmodule ExKantele.Combat.Skills.DuguJiujian do
   @impl true
   def id(), do: "dugu-jiujian"
 
-  # valid_enable 依赖刻度(>=30 才可 enable sword)：
+  # valid_enable 依赖刻度：>=30 才可 enable sword，否则只能 parry
   @impl true
   def valid_enable(usage, level \\ 0) do
     cond do
@@ -61,20 +63,31 @@ defmodule ExKantele.Combat.Skills.DuguJiujian do
     end
   end
 
+  # 需先有剑：LPC 要求 query_temp("weapon") 的 skill_type == "sword"
+  # 框架尚无武器对象模型（C 档钩子）
+  @learn_weapon_required true
+
   @impl true
   def valid_learn(stats) do
     cond do
-      Stats.attribute(stats, "int") < 39 -> {:error, "你的天资不足，无法理解独孤九剑的剑意。\n"}
-      Stats.skill(stats, "sword") < 100 -> {:error, "你的基本剑法造诣太浅，无法理解独孤九剑。\n"}
-      Stats.skill(stats, "sword") < Stats.skill(stats, id()) -> {:error, "你的基本剑法造诣有限，无法理解更高深的独孤九剑。\n"}
+      Stats.attribute(stats, "int") < 39 ->
+        {:error, "你的天资不足，无法理解独孤九剑的剑意。\n"}
+
+      Stats.skill(stats, "sword") < 100 ->
+        {:error, "你的基本剑法造诣太浅，无法理解独孤九剑。\n"}
+
+      Stats.skill(stats, "sword") < Stats.skill(stats, id()) ->
+        {:error, "你的基本剑法造诣有限，无法理解更高深的独孤九剑。\n"}
+
       true -> :ok
     end
   end
 
+  # practice_cost 无消耗？实际上 practice_skill 恒失败（只能用「总诀式」）
   @impl true
-  def practice_cost(), do: nil
+  def practice_cost(), do: %{qi: 0, neili: 0}
 
-  # 无招标记 -> 双表：需底层 query_action 支持标记（C 档）
+  # 无招标记 -> 双表切换
   def query_action(nothing?, _level, rng \\ &:rand.uniform/1) do
     table = if nothing?, do: @actions2, else: @actions
     Enum.at(table, rng.(length(table)) - 1)
@@ -86,13 +99,59 @@ defmodule ExKantele.Combat.Skills.DuguJiujian do
       level < 100 -> 50
       level < 125 -> 55
       level < 150 -> 60
+      level < 175 -> 65
       level < 200 -> 70
+      level < 225 -> 75
       level < 250 -> 80
+      level < 275 -> 90
       level < 325 -> 100
       level < 350 -> 110
       true -> 120
     end
   end
 
-  @unsupported [valid_damage: 4, hit_ob: 3, skill_improved: 1, difficult_level: 0]
+  # ---- 以下 LPC 回调现有行为缺失 -> 需底层扩展（C 档）----
+  @unsupported [
+    valid_damage: 4,
+    hit_ob: 3,
+    valid_learn_weapon: 1,
+    practice_skill: 1,
+    perform_action_file: 1,
+    skill_improved: 1,
+    difficult_level: 0
+  ]
+
+  # 破招判定，对照 valid_damage/4。
+  #   nothing?:            是否“无招”境界
+  #   dugu_sword:          施展者基本剑法
+  #   attacker_parry/count: 进攻方 parry 与 count
+  #   defender_parry:      挨招方 parry
+  # 返回 %{damage_reduction, msg} 表示成功反制；nil 表示正常受招。
+  def valid_damage(
+        nothing?,
+        dugu_sword,
+        attacker_parry,
+        attacker_count,
+        defender_parry,
+        damage
+      ) do
+    cond do
+      nothing? and dugu_sword * 3 + random(dugu_sword) > defender_parry * 4 ->
+        %{damage_reduction: -damage, msg: "$n不理会$N的攻势，随意挥出一剑，反攻向$N。\n"}
+
+      div(attacker_parry + attacker_count, 2) + random(attacker_parry + attacker_count) <
+          defender_parry ->
+        %{damage_reduction: -damage, msg: "$n以攻为守，剑法突变，刹那间反制$N。\n"}
+
+      true ->
+        nil
+    end
+  end
+
+  defp random(res) when res < 1, do: 0
+  defp random(res), do: :rand.uniform(res)
+
+  # hit_ob：命中后附伤 / 缴械 / 九连击。LPC 用 COMBAT_D->set_bhinfo / do_attack
+  # 与 message_vision 等横向钩子，框架未提供（C 档）。
+  def hit_ob(_me, _victim, _damage_bonus, _lvl), do: %{}
 end
