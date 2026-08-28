@@ -10,54 +10,12 @@ defmodule ExKantele.World.Room.WuduLiandu do
   alias ExKantele.World.{Player, Item, Skill}
 
   @recipes %{
-    "heding hong" => [
-      name: "Crane Top Red",
-      ingredients: ["du nang", "shexin zi", "qianri zui"],
-      skill_req: 60,
-      product: "hedinghong",
-      duration: 15,
-      level_bonus: 0
-    ],
-    "furou gao" => [
-      name: "Rotting Flesh Paste",
-      ingredients: ["du nang", "fugu cao", "chuanxin lian"],
-      skill_req: 60,
-      product: "furougao",
-      duration: 15,
-      level_bonus: 0
-    ],
-    "kongque dan" => [
-      name: "Peacock Gall",
-      ingredients: ["du nang", "fugu cao", "qianri zui"],
-      skill_req: 60,
-      product: "kongquedan",
-      duration: 15,
-      level_bonus: 0
-    ],
-    "chixie fen" => [
-      name: "Scorpion Powder",
-      ingredients: ["du nang", "shexin zi", "duanchang cao"],
-      skill_req: 60,
-      product: "chixiefen",
-      duration: 15,
-      level_bonus: 0
-    ],
-    "duanchang san" => [
-      name: "Intestine Breaking Powder",
-      ingredients: ["du nang", "duanchang cao", "chuanxin lian"],
-      skill_req: 60,
-      product: "duanchangsan",
-      duration: 15,
-      level_bonus: 0
-    ],
-    "wusheng san" => [
-      name: "Five Saints Powder",
-      ingredients: ["du nang", "heding hong", "duanchang san", "furou gao", "chixie fen", "kongque dan", "jinshe duye"],
-      skill_req: 60,
-      product: "wushengsan",
-      duration: 25,
-      level_bonus: 20
-    ]
+    "heding hong" => %{name: "Crane Top Red", ingredients: ["du nang", "shexin zi", "qianri zui"], skill_req: 60, product: "hedinghong", duration: 15, level_bonus: 0},
+    "furou gao" => %{name: "Rotting Flesh Paste", ingredients: ["du nang", "fugu cao", "chuanxin lian"], skill_req: 60, product: "furougao", duration: 15, level_bonus: 0},
+    "kongque dan" => %{name: "Peacock Gall", ingredients: ["du nang", "fugu cao", "qianri zui"], skill_req: 60, product: "kongquedan", duration: 15, level_bonus: 0},
+    "chixie fen" => %{name: "Scorpion Powder", ingredients: ["du nang", "shexin zi", "duanchang cao"], skill_req: 60, product: "chixiefen", duration: 15, level_bonus: 0},
+    "duanchang san" => %{name: "Intestine Breaking Powder", ingredients: ["du nang", "duanchang cao", "chuanxin lian"], skill_req: 60, product: "duanchangsan", duration: 15, level_bonus: 0},
+    "wusheng san" => %{name: "Five Saints Powder", ingredients: ["du nang", "heding hong", "duanchang san", "furou gao", "chixie fen", "kongque dan", "jinshe duye"], skill_req: 60, product: "wushengsan", duration: 25, level_bonus: 20}
   }
 
   @min_skill 60
@@ -85,7 +43,7 @@ defmodule ExKantele.World.Room.WuduLiandu do
          :ok <- check_not_busy(player),
          :ok <- check_skill_level(player),
          :ok <- check_vitals(player),
-         recipe <- get_recipe(recipe_name),
+         recipe when not is_nil(recipe) <- get_recipe(recipe_name),
          :ok <- check_ingredients(player, recipe) do
 
       consume_ingredients(player, recipe)
@@ -103,13 +61,17 @@ defmodule ExKantele.World.Room.WuduLiandu do
   def liandu_callback(player) do
     if Player.get_temp(player, "liandu/recipe") == nil do
       :ok
+    else
+      if Player.environment_id(player) != "liandu_shi" do
+        Player.delete_temp(player, "liandu/recipe")
+        :ok
+      else
+        do_liandu_success(player)
+      end
     end
+  end
 
-    if Player.environment_id(player) != "liandu_shi" do
-      Player.delete_temp(player, "liandu/recipe")
-      :ok
-    end
-
+  defp do_liandu_success(player) do
     Player.receive_damage(player, "jing", 50 + :rand.uniform(30))
     Player.receive_damage(player, "qi", 50 + :rand.uniform(30))
 

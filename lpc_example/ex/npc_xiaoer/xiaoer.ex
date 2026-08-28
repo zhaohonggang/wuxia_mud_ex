@@ -18,14 +18,14 @@ defmodule ExKantele.World.Npc.Xiaoer do
   ]
 
   @exchange_items %{
-    "blood_bodhi" => [cost: 5, item: "pill/puti1", name: "Blood Bodhi"],
-    "sarira" => [cost: 5, item: "pill/sheli1", name: "Sarira"],
-    "haotian_fruit" => [cost: 5, item: "pill/linghui1", name: "Haotian Fruit"],
-    "bone_strength" => [cost: 5, item: "gift/con1", name: "Bone Strength Powder"],
-    "longevity_paste" => [cost: 5, item: "gift/dex1", name: "Longevity Paste"],
-    "wisdom_pill" => [cost: 5, item: "gift/int1", name: "Wisdom Pill"],
-    "strength_pill" => [cost: 5, item: "gift/str1", name: "Strength Pill"],
-    "rebirth_pill" => [cost: 50, item: "gift/con3", name: "Rebirth Pill"]
+    "blood_bodhi" => %{cost: 5, item: "pill/puti1", name: "Blood Bodhi"},
+    "sarira" => %{cost: 5, item: "pill/sheli1", name: "Sarira"},
+    "haotian_fruit" => %{cost: 5, item: "pill/linghui1", name: "Haotian Fruit"},
+    "bone_strength" => %{cost: 5, item: "gift/con1", name: "Bone Strength Powder"},
+    "longevity_paste" => %{cost: 5, item: "gift/dex1", name: "Longevity Paste"},
+    "wisdom_pill" => %{cost: 5, item: "gift/int1", name: "Wisdom Pill"},
+    "strength_pill" => %{cost: 5, item: "gift/str1", name: "Strength Pill"},
+    "rebirth_pill" => %{cost: 50, item: "gift/con3", name: "Rebirth Pill"}
   }
 
   def init_npc do
@@ -89,12 +89,12 @@ defmodule ExKantele.World.Npc.Xiaoer do
   end
 
   def exchange(player, item_name) do
-    with item_data <- @exchange_items[item_name],
+    with item_data when not is_nil(item_data) <- @exchange_items[item_name],
          :ok <- check_points(player, item_data.cost) do
 
-      Player.add_points(player, -item_data.cost)
+      player = Player.add_points(player, -item_data.cost)
       item = Item.create(item_data.item)
-      Player.give_item(player, item)
+      player = Player.give_item(player, item)
 
       {:ok, %{item: item_data.name, cost: item_data.cost, remaining_points: Player.points(player)}}
     end

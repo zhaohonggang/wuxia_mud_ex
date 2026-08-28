@@ -86,14 +86,16 @@
   复核。
 - **框架接入（未做）**：`daemon_combatd` 公式、`feature_attack`/`feature_damage`
   状态机等应并入 `lib/kantele/` 引擎层 —— 属框架开发阶段，超出本迁移范围。
-- **smoke 测试**：已附测试的迁移（全部 PASS）：
+- **smoke 测试**：全部 19 个 suite 统一由 `test_runner.exs` 汇总（18 个 clean，
++  仅 `zzz_fail` 为故意失败的自检 canary）。已附测试的迁移（全部 PASS）：
   inherit_char_npc(18)、inherit_room_pigroom(36)、daemon_combatd(27)、
   system_npc_luban(28)、room_qiyuan2(38)、skill_taiji-quan(28)、
   skill_dugu-jiujian(36)、class_generate_chinese(32)、condition_poison(20)、
   room_qianting(14)、feature_damage(38)、item_yinzhen(19)、
   item_wudu_qianzhumiji(22)。
-  其余旧迁移（feature_attack/npc_xiaoer/npc_horseboss/room_wudu_liandu/
-  class_wudang_zhang 等强运行时耦合）待按相同模式补，部分函数需框架接入后才能落地。
+- **第二批（tier-2，强运行时耦合）已补齐 smoke 覆盖并全部 PASS**：
+  `feature_attack`(34)、`npc_xiaoer`(35)、`npc_horseboss`(60)、
+  `room_wudu_liandu`(25)、`class_wudang_zhang`(46)。累计 559 断言、0 失败。
 - **本批修复的模块 bug（随 smoke 测试发现）**：
   - `feature_damage.ex`：`who and` → `who &&`（非布尔 map 上严格 `and` 抛
     `BadBooleanError`）；`receive_wound` 丢弃不可变 `Player.put` 返回（qi 钳制）
@@ -107,6 +109,25 @@
   - `item_yinzhen` 测试：容器 `System.monotonic_time(:second)` 可为很大的负数，
     60s 冷却门误触发 → fixture 用 `monotonic - 1_000_000` 锚定"久远"的冷却时间戳。
   - stub `Skill.has?` 返回原始值（`1`/`nil`）而非布尔 → 改为布尔。
+  - **tier-2 批修复（随 smoke 测试发现）**：
+    - Elixir 1.11 `not`/`and`/`or` 需布尔：`class_wudang_zhang` 的
+      `handle_ask_jiuyang` `not flag` → `!(flag == true)`；`feature_attack` 的
+      `query_action` `flag or ...` → `flag == true or ...`（二者对 nil 抛 `BadBooleanError`）。
+    - 关键字列表点号访问崩溃 → 多处 `@xxx` 由 kw 列表改 `%{...}` map，或改用
+      `req[:key]` 默认安全访问（class_wudang_zhang/npc_xiaoer/npc_horseboss/
+      room_wudu_liandu）。
+    - `npc_xiaoer.ex` exchange：`Enum.reduce_while` 结果被丢弃 → 改为把
+      add_points/give_item 等函数式返回贯穿到最终 state；`with` 对未知物品补
+      nil-guard。
+    - `room_wudu_liandu` liandu_callback 两个被丢弃的 `if :ok` 及早返回 → 并入
+      if/else 并抽出 do_liandu_success。
+    - `feature_attack.ex`：缺失 `Item`/`Skill` alias；`init/2` vendetta 优先级 bug
+      （vendetta_mark 在 `if` 内才绑定）；`reset_action` skill 优先级 bug
+      （先 bind 再判）；`remove_enemy/remove_killer` 掉冗余 player 参（/3→/2）；
+      **`remove_all_enemy` 把 `state = Player.delete_temp(player,...)` 的返回值
+      误当 state 覆盖**（delete_temp 返回 player）→ 丢弃副作用结果。
+    - stub `get_temp` 原返回 `|| 0`（Elixir 恒真）→ 缺省时返回 `nil`，调用方用
+      `get_temp(...) || default`。
 - **`room_qianting` 限制**：模块混用 `laopu.living`（map 字段，可用）与
   `laopu.owner?`/`laopu.is_owner?`（LPC 式对象点调用，普通 map 上会崩），仅
   map 安全面可测；对象分支需框架 `laopu` 对象，故只覆盖 14 条 map-safe 断言。
@@ -119,7 +140,9 @@
    `feature_damage`(38)、`item_yinzhen`(19)、`item_wudu_qianzhumiji`(22)，连同
    `test_support/exkantele_world_stubs.ex` 共享桩已全部 PASS，可提交/推送
    （已推送）。
-2. 若继续补第二档（重运行时耦合、需更多桩/源码重构）：
-   `feature_attack`、`npc_xiaoer`、`npc_horseboss`、`room_wudu_liandu`
-   （`poison_workshop.ex` 的 `@recipes` 为 `defp` 私有）、`class_wudang_zhang`。
-3. 可选：写一个统一的 `test_runner.exs` 汇总跑所有 suite 断言数。
+2. 第二批（tier-2，强运行时耦合）已补齐并全部 PASS：`feature_attack`(34)、
+   `npc_xiaoer`(35)、`npc_horseboss`(60)、`room_wudu_liandu`(25)、
+   `class_wudang_zhang`(46)。全量 `test_runner.exs` 18/19 clean（仅 `zzz_fail`
+   故意失败），559 断言 0 失败，可提交/推送。
+3. 可选：把 `daemon_combatd` 公式、`feature_attack`/`feature_damage` 状态机并入
+   `lib/kantele/` 引擎层 —— 属框架开发阶段，超出本迁移范围。

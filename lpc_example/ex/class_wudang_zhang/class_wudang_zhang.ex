@@ -14,17 +14,17 @@ defmodule ExKantele.World.Npc.ClassWudangZhang do
   @zhenwu_sword_id "zhenwu_jian"
 
   @skill_thresholds %{
-    "鹤嘴劲" => [family: "武当派", gongxian: 800, shen: 150_000, skill: "taiji-shengong", skill_lvl: 100, neili: 1500, perform: "taiji-shengong/dian", gongxian_cost: 800],
-    "震字诀" => [family: "武当派", gongxian: 300, shen: 100_000, skill: "taiji-quan", skill_lvl: 150, neili: 1200, perform: "taiji-quan/zhen", gongxian_cost: 300],
-    "引字诀" => [family: "武当派", gongxian: 200, shen: 100_000, skill: "taiji-quan", skill_lvl: 150, neili: 1200, perform: "taiji-quan/yin", gongxian_cost: 200],
-    "挤字诀" => [family: "武当派", gongxian: 400, shen: 120_000, skill: "taiji-quan", skill_lvl: 150, neili: 1200, perform: "taiji-quan/ji", gongxian_cost: 400],
-    "粘字诀" => [family: "武当派", gongxian: 500, shen: 140_000, skill: "taiji-quan", skill_lvl: 150, neili: 1200, perform: "taiji-quan/zhan", gongxian_cost: 500],
-    "太极图" => [family: "武当派", gongxian: 3000, shen: 250_000, skill: "taiji-quan", skill_lvl: 250, force_skill: "taiji-shengong", force_lvl: 300, taoism: 300, jingli: 1000, perform: "taiji-quan/tu", gongxian_cost: 3000, multi_stage: true],
-    "缠字诀" => [family: "武当派", gongxian: 300, shen: 80_000, skill: "taiji-jian", skill_lvl: 80, perform: "taiji-jian/chan", gongxian_cost: 300],
-    "随字诀" => [family: "武当派", gongxian: 200, shen: 80_000, skill: "taiji-jian", skill_lvl: 60, perform: "taiji-jian/sui", gongxian_cost: 200],
-    "驾字诀" => [family: "武当派", gongxian: 600, shen: 100_000, skill: "taiji-jian", skill_lvl: 150, perform: "taiji-jian/jia", gongxian_cost: 600],
-    "剑轮岚转" => [family: "武当派", gongxian: 800, shen: 120_000, skill: "taiji-jian", skill_lvl: 160, perform: "taiji-jian/zhuan", gongxian_cost: 800],
-    "真武除邪" => [family: "武当派", gongxian: 2000, shen: 120_000, skill: "taiji-jian", skill_lvl: 180, perform: "taiji-jian/zhenwu", gongxian_cost: 2000]
+    "鹤嘴劲" => %{family: "武当派", gongxian: 800, shen: 150_000, skill: "taiji-shengong", skill_lvl: 100, neili: 1500, perform: "taiji-shengong/dian", gongxian_cost: 800},
+    "震字诀" => %{family: "武当派", gongxian: 300, shen: 100_000, skill: "taiji-quan", skill_lvl: 150, neili: 1200, perform: "taiji-quan/zhen", gongxian_cost: 300},
+    "引字诀" => %{family: "武当派", gongxian: 200, shen: 100_000, skill: "taiji-quan", skill_lvl: 150, neili: 1200, perform: "taiji-quan/yin", gongxian_cost: 200},
+    "挤字诀" => %{family: "武当派", gongxian: 400, shen: 120_000, skill: "taiji-quan", skill_lvl: 150, neili: 1200, perform: "taiji-quan/ji", gongxian_cost: 400},
+    "粘字诀" => %{family: "武当派", gongxian: 500, shen: 140_000, skill: "taiji-quan", skill_lvl: 150, neili: 1200, perform: "taiji-quan/zhan", gongxian_cost: 500},
+    "太极图" => %{family: "武当派", gongxian: 3000, shen: 250_000, skill: "taiji-quan", skill_lvl: 250, force_skill: "taiji-shengong", force_lvl: 300, taoism: 300, jingli: 1000, perform: "taiji-quan/tu", gongxian_cost: 3000, multi_stage: true},
+    "缠字诀" => %{family: "武当派", gongxian: 300, shen: 80_000, skill: "taiji-jian", skill_lvl: 80, perform: "taiji-jian/chan", gongxian_cost: 300},
+    "随字诀" => %{family: "武当派", gongxian: 200, shen: 80_000, skill: "taiji-jian", skill_lvl: 60, perform: "taiji-jian/sui", gongxian_cost: 200},
+    "驾字诀" => %{family: "武当派", gongxian: 600, shen: 100_000, skill: "taiji-jian", skill_lvl: 150, perform: "taiji-jian/jia", gongxian_cost: 600},
+    "剑轮岚转" => %{family: "武当派", gongxian: 800, shen: 120_000, skill: "taiji-jian", skill_lvl: 160, perform: "taiji-jian/zhuan", gongxian_cost: 800},
+    "真武除邪" => %{family: "武当派", gongxian: 2000, shen: 120_000, skill: "taiji-jian", skill_lvl: 180, perform: "taiji-jian/zhenwu", gongxian_cost: 2000}
   }
 
   @apprentice_reqs [
@@ -74,7 +74,7 @@ defmodule ExKantele.World.Npc.ClassWudangZhang do
   def attempt_apprentice(player) do
     checks = @apprentice_reqs
 
-    Enum.reduce_while(checks, :ok, fn
+    case Enum.reduce_while(checks, :ok, fn
       {:skill, skill_name, min, msg}, _ ->
         val = player.skills[skill_name] || 0
         if val >= min, do: {:cont, :ok}, else: {:halt, {:error, :reject, String.replace(msg, "{respect}", respect_title(player))}}
@@ -90,21 +90,25 @@ defmodule ExKantele.World.Npc.ClassWudangZhang do
       {:int, min, msg}, _ ->
         val = player.int || 0
         if val >= min, do: {:cont, :ok}, else: {:halt, {:error, :reject, String.replace(msg, "{respect}", respect_title(player))}}
-    end)
+    end) do
+      :ok ->
+        {:ok, %{
+          effects: [
+            %{type: :recruit, family: "武当派", generation: 2, title: "弟子"},
+            %{type: :message, text: "想不到老道在垂死之年，又觅得一个可塑之才，真是可喜可贺。"}
+          ]
+        }}
 
-    {:ok, %{
-      effects: [
-        %{type: :recruit, family: "武当派", generation: 2, title: "弟子"},
-        %{type: :message, text: "想不到老道在垂死之年，又觅得一个可塑之才，真是可喜可贺。"}
-      ]
-    }}
+      {:error, _, _} = err ->
+        err
+    end
   end
 
   @doc """
   处理给予物品
   """
   def accept_object(player, item) do
-    if item.id == @zhenwu_sword_id or item.base_id == @zhenwu_sword_id do
+    if item.id == @zhenwu_sword_id or Map.get(item, :base_id) == @zhenwu_sword_id do
       if player.family.master_id == "zhang_sanfeng" do
         {:ok, %{effects: [%{type: :message, text: "很好，很好！"}, %{type: :destruct_item, item: item.id}]}}
       else
@@ -160,7 +164,7 @@ defmodule ExKantele.World.Npc.ClassWudangZhang do
     gongxian_ok = (player.gongxian || 0) >= req.gongxian
     shen_ok = (player.shen || 0) >= req.shen
     skill_ok = (player.skills[req.skill] || 0) >= req.skill_lvl
-    neili_ok = (player.max_neili || 0) >= req.neili
+    neili_ok = (player.max_neili || 0) >= (req[:neili] || 0)
 
     extra_ok =
       case req do
@@ -238,10 +242,10 @@ defmodule ExKantele.World.Npc.ClassWudangZhang do
       player.flags["can_learn/jiuyang-shengong/wudang"] ->
         {:ok, %{type: :info, message: "老道已经答应传授你武当九阳功了，你怎么还那么罗嗦？"}}
 
-      not player.flags["can_learn/jiuyang-shengong/kunlun"] ->
+      !(player.flags["can_learn/jiuyang-shengong/kunlun"] == true) ->
         {:ok, %{type: :reject, message: "昔日《九阳真经》在我师父觉远大师手中丢失，现在也不知道流落何方。"}}
 
-      not player.flags["can_learn/jiuyang-shengong/shaolin"] ->
+      !(player.flags["can_learn/jiuyang-shengong/shaolin"] == true) ->
         {:ok, %{type: :reject, message: "唉，如果当时能够追回《九阳真经》，觉远大师也不至于落难。"}}
 
       true ->
@@ -281,11 +285,11 @@ defmodule ExKantele.World.Npc.ClassWudangZhang do
     ]
 
     base_skills = [req.skill, "force", "unarmed", "sword", "parry", "dodge", "strike", "hand", "claw"]
-    acc = Enum.uniq(base_skills ++ [req.force_skill, "taoism"])
+    acc = Enum.uniq(base_skills ++ [req[:force_skill], "taoism"])
     |> Enum.filter(&(&1 != nil))
     |> Enum.reduce(effects, fn s, acc_inner -> [%{type: :improve_skill, skill: s, exp: 1_500_000} | acc_inner] end)
 
-    acc = if req.multi_stage do
+    acc = if req[:multi_stage] do
       [%{type: :add_learned_points, delta: 100},
        %{type: :message, text: "你对太极图有了一点领悟。"}
        | acc]

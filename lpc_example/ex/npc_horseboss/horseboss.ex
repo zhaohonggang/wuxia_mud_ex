@@ -8,30 +8,30 @@ defmodule ExKantele.World.Npc.Horseboss do
   Framework requirements in FRAMEWORK_REQUIREMENTS.md.
   """
 
-  alias ExKantele.World.{Player, Item, Character}
+  alias ExKantele.World.{Player, Item, Character, Skill}
 
-  @species [
-    horse: [name: "Horse", id_suffix: "ma", unit: "match", base_stats: %{str: 30, con: 25, dex: 20, int: 10}],
-    donkey: [name: "Donkey", id_suffix: "lv", unit: "head", base_stats: %{str: 25, con: 30, dex: 15, int: 10}],
-    mule: [name: "Mule", id_suffix: "luo", unit: "head", base_stats: %{str: 35, con: 35, dex: 10, int: 10}],
-    camel: [name: "Camel", id_suffix: "tuo", unit: "head", base_stats: %{str: 40, con: 40, dex: 10, int: 10}],
-    ox: [name: "Ox", id_suffix: "niu", unit: "head", base_stats: %{str: 45, con: 45, dex: 5, int: 10}],
-    elephant: [name: "Elephant", id_suffix: "xiang", unit: "head", base_stats: %{str: 60, con: 50, dex: 5, int: 15}],
-    lion: [name: "Lion", id_suffix: "shi", unit: "head", base_stats: %{str: 50, con: 40, dex: 30, int: 15}],
-    tiger: [name: "Tiger", id_suffix: "hu", unit: "head", base_stats: %{str: 55, con: 40, dex: 35, int: 15}],
-    leopard: [name: "Leopard", id_suffix: "bao", unit: "head", base_stats: %{str: 45, con: 35, dex: 40, int: 15}],
-    deer: [name: "Deer", id_suffix: "lu", unit: "head", base_stats: %{str: 25, con: 30, dex: 45, int: 15}],
-    crane: [name: "Crane", id_suffix: "he", unit: "head", base_stats: %{str: 20, con: 25, dex: 50, int: 20}],
-    eagle: [name: "Eagle", id_suffix: "diao", unit: "head", base_stats: %{str: 30, con: 25, dex: 55, int: 20}],
-    goat: [name: "Goat", id_suffix: "yang", unit: "head", base_stats: %{str: 20, con: 25, dex: 30, int: 10}],
-    monkey: [name: "Monkey", id_suffix: "hou", unit: "head", base_stats: %{str: 25, con: 25, dex: 50, int: 25}],
-    bear: [name: "Bear", id_suffix: "xiong", unit: "head", base_stats: %{str: 55, con: 50, dex: 15, int: 10}],
-    wolf: [name: "Wolf", id_suffix: "lang", unit: "head", base_stats: %{str: 40, con: 35, dex: 40, int: 15}],
-    fox: [name: "Fox", id_suffix: "hu", unit: "head", base_stats: %{str: 30, con: 30, dex: 45, int: 20}],
-    marten: [name: "Marten", id_suffix: "diao", unit: "head", base_stats: %{str: 20, con: 25, dex: 50, int: 20}],
-    foal: [name: "Foal", id_suffix: "ju", unit: "match", base_stats: %{str: 15, con: 15, dex: 20, int: 10}],
-    beast: [name: "Beast", id_suffix: "shou", unit: "head", base_stats: %{str: 50, con: 50, dex: 20, int: 10}]
-  ]
+  @species %{
+    horse: %{name: "Horse", id_suffix: "ma", unit: "match", base_stats: %{str: 30, con: 25, dex: 20, int: 10}},
+    donkey: %{name: "Donkey", id_suffix: "lv", unit: "head", base_stats: %{str: 25, con: 30, dex: 15, int: 10}},
+    mule: %{name: "Mule", id_suffix: "luo", unit: "head", base_stats: %{str: 35, con: 35, dex: 10, int: 10}},
+    camel: %{name: "Camel", id_suffix: "tuo", unit: "head", base_stats: %{str: 40, con: 40, dex: 10, int: 10}},
+    ox: %{name: "Ox", id_suffix: "niu", unit: "head", base_stats: %{str: 45, con: 45, dex: 5, int: 10}},
+    elephant: %{name: "Elephant", id_suffix: "xiang", unit: "head", base_stats: %{str: 60, con: 50, dex: 5, int: 15}},
+    lion: %{name: "Lion", id_suffix: "shi", unit: "head", base_stats: %{str: 50, con: 40, dex: 30, int: 15}},
+    tiger: %{name: "Tiger", id_suffix: "hu", unit: "head", base_stats: %{str: 55, con: 40, dex: 35, int: 15}},
+    leopard: %{name: "Leopard", id_suffix: "bao", unit: "head", base_stats: %{str: 45, con: 35, dex: 40, int: 15}},
+    deer: %{name: "Deer", id_suffix: "lu", unit: "head", base_stats: %{str: 25, con: 30, dex: 45, int: 15}},
+    crane: %{name: "Crane", id_suffix: "he", unit: "head", base_stats: %{str: 20, con: 25, dex: 50, int: 20}},
+    eagle: %{name: "Eagle", id_suffix: "diao", unit: "head", base_stats: %{str: 30, con: 25, dex: 55, int: 20}},
+    goat: %{name: "Goat", id_suffix: "yang", unit: "head", base_stats: %{str: 20, con: 25, dex: 30, int: 10}},
+    monkey: %{name: "Monkey", id_suffix: "hou", unit: "head", base_stats: %{str: 25, con: 25, dex: 50, int: 25}},
+    bear: %{name: "Bear", id_suffix: "xiong", unit: "head", base_stats: %{str: 55, con: 50, dex: 15, int: 10}},
+    wolf: %{name: "Wolf", id_suffix: "lang", unit: "head", base_stats: %{str: 40, con: 35, dex: 40, int: 15}},
+    fox: %{name: "Fox", id_suffix: "hu", unit: "head", base_stats: %{str: 30, con: 30, dex: 45, int: 20}},
+    marten: %{name: "Marten", id_suffix: "diao", unit: "head", base_stats: %{str: 20, con: 25, dex: 50, int: 20}},
+    foal: %{name: "Foal", id_suffix: "ju", unit: "match", base_stats: %{str: 15, con: 15, dex: 20, int: 10}},
+    beast: %{name: "Beast", id_suffix: "shou", unit: "head", base_stats: %{str: 50, con: 50, dex: 20, int: 10}}
+  }
 
   @price 1000000  # 100 gold in copper
 
@@ -193,8 +193,9 @@ defmodule ExKantele.World.Npc.Horseboss do
   end
 
   defp is_chinese?(str) do
-    # Check for any CJK Unified Ideograph using Unicode Han property
-    Regex.match?(~r/\p{Han}/, str)
+    # Match any CJK Unified Ideograph (U+4E00..U+9FFF) by codepoint,
+    # since PCRE in this Elixir version does not support the \\p{Han} property.
+    Enum.any?(String.to_charlist(str), fn cp -> cp in 0x4E00..0x9FFF end)
   end
 
   def species_info do
