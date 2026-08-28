@@ -133,4 +133,17 @@ defmodule Kantele.Character.Combat do
   def weapon(%__MODULE__{} = combat), do: Map.get(combat.equipped, :weapon)
 
   def busy?(%__MODULE__{busy: busy}), do: busy > 0
+
+  @doc """
+  标记忙乱状态（对应 LPC start_busy/2）：设定忙乱轮数，取已有值与新值较大者
+
+  `busy` 在战斗 tick 中逐轮递减；忙乱期间动作命令会被拒绝。
+  """
+  def start_busy(%__MODULE__{} = combat, rounds) when rounds > 0,
+    do: %{combat | busy: max(combat.busy, trunc(rounds))}
+
+  def start_busy(%__MODULE__{} = combat, _rounds), do: combat
+
+  @doc "打断当前动作（对应 LPC interrupt_me/1）：忙乱清零"
+  def interrupt(%__MODULE__{} = combat), do: %{combat | busy: 0}
 end

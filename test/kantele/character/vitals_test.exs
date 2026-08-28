@@ -41,4 +41,30 @@ defmodule Kantele.Character.VitalsTest do
     assert full.qi == full.max_qi
     assert full.neili == full.max_neili
   end
+
+  test "heal 回补当前值但不超上限（receive_heal）" do
+    vitals = Vitals.damage(Vitals.new(), :qi, 50)
+    healed = Vitals.heal(vitals, :qi, 20)
+
+    assert healed.qi == vitals.qi + 20
+    # 回补封顶在 max_qi
+    over = Vitals.heal(vitals, :qi, 999_999)
+    assert over.qi == over.max_qi
+    # 各线独立（neili 满值时回补封顶，不会越上限）
+    assert Vitals.heal(Vitals.new(), :neili, 30).neili == Vitals.new().max_neili
+  end
+
+  test "curing 把创伤削低的上限回补到 base（receive_curing）" do
+    vitals = Vitals.new()
+    wounded = Vitals.wound(vitals, :qi, 30)
+    cured = Vitals.curing(wounded, :qi, 20)
+
+    assert cured.max_qi == wounded.max_qi + 20
+    assert cured.max_qi <= vitals.base_qi
+
+    # 驱除只看创伤上限，不额外回血当前值
+    assert cured.qi == wounded.qi
+    # 天花板封在 base，不会越界
+    assert Vitals.curing(wounded, :qi, 999_999).max_qi == vitals.base_qi
+  end
 end

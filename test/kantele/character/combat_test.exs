@@ -65,4 +65,28 @@ defmodule Kantele.Character.CombatTest do
 
     assert Combat.effective_applies(combat).damage == 5
   end
+
+  test "start_busy 设定忙乱并取较大值（start_busy/2）" do
+    combat = Combat.start_busy(Combat.new(), 3)
+
+    assert combat.busy == 3
+    assert Combat.busy?(combat)
+
+    # 已有值更大时保留大者
+    combat = Combat.start_busy(combat, 2)
+    assert combat.busy == 3
+    combat = Combat.start_busy(combat, 5)
+    assert combat.busy == 5
+
+    # 0 轮不生效
+    assert Combat.start_busy(Combat.new(), 0).busy == 0
+    refute Combat.busy?(Combat.new())
+  end
+
+  test "interrupt 清零忙乱（interrupt_me）" do
+    combat = Combat.new() |> Combat.start_busy(4) |> Combat.interrupt()
+
+    assert combat.busy == 0
+    refute Combat.busy?(combat)
+  end
 end

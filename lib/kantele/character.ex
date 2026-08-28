@@ -31,6 +31,7 @@ defmodule Kantele.Character.PlayerMeta do
     :team,
     :riding,
     :team_pending,
+    temp: %{},
     followers: []
   ]
 
@@ -45,6 +46,31 @@ defmodule Kantele.Character.PlayerMeta do
 
     def put(meta, key, value), do: Map.put(meta, key, value)
   end
+
+  # ---- temp 存储（对应 LPC get_temp/put_temp/delete_temp/add_temp）----
+  #
+  # 存放于 `meta.temp`，为**会话级**运行态：不落盘（Records.save 不写 temp）、
+  # 不进房间视图（Trim 只保留 :vitals）。用途：冷却时间戳、炼制/向导进度、
+  # attempt_hit 计数、rent_paid 等一次性/会话数据。
+
+  @doc "取临时值（LPC get_temp/2）；缺省返回 nil"
+  def get_temp(%__MODULE__{temp: temp}, key), do: Map.get(temp, key)
+
+  @doc "取临时值，缺省返回给定默认值"
+  def get_temp(%__MODULE__{temp: temp}, key, default), do: Map.get(temp, key, default)
+
+  @doc "写临时值（LPC set_temp/put_temp/3）"
+  def put_temp(%__MODULE__{} = meta, key, value),
+    do: %{meta | temp: Map.put(meta.temp, key, value)}
+
+  @doc "临时数值自增（LPC add_temp/3，缺省按 0 起步累加）"
+  def add_temp(%__MODULE__{} = meta, key, delta \\ 1) do
+    %{meta | temp: Map.update(meta.temp, key, delta, &(&1 + delta))}
+  end
+
+  @doc "删除临时值（LPC delete_temp/2）"
+  def delete_temp(%__MODULE__{} = meta, key),
+    do: %{meta | temp: Map.delete(meta.temp, key)}
 end
 
 defmodule Kantele.Character.NonPlayerMeta do
@@ -157,6 +183,39 @@ defmodule Kantele.Character.Vitals do
     max_qi = max(vitals.max_qi - amount, 1)
     vitals = %{vitals | max_qi: max_qi}
     %{vitals | qi: min(vitals.qi, max_qi)}
+  end
+
+  @doc """
+  治疗效果（对应 LPC receive_heal/3）：把当前值向 max_* 回补，不超过上限
+
+  与 `damage` 相反，只抬当前值、不动创伤上限。
+  """
+  def heal(%__MODULE__{} = vitals, :qi, amount) when amount >= 0,
+    do: %{vitals | qi: min(vitals.qi + amount, vitals.max_qi)}
+
+  def heal(%__MODULE__{} = vitals, :jing, amount) when amount >= 0,
+    do: %{vitals | jing: min(vitals.jing + amount, vitals.max_jing)}
+
+  def heal(%__MODULE__{} = vitals, :neili, amount) when amount >= 0,
+    do: %{vitals | neili: min(vitals.neili + amount, vitals.max_neili)}
+
+  @doc """
+  驱除创伤（对应 LPC receive_curing/4 对 eff_* 的效果）：把被 `wound` 削低的
+  max_* 向上回补，天花板封在 base_*，并夹住当前值不超新上限
+  """
+  def curing(%__MODULE__{} = vitals, :qi, amount) when amount >= 0 do
+    max_qi = min(vitals.max_qi + amount, vitals.base_qi)
+    %{vitals | max_qi: max_qi, qi: min(vitals.qi, max_qi)}
+  end
+
+  def curing(%__MODULE__{} = vitals, :jing, amount) when amount >= 0 do
+    max_jing = min(vitals.max_jing + amount, vitals.base_jing)
+    %{vitals | max_jing: max_jing, jing: min(vitals.jing, max_jing)}
+  end
+
+  def curing(%__MODULE__{} = vitals, :neili, amount) when amount >= 0 do
+    max_neili = min(vitals.max_neili + amount, vitals.base_neili)
+    %{vitals | max_neili: max_neili, neili: min(vitals.neili, max_neili)}
   end
 
   @doc """
@@ -313,6 +372,44 @@ defmodule Kantele.Character.Stats do
   @doc "记一笔潜能消耗（learn/practice 成功后调用），返回新 stats"
   def spend_potential(%__MODULE__{} = stats, cost) when cost >= 0,
     do: %{stats | learned_points: (stats.learned_points || 0) + cost}
+
+  @doc """
+  可用潜能（对应 LPC `query("potential")`，即花费型潜能池）
+
+  等于 `available_potential/1`：总潜力减去已学点数。
+  """
+  def potential(%__MODULE__{} = stats), do: available_potential(stats)
+
+  @doc """
+  潜能上限（对应 LPC potential_limit）：以已学点数为基准的浮动上限
+
+  预置简化为 `learned_points + 100`（对照 wudang_zhang 的守卫阈值）；
+  到期原型可替换为存储字段。
+  """
+  def potential_limit(%__MODULE__{} = stats),
+    do: (stats.learned_points || 0) + 100
+
+  @doc """
+  增减可用潜能（对应 LPC `add("potential", delta)`）
+
+  - `delta >= 0`：发放潜能，累计总潜力增加
+  - `delta < 0`：消耗可用潜能，记入已学点数
+  """
+  def add_potential(%__MODULE__{} = stats, delta) when delta >= 0,
+    do: %{stats | potential: (stats.potential || 0) + delta}
+
+  def add_potential(%__MODULE__{} = stats, delta) when delta < 0,
+    do: %{stats | learned_points: (stats.learned_points || 0) + abs(delta)}
+
+  @doc """
+  提升潜能（对应 LPC improve_potential/2）：发放可用潜能
+
+  发放额被封在 `potential_limit` 之内，避免越上限。
+  """
+  def improve_potential(%__MODULE__{} = stats, gain) when gain >= 0 do
+    room = max(potential_limit(stats) - potential(stats), 0)
+    add_potential(stats, min(gain, room))
+  end
 
   @doc """
   提升技能一级并返回 {new_stats, gained_level?}
