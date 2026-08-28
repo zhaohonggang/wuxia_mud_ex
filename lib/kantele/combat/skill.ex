@@ -57,7 +57,52 @@ defmodule Kantele.Combat.Skill do
   @doc "运功列表：功能名 -> 实现 module（exert_function_file 映射）"
   @callback exert_list() :: %{String.t() => module()}
 
-  @optional_callbacks [perform_list: 0, exert_list: 0]
+  @doc """
+  伤害再判定钩子（对应 LPC valid_damage/4，如 taiji-quan 的借力打力）
+
+  在引擎算出本轮命中伤害后调用；返回 `{new_damage, message | nil}`。
+  `new_damage` 可为负表示完全化解并使伤害回弹；`message` 追加到战报文案。
+  """
+  @callback valid_damage(map(), map(), non_neg_integer(), map()) ::
+              {non_neg_integer(), String.t() | nil}
+
+  @doc """
+  命中回调（对应 LPC hit_ob/4，如 taiji-quan 蓄力连击）
+
+  命中成功时调用；返回修改后的 attacker 快照 map（如追加临时加成）。
+  """
+  @callback hit_ob(map(), map(), map()) :: map()
+
+  @doc "练习前置校验（对应 practice_skill 的 qi/neili 门槛），返回 :ok 或出错文案"
+  @callback practice_check(map()) :: :ok | {:error, String.t()}
+
+  @doc "学习难度系数（对应 difficult_level/1，越小越容易升级）"
+  @callback difficult_level(Stats.t()) :: non_neg_integer()
+
+  @doc "被动招架加成（对应 query_effect_parry/1，按等级阶梯）"
+  @callback query_effect_parry(Stats.t()) :: non_neg_integer()
+
+  @doc "被动闪避加成（对应 query_effect_dodge/1）"
+  @callback query_effect_dodge(Stats.t()) :: non_neg_integer()
+
+  @doc "技能升级回调（对应 skill_improved/1），可在升级时改属性/解锁，返回新 stats"
+  @callback skill_improved(Stats.t()) :: Stats.t()
+
+  @doc "绝招文件路由（对应 perform_action_file/2）：招式名 -> 实现 module"
+  @callback perform_action_file(String.t()) :: module() | nil
+
+  @optional_callbacks [
+    perform_list: 0,
+    exert_list: 0,
+    valid_damage: 4,
+    hit_ob: 3,
+    practice_check: 1,
+    difficult_level: 1,
+    query_effect_parry: 1,
+    query_effect_dodge: 1,
+    skill_improved: 1,
+    perform_action_file: 1
+  ]
 
   defmacro __using__(_opts) do
     quote do
@@ -80,7 +125,43 @@ defmodule Kantele.Combat.Skill do
       @doc false
       def exert_list(), do: %{}
 
-      defoverridable valid_learn: 1, valid_force: 1, practice_cost: 0, perform_list: 0, exert_list: 0
+      @doc false
+      def valid_damage(_attacker, _victim, damage, _action), do: {damage, nil}
+
+      @doc false
+      def hit_ob(_attacker, _victim, attacker_data), do: attacker_data
+
+      @doc false
+      def practice_check(_vitals), do: :ok
+
+      @doc false
+      def difficult_level(_stats), do: 100
+
+      @doc false
+      def query_effect_parry(_stats), do: 0
+
+      @doc false
+      def query_effect_dodge(_stats), do: 0
+
+      @doc false
+      def skill_improved(stats), do: stats
+
+      @doc false
+      def perform_action_file(name), do: Map.get(perform_list(), name)
+
+      defoverridable valid_learn: 1,
+                     valid_force: 1,
+                     practice_cost: 0,
+                     perform_list: 0,
+                     exert_list: 0,
+                     valid_damage: 4,
+                     hit_ob: 3,
+                     practice_check: 1,
+                     difficult_level: 1,
+                     query_effect_parry: 1,
+                     query_effect_dodge: 1,
+                     skill_improved: 1,
+                     perform_action_file: 1
     end
   end
 

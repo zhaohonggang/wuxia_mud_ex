@@ -291,6 +291,10 @@ defmodule Kantele.Combat.Engine do
         damage
       end
 
+    # 攻击特技的 valid_damage 钩子（如 taiji-quan 借力打力：化解/回弹伤害）
+    {damage, hook_msg} =
+      apply_valid_damage(attacker, victim, damage, round.action, rng)
+
     segments =
       case damage > 0 do
         true ->
@@ -301,6 +305,11 @@ defmodule Kantele.Combat.Engine do
           round.segments ++ [Messages.no_damage_msg()]
       end
 
+    segments = case hook_msg do
+      nil -> segments
+      msg -> segments ++ ["\n" <> msg]
+    end
+
     %Round{
       round
       | damage: damage,
@@ -308,6 +317,31 @@ defmodule Kantele.Combat.Engine do
         jiali_spent: jiali_spent,
         segments: segments
     }
+  end
+
+  # 命中后调用攻击方映射特技的 valid_damage 钩子；无特技或未实现该回调则原样返回
+  defp apply_valid_damage(attacker, victim, damage, action, _rng) do
+    mapped = Map.get(attacker.mapped, attacker.attack_skill)
+
+    case mapped && Skills.get(mapped) do
+      skill_module ->
+        if function_exported?(skill_module, :valid_damage, 4) do
+          case skill_module.valid_damage(
+                 Map.from_struct(attacker),
+                 Map.from_struct(victim),
+                 damage,
+                 action
+               ) do
+            {new_damage, msg} when is_integer(new_damage) -> {new_damage, msg}
+            _ -> {damage, nil}
+          end
+        else
+          {damage, nil}
+        end
+
+      _ ->
+        {damage, nil}
+    end
   end
 
   # 创伤概率门（LPC random(3)==1 或主动杀意下同样判定 ≈ 1/2）：掷中才结算创伤

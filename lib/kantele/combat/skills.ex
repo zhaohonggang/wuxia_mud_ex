@@ -1,19 +1,34 @@
 defmodule Kantele.Combat.Skills do
   @moduledoc """
   武学注册表：技能 id -> 实现 module
+
+  注册表=静态内建 `@skills` + 运行时增量（`:persistent_term`）。运行时可
+  `register/2` 追加（测试注入新技能、启动时挂载更多武学），`unregister/1` 移除。
   """
 
-  @skills %{
+  @static %{
     "liuxin-jian" => Kantele.Combat.Skills.LiuxinJian,
     "liuxi-neigong" => Kantele.Combat.Skills.LiuxiNeigong
   }
 
-  def all(), do: @skills
+  @doc "运行时注册一门武学（覆盖同名内建）"
+  def register(id, module) when is_binary(id) and is_atom(module) do
+    :persistent_term.put({__MODULE__, :extra}, Map.put(extras(), id, module))
+    :ok
+  end
 
-  def get(id) when is_binary(id), do: Map.get(@skills, id)
+  @doc "运行时移除一门武学（仅影响运行时增量，不碰内建）"
+  def unregister(id) when is_binary(id) do
+    :persistent_term.put({__MODULE__, :extra}, Map.delete(extras(), id))
+    :ok
+  end
+
+  def all(), do: Map.merge(@static, extras())
+
+  def get(id) when is_binary(id), do: Map.get(all(), id)
   def get(_id), do: nil
 
-  def known?(id), do: Map.has_key?(@skills, id)
+  def known?(id), do: Map.has_key?(all(), id)
 
   @doc """
   按用法解析可 enable 的特技（对应 valid_enable）
@@ -25,6 +40,10 @@ defmodule Kantele.Combat.Skills do
       nil -> nil
       skill_id -> get(skill_id)
     end
+  end
+
+  defp extras() do
+    :persistent_term.get({__MODULE__, :extra}, %{})
   end
 end
 
