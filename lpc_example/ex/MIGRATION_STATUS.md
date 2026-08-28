@@ -3,6 +3,10 @@
 > 更新时间: 2026-08-28
 > 共 22 个样本目录，**18 个真实行为迁移 + 4 个纯 UCL 数据物品**，均已覆盖。
 >
+> 📄 **框架需求汇总**: `FRAMEWORK_REQUIREMENTS.md` 汇总全部 17 份子目录
+> FRAMEWORK_REQUIREMENTS 并按跨领域域归并，含对照 `lib/kantele` 现状的
+> 可行性分级与分阶段实现步骤（见本文档「框架落地」章节）。
+>
 > ⚠️ **重要约束**: 所有迁移仅限 `C:\files\git\wuxia_mud_ex\lpc_example\ex` 目录内修改，**不实际接入游戏**。产物为纯数据 UCL + 纯函数 Elixir 模块，供开发参考与框架能力设计使用。所有 `.ex` 均通过容器 `elixirc` 编译（Elixir 1.11），仅剩框架缺口的 undefined-function 警告属预期。
 
 ---
@@ -134,6 +138,29 @@
 
 ---
 
+## 框架落地（在真实游戏 `lib/kantele` 中实现）
+
+> 详见 `FRAMEWORK_REQUIREMENTS.md`（汇总全部 17 份子目录需求 + 可行性分级 + 分阶段步骤）。
+
+**关键点**：所有迁移在 `.ex` 里都是纯函数/纯数据，框架要补的不是算法，而是
+**副作用宿主与对象模型**。四大核心缺口：
+
+1. **Player 对象模型**：temp 存储、`performs/gongxian/shen/learned_points/potential`
+   字段、`exert/dazuo/give_mount` 等动作 —— 影响几乎所有样本。
+2. **战斗引擎钩子**：`valid_damage/hit_ob/practice_skill/perform_action_file/
+   skill_improved` 回调钻取 —— 影响 combatd、skill_*、feature_*、poison。
+3. **房间级能力**：动态 exits、跨房 sync、每房定时器、`valid_leave`、座位/清单、
+   `add_action` 分发、广播原语 —— 影响 room_*、pigroom、xiaoer。
+4. **全局服务**：物品唯一注册表、师门查询、定时代理、巫师批核、房屋系统、
+   公告频道 —— 影响 class_wudang_zhang、luban、npc_*。
+
+**可行性**：对照 `lib/kantele` 现状（Room Callbacks/Verb、Combat.Skills 注册表、
+Character.Stats）评估，**17 项能力均无架构性阻碍**（皆为 MUD 常规能力 + Kalevala
+生态既有原语）。按 P0→P3 分 5 阶段实现：Player 模型 → 战斗钩子 → Room/NPC 交互 →
+全局服务层 → 整合回归。总体是**数月级**工程而非一次性重构。
+
+---
+
 ## 下一步建议
 
 1. 本批（batch B/C）已补 4 个旧迁移的 smoke 覆盖：`room_qianting`(14)、
@@ -144,5 +171,7 @@
    `npc_xiaoer`(35)、`npc_horseboss`(60)、`room_wudu_liandu`(25)、
    `class_wudang_zhang`(46)。全量 `test_runner.exs` 18/19 clean（仅 `zzz_fail`
    故意失败），559 断言 0 失败，可提交/推送。
-3. 可选：把 `daemon_combatd` 公式、`feature_attack`/`feature_damage` 状态机并入
-   `lib/kantele/` 引擎层 —— 属框架开发阶段，超出本迁移范围。
+3. 落地：按 `FRAMEWORK_REQUIREMENTS.md` 的分阶段步骤，把已提炼的纯函数/公式/状态机
+   并入 `lib/kantele/` 引擎层（Phase 1 Player 模型 → Phase 2 战斗钩子 → Phase 3
+   Room/NPC 交互 → Phase 4 全局服务层 → Phase 5 整合回归）—— 属框架开发阶段，
+   超出本迁移范围，作为后续独立工程。
