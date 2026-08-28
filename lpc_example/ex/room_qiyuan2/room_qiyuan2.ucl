@@ -1,14 +1,30 @@
-# 对应原文件: lpc_example/room/room_qiyuan2.c (奇缘, 22443B)
+# 对应原文件: lpc_example/room/room_qiyuan2.c (棋苑标准棋房, 22443B)
 #
-# 迁移判定: C —— 大型互动房间，静态 + 随机多分支。
-#   ① 静态 rooms 块 -> 单文件可落
-#   ② 随机事件/多分支(look/zhao 触发) -> 需 room_heart_beat + 玩家状态查询
+# 迁移判定: B/C —— 棋局引擎(围棋+五子棋)纯函数可完整落地；仅需底层
+#   Room 交互载体(座位/对弈状态/消息广播)。
+#
+# ⚠️ 修正: 原名误标「奇缘」(随机事件)；实为 棋苑(Go/Gomoku 棋房)。
 
 rooms "qiyuan2" {
-  name = "奇缘"
-  description = "一处奇异之所，机缘与凶险并存。"
+  name = "棋室"
+  description = "棋苑共分四个大间，是手谈休栖的好地方。这个房间里有一张石桌，上面划着一张围棋盘。桌角摆放着棋子。"
+  no_fight = "1"
+  no_steal = "1"
+  no_sleep_room = "1"
+  no_practice = "这里不允许练功。\n"
 
-  x = 2
+  x = 0
   y = 0
   z = 0
 }
+
+commands {
+  sit = "入座：sit black|white"
+  leave = "离座"
+  play = "走棋：play <坐标>"
+  pass = "弃子认输"
+  new = "新局：new [-5] [-bN] [-hN]"
+  undo = "悔棋（仅五子棋）"
+  refresh = "查看棋盘"
+}
+
