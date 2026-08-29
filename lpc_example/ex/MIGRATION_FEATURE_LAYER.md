@@ -87,7 +87,7 @@
 | `save.c` | 🟢 | Ecto persistence | CORE_SAVE 占位，已由 Ecto 替代 |
 | `dbsave.c` | 🟢 | Ecto persistence | CORE_DBSAVE 占位，已由 Ecto 替代 |
 | `obsave.c` | ⏸ | — | 空注释 stub，标记 dead |
-| `user_quest.c` | ⏸ | `Kantele.Quest` | CORE_USER_QUEST 占位 |
+| `user_quest.c` | ✅ | `Kantele.Quest` | 移植 CORE_USER_QUEST：任务进度表（set_todo/add_killed/get_killed/add_item/get_item/is_solved/del_todo/del_solved；QUEST_SIZE=20）；`ask_quest/cancel_quest` 为 QUEST_D 宿主存根 |
 
 ### 1.9 交互 / 指令输入
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
@@ -316,3 +316,4 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
 |------|------|
 | 2026-08-29 | 创建文档，产出 49 feature 全量映射 + 8 批次推进计划 |
 | 2026-08-29 | Batch 8：port edit/more/shell/user_gmcp 纯逻辑（Editor.Line+note、Pager、Shell、GMCP）；vi/mxp/sserver 标记废弃 |
+| 2026-08-29 | 补 user_quest.c：移植 CORE_USER_QUEST -> Kantele.Quest 任务进度表（15 tests） |
