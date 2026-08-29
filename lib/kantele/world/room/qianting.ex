@@ -97,12 +97,11 @@ defmodule Kantele.World.Room.Qianting do
 
   @doc "生成动态 room long（大门状态 + 老仆扫地）"
   def generate_long(base_long, room, laopu_present) do
-    msg = "    "
-    if laopu_present do
-      msg = msg <> "老仆人扫扫"
-    end
-    msg = msg <> (if room.state.gate == :open, do: "大门敞开", else: "大门紧闭")
-    base_long <> sort_string(msg, 60, 0)
+    message =
+      "    " <>
+        (if laopu_present, do: "老仆人扫扫", else: "") <>
+        (if room.state.gate == :open, do: "大门敞开", else: "大门紧闭")
+    base_long <> sort_string(message, 60, 0)
   end
 
   # ---- 内部实现 ----
