@@ -319,3 +319,4 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
 | 2026-08-29 | 补 user_quest.c：移植 CORE_USER_QUEST -> Kantele.Quest 任务进度表（15 tests） |
 | 2026-08-29 | Quest 宿主接线：quest/任务 命令展示进度（Kantele.Quest），QuestEvent 交付时写入 set_solved（+4 tests） |
 | 2026-08-29 | Banker 宿主接线：bank/银行 存·取·查命令接 Kantele.Npc.Banker（meta.bank_coins 运行态余额，+7 tests） |
+| 2026-08-29 | Fix：bank 裸命令断联——命令分发以双参 (conn, params) 调 :show，补 show/2 入口（+1 dispatch test） |

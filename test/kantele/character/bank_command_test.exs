@@ -36,9 +36,15 @@ defmodule Kantele.Character.BankCommandTest do
   defp updated_meta(conn), do: (conn.private.update_character || conn.character).meta
 
   test "裸 bank 查出空余额" do
-    conn = BankCommand.run(build_conn(player()), %{})
+    # 命令分发以 (conn, params) 双参调用 :show，这里直接走该入口防 arity 崩
+    conn = BankCommand.show(build_conn(player()), %{})
     assert output_text(conn) =~ "共存了一文钱"
     assert output_text(conn) =~ "身上带着一文钱"
+  end
+
+  test "run 无参兜底也走查余额" do
+    conn = BankCommand.run(build_conn(player()), %{})
+    assert output_text(conn) =~ "共存了一文钱"
   end
 
   test "存款：5 两白银入库，身上铜钱减少" do

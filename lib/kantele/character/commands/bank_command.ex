@@ -35,6 +35,9 @@ defmodule Kantele.Character.BankCommand do
 
   def run(conn, _params), do: show(conn)
 
+  @doc "查存款（对应 banker.c do_check；命令分发入口 arity 2）"
+  def show(conn, _params), do: show(conn)
+
   @doc "查存款（对应 banker.c do_check）"
   def show(conn) do
     balance = PlayerMeta.bank_coins(conn.character.meta)
