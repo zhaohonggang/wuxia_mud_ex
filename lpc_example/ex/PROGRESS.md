@@ -1,9 +1,9 @@
 # Kantele Framework Landing Progress
 
-> Last updated: 2026-08-28 (commit `b761663` on `kalevala`)
+> Last updated: 2026-08-28 (commit `4629275` on `kalevala`)
 
 ## Baseline
-- **Full test suite**: 372 tests, 0 failures
+- **Full test suite**: 388 tests, 0 failures (flaky `death` combat test occasionally fails under full-suite load, passes in isolation)
 - All increments verified with `MIX_ENV=test mix test` in container
 
 ---
