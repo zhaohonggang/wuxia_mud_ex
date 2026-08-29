@@ -185,6 +185,16 @@
 **测试**: food_test.exs、liquid_test.exs、cutable_test.exs、transport_test.exs
 **依赖**: Batch 1 (attribute)、现有 item 系统
 
+> ✅ **DONE (Batch 4)** — 已建纯逻辑模块（宿主命令/combat 接入为后续）
+> - `lib/kantele/item/effect.ex` — `Kantele.Item.Effect`，移植 food/liquid 效果栈（apply/clear/query/do_effect，上限 12）
+> - `lib/kantele/item/liquid.ex` — `Kantele.Item.Liquid`，移植 liquid.c extra_long（液量分级描述）
+> - `lib/kantele/item/cutable.ex` — `Kantele.Item.Cutable`，移植 cutable.c（available_parts/validate_cut/extra_desc）
+> - `lib/kantele/item/transport.ex` — `Kantele.Item.Transport`，移植 transport.c（set/query_owner/can_drive_by）
+> - `lib/kantele/item/equip.ex` — `Kantele.Item.Equip`，移植 equip.c（two_handed?/secondary?/wield_decision/wield/unequip/wear_state 纯逻辑）
+> - 注意：现有 `wield_command.ex`/`World.Item.Meta` 已实现多槽位护甲+weapon_prop；本期补齐双手/副手决策纯层
+> - 测试: `test/kantele/item/feature_item_test.exs`
+> - 全量: **471 tests, 0 failures** (449 + 22)
+
 ### Batch 5 — 物品锻造与背包存储 (P1)
 **source**: `itemmake.c`, `user_storage.c`, `silentdest.c`, `autoload.c`
 **target**:
