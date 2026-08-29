@@ -223,6 +223,14 @@
 **测试**: encumbrance_test.exs、clean_up_test.exs、condition_generic_test.exs
 **依赖**: Batch 4 (equip)、现有 Scheduler
 
+> ✅ **DONE (Batch 6)** — 纯逻辑落地（move/remove 实体副作用由宿主执行）
+> - `lib/kantele/character/encumbrance.ex` — `Kantele.Character.Encumbrance`，移植 move.c（weight/encumb/max_encumb/set_weight/on_over 回调）
+> - `lib/kantele/character/conditions.ex` — `Kantele.Character.Conditions`，移植 condition.c（apply/query/clear/update/affect_by + piyi 免疫）
+> - `lib/kantele/object/cleanup.ex` — `Kantele.Object.CleanUp`，移植 clean_up.c（:never_again/:again 决策）
+> - `lib/kantele/util/shadow.ex` — `Kantele.Util.Shadow`，移植 shadow.c（do/remove_shadow/query）
+> - 测试: `test/kantele/batch6_test.exs`
+> - 全量: **505 tests, 0 failures** (489 + 16)
+
 ### Batch 7 — 消息 / 提示补强 (P1)
 **source**: `message.c`(增强)
 **target**:
