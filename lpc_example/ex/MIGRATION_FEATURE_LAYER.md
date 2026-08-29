@@ -205,6 +205,14 @@
 **测试**: craft_test.exs、backpack_test.exs、autoload_test.exs
 **依赖**: Batch 1/4、现有 Item.Registry + Scheduler
 
+> ✅ **DONE (Batch 5)** — 纯逻辑落地（ITEM_D 委托/宿主副作用为后续）
+> - `lib/kantele/item/craft.ex` — `Kantele.Item.Craft`(+`Level`)，移植 itemmake.c（weapon_level/apply_damage/apply_armor/chinese_s/item_owner/is_equiped_weapon/is_unarmed_weapon）
+> - `lib/kantele/item/backpack.ex` — `Kantele.Item.Backpack`，移植 user_storage.c（capacity/store/take/list_bag/serialize/deserialize）
+> - `lib/kantele/item/autoload.ex` — `Kantele.Item.Autoload`，移植 autoload.c（save/parse_entry/restore_plan）
+> - `lib/kantele/item/silentdest.ex` — `Kantele.Item.SilentDest`，移植 silentdest.c（should_destruct?/env 链判定）
+> - 测试: `test/kantele/item/batch5_test.exs`
+> - 全量: **489 tests, 0 failures** (471 + 18)
+
 ### Batch 6 — 移动 / 负重 / 生命周期 (P1)
 **source**: `move.c`(增强), `clean_up.c`, `shadow.c`, `condition.c`(通用化)
 **target**:
