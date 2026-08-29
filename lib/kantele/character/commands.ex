@@ -608,6 +608,13 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(QuestCommand) do
+    parse("quest", :run)
+    parse("myquest", :run)
+    parse("任务", :run)
+    parse("我的任务", :run)
+  end
+
   module(RideCommand) do
     parse("ride", :run, fn command ->
       command |> spaces() |> text(:rest)

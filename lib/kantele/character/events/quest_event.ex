@@ -10,9 +10,10 @@ defmodule Kantele.Character.QuestEvent do
 
   import Kalevala.Character.Conn
 
-  alias Kalevala.World.Item
   alias Kantele.Character.CommandView
+  alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Records
+  alias Kantele.Quest
 
   def turnin_request(conn, %{data: data}) do
     character = conn.character
@@ -47,11 +48,19 @@ defmodule Kantele.Character.QuestEvent do
 
     coins = (character.meta.coins || 0) + (Map.get(rewards, :coins) || 0)
 
+    # 记录任务进度：标记已解并从在办移除（quest id 见 data[:quest]）
+    {quest_state, quest_id} = update_quests(character.meta, data)
+
     # 收走任务物品（v0 只收一个实例）
     character =
       character
       |> Map.put(:inventory, inventory_rest)
-      |> Map.put(:meta, %{character.meta | stats: stats, coins: coins})
+      |> Map.put(:meta, %{
+        character.meta
+        | stats: stats,
+          coins: coins,
+          quests: quest_state
+      })
 
     Records.save(character)
 
@@ -59,11 +68,30 @@ defmodule Kantele.Character.QuestEvent do
 
     conn
     |> put_character(character)
-    |> render(CommandView, "text", %{text: quest_text(data, rewards)})
+    |> render(CommandView, "text", %{text: quest_text(data, rewards, quest_id)})
     |> prompt(CommandView, "prompt", %{})
   end
 
-  defp quest_text(data, rewards) do
+  # 任务进度更新（CORE_USER_QUEST）：有 quest id 则 set_solved + del_todo
+  defp update_quests(meta, data) do
+    quest_id = Map.get(data, :quest)
+
+    if is_binary(quest_id) and quest_id != "" do
+      state = PlayerMeta.quests(meta)
+
+      state =
+        case Quest.set_solved(state, %{file: quest_id}) do
+          {:ok, s} -> s
+          _ -> state
+        end
+
+      {Quest.del_todo(state, quest_id), quest_id}
+    else
+      {PlayerMeta.quests(meta), nil}
+    end
+  end
+
+  defp quest_text(data, rewards, _quest_id) do
     [
       "你把东西交给了#{Map.get(data, :vendor_name)}。\n",
       "任务完成！（实战经验+#{Map.get(rewards, :exp) || 0} 潜能+#{

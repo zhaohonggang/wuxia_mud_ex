@@ -41,7 +41,8 @@ defmodule Kantele.Character.PlayerMeta do
     attack_default_object: nil,
     attack_default_function: nil,
     attack_competitor: nil,
-    override: %{}
+    override: %{},
+    quests: nil
   ]
 
   defimpl Kalevala.Meta.Trim do
@@ -161,6 +162,16 @@ defmodule Kantele.Character.PlayerMeta do
   @doc "删除临时值（LPC delete_temp/2）"
   def delete_temp(%__MODULE__{} = meta, key),
     do: %{meta | temp: Map.delete(meta.temp, key)}
+
+  # ---- quest 进度（运行态，Kantele.Quest 状态；nil 懒初始化）----
+  @doc "任务进度状态（缺省按空 Kantele.Quest 兜底）"
+  def quests(%__MODULE__{} = meta) do
+    meta.quests || Kantele.Quest.new()
+  end
+
+  @doc "写任务进度状态"
+  def put_quests(%__MODULE__{} = meta, quest_state),
+    do: %{meta | quests: quest_state}
 end
 
 defmodule Kantele.Character.NonPlayerMeta do
