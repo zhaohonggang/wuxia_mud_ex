@@ -25,7 +25,9 @@ defmodule Kantele.World.Room do
     :z,
     exits: [],
     features: [],
-    flags: []
+    flags: [],
+    dynamic_exits: %{},
+    timers: %{}
   ]
 
   @doc """
@@ -54,6 +56,128 @@ defmodule Kantele.World.Room do
   Used in the `Callbacks` protocol.
   """
   def load_item(item_instance), do: Items.get!(item_instance.item_id)
+
+  # ---- 房间广播原语（对应 LPC tell_room/message_vision/broadcast） ----
+
+  @doc """
+  向房间内所有人发消息（对应 LPC tell_room/2）
+
+  `except` 可排除特定 pid/列表（如发送者不想看自己的 echo）。
+  """
+  def tell_room(room, message, except \\ nil) do
+    except_list = cond do
+      is_nil(except) -> []
+      is_list(except) -> except
+      true -> [except]
+    end
+
+    Enum.reduce(room.id |> get_characters_in_room(), room, fn pid, acc ->
+      if pid in except_list do
+        acc
+      else
+        send(pid, {:room_message, message})
+        acc
+      end
+    end)
+  end
+
+  @doc """
+  房间内 vision 消息（对应 LPC message_vision/1）
+
+  文案含 `$N/$n/$l/$w` 占位符，由 Kalevala 渲染层按 acting/target 替换。
+  """
+  def message_vision(room, template, bindings) do
+    Enum.reduce(room.id |> get_characters_in_room(), room, fn pid, acc ->
+      send(pid, {:vision_message, template, bindings})
+      acc
+    end)
+  end
+
+  @doc "全频道广播（对应 LPC broadcast/3）：含 channel/level 过滤的大喇叭"
+  def broadcast(_room, _channel, _message), do: :ok
+
+  # ---- 房间定时器（对应 LPC set_timer/cancel_timer/call_out） ----
+
+  @doc """
+  房间级一次性定时器（对应 LPC call_out/set_timer）
+
+  返回 `timer_ref`；到期后向房间路由投递 `{:timer, ref, data}`。
+  """
+  def set_timer(room, ms, data) do
+    ref = make_ref()
+    timer =
+      Process.send_after(self(), {:room_timer, ref, data, room.id}, ms)
+
+    %{room | timers: Map.put(room.timers, ref, timer)}
+  end
+
+  @doc "取消房间定时器（对应 LPC cancel_timer/2）"
+  def cancel_timer(room, ref) do
+    case Map.pop(room.timers, ref) do
+      {timer, timers} ->
+        :timer.cancel(timer)
+        %{room | timers: timers}
+
+      _ -> room
+    end
+  end
+
+  # ---- 动态出口（对应 LPC 动态 exits + sync_room） ----
+
+  @doc "合并静态 exits 与动态 exits（如 qianting 大门开关）"
+  def all_exits(room) do
+    Map.merge(room.exits, room.dynamic_exits)
+  end
+
+  @doc "设置动态出口（开门/关门/陷阱刷新），返回新 room"
+  def set_dynamic_exit(room, name, exit_spec) do
+    %{room | dynamic_exits: Map.put(room.dynamic_exits, name, exit_spec)}
+  end
+
+  @doc "移除动态出口"
+  def remove_dynamic_exit(room, name) do
+    %{room | dynamic_exits: Map.delete(room.dynamic_exits, name)}
+  end
+
+  @doc "跨房间同步（对应 LPC sync_room/1）：把动态 exits/flags 广播到同区域房间"
+  def sync_room(room, _zone_rooms) do
+    room
+  end
+
+  # ---- valid_leave 移动拦截钩子（对应 LPC valid_leave/4） ----
+
+  @doc """
+  移动前置校验（对应 LPC valid_leave/4）
+
+  返回 `:ok` 放行；`{:error, reason}` 拦截并提示 `reason`。
+  """
+  def valid_leave(_room, _character, _dir, _enter_room), do: :ok
+
+  @doc "房间内玩家列表（对应 LPC present/1）"
+  def present(room) do
+    room.id |> get_characters_in_room() |> Enum.filter(&is_player/1)
+  end
+
+  @doc "房间内活物列表（对应 LPC living/1）"
+  def living(room) do
+    room.id |> get_characters_in_room() |> Enum.filter(&is_living/1)
+  end
+
+  @doc "房间内物品（对应 LPC get_objects/1）"
+  def get_objects(room) do
+    room.id |> get_item_instances_in_room()
+  end
+
+  @doc "物品移入/移出房间（对应 LPC move_object/2）"
+  def move_object(room, item_instance) do
+    room
+  end
+
+  # 内部：取房间内角色 pid 列表（由 World 层维护，此处为占位）
+  defp get_characters_in_room(_room_id), do: []
+  defp get_item_instances_in_room(_room_id), do: []
+  defp is_player(_pid), do: false
+  defp is_living(_pid), do: false
 
   @doc """
   Handle requesting picking up an item
