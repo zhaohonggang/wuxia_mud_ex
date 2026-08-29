@@ -238,6 +238,11 @@
 **测试**: message_io_test.exs
 **依赖**: 现有 Output
 
+> ✅ **DONE (Batch 7)** — 纯格式化层
+> - `lib/kantele/communication/message.ex` — `Kantele.Communication.Message`，移植 message.c（color_class 消息类→ANSI、s 染色、prompt_prefix 四种/自定义、buffer_message 输入缓冲≤500、drain_buffer、written 状态机）
+> - 测试: `test/kantele/communication/message_test.exs`
+> - 全量: **513 tests, 0 failures** (505 + 8)
+
 ### Batch 8 — 工具/协议（⏸ 延期，最后做）
 **source**: `vi.c`, `edit.c`, `more.c`, `shell.c`, `user_gmcp.c`, `user_mxp.c`
 **target**（单独里程碑，核心可玩性之后）:
