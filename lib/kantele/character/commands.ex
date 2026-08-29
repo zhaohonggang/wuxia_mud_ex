@@ -16,17 +16,22 @@ defmodule Kantele.Character.Commands do
   end
 
   module(DrinkCommand) do
-    parse("drink", :run)
-    parse("heal", :run)
-    parse("喝药", :run)
+    parse("drink", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
 
-    # 中文别名（A8/N1）：裸命令加词边界（后随字符须为空白/结尾）
-    parse("喝", :run, [],
-      fn command ->
-        command
-        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
-      end
-    )
+    parse("heal", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+
+    parse("喝药", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+
+    # 带参中文别名靠必需空格自然分词：喝某个东西不会误触喝?
+    parse("喝", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
   end
 
   module(EatCommand) do

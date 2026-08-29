@@ -323,3 +323,4 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
 | 2026-08-29 | Dealer 宿主接线：sell/卖/变卖 + value/估价 命令接 Kantele.Npc.Dealer（do_value 估价、do_sell 收购 x3/10，扣物加钱落盘，+7 tests） |
 | 2026-08-29 | Help 宿主接线：help/帮助 命令列出全部主题 + 按 key/keyword 查找（中文别名），索引页渲染（+5 tests） |
 | 2026-08-29 | NPC 商店重做（方案2）：list 货单接 Kantele.Npc.Dealer.build_list（{short,unit,price,count} 目录大量供应原版样式），buy 计价接 Dealer.do_buy（do_buy 单价串联），ShopView 渲染 名字(id)+单位×大量+价格串；build_list 行补 :short 字段 |
+| 2026-08-29 | eat/drink 重构：Kantele.Item.Effect 扩展数据驱动 consume/3（读 meta.food/medicine 计算 vitals/stats 增量、四维软上限拒绝），eat+drink 命令接入统一效果层，去除硬编码 global:potion+80/50，drink 注册改需 item_name 参数，新增 10 tests（626 total） |

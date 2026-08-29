@@ -70,10 +70,10 @@ defmodule Kantele.Character.RouterAliasesTest do
     assert_command("脱 布袍", Kantele.Character.WieldCommand, :remove, %{"item_name" => "布袍"})
   end
 
-  test "吃 → eat、喝 → drink、喝药 保持不变" do
+  test "吃 → eat、喝 → drink、喝药（均需物品名参数）" do
     assert_command("吃 包子", Kantele.Character.EatCommand, :run, %{"item_name" => "包子"})
-    assert_command("喝", Kantele.Character.DrinkCommand, :run)
-    assert_command("喝药", Kantele.Character.DrinkCommand, :run)
+    assert_command("喝 金创药", Kantele.Character.DrinkCommand, :run, %{"item_name" => "金创药"})
+    assert_command("喝药 金创药", Kantele.Character.DrinkCommand, :run, %{"item_name" => "金创药"})
     assert parse("喝酒") == {:error, :unknown}
   end
 

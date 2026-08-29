@@ -1,11 +1,14 @@
 defmodule Kantele.Item.FeatureItemTest do
   use ExUnit.Case, async: true
 
+  alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
   alias Kantele.Item.Effect
   alias Kantele.Item.Liquid
   alias Kantele.Item.Transport
   alias Kantele.Item.Equip
   alias Kantele.Item.Cutable
+  alias Kantele.World.Item.Meta
 
   describe "Effect (food/liquid 效果栈)" do
     test "apply_effect 追加/上限 12/保序" do
@@ -34,6 +37,63 @@ defmodule Kantele.Item.FeatureItemTest do
     test "clear_effect 清空" do
       eff = Effect.apply_effect(nil, fn -> :x end)
       assert Effect.clear_effect(eff) == []
+    end
+  end
+
+  describe "Consume (数据驱动 food/medicine)" do
+    test "纯食物：无药效、无效果文案" do
+      vitals = Vitals.new()
+      stats = Stats.new()
+
+      assert {:ok, effect} =
+               Effect.consume(vitals, stats, %Meta{food: 20})
+
+      assert effect.food? == true
+      assert effect.medicine? == false
+      assert effect.parts == []
+      assert effect.vitals == vitals
+      assert effect.stats == stats
+    end
+
+    test "药效：气血回复钳到上限" do
+      vitals = %{Vitals.new() | qi: 100}
+      stats = Stats.new()
+
+      assert {:ok, effect} =
+               Effect.consume(vitals, stats, %Meta{medicine: %{qi: 50, stats: %{str: 1}}})
+
+      assert effect.vitals.qi == 150
+      assert effect.parts == ["气血+50", "臂力+1"]
+    end
+
+    test "四维永久+1" do
+      vitals = Vitals.new()
+      stats = %{Stats.new() | str: 20}
+
+      assert {:ok, effect} =
+               Effect.consume(vitals, stats, %Meta{medicine: %{stats: %{str: 1}}})
+
+      assert effect.stats.str == 21
+    end
+
+    test "声明的四维全部到软上限 -> reject" do
+      vitals = Vitals.new()
+      stats = %{Stats.new() | str: 30}
+
+      assert {:reject, reason} =
+               Effect.consume(vitals, stats, %Meta{medicine: %{stats: %{str: 1}}})
+
+      assert reason =~ "再难精进"
+    end
+
+    test "无 medicine/food -> 空效果" do
+      vitals = Vitals.new()
+      stats = Stats.new()
+
+      assert {:ok, effect} = Effect.consume(vitals, stats, %Meta{})
+      assert effect.food? == false
+      assert effect.medicine? == false
+      assert effect.parts == []
     end
   end
 
