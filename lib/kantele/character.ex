@@ -33,7 +33,14 @@ defmodule Kantele.Character.PlayerMeta do
     :team_pending,
     temp: %{},
     followers: [],
-    damage: %{}
+    damage: %{},
+    attack_killer: [],
+    attack_want_kills: [],
+    attack_enemy: [],
+    attack_next_action: nil,
+    attack_default_object: nil,
+    attack_default_function: nil,
+    attack_competitor: nil
   ]
 
   defimpl Kalevala.Meta.Trim do
@@ -56,6 +63,46 @@ defmodule Kantele.Character.PlayerMeta do
 
   def update_damage(%__MODULE__{} = meta, fun) do
     %{meta | damage: fun.(meta.damage || %{})}
+  end
+
+  # ---- attack 状态（会话级，对应 LPC F_ATTACK，不落盘、不进房间视图）----
+  @doc "攻击/仇恨状态：killer/want_kills/enemy/next_action/competitor"
+  def attack_state(%__MODULE__{
+        attack_killer: killer,
+        attack_want_kills: want_kills,
+        attack_enemy: enemy,
+        attack_next_action: next_action,
+        attack_default_object: default_object,
+        attack_default_function: default_function,
+        attack_competitor: competitor
+      }) do
+    %{
+      killer: killer,
+      want_kills: want_kills,
+      enemy: enemy,
+      next_action: next_action,
+      default_object: default_object,
+      default_function: default_function,
+      competitor: competitor
+    }
+  end
+
+  def put_attack(%__MODULE__{} = meta, attack) do
+    %{meta |
+      attack_killer: attack.killer || [],
+      attack_want_kills: attack.want_kills || [],
+      attack_enemy: attack.enemy || [],
+      attack_next_action: attack.next_action,
+      attack_default_object: attack.default_object,
+      attack_default_function: attack.default_function,
+      attack_competitor: attack.competitor
+    }
+  end
+
+  def update_attack(%__MODULE__{} = meta, fun) do
+    current = attack_state(meta)
+    new_attack = fun.(current)
+    put_attack(meta, new_attack)
   end
 
   # ---- temp 存储（对应 LPC get_temp/put_temp/delete_temp/add_temp）----
