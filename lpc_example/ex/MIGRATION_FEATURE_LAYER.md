@@ -165,6 +165,15 @@
 **测试**: family_test.exs、guarder_test.exs、coagent_test.exs
 **依赖**: Batch 1 (skill_limit)、现有 `Kantele.Npc` + AskHandler + damage/attack
 
+> ✅ **DONE (Batch 3)**
+> - `lib/kantele/character/family.ex` — `Kantele.Character.Family`，移植 apprentice.c（is_apprentice_of/has_family/create_family/assign_apprentice/recruit_apprentice）
+> - `lib/kantele/npc/master.ex` — `Kantele.Npc.Master`，移植 master.c（prevent_learn/attempt_detach）
+> - `lib/kantele/npc/guarder.ex` — `Kantele.Npc.Guarder`，移植 guarder.c（permit_pass/check_enemy）
+> - `lib/kantele/npc/coagent.ex` — `Kantele.Npc.Coagent`，移植 coagent.c（start_help/finish_help）
+> - `lib/kantele/npc/quester.ex` + `lib/kantele/quest.ex` — 移植 quester.c + QUEST_D 桩
+> - 测试: `test/kantele/character/family_test.exs`、`test/kantele/npc/traits_test.exs`
+> - 全量: **449 tests, 0 failures** (420 + 29)
+
 ### Batch 4 — 物品类型扩展 (P0/P1)
 **source**: `food.c`, `liquid.c`, `cutable.c`, `transport.c`, `equip.c`(增强)
 **target**:
