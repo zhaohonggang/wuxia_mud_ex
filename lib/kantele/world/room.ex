@@ -179,6 +179,75 @@ defmodule Kantele.World.Room do
   defp is_player(_pid), do: false
   defp is_living(_pid), do: false
 
+  # ---- add_action 指令分发（对应 LPC add_action/2，棋房/拱猪/房间动词） ----
+
+  @doc """
+  房间级动词注册（对应 LPC add_action/2）
+
+  把自定义动词绑定到房间实例，玩家输入时优先匹配房间动词。
+  `verbs` 为 `%{verb_name => {module, function, args}}` 或
+  `%{verb_name => {module, function, args, :help_text}}`。
+
+  返回更新后的 room（将 verbs 存入 `dynamic_exits[:verbs]` 兼容字段）。
+  """
+  def add_action(room, verbs) when is_map(verbs) do
+    existing = Map.get(room.dynamic_exits, :verbs, %{})
+    %{room | dynamic_exits: Map.merge(existing, verbs)}
+  end
+
+  @doc "解析并执行房间动词（由 Kalevala.Verb 路由调用）"
+  def resolve_verb(room, verb_name, context, _args) do
+    verbs = Map.get(room.dynamic_exits, :verbs, %{})
+
+    case Map.get(verbs, verb_name) do
+      {module, fun, args} ->
+        apply(module, fun, [context, args])
+      {module, fun, args, _help} ->
+        apply(module, fun, [context, args])
+      nil ->
+        {:error, :no_such_verb}
+    end
+  end
+
+  # ---- 座位/玩家清单（对应 LPC seat/present/living） ----
+
+  @doc "房间座位表（对应 LPC qiyuan2 的 `%{black, white, game}`）"
+  def get_seats(room), do: Map.get(room.dynamic_exits, :seats, %{})
+
+  @doc "设置座位（落子/入座/开始对弈）"
+  def set_seat(room, seat_name, player_info) do
+    seats = get_seats(room)
+    %{room | dynamic_exits: Map.put(room.dynamic_exits, :seats, Map.put(seats, seat_name, player_info))}
+  end
+
+  @doc "移除座位玩家"
+  def clear_seat(room, seat_name) do
+    seats = get_seats(room)
+    %{room | dynamic_exits: Map.put(room.dynamic_exits, :seats, Map.delete(seats, seat_name))}
+  end
+
+  # ---- 跨房间同步完善（对应 LPC sync_room/1） ----
+
+  @doc "跨房间同步动态状态（出口/标记/座位/定时器）到同区域房间"
+  def sync_room(room, zone_rooms) do
+    Enum.reduce(zone_rooms, room, fn other_room, acc ->
+      if other_room.zone_id == room.zone_id and other_room.id != room.id do
+        # 广播动态出口/标记/座位变更
+        send(other_room.pid, {:room_sync, room.id, %{
+          dynamic_exits: room.dynamic_exits,
+          flags: room.flags
+        }})
+      end
+      acc
+    end)
+  end
+
+  @doc "房间内物品移入/移出（对应 LPC move_object/2）"
+  def move_object(room, item_instance) do
+    # 实际由 World.Items 维护实例位置，此处仅作钩子
+    room
+  end
+
   @doc """
   Handle requesting picking up an item
 
