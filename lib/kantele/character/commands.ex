@@ -464,6 +464,16 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(DetachCommand) do
+    parse("detach", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+
+    parse("叛师", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+  end
+
   module(PaiCommand) do
     parse("pai", :run)
 

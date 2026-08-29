@@ -22,7 +22,8 @@ defmodule Kantele.Character.LearnCommand do
       skill: params["skill"],
       name: name,
       times: times,
-      student_stats: conn.character.meta.stats
+      student_stats: conn.character.meta.stats,
+      student_family: conn.character.meta.family
     })
     |> assign(:prompt, false)
   end

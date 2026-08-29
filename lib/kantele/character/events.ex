@@ -193,6 +193,7 @@ defmodule Kantele.Character.NonPlayerEvents do
 
     module(NpcFamilyEvent) do
       event("family/apprentice", :apprentice)
+      event("family/detach", :detach)
     end
 
     module(WanderEvent) do

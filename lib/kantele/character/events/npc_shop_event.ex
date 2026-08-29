@@ -1,12 +1,16 @@
 defmodule Kantele.Character.NpcFamilyEvent do
   @moduledoc """
-  NPC 侧拜师应答（A11/N5 门派 v0）
+  NPC 侧拜师/叛师应答（A11/N5 门派 v0）
 
   带 teach 配置（即有门派）的 NPC 应允拜师，把门派名与师父信息
   回给玩家进程存档；无 teach 配置者婉拒。
+  叛师请求使用 Master.attempt_detach 判定是否为嫡传弟子。
   """
 
   use Kalevala.Character.Event
+
+  alias Kantele.Character.Family
+  alias Kantele.Npc.Master
 
   def apprentice(conn, %{data: %{reply_to: reply_to, student_name: student_name}}) do
     teach = conn.character.meta.teach
@@ -35,6 +39,28 @@ defmodule Kantele.Character.NpcFamilyEvent do
           }
         })
 
+        conn
+    end
+  end
+
+  def detach(conn, %{data: %{reply_to: reply_to, student_family: student_family}}) do
+    my_family = conn.character.meta.family
+
+    case Master.attempt_detach(conn.character.meta.family, student_family, Map.get(student_family, :name)) do
+      {:noop} ->
+        send(reply_to, %Kalevala.Event{
+          from_pid: self(),
+          topic: "family/detach-result",
+          data: %{ok: false, reason: "#{conn.character.name}摆了摆手：你并非我门下弟子，何来叛师之说？"}
+        })
+        conn
+
+      {:detach, %{penalty?: penalty?}} ->
+        send(reply_to, %Kalevala.Event{
+          from_pid: self(),
+          topic: "family/detach-result",
+          data: %{ok: true, penalty?: penalty?, master_name: conn.character.name}
+        })
         conn
     end
   end
