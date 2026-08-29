@@ -158,7 +158,12 @@ defmodule Kantele.Character.Commands do
       command |> spaces() |> text(:topic)
     end)
 
+    parse("帮助", :show, fn command ->
+      command |> spaces() |> text(:topic)
+    end)
+
     parse("help", :index)
+    parse("帮助", :index)
   end
 
   module(CommandsCommand) do

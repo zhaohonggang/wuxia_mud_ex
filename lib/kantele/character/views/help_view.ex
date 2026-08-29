@@ -1,10 +1,23 @@
 defmodule Kantele.Character.HelpView do
   use Kalevala.Character.View
 
-  def render("index", _assigns) do
-    ~E"""
-    Available topics:
-    """
+  def render("index", %{topics: topics}) do
+    ["可用帮助主题：\n"] ++
+      Enum.map(topics, fn topic -> render("_entry", %{topic: topic}) end)
+  end
+
+  def render("_entry", %{topic: %{key: key, title: title, tagline: tagline}}) do
+    padding = String.pad_trailing(key, 12)
+
+    line = ~i(  {color foreground="white"}#{padding}{/color} #{title})
+
+    case tagline do
+      tag when is_binary(tag) and tag != "" ->
+        [line, ~i(（#{tag}）), "\n"]
+
+      _ ->
+        [line, "\n"]
+    end
   end
 
   def render("show", %{help_topic: help_topic}) do
