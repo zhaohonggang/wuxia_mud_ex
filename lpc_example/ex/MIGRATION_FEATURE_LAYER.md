@@ -148,6 +148,12 @@
 **测试**: finance_test.exs、banker_test.exs
 **依赖**: Batch 1 的 `query_level`（无强依赖，可并行）
 
+> ✅ **DONE (Batch 2)**
+> - `lib/kantele/economy/money.ex` — `Kantele.Economy.Money`，移植 finance.c（split/total_value/can_afford/pay/money_str/normalize）
+> - `lib/kantele/npc/banker.ex` — `Kantele.Npc.Banker`，移植 banker.c（check/convert/deposit/withdraw/transfer 纯逻辑）
+> - 测试: `test/kantele/economy/money_test.exs`、`test/kantele/npc/banker_test.exs`
+> - 全量: **420 tests, 0 failures** (406 + 14)
+
 ### Batch 3 — NPC 社会关系与守卫 (P0/P1)
 **source**: `apprentice.c`, `master.c`, `guarder.c`, `coagent.c`, `quester.c`
 **target**:
