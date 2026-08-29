@@ -6,13 +6,18 @@ defmodule Kantele.NPC.ZhangSanfeng do
     - "鹤嘴劲"：入门测试
     - "收徒"：拜师
     - "真武剑"：师门唯一物品发放
+    - "九阳神功"：内功传授
+    - "太极拳" / "太极剑"：武学传授
+    - "真武剑法"：剑法传授
   """
 
   @behaviour Kantele.NPC.AskHandler
 
+  alias Kantele.Character
   alias Kantele.Character.Stats
-  alias Kantele.Character.Presence
-  alias Kantele.Combat.Skills
+  alias Kantele.Character.PlayerMeta
+  alias Kantele.Character.Combat
+  alias Kantele.Item.Registry
 
   @impl true
   def ask_specs do
@@ -32,13 +37,13 @@ defmodule Kantele.NPC.ZhangSanfeng do
             Stats.skill(asker.meta.stats, "taiji-quan") >= 1 ->
               :ok
             true ->
-              {:error, "你的太极拳火候不足，老道暂不收徒。\n"}
+              {:error, "你的太极拳火候不够，老道暂不收徒。\n"}
           end
         end,
         execute: fn asker, npc ->
           asker = Map.put(asker.meta, :family, "wudang")
           npc = Map.put(npc.meta, :disciples, [asker.id | Map.get(npc.meta, :disciples, [])])
-          send(asker.pid, {:room_message, "张三丰大笑：「好徒儿！从此你便是吾武当派第 N 代弟子。」\n"})
+          send(asker.pid, {:room_message, "张三丰大笑：「好徒儿！从此你便是吾武当派弟子。」\n"})
           :ok
         end,
         effects: [{:set_faction, "wudang"}, {:add_gongxian, 10}]
@@ -59,6 +64,74 @@ defmodule Kantele.NPC.ZhangSanfeng do
           :ok
         end,
         effects: [{:give_unique_item, "zhenwu_sword"}]
+      },
+
+      "九阳神功" => %{
+        check: fn asker, _npc ->
+          cond do
+            asker.meta.family == "wudang" ->
+              :ok
+            true ->
+              {:error, "非本派弟子，不可传九阳神功。\n"}
+          end
+        end,
+        execute: fn asker, _npc ->
+          asker = Map.put(asker.meta, :learned_skills, Map.put(asker.meta.learned_skills || %{}, "jiuyang-shengong", 1))
+          send(asker.pid, {:room_message, "张三丰凝神传授：「九阳神功心法……」（此处省略内功心法）\n"})
+          :ok
+        end,
+        effects: [{:learn_skill, "jiuyang-shengong"}]
+      },
+
+      "太极拳" => %{
+        check: fn asker, _npc ->
+          cond do
+            asker.meta.family == "wudang" ->
+              :ok
+            true ->
+              {:error, "非本派弟子，不可传太极拳。\n"}
+          end
+        end,
+        execute: fn asker, _npc ->
+          asker = Map.put(asker.meta, :learned_skills, Map.put(asker.meta.learned_skills || %{}, "taiji-quan", 1))
+          send(asker.pid, {:room_message, "张三丰缓缓演示：「太极拳乃以柔克刚……」（此处省略拳谱）\n"})
+          :ok
+        end,
+        effects: [{:learn_skill, "taiji-quan"}]
+      },
+
+      "太极剑" => %{
+        check: fn asker, _npc ->
+          cond do
+            asker.meta.family == "wudang" ->
+              :ok
+            true ->
+              {:error, "非本派弟子，不可传太极剑。\n"}
+          end
+        end,
+        execute: fn asker, _npc ->
+          asker = Map.put(asker.meta, :learned_skills, Map.put(asker.meta.learned_skills || %{}, "taiji-jian", 1))
+          send(asker.pid, {:room_message, "张三丰拔剑演示：「太极剑意在剑先……」（此处省略剑谱）\n"})
+          :ok
+        end,
+        effects: [{:learn_skill, "taiji-jian"}]
+      },
+
+      "真武剑法" => %{
+        check: fn asker, _npc ->
+          cond do
+            asker.meta.family == "wudang" ->
+              :ok
+            true ->
+              {:error, "非本派弟子，不可传真武剑法。\n"}
+          end
+        end,
+        execute: fn asker, _npc ->
+          asker = Map.put(asker.meta, :learned_skills, Map.put(asker.meta.learned_skills || %{}, "zhenwu-jianfa", 1))
+          send(asker.pid, {:room_message, "张三丰传授：「真武剑法乃武当镇派绝学……」（此处省略剑谱）\n"})
+          :ok
+        end,
+        effects: [{:learn_skill, "zhenwu-jianfa"}]
       }
     }
   end
