@@ -32,7 +32,8 @@ defmodule Kantele.Character.PlayerMeta do
     :riding,
     :team_pending,
     temp: %{},
-    followers: []
+    followers: [],
+    damage: %{}
   ]
 
   defimpl Kalevala.Meta.Trim do
@@ -45,6 +46,16 @@ defmodule Kantele.Character.PlayerMeta do
     def get(meta, key), do: Map.get(meta, key)
 
     def put(meta, key, value), do: Map.put(meta, key, value)
+  end
+
+  # ---- damage 状态（会话级，对应 LPC F_DAMAGE，不落盘、不进房间视图）----
+  @doc "伤害追踪状态：last_damage_from/name, defeated_by/who, ghost, defeat_player[]"
+  def damage_state(%__MODULE__{damage: dmg}), do: dmg
+
+  def put_damage(%__MODULE__{} = meta, dmg), do: %{meta | damage: dmg}
+
+  def update_damage(%__MODULE__{} = meta, fun) do
+    %{meta | damage: fun.(meta.damage || %{})}
   end
 
   # ---- temp 存储（对应 LPC get_temp/put_temp/delete_temp/add_temp）----
