@@ -594,6 +594,20 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(NoteCommand) do
+    parse("note", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("便笺", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("笔记", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+  end
+
   module(RideCommand) do
     parse("ride", :run, fn command ->
       command |> spaces() |> text(:rest)

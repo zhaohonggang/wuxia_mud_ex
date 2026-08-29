@@ -106,13 +106,13 @@
 ### 1.11 ⏸ 延期批次（工具 + 协议，核心可玩性之后）
 | feature.c | 落地 | 说明 |
 |-----------|------|------|
-| `vi.c` (1146) | ⏸ | 全屏 vi 编辑器（巫师工具） |
-| `edit.c` | ⏸ | 简易行编辑器 |
-| `more.c` | ⏸ | 分页器 |
-| `shell.c` | ⏸ | 巫师 $...$ 求值 shell |
-| `user_gmcp.c` | ⏸ | GMCP/MSP 协议 |
-| `user_mxp.c` | ⏸ | MXP/MSDP/ZMP 协议 |
-| `sserver.c` | ⏸ | 法术服务 wrapper（vestigial） |
+| `vi.c` (1146) | ⏸ 废弃 | 全屏 vi 编辑器需整屏 raw 输入基础设施，不满足；以 `edit.c` 行编辑器替代 |
+| `edit.c` | ✅ | `Kantele.Editor.Line`（纯状态机）+ `note` 命令宿主接线 |
+| `more.c` | ✅ | `Kantele.Pager`（纯翻页解析 `resolve/...` + 进度） |
+| `shell.c` | ✅ | `Kantele.Shell`（纯 `$...$` 插值 = 变量存取，不含 eval） |
+| `user_gmcp.c` | ✅ | `Kantele.Protocol.GMCP`（纯消息串 + Char.Vitals/Room.Info 数据组装 + 滚动日志） |
+| `user_mxp.c` | ⏸ 废弃 | MXP/MSDP/ZMP 协议；efun 直通层无框架对应物 |
+| `sserver.c` | ⏸ 废弃 | 法术服务 wrapper 仅 7 行 vestigial，随 `user_mxp.c` 一并废弃 |
 | `itemmakeBak.c` | ⏸ | 重复备份，建议标记废弃不迁移 |
 | `coagent.c` → 见 1.7 | — | — |
 
@@ -262,13 +262,17 @@
 > - 测试: `test/kantele/skill_penalty_test.exs`
 > - 全量: **554 tests, 0 failures** (547 + 7)
 
-### Batch 8 — 工具/协议（⏸ 延期，最后做）
-**source**: `vi.c`, `edit.c`, `more.c`, `shell.c`, `user_gmcp.c`, `user_mxp.c`
-**target**（单独里程碑，核心可玩性之后）:
-- `Kantele.Editor.Vi` / `Kantele.Editor.Line` / `Kantele.Pager`
-- `Kantele.Shell`（巫师求值）
-- `Kantele.Protocol.GMCP/MXP`
-**测试**: editor_test.exs、shell_test.exs、protocol_test.exs
+### Batch 8 — 工具/协议 ✅（纯逻辑部分）
+**source**: `edit.c`, `more.c`, `shell.c`, `user_gmcp.c`（`vi.c`/`user_mxp.c`/`sserver.c` 标记废弃，不迁移）
+**target**（本批落地）:
+- `Kantele.Editor.Line`（纯行累积状态机）+ `note`/`便笺`/`笔记` 命令（`lib/kantele/character/commands/note_command.ex`，temp 会话 + prompt 循环）
+- `Kantele.Pager`（纯 `resolve/...`：默认下页 `n<行>Be`、`q`、`b`、`t`、`N` 跳行、`a,b` 区间、负偏移、>300 钳制、`progress_percent`/`at_end?`）
+- `Kantele.Shell`（纯 `$...$` 插值 + 变量存取；eval 落盘不受框架支持，剔除外）
+- `Kantele.Protocol.GMCP`（纯消息串 `Core.Hello {...}` + `char_vitals/1`/`room_info/1` 数据组装 + 50 条滚动日志）
+**测试**: `test/kantele/batch8_test.exs`（20）、`test/kantele/character/note_command_test.exs`（3）
+**全量**: **577 tests, 0 failures**（554 + 23）
+
+> 说明：框架每行输入按命令解析（无 LPC `input_to` 裸行捕获），且方向单字 `n`/`s` 等按前缀匹配会吞掉 `note` 单字——故 `note` 操作一律带参数（`note 正文` / `note .` / `note ~q`）。
 
 ---
 
@@ -280,8 +284,8 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
         └──► Batch2(经济) ───┘                       │
                         └──► Batch4(物品类型) ────────┘
                                 └──► Batch6(移动/生命周期)
-                                         └──► Batch7(消息)
-                                                  └──► Batch8(工具/协议 ⏸)
+                                                  └──► Batch7(消息)
+                                                           └──► Batch8(工具/协议 ✅ 纯逻辑)
 ```
 
 | 批次 | 核心价值 | 影响 feature 数 | 优先级 |
@@ -293,7 +297,7 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
 | Batch 5 | 锻造/背包/自动装载 | 4 | P1 |
 | Batch 6 | 负重/清场/通用 condition | 4 | P1 |
 | Batch 7 | 消息/提示补强 | 1 | P1 |
-| Batch 8 | 编辑/协议(工具层) | 6 | ⏸ 延期 |
+| Batch 8 | 编辑/协议(工具层，纯逻辑) | 3 移植 + 3 废弃 | ✅ 已完成 |
 
 ---
 
@@ -311,3 +315,4 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
 | 日期 | 变更 |
 |------|------|
 | 2026-08-29 | 创建文档，产出 49 feature 全量映射 + 8 批次推进计划 |
+| 2026-08-29 | Batch 8：port edit/more/shell/user_gmcp 纯逻辑（Editor.Line+note、Pager、Shell、GMCP）；vi/mxp/sserver 标记废弃 |
