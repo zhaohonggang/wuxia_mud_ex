@@ -42,7 +42,8 @@ defmodule Kantele.Character.PlayerMeta do
     attack_default_function: nil,
     attack_competitor: nil,
     override: %{},
-    quests: nil
+    quests: nil,
+    bank_coins: nil
   ]
 
   defimpl Kalevala.Meta.Trim do
@@ -172,6 +173,16 @@ defmodule Kantele.Character.PlayerMeta do
   @doc "写任务进度状态"
   def put_quests(%__MODULE__{} = meta, quest_state),
     do: %{meta | quests: quest_state}
+
+  # ---- 钱庄存款（运行态，banker.c 充裕余额；nil 懒初始化 0，暂不落盘）----
+  @doc "钱庄存款（铜钱；缺省 0）"
+  def bank_coins(%__MODULE__{} = meta) do
+    meta.bank_coins || 0
+  end
+
+  @doc "写钱庄存款（铜钱）"
+  def put_bank_coins(%__MODULE__{} = meta, value),
+    do: %{meta | bank_coins: value}
 end
 
 defmodule Kantele.Character.NonPlayerMeta do

@@ -615,6 +615,20 @@ defmodule Kantele.Character.Commands do
     parse("我的任务", :run)
   end
 
+  # 钱庄存取：带参形式先注册，裸 "bank" 才落到 :show 查余额
+  module(BankCommand) do
+    parse("bank", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("银行", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("银行", :show)
+    parse("bank", :show)
+  end
+
   module(RideCommand) do
     parse("ride", :run, fn command ->
       command |> spaces() |> text(:rest)
