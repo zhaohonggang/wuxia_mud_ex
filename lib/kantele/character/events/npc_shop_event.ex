@@ -50,6 +50,7 @@ defmodule Kantele.Character.NpcShopEvent do
 
   use Kalevala.Character.Event
 
+  alias Kantele.Npc.Dealer
   alias Kantele.World.Items
 
   def list(conn, %{data: %{reply_to: reply_to}}) do
@@ -60,11 +61,18 @@ defmodule Kantele.Character.NpcShopEvent do
         conn
 
       goods ->
-        items = Enum.reject(Enum.map(goods, &item_info/1), &is_nil/1)
+        catalog =
+          goods
+          |> Enum.map(fn item_id -> {item_id, item_info(item_id)} end)
+          |> Enum.reject(fn {_id, info} -> is_nil(info) end)
+          |> Enum.into(%{}, fn {_id, info} -> {info.id, info} end)
+
+        # 货单走纯层 dealer.c do_list：聚合 {short, unit, price, count}（目录大量供应）
+        rows = Dealer.build_list([], catalog)
 
         reply(reply_to, "shop/list-result", %{
           vendor: conn.character.name,
-          items: items
+          items: rows
         })
 
         conn
@@ -94,28 +102,55 @@ defmodule Kantele.Character.NpcShopEvent do
         conn
 
       info ->
-        reply(reply_to, "shop/buy-result", %{
-          vendor: conn.character.name,
-          unavailable: false,
-          item_id: info.item_id,
-          item_name: info.name,
-          price: info.price,
-          quantity: Map.get(data, :quantity, 1),
-          buyer_id: Map.get(data, :buyer_id),
-          buyer_name: Map.get(data, :buyer_name)
-        })
+        item_map = %{
+          name: info.name,
+          id: info.id,
+          unit: info.unit,
+          value: info.value,
+          file: info.id,
+          amount: 1
+        }
 
-        conn
+        # 计价走纯层 dealer.c do_buy（成本价因子 10 / 目录覆盖 / 店东折扣），
+        # 单价随 event 串联（玩家侧再按 quantity 乘总价）
+        case Dealer.do_buy(item_map, 1, %{}) do
+          {:ok, unit_price} ->
+            reply(reply_to, "shop/buy-result", %{
+              vendor: conn.character.name,
+              unavailable: false,
+              item_id: info.id,
+              item_name: info.name,
+              price: unit_price,
+              quantity: Map.get(data, :quantity, 1),
+              buyer_id: Map.get(data, :buyer_id),
+              buyer_name: Map.get(data, :buyer_name)
+            })
+
+            conn
+
+          {:reject, _msg} ->
+            reply(reply_to, "shop/buy-result", %{
+              vendor: conn.character.name,
+              unavailable: true,
+              item_name: info.name,
+              buyer_id: Map.get(data, :buyer_id),
+              buyer_name: Map.get(data, :buyer_name)
+            })
+
+            conn
+        end
     end
   end
 
   defp item_info(item_id) do
     item = Items.get!(item_id)
+    meta = item.meta || %{}
 
     %{
-      item_id: item_id,
+      id: item_id,
       name: item.name,
-      price: (item.meta && Map.get(item.meta, :value)) || 0
+      unit: Map.get(meta, :unit) || "个",
+      value: Map.get(meta, :value) || 0
     }
   rescue
     _ -> nil

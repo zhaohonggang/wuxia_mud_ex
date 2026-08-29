@@ -61,7 +61,7 @@ defmodule Kantele.Character.ShopTest do
 
     assert_receive %Event{topic: "shop/list-result", data: data}
     assert data.vendor == "店小二"
-    assert [%{item_id: "liuxi:baozi", name: "包子 Baozi", price: 15}] = data.items
+    assert [%{short: "包子 Baozi(liuxi:baozi)", unit: "个", price: 15, count: -1}] = data.items
   end
 
   test "非商人（无 goods）不应答" do

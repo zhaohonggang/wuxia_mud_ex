@@ -322,3 +322,4 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
 | 2026-08-29 | Fix：bank 裸命令断联——命令分发以双参 (conn, params) 调 :show，补 show/2 入口（+1 dispatch test） |
 | 2026-08-29 | Dealer 宿主接线：sell/卖/变卖 + value/估价 命令接 Kantele.Npc.Dealer（do_value 估价、do_sell 收购 x3/10，扣物加钱落盘，+7 tests） |
 | 2026-08-29 | Help 宿主接线：help/帮助 命令列出全部主题 + 按 key/keyword 查找（中文别名），索引页渲染（+5 tests） |
+| 2026-08-29 | NPC 商店重做（方案2）：list 货单接 Kantele.Npc.Dealer.build_list（{short,unit,price,count} 目录大量供应原版样式），buy 计价接 Dealer.do_buy（do_buy 单价串联），ShopView 渲染 名字(id)+单位×大量+价格串；build_list 行补 :short 字段 |
