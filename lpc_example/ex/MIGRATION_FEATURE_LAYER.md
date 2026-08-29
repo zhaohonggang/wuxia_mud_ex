@@ -25,12 +25,12 @@
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
 |-----------|------|----------------|------|
 | `dbase.c` | 🟢 | `Kantele.Character` (meta) | PlayerMeta temp 已实现；持久 dbase 由 Ecto schema 承载 |
-| `treemap.c` | 🟢 | (util) | 路径式 map 访问，可做纯 util |
+| `treemap.c` | ✅ | `Kantele.Util.TreeMap` | 路径式 map 访问（_query/_set/_delete，自动建中间层） |
 
 ### 1.2 身份 / 属性
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
 |-----------|------|----------------|------|
-| `name.c` | 🟡 | `Kantele.Character` | id/short/long/visible 现有，补 parse_command_id_list |
+| `name.c` | ✅ | `Kantele.Character.Name` | surname+purename 组名/无名氏/set_name/id?/parse_command_id_list/短名 |
 | `attribute.c` | 🔴 | `Kantele.Character.Stats` | 派生属性：str/int/con/dex/per/level = base + skill/10 + temp apply |
 | `sadjust.c` | 🔴 | `Kantele.Combat.Skills` | 技能上限 = combat_exp^3/10 |
 
@@ -72,7 +72,7 @@
 | `master.c` | 🔴 | `Kantele.Npc.Master` | prevent_learn / attempt_detach |
 | `guarder.c` | 🟡 | `Kantele.Npc.Guarder` | 守卫 permit_pass / kill_enemy / check_enemy |
 | `coagent.c` | 🔴 | `Kantele.Npc.Coagent` | 帮手 start_help / finish_help |
-| `team.c` | 🟢 | `Kantele.Character.Team` | team 已有；补 follow_me 覆盖 |
+| `team.c` | ✅ | `Kantele.Character.Team` | team 已有；补 follow?/2 (follow_me 决策) |
 | `finance.c` | 🔴 | `Kantele.Economy.Finance` | can_afford / pay_money (金/银/铜) |
 | `banker.c` | 🟡 | `Kantele.Npc.Banker` | 存款/汇兑/转账/离线转账 |
 | `dealer.c` | ✅ | `Kantele.Npc.Dealer` | 估价/收购/标价/购买价计算（纯函数，见 Batch 2 后补） |
@@ -248,6 +248,13 @@
 > - `lib/kantele/npc/vendor.ex` — `Kantele.Npc.Vendor`，移植 vendor.c（buy_object、price_string 金/银/铜分档、vendor_list 清单）
 > - 测试: `test/kantele/npc/dealer_test.exs`
 > - 全量: **529 tests, 0 failures** (513 + 16)
+
+> ✅ **DONE (补充：treemap + name + team follow)** — 小工具/决策补全
+> - `lib/kantele/util/treemap.ex` — `Kantele.Util.TreeMap`，移植 treemap.c（query/set 自动建中间层/delete）
+> - `lib/kantele/character/name.ex` — `Kantele.Character.Name`，移植 name.c（surname+purename 组名/无名氏、set_name、id?、parse_command_id_list、短名、非玩家首字母小写 ID）
+> - `lib/kantele/character/team.ex` — 补 `follow?/3`，移植 team.c follow_me 决策（leader/队伍首位跟随 + no_follow 身法判定）
+> - 测试: `test/kantele/followup_test.exs`
+> - 全量: **547 tests, 0 failures** (529 + 18)
 
 ### Batch 8 — 工具/协议（⏸ 延期，最后做）
 **source**: `vi.c`, `edit.c`, `more.c`, `shell.c`, `user_gmcp.c`, `user_mxp.c`
