@@ -61,6 +61,13 @@ items "longsword" {
     # "steal",
     # "remove"
   ]
+
+  meta = {
+    damage = 30
+    skill_type = "sword"
+    value = 500
+    flag = 4
+  }
 }
 
 # Healing

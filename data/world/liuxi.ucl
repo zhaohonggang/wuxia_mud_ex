@@ -190,6 +190,7 @@ items "changjian" {
     damage = 22
     skill_type = "sword"
     value = 300
+    flag = 1
     # b6/D3 多键武器加成：轻巧剑身出手更快（白名单键见 Combat.applies_keys）
     weapon_prop = {
       attack = 3

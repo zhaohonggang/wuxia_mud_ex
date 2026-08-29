@@ -65,6 +65,7 @@ defmodule Kantele.World.Item.Meta do
   - `food` 饱食度供给（对应 LPC food_supply；饥饿系统消费端属 O4）
   - `medicine` 药效 map（原样透传，如 `%{qi: 50, stats: %{str: 1}}`；消费端见 A7）
   - `book` 秘籍五元组 `%Meta.Book{}`（消费端研习命令属 b 期）
+  - `flag` 武器类型位掩码（LPC weapon.h：ONE_HANDED=0x1, SECONDARY=0x2, TWO_HANDED=0x4；缺省 0x1 单手）
   """
 
   defstruct [
@@ -80,7 +81,8 @@ defmodule Kantele.World.Item.Meta do
     :book,
     :armor_type,
     :weapon_prop,
-    :armor_prop
+    :armor_prop,
+    :flag
   ]
 
   @doc """
