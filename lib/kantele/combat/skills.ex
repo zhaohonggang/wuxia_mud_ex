@@ -64,6 +64,84 @@ defmodule Kantele.Combat.Skills do
     end)
   end
 
+  @doc """
+  死亡技能惩罚（对应 `feature/skill.c skill_death_penalty`）
+
+  无 `learned` 映射：每技能 -1，跌破 1 删除。
+  有 `learned` 映射（`%{技能 => 领悟点数}`）：若 `learned[sk] > (skills[sk]+1)^2/2`
+  则删 learned[sk]，否则 skills[sk]--，跌破 0 删除。
+  返回 `{skills_after, learned_after}`。
+  """
+  def skill_death_penalty(skills, learned \\ %{})
+
+  def skill_death_penalty(skills, learned) when map_size(learned) == 0 do
+    skills =
+      Enum.reduce(skills, %{}, fn {name, lvl}, acc ->
+        if lvl - 1 < 1, do: acc, else: Map.put(acc, name, lvl - 1)
+      end)
+
+    {skills, %{}}
+  end
+
+  def skill_death_penalty(skills, learned) do
+    {skills, learned} =
+      Enum.reduce(skills, {skills, learned}, fn {name, lvl}, {sk_acc, ln_acc} ->
+        learned_lvl = Map.get(ln_acc, name, 0)
+
+        if learned_lvl > div((lvl + 1) * (lvl + 1), 2) do
+          {sk_acc, Map.delete(ln_acc, name)}
+        else
+          new_lvl = if lvl - 1 < 0, do: nil, else: lvl - 1
+          sk_acc = if new_lvl, do: Map.put(sk_acc, name, new_lvl), else: Map.delete(sk_acc, name)
+          {sk_acc, ln_acc}
+        end
+      end)
+
+    {skills, learned}
+  end
+
+  @doc """
+  逐出师门技能惩罚（对应 `feature/skill.c skill_expell_penalty`）
+
+  - 技能文件不存在（`missing?/1` 谓词）→ 删除该技能
+  - 非 martial 类或 `martial-cognize` → 保留
+  - 可 enable parry/dodge/throwing/force（`guard_special?/1` 谓词）→ 删除
+  - 其余 >100 压回 100
+  `meta` 由调用方提供（按技能名查 type / valid_enable），形如
+  `%{name => %{type: "martial", guards: ["parry"]}}`。
+  """
+  def skill_expell_penalty(skills, meta) when is_map(skills) do
+    {done, _} =
+      Enum.reduce(skills, {%{}, meta}, fn {name, lvl}, {acc, m} ->
+        rel = Map.get(m, name, %{})
+
+        cond do
+          Map.get(rel, :missing, false) ->
+            {acc, m}
+
+          Map.get(rel, :type) != "martial" or name == "martial-cognize" ->
+            {Map.put(acc, name, lvl), m}
+
+          guards_special?(rel) ->
+            {acc, m}
+
+          lvl >= 100 ->
+            {Map.put(acc, name, 100), m}
+
+          true ->
+            {Map.put(acc, name, lvl), m}
+        end
+      end)
+
+    done
+  end
+
+  @doc "技能是否可 enable parry/dodge/throwing/force（skill_expell_penalty 谓词）"
+  def guards_special?(rel) do
+    guards = Map.get(rel, :guards, [])
+    Enum.any?(["parry", "dodge", "throwing", "force"], &(&1 in guards))
+  end
+
   defp extras() do
     :persistent_term.get({__MODULE__, :extra}, %{})
   end

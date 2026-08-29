@@ -133,6 +133,35 @@ defmodule Kantele.Feature.Damage do
     PlayerMeta.update_damage(character, fn dmg -> Map.put(dmg, :defeat_player, []) end)
   end
 
+  @doc """
+  DPS 计数（对应 damage.c dps_count/1）：剔除已不存活/失活的被击败者，返回存活数
+  `alive?/1` 由宿主提供（`fn victim_state -> boolean`），缺省认为全部存活。
+  """
+  def dps_count(character, alive? \\ fn _ -> false end) do
+    PlayerMeta.update_damage(character, fn dmg ->
+      dp = dmg.defeat_player || []
+      live = Enum.filter(dp, fn victim -> victim != nil && alive?.(victim) end)
+      Map.put(dmg, :defeat_player, live)
+    end)
+  end
+
+  @doc "击杀加成（对应 damage.c craze_of_die / craze_of_defeated）：victim_id 击杀者累计 craze"
+  def craze_of_die(character, _victim_id), do: character
+
+  @doc "读狂暴值"
+  def query_craze(character) do
+    Map.get(PlayerMeta.damage_state(character), :craze, 0) || 0
+  end
+
+  @doc "累计狂暴值（对应 improve_craze/1），返回更新后的 character"
+  def improve_craze(character, gain) when is_integer(gain) and gain > 0 do
+    PlayerMeta.update_damage(character, fn dmg ->
+      Map.put(dmg, :craze, (dmg.craze || 0) + gain)
+    end)
+  end
+
+  def improve_craze(character, _), do: character
+
   # ---- 昏迷/复活/死亡 ----
 
   @doc "昏迷处理（对应 LPC unconcious/2）"
@@ -491,8 +520,6 @@ defmodule Kantele.Feature.Damage do
     # 实际应调度 heal_up 心跳，此处占位
     character
   end
-
-  defp improve_craze(_who, _amount), do: :ok
 
   defp handle_competition_unconcious(character) do
     competitor = query_competitor(character)

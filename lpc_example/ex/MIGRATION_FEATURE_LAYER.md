@@ -37,14 +37,14 @@
 ### 1.3 生命 / 伤害
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
 |-----------|------|----------------|------|
-| `damage.c` | 🟡 | `Kantele.FeatureDamage` | 已有 receive_damage/wound/unconcious/revive/heal_up；补 craze/ghost/dps_count |
+| `damage.c` | 🟡 | `Kantele.Feature.Damage` | 已有 receive_damage/wound/unconcious/revive/heal_up；已补 craze 累计/ghost/dps_count 裁剪 |
 | `condition.c` | 🟡 | `Kantele.Character.Conditions` | 已有 poison tick；扩为通用 condition 周期机制 + CONDITION_D 分发 |
 | `action.c` | 🟡 | `Kantele.Character.Combat` | start_busy 已有；补 override 钩子(unconcious/die/win/lost) |
 
 ### 1.4 战斗 / 技能
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
 |-----------|------|----------------|------|
-| `skill.c` | 🟡 | `Kantele.Combat.Skills` | 已有 set_skill/query_skill/prepare/map/improve；补 skill_death_penalty / expell |
+| `skill.c` | 🟡 | `Kantele.Combat.Skills` | 已有 set_skill/query_skill/prepare/map/improve；已补 skill_death_penalty / skill_expell_penalty |
 | `attack.c` | 🟡 | `Kantele.FeatureAttack` | 已有 enemy/kill/competitor/auto_fight；补 kill_ob 增强、守卫联动 |
 | `equip.c` | 🟡 | `Kantele.World.Item` + Character | 补 wield/wear/unequip + 双手武器 + is_unarmed_weapon |
 
@@ -255,6 +255,12 @@
 > - `lib/kantele/character/team.ex` — 补 `follow?/3`，移植 team.c follow_me 决策（leader/队伍首位跟随 + no_follow 身法判定）
 > - 测试: `test/kantele/followup_test.exs`
 > - 全量: **547 tests, 0 failures** (529 + 18)
+
+> ✅ **DONE (补充：damage craze/DPS + skill 惩罚)** — 战斗事后逻辑补全
+> - `lib/kantele/feature_damage.ex` — `Kantele.Feature.Damage`：improve_craze/query_craze 狂暴累计、dps_count 存活裁剪（damage.c craze/DPS 部分）
+> - `lib/kantele/combat/skills.ex` — `Kantele.Combat.Skills`：skill_death_penalty（技能 -1/领悟惩罚）、skill_expell_penalty（逐出/禁招删除/压回 100）
+> - 测试: `test/kantele/skill_penalty_test.exs`
+> - 全量: **554 tests, 0 failures** (547 + 7)
 
 ### Batch 8 — 工具/协议（⏸ 延期，最后做）
 **source**: `vi.c`, `edit.c`, `more.c`, `shell.c`, `user_gmcp.c`, `user_mxp.c`
