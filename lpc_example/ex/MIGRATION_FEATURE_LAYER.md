@@ -1,0 +1,248 @@
+# 迁移计划：`mud/feature`（49 个 LPC 基础层文件）→ `lib/kantele`
+
+> 计划生成: 2026-08-29 ｜ 分支: `kalevala` ｜ 方式: **按批推进，每批可编译/可测试/可回滚，批批推送**
+> 目标: 把 `C:\files\git\mud\feature\*.c`（继承式 mudlib 基础层）完整接入真实游戏框架。
+
+---
+
+## 0. 现状基线
+
+- **当前全量测试**: 388 tests, 0 failures (flaky `death` 战斗测试偶发，isolated 通过)
+- 已完成 13 个 Phase 5 样本接入（feature_damage/attack、condition_poison、skill_taiji-quan/dugu-jiujian、room_qianting/qiyuan2/pigroom、item_yinzhen/qianzhumiji、room_wudu_liandu、npc_xiaoer/horseboss、class_wudang_zhang、system_npc_luban、class_generate_chinese）。
+- 注意：`mud/feature` 是**完整 mudlib 继承层**（Player/NPC/物品共享行为），与之前"单个样本".ex 迁移是**两个层面**。本次把底层能力系统化落地。
+
+---
+
+## 1. 全量映射：49 个 feature 文件 → 落地方式
+
+### 判定图例
+- 🟢 **已有/可复用**：`lib/kantele` 已有对应实现，本计划只补缺口或直接视为完成
+- 🟡 **需合并/扩展现有**：在现有模块上扩展
+- 🔴 **需新建**：framework 尚无，需新模块
+- ⏸ **延期**：工具/协议，核心可玩性之后再做
+
+### 1.1 基础数据容器
+| feature.c | 落地 | 对应 frame 模块 | 说明 |
+|-----------|------|----------------|------|
+| `dbase.c` | 🟢 | `Kantele.Character` (meta) | PlayerMeta temp 已实现；持久 dbase 由 Ecto schema 承载 |
+| `treemap.c` | 🟢 | (util) | 路径式 map 访问，可做纯 util |
+
+### 1.2 身份 / 属性
+| feature.c | 落地 | 对应 frame 模块 | 说明 |
+|-----------|------|----------------|------|
+| `name.c` | 🟡 | `Kantele.Character` | id/short/long/visible 现有，补 parse_command_id_list |
+| `attribute.c` | 🔴 | `Kantele.Character.Stats` | 派生属性：str/int/con/dex/per/level = base + skill/10 + temp apply |
+| `sadjust.c` | 🔴 | `Kantele.Combat.Skills` | 技能上限 = combat_exp^3/10 |
+
+### 1.3 生命 / 伤害
+| feature.c | 落地 | 对应 frame 模块 | 说明 |
+|-----------|------|----------------|------|
+| `damage.c` | 🟡 | `Kantele.FeatureDamage` | 已有 receive_damage/wound/unconcious/revive/heal_up；补 craze/ghost/dps_count |
+| `condition.c` | 🟡 | `Kantele.Character.Conditions` | 已有 poison tick；扩为通用 condition 周期机制 + CONDITION_D 分发 |
+| `action.c` | 🟡 | `Kantele.Character.Combat` | start_busy 已有；补 override 钩子(unconcious/die/win/lost) |
+
+### 1.4 战斗 / 技能
+| feature.c | 落地 | 对应 frame 模块 | 说明 |
+|-----------|------|----------------|------|
+| `skill.c` | 🟡 | `Kantele.Combat.Skills` | 已有 set_skill/query_skill/prepare/map/improve；补 skill_death_penalty / expell |
+| `attack.c` | 🟡 | `Kantele.FeatureAttack` | 已有 enemy/kill/competitor/auto_fight；补 kill_ob 增强、守卫联动 |
+| `equip.c` | 🟡 | `Kantele.World.Item` + Character | 补 wield/wear/unequip + 双手武器 + is_unarmed_weapon |
+
+### 1.5 移动 / 位置
+| feature.c | 落地 | 对应 frame 模块 | 说明 |
+|-----------|------|----------------|------|
+| `move.c` | 🟡 | `Kantele.World.Room` + Character | 已有 move_object；补 encumbrance/unequip-first/move_or_destruct/remove 钩子 |
+
+### 1.6 物品类型 / 工匠
+| feature.c | 落地 | 对应 frame 模块 | 说明 |
+|-----------|------|----------------|------|
+| `food.c` | 🟡 | `Kantele.Item` | 补 apply_effect 栈 (max 12) + do_effect |
+| `liquid.c` | 🟡 | `Kantele.Item` | 补 liquid fill level + apply_effect |
+| `cutable.c` | 🟡 | `Kantele.Item` | 补 do_cut 剁尸产件 (parts 映射) |
+| `itemmake.c` | 🟡 | `Kantele.Item` | 补 9 级武器/护甲锻造、item_owner、ITEM_D 委托动作；include 现有 qianzhumiji/yinzhen 模式 |
+| `noclone.c` | 🟢 | `Kantele.Item.Registry` | unique/no_clone 已有 |
+| `unique.c` | 🟢 | `Kantele.Item.Registry` | violate_unique / create_replica 已有 |
+| `silentdest.c` | 🔴 | `Kantele.Scheduler` | 无人时 auto-destruct |
+| `transport.c` | 🔴 | `Kantele.Mount` | 骑乘/驾驶载体 is_transport/owner |
+
+### 1.7 NPC / 社会 / 经济
+| feature.c | 落地 | 对应 frame 模块 | 说明 |
+|-----------|------|----------------|------|
+| `apprentice.c` | 🔴 | `Kantele.File.Family` | 师徒关系 assign_apprentice/create_family/recruit |
+| `master.c` | 🔴 | `Kantele.Npc.Master` | prevent_learn / attempt_detach |
+| `guarder.c` | 🟡 | `Kantele.Npc.Guarder` | 守卫 permit_pass / kill_enemy / check_enemy |
+| `coagent.c` | 🔴 | `Kantele.Npc.Coagent` | 帮手 start_help / finish_help |
+| `team.c` | 🟢 | `Kantele.Character.Team` | team 已有；补 follow_me 覆盖 |
+| `finance.c` | 🔴 | `Kantele.Economy.Finance` | can_afford / pay_money (金/银/铜) |
+| `banker.c` | 🟡 | `Kantele.Npc.Banker` | 存款/汇兑/转账/离线转账 |
+| `dealer.c` | 🟡 | `Kantele.Npc.Dealer` | 买卖/估价/consistence/折扣 |
+| `vendor.c` | 🟡 | `Kantele.Npc.Vendor` | 轻量 buy_object / price_string |
+| `quester.c` | 🟡 | `Kantele.Npc.Quests` | is_quester / ask_quest |
+| `autoload.c` | 🔴 | `Kantele.Item.Autoload` | 重登还原背包 |
+
+### 1.8 存储 / 玩家背包
+| feature.c | 落地 | 对应 frame 模块 | 说明 |
+|-----------|------|----------------|------|
+| `user_storage.c` | 🔴 | `Kantele.Item.Backpack` | do_store/take/list_bag + 排除规则 + depot 持久化 |
+| `save.c` | 🟢 | Ecto persistence | CORE_SAVE 占位，已由 Ecto 替代 |
+| `dbsave.c` | 🟢 | Ecto persistence | CORE_DBSAVE 占位，已由 Ecto 替代 |
+| `obsave.c` | ⏸ | — | 空注释 stub，标记 dead |
+| `user_quest.c` | ⏸ | `Kantele.Quest` | CORE_USER_QUEST 占位 |
+
+### 1.9 交互 / 指令输入
+| feature.c | 落地 | 对应 frame 模块 | 说明 |
+|-----------|------|----------------|------|
+| `command.c` | 🟢 | `Kantele.Character.Commands` | command_hook/dispatch 已有 command_controller |
+| `alias.c` | 🟢 | `Kantele.Character.Aliases` | process_input 别名展开已有 |
+| `message.c` | 🟡 | `Kantele.Output` | prompt/color/缓冲已有；补 receive_snoop/log |
+| `name.c`(in 1.2) | — | — | — |
+
+### 1.10 定时 / 生命周期
+| feature.c | 落地 | 对应 frame 模块 | 说明 |
+|-----------|------|----------------|------|
+| `clean_up.c` | 🔴 | `Kantele.Scheduler` | no_clean_up 保护 / 空闲销毁 / 失败日志 |
+| `shadow.c` | 🔴 | util | do_shadow / remove_shadow |
+
+### 1.11 ⏸ 延期批次（工具 + 协议，核心可玩性之后）
+| feature.c | 落地 | 说明 |
+|-----------|------|------|
+| `vi.c` (1146) | ⏸ | 全屏 vi 编辑器（巫师工具） |
+| `edit.c` | ⏸ | 简易行编辑器 |
+| `more.c` | ⏸ | 分页器 |
+| `shell.c` | ⏸ | 巫师 $...$ 求值 shell |
+| `user_gmcp.c` | ⏸ | GMCP/MSP 协议 |
+| `user_mxp.c` | ⏸ | MXP/MSDP/ZMP 协议 |
+| `sserver.c` | ⏸ | 法术服务 wrapper（vestigial） |
+| `itemmakeBak.c` | ⏸ | 重复备份，建议标记废弃不迁移 |
+| `coagent.c` → 见 1.7 | — | — |
+
+---
+
+## 2. 分批推进计划（依赖顺序）
+
+> 每批：实现 → 编译 → 全量 `mix test` 通过 → 提交推送 → 更新本文档勾选。
+> 验收口径: 每批新增的纯函数走容器 smoke test，框架部分走 `MIX_ENV=test mix test`。
+
+### Batch 1 — 派生属性与基础模型补齐 (P0)
+**source**: `attribute.c`, `sadjust.c`, `name.c`(部分), `action.c`(override 钩子)
+**target**:
+- `Kantele.Character.Stats` 补 `query_str/int/con/dex/per/level`（base + tattoo + skill/10 + temp apply）
+- `Kantele.Combat.Skills` 补 `skill_limit/1` (combat_exp^3/10)
+- `Kantele.Character` 补 `id_str?/parse_command_id_list`
+- `Kantele.Character.Combat` 补 override 注册表 (`run_override/delete_override/query_override`)
+**测试**: stats_derived_test.exs、skills_limit_test.exs、override_hook_test.exs
+**关键**: `attribute.query_level` 已被 user_storage/guarding 依赖，先立。
+
+> ✅ **DONE (Batch 1)**
+> - `lib/kantele/character/attributes.ex` — `Kantele.Character.Attributes`，纯函数移植 attribute.c（str/int/con/dex/per/level）
+> - `Kantele.Combat.Skills.skill_adjust/3` — 移植 sadjust.c（combat_exp^3/10 封顶）
+> - `Kantele.Character.PlayerMeta` — override 注册表（set/query/run/delete_override），移植 action.c
+> - 测试: `test/kantele/character/attributes_test.exs`、`test/kantele/combat/skills_adjust_test.exs`、`test/kantele/character/override_test.exs`
+> - 全量: **406 tests, 0 failures** (388 + 18)
+
+### Batch 2 — 经济与货币引擎 (P0)
+**source**: `finance.c`, `banker.c`
+**target**:
+- `Kantele.Economy.Money` (`Kantele.Economy.Finance`): can_afford/pay_money（金/银/铜换算）+ `is_currency?`
+- `Kantele.Npc.Banker`: do_check/convert/deposit/withdraw/transfer（离线转账）
+**测试**: finance_test.exs、banker_test.exs
+**依赖**: Batch 1 的 `query_level`（无强依赖，可并行）
+
+### Batch 3 — NPC 社会关系与守卫 (P0/P1)
+**source**: `apprentice.c`, `master.c`, `guarder.c`, `coagent.c`, `quester.c`
+**target**:
+- `Kantele.File.Family`: create_family/assign_apprentice/is_apprentice_of/recruit_apprentice
+- `Kantele.Npc.Master`: prevent_learn/attempt_detach (skill_expell)
+- `Kantele.Npc.Guarder`: permit_pass/kill_enemy/check_enemy
+- `Kantele.Npc.Coagent`: start_help/finish_help
+- `Kantele.Npc.Quests`: is_quester/ask_quest (→QUEST_D 委托)
+**测试**: family_test.exs、guarder_test.exs、coagent_test.exs
+**依赖**: Batch 1 (skill_limit)、现有 `Kantele.Npc` + AskHandler + damage/attack
+
+### Batch 4 — 物品类型扩展 (P0/P1)
+**source**: `food.c`, `liquid.c`, `cutable.c`, `transport.c`, `equip.c`(增强)
+**target**:
+- `Kantele.Item.Food`: apply_effect 栈 + do_effect
+- `Kantele.Item.Liquid`: 液量 + extra_long
+- `Kantele.Item.Cutable`: do_cut 剁尸产件
+- `Kantele.Mount` + `Kantele.Item.Transport`: is_transport/owner (衔接现有 horseboss)
+- `Kantele.World.Item`/Character: 双手武器 + is_unarmed_weapon + unequip 增强
+**测试**: food_test.exs、liquid_test.exs、cutable_test.exs、transport_test.exs
+**依赖**: Batch 1 (attribute)、现有 item 系统
+
+### Batch 5 — 物品锻造与背包存储 (P1)
+**source**: `itemmake.c`, `user_storage.c`, `silentdest.c`, `autoload.c`
+**target**:
+- `Kantele.Item.Craft`: 9 级武器/护甲锻造、item_owner、ITEM_D 委托动作（include die/san/imbue/enchase）
+- `Kantele.Item.Backpack`: do_store/take/list_bag + 排除规则 + depot
+- `Kantele.Item.Autoload`: save/restore 重登背包
+- `Kantele.Scheduler` 补 silentdest auto-destruct
+**测试**: craft_test.exs、backpack_test.exs、autoload_test.exs
+**依赖**: Batch 1/4、现有 Item.Registry + Scheduler
+
+### Batch 6 — 移动 / 负重 / 生命周期 (P1)
+**source**: `move.c`(增强), `clean_up.c`, `shadow.c`, `condition.c`(通用化)
+**target**:
+- `Kantele.World.Room`/Character: encumbrance/weight、move_or_destruct/remove 钩子、GMCP Room.Info(挂)
+- `Kantele.Scheduler`: clean_up 空闲销毁 + no_clean_up 保护
+- util `shadow`
+- `Kantele.Character.Conditions`: 通用 condition 周期机制（非仅毒）
+**测试**: encumbrance_test.exs、clean_up_test.exs、condition_generic_test.exs
+**依赖**: Batch 4 (equip)、现有 Scheduler
+
+### Batch 7 — 消息 / 提示补强 (P1)
+**source**: `message.c`(增强)
+**target**:
+- `Kantele.Output`: receive_snoop、log_command/log_message、缓冲细化
+**测试**: message_io_test.exs
+**依赖**: 现有 Output
+
+### Batch 8 — 工具/协议（⏸ 延期，最后做）
+**source**: `vi.c`, `edit.c`, `more.c`, `shell.c`, `user_gmcp.c`, `user_mxp.c`
+**target**（单独里程碑，核心可玩性之后）:
+- `Kantele.Editor.Vi` / `Kantele.Editor.Line` / `Kantele.Pager`
+- `Kantele.Shell`（巫师求值）
+- `Kantele.Protocol.GMCP/MXP`
+**测试**: editor_test.exs、shell_test.exs、protocol_test.exs
+
+---
+
+## 3. 依赖图 & 优先级总表
+
+```
+Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/背包)
+        │                    │                       │
+        └──► Batch2(经济) ───┘                       │
+                        └──► Batch4(物品类型) ────────┘
+                                └──► Batch6(移动/生命周期)
+                                         └──► Batch7(消息)
+                                                  └──► Batch8(工具/协议 ⏸)
+```
+
+| 批次 | 核心价值 | 影响 feature 数 | 优先级 |
+|------|---------|---------------|--------|
+| Batch 1 | 玩家属性、技能上限、override 钩子 | 3 | P0 |
+| Batch 2 | 钱币/银行经济 | 2 | P0 |
+| Batch 3 | NPC 师徒/守卫/帮手/任务 | 5 | P0/P1 |
+| Batch 4 | 食物/饮料/剁尸/坐骑/装备 | 5 | P0/P1 |
+| Batch 5 | 锻造/背包/自动装载 | 4 | P1 |
+| Batch 6 | 负重/清场/通用 condition | 4 | P1 |
+| Batch 7 | 消息/提示补强 | 1 | P1 |
+| Batch 8 | 编辑/协议(工具层) | 6 | ⏸ 延期 |
+
+---
+
+## 4. 验收与回归策略
+
+1. 每批产出：框架模块 + 测试 + 更新本文档勾选。
+2. 每批跑 `MIX_ENV=test mix test`（容器 `wuxia_mud_dev-app-1`），目标保持 **388 + 新增 tests, 0 failures**（允许既知 flaky `death`）。
+3. 纯函数/数据部分（招表、配方、公式、状态机）沿用 `lpc_example/ex/*.ex` 作为"参照真值"，集成层断言结果一致。
+4. 每批 git commit + push 到 `origin/kalevala`，commit 信息标注 `Batch N: <source files>`。
+5. 延期项（Batch 8 工具/协议）不在本期核心可玩性验收内，可后续单独立项。
+
+---
+
+## 5. 修订记录
+| 日期 | 变更 |
+|------|------|
+| 2026-08-29 | 创建文档，产出 49 feature 全量映射 + 8 批次推进计划 |

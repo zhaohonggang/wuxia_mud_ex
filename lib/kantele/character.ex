@@ -40,7 +40,8 @@ defmodule Kantele.Character.PlayerMeta do
     attack_next_action: nil,
     attack_default_object: nil,
     attack_default_function: nil,
-    attack_competitor: nil
+    attack_competitor: nil,
+    override: %{}
   ]
 
   defimpl Kalevala.Meta.Trim do
@@ -104,6 +105,37 @@ defmodule Kantele.Character.PlayerMeta do
     new_attack = fun.(current)
     put_attack(meta, new_attack)
   end
+
+  # ---- override 钩子注册表（对应 LPC F_ACTION set_override/run_override）----
+  #
+  # 存放于 `meta.override`，为**会话级**运行态（不落盘、不进房间视图）。
+  # 用途：玩家 unconsious/die/win/lost 等钩子被 NPC/物品临时覆盖（如张三丰
+  # 的"不可击倒"）。`run_override/2` 取走并删除该钩子，返回是否执行过。
+  #
+  # 与原版返回 `(*fun)(this_object())` 不同，本框架以纯数据方式记录"钩子存在性"，
+  # 由宿主组件决定执行内容。
+
+  @doc "读所有 override"
+  def override(%__MODULE__{override: o}), do: o
+
+  @doc "注册一个 override 钩子（覆盖同名）"
+  def set_override(%__MODULE__{} = meta, index, marker),
+    do: %{meta | override: Map.put(meta.override, index, marker)}
+
+  @doc "查询某个 override 是否存在"
+  def query_override(%__MODULE__{override: o}, index), do: Map.get(o, index)
+
+  @doc "执行并移除一个 override 钩子；返回 {是否存在, 剔除后的 meta}"
+  def run_override(%__MODULE__{} = meta, index) do
+    case Map.pop(meta.override, index) do
+      {nil, _} -> {false, meta}
+      {marker, rest} -> {marker, %{meta | override: rest}}
+    end
+  end
+
+  @doc "删除一个 override 钩子"
+  def delete_override(%__MODULE__{} = meta, index),
+    do: %{meta | override: Map.delete(meta.override, index)}
 
   # ---- temp 存储（对应 LPC get_temp/put_temp/delete_temp/add_temp）----
   #

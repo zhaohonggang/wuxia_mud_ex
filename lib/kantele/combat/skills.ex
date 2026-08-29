@@ -44,6 +44,26 @@ defmodule Kantele.Combat.Skills do
     end
   end
 
+  @doc """
+  技能力量 / 武学上限（对应 `feature/sadjust.c` 的 `skill_adjust`）
+
+  LPC: `lmt = combat_exp^3 / 10`，把超过上限的 martial 类技能压回 `lmt`。
+  返回压制后的 skills 映射。`martial_keys` 为判定"martial 类"的技能名集合，
+  调用方提供（由技能元数据决定）。
+  """
+  def skill_adjust(skills, combat_exp, martial_keys \\ :auto) when is_map(skills) do
+    lmt = div(combat_exp * combat_exp * combat_exp, 10)
+    selected = if martial_keys == :auto, do: Map.keys(skills), else: martial_keys
+
+    Enum.reduce(selected, skills, fn name, acc ->
+      if Map.get(acc, name, 0) > lmt do
+        Map.put(acc, name, lmt)
+      else
+        acc
+      end
+    end)
+  end
+
   defp extras() do
     :persistent_term.get({__MODULE__, :extra}, %{})
   end
