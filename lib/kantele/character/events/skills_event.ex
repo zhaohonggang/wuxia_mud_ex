@@ -175,10 +175,24 @@ defmodule Kantele.Character.SkillsEvent do
       :ok ->
         {vitals, stats} = LearnGate.pay_level(vitals, stats, skill)
         {stats, _gained?} = Stats.improve_skill(stats, skill)
+        stats = apply_skill_improved(skill, stats)
         learn_levels(vitals, stats, skill, remaining - 1, n + 1)
 
       {:halt, _message} ->
         {vitals, stats, n}
+    end
+  end
+
+  # 技能升级回调（skill_improved）：如 taiji-quan 解锁新招式、wudang 补属性
+  defp apply_skill_improved(skill, stats) do
+    case Kantele.Combat.Skills.get(skill) do
+      skill_module ->
+        if function_exported?(skill_module, :skill_improved, 1) do
+          skill_module.skill_improved(stats)
+        else
+          stats
+        end
+      _ -> stats
     end
   end
 

@@ -227,7 +227,38 @@ defmodule Kantele.Combat.Engine do
       # (4) AP/(AP+PP)：招架成功
       %{round | outcome: :parry, segments: round.segments ++ [Messages.parry_msg()]}
     else
+      # 命中回调（hit_ob）：攻击特技可追加临时加成、触发连击等
+      attacker = apply_hit_ob(attacker, victim, round.action, rng)
       damage_calc(attacker, victim, round, rng)
+    end
+  end
+
+  # 命中时调用攻击方映射特技的 hit_ob 钩子；无特技或未实现则原样返回
+  defp apply_hit_ob(attacker, victim, action, _rng) do
+    mapped = Map.get(attacker.mapped, attacker.attack_skill)
+
+    case mapped && Skills.get(mapped) do
+      skill_module ->
+        if function_exported?(skill_module, :hit_ob, 3) do
+          case skill_module.hit_ob(
+                 Map.from_struct(attacker),
+                 Map.from_struct(victim),
+                 action
+               ) do
+            :unchanged ->
+              attacker
+            delta when is_map(delta) ->
+              if Map.has_key?(delta, :__struct__) do
+                attacker
+              else
+                struct(Fighter, Map.merge(attacker, delta))
+              end
+            _ -> attacker
+          end
+        else
+          attacker
+        end
+      _ -> attacker
     end
   end
 
@@ -400,4 +431,34 @@ defmodule Kantele.Combat.Engine do
         skill_module.query_action(level)
     end
   end
+
+  # ---- 战斗状态机桩（对应 LPC combatd 入口） ----
+
+  @doc """
+  发起战斗（对应 LPC fight/2）：双方加入竞争者列表，启动心跳回合
+
+  返回 `{:ok, attacker, victim}` 或 `{:error, reason}`
+  """
+  def fight(attacker, victim), do: {:ok, attacker, victim}
+
+  @doc """
+  自动战斗循环（对应 LPC auto_fight/3）：按类型持续出招直到条件满足
+
+  `type`：`:attack` / `:flee` / `:guard` 等
+  """
+  def auto_fight(attacker, victim, type), do: {:ok, attacker, victim, type}
+
+  @doc """
+  战斗公告（对应 LPC announce/2）：昏迷、死亡、复活、击杀广播
+
+  `event`：`:unconcious` | `:die` | `:revive` | `:kill`
+  """
+  def announce(event, data), do: {:ok, event, data}
+
+  @doc """
+  战斗提示信息（对应 LPC set_bhinfo/2）：如太极蓄力提示
+
+  存入角色 temp 或 combat_config.bhinfo，供 prompt/状态栏读取
+  """
+  def set_bhinfo(character, message), do: character
 end
