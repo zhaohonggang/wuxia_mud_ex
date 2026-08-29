@@ -320,3 +320,4 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
 | 2026-08-29 | Quest 宿主接线：quest/任务 命令展示进度（Kantele.Quest），QuestEvent 交付时写入 set_solved（+4 tests） |
 | 2026-08-29 | Banker 宿主接线：bank/银行 存·取·查命令接 Kantele.Npc.Banker（meta.bank_coins 运行态余额，+7 tests） |
 | 2026-08-29 | Fix：bank 裸命令断联——命令分发以双参 (conn, params) 调 :show，补 show/2 入口（+1 dispatch test） |
+| 2026-08-29 | Dealer 宿主接线：sell/卖/变卖 + value/估价 命令接 Kantele.Npc.Dealer（do_value 估价、do_sell 收购 x3/10，扣物加钱落盘，+7 tests） |

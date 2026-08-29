@@ -629,6 +629,29 @@ defmodule Kantele.Character.Commands do
     parse("bank", :show)
   end
 
+  # 变卖/估价：接 Kantele.Npc.Dealer（do_value/do_sell）
+  module(SellCommand) do
+    parse("sell", :sell, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+
+    parse("卖", :sell, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+
+    parse("变卖", :sell, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+
+    parse("value", :value, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+
+    parse("估价", :value, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+  end
+
   module(RideCommand) do
     parse("ride", :run, fn command ->
       command |> spaces() |> text(:rest)
