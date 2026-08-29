@@ -75,8 +75,8 @@
 | `team.c` | 🟢 | `Kantele.Character.Team` | team 已有；补 follow_me 覆盖 |
 | `finance.c` | 🔴 | `Kantele.Economy.Finance` | can_afford / pay_money (金/银/铜) |
 | `banker.c` | 🟡 | `Kantele.Npc.Banker` | 存款/汇兑/转账/离线转账 |
-| `dealer.c` | 🟡 | `Kantele.Npc.Dealer` | 买卖/估价/consistence/折扣 |
-| `vendor.c` | 🟡 | `Kantele.Npc.Vendor` | 轻量 buy_object / price_string |
+| `dealer.c` | ✅ | `Kantele.Npc.Dealer` | 估价/收购/标价/购买价计算（纯函数，见 Batch 2 后补） |
+| `vendor.c` | ✅ | `Kantele.Npc.Vendor` | 轻量 buy_object / price_string / 商品清单 |
 | `quester.c` | 🟡 | `Kantele.Npc.Quests` | is_quester / ask_quest |
 | `autoload.c` | 🔴 | `Kantele.Item.Autoload` | 重登还原背包 |
 
@@ -242,6 +242,12 @@
 > - `lib/kantele/communication/message.ex` — `Kantele.Communication.Message`，移植 message.c（color_class 消息类→ANSI、s 染色、prompt_prefix 四种/自定义、buffer_message 输入缓冲≤500、drain_buffer、written 状态机）
 > - 测试: `test/kantele/communication/message_test.exs`
 > - 全量: **513 tests, 0 failures** (505 + 8)
+
+> ✅ **DONE (补充：dealer.c + vendor.c)** — 经济 NPC 补全（核心可玩性 P1，原批外）
+> - `lib/kantele/npc/dealer.ex` — `Kantele.Npc.Dealer`，移植 dealer.c（is_vendor_good 按 id/去色名匹配、do_value 估价 x3/10、do_sell 收购价、do_list 库存+目录聚合清单、do_buy 购买价：成本 10/现货 12/目录覆盖/店东八折）
+> - `lib/kantele/npc/vendor.ex` — `Kantele.Npc.Vendor`，移植 vendor.c（buy_object、price_string 金/银/铜分档、vendor_list 清单）
+> - 测试: `test/kantele/npc/dealer_test.exs`
+> - 全量: **529 tests, 0 failures** (513 + 16)
 
 ### Batch 8 — 工具/协议（⏸ 延期，最后做）
 **source**: `vi.c`, `edit.c`, `more.c`, `shell.c`, `user_gmcp.c`, `user_mxp.c`
