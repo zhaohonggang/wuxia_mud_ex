@@ -8,7 +8,9 @@ defmodule Kantele.Combat.Skills do
 
   @static %{
     "liuxin-jian" => Kantele.Combat.Skills.LiuxinJian,
-    "liuxi-neigong" => Kantele.Combat.Skills.LiuxiNeigong
+    "liuxi-neigong" => Kantele.Combat.Skills.LiuxiNeigong,
+    "taiji-quan" => Kantele.Combat.Skills.TaijiQuan,
+    "dugu-jiujian" => Kantele.Combat.Skills.DuguJiujian
   }
 
   @doc "运行时注册一门武学（覆盖同名内建）"
