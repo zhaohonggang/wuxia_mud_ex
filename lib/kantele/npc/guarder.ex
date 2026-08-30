@@ -43,6 +43,45 @@ defmodule Kantele.Npc.Guarder do
     end
   end
 
+  @doc """
+  kill_enemy：守卫被攻击时呼唤帮手
+
+  检查 coagents 列表，若守卫在 startroom 且有帮手，则返回待调用的帮手列表。
+  宿主负责：加载 startroom、find coagent、调用 Coagent.start_help/1、发送消息。
+  """
+  def kill_enemy(opts) do
+    %{
+      coagents: coagents,
+      startroom: startroom,
+      current_room: current_room,
+      enemy_id: enemy_id,
+      enemy_name: enemy_name,
+      enemy_in_target_room?: enemy_in_room
+    } = opts
+
+    cond do
+      is_list(coagents) && length(coagents) < 1 ->
+        {:no_coagents, "no coagents configured"}
+
+      current_room != startroom ->
+        {:not_at_startroom, "guarder not in startroom, skipping coagent call"}
+
+      true ->
+        helpers =
+          coagents
+          |> Enum.filter(fn c -> is_map(c) end)
+          |> Enum.map(fn c -> %{
+            id: Map.get(c, "id"),
+            startroom: Map.get(c, "startroom"),
+            target_id: enemy_id,
+            target_room: current_room,
+            in_target_room?: enemy_in_room
+          } end)
+
+        {:helpers_notified, helpers}
+    end
+  end
+
   @doc "check_enemy：按 fight/kill/hit 判定是否敌对。返回 :ignore 或 {:kill}"
   def check_enemy(opts) do
     %{my_family: my_fam, enemy_family: e_fam, enemy_name: e_name} = opts
