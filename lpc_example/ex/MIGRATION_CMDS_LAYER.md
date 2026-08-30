@@ -399,32 +399,33 @@ Batch CM7(信息/系统)    Batch CM8(排行)
 
 ---
 
-## 附录 A：已移植命令（72个）
+## 附录 A：已移植命令（78个）
 
 ```
 abandon, alias, backpack, bank, channel, checkskill, closed, color,
-cut, detach, drink, eat, emote, enable, exercise, exert, fight,
-finger, fill, flee, follow, get, give, help, hp, inventory, jiali,
-jingzuo, learn, look, map, move, nick, note, option, perform,
-prepare, put, quest, quest_ask, quit, recall, reply, respirate,
-ride, save, say, score, sell, shop, skills, study, suicide,
-surrender, team, tell, title, unride, version, whistle, who,
-wield, wimpy, world_status
+close, cut, describe, detach, drink, eat, emote, enable, exercise,
+exert, fight, finger, fill, flee, follow, get, give, help, hp,
+inventory, jiali, jingzuo, learn, look, map, move, nick, note,
+open, option, perform, prepare, put, quest, quest_ask, quit,
+recall, reply, respirate, ride, save, say, score, sell, shop,
+skills, study, suicide, surrender, team, tell, time, title,
+tune, unride, version, whistle, who, wield, wimpy, world_status
 ```
 
 ---
 
 ## 附录 B：未移植命令清单（按目录）
 
-### std/ (约 74 个，~17 已移植)
+### std/ (约 74 个，~19 已移植)
 ```
 ansuan, attack, beg, close, cook, daub, drive, drug,
-guard, hide, kill, liuxi, make, open, pour, purchase,
-push, search, secularize, sleep, steal, stun,
-swear, train, tune, vote, wash, wear, wenxuan, ...
+fill, get, guard, hide, kill, liuxi, make, open, pour,
+purchase, push, put, remove, search, secularize, sleep,
+steal, stun, swear, train, tune, unwield, vote, wash,
+wear, wenxuan, ...
 ```
 
-### usr/ (约 65 个，~35 已移植)
+### usr/ (约 65 个，~38 已移植)
 ```
 area, assist, auction, baitan, beep, brothers, buy, describe,
 divorce, engage, feed, finger, hatred, idle, jifen, league,
@@ -457,6 +458,10 @@ spattack, syn, yanlian, animaout, crattack, enchase, ...
 | put | ItemCommand | ✅ | 放东西到容器 |
 | fill | FillCommand | ✅ | 装填液体 |
 | abandon | AbandonCommand | ✅ | 放弃技能/经验 |
+| close | CloseCommand | ✅ | 关门 |
+| open | OpenCommand | ✅ | 开门 |
+| describe | DescribeCommand | ✅ | 设置角色描述 |
+| tune | TuneCommand | ✅ | 频道收听管理 |
 | wear/remove/unwield | WieldCommand | ✅ | 装备/脱装备命令 |
 | wield | WieldCommand | ✅ | 装备武器 |
 | ride/unride | RideCommand | ✅ | 骑乘/下骑 |
