@@ -7,7 +7,7 @@
 
 ## 0. 现状基线
 
-- **当前全量测试**: 729 tests, 0 failures
+- **当前全量测试**: 740 tests, 0 failures
 - 已完成 13 个 Phase 5 样本接入（feature_damage/attack、condition_poison、skill_taiji-quan/dugu-jiujian、room_qianting/qiyuan2/pigroom、item_yinzhen/qianzhumiji、room_wudu_liandu、npc_xiaoer/horseboss、class_wudang_zhang、system_npc_luban、class_generate_chinese）。
 - 注意：`mud/feature` 是**完整 mudlib 继承层**（Player/NPC/物品共享行为），与之前"单个样本".ex 迁移是**两个层面**。本次把底层能力系统化落地。
 
@@ -31,7 +31,7 @@
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
 |-----------|------|----------------|------|
 | `name.c` | ✅ | `Kantele.Character.Name` | surname+purename 组名/无名氏/set_name/id?/parse_command_id_list/短名 |
-| `attribute.c` | 🟡 | `Kantele.Character.Stats` | 派生属性：str/int/con/dex/per/level = base + skill/10 + temp apply（基础结构已有，部分 temp apply 待扩展） |
+| `attribute.c` | ✅ | `Kantele.Character.Stats` | 派生属性：query_str/int/con/dex/per（base + tattoo + reborn + skill/10 + temp_apply）、query_level（combat_exp 公式）；tattoo/reborn 字段已添加 |
 | `sadjust.c` | ✅ | `Kantele.Character.Stats` | 技能上限 = combat_exp^3/10，Stats.skill_limit/1 |
 
 ### 1.3 生命 / 伤害
@@ -335,3 +335,4 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
 | 2026-08-30 | transport 宿主接线：ride/unride/whistle 命令接 Kantele.Mount + Transport.can_drive_by?（owner/同房间判定），horseboss 购买流程接 Kantele.Mount.create_mount/give_mount，修正 FeatureItemTest 期望值（同房间不可驾驶/不同房间可驾驶，符合 LPC transport.c），+29 tests，全量 718/4 保持既有 4 失败 |
 | 2026-08-30 | food.c + liquid.c 宿主接线：新增 `Kantele.Item.Food` 模块（`is_food?/1` marker）；`Effect.consume` 补 `restore_from_food/2` 实现食物 qi 恢复逻辑；新增 `test/kantele/food_test.exs`（4 tests）+ `test/kantele/liquid_test.exs`（7 tests），全量 729/4 保持既有 4 失败 |
 | 2026-08-30 | fix Stats.improve_skill 技能上限检查逻辑 + SkillsEvent.teach nil 访问修复：移除 improve_skill 中错误的 skill_limit 上限检查（该检查导致 59 级技能无法升到 60）；teach 函数 student_family 改为可选、修复 meta.teach nil 访问、修复布尔运算对 nil 值处理；全量 729/0 |
+| 2026-08-30 | attribute.c 派生属性完整实现：Stats 新增 query_str/int/con/dex/per（base + tattoo + reborn + skill/10 + temp_apply）、query_level（combat_exp 公式）；Stats 新增 tattoo/reborn 字段；新增 `test/kantele/character/stats_attribute_test.exs`（11 tests），全量 740/0 |
