@@ -835,6 +835,46 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(BeepCommand) do
+    parse("beep", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
+  end
+
+  module(BrothersCommand) do
+    parse("brothers", :run)
+    parse("兄弟", :run)
+  end
+
+  module(JifenCommand) do
+    parse("jifen", :run)
+    parse("积分", :run)
+  end
+
+  module(NewsCommand) do
+    parse("news", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+  end
+
+  module(PkdCommand) do
+    parse("pkd", :run)
+  end
+
+  module(SchemeCommand) do
+    parse("scheme", :run)
+    parse("计划", :run)
+  end
+
+  module(SystemCommand) do
+    parse("system", :run)
+  end
+
+  module(TianshuCommand) do
+    parse("tianshu", :run)
+    parse("天书", :run)
+  end
+
   # 表情名直用已改为 EmoteCommand 里的显式 parse（smile/wave/frown）。
   # 不再用 dynamic 路由：kalevala parse_dynamic_text 返回 3 元组，
   # Router.parse/3 只匹配 4 元组，命中必 CaseClauseError 崩 foreman（断线）
