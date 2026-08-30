@@ -60,7 +60,9 @@ defmodule Kantele.NPC.Horseboss do
         "马夫摇了摇头：你的驯兽技艺不够（需 #{@training_req} 级），我这儿的牲口你驾驭不了。"
 
       true ->
-        species_list = Enum.map_join(Map.keys(@species), "、", fn k -> @species[k].name end)
+        species_list = Enum.map_join(Map.keys(@species), "、", fn k ->
+          Keyword.get(@species[k], :name)
+        end)
         "马夫笑道：客官想买坐骑？我这儿有：#{species_list}。价格 #{@price} 文钱（100 金）。想买哪种？"
     end
   end
@@ -71,7 +73,7 @@ defmodule Kantele.NPC.Horseboss do
 
     if Map.has_key?(@species, species_key) do
       player = PlayerMeta.put_temp(player.meta, "chosen_species", species_key)
-      species_name = @species[species_key].name
+      species_name = Keyword.get(@species[species_key], :name)
 
       "马夫点头：#{species_name} 好选择！公的还是母的？"
     else
@@ -96,7 +98,7 @@ defmodule Kantele.NPC.Horseboss do
   @doc "选择 ID"
   def choose_id(npc, player, id) do
     cond do
-      not ~r/^[a-z_]{3,20}$/.match?(id) ->
+      not Regex.match?(~r/^[a-z_]{3,20}$/, id) ->
         {:error, "ID 只能用小写字母和下划线，3-20 字符。"}
 
       Item.item_exists?(id) ->
@@ -111,7 +113,7 @@ defmodule Kantele.NPC.Horseboss do
   @doc "选择名字"
   def choose_name(npc, player, name) do
     cond do
-      not ~r/^[\p{Han}]{2,12}$/.match?(name) ->
+      not Regex.match?(~r/^[\p{Han}]{2,12}$/, name) ->
         {:error, "名字必须是 2-12 个中文字。"}
 
       String.length(name) > 12 ->
@@ -131,43 +133,43 @@ defmodule Kantele.NPC.Horseboss do
     name = PlayerMeta.get_temp(player.meta, "pet_name")
 
     cond do
-      not species -> {:error, "流程异常，请重新开始。"}
-      not gender -> {:error, "流程异常，请重新开始。"}
-      not base_id -> {:error, "流程异常，请重新开始。"}
-      not name -> {:error, "流程异常，请重新开始。"}
+      is_nil(species) -> {:error, "流程异常，请重新开始。"}
+      is_nil(gender) -> {:error, "流程异常，请重新开始。"}
+      is_nil(base_id) -> {:error, "流程异常，请重新开始。"}
+      is_nil(name) -> {:error, "流程异常，请重新开始。"}
 
       true ->
         species_data = @species[species]
-        full_id = base_id <> "_" <> species_data.suffix
+        full_id = base_id <> "_" <> Keyword.get(species_data, :suffix)
 
-        stats = generate_stats(species_data.base)
+        stats = generate_stats(Keyword.get(species_data, :base))
 
         mount = %{
           id: full_id,
-          name: name <> "的" <> species_data.name,
+          name: name <> "的" <> Keyword.get(species_data, :name),
           type: "mount",
-          species: species_data.name,
+          species: Keyword.get(species_data, :name),
           gender: gender,
-          unit: species_data.unit,
+          unit: Keyword.get(species_data, :unit),
           stats: stats,
-          description: String.trim(desc) <> "\n主人：#{player.meta.name} (#{player.id})",
+          description: String.trim(desc) <> "\n主人：#{player.name} (#{player.id})",
           owner: player.id,
-          owner_name: player.meta.name,
+          owner_name: player.name,
           summon_id: full_id,
           rideable: true,
           trained: true
         }
 
         # 创建坐骑物品实例
-        Item.create(mount)
+        mount = Kantele.Mount.create_mount(mount)
 
         # 给予玩家
-        Item.give_mount(player, mount)
+        player = Kantele.Mount.give_mount(player, mount)
 
         # 清理临时状态
         player = clear_temp(player)
 
-        "马夫拍拍手：成交！您的 #{species_data.name} 已备好，用 whistle #{full_id} 召唤。"
+        "马夫拍拍手：成交！您的 #{Keyword.get(species_data, :name)} 已备好，用 whistle #{full_id} 召唤。"
     end
   end
 
@@ -186,11 +188,13 @@ defmodule Kantele.NPC.Horseboss do
     end)
   end
 
-  defp clear_temp(player) do
-    player
-    |> PlayerMeta.delete_temp("chosen_species")
-    |> PlayerMeta.delete_temp("pet_gender")
-    |> PlayerMeta.delete_temp("pet_id")
-    |> PlayerMeta.delete_temp("pet_name")
+  defp clear_temp(character) do
+    %{character | meta: 
+      character.meta
+      |> PlayerMeta.delete_temp("chosen_species")
+      |> PlayerMeta.delete_temp("pet_gender")
+      |> PlayerMeta.delete_temp("pet_id")
+      |> PlayerMeta.delete_temp("pet_name")
+    }
   end
 end

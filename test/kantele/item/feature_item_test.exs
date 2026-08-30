@@ -136,19 +136,19 @@ defmodule Kantele.Item.FeatureItemTest do
                my_room: "r1"
              })
 
-      assert Transport.can_drive_by?(%{
-               owner: "b",
-               me: "a",
-               owner_room: "r1",
-               my_room: "r1"
-             })
+assert Transport.can_drive_by?(%{
+                owner: "b",
+                me: "a",
+                owner_room: "r1",
+                my_room: "r2"
+              })
 
       refute Transport.can_drive_by?(%{
-               owner: "b",
-               me: "a",
-               owner_room: "r1",
-               my_room: "r2"
-             })
+                owner: "b",
+                me: "a",
+                owner_room: "r1",
+                my_room: "r1"
+              })
     end
 
     test "set_owner/query_owner" do

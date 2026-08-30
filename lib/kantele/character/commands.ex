@@ -127,6 +127,16 @@ defmodule Kantele.Character.Commands do
     parse("cut", :run_bare)
   end
 
+  module(WhistleCommand) do
+    parse("whistle", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("xiao", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+  end
+
   module(FollowCommand) do
     parse("follow", :run, fn command ->
       command |> spaces() |> text(:rest)

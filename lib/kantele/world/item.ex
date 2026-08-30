@@ -22,6 +22,49 @@ defmodule Kantele.World.Item do
 
     name == keyword or String.starts_with?(name, "#{keyword} ")
   end
+
+  @doc """
+  创建坐骑模板（供 horseboss 调用）
+  """
+  def create_mount(attrs) do
+    %Kalevala.World.Item{
+      id: attrs.id,
+      name: attrs.name,
+      description: attrs.description,
+      meta: %{
+        "type" => "mount",
+        "species" => attrs.species,
+        "gender" => attrs.gender,
+        "unit" => attrs.unit,
+        "stats" => attrs.stats,
+        "owner" => attrs.owner,
+        "owner_name" => attrs.owner_name,
+        "summon_id" => attrs.summon_id,
+        "rideable" => true,
+        "trained" => true
+      }
+    }
+  end
+
+  @doc "给予玩家坐骑实例"
+  def give_mount(player, mount_template) do
+    instance = %Kalevala.World.Item.Instance{
+      id: Instance.generate_id(),
+      item_id: mount_template.id,
+      created_at: DateTime.utc_now(),
+      item: mount_template
+    }
+
+    %{player | inventory: [instance | player.inventory]}
+  end
+
+  @doc "检查物品模板 ID 是否已存在"
+  def item_exists?(id) do
+    case Kantele.World.Items.get(id) do
+      nil -> false
+      _ -> true
+    end
+  end
 end
 
 defmodule Kantele.World.Item.Meta.Book do

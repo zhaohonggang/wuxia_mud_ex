@@ -5,11 +5,15 @@ defmodule Kantele.Character.RideCommand do
   Batch 6 简化：坐骑为玩家背包中 `meta` 带 `"ridable" => true`（或
   `"type" => "mount"`）的物品；骑上后记录运行态 `meta.riding`，物品保留
   在背包。不做 LPC 的房间在场生物检定/守卫阻挡/重量对抗。
+
+  新增：驾驶权限检查（Transport.can_drive_by?）——无主/自己/同房间车主可骑。
   """
 
   use Kalevala.Character.Command
 
   alias Kantele.Character.CommandView
+  alias Kantele.Item.Transport
+  alias Kantele.Mount
 
   def run(conn, %{"rest" => rest}) do
     rest = String.trim(rest || "")
@@ -40,13 +44,20 @@ defmodule Kantele.Character.RideCommand do
         |> prompt(CommandView, "prompt", %{})
 
       instance ->
-        character = conn.character
-        riding = %{instance_id: instance.id, item_id: instance.item_id, name: instance.item.name}
+        # 驾驶权限检查
+        case Mount.can_ride?(instance, conn.character) do
+          :ok ->
+            riding = %{instance_id: instance.id, item_id: instance.item_id, name: instance.item.name}
+            conn
+            |> put_character(%{conn.character | meta: %{conn.character.meta | riding: riding}})
+            |> render(CommandView, "text", %{text: "你飞身跃上#{instance.item.name}，身手很是矫捷。\n"})
+            |> prompt(CommandView, "prompt", %{})
 
-        conn
-        |> put_character(%{character | meta: %{character.meta | riding: riding}})
-        |> render(CommandView, "text", %{text: "你飞身跃上#{instance.item.name}，身手很是矫捷。\n"})
-        |> prompt(CommandView, "prompt", %{})
+          {:error, msg} ->
+            conn
+            |> render(CommandView, "text", %{text: msg <> "\n"})
+            |> prompt(CommandView, "prompt", %{})
+        end
     end
   end
 

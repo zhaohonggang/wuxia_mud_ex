@@ -71,6 +71,7 @@ defmodule Kantele.Character.CommandsCommand do
     # Batch 5: 物品/跟随/回城/查人/状态
     "give" => "赠送物品：give 物品 to 人或 give 人 物品",
     "cut" => "解剖尸体：cut <部位> from <尸体>（cut <尸体> 查看可割部位）",
+    "whistle" => "召唤坐骑：whistle <summon_id>",
     "follow" => "跟随某人：follow 某人 / follow none",
     "recall" => "回城（回到当前区域起始房间）",
     "finger" => "查找玩家：finger [姓名]",

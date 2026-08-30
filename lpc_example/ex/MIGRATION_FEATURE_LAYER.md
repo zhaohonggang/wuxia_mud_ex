@@ -63,7 +63,7 @@
 | `noclone.c` | 🟢 | `Kantele.Item.Registry` | unique/no_clone 已有 |
 | `unique.c` | 🟢 | `Kantele.Item.Registry` | violate_unique / create_replica 已有 |
 | `silentdest.c` | 🔴 | `Kantele.Scheduler` | 无人时 auto-destruct |
-| `transport.c` | 🔴 | `Kantele.Mount` | 骑乘/驾驶载体 is_transport/owner |
+| `transport.c` | ✅ | `Kantele.Mount` + `Kantele.Item.Transport` | 骑乘/驾驶载体 is_transport/owner (衔接现有 horseboss)：ride/unride/whistle 命令，Transport.can_drive_by? 权限检查，马夫购买流程，+29 tests |
 
 ### 1.7 NPC / 社会 / 经济
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
@@ -332,3 +332,4 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
 | 2026-08-30 | Quest 杀怪进度落地 + 交付校验：enemy_died 击杀经 Quest.register_kill 计裸 key 入在办任务进度；turnin_request 依任务击杀要求校验（未满足拒绝结算保留物品，满足才交付）；ask_quest/cancel_quest 由占位改为依 NPC meta.quest 应答并容错无 meta 的 npc（+11 tests，修复 2 个既有 Quest/Quester 失败） |
 | 2026-08-30 | Backpack 宿主接线：store/take/背包 命令接 Kantele.Item.Backpack——storage_bag 解锁判定、忙碌/战斗拦截、能力上限（combat_exp+storage_bag 扩展格）、store store_item 排除规则（装备/食物/液体/不可克隆）、store all、take 按编号重建实例、depot serialize/deserialize 落盘 metadata.bag（Item.Meta 增 storage_bag 字段 + loader 解析，+25 tests） |
 | 2026-08-30 | cut 剁尸宿主接线：cut <部位> from <尸体> 命令 → Room.CutRequestEvent（附近无物/割自己/活人守卫）→ 尸体侧 NpcCutEvent 依 meta.parts do_cut（部位校验/空手内力与针锤杖棍鞭修为门槛/? 清单/割头清 defeated_by/产出 clone 或 default_clone）→ CutEvent 产物实例入包+文案（NonPlayerMeta 增 parts/no_cut/default_clone/been_cut/defeated_by，loader 解析，combat die 记 defeated_by、respawn 清剁尸态，+26 tests） |
+| 2026-08-30 | transport 宿主接线：ride/unride/whistle 命令接 Kantele.Mount + Transport.can_drive_by?（owner/同房间判定），horseboss 购买流程接 Kantele.Mount.create_mount/give_mount，修正 FeatureItemTest 期望值（同房间不可驾驶/不同房间可驾驶，符合 LPC transport.c），+29 tests，全量 718/4 保持既有 4 失败 |
