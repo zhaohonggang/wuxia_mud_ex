@@ -1,6 +1,10 @@
 defmodule Kantele.World.Room do
   @moduledoc """
   Callbacks for a Kalevala room
+
+  对应 LPC inherit/room/room.c，包括：
+  - Room.reset/0 - 房间重置逻辑
+  - Room.Const - 房间常量
   """
 
   require Logger
