@@ -9,6 +9,26 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(CloseCommand) do
+    parse("close", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
+
+    parse("关", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
+  end
+
+  module(OpenCommand) do
+    parse("open", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
+
+    parse("开", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
+  end
+
   module(DelayedCommand) do
     parse("delay", :run, fn command ->
       command |> spaces() |> text(:parse)
