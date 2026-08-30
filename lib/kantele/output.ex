@@ -191,6 +191,46 @@ defmodule Kantele.Output.Tooltips do
   end
 end
 
+defmodule Kantele.Output.Commands do
+  @moduledoc """
+  Wrap tags in command tags to send text by clicking
+  """
+
+  use Kalevala.Output
+
+  @impl true
+  def init(opts) do
+    %Kalevala.Output.Context{
+      data: [],
+      opts: opts,
+      meta: %{}
+    }
+  end
+
+  def parse({:open, "exit", attributes}, context) do
+    tags = [
+      {:open, "command", %{"send" => attributes["name"]}},
+      {:open, "exit", attributes}
+    ]
+
+    Map.put(context, :data, context.data ++ tags)
+  end
+
+  def parse({:close, "exit"}, context) do
+    tags = [
+      {:close, "exit"},
+      {:close, "command"}
+    ]
+
+    Map.put(context, :data, context.data ++ tags)
+  end
+
+  @impl true
+  def parse(datum, context) do
+    Map.put(context, :data, context.data ++ [datum])
+  end
+end
+
 defmodule Kantele.Output.Snoop do
   @moduledoc """
   Snoop 消息格式化（对应 `feature/message.c receive_snoop`）
