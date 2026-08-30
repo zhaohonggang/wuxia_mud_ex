@@ -11,6 +11,8 @@ defmodule Kantele.World.Room do
   alias Kantele.RoomChannel
   alias Kantele.World.Items
   alias Kantele.World.Room.Events
+  alias Kantele.Npc.Guarder
+  alias Kalevala.World.Room.Context
 
   defstruct [
     :id,
@@ -303,9 +305,70 @@ defmodule Kantele.World.Room do
     @impl true
     def exits(room), do: room.exits
 
+    defp check_guarders(context, mover, _room_exit) do
+      # 找房间里的守卫 NPC（有 guarder 配置且 is_guarder? 为 true）
+      guarders =
+        Enum.filter(context.characters, fn c ->
+          c.meta.guarder && Guarder.is_guarder?(c)
+        end)
+
+      Enum.reduce_while(guarders, :allow, fn guarder, acc ->
+        case acc do
+          :allow ->
+            # 构造 permit_pass 参数
+            opts = build_guarder_opts(guarder, mover, context)
+            case Guarder.permit_pass(opts) do
+              {:allow} -> {:cont, :allow}
+              {:deny, msg} -> {:halt, {:deny, msg}}
+            end
+
+          {:deny, msg} ->
+            {:halt, {:deny, msg}}
+        end
+      end)
+    end
+
+    defp build_guarder_opts(guarder, mover, context) do
+      my_family = Map.get(guarder.meta.guarder, :family)
+      guest_family = mover.meta.family && Map.get(mover.meta.family, :name)
+      guest_born_family = mover.meta.family && Map.get(mover.meta.family, :born_family)
+      carried_families =
+        mover.meta.carrying
+        |> Enum.filter(& &1)
+        |> Enum.map(&Map.get(&1.family, :name))
+        |> Enum.reject(&is_nil/1)
+        |> Enum.uniq()
+
+      msgs = guarder.meta.guarder.msgs || %{}
+
+      %{
+        living?: not guarder.meta.dead,
+        my_family: my_family,
+        guest_family: guest_family,
+        guest_born_family: guest_born_family,
+        carried_families: carried_families,
+        msgs: msgs
+      }
+    end
+
     @impl true
-    def movement_request(_room, context, event, room_exit),
-      do: BasicRoom.movement_request(context, event, room_exit)
+    def movement_request(_room, context, event, room_exit) do
+      mover = Enum.find(context.characters, &(&1.pid == event.from_pid))
+
+      if mover do
+        guarder_result = check_guarders(context, mover, room_exit)
+        case guarder_result do
+          {:deny, msg} ->
+            Context.render(context, mover.pid, Kantele.Character.CommandView, "text", %{text: msg <> "\n"})
+            {:abort, event, :guarder_denied, msg}
+
+          :allow ->
+            BasicRoom.movement_request(context, event, room_exit)
+        end
+      else
+        BasicRoom.movement_request(context, event, room_exit)
+      end
+    end
 
     @impl true
     def confirm_movement(_room, context, event),
