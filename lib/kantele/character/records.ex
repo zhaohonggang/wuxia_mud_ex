@@ -24,6 +24,7 @@ defmodule ExVenture.Characters.Metadata do
     field(:max_neili, :integer, default: 200)
     field(:max_jingli, :integer, default: 0)
     field(:coins, :integer, default: 100)
+    field(:bank_coins, :integer, default: 0)
     field(:score, :integer, default: 0)
     field(:weiwang, :integer, default: 0)
     field(:gongxian, :integer, default: 0)
@@ -57,6 +58,7 @@ defmodule ExVenture.Characters.Metadata do
       :max_neili,
       :max_jingli,
       :coins,
+      :bank_coins,
       :score,
       :weiwang,
       :gongxian,
@@ -130,6 +132,7 @@ defmodule Kantele.Character.Records do
             max_neili: meta.vitals.max_neili,
             max_jingli: meta.vitals.max_jingli || 0,
             coins: meta.coins || 0,
+            bank_coins: meta.bank_coins || 0,
             score: meta.stats.score || 0,
             weiwang: meta.stats.weiwang || 0,
             gongxian: meta.stats.gongxian || 0,
@@ -271,6 +274,7 @@ defmodule Kantele.Character.Records do
       |> Map.put(:vitals, vitals)
       |> Map.put(:combat, combat)
       |> Map.put(:coins, max(metadata.coins || 0, 0))
+      |> Map.put(:bank_coins, metadata.bank_coins || 0)
       |> Map.put(:family, restore_family(metadata.family))
       |> Map.put(:nickname, metadata.nickname)
       |> Map.put(:title, metadata.title || "")
