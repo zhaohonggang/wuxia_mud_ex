@@ -811,6 +811,16 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(TuneCommand) do
+    parse("tune", :run, fn command ->
+      command |> spaces() |> word(:channel)
+    end)
+
+    parse("tune", :run_bare, fn command ->
+      command
+    end)
+  end
+
   module(TeamCommand) do
     parse("team", :run, fn command ->
       command |> spaces() |> text(:rest)
