@@ -76,18 +76,20 @@ defmodule Kantele.Item.Effect do
   """
   def consume(vitals, stats, meta) when is_map(meta) do
     medicine = Map.get(meta, :medicine)
+    food_value = Map.get(meta, :food)
     boosts = stat_boost(medicine)
-    food? = is_integer(Map.get(meta, :food)) && Map.get(meta, :food) > 0
+    food? = is_integer(food_value) && food_value > 0
     medicine? = is_map(medicine) && medicine != %{}
 
     if boosts == %{} do
-      {parts, new_vitals} = restore_vitals(vitals, medicine)
+      {medicine_parts, new_vitals} = restore_vitals(vitals, medicine)
+      {food_parts, final_vitals} = restore_from_food(new_vitals, food_value)
 
       {:ok,
        %{
-         vitals: new_vitals,
+         vitals: final_vitals,
          stats: stats,
-         parts: parts,
+         parts: medicine_parts ++ food_parts,
          food?: food?,
          medicine?: medicine?
        }}
@@ -98,13 +100,14 @@ defmodule Kantele.Item.Effect do
 
         :ok ->
           {new_stats, stat_parts} = boost_stats(stats, boosts)
-          {vital_parts, new_vitals} = restore_vitals(vitals, medicine)
+          {medicine_parts, new_vitals} = restore_vitals(vitals, medicine)
+          {food_parts, final_vitals} = restore_from_food(new_vitals, food_value)
 
           {:ok,
            %{
-             vitals: new_vitals,
+             vitals: final_vitals,
              stats: new_stats,
-             parts: vital_parts ++ stat_parts,
+             parts: medicine_parts ++ food_parts ++ stat_parts,
              food?: food?,
              medicine?: medicine?
            }}
@@ -112,7 +115,8 @@ defmodule Kantele.Item.Effect do
     end
   end
 
-  def consume(_vitals, stats, _meta), do: {:ok, %{vitals: nil, stats: stats, parts: [], food?: false, medicine?: false}}
+  def consume(_vitals, stats, _meta),
+    do: {:ok, %{vitals: nil, stats: stats, parts: [], food?: false, medicine?: false}}
 
   # 药效里声明的四维增量（%{str: 1}）；缺省/空返回空 map 表示无四维药效
   defp stat_boost(nil), do: %{}
@@ -190,6 +194,20 @@ defmodule Kantele.Item.Effect do
   end
 
   defp restore_vitals(vitals, _), do: {[], vitals}
+
+  defp restore_from_food(vitals, food_value) when is_integer(food_value) and food_value > 0 do
+    current_qi = Map.get(vitals, :qi, 0)
+    max_qi = Map.get(vitals, :max_qi)
+    actual = min(current_qi + food_value, max_qi) - current_qi
+
+    if actual > 0 do
+      {["气血+#{actual}"], %{vitals | :qi => current_qi + actual}}
+    else
+      {[], vitals}
+    end
+  end
+
+  defp restore_from_food(vitals, _), do: {[], vitals}
 
   defp vital_part(key, actual), do: "#{@vital_names[key]}+#{actual}"
   defp stat_name(key), do: Map.get(@stat_names, key, to_string(key))
