@@ -182,4 +182,157 @@ defmodule Kantele.Item.CraftTest do
       assert Craft.Level.ultra() == 50_001
     end
   end
+
+  describe "ITEM_D killer_reward" do
+    test "记录玩家击杀" do
+      item_meta = %{}
+      killer_meta = %{id: "killer", combat_exp: 1000000}
+      victim_meta = %{can_speak: true, is_good: true, combat_exp: 50000}
+
+      result = Craft.killer_reward(item_meta, killer_meta, victim_meta)
+
+      assert get_in(result, [:combat, :PKS]) == 1
+      assert get_in(result, [:combat, :WPK_GOOD]) == 1
+    end
+
+    test "记录NPC击杀" do
+      item_meta = %{}
+      killer_meta = %{id: "killer", combat_exp: 1000000}
+      victim_meta = %{can_speak: false, is_bad: true, combat_exp: 5000}
+
+      result = Craft.killer_reward(item_meta, killer_meta, victim_meta)
+
+      assert get_in(result, [:combat, :MKS]) == 1
+      assert get_in(result, [:combat, :WPK_BAD]) == 1
+    end
+
+    test "更新owner映射" do
+      item_meta = %{}
+      killer_meta = %{id: "hero", combat_exp: 10000000}
+      victim_meta = %{can_speak: true, combat_exp: 500000}
+
+      result = Craft.killer_reward(item_meta, killer_meta, victim_meta)
+
+      assert get_in(result, [:owner, "hero"]) != nil
+    end
+  end
+
+  describe "ITEM_D can_san?" do
+    test "武器可圣化" do
+      item_meta = %{name: "长剑", skill_type: "sword", magic: %{}}
+      player_meta = %{
+        id: "player",
+        neili: 9000,
+        max_neili: 10000,
+        jingli: 900,
+        max_jingli: 1000,
+        skills: %{"force" => 400}
+      }
+
+      assert Craft.can_san?(item_meta, player_meta) == :ok
+    end
+
+    test "防具不可圣化" do
+      item_meta = %{name: "护甲", armor_type: "cloth"}
+      player_meta = %{neili: 9000, max_neili: 10000, jingli: 900, max_jingli: 1000, skills: %{"force" => 400}}
+
+      assert {:error, msg} = Craft.can_san?(item_meta, player_meta)
+      assert msg =~ "无法圣化"
+    end
+
+    test "内力不足拒绝" do
+      item_meta = %{name: "长剑", skill_type: "sword", magic: %{}}
+      player_meta = %{
+        neili: 5000,
+        max_neili: 10000,
+        jingli: 900,
+        max_jingli: 1000,
+        skills: %{"force" => 400}
+      }
+
+      assert {:error, msg} = Craft.can_san?(item_meta, player_meta)
+      assert msg =~ "内力"
+    end
+  end
+
+  describe "ITEM_D can_imbue?" do
+    test "圣化后可浸透" do
+      item_meta = %{name: "长剑", skill_type: "sword", magic: %{do_san: %{"player" => "张三"}, power: 0}}
+      player_meta = %{}
+      imbue_item = %{}
+
+      assert Craft.can_imbue?(item_meta, player_meta, imbue_item) == :ok
+    end
+
+    test "未圣化拒绝" do
+      item_meta = %{name: "长剑", skill_type: "sword", magic: %{}}
+      player_meta = %{}
+      imbue_item = %{}
+
+      assert {:error, msg} = Craft.can_imbue?(item_meta, player_meta, imbue_item)
+      assert msg =~ "圣化"
+    end
+  end
+
+  describe "ITEM_D do_imbue" do
+    test "浸透成功更新状态" do
+      item_meta = %{name: "长剑", magic: %{imbue: 49, power: 0}}
+
+      {:ok, result} = Craft.do_imbue(item_meta)
+
+      assert get_in(result, [:magic, :imbue]) == 50
+      assert get_in(result, [:magic, :imbue_ok]) == nil
+    end
+
+    test "浸透完成设置imbue_ok" do
+      item_meta = %{name: "长剑", magic: %{imbue: 50, power: 0}}
+
+      {:ok, result} = Craft.do_imbue(item_meta)
+
+      assert get_in(result, [:magic, :imbue]) == 51
+      assert get_in(result, [:magic, :imbue_ok]) == true
+    end
+  end
+
+  describe "ITEM_D can_enchase?" do
+    test "已浸透可镶嵌" do
+      item_meta = %{name: "长剑", skill_type: "sword", magic: %{imbue_ok: true, power: 0}}
+      player_meta = %{skills: %{"certosina" => 300}}
+      tessera_meta = %{name: "红宝石", can_be_enchased: true, magic: %{power: 50, type: "fire"}}
+
+      assert Craft.can_enchase?(item_meta, player_meta, tessera_meta) == :ok
+    end
+
+    test "未浸透拒绝" do
+      item_meta = %{name: "长剑", skill_type: "sword", magic: %{imbue_ok: false, power: 0}}
+      player_meta = %{skills: %{"certosina" => 300}}
+      tessera_meta = %{name: "红宝石", can_be_enchased: true, magic: %{power: 50}}
+
+      assert {:error, msg} = Craft.can_enchase?(item_meta, player_meta, tessera_meta)
+      assert msg =~ "潜力"
+    end
+
+    test "镶嵌技能不足拒绝" do
+      item_meta = %{name: "长剑", skill_type: "sword", magic: %{imbue_ok: true, power: 0}}
+      player_meta = %{skills: %{"certosina" => 100}}
+      tessera_meta = %{name: "红宝石", can_be_enchased: true, magic: %{power: 50}}
+
+      assert {:error, msg} = Craft.can_enchase?(item_meta, player_meta, tessera_meta)
+      assert msg =~ "镶嵌技艺"
+    end
+  end
+
+  describe "ITEM_D do_enchase" do
+    test "镶嵌成功更新物品状态" do
+      item_meta = %{name: "长剑", weight: 10, magic: %{imbue_ok: true}}
+      tessera_meta = %{name: "红宝石", weight: 2, magic: %{power: 50, type: "fire"}}
+
+      result = Craft.do_enchase(item_meta, tessera_meta)
+
+      assert get_in(result, [:magic, :power]) == 50
+      assert get_in(result, [:magic, :type]) == "fire"
+      assert get_in(result, [:magic, :tessera]) == "红宝石"
+      assert get_in(result, [:weight]) == 12
+    end
+  end
 end

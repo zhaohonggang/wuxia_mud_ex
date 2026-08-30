@@ -320,4 +320,259 @@ defmodule Kantele.Item.Craft do
 
     def rank(_), do: 0
   end
+
+  @doc """
+  ITEM_D 委托动作（对应 itemmake.c 的委托函数）
+
+  这些函数处理自制武器的强化流程：
+  - killer_reward: 记录击杀，更新 owner 和 combat 统计
+  - do_san: 圣化（需要前置条件检查）
+  - do_imbue: 浸透（需要圣化完成）
+  - do_enchase: 镶嵌（需要浸透完成）
+
+  宿主接线说明：
+  - 实际 stat 消耗（jingli/neili/exp/potential）由命令层处理
+  - 消息发送由命令层处理
+  - 本模块仅处理物品状态数据更新
+  """
+
+  @san_per_imbue 1
+  @random_imbue_ok 50
+
+  @doc """
+  killer_reward：记录击杀奖励
+
+  更新 item meta：
+  - combat/MKS 或 PKS：击杀计数
+  - combat/WPK_GOOD/WPK_BAD：正邪击杀
+  - combat/WPK_NOTGOOD/WPK_NOTBAD：善恶击杀
+  - owner：武器归属映射（最多12人）
+  """
+  def killer_reward(item_meta, killer_meta, victim_meta) when is_map(item_meta) and is_map(killer_meta) and is_map(victim_meta) do
+    item_meta
+    |> update_combat_on_kill(victim_meta)
+    |> update_owner_on_kill(killer_meta, victim_meta)
+  end
+
+  defp update_combat_on_kill(item_meta, victim_meta) do
+    combat = Map.get(item_meta, :combat, %{})
+
+    combat =
+      cond do
+        Map.get(victim_meta, :is_not_bad, false) ->
+          Map.update(combat, :WPK_NOTBAD, 1, &(&1 + 1))
+
+        true ->
+          combat
+      end
+      |> cond_combat_update(:WPK_NOTGOOD, Map.get(victim_meta, :is_not_good, false))
+      |> cond_combat_update(:WPK_GOOD, Map.get(victim_meta, :is_good, false))
+      |> cond_combat_update(:WPK_BAD, Map.get(victim_meta, :is_bad, false))
+      |> cond_combat_update(:MKS, !Map.get(victim_meta, :can_speak, false))
+      |> cond_combat_update(:PKS, Map.get(victim_meta, :can_speak, false))
+
+    Map.put(item_meta, :combat, combat)
+  end
+
+  defp cond_combat_update(combat, _key, false), do: combat
+  defp cond_combat_update(combat, key, true), do: Map.update(combat, key, 1, &(&1 + 1))
+
+  defp update_owner_on_kill(item_meta, killer_meta, victim_meta) do
+    victim_exp = Map.get(victim_meta, :combat_exp, 0)
+    killer_exp = Map.get(killer_meta, :combat_exp, 0)
+
+    if victim_exp < 10_000 || killer_exp < victim_exp * 4 / 5 do
+      item_meta
+    else
+      exp = div(victim_exp, 10_000)
+      exp = if exp > 250, do: 100 + div(exp - 250, 16), else: if exp > 50, do: 50 + div(exp - 50, 4), else: exp
+      exp = min(exp, 250)
+
+      killer_id = Map.get(killer_meta, :id, "unknown")
+      owner = Map.get(item_meta, :owner, %{})
+
+      owner_size = map_size(owner)
+
+      {owner, _} =
+        if Map.has_key?(owner, killer_id) || owner_size < 12 do
+          {Map.update(owner, killer_id, exp, &(&1 + exp)), :ok}
+        else
+          lowest_key = find_lowest_owner(owner)
+          {owner |> Map.delete(lowest_key) |> Map.put(killer_id, exp), :evicted}
+        end
+
+      Map.put(item_meta, :owner, owner)
+    end
+  end
+
+  defp find_lowest_owner(owner) do
+    owner
+    |> Map.to_list()
+    |> Enum.min_by(fn {_k, v} -> v end)
+    |> elem(0)
+  end
+
+  @doc """
+  Do_san 前置条件检查
+
+  返回 {:ok, reasons} 如果可以圣化，或 {:error, reason}
+  """
+  def can_san?(item_meta, player_meta) do
+    magic = Map.get(item_meta, :magic) || %{}
+    power = Map.get(magic, :power, 0)
+    imbue_ok = Map.get(magic, :imbue_ok, false)
+    imbue_ob = Map.get(magic, :imbue_ob)
+    do_san = Map.get(magic, :do_san) || %{}
+
+    cond do
+      !is_weapon_or_hands?(item_meta) ->
+        {:error, "装备现在还无法圣化"}
+
+      power > 0 ->
+        {:error, "现在#{Map.get(item_meta, :name, "装备")}的威力已经得到了充分的发挥了"}
+
+      imbue_ok ->
+        {:error, "现在#{Map.get(item_meta, :name, "装备")}的潜力已经充分挖掘了，现在只是需要最后一步融合"}
+
+      imbue_ob != nil ->
+        {:error, "现在#{Map.get(item_meta, :name, "装备")}已经被充分的圣化了，需要浸入神物以进一步磨练"}
+
+      Map.has_key?(do_san, Map.get(player_meta, :id, "")) ->
+        {:error, "你已经为#{Map.get(item_meta, :name, "装备")}圣化过了"}
+
+      Map.get(player_meta, :neili, 0) < Map.get(player_meta, :max_neili, 1) * 9 / 10 ->
+        {:error, "你现在内力并不充沛，怎敢贸然运用"}
+
+      Map.get(player_meta, :jingli, 0) < Map.get(player_meta, :max_jingli, 1) * 9 / 10 ->
+        {:error, "你现在精力不济，怎敢贸然运用"}
+
+      get_skill(player_meta, "force") < 300 ->
+        {:error, "你的内功根基不够扎实，不能贸然圣化"}
+
+      Map.get(player_meta, :max_neili, 0) < 8000 ->
+        {:error, "你尝试运了一下内力，无法顺利运足一个周天，难以施展你的能力"}
+
+      Map.get(player_meta, :max_jingli, 0) < 1000 ->
+        {:error, "你试图凝神运用精力，但是感觉尚有欠缺"}
+
+      true ->
+        :ok
+    end
+  end
+
+  @doc """
+  do_san 执行圣化（更新物品状态）
+
+  返回更新后的 item_meta
+  """
+  def do_san(item_meta, player_meta) do
+    player_id = Map.get(player_meta, :id, "unknown")
+    player_name = Map.get(player_meta, :name, "某人")
+
+    item_meta
+    |> put_in([:magic, :do_san, player_id], player_name)
+  end
+
+  @doc """
+  do_imbue 前置条件检查
+
+  返回 {:ok, reasons} 如果可以浸透，或 {:error, reason}
+  """
+  def can_imbue?(item_meta, _player_meta, _imbue_item) do
+    magic = Map.get(item_meta, :magic) || %{}
+    power = Map.get(magic, :power, 0)
+    imbue_ok = Map.get(magic, :imbue_ok, false)
+
+    cond do
+      power > 0 ->
+        {:error, "现在#{Map.get(item_meta, :name, "装备")}的威力已经得到了充分的发挥了"}
+
+      imbue_ok ->
+        {:error, "现在#{Map.get(item_meta, :name, "装备")}的潜力已经充分挖掘了，现在只是需要最后一步融合"}
+
+      true ->
+        do_san = Map.get(magic, :do_san) || %{}
+        san_count = Kernel.map_size(do_san)
+        if san_count < @san_per_imbue do
+          {:error, "你必须先对#{Map.get(item_meta, :name, "装备")}进行充分的圣化才行"}
+        else
+          :ok
+        end
+    end
+  end
+
+  @doc """
+  do_imbue 执行浸透
+
+  返回 {:ok, new_item_meta} 或 {:error, reason}
+  """
+  def do_imbue(item_meta) do
+    current_imbue = get_in(item_meta, [:magic, :imbue]) || 0
+
+    meta =
+      item_meta
+      |> update_in([:magic, :do_san], fn _ -> %{} end)
+      |> update_in([:magic, :imbue_ob], fn _ -> nil end)
+      |> update_in([:magic, :imbue], &((&1 || 0) + 1))
+
+    if current_imbue >= @random_imbue_ok do
+      {:ok, put_in(meta, [:magic, :imbue_ok], true)}
+    else
+      {:ok, meta}
+    end
+  end
+
+  @doc """
+  do_enchase 前置条件检查
+
+  返回 {:ok, reasons} 如果可以镶嵌，或 {:error, reason}
+  """
+  def can_enchase?(item_meta, player_meta, tessera_meta) do
+    magic = Map.get(item_meta, :magic) || %{}
+    power = Map.get(magic, :power, 0)
+    imbue_ok = Map.get(magic, :imbue_ok, false)
+
+    cond do
+      power > 0 ->
+        {:error, "现在#{Map.get(item_meta, :name, "装备")}的威力已经得到了充分的发挥了"}
+
+      !imbue_ok ->
+        {:error, "现在#{Map.get(item_meta, :name, "装备")}的潜力还没有充分的激发，未到镶嵌的时候"}
+
+      !Map.get(tessera_meta, :can_be_enchased, false) ->
+        {:error, "#{Map.get(tessera_meta, :name, "宝石")}没法用来镶嵌吧"}
+
+      !Map.has_key?(tessera_meta, :magic) ->
+        {:error, "#{Map.get(tessera_meta, :name, "宝石")}不能发挥魔力，没有必要镶嵌"}
+
+      get_skill(player_meta, "certosina") < 200 ->
+        {:error, "你觉得你的镶嵌技艺还不够娴熟，不敢贸然动手"}
+
+      true ->
+        :ok
+    end
+  end
+
+  @doc """
+  do_enchase 执行镶嵌
+
+  返回更新后的 item_meta
+  """
+  def do_enchase(item_meta, tessera_meta) do
+    magic = Map.get(tessera_meta, :magic, %{})
+
+    item_meta
+    |> put_in([:magic, :power], Map.get(magic, :power, 0))
+    |> put_in([:magic, :type], Map.get(magic, :type, "magic"))
+    |> put_in([:magic, :tessera], Map.get(tessera_meta, :name, "宝石"))
+    |> update_in([:weight], &((&1 || 0) + Map.get(tessera_meta, :weight, 0)))
+  end
+
+  defp is_weapon_or_hands?(meta) do
+    is_binary(Map.get(meta, :skill_type)) || Map.get(meta, :armor_type) == "hands"
+  end
+
+  defp get_skill(player_meta, skill_name, default \\ 0) do
+    (player_meta[:skills] || %{})[skill_name] || default
+  end
 end
