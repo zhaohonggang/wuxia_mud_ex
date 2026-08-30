@@ -105,14 +105,14 @@ inherit/
 
 | 类别 | 框架状态 | 说明 |
 |------|----------|------|
-| char/ | ✅ 完整 | `Kalevala.Character` + `Kantele.Character` |
-| item/ | ✅ 完整 | `Kalevala.Item` + 具体 Item 类型 |
-| room/ | ✅ 基础完整 | `Kalevala.Room` + `Kantele.World.Room` |
-| weapon/ | 🟡 需补 | extra_long 描述系统 |
-| armor/ | 🟡 需补 | extra_long 描述系统 |
+| char/ | ✅ 完整 | `Kalevala.Character` + `Kantele.Character` + `Kantele.NPC` |
+| item/ | ✅ 完整 | `Kalevala.Item` + 具体 Item 类型 + `Kantele.Item.ExtraLong` + `Kantele.Item.type/1` |
+| room/ | ✅ 完整 | `Kalevala.Room` + `Kantele.World.Room` + `Kantele.World.Room.Const` |
+| weapon/ | ✅ 完整 | `Kantele.Item.ExtraLong.weapon/2` |
+| armor/ | ✅ 完整 | `Kantele.Item.ExtraLong.armor/2` |
 | condition/ | ✅ 完整 | `Kantele.Character.Conditions` |
 | skill/ | ✅ 完整 | `Kantele.Combat.Skills` |
-| misc/ | 🟡 部分 | bboard/fboard/jboard 需实现 |
+| misc/ | 🟡 部分 | bboard/fboard/jboard 需实现（P2） |
 
 ---
 
@@ -120,23 +120,23 @@ inherit/
 
 ### P0 — 核心阻塞（缺失则世界文件无法加载）
 
-| 优先级 | 文件 | 原因 | 目标模块 |
-|--------|------|------|----------|
-| P0 | `weapon/*.c` | 所有武器继承，无 extra_long 则描述不完整 | `Kantele.Item.Weapon` |
-| P0 | `armor/*.c` | 所有护甲继承，无 extra_long 则描述不完整 | `Kantele.Item.Armor` |
-| P0 | `item/item.c` | 所有物品基础，type() 影响分类 | `Kalevala.Item` |
-| P0 | `room/room.c` | 所有房间继承，MAX_ITEM_IN_ROOM 等 | `Kantele.World.Room` |
-| P0 | `char/char.c` | 玩家/NPC 基础，心跳/is_character | `Kalevala.Character` |
+| 优先级 | 文件 | 原因 | 目标模块 | 状态 |
+|--------|------|------|----------|------|
+| P0 | `weapon/*.c` | 所有武器继承，无 extra_long 则描述不完整 | `Kantele.Item.ExtraLong` | ✅ 已完成 |
+| P0 | `armor/*.c` | 所有护甲继承，无 extra_long 则描述不完整 | `Kantele.Item.ExtraLong` | ✅ 已完成 |
+| P0 | `item/item.c` | 所有物品基础，type() 影响分类 | `Kantele.Item.type/1` | ✅ 已完成 |
+| P0 | `room/room.c` | 所有房间继承，MAX_ITEM_IN_ROOM 等 | `Kantele.World.Room.Const` | ✅ 已完成 |
+| P0 | `char/char.c` | 玩家/NPC 基础，心跳/is_character | `Kalevala.Character` | ✅ 已有 |
 
 ### P1 — 重要系统（缺失影响游戏体验）
 
-| 优先级 | 文件 | 原因 | 目标模块 |
-|--------|------|------|----------|
-| P1 | `condition/*.c` | 毒/病系统，世界文件大量使用 | `Kantele.Character.Conditions` |
-| P1 | `item/money.c` | 货币系统，经济基础 | `Kantele.Economy.Money` |
-| P1 | `char/npc.c` | NPC 基础行为 | `Kantele.NPC` |
-| P1 | `item/book.c` | 书籍系统，技能学习相关 | `Kantele.Item.Book` |
-| P1 | `room/shop.c` | 商店房间 | `Kantele.Npc.Dealer` |
+| 优先级 | 文件 | 原因 | 目标模块 | 状态 |
+|--------|------|------|----------|------|
+| P1 | `condition/*.c` | 毒/病系统，世界文件大量使用 | `Kantele.Character.Conditions` | ✅ 已有 |
+| P1 | `item/money.c` | 货币系统，经济基础 | `Kantele.Economy.Money` | ✅ 已有 |
+| P1 | `char/npc.c` | NPC 基础行为 | `Kantele.NPC` | ✅ 已完成 |
+| P1 | `item/book.c` | 书籍系统，技能学习相关 | `Kantele.Item.Book` | 🟡 待补 |
+| P1 | `room/shop.c` | 商店房间 | `Kantele.Npc.Dealer` | ✅ 已有 |
 
 ### P2 — 锦上添花
 
@@ -236,3 +236,5 @@ chatroom + bboard
 | 日期 | 变更 |
 |------|------|
 | 2026-08-30 | 创建文档，分类 inherit 文件并制定优先级计划 |
+| 2026-08-30 | Phase 1-4 完成：weapon/armor extra_long、item type()、room Const、NPC carry_object |
+| 2026-08-30 | 全量 812 tests / 0 failures |
