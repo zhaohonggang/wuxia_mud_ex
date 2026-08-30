@@ -66,6 +66,10 @@ defmodule Kantele.World.Item.Meta do
   - `medicine` 药效 map（原样透传，如 `%{qi: 50, stats: %{str: 1}}`；消费端见 A7）
   - `book` 秘籍五元组 `%Meta.Book{}`（消费端研习命令属 b 期）
   - `flag` 武器类型位掩码（LPC weapon.h：ONE_HANDED=0x1, SECONDARY=0x2, TWO_HANDED=0x4；缺省 0x1 单手）
+
+  背包扩展字段（Backpack 宿主接线，对应 `feature/user_storage.c`）：
+
+  - `storage_bag` 存储扩展格数（整数；为 nil 表示非背包容器）
   """
 
   defstruct [
@@ -82,7 +86,8 @@ defmodule Kantele.World.Item.Meta do
     :armor_type,
     :weapon_prop,
     :armor_prop,
-    :flag
+    :flag,
+    :storage_bag
   ]
 
   @doc """

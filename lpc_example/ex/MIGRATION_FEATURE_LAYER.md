@@ -83,7 +83,7 @@
 ### 1.8 存储 / 玩家背包
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
 |-----------|------|----------------|------|
-| `user_storage.c` | 🔴 | `Kantele.Item.Backpack` | do_store/take/list_bag + 排除规则 + depot 持久化 |
+| `user_storage.c` | ✅ 宿主接线 | `Kantele.Item.Backpack` → `BackpackCommand` | do_store/take/list_bag + 排除规则 + depot 持久化（storage_bag 解锁、容量、背包查询） |
 | `save.c` | 🟢 | Ecto persistence | CORE_SAVE 占位，已由 Ecto 替代 |
 | `dbsave.c` | 🟢 | Ecto persistence | CORE_DBSAVE 占位，已由 Ecto 替代 |
 | `obsave.c` | ⏸ | — | 空注释 stub，标记 dead |
@@ -330,3 +330,4 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
 | 2026-08-30 | Guarder 守卫接线：permit_pass 接入房间移动（阻挡非同门派/携带敌对门派物品，movement_request 拦截并提示），check_enemy 接入 combat/attack（同门 fight 拒切磋提示、kill/hit 守卫反杀），fight/kill/hit 命令携带 type |
 | 2026-08-30 | Coagent 帮手接线（含跨房移动）：mate 受击时经角色频道投递 coagent/help，帮手 start_help 决策（同房参战/异地 Teleport 后参战/返回），finish_help 在脱离战斗后回 startroom；meta.coagents 配置 + loader 解析，Combat 增加 helping 标记（+1 test） |
 | 2026-08-30 | Quest 杀怪进度落地 + 交付校验：enemy_died 击杀经 Quest.register_kill 计裸 key 入在办任务进度；turnin_request 依任务击杀要求校验（未满足拒绝结算保留物品，满足才交付）；ask_quest/cancel_quest 由占位改为依 NPC meta.quest 应答并容错无 meta 的 npc（+11 tests，修复 2 个既有 Quest/Quester 失败） |
+| 2026-08-30 | Backpack 宿主接线：store/take/背包 命令接 Kantele.Item.Backpack——storage_bag 解锁判定、忙碌/战斗拦截、能力上限（combat_exp+storage_bag 扩展格）、store store_item 排除规则（装备/食物/液体/不可克隆）、store all、take 按编号重建实例、depot serialize/deserialize 落盘 metadata.bag（Item.Meta 增 storage_bag 字段 + loader 解析，+25 tests） |

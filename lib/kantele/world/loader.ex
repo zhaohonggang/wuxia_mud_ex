@@ -696,7 +696,8 @@ alias Kantele.Character.Vitals
         armor_type: Kantele.World.Item.Meta.normalize_armor_type(Map.get(meta, :armor_type)),
         weapon_prop: Kantele.World.Item.Meta.sanitize_prop(Map.get(meta, :weapon_prop)),
         armor_prop: Kantele.World.Item.Meta.sanitize_prop(Map.get(meta, :armor_prop)),
-        flag: Map.get(meta, :flag) || 1
+        flag: Map.get(meta, :flag) || 1,
+        storage_bag: Map.get(meta, :storage_bag)
       }
 
     meta

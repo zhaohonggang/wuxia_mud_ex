@@ -13,6 +13,7 @@ defmodule Kantele.Character.PlayerMeta do
   - `alias_commands` 自定义别名 `%{"sc" => "score", ...}`（cmds/usr/alias.c；落盘）
   - `team` 队伍 `%{id, leader_pid, members: [%{id, name, pid}]}`（cmds/std/team.c；运行态）
   - `riding` 座骑（运行态）：`%{instance_id, item_id, name}` 或缺省 nil（cmds/std/ride.c）
+  - `bag` 背包内容 `[%{file,name,id,amount}]`（feature/user_storage.c；落盘 metadata.bag）
   """
 
   defstruct [
@@ -43,7 +44,8 @@ defmodule Kantele.Character.PlayerMeta do
     attack_competitor: nil,
     override: %{},
     quests: nil,
-    bank_coins: nil
+    bank_coins: nil,
+    bag: nil
   ]
 
   defimpl Kalevala.Meta.Trim do
@@ -183,6 +185,16 @@ defmodule Kantele.Character.PlayerMeta do
   @doc "写钱庄存款（铜钱）"
   def put_bank_coins(%__MODULE__{} = meta, value),
     do: %{meta | bank_coins: value}
+
+  # ---- 背包（运行态，feature/user_storage.c；nil 懒初始化空表，落盘存 character_metadata）----
+  @doc "背包内容（`%{file,name,id,amount}` 列表；缺省空表）"
+  def bag(%__MODULE__{} = meta) do
+    meta.bag || []
+  end
+
+  @doc "写背包内容"
+  def put_bag(%__MODULE__{} = meta, bag),
+    do: %{meta | bag: bag}
 end
 
 defmodule Kantele.Character.NonPlayerMeta do

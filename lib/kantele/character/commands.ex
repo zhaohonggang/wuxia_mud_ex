@@ -211,6 +211,22 @@ defmodule Kantele.Character.Commands do
     parse("inventory", :run)
   end
 
+  module(BackpackCommand) do
+    parse("store", :store, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("store", :store_bare)
+
+    parse("take", :take, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("take", :take_bare)
+
+    parse("背包", :list)
+  end
+
 
   module(LookCommand) do
     parse("look", :run)

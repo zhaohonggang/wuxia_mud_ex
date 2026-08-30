@@ -38,6 +38,7 @@ defmodule ExVenture.Characters.Metadata do
     field(:title, :string, default: "")
     field(:option, :map, default: %{})
     field(:alias_commands, :map, default: %{})
+    field(:bag, :map, default: %{})
 
     timestamps()
   end
@@ -69,7 +70,8 @@ defmodule ExVenture.Characters.Metadata do
       :nickname,
       :title,
       :option,
-      :alias_commands
+      :alias_commands,
+      :bag
     ])
     |> validate_required([:character_id])
     |> unique_constraint(:character_id)
@@ -141,7 +143,8 @@ defmodule Kantele.Character.Records do
             nickname: meta.nickname,
             title: meta.title || "",
             option: meta.option || %{},
-            alias_commands: meta.alias_commands || %{}
+            alias_commands: meta.alias_commands || %{},
+            bag: Kantele.Item.Backpack.serialize(meta.bag || [])
           })
 
       case Repo.insert_or_update(metadata) do
@@ -273,6 +276,7 @@ defmodule Kantele.Character.Records do
       |> Map.put(:title, metadata.title || "")
       |> Map.put(:option, metadata.option || %{})
       |> Map.put(:alias_commands, metadata.alias_commands || %{})
+      |> Map.put(:bag, Kantele.Item.Backpack.deserialize(metadata.bag))
 
     %{character | meta: meta, inventory: inventory}
   end
