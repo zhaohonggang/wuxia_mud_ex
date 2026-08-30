@@ -875,6 +875,31 @@ defmodule Kantele.Character.Commands do
     parse("天书", :run)
   end
 
+  module(Score2Command) do
+    parse("score2", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+  end
+
+  module(TopCommand) do
+    parse("top", :run, fn command ->
+      command |> spaces() |> word(:category)
+    end)
+  end
+
+  module(Top2Command) do
+    parse("top2", :run)
+  end
+
+  module(ToppCommand) do
+    parse("topp", :run)
+  end
+
+  module(LeagueCommand) do
+    parse("league", :run)
+    parse("帮派", :run)
+  end
+
   # 表情名直用已改为 EmoteCommand 里的显式 parse（smile/wave/frown）。
   # 不再用 dynamic 路由：kalevala parse_dynamic_text 返回 3 元组，
   # Router.parse/3 只匹配 4 元组，命中必 CaseClauseError 崩 foreman（断线）
