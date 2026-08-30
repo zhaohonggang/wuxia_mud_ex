@@ -905,6 +905,23 @@ defmodule Kantele.Character.Commands do
     parse("时间", :run)
   end
 
+  module(ClsCommand) do
+    parse("cls", :run)
+    parse("clear", :run)
+  end
+
+  module(MissCommand) do
+    parse("miss", :run)
+  end
+
+  module(BjtimeCommand) do
+    parse("bjtime", :run)
+  end
+
+  module(AssistCommand) do
+    parse("assist", :run)
+  end
+
   module(IdCommand) do
     parse("id", :run)
   end
