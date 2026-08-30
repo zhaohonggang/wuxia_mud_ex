@@ -142,11 +142,11 @@ inherit/
 
 | 优先级 | 文件 | 原因 | 目标模块 | 状态 |
 |--------|------|------|----------|------|
-| P2 | `room/chatroom.c` | 聊天室（625 行） | `Kantele.Chatroom` | 🟡 待补 |
+| P2 | `room/chatroom.c` | 聊天室（625 行） | `Kantele.Chatroom` | ✅ 已完成 |
 | P2 | `misc/bboard.c` | 公告板（214 行） | `Kantele.Bboard` | ✅ 已完成 |
-| P2 | `room/privateroom.c` | 私人房间 | `Kantele.PrivateRoom` | 🟡 待补 |
-| P2 | `skill/force.c` | 内功系统 | `Kantele.Combat.Force` | 🟡 待补 |
-| P2 | `misc/fboard.c`, `jboard.c` | 论坛/江湖榜 | `Kantele.Board` | 🟡 待补 |
+| P2 | `room/privateroom.c` | 私人房间 | `Kantele.PrivateRoom` | ✅ 已完成 |
+| P2 | `skill/force.c` | 内功系统 | `Kantele.Combat.Force` | ✅ 已完成 |
+| P2 | `misc/fboard.c`, `jboard.c` | 论坛/江湖榜 | `Kantele.Board` | ✅ 已完成 |
 
 ---
 
@@ -238,4 +238,5 @@ chatroom + bboard
 | 2026-08-30 | 创建文档，分类 inherit 文件并制定优先级计划 |
 | 2026-08-30 | Phase 1-4 完成：weapon/armor extra_long、item type()、room Const、NPC carry_object |
 | 2026-08-30 | Phase 6 完成：Bboard 公告板系统 |
-| 2026-08-30 | 全量 827 tests / 0 failures |
+| 2026-08-30 | P2 完成：Chatroom、PrivateRoom、Force、Board |
+| 2026-08-30 | 全量 872 tests / 0 failures |
