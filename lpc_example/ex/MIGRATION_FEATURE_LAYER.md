@@ -59,7 +59,7 @@
 | `food.c` | ✅ | `Kantele.Item.Food` + `Kantele.Item.Effect` | `is_food?/1` marker + `consume` food qi restoration (max 12 effect stack via Effect.apply/clear/query/do_effect) |
 | `liquid.c` | ✅ | `Kantele.Item.Liquid` | `is_liquid?/1` + `extra_long/1` 液量分级描述 |
 | `cutable.c` | ✅ | `Kantele.Item.Cutable` | do_cut 剁尸产件：`cut` 命令 → Room.CutRequestEvent → 尸体侧 `NpcCutEvent`（部位校验/武器修为门槛/割头清 defeated_by）→ `CutEvent` 产物入包 |
-| `itemmake.c` | 🟡 | `Kantele.Item` | 补 9 级武器/护甲锻造、item_owner、ITEM_D 委托动作；include 现有 qianzhumiji/yinzhen 模式 |
+| `itemmake.c` | ✅ | `Kantele.Item.Craft` | 9 级武器/护甲锻造、weapon_long、item_owner、ITEM_D 委托动作（killer_reward/do_san/do_imbue/do_enchase 及前置条件检查）；weapon_level/apply_damage/apply_armor |
 | `noclone.c` | 🟢 | `Kantele.Item.Registry` | unique/no_clone 已有 |
 | `unique.c` | 🟢 | `Kantele.Item.Registry` | violate_unique / create_replica 已有 |
 | `silentdest.c` | ✅ | `Kantele.Item.SilentDest` | should_destruct?/env 链判定（无人时 auto-destruct） |
@@ -70,7 +70,7 @@
 |-----------|------|----------------|------|
 | `apprentice.c` | ✅ | `Kantele.Character.Family` | 师徒关系 assign_apprentice/create_family/recruit |
 | `master.c` | ✅ | `Kantele.Npc.Master` | prevent_learn / attempt_detach |
-| `guarder.c` | 🟡 | `Kantele.Npc.Guarder` | 守卫 permit_pass / kill_enemy / check_enemy |
+| `guarder.c` | ✅ | `Kantele.Npc.Guarder` | 守卫 permit_pass / check_enemy / kill_enemy（呼唤 coagent 帮手） |
 | `coagent.c` | ✅ | `Kantele.Npc.Coagent` | 帮手 start_help / finish_help |
 | `team.c` | ✅ | `Kantele.Character.Team` | team 已有；补 follow?/2 (follow_me 决策) |
 | `finance.c` | ✅ | `Kantele.Economy.Money` | can_afford / pay_money (金/银/铜) |
@@ -336,3 +336,5 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
 | 2026-08-30 | food.c + liquid.c 宿主接线：新增 `Kantele.Item.Food` 模块（`is_food?/1` marker）；`Effect.consume` 补 `restore_from_food/2` 实现食物 qi 恢复逻辑；新增 `test/kantele/food_test.exs`（4 tests）+ `test/kantele/liquid_test.exs`（7 tests），全量 729/4 保持既有 4 失败 |
 | 2026-08-30 | fix Stats.improve_skill 技能上限检查逻辑 + SkillsEvent.teach nil 访问修复：移除 improve_skill 中错误的 skill_limit 上限检查（该检查导致 59 级技能无法升到 60）；teach 函数 student_family 改为可选、修复 meta.teach nil 访问、修复布尔运算对 nil 值处理；全量 729/0 |
 | 2026-08-30 | attribute.c 派生属性完整实现：Stats 新增 query_str/int/con/dex/per（base + tattoo + reborn + skill/10 + temp_apply）、query_level（combat_exp 公式）；Stats 新增 tattoo/reborn 字段；新增 `test/kantele/character/stats_attribute_test.exs`（11 tests），全量 740/0 |
+| 2026-08-30 | itemmake.c 完整实现：weapon_long（combat 统计生成武器描述）、weapon_level/armor_level、apply_damage/apply_armor、item_owner、ITEM_D 委托（killer_reward/do_san/do_imbue/do_enchase 及前置条件检查）；craft_test.exs（33 tests），全量 777/0 |
+| 2026-08-30 | guarder.c kill_enemy 实现：返回 helpers_notified 列表供宿主调用 coagent；traits_test.exs 新增 4 测试 |
