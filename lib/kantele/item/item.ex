@@ -153,4 +153,38 @@ defmodule Kantele.Item do
   @doc "检查是否为秘籍"
   def is_secret_manual?(%Item{type: "secret_manual"}), do: true
   def is_secret_manual?(_), do: false
+
+  @doc """
+  获取物品类型中文描述（对应 LPC inherit/item/item.c type()）
+
+  根据 meta 中的标记返回物品类型字符串：
+  - is_weapon? → "武器"
+  - is_armor? → "防具"
+  - is_food? → "食物"
+  - is_liquid? → "饮具"
+  - is_container? → "容器"
+  - is_book? → "书物"
+  - is_money? → "货币"
+  - is_charm? → "护身符"
+  - is_rune? → "符文"
+  - is_inlaid? → "镶嵌物"
+  - is_task? → "任务物品"
+  - 默认 → "杂物"
+  """
+  def type(meta) when is_map(meta) do
+    cond do
+      meta["is_weapon"] -> "武器"
+      meta["is_armor"] -> "防具"
+      meta["is_food"] -> "食物"
+      meta["is_liquid"] -> "饮具"
+      meta["is_container"] -> "容器"
+      meta["is_book"] -> "书物"
+      meta["is_money"] -> "货币"
+      meta["is_charm"] -> "护身符"
+      meta["is_rune"] -> "符文"
+      meta["is_inlaid"] -> "镶嵌物"
+      meta["is_task"] -> "任务物品"
+      true -> "杂物"
+    end
+  end
 end
