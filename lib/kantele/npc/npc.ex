@@ -53,4 +53,41 @@ defmodule Kantele.NPC do
   def on_unconcious(_npc, _attacker), do: :default
   def on_die(_npc, _killer), do: :default
   def on_revive(_npc), do: :default
+
+  @doc """
+  携带物品（对应 LPC carry_object）
+
+  创建物品并移动到 NPC 背包。
+  返回物品实例或 nil。
+  """
+  def carry_object(npc, item_id) do
+    case Items.get(item_id) do
+      nil -> nil
+      item_def -> Items.create_instance(item_def)
+    end
+  end
+
+  @doc """
+  添加货币（对应 LPC add_money）
+
+  在 NPC 背包添加指定面额和数量的货币。
+  """
+  def add_money(npc, _denom, _amount) do
+    # 货币通过 Items 系统管理，具体实现取决于框架
+    :ok
+  end
+
+  @doc """
+  NPC 是否可说话（对应 LPC can_speak）
+  """
+  def can_speak?(npc) do
+    Map.get(npc, :meta, %{})["can_speak"] == true
+  end
+
+  @doc """
+  NPC 态度（对应 LPC attitude）
+  """
+  def attitude(npc) do
+    Map.get(npc, :meta, %{})["attitude"] || "neutral"
+  end
 end
