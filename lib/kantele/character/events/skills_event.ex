@@ -25,7 +25,7 @@ defmodule Kantele.Character.SkillsEvent do
 
   # ---- 师父侧 ----
 
-  def teach(conn, %{data: %{skill: skill, student_stats: student_stats, student_family: student_family} = data}) do
+  def teach(conn, %{data: %{skill: skill, student_stats: student_stats} = data}) do
     character = conn.character
     reply_to = Map.fetch!(data, :reply_to)
     times = Map.get(data, :times, 1)
@@ -35,8 +35,12 @@ defmodule Kantele.Character.SkillsEvent do
     gate = LearnGate.snapshot_gate(student_stats, skill)
 
     # Master.prevent_learn: 非嫡传但同门派 -> 阻止
-    my_family = character.meta.teach && Map.get(character.meta.teach, :family)
-    if my_family and Map.get(student_family, :name) == my_family do
+    my_family =
+      Map.get(character.meta, :teach) && Map.get(Map.get(character.meta, :teach), :family)
+
+    student_family = Map.get(data, :student_family)
+
+    if my_family != nil and student_family != nil and Map.get(student_family, :name) == my_family do
       if Master.prevent_learn?(character.meta.family, student_family, student_family) do
         reply(reply_to, "你已入别派，老夫不便传授。\n")
         conn
@@ -70,7 +74,13 @@ defmodule Kantele.Character.SkillsEvent do
         conn
 
       base_skill? ->
-        grant(reply_to, character, skill, teachable(times, character.meta.stats, student_stats, skill))
+        grant(
+          reply_to,
+          character,
+          skill,
+          teachable(times, character.meta.stats, student_stats, skill)
+        )
+
         conn
 
       true ->
@@ -211,7 +221,9 @@ defmodule Kantele.Character.SkillsEvent do
         else
           stats
         end
-      _ -> stats
+
+      _ ->
+        stats
     end
   end
 

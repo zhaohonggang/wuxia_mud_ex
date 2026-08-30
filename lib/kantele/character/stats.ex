@@ -143,4 +143,14 @@ defmodule Kantele.Character.Stats do
     limit = :math.pow(exp / 1000.0, 1.0 / 3.0) * 10
     floor(limit)
   end
+
+  @doc """
+  提升技能等级（对应 LPC improve_skill）：技能 +1，返回 {新stats, 是否升级成功}
+
+  技能等级上限由调用方在适当地方校验（如 level_gate）；此处只负责 +1。
+  """
+  def improve_skill(%__MODULE__{} = stats, skill_name) do
+    new_skills = Map.update(stats.skills, skill_name, 1, &(&1 + 1))
+    {%{stats | skills: new_skills}, true}
+  end
 end
