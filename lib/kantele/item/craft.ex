@@ -65,7 +65,7 @@ defmodule Kantele.Item.Craft do
   def chinese_s("lighting"), do: "电"
   def chinese_s(_), do: "无"
 
-  @doc "item_owner：由物品 id 解析主人（LPC 由 ITEM_DIR %s-%s 文件名解析）"
+  @doc "item_owner：由物品 id 解析主人（LPC sscanf pattern: ITEM_DIR %*s/%s-%*s）"
   def item_owner(item_id) when is_binary(item_id) do
     case Regex.run(~r/^(.+)-[^-]+$/, item_id) do
       [_, owner] -> owner
@@ -74,6 +74,226 @@ defmodule Kantele.Item.Craft do
   end
 
   def item_owner(_), do: nil
+
+  @doc """
+  武器长描述（weapon_long）：根据 combat 统计生成武器描述
+
+  - `combat` - 战斗统计映射，包含 MKS（杀怪数）、PKS（杀人次数）、WPK_GOOD/WPK_BAD（正/邪击杀）
+  - `name` - 武器名称
+  - `unit` - 单位（把/柄/支等）
+  - `point` - 基础伤害值
+  - `bless` - 圣化次数
+  - `attack_lvl` - 攻击等级
+  - `magic` - 魔力属性映射 %{type, power, imbue, imbue_ok, tessera, blood}
+  """
+  def weapon_long(meta) do
+    combat = Map.get(meta, :combat) || %{}
+    name = Map.get(meta, :name) || "武器"
+    unit = Map.get(meta, :unit) || "把"
+
+    mks = Map.get(combat, :MKS, 0)
+    pks = Map.get(combat, :PKS, 0)
+    k = mks + pks
+
+    type =
+      cond do
+        Map.get(combat, :WPK_GOOD, 0) < div(k, 2) and Map.get(combat, :WPK_BAD, 0) < div(k, 2) ->
+          0
+
+        Map.get(combat, :WPK_GOOD, 0) > Map.get(combat, :WPK_BAD, 0) * 2 ->
+          -1
+
+        true ->
+          1
+      end
+
+    cond do
+      k < 10 ->
+        "这#{unit}#{name}看来已经用过人血开祭，上面隐现血痕。\n"
+
+      true ->
+        attack_lvl = weapon_level(Map.get(meta, :owner), Map.get(meta, :magic))
+        result = weapon_long_description(type, attack_lvl, name, unit, meta)
+        result <> weapon_stats(meta, attack_lvl)
+    end
+  end
+
+  defp weapon_long_description(type, attack_lvl, name, unit, meta) do
+    _bless = Map.get(meta, :bless, 0)
+    magic = Map.get(meta, :magic, %{})
+
+    base_desc = weapon_base_description(type, attack_lvl, name, unit)
+
+    if attack_lvl > Level.max() do
+      tessera = Map.get(magic, :tessera)
+      tessera_part =
+        if tessera do
+          "它上面镶嵌着#{tessera}，闪烁着奇异的光芒。\n"
+        else
+          ""
+        end
+
+      "#{tessera_part}#{base_desc}#{name}的等级：无上神品  LV10\n"
+    else
+      rank = Level.rank(attack_lvl)
+
+      level_part =
+        if rank > 0 and rank < 9 do
+          threshold = Enum.at(Level.levels(), rank) || Level.max()
+          "#{name}的等级：#{rank}/9（升级进度：#{attack_lvl}/#{threshold}）\n"
+        else
+          "#{name}的等级：#{rank}/9\n"
+        end
+
+      imbue = Map.get(magic, :imbue, 0)
+      imbue_part =
+        cond do
+          Map.get(magic, :imbue_ok) ->
+            "#{name}已经充分的浸入了，需要镶嵌以充分发挥威力。\n"
+
+          imbue > 0 ->
+            "#{name}已经运用灵物浸入了#{imbue}次，正在激发它的潜能。\n"
+
+          true ->
+            ""
+        end
+
+      base_desc <> level_part <> imbue_part
+    end
+  end
+
+  defp weapon_base_description(type, attack_lvl, name, unit) do
+    cond do
+      type == 1 -> weapon_desc_good(attack_lvl, name, unit)
+      type == -1 -> weapon_desc_evil(attack_lvl, name, unit)
+      true -> weapon_desc_neutral(attack_lvl, name, unit)
+    end
+  end
+
+  defp weapon_desc_good(attack_lvl, name, unit) do
+    cond do
+      attack_lvl > Level.ultra() ->
+        "它看上去平平常常，没有半点特殊，只是隐隐的让人感到那不凡的气质。\n"
+
+      attack_lvl > Level.max() ->
+        "它看上去让人发自内心无限崇敬，一股皓然正气悠然长存，颇具帝王风范，君临天下，威镇诸路凶神恶煞、难道这就是传说中的诸神之#{name}？\n"
+
+      attack_lvl >= 10_000 ->
+        "一眼望去，你觉得有无数的凶灵在疯狂乱舞，哭天抢地，凄烈之极，似乎要重返人间。你忍不住要长叹一声，昔日凶魔，也难逃死劫。\n"
+
+      attack_lvl >= 3_000 ->
+        "它上面附着着不知多少凶魂，无数邪派凶魔毙命于下，一股哀气犹然不散，让你忍不住打了个冷战。\n"
+
+      attack_lvl >= 1_000 ->
+        "它看上去令人惊心动魄，这就是名动江湖的#{name}，多少凶煞就此毙命，成就人间正义。\n"
+
+      attack_lvl >= 300 ->
+        "它上面隐隐然透出一股血光，多年以来，许多江湖上闻名一时的凶魔都成了#{name}下的游魂。\n"
+
+      attack_lvl >= 100 ->
+        "这就是江湖上著名的神兵之一：#{name}，穷凶极恶之徒见此物无不心驰神摇。\n"
+
+      attack_lvl >= 30 ->
+        "这#{unit}#{name}有一股正气散发出来，看来它下面凶魂不少。\n"
+
+      attack_lvl >= 10 ->
+        "这#{unit}#{name}隐然透出一股正气，看来它杀了不少凶恶之徒。\n"
+
+      attack_lvl >= 5 ->
+        "细观之下，刃口有一丝血痕，想必是它杀人不少，殷血于此吧！\n"
+
+      true ->
+        "看得出这#{unit}#{name}曾经杀过不少凶恶之徒。\n"
+    end
+  end
+
+  defp weapon_desc_evil(attack_lvl, name, unit) do
+    cond do
+      attack_lvl > Level.ultra() ->
+        "它看上去平平常常，没有半点特殊，但是不知为何却总是让人感到有些不安。\n"
+
+      attack_lvl > Level.max() ->
+        "它看上去让人打心底泛出阵阵寒意，隐隐然上面似乎附着着无数冤魂，但是全然被这#{unit}#{name}上面的杀气所制，难道这就是传说中的邪神之#{name}？\n"
+
+      attack_lvl >= 10_000 ->
+        "一眼望去，你觉得有无数的冤魂向你扑来，哭天抢地，凄烈之极，你忍不住打了个寒战，不敢再看第二眼。\n"
+
+      attack_lvl >= 3_000 ->
+        "它上面附着着不知多少冤魂，无数高手饮恨于下，一股怨气直冲霄汉，让你忍不住打了个冷战。\n"
+
+      attack_lvl >= 1_000 ->
+        "它看上去令人惊心动魄，这就是名动江湖的#{name}，不知多少英雄就此饮恨。\n"
+
+      attack_lvl >= 300 ->
+        "它上面隐隐然透出一股血光，多年以来，许多江湖上闻名一时的高手都成了#{name}下的游魂。\n"
+
+      attack_lvl >= 100 ->
+        "这就是江湖上著名的凶器之一：#{name}，谁曾想那么多仁人义士饮恨于下。\n"
+
+      attack_lvl >= 30 ->
+        "这#{unit}#{name}有一股戾气散发出来，看来它下面游魂不少。\n"
+
+      attack_lvl >= 10 ->
+        "这#{unit}#{name}隐然透出一股戾气，看来它杀了不少人。\n"
+
+      attack_lvl >= 5 ->
+        "细观之下，刃口有一丝血痕，想必是它杀人不少，殷血于此吧！\n"
+
+      true ->
+        "看得出这#{unit}#{name}曾经杀过不少侠义之士。\n"
+    end
+  end
+
+  defp weapon_desc_neutral(attack_lvl, name, unit) do
+    cond do
+      attack_lvl > Level.ultra() ->
+        "它看上去平平常常，没有半点特殊，只是一件平凡之极的兵器而已。\n"
+
+      attack_lvl > Level.max() ->
+        "它安然畅意，似乎就要腾空而去，跳出三界，不入五行。世间万物，仿佛俱在它霸气所及之处。冤魂不舞、群邪辟易，无不被这#{unit}#{name}上古神兵的霸气所制。\n"
+
+      attack_lvl >= 10_000 ->
+        "一眼望去，你觉得有无数的游魂向你扑来，哭天抢地，凄烈之极，你顿时觉得它沉重无比，几乎拿捏不住。\n"
+
+      attack_lvl >= 3_000 ->
+        "它上面附着着不知多少游魂，无数正邪高手丧命于下，一股怨气哀愁油然不尽，让你忍不住打了个冷战。\n"
+
+      attack_lvl >= 1_000 ->
+        "它看上去令人惊心动魄，这就是名动江湖的#{name}，多少正邪高手都难逃此劫，堕入轮回。\n"
+
+      attack_lvl >= 300 ->
+        "它上面隐隐然透出一股血光，多年以来，许多江湖上闻名一时的高手都成了这#{unit}#{name}下的游魂。\n"
+
+      attack_lvl >= 100 ->
+        "这就是江湖上著名的利器之一：#{name}，谁能想到那么多高手饮恨于下。\n"
+
+      attack_lvl >= 30 ->
+        "这#{unit}#{name}有一股杀气散发出来，看来它下面游魂不少。\n"
+
+      attack_lvl >= 10 ->
+        "这#{unit}#{name}隐然透出一股杀气，看来它杀了不少人。\n"
+
+      attack_lvl >= 5 ->
+        "细观之下，刃口有一丝血痕，想必是它杀人不少，殷血于此吧！\n"
+
+      true ->
+        "看得出这#{unit}#{name}曾经杀过不少人。\n"
+    end
+  end
+
+  defp weapon_stats(meta, _attack_lvl) do
+    bless = Map.get(meta, :bless, 0)
+    magic = Map.get(meta, :magic, %{})
+
+    "-------------------------------------\n" <>
+    "坚固修正： #{bless}\t" <>
+    "攻·防修正：#{bless * 2}\n" <>
+    "圣化次数： #{bless}\t" <>
+    "魔力改善值：#{Map.get(magic, :power, 0)}\n" <>
+    "魔力属性：#{chinese_s(Map.get(magic, :type))}\t" <>
+    "人器融合度：#{Map.get(magic, :blood, 0)}\n" <>
+    "-------------------------------------\n"
+  end
 
   defmodule Level do
     @moduledoc "itemmake.c 等级阈值与换算"
