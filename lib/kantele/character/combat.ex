@@ -28,7 +28,8 @@ defmodule Kantele.Character.Combat do
             buffs: [],
             equipped: %{},
             temp: %{},
-            attacked_by: MapSet.new()
+            attacked_by: MapSet.new(),
+            helping: false
 
   @applies_keys [:attack, :defense, :damage, :unarmed_damage, :dodge, :parry, :armor]
 
@@ -146,4 +147,10 @@ defmodule Kantele.Character.Combat do
 
   @doc "打断当前动作（对应 LPC interrupt_me/1）：忙乱清零"
   def interrupt(%__MODULE__{} = combat), do: %{combat | busy: 0}
+
+  @doc "是否正在助战（coagent 帮手已出动）"
+  def helping?(%__MODULE__{helping: helping}), do: helping == true
+
+  @doc "标记/清除助战状态（coagent.c is_helping/set_helping）"
+  def set_helping(%__MODULE__{} = combat, boolean), do: %{combat | helping: boolean == true}
 end

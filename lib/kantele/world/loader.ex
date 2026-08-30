@@ -336,6 +336,7 @@ alias Kantele.Character.Vitals
         teach: parse_teach(Map.get(character_data, :teach)),
         turn_in: parse_turn_in(Map.get(character_data, :turn_in)),
         quest: parse_quest(Map.get(character_data, :quest)),
+        coagents: parse_coagents(Map.get(character_data, :coagents)),
         loot: parse_goods(Map.get(character_data, :loot))
       }
     }
@@ -539,6 +540,15 @@ alias Kantele.Character.Vitals
   end
 
   defp parse_quest(_), do: nil
+
+  # 帮手列表（coagent.c）：UCL 例 coagents = ["liuxi:mafu"]，帮手 NPC 的 id 列表
+  defp parse_coagents(nil), do: nil
+
+  defp parse_coagents(coagents) do
+    coagents
+    |> List.wrap()
+    |> Enum.map(&to_string/1)
+  end
 
   defp npc_vitals(nil), do: Kantele.Character.Vitals.new()
 

@@ -103,6 +103,8 @@ defmodule Kantele.Character.CombatEvent do
               )
 
             false ->
+              # 他人挑衅我：通知我的帮手（coagent）前来助战
+              notify_coagents(conn, character, enemy)
               render(conn, CommandView, "under-attack", %{name: enemy.name})
           end
 
@@ -132,7 +134,8 @@ defmodule Kantele.Character.CombatEvent do
 
         case combat.enemies do
           [] ->
-            put_character(conn, put_combat(character, combat))
+            # 助战结束且已脱离战斗：清敌并（若在助战）回 startroom
+            finish_help(conn, character, combat)
 
           enemies ->
             # 只攻击仍在同一房间的敌人；异房的残留引用直接清除并通知对方
@@ -342,6 +345,47 @@ defmodule Kantele.Character.CombatEvent do
     end
   end
 
+  # 他人挑衅我时，通知我登记在案的帮手（coagent.c）前来助战。
+  # 帮手可能在其他房间：通过其唯一角色频道（characters:<id>）定位 pid，
+  # 直接投递 coagent/help 事件，由帮手侧自行 start_help 决策（移动/参战）。
+  defp notify_coagents(conn, character, enemy) do
+    case Map.get(character.meta, :coagents) do
+      ids when is_list(ids) and ids != [] ->
+        Enum.each(ids, fn coagent_id ->
+          case coagent_pid(coagent_id) do
+            nil ->
+              :ok
+
+            pid ->
+              send(pid, %Event{
+                from_pid: self(),
+                topic: "coagent/help",
+                data: %{
+                  attacker: ref(enemy),
+                  mate_room: character.room_id,
+                  mate_id: character.id,
+                  mate_name: character.name
+                }
+              })
+          end
+        end)
+
+        conn
+
+      _ ->
+        conn
+    end
+  end
+
+  defp coagent_pid(coagent_id) when is_binary(coagent_id) do
+    case Kantele.Communication.subscribers("characters:#{coagent_id}") do
+      [{_channel, pid, _opts} | _] -> pid
+      _ -> nil
+    end
+  end
+
+  defp coagent_pid(_), do: nil
+
   # ---- 死亡与重生 ----
 
   defp die(conn, character, killer) do
@@ -495,7 +539,7 @@ defmodule Kantele.Character.CombatEvent do
     share_team_reward(character, exp, potential)
 
     conn
-    |> put_character(character)
+    |> finish_help(character, combat)
     |> render(CommandView, "kill-reward", %{exp: exp, potential: potential})
     |> prompt(CommandView, "prompt", %{})
   end
@@ -540,7 +584,7 @@ defmodule Kantele.Character.CombatEvent do
     combat = Combat.remove_enemy(character.meta.combat, id)
 
     conn
-    |> put_character(put_combat(character, combat))
+    |> finish_help(character, combat)
     |> prompt(CommandView, "prompt", %{})
   end
 
@@ -666,6 +710,18 @@ defmodule Kantele.Character.CombatEvent do
   end
 
   defp coin_reward(), do: 5 + :rand.uniform(10)
+
+  # 落盘清理后的战斗状态；若已在助战且已无敌人，触发 coagent/finish 回 startroom
+  defp finish_help(conn, character, combat) do
+    conn = conn |> put_character(put_combat(character, combat))
+
+    if Combat.helping?(combat) and Enum.empty?(combat.enemies) do
+      # combat/finish 由角色自身控制器处理，经自我定时直投（不走房间路由）
+      schedule_self("coagent/finish", %{}, 0)
+    end
+
+    conn
+  end
 
   defp put_combat(character, combat),
     do: %{character | meta: Map.put(character.meta, :combat, combat)}

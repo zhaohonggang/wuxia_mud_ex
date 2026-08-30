@@ -89,4 +89,15 @@ defmodule Kantele.Character.CombatTest do
     assert combat.busy == 0
     refute Combat.busy?(combat)
   end
+
+  test "helping 助战标记（coagent is_helping/set_helping）" do
+    combat = Combat.new()
+    refute Combat.helping?(combat)
+
+    combat = Combat.set_helping(combat, true)
+    assert Combat.helping?(combat)
+
+    combat = Combat.set_helping(combat, false)
+    refute Combat.helping?(combat)
+  end
 end

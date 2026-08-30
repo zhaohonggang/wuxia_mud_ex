@@ -328,3 +328,4 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
 | 2026-08-29 | NPC 社会关系接线（Master/Detach）：Master.prevent_learn? 接入 learn_command（同门非嫡传禁学），新增 detach/叛师命令接 Master.attempt_detach（嫡传弟子可叛师并扣武功/清门派/清贡献），NpcFamilyEvent 新增 detach 处理 |
 | 2026-08-29 | 循环依赖重构：新增 Stats/Vitals/NPCConfig/InitialEvent 独立模块（stats.ex/vitals.ex/character.ex 补充），打破 character.ex <-> records.ex/loader.ex 循环依赖，Stats.improve_skill -> improve_potential 统一（+stats.ex/vitals.ex/character.ex 补充） |
 | 2026-08-30 | Guarder 守卫接线：permit_pass 接入房间移动（阻挡非同门派/携带敌对门派物品，movement_request 拦截并提示），check_enemy 接入 combat/attack（同门 fight 拒切磋提示、kill/hit 守卫反杀），fight/kill/hit 命令携带 type |
+| 2026-08-30 | Coagent 帮手接线（含跨房移动）：mate 受击时经角色频道投递 coagent/help，帮手 start_help 决策（同房参战/异地 Teleport 后参战/返回），finish_help 在脱离战斗后回 startroom；meta.coagents 配置 + loader 解析，Combat 增加 helping 标记（+1 test） |
