@@ -399,31 +399,32 @@ Batch CM7(信息/系统)    Batch CM8(排行)
 
 ---
 
-## 附录 A：已移植命令（67个）
+## 附录 A：已移植命令（72个）
 
 ```
-alias, backpack, bank, channel, checkskill, closed, color, cut,
-detach, drink, eat, emote, enable, exercise, exert, fight, finger,
-flee, follow, give, help, hp, inventory, jiali, jingzuo, learn,
-look, map, move, nick, note, option, perform, prepare, quest,
-quest_ask, quit, recall, reply, respirate, ride, save, say,
-score, sell, shop, skills, study, suicide, surrender, team, tell,
-title, unride, version, whistle, who, wield, wimpy, world_status
+abandon, alias, backpack, bank, channel, checkskill, closed, color,
+cut, detach, drink, eat, emote, enable, exercise, exert, fight,
+finger, fill, flee, follow, get, give, help, hp, inventory, jiali,
+jingzuo, learn, look, map, move, nick, note, option, perform,
+prepare, put, quest, quest_ask, quit, recall, reply, respirate,
+ride, save, say, score, sell, shop, skills, study, suicide,
+surrender, team, tell, title, unride, version, whistle, who,
+wield, wimpy, world_status
 ```
 
 ---
 
 ## 附录 B：未移植命令清单（按目录）
 
-### std/ (约 74 个，~15 已移植)
+### std/ (约 74 个，~17 已移植)
 ```
-ansuan, attack, beg, close, cook, daub, drive, drop, drug,
-fill, get, guard, hide, kill, liuxi, make, open, pour, purchase,
-push, put, remove, search, secularize, sleep, steal, stun,
-swear, train, tune, unwield, vote, wash, wear, wenxuan, ...
+ansuan, attack, beg, close, cook, daub, drive, drug,
+guard, hide, kill, liuxi, make, open, pour, purchase,
+push, search, secularize, sleep, steal, stun,
+swear, train, tune, vote, wash, wear, wenxuan, ...
 ```
 
-### usr/ (约 65 个，~30 已移植)
+### usr/ (约 65 个，~35 已移植)
 ```
 area, assist, auction, baitan, beep, brothers, buy, describe,
 divorce, engage, feed, finger, hatred, idle, jifen, league,
@@ -432,9 +433,9 @@ record, rideto, scheme, score2, set, shop, skip, summon,
 suicide, system, tianshu, time, title, top, top2, topp, ...
 ```
 
-### skill/ (约 39 个，~20 已移植)
+### skill/ (约 39 个，~21 已移植)
 ```
-abandon, berserk, breakup, burning, combine, derive, fuse,
+berserk, breakup, burning, combine, derive, fuse,
 imbue, jingxiu, persaude, pique, recruit, research, san,
 spattack, syn, yanlian, animaout, crattack, enchase, ...
 ```
@@ -444,3 +445,18 @@ spattack, syn, yanlian, animaout, crattack, enchase, ...
 
 ### chat/imm/ (约 15 个)
 （部分已移植，部分需框架支持）
+
+---
+
+## 附录 C：已实现命令详细
+
+| 命令 | 模块 | 状态 | 说明 |
+|------|------|------|------|
+| drop | ItemCommand | ✅ | 丢弃物品（含 all，数量支持） |
+| get | ItemCommand | ✅ | 捡东西（含 all，从容器获取） |
+| put | ItemCommand | ✅ | 放东西到容器 |
+| fill | FillCommand | ✅ | 装填液体 |
+| abandon | AbandonCommand | ✅ | 放弃技能/经验 |
+| wear/remove/unwield | WieldCommand | ✅ | 装备/脱装备命令 |
+| wield | WieldCommand | ✅ | 装备武器 |
+| ride/unride | RideCommand | ✅ | 骑乘/下骑 |
