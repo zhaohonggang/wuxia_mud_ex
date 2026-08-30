@@ -56,8 +56,8 @@
 ### 1.6 物品类型 / 工匠
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
 |-----------|------|----------------|------|
-| `food.c` | 🟡 | `Kantele.Item` | 补 apply_effect 栈 (max 12) + do_effect |
-| `liquid.c` | 🟡 | `Kantele.Item` | 补 liquid fill level + apply_effect |
+| `food.c` | ✅ | `Kantele.Item.Food` + `Kantele.Item.Effect` | `is_food?/1` marker + `consume` food qi restoration (max 12 effect stack via Effect.apply/clear/query/do_effect) |
+| `liquid.c` | ✅ | `Kantele.Item.Liquid` | `is_liquid?/1` + `extra_long/1` 液量分级描述 |
 | `cutable.c` | ✅ | `Kantele.Item.Cutable` | do_cut 剁尸产件：`cut` 命令 → Room.CutRequestEvent → 尸体侧 `NpcCutEvent`（部位校验/武器修为门槛/割头清 defeated_by）→ `CutEvent` 产物入包 |
 | `itemmake.c` | 🟡 | `Kantele.Item` | 补 9 级武器/护甲锻造、item_owner、ITEM_D 委托动作；include 现有 qianzhumiji/yinzhen 模式 |
 | `noclone.c` | 🟢 | `Kantele.Item.Registry` | unique/no_clone 已有 |
@@ -333,3 +333,4 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
 | 2026-08-30 | Backpack 宿主接线：store/take/背包 命令接 Kantele.Item.Backpack——storage_bag 解锁判定、忙碌/战斗拦截、能力上限（combat_exp+storage_bag 扩展格）、store store_item 排除规则（装备/食物/液体/不可克隆）、store all、take 按编号重建实例、depot serialize/deserialize 落盘 metadata.bag（Item.Meta 增 storage_bag 字段 + loader 解析，+25 tests） |
 | 2026-08-30 | cut 剁尸宿主接线：cut <部位> from <尸体> 命令 → Room.CutRequestEvent（附近无物/割自己/活人守卫）→ 尸体侧 NpcCutEvent 依 meta.parts do_cut（部位校验/空手内力与针锤杖棍鞭修为门槛/? 清单/割头清 defeated_by/产出 clone 或 default_clone）→ CutEvent 产物实例入包+文案（NonPlayerMeta 增 parts/no_cut/default_clone/been_cut/defeated_by，loader 解析，combat die 记 defeated_by、respawn 清剁尸态，+26 tests） |
 | 2026-08-30 | transport 宿主接线：ride/unride/whistle 命令接 Kantele.Mount + Transport.can_drive_by?（owner/同房间判定），horseboss 购买流程接 Kantele.Mount.create_mount/give_mount，修正 FeatureItemTest 期望值（同房间不可驾驶/不同房间可驾驶，符合 LPC transport.c），+29 tests，全量 718/4 保持既有 4 失败 |
+| 2026-08-30 | food.c + liquid.c 宿主接线：新增 `Kantele.Item.Food` 模块（`is_food?/1` marker）；`Effect.consume` 补 `restore_from_food/2` 实现食物 qi 恢复逻辑；新增 `test/kantele/food_test.exs`（4 tests）+ `test/kantele/liquid_test.exs`（7 tests），全量 729/4 保持既有 4 失败 |
