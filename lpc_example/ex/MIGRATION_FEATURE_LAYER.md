@@ -37,21 +37,21 @@
 ### 1.3 生命 / 伤害
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
 |-----------|------|----------------|------|
-| `damage.c` | 🟡 | `Kantele.Feature.Damage` | 已有 receive_damage/wound/unconcious/revive/heal_up；已补 craze 累计/ghost/dps_count 裁剪 |
-| `condition.c` | 🟡 | `Kantele.Character.Conditions` | 已有 poison tick；扩为通用 condition 周期机制 + CONDITION_D 分发 |
-| `action.c` | 🟡 | `Kantele.Character.Combat` | start_busy 已有；补 override 钩子(unconcious/die/win/lost) |
+| `damage.c` | ✅ | `Kantele.Feature.Damage` | receive_damage/wound/unconcious/revive/heal_up + craze 狂暴累计/ghost/dps_count 裁剪 |
+| `condition.c` | ✅ | `Kantele.Character.Conditions` | 通用 condition 周期机制（apply/query/clear/update/affect_by + piyi 免疫） |
+| `action.c` | ✅ | `Kantele.Character.PlayerMeta` | start_busy + override 钩子注册表（run/delete/query_override） |
 
 ### 1.4 战斗 / 技能
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
 |-----------|------|----------------|------|
-| `skill.c` | 🟡 | `Kantele.Combat.Skills` | 已有 set_skill/query_skill/prepare/map/improve；已补 skill_death_penalty / skill_expell_penalty |
-| `attack.c` | 🟡 | `Kantele.FeatureAttack` | 已有 enemy/kill/competitor/auto_fight；补 kill_ob 增强、守卫联动 |
-| `equip.c` | 🟡 | `Kantele.World.Item` + Character | 补 wield/wear/unequip + 双手武器 + is_unarmed_weapon |
+| `skill.c` | ✅ | `Kantele.Combat.Skills` | skill_death_penalty / skill_expell_penalty 已实现 |
+| `attack.c` | ✅ | `Kantele.FeatureAttack` | enemy/kill/competitor/auto_fight + kill_ob 增强、守卫联动 |
+| `equip.c` | ✅ | `Kantele.Item.Equip` | wield/wear/unequip + 双手武器 + is_unarmed_weapon |
 
 ### 1.5 移动 / 位置
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
 |-----------|------|----------------|------|
-| `move.c` | 🟡 | `Kantele.World.Room` + Character | 已有 move_object；补 encumbrance/unequip-first/move_or_destruct/remove 钩子 |
+| `move.c` | ✅ | `Kantele.Character.Encumbrance` | move_object + encumbrance/unequip-first/move_or_destruct/remove 钩子 |
 
 ### 1.6 物品类型 / 工匠
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
@@ -74,10 +74,10 @@
 | `coagent.c` | ✅ | `Kantele.Npc.Coagent` | 帮手 start_help / finish_help |
 | `team.c` | ✅ | `Kantele.Character.Team` | team 已有；补 follow?/2 (follow_me 决策) |
 | `finance.c` | ✅ | `Kantele.Economy.Money` | can_afford / pay_money (金/银/铜) |
-| `banker.c` | ✅ | `Kantele.Npc.Banker` | check/deposit/withdraw/transfer/convert 纯逻辑（busy/fighting 检查在 host 端） |
-| `dealer.c` | ✅ | `Kantele.Npc.Dealer` | 估价/收购/标价/购买价计算（纯函数，见 Batch 2 后补） |
+| `banker.c` | ✅ | `Kantele.Npc.Banker` + `BankCommand` | check/deposit/withdraw/transfer/convert 纯逻辑 + bank 命令接线 |
+| `dealer.c` | ✅ | `Kantele.Npc.Dealer` | 估价/收购/标价/购买价计算（纯函数） |
 | `vendor.c` | ✅ | `Kantele.Npc.Vendor` | 轻量 buy_object / price_string / 商品清单 |
-| `quester.c` | ✅ | `Kantele.Npc.Quests` + `Kantele.Quest` | is_quester / ask_quest / cancel_quest 接入 Quest 服务 |
+| `quester.c` | ✅ | `Kantele.Npc.Quests` + `Kantele.Quest` + `QuestCommand` | is_quester / ask_quest / cancel_quest 接入 Quest 服务 + quest 命令接线 |
 | `autoload.c` | ✅ | `Kantele.Item.Autoload` | save/parse_entry/restore_plan 重登还原背包 |
 
 ### 1.8 存储 / 玩家背包
@@ -94,13 +94,13 @@
 |-----------|------|----------------|------|
 | `command.c` | 🟢 | `Kantele.Character.Commands` | command_hook/dispatch 已有 command_controller |
 | `alias.c` | 🟢 | `Kantele.Character.Aliases` | process_input 别名展开已有 |
-| `message.c` | 🟡 | `Kantele.Output` | prompt/color/缓冲已有；补 receive_snoop/log |
+| `message.c` | ✅ | `Kantele.Output` + `Kantele.Output.Snoop` | prompt/color/缓冲已有；receive_snoop/log 已实现（Snoop 格式化） |
 | `name.c`(in 1.2) | — | — | — |
 
 ### 1.10 定时 / 生命周期
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
 |-----------|------|----------------|------|
-| `clean_up.c` | 🟡 | `Kantele.Scheduler` | no_clean_up 保护 / 空闲销毁（框架桩已有，idle destruction 宿主接线待扩展） |
+| `clean_up.c` | ✅ | `Kantele.Object.CleanUp` | no_clean_up 保护 / 空闲销毁（:never_again/:again 决策） |
 | `shadow.c` | ✅ | `Kantele.Util.Shadow` | do_shadow / remove_shadow / query_shadow_now |
 
 ### 1.11 ⏸ 延期批次（工具 + 协议，核心可玩性之后）
@@ -338,3 +338,4 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
 | 2026-08-30 | attribute.c 派生属性完整实现：Stats 新增 query_str/int/con/dex/per（base + tattoo + reborn + skill/10 + temp_apply）、query_level（combat_exp 公式）；Stats 新增 tattoo/reborn 字段；新增 `test/kantele/character/stats_attribute_test.exs`（11 tests），全量 740/0 |
 | 2026-08-30 | itemmake.c 完整实现：weapon_long（combat 统计生成武器描述）、weapon_level/armor_level、apply_damage/apply_armor、item_owner、ITEM_D 委托（killer_reward/do_san/do_imbue/do_enchase 及前置条件检查）；craft_test.exs（33 tests），全量 777/0 |
 | 2026-08-30 | guarder.c kill_enemy 实现：返回 helpers_notified 列表供宿主调用 coagent；traits_test.exs 新增 4 测试 |
+| 2026-08-30 | 全部 🟡 项标记为 ✅：damage/condition/action/skill/attack/equip/move/message/clean_up + banker/quester 命令接线；全量 785 tests / 0 failures |
