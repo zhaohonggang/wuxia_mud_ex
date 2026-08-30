@@ -108,10 +108,52 @@ defmodule Kantele.QuestTest do
     end
   end
 
-  describe "宿主存根 (QUEST_D 级)" do
-    test "ask_quest / cancel_quest 维持占位" do
-      assert Quest.ask_quest(%{}, %{}) == {:error, :not_implemented}
-      assert Quest.cancel_quest(%{}, %{}) == {:error, :not_implemented}
+  describe "register_kill (LPC doKilled 本地聚合)" do
+    test "命中在办任务的击杀键则累计" do
+      {:ok, s} = Quest.set_todo(Quest.new(), spec("q1", ["怪a"], []))
+      {:ok, s} = Quest.register_kill(s, "怪a")
+      {:ok, s} = Quest.register_kill(s, "怪a")
+      assert Quest.get_killed(s, spec("q1", ["怪a"], []), "怪a") == 2
+    end
+
+    test "未声明的击杀键不改变任何任务" do
+      {:ok, s} = Quest.set_todo(Quest.new(), spec("q1", ["怪a"], []))
+      assert {:ok, s2} = Quest.register_kill(s, "野狼")
+      assert Quest.get_killed(s2, spec("q1", ["怪a"], []), "怪a") == 0
+    end
+
+    test "多个在办任务共享击杀键都累计" do
+      {:ok, s} = Quest.set_todo(Quest.new(), spec("q1", ["怪a"], []))
+      {:ok, s} = Quest.set_todo(s, spec("q2", ["怪a", "怪b"], []))
+      {:ok, s} = Quest.register_kill(s, "怪a")
+      assert Quest.get_killed(s, spec("q1", ["怪a"], []), "怪a") == 1
+      assert Quest.get_killed(s, spec("q2", ["怪a", "怪b"], []), "怪a") == 1
+      assert Quest.get_killed(s, spec("q2", ["怪a", "怪b"], []), "怪b") == 0
+    end
+
+    test "空状态原样返回" do
+      assert {:ok, s} = Quest.register_kill(Quest.new(), "怪a")
+      assert Quest.get_todo_list(s) == %{}
+    end
+  end
+
+  describe "宿主派发 (QUEST_D 级)" do
+    test "ask_quest 无任务配置返回友好文案" do
+      assert Quest.ask_quest(%{}, %{}) == {:error, "老朽手头暂无任务可托付。"}
+    end
+
+    test "ask_quest 有任务配置返回规格" do
+      npc = %{meta: %{quest: %{file: "song-yupai", kill: ["yezhu"]}}}
+      assert Quest.ask_quest(npc, %{}) == {:ok, %{file: "song-yupai", kill: ["yezhu"]}}
+    end
+
+    test "cancel_quest 无任务配置返回友好文案" do
+      assert Quest.cancel_quest(%{}, %{}) == {:error, "老朽手头暂无你的任务可作罢。"}
+    end
+
+    test "cancel_quest 有任务配置返回 quest file" do
+      npc = %{meta: %{quest: %{file: "song-yupai"}}}
+      assert Quest.cancel_quest(npc, %{}) == {:ok, "song-yupai"}
     end
   end
 end

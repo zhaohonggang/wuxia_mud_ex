@@ -20,20 +20,27 @@ defmodule Kantele.Character.QuestEvent do
 
   def turnin_request(conn, %{data: data}) do
     character = conn.character
-    item_id = Map.get(data, :item_id)
 
-    {instance, rest} =
-      character.inventory
-      |> Enum.split_with(&(&1.item_id == item_id))
+    if kill_requirement_met?(PlayerMeta.quests(character.meta), Map.get(data, :quest)) do
+      item_id = Map.get(data, :item_id)
 
-    cond do
-      instance == [] ->
-        conn
-        |> render(CommandView, "text", %{text: "#{Map.get(data, :prompt)}\n"})
-        |> prompt(CommandView, "prompt", %{})
+      {instance, rest} =
+        character.inventory
+        |> Enum.split_with(&(&1.item_id == item_id))
 
-      true ->
-        complete(conn, character, rest, data)
+      cond do
+        instance == [] ->
+          conn
+          |> render(CommandView, "text", %{text: "#{Map.get(data, :prompt)}\n"})
+          |> prompt(CommandView, "prompt", %{})
+
+        true ->
+          complete(conn, character, rest, data)
+      end
+    else
+      conn
+      |> render(CommandView, "text", %{text: "#{Map.get(data, :prompt)}\n"})
+      |> prompt(CommandView, "prompt", %{})
     end
   end
 
@@ -87,24 +94,22 @@ defmodule Kantele.Character.QuestEvent do
     |> prompt(CommandView, "prompt", %{})
   end
 
-  def turnin_request(conn, %{data: data}) do
-    character = conn.character
-    item_id = Map.get(data, :item_id)
+  defp kill_requirement_met?(quests_state, quest_file) when is_map(quests_state) do
+    case Quest.get_todo(quests_state, quest_file) do
+      # 未登记任务（纯物品交付路径）：跳过击杀校验
+      nil ->
+        true
 
-    {instance, rest} =
-      character.inventory
-      |> Enum.split_with(&(&1.item_id == item_id))
+      task ->
+        killed = Map.get(task, :killed, %{})
 
-    cond do
-      instance == [] ->
-        conn
-        |> render(CommandView, "text", %{text: "#{Map.get(data, :prompt)}\n"})
-        |> prompt(CommandView, "prompt", %{})
-
-      true ->
-        complete(conn, character, rest, data)
+        # 无击杀要求则通过；否则每个已登记怪物都须击杀至少 1
+        map_size(killed) == 0 or
+          Enum.all?(killed, fn {_monster, count} -> count >= 1 end)
     end
   end
+
+  defp kill_requirement_met?(nil, _quest_file), do: true
 
   defp complete(conn, character, inventory_rest, data) do
     rewards = Map.get(data, :rewards) || %{}

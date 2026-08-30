@@ -204,9 +204,9 @@ defmodule Kantele.Npc.TraitsTest do
       assert Quester.is_quester?(%{})
     end
 
-    test "ask_quest/cancel_quest 占位" do
-      assert Quester.ask_quest(%{}, %{}) == {:error, :not_implemented}
-      assert Quester.cancel_quest(%{}, %{}) == {:error, :not_implemented}
+    test "ask_quest/cancel_quest 无任务配置返回友好文案" do
+      assert Quester.ask_quest(%{}, %{}) == {:error, "老朽手头暂无任务可托付。"}
+      assert Quester.cancel_quest(%{}, %{}) == {:error, "老朽手头暂无你的任务可作罢。"}
     end
   end
 end

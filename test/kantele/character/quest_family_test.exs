@@ -12,6 +12,7 @@ defmodule Kantele.Character.QuestFamilyTest do
   alias Kantele.Character.QuestEvent
   alias Kantele.Character.Stats
   alias Kantele.Character.Vitals
+  alias Kantele.Quest
 
   defp vendor_npc() do
     %Kalevala.Character{
@@ -164,5 +165,50 @@ defmodule Kantele.Character.QuestFamilyTest do
 
     assert_receive %Event{topic: "quest/turnin-request", data: data}
     assert data.item_id == "liuxi:yupai"
+  end
+
+  test "任务交付：杀怪要求未满足时拒绝结算（保留玉牌）" do
+    p = player(inventory: ["liuxi:yupai"])
+
+    {:ok, quests} = Quest.set_todo(Quest.new(), %{file: "song-yupai", kill: ["yezhu"]})
+    p = %{p | meta: PlayerMeta.put_quests(p.meta, quests)}
+
+    conn =
+      QuestEvent.turnin_request(build_conn(p), %{topic: "quest/turnin-request", data: %{
+        vendor_name: "阿婆",
+        quest: "song-yupai",
+        item_id: "liuxi:yupai",
+        prompt: "去把进山的野猪除掉，寻回玉牌。",
+        rewards: %{exp: 200, potential: 50, score: 10, weiwang: 5, coins: 100}
+      }})
+
+    assert conn.private.update_character == nil
+    assert output_text(conn) =~ "野猪"
+    assert length(conn.character.inventory) == 1
+  end
+
+  test "任务交付：杀怪要求满足后结算成功" do
+    p = player(inventory: ["liuxi:yupai"])
+
+    {:ok, quests} = Quest.set_todo(Quest.new(), %{file: "song-yupai", kill: ["yezhu"]})
+
+    {:ok, quests} =
+      Quest.add_killed(quests, %{file: "song-yupai", kill: ["yezhu"]}, "yezhu", 1)
+
+    p = %{p | meta: PlayerMeta.put_quests(p.meta, quests)}
+
+    conn =
+      QuestEvent.turnin_request(build_conn(p), %{topic: "quest/turnin-request", data: %{
+        vendor_name: "阿婆",
+        quest: "song-yupai",
+        item_id: "liuxi:yupai",
+        prompt: "去把进山的野猪除掉，寻回玉牌。",
+        rewards: %{exp: 200, potential: 50, score: 10, weiwang: 5, coins: 100}
+      }})
+
+    updated = conn.private.update_character || conn.character
+    assert updated.inventory == []
+    assert updated.meta.coins == 150
+    assert output_text(conn) =~ "任务完成"
   end
 end

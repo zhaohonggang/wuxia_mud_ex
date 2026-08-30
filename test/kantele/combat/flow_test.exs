@@ -11,6 +11,7 @@ defmodule Kantele.Combat.FlowTest do
   alias Kantele.Character.NonPlayerMeta
   alias Kantele.Character.Stats
   alias Kantele.Character.Vitals
+  alias Kantele.Quest
 
   @recv_timeout 3000
 
@@ -347,6 +348,42 @@ defmodule Kantele.Combat.FlowTest do
         })
 
       assert current_character(conn).meta.stats.gongxian == 3
+    end
+
+    test "击杀计入在办任务的杀怪进度（裸 key 匹配）" do
+      a = player()
+
+      {:ok, quests} =
+        Quest.set_todo(Quest.new(), %{file: "song-yupai", kill: ["yezhu"]})
+
+      a = %{a | meta: PlayerMeta.put_quests(a.meta, quests)}
+
+      conn =
+        CombatEvent.enemy_died(build_conn(a), %{
+          topic: "combat/enemy-died",
+          data: %{id: "liuxi:yezhu", exp: 5, potential: 2}
+        })
+
+      task = current_character(conn).meta |> PlayerMeta.quests() |> Quest.get_todo("song-yupai")
+      assert task.killed["yezhu"] == 1
+    end
+
+    test "与任务无关的击杀不影响进度" do
+      a = player()
+
+      {:ok, quests} =
+        Quest.set_todo(Quest.new(), %{file: "song-yupai", kill: ["yezhu"]})
+
+      a = %{a | meta: PlayerMeta.put_quests(a.meta, quests)}
+
+      conn =
+        CombatEvent.enemy_died(build_conn(a), %{
+          topic: "combat/enemy-died",
+          data: %{id: "liuxi:lang", exp: 5, potential: 2}
+        })
+
+      task = current_character(conn).meta |> PlayerMeta.quests() |> Quest.get_todo("song-yupai")
+      assert task.killed["yezhu"] == 0
     end
   end
 

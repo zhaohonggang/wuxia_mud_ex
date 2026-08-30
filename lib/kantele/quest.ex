@@ -26,9 +26,10 @@ defmodule Kantele.Quest do
   所有变更函数都返回 `{:ok, state}` 或 `{:error, reason}`；查询函数返回纯值。
   ```
 
-  ## 保留的宿主存根
+  ## 宿主派发（QUEST_D 级）
   `ask_quest/2` / `cancel_quest/2` 对应 `feature/quester.c` 委托给 QUEST_D 的调用
-  （无 spec 参数，无法派发具体任务），维持占位返回 `{:error, :not_implemented}`。
+  （无 spec 参数，无法派发具体任务）。本实现按 NPC 自身的 `meta.quest` 配置应答：
+  有发布任务规格则返回该规格/其 file，否则回以友好文案。
   """
 
   @quest_size 20
@@ -110,6 +111,24 @@ defmodule Kantele.Quest do
     nested_update(state, spec, :item, item_file, amount, item_files(spec))
   end
 
+  @doc """
+  击杀登记（LPC 侧 `QUEST_D->doKilled` 的本地聚合）
+
+  对每个在办任务，若其声称的击杀对象（`task.killed` 的键，由 `set_todo`
+  按 `spec.kill` 预填）包含 `killed_key`，则计数 +1。无需外部再传 spec，
+  直接以在办任务的已登记击杀键重建 spec 走 `add_killed/4`。
+  """
+  def register_kill(%{todo: todo} = state, killed_key) do
+    Enum.reduce(todo, {:ok, state}, fn {file, task}, {:ok, acc} ->
+      spec = %{file: file, kill: Map.keys(Map.get(task, :killed, %{}))}
+
+      case add_killed(acc, spec, killed_key, 1) do
+        {:ok, s} -> {:ok, s}
+        _ -> {:ok, acc}
+      end
+    end)
+  end
+
   @doc "查询物品收集数（LPC getItem；无则 0）"
   def get_item(%{todo: todo}, spec, item_file) do
     with :ok <- valid_quest(spec),
@@ -147,21 +166,23 @@ defmodule Kantele.Quest do
 
   @doc "请求任务（LPC: QUEST_D->ask_quest(npc, who)）"
   def ask_quest(npc, _who) do
-    quest = npc.meta.quest
-    if quest && Map.get(quest, :file) do
-      {:ok, quest}
-    else
-      {:error, "老朽手头暂无任务可托付。"}
+    case Map.get(npc, :meta) do
+      %{quest: %{file: file} = quest} when is_binary(file) ->
+        {:ok, quest}
+
+      _ ->
+        {:error, "老朽手头暂无任务可托付。"}
     end
   end
 
   @doc "取消任务（LPC: QUEST_D->cancel_quest(npc, who)）"
   def cancel_quest(npc, _who) do
-    quest = npc.meta.quest
-    if quest && Map.get(quest, :file) do
-      {:ok, Map.get(quest, :file)}
-    else
-      {:error, "老朽手头暂无你的任务可作罢。"}
+    case Map.get(npc, :meta) do
+      %{quest: %{file: file}} when is_binary(file) ->
+        {:ok, file}
+
+      _ ->
+        {:error, "老朽手头暂无你的任务可作罢。"}
     end
   end
 

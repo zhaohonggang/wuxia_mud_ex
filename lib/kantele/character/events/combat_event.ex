@@ -38,8 +38,10 @@ defmodule Kantele.Character.CombatEvent do
   alias Kantele.Character.Combat.StatusTracker
   alias Kantele.Character.CharacterView
   alias Kantele.Character.CommandView
+  alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Teleport
   alias Kantele.Character.Vitals
+  alias Kantele.Quest
 
   @tick_interval 1000
   @regen_interval 15_000
@@ -523,6 +525,7 @@ defmodule Kantele.Character.CombatEvent do
     coins = (Map.get(character.meta, :coins) || 0) + (Map.get(reward, :coins) || 0)
     character = Map.put(character, :meta, Map.put(character.meta, :coins, coins))
     character = put_stats(character, stats)
+    character = apply_quest_kill(character, id)
 
     # 掉落物直接入包（v0 简化：不做尸体拾取）
     drops = Enum.map(Map.get(reward, :drops) || [], fn item_id ->
@@ -731,6 +734,25 @@ defmodule Kantele.Character.CombatEvent do
 
   defp put_stats(character, stats),
     do: %{character | meta: Map.put(character.meta, :stats, stats)}
+
+  # 击杀登记：把被杀敌人的裸 key（"zone:key" -> "key"）记入玩家的任务进度
+  defp apply_quest_kill(character, enemy_id) do
+    case PlayerMeta.quests(character.meta) do
+      nil ->
+        character
+
+      quests ->
+        killed_key = enemy_id |> String.split(":") |> List.last()
+
+        case Quest.register_kill(quests, killed_key) do
+          {:ok, new_quests} ->
+            %{character | meta: Map.put(character.meta, :quests, new_quests)}
+
+          _ ->
+            character
+        end
+    end
+  end
 
   defp send_event(conn, pid, topic, data) do
     send(pid, %Event{from_pid: self(), topic: topic, data: data})
