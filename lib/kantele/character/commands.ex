@@ -299,6 +299,19 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(AbandonCommand) do
+    parse("abandon", :run, fn command ->
+      command |> spaces() |> word(:skill)
+    end)
+
+    parse("fangqi", :run, fn command ->
+      command |> spaces() |> word(:skill)
+    end)
+
+    parse("放弃", :run, fn command ->
+      command |> spaces() |> word(:skill)
+    end)
+  end
 
   module(LearnCommand) do
     parse("learn", :run, fn command ->
