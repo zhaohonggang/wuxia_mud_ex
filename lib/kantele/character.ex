@@ -210,6 +210,12 @@ defmodule Kantele.Character.NonPlayerMeta do
   - `loot` 击杀掉落 item id 列表（A11/N6：黑虎掉玉牌）
   - `quest` 任务发布规格（A11/N6 v1）：`%{file:, kill:[], item:[]}`
   - `coagents` 帮手列表（coagent.c）：`[coagent_id]`，受击时通知这些帮手前来助战
+  - `parts` 可切割部位表（cutable.c）：`%{part_id => [level, unit, name, name_left,
+    id_left, ass_part, verb, clone]}`（8 字段数组对齐 cutable.c；nil = 不可切割）
+  - `no_cut` 不可切割部位 `%{part_id => 提示串 | true}`（cutable.c no_cut）
+  - `default_clone` 部位无独立 clone 时的默认产物 item id（cutable.c default_clone）
+  - `been_cut` 已被割走的部位 id 列表（cutable.c been_cut；风纪运行时，重登还原）
+  - `defeated_by` 放倒这具尸体的角色 id（cut.c defeated_by：他人尸体不可动）
   """
 
   defstruct [
@@ -225,7 +231,12 @@ defmodule Kantele.Character.NonPlayerMeta do
     :turn_in,
     :loot,
     :quest,
-    :coagents
+    :coagents,
+    :parts,
+    :no_cut,
+    :default_clone,
+    :been_cut,
+    :defeated_by
   ]
 
   defimpl Kalevala.Meta.Trim do

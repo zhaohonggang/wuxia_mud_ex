@@ -119,6 +119,14 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(CutCommand) do
+    parse("cut", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("cut", :run_bare)
+  end
+
   module(FollowCommand) do
     parse("follow", :run, fn command ->
       command |> spaces() |> text(:rest)

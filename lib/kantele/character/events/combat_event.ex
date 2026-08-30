@@ -434,6 +434,7 @@ defmodule Kantele.Character.CombatEvent do
       character =
         character
         |> Map.put(:status, "#{character.name}的尸体躺在地上。")
+        |> Map.put(:meta, Map.put(character.meta, :defeated_by, killer && killer.id))
         |> put_combat(%Combat{dead: true})
 
       StatusTracker.mark_dead(character.id)
@@ -490,9 +491,15 @@ defmodule Kantele.Character.CombatEvent do
             max_neili: v.base_neili
         }
 
+        meta =
+          character.meta
+          |> Map.put(:been_cut, nil)
+          |> Map.put(:defeated_by, nil)
+
         character =
           character
           |> Map.put(:status, "#{character.name} is here.")
+          |> Map.put(:meta, meta)
           |> put_vitals(vitals)
           |> put_combat(Combat.new())
 

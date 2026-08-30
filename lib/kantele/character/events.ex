@@ -49,6 +49,10 @@ defmodule Kantele.Character.Events do
       event("give/result", :result)
     end
 
+    module(CutEvent) do
+      event("cut/result", :result)
+    end
+
     module(FollowEvent) do
       event("follow/set-leader", :set_leader)
       event("follow/register", :register)
@@ -191,6 +195,10 @@ defmodule Kantele.Character.NonPlayerEvents do
       event("characters/ask", :call)
       event("quest/ask", :call)
       event("quest/cancel", :call)
+    end
+
+    module(NpcCutEvent) do
+      event("characters/cut", :call)
     end
 
     module(NpcFamilyEvent) do

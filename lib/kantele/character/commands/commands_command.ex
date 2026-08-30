@@ -70,6 +70,7 @@ defmodule Kantele.Character.CommandsCommand do
     "surrender" => "投降（脱战，扣 50 阅历）",
     # Batch 5: 物品/跟随/回城/查人/状态
     "give" => "赠送物品：give 物品 to 人或 give 人 物品",
+    "cut" => "解剖尸体：cut <部位> from <尸体>（cut <尸体> 查看可割部位）",
     "follow" => "跟随某人：follow 某人 / follow none",
     "recall" => "回城（回到当前区域起始房间）",
     "finger" => "查找玩家：finger [姓名]",

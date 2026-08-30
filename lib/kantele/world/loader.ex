@@ -337,6 +337,10 @@ alias Kantele.Character.Vitals
         turn_in: parse_turn_in(Map.get(character_data, :turn_in)),
         quest: parse_quest(Map.get(character_data, :quest)),
         coagents: parse_coagents(Map.get(character_data, :coagents)),
+        parts: parse_parts(Map.get(character_data, :parts)),
+        no_cut: parse_no_cut(Map.get(character_data, :no_cut)),
+        default_clone:
+          (Map.get(character_data, :default_clone) && to_string(Map.get(character_data, :default_clone))),
         loot: parse_goods(Map.get(character_data, :loot))
       }
     }
@@ -549,6 +553,59 @@ alias Kantele.Character.Vitals
     |> List.wrap()
     |> Enum.map(&to_string/1)
   end
+
+  # 可切割部位（cutable.c）：UCL 例 parts = {
+  #   head = { level = 3, unit = "颗", name = "头", name_left = "头",
+  #            id_left = "head", verb = "割了下来", clone = "meat" }
+  # }
+  # 归一化为 8 字段数组对齐 cutable.c：[level, unit, name, name_left, id_left,
+  # ass_part, verb, clone]；ass_part 为关联部位 id => 新 id 映射。
+  defp parse_parts(nil), do: nil
+
+  defp parse_parts(parts) when is_map(parts) do
+    Map.new(parts, fn {id, part} ->
+      {to_string(id), normalize_part(part)}
+    end)
+  end
+
+  defp parse_parts(_), do: nil
+
+  defp normalize_part(part) when is_map(part) do
+    [
+      Map.get(part, :level) || 0,
+      of_binary(Map.get(part, :unit)),
+      of_binary(Map.get(part, :name)),
+      of_binary(Map.get(part, :name_left)),
+      of_binary(Map.get(part, :id_left)),
+      parse_ass_part(Map.get(part, :ass_part)),
+      of_binary(Map.get(part, :verb)),
+      of_binary(Map.get(part, :clone))
+    ]
+  end
+
+  defp normalize_part(_), do: nil
+
+  defp parse_ass_part(nil), do: nil
+
+  defp parse_ass_part(ass) when is_map(ass) do
+    Map.new(ass, fn {k, v} -> {to_string(k), to_string(v)} end)
+  end
+
+  defp parse_ass_part(_), do: nil
+
+  # 不可切割部位（cutable.c no_cut）：UCL 例 no_cut = { horn = "这样东西你割不下来。" }
+  defp parse_no_cut(nil), do: %{}
+
+  defp parse_no_cut(no_cut) when is_map(no_cut) do
+    Map.new(no_cut, fn {k, v} ->
+      {to_string(k), if(is_binary(v), do: v, else: true)}
+    end)
+  end
+
+  defp parse_no_cut(_), do: %{}
+
+  defp of_binary(nil), do: nil
+  defp of_binary(value), do: to_string(value)
 
   defp npc_vitals(nil), do: Kantele.Character.Vitals.new()
 

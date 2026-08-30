@@ -456,6 +456,10 @@ defmodule Kantele.World.Room.Events do
       event("room/give", :call)
     end
 
+    module(CutRequestEvent) do
+      event("room/cut", :call)
+    end
+
     module(FollowRequestEvent) do
       event("room/follow", :call)
     end
@@ -751,6 +755,72 @@ defmodule Kantele.World.Room.GiveRequestEvent do
         Kantele.World.Room.NameMatch.matches?(character, target_name)
     end)
   end
+end
+
+defmodule Kantele.World.Room.CutRequestEvent do
+  @moduledoc """
+  解剖转发（`cmds/std/cut.c`）：把 `cut` 的 `room/cut` 事件按名字解析尸体目标，
+  应用 cut.c 前置守卫（附近无物 / 割自己 / 活人），把 `characters/cut` 转给
+  尸体进程做 do_cut（部位校验 + 产物入包）。
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat.StatusTracker
+
+  def call(context, %{data: data} = event) do
+    requester = Enum.find(context.characters, &(&1.pid == event.from_pid))
+    name = Map.get(data, :name)
+
+    case {requester, find_target(context.characters, name)} do
+      {nil, _} ->
+        context
+
+      {_requester, nil} ->
+        render(context, requester.pid, CommandView, "text", %{text: "你附近没有这样东西。\n"})
+
+      {requester, target} ->
+        cond do
+          target.pid == requester.pid ->
+            render(context, requester.pid, CommandView, "text", %{
+              text: "割自己？你有毛病啊？\n"
+            })
+
+          not dead?(target) ->
+            render(context, requester.pid, CommandView, "text", %{text: "活人你也敢割，找打么。\n"})
+
+          true ->
+            event(context, target.pid, self(), "characters/cut", %{
+              part: Map.get(data, :part),
+              name: target.name,
+              id: target.id,
+              requester_id: requester.id,
+              requester_name: requester.name,
+              weapon_skill_type: Map.get(data, :weapon_skill_type),
+              weapon_name: Map.get(data, :weapon_name),
+              skills: Map.get(data, :skills),
+              force: Map.get(data, :force),
+              reply_to: requester.pid
+            })
+        end
+    end
+  end
+
+  defp find_target(characters, name) when is_binary(name) and name != "" do
+    Enum.find(characters, fn character ->
+      Kantele.World.Room.NameMatch.matches?(character, name)
+    end)
+  end
+
+  defp find_target(_characters, _name), do: nil
+
+  defp dead?(%{status: status, id: id}) when is_binary(status) do
+    String.contains?(status, "尸体") or StatusTracker.dead?(id)
+  end
+
+  defp dead?(%{id: id}), do: StatusTracker.dead?(id)
+  defp dead?(_), do: false
 end
 
 defmodule Kantele.World.Room.FollowRequestEvent do

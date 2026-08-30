@@ -58,7 +58,7 @@
 |-----------|------|----------------|------|
 | `food.c` | 🟡 | `Kantele.Item` | 补 apply_effect 栈 (max 12) + do_effect |
 | `liquid.c` | 🟡 | `Kantele.Item` | 补 liquid fill level + apply_effect |
-| `cutable.c` | 🟡 | `Kantele.Item` | 补 do_cut 剁尸产件 (parts 映射) |
+| `cutable.c` | ✅ | `Kantele.Item.Cutable` | do_cut 剁尸产件：`cut` 命令 → Room.CutRequestEvent → 尸体侧 `NpcCutEvent`（部位校验/武器修为门槛/割头清 defeated_by）→ `CutEvent` 产物入包 |
 | `itemmake.c` | 🟡 | `Kantele.Item` | 补 9 级武器/护甲锻造、item_owner、ITEM_D 委托动作；include 现有 qianzhumiji/yinzhen 模式 |
 | `noclone.c` | 🟢 | `Kantele.Item.Registry` | unique/no_clone 已有 |
 | `unique.c` | 🟢 | `Kantele.Item.Registry` | violate_unique / create_replica 已有 |
@@ -331,3 +331,4 @@ Batch1(派生属性) ──► Batch3(NPC社会/守卫) ──► Batch5(锻造/
 | 2026-08-30 | Coagent 帮手接线（含跨房移动）：mate 受击时经角色频道投递 coagent/help，帮手 start_help 决策（同房参战/异地 Teleport 后参战/返回），finish_help 在脱离战斗后回 startroom；meta.coagents 配置 + loader 解析，Combat 增加 helping 标记（+1 test） |
 | 2026-08-30 | Quest 杀怪进度落地 + 交付校验：enemy_died 击杀经 Quest.register_kill 计裸 key 入在办任务进度；turnin_request 依任务击杀要求校验（未满足拒绝结算保留物品，满足才交付）；ask_quest/cancel_quest 由占位改为依 NPC meta.quest 应答并容错无 meta 的 npc（+11 tests，修复 2 个既有 Quest/Quester 失败） |
 | 2026-08-30 | Backpack 宿主接线：store/take/背包 命令接 Kantele.Item.Backpack——storage_bag 解锁判定、忙碌/战斗拦截、能力上限（combat_exp+storage_bag 扩展格）、store store_item 排除规则（装备/食物/液体/不可克隆）、store all、take 按编号重建实例、depot serialize/deserialize 落盘 metadata.bag（Item.Meta 增 storage_bag 字段 + loader 解析，+25 tests） |
+| 2026-08-30 | cut 剁尸宿主接线：cut <部位> from <尸体> 命令 → Room.CutRequestEvent（附近无物/割自己/活人守卫）→ 尸体侧 NpcCutEvent 依 meta.parts do_cut（部位校验/空手内力与针锤杖棍鞭修为门槛/? 清单/割头清 defeated_by/产出 clone 或 default_clone）→ CutEvent 产物实例入包+文案（NonPlayerMeta 增 parts/no_cut/default_clone/been_cut/defeated_by，loader 解析，combat die 记 defeated_by、respawn 清剁尸态，+26 tests） |
