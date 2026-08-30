@@ -34,6 +34,16 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(FillCommand) do
+    parse("fill", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+
+    parse("灌水", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+  end
+
   module(EatCommand) do
     parse("eat", :run, fn command ->
       command |> spaces() |> text(:item_name)
@@ -210,6 +220,10 @@ defmodule Kantele.Character.Commands do
 
     parse("捡", :get, fn command ->
       command |> spaces() |> text(:item_name)
+    end)
+
+    parse("put", :put, fn command ->
+      command |> spaces() |> text(:item) |> string(" in ") |> text(:target)
     end)
   end
 
