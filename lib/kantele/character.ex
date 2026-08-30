@@ -195,9 +195,9 @@ defmodule Kantele.Character.NonPlayerMeta do
     gongxian: 价目}}, no_teach: [...]}`；本期只解析落位供展示，消费端等 b 期 learn 重构
   - `turn_in` 任务交付（A11/N6 v0）：`%{quest: id, item: item_id, prompt: 引导文案,
     rumor: 播报文案, rewards: %{exp:, potential:, score:, weiwang:, coins:}}`
-   - `loot` 击杀掉落 item id 列表（A11/N6：黑虎掉玉牌）
-   - `quest` 任务发布规格（A11/N6 v1）：`%{file:, kill:[], item:[]}`
-   - `coagents` 帮手列表（coagent.c）：`[coagent_id]`，受击时通知这些帮手前来助战
+  - `loot` 击杀掉落 item id 列表（A11/N6：黑虎掉玉牌）
+  - `quest` 任务发布规格（A11/N6 v1）：`%{file:, kill:[], item:[]}`
+  - `coagents` 帮手列表（coagent.c）：`[coagent_id]`，受击时通知这些帮手前来助战
   """
 
   defstruct [
