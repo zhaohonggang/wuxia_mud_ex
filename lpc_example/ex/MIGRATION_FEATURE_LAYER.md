@@ -74,10 +74,10 @@
 | `coagent.c` | ✅ | `Kantele.Npc.Coagent` | 帮手 start_help / finish_help |
 | `team.c` | ✅ | `Kantele.Character.Team` | team 已有；补 follow?/2 (follow_me 决策) |
 | `finance.c` | ✅ | `Kantele.Economy.Money` | can_afford / pay_money (金/银/铜) |
-| `banker.c` | 🟡 | `Kantele.Npc.Banker` | 存款/汇兑/转账/离线转账 |
+| `banker.c` | ✅ | `Kantele.Npc.Banker` | check/deposit/withdraw/transfer/convert 纯逻辑（busy/fighting 检查在 host 端） |
 | `dealer.c` | ✅ | `Kantele.Npc.Dealer` | 估价/收购/标价/购买价计算（纯函数，见 Batch 2 后补） |
 | `vendor.c` | ✅ | `Kantele.Npc.Vendor` | 轻量 buy_object / price_string / 商品清单 |
-| `quester.c` | 🟡 | `Kantele.Npc.Quests` | is_quester / ask_quest |
+| `quester.c` | ✅ | `Kantele.Npc.Quests` + `Kantele.Quest` | is_quester / ask_quest / cancel_quest 接入 Quest 服务 |
 | `autoload.c` | ✅ | `Kantele.Item.Autoload` | save/parse_entry/restore_plan 重登还原背包 |
 
 ### 1.8 存储 / 玩家背包
