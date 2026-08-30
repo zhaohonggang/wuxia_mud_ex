@@ -29,6 +29,8 @@ defmodule Kantele.Character.BankCommand do
       ["查询" | _] -> show(conn)
       [verb, amount, denom] when verb in ["deposit", "存"] -> deposit(conn, amount, denom)
       [verb, amount, denom] when verb in ["withdraw", "取"] -> withdraw(conn, amount, denom)
+      [verb, amount, from, "to", to] when verb in ["convert", "兑换"] -> convert(conn, amount, from, to)
+      [verb, amount, denom, "to", who] when verb in ["transfer", "转"] -> transfer(conn, amount, denom, who)
       _ -> usage(conn)
     end
   end
@@ -116,8 +118,74 @@ defmodule Kantele.Character.BankCommand do
     end
   end
 
+  @doc "货币兑换（对应 banker.c do_convert，把一种货币换成另一种）"
+  def convert(conn, amount_str, from_denom_str, to_denom_str) do
+    amount = parse_int(amount_str)
+    from_denom = parse_denom(from_denom_str)
+    to_denom = parse_denom(to_denom_str)
+
+    if is_nil(from_denom) or is_nil(to_denom) do
+      reply(conn, "没有这种货币。\n")
+    else
+      meta = conn.character.meta
+      money_map = Money.split(meta.coins || 0)
+
+      case Banker.convert(money_map, amount, from_denom, to_denom) do
+        {:ok, new_map} ->
+          new_coins = Money.total_value(new_map)
+          meta = %{meta | coins: new_coins}
+          character = Map.put(conn.character, :meta, meta)
+          Records.save(character)
+
+          from_value = denom_base(from_denom) * amount
+          to_value = denom_base(to_denom) * amount
+
+          text =
+            "你把#{Money.money_str(from_value)}兑换成了#{Money.money_str(to_value)}。\n"
+
+          conn
+          |> put_character(character)
+          |> reply(text)
+
+        {:error, reason} ->
+          reply(conn, "#{friendly(reason)}\n")
+      end
+    end
+  end
+
+  @doc "转账（对应 banker.c do_transfer，向另一玩家转账）"
+  def transfer(conn, amount_str, denom_str, who) do
+    amount = parse_int(amount_str)
+    denom = parse_denom(denom_str)
+
+    if is_nil(denom) do
+      reply(conn, "没有这种货币。\n")
+    else
+      meta = conn.character.meta
+      balance = PlayerMeta.bank_coins(meta)
+
+      case Banker.transfer(balance, amount, denom) do
+        {:ok, new_balance, value} ->
+          meta = PlayerMeta.put_bank_coins(meta, new_balance)
+          character = Map.put(conn.character, :meta, meta)
+          Records.save(character)
+
+          text =
+            "你向 #{who} 转账了#{Money.money_str(value)}，" <>
+              "户头里还剩#{Money.money_str(new_balance)}。\n"
+
+          conn
+          |> put_character(character)
+          |> reply(text)
+
+        {:error, reason} ->
+          reply(conn, "#{friendly(reason)}\n")
+      end
+    end
+  end
+
   defp usage(conn) do
-    reply(conn, "钱庄用法：bank 查余额；bank deposit|存 <数量> <金|银|铜>；bank withdraw|取 <数量> <金|银|铜>\n")
+    reply(conn, "钱庄用法：bank 查余额；bank deposit|存 <数量> <金|银|铜>；bank withdraw|取 <数量> <金|银|铜>；bank convert|兑换 <数量> <金|银|铜> to <金|银|铜>；bank transfer|转 <数量> <金|银|铜> to <玩家>\n")
   end
 
   defp reply(conn, text) do
