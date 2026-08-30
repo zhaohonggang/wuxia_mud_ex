@@ -1102,6 +1102,7 @@ defmodule Kantele.World.Room.CombatEvent do
   alias Kantele.Character.CharacterView
   alias Kantele.Character.Combat.StatusTracker
   alias Kantele.Character.CommandView
+  alias Kantele.Npc.Guarder
 
   def call(context, event) do
     attacker = Enum.find(context.characters, &(&1.pid == event.from_pid))
@@ -1114,7 +1115,7 @@ defmodule Kantele.World.Room.CombatEvent do
 
   # ---- 开战请求 ----
 
-  defp dispatch(context, %{topic: "combat/attack", data: %{name: name}}, attacker) do
+  defp dispatch(context, %{topic: "combat/attack", data: %{name: name}} = event, attacker) do
     target =
       Enum.find(context.characters, fn character ->
         character.pid != attacker.pid &&
@@ -1151,6 +1152,15 @@ defmodule Kantele.World.Room.CombatEvent do
           "text",
           %{text: "对方已经倒下了，刀剑无眼，何必赶尽杀绝。\n"}
         )
+
+      guarder_deny?(target, attacker, event) ->
+        # 守卫拒战：同门 fight 拒切磋；异族 kill/hit 反杀已在 guarder_kill 分支处理
+        msg = guarder_refuse_msg(target, Map.get(event.data, :type, "fight"))
+        render(context, attacker.pid, CommandView, "text", %{text: msg <> "\n"})
+
+      guarder_kill?(target, attacker, event) ->
+        # 守卫反杀惹事者（kill/hit）
+        engage(context, target, attacker)
 
       true ->
         engage(context, attacker, target)
@@ -1259,6 +1269,38 @@ defmodule Kantele.World.Room.CombatEvent do
 
   defp dead?(%{id: id}), do: StatusTracker.dead?(id)
   defp dead?(_), do: false
+
+  # ---- 守卫敌对判定（Guarder.check_enemy 接线） ----
+
+  defp guarder_config?(character) do
+    character.meta.guarder && Guarder.is_guarder?(character)
+  end
+
+  defp guarder_decision(target, attacker, event) do
+    Guarder.check_enemy(%{
+      my_family: Map.get(target.meta.guarder, :family),
+      my_name: target.name,
+      enemy_family: Map.get(attacker.meta.family || %{}, :name),
+      enemy_name: attacker.name,
+      enemy_id: attacker.id,
+      type: Map.get(event.data, :type, "fight")
+    })
+  end
+
+  defp guarder_deny?(target, attacker, event) do
+    guarder_config?(target) and guarder_decision(target, attacker, event) ==
+      {:refuse_fight, attacker.name}
+  end
+
+  defp guarder_kill?(target, attacker, event) do
+    guarder_config?(target) and match?({:kill, _}, guarder_decision(target, attacker, event))
+  end
+
+  defp guarder_refuse_msg(target, _type) do
+    msgs = target.meta.guarder.msgs || %{}
+    Map.get(msgs, :refuse_fight) ||
+      "#{target.name}摇头道：同门之间，点到为止，切磋就免了。\n"
+  end
 
   defp players_in_room(context) do
     player_ids = MapSet.new(Kantele.Character.Presence.characters(), & &1.id)
