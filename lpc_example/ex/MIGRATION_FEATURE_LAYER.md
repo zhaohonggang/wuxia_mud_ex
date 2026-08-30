@@ -7,7 +7,7 @@
 
 ## 0. 现状基线
 
-- **当前全量测试**: 388 tests, 0 failures (flaky `death` 战斗测试偶发，isolated 通过)
+- **当前全量测试**: 729 tests, 0 failures
 - 已完成 13 个 Phase 5 样本接入（feature_damage/attack、condition_poison、skill_taiji-quan/dugu-jiujian、room_qianting/qiyuan2/pigroom、item_yinzhen/qianzhumiji、room_wudu_liandu、npc_xiaoer/horseboss、class_wudang_zhang、system_npc_luban、class_generate_chinese）。
 - 注意：`mud/feature` 是**完整 mudlib 继承层**（Player/NPC/物品共享行为），与之前"单个样本".ex 迁移是**两个层面**。本次把底层能力系统化落地。
 
@@ -31,8 +31,8 @@
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
 |-----------|------|----------------|------|
 | `name.c` | ✅ | `Kantele.Character.Name` | surname+purename 组名/无名氏/set_name/id?/parse_command_id_list/短名 |
-| `attribute.c` | 🔴 | `Kantele.Character.Stats` | 派生属性：str/int/con/dex/per/level = base + skill/10 + temp apply |
-| `sadjust.c` | 🔴 | `Kantele.Combat.Skills` | 技能上限 = combat_exp^3/10 |
+| `attribute.c` | 🟡 | `Kantele.Character.Stats` | 派生属性：str/int/con/dex/per/level = base + skill/10 + temp apply（基础结构已有，部分 temp apply 待扩展） |
+| `sadjust.c` | ✅ | `Kantele.Character.Stats` | 技能上限 = combat_exp^3/10，Stats.skill_limit/1 |
 
 ### 1.3 生命 / 伤害
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
@@ -62,23 +62,23 @@
 | `itemmake.c` | 🟡 | `Kantele.Item` | 补 9 级武器/护甲锻造、item_owner、ITEM_D 委托动作；include 现有 qianzhumiji/yinzhen 模式 |
 | `noclone.c` | 🟢 | `Kantele.Item.Registry` | unique/no_clone 已有 |
 | `unique.c` | 🟢 | `Kantele.Item.Registry` | violate_unique / create_replica 已有 |
-| `silentdest.c` | 🔴 | `Kantele.Scheduler` | 无人时 auto-destruct |
+| `silentdest.c` | ✅ | `Kantele.Item.SilentDest` | should_destruct?/env 链判定（无人时 auto-destruct） |
 | `transport.c` | ✅ | `Kantele.Mount` + `Kantele.Item.Transport` | 骑乘/驾驶载体 is_transport/owner (衔接现有 horseboss)：ride/unride/whistle 命令，Transport.can_drive_by? 权限检查，马夫购买流程，+29 tests |
 
 ### 1.7 NPC / 社会 / 经济
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
 |-----------|------|----------------|------|
-| `apprentice.c` | 🔴 | `Kantele.File.Family` | 师徒关系 assign_apprentice/create_family/recruit |
-| `master.c` | 🔴 | `Kantele.Npc.Master` | prevent_learn / attempt_detach |
+| `apprentice.c` | ✅ | `Kantele.Character.Family` | 师徒关系 assign_apprentice/create_family/recruit |
+| `master.c` | ✅ | `Kantele.Npc.Master` | prevent_learn / attempt_detach |
 | `guarder.c` | 🟡 | `Kantele.Npc.Guarder` | 守卫 permit_pass / kill_enemy / check_enemy |
-| `coagent.c` | 🔴 | `Kantele.Npc.Coagent` | 帮手 start_help / finish_help |
+| `coagent.c` | ✅ | `Kantele.Npc.Coagent` | 帮手 start_help / finish_help |
 | `team.c` | ✅ | `Kantele.Character.Team` | team 已有；补 follow?/2 (follow_me 决策) |
-| `finance.c` | 🔴 | `Kantele.Economy.Finance` | can_afford / pay_money (金/银/铜) |
+| `finance.c` | ✅ | `Kantele.Economy.Money` | can_afford / pay_money (金/银/铜) |
 | `banker.c` | 🟡 | `Kantele.Npc.Banker` | 存款/汇兑/转账/离线转账 |
 | `dealer.c` | ✅ | `Kantele.Npc.Dealer` | 估价/收购/标价/购买价计算（纯函数，见 Batch 2 后补） |
 | `vendor.c` | ✅ | `Kantele.Npc.Vendor` | 轻量 buy_object / price_string / 商品清单 |
 | `quester.c` | 🟡 | `Kantele.Npc.Quests` | is_quester / ask_quest |
-| `autoload.c` | 🔴 | `Kantele.Item.Autoload` | 重登还原背包 |
+| `autoload.c` | ✅ | `Kantele.Item.Autoload` | save/parse_entry/restore_plan 重登还原背包 |
 
 ### 1.8 存储 / 玩家背包
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
@@ -100,8 +100,8 @@
 ### 1.10 定时 / 生命周期
 | feature.c | 落地 | 对应 frame 模块 | 说明 |
 |-----------|------|----------------|------|
-| `clean_up.c` | 🔴 | `Kantele.Scheduler` | no_clean_up 保护 / 空闲销毁 / 失败日志 |
-| `shadow.c` | 🔴 | util | do_shadow / remove_shadow |
+| `clean_up.c` | 🟡 | `Kantele.Scheduler` | no_clean_up 保护 / 空闲销毁（框架桩已有，idle destruction 宿主接线待扩展） |
+| `shadow.c` | ✅ | `Kantele.Util.Shadow` | do_shadow / remove_shadow / query_shadow_now |
 
 ### 1.11 ⏸ 延期批次（工具 + 协议，核心可玩性之后）
 | feature.c | 落地 | 说明 |
