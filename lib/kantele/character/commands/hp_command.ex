@@ -1,26 +1,28 @@
 defmodule Kantele.Character.HpCommand do
   @moduledoc """
-  状态命令：`hp`（cmds/usr/hp.c）
+  状态命令：`hp`
 
-  展示精气/气血/内力/食物/饮水/潜能等数值。简化为只显示自身状态，
-  不做 LPC 的 -m/-g 巫师参数与怒气/死亡保护明细。
+  对应 LPC cmds/usr/hp.c
+  显示角色状态。
   """
 
   use Kalevala.Character.Command
 
-  alias Kantele.Character.HpView
+  alias Kantele.Character.CommandView
 
   def run(conn, _params) do
     character = conn.character
-    stats = character.meta.stats
+    vitals = character.meta.vitals
+
+    info = """
+    【 气血 】 #{vitals.qi}/#{vitals.max_qi}
+    【 精气 】 #{vitals.jing}/#{vitals.max_jing}
+    【 内力 】 #{vitals.neili}/#{vitals.max_neili}
+    【 精力 】 #{vitals.jingli}/#{vitals.max_jingli}
+    """
 
     conn
-    |> render(HpView, "display", %{
-      name: character.name,
-      vitals: character.meta.vitals,
-      combat_exp: stats.combat_exp,
-      potential: stats.potential,
-      learned_points: stats.learned_points || 0
-    })
+    |> render(CommandView, "text", %{text: info})
+    |> prompt(CommandView, "prompt", %{})
   end
 end

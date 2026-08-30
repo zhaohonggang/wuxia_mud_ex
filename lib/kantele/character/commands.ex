@@ -900,6 +900,15 @@ defmodule Kantele.Character.Commands do
     parse("帮派", :run)
   end
 
+  module(TimeCommand) do
+    parse("time", :run)
+    parse("时间", :run)
+  end
+
+  module(IdCommand) do
+    parse("id", :run)
+  end
+
   # 表情名直用已改为 EmoteCommand 里的显式 parse（smile/wave/frown）。
   # 不再用 dynamic 路由：kalevala parse_dynamic_text 返回 3 元组，
   # Router.parse/3 只匹配 4 元组，命中必 CaseClauseError 崩 foreman（断线）
