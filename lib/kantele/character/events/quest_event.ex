@@ -1,9 +1,12 @@
 defmodule Kantele.Character.QuestEvent do
   @moduledoc """
-  任务事件（A11/N6 v0，玩家侧）
+  任务事件（A11/N6 v0 + v1，玩家侧）
 
   `quest/turnin-request`：NPC 发来的交付请求。玩家校验背包里是否有所需
   物品——有则收走物品、发放奖励并往 rumor 频道播报谣言；无则提示引导。
+
+  `quest/ask-result`：NPC 应答请求任务。成功则记录任务到 todo；失败则提示原因。
+  `quest/cancel-result`：NPC 应答取消任务。成功则从 todo 移除；失败则提示原因。
   """
 
   use Kalevala.Character.Event
@@ -14,6 +17,75 @@ defmodule Kantele.Character.QuestEvent do
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Records
   alias Kantele.Quest
+
+  def turnin_request(conn, %{data: data}) do
+    character = conn.character
+    item_id = Map.get(data, :item_id)
+
+    {instance, rest} =
+      character.inventory
+      |> Enum.split_with(&(&1.item_id == item_id))
+
+    cond do
+      instance == [] ->
+        conn
+        |> render(CommandView, "text", %{text: "#{Map.get(data, :prompt)}\n"})
+        |> prompt(CommandView, "prompt", %{})
+
+      true ->
+        complete(conn, character, rest, data)
+    end
+  end
+
+  def ask_result(conn, %{data: %{ok: true, quest: quest} = data}) do
+    character = conn.character
+
+    # 任务规格：%{file:, kill:, item:}
+    case Quest.set_todo(PlayerMeta.quests(character.meta), quest) do
+      {:ok, new_quests} ->
+        meta = Map.put(character.meta, :quests, new_quests)
+        character = %{character | meta: meta}
+        Records.save(character)
+
+        conn
+        |> put_character(character)
+        |> render(CommandView, "text", %{
+          text: "#{Map.get(data, :npc_name)}道：「好，这#{quest.file}之事便托付给你了，务必小心。」\n"
+        })
+        |> prompt(CommandView, "prompt", %{})
+
+      {:error, reason} ->
+        conn
+        |> render(CommandView, "text", %{text: "#{reason}\n"})
+        |> prompt(CommandView, "prompt", %{})
+    end
+  end
+
+  def ask_result(conn, %{data: %{ok: false, reason: reason, npc_name: npc_name}}) do
+    conn
+    |> render(CommandView, "text", %{text: "#{npc_name}摇头道：「#{reason}」\n"})
+    |> prompt(CommandView, "prompt", %{})
+  end
+
+  def cancel_result(conn, %{data: %{ok: true, quest: quest_file, npc_name: npc_name}}) do
+    character = conn.character
+    state = PlayerMeta.quests(character.meta)
+    new_state = Quest.del_todo(state, quest_file)
+    meta = Map.put(character.meta, :quests, new_state)
+    character = %{character | meta: meta}
+    Records.save(character)
+
+    conn
+    |> put_character(character)
+    |> render(CommandView, "text", %{text: "#{npc_name}点头道：「#{quest_file}之事既已作罢，你便自去忙吧。」\n"})
+    |> prompt(CommandView, "prompt", %{})
+  end
+
+  def cancel_result(conn, %{data: %{ok: false, reason: reason, npc_name: npc_name}}) do
+    conn
+    |> render(CommandView, "text", %{text: "#{npc_name}道：「#{reason}」\n"})
+    |> prompt(CommandView, "prompt", %{})
+  end
 
   def turnin_request(conn, %{data: data}) do
     character = conn.character

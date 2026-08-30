@@ -189,6 +189,8 @@ defmodule Kantele.Character.NonPlayerEvents do
 
     module(NpcAskEvent) do
       event("characters/ask", :call)
+      event("quest/ask", :call)
+      event("quest/cancel", :call)
     end
 
     module(NpcFamilyEvent) do

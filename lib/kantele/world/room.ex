@@ -381,6 +381,14 @@ defmodule Kantele.World.Room.Events do
       event("family/apprentice", :call)
     end
 
+    module(QuestAskRequestEvent) do
+      event("quest/ask", :call)
+    end
+
+    module(QuestCancelRequestEvent) do
+      event("quest/cancel", :call)
+    end
+
     module(GiveRequestEvent) do
       event("room/give", :call)
     end
@@ -558,6 +566,80 @@ defmodule Kantele.World.Room.ApprenticeRequestEvent do
 
       {requester, false} ->
         render(context, requester.pid, CommandView, "text", %{text: "你要拜谁为师？\n"})
+    end
+  end
+end
+
+defmodule Kantele.World.Room.QuestAskRequestEvent do
+  @moduledoc """
+  请求任务转发：把 `ask_quest <人>` 转给对应 NPC，
+  NPC 侧按 quest 配置决定是否发布任务。
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+
+  def call(context, %{data: %{name: name}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case {requester, is_binary(name) and name != ""} do
+      {nil, _} ->
+        context
+
+      {requester, true} ->
+        Enum.reduce(context.characters, context, fn character, acc ->
+          if character.pid != requester.pid and
+               Kantele.World.Room.NameMatch.matches?(character, name) do
+            event(acc, character.pid, self(), "quest/ask", %{
+              reply_to: requester.pid,
+              asker_id: requester.id,
+              asker_name: requester.name
+            })
+          else
+            acc
+          end
+        end)
+
+      {requester, false} ->
+        render(context, requester.pid, CommandView, "text", %{text: "你要向谁请求任务？\n"})
+    end
+  end
+end
+
+defmodule Kantele.World.Room.QuestCancelRequestEvent do
+  @moduledoc """
+  取消任务转发：把 `cancel_quest <人>` 转给对应 NPC，
+  NPC 侧取消该 NPC 发布的任务。
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+
+  def call(context, %{data: %{name: name}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case {requester, is_binary(name) and name != ""} do
+      {nil, _} ->
+        context
+
+      {requester, true} ->
+        Enum.reduce(context.characters, context, fn character, acc ->
+          if character.pid != requester.pid and
+               Kantele.World.Room.NameMatch.matches?(character, name) do
+            event(acc, character.pid, self(), "quest/cancel", %{
+              reply_to: requester.pid,
+              asker_id: requester.id,
+              asker_name: requester.name
+            })
+          else
+            acc
+          end
+        end)
+
+      {requester, false} ->
+        render(context, requester.pid, CommandView, "text", %{text: "你要向谁取消任务？\n"})
     end
   end
 end

@@ -7,6 +7,7 @@ defmodule Kantele.World.Loader do
   alias Kalevala.World.Item
   alias Kalevala.World.Room.Feature
   alias Kantele.Character.Stats
+alias Kantele.Character.Vitals
   alias Kantele.World.LoaderError
   alias Kantele.World.Room
   alias Kantele.World.Zone
@@ -334,6 +335,7 @@ defmodule Kantele.World.Loader do
         inquiries: parse_inquiries(Map.get(character_data, :inquiries)),
         teach: parse_teach(Map.get(character_data, :teach)),
         turn_in: parse_turn_in(Map.get(character_data, :turn_in)),
+        quest: parse_quest(Map.get(character_data, :quest)),
         loot: parse_goods(Map.get(character_data, :loot))
       }
     }
@@ -523,6 +525,20 @@ defmodule Kantele.World.Loader do
   end
 
   defp parse_turn_in(_), do: nil
+
+  # 任务发布（A11/N6 v1）：NPC 可发布的任务规格
+  # UCL 例：quest = { file = "song-yupai", kill = ["monster1"], item = ["item1"] }
+  defp parse_quest(nil), do: nil
+
+  defp parse_quest(quest) when is_map(quest) do
+    %{
+      file: Map.get(quest, :file) && to_string(Map.get(quest, :file)),
+      kill: Map.get(quest, :kill) && (List.wrap(Map.get(quest, :kill)) |> Enum.map(&to_string/1)),
+      item: Map.get(quest, :item) && (List.wrap(Map.get(quest, :item)) |> Enum.map(&to_string/1))
+    }
+  end
+
+  defp parse_quest(_), do: nil
 
   defp npc_vitals(nil), do: Kantele.Character.Vitals.new()
 
@@ -782,6 +798,7 @@ defmodule Kantele.World.Loader do
           # 任务交付物品引用同上（A11/N6）；掉落表同商品解引用
           meta = %{meta | turn_in: resolve_turn_in(Map.get(meta, :turn_in), zone, zones)}
           meta = %{meta | loot: resolve_goods(Map.get(meta, :loot), zone, zones)}
+          meta = %{meta | quest: Map.get(meta, :quest)}
 
           %Character{
             character

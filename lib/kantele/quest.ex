@@ -145,11 +145,25 @@ defmodule Kantele.Quest do
 
   # ---- 宿主存根（QUEST_D 级，见 @moduledoc）----
 
-  @doc "请求任务（LPC: QUEST_D->ask_quest(npc, who)，占位）"
-  def ask_quest(_npc, _who), do: {:error, :not_implemented}
+  @doc "请求任务（LPC: QUEST_D->ask_quest(npc, who)）"
+  def ask_quest(npc, _who) do
+    quest = npc.meta.quest
+    if quest && Map.get(quest, :file) do
+      {:ok, quest}
+    else
+      {:error, "老朽手头暂无任务可托付。"}
+    end
+  end
 
-  @doc "取消任务（LPC: QUEST_D->cancel_quest(npc, who)，占位）"
-  def cancel_quest(_npc, _who), do: {:error, :not_implemented}
+  @doc "取消任务（LPC: QUEST_D->cancel_quest(npc, who)）"
+  def cancel_quest(npc, _who) do
+    quest = npc.meta.quest
+    if quest && Map.get(quest, :file) do
+      {:ok, Map.get(quest, :file)}
+    else
+      {:error, "老朽手头暂无你的任务可作罢。"}
+    end
+  end
 
   # ---- 内部辅助 ----
 

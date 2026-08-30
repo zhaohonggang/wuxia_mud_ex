@@ -1,71 +1,3 @@
-defmodule Kantele.Character.NpcFamilyEvent do
-  @moduledoc """
-  NPC 侧拜师/叛师应答（A11/N5 门派 v0）
-
-  带 teach 配置（即有门派）的 NPC 应允拜师，把门派名与师父信息
-  回给玩家进程存档；无 teach 配置者婉拒。
-  叛师请求使用 Master.attempt_detach 判定是否为嫡传弟子。
-  """
-
-  use Kalevala.Character.Event
-
-  alias Kantele.Character.Family
-  alias Kantele.Npc.Master
-
-  def apprentice(conn, %{data: %{reply_to: reply_to, student_name: student_name}}) do
-    teach = conn.character.meta.teach
-
-    case teach && Map.get(teach, :family) do
-      nil ->
-        send(reply_to, %Kalevala.Event{
-          from_pid: self(),
-          topic: "family/result",
-          data: %{ok: false, reason: "#{conn.character.name}摆了摆手：老朽并无门派，不敢误人子弟。"}
-        })
-
-        conn
-
-      family ->
-        send(reply_to, %Kalevala.Event{
-          from_pid: self(),
-          topic: "family/result",
-          data: %{
-            ok: true,
-            family: family,
-            master_id: conn.character.id,
-            master_name: conn.character.name,
-            student_name: student_name,
-            teach: teach
-          }
-        })
-
-        conn
-    end
-  end
-
-  def detach(conn, %{data: %{reply_to: reply_to, student_family: student_family}}) do
-    my_family = conn.character.meta.family
-
-    case Master.attempt_detach(conn.character.meta.family, student_family, Map.get(student_family, :name)) do
-      {:noop} ->
-        send(reply_to, %Kalevala.Event{
-          from_pid: self(),
-          topic: "family/detach-result",
-          data: %{ok: false, reason: "#{conn.character.name}摆了摆手：你并非我门下弟子，何来叛师之说？"}
-        })
-        conn
-
-      {:detach, %{penalty?: penalty?}} ->
-        send(reply_to, %Kalevala.Event{
-          from_pid: self(),
-          topic: "family/detach-result",
-          data: %{ok: true, penalty?: penalty?, master_name: conn.character.name}
-        })
-        conn
-    end
-  end
-end
-
 defmodule Kantele.Character.NpcShopEvent do
   @moduledoc """
   NPC 侧商店应答（A10/N2）
@@ -190,17 +122,89 @@ defmodule Kantele.Character.NpcShopEvent do
   end
 end
 
+defmodule Kantele.Character.NpcFamilyEvent do
+  @moduledoc """
+  NPC 侧拜师/叛师应答（A11/N5 门派 v0）
+
+  带 teach 配置（即有门派）的 NPC 应允拜师，把门派名与师父信息
+  回给玩家进程存档；无 teach 配置者婉拒。
+  叛师请求使用 Master.attempt_detach 判定是否为嫡传弟子。
+  """
+
+  use Kalevala.Character.Event
+
+  alias Kantele.Character.Family
+  alias Kantele.Npc.Master
+
+  def apprentice(conn, %{data: %{reply_to: reply_to, student_name: student_name}}) do
+    teach = conn.character.meta.teach
+
+    case teach && Map.get(teach, :family) do
+      nil ->
+        send(reply_to, %Kalevala.Event{
+          from_pid: self(),
+          topic: "family/result",
+          data: %{ok: false, reason: "#{conn.character.name}摆了摆手：老朽并无门派，不敢误人子弟。"}
+        })
+
+        conn
+
+      family ->
+        send(reply_to, %Kalevala.Event{
+          from_pid: self(),
+          topic: "family/result",
+          data: %{
+            ok: true,
+            family: family,
+            master_id: conn.character.id,
+            master_name: conn.character.name,
+            student_name: student_name,
+            teach: teach
+          }
+        })
+
+        conn
+    end
+  end
+
+  def detach(conn, %{data: %{reply_to: reply_to, student_family: student_family}}) do
+    my_family = conn.character.meta.family
+
+    case Master.attempt_detach(conn.character.meta.family, student_family, Map.get(student_family, :name)) do
+      {:noop} ->
+        send(reply_to, %Kalevala.Event{
+          from_pid: self(),
+          topic: "family/detach-result",
+          data: %{ok: false, reason: "#{conn.character.name}摆了摆手：你并非我门下弟子，何来叛师之说？"}
+        })
+        conn
+
+      {:detach, %{penalty?: penalty?}} ->
+        send(reply_to, %Kalevala.Event{
+          from_pid: self(),
+          topic: "family/detach-result",
+          data: %{ok: true, penalty?: penalty?, master_name: conn.character.name}
+        })
+        conn
+    end
+  end
+end
+
 defmodule Kantele.Character.NpcAskEvent do
   @moduledoc """
   NPC 侧问答应答（A10/N4，对应 LPC inquiry）+ 任务交付判定（A11/N6 v0）
+  + 任务发布/取消（A11/N6 v1）
 
   关键词包含匹配 inquiries 表后以 tell 回话；
   若配置了 turn_in 且玩家背包有所需物品，则触发任务完成流程。
+  若配置了 quest 且玩家请求任务/取消，则按 Quest.ask_quest/cancel_quest 处理。
   """
 
   use Kalevala.Character.Event
 
   alias Kantele.World.Items
+  alias Kantele.Quest
+  alias Kantele.Npc.Quester
 
   def call(conn, %{data: %{reply_to: reply_to, asker_id: asker_id} = data}) do
     keyword = Map.get(data, :keyword) || ""
@@ -229,9 +233,56 @@ defmodule Kantele.Character.NpcAskEvent do
 
         conn
 
+      conn.character.meta.quest ->
+        # 任务发布/取消（A11/N6 v1）：委托 Quester
+        keyword_lower = String.downcase(keyword)
+        if String.contains?(keyword_lower, "取消") or String.contains?(keyword_lower, "cancel") do
+          handle_cancel_quest(conn, reply_to, asker_id)
+        else
+          handle_ask_quest(conn, reply_to, asker_id)
+        end
+
       true ->
         conn
     end
+  end
+
+  defp handle_ask_quest(conn, reply_to, asker_id) do
+    case Quester.ask_quest(conn.character, asker_id) do
+      {:ok, quest_spec} ->
+        send(reply_to, %Kalevala.Event{
+          from_pid: self(),
+          topic: "quest/ask-result",
+          data: %{ok: true, quest: quest_spec, npc_name: conn.character.name}
+        })
+
+      {:error, reason} ->
+        send(reply_to, %Kalevala.Event{
+          from_pid: self(),
+          topic: "quest/ask-result",
+          data: %{ok: false, reason: reason, npc_name: conn.character.name}
+        })
+    end
+    conn
+  end
+
+  defp handle_cancel_quest(conn, reply_to, asker_id) do
+    case Quester.cancel_quest(conn.character, asker_id) do
+      {:ok, quest_file} ->
+        send(reply_to, %Kalevala.Event{
+          from_pid: self(),
+          topic: "quest/cancel-result",
+          data: %{ok: true, quest: quest_file, npc_name: conn.character.name}
+        })
+
+      {:error, reason} ->
+        send(reply_to, %Kalevala.Event{
+          from_pid: self(),
+          topic: "quest/cancel-result",
+          data: %{ok: false, reason: reason, npc_name: conn.character.name}
+        })
+    end
+    conn
   end
 
   # 关键词包含匹配：问题里含表中的关键词即命中（LPC add_action/inquiry 风格）
@@ -253,5 +304,5 @@ defmodule Kantele.Character.NpcAskEvent do
     )
   end
 
-  def publish_error(conn, _error), do: conn
+  defp publish_error(conn, _error), do: conn
 end

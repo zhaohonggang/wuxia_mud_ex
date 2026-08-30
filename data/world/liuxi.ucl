@@ -541,6 +541,13 @@ characters "wangshifu" {
       "田伯光"
     ]
   }
+
+  # 任务发布配置（A11/N6 v1）
+  quest = {
+    file = "song-yupai"
+    kill = [ "wild_boar" ]
+    item = [ "yupai" ]
+  }
   combat = {
     no_kill = true
     max_qi = 2600

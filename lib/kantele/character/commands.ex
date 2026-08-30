@@ -635,6 +635,24 @@ defmodule Kantele.Character.Commands do
     parse("我的任务", :run)
   end
 
+  module(AskQuestCommand) do
+    parse("ask_quest", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+
+    parse("cancel_quest", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+
+    parse("问任务", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+
+    parse("取消任务", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+  end
+
   # 钱庄存取：带参形式先注册，裸 "bank" 才落到 :show 查余额
   module(BankCommand) do
     parse("bank", :run, fn command ->
