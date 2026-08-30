@@ -191,42 +191,79 @@ defmodule Kantele.Output.Tooltips do
   end
 end
 
-defmodule Kantele.Output.Commands do
+defmodule Kantele.Output.Snoop do
   @moduledoc """
-  Wrap tags in command tags to send text by clicking
+  Snoop 消息格式化（对应 `feature/message.c receive_snoop`）
+
+  LPC ANSI 序列：
+  - ESC "[256D" - 光标上移行首
+  - ESC "[K" - 清除到行尾
+  - ESC "[1A" - 上箭头
+  - NOR - 清除属性
+  - BBLU WHT - 蓝底白字
+
+  处理流程：
+  1. 跳过提示行（ESC "[256D" 且非 ESC "[K"）
+  2. 去除 ESC "[1A"
+  3. NOR 替换为 NOR BBLU WHT（蓝底白字）
+  4. 前后添加颜色序列
+  5. 按 2560 字符分块
   """
 
-  use Kalevala.Output
+  @max_size 2560
+  @esc_256d "\e[256D"
+  @esc_k "\e[K"
+  @esc_1a "\e[1A"
+  @bblu_wht "\e[44;37m"
+  @nor IO.ANSI.reset()
+  @cursor_left "\e[1D"
 
-  @impl true
-  def init(opts) do
-    %Context{
-      data: [],
-      opts: opts,
-      meta: %{}
-    }
+  @doc """
+  格式化 snoop 消息，返回分块后的消息列表
+
+  返回 `[msg1, msg2, ...]`
+  """
+  def format(msg) when is_binary(msg) do
+    if skip_prompt?(msg) do
+      []
+    else
+      msg
+      |> strip_up_arrow()
+      |> wrap_nor()
+      |> wrap_message()
+      |> chunk()
+    end
   end
 
-  def parse({:open, "exit", attributes}, context) do
-    tags = [
-      {:open, "command", %{"send" => attributes["name"]}},
-      {:open, "exit", attributes}
-    ]
-
-    Map.put(context, :data, context.data ++ tags)
+  defp skip_prompt?(msg) do
+    String.starts_with?(msg, @esc_256d) and not String.contains?(msg, @esc_k)
   end
 
-  def parse({:close, "exit"}, context) do
-    tags = [
-      {:close, "exit"},
-      {:close, "command"}
-    ]
-
-    Map.put(context, :data, context.data ++ tags)
+  defp strip_up_arrow(msg) do
+    String.replace(msg, @esc_1a, "")
   end
 
-  @impl true
-  def parse(datum, context) do
-    Map.put(context, :data, context.data ++ [datum])
+  defp wrap_nor(msg) do
+    String.replace(msg, @nor, @nor <> @bblu_wht)
+  end
+
+  defp wrap_message(msg) do
+    @bblu_wht <> msg <> @nor <> " " <> @cursor_left
+  end
+
+  defp chunk(msg) when byte_size(msg) <= @max_size do
+    [msg]
+  end
+
+  defp chunk(msg) do
+    do_chunk(msg, [])
+  end
+
+  defp do_chunk(<<head::binary-size(@max_size), rest::binary>>, acc) do
+    do_chunk(rest, [head | acc])
+  end
+
+  defp do_chunk(rest, acc) do
+    Enum.reverse([rest | acc])
   end
 end
