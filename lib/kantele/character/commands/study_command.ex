@@ -197,12 +197,14 @@ defmodule Kantele.Character.StudyCommand do
   end
 
   defp parse_times(nil), do: 1
+
   defp parse_times(str) when is_binary(str) do
     case Integer.parse(String.trim(str)) do
       {value, _} -> value
       :error -> 1
     end
   end
+
   defp parse_times(_), do: 1
 
   defp skill_title(skill_id) do

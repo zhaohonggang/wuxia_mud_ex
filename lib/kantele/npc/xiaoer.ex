@@ -82,19 +82,22 @@ defmodule Kantele.NPC.Xiaoer do
       player = PlayerMeta.put_temp(player.meta, "rent_paid", new_rent)
 
       change = amount - @rent_per_night
-      msg = if change > 0 do
-        "多谢客官，找您 #{change} 文钱。您已预付 #{new_rent} 文房钱。"
-      else
-        "多谢客官，您已预付 #{new_rent} 文房钱。"
-      end
 
-      {:ok, player, [
-        %{
-          type: :tell,
-          target: player.id,
-          text: msg
-        }
-      ]}
+      msg =
+        if change > 0 do
+          "多谢客官，找您 #{change} 文钱。您已预付 #{new_rent} 文房钱。"
+        else
+          "多谢客官，您已预付 #{new_rent} 文房钱。"
+        end
+
+      {:ok, player,
+       [
+         %{
+           type: :tell,
+           target: player.id,
+           text: msg
+         }
+       ]}
     else
       {:error, "钱不够住店，至少需要 #{@rent_per_night} 文。"}
     end
@@ -134,7 +137,8 @@ defmodule Kantele.NPC.Xiaoer do
 
   # --- 心跳清理 ---
 
-  @heartbeat_interval 60_000  # 60秒
+  # 60秒
+  @heartbeat_interval 60_000
 
   @doc "启动心跳定时器"
   def start_heartbeat(npc) do

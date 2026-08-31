@@ -80,18 +80,17 @@ defmodule Kantele.Item.Qianzhumiji do
          :ok <- check_prerequisites(player, tech),
          :ok <- check_resources(player, tech),
          :ok <- check_cooldown(player) do
+      consume_resources(player, tech)
+      apply_busy(player, tech)
 
-    consume_resources(player, tech)
-    apply_busy(player, tech)
+      case attempt_unlock(player, tech) do
+        :success ->
+          grant_perform(player, tech)
+          {:ok, %{type: :unlock, technique: tech.name, message: "Technique unlocked!"}}
 
-    case attempt_unlock(player, tech) do
-      :success ->
-        grant_perform(player, tech)
-        {:ok, %{type: :unlock, technique: tech.name, message: "Technique unlocked!"}}
-
-      :fail ->
-        {:ok, %{type: :fail, technique: tech.name, message: "Research failed."}}
-    end
+        :fail ->
+          {:ok, %{type: :fail, technique: tech.name, message: "Research failed."}}
+      end
     end
   end
 
@@ -137,7 +136,8 @@ defmodule Kantele.Item.Qianzhumiji do
       Kantele.Character.Stats.perform_known?(player.meta.stats, "qianzhu-wandushou/#{tech.name}") ->
         {:error, "You have already learned this technique."}
 
-      true -> :ok
+      true ->
+        :ok
     end
   end
 
@@ -152,7 +152,8 @@ defmodule Kantele.Item.Qianzhumiji do
       player.meta.vitals.qi < tech.cost_qi ->
         {:error, "Insufficient qi."}
 
-      true -> :ok
+      true ->
+        :ok
     end
   end
 

@@ -75,6 +75,7 @@ defmodule Kantele.Character.ExerciseCommand do
       @tick_interval
     )
   end
+
   defp fail(conn, text) do
     conn
     |> render(CommandView, "text", %{text: text})

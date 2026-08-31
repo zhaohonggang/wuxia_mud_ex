@@ -47,8 +47,7 @@ defmodule Kantele.Character.LearnTimesTest do
       event = find_event(conn, "skills/learn")
       assert event.data.times == SkillsEvent.max_times()
 
-      conn1 =
-        LearnCommand.run(build_conn(student(3)), %{"skill" => "sword", "name" => "王重九"})
+      conn1 = LearnCommand.run(build_conn(student(3)), %{"skill" => "sword", "name" => "王重九"})
 
       assert find_event(conn1, "skills/learn").data.times == 1
     end

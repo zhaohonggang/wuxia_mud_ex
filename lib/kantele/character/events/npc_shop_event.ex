@@ -170,13 +170,18 @@ defmodule Kantele.Character.NpcFamilyEvent do
   def detach(conn, %{data: %{reply_to: reply_to, student_family: student_family}}) do
     my_family = conn.character.meta.family
 
-    case Master.attempt_detach(conn.character.meta.family, student_family, Map.get(student_family, :name)) do
+    case Master.attempt_detach(
+           conn.character.meta.family,
+           student_family,
+           Map.get(student_family, :name)
+         ) do
       {:noop} ->
         send(reply_to, %Kalevala.Event{
           from_pid: self(),
           topic: "family/detach-result",
           data: %{ok: false, reason: "#{conn.character.name}摆了摆手：你并非我门下弟子，何来叛师之说？"}
         })
+
         conn
 
       {:detach, %{penalty?: penalty?}} ->
@@ -185,6 +190,7 @@ defmodule Kantele.Character.NpcFamilyEvent do
           topic: "family/detach-result",
           data: %{ok: true, penalty?: penalty?, master_name: conn.character.name}
         })
+
         conn
     end
   end
@@ -236,6 +242,7 @@ defmodule Kantele.Character.NpcAskEvent do
       conn.character.meta.quest ->
         # 任务发布/取消（A11/N6 v1）：委托 Quester
         keyword_lower = String.downcase(keyword)
+
         if String.contains?(keyword_lower, "取消") or String.contains?(keyword_lower, "cancel") do
           handle_cancel_quest(conn, reply_to, asker_id)
         else
@@ -263,6 +270,7 @@ defmodule Kantele.Character.NpcAskEvent do
           data: %{ok: false, reason: reason, npc_name: conn.character.name}
         })
     end
+
     conn
   end
 
@@ -282,6 +290,7 @@ defmodule Kantele.Character.NpcAskEvent do
           data: %{ok: false, reason: reason, npc_name: conn.character.name}
         })
     end
+
     conn
   end
 

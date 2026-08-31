@@ -48,7 +48,10 @@ defmodule Kantele.Character.Name do
   @doc "短名：name + (id)（name.c short/1）"
   def render_short(obj) do
     name = obj.name
-    id = if is_binary(obj.id) && obj.id != "", do: "(" <> String.capitalize(obj.id) <> ")", else: ""
+
+    id =
+      if is_binary(obj.id) && obj.id != "", do: "(" <> String.capitalize(obj.id) <> ")", else: ""
+
     name <> id
   end
 

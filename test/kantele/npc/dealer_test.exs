@@ -104,6 +104,7 @@ defmodule Kantele.Npc.DealerTest do
         %{name: "药", id: "yao", unit: "瓶", value: 100, amount: 3, base_unit: true},
         %{name: "长剑", id: "jian", unit: "把", value: 500, equipped?: true}
       ]
+
       goods = %{"data/sword.c" => %{name: "长剑", id: "jian", unit: "把", value: 500}}
 
       rows = Dealer.build_list(inventory, goods)

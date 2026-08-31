@@ -29,5 +29,7 @@ defmodule Kantele.Editor.Line do
   def accumulate(%{lines: lines} = state, "."), do: {state, {:done, Enum.join(lines, "\n")}}
   def accumulate(%{} = state, "~q"), do: {state, :cancel}
   def accumulate(%{} = state, "~e"), do: {state, :use_vi}
-  def accumulate(%{lines: lines} = state, line) when is_binary(line), do: {%{state | lines: lines ++ [line]}, :continue}
+
+  def accumulate(%{lines: lines} = state, line) when is_binary(line),
+    do: {%{state | lines: lines ++ [line]}, :continue}
 end

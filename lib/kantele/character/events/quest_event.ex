@@ -171,11 +171,9 @@ defmodule Kantele.Character.QuestEvent do
   defp quest_text(data, rewards, _quest_id) do
     [
       "你把东西交给了#{Map.get(data, :vendor_name)}。\n",
-      "任务完成！（实战经验+#{Map.get(rewards, :exp) || 0} 潜能+#{
-        Map.get(rewards, :potential) || 0
-      } 阅历+#{Map.get(rewards, :score) || 0} 威望+#{Map.get(rewards, :weiwang) || 0} 铜钱+#{
-        Map.get(rewards, :coins) || 0
-      }）\n"
+      "任务完成！（实战经验+#{Map.get(rewards, :exp) || 0} 潜能+#{Map.get(rewards, :potential) || 0} 阅历+#{
+        Map.get(rewards, :score) || 0
+      } 威望+#{Map.get(rewards, :weiwang) || 0} 铜钱+#{Map.get(rewards, :coins) || 0}）\n"
     ]
   end
 

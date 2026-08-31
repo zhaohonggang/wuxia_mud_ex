@@ -43,7 +43,9 @@ defmodule Kantele.Character.ScoreView do
     ╔══════════════════════════════
     ║ {room-title}#{assigns.name}{/room-title}
     ╠══════════════════════════════
-    ║ 气血：{hp}#{vitals.qi}/#{vitals.max_qi}{/hp}　精力：{sp}#{vitals.jing}/#{vitals.max_jing}{/sp}　内力：{ep}#{vitals.neili}/#{vitals.max_neili}{/ep}
+    ║ 气血：{hp}#{vitals.qi}/#{vitals.max_qi}{/hp}　精力：{sp}#{vitals.jing}/#{vitals.max_jing}{/sp}　内力：{ep}#{
+      vitals.neili
+    }/#{vitals.max_neili}{/ep}
     ║ 状态：#{Messages.eff_status_msg(ratio)}。
     ╠══════════════════════════════
     ║ 膂力 #{assigns.str}　身法 #{assigns.dex}　根骨 #{assigns.con}　悟性 #{assigns.int}

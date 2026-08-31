@@ -37,6 +37,7 @@ defmodule Kantele.Character.TuneCommand do
       |> prompt(CommandView, "prompt", %{})
     else
       channel_list = Enum.join(channels, ", ")
+
       conn
       |> render(CommandView, "text", %{text: "你现在收听的频道：#{channel_list}。\n"})
       |> prompt(CommandView, "prompt", %{})

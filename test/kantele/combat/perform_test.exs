@@ -173,7 +173,8 @@ defmodule Kantele.Combat.PerformExertTest do
     test "未映射内功时拒绝" do
       character = build_character()
 
-      conn = ExertCommand.run(conn_for(character), %{"function" => "powerup", "command" => "exert"})
+      conn =
+        ExertCommand.run(conn_for(character), %{"function" => "powerup", "command" => "exert"})
 
       assert output_text(conn) =~ "你不会这种运功方法"
     end
@@ -187,7 +188,8 @@ defmodule Kantele.Combat.PerformExertTest do
 
       character = put_in(character.meta.vitals.neili, 50)
 
-      conn = ExertCommand.run(conn_for(character), %{"function" => "powerup", "command" => "exert"})
+      conn =
+        ExertCommand.run(conn_for(character), %{"function" => "powerup", "command" => "exert"})
 
       assert output_text(conn) =~ "真气不够"
     end
@@ -204,7 +206,8 @@ defmodule Kantele.Combat.PerformExertTest do
 
       character = put_in(character.meta.combat, combat)
 
-      conn = ExertCommand.run(conn_for(character), %{"function" => "powerup", "command" => "exert"})
+      conn =
+        ExertCommand.run(conn_for(character), %{"function" => "powerup", "command" => "exert"})
 
       updated = conn.private.update_character
 
@@ -222,8 +225,7 @@ defmodule Kantele.Combat.PerformExertTest do
 
   describe "learn 授艺回执" do
     test "learn_result 提升等级并在 60 层解锁绝招" do
-      character =
-        build_character(skills: %{"sword" => 70, "force" => 30, "liuxin-jian" => 59})
+      character = build_character(skills: %{"sword" => 70, "force" => 30, "liuxin-jian" => 59})
 
       conn =
         SkillsEvent.learn_result(conn_for(character), %{

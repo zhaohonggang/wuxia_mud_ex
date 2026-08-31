@@ -97,57 +97,68 @@ defmodule Kantele.Npc.TraitsTest do
       assert Guarder.check_enemy(%{
                my_family: "武当派",
                enemy_family: "武当派",
-                my_name: "张三丰",
-                enemy_name: "甲",
-                enemy_id: "jia",
-                type: "kill"
-              }) == {:kill, "jia"}
+               my_name: "张三丰",
+               enemy_name: "甲",
+               enemy_id: "jia",
+               type: "kill"
+             }) == {:kill, "jia"}
     end
 
     test "kill_enemy: 无 coagents 返回 no_coagents" do
       assert Guarder.kill_enemy(%{
-        coagents: [],
-        startroom: "room1",
-        current_room: "room1",
-        enemy_id: "enemy",
-        enemy_name: "敌人",
-        enemy_in_target_room?: false
-      }) == {:no_coagents, "no coagents configured"}
+               coagents: [],
+               startroom: "room1",
+               current_room: "room1",
+               enemy_id: "enemy",
+               enemy_name: "敌人",
+               enemy_in_target_room?: false
+             }) == {:no_coagents, "no coagents configured"}
     end
 
     test "kill_enemy: 不在 startroom 返回 not_at_startroom" do
       assert Guarder.kill_enemy(%{
-        coagents: [%{"id" => "helper1", "startroom" => "room2"}],
-        startroom: "room1",
-        current_room: "other_room",
-        enemy_id: "enemy",
-        enemy_name: "敌人",
-        enemy_in_target_room?: false
-      }) == {:not_at_startroom, "guarder not in startroom, skipping coagent call"}
+               coagents: [%{"id" => "helper1", "startroom" => "room2"}],
+               startroom: "room1",
+               current_room: "other_room",
+               enemy_id: "enemy",
+               enemy_name: "敌人",
+               enemy_in_target_room?: false
+             }) == {:not_at_startroom, "guarder not in startroom, skipping coagent call"}
     end
 
     test "kill_enemy: 在 startroom 有 coagents 返回 helpers_notified" do
-      result = Guarder.kill_enemy(%{
-        coagents: [%{"id" => "helper1", "startroom" => "room2"}],
-        startroom: "room1",
-        current_room: "room1",
-        enemy_id: "enemy",
-        enemy_name: "敌人",
-        enemy_in_target_room?: false
-      })
+      result =
+        Guarder.kill_enemy(%{
+          coagents: [%{"id" => "helper1", "startroom" => "room2"}],
+          startroom: "room1",
+          current_room: "room1",
+          enemy_id: "enemy",
+          enemy_name: "敌人",
+          enemy_in_target_room?: false
+        })
 
-      assert {:helpers_notified, [%{id: "helper1", startroom: "room2", target_id: "enemy", target_room: "room1", in_target_room?: false}]} = result
+      assert {:helpers_notified,
+              [
+                %{
+                  id: "helper1",
+                  startroom: "room2",
+                  target_id: "enemy",
+                  target_room: "room1",
+                  in_target_room?: false
+                }
+              ]} = result
     end
 
     test "kill_enemy: 过滤非 map 的 coagent 项" do
-      result = Guarder.kill_enemy(%{
-        coagents: [%{"id" => "h1", "startroom" => "r1"}, nil, "invalid", %{}],
-        startroom: "room1",
-        current_room: "room1",
-        enemy_id: "enemy",
-        enemy_name: "敌人",
-        enemy_in_target_room?: true
-      })
+      result =
+        Guarder.kill_enemy(%{
+          coagents: [%{"id" => "h1", "startroom" => "r1"}, nil, "invalid", %{}],
+          startroom: "room1",
+          current_room: "room1",
+          enemy_id: "enemy",
+          enemy_name: "敌人",
+          enemy_in_target_room?: true
+        })
 
       assert {:helpers_notified, helpers} = result
       assert length(helpers) == 2

@@ -37,7 +37,6 @@ defmodule Kantele.Item.Yinzhen do
          :ok <- check_force(target),
          :ok <- check_vitals(target),
          :ok <- check_cooldown(player, target) do
-
       consume_resources(player)
       apply_cooldown(player, target)
 
@@ -52,7 +51,7 @@ defmodule Kantele.Item.Yinzhen do
 
   defp check_skill(player) do
     if Kantele.Item.is_acupuncture_tool?(Kantele.Item.Item.get("yinzhen")) and
-       Kantele.Character.Stats.skill(player.meta.stats, "zhenjiu-shu") >= @min_skill do
+         Kantele.Character.Stats.skill(player.meta.stats, "zhenjiu-shu") >= @min_skill do
       :ok
     else
       {:error, "You don't know acupuncture technique (zhenjiu-shu)."}
@@ -73,10 +72,11 @@ defmodule Kantele.Item.Yinzhen do
         {:error, "Cannot acupuncture other players."}
 
       Kantele.Character.is_npc?(target) and
-      Kantele.Character.Stats.skill(target.meta.stats, "force") >= 300 ->
+          Kantele.Character.Stats.skill(target.meta.stats, "force") >= 300 ->
         {:error, "Target's internal force is too strong."}
 
-      true -> :ok
+      true ->
+        :ok
     end
   end
 
@@ -98,6 +98,7 @@ defmodule Kantele.Item.Yinzhen do
 
   defp check_vitals(target) do
     eff_qi_pct = div(target.meta.vitals.qi * 100, target.meta.vitals.max_qi)
+
     if eff_qi_pct > 5 do
       :ok
     else
@@ -149,7 +150,13 @@ defmodule Kantele.Item.Yinzhen do
 
     Kantele.Character.Stats.improve_skill(player.meta.stats, "zhenjiu-shu")
 
-    {:ok, %{type: :heal, target: target.id, amount: heal_amount, message: "Acupuncture successful. Target healed."}}
+    {:ok,
+     %{
+       type: :heal,
+       target: target.id,
+       amount: heal_amount,
+       message: "Acupuncture successful. Target healed."
+     }}
   end
 
   defp fail_outcome(player, target) do
@@ -158,6 +165,12 @@ defmodule Kantele.Item.Yinzhen do
     Kantele.Character.Vitals.damage(target.meta.vitals, :qi, dmg)
     Kantele.Character.Vitals.wound(target.meta.vitals, :qi, div(dmg, 2))
 
-    {:ok, %{type: :fail, target: target.id, damage: dmg, message: "Acupuncture failed! Target injured."}}
+    {:ok,
+     %{
+       type: :fail,
+       target: target.id,
+       damage: dmg,
+       message: "Acupuncture failed! Target injured."
+     }}
   end
 end

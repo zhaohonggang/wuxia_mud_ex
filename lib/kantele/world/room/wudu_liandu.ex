@@ -65,7 +65,14 @@ defmodule Kantele.World.Room.WuduLiandu do
     },
     "wusheng san" => %{
       name: "Wusheng San",
-      ingredients: ["du nang", "shexin zi", "qianri zui", "duanchang cao", "chuanxin lian", "jinshe duyu"],
+      ingredients: [
+        "du nang",
+        "shexin zi",
+        "qianri zui",
+        "duanchang cao",
+        "chuanxin lian",
+        "jinshe duyu"
+      ],
       skill_req: 60,
       product: "wushengsan",
       duration: 25,
@@ -131,8 +138,16 @@ defmodule Kantele.World.Room.WuduLiandu do
         consume_ingredients(player, recipe.ingredients)
         duration = recipe.duration + :rand.uniform(@base_time_max)
 
-        player = Kantele.Character.PlayerMeta.put_temp(player.meta, "liandu/recipe", recipe.product)
-        player = Kantele.Character.PlayerMeta.put_temp(player.meta, "liandu/level_bonus", recipe.level_bonus)
+        player =
+          Kantele.Character.PlayerMeta.put_temp(player.meta, "liandu/recipe", recipe.product)
+
+        player =
+          Kantele.Character.PlayerMeta.put_temp(
+            player.meta,
+            "liandu/level_bonus",
+            recipe.level_bonus
+          )
+
         player = Kantele.Character.PlayerMeta.put_temp(player.meta, "liandu/duration", duration)
 
         player = Combat.start_busy(player.meta.combat, div(duration, 2) + 1)
@@ -181,7 +196,8 @@ defmodule Kantele.World.Room.WuduLiandu do
 
     # 伤害判定
     cond do
-      Stats.skill(player.meta.stats, "wudu-qishu") < @failure_chance and :rand.uniform(@failure_roll_max) == 1 ->
+      Stats.skill(player.meta.stats, "wudu-qishu") < @failure_chance and
+          :rand.uniform(@failure_roll_max) == 1 ->
         # 失败
         dmg_jing = 50 + :rand.uniform(30)
         dmg_qi = 50 + :rand.uniform(30)
@@ -194,11 +210,15 @@ defmodule Kantele.World.Room.WuduLiandu do
       true ->
         # 成功
         base_level = div(Stats.skill(player.meta.stats, "wudu-qishu"), 2) + 10
-        level = base_level + (Kantele.Character.PlayerMeta.get_temp(player.meta, "liandu/level_bonus") || 0)
+
+        level =
+          base_level +
+            (Kantele.Character.PlayerMeta.get_temp(player.meta, "liandu/level_bonus") || 0)
 
         poison = %{
           id: Kantele.Character.PlayerMeta.get_temp(player.meta, "liandu/recipe"),
-          name: @recipes[Kantele.Character.PlayerMeta.get_temp(player.meta, "liandu/recipe")].name,
+          name:
+            @recipes[Kantele.Character.PlayerMeta.get_temp(player.meta, "liandu/recipe")].name,
           type: "poison",
           poison: %{
             level: level,

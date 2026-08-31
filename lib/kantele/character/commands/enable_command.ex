@@ -26,7 +26,11 @@ defmodule Kantele.Character.EnableCommand do
         render_error(conn, "#{skill_title(skill_id)}不能enable到这个用法。\n")
 
       true ->
-        stats = %{character.meta.stats | mapped: Map.put(character.meta.stats.mapped, usage, skill_id)}
+        stats = %{
+          character.meta.stats
+          | mapped: Map.put(character.meta.stats.mapped, usage, skill_id)
+        }
+
         character = %{character | meta: %{character.meta | stats: stats}}
         Records.save(character)
 

@@ -27,8 +27,7 @@ defmodule Kantele.Npc.Master do
 
       true ->
         # LPC: old_family_name 未设或与当前门派不同 -> 罚武功
-        penalty? =
-          old_family == nil or old_family != Family.name(asker_family)
+        penalty? = old_family == nil or old_family != Family.name(asker_family)
 
         {:detach, %{penalty?: penalty?}}
     end

@@ -106,9 +106,14 @@ defmodule Kantele.Pager do
           match?({_, ""}, Integer.parse(cmd)) ->
             {elem(Integer.parse(cmd), 0), ps}
 
-          cmd == "b" -> back(line, ps)
-          cmd == "t" -> {1, ps}
-          true -> next(line, ps)
+          cmd == "b" ->
+            back(line, ps)
+
+          cmd == "t" ->
+            {1, ps}
+
+          true ->
+            next(line, ps)
         end
     end
   end

@@ -66,7 +66,7 @@ defmodule Kantele.Combat.Skill do
   @callback valid_damage(map(), map(), non_neg_integer(), map()) ::
               {non_neg_integer(), String.t() | nil}
 
-@doc """
+  @doc """
   命中回调（对应 LPC hit_ob/4，如 taiji-quan 蓄力连击）
 
   命中成功时调用；返回修改后的 attacker 快照 map（如追加临时加成）。
@@ -149,7 +149,7 @@ defmodule Kantele.Combat.Skill do
       @doc false
       def perform_action_file(name), do: Map.get(perform_list(), name)
 
-defoverridable valid_learn: 1,
+      defoverridable valid_learn: 1,
                      valid_force: 1,
                      practice_cost: 0,
                      perform_list: 0,
@@ -165,7 +165,7 @@ defoverridable valid_learn: 1,
     end
   end
 
-@doc """
+  @doc """
   从招式表中按等级选出可用招式并加权抽取一式
 
   对照 LPC：

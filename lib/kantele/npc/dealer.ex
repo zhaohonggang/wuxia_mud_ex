@@ -105,7 +105,8 @@ defmodule Kantele.Npc.Dealer do
     inv_rows =
       inventory
       |> Enum.reject(fn i ->
-        Map.get(i, :equipped?, false) || Map.get(i, :money_id) || Map.get(i, :is_character?, false)
+        Map.get(i, :equipped?, false) || Map.get(i, :money_id) ||
+          Map.get(i, :is_character?, false)
       end)
 
     inv_map = aggregate_inventory(inv_rows, %{})
@@ -114,14 +115,27 @@ defmodule Kantele.Npc.Dealer do
       goods
       |> Enum.reduce(%{}, fn {key, item}, acc ->
         short = short_name(item)
-        price = if is_integer(Map.get(goods, key)) and Map.get(goods, key) > 0,
-                  do: Map.get(goods, key),
-                  else: Map.get(item, :value, 0)
-        Map.put(acc, short, %{short: short, unit: Map.get(item, :unit, "个"), price: price, count: -1})
+
+        price =
+          if is_integer(Map.get(goods, key)) and Map.get(goods, key) > 0,
+            do: Map.get(goods, key),
+            else: Map.get(item, :value, 0)
+
+        Map.put(acc, short, %{
+          short: short,
+          unit: Map.get(item, :unit, "个"),
+          price: price,
+          count: -1
+        })
       end)
 
     Map.merge(inv_map, goods_map, fn _short, inv, gd ->
-      %{short: Map.get(gd, :short, Map.get(inv, :short)), unit: Map.get(gd, :unit, Map.get(inv, :unit)), price: Map.get(inv, :price), count: Map.get(inv, :count, -1)}
+      %{
+        short: Map.get(gd, :short, Map.get(inv, :short)),
+        unit: Map.get(gd, :unit, Map.get(inv, :unit)),
+        price: Map.get(inv, :price),
+        count: Map.get(inv, :count, -1)
+      }
     end)
     |> Map.values()
   end
@@ -162,7 +176,11 @@ defmodule Kantele.Npc.Dealer do
         do: Map.get(item, :base_value, 0) * amount,
         else: Map.get(item, :value, 0)
 
-    value = if Map.get(item, :consistence), do: div(value * Map.get(item, :consistence), 100), else: value
+    value =
+      if Map.get(item, :consistence),
+        do: div(value * Map.get(item, :consistence), 100),
+        else: value
+
     div(value * @resale, 100)
   end
 

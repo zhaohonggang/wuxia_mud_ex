@@ -35,7 +35,13 @@ defmodule Kantele.Character.RideCommandTest do
   end
 
   defp mount_item do
-    %Item{id: "test:horse", name: "千里马", verbs: [], callback_module: Kantele.World.Item, meta: %{"ridable" => true}}
+    %Item{
+      id: "test:horse",
+      name: "千里马",
+      verbs: [],
+      callback_module: Kantele.World.Item,
+      meta: %{"ridable" => true}
+    }
   end
 
   defp normal_item do
@@ -70,7 +76,11 @@ defmodule Kantele.Character.RideCommandTest do
     end
 
     test "已有坐骑拒绝再骑" do
-      char = %{player([instance(mount_item())]) | meta: %{player([instance(mount_item())]).meta | riding: %{item_id: "test:horse"}}}
+      char = %{
+        player([instance(mount_item())])
+        | meta: %{player([instance(mount_item())]).meta | riding: %{item_id: "test:horse"}}
+      }
+
       conn = RideCommand.run(build_conn(char), %{"rest" => "千里马"})
       assert output_text(conn) =~ "已经有座骑"
     end

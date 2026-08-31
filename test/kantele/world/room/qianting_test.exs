@@ -19,12 +19,17 @@ defmodule Kantele.World.Room.QiantingTest do
 
   defp room_with_laopu(opts \\ []) do
     base = base_room()
-    Map.put(base, :state, Map.merge(base.state, %{
-      laopu_owner_id: Keyword.get(opts, :owner_id, "player:owner"),
-      laopu_present: Keyword.get(opts, :present, true),
-      laopu_living: Keyword.get(opts, :living, true),
-      laopu_owner_permits: Keyword.get(opts, :owner_permits, [])
-    }))
+
+    Map.put(
+      base,
+      :state,
+      Map.merge(base.state, %{
+        laopu_owner_id: Keyword.get(opts, :owner_id, "player:owner"),
+        laopu_present: Keyword.get(opts, :present, true),
+        laopu_living: Keyword.get(opts, :living, true),
+        laopu_owner_permits: Keyword.get(opts, :owner_permits, [])
+      })
+    )
   end
 
   test "init_room 初始状态：关门，无 north 出口" do
@@ -62,7 +67,10 @@ defmodule Kantele.World.Room.QiantingTest do
   end
 
   test "do_close：关门，移除 north 出口" do
-    room = %{state: %{room_with_laopu().state | gate: :open, exits: ["south", "east", "west", "north"]}}
+    room = %{
+      state: %{room_with_laopu().state | gate: :open, exits: ["south", "east", "west", "north"]}
+    }
+
     {:ok, room, msgs} = Qianting.do_close(room, player("player:owner", "Owner"), nil)
 
     assert room.state.gate == :close
@@ -76,7 +84,10 @@ defmodule Kantele.World.Room.QiantingTest do
   end
 
   test "auto_close_timer：门开时自动关门" do
-    room = %{state: %{room_with_laopu().state | gate: :open, exits: ["south", "east", "west", "north"]}}
+    room = %{
+      state: %{room_with_laopu().state | gate: :open, exits: ["south", "east", "west", "north"]}
+    }
+
     {:ok, room, msgs} = Qianting.auto_close_timer(room, nil)
 
     assert room.state.gate == :close

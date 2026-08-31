@@ -46,6 +46,7 @@ defmodule Kantele.Character.OptionCommand do
   end
 
   defp parse_value("0"), do: nil
+
   defp parse_value(int_str) do
     case Integer.parse(int_str) do
       {int, ""} -> int

@@ -121,7 +121,11 @@ defmodule Kantele.Character.ShopTest do
       buyer_id: "player-1"
     }
 
-    conn = ShopEvent.buy_result(build_conn(buyer(10)), %Event{topic: "shop/buy-result", data: quote_data})
+    conn =
+      ShopEvent.buy_result(build_conn(buyer(10)), %Event{
+        topic: "shop/buy-result",
+        data: quote_data
+      })
 
     updated = conn.private.update_character || conn.character
     assert updated.meta.coins == 10
@@ -139,7 +143,8 @@ defmodule Kantele.Character.ShopTest do
       buyer_id: "someone-else"
     }
 
-    conn = ShopEvent.buy_result(build_conn(buyer()), %Event{topic: "shop/buy-result", data: quote_data})
+    conn =
+      ShopEvent.buy_result(build_conn(buyer()), %Event{topic: "shop/buy-result", data: quote_data})
 
     assert conn.private.update_character == nil
   end

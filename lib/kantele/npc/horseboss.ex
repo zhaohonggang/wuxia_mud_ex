@@ -60,9 +60,11 @@ defmodule Kantele.NPC.Horseboss do
         "马夫摇了摇头：你的驯兽技艺不够（需 #{@training_req} 级），我这儿的牲口你驾驭不了。"
 
       true ->
-        species_list = Enum.map_join(Map.keys(@species), "、", fn k ->
-          Keyword.get(@species[k], :name)
-        end)
+        species_list =
+          Enum.map_join(Map.keys(@species), "、", fn k ->
+            Keyword.get(@species[k], :name)
+          end)
+
         "马夫笑道：客官想买坐骑？我这儿有：#{species_list}。价格 #{@price} 文钱（100 金）。想买哪种？"
     end
   end
@@ -133,10 +135,17 @@ defmodule Kantele.NPC.Horseboss do
     name = PlayerMeta.get_temp(player.meta, "pet_name")
 
     cond do
-      is_nil(species) -> {:error, "流程异常，请重新开始。"}
-      is_nil(gender) -> {:error, "流程异常，请重新开始。"}
-      is_nil(base_id) -> {:error, "流程异常，请重新开始。"}
-      is_nil(name) -> {:error, "流程异常，请重新开始。"}
+      is_nil(species) ->
+        {:error, "流程异常，请重新开始。"}
+
+      is_nil(gender) ->
+        {:error, "流程异常，请重新开始。"}
+
+      is_nil(base_id) ->
+        {:error, "流程异常，请重新开始。"}
+
+      is_nil(name) ->
+        {:error, "流程异常，请重新开始。"}
 
       true ->
         species_data = @species[species]
@@ -183,18 +192,21 @@ defmodule Kantele.NPC.Horseboss do
 
   defp generate_stats(base) do
     Enum.into(base, %{}, fn {k, v} ->
-      variance = :rand.uniform(21) - 11  # -10..10
+      # -10..10
+      variance = :rand.uniform(21) - 11
       {k, max(1, v + variance)}
     end)
   end
 
   defp clear_temp(character) do
-    %{character | meta: 
-      character.meta
-      |> PlayerMeta.delete_temp("chosen_species")
-      |> PlayerMeta.delete_temp("pet_gender")
-      |> PlayerMeta.delete_temp("pet_id")
-      |> PlayerMeta.delete_temp("pet_name")
+    %{
+      character
+      | meta:
+          character.meta
+          |> PlayerMeta.delete_temp("chosen_species")
+          |> PlayerMeta.delete_temp("pet_gender")
+          |> PlayerMeta.delete_temp("pet_id")
+          |> PlayerMeta.delete_temp("pet_name")
     }
   end
 end

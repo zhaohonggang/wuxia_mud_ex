@@ -290,8 +290,7 @@ defmodule Kantele.Combat.FlowTest do
     end
 
     test "有效等级放大攻击当量" do
-      plain =
-        player(stats: [skills: %{"unarmed" => 60, "dodge" => 60}, mapped: %{}])
+      plain = player(stats: [skills: %{"unarmed" => 60, "dodge" => 60}, mapped: %{}])
 
       mapped_sword =
         player(
@@ -353,8 +352,7 @@ defmodule Kantele.Combat.FlowTest do
     test "击杀计入在办任务的杀怪进度（裸 key 匹配）" do
       a = player()
 
-      {:ok, quests} =
-        Quest.set_todo(Quest.new(), %{file: "song-yupai", kill: ["yezhu"]})
+      {:ok, quests} = Quest.set_todo(Quest.new(), %{file: "song-yupai", kill: ["yezhu"]})
 
       a = %{a | meta: PlayerMeta.put_quests(a.meta, quests)}
 
@@ -371,8 +369,7 @@ defmodule Kantele.Combat.FlowTest do
     test "与任务无关的击杀不影响进度" do
       a = player()
 
-      {:ok, quests} =
-        Quest.set_todo(Quest.new(), %{file: "song-yupai", kill: ["yezhu"]})
+      {:ok, quests} = Quest.set_todo(Quest.new(), %{file: "song-yupai", kill: ["yezhu"]})
 
       a = %{a | meta: PlayerMeta.put_quests(a.meta, quests)}
 
@@ -388,7 +385,8 @@ defmodule Kantele.Combat.FlowTest do
   end
 
   # victim 持续承受 attacker 的 incoming，累积全部战况文案
-  defp exchange_rounds(attacker, victim, pred, max_rounds) do    attacker_conn = engage(build_conn(attacker), attacker, victim)
+  defp exchange_rounds(attacker, victim, pred, max_rounds) do
+    attacker_conn = engage(build_conn(attacker), attacker, victim)
     attacker1 = current_character(attacker_conn)
 
     victim_conn = engage(build_conn(victim), victim, attacker)
@@ -399,7 +397,8 @@ defmodule Kantele.Combat.FlowTest do
 
   defp do_rounds(_attacker, victim, last_conn, n, _pred, max, acc, moved)
        when n >= max do
-    {IO.iodata_to_binary(Enum.reverse(acc)), moved, last_conn || %Kalevala.Character.Conn{}, victim, n}
+    {IO.iodata_to_binary(Enum.reverse(acc)), moved, last_conn || %Kalevala.Character.Conn{},
+     victim, n}
   end
 
   defp do_rounds(attacker, victim, last_conn, n, pred, max, acc, moved) do

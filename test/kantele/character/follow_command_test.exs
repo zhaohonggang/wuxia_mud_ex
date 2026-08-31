@@ -68,7 +68,11 @@ defmodule Kantele.Character.FollowCommandTest do
   describe "FollowCommand" do
     test "follow none 且已跟随：清 leader 并通知对方" do
       leader = %{id: "player-2", pid: self(), name: "李四"}
-      conn = FollowCommand.run(build_conn(player("player-1", "张三", leader: leader)), %{"rest" => "none"})
+
+      conn =
+        FollowCommand.run(build_conn(player("player-1", "张三", leader: leader)), %{
+          "rest" => "none"
+        })
 
       updated = conn.private.update_character || conn.character
       assert updated.meta.leader == nil
@@ -120,7 +124,10 @@ defmodule Kantele.Character.FollowCommandTest do
     end
 
     test "unregister 移除跟随者" do
-      followers = [%{id: "player-1", pid: self(), name: "张三"}, %{id: "player-3", pid: self(), name: "王五"}]
+      followers = [
+        %{id: "player-1", pid: self(), name: "张三"},
+        %{id: "player-3", pid: self(), name: "王五"}
+      ]
 
       conn =
         FollowEvent.unregister(build_conn(player("player-2", "李四", followers: followers)), %Event{

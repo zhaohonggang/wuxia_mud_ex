@@ -108,6 +108,7 @@ defmodule Kantele.Character.Family do
 
   defp match_master?(my_family, other_family) do
     mid = Map.get(other_family, :master_id)
+
     mid != nil and
       mid == Map.get(my_family, :master_id) and
       Map.get(other_family, :master_name) == Map.get(my_family, :master_name)
@@ -122,6 +123,7 @@ defmodule Kantele.Character.Family do
   defp maybe_set_rank_title(family, title) do
     gen = Map.get(family, :generation)
     fname = name(family)
+
     display =
       cond do
         gen == nil -> fname && "#{fname}#{title}"

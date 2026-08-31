@@ -42,7 +42,9 @@ defmodule Kantele.Character.OptionCommandTest do
     end
 
     test "列出已有选项" do
-      conn = OptionCommand.run(build_conn(player(%{option: %{"verbose" => "on"}})), %{"rest" => ""})
+      conn =
+        OptionCommand.run(build_conn(player(%{option: %{"verbose" => "on"}})), %{"rest" => ""})
+
       assert output_text(conn) =~ "verbose"
       assert output_text(conn) =~ "on"
     end
@@ -57,14 +59,22 @@ defmodule Kantele.Character.OptionCommandTest do
     end
 
     test "单值即删除键" do
-      conn = OptionCommand.run(build_conn(player(%{option: %{"verbose" => "on"}})), %{"rest" => "verbose"})
+      conn =
+        OptionCommand.run(build_conn(player(%{option: %{"verbose" => "on"}})), %{
+          "rest" => "verbose"
+        })
+
       updated = conn.private.update_character || conn.character
       refute Map.has_key?(updated.meta.option, "verbose")
       assert output_text(conn) =~ "Ok"
     end
 
     test "设定值 0 视为删除" do
-      conn = OptionCommand.run(build_conn(player(%{option: %{"verbose" => "on"}})), %{"rest" => "verbose 0"})
+      conn =
+        OptionCommand.run(build_conn(player(%{option: %{"verbose" => "on"}})), %{
+          "rest" => "verbose 0"
+        })
+
       updated = conn.private.update_character || conn.character
       refute Map.has_key?(updated.meta.option, "verbose")
     end

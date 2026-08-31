@@ -12,7 +12,7 @@ defmodule Kantele.Character.FingerView do
       topic: "Character.Finger",
       text:
         "在线玩家：\n" <>
-          (render("_characters", %{characters: characters}) <> "\n")
+          render("_characters", %{characters: characters}) <> "\n"
     }
   end
 

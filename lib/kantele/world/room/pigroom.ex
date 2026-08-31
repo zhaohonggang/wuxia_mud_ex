@@ -77,7 +77,11 @@ defmodule Kantele.World.Room.Pigroom do
       @seats
       |> Enum.with_index()
       |> Map.new(fn {seat, s} ->
-        {seat, newcards |> Enum.with_index() |> Enum.filter(fn {_, i} -> rem(i, 4) == s end) |> Enum.map(&elem(&1, 0))}
+        {seat,
+         newcards
+         |> Enum.with_index()
+         |> Enum.filter(fn {_, i} -> rem(i, 4) == s end)
+         |> Enum.map(&elem(&1, 0))}
       end)
 
     Map.new(hands, fn {seat, cards} -> {seat, Enum.sort(cards)} end)
@@ -103,23 +107,24 @@ defmodule Kantele.World.Room.Pigroom do
         new_room = %{
           room
           | phase: :bidding,
-          round_no: room.round_no + 1,
-          cards: deal(deck),
-          card_count: %{"north" => 13, "west" => 13, "south" => 13, "east" => 13},
-          round_order: round_order,
-          roundcards: %{"north" => 0, "west" => 0, "south" => 0, "east" => 0},
-          roundcard_count: 0,
-          bidcard_str: "",
-          allow_playbid: [1, 1, 1, 1]
+            round_no: room.round_no + 1,
+            cards: deal(deck),
+            card_count: %{"north" => 13, "west" => 13, "south" => 13, "east" => 13},
+            round_order: round_order,
+            roundcards: %{"north" => 0, "west" => 0, "south" => 0, "east" => 0},
+            roundcard_count: 0,
+            bidcard_str: "",
+            allow_playbid: [1, 1, 1, 1]
         }
 
-        {:ok, new_room, [
-          %{
-            type: :vision,
-            target: :room,
-            text: "庄家 #{dealer} 发牌完毕，进入叫牌阶段。"
-          }
-        ]}
+        {:ok, new_room,
+         [
+           %{
+             type: :vision,
+             target: :room,
+             text: "庄家 #{dealer} 发牌完毕，进入叫牌阶段。"
+           }
+         ]}
     end
   end
 
@@ -134,13 +139,14 @@ defmodule Kantele.World.Room.Pigroom do
 
       true ->
         # 这里需要根据牌的卖牌位掩码判断
-        {:ok, room, [
-          %{
-            type: :vision,
-            target: :room,
-            text: "#{player.name} 叫了牌。"
-          }
-        ]}
+        {:ok, room,
+         [
+           %{
+             type: :vision,
+             target: :room,
+             text: "#{player.name} 叫了牌。"
+           }
+         ]}
     end
   end
 
@@ -155,16 +161,20 @@ defmodule Kantele.World.Room.Pigroom do
 
       true ->
         case valid_play?(room, player, card) do
-          {:error, msg} -> {:error, msg}
+          {:error, msg} ->
+            {:error, msg}
+
           :ok ->
             room = apply_play(room, player, card)
-            {:ok, room, [
-              %{
-                type: :vision,
-                target: :room,
-                text: "Player #{player.name} plays card #{card}."
-              }
-            ]}
+
+            {:ok, room,
+             [
+               %{
+                 type: :vision,
+                 target: :room,
+                 text: "Player #{player.name} plays card #{card}."
+               }
+             ]}
         end
     end
   end
@@ -183,28 +193,33 @@ defmodule Kantele.World.Room.Pigroom do
 
       true ->
         new_room = %{room | seats: Map.put(room.seats, seat, player.id)}
-        {:ok, new_room, [
-          %{
-            type: :vision,
-            target: :room,
-            text: "#{player.name} 在 #{seat} 位坐下了。"
-          }
-        ]}
+
+        {:ok, new_room,
+         [
+           %{
+             type: :vision,
+             target: :room,
+             text: "#{player.name} 在 #{seat} 位坐下了。"
+           }
+         ]}
     end
   end
 
   @doc "离座"
   def leave(room, player) do
     seat = Enum.find(Map.keys(room.seats), fn seat -> room.seats[seat] == player.id end)
+
     if seat do
       new_room = %{room | seats: Map.put(room.seats, seat, nil)}
-      {:ok, new_room, [
-        %{
-          type: :vision,
-          target: :room,
-          text: "#{player.name} 站了起来。"
-        }
-      ]}
+
+      {:ok, new_room,
+       [
+         %{
+           type: :vision,
+           target: :room,
+           text: "#{player.name} 站了起来。"
+         }
+       ]}
     else
       {:error, "你没坐在牌桌上"}
     end
@@ -246,18 +261,19 @@ defmodule Kantele.World.Room.Pigroom do
         "\n"
       )
     else
-      status = Enum.reduce(@seats, "", fn seat, acc ->
-        cond do
-          not Map.has_key?(room.pl, seat) ->
-            acc <> "#{chinese_seat(seat)}的椅子是空的。 想玩可用 sit #{seat} 坐上去。\n"
+      status =
+        Enum.reduce(@seats, "", fn seat, acc ->
+          cond do
+            not Map.has_key?(room.pl, seat) ->
+              acc <> "#{chinese_seat(seat)}的椅子是空的。 想玩可用 sit #{seat} 坐上去。\n"
 
-          room.pl[seat] == room.server ->
-            acc <> "#{chinese_seat(seat)}的椅子上坐的是：#{name_of(room, seat)}(桌长)。\n"
+            room.pl[seat] == room.server ->
+              acc <> "#{chinese_seat(seat)}的椅子上坐的是：#{name_of(room, seat)}(桌长)。\n"
 
-          true ->
-            acc <> "#{chinese_seat(seat)}的椅子上坐的是：#{name_of(room, seat)}。\n"
-        end
-      end)
+            true ->
+              acc <> "#{chinese_seat(seat)}的椅子上坐的是：#{name_of(room, seat)}。\n"
+          end
+        end)
 
       "这是一张专门用于拱猪的四方桌。\n" <> status
     end

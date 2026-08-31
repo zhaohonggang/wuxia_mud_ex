@@ -24,14 +24,29 @@ defmodule Kantele.Character.BankCommand do
 
   def run(conn, %{"rest" => rest}) do
     case String.split(String.trim(rest || "")) do
-      [] -> show(conn)
-      ["check" | _] -> show(conn)
-      ["查询" | _] -> show(conn)
-      [verb, amount, denom] when verb in ["deposit", "存"] -> deposit(conn, amount, denom)
-      [verb, amount, denom] when verb in ["withdraw", "取"] -> withdraw(conn, amount, denom)
-      [verb, amount, from, "to", to] when verb in ["convert", "兑换"] -> convert(conn, amount, from, to)
-      [verb, amount, denom, "to", who] when verb in ["transfer", "转"] -> transfer(conn, amount, denom, who)
-      _ -> usage(conn)
+      [] ->
+        show(conn)
+
+      ["check" | _] ->
+        show(conn)
+
+      ["查询" | _] ->
+        show(conn)
+
+      [verb, amount, denom] when verb in ["deposit", "存"] ->
+        deposit(conn, amount, denom)
+
+      [verb, amount, denom] when verb in ["withdraw", "取"] ->
+        withdraw(conn, amount, denom)
+
+      [verb, amount, from, "to", to] when verb in ["convert", "兑换"] ->
+        convert(conn, amount, from, to)
+
+      [verb, amount, denom, "to", who] when verb in ["transfer", "转"] ->
+        transfer(conn, amount, denom, who)
+
+      _ ->
+        usage(conn)
     end
   end
 
@@ -140,8 +155,7 @@ defmodule Kantele.Character.BankCommand do
           from_value = denom_base(from_denom) * amount
           to_value = denom_base(to_denom) * amount
 
-          text =
-            "你把#{Money.money_str(from_value)}兑换成了#{Money.money_str(to_value)}。\n"
+          text = "你把#{Money.money_str(from_value)}兑换成了#{Money.money_str(to_value)}。\n"
 
           conn
           |> put_character(character)
@@ -185,7 +199,10 @@ defmodule Kantele.Character.BankCommand do
   end
 
   defp usage(conn) do
-    reply(conn, "钱庄用法：bank 查余额；bank deposit|存 <数量> <金|银|铜>；bank withdraw|取 <数量> <金|银|铜>；bank convert|兑换 <数量> <金|银|铜> to <金|银|铜>；bank transfer|转 <数量> <金|银|铜> to <玩家>\n")
+    reply(
+      conn,
+      "钱庄用法：bank 查余额；bank deposit|存 <数量> <金|银|铜>；bank withdraw|取 <数量> <金|银|铜>；bank convert|兑换 <数量> <金|银|铜> to <金|银|铜>；bank transfer|转 <数量> <金|银|铜> to <玩家>\n"
+    )
   end
 
   defp reply(conn, text) do

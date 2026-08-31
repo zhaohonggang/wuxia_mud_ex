@@ -14,38 +14,40 @@ defmodule Kantele.Combat.ForceTest do
   describe "hit_ob" do
     test "low attacker exp consumes neili" do
       assert Force.hit_ob(%{}, %{}, 0, 10,
-        attacker_combat_exp: 1000,
-        defender_combat_exp: 100_000
-      ) == {:neili_consume, 10}
+               attacker_combat_exp: 1000,
+               defender_combat_exp: 100_000
+             ) == {:neili_consume, 10}
     end
 
     test "calculates damage with neili factors" do
-      result = Force.hit_ob(%{}, %{}, 0, 50,
-        attacker_neili: 1000,
-        attacker_max_neili: 1000,
-        defender_neili: 800,
-        defender_max_neili: 800,
-        attacker_force: 100,
-        defender_force: 80,
-        attacker_combat_exp: 50_000_000,
-        defender_combat_exp: 500_000
-      )
+      result =
+        Force.hit_ob(%{}, %{}, 0, 50,
+          attacker_neili: 1000,
+          attacker_max_neili: 1000,
+          defender_neili: 800,
+          defender_max_neili: 800,
+          attacker_force: 100,
+          defender_force: 80,
+          attacker_combat_exp: 50_000_000,
+          defender_combat_exp: 500_000
+        )
 
       assert elem(result, 0) == :damage
     end
 
     test "counterattack when defender force is higher" do
-      result = Force.hit_ob(%{}, %{}, 0, 10,
-        attacker_neili: 100,
-        attacker_max_neili: 100,
-        defender_neili: 1000,
-        defender_max_neili: 1000,
-        attacker_force: 50,
-        defender_force: 150,
-        attacker_combat_exp: 50_000_000,
-        defender_combat_exp: 500_000,
-        attacker_weapon: nil
-      )
+      result =
+        Force.hit_ob(%{}, %{}, 0, 10,
+          attacker_neili: 100,
+          attacker_max_neili: 100,
+          defender_neili: 1000,
+          defender_max_neili: 1000,
+          attacker_force: 50,
+          defender_force: 150,
+          attacker_combat_exp: 50_000_000,
+          defender_combat_exp: 500_000,
+          attacker_weapon: nil
+        )
 
       assert elem(result, 0) in [:counterattack, :damage]
     end

@@ -72,8 +72,7 @@ defmodule Kantele.World.LoaderCombatTest do
 
     blacksmith = Enum.find(world.rooms, &(&1.id == "sammatti:blacksmith"))
 
-    north =
-      Enum.find(blacksmith.exits, &(&1.exit_name == "north"))
+    north = Enum.find(blacksmith.exits, &(&1.exit_name == "north"))
 
     assert north.end_room_id == "liuxi:shanlu"
 

@@ -46,7 +46,12 @@ defmodule Kantele.Character.JingzuoEvent do
     character = Map.put(character, :meta, Map.put(character.meta, :stats, stats))
 
     # 记录静坐时间戳
-    character = Map.put(character, :meta, Map.put(character.meta, :jingzuo_time, System.system_time(:second)))
+    character =
+      Map.put(
+        character,
+        :meta,
+        Map.put(character.meta, :jingzuo_time, System.system_time(:second))
+      )
 
     Records.save(character)
 

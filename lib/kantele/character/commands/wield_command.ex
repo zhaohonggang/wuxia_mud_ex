@@ -32,7 +32,8 @@ defmodule Kantele.Character.WieldCommand do
     cond do
       weapon_snap != nil && snapshot_matches?(weapon_snap, item_name) ->
         # 卸下主手武器：扣减 prop，清空槽位
-        combat = character.meta.combat
+        combat =
+          character.meta.combat
           |> Combat.unequip(:weapon)
           |> subtract_weapon_prop(weapon_snap)
 
@@ -44,8 +45,10 @@ defmodule Kantele.Character.WieldCommand do
       true ->
         # 尝试卸下副手武器
         secondary_snap = Map.get(character.meta.combat.equipped, :secondary_weapon)
+
         if secondary_snap && snapshot_matches?(secondary_snap, item_name) do
-          combat = character.meta.combat
+          combat =
+            character.meta.combat
             |> Combat.unequip(:secondary_weapon)
             |> subtract_weapon_prop(secondary_snap)
 
@@ -76,7 +79,9 @@ defmodule Kantele.Character.WieldCommand do
 
       slot ->
         snap = get_in(character.meta.combat.equipped, [slot])
-        combat = character.meta.combat
+
+        combat =
+          character.meta.combat
           |> Combat.unequip(slot)
           |> subtract_armor_prop(snap)
 
@@ -102,13 +107,15 @@ defmodule Kantele.Character.WieldCommand do
 
         true ->
           state = build_equip_state(character.meta.combat)
+
           case Equip.wield_decision(flag, state) do
             {:error, msg} ->
               render_error(conn, msg)
 
             {:weapon} ->
               # 装备到主手：需先清空原主手/副手/handing
-              combat = clear_weapon_slots(character.meta.combat)
+              combat =
+                clear_weapon_slots(character.meta.combat)
                 |> put_weapon_snapshot(item, :weapon)
                 |> apply_weapon_prop(item)
 
@@ -119,7 +126,8 @@ defmodule Kantele.Character.WieldCommand do
 
             {:secondary_weapon} ->
               # 装备到副手
-              combat = character.meta.combat
+              combat =
+                character.meta.combat
                 |> put_weapon_snapshot(item, :secondary_weapon)
                 |> apply_weapon_prop(item)
 
@@ -131,7 +139,9 @@ defmodule Kantele.Character.WieldCommand do
             {:swap} ->
               # 交换：卸下原主手（如果是副手类），装备新武器到主手
               old_weapon = Combat.weapon(character.meta.combat)
-              combat = character.meta.combat
+
+              combat =
+                character.meta.combat
                 |> Combat.unequip(:weapon)
                 |> subtract_weapon_prop(old_weapon)
                 |> put_weapon_snapshot(item, :weapon)
@@ -139,7 +149,9 @@ defmodule Kantele.Character.WieldCommand do
 
               conn
               |> put_character(%{character | meta: %{character.meta | combat: combat}})
-              |> render(CommandView, "text", %{text: "你将#{Map.get(old_weapon, :name)}收回，改握#{item.name}。\n"})
+              |> render(CommandView, "text", %{
+                text: "你将#{Map.get(old_weapon, :name)}收回，改握#{item.name}。\n"
+              })
               |> prompt(CommandView, "prompt", %{})
           end
       end
@@ -166,7 +178,8 @@ defmodule Kantele.Character.WieldCommand do
               prop: Map.get(item.meta, :armor_prop)
             }
 
-            combat = character.meta.combat
+            combat =
+              character.meta.combat
               |> Combat.equip(slot, snapshot)
               |> apply_armor_prop(snapshot)
 
@@ -212,11 +225,13 @@ defmodule Kantele.Character.WieldCommand do
       prop: Map.get(item.meta, :weapon_prop),
       flag: Map.get(item.meta, :flag, 1)
     }
+
     Combat.equip(combat, slot, snapshot)
   end
 
   defp apply_weapon_prop(combat, item) do
     prop = Map.get(item.meta, :weapon_prop)
+
     if prop do
       Combat.apply_temp(combat, Equip.wield_state(%{}, prop))
     else
@@ -226,6 +241,7 @@ defmodule Kantele.Character.WieldCommand do
 
   defp subtract_weapon_prop(combat, weapon_snap) do
     prop = Map.get(weapon_snap, :prop)
+
     if prop do
       Combat.apply_temp(combat, Equip.unequip_state(%{}, prop))
     else
@@ -242,10 +258,12 @@ defmodule Kantele.Character.WieldCommand do
   defp subtract_armor_prop(combat, armor_snap) do
     armor = Map.get(armor_snap, :armor) || 0
     prop = Map.get(armor_snap, :prop)
+
     temp_sub =
       %{}
       |> Equip.unequip_state(prop)
       |> Map.update(:armor, -armor, &(&1 - armor))
+
     Combat.apply_temp(combat, temp_sub)
   end
 

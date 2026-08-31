@@ -60,7 +60,12 @@ defmodule Kantele.Character.EquipmentTest do
 
       combat =
         combat
-        |> Combat.equip(:weapon, %{name: "长剑", skill_type: "sword", damage: 22, prop: %{attack: 3}})
+        |> Combat.equip(:weapon, %{
+          name: "长剑",
+          skill_type: "sword",
+          damage: 22,
+          prop: %{attack: 3}
+        })
         |> Combat.equip(:cloth, %{name: "布袍", armor: 2, prop: %{defense: 4}})
         |> Combat.equip(:head, %{name: "斗笠", armor: 3, prop: %{defense: 2, dodge: -1}})
         |> Combat.equip(:waist, %{name: "束腰带", armor: 2, prop: %{dodge: 3}})
@@ -160,14 +165,25 @@ defmodule Kantele.Character.EquipmentTest do
     test "多槽位序列化→恢复 round-trip" do
       combat =
         Combat.new()
-        |> Combat.equip(:weapon, %{name: "长剑", skill_type: "sword", damage: 22, prop: %{attack: 3}})
+        |> Combat.equip(:weapon, %{
+          name: "长剑",
+          skill_type: "sword",
+          damage: 22,
+          prop: %{attack: 3}
+        })
         |> Combat.equip(:cloth, %{name: "布袍", armor: 2, prop: %{defense: 4}})
         |> Combat.equip(:head, %{name: "斗笠", armor: 3})
 
       json = serialized_equipment_via_record(combat)
       restored = restore_equipment_via_record(json)
 
-      assert Combat.weapon(restored) == %{name: "长剑", skill_type: "sword", damage: 22, prop: %{attack: 3}}
+      assert Combat.weapon(restored) == %{
+               name: "长剑",
+               skill_type: "sword",
+               damage: 22,
+               prop: %{attack: 3}
+             }
+
       assert get_in(restored.equipped, [:cloth]) == %{name: "布袍", armor: 2, prop: %{defense: 4}}
       assert get_in(restored.equipped, [:head]) == %{name: "斗笠", armor: 3, prop: nil}
     end
@@ -198,7 +214,10 @@ defmodule Kantele.Character.EquipmentTest do
 
   defp snapshot_json(snap) do
     json = %{"name" => Map.get(snap, :name)}
-    json = if Map.get(snap, :skill_type), do: Map.put(json, "skill_type", snap.skill_type), else: json
+
+    json =
+      if Map.get(snap, :skill_type), do: Map.put(json, "skill_type", snap.skill_type), else: json
+
     json = if Map.get(snap, :damage), do: Map.put(json, "damage", snap.damage), else: json
     json = if Map.get(snap, :armor), do: Map.put(json, "armor", snap.armor), else: json
 

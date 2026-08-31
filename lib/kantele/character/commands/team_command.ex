@@ -50,17 +50,39 @@ defmodule Kantele.Character.TeamCommand do
 
   defp dispatch(conn, verb, arg) do
     case verb do
-      "with" -> invite(conn, arg)
-      "accept" -> accept(conn)
-      "refuse" -> refuse(conn)
-      "dismiss" -> dismiss(conn)
-      "kick" -> kick(conn, arg)
-      "talk" -> talk(conn, arg)
-      "say" -> talk(conn, arg)
-      "list" -> list_team(conn)
-      "form" -> form(conn, arg)
-      "kill" -> kill(conn, arg)
-      "swear" -> swear(conn, arg)
+      "with" ->
+        invite(conn, arg)
+
+      "accept" ->
+        accept(conn)
+
+      "refuse" ->
+        refuse(conn)
+
+      "dismiss" ->
+        dismiss(conn)
+
+      "kick" ->
+        kick(conn, arg)
+
+      "talk" ->
+        talk(conn, arg)
+
+      "say" ->
+        talk(conn, arg)
+
+      "list" ->
+        list_team(conn)
+
+      "form" ->
+        form(conn, arg)
+
+      "kill" ->
+        kill(conn, arg)
+
+      "swear" ->
+        swear(conn, arg)
+
       _ ->
         conn
         |> render(CommandView, "text", %{text: "你要发什么队伍命令？\n"})
@@ -109,6 +131,7 @@ defmodule Kantele.Character.TeamCommand do
         })
 
         character = conn.character
+
         conn
         |> put_character(%{character | meta: %{character.meta | team_pending: nil}})
         |> render_text("#{leader.name}的邀请已被你拒绝。\n")
@@ -210,7 +233,7 @@ defmodule Kantele.Character.TeamCommand do
 
       team ->
         alive = Team.alive_members(team)
-        names = Enum.map_join(alive, "\n  ", &"- " <> &1.name)
+        names = Enum.map_join(alive, "\n  ", &("- " <> &1.name))
         formation = if Map.get(team, :formation), do: "（阵形：#{team.formation}）", else: ""
         leader_name = leader_name(team)
         render_text(conn, "你现在队伍中的成员有：\n  #{names}#{formation}\n队长：#{leader_name}\n")

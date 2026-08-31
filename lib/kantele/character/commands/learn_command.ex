@@ -168,8 +168,7 @@ defmodule Kantele.Character.PracticeCommand do
          not Stats.perform_known?(stats, "liuxin-jian/liu") do
       stats = Stats.learn_perform(stats, "liuxin-jian/liu")
 
-      {stats,
-       "剑意涌动之间，你领悟了绝招「柳浪闻莺」！（perform liuxin-jian.liu）\n"}
+      {stats, "剑意涌动之间，你领悟了绝招「柳浪闻莺」！（perform liuxin-jian.liu）\n"}
     else
       {stats, ""}
     end

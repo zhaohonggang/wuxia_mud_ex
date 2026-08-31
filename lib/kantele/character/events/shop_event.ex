@@ -38,14 +38,15 @@ defmodule Kantele.Character.ShopEvent do
   def buy_result(
         conn,
         %{
-          data: %{
-            unavailable: false,
-            vendor: vendor,
-            item_id: item_id,
-            item_name: item_name,
-            price: price,
-            buyer_id: buyer_id
-          } = data
+          data:
+            %{
+              unavailable: false,
+              vendor: vendor,
+              item_id: item_id,
+              item_name: item_name,
+              price: price,
+              buyer_id: buyer_id
+            } = data
         }
       ) do
     character = conn.character
@@ -57,7 +58,9 @@ defmodule Kantele.Character.ShopEvent do
 
       (character.meta.coins || 0) < price * quantity ->
         conn
-        |> render(CommandView, "text", %{text: "你身上的钱不够，#{item_name}要 #{price} 文×#{quantity}＝#{price * quantity} 文。\n"})
+        |> render(CommandView, "text", %{
+          text: "你身上的钱不够，#{item_name}要 #{price} 文×#{quantity}＝#{price * quantity} 文。\n"
+        })
         |> prompt(CommandView, "prompt", %{})
 
       true ->
@@ -82,16 +85,16 @@ defmodule Kantele.Character.ShopEvent do
 
             conn
             |> put_character(character)
-            |> render(CommandView, "text", %{text: "你从#{vendor}手里买下#{item_name}#{qty_text}，花了 #{
-              price * quantity
-            } 文铜钱。\n"})
+            |> render(CommandView, "text", %{
+              text: "你从#{vendor}手里买下#{item_name}#{qty_text}，花了 #{price * quantity} 文铜钱。\n"
+            })
             |> prompt(CommandView, "prompt", %{})
             |> render(Kantele.Character.CharacterView, "vitals")
 
           _ ->
             conn
         end
-      end
+    end
   end
 
   def buy_result(conn, _event), do: conn

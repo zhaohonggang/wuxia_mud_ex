@@ -35,6 +35,7 @@ defmodule Kantele.ClassGenerateChinese do
     choices = Sects.all()
     total = Enum.reduce(choices, 0, fn {_k, v}, acc -> acc + (v.scale || 1) end)
     pick = rem(rng.(total * 100), total)
+
     Enum.find(choices, fn {_, v} -> (v.scale || 1) > pick end)
     |> elem(0)
   end

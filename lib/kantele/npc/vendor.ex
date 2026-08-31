@@ -52,6 +52,7 @@ defmodule Kantele.Npc.Vendor do
         |> Enum.sort_by(&elem(&1, 0))
         |> Enum.map(fn {_key, item} ->
           val = Map.get(item, :value, 0)
+
           pad(item_name(item) <> "(" <> Map.get(item, :id, "") <> ")", 30) <>
             "：" <> price_string(val)
         end)
@@ -75,7 +76,12 @@ defmodule Kantele.Npc.Vendor do
 
   defp chinese(0), do: "零"
   defp chinese(n) when n in 1..9, do: Enum.at(~w(一 二 三 四 五 六 七 八 九), n - 1)
-  defp chinese(n) when n in 10..19, do: "十" <> if(rem(n, 10) > 0, do: chinese(rem(n, 10)), else: "")
-  defp chinese(n) when n in 20..99, do: chinese(div(n, 10)) <> "十" <> if(rem(n, 10) > 0, do: chinese(rem(n, 10)), else: "")
+
+  defp chinese(n) when n in 10..19,
+    do: "十" <> if(rem(n, 10) > 0, do: chinese(rem(n, 10)), else: "")
+
+  defp chinese(n) when n in 20..99,
+    do: chinese(div(n, 10)) <> "十" <> if(rem(n, 10) > 0, do: chinese(rem(n, 10)), else: "")
+
   defp chinese(n), do: Integer.to_string(n)
 end

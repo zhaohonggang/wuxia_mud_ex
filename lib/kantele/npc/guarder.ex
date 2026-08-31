@@ -24,10 +24,12 @@ defmodule Kantele.Npc.Guarder do
       carried_families: carried,
       msgs: msgs
     } = opts
+
     msgs = msgs || %{}
 
     cond do
-      not living -> {:allow}
+      not living ->
+        {:allow}
 
       born_fam == my_fam and fam != nil and fam != my_fam ->
         {:deny, Map.get(msgs, :refuse_home) || default_refuse_home(fam, my_fam)}
@@ -70,13 +72,15 @@ defmodule Kantele.Npc.Guarder do
         helpers =
           coagents
           |> Enum.filter(fn c -> is_map(c) end)
-          |> Enum.map(fn c -> %{
-            id: Map.get(c, "id"),
-            startroom: Map.get(c, "startroom"),
-            target_id: enemy_id,
-            target_room: current_room,
-            in_target_room?: enemy_in_room
-          } end)
+          |> Enum.map(fn c ->
+            %{
+              id: Map.get(c, "id"),
+              startroom: Map.get(c, "startroom"),
+              target_id: enemy_id,
+              target_room: current_room,
+              in_target_room?: enemy_in_room
+            }
+          end)
 
         {:helpers_notified, helpers}
     end

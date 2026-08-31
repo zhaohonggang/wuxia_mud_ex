@@ -100,6 +100,7 @@ defmodule Kantele.Character.ItemCommand do
       Enum.count(character.inventory, fn item_instance ->
         item = Items.get!(item_instance.item_id)
         combat = character.meta.combat
+
         !is_equipped?(combat, item_instance) &&
           !is_riding?(character, item_instance) &&
           !Map.get(item.meta || %{}, :no_drop)
@@ -110,6 +111,7 @@ defmodule Kantele.Character.ItemCommand do
       |> Enum.filter(fn item_instance ->
         item = Items.get!(item_instance.item_id)
         combat = character.meta.combat
+
         !is_equipped?(combat, item_instance) &&
           !is_riding?(character, item_instance) &&
           !Map.get(item.meta || %{}, :no_drop)
@@ -180,6 +182,7 @@ defmodule Kantele.Character.ItemCommand do
       count =
         Enum.count(items, fn item_instance ->
           item = Items.get!(item_instance.item_id)
+
           !Map.get(item.meta || %{}, :no_get) &&
             length(character.inventory) < @max_item_carried
         end)
@@ -188,6 +191,7 @@ defmodule Kantele.Character.ItemCommand do
         items
         |> Enum.filter(fn item_instance ->
           item = Items.get!(item_instance.item_id)
+
           !Map.get(item.meta || %{}, :no_get) &&
             length(character.inventory) < @max_item_carried
         end)
@@ -272,6 +276,7 @@ defmodule Kantele.Character.ItemCommand do
   defp find_item_in_room(room, item_name) do
     Enum.find_value(room.items, fn item_instance ->
       item = Items.get!(item_instance.item_id)
+
       if item_instance.id == item_name || item.callback_module.matches?(item, item_name) do
         {item_instance, item}
       else
@@ -288,6 +293,7 @@ defmodule Kantele.Character.ItemCommand do
 
     Enum.find_value(items, fn item_instance ->
       item = Items.get!(item_instance.item_id)
+
       if item_instance.id == item_name || item.callback_module.matches?(item, item_name) do
         {item_instance, item}
       else

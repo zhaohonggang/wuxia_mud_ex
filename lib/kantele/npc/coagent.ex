@@ -36,7 +36,8 @@ defmodule Kantele.Npc.Coagent do
     } = opts
 
     cond do
-      not living -> {:noop}
+      not living ->
+        {:noop}
 
       in_room ->
         if killing, do: {:already}, else: {:fight, target_id}

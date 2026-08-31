@@ -109,7 +109,8 @@ defmodule Kantele.Character.CheckskillCommand do
     perform_info = format_perform_info(module)
     exert_info = format_exert_info(module)
 
-    header <> basic_info <> type_info <> effective_info <> enable_info <> perform_info <> exert_info
+    header <>
+      basic_info <> type_info <> effective_info <> enable_info <> perform_info <> exert_info
   end
 
   defp format_effective_info(stats, skill_id) do
@@ -126,7 +127,10 @@ defmodule Kantele.Character.CheckskillCommand do
         base_level = Stats.skill(stats, usage)
         effective = base_level + Stats.skill(stats, skill_id)
         usage_title = Map.get(@skill_titles, usage, usage)
-        "\n映射到：#{usage_title}（基本 #{base_level} + 特殊 #{Stats.skill(stats, skill_id)} = 有效 #{effective} 级）\n"
+
+        "\n映射到：#{usage_title}（基本 #{base_level} + 特殊 #{Stats.skill(stats, skill_id)} = 有效 #{
+          effective
+        } 级）\n"
     end
   end
 
@@ -153,7 +157,9 @@ defmodule Kantele.Character.CheckskillCommand do
       performs = module.perform_list()
 
       case map_size(performs) do
-        0 -> ""
+        0 ->
+          ""
+
         _ ->
           perform_names = Enum.join(Map.keys(performs), "、")
           "\n可施展绝招：#{perform_names}\n"
@@ -168,7 +174,9 @@ defmodule Kantele.Character.CheckskillCommand do
       exerts = module.exert_list()
 
       case map_size(exerts) do
-        0 -> ""
+        0 ->
+          ""
+
         _ ->
           exert_names = Enum.join(Map.keys(exerts), "、")
           "\n可运功：#{exert_names}\n"

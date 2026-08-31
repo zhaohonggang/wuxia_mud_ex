@@ -125,7 +125,8 @@ defmodule Kantele.Character.Combat do
     put_in(combat.equipped[slot], meta)
   end
 
-  def unequip(%__MODULE__{} = combat, slot), do: %{combat | equipped: Map.delete(combat.equipped, slot)}
+  def unequip(%__MODULE__{} = combat, slot),
+    do: %{combat | equipped: Map.delete(combat.equipped, slot)}
 
   @doc "槽位是否已被占用（同槽互斥，命令层调用）"
   def occupied?(%__MODULE__{equipped: equipped}, slot), do: Map.has_key?(equipped, slot)

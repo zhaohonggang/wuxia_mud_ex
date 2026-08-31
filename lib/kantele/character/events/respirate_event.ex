@@ -77,6 +77,7 @@ defmodule Kantele.Character.RespirateEvent do
 
   defp finish(conn, character) do
     vitals = character.meta.vitals
+
     # 精力上限 = jingli_limit（暂用 con×10 估算；后续可接入专门的 JingliLimit 模块）
     limit = jingli_limit(character.meta.stats)
 

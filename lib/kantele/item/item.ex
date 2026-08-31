@@ -21,16 +21,16 @@ defmodule Kantele.Item do
     @moduledoc "物品基础结构"
 
     @type t :: %__MODULE__{
-      id: String.t(),
-      name: String.t(),
-      type: String.t(),
-      weight: non_neg_integer(),
-      value: non_neg_integer(),
-      verb: String.t() | nil,
-      description: String.t(),
-      no_sell: boolean(),
-      attrs: map()
-    }
+            id: String.t(),
+            name: String.t(),
+            type: String.t(),
+            weight: non_neg_integer(),
+            value: non_neg_integer(),
+            verb: String.t() | nil,
+            description: String.t(),
+            no_sell: boolean(),
+            attrs: map()
+          }
 
     defstruct [
       :id,
@@ -96,7 +96,8 @@ defmodule Kantele.Item do
       :id,
       :item_id,
       :owner_id,
-      :location,  # :inventory, :equipped, :room, :ground
+      # :inventory, :equipped, :room, :ground
+      :location,
       :room_id,
       attrs: %{}
     ]

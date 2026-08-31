@@ -22,8 +22,7 @@ defmodule Kantele.Character.FamilyEvent do
     conn
     |> put_character(character)
     |> render(CommandView, "text", %{
-      text:
-        "#{data.master_name}捋须点头：「好，从今日起你便是#{data.family}门下弟子，好生修炼，莫堕了师门名声。」\n"
+      text: "#{data.master_name}捋须点头：「好，从今日起你便是#{data.family}门下弟子，好生修炼，莫堕了师门名声。」\n"
     })
     |> prompt(CommandView, "prompt", %{})
   end

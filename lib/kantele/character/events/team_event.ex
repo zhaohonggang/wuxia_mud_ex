@@ -44,7 +44,9 @@ defmodule Kantele.Character.TeamEvent do
     team =
       case current do
         %{leader_pid: leader_pid} when leader_pid == character.pid ->
-          if Team.member?(current, accepter.id), do: current, else: Team.add_member(current, accepter)
+          if Team.member?(current, accepter.id),
+            do: current,
+            else: Team.add_member(current, accepter)
 
         nil ->
           Team.new(character)
@@ -169,7 +171,9 @@ defmodule Kantele.Character.TeamEvent do
 
   defp broadcast_set(conn, team, target_pids) do
     character = conn.character
-    conn = put_character(conn, %{character | meta: %{character.meta | team: team, team_pending: nil}})
+
+    conn =
+      put_character(conn, %{character | meta: %{character.meta | team: team, team_pending: nil}})
 
     Enum.each(target_pids, fn pid ->
       if pid != character.pid && Process.alive?(pid) do

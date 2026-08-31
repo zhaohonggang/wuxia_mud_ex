@@ -80,7 +80,7 @@ defmodule Kantele.Character.Conditions do
       true ->
         {new_conditions, new_applyer, any_live?} =
           Enum.reduce(conditions, {%{}, intended_applyer(applyer), false}, fn {cnd, info},
-                                                                               {acc, apl, live} ->
+                                                                              {acc, apl, live} ->
             case daemon.(cnd) do
               :error ->
                 {acc, apl, live}
@@ -103,7 +103,10 @@ defmodule Kantele.Character.Conditions do
 
         state =
           state
-          |> Map.put(:conditions, if(map_size(new_conditions) == 0, do: nil, else: new_conditions))
+          |> Map.put(
+            :conditions,
+            if(map_size(new_conditions) == 0, do: nil, else: new_conditions)
+          )
           |> Map.put(:cond_applyer, if(map_size(new_applyer) == 0, do: nil, else: new_applyer))
 
         {state, any_live?}

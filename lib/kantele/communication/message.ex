@@ -17,19 +17,32 @@ defmodule Kantele.Communication.Message do
   @command_rcvd 2
 
   @ansi %{
-    info: "\e[36m",       # HIC
-    success: "\e[32m",    # HIG
-    warning: "\e[33m",    # HIY
-    error: "\e[31m",      # HIR
-    danger: "\e[31m",     # HIR
-    him: "\e[35m",        # HIM
-    mag: "\e[35m",        # MAG
-    cyn: "\e[36m",        # CYN
-    red: "\e[31m",        # RED
-    grn: "\e[32m",        # GRN
-    blu: "\e[34m",        # BLU
-    yel: "\e[33m",        # YEL
-    reset: "\e[0m"        # NOR
+    # HIC
+    info: "\e[36m",
+    # HIG
+    success: "\e[32m",
+    # HIY
+    warning: "\e[33m",
+    # HIR
+    error: "\e[31m",
+    # HIR
+    danger: "\e[31m",
+    # HIM
+    him: "\e[35m",
+    # MAG
+    mag: "\e[35m",
+    # CYN
+    cyn: "\e[36m",
+    # RED
+    red: "\e[31m",
+    # GRN
+    grn: "\e[32m",
+    # BLU
+    blu: "\e[34m",
+    # YEL
+    yel: "\e[33m",
+    # NOR
+    reset: "\e[0m"
   }
 
   @doc "消息类 → (ANSI 前缀, ANSI 后缀)；无映射返回 nil/裸文本（LPC default receive(msg)）"

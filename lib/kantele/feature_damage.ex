@@ -107,11 +107,12 @@ defmodule Kantele.Feature.Damage do
 
   # ---- DPS / 击杀追踪 ----
 
-@doc "记录击杀（DPS/胜负追踪）"
+  @doc "记录击杀（DPS/胜负追踪）"
   def record_defeat(character, victim) do
     if killing?(character, victim.id) do
       PlayerMeta.update_damage(character, fn dmg ->
         dp = dmg.defeat_player || []
+
         if victim.id in dp do
           dmg
         else
@@ -192,13 +193,13 @@ defmodule Kantele.Feature.Damage do
   defp handle_unconcious(character) do
     competitor = query_competitor(character)
 
-    character =
-      character
-      PlayerMeta.update_damage(fn dmg ->
-        dmg
-        |> Map.put(:defeated_by, competitor)
-        |> Map.put(:defeated_by_who, competitor && competitor.name)
-      end)
+    character = character
+
+    PlayerMeta.update_damage(fn dmg ->
+      dmg
+      |> Map.put(:defeated_by, competitor)
+      |> Map.put(:defeated_by_who, competitor && competitor.name)
+    end)
 
     # DPS 记录
     if competitor && is_player?(character) && killing?(character, competitor.id) do
@@ -208,12 +209,12 @@ defmodule Kantele.Feature.Damage do
     character = clear_enemies(character)
 
     # 封印状态
-    character =
-      character
-      PlayerMeta.update_damage(fn dmg -> Map.put(dmg, :block_msg_all, 1) end)
-      |> disable_player()
-      |> put_vitals(%{character.meta.vitals | qi: 0, jing: 0})
-      |> PlayerMeta.put_temp("block_msg/all", 1)
+    character = character
+
+    PlayerMeta.update_damage(fn dmg -> Map.put(dmg, :block_msg_all, 1) end)
+    |> disable_player()
+    |> put_vitals(%{character.meta.vitals | qi: 0, jing: 0})
+    |> PlayerMeta.put_temp("block_msg/all", 1)
 
     # 自动复活延迟：30 + random(100 - con) 秒
     delay = 30 + :rand.uniform(100 - character.meta.stats.con)
@@ -235,8 +236,10 @@ defmodule Kantele.Feature.Damage do
 
     # 找有效房间（若在尸体链中）
     env = environment(character)
+
     if env do
       env = find_valid_room(env)
+
       if env != environment(character) do
         character = move_character(character, env)
       end
@@ -254,35 +257,35 @@ defmodule Kantele.Feature.Damage do
     |> PlayerMeta.damage_state()
     |> Map.get(:defeated_by)
     |> (fn defeated_by ->
-      if defeated_by do
-        remove_defeat(defeated_by, character.id)
-        character
-      else
-        character
-      end
-    end).()
+          if defeated_by do
+            remove_defeat(defeated_by, character.id)
+            character
+          else
+            character
+          end
+        end).()
 
     unless quiet do
-      character =
-        character
-        PlayerMeta.update_damage(fn dmg ->
-          dmg
-          |> Map.put(:defeated_by, nil)
-          |> Map.put(:defeated_by_who, nil)
-        end)
+      character = character
+
+      PlayerMeta.update_damage(fn dmg ->
+        dmg
+        |> Map.put(:defeated_by, nil)
+        |> Map.put(:defeated_by_who, nil)
+      end)
 
       announce(character, "revive")
       send_message(character, "Slowly you regain consciousness...")
     end
 
     # 清除上次伤害记录
-    character =
-      character
-      PlayerMeta.update_damage(fn dmg ->
-        dmg
-        |> Map.put(:last_damage_from, nil)
-        |> Map.put(:last_damage_name, nil)
-      end)
+    character = character
+
+    PlayerMeta.update_damage(fn dmg ->
+      dmg
+      |> Map.put(:last_damage_from, nil)
+      |> Map.put(:last_damage_name, nil)
+    end)
 
     {:ok, character}
   end
@@ -293,6 +296,7 @@ defmodule Kantele.Feature.Damage do
 
     # 竞争处理
     competitor = query_competitor(character)
+
     if competitor do
       # 胜负结算留给 Combat.announce
     end
@@ -372,7 +376,8 @@ defmodule Kantele.Feature.Damage do
       character =
         character
         |> put_vitals(%{character.meta.vitals | qi: 1, jing: 1})
-        PlayerMeta.update_damage(fn dmg -> Map.put(dmg, :ghost, true) end)
+
+      PlayerMeta.update_damage(fn dmg -> Map.put(dmg, :ghost, true) end)
     else
       # NPC 直接析构（留钩子给 World）
       destruct_npc(character)
@@ -383,14 +388,15 @@ defmodule Kantele.Feature.Damage do
 
   @doc "复活/重生（对应 LPC reincarnate/2）"
   def reincarnate(character) do
-    character =
-      character
-      PlayerMeta.update_damage(fn dmg -> Map.put(dmg, :ghost, false) end)
-      |> put_vitals(%{
-        character.meta.vitals
-        | eff_jing: character.meta.vitals.max_jing,
-          eff_qi: character.meta.vitals.max_qi
-      })
+    character = character
+
+    PlayerMeta.update_damage(fn dmg -> Map.put(dmg, :ghost, false) end)
+    |> put_vitals(%{
+      character.meta.vitals
+      | eff_jing: character.meta.vitals.max_jing,
+        eff_qi: character.meta.vitals.max_qi
+    })
+
     {:ok, character}
   end
 
@@ -404,17 +410,17 @@ defmodule Kantele.Feature.Damage do
     # 监狱处理（占位）
     if in_prison?(character) do
       update_in_prison(character)
-      return {:ok, character}
+      return({:ok, character})
     end
 
-    scale = if living?(character), do: 1, else: (if is_player?(character), do: 4, else: 8)
+    scale = if living?(character), do: 1, else: if(is_player?(character), do: 4, else: 8)
 
     # 非玩家/非聊天室/非 scheme 时才回复
     unless not is_player?(character) or
-           (environment(character) and not chat_room?(environment(character)) and
-            (not is_binary(character.meta.temp.doing) and interactive?(character) or
-             character.meta.temp.doing == "scheme")) do
-      return {:ok, character}
+             (environment(character) and not chat_room?(environment(character)) and
+                ((not is_binary(character.meta.temp.doing) and interactive?(character)) or
+                   character.meta.temp.doing == "scheme")) do
+      return({:ok, character})
     end
 
     vitals = character.meta.vitals
@@ -425,20 +431,21 @@ defmodule Kantele.Feature.Damage do
     vitals = if vitals.food > 0, do: %{vitals | food: vitals.food - 1}, else: vitals
 
     if vitals.water < 1 and is_player?(character) do
-      return {:ok, character}
+      return({:ok, character})
     end
 
     # 守卫职责消耗精力
     guard = PlayerMeta.get_temp(character, "guardfor")
+
     if guard && (not is_map(guard) or not is_character(guard)) do
       if div(vitals.jing * 100, vitals.max_jing) < 50 do
         send_message(character, "You feel too tired, need to relax.")
-        return {:ok, character}
+        return({:ok, character})
       end
 
       vitals = %{vitals | jing: vitals.jing - 30 - :rand.uniform(20)}
       character = put_vitals(character, vitals)
-      return {:ok, character}
+      return({:ok, character})
     end
 
     # 精力回复：(con + max_jingli/10) / scale
@@ -460,7 +467,7 @@ defmodule Kantele.Feature.Damage do
     end
 
     if vitals.food < 1 && is_player?(character) do
-      return {:ok, character}
+      return({:ok, character})
     end
 
     # 精力修为
@@ -502,6 +509,7 @@ defmodule Kantele.Feature.Damage do
   defp update_last_damage(character, who) do
     if who && who != Map.get(PlayerMeta.damage_state(character), :last_damage_from) do
       character
+
       PlayerMeta.update_damage(fn dmg ->
         dmg
         |> Map.put(:last_damage_from, who)
@@ -523,9 +531,11 @@ defmodule Kantele.Feature.Damage do
 
   defp handle_competition_unconcious(character) do
     competitor = query_competitor(character)
+
     if competitor && not killing?(competitor, character.id) do
       # win/lost 留给 Combat.announce
     end
+
     character
   end
 

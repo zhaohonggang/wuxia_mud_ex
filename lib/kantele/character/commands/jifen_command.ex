@@ -16,11 +16,15 @@ defmodule Kantele.Character.JifenCommand do
 
     if jifen > 0 do
       conn
-      |> render(CommandView, "text", %{text: "你在#{Application.get_env(:kalevala, :mud_name, "江湖")}中的积分为#{jifen}点。\n"})
+      |> render(CommandView, "text", %{
+        text: "你在#{Application.get_env(:kalevala, :mud_name, "江湖")}中的积分为#{jifen}点。\n"
+      })
       |> prompt(CommandView, "prompt", %{})
     else
       conn
-      |> render(CommandView, "text", %{text: "你在#{Application.get_env(:kalevala, :mud_name, "江湖")}中尚无积分记录。\n"})
+      |> render(CommandView, "text", %{
+        text: "你在#{Application.get_env(:kalevala, :mud_name, "江湖")}中尚无积分记录。\n"
+      })
       |> prompt(CommandView, "prompt", %{})
     end
   end

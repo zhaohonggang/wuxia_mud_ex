@@ -16,8 +16,7 @@ defmodule Kantele.Character.ExertCommand do
     skill_id = Stats.mapped(stats, "force")
     module = skill_id && Skills.get(skill_id)
 
-    exert_module =
-      module && Map.get(module.exert_list(), String.trim(function))
+    exert_module = module && Map.get(module.exert_list(), String.trim(function))
 
     case exert_module do
       nil ->

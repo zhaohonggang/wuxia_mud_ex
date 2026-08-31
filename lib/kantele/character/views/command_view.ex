@@ -2,6 +2,7 @@ defmodule Kantele.Character.CommandView do
   use Kalevala.Character.View
 
   alias Kalevala.Character.Conn.EventText
+
   def render("prompt", %{character: character}) do
     %{vitals: vitals} = character.meta
 

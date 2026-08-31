@@ -49,18 +49,19 @@ defmodule Kantele.Item.ExtraLong do
     need = meta["need"] || %{}
     autoload = meta["autoload"] || false
 
-    lines = [
-      "\n物品类型 : #{category_name}",
-      if(bindable_type, do: "绑定类型 : #{bindable_type}"),
-      "重    量 : #{weight}",
-      if(damage > 0, do: "伤 害 力 : #{damage}"),
-      if(armor_val > 0, do: "防 护 力 : #{armor_val}"),
-      if(flute > 0, do: "镶嵌凹槽 : #{flute}"),
-      build_need_lines(need),
-      "下线丢失 : #{if(autoload, do: "否", else: "是")}"
-    ]
-    |> Enum.reject(&is_nil/1)
-    |> Enum.join("\n")
+    lines =
+      [
+        "\n物品类型 : #{category_name}",
+        if(bindable_type, do: "绑定类型 : #{bindable_type}"),
+        "重    量 : #{weight}",
+        if(damage > 0, do: "伤 害 力 : #{damage}"),
+        if(armor_val > 0, do: "防 护 力 : #{armor_val}"),
+        if(flute > 0, do: "镶嵌凹槽 : #{flute}"),
+        build_need_lines(need),
+        "下线丢失 : #{if(autoload, do: "否", else: "是")}"
+      ]
+      |> Enum.reject(&is_nil/1)
+      |> Enum.join("\n")
 
     lines
   end

@@ -19,7 +19,8 @@ defmodule Kantele.Character.SuicideCommand do
     else
       conn
       |> render(CommandView, "text", %{
-        text: "您选择永远死掉的自杀方式，这个角色的资料将永远删除，请务必\n考虑清楚，确定的话请输入完整的自杀(suicide -f)指令。\n\n（注：当前为占位实现，实际不会删除档案。）\n"
+        text:
+          "您选择永远死掉的自杀方式，这个角色的资料将永远删除，请务必\n考虑清楚，确定的话请输入完整的自杀(suicide -f)指令。\n\n（注：当前为占位实现，实际不会删除档案。）\n"
       })
       |> prompt(CommandView, "prompt", %{})
     end

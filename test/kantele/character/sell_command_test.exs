@@ -69,7 +69,11 @@ defmodule Kantele.Character.SellCommandTest do
   defp updated(conn), do: conn.private.update_character || conn.character
 
   test "估价显示收购价（resale 3/10，1000 → 300 文）" do
-    conn = Kantele.Character.SellCommand.value(build_conn(player(["test:sword"])), %{"item_name" => "长剑"})
+    conn =
+      Kantele.Character.SellCommand.value(build_conn(player(["test:sword"])), %{
+        "item_name" => "长剑"
+      })
+
     assert output_text(conn) =~ "长剑 Changjian 可以卖三两白银"
     # 估价不成交：物与钱都不变
     assert updated(conn).inventory != []
@@ -77,7 +81,10 @@ defmodule Kantele.Character.SellCommandTest do
   end
 
   test "变卖成交：收入加钱、物品移除" do
-    conn = Kantele.Character.SellCommand.sell(build_conn(player(["test:sword"])), %{"item_name" => "长剑"})
+    conn =
+      Kantele.Character.SellCommand.sell(build_conn(player(["test:sword"])), %{
+        "item_name" => "长剑"
+      })
 
     assert output_text(conn) =~ "卖给了商人"
     assert output_text(conn) =~ "三两白银"
@@ -99,7 +106,9 @@ defmodule Kantele.Character.SellCommandTest do
 
   test "数量超出拒绝，状态不变" do
     conn =
-      Kantele.Character.SellCommand.sell(build_conn(player(["test:sword"])), %{"item_name" => "长剑 x3"})
+      Kantele.Character.SellCommand.sell(build_conn(player(["test:sword"])), %{
+        "item_name" => "长剑 x3"
+      })
 
     assert output_text(conn) =~ "你身上没有这么多"
     assert updated(conn).meta.coins == 100
@@ -113,7 +122,9 @@ defmodule Kantele.Character.SellCommandTest do
 
   test "无价值/尸体类拒绝（一文不值）" do
     conn =
-      Kantele.Character.SellCommand.value(build_conn(player(["test:corpse"])), %{"item_name" => "无名尸体"})
+      Kantele.Character.SellCommand.value(build_conn(player(["test:corpse"])), %{
+        "item_name" => "无名尸体"
+      })
 
     assert output_text(conn) =~ "一文不值"
   end

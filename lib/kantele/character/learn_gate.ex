@@ -75,9 +75,10 @@ defmodule Kantele.Character.LearnGate do
           other_id != skill_id and other_module.valid_enable("force") and
             Stats.skill(stats, other_id) > 0
 
-        if learned? and (not other_module.valid_force(skill_id) or
-                          not new_module.valid_force(other_id)),
-          do: other_id
+        if learned? and
+             (not other_module.valid_force(skill_id) or
+                not new_module.valid_force(other_id)),
+           do: other_id
       end)
     else
       # 非内功技能：仅检查已学 force 是否拒绝它

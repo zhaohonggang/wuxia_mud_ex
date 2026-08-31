@@ -23,8 +23,8 @@
 5. **每个命令移植前必须现场核查现状（强制）**：不依赖 `IMPLEMENTATION_GAP.md` 的历史结论，
    **逐命令**打开 `wuxia_mud_ex` 的相关文件确认其在当前代码库里的真实状态，
    记录核查结论后再动手移植。见 §1「单命令移植前置核查」。
-6. **禁止直接 push（强制）**：任何批次只 commit、**不 push**；完成并汇报后，
-   等用户检查确认、明确指示「push」时，才允许执行 `git push`。
+6. **禁止直接 commit push（强制）**：任何批次**不 commit、push**；完成并汇报后，
+   等用户检查确认、明确指示「push」时，才允许执行`git commit` `git push`。
 
 状态标记：`[ ]` 待办 ｜ `[~]` 进行中 ｜ `[x]` 完成且测试通过
 
@@ -348,7 +348,7 @@ P5 无
 □ 内测：单命令 `mix test test/kantele/character/commands/xxx_test.exs`（容器命令见 §12.3）
 □ 全量：`mix test` == 877 + 本批新增 ≥ n，0 failures（§12.3）
 □ 提交：`git add` 仅本批文件；commit 信息含 `Batch M1: purchase/shop/auction/baitan (P1)`（提交前容器内补 `mix format --check-formatted` + `mix credo`，见 §12.6）
-□ **禁止自行 push（强制）**：仅本地 `git commit` 并汇报；待用户检查确认、明确说「push」后，才执行 `git push`（见 §0 原则 6）
+□ **禁止自行commit or push（强制）**：完成后待用户检查确认、明确说「push」后，才执行`git commit` 和 `git push`（见 §0 原则 6）
 □ 更新：本文档 §1.2 核查表/勾选 + IMPLEMENTATION_GAP.md 勾选
 ```
 

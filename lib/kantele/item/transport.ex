@@ -18,7 +18,7 @@ defmodule Kantele.Item.Transport do
   @doc "查询车主 (LPC: query_owner)"
   def query_owner(transport), do: Map.get(transport, :owner)
 
-@doc """
+  @doc """
   我能否驾驶 (LPC: can_drive_by(me))
 
   opts: `%{owner: owner_id, me: me_id, owner_room: owner_room_id, my_room: my_room_id}`

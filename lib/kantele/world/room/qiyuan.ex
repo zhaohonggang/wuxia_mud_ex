@@ -29,7 +29,16 @@ defmodule Kantele.World.Room.Qiyuan do
   @jie_banned -3
   @no_qi_banned -4
 
-  @handicap_stars [3 * 19 + 3, 15 * 19 + 15, 15 * 19 + 3, 3 * 19 + 15, 3 * 19 + 9, 15 * 19 + 9, 9 * 19 + 3, 9 * 19 + 15]
+  @handicap_stars [
+    3 * 19 + 3,
+    15 * 19 + 15,
+    15 * 19 + 3,
+    3 * 19 + 15,
+    3 * 19 + 9,
+    15 * 19 + 9,
+    9 * 19 + 3,
+    9 * 19 + 15
+  ]
 
   # 坐标解析表
   @ucase ~w(A B C D E F G H I J K L M N O P Q R S)
@@ -92,7 +101,16 @@ defmodule Kantele.World.Room.Qiyuan do
   @jie_banned -3
   @no_qi_banned -4
 
-  @handicap_stars [3 * 19 + 3, 15 * 19 + 15, 15 * 19 + 3, 3 * 19 + 15, 3 * 19 + 9, 15 * 19 + 9, 9 * 19 + 3, 9 * 19 + 15]
+  @handicap_stars [
+    3 * 19 + 3,
+    15 * 19 + 15,
+    15 * 19 + 3,
+    3 * 19 + 15,
+    3 * 19 + 9,
+    15 * 19 + 9,
+    9 * 19 + 3,
+    9 * 19 + 15
+  ]
 
   # 坐标解析表
   @ucase ~w(A B C D E F G H I J K L M N O P Q R S)
@@ -295,7 +313,8 @@ defmodule Kantele.World.Room.Qiyuan do
   defp five_in_row?(g, cells, x, y, color) do
     [{1, 1}, {1, -1}, {1, 0}, {0, 1}]
     |> Enum.any?(fn {dx, dy} ->
-      count_line(g, cells, x, y, dx, dy, color) + count_line(g, cells, x, y, -dx, -dy, color) - 1 >= 5
+      count_line(g, cells, x, y, dx, dy, color) + count_line(g, cells, x, y, -dx, -dy, color) - 1 >=
+        5
     end)
   end
 
@@ -409,13 +428,23 @@ defmodule Kantele.World.Room.Qiyuan do
   @doc "悔棋（do_undo，仅五子棋）"
   def undo(%Game{} = g) do
     cond do
-      g.status == @not_playing -> {g, {:error, "还没新开一局棋呐。"}}
-      g.status != @playing_wuzi -> {g, {:error, "目前只提供五子棋的悔棋功能。"}}
-      not g.started -> {g, {:error, "一步都没走，悔什么棋。"}}
-      g.undoable -> {g, {:error, "一次只能悔一步棋。"}}
+      g.status == @not_playing ->
+        {g, {:error, "还没新开一局棋呐。"}}
+
+      g.status != @playing_wuzi ->
+        {g, {:error, "目前只提供五子棋的悔棋功能。"}}
+
+      not g.started ->
+        {g, {:error, "一步都没走，悔什么棋。"}}
+
+      g.undoable ->
+        {g, {:error, "一次只能悔一步棋。"}}
+
       true ->
         case translate_position(g, g.lastmove) do
-          :error -> {g, {:error, "无法定位上一步。"}}
+          :error ->
+            {g, {:error, "无法定位上一步。"}}
+
           {:ok, x, y} ->
             cells = Map.delete(g.cells, x * g.bsize + y)
             ng = %{g | cells: cells, undoable: true, lastmove: g.lastlastmove}

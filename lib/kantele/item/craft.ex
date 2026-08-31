@@ -22,8 +22,7 @@ defmodule Kantele.Item.Craft do
     total = if is_map(owner), do: Enum.reduce(owner, 0, fn {_k, v}, acc -> acc + v end), else: 0
     lvl = div(total, 100)
 
-    lvl =
-      if lvl > Level.max(), do: Level.max(), else: lvl
+    lvl = if lvl > Level.max(), do: Level.max(), else: lvl
 
     if lvl == Level.max() and (Map.get(magic, :power) || Map.get(magic, :imbue_ok)) do
       Level.ultra()
@@ -126,6 +125,7 @@ defmodule Kantele.Item.Craft do
 
     if attack_lvl > Level.max() do
       tessera = Map.get(magic, :tessera)
+
       tessera_part =
         if tessera do
           "它上面镶嵌着#{tessera}，闪烁着奇异的光芒。\n"
@@ -146,6 +146,7 @@ defmodule Kantele.Item.Craft do
         end
 
       imbue = Map.get(magic, :imbue, 0)
+
       imbue_part =
         cond do
           Map.get(magic, :imbue_ok) ->
@@ -286,13 +287,13 @@ defmodule Kantele.Item.Craft do
     magic = Map.get(meta, :magic, %{})
 
     "-------------------------------------\n" <>
-    "坚固修正： #{bless}\t" <>
-    "攻·防修正：#{bless * 2}\n" <>
-    "圣化次数： #{bless}\t" <>
-    "魔力改善值：#{Map.get(magic, :power, 0)}\n" <>
-    "魔力属性：#{chinese_s(Map.get(magic, :type))}\t" <>
-    "人器融合度：#{Map.get(magic, :blood, 0)}\n" <>
-    "-------------------------------------\n"
+      "坚固修正： #{bless}\t" <>
+      "攻·防修正：#{bless * 2}\n" <>
+      "圣化次数： #{bless}\t" <>
+      "魔力改善值：#{Map.get(magic, :power, 0)}\n" <>
+      "魔力属性：#{chinese_s(Map.get(magic, :type))}\t" <>
+      "人器融合度：#{Map.get(magic, :blood, 0)}\n" <>
+      "-------------------------------------\n"
   end
 
   defmodule Level do
@@ -348,7 +349,8 @@ defmodule Kantele.Item.Craft do
   - combat/WPK_NOTGOOD/WPK_NOTBAD：善恶击杀
   - owner：武器归属映射（最多12人）
   """
-  def killer_reward(item_meta, killer_meta, victim_meta) when is_map(item_meta) and is_map(killer_meta) and is_map(victim_meta) do
+  def killer_reward(item_meta, killer_meta, victim_meta)
+      when is_map(item_meta) and is_map(killer_meta) and is_map(victim_meta) do
     item_meta
     |> update_combat_on_kill(victim_meta)
     |> update_owner_on_kill(killer_meta, victim_meta)
@@ -385,7 +387,12 @@ defmodule Kantele.Item.Craft do
       item_meta
     else
       exp = div(victim_exp, 10_000)
-      exp = if exp > 250, do: 100 + div(exp - 250, 16), else: if exp > 50, do: 50 + div(exp - 50, 4), else: exp
+
+      exp =
+        if exp > 250,
+          do: 100 + div(exp - 250, 16),
+          else: if(exp > 50, do: 50 + div(exp - 50, 4), else: exp)
+
       exp = min(exp, 250)
 
       killer_id = Map.get(killer_meta, :id, "unknown")
@@ -493,6 +500,7 @@ defmodule Kantele.Item.Craft do
       true ->
         do_san = Map.get(magic, :do_san) || %{}
         san_count = Kernel.map_size(do_san)
+
         if san_count < @san_per_imbue do
           {:error, "你必须先对#{Map.get(item_meta, :name, "装备")}进行充分的圣化才行"}
         else

@@ -46,22 +46,25 @@ defmodule Kantele.Economy.Money do
   """
   def can_afford(money_map, amount) when is_integer(amount) and amount >= 0 do
     total = total_value(money_map)
+
     if total < amount do
       0
     else
       amount = amount - amount_value(money_map, "coin")
+
       if amount <= 0,
         do: 1,
         else:
-          if rem(amount, 100) != 0,
+          if(rem(amount, 100) != 0,
             do: 2,
             else: afford_silver(money_map, amount)
+          )
     end
   end
 
   defp afford_silver(money_map, amount) do
     amount = amount - amount_value(money_map, "silver")
-    if amount <= 0, do: 1, else: if rem(amount, 10_000) != 0, do: 2, else: 1
+    if amount <= 0, do: 1, else: if(rem(amount, 10_000) != 0, do: 2, else: 1)
   end
 
   @doc """
@@ -72,6 +75,7 @@ defmodule Kantele.Economy.Money do
   """
   def pay(money_map, amount) when is_integer(amount) and amount >= 0 do
     total = total_value(money_map)
+
     if total < amount do
       :error
     else

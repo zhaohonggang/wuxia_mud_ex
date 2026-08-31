@@ -28,10 +28,11 @@ defmodule Kantele.Item.Registry do
 
       existing ->
         # 已存在则更新持有者
-        Repo.update!(%{existing |
-          holder_type: holder.type,
-          holder_id: holder.id,
-          holder_pid: holder.pid
+        Repo.update!(%{
+          existing
+          | holder_type: holder.type,
+            holder_id: holder.id,
+            holder_pid: holder.pid
         })
     end
   end
@@ -47,13 +48,17 @@ defmodule Kantele.Item.Registry do
   @doc "转移唯一物品给新持有者"
   def transfer(item_id, new_holder) do
     case Repo.get_by(UniqueItem, item_id: item_id) do
-      nil -> {:error, :not_found}
+      nil ->
+        {:error, :not_found}
+
       item ->
-        Repo.update!(%{item |
-          holder_type: new_holder.type,
-          holder_id: new_holder.id,
-          holder_pid: new_holder.pid
+        Repo.update!(%{
+          item
+          | holder_type: new_holder.type,
+            holder_id: new_holder.id,
+            holder_pid: new_holder.pid
         })
+
         {:ok, holder_of(item)}
     end
   end

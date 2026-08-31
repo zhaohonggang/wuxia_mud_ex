@@ -27,6 +27,7 @@ defmodule Kantele.Item.SilentDest do
   end
 
   defp walk_chain(nil, _char?), do: false
+
   defp walk_chain(env, char?) do
     if char?.(env) do
       true

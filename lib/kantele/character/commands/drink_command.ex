@@ -60,18 +60,25 @@ defmodule Kantele.Character.DrinkCommand do
         |> prompt(CommandView, "prompt", %{})
 
       {:ok, effect} ->
-        new_meta = character.meta |> Map.put(:vitals, effect.vitals) |> Map.put(:stats, effect.stats)
-        character =
-          %{character | inventory: drop_instance(character.inventory, instance), meta: new_meta}
+        new_meta =
+          character.meta |> Map.put(:vitals, effect.vitals) |> Map.put(:stats, effect.stats)
+
+        character = %{
+          character
+          | inventory: drop_instance(character.inventory, instance),
+            meta: new_meta
+        }
 
         text =
           if effect.parts == [] do
             "你仰头喝下#{item.name}，顿觉神清气爽。\n"
           else
-            "你仰头喝下#{item.name}，一股暖流涌遍全身，伤势顿时好转。（#{Enum.join(
-              effect.parts,
-              " "
-            )}）\n"
+            "你仰头喝下#{item.name}，一股暖流涌遍全身，伤势顿时好转。（#{
+              Enum.join(
+                effect.parts,
+                " "
+              )
+            }）\n"
           end
 
         conn

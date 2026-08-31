@@ -116,19 +116,39 @@ defmodule Kantele.TransportTest do
     end
 
     test "can_drive_by? 无主可驾驶" do
-      assert Transport.can_drive_by?(%{owner: nil, me: "player-1", owner_room: nil, my_room: "room-1"})
+      assert Transport.can_drive_by?(%{
+               owner: nil,
+               me: "player-1",
+               owner_room: nil,
+               my_room: "room-1"
+             })
     end
 
     test "can_drive_by? 自己是车主可驾驶" do
-      assert Transport.can_drive_by?(%{owner: "player-1", me: "player-1", owner_room: "room-2", my_room: "room-1"})
+      assert Transport.can_drive_by?(%{
+               owner: "player-1",
+               me: "player-1",
+               owner_room: "room-2",
+               my_room: "room-1"
+             })
     end
 
     test "can_drive_by? 车主不在同房间可驾驶" do
-      assert Transport.can_drive_by?(%{owner: "player-2", me: "player-1", owner_room: "room-2", my_room: "room-1"})
+      assert Transport.can_drive_by?(%{
+               owner: "player-2",
+               me: "player-1",
+               owner_room: "room-2",
+               my_room: "room-1"
+             })
     end
 
     test "can_drive_by? 车主在同房间不可驾驶" do
-      refute Transport.can_drive_by?(%{owner: "player-2", me: "player-1", owner_room: "room-1", my_room: "room-1"})
+      refute Transport.can_drive_by?(%{
+               owner: "player-2",
+               me: "player-1",
+               owner_room: "room-1",
+               my_room: "room-1"
+             })
     end
   end
 
@@ -153,17 +173,41 @@ defmodule Kantele.TransportTest do
 
     test "他人车主在线但不同房间可骑" do
       inst = mount_instance()
-      inst = %{inst | item: %{inst.item | meta: %{inst.item.meta | "owner" => "player-2", "owner_name" => "李四"}}}
+
+      inst = %{
+        inst
+        | item: %{
+            inst.item
+            | meta: %{inst.item.meta | "owner" => "player-2", "owner_name" => "李四"}
+          }
+      }
+
       third = player("player-3", "王五")
       third = %{third | room_id: "room-1"}
-      inst = %{inst | item: %{inst.item | meta: %{inst.item.meta | "owner" => "player-2", "owner_name" => "李四"}}}
+
+      inst = %{
+        inst
+        | item: %{
+            inst.item
+            | meta: %{inst.item.meta | "owner" => "player-2", "owner_name" => "李四"}
+          }
+      }
+
       # 当前实现无法获取车主房间，owner_room 为 nil 视为允许
       assert :ok = Mount.can_ride?(inst, third)
     end
 
     test "他人车主同房间不可骑（需 owner 在线）" do
       inst = mount_instance()
-      inst = %{inst | item: %{inst.item | meta: %{inst.item.meta | "owner" => "player-2", "owner_name" => "李四"}}}
+
+      inst = %{
+        inst
+        | item: %{
+            inst.item
+            | meta: %{inst.item.meta | "owner" => "player-2", "owner_name" => "李四"}
+          }
+      }
+
       third = player("player-3", "王五")
       # 显式传入同房间时拒绝（模拟 owner 在线且同房）
       opts = %{owner: "player-2", me: "player-3", owner_room: "test:room", my_room: "test:room"}
@@ -199,7 +243,15 @@ defmodule Kantele.TransportTest do
 
     test "权限不足拒绝（非车主且同房间）" do
       inst = mount_instance()
-      inst = %{inst | item: %{inst.item | meta: %{inst.item.meta | "owner" => "player-2", "owner_name" => "李四"}}}
+
+      inst = %{
+        inst
+        | item: %{
+            inst.item
+            | meta: %{inst.item.meta | "owner" => "player-2", "owner_name" => "李四"}
+          }
+      }
+
       third = player("player-3", "王五")
       third = %{third | room_id: "test:room"}
       char = %{third | inventory: [inst]}
@@ -236,7 +288,13 @@ defmodule Kantele.TransportTest do
 
     test "已骑乘时召唤提示" do
       inst = mount_instance()
-      char = %{player() | inventory: [inst], meta: %{player().meta | riding: %{instance_id: "inst-1", name: "马"}}}
+
+      char = %{
+        player()
+        | inventory: [inst],
+          meta: %{player().meta | riding: %{instance_id: "inst-1", name: "马"}}
+      }
+
       conn = WhistleCommand.run(build_conn(char), %{"rest" => "test_mount_ma"})
       assert conn_text(conn) =~ "你已经有座骑了！"
     end
@@ -271,13 +329,22 @@ defmodule Kantele.TransportTest do
     end
 
     test "选择性别" do
-      pl = %Kalevala.Character{meta: player_meta() |> PlayerMeta.put_temp("chosen_species", :horse)}
+      pl = %Kalevala.Character{
+        meta: player_meta() |> PlayerMeta.put_temp("chosen_species", :horse)
+      }
+
       result = Horseboss.choose_gender(%{}, pl, "male")
       assert result =~ "公的好"
     end
 
     test "选择 ID 校验" do
-      pl = %Kalevala.Character{meta: player_meta() |> PlayerMeta.put_temp("chosen_species", :horse) |> PlayerMeta.put_temp("pet_gender", "male")}
+      pl = %Kalevala.Character{
+        meta:
+          player_meta()
+          |> PlayerMeta.put_temp("chosen_species", :horse)
+          |> PlayerMeta.put_temp("pet_gender", "male")
+      }
+
       {:error, msg} = Horseboss.choose_id(%{}, pl, "ab")
       assert msg =~ "3-20 字符"
 
@@ -286,17 +353,27 @@ defmodule Kantele.TransportTest do
     end
 
     test "选择名字校验" do
-      pl = %Kalevala.Character{meta: player_meta() |> PlayerMeta.put_temp("chosen_species", :horse) |> PlayerMeta.put_temp("pet_gender", "male") |> PlayerMeta.put_temp("pet_id", "test_mount")}
+      pl = %Kalevala.Character{
+        meta:
+          player_meta()
+          |> PlayerMeta.put_temp("chosen_species", :horse)
+          |> PlayerMeta.put_temp("pet_gender", "male")
+          |> PlayerMeta.put_temp("pet_id", "test_mount")
+      }
+
       {:error, msg} = Horseboss.choose_name(%{}, pl, "a")
       assert msg =~ "2-12 个中文字"
     end
 
     test "完成购买创建坐骑" do
-      pl = %Kalevala.Character{meta: player_meta()
-        |> PlayerMeta.put_temp("chosen_species", :horse)
-        |> PlayerMeta.put_temp("pet_gender", "male")
-        |> PlayerMeta.put_temp("pet_id", "test_mount")
-        |> PlayerMeta.put_temp("pet_name", "小黑")}
+      pl = %Kalevala.Character{
+        meta:
+          player_meta()
+          |> PlayerMeta.put_temp("chosen_species", :horse)
+          |> PlayerMeta.put_temp("pet_gender", "male")
+          |> PlayerMeta.put_temp("pet_id", "test_mount")
+          |> PlayerMeta.put_temp("pet_name", "小黑")
+      }
 
       result = Horseboss.choose_desc(%{}, pl, "一匹黑马")
       assert result =~ "成交"

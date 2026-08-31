@@ -465,8 +465,6 @@ defmodule Kantele.Character.CombatEvent do
 
   defp npc?(_), do: false
 
-
-
   def respawn(conn, _event) do
     character = conn.character
 
@@ -535,13 +533,14 @@ defmodule Kantele.Character.CombatEvent do
     character = apply_quest_kill(character, id)
 
     # 掉落物直接入包（v0 简化：不做尸体拾取）
-    drops = Enum.map(Map.get(reward, :drops) || [], fn item_id ->
-      %Kalevala.World.Item.Instance{
-        id: Kalevala.World.Item.Instance.generate_id(),
-        item_id: item_id,
-        created_at: DateTime.utc_now()
-      }
-    end)
+    drops =
+      Enum.map(Map.get(reward, :drops) || [], fn item_id ->
+        %Kalevala.World.Item.Instance{
+          id: Kalevala.World.Item.Instance.generate_id(),
+          item_id: item_id,
+          created_at: DateTime.utc_now()
+        }
+      end)
 
     character = %{character | inventory: character.inventory ++ drops}
 
@@ -710,6 +709,7 @@ defmodule Kantele.Character.CombatEvent do
       _ -> @default_respawn_delay
     end
   end
+
   defp starting_room_id() do
     Kantele.World.start_room_id()
   end

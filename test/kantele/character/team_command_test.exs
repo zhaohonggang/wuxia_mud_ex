@@ -143,10 +143,13 @@ defmodule Kantele.Character.TeamCommandTest do
       team = team_with([member("player-1", self(), "张三"), member("player-2", self(), "李四")])
 
       conn =
-        TeamEvent.set_team(build_conn(player(team_pending: member("player-9", self(), "王五"))), %Event{
-          topic: "team/set",
-          data: %{team: team}
-        })
+        TeamEvent.set_team(
+          build_conn(player(team_pending: member("player-9", self(), "王五"))),
+          %Event{
+            topic: "team/set",
+            data: %{team: team}
+          }
+        )
 
       updated = conn.private.update_character || conn.character
       assert updated.meta.team.id == "team_x"
@@ -162,7 +165,8 @@ defmodule Kantele.Character.TeamCommandTest do
       other_pid =
         spawn(fn ->
           receive do
-            %Event{topic: "team/disband", data: %{leader_name: "张三"}} -> send(test_pid, :disbanded)
+            %Event{topic: "team/disband", data: %{leader_name: "张三"}} ->
+              send(test_pid, :disbanded)
           end
         end)
 
@@ -183,11 +187,17 @@ defmodule Kantele.Character.TeamCommandTest do
       leader_pid =
         spawn(fn ->
           receive do
-            %Event{topic: "team/member-left", data: %{member_name: "张三"}} -> send(test_pid, :member_left)
+            %Event{topic: "team/member-left", data: %{member_name: "张三"}} ->
+              send(test_pid, :member_left)
           end
         end)
 
-      team = %{id: "team_x", leader_pid: leader_pid, members: [member("player-1", self(), "张三"), member("player-2", leader_pid, "王五")], formation: nil}
+      team = %{
+        id: "team_x",
+        leader_pid: leader_pid,
+        members: [member("player-1", self(), "张三"), member("player-2", leader_pid, "王五")],
+        formation: nil
+      }
 
       conn = TeamCommand.run(build_conn(player(team: team)), %{"rest" => "dismiss"})
 
@@ -201,7 +211,13 @@ defmodule Kantele.Character.TeamCommandTest do
   describe "kick 踢出" do
     test "只有队长能踢" do
       leader_pid = spawn(fn -> Process.sleep(:infinity) end)
-      team = %{id: "team_x", leader_pid: leader_pid, members: [member("player-1", self(), "张三"), member("player-2", leader_pid, "王五")], formation: nil}
+
+      team = %{
+        id: "team_x",
+        leader_pid: leader_pid,
+        members: [member("player-1", self(), "张三"), member("player-2", leader_pid, "王五")],
+        formation: nil
+      }
 
       conn = TeamCommand.run(build_conn(player(team: team)), %{"rest" => "kick 李四"})
       assert output_text(conn) =~ "只有队伍领袖可以踢人"

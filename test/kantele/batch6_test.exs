@@ -32,7 +32,12 @@ defmodule Kantele.Batch6Test do
 
     test "add_encumbrance 不重复触发" do
       {:ok, agent} = Agent.start_link(fn -> 0 end)
-      s = Encumbrance.add_encumbrance(%Encumbrance{encumb: 8, max_encumb: 10}, 5, on_over: fn -> Agent.update(agent, &(&1 + 1)) end)
+
+      s =
+        Encumbrance.add_encumbrance(%Encumbrance{encumb: 8, max_encumb: 10}, 5,
+          on_over: fn -> Agent.update(agent, &(&1 + 1)) end
+        )
+
       s = Encumbrance.add_encumbrance(s, 1, on_over: fn -> Agent.update(agent, &(&1 + 1)) end)
       assert Agent.get(agent, & &1) == 1
     end
@@ -79,6 +84,7 @@ defmodule Kantele.Batch6Test do
 
     test "update_condition 迭代/到期/失败移除" do
       s = Conditions.apply_condition(%{}, "poison", %{hits: 1})
+
       daemon = fn
         "poison" -> {:ok, DemoCond}
         _ -> :error
@@ -102,28 +108,99 @@ defmodule Kantele.Batch6Test do
 
     test "affect_by 调用 do_effect + piyi 免疫" do
       s = Conditions.apply_condition(%{hp: 50}, "poison", %{hits: 1})
-      assert Conditions.affect_by(s, fn "poison" -> {:ok, DemoCond}; _ -> :error end, "poison", nil) == {:ok, {:effect, 50}}
+
+      assert Conditions.affect_by(
+               s,
+               fn
+                 "poison" -> {:ok, DemoCond}
+                 _ -> :error
+               end,
+               "poison",
+               nil
+             ) == {:ok, {:effect, 50}}
 
       immune = %{special_skill: %{piyi: true}}
-      assert Conditions.affect_by(immune, fn "poison" -> {:ok, DemoCond}; _ -> :error end, "poison", nil) == {:immune}
+
+      assert Conditions.affect_by(
+               immune,
+               fn
+                 "poison" -> {:ok, DemoCond}
+                 _ -> :error
+               end,
+               "poison",
+               nil
+             ) == {:immune}
     end
   end
 
   describe "CleanUp (clean_up.c)" do
     test "决定保留项" do
-      assert CleanUp.decide(%{is_clone?: true, no_clean_up: 0, interactive?: true, quest_ob?: false, environment: nil, occupants: []}) == :again
-      assert CleanUp.decide(%{is_clone?: false, no_clean_up: 1, interactive?: true, quest_ob?: false, environment: nil, occupants: []}) == :again
-      assert CleanUp.decide(%{is_clone?: true, no_clean_up: 0, interactive?: false, quest_ob?: true, environment: nil, occupants: []}) == :again
-      assert CleanUp.decide(%{is_clone?: true, no_clean_up: 0, interactive?: false, quest_ob?: false, environment: %{id: "r"}, occupants: []}) == :again
+      assert CleanUp.decide(%{
+               is_clone?: true,
+               no_clean_up: 0,
+               interactive?: true,
+               quest_ob?: false,
+               environment: nil,
+               occupants: []
+             }) == :again
+
+      assert CleanUp.decide(%{
+               is_clone?: false,
+               no_clean_up: 1,
+               interactive?: true,
+               quest_ob?: false,
+               environment: nil,
+               occupants: []
+             }) == :again
+
+      assert CleanUp.decide(%{
+               is_clone?: true,
+               no_clean_up: 0,
+               interactive?: false,
+               quest_ob?: true,
+               environment: nil,
+               occupants: []
+             }) == :again
+
+      assert CleanUp.decide(%{
+               is_clone?: true,
+               no_clean_up: 0,
+               interactive?: false,
+               quest_ob?: false,
+               environment: %{id: "r"},
+               occupants: []
+             }) == :again
     end
 
     test "环境有玩家/stay_in_room -> 保留" do
-      assert CleanUp.decide(%{is_clone?: true, no_clean_up: 0, interactive?: false, quest_ob?: false, environment: nil, occupants: [%{interactive: true}]}) == :again
-      assert CleanUp.decide(%{is_clone?: true, no_clean_up: 0, interactive?: false, quest_ob?: false, environment: nil, occupants: [%{stay_in_room: true}]}) == :again
+      assert CleanUp.decide(%{
+               is_clone?: true,
+               no_clean_up: 0,
+               interactive?: false,
+               quest_ob?: false,
+               environment: nil,
+               occupants: [%{interactive: true}]
+             }) == :again
+
+      assert CleanUp.decide(%{
+               is_clone?: true,
+               no_clean_up: 0,
+               interactive?: false,
+               quest_ob?: false,
+               environment: nil,
+               occupants: [%{stay_in_room: true}]
+             }) == :again
     end
 
     test "无保留因素 -> never_again（清场）" do
-      assert CleanUp.decide(%{is_clone?: true, no_clean_up: 0, interactive?: false, quest_ob?: false, environment: nil, occupants: []}) == :never_again
+      assert CleanUp.decide(%{
+               is_clone?: true,
+               no_clean_up: 0,
+               interactive?: false,
+               quest_ob?: false,
+               environment: nil,
+               occupants: []
+             }) == :never_again
     end
   end
 

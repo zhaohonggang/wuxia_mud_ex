@@ -82,7 +82,9 @@ defmodule Kantele.Item.Backpack do
   def deserialize(data) when is_map(data) do
     data
     |> Enum.sort_by(fn {k, _v} -> k end)
-    |> Enum.map(fn {_k, v} -> %{file: v["file"], name: v["name"], id: v["id"], amount: v["amount"]} end)
+    |> Enum.map(fn {_k, v} ->
+      %{file: v["file"], name: v["name"], id: v["id"], amount: v["amount"]}
+    end)
   end
 
   def deserialize(_), do: []

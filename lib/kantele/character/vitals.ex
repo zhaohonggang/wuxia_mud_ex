@@ -169,5 +169,7 @@ defmodule Kantele.Character.Vitals do
 
   defp clamp_current(vitals, :max_qi), do: %{vitals | qi: min(vitals.qi, vitals.max_qi)}
   defp clamp_current(vitals, :max_jing), do: %{vitals | jing: min(vitals.jing, vitals.max_jing)}
-  defp clamp_current(vitals, :max_neili), do: %{vitals | neili: min(vitals.neili, vitals.max_neili)}
+
+  defp clamp_current(vitals, :max_neili),
+    do: %{vitals | neili: min(vitals.neili, vitals.max_neili)}
 end

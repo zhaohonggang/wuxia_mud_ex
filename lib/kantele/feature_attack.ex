@@ -48,11 +48,12 @@ defmodule Kantele.Feature.Attack do
 
   @doc "是否正在杀戮目标"
   def killing?(character, ob) do
-    id = cond do
-      is_binary(ob) -> ob
-      is_map(ob) -> ob.id
-      true -> nil
-    end
+    id =
+      cond do
+        is_binary(ob) -> ob
+        is_map(ob) -> ob.id
+        true -> nil
+      end
 
     if id == nil do
       length(killers(character)) > 0
@@ -94,6 +95,7 @@ defmodule Kantele.Feature.Attack do
 
       true ->
         env = environment(character)
+
         if environment(opponent) != env or Room.no_fight?(env) do
           {:ok, character}
         else
@@ -125,14 +127,17 @@ defmodule Kantele.Feature.Attack do
 
       true ->
         env = environment(character)
+
         if environment(opponent) != env or Room.no_fight?(env) do
           {:ok, character}
         else
           guarded = PlayerMeta.get_temp(opponent, "guarded") || []
+
           if character in guarded do
             {:error, "Cannot kill someone you are guarding!"}
           else
             character = ensure_killer_list(character)
+
             if opponent.id not in killers(character) do
               character = add_killer(character, opponent.id)
               send_message(opponent, "It looks like #{character.name} wants to kill you!")
@@ -158,6 +163,7 @@ defmodule Kantele.Feature.Attack do
 
       true ->
         ob_id = opponent.id
+
         if killing?(character, ob_id) or want_kill?(character, ob_id) do
           {:ok, character}
         else
@@ -176,12 +182,15 @@ defmodule Kantele.Feature.Attack do
   @doc "清理失效敌人（不同房间/已死/非杀戮目标）"
   def clean_up_enemy(character) do
     enemy = enemies(character)
+
     if length(enemy) > 0 do
-      enemy = Enum.filter(enemy, fn e ->
-        is_map(e) and
-        environment(e) == environment(character) and
-        (living?(e) or killing?(character, e.id))
-      end)
+      enemy =
+        Enum.filter(enemy, fn e ->
+          is_map(e) and
+            environment(e) == environment(character) and
+            (living?(e) or killing?(character, e.id))
+        end)
+
       remove_enemies(character, enemy)
     else
       character
@@ -191,6 +200,7 @@ defmodule Kantele.Feature.Attack do
   @doc "随机选择一个对手"
   def select_opponent(character) do
     enemy = enemies(character)
+
     if length(enemy) == 0 do
       nil
     else
@@ -225,18 +235,21 @@ defmodule Kantele.Feature.Attack do
   def remove_all_enemy(character, force \\ false) do
     character = PlayerMeta.delete_temp(character, "combat_time")
     enemy = enemies(character)
+
     if length(enemy) == 0 do
       character
     else
-      enemy = Enum.reduce(enemy, [], fn e, acc ->
-        if is_map(e) and (force or not killing?(character, e.id)) do
-          # 对方也移除我们
-          remove_enemy(e, character)
-          [e | acc]
-        else
-          [e | acc]
-        end
-      end)
+      enemy =
+        Enum.reduce(enemy, [], fn e, acc ->
+          if is_map(e) and (force or not killing?(character, e.id)) do
+            # 对方也移除我们
+            remove_enemy(e, character)
+            [e | acc]
+          else
+            [e | acc]
+          end
+        end)
+
       remove_enemies(character, enemy)
     end
   end
@@ -294,6 +307,7 @@ defmodule Kantele.Feature.Attack do
   @doc "查询下一步动作"
   def query_action(character, flag) do
     action = PlayerMeta.attack_state(character).next_action
+
     if flag == true or not is_function(action) do
       action
     else
@@ -308,10 +322,12 @@ defmodule Kantele.Feature.Attack do
         PlayerMeta.update_attack(character, fn attack ->
           %{attack | next_action: action}
         end)
+
       is_binary(action) or is_map(action) ->
         PlayerMeta.update_attack(character, fn attack ->
           %{attack | next_action: fn _ -> apply(action, fun, [character]) end}
         end)
+
       true ->
         {:error, "Invalid action"}
     end
@@ -329,22 +345,31 @@ defmodule Kantele.Feature.Attack do
     prepare = Stats.get_prepared(character.meta.stats)
     weapon = PlayerMeta.get_temp(character, "weapon")
 
-    type = cond do
-      weapon ->
-        type = Item.get_skill_type(weapon)
-        if type == "pin", do: "sword", else: type
-      not prepare or map_size(prepare) == 0 ->
-        "unarmed"
-      map_size(prepare) == 1 ->
-        Map.keys(prepare) |> Enum.at(0)
-      map_size(prepare) == 2 ->
-        Map.keys(prepare) |> Enum.at(PlayerMeta.get_temp(character, "action_flag") || 0)
-    end
+    type =
+      cond do
+        weapon ->
+          type = Item.get_skill_type(weapon)
+          if type == "pin", do: "sword", else: type
+
+        not prepare or map_size(prepare) == 0 ->
+          "unarmed"
+
+        map_size(prepare) == 1 ->
+          Map.keys(prepare) |> Enum.at(0)
+
+        map_size(prepare) == 2 ->
+          Map.keys(prepare) |> Enum.at(PlayerMeta.get_temp(character, "action_flag") || 0)
+      end
 
     skill = Stats.get_mapped(character.meta.stats, type)
+
     if skill != nil and Stats.skill(character.meta.stats, skill) > 0 do
       if weapon do
-        set_action(character, fn _ -> Skill.query_action(skill, character.meta.stats, weapon) end, 0)
+        set_action(
+          character,
+          fn _ -> Skill.query_action(skill, character.meta.stats, weapon) end,
+          0
+        )
       else
         set_action(character, fn _ -> Skill.query_action(skill, character.meta.stats) end, 0)
       end
@@ -384,7 +409,7 @@ defmodule Kantele.Feature.Attack do
     me = character
 
     if not living?(me) or this_player == nil or not living?(this_player) or
-       length(enemies(me)) > 0 or (not interactive?(this_player) and not interactive?(me)) do
+         length(enemies(me)) > 0 or (not interactive?(this_player) and not interactive?(me)) do
       {:ok, me}
     else
       # 仇恨自动战斗
@@ -405,6 +430,7 @@ defmodule Kantele.Feature.Attack do
         # 血仇自动战斗
         vendetta_mark = Map.get(entire_dbase(me), "vendetta_mark")
         vend = Map.get(entire_dbase(this_player), "vendetta")
+
         if vendetta_mark and vend and Map.get(vend, vendetta_mark) do
           Combat.auto_fight(me, this_player, "vendetta")
           {:ok, me}
@@ -447,16 +473,18 @@ defmodule Kantele.Feature.Attack do
           acc
           |> send_message("#{victim.name} is under attack, you step forward to join the battle!")
 
-        message = case :rand.uniform(8) do
-          1 -> template_attack(1, attacker, victim)
-          2 -> template_attack(2, attacker, victim)
-          3 -> template_attack(3, attacker, victim)
-          4 -> template_attack(4, attacker, victim)
-          5 -> template_attack(5, attacker, victim)
-          6 -> template_attack(6, attacker, victim)
-          7 -> template_attack(7, attacker, victim)
-          _ -> template_attack(8, attacker, victim)
-        end
+        message =
+          case :rand.uniform(8) do
+            1 -> template_attack(1, attacker, victim)
+            2 -> template_attack(2, attacker, victim)
+            3 -> template_attack(3, attacker, victim)
+            4 -> template_attack(4, attacker, victim)
+            5 -> template_attack(5, attacker, victim)
+            6 -> template_attack(6, attacker, victim)
+            7 -> template_attack(7, attacker, victim)
+            _ -> template_attack(8, attacker, victim)
+          end
+
         message = replace_vars(message, attacker, victim)
         broadcast_message(message, guardian, attacker)
 
@@ -472,6 +500,7 @@ defmodule Kantele.Feature.Attack do
   defp template_attack(num, attacker, victim) do
     n = attacker.name
     v = victim.name
+
     case num do
       1 -> "#{n} silently attacks #{v}!"
       2 -> "#{n} roars and charges at #{v}!"
@@ -537,7 +566,8 @@ defmodule Kantele.Feature.Attack do
 
   defp this_player(), do: nil
 
-  defp entire_dbase(character), do: Map.merge(character.meta.stats.__struct__(), character.meta.temp)
+  defp entire_dbase(character),
+    do: Map.merge(character.meta.stats.__struct__(), character.meta.temp)
 
   defp find_player(_id), do: nil
 

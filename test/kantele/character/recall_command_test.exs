@@ -39,7 +39,15 @@ defmodule Kantele.Character.RecallCommandTest do
       zone = %Zone{
         id: "liuxi",
         rooms: [
-          %Room{id: "liuxi:start", key: "start", flags: ["startroom"], y: 0, x: 0, z: 0, exits: []},
+          %Room{
+            id: "liuxi:start",
+            key: "start",
+            flags: ["startroom"],
+            y: 0,
+            x: 0,
+            z: 0,
+            exits: []
+          },
           %Room{id: "liuxi:field", key: "field", flags: [], y: 1, x: 0, z: 0, exits: []}
         ]
       }

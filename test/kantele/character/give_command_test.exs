@@ -72,7 +72,8 @@ defmodule Kantele.Character.GiveCommandTest do
 
   describe "命令发布 room/give" do
     test "物品在背包时发 room/give" do
-      conn = GiveCommand.run(build_conn(player("player-1", "张三", [instance()])), %{"rest" => "张三 包子"})
+      conn =
+        GiveCommand.run(build_conn(player("player-1", "张三", [instance()])), %{"rest" => "张三 包子"})
 
       assert [%Event{topic: "room/give", data: data}] = conn.events
       assert data.target == "张三"
@@ -88,7 +89,11 @@ defmodule Kantele.Character.GiveCommandTest do
 
     test "已装备物品不能赠送" do
       equipped = %{weapon: %{name: "包子 Baozi", damage: 10}}
-      char = %{player("player-1", "张三", [instance()]) | meta: %{player().meta | combat: %{player().meta.combat | equipped: equipped}}}
+
+      char = %{
+        player("player-1", "张三", [instance()])
+        | meta: %{player().meta | combat: %{player().meta.combat | equipped: equipped}}
+      }
 
       conn = GiveCommand.run(build_conn(char), %{"rest" => "张三 包子"})
 

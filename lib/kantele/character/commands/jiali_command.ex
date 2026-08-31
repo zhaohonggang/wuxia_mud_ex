@@ -38,9 +38,10 @@ defmodule Kantele.Character.JialiCommand do
 
         cond do
           level > cap ->
-            fail(conn, "你的#{special_name(special_id)}只有 #{Stats.skill(stats, special_id)} 级，最多加力 #{
-              cap
-            } 档。\n")
+            fail(
+              conn,
+              "你的#{special_name(special_id)}只有 #{Stats.skill(stats, special_id)} 级，最多加力 #{cap} 档。\n"
+            )
 
           true ->
             set_level(conn, level, cap)

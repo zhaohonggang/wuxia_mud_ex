@@ -43,7 +43,9 @@ defmodule Kantele.Character.AliasCommandTest do
     end
 
     test "列出已有别名" do
-      conn = AliasCommand.run(build_conn(player(%{aliases: %{"sc" => "say $1"}})), %{"rest" => ""})
+      conn =
+        AliasCommand.run(build_conn(player(%{aliases: %{"sc" => "say $1"}})), %{"rest" => ""})
+
       assert output_text(conn) =~ "sc"
       assert output_text(conn) =~ "say"
     end

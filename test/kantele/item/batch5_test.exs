@@ -130,8 +130,14 @@ defmodule Kantele.Item.Batch5Test do
     test "restore_plan clone/reuse/drop" do
       opts = %{
         file_exists: fn _ -> true end,
-        is_no_clone: fn "/obj/unique" -> true; _ -> false end,
-        obj_environment: fn "/obj/unique" -> nil; _ -> nil end,
+        is_no_clone: fn
+          "/obj/unique" -> true
+          _ -> false
+        end,
+        obj_environment: fn
+          "/obj/unique" -> nil
+          _ -> nil
+        end,
         is_belong_me: fn _ -> true end
       }
 

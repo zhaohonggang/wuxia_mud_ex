@@ -82,12 +82,14 @@ defmodule Kantele.Scheduler do
 
   defp recurring_loop(ref, ms, fun) do
     :timer.sleep(ms)
+
     try do
       fun.()
     catch
       :exit, reason ->
         Logger.error("Scheduler recurring #{inspect(ref)} crashed: #{inspect(reason)}")
     end
+
     # 检查是否已取消（简化：重新 schedule）
     unless :timer.cancel(ref) == false do
       recurring_loop(ref, ms, fun)

@@ -44,20 +44,21 @@ defmodule Kantele.Character.DetachEvent do
     stats = character.meta.stats
     meta = character.meta
 
-    stats = if penalty? do
-      # 降武功：各技能 -1 到最小 1（对应 skill_expell_penalty）
-      Stats.all(stats)
-      |> Enum.reduce(stats, fn {skill_id, level}, acc ->
-        if level > 1 do
-          Map.put(acc, skill_id, level - 1)
-        else
-          acc
-        end
-      end)
-      |> Map.put(:gongxian, 0)
-    else
-      stats
-    end
+    stats =
+      if penalty? do
+        # 降武功：各技能 -1 到最小 1（对应 skill_expell_penalty）
+        Stats.all(stats)
+        |> Enum.reduce(stats, fn {skill_id, level}, acc ->
+          if level > 1 do
+            Map.put(acc, skill_id, level - 1)
+          else
+            acc
+          end
+        end)
+        |> Map.put(:gongxian, 0)
+      else
+        stats
+      end
 
     # 清门派
     meta = Map.put(meta, :family, nil)

@@ -22,11 +22,14 @@ defmodule Kantele.Character.HpCommandTest do
   defp output_text(conn) do
     conn.output
     |> Enum.flat_map(fn
-      %Kalevala.Character.Conn.Text{data: data} -> [IO.iodata_to_binary(data)]
+      %Kalevala.Character.Conn.Text{data: data} ->
+        [IO.iodata_to_binary(data)]
+
       %Kalevala.Character.Conn.EventText{text: %Kalevala.Character.Conn.Text{data: data}} ->
         [IO.iodata_to_binary(data)]
 
-      _ -> []
+      _ ->
+        []
     end)
     |> Enum.join("")
   end

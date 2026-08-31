@@ -19,7 +19,10 @@ defmodule Kantele.Character.PlayerMetaTempTest do
 
   test "put_temp 覆盖旧值" do
     meta = %PlayerMeta{}
-    assert meta |> PlayerMeta.put_temp(:k, 1) |> PlayerMeta.put_temp(:k, 2)
+
+    assert meta
+           |> PlayerMeta.put_temp(:k, 1)
+           |> PlayerMeta.put_temp(:k, 2)
            |> PlayerMeta.get_temp(:k) == 2
   end
 

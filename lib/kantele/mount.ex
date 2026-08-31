@@ -24,10 +24,12 @@ defmodule Kantele.Mount do
       {:error, "这不是可驾驶的载具。"}
     else
       owner = Transport.query_owner(item)
+
       opts = %{
         owner: owner,
         me: player.id,
-        owner_room: player.room_id,  # nil 视为不在同房间（允许驾驶）
+        # nil 视为不在同房间（允许驾驶）
+        owner_room: player.room_id,
         my_room: player.room_id
       }
 
@@ -47,9 +49,10 @@ defmodule Kantele.Mount do
   def summon(player, summon_id) do
     # 查找玩家拥有的、summon_id 匹配的坐骑
     # 先检查背包
-    existing = Enum.find(player.inventory, fn inst ->
-      Map.get(inst.item.meta, "summon_id") == summon_id
-    end)
+    existing =
+      Enum.find(player.inventory, fn inst ->
+        Map.get(inst.item.meta, "summon_id") == summon_id
+      end)
 
     case existing do
       nil ->
@@ -106,6 +109,7 @@ defmodule Kantele.Mount do
   end
 
   defp owner_name(nil, _item), do: "无主"
+
   defp owner_name(owner_id, item) do
     owner_name = Map.get(item.meta, "owner_name")
     if owner_name, do: owner_name, else: owner_id

@@ -202,16 +202,30 @@ defmodule Kantele.Character.BackpackCommandTest do
     end
 
     test "食物/液体不可入包" do
-      conn = BackpackCommand.store(build_conn(player([instance("test:bag"), instance("test:mantou")])), %{"rest" => "馒头"})
+      conn =
+        BackpackCommand.store(
+          build_conn(player([instance("test:bag"), instance("test:mantou")])),
+          %{"rest" => "馒头"}
+        )
+
       assert output_text(conn) =~ "食物饮水存背包里会变质的"
 
-      conn = BackpackCommand.store(build_conn(player([instance("test:bag"), instance("test:jiu")])), %{"rest" => "女儿红"})
+      conn =
+        BackpackCommand.store(build_conn(player([instance("test:bag"), instance("test:jiu")])), %{
+          "rest" => "女儿红"
+        })
+
       assert output_text(conn) =~ "食物饮水存背包里会变质的"
     end
 
     test "已装备物品不可入包" do
       equipped = %{weapon: %{name: "铁剑 Tiejian", damage: 22}}
-      p = %{player([instance("test:bag"), instance("test:sword")]) | meta: %{player().meta | combat: %{player().meta.combat | equipped: equipped}}}
+
+      p = %{
+        player([instance("test:bag"), instance("test:sword")])
+        | meta: %{player().meta | combat: %{player().meta.combat | equipped: equipped}}
+      }
+
       conn = BackpackCommand.store(build_conn(p), %{"rest" => "铁剑"})
 
       assert output_text(conn) =~ "必须先脱离装备才能存放"
@@ -254,7 +268,11 @@ defmodule Kantele.Character.BackpackCommandTest do
     end
 
     test "没有可存物品时提示" do
-      conn = BackpackCommand.store(build_conn(player([instance("test:bag"), instance("test:mantou")])), %{"rest" => "all"})
+      conn =
+        BackpackCommand.store(
+          build_conn(player([instance("test:bag"), instance("test:mantou")])),
+          %{"rest" => "all"}
+        )
 
       assert output_text(conn) =~ "你身上没有任何可以保存的物品"
     end
@@ -262,7 +280,14 @@ defmodule Kantele.Character.BackpackCommandTest do
 
   describe "take" do
     test "按编号取回：重建实例入背包，包内条目移除" do
-      p = %{player([instance("test:bag")]) | meta: PlayerMeta.put_bag(player().meta, [%{file: "test:baozi", name: "包子 Baozi", id: "test:baozi", amount: 1}])}
+      p = %{
+        player([instance("test:bag")])
+        | meta:
+            PlayerMeta.put_bag(player().meta, [
+              %{file: "test:baozi", name: "包子 Baozi", id: "test:baozi", amount: 1}
+            ])
+      }
+
       conn = BackpackCommand.take(build_conn(p), %{"rest" => "1 1"})
 
       assert output_text(conn) =~ "你从背包里取出包子"
@@ -271,7 +296,14 @@ defmodule Kantele.Character.BackpackCommandTest do
     end
 
     test "部分取出：条目扣减而不移除" do
-      p = %{player_with_bag() | meta: PlayerMeta.put_bag(player().meta, [%{file: "test:baozi", name: "包子 Baozi", id: "test:baozi", amount: 5}])}
+      p = %{
+        player_with_bag()
+        | meta:
+            PlayerMeta.put_bag(player().meta, [
+              %{file: "test:baozi", name: "包子 Baozi", id: "test:baozi", amount: 5}
+            ])
+      }
+
       conn = BackpackCommand.take(build_conn(p), %{"rest" => "1 2"})
 
       assert output_text(conn) =~ "你从背包里取出2个包子"
@@ -280,7 +312,14 @@ defmodule Kantele.Character.BackpackCommandTest do
     end
 
     test "单参按数量 1 取" do
-      p = %{player_with_bag() | meta: PlayerMeta.put_bag(player().meta, [%{file: "test:baozi", name: "包子 Baozi", id: "test:baozi", amount: 3}])}
+      p = %{
+        player_with_bag()
+        | meta:
+            PlayerMeta.put_bag(player().meta, [
+              %{file: "test:baozi", name: "包子 Baozi", id: "test:baozi", amount: 3}
+            ])
+      }
+
       conn = BackpackCommand.take(build_conn(p), %{"rest" => "1"})
 
       assert output_text(conn) =~ "你从背包里取出包子"
@@ -288,7 +327,13 @@ defmodule Kantele.Character.BackpackCommandTest do
     end
 
     test "越界/超量提示" do
-      p = %{player_with_bag() | meta: PlayerMeta.put_bag(player().meta, [%{file: "test:baozi", name: "包子 Baozi", id: "test:baozi", amount: 1}])}
+      p = %{
+        player_with_bag()
+        | meta:
+            PlayerMeta.put_bag(player().meta, [
+              %{file: "test:baozi", name: "包子 Baozi", id: "test:baozi", amount: 1}
+            ])
+      }
 
       conn = BackpackCommand.take(build_conn(p), %{"rest" => "2 1"})
       assert output_text(conn) =~ "你的背包里没有存放这项物品"
@@ -314,7 +359,14 @@ defmodule Kantele.Character.BackpackCommandTest do
     end
 
     test "模板失效时清除该格" do
-      p = %{player_with_bag() | meta: PlayerMeta.put_bag(player().meta, [%{file: "test:ghost", name: "幽灵", id: "ghost", amount: 1}])}
+      p = %{
+        player_with_bag()
+        | meta:
+            PlayerMeta.put_bag(player().meta, [
+              %{file: "test:ghost", name: "幽灵", id: "ghost", amount: 1}
+            ])
+      }
+
       conn = BackpackCommand.take(build_conn(p), %{"rest" => "1 1"})
 
       assert output_text(conn) =~ "无法取出该物品，系统自动清除之"
@@ -331,7 +383,11 @@ defmodule Kantele.Character.BackpackCommandTest do
     end
 
     test "战斗中拒绝" do
-      fighting = %{player_with_bag() | meta: %{player().meta | combat: %{Combat.new() | enemies: [%{id: "e1"}]}}}
+      fighting = %{
+        player_with_bag()
+        | meta: %{player().meta | combat: %{Combat.new() | enemies: [%{id: "e1"}]}}
+      }
+
       conn = BackpackCommand.store(build_conn(fighting), %{"rest" => "包子"})
       assert output_text(conn) =~ "你正在战斗中呢"
       assert PlayerMeta.bag(updated_meta(conn)) == []
@@ -356,8 +412,13 @@ defmodule Kantele.Character.BackpackCommandTest do
 
   describe "背包查询" do
     test "列出已存物品" do
-      p =
-        %{player_with_bag() | meta: PlayerMeta.put_bag(player().meta, [%{file: "test:baozi", name: "包子 Baozi", id: "test:baozi", amount: 2}])}
+      p = %{
+        player_with_bag()
+        | meta:
+            PlayerMeta.put_bag(player().meta, [
+              %{file: "test:baozi", name: "包子 Baozi", id: "test:baozi", amount: 2}
+            ])
+      }
 
       conn = BackpackCommand.list(build_conn(p), %{})
 

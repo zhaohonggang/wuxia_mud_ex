@@ -20,8 +20,7 @@ defmodule Kantele.Character.CommandController do
   def recv(conn, data) do
     Logger.info("Received - #{inspect(data)}")
 
-    {data, _expanded?} =
-      Kantele.Character.Aliases.expand(data, alias_map(conn))
+    {data, _expanded?} = Kantele.Character.Aliases.expand(data, alias_map(conn))
 
     data = Tags.escape(data)
 

@@ -60,10 +60,12 @@ defmodule Kantele.Character.ClosedCommand do
 
   defp qi_ratio(%{qi: qi, max_qi: max_qi}) when max_qi > 0,
     do: div(qi * 100, max_qi)
+
   defp qi_ratio(_), do: 0
 
   defp jing_ratio(%{jing: jing, max_jing: max_jing}) when max_jing > 0,
     do: div(jing * 100, max_jing)
+
   defp jing_ratio(_), do: 0
 
   defp no_fight_room?(room_id) do

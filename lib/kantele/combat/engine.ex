@@ -247,18 +247,23 @@ defmodule Kantele.Combat.Engine do
                ) do
             :unchanged ->
               attacker
+
             delta when is_map(delta) ->
               if Map.has_key?(delta, :__struct__) do
                 attacker
               else
                 struct(Fighter, Map.merge(attacker, delta))
               end
-            _ -> attacker
+
+            _ ->
+              attacker
           end
         else
           attacker
         end
-      _ -> attacker
+
+      _ ->
+        attacker
     end
   end
 
@@ -268,6 +273,7 @@ defmodule Kantele.Combat.Engine do
       victim
       |> skill_power(skill, :defense)
       |> Kernel.+(delta)
+
     power =
       case victim.busy > 0 do
         true -> div(power, 3)
@@ -308,8 +314,7 @@ defmodule Kantele.Combat.Engine do
     # 随后各自封顶
     armor = max(Map.get(victim.applies, :armor, 0), 0)
 
-    {wounded, damage} =
-      wound_split(damage - rand(rng, armor), damage, rng)
+    {wounded, damage} = wound_split(damage - rand(rng, armor), damage, rng)
 
     # 攻击者根骨影响创伤（con 效果）
     wounded = wounded |> Kernel.-(div(wounded * (attacker.con - 10), 100)) |> max(0)
@@ -323,8 +328,7 @@ defmodule Kantele.Combat.Engine do
       end
 
     # 攻击特技的 valid_damage 钩子（如 taiji-quan 借力打力：化解/回弹伤害）
-    {damage, hook_msg} =
-      apply_valid_damage(attacker, victim, damage, round.action, rng)
+    {damage, hook_msg} = apply_valid_damage(attacker, victim, damage, round.action, rng)
 
     segments =
       case damage > 0 do
@@ -336,10 +340,11 @@ defmodule Kantele.Combat.Engine do
           round.segments ++ [Messages.no_damage_msg()]
       end
 
-    segments = case hook_msg do
-      nil -> segments
-      msg -> segments ++ ["\n" <> msg]
-    end
+    segments =
+      case hook_msg do
+        nil -> segments
+        msg -> segments ++ ["\n" <> msg]
+      end
 
     %Round{
       round

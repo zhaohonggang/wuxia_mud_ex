@@ -76,6 +76,7 @@ defmodule Kantele.Item.Equip do
   # ---- internal ----
 
   defp merge_prop(applies, nil), do: applies
+
   defp merge_prop(applies, prop) when is_map(prop) do
     Enum.reduce(prop, applies, fn {key, val}, acc ->
       Map.update(acc, key, val, &(&1 + val))
@@ -85,6 +86,7 @@ defmodule Kantele.Item.Equip do
   defp merge_prop(applies, _), do: applies
 
   defp subtract_prop(applies, nil), do: applies
+
   defp subtract_prop(applies, prop) when is_map(prop) do
     Enum.reduce(prop, applies, fn {key, val}, acc ->
       Map.update(acc, key, -val, &(&1 - val))

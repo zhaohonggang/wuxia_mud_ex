@@ -7,7 +7,7 @@ defmodule Kantele.World.Loader do
   alias Kalevala.World.Item
   alias Kalevala.World.Room.Feature
   alias Kantele.Character.Stats
-alias Kantele.Character.Vitals
+  alias Kantele.Character.Vitals
   alias Kantele.World.LoaderError
   alias Kantele.World.Room
   alias Kantele.World.Zone
@@ -340,7 +340,8 @@ alias Kantele.Character.Vitals
         parts: parse_parts(Map.get(character_data, :parts)),
         no_cut: parse_no_cut(Map.get(character_data, :no_cut)),
         default_clone:
-          (Map.get(character_data, :default_clone) && to_string(Map.get(character_data, :default_clone))),
+          Map.get(character_data, :default_clone) &&
+            to_string(Map.get(character_data, :default_clone)),
         loot: parse_goods(Map.get(character_data, :loot))
       }
     }
@@ -538,8 +539,8 @@ alias Kantele.Character.Vitals
   defp parse_quest(quest) when is_map(quest) do
     %{
       file: Map.get(quest, :file) && to_string(Map.get(quest, :file)),
-      kill: Map.get(quest, :kill) && (List.wrap(Map.get(quest, :kill)) |> Enum.map(&to_string/1)),
-      item: Map.get(quest, :item) && (List.wrap(Map.get(quest, :item)) |> Enum.map(&to_string/1))
+      kill: Map.get(quest, :kill) && List.wrap(Map.get(quest, :kill)) |> Enum.map(&to_string/1),
+      item: Map.get(quest, :item) && List.wrap(Map.get(quest, :item)) |> Enum.map(&to_string/1)
     }
   end
 
@@ -658,8 +659,9 @@ alias Kantele.Character.Vitals
       no_kill: Map.get(combat, :no_kill) in [true, "true"],
       spawn_room_id: nil,
       respawn_delay: Map.get(combat, :respawn_delay),
-      apply: Kantele.Character.Combat.new().temp
-      |> Map.merge(stringify_apply(Map.get(combat, :apply, %{})))
+      apply:
+        Kantele.Character.Combat.new().temp
+        |> Map.merge(stringify_apply(Map.get(combat, :apply, %{})))
     }
   end
 
@@ -738,24 +740,23 @@ alias Kantele.Character.Vitals
 
   defp parse_item_meta(meta) do
     # 注意不能用 %Item.Meta{}：本模块顶部 alias 的 Item 指 Kalevala.World.Item
-    meta =
-      %Kantele.World.Item.Meta{
-        damage: Map.get(meta, :damage),
-        skill_type: Map.get(meta, :skill_type),
-        armor: Map.get(meta, :armor),
-        value: Map.get(meta, :value),
-        weight: Map.get(meta, :weight),
-        unit: Map.get(meta, :unit),
-        material: Map.get(meta, :material),
-        food: Map.get(meta, :food),
-        medicine: parse_medicine(Map.get(meta, :medicine)),
-        book: parse_book(Map.get(meta, :book)),
-        armor_type: Kantele.World.Item.Meta.normalize_armor_type(Map.get(meta, :armor_type)),
-        weapon_prop: Kantele.World.Item.Meta.sanitize_prop(Map.get(meta, :weapon_prop)),
-        armor_prop: Kantele.World.Item.Meta.sanitize_prop(Map.get(meta, :armor_prop)),
-        flag: Map.get(meta, :flag) || 1,
-        storage_bag: Map.get(meta, :storage_bag)
-      }
+    meta = %Kantele.World.Item.Meta{
+      damage: Map.get(meta, :damage),
+      skill_type: Map.get(meta, :skill_type),
+      armor: Map.get(meta, :armor),
+      value: Map.get(meta, :value),
+      weight: Map.get(meta, :weight),
+      unit: Map.get(meta, :unit),
+      material: Map.get(meta, :material),
+      food: Map.get(meta, :food),
+      medicine: parse_medicine(Map.get(meta, :medicine)),
+      book: parse_book(Map.get(meta, :book)),
+      armor_type: Kantele.World.Item.Meta.normalize_armor_type(Map.get(meta, :armor_type)),
+      weapon_prop: Kantele.World.Item.Meta.sanitize_prop(Map.get(meta, :weapon_prop)),
+      armor_prop: Kantele.World.Item.Meta.sanitize_prop(Map.get(meta, :armor_prop)),
+      flag: Map.get(meta, :flag) || 1,
+      storage_bag: Map.get(meta, :storage_bag)
+    }
 
     meta
   end

@@ -69,6 +69,7 @@ defmodule Kantele.Combat.Force do
           # 防御减免
           true ->
             damage = damage - defender_armor
+
             if damage_bonus + damage < 0 do
               {:damage, -damage_bonus}
             else

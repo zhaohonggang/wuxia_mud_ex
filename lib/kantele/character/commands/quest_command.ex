@@ -34,16 +34,16 @@ defmodule Kantele.Character.QuestCommand do
   defp build_quest_display(todo, solved) do
     lines = []
 
-    if map_size(todo) > 0 do
-      lines ++ ["在办任务（#{map_size(todo)}）", build_todo_list(todo)]
-    else
-      lines
-    end ++
-    if solved != [] do
-      ["已完成任务（#{length(solved)}）", build_solved_list(solved)]
-    else
-      []
-    end
+    (if map_size(todo) > 0 do
+       lines ++ ["在办任务（#{map_size(todo)}）", build_todo_list(todo)]
+     else
+       lines
+     end ++
+       if solved != [] do
+         ["已完成任务（#{length(solved)}）", build_solved_list(solved)]
+       else
+         []
+       end)
     |> Enum.join("\n")
   end
 
@@ -59,8 +59,11 @@ defmodule Kantele.Character.QuestCommand do
     killed_map
     |> Enum.reject(fn {_enemy, count} -> count == 0 end)
     |> case do
-      [] -> ""
-      kills -> " [" <> Enum.map_join(kills, ", ", fn {enemy, count} -> "#{enemy} x#{count}" end) <> "]"
+      [] ->
+        ""
+
+      kills ->
+        " [" <> Enum.map_join(kills, ", ", fn {enemy, count} -> "#{enemy} x#{count}" end) <> "]"
     end
   end
 
@@ -70,8 +73,11 @@ defmodule Kantele.Character.QuestCommand do
     item_map
     |> Enum.reject(fn {_item, count} -> count == 0 end)
     |> case do
-      [] -> ""
-      items -> " [" <> Enum.map_join(items, ", ", fn {item, count} -> "#{item} x#{count}" end) <> "]"
+      [] ->
+        ""
+
+      items ->
+        " [" <> Enum.map_join(items, ", ", fn {item, count} -> "#{item} x#{count}" end) <> "]"
     end
   end
 

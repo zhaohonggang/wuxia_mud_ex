@@ -153,7 +153,11 @@ defmodule Kantele.Character.CutCommandTest do
 
     test "携带武器快照与修为" do
       equipped = %{weapon: %{name: "长剑", skill_type: "sword", damage: 10}}
-      char = %{player() | meta: %{player().meta | combat: %{player().meta.combat | equipped: equipped}}}
+
+      char = %{
+        player()
+        | meta: %{player().meta | combat: %{player().meta.combat | equipped: equipped}}
+      }
 
       conn = CutCommand.run(build_conn(char), %{"arg" => "头 from 黑虎"})
 
@@ -166,14 +170,14 @@ defmodule Kantele.Character.CutCommandTest do
   end
 
   describe "房间 CutRequestEvent 守卫与转发" do
-defp room_context(requester, target) do
-    %Kalevala.World.Room.Context{
-      characters: Enum.reject([requester, target], &is_nil/1),
-      item_instances: []
-    }
-  end
+    defp room_context(requester, target) do
+      %Kalevala.World.Room.Context{
+        characters: Enum.reject([requester, target], &is_nil/1),
+        item_instances: []
+      }
+    end
 
-  defp other_pid, do: spawn(fn -> :ok end)
+    defp other_pid, do: spawn(fn -> :ok end)
 
     test "找到尸体则转 characters/cut 给尸体进程" do
       requester = player()
@@ -289,8 +293,7 @@ defp room_context(requester, target) do
     end
 
     test "针法达标可割" do
-      data =
-        cut_data(%{weapon_skill_type: "pin", weapon_name: "银针", skills: %{"sword" => 120}})
+      data = cut_data(%{weapon_skill_type: "pin", weapon_name: "银针", skills: %{"sword" => 120}})
 
       _conn = call_npc(corpse(), data)
 

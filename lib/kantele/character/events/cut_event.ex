@@ -103,7 +103,10 @@ defmodule Kantele.Character.NpcCutEvent do
         item_id = clone_id(part, meta)
 
         character =
-          %{conn.character | meta: %{conn.character.meta | been_cut: (meta.been_cut || []) ++ [part_id]}}
+          %{
+            conn.character
+            | meta: %{conn.character.meta | been_cut: (meta.been_cut || []) ++ [part_id]}
+          }
           |> clear_defeated_by_if_head(part_id)
 
         reply_to = Map.get(data, :reply_to)

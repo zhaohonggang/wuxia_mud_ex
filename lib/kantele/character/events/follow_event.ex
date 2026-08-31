@@ -25,8 +25,7 @@ defmodule Kantele.Character.FollowEvent do
     character = conn.character
     followers = ensure_followers(character)
 
-    followers =
-      Enum.reject(followers, &(&1.id == follower.id)) ++ [follower]
+    followers = Enum.reject(followers, &(&1.id == follower.id)) ++ [follower]
 
     conn
     |> put_character(%{character | meta: %{character.meta | followers: followers}})
@@ -44,7 +43,8 @@ defmodule Kantele.Character.FollowEvent do
     |> put_character(%{character | meta: %{character.meta | followers: followers}})
   end
 
-  def move(conn, %{data: %{exit_name: exit_name}}) when is_binary(exit_name) and exit_name != "" do
+  def move(conn, %{data: %{exit_name: exit_name}})
+      when is_binary(exit_name) and exit_name != "" do
     conn
     |> request_movement(exit_name)
     |> assign(:prompt, false)

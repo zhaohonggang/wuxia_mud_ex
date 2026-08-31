@@ -186,7 +186,7 @@ defmodule Kantele.Item.CraftTest do
   describe "ITEM_D killer_reward" do
     test "记录玩家击杀" do
       item_meta = %{}
-      killer_meta = %{id: "killer", combat_exp: 1000000}
+      killer_meta = %{id: "killer", combat_exp: 1_000_000}
       victim_meta = %{can_speak: true, is_good: true, combat_exp: 50000}
 
       result = Craft.killer_reward(item_meta, killer_meta, victim_meta)
@@ -197,7 +197,7 @@ defmodule Kantele.Item.CraftTest do
 
     test "记录NPC击杀" do
       item_meta = %{}
-      killer_meta = %{id: "killer", combat_exp: 1000000}
+      killer_meta = %{id: "killer", combat_exp: 1_000_000}
       victim_meta = %{can_speak: false, is_bad: true, combat_exp: 5000}
 
       result = Craft.killer_reward(item_meta, killer_meta, victim_meta)
@@ -208,8 +208,8 @@ defmodule Kantele.Item.CraftTest do
 
     test "更新owner映射" do
       item_meta = %{}
-      killer_meta = %{id: "hero", combat_exp: 10000000}
-      victim_meta = %{can_speak: true, combat_exp: 500000}
+      killer_meta = %{id: "hero", combat_exp: 10_000_000}
+      victim_meta = %{can_speak: true, combat_exp: 500_000}
 
       result = Craft.killer_reward(item_meta, killer_meta, victim_meta)
 
@@ -220,6 +220,7 @@ defmodule Kantele.Item.CraftTest do
   describe "ITEM_D can_san?" do
     test "武器可圣化" do
       item_meta = %{name: "长剑", skill_type: "sword", magic: %{}}
+
       player_meta = %{
         id: "player",
         neili: 9000,
@@ -234,7 +235,14 @@ defmodule Kantele.Item.CraftTest do
 
     test "防具不可圣化" do
       item_meta = %{name: "护甲", armor_type: "cloth"}
-      player_meta = %{neili: 9000, max_neili: 10000, jingli: 900, max_jingli: 1000, skills: %{"force" => 400}}
+
+      player_meta = %{
+        neili: 9000,
+        max_neili: 10000,
+        jingli: 900,
+        max_jingli: 1000,
+        skills: %{"force" => 400}
+      }
 
       assert {:error, msg} = Craft.can_san?(item_meta, player_meta)
       assert msg =~ "无法圣化"
@@ -242,6 +250,7 @@ defmodule Kantele.Item.CraftTest do
 
     test "内力不足拒绝" do
       item_meta = %{name: "长剑", skill_type: "sword", magic: %{}}
+
       player_meta = %{
         neili: 5000,
         max_neili: 10000,
@@ -257,7 +266,12 @@ defmodule Kantele.Item.CraftTest do
 
   describe "ITEM_D can_imbue?" do
     test "圣化后可浸透" do
-      item_meta = %{name: "长剑", skill_type: "sword", magic: %{do_san: %{"player" => "张三"}, power: 0}}
+      item_meta = %{
+        name: "长剑",
+        skill_type: "sword",
+        magic: %{do_san: %{"player" => "张三"}, power: 0}
+      }
+
       player_meta = %{}
       imbue_item = %{}
 

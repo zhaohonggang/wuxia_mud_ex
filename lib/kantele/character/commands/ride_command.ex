@@ -47,7 +47,12 @@ defmodule Kantele.Character.RideCommand do
         # 驾驶权限检查
         case Mount.can_ride?(instance, conn.character) do
           :ok ->
-            riding = %{instance_id: instance.id, item_id: instance.item_id, name: instance.item.name}
+            riding = %{
+              instance_id: instance.id,
+              item_id: instance.item_id,
+              name: instance.item.name
+            }
+
             conn
             |> put_character(%{conn.character | meta: %{conn.character.meta | riding: riding}})
             |> render(CommandView, "text", %{text: "你飞身跃上#{instance.item.name}，身手很是矫捷。\n"})

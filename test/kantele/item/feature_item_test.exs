@@ -26,8 +26,7 @@ defmodule Kantele.Item.FeatureItemTest do
     test "has_effect?/do_effect 执行" do
       agent = _agent(0)
 
-      eff =
-        Effect.apply_effect(nil, fn -> Agent.update(agent, &(&1 + 1)) end)
+      eff = Effect.apply_effect(nil, fn -> Agent.update(agent, &(&1 + 1)) end)
 
       assert Effect.has_effect?(eff)
       Effect.do_effect(eff, nil)
@@ -45,8 +44,7 @@ defmodule Kantele.Item.FeatureItemTest do
       vitals = Vitals.new()
       stats = Stats.new()
 
-      assert {:ok, effect} =
-               Effect.consume(vitals, stats, %Meta{food: 20})
+      assert {:ok, effect} = Effect.consume(vitals, stats, %Meta{food: 20})
 
       assert effect.food? == true
       assert effect.medicine? == false
@@ -70,8 +68,7 @@ defmodule Kantele.Item.FeatureItemTest do
       vitals = Vitals.new()
       stats = %{Stats.new() | str: 20}
 
-      assert {:ok, effect} =
-               Effect.consume(vitals, stats, %Meta{medicine: %{stats: %{str: 1}}})
+      assert {:ok, effect} = Effect.consume(vitals, stats, %Meta{medicine: %{stats: %{str: 1}}})
 
       assert effect.stats.str == 21
     end
@@ -136,19 +133,19 @@ defmodule Kantele.Item.FeatureItemTest do
                my_room: "r1"
              })
 
-assert Transport.can_drive_by?(%{
-                owner: "b",
-                me: "a",
-                owner_room: "r1",
-                my_room: "r2"
-              })
+      assert Transport.can_drive_by?(%{
+               owner: "b",
+               me: "a",
+               owner_room: "r1",
+               my_room: "r2"
+             })
 
       refute Transport.can_drive_by?(%{
-                owner: "b",
-                me: "a",
-                owner_room: "r1",
-                my_room: "r1"
-              })
+               owner: "b",
+               me: "a",
+               owner_room: "r1",
+               my_room: "r1"
+             })
     end
 
     test "set_owner/query_owner" do
@@ -172,7 +169,11 @@ assert Transport.can_drive_by?(%{
                {:weapon}
 
       assert {:error, msg} =
-               Equip.wield_decision(0x4, %{weapon: %{flag: 0}, secondary_weapon: nil, handing: nil})
+               Equip.wield_decision(0x4, %{
+                 weapon: %{flag: 0},
+                 secondary_weapon: nil,
+                 handing: nil
+               })
 
       assert msg =~ "空出双手"
     end
@@ -237,7 +238,8 @@ assert Transport.can_drive_by?(%{
     end
 
     test "validate_cut 无部位 -> error" do
-      assert {:error, _} = Cutable.validate_cut(nil, %{part_id: "head", been_cut: [], no_cut: %{}})
+      assert {:error, _} =
+               Cutable.validate_cut(nil, %{part_id: "head", been_cut: [], no_cut: %{}})
     end
 
     test "validate_cut 已割 -> error" do
@@ -251,7 +253,11 @@ assert Transport.can_drive_by?(%{
       head = Map.get(hawk_parts(), "head")
 
       assert {:error, "割不下来"} =
-               Cutable.validate_cut(head, %{part_id: "head", been_cut: [], no_cut: %{"head" => "割不下来"}})
+               Cutable.validate_cut(head, %{
+                 part_id: "head",
+                 been_cut: [],
+                 no_cut: %{"head" => "割不下来"}
+               })
     end
 
     test "validate_cut 武器切割" do
@@ -289,7 +295,9 @@ assert Transport.can_drive_by?(%{
 
     test "validate_cut 徒手内力不足" do
       head = Map.get(hawk_parts(), "head")
-      assert {:error_force, "鹰头"} = Cutable.validate_cut(head, %{part_id: "head", been_cut: [], no_cut: %{}, force: 10})
+
+      assert {:error_force, "鹰头"} =
+               Cutable.validate_cut(head, %{part_id: "head", been_cut: [], no_cut: %{}, force: 10})
     end
 
     test "extra_desc 摘要" do

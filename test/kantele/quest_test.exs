@@ -21,7 +21,12 @@ defmodule Kantele.QuestTest do
 
     test "任务数达上限被拒 (:full)" do
       specs = Enum.map(1..20, &%{file: "q#{&1}", kill: []})
-      {:ok, s} = Enum.reduce(specs, {:ok, Quest.new()}, fn spec, {:ok, acc} -> Quest.set_todo(acc, spec) end)
+
+      {:ok, s} =
+        Enum.reduce(specs, {:ok, Quest.new()}, fn spec, {:ok, acc} ->
+          Quest.set_todo(acc, spec)
+        end)
+
       assert Quest.get_size(s) == 20
       assert Quest.set_todo(s, spec("q21")) == {:error, :full}
     end

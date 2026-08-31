@@ -209,11 +209,12 @@ defmodule Kantele.Combat.Skills.LiuxinJian.Liu do
 
     duration = (div(skill, 6) + 10) * 1000
 
-    conn = Broadcast.publish(
-      conn,
-      "$N长吟一声，剑势陡然一变，剑尖颤出万千朵浪花，如春风拂过万条柳枝，绵绵不绝地涌向对手！\n",
-      n1: character.name
-    )
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N长吟一声，剑势陡然一变，剑尖颤出万千朵浪花，如春风拂过万条柳枝，绵绵不绝地涌向对手！\n",
+        n1: character.name
+      )
 
     # 定时自投递（foreman 会把 delay_event 转发给房间路由，故此处直接 send）
     Process.send_after(

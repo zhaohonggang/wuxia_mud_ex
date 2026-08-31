@@ -80,7 +80,10 @@ defmodule Kantele.Character.AliasCommand do
         aliases = Map.get(character.meta, :alias_commands, %{}) || %{}
 
         conn
-        |> put_character(%{character | meta: %{character.meta | alias_commands: Map.put(aliases, verb, replacement)}})
+        |> put_character(%{
+          character
+          | meta: %{character.meta | alias_commands: Map.put(aliases, verb, replacement)}
+        })
         |> save
         |> render(CommandView, "text", %{text: "今后你用 #{verb} 来替代 #{replacement} 命令。\n"})
         |> prompt(CommandView, "prompt", %{})
@@ -99,7 +102,10 @@ defmodule Kantele.Character.AliasCommand do
       end
 
     conn
-    |> put_character(%{character | meta: %{character.meta | alias_commands: Map.delete(aliases, verb)}})
+    |> put_character(%{
+      character
+      | meta: %{character.meta | alias_commands: Map.delete(aliases, verb)}
+    })
     |> save
     |> render(CommandView, "text", %{text: text})
     |> prompt(CommandView, "prompt", %{})

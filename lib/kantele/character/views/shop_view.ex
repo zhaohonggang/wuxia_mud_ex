@@ -29,7 +29,9 @@ defmodule Kantele.Character.ShopView do
     count_text = if count < 0, do: "大量", else: "#{to_string(count)}"
     pad = String.pad_trailing(short, 28)
 
-    ~i(  {text}#{pad}{/text} {unit}×#{count_text}　：{color foreground="white"}#{Vendor.price_string(price)}{/color}\n)
+    ~i(  {text}#{pad}{/text} {unit}×#{count_text}　：{color foreground="white"}#{
+      Vendor.price_string(price)
+    }{/color}\n)
   end
 
   defp join([], _separator), do: []

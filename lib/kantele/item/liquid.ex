@@ -11,6 +11,7 @@ defmodule Kantele.Item.Liquid do
 
   @doc "extra_long：按液量生成装满度描述"
   def extra_long(%{liquid: %{remaining: 0}}), do: nil
+
   def extra_long(%{liquid: %{remaining: remaining}} = meta) do
     max = Map.get(meta.liquid, :max) || Map.get(meta, :max_liquid)
     name = Map.get(meta.liquid, :name) || "液体"

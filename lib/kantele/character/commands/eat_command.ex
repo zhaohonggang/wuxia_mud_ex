@@ -67,12 +67,16 @@ defmodule Kantele.Character.EatCommand do
         |> prompt(CommandView, "prompt", %{})
 
       {:ok, effect} ->
-        new_meta = character.meta |> Map.put(:vitals, effect.vitals) |> Map.put(:stats, effect.stats)
-        character =
-          %{character | inventory: drop_instance(character.inventory, instance), meta: new_meta}
+        new_meta =
+          character.meta |> Map.put(:vitals, effect.vitals) |> Map.put(:stats, effect.stats)
 
-        text =
-          narrator(item, effect)
+        character = %{
+          character
+          | inventory: drop_instance(character.inventory, instance),
+            meta: new_meta
+        }
+
+        text = narrator(item, effect)
 
         conn
         |> put_character(character)

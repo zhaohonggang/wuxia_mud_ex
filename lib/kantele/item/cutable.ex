@@ -78,8 +78,8 @@ defmodule Kantele.Item.Cutable do
   # ---- internal ----
 
   defp excluded?(id, been_cut, no_cut) do
-    (id in (been_cut || [])) or
-      (Map.get(no_cut, id) != nil)
+    id in (been_cut || []) or
+      Map.get(no_cut, id) != nil
   end
 
   defp validate_weapon(part, opts) do

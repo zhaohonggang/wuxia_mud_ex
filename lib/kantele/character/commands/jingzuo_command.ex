@@ -55,7 +55,9 @@ defmodule Kantele.Character.JingzuoCommand do
   end
 
   defp start_jingzuo(conn, character) do
-    duration = :rand.uniform(46) + 44  # 45-90 秒
+    # 45-90 秒
+    duration = :rand.uniform(46) + 44
+
     Process.send_after(
       self(),
       %Event{from_pid: self(), topic: "jingzuo/wakeup", data: %{}},

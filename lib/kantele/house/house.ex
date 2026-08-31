@@ -11,20 +11,21 @@ defmodule Kantele.House do
   import Ecto.Query
 
   @type house :: %{
-    id: String.t(),
-    owner_id: String.t(),
-    room_id: String.t(),
-    zone_id: String.t(),
-    key_item_id: String.t(),
-    status: :pending | :approved | :built | :demolished,
-    created_at: DateTime.t(),
-    approved_at: DateTime.t() | nil,
-    approved_by: String.t() | nil
-  }
+          id: String.t(),
+          owner_id: String.t(),
+          room_id: String.t(),
+          zone_id: String.t(),
+          key_item_id: String.t(),
+          status: :pending | :approved | :built | :demolished,
+          created_at: DateTime.t(),
+          approved_at: DateTime.t() | nil,
+          approved_by: String.t() | nil
+        }
 
   @doc "玩家提交建房申请（返回申请记录，待巫师批核）"
   def apply(owner_id, zone_id, room_spec) do
     id = "house:#{owner_id}:#{DateTime.utc_now() |> DateTime.to_unix()}"
+
     %House{
       id: id,
       owner_id: owner_id,
@@ -39,7 +40,9 @@ defmodule Kantele.House do
   @doc "巫师批核建房申请"
   def approve(house_id, wizard_id) do
     case Repo.get(House, house_id) do
-      nil -> {:error, :not_found}
+      nil ->
+        {:error, :not_found}
+
       house ->
         if house.status != :pending do
           {:error, {:invalid_status, house.status}}
@@ -47,12 +50,13 @@ defmodule Kantele.House do
           room_id = create_room_instance(house)
           key_item_id = create_key_item(house)
 
-          Repo.update!(%{house |
-            status: :approved,
-            room_id: room_id,
-            key_item_id: key_item_id,
-            approved_at: DateTime.utc_now(),
-            approved_by: wizard_id
+          Repo.update!(%{
+            house
+            | status: :approved,
+              room_id: room_id,
+              key_item_id: key_item_id,
+              approved_at: DateTime.utc_now(),
+              approved_by: wizard_id
           })
           |> Map.put(:status, :approved)
         end
@@ -62,7 +66,9 @@ defmodule Kantele.House do
   @doc "拆除房屋（归还区域、销毁钥匙）"
   def demolish(house_id, actor_id) do
     case Repo.get(House, house_id) do
-      nil -> {:error, :not_found}
+      nil ->
+        {:error, :not_found}
+
       house ->
         if house.owner_id != actor_id and not is_wizard?(actor_id) do
           {:error, :unauthorized}

@@ -137,7 +137,7 @@ defmodule Kantele.Character.BackpackCommand do
 
             if length(collect) < amount do
               item = safe_item(List.first(instances))
-              fail(conn, "你没有那么多的#{item && item.name || "东西"}。\n")
+              fail(conn, "你没有那么多的#{(item && item.name) || "东西"}。\n")
             else
               store_each(conn, collect)
             end
