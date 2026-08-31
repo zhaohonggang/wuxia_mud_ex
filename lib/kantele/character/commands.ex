@@ -901,7 +901,9 @@ defmodule Kantele.Character.Commands do
   end
 
   module(MissCommand) do
-    parse("miss", :run)
+    parse("miss", :run, fn command ->
+      command |> spaces() |> word(:item)
+    end)
   end
 
   module(BjtimeCommand) do
@@ -919,7 +921,13 @@ defmodule Kantele.Character.Commands do
   end
 
   module(CheckCommand) do
-    parse("check", :run)
+    parse("check", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
+
+    parse("dating", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
   end
 
   module(AnswerCommand) do
@@ -1034,7 +1042,9 @@ defmodule Kantele.Character.Commands do
   end
 
   module(WenxuanCommand) do
-    parse("wenxuan", :run)
+    parse("wenxuan", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
   end
 
   module(PurchaseCommand) do

@@ -507,6 +507,14 @@ defmodule Kantele.World.Room.Events do
       event("guard/guard", :call)
       event("guard/cancel", :call)
     end
+
+    module(CheckRequestEvent) do
+      event("check/request", :call)
+    end
+
+    module(SearchRequestEvent) do
+      event("search/attempt", :call)
+    end
   end
 end
 
@@ -1236,6 +1244,244 @@ defmodule Kantele.World.Room.GuardRequestEvent do
     else
       context
     end
+  end
+end
+
+defmodule Kantele.World.Room.CheckRequestEvent do
+  @moduledoc """
+  查探请求处理：对应 LPC check.c 的完整逻辑。
+
+  前置条件：
+  - 请求者必须是丐帮成员
+  - 请求者的 checking 技能等级 >= 30
+  - 房间中必须有可交谈的 NPC
+
+  成功率 = (checking_skill * 10 + jing * 3) vs (target_jing * 2)
+  成功时向请求者显示目标的一个随机技能。
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+
+  def call(context, %{data: %{target_name: target_name}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case requester do
+      nil ->
+        context
+
+      _ ->
+        process_check(context, requester, target_name)
+    end
+  end
+
+  defp process_check(context, requester, target_name) do
+    # 1. 找可交谈的 NPC
+    npc =
+      Enum.find(context.characters, fn c ->
+        c.is_character && !c.is_player && can_speak?(c) && !is_nil(c.name)
+      end)
+
+    if !npc do
+      render(context, requester.pid, CommandView, "text", %{text: "你周围又没人，没办法打听。\n"})
+    else
+      # 2. 在房间内找目标玩家
+      target = find_target_in_room(context, requester.pid, target_name)
+
+      cond do
+        is_nil(target) ->
+          render(context, requester.pid, CommandView, "text", %{text: "你要打听谁的技能？\n"})
+
+        target.id == requester.id ->
+          render(context, requester.pid, CommandView, "text", %{text: "不至于吧，要别人告诉你自己的技能？\n"})
+
+        true ->
+          do_check(context, requester, npc, target)
+      end
+    end
+  end
+
+  defp do_check(context, requester, npc, target) do
+    # 检查帝王特殊技能
+    if has_emperor_skill?(target) do
+      render(context, requester.pid, CommandView, "text", %{text: "此人乃真命天子，无法探知其属性。\n"})
+    else
+      # 计算精消耗
+      checking_skill = requester.skills["checking"] || 0
+      sklvl = div(checking_skill, 10)
+      cost = div(Map.get(requester.attributes, "max_jing", 100), max(sklvl, 1)) - 10
+      cost = if cost < 40, do: 30 + :rand.uniform(10), else: cost
+
+      jing = Map.get(requester.attributes, "jing", 0)
+
+      if jing < cost do
+        render(context, requester.pid, CommandView, "text", %{text: "现在你太累了，无法去打听别人的技能。\n"})
+      else
+        # 扣除精
+        updated_requester = put_in(requester.attributes["jing"], jing - cost)
+        context = update_character_in_context(context, requester.id, updated_requester)
+
+        # 显示查探过程
+        context =
+          context
+          |> render(requester.pid, CommandView, "text", %{
+            text: "\n你走上前去，小心翼翼地向#{npc.name}打听关于#{target.name}的情况。\n"
+          })
+          |> render_to_room_except(requester.pid, CommandView, "text", %{
+            text: "只见#{requester.name}陪着笑脸，跟#{npc.name}说着话，好像在打听些什么。\n"
+          })
+
+        # 计算成功率
+        sp = (checking_skill * 10) + (jing * 3)
+        dp = (Map.get(target.attributes, "jing", 1) || 1) * 2
+
+        if :rand.uniform(sp + dp) < :rand.uniform(dp) do
+          render(context, requester.pid, CommandView, "text", %{
+            text: "#{npc.name}皱着眉道：那#{target.name}比你强多了，你没事去招惹他做甚？\n"
+          })
+        else
+          # 查探成功，显示目标的一个随机技能
+          skills = target.skills
+
+          if map_size(skills) == 0 do
+            render(context, requester.pid, CommandView, "text", %{
+              text: "#{npc.name}悄悄告诉你：#{target.name}啥都不会，打听他干嘛？\n"
+            })
+          else
+            skill_names = Map.keys(skills)
+            skill_name = Enum.random(skill_names)
+            skill_level = Map.get(skills, skill_name, 0)
+
+            # 精确度：1000 / checking_level
+            precise = div(1000, max(div(checking_skill, 10), 1))
+            lvl = div(skill_level + div(precise, 2), precise) * precise
+
+            chinese_skill_name = skill_name
+            level_text = chinese_number(lvl)
+
+            context
+            |> render(requester.pid, CommandView, "text", %{
+              text: "#{npc.name}悄悄告诉你：#{target.name}修炼过#{chinese_skill_name}，估计修炼到#{level_text}级了吧。\n"
+            })
+          end
+        end
+      end
+    end
+  end
+
+  defp can_speak?(character) do
+    character.attributes["can_speak"] == true && character.attributes["not_living"] != true
+  end
+
+  defp has_emperor_skill?(character) do
+    Map.get(character.attributes, "special_skills", %{})["emperor"] == true
+  end
+
+  defp find_target_in_room(context, requester_pid, target_name) do
+    Enum.find(context.characters, fn c ->
+      c.pid != requester_pid && Kantele.World.Room.NameMatch.matches?(c, target_name)
+    end)
+  end
+
+  defp update_character_in_context(context, char_id, updated_character) do
+    %{
+      context
+      | characters:
+          Enum.map(context.characters, fn c ->
+            if c.id == char_id, do: %{c | attributes: updated_character}, else: c
+          end)
+    }
+  end
+
+  defp render_to_room_except(exclude_pid, context, view, template, data) do
+    Enum.reduce(context.characters -- Enum.filter(context.characters, fn c -> c.pid == exclude_pid end), context, fn character, acc ->
+      render(acc, character.pid, view, template, data)
+    end)
+  end
+
+  defp chinese_number(n) when n > 0 do
+    Integer.to_string(n)
+  end
+end
+
+defmodule Kantele.World.Room.SearchRequestEvent do
+  @moduledoc """
+  搜寻请求处理：对应 LPC search.c 的简化逻辑。
+
+  消耗 30 气 + 30 精，根据积分随机获取物品。
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+
+  def call(context, %{data: %{}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case requester do
+      nil ->
+        context
+
+      _ ->
+        if context.data.no_search == "all" do
+          render(context, requester.pid, CommandView, "text", %{text: "这里不允许搜寻。\n"})
+        else
+          qi = Map.get(requester.attributes, "qi", 0)
+          jing = Map.get(requester.attributes, "jing", 0)
+
+          if qi < 30 || jing < 30 do
+            render(context, requester.pid, CommandView, "text", %{text: "你的气或精不足，无法进行搜寻。\n"})
+          else
+            updated_requester =
+              requester
+              |> put_in([:attributes, "qi"], qi - 30)
+              |> put_in([:attributes, "jing"], jing - 30)
+
+            context = update_char_in_ctx(context, requester.id, updated_requester)
+
+            # 根据积分计算发现概率
+            score = Map.get(requester.attributes, "score", 0)
+            probability = min(30, div(score, 7))
+
+            if :rand.uniform(100) < probability do
+              # 发现物品，从默认物品表中随机选一个
+              item_id = get_default_item(score)
+              item = Kantele.World.Items.get!(item_id)
+
+              context
+              |> render(requester.pid, CommandView, "text", %{
+                text: "你东张西望，发现了地上一个#{item.name}。\n"
+              })
+            else
+              context
+              |> render(requester.pid, CommandView, "text", %{
+                text: "你东张西望，什么也没找到。\n"
+              })
+            end
+          end
+        end
+    end
+  end
+
+  defp get_default_item(score) do
+    cond do
+      score < 100 -> "coin"
+      score < 400 -> "silver"
+      score < 2000 -> "jinchuang"
+      score < 10000 -> "dagger"
+      true -> "sword"
+    end
+  end
+
+  defp update_char_in_ctx(context, char_id, updated_character) do
+    %{
+      context
+      | characters:
+          Enum.map(context.characters, fn c ->
+            if c.id == char_id, do: updated_character, else: c
+          end)
+    }
   end
 end
 
