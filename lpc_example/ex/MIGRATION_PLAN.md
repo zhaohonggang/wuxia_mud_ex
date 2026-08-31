@@ -1,9 +1,11 @@
 # 命令真正迁移到游戏的分批计划
 
 > 分支: `kalevala` ｜ 更新: 2026-08-31 ｜ 依据: `IMPLEMENTATION_GAP.md` 全命令盘点审计
-> 验证: 容器 `docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app && MIX_ENV=test mix test"`
+> 验证: 容器 `docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app && MIX_ENV=test mix test"`（详见本文件 §12 运行与测试）
 > 测试基线: **877 tests / 0 failures**（本次已实测确认）
 > 硬性前置: 移植每条命令前，先按 §1 现场核查 `wuxia_mud_ex` 现状再动手
+> ⚠️ **禁止直接 push** : 任何批次的提交都**不得自行 push**；先本地提交并汇报，
+>    等用户检查完、明确指示「push」后再执行 `git push`。
 
 ---
 
@@ -21,6 +23,8 @@
 5. **每个命令移植前必须现场核查现状（强制）**：不依赖 `IMPLEMENTATION_GAP.md` 的历史结论，
    **逐命令**打开 `wuxia_mud_ex` 的相关文件确认其在当前代码库里的真实状态，
    记录核查结论后再动手移植。见 §1「单命令移植前置核查」。
+6. **禁止直接 push（强制）**：任何批次只 commit、**不 push**；完成并汇报后，
+   等用户检查确认、明确指示「push」时，才允许执行 `git push`。
 
 状态标记：`[ ]` 待办 ｜ `[~]` 进行中 ｜ `[x]` 完成且测试通过
 
@@ -341,9 +345,10 @@ P5 无
          打开 wuxia_mud_ex 实际代码确认现状，填 §1.2 核查表，
          判定 real/stub/missing 后再动手（本次核查以现场代码为准）
 □ 实现：command → event → event handler → view 一条龙，不做纯展示死代码
-□ 内测：单命令 `mix test test/kantele/character/commands/xxx_test.exs`
-□ 全量：`mix test` == 877 + 本批新增 ≥ n，0 failures
-□ 提交：`git add` 仅本批文件；commit 信息含 `Batch M1: purchase/shop/auction/baitan (P1)`
+□ 内测：单命令 `mix test test/kantele/character/commands/xxx_test.exs`（容器命令见 §12.3）
+□ 全量：`mix test` == 877 + 本批新增 ≥ n，0 failures（§12.3）
+□ 提交：`git add` 仅本批文件；commit 信息含 `Batch M1: purchase/shop/auction/baitan (P1)`（提交前容器内补 `mix format --check-formatted` + `mix credo`，见 §12.6）
+□ **禁止自行 push（强制）**：仅本地 `git commit` 并汇报；待用户检查确认、明确说「push」后，才执行 `git push`（见 §0 原则 6）
 □ 更新：本文档 §1.2 核查表/勾选 + IMPLEMENTATION_GAP.md 勾选
 ```
 
@@ -384,4 +389,102 @@ P5 无
 | 数据结构差异：LPC flat env vs Elixir meta | `set/passwd` 校验缺失 | P1 补白名单/二次确认（已列 GAP B 表） |
 | 管理命令无妥善对应 | 大量 W 命令「架构不适用」 | P4 明确「不迁移」清单，防过度工程 |
 | 中文文本乱码（Windows 写文件） | 命令文案损坏 | 遵循 `MIGRATION_STATUS.md` 既有 `\u{...}` 转义约定 |
-| test 沙箱 / Postgres 不可用 | 无法验证 | 统一走 compose `run --rm app mix test`（§0 命令） |
+| test 沙箱 / Postgres 不可用 | 无法验证 | 统一走 compose `run --rm app mix test`（§12 运行方式） |
+
+---
+
+## 12. 本系统如何运行与测试（环境速查）
+
+> 本节为本游戏在**本机（Windows + Docker）**环境的启动/测试/验证方式，全部为实测。
+
+### 12.1 技术栈与环境
+
+| 项 | 值 |
+|----|----|
+| 语言/OTP | Elixir 1.11.1 / OTP 23（容器固定，见镜像 `wuxia-mud-dev:1.11.1-otp-23-alpine3.12`） |
+| 框架 | ExVenture（MUD）+ Kalevala（MUD 命令/事件框架）+ Phoenix 1.5（Web） |
+| 数据库 | PostgreSQL 12（容器内 `postgres:12-alpine`） |
+| 运行载体 | **Docker Desktop**；本机 Windows 未装 Elixir/mix，一律在容器内执行 |
+| 关键 compose 文件 | `docker-compose.dev.yml`（开发）、`docker-compose.yml`（prod 发布） |
+| 世界数据 | `data/world/*.ucl`（Loader 于启动时解析加载） |
+
+### 12.2 开发环境启动（唯一入口 `dev_start.bat`）
+
+```
+dev_start.bat          完整流程：起 db → deps.get + ecto.setup → 前台起 app
+dev_start.bat reset    重置数据库（drop + create + migrate + seed）
+dev_start.bat stop     docker compose down（保留数据卷）
+dev_start.bat clean    删除全部数据卷（连 deps/node_modules 一并清空，需确认）
+```
+
+启动后可连：
+- Web 客户端: http://localhost:4000
+- 游戏 Telnet: `telnet localhost 4646`
+
+等价手命令（对应 dev_start.bat 的 3 步）：
+```
+docker compose -f docker-compose.dev.yml up -d db
+docker compose -f docker-compose.dev.yml run --rm setup
+docker compose -f docker-compose.dev.yml up app
+```
+
+### 12.3 运行测试（本计划每批验收的唯一硬门槛）
+
+> 测试环境 DB 走 `config/test.exs`：`postgresql://postgres:postgres@db/ex_venture_test`
+> （`db` 为 compose 服务名）。`mix test` alias 会自动 `ecto.create --quiet` + `ecto.migrate`，
+> 无需手工建库；测试用 Ecto SQL Sandbox、不弹 Web 服务器、不播种世界。
+
+**全量测试（推荐，直接照抄）：**
+```
+docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app && MIX_ENV=test mix test"
+```
+实测基线：**877 tests, 0 failures**（2026-08-31 实测），约 6 秒。
+
+**单文件/单命令测试（每批内测用）：**
+```
+docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app && MIX_ENV=test mix test test/kantele/character/commands/xxx_test.exs"
+```
+
+### 12.4 手动冒烟脚本（快速看命令输出，不经 DB／房间）
+
+`scripts/` 下有若干 `.exs` 直接构造 `Kalevala.Character.Conn` 调命令，适合移植调试：
+- `scripts/commands_smoke.exs` — 调 `Commands.call(conn, "commands")` 验证路由/中文别名
+- `scripts/cmd_probe.exs` — 直接调 `CommandsCommand.run(conn, %{})` 看输出结构
+
+运行：
+```
+docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app && mix run scripts/commands_smoke.exs"
+```
+
+### 12.5 lpc_example 纯函数冒烟测试（与游戏解耦）
+
+`lpc_example/` 是**已迁移到 Elixir 的纯函数/状态机**参考实现（`lpc_example/ex/**/smoke_test.exs`），
+用 `lpc_example/ex/test_runner.exs` 统一编译+运行，**不依赖 Postgres/游戏进程**：
+```
+docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app/lpc_example/ex && elixir test_runner.exs"
+```
+> 移植某命令时若其逻辑已在 lpc_example 有 `.ex`（如 condition_poison、daemon_combatd、skill_taiji-quan），
+> 可直接复用其纯函数做 `lib/kantele` 落地，并以该 smoke 为准先行自检。
+
+### 12.6 CI（push 自动跑）：`.github/workflows/main.yml`
+
+| Job | 步骤 | 对应本机命令 |
+|-----|------|-------------|
+| elixir (ubuntu-20.04 + Postgres service) | `mix format --check-formatted` | 同左（容器内） |
+| | `mix compile --force --warnings-as-errors` | 同左 |
+| | `mix credo` | 同左 |
+| | `mix test` | §12.3 |
+| javascript (assets/) | `yarn lint:ci` + `yarn jest` | 前端，本计划不涉及 |
+| docker 发布 | 仅 `kalevala` 分支 push 后构建镜像到 DockerHub | 无需本机操作 |
+
+> `verify.sh` 是上述 elixir 部分的手动脚本；本计划每批验收以 §12.3 `mix test` 为准，
+> 推送前建议容器内补跑 `mix format --check-formatted` + `mix credo` 保持 CI 绿。
+
+### 12.7 常见坑（实测踩过）
+
+1. **宿主无 mix**：本机 PowerShell 没有 Elixir，`mix` 命令必须在容器内跑。
+2. **`run --rm app` 会先连 db**：若 `db` 未启动会报连接错误；先 `up -d db`。
+3. **测试别用 dev 库**：`config/test.exs` 强行指定 `ex_venture_test`，会覆盖环境变量——不要在测试里改 `DATABASE_URL`。
+4. **compose 网络解析 `db` 名**：容器内 `db` 即数据库主机；宿主机如需 psql 访问用映射端口 15432。
+5. **世界加载失败**：若 `mix test` 报了 `UndefinedFunctionError … nil.id/0` 一类的 kickoff 错误，
+   多半是你新加的 `_command.ex` 引用了尚不存在的系统——按 §1 核查确认依赖再动手。
