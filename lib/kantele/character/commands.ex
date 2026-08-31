@@ -998,6 +998,14 @@ defmodule Kantele.Character.Commands do
     parse("special", :run)
   end
 
+  module(AnsuanCommand) do
+    parse("ansuan", :run)
+  end
+
+  module(PourCommand) do
+    parse("pour", :run)
+  end
+
   module(IdCommand) do
     parse("id", :run)
   end
