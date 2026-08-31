@@ -947,7 +947,9 @@ defmodule Kantele.Character.Commands do
   end
 
   module(DrugCommand) do
-    parse("drug", :run)
+    parse("drug", :run, fn command ->
+      command |> spaces() |> word(:poison) |> spaces() |> string("in") |> spaces() |> word(:target)
+    end)
   end
 
   module(PushCommand) do
@@ -975,7 +977,9 @@ defmodule Kantele.Character.Commands do
   end
 
   module(WashCommand) do
-    parse("wash", :run)
+    parse("wash", :run, fn command ->
+      command |> spaces() |> text(:target)
+    end)
   end
 
   module(TalkCommand) do
@@ -1011,7 +1015,9 @@ defmodule Kantele.Character.Commands do
   end
 
   module(PourCommand) do
-    parse("pour", :run)
+    parse("pour", :run, fn command ->
+      command |> spaces() |> word(:poison) |> spaces() |> string("in") |> spaces() |> word(:target)
+    end)
   end
 
   module(ToCommand) do
@@ -1054,7 +1060,9 @@ defmodule Kantele.Character.Commands do
   end
 
   module(DaubCommand) do
-    parse("daub", :run)
+    parse("daub", :run, fn command ->
+      command |> spaces() |> word(:poison) |> spaces() |> string("on") |> spaces() |> text(:target)
+    end)
   end
 
   module(SetCommand) do

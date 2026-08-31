@@ -77,41 +77,55 @@ defmodule Kantele.Item.Effect do
   def consume(vitals, stats, meta) when is_map(meta) do
     medicine = Map.get(meta, :medicine)
     food_value = Map.get(meta, :food)
+    poison = Map.get(meta, :poison)
+
+    # 先处理食物/药效
     boosts = stat_boost(medicine)
     food? = is_integer(food_value) && food_value > 0
     medicine? = is_map(medicine) && medicine != %{}
 
-    if boosts == %{} do
-      {medicine_parts, new_vitals} = restore_vitals(vitals, medicine)
-      {food_parts, final_vitals} = restore_from_food(new_vitals, food_value)
+    # 统一处理：计算 food/medicine 效果
+    base_result =
+      if boosts == %{} do
+        {medicine_parts, new_vitals} = restore_vitals(vitals, medicine)
+        {food_parts, final_vitals} = restore_from_food(new_vitals, food_value)
+        {:ok, {medicine_parts, food_parts, final_vitals, stats}}
+      else
+        case boost_cap(stats, boosts) do
+          {:reject, reason} ->
+            {:reject, reason}
 
-      {:ok,
-       %{
-         vitals: final_vitals,
-         stats: stats,
-         parts: medicine_parts ++ food_parts,
-         food?: food?,
-         medicine?: medicine?
-       }}
-    else
-      case boost_cap(stats, boosts) do
-        {:reject, reason} ->
-          {:reject, reason}
-
-        :ok ->
-          {new_stats, stat_parts} = boost_stats(stats, boosts)
-          {medicine_parts, new_vitals} = restore_vitals(vitals, medicine)
-          {food_parts, final_vitals} = restore_from_food(new_vitals, food_value)
-
-          {:ok,
-           %{
-             vitals: final_vitals,
-             stats: new_stats,
-             parts: medicine_parts ++ food_parts ++ stat_parts,
-             food?: food?,
-             medicine?: medicine?
-           }}
+          :ok ->
+            {new_stats, stat_parts} = boost_stats(stats, boosts)
+            {medicine_parts, new_vitals} = restore_vitals(vitals, medicine)
+            {food_parts, final_vitals} = restore_from_food(new_vitals, food_value)
+            {:ok, {medicine_parts ++ stat_parts, food_parts, final_vitals, new_stats}}
+        end
       end
+
+    # 如果是 reject，直接返回
+    case base_result do
+      {:reject, reason} ->
+        {:reject, reason}
+
+      {:ok, {medicine_parts, food_parts, final_vitals, stats_out}} ->
+        # 处理毒药效果（如果有）
+        {poison_parts, final_vitals_with_poison} =
+          if poison && is_map(poison) && poison["level"] > 0 do
+            apply_poison(final_vitals, poison)
+          else
+            {[], final_vitals}
+          end
+
+        {:ok,
+         %{
+           vitals: final_vitals_with_poison,
+           stats: stats_out,
+           parts: medicine_parts ++ food_parts ++ poison_parts,
+           food?: food?,
+           medicine?: medicine?,
+           poison?: true
+         }}
     end
   end
 
@@ -211,4 +225,32 @@ defmodule Kantele.Item.Effect do
 
   defp vital_part(key, actual), do: "#{@vital_names[key]}+#{actual}"
   defp stat_name(key), do: Map.get(@stat_names, key, to_string(key))
+
+  # --- 毒药效果处理 ---
+
+  @doc "应用毒药效果到 vitals"
+  defp apply_poison(vitals, poison) do
+    # 毒药伤害：精力和气血
+    jing_loss = Kantele.Poison.jing_damage(%{}, poison)
+    qi_loss = Kantele.Poison.qi_damage(%{}, poison)
+
+    parts = []
+    new_vitals = vitals
+
+    if jing_loss > 0 do
+      current_jing = Map.get(vitals, :jing, 0)
+      new_jing = max(current_jing - jing_loss, 0)
+      new_vitals = %{new_vitals | jing: new_jing}
+      parts = parts ++ ["精力-#{jing_loss}"]
+    end
+
+    if qi_loss > 0 do
+      current_qi = Map.get(vitals, :qi, 0)
+      new_qi = max(current_qi - qi_loss, 0)
+      new_vitals = %{new_vitals | qi: new_qi}
+      parts = parts ++ ["气血-#{qi_loss}"]
+    end
+
+    {parts, new_vitals}
+  end
 end
