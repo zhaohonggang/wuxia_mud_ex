@@ -1018,6 +1018,25 @@ defmodule Kantele.Character.Commands do
     parse("stab", :run)
   end
 
+  module(LiuxiCommand) do
+    parse("liuxi", :run)
+    parse("柳溪", :run)
+  end
+
+  module(SecularizeCommand) do
+    parse("secularize", :run)
+    parse("huansu", :run)
+    parse("还俗", :run)
+  end
+
+  module(SemoteCommand) do
+    parse("semote", :run)
+  end
+
+  module(WenxuanCommand) do
+    parse("wenxuan", :run)
+  end
+
   module(IdCommand) do
     parse("id", :run)
   end
