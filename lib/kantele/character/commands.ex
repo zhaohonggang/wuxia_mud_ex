@@ -1045,6 +1045,14 @@ defmodule Kantele.Character.Commands do
     parse("daub", :run)
   end
 
+  module(SetCommand) do
+    parse("set", :run)
+  end
+
+  module(PasswdCommand) do
+    parse("passwd", :run)
+  end
+
   module(IdCommand) do
     parse("id", :run)
   end
