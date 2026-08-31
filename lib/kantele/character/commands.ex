@@ -1006,6 +1006,18 @@ defmodule Kantele.Character.Commands do
     parse("pour", :run)
   end
 
+  module(ToCommand) do
+    parse("to", :run)
+  end
+
+  module(TouchCommand) do
+    parse("touch", :run)
+  end
+
+  module(StabCommand) do
+    parse("stab", :run)
+  end
+
   module(IdCommand) do
     parse("id", :run)
   end
