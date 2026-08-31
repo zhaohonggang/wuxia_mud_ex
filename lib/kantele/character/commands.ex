@@ -966,6 +966,14 @@ defmodule Kantele.Character.Commands do
     parse("come", :run)
   end
 
+  module(TrainCommand) do
+    parse("train", :run)
+  end
+
+  module(StopCommand) do
+    parse("stop", :run)
+  end
+
   module(IdCommand) do
     parse("id", :run)
   end
