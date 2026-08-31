@@ -1037,6 +1037,14 @@ defmodule Kantele.Character.Commands do
     parse("wenxuan", :run)
   end
 
+  module(PurchaseCommand) do
+    parse("purchase", :run)
+  end
+
+  module(DaubCommand) do
+    parse("daub", :run)
+  end
+
   module(IdCommand) do
     parse("id", :run)
   end
