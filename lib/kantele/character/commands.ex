@@ -982,6 +982,22 @@ defmodule Kantele.Character.Commands do
     parse("talk", :run)
   end
 
+  module(SearchCommand) do
+    parse("search", :run)
+  end
+
+  module(RemoveCommand) do
+    parse("remove", :run)
+  end
+
+  module(StealCommand) do
+    parse("steal", :run)
+  end
+
+  module(SpecialCommand) do
+    parse("special", :run)
+  end
+
   module(IdCommand) do
     parse("id", :run)
   end
