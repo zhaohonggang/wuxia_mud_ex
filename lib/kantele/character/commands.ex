@@ -101,6 +101,10 @@ defmodule Kantele.Character.Commands do
       command |> spaces() |> word(:name)
     end)
 
+    parse("hit", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+
     parse("fight", :run, fn command ->
       command |> spaces() |> word(:name)
     end)
@@ -905,7 +909,9 @@ defmodule Kantele.Character.Commands do
   end
 
   module(AssistCommand) do
-    parse("assist", :run)
+    parse("assist", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
   end
 
   module(BegCommand) do
@@ -977,7 +983,15 @@ defmodule Kantele.Character.Commands do
   end
 
   module(StealCommand) do
-    parse("steal", :run)
+    parse("steal", :run, fn command ->
+      command |> spaces() |> word(:item) |> spaces() |> string("from") |> spaces() |> word(:target)
+    end)
+  end
+
+  module(GuardCommand) do
+    parse("guard", :run, fn command ->
+      command |> spaces() |> text(:target)
+    end)
   end
 
   module(SpecialCommand) do

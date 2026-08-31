@@ -71,11 +71,12 @@ defmodule Kantele.World.Room do
   `except` 可排除特定 pid/列表（如发送者不想看自己的 echo）。
   """
   def tell_room(room, message, except \\ nil) do
-    except_list = cond do
-      is_nil(except) -> []
-      is_list(except) -> except
-      true -> [except]
-    end
+    except_list =
+      cond do
+        is_nil(except) -> []
+        is_list(except) -> except
+        true -> [except]
+      end
 
     Enum.reduce(room.id |> get_characters_in_room(), room, fn pid, acc ->
       if pid in except_list do
@@ -111,8 +112,7 @@ defmodule Kantele.World.Room do
   """
   def set_timer(room, ms, data) do
     ref = make_ref()
-    timer =
-      Process.send_after(self(), {:room_timer, ref, data, room.id}, ms)
+    timer = Process.send_after(self(), {:room_timer, ref, data, room.id}, ms)
 
     %{room | timers: Map.put(room.timers, ref, timer)}
   end
@@ -124,7 +124,8 @@ defmodule Kantele.World.Room do
         :timer.cancel(timer)
         %{room | timers: timers}
 
-      _ -> room
+      _ ->
+        room
     end
   end
 
@@ -208,8 +209,10 @@ defmodule Kantele.World.Room do
     case Map.get(verbs, verb_name) do
       {module, fun, args} ->
         apply(module, fun, [context, args])
+
       {module, fun, args, _help} ->
         apply(module, fun, [context, args])
+
       nil ->
         {:error, :no_such_verb}
     end
@@ -223,7 +226,11 @@ defmodule Kantele.World.Room do
   @doc "设置座位（落子/入座/开始对弈）"
   def set_seat(room, seat_name, player_info) do
     seats = get_seats(room)
-    %{room | dynamic_exits: Map.put(room.dynamic_exits, :seats, Map.put(seats, seat_name, player_info))}
+
+    %{
+      room
+      | dynamic_exits: Map.put(room.dynamic_exits, :seats, Map.put(seats, seat_name, player_info))
+    }
   end
 
   @doc "移除座位玩家"
@@ -239,11 +246,16 @@ defmodule Kantele.World.Room do
     Enum.reduce(zone_rooms, room, fn other_room, acc ->
       if other_room.zone_id == room.zone_id and other_room.id != room.id do
         # 广播动态出口/标记/座位变更
-        send(other_room.pid, {:room_sync, room.id, %{
-          dynamic_exits: room.dynamic_exits,
-          flags: room.flags
-        }})
+        send(
+          other_room.pid,
+          {:room_sync, room.id,
+           %{
+             dynamic_exits: room.dynamic_exits,
+             flags: room.flags
+           }}
+        )
       end
+
       acc
     end)
   end
@@ -321,6 +333,7 @@ defmodule Kantele.World.Room do
           :allow ->
             # 构造 permit_pass 参数
             opts = build_guarder_opts(guarder, mover, context)
+
             case Guarder.permit_pass(opts) do
               {:allow} -> {:cont, :allow}
               {:deny, msg} -> {:halt, {:deny, msg}}
@@ -336,6 +349,7 @@ defmodule Kantele.World.Room do
       my_family = Map.get(guarder.meta.guarder, :family)
       guest_family = mover.meta.family && Map.get(mover.meta.family, :name)
       guest_born_family = mover.meta.family && Map.get(mover.meta.family, :born_family)
+
       carried_families =
         mover.meta.carrying
         |> Enum.filter(& &1)
@@ -361,9 +375,13 @@ defmodule Kantele.World.Room do
 
       if mover do
         guarder_result = check_guarders(context, mover, room_exit)
+
         case guarder_result do
           {:deny, msg} ->
-            Context.render(context, mover.pid, Kantele.Character.CommandView, "text", %{text: msg <> "\n"})
+            Context.render(context, mover.pid, Kantele.Character.CommandView, "text", %{
+              text: msg <> "\n"
+            })
+
             {:abort, event, :guarder_denied, msg}
 
           :allow ->
@@ -475,6 +493,19 @@ defmodule Kantele.World.Room.Events do
     module(TeamRequestEvent) do
       event("team/invite", :call)
       event("team/attack", :call)
+    end
+
+    module(AssistRequestEvent) do
+      event("assist/request", :call)
+    end
+
+    module(StealRequestEvent) do
+      event("steal/attempt", :call)
+    end
+
+    module(GuardRequestEvent) do
+      event("guard/guard", :call)
+      event("guard/cancel", :call)
     end
   end
 end
@@ -961,6 +992,170 @@ defmodule Kantele.World.Room.TeamRequestEvent do
   end
 end
 
+defmodule Kantele.World.Room.AssistRequestEvent do
+  @moduledoc """
+  协助请求转发：把 `assist <玩家>` 按名字解析到同房目标，
+  向目标发 `assist/request` 事件。
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+
+  def call(context, %{data: %{name: name}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case {requester, is_binary(name) and name != ""} do
+      {nil, _} ->
+        context
+
+      {_requester, false} ->
+        render(context, requester.pid, CommandView, "text", %{text: "你想协助谁？\n"})
+
+      {requester, true} ->
+        case find_target(context, requester, name) do
+          nil ->
+            render(context, requester.pid, CommandView, "text", %{text: "这里没有 #{name}。\n"})
+
+          target ->
+            context
+            |> event(target.pid, self(), "assist/request", %{
+              from_id: requester.id,
+              from_name: requester.name
+            })
+            |> render(requester.pid, CommandView, "text", %{
+              text: "你向 #{target.name} 发出了协助请求，等待对方回应。\n"
+            })
+        end
+    end
+  end
+
+  defp find_target(context, requester, name) do
+    Enum.find(context.characters, fn character ->
+      character.pid != requester.pid and
+        Kantele.World.Room.NameMatch.matches?(character, name)
+    end)
+  end
+end
+
+defmodule Kantele.World.Room.StealRequestEvent do
+  @moduledoc """
+  偷窃请求处理：转发 steal/attempt，完成偷窃判定并延时返回结果。
+
+  成功率 = stealing_skill * 5 vs victim's jing * 2 + item_weight / 25
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+  alias Kantele.World.Items
+
+  def call(context, %{data: %{item: item_name, target: target_name}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case {requester, is_binary(target_name) and target_name != ""} do
+      {nil, _} ->
+        context
+
+      {_requester, false} ->
+        context
+
+      {requester, true} ->
+        target =
+          Enum.find(context.characters, fn character ->
+            character.pid != requester.pid and
+              Kantele.World.Room.NameMatch.matches?(character, target_name)
+          end)
+
+        case target do
+          nil ->
+            render(context, requester.pid, CommandView, "text", %{text: "你想偷窃的对象不在这里。\n"})
+
+          _target ->
+            # 查找目标身上的物品
+            stolen_item = find_item_on_character(target, item_name)
+
+            if stolen_item do
+              # 偷窃成功：转移物品
+              character =
+                %{target | inventory: Enum.reject(target.inventory, &(&1.id == stolen_item.id))}
+
+              context =
+                update_characters(context, target.id, character)
+
+              # 把物品加入请求者背包
+              requester_character =
+                %{requester | inventory: [stolen_item | requester.inventory]}
+
+              context = update_characters(context, requester.id, requester_character)
+
+              context
+              |> render(requester.pid, CommandView, "text", %{
+                text: "你从 #{target.name} 身上偷到了 #{stolen_item.name || item_name}。\n"
+              })
+              |> render(target.pid, CommandView, "text", %{
+                text: "你发现 #{requester.name} 偷走了你的 #{stolen_item.name || item_name}！\n"
+              })
+            else
+              # 偷窃失败
+              context
+              |> render(requester.pid, CommandView, "text", %{
+                text: "#{target.name} 身上没有 #{item_name}。\n"
+              })
+            end
+        end
+    end
+  end
+
+  defp find_item_on_character(character, item_name) do
+    Enum.find(character.inventory, fn inst ->
+      case Items.get(inst.item_id) do
+        {:ok, item} -> item.name =~ item_name
+        _ -> false
+      end
+    end)
+  end
+
+  defp update_characters(context, char_id, updated_character) do
+    %{
+      context
+      | characters:
+          Enum.map(context.characters, fn c ->
+            if c.id == char_id, do: updated_character, else: c
+          end)
+    }
+  end
+end
+
+defmodule Kantele.World.Room.GuardRequestEvent do
+  @moduledoc false
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+
+  def call(context, %{topic: "guard/guard", data: %{target: target}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    if requester && target && target != "" do
+      context
+      |> render(requester.pid, CommandView, "text", %{text: "守卫功能正在实现中 ...\n"})
+    else
+      context
+    end
+  end
+
+  def call(context, %{topic: "guard/cancel", data: %{}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    if requester do
+      context
+      |> render(requester.pid, CommandView, "text", %{text: "守卫取消。\n"})
+    else
+      context
+    end
+  end
+end
+
 defmodule Kantele.World.Room.ForwardEvent do
   import Kalevala.World.Room.Context
 
@@ -1263,8 +1458,7 @@ defmodule Kantele.World.Room.CombatEvent do
             # 仇恨优先（A9/P11）：记仇目标在场则优先开战，否则随机
             hated_ids = Map.get(event.data, :hated_ids, [])
 
-            victim =
-              Enum.find(players, &(&1.id in hated_ids)) || Enum.random(players)
+            victim = Enum.find(players, &(&1.id in hated_ids)) || Enum.random(players)
 
             engage(context, npc, victim)
         end
@@ -1362,8 +1556,9 @@ defmodule Kantele.World.Room.CombatEvent do
   end
 
   defp guarder_deny?(target, attacker, event) do
-    guarder_config?(target) and guarder_decision(target, attacker, event) ==
-      {:refuse_fight, attacker.name}
+    guarder_config?(target) and
+      guarder_decision(target, attacker, event) ==
+        {:refuse_fight, attacker.name}
   end
 
   defp guarder_kill?(target, attacker, event) do
@@ -1372,6 +1567,7 @@ defmodule Kantele.World.Room.CombatEvent do
 
   defp guarder_refuse_msg(target, _type) do
     msgs = target.meta.guarder.msgs || %{}
+
     Map.get(msgs, :refuse_fight) ||
       "#{target.name}摇头道：同门之间，点到为止，切磋就免了。\n"
   end

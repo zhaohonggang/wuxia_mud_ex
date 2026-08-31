@@ -12,8 +12,16 @@ defmodule Kantele.Character.FightCommand do
   use Kalevala.Character.Command
 
   def run(conn, params) do
+    type =
+      case params["command"] do
+        "kill" -> "kill"
+        "hit" -> "hit"
+        "杀掉" -> "kill"
+        _ -> "fight"
+      end
+
     conn
-    |> event("combat/attack", %{name: params["name"], type: params["type"] || "fight"})
+    |> event("combat/attack", %{name: params["name"], type: type})
     |> assign(:prompt, false)
   end
 end

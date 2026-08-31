@@ -49,6 +49,10 @@ defmodule Kantele.Character.Events do
       event("give/result", :result)
     end
 
+    module(AssistEvent) do
+      event("assist/request", :request)
+    end
+
     module(CutEvent) do
       event("cut/result", :result)
     end
@@ -205,10 +209,12 @@ defmodule Kantele.Character.NonPlayerEvents do
       event("family/apprentice", :apprentice)
       event("family/detach", :detach)
     end
+
     module(CoagentEvent) do
       event("coagent/help", :help)
       event("coagent/finish", :finish)
     end
+
     module(WanderEvent) do
       event("room/wander", :run)
     end
