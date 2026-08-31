@@ -922,6 +922,14 @@ defmodule Kantele.Character.Commands do
     parse("assist", :run)
   end
 
+  module(BegCommand) do
+    parse("beg", :run)
+  end
+
+  module(CheckCommand) do
+    parse("check", :run)
+  end
+
   module(IdCommand) do
     parse("id", :run)
   end
