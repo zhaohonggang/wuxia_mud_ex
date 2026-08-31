@@ -934,6 +934,14 @@ defmodule Kantele.Character.Commands do
     parse("answer", :run)
   end
 
+  module(AcceptCommand) do
+    parse("accept", :run)
+  end
+
+  module(VoteCommand) do
+    parse("vote", :run)
+  end
+
   module(IdCommand) do
     parse("id", :run)
   end
