@@ -942,6 +942,30 @@ defmodule Kantele.Character.Commands do
     parse("vote", :run)
   end
 
+  module(HandCommand) do
+    parse("hand", :run)
+  end
+
+  module(DrugCommand) do
+    parse("drug", :run)
+  end
+
+  module(PushCommand) do
+    parse("push", :run)
+  end
+
+  module(StayCommand) do
+    parse("stay", :run)
+  end
+
+  module(ReleaseCommand) do
+    parse("release", :run)
+  end
+
+  module(ComeCommand) do
+    parse("come", :run)
+  end
+
   module(IdCommand) do
     parse("id", :run)
   end
