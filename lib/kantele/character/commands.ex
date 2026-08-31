@@ -930,6 +930,10 @@ defmodule Kantele.Character.Commands do
     parse("check", :run)
   end
 
+  module(AnswerCommand) do
+    parse("answer", :run)
+  end
+
   module(IdCommand) do
     parse("id", :run)
   end
