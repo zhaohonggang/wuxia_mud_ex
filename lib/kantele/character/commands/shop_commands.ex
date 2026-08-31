@@ -76,3 +76,46 @@ defmodule Kantele.Character.AskCommand do
 
   defp strip_about(keyword), do: String.trim(keyword)
 end
+
+defmodule Kantele.Character.ShopCommand do
+  @moduledoc """
+  商店/摊位状态：`shop`
+
+  展示玩家当前摊位状态与货品（需先摆摊 baitan）。
+  对应 LPC cmds/usr/shop.c 的玩家视角简化版（巫师 shop 管理不在 M1 范围）。
+  """
+
+  use Kalevala.Character.Command
+
+  alias Kantele.Character.CommandView
+
+  def run(conn, _params) do
+    character = conn.character
+    meta = character.meta
+
+    text =
+      if meta.stall do
+        items = meta.shop_stock || []
+
+        if items == [] do
+          "你的摊位「#{meta.stall}」目前没有摆上货物。\n"
+        else
+          lines = ["你的摊位「#{meta.stall}」当前货品："]
+
+          items
+          |> Enum.with_index(1)
+          |> Enum.each(fn {item, idx} ->
+            lines = lines ++ ["  #{idx}. #{item["name"]} #{item["price"]}文"]
+          end)
+
+          lines |> Enum.join("\n")
+        end
+      else
+        "你还没有摆摊。使用 baitan 命令开始摆摊。\n"
+      end
+
+    conn
+    |> render(CommandView, "text", %{text: text})
+    |> prompt(CommandView, "prompt", %{})
+  end
+end

@@ -45,7 +45,11 @@ defmodule Kantele.Character.PlayerMeta do
     override: %{},
     quests: nil,
     bank_coins: nil,
-    bag: nil
+    bag: nil,
+    league: nil,
+    brothers: nil,
+    stall: nil,
+    shop_stock: nil
   ]
 
   defimpl Kalevala.Meta.Trim do
@@ -93,14 +97,15 @@ defmodule Kantele.Character.PlayerMeta do
   end
 
   def put_attack(%__MODULE__{} = meta, attack) do
-    %{meta |
-      attack_killer: attack.killer || [],
-      attack_want_kills: attack.want_kills || [],
-      attack_enemy: attack.enemy || [],
-      attack_next_action: attack.next_action,
-      attack_default_object: attack.default_object,
-      attack_default_function: attack.default_function,
-      attack_competitor: attack.competitor
+    %{
+      meta
+      | attack_killer: attack.killer || [],
+        attack_want_kills: attack.want_kills || [],
+        attack_enemy: attack.enemy || [],
+        attack_next_action: attack.next_action,
+        attack_default_object: attack.default_object,
+        attack_default_function: attack.default_function,
+        attack_competitor: attack.competitor
     }
   end
 
@@ -195,6 +200,22 @@ defmodule Kantele.Character.PlayerMeta do
   @doc "写背包内容"
   def put_bag(%__MODULE__{} = meta, bag),
     do: %{meta | bag: bag}
+
+  # ---- 帮派（落盘 metadata.league；S2 league.c）----
+  @doc "帮派信息（缺省 nil = 无帮派）"
+  def league(%__MODULE__{league: league}), do: league
+
+  @doc "写帮派信息"
+  def put_league(%__MODULE__{} = meta, league),
+    do: %{meta | league: league}
+
+  # ---- 结义（落盘 metadata.brothers；S1 brothers.c）----
+  @doc "结义列表（缺省空表）"
+  def brothers(%__MODULE__{brothers: brothers}), do: brothers || []
+
+  @doc "写结义列表"
+  def put_brothers(%__MODULE__{} = meta, brothers),
+    do: %{meta | brothers: brothers}
 end
 
 defmodule Kantele.Character.NonPlayerMeta do
@@ -265,7 +286,14 @@ defmodule Kantele.Character.NPCConfig do
     apply: %{}
   ]
 
-  def new(), do: %__MODULE__{apply: %{}, attitude: nil, no_kill: false, spawn_room_id: nil, respawn_delay: nil}
+  def new(),
+    do: %__MODULE__{
+      apply: %{},
+      attitude: nil,
+      no_kill: false,
+      spawn_room_id: nil,
+      respawn_delay: nil
+    }
 end
 
 defmodule Kantele.Character.InitialEvent do

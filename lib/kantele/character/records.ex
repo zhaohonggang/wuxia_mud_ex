@@ -40,6 +40,9 @@ defmodule ExVenture.Characters.Metadata do
     field(:option, :map, default: %{})
     field(:alias_commands, :map, default: %{})
     field(:bag, :map, default: %{})
+    field(:quest, :map, default: %{})
+    field(:league, :map, default: %{})
+    field(:brothers, {:array, :map}, default: [])
 
     timestamps()
   end
@@ -73,7 +76,10 @@ defmodule ExVenture.Characters.Metadata do
       :title,
       :option,
       :alias_commands,
-      :bag
+      :bag,
+      :quest,
+      :league,
+      :brothers
     ])
     |> validate_required([:character_id])
     |> unique_constraint(:character_id)
@@ -120,35 +126,38 @@ defmodule Kantele.Character.Records do
     meta = character.meta
 
     with {:ok, record} <- ensure_record(name) do
-        metadata =
-          Metadata.changeset(record, %{
-            str: meta.stats.str,
-            dex: meta.stats.dex,
-            con: meta.stats.con,
-            int: meta.stats.int,
-            combat_exp: meta.stats.combat_exp,
-            potential: meta.stats.potential,
-            learned_points: meta.stats.learned_points || 0,
-            max_neili: meta.vitals.max_neili,
-            max_jingli: meta.vitals.max_jingli || 0,
-            coins: meta.coins || 0,
-            bank_coins: meta.bank_coins || 0,
-            score: meta.stats.score || 0,
-            weiwang: meta.stats.weiwang || 0,
-            gongxian: meta.stats.gongxian || 0,
-            shen: meta.stats.shen || 0,
-            family: serialize_family(meta.family),
-            skills: meta.stats.skills,
-            mapped: meta.stats.mapped,
-            performs: MapSet.to_list(meta.stats.performs),
-            inventory: Enum.map(character.inventory, &%{item_id: &1.item_id}),
-            equipment: serialized_equipment(meta.combat.equipped),
-            nickname: meta.nickname,
-            title: meta.title || "",
-            option: meta.option || %{},
-            alias_commands: meta.alias_commands || %{},
-            bag: Kantele.Item.Backpack.serialize(meta.bag || [])
-          })
+      metadata =
+        Metadata.changeset(record, %{
+          str: meta.stats.str,
+          dex: meta.stats.dex,
+          con: meta.stats.con,
+          int: meta.stats.int,
+          combat_exp: meta.stats.combat_exp,
+          potential: meta.stats.potential,
+          learned_points: meta.stats.learned_points || 0,
+          max_neili: meta.vitals.max_neili,
+          max_jingli: meta.vitals.max_jingli || 0,
+          coins: meta.coins || 0,
+          bank_coins: meta.bank_coins || 0,
+          score: meta.stats.score || 0,
+          weiwang: meta.stats.weiwang || 0,
+          gongxian: meta.stats.gongxian || 0,
+          shen: meta.stats.shen || 0,
+          family: serialize_family(meta.family),
+          skills: meta.stats.skills,
+          mapped: meta.stats.mapped,
+          performs: MapSet.to_list(meta.stats.performs),
+          inventory: Enum.map(character.inventory, &%{item_id: &1.item_id}),
+          equipment: serialized_equipment(meta.combat.equipped),
+          nickname: meta.nickname,
+          title: meta.title || "",
+          option: meta.option || %{},
+          alias_commands: meta.alias_commands || %{},
+          bag: Kantele.Item.Backpack.serialize(meta.bag || []),
+          quest: Kantele.Quest.serialize(meta.quests),
+          league: meta.league || %{},
+          brothers: meta.brothers || []
+        })
 
       case Repo.insert_or_update(metadata) do
         {:ok, _metadata} ->
@@ -281,6 +290,9 @@ defmodule Kantele.Character.Records do
       |> Map.put(:option, metadata.option || %{})
       |> Map.put(:alias_commands, metadata.alias_commands || %{})
       |> Map.put(:bag, Kantele.Item.Backpack.deserialize(metadata.bag))
+      |> Map.put(:quests, Kantele.Quest.deserialize(metadata.quest))
+      |> Map.put(:league, restore_optional_map(metadata.league))
+      |> Map.put(:brothers, List.wrap(metadata.brothers))
 
     %{character | meta: meta, inventory: inventory}
   end
@@ -296,12 +308,23 @@ defmodule Kantele.Character.Records do
 
   defp restore_family(_), do: nil
 
+  # league/brothers 等社会字段：空表/空 map 视为缺失（nil），否则原样恢复
+  defp restore_optional_map(map) when is_map(map) and map_size(map) > 0, do: map
+  defp restore_optional_map(_), do: nil
+
   defp serialize_family(nil), do: %{}
 
   defp serialize_family(%{} = family) do
     case {Map.get(family, :name), Map.get(family, :master_id)} do
-      {nil, nil} -> %{}
-      _ -> %{name: Map.get(family, :name), master_id: Map.get(family, :master_id), master_name: Map.get(family, :master_name)}
+      {nil, nil} ->
+        %{}
+
+      _ ->
+        %{
+          name: Map.get(family, :name),
+          master_id: Map.get(family, :master_id),
+          master_name: Map.get(family, :master_name)
+        }
     end
   end
 

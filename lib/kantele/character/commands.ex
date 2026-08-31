@@ -208,12 +208,11 @@ defmodule Kantele.Character.Commands do
 
   module(HpCommand) do
     parse("hp", :run)
-    parse("气", :run, [],
-      fn command ->
-        command
-        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
-      end
-    )
+
+    parse("气", :run, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
   end
 
   module(HelpCommand) do
@@ -289,26 +288,21 @@ defmodule Kantele.Character.Commands do
     parse("背包", :list)
   end
 
-
   module(LookCommand) do
     parse("look", :run)
 
     # 单字母命令需带词边界断言，否则会前缀误吃 learn 等长命令
     # （路由按注册顺序先到先得）
-    parse("l", :run, [],
-      fn combinator ->
-        combinator
-        |> lookahead_not(utf8_char([?a..?z, ?A..?Z]))
-      end
-    )
+    parse("l", :run, [], fn combinator ->
+      combinator
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z]))
+    end)
 
     # 看：look 忽略参数，边界保证 "看书" 不误触（A8/N1）
-    parse("看", :run, [],
-      fn combinator ->
-        combinator
-        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
-      end
-    )
+    parse("看", :run, [], fn combinator ->
+      combinator
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
   end
 
   module(ListCommand) do
@@ -317,6 +311,10 @@ defmodule Kantele.Character.Commands do
     end)
 
     parse("list", :bare)
+  end
+
+  module(ShopCommand) do
+    parse("shop", :run)
   end
 
   module(BuyCommand) do
@@ -376,47 +374,35 @@ defmodule Kantele.Character.Commands do
     parse("down", :down, aliases: ["d"])
 
     # 中文方向别名（A8/N1）：单字加词边界，防止 "北上" 之类被吞成移动
-    parse("北", :north, [],
-      fn command ->
-        command
-        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
-      end
-    )
+    parse("北", :north, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
 
-    parse("南", :south, [],
-      fn command ->
-        command
-        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
-      end
-    )
+    parse("南", :south, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
 
-    parse("西", :west, [],
-      fn command ->
-        command
-        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
-      end
-    )
+    parse("西", :west, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
 
-    parse("东", :east, [],
-      fn command ->
-        command
-        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
-      end
-    )
+    parse("东", :east, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
 
-    parse("上", :up, [],
-      fn command ->
-        command
-        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
-      end
-    )
+    parse("上", :up, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
 
-    parse("下", :down, [],
-      fn command ->
-        command
-        |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
-      end
-    )
+    parse("下", :down, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
   end
 
   module(PerformCommand) do
@@ -1038,7 +1024,9 @@ defmodule Kantele.Character.Commands do
   end
 
   module(PurchaseCommand) do
-    parse("purchase", :run)
+    parse("purchase", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
   end
 
   module(DaubCommand) do
@@ -1055,6 +1043,18 @@ defmodule Kantele.Character.Commands do
 
   module(IdCommand) do
     parse("id", :run)
+  end
+
+  module(AuctionCommand) do
+    parse("auction", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+  end
+
+  module(BaitanCommand) do
+    parse("baitan", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
   end
 
   # 表情名直用已改为 EmoteCommand 里的显式 parse（smile/wave/frown）。

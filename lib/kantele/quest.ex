@@ -87,6 +87,32 @@ defmodule Kantele.Quest do
     %{state | todo: Map.delete(todo, quest_file)}
   end
 
+  # ---- 序列化（P0 持久化）----
+
+  @doc "序列化为可落盘结构；nil（未初始化）序列化为空状态"
+  def serialize(nil), do: %{todo: %{}, solved: []}
+
+  def serialize(%{todo: todo, solved: solved}) do
+    todo =
+      Enum.into(todo, %{}, fn {file, task} ->
+        {to_string(file), task}
+      end)
+
+    %{todo: todo, solved: Enum.map(solved, &to_string/1)}
+  end
+
+  @doc "从落盘结构恢复；非法输入回退空状态"
+  def deserialize(%{todo: todo, solved: solved}) when is_map(todo) and is_list(solved) do
+    todo =
+      Enum.into(todo, %{}, fn {file, task} ->
+        {to_string(file), task}
+      end)
+
+    %{todo: todo, solved: Enum.map(solved, &to_string/1)}
+  end
+
+  def deserialize(_), do: %{todo: %{}, solved: []}
+
   # ---- 击杀进度（addKilled / getKilled）----
 
   @doc "累计击杀（LPC addKilled；怪须在 spec.kill 声明过）"

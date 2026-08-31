@@ -13,7 +13,8 @@ defmodule Kantele.Communication do
   def initial_channels() do
     [
       {"general", Kantele.Communication.BroadcastChannel, []},
-      {"rumor", Kantele.Communication.BroadcastChannel, []}
+      {"rumor", Kantele.Communication.BroadcastChannel, []},
+      {"bill", Kantele.Communication.BroadcastChannel, []}
     ]
   end
 
