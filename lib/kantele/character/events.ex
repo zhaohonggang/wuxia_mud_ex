@@ -53,6 +53,10 @@ defmodule Kantele.Character.Events do
       event("assist/request", :request)
     end
 
+    module(StealEvent) do
+      event("steal/result", :result)
+    end
+
     module(CutEvent) do
       event("cut/result", :result)
     end

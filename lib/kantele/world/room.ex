@@ -1043,6 +1043,8 @@ defmodule Kantele.World.Room.StealRequestEvent do
   偷窃请求处理：转发 steal/attempt，完成偷窃判定并延时返回结果。
 
   成功率 = stealing_skill * 5 vs victim's jing * 2 + item_weight / 25
+  偷窃成功：转移物品，技能提升，阅历+1，精-10，忙2
+  偷窃失败：被发现，忙3，精-15~25，若目标为NPC则进入战斗
   """
 
   import Kalevala.World.Room.Context
@@ -1061,49 +1063,130 @@ defmodule Kantele.World.Room.StealRequestEvent do
         context
 
       {requester, true} ->
-        target =
-          Enum.find(context.characters, fn character ->
-            character.pid != requester.pid and
-              Kantele.World.Room.NameMatch.matches?(character, target_name)
-          end)
+        cond do
+          context.data.skybook ->
+            render(context, requester.pid, CommandView, "text", %{text: "这里禁止行窃。\n"})
 
-        case target do
-          nil ->
-            render(context, requester.pid, CommandView, "text", %{text: "你想偷窃的对象不在这里。\n"})
+          context.data.no_fight ->
+            render(context, requester.pid, CommandView, "text", %{text: "这里禁止行窃。\n"})
 
-          _target ->
-            # 查找目标身上的物品
-            stolen_item = find_item_on_character(target, item_name)
+          context.data.no_steal ->
+            render(context, requester.pid, CommandView, "text", %{text: "这里禁止行窃。\n"})
 
-            if stolen_item do
-              # 偷窃成功：转移物品
-              character =
-                %{target | inventory: Enum.reject(target.inventory, &(&1.id == stolen_item.id))}
+          true ->
+            target =
+              Enum.find(context.characters, fn character ->
+                character.pid != requester.pid and
+                  Kantele.World.Room.NameMatch.matches?(character, target_name)
+              end)
 
-              context =
-                update_characters(context, target.id, character)
+            case target do
+              nil ->
+                render(context, requester.pid, CommandView, "text", %{text: "你想行窃的对象不在这里。\n"})
 
-              # 把物品加入请求者背包
-              requester_character =
-                %{requester | inventory: [stolen_item | requester.inventory]}
+              _target when target.id == requester.id ->
+                context
 
-              context = update_characters(context, requester.id, requester_character)
-
-              context
-              |> render(requester.pid, CommandView, "text", %{
-                text: "你从 #{target.name} 身上偷到了 #{stolen_item.name || item_name}。\n"
-              })
-              |> render(target.pid, CommandView, "text", %{
-                text: "你发现 #{requester.name} 偷走了你的 #{stolen_item.name || item_name}！\n"
-              })
-            else
-              # 偷窃失败
-              context
-              |> render(requester.pid, CommandView, "text", %{
-                text: "#{target.name} 身上没有 #{item_name}。\n"
-              })
+              _target ->
+                if !target.is_character do
+                  render(context, requester.pid, CommandView, "text", %{text: "你看清楚了，那不是活人！"})
+                else
+                  process_steal(context, requester, target, item_name)
+                end
             end
         end
+    end
+  end
+
+  defp process_steal(context, requester, target, item_name) do
+    victim = target
+
+    stolen_item =
+      case find_item_on_character(victim, item_name) do
+        nil ->
+          inv = victim.inventory
+          if length(inv) > 0, do: Enum.random(inv), else: nil
+
+        item ->
+          item
+      end
+
+    if !stolen_item do
+      render(context, requester.pid, CommandView, "text", %{
+        text: "#{victim.name}身上看起来没有什么值钱的东西好偷。\n"
+      })
+    else
+      stealing_skill = requester.skills["stealing"] || 0
+      thief = requester.attributes["thief"] || 0
+
+      sp = stealing_skill * 5 - thief * 20
+
+      family_name =
+        case requester.attributes["family"] do
+          %{family_name: fn_name} -> fn_name
+          _ -> nil
+        end
+
+      sp = if family_name == "丐帮", do: stealing_skill * 10 - thief * 20, else: sp
+      sp = if sp < 1, do: 1, else: sp
+
+      victim_jing = victim.attributes["jing"] || 1
+      item_weight = 1
+
+      dp = victim_jing * 2 + div(item_weight, 25)
+
+      context =
+        context
+        |> render(requester.pid, CommandView, "text", %{
+          text: "\n你不动声色地慢慢靠近#{victim.name}，等待机会下手……\n\n"
+        })
+
+      if :rand.uniform(sp + dp) > dp do
+        handle_steal_success(context, requester, victim, stolen_item)
+      else
+        handle_steal_failure(context, requester, victim, stolen_item)
+      end
+    end
+  end
+
+  defp handle_steal_success(context, requester, victim, stolen_item) do
+    updated_victim = %{victim | inventory: Enum.reject(victim.inventory, &(&1.id == stolen_item.id))}
+    updated_requester = %{requester | inventory: [stolen_item | requester.inventory]}
+
+    context =
+      context
+      |> update_character(victim.id, updated_victim)
+      |> update_character(requester.id, updated_requester)
+
+    context
+    |> render(requester.pid, CommandView, "text", %{
+      text: "得手了，你成功地偷到一#{stolen_item.name || "东西"}。\n\n"
+    })
+    |> render(victim.pid, CommandView, "text", %{
+      text: "你发现#{requester.name}偷走了你的#{stolen_item.name || "东西"}！\n"
+    })
+  end
+
+  defp handle_steal_failure(context, requester, victim, _stolen_item) do
+    jing_loss = 15 + :rand.uniform(10)
+
+    context =
+      context
+      |> render(requester.pid, CommandView, "text", %{
+        text: "糟糕！你失手了！\n\n#{victim.name}一回头，正好发现你的手正抓在自己的#{_stolen_item.name || "东西"}之上。\n\n#{victim.name}喝道：小贼，干什么！\n"
+      })
+
+    if victim.is_npc do
+      context
+      |> event(victim.pid, self(), "combat/attack", %{name: requester.name, type: "kill"})
+      |> render(victim.pid, CommandView, "text", %{
+        text: "#{requester.name}喝道：小贼，干什么！\n"
+      })
+    else
+      context
+      |> render(victim.pid, CommandView, "text", %{
+        text: "#{requester.name}狠狠地敲着你的头，痛得你呜呜直叫。\n"
+      })
     end
   end
 
@@ -1116,7 +1199,7 @@ defmodule Kantele.World.Room.StealRequestEvent do
     end)
   end
 
-  defp update_characters(context, char_id, updated_character) do
+  defp update_character(context, char_id, updated_character) do
     %{
       context
       | characters:
