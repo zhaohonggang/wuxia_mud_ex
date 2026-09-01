@@ -327,24 +327,27 @@ defmodule Kantele.Combat.Skills.TaijiQuan do
   def valid_combine(combo), do: combo in ["wudang-zhang", "paiyun-shou"]
 
   @doc "借力打力（valid_damage）：太极拳核心反制"
-  def valid_damage(attacker_stats, me_stats, _damage, _weapon) do
-    # 太极拳等级 >= 100，防守方存活，空手
-    taiji_lvl = Map.get(me_stats.skills, "taiji-quan", 0)
+  def valid_damage(attacker, victim, damage, _action) do
+    taiji_lvl = Map.get(victim.skills, "taiji-quan", 0)
+    victim_weapon = victim.weapon_name
 
-    if taiji_lvl >= 100 and Map.get(attacker_stats, :living, true) and
-         Map.get(attacker_stats, :weapon_name, nil) == nil do
-      mp = Map.get(attacker_stats, :skills, %{}) |> Map.get("taiji-quan", 0)
-      ap = Map.get(attacker_stats, :force, 0) + mp
-      dp = div(Map.get(me_stats, :parry, 0), 2) + taiji_lvl
+    if taiji_lvl >= 100 and victim_weapon == nil do
+      mp = Map.get(attacker.skills, "count", 0)
+      ap = Map.get(attacker.skills, "force", 0) + mp
+      dp = div(Map.get(victim.skills, "parry", 0), 2) + taiji_lvl
 
       if div(ap, 2) + :rand.uniform(ap) < dp do
-        # 成功化解，伤害回弹
-        {:reduce_damage, 100, "$n面含微笑，双手齐出，划出了一个圆圈，竟然让$N的攻击全不着力。\n"}
+        msg = case :rand.uniform(3) do
+          1 -> "$n面含微笑，双手齐出，划出了一个圆圈，竟然让$N的攻击全不着力。\n"
+          2 -> "$n左右格档，使出四两拨千斤的手法，化解$N的攻势于无形。\n"
+          _ -> "$n慢慢出拳，动作虽然缓慢，却让$N感到浑身粘滞，甚不舒畅。\n"
+        end
+        {0, msg}
       else
-        {:reduce_damage, 0, ""}
+        {damage, nil}
       end
     else
-      :no_effect
+      {damage, nil}
     end
   end
 

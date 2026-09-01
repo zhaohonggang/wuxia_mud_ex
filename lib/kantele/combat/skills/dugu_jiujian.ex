@@ -292,8 +292,6 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
   @impl true
   def practice_cost(), do: %{qi: 0, neili: 0}
 
-  # 无招标记 -> 双表切换
-  # nothing? = 是否“无招”境界
   @impl true
   def query_action(nothing?, level, rng \\ &:rand.uniform/1) do
     table = if nothing?, do: @actions2, else: @actions
@@ -318,29 +316,41 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
     end
   end
 
-  # 破招判定（valid_damage）
-  def valid_damage(
-        nothing?,
-        dugu_sword,
-        attacker_parry,
-        attacker_count,
-        defender_parry,
-        damage
-      ) do
-    cond do
-      nothing? and dugu_sword * 3 + random(dugu_sword) > defender_parry * 4 ->
-        %{damage_reduction: -damage, msg: "$n不理会$N的攻势，随意挥出一剑，反攻向$N。\n"}
+  @impl true
+  def valid_damage(attacker, victim, damage, _action) do
+    victim_dugu = Map.get(victim.skills, "dugu-jiujian", 0)
+    victim_weapon = victim.weapon_name
+    victim_busy = Map.get(victim, :busy, 0)
 
-      div(attacker_parry + attacker_count, 2) + random(attacker_parry + attacker_count) <
-          defender_parry ->
-        %{damage_reduction: -damage, msg: "$n以攻为守，剑法突变，刹那间反制$N。\n"}
+    if victim_dugu < 120 or victim_weapon == nil or victim_busy != 0 do
+      {damage, nil}
+    else
+      mp = Map.get(attacker.skills, "count", 0)
+      ap = Map.get(attacker.skills, "parry", 0) + mp
+      dp = div(Map.get(victim.skills, "parry", 0), 2) + victim_dugu
 
-      true ->
-        nil
+      if div(ap, 2) + random(ap) < dp do
+        msg = case random(9) do
+          0 -> "$n踏前一步，剑式斜指$P右臂，想要使$P闪身而退。\n"
+          1 -> "$n以攻为守，以进为退，凝神运气向$P猛攻快打地挥出方位大异的泰山「快活三」三剑。\n"
+          2 -> "$n剑法突变，剑势伸缩不定，奔腾矫夭，逆使嵩山剑法的「天外玉龙」企图迫使$P变招。\n"
+          3 -> "$n突然一剑点向$P的$l，虽一剑却暗藏无数后着，$P手足无措，攻势不由自主停了下来。\n"
+          4 -> "$n不闪不避，举剑闪电般使出「叠翠浮青」反削$P的$l，想挡过你此招。\n"
+          5 -> "$n突然使出青城派松风剑法的「鸿飞冥冥」，长剑对着$P一绞，企图突破$P的攻势。\n"
+          6 -> "$n挺剑一招象是「白云出岫」回刺$P的$l，企图将$P的攻势化解。\n"
+          7 -> "$n不退反进，身如飘风，一式「天柱云气」动向无定，挡住了$P的进攻。\n"
+          _ -> "$n不退反进，使出恒山剑招「绵里藏针」，森森剑气充溢四周！架开了$P的这招。\n"
+        end
+        {0, msg}
+      else
+        {damage, nil}
+      end
     end
   end
 
-  def hit_ob(_me, _victim, _damage_bonus, _lvl), do: %{}
+  @impl true
+  def hit_ob(attacker, _victim, _action), do: %{}
+
   defp random(res) when res < 1, do: 0
   defp random(res), do: :rand.uniform(res)
 end
