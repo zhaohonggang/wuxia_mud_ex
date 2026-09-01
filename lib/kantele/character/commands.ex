@@ -1077,6 +1077,11 @@ defmodule Kantele.Character.Commands do
     parse("id", :run)
   end
 
+  module(SleepCommand) do
+    parse("sleep", :run)
+    parse("睡觉", :run)
+  end
+
   module(AuctionCommand) do
     parse("auction", :run, fn command ->
       command |> spaces() |> text(:rest)

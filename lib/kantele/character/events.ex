@@ -57,6 +57,10 @@ defmodule Kantele.Character.Events do
       event("steal/result", :result)
     end
 
+    module(SleepEvent) do
+      event("sleep/wakeup", :wakeup)
+    end
+
     module(CutEvent) do
       event("cut/result", :result)
     end
