@@ -832,8 +832,19 @@ defmodule Kantele.Character.Commands do
   end
 
   module(BrothersCommand) do
-    parse("brothers", :run)
-    parse("兄弟", :run)
+    parse("brothers", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("兄弟", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+  end
+
+  module(SwearCommand) do
+    parse("swear", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
   end
 
   module(JifenCommand) do

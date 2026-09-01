@@ -512,6 +512,10 @@ defmodule Kantele.World.Room.Events do
       event("check/request", :call)
     end
 
+    module(SwearRequestEvent) do
+      event("swear/request", :call)
+    end
+
     module(SearchRequestEvent) do
       event("search/attempt", :call)
     end
@@ -1485,6 +1489,80 @@ defmodule Kantele.World.Room.SearchRequestEvent do
   end
 end
 
+defmodule Kantele.World.Room.SwearRequestEvent do
+  @moduledoc """
+  结拜请求处理：转发 swear/request，在同房间寻找目标玩家并转发结拜请求。
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+
+  def call(context, %{data: %{target_name: target_name}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case requester do
+      nil ->
+        context
+
+      _ ->
+        target =
+          Enum.find(context.characters, fn c ->
+            c.pid != requester.pid and
+              Kantele.World.Room.NameMatch.matches?(c, target_name)
+          end)
+
+        case target do
+          nil ->
+            render(context, requester.pid, CommandView, "text", %{text: "这里没有 #{target_name}。\n"})
+
+          _target ->
+            if target.id == requester.id do
+              render(context, requester.pid, CommandView, "text", %{text: "你不能和自己结拜。\n"})
+            else
+              # 检查年龄
+              requester_age = requester.attributes["age"] || 0
+              target_age = target.attributes["age"] || 0
+
+              if requester_age < 18 do
+                render(context, requester.pid, CommandView, "text", %{text: "小毛孩子捣什么乱？一边玩去！\n"})
+              else
+                if target_age < 18 do
+                  render(context, requester.pid, CommandView, "text", %{text: "#{target.name}还是一个小毛孩子，你就省省吧，别逗人家了。\n"})
+                else
+                  if !target.attributes["can_speak"] do
+                    render(context, requester.pid, CommandView, "text", %{text: "你看清楚了，那不是活人！\n"})
+                  else
+                    # 检查是否已经结义
+                    requester_brothers = requester.meta.brothers || %{}
+                    if Map.has_key?(requester_brothers, target.id) do
+                      render(context, requester.pid, CommandView, "text", %{text: "你已经和#{target.name}结义了。\n"})
+                    else
+                      if map_size(requester_brothers) > 12 do
+                        render(context, requester.pid, CommandView, "text", %{text: "你结义的兄弟也太多了，连你自己都快记不清楚了。\n"})
+                      else
+                        # 发送结拜请求给目标
+                        context
+                        |> render(target.pid, CommandView, "text", %{
+                          text: "#{requester.name}请求和你结拜，你答应(right)还是不答应(refuse)？\n"
+                        })
+                        |> render(requester.pid, CommandView, "text", %{
+                          text: "你向#{target.name}提出结拜请求，等待对方回应...\n"
+                        })
+
+                        # 记录待处理请求
+                        # TODO: 记录 pending/swear 到双方 meta
+                        context
+                      end
+                    end
+                  end
+                end
+            end
+        end
+    end
+  end
+end
+
 defmodule Kantele.World.Room.ForwardEvent do
   import Kalevala.World.Room.Context
 
@@ -1908,4 +1986,5 @@ defmodule Kantele.World.Room.CombatEvent do
       dead?(character) == false and MapSet.member?(player_ids, character.id)
     end)
   end
+end
 end
