@@ -1093,6 +1093,12 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(MakeCommand) do
+    parse("make", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+  end
+
   module(SleepCommand) do
     parse("sleep", :run)
     parse("睡觉", :run)
