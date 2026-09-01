@@ -516,6 +516,11 @@ defmodule Kantele.World.Room.Events do
       event("swear/request", :call)
     end
 
+    module(SwearAnswerEvent) do
+      event("swear/answer", :call)
+      event("swear/cancel", :call)
+    end
+
     module(SearchRequestEvent) do
       event("search/attempt", :call)
     end
@@ -1497,6 +1502,7 @@ defmodule Kantele.World.Room.SwearRequestEvent do
   import Kalevala.World.Room.Context
 
   alias Kantele.Character.CommandView
+  alias Kantele.Character.PlayerMeta
 
   def call(context, %{data: %{target_name: target_name}} = _event) do
     requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
@@ -1521,6 +1527,8 @@ defmodule Kantele.World.Room.SwearRequestEvent do
   end
 
   defp check_target(context, requester, target) do
+    requester_brothers = PlayerMeta.brothers(requester.meta)
+
     cond do
       target.id == requester.id ->
         render(context, requester.pid, CommandView, "text", %{text: "你不能和自己结拜。\n"})
@@ -1536,22 +1544,120 @@ defmodule Kantele.World.Room.SwearRequestEvent do
       not target.attributes["can_speak"] ->
         render(context, requester.pid, CommandView, "text", %{text: "你看清楚了，那不是活人！\n"})
 
-      Map.has_key?(requester.meta.brothers || %{}, target.id) ->
+      Enum.any?(requester_brothers, &(&1.id == target.id)) ->
         render(context, requester.pid, CommandView, "text", %{text: "你已经和#{target.name}结义了。\n"})
 
-      map_size(requester.meta.brothers || %{}) > 12 ->
+      length(requester_brothers) > 12 ->
         render(context, requester.pid, CommandView, "text", %{text: "你结义的兄弟也太多了，连你自己都快记不清楚了。\n"})
 
       true ->
-        # 发送结拜请求给目标
+        # 通知请求方：建立 pending/swear 状态
+        context =
+          event(context, requester.pid, self(), "swear/pending", %{
+            target_id: target.id,
+            target_name: target.name
+          })
+
+        # 通知被邀方：建立 pending/answer 状态并提示回答
         context
-        |> render(target.pid, CommandView, "text", %{
-          text: "#{requester.name}请求和你结拜，你答应(right)还是不答应(refuse)？\n"
+        |> event(target.pid, self(), "swear/request", %{
+          from_id: requester.id,
+          from_name: requester.name
         })
         |> render(requester.pid, CommandView, "text", %{
           text: "你向#{target.name}提出结拜请求，等待对方回应...\n"
         })
     end
+  end
+end
+
+defmodule Kantele.World.Room.SwearAnswerEvent do
+  @moduledoc """
+  结拜应答处理：把 right/refuse 事件转给请求方，并完成结拜记录。
+
+  - `right`：把双方写入对方结义名单（swear/joined），双方各自落盘
+  - `refuse`：通知请求方被拒绝
+  - `swear/cancel`：请求方取消，清除被邀方的待处理状态
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+
+  def call(context, %{data: %{answer: "right", target_name: target_name}} = _event) do
+    answerer = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case answerer do
+      nil ->
+        context
+
+      _ ->
+        requester = lookup_requester(context, answerer, target_name)
+
+        case requester do
+          nil ->
+            render(context, answerer.pid, CommandView, "text", %{text: "这里没有你要找的人。\n"})
+
+          _ ->
+            context
+            |> event(requester.pid, self(), "swear/joined", %{
+              partner_id: answerer.id,
+              partner_name: answerer.name
+            })
+            |> event(answerer.pid, self(), "swear/joined", %{
+              partner_id: requester.id,
+              partner_name: requester.name
+            })
+            |> render(requester.pid, CommandView, "text", %{
+              text: "你和#{answerer.name}结拜成异姓兄弟了！\n"
+            })
+            |> render(answerer.pid, CommandView, "text", %{
+              text: "你看着#{requester.name}，笑道：「好！从今往后，我与你结为异姓兄弟！」\n"
+            })
+        end
+    end
+  end
+
+  def call(context, %{data: %{answer: "refuse", target_name: target_name}} = _event) do
+    answerer = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case answerer do
+      nil ->
+        context
+
+      _ ->
+        requester = lookup_requester(context, answerer, target_name)
+        from = if requester, do: requester.pid, else: answerer.pid
+
+        render(context, from, CommandView, "text", %{
+          text: (if requester, do: "#{answerer.name}拒绝了你的结拜请求。", else: "这人没有向你提出什么要求啊？") <> "\n"
+        })
+    end
+  end
+
+  def call(context, %{data: %{target_name: target_name}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case requester do
+      nil ->
+        context
+
+      _ ->
+        target = lookup_requester(context, requester, target_name)
+
+        if target do
+          event(context, target.pid, self(), "swear/cancelled", %{from_id: requester.id})
+        else
+          context
+        end
+    end
+  end
+
+  defp lookup_requester(context, answerer, name) do
+    Enum.find(context.characters, fn c ->
+      c.pid != answerer.pid and
+        Kantele.World.Room.NameMatch.matches?(c, name)
+    end)
   end
 end
 

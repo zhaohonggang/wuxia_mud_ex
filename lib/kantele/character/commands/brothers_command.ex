@@ -9,6 +9,7 @@ defmodule Kantele.Character.BrothersCommand do
   use Kalevala.Character.Command
 
   alias Kantele.Character.CommandView
+  alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Records
 
   def run(conn, %{"rest" => rest}) do
@@ -35,16 +36,16 @@ defmodule Kantele.Character.BrothersCommand do
 
   defp list_brothers(conn) do
     character = conn.character
-    brothers = Map.get(character.meta, :brothers, %{})
+    brothers = PlayerMeta.brothers(character.meta)
 
-    if map_size(brothers) == 0 do
+    if brothers == [] do
       conn
       |> render(CommandView, "text", %{text: "你现在还没有结义的兄弟们。\n"})
       |> prompt(CommandView, "prompt", %{})
     else
       brother_list =
         brothers
-        |> Enum.map(fn {id, name} -> "#{name}(#{id})" end)
+        |> Enum.map(fn %{id: id, name: name} -> "#{name}(#{id})" end)
         |> Enum.join("、")
 
       conn
@@ -55,41 +56,51 @@ defmodule Kantele.Character.BrothersCommand do
 
   defp break_oath(conn, name) do
     character = conn.character
-    brothers = Map.get(character.meta, :brothers, %{})
 
-    target_id = Enum.find(Map.keys(brothers), fn id -> brothers[id] == name end)
-
-    if !target_id do
-      conn
-      |> render(CommandView, "text", %{text: "你现在没有这个结拜兄弟啊。\n"})
-      |> prompt(CommandView, "prompt", %{})
-    else
-      # Check for confirmation
-      if character.meta.temp["pending/brother_out"] == target_id do
-        # Confirmed - break the oath
-        new_brothers = Map.delete(brothers, target_id)
-        new_meta = Map.put(character.meta, :brothers, new_brothers)
-        new_meta = Map.delete(new_meta, "pending/brother_out")
-        new_character = %{character | meta: new_meta}
-        new_conn = put_character(conn, new_character)
-
-        new_conn
-        |> render(CommandView, "text", %{text: "你和#{name}断绝了关系。\n"})
+    case Enum.find(PlayerMeta.brothers(character.meta), &(&1.name == name)) do
+      nil ->
+        conn
+        |> render(CommandView, "text", %{text: "你现在没有这个结拜兄弟啊。\n"})
         |> prompt(CommandView, "prompt", %{})
-        |> save()
-        # TODO: Notify the other player and remove from their brothers list
-      else
-        # First time - ask for confirmation
-        new_meta = Map.put(character.meta, "pending/brother_out", target_id)
-        new_character = %{character | meta: new_meta}
-        new_conn = put_character(conn, new_character)
 
-        new_conn
-        |> render(CommandView, "text", %{text: "你确定要和这位朋友(#{name})割袍断义吗？\n如果你确定，请再输入一次这条命令。\n"})
-        |> prompt(CommandView, "prompt", %{})
-        |> save()
-      end
+      target ->
+        if PlayerMeta.get_temp(character.meta, "pending/brother_out") == name do
+          confirmed_break(conn, target)
+        else
+          character = PlayerMeta.put_temp(character.meta, "pending/brother_out", name)
+          conn = put_character(conn, %{conn.character | meta: character})
+          save(conn)
+
+          conn
+          |> render(CommandView, "text", %{
+            text: "你确定要和这位朋友(#{name})割袍断义吗？\n" <>
+                    "如果你确定，请再输入一次这条命令。\n"
+          })
+          |> prompt(CommandView, "prompt", %{})
+        end
     end
+  end
+
+  defp confirmed_break(conn, target) do
+    character = conn.character
+    name = target.name
+
+    remaining = Enum.reject(PlayerMeta.brothers(character.meta), &(&1.id == target.id))
+
+    meta =
+      character.meta
+      |> PlayerMeta.put_brothers(remaining)
+      |> PlayerMeta.delete_temp("pending/brother_out")
+
+    new_conn = put_character(conn, %{character | meta: meta})
+    save(new_conn)
+
+    # TODO: 通知对方并同步移除对方名单（需跨角色更新，后续批处理）
+    # LPC 用 UPDATE_D 清除双方 brothers:<id> 关联；此处先只改己方名单。
+
+    new_conn
+    |> render(CommandView, "text", %{text: "你和#{name}断绝了关系。\n"})
+    |> prompt(CommandView, "prompt", %{})
   end
 
   defp save(conn) do

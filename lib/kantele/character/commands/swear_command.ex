@@ -3,13 +3,13 @@ defmodule Kantele.Character.SwearCommand do
   结拜命令：`swear with <玩家>` | `swear cancel`
 
   对应 LPC cmds/usr/swear.c
-  与其他玩家结拜结义，需双方同意。
+  与其他玩家结拜结义，需双方同意（对方用 right/refuse 回应）。
   """
 
   use Kalevala.Character.Command
 
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Records
+  alias Kantele.Character.PlayerMeta
 
   def run(conn, %{"arg" => arg}) do
     arg = String.trim(arg || "")
@@ -44,43 +44,41 @@ defmodule Kantele.Character.SwearCommand do
     character = conn.character
 
     cond do
-      character.meta.combat.enemies != [] ->
+      busy?(character) or fighting?(character) ->
         conn
         |> render(CommandView, "text", %{text: "好好忙你手头的事情！\n"})
         |> prompt(CommandView, "prompt", %{})
 
-      character.meta.temp["busy"] ->
-        conn
-        |> render(CommandView, "text", %{text: "好好忙你手头的事情！\n"})
-        |> prompt(CommandView, "prompt", %{})
-
-      character.attributes["age"] < 18 ->
+      age(character) < 18 ->
         conn
         |> render(CommandView, "text", %{text: "小毛孩子捣什么乱？一边玩去！\n"})
         |> prompt(CommandView, "prompt", %{})
 
+      PlayerMeta.get_temp(character.meta, "pending/swear") != nil ->
+        conn
+        |> render(CommandView, "text", %{text: "你正在向人家提出请求呢，可是人家还没有答应你。\n"})
+        |> prompt(CommandView, "prompt", %{})
+
       true ->
-        # Check if there's an existing pending request
-        if character.meta.temp["pending/swear"] do
-          conn
-          |> render(CommandView, "text", %{text: "你正在向人家提出请求呢，可是人家还没有答应你。\n"})
-          |> prompt(CommandView, "prompt", %{})
-        else
-          conn
-          |> event("swear/request", %{target_name: name})
-          |> assign(:prompt, false)
-        end
+        # 交给房间解析目标并转发请求
+        conn
+        |> event("swear/request", %{target_name: name})
+        |> assign(:prompt, false)
     end
   end
 
   defp cancel_swear(conn) do
     character = conn.character
 
-    if character.meta.temp["pending/swear"] do
-      new_meta = Map.delete(character.meta.temp, "pending/swear")
-      new_meta = Map.put(character.meta, :temp, new_meta)
-      new_character = %{character | meta: new_meta}
-      new_conn = put_character(conn, new_character)
+    if PlayerMeta.get_temp(character.meta, "pending/swear") do
+      meta = PlayerMeta.delete_temp(character.meta, "pending/swear")
+      new_conn = put_character(conn, %{character | meta: meta})
+
+      # 通知房间取消（清除对方 pending/answer 标记）
+      new_conn =
+        event(new_conn, "swear/cancel", %{
+          target_name: PlayerMeta.get_temp(character.meta, "pending/swear")
+        })
 
       new_conn
       |> render(CommandView, "text", %{text: "你打消了结义的念头。\n"})
@@ -93,8 +91,14 @@ defmodule Kantele.Character.SwearCommand do
     end
   end
 
+  defp busy?(character), do: PlayerMeta.get_temp(character.meta, "busy") != nil
+
+  defp fighting?(character), do: character.meta.combat.enemies != []
+
+  defp age(character), do: character.attributes["age"] || 0
+
   defp save(conn) do
-    Records.save(conn.private.update_character || conn.character)
+    Kantele.Character.Records.save(conn.private.update_character || conn.character)
     conn
   end
 end

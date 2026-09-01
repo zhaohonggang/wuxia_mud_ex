@@ -847,6 +847,18 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(RightCommand) do
+    parse("right", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+  end
+
+  module(RefuseCommand) do
+    parse("refuse", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+  end
+
   module(JifenCommand) do
     parse("jifen", :run)
     parse("积分", :run)

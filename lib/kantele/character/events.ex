@@ -62,7 +62,10 @@ defmodule Kantele.Character.Events do
     end
 
     module(SwearEvent) do
-      event("swear/answer", :answer)
+      event("swear/request", :request)
+      event("swear/pending", :pending)
+      event("swear/joined", :joined)
+      event("swear/cancelled", :cancelled)
     end
 
     module(CutEvent) do
