@@ -51,7 +51,7 @@ defmodule ExVenture.MixProject do
       {:ex_doc, "~> 0.23", only: :dev, runtime: false},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:kalevala, "~> 0.1"},
+      {:kalevala, path: "vendor/kalevala"},
       {:logster, "~> 1.0"},
       {:phoenix, "~> 1.5"},
       {:phoenix_ecto, "~> 4.0"},

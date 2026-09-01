@@ -325,7 +325,7 @@ defmodule Kantele.World.Room do
       # 找房间里的守卫 NPC（有 guarder 配置且 is_guarder? 为 true）
       guarders =
         Enum.filter(context.characters, fn c ->
-          c.meta.guarder && Guarder.is_guarder?(c)
+          Map.get(c.meta, :guarder) && Guarder.is_guarder?(c)
         end)
 
       Enum.reduce_while(guarders, :allow, fn guarder, acc ->
@@ -1512,53 +1512,45 @@ defmodule Kantele.World.Room.SwearRequestEvent do
               Kantele.World.Room.NameMatch.matches?(c, target_name)
           end)
 
-        case target do
-          nil ->
-            render(context, requester.pid, CommandView, "text", %{text: "这里没有 #{target_name}。\n"})
+        check_target(context, requester, target)
+    end
+  end
 
-          _target ->
-            if target.id == requester.id do
-              render(context, requester.pid, CommandView, "text", %{text: "你不能和自己结拜。\n"})
-            else
-              # 检查年龄
-              requester_age = requester.attributes["age"] || 0
-              target_age = target.attributes["age"] || 0
+  defp check_target(context, requester, nil) do
+    render(context, requester.pid, CommandView, "text", %{text: "这里没有你要找的人。\n"})
+  end
 
-              if requester_age < 18 do
-                render(context, requester.pid, CommandView, "text", %{text: "小毛孩子捣什么乱？一边玩去！\n"})
-              else
-                if target_age < 18 do
-                  render(context, requester.pid, CommandView, "text", %{text: "#{target.name}还是一个小毛孩子，你就省省吧，别逗人家了。\n"})
-                else
-                  if !target.attributes["can_speak"] do
-                    render(context, requester.pid, CommandView, "text", %{text: "你看清楚了，那不是活人！\n"})
-                  else
-                    # 检查是否已经结义
-                    requester_brothers = requester.meta.brothers || %{}
-                    if Map.has_key?(requester_brothers, target.id) do
-                      render(context, requester.pid, CommandView, "text", %{text: "你已经和#{target.name}结义了。\n"})
-                    else
-                      if map_size(requester_brothers) > 12 do
-                        render(context, requester.pid, CommandView, "text", %{text: "你结义的兄弟也太多了，连你自己都快记不清楚了。\n"})
-                      else
-                        # 发送结拜请求给目标
-                        context
-                        |> render(target.pid, CommandView, "text", %{
-                          text: "#{requester.name}请求和你结拜，你答应(right)还是不答应(refuse)？\n"
-                        })
-                        |> render(requester.pid, CommandView, "text", %{
-                          text: "你向#{target.name}提出结拜请求，等待对方回应...\n"
-                        })
+  defp check_target(context, requester, target) do
+    cond do
+      target.id == requester.id ->
+        render(context, requester.pid, CommandView, "text", %{text: "你不能和自己结拜。\n"})
 
-                        # 记录待处理请求
-                        # TODO: 记录 pending/swear 到双方 meta
-                        context
-                      end
-                    end
-                  end
-                end
-            end
-        end
+      (requester.attributes["age"] || 0) < 18 ->
+        render(context, requester.pid, CommandView, "text", %{text: "小毛孩子捣什么乱？一边玩去！\n"})
+
+      (target.attributes["age"] || 0) < 18 ->
+        render(context, requester.pid, CommandView, "text", %{
+          text: "#{target.name}还是一个小毛孩子，你就省省吧，别逗人家了。\n"
+        })
+
+      not target.attributes["can_speak"] ->
+        render(context, requester.pid, CommandView, "text", %{text: "你看清楚了，那不是活人！\n"})
+
+      Map.has_key?(requester.meta.brothers || %{}, target.id) ->
+        render(context, requester.pid, CommandView, "text", %{text: "你已经和#{target.name}结义了。\n"})
+
+      map_size(requester.meta.brothers || %{}) > 12 ->
+        render(context, requester.pid, CommandView, "text", %{text: "你结义的兄弟也太多了，连你自己都快记不清楚了。\n"})
+
+      true ->
+        # 发送结拜请求给目标
+        context
+        |> render(target.pid, CommandView, "text", %{
+          text: "#{requester.name}请求和你结拜，你答应(right)还是不答应(refuse)？\n"
+        })
+        |> render(requester.pid, CommandView, "text", %{
+          text: "你向#{target.name}提出结拜请求，等待对方回应...\n"
+        })
     end
   end
 end
@@ -1986,5 +1978,4 @@ defmodule Kantele.World.Room.CombatEvent do
       dead?(character) == false and MapSet.member?(player_ids, character.id)
     end)
   end
-end
 end
