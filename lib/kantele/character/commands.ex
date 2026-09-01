@@ -271,7 +271,11 @@ defmodule Kantele.Character.Commands do
   end
 
   module(InventoryCommand) do
-    parse("i", :run)
+    parse("i", :run, [], fn combinator ->
+      combinator
+      |> ignore(lookahead_not(utf8_char([?a..?z, ?A..?Z])))
+    end)
+
     parse("inv", :run)
     parse("inventory", :run)
   end
@@ -363,6 +367,52 @@ defmodule Kantele.Character.Commands do
     parse("练", :run, fn command ->
       command |> spaces() |> word(:skill)
     end)
+  end
+
+  module(SanCommand) do
+    parse("san", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("san", :run_bare)
+  end
+
+  module(ImbueCommand) do
+    parse("imbue", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("imbue", :run_bare)
+  end
+
+  module(EnchaseCommand) do
+    parse("enchase", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("enchase", :run_bare)
+  end
+
+  module(CombineCommand) do
+    parse("combine", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("combine", :run_bare)
+  end
+
+  module(ResearchCommand) do
+    parse("research", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("research", :run_bare)
+
+    parse("yanjiu", :yanjiu_run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("yanjiu", :run_bare)
   end
 
   module(MapCommand) do

@@ -56,7 +56,7 @@ defmodule Kantele.Character.DaubCommand do
       nil -> {:error, "你身上没有这样毒药。"}
       instance ->
         item = Items.get!(instance.item_id)
-        attrs = item.attrs || %{}
+        attrs = item.meta || %{}
         if attrs["can_daub"] == true && attrs["poison_type"] do
           {:ok, item, instance}
         else
@@ -81,8 +81,8 @@ defmodule Kantele.Character.DaubCommand do
         nil -> {:error, "你身上没有这样武器或防具。"}
         instance ->
           item = Items.get!(instance.item_id)
-          attrs = item.attrs || %{}
-          type = attrs["type"] || item.type
+          attrs = item.meta || %{}
+          type = attrs["type"] || item.meta["type"]
 
           cond do
             type in ["weapon", "sword", "blade", "axe", "hammer", "staff"] ->
@@ -130,7 +130,7 @@ defmodule Kantele.Character.DaubCommand do
   defp can_apply_poison_to_hand?(character, poison_item) do
     force_skill = character.skills["force"] || 0
     poison_skill = character.skills["poison"] || 0
-    poison_level = poison_item.attrs["poison_level"] || 100
+    poison_level = poison_item.meta["poison_level"] || 100
 
     # 需要 force + poison >= poison_level
     force_skill + poison_skill >= poison_level
@@ -139,7 +139,7 @@ defmodule Kantele.Character.DaubCommand do
   defp can_apply_poison_to_weapon?(character, poison_item, weapon_item) do
     force_skill = character.skills["force"] || 0
     poison_skill = character.skills["poison"] || 0
-    poison_level = poison_item.attrs["poison_level"] || 100
+    poison_level = poison_item.meta["poison_level"] || 100
 
     force_skill + poison_skill >= div(poison_level, 2)
   end
@@ -147,7 +147,7 @@ defmodule Kantele.Character.DaubCommand do
   defp can_apply_poison_to_armor?(character, poison_item, armor_item) do
     force_skill = character.skills["force"] || 0
     poison_skill = character.skills["poison"] || 0
-    poison_level = poison_item.attrs["poison_level"] || 100
+    poison_level = poison_item.meta["poison_level"] || 100
 
     force_skill + poison_skill >= div(poison_level, 3)
   end
@@ -160,9 +160,9 @@ defmodule Kantele.Character.DaubCommand do
       if existing_daub do
         # 混毒
         new_poison = %{
-          "level" => poison_item.attrs["poison_level"] || 100,
-          "duration" => poison_item.attrs["poison_duration"] || 300,
-          "remain" => poison_item.attrs["poison_remain"] || 10,
+          "level" => poison_item.meta["poison_level"] || 100,
+          "duration" => poison_item.meta["poison_duration"] || 300,
+          "remain" => poison_item.meta["poison_remain"] || 10,
           "id" => poison_item.id,
           "name" => poison_item.name
         }
@@ -171,9 +171,9 @@ defmodule Kantele.Character.DaubCommand do
         Kantele.Poison.mixed_poison(existing, new_poison)
       else
         %{
-          "level" => poison_item.attrs["poison_level"] || 100,
-          "duration" => poison_item.attrs["poison_duration"] || 300,
-          "remain" => poison_item.attrs["poison_remain"] || 10,
+          "level" => poison_item.meta["poison_level"] || 100,
+          "duration" => poison_item.meta["poison_duration"] || 300,
+          "remain" => poison_item.meta["poison_remain"] || 10,
           "id" => poison_item.id,
           "name" => poison_item.name
         }
@@ -199,40 +199,38 @@ defmodule Kantele.Character.DaubCommand do
   end
 
   defp apply_poison_to_equipment(conn, character, poison_item, poison_instance, equip_item, equip_instance, equip_type) do
-    equip_meta = equip_item.meta || %{}
-    equip_attrs = equip_item.attrs || %{}
+    instance_meta = equip_instance.meta || %{}
 
     merged =
-      if equip_meta["daub"] do
+      if instance_meta["daub"] do
         # 混毒
         new_poison = %{
-          "level" => poison_item.attrs["poison_level"] || 100,
-          "duration" => poison_item.attrs["poison_duration"] || 300,
-          "remain" => poison_item.attrs["poison_remain"] || 10,
+          "level" => poison_item.meta["poison_level"] || 100,
+          "duration" => poison_item.meta["poison_duration"] || 300,
+          "remain" => poison_item.meta["poison_remain"] || 10,
           "id" => poison_item.id,
           "name" => poison_item.name
         }
 
-        existing = equip_meta["daub"]
+        existing = instance_meta["daub"]
         Kantele.Poison.mixed_poison(existing, new_poison)
       else
         %{
-          "level" => poison_item.attrs["poison_level"] || 100,
-          "duration" => poison_item.attrs["poison_duration"] || 300,
-          "remain" => poison_item.attrs["poison_remain"] || 10,
+          "level" => poison_item.meta["poison_level"] || 100,
+          "duration" => poison_item.meta["poison_duration"] || 300,
+          "remain" => poison_item.meta["poison_remain"] || 10,
           "id" => poison_item.id,
           "name" => poison_item.name
         }
       end
 
-    # 更新装备 meta
-    new_equip_meta = Map.put(equip_meta, "daub", merged)
-    new_equip_attrs = Map.put(equip_attrs, "poisoned", true)
-    updated_equip = %{equip_item | meta: new_equip_meta, attrs: new_equip_attrs}
+    # 更新装备实例的 meta
+    new_instance_meta = Map.put(instance_meta, "daub", merged)
+    new_equip_instance = %{equip_instance | meta: new_instance_meta}
 
     # 更新背包
     new_inventory = Enum.map(character.inventory, fn inst ->
-      if inst.id == equip_instance.id, do: updated_equip, else: inst
+      if inst.id == equip_instance.id, do: new_equip_instance, else: inst
     end)
 
     # 移除毒药
