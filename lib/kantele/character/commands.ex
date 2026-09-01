@@ -1077,6 +1077,12 @@ defmodule Kantele.Character.Commands do
     parse("id", :run)
   end
 
+  module(CookCommand) do
+    parse("cook", :run, fn command ->
+      command |> spaces() |> text(:dish_name)
+    end)
+  end
+
   module(SleepCommand) do
     parse("sleep", :run)
     parse("睡觉", :run)
