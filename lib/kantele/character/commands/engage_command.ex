@@ -96,7 +96,7 @@ defmodule Kantele.Character.EngageCommand do
 
   defp fighting?(character), do: character.meta.combat.enemies != []
 
-  defp age(character), do: character.attributes["age"] || 0
+  defp age(character), do: Map.get(character, :attributes, %{})["age"] || 20
 
   defp render_msg(conn, text) do
     conn
