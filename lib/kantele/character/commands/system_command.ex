@@ -17,10 +17,10 @@ defmodule Kantele.Character.SystemCommand do
     游戏系统资源状态：
 
     虚拟机内存使用：
-      总内存：#{div(memory.total, 1024 * 1024)} MB
-      进程内存：#{div(memory.processes, 1024 * 1024)} MB
-      原子表：#{div(memory.atom, 1024)} KB
-      二进制：#{div(memory.binary, 1024 * 1024)} MB
+      总内存：#{div(Keyword.get(memory, :total, 0), 1024 * 1024)} MB
+      进程内存：#{div(Keyword.get(memory, :processes, 0), 1024 * 1024)} MB
+      原子表：#{div(Keyword.get(memory, :atom, 0), 1024)} KB
+      二进制：#{div(Keyword.get(memory, :binary, 0), 1024 * 1024)} MB
 
     运行时间：#{format_uptime()}
     进程数：#{length(:erlang.processes())}
@@ -32,7 +32,6 @@ defmodule Kantele.Character.SystemCommand do
   end
 
   defp format_uptime do
-    {:ok, uptime_ms} = :timer.sleep(0)
     elapsed = :erlang.statistics(:wall_clock)
     seconds = div(elem(elapsed, 0), 1000)
     minutes = div(seconds, 60)
