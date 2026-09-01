@@ -44,6 +44,9 @@ defmodule ExVenture.Characters.Metadata do
     field(:league, :map, default: %{})
     field(:brothers, {:array, :map}, default: [])
     field(:spouse, :map, default: %{})
+    field(:schedule, :string)
+    field(:tianshu_books, :map, default: %{})
+    field(:jifen, :integer, default: 0)
 
     timestamps()
   end
@@ -81,7 +84,10 @@ defmodule ExVenture.Characters.Metadata do
       :quest,
       :league,
       :brothers,
-      :spouse
+      :spouse,
+      :schedule,
+      :tianshu_books,
+      :jifen
     ])
     |> validate_required([:character_id])
     |> unique_constraint(:character_id)
@@ -159,7 +165,10 @@ defmodule Kantele.Character.Records do
           quest: Kantele.Quest.serialize(meta.quests),
           league: meta.league || %{},
           brothers: meta.brothers || [],
-          spouse: meta.spouse || %{}
+          spouse: meta.spouse || %{},
+          schedule: meta.schedule,
+          tianshu_books: meta.tianshu_books || %{},
+          jifen: meta.jifen || 0
         })
 
       case Repo.insert_or_update(metadata) do
@@ -297,6 +306,9 @@ defmodule Kantele.Character.Records do
       |> Map.put(:league, restore_optional_map(metadata.league))
       |> Map.put(:brothers, List.wrap(metadata.brothers))
       |> Map.put(:spouse, restore_spouse(metadata.spouse))
+      |> Map.put(:schedule, metadata.schedule)
+      |> Map.put(:tianshu_books, metadata.tianshu_books || %{})
+      |> Map.put(:jifen, metadata.jifen || 0)
 
     %{character | meta: meta, inventory: inventory}
   end

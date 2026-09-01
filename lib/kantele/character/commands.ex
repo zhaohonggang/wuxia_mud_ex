@@ -709,6 +709,20 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(Quest2Command) do
+    parse("quest2", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("quest2", :run_bare)
+
+    parse("任务日志", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("任务日志", :run_bare)
+  end
+
   module(QuestCommand) do
     parse("quest", :run)
     parse("myquest", :run)
@@ -882,6 +896,20 @@ defmodule Kantele.Character.Commands do
     parse("积分", :run)
   end
 
+  module(HatredCommand) do
+    parse("hatred", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("hatred", :run_bare)
+
+    parse("仇人", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("仇人", :run_bare)
+  end
+
   module(NewsCommand) do
     parse("news", :run, fn command ->
       command |> spaces() |> text(:arg)
@@ -893,8 +921,17 @@ defmodule Kantele.Character.Commands do
   end
 
   module(SchemeCommand) do
-    parse("scheme", :run)
-    parse("计划", :run)
+    parse("scheme", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("scheme", :run_bare)
+
+    parse("计划", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("计划", :run_bare)
   end
 
   module(SystemCommand) do
@@ -902,8 +939,17 @@ defmodule Kantele.Character.Commands do
   end
 
   module(TianshuCommand) do
-    parse("tianshu", :run)
-    parse("天书", :run)
+    parse("tianshu", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("tianshu", :run_bare)
+
+    parse("天书", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+
+    parse("天书", :run_bare)
   end
 
   module(Score2Command) do

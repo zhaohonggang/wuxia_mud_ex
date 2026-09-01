@@ -15,6 +15,9 @@ defmodule Kantele.Character.PlayerMeta do
   - `riding` 座骑（运行态）：`%{instance_id, item_id, name}` 或缺省 nil（cmds/std/ride.c）
   - `bag` 背包内容 `[%{file,name,id,amount}]`（feature/user_storage.c；落盘 metadata.bag）
   - `spouse` 配偶（S3 engage/accede/divorce.c）：`%{id, name}` 或缺省 nil（落盘 metadata.spouse）
+  - `schedule` 个人计划（S4 scheme.c）：文本串或缺省 nil（落盘 metadata.schedule）
+  - `tianshu_books` 天书收集（S4 tianshu.c）：`%{书名 => 1}` 已完成表或缺省 nil（落盘 metadata.tianshu_books）
+  - `jifen` 积分（S4 jifen.c）：整数或缺省 nil（落盘 metadata.jifen）
   """
 
   defstruct [
@@ -51,7 +54,10 @@ defmodule Kantele.Character.PlayerMeta do
     brothers: nil,
     stall: nil,
     shop_stock: nil,
-    spouse: nil
+    spouse: nil,
+    schedule: nil,
+    tianshu_books: nil,
+    jifen: nil
   ]
 
   defimpl Kalevala.Meta.Trim do
@@ -226,6 +232,31 @@ defmodule Kantele.Character.PlayerMeta do
   @doc "写配偶信息"
   def put_spouse(%__MODULE__{} = meta, spouse),
     do: %{meta | spouse: spouse}
+
+  # ---- 计划（落盘 metadata.schedule；S4 scheme.c）----
+  @doc "个人计划文本（缺省 nil = 未制订）"
+  def schedule(%__MODULE__{schedule: schedule}), do: schedule
+
+  @doc "写个人计划"
+  def put_schedule(%__MODULE__{} = meta, schedule),
+    do: %{meta | schedule: schedule}
+
+  # ---- 天书收集（落盘 metadata.tianshu_books；S4 tianshu.c）----
+  @doc "天书已完成表（缺省空 map）"
+  def tianshu_books(%__MODULE__{tianshu_books: tianshu_books}),
+    do: tianshu_books || %{}
+
+  @doc "写天书完成表"
+  def put_tianshu_books(%__MODULE__{} = meta, tianshu_books),
+    do: %{meta | tianshu_books: tianshu_books}
+
+  # ---- 积分（落盘 metadata.jifen；S4 jifen.c）----
+  @doc "积分（缺省 0）"
+  def jifen(%__MODULE__{jifen: jifen}), do: jifen || 0
+
+  @doc "写积分"
+  def put_jifen(%__MODULE__{} = meta, jifen),
+    do: %{meta | jifen: jifen}
 end
 
 defmodule Kantele.Character.NonPlayerMeta do

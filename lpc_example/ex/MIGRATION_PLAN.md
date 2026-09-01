@@ -261,6 +261,13 @@ P5 无
 | `tianshu` | usr/tianshu.c | 天书（当前只显示名称） |
 | `jifen` | usr/jifen.c | 积分（巫师增减分支） |
 
+落地要点（本次全做 + 按现有能力落地）：
+- `meta.schedule` / `meta.tianshu_books` / `meta.jifen` 持久化（migration `20260902000000`）；
+- `quest2`/`hatred` 玩家侧实现（巫师查他人分支依赖 P4 管理员框架，未迁移）；
+- `scheme` 仅命令层（`show/edit/clear`），`start` 自动执行器依赖食水/learned_points/busy 未迁移；
+- `tianshu` 仅命令层（`begin/select/status`），南贤打听/dating/物品/尸体/bigreward 未迁移；
+- `jifen` 仅查询自己积分（巫师 `+|-` 分支未迁移）。
+
 测试：P2 合计 ≥10。
 
 ---
@@ -368,8 +375,8 @@ P5 无
 | M4 | drug, pour, daub, wash, cook, make, sleep, drive | [ ] |
 | S1 | brothers | [ ] |
 | S2 | league | [ ] |
-| S3 | engage, accede, divorce | [ ] |
-| S4 | quest2, hatred, scheme, tianshu, jifen | [ ] |
+| S3 | engage, accede, divorce | [x] |
+| S4 | quest2, hatred, scheme, tianshu, jifen | [x] |
 | K1 | combine, san, imbue, enchase, research | [ ] |
 | K2 | berserk, crattack, spattack, animaout, jingxiu, persuade, pique, recruit | [ ] |
 | K3 | burning, breakup, fuse, derive, syn, yanlian | [ ] |
