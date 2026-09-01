@@ -16,6 +16,7 @@ defmodule Kantele.Character.TeamEvent do
   use Kalevala.Character.Event
 
   alias Kantele.Character.CommandView
+  alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Records
   alias Kantele.Character.Team
 
@@ -73,10 +74,24 @@ defmodule Kantele.Character.TeamEvent do
     |> prompt(CommandView, "prompt", %{})
   end
 
-  def swear(conn, %{data: %{leader_name: leader_name, name: name}}) do
+  def swear(conn, %{data: %{leader_name: leader_name, leader_id: leader_id, name: name}}) do
+    character = conn.character
+
+    league = %{
+      league_name: name,
+      leader_id: leader_id,
+      leader_name: leader_name,
+      grant: 0,
+      set: %{no_kill: 0, weiwang: 0, follow: 0}
+    }
+
+    meta = PlayerMeta.put_league(character.meta, league)
+
     conn
+    |> put_character(%{character | meta: meta})
     |> render(CommandView, "text", %{text: "#{leader_name}振臂一呼：我们结义成盟，共立「#{name}」！\n"})
     |> prompt(CommandView, "prompt", %{})
+    |> save()
   end
 
   def set_team(conn, %{data: %{team: team}}) do

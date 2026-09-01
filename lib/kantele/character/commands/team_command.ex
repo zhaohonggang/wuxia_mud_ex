@@ -16,7 +16,9 @@ defmodule Kantele.Character.TeamCommand do
 
   alias Kalevala.Event
   alias Kantele.Character.CommandView
+  alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Team
+  alias Kantele.League
 
   def run(conn, %{"rest" => rest}) do
     rest = String.trim(rest || "")
@@ -305,14 +307,46 @@ defmodule Kantele.Character.TeamCommand do
         render_text(conn, "结义的名字长度需在 4-12 个字符之间。\n")
 
       true ->
-        # 简化：即时结义，不逐人投票（LPC 的 LEAGUE_D 同盟库不存在 -> 不作持久化）
-        team = Map.get(character.meta, :team)
-        notify_all(team, character.pid, "team/swear", %{leader_name: character.name, name: name})
-        render_text(conn, "你们结义成盟，共立「#{name}」！\n")
+        case League.valid_new_league(name) do
+          nil ->
+            create_league_broadcast(conn, character, name)
+
+          err ->
+            render_text(conn, err)
+        end
     end
   end
 
   defp swear(conn, _), do: render_text(conn, "结义前先想好一个名字吧！\n")
+
+  defp create_league_broadcast(conn, character, name) do
+    team = Map.get(character.meta, :team)
+    leader_id = character.id
+    leader_name = character.name
+
+    League.create_league(name, 0, character, leader_id, leader_name)
+
+    # 队长立即写入 meta.league
+    league = %{
+      league_name: name,
+      leader_id: leader_id,
+      leader_name: leader_name,
+      grant: 4,
+      set: %{no_kill: 0, weiwang: 0, follow: 0}
+    }
+
+    meta = PlayerMeta.put_league(character.meta, league)
+    conn = put_character(conn, %{character | meta: meta})
+    save(conn)
+
+    notify_all(team, character.pid, "team/swear", %{leader_name: leader_name, leader_id: leader_id, name: name})
+    render_text(conn, "你们结义成盟，共立「#{name}」！\n")
+  end
+
+  defp save(conn) do
+    Kantele.Character.Records.save(conn.private.update_character || conn.character)
+    conn
+  end
 
   # ---- helpers ----
 

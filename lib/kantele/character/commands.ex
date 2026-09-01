@@ -909,8 +909,13 @@ defmodule Kantele.Character.Commands do
   end
 
   module(LeagueCommand) do
-    parse("league", :run)
-    parse("帮派", :run)
+    parse("league", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("帮派", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
   end
 
   module(TimeCommand) do

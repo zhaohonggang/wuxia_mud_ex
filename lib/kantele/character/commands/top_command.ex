@@ -9,6 +9,7 @@ defmodule Kantele.Character.TopCommand do
   use Kalevala.Character.Command
 
   alias Kantele.Character.CommandView
+  alias Kantele.League
 
   def run(conn, %{"category" => category}) do
     msg =
@@ -19,7 +20,8 @@ defmodule Kantele.Character.TopCommand do
         "age" -> "排行榜暂未开放。\n"
         "kill" -> "排行榜暂未开放。\n"
         "die" -> "排行榜暂未开放。\n"
-        _ -> "目前只提供等级(top lv)/经验(top exp)/气血(top hp)/年龄(top age)/杀敌(top kill)等全服排行。\n"
+        "league" -> league_ranking()
+        _ -> "目前只提供等级(top lv)/经验(top exp)/气血(top hp)/年龄(top age)/杀敌(top kill)/帮派(top league)等全服排行。\n"
       end
 
     conn
@@ -33,5 +35,17 @@ defmodule Kantele.Character.TopCommand do
       text: "目前只提供等级(top lv)/经验(top exp)/气血(top hp)/年龄(top age)/杀敌(top kill)等全服排行。\n"
     })
     |> prompt(CommandView, "prompt", %{})
+  end
+
+  defp league_ranking do
+    League.ranking()
+    |> Enum.with_index(1)
+    |> Enum.map_join("", fn {league, i} ->
+      "  #{i}. 「#{league.fname}」  威望 #{league.fame}  成员 #{length(league.member)}\n"
+    end)
+    |> case do
+      "" -> "江湖上还没有任何结义同盟。\n"
+      msg -> "结义同盟声望排行：\n#{msg}"
+    end
   end
 end

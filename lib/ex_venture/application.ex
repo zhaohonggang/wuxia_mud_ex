@@ -70,6 +70,7 @@ defmodule ExVenture.Application.KalevalaSupervisor do
       {Kantele.World, []},
       {Kantele.World.AnalectaService, []},
       {Kantele.World.NewsService, []},
+      {Kantele.League, []},
       {Kantele.Character.Presence, []},
       {Kantele.Character.Emotes, [name: Kantele.Character.Emotes]},
       {Kantele.Character.Combat.StatusTracker, []},
