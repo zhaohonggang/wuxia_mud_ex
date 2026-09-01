@@ -1258,7 +1258,40 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
-  # 表情名直用已改为 EmoteCommand 里的显式 parse（smile/wave/frown）。
-  # 不再用 dynamic 路由：kalevala parse_dynamic_text 返回 3 元组，
-  # Router.parse/3 只匹配 4 元组，命中必 CaseClauseError 崩 foreman（断线）
+  # K2 - 战斗辅助
+  module(BerserkCommand) do
+    parse("berserk", :run)
+    parse("baofa", :run)
+  end
+
+  module(JingxiuCommand) do
+    parse("jingxiu", :run)
+  end
+
+  module(PiqueCommand) do
+    parse("pique", :run)
+    parse("jianu", :run)
+  end
+
+  module(PersuadeCommand) do
+    parse("persuade", :run)
+    parse("quanjia", :run)
+  end
+
+  module(RecruitCommand) do
+    parse("recruit", :run)
+    parse("shou", :run)
+  end
+
+  module(CrattackCommand) do
+    parse("crattack", :run)
+  end
+
+  module(SpattackCommand) do
+    parse("spattack", :run)
+  end
+
+  module(AnimaoutCommand) do
+    parse("animaout", :run)
+  end
 end
