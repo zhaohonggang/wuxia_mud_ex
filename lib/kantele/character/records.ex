@@ -43,6 +43,7 @@ defmodule ExVenture.Characters.Metadata do
     field(:quest, :map, default: %{})
     field(:league, :map, default: %{})
     field(:brothers, {:array, :map}, default: [])
+    field(:spouse, :map, default: %{})
 
     timestamps()
   end
@@ -79,7 +80,8 @@ defmodule ExVenture.Characters.Metadata do
       :bag,
       :quest,
       :league,
-      :brothers
+      :brothers,
+      :spouse
     ])
     |> validate_required([:character_id])
     |> unique_constraint(:character_id)
@@ -156,7 +158,8 @@ defmodule Kantele.Character.Records do
           bag: Kantele.Item.Backpack.serialize(meta.bag || []),
           quest: Kantele.Quest.serialize(meta.quests),
           league: meta.league || %{},
-          brothers: meta.brothers || []
+          brothers: meta.brothers || [],
+          spouse: meta.spouse || %{}
         })
 
       case Repo.insert_or_update(metadata) do
@@ -293,6 +296,7 @@ defmodule Kantele.Character.Records do
       |> Map.put(:quests, Kantele.Quest.deserialize(metadata.quest))
       |> Map.put(:league, restore_optional_map(metadata.league))
       |> Map.put(:brothers, List.wrap(metadata.brothers))
+      |> Map.put(:spouse, restore_spouse(metadata.spouse))
 
     %{character | meta: meta, inventory: inventory}
   end
@@ -311,6 +315,13 @@ defmodule Kantele.Character.Records do
   # league/brothers 等社会字段：空表/空 map 视为缺失（nil），否则原样恢复
   defp restore_optional_map(map) when is_map(map) and map_size(map) > 0, do: map
   defp restore_optional_map(_), do: nil
+
+  # spouse 落盘是 string-key JSON，转回 atom-key 运行态；空 map 视为未婚(nil)
+  defp restore_spouse(spouse) when is_map(spouse) and map_size(spouse) > 0 do
+    %{id: spouse["id"], name: spouse["name"]}
+  end
+
+  defp restore_spouse(_), do: nil
 
   defp serialize_family(nil), do: %{}
 

@@ -521,6 +521,15 @@ defmodule Kantele.World.Room.Events do
       event("swear/cancel", :call)
     end
 
+    module(EngageRequestEvent) do
+      event("engage/request", :call)
+    end
+
+    module(EngageAnswerEvent) do
+      event("engage/answer", :call)
+      event("engage/cancel", :call)
+    end
+
     module(SearchRequestEvent) do
       event("search/attempt", :call)
     end
@@ -1650,6 +1659,167 @@ defmodule Kantele.World.Room.SwearAnswerEvent do
         else
           context
         end
+    end
+  end
+
+  defp lookup_requester(context, answerer, name) do
+    Enum.find(context.characters, fn c ->
+      c.pid != answerer.pid and
+        Kantele.World.Room.NameMatch.matches?(c, name)
+    end)
+  end
+end
+
+defmodule Kantele.World.Room.EngageRequestEvent do
+  @moduledoc """
+  求婚请求处理：转发 engage/pending 与 engage/propose，在同房间寻找目标玩家。
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+  alias Kantele.Character.PlayerMeta
+
+  def call(context, %{data: %{target_name: target_name, promise: promise}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case requester do
+      nil ->
+        context
+
+      _ ->
+        target =
+          Enum.find(context.characters, fn c ->
+            c.pid != requester.pid and
+              Kantele.World.Room.NameMatch.matches?(c, target_name)
+          end)
+
+        check_target(context, requester, target, promise)
+    end
+  end
+
+  defp check_target(context, requester, nil, _promise) do
+    render(context, requester.pid, CommandView, "text", %{text: "这里没有你要找的人。\n"})
+  end
+
+  defp check_target(context, requester, target, promise) do
+    cond do
+      target.id == requester.id ->
+        render(context, requester.pid, CommandView, "text", %{text: "你要和自己结婚？\n"})
+
+      PlayerMeta.spouse(requester.meta) != nil ->
+        render(context, requester.pid, CommandView, "text", %{
+          text: "你可要稳住！根据泥潭法典第九十九条，重婚者打入地狱！\n"
+        })
+
+      PlayerMeta.spouse(target.meta) != nil ->
+        render(context, requester.pid, CommandView, "text", %{
+          text: "你怎么也得等人家离婚了再说吧？\n"
+        })
+
+      not target.attributes["can_speak"] ->
+        render(context, requester.pid, CommandView, "text", %{text: "你看清楚了，那不是活人！\n"})
+
+      true ->
+        context =
+          event(context, requester.pid, self(), "engage/pending", %{
+            target_id: target.id,
+            target_name: target.name,
+            promise: promise
+          })
+
+        context
+        |> event(target.pid, self(), "engage/propose", %{
+          from_id: requester.id,
+          from_name: requester.name,
+          promise: promise
+        })
+        |> render(requester.pid, CommandView, "text", %{
+          text: "你向#{target.name}求婚，承诺是「#{promise}」，等待对方回应...\n"
+        })
+    end
+  end
+end
+
+defmodule Kantele.World.Room.EngageAnswerEvent do
+  @moduledoc """
+  求婚应答处理：把 accede 事件转给求婚方，并完成婚约（双写 meta.spouse）。
+
+  - `engage/answer`（应婚）：双方互写 spouse（engage/joined）
+  - `engage/cancel`（求婚方取消）：清除被求婚方的待处理状态
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+  alias Kantele.Character.PlayerMeta
+
+  def call(context, %{topic: "engage/answer", data: %{target_name: target_name}} = _event) do
+    answerer = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case answerer do
+      nil ->
+        context
+
+      _ ->
+        requester = lookup_requester(context, answerer, target_name)
+
+        case requester do
+          nil ->
+            render(context, answerer.pid, CommandView, "text", %{text: "这里没有你要找的人。\n"})
+
+          _ ->
+            complete_marriage(context, requester, answerer)
+        end
+    end
+  end
+
+  def call(context, %{topic: "engage/cancel", data: %{target_name: target_name}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case requester do
+      nil ->
+        context
+
+      _ ->
+        target = lookup_requester(context, requester, target_name)
+
+        if target do
+          event(context, target.pid, self(), "engage/cancelled", %{from_id: requester.id})
+        else
+          context
+        end
+    end
+  end
+
+  defp complete_marriage(context, requester, answerer) do
+    cond do
+      PlayerMeta.spouse(requester.meta) != nil ->
+        render(context, answerer.pid, CommandView, "text", %{
+          text: "人家已经结婚了，你还是不要去趟混水了！\n"
+        })
+
+      PlayerMeta.spouse(answerer.meta) != nil ->
+        render(context, answerer.pid, CommandView, "text", %{
+          text: "你可要稳住！根据泥潭法典第九十九条，重婚者打入地狱！\n"
+        })
+
+      true ->
+        context
+        |> event(requester.pid, self(), "engage/joined", %{
+          partner_id: answerer.id,
+          partner_name: answerer.name
+        })
+        |> event(answerer.pid, self(), "engage/joined", %{
+          partner_id: requester.id,
+          partner_name: requester.name
+        })
+        |> render(requester.pid, CommandView, "text", %{
+          text: "你和#{answerer.name}私定终身，结为夫妻，恭喜恭喜！\n"
+        })
+        |> render(answerer.pid, CommandView, "text", %{
+          text: "你欣然应允，与#{requester.name}私定终身，结为夫妻！\n"
+        })
     end
   end
 

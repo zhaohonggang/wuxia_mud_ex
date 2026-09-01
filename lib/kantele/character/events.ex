@@ -68,6 +68,14 @@ defmodule Kantele.Character.Events do
       event("swear/cancelled", :cancelled)
     end
 
+    module(EngageEvent) do
+      event("engage/propose", :propose)
+      event("engage/pending", :pending)
+      event("engage/joined", :joined)
+      event("engage/cancelled", :cancelled)
+      event("engage/divorced", :divorced)
+    end
+
     module(LeagueEvent) do
       event("league/joined", :joined)
       event("league/removed", :removed)

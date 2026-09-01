@@ -859,6 +859,24 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(EngageCommand) do
+    parse("engage", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+  end
+
+  module(AccedeCommand) do
+    parse("accede", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+  end
+
+  module(DivorceCommand) do
+    parse("divorce", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+  end
+
   module(JifenCommand) do
     parse("jifen", :run)
     parse("积分", :run)

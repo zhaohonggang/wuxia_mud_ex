@@ -14,6 +14,7 @@ defmodule Kantele.Character.PlayerMeta do
   - `team` 队伍 `%{id, leader_pid, members: [%{id, name, pid}]}`（cmds/std/team.c；运行态）
   - `riding` 座骑（运行态）：`%{instance_id, item_id, name}` 或缺省 nil（cmds/std/ride.c）
   - `bag` 背包内容 `[%{file,name,id,amount}]`（feature/user_storage.c；落盘 metadata.bag）
+  - `spouse` 配偶（S3 engage/accede/divorce.c）：`%{id, name}` 或缺省 nil（落盘 metadata.spouse）
   """
 
   defstruct [
@@ -49,7 +50,8 @@ defmodule Kantele.Character.PlayerMeta do
     league: nil,
     brothers: nil,
     stall: nil,
-    shop_stock: nil
+    shop_stock: nil,
+    spouse: nil
   ]
 
   defimpl Kalevala.Meta.Trim do
@@ -216,6 +218,14 @@ defmodule Kantele.Character.PlayerMeta do
   @doc "写结义列表"
   def put_brothers(%__MODULE__{} = meta, brothers),
     do: %{meta | brothers: brothers}
+
+  # ---- 配偶（落盘 metadata.spouse；S3 engage/accede/divorce.c）----
+  @doc "配偶信息（缺省 nil = 未婚）"
+  def spouse(%__MODULE__{spouse: spouse}), do: spouse
+
+  @doc "写配偶信息"
+  def put_spouse(%__MODULE__{} = meta, spouse),
+    do: %{meta | spouse: spouse}
 end
 
 defmodule Kantele.Character.NonPlayerMeta do
