@@ -1294,4 +1294,30 @@ defmodule Kantele.Character.Commands do
   module(AnimaoutCommand) do
     parse("animaout", :run)
   end
+
+  # K3 - 造物/修炼
+  module(BurningCommand) do
+    parse("burning", :run)
+    parse("fenu", :run)
+  end
+
+  module(BreakupCommand) do
+    parse("breakup", :run)
+  end
+
+  module(FuseCommand) do
+    parse("fuse", :run)
+  end
+
+  module(DeriveCommand) do
+    parse("derive", :run)
+  end
+
+  module(SynCommand) do
+    parse("syn", :run)
+  end
+
+  module(YanlianCommand) do
+    parse("yanlian", :run)
+  end
 end
