@@ -137,7 +137,7 @@ defmodule Kantele.Character.LeagueCommand do
 
   defp member(conn, arg) do
     character = conn.character
-    fname = arg || (character |> PlayerMeta.league() |> key_or("league_name", ""))
+    fname = arg || (character.meta |> PlayerMeta.league() |> key_or("league_name", ""))
 
     cond do
       fname == "" ->
@@ -620,15 +620,14 @@ defmodule Kantele.Character.LeagueCommand do
 
   defp resolve_league_name(character, arg) do
     if arg in [nil, ""] do
-      character |> PlayerMeta.league() |> key_or("league_name", nil)
+      character.meta |> PlayerMeta.league() |> key_or("league_name", nil)
     else
-      # LPC：巫师可查任意同盟；此处限制查询自身或在线玩家所在的同盟
-      character |> PlayerMeta.league() |> key_or("league_name", nil)
+      character.meta |> PlayerMeta.league() |> key_or("league_name", nil)
     end
   end
 
   defp leader_or_grant?(character, league, min_grant) do
-    character.id == league.leader_id or (PlayerMeta.league(character.meta) |> key_or("grant", 0)) >= min_grant
+    character.id == league.leader_id or key_or(league, :grant, 0) >= min_grant
   end
 
   defp key_or(map, key, default) when is_map(map), do: Map.get(map, key, default)
