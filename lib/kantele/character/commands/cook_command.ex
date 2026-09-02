@@ -58,7 +58,7 @@ defmodule Kantele.Character.CookCommand do
       |> render(CommandView, "text", %{text: "请先激发你要使用的菜艺。\n"})
       |> prompt(CommandView, "prompt", %{})
     else
-      skill_level = character.skills[cooking_skill] || 0
+      skill_level = character.meta.stats.skills[cooking_skill] || 0
 
       if skill_level < 50 do
         conn

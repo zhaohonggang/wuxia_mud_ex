@@ -128,8 +128,8 @@ defmodule Kantele.Character.DaubCommand do
   end
 
   defp can_apply_poison_to_hand?(character, poison_item) do
-    force_skill = character.skills["force"] || 0
-    poison_skill = character.skills["poison"] || 0
+    force_skill = character.meta.stats.skills["force"] || 0
+    poison_skill = character.meta.stats.skills["poison"] || 0
     poison_level = Kalevala.Meta.get(poison_item.meta, "poison_level") || 100
 
     # 需要 force + poison >= poison_level
@@ -137,16 +137,16 @@ defmodule Kantele.Character.DaubCommand do
   end
 
   defp can_apply_poison_to_weapon?(character, poison_item, weapon_item) do
-    force_skill = character.skills["force"] || 0
-    poison_skill = character.skills["poison"] || 0
+    force_skill = character.meta.stats.skills["force"] || 0
+    poison_skill = character.meta.stats.skills["poison"] || 0
     poison_level = Kalevala.Meta.get(poison_item.meta, "poison_level") || 100
 
     force_skill + poison_skill >= div(poison_level, 2)
   end
 
   defp can_apply_poison_to_armor?(character, poison_item, armor_item) do
-    force_skill = character.skills["force"] || 0
-    poison_skill = character.skills["poison"] || 0
+    force_skill = character.meta.stats.skills["force"] || 0
+    poison_skill = character.meta.stats.skills["poison"] || 0
     poison_level = Kalevala.Meta.get(poison_item.meta, "poison_level") || 100
 
     force_skill + poison_skill >= div(poison_level, 3)
@@ -247,7 +247,7 @@ defmodule Kantele.Character.DaubCommand do
 
   defp check_self_poison(character, poison) do
     # 自毒概率：基于 poison skill
-    poison_skill = character.skills["poison"] || 0
+    poison_skill = character.meta.stats.skills["poison"] || 0
     chance = div(100, max(poison_skill / 10, 1))
     :rand.uniform(100) <= chance
   end

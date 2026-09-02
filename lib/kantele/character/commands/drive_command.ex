@@ -64,7 +64,7 @@ defmodule Kantele.Character.DriveCommand do
               |> prompt(CommandView, "prompt", %{})
             else
               # 驾驶技能检定
-              driving_skill = character.skills["driving"] || 0
+              driving_skill = character.meta.stats.skills["driving"] || 0
 
               if :rand.uniform(driving_skill + 100) < 50 do
                 conn

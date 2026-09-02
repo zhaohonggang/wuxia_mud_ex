@@ -1142,7 +1142,7 @@ defmodule Kantele.World.Room.StealRequestEvent do
         text: "#{victim.name}身上看起来没有什么值钱的东西好偷。\n"
       })
     else
-      stealing_skill = requester.skills["stealing"] || 0
+      stealing_skill = requester.meta.stats.skills["stealing"] || 0
       thief = requester.attributes["thief"] || 0
 
       sp = stealing_skill * 5 - thief * 20
@@ -1326,7 +1326,7 @@ defmodule Kantele.World.Room.CheckRequestEvent do
       render(context, requester.pid, CommandView, "text", %{text: "此人乃真命天子，无法探知其属性。\n"})
     else
       # 计算精消耗
-      checking_skill = requester.skills["checking"] || 0
+      checking_skill = requester.meta.stats.skills["checking"] || 0
       sklvl = div(checking_skill, 10)
       cost = div(Map.get(requester.attributes, "max_jing", 100), max(sklvl, 1)) - 10
       cost = if cost < 40, do: 30 + :rand.uniform(10), else: cost

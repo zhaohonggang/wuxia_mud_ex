@@ -75,6 +75,14 @@ defmodule Kantele.Character.CheckCommandTest do
       assert text =~ "你不知道如何向人查探情报"
     end
 
+    test "丐帮技能不足提示" do
+      p = %{player() | attributes: %{"family" => %{family_name: "丐帮"}}}
+      conn = CheckCommand.run(build_conn(p), %{"target" => "李四"})
+      text = output_text(conn)
+
+      assert text =~ "打探本领尚未纯熟"
+    end
+
     test "check 路由解析" do
       {:ok, parsed} = Kantele.Character.Commands.parse("check 李四")
       assert parsed.module == CheckCommand

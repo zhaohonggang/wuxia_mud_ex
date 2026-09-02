@@ -197,7 +197,7 @@ defmodule Kantele.Character.MakeCommand do
 
   defp check_skills(character, recipe) do
     Enum.reduce_while(recipe.skills, :ok, fn {skill, req_level}, _ ->
-      skill_level = character.skills[skill] || 0
+      skill_level = character.meta.stats.skills[skill] || 0
       if skill_level < req_level do
         {:halt, {:error, "你的#{get_skill_name(skill)}水平不够，还无法调剂#{@recipes[Map.keys(@recipes) |> Enum.find(fn k -> @recipes[k].skills == recipe.skills end)].name}。"}}
       else

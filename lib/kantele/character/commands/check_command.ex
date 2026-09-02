@@ -27,7 +27,7 @@ defmodule Kantele.Character.CheckCommand do
         |> prompt(CommandView, "prompt", %{})
 
       true ->
-        checking_skill = character.skills["checking"] || 0
+        checking_skill = character.meta.stats.skills["checking"] || 0
 
         if checking_skill < 30 do
           conn
