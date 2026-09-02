@@ -46,8 +46,23 @@ defmodule Kantele.Character.CommandsCommandTest do
     }
   end
 
+  defp output_text(conn) do
+    conn.output
+    |> Enum.flat_map(fn
+      %Kalevala.Character.Conn.Text{data: data} -> List.wrap(data)
+      %Kalevala.Character.Conn.EventText{text: text} -> List.wrap(text)
+      _ -> []
+    end)
+    |> Enum.flat_map(fn
+      binary when is_binary(binary) -> [binary]
+      list when is_list(list) -> list
+      _ -> []
+    end)
+    |> IO.iodata_to_binary()
+  end
+
   describe "commands 命令" do
-    test "渲染命令列表" do
+    test "渲染命令列表有输出" do
       p = player()
       conn = CommandsCommand.run(build_conn(p), %{})
       assert length(conn.output) > 0
