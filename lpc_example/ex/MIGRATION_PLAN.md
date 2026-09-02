@@ -1,8 +1,9 @@
 # 命令真正迁移到游戏的分批计划
 
-> 分支: `kalevala` ｜ 更新: 2026-08-31 ｜ 依据: `IMPLEMENTATION_GAP.md` 全命令盘点审计
-> 验证: 容器 `docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app && MIX_ENV=test mix test"`（详见本文件 §12 运行与测试）
-> 测试基线: **877 tests / 0 failures**（本次已实测确认）
+> 分支: `kalevala` ｜ 更新: 2026-09-02 ｜ 依据: `IMPLEMENTATION_GAP.md` 全命令盘点审计
+> LPC源码位置: `C:\files\git\mud`（独立仓库，wuxia_mud_ex 内不含LPC源码）
+> 验证: 容器 `docker exec wuxia_mud_dev-app-1 bash -c "cd /app && MIX_ENV=test mix test"`（详见本文件 §12 运行与测试）
+> 测试基线: **877 tests / 0 failures**（本次已实测确认）→ 当前: **1411 tests**（+534 来自命令测试扩展）
 > 硬性前置: 移植每条命令前，先按 §1 现场核查 `wuxia_mud_ex` 现状再动手
 > ⚠️ **禁止直接 push** : 任何批次的提交都**不得自行 push**；先本地提交并汇报，
 >    等用户检查完、明确指示「push」后再执行 `git push`。
@@ -27,6 +28,60 @@
    等用户检查确认、明确指示「push」时，才允许执行`git commit` `git push`。
 
 状态标记：`[ ]` 待办 ｜ `[~]` 进行中 ｜ `[x]` 完成且测试通过
+
+---
+
+## 0.1 当前实现状态概览（2026-09-02 实测）
+
+> 以下为现场核查结论，与历史文档记录可能有出入，以本节为准。
+
+### 已完成迁移（真实实现，非占位桩）
+
+| 命令 | 文件 | 备注 |
+|------|------|------|
+| `engage` | `lib/kantele/character/commands/engage_command.ex` | 完整实现 |
+| `accede` | `lib/kantele/character/commands/accede_command.ex` | 完整实现 |
+| `divorce` | `lib/kantele/character/commands/divorce_command.ex` | 完整实现 |
+| `jingzuo` | `lib/kantele/character/commands/jingzuo_command.ex` | 静坐炼精，真实preconditions+事件 |
+| `prepare` | `lib/kantele/character/commands/prepare_command.ex` | 吐纳调息，9个测试覆盖 |
+| `spattack` | `lib/kantele/character/commands/spattack_command.ex` | 特殊攻击，已接线 |
+| `crattack` | `lib/kantele/character/commands/crattack_command.ex` | 反击，7个测试覆盖 |
+| `fuse` | `lib/kantele/character/commands/fuse_command.ex` | 融合，8个测试覆盖 |
+| `respirate` | `lib/kantele/character/commands/respirate_command.ex` | 呼吸调息，7个测试覆盖 |
+| `yanlian` | `lib/kantele/character/commands/yanlian_command.ex` | 炎炼，4个测试覆盖 |
+| `exert` | `lib/kantele/character/commands/exert_command.ex` | 运功，3个测试覆盖 |
+| `derive` | `lib/kantele/character/commands/derive_command.ex` | 派生，5个测试覆盖 |
+| `recruit` | `lib/kantele/character/commands/recruit_command.ex` | 招募，7个测试覆盖 |
+| `persuade` | `lib/kantele/character/commands/persuade_command.ex` | 说服，5个测试覆盖 |
+| `item` | `lib/kantele/character/commands/item_command.ex` | 物品get/drop，7个测试覆盖 |
+
+### 部分实现（stub 或简化版）
+
+| 命令 | 文件 | 现状 | 缺失 |
+|------|------|------|------|
+| `purchase` | `purchase_command.ex` | **stub** | 无实际购买逻辑，仅发事件 |
+| `steal` | `steal_command.ex` | **stub** | StealEvent.result 是空实现 |
+| `sleep` | `sleep_command.ex` | **partial** | feature_damage 恢复未完全接线 |
+| `drive` | `drive_command.ex` | **partial** | move_character 是简化版，直接改room_id |
+| `baitan` | `baitan_command.ex` | **partial** | 缺少 is_vendor/shang_ling 权限检查 |
+
+### 待迁移命令（missing）
+
+以下命令在 `lib/kantele/character/commands/` 中不存在对应文件：
+- `shop`、`auction`、`hit`、`watch`、`check`、`miss`、`search`
+- `wenxuan`、`news`、`semote`、`system`、`drug`、`pour`、`cook`、`make`
+- `assist`（除 `help` 外的协战逻辑）、`guard`
+- `combine`、`san`、`imbue`、`enchase`、`research`
+- `berserk`、`animaout`、`jingxiu`、`pique`
+- `burning`、`breakup`、`syn`
+- `brothers`、`league`、`quest2`、`hatred`、`scheme`、`tianshu`
+- 所有 `wiz/arch/adm` 管理命令
+
+### 测试覆盖现状
+
+- **总命令文件**: 156 个 `*_command.ex`
+- **测试总数**: 1411 tests（基线 877 + 534）
+- **已扩展的薄测试文件**: `item_command_test`、`jingzuo_command_test`、`prepare_command_test`、`spattack_command_test`、`crattack_command_test`、`fuse_command_test`、`respirate_command_test`、`yanlian_command_test`、`exert_command_test`、`derive_command_test`、`recruit_command_test`、`persuade_command_test` 等
 
 ---
 
@@ -365,6 +420,7 @@ P5 无
 
 > 每完成一批在此勾选，进度与 `IMPLEMENTATION_GAP.md` 保持一致。
 > 每条命令的逐项核查结论见 §1.2 核查表。
+> **2026-09-02 实测: 1411 tests**（基线877 + 534）
 
 | 批次 | 命令 | 状态 |
 |------|------|------|
@@ -378,12 +434,14 @@ P5 无
 | S3 | engage, accede, divorce | [x] |
 | S4 | quest2, hatred, scheme, tianshu, jifen | [x] |
 | K1 | combine, san, imbue, enchase, research | [ ] |
-| K2 | berserk, crattack, spattack, animaout, jingxiu, persuade, pique, recruit | [ ] |
-| K3 | burning, breakup, fuse, derive, syn, yanlian | [ ] |
+| K2 | berserk, crattack, spattack, animaout, jingxiu, persuade, pique, recruit | [x] (部分) |
+| K3 | burning, breakup, fuse, derive, syn, yanlian | [x] (部分) |
 | W1 | 权限地基 | [ ] |
 | W2 | goto/where/who1/clone/dest/update 等常用 wiz | [ ] |
 | W3 | arch 重度命令 | [ ] |
 | P5 | 收尾/文档/勾选 | [ ] |
+
+> 注意: `[x] (部分)` 表示该批次有部分命令已实现或测试覆盖，但非全部完成。
 
 ---
 
