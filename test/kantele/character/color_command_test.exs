@@ -31,10 +31,26 @@ defmodule Kantele.Character.ColorCommandTest do
     |> Enum.join("")
   end
 
-  test "color 渲染色彩对照表" do
+  test "color 渲染色彩对照表包含所有颜色" do
     conn = ColorCommand.run(build_conn(player()), %{})
-    assert output_text(conn) =~ "色彩对照表"
-    assert output_text(conn) =~ "RED"
+    text = output_text(conn)
+    assert text =~ "色彩对照表"
+    assert text =~ "BLK"
+    assert text =~ "RED"
+    assert text =~ "GRN"
+    assert text =~ "YEL"
+    assert text =~ "BLU"
+    assert text =~ "MAG"
+    assert text =~ "CYN"
+    assert text =~ "WHT"
+    assert text =~ "黑色"
+    assert text =~ "红色"
+    assert text =~ "绿色"
+    assert text =~ "黄色"
+    assert text =~ "蓝色"
+    assert text =~ "品红"
+    assert text =~ "青色"
+    assert text =~ "白色"
   end
 
   test "color 路由解析" do

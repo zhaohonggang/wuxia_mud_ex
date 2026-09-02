@@ -49,16 +49,34 @@ defmodule Kantele.Character.PersuadeCommandTest do
   end
 
   describe "persuade 命令" do
-    test "峨嵋派可以劝说" do
+    test "格式错误时报错" do
       p = player(family: %{"family_name" => "峨嵋派"})
-      conn = PersuadeCommand.run(build_conn(p), %{"arg" => "某人 stop"})
-      assert conn.output != []
+      conn = PersuadeCommand.run(build_conn(p), %{"arg" => "某人"})
+      text = output_text(conn)
+      assert text =~ "指令格式"
     end
 
     test "非峨嵋派不能劝说" do
       p = player(family: %{"family_name" => "少林派"})
       conn = PersuadeCommand.run(build_conn(p), %{"arg" => "某人 stop"})
-      assert conn.output != []
+      text = output_text(conn)
+      assert text =~ "只有峨嵋派才能用渡世济人"
     end
+
+    test "峨嵋派可以劝说" do
+      p = player(family: %{"family_name" => "峨嵋派"})
+      conn = PersuadeCommand.run(build_conn(p), %{"arg" => "某人 stop"})
+      text = output_text(conn)
+      assert text =~ "慢慢地向某人走过去"
+    end
+  end
+
+  defp output_text(conn) do
+    conn.output
+    |> Enum.flat_map(fn
+      %Kalevala.Character.Conn.Text{data: data} -> [IO.iodata_to_binary(data)]
+      _ -> []
+    end)
+    |> Enum.join("")
   end
 end

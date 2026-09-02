@@ -48,16 +48,48 @@ defmodule Kantele.Character.RecruitCommandTest do
   end
 
   describe "recruit 命令" do
+    test "无参数时报指令格式错误" do
+      p = player()
+      conn = RecruitCommand.run(build_conn(p), %{"arg" => ""})
+      text = output_text(conn)
+      assert text =~ "指令格式"
+    end
+
     test "无门派不能收徒" do
       p = player(family: nil)
       conn = RecruitCommand.run(build_conn(p), %{"arg" => "某人"})
-      assert conn.output != []
+      text = output_text(conn)
+      assert text =~ "并不属于任何门派"
     end
 
-    test "cancel 无待收弟子时" do
+    test "cancel无待收弟子时报错" do
       p = player(team_pending: nil)
       conn = RecruitCommand.run(build_conn(p), %{"arg" => "cancel"})
-      assert conn.output != []
+      text = output_text(conn)
+      assert text =~ "并没有收录任何人"
     end
+
+    test "cancel有pending时取消收录" do
+      p = player(team_pending: %{"recruit" => "某人"})
+      conn = RecruitCommand.run(build_conn(p), %{"arg" => "cancel"})
+      text = output_text(conn)
+      assert text =~ "改变主意不想收人为弟子"
+    end
+
+    test "有门派收某人为弟子" do
+      p = player()
+      conn = RecruitCommand.run(build_conn(p), %{"arg" => "某人"})
+      text = output_text(conn)
+      assert text =~ "你想收某人为弟子"
+    end
+  end
+
+  defp output_text(conn) do
+    conn.output
+    |> Enum.flat_map(fn
+      %Kalevala.Character.Conn.Text{data: data} -> [IO.iodata_to_binary(data)]
+      _ -> []
+    end)
+    |> Enum.join("")
   end
 end
