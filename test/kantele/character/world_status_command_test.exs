@@ -47,7 +47,7 @@ defmodule Kantele.Character.WorldStatusCommandTest do
   end
 
   describe "world_status 命令" do
-    test "渲染世界状态" do
+    test "渲染世界状态有输出" do
       p = player()
       conn = WorldStatusCommand.run(build_conn(p), %{})
       assert length(conn.output) > 0
