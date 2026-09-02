@@ -44,17 +44,20 @@ defmodule Kantele.Character.WenxuanCommand do
         end
 
       # 尝试解析为年份或 年份 编号
-      case Regex.run(~r/^(\d+)(?:\s+(\d+))?$/, arg) do
-        [_full, year_str, idx_str] ->
-          year = String.to_integer(year_str)
-          if idx_str do
-            read_analecta(conn, year, String.to_integer(idx_str))
-          else
-            show_wenxuan_year(conn, year)
-          end
-_ ->
-          show_wenxuan_help(conn)
-      end
+      true ->
+        case Regex.run(~r/^(\d+)(?:\s+(\d+))?$/, arg) do
+          [_full, year_str, idx_str] ->
+            year = String.to_integer(year_str)
+
+            if idx_str do
+              read_analecta(conn, year, String.to_integer(idx_str))
+            else
+              show_wenxuan_year(conn, year)
+            end
+
+          _ ->
+            show_wenxuan_help(conn)
+        end
     end
   end
 
