@@ -29,7 +29,6 @@ defmodule Kantele.CommandProbeTest do
     "stop_command" => "M4",
     "train_command" => "M4",
     "vote_command" => "M4",
-    "wash_command" => "M4",
     # S1-S4 社会系统
     "brothers_command" => "S1",
     "league_command" => "S2",
@@ -73,7 +72,6 @@ defmodule Kantele.CommandProbeTest do
     "pai_commands" => "后续批次",
     "perform_command" => "后续批次",
     "pkd_command" => "后续批次",
-    "pour_command" => "后续批次",
     "prepare_command" => "后续批次",
     "recall_command" => "后续批次",
     "ride_command" => "后续批次",
@@ -102,7 +100,6 @@ defmodule Kantele.CommandProbeTest do
     "abandon_command" => "后续批次",
     "answer_command" => "后续批次",
     "ansuan_command" => "M3",
-    "drug_command" => "M4",
     "beg_command" => "后续批次",
     "quest_command" => "后续批次",
     "quest_ask_command" => "后续批次",

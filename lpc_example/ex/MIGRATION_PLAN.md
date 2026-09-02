@@ -428,7 +428,7 @@ P5 无
 | M1 | purchase, shop, auction, baitan | [ ] |
 | M2 | assist, steal, hit, guard, kill | [ ] |
 | M3 | watch, check, miss, search, wenxuan, news, semote, system | [ ] |
-| M4 | drug, pour, daub, wash, cook, make, sleep, drive | [ ] |
+| M4 | drug, pour, daub, wash, cook, make, sleep, drive | [x] (all real) |
 | S1 | brothers | [ ] |
 | S2 | league | [ ] |
 | S3 | engage, accede, divorce | [x] |
