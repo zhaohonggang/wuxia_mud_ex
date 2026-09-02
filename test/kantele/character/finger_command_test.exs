@@ -47,10 +47,10 @@ defmodule Kantele.Character.FingerCommandTest do
   end
 
   describe "finger 命令" do
-    test "查找玩家显示 not_found" do
+    test "查找不存在玩家时设置name assign" do
       p = player()
       conn = FingerCommand.run(build_conn(p), %{"name" => "nonexistent"})
-      assert length(conn.output) > 0
+      assert conn.assigns[:name] == "nonexistent"
     end
 
     test "路由解析" do
