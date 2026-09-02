@@ -103,7 +103,7 @@ defmodule Kantele.Character.SleepCommand do
     # 设置睡眠状态
     new_temp = character.meta.temp
       |> Map.put("block_msg/all", 1)
-      |> Map.put("sleeped", 1)
+      |> Map.put("sleeped", true)
       |> Map.put("no_get", 1)
       |> Map.put("no_get_from", 1)
 
@@ -111,13 +111,11 @@ defmodule Kantele.Character.SleepCommand do
       new_temp = Map.delete(new_temp, "rent_paid")
     end
 
-    # 增加睡眠计数
-    sleep_count = (character.meta.state["sleep"] || 0) + 1
-    new_state = Map.put(character.meta.state, "sleep", sleep_count)
+    # 增加睡眠计数（PlayerMeta 无 state 字段，计数放入 temp）
+    sleep_count = (character.meta.temp["sleep_count"] || 0) + 1
+    new_temp = Map.put(new_temp, "sleep_count", sleep_count)
 
-    new_meta = character.meta
-      |> Map.put(:temp, new_temp)
-      |> Map.put(:state, new_state)
+    new_meta = Map.put(character.meta, :temp, new_temp)
 
     new_character = %{character | meta: new_meta}
     new_conn = put_character(conn, new_character)

@@ -107,6 +107,25 @@ defmodule Kantele.Character.SleepCommandTest do
       assert text =~ "先到一楼付钱后再来睡"
     end
 
+    test "可睡场所进入梦乡并安排唤醒" do
+      p = player()
+
+      conn =
+        SleepCommand.run(build_conn_with_room(p, %{attrs: %{"sleep_room" => true}}), %{})
+
+      text = output_text(conn)
+      assert text =~ "梦乡"
+
+      character = Kalevala.Character.Conn.character(conn)
+      assert character.meta.temp["sleeped"] == true
+      assert character.meta.temp["sleep_count"] == 1
+
+      delayed =
+        Enum.find(conn.events, &match?(%Kalevala.Event.Delayed{}, &1))
+
+      assert %Kalevala.Event.Delayed{topic: "sleep/wakeup"} = delayed
+    end
+
     test "sleep 路由解析" do
       {:ok, parsed} = Kantele.Character.Commands.parse("sleep")
       assert parsed.module == SleepCommand
