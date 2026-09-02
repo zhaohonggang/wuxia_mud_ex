@@ -41,12 +41,30 @@ defmodule Kantele.Character.StealCommandTest do
       pid: self(),
       room_id: "test:room",
       inventory: [],
+      attributes: %{"jing" => 200},
       meta: %PlayerMeta{
         vitals: vitals,
         stats: stats,
         combat: combat
       }
     }
+  end
+
+  defp player_in_combat() do
+    p = player()
+    combat = %{p.meta.combat | enemies: [%{id: "npc-1", name: "山贼", room_id: "test:room"}]}
+    %{p | meta: %{p.meta | combat: combat}}
+  end
+
+  defp player_already_stealing() do
+    p = player()
+    temp = Map.put(p.meta.temp || %{}, "stealing", true)
+    %{p | meta: %{p.meta | temp: temp}}
+  end
+
+  defp player_low_jing() do
+    p = player()
+    %{p | attributes: %{"jing" => 50}}
   end
 
   defp output_text(conn) do
@@ -68,11 +86,37 @@ defmodule Kantele.Character.StealCommandTest do
     end
 
     test "精神不足不可偷窃" do
-      p = player()
+      p = player_low_jing()
       conn = StealCommand.run(build_conn(p), %{"item" => "剑", "target" => "张三"})
       text = output_text(conn)
 
       assert text =~ "难以集中精神"
+    end
+
+    test "战斗中不可偷窃" do
+      p = player_in_combat()
+      conn = StealCommand.run(build_conn(p), %{"item" => "剑", "target" => "山贼"})
+      text = output_text(conn)
+
+      assert text =~ "好好打你的架"
+    end
+
+    test "正在偷窃时不可再次下手" do
+      p = player_already_stealing()
+      conn = StealCommand.run(build_conn(p), %{"item" => "剑", "target" => "张三"})
+      text = output_text(conn)
+
+      assert text =~ "已经在找机会下手"
+    end
+
+    test "偷窃成功发送 steal/attempt 事件" do
+      p = player()
+      conn = StealCommand.run(build_conn(p), %{"item" => "剑", "target" => "张三"})
+      events = Enum.filter(conn.events, fn e -> e.topic == "steal/attempt" end)
+      assert length(events) == 1
+      event = hd(events)
+      assert event.data.item == "剑"
+      assert event.data.target == "张三"
     end
   end
 end

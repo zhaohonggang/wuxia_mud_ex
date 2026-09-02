@@ -119,5 +119,28 @@ defmodule Kantele.Character.CombineCommandTest do
       conn = CombineCommand.run(build_conn(p), %{"arg" => "灵草一 & 灵草二"})
       assert output_text(conn) =~ "精力"
     end
+
+    test "配方不匹配时物品消耗但无变化" do
+      herb1 = instance("test:herb1", "herb1-1")
+      herb2 = instance("test:herb2", "herb2-1")
+      p = player([herb1, herb2])
+      conn = CombineCommand.run(build_conn(p), %{"arg" => "灵草一 & 灵草二"})
+      text = output_text(conn)
+      assert text =~ "似乎没有任何变化"
+      updated = conn.private.update_character || conn.character
+      assert length(updated.inventory) == 2
+    end
+
+    test "只提供一个材料时报错" do
+      herb1 = instance("test:herb1", "herb1-1")
+      p = player([herb1])
+      conn = CombineCommand.run(build_conn(p), %{"arg" => "灵草一"})
+      assert output_text(conn) =~ "至少两件"
+    end
+
+    test "空格式参数报错" do
+      conn = CombineCommand.run(build_conn(player([])), %{"arg" => "  &  "})
+      assert output_text(conn) =~ "至少两件"
+    end
   end
 end

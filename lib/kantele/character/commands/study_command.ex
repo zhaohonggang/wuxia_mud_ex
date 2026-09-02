@@ -15,6 +15,7 @@ defmodule Kantele.Character.StudyCommand do
   alias Kantele.Character.LearnGate
   alias Kantele.Character.Records
   alias Kantele.Character.Stats
+  alias Kantele.World.Items
 
   @max_times 100
 
@@ -44,8 +45,8 @@ defmodule Kantele.Character.StudyCommand do
   end
 
   defp parse_arg(arg) do
-    # 匹配末尾的 "x3" 或 "3"
-    case Regex.run(~r/^(.+?)\s+(?:x?)(\d+)$/, String.trim(arg)) do
+    # 支持 "书名 x3"、"书名X3"、"书名3" 三种格式
+    case Regex.run(~r/^(.+?)\s*x?(\d+)$/i, String.trim(arg)) do
       [_, book, times_str] ->
         {String.trim(book), String.to_integer(times_str)}
 
@@ -54,24 +55,18 @@ defmodule Kantele.Character.StudyCommand do
     end
   end
 
-  defp start_study(conn, book_name, times_str, character) do
+  defp start_study(conn, book_name, times, character) do
     stats = character.meta.stats
 
-    if is_nil(book_name) or book_name == "" do
-      fail(conn, "你要读什么？\n格式：study <书籍名称> [次数]\n")
-    else
-      times = parse_times(times_str)
+    cond do
+      times < 1 or times > @max_times ->
+        fail(conn, "读书次数最少一次，最多不能超过 #{@max_times} 次。\n")
 
-      cond do
-        times < 1 or times > @max_times ->
-          fail(conn, "读书次数最少一次，最多不能超过 #{@max_times} 次。\n")
+      not has_literate?(stats) ->
+        fail(conn, "你是个文盲，先学点文化(literate)吧。\n")
 
-        not has_literate?(stats) ->
-          fail(conn, "你是个文盲，先学点文化(literate)吧。\n")
-
-        true ->
-          find_and_study(conn, book_name, times, character)
-      end
+      true ->
+        find_and_study(conn, book_name, times, character)
     end
   end
 
@@ -156,8 +151,11 @@ defmodule Kantele.Character.StudyCommand do
         end
       end)
 
-    character = Map.put(character.meta, :stats, stats)
-    character = Map.put(character, :meta, Map.put(character.meta, :vitals, vitals))
+    new_meta = character.meta
+      |> Map.put(:stats, stats)
+      |> Map.put(:vitals, vitals)
+
+    character = %{character | meta: new_meta}
     Records.save(character)
 
     if times_done == 0 do
@@ -177,7 +175,8 @@ defmodule Kantele.Character.StudyCommand do
   end
 
   defp find_book(inventory, book_name) do
-    Enum.find(inventory, fn item ->
+    Enum.find(inventory, fn instance ->
+      item = Items.get!(instance.item_id)
       item_name = String.downcase(item.name)
       keyword = String.downcase(String.trim(book_name))
       item_name == keyword or String.starts_with?(item_name, "#{keyword} ")
