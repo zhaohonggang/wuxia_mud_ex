@@ -30,8 +30,6 @@ defmodule Kantele.CommandProbeTest do
     "train_command" => "M4",
     "vote_command" => "M4",
     # S1-S4 社会系统
-    "brothers_command" => "S1",
-    "league_command" => "S2",
     # K1-K3 skill 家族
     "checkskill_command" => "K1",
     # 后续批次

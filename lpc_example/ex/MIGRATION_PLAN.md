@@ -429,8 +429,8 @@ P5 无
 | M2 | assist, steal, hit, guard, kill | [ ] |
 | M3 | watch, check, miss, search, wenxuan, news, semote, system | [ ] |
 | M4 | drug, pour, daub, wash, cook, make, sleep, drive | [x] (all real) |
-| S1 | brothers | [ ] |
-| S2 | league | [ ] |
+| S1 | brothers | [x] (real) |
+| S2 | league | [x] (real) |
 | S3 | engage, accede, divorce | [x] |
 | S4 | quest2, hatred, scheme, tianshu, jifen | [x] |
 | K1 | combine, san, imbue, enchase, research | [ ] |
