@@ -36,6 +36,21 @@ defmodule Kantele.Character.YanlianCommandTest do
     }
   end
 
+  defp player_busy do
+    p = player()
+    combat = %{p.meta.combat | busy: 3}
+    %{p | meta: %{p.meta | combat: combat}}
+  end
+
+  defp output_text(conn) do
+    conn.output
+    |> Enum.flat_map(fn
+      %Kalevala.Character.Conn.Text{data: data} -> [IO.iodata_to_binary(data)]
+      _ -> []
+    end)
+    |> Enum.join("")
+  end
+
   describe "路由解析" do
     test "yanlian 路由解析" do
       {:ok, parsed} = Kantele.Character.Commands.parse("yanlian")
@@ -44,10 +59,25 @@ defmodule Kantele.Character.YanlianCommandTest do
   end
 
   describe "yanlian 命令" do
-    test "无技能名时提示" do
+    test "无技能名时报错" do
       p = player()
       conn = YanlianCommand.run(build_conn(p), %{"arg" => ""})
-      assert conn.output != []
+      text = output_text(conn)
+      assert text =~ "你想演练什么"
+    end
+
+    test "忙乱中拒绝" do
+      p = player_busy()
+      conn = YanlianCommand.run(build_conn(p), %{"arg" => "taiji"})
+      text = output_text(conn)
+      assert text =~ "正忙着"
+    end
+
+    test "有技能时报需要演练已有子技能的武功" do
+      p = player()
+      conn = YanlianCommand.run(build_conn(p), %{"arg" => "taiji"})
+      text = output_text(conn)
+      assert text =~ "已有子技能"
     end
   end
 end
