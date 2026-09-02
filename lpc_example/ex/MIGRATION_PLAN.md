@@ -433,9 +433,9 @@ P5 无
 | S2 | league | [x] (real) |
 | S3 | engage, accede, divorce | [x] |
 | S4 | quest2, hatred, scheme, tianshu, jifen | [x] |
-| K1 | combine, san, imbue, enchase, research | [ ] |
-| K2 | berserk, crattack, spattack, animaout, jingxiu, persuade, pique, recruit | [x] (部分) |
-| K3 | burning, breakup, fuse, derive, syn, yanlian | [x] (部分) |
+| K1 | combine, san, imbue, enchase, research | [x] (all real) |
+| K2 | berserk, crattack, spattack, animaout, jingxiu, persuade, pique, recruit | [x] (all real) |
+| K3 | burning, breakup, fuse, derive, syn, yanlian | [x] (all real) |
 | W1 | 权限地基 | [ ] |
 | W2 | goto/where/who1/clone/dest/update 等常用 wiz | [ ] |
 | W3 | arch 重度命令 | [ ] |
