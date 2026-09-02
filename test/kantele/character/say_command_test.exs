@@ -47,10 +47,10 @@ defmodule Kantele.Character.SayCommandTest do
   end
 
   describe "say 命令" do
-    test "产生输出" do
+    test "设置prompt为false" do
       p = player()
       conn = SayCommand.run(build_conn(p), %{"text" => "hello"})
-      assert length(conn.output) >= 0
+      assert conn.assigns[:prompt] == false
     end
 
     test "路由解析" do
