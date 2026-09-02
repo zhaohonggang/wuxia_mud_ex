@@ -16,44 +16,10 @@ defmodule Kantele.Character.DaubCommandTest do
   @non_daubable_id "test:bread"
 
   setup_all do
-    Items.put(@poison_id, %Item{
-      id: @poison_id,
-      name: "砒霜",
-      verbs: [],
-      callback_module: Kantele.World.Item,
-      meta: %{
-        "can_daub" => true,
-        "poison_type" => "毒药",
-        "poison_level" => 50,
-        "poison_duration" => 300,
-        "poison_remain" => 10
-      }
-    })
-
-    Items.put(@weapon_id, %Item{
-      id: @weapon_id,
-      name: "金蛇剑",
-      verbs: [],
-      callback_module: Kantele.World.Item,
-      meta: %{"type" => "sword"}
-    })
-
-    Items.put(@armor_id, %Item{
-      id: @armor_id,
-      name: "铁甲",
-      verbs: [],
-      callback_module: Kantele.World.Item,
-      meta: %{"type" => "armor"}
-    })
-
-    Items.put(@non_daubable_id, %Item{
-      id: @non_daubable_id,
-      name: "馒头",
-      verbs: [],
-      callback_module: Kantele.World.Item,
-      meta: %{}
-    })
-
+    Items.put(@poison_id, %Item{id: @poison_id, name: "砒霜", verbs: [], callback_module: Kantele.World.Item, meta: %{"can_daub" => true, "poison_type" => "毒药", "poison_level" => 50, "poison_duration" => 300, "poison_remain" => 10}})
+    Items.put(@weapon_id, %Item{id: @weapon_id, name: "金蛇剑", verbs: [], callback_module: Kantele.World.Item, meta: %{"type" => "sword"}})
+    Items.put(@armor_id, %Item{id: @armor_id, name: "铁甲", verbs: [], callback_module: Kantele.World.Item, meta: %{"type" => "armor"}})
+    Items.put(@non_daubable_id, %Item{id: @non_daubable_id, name: "馒头", verbs: [], callback_module: Kantele.World.Item, meta: %{}})
     :ok
   end
 
