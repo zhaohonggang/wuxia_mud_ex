@@ -67,6 +67,14 @@ defmodule Kantele.Character.MissCommandTest do
       assert text =~ "你要追寻什么物品"
     end
 
+    test "不知道如何追寻提示" do
+      p = player()
+      conn = MissCommand.run(build_conn(p), %{"item" => "feng-ming-jian"})
+      text = output_text(conn)
+
+      assert text =~ "你不知道如何追寻这个物品"
+    end
+
     test "miss 路由解析" do
       {:ok, parsed} = Kantele.Character.Commands.parse("miss feng-ming-jian")
       assert parsed.module == MissCommand

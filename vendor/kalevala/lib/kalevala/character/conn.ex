@@ -8,6 +8,7 @@ defmodule Kalevala.Character.Conn.Private do
     :next_controller,
     :request_id,
     :update_character,
+    :room,
     actions: [],
     channel_changes: [],
     halt?: false

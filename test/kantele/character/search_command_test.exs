@@ -1,14 +1,14 @@
-defmodule Kantele.Character.CheckCommandTest do
+defmodule Kantele.Character.SearchCommandTest do
   use ExUnit.Case, async: true
 
   import Kalevala.ConnTest
 
-  alias Kantele.Character.CheckCommand
   alias Kantele.Character.PlayerMeta
+  alias Kantele.Character.SearchCommand
   alias Kantele.Character.Stats
   alias Kantele.Character.Vitals
 
-  defp player() do
+  defp player(attrs \\ %{}) do
     vitals = %Vitals{
       jing: 2000,
       jingli: 2000,
@@ -41,6 +41,7 @@ defmodule Kantele.Character.CheckCommandTest do
       pid: self(),
       room_id: "test:room",
       inventory: [],
+      attributes: attrs,
       meta: %PlayerMeta{
         vitals: vitals,
         stats: stats,
@@ -58,33 +59,30 @@ defmodule Kantele.Character.CheckCommandTest do
     |> Enum.join("")
   end
 
-  describe "check 命令" do
-    test "缺少参数提示格式" do
+  defp search_events(conn) do
+    Enum.filter(conn.events, fn event -> event.topic == "search/attempt" end)
+  end
+
+  describe "search 命令" do
+    test "气不足时提示" do
       p = player()
-      conn = CheckCommand.run(build_conn(p), %{})
+      conn = SearchCommand.run(build_conn(p), %{})
       text = output_text(conn)
 
-      assert text =~ "指令格式：check"
+      assert text =~ "你的气不足"
     end
 
-    test "非丐帮不可查探" do
-      p = player()
-      conn = CheckCommand.run(build_conn(p), %{"target" => "李四"})
-      text = output_text(conn)
+    test "气足够时发出 search/attempt 事件" do
+      p = player(%{"qi" => 40})
+      conn = SearchCommand.run(build_conn(p), %{})
+      events = search_events(conn)
 
-      assert text =~ "你不知道如何向人查探情报"
+      assert length(events) == 1
     end
 
-    test "check 路由解析" do
-      {:ok, parsed} = Kantele.Character.Commands.parse("check 李四")
-      assert parsed.module == CheckCommand
-      assert parsed.params["target"] == "李四"
-    end
-
-    test "dating 路由解析" do
-      {:ok, parsed} = Kantele.Character.Commands.parse("dating 李四")
-      assert parsed.module == CheckCommand
-      assert parsed.params["target"] == "李四"
+    test "search 路由解析" do
+      {:ok, parsed} = Kantele.Character.Commands.parse("search")
+      assert parsed.module == SearchCommand
     end
   end
 end

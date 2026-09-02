@@ -1,9 +1,9 @@
-defmodule Kantele.Character.CheckCommandTest do
+defmodule Kantele.Character.CookCommandTest do
   use ExUnit.Case, async: true
 
   import Kalevala.ConnTest
 
-  alias Kantele.Character.CheckCommand
+  alias Kantele.Character.CookCommand
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Stats
   alias Kantele.Character.Vitals
@@ -58,33 +58,27 @@ defmodule Kantele.Character.CheckCommandTest do
     |> Enum.join("")
   end
 
-  describe "check 命令" do
-    test "缺少参数提示格式" do
+  describe "cook 命令" do
+    test "未激发菜艺提示" do
       p = player()
-      conn = CheckCommand.run(build_conn(p), %{})
+      conn = CookCommand.run(build_conn(p), %{})
       text = output_text(conn)
 
-      assert text =~ "指令格式：check"
+      assert text =~ "请先激发你要使用的菜艺"
     end
 
-    test "非丐帮不可查探" do
+    test "指定菜肴未激发菜艺提示" do
       p = player()
-      conn = CheckCommand.run(build_conn(p), %{"target" => "李四"})
+      conn = CookCommand.run(build_conn(p), %{"dish_name" => "回锅肉"})
       text = output_text(conn)
 
-      assert text =~ "你不知道如何向人查探情报"
+      assert text =~ "请先激发你要使用的菜艺"
     end
 
-    test "check 路由解析" do
-      {:ok, parsed} = Kantele.Character.Commands.parse("check 李四")
-      assert parsed.module == CheckCommand
-      assert parsed.params["target"] == "李四"
-    end
-
-    test "dating 路由解析" do
-      {:ok, parsed} = Kantele.Character.Commands.parse("dating 李四")
-      assert parsed.module == CheckCommand
-      assert parsed.params["target"] == "李四"
+    test "cook 路由解析" do
+      {:ok, parsed} = Kantele.Character.Commands.parse("cook 回锅肉")
+      assert parsed.module == CookCommand
+      assert parsed.params["dish_name"] == "回锅肉"
     end
   end
 end

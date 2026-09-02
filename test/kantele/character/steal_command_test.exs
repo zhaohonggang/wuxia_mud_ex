@@ -66,5 +66,13 @@ defmodule Kantele.Character.StealCommandTest do
 
       assert text =~ "指令格式：steal"
     end
+
+    test "精神不足不可偷窃" do
+      p = player()
+      conn = StealCommand.run(build_conn(p), %{"item" => "剑", "target" => "张三"})
+      text = output_text(conn)
+
+      assert text =~ "难以集中精神"
+    end
   end
 end

@@ -1,10 +1,10 @@
-defmodule Kantele.Character.CheckCommandTest do
+defmodule Kantele.Character.SleepCommandTest do
   use ExUnit.Case, async: true
 
   import Kalevala.ConnTest
 
-  alias Kantele.Character.CheckCommand
   alias Kantele.Character.PlayerMeta
+  alias Kantele.Character.SleepCommand
   alias Kantele.Character.Stats
   alias Kantele.Character.Vitals
 
@@ -49,6 +49,11 @@ defmodule Kantele.Character.CheckCommandTest do
     }
   end
 
+  defp build_conn_with_room(p, room) do
+    build_conn(p)
+    |> Map.put(:private, %{build_conn(p).private | room: room})
+  end
+
   defp output_text(conn) do
     conn.output
     |> Enum.flat_map(fn
@@ -58,33 +63,34 @@ defmodule Kantele.Character.CheckCommandTest do
     |> Enum.join("")
   end
 
-  describe "check 命令" do
-    test "缺少参数提示格式" do
+  describe "sleep 命令" do
+    test "非睡眠场所提示" do
       p = player()
-      conn = CheckCommand.run(build_conn(p), %{})
+      conn = SleepCommand.run(build_conn_with_room(p, %{attrs: %{}}), %{})
       text = output_text(conn)
 
-      assert text =~ "指令格式：check"
+      assert text =~ "这里不是你能睡的地方"
     end
 
-    test "非丐帮不可查探" do
+    test "客栈未付钱提示" do
       p = player()
-      conn = CheckCommand.run(build_conn(p), %{"target" => "李四"})
+
+      conn =
+        SleepCommand.run(build_conn_with_room(p, %{attrs: %{"sleep_room" => true, "hotel" => true}}), %{})
+
       text = output_text(conn)
 
-      assert text =~ "你不知道如何向人查探情报"
+      assert text =~ "先到一楼付钱后再来睡"
     end
 
-    test "check 路由解析" do
-      {:ok, parsed} = Kantele.Character.Commands.parse("check 李四")
-      assert parsed.module == CheckCommand
-      assert parsed.params["target"] == "李四"
+    test "sleep 路由解析" do
+      {:ok, parsed} = Kantele.Character.Commands.parse("sleep")
+      assert parsed.module == SleepCommand
     end
 
-    test "dating 路由解析" do
-      {:ok, parsed} = Kantele.Character.Commands.parse("dating 李四")
-      assert parsed.module == CheckCommand
-      assert parsed.params["target"] == "李四"
+    test "睡觉 路由解析" do
+      {:ok, parsed} = Kantele.Character.Commands.parse("睡觉")
+      assert parsed.module == SleepCommand
     end
   end
 end

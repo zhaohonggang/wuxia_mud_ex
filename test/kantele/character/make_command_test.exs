@@ -1,11 +1,11 @@
-defmodule Kantele.Character.SwearCommandTest do
+defmodule Kantele.Character.MakeCommandTest do
   use ExUnit.Case, async: true
 
   import Kalevala.ConnTest
 
+  alias Kantele.Character.MakeCommand
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Stats
-  alias Kantele.Character.SwearCommand
   alias Kantele.Character.Vitals
 
   defp player() do
@@ -58,51 +58,35 @@ defmodule Kantele.Character.SwearCommandTest do
     |> Enum.join("")
   end
 
-  describe "swear 命令" do
-    test "缺少参数提示格式" do
+  describe "make 命令" do
+    test "不会制药时提示" do
       p = player()
-      conn = SwearCommand.run(build_conn(p), %{})
+      conn = MakeCommand.run(build_conn(p), %{})
       text = output_text(conn)
 
-      assert text =~ "指令格式：swear"
+      assert text =~ "你现在不会制任何药物"
     end
 
-    test "空参数提示结义对象" do
+    test "未知药方提示" do
       p = player()
-      conn = SwearCommand.run(build_conn(p), %{"arg" => ""})
+      conn = MakeCommand.run(build_conn(p), %{"arg" => "bogus"})
       text = output_text(conn)
 
-      assert text =~ "你要和谁一同结义"
+      assert text =~ "你还不会配这种药"
     end
 
-    test "非法参数提示格式" do
+    test "缺少研钵提示" do
       p = player()
-      conn = SwearCommand.run(build_conn(p), %{"arg" => "foo"})
+      conn = MakeCommand.run(build_conn(p), %{"arg" => "xiaohuandan"})
       text = output_text(conn)
 
-      assert text =~ "指令格式：swear"
+      assert text =~ "先把能够磨药的研钵拿(hand)在手上"
     end
 
-    test "取消未发出的请求" do
-      p = player()
-      conn = SwearCommand.run(build_conn(p), %{"arg" => "cancel"})
-      text = output_text(conn)
-
-      assert text =~ "你现在没有提出结义请求"
-    end
-
-    test "年龄不足不可结义" do
-      p = player()
-      conn = SwearCommand.run(build_conn(p), %{"arg" => "with 李四"})
-      text = output_text(conn)
-
-      assert text =~ "小毛孩子捣什么乱"
-    end
-
-    test "swear 路由解析" do
-      {:ok, parsed} = Kantele.Character.Commands.parse("swear with 李四")
-      assert parsed.module == SwearCommand
-      assert parsed.params["arg"] == "with 李四"
+    test "make 路由解析" do
+      {:ok, parsed} = Kantele.Character.Commands.parse("make xiaohuandan")
+      assert parsed.module == MakeCommand
+      assert parsed.params["arg"] == "xiaohuandan"
     end
   end
 end

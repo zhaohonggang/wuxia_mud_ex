@@ -14,6 +14,7 @@ defmodule Kalevala.Character do
     :room_id,
     :status,
     inventory: [],
+    attributes: %{},
     meta: %{}
   ]
 

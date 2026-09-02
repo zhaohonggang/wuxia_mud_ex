@@ -13,7 +13,7 @@ defmodule Kantele.Character.SleepCommand do
 
   def run(conn, _params) do
     character = conn.character
-    room = character.room || %{}  # 从 conn 获取房间信息
+    room = conn.private.room || %{}  # 从 conn 获取房间信息
 
     cond do
       not can_sleep_here?(character, room) ->
@@ -57,8 +57,8 @@ defmodule Kantele.Character.SleepCommand do
       Items.get!(inst.item_id).attrs["sleepbag"] == true
     end)
 
-    room_sleep = room.attrs["sleep_room"] == true
-    room_no_sleep = room.attrs["no_sleep_room"] == true
+    room_sleep = Map.get(room, :attrs, %{})["sleep_room"] == true
+    room_no_sleep = Map.get(room, :attrs, %{})["no_sleep_room"] == true
 
     cond do
       room_no_sleep -> false
@@ -68,7 +68,7 @@ defmodule Kantele.Character.SleepCommand do
   end
 
   defp hotel_needs_payment?(character, room) do
-    room.attrs["hotel"] == true && character.meta.temp["rent_paid"] != true
+    Map.get(room, :attrs, %{})["hotel"] == true && character.meta.temp["rent_paid"] != true
   end
 
   defp vitals_too_low?(character) do
@@ -78,7 +78,7 @@ defmodule Kantele.Character.SleepCommand do
   end
 
   defp conditions_prevent_sleep?(character) do
-    conditions = character.meta.conditions || %{}
+    conditions = Map.get(character.meta, :conditions, %{})
 
     Enum.any?(conditions, fn {_cnd_name, cnd_info} ->
       # 简化：如果有任意 condition 且 qi/jing 低于阈值
@@ -92,11 +92,12 @@ defmodule Kantele.Character.SleepCommand do
   end
 
   defp start_sleep(conn, character, room) do
-    is_hotel = room.attrs["hotel"] == true
+    room_attrs = Map.get(room, :attrs, %{})
+    is_hotel = room_attrs["hotel"] == true
     has_sleepbag = Enum.any?(character.inventory, fn inst ->
       Items.get!(inst.item_id).attrs["sleepbag"] == true
     end)
-    room_sleep = room.attrs["sleep_room"] == true
+    room_sleep = room_attrs["sleep_room"] == true
 
     # 设置睡眠状态
     new_temp = character.meta.temp
@@ -123,7 +124,7 @@ defmodule Kantele.Character.SleepCommand do
     # 显示睡眠消息
     msg =
       cond do
-        room.attrs["sleep_room"] == true ->
+        room_attrs["sleep_room"] == true ->
           "你往床上一躺，开始睡觉。\n不一会儿，你就进入了梦乡。\n"
         has_sleepbag ->
           "你展开一个睡袋，钻了进去，开始睡觉。\n不一会儿，你就进入了梦乡。\n"
