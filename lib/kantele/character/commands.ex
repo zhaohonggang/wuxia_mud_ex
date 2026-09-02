@@ -299,6 +299,8 @@ defmodule Kantele.Character.Commands do
   module(LookCommand) do
     parse("look", :run)
 
+    parse("watch", :run)
+
     # 单字母命令需带词边界断言，否则会前缀误吃 learn 等长命令
     # （路由按注册顺序先到先得）
     parse("l", :run, [], fn combinator ->
