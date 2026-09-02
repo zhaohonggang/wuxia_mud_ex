@@ -36,6 +36,12 @@ defmodule Kantele.Character.JifenCommandTest do
     assert output_text(conn) =~ "尚无积分记录"
   end
 
+  test "jifen为0时提示尚无积分记录" do
+    p = %{player() | meta: %{player().meta | jifen: 0}}
+    conn = JifenCommand.run(build_conn(p), %{})
+    assert output_text(conn) =~ "尚无积分记录"
+  end
+
   test "有积分时显示积分" do
     p = %{player() | meta: %{player().meta | jifen: 120}}
     conn = JifenCommand.run(build_conn(p), %{})
