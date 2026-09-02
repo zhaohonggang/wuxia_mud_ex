@@ -28,13 +28,20 @@ defmodule Kantele.Character.TellEvent do
   end
 
   def echo(conn, event) do
+    character = event.data.character
+
     conn
-    |> assign(:character, event.data.character)
+    |> maybe_put_reply_to(character)
+    |> assign(:character, character)
     |> assign(:id, event.data.id)
     |> assign(:text, event.data.text)
     |> render(TellView, "listen")
     |> prompt(CommandView, "prompt", %{})
   end
+
+  # 记录发话人，供 `reply` 命令回话。
+  defp maybe_put_reply_to(conn, nil), do: conn
+  defp maybe_put_reply_to(conn, character), do: put_meta(conn, :reply_to, character.name)
 
   def subscribe_error(conn, error) do
     Logger.error("Tried to subscribe to the new channel and failed - #{inspect(error)}")
