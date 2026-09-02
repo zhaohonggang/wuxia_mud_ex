@@ -39,6 +39,15 @@ defmodule Kantele.Character.DeriveCommandTest do
     }
   end
 
+  defp output_text(conn) do
+    conn.output
+    |> Enum.flat_map(fn
+      %Kalevala.Character.Conn.Text{data: data} -> [IO.iodata_to_binary(data)]
+      _ -> []
+    end)
+    |> Enum.join("")
+  end
+
   describe "路由解析" do
     test "derive 路由解析" do
       {:ok, parsed} = Kantele.Character.Commands.parse("derive")
@@ -47,16 +56,32 @@ defmodule Kantele.Character.DeriveCommandTest do
   end
 
   describe "derive 命令" do
-    test "实战经验不足时拒绝" do
+    test "实战经验不足30000时报错" do
       p = player(combat_exp: 10000)
       conn = DeriveCommand.run(build_conn(p), %{})
-      assert conn.output != []
+      text = output_text(conn)
+      assert text =~ "实战经验太浅"
     end
 
-    test "体力不足时拒绝" do
+    test "气血不足70%时报错" do
       p = player(qi: 1000, max_qi: 5000)
       conn = DeriveCommand.run(build_conn(p), %{})
-      assert conn.output != []
+      text = output_text(conn)
+      assert text =~ "没有充足的体力"
+    end
+
+    test "精力不足70%时报错" do
+      p = player(jing: 500, max_jing: 2000)
+      conn = DeriveCommand.run(build_conn(p), %{})
+      text = output_text(conn)
+      assert text =~ "精神不济"
+    end
+
+    test "条件满足时开始汲取" do
+      p = player()
+      conn = DeriveCommand.run(build_conn(p), %{})
+      text = output_text(conn)
+      assert text =~ "开始吸收汲取"
     end
   end
 end
