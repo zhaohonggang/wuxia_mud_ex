@@ -1,52 +1,108 @@
 defmodule Kantele.Character.RespirateCommandTest do
   use ExUnit.Case, async: true
 
-  alias Kantele.Character.Vitals
-  alias Kantele.Character.Stats
+  import Kalevala.ConnTest
 
-  describe "respirate 参数校验" do
-    test "jingli 字段存在于 Vitals" do
-      vitals = Vitals.new()
-      assert Map.has_key?(vitals, :jingli)
-      assert Map.has_key?(vitals, :max_jingli)
-      assert vitals.jingli == 0
-      assert vitals.max_jingli == 0
-    end
+  alias Kantele.Character.RespirateCommand
+  alias Kantele.Character.PlayerMeta
+  alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
+  alias Kantele.Character.Combat
+
+  defp player(opts \\ []) do
+    vitals = %Vitals{
+      jing: Keyword.get(opts, :jing, 2000),
+      jingli: Keyword.get(opts, :jingli, 0),
+      max_jingli: Keyword.get(opts, :max_jingli, 2000),
+      qi: Keyword.get(opts, :qi, 5000),
+      max_qi: Keyword.get(opts, :max_qi, 5000),
+      neili: Keyword.get(opts, :neili, 9000),
+      max_neili: Keyword.get(opts, :max_neili, 10000)
+    }
+
+    stats = %Stats{
+      str: 20,
+      dex: 20,
+      con: 20,
+      int: 20,
+      skills: Keyword.get(opts, :skills, %{"force" => 50}),
+      mapped: Keyword.get(opts, :mapped, %{"force" => "liuxi-neigong"}),
+      performs: MapSet.new(),
+      combat_exp: 1000,
+      score: 0,
+      potential: 100,
+      weiwang: 0
+    }
+
+    %Kalevala.Character{
+      id: "player-1",
+      name: "张三",
+      pid: self(),
+      room_id: "test:room",
+      inventory: [],
+      meta: %PlayerMeta{
+        vitals: vitals,
+        stats: stats,
+        combat: Keyword.get(opts, :combat, Combat.new())
+      }
+    }
   end
 
-  describe "respirate_event jingli 转化" do
-    test "jingli 增加同时 jing 减少" do
-      vitals = %Vitals{
-        qi: 150,
-        max_qi: 150,
-        base_qi: 150,
-        jing: 100,
-        max_jing: 120,
-        base_jing: 120,
-        jingli: 0,
-        max_jingli: 0,
-        neili: 200,
-        max_neili: 200,
-        base_neili: 200
-      }
+  defp output_text(conn) do
+    conn.output
+    |> Enum.flat_map(fn
+      %Kalevala.Character.Conn.Text{data: data} -> [IO.iodata_to_binary(data)]
+      _ -> []
+    end)
+    |> Enum.join("")
+  end
 
-      # 模拟消耗 30 精，获得 30 jingli
-      vitals = %{vitals | jing: vitals.jing - 30, jingli: vitals.jingli + 30}
-
-      assert vitals.jing == 70
-      assert vitals.jingli == 30
+  describe "respirate 命令" do
+    test "路由解析" do
+      {:ok, parsed} = Kantele.Character.Commands.parse("respirate 50")
+      assert parsed.module == RespirateCommand
     end
 
-    test "jing 伤害正常工作" do
-      vitals = Vitals.new() |> Map.put(:jing, 100)
-      vitals = Vitals.damage(vitals, :jing, 30)
-      assert vitals.jing == 70
+    test "无内功时拒绝" do
+      p = player(skills: %{}, mapped: %{})
+      conn = RespirateCommand.run(build_conn(p), %{"arg" => "50"})
+      text = output_text(conn)
+      assert text =~ "必须先用 enable"
     end
 
-    test "jingli 伤害正常工作" do
-      vitals = Vitals.new() |> Map.put(:jingli, 100)
-      vitals = Vitals.damage(vitals, :jingli, 30)
-      assert vitals.jingli == 70
+    test "精不足时拒绝" do
+      p = player(jing: 5)
+      conn = RespirateCommand.run(build_conn(p), %{"arg" => "50"})
+      text = output_text(conn)
+      assert text =~ "精不足"
+    end
+
+    test "数量太小时报错" do
+      p = player()
+      conn = RespirateCommand.run(build_conn(p), %{"arg" => "5"})
+      text = output_text(conn)
+      assert text =~ "至少 10 点精"
+    end
+
+    test "格式错误时报错" do
+      p = player()
+      conn = RespirateCommand.run(build_conn(p), %{"arg" => "abc"})
+      text = output_text(conn)
+      assert text =~ "格式"
+    end
+
+    test "气血不足70%时报错" do
+      p = player(qi: 3000, max_qi: 5000)
+      conn = RespirateCommand.run(build_conn(p), %{"arg" => "50"})
+      text = output_text(conn)
+      assert text =~ "身体状况太差"
+    end
+
+    test "条件满足时开始吐纳" do
+      p = player()
+      conn = RespirateCommand.run(build_conn(p), %{"arg" => "50"})
+      text = output_text(conn)
+      assert text =~ "开始吐纳"
     end
   end
 end
