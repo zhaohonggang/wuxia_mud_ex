@@ -10,6 +10,7 @@ defmodule Kantele.Character.DaubCommand do
   use Kalevala.Character.Command
 
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Records
   alias Kalevala.Verb
   alias Kantele.World.Items
   alias Kantele.Poison
@@ -248,7 +249,7 @@ defmodule Kantele.Character.DaubCommand do
   defp check_self_poison(character, poison) do
     # 自毒概率：基于 poison skill
     poison_skill = character.meta.stats.skills["poison"] || 0
-    chance = div(100, max(poison_skill / 10, 1))
+    chance = div(100, max(div(poison_skill, 10), 1))
     :rand.uniform(100) <= chance
   end
 
