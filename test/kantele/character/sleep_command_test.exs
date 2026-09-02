@@ -40,7 +40,13 @@ defmodule Kantele.Character.SleepCommandTest do
       name: "张三",
       pid: self(),
       room_id: "test:room",
-      inventory: [],
+      inventory: [
+        %{
+          id: "inst-1",
+          item_id: "liuxi:peiyuan_dan",
+          item: %{id: "liuxi:peiyuan_dan", name: "培元丹"}
+        }
+      ],
       meta: %PlayerMeta{
         vitals: vitals,
         stats: stats,
@@ -52,6 +58,18 @@ defmodule Kantele.Character.SleepCommandTest do
   defp build_conn_with_room(p, room) do
     build_conn(p)
     |> Map.put(:private, %{build_conn(p).private | room: room})
+  end
+
+  setup do
+    peptide_item = %Kalevala.World.Item{
+      id: "liuxi:peiyuan_dan",
+      name: "培元丹",
+      description: "补充气血的丹药",
+      meta: %{}
+    }
+
+    Kantele.World.Items.put("liuxi:peiyuan_dan", peptide_item)
+    :ok
   end
 
   defp output_text(conn) do
