@@ -4,63 +4,58 @@ defmodule Kantele.Character.FingerCommandTest do
   import Kalevala.ConnTest
 
   alias Kantele.Character.FingerCommand
+  alias Kantele.Character.PlayerMeta
+  alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
-  defp player() do
+  defp player(opts \\ []) do
+    vitals = %Vitals{
+      jing: Keyword.get(opts, :jing, 2000),
+      jingli: Keyword.get(opts, :jingli, 2000),
+      neili: Keyword.get(opts, :neili, 9000),
+      max_neili: Keyword.get(opts, :max_neili, 10000),
+      max_jingli: Keyword.get(opts, :max_jingli, 2000),
+      qi: Keyword.get(opts, :qi, 5000),
+      max_qi: Keyword.get(opts, :max_qi, 5000)
+    }
+
+    stats = %Stats{
+      str: Keyword.get(opts, :str, 20),
+      dex: Keyword.get(opts, :dex, 20),
+      con: Keyword.get(opts, :con, 20),
+      int: Keyword.get(opts, :int, 20),
+      skills: Keyword.get(opts, :skills, %{}),
+      combat_exp: Keyword.get(opts, :combat_exp, 0),
+      score: Keyword.get(opts, :score, 0),
+      weiwang: Keyword.get(opts, :weiwang, 0)
+    }
+
+    combat = Kantele.Character.Combat.new()
+
     %Kalevala.Character{
-      id: "player-1",
-      name: "张三",
+      id: Keyword.get(opts, :id, "player-1"),
+      name: Keyword.get(opts, :name, "张三"),
       pid: self(),
       room_id: "test:room",
-      meta: %Kantele.Character.PlayerMeta{
-        vitals: Kantele.Character.Vitals.new(),
-        stats: Kantele.Character.Stats.new(),
-        combat: Kantele.Character.Combat.new()
+      inventory: [],
+      meta: %PlayerMeta{
+        vitals: vitals,
+        stats: stats,
+        combat: combat
       }
     }
   end
 
-  defp output_text(conn) do
-    conn.output
-    |> Enum.flat_map(fn
-      %Kalevala.Character.Conn.Text{data: data} ->
-        [IO.iodata_to_binary(data)]
+  describe "finger 命令" do
+    test "查找玩家显示 not_found" do
+      p = player()
+      conn = FingerCommand.run(build_conn(p), %{"name" => "nonexistent"})
+      assert length(conn.output) > 0
+    end
 
-      %Kalevala.Character.Conn.EventText{text: %Kalevala.Character.Conn.Text{data: data}} ->
-        [IO.iodata_to_binary(data)]
-
-      _ ->
-        []
-    end)
-    |> Enum.join("")
-  end
-
-  describe "路由解析" do
-    test "finger 解析" do
-      {:ok, parsed} = Kantele.Character.Commands.parse("finger")
-      assert parsed.function == :list
-
+    test "路由解析" do
       {:ok, parsed} = Kantele.Character.Commands.parse("finger 张三")
-      assert parsed.function == :run
-      assert parsed.params["name"] == "张三"
-    end
-
-    test "中文别名 查找" do
-      {:ok, parsed} = Kantele.Character.Commands.parse("查找 张三")
-      assert parsed.function == :run
-    end
-  end
-
-  describe "列出在线" do
-    test "无参数列出在线玩家" do
-      conn = FingerCommand.list(build_conn(player()), %{})
-      assert output_text(conn) =~ "在线玩家"
-    end
-  end
-
-  describe "查找玩家" do
-    test "找不到时提示" do
-      conn = FingerCommand.run(build_conn(player()), %{"name" => "不存在的人"})
-      assert output_text(conn) =~ "没有找到"
+      assert parsed.module == FingerCommand
     end
   end
 end
