@@ -34,24 +34,34 @@ defmodule Kantele.Character.SpattackCommandTest do
     }
   end
 
-  describe "路由解析" do
+  defp output_text(conn) do
+    conn.output
+    |> Enum.flat_map(fn
+      %Kalevala.Character.Conn.Text{data: data} -> [IO.iodata_to_binary(data)]
+      _ -> []
+    end)
+    |> Enum.join("")
+  end
+
+  describe "spattack 命令" do
     test "spattack 路由解析" do
       {:ok, parsed} = Kantele.Character.Commands.parse("spattack")
       assert parsed.module == SpattackCommand
     end
-  end
 
-  describe "spattack 命令" do
-    test "无伴侣时拒绝" do
+    test "无伴侣时报错" do
       p = player(spouse: nil)
       conn = SpattackCommand.run(build_conn(p), %{"arg" => ""})
-      assert conn.output != []
+      text = output_text(conn)
+      assert text =~ "还没有伴侣"
     end
 
-    test "有伴侣时可用" do
+    test "有伴侣时发送思念消息" do
       p = player(spouse: %{id: "spouse-1", name: "李四"})
       conn = SpattackCommand.run(build_conn(p), %{"arg" => ""})
-      assert conn.output != []
+      text = output_text(conn)
+      assert text =~ "李四"
+      assert text =~ "心灵相通"
     end
   end
 end
