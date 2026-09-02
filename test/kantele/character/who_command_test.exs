@@ -47,10 +47,15 @@ defmodule Kantele.Character.WhoCommandTest do
   end
 
   describe "who 命令" do
-    test "显示在线玩家列表" do
+    test "显示在线玩家列表sets characters assign" do
       p = player()
       conn = WhoCommand.run(build_conn(p), %{})
       assert conn.assigns[:characters] != nil
+    end
+
+    test "who 中文别名 路由解析" do
+      {:ok, parsed} = Kantele.Character.Commands.parse("who")
+      assert parsed.module == WhoCommand
     end
 
     test "路由解析" do
