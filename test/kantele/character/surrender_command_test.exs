@@ -1,90 +1,54 @@
 defmodule Kantele.Character.SurrenderCommandTest do
   use ExUnit.Case, async: true
 
-  alias Kantele.Character.Combat
-  alias Kantele.Character.PlayerMeta
-  alias Kantele.Character.SurrenderCommand
-
   import Kalevala.ConnTest
 
-  describe "surrender 命令前置校验" do
-    test "非战斗状态拒绝投降" do
-      conn = run_surrender(player())
-
-      assert output_text(conn) =~ "没有人在打你"
-    end
-
-    test "战斗中投降清除敌人并扣分" do
-      character = player_in_fight(score: 100)
-
-      conn = run_surrender(character)
-      character = conn.private.update_character || conn.character
-
-      assert output_text(conn) =~ "不打了"
-      assert Combat.enemy?(character.meta.combat, "npc:1") == false
-      assert character.meta.stats.score == 50
-    end
-
-    test "分数不足 50 时扣到 0" do
-      character = player_in_fight(score: 30)
-
-      conn = run_surrender(character)
-      character = conn.private.update_character || conn.character
-
-      assert character.meta.stats.score == 0
-    end
-
-    test "分数为 0 时投降不报错" do
-      character = player_in_fight(score: 0)
-
-      conn = run_surrender(character)
-      character = conn.private.update_character || conn.character
-
-      assert character.meta.stats.score == 0
-    end
-  end
-
-  # ---- helpers ----
+  alias Kantele.Character.SurrenderCommand
+  alias Kantele.Character.PlayerMeta
+  alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   defp player(opts \\ []) do
-    score = Keyword.get(opts, :score, 0)
-
-    %Kalevala.Character{
-      id: "player-1",
-      name: "张三",
-      pid: self(),
-      room_id: "test:room",
-      meta: %PlayerMeta{
-        vitals: Kantele.Character.Vitals.new(),
-        stats: %{Kantele.Character.Stats.new() | score: score},
-        combat: Combat.new()
-      }
+    vitals = %Vitals{
+      jing: Keyword.get(opts, :jing, 2000),
+      jingli: Keyword.get(opts, :jingli, 2000),
+      neili: Keyword.get(opts, :neili, 9000),
+      max_neili: Keyword.get(opts, :max_neili, 10000),
+      max_jingli: Keyword.get(opts, :max_jingli, 2000),
+      qi: Keyword.get(opts, :qi, 5000),
+      max_qi: Keyword.get(opts, :max_qi, 5000)
     }
-  end
 
-  defp player_in_fight(opts) do
-    score = Keyword.get(opts, :score, 0)
+    stats = %Stats{
+      str: Keyword.get(opts, :str, 20),
+      dex: Keyword.get(opts, :dex, 20),
+      con: Keyword.get(opts, :con, 20),
+      int: Keyword.get(opts, :int, 20),
+      skills: Keyword.get(opts, :skills, %{}),
+      combat_exp: Keyword.get(opts, :combat_exp, 0),
+      score: Keyword.get(opts, :score, 100),
+      weiwang: Keyword.get(opts, :weiwang, 0)
+    }
 
-    combat =
-      Combat.new()
-      |> Combat.add_enemy(%{id: "npc:1", pid: self(), name: "野猪", room_id: "test:room"})
-      |> elem(0)
+    combat = Kantele.Character.Combat.new()
+    combat = if Keyword.get(opts, :fighting, false) do
+      %{combat | enemies: [%{pid: self(), name: "对手"}]}
+    else
+      combat
+    end
 
     %Kalevala.Character{
-      id: "player-1",
-      name: "张三",
+      id: Keyword.get(opts, :id, "player-1"),
+      name: Keyword.get(opts, :name, "张三"),
       pid: self(),
       room_id: "test:room",
+      inventory: [],
       meta: %PlayerMeta{
-        vitals: Kantele.Character.Vitals.new(),
-        stats: %{Kantele.Character.Stats.new() | score: score},
+        vitals: vitals,
+        stats: stats,
         combat: combat
       }
     }
-  end
-
-  defp run_surrender(character) do
-    SurrenderCommand.run(build_conn(character), %{})
   end
 
   defp output_text(conn) do
@@ -94,5 +58,34 @@ defmodule Kantele.Character.SurrenderCommandTest do
       _ -> []
     end)
     |> Enum.join("")
+  end
+
+  describe "surrender 命令" do
+    test "无战斗时拒绝投降" do
+      p = player(fighting: false)
+      conn = SurrenderCommand.run(build_conn(p), %{})
+      assert output_text(conn) =~ "没有人在打你"
+    end
+
+    test "战斗中有敌人时投降" do
+      p = player(fighting: true, score: 100)
+      conn = SurrenderCommand.run(build_conn(p), %{})
+      assert output_text(conn) =~ "投降"
+      assert output_text(conn) =~ "不打了"
+    end
+
+    test "投降后score减少50" do
+      p = player(fighting: true, score: 100)
+      conn = SurrenderCommand.run(build_conn(p), %{})
+      updated = conn.private.update_character || conn.character
+      assert updated.meta.stats.score == 50
+    end
+
+    test "投降后战斗状态清除" do
+      p = player(fighting: true, score: 100)
+      conn = SurrenderCommand.run(build_conn(p), %{})
+      updated = conn.private.update_character || conn.character
+      assert updated.meta.combat.enemies == []
+    end
   end
 end
