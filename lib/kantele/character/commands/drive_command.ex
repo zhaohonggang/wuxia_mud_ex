@@ -135,7 +135,7 @@ defmodule Kantele.Character.DriveCommand do
     # 简化：直接尝试移动
     # 实际应调用 GO_CMD 类似逻辑
     room = get_room(conn)
-    exits = room.attrs["exits"] || %{}
+    exits = Map.get(room, :attrs, %{})["exits"] || %{}
 
     if Map.has_key?(exits, direction) do
       target_room_id = exits[direction]
@@ -187,7 +187,7 @@ defp show_move_messages(conn, character, vehicle_item, direction) do
 
     conn
     |> render(CommandView, "text", %{text: leave_msg <> "\n"})
-    |> render(CommandView, "text", %{text: "你赶着#{vehicle_item.name}到了#{room.attrs["short"] || "某处"}。\n"})
+    |> render(CommandView, "text", %{text: "你赶着#{vehicle_item.name}到了#{Map.get(room, :attrs, %{})["short"] || "某处"}。\n"})
   end
 
   defp interpolate(template, [character, vehicle]) do

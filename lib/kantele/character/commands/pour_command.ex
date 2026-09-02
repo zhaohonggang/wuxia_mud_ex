@@ -55,7 +55,7 @@ defmodule Kantele.Character.PourCommand do
       nil -> {:error, "你身上没有这样毒药。"}
       instance ->
         item = Items.get!(instance.item_id)
-        attrs = item.attrs || %{}
+        attrs = Map.get(item, :attrs, %{}) || %{}
         if attrs["can_pour"] == true && attrs["poison_type"] do
           {:ok, item, instance}
         else
@@ -73,7 +73,7 @@ defmodule Kantele.Character.PourCommand do
       nil -> {:error, "你身上没有这样容器。"}
       instance ->
         item = Items.get!(instance.item_id)
-        attrs = item.attrs || %{}
+        attrs = Map.get(item, :attrs, %{}) || %{}
         if attrs["liquid"] == true && is_integer(attrs["liquid/remaining"]) && attrs["liquid/remaining"] > 0 do
           {:ok, item, instance}
         else
@@ -84,18 +84,18 @@ defmodule Kantele.Character.PourCommand do
 
   defp pour_liquid(conn, character, poison_item, poison_instance, container_item, container_instance) do
     container_meta = container_item.meta || %{}
-    container_attrs = container_item.attrs || %{}
+    container_attrs = Map.get(container_item, :attrs, %{}) || %{}
 
-    if container_meta[:poison] do
+    if Kalevala.Meta.get(container_meta, :poison) do
       conn
       |> render(CommandView, "text", %{text: "这容器里的液体已经有毒了。\n"})
       |> prompt(CommandView, "prompt", %{})
     else
       # 构建毒药数据
       poison_data = %{
-        "level" => poison_item.attrs["poison_level"] || 100,
-        "duration" => poison_item.attrs["poison_duration"] || 300,
-        "remain" => poison_item.attrs["poison_remain"] || 10,
+        "level" => Kalevala.Meta.get(poison_item.meta, "poison_level") || 100,
+        "duration" => Kalevala.Meta.get(poison_item.meta, "poison_duration") || 300,
+        "remain" => Kalevala.Meta.get(poison_item.meta, "poison_remain") || 10,
         "id" => poison_item.id,
         "name" => poison_item.name
       }
@@ -105,11 +105,7 @@ defmodule Kantele.Character.PourCommand do
       new_container_attrs = Map.put(container_attrs, "poisoned", true)
 
       # 更新物品实例
-      updated_container = %{
-        container_item
-        | meta: new_container_meta,
-        attrs: new_container_attrs
-      }
+      updated_container = Map.put(container_item, :attrs, new_container_attrs)
 
       # 从背包移除毒药
       new_inventory = Enum.reject(character.inventory, &(&1.id == poison_instance.id))
@@ -118,9 +114,9 @@ defmodule Kantele.Character.PourCommand do
       end)
 
       # 扣除毒药使用次数或直接移除
-      poison_attrs = poison_item.attrs || %{}
+      poison_attrs = Map.get(poison_item, :attrs, %{}) || %{}
       if poison_attrs["remaining_uses"] && poison_attrs["remaining_uses"] > 1 do
-        new_poison = %{poison_item | attrs: Map.put(poison_attrs, "remaining_uses", poison_attrs["remaining_uses"] - 1)}
+        new_poison = Map.put(poison_item, :attrs, Map.put(poison_attrs, "remaining_uses", poison_attrs["remaining_uses"] - 1))
         new_inventory = Enum.map(new_inventory, fn inst ->
           if inst.id == poison_instance.id, do: new_poison, else: inst
         end)

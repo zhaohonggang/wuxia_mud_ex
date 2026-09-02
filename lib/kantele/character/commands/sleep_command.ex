@@ -55,7 +55,7 @@ defmodule Kantele.Character.SleepCommand do
   defp can_sleep_here?(character, room) do
     is_gaibang = (character.attributes["family"] || %{})["family_name"] == "丐帮"
     has_sleepbag = Enum.any?(character.inventory, fn inst ->
-      Items.get!(inst.item_id).meta["sleepbag"] == true
+      Kalevala.Meta.get(Items.get!(inst.item_id).meta, "sleepbag") == true
     end)
 
     room_sleep = Map.get(room, :attrs, %{})["sleep_room"] == true
@@ -96,7 +96,7 @@ defmodule Kantele.Character.SleepCommand do
     room_attrs = Map.get(room, :attrs, %{})
     is_hotel = room_attrs["hotel"] == true
     has_sleepbag = Enum.any?(character.inventory, fn inst ->
-      Items.get!(inst.item_id).meta["sleepbag"] == true
+      Kalevala.Meta.get(Items.get!(inst.item_id).meta, "sleepbag") == true
     end)
     room_sleep = room_attrs["sleep_room"] == true
 

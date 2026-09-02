@@ -65,7 +65,13 @@ defmodule Kantele.Character.SleepCommandTest do
       id: "liuxi:peiyuan_dan",
       name: "培元丹",
       description: "补充气血的丹药",
-      meta: %{}
+      meta: %Kantele.World.Item.Meta{
+        flag: 1,
+        unit: "颗",
+        value: 100,
+        weight: 10,
+        medicine: %{qi: 50, stats: %{str: 1}}
+      }
     }
 
     Kantele.World.Items.put("liuxi:peiyuan_dan", peptide_item)

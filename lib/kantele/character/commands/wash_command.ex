@@ -70,12 +70,12 @@ defmodule Kantele.Character.WashCommand do
         nil -> {:error, "你身上没有这样装备。"}
         instance ->
           item = Items.get!(instance.item_id)
-          attrs = item.attrs || %{}
+          attrs = Map.get(item, :attrs, %{}) || %{}
           meta = item.meta || %{}
-          type = attrs["type"] || item.type
+          type = attrs["type"]
 
           cond do
-            meta["daub"] == nil -> {:error, "这#{item.name}上没有毒。"}
+            Kalevala.Meta.get(meta, "daub") == nil -> {:error, "这#{item.name}上没有毒。"}
             type in ["weapon", "sword", "blade", "axe", "hammer", "staff"] ->
               {:ok, :weapon, item, instance}
             type in ["armor", "cloth", "surcoat", "boots"] ->
@@ -107,12 +107,12 @@ defmodule Kantele.Character.WashCommand do
 
   defp wash_equipment(conn, character, equip_item, equip_instance, equip_type) do
     equip_meta = equip_item.meta || %{}
-    equip_attrs = equip_item.attrs || %{}
+    equip_attrs = Map.get(equip_item, :attrs, %{}) || %{}
 
-    if equip_meta["daub"] do
+    if Kalevala.Meta.get(equip_meta, "daub") do
       new_equip_meta = Map.delete(equip_meta, "daub")
       new_equip_attrs = Map.delete(equip_attrs, "poisoned")
-      updated_equip = %{equip_item | meta: new_equip_meta, attrs: new_equip_attrs}
+      updated_equip = Map.put(Map.put(equip_item, :meta, new_equip_meta), :attrs, new_equip_attrs)
 
       new_inventory = Enum.map(character.inventory, fn inst ->
         if inst.id == equip_instance.id, do: updated_equip, else: inst

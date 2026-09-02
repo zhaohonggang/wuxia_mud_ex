@@ -181,7 +181,7 @@ defmodule Kantele.Character.MakeCommand do
     if qm == nil do
       {:error, "你的先把能够磨药的研钵拿(hand)在手上才行。"}
     else
-      if qm.attrs["can_make_medicine"] == true do
+      if Kalevala.Meta.get(qm.meta, "can_make_medicine") == true do
         :ok
       else
         {:error, "#{qm.name}好像无法发挥研钵的作用吧。"}
