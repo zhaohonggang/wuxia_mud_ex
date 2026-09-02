@@ -82,7 +82,7 @@ defmodule Kantele.Character.DaubCommand do
         instance ->
           item = Items.get!(instance.item_id)
           attrs = item.meta || %{}
-          type = attrs["type"] || item.meta["type"]
+          type = Kalevala.Meta.get(attrs, "type")
 
           cond do
             type in ["weapon", "sword", "blade", "axe", "hammer", "staff"] ->
@@ -130,7 +130,7 @@ defmodule Kantele.Character.DaubCommand do
   defp can_apply_poison_to_hand?(character, poison_item) do
     force_skill = character.skills["force"] || 0
     poison_skill = character.skills["poison"] || 0
-    poison_level = poison_item.meta["poison_level"] || 100
+    poison_level = Kalevala.Meta.get(poison_item.meta, "poison_level") || 100
 
     # 需要 force + poison >= poison_level
     force_skill + poison_skill >= poison_level
@@ -139,7 +139,7 @@ defmodule Kantele.Character.DaubCommand do
   defp can_apply_poison_to_weapon?(character, poison_item, weapon_item) do
     force_skill = character.skills["force"] || 0
     poison_skill = character.skills["poison"] || 0
-    poison_level = poison_item.meta["poison_level"] || 100
+    poison_level = Kalevala.Meta.get(poison_item.meta, "poison_level") || 100
 
     force_skill + poison_skill >= div(poison_level, 2)
   end
@@ -147,7 +147,7 @@ defmodule Kantele.Character.DaubCommand do
   defp can_apply_poison_to_armor?(character, poison_item, armor_item) do
     force_skill = character.skills["force"] || 0
     poison_skill = character.skills["poison"] || 0
-    poison_level = poison_item.meta["poison_level"] || 100
+    poison_level = Kalevala.Meta.get(poison_item.meta, "poison_level") || 100
 
     force_skill + poison_skill >= div(poison_level, 3)
   end
@@ -160,9 +160,9 @@ defmodule Kantele.Character.DaubCommand do
       if existing_daub do
         # 混毒
         new_poison = %{
-          "level" => poison_item.meta["poison_level"] || 100,
-          "duration" => poison_item.meta["poison_duration"] || 300,
-          "remain" => poison_item.meta["poison_remain"] || 10,
+          "level" => Kalevala.Meta.get(poison_item.meta, "poison_level") || 100,
+          "duration" => Kalevala.Meta.get(poison_item.meta, "poison_duration") || 300,
+          "remain" => Kalevala.Meta.get(poison_item.meta, "poison_remain") || 10,
           "id" => poison_item.id,
           "name" => poison_item.name
         }
@@ -171,9 +171,9 @@ defmodule Kantele.Character.DaubCommand do
         Kantele.Poison.mixed_poison(existing, new_poison)
       else
         %{
-          "level" => poison_item.meta["poison_level"] || 100,
-          "duration" => poison_item.meta["poison_duration"] || 300,
-          "remain" => poison_item.meta["poison_remain"] || 10,
+          "level" => Kalevala.Meta.get(poison_item.meta, "poison_level") || 100,
+          "duration" => Kalevala.Meta.get(poison_item.meta, "poison_duration") || 300,
+          "remain" => Kalevala.Meta.get(poison_item.meta, "poison_remain") || 10,
           "id" => poison_item.id,
           "name" => poison_item.name
         }
@@ -205,9 +205,9 @@ defmodule Kantele.Character.DaubCommand do
       if instance_meta["daub"] do
         # 混毒
         new_poison = %{
-          "level" => poison_item.meta["poison_level"] || 100,
-          "duration" => poison_item.meta["poison_duration"] || 300,
-          "remain" => poison_item.meta["poison_remain"] || 10,
+          "level" => Kalevala.Meta.get(poison_item.meta, "poison_level") || 100,
+          "duration" => Kalevala.Meta.get(poison_item.meta, "poison_duration") || 300,
+          "remain" => Kalevala.Meta.get(poison_item.meta, "poison_remain") || 10,
           "id" => poison_item.id,
           "name" => poison_item.name
         }
@@ -216,9 +216,9 @@ defmodule Kantele.Character.DaubCommand do
         Kantele.Poison.mixed_poison(existing, new_poison)
       else
         %{
-          "level" => poison_item.meta["poison_level"] || 100,
-          "duration" => poison_item.meta["poison_duration"] || 300,
-          "remain" => poison_item.meta["poison_remain"] || 10,
+          "level" => Kalevala.Meta.get(poison_item.meta, "poison_level") || 100,
+          "duration" => Kalevala.Meta.get(poison_item.meta, "poison_duration") || 300,
+          "remain" => Kalevala.Meta.get(poison_item.meta, "poison_remain") || 10,
           "id" => poison_item.id,
           "name" => poison_item.name
         }

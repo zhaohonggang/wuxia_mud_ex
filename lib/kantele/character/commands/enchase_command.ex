@@ -126,7 +126,7 @@ defmodule Kantele.Character.EnchaseCommand do
     %{
       name: item.name,
       can_be_enchased: true,
-      magic: item.meta["magic"] || %{}
+      magic: Kalevala.Meta.get(item.meta, "magic") || %{}
     }
   end
 
