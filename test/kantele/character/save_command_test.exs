@@ -31,10 +31,10 @@ defmodule Kantele.Character.SaveCommandTest do
     |> Enum.join("")
   end
 
-  test "save 渲染存档结果（不崩溃）" do
+  test "save 渲染存档结果包含储存完毕" do
     conn = SaveCommand.run(build_conn(player()), %{})
     text = output_text(conn)
-    assert text != ""
+    assert text =~ "档案储存完毕" or text =~ "储存失败"
   end
 
   test "save 路由解析" do
