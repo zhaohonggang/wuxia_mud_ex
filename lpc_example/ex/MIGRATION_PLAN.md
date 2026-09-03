@@ -438,7 +438,7 @@ P5 无
 | K3 | burning, breakup, fuse, derive, syn, yanlian | [x] (all real) |
 | W1 | 权限地基 (wiz_level + Access) | [x] (done) |
 | W2 | goto/where/who1/clone/dest/update 等常用 wiz | [x] (goto/where/who1/clone/dest/update stubs) |
-| W3 | arch 重度命令 | [ ] |
+| W3 | arch 重度命令 (build/call/smash/possess/throw/var/setsk/purge/restore/register/reboot/shutdown/grant/changeuser) | [x] (stubs, 需对象系统) |
 | P5 | 收尾/文档/勾选 | [ ] |
 
 > 注意: `[x] (部分)` 表示该批次有部分命令已实现或测试覆盖，但非全部完成。

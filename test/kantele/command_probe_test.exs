@@ -126,7 +126,22 @@ defmodule Kantele.CommandProbeTest do
     "study_command" => "后续批次",
     "team_command" => "后续批次",
     "help_command" => "后续批次",
-    "commands_command" => "后续批次"
+    "commands_command" => "后续批次",
+    # W3 arch 重度命令 (需对象系统/架构不适用)
+    "build_command" => "W3",
+    "call_command" => "W3",
+    "smash_command" => "W3",
+    "possess_command" => "W3",
+    "throw_command" => "W3",
+    "var_command" => "W3",
+    "setsk_command" => "W3",
+    "purge_command" => "W3",
+    "restore_command" => "W3",
+    "register_command" => "W3",
+    "reboot_command" => "W3",
+    "shutdown_command" => "W3",
+    "grant_command" => "W3",
+    "changeuser_command" => "W3"
   }
 
   test "无未列入白名单的占位桩" do
