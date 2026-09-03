@@ -175,7 +175,7 @@
 | top | TopCommand | ✅ | 已实现(stub) |
 | top2 | Top2Command | ✅ | 已实现(stub) |
 | topp | ToppCommand | ✅ | 已实现(stub) |
-| unset | - | ❌ | 取消设置，未实现 |
+| unset | UnsetCommand | ✅ | 已实现 |
 | uptime | UptimeCommand | ✅ | 已实现 |
 | whistle | WhistleCommand | ✅ | 已实现 |
 | who | WhoCommand | ✅ | 已实现 |
