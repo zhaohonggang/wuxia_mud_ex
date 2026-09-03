@@ -225,7 +225,7 @@
 | who1 | Who1Command | ✅ | 已实现 |
 | who2 | - | ❌ | who变体，未实现 |
 | who3 | - | ❌ | who变体，未实现 |
-| whoami | - | ❌ | 身份查询，未实现 |
+| whoami | WhoamiCommand | ✅ | 已实现 |
 | whohave | - | ❌ | 谁有物品，未实现 |
 | whoride | - | ❌ | 谁在骑乘，未实现 |
 | wizard | - | ❌ | 巫师模式，未实现 |
