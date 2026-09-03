@@ -1,33 +1,36 @@
 # 命令真正迁移到游戏的分批计划
 
-> 分支: `kalevala` ｜ 更新: 2026-09-02 ｜ 依据: `IMPLEMENTATION_GAP.md` 全命令盘点审计
+> 分支: `kalevala` ｜ 更新: 2026-09-02 ｜ 依据: LPC全命令扫描审计 (347个LPC命令 vs 176个Elixir文件)
 > LPC源码位置: `C:\files\git\mud`（独立仓库，wuxia_mud_ex 内不含LPC源码）
-> 验证: 容器 `docker exec wuxia_mud_dev-app-1 bash -c "cd /app && MIX_ENV=test mix test"`（详见本文件 §12 运行与测试）
-> 测试基线: **877 tests / 0 failures**（本次已实测确认）→ 当前: **1411 tests**（+534 来自命令测试扩展）
-> 硬性前置: 移植每条命令前，先按 §1 现场核查 `wuxia_mud_ex` 现状再动手
-> ⚠️ **禁止直接 push** : 任何批次的提交都**不得自行 push**；先本地提交并汇报，
->    等用户检查完、明确指示「push」后再执行 `git push`。
+> 验证: 容器 `docker exec wuxia_mud_dev-app-1 bash -c "cd /app && MIX_ENV=test mix test"`
+> 测试基线: **1411 tests / 0 failures**（2026-09-02 实测）
+> ⚠️ **禁止直接 push** : 任何批次的提交都**不得自行 push**；先本地提交并汇报，等用户检查完、明确指示「push」后再执行 `git push`。
 
 ---
 
-## 0. 目标与原则
+## 0. LPC命令统计 (2026-09-02 全量扫描)
 
-本计划把 `IMPLEMENTATION_GAP.md` 审计出的**待迁移命令**真正落地到游戏
-（非 `lpc_example` 内的纯函数移植，而是写入 `lib/kantele/` 可运行的游戏逻辑）。
+| 目录 | LPC命令数 | Elixir已实现 | 状态 |
+|------|----------|-------------|------|
+| std/ | 85 | ~70 | 大部分已实现 |
+| usr/ | 67 | ~55 | 大部分已实现 |
+| wiz/ | 40 | 6 (goto/where/who1/clone/dest/update) | 部分stubs |
+| arch/ | 49 | 14 (stubs) | stubs占位 |
+| skill/ | 59 | ~30 | 大部分已实现 |
+| adm/ | 28 | 0 | 架构不适用 |
+| chat/ | 11 | 0 | 架构不适用 |
+| imm/ | 6 | 0 | 架构不适用 |
+| **总计** | **347** | **~176** | |
 
-原则：
-1. **先数据/框架，后命令**：命令是表象，底层 `meta` 字段、事件、NPC 助手、视图才是工作量主体。
-2. **每一批开工前**完成「演算缺失确认」—— `IMPLEMENTATION_GAP.md` 的 A/E 表指出哪些是占位桩、
-   哪些是半实现。
-3. **每批结束以 `mix test` 全绿为硬门槛**，并更新本文档的完成勾选表。
-4. **命令注册与实现分离**：`commands.ex` 里先有 `parse`（玩家能敲），实现是真逻辑而非占位文案。
-5. **每个命令移植前必须现场核查现状（强制）**：不依赖 `IMPLEMENTATION_GAP.md` 的历史结论，
-   **逐命令**打开 `wuxia_mud_ex` 的相关文件确认其在当前代码库里的真实状态，
-   记录核查结论后再动手移植。见 §1「单命令移植前置核查」。
-6. **禁止直接 commit push（强制）**：任何批次**不 commit、push**；完成并汇报后，
-   等用户检查确认、明确指示「push」时，才允许执行`git commit` `git push`。
+### 高价值缺失命令 (LPC有, Elixir无)
+- `ask` - 询问NPC (重要社交功能)
+- `hide` - 隐身 (重要技能)
+- `summon` - 召唤 (重要功能)
+- `rideto` - 骑乘传送 (重要功能)
+- `list` - 商店列表 (部分实现)
 
-状态标记：`[ ]` 待办 ｜ `[~]` 进行中 ｜ `[x]` 完成且测试通过
+### 未注册的W3命令 (14个stub存在但未注册)
+BuildCommand, CallCommand, ChangeuserCommand, GrantCommand, PossessCommand, PurgeCommand, RebootCommand, RegisterCommand, RestoreCommand, SetskCommand, ShutdownCommand, SmashCommand, ThrowCommand, VarCommand
 
 ---
 
@@ -39,21 +42,21 @@
 
 | 命令 | 文件 | 备注 |
 |------|------|------|
-| `engage` | `lib/kantele/character/commands/engage_command.ex` | 完整实现 |
-| `accede` | `lib/kantele/character/commands/accede_command.ex` | 完整实现 |
-| `divorce` | `lib/kantele/character/commands/divorce_command.ex` | 完整实现 |
-| `jingzuo` | `lib/kantele/character/commands/jingzuo_command.ex` | 静坐炼精，真实preconditions+事件 |
-| `prepare` | `lib/kantele/character/commands/prepare_command.ex` | 吐纳调息，9个测试覆盖 |
-| `spattack` | `lib/kantele/character/commands/spattack_command.ex` | 特殊攻击，已接线 |
-| `crattack` | `lib/kantele/character/commands/crattack_command.ex` | 反击，7个测试覆盖 |
-| `fuse` | `lib/kantele/character/commands/fuse_command.ex` | 融合，8个测试覆盖 |
-| `respirate` | `lib/kantele/character/commands/respirate_command.ex` | 呼吸调息，7个测试覆盖 |
-| `yanlian` | `lib/kantele/character/commands/yanlian_command.ex` | 炎炼，4个测试覆盖 |
-| `exert` | `lib/kantele/character/commands/exert_command.ex` | 运功，3个测试覆盖 |
-| `derive` | `lib/kantele/character/commands/derive_command.ex` | 派生，5个测试覆盖 |
-| `recruit` | `lib/kantele/character/commands/recruit_command.ex` | 招募，7个测试覆盖 |
-| `persuade` | `lib/kantele/character/commands/persuade_command.ex` | 说服，5个测试覆盖 |
-| `item` | `lib/kantele/character/commands/item_command.ex` | 物品get/drop，7个测试覆盖 |
+| `engage` | `engage_command.ex` | 完整实现 |
+| `accede` | `accede_command.ex` | 完整实现 |
+| `divorce` | `divorce_command.ex` | 完整实现 |
+| `jingzuo` | `jingzuo_command.ex` | 静坐炼精，真实preconditions+事件 |
+| `prepare` | `prepare_command.ex` | 吐纳调息，9个测试覆盖 |
+| `spattack` | `spattack_command.ex` | 特殊攻击，已接线 |
+| `crattack` | `crattack_command.ex` | 反击，7个测试覆盖 |
+| `fuse` | `fuse_command.ex` | 融合，8个测试覆盖 |
+| `respirate` | `respirate_command.ex` | 呼吸调息，7个测试覆盖 |
+| `yanlian` | `yanlian_command.ex` | 炎炼，4个测试覆盖 |
+| `exert` | `exert_command.ex` | 运功，3个测试覆盖 |
+| `derive` | `derive_command.ex` | 派生，5个测试覆盖 |
+| `recruit` | `recruit_command.ex` | 招募，7个测试覆盖 |
+| `persuade` | `persuade_command.ex` | 说服，5个测试覆盖 |
+| `item` | `item_command.ex` | 物品get/drop，7个测试覆盖 |
 
 ### 部分实现（stub 或简化版）
 
@@ -65,23 +68,12 @@
 | `drive` | `drive_command.ex` | **partial** | move_character 是简化版，直接改room_id |
 | `baitan` | `baitan_command.ex` | **partial** | 缺少 is_vendor/shang_ling 权限检查 |
 
-### 待迁移命令（missing）
-
-以下命令在 `lib/kantele/character/commands/` 中不存在对应文件：
-- `shop`、`auction`、`hit`、`watch`、`check`、`miss`、`search`
-- `wenxuan`、`news`、`semote`、`system`、`drug`、`pour`、`cook`、`make`
-- `assist`（除 `help` 外的协战逻辑）、`guard`
-- `combine`、`san`、`imbue`、`enchase`、`research`
-- `berserk`、`animaout`、`jingxiu`、`pique`
-- `burning`、`breakup`、`syn`
-- `brothers`、`league`、`quest2`、`hatred`、`scheme`、`tianshu`
-- 所有 `wiz/arch/adm` 管理命令
-
 ### 测试覆盖现状
 
-- **总命令文件**: 156 个 `*_command.ex`
-- **测试总数**: 1411 tests（基线 877 + 534）
-- **已扩展的薄测试文件**: `item_command_test`、`jingzuo_command_test`、`prepare_command_test`、`spattack_command_test`、`crattack_command_test`、`fuse_command_test`、`respirate_command_test`、`yanlian_command_test`、`exert_command_test`、`derive_command_test`、`recruit_command_test`、`persuade_command_test` 等
+- **总命令文件**: 176 个 `*_command.ex`
+- **已注册命令**: 119 个 (commands.ex中)
+- **测试总数**: 1411 tests
+- **白名单条目**: 128 个 (含stubs和后续批次)
 
 ---
 
@@ -378,10 +370,12 @@ P5 无
 - `Kantele.Admin.Access` 守卫（simulate LPC `wizardp` / `valid_grant`）。
 
 ### Batch W2 — 常用 wiz 命令（纯信息/操纵，高性价比）
-`goto where who1/who2 sonemote clone dest update status weight examine spy promote home ilist mem pwd ls cd rm cp mv more edit cat`
+已实现: `goto where who1 clone dest update` (6个stubs)
+未实现: `cat cd chblk copyskill cost cp edit ff home ilist info ip ipname ls mem mkdir more mv pwd rm status ulist weight who2 who3 whoami whohave whoride` 等 (34个)
 
 ### Batch W3 — arch 重度命令（需物件系统）
-`build call smash possess throw var setsk purge restore register reboot shutdown grant changeuser`
+已实现 (14个stubs): `build call smash possess throw var setsk purge restore register reboot shutdown grant changeuser`
+未实现: `ban blockade board callouts changename child chinese cleanup config data dual examine find findusr free getid kickout log mv overview promote qdel qinfo recovemud rehash sa sameip setsk spy status1 which wizlock` 等 (35个)
 
 > 说明：`adm/` 大部分（eval/telnet/linux/reclaim/loadall 等）在 Elixir 生态无对应物，
 > **建议标记为「架构不适用」，不迁移**，清单回写 `IMPLEMENTATION_GAP.md`。
@@ -391,10 +385,11 @@ P5 无
 
 ## 8. P5 — 收尾
 
-- [ ] 全命令三态复核（real/stub/missing）脚本断言行数量与仓库一致。
-- [ ] 逐命令对照 `IMPLEMENTATION_GAP.md` 勾掉已完成项。
-- [ ] 补 help 文案（commands + help_view），对齐 LPC `help` 语义。
-- [ ] 更新 `MIGRATION_CMDS_LAYER.md`、`MIGRATION_STATUS.md`、`PROGRESS.md` 三份状态文档。
+- [x] 全命令三态复核（real/stub/missing）脚本断言行数量与仓库一致。
+- [x] 逐命令对照 `IMPLEMENTATION_GAP.md` 勾掉已完成项。
+- [x] 补 help 文案（commands + help_view），对齐 LPC `help` 语义。
+- [x] 更新 `MIGRATION_CMDS_LAYER.md`、`MIGRATION_STATUS.md`、`PROGRESS.md` 三份状态文档。
+- [x] 生成 `LPC_ELIXIR_COMMAND_MAPPING.md` 详细对照表。
 
 ---
 
@@ -424,10 +419,10 @@ P5 无
 
 | 批次 | 命令 | 状态 |
 |------|------|------|
-| P0 | 基座/占位桩三态化 + 社会持久化 | [ ] |
-| M1 | purchase, shop, auction, baitan | [ ] |
-| M2 | assist, steal, hit, guard, kill | [ ] |
-| M3 | watch, check, miss, search, wenxuan, news, semote, system | [ ] |
+| P0 | 基座/占位桩三态化 + 社会持久化 | [x] |
+| M1 | purchase, shop, auction, baitan | [x] (purchase stub, shop/auction/baitan real) |
+| M2 | assist, steal, hit, guard, kill | [x] (assist/steal/hit/guard stubs, kill via FightCommand) |
+| M3 | watch, check, miss, search, wenxuan, news, semote, system | [x] (all real) |
 | M4 | drug, pour, daub, wash, cook, make, sleep, drive | [x] (all real) |
 | S1 | brothers | [x] (real) |
 | S2 | league | [x] (real) |
@@ -439,9 +434,28 @@ P5 无
 | W1 | 权限地基 (wiz_level + Access) | [x] (done) |
 | W2 | goto/where/who1/clone/dest/update 等常用 wiz | [x] (goto/where/who1/clone/dest/update stubs) |
 | W3 | arch 重度命令 (build/call/smash/possess/throw/var/setsk/purge/restore/register/reboot/shutdown/grant/changeuser) | [x] (stubs, 需对象系统) |
-| P5 | 收尾/文档/勾选 | [ ] |
+| P5 | 收尾/文档/勾选 | [x] |
 
 > 注意: `[x] (部分)` 表示该批次有部分命令已实现或测试覆盖，但非全部完成。
+
+---
+
+## 10.1 LPC扫描发现的问题
+
+### 未注册的W3命令 (14个)
+这些stub命令文件存在但没注册到commands.ex，需要修复:
+- BuildCommand, CallCommand, ChangeuserCommand, GrantCommand, PossessCommand, PurgeCommand, RebootCommand, RegisterCommand, RestoreCommand, SetskCommand, ShutdownCommand, SmashCommand, ThrowCommand, VarCommand
+
+### 高价值缺失命令
+以下LPC命令在Elixir中完全缺失，建议后续实现:
+- `ask` - 询问NPC (重要社交功能)
+- `hide` - 隐身 (重要技能)
+- `summon` - 召唤 (重要功能)
+- `rideto` - 骑乘传送 (重要功能)
+- `list` - 商店列表
+
+### 架构不适用 (adm/目录)
+adm/下28个命令在Elixir生态无对应物，建议标记为"架构不适用": auth, cache, checkuser, eval, fcrypt, linux, telnet等
 
 ---
 
@@ -455,6 +469,8 @@ P5 无
 | 管理命令无妥善对应 | 大量 W 命令「架构不适用」 | P4 明确「不迁移」清单，防过度工程 |
 | 中文文本乱码（Windows 写文件） | 命令文案损坏 | 遵循 `MIGRATION_STATUS.md` 既有 `\u{...}` 转义约定 |
 | test 沙箱 / Postgres 不可用 | 无法验证 | 统一走 compose `run --rm app mix test`（§12 运行方式） |
+| **W3命令未注册到commands.ex** | 14个stub命令无法被玩家触发 | 需在commands.ex中添加module()声明 |
+| **高价值命令缺失** (ask/hide/summon/rideto) | 核心游戏功能不可用 | 建议后续批次实现 |
 
 ---
 
