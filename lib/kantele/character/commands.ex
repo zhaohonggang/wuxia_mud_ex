@@ -1354,4 +1354,61 @@ defmodule Kantele.Character.Commands do
       command |> spaces() |> word(:target)
     end)
   end
+
+  # W3 arch重度命令 (14个stubs - 需对象系统)
+  module(BuildCommand) do
+    parse("build", :run)
+  end
+
+  module(CallCommand) do
+    parse("call", :run)
+  end
+
+  module(SmashCommand) do
+    parse("smash", :run)
+  end
+
+  module(PossessCommand) do
+    parse("possess", :run)
+  end
+
+  module(ThrowCommand) do
+    parse("throw", :run)
+  end
+
+  module(VarCommand) do
+    parse("var", :run)
+  end
+
+  module(SetskCommand) do
+    parse("setsk", :run)
+  end
+
+  module(PurgeCommand) do
+    parse("purge", :run)
+  end
+
+  module(RestoreCommand) do
+    parse("restore", :run)
+  end
+
+  module(RegisterCommand) do
+    parse("register", :run)
+  end
+
+  module(RebootCommand) do
+    parse("reboot", :run)
+  end
+
+  module(ShutdownCommand) do
+    parse("shutdown", :run)
+  end
+
+  module(GrantCommand) do
+    parse("grant", :run)
+  end
+
+  module(ChangeuserCommand) do
+    parse("changeuser", :run)
+  end
 end
