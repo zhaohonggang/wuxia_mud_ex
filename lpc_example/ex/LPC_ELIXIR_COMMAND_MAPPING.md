@@ -305,7 +305,7 @@
 | detach | DetachCommand | ✅ | 已实现 |
 | enable | EnableCommand | ✅ | 已实现 |
 | enchase | EnchaseCommand | ✅ | 已实现 |
-| enforce | - | ❌ | 加力，未实现 |
+| enforce | JialiCommand | ✅ | 已实现（alias到jiali加力） |
 | exercise | ExerciseCommand | ✅ | 已实现 |
 | exert | ExertCommand | ✅ | 已实现 |
 | expell | - | ❌ | 开除，未实现 |

@@ -298,6 +298,10 @@ defmodule Kantele.Character.Commands do
     parse("jiali", :run, fn command ->
       command |> spaces() |> text(:arg)
     end)
+
+    parse("enforce", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
   end
 
   module(InfoCommand) do
