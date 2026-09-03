@@ -202,6 +202,12 @@ defmodule Kantele.Character.Commands do
     parse("回城", :run)
   end
 
+  module(RidetoCommand) do
+    parse("rideto", :run, fn command ->
+      command |> spaces() |> text(:place)
+    end)
+  end
+
   module(FingerCommand) do
     parse("finger", :run, fn command ->
       command |> spaces() |> text(:name)
