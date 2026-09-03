@@ -139,6 +139,8 @@ defmodule Kantele.Character.Events do
 
       event(ItemPickUp.Abort, :pickup_abort)
       event(ItemPickUp.Commit, :pickup_commit)
+
+      event("item/hide", :hide_commit)
     end
 
     module(MoveEvent) do

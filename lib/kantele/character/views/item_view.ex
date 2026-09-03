@@ -46,6 +46,15 @@ defmodule Kantele.Character.ItemView do
     }
   end
 
+  def render("hide-commit", %{item_instance: item_instance}) do
+    %EventText{
+      topic: "Inventory.HideItem",
+      data: %{item_instance: item_instance},
+      text:
+        ~i(You make #{render("name", %{item_instance: item_instance})} disappear without a trace.\n)
+    }
+  end
+
   def render("unknown", %{item_name: item_name}) do
     ~i(There is no item {color foreground="white"}"#{item_name}"{/color}.\n)
   end

@@ -73,6 +73,22 @@ defmodule Kantele.Character.ItemEvent do
     |> tap_save()
   end
 
+  def hide_commit(conn, %{data: event}) do
+    inventory =
+      Enum.reject(conn.character.inventory, fn item_instance ->
+        event.item_instance.id == item_instance.id
+      end)
+
+    item = Items.get!(event.item_instance.item_id)
+    item_instance = %{event.item_instance | item: item}
+
+    conn
+    |> put_character(%{conn.character | inventory: inventory})
+    |> render(ItemView, "hide-commit", %{item: item, item_instance: item_instance})
+    |> prompt(CommandView, "prompt")
+    |> tap_save()
+  end
+
   defp tap_save(conn) do
     Kantele.Character.Records.save(current_character(conn))
     conn

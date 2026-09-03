@@ -260,6 +260,12 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(HideCommand) do
+    parse("hide", :run, fn command ->
+      command |> spaces() |> text(:item)
+    end)
+  end
+
   module(JialiCommand) do
     parse("jiali", :run, fn command ->
       command |> spaces() |> text(:arg)
