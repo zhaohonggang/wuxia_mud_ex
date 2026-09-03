@@ -591,6 +591,10 @@ defmodule Kantele.Character.Commands do
     parse("version", :run)
   end
 
+  module(UptimeCommand) do
+    parse("uptime", :run)
+  end
+
   module(WhisperCommand) do
     parse("whisper", :run, fn command ->
       command
