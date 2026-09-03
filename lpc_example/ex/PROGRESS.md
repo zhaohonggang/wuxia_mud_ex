@@ -1,9 +1,13 @@
 # Kantele Framework Landing Progress
 
-> Last updated: 2026-08-28 (commit `4629275` on `kalevala`)
+> Last updated: 2026-09-02 (commit `41497fa` on `kalevala`)
+>
+> **当前测试基线**: 1411 tests, 0 failures (2026-09-02)
+>
+> **注意**: 本文档主要记录 Framework landing 进度（Phase 1-4），命令迁移进度见 `MIGRATION_PLAN.md`。
 
 ## Baseline
-- **Full test suite**: 388 tests, 0 failures (flaky `death` combat test occasionally fails under full-suite load, passes in isolation)
+- **Full test suite**: 1411 tests, 0 failures (flaky `kickoff` and `daub` tests excluded)
 - All increments verified with `MIX_ENV=test mix test` in container
 
 ---

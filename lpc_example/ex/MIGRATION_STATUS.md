@@ -1,7 +1,12 @@
 # LPC Example 迁移现状与差距记录
 
-> 更新时间: 2026-08-28
-> 共 22 个样本目录，**18 个真实行为迁移 + 4 个纯 UCL 数据物品**，均已覆盖。
+> 更新时间: 2026-09-02 (commit `41497fa` on `kalevala`)
+>
+> **当前测试基线**: 1411 tests / 0 failures
+>
+> 本文档主要记录 LPC examples 迁移，命令迁移进度见 `MIGRATION_PLAN.md`。
+
+---
 >
 > 📄 **框架需求汇总**: `FRAMEWORK_REQUIREMENTS.md` 汇总全部 17 份子目录
 > FRAMEWORK_REQUIREMENTS 并按跨领域域归并，含对照 `lib/kantele` 现状的
