@@ -436,7 +436,7 @@ P5 无
 | K1 | combine, san, imbue, enchase, research | [x] (all real) |
 | K2 | berserk, crattack, spattack, animaout, jingxiu, persuade, pique, recruit | [x] (all real) |
 | K3 | burning, breakup, fuse, derive, syn, yanlian | [x] (all real) |
-| W1 | 权限地基 | [ ] |
+| W1 | 权限地基 (wiz_level + Access) | [x] (done) |
 | W2 | goto/where/who1/clone/dest/update 等常用 wiz | [ ] |
 | W3 | arch 重度命令 | [ ] |
 | P5 | 收尾/文档/勾选 | [ ] |

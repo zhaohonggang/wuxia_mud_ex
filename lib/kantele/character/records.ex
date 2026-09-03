@@ -122,7 +122,7 @@ defmodule Kantele.Character.Records do
       character ->
         case Repo.get_by(Metadata, character_id: character.id) do
           nil -> :error
-          metadata -> {:ok, metadata}
+          metadata -> {:ok, metadata, character.wiz_level || 0}
         end
     end
   end
@@ -239,7 +239,7 @@ defmodule Kantele.Character.Records do
   end
 
   @doc "把持久化记录合并进新建角色的 meta"
-  def apply_to_character(character, nil), do: character
+  def apply_to_character(character, nil, _wiz_level), do: character
 
   @default_skills %{
     "unarmed" => 60,
@@ -249,7 +249,7 @@ defmodule Kantele.Character.Records do
     "force" => 20
   }
 
-  def apply_to_character(character, {:ok, metadata}) do
+  def apply_to_character(character, {:ok, metadata}, wiz_level) do
     # 保底合并：存档里的等级与默认值取较大者，
     # 防止历史坏档（空 skills 等）把角色打回零级
     skills =
@@ -310,7 +310,8 @@ defmodule Kantele.Character.Records do
       |> Map.put(:tianshu_books, metadata.tianshu_books || %{})
       |> Map.put(:jifen, metadata.jifen || 0)
 
-    %{character | meta: meta, inventory: inventory}
+    character = %{character | meta: meta, inventory: inventory}
+    %{character | attributes: Map.put(character.attributes, "wiz_level", wiz_level)}
   end
 
   # 存档里的 family 是 string-key JSON，转回 atom-key 运行态
@@ -426,7 +427,16 @@ defmodule Kantele.Character.Records do
 
   defp prop_from_json(_), do: nil
 
-  def apply_to_character(character, :error), do: character
+  def apply_to_character(character, :error, _wiz_level), do: character
+
+  @doc "Backward-compatible 2-arg version (wiz_level defaults to 0)"
+  def apply_to_character(character, {:ok, metadata}) do
+    apply_to_character(character, {:ok, metadata}, 0)
+  end
+
+  def apply_to_character(character, :error) do
+    apply_to_character(character, :error, 0)
+  end
 
   defp ensure_record(character_name) do
     case find_character(character_name) do

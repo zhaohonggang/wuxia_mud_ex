@@ -92,10 +92,16 @@ defmodule Kantele.Character.LoginController do
   defp process_character(conn, character_name) do
     name = String.trim(character_name)
 
+    {loaded, wiz_level} =
+      case Kantele.Character.Records.load(name) do
+        {:ok, metadata, wiz_level} -> {{:ok, metadata}, wiz_level}
+        :error -> {:error, 0}
+      end
+
     character =
       name
       |> build_character()
-      |> Kantele.Character.Records.apply_to_character(Kantele.Character.Records.load(name))
+      |> Kantele.Character.Records.apply_to_character(loaded, wiz_level)
 
     # 启动自然回复循环（foreman 自投递）
     Kantele.Character.CombatEvent.kick_regen()

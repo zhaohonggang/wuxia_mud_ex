@@ -11,6 +11,7 @@ defmodule ExVenture.Characters.Character do
 
   schema "characters" do
     field(:name, :string)
+    field(:wiz_level, :integer, default: 0)
 
     has_many(:playable, PlayableCharacter)
 
@@ -19,13 +20,13 @@ defmodule ExVenture.Characters.Character do
 
   def create_changeset(struct, params) do
     struct
-    |> cast(params, [:name])
+    |> cast(params, [:name, :wiz_level])
     |> validate_required([:name])
   end
 
   def update_changeset(struct, params) do
     struct
-    |> cast(params, [:name])
+    |> cast(params, [:name, :wiz_level])
     |> validate_required([:name])
   end
 end
