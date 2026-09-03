@@ -500,6 +500,10 @@ defmodule Kantele.World.Room.Events do
       event("assist/request", :call)
     end
 
+    module(FeedRequestEvent) do
+      event("room/feed", :call)
+    end
+
     module(StealRequestEvent) do
       event("steal/attempt", :call)
     end
@@ -805,6 +809,50 @@ defmodule Kantele.World.Room.GiveRequestEvent do
               item_name: data.item_name,
               from_id: data.from_id,
               from_name: data.from_name,
+              reply_to: requester.pid
+            })
+        end
+    end
+  end
+
+  defp find_target(context, requester, target_name) do
+    Enum.find(context.characters, fn character ->
+      character.pid != requester.pid and
+        Kantele.World.Room.NameMatch.matches?(character, target_name)
+    end)
+  end
+end
+
+defmodule Kantele.World.Room.FeedRequestEvent do
+  @moduledoc """
+  喂养转发：把 `feed` 的 `room/feed` 事件中的目标按名字解析，
+  向目标NPC发 `characters/feed`。
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+
+  def call(context, %{data: data} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+    target_name = Map.get(data, :name)
+
+    case {requester, is_binary(target_name) and target_name != ""} do
+      {nil, _} ->
+        context
+
+      {requester, false} ->
+        render(context, requester.pid, CommandView, "text", %{text: "你要喂养谁？\n"})
+
+      {requester, true} ->
+        case find_target(context, requester, target_name) do
+          nil ->
+            render(context, requester.pid, CommandView, "text", %{text: "这里没有这个人。\n"})
+
+          target ->
+            event(context, target.pid, self(), "characters/feed", %{
+              feeder_id: requester.id,
+              feeder_name: requester.name,
               reply_to: requester.pid
             })
         end

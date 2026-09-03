@@ -208,6 +208,16 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(FeedCommand) do
+    parse("feed", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+
+    parse("喂养", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+  end
+
   module(FingerCommand) do
     parse("finger", :run, fn command ->
       command |> spaces() |> text(:name)
