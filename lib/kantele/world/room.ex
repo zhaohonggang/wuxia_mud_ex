@@ -421,6 +421,7 @@ defmodule Kantele.World.Room.Events do
 
     module(CombatEvent) do
       event("combat/attack", :call)
+      event("combat/touxi", :call)
       event("combat/aggressive", :call)
       event("skills/learn", :call)
     end
@@ -2109,6 +2110,82 @@ defmodule Kantele.World.Room.CombatEvent do
       true ->
         engage(context, attacker, target)
     end
+  end
+
+  # ---- 偷袭请求 ----
+
+  defp dispatch(context, %{topic: "combat/touxi", data: %{name: name}} = event, attacker) do
+    target =
+      Enum.find(context.characters, fn character ->
+        character.pid != attacker.pid &&
+          safe_matches?(character, name)
+      end)
+
+    cond do
+      no_fight?(context) ->
+        render(
+          context,
+          attacker.pid,
+          CommandView,
+          "text",
+          %{text: "这里禁止战斗。\n"}
+        )
+
+      is_nil(name) or name == "" ->
+        render(context, attacker.pid, CommandView, "text", %{text: "你想偷袭谁？\n"})
+
+      is_nil(target) ->
+        render(context, attacker.pid, CommandView, "text", %{text: "这里没有这个人。\n"})
+
+      !is_character?(target) ->
+        render(context, attacker.pid, CommandView, "text", %{text: "看清楚一点，那并不是生物。\n"})
+
+      is_fighting_with?(target, attacker) ->
+        render(context, attacker.pid, CommandView, "text", %{text: "你已经在战斗中了，还想偷袭？\n"})
+
+      dead?(target) or dead?(attacker) ->
+        render(context, attacker.pid, CommandView, "text", %{text: "对方都已经这样了，你还用得着偷袭吗？\n"})
+
+      target.id == attacker.id ->
+        render(context, attacker.pid, CommandView, "text", %{text: "偷袭自己？别这么想不开。\n"})
+
+      true ->
+        touxi_messages(context, attacker, target)
+        engage_touxi(context, attacker, target)
+    end
+  end
+
+  defp is_character?(character) do
+    Map.has_key?(character, :name)
+  end
+
+  defp is_fighting_with?(target, attacker) do
+    # Simplified check - in real combat would check target's enemy list
+    false
+  end
+
+  defp touxi_messages(context, attacker, target) do
+    render(context, attacker.pid, CommandView, "text",
+      text: "\n你猛的飞身纵起，直扑#{target.name}而去。\n")
+
+    render(context, target.pid, CommandView, "text",
+      text: "\n#{attacker.name}忽然向你扑来，来势甚为迅猛。\n")
+
+    context
+  end
+
+  defp engage_touxi(context, initiator, target) do
+    context
+    |> start_combat_touxi(target, initiator)
+    |> start_combat(initiator, target)
+  end
+
+  defp start_combat_touxi(context, character, touxi_target) do
+    event(context, character.pid, self(), "combat/start", %{
+      enemy: ref(touxi_target),
+      initiator_id: touxi_target.id,
+      touxi?: true
+    })
   end
 
   # ---- aggressive NPC ----

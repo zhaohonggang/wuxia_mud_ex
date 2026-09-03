@@ -915,6 +915,16 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(TouxiCommand) do
+    parse("touxi", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+
+    parse("偷袭", :run, fn command ->
+      command |> spaces() |> word(:name)
+    end)
+  end
+
   module(BrothersCommand) do
     parse("brothers", :run, fn command ->
       command |> spaces() |> text(:rest)
