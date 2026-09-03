@@ -192,7 +192,7 @@
 | cd | - | ❌ | 切换目录，未实现 |
 | chblk | - | ❌ | 屏蔽频道，未实现 |
 | clone | CloneCommand | ✅ | 已实现(stub) |
-| color | - | ❌ | 颜色命令，未实现 |
+| color | ColorCommand | ✅ | 已实现（显示ANSI色样） |
 | copyskill | - | ❌ | 复制技能，未实现 |
 | cost | - | ❌ | 消耗计算，未实现 |
 | cp | - | ❌ | 复制文件，未实现 |
