@@ -30,10 +30,10 @@
 | ansuan | AnsuanCommand | ✅ | 已实现 |
 | answer | AnswerCommand | ✅ | 已实现 |
 | apply | - | ❌ | 系统函数，非玩家命令 |
-| ask | - | ❌ | 询问NPC，未实现 |
+| ask | AskCommand | ✅ | 已实现 |
 | attack | FightCommand | ✅ | hit/kill统一到fight |
 | beg | BegCommand | ✅ | 已实现 |
-| check | - | ❌ | 未实现 |
+| check | CheckCommand | ✅ | 已实现（丐帮打探） |
 | close | CloseCommand | ✅ | 已实现 |
 | come | ComeCommand | ✅ | 已实现(stub) |
 | cook | CookCommand | ✅ | 已实现 |
@@ -45,7 +45,7 @@
 | drug | DrugCommand | ✅ | 已实现 |
 | eat | EatCommand | ✅ | 已实现 |
 | emote | EmoteCommand | ✅ | 已实现 |
-| femote | - | ❌ | 女性表情变体，未实现 |
+| femote | FemoteCommand | ✅ | 已实现 |
 | fight | FightCommand | ✅ | 已实现 |
 | fill | FillCommand | ✅ | 已实现 |
 | follow | FollowCommand | ✅ | 已实现 |
@@ -93,7 +93,7 @@
 | tell | TellCommand | ✅ | 已实现 |
 | to | ToCommand | ✅ | 已实现(stub) |
 | touch | TouchCommand | ✅ | 已实现(stub) |
-| touxi | - | ❌ | 偷袭技能，未实现 |
+| touxi | TouxiCommand | ✅ | 已实现 |
 | train | TrainCommand | ✅ | 已实现(stub) |
 | tune | TuneCommand | ✅ | 已实现 |
 | unride | UnrideCommand | ✅ | 已实现 |
@@ -127,12 +127,12 @@
 | describe | DescribeCommand | ✅ | 已实现(stub) |
 | divorce | DivorceCommand | ✅ | 已实现 |
 | engage | EngageCommand | ✅ | 已实现 |
-| feed | - | ❌ | 喂养NPC，未实现 |
+| feed | FeedCommand | ✅ | 已实现 |
 | findwp | - | ❌ | 路点查找，系统工具 |
 | finger | FingerCommand | ✅ | 已实现 |
 | hatred | HatredCommand | ✅ | 已实现 |
 | help | HelpCommand | ✅ | 已实现(stub) |
-| hide | - | ❌ | 隐身，未实现 |
+| hide | HideCommand | ✅ | 已实现（隐藏兵器，非隐身） |
 | hp | HpCommand | ✅ | 已实现(stub) |
 | id | IdCommand | ✅ | 已实现(stub) |
 | idle | - | ❌ | 空闲状态，系统工具 |
@@ -142,7 +142,7 @@
 | list | ListCommand | ✅ | 已实现 |
 | miss | MissCommand | ✅ | 已实现 |
 | mobile | - | ❌ | 移动信息，未实现 |
-| mudinfo | - | ❌ | MUD信息，未实现 |
+| mudinfo | MudinfoCommand | ✅ | 已实现 |
 | mudlist | - | ❌ | MUD列表，未实现 |
 | mudlist2 | - | ❌ | MUD列表变体，未实现 |
 | news | NewsCommand | ✅ | 已实现 |
@@ -156,7 +156,7 @@
 | quit | QuitCommand | ✅ | 已实现 |
 | recall | RecallCommand | ✅ | 已实现 |
 | record | - | ❌ | 录制系统，未实现 |
-| rideto | - | ❌ | 骑乘传送，未实现 |
+| rideto | RidetoCommand | ✅ | 已实现 |
 | save | SaveCommand | ✅ | 已实现 |
 | scheme | SchemeCommand | ✅ | 已实现 |
 | score | ScoreCommand | ✅ | 已实现 |
@@ -166,7 +166,7 @@
 | skip | - | ❌ | 跳过，未实现 |
 | snoop | - | ❌ | 监听，未实现 |
 | suicide | SuicideCommand | ✅ | 已实现 |
-| summon | - | ❌ | 召唤，未实现 |
+| summon | SummonCommand | ✅ | 已实现（召唤已注册物品） |
 | swear | SwearCommand | ✅ | 复用std/ |
 | system | SystemCommand | ✅ | 已实现(stub) |
 | tianshu | TianshuCommand | ✅ | 已实现 |
@@ -176,11 +176,11 @@
 | top2 | Top2Command | ✅ | 已实现(stub) |
 | topp | ToppCommand | ✅ | 已实现(stub) |
 | unset | - | ❌ | 取消设置，未实现 |
-| uptime | - | ❌ | 运行时间，未实现 |
+| uptime | UptimeCommand | ✅ | 已实现 |
 | whistle | WhistleCommand | ✅ | 已实现 |
 | who | WhoCommand | ✅ | 已实现 |
 | wimpy | WimpyCommand | ✅ | 已实现(stub) |
-| wizlist | - | ❌ | 巫师列表，未实现 |
+| wizlist | WizlistCommand | ✅ | 已实现 |
 
 ---
 
