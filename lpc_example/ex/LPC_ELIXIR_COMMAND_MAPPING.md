@@ -205,7 +205,7 @@
 | info | - | ❌ | 信息，未实现 |
 | ip | - | ❌ | IP信息，未实现 |
 | ipname | - | ❌ | IP名称，未实现 |
-| localcmds | - | ❌ | 本地命令，未实现 |
+| localcmds | LocalcmdsCommand | ✅ | 已实现（列出房间出口指令） |
 | ls | - | ❌ | 目录列表，未实现 |
 | mem | MemCommand | ✅ | 已实现 |
 | mkdir | - | ❌ | 创建目录，未实现 |

@@ -1399,6 +1399,10 @@ defmodule Kantele.Character.Commands do
     parse("mem", :run)
   end
 
+  module(LocalcmdsCommand) do
+    parse("localcmds", :run)
+  end
+
   module(WhereCommand) do
     parse("where", :run)
   end
