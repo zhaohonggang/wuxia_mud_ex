@@ -181,6 +181,12 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(SummonCommand) do
+    parse("summon", :run, fn command ->
+      command |> spaces() |> text(:item)
+    end)
+  end
+
   module(FollowCommand) do
     parse("follow", :run, fn command ->
       command |> spaces() |> text(:rest)
