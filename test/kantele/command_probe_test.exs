@@ -31,6 +31,13 @@ defmodule Kantele.CommandProbeTest do
     "vote_command" => "M4",
     # S1-S4 社会系统
     # K1-K3 skill 家族
+    # W2 巫师常用命令
+    "goto_command" => "W2",
+    "where_command" => "W2",
+    "who1_command" => "W2",
+    "clone_command" => "W2",
+    "dest_command" => "W2",
+    "update_command" => "W2",
     # 后续批次
     "cut_command" => "后续批次",
     "hand_command" => "后续批次",

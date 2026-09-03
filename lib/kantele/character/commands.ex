@@ -1322,4 +1322,36 @@ defmodule Kantele.Character.Commands do
   module(YanlianCommand) do
     parse("yanlian", :run)
   end
+
+  module(GotoCommand) do
+    parse("goto", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
+  end
+
+  module(WhereCommand) do
+    parse("where", :run)
+  end
+
+  module(Who1Command) do
+    parse("who1", :run)
+  end
+
+  module(CloneCommand) do
+    parse("clone", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
+  end
+
+  module(DestCommand) do
+    parse("dest", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
+  end
+
+  module(UpdateCommand) do
+    parse("update", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
+  end
 end
