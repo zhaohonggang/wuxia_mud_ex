@@ -619,6 +619,10 @@ defmodule Kantele.Character.Commands do
     parse("who", :run)
   end
 
+  module(WizlistCommand) do
+    parse("wizlist", :run)
+  end
+
   module(AskCommand) do
     parse("ask", :run, fn command ->
       command |> spaces() |> word(:name) |> spaces() |> text(:keyword)

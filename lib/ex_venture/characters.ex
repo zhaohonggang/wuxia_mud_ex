@@ -60,6 +60,16 @@ defmodule ExVenture.Characters do
   end
 
   @doc """
+  List all wizard characters (wiz_level > 0), 对应 LPC SECURITY_D->query_wizlist()
+  """
+  def all_wizards do
+    Character
+    |> where([c], c.wiz_level > 0)
+    |> order_by([c], asc: c.name)
+    |> Repo.all()
+  end
+
+  @doc """
   Get a character scoped to the user accessing it
   """
   def get(id) do
