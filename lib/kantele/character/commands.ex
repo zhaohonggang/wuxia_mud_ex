@@ -1395,6 +1395,10 @@ defmodule Kantele.Character.Commands do
     parse("whoami", :run)
   end
 
+  module(MemCommand) do
+    parse("mem", :run)
+  end
+
   module(WhereCommand) do
     parse("where", :run)
   end
