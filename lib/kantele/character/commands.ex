@@ -1399,6 +1399,10 @@ defmodule Kantele.Character.Commands do
     parse("whoami", :run)
   end
 
+  module(NodieCommand) do
+    parse("nodie", :run)
+  end
+
   module(MemCommand) do
     parse("mem", :run)
   end
