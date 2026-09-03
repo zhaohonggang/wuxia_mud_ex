@@ -15,31 +15,33 @@ defmodule Kantele.Character.Who2Command do
   def run(conn, _params) do
     character = conn.character
 
-    unless Access.wizardp(character) do
-      return_error(conn, "你没有巫师的权限。")
+    case Access.wizardp(character) do
+      false ->
+        return_error(conn, "你没有巫师的权限。")
+
+      true ->
+        characters = Presence.characters()
+        count = length(characters)
+
+        sorted =
+          characters
+          |> Enum.sort_by(fn char ->
+            {-wiz_level(char), String.downcase(char.name)}
+          end)
+
+        lines =
+          Enum.map_join(sorted, "\n", fn char ->
+            level = wiz_level(char)
+            marker = if level > 0, do: "巫师#{level} ", else: "玩家    "
+            "#{marker}#{String.pad_trailing(char.name, 12)} #{char.room_id}"
+          end)
+
+        conn
+        |> render(CommandView, "text", %{
+          text: "在线角色查询 (who2)\n------------------------------------------------------------\n#{lines}\n------------------------------------------------------------\n共有 #{count} 位使用者连线中。\n"
+        })
+        |> prompt(CommandView, "prompt", %{})
     end
-
-    characters = Presence.characters()
-    count = length(characters)
-
-    sorted =
-      characters
-      |> Enum.sort_by(fn char ->
-        {-wiz_level(char), String.downcase(char.name)}
-      end)
-
-    lines =
-      Enum.map_join(sorted, "\n", fn char ->
-        level = wiz_level(char)
-        marker = if level > 0, do: "巫师#{level} ", else: "玩家    "
-        "#{marker}#{String.pad_trailing(char.name, 12)} #{char.room_id}"
-      end)
-
-    conn
-    |> render(CommandView, "text", %{
-      text: "在线角色查询 (who2)\n------------------------------------------------------------\n#{lines}\n------------------------------------------------------------\n共有 #{count} 位使用者连线中。\n"
-    })
-    |> prompt(CommandView, "prompt", %{})
   end
 
   defp wiz_level(char) do

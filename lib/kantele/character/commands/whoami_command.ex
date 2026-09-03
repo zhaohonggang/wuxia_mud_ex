@@ -14,17 +14,19 @@ defmodule Kantele.Character.WhoamiCommand do
   def run(conn, _params) do
     character = conn.character
 
-    unless Access.wizardp(character) do
-      return_error(conn, "你没有巫师的权限。")
+    case Access.wizardp(character) do
+      false ->
+        return_error(conn, "你没有巫师的权限。")
+
+      true ->
+        id = character.name
+
+        conn
+        |> render(CommandView, "text", %{
+          text: "你的 User ID = #{id}\n你的 Effective User ID = #{id}\n"
+        })
+        |> prompt(CommandView, "prompt", %{})
     end
-
-    id = character.name
-
-    conn
-    |> render(CommandView, "text", %{
-      text: "你的 User ID = #{id}\n你的 Effective User ID = #{id}\n"
-    })
-    |> prompt(CommandView, "prompt", %{})
   end
 
   defp return_error(conn, message) do

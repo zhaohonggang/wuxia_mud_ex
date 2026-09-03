@@ -16,26 +16,28 @@ defmodule Kantele.Character.HomeCommand do
   def run(conn, _params) do
     character = conn.character
 
-    unless Access.wizardp(character) do
-      return_error(conn, "你没有巫师的权限。")
-    end
+    case Access.wizardp(character) do
+      false ->
+        return_error(conn, "你没有巫师的权限。")
 
-    room_id = character.room_id
+      true ->
+        room_id = character.room_id
 
-    case start_room_id(room_id) do
-      nil ->
-        conn
-        |> render(CommandView, "text", %{text: "当前区域无法使用 home 指令。\n"})
-        |> prompt(CommandView, "prompt", %{})
+        case start_room_id(room_id) do
+          nil ->
+            conn
+            |> render(CommandView, "text", %{text: "当前区域无法使用 home 指令。\n"})
+            |> prompt(CommandView, "prompt", %{})
 
-      dest when dest == room_id ->
-        conn
-        |> render(CommandView, "text", %{text: "你已经在起始之地了。\n"})
-        |> prompt(CommandView, "prompt", %{})
+          dest when dest == room_id ->
+            conn
+            |> render(CommandView, "text", %{text: "你已经在起始之地了。\n"})
+            |> prompt(CommandView, "prompt", %{})
 
-      dest ->
-        conn
-        |> Teleport.teleport(dest)
+          dest ->
+            conn
+            |> Teleport.teleport(dest)
+        end
     end
   end
 

@@ -14,17 +14,19 @@ defmodule Kantele.Character.MemCommand do
   def run(conn, _params) do
     character = conn.character
 
-    unless Access.wizardp(character) do
-      return_error(conn, "你没有巫师的权限。")
+    case Access.wizardp(character) do
+      false ->
+        return_error(conn, "你没有巫师的权限。")
+
+      true ->
+        bytes = :erlang.memory(:total)
+
+        conn
+        |> render(CommandView, "text", %{
+          text: "武林外传目前共使用了 #{formatted_memory(bytes)} bytes 内存。\n"
+        })
+        |> prompt(CommandView, "prompt", %{})
     end
-
-    bytes = :erlang.memory(:total)
-
-    conn
-    |> render(CommandView, "text", %{
-      text: "武林外传目前共使用了 #{formatted_memory(bytes)} bytes 内存。\n"
-    })
-    |> prompt(CommandView, "prompt", %{})
   end
 
   defp formatted_memory(bytes) do

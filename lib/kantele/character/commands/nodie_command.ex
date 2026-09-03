@@ -16,23 +16,24 @@ defmodule Kantele.Character.NodieCommand do
   def run(conn, _params) do
     character = conn.character
 
-    unless Access.wizardp(character) do
-      return_error(conn, "你没有巫师的权限。\n")
+    cond do
+      !Access.wizardp(character) ->
+        return_error(conn, "你没有巫师的权限。\n")
+
+      PlayerMeta.get_temp(character.meta, "guard_death") == 1 ->
+        return_error(conn, "你已处于死亡保护状态。\n")
+
+      true ->
+        character =
+          character
+          |> restore_vitals()
+          |> put_guard_death()
+
+        conn
+        |> put_character(character)
+        |> render(CommandView, "text", %{text: "你面露拈花之色，口中念念有词，说不尽的慈祥安和。\n"})
+        |> prompt(CommandView, "prompt", %{})
     end
-
-    if PlayerMeta.get_temp(character, "guard_death") == 1 do
-      return_error(conn, "你已处于死亡保护状态。\n")
-    end
-
-    character =
-      character
-      |> restore_vitals()
-      |> PlayerMeta.put_temp("guard_death", 1)
-
-    conn
-    |> put_character(character)
-    |> render(CommandView, "text", %{text: "你面露拈花之色，口中念念有词，说不尽的慈祥安和。\n"})
-    |> prompt(CommandView, "prompt", %{})
   end
 
   defp restore_vitals(character) do
@@ -47,6 +48,11 @@ defmodule Kantele.Character.NodieCommand do
     }
 
     %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  end
+
+  defp put_guard_death(character) do
+    meta = PlayerMeta.put_temp(character.meta, "guard_death", 1)
+    %{character | meta: meta}
   end
 
   defp return_error(conn, text) do

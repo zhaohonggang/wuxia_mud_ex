@@ -16,30 +16,32 @@ defmodule Kantele.Character.Who3Command do
   def run(conn, _params) do
     character = conn.character
 
-    unless Access.wizardp(character) do
-      return_error(conn, "你没有巫师的权限。")
+    case Access.wizardp(character) do
+      false ->
+        return_error(conn, "你没有巫师的权限。")
+
+      true ->
+        characters = Presence.characters()
+        count = length(characters)
+
+        sorted =
+          characters
+          |> Enum.sort_by(fn char -> -wiz_level(char) end)
+
+        lines =
+          Enum.map_join(sorted, "\n", &(line(&1)))
+
+        conn
+        |> render(CommandView, "text", %{
+          text: "玩家属性查询 (who3)\n----------------------------------------------\n" <>
+            "玩家      悟性  根骨  身法  膂力  容貌\n" <>
+            "----------------------------------------------\n" <>
+            lines <>
+            "----------------------------------------------\n" <>
+            "#{count} 位使用者连线中。\n"
+        })
+        |> prompt(CommandView, "prompt", %{})
     end
-
-    characters = Presence.characters()
-    count = length(characters)
-
-    sorted =
-      characters
-      |> Enum.sort_by(fn char -> -wiz_level(char) end)
-
-    lines =
-      Enum.map_join(sorted, "\n", &(line(&1)))
-
-    conn
-    |> render(CommandView, "text", %{
-      text: "玩家属性查询 (who3)\n----------------------------------------------\n" <>
-        "玩家      悟性  根骨  身法  膂力  容貌\n" <>
-        "----------------------------------------------\n" <>
-        lines <>
-        "----------------------------------------------\n" <>
-        "#{count} 位使用者连线中。\n"
-    })
-    |> prompt(CommandView, "prompt", %{})
   end
 
   defp line(character) do

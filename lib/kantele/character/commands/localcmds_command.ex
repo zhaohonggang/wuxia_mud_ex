@@ -24,26 +24,28 @@ defmodule Kantele.Character.LocalcmdsCommand do
   def run(conn, _params) do
     character = conn.character
 
-    unless Access.wizardp(character) do
-      return_error(conn, "你没有巫师的权限。")
-    end
+    case Access.wizardp(character) do
+      false ->
+        return_error(conn, "你没有巫师的权限。")
 
-    room_id = character.room_id
+      true ->
+        room_id = character.room_id
 
-    case available_directions(room_id) do
-      [] ->
-        conn
-        |> render(CommandView, "text", %{text: "你所在的房间没有任何可用的本地指令（出口）。\n"})
-        |> prompt(CommandView, "prompt", %{})
+        case available_directions(room_id) do
+          [] ->
+            conn
+            |> render(CommandView, "text", %{text: "你所在的房间没有任何可用的本地指令（出口）。\n"})
+            |> prompt(CommandView, "prompt", %{})
 
-      dirs ->
-        lines = Enum.map_join(dirs, "\n", &(format_dir(&1)))
+          dirs ->
+            lines = Enum.map_join(dirs, "\n", &(format_dir(&1)))
 
-        conn
-        |> render(CommandView, "text", %{
-          text: "你所在的环境提供以下指令：\n#{lines}"
-        })
-        |> prompt(CommandView, "prompt", %{})
+            conn
+            |> render(CommandView, "text", %{
+              text: "你所在的环境提供以下指令：\n#{lines}"
+            })
+            |> prompt(CommandView, "prompt", %{})
+        end
     end
   end
 
