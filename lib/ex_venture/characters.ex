@@ -53,6 +53,13 @@ defmodule ExVenture.Characters do
   end
 
   @doc """
+  Count all registered characters (对应 LPC mudinfo.c: count_ppls)
+  """
+  def count_all do
+    Repo.aggregate(Character, :count, :id)
+  end
+
+  @doc """
   Get a character scoped to the user accessing it
   """
   def get(id) do
