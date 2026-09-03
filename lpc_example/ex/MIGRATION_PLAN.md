@@ -23,11 +23,17 @@
 | **总计** | **347** | **~176** | |
 
 ### 高价值缺失命令 (LPC有, Elixir无)
-- `ask` - 询问NPC (重要社交功能)
-- `hide` - 隐身 (重要技能)
-- `summon` - 召唤 (重要功能)
-- `rideto` - 骑乘传送 (重要功能)
-- `list` - 商店列表 (部分实现)
+已补齐:
+- `ask` - 询问NPC (已实现 AskCommand)
+- `hide` - 隐藏兵器 (已实现 HideCommand)
+- `summon` - 召唤 (已实现 SummonCommand)
+- `rideto` - 骑乘传送 (已实现 RidetoCommand)
+- `feed` - 喂养NPC (已实现 FeedCommand)
+- `uptime` - 运行时间 (已实现 UptimeCommand)
+- `mudinfo` - 系统资讯 (已实现 MudinfoCommand)
+- `femote` - 表情搜索 (已实现 FemoteCommand)
+- `wizlist` - 巫师名单 (已实现 WizlistCommand)
+- `unset` - 取消环境变量 (已实现 UnsetCommand)
 
 ### 未注册的W3命令 (14个stub存在但未注册)
 BuildCommand, CallCommand, ChangeuserCommand, GrantCommand, PossessCommand, PurgeCommand, RebootCommand, RegisterCommand, RestoreCommand, SetskCommand, ShutdownCommand, SmashCommand, ThrowCommand, VarCommand
@@ -370,8 +376,8 @@ P5 无
 - `Kantele.Admin.Access` 守卫（simulate LPC `wizardp` / `valid_grant`）。
 
 ### Batch W2 — 常用 wiz 命令（纯信息/操纵，高性价比）
-已实现: `goto where who1 clone dest update` (6个stubs)
-未实现: `cat cd chblk copyskill cost cp edit ff home ilist info ip ipname ls mem mkdir more mv pwd rm status ulist weight who2 who3 whoami whohave whoride` 等 (34个)
+已实现: `goto where who1 clone dest update` (6个stubs) + `whoami who2 who3 mem localcmds home` (本轮新增, 6个真实实现)
+未实现: `cat cd chblk copyskill cost cp edit ff ilist info ip ipname ls mkdir more mv pwd rm status ulist weight whohave whoride` 等 (28个)
 
 ### Batch W3 — arch 重度命令（需物件系统）
 已实现 (14个stubs): `build call smash possess throw var setsk purge restore register reboot shutdown grant changeuser`
@@ -447,12 +453,13 @@ P5 无
 - BuildCommand, CallCommand, ChangeuserCommand, GrantCommand, PossessCommand, PurgeCommand, RebootCommand, RegisterCommand, RestoreCommand, SetskCommand, ShutdownCommand, SmashCommand, ThrowCommand, VarCommand
 
 ### 高价值缺失命令
-以下LPC命令在Elixir中完全缺失，建议后续实现:
-- `ask` - 询问NPC (重要社交功能)
-- `hide` - 隐身 (重要技能)
-- `summon` - 召唤 (重要功能)
-- `rideto` - 骑乘传送 (重要功能)
-- `list` - 商店列表
+以下LPC命令在Elixir中已陆续补齐:
+- `ask` - 询问NPC (已实现 AskCommand)
+- `hide` - 隐藏兵器 (已实现 HideCommand)
+- `summon` - 召唤 (已实现 SummonCommand)
+- `rideto` - 骑乘传送 (已实现 RidetoCommand)
+- `feed` - 喂养NPC (已实现 FeedCommand)
+- `uptime/mudinfo/wizlist/femote/unset` (已分别实现)
 
 ### 架构不适用 (adm/目录)
 adm/下28个命令在Elixir生态无对应物，建议标记为"架构不适用": auth, cache, checkuser, eval, fcrypt, linux, telnet等
