@@ -90,6 +90,12 @@ defmodule Kantele.Character.Commands do
     parse("frown", :frown)
   end
 
+  module(FemoteCommand) do
+    parse("femote", :run, fn command ->
+      command |> spaces() |> text(:keyword)
+    end)
+  end
+
   module(EnableCommand) do
     parse("enable", :run, fn command ->
       command |> spaces() |> word(:usage) |> spaces() |> word(:skill)
