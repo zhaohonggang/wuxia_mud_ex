@@ -224,7 +224,7 @@
 | where | WhereCommand | ✅ | 已实现 |
 | who1 | Who1Command | ✅ | 已实现 |
 | who2 | Who2Command | ✅ | 已实现 |
-| who3 | - | ❌ | who变体，未实现 |
+| who3 | Who3Command | ✅ | 已实现 |
 | whoami | WhoamiCommand | ✅ | 已实现 |
 | whohave | - | ❌ | 谁有物品，未实现 |
 | whoride | - | ❌ | 谁在骑乘，未实现 |

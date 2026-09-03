@@ -1407,6 +1407,10 @@ defmodule Kantele.Character.Commands do
     parse("who2", :run)
   end
 
+  module(Who3Command) do
+    parse("who3", :run)
+  end
+
   module(CloneCommand) do
     parse("clone", :run, fn command ->
       command |> spaces() |> word(:target)
