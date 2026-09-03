@@ -1269,6 +1269,12 @@ defmodule Kantele.Character.Commands do
     parse("set", :run)
   end
 
+  module(UnsetCommand) do
+    parse("unset", :run, fn command ->
+      command |> spaces() |> text(:key)
+    end)
+  end
+
   module(PasswdCommand) do
     parse("passwd", :run)
   end
