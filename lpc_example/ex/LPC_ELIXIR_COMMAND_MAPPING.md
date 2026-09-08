@@ -79,7 +79,7 @@
 | search | SearchCommand | ✅ | 已实现 |
 | secularize | SecularizeCommand | ✅ | 已实现(stub) |
 | semote | SemoteCommand | ✅ | 已实现 |
-| skill | - | ❌ | 技能系统，未实现 |
+| skill | SkillCommand | ✅ | 已实现（显示技能等级/映射/绝招） |
 | sleep | SleepCommand | ✅ | 已实现 |
 | special | SpecialCommand | ✅ | 已实现(stub) |
 | stab | StabCommand | ✅ | 已实现(stub) |

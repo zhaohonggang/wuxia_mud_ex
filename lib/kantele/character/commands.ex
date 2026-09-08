@@ -677,6 +677,12 @@ defmodule Kantele.Character.Commands do
     parse("我的技能", :run)
   end
 
+  module(SkillCommand) do
+    parse("skill", :run, fn command ->
+      command |> spaces() |> text(:skill_name)
+    end)
+  end
+
   module(CheckskillCommand) do
     parse("checkskill", :run, fn command ->
       command |> spaces() |> text(:skill)
