@@ -61,8 +61,8 @@ defmodule Kantele.World.Item do
   @doc "检查物品模板 ID 是否已存在"
   def item_exists?(id) do
     case Kantele.World.Items.get(id) do
-      nil -> false
-      _ -> true
+      {:ok, _item} -> true
+      _ -> false
     end
   end
 end

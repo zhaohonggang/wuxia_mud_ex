@@ -4,28 +4,32 @@ defmodule Kantele.Character.UpdateCommand do
   alias Kantele.Admin.Access
   alias Kantele.Character.CommandView
 
-  def run(conn, %{"target" => target}) do
+  def run(conn, %{"target" => target} = _params) do
     character = conn.character
 
-    unless Access.wizardp(character) do
-      return_error(conn, "你没有巫师的权限。")
-    end
+    case Access.wizardp(character) do
+      false ->
+        return_error(conn, "你没有巫师的权限。\n")
 
-    conn
-    |> render(CommandView, "text", %{text: "对象 #{target} 已重新加载。\n"})
-    |> prompt(CommandView, "prompt", %{})
+      true ->
+        conn
+        |> render(CommandView, "text", %{text: "对象 #{target} 已重新加载。\n"})
+        |> prompt(CommandView, "prompt", %{})
+    end
   end
 
   def run(conn, _params) do
     character = conn.character
 
-    unless Access.wizardp(character) do
-      return_error(conn, "你没有巫师的权限。")
-    end
+    case Access.wizardp(character) do
+      false ->
+        return_error(conn, "你没有巫师的权限。\n")
 
-    conn
-    |> render(CommandView, "text", %{text: "用法: update <对象ID>\n"})
-    |> prompt(CommandView, "prompt", %{})
+      true ->
+        conn
+        |> render(CommandView, "text", %{text: "用法: update <对象ID>\n"})
+        |> prompt(CommandView, "prompt", %{})
+    end
   end
 
   defp return_error(conn, message) do

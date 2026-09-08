@@ -5,33 +5,37 @@ defmodule Kantele.Character.GotoCommand do
   alias Kantele.Character.CommandView
   alias Kantele.Character.Teleport
 
-  def run(conn, %{"target" => target}) do
+  def run(conn, %{"target" => target} = _params) do
     character = conn.character
 
-    unless Access.wizardp(character) do
-      return_error(conn, "你没有巫师的权限。")
-    end
+    case Access.wizardp(character) do
+      false ->
+        return_error(conn, "你没有巫师的权限。\n")
 
-    case find_room(target) do
-      nil ->
-        return_error(conn, "找不到目标地点 #{target}。")
+      true ->
+        case find_room(target) do
+          nil ->
+            return_error(conn, "找不到目标地点 #{target}。\n")
 
-      room_id ->
-        conn
-        |> Teleport.teleport(room_id)
+          room_id ->
+            conn
+            |> Teleport.teleport(room_id)
+        end
     end
   end
 
   def run(conn, _params) do
     character = conn.character
 
-    unless Access.wizardp(character) do
-      return_error(conn, "你没有巫师的权限。")
-    end
+    case Access.wizardp(character) do
+      false ->
+        return_error(conn, "你没有巫师的权限。\n")
 
-    conn
-    |> render(CommandView, "text", %{text: "用法: goto <房间ID或名称>\n"})
-    |> prompt(CommandView, "prompt", %{})
+      true ->
+        conn
+        |> render(CommandView, "text", %{text: "用法: goto <房间ID或名称>\n"})
+        |> prompt(CommandView, "prompt", %{})
+    end
   end
 
   defp find_room(target) do
