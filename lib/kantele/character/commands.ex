@@ -1431,6 +1431,12 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(CopyskillCommand) do
+    parse("copyskill", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+  end
+
   module(WhereCommand) do
     parse("where", :run)
   end

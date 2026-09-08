@@ -193,7 +193,7 @@
 | chblk | - | ❌ | 屏蔽频道，未实现 |
 | clone | CloneCommand | ✅ | 已实现(stub) |
 | color | ColorCommand | ✅ | 已实现（显示ANSI色样） |
-| copyskill | - | ❌ | 复制技能，未实现 |
+| copyskill | CopyskillCommand | ✅ | 已实现（复制在线玩家武功到自身，简化版） |
 | cost | - | ❌ | 消耗计算，未实现 |
 | cp | - | ❌ | 复制文件，未实现 |
 | dest | DestCommand | ✅ | 已实现(stub) |
