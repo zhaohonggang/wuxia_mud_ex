@@ -227,7 +227,7 @@
 | who3 | Who3Command | ✅ | 已实现 |
 | whoami | WhoamiCommand | ✅ | 已实现 |
 | whohave | - | ❌ | 谁有物品，未实现 |
-| whoride | - | ❌ | 谁在骑乘，未实现 |
+| whoride | WhorideCommand | ✅ | 谁在骑乘，已实现 (W2) |
 | wizard | - | ❌ | 巫师模式，未实现 |
 
 ---
@@ -263,7 +263,7 @@
 | overview | - | ❌ | 概览，未实现 |
 | p2 | - | ❌ | 协议p2，未实现 |
 | possess | PossessCommand | ✅ | 已实现(stub) |
-| promote | - | ❌ | 提升权限，未实现 |
+| promote | PromoteCommand | ✅ | 提升权限，已实现 (W3) |
 | purge | PurgeCommand | ✅ | 已实现(stub) |
 | qdel | - | ❌ | 查询删除，未实现 |
 | qinfo | - | ❌ | 查询信息，未实现 |

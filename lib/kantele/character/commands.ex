@@ -1421,6 +1421,16 @@ defmodule Kantele.Character.Commands do
     parse("home", :run)
   end
 
+  module(WhorideCommand) do
+    parse("whoride", :run)
+  end
+
+  module(PromoteCommand) do
+    parse("promote", :run, fn command ->
+      command |> spaces() |> text(:arg)
+    end)
+  end
+
   module(WhereCommand) do
     parse("where", :run)
   end

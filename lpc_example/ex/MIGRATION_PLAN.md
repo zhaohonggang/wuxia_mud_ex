@@ -376,10 +376,11 @@ P5 无
 - `Kantele.Admin.Access` 守卫（simulate LPC `wizardp` / `valid_grant`）。
 
 ### Batch W2 — 常用 wiz 命令（纯信息/操纵，高性价比）
-已实现: `goto where who1 clone dest update` (6个stubs) + `whoami who2 who3 mem localcmds home` (本轮新增, 6个真实实现)
-未实现: `cat cd chblk copyskill cost cp edit ff ilist info ip ipname ls mkdir more mv pwd rm status ulist weight whohave whoride` 等 (28个)
+已实现: `goto where who1 clone dest update` (6个stubs) + `whoami who2 who3 mem localcmds home whoride` (本轮新增, 7个真实实现)
+未实现: `cat cd chblk copyskill cost cp edit ff ilist info ip ipname ls mkdir more mv pwd rm status ulist weight whohave` 等 (27个)
 
 ### Batch W3 — arch 重度命令（需物件系统）
+已在 P4 先补: `promote` (PromoteCommand, 数据库级权限提升, 真实实现)
 已实现 (14个stubs): `build call smash possess throw var setsk purge restore register reboot shutdown grant changeuser`
 未实现: `ban blockade board callouts changename child chinese cleanup config data dual examine find findusr free getid kickout log mv overview promote qdel qinfo recovemud rehash sa sameip setsk spy status1 which wizlock` 等 (35个)
 
