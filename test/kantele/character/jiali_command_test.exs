@@ -95,5 +95,10 @@ defmodule Kantele.Character.JialiCommandTest do
       {:ok, parsed} = Kantele.Character.Commands.parse("jiali 5")
       assert parsed.module == JialiCommand
     end
+
+    test "enforce 别名路由解析" do
+      {:ok, parsed} = Kantele.Character.Commands.parse("enforce 3")
+      assert parsed.module == JialiCommand
+    end
   end
 end
