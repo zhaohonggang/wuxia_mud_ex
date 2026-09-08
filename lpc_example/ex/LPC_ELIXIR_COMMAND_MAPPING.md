@@ -202,7 +202,7 @@
 | goto | GotoCommand | ✅ | 已实现 |
 | home | HomeCommand | ✅ | 已实现（回区域起始房间） |
 | ilist | - | ❌ | 物品列表，未实现 |
-| info | - | ❌ | 信息，未实现 |
+| info | InfoCommand | ✅ | 已实现（属性/技能等级） |
 | ip | - | ❌ | IP信息，未实现 |
 | ipname | - | ❌ | IP名称，未实现 |
 | localcmds | LocalcmdsCommand | ✅ | 已实现（列出房间出口指令） |
@@ -280,7 +280,7 @@
 | status1 | - | ❌ | 状态1，未实现 |
 | throw | ThrowCommand | ✅ | 已实现(stub) |
 | var | VarCommand | ✅ | 已实现(stub) |
-| version | - | ❌ | 版本，未实现 |
+| version | VersionCommand | ✅ | 已实现（游戏版本） |
 | which | - | ❌ | 查找命令，未实现 |
 | wizlock | - | ❌ | 巫师锁，未实现 |
 
