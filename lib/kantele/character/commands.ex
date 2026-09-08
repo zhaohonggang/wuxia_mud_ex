@@ -1276,7 +1276,10 @@ defmodule Kantele.Character.Commands do
   end
 
   module(SetCommand) do
-    parse("set", :run)
+    parse("set", :run, fn command ->
+      command
+      |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(UnsetCommand) do

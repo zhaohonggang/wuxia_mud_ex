@@ -9,7 +9,7 @@ defmodule Kantele.Character.HideCommand do
   use Kalevala.Character.Command
 
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Damage
+  alias Kantele.Feature.Damage
   alias Kantele.World.Items
 
   @jingli_cost 100
@@ -67,8 +67,8 @@ defmodule Kantele.Character.HideCommand do
 
         {:ok, character} = Damage.receive_damage(character, :jing, @jingli_cost)
 
-        character
-        |> put_character(conn)
+        conn
+        |> put_character(character)
         |> event("item/hide", %{
           item_instance: item_instance,
           item: item,

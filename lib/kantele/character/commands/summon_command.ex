@@ -9,7 +9,6 @@ defmodule Kantele.Character.SummonCommand do
   use Kalevala.Character.Command
 
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Damage
   alias Kantele.World.Items
 
   @jingli_cost 200
@@ -86,7 +85,7 @@ defmodule Kantele.Character.SummonCommand do
     end
   end
 
-  defp attempt_summon(conn, character, item_id, item_template) do
+  defp attempt_summon(conn, character, _item_id, item_template) do
     vitals = character.meta.vitals
     jingli = is_map(vitals) && Map.get(vitals, :jingli, 0) || 0
 
@@ -95,15 +94,25 @@ defmodule Kantele.Character.SummonCommand do
       |> render(CommandView, "text", %{text: "你试图呼唤#{item_template.name}，可是难以进入境界，看来是精力不济。\n"})
       |> prompt(CommandView, "prompt", %{})
     else
-      {:ok, character} = Damage.receive_damage(character, :jingli, @jingli_cost)
-
-      character = put_character(conn, character)
+      character = deduct_jingli(character, @jingli_cost)
 
       conn
+      |> put_character(character)
       |> render(CommandView, "text", %{
         text: summon_message(item_template.name)
       })
       |> prompt(CommandView, "prompt", %{})
+    end
+  end
+
+  defp deduct_jingli(character, cost) do
+    case character.meta.vitals do
+      %{jingli: jingli} when is_integer(jingli) ->
+        vitals = %{character.meta.vitals | jingli: max(jingli - cost, 0)}
+        %{character | meta: %{character.meta | vitals: vitals}}
+
+      _ ->
+        character
     end
   end
 

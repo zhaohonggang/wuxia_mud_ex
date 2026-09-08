@@ -132,7 +132,7 @@
 | finger | FingerCommand | ✅ | 已实现 |
 | hatred | HatredCommand | ✅ | 已实现 |
 | help | HelpCommand | ✅ | 已实现(stub) |
-| hide | HideCommand | ✅ | 已实现（隐藏兵器，非隐身） |
+| hide | HideCommand | ✅ | 已实现（隐藏兵器，非隐身；修复 damage 模块与 put_character 参数顺序） |
 | hp | HpCommand | ✅ | 已实现(stub) |
 | id | IdCommand | ✅ | 已实现(stub) |
 | idle | - | ❌ | 空闲状态，系统工具 |
@@ -161,12 +161,12 @@
 | scheme | SchemeCommand | ✅ | 已实现 |
 | score | ScoreCommand | ✅ | 已实现 |
 | score2 | Score2Command | ✅ | 已实现(stub) |
-| set | SetCommand | ✅ | 已实现(stub) |
+| set | SetCommand | ✅ | 已实现（set/unset 环境变量注册修复；含回归测试） |
 | shop | ShopCommand | ✅ | 已实现 |
 | skip | - | ❌ | 跳过，未实现 |
 | snoop | - | ❌ | 监听，未实现 |
 | suicide | SuicideCommand | ✅ | 已实现 |
-| summon | SummonCommand | ✅ | 已实现（召唤已注册物品） |
+| summon | SummonCommand | ✅ | 已实现（召唤已注册物品；修复精力扣减未生效） |
 | swear | SwearCommand | ✅ | 复用std/ |
 | system | SystemCommand | ✅ | 已实现(stub) |
 | tianshu | TianshuCommand | ✅ | 已实现 |

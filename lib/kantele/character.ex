@@ -16,6 +16,7 @@ defmodule Kantele.Character.PlayerMeta do
   - `bag` 背包内容 `[%{file,name,id,amount}]`（feature/user_storage.c；落盘 metadata.bag）
   - `spouse` 配偶（S3 engage/accede/divorce.c）：`%{id, name}` 或缺省 nil（落盘 metadata.spouse）
   - `schedule` 个人计划（S4 scheme.c）：文本串或缺省 nil（落盘 metadata.schedule）
+  - `env` 环境变量（cmds/usr/set.c 简化版）：`%{key => value}`（运行态，不落盘）
   - `tianshu_books` 天书收集（S4 tianshu.c）：`%{书名 => 1}` 已完成表或缺省 nil（落盘 metadata.tianshu_books）
   - `jifen` 积分（S4 jifen.c）：整数或缺省 nil（落盘 metadata.jifen）
   """
@@ -37,6 +38,7 @@ defmodule Kantele.Character.PlayerMeta do
     :riding,
     :team_pending,
     temp: %{},
+    env: %{},
     followers: [],
     damage: %{},
     attack_killer: [],
