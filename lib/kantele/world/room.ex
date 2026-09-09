@@ -180,11 +180,17 @@ defmodule Kantele.World.Room do
     room
   end
 
-  # 内部：取房间内角色 pid 列表（由 World 层维护，此处为占位）
-  defp get_characters_in_room(_room_id), do: []
+  # 内部：取房间内角色 pid 列表（对应 LPC present/living/get_characters_in_room；
+  # Q2-T0 真实化：对齐 RoomChannel 订阅缓存，房间的在线玩家都会订阅 "rooms:客房id"）
+  defp get_characters_in_room(room_id) do
+    Kantele.Communication.subscribers("rooms:#{room_id}")
+    |> Enum.map(fn {_channel_name, pid, _options} -> pid end)
+  end
+
   defp get_item_instances_in_room(_room_id), do: []
-  defp is_player(_pid), do: false
-  defp is_living(_pid), do: false
+
+  defp is_player(pid), do: is_pid(pid)
+  defp is_living(pid), do: is_pid(pid)
 
   # ---- add_action 指令分发（对应 LPC add_action/2，棋房/拱猪/房间动词） ----
 

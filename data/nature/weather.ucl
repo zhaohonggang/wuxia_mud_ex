@@ -1,0 +1,639 @@
+# Q2-T2 天象时段表（数据源，由 lib/kantele/world/weather/data.ex 编译期加载）
+# 四季 × 3 天气 = 12 套表；每套 8 段，每 3 游戏时一档（hour = 0,3,6,9,12,15,18,21）。
+# 字段对齐 LPC adm/etc/nature：hour / time_msg（时辰语）/ desc_msg（天象描写）/ outcolor（展示色）。
+
+phases "spring_rain" {
+  table = [
+    {
+      hour = 0
+      time_msg = "夜深雨巷"
+      desc_msg = "细雨敲窗，檐角水珠滴答不绝，镇中石板路泛起一片湿亮。"
+      outcolor = "blue"
+    },
+    {
+      hour = 3
+      time_msg = "拂晓微雨"
+      desc_msg = "天蒙蒙亮，春雾混着雨丝贴着街面流动，连脚步声都显得潮润。"
+      outcolor = "blue"
+    },
+    {
+      hour = 6
+      time_msg = "晨雨初歇"
+      desc_msg = "雨势渐缓，柳条垂着水珠，山间新绿被洗得发亮。"
+      outcolor = "green"
+    },
+    {
+      hour = 9
+      time_msg = "午前薄雨"
+      desc_msg = "云层低垂，细雨时断时续，镇口茶棚里挤满了躲雨的行人。"
+      outcolor = "white"
+    },
+    {
+      hour = 12
+      time_msg = "午间雨幕"
+      desc_msg = "雨声渐密，打在青瓦上如万点鼓点，官道上溅起蒙蒙白雾。"
+      outcolor = "blue"
+    },
+    {
+      hour = 15
+      time_msg = "午后云开"
+      desc_msg = "雨住云开一线，阳光斜照，水珠在树梢上闪闪发亮。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 18
+      time_msg = "暮色残雨"
+      desc_msg = "暮色四合，余雨未净，远山笼着一层淡淡的水气。"
+      outcolor = "white"
+    },
+    {
+      hour = 21
+      time_msg = "初更再雨"
+      desc_msg = "初更时分又飘起细雨，家家灯火映在湿漉漉的街面上。"
+      outcolor = "blue"
+    }
+  ]
+}
+
+phases "spring_sun" {
+  table = [
+    {
+      hour = 0
+      time_msg = "春夜微凉"
+      desc_msg = "月光如水，风里混着嫩草与泥土的气息，四下静谧。"
+      outcolor = "white"
+    },
+    {
+      hour = 3
+      time_msg = "曙色初露"
+      desc_msg = "东方泛起鱼肚白，早起的鸟雀已在枝头啾鸣。"
+      outcolor = "green"
+    },
+    {
+      hour = 6
+      time_msg = "清晨新晴"
+      desc_msg = "朝阳爬上柳梢，露珠在草尖上滚落，空气清新得醉人。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 9
+      time_msg = "日上三竿"
+      desc_msg = "晴空万里，春风和暖，官道上人来人往，正是赶路的好时辰。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 12
+      time_msg = "正午春阳"
+      desc_msg = "日头正中，晒得石板路微微发烫，柳荫下有人打起了盹。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 15
+      time_msg = "午后暖阳"
+      desc_msg = "日光斜照，桃花杏花开得正好，蜂蝶绕着花枝打转。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 18
+      time_msg = "夕照满山"
+      desc_msg = "落日熔金，把镇子的屋脊和远山都镀上一层金边。"
+      outcolor = "red"
+    },
+    {
+      hour = 21
+      time_msg = "春夜灯市"
+      desc_msg = "星疏月朗，微风送爽，灯影把酒旗拉得老长。"
+      outcolor = "white"
+    }
+  ]
+}
+
+phases "spring_wind" {
+  table = [
+    {
+      hour = 0
+      time_msg = "夜风穿巷"
+      desc_msg = "风一阵紧似一阵，窗纸扑扑作响，杨花飞得满街都是。"
+      outcolor = "white"
+    },
+    {
+      hour = 3
+      time_msg = "晓风抖梢"
+      desc_msg = "天未大亮，风却先醒了，把屋檐下晾的衣衫吹得猎猎作响。"
+      outcolor = "white"
+    },
+    {
+      hour = 6
+      time_msg = "晨风扬尘"
+      desc_msg = "春风浩荡，卷起古道上的浮土，行人个个眯眼掩面。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 9
+      time_msg = "长风贯镇"
+      desc_msg = "风越刮越急，酒旗猎猎，茶棚的布帘被吹得鼓鼓囊囊。"
+      outcolor = "white"
+    },
+    {
+      hour = 12
+      time_msg = "当午疾风"
+      desc_msg = "午后风势不减，飞沙走石，树梢被压得抬不起头。"
+      outcolor = "grey"
+    },
+    {
+      hour = 15
+      time_msg = "风卷残云"
+      desc_msg = "云被风撕扯成一片片，天光忽明忽暗，风声呜呜直响。"
+      outcolor = "white"
+    },
+    {
+      hour = 18
+      time_msg = "傍晚风凉"
+      desc_msg = "暮风渐凉，吹得人衣袂飘飘，归鸦被风托着掠过头顶。"
+      outcolor = "white"
+    },
+    {
+      hour = 21
+      time_msg = "初更风吼"
+      desc_msg = "入夜风更紧，吹得灯笼摇摇晃晃，街上几乎没了人迹。"
+      outcolor = "blue"
+    }
+  ]
+}
+
+phases "summer_rain" {
+  table = [
+    {
+      hour = 0
+      time_msg = "暑夜骤雨"
+      desc_msg = "夜半一声闷雷，倾盆大雨瞬间浇透全镇，暑气被冲散了大半。"
+      outcolor = "blue"
+    },
+    {
+      hour = 3
+      time_msg = "雷雨未歇"
+      desc_msg = "雷声滚滚，雨点砸在屋顶像擂鼓，沟渠里水声哗哗。"
+      outcolor = "blue"
+    },
+    {
+      hour = 6
+      time_msg = "雨后初霁"
+      desc_msg = "雨停了，满街积水映着天光，蝉声被雨水洗得格外清亮。"
+      outcolor = "green"
+    },
+    {
+      hour = 9
+      time_msg = "闷热回潮"
+      desc_msg = "日头一出，地上腾起一股湿热的水气，闷得人透不过气。"
+      outcolor = "white"
+    },
+    {
+      hour = 12
+      time_msg = "午后暴雨"
+      desc_msg = "午后天边涌起墨云，哗啦啦一场急雨，把行人浇得四散躲避。"
+      outcolor = "blue"
+    },
+    {
+      hour = 15
+      time_msg = "阵雨如注"
+      desc_msg = "阵雨时来时去，屋檐挂起一道道水帘，天地一片白茫茫。"
+      outcolor = "blue"
+    },
+    {
+      hour = 18
+      time_msg = "晚雨湿街"
+      desc_msg = "暮色里又飘起细雨，灯火倒映在湿滑的石板路上，朦朦胧胧。"
+      outcolor = "blue"
+    },
+    {
+      hour = 21
+      time_msg = "夜雨闷雷"
+      desc_msg = "远处闷雷滚动，雨丝斜织，暑气在雨声中再添几分黏腻。"
+      outcolor = "blue"
+    }
+  ]
+}
+
+phases "summer_sun" {
+  table = [
+    {
+      hour = 0
+      time_msg = "暑夜星繁"
+      desc_msg = "天热得连风都是烫的，唯有檐下还存着一丝凉气。"
+      outcolor = "white"
+    },
+    {
+      hour = 3
+      time_msg = "薄明初凉"
+      desc_msg = "天边刚刚见亮，是这一日里难得的凉快时辰。"
+      outcolor = "white"
+    },
+    {
+      hour = 6
+      time_msg = "烈日方升"
+      desc_msg = "日头一露脸就带着热气，树影被晒得明晃晃的一片。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 9
+      time_msg = "炎阳似火"
+      desc_msg = "太阳白花花地烤着街道，蝉声嘶鸣，空气都是烫的。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 12
+      time_msg = "正午酷暑"
+      desc_msg = "正午的日头毒辣，狗都躲进树荫吐着舌头，街上几乎无人走动。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 15
+      time_msg = "午后蒸笼"
+      desc_msg = "暑气蒸腾，热浪在地面上颤巍巍地流动，教人只想寻个凉处。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 18
+      time_msg = "夕照仍炎"
+      desc_msg = "日头偏西仍不减威风，把人的影子拉得又长又烫。"
+      outcolor = "red"
+    },
+    {
+      hour = 21
+      time_msg = "夏夜溽热"
+      desc_msg = "夜虽黑下来，余热未散，扑扇声和蛙鸣混作一片。"
+      outcolor = "white"
+    }
+  ]
+}
+
+phases "summer_wind" {
+  table = [
+    {
+      hour = 0
+      time_msg = "夜风晚凉"
+      desc_msg = "入夜起了一阵穿堂风，带走一天的暑意，倒头能睡个好觉。"
+      outcolor = "white"
+    },
+    {
+      hour = 3
+      time_msg = "晓风微动"
+      desc_msg = "晨风带着草木气扫过街道，吹得人心头一爽。"
+      outcolor = "white"
+    },
+    {
+      hour = 6
+      time_msg = "晨风习习"
+      desc_msg = "趁凉赶路的人正多，风向人身后吹来，衣襟猎猎。"
+      outcolor = "white"
+    },
+    {
+      hour = 9
+      time_msg = "热风吹尘"
+      desc_msg = "白日里的风都是热烘烘的，卷着尘土直往人脸上扑。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 12
+      time_msg = "午间燥风"
+      desc_msg = "燥风一阵接一阵，吹得树叶哗哗作响，却没有半分凉意。"
+      outcolor = "white"
+    },
+    {
+      hour = 15
+      time_msg = "阵风乱云"
+      desc_msg = "忽起一阵大风，卷起夏云在天上翻涌，天色忽明忽暗。"
+      outcolor = "grey"
+    },
+    {
+      hour = 18
+      time_msg = "暮风送爽"
+      desc_msg = "日落风起，暑气被吹散几分，纳凉的人纷纷走上街头。"
+      outcolor = "white"
+    },
+    {
+      hour = 21
+      time_msg = "夜风扑灯"
+      desc_msg = "夜风呜呜地吹，把灯笼吹得忽明忽暗，树影乱晃。"
+      outcolor = "blue"
+    }
+  ]
+}
+
+phases "autumn_rain" {
+  table = [
+    {
+      hour = 0
+      time_msg = "秋夜雨寒"
+      desc_msg = "冷雨敲窗，一夜秋声，草木上的露水凉得浸骨。"
+      outcolor = "blue"
+    },
+    {
+      hour = 3
+      time_msg = "晓雨萧瑟"
+      desc_msg = "天色阴沉，细雨斜织，黄叶被打得满地狼藉。"
+      outcolor = "blue"
+    },
+    {
+      hour = 6
+      time_msg = "晨雨添愁"
+      desc_msg = "雨蒙蒙地下，远山淡成一片墨影，空气里满是湿冷的草木气。"
+      outcolor = "white"
+    },
+    {
+      hour = 9
+      time_msg = "午前细雨"
+      desc_msg = "雨势不紧不慢，青石街被洗得发亮，行人裹紧了衣裳。"
+      outcolor = "white"
+    },
+    {
+      hour = 12
+      time_msg = "午间秋雨"
+      desc_msg = "雨声沙沙，落在枯叶上格外清晰，酒旗被泅得湿沉沉的。"
+      outcolor = "blue"
+    },
+    {
+      hour = 15
+      time_msg = "雨后生凉"
+      desc_msg = "雨住了，西风一刮，遍体生凉，落叶贴着地面打着旋。"
+      outcolor = "white"
+    },
+    {
+      hour = 18
+      time_msg = "暮雨寒烟"
+      desc_msg = "暮色里又落起雨来，炊烟被压得贴地流淌，寒意渐重。"
+      outcolor = "blue"
+    },
+    {
+      hour = 21
+      time_msg = "夜雨寒砧"
+      desc_msg = "夜雨潇潇，听远处捣衣声断续，秋意越发浓了。"
+      outcolor = "blue"
+    }
+  ]
+}
+
+phases "autumn_sun" {
+  table = [
+    {
+      hour = 0
+      time_msg = "秋夜澄澈"
+      desc_msg = "天高云淡，月光冷清，正是宜于赶路和练剑的清夜。"
+      outcolor = "white"
+    },
+    {
+      hour = 3
+      time_msg = "霜晨冷月"
+      desc_msg = "天边挂着残月，草叶上铺着一层薄霜，呵气成雾。"
+      outcolor = "white"
+    },
+    {
+      hour = 6
+      time_msg = "高秋晴晓"
+      desc_msg = "秋高气爽，天蓝得像洗过一样，树梢上霜气未消。"
+      outcolor = "green"
+    },
+    {
+      hour = 9
+      time_msg = "秋阳明净"
+      desc_msg = "日头不燥，晒在人身上暖洋洋的，正是赏菊登高的好天。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 12
+      time_msg = "午间秋光"
+      desc_msg = "阳光金黄，把满地黄叶照得灿然，风里都是干爽的草木香。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 15
+      time_msg = "午后斜阳"
+      desc_msg = "斜阳穿过疏落的枝桠，在地面投下斑驳的光影。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 18
+      time_msg = "落日衔山"
+      desc_msg = "晚霞满天，把远山烧成一片绯红，雁阵正南飞。"
+      outcolor = "red"
+    },
+    {
+      hour = 21
+      time_msg = "清夜如水"
+      desc_msg = "星汉灿烂，风露渐凉，虫声唧唧，正是读书练功的时辰。"
+      outcolor = "white"
+    }
+  ]
+}
+
+phases "autumn_wind" {
+  table = [
+    {
+      hour = 0
+      time_msg = "风卷霜叶"
+      desc_msg = "夜风刮得落叶乱飞，沙沙声一路响到巷子尽头。"
+      outcolor = "white"
+    },
+    {
+      hour = 3
+      time_msg = "晓风劲凉"
+      desc_msg = "天没亮风就起了，吹得人缩着脖子，霜气白了一地。"
+      outcolor = "white"
+    },
+    {
+      hour = 6
+      time_msg = "晨风送寒"
+      desc_msg = "晨风带着明显的寒意，刮得酒旗猎猎，落叶打旋。"
+      outcolor = "white"
+    },
+    {
+      hour = 9
+      time_msg = "金风飒飒"
+      desc_msg = "日头虽好，秋风却硬，吹得人衣袂翻飞，遍体生凉。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 12
+      time_msg = "当午风凉"
+      desc_msg = "正午的风竟也有三分凉意，把夏日的最后一点暑气吹散。"
+      outcolor = "white"
+    },
+    {
+      hour = 15
+      time_msg = "西风卷叶"
+      desc_msg = "西风渐紧，黄叶漫天飞舞，官道上簌簌有声。"
+      outcolor = "white"
+    },
+    {
+      hour = 18
+      time_msg = "暮风萧萧"
+      desc_msg = "暮风呜咽着扫过长街，吹得烛火摇动，寒意侵衣。"
+      outcolor = "blue"
+    },
+    {
+      hour = 21
+      time_msg = "夜风催寒"
+      desc_msg = "入夜风冷入骨，吹得窗纸哗哗响，催人早早添衣。"
+      outcolor = "blue"
+    }
+  ]
+}
+
+phases "winter_rain" {
+  table = [
+    {
+      hour = 0
+      time_msg = "寒夜冷雨"
+      desc_msg = "冷雨夹着雪粒簌簌落下，到处是湿冷冻骨的滋味。"
+      outcolor = "blue"
+    },
+    {
+      hour = 3
+      time_msg = "冻雨如针"
+      desc_msg = "天蒙蒙亮，冻雨打在脸上生疼，街石亮晶晶的结着薄冰。"
+      outcolor = "blue"
+    },
+    {
+      hour = 6
+      time_msg = "晨雨凝冰"
+      desc_msg = "细雨落到地上就结起薄冰，一步一滑，人人大声咒着天气。"
+      outcolor = "white"
+    },
+    {
+      hour = 9
+      time_msg = "冻雨兼风"
+      desc_msg = "雨点夹着寒风斜着打来，屋檐下挂起一排晶莹的冰凌。"
+      outcolor = "white"
+    },
+    {
+      hour = 12
+      time_msg = "午间雪雨"
+      desc_msg = "雨里渐渐掺上雪花，天地灰蒙蒙一片，冷气直往骨头缝里钻。"
+      outcolor = "blue"
+    },
+    {
+      hour = 15
+      time_msg = "暮雪初降"
+      desc_msg = "雨止转雪，细密的雪珠撒落下来，很快把镇子染白了一层。"
+      outcolor = "white"
+    },
+    {
+      hour = 18
+      time_msg = "入夜雪紧"
+      desc_msg = "雪越下越密，远近房屋的轮廓都模糊起来，只剩一片簌簌声。"
+      outcolor = "white"
+    },
+    {
+      hour = 21
+      time_msg = "寒夜雪啸"
+      desc_msg = "风雪交加，窗缝里漏进来的风冻得人直打哆嗦。"
+      outcolor = "blue"
+    }
+  ]
+}
+
+phases "winter_sun" {
+  table = [
+    {
+      hour = 0
+      time_msg = "雪夜清寒"
+      desc_msg = "雪后月明，天地银装素裹，静得能听见雪落的轻响。"
+      outcolor = "white"
+    },
+    {
+      hour = 3
+      time_msg = "霜晨雪霁"
+      desc_msg = "天光微亮，满目琼枝玉树，呵出的气在眼前凝成白雾。"
+      outcolor = "white"
+    },
+    {
+      hour = 6
+      time_msg = "冬阳初照"
+      desc_msg = "一轮惨白的日头爬上屋顶，积雪的反光刺得人睁不开眼。"
+      outcolor = "white"
+    },
+    {
+      hour = 9
+      time_msg = "晴冬回暖"
+      desc_msg = "天晴了，日头虽淡，晒在身上总算有了几分暖意。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 12
+      time_msg = "午间冬晴"
+      desc_msg = "正午难得的好日头，屋檐下化雪嘀嘀嗒嗒，人们纷纷出来晒太阳。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 15
+      time_msg = "午后淡阳"
+      desc_msg = "日头偏西，光线转冷，影子在地面的积雪上拖得老长。"
+      outcolor = "yellow"
+    },
+    {
+      hour = 18
+      time_msg = "寒鸦背日"
+      desc_msg = "夕阳无光，映着雪地一片惨白，归鸦呱呱叫着飞过。"
+      outcolor = "red"
+    },
+    {
+      hour = 21
+      time_msg = "雪夜星冷"
+      desc_msg = "风停了，雪光映着满天寒星，冷得连犬吠都带颤音。"
+      outcolor = "white"
+    }
+  ]
+}
+
+phases "winter_wind" {
+  table = [
+    {
+      hour = 0
+      time_msg = "朔风如刀"
+      desc_msg = "朔风裹着雪花呜呜地刮，吹得窗棂格格作响。"
+      outcolor = "blue"
+    },
+    {
+      hour = 3
+      time_msg = "寒风吹雪"
+      desc_msg = "风卷起房顶的积雪，扬得满天都是，冷得人不敢露头。"
+      outcolor = "white"
+    },
+    {
+      hour = 6
+      time_msg = "晨风裂肤"
+      desc_msg = "晨风如刀割面，刮得干枯的树梢吱吱作响。"
+      outcolor = "white"
+    },
+    {
+      hour = 9
+      time_msg = "干风卷尘"
+      desc_msg = "风里带着雪末和沙尘，打得人脸生疼，路上行人稀少。"
+      outcolor = "white"
+    },
+    {
+      hour = 12
+      time_msg = "当午风疾"
+      desc_msg = "日头被风刮得惨白，风势猛烈，站都站不稳当。"
+      outcolor = "white"
+    },
+    {
+      hour = 15
+      time_msg = "狂风暴雪"
+      desc_msg = "狂风卷着大雪扑面而来，几步之外就看不见人影。"
+      outcolor = "white"
+    },
+    {
+      hour = 18
+      time_msg = "暮风雪紧"
+      desc_msg = "风雪交加，家家门户紧闭，只有远处的灯笼在风里摇晃。"
+      outcolor = "blue"
+    },
+    {
+      hour = 21
+      time_msg = "夜风呼号"
+      desc_msg = "夜风在檐下打着唿哨，一阵紧过一阵，教人缩在被窝里不敢动弹。"
+      outcolor = "blue"
+    }
+  ]
+}

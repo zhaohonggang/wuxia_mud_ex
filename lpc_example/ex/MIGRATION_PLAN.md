@@ -757,3 +757,12 @@ docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app/lpc_exampl
 - 全部定时用 `schedule_once` 链式（避免 `schedule_recurring` 取消 bug）；每次 tick 按现实 wall clock 重算剩余秒，防累计漂移。
 - GameTime 起点：从真实当前时间换算（epoch 偏移），不做 LPC 独立游戏历法年（除非后续要做节日活动）；season 直接按月。
 - 广播依赖 T0；若 T0 阻塞，v1 可先交付 look 注入（不阻塞核心体验）。
+
+**当前状态（2026-09-09，Q2 全绿）**：
+- ✅ Q2-T0（房间人员查询真实化）：`room.ex` `get_characters_in_room/1` 改为查 `Kantele.Communication.subscribers("rooms:#{id}")`（RoomChannel 订阅缓存，登录/移动即订阅，精确代表在线玩家）；`is_player/is_living` 由假 stub 改为 `is_pid`（订阅者均为玩家进程）。新建 `test/kantele/world/room_test.exs`：present/living 返回订阅者、tell_room 投递真实广播。注意：`Conn.subscribe` 生产路径注入 `character` 选项，测试须对齐；`unsubscribe_request` 反向判断属框架既有行为，移动/下线日志容忍。
+- ✅ Q2-T1（GameTime）：新建 `lib/kantele/world/game_time/calendar.ex` 纯函数（现实 1s=游戏 12s；锚点 2026-01-01→游戏 1996-01-01，`(real_now-real_epoch)*12+game_epoch` 墙钟 UTC+8 固定偏移不依赖 tzdata；`season/1` 春3-5/夏6-8/秋9-11/冬12-2）+ `lib/kantele/world/game_time.ex` GenServer（`game_localtime/0,1`/`datetime`/`hour`/`season`，`now` 可注入，`schedule_once` 链式 tick）；挂 supervision。game_time_test.exs：倍率、锚点、跨天+12 天、季节边界、with now 注入 GenServer。
+- ✅ Q2-T2（Weather 状态机+数据）：`data/nature/weather.ucl` 12 套表（四季×{rain,sun,wind}，每套 8 段 hour=0,3,..,21，字段 hour/time_msg/desc_msg/outcolor 对齐 adm/etc/nature）；`lib/kantele/world/weather/data.ex` 编译期加载（@external_resource，`select_phase/2` 取 ≤hour 最大档）；`lib/kantele/world/weather.ex` GenServer：`step/2` 纯推进（换季随机重选表+播报、时段变化播报），API current_phase/current_table/season/outdoor_description/time_msg/light/tick；播报走 `Kantele.Communication.announce("general")`；挂 supervision。weather_test.exs：12 表结构、查表边界、同段无播报/换段播报/换季重选与表 key、匿名实例 API。
+- ✅ Q2-T3（视图接入）：`look_view.ex` `_description` 对 `room.flags` 含 `outdoors` 的房间追加 `Weather.outdoor_description/0`（带 outcolor 颜色 tag），Weather 未启动/调用失败静默吞掉；室内无。look_weather_test.exs：户外见天气段、室内无。
+- 全量 **2282 tests, 0 failures**（seed 731933）。
+
+**实现注记**：UCL 数组内 map 元素用换行分隔字段、元素间需逗号；`then/2` 需 Elixir 1.12（本仓库 Elixir 1.11，禁止使用）；`DateTime.from_unix!/2` 在 1.11 第二参是时间单位而非时区（用固定偏移换算）。announce 频道选 "general"（登录即订阅，比逐房广播更贴合大喇叭语义；T0 仍保留供 tell_room/message_vision 使用）。

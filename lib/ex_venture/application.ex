@@ -69,6 +69,8 @@ defmodule ExVenture.Application.KalevalaSupervisor do
       {Kalevala.Help, [name: Kantele.Help]},
       {Kantele.World, []},
       {Kantele.World.QuestDaemon, []},
+      {Kantele.World.GameTime, []},
+      {Kantele.World.Weather, []},
       {Kantele.World.AnalectaService, []},
       {Kantele.World.NewsService, []},
       {Kantele.League, []},

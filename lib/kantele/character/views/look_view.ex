@@ -77,11 +77,34 @@ defmodule Kantele.Character.LookView do
         View.join(description, [~s({color foreground="white"}), feature.keyword, "{/color}"])
       end)
 
-    description = [room.description] ++ features
+    description = [room.description] ++ features ++ weather_descriptions(room)
 
     description
     |> Enum.reject(fn line -> line == "" end)
     |> View.join(" ")
+  end
+
+  # Q2-T3 室外房间注入天象段；Weather 未启动/调用失败都静默吞掉
+  defp weather_descriptions(%{flags: flags}) when is_list(flags) do
+    case "outdoors" in flags do
+      true ->
+        case weather_description() do
+          nil -> []
+          text -> [text]
+        end
+
+      false ->
+        []
+    end
+  end
+
+  defp weather_descriptions(_room), do: []
+
+  defp weather_description() do
+    Kantele.World.Weather.outdoor_description()
+  catch
+    :exit, _reason -> nil
+    :error, _reason -> nil
   end
 
   def render("_exits", %{room: room}) do
