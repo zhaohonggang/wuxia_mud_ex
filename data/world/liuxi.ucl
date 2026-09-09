@@ -52,6 +52,9 @@ room_characters "guangchang" {
     },
     {
       id = characters.apo.id
+    },
+    {
+      id = characters.butong.id
     }
   ]
 }
@@ -575,6 +578,50 @@ characters "wangshifu" {
     apply = {
       damage = 22
       attack = 30
+    }
+  }
+}
+
+# 镇广场的周不通：新手授业链 NPC（Q1-T4）
+# 七步链（打铁20/存钱/买包子/郭府/拜师/祈福/师门5）由链式前置逐步解锁：
+# 末一步 `_0_tutorial_shimen5` 的 chain 引用前六步，未解齐前接取会被 quest_event
+# 以「先办前事」文案拒绝（chain_blocked）；各步具体发放方留剧情扩展，此配置即数据接线。
+characters "butong" {
+  name = "周不通 Butong"
+  description = "一位白发灰袍的老者，坐在镇广场的石鼓上，腰里别着一根旱烟杆，说话慢条斯理，最爱给初出茅庐的少年指路。"
+
+  quest = {
+    file = "_0_tutorial_shimen5"
+    chain = [
+      "_0_tutorial_datie",
+      "_0_tutorial_cunqian",
+      "_0_tutorial_baozi",
+      "_0_tutorial_guofu",
+      "_0_tutorial_baishi",
+      "_0_tutorial_qifu"
+    ]
+    repeatable = false
+    type = "chain"
+    limit = 1800
+    master_name = "周不通"
+    master_id = "liuxi:butong"
+  }
+
+  combat = {
+    no_kill = true
+    max_qi = 3200
+    max_jing = 2400
+    max_neili = 3000
+    str = 30
+    dex = 26
+    con = 30
+    int = 28
+    combat_exp = 400000
+    skills = {
+      force = 150
+      dodge = 140
+      parry = 145
+      unarmed = 160
     }
   }
 }

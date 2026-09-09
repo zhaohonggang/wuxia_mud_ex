@@ -85,7 +85,7 @@ defmodule Kantele.Character.QuestEvent do
 
       {:error, reason} ->
         conn
-        |> render(CommandView, "text", %{text: "#{reason}\n"})
+        |> render(CommandView, "text", %{text: reason_text(reason)})
         |> prompt(CommandView, "prompt", %{})
     end
   end
@@ -95,6 +95,21 @@ defmodule Kantele.Character.QuestEvent do
     |> render(CommandView, "text", %{text: "#{npc_name}摇头道：「#{reason}」\n"})
     |> prompt(CommandView, "prompt", %{})
   end
+
+  # 接受失败原因转武侠风文案（Q1-T4 链式前置提示）
+  defp reason_text(reason) when is_atom(reason) do
+    case reason do
+      :chain_blocked -> "周不通捻须叹道：「欲成此事，须先把前头的差事办妥，一步一个脚印，方是正理。」\n"
+      :mutex_blocked -> "你正有相涉的要事在身，眼下接不得这桩差事。\n"
+      :full -> "你手头要办的事已经够多了，先了结几桩再来说话。\n"
+      :done -> "这桩差事你早已办妥，无需重复。\n"
+      :duplicate -> "这差事你已在办，何必再问？\n"
+      :invalid -> "这差事不似真的，恕老夫不相托付。\n"
+      other -> "#{inspect(other)}\n"
+    end
+  end
+
+  defp reason_text(reason), do: "#{reason}\n"
 
   def cancel_result(conn, %{data: %{ok: true, quest: quest_file, npc_name: npc_name}}) do
     character = conn.character

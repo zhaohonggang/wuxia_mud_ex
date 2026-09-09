@@ -533,8 +533,8 @@ defmodule Kantele.World.Loader do
 
   # 任务发布（A11/N6 v1 + Q1-T2）：NPC 可发布的任务规格
   # UCL 例：quest = { file = "song-yupai", kill = ["monster1"], item = ["item1"] }
-  # 扩展字段（Q1-T2，透传供 quest.ex meta / 阶梯奖励）：type / level / limit / repeatable /
-  # master_name / master_id
+  # 扩展字段（Q1-T2/T4，透传供 quest.ex meta / 阶梯奖励 / 链式前置）：
+  # type / level / limit / repeatable / master_name / master_id / chain / mutex
   defp parse_quest(nil), do: nil
 
   defp parse_quest(quest) when is_map(quest) do
@@ -544,7 +544,20 @@ defmodule Kantele.World.Loader do
       item: Map.get(quest, :item) && List.wrap(Map.get(quest, :item)) |> Enum.map(&to_string/1)
     }
 
-    Map.merge(base, Map.take(quest, [:type, :level, :limit, :repeatable, :master_name, :master_id]))
+    extra =
+      quest
+      |> Map.take([:type, :level, :limit, :repeatable, :master_name, :master_id,
+        :chain, :mutex])
+      |> Map.update(:chain, [], fn
+        nil -> []
+        chain -> List.wrap(chain) |> Enum.map(&to_string/1)
+      end)
+      |> Map.update(:mutex, [], fn
+        nil -> []
+        mutex -> List.wrap(mutex) |> Enum.map(&to_string/1)
+      end)
+
+    Map.merge(base, extra)
   end
 
   defp parse_quest(_), do: nil
