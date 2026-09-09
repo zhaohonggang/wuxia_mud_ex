@@ -405,6 +405,9 @@ defmodule Kantele.Character.CombatEvent do
     # Q3-stretch：神秘挑战者被击杀 → 通知 Story 登记处收摊（其余死亡为 no-op）
     notify_challenger_killed(character, killer)
 
+    # Q4 入侵：外族 NPC 被击杀 → 通知 Invasion 守护进程（记录计数/全歼判定/广播）
+    notify_invasion_killed(character, killer)
+
     enemy_ids = Enum.map(character.meta.combat.enemies, & &1.id)
 
     Enum.each(character.meta.combat.enemies, fn enemy ->
@@ -776,5 +779,19 @@ defmodule Kantele.Character.CombatEvent do
   defp send_event(conn, pid, topic, data) do
     send(pid, %Event{from_pid: self(), topic: topic, data: data})
     conn
+  end
+
+  # Q4 入侵：检查死者是否为入侵 NPC（meta.kind == "invader" 且有 invader_number）
+  defp notify_invasion_killed(character, killer) do
+    kind = Map.get(character.meta, :kind)
+    number = Map.get(character.meta, :invader_number)
+
+    if kind == "invader" and is_integer(number) do
+      Kantele.World.Invasion.on_died(number, killer)
+    end
+  rescue
+    _e -> :ok
+  catch
+    :exit, _reason -> :ok
   end
 end

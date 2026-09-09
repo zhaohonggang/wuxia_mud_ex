@@ -792,3 +792,29 @@ docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app/lpc_exampl
 **v1 简化（对 LPC 的偏差，记录在案）**：天灾类不再直接改写玩家四维/重创（无 kar 判定、仓库不做玩家进程直写），改为随机玩家房间掉对应仙丹；challenge 真打为本期 stretch 已落地（见上），LPC 的`胜利者威望/失败方惩罚`细化为「击杀掉玄铁令 + 经验/潜能」，不另设威望渠道。
 
 **风险**：storystep action 里的随机选人依赖 Presence（niku）；无人在线时静默跳过赠礼；物品掉落依赖房间进程已启动（:global lookup），未启动仅日志警告。
+
+---
+
+### 15.4 Q4 入侵事件
+
+**最终目标（v1 周期入侵，真实 NPC 波次）**：`Kantele.World.Invasion` 守护进程定时触发 → 每波刷 24 只外族 NPC（3 国族 × 5 级，属性按 LPC 公式）进随机 liuxi 房间 → 全服 `waidi` 频道广播 → 玩家击杀得 exp/potential/体会/威望/阅历（强者减奖）+ 记 `waidi/number` → 全歼 24 只触发大奖广播 → NPC 闲置 10 分钟自毁。
+
+**批次表**：
+
+| 批次 | 内容 | 主要文件（新建/修改） | 验收 |
+|------|------|----------------------|------|
+| **Q4-T0** 入侵守护进程 | `Kantele.World.Invasion` GenServer（启动延迟、波次间隔可注入、`current_wave/start_wave/stop_wave/status`、record 记录、schedule_once 链式、safe_run 兜底） | 新建 `lib/kantele/world/invasion.ex`、`lib/kantele/world/invasion/behaviour.ex`；挂 supervision | 单测：状态机、schedule_once 链式、全服广播、record 读写 |
+| **Q4-T1** NPC 配置与生成 | 3 国族（japanese/english/european）× 5 级配置（技能/属性/装备/头衔/称号、LPC 公式对齐）；`Invasion.build_invader(nation, level, number, room_id)` → 同 `Challenger.build_character`；出生房间池（liuxi 区非 no_fight 房间随机） | 新建 `lib/kantele/world/invasion/npc.ex`、`lib/kantele/world/invasion/npc/{japanese,english,european}.ex` | 单测：各级属性公式、装备映射、随机房间落点、国族武器/技能 |
+| **Q4-T2** 波次调度与清理 | `start_wave/1`：清空 record → 24 连发 `start_character`（`SpawnController` 自动进房） → 记录每 NPC `{number, pid, room_id, level, nation, born_time}`；`on_died/2` 钩子奖励 + 计数；`total_killed>=24` 触发大奖广播；闲置 10 分钟自毁（`Process.send_after` + 无心跳检测） | 改 `invasion.ex`（handle_info `:wave_tick`、`:npc_died`、`:npc_idle`、`despawn_npc/1`） | 集成测试：一波 24 只全刷、击杀奖励、全歼大奖、闲置自毁 |
+| **Q4-T3** 玩家可感交互 | `waidi` 频道广播（入侵开始/击杀/全歼/撤退）；命令 `waidi on/off` 收听控制 | 新建 `lib/kantele/character/channels/waidi_channel.ex`；`Communication.register`；`waidi_command.ex` | 手动触发一波 → 全服可见喊话、击杀提示、大奖公告 |
+
+**当前状态（2026-09-09）**：Q4-T0 待开工。
+
+**v1 简化（对 LPC 的偏差，记录在案）**：
+- NPC 名字：LPC 用 `NPC_D->generate_*_name`；v1 暂用 `"${国族}入侵者-#{唯一ID}"`。
+- 奖励物品：LPC 是"内廷总管"特殊奖励；v1 直接发 `misc/xuantie-ling` 或后续新增 `misc/invasion-badge`。
+- 出生点：LPC 北京 10 固定房间；v1 用 `ZoneCache` 抽 liuxi 非 no_fight 房间。
+- `waidi` 频道：LPC 是独立频道；v1 复用 `Communication` 注册 `waidi`，可选订阅/屏蔽。
+- NPC 自毁：LPC `do_leave()` 闲置 10 分钟自毁；v1 用 `Process.send_after` + 无战斗/忙碌检测，清理 record 并销毁。
+
+**风险**：入侵波次与剧情 Daemon 共用 scheduler，需错峰；大量 NPC 同波次 `start_character` 可能瞬间压力大（分批 50ms 间隔发）；`waidi` 广播频次高可能刷屏（可加玩家屏蔽开关）。
