@@ -346,6 +346,152 @@ items "peiyuan_dan" {
   }
 }
 
+# Q3 剧情赠礼：四种仙丹（对应 LPC /clone/fam/gift/str2|int2|dex2|con2）
+items "gift/str2" {
+  name = "白虎赐元丹 Baihu Ciyuan Dan"
+  description = "关羽听过的那颗白虎赐元丹，据说服下后脸色会变……黑脸变白脸。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+  meta = {
+    value = 200
+    weight = 10
+    unit = "颗"
+    medicine = {
+      qi = 200
+      stats = {
+        str = 1
+      }
+    }
+  }
+}
+
+items "gift/int2" {
+  name = "灵慧仙丹 Linghui Xiandan"
+  description = "太上老君新研的仙丹，灵光流转，说是可以使人变聪明。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+  meta = {
+    value = 200
+    weight = 10
+    unit = "颗"
+    medicine = {
+      qi = 200
+      stats = {
+        int = 1
+      }
+    }
+  }
+}
+
+items "gift/dex2" {
+  name = "矫健仙丹 Jiaojian Xiandan"
+  description = "炼丹炉里腾空而起的那颗仙丹，亮晶晶的，据说吃了身法大涨。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+  meta = {
+    value = 200
+    weight = 10
+    unit = "颗"
+    medicine = {
+      qi = 200
+      stats = {
+        dex = 1
+      }
+    }
+  }
+}
+
+items "gift/con2" {
+  name = "铸骨丹 Zhugu Dan"
+  description = "斗战胜佛蒙佛主所赐的铸骨丹，灰不溜秋，却能铸造骨头。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+  meta = {
+    value = 200
+    weight = 10
+    unit = "颗"
+    medicine = {
+      qi = 200
+      stats = {
+        con = 1
+      }
+    }
+  }
+}
+
+# Q3 剧情赠礼：两卷奇书（对应 LPC /clone/book/mengzi、/clone/book/guigu）
+items "book/mengzi" {
+  name = "孟子 Mengzi"
+  description = "一本破破烂烂的书，墨迹斑驳，隐约可辨「富贵不能淫」几个字。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+  meta = {
+    value = 300
+    weight = 100
+    unit = "本"
+    material = "paper"
+    medicine = {
+      qi = 500
+      stats = {
+        int = 1
+      }
+    }
+  }
+}
+
+items "book/guigu" {
+  name = "鬼谷神算 Guigu Shenshuan"
+  description = "千年前枯骨之侧捡来的奇书，材质非纸非帛，透着淡淡冷光。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+  meta = {
+    value = 500
+    weight = 100
+    unit = "本"
+    material = "jade"
+    medicine = {
+      qi = 1000
+      stats = {
+        int = 1
+      }
+    }
+  }
+}
+
+# Q3 剧情赠礼：玄铁令（对应 LPC /clone/fam/gift 系信物，收藏/换功）
+items "misc/xuantie-ling" {
+  name = "玄铁令 Xuantie Ling"
+  description = "黑黝黝的一块铁片，藏在吴道通的烧饼里，据说可号令摩天居士谢烟客。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+  meta = {
+    no_sell = "玄铁令乃是信物，岂能以银钱相论？"
+    value = 0
+    weight = 80
+    unit = "枚"
+  }
+}
+
 # ---------------------------------------------------------------------------
 # NPC
 # ---------------------------------------------------------------------------

@@ -766,3 +766,26 @@ docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app/lpc_exampl
 - 全量 **2282 tests, 0 failures**（seed 731933）。
 
 **实现注记**：UCL 数组内 map 元素用换行分隔字段、元素间需逗号；`then/2` 需 Elixir 1.12（本仓库 Elixir 1.11，禁止使用）；`DateTime.from_unix!/2` 在 1.11 第二参是时间单位而非时区（用固定偏移换算）。announce 频道选 "general"（登录即订阅，比逐房广播更贴合大喇叭语义；T0 仍保留供 tell_room/message_vision 使用）。
+
+### 15.3 Q3 剧情叙事移植（storyd.c + daemons/story/*）
+
+**最终目标（v1 全服叙事，真实循环）**：StoryDaemon 定时随机选故事 → 逐行全服播报（`{"general"}` 频道，带 prompt 颜色前缀）→ 剧情动作（选人、掉落赠礼）→ 结束自动排下一场。
+
+**批次表**：
+
+| 批次 | 内容 | 主要文件（新建/修改） | 验收 |
+|------|------|------|------|
+| **Q3-T0** 引擎骨架 | `Kantele.World.Story` GenServer（start_delay/step_delay 可注入、`current/start_story/tick/stop_story`、schedule_once 链式、safe_run 兜底）+ Behaviour 契约（prompt/init_state/step） | 新建 `lib/kantele/world/story.ex`、`lib/kantele/world/story/behaviour.ex`；挂 supervision | story_test.exs：状态机、频道播报、安全收尾 |
+| **Q3-T1** 14 故事模块 | Guanzhang/Laojun/Liandan/Nanji（四仙丹）、Mengzi/Guigu（两卷书）、Bizhen（玄铁令）、Huanyin/Sanfenjian（技能案文案）、Feng/Sun/Lighting/Water（四天灾）、Challenge（摆擂） | 新建 `lib/kantele/world/story/*.ex`（模块无状态，state 由 daemon 存管）；`data/world/liuxi.ucl` 增 gift/str2、gift/int2、gift/dex2、gift/con2、book/mengzi、book/guigu、misc/xuantie-ling | story_test：14 模块契约成立（prompt/init_state/推进到 done） |
+| **Q3-T2** 赠礼机制 | `Kantele.World.Story.Gift`：在线玩家抽取（Presence）、物品进房间地面（`Kalevala.World.Room.update_items` + `:sys.get_state` 追列表）、房间内 tell_room | 新建 `lib/kantele/world/story/gift.ex`；改 `lib/kantele/world/story.ex` broadcast | gift 单测：无玩家/无房间安全返回、有房间时物品进入 item_instances |
+
+**当前状态（2026-09-09，Q3 T0/T1/T2 全绿）**：
+- ✅ 引擎：`Kantele.World.Story` GenServer（`init` 即 `schedule_once` 链式；空闲期 1800+random(300) 秒建场，运行期每 1s 一行；`advance/1` 处理 `{:text,_}`/`{:action,fun,_}`/`{:done,_}`；action 返回值字符串则再播报一行，异常/退出静默兜底；`pick/2` 支持点名或随机，名字匹配原子/字符串）。Behaviour：`prompt/0`（含颜色 tag）、`init_state/0`、`step(index, state)`。
+- ✅ 14 模块全部落地（`lib/kantele/world/story/`）：四仙丹（guanzhang=str2/laojun=int2/liandan=dex2/nanji=con2）、两卷书（mengzi/guigu，文案含选人 $N）、玄铁令（bizhen）、幻阴指法（huanyin）、三分剑术（sanfenjian）、四天灾（feng/sun/lighting/water，选随机玩家+50% 掉丹）、challenge（摆擂，胜或握手，50% 掉玄铁令）。文案行内 `$N`/`$ID`/`$F` 替换由 `Kantele.World.Story.Lines` 统一处理。
+- ✅ 赠礼：`Kantele.World.Story.Gift.random_player/1`（Presence 在线玩家，可传过滤）、`drop_to_room/3`（构件 `Kalevala.World.Item.Instance` → `:global.whereis_name` 取房间 pid → `:sys.get_state` 追 item_instances → `Room.update_items` 落地面 → 房间 `tell_room`）、`drop_to_random_room/3`；无玩家/房间未启动安全返回。
+- ✅ UCL：`data/world/liuxi.ucl` 增 7 件赠礼物品（四仙丹 medicine stats +1 可 eat 吃，两卷书 medicine/int 可阅读服用，玄铁令 no_sell 收藏）。
+- ✅ 挂 supervision（`application.ex`）；story_test.exs 5 例：default_stories 14 模块集合、全模块契约推进到 done、状态机 current/start/tick/stop、进行中拒绝、general 频道逐行播报。
+
+**v1 简化（对 LPC 的偏差，记录在案）**：天灾类不再直接改写玩家四维/重创（无 kar 判定、仓库不做玩家进程直写），改为随机玩家房间掉对应仙丹；challenge 为叙事互动（摆擂+报道战况+奖励），暂不做「挑战者实刷进房间 + accept 命令 + 真实比武」（需 NPC 运行时进房/战斗工程，列为 Q3-stretch）。
+
+**风险**：storystep action 里的随机选人依赖 Presence（niku）；无人在线时静默跳过赠礼；物品掉落依赖房间进程已启动（:global lookup），未启动仅日志警告。
