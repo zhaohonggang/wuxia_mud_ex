@@ -83,4 +83,45 @@ defmodule Kantele.Character.MoveCommandTest do
       assert parsed.function == :north
     end
   end
+
+  describe "方向首字母/全词不误吞其他命令（A8）" do
+    for {input, dir} <- [
+          {"say", :south},
+          {"station", :south},
+          {"sell", :south},
+          {"suicide", :south},
+          {"eat", :east},
+          {"enable", :east},
+          {"nick", :north},
+          {"news", :north},
+          {"wield", :west},
+          {"wash", :west},
+          {"unset", :up},
+          {"update", :up},
+          {"daub", :down},
+          {"drink", :down},
+          {"northwest", :north},
+          {"southeast", :south}
+        ] do
+      test "`#{input}` 不被误解析为 #{dir}" do
+        refute match?(
+                 {:ok, %{module: MoveCommand, function: unquote(dir)}},
+                 Kantele.Character.Commands.parse(unquote(input))
+               )
+      end
+    end
+
+    test "say 带参解析到 SayCommand" do
+      {:ok, parsed} = Kantele.Character.Commands.parse("say 你好")
+      assert parsed.module == Kantele.Character.SayCommand
+    end
+
+    for {input, dir} <- [{"s", :south}, {"e", :east}, {"w", :west}, {"u", :up}, {"d", :down}] do
+      test "`#{input}` 别名仍解析为 #{dir}" do
+        {:ok, parsed} = Kantele.Character.Commands.parse(unquote(input))
+        assert parsed.module == MoveCommand
+        assert parsed.function == unquote(dir)
+      end
+    end
+  end
 end

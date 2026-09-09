@@ -314,7 +314,11 @@ defmodule Kantele.Character.Commands do
       |> ignore(lookahead_not(utf8_char([?a..?z, ?A..?Z])))
     end)
 
-    parse("inv", :run)
+    parse("inv", :run, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
     parse("inventory", :run)
   end
 
@@ -460,12 +464,66 @@ defmodule Kantele.Character.Commands do
   end
 
   module(MoveCommand) do
-    parse("north", :north, aliases: ["n"])
-    parse("south", :south, aliases: ["s"])
-    parse("east", :east, aliases: ["e"])
-    parse("west", :west, aliases: ["w"])
-    parse("up", :up, aliases: ["u"])
-    parse("down", :down, aliases: ["d"])
+    # 英文方向（A8/N1）：全词与单字母别名都加词边界，防止 "say"/"eat" 之类被吞成移动
+    parse("north", :north, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("south", :south, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("east", :east, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("west", :west, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("up", :up, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("down", :down, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("n", :north, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("s", :south, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("e", :east, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("w", :west, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("u", :up, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("d", :down, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
 
     # 中文方向别名（A8/N1）：单字加词边界，防止 "北上" 之类被吞成移动
     parse("北", :north, [], fn command ->
@@ -541,7 +599,10 @@ defmodule Kantele.Character.Commands do
   end
 
   module(ScoreCommand) do
-    parse("score", :run)
+    parse("score", :run, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
   end
 
   module(WieldCommand) do
@@ -620,7 +681,10 @@ defmodule Kantele.Character.Commands do
   end
 
   module(WhoCommand) do
-    parse("who", :run)
+    parse("who", :run, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
   end
 
   module(WizlistCommand) do
@@ -1231,7 +1295,10 @@ defmodule Kantele.Character.Commands do
   end
 
   module(ToCommand) do
-    parse("to", :run)
+    parse("to", :run, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
   end
 
   module(TouchCommand) do
