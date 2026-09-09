@@ -402,6 +402,9 @@ defmodule Kantele.Character.CombatEvent do
       |> Map.put(:gongxian, 1)
       |> Map.put(:drops, Map.get(character.meta, :loot) || [])
 
+    # Q3-stretch：神秘挑战者被击杀 → 通知 Story 登记处收摊（其余死亡为 no-op）
+    notify_challenger_killed(character, killer)
+
     enemy_ids = Enum.map(character.meta.combat.enemies, & &1.id)
 
     Enum.each(character.meta.combat.enemies, fn enemy ->
@@ -464,6 +467,15 @@ defmodule Kantele.Character.CombatEvent do
        do: true
 
   defp npc?(_), do: false
+
+  # Q3-stretch：登记者匹配不上时静默（热路径只做一次 cast，开销可忽略）
+  defp notify_challenger_killed(character, killer) do
+    Kantele.World.Story.Challenger.on_died(character.id, killer)
+  rescue
+    _e -> :ok
+  catch
+    :exit, _reason -> :ok
+  end
 
   def respawn(conn, _event) do
     character = conn.character
