@@ -14,8 +14,11 @@ defmodule Kantele.World.Invasion.NPC do
 
   require Logger
 
-  alias Kantele.Character.{NPCConfig, NonPlayerMeta, Stats, Vitals}
+  import Kalevala.Character.Conn
+
+  alias Kantele.Character.{InitialEvent, NPCConfig, NonPlayerMeta, Stats, Vitals}
   alias Kantele.Character.Combat
+  alias Kalevala.World.Item.Instance
   alias Kantele.World.Items
 
   @liuxi_zone "liuxi"
@@ -71,10 +74,21 @@ defmodule Kantele.World.Invasion.NPC do
 
     name = "#{nation_cfg.nickname}-#{number}"
 
+    # 创建武器和护甲实例，加入初始背包
+    weapon_id = nation_cfg.weapon
+    armor_id = nation_cfg.armor
+    weapon_instance = create_instance(weapon_id)
+    armor_instance = create_instance(armor_id)
+
+    # 初始事件：延迟 1 秒后自动装备
+    initial_events = [
+      %InitialEvent{topic: "invasion/equip", delay: 1_000, data: %{weapon_id: weapon_id, armor_id: armor_id}}
+    ]
+
     meta =
       %NonPlayerMeta{
         zone_id: @liuxi_zone,
-        initial_events: [],
+        initial_events: initial_events,
         vitals: %Vitals{
           qi: qi,
           max_qi: qi,
@@ -141,16 +155,108 @@ defmodule Kantele.World.Invasion.NPC do
       description: "一名#{nation_cfg.nickname}，杀气腾腾，显然是来寻仇的。",
       brain: %Kalevala.Brain{root: %Kalevala.Brain.NullNode{}},
       room_id: room_id,
+      inventory: [weapon_instance, armor_instance],
       meta: meta
     }
   end
 
-  # 供 NPC 进程内部调用：获取本国族的 weapon/armor item_id（用于 NPC 初始化后穿戴）
+  # 创建物品实例
+  defp create_instance(item_id) do
+    %Instance{
+      id: Instance.generate_id(),
+      item_id: item_id,
+      created_at: DateTime.utc_now()
+    }
+  end
+
+  # 供 NPC 进程内部调用：获取本国族的 weapon/armor item_id
   def nation_weapon(nation), do: Map.get(@nation_config, nation, %{})[:weapon]
   defp nation_armor(nation), do: Map.get(@nation_config, nation, %{})[:armor]
 
   def nation_skill_atoms(nation) do
     Map.get(@nation_config, nation, %{})[:skills]
     |> Map.keys()
+  end
+
+  # 程序化装备逻辑（供 "invasion/equip" 事件调用）
+  def equip_invader(conn, %{weapon_id: weapon_id, armor_id: armor_id} = data) do
+    character = conn.character
+
+    # 装备武器
+    conn =
+      equip_item(conn, character, weapon_id, :weapon)
+      |> equip_item(character, armor_id, :cloth)
+
+    conn
+  end
+
+  defp equip_item(conn, character, item_id, expected_slot) do
+    # 从背包找到物品实例
+    item_instance = Enum.find(character.inventory, fn inst -> inst.item_id == item_id end)
+
+    if item_instance do
+      item = Items.get!(item_id)
+      slot = armor_slot(item.meta) || :weapon
+
+      if slot == expected_slot or (expected_slot == :weapon and slot == :weapon) do
+        # 直接操作 combat.equipped（绕过命令流程）
+        snapshot = build_snapshot(item, slot)
+        combat =
+          character.meta.combat
+          |> Combat.equip(slot, snapshot)
+          |> apply_item_prop(slot, item)
+
+        conn
+        |> put_character(%{character | meta: %{character.meta | combat: combat}})
+      else
+        conn
+      end
+    else
+      conn
+    end
+  rescue
+    e ->
+      Logger.warn("invasion equip failed for #{item_id}: #{Exception.message(e)}")
+      conn
+  end
+
+  defp armor_slot(meta) do
+    case Kantele.World.Item.Meta.normalize_armor_type(Map.get(meta, :armor_type)) do
+      nil -> nil
+      slot -> String.to_atom(slot)
+    end
+  end
+
+  defp build_snapshot(item, slot) do
+    if slot == :weapon do
+      %{
+        name: item.name,
+        skill_type: Map.get(item.meta, :skill_type, "sword"),
+        damage: Map.get(item.meta, :damage) || 0,
+        prop: Map.get(item.meta, :weapon_prop),
+        flag: Map.get(item.meta, :flag, 1)
+      }
+    else
+      %{
+        name: item.name,
+        armor: Map.get(item.meta, :armor) || 0,
+        prop: Map.get(item.meta, :armor_prop)
+      }
+    end
+  end
+
+  defp apply_item_prop(combat, :weapon, item) do
+    prop = Map.get(item.meta, :weapon_prop)
+    if prop do
+      Combat.apply_temp(combat, Kantele.Item.Equip.wield_state(%{}, prop))
+    else
+      combat
+    end
+  end
+
+  defp apply_item_prop(combat, slot, item) do
+    armor = Map.get(item.meta, :armor) || 0
+    prop = Map.get(item.meta, :armor_prop)
+    Combat.apply_temp(combat, Kantele.Item.Equip.wear_state(%{}, armor, prop))
   end
 end

@@ -253,5 +253,9 @@ defmodule Kantele.Character.NonPlayerEvents do
     module(WanderEvent) do
       event("room/wander", :run)
     end
+
+    module(InvasionEquipEvent) do
+      event("invasion/equip", :call)
+    end
   end
 end

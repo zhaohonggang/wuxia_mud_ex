@@ -114,16 +114,16 @@ defmodule Kantele.World.Invasion do
 
   @impl true
   def handle_info(:wave_tick, state) do
-    # 周期触发：若上一波已全歼或超时收摊，启动新波
+    # 周期触发：若上一波已结束（all_killed 或强制收摊），启动新波
     if state.wave_active && !state.all_killed do
-      # 上一波未全歼也未超时，等待下次 tick（或可选：强制收摊再启动新波）
+      # 上一波进行中，等待下次 tick
       schedule_next_wave(state)
       {:noreply, state}
     else
-      # 启动新波
+      # 上一波已结束或从未启动，启动新波
       case start_wave(state) do
         {:ok, new_state} ->
-          announce("{color foreground=\"magenta\"}【 入  侵 】{/color} 第 #{new_state.wave_number} 波外族入侵开始！24 名入侵者已散落各地。\n")
+          # 通知延迟到最后一个 NPC spawn 后发送（见 handle_info {:spawn_one_invader}）
           schedule_next_wave(new_state)
           {:noreply, new_state}
         {:error, _} ->
@@ -161,7 +161,7 @@ defmodule Kantele.World.Invasion do
         )
 
         if new_state.total_killed >= @total_invaders do
-          new_state = %{new_state | all_killed: true}
+          new_state = %{new_state | all_killed: true, wave_active: false}
           announce(
             "{color foreground=\"magenta\"}【 入  侵 】{/color} 本波入侵者已被全歼！全体同胞获得丰厚奖赏！\n"
           )
@@ -238,52 +238,64 @@ defmodule Kantele.World.Invasion do
   end
 
   defp spawn_invaders(state, _opts) do
-    # 选出生房间池：liuxi 区非 no_fight 房间
+    # 每波动态抽取房间池（liuxi 区非 no_fight 房间）
     room_ids = pick_spawn_rooms()
 
-    # 打乱 level_distribution 生成 24 个 {level, nation} 元组
+    # 生成 24 个 {level, nation, number} 元组
     entries = build_invader_entries()
 
-    Enum.reduce(entries, state, fn {level, nation, number}, acc ->
+    # 为了避免瞬间并发压力，分批 50ms 启动
+    Enum.each(entries, fn {level, nation, number} ->
       room_id = Enum.random(room_ids)
-      invader = Kantele.World.Invasion.NPC.build_invader(nation, level, number, room_id)
-
-      # 启动 NPC 进程（复用 Kalevala.World.start_character 路径）
-      config = [
-        supervisor_name: Kalevala.World.CharacterSupervisor.global_name(invader.meta.zone_id),
-        communication_module: Kantele.Communication,
-        initial_controller: Kantele.Character.SpawnController,
-        quit_view: {Kantele.Character.QuitView, "disconnected"}
-      ]
-
-      case Kalevala.World.start_character(invader, config) do
-        {:ok, pid} ->
-          # 记录登记
-          invader_info = %{
-            pid: pid,
-            room_id: room_id,
-            level: level,
-            nation: nation,
-            born_time: System.system_time(:second),
-            alive: true,
-            name: invader.name
-          }
-          %{acc | invaders: Map.put(acc.invaders, number, invader_info)}
-
-        {:error, reason} ->
-          Logger.warn("invasion spawn invader #{number} (#{nation} L#{level}) failed - #{inspect(reason)}")
-          acc
-      end
+      Process.send_after(self(), {:spawn_one_invader, {level, nation, number, room_id}}, 50 * number)
     end)
-    |> then_announce_spawned()
+
+    state
+  end
+
+  @impl true
+  def handle_info({:spawn_one_invader, {level, nation, number, room_id}}, state) do
+    invader = Kantele.World.Invasion.NPC.build_invader(nation, level, number, room_id)
+
+    config = [
+      supervisor_name: Kalevala.World.CharacterSupervisor.global_name(invader.meta.zone_id),
+      communication_module: Kantele.Communication,
+      initial_controller: Kantele.Character.SpawnController,
+      quit_view: {Kantele.Character.QuitView, "disconnected"}
+    ]
+
+    case Kalevala.World.start_character(invader, config) do
+      {:ok, pid} ->
+        invader_info = %{
+          pid: pid,
+          room_id: room_id,
+          level: level,
+          nation: nation,
+          born_time: System.system_time(:second),
+          alive: true,
+          name: invader.name
+        }
+        new_state = %{state | invaders: Map.put(state.invaders, number, invader_info)}
+
+        # 最后一个启动后发送广播与闲置定时器
+        if Map.size(new_state.invaders) == @total_invaders do
+          announce(
+            "{color foreground=\"magenta\"}【 入  侵 】{/color} 第 #{new_state.wave_number} 波外族入侵开始！24 名入侵者已散落各地。\n"
+          )
+          Enum.each(new_state.invaders, fn {_n, %{pid: p, alive: true}} ->
+            Process.send_after(p, {:invasion_idle_check, _n}, @idle_timeout)
+          end)
+        end
+
+        {:noreply, new_state}
+
+      {:error, reason} ->
+        Logger.warn("invasion spawn invader #{number} (#{nation} L#{level}) failed - #{inspect(reason)}")
+        {:noreply, state}
+    end
   end
 
   defp then_announce_spawned(state) do
-    # 给 NPC 进程内发送闲置自毁定时器（10 分钟）
-    Enum.each(state.invaders, fn {number, %{pid: pid, alive: true}} ->
-      Process.send_after(pid, {:invasion_idle_check, number}, @idle_timeout)
-    end)
-
     state
   end
 
