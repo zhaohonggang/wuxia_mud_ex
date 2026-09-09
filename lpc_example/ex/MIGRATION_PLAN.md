@@ -726,12 +726,14 @@ docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app/lpc_exampl
 **当前状态**：
 - ✅ Q1-T1（数据层扩展）：`quest.ex` v2 完成；quest_test.exs 扩展；纪录在 §15/kalevala 提交记录。
 - ✅ Q1-T2（kill/report 主通路）：`lib/kantele/quest/reward.ex` 新建；`quest_event.ex` 增 `report/2` 与奖励/连击/里程碑/门派贡献结算；`events.ex` 注册 quest/report（并修复 ask-result/cancel-result 未注册的死代码）；`npc_shop_event.ex` 无交付物时转 `quest/report`；`loader.ex` parse_quest 透传 meta 字段。全量 2250 tests 0 failures。data/world 掌门 NPC 配置留待有真实击杀物品流时再接线（当前事件/数值层已由测试覆盖）。
+- ✅ Q1-T3（开放任务 QuestDaemon）：新建 `lib/kantele/world/quest_daemon.ex`（GenServer）+ `lib/kantele/quest/generator.ex` + `{deliver,supply,search,explore}.ex`；挂 supervision；心跳 `schedule_once` 链式（fun 在独立 timer 进程 → send 自身 pid，匿名测试实例可用）；expire/replenish 按 round；`quest_for(npc_id)` 供 NPC 问话分发；`npc_shop_event.ex` NpcAskEvent 无静态配置时按委员归属转发：deliver/supply → `quest/turnin-request`（可交付结算）、search/explore → `quest/ask-result`（todo 登记）；Generator 兼容 loader 映射型 `zone.characters/rooms`（拍平后筛选）；`generate/2` 支持 opts 覆盖 zone_id/item_id（测试确定性）。顺带修复 `scheduler.ex` `run_once/2` 被 `:timer.apply_after` 调用的 private bug（改 public）。全量 2258 tests 0 failures（seed 731933）。
 
 **风险**：
 - 动态目标生成：Elixir 无 LPC clone 机制，T3 用「world 已有 NPC 实例 + 区域激活」而非运行时 clone；真・clone 需 Chei/Pawning，成本高，不列入本期。
 - 里程碑物品奖励：若物品发放通路（give_item）未成熟，T2 里程碑先做 exp/pot 阶梯，物品档列后续。
 - `quest_event.ex` 现奖励段含 exp/potential/score/weiwang/coins；T2 核对并补 gongxian（stats 字段已存在，逐物品核对时加与否按玩法定）。
 - chain 旧数据：deserialize 兼容默认值，不做数据迁移。
+- T3 组委模型 v1 为「单委派点」（发布与交付同一 NPC）；LPC 的 NPC1 发布/NPC2 交付拆分、search/explore 的入位完成校验（须身在 target_room）与物品报到依赖 Q2-T0 房间人员查询真实化后接线；`count>1` 逐件交付结算留 T4 后。
 
 ### 15.2 Q2 天气/昼夜移植计划
 

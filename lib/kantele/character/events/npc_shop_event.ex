@@ -251,10 +251,65 @@ defmodule Kantele.Character.NpcAskEvent do
           handle_ask_quest(conn, reply_to, asker_id)
         end
 
+      quest = Kantele.World.QuestDaemon.quest_for(conn.character.id) ->
+        # 开放任务委员（Q1-T3）：无静态任务配置但挂有 daemon 开放任务的 NPC
+        handle_daemon_quest(conn, reply_to, quest)
+
       true ->
         conn
     end
   end
+
+  # 开放任务分发（Q1-T3）：
+  # - deliver/supply：直接走 turnin-request（玩家有货即交付结算，无货则提示引导）
+  # - search/explore：登记 todo（ask-result ok），方便玩家追踪
+  defp handle_daemon_quest(conn, reply_to, quest)
+       when quest.type in ~w(deliver supply) do
+    send(
+      reply_to,
+      %Kalevala.Event{
+        from_pid: self(),
+        topic: "quest/turnin-request",
+        data: %{
+          vendor_name: conn.character.name,
+          quest: quest.id,
+          item_id: quest.item_id,
+          prompt: quest.prompt,
+          rumor: nil,
+          rewards: quest.rewards
+        }
+      }
+    )
+
+    conn
+  end
+
+  defp handle_daemon_quest(conn, reply_to, quest)
+       when quest.type in ~w(search explore) do
+    send(
+      reply_to,
+      %Kalevala.Event{
+        from_pid: self(),
+        topic: "quest/ask-result",
+        data: %{
+          ok: true,
+          npc_name: conn.character.name,
+          quest: %{
+            file: quest.id,
+            type: quest.type,
+            level: quest.level,
+            limit: quest.limit,
+            master_name: conn.character.name,
+            master_id: conn.character.id
+          }
+        }
+      }
+    )
+
+    conn
+  end
+
+  defp handle_daemon_quest(conn, _reply_to, _quest), do: conn
 
   defp handle_ask_quest(conn, reply_to, asker_id) do
     case Quester.ask_quest(conn.character, asker_id) do

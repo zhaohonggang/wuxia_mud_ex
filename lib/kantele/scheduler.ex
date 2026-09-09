@@ -71,7 +71,7 @@ defmodule Kantele.Scheduler do
     end)
   end
 
-  defp run_once(ref, fun) do
+  def run_once(ref, fun) do
     try do
       fun.()
     catch
