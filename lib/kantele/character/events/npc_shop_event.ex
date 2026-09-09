@@ -220,12 +220,14 @@ defmodule Kantele.Character.NpcAskEvent do
         publish_tell(conn, asker_id, answer)
 
       turn_in = conn.character.meta.turn_in ->
-        # 任务交付引导（A11/N6 v0）：把交付请求转给玩家侧，由其校验物品并结算
+        # 任务交付引导（A11/N6 v0 + q1-T2）：
+        # - 配了交付物（letter 回执/送货）→ quest/turnin-request（玩家侧校验物品并结算）
+        # - 未配交付物（师门击杀类，无首级物品）→ quest/report（玩家侧按击杀进度结算）
         send(
           reply_to,
           %Kalevala.Event{
             from_pid: self(),
-            topic: "quest/turnin-request",
+            topic: turn_topic(turn_in),
             data: %{
               vendor_name: conn.character.name,
               quest: Map.get(turn_in, :quest),
@@ -292,6 +294,15 @@ defmodule Kantele.Character.NpcAskEvent do
     end
 
     conn
+  end
+
+  # 交付话题选择：配置了交付物走收物结算；item 为空/缺省走无物品结算
+  defp turn_topic(turn_in) do
+    case Map.get(turn_in, :item) do
+      nil -> "quest/report"
+      "" -> "quest/report"
+      _ -> "quest/turnin-request"
+    end
   end
 
   # 关键词包含匹配：问题里含表中的关键词即命中（LPC add_action/inquiry 风格）

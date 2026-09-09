@@ -7,10 +7,23 @@ defmodule Kantele.Quest do
   本模块把它原样移植成**纯不可变状态机**，宿主（QuestEvent / NPC quester / 任务
   引擎）用一个 `state` 累计即可。
 
+  ## v2 扩展（§15 Q1-T1，对齐 adm/daemons/questd.c 任务元数据）
+  - spec 可选字段：`type`（任务类型 kill/letter/deliver/...）、`level`（难度级）、
+    `limit`（时限秒，0=无时限）、`repeatable`（可重复接取，默认 `true`）、
+    `chain`（前置链，全部须已解 is_solved）、`mutex`（互斥，在办中不得接）、
+    `master_name`/`master_id`/`place`（发布人/地点提示）。
+  - 玩家层新增 `quest_count`（连续完成计数，供阶梯/里程碑奖励）。
+  - todo 项带 `meta`（type/level/master_*/place）、`accepted_at`、`limit`（秒）。
+
   ## 状态
   ```elixir
-  %{todo: %{ quest_file => %{killed: %{killed_file => count}, item: %{item_file => count}} },
-    solved: [quest_file]}
+  %{todo: %{ quest_file => %{killed: %{killed_file => count},
+                              item: %{item_file => count},
+                              meta: %{type: "...", level: n},
+                              accepted_at: unixts | nil,
+                              limit: seconds | 0}},
+    solved: [quest_file],
+    quest_count: 0}
   ```
 
   ## quest spec
@@ -24,20 +37,17 @@ defmodule Kantele.Quest do
   - `getItem` → `spec[:item] || []`
 
   所有变更函数都返回 `{:ok, state}` 或 `{:error, reason}`；查询函数返回纯值。
-  ```
-
-  ## 宿主派发（QUEST_D 级）
-  `ask_quest/2` / `cancel_quest/2` 对应 `feature/quester.c` 委托给 QUEST_D 的调用
-  （无 spec 参数，无法派发具体任务）。本实现按 NPC 自身的 `meta.quest` 配置应答：
-  有发布任务规格则返回该规格/其 file，否则回以友好文案。
   """
 
   @quest_size 20
 
+  # 里程碑阶梯（LPC questd.c special_bonus 分档 30/50/100/…/1000，可按玩法调整）
+  @milestones [30, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+
   @type quest_spec :: %{file: String.t(), kill: [String.t()], item: [String.t()]}
 
   @doc "新建空状态"
-  def new(), do: %{todo: %{}, solved: []}
+  def new(), do: %{todo: %{}, solved: [], quest_count: 0}
 
   # ---- 查询（getToDoList / getSolved / getToDoListSize）----
 
@@ -61,31 +71,54 @@ defmodule Kantele.Quest do
 
   def get_todo(nil, _quest_file), do: nil
 
+  @doc "连续完成计数（LPC quest_count；旧数据缺省 0）"
+  def quest_count(state), do: Map.get(state, :quest_count, 0)
+
+  @doc "里程碑阶梯（配置参考，可调）"
+  def milestone_ladder(), do: @milestones
+
   # ---- 增删任务进度（setToDo / delToDo）----
 
   @doc """
-  登记一个在办任务（LPC setToDo）
+  登记一个在办任务（LPC setToDo；v2 扩展 spec 元数据与前置条件）
 
-  - `:invalid` 非有效任务（未通过 isQuest）
-  - `:full` 任务已达上限 `#{@quest_size}`
-  - `:duplicate` 已在办
-  - 成功时初始化 `%{killed: %{}, item: %{}}` 并按 `spec.kill` 预填 0
+  校验顺序：`:invalid`（非有效任务）→ `:full`（达上限）→ `:duplicate`（已在办）→
+  `:done`（已解且 `repeatable: false`）→ `:chain_blocked`（前置链未全解）→
+  `:mutex_blocked`（互斥任务在办中）。
+
+  - `opts`：`:quest_size`（上限，默认 #{@quest_size}）、`:now`（accepted_at 时间戳，
+    默认当前系统秒）、`:limit`（覆盖 spec.limit 的时限秒）
+  - 成功时初始化 `%{killed: %{}, item: %{}, meta: ..., accepted_at: ..., limit: ...}`
+    并按 `spec.kill` 预填 0
   """
   def set_todo(state, spec, opts \\ []) do
     quest_size = Keyword.get(opts, :quest_size, @quest_size)
+    now = Keyword.get(opts, :now, :os.system_time(:second))
+    limit = Keyword.get(opts, :limit, spec[:limit] || 0)
 
     with :ok <- valid_quest(spec),
          :ok <- check_full(state, quest_size),
-         :ok <- check_duplicate(state, spec) do
+         :ok <- check_duplicate(state, spec),
+         :ok <- check_done(state, spec),
+         :ok <- check_chain(state, spec),
+         :ok <- check_mutex(state, spec) do
       killed =
         spec
         |> kill_files()
         |> Map.new(&{&1, 0})
 
+      task = %{
+        killed: killed,
+        item: %{},
+        meta: task_meta(spec),
+        accepted_at: now,
+        limit: limit
+      }
+
       {:ok,
        %{
          state
-         | todo: Map.put(state.todo, spec[:file], %{killed: killed, item: %{}})
+         | todo: Map.put(state.todo, spec[:file], task)
        }}
     end
   end
@@ -95,31 +128,56 @@ defmodule Kantele.Quest do
     %{state | todo: Map.delete(todo, quest_file)}
   end
 
+  # ---- 前置条件（chain / mutex / repeatable）----
+
+  @doc "前置链是否开放：spec.chain 全部已解（LPC preCondition isSolved）"
+  def chain_open?(state, spec) do
+    Enum.all?(List.wrap(spec[:chain] || []), fn file -> file in get_solved(state) end)
+  end
+
+  @doc "互斥是否开放：spec.mutex 无任一在办中（可自由接取返回 true）"
+  def mutex_open?(state, spec) do
+    Enum.all?(List.wrap(spec[:mutex] || []), fn file ->
+      not Map.has_key?(get_todo_list(state), file)
+    end)
+  end
+
+  @doc "是否可重复接取（LPC isNewly=1 语义；默认可重复）"
+  def repeatable?(spec), do: Map.get(spec, :repeatable, true) == true
+
   # ---- 序列化（P0 持久化）----
 
-  @doc "序列化为可落盘结构；nil（未初始化）序列化为空状态"
-  def serialize(nil), do: %{todo: %{}, solved: []}
+  @doc "序列化为可落盘结构；nil（未初始化）序列化为空状态（含 quest_count）"
+  def serialize(nil), do: %{todo: %{}, solved: [], quest_count: 0}
 
-  def serialize(%{todo: todo, solved: solved}) do
+  def serialize(%{todo: todo, solved: solved} = state) do
     todo =
       Enum.into(todo, %{}, fn {file, task} ->
         {to_string(file), task}
       end)
 
-    %{todo: todo, solved: Enum.map(solved, &to_string/1)}
+    %{
+      todo: todo,
+      solved: Enum.map(solved, &to_string/1),
+      quest_count: Map.get(state, :quest_count, 0)
+    }
   end
 
-  @doc "从落盘结构恢复；非法输入回退空状态"
-  def deserialize(%{todo: todo, solved: solved}) when is_map(todo) and is_list(solved) do
+  @doc "从落盘结构恢复；兼容旧结构（无 quest_count / 任务无 meta 键）；非法输入回退空状态"
+  def deserialize(%{todo: todo, solved: solved} = data) when is_map(todo) and is_list(solved) do
     todo =
       Enum.into(todo, %{}, fn {file, task} ->
-        {to_string(file), task}
+        {to_string(file), normalize_task(task)}
       end)
 
-    %{todo: todo, solved: Enum.map(solved, &to_string/1)}
+    %{
+      todo: todo,
+      solved: Enum.map(solved, &to_string/1),
+      quest_count: Map.get(data, :quest_count, 0)
+    }
   end
 
-  def deserialize(_), do: %{todo: %{}, solved: []}
+  def deserialize(_), do: %{todo: %{}, solved: [], quest_count: 0}
 
   # ---- 击杀进度（addKilled / getKilled）----
 
@@ -196,6 +254,101 @@ defmodule Kantele.Quest do
     %{state | solved: List.delete(solved, quest_file)}
   end
 
+  # ---- 超时与取消（v2：LPC questd.c cancel_quest / heartbeat 超时）----
+
+  @doc """
+  扫描超时任务（limit>0 且 `accepted_at + limit` 已过则超时）。
+
+  返回 `[{quest_file, task}]`；limit=0 视为无时限永不过期。
+  """
+  def check_timeout(state, now \\ :os.system_time(:second)) do
+    Enum.filter(state.todo, fn {_file, task} ->
+      limit = Map.get(task, :limit, 0)
+      accepted_at = Map.get(task, :accepted_at)
+
+      is_integer(limit) && limit > 0 && is_integer(accepted_at) && now >= accepted_at + limit
+    end)
+  end
+
+  @doc """
+  取消任务并计算惩罚（LPC questd.c cancel_quest：kill 扣威望/贡献/阅历，letter 扣阅历）。
+
+  返回 `{:ok, new_state, penalty_map}`（penalty 形如 `%{weiwang:, gongxian:, score:}`，
+  已按任务 level 放大）或 `{:error, :no_todo}`。惩罚的实际扣减由玩家层应用。
+  """
+  def cancel_with_penalty(state, quest_file, _opts \\ []) do
+    case Map.fetch(state.todo, quest_file) do
+      :error ->
+        {:error, :no_todo}
+
+      {:ok, task} ->
+        type = get_in(task, [:meta, :type]) || "default"
+        level = get_in(task, [:meta, :level]) || 1
+        factor = max(div(level + 9, 10), 1)
+
+        penalty =
+          type
+          |> penalty_base()
+          |> Map.new(fn {k, v} -> {k, v * factor} end)
+
+        {:ok, %{state | todo: Map.delete(state.todo, quest_file)}, penalty}
+    end
+  end
+
+  @doc "连续完成计数 +1（成功结算后调用）"
+  def bump_quest_count(state, step \\ 1) when is_integer(step) and step > 0 do
+    %{state | quest_count: Map.get(state, :quest_count, 0) + step}
+  end
+
+  @doc "清零连续完成计数（超时/放弃/失败时调用）"
+  def reset_quest_count(state), do: %{state | quest_count: 0}
+
+  @doc """
+  里程碑判断：`quest_count` 命中阶梯（#{inspect(@milestones)}）返回 `{:ok, tier}`，否则 `:none`。
+
+  奖励内容由宿主（§15 Q1-T2 reward 层）按 tier 发放（物品档后续）。
+  """
+  def milestone(quest_count) when is_integer(quest_count) and quest_count > 0 do
+    if quest_count in @milestones, do: {:ok, quest_count}, else: :none
+  end
+
+  def milestone(_), do: :none
+
+  # ---- 完成验收（v2：交付/击杀阈值判定，owner/回执校验在 NPC 层）----
+
+  @doc """
+  完成验收（纯计数门槛，LPC accept_object 的数值部分）：
+
+  - `%{kind: :kill}`：spec.kill 任一已击杀至少 1
+  - `%{kind: :item, item: item_file, count: n}`：已收集该物 ≥ n
+  - 其余 `:bad_evidence`
+
+  返回 `:ok` 或 `{:error, reason}`。动态校验（首级 owner_id、回执 reply_to 等）
+  在 NPC give 层做，不在这里。
+  """
+  def accept_check(state, spec, evidence) do
+    with :ok <- valid_quest(spec) do
+      case evidence do
+        %{kind: :kill} ->
+          if kill_files(spec) |> Enum.any?(&(get_killed(state, spec, &1) >= 1)) do
+            :ok
+          else
+            {:error, :kill_insufficient}
+          end
+
+        %{kind: :item, item: item, count: count} ->
+          if get_item(state, spec, item) >= (count || 1) do
+            :ok
+          else
+            {:error, :item_insufficient}
+          end
+
+        _ ->
+          {:error, :bad_evidence}
+      end
+    end
+  end
+
   # ---- 宿主存根（QUEST_D 级，见 @moduledoc）----
 
   @doc "请求任务（LPC: QUEST_D->ask_quest(npc, who)）"
@@ -235,6 +388,42 @@ defmodule Kantele.Quest do
   defp check_duplicate(%{todo: todo}, spec) do
     if Map.has_key?(todo, spec[:file]), do: {:error, :duplicate}, else: :ok
   end
+
+  defp check_done(state, spec) do
+    if spec[:file] in get_solved(state) and not repeatable?(spec) do
+      {:error, :done}
+    else
+      :ok
+    end
+  end
+
+  defp check_chain(state, spec) do
+    if chain_open?(state, spec), do: :ok, else: {:error, :chain_blocked}
+  end
+
+  defp check_mutex(state, spec) do
+    if mutex_open?(state, spec), do: :ok, else: {:error, :mutex_blocked}
+  end
+
+  defp task_meta(spec) do
+    Map.take(spec, [:type, :level, :master_name, :master_id, :place])
+  end
+
+  defp normalize_task(task) when is_map(task) do
+    %{
+      killed: Map.get(task, :killed) || %{},
+      item: Map.get(task, :item) || %{},
+      meta: Map.get(task, :meta) || %{},
+      accepted_at: Map.get(task, :accepted_at),
+      limit: Map.get(task, :limit) || 0
+    }
+  end
+
+  defp normalize_task(_), do: %{killed: %{}, item: %{}, meta: %{}, accepted_at: nil, limit: 0}
+
+  defp penalty_base("kill"), do: %{score: 50, weiwang: 10, gongxian: 5}
+  defp penalty_base("letter"), do: %{score: 20}
+  defp penalty_base(_), do: %{score: 10}
 
   defp kill_files(spec), do: spec |> Map.get(:kill, []) |> List.wrap()
 

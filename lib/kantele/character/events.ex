@@ -38,6 +38,9 @@ defmodule Kantele.Character.Events do
 
     module(QuestEvent) do
       event("quest/turnin-request", :turnin_request)
+      event("quest/report", :report)
+      event("quest/ask-result", :ask_result)
+      event("quest/cancel-result", :cancel_result)
     end
 
     module(FamilyEvent) do

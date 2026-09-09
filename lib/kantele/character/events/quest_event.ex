@@ -5,6 +5,9 @@ defmodule Kantele.Character.QuestEvent do
   `quest/turnin-request`：NPC 发来的交付请求。玩家校验背包里是否有所需
   物品——有则收走物品、发放奖励并往 rumor 频道播报谣言；无则提示引导。
 
+  `quest/report`：NPC 发来的无物品完成请求（师门击杀类）。玩家校验在办任务
+  的击杀进度已达标后结算（奖励走 `Kantele.Quest.Reward` 阶梯/里程碑）。
+
   `quest/ask-result`：NPC 应答请求任务。成功则记录任务到 todo；失败则提示原因。
   `quest/cancel-result`：NPC 应答取消任务。成功则从 todo 移除；失败则提示原因。
   """
@@ -17,6 +20,7 @@ defmodule Kantele.Character.QuestEvent do
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Records
   alias Kantele.Quest
+  alias Kantele.Quest.Reward
 
   def turnin_request(conn, %{data: data}) do
     character = conn.character
@@ -41,6 +45,24 @@ defmodule Kantele.Character.QuestEvent do
       conn
       |> render(CommandView, "text", %{text: "#{Map.get(data, :prompt)}\n"})
       |> prompt(CommandView, "prompt", %{})
+    end
+  end
+
+  @doc "无物品完成结算（师门击杀类）：在办任务 + 击杀进度达标才结算"
+  def report(conn, %{data: data}) do
+    character = conn.character
+    quest_id = Map.get(data, :quest)
+    state = PlayerMeta.quests(character.meta)
+
+    with true <- is_binary(quest_id) and quest_id != "",
+         %{} <- Quest.get_todo(state, quest_id),
+         true <- kill_requirement_met?(state, quest_id) do
+      complete(conn, character, character.inventory, data)
+    else
+      _ ->
+        conn
+        |> render(CommandView, "text", %{text: "#{Map.get(data, :prompt)}\n"})
+        |> prompt(CommandView, "prompt", %{})
     end
   end
 
@@ -112,7 +134,10 @@ defmodule Kantele.Character.QuestEvent do
   defp kill_requirement_met?(nil, _quest_file), do: true
 
   defp complete(conn, character, inventory_rest, data) do
-    rewards = Map.get(data, :rewards) || %{}
+    quest_id = Map.get(data, :quest)
+    state0 = PlayerMeta.quests(character.meta)
+    rewards = Reward.final(state0, quest_id, Map.get(data, :rewards))
+    milestone = Quest.milestone(Quest.quest_count(state0) + 1)
     stats = character.meta.stats
 
     stats = %{
@@ -120,15 +145,15 @@ defmodule Kantele.Character.QuestEvent do
       | combat_exp: stats.combat_exp + (Map.get(rewards, :exp) || 0),
         potential: stats.potential + (Map.get(rewards, :potential) || 0),
         score: stats.score + (Map.get(rewards, :score) || 0),
-        weiwang: stats.weiwang + (Map.get(rewards, :weiwang) || 0)
+        weiwang: stats.weiwang + (Map.get(rewards, :weiwang) || 0),
+        gongxian: stats.gongxian + (Map.get(rewards, :gongxian) || 0)
     }
 
     coins = (character.meta.coins || 0) + (Map.get(rewards, :coins) || 0)
 
-    # 记录任务进度：标记已解并从在办移除（quest id 见 data[:quest]）
+    # 记录任务进度：标记已解、连续计数 +1 并从在办移除（quest id 见 data[:quest]）
     {quest_state, quest_id} = update_quests(character.meta, data)
 
-    # 收走任务物品（v0 只收一个实例）
     character =
       character
       |> Map.put(:inventory, inventory_rest)
@@ -145,11 +170,11 @@ defmodule Kantele.Character.QuestEvent do
 
     conn
     |> put_character(character)
-    |> render(CommandView, "text", %{text: quest_text(data, rewards, quest_id)})
+    |> render(CommandView, "text", %{text: quest_text(data, rewards, quest_id, milestone)})
     |> prompt(CommandView, "prompt", %{})
   end
 
-  # 任务进度更新（CORE_USER_QUEST）：有 quest id 则 set_solved + del_todo
+  # 任务进度更新（CORE_USER_QUEST）：有 quest id 则 set_solved + 连续计数 +1 + del_todo
   defp update_quests(meta, data) do
     quest_id = Map.get(data, :quest)
 
@@ -162,19 +187,29 @@ defmodule Kantele.Character.QuestEvent do
           _ -> state
         end
 
-      {Quest.del_todo(state, quest_id), quest_id}
+      {Quest.del_todo(state, quest_id) |> Quest.bump_quest_count(), quest_id}
     else
       {PlayerMeta.quests(meta), nil}
     end
   end
 
-  defp quest_text(data, rewards, _quest_id) do
+  defp quest_text(data, rewards, _quest_id, milestone) do
+    milestone_line =
+      case milestone do
+        {:ok, tier} -> "\n（连续完成 #{tier} 次，气息鼓荡——有额外的江湖名望！）\n"
+        _ -> ""
+      end
+
     [
       "你把东西交给了#{Map.get(data, :vendor_name)}。\n",
       "任务完成！（实战经验+#{Map.get(rewards, :exp) || 0} 潜能+#{Map.get(rewards, :potential) || 0} 阅历+#{
         Map.get(rewards, :score) || 0
-      } 威望+#{Map.get(rewards, :weiwang) || 0} 铜钱+#{Map.get(rewards, :coins) || 0}）\n"
+      } 威望+#{Map.get(rewards, :weiwang) || 0} 门派贡献+#{Map.get(rewards, :gongxian) || 0} 铜钱+#{
+        Map.get(rewards, :coins) || 0
+      }）\n",
+      milestone_line
     ]
+    |> IO.iodata_to_binary()
   end
 
   # 谣言播报：rumor 频道全体在线玩家可见（登录时订阅）

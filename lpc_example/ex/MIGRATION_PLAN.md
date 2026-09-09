@@ -723,6 +723,10 @@ docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app/lpc_exampl
 
 **实施顺序**：T1 → T2（玩家可感主通路）→ T3 → T4（体验闭环）。
 
+**当前状态**：
+- ✅ Q1-T1（数据层扩展）：`quest.ex` v2 完成；quest_test.exs 扩展；纪录在 §15/kalevala 提交记录。
+- ✅ Q1-T2（kill/report 主通路）：`lib/kantele/quest/reward.ex` 新建；`quest_event.ex` 增 `report/2` 与奖励/连击/里程碑/门派贡献结算；`events.ex` 注册 quest/report（并修复 ask-result/cancel-result 未注册的死代码）；`npc_shop_event.ex` 无交付物时转 `quest/report`；`loader.ex` parse_quest 透传 meta 字段。全量 2250 tests 0 failures。data/world 掌门 NPC 配置留待有真实击杀物品流时再接线（当前事件/数值层已由测试覆盖）。
+
 **风险**：
 - 动态目标生成：Elixir 无 LPC clone 机制，T3 用「world 已有 NPC 实例 + 区域激活」而非运行时 clone；真・clone 需 Chei/Pawning，成本高，不列入本期。
 - 里程碑物品奖励：若物品发放通路（give_item）未成熟，T2 里程碑先做 exp/pot 阶梯，物品档列后续。

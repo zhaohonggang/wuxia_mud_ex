@@ -216,4 +216,99 @@ defmodule Kantele.Character.QuestFamilyTest do
     assert updated.meta.coins == 150
     assert output_text(conn) =~ "任务完成"
   end
+
+  describe "师门击杀结算（Q1-T2 quest/report）" do
+    defp master_npc() do
+      %Kalevala.Character{
+        id: "liuxi:zhangmen",
+        name: "掌门",
+        pid: self(),
+        room_id: "test:room",
+        meta: %NonPlayerMeta{
+          turn_in: %{
+            quest: "shaolin-disciple",
+            prompt: "下山去除掉祸害乡里的野猪，回来报功。",
+            rumor: "听说有人斩了野猪为乡里除害！",
+            rewards: %{}
+          }
+        }
+      }
+    end
+
+    test "无交付物的 NPC 被问话时转出 quest/report（不带 item_id）" do
+      NpcAskEvent.call(build_conn(master_npc()), %Event{
+        topic: "characters/ask",
+        data: %{reply_to: self(), asker_id: "player-1", asker_name: "张三", keyword: "任务"}
+      })
+
+      assert_receive %Event{topic: "quest/report", data: data}
+      assert data.quest == "shaolin-disciple"
+      assert data.item_id == nil
+    end
+
+    test "report：未接任务时拒绝结算" do
+      conn =
+        QuestEvent.report(build_conn(player()), %Event{
+          topic: "quest/report",
+          data: %{
+            vendor_name: "掌门",
+            quest: "shaolin-disciple",
+            prompt: "下山去除掉祸害乡里的野猪。",
+            rewards: %{}
+          }
+        })
+
+      assert conn.private.update_character == nil
+      assert output_text(conn) =~ "野猪"
+    end
+
+    test "report：接任务但击杀未达标时拒绝结算" do
+      {:ok, quests} = Quest.set_todo(Quest.new(), %{file: "shaolin-disciple", type: "kill", level: 3, kill: ["yezhu"]})
+      p = %{player() | meta: PlayerMeta.put_quests(player().meta, quests)}
+
+      conn =
+        QuestEvent.report(build_conn(p), %Event{
+          topic: "quest/report",
+          data: %{
+            vendor_name: "掌门",
+            quest: "shaolin-disciple",
+            prompt: "下山去除掉祸害乡里的野猪。",
+            rewards: %{}
+          }
+        })
+
+      assert conn.private.update_character == nil
+      assert output_text(conn) =~ "野猪"
+    end
+
+    test "report：击杀达标后结算（类型/难度联动奖励 + 连续计数 + 已解 + 门派贡献）" do
+      {:ok, quests} = Quest.set_todo(Quest.new(), %{file: "shaolin-disciple", type: "kill", level: 3, kill: ["yezhu"]})
+
+      {:ok, quests} = Quest.add_killed(quests, %{file: "shaolin-disciple", kill: ["yezhu"]}, "yezhu", 2)
+
+      p = %{player() | meta: PlayerMeta.put_quests(player().meta, quests)}
+
+      conn =
+        QuestEvent.report(build_conn(p), %Event{
+          topic: "quest/report",
+          data: %{
+            vendor_name: "掌门",
+            quest: "shaolin-disciple",
+            prompt: "下山去除掉祸害乡里的野猪。",
+            rewards: %{}
+          }
+        })
+
+      updated = conn.private.update_character || conn.character
+
+      assert updated.meta.stats.score == 81
+      assert updated.meta.stats.weiwang == 3
+      assert updated.meta.stats.gongxian == 20
+      refute Map.has_key?(Quest.get_todo_list(updated.meta.quests), "shaolin-disciple")
+      assert Quest.quest_count(updated.meta.quests) == 1
+      assert "shaolin-disciple" in Quest.get_solved(updated.meta.quests)
+      assert output_text(conn) =~ "任务完成"
+      assert output_text(conn) =~ "门派贡献+20"
+    end
+  end
 end
