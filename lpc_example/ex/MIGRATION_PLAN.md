@@ -442,6 +442,7 @@ P5 无
 | W2 | goto/where/who1/clone/dest/update 等常用 wiz | [x] (goto/where/who1/clone/dest/update stubs) |
 | W3 | arch 重度命令 (build/call/smash/possess/throw/var/setsk/purge/restore/register/reboot/shutdown/grant/changeuser) | [x] (stubs, 需对象系统) |
 | P5 | 收尾/文档/勾选 | [x] |
+| P-Adm | quest类型库 / 天气 / 剧情 / 入侵 / 任务载体 / 特色NPC | 未开始（§13/§14 已核查，§15 已列 Q1/Q2 详细计划） |
 
 > 注意: `[x] (部分)` 表示该批次有部分命令已实现或测试覆盖，但非全部完成。
 
@@ -577,3 +578,175 @@ docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app/lpc_exampl
 4. **compose 网络解析 `db` 名**：容器内 `db` 即数据库主机；宿主机如需 psql 访问用映射端口 15432。
 5. **世界加载失败**：若 `mix test` 报了 `UndefinedFunctionError … nil.id/0` 一类的 kickoff 错误，
    多半是你新加的 `_command.ex` 引用了尚不存在的系统——按 §1 核查确认依赖再动手。
+
+---
+
+## 13. 附：adm/ 系统级移植候补批次（P-Adm，待定）
+
+> 依据：`C:\files\git\mud\adm` 全量盘点（228 文件）对照 `lib/kantele`（2026-09-08）。
+> 判定：多数 daemon 已有 Elixir 对应（见本节末尾对照表）；`network/*`（MUD互联）、`ftpd.c`、
+> `qq_d/sms_d`（外部IM）、`master.c valid/security` 巫师保护、`single/simul_efun` 大部分、
+> `cpud/profiled/recordmemd` 运行时采样判「架构不适用」，不迁移（沿袭 §7 结论）。
+> 下表 6 项为**玩家可感的真实缺失**，是否立项取决于玩法目标；开工前每条必须走 §1 单命令移植前置核查。
+> **Q1 任务类型库、Q2 天气/昼夜已完成前置核查（§14）与详细移植计划（§15）。**
+
+| 批次 | 系统 | LPC 源 | 现状 | 落地要点 | 优先级 |
+|------|------|--------|------|---------|--------|
+| Q1 | 任务类型库 | `daemons/quest/*`（capture/deliver/explore/judge/search/shen/supply/trace + `_0_tutorial1-7` 新手链） | `quest.ex` 仅通用 todo/solved，各任务类型判定链未移植 | 移植 questd 各任务类型的判定/结算链，接 NPC 通路（`inquiryd.c`/AskEvent），教程链挂新手引导 | 高 |
+| Q2 | 天气/昼夜 | `etc/nature/*`（四季风雨）+ `natured.c` | 无天气系统 | 房间级定时天气事件（`scheduler.ex` 已有 tick 原语），影响 look 文案 | 高 |
+| Q3 | 剧情叙事 | `storyd.c` + `daemons/story/*`（炼丹/老君/三丰剑等） | 无 | 场景内时序/条件叙事，仿 `brain.ex` 状态机 | 中 |
+| Q4 | 入侵事件 | `invasiond.c` + `invasion/npc/*`（english/european/japanese/invader） | 无 | 周期入侵（`scheduler.ex`）+ 刷新外族 NPC | 中 |
+| Q5 | 任务载体 | `task/set_task.c` + `npc/zixu.c` + `task/obj/*` | 无 | 全局任务 NPC + 任务物品库（可先落纯数据层） | 中 |
+| Q6 | 特色 NPC | `adm/npc/*`（ganjiang/moye/qingyangzi/nanxian/referee 等） | `npc/{master,dealer,guarder,vendor,quester,horseboss,banker}.ex` 模式已有 | 数据驱动 NPC 配置化（skills/对话/事件），不写死模块 | 低 |
+
+> 已完成对照（排期参考，无需再核查）：
+> `auctiond/shopd/moneyd/band(int)/enchased` → `economy/{auction,stall,money}` / `item/craft`；
+> `commandd/emoted/fingerd/examinedd` → `commands.ex` / `emotes.ex`；
+> `familyd/leagued/rankd` → `family.ex` / `league.ex`（帮派排名）；
+> `questd` → `quest.ex`（通用）；`combatd` → `combat.ex` + `feature_attack.ex`；
+> `npcd/chard/logind` → `npc/*` + ExVenture 登录；`buildingd`（鲁班）→ `house.ex`；
+> `mapd/cached` → `mini_map.ex` / `zone_cache.ex`；`newsd/analectad` → `news.ex` / `analecta.ex`；
+> `configd/versiond/mysqld` → `config.ex` / version / Ecto；`inquiryd` → `npc/ask_handler.ex`；
+> `timed` → `scheduler.ex`；`pigd` → `room/pigroom.ex`；`weapond` → `item/equip.ex`；
+> `master.c(ed/error/parse)` → `editor/line.ex` / 错误视图。
+
+---
+
+## 14. Q1/Q2 前置核查记录（2026-09-08）
+
+> 按 §1 流程对 §13 中高优先级两项做**只读核查**（未改代码）。
+> LPC 源：`C:\files\git\mud`（独立仓库）；Elixir 侧：`wuxia_mud_ex`。
+
+### 14.1 Q1 任务类型库
+
+**覆盖**：`adm/daemons/quest/*.c`（14 型）+ 分发守护 `adm/daemons/questd.c` + 任务对象 `clone/quest/*.c`（8 个）+ `quest.ex`/`quester.ex`/`ask_handler.ex`/quest 系列命令。
+
+**questd.c 共享流程（师门任务 kill/letter）**：
+- `ask_quest`：掌门发布 → exp<10 万发 letter（生成 receiver NPC + 信件），≥10 万发 kill（生成 killed NPC 按 level 调属性、随机落点）→ 写玩家 `quest/{type,name,id,place,time,limit,level,family,master_name/id}`。
+- `accept_object`：提交完成物 → 校验（kill: owner_id+killed_by/defeated_by；letter: 回执 reply_to/reply_by）→ 阶梯奖励（基础×level×连续完成×reborn，无门派加成，超时减半）→ 里程碑 special_bonus（30/50/100/…/1000 送物品）→ 清 quest 数据。
+- `cancel_quest`：扣威望/贡献/阅历惩罚（福缘/诡辩奇学可减免）→ 清 NPC 与任务。
+- 开放任务（capture/deliver/search/explore/supply/trace/shen/judge）：`start_all_quest` 注册、heartbeat 扫描、约每 4 分钟 spawn 一轮、超时自动 finish。
+
+**14 型核查表**：
+
+| 类型 | 触发/初始化 | 进行中状态 | 完成判定 | 奖励/结算 | 依赖 | 难度 |
+|------|------|------|------|------|------|------|
+| kill 师门杀人 | 掌门 ask_quest，exp≥10万，生成 killed/killed_super 随机落点 | `quest/type=kill,name,id,place,limit,level`；NPC 有 `temp("quester")` | 交首级/尸体，校验 owner_id + killed_by | exp/pot/weiwang/score/gongxian，level×连续×reborn 阶梯；里程碑送物品 | 掌门 + 随机 killed NPC | 高 |
+| letter 师门送信 | 掌门 ask_quest，exp<10万，生成 receiver.c + 信件物品 | `quest/type=letter` + 身上携 letter | 回收执，校验 reply_to==me、reply_by==q.id，判超时 | exp15+rand10/pot5+rand8 等小额 | receiver NPC、`/clone/misc/letter` | 中 |
+| capture 追杀连环 | 进程每~4min spawn 3 目标 NPC | 谣言逐级透露下一目标地点 | 杀第 3 个 NPC 后 `npc_destructed → cancel` | 分段 GIFT_D bonus，终局传闻广播 | 3 随机 capturenpc/地点 | 高 |
+| deliver 送货 | spawn 随机物品(9种)×(5-10) + 2 questnpc | score≥1000 才可从 NPC2 接货 | NPC2 取货→交 NPC1，AMOUNT 计数归零 | 每件 exp50+rand50/pot20+rand20/score4+rand4 ×数量，高经验减半，银两即时 | questnpc ×2、questob 货物 | 中 |
+| search 寻物 | spawn 宝物(19种) + 2 questnpc | NPC2 持有宝物 | trick+int 劝说或击杀夺宝→交 NPC1（npc_accept_object 校验 ob==QOB） | exp200+rand100/pot150+rand100/score30+rand20 + 黄金1两 | questnpc ×2、questob 宝物 | 中 |
+| explore 寻宝 | 选 rcv_npcs 一员+区域，宝物藏入房间 search_objects | score≥2000，问 NPC 得出口提示 | 到房间 search 寻得→交原 NPC（校验仍在位） | exp200+rand200/pot150+rand150/score15+rand15/weiwang5+rand5 + 黄金1两 | rcv_npcs 大表、房间 search_objects | 高 |
+| supply 供应 | 选 rcv_npcs 一员 + 随机装备(20种) | 收集指定数量(3-8) | 逐件交 COUNT 归零 finish，restore_npc 复位 | 每件 exp50+rand50/pot20+rand20/score8+rand8，价值×1.5 银两 | rcv_npcs、装备名匹配 | 中 |
+| trace 寻人带路 | 2 NPC 分处两地（questnpc+tracenpc） | score≥500 且 freequest，询问后 NPC2 跟随(leader) | 领 NPC2 到 NPC1 房间即完成；4min 超时 cancel_follow | 走 freequest 延迟奖励 | leader 跟随机制、freequest | 中 |
+| shen 正邪 | 生成 shennpc（飞贼/反贼）随机落点 | gossip 获知位置 | 击杀 → `npc_destructed → cancel_quest` | GIFT_D 标准结算 | shennpc | 低 |
+| judge 判案 | 2 questnpc 同地，互相仇视(inquiry 互指) | gossip 逐级透露 | 双 NPC 互指对话链（可杀），铁面判官引导 | 标准消息结算 | questnpc ×2、铁面判官 | 中 |
+| _0_smith 铁匠 | 周不通引导→铁匠 ask job | mark/job_smith 计数 | postCondition job_smith≥10000 | exp10000+/pot5000+/score100+，乾坤石 | `/d/city/npc/smith.c` | 低 |
+| _0_tutorial1-7 新手链 | 周不通线性发布，isNewly=0/noGiveUp=0 | 各步 preCondition 查 is_solved(前步) | 打铁20→存钱→买包子→郭府报到→拜师→祈福→师门5 | exp500+/pot100+/score10+，步7加贡献 | 钱庄/醉仙楼/郭靖/祈福/掌门 | 低 |
+| _1_mao18/_1_shisong 对立 | 互斥接取 | getToDo/getSolved 检查对立任务 | getKill+getItem 完成后 postCondition=1 | exp10000+/pot5000+/score10+，技能解锁(can_learn) | 茅十八/史松、黑龙鞭/通缉令 | 低 |
+| _2_demon 幻境心魔 | 子虚道人（exp>10万），可重复(isNewly=1) | getKill 计数 | 杀 demon.c ×20 | exp500+/pot1000+/score50+ | 子虚道人、demon.c | 低 |
+
+**Elixir 缺口（quest.ex vs LPC）**：
+① 无任务类型标签 type（仅 file/killed/item）；
+② 无元数据 name/id/place/level/limit/time/family/master；
+③ 无连续计数 quest_count → 无阶梯/里程碑奖励；
+④ 无超时/失败惩罚；
+⑤ 无动态 NPC/物品/房间目标生成（killed.c 放置、receiver 生成、search_objects 注入）；
+⑥ 无链式依赖/互斥/重复标记/自定义 postCondition/special bonus；
+⑦ 无自由任务 freequest。
+
+**可复用项**：`data/world/liuxi.ucl` 已有 NPC `turn_in{quest,item,prompt,rumor,rewards}` 与 `quest{file,kill,item}` 配置格式，可覆盖 deliver/explore/supply 的交付语义；kill/letter 有 register_kill/ask/accept_object 通路可接。
+
+**建议分层**：
+- L1 数据层：扩展 `quest.ex` spec（type/level/limit/repeatable/chain/mutex）+ state（quest_count/meta/freequest）+ 函数（set_meta/check_timeout/cancel_with_penalty）。
+- L2 事件层：QuestEngine/QuestDaemon GenServer（heartbeat 扫超时、生成开放任务、事件总线 register_kill/npc_died/room_searched、任务生成器动态放 NPC/物品）。
+- L3 命令层：ask_quest/cancel_quest/accept(give) 扩展 + gossip/rumor 挂接。
+
+**分型优先级建议**：tutorial 链（低难度高体验）→ kill/letter（掌门，通路已有）→ deliver/supply（交付型，数据格式现成）→ 其余按需。
+
+### 14.2 Q2 天气/昼夜
+
+**模型**：
+- 昼夜 8 段：0午夜/3凌晨/6日出/9上午/12正午/15午后/18傍晚/21夜晚，按游戏时间小时查表。
+- 驱动：`call_out` 链式定时（非轮询），到阶段起始点换算现实秒（`剩余分钟×60/DATE_SCALE`）；阶段切换广播；午夜 event_midnight 换季 + 随机选表（四季×3：spring_/summer_/autumn_/winter_{rain,sun,wind}）；12 倍速（现实5s=游戏1min）。
+- phase 字段：`hour/time_msg/desc_msg/event_fun/outcolor`（`adm/etc/nature/day_phase` 用 hour，example_phase 的 length 为旧格式）。
+- 实际效果（非文案）：room.c `light` 光线表（3/6/9/12/9/6/3）；`event_noon` 疾病（春 ill_kesou/夏 ill_zhongshu/秋 ill_shanghan/冬 ill_dongshang，con+warm 门槛 `con+ic<25`）；东北雪原按季封路/冰面。
+
+**挂接点**：cmds/std/look.c:196 + look2.c:196 + watch.c:55 `outdoor_room_description()`（户外房间 look）、频道 message.c:108 前缀 `game_time()`、NPC AI 文案。
+
+**Elixir 现状**：
+- `scheduler.ex` 有 `schedule_once/recurring`（⚠️ recurring 取消有 bug：`:timer.cancel(make_ref())` 恒真，勿用；用 schedule_once 链式）；
+- `room.ex` 的 `get_characters_in_room/present/tell_room` 为空实现，广播需先落地；
+- look 注入点：`look_view.ex` `_description/1`（约 line 73）末尾，room 需带 `outdoors` 标志（loader.ex:270 已存未消费）；
+- `time/bjtime/uptime` 均为**现实时间**，无游戏日历；lib 无任何 season/day/night/weather 实现。
+
+**移植方案**：
+1. 新建 `Kantele.World.GameTime`（对应 TIME_D：现实5s=游戏1min，`game_localtime/0`、年月日时）——**季节根基，先建**。
+2. 新建 `Kantele.World.Weather` GenServer（昼夜阶段表 + 季节随机表 + light + event_midnight/event_noon），`schedule_once` 链式推进。
+3. 数据放 `data/nature/*.ucl` 启动时一次性加载（config.ucl 只读不刷新，不适用）。
+4. 天气文案注入 look_view `_description` 末尾（按 room.outdoors 过滤）；阶段切换广播依赖 Room 查询真实化。
+5. time 命令可扩展显示中文游戏日期+季节，prompt 的 `time_info[:game_time]` 接上。
+
+**难度**：文案/氛围 v1（look 注入 + 天色公告）＝中偏低；全量（疾病/warm/light/雪原封路）＝中偏高。前置依赖：GameTime + Room 广播/查询落地。
+
+---
+
+## 15. Q1/Q2 详细移植计划（真实移植）
+
+> 本节把 §14 核查结论落实为**可执行开发计划**，拆成可直接开工的批次。
+> 原则：每批独立验收、命令→事件→视图→测试一条龙，禁止 stub 占位；验收硬门槛
+> `docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app && MIX_ENV=test mix test"` 0 failures；
+> 提交/推送遵守 §0 原则（**禁止自行 push**）。
+
+### 15.1 Q1 任务类型库移植计划
+
+**最终目标（真实可玩）**：
+1. 师门任务 kill/letter：掌门发布（exp 分流）+ 完成物提交（give）+ 阶梯/里程碑奖励 + 超时/放弃惩罚。
+2. 开放任务 deliver/supply/search/explore：QuestDaemon 定时生成、随机目标落点、交付/寻物闭环。
+3. 新手链 `_0_tutorial1-7`：周不通一条链，每步 preCondition=is_solved(前步)。
+4. trace/shen/judge/capture：复用 2 的模式后置（结构相同，价格低）。
+
+**已有可复用接线（核查确认）**：
+- 纯状态机 `lib/kantele/quest.ex`（todo/solved + killed/item 计数 + register_kill），`combat_event.ex:746 apply_quest_kill` 击杀自动计数，`records.ex` `:quest` 字段已落盘（deserialize 旧数据有兜底）。
+- NPC 配置 `meta.quest %{file,kill,item}` / `meta.turn_in %{quest,item,prompt,rumor,rewards}`（`character.ex:272-275`，loader.ex:527 已解析）；`npc_shop_event.ex` 已接 ask_quest/cancel_quest/turnin，`quest_event.ex` 已实现 set_todo/奖励应用/完成结算。
+- 命令层已有：ask_quest / cancel_quest / quest2（日志+放弃）/ quest / myquest / give→GiveRequestEvent(turnin) / search（M3 real，SearchRequestEvent）。
+- 数值：stats.ex 已有 exp/potential/score/weiwang/gongxian。
+
+**批次表**：
+
+| 批次 | 内容 | 主要文件（新建/修改） | 验收 |
+|------|------|------|------|
+| **Q1-T1** 数据层扩展 | spec 增 type/level/limit/repeatable/chain/mutex/master_name/master_id/place；todo 项带 accepted_at/limit/meta；玩家 quest_count；超时/取消惩罚/里程碑/链式前置函数 | 改 `quest.ex`：`set_todo/2,3` 扩 opts、新增 `check_timeout/2`、`cancel_with_penalty/3`、`bump_quest_count/2`、`chain_open?/2`、`milestone_reward/1`、`accept_check/3`；`records.ex` 序列化同步（quest map 扩键，无迁移） | quest_test.exs 新增 ~25 用例（超时/惩罚/互斥/链式/连续计数/里程碑） |
+| **Q1-T2** 师门任务 kill/letter | 掌门 `ask_quest` exp 分流（<10万 letter、≥10万 kill）+ `give` 提交校验（kill: owner_id+killed_by；letter: 回执 reply_to/reply_by）+ 阶梯奖励（level×连续×reborn、超时减半）+ 里程碑 | 扩展 `quest_event.ex`（ask_result/turnin_request 按 quest.type 走 kill/letter 分支）；新建 `lib/kantele/quest/reward.ex` 纯函数（基础+level+连续+里程碑，奖励应用复用 quest_event.ex 现有段并核对补 gongxian）；data/world 掌门/收信人 NPC 配置 | 冒烟：发任务→打怪/交信→领奖闭环；相关测试全绿 |
+| **Q1-T3** 开放任务 QuestDaemon | 生成器 GenServer：心跳 spawn 一轮→按模板生成目标任务；deliver/supply 优先（复用 turn_in），search/explore 接 room search_objects+search，trace/judge/capture/shen 后置 | 新建 `lib/kantele/world/quest_daemon.ex`（GenServer）+ `lib/kantele/quest/generator/{deliver,supply,search,explore}.ex`；挂 supervision；目标落点用现有 world/room/item API（先同 zone 随机房间） | quest_daemon_test.exs（心跳生成、超时清理）+ 全量回归 |
+| **Q1-T4** 新手链 | 周不通 7 步链，每步预置 is_solved(前步)，奖励走 rewards 配置 + 引导文案 | data/world 新增 NPC butong 配置（quest 链 spec：chain=["_0_tutorial1",...]）；quest_event 对 chain 加 preCondition 校验（用 T1 `chain_open?/2`） | 新角色走链测试（一步一清：打铁20/存钱/买包子/郭府/拜师/祈福/师门5） |
+
+**实施顺序**：T1 → T2（玩家可感主通路）→ T3 → T4（体验闭环）。
+
+**风险**：
+- 动态目标生成：Elixir 无 LPC clone 机制，T3 用「world 已有 NPC 实例 + 区域激活」而非运行时 clone；真・clone 需 Chei/Pawning，成本高，不列入本期。
+- 里程碑物品奖励：若物品发放通路（give_item）未成熟，T2 里程碑先做 exp/pot 阶梯，物品档列后续。
+- `quest_event.ex` 现奖励段含 exp/potential/score/weiwang/coins；T2 核对并补 gongxian（stats 字段已存在，逐物品核对时加与否按玩法定）。
+- chain 旧数据：deserialize 兼容默认值，不做数据迁移。
+
+### 15.2 Q2 天气/昼夜移植计划
+
+**最终目标（v1 文案氛围，真实循环）**：游戏时间推进 → 季节/昼夜自动切换 → 户外房间 look 注入天气描述 + 阶段切换公告。
+
+**前置依赖**：`room.ex` `get_characters_in_room/1`（现为空实现）真实化，否则公告无处广播。若不广播只做 look 注入可跳过本项。
+
+**批次表**：
+
+| 批次 | 内容 | 主要文件（新建/修改） | 验收 |
+|------|------|------|------|
+| **Q2-T0** 房间人员查询（前置） | `get_characters_in_room/present/living` 真实化（对齐 room 的 Communication/RoomChannel 订阅） | 改 `lib/kantele/world/room.ex`（与 RoomChannel 联动） | room_test.exs：进房后 present/living 能查到 |
+| **Q2-T1** GameTime | 游戏时间 GenServer：现实 5s=游戏 1min；`game_localtime/0` → `%{year,month,day,hour}`；season 纯函数；**全部 schedule_once 链式**（recurring_loop 取消有 bug 勿用） | 新建 `lib/kantele/world/game_time.ex`（GenServer）+ `lib/kantele/world/game_time/calendar.ex`（纯函数）；挂 supervision；wall clock 差驱动防漂移 | game_time_test.exs：秒→分换算、季节边界（3|6|9|12 月起止）、跨天 |
+| **Q2-T2** Weather 状态机 + 数据 | `data/nature/*.ucl` 12 套 phase 表（hour/time_msg/desc_msg/outcolor，对齐 adm/etc/nature 字段）；`select_phase/2` 查表、`select_weather/1` 按月份随机、event_midnight 换季 | 新建 `lib/kantele/world/weather.ex`（GenServer：current_phase/current_table/season；API：`current_phase/0`、`outdoor_description/0`、`time_msg/0`、`weather_set/0`、`light/0`）；新建 `lib/kantele/world/weather/data.ex` 启动加载（不进 config.ucl） | weather_test.exs：8 段小时查表、四季×3 随机表、午夜换季 |
+| **Q2-T3** 视图接入 | look 注入：`look_view.ex` `_description`/look.text 末尾按 `room.flags` 含 outdoors → `Weather.outdoor_description/0`；阶段切换公告（依赖 T0） | 改 `look_view.ex`（或新增 `weather_view.ex` 片段）；LookEvent 传 room（flags 已由 loader 存储） | look 冒烟：户外房见天气段、室内房无；announce 单测 |
+
+**可选扩展（v2，本期不承诺）**：event_noon 疾病（体力/暖值门槛）、room light 光线（3/6/9/12）、东北雪原按季节封路——全部列 stretch，避免 overload。
+
+**风险**：
+- 全部定时用 `schedule_once` 链式（避免 `schedule_recurring` 取消 bug）；每次 tick 按现实 wall clock 重算剩余秒，防累计漂移。
+- GameTime 起点：从真实当前时间换算（epoch 偏移），不做 LPC 独立游戏历法年（除非后续要做节日活动）；season 直接按月。
+- 广播依赖 T0；若 T0 阻塞，v1 可先交付 look 注入（不阻塞核心体验）。
