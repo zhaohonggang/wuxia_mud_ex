@@ -355,7 +355,7 @@ defmodule Kantele.World.Invasion do
   end
 
   defp announce(text) do
-    Communication.announce("general", text)
+    Communication.announce("waidi", text)
   rescue
     e -> Logger.warn("invasion announce failed - #{Exception.message(e)}")
   catch

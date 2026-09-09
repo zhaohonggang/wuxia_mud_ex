@@ -2,6 +2,10 @@ defmodule Kantele.Communication.BroadcastChannel do
   use Kalevala.Communication.Channel
 end
 
+defmodule Kantele.Communication.WaidiChannel do
+  use Kalevala.Communication.Channel
+end
+
 defmodule Kantele.Communication do
   @moduledoc false
 
@@ -14,7 +18,8 @@ defmodule Kantele.Communication do
     [
       {"general", Kantele.Communication.BroadcastChannel, []},
       {"rumor", Kantele.Communication.BroadcastChannel, []},
-      {"bill", Kantele.Communication.BroadcastChannel, []}
+      {"bill", Kantele.Communication.BroadcastChannel, []},
+      {"waidi", Kantele.Communication.WaidiChannel, []}
     ]
   end
 

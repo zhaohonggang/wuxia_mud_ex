@@ -9,6 +9,12 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(WaidiCommand) do
+    parse("waidi", :run, fn command ->
+      command |> spaces() |> word(:action)
+    end)
+  end
+
   module(CloseCommand) do
     parse("close", :run, fn command ->
       command |> spaces() |> word(:target)
