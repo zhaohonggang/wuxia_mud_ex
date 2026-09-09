@@ -74,6 +74,7 @@ defmodule ExVenture.Application.KalevalaSupervisor do
       {Kantele.World.Story, []},
       {Kantele.World.Story.Challenger, []},
       {Kantele.World.Invasion, []},
+      {Kantele.World.MirrorDaemon, []},
       {Kantele.World.AnalectaService, []},
       {Kantele.World.NewsService, []},
       {Kantele.League, []},

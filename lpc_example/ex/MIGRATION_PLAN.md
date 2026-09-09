@@ -818,3 +818,29 @@ docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app/lpc_exampl
 - NPC 自毁：LPC `do_leave()` 闲置 10 分钟自毁；v1 用 `Process.send_after` + 无战斗/忙碌检测，清理 record 并销毁。
 
 **风险**：入侵波次与剧情 Daemon 共用 scheduler，需错峰；大量 NPC 同波次 `start_character` 可能瞬间压力大（分批 50ms 间隔发）；`waidi` 广播频次高可能刷屏（可加玩家屏蔽开关）。
+
+---
+
+### 15.5 Q5 任务载体（宝镜任务系统 / Mirror Daemon）
+
+**最终目标（v1 宝镜任务周期分发）**：`Kantele.World.MirrorDaemon` 周期触发（180s） → 读取 UCL 定义的 30 个 task 物品 → 每个生成一个 `TaskCarrier` NPC（随机 liuxi 房间、按等级加强属性） → task 物品放入 NPC 背包 → 全服 `waidi` 广播任务刷新 → 玩家向子虚道人领宝镜定位 → 找到 NPC 给物品上交得奖励 → 里程碑奖励（100/200/300/400/500）。
+
+**批次表**：
+
+| 批次 | 内容 | 主要文件（新建/修改） | 验收 |
+|------|------|----------------------|------|
+| **Q5-T0** MirrorDaemon 守护进程 | `Kantele.World.MirrorDaemon` GenServer（周期 180s 可注入、`current_round/start_round/stop_round/status`、record 记录、schedule_once 链式、safe_run 兜底） | 新建 `lib/kantele/world/mirror_daemon.ex`、`lib/kantele/world/mirror_daemon/behaviour.ex`；挂 supervision | 单测：状态机、schedule_once、全服广播、record 读写 |
+| **Q5-T1** 任务物品数据层 | 30 个 task 物品 UCL（`owner` 目标 NPC 中文名、`owner_id` NPC ID、描述、`no_sell/no_put`、价值 10）；`MirrorDaemon` 读取 UCL 生成物品实例 | 新建 `data/world/liuxi.ucl` items "task/*" 块（30 个）；`MirrorDaemon` 读取构建实例 | 单测：物品加载、owner/owner_id 映射、no_sell/no_put |
+| **Q5-T2** 任务载体 NPC | `TaskCarrier` NPC 模板（随机 liuxi 非 no_fight 房间、等级 1-15 随机加强属性、背包含 1 个 task 物品、无 loot、无重生）；复用 `Kalevala.World.start_character` + `SpawnController` | 新建 `lib/kantele/world/mirror_daemon/task_carrier.ex`；改 `mirror_daemon.ex` 生成 | 单测：NPC 生成、随机房间、属性加强、物品在背包 |
+| **Q5-T3** 玩家交互 NPC | 子虚道人（`zixu`）驻守固定房间：`ask mirror/宝镜` 给乾坤宝镜（每人限 1 个，记 `mirror_count`）、`ask 心魔幻境` 传送迷宫（后续）；玩家 `give task物品 to NPC` 触发 `do_return` 奖励（exp/pot/score/银子 + 里程碑仙丹） | 新建 `lib/kantele/world/mirror_daemon/zixu.ex`、`lib/kantele/character/commands/give_task.ex`；改 `commands.ex` 路由；子虚道人挂 supervision | 集成测试：领镜限 1、上交奖励、里程碑仙丹发放 |
+
+**当前状态（2026-09-09）**：Q5-T0 待开工。
+
+**v1 简化（对 LPC 的偏差，记录在案）**：
+- 宝镜定位：LPC 宝镜有 `power` 灵力递减机制；v1 暂不做定位 UI，玩家靠 `look`/广播线索找 NPC。
+- 心魔幻境（迷宫副本）：LPC `ask_maze` 进 MAZE；v1 仅占位 `ask_maze` 回复"暂未开放"。
+- IP 限制：LPC 宝镜按 IP 限 1 个；v1 按角色限 1 个（`mirror_count` 字段）。
+- 任务 NPC 伪装：LPC 有"拾荒者"弱鸡伪装；v1 统一用加强版 `TaskCarrier`。
+- 镜子 clone 销毁：LPC 每轮销毁旧物品重建；v1 直接生成新实例，旧的随 NPC 销毁。
+
+**风险**：30 个 task 物品 + 30 个 NPC 同轮次生成，分批 50ms 启动；子虚道人固定房间需在 liuxi 区预置；里程碑奖励物品需 UCL 先行定义。
