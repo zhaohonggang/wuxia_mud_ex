@@ -160,10 +160,19 @@ defmodule Kantele.World.Invasion do
           "{color foreground=\"magenta\"}【 入  侵 】{/color} #{killer_name} 在 #{invader.room_id} 击杀了 #{nation_title}#{invader.name}！\n"
         )
 
+        # 单击杀奖励：额外掉落玄铁令（已在 NPC loot 里），击杀者自动拾取
+        # 记录击杀者用于全歼大奖发放
+        killer_info = %{id: killer.id, name: killer.name, pid: killer.pid}
+        new_state = put_in(new_state, [:last_killer], killer_info)
+
         if new_state.total_killed >= @total_invaders do
           new_state = %{new_state | all_killed: true, wave_active: false}
+          
+          # 全歼大奖：在最后击杀房间掉落入侵徽记
+          drop_invasion_badge(invader.room_id, killer_info)
+          
           announce(
-            "{color foreground=\"magenta\"}【 入  侵 】{/color} 本波入侵者已被全歼！全体同胞获得丰厚奖赏！\n"
+            "{color foreground=\"magenta\"}【 入  侵 】{/color} 本波入侵者已被全歼！#{killer_name} 获得「入侵徽记」一枚！\n"
           )
         end
 
@@ -187,16 +196,22 @@ defmodule Kantele.World.Invasion do
     cond do
       invader && invader.alive ->
         if Process.alive?(invader.pid) do
+          # 简单策略：10 分钟无击杀记录则撤退（避免远程查询战斗状态的复杂性）
+          # 实际游戏中可由 NPC 进程自检 combat.enemies/busy 后自毁
+          new_invader = %{invader | alive: false}
+          new_state = %{state | invaders: Map.put(state.invaders, number, new_invader)}
           Process.exit(invader.pid, :shutdown)
+
+          announce(
+            "{color foreground=\"magenta\"}【 入  侵 】{/color} #{invader_nation_title(invader.nation, invader.level)}#{invader.name} 久候不遇，悻悻撤退了。\n"
+          )
+
+          {:noreply, new_state}
+        else
+          new_invader = %{invader | alive: false}
+          new_state = %{state | invaders: Map.put(state.invaders, number, new_invader)}
+          {:noreply, new_state}
         end
-        new_invader = %{invader | alive: false}
-        new_state = %{state | invaders: Map.put(state.invaders, number, new_invader)}
-
-        announce(
-          "{color foreground=\"magenta\"}【 入  侵 】{/color} #{invader_nation_title(invader.nation, invader.level)}#{invader.name} 久候不遇，悻悻撤退了。\n"
-        )
-
-        {:noreply, new_state}
 
       true ->
         {:noreply, state}
@@ -282,8 +297,9 @@ defmodule Kantele.World.Invasion do
           announce(
             "{color foreground=\"magenta\"}【 入  侵 】{/color} 第 #{new_state.wave_number} 波外族入侵开始！24 名入侵者已散落各地。\n"
           )
-          Enum.each(new_state.invaders, fn {_n, %{pid: p, alive: true}} ->
-            Process.send_after(p, {:invasion_idle_check, _n}, @idle_timeout)
+          # 闲置定时器发给自己（Invasion 进程），到时检查并清理
+          Enum.each(new_state.invaders, fn {n, %{alive: true}} ->
+            Process.send_after(self(), {:npc_idle, n}, @idle_timeout)
           end)
         end
 
@@ -326,6 +342,16 @@ defmodule Kantele.World.Invasion do
     |> Enum.shuffle()
     |> Enum.with_index(1)
     |> Enum.map(fn {{level, nation}, number} -> {level, nation, number} end)
+  end
+
+  # 全歼大奖：在击杀房间掉落入侵徽记
+  defp drop_invasion_badge(room_id, _killer_info) do
+    case Kantele.World.Story.Gift.drop_to_room(room_id, "liuxi:misc/invasion-badge", "一枚入侵徽记落在地上，泛着寒光。\n") do
+      :ok -> :ok
+      {:error, _reason, _player} -> :ok
+    end
+  rescue
+    e -> Logger.warn("invasion badge drop failed - #{Exception.message(e)}")
   end
 
   defp announce(text) do
