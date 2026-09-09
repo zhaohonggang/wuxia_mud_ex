@@ -26,7 +26,7 @@ defmodule Kantele.Character.JingxiuCommandTest do
       skills: Keyword.get(opts, :skills, %{"buddhism" => 250})
     }
 
-    family = Keyword.get(opts, :family, %{"family_name" => "少林派"})
+    family = Keyword.get(opts, :family, %{name: "少林派", master_id: "master-1", master_name: "方丈"})
 
     %Kalevala.Character{
       id: "player-1",
@@ -82,6 +82,18 @@ defmodule Kantele.Character.JingxiuCommandTest do
       p = player(skills: %{"buddhism" => 100})
       conn = JingxiuCommand.run(build_conn(p), %{})
       assert output_text(conn) =~ "佛学"
+    end
+
+    test "无门派时不崩溃并返回空提示" do
+      p = player(family: nil)
+      conn = JingxiuCommand.run(build_conn(p), %{})
+      assert output_text(conn) == ""
+    end
+
+    test "非少林门派时不崩溃并返回空提示" do
+      p = player(family: %{name: "柳溪派", master_id: "master-1", master_name: "柳溪谷主"})
+      conn = JingxiuCommand.run(build_conn(p), %{})
+      assert output_text(conn) == ""
     end
 
     test "正常静修" do

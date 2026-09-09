@@ -44,14 +44,22 @@ defmodule Kantele.Quest do
   @doc "任务进度表（LPC getToDoList）"
   def get_todo_list(%{todo: todo}), do: todo
 
+  def get_todo_list(nil), do: %{}
+
   @doc "已解任务表（LPC getSolved）"
   def get_solved(%{solved: solved}), do: solved
+
+  def get_solved(nil), do: []
 
   @doc "在办任务数（LPC getToDoListSize）"
   def get_size(%{todo: todo}), do: map_size(todo)
 
+  def get_size(nil), do: 0
+
   @doc "某任务进度（LPC getToDo，无此任务返回 nil）"
   def get_todo(%{todo: todo}, quest_file), do: Map.get(todo, quest_file)
+
+  def get_todo(nil, _quest_file), do: nil
 
   # ---- 增删任务进度（setToDo / delToDo）----
 

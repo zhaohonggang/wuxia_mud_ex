@@ -38,6 +38,12 @@ defmodule Kantele.Character.QuestCommandTest do
     assert output_text(conn) =~ "没有任何任务记录"
   end
 
+  test "新建角色（meta.quests 为 nil）不崩溃并显示空提示" do
+    p = %{player() | meta: %{player().meta | quests: nil}}
+    conn = QuestCommand.run(build_conn(p), %{})
+    assert output_text(conn) =~ "没有任何任务记录"
+  end
+
   test "显示已完成任务" do
     spec = %{file: "song-yupai", kill: ["黑虎"], item: ["玉牌"]}
     {:ok, q} = Quest.set_solved(player().meta.quests, spec)

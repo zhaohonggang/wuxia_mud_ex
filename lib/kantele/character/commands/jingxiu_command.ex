@@ -45,7 +45,7 @@ defmodule Kantele.Character.JingxiuCommand do
 
   defp is_shaolin?(character) do
     family = character.meta.family
-    family && family["family_name"] == "少林派"
+    is_map(family) and Map.get(family, :name) == "少林派"
   end
 
   defp do_jingxiu(conn, character, vitals, stats) do
