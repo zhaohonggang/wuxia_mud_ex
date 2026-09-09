@@ -199,6 +199,7 @@ defmodule Kantele.Character.DaubCommandTest do
 
   describe "daub 手部涂毒" do
     test "技能足够涂毒到手" do
+      :rand.seed(:exsss, {42, 42, 42})
       p = player(
         inventory: [inst(@poison_id)],
         skills: %{"force" => 30, "poison" => 30}
