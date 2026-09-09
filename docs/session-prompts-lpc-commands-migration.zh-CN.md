@@ -376,4 +376,47 @@ end)
 - `alias` 展开发生在 Router 解析前，被展开目标仍受 Router 动词边界约束；以 n/s/e/w/u/d 开头的别名动词会被方向前缀匹配截获（视同系统动词）
 - 裸动词（如裸 `team`/`suicide`/`nick`）因 `text(:rest)` 需至少一个参数，Router 层不可用（与 follow/wimpy 一致），实际需 `team <空格>` 或带子命令触发
 
+### Batch 7（已完成，commit 8292d8d）——巫师/技能命令守卫回归
+
+**覆盖命令（16 个）：**
+
+| 命令 | 逻辑/修复 |
+|---|---|
+| `copyskill` | 巫师式把自身技能复制给目标（wiz 守卫，目标技能覆盖） |
+| `whoride` | 查询坐骑当前骑乘者 |
+| `promote` | 提升称谓（arch/wiz guard） |
+| `home` | 回绑定房间 |
+| `skill` | 技能列表 |
+| `jiali` | 手动加力档位（上限=enable 内功/2） |
+| `who1`/`where`/`goto`/`clone`/`dest`/`update`/`uptime`/`mudinfo`/`summon` | 巫师查询/管理命令守卫回归 |
+
+**修复：**
+- **fall-through 守卫穿透漏洞**：`goto`/`where`/`who1`/`clone`/`dest`/`update` 在 faction/级别不满足时仍带空守卫落进 run 主体，改为逐项显式 `return_error` + 提示
+- 跨命令守卫统一：等级门槛用 `>=` 比较
+- `Items.get` 对 `{:error, :not_found}` 的健壮性修复
+
+**测试：** 新增 wizard_guard_test（含全部守卫分支）+ copyskill/whoride/promote/home/skill/jiali 命令测试。全量 1469 tests 通过。
+
+**已知未实现的 LPC 边缘功能：**
+- 巫师小命令仍为简化（如 `clone` 不深拷贝技能状态等），本次以守卫行为正确性为主
+
+### Regression 批次（已完成，commit 1a5f7ab + fc1c24d）——P4 玩家命令回归
+
+在此前 1469 之上补行为测试，专挑"只有路由解析测试"的命令深挖，暴露并修复 **4 个真实运行时 bug**：
+
+**修复：**
+1. `hide`：`character |> put_character(character)` 实参写反 ⟶ 成功路径必炸 BadMapError（正确写法 `conn |> put_character(character)`）；别名 `Kantele.Character.Damage` 不存在（应为 `Kantele.Feature.Damage`）
+2. `summon`：`Damage.receive_damage(character, :jingli, …)` 用了不存在的伤害类型（Feature.Damage 仅支持 :qi/:jing）⟶ MatchError；且扣除的精力只赋局部变量从未落到 conn。重写为直算 PlayerMeta vitals；修复同款 put_character 反向问题
+3. `set`/`unset`（env）：PlayerMeta 无 `:env` 字段 ⟶ `%{meta | env: …}` 必 KeyError；补 `env: %{}` 字段（仅运行态不落库）。`set` 原 `parse("set", :run)` 不带参数解析器，实参永远到不了 run，`set x=y` 静默失效只见空列表；改为 `optional(empty() |> spaces() |> text(:rest))`，裸 `set` 仍走 list
+4. `daub` 涂毒测试 flaky：`check_self_poison` 用全局 RNG，技能 30 级 33% 概率自毒，断言偶发被"你一不小心弄到自己手上！"拦截；"技能足够涂毒到手"测试顶 `:rand.seed(:exsss, {42, 42, 42})` 固化
+
+**新增测试（47 个）：** `test/kantele/character/player_misc_commands_test.exs`（set/unset env、hide、summon、rideto、touxi、feed、femote + 各命令路由解析含 wizlist）。全量 **1516 tests / 0 failures**，连跑三个随机种子（912765/340224/828826）稳定。
+
+**已确认无剩余未测命令：** 扫描 lib/kantele/character/commands/ 全部文件，除 13 个 arch 占位 no-op（build/changeuser/grant/possess/purge/reboot/register/restore/setsk/shutdown/smash/throw/var，由 CommandProbe 白名单锁定其原样）外，所有真实命令均有行为测试。
+
+**已知未实现的 LPC 边缘功能：**
+- `summon` 不校验物品归属/装备态（简化直传）；`rideto` 不校验目标坐骑可用性细节；`feed`/`femote` 为 show 直发
+- `set` env 键值仅运行态保存，reload 不恢复（不落库）
+- `setsk`（arch 改技能等级）无 LPC 源可参考，仍留占位，未迁移
+
 
