@@ -57,7 +57,7 @@ defmodule Kantele.World.LoaderCombatTest do
   test "武器/护甲 meta 解析进 Item.Meta" do
     world = Kantele.World.Loader.load()
 
-    sword = Enum.find(world.items, &String.contains?(&1.name, "长剑"))
+    sword = Enum.find(world.items, &(&1.id == "liuxi:changjian"))
     assert sword != nil
     assert sword.meta.damage == 22
     assert sword.meta.skill_type == "sword"

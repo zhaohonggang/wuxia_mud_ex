@@ -113,6 +113,13 @@ defmodule Kantele.World.Item.Meta do
   背包扩展字段（Backpack 宿主接线，对应 `feature/user_storage.c`）：
 
   - `storage_bag` 存储扩展格数（整数；为 nil 表示非背包容器）
+
+  任务物品扩展字段（Q5 宝镜任务，对应 LPC set_task 物品 meta）：
+
+  - `no_sell` 不可出售（Seller/Dealer 拒绝语；非空即拦截）
+  - `no_put` 不可存入容器（backpack/item 命令展示拒绝语）
+  - `owner` 物主姓名（触发上交的 NPC 匹配名前缀，如 "清法比丘"）
+  - `owner_id` 物主 id（上交匹配优先键，如 "qingfa biqiu"）
   """
 
   defstruct [
@@ -130,7 +137,13 @@ defmodule Kantele.World.Item.Meta do
     :weapon_prop,
     :armor_prop,
     :flag,
-    :storage_bag
+    :storage_bag,
+
+    # 任务物品扩展（Q5 宝镜任务，对应 LPC set_task 物品的 meta 字段）
+    :no_sell,
+    :no_put,
+    :owner,
+    :owner_id
   ]
 
   @doc """

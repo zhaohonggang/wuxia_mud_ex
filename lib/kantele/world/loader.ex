@@ -771,7 +771,11 @@ defmodule Kantele.World.Loader do
       weapon_prop: Kantele.World.Item.Meta.sanitize_prop(Map.get(meta, :weapon_prop)),
       armor_prop: Kantele.World.Item.Meta.sanitize_prop(Map.get(meta, :armor_prop)),
       flag: Map.get(meta, :flag) || 1,
-      storage_bag: Map.get(meta, :storage_bag)
+      storage_bag: Map.get(meta, :storage_bag),
+      no_sell: Map.get(meta, :no_sell),
+      no_put: Map.get(meta, :no_put),
+      owner: Map.get(meta, :owner),
+      owner_id: Map.get(meta, :owner_id)
     }
 
     meta

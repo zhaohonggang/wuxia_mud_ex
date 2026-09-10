@@ -38,7 +38,7 @@ defmodule Kantele.World.LoaderMetaTest do
   test "无 meta 块的旧字段物品不受影响" do
     world = Kantele.World.Loader.load()
 
-    changjian = Enum.find(world.items, &String.contains?(&1.name, "长剑"))
+    changjian = Enum.find(world.items, &(&1.id == "liuxi:changjian"))
     assert changjian.meta.damage == 22
     assert changjian.meta.skill_type == "sword"
     # 未配置的新字段保持默认空值
@@ -51,7 +51,7 @@ defmodule Kantele.World.LoaderMetaTest do
   test "armor_type/weapon_prop/armor_prop 解析与归一化" do
     world = Kantele.World.Loader.load()
 
-    changjian = Enum.find(world.items, &String.contains?(&1.name, "长剑"))
+    changjian = Enum.find(world.items, &(&1.id == "liuxi:changjian"))
     assert changjian.meta.weapon_prop == %{attack: 3}
     assert changjian.meta.armor_type == nil
 

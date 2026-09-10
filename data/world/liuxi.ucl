@@ -43,6 +43,20 @@ rooms "guangchang" {
   z = 0
 }
 
+rooms "zixu_guan" {
+  name = "子虚观 Zi Xu Temple"
+  description = "一座清幽的道观，殿内供着三清神像，香案上青烟袅袅。柳溪镇的居民常说，观中的子虚道人有未卜先知之能。A quiet Taoist temple beside the hill. Smoke curls from the incense burner beneath statues of the Three Pure Ones and the townsfolk say that Taoist Zi Xu can see what others cannot."
+
+  # 道门清修之地禁斗；不进 task carrier 出没池
+  flags = [
+    "no_fight"
+  ]
+
+  x = -1
+  y = 2
+  z = 0
+}
+
 room_characters "guangchang" {
   room_id = rooms.guangchang.id
 
@@ -505,6 +519,472 @@ items "misc/invasion-badge" {
     value = 0
     weight = 50
     unit = "枚"
+  }
+}
+
+# Q5 宝镜任务物品：由子虚道人发放乾坤宝镜，30 个任务物品各有物主（对应 LPC /adm/daemons/task/obj/*.c）
+items "task/ahjing" {
+  name = "阿含经"
+  description = "这是清法比丘的阿含经(ahjing)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "清法比丘"
+    owner_id = "qingfa biqiu"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 100
+    unit = "本"
+  }
+}
+
+items "task/baobei" {
+  name = "宝贝"
+  description = "这是葵花太监的宝贝(baobei)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "葵花太监"
+    owner_id = "kuihua taijian"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 50
+    unit = "个"
+  }
+}
+
+items "task/bianfa" {
+  name = "云龙鞭法"
+  description = "这是史松的云龙鞭法(bianfa)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "史松"
+    owner_id = "shi song"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 100
+    unit = "本"
+  }
+}
+
+items "task/btjian" {
+  name = "镔铁长剑"
+  description = "这是冯锡范的镔铁长剑(btjian)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "冯锡范"
+    owner_id = "feng xifan"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 300
+    unit = "把"
+  }
+}
+
+items "task/buyi" {
+  name = "布衣"
+  description = "这是北丑的布衣(buyi)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "北丑"
+    owner_id = "bei chou"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 200
+    unit = "件"
+  }
+}
+
+items "task/canpian" {
+  name = "九阴残篇"
+  description = "这是黄裳的九阴残篇(canpian)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "黄裳"
+    owner_id = "huang shang"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 80
+    unit = "本"
+  }
+}
+
+items "task/cgtu" {
+  name = "春宫图"
+  description = "这是欧阳克的春宫图(cgtu)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "欧阳克"
+    owner_id = "ouyang ke"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 60
+    unit = "幅"
+  }
+}
+
+items "task/chenfu" {
+  name = "尘拂"
+  description = "这是子虚道人的尘拂(chenfu)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "子虚道人"
+    owner_id = "zixu daoren"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 200
+    unit = "柄"
+  }
+}
+
+items "task/danyumo" {
+  name = "丹玉石"
+  description = "这是平一指的丹玉石(danyumo)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "平一指"
+    owner_id = "ping yizhi"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 100
+    unit = "块"
+  }
+}
+
+items "task/daofa" {
+  name = "五虎刀法"
+  description = "这是茅十八的五虎刀法(daofa)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "茅十八"
+    owner_id = "mao shiba"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 100
+    unit = "本"
+  }
+}
+
+items "task/ddjing" {
+  name = "道德经"
+  description = "这是宋远桥的道德经(ddjing)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "宋远桥"
+    owner_id = "song yuanqiao"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 150
+    unit = "本"
+  }
+}
+
+items "task/diqi" {
+  name = "丽春院地契"
+  description = "这是韦春芳的丽春院地契(diqi)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "韦春芳"
+    owner_id = "wei chunfang"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 30
+    unit = "张"
+  }
+}
+
+items "task/frjz" {
+  name = "芙蓉金针"
+  description = "这是陆菲青的芙蓉金针(frjz)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "陆菲青"
+    owner_id = "lu feiqing"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 20
+    unit = "枚"
+  }
+}
+
+items "task/gflp" {
+  name = "郭府令牌"
+  description = "这是武敦儒的郭府令牌(gflp)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "武敦儒"
+    owner_id = "wu dunru"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 120
+    unit = "块"
+  }
+}
+
+items "task/guanyin" {
+  name = "长安府官印"
+  description = "这是梁兴录的长安府官印(guanyin)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "梁兴录"
+    owner_id = "liang xinglu"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 200
+    unit = "枚"
+  }
+}
+
+items "task/jgjing" {
+  name = "金刚经"
+  description = "这是一灯大师的金刚经(jgjing)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "一灯大师"
+    owner_id = "yideng dashi"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 100
+    unit = "本"
+  }
+}
+
+items "task/jiapu" {
+  name = "唐家家谱"
+  description = "这是唐楠的唐家家谱(jiapu)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "唐楠"
+    owner_id = "tang nan"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 60
+    unit = "本"
+  }
+}
+
+items "task/jiaxin" {
+  name = "家信"
+  description = "这是陆冠英的家信(jiaxin)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "陆冠英"
+    owner_id = "lu guanying"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 10
+    unit = "封"
+  }
+}
+
+items "task/jlyy" {
+  name = "金缕玉衣"
+  description = "这是曾柔的金缕玉衣(jlyy)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "曾柔"
+    owner_id = "zeng rou"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 400
+    unit = "件"
+  }
+}
+
+items "task/lingpai" {
+  name = "天地会令牌"
+  description = "这是陈近南的天地会令牌(lingpai)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "陈近南"
+    owner_id = "chen jinnan"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 100
+    unit = "块"
+  }
+}
+
+items "task/mujian" {
+  name = "木剑"
+  description = "这是独孤求败的木剑(mujian)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "独孤求败"
+    owner_id = "dugu qiubai"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 200
+    unit = "把"
+  }
+}
+
+items "task/slling" {
+  name = "神龙令"
+  description = "这是胖头陀的神龙令(slling)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "胖头陀"
+    owner_id = "pang toutuo"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 80
+    unit = "枚"
+  }
+}
+
+items "task/szdao" {
+  name = "杀猪刀"
+  description = "这是钱老本的杀猪刀(szdao)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "钱老本"
+    owner_id = "qian laoben"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 250
+    unit = "把"
+  }
+}
+
+items "task/szjing" {
+  name = "三字经"
+  description = "这是朱熹的三字经(szjing)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "朱熹"
+    owner_id = "zhu xi"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 50
+    unit = "本"
+  }
+}
+
+items "task/txshan" {
+  name = "檀香扇"
+  description = "这是刘素素的檀香扇(txshan)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "刘素素"
+    owner_id = "liu susu"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 40
+    unit = "把"
+  }
+}
+
+items "task/xiaopu" {
+  name = "箫谱"
+  description = "这是黄药师的箫谱(xiaopu)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "黄药师"
+    owner_id = "huang yaoshi"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 60
+    unit = "本"
+  }
+}
+
+items "task/xuegui" {
+  name = "国子监学规"
+  description = "这是李伯元的国子监学规(xuegui)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "李伯元"
+    owner_id = "li boyuan"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 100
+    unit = "本"
+  }
+}
+
+items "task/yandai" {
+  name = "旱烟袋"
+  description = "这是霍山的旱烟袋(yandai)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "霍山"
+    owner_id = "huo shan"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 60
+    unit = "根"
+  }
+}
+
+items "task/yanzhi" {
+  name = "胭脂水粉"
+  description = "这是阿庆嫂的胭脂水粉(yanzhi)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "阿庆嫂"
+    owner_id = "aqing sao"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 80
+    unit = "盒"
+  }
+}
+
+items "task/zhangben" {
+  name = "账本"
+  description = "这是杨永福的账本(zhangben)。"
+  verbs = ["get", "drop"]
+  meta = {
+    owner = "杨永福"
+    owner_id = "yang yongfu"
+    no_sell = 1
+    no_put = 1
+    value = 10
+    weight = 100
+    unit = "本"
+  }
+}
+
+# Q5 宝镜：子虚道人发放的定位之物（对应 LPC /adm/daemons/task/mirror.c）
+items "item/mirror" {
+  name = "乾坤宝镜 Qiankun Baojing"
+  description = "这是道门至宝乾坤镜，据说内蕴乾坤，可定位万物。"
+  verbs = ["get", "drop"]
+  meta = {
+    no_sell = 1
+    no_put = 1
+    value = 100
+    weight = 10
+    unit = "面"
+    material = "tian jing"
   }
 }
 

@@ -249,12 +249,11 @@ defmodule Kantele.World.MirrorDaemon do
       case Kantele.World.Items.get(id) do
         {:ok, item} ->
           name = String.replace(id, "liuxi:task/", "")
-          meta = item.meta || %{}
           {
             name,
             %{
-              owner: meta["owner"] || "未知目标",
-              owner_id: meta["owner_id"] || "unknown",
+              owner: item.meta.owner || "未知目标",
+              owner_id: item.meta.owner_id || "unknown",
               description: item.description || "",
               item_id: id
             }

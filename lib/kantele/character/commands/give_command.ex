@@ -148,9 +148,8 @@ defmodule Kantele.Character.GiveCommand do
   end
 
   defp valid_task_target?(item, npc) do
-    meta = item.meta || %{}
-    target_id = meta["owner_id"]
-    target_id && (npc.id == target_id || npc.name == meta["owner"])
+    target_id = item.meta.owner_id
+    target_id && (npc.id == target_id || npc.name == item.meta.owner)
   end
 
   defp settle_task_reward(conn, item_instance, item, target_npc) do

@@ -834,11 +834,15 @@ docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app/lpc_exampl
 | **Q5-T2** 任务载体 NPC | `TaskCarrier` NPC 模板（随机 liuxi 非 no_fight 房间、等级 1-15 随机加强属性、背包含 1 个 task 物品、无 loot、无重生）；复用 `Kalevala.World.start_character` + `SpawnController` | 新建 `lib/kantele/world/mirror_daemon/task_carrier.ex`；改 `mirror_daemon.ex` 生成 | 单测：NPC 生成、随机房间、属性加强、物品在背包 |
 | **Q5-T3** 玩家交互 NPC | 子虚道人（`zixu`）驻守固定房间：`ask mirror/宝镜` 给乾坤宝镜（每人限 1 个，记 `mirror_count`）、`ask 心魔幻境` 传送迷宫（后续）；玩家 `give task物品 to NPC` 触发 `do_return` 奖励（exp/pot/score/银子 + 里程碑仙丹） | 新建 `lib/kantele/world/mirror_daemon/zixu.ex`、`lib/kantele/character/commands/give_task.ex`；改 `commands.ex` 路由；子虚道人挂 supervision | 集成测试：领镜限 1、上交奖励、里程碑仙丹发放 |
 
-**当前状态（2026-09-09）**：Q5-T0 待开工。
+**当前状态（2026-09-10）**：
+- ✅ Q5-T0（MirrorDaemon）：`lib/kantele/world/mirror_daemon.ex` + `behaviour.ex` GenServer（周期 180s 可注入、current_round/start_round/stop_round/status、record、schedule_once 链式、safe_run），挂 supervision。单测覆盖状态机/schedule_once/广播/record。
+- ✅ Q5-T1（任务物品数据层）：`data/world/liuxi.ucl` 新增 items "task/*" 30 个（名称/owner/owner_id 对齐 LPC `/adm/daemons/task/obj/*.c`；`no_sell/no_put`=1、value=10、weight/unit 合理值）+ `items "item/mirror"`（乾坤宝镜，LPC mirror.c：unit 面、weight 10、material tian jing、no_sell/no_put）+ `rooms "zixu_guan"`（子虚观，x=-1 y=2、flags no_fight，避开 carrier 出没池）。`loader.ex` parse_item_meta 与 `Item.Meta` struct 增 `owner/owner_id/no_sell/no_put` 透传。**注意**：elias UCL 语法中字符串内 `;` 是独立 token（半角逗号紧跟空格也危险），描述文案须避开；随物品数越过 32 键阈值，world.items 的 Map.values 顺序变为进程随机，凡按 `contains(名)` 找唯一物品的测试已改按 `liuxi:changjian` 等 id 精确匹配。全量 2292 tests 0 failures（seed 731933/820093/42/1）。
+- ⏳ Q5-T2（任务载体 NPC）：`task_carrier.ex` 已实现（802d875），背包含 task 物品、无 loot、非重生、复用 SpawnController——收尾待整合测试。
+- ⏳ Q5-T3（玩家交互 NPC）：`zixu.ex` 骨架已建（@mirror_item "liuxi:item/mirror"、@zixu_guan "liuxi:zixu_guan"，房间现已预置）；ask 领镜限 1 / 上交结算（give_command 已走 `item.meta.owner_id` 匹配）/ 里程碑仙丹 / 心魔幻境占位 待整合测试与挂 supervision。
 
 **v1 简化（对 LPC 的偏差，记录在案）**：
 - 宝镜定位：LPC 宝镜有 `power` 灵力递减机制；v1 暂不做定位 UI，玩家靠 `look`/广播线索找 NPC。
-- 心魔幻境（迷宫副本）：LPC `ask_maze` 进 MAZE；v1 仅占位 `ask_maze` 回复"暂未开放"。
+- 领镜：乾坤宝镜（item/mirror）已预置；领镜限 1 逻辑在 zixu 交互整合时落 `mirror_count`。
 - IP 限制：LPC 宝镜按 IP 限 1 个；v1 按角色限 1 个（`mirror_count` 字段）。
 - 任务 NPC 伪装：LPC 有"拾荒者"弱鸡伪装；v1 统一用加强版 `TaskCarrier`。
 - 镜子 clone 销毁：LPC 每轮销毁旧物品重建；v1 直接生成新实例，旧的随 NPC 销毁。
