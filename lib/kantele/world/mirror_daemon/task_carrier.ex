@@ -12,7 +12,6 @@ defmodule Kantele.World.MirrorDaemon.TaskCarrier do
   alias Kantele.Character.{NPCConfig, NonPlayerMeta, Stats, Vitals}
   alias Kantele.Character.Combat
   alias Kalevala.World.Item.Instance
-  alias Kantele.World.Items
 
   @liuxi_zone "liuxi"
 
@@ -34,8 +33,8 @@ defmodule Kantele.World.MirrorDaemon.TaskCarrier do
     15 => %{qi: 36_000, sk_lvl: 900, apply_mult: 1}
   }
 
-  @doc "构建任务载体 NPC 角色结构（携带指定 task 物品）"
-  def build_carrier(task_name, task_def, room_id) do
+  @doc "构建任务载体 NPC 角色结构（携带指定 task 物品；zone_id 可注入供测试）"
+  def build_carrier(task_name, task_def, room_id, zone_id \\ @liuxi_zone) do
     level = :rand.uniform(15)
     level_stat = Map.get(@level_stats, level, Map.get(@level_stats, 1))
 
@@ -51,7 +50,7 @@ defmodule Kantele.World.MirrorDaemon.TaskCarrier do
 
     meta =
       %NonPlayerMeta{
-        zone_id: @liuxi_zone,
+        zone_id: zone_id,
         initial_events: [],
         vitals: %Vitals{
           qi: qi,

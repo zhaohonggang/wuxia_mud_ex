@@ -11,12 +11,13 @@ defmodule Kantele.World.MirrorDaemon do
   alias Kantele.World.MirrorDaemon.Behaviour
   alias Kantele.Communication
   alias Kantele.World.ZoneCache
-  alias Kantele.World.Story.Gift
-  alias Kantele.World.Items
+
+  @behaviour Behaviour
 
   @default_start_delay 60_000       # 1 min after boot
   @default_round_interval 180_000   # 3 min between rounds (LPC 180s)
-  @total_tasks 30                   # UCL 中定义的 task 物品数
+  @total_tasks 30                   # UCL 中定义的 task 物品数（可通过 opts 覆盖供测试）
+  @default_zone "liuxi"             # 任务散落区域（可通过 opts 覆盖供测试）
 
   @impl Behaviour
   def prompt(), do: "{color foreground=\"yellow\"}【 宝  镜 】{/color}"
@@ -75,7 +76,7 @@ defmodule Kantele.World.MirrorDaemon do
 
   def child_spec(opts) do
     %{
-      id: __MODULE__,
+      id: opts[:id] || opts[:name] || __MODULE__,
       start: {__MODULE__, :start_link, [opts]},
       type: :worker,
       restart: :permanent,
@@ -93,6 +94,8 @@ defmodule Kantele.World.MirrorDaemon do
       init_state()
       |> Map.put(:start_delay, Keyword.get(opts, :start_delay, @default_start_delay))
       |> Map.put(:round_interval, Keyword.get(opts, :round_interval, @default_round_interval))
+      |> Map.put(:zone_id, Keyword.get(opts, :zone_id, @default_zone))
+      |> Map.put(:total_tasks, Keyword.get(opts, :total_tasks, @total_tasks))
 
     # 开机延迟后首轮
     schedule_next_round(state)
@@ -129,7 +132,7 @@ defmodule Kantele.World.MirrorDaemon do
     task = Map.get(state.tasks, task_name)
 
     cond do
-      task && task.alive ->
+task && task.alive ->
         new_task = %{task | alive: false}
         new_state = %{state | tasks: Map.put(state.tasks, task_name, new_task), total_completed: state.total_completed + 1}
 
@@ -138,13 +141,17 @@ defmodule Kantele.World.MirrorDaemon do
         )
 
         # 里程碑奖励在 give_task 命令里已处理
-        # 这里只判定全完成
-        if new_state.total_completed >= @total_tasks do
-          new_state = %{new_state | all_completed: true, round_active: false}
-          announce(
-            "{color foreground=\"yellow\"}【 宝  镜 】{/color} 本轮宝镜任务已全部完成！\n"
-          )
-        end
+        # 这里只判定全完成（注意：Elixir if 块内的重绑定不会外泄，需用表达式返回值）
+        new_state =
+          if new_state.total_completed >= state.total_tasks do
+            announce(
+              "{color foreground=\"yellow\"}【 宝  镜 】{/color} 本轮宝镜任务已全部完成！\n"
+            )
+
+            %{new_state | all_completed: true, round_active: false}
+          else
+            new_state
+          end
 
         {:noreply, new_state}
 
@@ -152,7 +159,7 @@ defmodule Kantele.World.MirrorDaemon do
         {:noreply, state}
 
       true ->
-        Logger.debug("mirror_daemon: unknown/already-completed task #{task_name}")
+        Logger.warning("MIRROR_CAST_UNKNOWN name=#{task_name}")
         {:noreply, state}
     end
   end
@@ -163,11 +170,17 @@ defmodule Kantele.World.MirrorDaemon do
   end
 
   def handle_call(:start_round, _from, state) do
-    {:reply, start_round(state), state}
+    case start_round(state) do
+      {:ok, new_state} -> {:reply, {:ok, new_state}, new_state}
+      {:error, reason} -> {:reply, {:error, reason}, state}
+    end
   end
 
   def handle_call(:stop_round, _from, state) do
-    {:reply, stop_round(state), state}
+    case stop_round(state) do
+      {:ok, new_state} -> {:reply, {:ok, new_state}, new_state}
+      {:error, reason} -> {:reply, {:error, reason}, state}
+    end
   end
 
   # ---- 私有 ----
@@ -190,46 +203,60 @@ defmodule Kantele.World.MirrorDaemon do
 
   defp spawn_tasks(state, _opts) do
     # 从 UCL 加载所有 task 物品定义
-    task_items = load_task_items()
+    task_items = load_task_items(state)
 
-    room_ids = pick_spawn_rooms()
+    room_ids = pick_spawn_rooms(state)
 
-    Enum.reduce(task_items, state, fn {task_name, task_def}, acc ->
-      room_id = Enum.random(room_ids)
-      npc_name = task_def.owner
-      npc_id = task_def.owner_id
+    if room_ids == [] do
+      Logger.warn("mirror_daemon: no spawnable rooms in zone #{state.zone_id}, aborting round")
+      state
+    else
+      Enum.reduce(task_items, state, fn {task_name, task_def}, acc ->
+        room_id = Enum.random(room_ids)
+        npc_name = task_def.owner
+        npc_id = task_def.owner_id
 
-      # 创建 TaskCarrier NPC（携带该 task 物品）
-      invader = Kantele.World.MirrorDaemon.TaskCarrier.build_carrier(
-        task_name, task_def, room_id
-      )
+        # 创建 TaskCarrier NPC（携带该 task 物品）
+        invader = Kantele.World.MirrorDaemon.TaskCarrier.build_carrier(
+          task_name, task_def, room_id, state.zone_id
+        )
 
-      config = [
-        supervisor_name: Kalevala.World.CharacterSupervisor.global_name(invader.meta.zone_id),
-        communication_module: Kantele.Communication,
-        initial_controller: Kantele.Character.SpawnController,
-        quit_view: {Kantele.Character.QuitView, "disconnected"}
-      ]
+        config = [
+          supervisor_name: Kalevala.World.CharacterSupervisor.global_name(invader.meta.zone_id),
+          communication_module: Kantele.Communication,
+          initial_controller: Kantele.Character.SpawnController,
+          quit_view: {Kantele.Character.QuitView, "disconnected"}
+        ]
 
-      case Kalevala.World.start_character(invader, config) do
-        {:ok, pid} ->
-          task_info = %{
-            pid: pid,
-            room_id: room_id,
-            npc_name: npc_name,
-            npc_id: npc_id,
-            owner: task_def.owner,
-            owner_id: task_def.owner_id,
-            alive: true
-          }
-          %{acc | tasks: Map.put(acc.tasks, task_name, task_info)}
+        result =
+          try do
+            Kalevala.World.start_character(invader, config)
+          rescue
+            e -> {:error, {:rescue, Exception.message(e)}}
+          catch
+            :exit, reason -> {:error, {:exit, inspect(reason)}}
+          end
 
-        {:error, reason} ->
-          Logger.warn("mirror_daemon spawn task carrier for #{task_name} failed - #{inspect(reason)}")
-          acc
-      end
-    end)
-    |> then_announce_spawned()
+        case result do
+          {:ok, pid} ->
+            task_info = %{
+              pid: pid,
+              room_id: room_id,
+              npc_name: npc_name,
+              npc_id: npc_id,
+              owner: task_def.owner,
+              owner_id: task_def.owner_id,
+              alive: true
+            }
+            %{acc | tasks: Map.put(acc.tasks, task_name, task_info)}
+
+          {:error, reason} ->
+            Logger.warn("mirror_daemon spawn task carrier for #{task_name} failed - #{inspect(reason)}")
+            acc
+        end
+      end)
+      |> then_announce_spawned()
+    end
   end
 
   defp then_announce_spawned(state) do
@@ -241,14 +268,16 @@ defmodule Kantele.World.MirrorDaemon do
     state
   end
 
-  defp load_task_items() do
-    # 从 Items 缓存中读取所有 "liuxi:task/*" 物品
+  defp load_task_items(state) do
+    # 从 Items 缓存中读取 zone 下所有 "zone:task/*" 物品
+    prefix = "#{state.zone_id}:task/"
+
     Kantele.World.Items.keys()
-    |> Enum.filter(fn id -> String.starts_with?(id, "liuxi:task/") end)
+    |> Enum.filter(fn id -> String.starts_with?(id, prefix) end)
     |> Enum.map(fn id ->
       case Kantele.World.Items.get(id) do
         {:ok, item} ->
-          name = String.replace(id, "liuxi:task/", "")
+          name = String.replace(id, prefix, "")
           {
             name,
             %{
@@ -265,18 +294,17 @@ defmodule Kantele.World.MirrorDaemon do
     |> Enum.into(%{})
   end
 
-  defp pick_spawn_rooms() do
-    zone = ZoneCache.get("liuxi")
-
-    case zone do
-      nil ->
-        ["liuxi:guangchang"]
-      %Kantele.World.Zone{rooms: rooms} ->
+  defp pick_spawn_rooms(state) do
+    case ZoneCache.get(state.zone_id) do
+      {:ok, %Kantele.World.Zone{rooms: rooms}} ->
         rooms
         |> Enum.filter(fn room ->
              room.flags && not Enum.member?(room.flags, "no_fight")
            end)
         |> Enum.map(& &1.id)
+
+      _ ->
+        ["#{state.zone_id}:guangchang"]
     end
   end
 
