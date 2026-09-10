@@ -52,6 +52,10 @@ defmodule Kantele.Character.Events do
       event("give/result", :result)
     end
 
+    module(MirrorEvent) do
+      event("mirror/give", :give_result)
+    end
+
     module(AssistEvent) do
       event("assist/request", :request)
     end

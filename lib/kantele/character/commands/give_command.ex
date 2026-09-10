@@ -156,7 +156,7 @@ defmodule Kantele.Character.GiveCommand do
     character = conn.character
 
     # 1. 从背包移除物品实例
-    conn = remove_item(conn, character, item_instance)
+    conn = remove_item(conn, item_instance)
 
     # 2. 计算奖励（参考 LPC do_return）
     mirror_count = Map.get(character.meta.stats, :mirror_count, 0) + 1
@@ -181,21 +181,21 @@ defmodule Kantele.Character.GiveCommand do
     kar = Map.get(character.meta.stats, :kar, 20)
     score = 10 + :rand.uniform(kar)
 
-    # 发放奖励
-    conn = add_exp(conn, character, exp)
-    conn = add_pot(conn, character, pot)
-    conn = add_score(conn, character, score)
-    conn = give_silver(conn, character, 10)
-    conn = update_mirror_count(conn, character, new_count)
+    # 3. 发放奖励（每步都基于 conn 当前角色，避免相互覆盖）
+    conn = add_exp(conn, exp)
+    conn = add_pot(conn, pot)
+    conn = add_score(conn, score)
+    conn = give_silver(conn, 10)
+    conn = update_mirror_count(conn, new_count)
 
-    # 里程碑奖励
-    conn = check_milestone_reward(conn, character, new_count)
+    # 4. 里程碑奖励
+    conn = check_milestone_reward(conn, new_count)
 
-    # 通知 MirrorDaemon
+    # 5. 通知 MirrorDaemon
     task_name = String.replace(item.id, "liuxi:task/", "")
     MirrorDaemon.on_task_completed(task_name, %{id: character.id, name: character.name})
 
-    # 广播
+    # 6. 广播
     conn
     |> render(CommandView, "text", %{
       text: "你将#{item.name}交给了#{target_npc.name}。\n" <>
@@ -205,17 +205,22 @@ defmodule Kantele.Character.GiveCommand do
     |> prompt(CommandView, "prompt", %{})
   end
 
-  defp remove_item(conn, character, item_instance) do
+  defp current_character(conn), do: conn.private.update_character || conn.character
+
+  defp remove_item(conn, item_instance) do
+    character = current_character(conn)
     new_inventory = Enum.reject(character.inventory, fn inst -> inst.id == item_instance.id end)
     conn |> put_character(%{character | inventory: new_inventory})
   end
 
-  defp add_exp(conn, character, exp) do
+  defp add_exp(conn, exp) do
+    character = current_character(conn)
     new_stats = Map.put(character.meta.stats, :combat_exp, character.meta.stats.combat_exp + exp)
     conn |> put_character(%{character | meta: %{character.meta | stats: new_stats}})
   end
 
-  defp add_pot(conn, character, pot) do
+  defp add_pot(conn, pot) do
+    character = current_character(conn)
     limit = Map.get(character.meta.stats, :potential_limit, 10000)
     current = character.meta.stats.potential
     new_pot = min(current + pot, limit)
@@ -223,22 +228,25 @@ defmodule Kantele.Character.GiveCommand do
     conn |> put_character(%{character | meta: %{character.meta | stats: new_stats}})
   end
 
-  defp add_score(conn, character, score) do
+  defp add_score(conn, score) do
+    character = current_character(conn)
     new_stats = Map.put(character.meta.stats, :score, character.meta.stats.score + score)
     conn |> put_character(%{character | meta: %{character.meta | stats: new_stats}})
   end
 
-  defp give_silver(conn, character, amount) do
+  defp give_silver(conn, amount) do
+    character = current_character(conn)
     new_stats = Map.put(character.meta.stats, :silver, (Map.get(character.meta.stats, :silver, 0) + amount))
     conn |> put_character(%{character | meta: %{character.meta | stats: new_stats}})
   end
 
-  defp update_mirror_count(conn, character, count) do
+  defp update_mirror_count(conn, count) do
+    character = current_character(conn)
     new_stats = Map.put(character.meta.stats, :mirror_count, count)
     conn |> put_character(%{character | meta: %{character.meta | stats: new_stats}})
   end
 
-  defp check_milestone_reward(conn, character, count) do
+  defp check_milestone_reward(conn, count) do
     gift_id = case count do
       100 -> random_gift(["liuxi:gift/perwan", "liuxi:gift/kardan", "liuxi:etc/prize4", "liuxi:etc/prize5"])
       200 -> random_gift(["liuxi:gift/str2", "liuxi:gift/int2", "liuxi:gift/con2", "liuxi:gift/dex2"])
@@ -249,13 +257,23 @@ defmodule Kantele.Character.GiveCommand do
     end
 
     if gift_id do
-      case Kantele.World.Story.Gift.drop_to_random_room(gift_id, "一#{Map.get(Items.get!(gift_id).meta, "unit", "个")}#{Items.get!(gift_id).name}从天而降！", fn _ -> true end) do
+      case Kantele.World.Story.Gift.drop_to_random_room(
+             gift_id,
+             gift_drop_text(gift_id),
+             fn _ -> true end
+           ) do
         {:ok, _player} -> :ok
         _ -> :ok
       end
     end
 
     conn
+  end
+
+  defp gift_drop_text(gift_id) do
+    item = Items.get!(gift_id)
+    unit = Map.get(item.meta, :unit) || "个"
+    "一#{unit}#{item.name}从天而降！"
   end
 
   defp random_gift(list) do

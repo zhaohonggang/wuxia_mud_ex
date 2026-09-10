@@ -445,6 +445,278 @@ items "gift/con2" {
   }
 }
 
+# Q5 里程碑赠礼：仙丹/宝物（对应 LPC /clone/fam/gift、/clone/fam/etc、/clone/fam/item、/clone/fam/obj、/clone/fam/max）
+items "gift/perwan" {
+  name = "萦香丸 Yingxiang Wan"
+  description = "一颗圆圆的丹丸，据说吃了可以变美，是每个女子梦寐以求的灵丹妙药。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+  meta = {
+    value = 10000
+    weight = 200
+    unit = "颗"
+    medicine = {
+      qi = 800
+    }
+  }
+}
+
+items "gift/kardan" {
+  name = "福缘丹 Fuyuan Dan"
+  description = "一颗圆圆的仙丹，据说吃了可以增加福缘，运气会慢慢好起来。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+  meta = {
+    value = 10000
+    weight = 200
+    unit = "颗"
+    medicine = {
+      qi = 800
+    }
+  }
+}
+
+items "etc/prize4" {
+  name = "聖杯 Shengbei"
+  description = "純銀所制的聖杯，杯內盛著滿滿一瓶聖水，似乎可以賣個好價錢。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+  meta = {
+    value = 500000
+    weight = 1000
+    unit = "只"
+  }
+}
+
+items "etc/prize5" {
+  name = "神聖血清 Shengxueqing"
+  description = "一瓶散發著異香的神聖血清，據說飲下可祛除一切疲憊。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+  meta = {
+    value = 300000
+    weight = 1000
+    unit = "瓶"
+  }
+}
+
+items "gift/str3" {
+  name = "蚩尤诛元仙丹 Chiyou Zhuyuan Xiandan"
+  description = "传说此丹乃是天宫中的神品，凡人吃了可以平增膂力，双臂几乎爆裂般充满力量。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+  meta = {
+    value = 100000
+    weight = 50
+    unit = "颗"
+    medicine = {
+      qi = 1000
+      stats = {
+        str = 1
+      }
+    }
+  }
+}
+
+items "gift/int3" {
+  name = "神恩通慧仙丹 Shenen Tonghui Xiandan"
+  description = "传说此丹乃是天宫中的神品，凡人吃了可以平增悟性，灵台处一片空明。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+  meta = {
+    value = 100000
+    weight = 50
+    unit = "颗"
+    medicine = {
+      qi = 1000
+      stats = {
+        int = 1
+      }
+    }
+  }
+}
+
+items "gift/con3" {
+  name = "洗髓再造仙丹 Xisui Zaizao Xiandan"
+  description = "传说此丹乃是天宫中的神品，凡人吃了可以平增根骨，浑身骨骼响个不停。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+  meta = {
+    value = 100000
+    weight = 50
+    unit = "颗"
+    medicine = {
+      qi = 1000
+      stats = {
+        con = 1
+      }
+    }
+  }
+}
+
+items "gift/dex3" {
+  name = "破阳无极仙丹 Poyang Wuji Xiandan"
+  description = "传说此丹乃是天宫中的神品，凡人吃了可以平增身法，全身轻飘飘如腾云驾雾。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+  meta = {
+    value = 100000
+    weight = 50
+    unit = "颗"
+    medicine = {
+      qi = 1000
+      stats = {
+        dex = 1
+      }
+    }
+  }
+}
+
+items "item/xuantie" {
+  name = "天山玄铁 Tianshan Xuantie"
+  description = "世间极为罕见的玄铁，采自天山，着手极为沉重，熔之可铸神兵。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+  meta = {
+    value = 30000
+    weight = 20000
+    unit = "块"
+    material = "stone"
+  }
+}
+
+items "etc/bipo" {
+  name = "碧魄冰晶 Bipo Bingjing"
+  description = "晶莹剔透的寒晶，寒气刺骨，乃天界极品，可镶嵌于兵器之上。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+  meta = {
+    value = 12000
+    weight = 300
+    unit = "颗"
+  }
+}
+
+items "etc/huanshi" {
+  name = "幻石 Huanshi"
+  description = "一块神奇的幻石，散射出七彩光芒，据说能迷乱人心。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+  meta = {
+    value = 8000
+    weight = 300
+    unit = "块"
+  }
+}
+
+items "etc/binghuozhu" {
+  name = "冰火珠 Binghuo Zhu"
+  description = "拳头大小的圆形宝珠，捧在手心只觉忽冷忽热，内含奇异魔力。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+  meta = {
+    value = 9000
+    weight = 300
+    unit = "颗"
+  }
+}
+
+items "etc/leishenzhu" {
+  name = "雷神珠 Leishen Zhu"
+  description = "一颗圆形的神珠，透射出绚目的光芒，隐隐有雷声滚过。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+  meta = {
+    value = 9000
+    weight = 300
+    unit = "颗"
+  }
+}
+
+items "obj/guo" {
+  name = "许愿无花果 Xuyuan Wuhuaguo"
+  description = "传说中的仙果，先许愿再吃，据说能帮人消除以往吃丹失败的痛苦经历。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+  meta = {
+    value = 100000
+    weight = 10
+    unit = "颗"
+    no_sell = 1
+  }
+}
+
+items "max/xuanhuang" {
+  name = "玄黄紫箐丹 Xuanhuang Dan"
+  description = "一颗紫中泛黄的精致奇丹，具有神话般的功效，吃了能平增数十年的功力。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+  meta = {
+    value = 100000
+    weight = 300
+    unit = "颗"
+    medicine = {
+      qi = 2000
+    }
+  }
+}
+
+items "max/longjia" {
+  name = "子午龙甲丹 Ziwu Longjia Dan"
+  description = "灵药中的神品，服用后不但可以医治任何内伤，而且可平增一个甲子以上的功力。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+  meta = {
+    value = 100000
+    weight = 300
+    unit = "颗"
+    medicine = {
+      qi = 2000
+    }
+  }
+}
+
 # Q3 剧情赠礼：两卷奇书（对应 LPC /clone/book/mengzi、/clone/book/guigu）
 items "book/mengzi" {
   name = "孟子 Mengzi"

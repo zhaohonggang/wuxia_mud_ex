@@ -127,4 +127,48 @@ defmodule Kantele.World.MirrorDaemon.Zixu do
 
     Kalevala.World.start_character(invader, config)
   end
+
+  @doc """
+  NPC 侧问询应答（Q5-T3，NpcAskEvent 对 atom 问询的分发目标）：
+
+  - `:ask_mirror` → 发 `mirror/give` 事件给 asker（限 1 判定在玩家侧 MirrorEvent）
+  - `:ask_maze` → 返回占位文本
+  """
+  def respond_to_ask(conn, %{reply_to: reply_to, asker_id: asker_id}, answer) do
+    case answer do
+      :ask_mirror ->
+        send(reply_to, %Kalevala.Event{
+          topic: "mirror/give",
+          data: %{
+            npc_name: conn.character.name,
+            item_id: @mirror_item,
+            asker_id: asker_id
+          }
+        })
+
+        conn
+
+      :ask_maze ->
+        publish_tell(
+          conn,
+          asker_id,
+          "子虚道人微微颔首：心魔幻境尚在祭炼之中，且先持宝镜寻回那三十件江湖失物。\n"
+        )
+
+      _ ->
+        conn
+    end
+  end
+
+  defp publish_tell(conn, asker_id, text) do
+    Kalevala.Character.Conn.publish_message(
+      conn,
+      "characters:#{asker_id}",
+      text,
+      [],
+      &publish_error/2
+    )
+  end
+
+  defp publish_error(conn, _error), do: conn
 end

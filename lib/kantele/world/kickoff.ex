@@ -147,6 +147,9 @@ defmodule Kantele.World.Kickoff do
         Enum.each(world.rooms, &start_room/1)
         Enum.each(world.characters, &start_character/1)
 
+        # Q5-T3：子虚道人常驻子虚观（随世界加载挂进 liuxi 区角色监督树）
+        spawn_zixu()
+
         Enum.each(help_topics, fn help_topic ->
           Kalevala.Help.put(help_topic)
         end)
@@ -344,6 +347,12 @@ defmodule Kantele.World.Kickoff do
     ]
 
     Kalevala.World.start_character(character, config)
+  end
+
+  # 子虚道人：不随 UCL 数据定义，而是在世界就绪后按代码模板启动
+  defp spawn_zixu() do
+    _ = Kantele.World.MirrorDaemon.Zixu.start_zixu()
+    :ok
   end
 
   defp cache_item(item) do

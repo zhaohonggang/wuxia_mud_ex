@@ -217,7 +217,11 @@ defmodule Kantele.Character.NpcAskEvent do
 
     cond do
       answer = find_answer(conn.character.meta.inquiries || %{}, keyword) ->
-        publish_tell(conn, asker_id, answer)
+        # 一问多态：inquire 值可为文本（直接回话）或 atom（交给各 NPC 专属应答）
+        case answer do
+          a when is_atom(a) -> handle_special_answer(conn, data, a)
+          text -> publish_tell(conn, asker_id, text)
+        end
 
       turn_in = conn.character.meta.turn_in ->
         # 任务交付引导（A11/N6 v0 + q1-T2）：
@@ -368,6 +372,14 @@ defmodule Kantele.Character.NpcAskEvent do
   end
 
   defp find_answer(_, _), do: nil
+
+  # atom 问询分发：目前只有子虚道人的宝镜链使用（对应 LPC ask/1 的动作分支）
+  defp handle_special_answer(conn, %{asker_id: asker_id} = data, answer) do
+    case conn.character.meta.kind do
+      "zixu" -> Kantele.World.MirrorDaemon.Zixu.respond_to_ask(conn, data, answer)
+      _ -> conn
+    end
+  end
 
   defp publish_tell(conn, asker_id, text) do
     Kalevala.Character.Conn.publish_message(
