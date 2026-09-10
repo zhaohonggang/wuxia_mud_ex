@@ -14,14 +14,15 @@ defmodule Kantele.World.MirrorDaemon.Zixu do
   alias Kantele.World.Items
 
   @liuxi_zone "liuxi"
-  @zixu_room "liuxi:zixu_guan"
   @mirror_item "liuxi:item/mirror"  # 待定义
 
-  @doc "构建子虚道人 NPC 角色结构"
-  def build_zixu() do
+  @doc "构建子虚道人 NPC 角色结构（zone_id 可注入，测试用独立 zone 避免抢占 liuxi 监督树）"
+  def build_zixu(zone_id \\ @liuxi_zone) do
+    room_id = "#{zone_id}:zixu_guan"
+
     meta =
       %NonPlayerMeta{
-        zone_id: @liuxi_zone,
+        zone_id: zone_id,
         initial_events: [],
         vitals: %Vitals{
           qi: 50_000,
@@ -78,7 +79,7 @@ defmodule Kantele.World.MirrorDaemon.Zixu do
         },
         combat_config: %NPCConfig{
           attitude: "friendly",
-          spawn_room_id: @zixu_room,
+          spawn_room_id: room_id,
           respawn_delay: 0,
           no_kill: true,
           apply: %{}
@@ -110,16 +111,16 @@ defmodule Kantele.World.MirrorDaemon.Zixu do
       name: "子虚道人",
       description: "此人身着道袍，须发皆白，一副仙风道骨的气派，这便是武林中号称「子虚乌有」二道仙中的子虚道人，传说此人早已得道成仙，可通神界。",
       brain: %Kalevala.Brain{root: %Kalevala.Brain.NullNode{}},
-      room_id: @zixu_room,
+      room_id: room_id,
       meta: meta
     }
   end
 
-  def start_zixu() do
-    invader = build_zixu()
+  def start_zixu(zone_id \\ @liuxi_zone) do
+    invader = build_zixu(zone_id)
 
     config = [
-      supervisor_name: Kalevala.World.CharacterSupervisor.global_name(invader.meta.zone_id),
+      supervisor_name: Kalevala.World.CharacterSupervisor.global_name(zone_id),
       communication_module: Kantele.Communication,
       initial_controller: Kantele.Character.SpawnController,
       quit_view: {Kantele.Character.QuitView, "disconnected"}
