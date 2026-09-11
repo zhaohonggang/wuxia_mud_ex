@@ -69,6 +69,9 @@ room_characters "guangchang" {
     },
     {
       id = characters.butong.id
+    },
+    {
+      id = characters.asao.id
     }
   ]
 }
@@ -103,6 +106,7 @@ room_exits "lianwuchang" {
   room_id = rooms.lianwuchang.id
 
   east = rooms.guangchang.id
+  north = rooms.guofu.id
 }
 
 room_characters "lianwuchang" {
@@ -111,6 +115,9 @@ room_characters "lianwuchang" {
   characters = [
     {
       id = characters.wangshifu.id
+    },
+    {
+      id = characters.dashixiong.id
     }
   ]
 }
@@ -133,6 +140,9 @@ room_characters "tiepupu" {
   characters = [
     {
       id = characters.xiaoer.id
+    },
+    {
+      id = characters.wangtiefu.id
     }
   ]
 }
@@ -141,6 +151,7 @@ room_exits "tiepupu" {
   room_id = rooms.tiepupu.id
 
   west = rooms.guangchang.id
+  east = rooms.qianzhuang.id
 }
 
 room_items "tiepupu" {
@@ -1271,9 +1282,10 @@ characters "heihu" {
 
   brain = brains.heihu
 
-  # 击杀掉落（A11/N6）：血玉牌（送还阿婆的任务物）
+  # 击杀掉落（A11/N6）：血玉牌（送还阿婆的任务物）+ 黑虎皮（Q1-T4 郭府差事）
   loot = [
-    { id = items.yupai.id }
+    { id = items.yupai.id },
+    { id = items.hupi.id }
   ]
 
   combat = {
@@ -1346,7 +1358,9 @@ characters "xiaoer" {
     { id = items.changjian.id },
     { id = items.bupao.id },
     { id = items.douli.id },
-    { id = items.yaodai.id }
+    { id = items.yaodai.id },
+    { id = items.shuxiu.id },
+    { id = items.xieshi.id }
   ]
 
   inquiries = {
@@ -1522,6 +1536,19 @@ characters "butong" {
     master_id = "liuxi:butong"
   }
 
+  turn_in = {
+    quest = "_0_tutorial_shimen5"
+    item = items.xieshi.id
+    prompt = "周不通捋须笑道：「入了师门，头一件事便是知礼。你拿份谢师礼来，全了拜师的规矩，老头子再给你指条明路。」"
+    rewards = {
+      exp = 600
+      potential = 150
+      score = 40
+      weiwang = 10
+      coins = 500
+    }
+  }
+
   combat = {
     no_kill = true
     max_qi = 3200
@@ -1537,6 +1564,510 @@ characters "butong" {
       dodge = 140
       parry = 145
       unarmed = 160
+    }
+  }
+}
+
+# ---------------------------------------------------------------------------
+# Q1-T4 新手授业链：6 前步发放方接线（周不通七步链的数据驱动发放方）
+# 每步 = 发放 NPC（quest spec，chain 递进） + 交付 NPC（turn_in 物品完成）
+# ---------------------------------------------------------------------------
+
+# 打铁步的物品（王铁铺出售）
+items "tiekuai" {
+  name = "铁块 Iron Lump"
+  description = "一块黑沉沉的生铁疙瘩，锻打久了边缘泛着暗红的光泽。"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 10
+    weight = 20
+    unit = "块"
+    material = "iron"
+  }
+}
+
+# 存钱步的物品（钱庄出售）
+items "yinpiao" {
+  name = "银票 Silver Bill"
+  description = "一张面额百文的钱庄银票，纸面压着水印，凭票可取。"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 100
+    weight = 1
+    unit = "张"
+    material = "paper"
+    no_sell = 1
+  }
+}
+
+# 郭府步的物品（黑虎掉落）
+items "hupi" {
+  name = "黑虎皮 Tiger Pelt"
+  description = "一张吊睛白额虎的整皮，毛色油亮，虎威犹在。"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 30
+    weight = 5
+    unit = "张"
+    material = "leather"
+  }
+}
+
+# 拜师步的物品（店小二代售束脩）
+items "shuxiu" {
+  name = "束脩 Ceremony Gift"
+  description = "一包拜师的束脩，裹着红纸，里面是十枚腊肉与几条咸鱼。"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 50
+    weight = 3
+    unit = "份"
+    material = "paper"
+  }
+}
+
+# 祈福步的物品（庙祝出售）
+items "xiang" {
+  name = "佛香 Incense Stick"
+  description = "一炷金黄色的佛香，点燃后香气清冽。"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 5
+    weight = 1
+    unit = "炷"
+    material = "wood"
+  }
+}
+
+# 拜入师门的谢师礼（店小二代售，周不通收官交付）
+items "xieshi" {
+  name = "谢师礼 Farewell Gift"
+  description = "一份备得齐整的拜师谢礼，布包上结着红绳。"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 80
+    weight = 5
+    unit = "份"
+    material = "cloth"
+  }
+}
+
+# 钱庄（铁铺东侧）
+rooms "qianzhuang" {
+  name = "钱庄 Money House"
+  description = "一间门面不大的钱庄，柜台后码着整整齐齐的银箱。柳溪镇的街坊进城卖货，都爱把银钱存在这里。"
+
+  x = 2
+  y = 1
+  z = 0
+}
+
+room_exits "qianzhuang" {
+  room_id = rooms.qianzhuang.id
+
+  west = rooms.tiepupu.id
+}
+
+room_characters "qianzhuang" {
+  room_id = rooms.qianzhuang.id
+
+  characters = [
+    {
+      id = characters.qianzhang.id
+    }
+  ]
+}
+
+# 郭府（练武场北侧）
+rooms "guofu" {
+  name = "郭府 Guo Manor"
+  description = "柳溪镇郭家的大宅，门楼漆着朱红，门前两只石狮子瞪着路人。府上的管家每逢山道不太平，便要张罗乡勇。"
+
+  x = -1
+  y = 0
+  z = 0
+}
+
+room_exits "guofu" {
+  room_id = rooms.guofu.id
+
+  south = rooms.lianwuchang.id
+}
+
+room_characters "guofu" {
+  room_id = rooms.guofu.id
+
+  characters = [
+    {
+      id = characters.guanguan.id
+    }
+  ]
+}
+
+room_characters "zixu_guan" {
+  room_id = rooms.zixu_guan.id
+
+  characters = [
+    {
+      id = characters.miaozhu.id
+    }
+  ]
+}
+
+# 铁铺的王铁匠：打铁步发放 + 交付（铁块）
+characters "wangtiefu" {
+  name = "王铁匠 Wang the Smith"
+  description = "张记铁铺的老师傅，古铜色的脸庞被炉火熏得发亮，抡起铁锤来虎虎生风。"
+
+  goods = [
+    { id = items.tiekuai.id }
+  ]
+
+  inquiries = {
+    打铁 = "后生愿意学打铁？铁要好铁，力要沉得住，锻够二十锤才算入门。你先去拿块铁块来，老夫教你两招。"
+  }
+
+  quest = {
+    file = "_0_tutorial_datie"
+    chain = []
+    repeatable = false
+    type = "chain"
+    limit = 1800
+    master_name = "周不通"
+    master_id = "liuxi:butong"
+  }
+
+  turn_in = {
+    quest = "_0_tutorial_datie"
+    item = items.tiekuai.id
+    prompt = "王铁匠掂了掂铁块，赞道：「好铁！有心人呐。拿去，这是老夫给你配的护腕。」"
+    rewards = {
+      exp = 100
+      potential = 20
+      score = 5
+      weiwang = 0
+      coins = 50
+    }
+  }
+
+  combat = {
+    no_kill = true
+    max_qi = 200
+    max_jing = 150
+    max_neili = 100
+    str = 20
+    dex = 16
+    con = 18
+    int = 14
+    combat_exp = 800
+    skills = {
+      unarmed = 30
+      dodge = 20
+      parry = 20
+      force = 10
+    }
+  }
+}
+
+# 钱庄的掌柜：存钱步发放 + 交付（银票）
+characters "qianzhang" {
+  name = "钱掌柜 Qian the Banker"
+  description = "钱庄的掌柜，圆脸善目，据说他记性极好，镇上谁家存了银子、取了几回，他门儿清。"
+
+  goods = [
+    { id = items.yinpiao.id }
+  ]
+
+  inquiries = {
+    存钱 = "穷家富路，攒下的银钱搁在身上终归不妥。你若发了一笔小财，记得换张银票存进来，利钱分文不少。"
+  }
+
+  quest = {
+    file = "_0_tutorial_cunqian"
+    chain = [
+      "_0_tutorial_datie"
+    ]
+    repeatable = false
+    type = "chain"
+    limit = 1800
+    master_name = "周不通"
+    master_id = "liuxi:butong"
+  }
+
+  turn_in = {
+    quest = "_0_tutorial_cunqian"
+    item = items.yinpiao.id
+    prompt = "钱掌柜在账本上记了一笔，笑眯眯道：「银票入账，利钱记下。往后用钱，随时来取。」"
+    rewards = {
+      exp = 120
+      potential = 25
+      score = 5
+      weiwang = 0
+      coins = 100
+    }
+  }
+
+  combat = {
+    no_kill = true
+    max_qi = 160
+    max_jing = 120
+    max_neili = 60
+    str = 12
+    dex = 12
+    con = 13
+    int = 18
+    combat_exp = 500
+    skills = {
+      unarmed = 20
+      dodge = 18
+    }
+  }
+}
+
+# 广场上的包子嫂：买包子步发放 + 交付（包子）
+characters "asao" {
+  name = "包子嫂 Aunt Bun"
+  description = "广场边上支着蒸笼的嫂子，围裙上沾着面粉，一手掀笼一手扬声吆喝：热乎的肉包子——"
+
+  goods = [
+    { id = items.baozi.id }
+  ]
+
+  inquiries = {
+    包子 = "肉包子皮薄馅大，三文钱一个！出门赶路、上山打猎，揣上几个顶饱又顶事。"
+  }
+
+  quest = {
+    file = "_0_tutorial_baozi"
+    chain = [
+      "_0_tutorial_cunqian"
+    ]
+    repeatable = false
+    type = "chain"
+    limit = 1800
+    master_name = "周不通"
+    master_id = "liuxi:butong"
+  }
+
+  turn_in = {
+    quest = "_0_tutorial_baozi"
+    item = items.baozi.id
+    prompt = "包子嫂把包子掰开看了一眼，笑道：「好个实诚的后生，这包子就当我请你的，路上吃。」"
+    rewards = {
+      exp = 150
+      potential = 30
+      score = 8
+      weiwang = 0
+      coins = 20
+    }
+  }
+
+  combat = {
+    no_kill = true
+    max_qi = 140
+    max_jing = 100
+    max_neili = 40
+    str = 10
+    dex = 12
+    con = 12
+    int = 12
+    combat_exp = 300
+    skills = {
+      unarmed = 15
+      dodge = 15
+    }
+  }
+}
+
+# 郭府管家：郭府步发放 + 交付（黑虎皮）
+characters "guanguan" {
+  name = "郭府管家 Steward of Guo"
+  description = "一位精瘦的老者，一袭青衫打理得一丝不苟，眼睛不大却极有精神。"
+
+  inquiries = {
+    黑虎 = "山道那头有只吊睛黑虎，已伤了几条人命！府上悬赏除虎——你若能将虎皮取来，老夫自当禀明老爷。"
+  }
+
+  quest = {
+    file = "_0_tutorial_guofu"
+    chain = [
+      "_0_tutorial_baozi"
+    ]
+    repeatable = false
+    type = "chain"
+    limit = 1800
+    master_name = "周不通"
+    master_id = "liuxi:butong"
+  }
+
+  turn_in = {
+    quest = "_0_tutorial_guofu"
+    item = items.hupi.id
+    prompt = "郭府管家接过虎皮，抚掌道：「好一条猛虎！我这就替你向老爷请赏，除虎的俊杰，镇上自当另眼相看。」"
+    rewards = {
+      exp = 300
+      potential = 50
+      score = 15
+      weiwang = 2
+      coins = 200
+    }
+  }
+
+  combat = {
+    no_kill = true
+    max_qi = 260
+    max_jing = 200
+    max_neili = 150
+    str = 16
+    dex = 18
+    con = 16
+    int = 18
+    combat_exp = 1200
+    skills = {
+      unarmed = 50
+      dodge = 45
+      parry = 40
+      force = 25
+    }
+  }
+}
+
+# 柳溪派大师兄：拜师步发放 + 交付（束脩）
+characters "dashixiong" {
+  name = "张青崖 Zhang Qingya"
+  description = "王重九的大弟子，腰悬长剑，英气勃勃。他待人和气，练武场上的新手没少得他指点。"
+
+  inquiries = {
+    拜师 = "想拜师父学艺？别的都好说，规矩不能坏——备一份束脩来，我替你呈上去。"
+  }
+
+  quest = {
+    file = "_0_tutorial_baishi"
+    chain = [
+      "_0_tutorial_guofu"
+    ]
+    repeatable = false
+    type = "chain"
+    limit = 1800
+    master_name = "周不通"
+    master_id = "liuxi:butong"
+  }
+
+  turn_in = {
+    quest = "_0_tutorial_baishi"
+    item = items.shuxiu.id
+    prompt = "张青崖接过束脩，郑重抱拳：「礼数周全，师父那边我自会引荐。你且去寻王重九师父拜师吧。」"
+    rewards = {
+      exp = 250
+      potential = 40
+      score = 10
+      weiwang = 3
+      coins = 0
+    }
+  }
+
+  combat = {
+    no_kill = true
+    max_qi = 1800
+    max_jing = 1400
+    max_neili = 2000
+    str = 24
+    dex = 24
+    con = 22
+    int = 18
+    combat_exp = 50000
+    skills = {
+      sword = 60
+      force = 50
+      dodge = 55
+      parry = 50
+      unarmed = 45
+    }
+  }
+}
+
+# 子虚观的庙祝：祈福步发放 + 交付（佛香）
+characters "miaozhu" {
+  name = "庙祝 Temple Keeper"
+  description = "子虚观里看管香火的庙祝，白发皤皤，手里执着一把长香，走到哪儿都带着一缕清烟。"
+
+  goods = [
+    { id = items.xiang.id }
+  ]
+
+  inquiries = {
+    祈福 = "进观先上一炷香，心诚则灵。香火钱不拘多少，老道替你在神前念叨两句。"
+  }
+
+  quest = {
+    file = "_0_tutorial_qifu"
+    chain = [
+      "_0_tutorial_baishi"
+    ]
+    repeatable = false
+    type = "chain"
+    limit = 1800
+    master_name = "周不通"
+    master_id = "liuxi:butong"
+  }
+
+  turn_in = {
+    quest = "_0_tutorial_qifu"
+    item = items.xiang.id
+    prompt = "庙祝把佛香插进香炉，合十道：「善哉。祈福已毕，你这一身去见周老先生，该是出师的时候了。」"
+    rewards = {
+      exp = 200
+      potential = 35
+      score = 10
+      weiwang = 1
+      coins = 0
+    }
+  }
+
+  combat = {
+    no_kill = true
+    max_qi = 180
+    max_jing = 200
+    max_neili = 120
+    str = 10
+    dex = 12
+    con = 14
+    int = 20
+    combat_exp = 400
+    skills = {
+      unarmed = 20
+      dodge = 15
+      force = 20
     }
   }
 }
