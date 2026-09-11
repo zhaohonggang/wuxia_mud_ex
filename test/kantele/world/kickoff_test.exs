@@ -201,11 +201,31 @@ defmodule Kantele.World.KickoffTest.StubLoader do
           reason: RuntimeError.exception("unexpected token")
 
       :broken_items ->
-        # item 为 nil 时 cache_item 取 item.id 会抛错，命中编排层兜底
-        %Kantele.World{items: [nil]}
+        # item 为空 map 时 cache_item 取 item.id 会抛错，命中编排层兜底
+        %Kantele.World{items: [%{}], zones: [], rooms: [], characters: []}
 
       :ok ->
-        %Kantele.World{}
+        # 返回一个最小但有效的 world，包含 liuxi:zixu_guan 房间，避免 spawn_zixu 失败
+        # 使用纯 map（Kalevala 期望 map，而非 struct）
+        zixu_room = %{
+          id: "liuxi:zixu_guan",
+          zone_id: "liuxi",
+          item_instances: []
+        }
+
+        liuxi_zone = %{
+          id: "liuxi",
+          rooms: [zixu_room],
+          room_exits: [],
+          characters: %{}
+        }
+
+        %Kantele.World{
+          zones: [liuxi_zone],
+          rooms: [zixu_room],
+          characters: [],
+          items: []
+        }
     end
   end
 
