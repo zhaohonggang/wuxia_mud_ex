@@ -71,7 +71,7 @@ defmodule Kantele.World.MirrorDaemonTaskCarrierTest do
       daemon: daemon,
       zone_id: zone_id
     } do
-      assert {:ok, state} = GenServer.call(daemon, :start_round)
+      assert {:ok, state} = GenServer.call(daemon, {:start_round, [sync: true]})
 
       assert map_size(state.tasks) == 2
       assert state.round_active
@@ -113,7 +113,7 @@ defmodule Kantele.World.MirrorDaemonTaskCarrierTest do
     end
 
     test "on_task_completed 上报：全部上交后计数到齐、收轮", %{daemon: daemon} do
-      assert {:ok, state} = GenServer.call(daemon, :start_round)
+      assert {:ok, state} = GenServer.call(daemon, {:start_round, [sync: true]})
 
       for name <- Map.keys(state.tasks) do
         MirrorDaemon.on_task_completed(daemon, name, %{id: "player-1", name: "张三"})
@@ -180,7 +180,7 @@ defmodule Kantele.World.MirrorDaemonTaskCarrierTest do
       allowed = Enum.map(@allowed_rooms, &"#{zone_id}:#{&1}")
 
       # 第一轮：30 个载体全部生成、存活、落地合法房间
-      assert {:ok, state} = GenServer.call(daemon, :start_round)
+      assert {:ok, state} = GenServer.call(daemon, {:start_round, [sync: true]})
       assert map_size(state.tasks) == 30
       assert state.round_active
       assert state.round_number == 1
@@ -205,7 +205,7 @@ defmodule Kantele.World.MirrorDaemonTaskCarrierTest do
       end)
 
       # 第二轮：生产环境 180s 周期环路，收轮后应能重新分发
-      assert {:ok, state2} = GenServer.call(daemon, :start_round)
+      assert {:ok, state2} = GenServer.call(daemon, {:start_round, [sync: true]})
       assert state2.round_number == 2
       assert map_size(state2.tasks) == 30
       assert state2.round_active

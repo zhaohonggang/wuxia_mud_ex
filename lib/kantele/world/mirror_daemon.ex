@@ -30,7 +30,8 @@ defmodule Kantele.World.MirrorDaemon do
       total_completed: 0,
       all_completed: false,
       timer_ref: nil,
-      round_active: false
+      round_active: false,
+      spawn_queue: []       # queue of pending spawns for batched 50ms spawning
     }
   end
 
@@ -47,7 +48,8 @@ defmodule Kantele.World.MirrorDaemon do
         |> Map.put(:tasks, %{})
         |> Map.update(:round_number, 0, &(&1 + 1))
 
-      {:ok, spawn_tasks(state, opts)}
+      sync = Keyword.get(opts, :sync, false)
+      {:ok, spawn_tasks(state, opts, sync)}
     end
   end
 
@@ -58,7 +60,7 @@ defmodule Kantele.World.MirrorDaemon do
     end)
 
     cancel_timers(state)
-    {:ok, %{state | round_active: false, tasks: %{}, timer_ref: nil}}
+    {:ok, %{state | round_active: false, tasks: %{}, timer_ref: nil, spawn_queue: []}}
   end
 
   @impl Behaviour
@@ -122,6 +124,31 @@ defmodule Kantele.World.MirrorDaemon do
     end
   end
 
+  @impl true
+  def handle_info({:DOWN, _ref, :process, pid, _reason}, state) do
+    # carrier 进程死亡（战斗中被杀或意外退出），从任务列表中标记为已死亡
+    task_name =
+      state.tasks
+      |> Enum.find_value(fn {name, %{pid: task_pid, alive: _alive}} ->
+        if task_pid == pid, do: name
+      end)
+
+    if task_name do
+      new_task = Map.put(Map.get(state.tasks, task_name), :alive, false)
+      new_state = %{state | tasks: Map.put(state.tasks, task_name, new_task)}
+      Logger.info("mirror_daemon: carrier #{task_name} died (pid: #{inspect(pid)})")
+      {:noreply, new_state}
+    else
+      {:noreply, state}
+    end
+  end
+
+  @impl true
+  def handle_info({:spawn_next, _from}, state) do
+    schedule_next_spawn(state)
+    {:noreply, state}
+  end
+
   # 任务物品被上交回调（由 give_task 命令触发）
   def on_task_completed(server \\ __MODULE__, task_name, player) do
     GenServer.cast(server, {:task_completed, task_name, player})
@@ -133,6 +160,11 @@ defmodule Kantele.World.MirrorDaemon do
 
     cond do
       task && task.alive ->
+        # 终止 carrier NPC 进程
+        if Process.alive?(task.pid) do
+          Process.exit(task.pid, :shutdown)
+        end
+
         new_task = %{task | alive: false}
         new_state = %{state | tasks: Map.put(state.tasks, task_name, new_task), total_completed: state.total_completed + 1}
 
@@ -141,14 +173,16 @@ defmodule Kantele.World.MirrorDaemon do
         )
 
         # 里程碑奖励在 give_task 命令里已处理
-        # 这里只判定全完成（注意：Elixir if 块内的重绑定不会外泄，需用表达式返回值）
+        # 这里只判定全完成
         new_state =
           if new_state.total_completed >= state.total_tasks do
             announce(
               "{color foreground=\"yellow\"}【 宝  镜 】{/color} 本轮宝镜任务已全部完成！\n"
             )
 
-            %{new_state | all_completed: true, round_active: false}
+            # 取消所有待定的生成计时器
+            cancel_timers(new_state)
+            %{new_state | all_completed: true, round_active: false, spawn_queue: []}
           else
             new_state
           end
@@ -167,6 +201,13 @@ defmodule Kantele.World.MirrorDaemon do
   @impl true
   def handle_call(:status, _from, state) do
     {:reply, status(state), state}
+  end
+
+  def handle_call({:start_round, opts}, _from, state) do
+    case start_round(state, opts) do
+      {:ok, new_state} -> {:reply, {:ok, new_state}, new_state}
+      {:error, reason} -> {:reply, {:error, reason}, state}
+    end
   end
 
   def handle_call(:start_round, _from, state) do
@@ -201,7 +242,7 @@ defmodule Kantele.World.MirrorDaemon do
     state
   end
 
-  defp spawn_tasks(state, _opts) do
+  defp spawn_tasks(state, _opts, sync \\ false) do
     # 从 UCL 加载所有 task 物品定义
     task_items = load_task_items(state)
 
@@ -211,12 +252,72 @@ defmodule Kantele.World.MirrorDaemon do
       Logger.warn("mirror_daemon: no spawnable rooms in zone #{state.zone_id}, aborting round")
       state
     else
-      Enum.reduce(task_items, state, fn {task_name, task_def}, acc ->
+      # 构建生成队列
+      spawn_queue = Enum.map(task_items, fn {task_name, task_def} ->
         room_id = Enum.random(room_ids)
         npc_name = task_def.owner
         npc_id = task_def.owner_id
+        {task_name, task_def, room_id, npc_name, npc_id}
+      end)
 
-        # 创建 TaskCarrier NPC（携带该 task 物品）
+      if sync do
+        # 同步模式：立即全部生成（测试用）
+        Enum.reduce(spawn_queue, state, fn {task_name, task_def, room_id, npc_name, npc_id}, acc ->
+          invader = Kantele.World.MirrorDaemon.TaskCarrier.build_carrier(
+            task_name, task_def, room_id, state.zone_id
+          )
+
+          config = [
+            supervisor_name: Kalevala.World.CharacterSupervisor.global_name(invader.meta.zone_id),
+            communication_module: Kantele.Communication,
+            initial_controller: Kantele.Character.SpawnController,
+            quit_view: {Kantele.Character.QuitView, "disconnected"}
+          ]
+
+          result =
+            try do
+              {:ok, pid} = Kalevala.World.start_character(invader, config)
+              Process.monitor(pid)
+              {:ok, pid}
+            rescue
+              e -> {:error, {:rescue, Exception.message(e)}}
+            catch
+              :exit, reason -> {:error, {:exit, inspect(reason)}}
+            end
+
+          case result do
+            {:ok, pid} ->
+              task_info = %{
+                pid: pid,
+                room_id: room_id,
+                npc_name: npc_name,
+                npc_id: npc_id,
+                owner: task_def.owner,
+                owner_id: task_def.owner_id,
+                alive: true
+              }
+              %{acc | tasks: Map.put(acc.tasks, task_name, task_info)}
+
+            {:error, reason} ->
+              Logger.warn("mirror_daemon spawn task carrier for #{task_name} failed - #{inspect(reason)}")
+              acc
+          end
+        end)
+      else
+        # 异步模式：每 50ms 生成一个
+        new_state = %{state | spawn_queue: spawn_queue}
+        schedule_next_spawn(new_state)
+      end
+    end
+  end
+
+  defp schedule_next_spawn(state) do
+    case state.spawn_queue do
+      [] ->
+        state
+
+      [{task_name, task_def, room_id, npc_name, npc_id} | rest] ->
+        # 生成当前任务的 carrier
         invader = Kantele.World.MirrorDaemon.TaskCarrier.build_carrier(
           task_name, task_def, room_id, state.zone_id
         )
@@ -230,42 +331,38 @@ defmodule Kantele.World.MirrorDaemon do
 
         result =
           try do
-            Kalevala.World.start_character(invader, config)
+            {:ok, pid} = Kalevala.World.start_character(invader, config)
+            Process.monitor(pid)
+            {:ok, pid}
           rescue
             e -> {:error, {:rescue, Exception.message(e)}}
           catch
             :exit, reason -> {:error, {:exit, inspect(reason)}}
           end
 
-        case result do
-          {:ok, pid} ->
-            task_info = %{
-              pid: pid,
-              room_id: room_id,
-              npc_name: npc_name,
-              npc_id: npc_id,
-              owner: task_def.owner,
-              owner_id: task_def.owner_id,
-              alive: true
-            }
-            %{acc | tasks: Map.put(acc.tasks, task_name, task_info)}
+        new_state =
+          case result do
+            {:ok, pid} ->
+              task_info = %{
+                pid: pid,
+                room_id: room_id,
+                npc_name: npc_name,
+                npc_id: npc_id,
+                owner: task_def.owner,
+                owner_id: task_def.owner_id,
+                alive: true
+              }
+              %{state | tasks: Map.put(state.tasks, task_name, task_info), spawn_queue: rest}
 
-          {:error, reason} ->
-            Logger.warn("mirror_daemon spawn task carrier for #{task_name} failed - #{inspect(reason)}")
-            acc
-        end
-      end)
-      |> then_announce_spawned()
+            {:error, reason} ->
+              Logger.warn("mirror_daemon spawn task carrier for #{task_name} failed - #{inspect(reason)}")
+              %{state | spawn_queue: rest}
+          end
+
+        # 调度下一个（50ms 后）
+        :timer.send_after(50, {:spawn_next, self()})
+        new_state
     end
-  end
-
-  defp then_announce_spawned(state) do
-    Enum.each(state.tasks, fn {_name, %{pid: p, alive: true}} ->
-      # 这里不需要闲置自毁，任务完成由玩家上交驱动
-      :ok
-    end)
-
-    state
   end
 
   defp load_task_items(state) do
