@@ -1,0 +1,29 @@
+# 机器人配置（压测/验收工具）：`Kantele.Bot.Registry` 会读取 data/bots/*.ucl
+# 控制：宿主机 `mix run scripts/bots.exs status` 查看 / start 停止某 bot
+#
+# 字段说明见 lib/kantele/bot/config.ex 的 @moduledoc。
+# 注意：Elias 会把裸 false 解析成字符串，boolean 请写 true/false（已归一化处理）。
+
+bots {
+  # 猎手一号：从萨玛蒂出生点沿固定路线走到柳溪镇广场，杀野猪练级，
+  # 途经山路会遇到黑虎（主动攻击）——由 flee_qi 触发逃跑，用来压测死亡/回复/重登链路
+  grinder {
+    enabled = false          # 想随世界自动起就改 true
+    account = "botuser"
+    password = "123"
+    name = "阿自动"
+    who = true               # false 则在 who 列表隐藏
+    tick_ms = 800
+    # 出生点(=萨玛蒂城镇广场) → w(铁匠铺) → n(山路) → n(柳溪镇广场) → 原路折返
+    march = ["west", "north", "north", "south", "south", "east"]
+    hunt = ["野猪"]
+    hunt_rooms = ["liuxi.rooms.guangchang.id"]
+    heal_qi = 0.5
+    flee_qi = 0.6
+    # 学会拜师/练功后可加：
+    # train = ["learn force 王重九", "practice sword"]
+    train = []
+    save_every = 60
+    relog = true
+  }
+}

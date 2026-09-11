@@ -24,6 +24,9 @@ config :ex_venture, ExVenture.Mailer, adapter: Bamboo.TestAdapter
 
 config :ex_venture, :listener, start: false
 
+# 测试环境不起机器人（它们会登录真实世界并打怪）
+config :ex_venture, :bots, enabled: false
+
 # 单元测试不播种世界（战斗公式测试为纯函数；世界数据由 loader 测试按需加载）
 config :ex_venture, :kantele_world, kickoff: false
 

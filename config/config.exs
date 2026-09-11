@@ -13,6 +13,9 @@ config :ex_venture,
 
 config :ex_venture, :listener, start: true
 
+# 机器人（data/bots/*.ucl）：压测/验收工具；测试环境关闭
+config :ex_venture, :bots, enabled: true
+
 # Configures the endpoint
 config :ex_venture, Web.Endpoint,
   render_errors: [view: Web.ErrorView, accepts: ~w(html json)],

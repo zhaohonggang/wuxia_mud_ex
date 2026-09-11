@@ -84,12 +84,13 @@ defmodule ExVenture.Application.KalevalaSupervisor do
       {Kantele.Economy.Auction, []},
       {Kantele.Economy.Stall, []},
       {Kalevala.Character.Foreman.Supervisor, [name: Kantele.Character.Foreman.Supervisor]},
+      bot_children(),
       telnet_listener(telnet_config)
     ]
 
     children =
       Enum.reject(children, fn child ->
-        is_nil(child)
+        is_nil(child) or (is_list(child) and child == [])
       end)
 
     Supervisor.init(children, strategy: :one_for_one)
@@ -104,6 +105,21 @@ defmodule ExVenture.Application.KalevalaSupervisor do
 
       false ->
         nil
+    end
+  end
+
+  defp bot_children do
+    config = Application.get_env(:ex_venture, :bots, [])
+
+    case Keyword.get(config, :enabled, true) do
+      true ->
+        [
+          {Kantele.Bot.Supervisor, [name: Kantele.Bot.Supervisor]},
+          {Kantele.Bot.Registry, [name: Kantele.Bot.Registry]}
+        ]
+
+      false ->
+        []
     end
   end
 end
