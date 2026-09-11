@@ -60,6 +60,7 @@ defmodule Kantele.Character.Events do
       event("npc/give", :give_result)
       event("npc/learn", :learn_result)
       event("npc/faction", :faction_result)
+      event("npc/register_summon", :register_result)
     end
 
     module(AssistEvent) do

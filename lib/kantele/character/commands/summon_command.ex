@@ -9,6 +9,7 @@ defmodule Kantele.Character.SummonCommand do
   use Kalevala.Character.Command
 
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Records
   alias Kantele.World.Items
 
   @jingli_cost 200
@@ -96,12 +97,24 @@ defmodule Kantele.Character.SummonCommand do
     else
       character = deduct_jingli(character, @jingli_cost)
 
+      # 创建物品实例并放入背包
+      instance = %Kalevala.World.Item.Instance{
+        id: Kalevala.World.Item.Instance.generate_id(),
+        item_id: item_template.id,
+        created_at: DateTime.utc_now()
+      }
+
+      character =
+        character
+        |> Map.put(:inventory, [instance | character.inventory])
+
       conn
       |> put_character(character)
       |> render(CommandView, "text", %{
         text: summon_message(item_template.name)
       })
       |> prompt(CommandView, "prompt", %{})
+      |> tap_save()
     end
   end
 
@@ -133,4 +146,11 @@ defmodule Kantele.Character.SummonCommand do
       _ -> nil
     end
   end
+
+  defp tap_save(conn) do
+    Records.save(current_character(conn))
+    conn
+  end
+
+  defp current_character(conn), do: conn.private.update_character || conn.character
 end

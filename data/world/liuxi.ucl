@@ -1755,6 +1755,10 @@ characters "wangtiefu" {
 
   inquiries = {
     打铁 = "后生愿意学打铁？铁要好铁，力要沉得住，锻够二十锤才算入门。你先去拿块铁块来，老夫教你两招。"
+    登记召唤 = {
+      reply = "想让兵器听你呼唤？把它放在桌上，老夫为你刻下召唤符文。"
+      register_summon = true
+    }
   }
 
   quest = {

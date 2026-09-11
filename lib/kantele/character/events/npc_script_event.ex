@@ -106,6 +106,64 @@ defmodule Kantele.Character.NpcScriptEvent do
 
   def faction_result(conn, _event), do: conn
 
+  def register_result(conn, %{
+        data: %{npc_name: npc_name, item_id: _item_id, asker_id: asker_id, keyword: keyword}
+      }) do
+    character = conn.character
+
+    case asker_id == character.id do
+      false ->
+        conn
+
+      true ->
+        # 从关键词提取物品名（格式：登记 <物品名>）
+        target_name = keyword
+          |> String.replace(~r/登记[召唤]?\s*/, "")
+          |> String.trim()
+
+        if target_name == "" do
+          conn
+          |> render(CommandView, "text", %{
+            text: "#{npc_name}问：你要登记哪件兵器？\n"
+          })
+          |> prompt(CommandView, "prompt", %{})
+        else
+          # 查找背包中匹配的物品
+          item_instance = Enum.find(character.inventory, fn inst ->
+            item = Items.get!(inst.item_id)
+            item.name == target_name ||
+            String.contains?(item.name, target_name) ||
+            String.contains?(inst.item_id, target_name)
+          end)
+
+          if is_nil(item_instance) do
+            conn
+            |> render(CommandView, "text", %{
+              text: "#{npc_name}摇头道：「你身上并没有#{target_name}，无法为你登记召唤之法。」\n"
+            })
+            |> prompt(CommandView, "prompt", %{})
+          else
+            item = Items.get!(item_instance.item_id)
+            item_path = item.id
+
+            can_summon = Map.put(character.attributes["can_summon"] || %{}, item_instance.item_id, item_path)
+            attributes = Map.put(character.attributes, "can_summon", can_summon)
+            character = %{character | attributes: attributes}
+            Records.save(character)
+
+            conn
+            |> put_character(character)
+            |> render(CommandView, "text", %{
+              text: "#{npc_name}在#{item.name}上刻下召唤符文，对你道：「日后想唤它，只需运功呼唤即可。」\n"
+            })
+            |> prompt(CommandView, "prompt", %{})
+          end
+        end
+    end
+  end
+
+  def register_result(conn, _event), do: conn
+
   defp bump_gongxian(character, gongxian) when is_integer(gongxian) do
     Map.update(character.meta.stats, :gongxian, gongxian, &(&1 + gongxian))
   end
