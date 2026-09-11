@@ -61,110 +61,10 @@ defmodule Kantele.World.MirrorDaemonTaskCarrierTest do
 
   describe "MirrorDaemon 轮次生成（集成）" do
     setup do
-      zone_id = "tmir-#{System.unique_integer([:positive])}"
-      daemon = :"mirror_daemon_#{System.unique_integer([:positive])}"
-
-      rooms =
-        Enum.map(@allowed_rooms, fn key ->
-          %Kantele.World.Room{
-            id: "#{zone_id}:#{key}",
-            key: key,
-            zone_id: zone_id,
-            name: key,
-            description: "测试房间",
-            x: -1,
-            y: 2,
-            z: 0,
-            exits: [],
-            features: [],
-            flags: []
-          }
-        end)
-        |> Kernel.++([
-          %Kantele.World.Room{
-            id: "#{zone_id}:heian",
-            key: "heian",
-            zone_id: zone_id,
-            name: "黑道",
-            description: "危险地带",
-            x: 1,
-            y: 1,
-            z: 0,
-            exits: [],
-            features: [],
-            flags: ["no_fight"]
-          }
-        ])
-
-      cells =
-        rooms
-        |> Enum.map(fn room ->
-          cell = %Kantele.MiniMap.Cell{
-            id: room.id,
-            name: room.name,
-            x: room.x,
-            y: room.y,
-            z: room.z,
-            map_color: "green",
-            connections: %Kantele.MiniMap.Connections{}
-          }
-
-          {{room.x, room.y}, cell}
-        end)
-        |> Enum.into(%{})
-
-      ZoneCache.cache(%Kantele.World.Zone{
-        id: zone_id,
-        name: "测试流溪",
-        mini_map: %Kantele.MiniMap{id: zone_id, cells: cells},
-        rooms: rooms
-      })
-
-      start_supervised!(
-        {Kalevala.World.CharacterSupervisor,
-         [name: Kalevala.World.CharacterSupervisor.global_name(zone_id)]}
+      scaffold_zone(
+        items: [{"t1", "张三", "zhang"}, {"t2", "李四", "li"}],
+        total_tasks: 2
       )
-
-      # 合法落点的房间必须真实运行，否则 SpawnController 入场失败会导致 Foreman 消亡
-      @allowed_rooms
-      |> Enum.with_index()
-      |> Enum.each(fn {key, idx} ->
-        room = Enum.find(rooms, &(&1.key == key))
-
-        options = %{
-          room: room,
-          item_instances: [],
-          config: %{
-            supervisor_name: Kalevala.World.CharacterSupervisor.global_name(zone_id),
-            callback_module: Kantele.World.Room
-          },
-          genserver_options: [name: Kalevala.World.Room.global_name(room)]
-        }
-
-        start_supervised({Kalevala.World.Room, options}, id: :"mirror_room_#{idx}")
-      end)
-
-      # 注册本 zone 的 task 物品（owner/owner_id 供上交匹配）
-      register_task_items(zone_id, [
-        {"t1", "张三", "zhang"},
-        {"t2", "李四", "li"}
-      ])
-
-      start_supervised!(
-        {MirrorDaemon,
-         [name: daemon, zone_id: zone_id, total_tasks: 2, round_interval: 3_600_000]}
-      )
-
-      on_exit(fn ->
-        # 收掉本 zone 监督树下的任务载体（全球名未注册时静默跳过）
-        case :global.whereis_name({Kalevala.World.CharacterSupervisor, zone_id}) do
-          nil -> :ok
-          :undefined -> :ok
-          sup -> sup |> DynamicSupervisor.which_children() |> Enum.each(fn {_, p, _, _} -> if is_pid(p), do: Process.exit(p, :shutdown) end)
-        end
-      end)
-
-      %{daemon: daemon, zone_id: zone_id}
     end
 
     test "start_round 生成 TaskCarrier：存活、入监督树、携带 task 物品、落地合法房间", %{
@@ -271,7 +171,158 @@ defmodule Kantele.World.MirrorDaemonTaskCarrierTest do
     end
   end
 
+  describe "整轮 30 件全量分发" do
+    test "start_round 铺满 30 载体，全部上交即收轮，收轮后可再开新轮" do
+      items = Enum.map(1..30, &{"t#{&1}", "目标#{&1}", "npc#{&1}_id"})
+      fixture = scaffold_zone(items: items, total_tasks: 30)
+      daemon = fixture.daemon
+      zone_id = fixture.zone_id
+      allowed = Enum.map(@allowed_rooms, &"#{zone_id}:#{&1}")
+
+      # 第一轮：30 个载体全部生成、存活、落地合法房间
+      assert {:ok, state} = GenServer.call(daemon, :start_round)
+      assert map_size(state.tasks) == 30
+      assert state.round_active
+      assert state.round_number == 1
+
+      Enum.each(state.tasks, fn {_name, info} ->
+        assert info.alive
+        assert is_pid(info.pid)
+        assert Process.alive?(info.pid)
+        assert info.room_id in allowed
+      end)
+
+      assert %{round_active: true, tasks_alive: 30} = GenServer.call(daemon, :status)
+
+      # 依次上交 30 件：最后一件触发全完成、收轮
+      for name <- Map.keys(state.tasks) do
+        MirrorDaemon.on_task_completed(daemon, name, %{id: "player-1", name: "张三"})
+      end
+
+      wait_until(fn ->
+        %{all_completed: true, total_completed: 30, round_active: false, tasks_alive: 0} =
+          GenServer.call(daemon, :status)
+      end)
+
+      # 第二轮：生产环境 180s 周期环路，收轮后应能重新分发
+      assert {:ok, state2} = GenServer.call(daemon, :start_round)
+      assert state2.round_number == 2
+      assert map_size(state2.tasks) == 30
+      assert state2.round_active
+
+      for name <- Map.keys(state2.tasks) do
+        MirrorDaemon.on_task_completed(daemon, name, %{id: "player-1", name: "张三"})
+      end
+
+      wait_until(fn ->
+        %{all_completed: true, total_completed: 30, round_active: false, tasks_alive: 0} =
+          GenServer.call(daemon, :status)
+      end)
+    end
+  end
+
   # ---- helpers ----
+
+  # 搭一套完整可跑的最小世界：唯一 zone + 可落点房间 + CharacterSupervisor + 房间进程 +
+  # task 物品 + MirrorDaemon（round_interval 拉大到 1 小时避免周期触发干扰），并在 on_exit 清场
+  defp scaffold_zone(opts) do
+    items = Keyword.fetch!(opts, :items)
+    total_tasks = Keyword.fetch!(opts, :total_tasks)
+
+    zone_id = "tmir-#{System.unique_integer([:positive])}"
+    daemon = :"mirror_daemon_#{System.unique_integer([:positive])}"
+
+    keys = Keyword.get(opts, :allowed_rooms, @allowed_rooms) ++ ["heian"]
+
+    rooms =
+      Enum.map(keys, fn key ->
+        no_fight = key == "heian"
+
+        %Kantele.World.Room{
+          id: "#{zone_id}:#{key}",
+          key: key,
+          zone_id: zone_id,
+          name: if(no_fight, do: "黑道", else: key),
+          description: "测试房间",
+          x: if(no_fight, do: 1, else: -1),
+          y: if(no_fight, do: 1, else: 2),
+          z: 0,
+          exits: [],
+          features: [],
+          flags: if(no_fight, do: ["no_fight"], else: [])
+        }
+      end)
+
+    cells =
+      Enum.map(rooms, fn room ->
+        cell = %Kantele.MiniMap.Cell{
+          id: room.id,
+          name: room.name,
+          x: room.x,
+          y: room.y,
+          z: room.z,
+          map_color: "green",
+          connections: %Kantele.MiniMap.Connections{}
+        }
+
+        {{room.x, room.y}, cell}
+      end)
+      |> Enum.into(%{})
+
+    ZoneCache.cache(%Kantele.World.Zone{
+      id: zone_id,
+      name: "测试流溪",
+      mini_map: %Kantele.MiniMap{id: zone_id, cells: cells},
+      rooms: rooms
+    })
+
+    start_supervised!(
+      {Kalevala.World.CharacterSupervisor,
+       [name: Kalevala.World.CharacterSupervisor.global_name(zone_id)]}
+    )
+
+    rooms
+    |> Enum.with_index()
+    |> Enum.each(fn {room, idx} ->
+      options = %{
+        room: room,
+        item_instances: [],
+        config: %{
+          supervisor_name: Kalevala.World.CharacterSupervisor.global_name(zone_id),
+          callback_module: Kantele.World.Room
+        },
+        genserver_options: [name: Kalevala.World.Room.global_name(room)]
+      }
+
+      start_supervised({Kalevala.World.Room, options}, id: :"mirror_room_#{idx}")
+    end)
+
+    register_task_items(zone_id, items)
+
+    start_supervised!(
+      {MirrorDaemon,
+       [name: daemon, zone_id: zone_id, total_tasks: total_tasks, round_interval: 3_600_000]}
+    )
+
+    on_exit(fn ->
+      # 收掉本 zone 监督树下的任务载体（全球名未注册时静默跳过）
+      case :global.whereis_name({Kalevala.World.CharacterSupervisor, zone_id}) do
+        nil -> :ok
+        :undefined -> :ok
+        sup ->
+          sup
+          |> DynamicSupervisor.which_children()
+          |> Enum.each(fn {_, p, _, _} ->
+            if is_pid(p), do: Process.exit(p, :shutdown)
+          end)
+
+          # 房间进程与 Room 频道随本测试监督树自动回收
+          :ok
+      end
+    end)
+
+    %{daemon: daemon, zone_id: zone_id, rooms: rooms}
+  end
 
   defp register_task_items(zone_id, entries) do
     for {name, owner, owner_id} <- entries do
@@ -289,20 +340,20 @@ defmodule Kantele.World.MirrorDaemonTaskCarrierTest do
     :ok
   end
 
-defp wait_until(fun, tries \\ 100) do
-  if tries == 0 do
-    flunk("wait_until timed out")
-  else
-    try do
-      if fun.() do
-        :ok
-      else
-        Process.sleep(20)
-        wait_until(fun, tries - 1)
+  defp wait_until(fun, tries \\ 100) do
+    if tries == 0 do
+      flunk("wait_until timed out")
+    else
+      try do
+        if fun.() do
+          :ok
+        else
+          Process.sleep(20)
+          wait_until(fun, tries - 1)
+        end
+      rescue
+        _e -> Process.sleep(20); wait_until(fun, tries - 1)
       end
-    rescue
-      _e -> Process.sleep(20); wait_until(fun, tries - 1)
     end
   end
-end
 end

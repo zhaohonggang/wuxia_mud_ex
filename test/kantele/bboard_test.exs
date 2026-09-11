@@ -113,12 +113,15 @@ defmodule Kantele.BboardTest do
       board = Bboard.new("test_board")
       {:ok, board} = Bboard.post(board, "First", "player1")
 
-      Process.sleep(10)
-      last_time = System.system_time(:second) - 1
+      # 秒级时间戳：必须等 wall-clock 整秒推进，保证 Second 严格晚于 First 的秒
+      first_sec = System.system_time(:second)
+      await_second_greater_than(first_sec)
 
-      {:ok, _board} = Bboard.post(board, "Second", "player2")
+      {:ok, board} = Bboard.post(board, "Second", "player2")
 
-      assert Bboard.unread_count(board, last_time) == 1
+      # board 需包含 Second（原测试 discard 返回值，导致断言恒作用于旧板子）
+      # First 的 time == first_sec（不算未读），Second 的 time > first_sec（算未读）
+      assert Bboard.unread_count(board, first_sec) == 1
     end
   end
 
@@ -141,6 +144,16 @@ defmodule Kantele.BboardTest do
 
       {:ok, pruned} = Bboard.prune(board)
       assert length(pruned.notes) == 1
+    end
+  end
+
+  # 等待 wall-clock 秒推进到严格大于 target 的整秒
+  defp await_second_greater_than(target) do
+    if System.system_time(:second) > target do
+      :ok
+    else
+      Process.sleep(50)
+      await_second_greater_than(target)
     end
   end
 end

@@ -10,10 +10,12 @@ defmodule Kantele.Character.DaubCommandTest do
   alias Kantele.World.Items
   alias Kalevala.World.Item
 
-  @poison_id "test:poison"
-  @weapon_id "test:sword"
-  @armor_id "test:cloth"
-  @non_daubable_id "test:bread"
+  # 物品 id 用私有前缀，避免与其他 async 测试文件共用 "test:sword" 等 id ——
+  # 各文件 setup_all 并发 Items.put 同 id 不同 meta 会互相覆盖，导致偶发「不是武器」误判
+  @poison_id "daubtest:poison"
+  @weapon_id "daubtest:sword"
+  @armor_id "daubtest:cloth"
+  @non_daubable_id "daubtest:bread"
 
   setup_all do
     Items.put(@poison_id, %Item{id: @poison_id, name: "砒霜", verbs: [], callback_module: Kantele.World.Item, meta: %{"can_daub" => true, "poison_type" => "毒药", "poison_level" => 50, "poison_duration" => 300, "poison_remain" => 10}})
@@ -100,15 +102,15 @@ defmodule Kantele.Character.DaubCommandTest do
 
   describe "daub 毒药不可涂" do
     test "物品没有 can_daub 属性" do
-      Items.put("test:herb", %Item{
-        id: "test:herb",
+      Items.put("daubtest:herb", %Item{
+        id: "daubtest:herb",
         name: "草药",
         verbs: [],
         callback_module: Kantele.World.Item,
         meta: %{}
       })
 
-      p = player(inventory: [inst("test:herb")])
+      p = player(inventory: [inst("daubtest:herb")])
       conn = DaubCommand.run(build_conn(p), %{"poison" => "草药", "target" => "金蛇剑"})
       assert output_text(conn) =~ "这不是可用于涂毒的药物"
     end
@@ -173,7 +175,7 @@ defmodule Kantele.Character.DaubCommandTest do
       updated = conn.private.update_character || conn.character
       weapon_inst = Enum.find(updated.inventory, &(&1.item_id == @weapon_id))
       merged = weapon_inst.meta["daub"]
-      assert merged["id"] == "test:poison"
+      assert merged["id"] == @poison_id
       assert merged["name"] == "砒霜"
       assert merged["level"] == 80 + div(50, 4)
     end

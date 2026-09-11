@@ -132,7 +132,7 @@ defmodule Kantele.World.MirrorDaemon do
     task = Map.get(state.tasks, task_name)
 
     cond do
-task && task.alive ->
+      task && task.alive ->
         new_task = %{task | alive: false}
         new_state = %{state | tasks: Map.put(state.tasks, task_name, new_task), total_completed: state.total_completed + 1}
 
@@ -159,7 +159,7 @@ task && task.alive ->
         {:noreply, state}
 
       true ->
-        Logger.warning("MIRROR_CAST_UNKNOWN name=#{task_name}")
+        Logger.debug("mirror_daemon: unknown/already-completed task #{task_name}")
         {:noreply, state}
     end
   end
