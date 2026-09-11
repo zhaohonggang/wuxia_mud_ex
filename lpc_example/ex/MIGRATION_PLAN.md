@@ -592,11 +592,11 @@ docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app/lpc_exampl
 
 | 批次 | 系统 | LPC 源 | 现状 | 落地要点 | 优先级 |
 |------|------|--------|------|---------|--------|
-| Q1 | 任务类型库 | `daemons/quest/*`（capture/deliver/explore/judge/search/shen/supply/trace + `_0_tutorial1-7` 新手链） | `quest.ex` 仅通用 todo/solved，各任务类型判定链未移植 | 移植 questd 各任务类型的判定/结算链，接 NPC 通路（`inquiryd.c`/AskEvent），教程链挂新手引导 | 高 |
-| Q2 | 天气/昼夜 | `etc/nature/*`（四季风雨）+ `natured.c` | 无天气系统 | 房间级定时天气事件（`scheduler.ex` 已有 tick 原语），影响 look 文案 | 高 |
-| Q3 | 剧情叙事 | `storyd.c` + `daemons/story/*`（炼丹/老君/三丰剑等） | 无 | 场景内时序/条件叙事，仿 `brain.ex` 状态机 | 中 |
-| Q4 | 入侵事件 | `invasiond.c` + `invasion/npc/*`（english/european/japanese/invader） | 无 | 周期入侵（`scheduler.ex`）+ 刷新外族 NPC | 中 |
-| Q5 | 任务载体 | `task/set_task.c` + `npc/zixu.c` + `task/obj/*` | 无 | 全局任务 NPC + 任务物品库（可先落纯数据层） | 中 |
+| Q1 | 任务类型库 | `daemons/quest/*`（capture/deliver/explore/judge/search/shen/supply/trace + `_0_tutorial1-7` 新手链） | `quest.ex` 仅通用 todo/solved，各任务类型判定链未移植 | 移植 questd 各任务类型的判定/结算链，接 NPC 通路（`inquiryd.c`/AskEvent），教程链挂新手引导 | ✅（2026-09-09） |
+| Q2 | 天气/昼夜 | `etc/nature/*`（四季风雨）+ `natured.c` | 无天气系统 | 房间级定时天气事件（`scheduler.ex` 已有 tick 原语），影响 look 文案 | ✅（2026-09-09） |
+| Q3 | 剧情叙事 | `storyd.c` + `daemons/story/*`（炼丹/老君/三丰剑等） | 无 | 场景内时序/条件叙事，仿 `brain.ex` 状态机 | ✅（2026-09-09） |
+| Q4 | 入侵事件 | `invasiond.c` + `invasion/npc/*`（english/european/japanese/invader） | 无 | 周期入侵（`scheduler.ex`）+ 刷新外族 NPC | ✅（2026-09-09） |
+| Q5 | 任务载体 | `task/set_task.c` + `npc/zixu.c` + `task/obj/*` | 无 | 全局任务 NPC + 任务物品库（可先落纯数据层） | ✅（2026-09-10） |
 | Q6 | 特色 NPC | `adm/npc/*`（ganjiang/moye/qingyangzi/nanxian/referee 等） | `npc/{master,dealer,guarder,vendor,quester,horseboss,banker}.ex` 模式已有 | 数据驱动 NPC 配置化（skills/对话/事件），不写死模块 | ✅（2026-09-10） |
 
 > 已完成对照（排期参考，无需再核查）：
