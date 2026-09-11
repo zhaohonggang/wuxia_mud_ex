@@ -53,7 +53,7 @@ defmodule Kantele.Character.PlayerMiscCommandsTest do
   end
 
   setup do
-    Items.put("test:sword", %Item{id: "test:sword", name: "青云剑"})
+    Items.put("pmisctest:sword", %Item{id: "pmisctest:sword", name: "青云剑"})
     :ok
   end
 
@@ -133,7 +133,7 @@ defmodule Kantele.Character.PlayerMiscCommandsTest do
     test "精力不足" do
       attrs =
         player(%{
-          attributes: %{"can_summon" => %{"青云剑" => "test:sword"}},
+          attributes: %{"can_summon" => %{"青云剑" => "pmisctest:sword"}},
           vitals: %{Vitals.new() | jing: 50}
         })
 
@@ -143,18 +143,18 @@ defmodule Kantele.Character.PlayerMiscCommandsTest do
     end
 
     test "身上没有这样东西" do
-      attrs = player(%{attributes: %{"can_summon" => %{"青云剑" => "test:sword"}}})
+      attrs = player(%{attributes: %{"can_summon" => %{"青云剑" => "pmisctest:sword"}}})
       conn = HideCommand.run(build_conn(attrs), %{"item" => "青云剑"})
 
       assert output_text(conn) =~ "你身上没有这样东西"
     end
 
     test "成功：扣减精力并派发 item/hide 事件" do
-      instance = %Item.Instance{id: "inst-1", item_id: "test:sword"}
+      instance = %Item.Instance{id: "inst-1", item_id: "pmisctest:sword"}
 
       attrs =
         player(%{
-          attributes: %{"can_summon" => %{"青云剑" => "test:sword"}},
+          attributes: %{"can_summon" => %{"青云剑" => "pmisctest:sword"}},
           inventory: [instance]
         })
 
@@ -177,7 +177,7 @@ defmodule Kantele.Character.PlayerMiscCommandsTest do
     end
 
     test "精力不济" do
-      attrs = player(%{attributes: %{"can_summon" => %{"青云剑" => "test:sword"}}})
+      attrs = player(%{attributes: %{"can_summon" => %{"青云剑" => "pmisctest:sword"}}})
       conn = SummonCommand.run(build_conn(attrs), %{"item" => "青云剑"})
 
       assert output_text(conn) =~ "精力不济"
@@ -186,7 +186,7 @@ defmodule Kantele.Character.PlayerMiscCommandsTest do
     test "成功：扣减精力并输出召唤信息" do
       attrs =
         player(%{
-          attributes: %{"can_summon" => %{"青云剑" => "test:sword"}},
+          attributes: %{"can_summon" => %{"青云剑" => "pmisctest:sword"}},
           vitals: %{Vitals.new() | jingli: 300}
         })
 

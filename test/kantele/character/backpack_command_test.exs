@@ -61,8 +61,8 @@ defmodule Kantele.Character.BackpackCommandTest do
       meta: %Meta{}
     })
 
-    Items.put("test:sword", %Item{
-      id: "test:sword",
+    Items.put("backpacktest:sword", %Item{
+      id: "backpacktest:sword",
       name: "铁剑 Tiejian",
       verbs: [@clone_verb],
       callback_module: Kantele.World.Item,
@@ -222,7 +222,7 @@ defmodule Kantele.Character.BackpackCommandTest do
       equipped = %{weapon: %{name: "铁剑 Tiejian", damage: 22}}
 
       p = %{
-        player([instance("test:bag"), instance("test:sword")])
+        player([instance("test:bag"), instance("backpacktest:sword")])
         | meta: %{player().meta | combat: %{player().meta.combat | equipped: equipped}}
       }
 
@@ -249,7 +249,7 @@ defmodule Kantele.Character.BackpackCommandTest do
         player([
           instance("test:bag"),
           instance("test:baozi"),
-          instance("test:sword"),
+          instance("backpacktest:sword"),
           instance("test:mantou")
         ])
 
@@ -263,7 +263,7 @@ defmodule Kantele.Character.BackpackCommandTest do
         |> Enum.map(& &1.file)
         |> Enum.sort()
 
-      assert stored == ["test:baozi", "test:sword"]
+      assert stored == ["backpacktest:sword", "test:baozi"]
       assert updated_inventory(conn) |> Enum.map(& &1.item_id) == ["test:bag", "test:mantou"]
     end
 

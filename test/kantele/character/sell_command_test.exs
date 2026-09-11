@@ -12,8 +12,8 @@ defmodule Kantele.Character.SellCommandTest do
   alias Kantele.World.Items
 
   setup do
-    Items.put("test:sword", %Item{
-      id: "test:sword",
+    Items.put("selltest:sword", %Item{
+      id: "selltest:sword",
       name: "长剑 Changjian",
       verbs: [],
       callback_module: Kantele.World.Item,
@@ -70,7 +70,7 @@ defmodule Kantele.Character.SellCommandTest do
 
   test "估价显示收购价（resale 3/10，1000 → 300 文）" do
     conn =
-      Kantele.Character.SellCommand.value(build_conn(player(["test:sword"])), %{
+      Kantele.Character.SellCommand.value(build_conn(player(["selltest:sword"])), %{
         "item_name" => "长剑"
       })
 
@@ -82,7 +82,7 @@ defmodule Kantele.Character.SellCommandTest do
 
   test "变卖成交：收入加钱、物品移除" do
     conn =
-      Kantele.Character.SellCommand.sell(build_conn(player(["test:sword"])), %{
+      Kantele.Character.SellCommand.sell(build_conn(player(["selltest:sword"])), %{
         "item_name" => "长剑"
       })
 
@@ -94,7 +94,7 @@ defmodule Kantele.Character.SellCommandTest do
 
   test "xN 变卖多件" do
     conn =
-      Kantele.Character.SellCommand.sell(build_conn(player(["test:sword", "test:sword"])), %{
+      Kantele.Character.SellCommand.sell(build_conn(player(["selltest:sword", "selltest:sword"])), %{
         "item_name" => "长剑 x2"
       })
 
@@ -106,7 +106,7 @@ defmodule Kantele.Character.SellCommandTest do
 
   test "数量超出拒绝，状态不变" do
     conn =
-      Kantele.Character.SellCommand.sell(build_conn(player(["test:sword"])), %{
+      Kantele.Character.SellCommand.sell(build_conn(player(["selltest:sword"])), %{
         "item_name" => "长剑 x3"
       })
 

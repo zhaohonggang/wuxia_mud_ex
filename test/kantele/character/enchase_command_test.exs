@@ -20,8 +20,8 @@ defmodule Kantele.Character.EnchaseCommandTest do
   }
 
   setup do
-    Items.put("test:sword", %Item{
-      id: "test:sword",
+    Items.put("enchasetest:sword", %Item{
+      id: "enchasetest:sword",
       name: "铁剑 Tiejian",
       verbs: [@clone_verb],
       callback_module: Kantele.World.Item,
@@ -104,13 +104,13 @@ defmodule Kantele.Character.EnchaseCommandTest do
     end
 
     test "没有宝石时提示" do
-      sword = instance("test:sword", "sword-1", %{})
+      sword = instance("enchasetest:sword", "sword-1", %{})
       conn = EnchaseCommand.run(build_conn(player([sword])), %{"arg" => "蓝宝石 in 铁剑"})
       assert output_text(conn) =~ "你身上没有"
     end
 
     test "武器未浸透时拒绝" do
-      sword = instance("test:sword", "sword-1", %{})
+      sword = instance("enchasetest:sword", "sword-1", %{})
       gem = instance("test:gem", "gem-1", %{})
       conn = EnchaseCommand.run(build_conn(player([sword, gem])), %{"arg" => "蓝宝石 in 铁剑"})
 
@@ -119,7 +119,7 @@ defmodule Kantele.Character.EnchaseCommandTest do
     end
 
     test "镶嵌技艺不够时拒绝" do
-      sword = instance("test:sword", "sword-1", %{})
+      sword = instance("enchasetest:sword", "sword-1", %{})
       gem = instance("test:gem", "gem-1", %{})
       p = player([sword, gem], skills: %{"certosina" => 100, "force" => 350})
       conn = EnchaseCommand.run(build_conn(p), %{"arg" => "蓝宝石 in 铁剑"})

@@ -20,8 +20,8 @@ defmodule Kantele.Character.ImbueCommandTest do
   }
 
   setup do
-    Items.put("test:sword", %Item{
-      id: "test:sword",
+    Items.put("imbuetest:sword", %Item{
+      id: "imbuetest:sword",
       name: "铁剑 Tiejian",
       verbs: [@clone_verb],
       callback_module: Kantele.World.Item,
@@ -104,13 +104,13 @@ defmodule Kantele.Character.ImbueCommandTest do
     end
 
     test "没有灵物时提示" do
-      sword = instance("test:sword", "sword-1", %{})
+      sword = instance("imbuetest:sword", "sword-1", %{})
       conn = ImbueCommand.run(build_conn(player([sword])), %{"arg" => "灵草 in 铁剑"})
       assert output_text(conn) =~ "你身上没有"
     end
 
     test "武器未圣化时拒绝" do
-      sword = instance("test:sword", "sword-1", %{"owner" => %{"player-1" => "张三"}})
+      sword = instance("imbuetest:sword", "sword-1", %{"owner" => %{"player-1" => "张三"}})
       herb = instance("test:herb", "herb-1", %{})
       conn = ImbueCommand.run(build_conn(player([sword, herb])), %{"arg" => "灵草 in 铁剑"})
 

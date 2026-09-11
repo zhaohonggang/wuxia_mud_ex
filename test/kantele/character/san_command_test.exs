@@ -21,8 +21,8 @@ defmodule Kantele.Character.SanCommandTest do
   }
 
   setup do
-    Items.put("test:sword", %Item{
-      id: "test:sword",
+    Items.put("santest:sword", %Item{
+      id: "santest:sword",
       name: "铁剑 Tiejian",
       verbs: [@clone_verb],
       callback_module: Kantele.World.Item,
@@ -108,12 +108,12 @@ defmodule Kantele.Character.SanCommandTest do
     end
 
     test "找不到指定武器时提示" do
-      conn = SanCommand.run(build_conn(player([instance("test:sword")])), %{"arg" => "大刀"})
+      conn = SanCommand.run(build_conn(player([instance("santest:sword")])), %{"arg" => "大刀"})
       assert output_text(conn) =~ "你身上没有"
     end
 
     test "圣化成功" do
-      sword = instance("test:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
+      sword = instance("santest:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
       p = player([sword], neili: 9000, max_neili: 10000, jingli: 1900, max_jingli: 2000, skills: %{"force" => 350})
       conn = SanCommand.run(build_conn(p), %{"arg" => "铁剑"})
 
@@ -122,7 +122,7 @@ defmodule Kantele.Character.SanCommandTest do
     end
 
     test "内力不足时拒绝" do
-      sword = instance("test:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
+      sword = instance("santest:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
       p = player([sword], neili: 1000, max_neili: 10000, jingli: 1900, max_jingli: 2000, skills: %{"force" => 350})
       conn = SanCommand.run(build_conn(p), %{"arg" => "铁剑"})
 
@@ -130,7 +130,7 @@ defmodule Kantele.Character.SanCommandTest do
     end
 
     test "精力不足时拒绝" do
-      sword = instance("test:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
+      sword = instance("santest:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
       p = player([sword], neili: 9000, max_neili: 10000, jingli: 100, max_jingli: 2000, skills: %{"force" => 350})
       conn = SanCommand.run(build_conn(p), %{"arg" => "铁剑"})
 
@@ -138,7 +138,7 @@ defmodule Kantele.Character.SanCommandTest do
     end
 
     test "内功根基不够时拒绝" do
-      sword = instance("test:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
+      sword = instance("santest:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
       p = player([sword], neili: 9000, max_neili: 10000, jingli: 1900, max_jingli: 2000, skills: %{"force" => 100})
       conn = SanCommand.run(build_conn(p), %{"arg" => "铁剑"})
 
