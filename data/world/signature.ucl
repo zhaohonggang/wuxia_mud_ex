@@ -1,0 +1,378 @@
+zones "signature" {
+  name = "隐世之境 Hidden Retreat"
+}
+
+# ---------------------------------------------------------------------------
+# 房间
+# ---------------------------------------------------------------------------
+
+rooms "yinyi" {
+  name = "隐逸山径 Hidden Retreat Path"
+  description = "一条古木参天的山径，尽头掩着一道竹篱院门。江湖传言，这片隐世的天地里住着几位早已近乎传说的名宿。A secluded mountain path shaded by ancient trees. Beyond the bamboo gate live several masters whose names are nearly legend."
+
+  map_color = "green"
+  map_icon = "trail"
+
+  x = 0
+  y = 1
+  z = 0
+}
+
+room_exits "yinyi" {
+  room_id = rooms.yinyi.id
+
+  north = liuxi.rooms.guangchang.id
+  south = rooms.zhu_ting.id
+  east = rooms.guan_yun.id
+}
+
+rooms "zhu_ting" {
+  name = "铸剑亭 Swordsmith Pavilion"
+  description = "一座半露天的石亭，炉火终年不熄。墙角堆着各色矿石与半成品的剑坯，一位铁匠打扮的老者正在砧上锻打着一柄长剑。A half-open stone pavilion where the forge never dies out. Ores and unfinished blades litter the corners while an old smith hammers a longsword on the anvil."
+
+  x = 0
+  y = 0
+  z = 0
+}
+
+room_exits "zhu_ting" {
+  room_id = rooms.zhu_ting.id
+
+  north = rooms.yinyi.id
+  east = rooms.lunwu_tai.id
+}
+
+rooms "guan_yun" {
+  name = "观云阁 Cloud Gazing Tower"
+  description = "阁楼临崖而建，凭栏可见云海翻涌。一位道人负手而立，望着远山出神，又一位青衫书生盘坐案前，就着松烟沏茶。A tower perched on the cliff edge, overlooking a sea of clouds. A Taoist stands lost in thought while a scholar in green robes brews tea beside a low table."
+
+  x = 1
+  y = 1
+  z = 0
+}
+
+room_exits "guan_yun" {
+  room_id = rooms.guan_yun.id
+
+  west = rooms.yinyi.id
+  south = rooms.lunwu_tai.id
+}
+
+rooms "shulin" {
+  name = "书林 Book Grove"
+  description = "半座山的书都被搬到了这里，竹架上一卷卷泛黄的典籍整整齐齐。风过处书页翻动，飒飒如语。Hillsides of books gathered under the trees, yellowed volumes sit in neat rows on bamboo racks, pages rustling in the wind."
+
+  x = 2
+  y = 1
+  z = 0
+}
+
+room_exits "shulin" {
+  room_id = rooms.shulin.id
+
+  west = rooms.guan_yun.id
+}
+
+rooms "lunwu_tai" {
+  name = "论武台 Martial Debate Arena"
+  description = "一方青石擂台，四角立着石柱，柱上刻满历次比武的名姓。一位收拾得一尘不染的白袍老者负手站在台下，目光如电，似乎一眼便能看穿来人的功夫深浅。A square bluestone platform with carved pillars listing the names of past bouts. A spotless elder in white stands below, his sharp gaze seeming to read a visitor's skill at a glance."
+
+  x = 1
+  y = 0
+  z = 0
+}
+
+room_exits "lunwu_tai" {
+  room_id = rooms.lunwu_tai.id
+
+  north = rooms.shulin.id
+  west = rooms.zhu_ting.id
+}
+
+# ---------------------------------------------------------------------------
+# 物品
+# ---------------------------------------------------------------------------
+
+items "jinggang" {
+  name = "精钢块 Steel Ingot"
+  description = "一块淬炼了十多遍的精钢，通体乌黑发亮，是铸剑的上好胚料。"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 500
+    weight = 100
+    material = "steel"
+  }
+}
+
+items "hantie" {
+  name = "寒铁 Cold Iron"
+  description = "一块取自深海的极北寒铁，入手冰凉刺骨，据说以它铸剑可断金玉。"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 800
+    weight = 80
+    material = "cold-iron"
+  }
+}
+
+items "lingpai" {
+  name = "比武令牌 Challenge Token"
+  description = "一枚铁铸的令字牌，凭它可以登上论武台与人切蹉武艺。"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 50
+    weight = 10
+    unit = "枚"
+    material = "iron"
+  }
+}
+
+# ---------------------------------------------------------------------------
+# 角色（特色 NPC：数据驱动 skills/对话/事件，不写死模块）
+# ---------------------------------------------------------------------------
+
+# 干将：铸剑大师（脚本答语：给物）
+characters "ganjiang" {
+  name = "干将 Ganjiang"
+  description = "一代铸剑宗师，蓬头垢面，两臂尽是烫疤。他一生痴于炉火，剑一起便是三四天不歇手。"
+
+  inquiries = {
+    铸剑 = {
+      reply = "干将头也不抬，瓮声道：铸剑先要有好的胚料。这块精钢你拿去温一温手，改日再来听我说道说道火候。"
+      give = "signature:jinggang"
+    }
+    莫邪 = "干将眼中凶光一敛：莫邪是吾师妹，也是吾妻。她的剑道在柔不在刚，你莫要打她的主意。"
+  }
+
+  combat = {
+    no_kill = true
+    max_qi = 6000
+    max_jing = 4000
+    str = 40
+    dex = 30
+    con = 35
+    int = 25
+    combat_exp = 900000
+    skills = {
+      unarmed = 120
+      dodge = 100
+      parry = 110
+      force = 110
+      blade = 100
+      sword = 130
+    }
+    apply = {
+      attack = 60
+      damage = 80
+      armor = 60
+    }
+  }
+}
+
+# 莫邪：干将之妻（脚本答语：给物）
+characters "moye" {
+  name = "莫邪 Moye"
+  description = "与干将齐名的铸剑师，面容清冷，指若削葱。她铸的剑轻灵如风，江湖人称「柔剑莫邪」。"
+
+  inquiries = {
+    寒铁 = {
+      reply = "莫邪抬眸看你一眼：极北寒铁可遇不可求，我这儿恰好藏着一块，且予你开开眼界。"
+      give = "signature:hantie"
+    }
+    铸剑 = "莫邪淡淡道：铸剑一道，刚柔相济方为上品。干将性烈，我的话他听不进几分的。"
+  }
+
+  combat = {
+    no_kill = true
+    max_qi = 5000
+    max_jing = 5000
+    str = 25
+    dex = 40
+    con = 30
+    int = 35
+    combat_exp = 800000
+    skills = {
+      unarmed = 100
+      dodge = 120
+      parry = 100
+      force = 100
+      sword = 120
+    }
+    apply = {
+      attack = 55
+      damage = 60
+      armor = 40
+    }
+  }
+}
+
+# 青阳子：道门高人（脚本答语：传技 + 拜师）
+characters "qingyangzi" {
+  name = "青阳子 Qingyangzi"
+  description = "青阳观的现任观主，一袭青色道袍，仙风道骨。传闻他年轻时也曾仗剑纵横，如今只在云台观雾，提点有缘人。"
+
+  inquiries = {
+    道法 = {
+      reply = "青阳子微微一笑：道之一字，贯于性命。你既有意，老道便将吐纳导引的入门功夫说与你听。"
+      learn_skill = "taoism"
+    }
+    拜师 = {
+      reply = "青阳子捋须点头：你根骨不坏，从今日起便是我青阳门下的弟子，且去勤练道法，莫要堕了门风。"
+      family = "青阳门"
+      gongxian = 10
+    }
+    江湖 = "青阳子叹道：江湖路远，人心更远。你若要在这山外的浊世上行走，切记守得住本心。"
+  }
+
+  combat = {
+    no_kill = true
+    max_qi = 8000
+    max_jing = 8000
+    str = 35
+    dex = 35
+    con = 35
+    int = 45
+    combat_exp = 1500000
+    skills = {
+      unarmed = 130
+      dodge = 120
+      parry = 120
+      force = 130
+      taoism = 150
+      blessing = 90
+    }
+    apply = {
+      attack = 70
+      damage = 70
+      armor = 70
+    }
+  }
+}
+
+# 南贤：博闻强识的隐士（脚本答语：传技）
+characters "nanxian" {
+  name = "南贤 Nanxian"
+  description = "一袭青衫，温文尔雅。他读尽天下书，晓畅武林旧事，凡有疑难向他打听，鲜少有答不上来的。"
+
+  inquiries = {
+    识字 = {
+      reply = "南贤摊开一卷竹简：天下武功，识得字方能读得书。来，我教你认读这段拳经。"
+      learn_skill = "literate"
+    }
+    打听 = "南贤摇着折扇：你要打听什么？这山里的铁铺剑事，山外的门派纷争，老夫倒是略知一二。"
+    天书 = "南贤神色一凝：天书一事莫要再提，那是天机，不该落于凡人之手。"
+  }
+
+  combat = {
+    no_kill = true
+    max_qi = 4000
+    max_jing = 9000
+    str = 20
+    dex = 25
+    con = 25
+    int = 60
+    combat_exp = 600000
+    skills = {
+      unarmed = 90
+      dodge = 90
+      parry = 90
+      force = 100
+      literate = 200
+    }
+  }
+}
+
+# 裁判：论武台主事（脚本答语：给物 + 纯文本）
+characters "referee" {
+  name = "裁判 Referee"
+  description = "论武台的白袍老者，主持山中一切比武公平。他目光如炬，任何作弊都逃不过他的双眼。"
+
+  inquiries = {
+    比武 = {
+      reply = "裁判取出一枚令牌递给你：持此登上论武台，自有高手与你切蹉。切记点到为止。"
+      give = "signature:lingpai"
+    }
+    规矩 = "裁判正色道：论武台只分高下，不决生死。擂台上不得使毒，不得偷袭，违者逐出此山。"
+  }
+
+  combat = {
+    no_kill = true
+    max_qi = 7000
+    max_jing = 7000
+    str = 40
+    dex = 45
+    con = 40
+    int = 30
+    combat_exp = 1200000
+    skills = {
+      unarmed = 140
+      dodge = 130
+      parry = 130
+      force = 120
+      sword = 120
+    }
+    apply = {
+      attack = 75
+      damage = 65
+      armor = 65
+    }
+  }
+}
+
+room_characters "zhu_ting" {
+  room_id = rooms.zhu_ting.id
+
+  characters = [
+    {
+      id = characters.ganjiang.id
+    },
+    {
+      id = characters.moye.id
+    }
+  ]
+}
+
+room_characters "guan_yun" {
+  room_id = rooms.guan_yun.id
+
+  characters = [
+    {
+      id = characters.qingyangzi.id
+    }
+  ]
+}
+
+room_characters "shulin" {
+  room_id = rooms.shulin.id
+
+  characters = [
+    {
+      id = characters.nanxian.id
+    }
+  ]
+}
+
+room_characters "lunwu_tai" {
+  room_id = rooms.lunwu_tai.id
+
+  characters = [
+    {
+      id = characters.referee.id
+    }
+  ]
+}

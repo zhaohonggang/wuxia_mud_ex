@@ -217,8 +217,10 @@ defmodule Kantele.Character.NpcAskEvent do
 
     cond do
       answer = find_answer(conn.character.meta.inquiries || %{}, keyword) ->
-        # 一问多态：inquire 值可为文本（直接回话）或 atom（交给各 NPC 专属应答）
+        # 一问多态：inquire 值可为文本（直接回话）、脚本化 map（Q6 数据驱动
+        # 事件）或 atom（交给各 NPC 专属应答）
         case answer do
+          script when is_map(script) -> handle_scripted_answer(conn, data, script)
           a when is_atom(a) -> handle_special_answer(conn, data, a)
           text -> publish_tell(conn, asker_id, text)
         end
@@ -378,6 +380,58 @@ defmodule Kantele.Character.NpcAskEvent do
     case conn.character.meta.kind do
       "zixu" -> Kantele.World.MirrorDaemon.Zixu.respond_to_ask(conn, data, answer)
       _ -> conn
+    end
+  end
+
+  # 脚本化问询分发（Q6 数据驱动事件，不写死模块）：
+  #   reply       -> 文本回话（默认回话文案）
+  #   give        -> npc/give    给物品
+  #   learn_skill -> npc/learn   传授技能
+  #   family      -> npc/faction 拜入门派（gongxian 一并发放）
+  # 各效果以事件送回玩家进程，由玩家侧 NpcScriptEvent 落盘并渲染。
+  defp handle_scripted_answer(conn, %{reply_to: reply_to, asker_id: asker_id}, script) do
+    npc_name = conn.character.name
+
+    case Map.get(script, "reply") do
+      text when is_binary(text) and text != "" ->
+        publish_tell(conn, asker_id, text)
+
+      _ ->
+        :ok
+    end
+
+    cond do
+      item_id = Map.get(script, "give") ->
+        send(reply_to, %Kalevala.Event{
+          topic: "npc/give",
+          data: %{npc_name: npc_name, item_id: item_id, asker_id: asker_id}
+        })
+
+        conn
+
+      skill = Map.get(script, "learn_skill") ->
+        send(reply_to, %Kalevala.Event{
+          topic: "npc/learn",
+          data: %{npc_name: npc_name, skill: skill, asker_id: asker_id}
+        })
+
+        conn
+
+      family = Map.get(script, "family") ->
+        send(reply_to, %Kalevala.Event{
+          topic: "npc/faction",
+          data: %{
+            npc_name: npc_name,
+            family: family,
+            gongxian: Map.get(script, "gongxian", 0),
+            asker_id: asker_id
+          }
+        })
+
+        conn
+
+      true ->
+        conn
     end
   end
 

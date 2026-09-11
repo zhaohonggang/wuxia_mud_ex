@@ -56,6 +56,12 @@ defmodule Kantele.Character.Events do
       event("mirror/give", :give_result)
     end
 
+    module(NpcScriptEvent) do
+      event("npc/give", :give_result)
+      event("npc/learn", :learn_result)
+      event("npc/faction", :faction_result)
+    end
+
     module(AssistEvent) do
       event("assist/request", :request)
     end

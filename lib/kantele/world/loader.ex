@@ -448,16 +448,23 @@ defmodule Kantele.World.Loader do
     %{turn_in | item: item}
   end
 
-  # 问答表：%{关键词 => 回答}，键值统一字符串
+  # 问答表：%{关键词 => 回答}，键统一字符串；值可为文本（直接回话）或
+  # 脚本化 map（Q6 数据驱动事件：reply/give/learn_skill/family/gongxian）
   defp parse_inquiries(nil), do: nil
 
   defp parse_inquiries(inquiries) when is_map(inquiries) do
     Enum.into(inquiries, %{}, fn {key, value} ->
-      {to_string(key), to_string(value)}
+      {to_string(key), parse_inquiry_value(value)}
     end)
   end
 
   defp parse_inquiries(_), do: nil
+
+  defp parse_inquiry_value(value) when is_map(value) do
+    Enum.into(value, %{}, fn {key, val} -> {to_string(key), val} end)
+  end
+
+  defp parse_inquiry_value(value), do: to_string(value)
 
   # 教学配置（A11/D4）：归一化字符串键，本期只解析落位供门派信息展示，
   # 消费端校验等 b 期 learn 重构接入

@@ -597,7 +597,7 @@ docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app/lpc_exampl
 | Q3 | 剧情叙事 | `storyd.c` + `daemons/story/*`（炼丹/老君/三丰剑等） | 无 | 场景内时序/条件叙事，仿 `brain.ex` 状态机 | 中 |
 | Q4 | 入侵事件 | `invasiond.c` + `invasion/npc/*`（english/european/japanese/invader） | 无 | 周期入侵（`scheduler.ex`）+ 刷新外族 NPC | 中 |
 | Q5 | 任务载体 | `task/set_task.c` + `npc/zixu.c` + `task/obj/*` | 无 | 全局任务 NPC + 任务物品库（可先落纯数据层） | 中 |
-| Q6 | 特色 NPC | `adm/npc/*`（ganjiang/moye/qingyangzi/nanxian/referee 等） | `npc/{master,dealer,guarder,vendor,quester,horseboss,banker}.ex` 模式已有 | 数据驱动 NPC 配置化（skills/对话/事件），不写死模块 | 低 |
+| Q6 | 特色 NPC | `adm/npc/*`（ganjiang/moye/qingyangzi/nanxian/referee 等） | `npc/{master,dealer,guarder,vendor,quester,horseboss,banker}.ex` 模式已有 | 数据驱动 NPC 配置化（skills/对话/事件），不写死模块 | ✅（2026-09-10） |
 
 > 已完成对照（排期参考，无需再核查）：
 > `auctiond/shopd/moneyd/band(int)/enchased` → `economy/{auction,stall,money}` / `item/craft`；
@@ -848,3 +848,23 @@ docker compose -f docker-compose.dev.yml run --rm app sh -ec "cd /app/lpc_exampl
 - 镜子 clone 销毁：LPC 每轮销毁旧物品重建；v1 直接生成新实例，旧的随 NPC 销毁。
 
 **风险**：30 个 task 物品 + 30 个 NPC 同轮次生成，分批 50ms 启动；子虚道人固定房间需在 liuxi 区预置；里程碑奖励物品已补 UCL 定义（解除）；`start_zixu` 使用 liuxi 全局监督树名，测试必须注入唯一 zone 避免与套件抢占（已修复）。**测试涉时 flake 已修**：(a) `daub_command_test` 与 8 个 async 测试文件共用 `test:sword` 等物品 id，setup_all 并发 `Items.put` 不同 meta 互相覆盖导致偶发「不是武器」——daub 改用私有 `daubtest:` 前缀；随后把同类隐患一并肃清：backpack/enchase/imbue/san/sell/player_misc 各自改 `backpacktest:`/`enchasetest:`/`imbuetest:`/`santest:`/`selltest:`/`pmisctest:` 前缀，`item_command` 成为 `test:sword` 唯一写入方；顺带修正 backpack "store all" 断言依赖排序巧合（`Enum.sort()` 后期望值写反序，改名后现形）改按排序结果断言；`test:baozi` 虽无前缀但 backpack 与 give 两处 put 语义完全一致（同 name/meta），无冲突保留。(b) `bboard_test.unread_count/2` 秒级时间戳竞态 + `{:ok, _board}` 丢弃 Second 返回值——改为等整秒推进并回收新板子。seed 731933/788424 现皆全绿。
+
+---
+
+### 15.6 Q6 特色 NPC（数据驱动配置化）
+
+**最终目标**：`adm/npc/*` 特色 NPC（干将/莫邪/青阳子/南贤/裁判等）以纯数据定义（skills/对话/事件），新增 NPC = 追加 UCL 文件，不写任何 Elixir 模块。
+
+**实现（2026-09-10，并入本批次）**：
+
+1. **脚本化问询引擎（事件数据化）**：
+   - `loader.ex` `parse_inquiries/1`：答语值支持文本（直接回话）与 **map 脚本**（`%{"reply"..,"give"..,"learn_skill"..,"family"..,"gongxian"..}`），map 不再被 `to_string`（原是潜在崩溃点）。
+   - `npc_shop_event.ex` `NpcAskEvent.call`：新增 `is_map` 分支 → `handle_scripted_answer/3`（先 `publish_tell` 回话，再按效果发事件）；`find_answer` 的包含匹配对 map 值同样生效。atom 分支（子虚道人）原样保留。
+   - 新增玩家侧 `lib/kantele/character/events/npc_script_event.ex`（`Kantele.Character.NpcScriptEvent`）：`npc/give`（`Items.get` → 背包实例 + `Records.save` + 渲染）、`npc/learn`（`stats.skills` 首学 1 级）、`npc/faction`（`meta.family = %{name:..}` + `stats.gongxian` 累加），非 asker 事件忽略。`events.ex` 注册三条路由。
+2. **数据内容**：新建 `data/world/signature.ucl`（隐世之境 signature 区）——5 房间（隐逸山径/铸剑亭/观云阁/书林/论武台）+ 3 物品（精钢/寒铁/比武令牌）+ **5 位特色 NPC**（干将/莫邪/青阳子/南贤/裁判），各自 combat（skills/mapped/apply/no_kill）与问询：
+   - 干将「铸剑」→ give 精钢；莫邪「寒铁」→ give 寒铁；青阳子「道法」→ learn_skill taoism、「拜师」→ family 青阳门 + gongxian 10；南贤「识字」→ learn_skill literate；裁判「比武」→ give 令牌。每人另有纯文本咨询词。
+   - `liuxi.ucl` 广场 `room_exits` 补 `north = signature.rooms.yinyi.id`（双向出口，游戏内可达）。
+3. **发现并规避**：Elias UCL 解析器**不允许字符串中含 `;`**（liuxi.ucl 全文件无分号的成因），描述文案须避开分号。
+4. **测试**：`npc_script_event_test.exs`（8 用例：NpcAskEvent 脚本分发 give/learn/family、纯文本不进脚本分支；玩家侧 give 入包/他人事件忽略、learn 加技能、faction 写 family+贡献）+ `signature_npc_test.exs`（6 用例：区/房间/物品加载、5 角色引表、脚本 map 保留、combat 技能、跨区出口、落位正确房间）。全量 **2330 tests 0 failures**（seed 731933/788424）。
+
+**v1 简化（对 LPC 的偏差）**：LPC `adm/npc/*` 源文件不在本仓库（mud 外部库），内容按游戏设定新编；`learn_skill` 效果为首次学习 1 级简化（无精通/等级门限）；`family` 效果只写 `%{name:..}`（师承 privs/generation 走既有 `NpcFamilyEvent`）；脚本效果集固定四类，扩展效果需在 `handle_scripted_answer` 增加分发。**数据驱动扩展点**：加特色 NPC 只需追加 `data/world/*.ucl` 的 characters/room_characters + inquiries 脚本，无需改代码。
