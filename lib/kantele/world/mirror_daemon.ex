@@ -31,7 +31,10 @@ defmodule Kantele.World.MirrorDaemon do
       all_completed: false,
       timer_ref: nil,
       round_active: false,
-      spawn_queue: []       # queue of pending spawns for batched 50ms spawning
+      spawn_queue: [],      # queue of pending spawns for batched spawning
+      spawn_timer_ref: nil, # timer for spawn_next messages
+      total_tasks: @total_tasks,
+      spawn_delay: 50       # ms between each carrier spawn
     }
   end
 
@@ -40,12 +43,17 @@ defmodule Kantele.World.MirrorDaemon do
     if state.round_active do
       {:error, :round_already_active}
     else
+      # 清理上一轮遗留的 carrier（避免进程堆积）
+      terminate_carriers(state)
+
       state =
         state
         |> Map.put(:round_active, true)
         |> Map.put(:total_completed, 0)
         |> Map.put(:all_completed, false)
         |> Map.put(:tasks, %{})
+        |> Map.put(:spawn_queue, [])
+        |> Map.put(:spawn_timer_ref, nil)
         |> Map.update(:round_number, 0, &(&1 + 1))
 
       sync = Keyword.get(opts, :sync, false)
@@ -53,14 +61,30 @@ defmodule Kantele.World.MirrorDaemon do
     end
   end
 
+  defp terminate_carriers(state) do
+    Enum.each(state.tasks, fn
+      {_name, %{pid: pid, alive: true}} when is_pid(pid) ->
+        if Process.alive?(pid), do: Process.exit(pid, :shutdown)
+
+      _ ->
+        :ok
+    end)
+
+    :ok
+  end
+
   @impl Behaviour
   def stop_round(state) do
-    Enum.each(state.tasks, fn {_name, %{pid: pid, alive: true}} ->
-      if Process.alive?(pid), do: Process.exit(pid, :shutdown)
+    Enum.each(state.tasks, fn
+      {_name, %{pid: pid, alive: true}} when is_pid(pid) ->
+        if Process.alive?(pid), do: Process.exit(pid, :shutdown)
+
+      _ ->
+        :ok
     end)
 
     cancel_timers(state)
-    {:ok, %{state | round_active: false, tasks: %{}, timer_ref: nil, spawn_queue: []}}
+    {:ok, %{state | round_active: false, tasks: %{}, timer_ref: nil, spawn_queue: [], spawn_timer_ref: nil}}
   end
 
   @impl Behaviour
@@ -98,30 +122,11 @@ defmodule Kantele.World.MirrorDaemon do
       |> Map.put(:round_interval, Keyword.get(opts, :round_interval, @default_round_interval))
       |> Map.put(:zone_id, Keyword.get(opts, :zone_id, @default_zone))
       |> Map.put(:total_tasks, Keyword.get(opts, :total_tasks, @total_tasks))
+      |> Map.put(:spawn_delay, Keyword.get(opts, :spawn_delay, 50))
 
     # 开机延迟后首轮
     schedule_next_round(state)
     {:ok, state}
-  end
-
-  @impl true
-  def handle_info(:round_tick, state) do
-    if state.round_active && !state.all_completed do
-      schedule_next_round(state)
-      {:noreply, state}
-    else
-      case start_round(state) do
-        {:ok, new_state} ->
-          announce(
-            "{color foreground=\"yellow\"}【 宝  镜 】{/color} 第 #{new_state.round_number} 轮宝镜任务重新分布完毕！30 件任务物品已散落各地。\n"
-          )
-          schedule_next_round(new_state)
-          {:noreply, new_state}
-        {:error, _} ->
-          schedule_next_round(state)
-          {:noreply, state}
-      end
-    end
   end
 
   @impl true
@@ -145,8 +150,24 @@ defmodule Kantele.World.MirrorDaemon do
 
   @impl true
   def handle_info({:spawn_next, _from}, state) do
-    schedule_next_spawn(state)
-    {:noreply, state}
+    new_state = schedule_next_spawn(state)
+    {:noreply, new_state}
+  end
+
+  @impl true
+  def handle_info(:round_tick, state) do
+    # 每次 tick 后都重排下一轮，避免 send_interval 累积
+    case start_round(state) do
+      {:ok, new_state} ->
+        announce(
+          "{color foreground=\"yellow\"}【 宝  镜 】{/color} 第 #{new_state.round_number} 轮宝镜任务重新分布完毕！30 件任务物品已散落各地。\n"
+        )
+        schedule_next_round(new_state)
+        {:noreply, new_state}
+      {:error, _} ->
+        schedule_next_round(state)
+        {:noreply, state}
+    end
   end
 
   # 任务物品被上交回调（由 give_task 命令触发）
@@ -230,13 +251,16 @@ defmodule Kantele.World.MirrorDaemon do
     if ref = state.timer_ref, do: :erlang.cancel_timer(ref)
 
     interval = Map.get(state, :round_interval, @default_round_interval)
-    ref = :timer.send_interval(interval, :round_tick)
+    ref = :timer.send_after(interval, self(), :round_tick)
 
     %{state | timer_ref: ref}
   end
 
   defp cancel_timers(state) do
     if ref = state.timer_ref do
+      :erlang.cancel_timer(ref)
+    end
+    if ref = state.spawn_timer_ref do
       :erlang.cancel_timer(ref)
     end
     state
@@ -314,7 +338,7 @@ defmodule Kantele.World.MirrorDaemon do
   defp schedule_next_spawn(state) do
     case state.spawn_queue do
       [] ->
-        state
+        %{state | spawn_timer_ref: nil}
 
       [{task_name, task_def, room_id, npc_name, npc_id} | rest] ->
         # 生成当前任务的 carrier
@@ -359,9 +383,10 @@ defmodule Kantele.World.MirrorDaemon do
               %{state | spawn_queue: rest}
           end
 
-        # 调度下一个（50ms 后）
-        :timer.send_after(50, {:spawn_next, self()})
-        new_state
+        # 调度下一个（spawn_delay ms 后）
+        delay = Map.get(state, :spawn_delay, 50)
+        spawn_ref = :timer.send_after(delay, {:spawn_next, self()})
+        %{new_state | spawn_timer_ref: spawn_ref}
     end
   end
 
