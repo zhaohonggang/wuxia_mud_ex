@@ -8,7 +8,7 @@ bots {
     tick_ms = 800
     march = ["west", "north", "north", "south", "south", "east"]
     hunt = ["yecu"]
-    hunt_rooms = ["liuxi.rooms.guangchang.id"]
+    hunt_rooms = ["liuxi:guangchang"]
     train = []
     save_every = 60
     relog = true

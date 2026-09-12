@@ -228,14 +228,15 @@ defmodule Kantele.Bot do
           target when is_binary(target) ->
             {%{state | last_kill_at: now_ms()}, "kill " <> target}
 
-          nil ->
-            case train_target(st, cfg, state) do
-              {line, train_index} ->
-                {%{state | train_index: train_index}, line}
+nil ->
+              case train_target(st, cfg, state) do
+                {line, train_index} ->
+                  {%{state | train_index: train_index}, line}
 
-              nil ->
-                {state, march_step(st, cfg, state)}
-            end
+                nil ->
+                  {state, march_action} = march_step(st, cfg, state)
+                  {state, march_action}
+              end
         end
     end
   end
@@ -249,7 +250,7 @@ defmodule Kantele.Bot do
     allowed =
       not_no_fight?(st.room_id) and
         (cfg.hunt_rooms == [] or st.room_id in cfg.hunt_rooms) and
-        now_ms() - state.last_kill_at >= @kill_cooldown_ms
+        (state.last_kill_at == 0 or now_ms() - state.last_kill_at >= @kill_cooldown_ms)
 
     if allowed do
       mobs = room_names(st.room_id, st.name)
@@ -274,14 +275,67 @@ defmodule Kantele.Bot do
   end
 
   defp march_step(st, cfg, state) do
-    state = %{state | route_index: state.route_index + 1}
+    case cfg.hunt_rooms do
+      [] ->
+        fallback_march(st, cfg, state)
 
+      hunt_rooms ->
+        if st.room_id in hunt_rooms do
+          {state, nil}
+        else
+          case nav_step(st.room_id, hunt_rooms) do
+            {dir, _path} -> {state, dir}
+            nil -> fallback_march(st, cfg, state)
+          end
+        end
+    end
+  end
+
+  defp fallback_march(st, cfg, state) do
     case cfg.march do
       [] ->
-        random_exit(st.room_id)
+        {state, random_exit(st.room_id)}
 
       route ->
-        Enum.at(route, rem(state.route_index, length(route)))
+        index = rem(state.route_index, length(route))
+        state = %{state | route_index: state.route_index + 1}
+        {state, Enum.at(route, index)}
+    end
+  end
+
+  defp nav_step(start_id, goal_ids) do
+    case bfs_path([{start_id, []}], MapSet.new([start_id]), goal_ids) do
+      [dir | rest] -> {dir, rest}
+      _ -> nil
+    end
+  end
+
+  defp bfs_path([], _visited, _goal_ids), do: nil
+
+  defp bfs_path([{room_id, path} | queue], visited, goal_ids) do
+    if room_id in goal_ids do
+      path
+    else
+      neighbors =
+        room_id
+        |> room_exits()
+        |> Enum.reject(fn {_dir, dest} -> is_nil(dest) or MapSet.member?(visited, dest) end)
+        |> Enum.uniq_by(fn {_dir, dest} -> dest end)
+
+      visited =
+        Enum.reduce(neighbors, visited, fn {_dir, dest}, acc -> MapSet.put(acc, dest) end)
+
+      queue = queue ++ Enum.map(neighbors, fn {dir, dest} -> {dest, path ++ [dir]} end)
+      bfs_path(queue, visited, goal_ids)
+    end
+  end
+
+  defp room_exits(room_id) do
+    with {:ok, zone} <- Kantele.World.ZoneCache.get(zone_id(room_id)),
+         room when not is_nil(room) <- Enum.find(zone.rooms, &(&1.id == room_id)) do
+      Enum.map(room.exits, fn exit -> {exit.exit_name, exit.end_room_id} end)
+    else
+      _ -> []
     end
   end
 
@@ -306,6 +360,8 @@ defmodule Kantele.Bot do
         nil
     end
   end
+
+  defp zone_id(room_id), do: room_id |> String.split(":") |> hd()
 
   @doc """
   房间内角色名列表（排除自己与在线玩家；仅用于找打猎目标）

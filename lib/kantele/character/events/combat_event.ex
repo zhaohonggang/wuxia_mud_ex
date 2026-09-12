@@ -758,6 +758,10 @@ defmodule Kantele.Character.CombatEvent do
     do: %{character | meta: Map.put(character.meta, :stats, stats)}
 
   # 击杀登记：把被杀敌人的裸 key（"zone:key" -> "key"）记入玩家的任务进度
+  defp apply_quest_kill(%{meta: %Kantele.Character.NonPlayerMeta{}} = character, _enemy_id) do
+    character
+  end
+
   defp apply_quest_kill(character, enemy_id) do
     case PlayerMeta.quests(character.meta) do
       nil ->

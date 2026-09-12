@@ -2347,7 +2347,10 @@ defmodule Kantele.World.Room.CombatEvent do
   # ---- 守卫敌对判定（Guarder.check_enemy 接线） ----
 
   defp guarder_config?(character) do
-    character.meta.guarder && Guarder.is_guarder?(character)
+    case Map.get(character.meta, :guarder) do
+      nil -> false
+      guarder -> guarder && Guarder.is_guarder?(character)
+    end
   end
 
   defp guarder_decision(target, attacker, event) do
