@@ -328,6 +328,21 @@ defmodule Kantele.Character.Commands do
     parse("inventory", :run)
   end
 
+  module(DetailCommand) do
+    # 带参版声明在前（先尝试），裸 `detail` 才落到 run_bare
+    parse("detail", :run, fn command ->
+      command
+      |> spaces()
+      |> optional(
+        repeat(utf8_char([{:not, ?\s}]))
+        |> reduce({List, :to_string, []})
+        |> unwrap_and_tag(:rest)
+      )
+    end)
+
+    parse("detail", :run_bare)
+  end
+
   module(BackpackCommand) do
     parse("store", :store, fn command ->
       command |> spaces() |> text(:rest)

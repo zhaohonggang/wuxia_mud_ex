@@ -46,6 +46,7 @@ const eventTextHandlers = {
     dispatch(Creators.channelBroadcast(channel_name, character, id, text));
   },
   "Character.Info": dispatchEventText,
+  "Character.Detail": dispatchEventText,
   "Commands.Index": dispatchEventText,
   "Character.Prompt": (dispatch, getState, event, { history }) => {
     const { text } = event;
