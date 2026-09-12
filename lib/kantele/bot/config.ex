@@ -45,20 +45,31 @@ defmodule Kantele.BotConfig do
   @type t() :: %__MODULE__{}
 
   @doc """
-  读取 `data/bots` 下全部 .ucl，解析为 `key => %Config{}`
+  读取 `data/bots` 下全部 .ucl，解析为 `{:ok, key => %Config{}}` 或 `{:error, reason}`
   """
   def load_all(path \\ @bots_path) do
-    path
-    |> File.ls!()
-    |> Enum.filter(&String.ends_with?(&1, ".ucl"))
-    |> Enum.flat_map(fn file ->
-      full = Path.join([path, file])
-      File.read!(full)
-      |> Elias.parse()
-      |> Map.get(:bots, %{})
-      |> Enum.map(fn {key, data} -> {to_string(key), from_parsed(to_string(key), data)} end)
-    end)
-    |> Enum.into(%{})
+    try do
+      configs =
+        path
+        |> File.ls!()
+        |> Enum.filter(&String.ends_with?(&1, ".ucl"))
+        |> Enum.flat_map(fn file ->
+          full = Path.join([path, file])
+          content = File.read!(full)
+          case Elias.parse(content) do
+            %{bots: bots} when is_map(bots) ->
+              Enum.map(bots, fn {key, data} -> {to_string(key), from_parsed(to_string(key), data)} end)
+
+            _ ->
+              []
+          end
+        end)
+        |> Enum.into(%{})
+
+      {:ok, configs}
+    catch
+      :error, reason -> {:error, reason}
+    end
   end
 
   @doc """

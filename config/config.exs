@@ -13,7 +13,7 @@ config :ex_venture,
 
 config :ex_venture, :listener, start: true
 
-# 机器人（data/bots/*.ucl）：压测/验收工具；测试环境关闭
+# 机器人（data/bots/*.ucl）：压测/验收工具；开发环境可开启，测试环境关闭
 config :ex_venture, :bots, enabled: true
 
 # Configures the endpoint

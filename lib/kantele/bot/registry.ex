@@ -70,13 +70,24 @@ defmodule Kantele.Bot.Registry do
 
   @impl true
   def handle_continue(:bootstrap, state) do
-    case world_ready?() do
-      true ->
-        state = start_enabled(state)
-        {:noreply, state}
+    if bots_globally_enabled?() do
+      case world_ready?() do
+        true ->
+          state = start_enabled(state)
+          {:noreply, state}
 
-      false ->
-        {:noreply, state, {:continue, :bootstrap}}
+        false ->
+          {:noreply, state, {:continue, :bootstrap}}
+      end
+    else
+      {:noreply, state}
+    end
+  end
+
+  defp bots_globally_enabled? do
+    case Application.get_env(:ex_venture, :bots, []) do
+      [] -> true
+      opts -> Keyword.get(opts, :enabled, true)
     end
   end
 
@@ -103,14 +114,20 @@ defmodule Kantele.Bot.Registry do
   end
 
   defp start_enabled(state) do
-    BotConfig.load_all()
-    |> Enum.reduce(state, fn {_key, config}, acc ->
-      if config.enabled do
-        start_bot(config, acc)
-      else
-        acc
-      end
-    end)
+    case BotConfig.load_all() do
+      {:ok, configs} ->
+        Enum.reduce(configs, state, fn {_key, config}, acc ->
+          if config.enabled do
+            start_bot(config, acc)
+          else
+            acc
+          end
+        end)
+
+      {:error, reason} ->
+        Logger.warning("Failed to load bot configs: #{inspect(reason)}")
+        state
+    end
   end
 
   defp start_bot(%BotConfig{key: key, enabled: false} = config, state) do

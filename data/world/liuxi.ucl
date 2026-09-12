@@ -1314,7 +1314,7 @@ characters "heihu" {
 }
 
 characters "yezhu" {
-  name = "野猪"
+  name = "yecu"
   description = "一头獠牙外露的野猪，正哼哧哼哧地拱着土。新手练手的好对象。"
 
   # 闲聊（A10/N3）：8% 概率在事件触发时哼哼一声

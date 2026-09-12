@@ -29,6 +29,11 @@ end
 defmodule ExVenture.Application.KalevalaSupervisor do
   @moduledoc false
 
+  IO.puts("=== COMPILE TIME: KalevalaSupervisor module being compiled ===")
+  File.write!("/tmp/kalevala_supervisor_compile.txt", "COMPILE TIME\n")
+  File.write!("/tmp/kalevala_supervisor_load.txt", "MODULE LOADED\n")
+  Logger.info("KalevalaSupervisor module loaded")
+
   use Supervisor
 
   def foreman_options() do
@@ -46,6 +51,8 @@ defmodule ExVenture.Application.KalevalaSupervisor do
   end
 
   def init(_args) do
+    IO.puts("=== KalevalaSupervisor init START ===")
+    Logger.info("KalevalaSupervisor init starting")
     telnet_config = [
       telnet: [
         port: 4646
@@ -83,15 +90,13 @@ defmodule ExVenture.Application.KalevalaSupervisor do
       {Kantele.Character.Combat.StatusTracker, []},
       {Kantele.Economy.Auction, []},
       {Kantele.Economy.Stall, []},
-      {Kalevala.Character.Foreman.Supervisor, [name: Kantele.Character.Foreman.Supervisor]},
-      bot_children(),
-      telnet_listener(telnet_config)
+      {Kalevala.Character.Foreman.Supervisor, [name: Kantele.Character.Foreman.Supervisor]}
+      | bot_children()
+      ++ [telnet_listener(telnet_config)]
     ]
 
     children =
-      Enum.reject(children, fn child ->
-        is_nil(child) or (is_list(child) and child == [])
-      end)
+      Enum.reject(children, &is_nil/1)
 
     Supervisor.init(children, strategy: :one_for_one)
   end
@@ -110,15 +115,18 @@ defmodule ExVenture.Application.KalevalaSupervisor do
 
   defp bot_children do
     config = Application.get_env(:ex_venture, :bots, [])
+    Logger.info("bot_children: config = #{inspect(config)}")
 
     case Keyword.get(config, :enabled, true) do
       true ->
+        Logger.info("bot_children: starting bot supervisor and registry")
         [
           {Kantele.Bot.Supervisor, [name: Kantele.Bot.Supervisor]},
           {Kantele.Bot.Registry, [name: Kantele.Bot.Registry]}
         ]
 
       false ->
+        Logger.info("bot_children: bots disabled")
         []
     end
   end
