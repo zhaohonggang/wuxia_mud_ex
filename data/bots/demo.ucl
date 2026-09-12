@@ -9,8 +9,6 @@ bots {
     march = ["west", "north", "north", "south", "south", "east"]
     hunt = ["yecu"]
     hunt_rooms = ["liuxi.rooms.guangchang.id"]
-    heal_qi = 0.5
-    flee_qi = 0.6
     train = []
     save_every = 60
     relog = true

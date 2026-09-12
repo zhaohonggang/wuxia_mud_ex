@@ -29,10 +29,7 @@ end
 defmodule ExVenture.Application.KalevalaSupervisor do
   @moduledoc false
 
-  IO.puts("=== COMPILE TIME: KalevalaSupervisor module being compiled ===")
-  File.write!("/tmp/kalevala_supervisor_compile.txt", "COMPILE TIME\n")
-  File.write!("/tmp/kalevala_supervisor_load.txt", "MODULE LOADED\n")
-  Logger.info("KalevalaSupervisor module loaded")
+  require Logger
 
   use Supervisor
 
@@ -51,8 +48,6 @@ defmodule ExVenture.Application.KalevalaSupervisor do
   end
 
   def init(_args) do
-    IO.puts("=== KalevalaSupervisor init START ===")
-    Logger.info("KalevalaSupervisor init starting")
     telnet_config = [
       telnet: [
         port: 4646
