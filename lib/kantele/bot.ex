@@ -209,7 +209,7 @@ defmodule Kantele.Bot do
 
   # ---- 决策（返回 {更新的 state, 动作命令 或 nil}）----
 
-  defp decide(st, cfg, state) do
+defp decide(st, cfg, state) do
     cond do
       in_combat?(st) and ratio(st.vitals.qi, st.vitals.max_qi) < cfg.flee_qi ->
         {state, "逃跑"}
@@ -223,20 +223,34 @@ defmodule Kantele.Bot do
       ratio(st.vitals.jing, st.vitals.max_jing) < 0.2 ->
         {state, nil}
 
+      # 1. Train if potential >= train_potential and jing >= train_jing
+      train_target(st, cfg, state) != nil ->
+        # If not in train_rooms, navigate there first
+        if cfg.train_rooms != [] and st.room_id not in cfg.train_rooms do
+          {state, march_action} = march_step(st, cfg, state, :train)
+          {state, march_action}
+        else
+          case train_target(st, cfg, state) do
+            {line, train_index} -> {%{state | train_index: train_index}, line}
+            nil -> {state, nil}
+          end
+        end
+
+      # 2. Hunt if potential < threshold (default to train_potential) and target available
       true ->
-        case hunt_target(st, cfg, state) do
-          target when is_binary(target) ->
-            {%{state | last_kill_at: now_ms()}, "kill " <> target}
-
-nil ->
-              case train_target(st, cfg, state) do
-                {line, train_index} ->
-                  {%{state | train_index: train_index}, line}
-
-                nil ->
-                  {state, march_action} = march_step(st, cfg, state)
-                  {state, march_action}
-              end
+        potential = Stats.available_potential(st.stats)
+        threshold = if cfg.hunt_potential_threshold > 0, do: cfg.hunt_potential_threshold, else: cfg.train_potential
+        if potential < threshold do
+          case hunt_target(st, cfg, state) do
+            target when is_binary(target) ->
+              {%{state | last_kill_at: now_ms()}, "kill " <> target}
+            nil ->
+              {state, march_action} = march_step(st, cfg, state, :hunt)
+              {state, march_action}
+          end
+        else
+          {state, march_action} = march_step(st, cfg, state, :train)
+          {state, march_action}
         end
     end
   end
@@ -274,16 +288,23 @@ nil ->
     not Enum.member?(Kantele.World.room_flags(room_id), "no_fight")
   end
 
-  defp march_step(st, cfg, state) do
-    case cfg.hunt_rooms do
+  defp march_step(st, cfg, state, goal) do
+    target_rooms =
+      case goal do
+        :hunt -> cfg.hunt_rooms
+        :train -> cfg.train_rooms
+        _ -> []
+      end
+
+    case target_rooms do
       [] ->
         fallback_march(st, cfg, state)
 
-      hunt_rooms ->
-        if st.room_id in hunt_rooms do
+      rooms ->
+        if st.room_id in rooms do
           {state, nil}
         else
-          case nav_step(st.room_id, hunt_rooms) do
+          case nav_step(st.room_id, rooms) do
             {dir, _path} -> {state, dir}
             nil -> fallback_march(st, cfg, state)
           end

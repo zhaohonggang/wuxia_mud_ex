@@ -34,10 +34,12 @@ defmodule Kantele.BotConfig do
     hunt: [],
     hunt_rooms: [],
     train: [],
+    train_rooms: [],
     heal_qi: 0.5,
     flee_qi: 0.35,
     train_jing: 0.5,
     train_potential: 10,
+    hunt_potential_threshold: 0,
     save_every: 60,
     relog: true
   ]
@@ -88,10 +90,12 @@ defmodule Kantele.BotConfig do
       hunt: strings(value(data, :hunt, [])),
       hunt_rooms: strings(value(data, :hunt_rooms, [])),
       train: strings(value(data, :train, [])),
+      train_rooms: strings(value(data, :train_rooms, [])),
       heal_qi: float(value(data, :heal_qi, 0.5)),
       flee_qi: float(value(data, :flee_qi, 0.35)),
       train_jing: float(value(data, :train_jing, 0.5)),
       train_potential: int(value(data, :train_potential, 10)),
+      hunt_potential_threshold: int(value(data, :hunt_potential_threshold, 0)),
       save_every: int(value(data, :save_every, 60)),
       relog: bool(value(data, :relog, true))
     }

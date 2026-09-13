@@ -9,7 +9,13 @@ bots {
     march = ["west", "north", "north", "south", "south", "east"]
     hunt = ["yecu"]
     hunt_rooms = ["liuxi:guangchang"]
-    train = []
+    train = ["learn sword 王重九 x10", "learn force 王重九 x5", "learn dodge 王重九 x5"]
+    train_rooms = ["liuxi:lianwuchang"]
+    heal_qi = "0.5"
+    flee_qi = "0.35"
+    train_jing = "0.5"
+    train_potential = 50
+    hunt_potential_threshold = 30
     save_every = 60
     relog = true
   }
