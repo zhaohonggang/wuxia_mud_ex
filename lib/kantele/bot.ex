@@ -532,12 +532,12 @@ defp decide(st, cfg, state) do
       learn_cmds = Enum.filter(state.config.train, &is_learn_cmd/1)
       all_failed = Enum.all?(learn_cmds, &MapSet.member?(failed, &1))
       
-      new_state = %{state 
-        | pending_learn: nil
-          , failed_train_commands: failed
-          , train_index: 0  # 重置索引重新尝试
-          , train_fallback: all_failed  # 标记全失败，触发兜底
-      }
+new_state = %{state 
+         | pending_learn: nil
+         , failed_train_commands: failed
+         , train_index: 0
+         , train_fallback: all_failed
+       }
       
       {:cont, new_state}
     else
