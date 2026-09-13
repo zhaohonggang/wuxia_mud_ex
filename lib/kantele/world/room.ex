@@ -175,6 +175,38 @@ defmodule Kantele.World.Room do
     room.id |> get_item_instances_in_room()
   end
 
+  @doc """
+  获取运行中房间的实时快照（物品、角色等），供命令在运行时读取。
+
+  房间未启动或不存在时返回一个空快照（`items`/`private` 始终存在，避免命令读
+  `room.items` 等字段时抛 KeyError）。
+  """
+  def snapshot(room_id) do
+    case :global.whereis_name({Kalevala.World.Room, room_id}) do
+      pid when is_pid(pid) ->
+        state = :sys.get_state(pid)
+        private = state.private
+        characters = private.characters || []
+        item_instances = private.item_instances || []
+        data = state.data || %{}
+
+        %{
+          id: room_id,
+          name: Map.get(data, :name, room_id),
+          items: item_instances,
+          private: %{characters: characters, item_instances: item_instances}
+        }
+
+      _ ->
+        %{
+          id: room_id,
+          name: room_id,
+          items: [],
+          private: %{characters: [], item_instances: []}
+        }
+    end
+  end
+
   @doc "物品移入/移出房间（对应 LPC move_object/2）"
   def move_object(room, item_instance) do
     room

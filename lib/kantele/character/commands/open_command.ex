@@ -13,7 +13,7 @@ defmodule Kantele.Character.OpenCommand do
   def run(conn, %{"target" => target}) do
     character = conn.character
 
-    case open_door(conn.room, target, character) do
+    case open_door(get_room(conn), target, character) do
       :ok ->
         conn
         |> render(CommandView, "text", %{text: "你将#{target}打开了。\n"})
@@ -38,6 +38,10 @@ defmodule Kantele.Character.OpenCommand do
           :ok
         end
     end
+  end
+
+  defp get_room(conn) do
+    Map.get(conn, :room) || conn.private.room || Kantele.World.Room.snapshot(conn.character.room_id)
   end
 
   defp render_error(conn, message) do

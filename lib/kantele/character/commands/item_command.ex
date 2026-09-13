@@ -60,7 +60,7 @@ defmodule Kantele.Character.ItemCommand do
       item_instance ->
         item = Items.get!(item_instance.item_id)
 
-        case find_container(character, target_name) do
+        case find_container(conn, character, target_name) do
           nil ->
             render_error(conn, "这里没有这样东西。\n")
 
@@ -131,7 +131,7 @@ defmodule Kantele.Character.ItemCommand do
   # ---- get helpers ----
 
   defp get_single(conn, character, item_name) do
-    room = conn.room
+    room = get_room(conn)
 
     case find_item_in_room(room, item_name) do
       nil ->
@@ -143,10 +143,10 @@ defmodule Kantele.Character.ItemCommand do
   end
 
   defp get_from_container(conn, character, item_name, container_name) do
-    room = conn.room
+    room = get_room(conn)
 
     container_instance =
-      Enum.find(room.items ++ character.inventory, fn item_instance ->
+      Enum.find(Map.get(room, :items, []) ++ character.inventory, fn item_instance ->
         item = Items.get!(item_instance.item_id)
         item_instance.id == container_name || item.callback_module.matches?(item, container_name)
       end)
@@ -173,8 +173,8 @@ defmodule Kantele.Character.ItemCommand do
   end
 
   defp get_all(conn, character) do
-    room = conn.room
-    items = room.items
+    room = get_room(conn)
+    items = Map.get(room, :items, [])
 
     if length(items) == 0 do
       render_error(conn, "你什么都没有拣起来。\n")
@@ -274,7 +274,7 @@ defmodule Kantele.Character.ItemCommand do
   end
 
   defp find_item_in_room(room, item_name) do
-    Enum.find_value(room.items, fn item_instance ->
+    Enum.find_value(Map.get(room, :items, []), fn item_instance ->
       item = Items.get!(item_instance.item_id)
 
       if item_instance.id == item_name || item.callback_module.matches?(item, item_name) do
@@ -304,13 +304,19 @@ defmodule Kantele.Character.ItemCommand do
     _ -> nil
   end
 
-  defp find_container(character, target_name) do
-    Enum.find(character.inventory ++ character.room.items, fn item_instance ->
+  defp find_container(conn, character, target_name) do
+    room = get_room(conn)
+
+    Enum.find(character.inventory ++ Map.get(room, :items, []), fn item_instance ->
       item = Items.get!(item_instance.item_id)
       item_instance.id == target_name || item.callback_module.matches?(item, target_name)
     end)
   rescue
     _ -> nil
+  end
+
+  defp get_room(conn) do
+    Map.get(conn, :room) || conn.private.room || Kantele.World.Room.snapshot(conn.character.room_id)
   end
 
   defp render_error(conn, message) do

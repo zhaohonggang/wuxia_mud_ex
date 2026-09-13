@@ -13,7 +13,7 @@ defmodule Kantele.Character.CloseCommand do
   def run(conn, %{"target" => target}) do
     character = conn.character
 
-    case close_door(conn.room, target, character) do
+    case close_door(get_room(conn), target, character) do
       :ok ->
         conn
         |> render(CommandView, "text", %{text: "你将#{target}关上了。\n"})
@@ -38,6 +38,10 @@ defmodule Kantele.Character.CloseCommand do
           {:error, "#{target}已经关上了。\n"}
         end
     end
+  end
+
+  defp get_room(conn) do
+    Map.get(conn, :room) || conn.private.room || Kantele.World.Room.snapshot(conn.character.room_id)
   end
 
   defp render_error(conn, message) do

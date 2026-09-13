@@ -138,13 +138,17 @@ defmodule Kantele.Character.GiveCommand do
   end
 
   defp find_npc_in_room(conn, target) do
-    room = conn.room
+    room = get_room(conn)
     private = room.private || %{}
-    characters = private.characters || []
+    characters = Map.get(private, :characters, [])
 
     Enum.find(characters, fn char ->
       char.id == target || char.name == target
     end)
+  end
+
+  defp get_room(conn) do
+    Map.get(conn, :room) || conn.private.room || Kantele.World.Room.snapshot(conn.character.room_id)
   end
 
   defp valid_task_target?(item, npc) do

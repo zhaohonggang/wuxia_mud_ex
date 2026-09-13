@@ -140,6 +140,15 @@ defmodule Kantele.Character.ItemCommandTest do
       assert text =~ "附近没有"
     end
 
+    test "conn 未注入 :room 时（运行时快照为空）不崩溃" do
+      p = player()
+      conn = build_conn(p)
+
+      conn = ItemCommand.get(conn, %{"item_name" => @normal_item_id})
+      text = conn.output |> Enum.flat_map(fn %Kalevala.Character.Conn.Text{data: d} -> [IO.iodata_to_binary(d)]; _ -> [] end) |> Enum.join("")
+      assert text =~ "附近没有"
+    end
+
     test "背包已满时拒绝" do
       inst = %Kalevala.World.Item.Instance{id: @normal_item_id, item_id: @normal_item_id}
       full_inventory = Enum.map(1..80, fn i -> %Kalevala.World.Item.Instance{id: "item-#{i}", item_id: @normal_item_id} end)
