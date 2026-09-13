@@ -533,11 +533,11 @@ defp decide(st, cfg, state) do
       all_failed = Enum.all?(learn_cmds, &MapSet.member?(failed, &1))
       
 new_state = %{state
-         | pending_learn: nil
-         , failed_train_commands: failed
-         , train_index: 0
-         , train_fallback: all_failed
-       }
+        | pending_learn: nil
+        , failed_train_commands: failed
+        , train_index: 0
+        , train_fallback: all_failed
+      }
       
       {:cont, new_state}
     else
