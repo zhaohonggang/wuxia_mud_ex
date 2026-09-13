@@ -291,23 +291,7 @@ defmodule Kantele.World.MirrorDaemon do
             task_name, task_def, room_id, state.zone_id
           )
 
-          config = [
-            supervisor_name: Kalevala.World.CharacterSupervisor.global_name(invader.meta.zone_id),
-            communication_module: Kantele.Communication,
-            initial_controller: Kantele.Character.SpawnController,
-            quit_view: {Kantele.Character.QuitView, "disconnected"}
-          ]
-
-          result =
-            try do
-              {:ok, pid} = Kalevala.World.start_character(invader, config)
-              Process.monitor(pid)
-              {:ok, pid}
-            rescue
-              e -> {:error, {:rescue, Exception.message(e)}}
-            catch
-              :exit, reason -> {:error, {:exit, inspect(reason)}}
-            end
+          result = start_carrier(invader)
 
           case result do
             {:ok, pid} ->
@@ -346,23 +330,7 @@ defmodule Kantele.World.MirrorDaemon do
           task_name, task_def, room_id, state.zone_id
         )
 
-        config = [
-          supervisor_name: Kalevala.World.CharacterSupervisor.global_name(invader.meta.zone_id),
-          communication_module: Kantele.Communication,
-          initial_controller: Kantele.Character.SpawnController,
-          quit_view: {Kantele.Character.QuitView, "disconnected"}
-        ]
-
-        result =
-          try do
-            {:ok, pid} = Kalevala.World.start_character(invader, config)
-            Process.monitor(pid)
-            {:ok, pid}
-          rescue
-            e -> {:error, {:rescue, Exception.message(e)}}
-          catch
-            :exit, reason -> {:error, {:exit, inspect(reason)}}
-          end
+        result = start_carrier(invader)
 
         new_state =
           case result do
@@ -387,6 +355,44 @@ defmodule Kantele.World.MirrorDaemon do
         delay = Map.get(state, :spawn_delay, 50)
         spawn_ref = :timer.send_after(delay, {:spawn_next, self()})
         %{new_state | spawn_timer_ref: spawn_ref}
+    end
+  end
+
+  defp start_carrier(invader) do
+    config = [
+      supervisor_name: Kalevala.World.CharacterSupervisor.global_name(invader.meta.zone_id),
+      communication_module: Kantele.Communication,
+      initial_controller: Kantele.Character.SpawnController,
+      quit_view: {Kantele.Character.QuitView, "disconnected"}
+    ]
+
+    # 任务载体一次性 NPC：收轮时 Process.exit(pid, :shutdown) 成批终止，
+    # 若沿用 Foreman 默认 restart: :permanent，会触发大量重启并压垮
+    # CharacterSupervisor（max_restarts 超限）。此处以临时子进程启动，
+    # 死亡即销毁、不重启。
+    options = config ++ [character: invader, callback_module: Kalevala.Character.Foreman.NonPlayer]
+
+    spec = %{
+      id: {Kalevala.Character.Foreman, invader.id},
+      start: {Kalevala.Character.Foreman, :start_link, [options]},
+      restart: :temporary,
+      shutdown: 5000,
+      type: :worker
+    }
+
+    try do
+      case DynamicSupervisor.start_child(options[:supervisor_name], spec) do
+        {:ok, pid} ->
+          Process.monitor(pid)
+          {:ok, pid}
+
+        {:error, reason} ->
+          {:error, {:start_child, reason}}
+      end
+    rescue
+      e -> {:error, {:rescue, Exception.message(e)}}
+    catch
+      :exit, reason -> {:error, {:exit, inspect(reason)}}
     end
   end
 
