@@ -31,7 +31,9 @@ defmodule Kantele.Bot do
     train_index: 0,
     route_index: 0,
     save_counter: 0,
-    last_kill_at: 0
+    last_kill_at: 0,
+    pending_learn: nil,
+    failed_train_commands: MapSet.new()
   ]
 
   def start_link(config) do
@@ -161,18 +163,32 @@ defmodule Kantele.Bot do
               decide(st, cfg, state)
           end
 
-        case action do
+case action do
           nil ->
             :ok
 
           line ->
-            drain_mailbox()
+            # 先处理累积的事件
+            events = drain_mailbox()
+            state = process_events(events, state)
+            
+            # 如果是 learn 命令，记录 pending_learn
+            state = if is_learn_cmd(line) do
+              # 解析 learn 命令：learn <skill> <teacher> [xN]
+              [_, skill | rest] = String.split(line)
+              teacher = Enum.take(rest, 2) |> Enum.join(" ") |> String.trim()
+              times = parse_learn_times(line)
+              %{state | pending_learn: %{skill: skill, teacher: teacher, times: times, line: line}}
+            else
+              state
+            end
+            
             send(state.foreman, {:recv, :text, line})
         end
 
         schedule_tick(cfg.tick_ms)
         {:noreply, state}
-    end
+      end
   end
 
   defp save_due?(state, cfg, st) do
@@ -236,6 +252,18 @@ defp decide(st, cfg, state) do
           end
         end
 
+      # 1b. Fallback: all learn commands failed, use self-training (exercise/respirate)
+      state.train_fallback and
+      Stats.available_potential(st.stats) >= cfg.train_potential and
+      ratio(st.vitals.jing, st.vitals.max_jing) >= cfg.train_jing ->
+        fallback_cmd = get_fallback_train_cmd(cfg)
+        if cfg.train_rooms != [] and st.room_id not in cfg.train_rooms do
+          {state, march_action} = march_step(st, cfg, state, :train)
+          {state, march_action}
+        else
+          {%{state | train_fallback: false}, fallback_cmd}
+        end
+
       # 2. Hunt if potential < threshold (default to train_potential) and target available
       true ->
         potential = Stats.available_potential(st.stats)
@@ -276,11 +304,30 @@ defp decide(st, cfg, state) do
     if cfg.train != [] and
          Stats.available_potential(st.stats) >= cfg.train_potential and
          ratio(st.vitals.jing, st.vitals.max_jing) >= cfg.train_jing do
-      count = length(cfg.train)
-      index = rem(state.train_index, count)
-      line = Enum.at(cfg.train, index)
-      train_index = if index == count - 1, do: 0, else: index + 1
-      {line, train_index}
+
+      # 过滤掉已失败的 learn 命令
+      available_cmds =
+        cfg.train
+        |> Enum.filter(fn cmd ->
+          if is_learn_cmd(cmd) do
+            not MapSet.member?(state.failed_train_commands, cmd)
+          else
+            true  # 非 learn 命令不过滤
+          end
+        end)
+
+      if available_cmds == [] do
+        nil  # 所有可用命令都失败了
+      else
+        count = length(available_cmds)
+        # 找到当前 train_index 对应的可用命令
+        index = rem(state.train_index, count)
+        line = Enum.at(available_cmds, index)
+        # 计算在原始 cfg.train 中的索引
+        original_index = Enum.find_index(cfg.train, fn c -> c == line end)
+        train_index = if original_index == length(cfg.train) - 1, do: 0, else: original_index + 1
+        {line, train_index}
+      end
     end
   end
 
@@ -448,13 +495,91 @@ defp decide(st, cfg, state) do
     :ok
   end
 
-  # 清空 protocol 输出邮箱（本进程就是 protocol pid，战斗/房间广播都会进来）
+  # 清空 protocol 输出邮箱，收集事件（本进程就是 protocol pid，战斗/房间广播都会进来）
   defp drain_mailbox do
+    collect_events([])
+  end
+
+  defp collect_events(acc) do
     receive do
-      {:send, _} -> drain_mailbox()
+      {:send, data} -> collect_events([data | acc])
     after
-      0 -> :ok
+      0 -> Enum.reverse(acc)
     end
+  end
+
+  # 处理事件，检测 learn 失败
+  defp process_events(events, state) do
+    Enum.reduce(events, state, fn event, acc ->
+      case process_event(event, acc) do
+        {:cont, new_state} -> new_state
+        {:halt, new_state} -> new_state
+      end
+    end)
+  end
+
+  defp process_event(%{topic: "skills/learn-result", data: %{skill: nil, failure_message: msg}}, state) do
+    if state.pending_learn do
+      line = state.pending_learn.line
+      teacher = state.pending_learn.teacher
+      reason = String.trim(msg)
+      Logger.warning("bot #{state.config.name} learn failed: #{reason} (cmd: #{line})")
+      
+      # 记录失败命令
+      failed = MapSet.put(state.failed_train_commands, line)
+      
+      # 检查是否所有 learn 命令都失败了
+      learn_cmds = Enum.filter(state.config.train, &is_learn_cmd/1)
+      all_failed = Enum.all?(learn_cmds, &MapSet.member?(failed, &1))
+      
+      new_state = %{state 
+        | pending_learn: nil
+          , failed_train_commands: failed
+          , train_index: 0  # 重置索引重新尝试
+          , train_fallback: all_failed  # 标记全失败，触发兜底
+      }
+      
+      {:cont, new_state}
+    else
+      {:cont, state}
+    end
+  end
+
+  defp process_event(%{topic: "skills/learn-result", data: %{skill: skill}}, state) do
+    if state.pending_learn and state.pending_learn.skill == skill do
+      Logger.info("bot #{state.config.name} learn success: #{skill}")
+      {:cont, %{state | pending_learn: nil, train_fallback: false}}
+    else
+      {:cont, state}
+    end
+  end
+
+  defp process_event(_other, state), do: {:cont, state}
+
+  # 判断是否为 learn 命令
+  defp is_learn_cmd(cmd) do
+    cmd
+    |> String.trim()
+    |> String.starts_with?("learn ")
+  end
+
+  # 解析 learn 命令中的 xN 次数
+  defp parse_learn_times(cmd) do
+    cmd
+    |> String.split()
+    |> Enum.reduce(1, fn token, acc ->
+      case Regex.run(~r/^x(\d+)$/i, token) do
+        [_, n] -> String.to_integer(n)
+        _ -> acc
+      end
+    end)
+  end
+
+  # 兜底自练指令（当所有 learn 都失败时）
+  defp get_fallback_train_cmd(cfg) do
+    # 优先用配置里非 learn 的命令，否则默认 exercise/respirate
+    fallback = Enum.find(cfg.train, fn cmd -> not is_learn_cmd(cmd) end)
+    fallback || "exercise"
   end
 
   defp now_ms, do: System.monotonic_time(:millisecond)
