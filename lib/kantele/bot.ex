@@ -534,9 +534,9 @@ defp decide(st, cfg, state) do
       
 new_state = %{state
         | pending_learn: nil
-        , failed_train_commands: failed
-        , train_index: 0
-        , train_fallback: all_failed
+        | failed_train_commands: failed
+        | train_index: 0
+        | train_fallback: all_failed
       }
       
       {:cont, new_state}
