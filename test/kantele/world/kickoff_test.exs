@@ -205,23 +205,27 @@ defmodule Kantele.World.KickoffTest.StubLoader do
         %Kantele.World{items: [%{}], zones: [], rooms: [], characters: []}
 
       :ok ->
-        # 返回一个最小但有效的 world，包含 liuxi:zixu_guan 房间，避免 spawn_zixu 失败
-        # 使用纯 map（Kalevala 期望 map，而非 struct）
+        # 返回一个最小但有效的 world，走完整编排层（cache/start 各阶段）。
+        # 用每次唯一的 zone id，避免砸进真实 "liuxi" 全局命名/ZoneCache：
+        # 否则会污染套件中真实 liuxi 世界（镜像房间泄漏），随机顺序下偶发失败。
+        # 使用纯 map（Kalevala start 阶段仅按 map 字段处理，不依赖 struct）。
+        zone_id = "kstub-#{System.unique_integer([:positive])}"
+
         zixu_room = %{
-          id: "liuxi:zixu_guan",
-          zone_id: "liuxi",
+          id: "#{zone_id}:zixu_guan",
+          zone_id: zone_id,
           item_instances: []
         }
 
-        liuxi_zone = %{
-          id: "liuxi",
+        stub_zone = %{
+          id: zone_id,
           rooms: [zixu_room],
           room_exits: [],
           characters: %{}
         }
 
         %Kantele.World{
-          zones: [liuxi_zone],
+          zones: [stub_zone],
           rooms: [zixu_room],
           characters: [],
           items: []

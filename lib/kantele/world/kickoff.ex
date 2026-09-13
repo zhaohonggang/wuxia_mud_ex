@@ -148,7 +148,7 @@ defmodule Kantele.World.Kickoff do
         Enum.each(world.characters, &start_character/1)
 
         # Q5-T3：子虚道人常驻子虚观（随世界加载挂进 liuxi 区角色监督树）
-        spawn_zixu()
+        spawn_zixu(world)
 
         Enum.each(help_topics, fn help_topic ->
           Kalevala.Help.put(help_topic)
@@ -349,9 +349,14 @@ defmodule Kantele.World.Kickoff do
     Kalevala.World.start_character(character, config)
   end
 
-  # 子虚道人：不随 UCL 数据定义，而是在世界就绪后按代码模板启动
-  defp spawn_zixu() do
-    _ = Kantele.World.MirrorDaemon.Zixu.start_zixu()
+  # 子虚道人：不随 UCL 数据定义，而是在世界就绪后按代码模板启动。
+  # 只在本次加载的世界实际包含 liuxi 区时才派生；其他加载（如测试桩世界）
+  # 不派生，避免往真实 liuxi 监督树里塞 NPC 造成跨测试/跨加载污染。
+  defp spawn_zixu(world) do
+    if Enum.any?(world.zones, &(&1.id == "liuxi")) do
+      _ = Kantele.World.MirrorDaemon.Zixu.start_zixu()
+    end
+
     :ok
   end
 
