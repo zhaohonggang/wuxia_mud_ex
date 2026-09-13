@@ -189,12 +189,25 @@ defmodule Kantele.World.Room do
         characters = private.characters || []
         item_instances = private.item_instances || []
         data = state.data || %{}
+        flags = Map.get(data, :flags, []) || []
+
+        exits =
+          Enum.reduce(Map.get(data, :exits, []), %{}, fn room_exit, acc ->
+            Map.put(acc, Map.get(room_exit, :exit_name), Map.get(room_exit, :end_room_id))
+          end)
 
         %{
           id: room_id,
           name: Map.get(data, :name, room_id),
           items: item_instances,
-          private: %{characters: characters, item_instances: item_instances}
+          private: %{characters: characters, item_instances: item_instances},
+          attrs: %{
+            "exits" => exits,
+            "short" => Map.get(data, :name, room_id),
+            "sleep_room" => "sleep_room" in flags,
+            "no_sleep_room" => "no_sleep_room" in flags,
+            "hotel" => "hotel" in flags
+          }
         }
 
       _ ->
@@ -202,7 +215,8 @@ defmodule Kantele.World.Room do
           id: room_id,
           name: room_id,
           items: [],
-          private: %{characters: [], item_instances: []}
+          private: %{characters: [], item_instances: []},
+          attrs: %{"exits" => %{}, "short" => room_id}
         }
     end
   end
@@ -1333,8 +1347,26 @@ defmodule Kantele.World.Room.GuardRequestEvent do
     requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
 
     if requester && target && target != "" do
-      context
-      |> render(requester.pid, CommandView, "text", %{text: "守卫功能正在实现中 ...\n"})
+      target_char = find_target_in_room(context, requester, target)
+
+      case target_char do
+        nil ->
+          render(context, requester.pid, CommandView, "text", %{text: "这里没有这个人。\n"})
+
+        target_char when target_char.id == requester.id ->
+          render(context, requester.pid, CommandView, "text", %{text: "不能守护自己。\n"})
+
+        target_char ->
+          # 在目标的 meta.temp.guarded 中加入请求者
+          new_temp = Map.update(target_char.meta.temp, "guarded", [requester.id], fn list ->
+            if requester.id in list, do: list, else: [requester.id | list]
+          end)
+
+          new_target = %{target_char | meta: Map.put(target_char.meta, :temp, new_temp)}
+          context = update_character_in_context(context, target_char.id, new_target)
+
+          render(context, requester.pid, CommandView, "text", %{text: "你开始守护#{target_char.name}。\n"})
+      end
     else
       context
     end
@@ -1344,11 +1376,44 @@ defmodule Kantele.World.Room.GuardRequestEvent do
     requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
 
     if requester do
-      context
-      |> render(requester.pid, CommandView, "text", %{text: "守卫取消。\n"})
+      # 从所有角色的 guarded 列表中移除请求者
+      context =
+        Enum.reduce(context.characters, context, fn character, acc ->
+          guarded = character.meta.temp["guarded"] || []
+
+          if requester.id in guarded do
+            new_guarded = List.delete(guarded, requester.id)
+            new_temp = Map.put(character.meta.temp, "guarded", new_guarded)
+            new_char = %{character | meta: Map.put(character.meta, :temp, new_temp)}
+            update_character_in_context(acc, character.id, new_char)
+          else
+            acc
+          end
+        end)
+
+      render(context, requester.pid, CommandView, "text", %{text: "你不再守护任何人。\n"})
     else
       context
     end
+  end
+
+  # 房间内按名字查找目标（复用 NameMatch）
+  defp find_target_in_room(context, requester, target_name) do
+    Enum.find(context.characters, fn character ->
+      character.pid != requester.pid and
+        Kantele.World.Room.NameMatch.matches?(character, target_name)
+    end)
+  end
+
+  # 更新 context 中的角色
+  defp update_character_in_context(context, char_id, updated_character) do
+    %{
+      context
+      | characters:
+          Enum.map(context.characters, fn c ->
+            if c.id == char_id, do: updated_character, else: c
+          end)
+    }
   end
 end
 
@@ -2184,17 +2249,15 @@ defmodule Kantele.World.Room.CombatEvent do
           %{text: "对方已经倒下了，刀剑无眼，何必赶尽杀绝。\n"}
         )
 
-      guarder_deny?(target, attacker, event) ->
-        # 守卫拒战：同门 fight 拒切磋；异族 kill/hit 反杀已在 guarder_kill 分支处理
-        msg = guarder_refuse_msg(target, Map.get(event.data, :type, "fight"))
-        render(context, attacker.pid, CommandView, "text", %{text: msg <> "\n"})
-
-      guarder_kill?(target, attacker, event) ->
-        # 守卫反杀惹事者（kill/hit）
-        engage(context, target, attacker)
+      guarded_deny?(target, attacker, event) ->
+        # 被守护者拒绝被守护者杀害
+        msg = "你正在守护着#{target.name}，不能杀他！\n"
+        render(context, attacker.pid, CommandView, "text", %{text: msg})
 
       true ->
-        engage(context, attacker, target)
+        # 触发被守护者的守护者（若是 kill 类型）
+        trigger_guarded_allies(context, attacker, target, Map.get(event.data, :type, "fight"))
+        engage(context, attacker, target, Map.get(event.data, :type, "fight"))
     end
   end
 
@@ -2263,7 +2326,7 @@ defmodule Kantele.World.Room.CombatEvent do
   defp engage_touxi(context, initiator, target) do
     context
     |> start_combat_touxi(target, initiator)
-    |> start_combat(initiator, target)
+    |> engage(initiator, target)
   end
 
   defp start_combat_touxi(context, character, touxi_target) do
@@ -2298,7 +2361,7 @@ defmodule Kantele.World.Room.CombatEvent do
 
             victim = Enum.find(players, &(&1.id in hated_ids)) || Enum.random(players)
 
-            engage(context, npc, victim)
+            engage(context, npc, victim, Map.get(event.data, :type, "kill"))
         end
     end
   end
@@ -2351,16 +2414,19 @@ defmodule Kantele.World.Room.CombatEvent do
 
   # ---- 双方入场 ----
 
-  defp engage(context, initiator, target) do
+  defp engage(context, initiator, target), do: engage(context, initiator, target, "fight")
+
+  defp engage(context, initiator, target, type) do
     context
-    |> start_combat(target, initiator)
-    |> start_combat(initiator, target)
+    |> start_combat(target, initiator, type)
+    |> start_combat(initiator, target, type)
   end
 
-  defp start_combat(context, character, initiator) do
+  defp start_combat(context, character, initiator, type) do
     event(context, character.pid, self(), "combat/start", %{
       enemy: ref(initiator),
-      initiator_id: initiator.id
+      initiator_id: initiator.id,
+      type: type
     })
   end
 
@@ -2411,6 +2477,76 @@ defmodule Kantele.World.Room.CombatEvent do
 
     Map.get(msgs, :refuse_fight) ||
       "#{target.name}摇头道：同门之间，点到为止，切磋就免了。\n"
+  end
+
+  defp players_in_room(context) do
+    player_ids = MapSet.new(Kantele.Character.Presence.characters(), & &1.id)
+
+    Enum.filter(context.characters, fn character ->
+      dead?(character) == false and MapSet.member?(player_ids, character.id)
+    end)
+  end
+
+  # ---- 玩家守卫联动（F_ATTACK guarded，LPC guard.c）----
+
+  defp guarded_deny?(target, attacker, event) do
+    Map.get(event.data, :type) == "kill" and
+      attacker.id in (target.meta.temp["guarded"] || [])
+  end
+
+  # 触发被守护者的守护者加入战斗
+  defp trigger_guarded_allies(context, attacker, target, type) do
+    if type != "kill" do
+      context
+    else
+      guarded = target.meta.temp["guarded"] || []
+
+      Enum.reduce(guarded, context, fn guardian_id, acc ->
+        guardian = Enum.find(acc.characters, &(&1.id == guardian_id))
+
+        if guardian && not dead?(guardian) and guardian.pid != attacker.pid do
+          # 守护者加入战斗攻击攻击者
+          engage(acc, guardian, attacker, "kill")
+        else
+          acc
+        end
+      end)
+    end
+  end
+
+  defp players_in_room(context) do
+    player_ids = MapSet.new(Kantele.Character.Presence.characters(), & &1.id)
+
+    Enum.filter(context.characters, fn character ->
+      dead?(character) == false and MapSet.member?(player_ids, character.id)
+    end)
+  end
+
+  # ---- 玩家守卫联动（F_ATTACK guarded，LPC guard.c）----
+
+  defp guarded_deny?(target, attacker, event) do
+    Map.get(event.data, :type) == "kill" and
+      attacker.id in (target.meta.temp["guarded"] || [])
+  end
+
+  # 触发被守护者的守护者加入战斗
+  defp trigger_guarded_allies(context, attacker, target, type) do
+    if type != "kill" do
+      context
+    else
+      guarded = target.meta.temp["guarded"] || []
+
+      Enum.reduce(guarded, context, fn guardian_id, acc ->
+        guardian = Enum.find(acc.characters, &(&1.id == guardian_id))
+
+        if guardian && not dead?(guardian) and guardian.pid != attacker.pid do
+          # 守护者加入战斗攻击攻击者
+          engage(acc, guardian, attacker, "kill")
+        else
+          acc
+        end
+      end)
+    end
   end
 
   defp players_in_room(context) do

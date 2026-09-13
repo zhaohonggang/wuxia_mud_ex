@@ -135,17 +135,35 @@ defmodule Kantele.Item do
     false
   end
 
-  @doc "检查物品是否为货币"
-  def is_currency?(_item), do: false
+  @doc "检查物品是否为货币（meta.is_money 为 true）"
+  def is_currency?(%Item{} = item), do: item.meta["is_money"] == true
+  def is_currency?(_), do: false
 
-  @doc "检查物品是否为尸体"
-  def is_corpse?(_item), do: false
+  @doc "检查物品是否为尸体（meta.is_corpse 为 true 或 item_id 含 corpse）"
+  def is_corpse?(%Item{} = item), do: item.meta["is_corpse"] == true or String.contains?(item.id, "corpse")
+  def is_corpse?(_), do: false
+
+  @doc "检查物品是否为兑换物品（在店小二兑换列表中）"
+  def is_exchange_item?(%Item{} = item) do
+    item.id in @xiaoer_exchange_ids
+  end
+  def is_exchange_item?(_), do: false
+
+  @doc "获取货币数量（从 meta.amount 读取，默认 1）"
+  def currency_amount(%Item{} = item), do: item.meta["amount"] || 1
+  def currency_amount(_), do: 0
 
   @doc "获取物品技能类型（兵器类型）"
   def get_skill_type(_item), do: "sword"
 
   @doc "获取物品动作列表"
   def get_actions(_item), do: []
+
+  # 店小二兑换物品 ID 列表（对应 xiaoer.ex @exchange_items）
+  @xiaoer_exchange_ids ~w(
+    blood_bodhi sarira haotian_fruit bone_strength
+    longevity_paste wisdom_pill strength_pill rebirth_pill
+  )a
 
   @doc "检查是否为针灸工具"
   def is_acupuncture_tool?(%Item{type: "acupuncture_tool"}), do: true

@@ -14,7 +14,7 @@ defmodule Kantele.Character.SleepCommand do
 
   def run(conn, _params) do
     character = conn.character
-    room = conn.private.room || %{}  # 从 conn 获取房间信息
+    room = get_room(conn)  # 从实时快照/注入获取房间信息
 
     cond do
       not can_sleep_here?(character, room) ->
@@ -50,6 +50,12 @@ defmodule Kantele.Character.SleepCommand do
       true ->
         start_sleep(conn, character, room)
     end
+  end
+
+  defp get_room(conn) do
+    Map.get(conn, :room) ||
+      Map.get(conn.private, :room) ||
+      Kantele.World.Room.snapshot(conn.character.room_id)
   end
 
   defp can_sleep_here?(character, room) do

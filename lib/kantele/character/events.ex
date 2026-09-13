@@ -50,6 +50,7 @@ defmodule Kantele.Character.Events do
     module(GiveEvent) do
       event("characters/give", :receive)
       event("give/result", :result)
+      event("xiaoer/process_give", :xiaoer_process_give)
     end
 
     module(MirrorEvent) do

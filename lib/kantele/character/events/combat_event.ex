@@ -72,7 +72,7 @@ defmodule Kantele.Character.CombatEvent do
 
   # ---- 开战 ----
 
-  def start(conn, %{data: %{enemy: enemy, initiator_id: initiator_id}}) do
+  def start(conn, %{data: %{enemy: enemy, initiator_id: initiator_id} = data}) do
     character = conn.character
 
     cond do
@@ -95,6 +95,10 @@ defmodule Kantele.Character.CombatEvent do
       true ->
         {combat, new_fight?} = Combat.add_enemy(character.meta.combat, enemy)
         character = put_combat(character, combat)
+
+        # 杀戮意图登记（kill/aggressive）：攻击方记 killer，防守方记 want_kills
+        character =
+          record_combat_intent(character, enemy, initiator_id, Map.get(data, :type, "fight"))
 
         conn =
           case initiator_id == character.id do
@@ -388,9 +392,55 @@ defmodule Kantele.Character.CombatEvent do
 
   defp coagent_pid(_), do: nil
 
+  # 决斗结算（败者端）：若角色死在 competitor 手下，清掉指向胜者的 competitor，
+# 胜负文案由胜者端 announce_duel_victory 广播。
+defp announce_duel_result(conn, %{meta: %Kantele.Character.PlayerMeta{} = meta} = character, killer) do
+  attack = PlayerMeta.attack_state(meta)
+  competitor_id = attack.competitor
+
+  if not is_nil(competitor_id) and not is_nil(killer) and killer.id == competitor_id do
+    clean_duel_competitor(conn, character, killer)
+  else
+    conn
+  end
+end
+
+defp announce_duel_result(conn, _character, _killer), do: conn
+
+# 决斗结算（胜者端）：被杀的目标曾是我的 competitor，则广播胜负文案
+defp announce_duel_victory(conn, %{meta: %Kantele.Character.PlayerMeta{} = meta} = character, enemy_id, enemy_name) do
+  attack = PlayerMeta.attack_state(meta)
+
+  if attack.competitor == enemy_id do
+    conn
+    |> Broadcast.publish("$N武艺更胜一筹，胜了与$n的一番较量。\n",
+      n1: character.name,
+      n2: enemy_name || "对手"
+    )
+  else
+    conn
+  end
+end
+
+defp announce_duel_victory(conn, _character, _enemy_id, _enemy_name), do: conn
+
+# 清掉指向某 competitor 的状态（败者端将自己清空）
+defp clean_duel_competitor(conn, %{meta: %Kantele.Character.PlayerMeta{} = meta} = character, killer) do
+  new_meta =
+    PlayerMeta.update_attack(meta, fn attack ->
+      if attack.competitor == killer.id, do: %{attack | competitor: nil}, else: attack
+    end)
+
+  put_character(conn, %{character | meta: new_meta})
+end
+
+defp clean_duel_competitor(conn, _character, _killer), do: conn
+
   # ---- 死亡与重生 ----
 
   defp die(conn, character, killer) do
+    # 决斗结算：倒在 competitor 手下即败者，清理自身决斗状态（胜负广播在胜者端）
+    conn = announce_duel_result(conn, character, killer)
     conn = Broadcast.publish(conn, Messages.death_msg(), n1: character.name)
 
     # 击杀奖励：经验/潜能之外顺带掉落少量铜钱（A10/N2）与门派贡献（A11/N5）
@@ -451,7 +501,19 @@ defmodule Kantele.Character.CombatEvent do
 
       conn
     else
-      # 玩家：满血传回出生点
+      # 玩家：满血传回出生点。死亡即了结：清空对所有人的杀戮意图（killer/want_kills）
+      character =
+        case character.meta do
+          %Kantele.Character.PlayerMeta{} = meta ->
+            new_meta =
+              PlayerMeta.update_attack(meta, fn attack -> %{attack | killer: [], want_kills: []} end)
+
+            %{character | meta: new_meta}
+
+          _ ->
+            character
+        end
+
       character =
         character
         |> put_vitals(Vitals.new())
@@ -527,6 +589,12 @@ defmodule Kantele.Character.CombatEvent do
   def enemy_died(conn, %{data: %{id: id, exp: exp, potential: potential} = reward}) do
     character = conn.character
     combat = Combat.remove_enemy(character.meta.combat, id)
+
+    # 决斗胜负：若倒下的正是我 competitor，则这边是胜者，广播胜负
+    conn = announce_duel_victory(conn, character, id, Map.get(reward, :name))
+
+    # 敌人已死：杀戮意图完结，从 killer/want_kills 移除
+    character = clear_kill_intent(character, id)
 
     # 门派贡献：拜师后击杀累积（A11/N5）；玩家才有关注点，NPC meta 防御兼容
     gongxian_gain =
@@ -606,6 +674,9 @@ defmodule Kantele.Character.CombatEvent do
   defp drop_enemy(conn, id) do
     character = conn.character
     combat = Combat.remove_enemy(character.meta.combat, id)
+
+    # 对手停手/离开/倒下：清理对它的杀戮意图
+    character = clear_kill_intent(character, id)
 
     conn
     |> finish_help(character, combat)
@@ -714,6 +785,96 @@ defmodule Kantele.Character.CombatEvent do
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+
+  # ---- 战斗意图（F_ATTACK killer/want_kills/competitor，LPC kill_ob/duel）----
+  #
+  # 仅玩家维护杀戮意图（NPC meta 为 NonPlayerMeta，无 attack 字段，直接忽略）
+
+  # kill/aggressive 开战即互记意图：攻击方把对手加入 killer，防守方把攻击者加入
+  # want_kills（宣告"有人想杀我"）。fight/touxi 不记意图（点到为止类）。
+  # duel 则双方互为 competitor（F_ATTACK 决斗，LPC duel 命令：败者倒下分出胜负）。
+  defp record_combat_intent(%{meta: %Kantele.Character.PlayerMeta{}} = character, enemy, initiator_id, type) do
+    character =
+      case type do
+        t when t in ["kill", "aggressive", "duel"] ->
+          if initiator_id == character.id do
+            add_attack(character, :killer, enemy.id)
+          else
+            add_attack(character, :want_kills, enemy.id)
+          end
+
+        _ ->
+          character
+      end
+
+    case type do
+      "duel" -> set_competitor(character, enemy.id)
+      _ -> character
+    end
+  end
+
+  defp record_combat_intent(character, _enemy, _initiator_id, _type), do: character
+
+  # 角色害死（enemy-died）时已结算完结，双方意图都在攻击方侧移除对手；
+  # 对手死亡/离场/停手则各自从 killer/want_kills 移除对方
+  defp clear_kill_intent(%{meta: %Kantele.Character.PlayerMeta{}} = character, id) do
+    character
+    |> remove_attack(:killer, id)
+    |> remove_attack(:want_kills, id)
+    |> clear_competitor(id)
+  end
+
+  defp clear_kill_intent(character, _id), do: character
+
+  defp add_attack(%{meta: %Kantele.Character.PlayerMeta{} = meta} = character, key, id) do
+    new_meta =
+      PlayerMeta.update_attack(meta, fn attack ->
+        list = attack[key] || []
+
+        if id in list do
+          attack
+        else
+          Map.put(attack, key, [id | list])
+        end
+      end)
+
+    %{character | meta: new_meta}
+  end
+
+  defp add_attack(character, _key, _id), do: character
+
+  defp remove_attack(%{meta: %Kantele.Character.PlayerMeta{} = meta} = character, key, id) do
+    new_meta =
+      PlayerMeta.update_attack(meta, fn attack ->
+        Map.put(attack, key, List.delete(attack[key] || [], id))
+      end)
+
+    %{character | meta: new_meta}
+  end
+
+  defp remove_attack(character, _key, _id), do: character
+
+  defp set_competitor(%{meta: %Kantele.Character.PlayerMeta{} = meta} = character, id) do
+    new_meta = PlayerMeta.update_attack(meta, fn attack -> %{attack | competitor: id} end)
+    %{character | meta: new_meta}
+  end
+
+  defp set_competitor(character, _id), do: character
+
+  defp clear_competitor(%{meta: %Kantele.Character.PlayerMeta{} = meta} = character, id) do
+    new_meta =
+      PlayerMeta.update_attack(meta, fn attack ->
+        if attack.competitor == id do
+          %{attack | competitor: nil}
+        else
+          attack
+        end
+      end)
+
+    %{character | meta: new_meta}
+  end
+
+  defp clear_competitor(character, _id), do: character
 
   defp combat_config(%{meta: %{combat_config: %{} = config}}), do: config
   defp combat_config(_), do: %{}

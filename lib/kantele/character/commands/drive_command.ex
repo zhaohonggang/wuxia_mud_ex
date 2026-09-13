@@ -152,7 +152,9 @@ defmodule Kantele.Character.DriveCommand do
   end
 
   defp get_room(conn) do
-    conn.private.room || %{}
+    Map.get(conn, :room) ||
+      Map.get(conn.private, :room) ||
+      Kantele.World.Room.snapshot(conn.character.room_id)
   end
 
   defp move_character(conn, character, target_room_id, direction) do
