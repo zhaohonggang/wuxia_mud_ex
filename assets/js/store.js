@@ -31,7 +31,8 @@ const parseColorTags = (text) => {
     if (match[0].startsWith("{color")) {
       const attrStr = match[0].slice(7, -1); // remove "{color " and "}"
       const attrs = {};
-      attrStr.replace(/(?:\w+)="(?:[^"]*)"/g, (_, key, value) => {
+      // eslint-disable-next-line prefer-named-capture-group
+      attrStr.replace(/(\w+)="([^"]*)"/g, (_, key, value) => {
         attrs[key] = value;
       });
       tokens.push({ type: "open", attrs });
@@ -93,7 +94,7 @@ const dispatchEventText = (dispatch, getState, event, { history }) => {
 
 const eventTextHandlers = {
   "Channel.Broadcast": (dispatch, getState, event, { history }) => {
-    const { channel_name, character, id, text } = event.data;
+    const { channel_name, character, id, text } = event.data.data;
     dispatch(KalevalaCreators.socketReceivedEvent({ topic: "system/display", data: "\n" }, { history }));
     dispatch(Creators.channelBroadcast(channel_name, character, id, parseColorTags(text)));
   },
