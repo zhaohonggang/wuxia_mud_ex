@@ -14,7 +14,7 @@ defmodule Kantele.Character.CommandController do
     prompt(conn, CommandView, "prompt", %{})
   end
 
-  @impl true
+@impl true
   def recv(conn, ""), do: conn
 
   def recv(conn, data) do
@@ -22,7 +22,13 @@ defmodule Kantele.Character.CommandController do
 
     {data, _expanded?} = Kantele.Character.Aliases.expand(data, alias_map(conn))
 
-    data = Tags.escape(data)
+    # Skip tag escaping for channel commands (general, waidi) to allow color tags
+    is_channel = String.starts_with?(data, "general ") or String.starts_with?(data, "waidi ")
+    data = (if is_channel do
+      data
+    else
+      Tags.escape(data)
+    end)
 
     case Commands.call(conn, data) do
       {:error, :unknown} ->
