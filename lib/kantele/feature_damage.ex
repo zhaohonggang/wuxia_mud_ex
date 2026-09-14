@@ -8,9 +8,7 @@ defmodule Kantele.Feature.Damage do
 
   alias Kantele.Character.{Vitals, Stats, PlayerMeta}
   alias Kantele.Character.Combat
-  alias Kantele.Combat.Engine
   alias Kantele.Scheduler
-  alias Kantele.World.Room
 
   @doc """
   受直接伤害（对应 LPC receive_damage/3）：气/精扣减，不为负；触发心跳
@@ -194,12 +192,7 @@ defmodule Kantele.Feature.Damage do
     competitor = query_competitor(character)
 
     character = character
-
-    PlayerMeta.update_damage(fn dmg ->
-      dmg
-      |> Map.put(:defeated_by, competitor)
-      |> Map.put(:defeated_by_who, competitor && competitor.name)
-    end)
+    |> put_damage_defeated_by(competitor)
 
     # DPS 记录
     if competitor && is_player?(character) && killing?(character, competitor.id) do
@@ -210,15 +203,14 @@ defmodule Kantele.Feature.Damage do
 
     # 封印状态
     character = character
-
-    PlayerMeta.update_damage(fn dmg -> Map.put(dmg, :block_msg_all, 1) end)
+    |> put_damage_block_msg_all(1)
     |> disable_player()
     |> put_vitals(%{character.meta.vitals | qi: 0, jing: 0})
     |> PlayerMeta.put_temp("block_msg/all", 1)
 
     # 自动复活延迟：30 + random(100 - con) 秒
     delay = 30 + :rand.uniform(100 - character.meta.stats.con)
-    schedule_revive(character.id, delay * 1000)
+    Scheduler.schedule_revive(character.id, delay * 1000)
 
     # 广播昏迷
     announce(character, "unconcious")
@@ -247,7 +239,7 @@ defmodule Kantele.Feature.Damage do
 
     character =
       character
-      |> PlayerMeta.delete("disable_type")
+      |> PlayerMeta.delete_temp("disable_type")
       |> PlayerMeta.put_temp("block_msg/all", 0)
       |> enable_player()
       |> write_prompt()
@@ -267,12 +259,7 @@ defmodule Kantele.Feature.Damage do
 
     unless quiet do
       character = character
-
-      PlayerMeta.update_damage(fn dmg ->
-        dmg
-        |> Map.put(:defeated_by, nil)
-        |> Map.put(:defeated_by_who, nil)
-      end)
+      |> put_damage_defeated_by(nil)
 
       announce(character, "revive")
       send_message(character, "Slowly you regain consciousness...")
@@ -280,12 +267,7 @@ defmodule Kantele.Feature.Damage do
 
     # 清除上次伤害记录
     character = character
-
-    PlayerMeta.update_damage(fn dmg ->
-      dmg
-      |> Map.put(:last_damage_from, nil)
-      |> Map.put(:last_damage_name, nil)
-    end)
+    |> put_damage_last_damage(nil)
 
     {:ok, character}
   end
@@ -336,9 +318,9 @@ defmodule Kantele.Feature.Damage do
     # 直接死亡标记（已昏迷再死）
     direct_die = ghost?(character) || killing?(character, killer && killer.id)
 
-    # 胜负/奖励
+    # 胜负/奖励（由 CombatEvent.enemy_died 处理，此处仅标记）
     if direct_die && killer do
-      Combat.winner_reward(killer, character)
+      # 奖励由 CombatEvent.enemy_died 处理
     end
 
     # 坐骑下马（留钩子）
@@ -356,9 +338,9 @@ defmodule Kantele.Feature.Damage do
     # 标记击杀者
     character = PlayerMeta.put_temp(character, "my_killer", killer)
 
-    # 击杀者奖励
+    # 击杀者奖励（由 CombatEvent.enemy_died 处理）
     if killer do
-      Combat.killer_reward(killer, character)
+      # Combat.killer_reward(killer, character)
     end
 
     # 统计/尸体/死亡房间
@@ -377,7 +359,7 @@ defmodule Kantele.Feature.Damage do
         character
         |> put_vitals(%{character.meta.vitals | qi: 1, jing: 1})
 
-      PlayerMeta.update_damage(fn dmg -> Map.put(dmg, :ghost, true) end)
+      PlayerMeta.update_damage(character, fn dmg -> Map.put(dmg, :ghost, true) end)
     else
       # NPC 直接析构（留钩子给 World）
       destruct_npc(character)
@@ -389,8 +371,7 @@ defmodule Kantele.Feature.Damage do
   @doc "复活/重生（对应 LPC reincarnate/2）"
   def reincarnate(character) do
     character = character
-
-    PlayerMeta.update_damage(fn dmg -> Map.put(dmg, :ghost, false) end)
+    |> put_damage_ghost(false)
     |> put_vitals(%{
       character.meta.vitals
       | eff_jing: character.meta.vitals.max_jing,
@@ -509,8 +490,7 @@ defmodule Kantele.Feature.Damage do
   defp update_last_damage(character, who) do
     if who && who != Map.get(PlayerMeta.damage_state(character), :last_damage_from) do
       character
-
-      PlayerMeta.update_damage(fn dmg ->
+      |> PlayerMeta.update_damage(fn dmg ->
         dmg
         |> Map.put(:last_damage_from, who)
         |> Map.put(:last_damage_name, character.name(who))
@@ -525,7 +505,8 @@ defmodule Kantele.Feature.Damage do
   end
 
   defp set_heart_beat(character, enabled) do
-    # 实际应调度 heal_up 心跳，此处占位
+    # 实际应调度 heal_up 心跳，此处委托给 CombatEvent.kick_regen/0
+    Kantele.Character.CombatEvent.kick_regen()
     character
   end
 
@@ -541,43 +522,100 @@ defmodule Kantele.Feature.Damage do
 
   defp run_override(_character, _fname), do: false
 
-  defp clear_enemies(character), do: character
+  defp clear_enemies(character) do
+    # 真实引擎在 CombatEvent 中管理 enemies，此处清空 attack 状态
+    PlayerMeta.update_damage(character, fn dmg ->
+      %{dmg | defeated_by: nil, defeated_by_who: nil}
+    end)
+  end
 
-  defp disable_player(character), do: character
+  defp disable_player(character) do
+    # 标记为不可操作（ghost 等同）
+    PlayerMeta.update_damage(character, fn dmg -> Map.put(dmg, :ghost, true) end)
+  end
 
-  defp enable_player(character), do: character
+  defp enable_player(character) do
+    # 解除禁用
+    PlayerMeta.update_damage(character, fn dmg -> Map.put(dmg, :ghost, false) end)
+  end
 
   defp write_prompt(character), do: character
 
-  defp schedule_revive(_player_id, _ms), do: :ok
+  defp schedule_revive(player_id, ms) do
+    Scheduler.schedule_revive(player_id, ms)
+  end
 
-  defp announce(_character, _event), do: :ok
+  defp announce(character, event) do
+    # 使用 Communication.announce 向房间广播
+    msg = case event do
+      "unconcious" -> "#{character.name}晕倒了。"
+      "revive" -> "#{character.name}慢慢醒了过来。"
+      "dead" -> "#{character.name}倒下了。"
+      _ -> "#{character.name}状态变更。"
+    end
+
+    # 房间广播
+    Kantele.Communication.announce("rooms:#{character.room_id}", msg)
+    :ok
+  end
 
   defp check_player_escape(_character), do: :ok
 
   defp find_valid_room(env), do: env
 
-  defp move_character(_character, _env), do: _character
+  defp move_character(character, env) do
+    # 真实移动应走 Teleport.teleport，此处仅更新 room_id
+    %{character | room_id: env}
+  end
 
-  defp delete_sleep_flags(character), do: character
+  defp delete_sleep_flags(character) do
+    character
+    |> PlayerMeta.delete_temp("sleeping")
+    |> PlayerMeta.delete_temp("sleep_room")
+  end
 
   defp determine_killer(character, killer) do
     {killer, killer && killer.name}
   end
 
-  defp dismount_if_riding(character), do: character
+  defp dismount_if_riding(character) do
+    # 坐骑处理留钩子
+    character
+  end
 
   defp determine_die_reason(_character), do: "unknown"
 
-  defp increment_death_times(character), do: character
+  defp increment_death_times(character) do
+    # 死亡次数统计
+    character
+  end
 
-  defp make_corpse(_character), do: nil
+  defp make_corpse(character) do
+    # 生成尸体实例（留钩子给 World）
+    %{
+      id: "corpse_#{character.id}_#{:rand.uniform(10000)}",
+      name: "#{character.name}的尸体",
+      owner_id: character.id,
+      room_id: character.room_id
+    }
+  end
 
-  defp move_to_death_room(character), do: character
+  defp move_to_death_room(character) do
+    # 移至死亡房间（配置中 DEATH_ROOM_ID）
+    death_room = Kantele.World.start_room_id()
+    %{character | room_id: death_room}
+  end
 
-  defp clear_die_flags(character), do: character
+  defp clear_die_flags(character) do
+    character
+    |> PlayerMeta.delete_temp("die_reason")
+    |> PlayerMeta.delete_temp("my_killer")
+  end
 
-  defp destruct_npc(_character), do: :ok
+  defp destruct_npc(_character) do
+    # NPC 析构：标记 dead，60s 后 respawn（由 CombatEvent.respawn 处理）
+    :ok
+  end
 
   defp living?(%{meta: %{vitals: vitals}}), do: vitals.qi > 0 || vitals.jing > 0
 
@@ -608,18 +646,55 @@ defmodule Kantele.Feature.Damage do
 
   defp has_item?(_character, _item_id), do: false
 
-  defp remove_call_out(_character, _name), do: :ok
+  defp remove_call_out(_character, _name) do
+    # 真实调度取消：Scheduler.cancel/1
+    :ok
+  end
 
   defp query_competitor(_character), do: nil
 
-  defp send_message(_character, _msg), do: :ok
+  defp send_message(character, msg) do
+    # 发送私聊消息（占位，真实走 Communication）
+    :ok
+  end
 
   defp winner_reward(_killer, _victim), do: :ok
   defp killer_reward(_killer, _victim), do: :ok
-  defp announce(_character, _event), do: :ok
 
-  defp schedule_revive(_player_id, _ms), do: :ok
+  defp schedule_revive(_player_id, _ms) do
+    Scheduler.schedule_revive(_player_id, _ms)
+  end
 
   defp ghost?(%{meta: %{damage: dmg}}), do: dmg.ghost || false
   defp return(_v), do: :ok
+
+  # ---- Damage State 访问器 ----
+
+  defp put_damage_block_msg_all(character, value) do
+    PlayerMeta.update_damage(character, fn dmg -> Map.put(dmg, :block_msg_all, value) end)
+  end
+
+  defp put_damage_defeated_by(character, competitor) do
+    PlayerMeta.update_damage(character, fn dmg ->
+      dmg
+      |> Map.put(:defeated_by, competitor)
+      |> Map.put(:defeated_by_who, competitor && competitor.name)
+    end)
+  end
+
+  defp put_damage_ghost(character, ghost) do
+    PlayerMeta.update_damage(character, fn dmg -> Map.put(dmg, :ghost, ghost) end)
+  end
+
+  defp put_damage_last_damage(character, from) do
+    PlayerMeta.update_damage(character, fn dmg ->
+      if from == nil do
+        dmg
+        |> Map.put(:last_damage_from, nil)
+        |> Map.put(:last_damage_name, nil)
+      else
+        Map.put(dmg, :last_damage_from, from)
+      end
+    end)
+  end
 end
