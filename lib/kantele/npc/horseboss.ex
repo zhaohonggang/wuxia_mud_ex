@@ -48,6 +48,11 @@ defmodule Kantele.NPC.Horseboss do
     :room_id
   ]
 
+  @doc "判断是否为马夫 NPC（通过 meta.kind 或特定标识）"
+  def is_horseboss?(%{meta: %{kind: "horseboss"}}), do: true
+  def is_horseboss?(%{meta: %{horseboss: true}}), do: true
+  def is_horseboss?(_), do: false
+
   @doc "初始化马夫"
   def init_npc do
     %__MODULE__{}

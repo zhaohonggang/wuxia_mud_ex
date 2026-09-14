@@ -72,6 +72,9 @@ room_characters "guangchang" {
     },
     {
       id = characters.asao.id
+    },
+    {
+      id = characters.mafu.id
     }
   ]
 }
@@ -2072,6 +2075,32 @@ characters "miaozhu" {
       unarmed = 20
       dodge = 15
       force = 20
+    }
+  }
+}
+
+
+# 柳溪镇马夫：售卖坐骑（对应 HorseBoss 模块）
+characters "mafu" {
+  name = "马夫 Ma Fu"
+  description = "马厩里的老马夫，面容黝黑，手里牵着几根缰绳，见人便笑道：\"客官想买坐骑？我这儿样样俱全！\""
+
+  kind = "horseboss"
+
+  combat = {
+    no_kill = true
+    max_qi = 200
+    max_jing = 150
+    max_neili = 200
+    str = 25
+    dex = 20
+    con = 25
+    int = 15
+    combat_exp = 1000
+    skills = {
+      unarmed = 30
+      dodge = 20
+      force = 15
     }
   }
 }
