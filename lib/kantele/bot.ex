@@ -170,27 +170,38 @@ defstruct [
               decide(st, cfg, state)
           end
 
-case action do
-          nil ->
-            :ok
-
-          line ->
-            # 先清空累积的输出，避免邮箱膨胀
-            drain_mailbox()
-
-            # 如果是 learn 命令，记录 pending_learn 并快照当前技能等级
-            state = if is_learn_cmd(line) do
-              # 解析 learn 命令：learn <skill> <teacher> [xN]
-              [_, skill | rest] = String.split(line)
-              teacher = Enum.take(rest, 2) |> Enum.join(" ") |> String.trim()
-              times = parse_learn_times(line)
-              %{state | pending_learn: %{skill: skill, teacher: teacher, times: times, line: line, level_before: Stats.skill(st.stats, skill), since: state.seq}}
-            else
+state =
+          case action do
+            nil ->
               state
-            end
-            
-            send(state.foreman, {:recv, :text, line})
-        end
+
+            line ->
+              # 先清空累积的输出，避免邮箱膨胀
+              drain_mailbox()
+
+              send(state.foreman, {:recv, :text, line})
+
+              # 如果是 learn 命令，记录 pending_learn 并快照当前技能等级
+              if is_learn_cmd(line) do
+                # 解析 learn 命令：learn <skill> <teacher> [xN]
+                [_, skill | rest] = String.split(line)
+                teacher = Enum.take(rest, 2) |> Enum.join(" ") |> String.trim()
+                times = parse_learn_times(line)
+
+                %{state |
+                  pending_learn: %{
+                    skill: skill,
+                    teacher: teacher,
+                    times: times,
+                    line: line,
+                    level_before: Stats.skill(st.stats, skill),
+                    since: state.seq
+                  }
+                }
+              else
+                state
+              end
+          end
 
         schedule_tick(cfg.tick_ms)
         {:noreply, state}
@@ -262,18 +273,6 @@ defp decide(st, cfg, state) do
           end
         end
 
-      # 1b. Fallback: all learn commands failed, use self-training (exercise/respirate)
-      state.train_fallback and
-      Stats.available_potential(st.stats) >= cfg.train_potential and
-      ratio(st.vitals.jing, st.vitals.max_jing) >= cfg.train_jing ->
-        fallback_cmd = get_fallback_train_cmd(cfg)
-        if cfg.train_rooms != [] and st.room_id not in cfg.train_rooms do
-          {state, march_action} = march_step(st, cfg, state, :train)
-          {state, march_action}
-        else
-          {%{state | train_fallback: false}, fallback_cmd}
-        end
-
       # 2. Hunt if potential < threshold (default to train_potential) and target available
       true ->
         potential = Stats.available_potential(st.stats)
@@ -327,7 +326,11 @@ defp decide(st, cfg, state) do
         end)
 
       if available_cmds == [] do
-        nil  # 所有可用命令都失败了
+        # 所有 learn 命令都失败：转入兜底自练命令（exercise/respirate 或配置里的非 learn 命令）
+        case get_fallback_train_cmd(cfg, st) do
+          nil -> nil
+          cmd -> {cmd, state.train_index}
+        end
       else
         count = length(available_cmds)
         # 找到当前 train_index 对应的可用命令
@@ -575,10 +578,15 @@ defp decide(st, cfg, state) do
   end
 
   # 兜底自练指令（当所有 learn 都失败时）
-  defp get_fallback_train_cmd(cfg) do
-    # 优先用配置里非 learn 的命令，否则默认 exercise/respirate
+  defp get_fallback_train_cmd(cfg, st) do
+    # 优先用配置里非 learn 的命令，否则默认 exercise（打坐攒内力，耗气按当前 qi 动态给定）
     fallback = Enum.find(cfg.train, fn cmd -> not is_learn_cmd(cmd) end)
-    fallback || "exercise"
+    fallback || "exercise #{exercise_cost(st.vitals.qi)}"
+  end
+
+  # exercise 耗气：留 10 点底线、不少于 10 点，避免每次失败
+  defp exercise_cost(qi) do
+    max(min(qi - 10, 50), 10)
   end
 
   defp now_ms, do: System.monotonic_time(:millisecond)
