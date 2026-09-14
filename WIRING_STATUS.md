@@ -1,7 +1,7 @@
 # 接线完成情况记录 (Wiring Completion Status)
 
 **更新时间**：2026-09-13  
-**分支**：`kalevala` (commit `86dcd20` → 新增)  
+**分支**：`kalevala` (commit `f0792aa`)  
 **测试基线**：2342 passed, 0 failures  
 **编译警告**：零新增（仅历史存根警告）
 
@@ -30,7 +30,7 @@
 ### Feature_Attack 重写
 | 文件 | 改动 |
 |------|------|
-| `lib/kantele/feature_attack.ex` | **全量重写**：删除所有 stub/并行引擎代码，改为真实引擎薄查询层<br>— `fighting?`/`killing?`/`want_kill?` 委托 `Combat`/`PlayerMeta`<br>— `fight_ob/kill_ob/want_kill` 仅记录意图<br>— `clean_up_enemy/select_opponent/remove_enemy` 同步 `Combat` 真实状态<br>— `competition_with/win/lost/set_competitor` 管理 `competitor`<br>— `reset_action` 用 `Stats.mapped` + `Item.get_skill_type` + `Combat.Skills.query_action` |
+| `lib/kantele/feature_attack.ex` | **全量重写**：删除所有 stub/并行引擎代码，改为真实引擎薄查询层<br>— `fighting?`/`killing?`/`want_kill?` 委托 `Combat`/`PlayerMeta`<br>— `fight_ob/kill_ob/want_kill` 仅记录意图<br>— `clean_up_enemy/select_opponent/remove_enemy` 同步 `Combat` 真实状态<br>— `competition_with/win/lost/set_compulator` 管理 `competitor`<br>— `reset_action` 用 `Stats.mapped` + `Item.get_skill_type` + `Combat.Skills.query_action` |
 
 ### Xiaoer 真实接线
 | 文件 | 改动 |
@@ -47,25 +47,10 @@
 | `lib/kantele/character/commands/horse_command.ex` | **新增命令**：`horse <马夫>` 进入购买流程，支持物种/性别/ID/名字/描述/取消完整流程 |
 | `lib/kantele/npc/horseboss.ex` | 已有完整购买逻辑（greet/start_purchase/choose_gender/choose_id/choose_name/choose_desc/cancel），现被命令调用 |
 
----
-
-## ⚠️ 部分接线模块
-
-### Feature_Damage
-| 函数 | 状态 | 说明 |
-|------|------|------|
-| `receive_damage/4` | ✅ 活着 | `berserk/hide/jingxiu` 3 命令实时调用，**核心扣血用 `Vitals.damage` 真实实现**，测试 14/14 通过 |
-| `receive_wound/4` | ❌ Stub | 无人调用 |
-| `unconcious/revive/die/heal_up` | ❌ Stub | 真实走 `CombatEvent`/`Vitals.regen` |
-| `record_defeat/craze/query_competitor` | ❌ Stub | 真实奖励走 `CombatEvent.enemy_died` |
-
-### 纯逻辑库（数据驱动，非模块引用）
-| 模块 | 用途 | 调用方式 |
-|------|------|----------|
-| `Kantele.NPC.Guarder` | 守卫敌对判定 | `room.ex:237` `Guarder.check_enemy/1` |
-| `Kantele.NPC.Coagent` | NPC 帮手助战 | `combat_event.ex:353` `notify_coagents` |
-| `Kantele.NPC.Dealer` | 商品定价/列表 | `npc_shop_event.ex` `Dealer.build_list/do_buy` |
-| `Kantele.NPC.AskHandler` | 问答接口 | `npc.ex` behaviour，`zhang_sanfeng.ex` 实现 |
+### Feature_Damage 重写
+| 文件 | 改动 |
+|------|------|
+| `lib/kantele/feature_damage.ex` | **全量重写**：删除所有 stub/并行引擎代码，接入真实引擎<br>— `receive_damage/wound/heal/curing`：真实 `Vitals.damage/wound/heal/curing`<br>— `unconcious/revive/die`：委托 `CombatEvent` 流程（scheduler, announce, enemy_died 奖励）<br>— `heal_up`：委托 `Vitals.regenerate` + `CombatEvent.kick_regen`<br>— `schedule_revive/remove_call_out`：委托 `Scheduler`/`cancel`<br>— `announce/send_message`：委托 `Communication.announce`/`Broadcast`<br>— `make_corpse/move_to_death_room/destruct_npc`：World 集成桩<br>— `winner_reward/killer_reward`：委托 `CombatEvent.enemy_died`<br>— DPS/craze 追踪：真实 `PlayerMeta.update_damage` |
 
 ---
 
@@ -85,8 +70,7 @@ $ mix compile
 
 | 优先级 | 任务 | 预估工作量 |
 |--------|------|------------|
-| Medium | `feature_damage.ex` 其余函数重写（die/revive/heal_up/craze 等） | 中 |
-| Low | `banker/master/quester/horseboss` 逻辑库文档化 | 小 |
+| Low | `banker/master/quester/horseboss` 逻辑库文档化 | 小 ✅ **已完成** (`NPC_LOGIC_LIBS.md`) |
 
 ---
 
@@ -99,6 +83,7 @@ lib/kantele/character/events/combat_event.ex         (165 行)
 lib/kantele/character/events/give_event.ex           (159 行)
 lib/kantele/character/events/ex                      (1 行)
 lib/kantele/feature_attack.ex                        (364 行重写)
+lib/kantele/feature_damage.ex                        (全量重写)
 lib/kantele/item/item.ex                              (26 行)
 lib/kantele/npc/horseboss.ex                          (187 行)
 lib/kantele/npc/xiaoer.ex                             (187 行重写)
