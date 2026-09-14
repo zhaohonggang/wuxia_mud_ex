@@ -23,7 +23,7 @@ defmodule Kantele.Bot do
   @world_wait_delay 1_000
   @kill_cooldown_ms 2_500
 
-  defstruct [
+defstruct [
     :config,
     :foreman,
     seq: 0,
@@ -33,7 +33,9 @@ defmodule Kantele.Bot do
     save_counter: 0,
     last_kill_at: 0,
     pending_learn: nil,
-    failed_train_commands: MapSet.new()
+    failed_train_commands: MapSet.new(),
+    failed_train_count: 0,
+    train_fallback: false
   ]
 
   def start_link(config) do
@@ -518,7 +520,7 @@ defp decide(st, cfg, state) do
     end)
   end
 
-  defp process_event(%{topic: "skills/learn-result", data: %{skill: nil, failure_message: msg}}, state) do
+defp process_event(%{topic: "skills/learn-result", data: %{skill: nil, failure_message: msg}}, state) do
     if state.pending_learn do
       line = state.pending_learn.line
       teacher = state.pending_learn.teacher
@@ -527,12 +529,22 @@ defp decide(st, cfg, state) do
       
       # 记录失败命令
       failed = MapSet.put(state.failed_train_commands, line)
+      failed_count = state.failed_train_count + 1
       
       # 检查是否所有 learn 命令都失败了
       learn_cmds = Enum.filter(state.config.train, &is_learn_cmd/1)
       all_failed = Enum.all?(learn_cmds, &MapSet.member?(failed, &1))
       
-new_state = %{state | pending_learn: nil, failed_train_commands: failed, train_index: 0, train_fallback: all_failed}
+      # 累计失败超过阈值（默认 5 次）强制 fallback
+      force_fallback = failed_count >= 5
+      
+      new_state = %{state | 
+        pending_learn: nil, 
+        failed_train_commands: failed, 
+        failed_train_count: failed_count,
+        train_index: 0, 
+        train_fallback: all_failed or force_fallback
+      }
       
       {:cont, new_state}
     else
@@ -543,7 +555,7 @@ new_state = %{state | pending_learn: nil, failed_train_commands: failed, train_i
   defp process_event(%{topic: "skills/learn-result", data: %{skill: skill}}, state) do
     if state.pending_learn and state.pending_learn.skill == skill do
       Logger.info("bot #{state.config.name} learn success: #{skill}")
-      {:cont, %{state | pending_learn: nil, train_fallback: false}}
+      {:cont, %{state | pending_learn: nil, train_fallback: false, failed_train_commands: MapSet.new(), failed_train_count: 0}}
     else
       {:cont, state}
     end
