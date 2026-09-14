@@ -21,7 +21,7 @@ Message.propTypes = {
   character: PropTypes.shape({
     name: PropTypes.string.isRequired,
   }).isRequired,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.element, PropTypes.arrayOf(PropTypes.element)]).isRequired,
 };
 
 class Channels extends React.Component {
@@ -84,7 +84,7 @@ Channels.propTypes = {
       channelName: PropTypes.string.isRequired,
       character: PropTypes.object,
       id: PropTypes.string.isRequired,
-      text: PropTypes.string.isRequired,
+      text: PropTypes.oneOfType([PropTypes.string, PropTypes.element, PropTypes.arrayOf(PropTypes.element)]).isRequired,
     }),
   ),
 };
