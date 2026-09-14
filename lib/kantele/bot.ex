@@ -22,6 +22,7 @@ defmodule Kantele.Bot do
   @world_wait_retries 60
   @world_wait_delay 1_000
   @kill_cooldown_ms 2_500
+  @learn_grace_ticks 3
 
 defstruct [
     :config,
@@ -153,6 +154,10 @@ defstruct [
       st ->
         state = %{state | seq: state.seq + 1, save_counter: state.save_counter + 1}
 
+        # learn 命令在途：靠技能等级差分判定成功/失败（learn-result 事件只在
+        # foreman 内部被消费，不会作为 {:send, _} 输出到达本进程）
+        state = resolve_learn_result(state, st)
+
         {state, action} =
           cond do
             st.vitals.qi <= 0 ->
@@ -170,17 +175,16 @@ case action do
             :ok
 
           line ->
-            # 先处理累积的事件
-            events = drain_mailbox()
-            state = process_events(events, state)
-            
-            # 如果是 learn 命令，记录 pending_learn
+            # 先清空累积的输出，避免邮箱膨胀
+            drain_mailbox()
+
+            # 如果是 learn 命令，记录 pending_learn 并快照当前技能等级
             state = if is_learn_cmd(line) do
               # 解析 learn 命令：learn <skill> <teacher> [xN]
               [_, skill | rest] = String.split(line)
               teacher = Enum.take(rest, 2) |> Enum.join(" ") |> String.trim()
               times = parse_learn_times(line)
-              %{state | pending_learn: %{skill: skill, teacher: teacher, times: times, line: line}}
+              %{state | pending_learn: %{skill: skill, teacher: teacher, times: times, line: line, level_before: Stats.skill(st.stats, skill), since: state.seq}}
             else
               state
             end
@@ -239,6 +243,10 @@ defp decide(st, cfg, state) do
         {state, nil}
 
       ratio(st.vitals.jing, st.vitals.max_jing) < 0.2 ->
+        {state, nil}
+
+      # 有 learn 命令在途未定论：等 3 tick 后按技能等级差分判定成败
+      state.pending_learn != nil ->
         {state, nil}
 
       # 1. Train if potential >= train_potential and jing >= train_jing
@@ -497,7 +505,7 @@ defp decide(st, cfg, state) do
     :ok
   end
 
-  # 清空 protocol 输出邮箱，收集事件（本进程就是 protocol pid，战斗/房间广播都会进来）
+# 清空 protocol 输出邮箱（learn-result 事件在 foreman 内部消费，不会到达这里）
   defp drain_mailbox do
     collect_events([])
   end
@@ -510,58 +518,42 @@ defp decide(st, cfg, state) do
     end
   end
 
-  # 处理事件，检测 learn 失败
-  defp process_events(events, state) do
-    Enum.reduce(events, state, fn event, acc ->
-      case process_event(event, acc) do
-        {:cont, new_state} -> new_state
-        {:halt, new_state} -> new_state
-      end
-    end)
-  end
+  # 判定在途 learn 是否成功：发指令时快照技能等级，超过宽限期后技能等级未提升即失败
+  defp resolve_learn_result(state, st) do
+    case state.pending_learn do
+      nil ->
+        state
 
-defp process_event(%{topic: "skills/learn-result", data: %{skill: nil, failure_message: msg}}, state) do
-    if state.pending_learn do
-      line = state.pending_learn.line
-      teacher = state.pending_learn.teacher
-      reason = String.trim(msg)
-      Logger.warning("bot #{state.config.name} learn failed: #{reason} (cmd: #{line})")
-      
-      # 记录失败命令
-      failed = MapSet.put(state.failed_train_commands, line)
-      failed_count = state.failed_train_count + 1
-      
-      # 检查是否所有 learn 命令都失败了
-      learn_cmds = Enum.filter(state.config.train, &is_learn_cmd/1)
-      all_failed = Enum.all?(learn_cmds, &MapSet.member?(failed, &1))
-      
-      # 累计失败超过阈值（默认 5 次）强制 fallback
-      force_fallback = failed_count >= 5
-      
-      new_state = %{state | 
-        pending_learn: nil, 
-        failed_train_commands: failed, 
-        failed_train_count: failed_count,
-        train_index: 0, 
-        train_fallback: all_failed or force_fallback
-      }
-      
-      {:cont, new_state}
-    else
-      {:cont, state}
+      pending ->
+        now = Stats.skill(st.stats, pending.skill)
+
+        cond do
+          now > pending.level_before ->
+            Logger.info("bot #{state.config.name} learn success: #{pending.skill} (#{pending.level_before}->#{now})")
+            %{state | pending_learn: nil, train_fallback: false, failed_train_commands: MapSet.new(), failed_train_count: 0}
+
+          state.seq - pending.since >= @learn_grace_ticks ->
+            Logger.warning("bot #{state.config.name} learn failed: no progress for #{pending.skill} (cmd: #{pending.line})")
+            failed = MapSet.put(state.failed_train_commands, pending.line)
+            failed_count = state.failed_train_count + 1
+
+            learn_cmds = Enum.filter(state.config.train, &is_learn_cmd/1)
+            all_failed = Enum.all?(learn_cmds, &MapSet.member?(failed, &1))
+            force_fallback = failed_count >= 5
+
+            %{state |
+              pending_learn: nil,
+              failed_train_commands: failed,
+              failed_train_count: failed_count,
+              train_index: 0,
+              train_fallback: all_failed or force_fallback
+            }
+
+          true ->
+            state
+        end
     end
   end
-
-  defp process_event(%{topic: "skills/learn-result", data: %{skill: skill}}, state) do
-    if state.pending_learn and state.pending_learn.skill == skill do
-      Logger.info("bot #{state.config.name} learn success: #{skill}")
-      {:cont, %{state | pending_learn: nil, train_fallback: false, failed_train_commands: MapSet.new(), failed_train_count: 0}}
-    else
-      {:cont, state}
-    end
-  end
-
-  defp process_event(_other, state), do: {:cont, state}
 
   # 判断是否为 learn 命令
   defp is_learn_cmd(cmd) do
