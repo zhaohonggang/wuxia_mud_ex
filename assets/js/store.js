@@ -15,6 +15,9 @@ const composeEnhancers =
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose;
 
+// Strip Kalevala {color ...} tags from raw text for channel panel display
+const stripColorTags = (text) => text.replace(/\{color[^}]*\}/g, "").replace(/\{\/color\}/g, "");
+
 const dispatchEventText = (dispatch, getState, event, { history }) => {
   const { data, text, topic } = event;
 
@@ -43,7 +46,7 @@ const eventTextHandlers = {
   "Channel.Broadcast": (dispatch, getState, event, { history }) => {
     const { channel_name, character, id, text } = event.data;
     dispatch(KalevalaCreators.socketReceivedEvent({ topic: "system/display", data: "\n" }, { history }));
-    dispatch(Creators.channelBroadcast(channel_name, character, id, text));
+    dispatch(Creators.channelBroadcast(channel_name, character, id, stripColorTags(text)));
   },
   "Character.Info": dispatchEventText,
   "Character.Detail": dispatchEventText,
