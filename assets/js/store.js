@@ -94,7 +94,7 @@ const dispatchEventText = (dispatch, getState, event, { history }) => {
 
 const eventTextHandlers = {
   "Channel.Broadcast": (dispatch, getState, event, { history }) => {
-    const { channel_name, character, id, text } = event.data.data;
+    const { channel_name, character, id, text } = event.data;
     dispatch(KalevalaCreators.socketReceivedEvent({ topic: "system/display", data: "\n" }, { history }));
     dispatch(Creators.channelBroadcast(channel_name, character, id, parseColorTags(text)));
   },
