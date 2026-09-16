@@ -29,25 +29,25 @@ defmodule Kantele.Poison do
   def daemon("poison"), do: {:ok, __MODULE__}
   def daemon(_), do: :error
 
-  @doc "Conditions 系统调用：应用中毒效果到角色状态"
+  @doc """
+  Conditions 系统调用：应用中毒伤害（每 condition/tick 一跳）。
+
+  只负责扣 jing/qi（以及缺失时回填），**不递减 remain、不重写 condition**——
+  生命周期（remain/duration 递减与到期）由 `update_condition/1` 在
+  `Conditions.update_condition/2` 主循环里统一处理，避免双递减。
+  """
   def do_effect(state, _cnd, _para) do
     # 获取当前中毒信息
     cond = Kantele.Character.Conditions.query_condition(state, @name)
 
     if cond && is_map(cond) && cond["level"] > 0 do
-      # 应用中毒伤害
       jing_loss = jing_damage(cond)
       qi_loss = qi_damage(cond)
 
-      new_state = state
-      |> put_in([:attributes, :jing], max(Map.get(state.attributes, :jing, 0) - jing_loss, 0))
-      |> put_in([:attributes, :qi], max(Map.get(state.attributes, :qi, 0) - qi_loss, 0))
-
-      # 减少 remain
-      new_cond = Map.put(cond, "remain", cond["remain"] - 1)
-      new_state = Kantele.Character.Conditions.apply_condition(new_state, @name, new_cond)
-
-      {:ok, new_state}
+      {:ok,
+       state
+       |> put_in([:attributes, :jing], max(Map.get(state.attributes, :jing, 0) - jing_loss, 0))
+       |> put_in([:attributes, :qi], max(Map.get(state.attributes, :qi, 0) - qi_loss, 0))}
     else
       {:ok, state}
     end
