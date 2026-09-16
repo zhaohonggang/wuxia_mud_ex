@@ -114,7 +114,60 @@ defmodule Kantele.Character.LearnTimesTest do
     end
   end
 
+  describe "师父侧门派门槛（SectMaster.teachable? 接线）" do
+    test "同门派非嫡传被拦（你已入别派，对照 skills_event.ex:38-44）" do
+      teacher = sect_teacher()
+
+      SkillsEvent.teach(build_conn(teacher), %{
+        topic: "skills/teach",
+        data: %{
+          skill: "sword",
+          times: 1,
+          student_stats: Stats.new() |> Map.put(:skills, %{"sword" => 3}),
+          reply_to: self(),
+          student_family: %{name: "武当派"}
+        }
+      })
+
+      assert_receive %Event{
+        topic: "skills/learn-result",
+        data: %{failure_message: "你已入别派，老夫不便传授。\n"}
+      }
+    end
+
+    test "异门派正常授艺（SectMaster 只拦本门非嫡传，其余走 do_teach）" do
+      teacher = sect_teacher()
+
+      SkillsEvent.teach(build_conn(teacher), %{
+        topic: "skills/teach",
+        data: %{
+          skill: "sword",
+          times: 1,
+          student_stats: Stats.new() |> Map.put(:skills, %{"sword" => 3}),
+          reply_to: self(),
+          student_family: %{name: "峨眉派"}
+        }
+      })
+
+      assert_receive %Event{topic: "skills/learn-result", data: %{times: 1, skill: "sword"}}
+    end
+  end
+
   # ---- helpers ----
+
+  defp sect_teacher do
+    base_character()
+    |> Map.put(:name, "俞莲舟")
+    |> Map.put(:id, "npc-yu")
+    |> Map.put(:meta, %PlayerMeta{
+      vitals: Vitals.new(),
+      stats: Map.put(Stats.new(), :skills, %{"sword" => 40}),
+      combat: Kantele.Character.Combat.new()
+    })
+    |> Map.update!(:meta, fn meta ->
+      Map.put(meta, :teach, %{family: "武当派", teach_skills: %{"sword" => %{max: 40, gongxian: 2}}, no_teach: []})
+    end)
+  end
 
   defp find_event(conn, topic) do
     Enum.find(conn.events, fn event ->

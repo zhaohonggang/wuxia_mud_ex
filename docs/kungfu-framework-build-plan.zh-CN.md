@@ -165,12 +165,25 @@ F1（接线+注册表）→ F2（特技系统）→ F3（门派师父框架）�
 - `teachable?/3` 镜像 skills_event.ex:38-69：`Master.prevent_learn?`（同门派非嫡传拦，文案「你已入别派」）+ 师父已不高于学生拦；`recruit_gate?/3` 走 `meta.apprentice` 的 min_shen/min_exp/min_skills；`detach_penalty?/2` family map 近似（同门=罚）。
 - 全量 `MIX_ENV=test mix test`：**2351 tests, 0 failures**。
 
+### 切片 3：skills_event teach/2 接入 SectMaster.teachable?（已测通、已提交、已推送）
+- `sect_master.ex` `family_of/1` 支持两条真宿主读法：先 `meta.family` map，缺失则从
+  `teach.family`（字符串）合成 `%{name:}`——NPC（NonPlayerMeta）没有 `:family` 字段，
+  门派身份只在 `teach.family`（skills_event.ex:38-39 同源），合成后同门非嫡传判定与 host 等价，
+  **否则会把同门非嫡传静默放行**。
+- `skills_event.ex teach/2` 原手工 `my_family == student_family.name` +
+  `Master.prevent_learn?` 块替换为 `SectMaster.teachable?/3`（保留 LearnGate
+  snapshot_gate b1/b4/b5 与 do_teach 主链，语义等价）；顺带清掉存量 unused `Family` alias。
+- 新增 e2e 2 条（learn_times_test：同门非嫡传拦「你已入别派」/ 异门正常授艺）+
+  sect_master 单测 2 条（NPC 仅 teach.family 身份、student_family 直传 map）。
+- 全量 `MIX_ENV=test mix test`：**2355 tests, 0 failures**。
+
 ### 当前断言
 | 条目 | 真实状态 |
 |---|---|
 | loader 接线（容器测试） | 绿 |
 | 切片 2（容器测试） | **绿**（2351/0） |
-| `origin/kalevala` | `6413383`（切片 1）已推送；切片 2 已推送 |
+| 切片 3 teach/2 接线（容器测试） | **绿**（2355/0） |
+| `origin/kalevala` | `6413383`（切片 1）已推送；切片 2、3 已推送 |
 
 ---
 

@@ -51,6 +51,33 @@ defmodule Kantele.SectMasterTest do
              {:error, "你已入别派，老夫不便传授。\n"}
   end
 
+  test "teachable?/3：NPC 无 meta.family、仅 teach.family 时同门非嫡传仍拦（skills_event.ex:38-44 同源）" do
+    npc_teacher = %{
+      meta: %{
+        teach: %{family: "武当派", teach_skills: %{}, no_teach: []},
+        apprentice: %{min_shen: 20_000, min_exp: 300_000, min_skills: %{}, no_recruit: []},
+        stats: %{combat_exp: 300_000, shen: 20_000, skills: %{"sword" => 40}}
+      }
+    }
+
+    assert Kantele.SectMaster.teachable?(npc_teacher, outsider_student(), "sword") ==
+             {:error, "你已入别派，老夫不便传授。\n"}
+  end
+
+  test "teachable?/3：student_family 直接传 family map（build_conn 侧不包 meta 壳）" do
+    npc_teacher = %{
+      meta: %{
+        teach: %{family: "武当派", teach_skills: %{}, no_teach: []},
+        stats: %{skills: %{"sword" => 40}}
+      }
+    }
+
+    student_family_map = %{name: "武当派", master_id: nil, master_name: nil}
+
+    assert Kantele.SectMaster.teachable?(npc_teacher, %{meta: %{family: student_family_map}}, "taiji-quan") ==
+             {:error, "你已入别派，老夫不便传授。\n"}
+  end
+
   test "teachable?/3：异门派由更高层收徒门槛把（此处贫口只负责本门门槛）" do
     assert Kantele.SectMaster.teachable?(teacher(), other_sect_student(), "sword") == :ok
   end

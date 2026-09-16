@@ -1,10 +1,11 @@
 defmodule Kantele.SectMaster do
   @moduledoc """
-  门派师父判定（F3 切片 2）：纯函数宿主——只做门槛判定链条，不改写任何既有入参形状。
+  门派师父判定（F3）：纯函数宿主——只做门槛判定链条，不改写任何既有入参形状。
 
-  本模块**不新增任何宿主调用点**（不碰 teach/2 主链、不碰 family/recruit、
-  不碰 room 对话），各调用方维持现状；只把散落的门槛判定收敛成纯函数以便
-  后续 F3 接线时逐点替换。
+  - 切片 2：纯函数收口，不动宿主调用点。
+  - 切片 3：`skills_event.ex teach/2` 已接入 `teachable?/3`（替换原手工
+    `Master.prevent_learn?` 门派块，行为等价）；recruit/apprentice/detach/inquiry
+    仍按计划后续切片逐个接入。
 
   宿主形状（已读盘核实，不再臆造）：
     - 师父收徒门槛存 `character.meta.apprentice`（loader `parse_apprentice/1`
@@ -85,11 +86,34 @@ defmodule Kantele.SectMaster do
   end
 
   # ---- 内部取数（只读真宿主形状，不臆造） ----
+  #
+  # 角色 -> family map。真宿主两种落点：
+  # - 玩家展开 `meta.family` 是 map（family_event.ex:17）；
+  # - NPC（NonPlayerMeta）没有 `:family` 字段，门派身份只在 `meta.teach.family`
+  #   （loader.parse_teach 的字符串门派名，skills_event.ex:38-39 同源读法）。
+  #   这里按 host 顺序：先 meta.family map，缺失则用 teach.family 合成 %{name:}，
+  #   保证 teach/2 侧面同门派非嫡传判定与 host 一致。
+  defp family_of(%{meta: meta} = character) when is_map(meta) do
+    case Map.get(meta, :family) do
+      family when is_map(family) and map_size(family) > 0 ->
+        family
 
-  # 角色 -> family map：接受 `%{family: %{name:..}}`（meta 壳）或直接 family map
-  defp family_of(%{meta: %{family: family}}) when is_map(family), do: family
-  defp family_of(%{family: family}) when is_map(family), do: family
+      _ ->
+        teach_family(character, meta)
+    end
+  end
+
+  # 直接给 family map（不包 meta 壳，如 build_conn 侧传 student_family map）
+  defp family_of(family) when is_map(family), do: family
   defp family_of(_), do: %{}
+
+  # teach.family 合成（host 同源：skills_event.ex:39）
+  defp teach_family(_character, meta) do
+    case Map.get(Map.get(meta, :teach) || %{}, :family) do
+      nil -> %{}
+      name -> %{name: name}
+    end
+  end
 
   # 角色 -> meta 壳
   defp meta_of(character) when is_map(character), do: Map.get(character, :meta) || %{}

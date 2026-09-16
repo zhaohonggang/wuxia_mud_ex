@@ -11,12 +11,11 @@ defmodule Kantele.Character.SkillsEvent do
   import Kalevala.Character.Conn
 
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Family
   alias Kantele.Character.LearnGate
   alias Kantele.Character.Records
   alias Kantele.Character.Stats
   alias Kantele.Combat.Skills
-  alias Kantele.Npc.Master
+  alias Kantele.SectMaster
 
   @max_teachable_levels 100
   @max_times 100
@@ -34,21 +33,21 @@ defmodule Kantele.Character.SkillsEvent do
     # b2 捆绑门槛：潜能池(b1)/经验门(b4)/内功互斥(b5)，快照判定
     gate = LearnGate.snapshot_gate(student_stats, skill)
 
-    # Master.prevent_learn: 非嫡传但同门派 -> 阻止
-    my_family =
-      Map.get(character.meta, :teach) && Map.get(Map.get(character.meta, :teach), :family)
-
+    # F3 切片 3：门派/等级门槛收敛到 SectMaster.teachable?/3
+    # （同门派非嫡传 prevent_learn? + 师父已不高于学生，skills_event.ex:38-69）
     student_family = Map.get(data, :student_family)
 
-    if my_family != nil and student_family != nil and Map.get(student_family, :name) == my_family do
-      if Master.prevent_learn?(character.meta.family, student_family, student_family) do
-        reply(reply_to, "你已入别派，老夫不便传授。\n")
+    case SectMaster.teachable?(
+           character,
+           %{meta: %{family: student_family, stats: student_stats}},
+           skill
+         ) do
+      {:error, message} ->
+        reply(reply_to, message)
         conn
-      else
+
+      :ok ->
         do_teach(conn, module, base_skill?, skill, times, student_stats, gate, reply_to)
-      end
-    else
-      do_teach(conn, module, base_skill?, skill, times, student_stats, gate, reply_to)
     end
   end
 
