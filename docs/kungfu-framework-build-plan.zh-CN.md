@@ -150,8 +150,9 @@ F1（接线+注册表）→ F2（特技系统）→ F3（门派师父框架）�
 ## 当前进度（2026-09-16，如实盘）
 
 ### 阶段状态（F1/F2 已在 git 史，补记）
-- **F1 conditions 接线**（提交 `37f233d`，早于本计划切片）：`condition_registry.ex`（静态 `@daemons %{"poison" => Kantele.Poison}` + `:persistent_term` 热增，`daemon/1`）+ `condition_event.ex`（独立 `condition/tick` 1s 自投递心跳，conds 非空才续投；驱动 `Conditions.update_condition/2` 到期流转 + 每存活条件 `affect_by` 跳 `do_effect`）+ `poison.ex do_effect` 只扣 jing/qi 不递减 remain（避免与 update_condition 双递减）。
-- ⚠️ **F1 验收测试缺**：计划 F1 步骤 5 的 `condition_registry_test.exs`/`condition_flow_test.exs` 未创建（glob 全库无 `*condition*` 测试）——收尾待补项，列入后续切片。
+- **F1 conditions 接线**（初版提交 `37f233d`，早于本计划切片）：`condition_registry.ex`（静态 `@daemons %{"poison" => Kantele.Poison}` + `:persistent_term` 热增，`daemon/1`）+ `condition_event.ex`（独立 `condition/tick` 1s 自投递心跳，conds 非空才续投）+ `poison.ex do_effect` 只扣 jing/qi 不递减 remain（避免与 update_condition 双递减）。
+- ⚠️ **F1 初版是空转的（本次已修，见下）**：补验收测试时发现初版有 4 个真 bug，且在无测试覆盖下全量绿是假象——(1) `ConditionEvent` **未注册**进 `Kantele.Character.Events`（`poison/apply`/`condition/tick` 都不路由，心跳从不启动）；(2) `apply/2` 读 `data["target"]`/`data["poison"]` 字符串键，而 `daub_command` 发的是**原子键** `%{target:, poison:}`（自毒判定恒 false）；(3) `tick` 的 `affect_by` 结果契约是 `{:ok, do_effect 返回值}`（batch6 锁定），`Poison.do_effect` 自己又返回 `{:ok, state}` → 双层 `{:ok, {:ok, state}}`，reduce 只解一层导致 `state.attributes` 首跳即崩；(4) 混毒 prev 读 `meta.temp["conditions"]`（无人写、恒 nil），应读 session。
+- **F1 修正 + 验收测试**（本次提交）：注册 `ConditionEvent` 两个 topic；`apply` 改原子键并真正走 `Poison.mixed_poison/2`（prev 读 session）；`tick` reduce 解双层；新增 `test/kantele/character/condition_registry_test.exs`（注册/注销/覆盖/`all`）+ `condition_flow_test.exs`（经 `Kantele.Character.Events.call/2` 锁路由：自毒→掉血→到期自清→停跳、混毒等级叠加）。
 - **F2 特技注册表**（提交 `8d4648f`，早于本计划切片）：`special_skills.ex` 注册表 + `special_skills_test.exs`；拍板（两个）：**保持原样**（散落读取点 `poison.ex`/`conditions.ex`/`attributes.ex`/`feature_damage.ex`/`room.ex` 不改写）、**只写注册表+测试**（`special` 命令维持「暂未开放」占位契约，`special_command_test.exs` 已锁）。
 - ⚠️ **piyi 免疫实际未生效**：`conditions.ex:121` 读 `state.special_skill.piyi`、`poison.ex:192` 读 `state.attributes["special_skills"]["piyi"]`，两形状不一，且 `condition_event.ex tick` 构造的 state 只含 `conditions/cond_applyer/attributes(jing,qi,jingli,neili)`——两读法均取不到值。待 F2 接线（喂 `special_skills` 进 state/attributes）才能真正免疫。
 
@@ -186,12 +187,13 @@ F1（接线+注册表）→ F2（特技系统）→ F3（门派师父框架）�
 ### 当前断言
 | 条目 | 真实状态 |
 |---|---|
-| F1 conditions 接线（`37f233d`） | 已提交；心跳+到期流转绿，验收测试（切片化前缺）待补 |
+| F1 conditions 接线（`37f233d` → 本次修正） | 修正后：宿主路由 + 原子键 + 双层解包 + 混毒全通；`condition_registry_test`/`condition_flow_test` 补上 |
 | F2 特技注册表（`8d4648f`） | 已提交；注册表+测试注入绿；命令/读取点保持占位（拍板） |
 | loader 接线（容器测试） | 绿 |
 | 切片 2（容器测试） | **绿**（2351/0） |
 | 切片 3 teach/2 接线（容器测试） | **绿**（2355/0） |
-| `origin/kalevala` | `6413383`（切片 1）已推送；F1/F2、切片 2、3 均已推送 |
+| 本次 F1 修正 + 测试（容器测试） | **绿**（2364/0，+9 测试） |
+| `origin/kalevala` | `6413383`（切片 1）已推送；F1/F2、切片 2、3、文档修正均已推送 |
 
 ---
 

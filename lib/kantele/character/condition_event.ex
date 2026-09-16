@@ -19,6 +19,7 @@ defmodule Kantele.Character.ConditionEvent do
   alias Kantele.Character.CommandView
   alias Kantele.Character.ConditionRegistry
   alias Kantele.Character.Conditions
+  alias Kantele.Poison
 
   @tick_interval 1000
 
@@ -29,12 +30,13 @@ defmodule Kantele.Character.ConditionEvent do
   def apply(conn, event) do
     data = event.data
 
-    if data["target"] == "self" && is_map(data["poison"]) do
-      character = conn.character
-      prev = character.meta.temp["conditions"]
+    if data.target == "self" && is_map(data.poison) do
+      # 已有同种毒则混毒（LPC POISON_D->mixed_poison）；毒存 session.conditions
+      prev = get_session(conn, "conditions")
+      existing = prev && prev["poison"]
+      mixed = Poison.mixed_poison(existing, data.poison)
 
-      # 混毒（若已有同种毒）后写回宿主
-      merged = Conditions.apply_condition(%{conditions: prev}, "poison", data["poison"])
+      merged = Conditions.apply_condition(%{conditions: prev}, "poison", mixed)
       conds = merged.conditions
 
       conn =
@@ -77,10 +79,14 @@ defmodule Kantele.Character.ConditionEvent do
       {state, _live?} = Conditions.update_condition(state, daemon)
 
       # 2) 每存活条件一跳 do_effect（Poison 扣 jing/qi；do_effect 已不递减 remain）
+      #    Conditions.affect_by/4 的契约是 `{:ok, do_effect 返回值}`（结果不透明，
+      #    见 test/kantele/batch6_test.exs），Poison.do_effect 返回 `{:ok, state}`，
+      #    故这里要解双层；免疫 `{:immune}` 与解析失败 `:error` 保持 state。
       state =
         Enum.reduce(Map.keys(state.conditions || %{}), state, fn cnd, state ->
           case Conditions.affect_by(state, daemon, cnd, nil) do
-            {:ok, new_state} -> new_state
+            {:ok, {:ok, new_state}} when is_map(new_state) -> new_state
+            {:ok, new_state} when is_map(new_state) -> new_state
             _ -> state
           end
         end)

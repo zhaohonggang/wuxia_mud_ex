@@ -23,6 +23,11 @@ defmodule Kantele.Character.Events do
       event("exercise/tick", :tick)
     end
 
+    module(ConditionEvent) do
+      event("poison/apply", :apply)
+      event("condition/tick", :tick)
+    end
+
     module(RespirateEvent) do
       event("respirate/tick", :tick)
     end
