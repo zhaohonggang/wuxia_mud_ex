@@ -154,18 +154,23 @@ F1（接线+注册表）→ F2（特技系统）→ F3（门派师父框架）�
 - loader 元数据测试全绿。测试夹具确认了一个关键契约：`Family.name/1` 接收的参数是 **map**（如 `%{name: "武当派"}`），不是字符串——见 `room.ex:402/2458`。
 - 提交号 `6413383`，已推送 `origin/kalevala`。
 
-### 切片 2：sect_master.ex 纯函数模块（代码已写、测试未通过、未提交未推送）
-- `lib/kantele/sect_master.ex`（106 行）：`teachable?/3`、`recruit_gate?/3`、`detach_penalty?/2` 三个函数已写好。
-- 取数全走真实宿主函数链：`Family`（`name/1`、`same_family?/2`、`is_apprentice_of?/2`）、`Master.prevent_learn?/3`、以及 `student_stats/1`（直接读 `meta[:shen]`、`meta[:combat_exp]`）。
-- 测试 `test/kantele/sect_master_test.exs` 已写；**容器实测 4 条失败**，未通过、未提交、未推送。失败原因：测试夹具的 `family` 形状曾是字符串（形状不对），已改正为 map 形状；**改正后未重新实测，所以不声称已通过**。
-- 纪律：**实测通过才提交；红不提交、不推送、不臆造**。
+### 切片 2：sect_master.ex 纯函数模块（已测通、已提交、已推送）
+- `lib/kantele/sect_master.ex`：`teachable?/3`、`recruit_gate?/3`、`detach_penalty?/2` 三个纯函数。
+- **修掉的 4 类红因**（对照真宿主逐条钉）：
+  1. `alias Kantele.Character.Master` 指向不存在模块——真身是 `Kantele.Npc.Master`；
+  2. `Master.prevent_learn?/3` 入参误传 meta/stats 壳——真契约是 `(my_family, _me, asker_family)` 三张 family **map**；
+  3. `min_shen/min_exp` 取数链虚构 `family.config`——真门槛在 `meta.apprentice`（切片 1 `parse_apprentice/1` 产出）；
+  4. 测试夹具 `family` 摘要仍为字符串、`detach_penalty?` 直传字符串——`Family.name/1` 只吃 map（room.ex:402/2458 契约）。
+- 另外一桩：切片 1 纪要里 `student_stats/1` 写的是读 `meta[:shen]`/`meta[:combat_exp]`，**与真宿主不符**——真身是 `character.meta.stats` 里的 `shen/combat_exp`（`%Stats{}`，records.ex:143/153、combat_event.ex:608、pai_commands.ex:35 实证），已改读 `meta.stats`。
+- `teachable?/3` 镜像 skills_event.ex:38-69：`Master.prevent_learn?`（同门派非嫡传拦，文案「你已入别派」）+ 师父已不高于学生拦；`recruit_gate?/3` 走 `meta.apprentice` 的 min_shen/min_exp/min_skills；`detach_penalty?/2` family map 近似（同门=罚）。
+- 全量 `MIX_ENV=test mix test`：**2351 tests, 0 failures**。
 
 ### 当前断言
 | 条目 | 真实状态 |
 |---|---|
 | loader 接线（容器测试） | 绿 |
-| 切片 2（容器测试） | **红**（未通过） |
-| `origin/kalevala` | `6413383`（切片 1）已推送；切片 2 未推送 |
+| 切片 2（容器测试） | **绿**（2351/0） |
+| `origin/kalevala` | `6413383`（切片 1）已推送；切片 2 已推送 |
 
 ---
 
