@@ -1,6 +1,8 @@
 defmodule Kantele.SectMasterTest do
   use ExUnit.Case, async: true
 
+  alias Kantele.Character.Stats
+
   # 形状镜像真宿主（不再臆造）：
   # - 门派 family 是 map（%{name: ..}，family_event.ex:17）；字符串会 BadMapError
   # - 角色 shen/combat_exp 存在 meta.stats（%Stats{}，records.ex:143/153）；
@@ -134,5 +136,91 @@ defmodule Kantele.SectMasterTest do
         stats: %{combat_exp: 300_000, shen: 20_000, skills: %{"sword" => 40}}
       }
     }
+  end
+
+  # ---- inquiry_grant/3（镜像 class/wudang/yu.c ask_me；config 字符串键） ----
+
+  defp yu_juehu_config do
+    %{
+      "perform_id" => "huzhua-shou/juehu",
+      "skill" => "huzhua-shou",
+      "min_levels" => %{"force" => 180, "huzhua-shou" => 120},
+      "min_gongxian" => 400,
+      "min_shen" => 100_000,
+      "cost_gongxian" => 400
+    }
+  end
+
+  defp qualify_stats(overrides \\ %{}) do
+    Map.merge(
+      %Stats{
+        skills: %{"huzhua-shou" => 120, "force" => 180},
+        gongxian: 400,
+        shen: 100_000,
+        performs: MapSet.new()
+      },
+      overrides
+    )
+  end
+
+  test "inquiry_grant/3：全门槛达标返回 {:ok, perform_id, cost}（yu.c 成功分支）" do
+    assert Kantele.SectMaster.inquiry_grant(qualify_stats(), %{}, yu_juehu_config()) ==
+             {:ok, "huzhua-shou/juehu", 400}
+  end
+
+  test "inquiry_grant/3：已会则不重复授予（yu.c can_perform 分支）" do
+    stats = qualify_stats(%{performs: MapSet.new(["huzhua-shou/juehu"])})
+
+    assert {:error, "这一招你不是已经会了吗？\n"} =
+             Kantele.SectMaster.inquiry_grant(stats, %{}, yu_juehu_config())
+  end
+
+  test "inquiry_grant/3：同门校验（两方都带 :family 才拦，yu.c 非同门分支）" do
+    player = qualify_stats() |> Map.from_struct() |> Map.put(:family, "峨眉派")
+
+    assert {:error, "你我并非同门，何来讨教绝招之说？\n"} =
+             Kantele.SectMaster.inquiry_grant(player, %{family: "武当派"}, yu_juehu_config())
+
+    # npc 未带 family → 无从判定，放行到后续门槛
+    assert {:ok, "huzhua-shou/juehu", 400} =
+             Kantele.SectMaster.inquiry_grant(player, %{}, yu_juehu_config())
+  end
+
+  test "inquiry_grant/3：未习核心技能（skill < 1，yu.c「连…都没学」）" do
+    stats = qualify_stats(%{skills: %{"huzhua-shou" => 0, "force" => 180}})
+
+    assert {:error, "你连huzhua-shou都没学，还谈什么绝招可言？\n"} =
+             Kantele.SectMaster.inquiry_grant(stats, %{}, yu_juehu_config())
+  end
+
+  test "inquiry_grant/3：gongxian 门槛（yu.c 400）" do
+    stats = qualify_stats(%{gongxian: 399})
+
+    assert {:error, "你为本派效力还不够，这招我先不忙传你。\n"} =
+             Kantele.SectMaster.inquiry_grant(stats, %{}, yu_juehu_config())
+  end
+
+  test "inquiry_grant/3：shen 门槛（yu.c 100000）" do
+    stats = qualify_stats(%{shen: 99_999})
+
+    assert {:error, "这一招太过阴恨，若被你用去我恐怕不放心！\n"} =
+             Kantele.SectMaster.inquiry_grant(stats, %{}, yu_juehu_config())
+  end
+
+  test "inquiry_grant/3：min_levels 技能门槛（yu.c force 180 / huzhua-shou 120）" do
+    low_force = qualify_stats(%{skills: %{"huzhua-shou" => 120, "force" => 179}})
+
+    assert {:error, "你的修为还不够，练高了再来吧。\n"} =
+             Kantele.SectMaster.inquiry_grant(low_force, %{}, yu_juehu_config())
+
+    low_claw = qualify_stats(%{skills: %{"huzhua-shou" => 119, "force" => 180}})
+
+    assert {:error, "你的修为还不够，练高了再来吧。\n"} =
+             Kantele.SectMaster.inquiry_grant(low_claw, %{}, yu_juehu_config())
+  end
+
+  test "inquiry_grant/3：缺 perform_id 时拒（配置不完整）" do
+    assert {:error, "这门绝招暂不外传。\n"} =
+             Kantele.SectMaster.inquiry_grant(qualify_stats(), %{}, %{"skill" => "huzhua-shou"})
   end
 end

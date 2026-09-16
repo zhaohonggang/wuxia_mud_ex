@@ -86,14 +86,15 @@
    - `apprentice`：⚠️ loader `parse_apprentice/1`（loader.ex:481）已产出 `%{family, min_shen, min_exp, min_skills: %{技能 => 等级}, no_recruit: [...]}`；**`class` 继承尚不在产物里**，本阶段补。
    - `inquiries`：⚠️ 键是复数且为 **顶层**字段；loader `parse_inquiries/1`（loader.ex:455）已解析，授绝招配置 map 值经 `parse_inquiry_value/1` 键归一为字符串——兼容 `%{skill, min_gongxian, min_shen, min_levels, cost_gongxian, perform_id}`。kyu 真身（`class/wudang/yu.c`）还把 `huzhua-shou>=120`（min_levels）与同门校验塞进 `ask_me`，实现时一并覆盖。
 2. **`lib/kantele/sect_master.ex`（纯函数，类 `Master`）**——⚠️ 模块在**顶层** `Kantele.SectMaster`（切片 2 已建），不在 `npc/` 子目录
-   - `teachable?(npc_stats, student_stats, skill, config)`：等级差 + `no_teach` + `valid_learn`（切片 2 已实现，切片 3 已接入 `teach/2`）。
-   - `recruit_gate?(player_stats, config)`：shen/exp/心法门槛（切片 2 已实现，待接 NPC 侧事件）。
-   - `inquiry_grant(player_stats, npc_stats, config)`：返回 `{:ok, perform_id, cost}` | `{:error, msg}`（待补写）。
-3. **接入事件**
+   - `teachable?(teacher, student, skill)`：同门派非嫡传（`Master.prevent_learn?`）+ 师父不高于学生（切片 2 已实现，切片 3 已接入 `teach/2`；⚠️ 实际 3 元而非早期草案 4 元）。
+   - `recruit_gate?(teacher, student, gate \\ nil)`：shen/exp/心法门槛，读 `meta.apprentice`（切片 2 已实现，待接 NPC 侧事件）。
+   - `inquiry_grant(player_stats, npc_stats, config)`：返回 `{:ok, perform_id, cost}` | `{:error, msg}`（**切片 4 已实现**，镜像 `yu.c` `ask_me`：已会→同门→`skill<1`→`min_gongxian`→`min_shen`→`min_levels`；`config` 字符串键 `%{perform_id, skill, min_levels, min_gongxian, min_shen, cost_gongxian}`；入参可为 `%Stats{}` 或等形 map，`:family` 双方都带才比较）。调用方据 `cost` 扣 `gongxian` 并 `Stats.learn_perform/2`（接线待续）。
+ 3. **接入事件**
    - `skills_event.ex teach/2`：改用 `SectMaster.teachable?`（保留 `prevent_learn?` 门派校验）。
    - `recruit` 命令 + `family/apprentice` 事件：按 `config` 检查门槛 → `Family.recruit_apprentice` + class 继承 → `gongxian` 初始化。
    - `family/detach`：`Master.attempt_detach` → `Skills.skill_expell_penalty`（已就绪）。
    - inquiry：`ask`/`chat` 匹配 `inquiry` 关键词 → `SectMaster.inquiry_grant` → `Stats.learn_perform` + `add(:gongxian, -cost)`。
+   - ⚠️ **读盘发现的 detach/inquiry 接线缺口**（下一切片处理）：(1) `family/detach` 房间侧**未注册转发**（`Room.ApprenticeRequestEvent` 只映 `family/apprentice`，room.ex:518-520；detach 无 `xxxRequestEvent`）；(2) 玩家侧 `Kantele.Character.DetachEvent.detach_result/2` **未注册**进 `events.ex`（无 `family/detach-result` → `:detach_result` 映射）；(3) `NpcFamilyEvent.apprentice/2` **未接 `SectMaster.recruit_gate?`**（当前有 `teach.family` 即应允）；(4) `NpcFamilyEvent.detach/2` 读 `conn.character.meta.family`，而 `NonPlayerMeta` 无 `:family` 字段（character.ex:285-305）→ **KeyError**，应改读 `teach.family` 合成；(5) `DetachEvent.detach_result/2` 调 `Stats.all/1`（detach_command.ex:50）**该函数不存在**（编译告警），应改按 `stats.skills` 归约；(6) `class` 继承落在 `parse_apprentice/1` 产物 + 拜师成功路径（待补）。
 4. **样板内容**
    - 把 `class/wudang/yu.c`（俞莲舟）翻译成一份 UCL 师父配置挂进测试世界：no_teach（三绝张真人亲传）、门槛（shen 20000/exp 150000/武当心法 80/taoism 80）、inquiry 授「虎爪绝户手」（gongxian 400/shen 100000/force 180）。
 5. **测试**
