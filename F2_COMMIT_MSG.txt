@@ -1,0 +1,12 @@
+F2 fix: 特技注册表 SpecialSkills——只做注册表 + 测试注入（两个拍板：保持原样、只写注册表+测试）
+
+- lib/kantele/character/special_skills.ex（新建）：空起步静态内建表 + persistent_term
+  运行时热增热删 register/2、unregister/1，daemon/1 / registered?/1 / all/0 供
+  special 命令（现为"暂未开放" stub，contract 槽已锁在 special_command_test.exs）
+  与既有读取点查询。不改写任何既有读取点——poison.ex/conditions.ex/attributes.ex/
+  feature_damage.ex/room.ex 各自维持现状（F2 决策#1"保持原样"）。
+- test/kantele/character/special_skills_test.exs（新建）：纯注册/热增/热删/daemon
+  解析，经 attributes["special_skills"] 字符串 map（%{"piyi" => true, ...}，
+  与 poison.ex/room.ex 已用宿主形状一致）注入验证。
+
+不触碰 special_command.ex 主体（维持已锁定"暂未开放"契约）。
