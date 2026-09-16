@@ -333,6 +333,7 @@ defmodule Kantele.World.Loader do
         goods: parse_goods(Map.get(character_data, :goods)),
         inquiries: parse_inquiries(Map.get(character_data, :inquiries)),
         teach: parse_teach(Map.get(character_data, :teach)),
+        apprentice: parse_apprentice(Map.get(character_data, :apprentice)),
         turn_in: parse_turn_in(Map.get(character_data, :turn_in)),
         quest: parse_quest(Map.get(character_data, :quest)),
         coagents: parse_coagents(Map.get(character_data, :coagents)),
@@ -469,6 +470,44 @@ defmodule Kantele.World.Loader do
   # 教学配置（A11/D4）：归一化字符串键，本期只解析落位供门派信息展示，
   # 消费端校验等 b 期 learn 重构接入
   defp parse_teach(nil), do: nil
+
+  # 收徒门槛（F3 切片 1）：镜像 parse_teach/1 的卫句/归约形状。
+  # UCL 例 apprentice = {
+  #   family = "武当派"
+  #   min_shen = 20000  min_exp = 300000
+  #   min_skills = { sword = 80  force = 60 }
+  #   no_recruit = [ "张翠山" ]
+  # }
+  defp parse_apprentice(nil), do: nil
+
+  defp parse_apprentice(apprentice) when is_map(apprentice) do
+    min_skills =
+      case Map.get(apprentice, :min_skills) do
+        skills when is_map(skills) ->
+          Enum.into(skills, %{}, fn {key, level} ->
+            {String.replace(to_string(key), "_", "-"), level}
+          end)
+
+        _ ->
+          %{}
+      end
+
+    no_recruit =
+      case Map.get(apprentice, :no_recruit) do
+        list when is_list(list) -> Enum.map(list, &to_string/1)
+        _ -> []
+      end
+
+    %{
+      family: Map.get(apprentice, :family) && to_string(Map.get(apprentice, :family)),
+      min_shen: Map.get(apprentice, :min_shen) || 0,
+      min_exp: Map.get(apprentice, :min_exp) || 0,
+      min_skills: min_skills,
+      no_recruit: no_recruit
+    }
+  end
+
+  defp parse_apprentice(_), do: nil
 
   defp parse_teach(teach) when is_map(teach) do
     teach_skills =

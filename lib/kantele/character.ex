@@ -292,6 +292,7 @@ defmodule Kantele.Character.NonPlayerMeta do
     :goods,
     :inquiries,
     :teach,
+    :apprentice,
     :turn_in,
     :loot,
     :quest,
