@@ -9,10 +9,10 @@
 
 | 目录 | 内容 | 规模 | 文件模式 |
 |---|---|---|---|
-| `skill/` | 顶层=基础武功/门派武功 `.c`（`blade.c`、`bagua-quan.c`、`huashan-jian.c`…）；每个武功一个子目录放招式（perform/exert）文件 | 720 个 `.c` + 442 个子目录 | 基础武功 `inherit SKILL;`；子目录招式 `inherit F_SSERVER;`/`inherit F_CLEAN_UP;` |
-| `condition/` | 状态效果 daemon（毒/疾病/晕醉/束缚/内息异常/官府悬赏…） | ~70 个 | `inherit F_CLEAN_UP;`（部分 `inherit POISON;`），定义 `update_condition(me, duration)`、`dispel(me, ob, duration)` |
-| `special/` | 转世特技（accuracy/piyi/ironskin/youth/greedy…） | 32 个 | `inherit F_CLEAN_UP;`，`int is_scborn()`、`string name()`、`int perform(object me, string skill)` |
-| `class/` | 各门派师父/弟子 NPC（duan/emei/wudang/shaolin/…） | 41 个门派目录 | `inherit NPC + F_MASTER + F_COAGENT;`，`attempt_apprentice`、`permit_recruit`（在 `.h`）、`create_family`、`set_skill/map_skill/prepare_skill` |
+| `skill/` | 顶层=基础武功/门派武功 `.c`（`blade.c`、`bagua-quan.c`、`huashan-jian.c`…）；每个武功一个子目录放招式（perform/exert）文件 | 719 个 `.c` + 1 个 `.h`（`eff_msg.h`）+ 442 个子目录 | 基础武功 `inherit SKILL;`；子目录招式 `inherit F_SSERVER;`/`inherit F_CLEAN_UP;` |
+| `condition/` | 状态效果 daemon（毒/疾病/晕醉/束缚/内息异常/官府悬赏…） | 70 个 `.c` | `inherit F_CLEAN_UP;`（部分 `inherit POISON;`），定义 `update_condition(me, duration)`、`dispel(me, ob, duration)` |
+| `special/` | 转世特技（accuracy/piyi/ironskin/youth/greedy…） | 33 个 `.c` | `inherit F_CLEAN_UP;`，`int is_scborn()`、`string name()`、`int perform(object me, string skill)` |
+| `class/` | 各门派师父/弟子 NPC（duan/emei/wudang/shaolin/…） | 42 个门派目录 | `inherit NPC + F_MASTER + F_COAGENT;`，`attempt_apprentice`、`permit_recruit`（在 `.h`）、`create_family`、`set_skill/map_skill/prepare_skill` |
 
 ## 二、LPC 侧关键模式（抽样实测）
 
@@ -65,7 +65,7 @@
 
 | 缺口 | 现状 | 需要补 |
 |---|---|---|
-| **conditions 宿主接线** | `conditions.ex` 引擎完整、`poison.ex` 是唯一 daemon，但 `CombatEvent.tick` 从不调 `Conditions.update_condition(state, daemon)` | 在每角色 1s 心跳里接入 condition daemon 注册表并做到期/效果驱动 |
+| **conditions 宿主接线** | `conditions.ex` 引擎完整、`poison.ex` 是唯一 daemon。**F1 已落地**（提交 `37f233d`）：独立 `condition/tick` 事件（`condition_event.ex`，1s 自投递）驱动 `Conditions.update_condition/2` + 每存活条件 `affect_by` 跳 `do_effect`，与 combat 解耦；`condition_registry.ex` 注册表（静态 + `:persistent_term` 热增）就位 | 补 F1 验收测试（`condition_registry_test.exs`/`condition_flow_test.exs` 尚缺）+ 其余 ~69 个 `condition/*.c` 按 daemon 接口移植 |
 | **condition 内容量** | 只有 poison 一个 | ~70 个 `condition/*.c` 待按 daemon 接口移植 |
 | **performs/exerts 内容量** | 只有 liuxin-jian、taiji-quan、powerup 三个 | 442 个子目录的招式文件待移植 |
 | **内功内容量** | 只有 `force.ex` 泛型 + liuxi-neigong | 各门派内功（有效互斥 `valid_force`）待移植 |
@@ -74,7 +74,7 @@
 
 | 缺口框架 | kungfu 参照 | 说明 |
 |---|---|---|
-| **转世特技（special）系统** | `special/*.c` 32 个 | `special_command.ex` 仍是"暂未开放"占位；`special_skill/piyi` 等只是散落硬编码检查（conditions.ex:121、poison.ex:192、feature_damage.ex:476、attributes.ex:44） |
+| **转世特技（special）系统** | `special/*.c` 33 个 | **F2 已落地一半**（提交 `8d4648f`，拍板「保持原样、只写注册表+测试」）：`special_skills.ex` 注册表 + 测试注入，`special_command.ex` 仍是"暂未开放"占位；散落硬编码未替换——`conditions.ex:121`/`poison.ex:192`（piyi 免疫）、`feature_damage.ex:476/484`（greedy = 食物/饮水上限 `f+500/w+500`，**非**击杀奖励）、`attributes.ex:44`（youth 容貌不衰，属实）。另注意 `conditions.ex:121` 读 `state.special_skill.piyi`、`poison.ex:192` 读 `state.attributes["special_skills"]`，两处形状不一且 `condition_event.ex tick` 构造的 state 未喂该键——piyi 免疫目前名义存在、心跳里未生效，待 F2 接线 |
 | **通用门派师父数据驱动框架** | `class/<sect>/*.c` | 现仅 `ZhangSanfeng` 单例硬编码；`Sects` 只用于随机 NPC 生成，非师父 NPC 配置 |
 | **师父收徒/叛师闭环** | `F_MASTER` `attempt_apprentice`/`permit_recruit` | `recruit`/`family/*` 事件已注册但无完整拜师流程（shen/exp/心法门槛、class 继承、`no_teach`/`inquiry` 授绝招） |
 
@@ -111,14 +111,16 @@ end
 ### 4.2 通用门派师父框架（SectMaster）
 
 ```
-data/world/<map>.ucl 的 characters 块扩展字段：
-  teach: %{family: "wudang", skills: %{"taiji-jian" => %{max: N}}, no_teach: [...], inquiry: [...]}
+data/world/<map>.ucl 的 characters 块扩展字段（与 loader.ex 实际解析形状对齐）：
+  teach: %{family: "武当派", teach_skills: %{"taiji-jian" => %{max: N, gongxian: M}}, no_teach: [...]}
+  apprentice: %{family, min_shen, min_exp, min_skills: %{技能 => 等级}, no_recruit: [...]}
+  inquiries: %{关键词 => 文本|授绝招配置 map}（顶层；loader `parse_inquiries/1` 已解析，map 值键归一为字符串）
 ```
 
 **数据驱动**，替代硬编码 `ZhangSanfeng`：
-- UCL 里声明师父的 `teach_skills`、`no_teach`、`inquiry`（问答→授绝招配置：门槛 gongxian/shen/技能 + 扣除额）、收徒门槛 `apprentice: %{min_shen, min_exp, min_skills}`、`class` 继承。
-- `SkillsEvent.teach` 改用 `Npc.Master.teachable?` + `prevent_learn?` + `no_teach` 表。
-- 拜师流程：`recruit` → `Family.recruit_apprentice` + class 继承 + `gongxian` 初始化。
+- UCL 里声明师父的 `teach_skills`、`no_teach`、`inquiries`（问答→授绝招配置：门槛 gongxian/shen/技能 + 扣除额）、收徒门槛 `apprentice: %{min_shen, min_exp, min_skills}` 与 `no_recruit`（`class` 继承**尚不在** loader `parse_apprentice/1` 产物里，F3 待补）。
+- `SkillsEvent.teach` 改用 `SectMaster.teachable?`（切片 3 已接入 `skills_event.ex teach/2`；同门判定走 `meta.family` map，NPC 侧用 `teach.family` 合成）。
+- 拜师流程：`recruit` → `Family.recruit_apprentice` + class 继承 + `gongxian` 初始化（切片 2 的 `SectMaster.recruit_gate?/3` 门槛函数已就绪，接 NPC 侧应答事件待 F3 续）。
 - 叛师：`Master.attempt_detach` → `Skills.skill_expell_penalty`（已就绪）。
 
 ### 4.3 conditions 宿主接线 + 注册表

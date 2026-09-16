@@ -52,13 +52,13 @@
 ### 目标
 统一现有的散落 `special_skill/{piyi,greedy,youth}` 硬编码，提供注册表 + `special` 命令 + 被动/主动接口。
 
-### 步骤
+> 已拍板（`8d4648f`）：本阶段只做**注册表 + 测试注入**，散落读取点保持原样，`special` 命令维持占位。下方步骤为完整蓝图，逐条执行时以拍板范围为准。
 1. **新建 `lib/kantele/character/special_skills.ex`（注册表）**
    - 静态 `@specials %{"piyi" => SpecialSkills.Piyi, "accuracy" => ..., "youth" => ...}` 起步放 3-5 个 kungfu 已读样板做验证，其余随迁移补。
    - `all/get/known?` + 运行时增量（同 `Skills` 模式）。
 2. **新建特技模块（样板 3 个）**
    - `special_skills/piyi.ex`：被动——免疫毒/病/内伤反噬（替换 `conditions.ex:121`、`poison.ex:192` 的 `special_skill/piyi` 读法为 `SpecialSkills.immune?/2`）。
-   - `special_skills/greedy.ex`：被动——击杀奖励 500 加成（替换 `feature_damage.ex:476,484`）。
+   - `special_skills/greedy.ex`：被动——食物/饮水上限 `f+500`/`w+500`（饕餮转世，`greedy.c` 原文"增加你的食物及饮水上限"；替换 `feature_damage.ex:476,484` `max_food_capacity/2`/`max_water_capacity/2`。⚠️ 此前文档把 greedy 误记为"击杀奖励 500"，已纠正）。
    - `special_skills/youth.ex`：被动——`attributes.ex:44` 容貌不衰。
    - 定义 `affect(state, opts)`（被动）与 `perform(conn, opts)`（主动，对应 LPC `perform(me, skill)`）。
 3. **角色存储**
@@ -81,14 +81,14 @@
 用数据驱动替代 `ZhangSanfeng` 单例，让任意门派师父 NPC 支持学艺、禁授、收徒门槛、问答授绝招。
 
 ### 步骤
-1. **UCL 字段扩展**（`data/world/*.ucl` characters 块）
-   - `teach`：`%{family, skills: %{技能 => %{max}}, no_teach: [...]}` —— loader.ex parse 时透传（loader 已解析 `teach.family`，见 loader.ex:506）。
-   - `apprentice`：`%{min_shen, min_exp, min_skills: %{技能 => 等级}, class}`。
-   - `inquiry`：`%{关键字 => %{skill, min_gongxian, min_shen, min_levels, cost_gongxian, perform_id}}`（授绝招配置）。
-2. **`lib/kantele/npc/sect_master.ex`（纯函数，类 `Master`）**
-   - `teachable?(npc_stats, student_stats, skill, config)`：等级差 + `no_teach` + `valid_learn`。
-   - `recruit_gate?(player_stats, config)`：shen/exp/心法门槛。
-   - `inquiry_grant(player_stats, npc_stats, config)`：返回 `{:ok, perform_id, cost}` | `{:error, msg}`。
+1. **UCL 字段扩展**（`data/world/*.ucl` characters 块，与 loader.ex 已解析形状对齐）
+   - `teach`：`%{family, teach_skills: %{技能 => %{max, gongxian}}, no_teach: [...]}`。⚠️ loader `parse_teach/1`（loader.ex:512）键是 **`teach_skills`**（非 `skills`），已支持 `%{max}`/`%{max, gongxian}` 两种值。
+   - `apprentice`：⚠️ loader `parse_apprentice/1`（loader.ex:481）已产出 `%{family, min_shen, min_exp, min_skills: %{技能 => 等级}, no_recruit: [...]}`；**`class` 继承尚不在产物里**，本阶段补。
+   - `inquiries`：⚠️ 键是复数且为 **顶层**字段；loader `parse_inquiries/1`（loader.ex:455）已解析，授绝招配置 map 值经 `parse_inquiry_value/1` 键归一为字符串——兼容 `%{skill, min_gongxian, min_shen, min_levels, cost_gongxian, perform_id}`。kyu 真身（`class/wudang/yu.c`）还把 `huzhua-shou>=120`（min_levels）与同门校验塞进 `ask_me`，实现时一并覆盖。
+2. **`lib/kantele/sect_master.ex`（纯函数，类 `Master`）**——⚠️ 模块在**顶层** `Kantele.SectMaster`（切片 2 已建），不在 `npc/` 子目录
+   - `teachable?(npc_stats, student_stats, skill, config)`：等级差 + `no_teach` + `valid_learn`（切片 2 已实现，切片 3 已接入 `teach/2`）。
+   - `recruit_gate?(player_stats, config)`：shen/exp/心法门槛（切片 2 已实现，待接 NPC 侧事件）。
+   - `inquiry_grant(player_stats, npc_stats, config)`：返回 `{:ok, perform_id, cost}` | `{:error, msg}`（待补写）。
 3. **接入事件**
    - `skills_event.ex teach/2`：改用 `SectMaster.teachable?`（保留 `prevent_learn?` 门派校验）。
    - `recruit` 命令 + `family/apprentice` 事件：按 `config` 检查门槛 → `Family.recruit_apprentice` + class 继承 → `gongxian` 初始化。
@@ -97,7 +97,7 @@
 4. **样板内容**
    - 把 `class/wudang/yu.c`（俞莲舟）翻译成一份 UCL 师父配置挂进测试世界：no_teach（三绝张真人亲传）、门槛（shen 20000/exp 150000/武当心法 80/taoism 80）、inquiry 授「虎爪绝户手」（gongxian 400/shen 100000/force 180）。
 5. **测试**
-   - `Npc.SectMaster` 纯函数单测 + 一条 e2e：拜师 → 学艺 → 门槛拦截 → 问答得绝招 → 叛师惩罚。
+   - `Kantele.SectMaster` 纯函数单测 + 一条 e2e：拜师 → 学艺 → 门槛拦截 → 问答得绝招 → 叛师惩罚。
 
 ### 验收
 - 任意 UCL 声明 `teach/apprentice/inquiry` 的 NPC 即可当师父，无需改代码加新门派。
@@ -149,6 +149,12 @@ F1（接线+注册表）→ F2（特技系统）→ F3（门派师父框架）�
 
 ## 当前进度（2026-09-16，如实盘）
 
+### 阶段状态（F1/F2 已在 git 史，补记）
+- **F1 conditions 接线**（提交 `37f233d`，早于本计划切片）：`condition_registry.ex`（静态 `@daemons %{"poison" => Kantele.Poison}` + `:persistent_term` 热增，`daemon/1`）+ `condition_event.ex`（独立 `condition/tick` 1s 自投递心跳，conds 非空才续投；驱动 `Conditions.update_condition/2` 到期流转 + 每存活条件 `affect_by` 跳 `do_effect`）+ `poison.ex do_effect` 只扣 jing/qi 不递减 remain（避免与 update_condition 双递减）。
+- ⚠️ **F1 验收测试缺**：计划 F1 步骤 5 的 `condition_registry_test.exs`/`condition_flow_test.exs` 未创建（glob 全库无 `*condition*` 测试）——收尾待补项，列入后续切片。
+- **F2 特技注册表**（提交 `8d4648f`，早于本计划切片）：`special_skills.ex` 注册表 + `special_skills_test.exs`；拍板（两个）：**保持原样**（散落读取点 `poison.ex`/`conditions.ex`/`attributes.ex`/`feature_damage.ex`/`room.ex` 不改写）、**只写注册表+测试**（`special` 命令维持「暂未开放」占位契约，`special_command_test.exs` 已锁）。
+- ⚠️ **piyi 免疫实际未生效**：`conditions.ex:121` 读 `state.special_skill.piyi`、`poison.ex:192` 读 `state.attributes["special_skills"]["piyi"]`，两形状不一，且 `condition_event.ex tick` 构造的 state 只含 `conditions/cond_applyer/attributes(jing,qi,jingli,neili)`——两读法均取不到值。待 F2 接线（喂 `special_skills` 进 state/attributes）才能真正免疫。
+
 ### 切片 1：loader 收徒配置接线（已测通、已提交、已推送）
 - 在 `loader.ex` 新增 `parse_apprentice/1` 函数：把 UCL 数据里的 `apprentice` 段解析成 `%{min_shen/min_exp/no_recruit/...}` 结构；`NonPlayerMeta` 结构体新增 `:apprentice` 字段（在 `character.ex`），并同步了 `apprentice_id` 字段。
 - loader 元数据测试全绿。测试夹具确认了一个关键契约：`Family.name/1` 接收的参数是 **map**（如 `%{name: "武当派"}`），不是字符串——见 `room.ex:402/2458`。
@@ -180,10 +186,12 @@ F1（接线+注册表）→ F2（特技系统）→ F3（门派师父框架）�
 ### 当前断言
 | 条目 | 真实状态 |
 |---|---|
+| F1 conditions 接线（`37f233d`） | 已提交；心跳+到期流转绿，验收测试（切片化前缺）待补 |
+| F2 特技注册表（`8d4648f`） | 已提交；注册表+测试注入绿；命令/读取点保持占位（拍板） |
 | loader 接线（容器测试） | 绿 |
 | 切片 2（容器测试） | **绿**（2351/0） |
 | 切片 3 teach/2 接线（容器测试） | **绿**（2355/0） |
-| `origin/kalevala` | `6413383`（切片 1）已推送；切片 2、3 已推送 |
+| `origin/kalevala` | `6413383`（切片 1）已推送；F1/F2、切片 2、3 均已推送 |
 
 ---
 
