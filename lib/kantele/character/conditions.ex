@@ -15,6 +15,8 @@ defmodule Kantele.Character.Conditions do
   纯函数：state 不可变，副作用在宿主。
   """
 
+  alias Kantele.Character.SpecialSkills
+
   @doc "query_condition：cnd=nil 返回全部；否则查单个（不存在返回 nil）"
   def query_condition(state, cnd \\ nil)
 
@@ -115,10 +117,14 @@ defmodule Kantele.Character.Conditions do
 
   @doc """
   affect_by：调用条件 do_effect；转世特殊技 `special_skill/piyi` 免疫。
-  返回 `{:ok, result}` | `{:immune}` | `:error`。
+
+  免疫判定统一走 `SpecialSkills.immune?/2`（读 `attributes["special_skills"]`，
+  与 `poison.ex`/`room.ex` 宿主形状一致）；返回 `{:ok, result}` | `{:immune}` | `:error`。
   """
   def affect_by(state, daemon, cnd, para) do
-    if get_in(state, [Access.key(:special_skill), :piyi]) do
+    attributes = Map.get(state, :attributes) || %{}
+
+    if SpecialSkills.immune?(attributes, "piyi") do
       {:immune}
     else
       case daemon.(cnd) do

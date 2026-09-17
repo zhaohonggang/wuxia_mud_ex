@@ -61,7 +61,7 @@ defmodule Kantele.Character.ConditionEvent do
       character = conn.character
       vitals = character.meta.vitals
 
-      # 引擎状态：attributes 由 vitals 喂入
+      # 引擎状态：attributes 由 vitals 喂入 + 特技开关（piyi 免疫判定用）
       state = %{
         conditions: conds,
         cond_applyer: get_session(conn, "cond_applyer"),
@@ -69,7 +69,8 @@ defmodule Kantele.Character.ConditionEvent do
           jing: vitals.jing,
           qi: vitals.qi,
           jingli: vitals.jingli,
-          neili: vitals.neili
+          neili: vitals.neili,
+          special_skills: Map.get(character.attributes, "special_skills") || %{}
         }
       }
 

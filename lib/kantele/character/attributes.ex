@@ -41,7 +41,7 @@ defmodule Kantele.Character.Attributes do
   def per(base, opts \\ %{}) do
     result = base + tattoo_reborn(opts, "per") + apply_of(opts, "per")
 
-    if Map.get(opts, "special_skill/youth") || Map.get(opts, :youth?) do
+    if Kantele.Character.SpecialSkills.owned?(opts, "youth") || Map.get(opts, :youth?) do
       result
     else
       age = Map.get(opts, :age) || Map.get(opts, "age") || 0

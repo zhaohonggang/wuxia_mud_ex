@@ -189,7 +189,9 @@ defmodule Kantele.Poison do
   end
 
   defp check_immunity(state, _cnd) do
-    if Map.get(state.attributes, "special_skills", %{})["piyi"] == true do
+    attributes = Map.get(state, :attributes) || %{}
+
+    if Kantele.Character.SpecialSkills.immune?(attributes, "piyi") do
       {:error, "Immune to poison"}
     else
       :ok

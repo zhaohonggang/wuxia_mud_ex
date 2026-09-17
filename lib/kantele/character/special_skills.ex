@@ -35,6 +35,27 @@ defmodule Kantele.Character.SpecialSkills do
     end
   end
 
+  @doc """
+  是否拥有某特技（统一宿主形状，F2 接线）：
+
+    - 主形状 `source["special_skills"][skill_id] == true`——与 `poison.ex`/
+      `room.ex` 已用的 `attributes["special_skills"]` 字符串 map 一致；
+    - 兼容旧字符串旗标 `source["special_skill/\#{skill_id}"] == true`
+      （`attributes.ex:44` 曾用此形）。
+
+  两个读取点（`conditions.ex affect_by` / `poison.ex check_immunity`）据此
+  收敛，不再各自臆造形状。
+  """
+  def owned?(source, skill_id) when is_map(source) do
+    specials = Map.get(source, "special_skills") || Map.get(source, :special_skills) || %{}
+    Map.get(specials, skill_id) == true || Map.get(source, "special_skill/#{skill_id}") == true
+  end
+
+  def owned?(_source, _skill_id), do: false
+
+  @doc "免疫类特技判定（piyi 百毒不侵：bypass the damage tick）"
+  def immune?(source, skill_id), do: owned?(source, skill_id)
+
   @doc "特技是否已注册"
   def registered?(skill_id), do: Map.has_key?(all(), skill_id)
 

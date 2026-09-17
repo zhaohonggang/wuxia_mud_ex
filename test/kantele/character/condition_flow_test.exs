@@ -63,6 +63,21 @@ defmodule Kantele.Character.ConditionFlowTest do
       assert output_text(tick(tick2)) == ""
     end
 
+    test "piyi 免疫：attributes special_skills 含 piyi 时中毒不掉血" do
+      character =
+        poisoned_player(
+          vitals: [jing: 2000, qi: 5000, max_jing: 2000, max_qi: 5000],
+          attributes: %{"special_skills" => %{"piyi" => true}}
+        )
+
+      conn = tick(apply_poison(character))
+
+      char = current_character(conn)
+      assert char.meta.vitals.jing == 2000
+      assert char.meta.vitals.qi == 5000
+      assert Conn.get_session(conn, "conditions")["poison"]["level"] == 50
+    end
+
     test "conditions 清空后不再续投心跳（省资源）" do
       _conn = tick(tick(apply_poison(poisoned_player())))
       refute_receive %Event{topic: "condition/tick"}, 100
@@ -112,6 +127,7 @@ defmodule Kantele.Character.ConditionFlowTest do
       name: "张三",
       pid: self(),
       room_id: "test:room",
+      attributes: Keyword.get(opts, :attributes, %{}),
       meta: %PlayerMeta{
         vitals: vitals,
         stats: Stats.new(),

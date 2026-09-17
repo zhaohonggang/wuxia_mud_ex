@@ -119,7 +119,7 @@ defmodule Kantele.Batch6Test do
                nil
              ) == {:ok, {:effect, 50}}
 
-      immune = %{special_skill: %{piyi: true}}
+      immune = %{attributes: %{"special_skills" => %{"piyi" => true}}}
 
       assert Conditions.affect_by(
                immune,

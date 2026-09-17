@@ -65,8 +65,8 @@
    - `meta.stats` 或 `meta.attributes` 加 `special_skills: MapSet`（`poison.ex` 已用 `attributes["special_skills"]`，统一收敛为单字段并同步 `records.ex` 持久化）。
 4. **`special` 命令（替换 `special_command.ex` 占位）**
    - `special` 列出已学特技；`special <name>` 调主动 `perform`（如 iro skin 类加临时 buff）。
-5. **接线替换**
-   - 全库 grep `special_skill/` 引用点，逐一改为 `SpecialSkills` 查询。
+5. **接线替换**（piyi/免疫链路已完成，见阶段状态；greedy/emperor/youth 旧旗标兼容保留）
+   - 已改：`conditions.ex affect_by`、`poison.ex check_immunity`、`attributes.ex per`、`condition_event.ex tick` 喂 `special_skills`。全库 grep 剩余 `special_skill/` 引用：`feature_damage.ex`（greedy 物品形）、`room.ex`（emperor）、`skills_command.ex`（格式展示），均不在 piyi 免疫链路。
 6. **测试**
    - 注册、grant、查列；piyi 免疫链路（中毒后 apply 返回 `{:immune}`）；youth 属性不改。
 
@@ -157,7 +157,7 @@ F1（接线+注册表）→ F2（特技系统）→ F3（门派师父框架）�
 - ⚠️ **F1 初版是空转的（本次已修，见下）**：补验收测试时发现初版有 4 个真 bug，且在无测试覆盖下全量绿是假象——(1) `ConditionEvent` **未注册**进 `Kantele.Character.Events`（`poison/apply`/`condition/tick` 都不路由，心跳从不启动）；(2) `apply/2` 读 `data["target"]`/`data["poison"]` 字符串键，而 `daub_command` 发的是**原子键** `%{target:, poison:}`（自毒判定恒 false）；(3) `tick` 的 `affect_by` 结果契约是 `{:ok, do_effect 返回值}`（batch6 锁定），`Poison.do_effect` 自己又返回 `{:ok, state}` → 双层 `{:ok, {:ok, state}}`，reduce 只解一层导致 `state.attributes` 首跳即崩；(4) 混毒 prev 读 `meta.temp["conditions"]`（无人写、恒 nil），应读 session。
 - **F1 修正 + 验收测试**（本次提交）：注册 `ConditionEvent` 两个 topic；`apply` 改原子键并真正走 `Poison.mixed_poison/2`（prev 读 session）；`tick` reduce 解双层；新增 `test/kantele/character/condition_registry_test.exs`（注册/注销/覆盖/`all`）+ `condition_flow_test.exs`（经 `Kantele.Character.Events.call/2` 锁路由：自毒→掉血→到期自清→停跳、混毒等级叠加）。
 - **F2 特技注册表**（提交 `8d4648f`，早于本计划切片）：`special_skills.ex` 注册表 + `special_skills_test.exs`；拍板（两个）：**保持原样**（散落读取点 `poison.ex`/`conditions.ex`/`attributes.ex`/`feature_damage.ex`/`room.ex` 不改写）、**只写注册表+测试**（`special` 命令维持「暂未开放」占位契约，`special_command_test.exs` 已锁）。
-- ⚠️ **piyi 免疫实际未生效**：`conditions.ex:121` 读 `state.special_skill.piyi`、`poison.ex:192` 读 `state.attributes["special_skills"]["piyi"]`，两形状不一，且 `condition_event.ex tick` 构造的 state 只含 `conditions/cond_applyer/attributes(jing,qi,jingli,neili)`——两读法均取不到值。待 F2 接线（喂 `special_skills` 进 state/attributes）才能真正免疫。
+- ⚠️ **piyi 免疫实际未生效 → 已接线（F2 切片 F2-piyi）**：两读取点收敛为 `SpecialSkills.owned?/immune?/2`（统一宿主形状 `attributes["special_skills"][id] == true`，兼容旧字符串旗标 `"special_skill/<id>"`；因 `tick` 的 state 用**原子键** `:special_skills`，`owned?` 同时兼容原子键）；`conditions.ex affect_by` 与 `poison.ex check_immunity` 改走该入口；`condition_event.ex tick` 把 `character.attributes["special_skills"]` 喂进 state.attributes —— 现在 `attributes["special_skills"]["piyi"] == true` 时中毒心跳**不掉血**（`{:immune}` 短路，测试 `condition_flow_test` piyi 用例 + `special_skills_test` 两形状断言锁定）。`attributes.ex per` 也改走 `owned?(opts, "youth")`（旧旗标兼容）。`feature_damage greedy`/`room.ex emperor` 保持原样（非 F2-piyi 范围）。
 
 ### 切片 1：loader 收徒配置接线（已测通、已提交、已推送）
 - 在 `loader.ex` 新增 `parse_apprentice/1` 函数：把 UCL 数据里的 `apprentice` 段解析成 `%{min_shen/min_exp/no_recruit/...}` 结构；`NonPlayerMeta` 结构体新增 `:apprentice` 字段（在 `character.ex`），并同步了 `apprentice_id` 字段。

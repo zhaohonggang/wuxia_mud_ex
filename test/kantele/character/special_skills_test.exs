@@ -33,4 +33,27 @@ defmodule Kantele.Character.SpecialSkillsTest do
     refute SpecialSkills.registered?("greedy")
     assert SpecialSkills.daemon("greedy") == :error
   end
+
+  describe "owned?/immune?（统一宿主形状 attributes[\"special_skills\"]）" do
+    test "主形状：字符串 map 值 true" do
+      assert SpecialSkills.owned?(%{"special_skills" => %{"piyi" => true}}, "piyi")
+      assert SpecialSkills.immune?(%{"special_skills" => %{"piyi" => true}}, "piyi")
+      refute SpecialSkills.owned?(%{"special_skills" => %{"piyi" => false}}, "piyi")
+    end
+
+    test "condition 引擎 state 用原子键 special_skills（tick 构造）" do
+      attrs = %{jing: 2000, qi: 5000, special_skills: %{"piyi" => true}}
+      assert SpecialSkills.immune?(attrs, "piyi")
+    end
+
+    test "兼容旧旗标 special_skill/<id>（attributes.ex 曾用）" do
+      assert SpecialSkills.owned?(%{"special_skill/youth" => true}, "youth")
+    end
+
+    test "缺失/非 map 一律 false" do
+      refute SpecialSkills.owned?(%{}, "piyi")
+      refute SpecialSkills.owned?(%{"special_skills" => %{}}, "piyi")
+      refute SpecialSkills.owned?(nil, "piyi")
+    end
+  end
 end
