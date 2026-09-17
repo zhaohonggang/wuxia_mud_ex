@@ -58,6 +58,10 @@ defmodule Kantele.Character.LearnGate do
 
   # ---- b5：内功互斥 ----
 
+  # 基本内功「force」是 skill 注册表里的运功载体（F4），不是可选内功，
+  # 互斥扫描时排除，避免把基本 force 误判为已学内功。
+  @basic_force "force"
+
   @doc """
   新学 skill_id 是否与已学内功冲突（learn.c can_learn/229-251）
 
@@ -71,9 +75,7 @@ defmodule Kantele.Character.LearnGate do
          false <- new_module.valid_force("*") do
       # 双向检查：新技能拒绝已学内功 OR 已学内功拒绝新技能
       Enum.find_value(Skills.all(), fn {other_id, other_module} ->
-        learned? =
-          other_id != skill_id and other_module.valid_enable("force") and
-            Stats.skill(stats, other_id) > 0
+        learned? = conflict_candidate?(stats, other_id, other_module, skill_id)
 
         if learned? and
              (not other_module.valid_force(skill_id) or
@@ -85,14 +87,17 @@ defmodule Kantele.Character.LearnGate do
       _ ->
         if new_module != nil do
           Enum.find_value(Skills.all(), fn {other_id, other_module} ->
-            learned? =
-              other_id != skill_id and other_module.valid_enable("force") and
-                Stats.skill(stats, other_id) > 0
+            learned? = conflict_candidate?(stats, other_id, other_module, skill_id)
 
             if learned? and not other_module.valid_force(skill_id), do: other_id
           end)
         end
     end
+  end
+
+  defp conflict_candidate?(stats, other_id, other_module, skill_id) do
+    other_id != skill_id and other_id != @basic_force and
+      other_module.valid_enable("force") and Stats.skill(stats, other_id) > 0
   end
 
   @doc "互斥冲突提示文案（learn.c:246-250）"

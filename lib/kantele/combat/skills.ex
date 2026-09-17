@@ -10,7 +10,8 @@ defmodule Kantele.Combat.Skills do
     "liuxin-jian" => Kantele.Combat.Skills.LiuxinJian,
     "liuxi-neigong" => Kantele.Combat.Skills.LiuxiNeigong,
     "taiji-quan" => Kantele.Combat.Skills.TaijiQuan,
-    "dugu-jiujian" => Kantele.Combat.Skills.DuguJiujian
+    "dugu-jiujian" => Kantele.Combat.Skills.DuguJiujian,
+    "force" => Kantele.Combat.Skills.Force
   }
 
   @doc "运行时注册一门武学（覆盖同名内建）"
