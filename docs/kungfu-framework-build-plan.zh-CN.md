@@ -142,8 +142,14 @@
 - **提取器改进**：输出目录改为与模块文件一致的下划线名（`huashan-jian` -> `huashan_jian`）；`Messages.interpolate` 补 `$P`（同 `$N`）。
 - **回归**：`test/kantele/combat/huashan_jian_test.exs`（技能表 + 攻击方 7 类门槛 + 目标侧命中/失手/死亡/未知），全量 2426/0。
 
-### 待续（slice3）
-- `chousui-zhang/dan`：远程伤害 + `fire_poison` + 护甲损耗（含 `TODO(migrate)` 项）；复用 slice2 的目标侧通道。
+### 进度（F4 slice3 已完成并推送）
+- **回执通道**：新增 `combat/perform-feedback`（目标 -> 攻击方，两路由注册；`CombatEvent.perform_feedback/2`）。用于按目标结算分支补扣攻击方的变量内力与忙乱（等价 LPC 同步 `message_combatd` 后的 `me->add/start_busy`，因事件异步改为回执）。
+- **样板 3 实装**：`Kantele.Combat.Skills.ChousuiZhang`（5 式静态招式取自 `chousui-zhang.c`，源文件 `dmage` 拼写已修正为 `damage`）+ `performs/chousui_zhang/dan.ex`（门槛 can_perform / 战斗中 / chousui-zhang≥120 / poison≥180 / throwing≥190 / mapped strike / max_neili≥1800 / neili≥300；按 lvl+poison 分档定 `pos` 与焰色，投递 `an/ap/damage` 快照）。目标侧 `resolve_dan`：内力比对（震灭 -150/busy3）、`ap/2+random(ap)>dp` 命中（jing 伤害，-220/busy2）、被闪（-100/busy3）。
+- **TODO(migrate)**：手中毒药（`handing`）与消耗（无 handing/毒药物品）、`query_skill_prepared("strike")`（prepare_skill 未实现）、命中附加 `fire_poison`（NPC 条件宿主未接）、`receive_wound("jing", ...)`（`Vitals.wound/3` 仅支持 qi）、护甲 `consistence` 损耗（装备耐久未接）。
+- **回归**：`test/kantele/combat/chousui_zhang_test.exs`（技能表 + 攻击方 9 类门槛 + 目标侧三分支/死亡 + 回执落账），全量 2444/0。
+
+### F4 收尾
+- 三个样板（force/power、huashan-jian/jie、chousui-zhang/dan）已覆盖 perform/exert 全链路、目标侧结算与回执。
 
 ---
 

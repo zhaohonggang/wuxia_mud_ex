@@ -12,6 +12,7 @@ defmodule Kantele.Combat.Skills do
     "taiji-quan" => Kantele.Combat.Skills.TaijiQuan,
     "dugu-jiujian" => Kantele.Combat.Skills.DuguJiujian,
     "huashan-jian" => Kantele.Combat.Skills.HuashanJian,
+    "chousui-zhang" => Kantele.Combat.Skills.ChousuiZhang,
     "force" => Kantele.Combat.Skills.Force
   }
 

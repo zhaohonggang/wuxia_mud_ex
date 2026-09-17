@@ -307,6 +307,9 @@ defmodule Kantele.Character.CombatEvent do
       Map.get(data, :perform_id) == "huashan-jian/jie" ->
         resolve_jie(conn, character, attacker, data)
 
+      Map.get(data, :perform_id) == "chousui-zhang/dan" ->
+        resolve_dan(conn, character, attacker, data)
+
       true ->
         conn
     end
@@ -347,6 +350,97 @@ defmodule Kantele.Character.CombatEvent do
       Broadcast.publish(conn, text)
     end
   end
+
+  # 「炼心弹」目标侧结算（dan.c 95-134）：内力比对 -> 命中/闪避三分支。
+  # 内力消耗与忙乱属攻击方状态，经 combat/perform-feedback 回执补扣。
+  defp resolve_dan(conn, character, attacker, data) do
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    vitals = character.meta.vitals
+    stats = character.meta.stats
+
+    bindings = [n1: attacker.name, n2: character.name]
+
+    an = Map.get(data, :an, 0)
+    dn = vitals.max_neili + div(vitals.neili, 4)
+
+    cond do
+      Engine.rand(rng, max(an, 1)) + div(an, 2) < div(dn * 2, 3) ->
+        # 对方内力过高：震灭，攻击方 -150 内力 / busy 3
+        send_feedback(attacker, 150, 3)
+
+        Broadcast.publish(
+          conn,
+          Messages.interpolate("然而$n全然不放在心上，轻轻一抖，已将$N射来的火焰震灭。\n", bindings)
+        )
+
+      true ->
+        ap = Map.get(data, :ap, 0)
+
+        dp =
+          if Map.get(data, :userp, true) do
+            Stats.effective(stats, "dodge") + Stats.effective(stats, "martial-cognize")
+          else
+            Stats.effective(stats, "dodge") + Stats.effective(stats, "parry")
+          end
+
+        if Engine.rand(rng, max(ap, 1)) + div(ap, 2) > dp do
+          # 命中：jing 直接伤害，攻击方 -220 内力 / busy 2
+          # TODO(migrate): receive_wound("jing", damage/3)、fire_poison、护甲 consistence 损耗
+          damage = Map.get(data, :damage, 0)
+          vitals = Vitals.damage(vitals, :jing, div(damage, 2))
+          character = %{character | meta: %{character.meta | vitals: vitals}}
+          send_feedback(attacker, 220, 2)
+
+          conn
+          |> Broadcast.publish(
+            Messages.interpolate(
+              "$n一个不慎，火星顿时溅到肌肤之上，大势燃烧起来，皮肉烧得嗤嗤作响。\n",
+              bindings
+            )
+          )
+          |> put_character(character)
+        else
+          # 被闪避：攻击方 -100 内力 / busy 3
+          send_feedback(attacker, 100, 3)
+
+          Broadcast.publish(
+            conn,
+            Messages.interpolate(
+              "可是$n见势不妙，急忙腾挪身形，终于避开了$N射来的火焰。\n",
+              bindings
+            )
+          )
+        end
+    end
+  end
+
+  defp send_feedback(attacker, neili_cost, busy) do
+    if Process.alive?(attacker.pid) do
+      send(attacker.pid, %Event{
+        from_pid: self(),
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: neili_cost, busy: busy}
+      })
+    end
+  end
+
+  # 攻击方回执：按目标结算的分支扣内力并进入忙乱（dan.c 的 me->add/start_busy）
+  def perform_feedback(conn, %{data: %{neili_cost: neili_cost, busy: busy}}) do
+    character = conn.character
+
+    if dead?(character) do
+      conn
+    else
+      vitals = character.meta.vitals
+      vitals = %{vitals | neili: max(vitals.neili - neili_cost, 0)}
+      combat = Combat.start_busy(character.meta.combat, busy)
+
+      conn
+      |> put_character(%{character | meta: %{character.meta | vitals: vitals, combat: combat}})
+    end
+  end
+
+  def perform_feedback(conn, _event), do: conn
 
   defp apply_hit(conn, character, attacker, data) do
     damage = Map.get(data, :damage, 0)
