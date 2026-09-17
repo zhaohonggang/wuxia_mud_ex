@@ -156,7 +156,8 @@ defmodule Kantele.Character.NpcFamilyEvent do
             master_id: conn.character.id,
             master_name: conn.character.name,
             student_name: student_name,
-            teach: teach
+            teach: teach,
+            apprentice: Map.get(conn.character.meta, :apprentice)
           }
         })
 

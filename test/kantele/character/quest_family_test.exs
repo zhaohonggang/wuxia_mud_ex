@@ -112,6 +112,73 @@ defmodule Kantele.Character.QuestFamilyTest do
     assert data.ok == false
   end
 
+  test "拜师：NPC 回执携带 apprentice 门槛配置（供玩家侧复核）" do
+    npc = %{
+      vendor_npc()
+      | meta: %NonPlayerMeta{
+          teach: %{family: "柳溪派", teach_skills: %{}, no_teach: []},
+          apprentice: %{
+            family: "柳溪派",
+            min_shen: 20_000,
+            min_exp: 150_000,
+            min_skills: %{"wudang-xinfa" => 80},
+            class: "taoist"
+          }
+        }
+    }
+
+    NpcFamilyEvent.apprentice(build_conn(npc), %Event{
+      topic: "family/apprentice",
+      data: %{reply_to: self(), student_name: "张三"}
+    })
+
+    assert_receive %Event{topic: "family/result", data: data}
+    assert data.ok == true
+    assert data.apprentice.class == "taoist"
+    assert data.apprentice.min_shen == 20_000
+  end
+
+  describe "拜师门槛（玩家侧复核）" do
+    defp pending_recruit_data do
+      %{
+        ok: true,
+        family: "柳溪派",
+        master_id: "liuxi:wangshifu",
+        master_name: "王重九",
+        apprentice: %{
+          family: "柳溪派",
+          min_shen: 20_000,
+          min_exp: 150_000,
+          min_skills: %{},
+          class: "taoist"
+        }
+      }
+    end
+
+    test "门槛不过（杀气不足）则不落盘并提示" do
+      p = player(stats: [shen: 100, combat_exp: 1_000])
+
+      conn =
+        FamilyEvent.result(build_conn(p), %Event{topic: "family/result", data: pending_recruit_data()})
+
+      assert conn.private.update_character == nil
+      assert output_text(conn) =~ "杀气不足"
+    end
+
+    test "门槛通过则写入 family 并继承 class" do
+      p = player(stats: [shen: 30_000, combat_exp: 200_000])
+
+      conn =
+        FamilyEvent.result(build_conn(p), %Event{topic: "family/result", data: pending_recruit_data()})
+
+      updated = conn.private.update_character || conn.character
+      assert updated.meta.family.name == "柳溪派"
+      assert updated.meta.family.master_id == "liuxi:wangshifu"
+      assert updated.meta.family.class == "taoist"
+      assert output_text(conn) =~ "柳溪派"
+    end
+  end
+
   test "任务交付：有玉牌则结算奖励（阅历/威望/铜钱）" do
     p =
       player(

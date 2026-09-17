@@ -498,12 +498,21 @@ defmodule Kantele.World.Loader do
         _ -> []
       end
 
+    # class 继承（F3 切片 6）：LPC attempt_apprentice 成功时 ob->set("class", ...)
+    class =
+      case Map.get(apprentice, :class) do
+        value when is_binary(value) -> value
+        value when is_atom(value) and not is_nil(value) -> to_string(value)
+        _ -> nil
+      end
+
     %{
       family: Map.get(apprentice, :family) && to_string(Map.get(apprentice, :family)),
       min_shen: Map.get(apprentice, :min_shen) || 0,
       min_exp: Map.get(apprentice, :min_exp) || 0,
       min_skills: min_skills,
-      no_recruit: no_recruit
+      no_recruit: no_recruit,
+      class: class
     }
   end
 

@@ -91,10 +91,10 @@
    - `inquiry_grant(player_stats, npc_stats, config)`：返回 `{:ok, perform_id, cost}` | `{:error, msg}`（**切片 4 已实现**，镜像 `yu.c` `ask_me`：已会→同门→`skill<1`→`min_gongxian`→`min_shen`→`min_levels`；`config` 字符串键 `%{perform_id, skill, min_levels, min_gongxian, min_shen, cost_gongxian}`；入参可为 `%Stats{}` 或等形 map，`:family` 双方都带才比较）。调用方据 `cost` 扣 `gongxian` 并 `Stats.learn_perform/2`（接线待续）。
  3. **接入事件**
    - `skills_event.ex teach/2`：改用 `SectMaster.teachable?`（保留 `prevent_learn?` 门派校验）。
-   - `recruit` 命令 + `family/apprentice` 事件：按 `config` 检查门槛 → `Family.recruit_apprentice` + class 继承 → `gongxian` 初始化。
+    - `recruit` 命令 + `family/apprentice` 事件：**切片 6 已接**——NPC 回执带 `apprentice` 配置；玩家侧 `FamilyEvent.result/2` 用 `SectMaster.recruit_gate?/3` 复核门槛（不过则不落盘并提示），通过则写 `meta.family` + `class` 继承（bonze/eunach 不传播，对齐 `Family.recruit_apprentice` 判据）+ `gongxian` 兜底初始化；`class` 随 family map 持久化（records.ex `serialize_family`/`restore_family`）。`parse_apprentice/1` 已补 `class`。
     - `family/detach`：**切片 5 已修链路**——新增 `Room.DetachRequestEvent`（room.ex 注册 `family/detach`→转发目标 NPC）；玩家侧 `events.ex` 注册 `family/detach-result`→`DetachEvent.detach_result/2`；`NpcFamilyEvent.detach/2` 改从 `teach.family` 取门派身份（不再读 `NonPlayerMeta` 的 `:family`，消除 KeyError）并只回执身份；**玩家侧**据自身 family 用 `Master.attempt_detach` 判定嫡传/惩罚（`old_family` 暂传 `nil`=正常叛师必罚；转世免罚待历史字段）。惩罚降武功改为按 `stats.skills` 归约（`Stats.all/1` 不存在，编译告警已消）。⚠️ 仍用「各技能 -1 到最小 1」简化，未接 `Skills.skill_expell_penalty`（其需逐技能 type/enable 元数据，来源暂缺）。
     - inquiry：`ask`/`chat` 匹配 `inquiry` 关键词 → `SectMaster.inquiry_grant` → `Stats.learn_perform` + `add(:gongxian, -cost)`（**待补**）。
-    - ⚠️ **读盘发现的其余接线缺口**（下一切片处理）：(3) `NpcFamilyEvent.apprentice/2` **未接 `SectMaster.recruit_gate?`**（当前有 `teach.family` 即应允）；(6) `class` 继承落在 `parse_apprentice/1` 产物 + 拜师成功路径（待补）。
+    - ~~其余缺口 (3) apprentice recruit_gate / (6) class 继承~~：**切片 6 已修**（上条）。F3 接线仅余 inquiry（`ask`→`inquiry_grant`）与俞莲舟 UCL 样板 + e2e。
 4. **样板内容**
    - 把 `class/wudang/yu.c`（俞莲舟）翻译成一份 UCL 师父配置挂进测试世界：no_teach（三绝张真人亲传）、门槛（shen 20000/exp 150000/武当心法 80/taoism 80）、inquiry 授「虎爪绝户手」（gongxian 400/shen 100000/force 180）。
 5. **测试**

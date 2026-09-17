@@ -319,8 +319,10 @@ defmodule Kantele.Character.Records do
     %{
       name: family["name"],
       master_id: family["master_id"],
-      master_name: family["master_name"]
+      master_name: family["master_name"],
+      class: family["class"]
     }
+    |> drop_nil_values()
   end
 
   defp restore_family(_), do: nil
@@ -349,10 +351,22 @@ defmodule Kantele.Character.Records do
           master_id: Map.get(family, :master_id),
           master_name: Map.get(family, :master_name)
         }
+        |> maybe_put_class(family)
     end
   end
 
   defp serialize_family(_), do: %{}
+
+  defp maybe_put_class(json, family) do
+    case Map.get(family, :class) do
+      nil -> json
+      class -> Map.put(json, :class, class)
+    end
+  end
+
+  defp drop_nil_values(map) do
+    map |> Enum.reject(fn {_k, v} -> is_nil(v) end) |> Map.new()
+  end
 
   # 存档里有背包记录则按 item_id 重建实例；空记录保留默认新手物品
   defp restore_inventory(default_inventory, []) do
