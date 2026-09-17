@@ -93,8 +93,8 @@
    - `skills_event.ex teach/2`：改用 `SectMaster.teachable?`（保留 `prevent_learn?` 门派校验）。
     - `recruit` 命令 + `family/apprentice` 事件：**切片 6 已接**——NPC 回执带 `apprentice` 配置；玩家侧 `FamilyEvent.result/2` 用 `SectMaster.recruit_gate?/3` 复核门槛（不过则不落盘并提示），通过则写 `meta.family` + `class` 继承（bonze/eunach 不传播，对齐 `Family.recruit_apprentice` 判据）+ `gongxian` 兜底初始化；`class` 随 family map 持久化（records.ex `serialize_family`/`restore_family`）。`parse_apprentice/1` 已补 `class`。
     - `family/detach`：**切片 5 已修链路**——新增 `Room.DetachRequestEvent`（room.ex 注册 `family/detach`→转发目标 NPC）；玩家侧 `events.ex` 注册 `family/detach-result`→`DetachEvent.detach_result/2`；`NpcFamilyEvent.detach/2` 改从 `teach.family` 取门派身份（不再读 `NonPlayerMeta` 的 `:family`，消除 KeyError）并只回执身份；**玩家侧**据自身 family 用 `Master.attempt_detach` 判定嫡传/惩罚（`old_family` 暂传 `nil`=正常叛师必罚；转世免罚待历史字段）。惩罚降武功改为按 `stats.skills` 归约（`Stats.all/1` 不存在，编译告警已消）。⚠️ 仍用「各技能 -1 到最小 1」简化，未接 `Skills.skill_expell_penalty`（其需逐技能 type/enable 元数据，来源暂缺）。
-    - inquiry：`ask`/`chat` 匹配 `inquiry` 关键词 → `SectMaster.inquiry_grant` → `Stats.learn_perform` + `add(:gongxian, -cost)`（**待补**）。
-    - ~~其余缺口 (3) apprentice recruit_gate / (6) class 继承~~：**切片 6 已修**（上条）。F3 接线仅余 inquiry（`ask`→`inquiry_grant`）与俞莲舟 UCL 样板 + e2e。
+    - inquiry：**切片 7 已接**——`NpcAskEvent.handle_scripted_answer` 命中脚本 `perform_id` → 派发 `npc/perform`（带 config + NPC `teach.family`）；玩家侧 `NpcScriptEvent.perform_result/2` 用自身 `%Stats{}` 调 `SectMaster.inquiry_grant/3`，`{:error,msg}` 只提示不落盘，`{:ok,perform_id,cost}` 则 `Stats.learn_perform` + 扣 `gongxian`（不为负）后 `Records.save`。loader `parse_inquiry_value/1` 顺带把嵌套 `min_levels` 键归一为字符串（下划线→连字符），否则技能门槛永远查 0 级。
+    - ~~其余缺口 (3) apprentice recruit_gate / (6) class 继承~~：**切片 6 已修**；inquiry（`ask`→`npc/perform`→`inquiry_grant`）**切片 7 已接**。F3 仅余俞莲舟 UCL 样板 + e2e（步骤 4）。
 4. **样板内容**
    - 把 `class/wudang/yu.c`（俞莲舟）翻译成一份 UCL 师父配置挂进测试世界：no_teach（三绝张真人亲传）、门槛（shen 20000/exp 150000/武当心法 80/taoism 80）、inquiry 授「虎爪绝户手」（gongxian 400/shen 100000/force 180）。
 5. **测试**

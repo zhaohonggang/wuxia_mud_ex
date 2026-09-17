@@ -462,10 +462,23 @@ defmodule Kantele.World.Loader do
   defp parse_inquiries(_), do: nil
 
   defp parse_inquiry_value(value) when is_map(value) do
-    Enum.into(value, %{}, fn {key, val} -> {to_string(key), val} end)
+    Enum.into(value, %{}, fn {key, val} ->
+      key = to_string(key)
+      {key, normalize_inquiry_field(key, val)}
+    end)
   end
 
   defp parse_inquiry_value(value), do: to_string(value)
+
+  # 授绝招配置的 min_levels 是嵌套 map：键归一为字符串（下划线->连字符，与
+  # Stats.skills 键一致），否则 inquiry_grant 的技能门槛查不到等级。
+  defp normalize_inquiry_field("min_levels", levels) when is_map(levels) do
+    Enum.into(levels, %{}, fn {skill, level} ->
+      {String.replace(to_string(skill), "_", "-"), level}
+    end)
+  end
+
+  defp normalize_inquiry_field(_key, val), do: val
 
   # 教学配置（A11/D4）：归一化字符串键，本期只解析落位供门派信息展示，
   # 消费端校验等 b 期 learn 重构接入

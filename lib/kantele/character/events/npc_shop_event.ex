@@ -438,6 +438,22 @@ defmodule Kantele.Character.NpcAskEvent do
 
         conn
 
+      perform_id = Map.get(script, "perform_id") ->
+        # 授绝招：NPC 只把配置与门派身份回执给玩家，门槛校验/落库在玩家侧
+        # （SectMaster.inquiry_grant + Stats.learn_perform；见 NpcScriptEvent）
+        send(reply_to, %Kalevala.Event{
+          topic: "npc/perform",
+          data: %{
+            npc_name: npc_name,
+            npc_family: teach_family(conn.character),
+            config: script,
+            perform_id: perform_id,
+            asker_id: asker_id
+          }
+        })
+
+        conn
+
       register_item = Map.get(script, "register_summon") ->
         keyword = Map.get(data, "keyword", "")
         send(reply_to, %Kalevala.Event{
@@ -463,4 +479,11 @@ defmodule Kantele.Character.NpcAskEvent do
   end
 
   defp publish_error(conn, _error), do: conn
+
+  defp teach_family(character) do
+    case Map.get(Map.get(character.meta, :teach) || %{}, :family) do
+      family when is_binary(family) and family != "" -> family
+      _ -> nil
+    end
+  end
 end

@@ -49,6 +49,23 @@ defmodule Kantele.Character.NpcScriptEventTest do
       }
     end
 
+    test "perform 脚本 → npc/perform 事件（带配置与 NPC 门派，供玩家侧校验）" do
+      npc = %{
+        npc(%{"绝户神抓" => %{"perform_id" => "huzhua-shou/juehu", "min_gongxian" => 400}})
+        | meta: %Kantele.Character.NonPlayerMeta{
+            inquiries: %{"绝户神抓" => %{"perform_id" => "huzhua-shou/juehu", "min_gongxian" => 400}},
+            teach: %{family: "武当派", teach_skills: %{}, no_teach: []}
+          }
+      }
+
+      NpcAskEvent.call(build_conn(npc), ask_event("绝户神抓"))
+
+      assert_receive %Event{
+        topic: "npc/perform",
+        data: %{perform_id: "huzhua-shou/juehu", npc_family: "武当派", asker_id: "player-1"}
+      }
+    end
+
     test "纯文本问询保持原有行为（不进脚本分支）" do
       npc = npc(%{"莫邪" => "她是吾妻。\n"})
 
@@ -113,6 +130,50 @@ defmodule Kantele.Character.NpcScriptEventTest do
     end
   end
 
+  describe "玩家侧授绝招（NpcScriptEvent.npc/perform）" do
+    test "全门槛达标：学会绝招并扣门派贡献" do
+      p =
+        player(
+          stats: %{
+            skills: %{"huzhua-shou" => 120, "force" => 180},
+            gongxian: 500,
+            shen: 100_000,
+            performs: MapSet.new()
+          }
+        )
+
+      conn = NpcScriptEvent.perform_result(build_conn(p), perform_event())
+      updated = conn.private.update_character || conn.character
+
+      assert MapSet.member?(updated.meta.stats.performs, "huzhua-shou/juehu")
+      assert updated.meta.stats.gongxian == 100
+      assert output_text(conn) =~ "学会了「huzhua-shou/juehu」"
+    end
+
+    test "门槛不过（贡献不足）：不落盘并提示" do
+      p =
+        player(
+          stats: %{
+            skills: %{"huzhua-shou" => 120, "force" => 180},
+            gongxian: 10,
+            shen: 100_000
+          }
+        )
+
+      conn = NpcScriptEvent.perform_result(build_conn(p), perform_event())
+
+      assert conn.private.update_character == nil
+      assert output_text(conn) =~ "效力还不够"
+    end
+
+    test "它人事件不处理" do
+      event = %{perform_event() | data: %{perform_event().data | asker_id: "someone"}}
+      conn = NpcScriptEvent.perform_result(build_conn(player()), event)
+
+      assert conn.private.update_character == nil
+    end
+  end
+
   # ---- helpers ----
 
   defp npc(inquiries) do
@@ -149,7 +210,28 @@ defmodule Kantele.Character.NpcScriptEventTest do
       data: %{npc_name: "青阳子", family: "青阳门", gongxian: 10, asker_id: "player-1"}
     }
 
-  defp player() do
+  defp perform_event() do
+    %Event{
+      topic: "npc/perform",
+      data: %{
+        npc_name: "俞莲舟",
+        npc_family: "武当派",
+        asker_id: "player-1",
+        config: %{
+          "perform_id" => "huzhua-shou/juehu",
+          "skill" => "huzhua-shou",
+          "min_levels" => %{"force" => 180, "huzhua-shou" => 120},
+          "min_gongxian" => 400,
+          "min_shen" => 100_000,
+          "cost_gongxian" => 400
+        }
+      }
+    }
+  end
+
+  defp player(opts \\ []) do
+    stats = struct(Stats.new(), Keyword.get(opts, :stats, %{}))
+
     %Kalevala.Character{
       id: "player-1",
       name: "张三",
@@ -157,7 +239,7 @@ defmodule Kantele.Character.NpcScriptEventTest do
       room_id: "test:room",
       meta: %PlayerMeta{
         vitals: Vitals.new(),
-        stats: Stats.new(),
+        stats: stats,
         combat: Kantele.Character.Combat.new()
       }
     }

@@ -18,6 +18,8 @@ defmodule Kantele.Character.NpcScriptEvent do
   alias Kalevala.World.Item
   alias Kantele.Character.CommandView
   alias Kantele.Character.Records
+  alias Kantele.Character.Stats
+  alias Kantele.SectMaster
   alias Kantele.World.Items
 
   def give_result(conn, %{
@@ -163,6 +165,52 @@ defmodule Kantele.Character.NpcScriptEvent do
   end
 
   def register_result(conn, _event), do: conn
+
+  # 授绝招（inquiries 脚本配置；玩家侧校验 + 落库）
+  def perform_result(conn, %{
+        data: %{npc_name: npc_name, config: config, asker_id: asker_id} = data
+      }) do
+    character = conn.character
+
+    case asker_id == character.id do
+      false ->
+        conn
+
+      true ->
+        npc_stats = %{family: Map.get(data, :npc_family)}
+
+        case SectMaster.inquiry_grant(character.meta.stats, npc_stats, config) do
+          {:error, msg} ->
+            conn
+            |> render(CommandView, "text", %{text: "#{msg}"})
+            |> prompt(CommandView, "prompt", %{})
+
+          {:ok, perform_id, cost} ->
+            stats =
+              character.meta.stats
+              |> Stats.learn_perform(perform_id)
+              |> deduct_gongxian(cost)
+
+            character = %{character | meta: %{character.meta | stats: stats}}
+            Records.save(character)
+
+            conn
+            |> put_character(character)
+            |> render(CommandView, "text", %{
+              text: "#{npc_name}在你耳边轻声说了几句精要，你学会了「#{perform_id}」。\n"
+            })
+            |> prompt(CommandView, "prompt", %{})
+        end
+    end
+  end
+
+  def perform_result(conn, _event), do: conn
+
+  defp deduct_gongxian(%Stats{} = stats, cost) when is_integer(cost) and cost > 0 do
+    %{stats | gongxian: max((stats.gongxian || 0) - cost, 0)}
+  end
+
+  defp deduct_gongxian(stats, _cost), do: stats
 
   defp bump_gongxian(character, gongxian) when is_integer(gongxian) do
     Map.update(character.meta.stats, :gongxian, gongxian, &(&1 + gongxian))
