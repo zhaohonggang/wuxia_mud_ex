@@ -17,6 +17,7 @@ defmodule Kantele.Character.NpcScriptEvent do
 
   alias Kalevala.World.Item
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Family
   alias Kantele.Character.Records
   alias Kantele.Character.Stats
   alias Kantele.SectMaster
@@ -179,7 +180,7 @@ defmodule Kantele.Character.NpcScriptEvent do
       true ->
         npc_stats = %{family: Map.get(data, :npc_family)}
 
-        case SectMaster.inquiry_grant(character.meta.stats, npc_stats, config) do
+        case SectMaster.inquiry_grant(stats_with_family(character), npc_stats, config) do
           {:error, msg} ->
             conn
             |> render(CommandView, "text", %{text: "#{msg}"})
@@ -211,6 +212,18 @@ defmodule Kantele.Character.NpcScriptEvent do
   end
 
   defp deduct_gongxian(stats, _cost), do: stats
+
+  # 玩家门派身份在 meta.family（map），而 inquiry_grant 同门校验读 stats 的
+  # :family；调用前把门派名并进去（yu.c ask_me 的「不是我们武当派的人」分支）
+  defp stats_with_family(character) do
+    case character.meta.family do
+      family when is_map(family) and map_size(family) > 0 ->
+        Map.put(character.meta.stats, :family, Family.name(family))
+
+      _ ->
+        character.meta.stats
+    end
+  end
 
   defp bump_gongxian(character, gongxian) when is_integer(gongxian) do
     Map.update(character.meta.stats, :gongxian, gongxian, &(&1 + gongxian))

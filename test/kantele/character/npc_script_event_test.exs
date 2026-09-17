@@ -166,6 +166,23 @@ defmodule Kantele.Character.NpcScriptEventTest do
       assert output_text(conn) =~ "效力还不够"
     end
 
+    test "非同门：拒绝授招（读玩家 meta.family）" do
+      p =
+        player(
+          stats: %{
+            skills: %{"huzhua-shou" => 120, "force" => 180},
+            gongxian: 500,
+            shen: 100_000
+          },
+          family: %{name: "青阳门"}
+        )
+
+      conn = NpcScriptEvent.perform_result(build_conn(p), perform_event())
+
+      assert conn.private.update_character == nil
+      assert output_text(conn) =~ "并非同门"
+    end
+
     test "它人事件不处理" do
       event = %{perform_event() | data: %{perform_event().data | asker_id: "someone"}}
       conn = NpcScriptEvent.perform_result(build_conn(player()), event)
@@ -240,7 +257,8 @@ defmodule Kantele.Character.NpcScriptEventTest do
       meta: %PlayerMeta{
         vitals: Vitals.new(),
         stats: stats,
-        combat: Kantele.Character.Combat.new()
+        combat: Kantele.Character.Combat.new(),
+        family: Keyword.get(opts, :family)
       }
     }
   end

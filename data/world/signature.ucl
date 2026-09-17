@@ -334,6 +334,134 @@ characters "referee" {
   }
 }
 
+# 俞莲舟：武当七侠（F3 数据驱动师父样板，对照 lpc class/wudang/yu.c）
+# 同一份 UCL 同时声明 teach（学艺）/ apprentice（收徒门槛）/ inquiries（问答授绝招），
+# 全部门槛由玩家侧 SectMaster 纯函数复核，NPC 只回执数据。
+characters "yulianzhou" {
+  name = "俞莲舟 Yu Lianzhou"
+  description = "武当七侠之一，面容清癯，一袭洗得发白的青布道袍，腰间系一条旧绦。目光沉静如渊，举手投足间自有一股名门正派的端方气度。"
+
+  teach = {
+    family = "武当派"
+    teach_skills = {
+      force = {
+        max = 250
+        gongxian = 5
+      }
+      wudang_xinfa = {
+        max = 250
+        gongxian = 5
+      }
+      dodge = {
+        max = 240
+        gongxian = 4
+      }
+      tiyunzong = {
+        max = 240
+        gongxian = 5
+      }
+      claw = {
+        max = 250
+        gongxian = 5
+      }
+      huzhua_shou = {
+        max = 250
+        gongxian = 5
+      }
+      parry = {
+        max = 240
+        gongxian = 4
+      }
+      sword = {
+        max = 250
+        gongxian = 5
+      }
+      wudang_jian = {
+        max = 250
+        gongxian = 5
+      }
+      taoism = {
+        max = 230
+        gongxian = 4
+      }
+    }
+    no_teach = [
+      "taiji-shengong",
+      "taiji-jian",
+      "taiji-quan"
+    ]
+  }
+
+  apprentice = {
+    family = "武当派"
+    min_shen = 20000
+    min_exp = 150000
+    min_skills = {
+      wudang_xinfa = 80
+      taoism = 80
+    }
+    class = "taoist"
+  }
+
+  inquiries = {
+    绝户神抓 = {
+      perform_id = "huzhua-shou/juehu"
+      skill = "huzhua-shou"
+      min_levels = {
+        force = 180
+        huzhua_shou = 120
+      }
+      min_gongxian = 400
+      min_shen = 100000
+      cost_gongxian = 400
+    }
+  }
+
+  combat = {
+    no_kill = true
+    max_qi = 9000
+    max_jing = 8000
+    max_neili = 9000
+    str = 32
+    dex = 34
+    con = 33
+    int = 40
+    combat_exp = 1800000
+    skills = {
+      force = 250
+      wudang_xinfa = 250
+      taiji_shengong = 240
+      dodge = 240
+      tiyunzong = 240
+      claw = 250
+      huzhua_shou = 250
+      unarmed = 240
+      taiji_quan = 220
+      parry = 240
+      sword = 250
+      wudang_jian = 250
+      taiji_jian = 240
+      taoism = 230
+      literate = 200
+    }
+    map_skill = {
+      force = "taiji-shengong"
+      dodge = "tiyunzong"
+      claw = "huzhua-shou"
+      parry = "taiji-jian"
+      sword = "taiji-jian"
+    }
+    prepare_skill = {
+      claw = "huzhua-shou"
+    }
+    apply = {
+      attack = 150
+      defense = 150
+      damage = 150
+    }
+  }
+}
+
 room_characters "zhu_ting" {
   room_id = rooms.zhu_ting.id
 
@@ -353,6 +481,9 @@ room_characters "guan_yun" {
   characters = [
     {
       id = characters.qingyangzi.id
+    },
+    {
+      id = characters.yulianzhou.id
     }
   ]
 }

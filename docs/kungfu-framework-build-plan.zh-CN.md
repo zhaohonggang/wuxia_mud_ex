@@ -94,11 +94,13 @@
     - `recruit` 命令 + `family/apprentice` 事件：**切片 6 已接**——NPC 回执带 `apprentice` 配置；玩家侧 `FamilyEvent.result/2` 用 `SectMaster.recruit_gate?/3` 复核门槛（不过则不落盘并提示），通过则写 `meta.family` + `class` 继承（bonze/eunach 不传播，对齐 `Family.recruit_apprentice` 判据）+ `gongxian` 兜底初始化；`class` 随 family map 持久化（records.ex `serialize_family`/`restore_family`）。`parse_apprentice/1` 已补 `class`。
     - `family/detach`：**切片 5 已修链路**——新增 `Room.DetachRequestEvent`（room.ex 注册 `family/detach`→转发目标 NPC）；玩家侧 `events.ex` 注册 `family/detach-result`→`DetachEvent.detach_result/2`；`NpcFamilyEvent.detach/2` 改从 `teach.family` 取门派身份（不再读 `NonPlayerMeta` 的 `:family`，消除 KeyError）并只回执身份；**玩家侧**据自身 family 用 `Master.attempt_detach` 判定嫡传/惩罚（`old_family` 暂传 `nil`=正常叛师必罚；转世免罚待历史字段）。惩罚降武功改为按 `stats.skills` 归约（`Stats.all/1` 不存在，编译告警已消）。⚠️ 仍用「各技能 -1 到最小 1」简化，未接 `Skills.skill_expell_penalty`（其需逐技能 type/enable 元数据，来源暂缺）。
     - inquiry：**切片 7 已接**——`NpcAskEvent.handle_scripted_answer` 命中脚本 `perform_id` → 派发 `npc/perform`（带 config + NPC `teach.family`）；玩家侧 `NpcScriptEvent.perform_result/2` 用自身 `%Stats{}` 调 `SectMaster.inquiry_grant/3`，`{:error,msg}` 只提示不落盘，`{:ok,perform_id,cost}` 则 `Stats.learn_perform` + 扣 `gongxian`（不为负）后 `Records.save`。loader `parse_inquiry_value/1` 顺带把嵌套 `min_levels` 键归一为字符串（下划线→连字符），否则技能门槛永远查 0 级。
-    - ~~其余缺口 (3) apprentice recruit_gate / (6) class 继承~~：**切片 6 已修**；inquiry（`ask`→`npc/perform`→`inquiry_grant`）**切片 7 已接**。F3 仅余俞莲舟 UCL 样板 + e2e（步骤 4）。
-4. **样板内容**
-   - 把 `class/wudang/yu.c`（俞莲舟）翻译成一份 UCL 师父配置挂进测试世界：no_teach（三绝张真人亲传）、门槛（shen 20000/exp 150000/武当心法 80/taoism 80）、inquiry 授「虎爪绝户手」（gongxian 400/shen 100000/force 180）。
-5. **测试**
-   - `Kantele.SectMaster` 纯函数单测 + 一条 e2e：拜师 → 学艺 → 门槛拦截 → 问答得绝招 → 叛师惩罚。
+    - ~~其余缺口 (3) apprentice recruit_gate / (6) class 继承~~：**切片 6 已修**；inquiry（`ask`→`npc/perform`→`inquiry_grant`）**切片 7 已接**。
+4. **样板内容**（**切片 8 已完成**）
+    - `class/wudang/yu.c`（俞莲舟）已翻译为 `data/world/signature.ucl` 的 `characters "yulianzhou"`：`teach`（含 `no_teach` 三绝张真人亲传）、`apprentice`（shen 20000/exp 150000/武当心法 80/taoism 80、class="taoist"）、`inquiries["绝户神抓"]`（`perform_id="huzhua-shou/juehu"`，gongxian 400/shen 100000/force 180/huzhua-shou 120）。落位「观云阁」，同一份 UCL 数据驱动四类行为，零代码新增门派。
+    - `signature_npc_test.exs` 增 `yulianzhou` 键 + 逐字段解析断言（6 位特色 NPC）。
+5. **测试**（**切片 8 已完成**）
+    - `test/kantele/f3_sect_master_e2e_test.exs`：读真实 UCL 的俞莲舟，串起 拜师门槛拦（杀气不足不落盘）→ 达标拜师（family+class="taoist"）→ 学艺（`skills/teach` 走 `teachable?`）→ 问答得绝招（`ask`→`npc/perform`→`inquiry_grant`，扣 contrib 500→100）→ 叛师惩罚（同门嫡传→降功/清贡献/清门派）。
+    - `NpcScriptEvent.perform_result/2` 顺带补 `stats_with_family/1`：把玩家 `meta.family` 门派名并入传给 `inquiry_grant`，否则 yu.c 的「非同门」分支永不触发（新增单测覆盖）。
 
 ### 验收
 - 任意 UCL 声明 `teach/apprentice/inquiry` 的 NPC 即可当师父，无需改代码加新门派。

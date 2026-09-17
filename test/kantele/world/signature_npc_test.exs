@@ -34,7 +34,7 @@ defmodule Kantele.World.SignatureNpcTest do
       assert items == ["signature:hantie", "signature:jinggang", "signature:lingpai"]
     end
 
-    test "五位特色 NPC 均定义在区角色表", %{world: world} do
+    test "六位特色 NPC 均定义在区角色表", %{world: world} do
       zone = Enum.find(world.zones, &(&1.id == "signature"))
 
       keys = Map.keys(zone.characters) |> Enum.map(&to_string/1) |> Enum.sort()
@@ -44,8 +44,31 @@ defmodule Kantele.World.SignatureNpcTest do
                "moye",
                "nanxian",
                "qingyangzi",
-               "referee"
+               "referee",
+               "yulianzhou"
              ]
+    end
+
+    test "俞莲舟：teach/apprentice/inquiries 解析为 F3 配置", %{world: world} do
+      yu = zone_char(world, "yulianzhou")
+
+      assert yu.meta.teach.family == "武当派"
+      assert "taiji-jian" in yu.meta.teach.no_teach
+      assert yu.meta.teach.teach_skills["huzhua-shou"].max == 250
+
+      assert yu.meta.apprentice.family == "武当派"
+      assert yu.meta.apprentice.min_shen == 20000
+      assert yu.meta.apprentice.min_exp == 150000
+      assert yu.meta.apprentice.min_skills == %{"wudang-xinfa" => 80, "taoism" => 80}
+      assert yu.meta.apprentice.class == "taoist"
+
+      grant = yu.meta.inquiries["绝户神抓"]
+      assert grant["perform_id"] == "huzhua-shou/juehu"
+      assert grant["skill"] == "huzhua-shou"
+      assert grant["min_gongxian"] == 400
+      assert grant["min_shen"] == 100000
+      assert grant["cost_gongxian"] == 400
+      assert grant["min_levels"] == %{"force" => 180, "huzhua-shou" => 120}
     end
 
     test "脚本化问询保留 map 形态（事件字段齐备）", %{world: world} do
@@ -82,6 +105,7 @@ defmodule Kantele.World.SignatureNpcTest do
       assert room_has?(world, "signature:zhu_ting", "干将")
       assert room_has?(world, "signature:zhu_ting", "莫邪")
       assert room_has?(world, "signature:guan_yun", "青阳子")
+      assert room_has?(world, "signature:guan_yun", "俞莲舟")
       assert room_has?(world, "signature:shulin", "南贤")
       assert room_has?(world, "signature:lunwu_tai", "裁判")
     end
