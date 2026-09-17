@@ -14,7 +14,7 @@ defmodule Kantele.Character.ConditionRegistry do
   （对应 LPC `condition_d->daemon(me, cnd)` 与 condition 宿主把 cnd 名解开成模块）。
   """
 
-  @daemons %{"poison" => Kantele.Poison}
+  @daemons %{"poison" => Kantele.Poison, "fire_poison" => Kantele.Poison}
 
   @doc "给条件名返回 `{:ok, mod} | :error`（先查运行时增量，再查静态表）"
   def daemon(cnd) when is_binary(cnd) do

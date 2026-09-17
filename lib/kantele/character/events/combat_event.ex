@@ -42,6 +42,7 @@ defmodule Kantele.Character.CombatEvent do
   alias Kantele.Character.Stats
   alias Kantele.Character.Teleport
   alias Kantele.Character.Vitals
+  alias Kantele.Character.ConditionEvent
   alias Kantele.Quest
 
   @tick_interval 1000
@@ -383,22 +384,97 @@ defmodule Kantele.Character.CombatEvent do
             Stats.effective(stats, "dodge") + Stats.effective(stats, "parry")
           end
 
-        if Engine.rand(rng, max(ap, 1)) + div(ap, 2) > dp do
-          # 命中：jing 直接伤害，攻击方 -220 内力 / busy 2
-          # TODO(migrate): receive_wound("jing", damage/3)、fire_poison、护甲 consistence 损耗
-          damage = Map.get(data, :damage, 0)
-          vitals = Vitals.damage(vitals, :jing, div(damage, 2))
-          character = %{character | meta: %{character.meta | vitals: vitals}}
-          send_feedback(attacker, 220, 2)
+if Engine.rand(rng, max(ap, 1)) + div(ap, 2) > dp do
+           # 命中：jing 直接伤害和创伤，攻击方 -220 内力 / busy 2
+           # TODO(migrate): handing 毒药、query_skill_prepared 前置
+damage = Map.get(data, :damage, 0)
+            jing_damage = div(damage, 2)
+            jing_wound = div(damage, 3)
+            vitals = Vitals.damage(vitals, :jing, jing_damage)
+                     |> Vitals.wound(:jing, jing_wound)
+            character = %{character | meta: %{character.meta | vitals: vitals}}
 
-          conn
-          |> Broadcast.publish(
-            Messages.interpolate(
-              "$n一个不慎，火星顿时溅到肌肤之上，大势燃烧起来，皮肉烧得嗤嗤作响。\n",
-              bindings
-            )
-          )
-          |> put_character(character)
+            # 火毒
+            lvp = Map.get(data, :poison, 0)
+            poison_level = div(lvp, 2) + Engine.rand(rng, div(lvp, 2))
+            poison_duration = 3 + Engine.rand(rng, div(lvp, 30))
+            poison_params = %{
+              "level" => poison_level,
+              "duration" => poison_duration,
+              "remain" => poison_duration,
+              "id" => attacker.id,
+              "name" => "火毒"
+            }
+            conn =
+              conn
+              |> ConditionEvent.apply_poison(poison_params)
+
+# 火毒
+             lvp = Map.get(data, :poison, 0)
+             poison_level = div(lvp, 2) + Engine.rand(rng, div(lvp, 2))
+             poison_duration = 3 + Engine.rand(rng, div(lvp, 30))
+             poison_params = %{
+               "level" => poison_level,
+               "duration" => poison_duration,
+               "remain" => poison_duration,
+               "id" => attacker.id,
+               "name" => "火毒"
+             }
+             conn =
+               conn
+               |> ConditionEvent.apply_poison(poison_params)
+
+             # 护甲 consisence 损耗
+             equipped = character.meta.combat.equipped
+             armor_name = nil
+             consistence_updated = false
+             # 检查衣服
+             cloth_slot = :cloth
+             cloth_snapshot = Map.get(equipped, cloth_slot)
+             if cloth_snapshot && is_map(cloth_snapshot) do
+               consistence = Map.get(cloth_snapshot, :consistence) || 100
+               new_consistence = max(consistence - :rand.uniform(10), 0)
+               if new_consistence != consistence do
+                 updated_snapshot = Map.put(cloth_snapshot, :consistence, new_consistence)
+                 updated_equipped = Map.put(equipped, cloth_slot, updated_snapshot)
+                 updated_combat = %{character.meta.combat | equipped: updated_equipped}
+                 character = %{character | meta: %{character.meta | combat: updated_combat}}
+                 armor_name = Map.get(cloth_snapshot, :name)
+                 consistence_updated = true
+               end
+             end
+             # 如果衣服没损耗或没穿衣，检查盔甲
+             if not consistence_updated do
+               armor_slot = :armor
+               armor_snapshot = Map.get(equipped, armor_slot)
+               if armor_snapshot && is_map(armor_snapshot) do
+                 consistence = Map.get(armor_snapshot, :consistence) || 100
+                 new_consistence = max(consistence - :rand.uniform(10), 0)
+                 if new_consistence != consistence do
+                   updated_snapshot = Map.put(armor_snapshot, :consistence, new_consistence)
+                   updated_equipped = Map.put(equipped, armor_slot, updated_snapshot)
+                   updated_combat = %{character.meta.combat | equipped: updated_equipped}
+                   character = %{character | meta: %{character.meta | combat: updated_combat}}
+                   armor_name = Map.get(armor_snapshot, :name)
+                   consistence_updated = true
+                 end
+               end
+             end
+             # 消息：如果有 armor_name 则使用它，否则肌肤
+             wound_text =
+               if armor_name do
+                 "$n一个不慎，火星顿时溅到#{armor_name}之上，大势燃烧起来，皮肉烧得嗤嗤作响。\n"
+               else
+                 "$n一个不慎，火星顿时溅到肌肤之上，大势燃烧起来，皮肉烧得嗤嗤作响。\n"
+               end
+
+             send_feedback(attacker, 220, 2)
+
+             conn
+               |> Broadcast.publish(
+                 Messages.interpolate(wound_text, bindings)
+               )
+               |> put_character(character)
         else
           # 被闪避：攻击方 -100 内力 / busy 3
           send_feedback(attacker, 100, 3)

@@ -172,11 +172,12 @@ defmodule Kantele.Character.WieldCommand do
           if Combat.occupied?(character.meta.combat, slot) do
             render_error(conn, "你已经穿戴了同类型的护具了。\n")
           else
-            snapshot = %{
-              name: item.name,
-              armor: Map.get(item.meta, :armor) || 0,
-              prop: Map.get(item.meta, :armor_prop)
-            }
+snapshot = %{
+               name: item.name,
+               armor: Map.get(item.meta, :armor) || 0,
+               prop: Map.get(item.meta, :armor_prop),
+               consistence: Map.get(item.meta, :consistence) || 100
+             }
 
             combat =
               character.meta.combat

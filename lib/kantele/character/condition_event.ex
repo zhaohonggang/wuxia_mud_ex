@@ -134,4 +134,19 @@ defmodule Kantele.Character.ConditionEvent do
   defp put_session_cond(conn, key, value) when key in @condition_keys do
     put_session(conn, key, value || nil)
   end
+
+  @doc """
+  套用毒药到宿主（无渲染，用于 combat 结算）：混毒后写入 session.conditions 并开启心跳。
+  """
+  def apply_poison(conn, poison) do
+    state = get_session(conn, "conditions") || %{}
+    existing = state["poison"]
+    mixed = Poison.mixed_poison(existing, poison)
+    merged = Conditions.apply_condition(%{conditions: state}, "poison", mixed)
+    conds = merged.conditions
+
+    conn
+    |> put_session_cond("conditions", conds)
+    |> schedule_next()
+  end
 end

@@ -27,6 +27,7 @@ defmodule Kantele.Poison do
 
   @doc "给 'poison' 返回 {:ok, Poison} 供 Conditions.affect_by 使用"
   def daemon("poison"), do: {:ok, __MODULE__}
+  def daemon("fire_poison"), do: {:ok, __MODULE__}
   def daemon(_), do: :error
 
   @doc """
@@ -36,9 +37,9 @@ defmodule Kantele.Poison do
   生命周期（remain/duration 递减与到期）由 `update_condition/1` 在
   `Conditions.update_condition/2` 主循环里统一处理，避免双递减。
   """
-  def do_effect(state, _cnd, _para) do
+  def do_effect(state, cnd, _para) do
     # 获取当前中毒信息
-    cond = Kantele.Character.Conditions.query_condition(state, @name)
+    cond = Kantele.Character.Conditions.query_condition(state, cnd)
 
     if cond && is_map(cond) && cond["level"] > 0 do
       jing_loss = jing_damage(cond)

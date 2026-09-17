@@ -71,6 +71,15 @@ defmodule Kantele.Character.Vitals do
   end
 
   @doc """
+  Wound reduces max_jing (LPC receive_wound/2 effect on eff_jing), clamps current value
+  """
+  def wound(%__MODULE__{} = vitals, :jing, amount) when amount >= 0 do
+    max_jing = max(vitals.max_jing - amount, 1)
+    vitals = %{vitals | max_jing: max_jing}
+    %{vitals | jing: min(vitals.jing, max_jing)}
+  end
+
+  @doc """
   Healing effect (LPC receive_heal/3): raise current value toward max_*, not exceeding cap
 
   Opposite of damage, only raises current value, doesn't move wound cap.
