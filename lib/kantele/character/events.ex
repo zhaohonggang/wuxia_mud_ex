@@ -9,6 +9,7 @@ defmodule Kantele.Character.Events do
   alias Kalevala.Event.Movement
   alias Kantele.Character.ChannelEvent
   alias Kantele.Character.CombatEvent
+  alias Kantele.Character.DetachEvent
   alias Kantele.Character.EmoteEvent
   alias Kantele.Character.SayEvent
   alias Kantele.Character.TellEvent
@@ -50,6 +51,10 @@ defmodule Kantele.Character.Events do
 
     module(FamilyEvent) do
       event("family/result", :result)
+    end
+
+    module(DetachEvent) do
+      event("family/detach-result", :detach_result)
     end
 
     module(GiveEvent) do

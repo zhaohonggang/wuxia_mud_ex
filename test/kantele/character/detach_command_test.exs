@@ -3,10 +3,35 @@ defmodule Kantele.Character.DetachCommandTest do
 
   import Kalevala.ConnTest
 
+  alias Kalevala.Event
   alias Kantele.Character.DetachCommand
+  alias Kantele.Character.DetachEvent
+  alias Kantele.Character.NonPlayerMeta
+  alias Kantele.Character.NpcFamilyEvent
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Stats
   alias Kantele.Character.Vitals
+
+  defp npc(opts \\ []) do
+    %Kalevala.Character{
+      id: Keyword.get(opts, :id, "wudang:yu"),
+      name: Keyword.get(opts, :name, "俞莲舟"),
+      pid: self(),
+      room_id: "test:room",
+      meta: %NonPlayerMeta{
+        teach: %{family: "武当派", teach_skills: %{}, no_teach: []}
+      }
+    }
+  end
+
+  defp output_text(conn) do
+    conn.output
+    |> Enum.flat_map(fn
+      %Kalevala.Character.Conn.Text{data: data} -> [IO.iodata_to_binary(data)]
+      _ -> []
+    end)
+    |> Enum.join("")
+  end
 
   defp player(opts \\ []) do
     vitals = %Vitals{
@@ -27,7 +52,8 @@ defmodule Kantele.Character.DetachCommandTest do
       skills: Keyword.get(opts, :skills, %{}),
       combat_exp: Keyword.get(opts, :combat_exp, 0),
       score: Keyword.get(opts, :score, 0),
-      weiwang: Keyword.get(opts, :weiwang, 0)
+      weiwang: Keyword.get(opts, :weiwang, 0),
+      gongxian: Keyword.get(opts, :gongxian, 0)
     }
 
     combat = Kantele.Character.Combat.new()
@@ -41,7 +67,8 @@ defmodule Kantele.Character.DetachCommandTest do
       meta: %PlayerMeta{
         vitals: vitals,
         stats: stats,
-        combat: combat
+        combat: combat,
+        family: Keyword.get(opts, :family, nil)
       }
     }
   end
@@ -59,6 +86,92 @@ defmodule Kantele.Character.DetachCommandTest do
     test "路由解析" do
       {:ok, parsed} = Kantele.Character.Commands.parse("detach 师父")
       assert parsed.module == DetachCommand
+    end
+  end
+
+  describe "NPC 侧叛师回执（family/detach-result）" do
+    test "有 teach.family 的 NPC 回门派身份（不再读 NonPlayerMeta 不存在的 :family）" do
+      NpcFamilyEvent.detach(build_conn(npc()), %Event{
+        topic: "family/detach",
+        data: %{reply_to: self(), student_id: "player-1", student_name: "张三"}
+      })
+
+      assert_receive %Event{topic: "family/detach-result", data: data}
+      assert data.ok == true
+      assert data.family == "武当派"
+      assert data.master_id == "wudang:yu"
+      assert data.master_name == "俞莲舟"
+    end
+
+    test "无 teach 的 NPC 婉拒" do
+      plain = %{npc() | meta: %NonPlayerMeta{}}
+
+      NpcFamilyEvent.detach(build_conn(plain), %Event{
+        topic: "family/detach",
+        data: %{reply_to: self(), student_id: "player-1", student_name: "张三"}
+      })
+
+      assert_receive %Event{topic: "family/detach-result", data: data}
+      assert data.ok == false
+    end
+  end
+
+  describe "玩家侧叛师判定（DetachEvent.detach_result）" do
+    test "嫡传弟子叛师：降武功一重 + 清贡献 + 清门派并落盘" do
+      p =
+        player(
+          family: %{name: "武当派", master_id: "wudang:yu", master_name: "俞莲舟"},
+          skills: %{"sword" => 10, "force" => 50},
+          gongxian: 120
+        )
+
+      conn =
+        DetachEvent.detach_result(build_conn(p), %Event{
+          topic: "family/detach-result",
+          data: %{ok: true, family: "武当派", master_id: "wudang:yu", master_name: "俞莲舟"}
+        })
+
+      updated = conn.private.update_character || conn.character
+
+      assert updated.meta.family == nil
+      assert updated.meta.stats.skills == %{"sword" => 9, "force" => 49}
+      assert updated.meta.stats.gongxian == 0
+      assert output_text(conn) =~ "叛离"
+    end
+
+    test "非门下弟子请求叛师：noop，不落盘" do
+      p = player(family: %{name: "峨眉派", master_id: "emei:x", master_name: "灭绝"})
+
+      conn =
+        DetachEvent.detach_result(build_conn(p), %Event{
+          topic: "family/detach-result",
+          data: %{ok: true, family: "武当派", master_id: "wudang:yu", master_name: "俞莲舟"}
+        })
+
+      assert conn.private.update_character == nil
+      assert output_text(conn) =~ "并非我门下"
+    end
+
+    test "无门派的玩家请求叛师：noop（不崩 on nil family）" do
+      conn =
+        DetachEvent.detach_result(build_conn(player()), %Event{
+          topic: "family/detach-result",
+          data: %{ok: true, family: "武当派", master_id: "wudang:yu", master_name: "俞莲舟"}
+        })
+
+      assert conn.private.update_character == nil
+      assert output_text(conn) =~ "并非我门下"
+    end
+
+    test "NPC 婉拒回执：展示原因，不落盘" do
+      conn =
+        DetachEvent.detach_result(build_conn(player()), %Event{
+          topic: "family/detach-result",
+          data: %{ok: false, reason: "老朽并无门派，何来叛师之说？"}
+        })
+
+      assert conn.private.update_character == nil
+      assert output_text(conn) =~ "并无门派"
     end
   end
 end

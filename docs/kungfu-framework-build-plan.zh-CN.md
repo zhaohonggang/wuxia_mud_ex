@@ -92,9 +92,9 @@
  3. **接入事件**
    - `skills_event.ex teach/2`：改用 `SectMaster.teachable?`（保留 `prevent_learn?` 门派校验）。
    - `recruit` 命令 + `family/apprentice` 事件：按 `config` 检查门槛 → `Family.recruit_apprentice` + class 继承 → `gongxian` 初始化。
-   - `family/detach`：`Master.attempt_detach` → `Skills.skill_expell_penalty`（已就绪）。
-   - inquiry：`ask`/`chat` 匹配 `inquiry` 关键词 → `SectMaster.inquiry_grant` → `Stats.learn_perform` + `add(:gongxian, -cost)`。
-   - ⚠️ **读盘发现的 detach/inquiry 接线缺口**（下一切片处理）：(1) `family/detach` 房间侧**未注册转发**（`Room.ApprenticeRequestEvent` 只映 `family/apprentice`，room.ex:518-520；detach 无 `xxxRequestEvent`）；(2) 玩家侧 `Kantele.Character.DetachEvent.detach_result/2` **未注册**进 `events.ex`（无 `family/detach-result` → `:detach_result` 映射）；(3) `NpcFamilyEvent.apprentice/2` **未接 `SectMaster.recruit_gate?`**（当前有 `teach.family` 即应允）；(4) `NpcFamilyEvent.detach/2` 读 `conn.character.meta.family`，而 `NonPlayerMeta` 无 `:family` 字段（character.ex:285-305）→ **KeyError**，应改读 `teach.family` 合成；(5) `DetachEvent.detach_result/2` 调 `Stats.all/1`（detach_command.ex:50）**该函数不存在**（编译告警），应改按 `stats.skills` 归约；(6) `class` 继承落在 `parse_apprentice/1` 产物 + 拜师成功路径（待补）。
+    - `family/detach`：**切片 5 已修链路**——新增 `Room.DetachRequestEvent`（room.ex 注册 `family/detach`→转发目标 NPC）；玩家侧 `events.ex` 注册 `family/detach-result`→`DetachEvent.detach_result/2`；`NpcFamilyEvent.detach/2` 改从 `teach.family` 取门派身份（不再读 `NonPlayerMeta` 的 `:family`，消除 KeyError）并只回执身份；**玩家侧**据自身 family 用 `Master.attempt_detach` 判定嫡传/惩罚（`old_family` 暂传 `nil`=正常叛师必罚；转世免罚待历史字段）。惩罚降武功改为按 `stats.skills` 归约（`Stats.all/1` 不存在，编译告警已消）。⚠️ 仍用「各技能 -1 到最小 1」简化，未接 `Skills.skill_expell_penalty`（其需逐技能 type/enable 元数据，来源暂缺）。
+    - inquiry：`ask`/`chat` 匹配 `inquiry` 关键词 → `SectMaster.inquiry_grant` → `Stats.learn_perform` + `add(:gongxian, -cost)`（**待补**）。
+    - ⚠️ **读盘发现的其余接线缺口**（下一切片处理）：(3) `NpcFamilyEvent.apprentice/2` **未接 `SectMaster.recruit_gate?`**（当前有 `teach.family` 即应允）；(6) `class` 继承落在 `parse_apprentice/1` 产物 + 拜师成功路径（待补）。
 4. **样板内容**
    - 把 `class/wudang/yu.c`（俞莲舟）翻译成一份 UCL 师父配置挂进测试世界：no_teach（三绝张真人亲传）、门槛（shen 20000/exp 150000/武当心法 80/taoism 80）、inquiry 授「虎爪绝户手」（gongxian 400/shen 100000/force 180）。
 5. **测试**

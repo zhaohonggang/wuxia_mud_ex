@@ -133,9 +133,6 @@ defmodule Kantele.Character.NpcFamilyEvent do
 
   use Kalevala.Character.Event
 
-  alias Kantele.Character.Family
-  alias Kantele.Npc.Master
-
   def apprentice(conn, %{data: %{reply_to: reply_to, student_name: student_name}}) do
     teach = conn.character.meta.teach
 
@@ -167,31 +164,41 @@ defmodule Kantele.Character.NpcFamilyEvent do
     end
   end
 
-  def detach(conn, %{data: %{reply_to: reply_to, student_family: student_family}}) do
-    my_family = conn.character.meta.family
-
-    case Master.attempt_detach(
-           conn.character.meta.family,
-           student_family,
-           Map.get(student_family, :name)
-         ) do
-      {:noop} ->
+  def detach(conn, %{data: %{reply_to: reply_to, student_name: student_name}}) do
+    # NonPlayerMeta 无 `:family` 字段（character.ex:285-305），门派身份只在
+    # `meta.teach.family`（loader.parse_teach 字符串）；是否嫡传/是否惩罚由玩家侧
+    # 据本回执（NPC 门派身份）用 Master.attempt_detach 判定（玩家侧校验）。
+    case teach_family(conn.character) do
+      nil ->
         send(reply_to, %Kalevala.Event{
           from_pid: self(),
           topic: "family/detach-result",
-          data: %{ok: false, reason: "#{conn.character.name}摆了摆手：你并非我门下弟子，何来叛师之说？"}
+          data: %{ok: false, reason: "#{conn.character.name}摆了摆手：老朽并无门派，何来叛师之说？"}
         })
 
         conn
 
-      {:detach, %{penalty?: penalty?}} ->
+      family ->
         send(reply_to, %Kalevala.Event{
           from_pid: self(),
           topic: "family/detach-result",
-          data: %{ok: true, penalty?: penalty?, master_name: conn.character.name}
+          data: %{
+            ok: true,
+            family: family,
+            master_id: conn.character.id,
+            master_name: conn.character.name,
+            student_name: student_name
+          }
         })
 
         conn
+    end
+  end
+
+  defp teach_family(character) do
+    case Map.get(Map.get(character.meta, :teach) || %{}, :family) do
+      family when is_binary(family) and family != "" -> family
+      _ -> nil
     end
   end
 end

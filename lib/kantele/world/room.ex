@@ -519,6 +519,10 @@ defmodule Kantele.World.Room.Events do
       event("family/apprentice", :call)
     end
 
+    module(DetachRequestEvent) do
+      event("family/detach", :call)
+    end
+
     module(QuestAskRequestEvent) do
       event("quest/ask", :call)
     end
@@ -751,6 +755,43 @@ defmodule Kantele.World.Room.ApprenticeRequestEvent do
 
       {requester, false} ->
         render(context, requester.pid, CommandView, "text", %{text: "你要拜谁为师？\n"})
+    end
+  end
+end
+
+defmodule Kantele.World.Room.DetachRequestEvent do
+  @moduledoc """
+  叛师转发（A11/N5）：把 `detach <师父>` 转给对应 NPC，
+  是否确为嫡传与惩罚由玩家侧据 NPC 回执判定（玩家侧校验）。
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+
+  def call(context, %{data: %{name: name}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case {requester, is_binary(name) and name != ""} do
+      {nil, _} ->
+        context
+
+      {requester, true} ->
+        Enum.reduce(context.characters, context, fn character, acc ->
+          if character.pid != requester.pid and
+               Kantele.World.Room.NameMatch.matches?(character, name) do
+            event(acc, character.pid, self(), "family/detach", %{
+              reply_to: requester.pid,
+              student_id: requester.id,
+              student_name: requester.name
+            })
+          else
+            acc
+          end
+        end)
+
+      {requester, false} ->
+        render(context, requester.pid, CommandView, "text", %{text: "你要叛离谁？\n"})
     end
   end
 end
