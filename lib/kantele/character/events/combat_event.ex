@@ -39,6 +39,7 @@ defmodule Kantele.Character.CombatEvent do
   alias Kantele.Character.CharacterView
   alias Kantele.Character.CommandView
   alias Kantele.Character.PlayerMeta
+  alias Kantele.Character.Stats
   alias Kantele.Character.Teleport
   alias Kantele.Character.Vitals
   alias Kantele.Quest
@@ -283,6 +284,67 @@ defmodule Kantele.Character.CombatEvent do
 
       _ ->
         conn
+    end
+  end
+
+  # ---- 绝招命中结算（攻击型 perform：攻击方放招，防守方结算）----
+  #
+  # 与 combat/incoming 同构：攻击方进程只发快照，命中随机（依赖防守方 parry）
+  # 与忙乱在防守方进程内进行。当前支持「截手式」（huashan-jian/jie）。
+  def perform_incoming(conn, %{data: %{attacker: attacker} = data}) do
+    character = conn.character
+
+    cond do
+      dead?(character) ->
+        conn
+
+      not Process.alive?(attacker.pid) ->
+        notify_left(conn, character, attacker)
+
+      Map.get(attacker, :room_id) != character.room_id ->
+        notify_left(conn, character, attacker)
+
+      Map.get(data, :perform_id) == "huashan-jian/jie" ->
+        resolve_jie(conn, character, attacker, data)
+
+      true ->
+        conn
+    end
+  end
+
+  def perform_incoming(conn, _event), do: conn
+
+  defp resolve_jie(conn, character, attacker, data) do
+    level = Map.get(data, :level, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    combat = character.meta.combat
+    weapon = Combat.weapon(combat)
+    weapon_name = weapon && Map.get(weapon, :name)
+    parry = Stats.skill(character.meta.stats, "parry")
+
+    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
+
+    if Engine.rand(rng, level) > div(parry, 2) do
+      combat = Combat.start_busy(combat, div(level, 22) + 2)
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings)
+      )
+      |> put_character(put_combat(character, combat))
+    else
+      text =
+        if weapon_name do
+          Messages.interpolate(
+            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
+              "$N一怔之下再也攻不进去。\n",
+            bindings
+          )
+        else
+          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
+        end
+
+      Broadcast.publish(conn, text)
     end
   end
 

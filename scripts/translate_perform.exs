@@ -207,7 +207,7 @@ defmodule Scripts.TranslatePerform do
   end
 
   defp write_skeleton(out_root, skill, data) do
-    dir = Path.join([out_root, skill])
+    dir = Path.join([out_root, skill_dir(skill)])
     File.mkdir_p!(dir)
     file = Path.join(dir, data.move <> ".ex")
     rendered = render_skeleton(data)
@@ -219,6 +219,9 @@ defmodule Scripts.TranslatePerform do
       Path.relative_to(file, out_root)
     end
   end
+
+  @doc "技能 id → 输出目录名（与模块文件路径一致，huashan-jian → huashan_jian）"
+  def skill_dir(skill), do: String.replace(skill, "-", "_")
 
   defp skill_dirs(src_root) do
     src_root

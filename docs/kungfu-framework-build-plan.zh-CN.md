@@ -134,7 +134,16 @@
 - **步骤 1 提取器**：`scripts/translate_perform.exs`（模块 `Scripts.TranslatePerform`）。递归 `<src>/<skill>/<move>.c`，按顶层 `int perform(`/`int exert(` 签名分类（`F_SSERVER`/`F_CLEAN_UP` 继承一并记录）；抽取事实：level 门槛、变量赋值门槛（`lvl=query_skill(...)` + `lvl<120`）、`query_skill_mapped`/`_prepared`、资源门槛、`add`/`set` 消耗、`set_temp`/`add_temp("apply/..")`、`affect_by`、`do_damage`、`start_busy/is_busy` 行、首条 `notify_fail`。输出 `performs/<skill>/<move>.ex` 骨架（幂等；与人工实装同模板，未自动化处标 `TODO(migrate)`——即步骤 3 校对清单）。
 - **步骤 2/4 元数据与样板**：3 个 LPC 样本以 fixture 形式入库（`scripts/fixtures/kungfu/skill/{huashan-jian/jie.c,chousui-zhang/dan.c,force/power.c}`，回归数据源）。样板 1 已实装：`Kantele.Combat.Skills.Force` + `performs/force/power.ex`（运功 `power`：force≥200 / martial-cognize≥120 / neili≥100 门槛、内力清零、攻防加成 cognize/5、战斗中 busy 3）；`exert` 命令补公共运功 fallback（`Skills.get("force")` 的 `exert_list`，对应 `kungfu/skill/force/*` 由各内功共享）。`valid_force` 互斥已在 F2/b5 生效；`Force` 注册后需在 `LearnGate.force_conflict` 排除基本 `force`（非可选内功）。
 - **步骤 5 回归**：`test/kantele/f4_extractor_test.exs`（分类/事实抽取/骨架落盘与幂等）+ `test/kantele/combat/force_power_test.exs`（门槛/生效/busy/fallback），全量 2411/0。
-- **待续（slice2/3）**：`huashan-jian/jie`（目标侧 busy，需新增 `perform -> target` 事件）、`chousui-zhang/dan`（远程伤害 + `fire_poison` + 护甲损耗，含 `TODO(migrate)` 项）。引擎现有 perform 均为自身 buff，攻击型 perform 的目标侧结算通道是 slice2 的前置。
+
+### 进度（F4 slice2 已完成并推送）
+- **目标侧结算通道**：新增 `combat/perform-incoming`（攻击方 -> 防守方，玩家/NPC 两路由均注册；`Kantele.Character.CombatEvent.perform_incoming/2`）。攻击型 perform 与战斗心跳同构：攻击方进程只校验门槛、扣资源、放主文案，把命中随机（依赖防守方 `parry`）与忙乱交给防守方进程，规避跨进程读取目标状态。
+- **样板 2 实装**：`Kantele.Combat.Skills.HuashanJian`（6 式静态招式取自 `huashan-jian.c`；`valid_enable sword/parry`、`valid_learn`、`practice_cost qi50/neili31`）+ `performs/huashan_jian/jie.ex`（门槛 can_perform / 战斗中 / 兵器 sword / level≥30 / mapped sword / neili≥60，扣 50 内力，命中目标忙乱 `level/22+2`）。LPC 第 7 式「极意」动态招式与 `hit_ob`「紫霞剑气」留在 `TODO(migrate)`。
+- **分歧记录**：LPC `target->is_busy()` 时直接拒绝、且仅失手时 `me->start_busy(1)`；本版无回执通道，目标忙乱不阻发招、攻击者不进入忙乱，均在 `TODO(migrate)` 注明。
+- **提取器改进**：输出目录改为与模块文件一致的下划线名（`huashan-jian` -> `huashan_jian`）；`Messages.interpolate` 补 `$P`（同 `$N`）。
+- **回归**：`test/kantele/combat/huashan_jian_test.exs`（技能表 + 攻击方 7 类门槛 + 目标侧命中/失手/死亡/未知），全量 2426/0。
+
+### 待续（slice3）
+- `chousui-zhang/dan`：远程伤害 + `fire_poison` + 护甲损耗（含 `TODO(migrate)` 项）；复用 slice2 的目标侧通道。
 
 ---
 

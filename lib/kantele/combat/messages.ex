@@ -222,7 +222,8 @@ defmodule Kantele.Combat.Messages do
   @doc """
   把带占位符的战斗文案替换为真名（message_vision 替代）
 
-  绑定：keyword 或 map，键为 `n1/n2/p/limb/weapon/weapon2`
+  绑定：keyword 或 map，键为 `n1/n2/p/limb/weapon/weapon2`（`$P` 与 `$p` 分别
+  指攻守双方，与 `$N`/`$n` 同源）
   """
   def interpolate(text, bindings) do
     bindings = Enum.into(bindings, %{})
@@ -230,6 +231,7 @@ defmodule Kantele.Combat.Messages do
     text
     |> String.replace("$N", Map.get(bindings, :n1, ""))
     |> String.replace("$n", Map.get(bindings, :n2, ""))
+    |> String.replace("$P", Map.get(bindings, :n1, ""))
     |> String.replace("$p", Map.get(bindings, :n2, ""))
     |> String.replace("$l", Map.get(bindings, :limb, "身体"))
     |> String.replace("$w", Map.get(bindings, :weapon, "拳头"))

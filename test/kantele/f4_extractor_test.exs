@@ -91,8 +91,8 @@ defmodule Kantele.F4ExtractorTest do
 
       stats = TranslatePerform.run(@fixtures, out)
 
-      assert Path.join("huashan-jian", "jie.ex") in stats.written
-      assert Path.join("chousui-zhang", "dan.ex") in stats.written
+      assert Path.join("huashan_jian", "jie.ex") in stats.written
+      assert Path.join("chousui_zhang", "dan.ex") in stats.written
       assert Path.join("force", "power.ex") in stats.written
 
       rendered = TranslatePerform.render_skeleton(TranslatePerform.extract(c("force", "power")))
