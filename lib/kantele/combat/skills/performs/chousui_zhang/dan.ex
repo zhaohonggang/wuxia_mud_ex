@@ -32,14 +32,15 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
     stats = character.meta.stats
     combat = character.meta.combat
 
-    with :ok <- check_perform_known(stats),
-         {:ok, target} <- check_target(combat),
-         {:ok, lvl} <- check_chousui(stats),
-         {:ok, lvp} <- check_poison(stats),
-         :ok <- check_throwing(stats),
-         :ok <- check_mapped(stats),
-         :ok <- check_max_neili(character),
-         :ok <- check_neili(character) do
+with :ok <- check_perform_known(stats),
+          {:ok, target} <- check_target(combat),
+          {:ok, lvl} <- check_chousui(stats),
+          {:ok, lvp} <- check_poison(stats),
+          :ok <- check_throwing(stats),
+          :ok <- check_mapped(stats),
+          :ok <- check_max_neili(character),
+          :ok <- check_neili(character),
+          :ok <- check_handing(character) do
       apply_perform(conn, character, target, lvl, lvp)
     else
       {:error, message} ->
@@ -149,8 +150,21 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
       }
     })
 
+    # 消耗手中毒药（若有）
+    temp = Map.get(character.meta, :temp, %{})
+    handing = Map.get(temp, "handing")
+    new_inventory =
+      if handing && is_map(handing) do
+        Enum.reject(character.inventory, &(&1.id == handing.id))
+      else
+        character.inventory
+      end
+    new_temp = Map.put(temp, "handing", nil)
+    new_meta = Map.put(character.meta, :temp, new_temp)
+    new_character = %{character | inventory: new_inventory, meta: new_meta}
+
     conn
-    |> put_character(character)
+    |> put_character(new_character)
     |> assign(:prompt, false)
   end
 
@@ -172,5 +186,18 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
   end
 
   defp ref(character),
-    do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
-end
+do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+
+defp check_handing(character) do
+    handing = character.meta.temp["handing"]
+    if handing == nil do
+      :ok  # TODO(migrate): 后续强制校验 handing 必须存在
+    else
+      if is_map(handing) && handing.meta && handing.meta["can_daub"] == true && handing.meta["poison_type"] do
+        :ok
+      else
+        {:error, "你必须拿着(hand)些毒药才能施展\"炼心弹\"。\n"}
+      end
+    end
+  end
+ end
