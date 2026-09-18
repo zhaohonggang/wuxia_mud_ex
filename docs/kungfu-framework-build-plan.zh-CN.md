@@ -151,6 +151,13 @@
 ### F4 收尾
 - 三个样板（force/power、huashan-jian/jie、chousui-zhang/dan）已覆盖 perform/exert 全链路、目标侧结算与回执。
 
+### F4 批量迁移（进行中）
+- **提取器跑通全量**：`KUNGFU_SRC=/tmp/kungfu_skill RUN_EXTRACTOR=1 mix run scripts/translate_perform.exs` → 428 个 skill、644 个 perform/exert 骨架（非招式 `.c` 记入 `skipped`）。
+- **编码问题定位与修复（此前是在追幻影）**：全量 1448 个 `.c` 经 `iconv -f UTF-8 -t UTF-8`（无 `-c`）核验**全部合法 UTF-8**，源文件并无编码问题。此前生成骨架含非法 UTF-8，是提取器自带的 `sanitize/1`（temp-file + `iconv` + 字节级回退）与 `read_source/1` 把**合法字节改坏**造成的；`@skip_skills` 逐个回避源在解决一个不存在的问题。已删除 `sanitize`/`sanitize_bytes_fallback`/`read_source`/`@skip_skills` 全部臆造转码逻辑，改为直接 `File.read!`。重新生成 644 文件经 `iconv` 复检 **0 非法、0 U+FFFD**。
+- **输出改到暂存区**：默认输出由 `lib/kantele/combat/skills/performs/` 改为 `tmp/perf_out/`（`.gitignore` 已忽略 `/tmp/`）。此前提取器曾把已实装的三个样板覆盖成骨架、并把数百未评审文件落进编译路径导致 `mix test` 编译失败。评审后按批挑入 `lib/` 并注册 `Skills.@static`。
+- **回归**：`f4_extractor_test.exs` 9/0（新增生成文本 `String.valid?` + 无 U+FFFD 断言）；全量 2444/0。
+- **待办（步骤 3 人工校对）**：按批校对 644 骨架的 `TODO(migrate)` 门槛/效果，逐批实装 + 测试锁定 + 提交。
+
 ---
 
 ## 依赖与风险

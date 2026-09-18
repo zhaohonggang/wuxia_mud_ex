@@ -98,6 +98,10 @@ defmodule Kantele.F4ExtractorTest do
       rendered = TranslatePerform.render_skeleton(TranslatePerform.extract(c("force", "power")))
       assert File.read!(Path.join([out, "force", "power.ex"])) == rendered
 
+      # 生成骨架必须是合法 UTF-8（中文标题/文案不得被清洗逻辑改坏）
+      assert String.valid?(rendered)
+      refute rendered =~ <<0xEF, 0xBF, 0xBD>>
+
       skel = rendered
       assert skel =~ "defmodule Kantele.Combat.Skills.Performs.Force.Power"
       assert skel =~ "TODO(migrate)"

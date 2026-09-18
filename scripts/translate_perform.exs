@@ -4,9 +4,8 @@ defmodule Scripts.TranslatePerform do
 
   扫描 `kungfu/skill/<skill>/<move>.c`，按 `int perform(` / `int exert(`
   顶层签名分类（F_SSERVER / F_CLEAN_UP 继承标注一并记录），抽取门槛、
-  资源消耗、文案等事实数据，产出 `lib/kantele/combat/skills/performs/
-  <skill>/<move>.ex` 骨架（与样板实装同模板，语义未自动化处标
-  `TODO(migrate)`，由人工校对清单补完）。
+  资源消耗、文案等事实数据，产出骨架（与样板实装同模板，语义未自动化处
+  标 `TODO(migrate)`，由人工校对清单补完）。
 
   用法（跑在仓库根）：
 
@@ -14,7 +13,11 @@ defmodule Scripts.TranslatePerform do
       KUNGFU_SRC=/path/to/mud/kungfu/skill mix run scripts/translate_perform.exs
       KUNGFU_OUT=/tmp/out mix run scripts/translate_perform.exs
 
-  不设置 `RUN_EXTRACTOR=1` 时（如被测试 `Code.require_file` 引入）不执行主流程。
+  默认输出到 `tmp/perf_out`（不进编译路径，人工评审后再挑入
+  `lib/kantele/combat/skills/performs/`）。不设置 `RUN_EXTRACTOR=1` 时
+  （如被测试 `Code.require_file` 引入）不执行主流程。
+
+  LPC 源码经核验全部是合法 UTF-8，故无需转码/清洗。
   """
 
   @perform_re ~r/^\s*int\s+perform\s*\(/m
@@ -91,26 +94,36 @@ defmodule Scripts.TranslatePerform do
     {written, skipped} =
       src_root
       |> skill_dirs()
-      |> Enum.reduce({[], []}, fn skill_dir, {written, skipped} ->
-        skill = Path.basename(skill_dir)
-
-        Path.wildcard(Path.join(skill_dir, "*.c"))
-        |> Enum.sort()
-        |> Enum.reduce({written, skipped}, fn c, {w, s} ->
-          case extract(c) do
-            nil ->
-              {w, [Path.relative_to(c, src_root) | s]}
-
-            data when is_map(data) ->
-              case write_skeleton(out_root, skill, data) do
-                nil -> {w, s}
-                out -> {[out | w], s}
-              end
-          end
-        end)
-      end)
+      |> Enum.reduce({[], []}, &reduce_skill_dir(&1, &2, out_root))
 
     %{written: Enum.sort(written), skipped: Enum.sort(skipped)}
+  end
+
+  defp reduce_skill_dir(skill_dir, acc, out_root) do
+    skill_dir
+    |> Path.join("*.c")
+    |> Path.wildcard()
+    |> Enum.sort()
+    |> Enum.reduce(acc, &reduce_c_file(&1, &2, out_root))
+  end
+
+  defp reduce_c_file(c_file, {written, skipped}, out_root) do
+    case extract(c_file) do
+      nil ->
+        {written, [Path.relative_to(c_file, System.get_env("KUNGFU_SRC") || Path.join([__DIR__, "fixtures", "kungfu", "skill"])) | skipped]}
+
+      data when is_map(data) ->
+        case write_skeleton(out_root, skill_from_path(c_file), data) do
+          nil -> {written, skipped}
+          out -> {[out | written], skipped}
+        end
+    end
+  end
+
+  defp skill_from_path(c_file) do
+    c_file
+    |> Path.dirname()
+    |> Path.basename()
   end
 
   @doc "渲染单个骨架文本（测试/人工复刻参照）"
@@ -154,7 +167,6 @@ defmodule Scripts.TranslatePerform do
       |> Enum.join("\n")
 
     """
-
     defmodule #{mod} do
       @moduledoc \"""
       #{data.kind}「#{data.title}」（source #{data.skill}/#{data.move}.c，由 translate_perform.exs 骨架生成，inherit #{data.inherit || "?"}）
@@ -207,7 +219,7 @@ defmodule Scripts.TranslatePerform do
   end
 
   defp write_skeleton(out_root, skill, data) do
-    dir = Path.join([out_root, skill_dir(skill)])
+    dir = Path.join(out_root, skill_dir(skill))
     File.mkdir_p!(dir)
     file = Path.join(dir, data.move <> ".ex")
     rendered = render_skeleton(data)
@@ -270,6 +282,6 @@ end
 
 if System.get_env("RUN_EXTRACTOR") in ["1", "true"] do
   src = System.get_env("KUNGFU_SRC") || Path.join([__DIR__, "fixtures", "kungfu", "skill"])
-  out = System.get_env("KUNGFU_OUT") || Path.join([__DIR__, "..", "lib", "kantele", "combat", "skills", "performs"])
+  out = System.get_env("KUNGFU_OUT") || Path.join([__DIR__, "..", "tmp", "perf_out"])
   Scripts.TranslatePerform.run(src, out) |> IO.inspect(label: "translate_perform")
 end
