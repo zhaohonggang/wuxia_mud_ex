@@ -13,7 +13,6 @@ defmodule Kantele.Combat.T1ExertsTest do
     {"bahuang-gong", "powerup", "bahuang-gong", %{attack: 50, dodge: 33, parry: 33}, "你的内力不够。\n"},
     {"bahuang-gong", "shield", "bahuang-gong", %{armor: 50}, "你的内力不够。\n"},
     {"beiming-shengong", "powerup", "beiming-shengong", %{attack: 33, defense: 33}, "你的内力不够!"},
-    {"beiming-shengong", "shield", "beiming-shengong", %{armor: 50}, "你的内力不够。\n"},
     {"changsheng-jue", "powerup", "force", %{attack: 40, parry: 40, dodge: 40}, "你的内力不够。\n"},
     {"changsheng-jue", "shield", "force", %{armor: 300}, "你的内力不够。\n"},
     {"bibo-shengong", "powerup", "bibo-shengong", %{attack: 33, defense: 33}, "你的真气不够！"},
@@ -86,6 +85,7 @@ defmodule Kantele.Combat.T1ExertsTest do
     {"linji-zhuang", "powerup", "linji-zhuang", %{attack: 33, dodge: 33, damage: 50},
      "你的内力不够。\n"},
     {"zihui-xinfa", "powerup", "zihui-xinfa", %{attack: 33, dodge: 33, defense: 33}, "你的真气不够！"},
+    {"biyun-xinfa", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"},
     {"luohan-fumogong", "powerup", "luohan-fumogong", %{attack: 33, defense: 33}, "你的内力不够。\n"},
     {"sanku-shengong", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"}
   ]
@@ -99,7 +99,7 @@ defmodule Kantele.Combat.T1ExertsTest do
              xiuluo-yinshagong xixing-dafa surge-force shenlong-xinfa lengyue-shengong
              huagong-dafa xiyang-neigong xuehai-mogong yijin-duangu yijinjing yujiashu
              yunlong-shengong yunv-xinjing zhenyue-jue longxiang-gong linji-zhuang
-             zihui-xinfa sanku-shengong)
+             zihui-xinfa biyun-xinfa sanku-shengong beiming-shengong)
 
   defp player(opts) do
     skills = Keyword.get(opts, :skills, %{"force" => 100})
@@ -121,7 +121,7 @@ defmodule Kantele.Combat.T1ExertsTest do
     }
   end
 
-  defp exert(skill_id, function), do: Skills.get(skill_id).exert_list()[function]
+defp exert(skill_id, function), do: Skills.get(skill_id).exert_list()[function]
 
   defp output_text(conn) do
     conn.output
@@ -519,26 +519,43 @@ defmodule Kantele.Combat.T1ExertsTest do
     skills = fn map -> build.(%{skills: map, con: 20, int: 20}) end
 
     luohan = Skills.get("luohan-fumogong")
-    assert luohan.valid_learn(build.(%{skills: %{"force" => 180, "luohan-fumogong" => 180}, int: 30, con: 30})) == :ok
-    assert {:error, _} = luohan.valid_learn(build.(%{skills: %{"force" => 100, "luohan-fumogong" => 150}, int: 30, con: 30}))
+
+    assert luohan.valid_learn(
+             build.(%{skills: %{"force" => 180, "luohan-fumogong" => 180}, int: 30, con: 30})
+           ) == :ok
+
+    assert {:error, _} =
+             luohan.valid_learn(
+               build.(%{skills: %{"force" => 100, "luohan-fumogong" => 150}, int: 30, con: 30})
+             )
 
     spec = luohan.exert_list()["fireice"].spec()
 
-    low = Simple.run(
-      build_conn(player(skills: %{"luohan-fumogong" => 100, "force" => 100})),
-      spec,
-      fn _ -> 1 end
-    )
+    low =
+      Simple.run(
+        build_conn(player(skills: %{"luohan-fumogong" => 100, "force" => 100})),
+        spec,
+        fn _ -> 1 end
+      )
+
     assert output_text(low) =~ "火候不足"
 
-    high = Simple.run(
-      build_conn(player(skills: %{"luohan-fumogong" => 180, "force" => 100, "max_neili" => 5000}, neili: 1000)),
-      spec,
-      fn _ -> 1 end
-    )
+    high =
+      Simple.run(
+        build_conn(
+          player(
+            skills: %{"luohan-fumogong" => 180, "force" => 100, "max_neili" => 5000},
+            neili: 1000
+          )
+        ),
+        spec,
+        fn _ -> 1 end
+      )
+
     char = high.private.update_character
     assert char.meta.vitals.neili == 700
     assert Combat.buff_active?(char.meta.combat, "fireice")
+
     assert Enum.find(char.meta.combat.buffs, &(&1.key == "fireice")).applies ==
              %{
                armor: -72,
