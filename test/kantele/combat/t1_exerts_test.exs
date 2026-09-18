@@ -17,8 +17,20 @@ defmodule Kantele.Combat.T1ExertsTest do
     {"changsheng-jue", "powerup", "force", %{attack: 40, parry: 40, dodge: 40}, "你的内力不够。\n"},
     {"changsheng-jue", "shield", "force", %{armor: 300}, "你的内力不够。\n"},
     {"bibo-shengong", "powerup", "bibo-shengong", %{attack: 33, defense: 33}, "你的真气不够！"},
-    {"hunyuan-yiqi", "powerup", "hunyuan-yiqi", %{attack: 33, defense: 33}, "你的内力不够。\n"}
+    {"hunyuan-yiqi", "powerup", "hunyuan-yiqi", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"taiji-shengong", "powerup", "taiji-shengong", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"taiji-shengong", "shield", "taiji-shengong", %{armor: 50}, "你的内力不够。\n"},
+    {"xiaowuxiang", "powerup", "xiaowuxiang", %{attack: 33, parry: 33, dodge: 33}, "你的真气不够！"},
+    {"xiaowuxiang", "shield", "xiaowuxiang", %{armor: 50}, "你的真气不够。\n"},
+    {"xuanming-shengong", "powerup", "xuanming-shengong", %{attack: 33, defense: 33},
+     "你的内力不够。\n"},
+    {"xuanming-shengong", "shield", "xuanming-shengong", %{armor: 50}, "你的内力不够。\n"},
+    {"zhanshen-xinjing", "powerup", "zhanshen-xinjing", %{attack: 33, defense: 33}, "你的内力不够了。"},
+    {"zhanshen-xinjing", "shield", "zhanshen-xinjing", %{armor: 50}, "你的内力不够。\n"}
   ]
+
+  @skills ~w(bahuang-gong beiming-shengong bibo-shengong changsheng-jue hunyuan-yiqi
+             taiji-shengong xiaowuxiang xuanming-shengong zhanshen-xinjing)
 
   defp player(opts) do
     skills = Keyword.get(opts, :skills, %{"force" => 100})
@@ -51,8 +63,8 @@ defmodule Kantele.Combat.T1ExertsTest do
     |> Enum.join("")
   end
 
-  test "五门内功已注册且挂载 exert" do
-    for id <- ~w(bahuang-gong beiming-shengong bibo-shengong changsheng-jue hunyuan-yiqi) do
+  test "内功已注册且挂载 exert" do
+    for id <- @skills do
       module = Skills.get(id)
       assert module, "missing skill #{id}"
       assert map_size(module.exert_list()) >= 1
@@ -62,12 +74,19 @@ defmodule Kantele.Combat.T1ExertsTest do
   test "powerup/shield 成功：扣 100 内力 + 加成 + buff 回收值" do
     for {skill_id, function, _level_skill, expected, _message} <- @cases do
       skills = %{"force" => 100, skill_id => 100}
-      conn = Simple.run(build_conn(player(skills: skills)), exert(skill_id, function).spec(), fn _ -> 1 end)
+
+      conn =
+        Simple.run(build_conn(player(skills: skills)), exert(skill_id, function).spec(), fn _ ->
+          1
+        end)
+
       char = conn.private.update_character
 
       assert char.meta.vitals.neili == 8900, "#{skill_id}/#{function} 内力"
       assert Combat.buff_active?(char.meta.combat, function), "#{skill_id}/#{function} buff"
-      assert Map.take(char.meta.combat.temp, Map.keys(expected)) == expected, "#{skill_id}/#{function} 加成"
+
+      assert Map.take(char.meta.combat.temp, Map.keys(expected)) == expected,
+             "#{skill_id}/#{function} 加成"
 
       buff = Enum.find(char.meta.combat.buffs, &(&1.key == function))
       assert buff.applies == Map.new(expected, fn {key, value} -> {key, -value} end)
@@ -76,7 +95,8 @@ defmodule Kantele.Combat.T1ExertsTest do
 
   test "内力不足：渲染各自文案且不落库" do
     for {skill_id, function, _level_skill, _expected, message} <- @cases do
-      conn = Simple.run(build_conn(player(neili: 0)), exert(skill_id, function).spec(), fn _ -> 1 end)
+      conn =
+        Simple.run(build_conn(player(neili: 0)), exert(skill_id, function).spec(), fn _ -> 1 end)
 
       assert output_text(conn) =~ message, "#{skill_id}/#{function} 文案"
       assert is_nil(conn.private.update_character)
@@ -117,5 +137,34 @@ defmodule Kantele.Combat.T1ExertsTest do
       )
 
     assert conn.private.update_character.meta.combat.busy == 2
+  end
+
+  test "新内功 valid_learn 门槛" do
+    stats = fn skills, con ->
+      struct(Kantele.Character.Stats.new(), %{skills: skills, con: con})
+    end
+
+    taiji = Skills.get("taiji-shengong")
+    assert taiji.valid_learn(stats.(%{"force" => 100, "taoism" => 100}, 20)) == :ok
+    assert {:error, _} = taiji.valid_learn(stats.(%{"force" => 99, "taoism" => 100}, 20))
+    assert {:error, _} = taiji.valid_learn(stats.(%{"force" => 100, "taoism" => 99}, 20))
+
+    assert {:error, _} =
+             taiji.valid_learn(
+               stats.(%{"force" => 100, "taoism" => 100, "taiji-shengong" => 200}, 20)
+             )
+
+    xiaowuxiang = Skills.get("xiaowuxiang")
+    assert xiaowuxiang.valid_learn(stats.(%{"force" => 80}, 20)) == :ok
+    assert {:error, _} = xiaowuxiang.valid_learn(stats.(%{"force" => 79}, 20))
+
+    xuanming = Skills.get("xuanming-shengong")
+    assert xuanming.valid_learn(stats.(%{"force" => 100}, 32)) == :ok
+    assert {:error, _} = xuanming.valid_learn(stats.(%{"force" => 100}, 31))
+    assert {:error, _} = xuanming.valid_learn(stats.(%{"force" => 50}, 40))
+
+    zhanshen = Skills.get("zhanshen-xinjing")
+    assert zhanshen.valid_learn(stats.(%{"force" => 100}, 25)) == :ok
+    assert {:error, _} = zhanshen.valid_learn(stats.(%{"force" => 100}, 24))
   end
 end

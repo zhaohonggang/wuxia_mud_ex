@@ -175,7 +175,11 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   与 `duration`/`expire_message`（到期投递 `combat/buff-expire`）。新增
   `test/kantele/combat/t1_exerts_test.exs`（5 例）。各内功 `valid_learn` 的性别/性格/婚姻/僧戒等
   未建模字段以 `TODO(migrate)` 标注。
-- [ ] 批次 2–4：余下 ~78 条（`powerup`/`shield` 族为主）。
+- [x] 批次 2（8 条）：`taiji-shengong` powerup/shield、`xiaowuxiang` powerup/shield、
+  `xuanming-shengong` powerup/shield、`zhanshen-xinjing` powerup/shield。新增 4 门内功 module 并注册。
+  `t1_exerts_test.exs` 扩到 `@cases`（18 条）+ 新增 `valid_learn` 门槛用例。差异：`xuanming-shengong/shield`
+  的 LPC `apply/strike` 加成未建模（临时键收敛），仅落 armor。
+- [ ] 批次 3–4：余下 ~70 条（`powerup`/`shield` 族为主）。
 - [ ] 差异项：`suck`/`freeze`/`dispel`/`heal`/`regenerate` 等带吸取/条件分支，手写。
 - [ ] 每批补 `exert` 命令回归（含 force fallback）。
 
