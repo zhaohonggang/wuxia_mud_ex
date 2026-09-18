@@ -14,14 +14,19 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
     条件宿主（NPC）/jing 创伤/装备耐久未接，见目标侧 TODO。
   """
 
+  @behaviour Kantele.Combat.Perform
+
   import Kalevala.Character.Conn
 
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
+  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Combat
+  alias Kantele.Character.ConditionEvent
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "chousui-zhang/dan"
   @dan "「炼心弹」"
@@ -184,6 +189,135 @@ with :ok <- check_perform_known(stats),
         {50 + Engine.rand(rng, div(lvp, 2)), "一点暗红色的火星"}
     end
   end
+
+  @doc false
+  def resolve_incoming(conn, character, attacker, data) do
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    vitals = character.meta.vitals
+    stats = character.meta.stats
+
+    bindings = [n1: attacker.name, n2: character.name]
+
+    an = Map.get(data, :an, 0)
+    dn = vitals.max_neili + div(vitals.neili, 4)
+
+    cond do
+      Engine.rand(rng, max(an, 1)) + div(an, 2) < div(dn * 2, 3) ->
+        # 对方内力过高：震灭，攻击方 -150 内力 / busy 3
+        Performs.feedback(attacker, 150, 3)
+
+        Broadcast.publish(
+          conn,
+          Messages.interpolate("然而$n全然不放在心上，轻轻一抖，已将$N射来的火焰震灭。\n", bindings)
+        )
+
+      true ->
+        ap = Map.get(data, :ap, 0)
+
+        dp =
+          if Map.get(data, :userp, true) do
+            Stats.effective(stats, "dodge") + Stats.effective(stats, "martial-cognize")
+          else
+            Stats.effective(stats, "dodge") + Stats.effective(stats, "parry")
+          end
+
+        if Engine.rand(rng, max(ap, 1)) + div(ap, 2) > dp do
+          # 命中：jing 直接伤害和创伤，攻击方 -220 内力 / busy 2
+          # TODO(migrate): handing 毒药、query_skill_prepared 前置
+          damage = Map.get(data, :damage, 0)
+          jing_damage = div(damage, 2)
+          jing_wound = div(damage, 3)
+
+          vitals =
+            Vitals.damage(vitals, :jing, jing_damage)
+            |> Vitals.wound(:jing, jing_wound)
+
+          character = %{character | meta: %{character.meta | vitals: vitals}}
+
+          # 火毒（dan.c final 181-184）
+          lvp = Map.get(data, :poison, 0)
+          poison_level = div(lvp, 2) + Engine.rand(rng, div(lvp, 2))
+          poison_duration = 3 + Engine.rand(rng, div(lvp, 30))
+
+          poison_params = %{
+            "level" => poison_level,
+            "duration" => poison_duration,
+            "remain" => poison_duration,
+            "id" => attacker.id,
+            "name" => "火毒"
+          }
+
+          conn = ConditionEvent.apply_poison(conn, poison_params)
+
+          # 护甲 consistence 损耗（dan.c final 157-179）：作用在角色状态上，
+          # 由末尾 put_character/2 落账；同时取得命中文案所用护具名。
+          {character, armor_name} = wear_armor(character)
+
+          wound_text =
+            "$n一个不慎，火星顿时溅到#{armor_name}之上，大势燃烧起来，皮肉烧得嗤嗤作响。\n"
+
+          Performs.feedback(attacker, 220, 2)
+
+          conn
+          |> Broadcast.publish(Messages.interpolate(wound_text, bindings))
+          |> put_character(character)
+        else
+          # 被闪避：攻击方 -100 内力 / busy 3
+          Performs.feedback(attacker, 100, 3)
+
+          Broadcast.publish(
+            conn,
+            Messages.interpolate(
+              "可是$n见势不妙，急忙腾挪身形，终于避开了$N射来的火焰。\n",
+              bindings
+            )
+          )
+        end
+    end
+  end
+
+  # 护甲 consistence 损耗（dan.c final 157-179）：
+  # 优先衣服，其次盔甲；stable >= 100 的护具不损耗，但仍取用其名。
+  # 返回 {更新后的角色, 护具名或 "肌肤"}。
+  defp wear_armor(character) do
+    equipped = character.meta.combat.equipped
+
+    case pick_armor(equipped) do
+      {slot, snapshot} ->
+        character =
+          if armor_stable?(snapshot) do
+            character
+          else
+            consistence = Map.get(snapshot, :consistence) || 100
+            new_consistence = max(consistence - :rand.uniform(10), 0)
+
+            if new_consistence == consistence do
+              character
+            else
+              updated = Map.put(snapshot, :consistence, new_consistence)
+              updated_equipped = Map.put(equipped, slot, updated)
+              updated_combat = %{character.meta.combat | equipped: updated_equipped}
+              %{character | meta: %{character.meta | combat: updated_combat}}
+            end
+          end
+
+        {character, Map.get(snapshot, :name, "肌肤")}
+
+      nil ->
+        {character, "肌肤"}
+    end
+  end
+
+  defp pick_armor(equipped) do
+    Enum.find_value([:cloth, :armor], fn slot ->
+      case Map.get(equipped, slot) do
+        snapshot when is_map(snapshot) -> {slot, snapshot}
+        _ -> nil
+      end
+    end)
+  end
+
+  defp armor_stable?(snapshot), do: Map.get(snapshot, :stable, 1) >= 100
 
   defp ref(character),
 do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}

@@ -14,10 +14,14 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Jie do
   `me->start_busy(1)`；本版目标忙乱不阻发招、攻击者也不进入忙乱（缺回执通道）。
   """
 
+  @behaviour Kantele.Combat.Perform
+
   import Kalevala.Character.Conn
 
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
+  alias Kantele.Combat.Engine
+  alias Kantele.Combat.Messages
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
@@ -120,6 +124,44 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Jie do
     |> put_character(character)
     |> assign(:prompt, false)
   end
+
+  @doc false
+  def resolve_incoming(conn, character, attacker, data) do
+    level = Map.get(data, :level, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    combat = character.meta.combat
+    weapon = Combat.weapon(combat)
+    weapon_name = weapon && Map.get(weapon, :name)
+    parry = Stats.skill(character.meta.stats, "parry")
+
+    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
+
+    if Engine.rand(rng, level) > div(parry, 2) do
+      combat = Combat.start_busy(combat, div(level, 22) + 2)
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings)
+      )
+      |> put_character(put_combat(character, combat))
+    else
+      text =
+        if weapon_name do
+          Messages.interpolate(
+            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
+              "$N一怔之下再也攻不进去。\n",
+            bindings
+          )
+        else
+          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
+        end
+
+      Broadcast.publish(conn, text)
+    end
+  end
+
+  defp put_combat(character, combat),
+    do: %{character | meta: Map.put(character.meta, :combat, combat)}
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}

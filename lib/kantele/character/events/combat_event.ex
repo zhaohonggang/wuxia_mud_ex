@@ -34,15 +34,14 @@ defmodule Kantele.Character.CombatEvent do
   alias Kantele.Combat.Engine
   alias Kantele.Combat.Fighter
   alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.Combat
   alias Kantele.Character.Combat.StatusTracker
   alias Kantele.Character.CharacterView
   alias Kantele.Character.CommandView
   alias Kantele.Character.PlayerMeta
-  alias Kantele.Character.Stats
   alias Kantele.Character.Teleport
   alias Kantele.Character.Vitals
-  alias Kantele.Character.ConditionEvent
   alias Kantele.Quest
 
   @tick_interval 1000
@@ -305,191 +304,12 @@ defmodule Kantele.Character.CombatEvent do
       Map.get(attacker, :room_id) != character.room_id ->
         notify_left(conn, character, attacker)
 
-      Map.get(data, :perform_id) == "huashan-jian/jie" ->
-        resolve_jie(conn, character, attacker, data)
-
-      Map.get(data, :perform_id) == "chousui-zhang/dan" ->
-        resolve_dan(conn, character, attacker, data)
-
       true ->
-        conn
+        Performs.resolve_incoming(conn, Map.get(data, :perform_id), character, attacker, data)
     end
   end
 
   def perform_incoming(conn, _event), do: conn
-
-  defp resolve_jie(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
-
-    if Engine.rand(rng, level) > div(parry, 2) do
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-
-      conn
-      |> Broadcast.publish(
-        Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings)
-      )
-      |> put_character(put_combat(character, combat))
-    else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
-    end
-  end
-
-  # 「炼心弹」目标侧结算（dan.c 95-134）：内力比对 -> 命中/闪避三分支。
-  # 内力消耗与忙乱属攻击方状态，经 combat/perform-feedback 回执补扣。
-  defp resolve_dan(conn, character, attacker, data) do
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    vitals = character.meta.vitals
-    stats = character.meta.stats
-
-    bindings = [n1: attacker.name, n2: character.name]
-
-    an = Map.get(data, :an, 0)
-    dn = vitals.max_neili + div(vitals.neili, 4)
-
-    cond do
-      Engine.rand(rng, max(an, 1)) + div(an, 2) < div(dn * 2, 3) ->
-        # 对方内力过高：震灭，攻击方 -150 内力 / busy 3
-        send_feedback(attacker, 150, 3)
-
-        Broadcast.publish(
-          conn,
-          Messages.interpolate("然而$n全然不放在心上，轻轻一抖，已将$N射来的火焰震灭。\n", bindings)
-        )
-
-      true ->
-        ap = Map.get(data, :ap, 0)
-
-        dp =
-          if Map.get(data, :userp, true) do
-            Stats.effective(stats, "dodge") + Stats.effective(stats, "martial-cognize")
-          else
-            Stats.effective(stats, "dodge") + Stats.effective(stats, "parry")
-          end
-
-if Engine.rand(rng, max(ap, 1)) + div(ap, 2) > dp do
-           # 命中：jing 直接伤害和创伤，攻击方 -220 内力 / busy 2
-           # TODO(migrate): handing 毒药、query_skill_prepared 前置
-damage = Map.get(data, :damage, 0)
-            jing_damage = div(damage, 2)
-            jing_wound = div(damage, 3)
-            vitals = Vitals.damage(vitals, :jing, jing_damage)
-                     |> Vitals.wound(:jing, jing_wound)
-            character = %{character | meta: %{character.meta | vitals: vitals}}
-
-            # 火毒
-            lvp = Map.get(data, :poison, 0)
-            poison_level = div(lvp, 2) + Engine.rand(rng, div(lvp, 2))
-            poison_duration = 3 + Engine.rand(rng, div(lvp, 30))
-            poison_params = %{
-              "level" => poison_level,
-              "duration" => poison_duration,
-              "remain" => poison_duration,
-              "id" => attacker.id,
-              "name" => "火毒"
-            }
-            conn =
-              conn
-              |> ConditionEvent.apply_poison(poison_params)
-
-             # 护甲 consistence 损耗（dan.c final 157-179）：作用在角色状态上，
-             # 由末尾 put_character/2 落账；同时取得命中文案所用护具名。
-             {character, armor_name} = wear_armor(character)
-
-             wound_text =
-               "$n一个不慎，火星顿时溅到#{armor_name}之上，大势燃烧起来，皮肉烧得嗤嗤作响。\n"
-
-             send_feedback(attacker, 220, 2)
-
-             conn
-               |> Broadcast.publish(
-                 Messages.interpolate(wound_text, bindings)
-               )
-               |> put_character(character)
-        else
-          # 被闪避：攻击方 -100 内力 / busy 3
-          send_feedback(attacker, 100, 3)
-
-          Broadcast.publish(
-            conn,
-            Messages.interpolate(
-              "可是$n见势不妙，急忙腾挪身形，终于避开了$N射来的火焰。\n",
-              bindings
-            )
-          )
-        end
-    end
-  end
-
-  # 护甲 consistence 损耗（dan.c final 157-179）：
-  # 优先衣服，其次盔甲；stable >= 100 的护具不损耗，但仍取用其名。
-  # 返回 {更新后的角色, 护具名或 "肌肤"}。
-  defp wear_armor(character) do
-    equipped = character.meta.combat.equipped
-
-    case pick_armor(equipped) do
-      {slot, snapshot} ->
-        character =
-          if armor_stable?(snapshot) do
-            character
-          else
-            consistence = Map.get(snapshot, :consistence) || 100
-            new_consistence = max(consistence - :rand.uniform(10), 0)
-
-            if new_consistence == consistence do
-              character
-            else
-              updated = Map.put(snapshot, :consistence, new_consistence)
-              updated_equipped = Map.put(equipped, slot, updated)
-              updated_combat = %{character.meta.combat | equipped: updated_equipped}
-              %{character | meta: %{character.meta | combat: updated_combat}}
-            end
-          end
-
-        {character, Map.get(snapshot, :name, "肌肤")}
-
-      nil ->
-        {character, "肌肤"}
-    end
-  end
-
-  defp pick_armor(equipped) do
-    Enum.find_value([:cloth, :armor], fn slot ->
-      case Map.get(equipped, slot) do
-        snapshot when is_map(snapshot) -> {slot, snapshot}
-        _ -> nil
-      end
-    end)
-  end
-
-  defp armor_stable?(snapshot), do: Map.get(snapshot, :stable, 1) >= 100
-
-  defp send_feedback(attacker, neili_cost, busy) do
-    if Process.alive?(attacker.pid) do
-      send(attacker.pid, %Event{
-        from_pid: self(),
-        topic: "combat/perform-feedback",
-        data: %{neili_cost: neili_cost, busy: busy}
-      })
-    end
-  end
 
   # 攻击方回执：按目标结算的分支扣内力并进入忙乱（dan.c 的 me->add/start_busy）
   def perform_feedback(conn, %{data: %{neili_cost: neili_cost, busy: busy}}) do
