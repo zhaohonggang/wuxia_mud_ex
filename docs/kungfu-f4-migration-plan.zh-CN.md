@@ -140,9 +140,10 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
 
 ### Phase 0 — 基础设施（阻塞全部内容批）
 
-- [ ] 0.0 **已知缺陷清理**（见 §6 风险 R1/R2）：
-  - `combat_event.ex` `resolve_dan` 的「火毒」块**重复两次**（`:397-410` 与 `:412-425`），会双倍附毒；去重。
-  - `performs/chousui_zhang/dan.ex` `check_handing` 缩进/健壮性（`handing.meta` 对缺键 map 会 raise）；归正。
+- [x] 0.0 **已知缺陷清理**（见 §6 风险 R1/R2/R11，均已修复）：
+  - `combat_event.ex` `resolve_dan` 的「火毒」块**重复两次**，会双倍附毒；已去重（`891604f`）。
+  - `performs/chousui_zhang/dan.ex` `check_handing` 对缺键 map 用点取会 raise；已改 `Map.get`（`891604f`）。
+  - `combat_event.ex` `resolve_dan` 护甲损耗重绑陷在 `if` 作用域内（死代码，扣甲不生效、文案恒「肌肤」）；已抽 `wear_armor/1` 返回落账（`98959a1`）。
 - [ ] 0.1 D1 目标侧注册表 + 可选回调；迁移 `jie`/`dan` 的 `resolve_*`；提公共 `feedback`。
 - [ ] 0.2 D2 技能元数据提取器 → 生成数据模块。
 - [ ] 0.3 D3 spec + `Simple` 解释器（先支持 exert，再 perform）。
@@ -199,8 +200,8 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
 
 | ID | 风险 | 影响 | 对策 |
 |---|---|---|---|
-| R1 | `resolve_dan` 火毒块重复（已发现） | 中毒双倍，数值错 | Phase 0.0 去重 + 断言测试 |
-| R2 | `check_handing` 对缺键 map 用 `handing.meta` | 可能 raise | 改 `Map.get(handing, :meta, %{})` |
+| R1 | `resolve_dan` 火毒块重复 | 中毒双倍，数值错 | 已修 `891604f` + 断言测试 |
+| R2 | `check_handing` 对缺键 map 用 `handing.meta` | 可能 raise | 已修 `891604f`（改 `Map.get`） |
 | R3 | 目标侧 `cond` 硬编码 | 无法扩展 169 招式 | D1 注册表 + 回调 |
 | R4 | 招式无授予链路 | 实装后玩家学不到 | D5 随批生成授予配置 |
 | R5 | 技能元数据（招式表/学习/练习）未迁移 | 只有绝招、无平砍 | D2 提取 + 分阶段实装 |
@@ -209,6 +210,7 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
 | R8 | 428 门注册/编译规模、启动时长 | 启动慢、编译久 | D6 生成表；观测 `mix compile`/启动指标 |
 | R9 | NPC 战斗 AI 不施放 perform | NPC 强度不符 | 记入后续（`npc.ex` 仅 behaviour，无实现） |
 | R10 | 数值对拍缺口（动态招式/分段公式） | 平衡偏差 | 每批抽样对拍；差异写文档 |
+| R11 | `resolve_dan` 护甲损耗重绑陷在 `if` 作用域（死代码） | 扣甲不生效、文案恒「肌肤」 | 已修 `98959a1` + `wear_armor/1` |
 
 ---
 
