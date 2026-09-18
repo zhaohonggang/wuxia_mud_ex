@@ -144,8 +144,18 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   - `combat_event.ex` `resolve_dan` 的「火毒」块**重复两次**，会双倍附毒；已去重（`891604f`）。
   - `performs/chousui_zhang/dan.ex` `check_handing` 对缺键 map 用点取会 raise；已改 `Map.get`（`891604f`）。
   - `combat_event.ex` `resolve_dan` 护甲损耗重绑陷在 `if` 作用域内（死代码，扣甲不生效、文案恒「肌肤」）；已抽 `wear_armor/1` 返回落账（`98959a1`）。
-- [ ] 0.1 D1 目标侧注册表 + 可选回调；迁移 `jie`/`dan` 的 `resolve_*`；提公共 `feedback`。
-- [ ] 0.2 D2 技能元数据提取器 → 生成数据模块。
+- [x] 0.1 D1 目标侧注册表 + 可选回调；迁移 `jie`/`dan` 的 `resolve_*`；提公共 `feedback`（`93d17d4`）：
+  - 新增 `Kantele.Combat.Perform` behaviour（`run/1` + 可选 `resolve_incoming/4`）与
+    `Kantele.Combat.Performs`（`lookup/1`、`resolve_incoming/5`、`feedback/3`）。
+  - `combat_event.ex` `perform_incoming` 删除 `perform_id` 硬编码 `cond`；`resolve_jie`/`resolve_dan`
+    迁入各自模块的 `resolve_incoming/4`；新增 `performs_test`（5 例）。
+- [x] 0.2 D2 技能元数据提取器 → 生成数据模块（本提交）：
+  - 新增 `scripts/translate_skill.exs`（`Scripts.TranslateSkill`）：解析顶层 `<skill>.c` 的
+    静态招式表（归一 `name`→`skill_name`、`dmage`→`damage`）、`valid_enable` 用法集合、
+    `practice_skill` 消耗，并列出动态招式数与钩子/条件清单。
+  - 产出 `tmp/skill_out/<skill>.ex` 骨架（`Kantele.Combat.Skills.Generated.*`）+ `_summary.md`；
+    全量 719 门已跑通，`String.valid?` 与 `Code.compile_file` 复检 0 失败。
+  - 新增 `test/kantele/f4_skill_extractor_test.exs`（10 例）。
 - [ ] 0.3 D3 spec + `Simple` 解释器（先支持 exert，再 perform）。
 - [ ] 0.4 D4 `prepare_skill` 状态 + `prepare` 命令。
 - [ ] 0.5 D6 注册生成器 + D7 覆盖保护。
@@ -204,7 +214,7 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
 | R2 | `check_handing` 对缺键 map 用 `handing.meta` | 可能 raise | 已修 `891604f`（改 `Map.get`） |
 | R3 | 目标侧 `cond` 硬编码 | 无法扩展 169 招式 | D1 注册表 + 回调 |
 | R4 | 招式无授予链路 | 实装后玩家学不到 | D5 随批生成授予配置 |
-| R5 | 技能元数据（招式表/学习/练习）未迁移 | 只有绝招、无平砍 | D2 提取 + 分阶段实装 |
+| R5 | 技能元数据（招式表/学习/练习）未迁移 | 只有绝招、无平砍 | D2 提取器已就绪（`translate_skill.exs`，719 骨架见 `tmp/skill_out/`）；待分阶段实装 |
 | R6 | `prepare_skill` 未实现 | 184 条阻塞 | D4 |
 | R7 | 提取器覆盖手写实现 | 回退事故 | D7 标记保护 |
 | R8 | 428 门注册/编译规模、启动时长 | 启动慢、编译久 | D6 生成表；观测 `mix compile`/启动指标 |
