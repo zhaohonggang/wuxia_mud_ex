@@ -26,11 +26,22 @@ defmodule Kantele.Combat.T1ExertsTest do
      "你的内力不够。\n"},
     {"xuanming-shengong", "shield", "xuanming-shengong", %{armor: 50}, "你的内力不够。\n"},
     {"zhanshen-xinjing", "powerup", "zhanshen-xinjing", %{attack: 33, defense: 33}, "你的内力不够了。"},
-    {"zhanshen-xinjing", "shield", "zhanshen-xinjing", %{armor: 50}, "你的内力不够。\n"}
+    {"zhanshen-xinjing", "shield", "zhanshen-xinjing", %{armor: 50}, "你的内力不够。\n"},
+    {"xuantian-wujigong", "powerup", "xuantian-wujigong", %{attack: 33, defense: 33},
+     "你的内力不够。\n"},
+    {"xuantian-wujigong", "shield", "xuantian-wujigong", %{armor: 50}, "你的内力不够。\n"},
+    {"shenghuo-shengong", "powerup", "shenghuo-shengong", %{attack: 33, dodge: 33, parry: 33},
+     "你的内力不够。\n"},
+    {"shenghuo-shengong", "shield", "shenghuo-shengong", %{armor: 50}, "你的真气不够。\n"},
+    {"shenghuo-xinfa", "powerup", "force", %{attack: 16, dodge: 16, parry: 16}, "你的内力不够。\n"},
+    {"xuanmen-neigong", "powerup", "xuanmen-neigong", %{attack: 25, dodge: 25, parry: 25},
+     "你的内力不够。\n"},
+    {"zixia-shengong", "powerup", "zixia-shengong", %{attack: 33, defense: 33}, "你的内力不够。\n"}
   ]
 
   @skills ~w(bahuang-gong beiming-shengong bibo-shengong changsheng-jue hunyuan-yiqi
-             taiji-shengong xiaowuxiang xuanming-shengong zhanshen-xinjing)
+             taiji-shengong xiaowuxiang xuanming-shengong zhanshen-xinjing
+             xuantian-wujigong shenghuo-shengong shenghuo-xinfa xuanmen-neigong zixia-shengong)
 
   defp player(opts) do
     skills = Keyword.get(opts, :skills, %{"force" => 100})
@@ -71,18 +82,17 @@ defmodule Kantele.Combat.T1ExertsTest do
     end
   end
 
-  test "powerup/shield 成功：扣 100 内力 + 加成 + buff 回收值" do
+  test "powerup/shield 成功：扣对应内力 + 加成 + buff 回收值" do
     for {skill_id, function, _level_skill, expected, _message} <- @cases do
       skills = %{"force" => 100, skill_id => 100}
+      spec = exert(skill_id, function).spec()
 
-      conn =
-        Simple.run(build_conn(player(skills: skills)), exert(skill_id, function).spec(), fn _ ->
-          1
-        end)
-
+      conn = Simple.run(build_conn(player(skills: skills)), spec, fn _ -> 1 end)
       char = conn.private.update_character
 
-      assert char.meta.vitals.neili == 8900, "#{skill_id}/#{function} 内力"
+      assert char.meta.vitals.neili == 9000 - Map.get(spec.costs, :neili, 0),
+             "#{skill_id}/#{function} 内力"
+
       assert Combat.buff_active?(char.meta.combat, function), "#{skill_id}/#{function} buff"
 
       assert Map.take(char.meta.combat.temp, Map.keys(expected)) == expected,
@@ -137,34 +147,57 @@ defmodule Kantele.Combat.T1ExertsTest do
       )
 
     assert conn.private.update_character.meta.combat.busy == 2
+
+    conn =
+      Simple.run(
+        build_conn(player(skills: %{"xuantian-wujigong" => 100, "force" => 100}, combat: fight)),
+        exert("xuantian-wujigong", "powerup").spec(),
+        fn _ -> 1 end
+      )
+
+    assert conn.private.update_character.meta.combat.busy == 3
   end
 
   test "新内功 valid_learn 门槛" do
-    stats = fn skills, con ->
-      struct(Kantele.Character.Stats.new(), %{skills: skills, con: con})
-    end
+    build = fn attrs -> struct(Kantele.Character.Stats.new(), attrs) end
+    skills = fn map -> build.(%{skills: map, con: 20, int: 20}) end
 
     taiji = Skills.get("taiji-shengong")
-    assert taiji.valid_learn(stats.(%{"force" => 100, "taoism" => 100}, 20)) == :ok
-    assert {:error, _} = taiji.valid_learn(stats.(%{"force" => 99, "taoism" => 100}, 20))
-    assert {:error, _} = taiji.valid_learn(stats.(%{"force" => 100, "taoism" => 99}, 20))
+    assert taiji.valid_learn(skills.(%{"force" => 100, "taoism" => 100})) == :ok
+    assert {:error, _} = taiji.valid_learn(skills.(%{"force" => 99, "taoism" => 100}))
+    assert {:error, _} = taiji.valid_learn(skills.(%{"force" => 100, "taoism" => 99}))
 
     assert {:error, _} =
              taiji.valid_learn(
-               stats.(%{"force" => 100, "taoism" => 100, "taiji-shengong" => 200}, 20)
+               skills.(%{"force" => 100, "taoism" => 100, "taiji-shengong" => 200})
              )
 
     xiaowuxiang = Skills.get("xiaowuxiang")
-    assert xiaowuxiang.valid_learn(stats.(%{"force" => 80}, 20)) == :ok
-    assert {:error, _} = xiaowuxiang.valid_learn(stats.(%{"force" => 79}, 20))
+    assert xiaowuxiang.valid_learn(skills.(%{"force" => 80})) == :ok
+    assert {:error, _} = xiaowuxiang.valid_learn(skills.(%{"force" => 79}))
 
     xuanming = Skills.get("xuanming-shengong")
-    assert xuanming.valid_learn(stats.(%{"force" => 100}, 32)) == :ok
-    assert {:error, _} = xuanming.valid_learn(stats.(%{"force" => 100}, 31))
-    assert {:error, _} = xuanming.valid_learn(stats.(%{"force" => 50}, 40))
+    assert xuanming.valid_learn(build.(%{skills: %{"force" => 100}, con: 32})) == :ok
+    assert {:error, _} = xuanming.valid_learn(build.(%{skills: %{"force" => 100}, con: 31}))
+    assert {:error, _} = xuanming.valid_learn(build.(%{skills: %{"force" => 50}, con: 40}))
 
     zhanshen = Skills.get("zhanshen-xinjing")
-    assert zhanshen.valid_learn(stats.(%{"force" => 100}, 25)) == :ok
-    assert {:error, _} = zhanshen.valid_learn(stats.(%{"force" => 100}, 24))
+    assert zhanshen.valid_learn(build.(%{skills: %{"force" => 100}, con: 25})) == :ok
+    assert {:error, _} = zhanshen.valid_learn(build.(%{skills: %{"force" => 100}, con: 24}))
+
+    for id <- ~w(xuantian-wujigong xuanmen-neigong zixia-shengong) do
+      module = Skills.get(id)
+      assert module.valid_learn(skills.(%{"force" => 60})) == :ok
+      assert {:error, _} = module.valid_learn(skills.(%{"force" => 59}))
+    end
+
+    xinfa = Skills.get("shenghuo-xinfa")
+    assert xinfa.valid_learn(skills.(%{"force" => 10})) == :ok
+    assert {:error, _} = xinfa.valid_learn(skills.(%{"force" => 9}))
+
+    shenghuo = Skills.get("shenghuo-shengong")
+    assert shenghuo.valid_learn(build.(%{skills: %{"force" => 180}, int: 32})) == :ok
+    assert {:error, _} = shenghuo.valid_learn(build.(%{skills: %{"force" => 180}, int: 31}))
+    assert {:error, _} = shenghuo.valid_learn(build.(%{skills: %{"force" => 179}, int: 40}))
   end
 end

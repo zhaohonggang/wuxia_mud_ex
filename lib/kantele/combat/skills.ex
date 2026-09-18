@@ -22,7 +22,12 @@ defmodule Kantele.Combat.Skills do
     "taiji-shengong" => Kantele.Combat.Skills.TaijiShengong,
     "xiaowuxiang" => Kantele.Combat.Skills.Xiaowuxiang,
     "xuanming-shengong" => Kantele.Combat.Skills.XuanmingShengong,
-    "zhanshen-xinjing" => Kantele.Combat.Skills.ZhanshenXinjing
+    "zhanshen-xinjing" => Kantele.Combat.Skills.ZhanshenXinjing,
+    "xuantian-wujigong" => Kantele.Combat.Skills.XuantianWujigong,
+    "shenghuo-shengong" => Kantele.Combat.Skills.ShenghuoShengong,
+    "shenghuo-xinfa" => Kantele.Combat.Skills.ShenghuoXinfa,
+    "xuanmen-neigong" => Kantele.Combat.Skills.XuanmenNeigong,
+    "zixia-shengong" => Kantele.Combat.Skills.ZixiaShengong
   }
 
   @doc "运行时注册一门武学（覆盖同名内建）"

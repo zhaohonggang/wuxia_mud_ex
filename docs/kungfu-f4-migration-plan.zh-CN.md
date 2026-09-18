@@ -179,7 +179,11 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   `xuanming-shengong` powerup/shield、`zhanshen-xinjing` powerup/shield。新增 4 门内功 module 并注册。
   `t1_exerts_test.exs` 扩到 `@cases`（18 条）+ 新增 `valid_learn` 门槛用例。差异：`xuanming-shengong/shield`
   的 LPC `apply/strike` 加成未建模（临时键收敛），仅落 armor。
-- [ ] 批次 3–4：余下 ~70 条（`powerup`/`shield` 族为主）。
+- [x] 批次 3（7 条）：`xuantian-wujigong` powerup/shield、`shenghuo-shengong` powerup/shield、
+  `shenghuo-xinfa` powerup、`xuanmen-neigong` powerup、`zixia-shengong` powerup。新增 5 门内功 module 并注册。
+  测试成功用例改为按 `spec.costs` 校验内力（本批出现耗 150 的条目）；补固定 busy=3 用例与新内功
+  `valid_learn` 门槛。差异：`shenghuo-shengong` 的 `hit_ob` 被动（圣火令法连击）未建模。
+- [ ] 批次 4：余下 ~63 条（`powerup`/`shield` 族为主）。
 - [ ] 差异项：`suck`/`freeze`/`dispel`/`heal`/`regenerate` 等带吸取/条件分支，手写。
 - [ ] 每批补 `exert` 命令回归（含 force fallback）。
 
