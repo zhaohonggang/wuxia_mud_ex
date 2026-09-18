@@ -49,7 +49,22 @@ defmodule Kantele.Combat.Skills do
     "surge-force" => Kantele.Combat.Skills.SurgeForce,
     "shenlong-xinfa" => Kantele.Combat.Skills.ShenlongXinfa,
     "lengyue-shengong" => Kantele.Combat.Skills.LengyueShengong,
-    "huagong-dafa" => Kantele.Combat.Skills.HuagongDafa
+    "huagong-dafa" => Kantele.Combat.Skills.HuagongDafa,
+    "tianhuan-shenjue" => Kantele.Combat.Skills.TianhuanShenjue,
+    "tianlei-shengong" => Kantele.Combat.Skills.TianleiShengong,
+    "xiuluo-yinshagong" => Kantele.Combat.Skills.XiuluoYinshagong,
+    "xixing-dafa" => Kantele.Combat.Skills.XixingDafa,
+    "surge-force" => Kantele.Combat.Skills.SurgeForce,
+    "shenlong-xinfa" => Kantele.Combat.Skills.ShenlongXinfa,
+    "lengyue-shengong" => Kantele.Combat.Skills.LengyueShengong,
+    "xiyang-neigong" => Kantele.Combat.Skills.XiyangNeigong,
+    "xuehai-mogong" => Kantele.Combat.Skills.XuehaiMogong,
+    "yijin-duangu" => Kantele.Combat.Skills.YijinDuangu,
+    "yijinjing" => Kantele.Combat.Skills.Yijinjing,
+    "yujiashu" => Kantele.Combat.Skills.Yujiashu,
+    "yunlong-shengong" => Kantele.Combat.Skills.YunlongShengong,
+    "yunv-xinjing" => Kantele.Combat.Skills.YunvXinjing,
+    "zhenyue-jue" => Kantele.Combat.Skills.ZhenyueJue
   }
 
   @doc "运行时注册一门武学（覆盖同名内建）"

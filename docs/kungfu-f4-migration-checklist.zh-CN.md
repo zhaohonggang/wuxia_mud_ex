@@ -84,22 +84,22 @@
 - [x] `xixing-dafa/powerup` exert「powerup」 门槛: assign:skill=xixing-dafa; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [ ] `xixing-dafa/sangong` exert「sangong」 门槛: res:max_neili>=1 | 效果: add:max_neili -1; busy | 依赖: 无
 - [ ] `xixing-dafa/suck` exert「suck」 门槛: level:xixing-dafa>=200; assign:amount=xixing-dafa,dp=force,sp=force; res:max_neili>=1,max_neili>=100,neili>=100 | 效果: add:neili -10; set:max_neili=0; temp:sucked; busy | 依赖: 无
-- [ ] `xiyang-neigong/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=100 | 效果: add:neili -90; temp:powerup; apply+:attack,defense; busy | 依赖: 无
+- [x] `xiyang-neigong/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=100 | 效果: add:neili -90; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [x] `xuanmen-neigong/powerup` exert「powerup」 门槛: assign:skill=xuanmen-neigong; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,dodge,parry; busy | 依赖: 无
 - [x] `xuanming-shengong/powerup` exert「powerup」 门槛: assign:skill=xuanming-shengong; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [x] `xuanming-shengong/shield` exert「shield」 门槛: level:xuanming-shengong>=100; assign:skill=xuanming-shengong; res:neili>=100 | 效果: add:neili -100; temp:shield; apply+:armor,strike; busy | 依赖: 无
 - [x] `xuantian-wujigong/powerup` exert「powerup」 门槛: assign:skill=xuantian-wujigong; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [x] `xuantian-wujigong/shield` exert「shield」 门槛: level:xuantian-wujigong>=50; assign:skill=xuantian-wujigong; res:neili>=100 | 效果: add:neili -100; temp:shield; apply+:armor; busy | 依赖: 无
-- [ ] `xuehai-mogong/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
-- [ ] `yijin-duangu/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack; busy | 依赖: 无
-- [ ] `yijinjing/powerup` exert「powerup」 门槛: assign:skill=yijinjing; res:neili>=200 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
+- [x] `xuehai-mogong/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
+- [x] `yijin-duangu/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack; busy | 依赖: 无
+- [x] `yijinjing/powerup` exert「powerup」 门槛: assign:skill=yijinjing; res:neili>=200 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [ ] `yijinjing/tong` exert「tong」 门槛: level:yijinjing>=100; assign:skill=yijinjing; res:max_neili>=500,max_qi>=10 | 效果: busy | 依赖: 无
-- [ ] `yujiashu/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=200 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
-- [ ] `yunlong-shengong/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=100 | 效果: add:force -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
-- [ ] `yunv-xinjing/powerup` exert「powerup」 门槛: assign:skill=yunv-xinjing; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
+- [x] `yujiashu/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=200 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
+- [x] `yunlong-shengong/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=100 | 效果: add:force -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
+- [x] `yunv-xinjing/powerup` exert「powerup」 门槛: assign:skill=yunv-xinjing; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [x] `zhanshen-xinjing/powerup` exert「powerup」 门槛: assign:skill=zhanshen-xinjing; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [x] `zhanshen-xinjing/shield` exert「shield」 门槛: level:zhanshen-xinjing>=50; assign:skill=zhanshen-xinjing; res:neili>=100 | 效果: add:neili -100; temp:shield; apply+:armor; busy | 依赖: 无
-- [ ] `zhenyue-jue/powerup` exert「powerup」 门槛: assign:skill=zhenyue-jue; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
+- [x] `zhenyue-jue/powerup` exert「powerup」 门槛: assign:skill=zhenyue-jue; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [ ] `zihui-xinfa/powerup` exert「powerup」 门槛: assign:skill=zihui-xinfa; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack,defense,dodge; busy | 依赖: 无
 - [x] `zixia-shengong/powerup` exert「powerup」 门槛: assign:skill=zixia-shengong; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [ ] `zixia-shengong/ziqi` exert「ziqi」 门槛: assign:skill=zixia-shengong; var:skill<150; res:neili>=200 | 效果: add:neili -200; temp:ziqi; apply+:damage,sword; busy | 依赖: 无

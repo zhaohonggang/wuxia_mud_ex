@@ -61,7 +61,25 @@ defmodule Kantele.Combat.T1ExertsTest do
      "你的内力不够。\n"},
     {"shenlong-xinfa", "powerup", "force", %{attack: 33, dodge: 33}, "你的内力不够!"},
     {"lengyue-shengong", "powerup", "lengyue-shengong", %{attack: 33, defense: 33}, "你的真气不够！"},
-    {"huagong-dafa", "powerup", "huagong-dafa", %{attack: 33, dodge: 33}, "你的真气不够！"}
+    {"huagong-dafa", "powerup", "huagong-dafa", %{attack: 33, dodge: 33}, "你的真气不够！"},
+    {"tianhuan-shenjue", "powerup", "tianhuan-shenjue", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"tianlei-shengong", "powerup", "tianlei-shengong",
+     %{attack: 33, defense: 33, unarmed_damage: 16}, "你的内力不够。\n"},
+    {"xiuluo-yinshagong", "powerup", "xiuluo-yinshagong", %{attack: 33, defense: 33},
+     "你的内力不够。\n"},
+    {"xixing-dafa", "powerup", "xixing-dafa", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"surge-force", "powerup", "surge-force", %{attack: 40, defense: 40, unarmed_damage: 20},
+     "你的内力不够。\n"},
+    {"shenlong-xinfa", "powerup", "force", %{attack: 33, dodge: 33}, "你的内力不够!"},
+    {"lengyue-shengong", "powerup", "lengyue-shengong", %{attack: 33, defense: 33}, "你的真气不够！"},
+    {"xiyang-neigong", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"xuehai-mogong", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"yijin-duangu", "powerup", "force", %{attack: 33}, "你的真气不够！"},
+    {"yijinjing", "powerup", "yijinjing", %{attack: 33, defense: 33}, "你的真气不够。\n"},
+    {"yujiashu", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"yunlong-shengong", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"yunv-xinjing", "powerup", "yunv-xinjing", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"zhenyue-jue", "powerup", "zhenyue-jue", %{attack: 33, defense: 33}, "你的内力不够。\n"}
   ]
 
   @skills ~w(bahuang-gong beiming-shengong bibo-shengong changsheng-jue hunyuan-yiqi
@@ -71,7 +89,8 @@ defmodule Kantele.Combat.T1ExertsTest do
              hanbing-zhenqi freezing-force kurong-changong liangyi-shengong luohan-fumogong
              miaojia-neigong nei-bagua wuwang-shengong tianhuan-shenjue tianlei-shengong
              xiuluo-yinshagong xixing-dafa surge-force shenlong-xinfa lengyue-shengong
-             huagong-dafa)
+             huagong-dafa xiyang-neigong xuehai-mogong yijin-duangu yijinjing yujiashu
+             yunlong-shengong yunv-xinjing zhenyue-jue)
 
   defp player(opts) do
     skills = Keyword.get(opts, :skills, %{"force" => 100})
@@ -403,5 +422,39 @@ defmodule Kantele.Combat.T1ExertsTest do
                  con: 30
                })
              )
+  end
+
+  test "第 7 批 valid_learn 门槛" do
+    build = fn attrs -> struct(Kantele.Character.Stats.new(), attrs) end
+    skills = fn map -> build.(%{skills: map, con: 20, int: 20}) end
+
+    assert Skills.get("xiyang-neigong").valid_learn(skills.(%{"force" => 40})) == :ok
+    assert {:error, _} = Skills.get("xiyang-neigong").valid_learn(skills.(%{"force" => 39}))
+
+    assert Skills.get("xuehai-mogong").valid_learn(skills.(%{})) == :ok
+
+    yijin = Skills.get("yijin-duangu")
+    assert yijin.valid_learn(build.(%{skills: %{"force" => 100}, con: 30})) == :ok
+    assert {:error, _} = yijin.valid_learn(build.(%{skills: %{"force" => 100}, con: 29}))
+    assert {:error, _} = yijin.valid_learn(build.(%{skills: %{"force" => 99}, con: 40}))
+
+    yijinjing = Skills.get("yijinjing")
+    assert yijinjing.valid_learn(skills.(%{"force" => 100})) == :ok
+    assert {:error, _} = yijinjing.valid_learn(skills.(%{"force" => 99}))
+    assert {:error, _} = yijinjing.valid_learn(skills.(%{"force" => 100, "yijinjing" => 150}))
+
+    assert Skills.get("yujiashu").valid_learn(skills.(%{"force" => 100})) == :ok
+    assert {:error, _} = Skills.get("yujiashu").valid_learn(skills.(%{"force" => 99}))
+
+    assert Skills.get("yunlong-shengong").valid_learn(skills.(%{"force" => 30})) == :ok
+    assert {:error, _} = Skills.get("yunlong-shengong").valid_learn(skills.(%{"force" => 29}))
+
+    yunv = Skills.get("yunv-xinjing")
+    assert yunv.valid_learn(build.(%{skills: %{"force" => 150}, int: 32})) == :ok
+    assert {:error, _} = yunv.valid_learn(build.(%{skills: %{"force" => 150}, int: 31}))
+    assert {:error, _} = yunv.valid_learn(build.(%{skills: %{"force" => 149}, int: 40}))
+
+    assert Skills.get("zhenyue-jue").valid_learn(skills.(%{"force" => 70})) == :ok
+    assert {:error, _} = Skills.get("zhenyue-jue").valid_learn(skills.(%{"force" => 69}))
   end
 end
