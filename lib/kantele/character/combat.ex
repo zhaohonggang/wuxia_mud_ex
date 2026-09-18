@@ -3,7 +3,7 @@ defmodule Kantele.Character.Combat.Buff do
   生效中的临时增益（对应 LPC 的 temp buff + start_call_out 定时移除）
   """
 
-  defstruct [:key, :applies]
+  defstruct [:key, :applies, :duration]
 end
 
 defmodule Kantele.Character.Combat do

@@ -67,7 +67,7 @@ defmodule Kantele.Combat.T1ExertsTest do
     {"xiuluo-yinshagong", "powerup", "xiuluo-yinshagong", %{attack: 33, defense: 33},
      "你的内力不够。\n"},
     {"xixing-dafa", "powerup", "xixing-dafa", %{attack: 33, defense: 33}, "你的内力不够。\n"},
-    {"surge-force", "powerup", "surge-force", %{attack: 40, defense: 40, unarmed_damage: 20},
+{"surge-force", "powerup", "surge-force", %{attack: 40, defense: 40, unarmed_damage: 20},
      "你的内力不够。\n"},
     {"shenlong-xinfa", "powerup", "force", %{attack: 33, dodge: 33}, "你的内力不够!"},
     {"lengyue-shengong", "powerup", "lengyue-shengong", %{attack: 33, defense: 33}, "你的真气不够！"},
@@ -86,6 +86,7 @@ defmodule Kantele.Combat.T1ExertsTest do
      "你的内力不够。\n"},
     {"zihui-xinfa", "powerup", "zihui-xinfa", %{attack: 33, dodge: 33, defense: 33}, "你的真气不够！"},
     {"biyun-xinfa", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"beiming-shengong", "powerup", "beiming-shengong", %{attack: 33, defense: 33}, "你的内力不够!"},
     {"luohan-fumogong", "powerup", "luohan-fumogong", %{attack: 33, defense: 33}, "你的内力不够。\n"},
     {"sanku-shengong", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"}
   ]
@@ -99,7 +100,8 @@ defmodule Kantele.Combat.T1ExertsTest do
              xiuluo-yinshagong xixing-dafa surge-force shenlong-xinfa lengyue-shengong
              huagong-dafa xiyang-neigong xuehai-mogong yijin-duangu yijinjing yujiashu
              yunlong-shengong yunv-xinjing zhenyue-jue longxiang-gong linji-zhuang
-             zihui-xinfa biyun-xinfa sanku-shengong beiming-shengong)
+             zihui-xinfa biyun-xinfa sanku-shengong beiming-shengong
+             huagong-dafa xixing-dafa zixia-shengong hanbing-zhenqi bingxin-jue)
 
   defp player(opts) do
     skills = Keyword.get(opts, :skills, %{"force" => 100})
@@ -121,7 +123,7 @@ defmodule Kantele.Combat.T1ExertsTest do
     }
   end
 
-defp exert(skill_id, function), do: Skills.get(skill_id).exert_list()[function]
+  defp exert(skill_id, function), do: Skills.get(skill_id).exert_list()[function]
 
   defp output_text(conn) do
     conn.output
@@ -252,11 +254,15 @@ defp exert(skill_id, function), do: Skills.get(skill_id).exert_list()[function]
     assert zhanshen.valid_learn(build.(%{skills: %{"force" => 100}, con: 25})) == :ok
     assert {:error, _} = zhanshen.valid_learn(build.(%{skills: %{"force" => 100}, con: 24}))
 
-    for id <- ~w(xuantian-wujigong xuanmen-neigong zixia-shengong) do
+    for id <- ~w(xuantian-wujigong xuanmen-neigong) do
       module = Skills.get(id)
       assert module.valid_learn(skills.(%{"force" => 60})) == :ok
       assert {:error, _} = module.valid_learn(skills.(%{"force" => 59}))
     end
+
+    zixia = Skills.get("zixia-shengong")
+    assert zixia.valid_learn(skills.(%{"force" => 100})) == :ok
+    assert {:error, _} = zixia.valid_learn(skills.(%{"force" => 99}))
 
     xinfa = Skills.get("shenghuo-xinfa")
     assert xinfa.valid_learn(skills.(%{"force" => 10})) == :ok
@@ -268,8 +274,8 @@ defp exert(skill_id, function), do: Skills.get(skill_id).exert_list()[function]
     assert {:error, _} = shenghuo.valid_learn(build.(%{skills: %{"force" => 179}, int: 40}))
 
     bingxin = Skills.get("bingxin-jue")
-    assert bingxin.valid_learn(build.(%{skills: %{"force" => 100}, int: 26})) == :ok
-    assert {:error, _} = bingxin.valid_learn(build.(%{skills: %{"force" => 100}, int: 25}))
+    assert bingxin.valid_learn(build.(%{skills: %{"force" => 100}, con: 30})) == :ok
+    assert {:error, _} = bingxin.valid_learn(build.(%{skills: %{"force" => 100}, con: 29}))
     assert {:error, _} = bingxin.valid_learn(build.(%{skills: %{"force" => 99}, int: 30}))
 
     for id <- ~w(dahai-wuliang fushang-neigong) do

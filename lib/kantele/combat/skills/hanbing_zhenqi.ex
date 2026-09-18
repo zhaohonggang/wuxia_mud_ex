@@ -6,11 +6,9 @@ defmodule Kantele.Combat.Skills.HanbingZhenqi do
   `valid_force` 接受 华山心法/衡山心法/嵩山心法/紫霞神功/镇岳诀 共存。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 的性格（光明磊落）判定与 `max_neili>=1000` 检查
-    （`valid_learn/1` 仅有 stats，无 vitals）未实现。
-  - 性别/根骨限制在源文件中已注释，未实装。
-  - `query_neili_improve` 分档公式与 `hit_ob` 冰封被动（需 `freezing` temp）
-    未接入。
+  - LPC `valid_learn` 的性格/性别/`max_neili` 检查未实现。
+  - `freezing`（寒冰真气）实现如下，需先 powerup、con>=34、skill>=140、max_neili>=2200、neili>=1000。
+  - `hit_ob` 冰封被动未接入。
   """
 
   use Kantele.Combat.Skill
@@ -55,7 +53,10 @@ defmodule Kantele.Combat.Skills.HanbingZhenqi do
 
   @impl true
   def exert_list() do
-    %{"powerup" => Kantele.Combat.Skills.HanbingZhenqi.Powerup}
+    %{
+      "powerup" => Kantele.Combat.Skills.HanbingZhenqi.Powerup,
+      "freezing" => Kantele.Combat.Skills.HanbingZhenqi.Freezing
+    }
   end
 end
 
@@ -87,4 +88,108 @@ defmodule Kantele.Combat.Skills.HanbingZhenqi.Powerup do
       expire_message: "你的寒冰真气运行完毕，将内力收回丹田。\n",
       message: "$N微一凝神，默默运转体内所蓄的寒冰真气，霎时面部竟呈出一层薄霜。\n"
     }
+end
+
+defmodule Kantele.Combat.Skills.HanbingZhenqi.Freezing do
+  @moduledoc """
+  寒冰真气「freezing」（对照 `kungfu/skill/hanbing-zhenqi/freezing.c`）
+
+  门槛：寒冰>=140、con>=34、max_neili>=2200、neili>=1000、
+  需先 powerup 状态、非 freezing 状态。
+  扣 neili 300，设 temp freezing，busy 3。
+  """
+
+  use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
+
+  @impl true
+  def id(), do: "hanbing-zhenqi"
+
+  @impl true
+  def valid_enable(usage), do: usage == "force"
+
+  @impl true
+  def valid_force(force),
+    do:
+      force in [
+        "huashan-xinfa",
+        "henshan-xinfa",
+        "songshan-xinfa",
+        "zixia-shengong",
+        "zhenyue-jue"
+      ]
+
+  @impl true
+  def valid_learn(stats) do
+    force = Stats.skill(stats, "force")
+    level = Stats.skill(stats, id())
+
+    cond do
+      force < 100 -> {:error, "你的基本内功火候不够，难以锻炼寒冰真气。\n"}
+      force < level -> {:error, "你的基本内功水平不够，难以锻炼更深厚的寒冰真气。\n"}
+      true -> :ok
+    end
+  end
+
+  @impl true
+  def practice_cost(), do: nil
+
+  @impl true
+  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+
+  @impl true
+  def exert_list() do
+    %{"freezing" => __MODULE__}
+  end
+
+  def spec do
+    %Kantele.Combat.Performs.Spec{
+      id: "hanbing-zhenqi/freezing",
+      kind: :exert,
+      gates: [
+        {:custom, &gate_self_only/1, "寒冰真气只能对自己使用。\n"},
+        {:skill_min, "hanbing-zhenqi", 140, "你的寒冰真气不够，难以施展「寒冰真气」。\n"},
+        {:custom, &gate_con/1, "你的先天根骨不足，无法施展「寒冰真气」。\n"},
+        {:max_neili_min, 2200, "你的内力修为不足，难以施展「寒冰真气」。\n"},
+        {:custom, &gate_powerup/1, "你现在尚未曾运功，难以施展「寒冰真气」。\n"},
+        {:neili_min, 1000, "你目前的内力不够，难以施展「寒冰真气」。\n"},
+        {:no_buff, "freezing", "你现在正在施展「寒冰真气」。\n"}
+      ],
+      costs: %{neili: 300},
+      effects: [
+        {:custom, &effect_freezing/1}
+      ],
+      busy: {:if_fighting, 3},
+      message: "$N一声冷笑，体内寒冰真气迅速疾转数个周天，将力聚于掌心。\n"
+    }
+  end
+
+  defp gate_self_only(ctx),
+    do: if(ctx.target == ctx.character, do: :ok, else: {:error, "寒冰真气只能对自己使用。\n"})
+
+  defp gate_con(ctx),
+    do: if(ctx.character.meta.stats.con >= 34, do: :ok, else: {:error, "你的先天根骨不足，无法施展「寒冰真气」。\n"})
+
+  defp gate_powerup(ctx),
+    do:
+      if(ctx.character.meta.combat.buffs |> Enum.any?(&(&1.key == "powerup")),
+        do: :ok,
+        else: {:error, "你现在尚未曾运功，难以施展「寒冰真气」。\n"}
+      )
+
+  defp effect_freezing(state) do
+    char = state.character
+
+    new_combat =
+      char.meta.combat
+      |> Combat.add_buff(%Kantele.Character.Combat.Buff{
+        key: "freezing",
+        applies: %{},
+        duration: Stats.skill(char.meta.stats, "hanbing-zhenqi")
+      })
+
+    new_char = %{char | meta: %{char.meta | combat: new_combat}}
+    %{state | character: new_char}
+  end
 end
