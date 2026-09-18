@@ -194,7 +194,13 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   `luohan` 的按门派/修为分档文案）。差异：`hanbing-zhenqi`/`luohan-fumogong` 的 `max_neili` 门槛与性格
   判定（stats 无 vitals）、`luohan-fumogong`/`freezing-force` 的 family/item 门槛与被动未建模。
   测试补批次 5 `valid_learn` 门槛与 kurong 文案分档（published 通道断言）。
-- [ ] 批次 6：余下 ~48 条（`powerup`/`shield` 族 + `longxiang`/`linji-zhuang`/`sanku-shengong` 等）。
+- [x] 批次 6（8 条）：`tianhuan-shenjue` powerup、`tianlei-shengong` powerup、`xiuluo-yinshagong`
+  powerup、`xixing-dafa` powerup、`surge-force` powerup、`shenlong-xinfa` powerup、`lengyue-shengong`
+  powerup、`huagong-dafa` powerup。新增 8 门内功 module 并注册。`surge-force` powerup 攻防按
+  `skill*2/5`、耗 200/需 500。差异：`xixing-dafa`/`huagong-dafa` 的性格、`can_learn` 前置与
+  `valid_damage` 被动未建模；`surge-force` 性别限制未实现；`lengyue-shengong` 源技能查询笔误
+  （`lenyue`）失效。测试补批次 6 `valid_learn` 门槛。
+- [ ] 批次 7：余下 ~40 条（`powerup`/`shield` 族 + `longxiang`/`linji-zhuang`/`sanku-shengong` 等）。
 - [ ] 差异项：`suck`/`freeze`/`dispel`/`heal`/`regenerate` 等带吸取/条件分支，手写。
 - [ ] 每批补 `exert` 命令回归（含 force fallback）。
 

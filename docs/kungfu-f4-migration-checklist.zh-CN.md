@@ -47,12 +47,12 @@
 - [ ] `hanbing-zhenqi/freezing` exert「寒冰真气」 门槛: assign:skill=hanbing-zhenqi; var:skill<140; res:con>=34,max_neili>=2200,neili>=1000 | 效果: add:neili -300; temp:freezing; busy | 依赖: 无
 - [x] `hanbing-zhenqi/powerup` exert「powerup」 门槛: assign:skill=hanbing-zhenqi; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [ ] `huagong-dafa/hua` exert「hua」 门槛: level:huagong-dafa>=100; assign:dp=force,sp=force; res:max_neili>=1,max_neili>=10,neili>=10,neili>=120 | 效果: add:neili -100; set:max_neili=0; busy | 依赖: 无
-- [ ] `huagong-dafa/powerup` exert「powerup」 门槛: assign:skill=huagong-dafa; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack,dodge; busy | 依赖: 无
+- [x] `huagong-dafa/powerup` exert「powerup」 门槛: assign:skill=huagong-dafa; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack,dodge; busy | 依赖: 无
 - [x] `huntian-qigong/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [x] `huntian-qigong/shield` exert「shield」 门槛: level:huntian-qigong>=200; assign:skill=huntian-qigong; res:neili>=100 | 效果: add:neili -100; temp:shield; busy | 依赖: 无
 - [x] `hunyuan-yiqi/powerup` exert「powerup」 门槛: assign:skill=hunyuan-yiqi; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [x] `kurong-changong/powerup` exert「powerup」 门槛: assign:skill=kurong-changong; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
-- [ ] `lengyue-shengong/powerup` exert「powerup」 门槛: assign:skill=lengyue-shengong; res:neili>=300 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
+- [x] `lengyue-shengong/powerup` exert「powerup」 门槛: assign:skill=lengyue-shengong; res:neili>=300 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [x] `liangyi-shengong/powerup` exert「powerup」 门槛: assign:skill=liangyi-shengong; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [ ] `lingyuan-xinfa/break` exert「break」 门槛: level:lingyuan-xinfa>=150 | 效果: busy | 依赖: 无
 - [ ] `linji-zhuang/powerup` exert「powerup」 门槛: assign:skill=linji-zhuang,skill2=mahayana; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack,damage,dodge; busy | 依赖: 无
@@ -68,20 +68,20 @@
 - [x] `shenghuo-shengong/powerup` exert「powerup」 门槛: assign:skill=shenghuo-shengong; res:neili>=150 | 效果: add:neili -150; temp:powerup; apply+:attack,dodge,parry; busy | 依赖: 无
 - [x] `shenghuo-shengong/shield` exert「shield」 门槛: level:shenghuo-shengong>=40; assign:skill=shenghuo-shengong; res:neili>=100 | 效果: add:neili -100; temp:shield; apply+:armor; busy | 依赖: 无
 - [x] `shenghuo-xinfa/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=150 | 效果: add:neili -150; temp:powerup; apply+:attack,dodge,parry; busy | 依赖: 无
-- [ ] `shenlong-xinfa/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack,dodge; busy | 依赖: 无
-- [ ] `surge-force/powerup` exert「powerup」 门槛: assign:skill=surge-force; res:neili>=500 | 效果: add:neili -200; temp:powerup; apply+:attack,defense,unarmed_damage; busy | 依赖: 无
+- [x] `shenlong-xinfa/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack,dodge; busy | 依赖: 无
+- [x] `surge-force/powerup` exert「powerup」 门槛: assign:skill=surge-force; res:neili>=500 | 效果: add:neili -200; temp:powerup; apply+:attack,defense,unarmed_damage; busy | 依赖: 无
 - [ ] `surge-force/roar` exert「roar」 门槛: level:surge-force>=100; assign:skill=force; res:neili>=100 | 效果: add:neili -100; busy | 依赖: 无
 - [ ] `taiji-shengong/dian` exert「鹤嘴劲点龙跃窍」 门槛: level:taiji-shengong>=100; res:jing>=100,max_neili>=1500,neili>=1000 | 效果: add:neili -800; set:jing=1,qi=1; busy | 依赖: 无
 - [x] `taiji-shengong/powerup` exert「powerup」 门槛: assign:skill=taiji-shengong; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [x] `taiji-shengong/shield` exert「shield」 门槛: level:taiji-shengong>=50; assign:skill=taiji-shengong; res:neili>=100 | 效果: add:neili -100; temp:shield; apply+:armor; busy | 依赖: 无
-- [ ] `tianhuan-shenjue/powerup` exert「powerup」 门槛: assign:skill=tianhuan-shenjue; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
-- [ ] `tianlei-shengong/powerup` exert「powerup」 门槛: assign:skill=tianlei-shengong; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense,unarmed_damage; busy | 依赖: 无
+- [x] `tianhuan-shenjue/powerup` exert「powerup」 门槛: assign:skill=tianhuan-shenjue; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
+- [x] `tianlei-shengong/powerup` exert「powerup」 门槛: assign:skill=tianlei-shengong; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense,unarmed_damage; busy | 依赖: 无
 - [x] `wuwang-shengong/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [x] `xiaowuxiang/powerup` exert「powerup」 门槛: assign:skill=xiaowuxiang; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack,dodge,parry; busy | 依赖: 无
 - [x] `xiaowuxiang/shield` exert「shield」 门槛: level:xiaowuxiang>=40; assign:skill=xiaowuxiang; res:neili>=100 | 效果: add:neili -100; temp:shield; apply+:armor; busy | 依赖: 无
-- [ ] `xiuluo-yinshagong/powerup` exert「powerup」 门槛: assign:skill=xiuluo-yinshagong; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
+- [x] `xiuluo-yinshagong/powerup` exert「powerup」 门槛: assign:skill=xiuluo-yinshagong; res:neili>=100 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [ ] `xiuluo-yinshagong/suck` exert「suck」 门槛: level:wudu-qishu>=100,xiuluo-yinshagong>=100; assign:lvl=poison; res:neili>=200 | 效果: add:neili -50; busy | 依赖: 无
-- [ ] `xixing-dafa/powerup` exert「powerup」 门槛: assign:skill=xixing-dafa; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
+- [x] `xixing-dafa/powerup` exert「powerup」 门槛: assign:skill=xixing-dafa; res:neili>=150 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [ ] `xixing-dafa/sangong` exert「sangong」 门槛: res:max_neili>=1 | 效果: add:max_neili -1; busy | 依赖: 无
 - [ ] `xixing-dafa/suck` exert「suck」 门槛: level:xixing-dafa>=200; assign:amount=xixing-dafa,dp=force,sp=force; res:max_neili>=1,max_neili>=100,neili>=100 | 效果: add:neili -10; set:max_neili=0; temp:sucked; busy | 依赖: 无
 - [ ] `xiyang-neigong/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=100 | 效果: add:neili -90; temp:powerup; apply+:attack,defense; busy | 依赖: 无

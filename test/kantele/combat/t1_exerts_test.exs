@@ -50,7 +50,18 @@ defmodule Kantele.Combat.T1ExertsTest do
     {"luohan-fumogong", "powerup", "luohan-fumogong", %{attack: 33, defense: 33}, "你的内力不够。\n"},
     {"miaojia-neigong", "powerup", "miaojia-neigong", %{attack: 33, defense: 33}, "你的内力不够了。"},
     {"nei-bagua", "powerup", "nei-bagua", %{attack: 33, defense: 33, parry: 16}, "你的内力不够。\n"},
-    {"wuwang-shengong", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"}
+    {"wuwang-shengong", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"tianhuan-shenjue", "powerup", "tianhuan-shenjue", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"tianlei-shengong", "powerup", "tianlei-shengong",
+     %{attack: 33, defense: 33, unarmed_damage: 16}, "你的内力不够。\n"},
+    {"xiuluo-yinshagong", "powerup", "xiuluo-yinshagong", %{attack: 33, defense: 33},
+     "你的内力不够。\n"},
+    {"xixing-dafa", "powerup", "xixing-dafa", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"surge-force", "powerup", "surge-force", %{attack: 40, defense: 40, unarmed_damage: 20},
+     "你的内力不够。\n"},
+    {"shenlong-xinfa", "powerup", "force", %{attack: 33, dodge: 33}, "你的内力不够!"},
+    {"lengyue-shengong", "powerup", "lengyue-shengong", %{attack: 33, defense: 33}, "你的真气不够！"},
+    {"huagong-dafa", "powerup", "huagong-dafa", %{attack: 33, dodge: 33}, "你的真气不够！"}
   ]
 
   @skills ~w(bahuang-gong beiming-shengong bibo-shengong changsheng-jue hunyuan-yiqi
@@ -58,7 +69,9 @@ defmodule Kantele.Combat.T1ExertsTest do
              xuantian-wujigong shenghuo-shengong shenghuo-xinfa xuanmen-neigong zixia-shengong
              bingxin-jue dahai-wuliang duanshi-xinfa fushang-neigong huntian-qigong fenxin-jue
              hanbing-zhenqi freezing-force kurong-changong liangyi-shengong luohan-fumogong
-             miaojia-neigong nei-bagua wuwang-shengong)
+             miaojia-neigong nei-bagua wuwang-shengong tianhuan-shenjue tianlei-shengong
+             xiuluo-yinshagong xixing-dafa surge-force shenlong-xinfa lengyue-shengong
+             huagong-dafa)
 
   defp player(opts) do
     skills = Keyword.get(opts, :skills, %{"force" => 100})
@@ -332,5 +345,63 @@ defmodule Kantele.Combat.T1ExertsTest do
       )
 
     assert published_text(low) =~ "真气顿时游遍全身"
+  end
+
+  test "第 6 批 valid_learn 门槛" do
+    build = fn attrs -> struct(Kantele.Character.Stats.new(), attrs) end
+    skills = fn map -> build.(%{skills: map, con: 20, int: 20}) end
+
+    assert Skills.get("tianhuan-shenjue").valid_learn(skills.(%{"force" => 50})) == :ok
+    assert {:error, _} = Skills.get("tianhuan-shenjue").valid_learn(skills.(%{"force" => 49}))
+
+    assert Skills.get("xiuluo-yinshagong").valid_learn(skills.(%{"force" => 60})) == :ok
+    assert {:error, _} = Skills.get("xiuluo-yinshagong").valid_learn(skills.(%{"force" => 59}))
+
+    assert Skills.get("tianlei-shengong").valid_learn(skills.(%{"force" => 70})) == :ok
+    assert {:error, _} = Skills.get("tianlei-shengong").valid_learn(skills.(%{"force" => 69}))
+
+    xixing = Skills.get("xixing-dafa")
+    assert xixing.valid_learn(build.(%{skills: %{"force" => 100}, con: 30})) == :ok
+    assert {:error, _} = xixing.valid_learn(build.(%{skills: %{"force" => 100}, con: 29}))
+    assert {:error, _} = xixing.valid_learn(build.(%{skills: %{"force" => 99}, con: 40}))
+
+    surge = Skills.get("surge-force")
+    assert surge.valid_learn(build.(%{skills: %{"force" => 150}, str: 45})) == :ok
+    assert {:error, _} = surge.valid_learn(build.(%{skills: %{"force" => 149}, str: 45}))
+    assert {:error, _} = surge.valid_learn(build.(%{skills: %{"force" => 150}, str: 44}))
+
+    for id <- ~w(shenlong-xinfa lengyue-shengong) do
+      assert Skills.get(id).valid_learn(skills.(%{})) == :ok
+    end
+
+    huagong = Skills.get("huagong-dafa")
+
+    assert huagong.valid_learn(build.(%{skills: %{"force" => 120, "poison" => 120}, con: 30})) ==
+             :ok
+
+    assert {:error, _} =
+             huagong.valid_learn(build.(%{skills: %{"force" => 119, "poison" => 120}, con: 30}))
+
+    assert {:error, _} =
+             huagong.valid_learn(build.(%{skills: %{"force" => 120, "poison" => 119}, con: 30}))
+
+    assert {:error, _} =
+             huagong.valid_learn(build.(%{skills: %{"force" => 120, "poison" => 120}, con: 29}))
+
+    assert {:error, _} =
+             huagong.valid_learn(
+               build.(%{
+                 skills: %{"force" => 140, "poison" => 100, "huagong-dafa" => 150},
+                 con: 30
+               })
+             )
+
+    assert {:error, _} =
+             huagong.valid_learn(
+               build.(%{
+                 skills: %{"force" => 100, "poison" => 140, "huagong-dafa" => 150},
+                 con: 30
+               })
+             )
   end
 end
