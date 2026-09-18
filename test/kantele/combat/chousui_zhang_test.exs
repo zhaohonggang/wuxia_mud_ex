@@ -233,6 +233,38 @@ defmodule Kantele.Combat.ChousuiZhangTest do
       assert poison["duration"] == 3
     end
 
+    test "命中：护甲 consistence 损耗且落账，文案用护具名" do
+      combat = %{equipped: %{cloth: %{name: "皮甲", consistence: 50}}}
+      character = target(%{"dodge" => 0, "martial-cognize" => 0}, combat)
+
+      data = %{perform_id: @dan, an: 100_000, ap: 100_000, damage: 60, rng: fn _ -> 1 end}
+      conn = incoming(build_conn(character), data)
+
+      updated = conn.private.update_character
+      assert updated.meta.combat.equipped.cloth.consistence in 40..49
+      assert published_text(conn) =~ "皮甲"
+    end
+
+    test "命中：stable 护具不损耗但仍取用其名" do
+      combat = %{equipped: %{cloth: %{name: "天蚕宝甲", consistence: 50, stable: 100}}}
+      character = target(%{"dodge" => 0, "martial-cognize" => 0}, combat)
+
+      data = %{perform_id: @dan, an: 100_000, ap: 100_000, damage: 60, rng: fn _ -> 1 end}
+      conn = incoming(build_conn(character), data)
+
+      assert conn.private.update_character.meta.combat.equipped.cloth.consistence == 50
+      assert published_text(conn) =~ "天蚕宝甲"
+    end
+
+    test "命中：无护具时文案用肌肤" do
+      character = target(%{"dodge" => 0, "martial-cognize" => 0})
+
+      data = %{perform_id: @dan, an: 100_000, ap: 100_000, damage: 60, rng: fn _ -> 1 end}
+      conn = incoming(build_conn(character), data)
+
+      assert published_text(conn) =~ "肌肤"
+    end
+
     test "被闪避：状态不变，回执 -100 / busy 3" do
       character = target(%{"dodge" => 100_000, "martial-cognize" => 100_000})
 

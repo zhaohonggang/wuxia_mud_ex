@@ -409,49 +409,12 @@ damage = Map.get(data, :damage, 0)
               conn
               |> ConditionEvent.apply_poison(poison_params)
 
-             # 护甲 consisence 损耗
-             equipped = character.meta.combat.equipped
-             armor_name = nil
-             consistence_updated = false
-             # 检查衣服
-             cloth_slot = :cloth
-             cloth_snapshot = Map.get(equipped, cloth_slot)
-             if cloth_snapshot && is_map(cloth_snapshot) do
-               consistence = Map.get(cloth_snapshot, :consistence) || 100
-               new_consistence = max(consistence - :rand.uniform(10), 0)
-               if new_consistence != consistence do
-                 updated_snapshot = Map.put(cloth_snapshot, :consistence, new_consistence)
-                 updated_equipped = Map.put(equipped, cloth_slot, updated_snapshot)
-                 updated_combat = %{character.meta.combat | equipped: updated_equipped}
-                 character = %{character | meta: %{character.meta | combat: updated_combat}}
-                 armor_name = Map.get(cloth_snapshot, :name)
-                 consistence_updated = true
-               end
-             end
-             # 如果衣服没损耗或没穿衣，检查盔甲
-             if not consistence_updated do
-               armor_slot = :armor
-               armor_snapshot = Map.get(equipped, armor_slot)
-               if armor_snapshot && is_map(armor_snapshot) do
-                 consistence = Map.get(armor_snapshot, :consistence) || 100
-                 new_consistence = max(consistence - :rand.uniform(10), 0)
-                 if new_consistence != consistence do
-                   updated_snapshot = Map.put(armor_snapshot, :consistence, new_consistence)
-                   updated_equipped = Map.put(equipped, armor_slot, updated_snapshot)
-                   updated_combat = %{character.meta.combat | equipped: updated_equipped}
-                   character = %{character | meta: %{character.meta | combat: updated_combat}}
-                   armor_name = Map.get(armor_snapshot, :name)
-                   consistence_updated = true
-                 end
-               end
-             end
-             # 消息：如果有 armor_name 则使用它，否则肌肤
+             # 护甲 consistence 损耗（dan.c final 157-179）：作用在角色状态上，
+             # 由末尾 put_character/2 落账；同时取得命中文案所用护具名。
+             {character, armor_name} = wear_armor(character)
+
              wound_text =
-               if armor_name do
-                 "$n一个不慎，火星顿时溅到#{armor_name}之上，大势燃烧起来，皮肉烧得嗤嗤作响。\n"
-               else
-                 "$n一个不慎，火星顿时溅到肌肤之上，大势燃烧起来，皮肉烧得嗤嗤作响。\n"
-               end
+               "$n一个不慎，火星顿时溅到#{armor_name}之上，大势燃烧起来，皮肉烧得嗤嗤作响。\n"
 
              send_feedback(attacker, 220, 2)
 
@@ -474,6 +437,49 @@ damage = Map.get(data, :damage, 0)
         end
     end
   end
+
+  # 护甲 consistence 损耗（dan.c final 157-179）：
+  # 优先衣服，其次盔甲；stable >= 100 的护具不损耗，但仍取用其名。
+  # 返回 {更新后的角色, 护具名或 "肌肤"}。
+  defp wear_armor(character) do
+    equipped = character.meta.combat.equipped
+
+    case pick_armor(equipped) do
+      {slot, snapshot} ->
+        character =
+          if armor_stable?(snapshot) do
+            character
+          else
+            consistence = Map.get(snapshot, :consistence) || 100
+            new_consistence = max(consistence - :rand.uniform(10), 0)
+
+            if new_consistence == consistence do
+              character
+            else
+              updated = Map.put(snapshot, :consistence, new_consistence)
+              updated_equipped = Map.put(equipped, slot, updated)
+              updated_combat = %{character.meta.combat | equipped: updated_equipped}
+              %{character | meta: %{character.meta | combat: updated_combat}}
+            end
+          end
+
+        {character, Map.get(snapshot, :name, "肌肤")}
+
+      nil ->
+        {character, "肌肤"}
+    end
+  end
+
+  defp pick_armor(equipped) do
+    Enum.find_value([:cloth, :armor], fn slot ->
+      case Map.get(equipped, slot) do
+        snapshot when is_map(snapshot) -> {slot, snapshot}
+        _ -> nil
+      end
+    end)
+  end
+
+  defp armor_stable?(snapshot), do: Map.get(snapshot, :stable, 1) >= 100
 
   defp send_feedback(attacker, neili_cost, busy) do
     if Process.alive?(attacker.pid) do
