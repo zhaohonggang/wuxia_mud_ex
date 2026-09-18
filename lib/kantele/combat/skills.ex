@@ -33,7 +33,15 @@ defmodule Kantele.Combat.Skills do
     "duanshi-xinfa" => Kantele.Combat.Skills.DuanshiXinfa,
     "fushang-neigong" => Kantele.Combat.Skills.FushangNeigong,
     "huntian-qigong" => Kantele.Combat.Skills.HuntianQigong,
-    "fenxin-jue" => Kantele.Combat.Skills.FenxinJue
+    "fenxin-jue" => Kantele.Combat.Skills.FenxinJue,
+    "hanbing-zhenqi" => Kantele.Combat.Skills.HanbingZhenqi,
+    "freezing-force" => Kantele.Combat.Skills.FreezingForce,
+    "kurong-changong" => Kantele.Combat.Skills.KurongChangong,
+    "liangyi-shengong" => Kantele.Combat.Skills.LiangyiShengong,
+    "luohan-fumogong" => Kantele.Combat.Skills.LuohanFumogong,
+    "miaojia-neigong" => Kantele.Combat.Skills.MiaojiaNeigong,
+    "nei-bagua" => Kantele.Combat.Skills.NeiBagua,
+    "wuwang-shengong" => Kantele.Combat.Skills.WuwangShengong
   }
 
   @doc "运行时注册一门武学（覆盖同名内建）"

@@ -151,12 +151,16 @@ defmodule Kantele.Combat.Performs.Simple do
     vitals = apply_costs(character.meta.vitals, spec.costs)
 
     state =
-      Enum.reduce(spec.effects, %{vitals: vitals, combat: character.meta.combat, messages: [], buff: nil}, fn
-        effect, state -> apply_effect(effect, state, ctx, rng)
-      end)
+      Enum.reduce(
+        spec.effects,
+        %{vitals: vitals, combat: character.meta.combat, messages: [], buff: nil},
+        fn
+          effect, state -> apply_effect(effect, state, ctx, rng)
+        end
+      )
 
     combat = apply_busy(state.combat, spec.busy, ctx, rng)
-    messages = if spec.message, do: state.messages ++ [spec.message], else: state.messages
+    messages = state.messages ++ message_texts(spec.message, ctx)
 
     character = %{
       character
@@ -209,7 +213,9 @@ defmodule Kantele.Combat.Performs.Simple do
     do: %{state | messages: state.messages ++ [text]}
 
   defp apply_busy(combat, {:if_fighting, rounds}, ctx, rng) do
-    if Combat.fighting?(combat), do: Combat.start_busy(combat, eval(rounds, ctx, rng)), else: combat
+    if Combat.fighting?(combat),
+      do: Combat.start_busy(combat, eval(rounds, ctx, rng)),
+      else: combat
   end
 
   defp apply_busy(combat, rounds, ctx, rng), do: Combat.start_busy(combat, eval(rounds, ctx, rng))
@@ -232,6 +238,10 @@ defmodule Kantele.Combat.Performs.Simple do
     do: Map.new(applies, fn {key, value} -> {key, eval(value, ctx, rng)} end)
 
   defp negate(applies), do: Map.new(applies, fn {key, value} -> {key, -value} end)
+
+  defp message_texts(nil, _ctx), do: []
+  defp message_texts(message, _ctx) when is_binary(message), do: [message]
+  defp message_texts(fun, ctx) when is_function(fun, 1), do: [fun.(ctx)]
 
   # -- buff 到期 ----------------------------------------------------------
 

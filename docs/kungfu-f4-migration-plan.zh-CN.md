@@ -188,7 +188,13 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   并注册。差异：`huntian-qigong/shield` 的 LPC `add_temp("str"/"dex", …)` 非 `apply/*` 键，本引擎未建模
   str/dex 临时属性，故该 buff 无数值加成（保留状态与到期回收）；`bingxin-jue` 源文件性别判定误用
   `query("bingxin-jue",1)`（永不触发），未实装。测试补 huntian shield 专项与各门 `valid_learn` 门槛。
-- [ ] 批次 5：余下 ~56 条（`powerup`/`shield` 族为主）。
+- [x] 批次 5（8 条）：`hanbing-zhenqi` powerup、`freezing-force` powerup、`kurong-changong` powerup、
+  `liangyi-shengong` powerup、`luohan-fumogong` powerup、`miaojia-neigong` powerup、`nei-bagua` powerup、
+  `wuwang-shengong` powerup。新增 8 门内功 module 并注册；`Spec.message` 支持 `fun.(ctx)`（`kurong`/
+  `luohan` 的按门派/修为分档文案）。差异：`hanbing-zhenqi`/`luohan-fumogong` 的 `max_neili` 门槛与性格
+  判定（stats 无 vitals）、`luohan-fumogong`/`freezing-force` 的 family/item 门槛与被动未建模。
+  测试补批次 5 `valid_learn` 门槛与 kurong 文案分档（published 通道断言）。
+- [ ] 批次 6：余下 ~48 条（`powerup`/`shield` 族 + `longxiang`/`linji-zhuang`/`sanku-shengong` 等）。
 - [ ] 差异项：`suck`/`freeze`/`dispel`/`heal`/`regenerate` 等带吸取/条件分支，手写。
 - [ ] 每批补 `exert` 命令回归（含 force fallback）。
 

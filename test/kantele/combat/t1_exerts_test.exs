@@ -42,13 +42,23 @@ defmodule Kantele.Combat.T1ExertsTest do
     {"duanshi-xinfa", "powerup", "force", %{attack: 20, defense: 20}, "你的内力不够。\n"},
     {"fushang-neigong", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"},
     {"huntian-qigong", "powerup", "force", %{attack: 33, defense: 33}, "你的真气不够。\n"},
-    {"fenxin-jue", "powerup", "fenxin-jue", %{attack: 33, defense: 33}, "你的内力不够。\n"}
+    {"fenxin-jue", "powerup", "fenxin-jue", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"hanbing-zhenqi", "powerup", "hanbing-zhenqi", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"freezing-force", "powerup", "freezing-force", %{attack: 33, defense: 33}, "你的真气不够。\n"},
+    {"kurong-changong", "powerup", "kurong-changong", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"liangyi-shengong", "powerup", "liangyi-shengong", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"luohan-fumogong", "powerup", "luohan-fumogong", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"miaojia-neigong", "powerup", "miaojia-neigong", %{attack: 33, defense: 33}, "你的内力不够了。"},
+    {"nei-bagua", "powerup", "nei-bagua", %{attack: 33, defense: 33, parry: 16}, "你的内力不够。\n"},
+    {"wuwang-shengong", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"}
   ]
 
   @skills ~w(bahuang-gong beiming-shengong bibo-shengong changsheng-jue hunyuan-yiqi
              taiji-shengong xiaowuxiang xuanming-shengong zhanshen-xinjing
              xuantian-wujigong shenghuo-shengong shenghuo-xinfa xuanmen-neigong zixia-shengong
-             bingxin-jue dahai-wuliang duanshi-xinfa fushang-neigong huntian-qigong fenxin-jue)
+             bingxin-jue dahai-wuliang duanshi-xinfa fushang-neigong huntian-qigong fenxin-jue
+             hanbing-zhenqi freezing-force kurong-changong liangyi-shengong luohan-fumogong
+             miaojia-neigong nei-bagua wuwang-shengong)
 
   defp player(opts) do
     skills = Keyword.get(opts, :skills, %{"force" => 100})
@@ -78,6 +88,15 @@ defmodule Kantele.Combat.T1ExertsTest do
       %Kalevala.Character.Conn.Text{data: data} -> [IO.iodata_to_binary(data)]
       _ -> []
     end)
+    |> Enum.join("")
+  end
+
+  defp published_text(conn) do
+    conn.private.channel_changes
+    |> Enum.filter(fn change ->
+      match?({:publish, _, %Kalevala.Event{topic: Kalevala.Event.Message}, _, _}, change)
+    end)
+    |> Enum.map(fn {:publish, _channel, event, _opts, _error} -> event.data.text end)
     |> Enum.join("")
   end
 
@@ -241,5 +260,77 @@ defmodule Kantele.Combat.T1ExertsTest do
     low = %{"huntian-qigong" => 100, "force" => 100}
     conn = Simple.run(build_conn(player(skills: low)), spec, fn _ -> 1 end)
     assert output_text(conn) =~ "你的混天气功修为不够"
+  end
+
+  test "第 5 批 valid_learn 门槛" do
+    build = fn attrs -> struct(Kantele.Character.Stats.new(), attrs) end
+    skills = fn map -> build.(%{skills: map, con: 20, int: 20}) end
+
+    hanbing = Skills.get("hanbing-zhenqi")
+    assert hanbing.valid_learn(skills.(%{"force" => 100})) == :ok
+
+    assert {:error, _} = hanbing.valid_learn(skills.(%{"force" => 100, "hanbing-zhenqi" => 150}))
+
+    freezing = Skills.get("freezing-force")
+    assert freezing.valid_learn(skills.(%{"force" => 50})) == :ok
+    assert {:error, _} = freezing.valid_learn(skills.(%{"force" => 49}))
+    assert {:error, _} = freezing.valid_learn(skills.(%{"force" => 100, "freezing-force" => 120}))
+
+    assert Skills.get("kurong-changong").valid_learn(skills.(%{})) == :ok
+
+    for id <- ~w(liangyi-shengong wuwang-shengong) do
+      module = Skills.get(id)
+      assert module.valid_learn(skills.(%{"force" => 60})) == :ok
+      assert {:error, _} = module.valid_learn(skills.(%{"force" => 59}))
+    end
+
+    luohan = Skills.get("luohan-fumogong")
+    assert luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 30, con: 30})) == :ok
+
+    assert {:error, _} =
+             luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 29, con: 30}))
+
+    assert {:error, _} =
+             luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 30, con: 29}))
+
+    assert {:error, _} = luohan.valid_learn(build.(%{skills: %{"force" => 99}, int: 30, con: 30}))
+
+    assert Skills.get("miaojia-neigong").valid_learn(skills.(%{})) == :ok
+
+    nei = Skills.get("nei-bagua")
+    assert nei.valid_learn(skills.(%{"force" => 80, "wai-bagua" => 100})) == :ok
+    assert {:error, _} = nei.valid_learn(skills.(%{"force" => 79, "wai-bagua" => 100}))
+    assert {:error, _} = nei.valid_learn(skills.(%{"force" => 80, "wai-bagua" => 99}))
+  end
+
+  test "kurong-changong/powerup 文案按修为分档（message 函数）" do
+    spec = exert("kurong-changong", "powerup").spec()
+
+    high =
+      Simple.run(
+        build_conn(player(skills: %{"kurong-changong" => 300, "force" => 100})),
+        spec,
+        fn _ -> 1 end
+      )
+
+    assert published_text(high) =~ "一半犹如婴儿"
+
+    mid =
+      Simple.run(
+        build_conn(player(skills: %{"kurong-changong" => 180, "force" => 100})),
+        spec,
+        fn _ -> 1 end
+      )
+
+    assert published_text(mid) =~ "树皮般干皱苍老"
+
+    low =
+      Simple.run(
+        build_conn(player(skills: %{"kurong-changong" => 100, "force" => 100})),
+        spec,
+        fn _ -> 1 end
+      )
+
+    assert published_text(low) =~ "真气顿时游遍全身"
   end
 end

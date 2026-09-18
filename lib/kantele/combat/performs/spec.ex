@@ -22,7 +22,8 @@ defmodule Kantele.Combat.Performs.Spec do
 
   `gates` 每项自带失败文案，按序短路；`check_gate/2` 只支持下列元组，
   无法表达时用 `{:custom, fun, msg}`（`fun.(ctx) :: boolean`，ctx 见
-  `Kantele.Combat.Performs.Simple`）。
+  `Kantele.Combat.Performs.Simple`）。`message` 除字符串外也可用
+  `fun.(ctx) :: String.t()`，应对 LPC 按修为分档的运功文案。
 
   效果中 buff 的 `applies` 传**正加成值**，解释器按引擎惯例落
   `Combat.apply_temp(+bonus)` 并记 `Buff.applies`（负值），到期由
@@ -89,7 +90,7 @@ defmodule Kantele.Combat.Performs.Spec do
           busy: non_neg_integer() | {:if_fighting, value()},
           duration: duration() | nil,
           expire_message: String.t() | nil,
-          message: String.t() | nil
+          message: String.t() | (map() -> String.t()) | nil
         }
 
   defstruct id: nil,
