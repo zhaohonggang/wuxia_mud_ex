@@ -409,21 +409,6 @@ damage = Map.get(data, :damage, 0)
               conn
               |> ConditionEvent.apply_poison(poison_params)
 
-# 火毒
-             lvp = Map.get(data, :poison, 0)
-             poison_level = div(lvp, 2) + Engine.rand(rng, div(lvp, 2))
-             poison_duration = 3 + Engine.rand(rng, div(lvp, 30))
-             poison_params = %{
-               "level" => poison_level,
-               "duration" => poison_duration,
-               "remain" => poison_duration,
-               "id" => attacker.id,
-               "name" => "火毒"
-             }
-             conn =
-               conn
-               |> ConditionEvent.apply_poison(poison_params)
-
              # 护甲 consisence 损耗
              equipped = character.meta.combat.equipped
              armor_name = nil

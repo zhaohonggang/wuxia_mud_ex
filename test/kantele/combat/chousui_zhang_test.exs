@@ -151,6 +151,15 @@ defmodule Kantele.Combat.ChousuiZhangTest do
       assert output_text(conn) =~ "内息不足"
     end
 
+    test "手持毒药缺少 meta：安全拒绝而不抛异常" do
+      character = ready_character()
+      temp = Map.put(character.meta.temp, "handing", %{"poison_type" => "火毒"})
+      character = %{character | meta: %{character.meta | temp: temp}}
+
+      conn = PerformCommand.run(build_conn(character), %{"action" => @cmd})
+      assert output_text(conn) =~ "拿着(hand)些毒药"
+    end
+
     test "成功放招：放出主文案、投递目标侧事件、暂不扣内力" do
       character = ready_character()
 
@@ -211,6 +220,17 @@ defmodule Kantele.Combat.ChousuiZhangTest do
         topic: "combat/perform-feedback",
         data: %{neili_cost: 220, busy: 2}
       }
+    end
+
+    test "命中：火毒只施加一次（level 不翻倍）" do
+      character = target(%{"dodge" => 0, "martial-cognize" => 0})
+
+      data = %{perform_id: @dan, an: 100_000, ap: 100_000, poison: 300, rng: fn _ -> 1 end}
+      conn = incoming(build_conn(character), data)
+
+      poison = conn.session["conditions"]["poison"]
+      assert poison["level"] == 150
+      assert poison["duration"] == 3
     end
 
     test "被闪避：状态不变，回执 -100 / busy 3" do

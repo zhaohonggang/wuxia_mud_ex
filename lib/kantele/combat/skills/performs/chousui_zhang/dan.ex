@@ -189,15 +189,27 @@ with :ok <- check_perform_known(stats),
 do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
 
 defp check_handing(character) do
-    handing = character.meta.temp["handing"]
-    if handing == nil do
-      :ok  # TODO(migrate): 后续强制校验 handing 必须存在
-    else
-      if is_map(handing) && handing.meta && handing.meta["can_daub"] == true && handing.meta["poison_type"] do
+    handing =
+      character.meta
+      |> Map.get(:temp, %{})
+      |> Map.get("handing")
+
+    cond do
+      handing == nil ->
+        # TODO(migrate): 后续强制校验 handing 必须存在
         :ok
-      else
+
+      not is_map(handing) ->
         {:error, "你必须拿着(hand)些毒药才能施展\"炼心弹\"。\n"}
-      end
+
+      true ->
+        meta = Map.get(handing, :meta, %{})
+
+        if Map.get(meta, "can_daub") == true && Map.get(meta, "poison_type") do
+          :ok
+        else
+          {:error, "你必须拿着(hand)些毒药才能施展\"炼心弹\"。\n"}
+        end
     end
   end
  end
