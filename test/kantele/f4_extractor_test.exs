@@ -62,6 +62,20 @@ defmodule Kantele.F4ExtractorTest do
       assert d.title == "炼心弹"
     end
 
+    test "yinfeng-dao/jue：标题末字含 0x80，u 标志下不截断" do
+      d = TranslatePerform.extract(c("yinfeng-dao", "jue"))
+
+      assert d.title == "绝杀"
+      assert String.valid?(d.title)
+      assert String.valid?(TranslatePerform.render_skeleton(d))
+      refute TranslatePerform.render_skeleton(d) =~ <<0xEF, 0xBF, 0xBD>>
+
+      raw = File.read!(c("yinfeng-dao", "jue"))
+      byte_pat = ~r/#define\s+\w+\s*"「"\s*\w*\s*"([^"「」]+)/
+      assert [_, truncated] = Regex.run(byte_pat, raw)
+      refute String.valid?(truncated)
+    end
+
     test "power：内力量清零/双门槛/战斗中忙乱" do
       d = TranslatePerform.extract(c("force", "power"))
 

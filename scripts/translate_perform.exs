@@ -23,7 +23,7 @@ defmodule Scripts.TranslatePerform do
   @perform_re ~r/^\s*int\s+perform\s*\(/m
   @exert_re ~r/^\s*int\s+exert\s*\(/m
   @inherit_re ~r/\binherit\s+(F_\w+)\b/
-  @sense_re ~r/#define\s+\w+\s*"「"\s*\w*\s*"([^"「」]+)/
+  @sense_re ~r/#define\s+\w+\s*"「"\s*\w*\s*"([^"「」]+)/u
   @level_gate_re ~r/query_skill\("([a-z0-9-]+)"[^)]*\)+\s*<\s*(\d+)/
   @assign_re ~r/(\w+)\s*=\s*[^;\n]*?query_skill\("([a-z0-9-]+)"/
   @var_gate_re ~r/\b(\w+)\s*<\s*(\d+)/
@@ -37,7 +37,7 @@ defmodule Scripts.TranslatePerform do
   @affect_re ~r/\baffect_by\("([a-z_]+)"/
   @damage_re ~r/\bdo_damage\(/
   @busy_re ~r/^\s*(?:\/\/)?\s*.*\b(?:start_busy|is_busy)\(/
-  @notify_re ~r/notify_fail\(\s*"([^"\n]+)/m
+  @notify_re ~r/notify_fail\(\s*"([^"\n]+)/mu
 
   @doc "按顶层 perform/exert 签名分类：`:perform` | `:exert` | `:skip`"
   def classify(src) do

@@ -153,10 +153,14 @@
 
 ### F4 批量迁移（进行中）
 - **提取器跑通全量**：`KUNGFU_SRC=/tmp/kungfu_skill RUN_EXTRACTOR=1 mix run scripts/translate_perform.exs` → 428 个 skill、644 个 perform/exert 骨架（非招式 `.c` 记入 `skipped`）。
-- **编码问题定位与修复（此前是在追幻影）**：全量 1448 个 `.c` 经 `iconv -f UTF-8 -t UTF-8`（无 `-c`）核验**全部合法 UTF-8**，源文件并无编码问题。此前生成骨架含非法 UTF-8，是提取器自带的 `sanitize/1`（temp-file + `iconv` + 字节级回退）与 `read_source/1` 把**合法字节改坏**造成的；`@skip_skills` 逐个回避源在解决一个不存在的问题。已删除 `sanitize`/`sanitize_bytes_fallback`/`read_source`/`@skip_skills` 全部臆造转码逻辑，改为直接 `File.read!`。重新生成 644 文件经 `iconv` 复检 **0 非法、0 U+FFFD**。
+- **编码问题定位与修复（此前是在追幻影）**：源文件并无编码问题——全量 1448 个 `.c` 用 Elixir `String.valid?` 核验**全部合法 UTF-8**（注意：`iconv -f UTF-8 -t UTF-8` 同编码会直通、**不做校验**，早前用它得出的 0 非法是假绿）。生成骨架含非法 UTF-8 有两个真因，均与源文件无关：
+  1. 提取器自带的 `sanitize/1`（temp-file + `iconv` + 字节级回退）与 `read_source/1` 把**合法字节改坏**。已删除 `sanitize`/`sanitize_bytes_fallback`/`read_source`/`@skip_skills` 全部臆造转码逻辑，改用直接 `File.read!`。
+  2. **正则字节模式截断多字节标题**：`@sense_re` 的否定字符类 `[^"「」]` 在无 `u` 标志下按**字节**匹配，`「`/`」` 的 UTF-8 字节（`0xE3 0x80 0x8C/0x8D`）会连带截断末字节含 `0x80` 等在类内字节的汉字——如 `绝杀` 被截成 `绝` + 不完整的 `0xE6 0x9D`（非法 UTF-8）。已给 `@sense_re`/`@notify_re` 加 `u` 标志；新增夹具 `yinfeng-dao/jue.c`（标题「绝杀」）与回归断言（无 `u` 时截断、有 `u` 时 `String.valid?`）。
+- 修复后重生成 644 骨架，Elixir `String.valid?` 复检 **0 非法、0 U+FFFD**（源里另有 3 个 `.c` 自带 U+FFFD，属 LPC 原始数据，非本次问题）。
 - **输出改到暂存区**：默认输出由 `lib/kantele/combat/skills/performs/` 改为 `tmp/perf_out/`（`.gitignore` 已忽略 `/tmp/`）。此前提取器曾把已实装的三个样板覆盖成骨架、并把数百未评审文件落进编译路径导致 `mix test` 编译失败。评审后按批挑入 `lib/` 并注册 `Skills.@static`。
-- **回归**：`f4_extractor_test.exs` 9/0（新增生成文本 `String.valid?` + 无 U+FFFD 断言）；全量 2444/0。
-- **待办（步骤 3 人工校对）**：按批校对 644 骨架的 `TODO(migrate)` 门槛/效果，逐批实装 + 测试锁定 + 提交。
+- **步骤 3 校对清单**：新增生成器 `scripts/f4_checklist.exs`，产出 `docs/kungfu-f4-migration-checklist.zh-CN.md`（644 条，勾选式）。按复杂度分档：T1 自我增益 exert 86、T2 无目标 perform 193、T3 攻击型 169、T4 状态/毒 12、T5 需 `prepare_skill`（当前阻塞）184。
+- **回归**：`f4_extractor_test.exs` 10/0；全量待复跑。
+- **待办**：按档校对 644 骨架的 `TODO(migrate)` 门槛/效果，逐批实装 + 测试锁定 + 提交。
 
 ---
 
