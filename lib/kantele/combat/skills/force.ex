@@ -28,6 +28,14 @@ defmodule Kantele.Combat.Skills.Force do
 
   @impl true
   def exert_list() do
-    %{"power" => Kantele.Combat.Skills.Performs.Force.Power}
+    %{
+      "power" => Kantele.Combat.Skills.Performs.Force.Power,
+      "heal" => Kantele.Combat.Skills.Force.Heal,
+      "inspire" => Kantele.Combat.Skills.Force.Inspire,
+      "recover" => Kantele.Combat.Skills.Force.Recover,
+      "lifeheal" => Kantele.Combat.Skills.Force.Lifeheal,
+      "regenerate" => Kantele.Combat.Skills.Force.Regenerate,
+      "dispel" => Kantele.Combat.Skills.Force.Dispel
+    }
   end
 end
