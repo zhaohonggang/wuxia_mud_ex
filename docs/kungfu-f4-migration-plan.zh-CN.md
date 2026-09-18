@@ -205,7 +205,12 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   `zhenyue-jue` powerup。新增 8 门内功 module 并注册。差异：`yijinjing` 的性别限制与
   `tong`（易筋通脉）复杂动态逻辑未建模；`yunlong-shengong` 源码误扣 force 技能点（已按 neili 实现并标记）；
   `yujiashu` 的 `valid_enable("dodge")` 未接入；`yunv-xinjing` 的 `max_neili` 门槛与被动未建模。测试补批次 7 `valid_learn` 门槛。
-- [ ] 批次 8：余下 ~32 条（`powerup`/`shield` 族 + `longxiang`/`linji-zhuang`/`sanku-shengong` 等）。
+- [x] 批次 8（7 技能 / 8 exert）：`longxiang-gong` powerup/shield、`linji-zhuang` powerup、
+  `zihui-xinfa` powerup、`luohan-fumogong` fireice、`sanku-shengong` powerup。
+  新增 5 门内功 module 并注册（longxiang 含 powerup+shield）。差异：`longxiang-gong` 的 `str` 临时属性、
+  `linji-zhuang` 的性别/大乘涅槃判定与 `di` 计算简化、`luohan-fumogong` 的门派/物品门槛、
+  `sanku-shengong` 的 `dispel`/`roar` 手写差异项。测试补批次 8 `valid_learn` 门槛与 fireice 专项。
+- [ ] 批次 9：余下 ~24 条（`powerup`/`shield` 族 + `force/*` 基础 exert 等）。
 - [ ] 差异项：`suck`/`freeze`/`dispel`/`heal`/`regenerate` 等带吸取/条件分支，手写。
 - [ ] 每批补 `exert` 命令回归（含 force fallback）。
 

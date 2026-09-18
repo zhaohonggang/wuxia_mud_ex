@@ -79,7 +79,15 @@ defmodule Kantele.Combat.T1ExertsTest do
     {"yujiashu", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"},
     {"yunlong-shengong", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"},
     {"yunv-xinjing", "powerup", "yunv-xinjing", %{attack: 33, defense: 33}, "你的内力不够。\n"},
-    {"zhenyue-jue", "powerup", "zhenyue-jue", %{attack: 33, defense: 33}, "你的内力不够。\n"}
+    {"zhenyue-jue", "powerup", "zhenyue-jue", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"longxiang-gong", "powerup", "longxiang-gong", %{attack: 78, parry: 33, dodge: 33},
+     "你龙象般若功修为不够，难以运功。\n"},
+    {"longxiang-gong", "shield", "longxiang-gong", %{armor: 50}, "你龙象般若功修为不够，难以运功。\n"},
+    {"linji-zhuang", "powerup", "linji-zhuang", %{attack: 33, dodge: 33, damage: 50},
+     "你的内力不够。\n"},
+    {"zihui-xinfa", "powerup", "zihui-xinfa", %{attack: 33, dodge: 33, defense: 33}, "你的真气不够！"},
+    {"luohan-fumogong", "powerup", "luohan-fumogong", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"sanku-shengong", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"}
   ]
 
   @skills ~w(bahuang-gong beiming-shengong bibo-shengong changsheng-jue hunyuan-yiqi
@@ -90,7 +98,8 @@ defmodule Kantele.Combat.T1ExertsTest do
              miaojia-neigong nei-bagua wuwang-shengong tianhuan-shenjue tianlei-shengong
              xiuluo-yinshagong xixing-dafa surge-force shenlong-xinfa lengyue-shengong
              huagong-dafa xiyang-neigong xuehai-mogong yijin-duangu yijinjing yujiashu
-             yunlong-shengong yunv-xinjing zhenyue-jue)
+             yunlong-shengong yunv-xinjing zhenyue-jue longxiang-gong linji-zhuang
+             zihui-xinfa sanku-shengong)
 
   defp player(opts) do
     skills = Keyword.get(opts, :skills, %{"force" => 100})
@@ -456,5 +465,85 @@ defmodule Kantele.Combat.T1ExertsTest do
 
     assert Skills.get("zhenyue-jue").valid_learn(skills.(%{"force" => 70})) == :ok
     assert {:error, _} = Skills.get("zhenyue-jue").valid_learn(skills.(%{"force" => 69}))
+  end
+
+  test "第 8 批 valid_learn 门槛" do
+    build = fn attrs -> struct(Kantele.Character.Stats.new(), attrs) end
+    skills = fn map -> build.(%{skills: map, con: 20, int: 20}) end
+
+    longxiang = Skills.get("longxiang-gong")
+
+    assert longxiang.valid_learn(
+             skills.(%{"force" => 100, "lamaism" => 100, "longxiang-gong" => 100})
+           ) == :ok
+
+    assert {:error, _} =
+             longxiang.valid_learn(
+               skills.(%{"force" => 99, "lamaism" => 100, "longxiang-gong" => 100})
+             )
+
+    assert {:error, _} =
+             longxiang.valid_learn(
+               skills.(%{"force" => 100, "lamaism" => 99, "longxiang-gong" => 100})
+             )
+
+    linji = Skills.get("linji-zhuang")
+
+    assert linji.valid_learn(skills.(%{"force" => 40, "linji-zhuang" => 50, "mahayana" => 100})) ==
+             :ok
+
+    assert {:error, _} = linji.valid_learn(skills.(%{"force" => 39, "mahayana" => 100}))
+
+    assert {:error, _} =
+             linji.valid_learn(skills.(%{"force" => 40, "linji-zhuang" => 60, "mahayana" => 50}))
+
+    assert Skills.get("zihui-xinfa").valid_learn(skills.(%{"force" => 20})) == :ok
+    assert {:error, _} = Skills.get("zihui-xinfa").valid_learn(skills.(%{"force" => 19}))
+
+    luohan = Skills.get("luohan-fumogong")
+    assert luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 30, con: 30})) == :ok
+
+    assert {:error, _} =
+             luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 29, con: 30}))
+
+    assert {:error, _} =
+             luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 30, con: 29}))
+
+    assert {:error, _} = luohan.valid_learn(build.(%{skills: %{"force" => 99}, int: 40, con: 40}))
+
+    assert Skills.get("sanku-shengong").valid_learn(skills.(%{})) == :ok
+  end
+
+  test "luohan-fumogong/fireice 门槛与加成（需 180 级）" do
+    build = fn attrs -> struct(Kantele.Character.Stats.new(), attrs) end
+    skills = fn map -> build.(%{skills: map, con: 20, int: 20}) end
+
+    luohan = Skills.get("luohan-fumogong")
+    assert luohan.valid_learn(build.(%{skills: %{"force" => 180, "luohan-fumogong" => 180}, int: 30, con: 30})) == :ok
+    assert {:error, _} = luohan.valid_learn(build.(%{skills: %{"force" => 100, "luohan-fumogong" => 150}, int: 30, con: 30}))
+
+    spec = luohan.exert_list()["fireice"].spec()
+
+    low = Simple.run(
+      build_conn(player(skills: %{"luohan-fumogong" => 100, "force" => 100})),
+      spec,
+      fn _ -> 1 end
+    )
+    assert output_text(low) =~ "火候不足"
+
+    high = Simple.run(
+      build_conn(player(skills: %{"luohan-fumogong" => 180, "force" => 100, "max_neili" => 5000}, neili: 1000)),
+      spec,
+      fn _ -> 1 end
+    )
+    char = high.private.update_character
+    assert char.meta.vitals.neili == 700
+    assert Combat.buff_active?(char.meta.combat, "fireice")
+    assert Enum.find(char.meta.combat.buffs, &(&1.key == "fireice")).applies ==
+             %{
+               armor: -72,
+               damage: -36,
+               unarmed_damage: -36
+             }
   end
 end
