@@ -35,13 +35,13 @@
 - [x] `force/heal` exert「heal」 门槛: assign:recover_points=force; res:neili>=50,neili>=50 | 效果: add:neili -50,neili -50; set:neili=0; busy | 依赖: 无
 - [x] `force/inspire` exert「inspire」 门槛: assign:recover_points=force; res:neili>=100,neili>=200 | 效果: add:neili -100; busy | 依赖: 无
 - [x] `force/lifeheal` exert「lifeheal」 门槛: res:max_neili>=300,neili>=150 | 效果: add:neili -150 | 依赖: 无
-- [ ] `force/power` exert「power」 门槛: level:force>=200; assign:lev=force,skill=martial-cognize; var:skill<120; res:neili>=100 | 效果: set:neili=0; temp:power; busy | 依赖: 无
+- [x] `force/power` exert「power」 门槛: level:force>=200; assign:lev=force,skill=martial-cognize; var:skill<120; res:neili>=100 | 效果: set:neili=0; temp:power; busy | 依赖: 无
 - [x] `force/recover` exert「recover」 门槛: assign:n=force; var:n<20,q<10; res:neili>=20 | 效果: busy | 依赖: 无
 - [x] `force/regenerate` exert「regenerate」 门槛: assign:lvl=force; var:heal<10,neili_cost<20,neili_cost<20 | 效果: busy | 依赖: 无
-- [ ] `force/roar` exert「roar」 门槛: assign:skill=force; var:skill<180; map:force=huntian-qigong,force=hunyuan-gong,force=jiuyang-shengong,force=jiuyin-shengong,force=kuihua-mogong,force=longxiang-gong,force=tianhuan-shenjue,force=xixing-dafa,force=yijinjing,force=zhanshen-xinjing; res:eff_jing>=1,jing>=1,neili>=800 | 效果: add:eff_jing 10,jing 10,neili -800; busy | 依赖: 无
-- [ ] `force/shot` exert「shot」 门槛: level:poison>=100,throwing>=100; assign:ap=force,dp=dodge,skill=force; var:skill<150; map:force=hamagong,force=huagong-dafa,force=huaxue-shengong,force=shennong-xinjing,force=xiuluo-yinshagong; res:neili>=300 | 效果: add:neili -100; busy | 依赖: 无
-- [ ] `force/tianmo` exert「天魔解体大法」 门槛: level:force>=300,martial-cognize>=300; assign:skill=force; res:con>=30,neili>=8000,str>=30 | 效果: set:neili=0; temp:tianmo; apply+:attack,con,damage,dex,dodge,force,int,parry,str,unarmed_damage; busy | 依赖: 无
-- [ ] `force/xun` exert「xun」 门槛: — | 效果: — | 依赖: 无
+- [x] `force/roar` exert「roar」 门槛: assign:skill=force; var:skill<180; map:force=huntian-qigong,force=hunyuan-gong,force=jiuyang-shengong,force=jiuyin-shengong,force=kuihua-mogong,force=longxiang-gong,force=tianhuan-shenjue,force=xixing-dafa,force=yijinjing,force=zhanshen-xinjing; res:eff_jing>=1,jing>=1,neili>=800 | 效果: add:eff_jing 10,jing 10,neili -800; busy | 依赖: 无
+- [x] `force/shot` exert「shot」 门槛: level:poison>=100,throwing>=100; assign:ap=force,dp=dodge,skill=force; var:skill<150; map:force=hamagong,force=huagong-dafa,force=huaxue-shengong,force=shennong-xinjing,force=xiuluo-yinshagong; res:neili>=300 | 效果: add:neili -100; busy | 依赖: 无
+- [x] `force/tianmo` exert「天魔解体大法」 门槛: level:force>=300,martial-cognize>=300; assign:skill=force; res:con>=30,neili>=8000,str>=30 | 效果: set:neili=0; temp:tianmo; apply+:attack,con,damage,dex,dodge,force,int,parry,str,unarmed_damage; busy | 依赖: 无
+- [x] `force/xun` exert「xun」 门槛: — | 效果: — | 依赖: 无
 - [x] `freezing-force/powerup` exert「powerup」 门槛: assign:skill=freezing-force; res:neili>=200 | 效果: add:neili -100; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [x] `fushang-neigong/powerup` exert「powerup」 门槛: assign:skill=force; res:neili>=100 | 效果: add:neili -90; temp:powerup; apply+:attack,defense; busy | 依赖: 无
 - [ ] `hanbing-zhenqi/freezing` exert「寒冰真气」 门槛: assign:skill=hanbing-zhenqi; var:skill<140; res:con>=34,max_neili>=2200,neili>=1000 | 效果: add:neili -300; temp:freezing; busy | 依赖: 无

@@ -214,8 +214,12 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   `force/recover`、`force/regenerate`、`force/dispel`。新增 7 个 force 扩展 exert 并注册到 force 模块。
   差异：原 LPC 为 async busy 循环（heal/inspire/regenerate），本实现为单次同步执行；`lifeheal` 目标端回复；
   `dispel` 简化为直接清除 conditions map。测试覆盖 gate 与效果。
-- [ ] 批次 10：余下 ~16 条（`powerup`/`shield` 族 + `force/power`/`force/roar`/`force/shot`/`force/tianmo`/`force/xun` 等）。
-- [ ] 差异项：`suck`/`freeze`/`dispel`/`heal`/`regenerate` 等带吸取/条件分支，手写。
+- [x] 批次 10（5 条 force/* 基础 exert）：`force/power`、`force/roar`、`force/shot`、
+  `force/tianmo`、`force/xun`。新增 5 个 force 扩展 exert 并注册到 force 模块。
+  差异：`force/roar` 房间广播简化为单次循环、`force/shot` 目标对抗与毒药系统、
+  `force/tianmo` 永久属性改变与全技能加成、`force/xun` 传送/查找功能。
+  测试覆盖 gate 与效果。
+- [ ] 批次 11：余下差异项（`suck`/`freeze`/`dispel`/`heal`/`regenerate` 等带吸取/条件分支，手写）。
 - [ ] 每批补 `exert` 命令回归（含 force fallback）。
 
 ### Phase 2 — T2 无目标 perform（193）

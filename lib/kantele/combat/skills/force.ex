@@ -35,7 +35,11 @@ defmodule Kantele.Combat.Skills.Force do
       "recover" => Kantele.Combat.Skills.Force.Recover,
       "lifeheal" => Kantele.Combat.Skills.Force.Lifeheal,
       "regenerate" => Kantele.Combat.Skills.Force.Regenerate,
-      "dispel" => Kantele.Combat.Skills.Force.Dispel
+      "dispel" => Kantele.Combat.Skills.Force.Dispel,
+      "roar" => Kantele.Combat.Skills.Force.Roar,
+      "shot" => Kantele.Combat.Skills.Force.Shot,
+      "tianmo" => Kantele.Combat.Skills.Force.Tianmo,
+      "xun" => Kantele.Combat.Skills.Force.Xun
     }
   end
 end
