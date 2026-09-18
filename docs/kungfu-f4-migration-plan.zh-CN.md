@@ -156,7 +156,12 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   - 产出 `tmp/skill_out/<skill>.ex` 骨架（`Kantele.Combat.Skills.Generated.*`）+ `_summary.md`；
     全量 719 门已跑通，`String.valid?` 与 `Code.compile_file` 复检 0 失败。
   - 新增 `test/kantele/f4_skill_extractor_test.exs`（10 例）。
-- [ ] 0.3 D3 spec + `Simple` 解释器（先支持 exert，再 perform）。
+- [x] 0.3 D3 声明式 spec + `Simple` 解释器（本提交）：
+  - `Kantele.Combat.Performs.Spec`（`gates`/`costs`/`effects`/`busy`/`message` 数据形状）+
+    `Kantele.Combat.Performs.Simple`（`run/2` 解释器 + `use` 宏注入 `run/1`、`spec/0`）。
+  - 门槛：`perform_known`/`skill_min`/`mapped`/`neili|qi|jing_min`/`max_neili_min`/`no_buff`/`buff`/`custom`；
+    效果：`temp`/`buff`（传正加成，自动落负 `Buff.applies`）/`set`/`add`/`message`；`busy: n | {:if_fighting, n}`。
+  - 新增 `test/kantele/combat/simple_test.exs`（9 例）。Phase 1 起批量启用；超出表达力仍手写模块。
 - [ ] 0.4 D4 `prepare_skill` 状态 + `prepare` 命令。
 - [ ] 0.5 D6 注册生成器 + D7 覆盖保护。
 - [ ] 0.6 批次工程化：`f4_checklist` 支持勾选回写/筛选；批量补注册脚本；测试模板。
