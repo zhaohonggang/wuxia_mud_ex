@@ -183,7 +183,12 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   `shenghuo-xinfa` powerup、`xuanmen-neigong` powerup、`zixia-shengong` powerup。新增 5 门内功 module 并注册。
   测试成功用例改为按 `spec.costs` 校验内力（本批出现耗 150 的条目）；补固定 busy=3 用例与新内功
   `valid_learn` 门槛。差异：`shenghuo-shengong` 的 `hit_ob` 被动（圣火令法连击）未建模。
-- [ ] 批次 4：余下 ~63 条（`powerup`/`shield` 族为主）。
+- [x] 批次 4（7 条）：`bingxin-jue` powerup、`dahai-wuliang` powerup、`duanshi-xinfa` powerup、
+  `fushang-neigong` powerup、`huntian-qigong` powerup/shield、`fenxin-jue` powerup。新增 6 门内功 module
+  并注册。差异：`huntian-qigong/shield` 的 LPC `add_temp("str"/"dex", …)` 非 `apply/*` 键，本引擎未建模
+  str/dex 临时属性，故该 buff 无数值加成（保留状态与到期回收）；`bingxin-jue` 源文件性别判定误用
+  `query("bingxin-jue",1)`（永不触发），未实装。测试补 huntian shield 专项与各门 `valid_learn` 门槛。
+- [ ] 批次 5：余下 ~56 条（`powerup`/`shield` 族为主）。
 - [ ] 差异项：`suck`/`freeze`/`dispel`/`heal`/`regenerate` 等带吸取/条件分支，手写。
 - [ ] 每批补 `exert` 命令回归（含 force fallback）。
 

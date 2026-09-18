@@ -36,12 +36,19 @@ defmodule Kantele.Combat.T1ExertsTest do
     {"shenghuo-xinfa", "powerup", "force", %{attack: 16, dodge: 16, parry: 16}, "你的内力不够。\n"},
     {"xuanmen-neigong", "powerup", "xuanmen-neigong", %{attack: 25, dodge: 25, parry: 25},
      "你的内力不够。\n"},
-    {"zixia-shengong", "powerup", "zixia-shengong", %{attack: 33, defense: 33}, "你的内力不够。\n"}
+    {"zixia-shengong", "powerup", "zixia-shengong", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"bingxin-jue", "powerup", "force", %{attack: 33, defense: 33}, "你的真气不够！"},
+    {"dahai-wuliang", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够了。"},
+    {"duanshi-xinfa", "powerup", "force", %{attack: 20, defense: 20}, "你的内力不够。\n"},
+    {"fushang-neigong", "powerup", "force", %{attack: 33, defense: 33}, "你的内力不够。\n"},
+    {"huntian-qigong", "powerup", "force", %{attack: 33, defense: 33}, "你的真气不够。\n"},
+    {"fenxin-jue", "powerup", "fenxin-jue", %{attack: 33, defense: 33}, "你的内力不够。\n"}
   ]
 
   @skills ~w(bahuang-gong beiming-shengong bibo-shengong changsheng-jue hunyuan-yiqi
              taiji-shengong xiaowuxiang xuanming-shengong zhanshen-xinjing
-             xuantian-wujigong shenghuo-shengong shenghuo-xinfa xuanmen-neigong zixia-shengong)
+             xuantian-wujigong shenghuo-shengong shenghuo-xinfa xuanmen-neigong zixia-shengong
+             bingxin-jue dahai-wuliang duanshi-xinfa fushang-neigong huntian-qigong fenxin-jue)
 
   defp player(opts) do
     skills = Keyword.get(opts, :skills, %{"force" => 100})
@@ -199,5 +206,40 @@ defmodule Kantele.Combat.T1ExertsTest do
     assert shenghuo.valid_learn(build.(%{skills: %{"force" => 180}, int: 32})) == :ok
     assert {:error, _} = shenghuo.valid_learn(build.(%{skills: %{"force" => 180}, int: 31}))
     assert {:error, _} = shenghuo.valid_learn(build.(%{skills: %{"force" => 179}, int: 40}))
+
+    bingxin = Skills.get("bingxin-jue")
+    assert bingxin.valid_learn(build.(%{skills: %{"force" => 100}, int: 26})) == :ok
+    assert {:error, _} = bingxin.valid_learn(build.(%{skills: %{"force" => 100}, int: 25}))
+    assert {:error, _} = bingxin.valid_learn(build.(%{skills: %{"force" => 99}, int: 30}))
+
+    for id <- ~w(dahai-wuliang fushang-neigong) do
+      module = Skills.get(id)
+      assert module.valid_learn(skills.(%{"force" => 50})) == :ok
+      assert {:error, _} = module.valid_learn(skills.(%{"force" => 49}))
+    end
+
+    assert Skills.get("huntian-qigong").valid_learn(skills.(%{"force" => 30})) == :ok
+    assert {:error, _} = Skills.get("huntian-qigong").valid_learn(skills.(%{"force" => 29}))
+
+    assert Skills.get("fenxin-jue").valid_learn(skills.(%{"force" => 70})) == :ok
+    assert {:error, _} = Skills.get("fenxin-jue").valid_learn(skills.(%{"force" => 69}))
+
+    assert Skills.get("duanshi-xinfa").valid_learn(skills.(%{})) == :ok
+  end
+
+  test "huntian-qigong/shield 无数值加成（LPC 用非 apply 的 str/dex 临时键）" do
+    spec = exert("huntian-qigong", "shield").spec()
+    skills = %{"huntian-qigong" => 200, "checking" => 10, "begging" => 5, "force" => 100}
+
+    conn = Simple.run(build_conn(player(skills: skills)), spec, fn _ -> 1 end)
+    char = conn.private.update_character
+
+    assert char.meta.vitals.neili == 8900
+    assert Combat.buff_active?(char.meta.combat, "shield")
+    assert Enum.find(char.meta.combat.buffs, &(&1.key == "shield")).applies == %{}
+
+    low = %{"huntian-qigong" => 100, "force" => 100}
+    conn = Simple.run(build_conn(player(skills: low)), spec, fn _ -> 1 end)
+    assert output_text(conn) =~ "你的混天气功修为不够"
   end
 end
