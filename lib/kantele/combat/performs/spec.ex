@@ -27,7 +27,34 @@ defmodule Kantele.Combat.Performs.Spec do
   效果中 buff 的 `applies` 传**正加成值**，解释器按引擎惯例落
   `Combat.apply_temp(+bonus)` 并记 `Buff.applies`（负值），到期由
   `combat/buff-expire` 回收。
+
+  ## 数值表达式
+
+  效果/busy 的数值可以是静态整数，也可以是随状态求值的表达式 `value()`：
+
+      integer           静态值
+      {:skill, id}      技能等级 Stats.skill/2
+      {:effective, id}  有效等级 Stats.effective/2
+      {:add, a, b} / {:sub, a, b} / {:mul, a, b} / {:div, a, b}
+      {:random, min, max}  含端点均匀随机（依赖 run/3 注入的 rng）
+
+  例：LPC `skill / 3` 写作 `{:div, {:skill, "bahuang-gong"}, 3}`；
+  `skill * 2 / 5` 写作 `{:div, {:mul, {:skill, "force"}, 2}, 5}`。
+
+  带 `duration` 的 spec 会在效果应用后对首个 `{:buff, key, applies}`
+  投递 `combat/buff-expire`（`duration` 为秒，`{:skill, id}` 取该技能等级）。
   """
+
+  @typedoc "数值表达式（效果/busy 用）"
+  @type value ::
+          integer()
+          | {:skill, skill_id :: String.t()}
+          | {:effective, skill_id :: String.t()}
+          | {:add, value(), value()}
+          | {:sub, value(), value()}
+          | {:mul, value(), value()}
+          | {:div, value(), value()}
+          | {:random, integer(), integer()}
 
   @typedoc "门槛项：`{类型, 参数..., 失败文案}`"
   @type gate ::
@@ -44,19 +71,24 @@ defmodule Kantele.Combat.Performs.Spec do
 
   @typedoc "效果项"
   @type effect ::
-          {:temp, %{optional(atom()) => number()}}
-          | {:buff, key :: String.t(), %{optional(atom()) => number()}}
-          | {:set, vital :: atom(), number()}
-          | {:add, vital :: atom(), number()}
+          {:temp, %{optional(atom()) => value()}}
+          | {:buff, key :: String.t(), %{optional(atom()) => value()}}
+          | {:set, vital :: atom(), value()}
+          | {:add, vital :: atom(), value()}
           | {:message, String.t()}
+
+  @typedoc "buff 到期时长：静态秒数或按技能等级取秒"
+  @type duration :: non_neg_integer() | {:skill, skill_id :: String.t()}
 
   @type t :: %__MODULE__{
           id: String.t() | nil,
           kind: :exert | :perform,
           gates: [gate()],
-          costs: %{optional(atom()) => number()},
+          costs: %{optional(atom()) => non_neg_integer()},
           effects: [effect()],
-          busy: non_neg_integer() | {:if_fighting, non_neg_integer()},
+          busy: non_neg_integer() | {:if_fighting, value()},
+          duration: duration() | nil,
+          expire_message: String.t() | nil,
           message: String.t() | nil
         }
 
@@ -66,6 +98,8 @@ defmodule Kantele.Combat.Performs.Spec do
             costs: %{},
             effects: [],
             busy: 0,
+            duration: nil,
+            expire_message: nil,
             message: nil
 
   @doc "构造规格（关键字覆盖默认值；未知键报错）"

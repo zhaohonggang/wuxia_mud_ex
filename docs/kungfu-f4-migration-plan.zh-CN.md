@@ -168,7 +168,14 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
 
 ### Phase 1 — T1 exert 自我增益（86）
 
-- [ ] 分批（建议 4 批 × ~20）：`powerup`/`shield` 占多数，可高度声明式。
+- [x] 批次 1（8 条）：`bahuang-gong` powerup/shield、`beiming-shengong` powerup/shield、
+  `bibo-shengong` powerup、`changsheng-jue` powerup/shield、`hunyuan-yiqi` powerup。
+  新增 5 门内功 module（`valid_enable`/`valid_force`/`valid_learn`/`practice_cost`）并注册 `Skills.@static`；
+  `Spec`/`Simple` 扩展数值表达式（`{:skill,_}`/`{:effective,_}`/`{:div,_}`/`{:mul,_}`/`{:random,_}` 等）
+  与 `duration`/`expire_message`（到期投递 `combat/buff-expire`）。新增
+  `test/kantele/combat/t1_exerts_test.exs`（5 例）。各内功 `valid_learn` 的性别/性格/婚姻/僧戒等
+  未建模字段以 `TODO(migrate)` 标注。
+- [ ] 批次 2–4：余下 ~78 条（`powerup`/`shield` 族为主）。
 - [ ] 差异项：`suck`/`freeze`/`dispel`/`heal`/`regenerate` 等带吸取/条件分支，手写。
 - [ ] 每批补 `exert` 命令回归（含 force fallback）。
 

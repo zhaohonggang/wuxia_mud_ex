@@ -13,7 +13,12 @@ defmodule Kantele.Combat.Skills do
     "dugu-jiujian" => Kantele.Combat.Skills.DuguJiujian,
     "huashan-jian" => Kantele.Combat.Skills.HuashanJian,
     "chousui-zhang" => Kantele.Combat.Skills.ChousuiZhang,
-    "force" => Kantele.Combat.Skills.Force
+    "force" => Kantele.Combat.Skills.Force,
+    "bahuang-gong" => Kantele.Combat.Skills.BahuangGong,
+    "beiming-shengong" => Kantele.Combat.Skills.BeimingShengong,
+    "bibo-shengong" => Kantele.Combat.Skills.BiboShengong,
+    "changsheng-jue" => Kantele.Combat.Skills.ChangshengJue,
+    "hunyuan-yiqi" => Kantele.Combat.Skills.HunyuanYiqi
   }
 
   @doc "运行时注册一门武学（覆盖同名内建）"

@@ -22,6 +22,22 @@ defmodule Kantele.Combat.Performs.Simple do
   生成模块导出 `run/1`（满足 `Kantele.Combat.Perform`）与 `spec/0`；
   `perform_list/0`/`exert_list/0` 照常映射到该模块。
 
+  ## 数值表达式
+
+  效果/busy 里的数值可为整数或表达式（spec 的 `value()` 类型），
+  按当前角色状态求值：
+
+      {:skill, id}        Stats.skill/2
+      {:effective, id}    Stats.effective/2
+      {:add, a, b} {:sub, a, b} {:mul, a, b} {:div, a, b}
+      {:random, min, max} 含端点均匀随机（rng 可注入，便于测试）
+
+  ## buff 到期
+
+  spec 带 `duration`（秒；`{:skill, id}` 取技能等级）时，效果应用后对其
+  首个 `{:buff, key, applies}` 投递 `combat/buff-expire`（`expire_message`
+  为到期文案），对应 LPC 的 `start_call_out(remove_effect, skill)`。
+
   `{:custom, fun, msg}` 的入参 ctx：
 
       %{conn:, character:, stats:, combat:, vitals:}
@@ -38,6 +54,9 @@ defmodule Kantele.Combat.Performs.Simple do
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Performs.Spec
 
+  @typedoc "随机源：`rng.(n)` 返回 1..n"
+  @type rng :: (pos_integer() -> pos_integer())
+
   @doc "为声明式 spec 生成实现模块（注入 `run/1` 与 `spec/0`）"
   defmacro __using__(opts) do
     spec = Keyword.fetch!(opts, :spec)
@@ -53,13 +72,18 @@ defmodule Kantele.Combat.Performs.Simple do
     end
   end
 
-  @doc "按 spec 执行"
+  @doc "按 spec 执行（默认随机源 `:rand.uniform/1`）"
   @spec run(Kalevala.Character.Conn.t(), Spec.t()) :: Kalevala.Character.Conn.t()
-  def run(conn, %Spec{} = spec) do
-    character = conn.character
+  def run(conn, %Spec{} = spec), do: run(conn, spec, &:rand.uniform/1)
 
-    with :ok <- check_gates(spec.gates, context(conn, character)) do
-      apply_spec(conn, character, spec)
+  @doc "按 spec 执行，随机源可注入（测试用）"
+  @spec run(Kalevala.Character.Conn.t(), Spec.t(), rng()) :: Kalevala.Character.Conn.t()
+  def run(conn, %Spec{} = spec, rng) do
+    character = conn.character
+    ctx = context(conn, character)
+
+    with :ok <- check_gates(spec.gates, ctx) do
+      apply_spec(conn, character, spec, ctx, rng)
     else
       {:error, message} ->
         conn
@@ -123,16 +147,15 @@ defmodule Kantele.Combat.Performs.Simple do
 
   # -- 效果 ---------------------------------------------------------------
 
-  defp apply_spec(conn, character, spec) do
+  defp apply_spec(conn, character, spec, ctx, rng) do
     vitals = apply_costs(character.meta.vitals, spec.costs)
 
     state =
-      Enum.reduce(spec.effects, %{vitals: vitals, combat: character.meta.combat, messages: []}, fn effect,
-                                                                                                   state ->
-        apply_effect(effect, state)
+      Enum.reduce(spec.effects, %{vitals: vitals, combat: character.meta.combat, messages: [], buff: nil}, fn
+        effect, state -> apply_effect(effect, state, ctx, rng)
       end)
 
-    combat = apply_busy(state.combat, spec.busy)
+    combat = apply_busy(state.combat, spec.busy, ctx, rng)
     messages = if spec.message, do: state.messages ++ [spec.message], else: state.messages
 
     character = %{
@@ -148,6 +171,8 @@ defmodule Kantele.Combat.Performs.Simple do
         Broadcast.publish(conn, text, n1: character.name)
       end)
 
+    schedule_expire(spec, state.buff, ctx, rng)
+
     conn
     |> put_character(character)
     |> assign(:prompt, false)
@@ -159,10 +184,11 @@ defmodule Kantele.Combat.Performs.Simple do
     end)
   end
 
-  defp apply_effect({:temp, applies}, state),
-    do: %{state | combat: Combat.apply_temp(state.combat, applies)}
+  defp apply_effect({:temp, applies}, state, ctx, rng),
+    do: %{state | combat: Combat.apply_temp(state.combat, eval_map(applies, ctx, rng))}
 
-  defp apply_effect({:buff, key, applies}, state) do
+  defp apply_effect({:buff, key, applies}, state, ctx, rng) do
+    applies = eval_map(applies, ctx, rng)
     buff = %Buff{key: key, applies: negate(applies)}
 
     combat =
@@ -170,23 +196,63 @@ defmodule Kantele.Combat.Performs.Simple do
       |> Combat.apply_temp(applies)
       |> Combat.add_buff(buff)
 
-    %{state | combat: combat}
+    %{state | combat: combat, buff: {key, buff.applies}}
   end
 
-  defp apply_effect({:set, vital, value}, state),
-    do: %{state | vitals: Map.put(state.vitals, vital, value)}
+  defp apply_effect({:set, vital, value}, state, ctx, rng),
+    do: %{state | vitals: Map.put(state.vitals, vital, eval(value, ctx, rng))}
 
-  defp apply_effect({:add, vital, delta}, state),
-    do: %{state | vitals: Map.update!(state.vitals, vital, &(&1 + delta))}
+  defp apply_effect({:add, vital, delta}, state, ctx, rng),
+    do: %{state | vitals: Map.update!(state.vitals, vital, &(&1 + eval(delta, ctx, rng)))}
 
-  defp apply_effect({:message, text}, state),
+  defp apply_effect({:message, text}, state, _ctx, _rng),
     do: %{state | messages: state.messages ++ [text]}
 
-  defp apply_busy(combat, {:if_fighting, rounds}) do
-    if Combat.fighting?(combat), do: Combat.start_busy(combat, rounds), else: combat
+  defp apply_busy(combat, {:if_fighting, rounds}, ctx, rng) do
+    if Combat.fighting?(combat), do: Combat.start_busy(combat, eval(rounds, ctx, rng)), else: combat
   end
 
-  defp apply_busy(combat, rounds) when is_integer(rounds), do: Combat.start_busy(combat, rounds)
+  defp apply_busy(combat, rounds, ctx, rng), do: Combat.start_busy(combat, eval(rounds, ctx, rng))
+
+  # -- 数值表达式 ---------------------------------------------------------
+
+  defp eval(value, _ctx, _rng) when is_integer(value), do: value
+
+  defp eval({:skill, skill_id}, ctx, _rng), do: Stats.skill(ctx.stats, skill_id)
+  defp eval({:effective, skill_id}, ctx, _rng), do: Stats.effective(ctx.stats, skill_id)
+
+  defp eval({:add, a, b}, ctx, rng), do: eval(a, ctx, rng) + eval(b, ctx, rng)
+  defp eval({:sub, a, b}, ctx, rng), do: eval(a, ctx, rng) - eval(b, ctx, rng)
+  defp eval({:mul, a, b}, ctx, rng), do: eval(a, ctx, rng) * eval(b, ctx, rng)
+  defp eval({:div, a, b}, ctx, rng), do: div(eval(a, ctx, rng), eval(b, ctx, rng))
+
+  defp eval({:random, min, max}, _ctx, rng), do: min + rng.(max - min + 1) - 1
+
+  defp eval_map(applies, ctx, rng),
+    do: Map.new(applies, fn {key, value} -> {key, eval(value, ctx, rng)} end)
 
   defp negate(applies), do: Map.new(applies, fn {key, value} -> {key, -value} end)
+
+  # -- buff 到期 ----------------------------------------------------------
+
+  defp schedule_expire(%Spec{duration: nil}, _buff, _ctx, _rng), do: :ok
+  defp schedule_expire(_spec, nil, _ctx, _rng), do: :ok
+
+  defp schedule_expire(%Spec{} = spec, {key, applies}, ctx, rng) do
+    seconds = eval(spec.duration, ctx, rng)
+
+    if seconds > 0 do
+      Process.send_after(
+        self(),
+        %Kalevala.Event{
+          from_pid: self(),
+          topic: "combat/buff-expire",
+          data: %{key: key, applies: applies, message: spec.expire_message}
+        },
+        seconds * 1000
+      )
+    end
+
+    :ok
+  end
 end

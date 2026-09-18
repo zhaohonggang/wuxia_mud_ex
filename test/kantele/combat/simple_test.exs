@@ -35,6 +35,25 @@ defmodule Kantele.Combat.SimpleTest.CustomGateExert do
     }
 end
 
+defmodule Kantele.Combat.SimpleTest.ScaledExert do
+  use Kantele.Combat.Performs.Simple,
+    spec: %Kantele.Combat.Performs.Spec{
+      id: "test/scaled",
+      costs: %{neili: 100},
+      effects: [
+        {:buff, "scaled", %{
+          attack: {:div, {:skill, "force"}, 2},
+          defense: {:div, {:mul, {:skill, "force"}, 2}, 5}
+        }},
+        {:add, :neili, {:random, -5, -1}}
+      ],
+      busy: {:if_fighting, {:random, 1, 3}},
+      duration: 1,
+      expire_message: "运功完毕。\n",
+      message: "$N运功。\n"
+    }
+end
+
 defmodule Kantele.Combat.SimpleTest do
   use ExUnit.Case, async: true
 
@@ -42,9 +61,11 @@ defmodule Kantele.Combat.SimpleTest do
 
   alias Kantele.Character.Combat
   alias Kantele.Character.Vitals
+  alias Kantele.Combat.Performs.Simple
   alias Kantele.Combat.Performs.Spec
   alias Kantele.Combat.SimpleTest.BuffExert
   alias Kantele.Combat.SimpleTest.CustomGateExert
+  alias Kantele.Combat.SimpleTest.ScaledExert
   alias Kantele.Combat.SimpleTest.SetNeiliExert
 
   defp player(opts) do
@@ -141,6 +162,33 @@ defmodule Kantele.Combat.SimpleTest do
       conn = SetNeiliExert.run(build_conn(player(neili: 7777)))
       assert conn.private.update_character.meta.vitals.neili == 0
       assert published_text(conn) =~ "散去内力"
+    end
+
+    test "值表达式按状态求值（skill/div/mul/random）" do
+      conn = Simple.run(build_conn(player(neili: 9000)), ScaledExert.spec(), fn _n -> 1 end)
+      char = conn.private.update_character
+
+      # 扣 100 → 8900，再 {:add, :neili, {:random, -5, -1}}；rng=1 → -5
+      assert char.meta.vitals.neili == 8895
+      assert char.meta.combat.temp.attack == 125
+      assert char.meta.combat.temp.defense == 100
+
+      buff = Enum.find(char.meta.combat.buffs, &(&1.key == "scaled"))
+      assert buff.applies == %{attack: -125, defense: -100}
+    end
+
+    test "random busy 由 rng 决定；非战斗不计" do
+      conn = Simple.run(build_conn(player(neili: 9000, combat: combat_fight())), ScaledExert.spec(), fn _n -> 3 end)
+      assert conn.private.update_character.meta.combat.busy == 3
+
+      conn = Simple.run(build_conn(player(neili: 9000)), ScaledExert.spec(), fn _n -> 3 end)
+      assert conn.private.update_character.meta.combat.busy == 0
+    end
+
+    test "duration 到期投递 combat/buff-expire" do
+      Simple.run(build_conn(player(neili: 9000)), ScaledExert.spec(), fn _n -> 1 end)
+
+      assert_receive %Kalevala.Event{topic: "combat/buff-expire", data: %{key: "scaled"}}, 1500
     end
   end
 
