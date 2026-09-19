@@ -30,7 +30,7 @@ defmodule ExVenture.MixProject do
   def application do
     [
       mod: {ExVenture.Application, []},
-      extra_applications: [:iex, :logger, :runtime_tools]
+      extra_applications: [:iex, :logger, :runtime_tools, :kalevala]
     ]
   end
 
