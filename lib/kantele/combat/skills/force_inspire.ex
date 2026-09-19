@@ -2,40 +2,25 @@ defmodule Kantele.Combat.Skills.Force.Inspire do
   @moduledoc """
   振奋精神（对照 `kungfu/skill/force/inspire.c`）
 
-  自我回精：需打通任督、非战斗、有内功、内功>=200、
+  自我回精：需打通任督（breakup）、非战斗、已激发内功、内功>=200、
   eff_jing < max_jing、eff_jing >= max_jing/4、neili>=200。
-  扣 neili 100/回合，回复 jing=5+force/6（单次版）。
+  扣 neili 100；回复 eff_jing/jing = 5+force/6，上限 max_jing。
+  LPC 原为 async busy 循环，本引擎做单次版。
+
+  eff_jing/max_jing 在本引擎折合 `vitals.max_jing`/`vitals.base_jing`（见 Vitals.wound）
+  TODO(migrate): LPC inspiring 循环 → 单次回复；`breakup` 折合
+  `attributes["special_skills"]`。
   """
 
-  use Kantele.Combat.Skill
+  use Kantele.Combat.Performs.Simple, spec: :local
 
+  alias Kantele.Character.Combat
+  alias Kantele.Character.SpecialSkills
   alias Kantele.Character.Stats
-
-  @impl true
-  def id(), do: "force"
-
-  @impl true
-  def valid_enable(usage), do: usage == "force"
-
-  @impl true
-  def valid_force(_force), do: true
-
-  @impl true
-  def valid_learn(_stats), do: :ok
-
-  @impl true
-  def practice_cost(), do: nil
-
-  @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
-
-  @impl true
-  def exert_list() do
-    %{"inspire" => __MODULE__}
-  end
+  alias Kantele.Combat.Performs.Spec
 
   def spec do
-    %Kantele.Combat.Performs.Spec{
+    %Spec{
       id: "force/inspire",
       kind: :exert,
       gates: [
@@ -56,35 +41,24 @@ defmodule Kantele.Combat.Skills.Force.Inspire do
     }
   end
 
-  defp gate_breakup(ctx) do
-    if Stats.special_skill(ctx.character.meta.stats, "breakup"),
-      do: :ok,
-      else: {:error, "你所学的内功中没有这种功能。\n"}
-  end
+  defp gate_breakup(ctx), do: SpecialSkills.owned?(ctx.character.attributes, "breakup")
 
-  defp gate_not_fighting(ctx),
-    do:
-      if(not ctx.character.meta.combat.busy > 0 || Enum.empty?(ctx.character.meta.combat.enemies),
-        do: :ok,
-        else: {:error, "现在你正在战斗中？还是等打完了再说吧！\n"}
-      )
+  defp gate_not_fighting(ctx), do: not Combat.fighting?(ctx.character.meta.combat)
 
-  defp gate_has_force(ctx),
-    do: if(ctx.stats.mapped.force, do: :ok, else: {:error, "先激发你的特殊内功。\n"})
+  defp gate_has_force(ctx), do: Map.get(ctx.stats.mapped, "force") != nil
 
   defp gate_force_level(ctx) do
-    force_lvl = Stats.skill(ctx.stats, ctx.stats.mapped.force)
-    if force_lvl >= 200, do: :ok, else: {:error, "你的内功修为还不够。\n"}
+    Stats.skill(ctx.stats, Map.get(ctx.stats.mapped, "force") || "force") >= 200
   end
 
   defp gate_needs_jing(ctx) do
     v = ctx.character.meta.vitals
-    if v.eff_jing < v.max_jing, do: :ok, else: {:error, "你现在精神饱满，有什么好激励的？\n"}
+    v.max_jing < v.base_jing
   end
 
   defp gate_not_critical(ctx) do
     v = ctx.character.meta.vitals
-    if v.eff_jing >= div(v.max_jing, 4), do: :ok, else: {:error, "你的精损伤太重，现在难以振奋自己。\n"}
+    v.max_jing >= div(v.base_jing, 4)
   end
 
   defp effect_inspire(state) do
@@ -92,14 +66,11 @@ defmodule Kantele.Combat.Skills.Force.Inspire do
     vitals = char.meta.vitals
     stats = char.meta.stats
 
-    force_lvl = Stats.skill(stats, char.meta.stats.mapped.force)
+    force_lvl = Stats.skill(stats, Map.get(stats.mapped, "force") || "force")
     recover = 5 + div(force_lvl, 6)
 
-    new_vitals = %{
-      vitals
-      | neili: vitals.neili - 100,
-        eff_jing: min(vitals.eff_jing + recover, vitals.max_jing)
-    }
+    new_max = min(vitals.max_jing + recover, vitals.base_jing)
+    new_vitals = %{vitals | max_jing: new_max, jing: min(vitals.jing + recover, new_max)}
 
     %{state | character: %{char | meta: %{char.meta | vitals: new_vitals}}}
   end

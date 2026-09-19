@@ -54,6 +54,36 @@ defmodule Kantele.Combat.SimpleTest.ScaledExert do
     }
 end
 
+defmodule Kantele.Combat.SimpleTest.CustomEffectExert do
+  use Kantele.Combat.Performs.Simple,
+    spec: %Kantele.Combat.Performs.Spec{
+      id: "test/custom-effect",
+      costs: %{neili: 10},
+      effects: [
+        {:custom,
+         fn state, _ctx ->
+           vitals = Kantele.Character.Vitals.heal(state.character.meta.vitals, :qi, 30)
+
+           %{
+             state
+             | character: %{state.character | meta: %{state.character.meta | vitals: vitals}}
+           }
+         end},
+        {:message, "$N运功疗伤。\n"}
+      ]
+    }
+end
+
+defmodule Kantele.Combat.SimpleTest.LocalSpecExert do
+  use Kantele.Combat.Performs.Simple, spec: :local
+
+  alias Kantele.Combat.Performs.Spec
+
+  def spec do
+    %Spec{id: "test/local", effects: [{:add, :qi, 5}]}
+  end
+end
+
 defmodule Kantele.Combat.SimpleTest do
   use ExUnit.Case, async: true
 
@@ -64,7 +94,9 @@ defmodule Kantele.Combat.SimpleTest do
   alias Kantele.Combat.Performs.Simple
   alias Kantele.Combat.Performs.Spec
   alias Kantele.Combat.SimpleTest.BuffExert
+  alias Kantele.Combat.SimpleTest.CustomEffectExert
   alias Kantele.Combat.SimpleTest.CustomGateExert
+  alias Kantele.Combat.SimpleTest.LocalSpecExert
   alias Kantele.Combat.SimpleTest.ScaledExert
   alias Kantele.Combat.SimpleTest.SetNeiliExert
 
@@ -219,6 +251,43 @@ defmodule Kantele.Combat.SimpleTest do
       fail = CustomGateExert.run(build_conn(player(neili: 100)))
       assert output_text(fail) =~ "内力不足五千"
       assert is_nil(fail.private.update_character)
+    end
+  end
+
+  describe "自定义效果与目标" do
+    test "custom 效果操作 character 并落账" do
+      character = player(neili: 9000)
+      character = put_in(character.meta.vitals.qi, 100)
+
+      conn = CustomEffectExert.run(build_conn(character))
+      updated = conn.private.update_character
+
+      assert updated.meta.vitals.neili == 8990
+      assert updated.meta.vitals.qi == 130
+      assert published_text(conn) =~ "运功疗伤"
+    end
+
+    test "spec: :local 用模块自己的 spec/0" do
+      assert LocalSpecExert.spec().id == "test/local"
+      conn = LocalSpecExert.run(build_conn(player([])))
+      assert conn.private.update_character.meta.vitals.qi == Vitals.new().qi + 5
+    end
+
+    test "run/4 把 target 放进 ctx" do
+      target = %{player([]) | id: "target-9", name: "李四"}
+
+      spec = %Spec{
+        id: "test/target",
+        effects: [
+          {:custom,
+           fn state, ctx ->
+             %{state | messages: state.messages ++ ["目标=#{ctx.target && ctx.target.name}\n"]}
+           end}
+        ]
+      }
+
+      conn = Simple.run(build_conn(player([])), spec, fn _ -> 1 end, target)
+      assert published_text(conn) =~ "目标=李四"
     end
   end
 end

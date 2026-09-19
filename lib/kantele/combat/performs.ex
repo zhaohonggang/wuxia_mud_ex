@@ -52,11 +52,23 @@ defmodule Kantele.Combat.Performs do
   与目标分处两个进程，改由 `combat/perform-feedback` 事件回传。
   """
   def feedback(attacker, neili_cost, busy) do
+    feedback(attacker, %{neili_cost: neili_cost, busy: busy})
+  end
+
+  @doc """
+  攻击型绝招回执（完整数据版）
+
+  `data` 至少含 `:neili_cost` 与 `:busy`，可选 `:gain_neili` / `:gain_qi` /
+  `:gain_jing` 供吸取类绝招把从目标处得到的气血/内力回补攻击方。
+  """
+  def feedback(attacker, data) when is_map(data) or is_list(data) do
+    data = Enum.into(data, %{})
+
     if Process.alive?(attacker.pid) do
       send(attacker.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-feedback",
-        data: %{neili_cost: neili_cost, busy: busy}
+        data: data
       })
     end
   end

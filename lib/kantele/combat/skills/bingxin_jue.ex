@@ -42,12 +42,21 @@ defmodule Kantele.Combat.Skills.BingxinJue do
   def practice_cost(), do: nil
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(_level, _rng \\ &:rand.uniform/1) do
+    %{}
+  end
 
   @impl true
   def exert_list() do
     %{
       "powerup" => Kantele.Combat.Skills.BingxinJue.Powerup,
+      "freeze" => Kantele.Combat.Skills.BingxinJue.Freeze
+    }
+  end
+
+  @impl true
+  def perform_list() do
+    %{
       "freeze" => Kantele.Combat.Skills.BingxinJue.Freeze
     }
   end
@@ -92,133 +101,183 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
   扣目标 neili = damage（若目标 neili > damage），busy 1。
   """
 
-  use Kantele.Combat.Skill
+  @behaviour Kantele.Combat.Perform
 
+  import Kalevala.Character.Conn
+
+  alias Kalevala.Event
+  alias Kantele.Combat.Broadcast
+  alias Kantele.Combat.Performs
+  alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
+
+  @perform_id "bingxin-jue/freeze"
+  @jie "「冰心诀」"
 
   @impl true
-  def id(), do: "bingxin-jue"
+  def run(conn) do
+    character = conn.character
+    stats = character.meta.stats
+    combat = character.meta.combat
 
-  @impl true
-  def valid_enable(usage), do: usage == "force"
-
-  @impl true
-  def valid_force(_force), do: true
-
-  @impl true
-  def valid_learn(stats) do
-    if Stats.skill(stats, "force") < 100 do
-      {:error, "你的基本内功火候不足，不能学冰心诀。\n"}
+    with :ok <- check_perform_known(stats),
+         {:ok, target} <- check_target(combat),
+         :ok <- check_skill_level(stats),
+         :ok <- check_neili(character),
+         :ok <- check_target_alive(target) do
+      apply_perform(conn, character, target)
     else
-      :ok
+      {:error, message} ->
+        conn
+        |> render(CommandView, "text", %{text: message})
+        |> assign(:prompt, false)
     end
   end
 
-  @impl true
-  def practice_cost(), do: nil
-
-  @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
-
-  @impl true
-  def exert_list() do
-    %{"freeze" => __MODULE__}
+  defp check_perform_known(stats) do
+    if Stats.perform_known?(stats, @perform_id) do
+      :ok
+    else
+      {:error, "你所使用的外功中没有这种功能。\n"}
+    end
   end
 
-  def spec do
-    %Kantele.Combat.Performs.Spec{
-      id: "bingxin-jue/freeze",
-      kind: :exert,
-      gates: [
-        {:custom, &gate_target_valid/1, "你只能用寒气攻击战斗中的对手。\n"},
-        {:skill_min, "bingxin-jue", 150, "你的冰心决火候不够，无法运用寒气。\n"},
-        {:neili_min, 1000, "你的内力不够!\n"},
-        {:custom, &gate_target_alive/1, "对方都已经这样了，用不着这么费力吧？\n"}
-      ],
-      costs: %{neili: 0},
-      effects: [
-        {:custom, &effect_freeze/1}
-      ],
-      busy: 2,
-      message: "$N默运冰心决，一股寒气迎面扑向$n，四周登时雪花飘飘。\n"
-    }
+  defp check_target(combat) do
+    case combat.enemies do
+      [enemy | _] ->
+        if enemy.meta.vitals.alive? do
+          {:ok, enemy}
+        else
+          {:error, "你只能用寒气攻击战斗中的对手。\n"}
+        end
+      [] ->
+        {:error, "你只能用寒气攻击战斗中的对手。\n"}
+    end
   end
 
-  defp gate_target_alive(ctx) do
-    if ctx.target && ctx.target.meta.vitals.alive? do
+  defp check_skill_level(stats) do
+    if Stats.skill(stats, "bingxin-jue") >= 150 do
+      :ok
+    else
+      {:error, "你的冰心决火候不够，无法运用寒气。\n"}
+    end
+  end
+
+  defp check_neili(character) do
+    if character.meta.vitals.neili >= 1000 do
+      :ok
+    else
+      {:error, "你的内力不够!\n"}
+    end
+  end
+
+  defp check_target_alive(target) do
+    if target.meta.vitals.alive? do
       :ok
     else
       {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     end
   end
 
-  defp gate_target_valid(ctx) do
-    if ctx.target && ctx.target != ctx.character && ctx.target.meta.vitals.alive? &&
-         ctx.character.meta.combat.busy > 0 &&
-         ctx.target.meta.combat.busy > 0 do
-      :ok
-    else
-      {:error, "你只能用寒气攻击战斗中的对手。\n"}
-    end
+  defp apply_perform(conn, character, target) do
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N默运冰心决，一股寒气迎面扑向$n，四周登时雪花飘飘。\n",
+        n1: character.name,
+        n2: target.name
+      )
+
+    send(target.pid, %Event{
+      from_pid: self(),
+      topic: "combat/perform-incoming",
+      data: %{
+        attacker: ref(character),
+        perform_id: @perform_id,
+        level: Stats.skill(character.meta.stats, "bingxin-jue"),
+        rng: &:rand.uniform/1
+      }
+    })
+
+    conn
+    |> put_character(character)
+    |> assign(:prompt, false)
   end
 
-  defp effect_freeze(state) do
-    char = state.character
-    target = state.target
+  @impl true
+  def resolve_incoming(conn, character, attacker, data) do
+    level = Map.get(data, :level, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
 
-    ap = Stats.skill(char.meta.stats, "force")
-    dp = Stats.skill(char.meta.stats, "force")
+    ap = Stats.skill(attacker.meta.stats, "force")
+    dp = Stats.skill(character.meta.stats, "force")
 
-    success = div(ap, 2) + :rand.uniform(ap) > :rand.uniform(dp)
+    success = div(ap, 2) + rng.(ap) > rng.(dp)
 
-    {new_target, msg_suffix} =
-      if success do
-        damage = div(ap, 3) + :rand.uniform(div(ap, 3))
+    if success do
+      damage = div(ap, 3) + rng.(div(ap, 3))
 
-        new_t_q = max(target.meta.vitals.qi - damage, 0)
-        new_t_eff_q = max(target.meta.vitals.eff_qi - damage, 0)
+      new_t_q = max(character.meta.vitals.qi - damage, 0)
+      new_t_eff_q = max(character.meta.vitals.max_qi - damage, 0)
 
-        new_t_neili =
-          if target.meta.vitals.neili > damage,
-            do: target.meta.vitals.neili - damage,
-            else: 0
+      new_t_neili =
+        if character.meta.vitals.neili > damage,
+          do: character.meta.vitals.neili - damage,
+          else: 0
 
-        new_target = %{
-          target
-          | meta: %{
-              target.meta
-              | vitals: %{
-                  target.meta.vitals
-                  | qi: new_t_q,
-                    eff_qi: new_t_eff_q,
-                    neili: new_t_neili
-                },
-                combat: put_busy(target.meta.combat, 1)
-            }
-        }
+      new_target = %{
+        character
+        | meta: %{
+            character.meta
+            | vitals: %{
+                character.meta.vitals
+                | qi: new_t_q,
+                  max_qi: new_t_eff_q,
+                  neili: new_t_neili
+              },
+              combat: Combat.start_busy(character.meta.combat, 1)
+          }
+      }
 
-        {new_target, "你觉得#{target.name}的全身功力如融雪般消失得无影无踪！\n"}
-      else
-        {target, "你感到一阵寒意自心底泛起，连忙运动抵抗，堪勘无事。\n"}
-      end
+      message = "$N默运冰心决，一股寒气迎面扑向$n，四周登时雪花飘飘。\n" <>
+                "你觉得#{attacker.name}的全身功力如融雪般消失得无影无踪！\n"
 
-    message = "$N默运冰心决，一股寒气迎面扑向$n，四周登时雪花飘飘。\n" <> msg_suffix
+      conn =
+        conn
+        |> Broadcast.publish(message, n1: attacker.name, n2: character.name)
+        |> put_character(new_target)
 
-    state
-    |> Map.put(:target, new_target)
-    |> Map.put(:message, message)
+      Performs.feedback(attacker, %{
+        neili_cost: 0,
+        busy: 2
+      })
+    else
+      message = "$N默运冰心决，一股寒气迎面扑向$n，四周登时雪花飘飘。\n" <>
+                "你感到一阵寒意自心底泛起，连忙运动抵抗，堪勘无事。\n"
+
+      conn =
+        conn
+        |> Broadcast.publish(message, n1: attacker.name, n2: character.name)
+        |> put_character(character)
+
+      Performs.feedback(attacker, %{
+        neili_cost: 0,
+        busy: 2
+      })
+    end
+
+    conn
   end
 
-  defp put_busy(combat, n), do: %{combat | busy: n}
-
-  defp gate_target_valid(ctx) do
-    if ctx.target && ctx.target != ctx.character &&
-         ctx.target.meta.vitals.alive? &&
-         ctx.character.meta.combat.busy > 0 &&
-         ctx.target.meta.combat.busy > 0 do
-      :ok
-    else
-      {:error, "你只能用寒气攻击战斗中的对手。\n"}
-    end
+  defp ref(character) do
+    %{
+      id: character.id,
+      pid: character.pid,
+      name: character.name,
+      room_id: character.room_id,
+      meta: character.meta
+    }
   end
 end

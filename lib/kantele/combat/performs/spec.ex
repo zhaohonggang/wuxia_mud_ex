@@ -77,6 +77,7 @@ defmodule Kantele.Combat.Performs.Spec do
           | {:set, vital :: atom(), value()}
           | {:add, vital :: atom(), value()}
           | {:message, String.t()}
+          | {:custom, (map() -> map()) | (map(), map() -> map())}
 
   @typedoc "buff 到期时长：静态秒数或按技能等级取秒"
   @type duration :: non_neg_integer() | {:skill, skill_id :: String.t()}

@@ -311,8 +311,17 @@ defmodule Kantele.Character.CombatEvent do
 
   def perform_incoming(conn, _event), do: conn
 
-  # 攻击方回执：按目标结算的分支扣内力并进入忙乱（dan.c 的 me->add/start_busy）
-  def perform_feedback(conn, %{data: %{neili_cost: neili_cost, busy: busy}}) do
+  # 攻击方回执：按目标结算的分支扣内力/回复并进入忙乱（dan.c 的 me->add/start_busy）
+  # 可选 `:gain_neili` / `:gain_qi` / `:gain_jing` 供吸取类绝招回补攻击方。
+  # 可选 `:gain_max_neili` 供吸取类绝招永久增加攻击方 max_neili（受 max_neili_limit 约束）。
+  def perform_feedback(conn, %{data: data}) do
+    neili_cost = Map.get(data, :neili_cost, 0)
+    busy = Map.get(data, :busy, 0)
+    gain_neili = Map.get(data, :gain_neili, 0)
+    gain_qi = Map.get(data, :gain_qi, 0)
+    gain_jing = Map.get(data, :gain_jing, 0)
+    gain_max_neili = Map.get(data, :gain_max_neili, 0)
+
     character = conn.character
 
     if dead?(character) do
@@ -320,6 +329,16 @@ defmodule Kantele.Character.CombatEvent do
     else
       vitals = character.meta.vitals
       vitals = %{vitals | neili: max(vitals.neili - neili_cost, 0)}
+      vitals = Vitals.heal(vitals, :neili, gain_neili)
+      vitals = Vitals.heal(vitals, :qi, gain_qi)
+      vitals = Vitals.heal(vitals, :jing, gain_jing)
+
+      if gain_max_neili > 0 do
+        limit = character.meta.stats.max_neili_limit || vitals.base_neili * 2
+        new_max = min(vitals.max_neili + gain_max_neili, limit)
+        vitals = %{vitals | max_neili: new_max}
+      end
+
       combat = Combat.start_busy(character.meta.combat, busy)
 
       conn

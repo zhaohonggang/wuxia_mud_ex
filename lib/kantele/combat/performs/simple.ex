@@ -40,9 +40,19 @@ defmodule Kantele.Combat.Performs.Simple do
 
   `{:custom, fun, msg}` 的入参 ctx：
 
-      %{conn:, character:, stats:, combat:, vitals:}
+      %{conn:, character:, target:, stats:, combat:, vitals:}
 
-  超出 spec 表达力时，回退手写模块，不要硬塞。
+  ## 自定义效果
+
+  效果 `{:custom, fun}` 用于 spec 表达不了的自我逻辑（治疗/回气/清状态等）：
+
+  - `fun.(state)` 或 `fun.(state, ctx)`，返回更新后的 `state`。
+  - `state` 含 `:character`（当前角色，已扣消耗）、`:target`（`run/4` 传入的
+    目标角色或 nil）、`:messages`、`:buff`。
+  - 想改气血/战斗态时改 `state.character.meta.vitals` / `meta.combat`。
+
+  目标交互（吸取/攻击/远程）不在 `Simple` 表达范围，回退手写
+  `Kantele.Combat.Perform`（`run/1` + `resolve_incoming/4`）。
   """
 
   import Kalevala.Character.Conn
@@ -57,18 +67,32 @@ defmodule Kantele.Combat.Performs.Simple do
   @typedoc "随机源：`rng.(n)` 返回 1..n"
   @type rng :: (pos_integer() -> pos_integer())
 
-  @doc "为声明式 spec 生成实现模块（注入 `run/1` 与 `spec/0`）"
+  @doc """
+  为声明式 spec 生成实现模块（注入 `run/1` 与 `spec/0`）
+
+  `spec: :local` 时不注入 `spec/0`，改用模块自己定义的 `spec/0`（供把
+  已有 `def spec` 的模块接到解释器上）。
+  """
   defmacro __using__(opts) do
-    spec = Keyword.fetch!(opts, :spec)
+    case Keyword.fetch!(opts, :spec) do
+      :local ->
+        quote do
+          @behaviour Kantele.Combat.Perform
 
-    quote do
-      @behaviour Kantele.Combat.Perform
+          @impl true
+          def run(conn), do: Kantele.Combat.Performs.Simple.run(conn, spec())
+        end
 
-      @impl true
-      def run(conn), do: Kantele.Combat.Performs.Simple.run(conn, unquote(spec))
+      spec ->
+        quote do
+          @behaviour Kantele.Combat.Perform
 
-      @doc "本模块的声明式规格"
-      def spec(), do: unquote(spec)
+          @impl true
+          def run(conn), do: Kantele.Combat.Performs.Simple.run(conn, unquote(spec))
+
+          @doc "本模块的声明式规格"
+          def spec(), do: unquote(spec)
+        end
     end
   end
 
@@ -78,9 +102,14 @@ defmodule Kantele.Combat.Performs.Simple do
 
   @doc "按 spec 执行，随机源可注入（测试用）"
   @spec run(Kalevala.Character.Conn.t(), Spec.t(), rng()) :: Kalevala.Character.Conn.t()
-  def run(conn, %Spec{} = spec, rng) do
+  def run(conn, %Spec{} = spec, rng), do: run(conn, spec, rng, nil)
+
+  @doc "按 spec 执行，随机源与目标可注入（测试/目标交互用）"
+  @spec run(Kalevala.Character.Conn.t(), Spec.t(), rng(), map() | nil) ::
+          Kalevala.Character.Conn.t()
+  def run(conn, %Spec{} = spec, rng, target) do
     character = conn.character
-    ctx = context(conn, character)
+    ctx = context(conn, character, target)
 
     with :ok <- check_gates(spec.gates, ctx) do
       apply_spec(conn, character, spec, ctx, rng)
@@ -92,10 +121,11 @@ defmodule Kantele.Combat.Performs.Simple do
     end
   end
 
-  defp context(conn, character) do
+  defp context(conn, character, target) do
     %{
       conn: conn,
       character: character,
+      target: target,
       stats: character.meta.stats,
       combat: character.meta.combat,
       vitals: character.meta.vitals
@@ -149,26 +179,20 @@ defmodule Kantele.Combat.Performs.Simple do
 
   defp apply_spec(conn, character, spec, ctx, rng) do
     vitals = apply_costs(character.meta.vitals, spec.costs)
+    character = %{character | meta: %{character.meta | vitals: vitals}}
 
     state =
       Enum.reduce(
         spec.effects,
-        %{vitals: vitals, combat: character.meta.combat, messages: [], buff: nil},
+        %{character: character, messages: [], buff: nil},
         fn
           effect, state -> apply_effect(effect, state, ctx, rng)
         end
       )
 
-    combat = apply_busy(state.combat, spec.busy, ctx, rng)
+    combat = apply_busy(state.character.meta.combat, spec.busy, ctx, rng)
+    character = %{state.character | meta: %{state.character.meta | combat: combat}}
     messages = state.messages ++ message_texts(spec.message, ctx)
-
-    character = %{
-      character
-      | meta:
-          character.meta
-          |> Map.put(:vitals, state.vitals)
-          |> Map.put(:combat, combat)
-    }
 
     conn =
       Enum.reduce(messages, conn, fn text, conn ->
@@ -189,28 +213,45 @@ defmodule Kantele.Combat.Performs.Simple do
   end
 
   defp apply_effect({:temp, applies}, state, ctx, rng),
-    do: %{state | combat: Combat.apply_temp(state.combat, eval_map(applies, ctx, rng))}
+    do: update_combat(state, &Combat.apply_temp(&1, eval_map(applies, ctx, rng)))
 
   defp apply_effect({:buff, key, applies}, state, ctx, rng) do
     applies = eval_map(applies, ctx, rng)
     buff = %Buff{key: key, applies: negate(applies)}
 
-    combat =
-      state.combat
-      |> Combat.apply_temp(applies)
-      |> Combat.add_buff(buff)
+    state =
+      update_combat(state, fn combat ->
+        combat
+        |> Combat.apply_temp(applies)
+        |> Combat.add_buff(buff)
+      end)
 
-    %{state | combat: combat, buff: {key, buff.applies}}
+    %{state | buff: {key, buff.applies}}
   end
 
   defp apply_effect({:set, vital, value}, state, ctx, rng),
-    do: %{state | vitals: Map.put(state.vitals, vital, eval(value, ctx, rng))}
+    do: update_vitals(state, &Map.put(&1, vital, eval(value, ctx, rng)))
 
   defp apply_effect({:add, vital, delta}, state, ctx, rng),
-    do: %{state | vitals: Map.update!(state.vitals, vital, &(&1 + eval(delta, ctx, rng)))}
+    do: update_vitals(state, &Map.update!(&1, vital, fn value -> value + eval(delta, ctx, rng) end))
 
   defp apply_effect({:message, text}, state, _ctx, _rng),
     do: %{state | messages: state.messages ++ [text]}
+
+  defp apply_effect({:custom, fun}, state, ctx, rng), do: apply_custom(fun, state, ctx, rng)
+
+  defp apply_custom(fun, state, ctx, _rng) when is_function(fun, 2), do: fun.(state, ctx)
+  defp apply_custom(fun, state, _ctx, _rng) when is_function(fun, 1), do: fun.(state)
+
+  defp update_vitals(state, fun) do
+    vitals = fun.(state.character.meta.vitals)
+    %{state | character: %{state.character | meta: %{state.character.meta | vitals: vitals}}}
+  end
+
+  defp update_combat(state, fun) do
+    combat = fun.(state.character.meta.combat)
+    %{state | character: %{state.character | meta: %{state.character.meta | combat: combat}}}
+  end
 
   defp apply_busy(combat, {:if_fighting, rounds}, ctx, rng) do
     if Combat.fighting?(combat),

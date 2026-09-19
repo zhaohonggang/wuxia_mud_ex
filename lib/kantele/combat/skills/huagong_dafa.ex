@@ -51,13 +51,22 @@ defmodule Kantele.Combat.Skills.HuagongDafa do
   @impl true
   def practice_cost(), do: nil
 
-  @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+@impl true
+  def query_action(_level, _rng \\ &:rand.uniform/1) do
+    %{}
+  end
 
   @impl true
   def exert_list() do
     %{
       "powerup" => Kantele.Combat.Skills.HuagongDafa.Powerup,
+      "hua" => Kantele.Combat.Skills.HuagongDafa.Hua
+    }
+  end
+
+  @impl true
+  def perform_list() do
+    %{
       "hua" => Kantele.Combat.Skills.HuagongDafa.Hua
     }
   end
@@ -101,158 +110,236 @@ defmodule Kantele.Combat.Skills.HuagongDafa.Hua do
   自身 neili>=120、目标 neili>=10 且 max_neili>=10、
   目标 max_neili <= 自身 max_neili * 4/3、目标非太玄功。
   内力对抗：sp=force+dodge vs dp=target force+dodge。
-  成功：扣目标 max_neili = random(4) + (化功-90)/8，增自身 max_neili 同量（未实现增，仅扣目标）；
+  成功：扣目标 max_neili = random(4) + (化功-90)/8，增自身 max_neili 同量、
   双方 busy、扣 neili 100。
   """
 
-  use Kantele.Combat.Skill
+  @behaviour Kantele.Combat.Perform
 
+  import Kalevala.Character.Conn
+
+  alias Kalevala.Event
+  alias Kantele.Combat.Broadcast
+  alias Kantele.Combat.Performs
+  alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
 
-  @impl true
-  def id(), do: "huagong-dafa"
+  @perform_id "huagong-dafa/hua"
+  @jie "「化功大法」"
 
   @impl true
-  def valid_enable(usage), do: usage == "force"
+  def run(conn) do
+    character = conn.character
+    stats = character.meta.stats
+    combat = character.meta.combat
 
-  @impl true
-  def valid_force(force), do: force == "guixi-gong"
-
-  @impl true
-  def valid_learn(_stats), do: :ok
-
-  @impl true
-  def practice_cost(), do: nil
-
-  @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
-
-  @impl true
-  def exert_list() do
-    %{"hua" => __MODULE__}
-  end
-
-  def spec do
-    %Kantele.Combat.Performs.Spec{
-      id: "huagong-dafa/hua",
-      kind: :exert,
-      gates: [
-        {:custom, &gate_target_valid/1, "你要化谁的内力？\n"},
-        {:custom, &gate_no_fight/1, "在这里不能攻击他人。\n"},
-        {:custom, &gate_not_busy/1, "你现在正忙，无法化他人内力。\n"},
-        {:custom, &gate_empty_handed/1, "你必须空手才能施用化功大法！\n"},
-        {:custom, &gate_skill_level/1, "你的化功大法功力不够，不能施展！\n"},
-        {:neili_min, 120, "你的内力不够，不能施展化功大法。\n"},
-        {:custom, &gate_target_has_neili/1, "目标已然内力涣散，不必再化了。\n"},
-        {:custom, &gate_target_not_stronger/1, "目标的内功修为远胜于你，你无法化他的内力！\n"},
-        {:custom, &gate_not_taixuan/1, "目标运行太玄真气将吸功反弹回去。\n"}
-      ],
-      costs: %{neili: 100},
-      effects: [
-        {:custom, &effect_hua/1}
-      ],
-      busy: 0,
-      message: "$N全身骨节爆响，双臂暴长数尺，手掌刷的一抖，粘向$n！\n"
-    }
-  end
-
-  defp gate_target_valid(ctx) do
-    if ctx.target && ctx.target != ctx.character && ctx.target.meta.vitals.alive? do
-      :ok
+    with :ok <- check_perform_known(stats),
+         {:ok, target} <- check_target(combat),
+         :ok <- check_no_fight(character),
+         :ok <- check_not_busy(character),
+         :ok <- check_empty_handed(character),
+         :ok <- check_skill_level(stats),
+         :ok <- check_neili(character),
+         :ok <- check_target_has_neili(target),
+         :ok <- check_target_not_stronger(character, target),
+         :ok <- check_not_taixuan(target) do
+      apply_perform(conn, character, target)
     else
-      {:error, "你要化谁的内力？\n"}
+      {:error, message} ->
+        conn
+        |> render(CommandView, "text", %{text: message})
+        |> assign(:prompt, false)
     end
   end
 
-  defp gate_no_fight(ctx), do: if(not ctx.room.no_fight, do: :ok, else: {:error, "在这里不能攻击他人。\n"})
-
-  defp gate_not_busy(ctx) do
-    if not ctx.character.meta.combat.busy > 0, do: :ok, else: {:error, "你现在正忙，无法化他人内力。\n"}
-  end
-
-  defp gate_empty_handed(ctx) do
-    if not ctx.character.meta.equipped.weapon, do: :ok, else: {:error, "你必须空手才能施用化功大法！\n"}
-  end
-
-  defp gate_skill_level(ctx) do
-    if Stats.skill(ctx.stats, "huagong-dafa") >= 100,
-      do: :ok,
-      else: {:error, "你的化功大法功力不够，不能施展！\n"}
-  end
-
-  defp gate_target_has_neili(ctx) do
-    if ctx.target.meta.vitals.neili >= 10 && ctx.target.meta.vitals.max_neili >= 10 do
+  defp check_perform_known(stats) do
+    if Stats.perform_known?(stats, @perform_id) do
       :ok
     else
-      {:error, ctx.target.name <> "已然内力涣散，不必再化了。\n"}
+      {:error, "你所使用的外功中没有这种功能。\n"}
     end
   end
 
-  defp gate_target_not_stronger(ctx) do
-    my_max = ctx.character.meta.vitals.max_neili
-    tg_max = ctx.target.meta.vitals.max_neili
-
-    if tg_max <= my_max * 4 / 3,
-      do: :ok,
-      else: {:error, ctx.target.name <> "的内功修为远胜于你，你无法化他的内力！\n"}
+  defp check_target(combat) do
+    case combat.enemies do
+      [enemy | _] ->
+        if enemy.meta.vitals.alive? do
+          {:ok, enemy}
+        else
+          {:error, "你要化谁的内力？\n"}
+        end
+      [] ->
+        {:error, "你要化谁的内力？\n"}
+    end
   end
 
-  defp gate_not_taixuan(ctx) do
-    if ctx.target.meta.stats.mapped.force != "taixuan-gong",
-      do: :ok,
-      else: {:error, "目标运行太玄真气将吸功反弹回去。\n"}
+  defp check_no_fight(character) do
+    if character.room.no_fight do
+      {:error, "在这里不能攻击他人。\n"}
+    else
+      :ok
+    end
   end
 
-  defp effect_hua(state) do
-    char = state.character
-    target = state.target
+  defp check_not_busy(character) do
+    if character.meta.combat.busy <= 0 do
+      :ok
+    else
+      {:error, "你现在正忙，无法化他人内力。\n"}
+    end
+  end
 
-    sp = Stats.skill(char.meta.stats, "force") + Stats.skill(char.meta.stats, "dodge")
-    dp = Stats.skill(target.meta.stats, "force") + Stats.skill(target.meta.stats, "dodge")
+  defp check_empty_handed(character) do
+    if not character.meta.equipped.weapon do
+      :ok
+    else
+      {:error, "你必须空手才能施用化功大法！\n"}
+    end
+  end
 
-    success = div(sp, 2) + :rand.uniform(sp) > :rand.uniform(dp) || not target.meta.vitals.alive?
+  defp check_skill_level(stats) do
+    if Stats.skill(stats, "huagong-dafa") >= 100 do
+      :ok
+    else
+      {:error, "你的化功大法功力不够，不能施展！\n"}
+    end
+  end
+
+  defp check_neili(character) do
+    if character.meta.vitals.neili >= 120 do
+      :ok
+    else
+      {:error, "你的内力不够，不能施展化功大法。\n"}
+    end
+  end
+
+  defp check_target_has_neili(target) do
+    if target.meta.vitals.neili >= 10 && target.meta.vitals.max_neili >= 10 do
+      :ok
+    else
+      {:error, target.name <> "已然内力涣散，不必再化了。\n"}
+    end
+  end
+
+  defp check_target_not_stronger(character, target) do
+    my_max = character.meta.vitals.max_neili
+    tg_max = target.meta.vitals.max_neili
+    if tg_max <= my_max * 4 / 3 do
+      :ok
+    else
+      {:error, target.name <> "的内功修为远胜于你，你无法化他的内力！\n"}
+    end
+  end
+
+  defp check_not_taixuan(target) do
+    if target.meta.stats.mapped.force != "taixuan-gong" do
+      :ok
+    else
+      {:error, "目标运行太玄真气将吸功反弹回去。\n"}
+    end
+  end
+
+  defp apply_perform(conn, character, target) do
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 100}
+    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N全身骨节爆响，双臂暴长数尺，手掌刷的一抖，粘向$n！\n",
+        n1: character.name,
+        n2: target.name
+      )
+
+    send(target.pid, %Event{
+      from_pid: self(),
+      topic: "combat/perform-incoming",
+      data: %{
+        attacker: ref(character),
+        perform_id: @perform_id,
+        level: Stats.skill(character.meta.stats, "huagong-dafa"),
+        attacker_force: Stats.skill(character.meta.stats, "force") + Stats.skill(character.meta.stats, "dodge"),
+        rng: &:rand.uniform/1
+      }
+    })
+
+    conn
+    |> put_character(character)
+    |> assign(:prompt, false)
+  end
+
+  @impl true
+  def resolve_incoming(conn, character, attacker, data) do
+    level = Map.get(data, :level, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    attacker_sp = Map.get(data, :attacker_force, 0)
+
+    sp = attacker_sp
+    dp = Stats.skill(character.meta.stats, "force") + Stats.skill(character.meta.stats, "dodge")
+
+    success = div(sp, 2) + rng.(sp) > rng.(dp) || not character.meta.vitals.alive?
 
     if success do
-      lvl = Stats.skill(char.meta.stats, "huagong-dafa")
-      amount = :rand.uniform(4) + div(lvl - 90, 8)
+      lvl = Stats.skill(attacker.meta.stats, "huagong-dafa")
+      amount = rng.(4) + div(lvl - 90, 8)
       amount = max(amount, 1)
 
-      new_tg_max = max(target.meta.vitals.max_neili - amount, 0)
+      new_tg_max = max(character.meta.vitals.max_neili - amount, 0)
 
       new_target = %{
-        target
+        character
         | meta: %{
-            target.meta
-            | vitals: %{target.meta.vitals | max_neili: new_tg_max},
-              combat: put_busy(target.meta.combat, 2)
+            character.meta
+            | vitals: %{character.meta.vitals | max_neili: new_tg_max},
+              combat: Combat.start_busy(character.meta.combat, 2)
           }
       }
 
-      new_char = %{
-        char
-        | meta: %{char.meta | combat: put_busy(char.meta.combat, 2 + :rand.uniform(2))}
-      }
+      message = "你觉得#{character.name}的丹元自手掌源源不绝地流了进来。\n"
 
-      message = "你觉得#{target.name}的丹元自手掌源源不绝地流了进来。\n"
+      conn =
+        conn
+        |> Broadcast.publish(message, n1: attacker.name, n2: character.name)
+        |> put_character(new_target)
 
-      state
-      |> Map.put(:character, new_char)
-      |> Map.put(:target, new_target)
-      |> Map.put(:message, message)
+      Performs.feedback(attacker, %{
+        neili_cost: 100,
+        busy: 2 + rng.(2),
+        gain_max_neili: amount
+      })
     else
-      new_char = %{
-        char
-        | meta: %{char.meta | combat: put_busy(char.meta.combat, 2 + :rand.uniform(3))}
+      new_target = %{
+        character
+        | meta: %{
+            character.meta
+            | combat: Combat.start_busy(character.meta.combat, 2 + rng.(3))
+          }
       }
 
-      message = "可是#{target.name}看破了你的企图，内力猛地一震，借势溜了开去。\n"
+      message = "可是#{attacker.name}看破了你的企图，内力猛地一震，借势溜了开去。\n"
 
-      state
-      |> Map.put(:character, new_char)
-      |> Map.put(:target, target)
-      |> Map.put(:message, message)
+      conn =
+        conn
+        |> Broadcast.publish(message, n1: attacker.name, n2: character.name)
+        |> put_character(new_target)
+
+      Performs.feedback(attacker, %{
+        neili_cost: 100,
+        busy: 2 + rng.(3)
+      })
     end
+
+    conn
   end
 
-  defp put_busy(combat, n), do: %{combat | busy: n}
+  defp ref(character) do
+    %{
+      id: character.id,
+      pid: character.pid,
+      name: character.name,
+      room_id: character.room_id,
+      meta: character.meta
+    }
+  end
 end

@@ -2,46 +2,31 @@ defmodule Kantele.Combat.Skills.Force.Tianmo do
   @moduledoc """
   天魔解体大法（对照 `kungfu/skill/force/tianmo.c`）
 
-  极限门槛：str>=30 且 con>=30、neili>=8000、shen <= -10000000、
-  force>=300、martial-cognize>=300、非天魔状态。
-  设 neili=0，扣 qi/jing（skill+shen_lvl+rand），
-  临时全属性加成 + mapped 武学技能加成，busy 3。
+  极限门槛：str>=30 或 con>=30、neili>=8000、shen<=-10000000、
+  force>=300 且 martial-cognize>=300、非天魔状态。
+  设 neili=0；扣 qi/jing 及 eff_qi/eff_jing（skill+shen_lvl+rand(1000)）；
+  临时 str/int/con/dex 各 +自身值、attack +count、damage/unarmed_damage +str*3、
+  每个 mapped 武学技能 +count/2（count=(shen_lvl+skill)/4），busy 3。
+
+  LPC 为久效 temp（无 remove_effect/duration），本引擎按 Buff "tianmo" 记录
+  （heal 等以此为判定），不设到期时长。
+  TODO(migrate): custom 效果不接受注入 rng，伤害随机用 :rand.uniform；
+  temp 键收敛为 atom 攻防当量 + 技能名（技能键暂未被消费端读取）。
   """
 
-  use Kantele.Combat.Skill
+  use Kantele.Combat.Performs.Simple, spec: :local
 
+  alias Kantele.Character.Combat
+  alias Kantele.Character.Combat.Buff
   alias Kantele.Character.Stats
-
-  @impl true
-  def id(), do: "force"
-
-  @impl true
-  def valid_enable(usage), do: usage == "force"
-
-  @impl true
-  def valid_force(_force), do: true
-
-  @impl true
-  def valid_learn(_stats), do: :ok
-
-  @impl true
-  def practice_cost(), do: nil
-
-  @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
-
-  @impl true
-  def exert_list() do
-    %{"tianmo" => __MODULE__}
-  end
+  alias Kantele.Combat.Performs.Spec
 
   def spec do
-    %Kantele.Combat.Performs.Spec{
+    %Spec{
       id: "force/tianmo",
       kind: :exert,
       gates: [
-        {:custom, &gate_self_only/1, "你只能提升自己的战斗力。\n"},
-        {:custom, &gate_not_tianmo/1, "你已经在运功中了。\n"},
+        {:no_buff, "tianmo", "你已经在运功中了。\n"},
         {:custom, &gate_attributes/1, "你的资质不适合使用「天魔解体大法」。\n"},
         {:neili_min, 8000, "你的内力不够!\n"},
         {:custom, &gate_shen/1, "你还没有入魔，无法使用「天魔解体大法」。\n"},
@@ -56,31 +41,17 @@ defmodule Kantele.Combat.Skills.Force.Tianmo do
     }
   end
 
-  defp gate_self_only(_ctx), do: :ok
-
-  defp gate_not_tianmo(ctx),
-    do:
-      if(not ctx.combat.buffs |> Enum.any?(&(&1.key == "tianmo")),
-        do: :ok,
-        else: {:error, "你已经在运功中了。\n"}
-      )
-
   defp gate_attributes(ctx) do
-    if ctx.character.meta.stats.str >= 30 && ctx.character.meta.stats.con >= 30,
-      do: :ok,
-      else: {:error, "你的资质不适合使用「天魔解体大法」。\n"}
+    stats = ctx.character.meta.stats
+    (stats.str || 0) >= 30 || (stats.con || 0) >= 30
   end
 
   defp gate_shen(ctx) do
-    if (ctx.character.meta.stats.shen || 0) <= -10_000_000,
-      do: :ok,
-      else: {:error, "你还没有入魔，无法使用「天魔解体大法」。\n"}
+    (ctx.character.meta.stats.shen || 0) <= -10_000_000
   end
 
   defp gate_skill_levels(ctx) do
-    force = Stats.skill(ctx.stats, "force")
-    cognize = Stats.skill(ctx.stats, "martial-cognize")
-    if force >= 300 && cognize >= 300, do: :ok, else: {:error, "你的修行还不够,无法使用「天魔解体大法」。\n"}
+    Stats.skill(ctx.stats, "force") >= 300 && Stats.skill(ctx.stats, "martial-cognize") >= 300
   end
 
   defp effect_tianmo(state) do
@@ -91,48 +62,46 @@ defmodule Kantele.Combat.Skills.Force.Tianmo do
 
     skill = Stats.skill(stats, "force")
     shen = stats.shen || 0
-    shen_lvl = :math.sqrt(-shen) |> :math.pow(1.0 / 3) |> floor()
+    shen_lvl = :math.pow(-shen * 1.0, 1.0 / 3.0) |> floor()
     count = div(shen_lvl + skill, 4)
+    skills = stats.mapped |> Map.values() |> Enum.uniq()
 
-    skills = Stats.mapped_combat_skills(stats) |> Map.keys()
-
-    damage = skill + shen_lvl + :rand.uniform(1000)
+    dmg = skill + shen_lvl + :rand.uniform(1000)
 
     new_vitals = %{
       vitals
       | neili: 0,
-        qi: max(vitals.qi - damage, 1),
-        eff_qi: max(vitals.eff_qi - damage, 1),
-        jing: max(vitals.jing - damage, 1),
-        eff_jing: max(vitals.eff_jing - damage, 1)
+        qi: max(vitals.qi - dmg, 1),
+        max_qi: max(vitals.max_qi - dmg, 1),
+        jing: max(vitals.jing - dmg, 1),
+        max_jing: max(vitals.max_jing - dmg, 1)
     }
 
-    applies = %{
-      str: stats.str,
-      int: stats.int,
-      con: stats.con,
-      dex: stats.dex,
-      attack: count,
-      damage: stats.str * 3,
-      unarmed_damage: stats.str * 3
-    }
+    str = stats.str || 0
 
     applies =
-      Enum.reduce(skills, applies, fn skill_id, acc ->
-        Map.put(acc, skill_id, div(count, 2))
-      end)
+      %{
+        str: str,
+        int: stats.int || 0,
+        con: stats.con || 0,
+        dex: stats.dex || 0,
+        attack: count,
+        damage: str * 3,
+        unarmed_damage: str * 3
+      }
 
-    buff = %Kantele.Character.Combat.Buff{
-      key: "tianmo",
-      applies: Enum.reduce(applies, %{}, fn {k, v}, acc -> Map.put(acc, k, -v) end)
-    }
+    applies = Enum.reduce(skills, applies, fn skill_id, acc -> Map.put(acc, skill_id, div(count, 2)) end)
+
+    buff =
+      %Buff{
+        key: "tianmo",
+        applies: Enum.reduce(applies, %{}, fn {key, value}, acc -> Map.put(acc, key, -value) end)
+      }
 
     new_combat =
       combat
-      |> Kantele.Character.Combat.apply_temp(applies)
-      |> Kantele.Character.Combat.add_buff(buff)
-
-    new_vitals = %{new_vitals | neili: 0}
+      |> Combat.apply_temp(applies)
+      |> Combat.add_buff(buff)
 
     new_char = %{char | meta: %{char.meta | vitals: new_vitals, combat: new_combat}}
 

@@ -8,11 +8,24 @@ defmodule Kantele.Combat.Skills.Force.Shot do
   内力对抗，成功施加毒药效果、busy 2。
   """
 
-  use Kantele.Combat.Skill
+  @behaviour Kantele.Combat.Perform
 
+  import Kalevala.Character.Conn
+
+  alias Kalevala.Event
+  alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
+  alias Kantele.Combat.Broadcast
+  alias Kantele.Combat.Engine
+  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
 
   @allowed_forces ~w(xiuluo-yinshagong huagong-dafa hamagong shennong-xinjing huaxue-shengong)
+
+  @perform "force/shot"
+  @name "弹毒"
 
   @impl true
   def id(), do: "force"
@@ -30,128 +43,221 @@ defmodule Kantele.Combat.Skills.Force.Shot do
   def practice_cost(), do: nil
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(_level, _rng \\ &:rand.uniform/1) do
+    %{}
+  end
 
   @impl true
   def exert_list() do
     %{"shot" => __MODULE__}
   end
 
-  def spec do
-    %Kantele.Combat.Performs.Spec{
-      id: "force/shot",
-      kind: :exert,
-      gates: [
-        {:custom, &gate_allowed_force/1, "你所学的内功中没有这种功能。\n"},
-        {:custom, &gate_force_level/1, "你的内功修为不够。\n"},
-        {:custom, &gate_skill_level/1, "你的基本毒技/暗器火候不够。\n"},
-        {:custom, &gate_room_ok/1, "在这里不能攻击他人。\n"},
-        {:neili_min, 300, "你的真气不够。\n"},
-        {:custom, &gate_handing_poison/1, "你得先准备(hand)好毒药再说。\n"},
-        {:custom, &gate_valid_target/1, "你想攻击谁？\n"}
-      ],
-      costs: %{neili: 100},
-      effects: [
-        {:custom, &effect_shot/1}
-      ],
-      busy: {:if_fighting, 1 + :rand.uniform(3)},
-      message: fn ctx ->
-        du =
-          ctx.character.meta.inventory |> Enum.find(& &1.handing) ||
-            %{name: "毒药"}
+  @impl true
+  def run(conn) do
+    character = conn.character
+    stats = character.meta.stats
+    combat = character.meta.combat
+    vitals = character.meta.vitals
 
-        "$N一声冷笑，默运#{to_chinese(ctx.stats.mapped.force)}内劲，手指粘住#{du.name}对准#{ctx.target.name}「嗖」的弹射了出去。\n"
-      end
-    }
-  end
+    force = Map.get(stats.mapped, "force")
+    skill = Stats.skill(stats, "force")
+    poison_skill = Stats.skill(stats, "poison")
+    throwing_skill = Stats.skill(stats, "throwing")
 
-  defp gate_allowed_force(ctx),
-    do: if(ctx.stats.mapped.force in @allowed_forces, do: :ok, else: {:error, "你所学的内功中没有这种功能。\n"})
+    with :ok <- gate_allowed_force(force),
+         :ok <- gate_force_level(skill),
+         :ok <- gate_skill_level(poison_skill, throwing_skill),
+         :ok <- gate_room_ok(character),
+         :ok <- gate_neili(vitals),
+         {:ok, du} <- gate_handing_poison(character),
+         {:ok, target} <- find_target(combat, character) do
+      du_name = du.item.name || "毒药"
 
-  defp gate_force_level(ctx),
-    do: if(Stats.skill(ctx.stats, "force") >= 150, do: :ok, else: {:error, "你的内功修为不够。\n"})
+      message = "$N一声冷笑，默运#{to_chinese(force)}内劲，手指粘住#{du_name}对准#{target.name}「嗖」的弹射了出去。\n"
 
-  defp gate_skill_level(ctx) do
-    if Stats.skill(ctx.stats, "poison") >= 100 && Stats.skill(ctx.stats, "throwing") >= 100,
-      do: :ok,
-      else: {:error, "你的基本毒技/暗器火候不够。\n"}
-  end
-
-  defp gate_room_ok(ctx),
-    do: if(not (ctx.room.no_fight || ctx.room.skybook), do: :ok, else: {:error, "在这里不能攻击他人。\n"})
-
-  defp gate_handing_poison(ctx) do
-    du = ctx.character.meta.inventory |> Enum.find(& &1.handing)
-    if du && du.meta.poison, do: :ok, else: {:error, "你手中所拿的不是毒药，无法弹射。\n"}
-  end
-
-  defp gate_valid_target(ctx) do
-    if ctx.target && ctx.target != ctx.character && ctx.target.meta.vitals.alive? &&
-         not ctx.target.meta.conditions.die_guard && not ctx.target.meta.combat.competitor,
-       do: :ok,
-       else: {:error, "无效目标。\n"}
-  end
-
-  defp effect_shot(state) do
-    char = state.character
-    target = state.target
-    du = char.meta.inventory |> Enum.find(& &1.handing)
-
-    an = char.meta.vitals.max_neili + div(char.meta.vitals.neili, 2)
-    dn = target.meta.vitals.max_neili + div(target.meta.vitals.neili, 2)
-
-    if div(an, 2) + :rand.uniform(an) < dn * 2 / 3 do
-      # Target resists
-      target = target
-    else
-      ap =
-        Stats.skill(char.meta.stats, "force") + Stats.skill(char.meta.stats, "poison") +
-          Stats.skill(char.meta.stats, "throwing")
-
-      dp =
-        Stats.skill(target.meta.stats, "dodge") + Stats.skill(target.meta.stats, "parry") +
-          Stats.skill(target.meta.stats, "martial-cognize")
-
-      if div(ap, 2) + :rand.uniform(ap) > dp do
-        # Apply poison
-        poison_type = du.meta.poison_type
-
-        target = %{
-          target
-          | meta: %{
-              target.meta
-              | conditions: Map.put(target.meta.conditions || %{}, poison_type, du.meta.poison)
-            }
+      send(target.pid, %Event{
+        from_pid: self(),
+        topic: "combat/perform-incoming",
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform,
+          force_lvl: skill,
+          poison_skill: poison_skill,
+          throwing_skill: throwing_skill,
+          du: du,
+          rng: &:rand.uniform/1
         }
+      })
 
-        if not target.meta.combat.busy > 0,
-          do: target = %{target | meta: %{target.meta | combat: %{target.meta.combat | busy: 2}}}
+      busy = 1 + Engine.rand(&:rand.uniform/1, 3)
+      vitals = %{vitals | neili: vitals.neili - 100}
+
+      new_inventory =
+        Enum.map(character.meta.inventory, fn item ->
+          if item == du do
+            if item.meta.amount and item.meta.amount > 1 do
+              %{item | meta: %{item.meta | amount: item.meta.amount - 1}}
+            else
+              nil
+            end
+          else
+            item
+          end
+        end)
+        |> Enum.reject(&is_nil/1)
+
+      character = %{
+        character
+        | meta: %{
+            character.meta
+            | vitals: vitals,
+            combat: Combat.start_busy(combat, busy),
+            inventory: new_inventory
+          }
+      }
+
+      conn
+      |> Broadcast.publish(message, n1: character.name, n2: target.name)
+      |> put_character(character)
+      |> assign(:prompt, false)
+    else
+      {:error, message} ->
+        conn
+        |> render(CommandView, "text", %{text: message})
+        |> assign(:prompt, false)
+    end
+  end
+
+  @impl true
+  def resolve_incoming(conn, character, attacker, data) do
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    force_lvl = Map.get(data, :force_lvl, 0)
+    poison_skill = Map.get(data, :poison_skill, 0)
+    throwing_skill = Map.get(data, :throwing_skill, 0)
+    du = Map.get(data, :du)
+    bindings = [n1: attacker.name, n2: character.name]
+
+    if character.meta.combat.busy > 0 do
+      conn
+    else
+      an = attacker.meta.vitals.max_neili + div(attacker.meta.vitals.neili, 2)
+      dn = character.meta.vitals.max_neili + div(character.meta.vitals.neili, 2)
+
+      if div(an, 2) + Engine.rand(rng, max(an, 1)) < dn * 2 / 3 do
+        text = "然而$n全然不放在心上，轻轻一抖，已将$N射来的毒素尽数震落。\n"
+               |> Messages.interpolate(bindings)
+
+        conn = Broadcast.publish(conn, text)
+        Performs.feedback(attacker, %{neili_cost: 0, busy: 0})
+        conn
+      else
+        ap = force_lvl + poison_skill + throwing_skill
+        dp = Stats.skill(character.meta.stats, "dodge") +
+             Stats.skill(character.meta.stats, "parry") +
+             Stats.skill(character.meta.stats, "martial-cognize")
+
+        if div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp do
+          poison_type = du.meta.poison_type
+          poison_data = du.meta.poison
+
+          conditions = Map.put(character.meta.conditions || %{}, poison_type, poison_data)
+
+          combat = character.meta.combat
+          if not Combat.busy?(combat) do
+            combat = Combat.start_busy(combat, 2)
+          end
+
+          character = %{
+            character
+            | meta: %{
+                character.meta
+                | conditions: conditions,
+                combat: combat
+              }
+          }
+
+text = "$n急忙飞身躲避，可已然不及，霎时绿光闪过，$p顿感一阵麻痹。\n"
+                 |> Messages.interpolate(bindings)
+
+           conn =
+             Broadcast.publish(conn, text)
+             |> put_character(character)
+
+           Performs.feedback(attacker, %{neili_cost: 0, busy: 0})
+           conn
+         else
+           text = "可是$n见势不妙，急忙腾挪身形，终于避开了$N的弹毒攻击。\n"
+                  |> Messages.interpolate(bindings)
+
+          conn = Broadcast.publish(conn, text)
+          Performs.feedback(attacker, %{neili_cost: 0, busy: 0})
+          conn
+        end
       end
     end
+  end
 
-    # Consume poison
-    new_du =
-      if du.meta.amount do
-        %{du | meta: %{du.meta | amount: du.meta.amount - 1}}
-      else
-        nil
-      end
+  defp gate_allowed_force(force) do
+    if force in @allowed_forces do
+      :ok
+    else
+      {:error, "你所学的内功中没有这种功能。\n"}
+    end
+  end
 
-    new_inventory =
-      Enum.map(char.meta.inventory, fn item ->
-        if item == du, do: new_du, else: item
-      end)
+  defp gate_force_level(skill) do
+    if skill >= 150 do
+      :ok
+    else
+      {:error, "你的内功修为不够。\n"}
+    end
+  end
 
-    new_char = %{
-      char
-      | meta: %{
-          char.meta
-          | inventory: new_inventory,
-            vitals: %{char.meta.vitals | neili: char.meta.vitals.neili - 100}
-        }
-    }
+  defp gate_skill_level(poison_skill, throwing_skill) do
+    if poison_skill >= 100 and throwing_skill >= 100 do
+      :ok
+    else
+      {:error, "你的基本毒技/暗器火候不够。\n"}
+    end
+  end
 
-    %{state | character: new_char, target: target}
+  defp gate_room_ok(character) do
+    room_config = Map.get(character.meta, :room, %{})
+    if Map.get(room_config, :no_fight) or Map.get(room_config, :skybook) do
+      {:error, "在这里不能攻击他人。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp gate_neili(vitals) do
+    if vitals.neili >= 300 do
+      :ok
+    else
+      {:error, "你的真气不够。\n"}
+    end
+  end
+
+  defp gate_handing_poison(character) do
+    du = character.meta.inventory |> Enum.find(& &1.handing)
+    if du && du.meta && du.meta.poison do
+      {:ok, du}
+    else
+      {:error, "你得先准备(hand)好毒药再说。\n"}
+    end
+  end
+
+  defp find_target(combat, character) do
+    case combat.enemies do
+      [target | _] when target.id != character.id and target.meta.vitals.qi > 0 ->
+        if target.meta.conditions && target.meta.conditions.die_guard do
+          {:error, "这个人正被官府保护着，还是别去招惹。\n"}
+        else
+          {:ok, target}
+        end
+      _ ->
+        {:error, "你想攻击谁？\n"}
+    end
   end
 
   defp to_chinese(name) do
@@ -160,7 +266,16 @@ defmodule Kantele.Combat.Skills.Force.Shot do
       "taiji-shengong" -> "太极神功"
       "xiaowuxiang" -> "小无相"
       "longxiang-gong" -> "龙象般若功"
+      "xiuluo-yinshagong" -> "修罗阴煞功"
+      "huagong-dafa" -> "化功大法"
+      "hamagong" -> "蛤蟆功"
+      "shennong-xinjing" -> "神农心经"
+      "huaxue-shengong" -> "华血神功"
       _ -> name
     end
+  end
+
+  defp ref(character) do
+    %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 end

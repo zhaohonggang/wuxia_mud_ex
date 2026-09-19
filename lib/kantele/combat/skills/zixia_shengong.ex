@@ -87,41 +87,15 @@ defmodule Kantele.Combat.Skills.ZixiaShengong.Ziqi do
   若 qi <= 40% max_qi 则失败（仅消耗 busy/内力）。
   """
 
-  use Kantele.Combat.Skill
+  use Kantele.Combat.Performs.Simple, spec: :local
 
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Combat.Performs.Spec
 
   @impl true
-  def id(), do: "zixia-shengong"
-
-  @impl true
-  def valid_enable(usage), do: usage == "force"
-
-  @impl true
-  def valid_force(force), do: force in ["hunyuan-yiqi", "taiji-shengong", "wudang-xinfa", "shaolin-xinfa"]
-
-  @impl true
-  def valid_learn(stats) do
-    if Stats.skill(stats, "force") < 100 do
-      {:error, "你的基本内功火候不够，无法学习紫霞神功！\n"}
-    else
-      :ok
-    end
-  end
-
-  @impl true
-  def practice_cost(), do: nil
-
-  @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
-
-  @impl true
-  def exert_list() do
-    %{"ziqi" => __MODULE__}
-  end
-
   def spec do
-    %Kantele.Combat.Performs.Spec{
+    %Spec{
       id: "zixia-shengong/ziqi",
       kind: :exert,
       gates: [
@@ -143,136 +117,13 @@ defmodule Kantele.Combat.Skills.ZixiaShengong.Ziqi do
   end
 
   defp gate_sword(ctx) do
-    weapon = ctx.character.meta.equipped.weapon
-    if weapon && weapon.meta.skill_type == "sword", do: :ok, else: {:error, "你没有剑.怎么用紫气东来呀? \n"}
+    weapon = ctx.character.meta.combat.equipped.weapon
+    weapon && weapon.meta.skill_type == "sword"
   end
 
   defp gate_qi_ok(ctx) do
     vitals = ctx.character.meta.vitals
-
-    if vitals.qi > div(vitals.max_qi * 4, 10),
-      do: :ok,
-      else: {:error, "你拼尽毕生功力想提起紫气东来，但自己受伤太重，没能成功!\n"}
-  end
-
-  defp effect_ziqi(state) do
-    char = state.character
-    skill = Stats.skill(char.meta.stats, "zixia-shengong")
-    bonus = div(skill, 10)
-
-    new_combat =
-      char.meta.combat
-      |> Combat.apply_temp(%{damage: bonus, sword: bonus})
-      |> Combat.add_buff(%Kantele.Character.Combat.Buff{
-        key: "ziqi",
-        applies: %{damage: -bonus, sword: -bonus}
-      })
-
-    new_char = %{char | meta: %{char.meta | combat: new_combat}}
-    %{state | character: new_char}
-  end
-
-  defp gate_sword(ctx) do
-    weapon = ctx.character.meta.equipped.weapon
-    if weapon && weapon.meta.skill_type == "sword", do: :ok, else: {:error, "你没有剑.怎么用紫气东来呀? \n"}
-  end
-
-  defp gate_qi_ok(ctx) do
-    vitals = ctx.character.meta.vitals
-
-    if vitals.qi > div(vitals.max_qi * 4, 10),
-      do: :ok,
-      else: {:error, "你拼尽毕生功力想提起紫气东来，但自己受伤太重，没能成功!\n"}
-  end
-
-  defp effect_ziqi(state) do
-    char = state.character
-    skill = Stats.skill(char.meta.stats, "zixia-shengong")
-    bonus = div(skill, 10)
-
-    new_combat =
-      char.meta.combat
-      |> Combat.apply_temp(%{damage: bonus, sword: bonus})
-      |> Combat.add_buff(%Kantele.Character.Combat.Buff{
-        key: "ziqi",
-        applies: %{damage: -bonus, sword: -bonus}
-      })
-
-    new_char = %{char | meta: %{char.meta | combat: new_combat}}
-    %{state | character: new_char}
-  end
-
-  defp gate_sword(ctx) do
-    weapon = ctx.character.meta.equipped.weapon
-    if weapon && weapon.meta.skill_type == "sword", do: :ok, else: {:error, "你没有剑.怎么用紫气东来呀? \n"}
-  end
-
-  defp gate_qi_ok(ctx) do
-    vitals = ctx.character.meta.vitals
-
-    if vitals.qi > div(vitals.max_qi * 4, 10),
-      do: :ok,
-      else: {:error, "你拼尽毕生功力想提起紫气东来，但自己受伤太重，没能成功!\n"}
-  end
-
-  defp effect_ziqi(state) do
-    char = state.character
-    skill = Stats.skill(char.meta.stats, "zixia-shengong")
-    bonus = div(skill, 10)
-
-    new_combat =
-      char.meta.combat
-      |> Combat.apply_temp(%{damage: bonus, sword: bonus})
-      |> Combat.add_buff(%Kantele.Character.Combat.Buff{
-        key: "ziqi",
-        applies: %{damage: -bonus, sword: -bonus}
-      })
-
-    new_char = %{char | meta: %{char.meta | combat: new_combat}}
-    %{state | character: new_char}
-  end
-
-  defp gate_sword(ctx) do
-    weapon = ctx.character.meta.equipped.weapon
-    if weapon && weapon.meta.skill_type == "sword", do: :ok, else: {:error, "你没有剑.怎么用紫气东来呀? \n"}
-  end
-
-  defp gate_qi_ok(ctx) do
-    vitals = ctx.character.meta.vitals
-
-    if vitals.qi > div(vitals.max_qi * 4, 10),
-      do: :ok,
-      else: {:error, "你拼尽毕生功力想提起紫气东来，但自己受伤太重，没能成功!\n"}
-  end
-
-  defp effect_ziqi(state) do
-    char = state.character
-    skill = Stats.skill(char.meta.stats, "zixia-shengong")
-    bonus = div(skill, 10)
-
-    new_combat =
-      char.meta.combat
-      |> Combat.apply_temp(%{damage: bonus, sword: bonus})
-      |> Combat.add_buff(%Kantele.Character.Combat.Buff{
-        key: "ziqi",
-        applies: %{damage: -bonus, sword: -bonus}
-      })
-
-    new_char = %{char | meta: %{char.meta | combat: new_combat}}
-    %{state | character: new_char}
-  end
-
-  defp gate_sword(ctx) do
-    weapon = ctx.character.meta.equipped.weapon
-    if weapon && weapon.meta.skill_type == "sword", do: :ok, else: {:error, "你没有剑.怎么用紫气东来呀? \n"}
-  end
-
-  defp gate_qi_ok(ctx) do
-    vitals = ctx.character.meta.vitals
-
-    if vitals.qi > div(vitals.max_qi * 4, 10),
-      do: :ok,
-      else: {:error, "你拼尽毕生功力想提起紫气东来，但自己受伤太重，没能成功!\n"}
+    vitals.qi > div(vitals.max_qi * 4, 10)
   end
 
   defp effect_ziqi(state) do

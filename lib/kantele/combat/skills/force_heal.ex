@@ -2,47 +2,31 @@ defmodule Kantele.Combat.Skills.Force.Heal do
   @moduledoc """
   内功疗伤（对照 `kungfu/skill/force/heal.c`）
 
-  自我疗伤：需非战斗、非忙碌、非天魔、有内功、eff_qi < max_qi、
-  内功>=20、neili>=50、非(重伤且无divine)。
-  扣 neili 50，回复 qi=10+force/3（divine/breakup加成）。
-  单次版（原为 async busy 循环）。
+  自我疗伤：需非战斗、非忙碌、非天魔状态、已激发内功、
+  eff_qi < max_qi、内功>=20、neili>=50、非(重伤且无 divine)。
+  扣 neili 50；回复 eff_qi/qi = 10+force/3（divine +con*2，breakup *3），
+  上限 max_qi。LPC 原为 async busy 循环，本引擎做单次版。
+
+  eff_qi/max_qi 在本引擎折合 `vitals.max_qi`/`vitals.base_qi`（见 Vitals.wound）
+  TODO(migrate): LPC healing 循环 → 单次回复；`special_skill/divine`、
+  `breakup` 折合 `attributes["special_skills"]`。
   """
 
-  use Kantele.Combat.Skill
+  use Kantele.Combat.Performs.Simple, spec: :local
 
+  alias Kantele.Character.Combat
+  alias Kantele.Character.SpecialSkills
   alias Kantele.Character.Stats
-
-  @impl true
-  def id(), do: "force"
-
-  @impl true
-  def valid_enable(usage), do: usage == "force"
-
-  @impl true
-  def valid_force(_force), do: true
-
-  @impl true
-  def valid_learn(_stats), do: :ok
-
-  @impl true
-  def practice_cost(), do: nil
-
-  @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
-
-  @impl true
-  def exert_list() do
-    %{"heal" => __MODULE__}
-  end
+  alias Kantele.Combat.Performs.Spec
 
   def spec do
-    %Kantele.Combat.Performs.Spec{
+    %Spec{
       id: "force/heal",
       kind: :exert,
       gates: [
         {:custom, &gate_not_fighting/1, "战斗中运功疗伤？找死吗？\n"},
         {:custom, &gate_not_busy/1, "等你忙完了手头的事情再说！\n"},
-        {:custom, &gate_not_tianmo/1, "天魔解体状态不能运功疗伤！\n"},
+        {:no_buff, "tianmo", "天魔解体状态不能运功疗伤！\n"},
         {:custom, &gate_has_force/1, "先激发你的特殊内功。\n"},
         {:custom, &gate_needs_heal/1, "你现在气血充盈，不需要疗伤。\n"},
         {:custom, &gate_force_level/1, "你的内功修为还不够。\n"},
@@ -58,51 +42,26 @@ defmodule Kantele.Combat.Skills.Force.Heal do
     }
   end
 
-  defp gate_not_fighting(ctx),
-    do:
-      if(not ctx.character.meta.combat.busy > 0 || Enum.empty?(ctx.character.meta.combat.enemies),
-        do: :ok,
-        else: {:error, "战斗中运功疗伤？找死吗？\n"}
-      )
+  defp gate_not_fighting(ctx), do: not Combat.fighting?(ctx.character.meta.combat)
 
-  defp gate_not_busy(ctx),
-    do:
-      if(ctx.character.meta.temp.pending_healing == nil,
-        do: :ok,
-        else: {:error, "等你忙完了手头的事情再说！\n"}
-      )
+  defp gate_not_busy(ctx), do: not Combat.busy?(ctx.character.meta.combat)
 
-  defp gate_not_tianmo(ctx),
-    do:
-      if(not ctx.combat.buffs |> Enum.any?(&(&1.key == "tianmo")),
-        do: :ok,
-        else: {:error, "天魔解体状态不能运功疗伤！\n"}
-      )
+  defp gate_has_force(ctx), do: Map.get(ctx.stats.mapped, "force") != nil
 
-  defp gate_has_force(ctx),
-    do: if(ctx.stats.mapped.force, do: :ok, else: {:error, "先激发你的特殊内功。\n"})
+  defp gate_needs_heal(ctx) do
+    v = ctx.character.meta.vitals
+    v.max_qi < v.base_qi
+  end
 
-  defp gate_needs_heal(ctx),
-    do:
-      if(ctx.character.meta.vitals.qi < ctx.character.meta.vitals.max_qi,
-        do: :ok,
-        else: {:error, "你现在气血充盈，不需要疗伤。\n"}
-      )
-
-  defp gate_force_level(ctx),
-    do:
-      if(Stats.skill(ctx.stats, ctx.stats.mapped.force) >= 20,
-        do: :ok,
-        else: {:error, "你的内功修为还不够。\n"}
-      )
+  defp gate_force_level(ctx) do
+    Stats.skill(ctx.stats, Map.get(ctx.stats.mapped, "force") || "force") >= 20
+  end
 
   defp gate_not_critical_without_divine(ctx) do
-    vitals = ctx.character.meta.vitals
-    has_divine = ctx.character.meta.temp.divine_skill || false
+    v = ctx.character.meta.vitals
+    divine? = SpecialSkills.owned?(ctx.character.attributes, "divine")
 
-    if vitals.qi >= div(vitals.max_qi, 5) || has_divine,
-      do: :ok,
-      else: {:error, "你已经受伤过重，只怕一运真气便有生命危险！\n"}
+    v.max_qi >= div(v.base_qi, 5) || divine?
   end
 
   defp effect_heal(state) do
@@ -110,16 +69,13 @@ defmodule Kantele.Combat.Skills.Force.Heal do
     vitals = char.meta.vitals
     stats = char.meta.stats
 
-    force_lvl = Stats.skill(stats, char.meta.stats.mapped.force)
+    force_lvl = Stats.skill(stats, Map.get(stats.mapped, "force") || "force")
     cure = 10 + div(force_lvl, 3)
-    if stats.divine_skill, do: cure = cure + stats.con * 2
-    if stats.breakup, do: cure = cure * 3
+    cure = if SpecialSkills.owned?(char.attributes, "divine"), do: cure + Stats.query_con(stats) * 2, else: cure
+    cure = if SpecialSkills.owned?(char.attributes, "breakup"), do: cure * 3, else: cure
 
-    new_vitals = %{
-      vitals
-      | neili: vitals.neili - 50,
-        qi: min(vitals.qi + cure, vitals.eff_qi)
-    }
+    new_max = min(vitals.max_qi + cure, vitals.base_qi)
+    new_vitals = %{vitals | max_qi: new_max, qi: min(vitals.qi + cure, new_max)}
 
     %{state | character: %{char | meta: %{char.meta | vitals: new_vitals}}}
   end

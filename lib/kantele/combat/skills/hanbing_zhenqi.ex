@@ -99,52 +99,15 @@ defmodule Kantele.Combat.Skills.HanbingZhenqi.Freezing do
   扣 neili 300，设 temp freezing，busy 3。
   """
 
-  use Kantele.Combat.Skill
+  use Kantele.Combat.Performs.Simple, spec: :local
 
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Combat.Performs.Spec
 
   @impl true
-  def id(), do: "hanbing-zhenqi"
-
-  @impl true
-  def valid_enable(usage), do: usage == "force"
-
-  @impl true
-  def valid_force(force),
-    do:
-      force in [
-        "huashan-xinfa",
-        "henshan-xinfa",
-        "songshan-xinfa",
-        "zixia-shengong",
-        "zhenyue-jue"
-      ]
-
-  @impl true
-  def valid_learn(stats) do
-    force = Stats.skill(stats, "force")
-    level = Stats.skill(stats, id())
-
-    cond do
-      force < 100 -> {:error, "你的基本内功火候不够，难以锻炼寒冰真气。\n"}
-      force < level -> {:error, "你的基本内功水平不够，难以锻炼更深厚的寒冰真气。\n"}
-      true -> :ok
-    end
-  end
-
-  @impl true
-  def practice_cost(), do: nil
-
-  @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
-
-  @impl true
-  def exert_list() do
-    %{"freezing" => __MODULE__}
-  end
-
   def spec do
-    %Kantele.Combat.Performs.Spec{
+    %Spec{
       id: "hanbing-zhenqi/freezing",
       kind: :exert,
       gates: [
@@ -161,22 +124,21 @@ defmodule Kantele.Combat.Skills.HanbingZhenqi.Freezing do
         {:custom, &effect_freezing/1}
       ],
       busy: {:if_fighting, 3},
+      duration: {:skill, "hanbing-zhenqi"},
+      expire_message: "你的「寒冰真气」运行完毕，将内力收回丹田。\n",
       message: "$N一声冷笑，体内寒冰真气迅速疾转数个周天，将力聚于掌心。\n"
     }
   end
 
   defp gate_self_only(ctx),
-    do: if(ctx.target == ctx.character, do: :ok, else: {:error, "寒冰真气只能对自己使用。\n"})
+    do: ctx.target == ctx.character
 
   defp gate_con(ctx),
-    do: if(ctx.character.meta.stats.con >= 34, do: :ok, else: {:error, "你的先天根骨不足，无法施展「寒冰真气」。\n"})
+    do: ctx.character.meta.stats.con >= 34
 
   defp gate_powerup(ctx),
     do:
-      if(ctx.character.meta.combat.buffs |> Enum.any?(&(&1.key == "powerup")),
-        do: :ok,
-        else: {:error, "你现在尚未曾运功，难以施展「寒冰真气」。\n"}
-      )
+      ctx.character.meta.combat.buffs |> Enum.any?(&(&1.key == "powerup"))
 
   defp effect_freezing(state) do
     char = state.character
