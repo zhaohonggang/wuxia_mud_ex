@@ -81,8 +81,14 @@ defmodule Kantele.Combat.DagouBangTest do
       refute DagouBang.valid_enable("sword")
     end
 
-    test "perform_list 含三诀" do
-      assert DagouBang.perform_list() == %{"chan" => Chan, "feng" => Feng, "tian" => Tian}
+    test "perform_list 含五诀" do
+      assert DagouBang.perform_list() == %{
+        "chan" => Chan,
+        "feng" => Feng,
+        "tian" => Tian,
+        "ban" => Kantele.Combat.Skills.Performs.DagouBang.Ban,
+        "chuo" => Kantele.Combat.Skills.Performs.DagouBang.Chuo
+      }
     end
   end
 

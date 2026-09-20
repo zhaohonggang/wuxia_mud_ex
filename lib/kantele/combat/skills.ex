@@ -172,7 +172,11 @@ defmodule Kantele.Combat.Skills do
     "caiyan-gong" => Kantele.Combat.Skills.CaiyanGong,
     "canghong-bifa" => Kantele.Combat.Skills.CanghongBifa,
     "chanhun-suo" => Kantele.Combat.Skills.ChanhunSuo,
-    "chuanxin-zhang" => Kantele.Combat.Skills.ChuanxinZhang
+    "chuanxin-zhang" => Kantele.Combat.Skills.ChuanxinZhang,
+    "chuanyue-jian" => Kantele.Combat.Skills.ChuanyueJian,
+    "dagou-bang" => Kantele.Combat.Skills.DagouBang,
+    "dali-chu" => Kantele.Combat.Skills.DaliChu,
+    "danding-dao" => Kantele.Combat.Skills.DandingDao
   }
 
   @doc "运行时注册一门武学（覆盖同名内建）"

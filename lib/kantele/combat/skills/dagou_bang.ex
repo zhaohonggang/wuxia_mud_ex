@@ -2,10 +2,13 @@ defmodule Kantele.Combat.Skills.DagouBang do
   @moduledoc """
   打狗棒法（对照 `kungfu/skill/dagou-bang.c`）
 
-  杖法载体：`valid_enable("staff")`、`valid_enable("parry")`；
-  `valid_force` 接受 蛤蟆功/混元一气/九阴真经 共存。
+  棒法载体：`valid_enable("staff")` / `valid_enable("parry")`。
 
-  差异（TODO(migrate)）：LPC `valid_learn` 的性别/性格限制未实现。
+  绝招实现见 `lib/kantele/combat/skills/performs/dagou_bang/`。
+
+  差异（TODO(migrate)）：
+  - LPC `valid_learn` 门槛未建模；
+  - 招式表与 `practice_skill` 未建模。
   """
 
   use Kantele.Combat.Skill
@@ -17,12 +20,9 @@ defmodule Kantele.Combat.Skills.DagouBang do
   def valid_enable(usage), do: usage in ["staff", "parry"]
 
   @impl true
-  def valid_force(force), do: force in ["hamagong", "hunyuan-yiqi", "jiuyin-zhenjing"]
-
-  @impl true
   def valid_learn(_stats), do: :ok
 
-  @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
+  @doc "只能学(learn)不能练"
   @impl true
   def practice_cost(), do: nil
 
@@ -34,7 +34,9 @@ defmodule Kantele.Combat.Skills.DagouBang do
     %{
       "chan" => Kantele.Combat.Skills.Performs.DagouBang.Chan,
       "feng" => Kantele.Combat.Skills.Performs.DagouBang.Feng,
-      "tian" => Kantele.Combat.Skills.Performs.DagouBang.Tian
+      "tian" => Kantele.Combat.Skills.Performs.DagouBang.Tian,
+      "ban" => Kantele.Combat.Skills.Performs.DagouBang.Ban,
+      "chuo" => Kantele.Combat.Skills.Performs.DagouBang.Chuo
     }
   end
 end
