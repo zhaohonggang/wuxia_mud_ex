@@ -1,6 +1,6 @@
 # Kantele F4 招式/内功批量迁移执行计划
 
-> 状态：Phase 1（T1）批次 1–14 完成 + HEAD 回归修复 + 清单同步（`0ac52ca`）；Phase 2 T2 批次 1（8 条）实装完毕、测试全绿（暂未提交）；全量 2847 测试绿（2026-09-20）；清单 108/644（T1 85/86、T2 20/193、T3 2/169、T5 1/184）
+> 状态：Phase 1（T1）批次 1–14 完成 + HEAD 回归修复 + 清单同步（`0ac52ca`）；Phase 2 T2 批次 1（8 条）＋批次 2（6 条）实装完毕、测试全绿（暂未提交）；全量 2887 测试绿（2026-09-20）；清单 114/644（T1 85/86、T2 26/193、T3 2/169、T5 1/184）
 > 上游：`docs/kungfu-framework-build-plan.zh-CN.md`（F4 章节）
 > 数据清单：`docs/kungfu-f4-migration-checklist.zh-CN.md`（644 条）
 > 工具：`scripts/translate_perform.exs`、`scripts/f4_checklist.exs`
@@ -307,6 +307,23 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   新增 `test/kantele/combat/t2_self_buffs_test.exs`（38 例），既存 huashan_jian 测试
   perform_list 断言补 `"lian"`。全量 `MIX_ENV=test mix test` **2847 测试全绿**（批次 14 后
   2809 → +38）。
+
+- [x] 批次 T2-2（6 条，声明式 Simple）：`banruo-zhang/feng`、`longxing-jian/xian`、
+  `ranmu-daofa/zhenyan`、`riyue-lun/yuan`、`shenxing-baibian/piao`、`taiji-jian/sui`。
+  新增 6 个 skill module 注册 `Skills.@static`。差异（逐条记 TODO(migrate) 于模块）：
+  - 负加成 buff：feng（attack -skill/4，dodge +skill/3）、sui（attack -skill/6，
+    defense +skill/3）以 `{:sub, 0, expr}` 表达，随 buff 到期由 buff-expire 回收恢复。
+  - `xian` 神龙再现：战斗中限定、temp 计数器叠放（custom 门槛 `temp.xian < 50`），
+    无到期回收；busy 1。
+  - `zhenyan`/`yuan` 首次启用 `{:max_neili_min, ...}` 与 `{:mapped, usage, skill_id, ...}`
+    gate（simple.ex 已有）；少林内功激发 ∈ {hunyuan-yiqi,yijinjing,luohan-fumogong}
+    /龙象般若功激发以 custom 表达；武器存在性以装备 `skill_type` 近似。
+  - `valid_learn` 代理：banruo force30、ranmu force250+blade100、riyue str32+force150、
+    shenxing 无门槛、taiji int26+force200、longxing str/int/hunyuan-yiqi/sword。
+  - 因 `taiji-jian` 已注册，`perform_command_test`「未使用的武功提示」改用未注册技能 id
+    `feilong-jian` 保持原路径。
+  新增 `test/kantele/combat/t2_self_buffs2_test.exs`（40 例）。全量 `MIX_ENV=test mix test`
+  **2887 测试全绿**（批次 T2-1 后 2847 → +40）。
 
 - [ ] 分批（建议 8–10 批 × ~20）。
 - [ ] 先做 `heal`/`recover`/自我 buff 类声明式；后做带内部状态/随机分档的手写。

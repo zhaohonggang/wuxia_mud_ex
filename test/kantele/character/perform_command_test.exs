@@ -69,7 +69,7 @@ defmodule Kantele.Character.PerformCommandTest do
 
     test "未使用的武功提示" do
       p = player()
-      conn = PerformCommand.run(build_conn(p), %{"action" => "taiji-jian.liu"})
+      conn = PerformCommand.run(build_conn(p), %{"action" => "feilong-jian.fei"})
       text = output_text(conn)
 
       assert text =~ "你并没有使用这项武功"

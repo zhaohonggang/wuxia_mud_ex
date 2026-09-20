@@ -109,7 +109,7 @@
 - [ ] `bagua-biao/zhi` perform「乾坤一掷」 门槛: level:bagua-biao>=120,force>=200; assign:skill=bagua-biao; res:neili>=150 | 效果: add:neili -100; busy | 依赖: 无
 - [ ] `bagua-dao/tian` perform「天刀八势」 门槛: level:bagua-dao>=200,nei-bagua>=200,wai-bagua>=200; assign:count=bagua-dao; var:i<8; map:blade=bagua-dao; res:max_neili>=3000,neili>=500 | 效果: add:neili -250; apply+:attack; busy | 依赖: 无
 - [ ] `baibian-daxue/dian` perform「dian」 门槛: level:force>=100,staff>=150; assign:ap=staff,dp=dodge | 效果: busy | 依赖: 无
-- [ ] `banruo-zhang/feng` perform「feng」 门槛: level:banruo-zhang>=60; assign:skill=banruo-zhang; res:neili>=200 | 效果: add:neili -100; temp:brz_feng; apply+:attack,dodge; busy | 依赖: 无
+- [x] `banruo-zhang/feng` perform「feng」 门槛: level:banruo-zhang>=60; assign:skill=banruo-zhang; res:neili>=200 | 效果: add:neili -100; temp:brz_feng; apply+:attack,dodge; busy | 依赖: 无
 - [ ] `bingpo-shenzhen/bing` perform「寒冰针」 门槛: level:bingpo-shenzhen>=120,force>=150; assign:ap=throwing,dp=dodge,skill=bingpo-shenzhen; res:max_neili>=1500,neili>=150 | 效果: add:neili -120; temp:bingpo; apply+:attack,dodge,parry; busy | 依赖: 无
 - [ ] `biyan-dao/luo` perform「瀑落九霄」 门槛: level:biyan-dao>=80,force>=120; var:i<5; map:blade=biyan-dao; res:neili>=80 | 效果: add:neili -80; busy | 依赖: 无
 - [x] `boyun-suowu/dian` perform「dian」 门槛: — | 效果: busy | 依赖: 无
@@ -178,7 +178,7 @@
 - [ ] `longcheng-shendao/feng` perform「风雨交加」 门槛: level:force>=150,longcheng-shendao>=120; assign:ap=blade,dp=dodge; map:blade=longcheng-shendao; res:neili>=270 | 效果: busy | 依赖: 无
 - [ ] `longcheng-shendao/fengyu` perform「fengyu」 门槛: level:force>=150,longcheng-shendao>=120; assign:lvl=longcheng-shendao; var:i<5; res:neili>=270 | 效果: add:neili -120; apply+:attack; busy | 依赖: 无
 - [ ] `longxing-jian/kong` perform「金龙疾空」 门槛: level:longxing-jian>=160; assign:ap=sword,dp=parry; map:sword=longxing-jian; res:neili>=250 | 效果: apply+:attack; busy | 依赖: 无
-- [ ] `longxing-jian/xian` perform「xian」 门槛: level:buddhism>=150,longxing-jian>=150; assign:skill=force; res:neili>=300 | 效果: add:neili -100; apply+:attack,dodge,parry; busy | 依赖: 无
+- [x] `longxing-jian/xian` perform「xian」 门槛: level:buddhism>=150,longxing-jian>=150; assign:skill=force; res:neili>=300 | 效果: add:neili -100; apply+:attack,dodge,parry; busy | 依赖: 无
 - [ ] `luohan-gun/shibaluohan` perform「shibaluohan」 门槛: level:club>=120,club>=120,luohan-gun>=120,luohan-gun>=120; assign:i=luohan-gun,j=luohan-gun; var:k<0; map:club=luohan-gun,club=luohan-gun,club=luohan-gun,club=luohan-gun; res:jingli>=200,jingli>=200,neili>=1500,neili>=1500 | 效果: temp:bunzhen,gunzhen; apply+:dexerity,strength; busy | 依赖: 无
 - [ ] `luoyan-jian/luo` perform「一剑落九雁」 门槛: level:luoyan-jian>=150; assign:ap=sword,count=luoyan-jian,dp=dodge; var:i<9; map:sword=luoyan-jian; res:neili>=400 | 效果: add:neili -200; apply+:attack; busy | 依赖: 无
 - [ ] `luoying-shenjian/sui` perform「随波逐流」 门槛: level:force>=100,luoying-shenjian>=80; assign:ap=sword,dp=parry; map:sword=luoying-shenjian; res:neili>=100 | 效果: add:neili -100,neili -80; busy | 依赖: 无
@@ -214,11 +214,11 @@
 - [ ] `quemen-jian/can` perform「天残剑诀」 门槛: level:force>=120,quemen-jian>=80; var:i<4; map:sword=quemen-jian; res:max_neili>=800,neili>=100 | 效果: add:neili -80; busy | 依赖: 无
 - [ ] `qufannao-zhi/lingkong` perform「凌空指穴」 门槛: level:hunyuan-yiqi>=100,qufannao-zhi>=100; assign:ap=force,damage=qufannao-zhi,dp=force; var:damage<100,damage<300,damage<500; res:neili>=300 | 效果: busy | 依赖: 无
 - [ ] `qujing-gunfa/zhen` perform「震雷乾坤」 门槛: level:force>=350,qujing-gunfa>=200; assign:ap=club,dp=parry; var:i<10; map:club=qujing-gunfa,force=hunyuan-yiqi,force=luohan-fumogong,force=yijinjing; res:max_neili>=4000,max_neili>=4500,neili>=300 | 效果: add:neili -200; apply+:attack,damage; busy | 依赖: 无
-- [ ] `ranmu-daofa/zhenyan` perform「燃木真焰」 门槛: level:ranmu-daofa>=180; assign:skill=ranmu-daofa; map:blade=ranmu-daofa,force=hunyuan-yiqi,force=luohan-fumogong,force=yijinjing; res:max_neili>=2500,neili>=500 | 效果: add:neili -400; temp:zhen_yan; apply+:attack,damage,defense; busy | 依赖: 无
+- [x] `ranmu-daofa/zhenyan` perform「燃木真焰」 门槛: level:ranmu-daofa>=180; assign:skill=ranmu-daofa; map:blade=ranmu-daofa,force=hunyuan-yiqi,force=luohan-fumogong,force=yijinjing; res:max_neili>=2500,neili>=500 | 效果: add:neili -400; temp:zhen_yan; apply+:attack,damage,defense; busy | 依赖: 无
 - [x] `riyue-bian/chan` perform「chan」 门槛: assign:ap=whip,dp=parry; map:whip=riyue-bian; res:neili>=80 | 效果: busy | 依赖: 无
 - [x] `riyue-bian/he` perform「he」 门槛: level:riyue-bian>=120; assign:ap=whip,dp=parry; map:whip=riyue-bian; res:neili>=350 | 效果: apply+:attack; busy | 依赖: 无
 - [ ] `riyue-lun/lian` perform「五轮连转」 门槛: level:force>=250,longxiang-gong>=90,riyue-lun>=150; assign:count=force,count=longxiang-gong; var:i<5; map:hammer=riyue-lun; res:max_neili>=3000,neili>=500 | 效果: add:neili -250; apply+:attack,damage; busy | 依赖: 无
-- [ ] `riyue-lun/yuan` perform「圆满势」 门槛: level:force>=180,riyue-lun>=120; assign:skill=riyue-lun; map:force=longxiang-gong,hammer=riyue-lun; res:max_neili>=1500,neili>=300 | 效果: add:neili -200; temp:yuan_man; apply+:parry; busy | 依赖: 无
+- [x] `riyue-lun/yuan` perform「圆满势」 门槛: level:force>=180,riyue-lun>=120; assign:skill=riyue-lun; map:force=longxiang-gong,hammer=riyue-lun; res:max_neili>=1500,neili>=300 | 效果: add:neili -200; temp:yuan_man; apply+:parry; busy | 依赖: 无
 - [ ] `rouyun-jian/tao` perform「三环套月」 门槛: level:dodge>=180,force>=180,rouyun-jian>=140; map:sword=rouyun-jian; res:neili>=200 | 效果: add:neili -150; apply+:attack,damage; busy | 依赖: 无
 - [x] `rouyun-steps/zong` perform「zong」 门槛: level:rouyun-steps>=50 | 效果: — | 依赖: 无
 - [ ] `ruanhong-zhusuo/pan` perform「盘鹰诀」 门槛: level:ruanhong-zhusuo>=80; map:whip=ruanhong-zhusuo; res:neili>=100 | 效果: busy | 依赖: 无
@@ -235,7 +235,7 @@
 - [ ] `shenghuo-ling/can` perform「残血令」 门槛: level:force>=350; assign:count=shenghuo-ling,skill=shenghuo-ling; var:i<7,skill<220; map:sword=shenghuo-ling; res:max_neili>=5000,neili>=400 | 效果: add:neili -300; apply+:attack; busy | 依赖: 无
 - [ ] `shenghuo-ling/xi` perform「吸焰令」 门槛: assign:ap=sword,dp=parry,skill=shenghuo-ling; var:skill<140; res:max_neili>=1500,neili>=300 | 效果: add:neili -100,neili -240; busy | 依赖: 无
 - [ ] `shenmen-jian/ci` perform「神门刺」 门槛: assign:ap=sword,dp=parry,skill=shenmen-jian; var:dp<1,skill<120; map:sword=shenmen-jian; res:neili>=200 | 效果: add:neili -120,neili -40; busy | 依赖: 无
-- [ ] `shenxing-baibian/piao` perform「虚无缥缈」 门槛: assign:skill=shenxing-baibian; var:skill<60; map:dodge=shenxing-baibian; res:neili>=60 | 效果: add:neili -100; temp:shenxing; apply+:dodge | 依赖: 无
+- [x] `shenxing-baibian/piao` perform「虚无缥缈」 门槛: assign:skill=shenxing-baibian; var:skill<60; map:dodge=shenxing-baibian; res:neili>=60 | 效果: add:neili -100; temp:shenxing; apply+:dodge | 依赖: 无
 - [ ] `shexing-lifan/guiyuan` perform「guiyuan」 门槛: level:dodge>=150,force>=150,shexing-lifan>=150; assign:skill=shexing-lifan; res:max_neili>=1000,neili>=250 | 效果: add:neili -200; temp:gui_yuan; busy | 依赖: 无
 - [ ] `shigu-bifa/shiyi` perform「诗意纵横」 门槛: level:force>=150; assign:skill=shigu-bifa; var:i<4,skill<120; map:dagger=shigu-bifa; res:neili>=200 | 效果: add:neili -80; busy | 依赖: 无
 - [ ] `shilin-jian/luo` perform「落英纷飞」 门槛: level:shilin-jian>=120; assign:ap=sword,dp=dodge; map:sword=shilin-jian; res:neili>=140 | 效果: apply+:attack; busy | 依赖: 无
@@ -248,7 +248,7 @@
 - [ ] `sun-finger/heal` perform「heal」 门槛: res:jing>=100,max_neili>=1500,neili>=1000,neili>=200 | 效果: add:neili -1000; set:jing=1,qi=1; busy | 依赖: 无
 - [ ] `suxin-jian/lian` perform「连环剑术」 门槛: level:dodge>=100,suxin-jian>=120; assign:ap=sword,dp=dodge; map:sword=suxin-jian; res:neili>=200 | 效果: apply+:attack; busy | 依赖: 无
 - [ ] `taiji-jian/chan` perform「缠字诀」 门槛: level:taiji-jian>=80; assign:level=taiji-jian; map:sword=taiji-jian; res:neili>=60 | 效果: add:neili -30; busy | 依赖: 无
-- [ ] `taiji-jian/sui` perform「随字诀」 门槛: level:taiji-jian>=60; assign:skill=taiji-jian; map:sword=taiji-jian; res:neili>=300 | 效果: add:neili -100; temp:tjj_sui; apply+:attack,defense; busy | 依赖: 无
+- [x] `taiji-jian/sui` perform「随字诀」 门槛: level:taiji-jian>=60; assign:skill=taiji-jian; map:sword=taiji-jian; res:neili>=300 | 效果: add:neili -100; temp:tjj_sui; apply+:attack,defense; busy | 依赖: 无
 - [ ] `taiji-jian/zhuan` perform「剑轮岚转」 门槛: level:taiji-jian>=160; assign:ap=sword,dp=parry; map:sword=taiji-jian; res:neili>=250 | 效果: apply+:attack; busy | 依赖: 无
 - [ ] `taixuan-gong/xuan` perform「太玄激劲」 门槛: level:force>=300,taixuan-gong>=240; assign:ap=taixuan-gong,dp=dodge,lvl=taixuan-gong; var:i<15; map:blade=taixuan-gong,sword=taixuan-gong,unarmed=taixuan-gong,unarmed=taixuan-gong; res:max_neili>=5000,neili>=800 | 效果: add:neili -600; apply+:attack; busy | 依赖: 无
 - [ ] `tangmen-throwing/biao` perform「biao」 门槛: — | 效果: busy | 依赖: 无
