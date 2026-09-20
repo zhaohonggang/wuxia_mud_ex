@@ -20,6 +20,7 @@ defmodule Kantele.Character.Combat do
   """
 
   alias Kantele.Character.Combat.Buff
+  alias Kantele.Character.Vitals
 
   defstruct enemies: [],
             busy: 0,
@@ -145,6 +146,21 @@ defmodule Kantele.Character.Combat do
     do: %{combat | busy: max(combat.busy, trunc(rounds))}
 
   def start_busy(%__MODULE__{} = combat, _rounds), do: combat
+
+  @doc "打断当前动作（对应 LPC interrupt_me/1）：忙乱清零"
+  def interrupt(%__MODULE__{} = combat), do: %{combat | busy: 0}
+
+  @doc "对目标造成气血伤害（受击方 vitals 扣 qi，不低于 0）"
+  def apply_damage(%__MODULE__{} = combat, damage) when damage >= 0 do
+    character = Process.get(:character)
+    if character do
+      vitals = character.meta.vitals
+      vitals = Vitals.damage(vitals, :qi, damage)
+      character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+      Process.put(:character, character)
+    end
+    combat
+  end
 
   @doc "打断当前动作（对应 LPC interrupt_me/1）：忙乱清零"
   def interrupt(%__MODULE__{} = combat), do: %{combat | busy: 0}

@@ -164,7 +164,8 @@ defmodule Kantele.Combat.Skills do
     "taiji-jian" => Kantele.Combat.Skills.TaijiJian,
     "tangmen-throwing" => Kantele.Combat.Skills.TangmenThrowing,
     "tiangang-zhi" => Kantele.Combat.Skills.TiangangZhi,
-    "sougu" => Kantele.Combat.Skills.Sougu
+    "sougu" => Kantele.Combat.Skills.Sougu,
+    "bagua-dao" => Kantele.Combat.Skills.BaguaDao
   }
 
   @doc "运行时注册一门武学（覆盖同名内建）"
