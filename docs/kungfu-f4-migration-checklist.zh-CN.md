@@ -302,12 +302,12 @@
 
 ## T3 攻击型 perform（do_damage，走目标侧结算）
 
-- [ ] `bagua-dao/mang` perform「劈天神芒」 门槛: level:bagua-dao>=140,force>=200,wai-bagua>=140; assign:ap=blade,dp=parry; map:blade=bagua-dao; res:neili>=200 | 效果: add:neili -150,neili -60; remote_damage; busy | 依赖: target-side 结算（通道已就绪）
+- [x] `bagua-dao/mang` perform「劈天神芒」 门槛: level:bagua-dao>=140,force>=200,wai-bagua>=140; assign:ap=blade,dp=parry; map:blade=bagua-dao; res:neili>=200 | 效果: add:neili -150,neili -60; remote_damage; busy | 依赖: target-side 结算（通道已就绪）
 - [ ] `bagua-dao/sha` perform「杀龙无悔」 门槛: level:bagua-dao>=180,force>=250; assign:ap=blade,dp=force; map:blade=bagua-dao; res:neili>=300 | 效果: add:neili -100,neili -200; remote_damage; busy | 依赖: target-side 结算（通道已就绪）
-- [ ] `baisheng-daofa/heng` perform「横扫千军」 门槛: level:baisheng-daofa>=150,force>=200; assign:ap=blade,dp=force; map:blade=baisheng-daofa; res:neili>=500 | 效果: add:neili -150,neili -350; remote_damage; busy | 依赖: target-side 结算（通道已就绪）
-- [ ] `baxian-jian/dian` perform「魁星点元」 门槛: level:baxian-jian>=100,force>=150; assign:ap=sword,dp=parry; map:sword=baxian-jian; res:neili>=0,neili>=250 | 效果: add:neili -150,neili -60; set:neili=0; remote_damage; busy | 依赖: target-side 结算（通道已就绪）
-- [ ] `bizhen-qingzhang/pengpai` perform「pengpai」 门槛: level:bizhen-qingzhang>=180,force>=300; assign:ap=strike,dp=parry; map:strike=bizhen-qingzhang; res:max_neili>=3000,neili>=500 | 效果: add:neili -200,neili -300; remote_damage; busy | 依赖: target-side 结算（通道已就绪）
-- [ ] `caiyan-gong/huan` perform「云霞幻生」 门槛: level:dodge>=180; assign:ap=club,dp=parry,skill=caiyan-gong; var:skill<120; map:club=caiyan-gong; res:neili>=200 | 效果: add:neili -50,neili -80; remote_damage; busy | 依赖: target-side 结算（通道已就绪）
+- [x] `baisheng-daofa/heng` perform「横扫千军」 门槛: level:baisheng-daofa>=150,force>=200; assign:ap=blade,dp=force; map:blade=baisheng-daofa; res:neili>=500 | 效果: add:neili -150,neili -350; remote_damage; busy | 依赖: target-side 结算（通道已就绪）
+- [x] `baxian-jian/dian` perform「魁星点元」 门槛: level:baxian-jian>=100,force>=150; assign:ap=sword,dp=parry; map:sword=baxian-jian; res:neili>=0,neili>=250 | 效果: add:neili -150,neili -60; set:neili=0; remote_damage; busy | 依赖: target-side 结算（通道已就绪）
+- [x] `bizhen-qingzhang/pengpai` perform「pengpai」 门槛: level:bizhen-qingzhang>=180,force>=300; assign:ap=strike,dp=parry; map:strike=bizhen-qingzhang; res:max_neili>=3000,neili>=500 | 效果: add:neili -200,neili -300; remote_damage; busy | 依赖: target-side 结算（通道已就绪）
+- [x] `caiyan-gong/huan` perform「云霞幻生」 门槛: level:dodge>=180; assign:ap=club,dp=parry,skill=caiyan-gong; var:skill<120; map:club=caiyan-gong; res:neili>=200 | 效果: add:neili -50,neili -80; remote_damage; busy | 依赖: target-side 结算（通道已就绪）
 - [ ] `canghong-bifa/jing` perform「惊虹一笔」 门槛: level:force>=150; assign:ap=dagger,dp=parry,skill=canghong-bifa; var:skill<100; map:dagger=canghong-bifa; res:neili>=500 | 效果: add:neili -200,neili -50; remote_damage; busy | 依赖: target-side 结算（通道已就绪）
 - [ ] `chanhun-suo/duo` perform「夺魂势」 门槛: level:chanhun-suo>=100,force>=130; assign:ap=whip,dp=force; map:whip=chanhun-suo; res:neili>=220 | 效果: add:neili -100,neili -180; remote_damage; busy | 依赖: target-side 结算（通道已就绪）
 - [x] `chuangwang-dao/xiong` perform「雄霸群山」 门槛: level:chuangwang-dao>=40,force>=60; assign:ap=blade,dp=parry; map:blade=chuangwang-dao; res:neili>=50 | 效果: add:neili -10,neili -30; remote_damage; busy | 依赖: target-side 结算（通道已就绪）

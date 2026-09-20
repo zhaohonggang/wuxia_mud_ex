@@ -1,6 +1,6 @@
 # Kantele F4 招式/内功批量迁移执行计划
 
-> 状态：Phase 1（T1）批次 1–14 完成 + HEAD 回归修复 + 清单同步（`0ac52ca`）；Phase 2 T2 批次 1（8 条）＋批次 2（6 条）实装完毕、测试全绿；Phase 3 T3 批次 1（6 条攻击型）＋批次 2（6 条攻击型）＋批次 3（6 条攻击型：`chuanxin-zhang/zhui`、`chuanyue-jian/hao`、`dagou-bang/ban`、`dagou-bang/chuo`、`dali-chu/hong`、`danding-dao/kou`）＋批次 4–14（各 6 条攻击型）实装完毕、测试全绿；全量 2887 测试绿（2026-09-20）；清单 204/644（T1 85/86、T2 26/193、T3 86/169、T5 1/184）
+> 状态：Phase 1（T1）批次 1–14 完成 + HEAD 回归修复 + 清单同步（`0ac52ca`）；Phase 2 T2 批次 1（8 条）＋批次 2（6 条）实装完毕、测试全绿；Phase 3 T3 批次 1（6 条攻击型）＋批次 2（6 条攻击型）＋批次 3（6 条攻击型：`chuanxin-zhang/zhui`、`chuanyue-jian/hao`、`dagou-bang/ban`、`dagou-bang/chuo`、`dali-chu/hong`、`danding-dao/kou`）＋批次 4（6 条攻击型：`bagua-dao/mang`、`baisheng-daofa/heng`、`baxian-jian/dian`、`bizhen-qingzhang/pengpai`、`caiyan-gong/huan`）＋批次 5–14（各 6 条攻击型）实装完毕、测试全绿；全量 2887 测试绿（2026-09-20）；清单 210/644（T1 85/86、T2 26/193、T3 92/169、T5 1/184）
 > 上游：`docs/kungfu-framework-build-plan.zh-CN.md`（F4 章节）
 > 数据清单：`docs/kungfu-f4-migration-checklist.zh-CN.md`（644 条）
 > 工具：`scripts/translate_perform.exs`、`scripts/f4_checklist.exs`
