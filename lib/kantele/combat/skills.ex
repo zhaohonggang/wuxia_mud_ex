@@ -130,7 +130,13 @@ defmodule Kantele.Combat.Skills do
     "heixue-shenzhen" => Kantele.Combat.Skills.HeixueShenzhen,
     "damo-jian" => Kantele.Combat.Skills.DamoJian,
     "jiandun-zhusuo" => Kantele.Combat.Skills.JiandunZhusuo,
-    "jingyue-bifa" => Kantele.Combat.Skills.JingyueBifa
+    "jingyue-bifa" => Kantele.Combat.Skills.JingyueBifa,
+    "baibian-daxue" => Kantele.Combat.Skills.BaibianDaxue,
+    "bingpo-shenzhen" => Kantele.Combat.Skills.BingpoShenzhen,
+    "hanxing-bada" => Kantele.Combat.Skills.HanxingBada,
+    "hexing-bifa" => Kantele.Combat.Skills.HexingBifa,
+    "jingang-quan" => Kantele.Combat.Skills.JingangQuan,
+    "jinguan-yusuo" => Kantele.Combat.Skills.JinguanYusuo
   }
 
   @doc "运行时注册一门武学（覆盖同名内建）"
