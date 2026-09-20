@@ -165,10 +165,12 @@
   批次 2（6 条自我 buff）已实装、
   `test/kantele/combat/t2_self_buffs_test.exs`（38 例）到顶、全量 **2887 绿**。
   Phase 3 T3 批次 1（6 条基础攻击：`chuangwang-dao/xiong`、`duanyun-fu/tiaoyan`、
-  `emei-jian/xian`、`hanmei-jian/leng`、`houquan/zhen`、`henshan-jian/huan`）已实装、
-  沿用 `perform-incoming`/`resolve_incoming` 目标侧结算样板。
-  校对清单 `docs/kungfu-f4-migration-checklist.zh-CN.md` 同步至 **120/644**
-  （T1 85/86、T2 26/193、T3 8/169、T5 1/184）；T1 仅剩 `beiming-shengong/shield`
+  `emei-jian/xian`、`hanmei-jian/leng`、`houquan/zhen`、`henshan-jian/huan`）＋
+  批次 2（6 条基础攻击：`kuimang-dao/pan`、`jueqing-jian/liu`、`qixing-jian/xing`、
+  `wudang-jian/sheng`、`liuhe-dao/shan`、`qingliang-jian/ming`）已实装、
+  沿用 `perform-incoming`/`resolve_incoming` 目标侧结算样板（4 sword、2 blade）。
+  校对清单 `docs/kungfu-f4-migration-checklist.zh-CN.md` 同步至 **126/644**
+  （T1 85/86、T2 26/193、T3 14/169、T5 1/184）；T1 仅剩 `beiming-shengong/shield`
   （批次 11 重写北冥功时去实现，见迁移计划批次 11）。
 - **待办**：按档校对 644 骨架的 `TODO(migrate)` 门槛/效果，逐批实装 + 测试锁定 + 提交。
 
