@@ -219,10 +219,11 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   差异：`force/roar` 房间广播简化为单次循环、`force/shot` 目标对抗与毒药系统、
   `force/tianmo` 永久属性改变与全技能加成、`force/xun` 传送/查找功能。
   测试覆盖 gate 与效果。
-- [x] 批次 11（8 条 force/* 差异项手写）：`biyun-xinfa` powerup；`beiming-shengong` suck（目标吸功）。
-  批次 12（8 个复杂差异项）：`huagong/hua`、`xixing/suck/sangong`、`zixia/ziqi`、
+- [x] 批次 11（`7a63c25`）：`biyun-xinfa` powerup（新增内功模块）；`beiming-shengong` suck
+  （目标吸功，攻击型目标侧）。全量 2490 绿。
+  批次 12（`649a425`）：8 个复杂差异项——`huagong/hua`、`xixing/suck/sangong`、`zixia/ziqi`、
   `hanbing/freezing`、`bingxin/freeze`、`sanku dispel/roar`；修复 bingxin valid_learn con 检查；
-  补充缺失 Powerup 模块。
+  补充缺失 Powerup 模块。全量 2490 绿。
 - [x] 批次 13（7 门招式武学）：`duanjia-jian`、`dagou-bang`、`riyue-bian`、`boyun-suowu`、
   `furong-jinzhen`、`fenglei-zifa`、`rouyun-steps`；skills.ex 注册；mix.exs extra_applications 加 :kalevala。
 - [x] 批次 13 后续重构（`883b8f9`，含本次修复）：`Simple` 解释器扩展（`{:custom, fun}` 效果、
