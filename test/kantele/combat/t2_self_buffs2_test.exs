@@ -112,13 +112,13 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
 
     test "perform_list 映射正确" do
       assert BanruoZhang.perform_list() == %{"feng" => Kantele.Combat.Skills.Performs.BanruoZhang.Feng}
-      assert LongxingJian.perform_list() == %{"xian" => Kantele.Combat.Skills.Performs.LongxingJian.Xian}
+      assert LongxingJian.perform_list() == %{"xian" => Kantele.Combat.Skills.Performs.LongxingJian.Xian, "kong" => Kantele.Combat.Skills.Performs.LongxingJian.Kong}
       assert RanmuDaofa.perform_list() == %{"zhenyan" => Kantele.Combat.Skills.Performs.RanmuDaofa.Zhenyan}
       assert RiyueLun.perform_list() == %{"yuan" => Kantele.Combat.Skills.Performs.RiyueLun.Yuan}
       assert ShenxingBaibian.perform_list() == %{
                "piao" => Kantele.Combat.Skills.Performs.ShenxingBaibian.Piao
              }
-      assert TaijiJian.perform_list() == %{"sui" => Kantele.Combat.Skills.Performs.TaijiJian.Sui}
+      assert TaijiJian.perform_list() == %{"sui" => Kantele.Combat.Skills.Performs.TaijiJian.Sui, "chan" => Kantele.Combat.Skills.Performs.TaijiJian.Chan, "zhuan" => Kantele.Combat.Skills.Performs.TaijiJian.Zhuan}
     end
   end
 

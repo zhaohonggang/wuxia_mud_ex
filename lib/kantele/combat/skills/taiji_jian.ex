@@ -9,8 +9,7 @@ defmodule Kantele.Combat.Skills.TaijiJian do
   差异（TODO(migrate)）：
   - LPC `valid_learn` 的 max_neili>=1500 门槛本版以 force>=200 代理
     （引擎 `valid_learn/1` 只拿 stats，无 vitals）；
-  - LPC 招式表与 `practice_skill` 未建模（`query_action` 返回空、
-    `practice_cost` 为 nil）。
+  - LPC 招式表与 `practice_skill` 未建模。
   """
 
   use Kantele.Combat.Skill
@@ -46,6 +45,10 @@ defmodule Kantele.Combat.Skills.TaijiJian do
 
   @impl true
   def perform_list() do
-    %{"sui" => Kantele.Combat.Skills.Performs.TaijiJian.Sui}
+    %{
+      "sui" => Kantele.Combat.Skills.Performs.TaijiJian.Sui,
+      "chan" => Kantele.Combat.Skills.Performs.TaijiJian.Chan,
+      "zhuan" => Kantele.Combat.Skills.Performs.TaijiJian.Zhuan
+    }
   end
 end
