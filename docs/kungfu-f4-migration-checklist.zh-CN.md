@@ -160,22 +160,22 @@
 - [x] `jingyue-bifa/ci` perform「残月刺」 门槛: level:jingyue-bifa>=30; assign:level=jingyue-bifa; map:dagger=jingyue-bifa; res:neili>=100 | 效果: add:neili -80; busy | 依赖: 无
 - [ ] `jingzhong-bafa/bafa` perform「bafa」 门槛: level:force>=300,jingzhong-bafa>=200; var:i<8; map:blade=jingzhong-bafa; res:neili>=500 | 效果: add:neili -150; apply+:attack; busy | 依赖: 无
 - [ ] `jinshe-jian/kun` perform「蛇困愁城」 门槛: assign:level=jinshe-jian; var:level<140; map:sword=jinshe-jian; res:neili>=200 | 效果: add:neili -140; busy | 依赖: 无
-- [ ] `jinshe-jian/wan` perform「蛇影万道」 门槛: level:jinshe-jian>=180; assign:ap=sword,dp=dodge; map:sword=jinshe-jian; res:neili>=260 | 效果: apply+:attack,damage; busy | 依赖: 无
+- [x] `jinshe-jian/wan` perform「蛇影万道」 门槛: level:jinshe-jian>=180; assign:ap=sword,dp=dodge; map:sword=jinshe-jian; res:neili>=260 | 效果: apply+:attack,damage; busy | 依赖: 无
 - [ ] `jinshe-zhui/feng` perform「截脉封穴」 门槛: level:force>=150; assign:ap=throwing,dp=force,skill=jinshe-zhui; var:skill<100; map:throwing=jinshe-zhui; res:neili>=500 | 效果: add:neili -200,neili -50; apply+:armor,damage,defense,dodge,force,parry; busy | 依赖: 无
-- [ ] `jinshe-zhui/tuwu` perform「tuwu」 门槛: level:jinshe-zhui>=100; assign:skill=jinshe-zhui; res:neili>=300 | 效果: add:neili -200 | 依赖: 无
+- [x] `jinshe-zhui/tuwu` perform「tuwu」 门槛: level:jinshe-zhui>=100; assign:skill=jinshe-zhui; res:neili>=300 | 效果: add:neili -200 | 依赖: 无
 - [x] `jinzhong-zhao/zhao` perform「zhao」 门槛: level:jinzhong-zhao>=150; assign:skill=force; res:neili>=400 | 效果: add:neili -300; temp:jinzhongzhao; apply+:armor,force; busy | 依赖: 无
-- [ ] `jiuqu-jian/wan` perform「九曲十八弯」 门槛: level:jiuqu-jian>=100; assign:ap=sword,dp=dodge; map:sword=jiuqu-jian; res:neili>=300 | 效果: busy | 依赖: 无
+- [x] `jiuqu-jian/wan` perform「九曲十八弯」 门槛: level:jiuqu-jian>=100; assign:ap=sword,dp=dodge; map:sword=jiuqu-jian; res:neili>=300 | 效果: busy | 依赖: 无
 - [x] `kuangfeng-jian/sao` perform「风扫落叶」 门槛: level:dodge>=100,kuangfeng-jian>=100; assign:count=kuangfeng-jian; var:i<6; map:sword=kuangfeng-jian; res:neili>=180 | 效果: add:neili -150; apply+:attack; busy | 依赖: 无
-- [ ] `kunlun-qifa/liu` perform「流星电闪」 门槛: level:force>=200,kunlun-qifa>=120; assign:skill=kunlun-qifa; res:neili>=150 | 效果: add:neili -100; busy | 依赖: 无
+- [x] `kunlun-qifa/liu` perform「流星电闪」 门槛: level:force>=200,kunlun-qifa>=120; assign:skill=kunlun-qifa; res:neili>=150 | 效果: add:neili -100; busy | 依赖: 无
 - [ ] `lanhua-shou/fei` perform「影落飞花」 门槛: level:lanhua-shou>=140; assign:lvl=lanhua-shou; var:i<6; map:hand=lanhua-shou; res:neili>=300 | 效果: add:neili -150; temp:action_flag; apply+:attack; busy | 依赖: 无
 - [ ] `leiming-bian/cibei` perform「cibei」 门槛: assign:at=leiming-bian,df=dodge,extra=leiming-bian,extra=leiming-bian,lmt=leiming-bian,skill=buddhism; var:extra<160,lmt<3,skill<150; res:neili>=1500,shen>=200000 | 效果: add:neili -200,neili -300; apply+:attack,damage; busy | 依赖: 无
 - [x] `lingbo-weibu/ling` perform「洛神凌波」 门槛: level:lingbo-weibu>=120; assign:level=lingbo-weibu; res:neili>=600 | 效果: add:neili -400; temp:lingbo; busy | 依赖: 无
-- [ ] `lingshe-zhangfa/chan` perform「chan」 门槛: level:force>=80,staff>=80; assign:ap=staff,dp=dodge | 效果: busy | 依赖: 无
+- [x] `lingshe-zhangfa/chan` perform「chan」 门槛: level:force>=80,staff>=80; assign:ap=staff,dp=dodge | 效果: busy | 依赖: 无
 - [ ] `lingshe-zhangfa/qianshe` perform「qianshe」 门槛: level:force>=150,lingshe-zhangfa>=120; assign:lvl=lingshe-zhangfa; var:i<5; map:staff=lingshe-zhangfa; res:neili>=100 | 效果: add:neili -100; apply+:attack; busy | 依赖: 无
 - [ ] `liuyue-jian/sheng` perform「天升剑诀」 门槛: level:force>=200,liuyue-jian>=140; var:i<6; map:sword=liuyue-jian; res:neili>=300 | 效果: add:neili -100; busy | 依赖: 无
 - [ ] `lonely-sword/jue` perform「jue」 门槛: assign:skill=lonely-sword; var:jing_cost<30,skill<20; res:neili>=50 | 效果: busy | 依赖: 无
 - [ ] `lonely-sword/po` perform「po」 门槛: assign:ap=sword,skill=lonely-sword,ss=lonely-sword,ss=never-defeated,ss=pixie-jian; var:skill<50 | 效果: busy | 依赖: 无
-- [ ] `longcheng-shendao/feng` perform「风雨交加」 门槛: level:force>=150,longcheng-shendao>=120; assign:ap=blade,dp=dodge; map:blade=longcheng-shendao; res:neili>=270 | 效果: busy | 依赖: 无
+- [x] `longcheng-shendao/feng` perform「风雨交加」 门槛: level:force>=150,longcheng-shendao>=120; assign:ap=blade,dp=dodge; map:blade=longcheng-shendao; res:neili>=270 | 效果: busy | 依赖: 无
 - [ ] `longcheng-shendao/fengyu` perform「fengyu」 门槛: level:force>=150,longcheng-shendao>=120; assign:lvl=longcheng-shendao; var:i<5; res:neili>=270 | 效果: add:neili -120; apply+:attack; busy | 依赖: 无
 - [ ] `longxing-jian/kong` perform「金龙疾空」 门槛: level:longxing-jian>=160; assign:ap=sword,dp=parry; map:sword=longxing-jian; res:neili>=250 | 效果: apply+:attack; busy | 依赖: 无
 - [x] `longxing-jian/xian` perform「xian」 门槛: level:buddhism>=150,longxing-jian>=150; assign:skill=force; res:neili>=300 | 效果: add:neili -100; apply+:attack,dodge,parry; busy | 依赖: 无
