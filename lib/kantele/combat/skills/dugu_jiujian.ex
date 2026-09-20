@@ -351,6 +351,14 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
   @impl true
   def hit_ob(attacker, _victim, _action), do: %{}
 
+  @impl true
+  def perform_list() do
+    %{
+      "qi" => Kantele.Combat.Skills.Performs.DuguJiujian.Qi,
+      "yi" => Kantele.Combat.Skills.Performs.DuguJiujian.Yi
+    }
+  end
+
   defp random(res) when res < 1, do: 0
   defp random(res), do: :rand.uniform(res)
 end

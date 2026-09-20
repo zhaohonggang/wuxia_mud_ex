@@ -193,8 +193,8 @@
   批次 14（6 条基础攻击：`qiulin-shiye/wu`、`sun-finger/dian`、
   `taiji-jian/zhuan`、`tangmen-throwing/biao`、`tiangang-zhi/ling`、`sougu/muyeyingyang`）已实装、
   沿用 `perform-incoming`/`resolve_incoming` 目标侧结算样板（32 sword、6 blade、2 club、3 staff、6 whip、1 strike、1 hand、6 throwing、2 cuff、1 finger、1 dagger、1 force、1 hammer）。
-校对清单 `docs/kungfu-f4-migration-checklist.zh-CN.md` 同步至 **210/644**
-   （T1 85/86、T2 26/193、T3 92/169、T5 1/184）；T1 仅剩 `beiming-shengong/shield`
+校对清单 `docs/kungfu-f4-migration-checklist.zh-CN.md` 同步至 **218/644**
+   （T1 85/86、T2 26/193、T3 100/169、T5 1/184）；T1 仅剩 `beiming-shengong/shield`
   （批次 11 重写北冥功时去实现，见迁移计划批次 11）。
 - **待办**：按档校对 644 骨架的 `TODO(migrate)` 门槛/效果，逐批实装 + 测试锁定 + 提交。
 
