@@ -175,10 +175,12 @@
   批次 5（6 条基础攻击：`qiankun-jian/qian`、`quanzhen-jian/ding`、
   `raozhi-roujian/chuan`、`ruanhong-zhusuo/teng`、`sanhua-zhang/san`、`qianye-shou/qianye`）＋
   批次 6（6 条基础攻击：`bagua-biao/zhi`、`chanhun-suo/suo`、
-  `dacheng-fosuo/chanrao`、`guxing-jian/lian`、`hansha-sheying/zhen`、`jinbiao-jue/huan`）已实装、
-  沿用 `perform-incoming`/`resolve_incoming` 目标侧结算样板（16 sword、5 blade、2 club、1 staff、3 whip、1 strike、1 hand、5 throwing、2 cuff）。
-  校对清单 `docs/kungfu-f4-migration-checklist.zh-CN.md` 同步至 **150/644**
-  （T1 85/86、T2 26/193、T3 38/169、T5 1/184）；T1 仅剩 `beiming-shengong/shield`
+  `dacheng-fosuo/chanrao`、`guxing-jian/lian`、`hansha-sheying/zhen`、`jinbiao-jue/huan`）＋
+  批次 7（6 条基础攻击：`duoming-jinhua/hua`、`feixing-shu/hua`、
+  `heixue-shenzhen/luo`、`damo-jian/sanjue`、`jiandun-zhusuo/fu`、`jingyue-bifa/ci`）已实装、
+  沿用 `perform-incoming`/`resolve_incoming` 目标侧结算样板（18 sword、5 blade、2 club、1 staff、3 whip、1 strike、1 hand、5 throwing、2 cuff、1 dagger）。
+  校对清单 `docs/kungfu-f4-migration-checklist.zh-CN.md` 同步至 **156/644**
+  （T1 85/86、T2 26/193、T3 44/169、T5 1/184）；T1 仅剩 `beiming-shengong/shield`
   （批次 11 重写北冥功时去实现，见迁移计划批次 11）。
 - **待办**：按档校对 644 骨架的 `TODO(migrate)` 门槛/效果，逐批实装 + 测试锁定 + 提交。
 

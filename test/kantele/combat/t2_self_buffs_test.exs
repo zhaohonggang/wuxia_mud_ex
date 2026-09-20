@@ -290,7 +290,7 @@ defmodule Kantele.Combat.T2SelfBuffsTest do
 
     test "未激发达摩剑被拒" do
       conn = perform([skills: %{"damo-jian" => 220, "force" => 100}], "damo-jian", "qingxin", "sword")
-      assert output_text(conn) =~ "没有激发达摩剑法"
+      assert output_text(conn) =~ "没有激发达摩剑法，无法使用"
     end
 
     test "成功：扣 200 内力忙乱 1 并投递目标侧事件" do
