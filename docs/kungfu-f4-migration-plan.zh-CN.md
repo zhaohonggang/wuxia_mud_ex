@@ -1,6 +1,6 @@
 # Kantele F4 招式/内功批量迁移执行计划
 
-> 状态：Phase 1（T1）批次 1–13 完成 + HEAD 回归修复，全量 2769 测试绿（2026-09-19）
+> 状态：Phase 1（T1）批次 1–13 完成 + HEAD 回归修复 + 清单同步（`0ac52ca`），全量 2769 测试绿（2026-09-19）；清单 95/644（T1 80/86、T2 12/193、T3 2/169、T5 1/184）
 > 上游：`docs/kungfu-framework-build-plan.zh-CN.md`（F4 章节）
 > 数据清单：`docs/kungfu-f4-migration-checklist.zh-CN.md`（644 条）
 > 工具：`scripts/translate_perform.exs`、`scripts/f4_checklist.exs`
@@ -220,7 +220,8 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   `force/tianmo` 永久属性改变与全技能加成、`force/xun` 传送/查找功能。
   测试覆盖 gate 与效果。
 - [x] 批次 11（`7a63c25`）：`biyun-xinfa` powerup（新增内功模块）；`beiming-shengong` suck
-  （目标吸功，攻击型目标侧）。全量 2490 绿。
+  （目标吸功，攻击型目标侧）。差异：本批重写北冥功时**去掉了批次 1 的 `shield`**（exert_list
+  变为 powerup+suck），清单 `beiming-shengong/shield` 已同步去勾（`0ac52ca`）。全量 2490 绿。
   批次 12（`649a425`）：8 个复杂差异项——`huagong/hua`、`xixing/suck/sangong`、`zixia/ziqi`、
   `hanbing/freezing`、`bingxin/freeze`、`sanku dispel/roar`；修复 bingxin valid_learn con 检查；
   补充缺失 Powerup 模块。全量 2490 绿。
@@ -248,6 +249,13 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
     `nil or nil` BadBooleanError → 默认 false
   - 门槛测试补战斗目标（check_target 前置）、attacker 补 meta/数值、`attacker_force` 走 data 传递等测试同步
 - [x] 每批补 `exert` 命令回归（含 force fallback）。
+- [x] 清单同步（`0ac52ca`）：批次 13 的招式武学实际实现的是 perform（非 T1 exert），破冰
+  T2/T3/T5——勾选 15 项（`huashan-jian/jie`、`chousui-zhang/dan`、`dagou-bang/{chan,feng,tian}`、
+  `duanjia-jian/{jing,lian}`、`riyue-bian/{chan,he,shang}`、`boyun-suowu/{dian,meng}`、
+  `furong-jinzhen/xian`、`fenglei-zifa/she`、`rouyun-steps/zong`）；`beiming-shengong/shield`
+  无实现去勾（见批次 11）。遗留：清单 `longxiang/powerup`、`longxiang/shield` 用 `longxiang`
+  而代码注册 `longxiang-gong`（LPC 中 `longxiang` 与 `longxiang-gong` 两目录并存、各有
+  powerup/shield），留待批次 8 复盘归属。
 
 ### Phase 2 — T2 无目标 perform（193）
 
