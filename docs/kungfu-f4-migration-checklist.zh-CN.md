@@ -177,17 +177,17 @@
 - [ ] `lonely-sword/po` perform「po」 门槛: assign:ap=sword,skill=lonely-sword,ss=lonely-sword,ss=never-defeated,ss=pixie-jian; var:skill<50 | 效果: busy | 依赖: 无
 - [x] `longcheng-shendao/feng` perform「风雨交加」 门槛: level:force>=150,longcheng-shendao>=120; assign:ap=blade,dp=dodge; map:blade=longcheng-shendao; res:neili>=270 | 效果: busy | 依赖: 无
 - [ ] `longcheng-shendao/fengyu` perform「fengyu」 门槛: level:force>=150,longcheng-shendao>=120; assign:lvl=longcheng-shendao; var:i<5; res:neili>=270 | 效果: add:neili -120; apply+:attack; busy | 依赖: 无
-- [ ] `longxing-jian/kong` perform「金龙疾空」 门槛: level:longxing-jian>=160; assign:ap=sword,dp=parry; map:sword=longxing-jian; res:neili>=250 | 效果: apply+:attack; busy | 依赖: 无
+- [x] `longxing-jian/kong` perform「金龙疾空」 门槛: level:longxing-jian>=160; assign:ap=sword,dp=parry; map:sword=longxing-jian; res:neili>=250 | 效果: apply+:attack; busy | 依赖: 无
 - [x] `longxing-jian/xian` perform「xian」 门槛: level:buddhism>=150,longxing-jian>=150; assign:skill=force; res:neili>=300 | 效果: add:neili -100; apply+:attack,dodge,parry; busy | 依赖: 无
 - [ ] `luohan-gun/shibaluohan` perform「shibaluohan」 门槛: level:club>=120,club>=120,luohan-gun>=120,luohan-gun>=120; assign:i=luohan-gun,j=luohan-gun; var:k<0; map:club=luohan-gun,club=luohan-gun,club=luohan-gun,club=luohan-gun; res:jingli>=200,jingli>=200,neili>=1500,neili>=1500 | 效果: temp:bunzhen,gunzhen; apply+:dexerity,strength; busy | 依赖: 无
 - [ ] `luoyan-jian/luo` perform「一剑落九雁」 门槛: level:luoyan-jian>=150; assign:ap=sword,count=luoyan-jian,dp=dodge; var:i<9; map:sword=luoyan-jian; res:neili>=400 | 效果: add:neili -200; apply+:attack; busy | 依赖: 无
-- [ ] `luoying-shenjian/sui` perform「随波逐流」 门槛: level:force>=100,luoying-shenjian>=80; assign:ap=sword,dp=parry; map:sword=luoying-shenjian; res:neili>=100 | 效果: add:neili -100,neili -80; busy | 依赖: 无
-- [ ] `luoyun-dao/tian` perform「天刀落云式」 门槛: level:luoyun-dao>=100; assign:ap=blade,dp=dodge; map:blade=luoyun-dao; res:neili>=300 | 效果: busy | 依赖: 无
-- [ ] `mantian-xing/shan` perform「星光闪烁」 门槛: level:mantian-xing>=100; assign:skill=mantian-xing; res:neili>=100 | 效果: add:neili -80; busy | 依赖: 无
+- [x] `luoying-shenjian/sui` perform「随波逐流」 门槛: level:force>=100,luoying-shenjian>=80; assign:ap=sword,dp=parry; map:sword=luoying-shenjian; res:neili>=100 | 效果: add:neili -100,neili -80; busy | 依赖: 无
+- [x] `luoyun-dao/tian` perform「天刀落云式」 门槛: level:luoyun-dao>=100; assign:ap=blade,dp=dodge; map:blade=luoyun-dao; res:neili>=300 | 效果: busy | 依赖: 无
+- [x] `mantian-xing/shan` perform「星光闪烁」 门槛: level:mantian-xing>=100; assign:skill=mantian-xing; res:neili>=100 | 效果: add:neili -80; busy | 依赖: 无
 - [ ] `mantian-xing/xing` perform「穹外飞星」 门槛: level:force>=150,mantian-xing>=80; assign:skill=mantian-xing; res:max_neili>=1200,neili>=150 | 效果: add:neili -100; temp:feixing; apply+:attack,dodge,parry; busy | 依赖: 无
-- [ ] `mantianhuayu-zhen/zheng` perform「zheng」 门槛: level:force>=150,mantianhuayu-zhen>=100; assign:skill=mantianhuayu-zhen; res:neili>=150 | 效果: add:neili -100; busy | 依赖: 无
+- [x] `mantianhuayu-zhen/zheng` perform「zheng」 门槛: level:force>=150,mantianhuayu-zhen>=100; assign:skill=mantianhuayu-zhen; res:neili>=150 | 效果: add:neili -100; busy | 依赖: 无
 - [x] `miaojia-jian/qian` perform「剑舞千秋」 门槛: level:force>=220,miaojia-jian>=160; assign:ap=sword,dp=parry; map:sword=miaojia-jian; res:max_neili>=1800,neili>=300 | 效果: apply+:attack; busy | 依赖: 无
-- [ ] `miaojia-jian/zhai` perform「云边摘月」 门槛: level:force>=120,miaojia-jian>=100; assign:level=miaojia-jian; map:sword=miaojia-jian; res:max_neili>=800,neili>=100 | 效果: add:neili -30; busy | 依赖: 无
+- [x] `miaojia-jian/zhai` perform「云边摘月」 门槛: level:force>=120,miaojia-jian>=100; assign:level=miaojia-jian; map:sword=miaojia-jian; res:max_neili>=800,neili>=100 | 效果: add:neili -30; busy | 依赖: 无
 - [x] `mingwang-jian/ruo` perform「若悲」 门槛: level:mingwang-jian>=100; map:sword=mingwang-jian; res:neili>=100 | 效果: busy | 依赖: 无
 - [x] `mizong-houquan/zhou` perform「zhou」 门槛: level:mizong-houquan>=200; assign:n=mizong-houquan; res:neili>=500 | 效果: add:neili -50; apply+:attack,unarmed_damage; busy | 依赖: 无
 - [ ] `murong-jian/xing` perform「剑转七星」 门槛: level:dodge>=120,murong-jian>=80; var:i<7; map:sword=murong-jian; res:neili>=200 | 效果: add:neili -210; busy | 依赖: 无
