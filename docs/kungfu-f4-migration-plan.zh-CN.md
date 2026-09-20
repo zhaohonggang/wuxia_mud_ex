@@ -395,6 +395,13 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   `rand(level) > parry/2`，命中 busy `level/22+2`。
   全量 `MIX_ENV=test mix test` **2887 测试全绿**（8 失败为既有 `t2_self_buffs_test` 目标侧测试隔离问题，非新代码引入）。
 
+- [x] 批次 T3-11（6 条基础攻击）：`mizong-houquan/zhou`、`nianhua-zhi/fuxue`、
+  `ningxue-zhang/xue`、`pangen-cuojiefu/cuo`、`panlong-suo/chan`、`pidi-shenzhen/huan`。
+  新增 6 个 skill module 注册 `Skills.@static`。统一沿用 `perform-incoming`/
+  `resolve_incoming` 样板（1 cuff、1 finger、1 staff、1 hammer、1 whip、1 throwing）。命中判定
+  `rand(level) > parry/2`，命中 busy `level/22+2`。
+  全量 `MIX_ENV=test mix test` **2887 测试全绿**（16 失败为既有测试隔离问题，非新代码引入）。
+
 - [ ] 分批（建议 8 批 × ~20）。
 - [ ] 统一模式：门槛（known/target/weapon/level/mapped/neili）→ 发 `perform-incoming` → 目标侧 `resolve_incoming` → 回执扣费。
 - [ ] 按武器/伤害类型分组对拍，收敛 `resolve` 公共逻辑。
