@@ -1,6 +1,6 @@
 # Kantele F4 招式/内功批量迁移执行计划
 
-> 状态：Phase 1（T1）批次 1–13 完成 + HEAD 回归修复 + 清单同步（`0ac52ca`），全量 2769 测试绿（2026-09-19）；清单 95/644（T1 80/86、T2 12/193、T3 2/169、T5 1/184）
+> 状态：Phase 1（T1）批次 1–14 完成 + HEAD 回归修复 + 清单同步（`0ac52ca`），全量 2809 测试绿（2026-09-20）；清单 100/644（T1 85/86、T2 12/193、T3 2/169、T5 1/184）
 > 上游：`docs/kungfu-framework-build-plan.zh-CN.md`（F4 章节）
 > 数据清单：`docs/kungfu-f4-migration-checklist.zh-CN.md`（644 条）
 > 工具：`scripts/translate_perform.exs`、`scripts/f4_checklist.exs`
@@ -256,6 +256,28 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   无实现去勾（见批次 11）。遗留：清单 `longxiang/powerup`、`longxiang/shield` 用 `longxiang`
   而代码注册 `longxiang-gong`（LPC 中 `longxiang` 与 `longxiang-gong` 两目录并存、各有
   powerup/shield），留待批次 8 复盘归属。
+- [x] 批次 14（5 条，T1 收尾末批）：`lingyuan-xinfa/break`、`surge-force/roar`、
+  `taiji-shengong/dian`、`xiuluo-yinshagong/suck`、`yijinjing/tong`。
+  新增内功 module `lingyuan-xinfa`（纯学不可练、basic force>=10 门槛）并注册 `Skills.@static`；
+  其余 4 门在既有 exert_list 补挂手写子模块。共同点：均为**目标侧结算** exert（target 取自
+  `combat.enemies`，走 `perform-incoming` → `resolve_incoming/4` → `perform-feedback` 回执），
+  新增 `test/kantele/combat/t1_tail_test.exs`（40 例）。差异（逐条记 TODO(migrate) 于模块）：
+  - `break` 以柔破钢：LPC 目标无兵刃/尸体通知写回攻击方，改由攻击方预读目标快照前置拒绝
+    （瘦引用无 meta 放行、目标侧再弃）；震落只卸 `:weapon` 槽，不生成房间掉落物；判定按
+    `random(att_exp) > div(t_exp,3)`（LPC 同式）。
+  - `roar` 黯然吟：房间 AOE 简化为对 enemies 逐发（同 `force/roar`）；`want_kill`/`fight_ob`
+    敌对建立未建模；`die_guard` 在目标侧按 session `conditions` 跳过；本批顺手修复草稿期
+    `resolve_incoming` 的失效分支（busy gate 带 `and false`、die_guard 返回值未回传）。
+  - `dian` 鹤嘴劲点龙跃窍：非战斗 + enemies 取目标 ⇒ 攻击方成功路径引擎内不可达（同
+    `force/lifeheal`，文档化）；目标侧按 LPC `receive_curing` 只抬 eff（当前 qi/jing 保持，
+    归零才置 1）、target busy 2；`can_perform` 门控经 `perform_known` gate。
+  - `suck` 取毒液练药：`is_worm` 宿主与 `clone/misc/chongdu` 药丸未建模 ⇒ 目标需快照携带
+    `worm_poison` 方触发，药丸仅文案不入背包，`improve_skill` 历练未建模；门槛（wudu-qishu/
+    xiuluo-yinshagong>=100、neili>=200）实装。
+  - `tong` 易筋通脉：声明式 `Simple`（`spec: :local`）+ `{:custom, fun}` gates/effects——
+    ratio=`max_qi*100/base_qi` 判 10%..80% 两端，`neili>=skill*5`，耗 `skill*4`、
+    **永久扣 max_neili `skill/4`**、eff_qi 回复 `skill*8` 封顶 base、qi=eff_qi；战斗中 busy 4。
+  全量 `MIX_ENV=test mix test` **2809 测试全绿**（批次 13 后 2769 → +40）。
 
 ### Phase 2 — T2 无目标 perform（193）
 

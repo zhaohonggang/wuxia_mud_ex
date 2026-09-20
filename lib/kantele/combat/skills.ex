@@ -60,6 +60,7 @@ defmodule Kantele.Combat.Skills do
     "linji-zhuang" => Kantele.Combat.Skills.LinjiZhuang,
     "zihui-xinfa" => Kantele.Combat.Skills.ZihuiXinfa,
     "biyun-xinfa" => Kantele.Combat.Skills.BiyunXinfa,
+    "lingyuan-xinfa" => Kantele.Combat.Skills.LingyuanXinfa,
     "beiming-shengong" => Kantele.Combat.Skills.BeimingShengong,
     "luohan-fumogong" => Kantele.Combat.Skills.LuohanFumogong,
     "sanku-shengong" => Kantele.Combat.Skills.SankuShengong,
