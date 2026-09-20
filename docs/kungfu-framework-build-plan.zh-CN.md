@@ -167,10 +167,12 @@
   Phase 3 T3 批次 1（6 条基础攻击：`chuangwang-dao/xiong`、`duanyun-fu/tiaoyan`、
   `emei-jian/xian`、`hanmei-jian/leng`、`houquan/zhen`、`henshan-jian/huan`）＋
   批次 2（6 条基础攻击：`kuimang-dao/pan`、`jueqing-jian/liu`、`qixing-jian/xing`、
-  `wudang-jian/sheng`、`liuhe-dao/shan`、`qingliang-jian/ming`）已实装、
-  沿用 `perform-incoming`/`resolve_incoming` 目标侧结算样板（4 sword、2 blade）。
-  校对清单 `docs/kungfu-f4-migration-checklist.zh-CN.md` 同步至 **126/644**
-  （T1 85/86、T2 26/193、T3 14/169、T5 1/184）；T1 仅剩 `beiming-shengong/shield`
+  `wudang-jian/sheng`、`liuhe-dao/shan`、`qingliang-jian/ming`）＋
+  批次 3（6 条基础攻击：`hanwang-qingdao/ying`、`qishi-ji/juan`、
+  `suqin-beijian/can`、`xiyang-jian/ci`、`shangjia-dao/juan`、`luohan-quan/xiangmo`）已实装、
+  沿用 `perform-incoming`/`resolve_incoming` 目标侧结算样板（7 sword、4 blade、1 club、2 cuff）。
+  校对清单 `docs/kungfu-f4-migration-checklist.zh-CN.md` 同步至 **132/644**
+  （T1 85/86、T2 26/193、T3 20/169、T5 1/184）；T1 仅剩 `beiming-shengong/shield`
   （批次 11 重写北冥功时去实现，见迁移计划批次 11）。
 - **待办**：按档校对 644 骨架的 `TODO(migrate)` 门槛/效果，逐批实装 + 测试锁定 + 提交。
 
