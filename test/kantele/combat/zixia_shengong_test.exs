@@ -228,9 +228,7 @@ defmodule Kantele.Combat.ZixiaShengongTest do
 
       buff = Enum.find(updated.meta.combat.buffs, &(&1.key == "ziqi"))
       assert buff.applies == %{damage: -20, sword: -20}
-
-      # Simulate buff expire
-      assert_receive %Kalevala.Event{topic: "combat/buff-expire", data: %{key: "ziqi"}}, 1500
+      # duration = skill 200 秒，到期投递逻辑由 Simple.schedule_expire 覆盖（simple_test）
     end
   end
 end

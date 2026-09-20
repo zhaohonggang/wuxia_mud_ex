@@ -1,6 +1,6 @@
 # Kantele F4 招式/内功批量迁移执行计划
 
-> 状态：草案（待拍板架构决策项 D1–D7）
+> 状态：Phase 1（T1）批次 1–13 完成 + HEAD 回归修复，全量 2769 测试绿（2026-09-19）
 > 上游：`docs/kungfu-framework-build-plan.zh-CN.md`（F4 章节）
 > 数据清单：`docs/kungfu-f4-migration-checklist.zh-CN.md`（644 条）
 > 工具：`scripts/translate_perform.exs`、`scripts/f4_checklist.exs`
@@ -219,8 +219,34 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   差异：`force/roar` 房间广播简化为单次循环、`force/shot` 目标对抗与毒药系统、
   `force/tianmo` 永久属性改变与全技能加成、`force/xun` 传送/查找功能。
   测试覆盖 gate 与效果。
-- [ ] 批次 11：余下差异项（`suck`/`freeze`/`dispel`/`heal`/`regenerate` 等带吸取/条件分支，手写）。
-- [ ] 每批补 `exert` 命令回归（含 force fallback）。
+- [x] 批次 11（8 条 force/* 差异项手写）：`biyun-xinfa` powerup；`beiming-shengong` suck（目标吸功）。
+  批次 12（8 个复杂差异项）：`huagong/hua`、`xixing/suck/sangong`、`zixia/ziqi`、
+  `hanbing/freezing`、`bingxin/freeze`、`sanku dispel/roar`；修复 bingxin valid_learn con 检查；
+  补充缺失 Powerup 模块。
+- [x] 批次 13（7 门招式武学）：`duanjia-jian`、`dagou-bang`、`riyue-bian`、`boyun-suowu`、
+  `furong-jinzhen`、`fenglei-zifa`、`rouyun-steps`；skills.ex 注册；mix.exs extra_applications 加 :kalevala。
+- [x] 批次 13 后续重构（`883b8f9`，含本次修复）：`Simple` 解释器扩展（`{:custom, fun}` 效果、
+  `spec: :local` 模式、`run/4` 注入 target）；`combat_event.perform_feedback` 完整数据版
+  （`gain_neili/gain_qi/gain_jing/gain_max_neili`）；`Performs.lookup` 同时反查 perform/exert 列表
+  （修复 exert 型目标侧——`sanku/roar` 目标侧结算无法分派）。
+- [x] **HEAD 回归修复**（本次提交）：全量测试从 31 失败/编译错误修复到 2769 全绿。修复清单：
+  - `vitals.alive?` 点取不存在键（beiming/huagong/xixing/bingxin/sanku 共 5 处）→ 改用 `combat.dead`
+  - `resolve_incoming` 尾返回原始 conn（bingxin/beiming/xixing/huagong，if/else 内 re-assign 未回传）→ 各分支返回 conn
+  - `character.room.no_fight` / `meta.equipped` 读错位置（equipped 在 `meta.combat.equipped`）→ 修正
+  - `Simple.gate/2` 无 nil 子句（自定义 gate 返回 nil 时 FunctionClauseError）→ 补 nil 兜底
+  - `not nil` 崩（Elixir 1.11 `not` 严格布尔）→ 改 `is_nil` / 加括号（`buffs |> Enum.any?` 管道优先级）
+  - `sanku_shengong.ex` 三对重复模块定义（合并冲突产物，旧手写版覆盖新声明式版致 Dispel/Roar 无 run）→ 清理保留声明式版
+  - conditions 状态实际存 conn session（`condition_event.ex` 契约）而非 `PlayerMeta` → dispel/sangong 改为读写 session；
+    `Simple.apply_spec` 支持 custom 效果携带 conn session 变更
+  - exert 型 `gate_self_only`（`ctx.target == ctx.character` 在 exert 下恒 false）→ 删除（hanbing-freezing/sangong）
+  - `max_neili_limit` 点取（Stats 无此字段）→ `Map.get` 兜底
+  - `check_not_taixuan` 读 `mapped.force`（原子键/空 map 点取崩）→ `Map.get(mapped, "force")`
+  - `force_shot`：`meta.inventory` → `character.inventory`；`du.item.name`（ItemNotLoaded 无 name）→ `Map.get`；
+    `if` 内 re-assign combat 不生效 → 表达式赋回；`item.meta.amount and ...`（非布尔左值）→ `is_integer`
+  - `force_roar` 目标侧 `unconscious: true`（Vitals 无此键）→ 昏迷以 jing=1 表达；`gate_room_ok` 的
+    `nil or nil` BadBooleanError → 默认 false
+  - 门槛测试补战斗目标（check_target 前置）、attacker 补 meta/数值、`attacker_force` 走 data 传递等测试同步
+- [x] 每批补 `exert` 命令回归（含 force fallback）。
 
 ### Phase 2 — T2 无目标 perform（193）
 

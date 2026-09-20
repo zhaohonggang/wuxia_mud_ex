@@ -16,7 +16,9 @@ defmodule Kantele.Combat.HanbingZhenqiTest do
   @room "test:room"
 
   defp build_character(opts) do
-    stats = struct(Stats.new(), Keyword.take(opts, [:skills, :mapped, :performs]))
+    stats =
+      struct(Stats.new(), Keyword.take(opts, [:skills, :mapped, :performs]))
+      |> Map.put(:con, Keyword.get(opts, :con, 34))
 
     %Kalevala.Character{
       id: "player-1",
@@ -237,9 +239,7 @@ defmodule Kantele.Combat.HanbingZhenqiTest do
 
       buff = Enum.find(updated.meta.combat.buffs, &(&1.key == "freezing"))
       assert buff.applies == %{}
-
-      # Simulate buff expire
-      assert_receive %Kalevala.Event{topic: "combat/buff-expire", data: %{key: "freezing"}}, 1500
+      # duration = skill 200 秒，到期投递逻辑由 Simple.schedule_expire 覆盖（simple_test）
     end
   end
 end

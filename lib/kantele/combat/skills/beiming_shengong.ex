@@ -113,7 +113,6 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
 
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
-         :ok <- check_no_fight(character),
          :ok <- check_empty_handed(character),
          :ok <- check_skill_level(stats),
          :ok <- check_neili(character),
@@ -142,7 +141,7 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] ->
-        if enemy.meta.vitals.alive? do
+        if not enemy.meta.combat.dead do
           {:ok, enemy}
         else
           {:error, "你要吸取谁的丹元？\n"}
@@ -152,16 +151,8 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
     end
   end
 
-  defp check_no_fight(character) do
-    if character.room.no_fight do
-      {:error, "在这里不能攻击他人。\n"}
-    else
-      :ok
-    end
-  end
-
   defp check_empty_handed(character) do
-    if not character.meta.equipped.weapon do
+    if is_nil(Map.get(character.meta.combat.equipped || %{}, :weapon)) do
       :ok
     else
       {:error, "你必须空手才能施用北冥神功吸人丹元！\n"}
@@ -186,7 +177,7 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
 
   defp check_can_absorb_more(character) do
     my_max = character.meta.vitals.max_neili
-    limit = character.meta.stats.max_neili_limit || my_max * 2
+    limit = Map.get(character.meta.stats, :max_neili_limit) || my_max * 2
     if my_max < limit do
       :ok
     else
@@ -213,7 +204,7 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
   end
 
   defp check_not_taixuan(target) do
-    if target.meta.stats.mapped.force != "taixuan-gong" do
+    if Map.get(target.meta.stats.mapped || %{}, "force") != "taixuan-gong" do
       :ok
     else
       {:error, "目标运行太玄真气将吸功反弹回去。\n"}
@@ -221,7 +212,7 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
   end
 
   defp check_not_cooldown(character) do
-    if not character.meta.combat.buffs |> Enum.any?(&(&1.key == "sucked")) do
+    if not (character.meta.combat.buffs |> Enum.any?(&(&1.key == "sucked"))) do
       :ok
     else
       {:error, "你刚刚吸取过丹元！\n"}
@@ -305,7 +296,9 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
           neili_cost: 10,
           busy: 4
         })
-else
+
+        conn
+      else
         new_tg_max = max(character.meta.vitals.max_neili - sucked, 0)
 
         new_target = %{
@@ -329,6 +322,8 @@ else
           busy: 4,
           gain_max_neili: sucked
         })
+
+        conn
       end
     else
       new_target = %{
@@ -350,9 +345,9 @@ else
         neili_cost: 10,
         busy: 6
       })
-    end
 
-    conn
+      conn
+    end
   end
 
   defp ref(character) do

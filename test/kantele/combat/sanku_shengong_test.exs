@@ -28,8 +28,7 @@ defmodule Kantele.Combat.SankuShengongTest do
       meta: %Kantele.Character.PlayerMeta{
         vitals: Keyword.get(opts, :vitals, @vitals),
         stats: stats,
-        combat: Keyword.get(opts, :combat, Combat.new()),
-        conditions: %{}
+        combat: Keyword.get(opts, :combat, Combat.new())
       }
     }
   end
@@ -45,8 +44,7 @@ defmodule Kantele.Combat.SankuShengongTest do
       meta: %Kantele.Character.PlayerMeta{
         vitals: Keyword.get(opts, :vitals, @vitals),
         stats: stats,
-        combat: Keyword.get(opts, :combat, Combat.new()),
-        conditions: %{}
+        combat: Keyword.get(opts, :combat, Combat.new())
       }
     }
   end
@@ -143,13 +141,14 @@ defmodule Kantele.Combat.SankuShengongTest do
         mapped: %{"force" => "sanku-shengong"},
         vitals: %{@vitals | neili: 500}
       )
-      character = %{character | meta: %{character.meta | conditions: %{"poison" => 10, "frozen" => 5}}}
 
-      conn = ExertCommand.run(build_conn(character), %{"function" => "dispel"})
+      conn =
+        build_conn(character, %{"conditions" => %{"poison" => %{level: 10}}, "cond_applyer" => %{}})
+        |> ExertCommand.run(%{"function" => "dispel"})
 
       updated = conn.private.update_character
       assert updated.meta.vitals.neili == 400
-      assert updated.meta.conditions == %{}
+      assert conn.session["conditions"] == nil
       assert published_text(conn) =~ "调息完毕"
     end
 
@@ -175,15 +174,27 @@ defmodule Kantele.Combat.SankuShengongTest do
     end
 
     test "成功放招：扣 150 内力、受损 10 qi、busy 1、发 perform-incoming" do
-      conn =
-        exert(
-          [
-            skills: %{"sanku-shengong" => 60, "force" => 100},
-            mapped: %{"force" => "sanku-shengong"},
-            vitals: %{@vitals | neili: 600, qi: 500}
-          ],
-          "roar"
-        )
+      target =
+        %Kalevala.Character{
+          id: "mob-1",
+          name: "李四",
+          pid: self(),
+          room_id: @room,
+          meta: %Kantele.Character.NonPlayerMeta{
+            vitals: %{@vitals | qi: 500},
+            stats: struct(Stats.new(), %{"force" => 50}),
+            combat: Combat.new()
+          }
+        }
+
+      character = build_character(
+        skills: %{"sanku-shengong" => 60, "force" => 100},
+        mapped: %{"force" => "sanku-shengong"},
+        vitals: %{@vitals | neili: 600, qi: 500},
+        combat: %{Combat.new() | enemies: [target]}
+      )
+
+      conn = ExertCommand.run(build_conn(character), %{"function" => "roar"})
 
       updated = conn.private.update_character
       assert updated.meta.vitals.neili == 450
@@ -212,7 +223,7 @@ defmodule Kantele.Combat.SankuShengongTest do
     end
 
     test "con 对抗失败：受 jing 伤害" do
-      character = target_character(skills: %{"con" => 10}, vitals: %{@vitals | max_neili: 100, jing: 100, eff_jing: 100})
+      character = target_character(skills: %{"con" => 10}, vitals: %{@vitals | max_neili: 100, jing: 100})
       data = %{perform_id: "sanku-shengong/roar", skill: 100, rng: fn _ -> 100 end}
 
       conn = incoming(build_conn(character), data)

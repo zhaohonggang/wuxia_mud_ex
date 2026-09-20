@@ -120,19 +120,19 @@ defmodule Kantele.Combat.Skills.Force.Lifeheal do
     end
   end
 
-  defp gate_not_fighting(combat) do
-    if Combat.fighting?(combat) do
-      {:error, "战斗中无法运功疗伤！\n"}
-    else
-      :ok
-    end
-  end
-
   defp gate_has_force(stats) do
     if Map.get(stats.mapped, "force") do
       :ok
     else
       {:error, "你必须激发一种内功才能替人疗伤。\n"}
+    end
+  end
+
+  defp gate_not_fighting(combat) do
+    if Combat.fighting?(combat) do
+      {:error, "战斗中无法运功疗伤！\n"}
+    else
+      :ok
     end
   end
 

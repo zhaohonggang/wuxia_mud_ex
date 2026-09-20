@@ -34,8 +34,8 @@ defmodule Kantele.Combat.Skills.HanbingZhenqi do
 
   @impl true
   def valid_learn(stats) do
-    force = Stats.skill(stats, "force")
-    level = Stats.skill(stats, id())
+    force = Map.get(stats, "force") || Stats.skill(stats, "force")
+    level = Map.get(stats, id()) || Stats.skill(stats, id())
 
     cond do
       force < 100 -> {:error, "你的基本内功火候不够，难以锻炼寒冰真气。\n"}
@@ -111,7 +111,6 @@ defmodule Kantele.Combat.Skills.HanbingZhenqi.Freezing do
       id: "hanbing-zhenqi/freezing",
       kind: :exert,
       gates: [
-        {:custom, &gate_self_only/1, "寒冰真气只能对自己使用。\n"},
         {:skill_min, "hanbing-zhenqi", 140, "你的寒冰真气不够，难以施展「寒冰真气」。\n"},
         {:custom, &gate_con/1, "你的先天根骨不足，无法施展「寒冰真气」。\n"},
         {:max_neili_min, 2200, "你的内力修为不足，难以施展「寒冰真气」。\n"},
@@ -123,15 +122,12 @@ defmodule Kantele.Combat.Skills.HanbingZhenqi.Freezing do
       effects: [
         {:custom, &effect_freezing/1}
       ],
-      busy: {:if_fighting, 3},
+      busy: 3,
       duration: {:skill, "hanbing-zhenqi"},
       expire_message: "你的「寒冰真气」运行完毕，将内力收回丹田。\n",
       message: "$N一声冷笑，体内寒冰真气迅速疾转数个周天，将力聚于掌心。\n"
     }
   end
-
-  defp gate_self_only(ctx),
-    do: ctx.target == ctx.character
 
   defp gate_con(ctx),
     do: ctx.character.meta.stats.con >= 34

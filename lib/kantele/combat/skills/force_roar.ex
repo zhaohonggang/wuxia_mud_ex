@@ -71,7 +71,7 @@ defmodule Kantele.Combat.Skills.Force.Roar do
       targets = combat.enemies
 
       Enum.each(targets, fn target ->
-        if target.pid != character.pid and Process.alive?(target.pid) do
+        if target.id != character.id and Process.alive?(target.pid) do
           send(target.pid, %Event{
             from_pid: self(),
             topic: "combat/perform-incoming",
@@ -107,10 +107,19 @@ defmodule Kantele.Combat.Skills.Force.Roar do
     skill = Map.get(data, :skill, 0)
     bindings = [n1: attacker.name, n2: character.name]
 
+    # die_guard（官府保护）：conditions 存 session，命中则跳过目标
+    if Map.get(conn.session["conditions"] || %{}, "die_guard") do
+      conn
+    else
+      do_resolve(conn, character, attacker, data, rng, skill, bindings)
+    end
+  end
+
+  defp do_resolve(conn, character, attacker, data, rng, skill, bindings) do
     if character.meta.combat.busy > 0 do
       conn
     else
-      con = character.meta.stats.con || 20
+      con = Stats.skill(character.meta.stats, "con") || character.meta.stats.con || 20
 
       if div(skill, 2) + Engine.rand(rng, max(div(skill, 2), 1)) < con * 2 do
         Performs.feedback(attacker, %{neili_cost: 0, busy: 0})
@@ -128,9 +137,10 @@ defmodule Kantele.Combat.Skills.Force.Roar do
             new_eff_jing = max(new_eff_jing - damage, 0)
           end
 
-new_vitals =
+          new_vitals =
             if new_jing < 1 or new_eff_jing < 1 do
-              %{t_vitals | jing: 1, max_jing: 1, unconscious: true}
+              # 昏迷：jing/max_jing 归 1（Vitals 无 unconscious 字段，LPC 差异记 TODO(migrate)）
+              %{t_vitals | jing: 1, max_jing: 1}
             else
               %{t_vitals | jing: new_jing, max_jing: new_eff_jing}
             end
@@ -175,7 +185,7 @@ new_vitals =
 
   defp gate_room_ok(character) do
     room_config = Map.get(character.meta, :room, %{})
-    if Map.get(room_config, :no_fight) or Map.get(room_config, :skybook) do
+    if Map.get(room_config, :no_fight, false) or Map.get(room_config, :skybook, false) do
       {:error, "在这里不能攻击他人。\n"}
     else
       :ok

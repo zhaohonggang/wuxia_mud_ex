@@ -62,6 +62,9 @@ defmodule Kantele.Character.Stats do
   """
   def skill(%__MODULE__{} = stats, name), do: Map.get(stats.skills, name, 0)
 
+  def skill(%{skills: skills} = _stats, name) when is_map(skills), do: Map.get(skills, name, 0)
+  def skill(_stats, _name), do: 0
+
   @doc """
   查询某用法的有效等级：基本等级 + 映射特技等级（对应 LPC query_skill 不带 raw）
 

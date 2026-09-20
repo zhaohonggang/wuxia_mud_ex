@@ -71,7 +71,7 @@ defmodule Kantele.Combat.Skills.Force.Shot do
          :ok <- gate_neili(vitals),
          {:ok, du} <- gate_handing_poison(character),
          {:ok, target} <- find_target(combat, character) do
-      du_name = du.item.name || "毒药"
+      du_name = Map.get(du.item, :name) || Map.get(du.meta || %{}, :name) || "毒药"
 
       message = "$N一声冷笑，默运#{to_chinese(force)}内劲，手指粘住#{du_name}对准#{target.name}「嗖」的弹射了出去。\n"
 
@@ -93,9 +93,9 @@ defmodule Kantele.Combat.Skills.Force.Shot do
       vitals = %{vitals | neili: vitals.neili - 100}
 
       new_inventory =
-        Enum.map(character.meta.inventory, fn item ->
+        Enum.map(character.inventory, fn item ->
           if item == du do
-            if item.meta.amount and item.meta.amount > 1 do
+            if is_integer(item.meta.amount) and item.meta.amount > 1 do
               %{item | meta: %{item.meta | amount: item.meta.amount - 1}}
             else
               nil
@@ -111,9 +111,9 @@ defmodule Kantele.Combat.Skills.Force.Shot do
         | meta: %{
             character.meta
             | vitals: vitals,
-            combat: Combat.start_busy(combat, busy),
-            inventory: new_inventory
-          }
+            combat: Combat.start_busy(combat, busy)
+          },
+        inventory: new_inventory
       }
 
       conn
@@ -160,31 +160,37 @@ defmodule Kantele.Combat.Skills.Force.Shot do
           poison_type = du.meta.poison_type
           poison_data = du.meta.poison
 
-          conditions = Map.put(character.meta.conditions || %{}, poison_type, poison_data)
+          # conditions 存 conn session（condition_event.ex 契约），非 meta
+          prev = conn.session["conditions"] || %{}
+          conditions = Map.put(prev, poison_type, poison_data)
 
           combat = character.meta.combat
-          if not Combat.busy?(combat) do
-            combat = Combat.start_busy(combat, 2)
-          end
+          combat =
+            if not Combat.busy?(combat) do
+              Combat.start_busy(combat, 2)
+            else
+              combat
+            end
 
           character = %{
             character
             | meta: %{
                 character.meta
-                | conditions: conditions,
-                combat: combat
+                | combat: combat
               }
           }
 
-text = "$n急忙飞身躲避，可已然不及，霎时绿光闪过，$p顿感一阵麻痹。\n"
+          conn = conn |> Kalevala.Character.Conn.put_session("conditions", conditions)
+
+          text = "$n急忙飞身躲避，可已然不及，霎时绿光闪过，$p顿感一阵麻痹。\n"
                  |> Messages.interpolate(bindings)
 
-           conn =
-             Broadcast.publish(conn, text)
-             |> put_character(character)
+          conn =
+            Broadcast.publish(conn, text)
+            |> put_character(character)
 
-           Performs.feedback(attacker, %{neili_cost: 0, busy: 0})
-           conn
+          Performs.feedback(attacker, %{neili_cost: 0, busy: 0})
+          conn
          else
            text = "可是$n见势不妙，急忙腾挪身形，终于避开了$N的弹毒攻击。\n"
                   |> Messages.interpolate(bindings)
@@ -223,7 +229,7 @@ text = "$n急忙飞身躲避，可已然不及，霎时绿光闪过，$p顿感�
 
   defp gate_room_ok(character) do
     room_config = Map.get(character.meta, :room, %{})
-    if Map.get(room_config, :no_fight) or Map.get(room_config, :skybook) do
+    if Map.get(room_config, :no_fight, false) or Map.get(room_config, :skybook, false) do
       {:error, "在这里不能攻击他人。\n"}
     else
       :ok
@@ -239,7 +245,7 @@ text = "$n急忙飞身躲避，可已然不及，霎时绿光闪过，$p顿感�
   end
 
   defp gate_handing_poison(character) do
-    du = character.meta.inventory |> Enum.find(& &1.handing)
+    du = character.inventory |> Enum.find(&(&1.meta && &1.meta.handing))
     if du && du.meta && du.meta.poison do
       {:ok, du}
     else
@@ -249,11 +255,14 @@ text = "$n急忙飞身躲避，可已然不及，霎时绿光闪过，$p顿感�
 
   defp find_target(combat, character) do
     case combat.enemies do
-      [target | _] when target.id != character.id and target.meta.vitals.qi > 0 ->
-        if target.meta.conditions && target.meta.conditions.die_guard do
-          {:error, "这个人正被官府保护着，还是别去招惹。\n"}
-        else
+      [target | _] when target.id != character.id ->
+        # 瘦引用无 meta（enemy_ref）时视为存活；die_guard 在 session 由目标侧检查
+        alive? = is_nil(Map.get(target, :meta)) || target.meta.vitals.qi > 0
+
+        if alive? do
           {:ok, target}
+        else
+          {:error, "你想攻击谁？\n"}
         end
       _ ->
         {:error, "你想攻击谁？\n"}

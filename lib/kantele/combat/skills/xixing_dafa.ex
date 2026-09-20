@@ -157,7 +157,7 @@ defmodule Kantele.Combat.Skills.XixingDafa.Suck do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] ->
-        if enemy.meta.vitals.alive? do
+        if not enemy.meta.combat.dead do
           {:ok, enemy}
         else
           {:error, "你只能吸取战斗中的对手的丹元！\n"}
@@ -168,11 +168,9 @@ defmodule Kantele.Combat.Skills.XixingDafa.Suck do
   end
 
   defp check_no_fight(character) do
-    if character.room.no_fight do
-      {:error, "在这里不能攻击他人。\n"}
-    else
-      :ok
-    end
+    # 引擎未向 perform 暴露房间 no_fight 标志（character 仅 room_id），恒通过；
+    # 房间层禁止攻击由 combat_event 兜底（LPC no_fight 差异记 TODO(migrate)）。
+    :ok
   end
 
   defp check_skill_level(stats) do
@@ -193,7 +191,7 @@ defmodule Kantele.Combat.Skills.XixingDafa.Suck do
 
   defp check_can_absorb_more(character) do
     my_max = character.meta.vitals.max_neili
-    limit = character.meta.stats.max_neili_limit || my_max * 2
+    limit = Map.get(character.meta.stats, :max_neili_limit) || my_max * 2
     if my_max < limit do
       :ok
     else
@@ -220,7 +218,7 @@ defmodule Kantele.Combat.Skills.XixingDafa.Suck do
   end
 
   defp check_not_taixuan(target) do
-    if target.meta.stats.mapped.force != "taixuan-gong" do
+    if Map.get(target.meta.stats.mapped || %{}, "force") != "taixuan-gong" do
       :ok
     else
       {:error, "目标运行太玄真气将吸功反弹回去。\n"}
@@ -228,7 +226,7 @@ defmodule Kantele.Combat.Skills.XixingDafa.Suck do
   end
 
   defp check_not_cooldown(character) do
-    if not character.meta.combat.buffs |> Enum.any?(&(&1.key == "sucked")) do
+    if not (character.meta.combat.buffs |> Enum.any?(&(&1.key == "sucked"))) do
       :ok
     else
       {:error, "你刚刚吸取过丹元！\n"}
@@ -240,8 +238,8 @@ defmodule Kantele.Combat.Skills.XixingDafa.Suck do
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
 
     message =
-      if character.meta.equipped.weapon do
-        "$N把手中的#{character.meta.equipped.weapon.name}一扬，慢慢的逼向#{target.name}，#{target.name}连忙架住。\n"
+      if Map.get(character.meta.combat.equipped || %{}, :weapon) do
+        "$N把手中的#{Map.get(character.meta.combat.equipped, :weapon).name}一扬，慢慢的逼向#{target.name}，#{target.name}连忙架住。\n"
       else
         "$N探出右手，平平的拍在#{target.name}的胸前，似乎没有半点力道。\n"
       end
@@ -275,10 +273,11 @@ defmodule Kantele.Combat.Skills.XixingDafa.Suck do
     sp = attacker_force
     dp = Stats.skill(character.meta.stats, "force")
 
-    success = sp + rng.(sp) > dp + rng.(dp) || not character.meta.vitals.alive?
+    success = sp + rng.(sp) > dp + rng.(dp) || character.meta.combat.dead
 
     if success do
-      lvl = Stats.skill(attacker.meta.stats, "xixing-dafa")
+      # attacker 为瘦引用（ref/1），等级随 perform-incoming data 传递
+      lvl = level
       amount = 1 + div(lvl - 120, 10)
       amount = max(amount, 1)
 
@@ -305,6 +304,8 @@ defmodule Kantele.Combat.Skills.XixingDafa.Suck do
         busy: 4 + rng.(4),
         gain_max_neili: amount
       })
+
+      conn
     else
       new_target = %{
         character
@@ -325,9 +326,9 @@ defmodule Kantele.Combat.Skills.XixingDafa.Suck do
         neili_cost: 10,
         busy: 7
       })
-    end
 
-    conn
+      conn
+    end
   end
 
   defp ref(character) do
@@ -383,8 +384,7 @@ defmodule Kantele.Combat.Skills.XixingDafa.Sangong do
       id: "xixing-dafa/sangong",
       kind: :exert,
       gates: [
-        {:max_neili_min, 1, "你已经将内力散尽，没什么必要再散功了。\n"},
-        {:custom, &gate_self_only/1, "你只能用吸星大法为自己散功。\n"}
+        {:max_neili_min, 1, "你已经将内力散尽，没什么必要再散功了。\n"}
       ],
       costs: %{},
       effects: [
@@ -393,10 +393,6 @@ defmodule Kantele.Combat.Skills.XixingDafa.Sangong do
       busy: 1,
       message: "你默默的按照吸星大法的诀窍将内力散入奇经八脉。\n"
     }
-  end
-
-  defp gate_self_only(ctx) do
-    ctx.target == ctx.character
   end
 
   defp effect_sangong(state) do

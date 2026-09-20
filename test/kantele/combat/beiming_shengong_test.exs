@@ -50,7 +50,17 @@ defmodule Kantele.Combat.BeimingShengongTest do
     }
   end
 
-  defp attacker, do: %{id: "player-1", pid: self(), name: "段誉", room_id: @room}
+  defp attacker, do: %{
+    id: "player-1",
+    pid: self(),
+    name: "段誉",
+    room_id: @room,
+    meta: %Kantele.Character.PlayerMeta{
+      vitals: %{@vitals | max_neili: 500},
+      stats: struct(Stats.new(), skills: %{"force" => 150, "beiming-shengong" => 90}),
+      combat: Combat.new()
+    }
+  }
 
   defp output_text(conn) do
     conn.output
@@ -121,18 +131,33 @@ defmodule Kantele.Combat.BeimingShengongTest do
       assert updated.meta.combat.temp.attack == 40
       assert updated.meta.combat.temp.defense == 40
       assert Combat.buff_active?(updated.meta.combat, "powerup")
-      assert published_text(conn) =~ "北冥神功运行完毕"
+      assert published_text(conn) =~ "真气澎湃"
     end
   end
 
   describe "suck（吸星，攻击方门槛）" do
     test "等级不足被拒" do
-      conn = perform([skills: %{"beiming-shengong" => 89, "force" => 150}, mapped: %{"force" => "beiming-shengong"}], "suck")
+      conn =
+        build_conn(build_character(
+          skills: %{"beiming-shengong" => 89, "force" => 150},
+          mapped: %{"force" => "beiming-shengong"},
+          performs: MapSet.new(["beiming-shengong/suck"]),
+          combat: %{Combat.new() | enemies: [enemy()]}
+        ))
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert output_text(conn) =~ "功力不够"
     end
 
     test "内力不足被拒" do
-      conn = perform([skills: %{"beiming-shengong" => 90, "force" => 150}, mapped: %{"force" => "beiming-shengong"}, vitals: %{@vitals | neili: 10}], "suck")
+      conn =
+        build_conn(build_character(
+          skills: %{"beiming-shengong" => 90, "force" => 150},
+          mapped: %{"force" => "beiming-shengong"},
+          performs: MapSet.new(["beiming-shengong/suck"]),
+          vitals: %{@vitals | neili: 10},
+          combat: %{Combat.new() | enemies: [enemy()]}
+        ))
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert output_text(conn) =~ "内力不够"
     end
 
@@ -145,7 +170,7 @@ defmodule Kantele.Combat.BeimingShengongTest do
         performs: MapSet.new(["beiming-shengong/suck"]),
         combat: combat
       ))
-      conn = perform([], "suck")
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert output_text(conn) =~ "必须空手"
     end
 
@@ -157,33 +182,33 @@ defmodule Kantele.Combat.BeimingShengongTest do
         performs: MapSet.new(["beiming-shengong/suck"]),
         combat: %{Combat.new() | enemies: [target]}
       ))
-      conn = perform([], "suck")
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert output_text(conn) =~ "丹元涣散"
     end
 
     test "目标太弱被拒" do
-      target = enemy(vitals: %{Vitals.new() | max_neili: 50})
+      target = enemy(vitals: %{Vitals.new() | max_neili: 150})
       conn = build_conn(build_character(
         skills: %{"beiming-shengong" => 90, "force" => 150},
         mapped: %{"force" => "beiming-shengong"},
         performs: MapSet.new(["beiming-shengong/suck"]),
-        vitals: %{@vitals | max_neili: 500},
+        vitals: %{@vitals | max_neili: 5000},
         combat: %{Combat.new() | enemies: [target]}
       ))
-      conn = perform([], "suck")
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert output_text(conn) =~ "远不如你"
     end
 
     test "目标是太玄功被拒" do
       target = enemy(skills: %{"force" => 150})
-      target = %{target | meta: Map.put(target.meta.stats, :mapped, %{force: "taixuan-gong"})}
+      target = %{target | meta: %{target.meta | stats: Map.put(target.meta.stats, :mapped, %{"force" => "taixuan-gong"})}}
       conn = build_conn(build_character(
         skills: %{"beiming-shengong" => 90, "force" => 150},
         mapped: %{"force" => "beiming-shengong"},
         performs: MapSet.new(["beiming-shengong/suck"]),
         combat: %{Combat.new() | enemies: [target]}
       ))
-      conn = perform([], "suck")
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert output_text(conn) =~ "太玄真气"
     end
 
@@ -196,7 +221,7 @@ defmodule Kantele.Combat.BeimingShengongTest do
         performs: MapSet.new(["beiming-shengong/suck"]),
         combat: combat
       ))
-      conn = perform([], "suck")
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert output_text(conn) =~ "刚刚吸取过"
     end
 
@@ -208,7 +233,7 @@ defmodule Kantele.Combat.BeimingShengongTest do
         performs: MapSet.new(["beiming-shengong/suck"]),
         combat: %{Combat.new() | enemies: [target]}
       ))
-      conn = perform([], "suck")
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert published_text(conn) =~ "轻轻握在"
 
       assert_receive %Kalevala.Event{
@@ -222,9 +247,10 @@ defmodule Kantele.Combat.BeimingShengongTest do
     test "命中：目标 max_neili 减少，攻击方回执 gain_max_neili" do
       target = enemy(vitals: %{Vitals.new() | max_neili: 300})
       target_conn = build_conn(target)
-      data = %{perform_id: "beiming-shengong/suck", level: 90, rng: fn _ -> 200 end}
+      attacker = %{attacker() | meta: %{attacker().meta | stats: %{attacker().meta.stats | skills: %{"force" => 300, "beiming-shengong" => 200}}}}
+      data = %{perform_id: "beiming-shengong/suck", level: 200, rng: fn _ -> 200 end}
 
-      conn = incoming(target_conn, data)
+      conn = incoming(target_conn, Map.put(data, :attacker, attacker))
 
       assert conn.private.update_character.meta.vitals.max_neili < 300
       assert published_text(conn) =~ "丹元自手掌"
@@ -236,7 +262,14 @@ defmodule Kantele.Combat.BeimingShengongTest do
       target = enemy(vitals: %{Vitals.new() | max_neili: 200})
       target_conn = build_conn(target)
       # 攻击者 max_neili 远高于目标
-      attacker = %{attacker() | meta: %{vitals: %{Vitals.new() | max_neili: 1000}}}
+      attacker = %{
+        attacker()
+        | meta: %{
+            attacker().meta
+            | vitals: %{attacker().meta.vitals | max_neili: 1000},
+              stats: %{attacker().meta.stats | skills: %{"force" => 300, "beiming-shengong" => 200}}
+          }
+      }
       data = %{perform_id: "beiming-shengong/suck", level: 200, rng: fn _ -> 200 end}
 
       conn = incoming(target_conn, Map.put(data, :attacker, attacker))

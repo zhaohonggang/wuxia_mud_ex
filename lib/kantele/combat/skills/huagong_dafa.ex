@@ -164,7 +164,7 @@ defmodule Kantele.Combat.Skills.HuagongDafa.Hua do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] ->
-        if enemy.meta.vitals.alive? do
+        if not enemy.meta.combat.dead do
           {:ok, enemy}
         else
           {:error, "你要化谁的内力？\n"}
@@ -175,11 +175,9 @@ defmodule Kantele.Combat.Skills.HuagongDafa.Hua do
   end
 
   defp check_no_fight(character) do
-    if character.room.no_fight do
-      {:error, "在这里不能攻击他人。\n"}
-    else
-      :ok
-    end
+    # 引擎未向 perform 暴露房间 no_fight 标志（character 仅 room_id），恒通过；
+    # 房间层禁止攻击由 combat_event 兜底（LPC no_fight 差异记 TODO(migrate)）。
+    :ok
   end
 
   defp check_not_busy(character) do
@@ -191,7 +189,7 @@ defmodule Kantele.Combat.Skills.HuagongDafa.Hua do
   end
 
   defp check_empty_handed(character) do
-    if not character.meta.equipped.weapon do
+    if is_nil(Map.get(character.meta.combat.equipped || %{}, :weapon)) do
       :ok
     else
       {:error, "你必须空手才能施用化功大法！\n"}
@@ -233,7 +231,7 @@ defmodule Kantele.Combat.Skills.HuagongDafa.Hua do
   end
 
   defp check_not_taixuan(target) do
-    if target.meta.stats.mapped.force != "taixuan-gong" do
+    if Map.get(target.meta.stats.mapped || %{}, "force") != "taixuan-gong" do
       :ok
     else
       {:error, "目标运行太玄真气将吸功反弹回去。\n"}
@@ -278,10 +276,11 @@ defmodule Kantele.Combat.Skills.HuagongDafa.Hua do
     sp = attacker_sp
     dp = Stats.skill(character.meta.stats, "force") + Stats.skill(character.meta.stats, "dodge")
 
-    success = div(sp, 2) + rng.(sp) > rng.(dp) || not character.meta.vitals.alive?
+    success = div(sp, 2) + rng.(sp) > rng.(dp) || character.meta.combat.dead
 
     if success do
-      lvl = Stats.skill(attacker.meta.stats, "huagong-dafa")
+      # attacker 为瘦引用（ref/1），等级随 perform-incoming data 传递
+      lvl = level
       amount = rng.(4) + div(lvl - 90, 8)
       amount = max(amount, 1)
 
@@ -308,6 +307,8 @@ defmodule Kantele.Combat.Skills.HuagongDafa.Hua do
         busy: 2 + rng.(2),
         gain_max_neili: amount
       })
+
+      conn
     else
       new_target = %{
         character
@@ -328,9 +329,9 @@ defmodule Kantele.Combat.Skills.HuagongDafa.Hua do
         neili_cost: 100,
         busy: 2 + rng.(3)
       })
-    end
 
-    conn
+      conn
+    end
   end
 
   defp ref(character) do

@@ -37,6 +37,7 @@ defmodule Kantele.Combat.XixingDafaTest do
     vitals = Keyword.get(opts, :vitals, %{Vitals.new() | neili: 200, max_neili: 200})
     skills = Keyword.get(opts, :skills, %{"force" => 150})
     stats = struct(Stats.new(), skills: skills)
+    combat = Keyword.get(opts, :combat, %{Combat.new() | enemies: [%{id: "player-1", pid: self(), name: "丁春秋", room_id: @room}]})
 
     %Kalevala.Character{
       id: "mob-1",
@@ -46,7 +47,7 @@ defmodule Kantele.Combat.XixingDafaTest do
       meta: %Kantele.Character.NonPlayerMeta{
         vitals: vitals,
         stats: stats,
-        combat: %{Combat.new() | enemies: [%{id: "player-1", pid: self(), name: "丁春秋", room_id: @room}]}
+        combat: combat
       }
     }
   end
@@ -127,12 +128,27 @@ defmodule Kantele.Combat.XixingDafaTest do
 
   describe "suck（吸星，攻击方门槛）" do
     test "等级不足被拒" do
-      conn = perform([skills: %{"xixing-dafa" => 199, "force" => 150}, mapped: %{"force" => "xixing-dafa"}], "suck")
+      conn =
+        build_conn(build_character(
+          skills: %{"xixing-dafa" => 199, "force" => 150},
+          mapped: %{"force" => "xixing-dafa"},
+          performs: MapSet.new(["xixing-dafa/suck"]),
+          combat: %{Combat.new() | enemies: [enemy()]}
+        ))
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert output_text(conn) =~ "尚未大成"
     end
 
     test "内力不足被拒" do
-      conn = perform([skills: %{"xixing-dafa" => 200, "force" => 150}, mapped: %{"force" => "xixing-dafa"}, vitals: %{@vitals | neili: 50}], "suck")
+      conn =
+        build_conn(build_character(
+          skills: %{"xixing-dafa" => 200, "force" => 150},
+          mapped: %{"force" => "xixing-dafa"},
+          performs: MapSet.new(["xixing-dafa/suck"]),
+          vitals: %{@vitals | neili: 50},
+          combat: %{Combat.new() | enemies: [enemy()]}
+        ))
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert output_text(conn) =~ "内力不够"
     end
 
@@ -144,7 +160,7 @@ defmodule Kantele.Combat.XixingDafaTest do
           performs: MapSet.new(["xixing-dafa/suck"]),
           combat: Combat.new()
         ))
-      conn = perform([], "suck")
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert output_text(conn) =~ "只能吸取战斗中的对手"
     end
 
@@ -156,33 +172,33 @@ defmodule Kantele.Combat.XixingDafaTest do
         performs: MapSet.new(["xixing-dafa/suck"]),
         combat: %{Combat.new() | enemies: [target]}
       ))
-      conn = perform([], "suck")
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert output_text(conn) =~ "丹元涣散"
     end
 
     test "目标太弱被拒" do
-      target = enemy(vitals: %{Vitals.new() | max_neili: 50}, skills: %{"force" => 150})
+      target = enemy(vitals: %{Vitals.new() | max_neili: 150}, skills: %{"force" => 150})
       conn = build_conn(build_character(
         skills: %{"xixing-dafa" => 200, "force" => 150},
         mapped: %{"force" => "xixing-dafa"},
         performs: MapSet.new(["xixing-dafa/suck"]),
-        vitals: %{@vitals | max_neili: 500},
+        vitals: %{@vitals | max_neili: 5000},
         combat: %{Combat.new() | enemies: [target]}
       ))
-      conn = perform([], "suck")
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert output_text(conn) =~ "远不如你"
     end
 
     test "目标是太玄功被拒" do
       target = enemy(skills: %{"force" => 150})
-      target = %{target | meta: Map.put(target.meta.stats, :mapped, %{force: "taixuan-gong"})}
+      target = %{target | meta: %{target.meta | stats: Map.put(target.meta.stats, :mapped, %{"force" => "taixuan-gong"})}}
       conn = build_conn(build_character(
         skills: %{"xixing-dafa" => 200, "force" => 150},
         mapped: %{"force" => "xixing-dafa"},
         performs: MapSet.new(["xixing-dafa/suck"]),
         combat: %{Combat.new() | enemies: [target]}
       ))
-      conn = perform([], "suck")
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert output_text(conn) =~ "太玄真气"
     end
 
@@ -195,7 +211,7 @@ defmodule Kantele.Combat.XixingDafaTest do
         performs: MapSet.new(["xixing-dafa/suck"]),
         combat: combat
       ))
-      conn = perform([], "suck")
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert output_text(conn) =~ "刚刚吸取过"
     end
 
@@ -207,7 +223,7 @@ defmodule Kantele.Combat.XixingDafaTest do
         performs: MapSet.new(["xixing-dafa/suck"]),
         combat: %{Combat.new() | enemies: [target]}
       ))
-      conn = perform([], "suck")
+      conn = ExertCommand.run(conn, %{"function" => "suck"})
       assert published_text(conn) =~ "探出右手"
 
       assert_receive %Kalevala.Event{
@@ -221,7 +237,7 @@ defmodule Kantele.Combat.XixingDafaTest do
     test "命中：目标 max_neili 减少，攻击方回执 gain_max_neili" do
       target = enemy(vitals: %{Vitals.new() | max_neili: 300})
       target_conn = build_conn(target)
-      data = %{perform_id: "xixing-dafa/suck", level: 200, rng: fn _ -> 200 end}
+      data = %{perform_id: "xixing-dafa/suck", level: 200, attacker_force: 200, rng: fn _ -> 200 end}
 
       conn = incoming(target_conn, data)
 
@@ -243,7 +259,7 @@ defmodule Kantele.Combat.XixingDafaTest do
     end
 
     test "目标已死则忽略" do
-      target = enemy(vitals: %{Vitals.new() | max_neili: 300, qi: 0})
+      target = enemy(vitals: %{Vitals.new() | max_neili: 300, qi: 0}, combat: %{Combat.new() | dead: true})
       target_conn = build_conn(target)
       data = %{perform_id: "xixing-dafa/suck", level: 200, rng: fn _ -> 200 end}
 
@@ -261,7 +277,7 @@ defmodule Kantele.Combat.XixingDafaTest do
 
     test "max_neili 已为 0 时被拒" do
       conn = perform([skills: %{"xixing-dafa" => 200}, mapped: %{"force" => "xixing-dafa"}, vitals: %{@vitals | max_neili: 0}], "sangong")
-      assert output_text(conn) =~ "已将内力散尽"
+      assert output_text(conn) =~ "已经将内力散尽"
     end
   end
 end

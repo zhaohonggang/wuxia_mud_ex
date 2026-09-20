@@ -119,18 +119,33 @@ defmodule Kantele.Combat.HuagongDafaTest do
       assert updated.meta.combat.temp.attack == 40
       assert updated.meta.combat.temp.dodge == 40
       assert Combat.buff_active?(updated.meta.combat, "powerup")
-      assert published_text(conn) =~ "化功大法运行完毕"
+      assert published_text(conn) =~ "萤萤绿光"
     end
   end
 
   describe "hua（化功，攻击方门槛）" do
     test "等级不足被拒" do
-      conn = perform([skills: %{"huagong-dafa" => 99, "force" => 150}, mapped: %{"force" => "huagong-dafa"}], "hua")
+      conn =
+        build_conn(build_character(
+          skills: %{"huagong-dafa" => 99, "force" => 150},
+          mapped: %{"force" => "huagong-dafa"},
+          performs: MapSet.new(["huagong-dafa/hua"]),
+          combat: %{Combat.new() | enemies: [enemy()]}
+        ))
+      conn = ExertCommand.run(conn, %{"function" => "hua"})
       assert output_text(conn) =~ "功力不够"
     end
 
     test "内力不足被拒" do
-      conn = perform([skills: %{"huagong-dafa" => 100, "force" => 150}, mapped: %{"force" => "huagong-dafa"}, vitals: %{@vitals | neili: 50}], "hua")
+      conn =
+        build_conn(build_character(
+          skills: %{"huagong-dafa" => 100, "force" => 150},
+          mapped: %{"force" => "huagong-dafa"},
+          performs: MapSet.new(["huagong-dafa/hua"]),
+          vitals: %{@vitals | neili: 50},
+          combat: %{Combat.new() | enemies: [enemy()]}
+        ))
+      conn = ExertCommand.run(conn, %{"function" => "hua"})
       assert output_text(conn) =~ "内力不够"
     end
 
@@ -143,7 +158,7 @@ defmodule Kantele.Combat.HuagongDafaTest do
         performs: MapSet.new(["huagong-dafa/hua"]),
         combat: combat
       ))
-      conn = perform([], "hua")
+      conn = ExertCommand.run(conn, %{"function" => "hua"})
       assert output_text(conn) =~ "必须空手"
     end
 
@@ -155,7 +170,7 @@ defmodule Kantele.Combat.HuagongDafaTest do
         performs: MapSet.new(["huagong-dafa/hua"]),
         combat: %{Combat.new() | enemies: [target]}
       ))
-      conn = perform([], "hua")
+      conn = ExertCommand.run(conn, %{"function" => "hua"})
       assert output_text(conn) =~ "内力涣散"
     end
 
@@ -168,20 +183,20 @@ defmodule Kantele.Combat.HuagongDafaTest do
         vitals: %{@vitals | max_neili: 500},
         combat: %{Combat.new() | enemies: [target]}
       ))
-      conn = perform([], "hua")
+      conn = ExertCommand.run(conn, %{"function" => "hua"})
       assert output_text(conn) =~ "远胜于你"
     end
 
     test "目标是太玄功被拒" do
       target = enemy(skills: %{"force" => 150, "dodge" => 100})
-      target = %{target | meta: Map.put(target.meta.stats, :mapped, %{force: "taixuan-gong"})}
+      target = %{target | meta: %{target.meta | stats: Map.put(target.meta.stats, :mapped, %{"force" => "taixuan-gong"})}}
       conn = build_conn(build_character(
         skills: %{"huagong-dafa" => 100, "force" => 150},
         mapped: %{"force" => "huagong-dafa"},
         performs: MapSet.new(["huagong-dafa/hua"]),
         combat: %{Combat.new() | enemies: [target]}
       ))
-      conn = perform([], "hua")
+      conn = ExertCommand.run(conn, %{"function" => "hua"})
       assert output_text(conn) =~ "太玄真气"
     end
 
@@ -193,7 +208,7 @@ defmodule Kantele.Combat.HuagongDafaTest do
         performs: MapSet.new(["huagong-dafa/hua"]),
         combat: %{Combat.new() | enemies: [target]}
       ))
-      conn = perform([], "hua")
+      conn = ExertCommand.run(conn, %{"function" => "hua"})
       assert published_text(conn) =~ "全身骨节爆响"
 
       assert_receive %Kalevala.Event{
@@ -207,7 +222,7 @@ defmodule Kantele.Combat.HuagongDafaTest do
     test "命中：目标 max_neili 减少，攻击方回执 gain_max_neili" do
       target = enemy(vitals: %{Vitals.new() | max_neili: 300, neili: 200})
       target_conn = build_conn(target)
-      data = %{perform_id: "huagong-dafa/hua", level: 100, rng: fn _ -> 1 end}
+      data = %{perform_id: "huagong-dafa/hua", level: 100, attacker_force: 200, rng: fn _ -> 1 end}
 
       conn = incoming(target_conn, data)
 

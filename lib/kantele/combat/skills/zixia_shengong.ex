@@ -25,7 +25,9 @@ defmodule Kantele.Combat.Skills.ZixiaShengong do
 
   @impl true
   def valid_learn(stats) do
-    if Stats.skill(stats, "force") < 100 do
+    force = Map.get(stats, "force") || Stats.skill(stats, "force")
+
+    if force < 100 do
       {:error, "你的基本内功火候不够，无法学习紫霞神功！\n"}
     else
       :ok
@@ -99,17 +101,17 @@ defmodule Kantele.Combat.Skills.ZixiaShengong.Ziqi do
       id: "zixia-shengong/ziqi",
       kind: :exert,
       gates: [
-        {:custom, &gate_sword/1, "你没有剑.怎么用紫气东来呀? \n"},
         {:skill_min, "zixia-shengong", 150, "你的紫霞神功的修为不够，不能使用紫气东来! \n"},
         {:neili_min, 200, "你的内力还不够！\n"},
         {:custom, &gate_qi_ok/1, "你拼尽毕生功力想提起紫气东来，但自己受伤太重，没能成功!\n"},
-        {:no_buff, "ziqi", "你已经在运起紫气东来了。\n"}
+        {:no_buff, "ziqi", "你已经在运起紫气东来了。\n"},
+        {:custom, &gate_sword/1, "你没有剑.怎么用紫气东来呀? \n"}
       ],
       costs: %{neili: 200},
       effects: [
         {:custom, &effect_ziqi/1}
       ],
-      busy: {:if_fighting, 3},
+      busy: 3,
       duration: {:skill, "zixia-shengong"},
       expire_message: "你的紫气东来运行完毕，紫气渐渐隐去。\n",
       message: "$N猛吸一口气，脸上紫气大盛！手中的兵器隐隐透出一层紫光。。。\n"
@@ -117,8 +119,8 @@ defmodule Kantele.Combat.Skills.ZixiaShengong.Ziqi do
   end
 
   defp gate_sword(ctx) do
-    weapon = ctx.character.meta.combat.equipped.weapon
-    weapon && weapon.meta.skill_type == "sword"
+    weapon = Map.get(ctx.character.meta.combat.equipped || %{}, :weapon)
+    weapon && Map.get(weapon, :skill_type) == "sword"
   end
 
   defp gate_qi_ok(ctx) do

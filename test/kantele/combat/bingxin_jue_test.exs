@@ -36,6 +36,7 @@ defmodule Kantele.Combat.BingxinJueTest do
     vitals = Keyword.get(opts, :vitals, %{Vitals.new() | neili: 500, max_neili: 500, qi: 500, max_qi: 500})
     skills = Keyword.get(opts, :skills, %{"force" => 150})
     stats = struct(Stats.new(), skills: skills)
+    combat = Keyword.get(opts, :combat, %{Combat.new() | enemies: [%{id: "player-1", pid: self(), name: "灭绝师太", room_id: @room}]})
 
     %Kalevala.Character{
       id: "mob-1",
@@ -45,7 +46,7 @@ defmodule Kantele.Combat.BingxinJueTest do
       meta: %Kantele.Character.NonPlayerMeta{
         vitals: vitals,
         stats: stats,
-        combat: %{Combat.new() | enemies: [%{id: "player-1", pid: self(), name: "灭绝师太", room_id: @room}]}
+        combat: combat
       }
     }
   end
@@ -114,7 +115,7 @@ defmodule Kantele.Combat.BingxinJueTest do
       assert updated.meta.combat.temp.attack == 50
       assert updated.meta.combat.temp.defense == 50
       assert Combat.buff_active?(updated.meta.combat, "powerup")
-      assert published_text(conn) =~ "冰心诀运行完毕"
+      assert published_text(conn) =~ "白雾缭绕"
     end
 
     test "内力不足被拒" do
@@ -125,12 +126,27 @@ defmodule Kantele.Combat.BingxinJueTest do
 
   describe "freeze（寒气，攻击方门槛）" do
     test "等级不足被拒" do
-      conn = perform([skills: %{"bingxin-jue" => 149, "force" => 150}, mapped: %{"force" => "bingxin-jue"}], "freeze")
+      conn =
+        build_conn(build_character(
+          skills: %{"bingxin-jue" => 149, "force" => 150},
+          mapped: %{"force" => "bingxin-jue"},
+          performs: MapSet.new(["bingxin-jue/freeze"]),
+          combat: %{Combat.new() | enemies: [enemy()]}
+        ))
+      conn = ExertCommand.run(conn, %{"function" => "freeze"})
       assert output_text(conn) =~ "火候不够"
     end
 
     test "内力不足被拒" do
-      conn = perform([skills: %{"bingxin-jue" => 150, "force" => 150}, mapped: %{"force" => "bingxin-jue"}, vitals: %{@vitals | neili: 500}], "freeze")
+      conn =
+        build_conn(build_character(
+          skills: %{"bingxin-jue" => 150, "force" => 150},
+          mapped: %{"force" => "bingxin-jue"},
+          performs: MapSet.new(["bingxin-jue/freeze"]),
+          vitals: %{@vitals | neili: 500},
+          combat: %{Combat.new() | enemies: [enemy()]}
+        ))
+      conn = ExertCommand.run(conn, %{"function" => "freeze"})
       assert output_text(conn) =~ "内力不够"
     end
 
@@ -142,19 +158,19 @@ defmodule Kantele.Combat.BingxinJueTest do
           performs: MapSet.new(["bingxin-jue/freeze"]),
           combat: Combat.new()
         ))
-      conn = perform([], "freeze")
+      conn = ExertCommand.run(conn, %{"function" => "freeze"})
       assert output_text(conn) =~ "只能用寒气攻击战斗中的对手"
     end
 
     test "目标已死被拒" do
-      target = enemy(vitals: %{Vitals.new() | qi: 0})
+      target = enemy(vitals: %{Vitals.new() | qi: 0}, combat: %{Combat.new() | dead: true})
       conn = build_conn(build_character(
         skills: %{"bingxin-jue" => 150, "force" => 150},
         mapped: %{"force" => "bingxin-jue"},
         performs: MapSet.new(["bingxin-jue/freeze"]),
         combat: %{Combat.new() | enemies: [target]}
       ))
-      conn = perform([], "freeze")
+      conn = ExertCommand.run(conn, %{"function" => "freeze"})
       assert output_text(conn) =~ "已经这样了"
     end
 
@@ -166,7 +182,7 @@ defmodule Kantele.Combat.BingxinJueTest do
         performs: MapSet.new(["bingxin-jue/freeze"]),
         combat: %{Combat.new() | enemies: [target]}
       ))
-      conn = perform([], "freeze")
+      conn = ExertCommand.run(conn, %{"function" => "freeze"})
       assert published_text(conn) =~ "寒气迎面扑向"
 
       assert_receive %Kalevala.Event{
@@ -180,7 +196,7 @@ defmodule Kantele.Combat.BingxinJueTest do
     test "命中：目标 qi/max_qi/neili 减少，busy 1" do
       target = enemy(vitals: %{Vitals.new() | qi: 500, max_qi: 500, neili: 500})
       target_conn = build_conn(target)
-      data = %{perform_id: "bingxin-jue/freeze", level: 150, rng: fn n -> n end}
+      data = %{perform_id: "bingxin-jue/freeze", level: 150, ap: 150, rng: fn n -> n end}
 
       conn = incoming(target_conn, data)
 
@@ -196,7 +212,7 @@ defmodule Kantele.Combat.BingxinJueTest do
     test "失手：目标不动，仅文案" do
       target = enemy(vitals: %{Vitals.new() | qi: 500, max_qi: 500, neili: 500}, skills: %{"force" => 500})
       target_conn = build_conn(target)
-      data = %{perform_id: "bingxin-jue/freeze", level: 150, rng: fn _ -> 1 end}
+      data = %{perform_id: "bingxin-jue/freeze", level: 150, ap: 0, rng: fn _ -> 1 end}
 
       conn = incoming(target_conn, data)
 
@@ -207,9 +223,9 @@ defmodule Kantele.Combat.BingxinJueTest do
     end
 
     test "目标已死则忽略" do
-      target = enemy(vitals: %{Vitals.new() | qi: 0})
+      target = enemy(vitals: %{Vitals.new() | qi: 0}, combat: %{Combat.new() | dead: true})
       target_conn = build_conn(target)
-      data = %{perform_id: "bingxin-jue/freeze", level: 150, rng: fn _ -> 500 end}
+      data = %{perform_id: "bingxin-jue/freeze", level: 150, ap: 150, rng: fn _ -> 500 end}
 
       assert incoming(target_conn, data).private.update_character == nil
     end

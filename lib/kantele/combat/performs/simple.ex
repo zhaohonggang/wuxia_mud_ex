@@ -174,6 +174,7 @@ defmodule Kantele.Combat.Performs.Simple do
 
   defp gate(true, _message), do: :ok
   defp gate(false, message), do: {:error, message}
+  defp gate(nil, message), do: {:error, message}
 
   # -- 效果 ---------------------------------------------------------------
 
@@ -200,6 +201,13 @@ defmodule Kantele.Combat.Performs.Simple do
       end)
 
     schedule_expire(spec, state.buff, ctx, rng)
+
+    # custom 效果可携带 conn 副作用（如 session 变更）：合并 session 到最终 conn
+    conn =
+      case Map.get(state, :conn) do
+        nil -> conn
+        custom_conn -> %{conn | session: custom_conn.session}
+      end
 
     conn
     |> put_character(character)

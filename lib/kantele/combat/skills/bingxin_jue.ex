@@ -147,11 +147,7 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] ->
-        if enemy.meta.vitals.alive? do
-          {:ok, enemy}
-        else
-          {:error, "你只能用寒气攻击战斗中的对手。\n"}
-        end
+        {:ok, enemy}
       [] ->
         {:error, "你只能用寒气攻击战斗中的对手。\n"}
     end
@@ -174,7 +170,7 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
   end
 
   defp check_target_alive(target) do
-    if target.meta.vitals.alive? do
+    if not target.meta.combat.dead do
       :ok
     else
       {:error, "对方都已经这样了，用不着这么费力吧？\n"}
@@ -197,6 +193,7 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
         attacker: ref(character),
         perform_id: @perform_id,
         level: Stats.skill(character.meta.stats, "bingxin-jue"),
+        ap: Stats.skill(character.meta.stats, "force"),
         rng: &:rand.uniform/1
       }
     })
@@ -211,7 +208,8 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
     level = Map.get(data, :level, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
 
-    ap = Stats.skill(attacker.meta.stats, "force")
+    # attacker 为瘦引用（ref/1），攻防数值随 perform-incoming data 传递
+    ap = Map.get(data, :ap, 0)
     dp = Stats.skill(character.meta.stats, "force")
 
     success = div(ap, 2) + rng.(ap) > rng.(dp)
@@ -253,6 +251,8 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
         neili_cost: 0,
         busy: 2
       })
+
+      conn
     else
       message = "$N默运冰心决，一股寒气迎面扑向$n，四周登时雪花飘飘。\n" <>
                 "你感到一阵寒意自心底泛起，连忙运动抵抗，堪勘无事。\n"
@@ -266,9 +266,9 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
         neili_cost: 0,
         busy: 2
       })
-    end
 
-    conn
+      conn
+    end
   end
 
   defp ref(character) do

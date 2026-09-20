@@ -17,7 +17,7 @@ defmodule Kantele.Combat.Performs do
   def lookup(perform_id) when is_binary(perform_id) do
     with [skill_id, move] <- String.split(perform_id, "/", parts: 2),
          skill when not is_nil(skill) <- Skills.get(skill_id),
-         target when not is_nil(target) <- skill.perform_list()[move] do
+         target when not is_nil(target) <- skill.perform_list()[move] || skill.exert_list()[move] do
       target
     else
       _ -> nil
