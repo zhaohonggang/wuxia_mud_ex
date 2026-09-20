@@ -1,10 +1,10 @@
-defmodule Kantele.Combat.Skills.LongxingJian do
+defmodule Kantele.Combat.Skills.LuoyunDao do
   @moduledoc """
-  龙形剑法（对照 `kungfu/skill/longxing-jian.c`）
+  洛云刀法（对照 `kungfu/skill/luoyun-dao.c`）
 
-  剑法载体：`valid_enable("sword")` / `valid_enable("staff")` / `valid_enable("parry")`。
+  刀法载体：`valid_enable("blade")` / `valid_enable("parry")`。
 
-  绝招实现见 `lib/kantele/combat/skills/performs/longxing_jian/`。
+  绝招实现见 `lib/kantele/combat/skills/performs/luoyun_dao/`。
 
   差异（TODO(migrate)）：
   - LPC `valid_learn` 门槛未建模；
@@ -14,10 +14,10 @@ defmodule Kantele.Combat.Skills.LongxingJian do
   use Kantele.Combat.Skill
 
   @impl true
-  def id(), do: "longxing-jian"
+  def id(), do: "luoyun-dao"
 
   @impl true
-  def valid_enable(usage), do: usage in ["sword", "staff", "parry"]
+  def valid_enable(usage), do: usage in ["blade", "parry"]
 
   @impl true
   def valid_learn(_stats), do: :ok
@@ -31,6 +31,6 @@ defmodule Kantele.Combat.Skills.LongxingJian do
 
   @impl true
   def perform_list() do
-    %{"kong" => Kantele.Combat.Skills.Performs.LongxingJian.Kong}
+    %{"tian" => Kantele.Combat.Skills.Performs.LuoyunDao.Tian}
   end
 end
