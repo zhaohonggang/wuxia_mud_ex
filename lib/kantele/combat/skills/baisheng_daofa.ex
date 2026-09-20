@@ -1,10 +1,10 @@
-defmodule Kantele.Combat.Skills.ChanhunSuo do
+defmodule Kantele.Combat.Skills.BaishengDaofa do
   @moduledoc """
-  缠魂锁法（对照 `kungfu/skill/chanhun-suo.c`）
+  百胜刀法（对照 `kungfu/skill/baisheng-daofa.c`）
 
-  鞭/锁法载体：`valid_enable("whip")` / `valid_enable("parry")`。
+  刀法载体：`valid_enable("blade")` / `valid_enable("parry")`。
 
-  绝招实现见 `lib/kantele/combat/skills/performs/chanhun_suo/`。
+  绝招实现见 `lib/kantele/combat/skills/performs/baisheng_daofa/`。
 
   差异（TODO(migrate)）：
   - LPC `valid_learn` 门槛未建模；
@@ -14,10 +14,10 @@ defmodule Kantele.Combat.Skills.ChanhunSuo do
   use Kantele.Combat.Skill
 
   @impl true
-  def id(), do: "chanhun-suo"
+  def id(), do: "baisheng-daofa"
 
   @impl true
-  def valid_enable(usage), do: usage in ["whip", "parry"]
+  def valid_enable(usage), do: usage in ["blade", "parry"]
 
   @impl true
   def valid_learn(_stats), do: :ok
@@ -31,6 +31,6 @@ defmodule Kantele.Combat.Skills.ChanhunSuo do
 
   @impl true
   def perform_list() do
-    %{"duo" => Kantele.Combat.Skills.Performs.ChanhunSuo.Duo}
+    %{"heng" => Kantele.Combat.Skills.Performs.BaishengDaofa.Heng}
   end
 end

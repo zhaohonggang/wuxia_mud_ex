@@ -165,7 +165,14 @@ defmodule Kantele.Combat.Skills do
     "tangmen-throwing" => Kantele.Combat.Skills.TangmenThrowing,
     "tiangang-zhi" => Kantele.Combat.Skills.TiangangZhi,
     "sougu" => Kantele.Combat.Skills.Sougu,
-    "bagua-dao" => Kantele.Combat.Skills.BaguaDao
+    "bagua-dao" => Kantele.Combat.Skills.BaguaDao,
+    "baisheng-daofa" => Kantele.Combat.Skills.BaishengDaofa,
+    "baxian-jian" => Kantele.Combat.Skills.BaxianJian,
+    "bizhen-qingzhang" => Kantele.Combat.Skills.BizhenQingzhang,
+    "caiyan-gong" => Kantele.Combat.Skills.CaiyanGong,
+    "canghong-bifa" => Kantele.Combat.Skills.CanghongBifa,
+    "chanhun-suo" => Kantele.Combat.Skills.ChanhunSuo,
+    "chuanxin-zhang" => Kantele.Combat.Skills.ChuanxinZhang
   }
 
   @doc "运行时注册一门武学（覆盖同名内建）"
