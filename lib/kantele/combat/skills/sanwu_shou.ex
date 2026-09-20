@@ -1,10 +1,10 @@
-defmodule Kantele.Combat.Skills.QuanzhenJian do
+defmodule Kantele.Combat.Skills.SanwuShou do
   @moduledoc """
-  全真剑法（对照 `kungfu/skill/quanzhen-jian.c`）
+  散手（对照 `kungfu/skill/sanwu-shou.c`）
 
-  剑法载体：`valid_enable("sword")` / `valid_enable("parry")`。
+  鞭/手法载体：`valid_enable("whip")` / `valid_enable("parry")`。
 
-  绝招实现见 `lib/kantele/combat/skills/performs/quanzhen_jian/`。
+  绝招实现见 `lib/kantele/combat/skills/performs/sanwu_shou/`。
 
   差异（TODO(migrate)）：
   - LPC `valid_learn` 门槛未建模；
@@ -14,10 +14,10 @@ defmodule Kantele.Combat.Skills.QuanzhenJian do
   use Kantele.Combat.Skill
 
   @impl true
-  def id(), do: "quanzhen-jian"
+  def id(), do: "sanwu-shou"
 
   @impl true
-  def valid_enable(usage), do: usage in ["sword", "parry"]
+  def valid_enable(usage), do: usage in ["whip", "parry"]
 
   @impl true
   def valid_learn(_stats), do: :ok
@@ -31,6 +31,6 @@ defmodule Kantele.Combat.Skills.QuanzhenJian do
 
   @impl true
   def perform_list() do
-    %{"chan" => Kantele.Combat.Skills.Performs.QuanzhenJian.Chan}
+    %{"wei" => Kantele.Combat.Skills.Performs.SanwuShou.Wei}
   end
 end

@@ -208,9 +208,9 @@
 - [ ] `qianzhu-wandushou/suck` perform「suck」 门槛: assign:my_force=xiuluo-yinshagong,my_skill=qianzhu-wandushou; var:my_skill<100,tg_age<200,tg_age<300; res:age>=99,neili>=200,qi>=200,qi>=50 | 效果: temp:nopoison,wudu_suck; busy | 依赖: 无
 - [ ] `qingyun-bian/duan` perform「duan」 门槛: level:force>=100,whip>=100; assign:power=qingyun-bian; var:power<150 | 效果: apply+:armor,attack,damage,dodge; busy | 依赖: 无
 - [ ] `qishi-ji/chong` perform「冲刺攻击」 门槛: level:force>=150,qishi-ji>=100; var:i<6; map:club=qishi-ji; res:neili>=200 | 效果: add:neili -100; busy | 依赖: 无
-- [ ] `qiufeng-chenfa/chan` perform「chan」 门槛: level:qiufeng-chenfa>=80; res:neili>=200 | 效果: add:neili -100; busy | 依赖: 无
+- [x] `qiufeng-chenfa/chan` perform「chan」 门槛: level:qiufeng-chenfa>=80; res:neili>=200 | 效果: add:neili -100; busy | 依赖: 无
 - [ ] `qiulin-shiye/wu` perform「wu」 门槛: — | 效果: busy | 依赖: 无
-- [ ] `quanzhen-jian/chan` perform「缠字诀」 门槛: level:quanzhen-jian>=80; assign:ap=sword,dp=force,level=quanzhen-jian; map:sword=quanzhen-jian; res:neili>=100 | 效果: add:neili -50; busy | 依赖: 无
+- [x] `quanzhen-jian/chan` perform「缠字诀」 门槛: level:quanzhen-jian>=80; assign:ap=sword,dp=force,level=quanzhen-jian; map:sword=quanzhen-jian; res:neili>=100 | 效果: add:neili -50; busy | 依赖: 无
 - [ ] `quemen-jian/can` perform「天残剑诀」 门槛: level:force>=120,quemen-jian>=80; var:i<4; map:sword=quemen-jian; res:max_neili>=800,neili>=100 | 效果: add:neili -80; busy | 依赖: 无
 - [ ] `qufannao-zhi/lingkong` perform「凌空指穴」 门槛: level:hunyuan-yiqi>=100,qufannao-zhi>=100; assign:ap=force,damage=qufannao-zhi,dp=force; var:damage<100,damage<300,damage<500; res:neili>=300 | 效果: busy | 依赖: 无
 - [ ] `qujing-gunfa/zhen` perform「震雷乾坤」 门槛: level:force>=350,qujing-gunfa>=200; assign:ap=club,dp=parry; var:i<10; map:club=qujing-gunfa,force=hunyuan-yiqi,force=luohan-fumogong,force=yijinjing; res:max_neili>=4000,max_neili>=4500,neili>=300 | 效果: add:neili -200; apply+:attack,damage; busy | 依赖: 无
@@ -224,7 +224,7 @@
 - [ ] `ruanhong-zhusuo/pan` perform「盘鹰诀」 门槛: level:ruanhong-zhusuo>=80; map:whip=ruanhong-zhusuo; res:neili>=100 | 效果: busy | 依赖: 无
 - [ ] `ruanhong-zhusuo/suo` perform「锁龙诀」 门槛: level:ruanhong-zhusuo>=150; assign:ap=whip,dp=parry; map:whip=ruanhong-zhusuo; res:neili>=350 | 效果: apply+:attack; busy | 依赖: 无
 - [ ] `ruyi-dao/ruyi` perform「如意六刀」 门槛: level:force>=150,ruyi-dao>=100; var:i<6; map:blade=ruyi-dao; res:neili>=250 | 效果: add:neili -120; busy | 依赖: 无
-- [ ] `sanwu-shou/wei` perform「无所不为」 门槛: level:sanwu-shou>=70; map:whip=sanwu-shou; res:neili>=100 | 效果: add:neili -80; busy | 依赖: 无
+- [x] `sanwu-shou/wei` perform「无所不为」 门槛: level:sanwu-shou>=70; map:whip=sanwu-shou; res:neili>=100 | 效果: add:neili -80; busy | 依赖: 无
 - [ ] `sanwu-shou/zhi` perform「无所不至」 门槛: level:sanwu-shou>=100; assign:ap=whip,dp=dodge; map:whip=sanwu-shou; res:neili>=140 | 效果: apply+:attack; busy | 依赖: 无
 - [ ] `shedao-qigong/chang1` perform「chang1」 门槛: level:shedao-qigong>=60; assign:skill=force; res:neili>=300 | 效果: add:neili -200; apply+:attack,defense,dodge | 依赖: 无
 - [ ] `shedao-qigong/chang2` perform「chang2」 门槛: level:shedao-qigong>=80 | 效果: add:neili 100; apply+:attack,defense,dodge | 依赖: 无
@@ -241,13 +241,13 @@
 - [ ] `shilin-jian/luo` perform「落英纷飞」 门槛: level:shilin-jian>=120; assign:ap=sword,dp=dodge; map:sword=shilin-jian; res:neili>=140 | 效果: apply+:attack; busy | 依赖: 无
 - [ ] `six-finger/zongheng` perform「zongheng」 门槛: level:six-finger>=120; assign:ap=six-finger,dp=force; map:finger=six-finger; res:neili>=100 | 效果: busy | 依赖: 无
 - [ ] `sixiang-bufa/fei` perform「飞天神行」 门槛: level:dodge>=150,force>=150,sixiang-bufa>=150; assign:skill=sixiang-bufa; res:max_neili>=1000,neili>=250 | 效果: add:neili -200; temp:fei_tian; busy | 依赖: 无
-- [ ] `songshan-jian/meng` perform「如梦如幻」 门槛: level:songshan-jian>=40; assign:level=songshan-jian; map:sword=songshan-jian; res:neili>=120 | 效果: add:neili -80; busy | 依赖: 无
+- [x] `songshan-jian/meng` perform「如梦如幻」 门槛: level:songshan-jian>=40; assign:level=songshan-jian; map:sword=songshan-jian; res:neili>=120 | 效果: add:neili -80; busy | 依赖: 无
 - [ ] `sougu/muyeyingyang` perform「muyeyingyang」 门槛: level:sougu>=150; res:neili>=800 | 效果: add:neili -150; busy | 依赖: 无
 - [ ] `sougu-yingzhua/ying` perform「ying」 门槛: level:sougu-yingzhua>=150; res:neili>=800 | 效果: add:neili -150; busy | 依赖: 无
 - [ ] `sun-finger/dian` perform「dian」 门槛: level:sun-finger>=80; assign:ap=finger,dp=parry; map:finger=sun-finger | 效果: busy | 依赖: 无
 - [ ] `sun-finger/heal` perform「heal」 门槛: res:jing>=100,max_neili>=1500,neili>=1000,neili>=200 | 效果: add:neili -1000; set:jing=1,qi=1; busy | 依赖: 无
-- [ ] `suxin-jian/lian` perform「连环剑术」 门槛: level:dodge>=100,suxin-jian>=120; assign:ap=sword,dp=dodge; map:sword=suxin-jian; res:neili>=200 | 效果: apply+:attack; busy | 依赖: 无
-- [ ] `taiji-jian/chan` perform「缠字诀」 门槛: level:taiji-jian>=80; assign:level=taiji-jian; map:sword=taiji-jian; res:neili>=60 | 效果: add:neili -30; busy | 依赖: 无
+- [x] `suxin-jian/lian` perform「连环剑术」 门槛: level:dodge>=100,suxin-jian>=120; assign:ap=sword,dp=dodge; map:sword=suxin-jian; res:neili>=200 | 效果: apply+:attack; busy | 依赖: 无
+- [x] `taiji-jian/chan` perform「缠字诀」 门槛: level:taiji-jian>=80; assign:level=taiji-jian; map:sword=taiji-jian; res:neili>=60 | 效果: add:neili -30; busy | 依赖: 无
 - [x] `taiji-jian/sui` perform「随字诀」 门槛: level:taiji-jian>=60; assign:skill=taiji-jian; map:sword=taiji-jian; res:neili>=300 | 效果: add:neili -100; temp:tjj_sui; apply+:attack,defense; busy | 依赖: 无
 - [ ] `taiji-jian/zhuan` perform「剑轮岚转」 门槛: level:taiji-jian>=160; assign:ap=sword,dp=parry; map:sword=taiji-jian; res:neili>=250 | 效果: apply+:attack; busy | 依赖: 无
 - [ ] `taixuan-gong/xuan` perform「太玄激劲」 门槛: level:force>=300,taixuan-gong>=240; assign:ap=taixuan-gong,dp=dodge,lvl=taixuan-gong; var:i<15; map:blade=taixuan-gong,sword=taixuan-gong,unarmed=taixuan-gong,unarmed=taixuan-gong; res:max_neili>=5000,neili>=800 | 效果: add:neili -600; apply+:attack; busy | 依赖: 无
