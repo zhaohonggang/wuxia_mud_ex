@@ -1,10 +1,10 @@
-defmodule Kantele.Combat.Skills.QiankunJian do
+defmodule Kantele.Combat.Skills.MiaojiaJian do
   @moduledoc """
-  乾坤剑法（对照 `kungfu/skill/qiankun-jian.c`）
+  苗家剑法（对照 `kungfu/skill/miaojia-jian.c`）
 
   剑法载体：`valid_enable("sword")` / `valid_enable("parry")`。
 
-  绝招实现见 `lib/kantele/combat/skills/performs/qiankun_jian/`。
+  绝招实现见 `lib/kantele/combat/skills/performs/miaojia_jian/`。
 
   差异（TODO(migrate)）：
   - LPC `valid_learn` 门槛未建模；
@@ -14,7 +14,7 @@ defmodule Kantele.Combat.Skills.QiankunJian do
   use Kantele.Combat.Skill
 
   @impl true
-  def id(), do: "qiankun-jian"
+  def id(), do: "miaojia-jian"
 
   @impl true
   def valid_enable(usage), do: usage in ["sword", "parry"]
@@ -31,6 +31,6 @@ defmodule Kantele.Combat.Skills.QiankunJian do
 
   @impl true
   def perform_list() do
-    %{"riyue" => Kantele.Combat.Skills.Performs.QiankunJian.Riyue}
+    %{"qian" => Kantele.Combat.Skills.Performs.MiaojiaJian.Qian}
   end
 end

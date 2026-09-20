@@ -1,11 +1,11 @@
-defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
+defmodule Kantele.Combat.Skills.Performs.PomieJinzhen.Du do
   @moduledoc """
-  若悲「ruo」（对照 `kungfu/skill/mingwang-jian/ruo.c`）
+  金针渡劫「du」（对照 `kungfu/skill/pomie-jinzhen/du.c`）
 
-  明王剑法单体攻击：消耗 100 内力，对战斗中对手出招。
+  破灭金针单体攻击：消耗 150 内力，对战斗中对手出招。
 
   差异（TODO(migrate)）：
-  - LPC 仅 `level:mingwang-jian>=100`；本版加 `mapped` 与 `neili` 门槛；
+  - LPC 仅 `level:pomie-jinzhen>=150,force>=200`；本版加 `mapped` 与 `neili` 门槛；
   - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
   """
 
@@ -21,8 +21,8 @@ defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
 
-  @perform_id "mingwang-jian/ruo"
-  @move_name "「若悲」"
+  @perform_id "pomie-jinzhen/du"
+  @move_name "「金针渡劫」"
 
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
@@ -32,7 +32,6 @@ defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
 
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
          {:ok, level} <- check_skill_level(stats),
          :ok <- check_mapped(stats),
          :ok <- check_neili(character) do
@@ -60,36 +59,26 @@ defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
     end
   end
 
-  defp check_weapon(combat) do
-    weapon = Combat.weapon(combat)
-
-    if weapon && Map.get(weapon, :skill_type) == "sword" do
-      :ok
-    else
-      {:error, "你使用的武器不对。\n"}
-    end
-  end
-
   defp check_skill_level(stats) do
-    level = Stats.skill(stats, "mingwang-jian")
+    level = Stats.skill(stats, "pomie-jinzhen")
 
-    if level < 100 do
-      {:error, "你的明王剑法不够娴熟，无法施展#{@move_name}。\n"}
+    if level < 150 do
+      {:error, "你的破灭金针不够娴熟，无法施展#{@move_name}。\n"}
     else
       {:ok, level}
     end
   end
 
   defp check_mapped(stats) do
-    if Stats.mapped(stats, "sword") == "mingwang-jian" do
+    if Stats.mapped(stats, "throwing") == "pomie-jinzhen" do
       :ok
     else
-      {:error, "你没有激发明王剑法，无法施展#{@move_name}。\n"}
+      {:error, "你没有激发破灭金针，无法施展#{@move_name}。\n"}
     end
   end
 
   defp check_neili(character) do
-    if character.meta.vitals.neili < 100 do
+    if character.meta.vitals.neili < 150 do
       {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
     else
       :ok
@@ -97,13 +86,13 @@ defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
   end
 
   defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 100}
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
 
     conn =
       Broadcast.publish(
         conn,
-        "$N剑气如悲，使出明王剑法「若悲」，剑意凄凉刺向$n！\n",
+        "$N指尖弹出金针，使出破灭金针「金针渡劫」，针影如流星般射向$n！\n",
         n1: character.name,
         n2: target.name
       )
@@ -128,7 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
     weapon_name = weapon && Map.get(weapon, :name)
     parry = Stats.skill(character.meta.stats, "parry")
 
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
+    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "暗器"]
 
     if Engine.rand(rng, level) > div(parry, 2) do
       combat = Combat.start_busy(combat, div(level, 22) + 2)

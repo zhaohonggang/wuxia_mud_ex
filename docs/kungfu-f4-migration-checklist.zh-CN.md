@@ -186,9 +186,9 @@
 - [ ] `mantian-xing/shan` perform「星光闪烁」 门槛: level:mantian-xing>=100; assign:skill=mantian-xing; res:neili>=100 | 效果: add:neili -80; busy | 依赖: 无
 - [ ] `mantian-xing/xing` perform「穹外飞星」 门槛: level:force>=150,mantian-xing>=80; assign:skill=mantian-xing; res:max_neili>=1200,neili>=150 | 效果: add:neili -100; temp:feixing; apply+:attack,dodge,parry; busy | 依赖: 无
 - [ ] `mantianhuayu-zhen/zheng` perform「zheng」 门槛: level:force>=150,mantianhuayu-zhen>=100; assign:skill=mantianhuayu-zhen; res:neili>=150 | 效果: add:neili -100; busy | 依赖: 无
-- [ ] `miaojia-jian/qian` perform「剑舞千秋」 门槛: level:force>=220,miaojia-jian>=160; assign:ap=sword,dp=parry; map:sword=miaojia-jian; res:max_neili>=1800,neili>=300 | 效果: apply+:attack; busy | 依赖: 无
+- [x] `miaojia-jian/qian` perform「剑舞千秋」 门槛: level:force>=220,miaojia-jian>=160; assign:ap=sword,dp=parry; map:sword=miaojia-jian; res:max_neili>=1800,neili>=300 | 效果: apply+:attack; busy | 依赖: 无
 - [ ] `miaojia-jian/zhai` perform「云边摘月」 门槛: level:force>=120,miaojia-jian>=100; assign:level=miaojia-jian; map:sword=miaojia-jian; res:max_neili>=800,neili>=100 | 效果: add:neili -30; busy | 依赖: 无
-- [ ] `mingwang-jian/ruo` perform「若悲」 门槛: level:mingwang-jian>=100; map:sword=mingwang-jian; res:neili>=100 | 效果: busy | 依赖: 无
+- [x] `mingwang-jian/ruo` perform「若悲」 门槛: level:mingwang-jian>=100; map:sword=mingwang-jian; res:neili>=100 | 效果: busy | 依赖: 无
 - [x] `mizong-houquan/zhou` perform「zhou」 门槛: level:mizong-houquan>=200; assign:n=mizong-houquan; res:neili>=500 | 效果: add:neili -50; apply+:attack,unarmed_damage; busy | 依赖: 无
 - [ ] `murong-jian/xing` perform「剑转七星」 门槛: level:dodge>=120,murong-jian>=80; var:i<7; map:sword=murong-jian; res:neili>=200 | 效果: add:neili -210; busy | 依赖: 无
 - [ ] `murong-sword/qixing` perform「qixing」 门槛: level:force>=150,sword>=150; var:i<7; map:sword=murong-sword; res:neili>=220 | 效果: add:neili -140; busy | 依赖: 无
@@ -199,12 +199,12 @@
 - [ ] `panlong-suo/sha` perform「绝命七杀」 门槛: level:force>=220,panlong-suo>=180; assign:count=whip; var:i<6; map:whip=panlong-suo; res:neili>=300 | 效果: add:neili -180; apply+:attack; busy | 依赖: 无
 - [x] `pidi-shenzhen/huan` perform「幻遁寒星」 门槛: level:force>=200,pidi-shenzhen>=140; assign:skill=pidi-shenzhen; res:neili>=150 | 效果: add:neili -100; busy | 依赖: 无
 - [ ] `pixie-jian/gui` perform「鬼魅身法」 门槛: assign:ap=pixie-jian,dp=parry,skill=pixie-jian; var:skill<100; map:dodge=pixie-jian; res:neili>=100 | 效果: add:neili -50; busy | 依赖: 无
-- [ ] `poguang-dao/bing` perform「寒冰环」 门槛: level:dodge>=150,poguang-dao>=100; assign:level=sword; map:blade=poguang-dao; res:neili>=200 | 效果: add:neili -120; busy | 依赖: 无
-- [ ] `pomie-jinzhen/du` perform「金针渡劫」 门槛: level:force>=200,pomie-jinzhen>=150; assign:skill=pomie-jinzhen; res:neili>=150 | 效果: add:neili -100; busy | 依赖: 无
+- [x] `poguang-dao/bing` perform「寒冰环」 门槛: level:dodge>=150,poguang-dao>=100; assign:level=sword; map:blade=poguang-dao; res:neili>=200 | 效果: add:neili -120; busy | 依赖: 无
+- [x] `pomie-jinzhen/du` perform「金针渡劫」 门槛: level:force>=200,pomie-jinzhen>=150; assign:skill=pomie-jinzhen; res:neili>=150 | 效果: add:neili -100; busy | 依赖: 无
 - [ ] `poyang-jian/xian` perform「神光再现」 门槛: level:force>=200; assign:level=poyang-jian; var:level<120; map:sword=poyang-jian; res:neili>=150 | 效果: add:neili -120; busy | 依赖: 无
 - [ ] `poyu-quan/lei` perform「雷动九天」 门槛: assign:skill=cuff,skill=poyu-quan; var:skill<120; res:neili>=500 | 效果: add:neili -400; temp:lei; busy | 依赖: 无
 - [ ] `qiankun-danuoyi/nuoyi` perform「nuoyi」 门槛: level:qiankun-danuoyi>=50; assign:ap=force,dp=force,level=qiankun-danuoyi; var:i<2; res:neili>=400 | 效果: add:neili -350; busy | 依赖: 无
-- [ ] `qiankun-jian/riyue` perform「日月乾坤」 门槛: level:force>=220,qiankun-jian>=150; assign:ap=sword,dp=parry; map:sword=qiankun-jian; res:neili>=400 | 效果: apply+:attack; busy | 依赖: 无
+- [x] `qiankun-jian/riyue` perform「日月乾坤」 门槛: level:force>=220,qiankun-jian>=150; assign:ap=sword,dp=parry; map:sword=qiankun-jian; res:neili>=400 | 效果: apply+:attack; busy | 依赖: 无
 - [ ] `qianzhu-wandushou/suck` perform「suck」 门槛: assign:my_force=xiuluo-yinshagong,my_skill=qianzhu-wandushou; var:my_skill<100,tg_age<200,tg_age<300; res:age>=99,neili>=200,qi>=200,qi>=50 | 效果: temp:nopoison,wudu_suck; busy | 依赖: 无
 - [ ] `qingyun-bian/duan` perform「duan」 门槛: level:force>=100,whip>=100; assign:power=qingyun-bian; var:power<150 | 效果: apply+:armor,attack,damage,dodge; busy | 依赖: 无
 - [ ] `qishi-ji/chong` perform「冲刺攻击」 门槛: level:force>=150,qishi-ji>=100; var:i<6; map:club=qishi-ji; res:neili>=200 | 效果: add:neili -100; busy | 依赖: 无

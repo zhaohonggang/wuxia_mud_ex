@@ -1,10 +1,10 @@
-defmodule Kantele.Combat.Skills.QiankunJian do
+defmodule Kantele.Combat.Skills.PomieJinzhen do
   @moduledoc """
-  乾坤剑法（对照 `kungfu/skill/qiankun-jian.c`）
+  破灭金针（对照 `kungfu/skill/pomie-jinzhen.c`）
 
-  剑法载体：`valid_enable("sword")` / `valid_enable("parry")`。
+  暗器/针法载体：`valid_enable("throwing")` / `valid_enable("parry")`。
 
-  绝招实现见 `lib/kantele/combat/skills/performs/qiankun_jian/`。
+  绝招实现见 `lib/kantele/combat/skills/performs/pomie_jinzhen/`。
 
   差异（TODO(migrate)）：
   - LPC `valid_learn` 门槛未建模；
@@ -14,10 +14,10 @@ defmodule Kantele.Combat.Skills.QiankunJian do
   use Kantele.Combat.Skill
 
   @impl true
-  def id(), do: "qiankun-jian"
+  def id(), do: "pomie-jinzhen"
 
   @impl true
-  def valid_enable(usage), do: usage in ["sword", "parry"]
+  def valid_enable(usage), do: usage in ["throwing", "parry"]
 
   @impl true
   def valid_learn(_stats), do: :ok
@@ -31,6 +31,6 @@ defmodule Kantele.Combat.Skills.QiankunJian do
 
   @impl true
   def perform_list() do
-    %{"riyue" => Kantele.Combat.Skills.Performs.QiankunJian.Riyue}
+    %{"du" => Kantele.Combat.Skills.Performs.PomieJinzhen.Du}
   end
 end

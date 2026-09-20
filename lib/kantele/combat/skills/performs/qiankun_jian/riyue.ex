@@ -1,11 +1,11 @@
-defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
+defmodule Kantele.Combat.Skills.Performs.QiankunJian.Riyue do
   @moduledoc """
-  若悲「ruo」（对照 `kungfu/skill/mingwang-jian/ruo.c`）
+  日月乾坤「riyue」（对照 `kungfu/skill/qiankun-jian/riyue.c`）
 
-  明王剑法单体攻击：消耗 100 内力，对战斗中对手出招。
+  乾坤剑法单体攻击：消耗 400 内力，对战斗中对手出招。
 
   差异（TODO(migrate)）：
-  - LPC 仅 `level:mingwang-jian>=100`；本版加 `mapped` 与 `neili` 门槛；
+  - LPC 仅 `level:qiankun-jian>=150,force>=220`；本版加 `mapped` 与 `neili` 门槛；
   - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
   """
 
@@ -21,8 +21,8 @@ defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
 
-  @perform_id "mingwang-jian/ruo"
-  @move_name "「若悲」"
+  @perform_id "qiankun-jian/riyue"
+  @move_name "「日月乾坤」"
 
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
@@ -71,25 +71,25 @@ defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
   end
 
   defp check_skill_level(stats) do
-    level = Stats.skill(stats, "mingwang-jian")
+    level = Stats.skill(stats, "qiankun-jian")
 
-    if level < 100 do
-      {:error, "你的明王剑法不够娴熟，无法施展#{@move_name}。\n"}
+    if level < 150 do
+      {:error, "你的乾坤剑法不够娴熟，无法施展#{@move_name}。\n"}
     else
       {:ok, level}
     end
   end
 
   defp check_mapped(stats) do
-    if Stats.mapped(stats, "sword") == "mingwang-jian" do
+    if Stats.mapped(stats, "sword") == "qiankun-jian" do
       :ok
     else
-      {:error, "你没有激发明王剑法，无法施展#{@move_name}。\n"}
+      {:error, "你没有激发乾坤剑法，无法施展#{@move_name}。\n"}
     end
   end
 
   defp check_neili(character) do
-    if character.meta.vitals.neili < 100 do
+    if character.meta.vitals.neili < 400 do
       {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
     else
       :ok
@@ -97,13 +97,13 @@ defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
   end
 
   defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 100}
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
 
     conn =
       Broadcast.publish(
         conn,
-        "$N剑气如悲，使出明王剑法「若悲」，剑意凄凉刺向$n！\n",
+        "$N剑气纵横，使出乾坤剑法「日月乾坤」，剑势如日月交替般压向$n！\n",
         n1: character.name,
         n2: target.name
       )

@@ -1,11 +1,11 @@
-defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
+defmodule Kantele.Combat.Skills.Performs.PoguangDao.Bing do
   @moduledoc """
-  若悲「ruo」（对照 `kungfu/skill/mingwang-jian/ruo.c`）
+  寒冰环「bing」（对照 `kungfu/skill/poguang-dao/bing.c`）
 
-  明王剑法单体攻击：消耗 100 内力，对战斗中对手出招。
+  破光刀法单体攻击：消耗 200 内力，对战斗中对手出招。
 
   差异（TODO(migrate)）：
-  - LPC 仅 `level:mingwang-jian>=100`；本版加 `mapped` 与 `neili` 门槛；
+  - LPC 仅 `level:poguang-dao>=100,dodge>=150`；本版加 `mapped` 与 `neili` 门槛；
   - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
   """
 
@@ -21,8 +21,8 @@ defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
 
-  @perform_id "mingwang-jian/ruo"
-  @move_name "「若悲」"
+  @perform_id "poguang-dao/bing"
+  @move_name "「寒冰环」"
 
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
@@ -63,7 +63,7 @@ defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
   defp check_weapon(combat) do
     weapon = Combat.weapon(combat)
 
-    if weapon && Map.get(weapon, :skill_type) == "sword" do
+    if weapon && Map.get(weapon, :skill_type) == "blade" do
       :ok
     else
       {:error, "你使用的武器不对。\n"}
@@ -71,25 +71,25 @@ defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
   end
 
   defp check_skill_level(stats) do
-    level = Stats.skill(stats, "mingwang-jian")
+    level = Stats.skill(stats, "poguang-dao")
 
     if level < 100 do
-      {:error, "你的明王剑法不够娴熟，无法施展#{@move_name}。\n"}
+      {:error, "你的破光刀法不够娴熟，无法施展#{@move_name}。\n"}
     else
       {:ok, level}
     end
   end
 
   defp check_mapped(stats) do
-    if Stats.mapped(stats, "sword") == "mingwang-jian" do
+    if Stats.mapped(stats, "blade") == "poguang-dao" do
       :ok
     else
-      {:error, "你没有激发明王剑法，无法施展#{@move_name}。\n"}
+      {:error, "你没有激发破光刀法，无法施展#{@move_name}。\n"}
     end
   end
 
   defp check_neili(character) do
-    if character.meta.vitals.neili < 100 do
+    if character.meta.vitals.neili < 200 do
       {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
     else
       :ok
@@ -97,13 +97,13 @@ defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
   end
 
   defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 100}
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
 
     conn =
       Broadcast.publish(
         conn,
-        "$N剑气如悲，使出明王剑法「若悲」，剑意凄凉刺向$n！\n",
+        "$N刀光凛冽，使出破光刀法「寒冰环」，刀势如寒冰般封向$n！\n",
         n1: character.name,
         n2: target.name
       )
