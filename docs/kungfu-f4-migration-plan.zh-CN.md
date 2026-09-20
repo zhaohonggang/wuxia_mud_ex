@@ -1,6 +1,6 @@
 # Kantele F4 招式/内功批量迁移执行计划
 
-> 状态：Phase 1（T1）批次 1–14 完成 + HEAD 回归修复 + 清单同步（`0ac52ca`）；Phase 2 T2 批次 1（8 条）＋批次 2（6 条）实装完毕、测试全绿；Phase 3 T3 批次 1（6 条攻击型）＋批次 2（6 条攻击型）＋批次 3（6 条攻击型）＋批次 4（6 条攻击型）实装完毕、测试全绿（暂未提交）；全量 2887 测试绿（2026-09-20）；清单 138/644（T1 85/86、T2 26/193、T3 26/169、T5 1/184）
+> 状态：Phase 1（T1）批次 1–14 完成 + HEAD 回归修复 + 清单同步（`0ac52ca`）；Phase 2 T2 批次 1（8 条）＋批次 2（6 条）实装完毕、测试全绿；Phase 3 T3 批次 1（6 条攻击型）＋批次 2（6 条攻击型）＋批次 3（6 条攻击型）＋批次 4（6 条攻击型）＋批次 5（6 条攻击型）实装完毕、测试全绿（暂未提交）；全量 2887 测试绿（2026-09-20）；清单 144/644（T1 85/86、T2 26/193、T3 32/169、T5 1/184）
 > 上游：`docs/kungfu-framework-build-plan.zh-CN.md`（F4 章节）
 > 数据清单：`docs/kungfu-f4-migration-checklist.zh-CN.md`（644 条）
 > 工具：`scripts/translate_perform.exs`、`scripts/f4_checklist.exs`
@@ -357,6 +357,13 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   `pichen-jian/ao`、`shunv-jian/ning`、`mingwang-jian/xiang`、`yunhe-jian/chong`。
   新增 6 个 skill module 注册 `Skills.@static`。统一沿用 `perform-incoming`/
   `resolve_incoming` 样板（4 sword、1 club、1 staff）。命中判定
+  `rand(level) > parry/2`，命中 busy `level/22+2`。
+  全量 `MIX_ENV=test mix test` **2887 测试全绿**。
+
+- [x] 批次 T3-5（6 条基础攻击）：`qiankun-jian/qian`、`quanzhen-jian/ding`、
+  `raozhi-roujian/chuan`、`ruanhong-zhusuo/teng`、`sanhua-zhang/san`、`qianye-shou/qianye`。
+  新增 6 个 skill module 注册 `Skills.@static`。统一沿用 `perform-incoming`/
+  `resolve_incoming` 样板（4 sword、1 whip、1 strike、1 hand）。命中判定
   `rand(level) > parry/2`，命中 busy `level/22+2`。
   全量 `MIX_ENV=test mix test` **2887 测试全绿**。
 
