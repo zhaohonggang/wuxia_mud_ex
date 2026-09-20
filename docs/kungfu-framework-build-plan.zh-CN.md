@@ -161,8 +161,10 @@
 - **步骤 3 校对清单**：新增生成器 `scripts/f4_checklist.exs`，产出 `docs/kungfu-f4-migration-checklist.zh-CN.md`（644 条，勾选式）。按复杂度分档：T1 自我增益 exert 86、T2 无目标 perform 193、T3 攻击型 169、T4 状态/毒 12、T5 需 `prepare_skill`（当前阻塞）184。
 - **回归**：`f4_extractor_test.exs` 10/0；全量待复跑。
 - **批量进度**：T1 批次 1–14 已实装并推送 + HEAD 回归修复（全量 2809 绿），批次 13 起招式武学
-  破冰 T2/T3/T5。校对清单 `docs/kungfu-f4-migration-checklist.zh-CN.md` 同步至 **100/644**
-  （T1 85/86、T2 12/193、T3 2/169、T5 1/184）；T1 仅剩 `beiming-shengong/shield`
+  破冰 T2/T3/T5。Phase 2 T2 批次 1（8 条自我 buff，含 makearray 组队事件）已实装、
+  `test/kantele/combat/t2_self_buffs_test.exs`（38 例）到顶、全量 **2847 绿**（暂未提交）。
+  校对清单 `docs/kungfu-f4-migration-checklist.zh-CN.md` 同步至 **108/644**
+  （T1 85/86、T2 20/193、T3 2/169、T5 1/184）；T1 仅剩 `beiming-shengong/shield`
   （批次 11 重写北冥功时去实现，见迁移计划批次 11）。
 - **待办**：按档校对 644 骨架的 `TODO(migrate)` 门槛/效果，逐批实装 + 测试锁定 + 提交。
 

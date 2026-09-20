@@ -75,7 +75,10 @@ defmodule Kantele.Combat.HuashanJianTest do
     end
 
     test "perform_list 含截手式" do
-      assert HuashanJian.perform_list() == %{"jie" => Jie}
+      assert HuashanJian.perform_list() == %{
+               "jie" => Jie,
+               "lian" => Kantele.Combat.Skills.Performs.HuashanJian.Lian
+             }
     end
 
     test "query_action 按等级取式且不超过上限" do

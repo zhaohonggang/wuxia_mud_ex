@@ -153,6 +153,10 @@ defmodule Kantele.Character.Events do
       event(Message, :echo, interested?: &CombatEvent.interested?/1)
     end
 
+    module(FanliangyiEvent) do
+      event("array/fanliangyi-dao", :array)
+    end
+
     module(EmoteEvent) do
       event(Message, :echo, interested?: &EmoteEvent.interested?/1)
     end
@@ -237,6 +241,10 @@ defmodule Kantele.Character.NonPlayerEvents do
       event("combat/respawn", :respawn)
       event("vitals/regen", :regen)
 end
+
+     module(FanliangyiEvent) do
+       event("array/fanliangyi-dao", :array)
+     end
 
      module(ConditionEvent) do
        event("poison/apply", :apply)

@@ -116,12 +116,12 @@
 - [x] `boyun-suowu/meng` perform「meng」 门槛: var:damage<20,damage<40,damage<80 | 效果: busy | 依赖: 无
 - [ ] `chanhun-suo/suo` perform「锁魂势」 门槛: level:chanhun-suo>=70,force>=100; map:whip=chanhun-suo; res:neili>=150 | 效果: busy | 依赖: 无
 - [ ] `chongyang-shenzhang/lian` perform「重阳连环掌」 门槛: level:chongyang-shenzhang>=100,force>=120; var:i<4; map:strike=chongyang-shenzhang; res:neili>=100 | 效果: add:neili -80; temp:action_flag; busy | 依赖: 无
-- [ ] `cibei-dao/sheshen` perform「sheshen」 门槛: level:cibei-dao>=60; assign:skill=cibei-dao; res:neili>=200 | 效果: add:neili -100; temp:cbd_sheshen; apply+:attack,dodge; busy | 依赖: 无
+- [x] `cibei-dao/sheshen` perform「sheshen」 门槛: level:cibei-dao>=60; assign:skill=cibei-dao; res:neili>=200 | 效果: add:neili -100; temp:cbd_sheshen; apply+:attack,dodge; busy | 依赖: 无
 - [ ] `dacheng-fosuo/chanrao` perform「chanrao」 门槛: level:dacheng-fosuo>=80; map:whip=dacheng-fosuo; res:neili>=500 | 效果: add:neili -200; busy | 依赖: 无
 - [x] `dagou-bang/chan` perform「缠字诀」 门槛: level:force>=100; assign:level=dagou-bang; var:level<60; map:staff=dagou-bang; res:neili>=100 | 效果: add:neili -50; busy | 依赖: 无
 - [x] `dagou-bang/feng` perform「封字诀」 门槛: level:force>=180; assign:skill=dagou-bang; var:skill<120; map:staff=dagou-bang; res:neili>=200 | 效果: add:neili -150; temp:feng_zijue; apply+:parry; busy | 依赖: 无
 - [x] `dagou-bang/tian` perform「天下无狗」 门槛: level:dagou-bang>=220,force>=300; assign:ap=staff,dp=dodge; map:staff=dagou-bang; res:neili>=500 | 效果: apply+:attack,damage; busy | 依赖: 无
-- [ ] `damo-jian/qingxin` perform「qingxin」 门槛: level:damo-jian>=200; assign:ap=sword,dp=force; map:sword=damo-jian; res:neili>=300 | 效果: add:neili -200; temp:damo_qingxin; apply+:attack,defense; busy | 依赖: 无
+- [x] `damo-jian/qingxin` perform「qingxin」 门槛: level:damo-jian>=200; assign:ap=sword,dp=force; map:sword=damo-jian; res:neili>=300 | 效果: add:neili -200; temp:damo_qingxin; apply+:attack,defense; busy | 依赖: 无
 - [ ] `damo-jian/sanjue` perform「sanjue」 门槛: level:dodge>=200,force>=200,sword>=200; map:sword=damo-jian; res:neili>=150 | 效果: add:neili -75; apply+:attack; busy | 依赖: 无
 - [ ] `daojian-guizhen/xue` perform「天下有」 门槛: level:daojian-guizhen>=200,daojian-guizhen>=250; assign:ap=daojian-guizhen,dp=parry; var:i<9; res:neili>=500 | 效果: add:neili -300; apply+:attack,damage; busy | 依赖: 无
 - [ ] `dongyang-dao/luan` perform「luan」 门槛: level:dongyang-dao>=80,force>=100; var:i<5; res:neili>=100 | 效果: add:neili -100; busy | 依赖: 无
@@ -131,7 +131,7 @@
 - [ ] `dugu-jiujian/jue` perform「总诀式」 门槛: assign:skill=dugu-jiujian; var:jing_cost<30,skill<60,skill<60; res:neili>=85 | 效果: busy | 依赖: 无
 - [ ] `dugu-jiujian/po` perform「总破式」 门槛: assign:ap=sword,skill=dugu-jiujian,ss=dugu-jiujian,ss=pixie-jian; var:skill<150; map:sword=dugu-jiujian | 效果: busy | 依赖: 无
 - [ ] `duoming-jinhua/hua` perform「天外飞花」 门槛: level:duoming-jinhua>=120,force>=150; assign:skill=duoming-jinhua; map:throwing=duoming-jinhua; res:neili>=150 | 效果: add:neili -100; busy | 依赖: 无
-- [ ] `fanliangyi-dao/makearray` perform「makearray」 门槛: level:fanliangyi-dao>=30; assign:max=fanliangyi-dao,skill=fanliangyi-dao; map:blade=fanliangyi-dao; res:max_neili>=50 | 效果: temp:no_quit; apply+:armor,attack,damage,defense | 依赖: 无
+- [x] `fanliangyi-dao/makearray` perform「makearray」 门槛: level:fanliangyi-dao>=30; assign:max=fanliangyi-dao,skill=fanliangyi-dao; map:blade=fanliangyi-dao; res:max_neili>=50 | 效果: temp:no_quit; apply+:armor,attack,damage,defense | 依赖: 无
 - [ ] `feifeng-bian/xi` perform「凤栖于梧」 门槛: level:feifeng-bian>=120,force>=150; var:i<6; map:whip=feifeng-bian; res:neili>=300 | 效果: add:neili -100; busy | 依赖: 无
 - [ ] `feixing-shu/hua` perform「满天花雨」 门槛: level:feixing-shu>=100,force>=120; assign:skill=feixing-shu; map:throwing=feixing-shu; res:neili>=250 | 效果: add:neili -100; busy | 依赖: 无
 - [x] `fenglei-zifa/she` perform「射日诀」 门槛: level:fenglei-zifa>=100; assign:skill=fenglei-zifa; res:neili>=100 | 效果: add:neili -80; busy | 依赖: 无
@@ -147,14 +147,14 @@
 - [ ] `honglian-dao/huo` perform「流星火雨」 门槛: level:force>=120,honglian-dao>=80; var:i<4; map:blade=honglian-dao; res:max_neili>=800,neili>=100 | 效果: add:neili -80; busy | 依赖: 无
 - [ ] `hongye-daofa/kuang` perform「狂风落叶」 门槛: level:hongye-daofa>=150; assign:extra=hongye-daofa; res:neili>=800 | 效果: add:neili -300; busy | 依赖: 无
 - [x] `huashan-jian/jie` perform「截手式」 门槛: level:huashan-jian>=30; assign:level=huashan-jian; map:sword=huashan-jian; res:neili>=60 | 效果: add:neili -50; busy | 依赖: 无
-- [ ] `huashan-jian/lian` perform「剑掌五连环」 门槛: level:force>=100,huashan-jian>=50; assign:count=sword; var:i<5; map:sword=huashan-jian; res:neili>=160 | 效果: add:neili -120; apply+:attack; busy | 依赖: 无
+- [x] `huashan-jian/lian` perform「剑掌五连环」 门槛: level:force>=100,huashan-jian>=50; assign:count=sword; var:i<5; map:sword=huashan-jian; res:neili>=160 | 效果: add:neili -120; apply+:attack; busy | 依赖: 无
 - [ ] `huilong-zhang/baiwei` perform「baiwei」 门槛: level:huilong-zhang>=80,shaolin-xinfa>=80; assign:extra=huilong-zhang; res:neili>=600 | 效果: busy | 依赖: 无
 - [ ] `hujia-daofa/cang` perform「八方藏刀势」 门槛: level:force>=250,hujia-daofa>=180; assign:count=hujia-daofa; var:i<8; map:blade=hujia-daofa; res:neili>=200 | 效果: add:neili -220; apply+:attack; busy | 依赖: 无
 - [ ] `jiandun-zhusuo/fu` perform「缚字诀」 门槛: level:jiandun-zhusuo>=50; map:whip=jiandun-zhusuo; res:neili>=50 | 效果: busy | 依赖: 无
 - [ ] `jiechen-dao/xiuluo` perform「xiuluo」 门槛: level:blade>=180,hunyuan-yiqi>=140,jiechen-dao>=180; assign:i=force; map:blade=jiechen-dao,force=hunyuan-yiqi; res:max_neili>=3000,neili>=1000 | 效果: add:neili -300; apply+:attack; busy | 依赖: 无
 - [ ] `jifeng-cixuefa/cang` perform「天蝎藏针」 门槛: level:dodge>=120,force>=120; assign:skill=jifeng-cixuefa; var:i<5,skill<100; map:dagger=jifeng-cixuefa; res:neili>=200 | 效果: add:neili -80; busy | 依赖: 无
 - [ ] `jinbiao-jue/huan` perform「金莲幻生」 门槛: level:jinbiao-jue>=100; assign:skill=jinbiao-jue; res:neili>=100 | 效果: add:neili -80; busy | 依赖: 无
-- [ ] `jingang-buhuaiti/jingang` perform「jingang」 门槛: level:jingang-buhuaiti>=100; assign:skill=force; res:neili>=300 | 效果: add:neili -200; temp:jingangbuhuai; apply+:armor,force; busy | 依赖: 无
+- [x] `jingang-buhuaiti/jingang` perform「jingang」 门槛: level:jingang-buhuaiti>=100; assign:skill=force; res:neili>=300 | 效果: add:neili -200; temp:jingangbuhuai; apply+:armor,force; busy | 依赖: 无
 - [ ] `jingang-quan/jingang` perform「jingang」 门槛: level:cuff>=150,force>=150; assign:skill=jingang-quan; map:cuff=jingang-quan,force=hunyuan-yiqi,force=luohan-fumogong,force=yijinjing; res:neili>=500 | 效果: add:max_neili -10,neili -150; set:neili=0; temp:jingang | 依赖: 无
 - [ ] `jinguan-yusuo/suo` perform「玄门金锁」 门槛: level:force>=200,jinguan-yusuo>=150; assign:level=jinguan-yusuo; res:neili>=500 | 效果: add:neili -100,neili -50; busy | 依赖: 无
 - [ ] `jingyue-bifa/ci` perform「残月刺」 门槛: level:jingyue-bifa>=30; assign:level=jingyue-bifa; map:dagger=jingyue-bifa; res:neili>=100 | 效果: add:neili -80; busy | 依赖: 无
@@ -163,13 +163,13 @@
 - [ ] `jinshe-jian/wan` perform「蛇影万道」 门槛: level:jinshe-jian>=180; assign:ap=sword,dp=dodge; map:sword=jinshe-jian; res:neili>=260 | 效果: apply+:attack,damage; busy | 依赖: 无
 - [ ] `jinshe-zhui/feng` perform「截脉封穴」 门槛: level:force>=150; assign:ap=throwing,dp=force,skill=jinshe-zhui; var:skill<100; map:throwing=jinshe-zhui; res:neili>=500 | 效果: add:neili -200,neili -50; apply+:armor,damage,defense,dodge,force,parry; busy | 依赖: 无
 - [ ] `jinshe-zhui/tuwu` perform「tuwu」 门槛: level:jinshe-zhui>=100; assign:skill=jinshe-zhui; res:neili>=300 | 效果: add:neili -200 | 依赖: 无
-- [ ] `jinzhong-zhao/zhao` perform「zhao」 门槛: level:jinzhong-zhao>=150; assign:skill=force; res:neili>=400 | 效果: add:neili -300; temp:jinzhongzhao; apply+:armor,force; busy | 依赖: 无
+- [x] `jinzhong-zhao/zhao` perform「zhao」 门槛: level:jinzhong-zhao>=150; assign:skill=force; res:neili>=400 | 效果: add:neili -300; temp:jinzhongzhao; apply+:armor,force; busy | 依赖: 无
 - [ ] `jiuqu-jian/wan` perform「九曲十八弯」 门槛: level:jiuqu-jian>=100; assign:ap=sword,dp=dodge; map:sword=jiuqu-jian; res:neili>=300 | 效果: busy | 依赖: 无
-- [ ] `kuangfeng-jian/sao` perform「风扫落叶」 门槛: level:dodge>=100,kuangfeng-jian>=100; assign:count=kuangfeng-jian; var:i<6; map:sword=kuangfeng-jian; res:neili>=180 | 效果: add:neili -150; apply+:attack; busy | 依赖: 无
+- [x] `kuangfeng-jian/sao` perform「风扫落叶」 门槛: level:dodge>=100,kuangfeng-jian>=100; assign:count=kuangfeng-jian; var:i<6; map:sword=kuangfeng-jian; res:neili>=180 | 效果: add:neili -150; apply+:attack; busy | 依赖: 无
 - [ ] `kunlun-qifa/liu` perform「流星电闪」 门槛: level:force>=200,kunlun-qifa>=120; assign:skill=kunlun-qifa; res:neili>=150 | 效果: add:neili -100; busy | 依赖: 无
 - [ ] `lanhua-shou/fei` perform「影落飞花」 门槛: level:lanhua-shou>=140; assign:lvl=lanhua-shou; var:i<6; map:hand=lanhua-shou; res:neili>=300 | 效果: add:neili -150; temp:action_flag; apply+:attack; busy | 依赖: 无
 - [ ] `leiming-bian/cibei` perform「cibei」 门槛: assign:at=leiming-bian,df=dodge,extra=leiming-bian,extra=leiming-bian,lmt=leiming-bian,skill=buddhism; var:extra<160,lmt<3,skill<150; res:neili>=1500,shen>=200000 | 效果: add:neili -200,neili -300; apply+:attack,damage; busy | 依赖: 无
-- [ ] `lingbo-weibu/ling` perform「洛神凌波」 门槛: level:lingbo-weibu>=120; assign:level=lingbo-weibu; res:neili>=600 | 效果: add:neili -400; temp:lingbo; busy | 依赖: 无
+- [x] `lingbo-weibu/ling` perform「洛神凌波」 门槛: level:lingbo-weibu>=120; assign:level=lingbo-weibu; res:neili>=600 | 效果: add:neili -400; temp:lingbo; busy | 依赖: 无
 - [ ] `lingshe-zhangfa/chan` perform「chan」 门槛: level:force>=80,staff>=80; assign:ap=staff,dp=dodge | 效果: busy | 依赖: 无
 - [ ] `lingshe-zhangfa/qianshe` perform「qianshe」 门槛: level:force>=150,lingshe-zhangfa>=120; assign:lvl=lingshe-zhangfa; var:i<5; map:staff=lingshe-zhangfa; res:neili>=100 | 效果: add:neili -100; apply+:attack; busy | 依赖: 无
 - [ ] `liuyue-jian/sheng` perform「天升剑诀」 门槛: level:force>=200,liuyue-jian>=140; var:i<6; map:sword=liuyue-jian; res:neili>=300 | 效果: add:neili -100; busy | 依赖: 无

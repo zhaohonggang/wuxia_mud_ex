@@ -43,7 +43,8 @@ defmodule Kantele.Combat.Performs.Spec do
   `skill * 2 / 5` 写作 `{:div, {:mul, {:skill, "force"}, 2}, 5}`。
 
   带 `duration` 的 spec 会在效果应用后对首个 `{:buff, key, applies}`
-  投递 `combat/buff-expire`（`duration` 为秒，`{:skill, id}` 取该技能等级）。
+  投递 `combat/buff-expire`（`duration` 为秒，取任意 value() 表达式求值，
+  如 LPC `skill / 4` 写作 `{:div, {:skill, id}, 4}`）。
   """
 
   @typedoc "数值表达式（效果/busy 用）"
@@ -79,8 +80,8 @@ defmodule Kantele.Combat.Performs.Spec do
           | {:message, String.t()}
           | {:custom, (map() -> map()) | (map(), map() -> map())}
 
-  @typedoc "buff 到期时长：静态秒数或按技能等级取秒"
-  @type duration :: non_neg_integer() | {:skill, skill_id :: String.t()}
+  @typedoc "buff 到期时长：静态秒数或 value() 表达式求值"
+  @type duration :: value()
 
   @type t :: %__MODULE__{
           id: String.t() | nil,

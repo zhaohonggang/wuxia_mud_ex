@@ -1,6 +1,6 @@
 # Kantele F4 招式/内功批量迁移执行计划
 
-> 状态：Phase 1（T1）批次 1–14 完成 + HEAD 回归修复 + 清单同步（`0ac52ca`），全量 2809 测试绿（2026-09-20）；清单 100/644（T1 85/86、T2 12/193、T3 2/169、T5 1/184）
+> 状态：Phase 1（T1）批次 1–14 完成 + HEAD 回归修复 + 清单同步（`0ac52ca`）；Phase 2 T2 批次 1（8 条）实装完毕、测试全绿（暂未提交）；全量 2847 测试绿（2026-09-20）；清单 108/644（T1 85/86、T2 20/193、T3 2/169、T5 1/184）
 > 上游：`docs/kungfu-framework-build-plan.zh-CN.md`（F4 章节）
 > 数据清单：`docs/kungfu-f4-migration-checklist.zh-CN.md`（644 条）
 > 工具：`scripts/translate_perform.exs`、`scripts/f4_checklist.exs`
@@ -280,6 +280,33 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   全量 `MIX_ENV=test mix test` **2809 测试全绿**（批次 13 后 2769 → +40）。
 
 ### Phase 2 — T2 无目标 perform（193）
+
+- [x] 批次 T2-1（8 条，T2 开局批）：`cibei-dao/sheshen`、`damo-jian/qingxin`、
+  `fanliangyi-dao/makearray`、`huashan-jian/lian`、`jingang-buhuaiti/jingang`、
+  `jinzhong-zhao/zhao`、`kuangfeng-jian/sao`、`lingbo-weibu/ling`。
+  四条声明式 `Simple`（sheshen/jingang/zhao/ling：temp+apply+busy），四条手写
+  （qingxin/lian/sao/makearray）。新增 7 个 skill module 注册 `Skills.@static`，
+  `huashan-jian` perform_list 挂 `"lian"`。target-side 结算契约沿用批次 14：
+  `perform-incoming` → `resolve_incoming/4` → `perform-feedback` 回执；qingxin 内联规范算子
+  对攻击方直接扣费（不回流）。差异（逐条记 TODO(migrate) 于模块）：
+  - `lian`/`sao` 连击：忙乱判定按 `Engine.rand` 语义（rand 0..n-1）以 == 0 命中概率生效；
+    连击数由战斗流逐发，反馈 busy 1 覆盖战斗结果。
+  - `makearray` 组阵：队友侧降级为瘦引用（仅 id/name/pid），`n = 队长 skill*6`（同技能下
+    LPC `skill*(6+6)/2` 退化为 6×skill）；队长挂 `apply+:armor,attack,damage,defense` 无限期
+    临时加成，并 `send` 直发 `%Kalevala.Event{topic: "array/fanliangyi-dao"}` 给队友 pid；
+    `FanliangyiEvent.array/2` 自校验（同技能+持刀+已组阵判重）后自挂同名 buff。事件已在
+    Character 与 NonPlayer 两个 scope 注册。
+  - `Spec.duration` 类型放宽为 `value()`（支持 `{:div, {:skill, id}, n}` 表达式），
+    随本批进入 `Simple` 公共解释器（`{:add, :neili}` 等效果进 eval 骨架已有）。
+  - `valid_learn` 无 vitals：max_neili 门槛以属性/force 代理（cibei force30、damo force60、
+    fanliangyi force40、jingang force300、jinzhong force350+str/con33、kuangfeng dodge90+dex28、
+    lingbo dex30）。
+  - `ling` 凌波微步：LPC 文案按性别/修为分档，角色模型无 gender ⇒ 按 skill>300 两档替代。
+  - 文案对拍：jingang 「金光」、zhao 「烟尘滚滚」按 LPC 原文逐字核对（先期用近似文案的失败
+    已修正）。
+  新增 `test/kantele/combat/t2_self_buffs_test.exs`（38 例），既存 huashan_jian 测试
+  perform_list 断言补 `"lian"`。全量 `MIX_ENV=test mix test` **2847 测试全绿**（批次 14 后
+  2809 → +38）。
 
 - [ ] 分批（建议 8–10 批 × ~20）。
 - [ ] 先做 `heal`/`recover`/自我 buff 类声明式；后做带内部状态/随机分档的手写。
