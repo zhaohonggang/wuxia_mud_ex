@@ -45,6 +45,9 @@ defmodule Kantele.Combat.Skills.FanliangyiDao do
 
   @impl true
   def perform_list() do
-    %{"makearray" => Kantele.Combat.Skills.Performs.FanliangyiDao.Makearray}
+    %{
+      "makearray" => Kantele.Combat.Skills.Performs.FanliangyiDao.Makearray,
+      "san" => Kantele.Combat.Skills.Performs.FanliangyiDao.San
+    }
   end
 end
