@@ -24,7 +24,7 @@ defmodule Kantele.Combat.Skills.Performs.DongyangDao.Zhan do
   alias Kantele.Character.Stats
 
   @perform_id "dongyang-dao/zhan"
-  @move_name "「zhan」"
+  @move_name "「斩」"
 
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
@@ -105,7 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.DongyangDao.Zhan do
     conn =
       Broadcast.publish(
         conn,
-        "$N刀光一闪，使出东洋刀法「zhan」，刀势如电斩向$n！\n",
+        "$N刀光一闪，使出东洋刀法「斩」，刀势如电斩向$n！\n",
         n1: character.name,
         n2: target.name
       )

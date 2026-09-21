@@ -4,13 +4,11 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Qi do
 
   独孤九剑攻击绝招：发起 `combat/perform-incoming` 事件，
   由目标侧 `resolve_incoming` 判定命中并施加伤害。
-  命中后目标无法运功（temp:no_exert）。
 
   差异（TODO(migrate)）：
   - LPC 仅 `skill<120`；本版加 `mapped` 与 `neili` 门槛；
   - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
   - 伤害计算：`damage = level * 2`（简化），LPC 有复杂公式。
-  - LPC 有 `temp:no_exert` 效果，暂简化为标准忙乱。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -150,7 +148,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Qi do
 
       conn
       |> Broadcast.publish(
-        Messages.interpolate("结果$p被$N的#{@move_name}击中，受到#{damage}点伤害，真气大乱！\n", bindings)
+        Messages.interpolate("结果$p被$N的#{@move_name}击中，受到#{damage}点伤害！\n", bindings)
       )
       |> put_character(put_combat(character, combat))
     else

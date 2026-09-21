@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.DuanjiaSword.Jing do
   @moduledoc """
-  jing「jing」（对照 `kungfu/skill/duanjia-sword/jing.c`）
+  惊「jing」（对照 `kungfu/skill/duanjia-sword/jing.c`）
 
   段家剑攻击绝招：消耗 300 内力，发起 `combat/perform-incoming` 事件，
   由目标侧 `resolve_incoming` 判定命中并施加伤害。
@@ -24,7 +24,7 @@ defmodule Kantele.Combat.Skills.Performs.DuanjiaSword.Jing do
   alias Kantele.Character.Stats
 
   @perform_id "duanjia-sword/jing"
-  @move_name "「jing」"
+  @move_name "「惊」"
 
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
@@ -105,7 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.DuanjiaSword.Jing do
     conn =
       Broadcast.publish(
         conn,
-        "$N剑光如虹，使出段家剑「jing」，剑气惊天刺向$n！\n",
+        "$N剑光如虹，使出段家剑「惊」，剑气惊天刺向$n！\n",
         n1: character.name,
         n2: target.name
       )
