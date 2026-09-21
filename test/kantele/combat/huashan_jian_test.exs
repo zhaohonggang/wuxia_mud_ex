@@ -77,7 +77,9 @@ defmodule Kantele.Combat.HuashanJianTest do
     test "perform_list 含截手式" do
       assert HuashanJian.perform_list() == %{
                "jie" => Jie,
-               "lian" => Kantele.Combat.Skills.Performs.HuashanJian.Lian
+               "lian" => Kantele.Combat.Skills.Performs.HuashanJian.Lian,
+               "long" => Kantele.Combat.Skills.Performs.HuashanJian.Long,
+               "xian" => Kantele.Combat.Skills.Performs.HuashanJian.Xian
              }
     end
 

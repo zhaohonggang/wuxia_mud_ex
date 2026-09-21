@@ -116,7 +116,9 @@ defmodule Kantele.Combat.Skills.HuashanJian do
   def perform_list() do
     %{
       "jie" => Kantele.Combat.Skills.Performs.HuashanJian.Jie,
-      "lian" => Kantele.Combat.Skills.Performs.HuashanJian.Lian
+      "lian" => Kantele.Combat.Skills.Performs.HuashanJian.Lian,
+      "long" => Kantele.Combat.Skills.Performs.HuashanJian.Long,
+      "xian" => Kantele.Combat.Skills.Performs.HuashanJian.Xian
     }
   end
 
