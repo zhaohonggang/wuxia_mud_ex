@@ -1,27 +1,1215 @@
-# Generated from test_minimal_world_v2/obj/axe.c by LPCConverter
+zones "test" {
+  name = "test"
+}
+
+# Generated from test_minimal_world_v2_modified/adm/daemons/rankd.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2/obj/axe.c
+# Generic LPC file: test_minimal_world_v2_modified/adm/daemons/rankd.c
 # Requires manual conversion
 
-# Generated from test_minimal_world_v2/room/bet.c by LPCConverter
+# Generated from test_minimal_world_v2_modified/beast/mangshe.c by LPCConverter
 # Zone: test
 
-    rooms "赌场" {
-      name = "赌场"
+# Generic LPC file: test_minimal_world_v2_modified/beast/mangshe.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/board/kedian_b.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/board/kedian_b.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/corpse_poison.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/corpse_poison.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/drunk.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/drunk.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/flower_poison.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/flower_poison.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/freezing.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/freezing.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/hunger.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/hunger.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/ill_kesou.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/ill_kesou.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/poison.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/poison.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/sanxiao_poison.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/sanxiao_poison.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/npc/duke.c by LPCConverter
+# Zone: test
+
+    characters "duke" {
+      name = "NPC"
+      description = "他是赌场的管事，精明干练，眼神锐利。\n"
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/furen.c by LPCConverter
+# Zone: test
+
+    characters "furen" {
+      name = "NPC"
+      description = "\n只见她约莫二十六七年纪,全身缟素,不施脂粉,脸色苍白.\n"
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    con = 25
+    dex = 30
+    int = 25
+    max_jing = 400
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/jinhua.c by LPCConverter
+# Zone: test
+
+    characters "jinhua" {
+      name = "NPC"
+      description = "一个年少貌美的姑娘。\n"
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 800
+    con = 18
+    dex = 18
+    int = 18
+    str = 18
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/menwei.c by LPCConverter
+# Zone: test
+
+    characters "menwei" {
+      name = "NPC"
+      description = "他是白驼山庄的门卫，身材魁梧，手持钢叉，目光如炬。\n"
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 120000
+    max_jing = 800
+    max_neili = 1500
+    max_qi = 1500
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/worker-liu.c by LPCConverter
+# Zone: test
+
+    characters "worker_liu" {
+      name = "NPC"
       description = ""
+
+  combat = {
+    attitude = "friendly"
+    str = 33
+  }
     }
 
-# Generated from test_minimal_world_v2/obj/bigbox.c by LPCConverter
+# Generated from test_minimal_world_v2_modified/npc/xiaoer.c by LPCConverter
 # Zone: test
 
-    items "大铁盒" {
+    characters "xiaoer" {
+      name = "NPC"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。\n"
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/xingzhe.c by LPCConverter
+# Zone: test
+
+    characters "xingzhe" {
+      name = "NPC"
+      description = "他是少林寺的俗家弟子，在此打坐修行。\n"
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    max_jing = 600
+    max_neili = 1000
+    max_qi = 800
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/zhuangjia.c by LPCConverter
+# Zone: test
+
+    characters "zhuangjia" {
+      name = "NPC"
+      description = "他是赌场的庄家，一脸精明相，手里拿着骰盅。\n"
+
+  combat = {
+    attitude = "neutral"
+    combat_exp = 80000
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/axe.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/axe.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/bigbox.c by LPCConverter
+# Zone: test
+
+    items "bigbox" {
       name = "大铁盒"
-      description = "这盒子高约一尺，然而入手轻飘飘地，似乎盒里并没藏着甚么 东西。打开盒盖，那盒子竟浅得出奇，离底仅只一寸，一只尺 来高的盒子，怎地盒里却这般浅？料得必有夹层。\n"
+      description = "这盒子高约一尺，然而入手轻飘飘地，似乎盒里并没藏着甚么\n东西。打开盒盖，那盒子竟浅得出奇，离底仅只一寸，一只尺\n来高的盒子，怎地盒里却这般浅？料得必有夹层。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
     }
 
-# Generated from test_minimal_world_v2/skill/power.c by LPCConverter
+# Generated from test_minimal_world_v2_modified/obj/blade.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2/skill/power.c
+# Generic LPC file: test_minimal_world_v2_modified/obj/blade.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/blade1.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/blade1.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/blade2.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/blade2.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/blade3.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/blade3.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/bottle.c by LPCConverter
+# Zone: test
+
+    items "bottle" {
+      name = "水壶"
+      description = "一个不知道用什么动物的皮制成的水壶。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/box.c by LPCConverter
+# Zone: test
+
+    items "box" {
+      name = "功德箱"
+      description = "这是一个小庙里常见的功德箱，专门用来接受善男信女们的捐款。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/cloth.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/cloth.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/cloth1.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/cloth1.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/cloth2.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/cloth2.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/cloth3.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/cloth3.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/cloth4.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/cloth4.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/cloth5.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/cloth5.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/cloth6.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/cloth6.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/dagger.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/dagger.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/food.c by LPCConverter
+# Zone: test
+
+    items "food" {
+      name = "食物"
+      description = "还没定义，给下层调用。\n"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/fork.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/fork.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/gangdao.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/gangdao.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/goldcloth1.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/goldcloth1.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/goldcloth2.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/goldcloth2.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/hammer.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/hammer.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/head.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/head.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/jinship.c by LPCConverter
+# Zone: test
+
+    items "jinship" {
+      name = "金国战船模型"
+      description = "这是一艘金国战船的精致模型，船身雕龙画凤，威武雄壮。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/jinvcloth.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/jinvcloth.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/mace.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/mace.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/mingshijilue.c by LPCConverter
+# Zone: test
+
+    items "mingshijilue" {
+      name = "明史辑略"
+      description = "这是一本《明史辑略》，记载了明朝历史的精要。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/nvcloth.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/nvcloth.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/rice.c by LPCConverter
+# Zone: test
+
+    items "rice" {
+      name = "Item"
+      description = "一碗香喷喷的黄米饭。\n"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/ship.c by LPCConverter
+# Zone: test
+
+    items "ship" {
+      name = "战船模型"
+      description = "这是一艘战船的精致模型，船身结实，桅杆高耸。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/smallbox.c by LPCConverter
+# Zone: test
+
+    items "smallbox" {
+      name = "小铁盒"
+      description = "这只盒子小得多，只一尺见方。盒中一张笺上写道：“君\n是忠厚仁者，葬我骸骨，当酬以重宝秘术。大铁盒开启时\n有毒箭射出，愈中书谱地图均假，上有剧毒，以惩贪欲恶\n徒。真者在此小铁盒内。”\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/staff.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/staff.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/throwing.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/throwing.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/waist.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/waist.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/water.c by LPCConverter
+# Zone: test
+
+    items "water" {
+      name = "杯盏"
+      description = "还没定义，等下层调用。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/whip.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/whip.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/wine.c by LPCConverter
+# Zone: test
+
+    items "wine" {
+      name = "酒杯"
+      description = "还没定义，等下层调用。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/wuzhirong.c by LPCConverter
+# Zone: test
+
+    items "wuzhirong" {
+      name = "吴之荣"
+      description = "这是吴之荣的首级，面容狰狞，双眼圆睁。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/yuanzi_ornament1.c by LPCConverter
+# Zone: test
+
+    items "yuanzi_ornament1" {
+      name = "金色装饰品"
+      description = "这是一件精美的金色装饰品，闪闪发光。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/zhuangyuncheng.c by LPCConverter
+# Zone: test
+
+    items "zhuangyuncheng" {
+      name = "庄允城"
+      description = "这是一尊庄允城的塑像，栩栩如生，眼神中透着坚毅。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/quest/capture.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/quest/capture.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/quest/deliver.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/quest/deliver.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/quest/explore.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/quest/explore.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/quest/search.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/quest/search.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/quest/shen.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/quest/shen.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/room/beidajie1.c by LPCConverter
+# Zone: test
+
+    rooms "beidajie1" {
+      name = "北大街"
+      description = "这是一条宽阔的青石大街，两旁店铺林立，行人熙熙攘攘。\n北边是玫瑰宴厅，西边是牡丹宴厅，东边通往客店。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "beidajie1" {
+    room_id = rooms.beidajie1.id
+  east = rooms.kedian.id
+  north = rooms.furong.id
+  west = rooms.mudan.id  }
+
+# Generated from test_minimal_world_v2_modified/room/bet.c by LPCConverter
+# Zone: test
+
+    rooms "bet" {
+      name = "赌场"
+      description = "大厅里摆满大大小小的赌桌，只要能说出名的赌具，这里\n都有。进来这里你首先听到的就是少女们吃吃的笑声和男人们\n的吹牛声，掷骰子声……在这里，你几乎就可以听到世上所有\n不规矩的声音。墙上挂着一块牌子(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "bet" {
+    room_id = rooms.bet.id
+  south = rooms.duchang.id  }
+
+# Generated from test_minimal_world_v2_modified/room/cave.c by LPCConverter
+# Zone: test
+
+    rooms "cave" {
+      name = "岩洞"
+      description = "这里是一个大岩洞，在白驼山特殊的地质条件下经过漫长\n的年代形成的。洞内蜿蜒曲折，也不知延伸到了何处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "cave" {
+    room_id = rooms.cave.id
+  in = rooms.cave1.id
+  southdown = rooms.zhulin.id  }
+
+# Generated from test_minimal_world_v2_modified/room/cave1.c by LPCConverter
+# Zone: test
+
+    rooms "cave1" {
+      name = "岩洞深处"
+      description = "岩洞越往里越宽敞，洞壁上长满了发光的苔藓，泛着幽幽的\n蓝绿色光芒。地下有清澈的地下河流过，水声潺潺。洞顶垂下\n无数钟乳石，形态各异。出口在南边。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "cave1" {
+    room_id = rooms.cave1.id
+  out = rooms.cave.id  }
+
+# Generated from test_minimal_world_v2_modified/room/damen.c by LPCConverter
+# Zone: test
+
+    rooms "damen" {
+      name = "大门"
+      description = "这就是闻名天下的白驼山庄的大门。只见大门梁上雕龙刻\n凤，美奂美仑，不知凝聚着多少能工巧匠的心血。更显出庄主\n的富有与显贵。门前左右各蹲着一只威武庄严的石狮子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "damen" {
+    room_id = rooms.damen.id
+  north = rooms.yuanzi.id
+  southdown = rooms.shijie.id  }
+
+# Generated from test_minimal_world_v2_modified/room/dating.c by LPCConverter
+# Zone: test
+
+    rooms "dating" {
+      name = "白驼山庄大厅"
+      description = "这是白驼山庄的大厅，气派非凡。大厅正中悬挂着一块匾额，\n上书\"毒中之王\"四个大字。厅内陈设奢华，两侧排列着太师椅，\n正中设有太师椅一把，乃是庄主议事之处。两侧各有侧门通往\n内院。\n"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "dating" {
+    room_id = rooms.dating.id
+  south = rooms.yuanzi.id
+  north = rooms.houyuan.id  }
+
+# Generated from test_minimal_world_v2_modified/room/dir_macro_test.c by LPCConverter
+# Zone: test
+
+    rooms "dir_macro_test" {
+      name = "测试房间"
+      description = "这是一个测试房间，用于验证各种 __DIR__ 宏变体。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "dir_macro_test" {
+    room_id = rooms.dir_macro_test.id
+  up = rooms.room_above.id
+  down = rooms.room_below.id  }
+
+# Generated from test_minimal_world_v2_modified/room/duchang.c by LPCConverter
+# Zone: test
+
+    rooms "duchang" {
+      name = "赌场大厅"
+      description = "这里是赌场的大厅，人声鼎沸，烟雾缭绕。四周摆满了各式\n赌桌，骰子、牌九、马吊应有尽有。空气中弥漫着酒气和汗味，\n夹杂着金银碰撞的清脆声响。北边是贵宾厅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "duchang" {
+    room_id = rooms.duchang.id
+  north = rooms.bet.id  }
+
+# Generated from test_minimal_world_v2_modified/room/duwushi.c by LPCConverter
+# Zone: test
+
+    rooms "duwushi" {
+      name = "毒物室"
+      description = "这里是白驼山庄的毒物室，四周摆满了各式瓶瓶罐罐，装着\n各色毒药、毒虫、毒草。空气中弥漫着刺鼻的药味，令人作呕。\n墙上挂着一张\"毒物配方表\"。角落里养着几只毒蛇、蝎子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "duwushi" {
+    room_id = rooms.duwushi.id
+  east = rooms.houyuan.id  }
+
+# Generated from test_minimal_world_v2_modified/room/encoding_test.c by LPCConverter
+# Zone: test
+
+    rooms "encoding_test" {
+      name = "编码测试房间"
+      description = "这是一个包含特殊中文字符的房间：\n- 常用字：中文测试\n- 生僻字：龘靐齉爨\n- 标点符号：。、；：「」『』（）［］〔〕\n- 数字：１２３４５６７８９０\n- 英文：ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "encoding_test" {
+    room_id = rooms.encoding_test.id
+  north = rooms.room1.id  }
+
+# Generated from test_minimal_world_v2_modified/room/furong.c by LPCConverter
+# Zone: test
+
+    rooms "furong" {
+      name = "芙蓉宴厅"
+      description = "这里是醉仙楼的芙蓉宴厅。你走进门，绕过了一道淡绿绸\n屏风，迎面的墙上挂着一副『芙蓉出水图』，工笔彩绘，状极\n清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌\n玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼\n生辉，桌上铺着份菜单(menu)。\n"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "furong" {
+    room_id = rooms.furong.id
+  east = rooms.zxlpath.id  }
+
+# Generated from test_minimal_world_v2_modified/room/houyuan.c by LPCConverter
+# Zone: test
+
+    rooms "houyuan" {
+      name = "后院"
+      description = "这里是白驼山庄的后院，种着各种奇花异草，还有一口古井。\n井边立着一块石碑，上刻\"毒经\"二字。四周种满了各种毒草，\n散发着诡异的香气。东边是练功房，西边是毒物室。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "houyuan" {
+    room_id = rooms.houyuan.id
+  south = rooms.dating.id
+  east = rooms.liangong.id
+  west = rooms.duwushi.id  }
+
+# Generated from test_minimal_world_v2_modified/room/kedian.c by LPCConverter
+# Zone: test
+
+    rooms "kedian" {
+      name = "客店"
+      description = "这是一家价钱低廉的客栈，生意却是非常兴隆。外地游客\n多选择这里落脚，你可以在这里打听到各地的风土人情。店小\n二里里外外忙得团团转，接待着南腔北调的客人。客店的主人\n从不露面，他究竟是谁，有各种各样的猜测。客店的西墙上挂\n着一个牌子(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+  west = rooms.beidajie1.id
+  up = rooms.kedian2.id
+  south = rooms.liaotian.id
+  east = rooms.damen.id  }
+
+# Generated from test_minimal_world_v2_modified/room/kedian2.c by LPCConverter
+# Zone: test
+
+    rooms "kedian2" {
+      name = "客店二楼"
+      description = "你正走在客店二楼的走廊上，可以听到从客房里不时地呼\n呼的打酣声，一阵高过一阵。不时有睡意朦胧的旅客进进出出\n到楼下的掌柜处付了钱再上来睡觉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "kedian2" {
+    room_id = rooms.kedian2.id
+  down = rooms.kedian.id
+  in = rooms.kedian3.id  }
+
+# Generated from test_minimal_world_v2_modified/room/kedian3.c by LPCConverter
+# Zone: test
+
+    rooms "kedian3" {
+      name = "客店二楼"
+      description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小\n木床，不少客人正和衣而卧，满屋子都是呼呼的打酣声。西边\n有张床是空的，你蹑手蹑脚地走了过去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "kedian3" {
+    room_id = rooms.kedian3.id
+  out = rooms.kedian2.id  }
+
+# Generated from test_minimal_world_v2_modified/room/large_room_test.c by LPCConverter
+# Zone: test
+
+    rooms "large_room_test" {
+      name = "大型测试房间"
+      description = "这是一个模拟大型房间文件的测试文件。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "large_room_test" {
+    room_id = rooms.large_room_test.id
+  north = rooms.room1.id
+  south = rooms.room2.id
+  east = rooms.room3.id
+  west = rooms.room4.id
+  up = rooms.room_up.id
+  down = rooms.room_down.id  }
+
+# Generated from test_minimal_world_v2_modified/room/liangong.c by LPCConverter
+# Zone: test
+
+    rooms "liangong" {
+      name = "练功房"
+      description = "这里是白驼山庄的练功房，地上铺着厚厚的软垫，墙上挂着\n各种兵器架。正中央竖着一个木人桩，四周墙壁上刻满了拳法\n剑法的招式图解。空气中弥漫着淡淡的药香。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "liangong" {
+    room_id = rooms.liangong.id
+  west = rooms.houyuan.id  }
+
+# Generated from test_minimal_world_v2_modified/room/liaotian.c by LPCConverter
+# Zone: test
+
+    rooms "liaotian" {
+      name = "聊天室"
+      description = "这是客店后院的一间小屋，供住客休息聊天。墙上挂着几幅\n山水画，角落里摆着一张八仙桌，几把竹椅。窗外是一片小花园，\n鸟语花香，环境幽静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "liaotian" {
+    room_id = rooms.liaotian.id
+  north = rooms.kedian.id  }
+
+# Generated from test_minimal_world_v2_modified/room/meigui.c by LPCConverter
+# Zone: test
+
+    rooms "meigui" {
+      name = "玫瑰宴厅"
+      description = "这里是醉仙楼的玫瑰宴厅。你走进门，绕过了一道淡绿绸\n屏风，迎面的墙上挂着一副『玫瑰含露图』，工笔彩绘，状极\n清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌\n玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼\n生辉，桌上铺着份菜单(menu)。\n"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "meigui" {
+    room_id = rooms.meigui.id
+  east = rooms.zxlpath.id  }
+
+# Generated from test_minimal_world_v2_modified/room/mudan.c by LPCConverter
+# Zone: test
+
+    rooms "mudan" {
+      name = "牡丹宴厅"
+      description = "这里是醉仙楼的牡丹宴厅。你走进门，绕过了一道淡绿绸\n屏风，迎面的墙上挂着一副『牡丹争艳图』，工笔彩绘，状极\n清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌\n玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼\n生辉，桌上铺着份菜单(menu)。\n"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "mudan" {
+    room_id = rooms.mudan.id
+  north = rooms.zxlpath.id  }
+
+# Generated from test_minimal_world_v2_modified/room/multi_include_test.c by LPCConverter
+# Zone: test
+
+    rooms "multi_include_test" {
+      name = "多重包含测试"
+      description = "测试多重 #include 指令的解析。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "multi_include_test" {
+    room_id = rooms.multi_include_test.id
+  north = rooms.room1.id  }
+
+# Generated from test_minimal_world_v2_modified/room/shijie.c by LPCConverter
+# Zone: test
+
+    rooms "shijie" {
+      name = "山间石阶"
+      description = "这是一条蜿蜒的山间石阶，两旁杂草丛生，古树遮天蔽日。\n石阶蜿蜒向上，通向白驼山庄大门，向下通往山脚。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "shijie" {
+    room_id = rooms.shijie.id
+  northup = rooms.damen.id
+  southdown = rooms.shanlu.id  }
+
+# Generated from test_minimal_world_v2_modified/room/test_dating.c by LPCConverter
+# Zone: test
+
+    rooms "test_dating" {
+      name = "测试大厅"
+      description = "这是一个测试大厅。\n"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "test_dating" {
+    room_id = rooms.test_dating.id
+  south = rooms.yuanzi.id
+  north = rooms.houyuan.id  }
+
+# Generated from test_minimal_world_v2_modified/room/test_guangchang.c by LPCConverter
+# Zone: test
+
+    rooms "test_guangchang" {
+      name = "镇广场"
+      description = "这里是柳溪镇的中央广场，青石板铺就的地面被岁月磨得\n光可鉴人。广场中央竖着一根高大的旗杆(qigan)，上书「柳\n溪」二字的杏黄旗在风中猎猎作响。来往的乡民、行脚商人和\n江湖客在此穿行，不时传来小贩的吆喝声。东面是一间热闹的\n客栈，南边传来隐隐的喝喝之声，似乎有人在练武。镇口东北\n方向的官道(yangzhou)直通扬州府。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "test_guangchang" {
+    room_id = rooms.test_guangchang.id
+  east = rooms.kedian.id
+  west = rooms.chaguan.id
+  north = rooms.tiepupu.id
+  south = rooms.lianwuchang.id
+  yangzhou = rooms.guangchang.id  }
+
+# Generated from test_minimal_world_v2_modified/room/yuanzi.c by LPCConverter
+# Zone: test
+
+    rooms "yuanzi" {
+      name = "白驼山庄大院"
+      description = "这里是白驼山庄的大院，占地极广，青砖绿瓦，古树参天。\n院子中央摆着几个大水缸，四周种着几株古松。北边是大厅，\n南边通向大门。\n"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "yuanzi" {
+    room_id = rooms.yuanzi.id
+  south = rooms.damen.id
+  north = rooms.dating.id  }
+
+# Generated from test_minimal_world_v2_modified/room/zhulin.c by LPCConverter
+# Zone: test
+
+    rooms "zhulin" {
+      name = "竹林"
+      description = "这是一片茂密的竹林，翠竹成荫，微风吹过，竹叶沙沙作响，\n清爽宜人。几只小鸟在竹枝间跳跃鸣叫。南边是一条小路通向岩洞。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "zhulin" {
+    room_id = rooms.zhulin.id
+  northup = rooms.cave.id  }
+
+# Generated from test_minimal_world_v2_modified/room/zxlpath.c by LPCConverter
+# Zone: test
+
+    rooms "zxlpath" {
+      name = "醉仙楼大道"
+      description = "这是通往醉仙楼的青石大道，两旁种满了桃树杨柳，春天桃红\n柳绿，美不胜收。大道笔直通向北边的醉仙楼大门，南边是客店\n北大街，西边是玫瑰宴厅，东边是牡丹宴厅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "zxlpath" {
+    room_id = rooms.zxlpath.id
+  south = rooms.beidajie1.id
+  north = rooms.damen.id
+  west = rooms.furong.id
+  east = rooms.mudan.id  }
+
+# Generated from test_minimal_world_v2_modified/skill/ban.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/ban.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/chan.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/chan.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/chuo.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/chuo.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/dispel.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/dispel.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/feng.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/feng.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/heal.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/heal.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/hui.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/hui.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/inspire.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/inspire.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/ji.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/ji.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/jia.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/jia.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/lei.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/lei.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/lifeheal.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/lifeheal.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/luan.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/luan.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/power.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/power.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/qi.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/qi.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/qin.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/qin.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/qingxin.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/qingxin.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/recover.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/recover.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/regenerate.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/regenerate.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/roar.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/roar.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/sanjue.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/sanjue.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/shang.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/shang.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/shot.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/shot.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/six.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/six.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/sui.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/sui.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/tian.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/tian.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/tianmo.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/tianmo.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/tu.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/tu.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/xiang.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/xiang.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/xun.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/xun.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/yin.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/yin.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/zhan.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/zhan.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/zhe.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/zhe.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/zhen.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/zhen.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/zhenwu.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/zhenwu.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/zhuan.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/zhuan.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/zong.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/zong.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/zongheng.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/zongheng.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/special/guibian.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/special/guibian.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/special/guimai.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/special/guimai.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/special/hatred.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/special/hatred.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/special/jinshen.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/special/jinshen.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/special/shenyan.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/special/shenyan.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/special/trick.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/special/trick.c
 # Requires manual conversion

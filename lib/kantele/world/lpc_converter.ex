@@ -72,11 +72,15 @@ defmodule Kantele.World.LPCConverter do
   # --------------------------------------------------------------------------
 
   defp parse_lpc(content, source_path, base_path) do
+    # Extract heredocs and create body from RAW content (before whitespace normalization)
+    heredocs = parse_heredocs_from_raw(content)
+    create_body = extract_create_body(content)
+
     # Preprocess: strip comments, normalize whitespace
     cleaned = preprocess(content)
 
     # Parse into AST
-    parse_ast(cleaned, source_path, base_path)
+    parse_ast(cleaned, source_path, base_path, heredocs, create_body)
   end
 
   def preprocess(content) do
@@ -114,18 +118,22 @@ defmodule Kantele.World.LPCConverter do
   end
 
   def parse_ast(content, source_path, base_path) do
-    # Extract heredocs first (before whitespace normalization)
     heredocs = parse_heredocs_from_raw(content)
-    
-    # Preprocess: strip comments, normalize whitespace
-    cleaned = preprocess(content)
+    create_body = extract_create_body(content)
+    build_ast(content, source_path, base_path, heredocs, create_body)
+  end
 
+  def parse_ast(content, source_path, base_path, heredocs, create_body) do
+    build_ast(content, source_path, base_path, heredocs, create_body)
+  end
+
+  defp build_ast(content, source_path, base_path, heredocs, create_body) do
     # Extract key components from cleaned LPC
     %{
-      inherits: parse_inherits(cleaned),
-      create_fn: parse_create_function(cleaned),
-      other_fns: parse_other_functions(cleaned),
-      globals: parse_globals(cleaned),
+      inherits: parse_inherits(content),
+      create_fn: parse_create_function(content, create_body),
+      other_fns: parse_other_functions(content),
+      globals: parse_globals(content),
       heredocs: heredocs,
       source_path: source_path,
       base_path: base_path
@@ -136,6 +144,22 @@ defmodule Kantele.World.LPCConverter do
     e -> {:error, Exception.message(e)}
   end
 
+  def extract_create_body(content) do
+    # Find void create() { ... } and extract the body
+    case Regex.run(~r/void\s+create\s*\(\s*\)\s*\{/, content) do
+      nil -> ""
+      [match] ->
+        parts = String.split(content, match, parts: 2)
+        case parts do
+          [before, _rest] ->
+            open_brace_pos = String.length(before) + String.length(match) - 1
+            find_matching_brace(content, open_brace_pos)
+          _ ->
+            ""
+        end
+    end
+  end
+
   def parse_inherits(content) do
     # Match: inherit PATH;
     Regex.scan(~r/inherit\s+(["']?)([^;"']+)\1\s*;/, content)
@@ -143,9 +167,9 @@ defmodule Kantele.World.LPCConverter do
     |> Enum.uniq()
   end
 
-  def parse_create_function(content) do
-    # Find void create() { ... } - extract body using brace matching
-    case find_create_body(content) do
+  def parse_create_function(content, create_body \\ nil) do
+    body = create_body || find_create_body(content)
+    case body do
       nil -> %{}
       body -> parse_create_body(body)
     end
@@ -189,6 +213,11 @@ defmodule Kantele.World.LPCConverter do
           else
             find_matching_brace_loop(content, start_index, brace_count - 1, i + 1)
           end
+        char == "\"" ->
+          case find_quote_end(content, i + 1) do
+            nil -> nil
+            new_i -> find_matching_brace_loop(content, start_index, brace_count, new_i)
+          end
         true ->
           find_matching_brace_loop(content, start_index, brace_count, i + 1)
       end
@@ -203,9 +232,10 @@ defmodule Kantele.World.LPCConverter do
   end
 
   defp parse_set_calls(body) do
-    # Match: set("key", value); or set('key', value);
+    # Match set("key", value); or set('key', value); - handle multi-line values
+    # Use regex with [\s\S]*? to match across newlines
     sets =
-      Regex.scan(~r/set\s*\(\s*(["'])([^"']+)\1\s*,\s*([^;]+)\s*\)\s*;/, body)
+      Regex.scan(~r/set\s*\(\s*(["'])([^"']+)\1\s*,\s*([\s\S]*?)\s*\)\s*;/m, body)
       |> Enum.map(fn [_, _, key, value] ->
         {key, parse_lpc_value(String.trim(value))}
       end)
@@ -272,9 +302,9 @@ defmodule Kantele.World.LPCConverter do
     value_str = String.trim(value_str)
 
     cond do
-      # String
+      # String (possibly concatenated "a" "b")
       String.starts_with?(value_str, "\"") && String.ends_with?(value_str, "\"") ->
-        {:string, String.slice(value_str, 1..-2)}
+        {:string, parse_lpc_string(value_str)}
 
       # Number
       String.match?(value_str, ~r/^\d+$/) ->
@@ -303,6 +333,37 @@ defmodule Kantele.World.LPCConverter do
       # Variable reference
       true ->
         {:var, value_str}
+    end
+  end
+
+  defp parse_lpc_string(value_str) do
+    # Handle "a" "b" concatenation. value_str starts and ends with a quote.
+    # Extract each "..." segment (respecting \" escapes) and join them.
+    segments =
+      Regex.scan(~r/"((?:\\.|[^"\\])*)"/, value_str)
+      |> Enum.map(fn [_, seg] -> seg end)
+
+    Enum.join(segments)
+  end
+
+  defp skip_quoted_string(body, index) do
+    if index >= String.length(body) do
+      nil
+    else
+      find_quote_end(body, index)
+    end
+  end
+
+  defp find_quote_end(body, i) do
+    if i >= String.length(body) do
+      nil
+    else
+      char = String.at(body, i)
+      cond do
+        char == "\\" -> find_quote_end(body, i + 2)
+        char == "\"" -> i + 1
+        true -> find_quote_end(body, i + 1)
+      end
     end
   end
 
@@ -355,28 +416,24 @@ defmodule Kantele.World.LPCConverter do
       ""
     end
 
-    sections = []
-
     # Determine object type from inherits and create function
     obj_type = determine_object_type(ast)
 
     new_sections =
-case obj_type do
-      :room ->
-        [generate_room_ucl(ast, zone_id)]
-      :npc ->
-        [generate_npc_ucl(ast, zone_id)]
-      :item ->
-        [generate_item_ucl(ast, zone_id)]
-      :skill ->
-        [generate_skill_ucl(ast, zone_id)]
-      _ ->
-        [generate_generic_ucl(ast, zone_id)]
-    end
+      case obj_type do
+        :room ->
+          [generate_room_ucl(ast, zone_id)]
+        :npc ->
+          [generate_npc_ucl(ast, zone_id)]
+        :item ->
+          [generate_item_ucl(ast, zone_id)]
+        :skill ->
+          [generate_skill_ucl(ast, zone_id)]
+        _ ->
+          [generate_generic_ucl(ast, zone_id)]
+      end
 
-    sections = sections ++ new_sections
-
-    header <> Enum.join(sections, "\n\n")
+    header <> Enum.join(new_sections, "\n\n")
   end
 
   defp determine_object_type(ast) do
@@ -400,65 +457,103 @@ case obj_type do
     end
   end
 
-  defp generate_room_ucl(ast, zone_id) do
+  defp generate_room_ucl(ast, _zone_id) do
     create = ast.create_fn
     sets = Map.get(create, :sets, %{})
     heredocs = Map.get(ast.heredocs, :heredocs, %{})
 
-    room_id = extract_string(Map.get(sets, "short"), "room") |> String.replace(" ", "_") |> String.downcase()
+    room_id =
+      ast.source_path
+      |> Path.basename()
+      |> Path.rootname()
+      |> String.replace("-", "_")
 
-    ucl = """
+    room_block = """
     rooms "#{room_id}" {
       name = "#{extract_string(Map.get(sets, "short"), "Room")}"
       description = "#{get_heredoc_or_set(heredocs, sets, "long", "")}"
 """
 
-    # Exits
-    if Map.has_key?(sets, "exits") do
-      exits = Map.get(sets, "exits")
-      if is_tuple(exits) and elem(exits, 0) == :mapping do
-        ucl <> """
-      exits = [
-    """ <> generate_exits(elem(exits, 1)) <> """
-      ]
-    """
-      end
-    end
-
-    # Coordinates
-    coords = %{"x" => sets["x"], "y" => sets["y"], "z" => sets["z"]}
-    |> Enum.filter(fn {_, v} -> v != nil end)
-    |> Enum.map(fn {k, {:int, v}} -> "  #{k} = #{v}" end)
-    |> Enum.join("\n")
-
-    if coords != "" do
-      ucl <> "\n#{coords}\n"
-    end
+    # Coordinates (default to origin; Loader requires x/y/z)
+    coords_block = """
+  x = #{coord_of(sets["x"])}
+  y = #{coord_of(sets["y"])}
+  z = #{coord_of(sets["z"])}
+"""
 
     # Flags
     flags = build_room_flags(sets)
-    if flags != [] do
-      ucl <> """
-      flags = [
-    """ <> Enum.map_join(flags, "\n", &"        \"#{&1}\"") <> """
-      ]
-    """
-    end
+    flags_block =
+      if flags != [] do
+        """
+          flags = [
+        """ <> Enum.map_join(flags, "\n", &"            \"#{&1}\"") <> """
+          ]
+        """
+      else
+        ""
+      end
 
-    ucl <> "    }"
+    room_block = room_block <> coords_block <> flags_block <> "    }"
+
+    # Exits -> room_exits block
+    exits_block =
+      case Map.get(sets, "exits") do
+        {:mapping, exits} ->
+          exit_lines =
+            Enum.map_join(exits, "\n", fn {key, val} ->
+              direction = exit_key(key)
+              target = resolve_exit_target(val)
+              "  #{direction} = #{target}"
+            end)
+
+          """
+          room_exits "#{room_id}" {
+            room_id = rooms.#{room_id}.id
+        """ <> exit_lines <> """
+          }
+        """
+        _ ->
+          ""
+      end
+
+    Enum.join([room_block, exits_block], "\n")
   end
 
-  defp generate_exits(exits) do
-    exits
-    |> Enum.map(fn {key, val} ->
-      direction = get_string(key)
-      target = get_string(val)
-      "        #{direction} = #{target}"
-    end)
-    |> Enum.join("\n")
+  defp coord_of({:int, v}), do: v
+  defp coord_of(_), do: 0
+
+  defp resolve_exit_target({:string, s}), do: "rooms." <> room_id_from_path(s) <> ".id"
+
+  defp resolve_exit_target({:var, v}) do
+    v = String.trim(v)
+    "rooms." <> room_id_from_path(v) <> ".id"
   end
 
-defp get_string(value) do
+  defp resolve_exit_target(_), do: "\"unknown\""
+
+  defp room_id_from_path(path) do
+    # Normalize __DIR__"x" -> x, "/d/zone/x" -> x, strip quotes
+    stripped =
+      path
+      |> String.replace(~r/__DIR__"/, "")
+      |> String.replace(~r/"$/, "")
+      |> String.replace(~r/^"\/d\//, "")
+
+    stripped
+    |> Path.basename()
+    |> Path.rootname()
+    |> String.replace("-", "_")
+    |> String.downcase()
+  end
+
+defp exit_key({:string, s}), do: s
+  defp exit_key({:int, n}), do: to_string(n)
+  defp exit_key({:var, v}), do: v
+  defp exit_key(s) when is_binary(s), do: s
+  defp exit_key(_), do: "unknown"
+
+  defp get_string(value) do
     case value do
       {:string, s} -> "\"#{s}\""
       {:int, n} -> to_string(n)
@@ -496,19 +591,28 @@ defp get_string(value) do
 
   defp get_heredoc_or_set(heredocs, sets, key, default) do
     case Map.get(heredocs, key) do
-      %{content: content} -> escape_ucl_string(content)
+      %{content: content} -> escape_heredoc_content(content)
       nil ->
         case Map.get(sets, key) do
-          {:string, s} -> escape_ucl_string(s)
+          {:string, s} -> escape_set_string(s)
           _ -> default
         end
     end
   end
 
-  defp escape_ucl_string(str) do
+  # Heredoc content is raw LPC text (real newlines, real quotes).
+  # UCL/Elias accepts "\n" as literal backslash-n and "\"" as a quote.
+  defp escape_heredoc_content(str) do
     str
-    |> String.replace("\"", "\\\"")
     |> String.replace("\n", "\\n")
+    |> String.replace("\"", "\\\"")
+  end
+
+  # Set-string values already carry LPC escapes (\" for a literal quote, \n
+  # for a line break, ...). Only real newline chars (from multi-line LPC
+  # literals that our parser joined) need converting to "\n".
+  defp escape_set_string(str) do
+    String.replace(str, "\n", "\\n")
   end
 
   defp generate_npc_ucl(ast, zone_id) do
@@ -516,7 +620,11 @@ defp get_string(value) do
     sets = Map.get(create, :sets, %{})
     heredocs = Map.get(create, :heredocs, %{})
 
-    npc_id = extract_string(Map.get(sets, "name"), "npc") |> String.replace(" ", "_") |> String.downcase()
+    npc_id =
+      ast.source_path
+      |> Path.basename()
+      |> Path.rootname()
+      |> String.replace("-", "_")
 
     ucl = """
     characters "#{npc_id}" {
@@ -526,33 +634,26 @@ defp get_string(value) do
 
     # Brain reference (from inherit or default)
     brain = infer_brain(ast.inherits)
-    ucl <> "  brain = brains.#{brain}\n"
+    brain_line = if brain != nil, do: "  brain = brains.#{brain}\n", else: ""
 
     # Combat config
     combat = build_npc_combat(sets)
-    if combat != "" do
-      ucl <> "\n  combat = {\n#{combat}\n  }\n"
-    end
 
     # Goods
     goods = build_goods(sets)
-    if goods != [] do
-      ucl <> "\n  goods = [\n" <> Enum.map_join(goods, "\n", &"    { id = #{&1} }") <> "\n  ]\n"
-    end
 
     # Inquiries
     inquiries = build_inquiries(sets)
-    if inquiries != %{} do
-      ucl <> "\n  inquiries = {\n" <> generate_inquiries(inquiries) <> "\n  }\n"
-    end
 
     # Chat
     chat = build_chat(sets)
-    if chat != nil do
-      ucl <> "\n  #{chat}\n"
-    end
 
-    ucl <> "    }"
+    ucl <> brain_line <>
+      (if combat != "", do: "\n  combat = {\n#{combat}\n  }\n", else: "") <>
+      (if goods != [], do: "\n  goods = [\n" <> Enum.map_join(goods, "\n", &"    { id = #{&1} }") <> "\n  ]\n", else: "") <>
+      (if inquiries != %{}, do: "\n  inquiries = {\n" <> generate_inquiries(inquiries) <> "\n  }\n", else: "") <>
+      (if chat != nil, do: "\n  #{chat}\n", else: "") <>
+      "    }"
   end
 
   defp infer_brain(inherits) do
@@ -564,7 +665,7 @@ defp get_string(value) do
       Enum.any?(inherits, &String.contains?(&1, "BANKER")) -> "banker"
       Enum.any?(inherits, &String.contains?(&1, "HORSE")) -> "horseboss"
       Enum.any?(inherits, &String.contains?(&1, "QUEST")) -> "quester"
-      true -> "default"
+      true -> nil
     end
   end
 
@@ -633,7 +734,7 @@ defp get_string(value) do
 
     case {chance, chats} do
       {{:int, c}, {:array, lines}} when c > 0 ->
-        chat_lines = Enum.map(lines, fn {:string, s} -> "    \"#{escape_ucl_string(s)}\"" end) |> Enum.join(",\n")
+        chat_lines = Enum.map(lines, fn {:string, s} -> "    \"#{escape_set_string(s)}\"" end) |> Enum.join(",\n")
         """
         chat_chance = #{c}
         chats = [
@@ -651,17 +752,11 @@ defp get_string(value) do
     set_name = Map.get(create, :set_name, %{})
     heredocs = Map.get(create, :heredocs, %{})
 
-    item_id = case Map.get(set_name, "name") do
-      {:string, s} -> s
-      s when is_binary(s) -> s
-      nil -> case Map.get(sets, "name") do
-        {:string, s} -> s
-        s when is_binary(s) -> s
-        _ -> "item"
-      end
-    end
-    |> String.replace(" ", "_")
-    |> String.downcase()
+    item_id =
+      ast.source_path
+      |> Path.basename()
+      |> Path.rootname()
+      |> String.replace("-", "_")
 
     name = case Map.get(set_name, "name") do
       {:string, s} -> s
@@ -681,15 +776,13 @@ defp get_string(value) do
 
     # Verbs
     verbs = infer_verbs(ast.inherits, sets)
-    ucl <> "  verbs = [\n" <> Enum.map_join(verbs, ",\n", &"    \"#{&1}\"") <> "\n  ]\n"
 
     # Meta
     meta = build_item_meta(sets, ast.inherits)
-    if meta != %{} do
-      ucl <> "\n  meta = {\n" <> generate_meta(meta) <> "\n  }\n"
-    end
 
-    ucl <> "    }"
+    ucl <> "  verbs = [\n" <> Enum.map_join(verbs, ",\n", &"    \"#{&1}\"") <> "\n  ]\n" <>
+      (if meta != %{}, do: "\n  meta = {\n" <> generate_meta(meta) <> "\n  }\n", else: "") <>
+      "    }"
   end
 
   defp infer_verbs(inherits, sets) do
@@ -774,7 +867,7 @@ defp get_string(value) do
     |> Enum.join("\n")
   end
 
-  defp format_meta_value({:string, s}), do: "\"#{escape_ucl_string(s)}\""
+  defp format_meta_value({:string, s}), do: "\"#{escape_set_string(s)}\""
   defp format_meta_value({:int, i}), do: to_string(i)
   defp format_meta_value({:float, f}), do: to_string(f)
   defp format_meta_value({:bool, b}), do: if(b, do: "true", else: "false")

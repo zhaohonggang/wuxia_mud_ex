@@ -91,11 +91,17 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
              String.contains?(existing, "items \"#{base_name}\"") do
             Mix.shell().warning("#{base_name} already exists in #{output_file}, skipping append")
           else
-            File.write!(output_file, existing <> "\n\n" <> ucl)
+            File.write!(output_file, String.trim_trailing(existing) <> "\n\n" <> String.trim_trailing(ucl) <> "\n")
             Mix.shell().info("Appended to #{output_file}")
           end
         else
-          File.write!(output_file, ucl)
+          zone_header = """
+          zones "#{zone_id}" {
+            name = "#{zone_id}"
+          }
+
+          """
+          File.write!(output_file, zone_header <> String.trim_trailing(ucl) <> "\n")
           Mix.shell().info("Created #{output_file}")
         end
 

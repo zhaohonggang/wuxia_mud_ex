@@ -890,7 +890,9 @@ defmodule Kantele.World.Loader do
         room_id = room_exit.room_id
         room_exit = Map.delete(room_exit, :room_id)
 
-        Enum.map(room_exit, fn {key, value} ->
+        room_exit
+        |> Enum.filter(fn {_key, value} -> not is_nil(value) end)
+        |> Enum.map(fn {key, value} ->
           %Kalevala.World.Exit{
             id: "#{room_id}:#{key}",
             exit_name: to_string(key),
@@ -1056,11 +1058,17 @@ defmodule Kantele.World.Loader do
             z.id == key
           end)
 
-        zone
-        |> flatten_characters()
-        |> flatten_items()
-        |> flatten_rooms()
-        |> dereference(reference)
+        case zone do
+          nil ->
+            nil
+
+          found_zone ->
+            found_zone
+            |> flatten_characters()
+            |> flatten_items()
+            |> flatten_rooms()
+            |> dereference(reference)
+        end
     end
   end
 
@@ -1177,23 +1185,26 @@ defmodule Kantele.World.Loader do
       ["characters" | character] ->
         [character_name, character_key] = character
 
-        zone.characters
-        |> find_character(zone, character_name)
-        |> Map.get(String.to_atom(character_key))
+        case find_character(zone.characters, zone, character_name) do
+          nil -> nil
+          char -> Map.get(char, String.to_atom(character_key))
+        end
 
       ["items" | item] ->
         [item_name, item_key] = item
 
-        zone.items
-        |> find_item(zone, item_name)
-        |> Map.get(String.to_atom(item_key))
+        case find_item(zone.items, zone, item_name) do
+          nil -> nil
+          found_item -> Map.get(found_item, String.to_atom(item_key))
+        end
 
       ["rooms" | room] ->
         [room_name, room_key] = room
 
-        zone.rooms
-        |> find_room(zone, room_name)
-        |> Map.get(String.to_atom(room_key))
+        case find_room(zone.rooms, zone, room_name) do
+          nil -> nil
+          found_room -> Map.get(found_room, String.to_atom(room_key))
+        end
     end
   end
 
