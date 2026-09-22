@@ -89,7 +89,7 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
           if String.contains?(existing, "rooms \"#{base_name}\"") or
              String.contains?(existing, "characters \"#{base_name}\"") or
              String.contains?(existing, "items \"#{base_name}\"") do
-            Mix.shell().warning("#{base_name} already exists in #{output_file}, skipping append")
+            Mix.shell().info("#{base_name} already exists in #{output_file}, skipping append")
           else
             File.write!(output_file, String.trim_trailing(existing) <> "\n\n" <> String.trim_trailing(ucl) <> "\n")
             Mix.shell().info("Appended to #{output_file}")

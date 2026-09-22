@@ -192,8 +192,16 @@ zones "test" {
 # Generated from test_minimal_world_v2_modified/obj/axe.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/axe.c
-# Requires manual conversion
+    items "axe" {
+      name = "大板斧"
+      description = "这是一把沉重的大板斧，砍起东西来非常顺手。\n"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/bigbox.c by LPCConverter
 # Zone: test
@@ -210,26 +218,58 @@ zones "test" {
 # Generated from test_minimal_world_v2_modified/obj/blade.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/blade.c
-# Requires manual conversion
+    items "blade" {
+      name = "钢刀"
+      description = "这是一寻常的单刀，份量大约六、七斤重。\n"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/blade1.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/blade1.c
-# Requires manual conversion
+    items "blade1" {
+      name = "Item"
+      description = "一柄钢铁打造的刀。\n"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/blade2.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/blade2.c
-# Requires manual conversion
+    items "blade2" {
+      name = "短刀"
+      description = "一柄锈迹斑斑的短刀，看样子值不了两个钱。\n"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/blade3.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/blade3.c
-# Requires manual conversion
+    items "blade3" {
+      name = "大刀"
+      description = "一柄锋利的大刀。\n"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/bottle.c by LPCConverter
 # Zone: test
@@ -258,50 +298,100 @@ zones "test" {
 # Generated from test_minimal_world_v2_modified/obj/cloth.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/cloth.c
-# Requires manual conversion
+    items "cloth" {
+      name = "布衣"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/cloth1.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/cloth1.c
-# Requires manual conversion
+    items "cloth1" {
+      name = "Item"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/cloth2.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/cloth2.c
-# Requires manual conversion
+    items "cloth2" {
+      name = "Item"
+      description = "一件灰白色的普通长衫。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/cloth3.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/cloth3.c
-# Requires manual conversion
+    items "cloth3" {
+      name = "马褂"
+      description = "一件普通的马褂。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/cloth4.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/cloth4.c
-# Requires manual conversion
+    items "cloth4" {
+      name = "Item"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/cloth5.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/cloth5.c
-# Requires manual conversion
+    items "cloth5" {
+      name = "Item"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/cloth6.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/cloth6.c
-# Requires manual conversion
+    items "cloth6" {
+      name = "短打劲装"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/dagger.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/dagger.c
-# Requires manual conversion
+    items "dagger" {
+      name = "普通匕首"
+      description = "这是一把普通的小匕首。用来暗算别人比较合适。\n"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/food.c by LPCConverter
 # Zone: test
@@ -319,38 +409,80 @@ zones "test" {
 # Generated from test_minimal_world_v2_modified/obj/fork.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/fork.c
-# Requires manual conversion
+    items "fork" {
+      name = "钢叉"
+      description = "一柄锋利的钢叉。\n"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/gangdao.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/gangdao.c
-# Requires manual conversion
+    items "gangdao" {
+      name = "钢刀"
+      description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。\n"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/goldcloth1.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/goldcloth1.c
-# Requires manual conversion
+    items "goldcloth1" {
+      name = "Item"
+      description = "皇上御赐的黄马褂。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/goldcloth2.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/goldcloth2.c
-# Requires manual conversion
+    items "goldcloth2" {
+      name = "Item"
+      description = "皇上御赐的黄马褂。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/hammer.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/hammer.c
-# Requires manual conversion
+    items "hammer" {
+      name = "铁锤"
+      description = "这是一把沈重的铁锤，打造的相当坚实。\n"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/head.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/head.c
-# Requires manual conversion
+    items "head" {
+      name = "钢盔"
+      description = "一顶结实的钢盔。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/jinship.c by LPCConverter
 # Zone: test
@@ -367,14 +499,28 @@ zones "test" {
 # Generated from test_minimal_world_v2_modified/obj/jinvcloth.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/jinvcloth.c
-# Requires manual conversion
+    items "jinvcloth" {
+      name = "胸部半开纱衣"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/mace.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/mace.c
-# Requires manual conversion
+    items "mace" {
+      name = "熟铜锏"
+      description = "一柄沉甸甸的熟铜锏，上面铜锈斑斑。\n"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/mingshijilue.c by LPCConverter
 # Zone: test
@@ -391,8 +537,14 @@ zones "test" {
 # Generated from test_minimal_world_v2_modified/obj/nvcloth.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/nvcloth.c
-# Requires manual conversion
+    items "nvcloth" {
+      name = "短裙"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/rice.c by LPCConverter
 # Zone: test
@@ -434,20 +586,40 @@ zones "test" {
 # Generated from test_minimal_world_v2_modified/obj/staff.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/staff.c
-# Requires manual conversion
+    items "staff" {
+      name = "禅杖"
+      description = "这是一把禅杖，上面几个铁环叮当作响．\n"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/throwing.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/throwing.c
-# Requires manual conversion
+    items "throwing" {
+      name = "飞璜石"
+      description = "飞璜石是一种十分常见的暗器。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/waist.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/waist.c
-# Requires manual conversion
+    items "waist" {
+      name = "护心镜"
+      description = "一面黄铜做的护心镜。\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/water.c by LPCConverter
 # Zone: test
@@ -464,8 +636,14 @@ zones "test" {
 # Generated from test_minimal_world_v2_modified/obj/whip.c by LPCConverter
 # Zone: test
 
-# Generic LPC file: test_minimal_world_v2_modified/obj/whip.c
-# Requires manual conversion
+    items "whip" {
+      name = "皮鞭"
+      description = "一条长长的皮鞭．\n"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
 
 # Generated from test_minimal_world_v2_modified/obj/wine.c by LPCConverter
 # Zone: test

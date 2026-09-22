@@ -442,10 +442,47 @@ defmodule Kantele.World.LPCConverter do
     cond do
       Enum.any?(inherits, &String.contains?(&1, "ROOM")) -> :room
       Enum.any?(inherits, &String.contains?(&1, "NPC")) -> :npc
-      Enum.any?(inherits, &String.contains?(&1, "WEAPON") or String.contains?(&1, "SWORD") or String.contains?(&1, "ARMOR") or String.contains?(&1, "ITEM")) -> :item
+      Enum.any?(inherits, &is_item_inherit?(&1)) -> :item
       Enum.any?(inherits, &String.contains?(&1, "SKILL") or String.contains?(&1, "FORCE")) -> :skill
+      item_like?(ast) -> :item
       true -> :generic
     end
+  end
+
+  # 常见武器/防具/杂物类型的继承名；命中即视为物品。
+  # 真实 corpus 里的类型五花八门，因此这里只列已知大类，其余走 item_like? 兜底。
+  defp is_item_inherit?(inherit) do
+    Enum.any?(
+      ["WEAPON", "SWORD", "BLADE", "DAGGER", "STAFF", "CLUB", "HAMMER", "AXE",
+       "THROWING", "WHIP", "FORCE ?", "ARMOR", "CLOTH", "BOOTS", "FINGER",
+       "HANDS", "HEAD", "HELMET", "NECK", "RING", "SHIELD", "SURCOAT",
+       "WAIST", "WRIST", "ARMOR ?", "ITEM", "MONEY", "CONTAINER", "FOOD",
+       "MEDICINE", "BOOK", "GOLD", "SILVER"],
+      fn kw -> String.contains?(inherit, kw) end
+    )
+  end
+
+  # 兜底：obj 目录下的文件，具备 set_name/set_weight 等物品特征即视为物品
+  defp item_like?(ast) do
+    source = ast.source_path
+
+    cond do
+      String.contains?(source, "obj" <> "/") or String.contains?(source, Path.join("obj", "")) ->
+        item_features?(ast)
+
+      true ->
+        false
+    end
+  end
+
+  defp item_features?(ast) do
+    create = ast.create_fn
+    sets = Map.get(create, :sets, %{})
+    set_name = Map.get(create, :set_name, %{})
+
+    Map.has_key?(sets, "material") or Map.has_key?(sets, "unit") or
+      Map.has_key?(sets, "value") or Map.has_key?(sets, "weight") or
+      Map.has_key?(set_name, "name")
   end
 
   defp extract_string(value, default) do
