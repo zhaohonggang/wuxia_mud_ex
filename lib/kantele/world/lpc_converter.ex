@@ -554,8 +554,81 @@ defmodule Kantele.World.LPCConverter do
           ""
       end
 
-    Enum.join([room_block, exits_block], "\n")
+    objects_block = generate_room_objects(room_id, Map.get(sets, "objects"))
+
+    Enum.join([room_block, exits_block, objects_block], "\n")
   end
+
+  # --------------------------------------------------------------------------
+  # set("objects", ([ __DIR__"npc/x" : n, __DIR__"obj/y" : 1 ]))
+  #   -> room_characters "room" { room_id = ...; characters = [{ id = ... }, ...] }
+  #   -> room_items      "room" { room_id = ...; items = [{ id = ... }, ...] }
+  # --------------------------------------------------------------------------
+
+  defp generate_room_objects(_room_id, nil), do: ""
+
+  defp generate_room_objects(room_id, {:mapping, pairs}) do
+    {char_links, item_links} =
+      Enum.reduce(pairs, {[], []}, fn {key, count}, {chars, items} ->
+        path = extract_key_path(key)
+        id = object_id(path)
+
+        if contains_npc?(path) do
+          n = count_or_one(count)
+          links = List.duplicate("      { id = characters.#{id}.id }", n)
+          {chars ++ links, items}
+        else
+          {chars, items ++ ["      { id = items.#{id}.id }"]}
+        end
+      end)
+
+    char_block =
+      if char_links != [] do
+        """
+          room_characters "#{room_id}" {
+            room_id = rooms.#{room_id}.id
+            characters = [
+        """ <>
+          Enum.join(char_links, ",\n") <>
+          """
+            ]
+          }
+        """
+      else
+        ""
+      end
+
+    item_block =
+      if item_links != [] do
+        """
+          room_items "#{room_id}" {
+            room_id = rooms.#{room_id}.id
+            items = [
+        """ <>
+          Enum.join(item_links, ",\n") <>
+          """
+            ]
+          }
+        """
+      else
+        ""
+      end
+
+    Enum.join([char_block, item_block], "\n")
+  end
+
+  defp generate_room_objects(_room_id, _), do: ""
+
+  defp contains_npc?(path), do: String.contains?(path, "npc")
+
+  defp count_or_one({:int, n}), do: max(n, 1)
+  defp count_or_one(_), do: 1
+
+  defp extract_key_path({:var, v}), do: v
+  defp extract_key_path({:string, v}), do: v
+  defp extract_key_path(_), do: ""
+
+  defp object_id(path), do: room_id_from_path(path)
 
   defp coord_of({:int, v}), do: v
   defp coord_of(_), do: 0

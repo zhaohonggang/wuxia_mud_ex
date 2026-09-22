@@ -739,6 +739,15 @@ zones "test" {
   north = rooms.furong.id
   west = rooms.mudan.id  }
 
+
+  room_items "beidajie1" {
+    room_id = rooms.beidajie1.id
+    items = [
+      { id = items.cloth.id },
+      { id = items.blade1.id },
+      { id = items.food.id }    ]
+  }
+
 # Generated from test_minimal_world_v2_modified/room/bet.c by LPCConverter
 # Zone: test
 
@@ -752,6 +761,14 @@ zones "test" {
   room_exits "bet" {
     room_id = rooms.bet.id
   south = rooms.duchang.id  }
+
+  room_characters "bet" {
+    room_id = rooms.bet.id
+    characters = [
+      { id = characters.duke.id },
+      { id = characters.duke.id },
+      { id = characters.zhuangjia.id }    ]
+  }
 
 # Generated from test_minimal_world_v2_modified/room/cave.c by LPCConverter
 # Zone: test
@@ -768,6 +785,15 @@ zones "test" {
   in = rooms.cave1.id
   southdown = rooms.zhulin.id  }
 
+
+  room_items "cave" {
+    room_id = rooms.cave.id
+    items = [
+      { id = items.mangshe.id },
+      { id = items.dagger.id },
+      { id = items.staff.id }    ]
+  }
+
 # Generated from test_minimal_world_v2_modified/room/cave1.c by LPCConverter
 # Zone: test
 
@@ -781,6 +807,14 @@ zones "test" {
   room_exits "cave1" {
     room_id = rooms.cave1.id
   out = rooms.cave.id  }
+
+
+  room_items "cave1" {
+    room_id = rooms.cave1.id
+    items = [
+      { id = items.throwing.id },
+      { id = items.dagger.id }    ]
+  }
 
 # Generated from test_minimal_world_v2_modified/room/damen.c by LPCConverter
 # Zone: test
@@ -797,6 +831,20 @@ zones "test" {
   north = rooms.yuanzi.id
   southdown = rooms.shijie.id  }
 
+  room_characters "damen" {
+    room_id = rooms.damen.id
+    characters = [
+      { id = characters.menwei.id },
+      { id = characters.menwei.id }    ]
+  }
+
+  room_items "damen" {
+    room_id = rooms.damen.id
+    items = [
+      { id = items.blade2.id },
+      { id = items.blade3.id }    ]
+  }
+
 # Generated from test_minimal_world_v2_modified/room/dating.c by LPCConverter
 # Zone: test
 
@@ -812,6 +860,20 @@ zones "test" {
   south = rooms.yuanzi.id
   north = rooms.houyuan.id  }
 
+  room_characters "dating" {
+    room_id = rooms.dating.id
+    characters = [
+      { id = characters.furen.id }    ]
+  }
+
+  room_items "dating" {
+    room_id = rooms.dating.id
+    items = [
+      { id = items.mingshijilue.id },
+      { id = items.wuzhirong.id },
+      { id = items.zhuangyuncheng.id }    ]
+  }
+
 # Generated from test_minimal_world_v2_modified/room/dir_macro_test.c by LPCConverter
 # Zone: test
 
@@ -826,6 +888,18 @@ zones "test" {
     room_id = rooms.dir_macro_test.id
   up = rooms.room_above.id
   down = rooms.room_below.id  }
+
+  room_characters "dir_macro_test" {
+    room_id = rooms.dir_macro_test.id
+    characters = [
+      { id = characters.guard.id }    ]
+  }
+
+  room_items "dir_macro_test" {
+    room_id = rooms.dir_macro_test.id
+    items = [
+      { id = items.sword.id }    ]
+  }
 
 # Generated from test_minimal_world_v2_modified/room/duchang.c by LPCConverter
 # Zone: test
@@ -855,6 +929,20 @@ zones "test" {
     room_id = rooms.duwushi.id
   east = rooms.houyuan.id  }
 
+  room_characters "duwushi" {
+    room_id = rooms.duwushi.id
+    characters = [
+      { id = characters.jinhua.id }    ]
+  }
+
+  room_items "duwushi" {
+    room_id = rooms.duwushi.id
+    items = [
+      { id = items.bottle.id },
+      { id = items.poison.id },
+      { id = items.throwing.id }    ]
+  }
+
 # Generated from test_minimal_world_v2_modified/room/encoding_test.c by LPCConverter
 # Zone: test
 
@@ -883,6 +971,19 @@ zones "test" {
     room_id = rooms.furong.id
   east = rooms.zxlpath.id  }
 
+
+  room_items "furong" {
+    room_id = rooms.furong.id
+    items = [
+      { id = items.food.id },
+      { id = items.water.id },
+      { id = items.wine.id },
+      { id = items.box.id },
+      { id = items.bottle.id },
+      { id = items.bigbox.id },
+      { id = items.smallbox.id }    ]
+  }
+
 # Generated from test_minimal_world_v2_modified/room/houyuan.c by LPCConverter
 # Zone: test
 
@@ -898,6 +999,14 @@ zones "test" {
   south = rooms.dating.id
   east = rooms.liangong.id
   west = rooms.duwushi.id  }
+
+
+  room_items "houyuan" {
+    room_id = rooms.houyuan.id
+    items = [
+      { id = items.rice.id },
+      { id = items.rice.id }    ]
+  }
 
 # Generated from test_minimal_world_v2_modified/room/kedian.c by LPCConverter
 # Zone: test
@@ -916,6 +1025,27 @@ zones "test" {
   south = rooms.liaotian.id
   east = rooms.damen.id  }
 
+  room_characters "kedian" {
+    room_id = rooms.kedian.id
+    characters = [
+      { id = characters.xiaoer.id }    ]
+  }
+
+  room_items "kedian" {
+    room_id = rooms.kedian.id
+    items = [
+      { id = items.axe.id },
+      { id = items.blade.id },
+      { id = items.dagger.id },
+      { id = items.cloth.id },
+      { id = items.cloth1.id },
+      { id = items.food.id },
+      { id = items.water.id },
+      { id = items.wine.id },
+      { id = items.box.id },
+      { id = items.bottle.id }    ]
+  }
+
 # Generated from test_minimal_world_v2_modified/room/kedian2.c by LPCConverter
 # Zone: test
 
@@ -931,6 +1061,20 @@ zones "test" {
   down = rooms.kedian.id
   in = rooms.kedian3.id  }
 
+  room_characters "kedian2" {
+    room_id = rooms.kedian2.id
+    characters = [
+      { id = characters.xingzhe.id }    ]
+  }
+
+  room_items "kedian2" {
+    room_id = rooms.kedian2.id
+    items = [
+      { id = items.food.id },
+      { id = items.water.id },
+      { id = items.wine.id }    ]
+  }
+
 # Generated from test_minimal_world_v2_modified/room/kedian3.c by LPCConverter
 # Zone: test
 
@@ -944,6 +1088,14 @@ zones "test" {
   room_exits "kedian3" {
     room_id = rooms.kedian3.id
   out = rooms.kedian2.id  }
+
+
+  room_items "kedian3" {
+    room_id = rooms.kedian3.id
+    items = [
+      { id = items.food.id },
+      { id = items.water.id }    ]
+  }
 
 # Generated from test_minimal_world_v2_modified/room/large_room_test.c by LPCConverter
 # Zone: test
@@ -964,6 +1116,14 @@ zones "test" {
   up = rooms.room_up.id
   down = rooms.room_down.id  }
 
+  room_characters "large_room_test" {
+    room_id = rooms.large_room_test.id
+    characters = [
+      { id = characters.guard1.id },
+      { id = characters.guard2.id },
+      { id = characters.merchant.id }    ]
+  }
+
 # Generated from test_minimal_world_v2_modified/room/liangong.c by LPCConverter
 # Zone: test
 
@@ -977,6 +1137,21 @@ zones "test" {
   room_exits "liangong" {
     room_id = rooms.liangong.id
   west = rooms.houyuan.id  }
+
+  room_characters "liangong" {
+    room_id = rooms.liangong.id
+    characters = [
+      { id = characters.worker_liu.id }    ]
+  }
+
+  room_items "liangong" {
+    room_id = rooms.liangong.id
+    items = [
+      { id = items.axe.id },
+      { id = items.staff.id },
+      { id = items.hammer.id },
+      { id = items.throwing.id }    ]
+  }
 
 # Generated from test_minimal_world_v2_modified/room/liaotian.c by LPCConverter
 # Zone: test
@@ -992,6 +1167,14 @@ zones "test" {
     room_id = rooms.liaotian.id
   north = rooms.kedian.id  }
 
+
+  room_items "liaotian" {
+    room_id = rooms.liaotian.id
+    items = [
+      { id = items.food.id },
+      { id = items.water.id }    ]
+  }
+
 # Generated from test_minimal_world_v2_modified/room/meigui.c by LPCConverter
 # Zone: test
 
@@ -1006,6 +1189,19 @@ zones "test" {
     room_id = rooms.meigui.id
   east = rooms.zxlpath.id  }
 
+
+  room_items "meigui" {
+    room_id = rooms.meigui.id
+    items = [
+      { id = items.food.id },
+      { id = items.water.id },
+      { id = items.wine.id },
+      { id = items.box.id },
+      { id = items.bottle.id },
+      { id = items.bigbox.id },
+      { id = items.smallbox.id }    ]
+  }
+
 # Generated from test_minimal_world_v2_modified/room/mudan.c by LPCConverter
 # Zone: test
 
@@ -1019,6 +1215,19 @@ zones "test" {
   room_exits "mudan" {
     room_id = rooms.mudan.id
   north = rooms.zxlpath.id  }
+
+
+  room_items "mudan" {
+    room_id = rooms.mudan.id
+    items = [
+      { id = items.food.id },
+      { id = items.water.id },
+      { id = items.wine.id },
+      { id = items.box.id },
+      { id = items.bottle.id },
+      { id = items.bigbox.id },
+      { id = items.smallbox.id }    ]
+  }
 
 # Generated from test_minimal_world_v2_modified/room/multi_include_test.c by LPCConverter
 # Zone: test
@@ -1048,6 +1257,13 @@ zones "test" {
     room_id = rooms.shijie.id
   northup = rooms.damen.id
   southdown = rooms.shanlu.id  }
+
+
+  room_items "shijie" {
+    room_id = rooms.shijie.id
+    items = [
+      { id = items.staff.id }    ]
+  }
 
 # Generated from test_minimal_world_v2_modified/room/test_dating.c by LPCConverter
 # Zone: test
@@ -1097,6 +1313,13 @@ zones "test" {
   south = rooms.damen.id
   north = rooms.dating.id  }
 
+
+  room_items "yuanzi" {
+    room_id = rooms.yuanzi.id
+    items = [
+      { id = items.yuanzi_ornament1.id }    ]
+  }
+
 # Generated from test_minimal_world_v2_modified/room/zhulin.c by LPCConverter
 # Zone: test
 
@@ -1110,6 +1333,14 @@ zones "test" {
   room_exits "zhulin" {
     room_id = rooms.zhulin.id
   northup = rooms.cave.id  }
+
+
+  room_items "zhulin" {
+    room_id = rooms.zhulin.id
+    items = [
+      { id = items.staff.id },
+      { id = items.throwing.id }    ]
+  }
 
 # Generated from test_minimal_world_v2_modified/room/zxlpath.c by LPCConverter
 # Zone: test
@@ -1127,6 +1358,15 @@ zones "test" {
   north = rooms.damen.id
   west = rooms.furong.id
   east = rooms.mudan.id  }
+
+
+  room_items "zxlpath" {
+    room_id = rooms.zxlpath.id
+    items = [
+      { id = items.food.id },
+      { id = items.water.id },
+      { id = items.wine.id }    ]
+  }
 
 # Generated from test_minimal_world_v2_modified/skill/ban.c by LPCConverter
 # Zone: test
