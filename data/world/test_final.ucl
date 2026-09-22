@@ -1,0 +1,907 @@
+# Generated from test_minimal_world_v2_modified/adm/daemons/rankd.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/adm/daemons/rankd.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/beast/mangshe.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/beast/mangshe.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/board/kedian_b.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/board/kedian_b.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/corpse_poison.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/corpse_poison.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/drunk.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/drunk.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/flower_poison.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/flower_poison.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/freezing.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/freezing.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/hunger.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/hunger.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/ill_kesou.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/ill_kesou.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/poison.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/poison.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/sanxiao_poison.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/sanxiao_poison.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/npc/duke.c by LPCConverter
+# Zone: test_final
+
+    characters "npc" {
+      name = "NPC"
+      description = "他是赌场的管事，精明干练，眼神锐利。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/furen.c by LPCConverter
+# Zone: test_final
+
+    characters "npc" {
+      name = "NPC"
+      description = "\n只见她约莫二十六七年纪,全身缟素,不施脂粉,脸色苍白.\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/jinhua.c by LPCConverter
+# Zone: test_final
+
+    characters "npc" {
+      name = "NPC"
+      description = "一个年少貌美的姑娘。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/menwei.c by LPCConverter
+# Zone: test_final
+
+    characters "npc" {
+      name = "NPC"
+      description = "他是白驼山庄的门卫，身材魁梧，手持钢叉，目光如炬。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/worker-liu.c by LPCConverter
+# Zone: test_final
+
+    characters "npc" {
+      name = "NPC"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/xiaoer.c by LPCConverter
+# Zone: test_final
+
+    characters "npc" {
+      name = "NPC"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/xingzhe.c by LPCConverter
+# Zone: test_final
+
+    characters "npc" {
+      name = "NPC"
+      description = "他是少林寺的俗家弟子，在此打坐修行。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/zhuangjia.c by LPCConverter
+# Zone: test_final
+
+    characters "npc" {
+      name = "NPC"
+      description = "他是赌场的庄家，一脸精明相，手里拿着骰盅。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/axe.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/axe.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/bigbox.c by LPCConverter
+# Zone: test_final
+
+    items "大铁盒" {
+      name = "大铁盒"
+      description = "这盒子高约一尺，然而入手轻飘飘地，似乎盒里并没藏着甚么 东西。打开盒盖，那盒子竟浅得出奇，离底仅只一寸，一只尺 来高的盒子，怎地盒里却这般浅？料得必有夹层。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/blade.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/blade.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/blade1.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/blade1.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/blade2.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/blade2.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/blade3.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/blade3.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/bottle.c by LPCConverter
+# Zone: test_final
+
+    items "水壶" {
+      name = "水壶"
+      description = "一个不知道用什么动物的皮制成的水壶。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/box.c by LPCConverter
+# Zone: test_final
+
+    items "功德箱" {
+      name = "功德箱"
+      description = "这是一个小庙里常见的功德箱，专门用来接受善男信女们的捐款。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/cloth.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/cloth.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/cloth1.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/cloth1.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/cloth2.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/cloth2.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/cloth3.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/cloth3.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/cloth4.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/cloth4.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/cloth5.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/cloth5.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/cloth6.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/cloth6.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/dagger.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/dagger.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/food.c by LPCConverter
+# Zone: test_final
+
+    items "食物" {
+      name = "食物"
+      description = "还没定义，给下层调用。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/fork.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/fork.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/gangdao.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/gangdao.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/goldcloth1.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/goldcloth1.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/goldcloth2.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/goldcloth2.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/hammer.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/hammer.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/head.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/head.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/jinship.c by LPCConverter
+# Zone: test_final
+
+    items "金国战船模型" {
+      name = "金国战船模型"
+      description = "这是一艘金国战船的精致模型，船身雕龙画凤，威武雄壮。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/jinvcloth.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/jinvcloth.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/mace.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/mace.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/mingshijilue.c by LPCConverter
+# Zone: test_final
+
+    items "明史辑略" {
+      name = "明史辑略"
+      description = "这是一本《明史辑略》，记载了明朝历史的精要。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/nvcloth.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/nvcloth.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/rice.c by LPCConverter
+# Zone: test_final
+
+    items "item" {
+      name = "Item"
+      description = "一碗香喷喷的黄米饭。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/ship.c by LPCConverter
+# Zone: test_final
+
+    items "战船模型" {
+      name = "战船模型"
+      description = "这是一艘战船的精致模型，船身结实，桅杆高耸。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/smallbox.c by LPCConverter
+# Zone: test_final
+
+    items "小铁盒" {
+      name = "小铁盒"
+      description = "这只盒子小得多，只一尺见方。盒中一张笺上写道：“君 是忠厚仁者，葬我骸骨，当酬以重宝秘术。大铁盒开启时 有毒箭射出，愈中书谱地图均假，上有剧毒，以惩贪欲恶 徒。真者在此小铁盒内。”\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/staff.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/staff.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/throwing.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/throwing.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/waist.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/waist.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/water.c by LPCConverter
+# Zone: test_final
+
+    items "杯盏" {
+      name = "杯盏"
+      description = "还没定义，等下层调用。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/whip.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/obj/whip.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/obj/wine.c by LPCConverter
+# Zone: test_final
+
+    items "酒杯" {
+      name = "酒杯"
+      description = "还没定义，等下层调用。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/wuzhirong.c by LPCConverter
+# Zone: test_final
+
+    items "吴之荣" {
+      name = "吴之荣"
+      description = "这是吴之荣的首级，面容狰狞，双眼圆睁。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/yuanzi_ornament1.c by LPCConverter
+# Zone: test_final
+
+    items "金色装饰品" {
+      name = "金色装饰品"
+      description = "这是一件精美的金色装饰品，闪闪发光。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/zhuangyuncheng.c by LPCConverter
+# Zone: test_final
+
+    items "庄允城" {
+      name = "庄允城"
+      description = "这是一尊庄允城的塑像，栩栩如生，眼神中透着坚毅。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/quest/capture.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/quest/capture.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/quest/deliver.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/quest/deliver.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/quest/explore.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/quest/explore.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/quest/search.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/quest/search.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/quest/shen.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/quest/shen.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/room/beidajie1.c by LPCConverter
+# Zone: test_final
+
+    rooms "北大街" {
+      name = "北大街"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/bet.c by LPCConverter
+# Zone: test_final
+
+    rooms "赌场" {
+      name = "赌场"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/cave.c by LPCConverter
+# Zone: test_final
+
+    rooms "岩洞" {
+      name = "岩洞"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/cave1.c by LPCConverter
+# Zone: test_final
+
+    rooms "岩洞深处" {
+      name = "岩洞深处"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/damen.c by LPCConverter
+# Zone: test_final
+
+    rooms "大门" {
+      name = "大门"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/dating.c by LPCConverter
+# Zone: test_final
+
+    rooms "白驼山庄大厅" {
+      name = "白驼山庄大厅"
+      description = "这是白驼山庄的大厅，气派非凡。大厅正中悬挂着一块匾额，\n\" \"上书\\"毒中之王\\"四个大字。厅内陈设奢华，两侧排列着太师椅，\n\" \"正中设有太师椅一把，乃是庄主议事之处。两侧各有侧门通往\n\" \"内院。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/room/dir_macro_test.c by LPCConverter
+# Zone: test_final
+
+    rooms "测试房间" {
+      name = "测试房间"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/duchang.c by LPCConverter
+# Zone: test_final
+
+    rooms "赌场大厅" {
+      name = "赌场大厅"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/duwushi.c by LPCConverter
+# Zone: test_final
+
+    rooms "毒物室" {
+      name = "毒物室"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/encoding_test.c by LPCConverter
+# Zone: test_final
+
+    rooms "编码测试房间" {
+      name = "编码测试房间"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/furong.c by LPCConverter
+# Zone: test_final
+
+    rooms "芙蓉宴厅" {
+      name = "芙蓉宴厅"
+      description = "这里是醉仙楼的芙蓉宴厅。你走进门，绕过了一道淡绿绸 屏风，迎面的墙上挂着一副\" NOR + HIM \"『芙蓉出水图』\" NOR\"，工笔彩绘，状极 清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌 玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼 生辉，桌上铺着份菜单(menu)。 "
+    }
+
+# Generated from test_minimal_world_v2_modified/room/houyuan.c by LPCConverter
+# Zone: test_final
+
+    rooms "后院" {
+      name = "后院"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/kedian.c by LPCConverter
+# Zone: test_final
+
+    rooms "客店" {
+      name = "客店"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/kedian2.c by LPCConverter
+# Zone: test_final
+
+    rooms "客店二楼" {
+      name = "客店二楼"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/kedian3.c by LPCConverter
+# Zone: test_final
+
+    rooms "客店二楼" {
+      name = "客店二楼"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/large_room_test.c by LPCConverter
+# Zone: test_final
+
+    rooms "大型测试房间" {
+      name = "大型测试房间"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/liangong.c by LPCConverter
+# Zone: test_final
+
+    rooms "练功房" {
+      name = "练功房"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/liaotian.c by LPCConverter
+# Zone: test_final
+
+    rooms "聊天室" {
+      name = "聊天室"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/meigui.c by LPCConverter
+# Zone: test_final
+
+    rooms "玫瑰宴厅" {
+      name = "玫瑰宴厅"
+      description = "这里是醉仙楼的玫瑰宴厅。你走进门，绕过了一道淡绿绸 屏风，迎面的墙上挂着一副\" NOR + HIR \"『玫瑰含露图』\" NOR\"，工笔彩绘，状极 清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌 玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼 生辉，桌上铺着份菜单(menu)。 "
+    }
+
+# Generated from test_minimal_world_v2_modified/room/mudan.c by LPCConverter
+# Zone: test_final
+
+    rooms "牡丹宴厅" {
+      name = "牡丹宴厅"
+      description = "这里是醉仙楼的牡丹宴厅。你走进门，绕过了一道淡绿绸 屏风，迎面的墙上挂着一副\" NOR + HIW \"『牡丹争艳图』\" NOR\"，工笔彩绘，状极 清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌 玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼 生辉，桌上铺着份菜单(menu)。 "
+    }
+
+# Generated from test_minimal_world_v2_modified/room/multi_include_test.c by LPCConverter
+# Zone: test_final
+
+    rooms "多重包含测试" {
+      name = "多重包含测试"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/shijie.c by LPCConverter
+# Zone: test_final
+
+    rooms "山间石阶" {
+      name = "山间石阶"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/test_dating.c by LPCConverter
+# Zone: test_final
+
+    rooms "测试大厅" {
+      name = "测试大厅"
+      description = "这是一个测试大厅。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/room/test_guangchang.c by LPCConverter
+# Zone: test_final
+
+    rooms "镇广场" {
+      name = "镇广场"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/yuanzi.c by LPCConverter
+# Zone: test_final
+
+    rooms "白驼山庄大院" {
+      name = "白驼山庄大院"
+      description = "这里是白驼山庄的大院，占地极广，青砖绿瓦，古树参天。\n\" \"院子中央摆着几个大水缸，四周种着几株古松。北边是大厅，\n\" \"南边通向大门。\n"
+    }
+
+# Generated from test_minimal_world_v2_modified/room/zhulin.c by LPCConverter
+# Zone: test_final
+
+    rooms "竹林" {
+      name = "竹林"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/room/zxlpath.c by LPCConverter
+# Zone: test_final
+
+    rooms "醉仙楼大道" {
+      name = "醉仙楼大道"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2_modified/skill/ban.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/ban.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/chan.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/chan.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/chuo.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/chuo.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/dispel.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/dispel.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/feng.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/feng.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/heal.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/heal.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/hui.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/hui.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/inspire.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/inspire.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/ji.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/ji.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/jia.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/jia.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/lei.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/lei.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/lifeheal.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/lifeheal.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/luan.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/luan.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/power.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/power.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/qi.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/qi.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/qin.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/qin.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/qingxin.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/qingxin.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/recover.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/recover.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/regenerate.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/regenerate.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/roar.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/roar.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/sanjue.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/sanjue.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/shang.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/shang.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/shot.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/shot.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/six.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/six.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/sui.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/sui.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/tian.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/tian.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/tianmo.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/tianmo.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/tu.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/tu.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/xiang.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/xiang.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/xun.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/xun.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/yin.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/yin.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/zhan.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/zhan.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/zhe.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/zhe.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/zhen.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/zhen.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/zhenwu.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/zhenwu.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/zhuan.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/zhuan.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/zong.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/zong.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/skill/zongheng.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/zongheng.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/special/guibian.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/special/guibian.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/special/guimai.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/special/guimai.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/special/hatred.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/special/hatred.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/special/jinshen.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/special/jinshen.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/special/shenyan.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/special/shenyan.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/special/trick.c by LPCConverter
+# Zone: test_final
+
+# Generic LPC file: test_minimal_world_v2_modified/special/trick.c
+# Requires manual conversion

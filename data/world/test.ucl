@@ -1,0 +1,27 @@
+# Generated from test_minimal_world_v2/obj/axe.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2/obj/axe.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2/room/bet.c by LPCConverter
+# Zone: test
+
+    rooms "赌场" {
+      name = "赌场"
+      description = ""
+    }
+
+# Generated from test_minimal_world_v2/obj/bigbox.c by LPCConverter
+# Zone: test
+
+    items "大铁盒" {
+      name = "大铁盒"
+      description = "这盒子高约一尺，然而入手轻飘飘地，似乎盒里并没藏着甚么 东西。打开盒盖，那盒子竟浅得出奇，离底仅只一寸，一只尺 来高的盒子，怎地盒里却这般浅？料得必有夹层。\n"
+    }
+
+# Generated from test_minimal_world_v2/skill/power.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2/skill/power.c
+# Requires manual conversion
