@@ -932,40 +932,47 @@ defmodule Kantele.World.Loader do
 
         room_character.characters
         |> Enum.with_index()
-        |> Enum.map(fn {character_data, index} ->
+        |> Enum.flat_map(fn {character_data, index} ->
           character_id = dereference(zones, zone, character_data.id)
 
-          {_key, character} = Enum.find(zone.characters, &match_character(&1, character_id))
+          case Enum.find(zone.characters, &match_character(&1, character_id)) do
+            {_key, character} ->
+              meta = character.meta
+              combat_config = Map.get(meta, :combat_config)
 
-          meta = character.meta
-          combat_config = Map.get(meta, :combat_config)
+              combat_config =
+                case combat_config do
+                  %Kantele.Character.NPCConfig{} ->
+                    %{combat_config | spawn_room_id: room_id}
 
-          combat_config =
-            case combat_config do
-              %Kantele.Character.NPCConfig{} ->
-                %{combat_config | spawn_room_id: room_id}
+                  _ ->
+                    combat_config
+                end
 
-              _ ->
-                combat_config
-            end
+              meta = %{meta | combat_config: combat_config}
 
-          meta = %{meta | combat_config: combat_config}
+              # 商品引用此时才有 zones 上下文可解（A10/N2）
+              meta = %{meta | goods: resolve_goods(Map.get(meta, :goods), zone, zones)}
 
-          # 商品引用此时才有 zones 上下文可解（A10/N2）
-          meta = %{meta | goods: resolve_goods(Map.get(meta, :goods), zone, zones)}
+              # 任务交付物品引用同上（A11/N6）；掉落表同商品解引用
+              meta = %{meta | turn_in: resolve_turn_in(Map.get(meta, :turn_in), zone, zones)}
+              meta = %{meta | loot: resolve_goods(Map.get(meta, :loot), zone, zones)}
+              meta = %{meta | quest: Map.get(meta, :quest)}
 
-          # 任务交付物品引用同上（A11/N6）；掉落表同商品解引用
-          meta = %{meta | turn_in: resolve_turn_in(Map.get(meta, :turn_in), zone, zones)}
-          meta = %{meta | loot: resolve_goods(Map.get(meta, :loot), zone, zones)}
-          meta = %{meta | quest: Map.get(meta, :quest)}
+              [
+                %Character{
+                  character
+                  | id: "#{room_id}:#{character.id}:#{index}",
+                    name: Map.get(character_data, :name, character.name),
+                    room_id: room_id,
+                    meta: meta
+                }
+              ]
 
-          %Character{
-            character
-            | id: "#{room_id}:#{character.id}:#{index}",
-              name: Map.get(character_data, :name, character.name),
-              room_id: room_id,
-              meta: meta
-          }
+            nil ->
+              # NPC 数据缺失（引用不存在）时跳过，避免悬挂引用
+              []
+          end
         end)
       end)
 
@@ -1002,7 +1009,13 @@ defmodule Kantele.World.Loader do
 
       Enum.reduce(room_item.items, zone, fn item_data, zone ->
         item_id = dereference(zones, zone, item_data.id)
-        parse_room_item(zone, room_id, item_id)
+
+        # 物品数据缺失（引用不存在）时跳过，避免悬挂引用
+        if is_nil(item_id) do
+          zone
+        else
+          parse_room_item(zone, room_id, item_id)
+        end
       end)
     end)
   end
