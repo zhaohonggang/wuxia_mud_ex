@@ -136,7 +136,8 @@ defmodule Kantele.World.LPCConverter do
       globals: parse_globals(content),
       heredocs: heredocs,
       source_path: source_path,
-      base_path: base_path
+      base_path: base_path,
+      valid_leave: parse_valid_leave(content)
     }
     |> AST.new()
     |> (fn ast -> {:ok, ast} end).()
@@ -296,6 +297,111 @@ defmodule Kantele.World.LPCConverter do
     Regex.scan(~r/(int|string|mapping|object|mixed)\s+(\w+)\s*[=;]/, content)
     |> Enum.map(fn [_, type, name] -> {name, type} end)
     |> Enum.into(%{})
+  end
+
+  @doc """
+  Parse valid_leave function to extract guard exit behavior.
+  
+  Matches pattern:
+    int valid_leave(object me, string dir) {
+      if (objectp(guarder = present("guard name", this_object())) && dir == "direction")
+        return guarder->permit_pass(me, dir);
+      return 1;
+    }
+  
+  Returns map with: guard_npc, direction, permit_module, permit_function
+  """
+  defp parse_valid_leave(content) do
+    # Find valid_leave function body
+    case Regex.run(~r/int\s+valid_leave\s*\([^)]*\)\s*\{/, content) do
+      nil -> nil
+      [match] ->
+        parts = String.split(content, match, parts: 2)
+        case parts do
+          [_, rest] ->
+            # Find matching brace for function body
+            body = find_matching_brace(content, String.length(match) + String.length(parts |> List.first()))
+            parse_valid_leave_body(body)
+          _ -> nil
+        end
+    end
+  end
+
+  defp find_matching_brace(content, start_pos) do
+    find_matching_brace_loop(content, start_pos, 1, start_pos + 1)
+  end
+
+  defp find_matching_brace_loop(content, _start_index, brace_count, i) do
+    if i > String.length(content) - 1 do
+      ""
+    else
+      char = String.at(content, i)
+      cond do
+        char == "{" ->
+          find_matching_brace_loop(content, _start_index, brace_count + 1, i + 1)
+        char == "}" ->
+          if brace_count - 1 == 0 do
+            String.slice(content, _start_index + 1, i - _start_index - 1)
+          else
+            find_matching_brace_loop(content, _start_index, brace_count - 1, i + 1)
+          end
+        char == "\"" ->
+          case find_quote_end(content, i + 1) do
+            nil -> find_matching_brace_loop(content, _start_index, brace_count, i + 1)
+            new_i -> find_matching_brace_loop(content, _start_index, brace_count, new_i)
+          end
+        true ->
+          find_matching_brace_loop(content, _start_index, brace_count, i + 1)
+      end
+    end
+  end
+
+  defp find_quote_end(content, start) do
+    find_quote_end_loop(content, start)
+  end
+
+  defp find_quote_end_loop(content, i) do
+    if i >= String.length(content) do
+      nil
+    else
+      char = String.at(content, i)
+      cond do
+        char == "\\" -> find_quote_end_loop(content, i + 2)
+        char == "\"" -> i + 1
+        true -> find_quote_end_loop(content, i + 1)
+      end
+    end
+  end
+
+  defp parse_valid_leave_body(body) do
+    # Match: present("guard name", this_object())
+    guard_npc =
+      case Regex.run(~r/present\s*\(\s*(["'])([^"']+)\1\s*,\s*this_object\s*\(\s*\)/, body) do
+        [_, _, name] -> name
+        _ -> nil
+      end
+
+    # Match: dir == "direction"
+    direction =
+      case Regex.run(~r/dir\s*==\s*(["'])([^"']+)\1/, body) do
+        [_, _, dir] -> dir
+        _ -> nil
+      end
+
+    # Match: guarder->permit_pass or guard->permit_pass or xxx->permit_pass
+    has_permit_pass = String.contains?(body, "permit_pass")
+
+    cond do
+      guard_npc && direction && has_permit_pass ->
+        %{
+          guard_npc: guard_npc,
+          direction: direction,
+          permit_module: "Kantele.Npc.Guarder",
+          permit_function: "permit_pass"
+        }
+      true ->
+        nil
+    end
   end
 
   defp parse_lpc_value(value_str) do
@@ -531,7 +637,25 @@ defmodule Kantele.World.LPCConverter do
         ""
       end
 
-    room_block = room_block <> coords_block <> flags_block <> "    }"
+    room_block = room_block <> coords_block <> flags_block
+
+    # Behavior from valid_leave (guarded exits)
+    behavior_block =
+      case ast.valid_leave do
+        nil -> ""
+        vl ->
+          """
+          behavior = "guarded_exit"
+          behavior_config = {
+            guard_npc = "#{vl.guard_npc}"
+            direction = "#{vl.direction}"
+            permit_module = "#{vl.permit_module}"
+            permit_function = "#{vl.permit_function}"
+          }
+        """
+      end
+
+    room_block = room_block <> behavior_block <> "    }"
 
     # Exits -> room_exits block
     exits_block =

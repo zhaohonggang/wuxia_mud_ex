@@ -10,7 +10,8 @@ defmodule Kantele.World.LPCConverter.AST do
     :globals,
     :heredocs,
     :source_path,
-    :base_path
+    :base_path,
+    :valid_leave
   ]
 
   @type t :: %__MODULE__{
@@ -20,7 +21,8 @@ defmodule Kantele.World.LPCConverter.AST do
     globals: map(),
     heredocs: map(),
     source_path: String.t(),
-    base_path: String.t()
+    base_path: String.t(),
+    valid_leave: map() | nil
   }
 
   def new(params) do

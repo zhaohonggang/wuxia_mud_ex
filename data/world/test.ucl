@@ -825,6 +825,13 @@ zones "test" {
   x = 0
   y = 0
   z = 0
+  behavior = "guarded_exit"
+  behavior_config = {
+    guard_npc = "men wei"
+    direction = "north"
+    permit_module = "Kantele.Npc.Guarder"
+    permit_function = "permit_pass"
+  }
     }
   room_exits "damen" {
     room_id = rooms.damen.id
