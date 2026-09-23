@@ -72,21 +72,41 @@ zones "test" {
 # Zone: test
 
     characters "duke" {
-      name = "NPC"
+      name = "赌场管事"
       description = "他是赌场的管事，精明干练，眼神锐利。\n"
+  gender = "男性"
+  age = 45
+  shen_type = 1
 
   combat = {
     attitude = "friendly"
     combat_exp = 50000
   }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
     }
 
 # Generated from test_minimal_world_v2_modified/npc/furen.c by LPCConverter
 # Zone: test
 
     characters "furen" {
-      name = "NPC"
+      name = "庄夫人"
       description = "\n只见她约莫二十六七年纪,全身缟素,不施脂粉,脸色苍白.\n"
+  title = "庄家三少奶奶"
+  gender = "女性"
+  age = 25
+  shen_type = 1
+  score = 50000
 
   combat = {
     attitude = "peaceful"
@@ -99,14 +119,43 @@ zones "test" {
     max_qi = 1000
     str = 25
   }
+
+  inquiries = [
+    { key = "双儿" value = "这小丫头跟随我多年，做事也还妥当。" },
+    { key = "吴之荣" value = "我一定要手刃了这个奸贼。" },
+    { key = "礼物" value = "这样礼物可不一般，她就是我的好丫环双儿。" },
+    { key = "鳌拜" value = "鳌拜是我家的大仇人。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 90 },
+    { skill = "dodge" level = 90 },
+    { skill = "unarmed" level = 90 },
+    { skill = "sword" level = 90 },
+    { skill = "taiji-jian" level = 80 },
+    { skill = "tiyunzong" level = 90 },
+    { type = "dodge" skill = "tiyunzong" },
+    { type = "parry" skill = "tiaji-jian" },
+    { type = "sword" skill = "tiaji-jian" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.changjian.id }
+  ]
+
     }
 
 # Generated from test_minimal_world_v2_modified/npc/jinhua.c by LPCConverter
 # Zone: test
 
     characters "jinhua" {
-      name = "NPC"
+      name = "金花"
       description = "一个年少貌美的姑娘。\n"
+  gender = "女性"
+  age = 24
+  shen_type = 1
 
   combat = {
     attitude = "friendly"
@@ -116,14 +165,26 @@ zones "test" {
     int = 18
     str = 18
   }
+
+  inquiries = [
+    { key = "张妈" value = "你知道我娘？你可有她给你的信物？快给我看看。" },
+    { key = "绣花鞋" value = "你真有绣花鞋吗？快给我看看。" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
     }
 
 # Generated from test_minimal_world_v2_modified/npc/menwei.c by LPCConverter
 # Zone: test
 
     characters "menwei" {
-      name = "NPC"
+      name = "门卫"
       description = "他是白驼山庄的门卫，身材魁梧，手持钢叉，目光如炬。\n"
+  gender = "男性"
+  age = 35
 
   combat = {
     attitude = "aggressive"
@@ -132,27 +193,52 @@ zones "test" {
     max_neili = 1500
     max_qi = 1500
   }
+
+  skills = [
+    { skill = "unarmed" level = 120 },
+    { skill = "dodge" level = 120 },
+    { skill = "parry" level = 120 },
+    { skill = "blade" level = 120 },
+    { skill = "force" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.blade.id },
+    { id = items.cloth.id }
+  ]
+
     }
 
 # Generated from test_minimal_world_v2_modified/npc/worker-liu.c by LPCConverter
 # Zone: test
 
     characters "worker_liu" {
-      name = "NPC"
+      name = "刘工匠"
       description = ""
+  gender = "男性"
+  age = 52
 
   combat = {
     attitude = "friendly"
     str = 33
   }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
     }
 
 # Generated from test_minimal_world_v2_modified/npc/xiaoer.c by LPCConverter
 # Zone: test
 
     characters "xiaoer" {
-      name = "NPC"
+      name = "店小二"
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。\n"
+  gender = "男性"
+  age = 22
+  startroom = "/d/city/kedian"
 
   combat = {
     attitude = "friendly"
@@ -164,8 +250,11 @@ zones "test" {
 # Zone: test
 
     characters "xingzhe" {
-      name = "NPC"
+      name = "行者"
       description = "他是少林寺的俗家弟子，在此打坐修行。\n"
+  gender = "男性"
+  age = 25
+  shen_type = 1
 
   combat = {
     attitude = "peaceful"
@@ -174,19 +263,53 @@ zones "test" {
     max_neili = 1000
     max_qi = 800
   }
+
+  skills = [
+    { skill = "unarmed" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "buddhism" level = 80 },
+    { skill = "shaolin-xinfa" level = 100 },
+    { type = "force" skill = "shaolin-xinfa" },
+    { type = "unarmed" skill = "shaolin-xinfa" },
+    { type = "parry" skill = "shaolin-xinfa" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
     }
 
 # Generated from test_minimal_world_v2_modified/npc/zhuangjia.c by LPCConverter
 # Zone: test
 
     characters "zhuangjia" {
-      name = "NPC"
+      name = "庄家"
       description = "他是赌场的庄家，一脸精明相，手里拿着骰盅。\n"
+  gender = "男性"
+  age = 50
+  shen_type = 0
 
   combat = {
     attitude = "neutral"
     combat_exp = 80000
   }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "throwing" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
     }
 
 # Generated from test_minimal_world_v2_modified/obj/axe.c by LPCConverter

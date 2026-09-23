@@ -459,6 +459,16 @@ defmodule Kantele.World.Loader do
     end)
   end
 
+  defp parse_inquiries(inquiries) when is_list(inquiries) do
+    Enum.reduce(inquiries, %{}, fn item, acc ->
+      case item do
+        %{key: key, value: value} ->
+          Map.put(acc, to_string(key), parse_inquiry_value(value))
+        _ -> acc
+      end
+    end)
+  end
+
   defp parse_inquiries(_), do: nil
 
   defp parse_inquiry_value(value) when is_map(value) do

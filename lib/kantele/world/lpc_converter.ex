@@ -129,15 +129,18 @@ defmodule Kantele.World.LPCConverter do
 
   defp build_ast(content, source_path, base_path, heredocs, create_body) do
     # Extract key components from cleaned LPC
+    create_fn = parse_create_function(content, create_body)
+    function_calls = parse_function_calls(create_body || find_create_body(content))
     %{
       inherits: parse_inherits(content),
-      create_fn: parse_create_function(content, create_body),
+      create_fn: create_fn,
       other_fns: parse_other_functions(content),
       globals: parse_globals(content),
       heredocs: heredocs,
       source_path: source_path,
       base_path: base_path,
-      valid_leave: parse_valid_leave(content)
+      valid_leave: parse_valid_leave(content),
+      function_calls: function_calls
     }
     |> AST.new()
     |> (fn ast -> {:ok, ast} end).()
@@ -283,6 +286,27 @@ defmodule Kantele.World.LPCConverter do
       |> Enum.into(%{})
 
     %{assigns: assigns}
+  end
+
+  @doc """
+  Parse function calls in create() body: set_skill, map_skill, carry_object, etc.
+  """
+  defp parse_function_calls(body) do
+    # Match function calls: func_name(arg1, arg2, ...);
+    # Also handle chained calls like carry_object(...)->wear()
+    Regex.scan(~r/(\w+)\s*\(([^)]*)\)\s*(?:->\s*\w+\s*\(\s*\))?\s*;/, body)
+    |> Enum.reduce(%{}, fn [_, func, args_str], acc ->
+      args =
+        args_str
+        |> String.split(",")
+        |> Enum.map(&String.trim/1)
+        |> Enum.map(fn arg ->
+          parse_lpc_value(arg)
+        end)
+
+      # Append to list for this function (support multiple calls)
+      Map.update(acc, func, [args], fn existing -> existing ++ [args] end)
+    end)
   end
 
   defp parse_other_functions(content) do
@@ -852,6 +876,7 @@ defp exit_key({:string, s}), do: s
   defp generate_npc_ucl(ast, zone_id) do
     create = ast.create_fn
     sets = Map.get(create, :sets, %{})
+    set_name = Map.get(create, :set_name, %{})
     heredocs = Map.get(create, :heredocs, %{})
 
     npc_id =
@@ -860,11 +885,32 @@ defp exit_key({:string, s}), do: s
       |> Path.rootname()
       |> String.replace("-", "_")
 
+    # Extract name from set_name (primary) or sets (fallback)
+    name = extract_string(Map.get(set_name, "name"), extract_string(Map.get(sets, "name"), "NPC"))
+    aliases = Map.get(set_name, "aliases", [])
+
     ucl = """
     characters "#{npc_id}" {
-      name = "#{extract_string(Map.get(sets, "name"), "NPC")}"
+      name = "#{name}"
       description = "#{get_heredoc_or_set(heredocs, sets, "long", "")}"
 """
+
+    # Basic attributes from set()
+    basic_attrs = []
+    basic_attrs = add_if_present(basic_attrs, sets, "title", :string)
+    basic_attrs = add_if_present(basic_attrs, sets, "nickname", :string)
+    basic_attrs = add_if_present(basic_attrs, sets, "gender", :string)
+    basic_attrs = add_if_present(basic_attrs, sets, "age", :int)
+    basic_attrs = add_if_present(basic_attrs, sets, "shen_type", :int)
+    basic_attrs = add_if_present(basic_attrs, sets, "score", :int)
+    basic_attrs = add_if_present(basic_attrs, sets, "startroom", :string)
+
+    # Aliases
+    if aliases != [] do
+      basic_attrs = ["  aliases = [#{Enum.map_join(aliases, ", ", &"\"#{&1}\"")}]" | basic_attrs]
+    end
+
+    basic_block = if basic_attrs != [], do: Enum.join(Enum.reverse(basic_attrs), "\n") <> "\n", else: ""
 
     # Brain reference (from inherit or default)
     brain = infer_brain(ast.inherits)
@@ -876,18 +922,89 @@ defp exit_key({:string, s}), do: s
     # Goods
     goods = build_goods(sets)
 
-    # Inquiries
+    # Inquiries (handle both "inquiry" and "inquiries")
     inquiries = build_inquiries(sets)
 
     # Chat
     chat = build_chat(sets)
 
-    ucl <> brain_line <>
+    # Function calls: skills, map_skill, carry_object, etc.
+    function_calls = ast.function_calls
+    skills_block = build_skills_block(function_calls)
+    carry_block = build_carry_block(function_calls)
+
+    ucl <> basic_block <> brain_line <>
       (if combat != "", do: "\n  combat = {\n#{combat}\n  }\n", else: "") <>
       (if goods != [], do: "\n  goods = [\n" <> Enum.map_join(goods, "\n", &"    { id = #{&1} }") <> "\n  ]\n", else: "") <>
-      (if inquiries != %{}, do: "\n  inquiries = {\n" <> generate_inquiries(inquiries) <> "\n  }\n", else: "") <>
+      (if inquiries != %{}, do: "\n  inquiries = [\n" <> generate_inquiries(inquiries) <> "\n  ]\n", else: "") <>
       (if chat != nil, do: "\n  #{chat}\n", else: "") <>
+      (if skills_block != "", do: "\n#{skills_block}\n", else: "") <>
+      (if carry_block != "", do: "\n#{carry_block}\n", else: "") <>
       "    }"
+  end
+
+  defp build_skills_block(calls) do
+    skills = Map.get(calls, "set_skill", [])
+    map_skills = Map.get(calls, "map_skill", [])
+
+    cond do
+      skills == [] and map_skills == [] -> ""
+      true ->
+        skill_lines =
+          Enum.map(skills, fn
+            [{:string, skill}, {:int, level}] -> "    { skill = \"#{skill}\" level = #{level} }"
+            [{:string, skill}, {:string, level}] -> "    { skill = \"#{skill}\" level = #{level} }"
+            _ -> nil
+          end)
+          |> Enum.filter(&(&1 != nil))
+
+        map_lines =
+          Enum.map(map_skills, fn
+            [{:string, type}, {:string, skill}] -> "    { type = \"#{type}\" skill = \"#{skill}\" }"
+            _ -> nil
+          end)
+          |> Enum.filter(&(&1 != nil))
+
+        all_lines = skill_lines ++ map_lines
+        if all_lines == [] do
+          ""
+        else
+          """
+  skills = [
+#{Enum.join(all_lines, ",\n")}
+  ]
+"""
+        end
+    end
+  end
+
+  defp build_carry_block(calls) do
+    carry_objects = Map.get(calls, "carry_object", [])
+
+    cond do
+      carry_objects == [] -> ""
+      true ->
+        items =
+          Enum.map(carry_objects, fn
+            [{:string, path}] -> "items.#{room_id_from_path(path)}.id"
+            [{:var, path}] -> "items.#{room_id_from_path(path)}.id"
+            _ -> "items.unknown.id"
+          end)
+
+        """
+  carry = [
+#{Enum.map_join(items, ",\n", &"    { id = #{&1} }")}
+  ]
+"""
+    end
+  end
+
+  defp add_if_present(acc, sets, key, type) do
+    case Map.get(sets, key) do
+      {:string, v} -> ["  #{key} = \"#{escape_set_string(v)}\"" | acc]
+      {:int, v} -> ["  #{key} = #{v}" | acc]
+      _ -> acc
+    end
   end
 
   defp infer_brain(inherits) do
@@ -945,8 +1062,9 @@ defp exit_key({:string, s}), do: s
   end
 
   defp build_inquiries(sets) do
-    # Look for inquiry-like mappings
-    case Map.get(sets, "inquiries") do
+    # Look for inquiry-like mappings (LPC uses "inquiry", we normalize to "inquiries")
+    inquiry_data = Map.get(sets, "inquiry") || Map.get(sets, "inquiries")
+    case inquiry_data do
       {:mapping, pairs} ->
         Enum.into(pairs, %{}, fn {k, v} ->
           {get_string(k), get_string(v)}
@@ -956,10 +1074,12 @@ defp exit_key({:string, s}), do: s
   end
 
   defp generate_inquiries(inquiries) do
+    # Output as array of objects: [{ key = "..." value = "..." }, ...]
+    # UCL/Elias requires no comma between key-value pairs in object literals
     Enum.map(inquiries, fn {q, a} ->
-      "    #{q} = #{a}"
+      "    { key = #{q} value = #{a} }"
     end)
-    |> Enum.join("\n")
+    |> Enum.join(",\n")
   end
 
   defp build_chat(sets) do
