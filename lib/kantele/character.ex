@@ -280,6 +280,10 @@ defmodule Kantele.Character.NonPlayerMeta do
   - `default_clone` 部位无独立 clone 时的默认产物 item id（cutable.c default_clone）
   - `been_cut` 已被割走的部位 id 列表（cutable.c been_cut；风纪运行时，重登还原）
   - `defeated_by` 放倒这具尸体的角色 id（cut.c defeated_by：他人尸体不可动）
+  - `greetings` 欢迎台词池 `[String.t]`（玩家进入房间触发；nil = 无）
+  - `init` 入场配置 `%{greet_delay:, add_actions:, heartbeat:}`（nil = 无）
+  - `accept` 收受规则表（accept_object）`[%{kind: "money"|"item_id"|"item_name"|"any",
+    min:, id:, name:, accept:}]`（nil = 无规则）
   """
 
   defstruct [
@@ -301,7 +305,10 @@ defmodule Kantele.Character.NonPlayerMeta do
     :no_cut,
     :default_clone,
     :been_cut,
-    :defeated_by
+    :defeated_by,
+    :greetings,
+    :init,
+    :accept
   ]
 
   defimpl Kalevala.Meta.Trim do

@@ -99,12 +99,51 @@ defmodule Kantele.Character.MoveEvent do
   end
 
   def notice(conn, %{data: event}) do
+    greet(conn, event)
+
     conn
     |> assign(:character, event.character)
     |> assign(:direction, event.direction)
     |> assign(:reason, event.reason)
     |> render(MoveView, "notice")
     |> prompt(CommandView, "prompt")
+  end
+
+  # NPC 欢迎（对应 LPC greeting()）：有玩家进入房间且在欢迎台词，随机挑一句
+  # 广播到房间。NPC 自己（player:*）或没有 greetings 的 NPC 直接跳过。
+  # 台词自身已含 NPC 名与称谓（LPC say 的 "$N" 即说话者），直接原样广播。
+  defp greet(conn, %{character: character, direction: :to}) do
+    npc = conn.character
+
+    if is_nil(npc) || String.starts_with?(npc.id, "player:") do
+      :ok
+    else
+      case Map.get(npc.meta, :greetings) do
+        lines when is_list(lines) and lines != [] ->
+          room = %Kantele.World.Room{id: npc.room_id}
+
+          Kantele.World.Room.tell_room(
+            room,
+            render_greeting(Enum.random(lines), npc, character.name)
+          )
+
+          :ok
+
+        _ ->
+          :ok
+      end
+    end
+  end
+
+  defp greet(_conn, _event), do: :ok
+
+  defp render_greeting(line, npc, player_name) do
+    line
+    |> String.replace("{npc}", npc.name)
+    |> String.replace("{name}", player_name)
+    |> String.replace("{respect}", "客官")
+    |> String.replace("{rude}", "")
+    |> String.replace("{expr}", "")
   end
 
   def unsubscribe_error(conn, error) do

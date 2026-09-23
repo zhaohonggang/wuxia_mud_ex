@@ -76,19 +76,22 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
       {:ok, ucl} ->
         # Determine output filename
         base_name = Path.basename(lpc_path, ".c")
+        # 输出侧 ID 统一做 "-" → "_" 规范化（见 lpc_converter.ex 的 npc_id/room_id/item_id），
+        # 去重检查必须用规范化名，否则连字符文件名（如 worker-liu.c）每次运行都会重复追加
+        ucl_name = String.replace(base_name, "-", "_")
         zone_id = zone_id || infer_zone_id(lpc_path)
         output_file = Path.join(output_dir, "#{zone_id}.ucl")
 
         # Ensure directory exists
-        File.mkdir_p!(output_dir)
+        File.mkdir_p!(output_file |> Path.dirname())
 
         # Append or create
         if File.exists?(output_file) do
           existing = File.read!(output_file)
           # Check if already exists
-          if String.contains?(existing, "rooms \"#{base_name}\"") or
-             String.contains?(existing, "characters \"#{base_name}\"") or
-             String.contains?(existing, "items \"#{base_name}\"") do
+          if String.contains?(existing, "rooms \"#{ucl_name}\"") or
+             String.contains?(existing, "characters \"#{ucl_name}\"") or
+             String.contains?(existing, "items \"#{ucl_name}\"") do
             Mix.shell().info("#{base_name} already exists in #{output_file}, skipping append")
           else
             File.write!(output_file, String.trim_trailing(existing) <> "\n\n" <> String.trim_trailing(ucl) <> "\n")

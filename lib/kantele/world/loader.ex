@@ -342,7 +342,10 @@ defmodule Kantele.World.Loader do
         default_clone:
           Map.get(character_data, :default_clone) &&
             to_string(Map.get(character_data, :default_clone)),
-        loot: parse_goods(Map.get(character_data, :loot))
+        loot: parse_goods(Map.get(character_data, :loot)),
+        greetings: parse_greetings(Map.get(character_data, :greetings)),
+        init: parse_enter_init(Map.get(character_data, :init)),
+        accept: parse_accept_rules(Map.get(character_data, :accept))
       }
     }
 
@@ -490,9 +493,126 @@ defmodule Kantele.World.Loader do
 
   defp normalize_inquiry_field(_key, val), do: val
 
+  # 欢迎台词池：UCL greetings = [ { line = "..." } ]，归一为字符串列表
+  defp parse_greetings(nil), do: nil
+
+  defp parse_greetings(greetings) when is_list(greetings) do
+    Enum.map(greetings, fn
+      %{line: line} when is_binary(line) -> line
+      line when is_binary(line) -> line
+      _ -> nil
+    end)
+    |> Enum.reject(&is_nil/1)
+    |> case do
+      [] -> nil
+      lines -> lines
+    end
+  end
+
+  defp parse_greetings(_), do: nil
+
+  # 入场配置：UCL init = { greet_delay = 1  add_actions = [...]  heartbeat = 5 }
+  defp parse_enter_init(nil), do: nil
+
+  defp parse_enter_init(init) when is_map(init) do
+    add_actions =
+      case Map.get(init, :add_actions) do
+        list when is_list(list) -> Enum.map(list, &to_string/1)
+        _ -> []
+      end
+
+    %{
+      greet_delay: Map.get(init, :greet_delay) || 0,
+      add_actions: add_actions,
+      heartbeat: Map.get(init, :heartbeat) || 0
+    }
+  end
+
+  defp parse_enter_init(_), do: nil
+
+  # 收受规则（accept_object）：UCL accept = [ { kind = "money" min = 1000 } ... ]
+  defp parse_accept_rules(nil), do: nil
+
+  defp parse_accept_rules(rules) when is_list(rules) do
+    Enum.map(rules, fn rule when is_map(rule) ->
+      kind = Map.get(rule, :kind)
+
+      if kind in ["money", "item_id", "item_name", "any"] do
+        %{
+          kind: kind,
+          min: numeric_or_nil(Map.get(rule, :min)),
+          id: string_or_nil(Map.get(rule, :id)),
+          name: string_or_nil(Map.get(rule, :name)),
+          accept: to_bool(Map.get(rule, :accept, true))
+        }
+      else
+        nil
+      end
+    end)
+    |> Enum.reject(&is_nil/1)
+    |> case do
+      [] -> nil
+      clean -> clean
+    end
+  end
+
+  defp parse_accept_rules(_), do: nil
+
+  defp numeric_or_nil(v) when is_integer(v), do: v
+  defp numeric_or_nil(v) when is_binary(v), do: String.to_integer(v)
+  defp numeric_or_nil(_), do: nil
+
+  defp string_or_nil(v) when is_binary(v), do: v
+  defp string_or_nil(v) when is_atom(v) and not is_nil(v), do: to_string(v)
+  defp string_or_nil(_), do: nil
+
+  defp to_bool(v) when v in [true, "true", 1, "1"], do: true
+  defp to_bool(_), do: false
+
   # 教学配置（A11/D4）：归一化字符串键，本期只解析落位供门派信息展示，
   # 消费端校验等 b 期 learn 重构接入
   defp parse_teach(nil), do: nil
+
+  defp parse_teach(teach) when is_map(teach) do
+    teach_skills =
+      case Map.get(teach, :teach_skills) do
+        skills when is_map(skills) ->
+          Enum.into(skills, %{}, fn {key, conf} ->
+            skill_id = String.replace(to_string(key), "_", "-")
+
+            conf =
+              case conf do
+                %{max: max, gongxian: gongxian} ->
+                  %{max: max, gongxian: gongxian}
+
+                %{max: max} ->
+                  %{max: max, gongxian: 0}
+
+                _ ->
+                  %{max: 0, gongxian: 0}
+              end
+
+            {skill_id, conf}
+          end)
+
+        _ ->
+          %{}
+      end
+
+    no_teach =
+      case Map.get(teach, :no_teach) do
+        list when is_list(list) -> Enum.map(list, &to_string/1)
+        _ -> []
+      end
+
+    %{
+      family: Map.get(teach, :family) && to_string(Map.get(teach, :family)),
+      teach_skills: teach_skills,
+      no_teach: no_teach
+    }
+  end
+
+  defp parse_teach(_), do: nil
 
   # 收徒门槛（F3 切片 1）：镜像 parse_teach/1 的卫句/归约形状。
   # UCL 例 apprentice = {
@@ -540,47 +660,6 @@ defmodule Kantele.World.Loader do
   end
 
   defp parse_apprentice(_), do: nil
-
-  defp parse_teach(teach) when is_map(teach) do
-    teach_skills =
-      case Map.get(teach, :teach_skills) do
-        skills when is_map(skills) ->
-          Enum.into(skills, %{}, fn {key, conf} ->
-            skill_id = String.replace(to_string(key), "_", "-")
-
-            conf =
-              case conf do
-                %{max: max, gongxian: gongxian} ->
-                  %{max: max, gongxian: gongxian}
-
-                %{max: max} ->
-                  %{max: max, gongxian: 0}
-
-                _ ->
-                  %{max: 0, gongxian: 0}
-              end
-
-            {skill_id, conf}
-          end)
-
-        _ ->
-          %{}
-      end
-
-    no_teach =
-      case Map.get(teach, :no_teach) do
-        list when is_list(list) -> Enum.map(list, &to_string/1)
-        _ -> []
-      end
-
-    %{
-      family: Map.get(teach, :family) && to_string(Map.get(teach, :family)),
-      teach_skills: teach_skills,
-      no_teach: no_teach
-    }
-  end
-
-  defp parse_teach(_), do: nil
 
   # 任务交付（A11/N6 v0）：item 为引用串（items.yupai.id），延后到 parse_characters 解
   defp parse_turn_in(nil), do: nil

@@ -136,21 +136,24 @@ defmodule Kantele.Item do
   end
 
   @doc "检查物品是否为货币（meta.is_money 为 true）"
-  def is_currency?(%Item{} = item), do: item.meta["is_money"] == true
+  def is_currency?(%Kalevala.World.Item{} = item), do: Map.get(item.meta, "is_money") == true
   def is_currency?(_), do: false
 
   @doc "检查物品是否为尸体（meta.is_corpse 为 true 或 item_id 含 corpse）"
-  def is_corpse?(%Item{} = item), do: item.meta["is_corpse"] == true or String.contains?(item.id, "corpse")
+  def is_corpse?(%Kalevala.World.Item{} = item) do
+    Map.get(item.meta, "is_corpse") == true or String.contains?(item.id, "corpse")
+  end
+
   def is_corpse?(_), do: false
 
   @doc "检查物品是否为兑换物品（在店小二兑换列表中）"
-  def is_exchange_item?(%Item{} = item) do
+  def is_exchange_item?(%Kalevala.World.Item{} = item) do
     item.id in @xiaoer_exchange_ids
   end
   def is_exchange_item?(_), do: false
 
   @doc "获取货币数量（从 meta.amount 读取，默认 1）"
-  def currency_amount(%Item{} = item), do: item.meta["amount"] || 1
+  def currency_amount(%Kalevala.World.Item{} = item), do: Map.get(item.meta, "amount") || 1
   def currency_amount(_), do: 0
 
   @doc "获取物品技能类型（兵器类型）"

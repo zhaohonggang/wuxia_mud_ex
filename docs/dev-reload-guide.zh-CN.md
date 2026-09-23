@@ -92,6 +92,27 @@ docker cp <本地文件> wuxia_mud_dev-app-1:/app/<容器路径>
 docker exec wuxia_mud_dev-app-1 wget -q -O- http://127.0.0.1:4000/_health
 ```
 
+## Docker 文件位置
+
+Docker Desktop 在 Windows 上用 WSL2 后端运行，所有容器/镜像/数据卷都保存在 `docker-desktop` 这个 WSL 发行版的虚拟磁盘里，不是普通 Windows 目录。
+
+| 内容 | 位置 |
+|---|---|
+| docker-desktop 虚拟磁盘（宿主机） | `F:\Docker\DockerDesktopWSL\main\ext4.vhdx` |
+| Docker 根目录（WSL 内） | `/var/lib/docker/` |
+| 数据卷（WSL 内） | `/var/lib/docker/volumes/<卷名>/_data/` |
+| 主要卷 | `wuxia_mud_dev_postgres_data`（dev 库 `ex_venture_dev`）、`wuxia_mud_ex_postgres-data`（旧生产库 `ex_venture`）、`app_deps` / `app_build` / `app_mix_home` / `app_hex_cache` / `app_node_modules` |
+
+访问方式：
+- Windows 文件管理器直接输入：`\\wsl$\docker-desktop\var\lib\docker\volumes\...`
+- 或命令行进入：`wsl -d docker-desktop bash`，之后浏览 `/var/lib/docker/volumes/`
+
+备份/迁移数据库 = 复制对应卷目录（或整个 vhdx）。
+
+注意：
+- **游戏源码/世界数据不在 docker 里**：app 容器是 bind mount 宿主仓库 `C:\files\git\wuxia_mud_ex` → `/app`，`data/world/*.ucl`、`lib/` 直接看 Windows 目录即可。
+- 与 Ubuntu WSL（`C:\Users\honggang\AppData\Local\wsl\...\ext4.vhdx`）无关，那个磁盘里没有 docker 引擎或游戏数据。
+
 ## 重启服务器
 
 ### Docker 容器内开发服务器

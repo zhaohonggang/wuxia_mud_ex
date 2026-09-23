@@ -16,19 +16,162 @@ defmodule Kantele.Character.GiveEvent do
   alias Kantele.NPC.Xiaoer
   alias Kantele.World.Items
   alias Kalevala.World.Item
+  alias Kantele.Item, as: KItem
 
   # ---- 收受端 ----
 
   def receive(conn, %{data: %{item_instance: item_instance, from_name: from_name} = data}) do
     character = conn.character
 
-    # 店小二 NPC 特殊处理：验证物品后，由给予者进程处理状态更新
-    if Xiaoer.is_xiaoer?(character) do
-      handle_xiaoer_give(conn, character, item_instance, data, from_name)
-    else
-      handle_normal_give(conn, character, item_instance, data, from_name)
+    cond do
+      # 通用 accept_object 规则表优先生效（converter 从 accept_object() 抽取）
+      generic_accept?(character) ->
+        handle_accept_give(conn, character, item_instance, data, from_name)
+
+      # 店小二 NPC 特殊处理：验证物品后，由给予者进程处理状态更新
+      Xiaoer.is_xiaoer?(character) ->
+        handle_xiaoer_give(conn, character, item_instance, data, from_name)
+
+      true ->
+        handle_normal_give(conn, character, item_instance, data, from_name)
     end
   end
+
+  defp generic_accept?(%{meta: %{accept: rules}}) when is_list(rules) and rules != [], do: true
+  defp generic_accept?(_), do: false
+
+  # ---- 通用 accept_object 规则分发（对应 LPC accept_object/2） ----
+
+  defp handle_accept_give(conn, npc, item_instance, data, from_name) do
+    reply_to = Map.get(data, :reply_to)
+    from_id = Map.get(data, :from_id)
+    rules = npc.meta.accept
+
+    case match_accept_rule(item_instance, rules) do
+      {:ok, reply} ->
+        npc = take_item(npc, item_instance)
+
+        send(
+          reply_to,
+          %Event{
+            from_pid: self(),
+            topic: "give/result",
+            data: %{
+              ok: true,
+              item_id: item_instance.item_id,
+              instance_id: item_instance.id,
+              to_id: npc.id,
+              from_id: from_id
+            }
+          }
+        )
+
+        if npc != conn.character, do: Records.save(npc)
+
+        conn
+        |> put_character(npc)
+        |> render(CommandView, "text", %{text: reply <> "\n"})
+        |> prompt(CommandView, "prompt", %{})
+
+      {:error, reason} ->
+        send(
+          reply_to,
+          %Event{
+            from_pid: self(),
+            topic: "give/result",
+            data: %{
+              ok: false,
+              item_id: item_instance.item_id,
+              instance_id: item_instance.id,
+              to_id: npc.id,
+              from_id: from_id,
+              reason: reason
+            }
+          }
+        )
+
+        conn
+        |> put_character(npc)
+        |> render(CommandView, "text", %{text: reason <> "\n"})
+        |> prompt(CommandView, "prompt", %{})
+    end
+  end
+
+  # 按收录顺序匹配规则；命中即返回代表文案。规则：
+  #   { kind: "money" }        收钱币，可选 min 下限
+  #   { kind: "item_id" }      收指定物品 id
+  #   { kind: "item_name" }    收指定名字物品
+  #   { kind: "any" }          兜底接受/拒绝（accept 布尔）
+  defp match_accept_rule(item_instance, rules) do
+    item =
+      case Items.get(item_instance.item_id) do
+        {:ok, item} -> item
+        _ -> nil
+      end
+
+    if is_nil(item) do
+      {:error, from_drop_message()}
+    else
+      Enum.reduce(rules, {:error, refuse_message(item)}, fn rule, acc ->
+        case acc do
+          {:ok, _} ->
+            acc
+
+          _ ->
+            case rule_hit(rule, item) do
+              :hit -> {:ok, take_message(rule, item)}
+              :decline -> {:error, refuse_message(item)}
+              :miss -> acc
+            end
+        end
+      end)
+    end
+  end
+
+  defp rule_hit(%{kind: "money"} = rule, item) do
+    if KItem.is_currency?(item) do
+      min = rule.min || 0
+
+      if KItem.currency_amount(item) >= min,
+        do: :hit,
+        else: :miss
+    else
+      :miss
+    end
+  end
+
+  defp rule_hit(%{kind: "item_id"} = rule, item) do
+    if rule.id == item.id, do: :hit, else: :miss
+  end
+
+  defp rule_hit(%{kind: "item_name"} = rule, item) do
+    if Kantele.World.Item.matches?(item, rule.name), do: :hit, else: :miss
+  end
+
+  defp rule_hit(%{kind: "any"} = rule, _item) do
+    if rule.accept, do: :hit, else: :decline
+  end
+
+  defp rule_hit(_rule, _item), do: :miss
+
+  # 收下的物品进入 NPC 背包（钱币不进背包，避免污染商店货架）
+  defp take_item(npc, %{item_id: item_id} = item_instance) do
+    case Items.get(item_id) do
+      {:ok, item} ->
+        if KItem.is_currency?(item) do
+          npc
+        else
+          %{npc | inventory: [item_instance | npc.inventory]}
+        end
+
+      _ ->
+        npc
+    end
+  end
+
+  defp take_message(_rule, item), do: "你给了#{item.name}。"
+  defp refuse_message(item), do: "对方不收#{item.name}。"
+  defp from_drop_message(), do: "物品不在房间中。"
 
   defp handle_normal_give(conn, character, item_instance, data, from_name) do
     item = Items.get!(item_instance.item_id)

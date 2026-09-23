@@ -12,7 +12,10 @@ defmodule Kantele.World.LPCConverter.AST do
     :source_path,
     :base_path,
     :valid_leave,
-    :function_calls
+    :function_calls,
+    :enter,
+    :greetings,
+    :accept
   ]
 
   @type t :: %__MODULE__{
@@ -24,7 +27,10 @@ defmodule Kantele.World.LPCConverter.AST do
     source_path: String.t(),
     base_path: String.t(),
     valid_leave: map() | nil,
-    function_calls: map()
+    function_calls: map(),
+    enter: map() | nil,
+    greetings: [String.t()] | nil,
+    accept: [map()] | nil
   }
 
   def new(params) do

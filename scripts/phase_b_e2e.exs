@@ -31,12 +31,22 @@ defmodule PhaseBE2E.Driver do
 
     require Ecto.Query
 
+    # 保险丝：只允许删除白名单内的测试角色，防止清理范围扩大误删玩家存档
+    target_names = ["铁蛋", "小明"]
+    allowed_names = MapSet.new(["铁蛋", "阿福", "小明"])
+
+    unless MapSet.subset?(MapSet.new(target_names), allowed_names) do
+      raise(
+        "e2e cleanup 拒绝删除：角色 #{inspect(target_names)} 不在白名单 #{inspect(MapSet.to_list(allowed_names))} 内"
+      )
+    end
+
     ExVenture.Repo.delete_all(
       Ecto.Query.from(m in ExVenture.Characters.Metadata,
         where: m.character_id in subquery(
           Ecto.Query.from(c in ExVenture.Characters.Character,
             select: c.id,
-            where: c.name in ["铁蛋", "小明"]
+            where: c.name in ^target_names
           )
         )
       )
@@ -44,7 +54,7 @@ defmodule PhaseBE2E.Driver do
 
     ExVenture.Repo.delete_all(
       Ecto.Query.from(c in ExVenture.Characters.Character,
-        where: c.name in ["铁蛋", "小明"]
+        where: c.name in ^target_names
       )
     )
 

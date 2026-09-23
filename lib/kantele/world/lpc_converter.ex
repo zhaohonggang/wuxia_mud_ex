@@ -140,12 +140,16 @@ defmodule Kantele.World.LPCConverter do
       source_path: source_path,
       base_path: base_path,
       valid_leave: parse_valid_leave(content),
-      function_calls: function_calls
+      function_calls: function_calls,
+      enter: extract_enter(content),
+      greetings: extract_greetings(content),
+      accept: extract_accept(content)
     }
     |> AST.new()
     |> (fn ast -> {:ok, ast} end).()
   rescue
-    e -> {:error, Exception.message(e)}
+    e ->
+      {:error, Exception.message(e)}
   end
 
   def extract_create_body(content) do
@@ -351,35 +355,6 @@ defmodule Kantele.World.LPCConverter do
     end
   end
 
-  defp find_matching_brace(content, start_pos) do
-    find_matching_brace_loop(content, start_pos, 1, start_pos + 1)
-  end
-
-  defp find_matching_brace_loop(content, _start_index, brace_count, i) do
-    if i > String.length(content) - 1 do
-      ""
-    else
-      char = String.at(content, i)
-      cond do
-        char == "{" ->
-          find_matching_brace_loop(content, _start_index, brace_count + 1, i + 1)
-        char == "}" ->
-          if brace_count - 1 == 0 do
-            String.slice(content, _start_index + 1, i - _start_index - 1)
-          else
-            find_matching_brace_loop(content, _start_index, brace_count - 1, i + 1)
-          end
-        char == "\"" ->
-          case find_quote_end(content, i + 1) do
-            nil -> find_matching_brace_loop(content, _start_index, brace_count, i + 1)
-            new_i -> find_matching_brace_loop(content, _start_index, brace_count, new_i)
-          end
-        true ->
-          find_matching_brace_loop(content, _start_index, brace_count, i + 1)
-      end
-    end
-  end
-
   defp find_quote_end(content, start) do
     find_quote_end_loop(content, start)
   end
@@ -428,6 +403,171 @@ defmodule Kantele.World.LPCConverter do
     end
   end
 
+  # ---- 功能函数抽取：init / greeting / accept_object ----
+
+  # 按函数名抽取函数体（不含外层大括号）。找不到返回 nil。
+  defp extract_function_body(content, name) do
+    case Regex.run(~r/(?:int|string|void|mixed|mapping|object|protected)\s+#{name}\s*\([^)]*\)\s*\{/, content) do
+      nil -> nil
+      [match] ->
+        parts = String.split(content, match, parts: 2)
+        case parts do
+          [_, rest] -> find_matching_brace(rest, 0)
+          _ -> nil
+        end
+    end
+  end
+
+  # init()：add_action 注册的命令 / call_out("greeting", N) 延迟 / set_heart_beat(N)
+  defp extract_enter(content) do
+    case extract_function_body(content, "init") do
+      nil -> nil
+      body -> parse_enter_body(body)
+    end
+  end
+
+  defp parse_enter_body(body) do
+    add_actions =
+      Regex.scan(~r/add_action\s*\(\s*["']([^"']+)["']\s*,\s*["']([^"']+)["']\s*\)/, body)
+      |> Enum.map(fn [_, _func, verb] -> verb end)
+      |> Enum.uniq()
+
+    greet_delay =
+      case Regex.run(~r/call_out\s*\(\s*["']greeting["']\s*,\s*(\d+)/, body) do
+        [_, n] -> String.to_integer(n)
+        _ -> 0
+      end
+
+    heartbeat =
+      case Regex.run(~r/set_heart_beat\s*\(\s*(\d+)/, body) do
+        [_, n] -> String.to_integer(n)
+        _ -> 0
+      end
+
+    if add_actions == [] and greet_delay == 0 and heartbeat == 0 do
+      nil
+    else
+      %{greet_delay: greet_delay, add_actions: add_actions, heartbeat: heartbeat}
+    end
+  end
+
+  # greeting()：say/message_vision 台词池。字符串字面量拼接，LPC 表达式转占位符。
+  defp extract_greetings(content) do
+    case extract_function_body(content, "greeting") do
+      nil ->
+        nil
+
+      body ->
+        lines =
+          Regex.scan(~r/(?:say|message_vision)\s*\(([\s\S]*?)\)\s*;/m, body)
+          |> Enum.map(fn [_, args] -> render_dialogue(args) end)
+
+        lines
+        |> Enum.map(&String.trim/1)
+        |> Enum.reject(&(&1 == ""))
+        |> case do
+          [] -> nil
+          clean -> clean
+        end
+    end
+  end
+
+  # 把 LPC 台词表达式还原为文本：字符串字面量拼接，表达式换成运行时占位符。
+  defp render_dialogue(args) do
+    parts = Regex.split(~r/("(?:[^"\\]|\\.)*")/, args, include_captures: true, trim: true)
+
+    Enum.map(parts, fn token ->
+      case token do
+        "" ->
+          ""
+
+        "\"" <> rest ->
+          # 去掉首尾引号（保留内部转义原样）
+          inner = String.slice(rest, 0, max(String.length(rest) - 1, 0))
+          inner =
+            inner
+            |> String.replace("\\n", "\n")
+            |> String.replace("$N", "{npc}")
+            |> String.replace("$n", "{name}")
+
+          inner
+
+        raw ->
+          render_dialogue_expr(raw)
+      end
+    end)
+    |> Enum.join()
+  end
+
+  defp render_dialogue_expr(raw) do
+    expr = String.trim(raw)
+
+    cond do
+      # 纯大写 ANSI/宏常量（CYN/NOR/HIC/HIW ...），或仅由常量拼接（CYN + HIC + ）
+      expr == "" -> ""
+      Regex.match?(~r/^[A-Z][A-Z0-9_]*$/, expr) -> ""
+      String.contains?(expr, "RANK_D->query_respect") -> "{respect}"
+      String.contains?(expr, "RANK_D->query_rude") -> "{rude}"
+      String.contains?(expr, "->name()") or String.contains?(expr, "query(\"name\")") -> "{name}"
+      only_ansi_constants(expr) -> ""
+      true -> "{expr}"
+    end
+  end
+
+  # 表达式仅由 ANSI 常量与 + / 空格组成（如 "CYN + HIC + "）时，运行时无法重现，压成空。
+  defp only_ansi_constants(expr) do
+    expr
+    |> String.replace(~r/[A-Z][A-Z0-9_]*/, "")
+    |> String.replace("+", "")
+    |> String.trim()
+    |> Kernel.==("")
+  end
+
+  # accept_object()：抽取可识别的接收规则（收钱 / 指定物品 / 默认接受与否）。
+  defp extract_accept(content) do
+    case extract_function_body(content, "accept_object") do
+      nil -> nil
+      body -> parse_accept_body(body)
+    end
+  end
+
+  defp parse_accept_body(body) do
+    money_rule =
+      if body =~ ~r/money_id/ do
+        min =
+          case Regex.run(~r/->value\s*\(\s*\)\s*>=\s*(\d+)/, body) do
+            [_, n] -> String.to_integer(n)
+            _ -> nil
+          end
+
+        %{kind: "money", min: min}
+      end
+
+    item_id_rules =
+      Regex.scan(~r/query\s*\(\s*["']id["']\s*\)\s*==\s*["']([^"']+)["']/, body)
+      |> Enum.map(fn [_, id] -> %{kind: "item_id", id: id} end)
+
+    item_name_rules =
+      Regex.scan(~r/query\s*\(\s*["']name["']\s*\)\s*==\s*["']([^"']+)["']/, body)
+      |> Enum.map(fn [_, name] -> %{kind: "item_name", name: name} end)
+
+    default_rule =
+      cond do
+        Regex.match?(~r/return\s+0\s*;/, body) and not Regex.match?(~r/return\s+1\s*;/, body) ->
+          %{kind: "any", accept: false}
+
+        Regex.match?(~r/return\s+1\s*;/, body) ->
+          %{kind: "any", accept: true}
+
+        true ->
+          nil
+      end
+
+    rules = Enum.reject([money_rule] ++ item_id_rules ++ item_name_rules ++ [default_rule], &is_nil/1)
+
+    if rules == [], do: nil, else: rules
+  end
+
   defp parse_lpc_value(value_str) do
     value_str = String.trim(value_str)
 
@@ -474,27 +614,6 @@ defmodule Kantele.World.LPCConverter do
       |> Enum.map(fn [_, seg] -> seg end)
 
     Enum.join(segments)
-  end
-
-  defp skip_quoted_string(body, index) do
-    if index >= String.length(body) do
-      nil
-    else
-      find_quote_end(body, index)
-    end
-  end
-
-  defp find_quote_end(body, i) do
-    if i >= String.length(body) do
-      nil
-    else
-      char = String.at(body, i)
-      cond do
-        char == "\\" -> find_quote_end(body, i + 2)
-        char == "\"" -> i + 1
-        true -> find_quote_end(body, i + 1)
-      end
-    end
   end
 
   defp parse_array_elements(inner) do
@@ -933,6 +1052,11 @@ defp exit_key({:string, s}), do: s
     skills_block = build_skills_block(function_calls)
     carry_block = build_carry_block(function_calls)
 
+    # init() / greeting() / accept_object() 声明（功能函数抽取）
+    init_block = build_enter_ucl(ast.enter)
+    greetings_block = build_greetings_ucl(ast.greetings)
+    accept_block = build_accept_ucl(ast.accept)
+
     ucl <> basic_block <> brain_line <>
       (if combat != "", do: "\n  combat = {\n#{combat}\n  }\n", else: "") <>
       (if goods != [], do: "\n  goods = [\n" <> Enum.map_join(goods, "\n", &"    { id = #{&1} }") <> "\n  ]\n", else: "") <>
@@ -940,8 +1064,48 @@ defp exit_key({:string, s}), do: s
       (if chat != nil, do: "\n  #{chat}\n", else: "") <>
       (if skills_block != "", do: "\n#{skills_block}\n", else: "") <>
       (if carry_block != "", do: "\n#{carry_block}\n", else: "") <>
+      (if init_block != "", do: "\n#{init_block}\n", else: "") <>
+      (if greetings_block != "", do: "\n#{greetings_block}\n", else: "") <>
+      (if accept_block != "", do: "\n#{accept_block}\n", else: "") <>
       "    }"
   end
+
+  defp build_enter_ucl(nil), do: ""
+
+  defp build_enter_ucl(init) do
+    add_actions = Map.get(init, :add_actions, [])
+    heartbeat = Map.get(init, :heartbeat, 0)
+    greet_delay = Map.get(init, :greet_delay, 0)
+
+    "  init = {\n" <>
+      "    greet_delay = #{greet_delay}\n" <>
+      (if heartbeat > 0, do: "    heartbeat = #{heartbeat}\n", else: "") <>
+      (if add_actions != [], do: "    add_actions = [#{Enum.map_join(add_actions, ", ", &"\"#{&1}\"")}]\n", else: "") <>
+      "  }"
+  end
+
+  defp build_greetings_ucl(nil), do: ""
+  defp build_greetings_ucl(lines) when is_list(lines) and lines != [] do
+    "  greetings = [\n" <>
+      Enum.map_join(lines, ",\n", fn line ->
+        "    { line = \"#{escape_heredoc_content(line)}\" }"
+      end) <> "\n  ]"
+  end
+  defp build_greetings_ucl(_), do: ""
+
+  defp build_accept_ucl(nil), do: ""
+  defp build_accept_ucl(rules) when is_list(rules) and rules != [] do
+    "  accept = [\n" <>
+      Enum.map_join(rules, ",\n", fn rule ->
+        "    { kind = \"#{rule.kind}\"" <>
+          (if rule[:min], do: " min = #{rule.min}", else: "") <>
+          (if rule[:id], do: " id = \"#{rule.id}\"", else: "") <>
+          (if rule[:name], do: " name = \"#{rule.name}\"", else: "") <>
+          (if rule[:accept] != nil, do: " accept = #{rule.accept}", else: " accept = true") <>
+          " }"
+      end) <> "\n  ]"
+  end
+  defp build_accept_ucl(_), do: ""
 
   defp build_skills_block(calls) do
     skills = Map.get(calls, "set_skill", [])

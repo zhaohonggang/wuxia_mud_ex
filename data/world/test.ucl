@@ -145,6 +145,21 @@ zones "test" {
     { id = items.changjian.id }
   ]
 
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "庄夫人说道：很久没有人来了，这位{respect}，可知道我相公的下落吗？" }
+  ]
+
+  accept = [
+    { kind = "item_id" id = "wu zhi rong" accept = true },
+    { kind = "item_name" name = "明史辑略" accept = true },
+    { kind = "item_name" name = "庄允城" accept = true },
+    { kind = "any" accept = true }
+  ]
     }
 
 # Generated from test_minimal_world_v2_modified/npc/jinhua.c by LPCConverter
@@ -175,6 +190,18 @@ zones "test" {
     { id = items.cloth.id }
   ]
 
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "金花道：这位{respect}，我娘是白驼山庄的老佣人。你可有她消息？" }
+  ]
+
+  accept = [
+    { kind = "any" accept = true }
+  ]
     }
 
 # Generated from test_minimal_world_v2_modified/npc/menwei.c by LPCConverter
@@ -228,6 +255,11 @@ zones "test" {
     { id = items.cloth.id }
   ]
 
+
+  init = {
+    greet_delay = 0
+    heartbeat = 1
+  }
     }
 
 # Generated from test_minimal_world_v2_modified/npc/xiaoer.c by LPCConverter
@@ -244,6 +276,21 @@ zones "test" {
     attitude = "friendly"
     combat_exp = 100
   }
+
+  init = {
+    greet_delay = 1
+    add_actions = ["drop", "exchange", "duihuan"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+
+  accept = [
+    { kind = "money" min = 1000 accept = true },
+    { kind = "any" accept = true }
+  ]
     }
 
 # Generated from test_minimal_world_v2_modified/npc/xingzhe.c by LPCConverter
@@ -310,6 +357,11 @@ zones "test" {
     { id = items.cloth.id }
   ]
 
+
+  accept = [
+    { kind = "money" accept = true },
+    { kind = "any" accept = true }
+  ]
     }
 
 # Generated from test_minimal_world_v2_modified/obj/axe.c by LPCConverter

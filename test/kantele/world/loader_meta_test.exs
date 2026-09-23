@@ -115,6 +115,54 @@ defmodule Kantele.World.LoaderMetaTest do
     assert length(instances) == 2
   end
 
+  # ---- init()/greeting()/accept_object()（converter 抽取 → meta 落位） ----
+
+  test "xiaoer：init/greetings/accept 三块全量解析" do
+    world = Kantele.World.Loader.load()
+    test_zone = Enum.find(world.zones, &(&1.id == "test"))
+    xiaoer = Map.fetch!(test_zone.characters, :xiaoer).meta
+
+    assert xiaoer.init.greet_delay == 1
+    assert xiaoer.init.heartbeat == 0
+    assert xiaoer.init.add_actions == ["drop", "exchange", "duihuan"]
+
+    assert length(xiaoer.greetings) == 2
+    assert Enum.all?(xiaoer.greetings, &String.contains?(&1, "{respect}"))
+
+    assert Enum.any?(xiaoer.accept, &(&1.kind == "money" && &1.min == 1000 && &1.accept))
+    assert Enum.any?(xiaoer.accept, &(&1.kind == "any" && &1.accept))
+  end
+
+  test "furen：item_id/item_name 规则与 any 并存" do
+    world = Kantele.World.Loader.load()
+    test_zone = Enum.find(world.zones, &(&1.id == "test"))
+    furen = Map.fetch!(test_zone.characters, :furen).meta
+
+    assert Enum.any?(furen.accept, &(&1.kind == "item_id" && &1.id == "wu zhi rong"))
+    assert Enum.any?(furen.accept, &(&1.kind == "item_name" && &1.name == "明史辑略"))
+    assert Enum.any?(furen.accept, &(&1.kind == "any" && &1.accept == true))
+  end
+
+  test "worker-liu：仅 init，greetings/accept 缺席" do
+    world = Kantele.World.Loader.load()
+    test_zone = Enum.find(world.zones, &(&1.id == "test"))
+    worker = Map.fetch!(test_zone.characters, :worker_liu).meta
+
+    assert worker.init.heartbeat == 1
+    assert worker.greetings == nil
+    assert worker.accept == nil
+  end
+
+  test "普通 NPC（duke）：三块均缺席" do
+    world = Kantele.World.Loader.load()
+    test_zone = Enum.find(world.zones, &(&1.id == "test"))
+    duke = Map.fetch!(test_zone.characters, :duke).meta
+
+    assert duke.init == nil
+    assert duke.greetings == nil
+    assert duke.accept == nil
+  end
+
   defp world_zones() do
     Kantele.World.Loader.load().zones
   end
