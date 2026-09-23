@@ -143,7 +143,8 @@ defmodule Kantele.World.LPCConverter do
       function_calls: function_calls,
       enter: extract_enter(content),
       greetings: extract_greetings(content),
-      accept: extract_accept(content)
+      accept: extract_accept(content),
+      guard: extract_guard(content)
     }
     |> AST.new()
     |> (fn ast -> {:ok, ast} end).()
@@ -528,6 +529,44 @@ defmodule Kantele.World.LPCConverter do
     case extract_function_body(content, "accept_object") do
       nil -> nil
       body -> parse_accept_body(body)
+    end
+  end
+
+  # permit_pass() / guarder：抽取守卫配置（family + 拒绝台词）。
+  defp extract_guard(content) do
+    case extract_function_body(content, "permit_pass") do
+      nil -> nil
+      body -> parse_guard_body(body)
+    end
+  end
+
+  defp parse_guard_body(body) do
+    # 提取 family：me->query("family/family_name") == "门派名"
+    family =
+      case Regex.run(~r|query\s*\(\s*["']family/family_name["']\s*\)\s*==\s*["']([^"']+)["']|, body) do
+        [_, fam] -> fam
+        _ -> nil
+      end
+
+    # 提取拒绝台词：message_vision("...", this_object(), me)
+    refuse_msg =
+      case Regex.run(~r/message_vision\s*\(\s*["']([^"']+)["']/, body) do
+        [_, msg] ->
+          msg
+          |> String.replace("\\n", "\n")
+          |> String.replace("$N", "{npc}")
+          |> String.replace("$n", "{name}")
+          |> String.trim()
+        _ -> nil
+      end
+
+    if is_nil(family) and is_nil(refuse_msg) do
+      nil
+    else
+      %{
+        family: family,
+        refuse_other: refuse_msg
+      }
     end
   end
 
@@ -1052,10 +1091,11 @@ defp exit_key({:string, s}), do: s
     skills_block = build_skills_block(function_calls)
     carry_block = build_carry_block(function_calls)
 
-    # init() / greeting() / accept_object() 声明（功能函数抽取）
+    # init() / greeting() / accept_object() / permit_pass() 声明（功能函数抽取）
     init_block = build_enter_ucl(ast.enter)
     greetings_block = build_greetings_ucl(ast.greetings)
     accept_block = build_accept_ucl(ast.accept)
+    guarder_block = build_guarder_ucl(ast.guard)
 
     ucl <> basic_block <> brain_line <>
       (if combat != "", do: "\n  combat = {\n#{combat}\n  }\n", else: "") <>
@@ -1067,6 +1107,7 @@ defp exit_key({:string, s}), do: s
       (if init_block != "", do: "\n#{init_block}\n", else: "") <>
       (if greetings_block != "", do: "\n#{greetings_block}\n", else: "") <>
       (if accept_block != "", do: "\n#{accept_block}\n", else: "") <>
+      (if guarder_block != "", do: "\n#{guarder_block}\n", else: "") <>
       "    }"
   end
 
@@ -1106,6 +1147,24 @@ defp exit_key({:string, s}), do: s
       end) <> "\n  ]"
   end
   defp build_accept_ucl(_), do: ""
+
+  defp build_guarder_ucl(nil), do: ""
+  defp build_guarder_ucl(guard) when is_map(guard) do
+    family = Map.get(guard, :family)
+    refuse_other = Map.get(guard, :refuse_other)
+
+    if is_nil(family) do
+      ""
+    else
+      "  meta = {\n" <>
+        "    guarder = {\n" <>
+          "      family = \"#{family}\"\n" <>
+          (if refuse_other, do: "      msgs = { refuse_other = \"#{escape_set_string(refuse_other)}\" }\n", else: "") <>
+        "    }\n" <>
+      "  }"
+    end
+  end
+  defp build_guarder_ucl(_), do: ""
 
   defp build_skills_block(calls) do
     skills = Map.get(calls, "set_skill", [])

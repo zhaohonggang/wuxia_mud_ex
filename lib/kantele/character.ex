@@ -284,6 +284,7 @@ defmodule Kantele.Character.NonPlayerMeta do
   - `init` 入场配置 `%{greet_delay:, add_actions:, heartbeat:}`（nil = 无）
   - `accept` 收受规则表（accept_object）`[%{kind: "money"|"item_id"|"item_name"|"any",
     min:, id:, name:, accept:}]`（nil = 无规则）
+  - `guarder` 守卫配置 `%{family: 门派名, msgs: %{refuse_other: 拒绝文案}}`（nil = 非守卫）
   """
 
   defstruct [
@@ -308,7 +309,8 @@ defmodule Kantele.Character.NonPlayerMeta do
     :defeated_by,
     :greetings,
     :init,
-    :accept
+    :accept,
+    :guarder
   ]
 
   defimpl Kalevala.Meta.Trim do

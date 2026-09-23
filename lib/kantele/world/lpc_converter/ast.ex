@@ -15,7 +15,8 @@ defmodule Kantele.World.LPCConverter.AST do
     :function_calls,
     :enter,
     :greetings,
-    :accept
+    :accept,
+    :guard
   ]
 
   @type t :: %__MODULE__{

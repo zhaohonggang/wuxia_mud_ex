@@ -345,7 +345,8 @@ defmodule Kantele.World.Loader do
         loot: parse_goods(Map.get(character_data, :loot)),
         greetings: parse_greetings(Map.get(character_data, :greetings)),
         init: parse_enter_init(Map.get(character_data, :init)),
-        accept: parse_accept_rules(Map.get(character_data, :accept))
+        accept: parse_accept_rules(Map.get(character_data, :accept)),
+        guarder: parse_guarder(Map.get(Map.get(character_data, :meta, %{}), :guarder))
       }
     }
 
@@ -557,6 +558,26 @@ defmodule Kantele.World.Loader do
   end
 
   defp parse_accept_rules(_), do: nil
+
+  # 守卫配置：UCL guarder = { family = "白驼山庄" msgs = { refuse_other = "..." } }
+  defp parse_guarder(nil), do: nil
+
+  defp parse_guarder(guarder) when is_map(guarder) do
+    family = string_or_nil(Map.get(guarder, :family))
+    msgs = Map.get(guarder, :msgs)
+
+    if is_nil(family) do
+      nil
+    else
+      parsed_msgs = if is_map(msgs), do: msgs, else: %{}
+      %{
+        family: family,
+        msgs: parsed_msgs
+      }
+    end
+  end
+
+  defp parse_guarder(_), do: nil
 
   defp numeric_or_nil(v) when is_integer(v), do: v
   defp numeric_or_nil(v) when is_binary(v), do: String.to_integer(v)

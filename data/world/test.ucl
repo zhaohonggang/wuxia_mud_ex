@@ -235,6 +235,13 @@ zones "test" {
     { id = items.cloth.id }
   ]
 
+
+  meta = {
+    guarder = {
+      family = "白驼山庄"
+      msgs = { refuse_other = "{npc}拦住{name}，冷笑道：白驼山庄重地，闲杂人等不得入内！" }
+    }
+  }
     }
 
 # Generated from test_minimal_world_v2_modified/npc/worker-liu.c by LPCConverter
@@ -417,6 +424,72 @@ zones "test" {
     "unwield"
   ]
     }
+
+# Generated from test_minimal_world_v2_modified/adm/daemons/rankd.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/adm/daemons/rankd.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/beast/mangshe.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/beast/mangshe.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/board/kedian_b.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/board/kedian_b.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/corpse_poison.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/corpse_poison.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/drunk.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/drunk.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/flower_poison.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/flower_poison.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/freezing.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/freezing.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/hunger.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/hunger.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/ill_kesou.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/ill_kesou.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/poison.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/poison.c
+# Requires manual conversion
+
+# Generated from test_minimal_world_v2_modified/condition/sanxiao_poison.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/condition/sanxiao_poison.c
+# Requires manual conversion
 
 # Generated from test_minimal_world_v2_modified/obj/blade2.c by LPCConverter
 # Zone: test

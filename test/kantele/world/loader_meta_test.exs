@@ -163,6 +163,26 @@ defmodule Kantele.World.LoaderMetaTest do
     assert duke.accept == nil
   end
 
+  test "menwei：guarder meta 解析（family + msgs）" do
+    world = Kantele.World.Loader.load()
+    test_zone = Enum.find(world.zones, &(&1.id == "test"))
+    menwei = Map.fetch!(test_zone.characters, :menwei)
+
+    assert menwei.meta.guarder != nil
+    assert menwei.meta.guarder.family == "白驼山庄"
+    assert menwei.meta.guarder.msgs != %{}
+    assert String.contains?(menwei.meta.guarder.msgs.refuse_other, "白驼山庄重地")
+  end
+
+  test "非守卫 NPC（xiaoer/furen/duke）guarder 为 nil" do
+    world = Kantele.World.Loader.load()
+    test_zone = Enum.find(world.zones, &(&1.id == "test"))
+
+    assert Map.fetch!(test_zone.characters, :xiaoer).meta.guarder == nil
+    assert Map.fetch!(test_zone.characters, :furen).meta.guarder == nil
+    assert Map.fetch!(test_zone.characters, :duke).meta.guarder == nil
+  end
+
   defp world_zones() do
     Kantele.World.Loader.load().zones
   end

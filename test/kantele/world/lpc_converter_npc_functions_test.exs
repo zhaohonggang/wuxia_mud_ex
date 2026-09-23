@@ -8,6 +8,7 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
   @worker_liu_path "test_minimal_world_v2_modified/npc/worker-liu.c"
   @zhuangjia_path "test_minimal_world_v2_modified/npc/zhuangjia.c"
   @duke_path "test_minimal_world_v2_modified/npc/duke.c"
+  @menwei_path "test_minimal_world_v2_modified/npc/menwei.c"
 
   defp parse(path) do
     {:ok, ast} = LPCConverter.parse_ast(File.read!(path), path, path)
@@ -91,6 +92,21 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
     test "无 accept_object() 返回 nil" do
       ast = parse(@duke_path)
       assert ast.accept == nil
+    end
+  end
+
+  describe "permit_pass()/guarder 抽取" do
+    test "menwei：提取 family 与拒绝台词" do
+      ast = parse(@menwei_path)
+
+      assert ast.guard != nil
+      assert ast.guard.family == "白驼山庄"
+      assert String.contains?(ast.guard.refuse_other, "白驼山庄重地")
+    end
+
+    test "无 permit_pass() 的 NPC 返回 nil" do
+      ast = parse(@duke_path)
+      assert ast.guard == nil
     end
   end
 end
