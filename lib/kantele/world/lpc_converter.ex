@@ -571,6 +571,9 @@ defmodule Kantele.World.LPCConverter do
   end
 
   defp parse_accept_body(body) do
+    # Extract dialogue lines from accept_object (tell_object, command say, message_vision, say)
+    accept_dialogues = extract_accept_dialogues(body)
+
     money_rule =
       if body =~ ~r/money_id/ do
         min =
@@ -579,24 +582,45 @@ defmodule Kantele.World.LPCConverter do
             _ -> nil
           end
 
-        %{kind: "money", min: min}
+        msg = Map.get(accept_dialogues, :money) || Map.get(accept_dialogues, :default)
+
+        %{kind: "money", min: min, msg: msg}
       end
 
     item_id_rules =
-      Regex.scan(~r/query\s*\(\s*["']id["']\s*\)\s*==\s*["']([^"']+)["']/, body)
-      |> Enum.map(fn [_, id] -> %{kind: "item_id", id: id} end)
+      Regex.scan(~r/(\w+->)?query\s*\(\s*["']id["']\s*\)\s*==\s*["']([^"']+)["']/, body)
+      |> Enum.map(fn [_, _, id] ->
+        %{kind: "item_id", id: id, msg: Map.get(accept_dialogues, :"item_id_#{id}") || Map.get(accept_dialogues, :default)}
+      end)
 
     item_name_rules =
-      Regex.scan(~r/query\s*\(\s*["']name["']\s*\)\s*==\s*["']([^"']+)["']/, body)
-      |> Enum.map(fn [_, name] -> %{kind: "item_name", name: name} end)
+      Regex.scan(~r/(\w+->)?query\s*\(\s*["']name["']\s*\)\s*==\s*["']([^"']+)["']/, body)
+      |> Enum.map(fn [_, _, name] ->
+        %{kind: "item_name", name: name, msg: Map.get(accept_dialogues, :"item_name_#{name}") || Map.get(accept_dialogues, :default)}
+      end)
+
+has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
+    has_return_1 = Regex.match?(~r/return\s+1\s*;/, body)
+
+    # 判斷是否有具體的接受規則（money/item_id/item_name）
+    has_specific_rules = (money_rule != nil) or (item_id_rules != []) or (item_name_rules != [])
+
+    # 檢查函數最後一個 return 語句是 0 還是 1
+    last_return = get_last_return(body)
 
     default_rule =
       cond do
-        Regex.match?(~r/return\s+0\s*;/, body) and not Regex.match?(~r/return\s+1\s*;/, body) ->
-          %{kind: "any", accept: false}
+        has_return_0 and not has_return_1 ->
+          %{kind: "any", accept: false, msg: Map.get(accept_dialogues, :reject)}
 
-        Regex.match?(~r/return\s+1\s*;/, body) ->
-          %{kind: "any", accept: true}
+        has_return_1 and not has_return_0 ->
+          %{kind: "any", accept: has_specific_rules, msg: Map.get(accept_dialogues, :default)}
+
+        has_return_0 and has_return_1 ->
+          # 同時有 return 0 和 return 1：看最後一個 return 決定預設行為
+          accept_default = last_return == 1
+          msg = if last_return == 1, do: Map.get(accept_dialogues, :default), else: Map.get(accept_dialogues, :reject)
+          %{kind: "any", accept: accept_default, msg: msg || Map.get(accept_dialogues, :default)}
 
         true ->
           nil
@@ -605,6 +629,84 @@ defmodule Kantele.World.LPCConverter do
     rules = Enum.reject([money_rule] ++ item_id_rules ++ item_name_rules ++ [default_rule], &is_nil/1)
 
     if rules == [], do: nil, else: rules
+  end
+
+  # 从 accept_object 函数体中抽取 NPC 台词（tell_object, command say, message_vision, say）
+  defp extract_accept_dialogues(body) do
+    # 抽取所有字符串字面量及其上下文
+    all_strings = extract_all_strings_with_context(body)
+
+    # 启发式分配：按出现顺序和上下文关键字分配
+    money_msgs = Enum.filter(all_strings, fn {ctx, _} -> ctx in [:tell_object, :money] end) |> Enum.map(&elem(&1, 1))
+    default_msgs = Enum.filter(all_strings, fn {ctx, _} -> ctx in [:command_say, :say, :message_vision, :command_other] end) |> Enum.map(&elem(&1, 1))
+    reject_msgs = Enum.filter(all_strings, fn {ctx, _} -> ctx == :reject end) |> Enum.map(&elem(&1, 1))
+
+    money_msg = List.first(money_msgs) || List.first(default_msgs)
+    default_msg = List.first(default_msgs)
+    reject_msg = List.first(reject_msgs)
+
+    %{
+      money: money_msg,
+      default: default_msg,
+      reject: reject_msg
+    }
+  end
+
+  # 抽取函数体中所有字符串字面量及其上下文
+  defp extract_all_strings_with_context(body) do
+    # tell_object(me, ...) - 收钱回复
+    tell_object =
+      Regex.scan(~r/tell_object\s*\([^)]+\)/, body)
+      |> Enum.flat_map(fn [call] ->
+        # 从 tell_object 调用中提取所有字符串字面量
+        Regex.scan(~r/"((?:\\.|[^"\\])*)"/, call)
+        |> Enum.map(fn [_, s] -> {:tell_object, process_literal_string(s)} end)
+      end)
+
+    # command("say ...")
+    cmd_say =
+      Regex.scan(~r/command\s*\(\s*["']say\s+([^"']+)["']\s*\)/, body)
+      |> Enum.map(fn [_, msg] -> {:command_say, process_literal_string(msg)} end)
+
+    # message_vision("msg", ...)
+    mv =
+      Regex.scan(~r/message_vision\s*\(\s*["']([^"']+)["']/, body)
+      |> Enum.map(fn [_, msg] -> {:message_vision, process_literal_string(msg)} end)
+
+    # say("msg")
+    say =
+      Regex.scan(~r/say\s*\(\s*["']([^"']+)["']\s*\)/, body)
+      |> Enum.map(fn [_, msg] -> {:say, process_literal_string(msg)} end)
+
+    # command("msg") 不带 say 的情况
+    cmd_other =
+      Regex.scan(~r/command\s*\(\s*["']([^"']+)["']\s*\)/, body)
+      |> Enum.map(fn [_, msg] -> {:command_other, process_literal_string(msg)} end)
+
+    tell_object ++ cmd_say ++ mv ++ say ++ cmd_other
+  end
+
+  # 处理字面量字符串：处理转义字符、LPC 变量替换
+  defp process_literal_string(s) do
+    s
+    |> String.replace("\\n", "\n")
+    |> String.replace("$N", "{npc}")
+    |> String.replace("$n", "{name}")
+    |> String.trim()
+  end
+
+  # 取得函數體中最後一個 return 0 或 return 1
+  defp get_last_return(body) do
+    # 從後往前找最後一個 return 0; 或 return 1;
+    # 忽略大括號內容，只看頂層的 return
+    matches = Regex.scan(~r/return\s+([01])\s*;/, body)
+    case matches do
+      [] -> nil
+      matches ->
+        # 取最後一個匹配
+        [_, last] = List.last(matches)
+        String.to_integer(last)
+    end
   end
 
   defp parse_lpc_value(value_str) do
@@ -1143,6 +1245,7 @@ defp exit_key({:string, s}), do: s
           (if rule[:id], do: " id = \"#{rule.id}\"", else: "") <>
           (if rule[:name], do: " name = \"#{rule.name}\"", else: "") <>
           (if rule[:accept] != nil, do: " accept = #{rule.accept}", else: " accept = true") <>
+          (if rule[:msg], do: " msg = \"#{escape_set_string(rule.msg)}\"", else: "") <>
           " }"
       end) <> "\n  ]"
   end

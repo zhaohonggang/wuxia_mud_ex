@@ -64,17 +64,17 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
       ast = parse(@xiaoer_path)
 
       assert ast.accept == [
-               %{kind: "money", min: 1000},
-               %{kind: "any", accept: true}
+               %{kind: "money", min: 1000, msg: "小二一哈腰，说道：多谢您老，客官请上楼歇息。"},
+               %{kind: "any", accept: true, msg: "好！好！"}
              ]
     end
 
-    test "zhuangjia：收任意钱（无下限）+ 默认接受" do
+    test "zhuangjia：收任意钱（无下限）+ 拒绝非钱" do
       ast = parse(@zhuangjia_path)
 
       assert ast.accept == [
-               %{kind: "money", min: nil},
-               %{kind: "any", accept: true}
+               %{kind: "money", min: nil, msg: "{npc}接过{name}给的钱，笑道：好！请押注。"},
+               %{kind: "any", accept: false, msg: "{npc}接过{name}给的钱，笑道：好！请押注。"}
              ]
     end
 
