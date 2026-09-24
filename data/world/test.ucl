@@ -256,6 +256,75 @@ zones "test" {
   ]
     }
 
+# Generated from test_minimal_world_v2_modified/npc/huangyi.c by LPCConverter
+# Zone: test
+
+    characters "huangyi" {
+      name = "NPC"
+      description = "一个全身上下穿着黄装，领露酥胸的美女。\n"
+  gender = "女性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10
+    str = 30
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: regenerate
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from test_minimal_world_v2_modified/npc/jiang.c by LPCConverter
+# Zone: test
+
+    characters "jiang" {
+      name = "江百胜"
+      description = "当今武林盟主魏无双之手下之亲兵队长。\n"
+  gender = "男性"
+  age = 30
+  shen_type = 0
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 50000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 200
+    max_neili = 300
+    max_qi = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "unarmed" level = 100 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 80 }
+  ]
+
+    }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: checking
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/npc/jinhua.c by LPCConverter
 # Zone: test
 
@@ -345,6 +414,37 @@ zones "test" {
   }
     }
 
+# Generated from test_minimal_world_v2_modified/npc/shouwei.c by LPCConverter
+# Zone: test
+
+    characters "shouwei" {
+      name = "守卫"
+      description = "这是看护庄园的守卫，看上去似乎身怀绝技。\n"
+  gender = "男性"
+  age = 30
+
+  combat = {
+    attitude = "friendly"
+    max_jing = 2400
+    max_neili = 5200
+    max_qi = 4800
+  }
+
+  accept = [
+    { kind = "money" accept = true msg = "{npc}对{name}施了一礼。" },
+    { kind = "any" accept = false msg = "{npc}对{name}施了一礼。" }
+  ]
+    }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_kill
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/npc/worker-liu.c by LPCConverter
 # Zone: test
 
@@ -380,6 +480,62 @@ zones "test" {
 # ==== COMPLEX MAPPINGS ====
   # UNHANDLED FUNCTION: filter_ob
   # UNHANDLED FUNCTION: heart_beat
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from test_minimal_world_v2_modified/npc/wudunru.c by LPCConverter
+# Zone: test
+
+    characters "wudunru" {
+      name = "武敦儒"
+      description = "他是郭靖大弟子，相貌和蔼，一天到晚笑呵呵的。\n"
+  gender = "男性"
+  age = 23
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 400000
+    max_jing = 2500
+    max_neili = 2800
+    max_qi = 3000
+  }
+
+  inquiries = [
+    { key = "郭靖" value = "那是我师父。" },
+    { key = "黄蓉" value = "那是我师母。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 160 },
+    { skill = "dodge" level = 160 },
+    { skill = "unarmed" level = 160 },
+    { skill = "parry" level = 160 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["join", "hit", "kill", "touxi", "fight"]
+  }
+    }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (arg != "wu dunru" && arg != "wu" && arg != "dunru") { message_vision(CYN "\n武敦儒喝道：什么人？郭府门" "前可由不得你放肆！\n" NOR, ob); return 1; } return 0; } int do_join(string arg) { object ob = this_player(); if (!arg && arg != "guofu" && arg != "郭府") return notify_fail(CYN "武敦儒眉头一皱，道：你到" "底要干什么？怎么说话吞吞吐吐" "的？\n" NOR); if (ob->query("mark/guofu_over")) return notify_fail(CYN "武敦儒冷笑道：师傅让你走" "开，你还赖在这里干嘛？\n" NOR); if (ob->query("mark/guofu_ok")) return notify_fail(CYN "武敦儒皱眉道：你不是已经" "进来了吗？赶快干活去，罗嗦什" "么？\n" NOR); if (ob->query("combat_exp") > 5000) return notify_fail(CYN "武敦儒微笑道：让你来打杂" "可太委屈你了，你还是另谋出路" "吧。\n" NOR); if (ob->query_temp("mark/guofu_join")) { message_vision(HIC "\n$N" HIC "对$n" HIC "点了点" "头，说道：甚好，甚好。入了郭府一" "切就要\n按规矩办事，你现在去耶律" "帮主那里，他会帮你安排事情的。\n" "\n", this_object(), ob); ob->set("mark/guofu_ok", 1); ob->set("startroom", "/d/wuguan/guofu_dayuan"); ob->delete_temp("mark/guofu_join"); } else { command("nod"); command("whisper " + ob->query("id") + " 你进郭" "府之后我们会确保你的安\n全，但是经验在" HIW "四万" NOR + WHT "前不能离开郭府。如" "果你决定下来了，请\n再输入一次此命令。" "\n" NOR); ob->set_temp("mark/guofu_join", 1); }
+# ==== COMPLEX CONDITIONALS ====
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: do_join
+  # UNHANDLED FUNCTION: do_kill
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
