@@ -1,5 +1,34 @@
+#!/usr/bin/env elixir
+# scripts/check_loss.exs
+#
+# 检查 LPC 转换是否丢失中文内容。
+#
+# 规则：
+#   - 解析 data/world/test.ucl 中的 `# UNHANDLED FUNCTION: <name>` 列表
+#   - 对每个 .c 文件，提取所有函数体（按 converter 同款正则 + 大括号配对）
+#   - 若函数名在 UNHANDLED 列表中，该函数体内的中文“豁免”（不要求出现在 UCL）
+#   - 剔除注释（// 和 /* */）内的中文（注释本就不转换）
+#   - 剩余文本中每个连续非 ASCII 片段（含汉字、全角标点，长度≥2、含汉字）必须能在 test.ucl 中找到
+#   - 失败项写入 loss_report.txt，并非零退出码
+#
+# 用法：
+#   docker-compose -f docker-compose.dev.yml exec app sh -c "cd /app && elixir scripts/check_loss.exs"
+#   也可直接在宿主机运行（需 Elixir 环境）：elixir scripts/check_loss.exs
+
 base = "test_minimal_world_v2_modified"
-ucl = File.read!("data/world/test.ucl")
+ucl_path = "data/world/test.ucl"
+
+if !File.exists?(ucl_path) do
+  IO.puts("ERROR: #{ucl_path} 不存在，请先运行转换生成 test.ucl")
+  System.halt(1)
+end
+
+if !File.exists?(base) do
+  IO.puts("ERROR: 源码目录 #{base} 不存在")
+  System.halt(1)
+end
+
+ucl = File.read!(ucl_path)
 sources = Path.wildcard(Path.join(base, "**/*.c"))
 
 unhandled_names =
@@ -85,7 +114,13 @@ File.write!("loss_report.txt", Enum.map_join(Enum.sort(losses), "\n", fn {f, ms}
   "== #{f}\n" <> Enum.map_join(ms, "\n", &"    #{&1}")
 end))
 
-Enum.each(Enum.sort(losses), fn {file, ms} ->
-  IO.puts("\n== #{file}")
-  Enum.each(ms, &IO.puts("    #{&1}"))
-end)
+if total != [] do
+  Enum.each(Enum.sort(losses), fn {file, ms} ->
+    IO.puts("\n== #{file}")
+    Enum.each(ms, &IO.puts("    #{&1}"))
+  end)
+  System.halt(1)
+else
+  IO.puts("OK: 无丢失（按豁免规则）")
+  System.halt(0)
+end

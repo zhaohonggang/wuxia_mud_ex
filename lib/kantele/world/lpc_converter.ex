@@ -266,8 +266,8 @@ defmodule Kantele.World.LPCConverter do
   end
 
   defp parse_set_name(body) do
-    # Match: set_name("name", ({ "alias1", "alias2" }));
-    case Regex.run(~r/set_name\s*\(\s*(["'])([^"']+)\1\s*,\s*\(\s*\{([^}]+)\}\s*\)\s*\)\s*;/, body) do
+    # Match: set_name("name", ({ "alias1", "alias2" })) or set_name(HIB "name" NOR, ({ ... }))
+    case Regex.run(~r/set_name\s*\(\s*(?:[A-Z_]+)?\s*(["'])([^"']+)\1\s*(?:[A-Z_]+)?\s*,\s*\(\s*\{([^}]+)\}\s*\)\s*\)\s*;/, body) do
       nil -> %{}
       [_, _, name, aliases_str] ->
         aliases =
@@ -1324,39 +1324,65 @@ has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
   defp parse_lpc_value(value_str) do
     value_str = String.trim(value_str)
 
-    cond do
-      # String (possibly concatenated "a" "b")
-      String.starts_with?(value_str, "\"") && String.ends_with?(value_str, "\"") ->
-        {:string, parse_lpc_string(value_str)}
-
-      # Number
-      String.match?(value_str, ~r/^\d+$/) ->
-        {:int, String.to_integer(value_str)}
-
-      # Float
-      String.match?(value_str, ~r/^\d+\.\d+$/) ->
-        {:float, String.to_float(value_str)}
-
-      # Array: ({ ... })
-      String.starts_with?(value_str, "({") && String.ends_with?(value_str, "})") ->
-        inner = String.slice(value_str, 2..-3)
-        elements = parse_array_elements(inner)
-        {:array, elements}
-
-      # Mapping: ([ ... ])
-      String.starts_with?(value_str, "([") && String.ends_with?(value_str, "])") ->
-        inner = String.slice(value_str, 2..-3)
-        pairs = parse_mapping_pairs(inner)
-        {:mapping, pairs}
-
-      # Function call: func(args)
-      String.match?(value_str, ~r/^\w+\(.*\)$/) ->
-        {:call, value_str}
-
-      # Variable reference
-      true ->
-        {:var, value_str}
+    # 颜色宏包装字符串：HIW "未亡人" NOR、CYN "双对" NOR 等
+    # 宏名通常为大写/下划线，后跟字符串字面量
+    if String.match?(value_str, ~r/^[A-Z_]+/) do
+      case extract_strings_from_macro_wrapped(value_str) do
+        "" -> :no_match
+        extracted -> {:string, extracted}
+      end
+    else
+      :no_match
     end
+    |> case do
+      {:string, s} -> {:string, s}
+      :no_match ->
+        cond do
+          # String (possibly concatenated "a" "b")
+          String.starts_with?(value_str, "\"") && String.ends_with?(value_str, "\"") ->
+            {:string, parse_lpc_string(value_str)}
+
+          # Number
+          String.match?(value_str, ~r/^\d+$/) ->
+            {:int, String.to_integer(value_str)}
+
+          # Float
+          String.match?(value_str, ~r/^\d+\.\d+$/) ->
+            {:float, String.to_float(value_str)}
+
+          # Array: ({ ... })
+          String.starts_with?(value_str, "({") && String.ends_with?(value_str, "})") ->
+            inner = String.slice(value_str, 2..-3)
+            elements = parse_array_elements(inner)
+            {:array, elements}
+
+          # Mapping: ([ ... ])
+          String.starts_with?(value_str, "([") && String.ends_with?(value_str, "])") ->
+            inner = String.slice(value_str, 2..-3)
+            pairs = parse_mapping_pairs(inner)
+            {:mapping, pairs}
+
+          # Function call: func(args)
+          String.match?(value_str, ~r/^\w+\(.*\)$/) ->
+            {:call, value_str}
+
+          # Variable reference
+          true ->
+            {:var, value_str}
+        end
+    end
+  end
+
+  defp extract_strings_from_macro_wrapped(value_str) do
+    # Extract all "..." segments from macro-wrapped expression
+    # e.g., HIW "未亡人" NOR -> "未亡人"
+    #       CYN "双对" NOR -> "双对"
+    #       HIB "青布长衫" NOR -> "青布长衫"
+    segments =
+      Regex.scan(~r/"((?:\\.|[^"\\])*)"/, value_str)
+      |> Enum.map(fn [_, seg] -> seg end)
+
+    if segments == [], do: "", else: Enum.join(segments)
   end
 
   defp parse_lpc_string(value_str) do
