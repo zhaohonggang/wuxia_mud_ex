@@ -172,6 +172,8 @@ engage_deny?(target, attacker, event) ->
 
 并在 `engage` 后若 `engage.retaliate == true`（对 NPC 被 kill/hit 且选择反杀），
 向攻击者发 `combat/start`（ref 反转），使 NPC 主动开战——对应 LPC `kill_ob`。
+> **实现注**：未单独做 ref 反转；`engage/3`→`start_combat` 本就对双方各发一次 `combat/start`
+> （room.ex:2468-2480），被攻击 NPC 同样入场，反杀效果等效达成。`retaliate` 键已落 loader/meta。
 
 `spawn` 处理：本轮**只落位不自动执行**（似 `coagents` 现状：loader 落表，运行时 Coagent
 接线是独立的后续任务）。`Guarder.check_enemy` 仍是 kill 类场景的守卫专属路径，两者并存：
@@ -198,6 +200,7 @@ engage_deny?(target, attacker, event) ->
 - NPC `engage.fight.accept=false` → 玩家 `fight` 被拒，不出 `combat/start`
 - NPC `retaliate=true` → 玩家 `hit` 后 NPC 反向开战
 - 守卫 vs engage 并存：守卫 NPC 击杀路径不变
+> **未实现**：本文件未写（见 §六状态注）。运行时逻辑由 EnganeRule 纯函数单测 + fight_command_test 覆盖。
 
 ---
 
@@ -327,35 +330,42 @@ CONDITIONALS` 之上；`COMPLEX CONDITIONALS` 保留为原文兜底。
 
 ## 六、实施步骤（可分多次提交）
 
+> **状态**：Step 1–5 全部完成（2026-09-23），全量 2936 tests 全绿；后续追加了 accept 台词池语义化（见 §五后补充）。偏差项：
+> - §3.7 retaliate「ref 反转反开战」未单独实现——`start_combat` 本就双向开战（双方各收 `combat/start`），行为等效。
+> - §3.8 / Step2 / Step5 的 **room 级 e2e**（`room_combat_attack_test.exs`）未写；engage 规则以 `EngageRule` 纯函数单测（`test/kantele/npc/engage_rule_test.exs`，4 tests）覆盖。
+> - §4.4 accept_ask 转 inquiries 属于二期独立任务，未实现（方向已记录）。
+
 ### Step 1：engage 抽取（Converter + AST + UCL 输出）
-- [ ] `ast.ex` 加 `:engage` 字段
-- [ ] `extract_engage/1` + `extract_accept_fn/2` + msg/spawn/retaliate 辅助
-- [ ] `build_engage_ucl/1`；`generate_npc_ucl` 挂接
-- [ ] 移除 intercepted：`accept_fight/hit/kill` 从 `handled_functions` 白名单？**不自名单**，
+- [x] `ast.ex` 加 `:engage` 字段
+- [x] `extract_engage/1` + `extract_accept_fn/2` + msg/spawn/retaliate 辅助
+- [x] `build_engage_ucl/1`；`generate_npc_ucl` 挂接
+- [x] 移除 intercepted：`accept_fight/hit/kill` 从 `handled_functions` 白名单？**不自名单**，
       仍要进 UNHANDLED functions 名单（因为还有 note 原文需求），但改为列出并注明已有 engage 抽取
 
 ### Step 2：Loader + Meta + 运行时接线
-- [ ] `loader.ex` `parse_engage/1`；`parse_character` 挂接
-- [ ] `NonPlayerMeta` 加 `:engage`
-- [ ] `room.ex` `dispatch(combat/attack)` 插入 engage_deny 检查；retaliate 反开战
+- [x] `loader.ex` `parse_engage/1`；`parse_character` 挂接
+- [x] `NonPlayerMeta` 加 `:engage`
+- [x] `room.ex` `dispatch(combat/attack)` 插入 engage_deny 检查；retaliate 反开战
+      （retaliate 反开战由 `start_combat` 双向开战等效达成，未单独 ref 反转）
 - [ ] e2e：`fight`/`hit`/`kill` 对拒绝 NPC 的行为验证
+      （未写 room 级 e2e；已用 `EngageRule` 纯函数单测覆盖，见 §3.8 偏差注）
 
 ### Step 3：switch 分桶重构
-- [ ] `extract_unhandled_content` switch 分三桶（tables/pools/other）
-- [ ] `parse_switch_table/1`（case-assign → 表格行）
-- [ ] `generate_unhandled_comments` 新三段注释 + 函数名/行号标注
+- [x] `extract_unhandled_content` switch 分三桶（tables/pools/other）
+- [x] `parse_switch_table/1`（case-assign → 表格行）
+- [x] `generate_unhandled_comments` 新三段注释 + 函数名/行号标注
 
 ### Step 4：条件分支抽取
-- [ ] `split_condition_branches/1`（顶层切分 if/else-if/else）
-- [ ] `branch_actions/1`（条件→台词行为）
-- [ ] `:conditional_branches` 落 AST + 注释输出
+- [x] `split_condition_branches/1`（顶层切分 if/else-if/else）
+- [x] `branch_actions/1`（条件→台词行为）
+- [x] `:conditional_branches` 落 AST + 注释输出
 
 ### Step 5：测试与回归
-- [ ] converter 单测（engage/switch/conditional）——见 3.8
-- [ ] loader/meta 单测
-- [ ] room 运行时 e2e
-- [ ] 全量 `MIX_ENV=test mix test` 保持全绿（当前基线 2915）
-- [ ] 重新生成 `test.ucl`；抽查新 4 NPC（shouwei/wudunru/jiang/huangyi）输出
+- [x] converter 单测（engage/switch/conditional）——见 3.8
+- [x] loader/meta 单测
+- [ ] room 运行时 e2e（未写，见上）
+- [x] 全量 `MIX_ENV=test mix test` 保持全绿（基线 2915 → 2936）
+- [x] 重新生成 `test.ucl`；抽查新 4 NPC（shouwei/wudunru/jiang/huangyi）输出
 
 ---
 
@@ -387,8 +397,24 @@ CONDITIONALS` 之上；`COMPLEX CONDITIONALS` 保留为原文兜底。
 
 ## 九、验收标准
 
-- [ ] 4 个真实样例 NPC 的 engage 数据与手写 LPC 语义一致（accept/msg/retaliate/spawn）
-- [ ] switch case-assign 表输出为规整注释表格，信息无损（键/值/产物）
-- [ ] 条件分支注释含"条件 → 行为"，原文仍可回溯
-- [ ] 不再有任何原始 .c 内容在转换时**丢失**（UNHANDLED 兜底保证）
-- [ ] 全量 2915 tests 保持全绿（或仅新增测试引起数量增加）
+- [x] 4 个真实样例 NPC 的 engage 数据与手写 LPC 语义一致（accept/msg/retaliate/spawn）
+- [x] switch case-assign 表输出为规整注释表格，信息无损（键/值/产物）
+- [x] 条件分支注释含"条件 → 行为"，原文仍可回溯
+- [x] 不再有任何原始 .c 内容在转换时**丢失**（UNHANDLED 兜底保证）
+- [x] 全量 2915 tests 保持全绿（当前 2936，仅新增测试引起数量增加）
+
+---
+
+## 十、追加：switch 随机台词池 → accept 语义化（修复 xiaoer 案例）
+
+> 2026-09-23 复查时发现 xiaoer.c `accept_object` 的 `switch (random(6))` 台词池未被语义化：
+> 只原样入 `# SWITCH POOL:` 注释，"好！好！"被 `List.first` 单条捞进 accept，"不需要的东西全给我！"静默丢失。
+> 按 §4.3 L2（台词池 → 随机台词池）修复，已合入。
+
+- [x] `extract_accept_dialogues/1`：`default` 保留完整台词池（剔 `command("say x")` 双抓的 `say ` 前缀、去重）
+- [x] `build_accept_ucl/1`：msg 支持 `msg = ["a", "b"]` 列表输出
+- [x] `loader.accept_msg/1`：字符串/列表统一归一为台词池；空池 nil（修复 `msg = ` 空值产生 UCL 语法错误）
+- [x] `give_event.take_message/2`：命中规则时从台词池 `Enum.random` 取一条（此前规则 msg 完全未接线）
+- [x] 影响面：xiaoer `accept.any.msg = ["好！好！", "不需要的东西全给我！"]`；converter/loader 测试更新；test.ucl 重生成
+
+**遗留（二期，见 §4.4）**：`accept_ask(topic)` 连续 if/switch 台词 → `inquiries` 表未实现。
