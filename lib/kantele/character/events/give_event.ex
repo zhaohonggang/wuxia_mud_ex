@@ -169,6 +169,9 @@ defmodule Kantele.Character.GiveEvent do
     end
   end
 
+  defp take_message(%{msg: msg} = _rule, item) when is_list(msg) and msg != [],
+  do: Enum.random(msg)
+
   defp take_message(_rule, item), do: "你给了#{item.name}。"
   defp refuse_message(item), do: "对方不收#{item.name}。"
   defp from_drop_message(), do: "物品不在房间中。"

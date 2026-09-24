@@ -1189,7 +1189,7 @@ c ->
             _ -> nil
           end
 
-        msg = Map.get(accept_dialogues, :money) || Map.get(accept_dialogues, :default)
+        msg = Map.get(accept_dialogues, :money) || List.first(Map.get(accept_dialogues, :default, []))
 
         %{kind: "money", min: min, msg: msg}
       end
@@ -1249,12 +1249,17 @@ has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
     reject_msgs = Enum.filter(all_strings, fn {ctx, _} -> ctx == :reject end) |> Enum.map(&elem(&1, 1))
 
     money_msg = List.first(money_msgs) || List.first(default_msgs)
-    default_msg = List.first(default_msgs)
+    # default 保留完整台词池（对应 LPC switch(random(N)) 随机台词）。
+    # cmd_other 会把 command("say xxx") 双抓成 "say xxx"，此处剔除该前缀重复。
+    default_msgs =
+      default_msgs
+      |> Enum.reject(&String.starts_with?(&1, "say "))
+      |> Enum.uniq()
     reject_msg = List.first(reject_msgs)
 
     %{
       money: money_msg,
-      default: default_msg,
+      default: default_msgs,
       reject: reject_msg
     }
   end
@@ -1999,11 +2004,22 @@ defp exit_key({:string, s}), do: s
           (if rule[:id], do: " id = \"#{rule.id}\"", else: "") <>
           (if rule[:name], do: " name = \"#{rule.name}\"", else: "") <>
           (if rule[:accept] != nil, do: " accept = #{rule.accept}", else: " accept = true") <>
-          (if rule[:msg], do: " msg = \"#{escape_set_string(rule.msg)}\"", else: "") <>
+          (case render_accept_msg(Map.get(rule, :msg)) do
+             nil -> ""
+             rendered -> " msg = #{rendered}"
+           end) <>
           " }"
       end) <> "\n  ]"
   end
   defp build_accept_ucl(_), do: ""
+
+  # msg 支持单条字符串或台词池（列表）
+  defp render_accept_msg(msg) when is_list(msg) and msg != [] do
+    "[" <> Enum.map_join(msg, ", ", &"\"#{escape_set_string(&1)}\"") <> "]"
+  end
+
+  defp render_accept_msg(msg) when is_binary(msg), do: "\"#{escape_set_string(msg)}\""
+  defp render_accept_msg(_), do: nil
 
   defp build_guarder_ucl(nil), do: ""
   defp build_guarder_ucl(guard) when is_map(guard) do

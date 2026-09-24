@@ -305,10 +305,10 @@ zones "test" {
   ]
 
   accept = [
-    { kind = "item_id" id = "wu zhi rong" accept = true msg = "庄夫人大喜道：狗贼，死去吧！" },
-    { kind = "item_name" name = "明史辑略" accept = true msg = "庄夫人大喜道：狗贼，死去吧！" },
-    { kind = "item_name" name = "庄允城" accept = true msg = "庄夫人大喜道：狗贼，死去吧！" },
-    { kind = "any" accept = true msg = "庄夫人大喜道：狗贼，死去吧！" }
+    { kind = "item_id" id = "wu zhi rong" accept = true msg = ["庄夫人大喜道：狗贼，死去吧！", "庄夫人对{npc}说道：这位", "庄夫人说道：这位", "庄夫人感叹道：唉！你要能帮我找到吴之荣这"] },
+    { kind = "item_name" name = "明史辑略" accept = true msg = ["庄夫人大喜道：狗贼，死去吧！", "庄夫人对{npc}说道：这位", "庄夫人说道：这位", "庄夫人感叹道：唉！你要能帮我找到吴之荣这"] },
+    { kind = "item_name" name = "庄允城" accept = true msg = ["庄夫人大喜道：狗贼，死去吧！", "庄夫人对{npc}说道：这位", "庄夫人说道：这位", "庄夫人感叹道：唉！你要能帮我找到吴之荣这"] },
+    { kind = "any" accept = true msg = ["庄夫人大喜道：狗贼，死去吧！", "庄夫人对{npc}说道：这位", "庄夫人说道：这位", "庄夫人感叹道：唉！你要能帮我找到吴之荣这"] }
   ]
     }
 
@@ -543,7 +543,7 @@ zones "test" {
 
   accept = [
     { kind = "money" accept = true msg = "{npc}对{name}施了一礼。" },
-    { kind = "any" accept = false msg = "{npc}对{name}施了一礼。" }
+    { kind = "any" accept = false msg = ["{npc}对{name}施了一礼。"] }
   ]
 
   engage = {
@@ -733,7 +733,7 @@ zones "test" {
 
   accept = [
     { kind = "money" min = 1000 accept = true msg = "小二一哈腰，说道：多谢您老，客官请上楼歇息。" },
-    { kind = "any" accept = true msg = "好！好！" }
+    { kind = "any" accept = true msg = ["好！好！", "不需要的东西全给我！"] }
   ]
     }
 
@@ -881,7 +881,7 @@ zones "test" {
 
   accept = [
     { kind = "money" accept = true msg = "{npc}接过{name}给的钱，笑道：好！请押注。" },
-    { kind = "any" accept = false msg = "{npc}接过{name}给的钱，笑道：好！请押注。" }
+    { kind = "any" accept = false msg = ["{npc}接过{name}给的钱，笑道：好！请押注。"] }
   ]
     }
 
@@ -3419,6 +3419,170 @@ zones "test" {
   # ----------------------------------------------------------------
   # SWITCH TABLE (expr: f)
 # ==== SWITCH TABLES ====
+  # UNHANDLED FUNCTION: exert
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from test_minimal_world_v2_modified/skill/sanjue.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/sanjue.c
+# Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_skill_mapped("sword") != "damo-jian")  →  
+  # if (me->query("neili") < 150)  →  
+  # if (me->query_skill("sword") < 200)  →  
+  # if (me->query_skill("dodge") < 200)  →  
+  # if (me->query_skill("force") < 200)  →  
+  # if (me->query_dex() < 30)  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "sword")  →  
+  # if (! target || ! me->is_fighting(target))  →  
+  # if (! target)  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from test_minimal_world_v2_modified/skill/shang.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/shang.c
+# Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (ap / 2 + random(ap) > dp)  →  
+  # if (! living(target))  →  
+  # if (me->query("neili") < 300)  →  
+  # if ((int)me->query("max_neili") < 2000)  →  
+  # if (me->query_skill_mapped("sword") != "damo-jian")  →  
+  # if ((int)me->query_skill("damo-jian", 1) < 200)  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "sword")  →  
+  # if (! target || ! me->is_fighting(target))  →  
+  # if (! target)  →  
+  # if (userp(me) && ! me->query("can_perform/damo-jian/shang"))  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: final
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from test_minimal_world_v2_modified/skill/shot.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/shot.c
+# Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! target->is_killing(me))  →  
+  # else  →  
+  # if (du->query_amount())  →  
+  # else  →  
+  # if (an / 2 + random(an) < dn * 2 / 3)  →  
+  # if (! living(target))  →  
+  # if (target->query_competitor())  →  
+  # if (target->query_condition("die_guard"))  →  
+  # if (! target || me == target || ! target->is_character() || target->query("not_living"))  →  
+  # if (du->query("no_shot"))  →  
+  # if (! mapp(du->query("poison")))  →  
+  # if (! objectp(du = me->query_temp("handing")))  →  
+  # if ((int)me->query("neili") < 300)  →  
+  # if (environment(me)->query("skybook"))  →  
+  # if (environment(me)->query("no_fight"))  →  
+  # if ((int)me->query_skill("throwing", 1) < 100)  →  
+  # if ((int)me->query_skill("poison", 1) < 100)  →  
+  # if (skill < 150)  →  
+  # if (me->query_skill_mapped("force") != "xiuluo-yinshagong" && me->query_skill_mapped("force") != "huagong-dafa" && me->query_skill_mapped("force") != "hamagong" && me->query_skill_mapped("force") != "shennong-xinjing" && me->query_skill_mapped("force") != "huaxue-shengong")  →  
+# ==== CONDITIONAL BRANCHES (exert) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: exert
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from test_minimal_world_v2_modified/skill/six.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/six.c
+# Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from test_minimal_world_v2_modified/skill/sui.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/sui.c
+# Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_temp("tjj_sui"))  →  tell_object(me, "你的" SUI "运行完毕，将内力收回丹田。\n");
+# ==== CONDITIONAL BRANCHES (remove_effect) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: perform
+  # UNHANDLED FUNCTION: remove_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from test_minimal_world_v2_modified/skill/tian.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/tian.c
+# Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! me->is_fighting(target))  →  
+  # if (attack_time > 9)  →  
+  # else  →  
+  # if (ap / 2 + random(ap) > dp)  →  
+  # if (! living(target))  →  
+  # if (me->query("neili") < 500)  →  
+  # if ((int)me->query_skill("force") < 300)  →  
+  # if (me->query_skill_mapped("staff") != "dagou-bang")  →  
+  # if (me->query_skill("dagou-bang", 1) < 220)  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "staff")  →  
+  # if (! target || ! me->is_fighting(target))  →  
+  # if (! target)  →  
+  # if (userp(me) && ! me->query("can_perform/dagou-bang/tian"))  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from test_minimal_world_v2_modified/skill/tianmo.c by LPCConverter
+# Zone: test
+
+# Generic LPC file: test_minimal_world_v2_modified/skill/tianmo.c
+# Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->is_fighting())  →  
+  # if ((int)me->query_skill("martial-cognize", 1) < 300 || (int)me->query_skill("force", 1) < 300)  →  
+  # if (me->query("shen") > -10000000)  →  
+  # if ((int)me->query("neili") < 8000)  →  
+  # if (me->query("str") < 30 && me->query("con") < 30)  →  
+  # if (me->query_temp("tianmo"))  →  
+# ==== CONDITIONAL BRANCHES (exert) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: exert
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

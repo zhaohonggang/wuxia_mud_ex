@@ -131,6 +131,12 @@ defmodule Kantele.World.LoaderMetaTest do
 
     assert Enum.any?(xiaoer.accept, &(&1.kind == "money" && &1.min == 1000 && &1.accept))
     assert Enum.any?(xiaoer.accept, &(&1.kind == "any" && &1.accept))
+
+    # accept 台词池：any 规则 msg 为随机台词池（对应 LPC switch(random(N))）
+    any_rule = Enum.find(xiaoer.accept, &(&1.kind == "any"))
+    assert any_rule.msg == ["好！好！", "不需要的东西全给我！"]
+    assert msg = Enum.find(xiaoer.accept, &(&1.kind == "money")).msg
+    assert msg == ["小二一哈腰，说道：多谢您老，客官请上楼歇息。"]
   end
 
   test "furen：item_id/item_name 规则与 any 并存" do

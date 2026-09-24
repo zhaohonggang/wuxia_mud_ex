@@ -64,13 +64,19 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
   end
 
   describe "accept_object() 抽取" do
-    test "xiaoer：收钱下限 1000 + 默认接受" do
+    test "xiaoer：收钱下限 1000 + 默认接受；switch(random) 台词池进 any.msg" do
       ast = parse(@xiaoer_path)
 
       assert ast.accept == [
                %{kind: "money", min: 1000, msg: "小二一哈腰，说道：多谢您老，客官请上楼歇息。"},
-               %{kind: "any", accept: true, msg: "好！好！"}
+               %{kind: "any", accept: true, msg: ["好！好！", "不需要的东西全给我！"]}
              ]
+    end
+
+    test "xiaoer：build_accept_ucl 台词池输出 msg 列表" do
+      {:ok, ucl} = LPCConverter.convert_string(File.read!(@xiaoer_path),
+        base_path: "test_minimal_world_v2_modified/npc")
+      assert ucl =~ "msg = [\"好！好！\", \"不需要的东西全给我！\"]"
     end
 
     test "zhuangjia：收任意钱（无下限）+ 拒绝非钱" do
@@ -78,7 +84,7 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
 
       assert ast.accept == [
                %{kind: "money", min: nil, msg: "{npc}接过{name}给的钱，笑道：好！请押注。"},
-               %{kind: "any", accept: false, msg: "{npc}接过{name}给的钱，笑道：好！请押注。"}
+               %{kind: "any", accept: false, msg: ["{npc}接过{name}给的钱，笑道：好！请押注。"]}
              ]
     end
 

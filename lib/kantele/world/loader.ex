@@ -546,7 +546,7 @@ defmodule Kantele.World.Loader do
           id: string_or_nil(Map.get(rule, :id)),
           name: string_or_nil(Map.get(rule, :name)),
           accept: to_bool(Map.get(rule, :accept, true)),
-          msg: string_or_nil(Map.get(rule, :msg))
+          msg: accept_msg(Map.get(rule, :msg))
         }
       else
         nil
@@ -645,6 +645,15 @@ defmodule Kantele.World.Loader do
   defp string_or_nil(v) when is_binary(v), do: v
   defp string_or_nil(v) when is_atom(v) and not is_nil(v), do: to_string(v)
   defp string_or_nil(_), do: nil
+
+  # accept 规则台词：单条字符串或台词池（列表）→ 统一归一为台词池；空池为 nil
+  defp accept_msg(nil), do: nil
+  defp accept_msg(v) when is_binary(v), do: [v]
+  defp accept_msg(v) when is_list(v) do
+    v = Enum.reject(v, &(not is_binary(&1) or &1 == ""))
+    if v == [], do: nil, else: v
+  end
+  defp accept_msg(_), do: nil
 
   defp to_bool(v) when v in [true, "true", 1, "1"], do: true
   defp to_bool(_), do: false
