@@ -8,6 +8,15 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/adm/daemons/rankd.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: query_respect
+  # UNHANDLED FUNCTION: query_rude
+  # UNHANDLED FUNCTION: valid_respect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/beast/mangshe.c by LPCConverter
 # Zone: test
 
@@ -26,11 +35,34 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/condition/corpse_poison.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: chinese_name
+  # UNHANDLED FUNCTION: die_msg_others
+  # UNHANDLED FUNCTION: die_reason
+  # UNHANDLED FUNCTION: name
+  # UNHANDLED FUNCTION: update_msg_others
+  # UNHANDLED FUNCTION: update_msg_self
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/condition/drunk.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/condition/drunk.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (me == ob) { tell_object(me, "调息以后，你清醒多了，再没有半点醉酒的感觉。\n"); } else { tell_object(me, "你将内力缓缓的输入到" + ob->name() + "经脉，" + ob->name() + "精神一振。\n"); tell_object(ob, "你觉得" + me->name() + "将内力输入你的奇经八脉，你清醒多了，再没有醉酒的感觉。\n"); }
+  # COMPLEX IF: if (me == ob) { tell_object(me, "你的内功火候尚有欠缺，无法消除醉酒的影响。\n"); return -1; } else { tell_object(me, "你的内功火候尚有欠缺，无法帮助" + ob->name() + "消除醉酒的影响。\n"); return -1; }
+# ==== COMPLEX CONDITIONALS ====
+  # UNHANDLED FUNCTION: dispel
+  # UNHANDLED FUNCTION: update_condition
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/condition/flower_poison.c by LPCConverter
 # Zone: test
@@ -38,11 +70,35 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/condition/flower_poison.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: dispel
+  # UNHANDLED FUNCTION: update_condition
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/condition/freezing.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/condition/freezing.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: chinese_name
+  # UNHANDLED FUNCTION: clear_dispel
+  # UNHANDLED FUNCTION: die_msg_others
+  # UNHANDLED FUNCTION: die_reason
+  # UNHANDLED FUNCTION: dispel
+  # UNHANDLED FUNCTION: jing_damage
+  # UNHANDLED FUNCTION: name
+  # UNHANDLED FUNCTION: qi_damage
+  # UNHANDLED FUNCTION: update_msg_others
+  # UNHANDLED FUNCTION: update_msg_self
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/condition/hunger.c by LPCConverter
 # Zone: test
@@ -50,11 +106,28 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/condition/hunger.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: dispel
+  # UNHANDLED FUNCTION: update_condition
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/condition/ill_kesou.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/condition/ill_kesou.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: min_qi_needed
+  # UNHANDLED FUNCTION: name
+  # UNHANDLED FUNCTION: update_condition
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/condition/poison.c by LPCConverter
 # Zone: test
@@ -62,11 +135,32 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/condition/poison.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: name
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/condition/sanxiao_poison.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/condition/sanxiao_poison.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: chinese_name
+  # UNHANDLED FUNCTION: die_msg_others
+  # UNHANDLED FUNCTION: die_reason
+  # UNHANDLED FUNCTION: jing_damage
+  # UNHANDLED FUNCTION: name
+  # UNHANDLED FUNCTION: qi_damage
+  # UNHANDLED FUNCTION: update_msg_others
+  # UNHANDLED FUNCTION: update_msg_self
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/npc/duke.c by LPCConverter
 # Zone: test
@@ -204,6 +298,13 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: unconcious
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/npc/menwei.c by LPCConverter
 # Zone: test
 
@@ -269,6 +370,19 @@ zones "test" {
   }
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: heart_beat
+  # heart_beat: object *obs; object ob; object owner; string startroom; int amount; mapping goods; ::heart_beat(); if (!environment()) return; if (!stringp(startroom = query("startroom")) || find_object(startroom) != environment()) return; obs = all_inventory(environment()); obs = filter_array(obs, (: filter_ob :)); if (sizeof(obs) < 1) { set_heart_beat(0); return;
+# ==== RAW CODE BLOCKS ====
+  # COMPLEX MAPPING: (["exp":2000 + random(2000), "pot":1500 + random(1500), "score":30 + random(30), "prompt":"通过这次押送" + goods["name"]
+# ==== COMPLEX MAPPINGS ====
+  # UNHANDLED FUNCTION: filter_ob
+  # UNHANDLED FUNCTION: heart_beat
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/npc/xiaoer.c by LPCConverter
 # Zone: test
 
@@ -299,6 +413,21 @@ zones "test" {
     { kind = "any" accept = true msg = "好！好！" }
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: heart_beat
+  # heart_beat: string start_room; object ob; if (stringp(start_room = query("startroom")) && find_object(start_room) == environment()) { foreach (ob in all_inventory(environment())) { if (!ob->is_character() || interactive(ob) || playerp(ob) || ob->query_temp("owner")) continue; if (stringp(start_room = ob->query("startroom")) && find_object(start_room) == environment()) continue; if ((string)ob->query("id") == "corpse") message_vision(HIC "\n$N" HIC "站起身，把$n" HIC "拎到" "门外，然后又若无其事地走了回来。\n\n" NOR, this_object(), ob); else message_vision(CYN "\n$N" CYN "对$n" CYN "满脸歉然地说" "道：对不住，小店已经满座了。\n" HIC "$n" HIC "听后一愣，摇了摇头，骂骂咧咧地转身" "离去。\n" NOR, this_object(), ob); ob->move("/d/city/beidajie1");
+# ==== RAW CODE BLOCKS ====
+  # SWITCH: switch (arg) { case "血菩提": cost = 5; ob = new ("/clone/fam/pill/puti1"); break; case "舍利子": cost = 5; ob = new ("/clone/fam/pill/sheli1"); break; case "昊天果": cost = 5; ob = new ("/clone/fam/pill/linghui1"); break; case "壮骨粉": cost = 5; ob = new ("/clone/fam/gift/con1"); break; case "福寿膏": cost = 5; ob = new ("/clone/fam/gift/dex1"); break; case "增慧丹": cost = 5; ob = new ("/clone/fam/gift/int1"); break; case "神力丸": cost = 5; ob = new ("/clone/fam/gift/str1"); break; case "冰菩提": cost = 10; ob = new ("/clone/fam/pill/puti3"); break; case "昊天丹": cost = 10; ob = new ("/clone/fam/pill/linghui2"); break; case "帝者舍利": cost = 10; ob = new ("/clone/fam/pill/sheli3"); break; case "菩提子": cost = 15; ob = new ("/clone/fam/pill/puti4"); break; case "圣舍利": cost = 15; ob = new ("/clone/fam/pill/sheli4"); break; case "百年人参": cost = 15; ob = new ("/clone/fam/pill/renshen1"); break; case "百年灵芝": cost = 15; ob = new ("/clone/fam/pill/lingzhi1"); break; case "天山雪莲": cost = 15; ob = new ("/clone/fam/pill/xuelian1"); break; case "百年参心丹": cost = 20; ob = new ("/clone/fam/pill/renshen3"); break; case "天山雪莲膏": cost = 20; ob = new ("/clone/fam/pill/xuelian3"); break; case "百年灵芝丸": cost = 20; ob = new ("/clone/fam/pill/lingzhi3"); break; case "玄武铸骨丹": cost = 30; ob = new ("/clone/fam/gift/con2"); break; case "朱雀玲珑丹": cost = 30; ob = new ("/clone/fam/gift/dex2"); break; case "青龙炼睿丹": cost = 30; ob = new ("/clone/fam/gift/int2"); break; case "白虎赐元丹": cost = 30; ob = new ("/clone/fam/gift/str2"); break; case "千年参心丹": cost = 40; ob = new ("/clone/fam/pill/renshen4"); break; case "千年雪莲丹": cost = 40; ob = new ("/clone/fam/pill/xuelian4"); break; case "千年灵芝丸": cost = 40; ob = new ("/clone/fam/pill/lingzhi4"); break; case "洗髓再造仙丹": cost = 50; ob = new ("/clone/fam/gift/con3"); break; case "破阳无极仙丹": cost = 50; ob = new ("/clone/fam/gift/dex3"); break; case "神恩通慧仙丹": cost = 50; ob = new ("/clone/fam/gift/int3"); break; case "蚩尤诛元仙丹": cost = 50; ob = new ("/clone/fam/gift/str3"); break; case "子午龙甲丹": cost = 80; ob = new ("/clone/fam/max/longjia"); break; case "玄黄紫箐丹": cost = 80; ob = new ("/clone/fam/max/xuanhuang"); break; case "镇狱惊天丸": cost = 100; ob = new ("/clone/fam/max/zhenyu"); break; default: return notify_fail(CYN "店小二对你摇摇头道：你只能兑换" "规定范围内的物品。\n" NOR); }
+# ==== SWITCH STATEMENTS ====
+  # UNHANDLED FUNCTION: accept_ask
+  # UNHANDLED FUNCTION: do_drop
+  # UNHANDLED FUNCTION: do_exchange
+  # UNHANDLED FUNCTION: heart_beat
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/npc/xingzhe.c by LPCConverter
 # Zone: test
@@ -397,6 +526,13 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: do_open
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/blade.c by LPCConverter
 # Zone: test
 
@@ -476,6 +612,14 @@ zones "test" {
     "drop"
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: do_put
+  # UNHANDLED FUNCTION: is_container
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/obj/cloth.c by LPCConverter
 # Zone: test
@@ -765,6 +909,13 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: do_open
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/staff.c by LPCConverter
 # Zone: test
 
@@ -881,11 +1032,53 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/quest/capture.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: ask_2_for_1
+  # UNHANDLED FUNCTION: ask_3_for_1
+  # UNHANDLED FUNCTION: ask_3_for_2
+  # UNHANDLED FUNCTION: ask_npc1
+  # UNHANDLED FUNCTION: ask_npc2
+  # UNHANDLED FUNCTION: ask_npc3
+  # UNHANDLED FUNCTION: can_rumor_by
+  # UNHANDLED FUNCTION: cancel_quest
+  # UNHANDLED FUNCTION: init_quest
+  # UNHANDLED FUNCTION: query_introduce
+  # UNHANDLED FUNCTION: register_information
+  # UNHANDLED FUNCTION: whisper_to1
+  # UNHANDLED FUNCTION: whisper_to2
+  # UNHANDLED FUNCTION: whisper_to3
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/quest/deliver.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/quest/deliver.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (AMOUNT < 1) { message_vision(CYN "$N" CYN "抹了抹头上的汗，道：总算全运到了，这事可真够罗嗦的。\n" NOR, me); CHANNEL_D->do_channel(find_object(QUEST_D), "rumor", "听说" + who->name(1) + "(" + who->query("id") + ")替" + me->name() + HIM "安全送到了" + "一批" + ob->name() + HIM "。" NOR); call_out("do_finish", 4); change_status("stopping"); } else call_out("do_notice", 1 + random(3), me, who, ob); exp = 50 + random(50); exp *= ob->query_amount(); pot = 20 + random(20); pot *= ob->query_amount(); score = 4 + random(4); score *= ob->query_amount(); if (who->query("combat_exp") > 1000000) { exp = exp / 2 + 1; pot = pot / 2 + 1; score = score / 2 + 1; } if (mapp(b = query("bonus/" + who->query("id")))) { b["exp"] += exp; b["pot"] += pot; b["score"] += score; } else { b = ([ "exp":exp, "pot":pot, "score":score, "prompt":"经过这次帮助" + me->name() + "运送" + ob->name() + "的事情", ]); set("bonus/" + who->query("id"), b); call_out("do_bonus", 2 + random(2), who->query("id"), who); }
+# ==== COMPLEX CONDITIONALS ====
+  # UNHANDLED FUNCTION: ask_npc1
+  # UNHANDLED FUNCTION: ask_npc2
+  # UNHANDLED FUNCTION: ask_qob
+  # UNHANDLED FUNCTION: can_rumor_by
+  # UNHANDLED FUNCTION: cancel_quest
+  # UNHANDLED FUNCTION: do_bonus
+  # UNHANDLED FUNCTION: do_finish
+  # UNHANDLED FUNCTION: do_notice
+  # UNHANDLED FUNCTION: do_whisper
+  # UNHANDLED FUNCTION: init_quest
+  # UNHANDLED FUNCTION: npc_accept_object
+  # UNHANDLED FUNCTION: query_introduce
+  # UNHANDLED FUNCTION: query_prompt
+  # UNHANDLED FUNCTION: register_information
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/quest/explore.c by LPCConverter
 # Zone: test
@@ -893,17 +1086,70 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/quest/explore.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: ask_npc
+  # UNHANDLED FUNCTION: ask_qob
+  # UNHANDLED FUNCTION: can_know_by
+  # UNHANDLED FUNCTION: cancel_quest
+  # UNHANDLED FUNCTION: do_say
+  # UNHANDLED FUNCTION: init_quest
+  # UNHANDLED FUNCTION: npc_accept_object
+  # UNHANDLED FUNCTION: npc_destructed
+  # UNHANDLED FUNCTION: query_introduce
+  # UNHANDLED FUNCTION: query_prompt
+  # UNHANDLED FUNCTION: register_information
+  # UNHANDLED FUNCTION: restore_env
+  # UNHANDLED FUNCTION: restore_npc
+  # UNHANDLED FUNCTION: search_qob
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/quest/search.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/quest/search.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: ask_npc1
+  # UNHANDLED FUNCTION: ask_npc2
+  # UNHANDLED FUNCTION: ask_qob
+  # UNHANDLED FUNCTION: can_rumor_by
+  # UNHANDLED FUNCTION: cancel_quest
+  # UNHANDLED FUNCTION: do_say
+  # UNHANDLED FUNCTION: init_quest
+  # UNHANDLED FUNCTION: npc_accept_object
+  # UNHANDLED FUNCTION: query_introduce
+  # UNHANDLED FUNCTION: register_information
+  # UNHANDLED FUNCTION: whisper_to
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/quest/shen.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/quest/shen.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # SWITCH: switch (TYPE) { case 0: return "听说朝廷正在通缉反贼" + NPC_NAME + "，啧啧，胆子大了，敢造反。"; case 1: return "据说官府正在捉拿飞贼" + NPC_NAME + "，这家伙，可不是好人啊。"; }
+# ==== SWITCH STATEMENTS ====
+  # UNHANDLED FUNCTION: ask_npc
+  # UNHANDLED FUNCTION: can_know_by
+  # UNHANDLED FUNCTION: cancel_quest
+  # UNHANDLED FUNCTION: do_say
+  # UNHANDLED FUNCTION: init_quest
+  # UNHANDLED FUNCTION: npc_destructed
+  # UNHANDLED FUNCTION: query_introduce
+  # UNHANDLED FUNCTION: register_information
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/room/beidajie1.c by LPCConverter
 # Zone: test
@@ -951,6 +1197,29 @@ zones "test" {
       { id = characters.duke.id },
       { id = characters.zhuangjia.id }    ]
   }
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (r==3 || r==5 || r==9 || r==11) { total = 3; win = "sx"; } else { total = 0; win = "none of them"; }
+  # COMPLEX IF: if (dir == "south") { if (me->query_temp ("gamble_bet/amount") > 0) message_vision (CYN "$N" CYN "扔下押骰的钱，不要了。\n" NOR, me); me->delete_temp("gamble_bet"); } return ::valid_leave(me,dir); } void display_bet(object room, int i) { string str; switch (i) { case 1: str = "┌-----┐\n"+ "│ │\n"+ "│ ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 2: str = "┌-----┐\n"+ "│ │\n"+ "│ ● ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 3: str = "┌-----┐\n"+ "│● │\n"+ "│ ● │\n"+ "│ ●│\n"+ "└-----┘\n"; break; case 4: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; case 5: str = "┌-----┐\n"+ "│● ●│\n"+ "│ ● │\n"+ "│● ●│\n"+ "└-----┘\n"; break; case 6: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; } tell_room(room,str); } int rdm() { return random2(6) + 1; } void gamble_prepare() { object room = this_object(); tell_room (room, CYN "庄家唱道：新开盘！预叫头彩！\n" NOR); tell_room (room, CYN "庄家将两枚玉骰往银盘中一撒。\n" NOR); big[0] = rdm(); big[1] = rdm(); // keep two numbers different for a probability == 1/36 while (big[0] == big[1]) { reset_eval_cost(); big[1] = rdm(); } display_bet(room,big[0]); display_bet(room,big[1]); tell_room(room, CYN "\n庄家叫道：头彩骰号是「" HIY + chinese_number(big[0]) + NOR + CYN "」和「" HIY + chinese_number(big[1]) + NOR + CYN "」。\n\n" NOR); tell_room(room, CYN "接着庄家麻利地顺手将玉骰从盘中收回：现在开盘押钱！\n" NOR); room_status = 1; call_out("gamble_start",24); delete_temp("better"); } void gamble_start() { object room = this_object(); tell_room (room, CYN "庄家喊声：封盘停押！\n" NOR); tell_room (room, CYN "\n接着庄家又补叫道：本盘头彩骰号是「" HIY + chinese_number(big[0]) + NOR + CYN "」和「" HIY + chinese_number(big[1]) + NOR + CYN "」。\n\n" NOR); tell_room (room, CYN "然后庄家将两枚玉骰扔进两个金盅，一手持一盅摇将起来。\n" NOR); room_status = 2; call_out("gamble_perform", 6, 0); call_out("gamble_perform", 12, 1); call_out("gamble_finish", 18); } void gamble_perform (int i) { object room = this_object(); tell_room(room, HIY "\n金盅倒扣在银盘上，玉骰滚了出来。\n" NOR); res[i] = rdm(); display_bet (room,res[i]); } void player_wins(object who, int total) { object money = new("/clone/money/" + who->query_temp("gamble_bet/money")); int amount = who->query_temp("gamble_bet/amount"); total = total * amount; money->set_amount(total); message_vision(sprintf("$N赢了%s%s%s！\n", chinese_number(total), money->query("base_unit"), money->query("name")), who); money->move(who); } void player_loses(object who, int total) { object money = new("/clone/money/" + who->query_temp("gamble_bet/money")); total = who->query_temp("gamble_bet/amount"); message_vision(sprintf("庄家将$N押在银盘中的%s%s%s收走。\n", chinese_number(total), money->query("base_unit"), money->query("name")), who); destruct(money); } void gamble_finish() { string win; int total, i; object room = this_object(); object *list; if (res[0]==big[0] && res[1]==big[1]) { total = 36; win = "tc"; } else if (res[0]==res[1] && (res[0]/2*2 == res[0])) { total = 12; win = "sd"; } else { int r = res[0]+res[1]; if (r==7) { total = 6; win = "qx"; }
+# ==== COMPLEX CONDITIONALS ====
+  # SWITCH: switch (i) { case 1: str = "┌-----┐\n"+ "│ │\n"+ "│ ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 2: str = "┌-----┐\n"+ "│ │\n"+ "│ ● ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 3: str = "┌-----┐\n"+ "│● │\n"+ "│ ● │\n"+ "│ ●│\n"+ "└-----┘\n"; break; case 4: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; case 5: str = "┌-----┐\n"+ "│● ●│\n"+ "│ ● │\n"+ "│● ●│\n"+ "└-----┘\n"; break; case 6: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; }
+# ==== SWITCH STATEMENTS ====
+  # UNHANDLED FUNCTION: display_bet
+  # UNHANDLED FUNCTION: do_bet
+  # UNHANDLED FUNCTION: gamble_finish
+  # UNHANDLED FUNCTION: gamble_perform
+  # UNHANDLED FUNCTION: gamble_prepare
+  # UNHANDLED FUNCTION: gamble_start
+  # UNHANDLED FUNCTION: player_loses
+  # UNHANDLED FUNCTION: player_wins
+  # UNHANDLED FUNCTION: random2
+  # UNHANDLED FUNCTION: rdm
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/room/cave.c by LPCConverter
 # Zone: test
@@ -1173,6 +1442,20 @@ zones "test" {
       { id = items.smallbox.id }    ]
   }
 
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (type == "marry") { mesg = me->name() + "现在在醉仙楼芙蓉厅举行订婚酒宴。\n\n"; } else if (type == "birthday") { mesg = me->name() + "现在在醉仙楼芙蓉厅举行生辰寿宴。\n\n"; } else if (type == "player") { mesg = me->name() + "现在在醉仙楼芙蓉厅宴请各路英雄豪杰。\n\n"; } message("channel:chat", HIW "【江湖通告】" + mesg + NOR, users()); return 1; } int do_order(string arg) { object me, env; object* oblist; string mesg; int idx; me = this_player(); env = this_object(); mesg = query("order_owner"); if (mesg && (arg == "end") && (mesg == me->query("id"))) { mesg = "芙蓉厅的宴会结束了。\n\n"; message("channel:chat", HIW "【江湖通告】" + mesg + NOR, users()); delete("order_owner"); delete("order_type"); oblist = all_inventory(env); for(idx = 0; idx<sizeof(oblist); idx++) { if (! objectp(oblist[idx])) continue; if (userp(oblist[idx])) continue; destruct(oblist[idx]); } return 1; } if (mesg) return notify_fail("这里已经被人包租了。\n"); notify_fail("你没有足够的钱或零钱不够。\n"); if (arg == "marry") { mesg = me->name() + "现在在醉仙楼芙蓉厅举行订婚酒宴。\n\n"; if (me->can_afford(30000) == 0) return 0; me->pay_money(30000); create_water(HIG "龙井茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(RED "普洱茶"NOR, ({ "tea" }), WHT"水晶盏" NOR); create_wine(WHT "米酒" NOR, ({ "wine" }), HIW "搪瓷杯" NOR); create_wine(GRN "竹叶青" NOR, ({ "wine" }), GRN "翡翠杯" NOR); create_wine(YEL "绍兴黄酒" NOR, ({ "wine" }), HIY "象牙杯" NOR); create_wine(HIR "女儿红" NOR, ({ "wine" }), MAG "紫檀杯" NOR); create_wine(WHT "茅台酒" NOR, ({ "wine" }), YEL "鎏金杯" NOR); create_wine(RED "桂花酒" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(YEL "香酥花生" NOR, ({"peanut"})); create_food(HIR "酒糟红枣" NOR, ({"jujube"})); create_food(RED "喜糖" NOR, ({"sugar"})); create_food(HIW "奶油瓜子" NOR, ({"melon seeds", "seeds"})); create_food(HIG "碧螺春卷" NOR, ({ "spring roll", "roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(HIW "麻辣手撕鸡" NOR, ({"chicken"})); create_food(HIR "干煸尤鱼" NOR, ({"fish"})); create_food(HIY "东北水饺" NOR, ({ "dumpling" })); create_food(RED "麻辣火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIR "油煎螃蟹" NOR, ({ "crab" })); create_food(HIY "粉蒸肉" NOR, ({ "meat" })); create_food(YEL "家常豆腐" NOR, ({ "bean curd" })); } else if (arg == "birthday") { mesg = me->name() + "现在在醉仙楼芙蓉厅举行生辰寿宴。\n\n"; if (me->can_afford(20000) == 0) return 0; me->pay_money(20000); create_water(GRN "云雾茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(HIG "君山银针" NOR, ({ "tea" }), RED "红泥盏" NOR); create_water(HIW "鲜奶" NOR, ({ "milk" }), WHT "玻璃杯" NOR); create_wine(RED "陈年花雕" NOR, ({ "wine" }), HIW "宋瓷杯" NOR); create_wine(WHT "五粮液" NOR, ({ "wine" }), WHT "玻璃杯" NOR); create_wine(WHT "米酒" NOR, ({ "wine" }), HIW "搪瓷杯" NOR); create_wine(HIR "杜康酒" NOR, ({ "wine" }), HIG "青铜爵" NOR); create_wine(HIW "透瓶香" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(HIY "德州扒鸡" NOR, ({ "chicken" })); create_food(HIG "碧螺春卷" NOR, ({ "spring roll", "roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(YEL "咖喱饭" NOR, ({"rice"})); create_food(RED "蚝油肉片" NOR, ({"fish meat", "meat"})); create_food(RED "羊肉串" NOR, ({ "mutton" })); create_food(HIR "重庆火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIY "北京烤鸭" NOR, ({ "duck" })); create_food(YEL "粉蒸肉" NOR, ({ "meat" })); create_food(HIW "四喜豆腐" NOR, ({ "bean curd" })); } else if (arg == "player") { mesg = me->name() + "现在在醉仙楼芙蓉厅宴请各路英雄豪杰。\n\n"; if (me->can_afford(50000) == 0) return 0; me->pay_money(40000); create_water(HIW "羊奶" NOR, ({ "milk" }), CYN "青花碗" NOR); create_water(GRN "云雾茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(GRN "碧螺春" NOR, ({ "tea" }), MAG "紫砂盏" NOR); create_water(HIG "君山银针" NOR, ({ "tea" }), RED "红泥盏" NOR); create_water(HIR "红毛尖" NOR, ({ "tea" }), CYN "青泥盏" NOR); create_wine(HIW "汾酒" NOR, ({ "wine" }), WHT "羊脂白玉杯" NOR); create_wine(WHT "关外白酒" NOR, ({ "wine" }), YEL "犀角杯" NOR); create_wine(RED "葡萄酒" NOR, ({ "wine" }), HIW "夜光杯" NOR); create_wine(WHT "高粱酒" NOR, ({ "wine" }), CYN "青铜爵" NOR); create_wine(HIG "百草酒" NOR, ({ "wine" }), RED "古藤杯" NOR); create_wine(HIR "状元红" NOR, ({ "wine" }), WHT "古瓷杯" NOR); create_wine(GRN "梨花酒" NOR, ({ "wine" }), HIG "翡翠杯" NOR); create_wine(HIW "玉露酒" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(YEL "叫花鸡"NOR, ({ "chicken" })); create_food(HIW "四喜豆腐" NOR, ({ "bean curd" })); create_food(HIG "碧螺春卷" NOR, ({ "spring","roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(RED "羊肉串" NOR, ({ "mutton" })); create_food(HIY "花枝饭卷" NOR, ({"rice"})); create_food(HIR "鱼香肉丝" NOR, ({"fish meat", "meat"})); create_food(HIY "德州扒鸡" NOR, ({ "chicken" })); create_food(RED "麻辣火锅" NOR, ({ "chrafing dish", "dish" })); create_food(HIY "北京烤鸭" NOR, ({ "duck" })); create_food(HIW "白斩鸡" NOR, ({ "chicken" })); create_food(YEL "粉蒸肉" NOR, ({ "meat" })); create_food(HIR "重庆火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIR "麻婆豆腐" NOR, ({ "bean curd" })); create_food(RED "蚝油肉片" NOR, ({"fish meat", "meat"})); create_food(YEL "咖喱饭" NOR, ({"rice"})); create_food(HIW "麻辣手撕鸡" NOR, ({"chicken"})); create_food(HIR "干煸尤鱼" NOR, ({"fish"})); create_food(HIY "东北水饺" NOR, ({ "dumpling" })); } else { return notify_fail("你要定什么酒席?\n"); }
+# ==== COMPLEX CONDITIONALS ====
+  # UNHANDLED FUNCTION: create_food
+  # UNHANDLED FUNCTION: create_water
+  # UNHANDLED FUNCTION: create_wine
+  # UNHANDLED FUNCTION: do_broadcast
+  # UNHANDLED FUNCTION: do_order
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/room/houyuan.c by LPCConverter
 # Zone: test
 
@@ -1234,6 +1517,14 @@ zones "test" {
       { id = items.box.id },
       { id = items.bottle.id }    ]
   }
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: is_chat_room
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/room/kedian2.c by LPCConverter
 # Zone: test
@@ -1391,6 +1682,20 @@ zones "test" {
       { id = items.smallbox.id }    ]
   }
 
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (type == "marry") { mesg = me->name() + "现在在醉仙楼玫瑰厅举行订婚酒宴。\n\n"; } else if (type == "birthday") { mesg = me->name() + "现在在醉仙楼玫瑰厅举行生辰寿宴。\n\n"; } else if (type == "player") { mesg = me->name() + "现在在醉仙楼玫瑰厅宴请各路英雄豪杰。\n\n"; } message("channel:chat", HIW "【江湖通告】" + mesg + NOR, users()); return 1; } int do_order(string arg) { object me, env; object* oblist; string mesg; int idx; me = this_player(); env = this_object(); mesg = query("order_owner"); if (mesg && (arg == "end") && (mesg == me->query("id"))) { mesg = "玫瑰厅的宴会结束了。\n\n"; message("channel:chat", HIW "【江湖通告】" + mesg + NOR, users()); delete("order_owner"); delete("order_type"); oblist = all_inventory(env); for(idx = 0; idx<sizeof(oblist); idx++) { if (! objectp(oblist[idx])) continue; if (userp(oblist[idx])) continue; destruct(oblist[idx]); } return 1; } if (mesg) return notify_fail("这里已经被人包租了。\n"); notify_fail("你没有足够的钱或零钱不够。\n"); if (arg == "marry") { mesg = me->name() + "现在在醉仙楼玫瑰厅举行订婚酒宴。\n\n"; if (me->can_afford(30000) == 0) return 0; me->pay_money(30000); create_water(HIG "龙井茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(RED "普洱茶"NOR, ({ "tea" }), WHT"水晶盏" NOR); create_wine(WHT "米酒" NOR, ({ "wine" }), HIW "搪瓷杯" NOR); create_wine(GRN "竹叶青" NOR, ({ "wine" }), GRN "翡翠杯" NOR); create_wine(YEL "绍兴黄酒" NOR, ({ "wine" }), HIY "象牙杯" NOR); create_wine(HIR "女儿红" NOR, ({ "wine" }), MAG "紫檀杯" NOR); create_wine(WHT "茅台酒" NOR, ({ "wine" }), YEL "鎏金杯" NOR); create_wine(RED "桂花酒" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(YEL "香酥花生" NOR, ({"peanut"})); create_food(HIR "酒糟红枣" NOR, ({"jujube"})); create_food(RED "喜糖" NOR, ({"sugar"})); create_food(HIW "奶油瓜子" NOR, ({"melon seeds", "seeds"})); create_food(HIG "碧螺春卷" NOR, ({ "spring roll", "roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(HIW "麻辣手撕鸡" NOR, ({"chicken"})); create_food(HIR "干煸尤鱼" NOR, ({"fish"})); create_food(HIY "东北水饺" NOR, ({ "dumpling" })); create_food(RED "麻辣火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIR "油煎螃蟹" NOR, ({ "crab" })); create_food(HIY "粉蒸肉" NOR, ({ "meat" })); create_food(YEL "家常豆腐" NOR, ({ "bean curd" })); } else if (arg == "birthday") { mesg = me->name() + "现在在醉仙楼玫瑰厅举行生辰寿宴。\n\n"; if (me->can_afford(20000) == 0) return 0; me->pay_money(20000); create_water(GRN "云雾茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(HIG "君山银针" NOR, ({ "tea" }), RED "红泥盏" NOR); create_water(HIW "鲜奶" NOR, ({ "milk" }), WHT "玻璃杯" NOR); create_wine(RED "陈年花雕" NOR, ({ "wine" }), HIW "宋瓷杯" NOR); create_wine(WHT "五粮液" NOR, ({ "wine" }), WHT "玻璃杯" NOR); create_wine(WHT "米酒" NOR, ({ "wine" }), HIW "搪瓷杯" NOR); create_wine(HIR "杜康酒" NOR, ({ "wine" }), HIG "青铜爵" NOR); create_wine(HIW "透瓶香" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(HIY "德州扒鸡" NOR, ({ "chicken" })); create_food(HIG "碧螺春卷" NOR, ({ "spring roll", "roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(YEL "咖喱饭" NOR, ({"rice"})); create_food(RED "蚝油肉片" NOR, ({"fish meat", "meat"})); create_food(RED "羊肉串" NOR, ({ "mutton" })); create_food(HIR "重庆火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIY "北京烤鸭" NOR, ({ "duck" })); create_food(YEL "粉蒸肉" NOR, ({ "meat" })); create_food(HIW "四喜豆腐" NOR, ({ "bean curd" })); } else if (arg == "player") { mesg = me->name() + "现在在醉仙楼玫瑰厅宴请各路英雄豪杰。\n\n"; if (me->can_afford(50000) == 0) return 0; me->pay_money(40000); create_water(HIW "羊奶" NOR, ({ "milk" }), CYN "青花碗" NOR); create_water(GRN "云雾茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(GRN "碧螺春" NOR, ({ "tea" }), MAG "紫砂盏" NOR); create_water(HIG "君山银针" NOR, ({ "tea" }), RED "红泥盏" NOR); create_water(HIR "红毛尖" NOR, ({ "tea" }), CYN "青泥盏" NOR); create_wine(HIW "汾酒" NOR, ({ "wine" }), WHT "羊脂白玉杯" NOR); create_wine(WHT "关外白酒" NOR, ({ "wine" }), YEL "犀角杯" NOR); create_wine(RED "葡萄酒" NOR, ({ "wine" }), HIW "夜光杯" NOR); create_wine(WHT "高粱酒" NOR, ({ "wine" }), CYN "青铜爵" NOR); create_wine(HIG "百草酒" NOR, ({ "wine" }), RED "古藤杯" NOR); create_wine(HIR "状元红" NOR, ({ "wine" }), WHT "古瓷杯" NOR); create_wine(GRN "梨花酒" NOR, ({ "wine" }), HIG "翡翠杯" NOR); create_wine(HIW "玉露酒" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(YEL "叫花鸡"NOR, ({ "chicken" })); create_food(HIW "四喜豆腐" NOR, ({ "bean curd" })); create_food(HIG "碧螺春卷" NOR, ({ "spring","roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(RED "羊肉串" NOR, ({ "mutton" })); create_food(HIY "花枝饭卷" NOR, ({"rice"})); create_food(HIR "鱼香肉丝" NOR, ({"fish meat", "meat"})); create_food(HIY "德州扒鸡" NOR, ({ "chicken" })); create_food(RED "麻辣火锅" NOR, ({ "chrafing dish", "dish" })); create_food(HIY "北京烤鸭" NOR, ({ "duck" })); create_food(HIW "白斩鸡" NOR, ({ "chicken" })); create_food(YEL "粉蒸肉" NOR, ({ "meat" })); create_food(HIR "重庆火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIR "麻婆豆腐" NOR, ({ "bean curd" })); create_food(RED "蚝油肉片" NOR, ({"fish meat", "meat"})); create_food(YEL "咖喱饭" NOR, ({"rice"})); create_food(HIW "麻辣手撕鸡" NOR, ({"chicken"})); create_food(HIR "干煸尤鱼" NOR, ({"fish"})); create_food(HIY "东北水饺" NOR, ({ "dumpling" })); } else { return notify_fail("你要定什么酒席?\n"); }
+# ==== COMPLEX CONDITIONALS ====
+  # UNHANDLED FUNCTION: create_food
+  # UNHANDLED FUNCTION: create_water
+  # UNHANDLED FUNCTION: create_wine
+  # UNHANDLED FUNCTION: do_broadcast
+  # UNHANDLED FUNCTION: do_order
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/room/mudan.c by LPCConverter
 # Zone: test
 
@@ -1417,6 +1722,20 @@ zones "test" {
       { id = items.bigbox.id },
       { id = items.smallbox.id }    ]
   }
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (type == "marry") { mesg = me->name() + "现在在醉仙楼牡丹厅举行订婚酒宴。\n\n"; } else if (type == "birthday") { mesg = me->name() + "现在在醉仙楼牡丹厅举行生辰寿宴。\n\n"; } else if (type == "player") { mesg = me->name() + "现在在醉仙楼牡丹厅宴请各路英雄豪杰。\n\n"; } message("channel:chat", HIW "【江湖通告】" + mesg + NOR, users()); return 1; } int do_order(string arg) { object me, env; object* oblist; string mesg; int idx; me = this_player(); env = this_object(); mesg = query("order_owner"); if (mesg && (arg == "end") && (mesg == me->query("id"))) { mesg = "牡丹厅的宴会结束了。\n\n"; message("channel:chat", HIW "【江湖通告】" + mesg + NOR, users()); delete("order_owner"); delete("order_type"); oblist = all_inventory(env); for(idx = 0; idx<sizeof(oblist); idx++) { if (! objectp(oblist[idx])) continue; if (userp(oblist[idx])) continue; destruct(oblist[idx]); } return 1; } if (mesg) return notify_fail("这里已经被人包租了。\n"); notify_fail("你没有足够的钱或零钱不够。\n"); if (arg == "marry") { mesg = me->name() + "现在在醉仙楼牡丹厅举行订婚酒宴。\n\n"; if (me->can_afford(30000) == 0) return 0; me->pay_money(30000); create_water(HIG "龙井茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(RED "普洱茶"NOR, ({ "tea" }), WHT"水晶盏" NOR); create_wine(WHT "米酒" NOR, ({ "wine" }), HIW "搪瓷杯" NOR); create_wine(GRN "竹叶青" NOR, ({ "wine" }), GRN "翡翠杯" NOR); create_wine(YEL "绍兴黄酒" NOR, ({ "wine" }), HIY "象牙杯" NOR); create_wine(HIR "女儿红" NOR, ({ "wine" }), MAG "紫檀杯" NOR); create_wine(WHT "茅台酒" NOR, ({ "wine" }), YEL "鎏金杯" NOR); create_wine(RED "桂花酒" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(YEL "香酥花生" NOR, ({"peanut"})); create_food(HIR "酒糟红枣" NOR, ({"jujube"})); create_food(RED "喜糖" NOR, ({"sugar"})); create_food(HIW "奶油瓜子" NOR, ({"melon seeds", "seeds"})); create_food(HIG "碧螺春卷" NOR, ({ "spring roll", "roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(HIW "麻辣手撕鸡" NOR, ({"chicken"})); create_food(HIR "干煸尤鱼" NOR, ({"fish"})); create_food(HIY "东北水饺" NOR, ({ "dumpling" })); create_food(RED "麻辣火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIR "油煎螃蟹" NOR, ({ "crab" })); create_food(HIY "粉蒸肉" NOR, ({ "meat" })); create_food(YEL "家常豆腐" NOR, ({ "bean curd" })); } else if (arg == "birthday") { mesg = me->name() + "现在在醉仙楼牡丹厅举行生辰寿宴。\n\n"; if (me->can_afford(20000) == 0) return 0; me->pay_money(20000); create_water(GRN "云雾茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(HIG "君山银针" NOR, ({ "tea" }), RED "红泥盏" NOR); create_water(HIW "鲜奶" NOR, ({ "milk" }), WHT "玻璃杯" NOR); create_wine(RED "陈年花雕" NOR, ({ "wine" }), HIW "宋瓷杯" NOR); create_wine(WHT "五粮液" NOR, ({ "wine" }), WHT "玻璃杯" NOR); create_wine(WHT "米酒" NOR, ({ "wine" }), HIW "搪瓷杯" NOR); create_wine(HIR "杜康酒" NOR, ({ "wine" }), HIG "青铜爵" NOR); create_wine(HIW "透瓶香" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(HIY "德州扒鸡" NOR, ({ "chicken" })); create_food(HIG "碧螺春卷" NOR, ({ "spring roll", "roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(YEL "咖喱饭" NOR, ({"rice"})); create_food(RED "蚝油肉片" NOR, ({"fish meat", "meat"})); create_food(RED "羊肉串" NOR, ({ "mutton" })); create_food(HIR "重庆火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIY "北京烤鸭" NOR, ({ "duck" })); create_food(YEL "粉蒸肉" NOR, ({ "meat" })); create_food(HIW "四喜豆腐" NOR, ({ "bean curd" })); } else if (arg == "player") { mesg = me->name() + "现在在醉仙楼牡丹厅宴请各路英雄豪杰。\n\n"; if (me->can_afford(50000) == 0) return 0; me->pay_money(40000); create_water(HIW "羊奶" NOR, ({ "milk" }), CYN "青花碗" NOR); create_water(GRN "云雾茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(GRN "碧螺春" NOR, ({ "tea" }), MAG "紫砂盏" NOR); create_water(HIG "君山银针" NOR, ({ "tea" }), RED "红泥盏" NOR); create_water(HIR "红毛尖" NOR, ({ "tea" }), CYN "青泥盏" NOR); create_wine(HIW "汾酒" NOR, ({ "wine" }), WHT "羊脂白玉杯" NOR); create_wine(WHT "关外白酒" NOR, ({ "wine" }), YEL "犀角杯" NOR); create_wine(RED "葡萄酒" NOR, ({ "wine" }), HIW "夜光杯" NOR); create_wine(WHT "高粱酒" NOR, ({ "wine" }), CYN "青铜爵" NOR); create_wine(HIG "百草酒" NOR, ({ "wine" }), RED "古藤杯" NOR); create_wine(HIR "状元红" NOR, ({ "wine" }), WHT "古瓷杯" NOR); create_wine(GRN "梨花酒" NOR, ({ "wine" }), HIG "翡翠杯" NOR); create_wine(HIW "玉露酒" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(YEL "叫花鸡"NOR, ({ "chicken" })); create_food(HIW "四喜豆腐" NOR, ({ "bean curd" })); create_food(HIG "碧螺春卷" NOR, ({ "spring","roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(RED "羊肉串" NOR, ({ "mutton" })); create_food(HIY "花枝饭卷" NOR, ({"rice"})); create_food(HIR "鱼香肉丝" NOR, ({"fish meat", "meat"})); create_food(HIY "德州扒鸡" NOR, ({ "chicken" })); create_food(RED "麻辣火锅" NOR, ({ "chrafing dish", "dish" })); create_food(HIY "北京烤鸭" NOR, ({ "duck" })); create_food(HIW "白斩鸡" NOR, ({ "chicken" })); create_food(YEL "粉蒸肉" NOR, ({ "meat" })); create_food(HIR "重庆火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIR "麻婆豆腐" NOR, ({ "bean curd" })); create_food(RED "蚝油肉片" NOR, ({"fish meat", "meat"})); create_food(YEL "咖喱饭" NOR, ({"rice"})); create_food(HIW "麻辣手撕鸡" NOR, ({"chicken"})); create_food(HIR "干煸尤鱼" NOR, ({"fish"})); create_food(HIY "东北水饺" NOR, ({ "dumpling" })); } else { return notify_fail("你要定什么酒席?\n"); }
+# ==== COMPLEX CONDITIONALS ====
+  # UNHANDLED FUNCTION: create_food
+  # UNHANDLED FUNCTION: create_water
+  # UNHANDLED FUNCTION: create_wine
+  # UNHANDLED FUNCTION: do_broadcast
+  # UNHANDLED FUNCTION: do_order
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/room/multi_include_test.c by LPCConverter
 # Zone: test
@@ -1563,11 +1882,25 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/ban.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/chan.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/chan.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/chuo.c by LPCConverter
 # Zone: test
@@ -1575,11 +1908,30 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/chuo.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/dispel.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/dispel.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (me == target) { tell_object(me, "结果你没发现自己有任何异常。\n"); message_vision(WHT "$N" WHT "眉角微微一动，随即恢" "复正常。\n" NOR, me); me->start_busy(1); } else { tell_object(me, "结果你没发现" + target->name() + "有任何异常。\n"); tell_object(target, "你觉得内息一畅，看来是" + me->name() + "收功了，大概你本来没有什" "么异常吧。\n"); message_vision(WHT "$N" WHT "将手掌从$n" WHT "背后收了" "回来。\n" NOR, me, target); me->start_busy(2); target->start_busy(1); }
+  # COMPLEX IF: if (still_ill) { if (me == target) { tell_object(me, MAG "你调息良久，没有一点效果。\n" NOR); message_vision(HIG "$N" HIG "脸色变了变，有些不" "太自然。\n" NOR, me); me->start_busy(3 + random(3)); } else { tell_object(me, MAG "你运功良久，没能发挥半点作用。\n" NOR); tell_object(target, MAG "你觉得内息一阵紊乱，说不出" "的难受。\n看来" + me->name() + "是不能给予你帮助了。\n" NOR); message_vision(HIG "$N将手掌从$n背后收了回来，脸色" "说不出的难看。\n" NOR, me, target); me->start_busy(6 + random(6)); target->start_busy(4 + random(4)); }
+  # COMPLEX IF: if (conditions) { cnds = keys(conditions); for (i = 0; i < sizeof(cnds); i++) { switch(target->dispel_condition(me, cnds[i])) { case 0: continue; case -1: still_ill = 1; continue; } if (me == target) { tell_object(me, WHT "你调息完毕，将内力收回丹" "田。\n" NOR); me->start_busy(1 + random(2)); } else { tell_object(me, WHT "你调息完毕，将内力收回" "丹田。\n" NOR); tell_object(target, WHT "你觉得内息一畅，看来是" + me->name() + "收功了。\n"); me->start_busy(2 + random(3)); target->start_busy(1 + random(2)); message_vision(WHT "$N" WHT "将手掌从$n" WHT "背后" "收了回来。\n" NOR, me, target); }
+  # COMPLEX IF: if (me == target) { message_vision(HIW "$N" HIW "深吸一口气，又缓缓的吐了出来。\n" NOR, me); tell_object(me, YEL "你默运" + force_name + YEL "，开始排除身" "体中的异常症状。\n" NOR); me->add("neili", -100); } else { if (me->is_fighting(target)) { write("你们正打得热闹呢，还有心思干这个？\n"); return 1; }
+# ==== COMPLEX CONDITIONALS ====
+  # UNHANDLED FUNCTION: exert
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/feng.c by LPCConverter
 # Zone: test
@@ -1587,11 +1939,28 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/feng.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+  # UNHANDLED FUNCTION: remove_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/heal.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/heal.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: exert
+  # UNHANDLED FUNCTION: halt_healing
+  # UNHANDLED FUNCTION: healing
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/hui.c by LPCConverter
 # Zone: test
@@ -1599,11 +1968,27 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/hui.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/inspire.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/inspire.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: exert
+  # UNHANDLED FUNCTION: halt_inspiring
+  # UNHANDLED FUNCTION: inspiring
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/ji.c by LPCConverter
 # Zone: test
@@ -1611,11 +1996,29 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/ji.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (! target) { me->clean_up_enemy(); target = me->select_opponent(); } if (! target || ! me->is_fighting(target)) return notify_fail(JI "只能对战斗中的对手使用。\n"); if (me->query_temp("weapon") || me->query_temp("secondary_weapon")) return notify_fail(JI "只能空手施展。\n"); skill = me->query_skill("taiji-quan", 1); if (skill < 150) return notify_fail("你的太极拳等级不够，难以施展" JI "。\n"); if (me->query("neili") < 200) return notify_fail("你的真气不够，难以施展" JI "。\n"); if (me->query_skill_mapped("unarmed") != "taiji-quan") return notify_fail("你没有激发太极拳，难以施展" JI "。\n"); if (me->query_skill_prepared("unarmed") != "taiji-quan") return notify_fail("你现在没有准备使用太极拳，无法使用" JI "。\n"); if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n"); msg = HIW "$N" HIW "使出太极拳「挤」字诀，右脚实，左脚虚，粘连粘" "随，右掌已搭住$n" HIW "左腕，横劲发出。\n" NOR; damage = skill / 2 + random(skill / 2); ap = me->query_skill("unarmed"); dp = target->query_skill("parry"); if (ap / 2 + random(ap) > dp) { me->add("neili", -30); me->start_busy(2); target->receive_damage("jing", damage); target->receive_wound("jing", damage); msg += COMBAT_D->do_damage(me, target, REMOTE_ATTACK, damage, 0, HIR "$n" HIR "稍不留神，让$N" HIR "这么一挤，只觉全身力气犹似流入汪洋大海，无影" "无踪。\n" NOR); } else { me->add("neili", -10); msg += CYN "$n" CYN "见状大吃一惊，急忙向后猛退数步，" "终于避开了$N" CYN "这一击。\n" NOR; me->start_busy(4); }
+# ==== COMPLEX CONDITIONALS ====
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/jia.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/jia.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (! target) { me->clean_up_enemy(); target = me->select_opponent(); } if (! target || ! me->is_fighting(target)) return notify_fail(JIA "只能对战斗中的对手使用。\n"); if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "sword") return notify_fail("你使用的武器不对，难以施展" JIA "。\n"); skill = me->query_skill("taiji-jian", 1); if (skill < 150) return notify_fail("你的太极剑法等级不够，难以施展" JIA "。\n"); if (me->query("neili") < 200) return notify_fail("你的真气不够，难以施展" JIA "。\n"); if (me->query_skill_mapped("sword") != "taiji-jian") return notify_fail("你没有激发太极剑法，难以施展" JIA "。\n"); if (! objectp(weapon2 = target->query_temp("weapon"))) return notify_fail("对方没有使用兵器，难以施展" JIA "。\n"); if (target->is_busy()) return notify_fail(target->name() + "目前正自顾不暇，放胆攻击吧。\n"); if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n"); wn1 = weapon->name(); wn2 = weapon2->name(); msg = HIC "只见$N" HIC "收摄心神，以剑意运剑，手中" + wn1 + HIC "每剑均以弧形" "刺出，弧形收回，每发一招都似放\n出一条细丝，要去缠在$n" HIC "的" + wn2 + HIC "之上。\n" NOR; me->add("neili", -50); ap = me->query_skill("sword"); dp = target->query_skill("parry"); if (ap / 2 + random(ap * 4 / 3) > dp) { me->add("neili", -30); damage = ap / 8 + random(ap / 8); msg += COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 10, HIR "却见$n" HIR "手中" + wn2 + HIR "被" + wn1 + HIR "缠住后不断增加重量，招数顿见涩" "滞，真力不由狂泻而出。\n" NOR); me->start_busy(1); if (ap / 2 + random(ap) > dp && ! target->is_busy()) target->start_busy(ap / 30 + 2); } else { msg += CYN "$n" CYN "不禁大惊失色，急忙跃开数步，方才摆脱$N" CYN "的力道。\n" NOR; me->add("neili", -10); me->start_busy(3); }
+# ==== COMPLEX CONDITIONALS ====
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/lei.c by LPCConverter
 # Zone: test
@@ -1623,11 +2026,25 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/lei.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/lifeheal.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/lifeheal.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: exert
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/luan.c by LPCConverter
 # Zone: test
@@ -1635,11 +2052,26 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/luan.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: final
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/power.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/power.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: exert
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/qi.c by LPCConverter
 # Zone: test
@@ -1647,11 +2079,25 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/qi.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/qin.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/qin.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/qingxin.c by LPCConverter
 # Zone: test
@@ -1659,11 +2105,26 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/qingxin.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+  # UNHANDLED FUNCTION: remove_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/recover.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/recover.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: exert
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/regenerate.c by LPCConverter
 # Zone: test
@@ -1671,11 +2132,27 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/regenerate.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: exert
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/roar.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/roar.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # SWITCH: switch (f) { case "longxiang-gong" : msg = HIW "$N" HIW "运转真气，面无表情，歌声如梵唱般" "贯入众人耳中。\n" NOR; break; case "huntian-qigong" : msg = HIY "$N" HIY "深深吸入一囗气，运足内力发出一阵" "长啸，音传百里，慑人心神。\n" NOR; break; case "jiuyang-shengong" : msg = HIY "$N" HIY "仰天长啸，声音绵泊不绝，众人无不" "听得心驰神摇。\n" NOR; break; case "jiuyin-shengong" : msg = HIY "$N" HIY "气凝丹田，猛然一声断喝，声音远远" "的传了开去，激荡不止。\n" NOR; break; case "kuihua-mogong" : msg = HIY "$N" HIY "蓦地极嘶长呼，声音凄厉之极，令人" "毛骨悚然。\n" NOR; break; case "yijinjing" : case "hunyuan-gong" : msg = HIY "$N" HIY "深深吸入一囗气，运起金刚禅狮子吼" "，发出惊天动地的一声巨吼。\n" NOR; break; default: msg = HIY "$N" HIY "深深吸入一囗气，体内" + to_chinese(f) + HIY "真气急剧迸发，陡然一声巨啸。\n" NOR; break; }
+# ==== SWITCH STATEMENTS ====
+  # UNHANDLED FUNCTION: exert
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/sanjue.c by LPCConverter
 # Zone: test
@@ -1683,11 +2160,26 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/sanjue.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/shang.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/shang.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: final
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/shot.c by LPCConverter
 # Zone: test
@@ -1695,11 +2187,25 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/shot.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: exert
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/six.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/six.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/sui.c by LPCConverter
 # Zone: test
@@ -1707,11 +2213,26 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/sui.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+  # UNHANDLED FUNCTION: remove_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/tian.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/tian.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/tianmo.c by LPCConverter
 # Zone: test
@@ -1719,11 +2240,25 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/tianmo.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: exert
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/tu.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/tu.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/xiang.c by LPCConverter
 # Zone: test
@@ -1731,11 +2266,27 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/xiang.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (! target) { me->clean_up_enemy(); target = me->select_opponent(); } if (! target || ! me->is_fighting(target)) return notify_fail("「龙翔九天」只能在战斗中对对手使用。\n"); if (me->query_temp("weapon") || me->query_temp("secondary_weapon")) return notify_fail("「龙翔九天」只能空手使用。\n"); if (me->query("max_neili") < 2000) return notify_fail("你的内力修为还不够，无法施展「龙翔九天」。\n"); if ((int)me->query("neili") < 500) return notify_fail("你的真气不够！\n"); if ((int)me->query("qi") < 800) return notify_fail("你的体力现在不够！\n"); if ((int)me->query_skill("dragon-strike", 1) < 150) return notify_fail("你的降龙十八掌火候不够，无法使用「龙翔九天」！\n"); if ((int)me->query_skill("force") < 300) return notify_fail("你的内功修为不够，无法使用「龙翔九天」！\n"); if (me->query_skill_prepared("strike") != "dragon-strike") return notify_fail("你现在没有准备使用降龙十八掌，无法使用「龙翔九天」！\n"); if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n"); msg = HIY "$N" HIY "深吸一口气，跨前一步，双掌猛然翻滚，" "缤纷而出，宛如一条神龙攀蜒于九天之上！\n\n" NOR; ap = me->query_skill("strike") + me->query("str") * 10; dp = target->query_skill("parry") + target->query("dex") * 6; if (ap / 2 + random(ap) > dp) { count = ap / 9; msg += HIR "$n" HIR "面对$P" HIR "这排山倒海攻势，完全" "无法抵挡，唯有退后。\n" NOR; } else { msg += HIC "$n" HIC "凝神应战，竭尽所能化解$P" HIC "这几掌。\n" NOR; count = 0; }
+# ==== COMPLEX CONDITIONALS ====
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/xun.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/xun.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: exert
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/yin.c by LPCConverter
 # Zone: test
@@ -1743,11 +2294,29 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/yin.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (! target) { me->clean_up_enemy(); target = me->select_opponent(); } if (! target || ! me->is_fighting(target)) return notify_fail(YIN "只能对战斗中的对手使用。\n"); if (me->query_temp("weapon") || me->query_temp("secondary_weapon")) return notify_fail(YIN "只能空手施展。\n"); skill = me->query_skill("taiji-quan", 1); if (skill < 150) return notify_fail("你的太极拳等级不够，难以施展" YIN "。\n"); if (me->query("neili") < 200) return notify_fail("你的真气不够，难以施展" YIN "。\n"); if (me->query_skill_mapped("unarmed") != "taiji-quan") return notify_fail("你没有激发太极拳，难以施展" YIN "。\n"); if (me->query_skill_prepared("unarmed") != "taiji-quan") return notify_fail("你现在没有准备使用太极拳，无法使用" YIN "。\n"); if (target->is_busy()) return notify_fail(target->name() + "目前正自顾不暇，放胆攻击吧。\n"); if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n"); msg = HIW "$N" HIW "双手一圈，施出「引」字诀，如抱太极，一股" "雄浑无比的力道组成了一个旋涡，圈向$n" HIW "。\n" NOR; me->add("neili", -50); ap = me->query_skill("unarmed"); dp = target->query_skill("parry"); if (ap / 2 + random(ap * 4 / 3) > dp) { me->add("neili", -30); damage = ap / 8 + random(ap / 8); msg += COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 0, HIR "$n" HIR "微微一楞，登时被这力道带" "得在原地急转七八下，如转陀螺，如旋纺" "锤。\n" NOR); me->start_busy(1); if (ap / 2 + random(ap) > dp && ! target->is_busy()) target->start_busy(ap / 30 + 2); } else { msg += CYN "$n" CYN "见状连忙使出“千斤坠”之力定" "住身形，摆脱了$N" CYN "的力道。\n" NOR; me->add("neili", -10); me->start_busy(3); }
+# ==== COMPLEX CONDITIONALS ====
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/zhan.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/zhan.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (! target) { me->clean_up_enemy(); target = me->select_opponent(); } if (! target || ! me->is_fighting(target)) return notify_fail(ZHAN "只能对战斗中的对手使用。\n"); if (me->query_temp("weapon") || me->query_temp("secondary_weapon")) return notify_fail(ZHAN "只能空手施展。\n"); skill = me->query_skill("taiji-quan", 1); if (skill < 150) return notify_fail("你的太极拳等级不够，难以施展" ZHAN "。\n"); if (me->query("neili") < 200) return notify_fail("你的真气不够，难以施展" ZHAN "。\n"); if (me->query_skill_mapped("unarmed") != "taiji-quan") return notify_fail("你没有激发太极拳，难以施展" ZHAN "。\n"); if (me->query_skill_prepared("unarmed") != "taiji-quan") return notify_fail("你现在没有准备使用太极拳，无法使用" ZHAN "。\n"); if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n"); msg = HIW "$N" HIW "连消带打，双手成圆形击出，这" "正是太极拳「圆转不断」四字的精意。只\n见$N" HIW "随即平圈、立圈、正圈、斜圈，一个跟着一" "个，一个个太极圆圈顿时笼\n罩$n" HIW "四面" "八方。\n" NOR; ap = me->query_skill("unarmed"); dp = target->query_skill("parry"); if (ap / 2 + random(ap * 4 / 3) > dp) { me->add("neili", -30); damage = ap / 4 + random(ap / 4); msg += COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 20, HIR "$n" HIR "登时便被套得跌跌撞撞，身" "不由主的立足不稳，犹如中酒昏迷。\n" NOR); me->start_busy(2); if (ap / 2 + random(ap) > dp && ! target->is_busy()) target->start_busy(ap / 50 + 1); } else { msg += CYN "可是$p" CYN "的看破了$P" CYN "的企图，巧妙的拆招，没露半点破绽" "。\n" NOR; me->add("neili", -10); me->start_busy(3); }
+# ==== COMPLEX CONDITIONALS ====
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/zhe.c by LPCConverter
 # Zone: test
@@ -1755,11 +2324,28 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/zhe.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: final
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/zhen.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/zhen.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (! target) { me->clean_up_enemy(); target = me->select_opponent(); } if (! target || ! me->is_fighting(target)) return notify_fail(ZHEN "只能对战斗中的对手使用。\n"); if (me->query_temp("weapon") || me->query_temp("secondary_weapon")) return notify_fail(ZHEN "只能空手施展。\n"); skill = me->query_skill("taiji-quan", 1); if (skill < 150) return notify_fail("你的太极拳等级不够，难以施展" ZHEN "。\n"); if (me->query("neili") < 200) return notify_fail("你的真气不够，难以施展" ZHEN "。\n"); if (me->query_skill_mapped("unarmed") != "taiji-quan") return notify_fail("你没有激发太极拳，难以施展" ZHEN "。\n"); if (me->query_skill_prepared("unarmed") != "taiji-quan") return notify_fail("你现在没有准备使用太极拳，无法使用" ZHEN "。\n"); if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n"); msg = HIW "$N" HIW "使出太极拳「震」字诀，左手高，右手低，陡然" "回圈，企图以内力震伤$n" HIW "。\n" NOR; me->add("neili", -50); if (random(me->query_skill("force")) > target->query_skill("force") / 2) { me->start_busy(3); target->start_busy(random(3)); damage = (int)me->query_skill("force", 1); damage = damage / 2 + random(damage / 2); msg += COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 50, HIR "只见$N" HIR "这一拳变化无方，气劲" "封了$n" HIR "所有的退路，一拳正好命中" "。\n:内伤@?"); } else { me->start_busy(3); msg += CYN "可是$p" CYN "看破了$P" CYN "的企图，并没有上当。\n" NOR; }
+# ==== COMPLEX CONDITIONALS ====
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/zhenwu.c by LPCConverter
 # Zone: test
@@ -1767,11 +2353,26 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/zhenwu.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: final
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/zhuan.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/zhuan.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/skill/zong.c by LPCConverter
 # Zone: test
@@ -1779,11 +2380,25 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/skill/zong.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/skill/zongheng.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/skill/zongheng.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/special/guibian.c by LPCConverter
 # Zone: test
@@ -1791,11 +2406,29 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/special/guibian.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: is_scborn
+  # UNHANDLED FUNCTION: name
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/special/guimai.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/special/guimai.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: is_scborn
+  # UNHANDLED FUNCTION: name
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/special/hatred.c by LPCConverter
 # Zone: test
@@ -1803,11 +2436,30 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/special/hatred.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: name
+  # UNHANDLED FUNCTION: perform
+  # UNHANDLED FUNCTION: remove_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/special/jinshen.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/special/jinshen.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: is_scborn
+  # UNHANDLED FUNCTION: name
+  # UNHANDLED FUNCTION: perform
+  # UNHANDLED FUNCTION: remove_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/special/shenyan.c by LPCConverter
 # Zone: test
@@ -1815,8 +2467,31 @@ zones "test" {
 # Generic LPC file: test_minimal_world_v2_modified/special/shenyan.c
 # Requires manual conversion
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (my["max_jing"] < 1 || my["max_qi"] < 1) { tell_object(me, "无法察看" + ob->name(1) + "的状态。\n"); return; } sp = (ob == me ? "你" : ob->name()) + "目前的状态属性如下：\n"; sp += HIC "≡" HIY "----------------------------------------------------------------" HIC "≡\n" NOR; sp += sprintf(HIC "【 精 气 】 %s%5d/ %5d %s(%3d%%)" HIC " 【 精 力 】 %s%5d / %5d (+%d)\n", status_color(my["jing"], my["eff_jing"]), my["jing"], my["eff_jing"], status_color(my["eff_jing"], my["max_jing"]), my["eff_jing"] * 100 / my["max_jing"], status_color(my["jingli"], my["max_jingli"]), my["jingli"], my["max_jingli"], my["jiajing"]); sp += sprintf(HIC "【 气 血 】 %s%5d/ %5d %s(%3d%%)" HIC " 【 内 力 】 %s%5d / %5d (+%d)\n", status_color(my["qi"], my["eff_qi"]), my["qi"], my["eff_qi"], status_color(my["eff_qi"], my["max_qi"]), my["eff_qi"] * 100 / my["max_qi"], status_color(my["neili"], my["max_neili"]), my["neili"], my["max_neili"], my["jiali"]); sp += sprintf(HIW "【 食 物 】 %s%5d/ %5d " HIW " 【 潜 能 】 %s%d\n", status_color(my["food"], ob->max_food_capacity()), my["food"], ob->max_food_capacity(), (int)ob->query("potential") >= (int)ob->query_potential_limit() ? HIM : HIY, (int)ob->query("potential") - (int)ob->query("learned_points")); sp += sprintf(HIW "【 饮 水 】 %s%5d/ %5d " HIW " 【 体 会 】 %s%d\n", status_color(my["water"], ob->max_water_capacity()), my["water"], ob->max_water_capacity(), my["experience"] >= ob->query_experience_limit() ? HIM : HIY, my["experience"] - my["learned_experience"]); if (craze = me->query_craze()) { if (me->is_most_craze()) sp += HIR "【 愤 " BLINK "怒" NOR HIR " 】 " + sprintf("%-22s", me->query("character") == "光明磊落" ? "竖发冲冠" : "怒火中烧"); else sp += sprintf(HIR "【 愤 怒 】 %5d/ %5d (+%-3d) ", craze, me->query_max_craze(), me->query("jianu")); } else { sp += HIC "【 平 和 】 --------- "; }
+# ==== COMPLEX CONDITIONALS ====
+  # UNHANDLED FUNCTION: check_target
+  # UNHANDLED FUNCTION: is_scborn
+  # UNHANDLED FUNCTION: name
+  # UNHANDLED FUNCTION: perform
+  # UNHANDLED FUNCTION: show_target_skills
+  # UNHANDLED FUNCTION: show_target_status
+  # UNHANDLED FUNCTION: status_color
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/special/trick.c by LPCConverter
 # Zone: test
 
 # Generic LPC file: test_minimal_world_v2_modified/special/trick.c
 # Requires manual conversion
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: name
+  # UNHANDLED FUNCTION: perform
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================

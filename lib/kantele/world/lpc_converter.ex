@@ -131,10 +131,20 @@ defmodule Kantele.World.LPCConverter do
     # Extract key components from cleaned LPC
     create_fn = parse_create_function(content, create_body)
     function_calls = parse_function_calls(create_body || find_create_body(content))
+    
+    # Collect handled function names to identify unhandled functions
+    handled_functions = MapSet.new(["create", "init", "greeting", "accept_object", "permit_pass", "valid_leave"])
+    other_fns = parse_other_functions(content)
+    other_fn_names = Enum.map(other_fns, &(&1.name)) |> MapSet.new()
+    unhandled_fns = MapSet.difference(other_fn_names, handled_functions)
+    
+    # Extract unhandled content: global variables, complex mappings, switch statements, etc.
+    unhandled = extract_unhandled_content(content, unhandled_fns)
+    
     %{
       inherits: parse_inherits(content),
       create_fn: create_fn,
-      other_fns: parse_other_functions(content),
+      other_fns: other_fns,
       globals: parse_globals(content),
       heredocs: heredocs,
       source_path: source_path,
@@ -144,7 +154,8 @@ defmodule Kantele.World.LPCConverter do
       enter: extract_enter(content),
       greetings: extract_greetings(content),
       accept: extract_accept(content),
-      guard: extract_guard(content)
+      guard: extract_guard(content),
+      unhandled: unhandled
     }
     |> AST.new()
     |> (fn ast -> {:ok, ast} end).()
@@ -328,6 +339,75 @@ defmodule Kantele.World.LPCConverter do
     |> Enum.into(%{})
   end
 
+defp extract_unhandled_content(content, unhandled_fn_names) do
+    try do
+      unhandled = %{
+        functions: [],
+        globals: [],
+        complex_mappings: [],
+        switch_statements: [],
+        complex_conditionals: [],
+        raw_code_blocks: []
+      }
+
+# 1. Unhandled functions (not create/init/greeting/accept_object/permit_pass/valid_leave)
+    unhandled = Enum.reduce(unhandled_fn_names, unhandled, fn fn_name, acc ->
+      # Always record the function name for manual review, even if body extraction fails
+      Map.update(acc, :functions, [fn_name], fn acc -> [fn_name | acc] end)
+    end)
+
+      # 2. Global variables not parsed by parse_globals (complex initializers)
+      simple_globals =
+        Regex.scan(~r/(int|string|mapping|object|mixed)\s+(\w+)\s*[=;]/, content)
+        |> Enum.map(fn [_, type, name] -> {name, type} end)
+        |> Enum.into(%{})
+
+      complex_globals =
+        Regex.scan(~r/(int|string|mapping|object|mixed)\s+(\w+)\s*=\s*[^;]+;/, content)
+        |> Enum.map(fn [_, type, name] -> %{name: name, type: type} end)
+        |> Enum.filter(fn %{name: name} -> not Map.has_key?(simple_globals, name) end)
+      unhandled = Map.put(unhandled, :globals, complex_globals)
+
+      # 3. Complex mappings with nested structures
+      complex_mappings =
+        Regex.scan(~r/\(\s*\[[^]]*\[[^]]*\]/, content)
+        |> Enum.map(fn [m] -> m end)
+        |> Enum.uniq()
+      unhandled = Map.put(unhandled, :complex_mappings, complex_mappings)
+
+      # 4. Switch statements
+      switch_stmts =
+        Regex.scan(~r/switch\s*\([^)]+\)\s*\{[\s\S]*?\}/m, content)
+        |> Enum.map(fn [stmt] -> String.trim(stmt) end)
+      unhandled = Map.put(unhandled, :switch_statements, switch_stmts)
+
+      # 5. Complex conditionals (nested if/else)
+      complex_ifs =
+        Regex.scan(~r/if\s*\([^)]+\)\s*\{[\s\S]*?\}\s*else\s*\{[\s\S]*?\}/m, content)
+        |> Enum.map(fn [stmt] -> String.trim(stmt) end)
+      unhandled = Map.put(unhandled, :complex_conditionals, complex_ifs)
+
+      # 6. Raw code blocks (heartbeat, reset, clean_up)
+      raw_blocks =
+        Regex.scan(~r/(void|int)\s+(heart_beat|reset|clean_up)\s*\([^)]*\)\s*\{([\s\S]*?)\}/m, content)
+        |> Enum.map(fn [_, _, name, body] -> %{name: name, body: String.trim(body)} end)
+      unhandled = Map.put(unhandled, :raw_code_blocks, raw_blocks)
+
+      unhandled
+    rescue
+      e ->
+        IO.puts("WARNING: extract_unhandled_content failed: #{Exception.message(e)}")
+        %{
+          functions: [],
+          globals: [],
+          complex_mappings: [],
+          switch_statements: [],
+          complex_conditionals: [],
+          raw_code_blocks: []
+        }
+    end
+  end
+
   @doc """
   Parse valid_leave function to extract guard exit behavior.
   
@@ -406,14 +486,20 @@ defmodule Kantele.World.LPCConverter do
 
   # ---- 功能函数抽取：init / greeting / accept_object ----
 
-  # 按函数名抽取函数体（不含外层大括号）。找不到返回 nil。
+# 按函数名抽取函数体（不含外层大括号）。找不到返回 nil。
   defp extract_function_body(content, name) do
-    case Regex.run(~r/(?:int|string|void|mixed|mapping|object|protected)\s+#{name}\s*\([^)]*\)\s*\{/, content) do
-      nil -> nil
+    # Match function signature with optional newline before opening brace
+    case Regex.run(~r/(?:int|string|void|mixed|mapping|object|protected)\s+#{name}\s*\([^)]*\)\s*\n*\s*\{/, content) do
+      nil ->
+        IO.puts("DEBUG extract_function_body: no match for #{name}")
+        nil
       [match] ->
         parts = String.split(content, match, parts: 2)
         case parts do
-          [_, rest] -> find_matching_brace(rest, 0)
+          [before, _rest] ->
+            brace_pos = String.length(before) + String.length(match) - 1
+            IO.puts("DEBUG extract_function_body: name=#{name}, brace_pos=#{brace_pos}, char=#{String.at(content, brace_pos)}")
+            find_matching_brace(content, brace_pos)
           _ -> nil
         end
     end
@@ -823,7 +909,86 @@ has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
           [generate_generic_ucl(ast, zone_id)]
       end
 
-    header <> Enum.join(new_sections, "\n\n")
+    header <> Enum.join(new_sections, "\n\n") <> generate_unhandled_comments(ast.unhandled)
+  end
+
+  defp generate_unhandled_comments(unhandled) do
+    sections =
+      [
+        # Unhandled functions
+        if unhandled[:functions] != [] do
+          fn_list = Enum.map(unhandled[:functions], fn name -> "  # UNHANDLED FUNCTION: #{name}" end)
+          ["# ==== UNHANDLED FUNCTIONS ====" | fn_list]
+        else
+          []
+        end,
+
+        # Unhandled globals
+        if unhandled[:globals] != [] do
+          global_list = Enum.map(unhandled[:globals], fn %{name: name, type: type} ->
+            "  # UNHANDLED GLOBAL: #{type} #{name}"
+          end)
+          ["# ==== UNHANDLED GLOBAL VARIABLES ====" | global_list]
+        else
+          []
+        end,
+
+        # Complex mappings
+        if unhandled[:complex_mappings] != [] do
+          mapping_list = Enum.map(unhandled[:complex_mappings], fn m ->
+            "  # COMPLEX MAPPING: #{String.trim(m)}"
+          end)
+          ["# ==== COMPLEX MAPPINGS ====" | mapping_list]
+        else
+          []
+        end,
+
+        # Switch statements
+        if unhandled[:switch_statements] != [] do
+          switch_list = Enum.map(unhandled[:switch_statements], fn stmt ->
+            lines = String.split(stmt, "\n")
+            Enum.map(lines, fn l -> "  # SWITCH: #{String.trim(l)}" end)
+            |> Enum.join("\n")
+          end)
+          ["# ==== SWITCH STATEMENTS ====" | switch_list]
+        else
+          []
+        end,
+
+        # Complex conditionals
+        if unhandled[:complex_conditionals] != [] do
+          cond_list = Enum.map(unhandled[:complex_conditionals], fn stmt ->
+            lines = String.split(stmt, "\n")
+            Enum.map(lines, fn l -> "  # COMPLEX IF: #{String.trim(l)}" end)
+            |> Enum.join("\n")
+          end)
+          ["# ==== COMPLEX CONDITIONALS ====" | cond_list]
+        else
+          []
+        end,
+
+        # Raw code blocks (heartbeat, reset, etc.)
+        if unhandled[:raw_code_blocks] != [] do
+          block_list = Enum.map(unhandled[:raw_code_blocks], fn %{name: name, body: body} ->
+            lines = String.split(body, "\n")
+            comment_lines = Enum.map(lines, fn l -> "  # #{name}: #{String.trim(l)}" end)
+            Enum.join(["  # RAW BLOCK: #{name}", comment_lines | []], "\n")
+          end)
+          ["# ==== RAW CODE BLOCKS ====" | block_list]
+        else
+          []
+        end
+      ]
+      |> List.flatten()
+
+    if sections != [] do
+      header = "\n\n# ========================================\n# UNHANDLED CONTENT (for manual review)\n# ========================================\n"
+      body = Enum.reverse(sections) |> Enum.join("\n")
+      footer = "\n# ========================================\n"
+      header <> body <> footer
+    else
+      ""
+    end
   end
 
   defp determine_object_type(ast) do
