@@ -17,6 +17,7 @@ defmodule Kantele.World.LPCConverter.AST do
     :greetings,
     :accept,
     :guard,
+    :engage,
     :unhandled
   ]
 

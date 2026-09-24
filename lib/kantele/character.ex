@@ -285,6 +285,9 @@ defmodule Kantele.Character.NonPlayerMeta do
   - `accept` 收受规则表（accept_object）`[%{kind: "money"|"item_id"|"item_name"|"any",
     min:, id:, name:, accept:}]`（nil = 无规则）
   - `guarder` 守卫配置 `%{family: 门派名, msgs: %{refuse_other: 拒绝文案}}`（nil = 非守卫）
+  - `engage` 开战接受规则（accept_fight/hit/kill）`%{fight: %{accept:, msg:,
+    retaliate:, spawn:}, hit: ..., kill: ...}`（nil = 无规则；accept=true 接受开战/
+    接受被杀，retaliate=true 反杀，spawn 被 kill 时召唤的帮手 id 列表）
   """
 
   defstruct [
@@ -310,7 +313,8 @@ defmodule Kantele.Character.NonPlayerMeta do
     :greetings,
     :init,
     :accept,
-    :guarder
+    :guarder,
+    :engage
   ]
 
   defimpl Kalevala.Meta.Trim do

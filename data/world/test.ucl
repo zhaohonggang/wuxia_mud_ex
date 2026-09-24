@@ -11,6 +11,19 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (shen > -5000)  →  
+  # if (shen > 0)  →  
+  # if (shen > 5000)  →  
+  # if (!ob)  →  
+# ==== CONDITIONAL BRANCHES (query_rude) ====
+  # if (shen > -5000)  →  
+  # if (shen > -1000)  →  
+  # if (shen > 1000)  →  
+  # if (shen > 5000)  →  
+  # if (shen > 10000)  →  
+  # if (!ob)  →  
+# ==== CONDITIONAL BRANCHES (query_respect) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: query_respect
   # UNHANDLED FUNCTION: query_rude
   # UNHANDLED FUNCTION: valid_respect
@@ -59,6 +72,18 @@ zones "test" {
   # COMPLEX IF: if (me == ob) { tell_object(me, "调息以后，你清醒多了，再没有半点醉酒的感觉。\n"); } else { tell_object(me, "你将内力缓缓的输入到" + ob->name() + "经脉，" + ob->name() + "精神一振。\n"); tell_object(ob, "你觉得" + me->name() + "将内力输入你的奇经八脉，你清醒多了，再没有醉酒的感觉。\n"); }
   # COMPLEX IF: if (me == ob) { tell_object(me, "你的内功火候尚有欠缺，无法消除醉酒的影响。\n"); return -1; } else { tell_object(me, "你的内功火候尚有欠缺，无法帮助" + ob->name() + "消除醉酒的影响。\n"); return -1; }
 # ==== COMPLEX CONDITIONALS ====
+  # if (! duration)  →  
+  # else if (duration > limit/4)  →  tell_object(me, "你觉得一阵酒意上冲，眼皮有些沉重了。\n");
+  # else if (duration > limit / 2)  →  tell_object(me, "你觉得脑中昏昏沉沉，身子轻飘飘地，大概是醉了。\n");
+  # else if (!living(me))  →  
+  # if (duration > limit && living(me))  →  
+# ==== CONDITIONAL BRANCHES (update_condition) ====
+  # else  →  tell_object(me, "你将内力缓缓的输入到" + ob->name() + "经脉，" + ob->name() + "精神一振。\n"); tell_object(ob, "你觉得" + me->name() + "将内力输入你的奇经八脉，你清醒多了，再没有醉酒的感觉。\n");
+  # if (me == ob)  →  tell_object(me, "调息以后，你清醒多了，再没有半点醉酒的感觉。\n");
+  # if (need_lvl > me->query_skill("force"))  →  tell_object(me, "你的内功火候尚有欠缺，无法消除醉酒的影响。\n"); tell_object(me, "你的内功火候尚有欠缺，无法帮助" + ob->name() + "消除醉酒的影响。\n");
+  # if (me != ob)  →  
+# ==== CONDITIONAL BRANCHES (dispel) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: dispel
   # UNHANDLED FUNCTION: update_condition
 # ==== UNHANDLED FUNCTIONS ====
@@ -73,6 +98,14 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if ( duration < 1 )  →  tell_object(me, HIR "你心口一阵剧痛，不禁一阵晕眩，过" "后感觉却好了一些。\n" NOR);
+  # if (me->query_skill("force") >= 300)  →  
+  # if (! living(me) && (me->query("qi") < 25 || me->query("jing") < 25))  →  
+  # if (me->query_temp("nopoison"))  →  
+# ==== CONDITIONAL BRANCHES (update_condition) ====
+  # if (me == ob)  →  tell_object(me, "你试图运功化解断肠花毒，突然一感到" "阵撕心裂肺的疼痛，几乎晕厥。\n");
+# ==== CONDITIONAL BRANCHES (dispel) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: dispel
   # UNHANDLED FUNCTION: update_condition
 # ==== UNHANDLED FUNCTIONS ====
@@ -87,6 +120,11 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if ((me->query_skill("jiuyang-shengong", 1) > 180 && me->query_skill_mapped("force") == "jiuyang-shengong") || (me->query_skill("hanbing-zhenqi", 1) > 180 && me->query_skill_mapped("force") == "hanbing-zhenqi") || (me->query_skill("zixia-shengong", 1) > 180 && me->query_skill_mapped("force") == "zixia-shengong"))  →  
+# ==== CONDITIONAL BRANCHES (dispel) ====
+  # if (me->query_temp("apply/dispel-poison") && me->query_temp("add_dispel"))  →  
+# ==== CONDITIONAL BRANCHES (clear_dispel) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: chinese_name
   # UNHANDLED FUNCTION: clear_dispel
   # UNHANDLED FUNCTION: die_msg_others
@@ -109,6 +147,13 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # else if (duration >= 13)  →  tell_object(me, HIY "你眼看快要饿死了，好在你是巫师，变！" "变！变！你三口两口把变出来\n" + "的不知道什么东西给吞下肚，感觉好多了。\n" NOR); tell_object(me, HIY "你眼看就要不行了，突然天下掉下馅饼牛" "奶，你一阵狂吃滥喝，感觉总\n" + "算是好多了。\n" NOR); tell_object(me, HIR "你又饥又渴，终于晕了过去。\n" NOR); tell_object(me, HIR "你饿得晕了过去。\n" NOR); tell_object(me, HIR "你渴得晕了过去。\n" NOR);
+  # else if (duration == 7)  →  tell_object(me, HIR "你又饥又渴，觉得自己快要死了。\n" NOR); tell_object(me, HIR "你饿得快死了。\n" NOR); tell_object(me, HIR "你渴得要虚脱了。\n" NOR);
+  # if (duration == 4)  →  tell_object(me, HIY "你饿得头晕眼花，渴得喉咙冒烟，看来" "要赶快找点吃喝的东西了。\n" NOR); tell_object(me, HIY "你饿得头晕眼花，看来要赶快找点吃的了。\n" NOR); tell_object(me, HIY "\n你渴得喉咙冒烟，看来要赶快喝点什么了。\n" NOR);
+  # if (!interactive(me) || !environment(me) || environment(me)->is_chat_room())  →  
+  # if (me->query("food") > 0 && me->query("water") > 0)  →  
+# ==== CONDITIONAL BRANCHES (update_condition) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: dispel
   # UNHANDLED FUNCTION: update_condition
 # ==== UNHANDLED FUNCTIONS ====
@@ -123,6 +168,12 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if ( duration < 1 )  →  
+  # else  →  
+  # if ( !living(me) && me->query("qi") < 1 )  →  
+  # if ( duration < 1 )  →  
+# ==== CONDITIONAL BRANCHES (update_condition) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: min_qi_needed
   # UNHANDLED FUNCTION: name
   # UNHANDLED FUNCTION: update_condition
@@ -151,6 +202,11 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (me->query_skill("xingxiu-poison") > 50)  →  
+# ==== CONDITIONAL BRANCHES (qi_damage) ====
+  # if (me->query_skill("xingxiu-poison") > 50)  →  
+# ==== CONDITIONAL BRANCHES (jing_damage) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: chinese_name
   # UNHANDLED FUNCTION: die_msg_others
   # UNHANDLED FUNCTION: die_reason
@@ -256,6 +312,20 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( interactive(ob) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+  # if (! ob || environment(ob) != environment() || ! living(ob))  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # else if ( (string)ob->query("name") == "明史辑略" || (string)ob->query("name") == "庄允城" )  →  message_vision("\n庄夫人说道：这位" + RANK_D->query_respect(me)+"，多谢了！\n", me); message_vision("庄夫人感叹道：唉！你要能帮我找到吴之荣这" "狗贼就好了。\n", me);
+  # if ( (string)ob->query("id") == "wu zhi rong")  →  message_vision("\n庄夫人大喜道：狗贼，死去吧！" "想不到你也有今天！\n", me); message_vision(HIC "\n$N的江湖威望提高了！\n" NOR, me); message_vision("\n庄夫人对$N说道：这位" + RANK_D->query_respect(me) + "，如此大恩大德，妾身实不知何以为报。\n" "庄夫人微一沉思，道：我想送恩公一件礼物，" "务请勿却是幸。\n", me);
+  # if ( userp(ob) )  →  
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/npc/huangyi.c by LPCConverter
 # Zone: test
 
@@ -275,11 +345,21 @@ zones "test" {
     { id = items.cloth.id }
   ]
 
+
+  engage = {
+    fight = { accept = false msg = "小女子哪里是您的对手？" }
+    kill = { accept = false msg = "要杀人了，快来人救命啊！" spawn = ["baobiao"] }
+  }
     }
 
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (!ob)  →  
+  # if (query("called"))  →  
+  # if (is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (accept_kill) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: regenerate
@@ -315,11 +395,23 @@ zones "test" {
     { skill = "parry" level = 80 }
   ]
 
+
+  engage = {
+    fight = { accept = true }
+  }
     }
 
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (me->is_fighting())  →  say(GRN "\n江百胜说道：魏盟主泽被天下，福济苍生，他老人家算无遗策，功无不克，克无不胜！\n" NOR); message_vision(HIY "\n江百胜说完，全身不知打哪里冒出来的一股力气，不但功力尽复，拳力也威猛好多倍！\n" NOR, ob); say(GRN "\n江百胜说道：看来你小子跟我还差着一大截呢，回去练上十年再来吧！\n");
+  # if (!present(ob, environment()))  →  
+# ==== CONDITIONAL BRANCHES (checking) ====
+  # if (me->query("fight_times") >= 10)  →  
+  # if (!present(ob, environment()))  →  
+  # if (me->is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (accept_fight) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: checking
 # ==== UNHANDLED FUNCTIONS ====
@@ -370,6 +462,17 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (interactive(ob) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (query("gold_times") < 1)  →  
+  # if ((string)ob->query("id") != "xiuhua xie")  →  
+  # if (! present(ob, who))  →  
+  # if (! objectp(ob))  →  
+  # if (! who || environment(who) != environment())  →  
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -414,6 +517,14 @@ zones "test" {
   }
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("family/family_name") == "白驼山庄" || me->query("shen") < -1000)  →  
+# ==== CONDITIONAL BRANCHES (permit_pass) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/npc/shouwei.c by LPCConverter
 # Zone: test
 
@@ -434,11 +545,27 @@ zones "test" {
     { kind = "money" accept = true msg = "{npc}对{name}施了一礼。" },
     { kind = "any" accept = false msg = "{npc}对{name}施了一礼。" }
   ]
+
+  engage = {
+    fight = { accept = false msg = "{npc}吓了一跳，慌忙对{name}道：“小的不敢，小的不敢！”" }
+    hit = { accept = false msg = "{npc}连忙摆摆手，对{name}道：“可不要和我开这种玩笑！”" }
+    kill = { accept = false msg = "{npc}一声长叹，道：“既然主人不留我了，罢罢罢！合则留，不合则去！我走了。”\n说罢，{npc}一扬手，切下一角衣抉，飘然而去。" }
+  }
     }
 
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (userp(who))  →  message_vision("$N对$n施了一礼。\n", this_object(), who);
+  # if (!ob->query("money_id"))  →  
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if (userp(ob))  →  message_vision("$N一声长叹，道：“既然主人不留我了，罢" "罢罢！合则留，不合则去！我走了。”\n" "说罢，$N一扬手，切下一角衣抉，飘然而去。\n", this_object(), ob);
+# ==== CONDITIONAL BRANCHES (accept_kill) ====
+  # if (userp(ob))  →  message_vision("$N连忙摆摆手，对$n道：“可不要和我开这" "种玩笑！”\n", this_object(), ob);
+# ==== CONDITIONAL BRANCHES (accept_hit) ====
+  # if (userp(ob))  →  message_vision("$N吓了一跳，慌忙对$n道：“小的不敢，小" "的不敢！”\n", this_object(), ob);
+# ==== CONDITIONAL BRANCHES (accept_fight) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: accept_hit
   # UNHANDLED FUNCTION: accept_kill
@@ -476,6 +603,19 @@ zones "test" {
   # RAW BLOCK: heart_beat
   # heart_beat: object *obs; object ob; object owner; string startroom; int amount; mapping goods; ::heart_beat(); if (!environment()) return; if (!stringp(startroom = query("startroom")) || find_object(startroom) != environment()) return; obs = all_inventory(environment()); obs = filter_array(obs, (: filter_ob :)); if (sizeof(obs) < 1) { set_heart_beat(0); return;
 # ==== RAW CODE BLOCKS ====
+  # if (sizeof(obs) < 2)  →  
+  # if (ob->query_temp("job/owner") == owner)  →  
+  # if (sizeof(obs) < 1)  →  
+  # if (!stringp(startroom = query("startroom")) || find_object(startroom) != environment())  →  
+  # if (!environment())  →  
+# ==== CONDITIONAL BRANCHES (heart_beat) ====
+  # if (ob->query_temp("goods/amount") < 1)  →  
+  # if (ob->query_temp("goods/id") != CHECK_GOODS)  →  
+  # if (environment(owner) != environment())  →  
+  # if (!objectp(owner))  →  
+  # if (!ob->is_transport())  →  
+# ==== CONDITIONAL BRANCHES (filter_ob) ====
+# ==== CONDITIONAL BRANCHES ====
   # COMPLEX MAPPING: (["exp":2000 + random(2000), "pot":1500 + random(1500), "score":30 + random(30), "prompt":"通过这次押送" + goods["name"]
 # ==== COMPLEX MAPPINGS ====
   # UNHANDLED FUNCTION: filter_ob
@@ -524,6 +664,12 @@ zones "test" {
     greet_delay = 0
     add_actions = ["join", "hit", "kill", "touxi", "fight"]
   }
+
+  engage = {
+    fight = { accept = false msg = "给我滚进去，跑到这里来瞎胡闹什么！" }
+    hit = { accept = true msg = "给我滚进去，跑到这里来瞎胡闹什么！" retaliate = true }
+    kill = { accept = true msg = "给我滚进去，跑到这里来瞎胡闹什么！" retaliate = true }
+  }
     }
 
 # ========================================
@@ -531,6 +677,27 @@ zones "test" {
 # ========================================
   # COMPLEX IF: if (arg != "wu dunru" && arg != "wu" && arg != "dunru") { message_vision(CYN "\n武敦儒喝道：什么人？郭府门" "前可由不得你放肆！\n" NOR, ob); return 1; } return 0; } int do_join(string arg) { object ob = this_player(); if (!arg && arg != "guofu" && arg != "郭府") return notify_fail(CYN "武敦儒眉头一皱，道：你到" "底要干什么？怎么说话吞吞吐吐" "的？\n" NOR); if (ob->query("mark/guofu_over")) return notify_fail(CYN "武敦儒冷笑道：师傅让你走" "开，你还赖在这里干嘛？\n" NOR); if (ob->query("mark/guofu_ok")) return notify_fail(CYN "武敦儒皱眉道：你不是已经" "进来了吗？赶快干活去，罗嗦什" "么？\n" NOR); if (ob->query("combat_exp") > 5000) return notify_fail(CYN "武敦儒微笑道：让你来打杂" "可太委屈你了，你还是另谋出路" "吧。\n" NOR); if (ob->query_temp("mark/guofu_join")) { message_vision(HIC "\n$N" HIC "对$n" HIC "点了点" "头，说道：甚好，甚好。入了郭府一" "切就要\n按规矩办事，你现在去耶律" "帮主那里，他会帮你安排事情的。\n" "\n", this_object(), ob); ob->set("mark/guofu_ok", 1); ob->set("startroom", "/d/wuguan/guofu_dayuan"); ob->delete_temp("mark/guofu_join"); } else { command("nod"); command("whisper " + ob->query("id") + " 你进郭" "府之后我们会确保你的安\n全，但是经验在" HIW "四万" NOR + WHT "前不能离开郭府。如" "果你决定下来了，请\n再输入一次此命令。" "\n" NOR); ob->set_temp("mark/guofu_join", 1); }
 # ==== COMPLEX CONDITIONALS ====
+  # if (interactive(ob = this_player()) && !is_fighting())  →  command("say 这位" + RANK_D->query_respect(ob) + "，武功这么差，怎么闯江湖呢？\n"); command("look " + ob->query("id")); command("haha"); command("sneer " + ob->query("id")); command("nod " + ob->query("id")); command("hi " + ob->query("id")); command("say 现襄阳正值动乱时期，不及招呼，还请恕罪。"); command("hmm"); command("say 赶快干活去，没事瞎溜达什么？");
+# ==== CONDITIONAL BRANCHES (init) ====
+  # if (arg != "wu dunru" && arg != "wu" && arg != "dunru")  →  message_vision(CYN "\n武敦儒喝道：什么人？郭府门" "前可由不得你放肆！\n" NOR, ob);
+# ==== CONDITIONAL BRANCHES (do_kill) ====
+  # else  →  command("nod"); command("whisper " + ob->query("id") + " 你进郭" "府之后我们会确保你的安\n全，但是经验在" HIW "四万" NOR + WHT "前不能离开郭府。如" "果你决定下来了，请\n再输入一次此命令。" "\n" NOR);
+  # if (ob->query_temp("mark/guofu_join"))  →  message_vision(HIC "\n$N" HIC "对$n" HIC "点了点" "头，说道：甚好，甚好。入了郭府一" "切就要\n按规矩办事，你现在去耶律" "帮主那里，他会帮你安排事情的。\n" "\n", this_object(), ob);
+  # if (ob->query("combat_exp") > 5000)  →  
+  # if (ob->query("mark/guofu_ok"))  →  
+  # if (ob->query("mark/guofu_over"))  →  
+  # if (!arg && arg != "guofu" && arg != "郭府")  →  
+# ==== CONDITIONAL BRANCHES (do_join) ====
+  # else  →  command("say 找死。\n");
+  # if (ob->query("mark/guofu_ok"))  →  command("say 给我滚进去，跑到这里来瞎胡闹什么！");
+# ==== CONDITIONAL BRANCHES (accept_kill) ====
+  # else  →  command("say 找死。\n");
+  # if (ob->query("mark/guofu_ok"))  →  command("say 给我滚进去，跑到这里来瞎胡闹什么！");
+# ==== CONDITIONAL BRANCHES (accept_hit) ====
+  # else  →  command("say 我现在没空。\n");
+  # if (ob->query("mark/guofu_ok"))  →  command("say 给我滚进去，跑到这里来瞎胡闹什么！");
+# ==== CONDITIONAL BRANCHES (accept_fight) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: accept_hit
   # UNHANDLED FUNCTION: accept_kill
@@ -576,8 +743,70 @@ zones "test" {
   # RAW BLOCK: heart_beat
   # heart_beat: string start_room; object ob; if (stringp(start_room = query("startroom")) && find_object(start_room) == environment()) { foreach (ob in all_inventory(environment())) { if (!ob->is_character() || interactive(ob) || playerp(ob) || ob->query_temp("owner")) continue; if (stringp(start_room = ob->query("startroom")) && find_object(start_room) == environment()) continue; if ((string)ob->query("id") == "corpse") message_vision(HIC "\n$N" HIC "站起身，把$n" HIC "拎到" "门外，然后又若无其事地走了回来。\n\n" NOR, this_object(), ob); else message_vision(CYN "\n$N" CYN "对$n" CYN "满脸歉然地说" "道：对不住，小店已经满座了。\n" HIC "$n" HIC "听后一愣，摇了摇头，骂骂咧咧地转身" "离去。\n" NOR, this_object(), ob); ob->move("/d/city/beidajie1");
 # ==== RAW CODE BLOCKS ====
-  # SWITCH: switch (arg) { case "血菩提": cost = 5; ob = new ("/clone/fam/pill/puti1"); break; case "舍利子": cost = 5; ob = new ("/clone/fam/pill/sheli1"); break; case "昊天果": cost = 5; ob = new ("/clone/fam/pill/linghui1"); break; case "壮骨粉": cost = 5; ob = new ("/clone/fam/gift/con1"); break; case "福寿膏": cost = 5; ob = new ("/clone/fam/gift/dex1"); break; case "增慧丹": cost = 5; ob = new ("/clone/fam/gift/int1"); break; case "神力丸": cost = 5; ob = new ("/clone/fam/gift/str1"); break; case "冰菩提": cost = 10; ob = new ("/clone/fam/pill/puti3"); break; case "昊天丹": cost = 10; ob = new ("/clone/fam/pill/linghui2"); break; case "帝者舍利": cost = 10; ob = new ("/clone/fam/pill/sheli3"); break; case "菩提子": cost = 15; ob = new ("/clone/fam/pill/puti4"); break; case "圣舍利": cost = 15; ob = new ("/clone/fam/pill/sheli4"); break; case "百年人参": cost = 15; ob = new ("/clone/fam/pill/renshen1"); break; case "百年灵芝": cost = 15; ob = new ("/clone/fam/pill/lingzhi1"); break; case "天山雪莲": cost = 15; ob = new ("/clone/fam/pill/xuelian1"); break; case "百年参心丹": cost = 20; ob = new ("/clone/fam/pill/renshen3"); break; case "天山雪莲膏": cost = 20; ob = new ("/clone/fam/pill/xuelian3"); break; case "百年灵芝丸": cost = 20; ob = new ("/clone/fam/pill/lingzhi3"); break; case "玄武铸骨丹": cost = 30; ob = new ("/clone/fam/gift/con2"); break; case "朱雀玲珑丹": cost = 30; ob = new ("/clone/fam/gift/dex2"); break; case "青龙炼睿丹": cost = 30; ob = new ("/clone/fam/gift/int2"); break; case "白虎赐元丹": cost = 30; ob = new ("/clone/fam/gift/str2"); break; case "千年参心丹": cost = 40; ob = new ("/clone/fam/pill/renshen4"); break; case "千年雪莲丹": cost = 40; ob = new ("/clone/fam/pill/xuelian4"); break; case "千年灵芝丸": cost = 40; ob = new ("/clone/fam/pill/lingzhi4"); break; case "洗髓再造仙丹": cost = 50; ob = new ("/clone/fam/gift/con3"); break; case "破阳无极仙丹": cost = 50; ob = new ("/clone/fam/gift/dex3"); break; case "神恩通慧仙丹": cost = 50; ob = new ("/clone/fam/gift/int3"); break; case "蚩尤诛元仙丹": cost = 50; ob = new ("/clone/fam/gift/str3"); break; case "子午龙甲丹": cost = 80; ob = new ("/clone/fam/max/longjia"); break; case "玄黄紫箐丹": cost = 80; ob = new ("/clone/fam/max/xuanhuang"); break; case "镇狱惊天丸": cost = 100; ob = new ("/clone/fam/max/zhenyu"); break; default: return notify_fail(CYN "店小二对你摇摇头道：你只能兑换" "规定范围内的物品。\n" NOR); }
-# ==== SWITCH STATEMENTS ====
+  # if (interactive(ob = this_player()) && !is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+  # if (stringp(start_room = query("startroom")) && find_object(start_room) == environment())  →  message_vision(HIC "\n$N" HIC "站起身，把$n" HIC "拎到" "门外，然后又若无其事地走了回来。\n\n" NOR, this_object(), ob); message_vision(CYN "\n$N" CYN "对$n" CYN "满脸歉然地说" "道：对不住，小店已经满座了。\n" HIC "$n" HIC "听后一愣，摇了摇头，骂骂咧咧地转身" "离去。\n" NOR, this_object(), ob);
+# ==== CONDITIONAL BRANCHES (heart_beat) ====
+  # if (!ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (!ob)  →  
+  # if (jifen < cost)  →  
+  # if (!arg)  →  
+  # if (!jifen)  →  
+# ==== CONDITIONAL BRANCHES (do_exchange) ====
+  # if (!random(5))  →  command("say 你不要我要！"); command("sigh " + this_player()->query("id")); command("say 糟蹋啊，作孽啊！"); command("say 败家子，败家子！"); command("heihei");
+  # if (!obs[i]->is_character())  →  
+  # if (!GET_CMD->main(this_object(), arg))  →  
+  # if (!DROP_CMD->main(me, arg))  →  
+  # if (objectp(ob = present(arg, me)) && ob->is_character() && !playerp(ob))  →  message_vision(CYN "\n$N" CYN "大怒道：好你个" + RANK_D->query_rude(ob) + CYN "，还敢来添乱？\n" NOR + HIC "说罢$N" HIC "一声大" "叫，北丑顿时冲了出来，飞起两脚，将$n" HIC "和" + ob->name() + HIC "一起踢了出去。\n\n" NOR, this_object(), me); message_vision(CYN "\n$N" CYN "怒道：晦气，晦气！这里又不是棺材店，你搬个要死" "的人进来干嘛？\n" NOR + HIC "说罢$N" HIC "一招手，顿时来了一群" "彪形大汉，将$n" HIC "和" + ob->name() + HIC "一起赶了出去。\n\n" NOR, this_object(), me);
+  # if (!arg)  →  
+# ==== CONDITIONAL BRANCHES (do_drop) ====
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+  # if (!ob->is_character())  →  
+  # if (ob->query("money_id") && ob->value() >= 1000)  →  tell_object(me, CYN "小二一哈腰，说道：多谢您老，客官请上楼歇息。\n" NOR);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(4)) { case 0: command("say 你不要我要！"); break; case 1: command("sigh " + this_player()->query("id")); command("say 糟蹋啊，作孽啊！"); break; case 2: command("say 败家子，败家子！"); break; default: command("heihei"); break; }
+  # SWITCH POOL: switch (random(6)) { case 0: command("say 好！好！"); break; case 1: command("say 不需要的东西全给我！"); break; }
+  # SWITCH POOL: switch (random(2)) { case 0: say(CYN "店小二笑咪咪地说道：这位" + RANK_D->query_respect(ob) + CYN + "，进来喝杯茶，歇歇腿吧。\n" NOR); break; case 1: say(CYN "店小二用脖子上的毛巾抹了抹手，说道：这位" + RANK_D->query_respect(ob) + CYN + "，请进请进。\n" NOR); break; }
+  # SWITCH POOL: switch (random(5)) { case 0: return "嗨！我忙着呢，你和我那醉仙楼做活的兄弟聊聊吧！"; case 1: return "你干啥？没看我忙着呢么？"; case 2: return "哎呀呀，你没看我忙着呢么，要打听消息你去找我醉仙楼做活的兄弟吧？"; case 3: return "春来茶馆的老板娘阿庆嫂消息也灵通，那些爷们什么都告诉她，要不你问她去？"; default: return "我那醉仙楼做活的兄弟消息才叫灵通，你去和他聊吧。"; }
+# ==== SWITCH POOLS ====
+  #   镇狱惊天丸: cost=100 ob=new ("/clone/fam/max/zhenyu")
+  #   玄黄紫箐丹: cost=80 ob=new ("/clone/fam/max/xuanhuang")
+  #   子午龙甲丹: cost=80 ob=new ("/clone/fam/max/longjia")
+  #   蚩尤诛元仙丹: cost=50 ob=new ("/clone/fam/gift/str3")
+  #   神恩通慧仙丹: cost=50 ob=new ("/clone/fam/gift/int3")
+  #   破阳无极仙丹: cost=50 ob=new ("/clone/fam/gift/dex3")
+  #   洗髓再造仙丹: cost=50 ob=new ("/clone/fam/gift/con3")
+  #   千年灵芝丸: cost=40 ob=new ("/clone/fam/pill/lingzhi4")
+  #   千年雪莲丹: cost=40 ob=new ("/clone/fam/pill/xuelian4")
+  #   千年参心丹: cost=40 ob=new ("/clone/fam/pill/renshen4")
+  #   白虎赐元丹: cost=30 ob=new ("/clone/fam/gift/str2")
+  #   青龙炼睿丹: cost=30 ob=new ("/clone/fam/gift/int2")
+  #   朱雀玲珑丹: cost=30 ob=new ("/clone/fam/gift/dex2")
+  #   玄武铸骨丹: cost=30 ob=new ("/clone/fam/gift/con2")
+  #   百年灵芝丸: cost=20 ob=new ("/clone/fam/pill/lingzhi3")
+  #   天山雪莲膏: cost=20 ob=new ("/clone/fam/pill/xuelian3")
+  #   百年参心丹: cost=20 ob=new ("/clone/fam/pill/renshen3")
+  #   天山雪莲: cost=15 ob=new ("/clone/fam/pill/xuelian1")
+  #   百年灵芝: cost=15 ob=new ("/clone/fam/pill/lingzhi1")
+  #   百年人参: cost=15 ob=new ("/clone/fam/pill/renshen1")
+  #   圣舍利: cost=15 ob=new ("/clone/fam/pill/sheli4")
+  #   菩提子: cost=15 ob=new ("/clone/fam/pill/puti4")
+  #   帝者舍利: cost=10 ob=new ("/clone/fam/pill/sheli3")
+  #   昊天丹: cost=10 ob=new ("/clone/fam/pill/linghui2")
+  #   冰菩提: cost=10 ob=new ("/clone/fam/pill/puti3")
+  #   神力丸: cost=5 ob=new ("/clone/fam/gift/str1")
+  #   增慧丹: cost=5 ob=new ("/clone/fam/gift/int1")
+  #   福寿膏: cost=5 ob=new ("/clone/fam/gift/dex1")
+  #   壮骨粉: cost=5 ob=new ("/clone/fam/gift/con1")
+  #   昊天果: cost=5 ob=new ("/clone/fam/pill/linghui1")
+  #   舍利子: cost=5 ob=new ("/clone/fam/pill/sheli1")
+  #   血菩提: cost=5 ob=new ("/clone/fam/pill/puti1")
+  # ----------------------------------------------------------------
+  # SWITCH TABLE (expr: arg)
+# ==== SWITCH TABLES ====
   # UNHANDLED FUNCTION: accept_ask
   # UNHANDLED FUNCTION: do_drop
   # UNHANDLED FUNCTION: do_exchange
@@ -656,6 +885,14 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (ob->query("money_id"))  →  message_vision("$N接过$n给的钱，笑道：好！请押注。\n", this_object(), who);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/axe.c by LPCConverter
 # Zone: test
 
@@ -669,6 +906,15 @@ zones "test" {
     "unwield"
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/obj/bigbox.c by LPCConverter
 # Zone: test
@@ -685,6 +931,10 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # else  →  
+  # if (query("open_count") > 0)  →  message_vision(HIR "$N伸手打开铁盒，只见眼前黑影骤起，原来盒里是毒箭！\n" NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_open) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_open
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -703,6 +953,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/blade1.c by LPCConverter
 # Zone: test
 
@@ -716,6 +975,15 @@ zones "test" {
     "unwield"
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/obj/blade2.c by LPCConverter
 # Zone: test
@@ -731,6 +999,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/blade3.c by LPCConverter
 # Zone: test
 
@@ -745,6 +1022,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/bottle.c by LPCConverter
 # Zone: test
 
@@ -756,6 +1042,15 @@ zones "test" {
     "drop"
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/obj/box.c by LPCConverter
 # Zone: test
@@ -772,6 +1067,16 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if ( me->query("combat_exp") <= -500 && this_object()->query("amount") >=10 && random(2) == 1 )  →  tell_object(me, "\n你忽然看到功德箱里有什麽东西在闪闪发光！\n\n");
+# ==== CONDITIONAL BRANCHES (init) ====
+  # if ( obj->query("money_id") == "silver" && obj->query_amount() >= 5 && amount >= 5 )  →  message_vision( sprintf(HIY "$N将一%s%s放进%s。\n" NOR, obj->query("unit"), obj->name(), this_object()->name()),me );
+  # if ( sscanf(arg, "%s in %s", item, target)!=2 || sscanf(item, "%d %s", amount, item)!=2 || !objectp(obj = present(item, me)) )  →  
+  # if (!arg)  →  
+# ==== CONDITIONAL BRANCHES (do_put) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_put
   # UNHANDLED FUNCTION: is_container
 # ==== UNHANDLED FUNCTIONS ====
@@ -789,6 +1094,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/cloth1.c by LPCConverter
 # Zone: test
 
@@ -800,6 +1114,15 @@ zones "test" {
     "drop"
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/obj/cloth2.c by LPCConverter
 # Zone: test
@@ -813,6 +1136,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/cloth3.c by LPCConverter
 # Zone: test
 
@@ -824,6 +1156,15 @@ zones "test" {
     "drop"
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/obj/cloth4.c by LPCConverter
 # Zone: test
@@ -837,6 +1178,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/cloth5.c by LPCConverter
 # Zone: test
 
@@ -849,6 +1199,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/cloth6.c by LPCConverter
 # Zone: test
 
@@ -860,6 +1219,15 @@ zones "test" {
     "drop"
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/obj/dagger.c by LPCConverter
 # Zone: test
@@ -875,6 +1243,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/food.c by LPCConverter
 # Zone: test
 
@@ -887,6 +1264,15 @@ zones "test" {
     "eat"
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/obj/fork.c by LPCConverter
 # Zone: test
@@ -902,6 +1288,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/gangdao.c by LPCConverter
 # Zone: test
 
@@ -916,6 +1311,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/goldcloth1.c by LPCConverter
 # Zone: test
 
@@ -928,6 +1332,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/goldcloth2.c by LPCConverter
 # Zone: test
 
@@ -939,6 +1352,15 @@ zones "test" {
     "drop"
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/obj/hammer.c by LPCConverter
 # Zone: test
@@ -954,6 +1376,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/head.c by LPCConverter
 # Zone: test
 
@@ -965,6 +1396,15 @@ zones "test" {
     "drop"
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/obj/jinship.c by LPCConverter
 # Zone: test
@@ -990,6 +1430,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/mace.c by LPCConverter
 # Zone: test
 
@@ -1003,6 +1452,15 @@ zones "test" {
     "unwield"
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/obj/mingshijilue.c by LPCConverter
 # Zone: test
@@ -1028,6 +1486,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/rice.c by LPCConverter
 # Zone: test
 
@@ -1040,6 +1507,15 @@ zones "test" {
     "eat"
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/obj/ship.c by LPCConverter
 # Zone: test
@@ -1068,6 +1544,13 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # else  →  
+  # if (query("open_count") > 0)  →  message_vision(HIR "$N伸手打开铁盒，盒子里有三本书，上写《金蛇秘笈》四字，用 钳子揭开数页，见写满密密小字，又有许多图画。有的是地图， 有的是武术姿势，更有些兵刃机关的图样。\n" NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_open) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_open
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -1086,6 +1569,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/throwing.c by LPCConverter
 # Zone: test
 
@@ -1097,6 +1589,15 @@ zones "test" {
     "drop"
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/obj/waist.c by LPCConverter
 # Zone: test
@@ -1110,6 +1611,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/water.c by LPCConverter
 # Zone: test
 
@@ -1121,6 +1631,15 @@ zones "test" {
     "drop"
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/obj/whip.c by LPCConverter
 # Zone: test
@@ -1134,6 +1653,15 @@ zones "test" {
   ]
     }
 
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/obj/wine.c by LPCConverter
 # Zone: test
 
@@ -1145,6 +1673,15 @@ zones "test" {
     "drop"
   ]
     }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/obj/wuzhirong.c by LPCConverter
 # Zone: test
@@ -1191,6 +1728,39 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (! can_talk_with(me, knower))  →  
+# ==== CONDITIONAL BRANCHES (whisper_to3) ====
+  # if (! can_talk_with(me, knower))  →  
+# ==== CONDITIONAL BRANCHES (whisper_to2) ====
+  # if (! can_talk_with(me, knower))  →  
+# ==== CONDITIONAL BRANCHES (whisper_to1) ====
+  # if (! clonep() || ! mapp(my))  →  
+# ==== CONDITIONAL BRANCHES (register_information) ====
+  # if (! objectp(NPC3))  →  
+  # if (objectp(NPC3) && ! objectp(NPC2) && ! objectp(NPC1))  →  
+  # if (objectp(NPC2) && ! objectp(NPC1))  →  
+  # if (objectp(NPC1))  →  
+# ==== CONDITIONAL BRANCHES (query_introduce) ====
+  # if (me->query("combat_exp") < NPC3->query("combat_exp") / 2)  →  
+  # if (! objectp(NPC3))  →  
+  # if (objectp(NPC1) || objectp(NPC2))  →  
+# ==== CONDITIONAL BRANCHES (ask_npc3) ====
+  # if (me->query("combat_exp") < NPC2->query("combat_exp") / 2)  →  
+  # if (! objectp(NPC2))  →  
+  # if (objectp(NPC1))  →  
+  # if (! objectp(NPC2) && objectp(NPC1))  →  
+# ==== CONDITIONAL BRANCHES (ask_npc2) ====
+  # if (me->query("combat_exp") < NPC1->query("combat_exp") / 2)  →  
+  # if (! objectp(NPC1))  →  
+# ==== CONDITIONAL BRANCHES (ask_npc1) ====
+  # if (! objectp(NPC1))  →  
+# ==== CONDITIONAL BRANCHES (ask_3_for_1) ====
+  # if (! objectp(NPC1))  →  
+# ==== CONDITIONAL BRANCHES (ask_2_for_1) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(3)) { case 0: return "别说见过，我连听都没听说过。"; case 1: return "我不清楚，我看你还是找别人问问吧。"; default: return "不认识，不认识。"; }
+  # SWITCH POOL: switch (random(3)) { case 0: return "别说见过，我连听都没听说过。"; case 1: return "我不清楚，我看你还是找别人问问吧。"; default: return "不认识，不认识。"; }
+# ==== SWITCH POOLS ====
   # UNHANDLED FUNCTION: ask_2_for_1
   # UNHANDLED FUNCTION: ask_3_for_1
   # UNHANDLED FUNCTION: ask_3_for_2
@@ -1219,6 +1789,47 @@ zones "test" {
 # ========================================
   # COMPLEX IF: if (AMOUNT < 1) { message_vision(CYN "$N" CYN "抹了抹头上的汗，道：总算全运到了，这事可真够罗嗦的。\n" NOR, me); CHANNEL_D->do_channel(find_object(QUEST_D), "rumor", "听说" + who->name(1) + "(" + who->query("id") + ")替" + me->name() + HIM "安全送到了" + "一批" + ob->name() + HIM "。" NOR); call_out("do_finish", 4); change_status("stopping"); } else call_out("do_notice", 1 + random(3), me, who, ob); exp = 50 + random(50); exp *= ob->query_amount(); pot = 20 + random(20); pot *= ob->query_amount(); score = 4 + random(4); score *= ob->query_amount(); if (who->query("combat_exp") > 1000000) { exp = exp / 2 + 1; pot = pot / 2 + 1; score = score / 2 + 1; } if (mapp(b = query("bonus/" + who->query("id")))) { b["exp"] += exp; b["pot"] += pot; b["score"] += score; } else { b = ([ "exp":exp, "pot":pot, "score":score, "prompt":"经过这次帮助" + me->name() + "运送" + ob->name() + "的事情", ]); set("bonus/" + who->query("id"), b); call_out("do_bonus", 2 + random(2), who->query("id"), who); }
 # ==== COMPLEX CONDITIONALS ====
+  # if (!clonep() || !mapp(my))  →  
+# ==== CONDITIONAL BRANCHES (register_information) ====
+  # else  →  
+  # if (mapp(b = query("bonus/" + who->query("id"))))  →  
+  # if (who->query("combat_exp") > 1000000)  →  
+  # else  →  
+  # if (AMOUNT < 1)  →  message_vision(CYN "$N" CYN "抹了抹头上的汗，道：总算全运到了，这事可真够罗嗦的。\n" NOR, me);
+  # if (me->is_fighting())  →  
+  # if (ob->query("id") != QOB_ID)  →  message_vision(CYN "$N" CYN "瞪着$n" CYN "，使劲的摇着头道：我要这干什么？\n" NOR, me, who);
+  # if (ob->is_character() || ob->is_item_make())  →  message_vision(CYN "$N" CYN "瞪着$n" CYN "，使劲的摇着头道：我要这干什么？\n" NOR, me, who);
+# ==== CONDITIONAL BRANCHES (npc_accept_object) ====
+  # else  →  
+  # if (objectp(qob = find_object(qob_name)))  →  
+# ==== CONDITIONAL BRANCHES (init_quest) ====
+  # if (!can_talk_with(knower, me))  →  
+# ==== CONDITIONAL BRANCHES (do_whisper) ====
+  # if (!can_talk_with(me, who))  →  
+# ==== CONDITIONAL BRANCHES (do_notice) ====
+  # if (sizeof(query("bonus")) > 0)  →  
+# ==== CONDITIONAL BRANCHES (do_finish) ====
+  # if (!mapp(b) || !objectp(who) || !living(who))  →  
+# ==== CONDITIONAL BRANCHES (do_bonus) ====
+  # if (objectp(QOB))  →  
+  # if (objectp(NPC2))  →  
+  # if (objectp(NPC1))  →  
+  # if (!mapp(my))  →  
+# ==== CONDITIONAL BRANCHES (cancel_quest) ====
+  # if (!objectp(QOB))  →  
+# ==== CONDITIONAL BRANCHES (ask_qob) ====
+  # if (me->query("score") < 500)  →  
+  # if (!objectp(NPC2))  →  
+# ==== CONDITIONAL BRANCHES (ask_npc2) ====
+  # if (!objectp(NPC1))  →  
+# ==== CONDITIONAL BRANCHES (ask_npc1) ====
+  # else  →  
+  # if (objectp(qob) && environment(qob) == npc2 && qob->query_amount())  →  message_vision(CYN "$N" CYN "打量了$n" CYN "半天，" "点点头道：好吧，这批货可是非常重要" "的，你一定要准时送到啊。\n" NOR, npc2, me); tell_object(me, HIY + npc2->name() + HIY "把一" + qob->query("base_unit") + qob_name + HIY "交给了你托运。\n" NOR); tell_object(me, CYN + npc2->name() + CYN "突然脸色一变，大叫道：我的" + qob_name + CYN "呢？怎么不见了？\n" NOR); message_vision(CYN "$N" CYN "眯着眼睛瞥了$n" CYN "一" "眼，叹了口气道：" + RANK_D->query_respect(me) + CYN "，这批货你运得了么？\n" NOR, npc2, me);
+  # if (me->query("score") < 1000)  →  message_vision(CYN "$N" CYN "眯着眼睛瞥了$n" CYN "一眼，哼" "了一声道：这批货给你？我可不放心。”\n" NOR, npc2, me);
+# ==== CONDITIONAL BRANCHES (ask_for_qob) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(3)) { case 0: return CYN "倒是最近听来往的商人说起『" HIY + name() + NOR CYN "』的事来。"; case 1: return "也没什么大事，只是听说过『" HIY + name() + NOR CYN "』的事罢了。"; default: return "前两天还听人家说起『" HIY + name() + NOR CYN "』的事呢。"; }
+# ==== SWITCH POOLS ====
   # UNHANDLED FUNCTION: ask_npc1
   # UNHANDLED FUNCTION: ask_npc2
   # UNHANDLED FUNCTION: ask_qob
@@ -1245,6 +1856,47 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (mapp(dq = me->query_temp("freequest")) && dq[this_object()])  →  
+  # if (!environment(me)->query("no_fight") && random(100) < 10)  →  message_vision(HIW "\n突然窜出一个黑影，恶狠狠的对$N" HIW "骂道：" + RANK_D->query_rude(me) + "！你在这儿干啥？\n" NOR, me);
+  # if (objectp(environment(QOB)))  →  
+  # if (!objectp(QOB))  →  
+  # if (me->query("score") < 2000)  →  
+# ==== CONDITIONAL BRANCHES (search_qob) ====
+  # if (!objectp(npc_ob = NPC_OB))  →  
+# ==== CONDITIONAL BRANCHES (restore_npc) ====
+  # if (!objectp(env = ENV_OB))  →  
+# ==== CONDITIONAL BRANCHES (restore_env) ====
+  # if (!clonep() || !mapp(my))  →  
+# ==== CONDITIONAL BRANCHES (register_information) ====
+  # if (!objectp(NPC))  →  
+# ==== CONDITIONAL BRANCHES (query_introduce) ====
+  # if (base_name(environment(me)) != me->query("startroom"))  →  message_vision("$N望着$n，一副白痴模样。\n", me, who);
+  # if (me->is_fighting())  →  
+  # if (ob != QOB)  →  
+  # if (ob->is_character() || ob->is_item_make())  →  
+# ==== CONDITIONAL BRANCHES (npc_accept_object) ====
+  # if (mapp(env->query("exits")))  →  
+  # if (!objectp(env = find_object(room)))  →  
+  # else  →  
+  # if (objectp(qob = find_object(qob_name)))  →  
+  # if (npc_ob->query_temp("quest_ob"))  →  
+# ==== CONDITIONAL BRANCHES (init_quest) ====
+  # if (!objectp(knower) || !living(knower))  →  
+# ==== CONDITIONAL BRANCHES (do_say) ====
+  # if (objectp(QOB) && !environment(QOB))  →  
+# ==== CONDITIONAL BRANCHES (cancel_quest) ====
+  # if (!stringp(ZONE) || strlen(ZONE) < 1 || ZONE == fname[0..strlen(ZONE)-1])  →  
+# ==== CONDITIONAL BRANCHES (can_know_by) ====
+  # else  →  
+  # if (me->query("score") >= 2000)  →  tell_object(me, sort_msg(knower->name() + "看了看四周，鬼鬼祟祟的在你耳边说道：“你可千万" "别告诉别人呀！这可是我听到的秘密情报，" "今天我不要钱就告诉你了：据说那个东西在一个" + exits + "的地方，离咱们这里也不算太远呢。你到那里仔细找找没准会有发现呢！”\n"));
+  # if (environment(QOB))  →  
+  # if (!objectp(QOB) || !objectp(env = ENV_OB) && !environment(QOB))  →  
+# ==== CONDITIONAL BRANCHES (ask_qob) ====
+  # if (!objectp(NPC_OB))  →  
+# ==== CONDITIONAL BRANCHES (ask_npc) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(3)) { case 0: return CYN "最近听来往的客人谈起过『" HIY + name() + NOR CYN "』来。"; case 1: return "噢！楼上住店的那几个客人刚才说什么『" HIY + name() + NOR CYN "』呢。"; default: return "前两天来过几个江湖人士，一看就是高手，他们还说起过『" HIY + name() + NOR CYN "』呢。"; }
+# ==== SWITCH POOLS ====
   # UNHANDLED FUNCTION: ask_npc
   # UNHANDLED FUNCTION: ask_qob
   # UNHANDLED FUNCTION: can_know_by
@@ -1271,6 +1923,34 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (!can_talk_with(me, knower))  →  
+# ==== CONDITIONAL BRANCHES (whisper_to) ====
+  # if (!clonep() || !mapp(my))  →  
+# ==== CONDITIONAL BRANCHES (register_information) ====
+  # if (!objectp(NPC2))  →  
+# ==== CONDITIONAL BRANCHES (query_introduce) ====
+  # if (who->query("quest/freequest") > 0)  →  
+  # if (ob != QOB)  →  message_vision(CYN "$N" CYN "瞪着$n" CYN "，看了半天" "才道：这是什么？\n" NOR, me, who);
+# ==== CONDITIONAL BRANCHES (npc_accept_object) ====
+  # else  →  
+  # if (objectp(qob = find_object(qob_name)))  →  
+# ==== CONDITIONAL BRANCHES (init_quest) ====
+  # if (!objectp(knower) || !living(knower))  →  
+# ==== CONDITIONAL BRANCHES (do_say) ====
+  # if (objectp(NPC2))  →  
+  # if (objectp(NPC1))  →  
+  # if (!mapp(my))  →  
+# ==== CONDITIONAL BRANCHES (cancel_quest) ====
+  # if (!objectp(QOB))  →  
+# ==== CONDITIONAL BRANCHES (ask_qob) ====
+  # if (me->query("combat_exp") < NPC2->query("combat_exp") / 2)  →  
+  # if (!objectp(NPC2))  →  
+# ==== CONDITIONAL BRANCHES (ask_npc2) ====
+  # if (!objectp(NPC1))  →  
+# ==== CONDITIONAL BRANCHES (ask_npc1) ====
+  # if (me->query("special_skill/trick"))  →  message_vision(HIM "$N" HIM "瞥了$n" HIM "一眼，咳嗽两声，对着" "$n" HIM "就聊了开来。\n" NOR, me, npc2); tell_object(me, HIC "你劝说" + npc2->name() + HIC "将" + qob_name + HIC "交出来，大家都了事。\n" NOR); message_vision(CYN "$N" CYN "叹了一口气，对$n" CYN "道：好了好了，你就别多说" "了！\n" NOR, npc2, me); tell_object(me, HIY + npc2->name() + HIY "把" + qob_name + HIY "交给了你。\n" NOR); message_vision(CYN "$N" CYN "叹了口气，对$n" CYN "说：你就别说了，那东西真的不在我" "身上！\n" NOR, npc2, me); message_vision(CYN "$N" CYN "眼睛一瞪，对着$n" CYN "骂道" "：滚开！少来给我废话！\n" NOR, npc2, me);
+# ==== CONDITIONAL BRANCHES (ask_for_qob) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: ask_npc1
   # UNHANDLED FUNCTION: ask_npc2
   # UNHANDLED FUNCTION: ask_qob
@@ -1294,6 +1974,21 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (!clonep() || !mapp(my))  →  
+# ==== CONDITIONAL BRANCHES (register_information) ====
+  # else  →  
+  # if (sscanf(file_name(environment(npc)), "/d/%s/%*s", ZONE) == 2)  →  
+  # else  →  
+  # if (type = random(2))  →  
+# ==== CONDITIONAL BRANCHES (init_quest) ====
+  # if (objectp(NPC_OB))  →  
+  # if (!mapp(my))  →  
+# ==== CONDITIONAL BRANCHES (cancel_quest) ====
+  # if (!stringp(ZONE) || strlen(ZONE) < 1 || ZONE == fname[0..strlen(ZONE)-1])  →  
+# ==== CONDITIONAL BRANCHES (can_know_by) ====
+  # if (!objectp(NPC_OB))  →  
+# ==== CONDITIONAL BRANCHES (ask_npc) ====
+# ==== CONDITIONAL BRANCHES ====
   # SWITCH: switch (TYPE) { case 0: return "听说朝廷正在通缉反贼" + NPC_NAME + "，啧啧，胆子大了，敢造反。"; case 1: return "据说官府正在捉拿飞贼" + NPC_NAME + "，这家伙，可不是好人啊。"; }
 # ==== SWITCH STATEMENTS ====
   # UNHANDLED FUNCTION: ask_npc
@@ -1362,6 +2057,36 @@ zones "test" {
   # COMPLEX IF: if (r==3 || r==5 || r==9 || r==11) { total = 3; win = "sx"; } else { total = 0; win = "none of them"; }
   # COMPLEX IF: if (dir == "south") { if (me->query_temp ("gamble_bet/amount") > 0) message_vision (CYN "$N" CYN "扔下押骰的钱，不要了。\n" NOR, me); me->delete_temp("gamble_bet"); } return ::valid_leave(me,dir); } void display_bet(object room, int i) { string str; switch (i) { case 1: str = "┌-----┐\n"+ "│ │\n"+ "│ ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 2: str = "┌-----┐\n"+ "│ │\n"+ "│ ● ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 3: str = "┌-----┐\n"+ "│● │\n"+ "│ ● │\n"+ "│ ●│\n"+ "└-----┘\n"; break; case 4: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; case 5: str = "┌-----┐\n"+ "│● ●│\n"+ "│ ● │\n"+ "│● ●│\n"+ "└-----┘\n"; break; case 6: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; } tell_room(room,str); } int rdm() { return random2(6) + 1; } void gamble_prepare() { object room = this_object(); tell_room (room, CYN "庄家唱道：新开盘！预叫头彩！\n" NOR); tell_room (room, CYN "庄家将两枚玉骰往银盘中一撒。\n" NOR); big[0] = rdm(); big[1] = rdm(); // keep two numbers different for a probability == 1/36 while (big[0] == big[1]) { reset_eval_cost(); big[1] = rdm(); } display_bet(room,big[0]); display_bet(room,big[1]); tell_room(room, CYN "\n庄家叫道：头彩骰号是「" HIY + chinese_number(big[0]) + NOR + CYN "」和「" HIY + chinese_number(big[1]) + NOR + CYN "」。\n\n" NOR); tell_room(room, CYN "接着庄家麻利地顺手将玉骰从盘中收回：现在开盘押钱！\n" NOR); room_status = 1; call_out("gamble_start",24); delete_temp("better"); } void gamble_start() { object room = this_object(); tell_room (room, CYN "庄家喊声：封盘停押！\n" NOR); tell_room (room, CYN "\n接着庄家又补叫道：本盘头彩骰号是「" HIY + chinese_number(big[0]) + NOR + CYN "」和「" HIY + chinese_number(big[1]) + NOR + CYN "」。\n\n" NOR); tell_room (room, CYN "然后庄家将两枚玉骰扔进两个金盅，一手持一盅摇将起来。\n" NOR); room_status = 2; call_out("gamble_perform", 6, 0); call_out("gamble_perform", 12, 1); call_out("gamble_finish", 18); } void gamble_perform (int i) { object room = this_object(); tell_room(room, HIY "\n金盅倒扣在银盘上，玉骰滚了出来。\n" NOR); res[i] = rdm(); display_bet (room,res[i]); } void player_wins(object who, int total) { object money = new("/clone/money/" + who->query_temp("gamble_bet/money")); int amount = who->query_temp("gamble_bet/amount"); total = total * amount; money->set_amount(total); message_vision(sprintf("$N赢了%s%s%s！\n", chinese_number(total), money->query("base_unit"), money->query("name")), who); money->move(who); } void player_loses(object who, int total) { object money = new("/clone/money/" + who->query_temp("gamble_bet/money")); total = who->query_temp("gamble_bet/amount"); message_vision(sprintf("庄家将$N押在银盘中的%s%s%s收走。\n", chinese_number(total), money->query("base_unit"), money->query("name")), who); destruct(money); } void gamble_finish() { string win; int total, i; object room = this_object(); object *list; if (res[0]==big[0] && res[1]==big[1]) { total = 36; win = "tc"; } else if (res[0]==res[1] && (res[0]/2*2 == res[0])) { total = 12; win = "sd"; } else { int r = res[0]+res[1]; if (r==7) { total = 6; win = "qx"; }
 # ==== COMPLEX CONDITIONALS ====
+  # if (dir == "south")  →  message_vision (CYN "$N" CYN "扔下押骰的钱，不要了。\n" NOR, me);
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if (room_status > 0)  →  
+  # if (! interactive(this_player()))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+  # if (environment(list[i]) == room)  →  
+  # if (! objectp(list[i]))  →  
+  # else  →  
+  # if (total == 0)  →  
+  # else  →  
+  # else if (res[0]==res[1] && (res[0]/2*2 == res[0]))  →  
+  # if (res[0]==big[0] && res[1]==big[1])  →  
+# ==== CONDITIONAL BRANCHES (gamble_finish) ====
+  # else  →  
+  # if (! arrayp(query_temp("better")))  →  
+  # else  →  
+  # if (amount == ob->query_amount())  →  
+  # if (room_status > 1)  →  
+  # if (me->query_temp("gamble_bet/amount") > 0)  →  
+  # if (ob->query("base_value") * amount > 100000)  →  
+  # if (amount > 10)  →  
+  # if (amount > ob->query_amount())  →  
+  # if (amount < 1)  →  
+  # if (! ob)  →  
+  # if (what != "tc" && what != "sd" && what != "qx" && what != "sx")  →  
+  # if (! arg || sscanf (arg,"%s %d %s", what, amount, money) != 3)  →  
+  # if (! living(zj))  →  
+  # if (! objectp(zj = present("zhuang jia", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (do_bet) ====
+# ==== CONDITIONAL BRANCHES ====
   # SWITCH: switch (i) { case 1: str = "┌-----┐\n"+ "│ │\n"+ "│ ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 2: str = "┌-----┐\n"+ "│ │\n"+ "│ ● ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 3: str = "┌-----┐\n"+ "│● │\n"+ "│ ● │\n"+ "│ ●│\n"+ "└-----┘\n"; break; case 4: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; case 5: str = "┌-----┐\n"+ "│● ●│\n"+ "│ ● │\n"+ "│● ●│\n"+ "└-----┘\n"; break; case 6: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; }
 # ==== SWITCH STATEMENTS ====
   # UNHANDLED FUNCTION: display_bet
@@ -1400,6 +2125,15 @@ zones "test" {
       { id = items.dagger.id },
       { id = items.staff.id }    ]
   }
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "in" && objectp(present("mang she", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/room/cave1.c by LPCConverter
 # Zone: test
@@ -1458,6 +2192,15 @@ zones "test" {
       { id = items.blade2.id },
       { id = items.blade3.id }    ]
   }
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (objectp(guarder = present("men wei", this_object())) && dir == "north")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/room/dating.c by LPCConverter
 # Zone: test
@@ -1604,6 +2347,32 @@ zones "test" {
 # ========================================
   # COMPLEX IF: if (type == "marry") { mesg = me->name() + "现在在醉仙楼芙蓉厅举行订婚酒宴。\n\n"; } else if (type == "birthday") { mesg = me->name() + "现在在醉仙楼芙蓉厅举行生辰寿宴。\n\n"; } else if (type == "player") { mesg = me->name() + "现在在醉仙楼芙蓉厅宴请各路英雄豪杰。\n\n"; } message("channel:chat", HIW "【江湖通告】" + mesg + NOR, users()); return 1; } int do_order(string arg) { object me, env; object* oblist; string mesg; int idx; me = this_player(); env = this_object(); mesg = query("order_owner"); if (mesg && (arg == "end") && (mesg == me->query("id"))) { mesg = "芙蓉厅的宴会结束了。\n\n"; message("channel:chat", HIW "【江湖通告】" + mesg + NOR, users()); delete("order_owner"); delete("order_type"); oblist = all_inventory(env); for(idx = 0; idx<sizeof(oblist); idx++) { if (! objectp(oblist[idx])) continue; if (userp(oblist[idx])) continue; destruct(oblist[idx]); } return 1; } if (mesg) return notify_fail("这里已经被人包租了。\n"); notify_fail("你没有足够的钱或零钱不够。\n"); if (arg == "marry") { mesg = me->name() + "现在在醉仙楼芙蓉厅举行订婚酒宴。\n\n"; if (me->can_afford(30000) == 0) return 0; me->pay_money(30000); create_water(HIG "龙井茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(RED "普洱茶"NOR, ({ "tea" }), WHT"水晶盏" NOR); create_wine(WHT "米酒" NOR, ({ "wine" }), HIW "搪瓷杯" NOR); create_wine(GRN "竹叶青" NOR, ({ "wine" }), GRN "翡翠杯" NOR); create_wine(YEL "绍兴黄酒" NOR, ({ "wine" }), HIY "象牙杯" NOR); create_wine(HIR "女儿红" NOR, ({ "wine" }), MAG "紫檀杯" NOR); create_wine(WHT "茅台酒" NOR, ({ "wine" }), YEL "鎏金杯" NOR); create_wine(RED "桂花酒" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(YEL "香酥花生" NOR, ({"peanut"})); create_food(HIR "酒糟红枣" NOR, ({"jujube"})); create_food(RED "喜糖" NOR, ({"sugar"})); create_food(HIW "奶油瓜子" NOR, ({"melon seeds", "seeds"})); create_food(HIG "碧螺春卷" NOR, ({ "spring roll", "roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(HIW "麻辣手撕鸡" NOR, ({"chicken"})); create_food(HIR "干煸尤鱼" NOR, ({"fish"})); create_food(HIY "东北水饺" NOR, ({ "dumpling" })); create_food(RED "麻辣火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIR "油煎螃蟹" NOR, ({ "crab" })); create_food(HIY "粉蒸肉" NOR, ({ "meat" })); create_food(YEL "家常豆腐" NOR, ({ "bean curd" })); } else if (arg == "birthday") { mesg = me->name() + "现在在醉仙楼芙蓉厅举行生辰寿宴。\n\n"; if (me->can_afford(20000) == 0) return 0; me->pay_money(20000); create_water(GRN "云雾茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(HIG "君山银针" NOR, ({ "tea" }), RED "红泥盏" NOR); create_water(HIW "鲜奶" NOR, ({ "milk" }), WHT "玻璃杯" NOR); create_wine(RED "陈年花雕" NOR, ({ "wine" }), HIW "宋瓷杯" NOR); create_wine(WHT "五粮液" NOR, ({ "wine" }), WHT "玻璃杯" NOR); create_wine(WHT "米酒" NOR, ({ "wine" }), HIW "搪瓷杯" NOR); create_wine(HIR "杜康酒" NOR, ({ "wine" }), HIG "青铜爵" NOR); create_wine(HIW "透瓶香" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(HIY "德州扒鸡" NOR, ({ "chicken" })); create_food(HIG "碧螺春卷" NOR, ({ "spring roll", "roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(YEL "咖喱饭" NOR, ({"rice"})); create_food(RED "蚝油肉片" NOR, ({"fish meat", "meat"})); create_food(RED "羊肉串" NOR, ({ "mutton" })); create_food(HIR "重庆火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIY "北京烤鸭" NOR, ({ "duck" })); create_food(YEL "粉蒸肉" NOR, ({ "meat" })); create_food(HIW "四喜豆腐" NOR, ({ "bean curd" })); } else if (arg == "player") { mesg = me->name() + "现在在醉仙楼芙蓉厅宴请各路英雄豪杰。\n\n"; if (me->can_afford(50000) == 0) return 0; me->pay_money(40000); create_water(HIW "羊奶" NOR, ({ "milk" }), CYN "青花碗" NOR); create_water(GRN "云雾茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(GRN "碧螺春" NOR, ({ "tea" }), MAG "紫砂盏" NOR); create_water(HIG "君山银针" NOR, ({ "tea" }), RED "红泥盏" NOR); create_water(HIR "红毛尖" NOR, ({ "tea" }), CYN "青泥盏" NOR); create_wine(HIW "汾酒" NOR, ({ "wine" }), WHT "羊脂白玉杯" NOR); create_wine(WHT "关外白酒" NOR, ({ "wine" }), YEL "犀角杯" NOR); create_wine(RED "葡萄酒" NOR, ({ "wine" }), HIW "夜光杯" NOR); create_wine(WHT "高粱酒" NOR, ({ "wine" }), CYN "青铜爵" NOR); create_wine(HIG "百草酒" NOR, ({ "wine" }), RED "古藤杯" NOR); create_wine(HIR "状元红" NOR, ({ "wine" }), WHT "古瓷杯" NOR); create_wine(GRN "梨花酒" NOR, ({ "wine" }), HIG "翡翠杯" NOR); create_wine(HIW "玉露酒" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(YEL "叫花鸡"NOR, ({ "chicken" })); create_food(HIW "四喜豆腐" NOR, ({ "bean curd" })); create_food(HIG "碧螺春卷" NOR, ({ "spring","roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(RED "羊肉串" NOR, ({ "mutton" })); create_food(HIY "花枝饭卷" NOR, ({"rice"})); create_food(HIR "鱼香肉丝" NOR, ({"fish meat", "meat"})); create_food(HIY "德州扒鸡" NOR, ({ "chicken" })); create_food(RED "麻辣火锅" NOR, ({ "chrafing dish", "dish" })); create_food(HIY "北京烤鸭" NOR, ({ "duck" })); create_food(HIW "白斩鸡" NOR, ({ "chicken" })); create_food(YEL "粉蒸肉" NOR, ({ "meat" })); create_food(HIR "重庆火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIR "麻婆豆腐" NOR, ({ "bean curd" })); create_food(RED "蚝油肉片" NOR, ({"fish meat", "meat"})); create_food(YEL "咖喱饭" NOR, ({"rice"})); create_food(HIW "麻辣手撕鸡" NOR, ({"chicken"})); create_food(HIR "干煸尤鱼" NOR, ({"fish"})); create_food(HIY "东北水饺" NOR, ({ "dumpling" })); } else { return notify_fail("你要定什么酒席?\n"); }
 # ==== COMPLEX CONDITIONALS ====
+  # if (me->query("id") != query("order_owner"))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if (query("order_owner"))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+  # else  →  
+  # else if (arg == "player")  →  
+  # else if (arg == "birthday")  →  
+  # if (arg == "marry")  →  
+  # if (mesg)  →  
+  # if (mesg && (arg == "end") && (mesg == me->query("id")))  →  
+# ==== CONDITIONAL BRANCHES (do_order) ====
+  # else if (type == "player")  →  
+  # else if (type == "birthday")  →  
+  # if (type == "marry")  →  
+  # if (query("order_owner") != me->query("id"))  →  
+# ==== CONDITIONAL BRANCHES (do_broadcast) ====
+  # else  →  
+  # if (longstr)  →  
+# ==== CONDITIONAL BRANCHES (create_wine) ====
+  # else  →  
+  # if (longstr)  →  
+# ==== CONDITIONAL BRANCHES (create_water) ====
+  # else  →  
+  # if (longstr)  →  
+# ==== CONDITIONAL BRANCHES (create_food) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: create_food
   # UNHANDLED FUNCTION: create_water
   # UNHANDLED FUNCTION: create_wine
@@ -1678,6 +2447,10 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (me->query_temp("rent_paid") && dir == "west")  →  
+  # if (! me->query_temp("rent_paid") && dir == "up")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: is_chat_room
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -1732,6 +2505,15 @@ zones "test" {
       { id = items.food.id },
       { id = items.water.id }    ]
   }
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( dir == "out" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
 
 # Generated from test_minimal_world_v2_modified/room/large_room_test.c by LPCConverter
 # Zone: test
@@ -1844,6 +2626,32 @@ zones "test" {
 # ========================================
   # COMPLEX IF: if (type == "marry") { mesg = me->name() + "现在在醉仙楼玫瑰厅举行订婚酒宴。\n\n"; } else if (type == "birthday") { mesg = me->name() + "现在在醉仙楼玫瑰厅举行生辰寿宴。\n\n"; } else if (type == "player") { mesg = me->name() + "现在在醉仙楼玫瑰厅宴请各路英雄豪杰。\n\n"; } message("channel:chat", HIW "【江湖通告】" + mesg + NOR, users()); return 1; } int do_order(string arg) { object me, env; object* oblist; string mesg; int idx; me = this_player(); env = this_object(); mesg = query("order_owner"); if (mesg && (arg == "end") && (mesg == me->query("id"))) { mesg = "玫瑰厅的宴会结束了。\n\n"; message("channel:chat", HIW "【江湖通告】" + mesg + NOR, users()); delete("order_owner"); delete("order_type"); oblist = all_inventory(env); for(idx = 0; idx<sizeof(oblist); idx++) { if (! objectp(oblist[idx])) continue; if (userp(oblist[idx])) continue; destruct(oblist[idx]); } return 1; } if (mesg) return notify_fail("这里已经被人包租了。\n"); notify_fail("你没有足够的钱或零钱不够。\n"); if (arg == "marry") { mesg = me->name() + "现在在醉仙楼玫瑰厅举行订婚酒宴。\n\n"; if (me->can_afford(30000) == 0) return 0; me->pay_money(30000); create_water(HIG "龙井茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(RED "普洱茶"NOR, ({ "tea" }), WHT"水晶盏" NOR); create_wine(WHT "米酒" NOR, ({ "wine" }), HIW "搪瓷杯" NOR); create_wine(GRN "竹叶青" NOR, ({ "wine" }), GRN "翡翠杯" NOR); create_wine(YEL "绍兴黄酒" NOR, ({ "wine" }), HIY "象牙杯" NOR); create_wine(HIR "女儿红" NOR, ({ "wine" }), MAG "紫檀杯" NOR); create_wine(WHT "茅台酒" NOR, ({ "wine" }), YEL "鎏金杯" NOR); create_wine(RED "桂花酒" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(YEL "香酥花生" NOR, ({"peanut"})); create_food(HIR "酒糟红枣" NOR, ({"jujube"})); create_food(RED "喜糖" NOR, ({"sugar"})); create_food(HIW "奶油瓜子" NOR, ({"melon seeds", "seeds"})); create_food(HIG "碧螺春卷" NOR, ({ "spring roll", "roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(HIW "麻辣手撕鸡" NOR, ({"chicken"})); create_food(HIR "干煸尤鱼" NOR, ({"fish"})); create_food(HIY "东北水饺" NOR, ({ "dumpling" })); create_food(RED "麻辣火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIR "油煎螃蟹" NOR, ({ "crab" })); create_food(HIY "粉蒸肉" NOR, ({ "meat" })); create_food(YEL "家常豆腐" NOR, ({ "bean curd" })); } else if (arg == "birthday") { mesg = me->name() + "现在在醉仙楼玫瑰厅举行生辰寿宴。\n\n"; if (me->can_afford(20000) == 0) return 0; me->pay_money(20000); create_water(GRN "云雾茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(HIG "君山银针" NOR, ({ "tea" }), RED "红泥盏" NOR); create_water(HIW "鲜奶" NOR, ({ "milk" }), WHT "玻璃杯" NOR); create_wine(RED "陈年花雕" NOR, ({ "wine" }), HIW "宋瓷杯" NOR); create_wine(WHT "五粮液" NOR, ({ "wine" }), WHT "玻璃杯" NOR); create_wine(WHT "米酒" NOR, ({ "wine" }), HIW "搪瓷杯" NOR); create_wine(HIR "杜康酒" NOR, ({ "wine" }), HIG "青铜爵" NOR); create_wine(HIW "透瓶香" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(HIY "德州扒鸡" NOR, ({ "chicken" })); create_food(HIG "碧螺春卷" NOR, ({ "spring roll", "roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(YEL "咖喱饭" NOR, ({"rice"})); create_food(RED "蚝油肉片" NOR, ({"fish meat", "meat"})); create_food(RED "羊肉串" NOR, ({ "mutton" })); create_food(HIR "重庆火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIY "北京烤鸭" NOR, ({ "duck" })); create_food(YEL "粉蒸肉" NOR, ({ "meat" })); create_food(HIW "四喜豆腐" NOR, ({ "bean curd" })); } else if (arg == "player") { mesg = me->name() + "现在在醉仙楼玫瑰厅宴请各路英雄豪杰。\n\n"; if (me->can_afford(50000) == 0) return 0; me->pay_money(40000); create_water(HIW "羊奶" NOR, ({ "milk" }), CYN "青花碗" NOR); create_water(GRN "云雾茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(GRN "碧螺春" NOR, ({ "tea" }), MAG "紫砂盏" NOR); create_water(HIG "君山银针" NOR, ({ "tea" }), RED "红泥盏" NOR); create_water(HIR "红毛尖" NOR, ({ "tea" }), CYN "青泥盏" NOR); create_wine(HIW "汾酒" NOR, ({ "wine" }), WHT "羊脂白玉杯" NOR); create_wine(WHT "关外白酒" NOR, ({ "wine" }), YEL "犀角杯" NOR); create_wine(RED "葡萄酒" NOR, ({ "wine" }), HIW "夜光杯" NOR); create_wine(WHT "高粱酒" NOR, ({ "wine" }), CYN "青铜爵" NOR); create_wine(HIG "百草酒" NOR, ({ "wine" }), RED "古藤杯" NOR); create_wine(HIR "状元红" NOR, ({ "wine" }), WHT "古瓷杯" NOR); create_wine(GRN "梨花酒" NOR, ({ "wine" }), HIG "翡翠杯" NOR); create_wine(HIW "玉露酒" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(YEL "叫花鸡"NOR, ({ "chicken" })); create_food(HIW "四喜豆腐" NOR, ({ "bean curd" })); create_food(HIG "碧螺春卷" NOR, ({ "spring","roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(RED "羊肉串" NOR, ({ "mutton" })); create_food(HIY "花枝饭卷" NOR, ({"rice"})); create_food(HIR "鱼香肉丝" NOR, ({"fish meat", "meat"})); create_food(HIY "德州扒鸡" NOR, ({ "chicken" })); create_food(RED "麻辣火锅" NOR, ({ "chrafing dish", "dish" })); create_food(HIY "北京烤鸭" NOR, ({ "duck" })); create_food(HIW "白斩鸡" NOR, ({ "chicken" })); create_food(YEL "粉蒸肉" NOR, ({ "meat" })); create_food(HIR "重庆火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIR "麻婆豆腐" NOR, ({ "bean curd" })); create_food(RED "蚝油肉片" NOR, ({"fish meat", "meat"})); create_food(YEL "咖喱饭" NOR, ({"rice"})); create_food(HIW "麻辣手撕鸡" NOR, ({"chicken"})); create_food(HIR "干煸尤鱼" NOR, ({"fish"})); create_food(HIY "东北水饺" NOR, ({ "dumpling" })); } else { return notify_fail("你要定什么酒席?\n"); }
 # ==== COMPLEX CONDITIONALS ====
+  # if (me->query("id") != query("order_owner"))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if (query("order_owner"))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+  # else  →  
+  # else if (arg == "player")  →  
+  # else if (arg == "birthday")  →  
+  # if (arg == "marry")  →  
+  # if (mesg)  →  
+  # if (mesg && (arg == "end") && (mesg == me->query("id")))  →  
+# ==== CONDITIONAL BRANCHES (do_order) ====
+  # else if (type == "player")  →  
+  # else if (type == "birthday")  →  
+  # if (type == "marry")  →  
+  # if (query("order_owner") != me->query("id"))  →  
+# ==== CONDITIONAL BRANCHES (do_broadcast) ====
+  # else  →  
+  # if (longstr)  →  
+# ==== CONDITIONAL BRANCHES (create_wine) ====
+  # else  →  
+  # if (longstr)  →  
+# ==== CONDITIONAL BRANCHES (create_water) ====
+  # else  →  
+  # if (longstr)  →  
+# ==== CONDITIONAL BRANCHES (create_food) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: create_food
   # UNHANDLED FUNCTION: create_water
   # UNHANDLED FUNCTION: create_wine
@@ -1885,6 +2693,32 @@ zones "test" {
 # ========================================
   # COMPLEX IF: if (type == "marry") { mesg = me->name() + "现在在醉仙楼牡丹厅举行订婚酒宴。\n\n"; } else if (type == "birthday") { mesg = me->name() + "现在在醉仙楼牡丹厅举行生辰寿宴。\n\n"; } else if (type == "player") { mesg = me->name() + "现在在醉仙楼牡丹厅宴请各路英雄豪杰。\n\n"; } message("channel:chat", HIW "【江湖通告】" + mesg + NOR, users()); return 1; } int do_order(string arg) { object me, env; object* oblist; string mesg; int idx; me = this_player(); env = this_object(); mesg = query("order_owner"); if (mesg && (arg == "end") && (mesg == me->query("id"))) { mesg = "牡丹厅的宴会结束了。\n\n"; message("channel:chat", HIW "【江湖通告】" + mesg + NOR, users()); delete("order_owner"); delete("order_type"); oblist = all_inventory(env); for(idx = 0; idx<sizeof(oblist); idx++) { if (! objectp(oblist[idx])) continue; if (userp(oblist[idx])) continue; destruct(oblist[idx]); } return 1; } if (mesg) return notify_fail("这里已经被人包租了。\n"); notify_fail("你没有足够的钱或零钱不够。\n"); if (arg == "marry") { mesg = me->name() + "现在在醉仙楼牡丹厅举行订婚酒宴。\n\n"; if (me->can_afford(30000) == 0) return 0; me->pay_money(30000); create_water(HIG "龙井茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(RED "普洱茶"NOR, ({ "tea" }), WHT"水晶盏" NOR); create_wine(WHT "米酒" NOR, ({ "wine" }), HIW "搪瓷杯" NOR); create_wine(GRN "竹叶青" NOR, ({ "wine" }), GRN "翡翠杯" NOR); create_wine(YEL "绍兴黄酒" NOR, ({ "wine" }), HIY "象牙杯" NOR); create_wine(HIR "女儿红" NOR, ({ "wine" }), MAG "紫檀杯" NOR); create_wine(WHT "茅台酒" NOR, ({ "wine" }), YEL "鎏金杯" NOR); create_wine(RED "桂花酒" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(YEL "香酥花生" NOR, ({"peanut"})); create_food(HIR "酒糟红枣" NOR, ({"jujube"})); create_food(RED "喜糖" NOR, ({"sugar"})); create_food(HIW "奶油瓜子" NOR, ({"melon seeds", "seeds"})); create_food(HIG "碧螺春卷" NOR, ({ "spring roll", "roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(HIW "麻辣手撕鸡" NOR, ({"chicken"})); create_food(HIR "干煸尤鱼" NOR, ({"fish"})); create_food(HIY "东北水饺" NOR, ({ "dumpling" })); create_food(RED "麻辣火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIR "油煎螃蟹" NOR, ({ "crab" })); create_food(HIY "粉蒸肉" NOR, ({ "meat" })); create_food(YEL "家常豆腐" NOR, ({ "bean curd" })); } else if (arg == "birthday") { mesg = me->name() + "现在在醉仙楼牡丹厅举行生辰寿宴。\n\n"; if (me->can_afford(20000) == 0) return 0; me->pay_money(20000); create_water(GRN "云雾茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(HIG "君山银针" NOR, ({ "tea" }), RED "红泥盏" NOR); create_water(HIW "鲜奶" NOR, ({ "milk" }), WHT "玻璃杯" NOR); create_wine(RED "陈年花雕" NOR, ({ "wine" }), HIW "宋瓷杯" NOR); create_wine(WHT "五粮液" NOR, ({ "wine" }), WHT "玻璃杯" NOR); create_wine(WHT "米酒" NOR, ({ "wine" }), HIW "搪瓷杯" NOR); create_wine(HIR "杜康酒" NOR, ({ "wine" }), HIG "青铜爵" NOR); create_wine(HIW "透瓶香" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(HIY "德州扒鸡" NOR, ({ "chicken" })); create_food(HIG "碧螺春卷" NOR, ({ "spring roll", "roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(YEL "咖喱饭" NOR, ({"rice"})); create_food(RED "蚝油肉片" NOR, ({"fish meat", "meat"})); create_food(RED "羊肉串" NOR, ({ "mutton" })); create_food(HIR "重庆火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIY "北京烤鸭" NOR, ({ "duck" })); create_food(YEL "粉蒸肉" NOR, ({ "meat" })); create_food(HIW "四喜豆腐" NOR, ({ "bean curd" })); } else if (arg == "player") { mesg = me->name() + "现在在醉仙楼牡丹厅宴请各路英雄豪杰。\n\n"; if (me->can_afford(50000) == 0) return 0; me->pay_money(40000); create_water(HIW "羊奶" NOR, ({ "milk" }), CYN "青花碗" NOR); create_water(GRN "云雾茶" NOR, ({ "tea" }), MAG "紫砂茶盅" NOR); create_water(GRN "碧螺春" NOR, ({ "tea" }), MAG "紫砂盏" NOR); create_water(HIG "君山银针" NOR, ({ "tea" }), RED "红泥盏" NOR); create_water(HIR "红毛尖" NOR, ({ "tea" }), CYN "青泥盏" NOR); create_wine(HIW "汾酒" NOR, ({ "wine" }), WHT "羊脂白玉杯" NOR); create_wine(WHT "关外白酒" NOR, ({ "wine" }), YEL "犀角杯" NOR); create_wine(RED "葡萄酒" NOR, ({ "wine" }), HIW "夜光杯" NOR); create_wine(WHT "高粱酒" NOR, ({ "wine" }), CYN "青铜爵" NOR); create_wine(HIG "百草酒" NOR, ({ "wine" }), RED "古藤杯" NOR); create_wine(HIR "状元红" NOR, ({ "wine" }), WHT "古瓷杯" NOR); create_wine(GRN "梨花酒" NOR, ({ "wine" }), HIG "翡翠杯" NOR); create_wine(HIW "玉露酒" NOR, ({ "wine" }), WHT "琉璃杯" NOR); create_food(YEL "叫花鸡"NOR, ({ "chicken" })); create_food(HIW "四喜豆腐" NOR, ({ "bean curd" })); create_food(HIG "碧螺春卷" NOR, ({ "spring","roll" })); create_food(HIC "香片蒸鱼" NOR, ({"fish"})); create_food(RED "羊肉串" NOR, ({ "mutton" })); create_food(HIY "花枝饭卷" NOR, ({"rice"})); create_food(HIR "鱼香肉丝" NOR, ({"fish meat", "meat"})); create_food(HIY "德州扒鸡" NOR, ({ "chicken" })); create_food(RED "麻辣火锅" NOR, ({ "chrafing dish", "dish" })); create_food(HIY "北京烤鸭" NOR, ({ "duck" })); create_food(HIW "白斩鸡" NOR, ({ "chicken" })); create_food(YEL "粉蒸肉" NOR, ({ "meat" })); create_food(HIR "重庆火锅" NOR, ({ "chafing dish", "dish" })); create_food(HIR "麻婆豆腐" NOR, ({ "bean curd" })); create_food(RED "蚝油肉片" NOR, ({"fish meat", "meat"})); create_food(YEL "咖喱饭" NOR, ({"rice"})); create_food(HIW "麻辣手撕鸡" NOR, ({"chicken"})); create_food(HIR "干煸尤鱼" NOR, ({"fish"})); create_food(HIY "东北水饺" NOR, ({ "dumpling" })); } else { return notify_fail("你要定什么酒席?\n"); }
 # ==== COMPLEX CONDITIONALS ====
+  # if (me->query("id") != query("order_owner"))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if (query("order_owner"))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+  # else  →  
+  # else if (arg == "player")  →  
+  # else if (arg == "birthday")  →  
+  # if (arg == "marry")  →  
+  # if (mesg)  →  
+  # if (mesg && (arg == "end") && (mesg == me->query("id")))  →  
+# ==== CONDITIONAL BRANCHES (do_order) ====
+  # else if (type == "player")  →  
+  # else if (type == "birthday")  →  
+  # if (type == "marry")  →  
+  # if (query("order_owner") != me->query("id"))  →  
+# ==== CONDITIONAL BRANCHES (do_broadcast) ====
+  # else  →  
+  # if (longstr)  →  
+# ==== CONDITIONAL BRANCHES (create_wine) ====
+  # else  →  
+  # if (longstr)  →  
+# ==== CONDITIONAL BRANCHES (create_water) ====
+  # else  →  
+  # if (longstr)  →  
+# ==== CONDITIONAL BRANCHES (create_food) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: create_food
   # UNHANDLED FUNCTION: create_water
   # UNHANDLED FUNCTION: create_wine
@@ -2041,6 +2875,20 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # else  →  
+  # else if (ap / 2 + random(ap) > dp)  →  
+  # if (me->query("max_neili") > target->query("max_neili") * 2)  →  
+  # if (! living(target))  →  
+  # if (me->query("neili") < 300)  →  
+  # if ((int)me->query_skill("force") < 240)  →  
+  # if (me->query_skill_mapped("staff") != "dagou-bang")  →  
+  # if (level < 180)  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "staff")  →  
+  # if (! target || ! me->is_fighting(target))  →  
+  # if (! target)  →  
+  # if (userp(me) && ! me->query("can_perform/dagou-bang/ban"))  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: perform
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -2054,6 +2902,19 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # else  →  
+  # if (random(level) > (int)target->query_skill("parry", 1) / 2)  →  
+  # if (! living(target))  →  
+  # if (me->query("neili") < 60)  →  
+  # if (me->query_skill_mapped("sword") != "taiji-jian")  →  
+  # if ((level = me->query_skill("taiji-jian", 1)) < 80)  →  
+  # if (target->is_busy())  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "sword")  →  
+  # if (! target || ! me->is_fighting(target))  →  
+  # if (! target)  →  
+  # if (userp(me) && ! me->query("can_perform/taiji-jian/chan"))  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: perform
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -2067,6 +2928,19 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # else  →  
+  # if (ap / 2 + random(ap) > dp)  →  
+  # if (! living(target))  →  
+  # if (me->query("neili") < 200)  →  
+  # if ((int)me->query_skill("force") < 160)  →  
+  # if (me->query_skill_mapped("staff") != "dagou-bang")  →  
+  # if (level < 100)  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "staff")  →  
+  # if (! target || ! me->is_fighting(target))  →  
+  # if (! target)  →  
+  # if (userp(me) && ! me->query("can_perform/dagou-bang/chuo"))  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: perform
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -2085,6 +2959,16 @@ zones "test" {
   # COMPLEX IF: if (conditions) { cnds = keys(conditions); for (i = 0; i < sizeof(cnds); i++) { switch(target->dispel_condition(me, cnds[i])) { case 0: continue; case -1: still_ill = 1; continue; } if (me == target) { tell_object(me, WHT "你调息完毕，将内力收回丹" "田。\n" NOR); me->start_busy(1 + random(2)); } else { tell_object(me, WHT "你调息完毕，将内力收回" "丹田。\n" NOR); tell_object(target, WHT "你觉得内息一畅，看来是" + me->name() + "收功了。\n"); me->start_busy(2 + random(3)); target->start_busy(1 + random(2)); message_vision(WHT "$N" WHT "将手掌从$n" WHT "背后" "收了回来。\n" NOR, me, target); }
   # COMPLEX IF: if (me == target) { message_vision(HIW "$N" HIW "深吸一口气，又缓缓的吐了出来。\n" NOR, me); tell_object(me, YEL "你默运" + force_name + YEL "，开始排除身" "体中的异常症状。\n" NOR); me->add("neili", -100); } else { if (me->is_fighting(target)) { write("你们正打得热闹呢，还有心思干这个？\n"); return 1; }
 # ==== COMPLEX CONDITIONALS ====
+  # else  →  tell_object(me, "结果你没发现自己有任何异常。\n"); message_vision(WHT "$N" WHT "眉角微微一动，随即恢" "复正常。\n" NOR, me); tell_object(me, "结果你没发现" + target->name() + "有任何异常。\n"); tell_object(target, "你觉得内息一畅，看来是" + me->name() + "收功了，大概你本来没有什" "么异常吧。\n"); message_vision(WHT "$N" WHT "将手掌从$n" WHT "背后收了" "回来。\n" NOR, me, target);
+  # if (still_ill)  →  tell_object(me, MAG "你调息良久，没有一点效果。\n" NOR); message_vision(HIG "$N" HIG "脸色变了变，有些不" "太自然。\n" NOR, me); tell_object(me, MAG "你运功良久，没能发挥半点作用。\n" NOR); tell_object(target, MAG "你觉得内息一阵紊乱，说不出" "的难受。\n看来" + me->name() + "是不能给予你帮助了。\n" NOR); message_vision(HIG "$N将手掌从$n背后收了回来，脸色" "说不出的难看。\n" NOR, me, target);
+  # if (conditions)  →  tell_object(me, WHT "你调息完毕，将内力收回丹" "田。\n" NOR); tell_object(me, WHT "你调息完毕，将内力收回" "丹田。\n" NOR); tell_object(target, WHT "你觉得内息一畅，看来是" + me->name() + "收功了。\n"); message_vision(WHT "$N" WHT "将手掌从$n" WHT "背后" "收了回来。\n" NOR, me, target);
+  # else  →  write("你们正打得热闹呢，还有心思干这个？\n"); write("对方正在打架，还是等他打完了再说吧。\n"); write("对方现在正忙着呢，等他空了些再说吧。\n"); message_vision(HIW "$N" HIW "深吸一口气，将手掌粘到$n" HIW "的背后。\n" NOR, me, target); tell_object(me, YEL "你默运" + force_name + YEL "，开" "始帮助" + target->name() + YEL "排除" "身体中的异常症状。\n" NOR); tell_object(target, YEL + me->name() + YEL "正在运功帮" "助你排除身体中的异常症状。\n" NOR);
+  # if (me == target)  →  message_vision(HIW "$N" HIW "深吸一口气，又缓缓的吐了出来。\n" NOR, me); tell_object(me, YEL "你默运" + force_name + YEL "，开始排除身" "体中的异常症状。\n" NOR);
+  # if (me->query("neili") < 300)  →  write("你的内力不足，无法运满一个周天。\n");
+# ==== CONDITIONAL BRANCHES (exert) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH: switch(target->dispel_condition(me, cnds[i])) { case 0: continue; case -1: still_ill = 1; continue; }
+# ==== SWITCH STATEMENTS ====
   # UNHANDLED FUNCTION: exert
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -2098,6 +2982,19 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if ((int)me->query_temp("feng_zijue"))  →  tell_object(me, "你的" FENG "施展完毕，将内力收回丹田。\n");
+# ==== CONDITIONAL BRANCHES (remove_effect) ====
+  # if (me->is_fighting())  →  
+  # if (me->query("neili") < 200)  →  
+  # if ((int)me->query_skill("force") < 180)  →  
+  # if (me->query_skill_mapped("staff") != "dagou-bang")  →  
+  # if (skill < 120)  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "staff")  →  
+  # if ((int)me->query_temp("feng_zijue"))  →  
+  # if (! target)  →  
+  # if (userp(me) && ! me->query("can_perform/dagou-bang/feng"))  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: perform
   # UNHANDLED FUNCTION: remove_effect
 # ==== UNHANDLED FUNCTIONS ====
@@ -2112,6 +3009,24 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (me->query("eff_qi") < me->query("max_qi"))  →  tell_object(me, "你觉得真气不济，难以在经脉中继续运转疗伤。\n"); message_vision("$N叹了口气，摇摇晃晃的站了起来。\n", me); tell_object(me, "你运用" + to_chinese(force) + "沿着" "诸大穴慢慢运转，疗解伤痛。\n"); tell_object(me, "你将内力纳入丹田，再上行冲顶，透泥宫" "，顿觉精神爽快。\n"); tell_object(me, "你将内力运入四肢百赅，复又回收丹田，" "伤势痊愈不少。\n");
+  # if (! stringp(force))  →  tell_object(me, "你一时难以定夺如何运用内力，只好先暂停疗伤。\n"); message_vision("$N叹了口气，摇摇晃晃的站了起来。\n", me);
+# ==== CONDITIONAL BRANCHES (healing) ====
+  # else  →  
+  # if (me->query("neili") > 100)  →  
+# ==== CONDITIONAL BRANCHES (halt_healing) ====
+  # if (! me->query("special_skill/divine") && (int)me->query("eff_qi") < (int)me->query("max_qi") / 5)  →  
+  # if ((int)me->query("neili") < 50)  →  
+  # if ((int)me->query_skill(force, 1) < 20)  →  
+  # if ((int)me->query("eff_qi") >= (int)me->query("max_qi"))  →  
+  # if (! stringp(force))  →  
+  # if (me->query_temp("tianmo"))  →  
+  # if (me->is_busy())  →  
+  # if (me->is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (exert) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(10)) { case 0: tell_object(me, "你运用" + to_chinese(force) + "沿着" "诸大穴慢慢运转，疗解伤痛。\n"); break; case 1: tell_object(me, "你将内力纳入丹田，再上行冲顶，透泥宫" "，顿觉精神爽快。\n"); break; case 2: tell_object(me, "你将内力运入四肢百赅，复又回收丹田，" "伤势痊愈不少。\n"); break; }
+# ==== SWITCH POOLS ====
   # UNHANDLED FUNCTION: exert
   # UNHANDLED FUNCTION: halt_healing
   # UNHANDLED FUNCTION: healing
@@ -2127,6 +3042,25 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # else  →  message_vision(msg, me, target);
+  # if (ap / 2 + random(ap) > dp)  →  message_vision(msg, me, target);
+  # else  →  message_vision(msg, me, target);
+  # if (ap / 2 + random(ap) > dp)  →  message_vision(msg, me, target);
+  # else  →  message_vision(msg, me, target);
+  # if (ap / 2 + random(ap) > dp)  →  message_vision(msg, me, target);
+  # if (! living(target))  →  
+  # if ((int)me->query("neili") < 1000)  →  
+  # if (me->query_skill_prepared("strike") != "dragon-strike")  →  
+  # if (me->query_skill_mapped("strike") != "dragon-strike")  →  
+  # if ((int)me->query_skill("dragon-strike", 1) < 240)  →  
+  # if ((int)me->query("max_neili") < 5000)  →  
+  # if ((int)me->query_skill("force") < 360)  →  
+  # if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))  →  
+  # if (! target || ! me->is_fighting(target))  →  
+  # if (! target)  →  
+  # if (userp(me) && ! me->query("can_perform/dragon-strike/hui"))  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: perform
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -2140,6 +3074,20 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (me->query("eff_jing") < me->query("max_jing"))  →  tell_object(me, "你觉得真气不济，难以在经脉中继续运转振奋。\n"); message_vision("$N叹了口气，摇摇晃晃的站了起来。\n", me); tell_object(me, "你运用" + to_chinese(force) + "沿着" "诸大穴慢慢运转，振奋精神。\n"); tell_object(me, "你将内力纳入丹田，再上行冲顶，透泥宫" "，顿觉精神爽快。\n"); tell_object(me, "你运转内力，缓缓呼吸吐纳，额头上渗出" "点点汗珠，随即化作白雾蒸腾而起。\n");
+  # if (! stringp(force))  →  tell_object(me, "你一时难以定夺如何运用内力，只好先暂停疗伤。\n"); message_vision("$N叹了口气，摇摇晃晃的站了起来。\n", me);
+# ==== CONDITIONAL BRANCHES (inspiring) ====
+  # if ((int)me->query("eff_jing") < (int)me->query("max_jing") / 4)  →  
+  # if ((int)me->query("neili") < 200)  →  
+  # if ((int)me->query("eff_jing") >= (int)me->query("max_jing"))  →  
+  # if (userp(me) && (int)me->query_skill(force, 1) < 200)  →  
+  # if (! stringp(force))  →  
+  # if (me->is_fighting())  →  
+  # if (userp(me) && ! me->query("breakup"))  →  
+# ==== CONDITIONAL BRANCHES (exert) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(10)) { case 0: tell_object(me, "你运用" + to_chinese(force) + "沿着" "诸大穴慢慢运转，振奋精神。\n"); break; case 1: tell_object(me, "你将内力纳入丹田，再上行冲顶，透泥宫" "，顿觉精神爽快。\n"); break; case 2: tell_object(me, "你运转内力，缓缓呼吸吐纳，额头上渗出" "点点汗珠，随即化作白雾蒸腾而起。\n"); break; }
+# ==== SWITCH POOLS ====
   # UNHANDLED FUNCTION: exert
   # UNHANDLED FUNCTION: halt_inspiring
   # UNHANDLED FUNCTION: inspiring
@@ -2157,6 +3105,19 @@ zones "test" {
 # ========================================
   # COMPLEX IF: if (! target) { me->clean_up_enemy(); target = me->select_opponent(); } if (! target || ! me->is_fighting(target)) return notify_fail(JI "只能对战斗中的对手使用。\n"); if (me->query_temp("weapon") || me->query_temp("secondary_weapon")) return notify_fail(JI "只能空手施展。\n"); skill = me->query_skill("taiji-quan", 1); if (skill < 150) return notify_fail("你的太极拳等级不够，难以施展" JI "。\n"); if (me->query("neili") < 200) return notify_fail("你的真气不够，难以施展" JI "。\n"); if (me->query_skill_mapped("unarmed") != "taiji-quan") return notify_fail("你没有激发太极拳，难以施展" JI "。\n"); if (me->query_skill_prepared("unarmed") != "taiji-quan") return notify_fail("你现在没有准备使用太极拳，无法使用" JI "。\n"); if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n"); msg = HIW "$N" HIW "使出太极拳「挤」字诀，右脚实，左脚虚，粘连粘" "随，右掌已搭住$n" HIW "左腕，横劲发出。\n" NOR; damage = skill / 2 + random(skill / 2); ap = me->query_skill("unarmed"); dp = target->query_skill("parry"); if (ap / 2 + random(ap) > dp) { me->add("neili", -30); me->start_busy(2); target->receive_damage("jing", damage); target->receive_wound("jing", damage); msg += COMBAT_D->do_damage(me, target, REMOTE_ATTACK, damage, 0, HIR "$n" HIR "稍不留神，让$N" HIR "这么一挤，只觉全身力气犹似流入汪洋大海，无影" "无踪。\n" NOR); } else { me->add("neili", -10); msg += CYN "$n" CYN "见状大吃一惊，急忙向后猛退数步，" "终于避开了$N" CYN "这一击。\n" NOR; me->start_busy(4); }
 # ==== COMPLEX CONDITIONALS ====
+  # else  →  
+  # if (ap / 2 + random(ap) > dp)  →  
+  # if (! living(target))  →  
+  # if (me->query_skill_prepared("unarmed") != "taiji-quan")  →  
+  # if (me->query_skill_mapped("unarmed") != "taiji-quan")  →  
+  # if (me->query("neili") < 200)  →  
+  # if (skill < 150)  →  
+  # if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))  →  
+  # if (! target || ! me->is_fighting(target))  →  
+  # if (! target)  →  
+  # if (userp(me) && ! me->query("can_perform/taiji-quan/ji"))  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: perform
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -2172,6 +3133,20 @@ zones "test" {
 # ========================================
   # COMPLEX IF: if (! target) { me->clean_up_enemy(); target = me->select_opponent(); } if (! target || ! me->is_fighting(target)) return notify_fail(JIA "只能对战斗中的对手使用。\n"); if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "sword") return notify_fail("你使用的武器不对，难以施展" JIA "。\n"); skill = me->query_skill("taiji-jian", 1); if (skill < 150) return notify_fail("你的太极剑法等级不够，难以施展" JIA "。\n"); if (me->query("neili") < 200) return notify_fail("你的真气不够，难以施展" JIA "。\n"); if (me->query_skill_mapped("sword") != "taiji-jian") return notify_fail("你没有激发太极剑法，难以施展" JIA "。\n"); if (! objectp(weapon2 = target->query_temp("weapon"))) return notify_fail("对方没有使用兵器，难以施展" JIA "。\n"); if (target->is_busy()) return notify_fail(target->name() + "目前正自顾不暇，放胆攻击吧。\n"); if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n"); wn1 = weapon->name(); wn2 = weapon2->name(); msg = HIC "只见$N" HIC "收摄心神，以剑意运剑，手中" + wn1 + HIC "每剑均以弧形" "刺出，弧形收回，每发一招都似放\n出一条细丝，要去缠在$n" HIC "的" + wn2 + HIC "之上。\n" NOR; me->add("neili", -50); ap = me->query_skill("sword"); dp = target->query_skill("parry"); if (ap / 2 + random(ap * 4 / 3) > dp) { me->add("neili", -30); damage = ap / 8 + random(ap / 8); msg += COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 10, HIR "却见$n" HIR "手中" + wn2 + HIR "被" + wn1 + HIR "缠住后不断增加重量，招数顿见涩" "滞，真力不由狂泻而出。\n" NOR); me->start_busy(1); if (ap / 2 + random(ap) > dp && ! target->is_busy()) target->start_busy(ap / 30 + 2); } else { msg += CYN "$n" CYN "不禁大惊失色，急忙跃开数步，方才摆脱$N" CYN "的力道。\n" NOR; me->add("neili", -10); me->start_busy(3); }
 # ==== COMPLEX CONDITIONALS ====
+  # else  →  
+  # if (ap / 2 + random(ap * 4 / 3) > dp)  →  
+  # if (! living(target))  →  
+  # if (target->is_busy())  →  
+  # if (! objectp(weapon2 = target->query_temp("weapon")))  →  
+  # if (me->query_skill_mapped("sword") != "taiji-jian")  →  
+  # if (me->query("neili") < 200)  →  
+  # if (skill < 150)  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "sword")  →  
+  # if (! target || ! me->is_fighting(target))  →  
+  # if (! target)  →  
+  # if (userp(me) && ! me->query("can_perform/taiji-jian/jia"))  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: perform
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -2185,6 +3160,21 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # else  →  
+  # if (ap / 2 + random(ap) > dp)  →  
+  # if (! living(target))  →  
+  # if ((int)me->query("neili") < 600)  →  
+  # if (me->query_skill_prepared("strike") != "dragon-strike")  →  
+  # if (me->query_skill_mapped("strike") != "dragon-strike")  →  
+  # if ((int)me->query_skill("dragon-strike", 1) < 180)  →  
+  # if ((int)me->query("max_neili") < 2500)  →  
+  # if ((int)me->query_skill("force") < 250)  →  
+  # if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))  →  
+  # if (! target || ! me->is_fighting(target))  →  
+  # if (! target)  →  
+  # if (userp(me) && ! me->query("can_perform/dragon-strike/lei"))  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: perform
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -2198,6 +3188,18 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if ((int)target->query("qi") > (int)target->query("eff_qi"))  →  
+  # if ((int)target->query("eff_qi") < (int)target->query("max_qi") / 5)  →  
+  # if ((int)target->query("eff_qi") >= (int)target->query("max_qi"))  →  
+  # if ((int)me->query("neili") < 150)  →  
+  # if ((int)me->query("max_neili") < 300)  →  
+  # if ((int)me->query_skill(force,1) < 50)  →  
+  # if (! force)  →  
+  # if (target->query("not_living"))  →  
+  # if (me->is_fighting() || target->is_fighting())  →  
+  # if (! target || target == me)  →  
+# ==== CONDITIONAL BRANCHES (exert) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: exert
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -2211,6 +3213,19 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # else  →  
+  # if (ap / 2 + random(ap) > dp)  →  
+  # if (! living(target))  →  
+  # if (me->query("neili") < 300)  →  
+  # if ((int)me->query("max_neili") < 2000)  →  
+  # if (me->query_skill_mapped("sword") != "damo-jian")  →  
+  # if ((int)me->query_skill("damo-jian", 1) < 200)  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "sword")  →  
+  # if (! target || ! me->is_fighting(target))  →  
+  # if (! target)  →  
+  # if (userp(me) && ! me->query("can_perform/damo-jian/luan"))  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: final
   # UNHANDLED FUNCTION: perform
 # ==== UNHANDLED FUNCTIONS ====
@@ -2225,6 +3240,17 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (me->is_fighting())  →  
+  # if (lev < me->query_skill(skills[i]))  →  
+  # if (! me->query_skill(skills[i]))  →  
+  # if (undefinedp(map[skills[i]]))  →  
+  # if (skill < 120)  →  
+  # if ((int)me->query_skill("force") < 200)  →  
+  # if ((int)me->query_temp("power"))  →  
+  # if ((int)me->query("neili") < 100)  →  
+  # if (target != me)  →  
+# ==== CONDITIONAL BRANCHES (exert) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: exert
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -2238,6 +3264,19 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # else  →  
+  # if (ap * 2 / 3 + random(ap) > dp)  →  
+  # if (! living(target))  →  
+  # if (me->query_skill_prepared("finger") != "liumai-shenjian")  →  
+  # if (me->query_skill("liumai-shenjian", 1) < 200)  →  
+  # if ((int)me->query("neili") < 500)  →  
+  # if (me->query("max_neili") < 5000)  →  
+  # if ((int)me->query_skill("force") < 420)  →  
+  # if (! target || ! me->is_fighting(target))  →  
+  # if (userp(me) && ! me->query("can_perform/liumai-shenjian/qi"))  →  
+  # if (! target)  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: perform
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -2251,6 +3290,22 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # else  →  
+  # if (ap / 3 + random(ap) > dp)  →  
+  # if (! living(target))  →  
+  # if ((int)me->query("neili") < 400)  →  
+  # if (me->query_skill_prepared("strike") != "dragon-strike")  →  
+  # if (me->query_skill_mapped("strike") != "dragon-strike")  →  
+  # if ((int)me->query_skill("dragon-strike", 1) < 180)  →  
+  # if ((int)me->query("max_neili") < 3000)  →  
+  # if ((int)me->query_skill("force") < 260)  →  
+  # if (! objectp(weapon = target->query_temp("weapon")))  →  
+  # if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))  →  
+  # if (! target || ! me->is_fighting(target))  →  
+  # if (! target)  →  
+  # if (userp(me) && ! me->query("can_perform/dragon-strike/qin"))  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: perform
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -2264,6 +3319,22 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (me->query_temp("damo_qingxin"))  →  tell_object(me, "你觉得力气恢复了一些。\n");
+# ==== CONDITIONAL BRANCHES (remove_effect) ====
+  # else  →  
+  # else if (ap / 2 + random(ap) > dp)  →  
+  # if (! target->query_temp("powerup"))  →  
+  # if (! living(target))  →  
+  # if (target->query_temp("damo_qingxin"))  →  
+  # if (me->query_skill_mapped("sword") != "damo-jian")  →  
+  # if (me->query("neili") < 300)  →  
+  # if ((int)me->query_skill("damo-jian", 1) < 200)  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "sword")  →  
+  # if (! target || ! me->is_fighting(target))  →  
+  # if (! target)  →  
+  # if (userp(me) && ! me->query("can_perform/damo-jian/qingxin"))  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: perform
   # UNHANDLED FUNCTION: remove_effect
 # ==== UNHANDLED FUNCTIONS ====
@@ -2278,6 +3349,16 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (me->is_fighting() && ! me->query("special_skill/self"))  →  
+  # if ((int)me->query("neili") < n)  →  
+  # if (me->query("special_skill/self"))  →  
+  # if (n < 20)  →  
+  # if (me->query("breakup"))  →  
+  # if (q < 10)  →  
+  # if ((int)me->query("neili") < 20)  →  
+  # if (me != target)  →  
+# ==== CONDITIONAL BRANCHES (exert) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: exert
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -2291,6 +3372,17 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (me->is_fighting())  →  
+  # if ((int)me->query("neili") < neili_cost)  →  
+  # if (neili_cost < 20)  →  
+  # if (neili_cost > me->query("neili"))  →  
+  # if (neili_cost < 20)  →  
+  # if (me->query("breakup"))  →  
+  # if (lvl <= 0)  →  
+  # if (heal < 10)  →  
+  # if (target != me)  →  
+# ==== CONDITIONAL BRANCHES (exert) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: exert
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -2304,350 +3396,29 @@ zones "test" {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
-  # SWITCH: switch (f) { case "longxiang-gong" : msg = HIW "$N" HIW "运转真气，面无表情，歌声如梵唱般" "贯入众人耳中。\n" NOR; break; case "huntian-qigong" : msg = HIY "$N" HIY "深深吸入一囗气，运足内力发出一阵" "长啸，音传百里，慑人心神。\n" NOR; break; case "jiuyang-shengong" : msg = HIY "$N" HIY "仰天长啸，声音绵泊不绝，众人无不" "听得心驰神摇。\n" NOR; break; case "jiuyin-shengong" : msg = HIY "$N" HIY "气凝丹田，猛然一声断喝，声音远远" "的传了开去，激荡不止。\n" NOR; break; case "kuihua-mogong" : msg = HIY "$N" HIY "蓦地极嘶长呼，声音凄厉之极，令人" "毛骨悚然。\n" NOR; break; case "yijinjing" : case "hunyuan-gong" : msg = HIY "$N" HIY "深深吸入一囗气，运起金刚禅狮子吼" "，发出惊天动地的一声巨吼。\n" NOR; break; default: msg = HIY "$N" HIY "深深吸入一囗气，体内" + to_chinese(f) + HIY "真气急剧迸发，陡然一声巨啸。\n" NOR; break; }
-# ==== SWITCH STATEMENTS ====
+  # if (damage > 0)  →  tell_object(ob[i], HIR "突然间你只觉两耳一阵轰鸣，眼前金" "星乱冒，整个头便是要裂开一般。\n" NOR);
+  # if ((int)ob[i]->query_condition("die_guard"))  →  
+  # if (skill / 2 + random(skill / 2) < (int)ob[i]->query("con") * 2)  →  
+  # if (! living(ob[i]) || ob[i] == me)  →  
+  # if ((int)me->query("neili") < 800)  →  
+  # if (environment(me)->query("skybook"))  →  
+  # if (environment(me)->query("no_fight"))  →  
+  # if (skill < 180)  →  
+  # if (me->query_skill_mapped("force") != "longxiang-gong" && me->query_skill_mapped("force") != "tianhuan-shenjue" && me->query_skill_mapped("force") != "huntian-qigong" && me->query_skill_mapped("force") != "jiuyang-shengong" && me->query_skill_mapped("force") != "jiuyin-shengong" && me->query_skill_mapped("force") != "kuihua-mogong" && me->query_skill_mapped("force") != "xixing-dafa" && me->query_skill_mapped("force") != "zhanshen-xinjing" && me->query_skill_mapped("force") != "yijinjing" && me->query_skill_mapped("force") != "hunyuan-gong")  →  
+# ==== CONDITIONAL BRANCHES (exert) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(3)) { case 0 : msg = WHT "突然只见" + ob[i]->name() + WHT "两手" "抱头，双目凸出，嘴角泛出些许白沫，喉咙咯咯" "作响。\n" NOR; break; case 1 : msg = WHT "顿时听得" + ob[i]->name() + WHT "一声" "惨叫，两眼发直，全身不住颤抖，蓦地呕出一口" "鲜血。\n" NOR; break; default : msg = WHT "却见" + ob[i]->name() + WHT "竟摔倒在" "地，发出声声哀嚎，双目双耳及鼻孔均渗出丝丝" "鲜血。\n" NOR; break; }
+# ==== SWITCH POOLS ====
+  #   hunyuan-gong: msg=HIY "$N" HIY "深深吸入一囗气，运起金刚禅狮子吼" "，发出惊天动地的一声巨吼。\n" NOR
+  #   yijinjing: 
+  #   kuihua-mogong: msg=HIY "$N" HIY "蓦地极嘶长呼，声音凄厉之极，令人" "毛骨悚然。\n" NOR
+  #   jiuyin-shengong: msg=HIY "$N" HIY "气凝丹田，猛然一声断喝，声音远远" "的传了开去，激荡不止。\n" NOR
+  #   jiuyang-shengong: msg=HIY "$N" HIY "仰天长啸，声音绵泊不绝，众人无不" "听得心驰神摇。\n" NOR
+  #   huntian-qigong: msg=HIY "$N" HIY "深深吸入一囗气，运足内力发出一阵" "长啸，音传百里，慑人心神。\n" NOR
+  #   longxiang-gong: msg=HIW "$N" HIW "运转真气，面无表情，歌声如梵唱般" "贯入众人耳中。\n" NOR
+  # ----------------------------------------------------------------
+  # SWITCH TABLE (expr: f)
+# ==== SWITCH TABLES ====
   # UNHANDLED FUNCTION: exert
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/sanjue.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/sanjue.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/shang.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/shang.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: final
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/shot.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/shot.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: exert
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/six.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/six.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/sui.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/sui.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: perform
-  # UNHANDLED FUNCTION: remove_effect
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/tian.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/tian.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/tianmo.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/tianmo.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: exert
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/tu.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/tu.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/xiang.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/xiang.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # COMPLEX IF: if (! target) { me->clean_up_enemy(); target = me->select_opponent(); } if (! target || ! me->is_fighting(target)) return notify_fail("「龙翔九天」只能在战斗中对对手使用。\n"); if (me->query_temp("weapon") || me->query_temp("secondary_weapon")) return notify_fail("「龙翔九天」只能空手使用。\n"); if (me->query("max_neili") < 2000) return notify_fail("你的内力修为还不够，无法施展「龙翔九天」。\n"); if ((int)me->query("neili") < 500) return notify_fail("你的真气不够！\n"); if ((int)me->query("qi") < 800) return notify_fail("你的体力现在不够！\n"); if ((int)me->query_skill("dragon-strike", 1) < 150) return notify_fail("你的降龙十八掌火候不够，无法使用「龙翔九天」！\n"); if ((int)me->query_skill("force") < 300) return notify_fail("你的内功修为不够，无法使用「龙翔九天」！\n"); if (me->query_skill_prepared("strike") != "dragon-strike") return notify_fail("你现在没有准备使用降龙十八掌，无法使用「龙翔九天」！\n"); if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n"); msg = HIY "$N" HIY "深吸一口气，跨前一步，双掌猛然翻滚，" "缤纷而出，宛如一条神龙攀蜒于九天之上！\n\n" NOR; ap = me->query_skill("strike") + me->query("str") * 10; dp = target->query_skill("parry") + target->query("dex") * 6; if (ap / 2 + random(ap) > dp) { count = ap / 9; msg += HIR "$n" HIR "面对$P" HIR "这排山倒海攻势，完全" "无法抵挡，唯有退后。\n" NOR; } else { msg += HIC "$n" HIC "凝神应战，竭尽所能化解$P" HIC "这几掌。\n" NOR; count = 0; }
-# ==== COMPLEX CONDITIONALS ====
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/xun.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/xun.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: exert
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/yin.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/yin.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # COMPLEX IF: if (! target) { me->clean_up_enemy(); target = me->select_opponent(); } if (! target || ! me->is_fighting(target)) return notify_fail(YIN "只能对战斗中的对手使用。\n"); if (me->query_temp("weapon") || me->query_temp("secondary_weapon")) return notify_fail(YIN "只能空手施展。\n"); skill = me->query_skill("taiji-quan", 1); if (skill < 150) return notify_fail("你的太极拳等级不够，难以施展" YIN "。\n"); if (me->query("neili") < 200) return notify_fail("你的真气不够，难以施展" YIN "。\n"); if (me->query_skill_mapped("unarmed") != "taiji-quan") return notify_fail("你没有激发太极拳，难以施展" YIN "。\n"); if (me->query_skill_prepared("unarmed") != "taiji-quan") return notify_fail("你现在没有准备使用太极拳，无法使用" YIN "。\n"); if (target->is_busy()) return notify_fail(target->name() + "目前正自顾不暇，放胆攻击吧。\n"); if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n"); msg = HIW "$N" HIW "双手一圈，施出「引」字诀，如抱太极，一股" "雄浑无比的力道组成了一个旋涡，圈向$n" HIW "。\n" NOR; me->add("neili", -50); ap = me->query_skill("unarmed"); dp = target->query_skill("parry"); if (ap / 2 + random(ap * 4 / 3) > dp) { me->add("neili", -30); damage = ap / 8 + random(ap / 8); msg += COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 0, HIR "$n" HIR "微微一楞，登时被这力道带" "得在原地急转七八下，如转陀螺，如旋纺" "锤。\n" NOR); me->start_busy(1); if (ap / 2 + random(ap) > dp && ! target->is_busy()) target->start_busy(ap / 30 + 2); } else { msg += CYN "$n" CYN "见状连忙使出“千斤坠”之力定" "住身形，摆脱了$N" CYN "的力道。\n" NOR; me->add("neili", -10); me->start_busy(3); }
-# ==== COMPLEX CONDITIONALS ====
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/zhan.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/zhan.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # COMPLEX IF: if (! target) { me->clean_up_enemy(); target = me->select_opponent(); } if (! target || ! me->is_fighting(target)) return notify_fail(ZHAN "只能对战斗中的对手使用。\n"); if (me->query_temp("weapon") || me->query_temp("secondary_weapon")) return notify_fail(ZHAN "只能空手施展。\n"); skill = me->query_skill("taiji-quan", 1); if (skill < 150) return notify_fail("你的太极拳等级不够，难以施展" ZHAN "。\n"); if (me->query("neili") < 200) return notify_fail("你的真气不够，难以施展" ZHAN "。\n"); if (me->query_skill_mapped("unarmed") != "taiji-quan") return notify_fail("你没有激发太极拳，难以施展" ZHAN "。\n"); if (me->query_skill_prepared("unarmed") != "taiji-quan") return notify_fail("你现在没有准备使用太极拳，无法使用" ZHAN "。\n"); if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n"); msg = HIW "$N" HIW "连消带打，双手成圆形击出，这" "正是太极拳「圆转不断」四字的精意。只\n见$N" HIW "随即平圈、立圈、正圈、斜圈，一个跟着一" "个，一个个太极圆圈顿时笼\n罩$n" HIW "四面" "八方。\n" NOR; ap = me->query_skill("unarmed"); dp = target->query_skill("parry"); if (ap / 2 + random(ap * 4 / 3) > dp) { me->add("neili", -30); damage = ap / 4 + random(ap / 4); msg += COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 20, HIR "$n" HIR "登时便被套得跌跌撞撞，身" "不由主的立足不稳，犹如中酒昏迷。\n" NOR); me->start_busy(2); if (ap / 2 + random(ap) > dp && ! target->is_busy()) target->start_busy(ap / 50 + 1); } else { msg += CYN "可是$p" CYN "的看破了$P" CYN "的企图，巧妙的拆招，没露半点破绽" "。\n" NOR; me->add("neili", -10); me->start_busy(3); }
-# ==== COMPLEX CONDITIONALS ====
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/zhe.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/zhe.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: final
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/zhen.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/zhen.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # COMPLEX IF: if (! target) { me->clean_up_enemy(); target = me->select_opponent(); } if (! target || ! me->is_fighting(target)) return notify_fail(ZHEN "只能对战斗中的对手使用。\n"); if (me->query_temp("weapon") || me->query_temp("secondary_weapon")) return notify_fail(ZHEN "只能空手施展。\n"); skill = me->query_skill("taiji-quan", 1); if (skill < 150) return notify_fail("你的太极拳等级不够，难以施展" ZHEN "。\n"); if (me->query("neili") < 200) return notify_fail("你的真气不够，难以施展" ZHEN "。\n"); if (me->query_skill_mapped("unarmed") != "taiji-quan") return notify_fail("你没有激发太极拳，难以施展" ZHEN "。\n"); if (me->query_skill_prepared("unarmed") != "taiji-quan") return notify_fail("你现在没有准备使用太极拳，无法使用" ZHEN "。\n"); if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n"); msg = HIW "$N" HIW "使出太极拳「震」字诀，左手高，右手低，陡然" "回圈，企图以内力震伤$n" HIW "。\n" NOR; me->add("neili", -50); if (random(me->query_skill("force")) > target->query_skill("force") / 2) { me->start_busy(3); target->start_busy(random(3)); damage = (int)me->query_skill("force", 1); damage = damage / 2 + random(damage / 2); msg += COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 50, HIR "只见$N" HIR "这一拳变化无方，气劲" "封了$n" HIR "所有的退路，一拳正好命中" "。\n:内伤@?"); } else { me->start_busy(3); msg += CYN "可是$p" CYN "看破了$P" CYN "的企图，并没有上当。\n" NOR; }
-# ==== COMPLEX CONDITIONALS ====
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/zhenwu.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/zhenwu.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: final
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/zhuan.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/zhuan.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/zong.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/zong.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/skill/zongheng.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/skill/zongheng.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/special/guibian.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/special/guibian.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: is_scborn
-  # UNHANDLED FUNCTION: name
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/special/guimai.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/special/guimai.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: is_scborn
-  # UNHANDLED FUNCTION: name
-  # UNHANDLED FUNCTION: perform
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/special/hatred.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/special/hatred.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: name
-  # UNHANDLED FUNCTION: perform
-  # UNHANDLED FUNCTION: remove_effect
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/special/jinshen.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/special/jinshen.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: is_scborn
-  # UNHANDLED FUNCTION: name
-  # UNHANDLED FUNCTION: perform
-  # UNHANDLED FUNCTION: remove_effect
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/special/shenyan.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/special/shenyan.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # COMPLEX IF: if (my["max_jing"] < 1 || my["max_qi"] < 1) { tell_object(me, "无法察看" + ob->name(1) + "的状态。\n"); return; } sp = (ob == me ? "你" : ob->name()) + "目前的状态属性如下：\n"; sp += HIC "≡" HIY "----------------------------------------------------------------" HIC "≡\n" NOR; sp += sprintf(HIC "【 精 气 】 %s%5d/ %5d %s(%3d%%)" HIC " 【 精 力 】 %s%5d / %5d (+%d)\n", status_color(my["jing"], my["eff_jing"]), my["jing"], my["eff_jing"], status_color(my["eff_jing"], my["max_jing"]), my["eff_jing"] * 100 / my["max_jing"], status_color(my["jingli"], my["max_jingli"]), my["jingli"], my["max_jingli"], my["jiajing"]); sp += sprintf(HIC "【 气 血 】 %s%5d/ %5d %s(%3d%%)" HIC " 【 内 力 】 %s%5d / %5d (+%d)\n", status_color(my["qi"], my["eff_qi"]), my["qi"], my["eff_qi"], status_color(my["eff_qi"], my["max_qi"]), my["eff_qi"] * 100 / my["max_qi"], status_color(my["neili"], my["max_neili"]), my["neili"], my["max_neili"], my["jiali"]); sp += sprintf(HIW "【 食 物 】 %s%5d/ %5d " HIW " 【 潜 能 】 %s%d\n", status_color(my["food"], ob->max_food_capacity()), my["food"], ob->max_food_capacity(), (int)ob->query("potential") >= (int)ob->query_potential_limit() ? HIM : HIY, (int)ob->query("potential") - (int)ob->query("learned_points")); sp += sprintf(HIW "【 饮 水 】 %s%5d/ %5d " HIW " 【 体 会 】 %s%d\n", status_color(my["water"], ob->max_water_capacity()), my["water"], ob->max_water_capacity(), my["experience"] >= ob->query_experience_limit() ? HIM : HIY, my["experience"] - my["learned_experience"]); if (craze = me->query_craze()) { if (me->is_most_craze()) sp += HIR "【 愤 " BLINK "怒" NOR HIR " 】 " + sprintf("%-22s", me->query("character") == "光明磊落" ? "竖发冲冠" : "怒火中烧"); else sp += sprintf(HIR "【 愤 怒 】 %5d/ %5d (+%-3d) ", craze, me->query_max_craze(), me->query("jianu")); } else { sp += HIC "【 平 和 】 --------- "; }
-# ==== COMPLEX CONDITIONALS ====
-  # UNHANDLED FUNCTION: check_target
-  # UNHANDLED FUNCTION: is_scborn
-  # UNHANDLED FUNCTION: name
-  # UNHANDLED FUNCTION: perform
-  # UNHANDLED FUNCTION: show_target_skills
-  # UNHANDLED FUNCTION: show_target_status
-  # UNHANDLED FUNCTION: status_color
-# ==== UNHANDLED FUNCTIONS ====
-# ========================================
-
-# Generated from test_minimal_world_v2_modified/special/trick.c by LPCConverter
-# Zone: test
-
-# Generic LPC file: test_minimal_world_v2_modified/special/trick.c
-# Requires manual conversion
-
-# ========================================
-# UNHANDLED CONTENT (for manual review)
-# ========================================
-  # UNHANDLED FUNCTION: name
-  # UNHANDLED FUNCTION: perform
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

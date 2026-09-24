@@ -155,6 +155,7 @@ defmodule Kantele.World.LPCConverter do
       greetings: extract_greetings(content),
       accept: extract_accept(content),
       guard: extract_guard(content),
+      engage: extract_engage(content),
       unhandled: unhandled
     }
     |> AST.new()
@@ -345,7 +346,10 @@ defp extract_unhandled_content(content, unhandled_fn_names) do
         functions: [],
         globals: [],
         complex_mappings: [],
+        switch_tables: [],
         switch_statements: [],
+        switch_pools: [],
+        conditional_branches: %{},
         complex_conditionals: [],
         raw_code_blocks: []
       }
@@ -375,13 +379,46 @@ defp extract_unhandled_content(content, unhandled_fn_names) do
         |> Enum.uniq()
       unhandled = Map.put(unhandled, :complex_mappings, complex_mappings)
 
-      # 4. Switch statements
-      switch_stmts =
-        Regex.scan(~r/switch\s*\([^)]+\)\s*\{[\s\S]*?\}/m, content)
+      # 4. Switch statements：分三种
+      #    - case-assign 表（L1，case 后是赋值键值对）→ switch_tables
+      #    - random 台词池（L2，case 是 return/say/command 台词）→ switch_pools
+      #    - 其余命令分发/状态机 → switch_statements 原文
+      all_switches =
+        Regex.scan(~r/switch\s*\(\s*[^()]*(?:\([^()]*\)[^()]*)*\)\s*\{[\s\S]*?\}/m, content)
         |> Enum.map(fn [stmt] -> String.trim(stmt) end)
-      unhandled = Map.put(unhandled, :switch_statements, switch_stmts)
 
-      # 5. Complex conditionals (nested if/else)
+      switch_tables =
+        Enum.filter(all_switches, &is_switch_table?/1)
+        |> Enum.map(&parse_switch_table/1)
+        |> Enum.reject(&is_nil/1)
+
+      switch_pools =
+        Enum.filter(all_switches, fn stmt ->
+          not is_switch_table?(stmt) and Regex.match?(~r/switch\s*\(\s*random\s*\(/s, stmt)
+        end)
+
+      switch_others =
+        Enum.filter(all_switches, fn stmt ->
+          not is_switch_table?(stmt) and not Regex.match?(~r/switch\s*\(\s*random\s*\(/s, stmt)
+        end)
+
+      unhandled = Map.put(unhandled, :switch_tables, switch_tables)
+      unhandled = Map.put(unhandled, :switch_pools, switch_pools)
+      unhandled = Map.put(unhandled, :switch_statements, switch_others)
+
+      # 5. Conditional branches（if/else-if/else 链，"条件 → 行为"）
+      conditional_branches =
+        content
+        |> function_bodies()
+        |> Enum.reduce(%{}, fn {name, body}, acc ->
+          case split_condition_branches(body) do
+            [] -> acc
+            chains -> Map.put(acc, name, chains)
+          end
+        end)
+      unhandled = Map.put(unhandled, :conditional_branches, conditional_branches)
+
+      # 6. Complex conditionals (nested if/else)
       complex_ifs =
         Regex.scan(~r/if\s*\([^)]+\)\s*\{[\s\S]*?\}\s*else\s*\{[\s\S]*?\}/m, content)
         |> Enum.map(fn [stmt] -> String.trim(stmt) end)
@@ -401,10 +438,379 @@ defp extract_unhandled_content(content, unhandled_fn_names) do
           functions: [],
           globals: [],
           complex_mappings: [],
+          switch_tables: [],
           switch_statements: [],
+          switch_pools: [],
+          conditional_branches: %{},
           complex_conditionals: [],
           raw_code_blocks: []
         }
+    end
+  end
+
+  # case-assign 表判定：存在 `case "键": 变量 = 值;`（字符串键 + 赋值语句）
+  defp is_switch_table?(stmt) do
+    Regex.match?(~r/case\s+["'][^"']+["']\s*:\s*\w+\s*=/s, stmt)
+  end
+
+  # LPC switch(arg){ case "键": 变量 = 值; ... } → 解析为
+  # %{expr: arg, rows: [%{key: 键, cols: [{变量, 值串}, ...]}]}
+  # 值为字符串时保留引号，数字保数字，路径（new(...)）保留 clone 目标。
+  defp parse_switch_table(stmt) do
+    expr =
+      case Regex.run(~r/switch\s*\(\s*([^)]+)\s*\)/, stmt) do
+        [_, e] -> String.trim(e)
+        _ -> nil
+      end
+
+    rows =
+      Regex.scan(
+        ~r/case\s+["']([^"']+)["']\s*:\s*([\s\S]*?)(?=case\s+["']|default\s*:)/,
+        stmt
+      )
+      |> Enum.map(fn [_, key, body] ->
+        cols =
+          Regex.scan(~r/(\w+)\s*=\s*([^;]+);/, body)
+          |> Enum.map(fn [_, var, val] ->
+            {String.trim(var), String.trim(val)}
+          end)
+
+        %{key: key, cols: cols}
+      end)
+
+    if rows == [], do: nil, else: %{expr: expr, rows: rows}
+  end
+
+  # --------------------------------------------------------------------------
+  # 条件分支抽取：if / else-if / else 链 → "条件 → 行为" 参考行（L2）
+  # 只处理显式花括号块；原文保留在 COMPLEX CONDITIONALS 兜底（L3）。
+  # --------------------------------------------------------------------------
+
+  # 列出含花括号函数体的所有函数（{name, body}），复用 extract_function_body 的签名正则但不打 DEBUG。
+  defp function_bodies(content) do
+    sig = ~r/(?:int|string|void|mixed|mapping|object|protected)\s+(\w+)\s*\([^)]*\)\s*\n*\s*\{/
+
+    Regex.scan(sig, content)
+    |> Enum.map(fn [match, name] ->
+      [_, rest] = String.split(content, match, parts: 2)
+      brace_pos = String.length(content) - String.length(rest) - 1
+      {name, find_matching_brace(content, brace_pos)}
+    end)
+    |> Enum.reject(fn {_, body} -> is_nil(body) end)
+  end
+
+  # 沿字符流扫描函数体，把顶层的 if/else-if/else 链切成
+  # [%{kind: :if|:elif|:else, cond: 条件串|nil, actions: [行为串]}]
+  # （不含 else 的独立 if、无花括号体不产出）。
+  defp split_condition_branches(body) do
+    chars = String.to_charlist(body)
+    scan_chains(chars, 0, [], nil)
+  end
+
+  defp scan_chains(chars, i, acc, prev) do
+    case next_word(chars, i) do
+      nil ->
+        Enum.reverse(acc)
+
+      {"if", j, _} when prev != "else" ->
+        case parse_chain(chars, j) do
+          nil -> scan_chains(chars, j + 2, acc, "if")
+          {chain, after_i} -> scan_chains(chars, after_i, [chain | acc], nil)
+        end
+
+      {w, _j, next} ->
+        scan_chains(chars, next, acc, w)
+    end
+  end
+
+  defp parse_chain(chars, if_pos) do
+    case extract_condition(chars, if_pos) do
+      nil ->
+        nil
+
+      {cond, after_paren} ->
+        case read_block(chars, after_paren) do
+          nil ->
+            nil
+
+          {body1, after1} ->
+            head = %{kind: :if, cond: cond, actions: branch_actions(List.to_string(body1))}
+            collect_else(chars, after1, [head])
+        end
+    end
+  end
+
+  # 从 if/else if 的关键字位置提取条件串；返回 {cond, 右括号后的下标}
+  defp extract_condition(chars, if_pos) do
+    j = skip_trivia(chars, if_pos + 2)
+
+    if char_at(chars, j) == ?( do
+      case match_delim(chars, j + 1, ?(, ?), 1) do
+        nil ->
+          nil
+
+        close ->
+          inner = Enum.slice(chars, j + 1, close - j - 1)
+          {collapse_ws(List.to_string(inner)), skip_trivia(chars, close + 1)}
+      end
+    else
+      nil
+    end
+  end
+
+  defp collect_else(chars, i, acc) do
+    case next_word(chars, i) do
+      {"else", _, next} ->
+        k = skip_trivia(chars, next)
+
+        if word_at?(chars, k, "if") do
+          case extract_condition(chars, k) do
+            {cond, after_paren} ->
+              case read_block(chars, after_paren) do
+                {body, after_idx} ->
+                  branch = %{kind: :elif, cond: cond, actions: branch_actions(List.to_string(body))}
+                  collect_else(chars, after_idx, acc ++ [branch])
+
+                nil ->
+                  {acc, i}
+              end
+
+            nil ->
+              {acc, i}
+          end
+        else
+          case read_block(chars, k) do
+            {body, after_idx} ->
+              branch = %{kind: :else, actions: branch_actions(List.to_string(body))}
+              {acc ++ [branch], after_idx}
+
+            nil ->
+              {acc, k}
+          end
+        end
+
+      _ ->
+        {acc, i}
+    end
+  end
+
+  # 读块：花括号块（递归配平）或无花括号的单语句（到分号为止）
+  defp read_block(chars, i) do
+    case char_at(chars, i) do
+      ?{ ->
+        case match_delim(chars, i + 1, ?{, ?}, 1) do
+          nil -> nil
+          close -> {Enum.slice(chars, i + 1, close - i - 1), close + 1}
+        end
+
+      c when c != nil and c != ?; ->
+        read_statement(chars, i)
+
+      _ ->
+        nil
+    end
+  end
+
+  defp read_statement(chars, i) do
+    {fwd, next} = do_read_statement(chars, i, [], 0)
+    {Enum.reverse(fwd), next}
+  end
+
+  defp do_read_statement(chars, i, acc, depth) do
+    case char_at(chars, i) do
+      nil ->
+        {acc, i}
+
+      ?; when depth == 0 ->
+        {acc, i + 1}
+
+      ?" ->
+        k = skip_string(chars, i)
+        seg = Enum.slice(chars, i, k - i)
+        do_read_statement(chars, k, Enum.reverse(seg) ++ acc, depth)
+
+      ?{ ->
+        do_read_statement(chars, i + 1, [?{ | acc], depth + 1)
+
+      ?} ->
+        do_read_statement(chars, i + 1, [?} | acc], max(depth - 1, 0))
+
+      ?( ->
+        do_read_statement(chars, i + 1, [?( | acc], depth + 1)
+
+      ?) ->
+        do_read_statement(chars, i + 1, [?)| acc], max(depth - 1, 0))
+
+      _ ->
+        do_read_statement(chars, i + 1, [char_at(chars, i) | acc], depth)
+    end
+  end
+
+  # 分支行为抽取：command/say/tell_object/message_vision/write 整句台词
+  defp branch_actions(body) do
+    Regex.scan(~r/(command|say|tell_object|message_vision|write)\s*\([\s\S]*?\);/, body)
+    |> Enum.filter(&(&1 != []))
+    |> Enum.map(fn [full | _] -> full |> String.replace(~r/\s+/, " ") |> String.trim() end)
+    |> Enum.uniq()
+  end
+
+  defp collapse_ws(s), do: String.replace(s, ~r/\s+/, " ")
+
+  # ---------- 字符流工具 ----------
+
+  defp char_at(chars, i), do: Enum.at(chars, i)
+
+  defp is_ident(c) when is_integer(c), do: c in ?a..?z or c in ?A..?Z or c in ?0..?9 or c == ?_
+
+  defp is_ident(_), do: false
+
+  # w（如 "if"/"else"）恰好以 word 形式出现在 chars 的 i 处：前后都不是标识符字符
+  defp word_at?(chars, i, w) do
+    wlen = length(String.to_charlist(w))
+
+    match =
+      i >= 0 and
+        i + wlen <= length(chars) and
+        Enum.slice(chars, i, wlen) == String.to_charlist(w)
+
+    match and
+      (i == 0 or not is_ident(Enum.at(chars, i - 1))) and
+      (i + wlen >= length(chars) or not is_ident(Enum.at(chars, i + wlen)))
+  end
+
+  # 读取下一个 token：跳过空白/注释/字符串字面量，返回 {词, 起始下标, 结束下标}
+  defp next_word(chars, i) do
+    case skip_trivia(chars, i) do
+      nil ->
+        nil
+
+      j ->
+        case char_at(chars, j) do
+          ?" ->
+            k = skip_string(chars, j)
+            if is_nil(k), do: nil, else: {"<str>", j, k}
+
+c ->
+        if is_ident(c) do
+          {w, k} = read_ident(chars, j)
+          {List.to_string(w), j, k}
+        else
+          {"", j, j + 1}
+        end
+        end
+    end
+  end
+
+  defp read_ident(chars, i), do: do_read_ident(chars, i, [])
+
+  defp do_read_ident(chars, i, acc) do
+    case char_at(chars, i) do
+      c when is_integer(c) ->
+        if is_ident(c) do
+          do_read_ident(chars, i + 1, [c | acc])
+        else
+          {Enum.reverse(acc), i}
+        end
+
+      _ ->
+        {Enum.reverse(acc), i}
+    end
+  end
+
+  # 跳过空白、// 行注释、/* */ 块注释；返回下一个实质字符下标
+  defp skip_trivia(chars, i) do
+    case char_at(chars, i) do
+      nil ->
+        nil
+
+      c when c in [? , ?\t, ?\n, ?\r] ->
+        skip_trivia(chars, i + 1)
+
+      ?/ ->
+        case char_at(chars, i + 1) do
+          ?/ -> skip_trivia(chars, skip_line_comment(chars, i + 2))
+          ?* -> skip_trivia(chars, skip_block_comment(chars, i + 2))
+          _ -> i
+        end
+
+      _ ->
+        i
+    end
+  end
+
+  # 跳过 "..." 字符串（含转义），返回收尾引号后的下标
+  defp skip_string(chars, i) do
+    do_skip_string(chars, i + 1, false)
+  end
+
+  defp do_skip_string(chars, i, escaped?) do
+    case char_at(chars, i) do
+      nil ->
+        nil
+
+      ?\\ when not escaped? ->
+        do_skip_string(chars, i + 1, true)
+
+      ?" when not escaped? ->
+        i + 1
+
+      _ ->
+        do_skip_string(chars, i + 1, false)
+    end
+  end
+
+  defp skip_line_comment(chars, i) do
+    case char_at(chars, i) do
+      nil -> i
+      ?\n -> i + 1
+      _ -> skip_line_comment(chars, i + 1)
+    end
+  end
+
+  defp skip_block_comment(chars, i) do
+    case char_at(chars, i) do
+      nil ->
+        i
+
+      ?* ->
+        if char_at(chars, i + 1) == ?/ do
+          i + 2
+        else
+          skip_block_comment(chars, i + 1)
+        end
+
+      _ ->
+        skip_block_comment(chars, i + 1)
+    end
+  end
+
+  # 配平开闭字符（括号/花括号），跳过字符串与注释；返回闭合下标
+  defp match_delim(chars, i, open, close, depth) do
+    case char_at(chars, i) do
+      nil ->
+        nil
+
+      ?" ->
+        case skip_string(chars, i) do
+          nil -> nil
+          k -> match_delim(chars, k, open, close, depth)
+        end
+
+      ?/ ->
+        case char_at(chars, i + 1) do
+          ?/ -> match_delim(chars, skip_line_comment(chars, i + 2), open, close, depth)
+          ?* -> match_delim(chars, skip_block_comment(chars, i + 2), open, close, depth)
+          _ -> match_delim(chars, i + 1, open, close, depth)
+        end
+
+      ^open ->
+        match_delim(chars, i + 1, open, close, depth + 1)
+
+      ^close ->
+        if depth == 1, do: i, else: match_delim(chars, i + 1, open, close, depth - 1)
+
+      _ ->
+        match_delim(chars, i + 1, open, close, depth)
     end
   end
 
@@ -654,6 +1060,121 @@ defp extract_unhandled_content(content, unhandled_fn_names) do
         refuse_other: refuse_msg
       }
     end
+  end
+
+  # accept_fight()/accept_hit()/accept_kill()：抽取 NPC 开战接受语义。
+  # 返回 %{fight: %{...}, hit: %{...}, kill: %{...}}（只含检测到的键），
+  # 每个键：%{accept: true|false, msg: 台词或 nil, retaliate: bool, spawn: [id]}
+  # 复杂逻辑保留在 :note 供人工复核。
+  defp extract_engage(content) do
+    [:fight, :hit, :kill]
+    |> Enum.reduce(%{}, fn kind, acc ->
+      case extract_function_body(content, "accept_#{kind}") do
+        nil ->
+          acc
+
+        body ->
+          case parse_engage_kind(body) do
+            nil -> acc
+            parsed -> Map.put(acc, kind, parsed)
+          end
+      end
+    end)
+    |> case do
+      %{} = engage when map_size(engage) > 0 -> engage
+      _ -> nil
+    end
+  end
+
+  # 解析单个 accept_fight/hit/kill 函数体为语义规则。
+  # 启发式：
+  #   - accept = 函数体最后一个 return 0/1（与 accept_object 同口径）
+  #   - retaliate = 存在顶层 kill_ob(this_player()) 调用
+  #   - spawn = new(__DIR__"...") / new("/abs/path/name") 召唤帮手名单
+  #   - ::accept_xxx 继承回退 → 标记 :inherit（父类行为不可见，不猜测语义）
+  defp parse_engage_kind(body) do
+    last_return = get_last_return(body)
+    has_return = not is_nil(last_return)
+    has_kill_ob = has_own_kill_ob?(body)
+    has_inherit = Regex.match?(~r/::\s*accept_(fight|hit|kill)\s*\(/, body)
+    msg = extract_engage_msg(body)
+    spawn = extract_spawn_ids(body)
+
+    cond do
+      # 有明确 return 0/1（最普遍）：accept 取最后一个
+      has_return ->
+        %{
+          accept: last_return == 1,
+          msg: msg,
+          retaliate: has_kill_ob,
+          spawn: spawn,
+          inherit: has_inherit,
+          note: body
+        }
+
+      # 无 return，纯继承回退（如只 return ::accept_kill(ob)）
+      has_inherit ->
+        %{
+          accept: nil,
+          msg: msg,
+          retaliate: has_kill_ob,
+          spawn: spawn,
+          inherit: true,
+          note: body
+        }
+
+      true ->
+        # 认不出的结构：保留原文供人工决策，accept 置 nil（运行时按缺省放行）
+        %{accept: nil, msg: msg, retaliate: false, spawn: spawn, inherit: false, note: body}
+    end
+  end
+
+  # NPC 自身调用 kill_ob（反杀），排除 "->kill_ob"（帮手反杀他人）。
+  defp has_own_kill_ob?(body) do
+    Regex.match?(~r/(?<!->)kill_ob\s*\(/, body)
+  end
+
+  # 从 accept_* 函数体中抽取 NPC 台词：
+  #   - 优先 command("say ...") 的短句
+  #   - 其次 message_vision(...) 的首个字符串字面量，跨行拼接相邻字面量
+  # 拼回前同样经 process_literal_string 处理占位符与转义。
+  defp extract_engage_msg(body) do
+    case Regex.run(~r/command\s*\(\s*["']say\s+([^"']+)["']\s*\)/, body) do
+      [_, m] -> m |> process_literal_string()
+      _ -> extract_message_vision_literal(body)
+    end
+  end
+
+  # message_vision("..." "..." \n ...) 跨行字面量拼接，取首个相连串。
+  defp extract_message_vision_literal(body) do
+    case Regex.run(
+           ~r/message_vision\s*\(\s*((?:"(?:\\.|[^"\\])*"\s*)+)/,
+           body
+         ) do
+      nil ->
+        nil
+
+      [_, group] ->
+        Regex.scan(~r/"((?:\\.|[^"\\])*)"/, group)
+        |> Enum.map(fn [_, s] -> s end)
+        |> Enum.join()
+        |> process_literal_string()
+        |> case do
+          "" -> nil
+          m -> m
+        end
+    end
+  end
+
+  # 从 accept_* 函数体中抽取召唤帮手的 id：new(__DIR__"name") / new("/p/x/name")
+  defp extract_spawn_ids(body) do
+    Regex.scan(~r/new\s*\(\s*(?:__DIR__)?\s*["']([^"']+)["']\s*\)/, body)
+    |> Enum.map(fn [_, path] ->
+      path
+      |> Path.basename()
+      |> Path.rootname()
+    end)
+    |> Enum.reject(&(&1 == ""))
   end
 
   defp parse_accept_body(body) do
@@ -943,7 +1464,43 @@ has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
           []
         end,
 
-        # Switch statements
+        # Switch tables（case-assign 表，结构化）
+        if unhandled[:switch_tables] != [] do
+          table_list =
+            Enum.map(unhandled[:switch_tables], fn %{expr: expr, rows: rows} ->
+              head = "  # SWITCH TABLE (expr: #{expr})"
+              divider = "  # " <> String.duplicate("-", 64)
+
+              row_lines =
+                Enum.map(rows, fn %{key: key, cols: cols} ->
+                  cols_str =
+                    Enum.map_join(cols, " ", fn {v, val} -> "#{v}=#{val}" end)
+
+                  "  #   #{key}: #{cols_str}"
+                end)
+
+              [head, divider | row_lines]
+            end)
+            |> List.flatten()
+
+          ["# ==== SWITCH TABLES ====" | table_list]
+        else
+          []
+        end,
+
+        # Switch statement pools（random 台词池）
+        if unhandled[:switch_pools] != [] do
+          pool_list = Enum.map(unhandled[:switch_pools], fn stmt ->
+            lines = String.split(stmt, "\n")
+            Enum.map(lines, fn l -> "  # SWITCH POOL: #{String.trim(l)}" end)
+            |> Enum.join("\n")
+          end)
+          ["# ==== SWITCH POOLS ====" | pool_list]
+        else
+          []
+        end,
+
+        # Switch statements（命令分发/状态机，原文保留）
         if unhandled[:switch_statements] != [] do
           switch_list = Enum.map(unhandled[:switch_statements], fn stmt ->
             lines = String.split(stmt, "\n")
@@ -951,6 +1508,36 @@ has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
             |> Enum.join("\n")
           end)
           ["# ==== SWITCH STATEMENTS ====" | switch_list]
+        else
+          []
+        end,
+
+        # Conditional branches（if/else-if/else 链，"条件 → 行为"）
+        if unhandled[:conditional_branches] != %{} do
+          branch_sections =
+            for {fn_name, chains} <- unhandled[:conditional_branches] do
+              header = "# ==== CONDITIONAL BRANCHES (#{fn_name}) ===="
+
+              chain_lines =
+                Enum.map(chains, fn chain ->
+                  Enum.map(chain, fn branch ->
+                    prefix =
+                      case branch.kind do
+                        :if -> "if (#{branch.cond})"
+                        :elif -> "else if (#{branch.cond})"
+                        :else -> "else"
+                      end
+
+                    actions = Enum.join(branch.actions, " ")
+                    "  # #{prefix}  →  #{actions}"
+                  end)
+                end)
+                |> List.flatten()
+
+              [header | chain_lines]
+            end
+
+          ["# ==== CONDITIONAL BRANCHES ====" | List.flatten(branch_sections)]
         else
           []
         end,
@@ -1363,6 +1950,7 @@ defp exit_key({:string, s}), do: s
     greetings_block = build_greetings_ucl(ast.greetings)
     accept_block = build_accept_ucl(ast.accept)
     guarder_block = build_guarder_ucl(ast.guard)
+    engage_block = build_engage_ucl(ast.engage)
 
     ucl <> basic_block <> brain_line <>
       (if combat != "", do: "\n  combat = {\n#{combat}\n  }\n", else: "") <>
@@ -1375,6 +1963,7 @@ defp exit_key({:string, s}), do: s
       (if greetings_block != "", do: "\n#{greetings_block}\n", else: "") <>
       (if accept_block != "", do: "\n#{accept_block}\n", else: "") <>
       (if guarder_block != "", do: "\n#{guarder_block}\n", else: "") <>
+      (if engage_block != "", do: "\n#{engage_block}\n", else: "") <>
       "    }"
   end
 
@@ -1433,6 +2022,37 @@ defp exit_key({:string, s}), do: s
     end
   end
   defp build_guarder_ucl(_), do: ""
+
+  # accept_fight/accept_hit/accept_kill：UCL engage 块
+  defp build_engage_ucl(nil), do: ""
+
+  defp build_engage_ucl(engage) when is_map(engage) do
+    # 只输出 accept 判定的键（accept=nil 的继承/复杂场景不输出运行时规则）
+    entries =
+      Enum.map(engage, fn {kind, rule} ->
+        case rule[:accept] do
+          nil ->
+            nil
+
+          accept ->
+            "    #{kind} = {" <>
+              " accept = #{accept}" <>
+              (if rule[:msg], do: " msg = \"#{escape_set_string(rule.msg)}\"", else: "") <>
+              (if rule[:retaliate], do: " retaliate = true", else: "") <>
+              (if rule[:spawn] != [], do: " spawn = [#{Enum.map_join(rule.spawn, ", ", &"\"#{&1}\"")}]", else: "") <>
+              " }"
+        end
+      end)
+      |> Enum.reject(&is_nil/1)
+
+    if entries == [] do
+      ""
+    else
+      "  engage = {\n" <> Enum.join(entries, "\n") <> "\n  }"
+    end
+  end
+
+  defp build_engage_ucl(_), do: ""
 
   defp build_skills_block(calls) do
     skills = Map.get(calls, "set_skill", [])

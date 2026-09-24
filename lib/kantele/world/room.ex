@@ -2239,6 +2239,7 @@ defmodule Kantele.World.Room.CombatEvent do
   alias Kantele.Character.CharacterView
   alias Kantele.Character.Combat.StatusTracker
   alias Kantele.Character.CommandView
+  alias Kantele.Npc.EngageRule
   alias Kantele.Npc.Guarder
 
   def call(context, event) do
@@ -2293,6 +2294,13 @@ defmodule Kantele.World.Room.CombatEvent do
       guarded_deny?(target, attacker, event) ->
         # 被守护者拒绝被守护者杀害
         msg = "你正在守护着#{target.name}，不能杀他！\n"
+        render(context, attacker.pid, CommandView, "text", %{text: msg})
+
+      engage_rule_deny?(target, event) ->
+        # NPC 的 accept_fight/hit/kill 拒绝（accept=false）
+        {:deny, msg} =
+          EngageRule.decide(target.meta, Map.get(event.data, :type, "fight"), target.name)
+
         render(context, attacker.pid, CommandView, "text", %{text: msg})
 
       true ->
@@ -2518,6 +2526,15 @@ defmodule Kantele.World.Room.CombatEvent do
 
     Map.get(msgs, :refuse_fight) ||
       "#{target.name}摇头道：同门之间，点到为止，切磋就免了。\n"
+  end
+
+  # ---- NPC 开战接受规则（accept_fight/hit/kill → engage，见 EngageRule） ----
+
+  defp engage_rule_deny?(target, event) do
+    match?(
+      {:deny, _},
+      EngageRule.decide(target.meta, Map.get(event.data, :type, "fight"), target.name)
+    )
   end
 
   defp players_in_room(context) do

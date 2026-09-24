@@ -183,6 +183,62 @@ defmodule Kantele.World.LoaderMetaTest do
     assert Map.fetch!(test_zone.characters, :duke).meta.guarder == nil
   end
 
+  # ---- engage（accept_fight/hit/kill 抽取 → meta 落位） ----
+
+  test "shouwei：engage 三键均拒绝、台词占位、继承回退注入" do
+    world = Kantele.World.Loader.load()
+    test_zone = Enum.find(world.zones, &(&1.id == "test"))
+    shouwei = Map.fetch!(test_zone.characters, :shouwei).meta
+
+    assert shouwei.engage != nil
+    assert shouwei.engage.fight.accept == false
+    assert shouwei.engage.hit.accept == false
+    assert shouwei.engage.kill.accept == false
+    assert shouwei.engage.fight.msg == "{npc}吓了一跳，慌忙对{name}道：“小的不敢，小的不敢！”"
+  end
+
+  test "wudunru：fight 拒绝、hit/kill 接受并反杀（retaliate）" do
+    world = Kantele.World.Loader.load()
+    test_zone = Enum.find(world.zones, &(&1.id == "test"))
+    wudunru = Map.fetch!(test_zone.characters, :wudunru).meta
+
+    assert wudunru.engage.fight.accept == false
+    assert wudunru.engage.hit.accept == true
+    assert wudunru.engage.hit.retaliate == true
+    assert wudunru.engage.hit.spawn == []
+    assert wudunru.engage.kill.accept == true
+    assert wudunru.engage.kill.retaliate == true
+  end
+
+  test "jiang：accept_fight 接受，无台词无反杀" do
+    world = Kantele.World.Loader.load()
+    test_zone = Enum.find(world.zones, &(&1.id == "test"))
+    jiang = Map.fetch!(test_zone.characters, :jiang).meta
+
+    assert jiang.engage.fight.accept == true
+    assert jiang.engage.fight.msg == nil
+    assert jiang.engage.fight.retaliate == false
+  end
+
+  test "huangyi：kill 拒绝但召唤保镖 spawn" do
+    world = Kantele.World.Loader.load()
+    test_zone = Enum.find(world.zones, &(&1.id == "test"))
+    huangyi = Map.fetch!(test_zone.characters, :huangyi).meta
+
+    assert huangyi.engage.fight.accept == false
+    assert huangyi.engage.kill.accept == false
+    assert huangyi.engage.kill.retaliate == false
+    assert huangyi.engage.kill.spawn == ["baobiao"]
+  end
+
+  test "无 accept_* 的 NPC（duke）engage 为 nil" do
+    world = Kantele.World.Loader.load()
+    test_zone = Enum.find(world.zones, &(&1.id == "test"))
+    duke = Map.fetch!(test_zone.characters, :duke).meta
+
+    assert duke.engage == nil
+  end
+
   defp world_zones() do
     Kantele.World.Loader.load().zones
   end

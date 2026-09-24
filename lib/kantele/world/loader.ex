@@ -346,7 +346,8 @@ defmodule Kantele.World.Loader do
         greetings: parse_greetings(Map.get(character_data, :greetings)),
         init: parse_enter_init(Map.get(character_data, :init)),
         accept: parse_accept_rules(Map.get(character_data, :accept)),
-        guarder: parse_guarder(Map.get(Map.get(character_data, :meta, %{}), :guarder))
+        guarder: parse_guarder(Map.get(Map.get(character_data, :meta, %{}), :guarder)),
+        engage: parse_engage(Map.get(character_data, :engage))
       }
     }
 
@@ -579,6 +580,63 @@ defmodule Kantele.World.Loader do
   end
 
   defp parse_guarder(_), do: nil
+
+  # 开战接受规则（accept_fight/hit/kill）：
+  # UCL engage = {
+  #   fight = { accept = false msg = "..." }
+  #   hit   = { accept = true retaliate = true msg = "..." }
+  #   kill  = { accept = false spawn = ["baobiao"] }
+  # }
+  defp parse_engage(nil), do: nil
+
+  defp parse_engage(engage) when is_map(engage) do
+    parsed =
+      Enum.reduce([:fight, :hit, :kill], %{}, fn key, acc ->
+        case Map.get(engage, key) do
+          nil ->
+            acc
+
+          rule when is_map(rule) ->
+            accept = parse_engage_accept(Map.get(rule, :accept))
+
+            if is_nil(accept) do
+              acc
+            else
+              Map.put(acc, key, %{
+                accept: accept,
+                msg: string_or_nil(Map.get(rule, :msg)),
+                retaliate: to_bool(Map.get(rule, :retaliate, false)),
+                spawn:
+                  case Map.get(rule, :spawn) do
+                    list when is_list(list) -> Enum.map(list, &to_string/1)
+                    item when not is_nil(item) -> [to_string(item)]
+                    _ -> []
+                  end
+              })
+            end
+
+          _ ->
+            acc
+        end
+      end)
+
+    case parsed do
+      %{} = p when map_size(p) > 0 -> p
+      _ -> nil
+    end
+  end
+
+  defp parse_engage(_), do: nil
+
+  # accept 转布尔：true/false（含字符串形式）之外一律按缺省放行（nil = 无规则）
+  defp parse_engage_accept(true), do: true
+  defp parse_engage_accept(false), do: false
+  defp parse_engage_accept("true"), do: true
+  defp parse_engage_accept("false"), do: false
+  defp parse_engage_accept(value) when value in [1, "1", 0, "0"] do
+    value == 1 or value == "1"
+  end
+  defp parse_engage_accept(_), do: nil
 
   defp numeric_or_nil(v) when is_integer(v), do: v
   defp numeric_or_nil(v) when is_binary(v), do: String.to_integer(v)
