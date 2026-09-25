@@ -145,8 +145,33 @@ defmodule Kantele.World.Loader do
   defp zone_file_path(zone_id), do: Path.join(@paths.world_path, "#{zone_id}.ucl")
 
   defp merge_world_data(zone_data) do
+    zone_data = string_keys_to_atoms(zone_data)
     [key] = Map.keys(zone_data.zones)
     [{to_string(key), zone_data}]
+  end
+
+  defp string_keys_to_atoms(data) do
+    case data do
+      %{__struct__: _} = struct ->
+        struct
+      map when is_map(map) ->
+        map
+        |> Enum.into(%{}, fn {k, v} ->
+          {key_to_atom(k), string_keys_to_atoms(v)}
+        end)
+      list when is_list(list) ->
+        Enum.map(list, &string_keys_to_atoms/1)
+      other ->
+        other
+    end
+  end
+
+  defp key_to_atom(key) do
+    case key do
+      k when is_binary(k) -> String.to_existing_atom(k)
+      k when is_atom(k) -> k
+      other -> other
+    end
   end
 
   defp zone_items_to_list(zone) do

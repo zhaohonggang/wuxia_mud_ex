@@ -305,10 +305,7 @@ defmodule Kantele.World.LPCConverter do
     %{assigns: assigns}
   end
 
-  @doc """
-  Parse function calls in create() body: set_skill, map_skill, carry_object, etc.
-  """
-  defp parse_function_calls(body) do
+defp parse_function_calls(body) do
     # Match function calls: func_name(arg1, arg2, ...);
     # Also handle chained calls like carry_object(...)->wear()
     Regex.scan(~r/(\w+)\s*\(([^)]*)\)\s*(?:->\s*\w+\s*\(\s*\))?\s*;/, body)
@@ -490,13 +487,19 @@ defp extract_unhandled_content(content, unhandled_fn_names) do
   defp function_bodies(content) do
     sig = ~r/(?:int|string|void|mixed|mapping|object|protected)\s+(\w+)\s*\([^)]*\)\s*\n*\s*\{/
 
-    Regex.scan(sig, content)
-    |> Enum.map(fn [match, name] ->
-      [_, rest] = String.split(content, match, parts: 2)
-      brace_pos = String.length(content) - String.length(rest) - 1
-      {name, find_matching_brace(content, brace_pos)}
-    end)
-    |> Enum.reject(fn {_, body} -> is_nil(body) end)
+    try do
+      Regex.scan(sig, content)
+      |> Enum.map(fn [match, name] ->
+        [_, rest] = String.split(content, match, parts: 2)
+        brace_pos = String.length(content) - String.length(rest) - 1
+        {name, find_matching_brace(content, brace_pos)}
+      end)
+      |> Enum.reject(fn {_, body} -> is_nil(body) end)
+    rescue
+      e ->
+        IO.puts("ERROR in function_bodies regex: #{inspect(e)}")
+        []
+    end
   end
 
   # 沿字符流扫描函数体，把顶层的 if/else-if/else 链切成
@@ -723,7 +726,7 @@ c ->
       nil ->
         nil
 
-      c when c in [? , ?\t, ?\n, ?\r] ->
+      c when c in [?\s, ?\t, ?\n, ?\r] ->
         skip_trivia(chars, i + 1)
 
       ?/ ->
@@ -895,19 +898,25 @@ c ->
 # 按函数名抽取函数体（不含外层大括号）。找不到返回 nil。
   defp extract_function_body(content, name) do
     # Match function signature with optional newline before opening brace
-    case Regex.run(~r/(?:int|string|void|mixed|mapping|object|protected)\s+#{name}\s*\([^)]*\)\s*\n*\s*\{/, content) do
-      nil ->
-        IO.puts("DEBUG extract_function_body: no match for #{name}")
+    try do
+      case Regex.run(~r/(?:int|string|void|mixed|mapping|object|protected)\s+#{name}\s*\([^)]*\)\s*\n*\s*\{/, content) do
+        nil ->
+          IO.puts("DEBUG extract_function_body: no match for #{name}")
+          nil
+        [match] ->
+          parts = String.split(content, match, parts: 2)
+          case parts do
+            [before, _rest] ->
+              brace_pos = String.length(before) + String.length(match) - 1
+              IO.puts("DEBUG extract_function_body: name=#{name}, brace_pos=#{brace_pos}, char=#{String.at(content, brace_pos)}")
+              find_matching_brace(content, brace_pos)
+            _ -> nil
+          end
+      end
+    rescue
+      e ->
+        IO.puts("ERROR in extract_function_body for #{name}: #{inspect(e)}")
         nil
-      [match] ->
-        parts = String.split(content, match, parts: 2)
-        case parts do
-          [before, _rest] ->
-            brace_pos = String.length(before) + String.length(match) - 1
-            IO.puts("DEBUG extract_function_body: name=#{name}, brace_pos=#{brace_pos}, char=#{String.at(content, brace_pos)}")
-            find_matching_brace(content, brace_pos)
-          _ -> nil
-        end
     end
   end
 
@@ -1238,14 +1247,14 @@ has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
     if rules == [], do: nil, else: rules
   end
 
-  # 从 accept_object 函数体中抽取 NPC 台词（tell_object, command say, message_vision, say）
+  # 从 accept_object 函数体中抽取 NPC 台词（tell_object, command say, message_vision, say, notify_fail, write）
   defp extract_accept_dialogues(body) do
     # 抽取所有字符串字面量及其上下文
     all_strings = extract_all_strings_with_context(body)
 
     # 启发式分配：按出现顺序和上下文关键字分配
     money_msgs = Enum.filter(all_strings, fn {ctx, _} -> ctx in [:tell_object, :money] end) |> Enum.map(&elem(&1, 1))
-    default_msgs = Enum.filter(all_strings, fn {ctx, _} -> ctx in [:command_say, :say, :message_vision, :command_other] end) |> Enum.map(&elem(&1, 1))
+    default_msgs = Enum.filter(all_strings, fn {ctx, _} -> ctx in [:command_say, :say, :message_vision, :command_other, :default] end) |> Enum.map(&elem(&1, 1))
     reject_msgs = Enum.filter(all_strings, fn {ctx, _} -> ctx == :reject end) |> Enum.map(&elem(&1, 1))
 
     money_msg = List.first(money_msgs) || List.first(default_msgs)
@@ -1280,28 +1289,87 @@ has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
       Regex.scan(~r/command\s*\(\s*["']say\s+([^"']+)["']\s*\)/, body)
       |> Enum.map(fn [_, msg] -> {:command_say, process_literal_string(msg)} end)
 
-    # message_vision("msg", ...)
-    mv =
-      Regex.scan(~r/message_vision\s*\(\s*["']([^"']+)["']/, body)
-      |> Enum.map(fn [_, msg] -> {:message_vision, process_literal_string(msg)} end)
-
-    # say("msg")
-    say =
-      Regex.scan(~r/say\s*\(\s*["']([^"']+)["']\s*\)/, body)
-      |> Enum.map(fn [_, msg] -> {:say, process_literal_string(msg)} end)
+# message_vision / message_sort / say / notify_fail / write 台词抽取。
+    # 统一用括号配对提取完整调用，再拼接调用内全部字符串字面量，
+    # 避免 [^)]*["']...["'] 在多个语句间跨行抓取产生乱码。
+    mv = extract_pool_calls(body, ~r/message_(?:vision|sort)\s*\(/, :message_vision)
+    say = extract_pool_calls(body, ~r/(?<!\w)say\s*\(/, :say)
+    notify_fail = extract_pool_calls(body, ~r/notify_fail\s*\(/, :reject)
+    write = extract_pool_calls(body, ~r/write\s*\(/, :default)
 
     # command("msg") 不带 say 的情况
     cmd_other =
       Regex.scan(~r/command\s*\(\s*["']([^"']+)["']\s*\)/, body)
       |> Enum.map(fn [_, msg] -> {:command_other, process_literal_string(msg)} end)
 
-    tell_object ++ cmd_say ++ mv ++ say ++ cmd_other
+    tell_object ++ cmd_say ++ mv ++ say ++ cmd_other ++ notify_fail ++ write
+  end
+
+  # 抽取某类函数调用的台词池：完整调用（括号配对）→ 拼接全部字符串字面量 → 消毒
+  defp extract_pool_calls(body, re, context) do
+    try do
+      body
+      |> extract_calls_balanced(re)
+      |> Enum.map(fn call ->
+        call
+        |> extract_quoted_strings()
+        |> sanitize_message_text()
+      end)
+      |> Enum.reject(&(&1 == ""))
+      |> Enum.map(&{context, &1})
+    rescue
+      _ -> []
+    end
+  end
+
+  # 从函数调用文本中取出所有字符串字面量并拼接
+  defp extract_quoted_strings(call) do
+    Regex.scan(~r/"((?:\\.|[^"\\])*)"/, call)
+    |> Enum.map(fn [_, s] -> process_literal_string(s) end)
+    |> Enum.join("")
+  end
+
+  # 按函数名开头正则提取完整调用文本（括号配对，支持内嵌函数调用如 query_respect(who)）
+  defp extract_calls_balanced(body, re) do
+    Regex.scan(re, body, return: :index)
+    |> Enum.map(fn [match] ->
+      start_idx = elem(match, 0)
+      binary_part(body, start_idx, byte_size(body) - start_idx)
+    end)
+    |> Enum.map(&take_balanced_call/1)
+    |> Enum.reject(&(&1 == ""))
+  end
+
+  # 从调用开始处扫描到配对闭括号，返回完整调用文本
+  defp take_balanced_call(call) do
+    call
+    |> String.to_charlist()
+    |> do_take_balanced(0, [])
+  end
+
+  defp do_take_balanced([], _depth, acc), do: acc |> Enum.reverse() |> List.to_string()
+
+  defp do_take_balanced([h | t], depth, acc) do
+    case h do
+      ?( ->
+        do_take_balanced(t, depth + 1, [h | acc])
+
+      ?) ->
+        if depth <= 1 do
+          acc |> Enum.reverse([h]) |> List.to_string()
+        else
+          do_take_balanced(t, depth - 1, [h | acc])
+        end
+
+      _ ->
+        do_take_balanced(t, depth, [h | acc])
+    end
   end
 
   # 处理字面量字符串：处理转义字符、LPC 变量替换
   defp process_literal_string(s) do
     s
-    |> String.replace("\\n", "\n")
+    |> process_lpc_escapes()
     |> String.replace("$N", "{npc}")
     |> String.replace("$n", "{name}")
     |> String.trim()
@@ -1390,9 +1458,20 @@ has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
     # Extract each "..." segment (respecting \" escapes) and join them.
     segments =
       Regex.scan(~r/"((?:\\.|[^"\\])*)"/, value_str)
-      |> Enum.map(fn [_, seg] -> seg end)
+      |> Enum.map(fn [_, seg] -> process_lpc_escapes(seg) end)
 
     Enum.join(segments)
+  end
+
+  defp process_lpc_escapes(str) do
+    # Process LPC/C escape sequences in string literals
+    str
+    |> String.replace("\\n", "\n")
+    |> String.replace("\\t", "\t")
+    |> String.replace("\\r", "\r")
+    |> String.replace("\\\"", "\"")
+    |> String.replace("\\'", "'")
+    |> String.replace("\\\\", "\\")
   end
 
   defp parse_array_elements(inner) do
@@ -1560,7 +1639,9 @@ has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
                       end
 
                     actions = Enum.join(branch.actions, " ")
-                    "  # #{prefix}  →  #{actions}"
+                    # Sanitize actions text for UCL comments: remove problematic chars
+                    sanitized_actions = sanitize_comment_text(actions)
+                    "  # #{prefix}  →  #{sanitized_actions}"
                   end)
                 end)
                 |> List.flatten()
@@ -1704,7 +1785,7 @@ has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
         ""
       end
 
-    room_block = room_block <> coords_block <> flags_block
+room_block = room_block <> coords_block <> flags_block
 
     # Behavior from valid_leave (guarded exits)
     behavior_block =
@@ -1891,13 +1972,22 @@ defp exit_key({:string, s}), do: s
   end
 
   defp get_heredoc_or_set(heredocs, sets, key, default) do
+    case Map.get(sets, key) do
+      {:string, s} -> escape_set_string(s)
+      # set("long", @LONG ... LONG) 的占位值会被 parse_set_calls 抓成活字变量，回退到 heredocs
+      {:var, v} when is_binary(v) -> maybe_heredoc(heredocs, key, default, v)
+      nil -> get_heredoc(heredocs, key, default)
+    end
+  end
+
+  defp maybe_heredoc(heredocs, key, default, v) do
+    if v =~ ~r/^@\w+/, do: get_heredoc(heredocs, key, default), else: default
+  end
+
+  defp get_heredoc(heredocs, key, default) do
     case Map.get(heredocs, key) do
       %{content: content} -> escape_heredoc_content(content)
-      nil ->
-        case Map.get(sets, key) do
-          {:string, s} -> escape_set_string(s)
-          _ -> default
-        end
+      _ -> default
     end
   end
 
@@ -1905,15 +1995,20 @@ defp exit_key({:string, s}), do: s
   # UCL/Elias accepts "\n" as literal backslash-n and "\"" as a quote.
   defp escape_heredoc_content(str) do
     str
+    |> String.replace("\\", "\\\\")
     |> String.replace("\n", "\\n")
     |> String.replace("\"", "\\\"")
   end
 
-  # Set-string values already carry LPC escapes (\" for a literal quote, \n
+  # Set-string values already carry LPC escapes (\"" for a literal quote, \n
   # for a line break, ...). Only real newline chars (from multi-line LPC
   # literals that our parser joined) need converting to "\n".
   defp escape_set_string(str) do
-    String.replace(str, "\n", "\\n")
+    str
+    |> String.replace("\\", "\\\\")
+    |> String.replace("\"", "\\\"")
+    |> String.replace(";", "\\;")
+    |> String.replace("\n", "\\n")
   end
 
   defp generate_npc_ucl(ast, zone_id) do
@@ -2289,6 +2384,16 @@ defp exit_key({:string, s}), do: s
 
     ucl <> "  verbs = [\n" <> Enum.map_join(verbs, ",\n", &"    \"#{&1}\"") <> "\n  ]\n" <>
       (if meta != %{}, do: "\n  meta = {\n" <> generate_meta(meta) <> "\n  }\n", else: "") <>
+(if Map.has_key?(sets, "wield_msg") or Map.has_key?(sets, "unwield_msg") do
+         wield_str = escape_set_string(extract_string(Map.get(sets, "wield_msg"), ""))
+         unwield_str = escape_set_string(extract_string(Map.get(sets, "unwield_msg"), ""))
+         "\n  messages = {\n" <>
+           (if wield_str != "", do: "    wield = \"#{wield_str}\"\n", else: "") <>
+           (if unwield_str != "", do: "    unwield = \"#{unwield_str}\"\n", else: "") <>
+           "  }\n"
+       else
+         ""
+       end) <>
       "    }"
   end
 
@@ -2388,6 +2493,33 @@ defp exit_key({:string, s}), do: s
   end
   defp format_meta_value({:var, v}), do: v
   defp format_meta_value(_), do: "nil"
+
+defp sanitize_comment_text(text) do
+    text
+    |> String.replace("\\", "\\\\")
+    |> String.replace("\"", "\\\"")
+    |> String.replace("\n", " ")
+    |> String.replace("\r", " ")
+    # Aggressively escape/remove sequences that confuse UCL parser in comments
+    |> String.replace("\\\"", "\\\\\"")
+    |> String.replace("\\n", "\\\\n")
+    |> String.replace("\\t", "\\\\t")
+    |> String.replace("\\r", "\\\\r")
+    # Remove any remaining backslash-letter sequences that might confuse parser
+    |> String.replace(~r/\\[a-zA-Z]/, "\\\\$0")
+  end
+
+  defp sanitize_message_text(text) do
+    text
+    # 剥离提取残留的代码片段（须在转义前执行，否则反斜杠会让模式失配）
+    |> String.replace(~r/message_(?:vision|sort)\s*\(.*/, "")
+    |> String.replace(~r/\s*\)\;.*/, "")
+    # 兜底转义
+    |> String.replace(";", "\\;")
+    |> String.replace(")", "\\)")
+    |> String.replace("(", "\\(")
+    |> String.trim()
+  end
 
   defp generate_skill_ucl(ast, zone_id) do
     # Skills are handled differently - they map to combat skills, not UCL world data
