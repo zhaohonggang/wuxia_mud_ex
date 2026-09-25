@@ -126,6 +126,30 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
     end
   end
 
+  describe "chat 闲聊（chat_chance / chat_msg）抽取" do
+    test "jinhua：chat_msg 颜色宏数组转 chats 台词池，chance 保留" do
+      ast = parse(@jinhua_path)
+      sets = ast.create_fn.sets
+
+      assert sets["chat_chance"] == {:int, 5}
+      assert {:array, lines} = sets["chat_msg"]
+      assert Enum.map(lines, &elem(&1, 1)) == [
+               "金花哭泣着：我的命怎么这么苦哟。\\n",
+               "金花抹着眼泪：娘呀，我好想你呀！\\n",
+               "金花叹口气说道：不知今生今世能否再见到我娘。\\n"
+             ]
+    end
+
+    test "jinhua：build_chat 输出 chat_chance + chats 列表" do
+      {:ok, ucl} = LPCConverter.convert_string(File.read!(@jinhua_path),
+        base_path: "test_minimal_world_v2_modified/npc")
+      assert ucl =~ "chat_chance = 5"
+      assert ucl =~ "\"金花哭泣着：我的命怎么这么苦哟。\""
+      assert ucl =~ "\"金花抹着眼泪：娘呀，我好想你呀！\""
+      assert ucl =~ "\"金花叹口气说道：不知今生今世能否再见到我娘。\""
+    end
+  end
+
   describe "permit_pass()/guarder 抽取" do
     test "menwei：提取 family 与拒绝台词" do
       ast = parse(@menwei_path)

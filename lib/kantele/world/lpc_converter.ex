@@ -2354,17 +2354,31 @@ defp exit_key({:string, s}), do: s
 
   defp build_chat(sets) do
     chance = Map.get(sets, "chat_chance")
-    chats = Map.get(sets, "chats")
+    chats = Map.get(sets, "chats") || Map.get(sets, "chat_msg")
 
     case {chance, chats} do
       {{:int, c}, {:array, lines}} when c > 0 ->
-        chat_lines = Enum.map(lines, fn {:string, s} -> "    \"#{escape_set_string(s)}\"" end) |> Enum.join(",\n")
-        """
-        chat_chance = #{c}
-        chats = [
-        #{chat_lines}
-        ]
-        """
+        chat_lines =
+          lines
+          |> Enum.flat_map(fn
+            {:string, s} -> [s |> process_literal_string() |> sanitize_message_text()]
+            _ -> []
+          end)
+          |> Enum.reject(&(&1 == ""))
+          |> Enum.uniq()
+
+        if chat_lines == [] do
+          nil
+        else
+          rendered = Enum.map_join(chat_lines, ",\n", &"    \"#{escape_set_string(&1)}\"")
+          """
+          chat_chance = #{c}
+          chats = [
+          #{rendered}
+          ]
+          """
+        end
+
       _ ->
         nil
     end
