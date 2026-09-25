@@ -1203,6 +1203,8 @@ c ->
         %{kind: "money", min: min, msg: msg}
       end
 
+    reject_msgs = Map.get(accept_dialogues, :reject, [])
+
     item_id_rules =
       Regex.scan(~r/(\w+->)?query\s*\(\s*["']id["']\s*\)\s*==\s*["']([^"']+)["']/, body)
       |> Enum.map(fn [_, _, id] ->
@@ -1215,7 +1217,7 @@ c ->
         %{kind: "item_name", name: name, msg: Map.get(accept_dialogues, :"item_name_#{name}") || Map.get(accept_dialogues, :default)}
       end)
 
-has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
+    has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
     has_return_1 = Regex.match?(~r/return\s+1\s*;/, body)
 
     # 判斷是否有具體的接受規則（money/item_id/item_name）
@@ -1235,11 +1237,26 @@ has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
         has_return_0 and has_return_1 ->
           # 同時有 return 0 和 return 1：看最後一個 return 決定預設行為
           accept_default = last_return == 1
-          msg = if last_return == 1, do: Map.get(accept_dialogues, :default), else: Map.get(accept_dialogues, :reject)
+          reject_pool = Map.get(accept_dialogues, :reject, [])
+
+          msg =
+            if last_return == 1 do
+              Map.get(accept_dialogues, :default)
+            else
+              if reject_pool == [], do: Map.get(accept_dialogues, :default), else: reject_pool
+            end
+
           %{kind: "any", accept: accept_default, msg: msg || Map.get(accept_dialogues, :default)}
 
         true ->
           nil
+      end
+
+    default_rule =
+      if default_rule != nil and reject_msgs != [] and Map.get(default_rule, :msg) != reject_msgs do
+        Map.put(default_rule, :fail_msg, reject_msgs)
+      else
+        default_rule
       end
 
     rules = Enum.reject([money_rule] ++ item_id_rules ++ item_name_rules ++ [default_rule], &is_nil/1)
@@ -1264,12 +1281,13 @@ has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
       default_msgs
       |> Enum.reject(&String.starts_with?(&1, "say "))
       |> Enum.uniq()
-    reject_msg = List.first(reject_msgs)
+    # reject 保留完整 notify_fail 台词池（拒绝理由），供 fail_msg 展示
+    reject_msgs = reject_msgs |> Enum.uniq()
 
     %{
       money: money_msg,
       default: default_msgs,
-      reject: reject_msg
+      reject: reject_msgs
     }
   end
 
@@ -2015,7 +2033,7 @@ defp exit_key({:string, s}), do: s
     create = ast.create_fn
     sets = Map.get(create, :sets, %{})
     set_name = Map.get(create, :set_name, %{})
-    heredocs = Map.get(create, :heredocs, %{})
+    heredocs = Map.get(ast.heredocs, :heredocs, %{})
 
     npc_id =
       ast.source_path
@@ -2128,6 +2146,10 @@ defp exit_key({:string, s}), do: s
           (case render_accept_msg(Map.get(rule, :msg)) do
              nil -> ""
              rendered -> " msg = #{rendered}"
+           end) <>
+          (case render_accept_msg(Map.get(rule, :fail_msg)) do
+             nil -> ""
+             rendered -> " fail_msg = #{rendered}"
            end) <>
           " }"
       end) <> "\n  ]"
@@ -2352,7 +2374,7 @@ defp exit_key({:string, s}), do: s
     create = ast.create_fn
     sets = Map.get(create, :sets, %{})
     set_name = Map.get(create, :set_name, %{})
-    heredocs = Map.get(create, :heredocs, %{})
+    heredocs = Map.get(ast.heredocs, :heredocs, %{})
 
     item_id =
       ast.source_path

@@ -120,7 +120,7 @@ defmodule Kantele.Character.GiveEvent do
           _ ->
             case rule_hit(rule, item) do
               :hit -> {:ok, take_message(rule, item)}
-              :decline -> {:error, refuse_message(item)}
+              :decline -> {:error, failure_message(rule, item)}
               :miss -> acc
             end
         end
@@ -169,11 +169,20 @@ defmodule Kantele.Character.GiveEvent do
     end
   end
 
-  defp take_message(%{msg: msg} = _rule, item) when is_list(msg) and msg != [],
+defp take_message(%{msg: msg} = _rule, item) when is_list(msg) and msg != [],
   do: Enum.random(msg)
 
-  defp take_message(_rule, item), do: "你给了#{item.name}。"
-  defp refuse_message(item), do: "对方不收#{item.name}。"
+defp take_message(_rule, item), do: "你给了#{item.name}。"
+
+# 拒绝文案：优先使用规则 fail_msg 台词池，缺省回退泛化拒绝语
+defp failure_message(%{fail_msg: fail_msg} = rule, item) when is_list(fail_msg) and fail_msg != [],
+  do: Enum.random(fail_msg)
+
+defp failure_message(%{kind: "any"} = rule, _item), do: refuse_message(nil)
+defp failure_message(_rule, item), do: refuse_message(item)
+
+defp refuse_message(nil), do: "对方不肯收下。"
+defp refuse_message(item), do: "对方不收#{item.name}。"
   defp from_drop_message(), do: "物品不在房间中。"
 
   defp handle_normal_give(conn, character, item_instance, data, from_name) do

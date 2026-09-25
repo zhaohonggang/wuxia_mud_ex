@@ -13,6 +13,7 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
   @wudunru_path "test_minimal_world_v2_modified/npc/wudunru.c"
   @jiang_path "test_minimal_world_v2_modified/npc/jiang.c"
   @huangyi_path "test_minimal_world_v2_modified/npc/huangyi.c"
+  @jinhua_path "test_minimal_world_v2_modified/npc/jinhua.c"
 
   defp parse(path) do
     {:ok, ast} = LPCConverter.parse_ast(File.read!(path), path, path)
@@ -102,6 +103,26 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
     test "无 accept_object() 返回 nil" do
       ast = parse(@duke_path)
       assert ast.accept == nil
+    end
+
+    test "jinhua：notify_fail 拒绝台词进 fail_msg，accept 台词进 msg" do
+      ast = parse(@jinhua_path)
+
+      any = Enum.find(ast.accept, &(&1.kind == "any"))
+
+      assert any.accept == true
+      assert any.msg == [
+               "金花抹了把眼泪，不好意思道：这位见笑了。我实在没什么东西报答你，不过我知道山贼头有个钱箱藏在床下。我这就搬出来给你。",
+               "{npc}帮金花从床下搬出来一只钱箱，迫不及待地打开一看，里面竟然搁着一大堆白银。{npc}毫不客气地把白银装进衣服里。",
+               "金花双手捧着绣花鞋，泪如雨下道：娘，您还挂着女儿啊。"
+             ]
+      assert any.fail_msg == ["你没有这件东西。", "金花说道：你给我这个东西干嘛？", "金花说道：我已经有绣花鞋了。"]
+    end
+
+    test "jinhua：build_accept_ucl 输出 fail_msg 台词池" do
+      {:ok, ucl} = LPCConverter.convert_string(File.read!(@jinhua_path),
+        base_path: "test_minimal_world_v2_modified/npc")
+      assert ucl =~ "fail_msg = [\"你没有这件东西。\", \"金花说道：你给我这个东西干嘛？\", \"金花说道：我已经有绣花鞋了。\"]"
     end
   end
 

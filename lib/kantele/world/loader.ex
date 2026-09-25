@@ -571,7 +571,8 @@ defmodule Kantele.World.Loader do
           id: string_or_nil(Map.get(rule, :id)),
           name: string_or_nil(Map.get(rule, :name)),
           accept: to_bool(Map.get(rule, :accept, true)),
-          msg: accept_msg(Map.get(rule, :msg))
+          msg: accept_msg(Map.get(rule, :msg)),
+          fail_msg: accept_msg(Map.get(rule, :fail_msg))
         }
       else
         nil

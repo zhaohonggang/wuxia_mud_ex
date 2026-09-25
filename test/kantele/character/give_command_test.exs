@@ -303,6 +303,28 @@ updated = conn.private.update_character || conn.character
 
       assert_receive %Event{topic: "give/result", data: %{ok: false}}
     end
+
+    test "拒绝时优先使用 fail_msg 拒绝台词池" do
+      _conn =
+        GiveEvent.receive(
+          build_conn(
+            npc_with_accept([%{kind: "any", accept: false, fail_msg: ["你没有这件东西。", "我已有绣花鞋了。"]}])
+          ),
+          %Event{
+            topic: "characters/give",
+            data: %{
+              item_instance: instance(),
+              item_name: "包子",
+              from_name: "张三",
+              from_id: "player-1",
+              reply_to: self()
+            }
+          }
+        )
+
+      assert_receive %Event{topic: "give/result", data: %{ok: false, reason: reason}}
+      assert reason in ["你没有这件东西。", "我已有绣花鞋了。"]
+    end
   end
 
   describe "赠与端 GiveEvent.result" do
