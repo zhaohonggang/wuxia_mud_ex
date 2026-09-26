@@ -248,4 +248,39 @@ defmodule Kantele.World.LoaderMetaTest do
   defp world_zones() do
     Kantele.World.Loader.load().zones
   end
+
+  # ---- item_desc 墙牌/菜单 + valid_leave 出口阻挡（room 数据化） ----
+
+  test "bet 房间：item_desc 解析 paizi 规则板" do
+    world = Kantele.World.Loader.load()
+    bet = Enum.find(world.rooms, &(&1.key == "bet"))
+
+    assert bet != nil
+    assert Map.has_key?(bet.item_desc, "paizi")
+    assert String.contains?(bet.item_desc["paizi"], "赌博规则")
+    assert String.contains?(bet.item_desc["paizi"], "一赢三十六")
+  end
+
+  test "cave 房间：valid_leave 阻挡结构化为 exit_vetoes" do
+    world = Kantele.World.Loader.load()
+    cave = Enum.find(world.rooms, &(&1.key == "cave"))
+
+    assert cave != nil
+    assert cave.exit_vetoes == [
+             %{
+               direction: "in",
+               condition: nil,
+               message: "蟒蛇盘在岩洞口，将路封了个严实。"
+             }
+           ]
+  end
+
+  test "kedian 房间：两条条件阻挡都被保留" do
+    world = Kantele.World.Loader.load()
+    kedian = Enum.find(world.rooms, &(&1.key == "kedian"))
+
+    assert length(kedian.exit_vetoes) == 2
+    assert Enum.any?(kedian.exit_vetoes, &(&1.direction == "up"))
+    assert Enum.any?(kedian.exit_vetoes, &(&1.direction == "west"))
+  end
 end

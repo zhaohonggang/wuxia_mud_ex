@@ -150,6 +150,7 @@ defmodule Kantele.World.LPCConverter do
       source_path: source_path,
       base_path: base_path,
       valid_leave: parse_valid_leave(content),
+      exit_vetoes: parse_exit_vetoes(content),
       function_calls: function_calls,
       enter: extract_enter(content),
       greetings: extract_greetings(content),
@@ -890,6 +891,132 @@ c ->
         }
       true ->
         nil
+    end
+  end
+
+  @doc """
+  Parse valid_leave function to extract exit-blocking notify_fail messages.
+
+  Streaming the veto-side `return notify_fail("...")` calls in valid_leave,
+  preserving the message plus the guard condition and affected direction:
+    if (dir == "in" && objectp(present("mang she", environment(me))))
+        return notify_fail("蟒蛇盘在岩洞口，将路封了个严实。\\n");
+    if (me->query_temp("rent_paid") && dir == "up")
+        return notify_fail(CYN "店小二一下挡在楼梯前，白眼一翻：...\\n" NOR);
+  A bare `return notify_fail(...)` (not directly guarded by an if) applies to
+  all directions with no stored condition.
+
+  Returns a list of maps: %{dir, condition, message}
+  """
+  defp parse_exit_vetoes(content) do
+    case extract_function_body(content, "valid_leave") do
+      nil -> []
+      body -> parse_exit_vetoes_body(body)
+    end
+  end
+
+  defp parse_exit_vetoes_body(body) do
+    chars = String.to_charlist(body)
+
+    chars
+    |> notify_fail_sites(0, [])
+    |> Enum.map(fn open ->
+      exit_veto_at(chars, open)
+    end)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  # 扫描找出每个 "notify_fail " 词之后紧跟的 "(" 下标（跳过字符串/注释/空白）
+  defp notify_fail_sites(chars, i, acc) do
+    case skip_trivia(chars, i) do
+      nil ->
+        Enum.reverse(acc)
+
+      j ->
+        case next_word(chars, j) do
+          {"notify_fail", _start, k} ->
+            m = skip_trivia(chars, k)
+
+            if m && char_at(chars, m) == ?( do
+              notify_fail_sites(chars, m + 1, [m | acc])
+            else
+              notify_fail_sites(chars, k, acc)
+            end
+
+          {_w, _start, k} ->
+            notify_fail_sites(chars, k, acc)
+
+          nil ->
+            Enum.reverse(acc)
+        end
+    end
+  end
+
+  defp exit_veto_at(chars, open) do
+    case match_delim(chars, open + 1, ?(, ?), 1) do
+      nil ->
+        nil
+
+      close ->
+        msg_arg = Enum.slice(chars, open + 1, close - open - 1) |> List.to_string()
+
+        cond = preceding_if_condition(chars, open)
+
+        # notify_fail 是否为该 if 的直接语句（条件成立即阻挡）
+        in_if =
+          if is_nil(cond) do
+            false
+          else
+            mid = Enum.slice(chars, cond.close + 1, open - cond.close - 1) |> List.to_string()
+            trimmed = String.trim(mid)
+
+            String.starts_with?(trimmed, "return notify_fail") or
+              String.starts_with?(trimmed, "notify_fail")
+          end
+
+        dir = exit_veto_direction(cond && cond.text)
+        condition = if in_if, do: cond.text, else: nil
+
+        message =
+          msg_arg
+          |> extract_strings_from_macro_wrapped()
+          |> process_literal_string()
+
+        if message == "" do
+          nil
+        else
+          %{dir: dir, condition: condition, message: message}
+        end
+    end
+  end
+
+  # 往前找最近的 if( ... )，返回 %{text: 条件文本, close: 条件闭合括号下标}
+  defp preceding_if_condition(chars, open) do
+    (open - 1)..0
+    |> Enum.reduce_while(nil, fn i, acc ->
+      if word_at?(chars, i, "if") do
+        j = skip_trivia(chars, i + 2)
+
+        if j && char_at(chars, j) == ?( do
+          case match_delim(chars, j + 1, ?(, ?), 1) do
+            nil -> {:cont, acc}
+            close -> {:halt, %{text: collapse_ws(List.to_string(Enum.slice(chars, j + 1, close - j - 1))), close: close}}
+          end
+        else
+          {:cont, acc}
+        end
+      else
+        {:cont, acc}
+      end
+    end)
+  end
+
+  defp exit_veto_direction(nil), do: nil
+
+  defp exit_veto_direction(cond_text) do
+    case Regex.run(~r/dir\s*==\s*(["'])([^"']+)\1/, cond_text) do
+      [_, _, dir] -> dir
+      _ -> nil
     end
   end
 
@@ -1821,7 +1948,13 @@ room_block = room_block <> coords_block <> flags_block
         """
       end
 
-    room_block = room_block <> behavior_block <> "    }"
+    # Wall signs / menus from set("item_desc", ([ keyword : "..." ]))
+    item_desc_block = generate_room_item_desc(sets)
+
+    # Exit-blocking veto messages from valid_leave
+    exit_vetoes_block = generate_room_exit_vetoes(ast)
+
+    room_block = room_block <> behavior_block <> item_desc_block <> exit_vetoes_block <> "    }"
 
     # Exits -> room_exits block
     exits_block =
@@ -2555,6 +2688,95 @@ defp sanitize_comment_text(text) do
     |> String.replace(")", "\\)")
     |> String.replace("(", "\\(")
     |> String.trim()
+  end
+
+  defp generate_room_item_desc(sets) do
+    case Map.get(sets, "item_desc") do
+      {:mapping, pairs} ->
+        entries =
+          pairs
+          |> Enum.map(fn {k, v} ->
+            {item_desc_keyword(k), item_desc_text(v)}
+          end)
+          |> Enum.reject(fn {key, text} -> key == "" or text == "" end)
+
+        if entries == [] do
+          ""
+        else
+          rendered = Enum.map_join(entries, ",\n", fn {keyword, text} ->
+            "      #{normalize_item_keyword(keyword)} = \"#{escape_set_string(text)}\""
+          end)
+
+          """
+          item_desc = {
+          #{rendered}
+          }
+          """
+        end
+
+      _ ->
+        ""
+    end
+  end
+
+  # item_desc 值统一走拼接/宏包装字符串抽取，剥离颜色宏与代码残片
+  defp item_desc_text({:array, parts}) do
+    parts
+    |> Enum.map_join("", fn
+      {:string, s} -> s
+      _ -> ""
+    end)
+    |> process_literal_string()
+  end
+
+  defp item_desc_text({:string, s}), do: s |> process_literal_string()
+  defp item_desc_text(s) when is_binary(s), do: s |> process_literal_string()
+  defp item_desc_text(_), do: ""
+
+  defp item_desc_keyword({:string, s}), do: s
+  defp item_desc_keyword(s) when is_binary(s), do: s
+  defp item_desc_keyword(_), do: ""
+
+  # LPC 关键词多为英文小写 id；UCL 对象字段名要求标识符，保底清洗
+  defp normalize_item_keyword(keyword) do
+    keyword
+    |> String.replace(~r/[^a-zA-Z0-9_]/, "_")
+    |> String.replace(~r/^_+|_+$/, "")
+  end
+
+  defp generate_room_exit_vetoes(ast) do
+    case ast.exit_vetoes do
+      [] ->
+        ""
+
+      vetoes ->
+        rendered =
+          Enum.map_join(vetoes, ",\n", fn veto ->
+            dir = if veto.dir, do: ~s("#{veto.dir}"), else: "~"
+            message = ~s("#{escape_set_string(veto.message)}")
+
+            # UCL 字符串不允许 `(`/`)`/`,` 等符号，条件原样保留为注释（仅档案用途）
+            condition_comment =
+              if veto.condition do
+                "  # 阻挡条件（原样保留）：#{veto.condition}\n"
+              else
+                ""
+              end
+
+            """
+            {
+              #{condition_comment}direction = #{dir}
+              message = #{message}
+            }
+            """
+          end)
+
+        """
+        valid_leave = [
+        #{rendered}
+        ]
+        """
+    end
   end
 
   defp generate_skill_ucl(ast, zone_id) do

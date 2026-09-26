@@ -31,4 +31,19 @@ defmodule Kantele.World.RoomTest do
 
     assert_receive {:room_message, "测试广播"}
   end
+
+  describe "item_desc 墙上器物查看（LPC set(" <> "item_desc" <> ")）" do
+    test "按关键词精确/前缀匹配返回文本" do
+      room = %Room{item_desc: %{"paizi" => "赌博规则板", "menu" => "承办酒席菜单"}}
+
+      assert Room.item_desc(room, "paizi") == "赌博规则板\n"
+      assert Room.item_desc(room, "paize") == nil
+      assert Room.item_desc(room, "") == nil
+    end
+
+    test "无 item_desc / 空文本返回 nil" do
+      assert Room.item_desc(%Room{}, "paizi") == nil
+      assert Room.item_desc(%Room{item_desc: %{"paizi" => ""}}, "paizi") == nil
+    end
+  end
 end

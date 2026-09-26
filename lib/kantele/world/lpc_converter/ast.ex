@@ -12,6 +12,7 @@ defmodule Kantele.World.LPCConverter.AST do
     :source_path,
     :base_path,
     :valid_leave,
+    :exit_vetoes,
     :function_calls,
     :enter,
     :greetings,

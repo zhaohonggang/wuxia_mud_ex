@@ -49,13 +49,13 @@ defmodule Kantele.Character.RouterAliasesTest do
   end
 
   test "看 → look（忽略目标参数）且边界防误吞" do
-    assert_command("看", Kantele.Character.LookCommand, :run)
-    assert_command("看 黑虎", Kantele.Character.LookCommand, :run)
+    assert_command("看", Kantele.Character.LookCommand, :run_bare)
+    assert_command("看 黑虎", Kantele.Character.LookCommand, :run_bare)
     assert parse("看书") == {:error, :unknown}
   end
 
   test "l 的既有边界不受影响" do
-    assert_command("l", Kantele.Character.LookCommand, :run)
+    assert_command("l", Kantele.Character.LookCommand, :run_bare)
     assert parse("learn x y") != {:ok, %{module: Kantele.Character.LookCommand}}
   end
 
@@ -100,7 +100,7 @@ defmodule Kantele.Character.RouterAliasesTest do
   end
 
   test "长命令不被中文单字别名干扰" do
-    assert_command("look", Kantele.Character.LookCommand, :run)
+    assert_command("look", Kantele.Character.LookCommand, :run_bare)
     assert_command("learn sword wang", Kantele.Character.LearnCommand, :run)
   end
 

@@ -54,9 +54,25 @@ defmodule Kantele.Character.LookCommandTest do
       assert length(events) == 1
     end
 
+    test "带参 look <关键词> 发送 room/item_desc 事件" do
+      p = player()
+      conn = LookCommand.run(build_conn(p), %{"target" => "paizi"})
+      events = Enum.filter(conn.events, fn e -> e.topic == "room/item_desc" end)
+      assert length(events) == 1
+      assert hd(events).data == %{keyword: "paizi"}
+    end
+
     test "路由解析" do
       {:ok, parsed} = Kantele.Character.Commands.parse("look")
       assert parsed.module == LookCommand
+      assert parsed.function == :run_bare
+    end
+
+    test "路由解析 look <关键词> 绑定 target" do
+      {:ok, parsed} = Kantele.Character.Commands.parse("look paizi")
+      assert parsed.module == LookCommand
+      assert parsed.function == :run
+      assert parsed.params["target"] == "paizi"
     end
   end
 end

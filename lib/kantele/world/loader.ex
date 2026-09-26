@@ -285,11 +285,56 @@ defmodule Kantele.World.Loader do
       y: room_data.y,
       z: room_data.z,
       flags: parse_flags(Map.get(room_data, :flags)),
-      features: parse_features(room_data, zone_data)
+      features: parse_features(room_data, zone_data),
+      item_desc: parse_item_desc(Map.get(room_data, :item_desc)),
+      exit_vetoes: parse_room_vetoes(Map.get(room_data, :valid_leave))
     }
 
     {key, room}
   end
+
+  # 房间墙上器物/菜单（LPC set("item_desc", ...)）：keyword -> 文本
+  defp parse_item_desc(nil), do: %{}
+
+  defp parse_item_desc(item_desc) when is_map(item_desc) do
+    Enum.reduce(item_desc, %{}, fn {key, value}, acc ->
+      Map.put(acc, keyword_to_string(key), to_string(value))
+    end)
+  end
+
+  defp parse_item_desc(_), do: %{}
+
+  # 出口阻挡兜底消息（LPC valid_leave 的 notify_fail）：结构化保留，不做数据驱动拦截
+  defp parse_room_vetoes(nil), do: []
+
+  defp parse_room_vetoes(vetoes) when is_list(vetoes) do
+    Enum.map(vetoes, fn
+      %{} = veto ->
+        %{
+          direction: to_veto_dir(Map.get(veto, :direction)),
+          condition: to_string_or_nil(Map.get(veto, :condition)),
+          message: to_string_or_nil(Map.get(veto, :message))
+        }
+
+      _ ->
+        nil
+    end)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  defp parse_room_vetoes(_), do: []
+
+  defp to_veto_dir("~"), do: "*"
+  defp to_veto_dir(nil), do: "*"
+  defp to_veto_dir(dir), do: to_string(dir)
+
+  defp to_string_or_nil(nil), do: nil
+  defp to_string_or_nil(:nil), do: nil
+  defp to_string_or_nil(v), do: to_string(v)
+
+  defp keyword_to_string(key) when is_atom(key), do: Atom.to_string(key)
+  defp keyword_to_string(key) when is_binary(key), do: key
+  defp keyword_to_string(key), do: to_string(key)
 
   # 房间标志位（A5/D2）：no_fight/outdoors/water/startroom；
   # outdoors/water 本期只存不用（供日后天气/溺水）

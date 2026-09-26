@@ -360,19 +360,28 @@ defmodule Kantele.Character.Commands do
   end
 
   module(LookCommand) do
-    parse("look", :run)
+    # 带参版声明在前（先尝试），裸 look/看 才落到 run_bare
+    parse("look", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
 
-    parse("watch", :run)
+    parse("look", :run_bare)
+
+    parse("watch", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
+
+    parse("watch", :run_bare)
 
     # 单字母命令需带词边界断言，否则会前缀误吃 learn 等长命令
     # （路由按注册顺序先到先得）
-    parse("l", :run, [], fn combinator ->
+    parse("l", :run_bare, [], fn combinator ->
       combinator
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z]))
     end)
 
     # 看：look 忽略参数，边界保证 "看书" 不误触（A8/N1）
-    parse("看", :run, [], fn combinator ->
+    parse("看", :run_bare, [], fn combinator ->
       combinator
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)

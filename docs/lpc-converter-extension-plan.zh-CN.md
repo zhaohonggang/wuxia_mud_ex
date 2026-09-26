@@ -336,9 +336,9 @@ CONDITIONALS` 之上；`COMPLEX CONDITIONALS` 保留为原文兜底。
 > - §4.4 accept_ask 转 inquiries 属于二期独立任务，未实现（方向已记录）。
 >
 > **2026-09-25 收尾状态**（本计划 + 显影恢复工作）：
-> - 全量 `MIX_ENV=test mix test`：**2941 tests 全绿**（新增 fail_msg / chat_msg 单测）。
-> - 内容丢失 `scripts/check_loss.exs`：`sources=141 files_with_loss=47 lost_chunks=129 exempt_fns=89`
->   （恢复轨迹：~147 → 137 → 135 → 132 → **129**）。
+> - 全量 `MIX_ENV=test mix test`：**2960 tests 全绿**（新增 item_desc / exit_vetoes / run_bare 单测）。
+> - 内容丢失 `scripts/check_loss.exs`：`sources=141 files_with_loss=40 lost_chunks=81 exempt_fns=89`
+>   （恢复轨迹：~147 → 137 → 135 → 132 → 129 → **81**）。
 > - 本轮新增/修复：
 >   - 括号配平抽取 `extract_calls_balanced` 修复 `message_sort`/`write`/`notify_fail` 跨语句乱码
 >     （`test.ucl:460` elias 解析崩溃根因）。
@@ -346,9 +346,16 @@ CONDITIONALS` 之上；`COMPLEX CONDITIONALS` 保留为原文兜底。
 >   - NPC/物品 heredoc 长描述穿到 UCL（此前读取错误 map 为空）。
 >   - accept `fail_msg`：`notify_fail` 拒绝台词全池落 UCL，运行时拒绝时优先展示。
 >   - `chat_msg`/`chat_chance` → `chats`/`chat_chance`，接入既有 `chat_node`/`ChatAction` 运行时。
+>   - **room 出口阻挡 `notify_fail` 语义化**（`parse_exit_vetoes` → AST `exit_vetoes` → UCL
+>     `valid_leave = [{direction, message}]`，条件行原样保留为 `#` 注释——UCL 字符串不支持
+>     `(`/`)`/`,` 等符号）：cave/kedian/furong/meigui/mudan 台词全量入库。
+>   - **`room/bet.c` 等 `set("item_desc",...)` 赔率/菜单文案语义化**：AST → UCL `item_desc = {...}`
+>     → loader `room.item_desc` → 运行时 `look <关键词>`（LookCommand 带参版 + `room/item_desc`
+>     事件 + `Room.item_desc/2`，`l`/`看` 改走 `run_bare`）。
 > - 已知遗留：
 >   - `skill/` 等 generic 文件丢失（25 文件；按任务 item-4 维持现状）。
->   - room 出口阻挡 `notify_fail`（cave 蟒蛇等）与 `room/bet.c` 赔率文案未语义化。
+>   - room 剩余丢数据文件仅 `room/large_room_test.c`（超出本次选定范围，未处理）。
+>   - 出口阻挡 `condition` 不做运行时拦截（LPC 条件动态，纯数据保留）。
 >   - `flow_test.exs:164` 在某 seed(72689) 排序下死亡状态 flake（既有测试顺序敏感；单独运行/其它 seed 全绿）。
 >   - Windows/Docker bind mount 下 UCL 重生成偶发 `File.Error: invalid argument`，重试即可。
 

@@ -33,7 +33,9 @@ defmodule Kantele.World.Room do
     features: [],
     flags: [],
     dynamic_exits: %{},
-    timers: %{}
+    timers: %{},
+    item_desc: %{},
+    exit_vetoes: []
   ]
 
   @doc """
@@ -159,6 +161,22 @@ defmodule Kantele.World.Room do
   返回 `:ok` 放行；`{:error, reason}` 拦截并提示 `reason`。
   """
   def valid_leave(_room, _character, _dir, _enter_room), do: :ok
+
+  @doc """
+  查看房间墙上器物/菜单文本（对应 LPC set("item_desc", ...) 的 look <关键词>）。
+
+  按关键词精确匹配，退化到前缀匹配（LPC 物品 con 名惯例）；找不到返回 nil。
+  """
+  def item_desc(room, keyword) when is_binary(keyword) and keyword != "" do
+    case Enum.find(room.item_desc, fn {key, _text} ->
+           key == keyword or String.starts_with?(key, keyword)
+         end) do
+      {_key, text} when is_binary(text) and text != "" -> text <> "\n"
+      _ -> nil
+    end
+  end
+
+  def item_desc(_room, _keyword), do: nil
 
   @doc "房间内玩家列表（对应 LPC present/1）"
   def present(room) do
@@ -487,6 +505,7 @@ defmodule Kantele.World.Room.Events do
 
     module(LookEvent) do
       event("room/look", :call)
+      event("room/item_desc", :call)
     end
 
     module(MapEvent) do
@@ -2048,10 +2067,30 @@ end
 defmodule Kantele.World.Room.LookEvent do
   import Kalevala.World.Room.Context
 
+  alias Kantele.Character.CommandView
   alias Kantele.Character.Combat.StatusTracker
   alias Kantele.Character.LookView
   alias Kantele.World.Items
   alias Kantele.World.ZoneCache
+
+  # look <关键词> 查看墙上器物/菜单（LPC set("item_desc", ...)）
+  def call(context, %{data: %{keyword: keyword}} = event)
+      when is_binary(keyword) and keyword != "" do
+    requester = Enum.find(context.characters, &(&1.pid == event.from_pid))
+
+    case {requester, Kantele.World.Room.item_desc(context.data, keyword)} do
+      {nil, _} ->
+        context
+
+      {_requester, nil} ->
+        render(context, event.from_pid, CommandView, "text", %{
+          text: "这里没有这个东西。\n"
+        })
+
+      {_requester, text} ->
+        render(context, event.from_pid, CommandView, "text", %{text: text})
+    end
+  end
 
   def call(context, event) do
     x = context.data.x

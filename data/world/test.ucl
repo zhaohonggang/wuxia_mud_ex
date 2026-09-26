@@ -2135,6 +2135,9 @@ chats = [
   x = 0
   y = 0
   z = 0
+item_desc = {
+      paizi = "##==================================##\n        ##                                  ##\n        ##             赌博规则             ##\n        ##                                  ##\n        ##                                  ##\n        ##  头彩 <tc> 骰数由每次开盘前确定  ##\n        ##            赔率：一赢三十六      ##\n        ##                                  ##\n        ##  双对 <sd> 两骰号相同，且为偶数  ##\n        ##            赔率：一赢十二        ##\n        ##                                  ##\n        ##  七星 <qx> 两个骰数之和为七      ##\n        ##            赔率：一赢六          ##\n        ##                                  ##\n        ##  散星 <sx> 和为三，五，九，十一  ##\n        ##            赔率：一赢三          ##\n        ##                                  ##\n        ##  开赌：                          ##\n        ##                                  ##\n        ##                                  ##\n        ##   bet  压盘种类  数量  货币种类  ##\n        ##                                  ##\n        ##                                  ##\n        ##                                  ##\n        ##==================================##"
+}
     }
   room_exits "bet" {
     room_id = rooms.bet.id
@@ -2210,6 +2213,14 @@ chats = [
   x = 0
   y = 0
   z = 0
+valid_leave = [
+{
+    # 阻挡条件（原样保留）：dir == "in" && objectp(present("mang she", environment(me)))
+direction = "in"
+  message = "蟒蛇盘在岩洞口，将路封了个严实。"
+}
+
+]
     }
   room_exits "cave" {
     room_id = rooms.cave.id
@@ -2339,6 +2350,9 @@ chats = [
   x = 0
   y = 0
   z = 0
+item_desc = {
+      sign = "obj/signboard/sign"
+}
     }
   room_exits "dir_macro_test" {
     room_id = rooms.dir_macro_test.id
@@ -2422,6 +2436,16 @@ chats = [
   x = 0
   y = 0
   z = 0
+item_desc = {
+      menu = "##==========================##\n        ##                          ##\n        ##         承办酒席         ##\n        ##                          ##\n        ##  祝寿宴：order birthday  ##\n        ##                          ##\n        ##                二两黄金  ##\n        ##                          ##\n        ##  订婚宴：order marry     ##\n        ##                          ##\n        ##                三两黄金  ##\n        ##                          ##\n        ##  群豪宴：order player    ##\n        ##                          ##\n        ##                五两黄金  ##\n        ##                          ##\n        ##  结  束：order end       ##\n        ##                          ##\n        ##                          ##\n        ##                          ##\n        ##==========================##"
+}
+valid_leave = [
+{
+  direction = ~
+  message = "请先用 order end 结束宴会后才能离开。"
+}
+
+]
     }
   room_exits "furong" {
     room_id = rooms.furong.id
@@ -2513,6 +2537,23 @@ chats = [
   x = 0
   y = 0
   z = 0
+item_desc = {
+      paizi = "##==============================##\n        ##                              ##\n        ##    楼上雅房，每夜十两白银。  ##\n        ##                              ##\n        ##==============================##"
+}
+valid_leave = [
+{
+    # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "up"
+direction = "up"
+  message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊？"
+}
+,
+{
+    # 阻挡条件（原样保留）：me->query_temp("rent_paid") && dir == "west"
+direction = "west"
+  message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就走了呢！"
+}
+
+]
     }
   room_exits "kedian" {
     room_id = rooms.kedian.id
@@ -2701,6 +2742,16 @@ chats = [
   x = 0
   y = 0
   z = 0
+item_desc = {
+      menu = "##==========================##\n        ##                          ##\n        ##         承办酒席         ##\n        ##                          ##\n        ##  祝寿宴：order birthday  ##\n        ##                          ##\n        ##                二两黄金  ##\n        ##                          ##\n        ##  订婚宴：order marry     ##\n        ##                          ##\n        ##                三两黄金  ##\n        ##                          ##\n        ##  群豪宴：order player    ##\n        ##                          ##\n        ##                五两黄金  ##\n        ##                          ##\n        ##  结  束：order end       ##\n        ##                          ##\n        ##                          ##\n        ##                          ##\n        ##==========================##"
+}
+valid_leave = [
+{
+  direction = ~
+  message = "请先用 order end 结束宴会后才能离开。"
+}
+
+]
     }
   room_exits "meigui" {
     room_id = rooms.meigui.id
@@ -2768,6 +2819,16 @@ chats = [
   x = 0
   y = 0
   z = 0
+item_desc = {
+      menu = "##==========================##\n        ##                          ##\n        ##         承办酒席         ##\n        ##                          ##\n        ##  祝寿宴：order birthday  ##\n        ##                          ##\n        ##                二两黄金  ##\n        ##                          ##\n        ##  订婚宴：order marry     ##\n        ##                          ##\n        ##                三两黄金  ##\n        ##                          ##\n        ##  群豪宴：order player    ##\n        ##                          ##\n        ##                五两黄金  ##\n        ##                          ##\n        ##  结  束：order end       ##\n        ##                          ##\n        ##                          ##\n        ##                          ##\n        ##==========================##"
+}
+valid_leave = [
+{
+  direction = ~
+  message = "请先用 order end 结束宴会后才能离开。"
+}
+
+]
     }
   room_exits "mudan" {
     room_id = rooms.mudan.id
@@ -2886,6 +2947,9 @@ chats = [
   x = 0
   y = 0
   z = 0
+item_desc = {
+      qigan = "一根碗口粗的旗杆，旗面上绣着「柳溪」两个大字。"
+}
     }
   room_exits "test_guangchang" {
     room_id = rooms.test_guangchang.id
