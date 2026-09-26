@@ -2966,6 +2966,30 @@ valid_leave = [
     room_id = rooms.multi_include_test.id
   north = rooms.room1.id  }
 
+# Generated from test_minimal_world_v2_modified/room/river_chuanchang.c by LPCConverter
+# Zone: test
+
+    rooms "river_chuanchang" {
+      name = "船厂"
+      description = "这里是古镇船厂。船厂是位于关外大平原中部的一个古老\n的小镇，此镇西、南、北、三面是以高墙垒筑利于坚守。东面\n临松花江天成天险，乃兵家必争的要地。松花江 (river)在冬\n春时结冰可通行，夏秋化冻你只好找船家帮忙了。"
+  x = 0
+  y = 0
+  z = 0
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+  room_exits "river_chuanchang" {
+    room_id = rooms.river_chuanchang.id
+  south = rooms.xuedi3.id
+  river = rooms.damenkan.id  }
+
+  room_characters "river_chuanchang" {
+    room_id = rooms.river_chuanchang.id
+    characters = [
+      { id = characters.chuanfu.id }    ]
+  }
+
 # Generated from test_minimal_world_v2_modified/room/shijie.c by LPCConverter
 # Zone: test
 

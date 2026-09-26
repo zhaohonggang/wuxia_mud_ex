@@ -2037,6 +2037,7 @@ c ->
 
     cond do
       Enum.any?(inherits, &String.contains?(&1, "ROOM")) -> :room
+      Enum.any?(inherits, &String.contains?(&1, "RIVER")) -> :room
       Enum.any?(inherits, &String.contains?(&1, "NPC")) -> :npc
       Enum.any?(inherits, &String.contains?(&1, "KNOWER")) -> :npc
       npc_subdir?(ast.source_path) -> :npc
@@ -2060,7 +2061,7 @@ c ->
   # 非标记的继承（如 npc 文件里的 F_DEALER、F_CLEAN_UP）在 UCL 输出中以 # 注释保留原行。
   defp type_marker_inherit?(inherit, obj_type) do
     case obj_type do
-      :room -> String.contains?(inherit, "ROOM")
+      :room -> String.contains?(inherit, "ROOM") or String.contains?(inherit, "RIVER")
       :npc -> String.contains?(inherit, "NPC") or String.contains?(inherit, "KNOWER")
       :item -> is_item_inherit?(inherit)
       :skill -> skill_inherit?(inherit)
@@ -2131,6 +2132,10 @@ c ->
       |> Path.rootname()
       |> String.replace("-", "_")
 
+    # Check if this room inherits RIVER
+    is_river = Enum.any?(ast.inherits, &String.contains?(&1, "RIVER"))
+    arrive_room = if is_river, do: Map.get(sets, "arrive_room"), else: nil
+
     room_block = """
     rooms "#{room_id}" {
       name = "#{extract_string(Map.get(sets, "short"), "Room")}"
@@ -2181,7 +2186,19 @@ room_block = room_block <> coords_block <> flags_block
     # Exit-blocking veto messages from valid_leave
     exit_vetoes_block = generate_room_exit_vetoes(ast)
 
-    room_block = room_block <> behavior_block <> item_desc_block <> exit_vetoes_block <> "    }"
+    # River-specific actions (yell/cross from inherit RIVER)
+    river_actions_block =
+      if is_river do
+        """
+          # River actions: yell [boat] / cross
+          # - yell boat: summons river_boat to arrive_room (3s)
+          # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+        """
+      else
+        ""
+      end
+
+    room_block = room_block <> behavior_block <> item_desc_block <> exit_vetoes_block <> river_actions_block <> "    }"
 
     # Exits -> room_exits block
     exits_block =
@@ -2194,14 +2211,38 @@ room_block = room_block <> coords_block <> flags_block
               "  #{direction} = #{target}"
             end)
 
+          # Add river exit if this is a river room with arrive_room
+          river_exit =
+            if is_river and arrive_room do
+              target = resolve_exit_target(arrive_room)
+              "  river = #{target}"
+            else
+              ""
+            end
+
+          all_exit_lines = if river_exit != "", do: exit_lines <> "\n" <> river_exit, else: exit_lines
+
           """
           room_exits "#{room_id}" {
             room_id = rooms.#{room_id}.id
-        """ <> exit_lines <> """
+        """ <> all_exit_lines <> """
           }
         """
         _ ->
-          ""
+          # River room might only have river exit
+          river_exit =
+            if is_river and arrive_room do
+              target = resolve_exit_target(arrive_room)
+              """
+              room_exits "#{room_id}" {
+                room_id = rooms.#{room_id}.id
+                river = #{target}
+              }
+              """
+            else
+              ""
+            end
+          river_exit
       end
 
     objects_block = generate_room_objects(room_id, Map.get(sets, "objects"))
