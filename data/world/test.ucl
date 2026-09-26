@@ -2382,7 +2382,7 @@ direction = "in"
 
     rooms "dating" {
       name = "白驼山庄大厅"
-      description = "这是白驼山庄的大厅，气派非凡。大厅正中悬挂着一块匾额，\n上书\"毒中之王\"四个大字。厅内陈设奢华，两侧排列着太师椅，\n正中设有太师椅一把，乃是庄主议事之处。两侧各有侧门通往\n内院。\n"
+      description = "这是白驼山庄的大厅，气派非凡。大厅正中悬挂着一块匾额，\n上书'毒中之王'四个大字。厅内陈设奢华，两侧排列着太师椅，\n正中设有太师椅一把，乃是庄主议事之处。两侧各有侧门通往\n内院。\n"
   x = 0
   y = 0
   z = 0
@@ -2455,7 +2455,7 @@ item_desc = {
 
     rooms "duwushi" {
       name = "毒物室"
-      description = "这里是白驼山庄的毒物室，四周摆满了各式瓶瓶罐罐，装着\n各色毒药、毒虫、毒草。空气中弥漫着刺鼻的药味，令人作呕。\n墙上挂着一张\"毒物配方表\"。角落里养着几只毒蛇、蝎子。"
+      description = "这里是白驼山庄的毒物室，四周摆满了各式瓶瓶罐罐，装着\n各色毒药、毒虫、毒草。空气中弥漫着刺鼻的药味，令人作呕。\n墙上挂着一张'毒物配方表'。角落里养着几只毒蛇、蝎子。"
   x = 0
   y = 0
   z = 0
@@ -2574,7 +2574,7 @@ valid_leave = [
 
     rooms "houyuan" {
       name = "后院"
-      description = "这里是白驼山庄的后院，种着各种奇花异草，还有一口古井。\n井边立着一块石碑，上刻\"毒经\"二字。四周种满了各种毒草，\n散发着诡异的香气。东边是练功房，西边是毒物室。"
+      description = "这里是白驼山庄的后院，种着各种奇花异草，还有一口古井。\n井边立着一块石碑，上刻'毒经'二字。四周种满了各种毒草，\n散发着诡异的香气。东边是练功房，西边是毒物室。"
   x = 0
   y = 0
   z = 0
@@ -2966,12 +2966,40 @@ valid_leave = [
     room_id = rooms.multi_include_test.id
   north = rooms.room1.id  }
 
+# Generated from test_minimal_world_v2_modified/room/northgate.c by LPCConverter
+# Zone: test
+
+    rooms "northgate" {
+      name = "北门"
+      description = "阳苜咩城，或简称苜咩城，是大理国的都城。自南诏于初创，历\n经陈氏“长大和国”、赵氏“大天兴国”、杨氏“大义宁国”诸代而\n至当今的段氏的“大理国”，均以此城为都。此处乃是北城门，以梅\n'溪为护河，城墙建在溪南，由石块和土垒成，高二丈五，厚达二丈，\n门上有重楼，驻有了哨。青石官道从城里直向北延伸，另有一条黄土\n大路向西通去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "northgate" {
+    room_id = rooms.northgate.id
+  south = rooms.paifang.id
+  north = rooms.dalinorth.id
+  east = rooms.chahuashan1.id
+  west = rooms.shanlu3.id  }
+
+  room_characters "northgate" {
+    room_id = rooms.northgate.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.jiang.id },
+      { id = characters.walker.id }    ]
+  }
+
 # Generated from test_minimal_world_v2_modified/room/river_chuanchang.c by LPCConverter
 # Zone: test
 
     rooms "river_chuanchang" {
       name = "船厂"
-      description = "这里是古镇船厂。船厂是位于关外大平原中部的一个古老\n的小镇，此镇西、南、北、三面是以高墙垒筑利于坚守。东面\n临松花江天成天险，乃兵家必争的要地。松花江 (river)在冬\n春时结冰可通行，夏秋化冻你只好找船家帮忙了。"
+      description = "这里是古镇船厂。船厂是位于关外大平原中部的一个古老\n的小镇，此镇西、南、北、三面是以高墙垒筑利于坚守。东面\n临松花江天成天险，乃兵家必争的要地。松花江 (river)在冬\n春时结冰可通行，夏秋化冻你只好找船家帮忙了。"
   x = 0
   y = 0
   z = 0
@@ -2988,6 +3016,26 @@ valid_leave = [
     room_id = rooms.river_chuanchang.id
     characters = [
       { id = characters.chuanfu.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/sanglin.c by LPCConverter
+# Zone: test
+
+    rooms "sanglin" {
+      name = "桑林"
+      description = "一大片桑树林生长在低山的缓坡山腰上。养蚕、纺丝是摆夷族的\n重要副业，摆夷妇女大都擅织丝，编织自己穿着的短裙，也用来和临\n'近部落交换些其它物品。一群摆夷姑娘正在林间忙着采摘桑叶。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "sanglin" {
+    room_id = rooms.sanglin.id
+  northdown = rooms.yangzong.id  }
+
+  room_characters "sanglin" {
+    room_id = rooms.sanglin.id
+    characters = [
+      { id = characters.caisangnu.id }    ]
   }
 
 # Generated from test_minimal_world_v2_modified/room/shijie.c by LPCConverter

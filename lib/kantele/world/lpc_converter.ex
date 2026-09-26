@@ -72,15 +72,59 @@ defmodule Kantele.World.LPCConverter do
   # --------------------------------------------------------------------------
 
   defp parse_lpc(content, source_path, base_path) do
+    # Source LPC files are typically GBK/GB2312 encoded; convert to UTF-8 first
+    utf8_content = to_utf8(content)
+
     # Extract heredocs and create body from RAW content (before whitespace normalization)
-    heredocs = parse_heredocs_from_raw(content)
-    create_body = extract_create_body(content)
+    heredocs = parse_heredocs_from_raw(utf8_content)
+    # Create a version with heredocs replaced for brace matching
+    content_for_brace = strip_heredocs_for_brace(utf8_content)
+    create_body = extract_create_body(content_for_brace)
 
     # Preprocess: strip comments, normalize whitespace
-    cleaned = preprocess(content)
+    cleaned = preprocess(utf8_content)
 
     # Parse into AST
     parse_ast(cleaned, source_path, base_path, heredocs, create_body)
+  end
+
+  # Convert GBK/GB2312 to UTF-8 (best effort; if already valid UTF-8, return as-is)
+  defp to_utf8(binary) do
+    try do
+      # Try GBK first (common for Chinese MUD files)
+      case :unicode.characters_to_binary(binary, :gbk) do
+        {:ok, utf8} -> utf8
+        {:error, _, _} ->
+          # If GBK conversion fails, try UTF-8 (file might already be UTF-8)
+          case :unicode.characters_to_binary(binary, :utf8) do
+            {:ok, utf8} -> utf8
+            {:error, _, _} ->
+              # Last resort: replace invalid bytes with Unicode replacement char
+              :unicode.characters_to_binary(binary, :utf8, replacement: 0xFFFD)
+          end
+      end
+    rescue
+      ArgumentError ->
+        # :unicode.characters_to_binary can raise ArgumentError for invalid byte sequences
+        # Fall back to UTF-8 with replacement
+        try do
+          :unicode.characters_to_binary(binary, :utf8, replacement: 0xFFFD)
+        rescue
+          _ -> binary  # ultimate fallback
+        end
+    end
+  end
+
+  # Replace heredoc blocks (@DELIMITER ... DELIMITER) with empty placeholders
+  # to avoid confusing brace/quote matching
+  defp strip_heredocs_for_brace(content) do
+    Regex.replace(
+      ~r/set\s*\(\s*(["'])([^"']+)\1\s*,\s*@(\w+)\s*\n[\s\S]*?\n\3\s*\)\s*;/,
+      content,
+      fn _full, _q, key, _delim ->
+        "set(\"#{key}\", \"\");"
+      end
+    )
   end
 
   def preprocess(content) do
@@ -141,23 +185,37 @@ defmodule Kantele.World.LPCConverter do
     # Extract unhandled content: global variables, complex mappings, switch statements, etc.
     unhandled = extract_unhandled_content(content, unhandled_fns)
     
+    inherits = parse_inherits(content)
+    inherit_files = parse_inherit_files(content, source_path)
+    globals = parse_globals(content)
+    valid_leave = parse_valid_leave(content)
+    exit_vetoes = parse_exit_vetoes(content)
+    enter = extract_enter(content)
+    greetings = extract_greetings(content)
+    accept = extract_accept(content)
+    guard = extract_guard(content)
+    engage = extract_engage(content)
+    guard = extract_guard(content)
+    IO.puts("DEBUG: extract_engage")
+    engage = extract_engage(content)
+    
     %{
-      inherits: parse_inherits(content),
-      inherit_files: parse_inherit_files(content, source_path),
+      inherits: inherits,
+      inherit_files: inherit_files,
       create_fn: create_fn,
       other_fns: other_fns,
-      globals: parse_globals(content),
+      globals: globals,
       heredocs: heredocs,
       source_path: source_path,
       base_path: base_path,
-      valid_leave: parse_valid_leave(content),
-      exit_vetoes: parse_exit_vetoes(content),
+      valid_leave: valid_leave,
+      exit_vetoes: exit_vetoes,
       function_calls: function_calls,
-      enter: extract_enter(content),
-      greetings: extract_greetings(content),
-      accept: extract_accept(content),
-      guard: extract_guard(content),
-      engage: extract_engage(content),
+      enter: enter,
+      greetings: greetings,
+      accept: accept,
+      guard: guard,
+      engage: engage,
       unhandled: unhandled
     }
     |> AST.new()
@@ -176,7 +234,10 @@ defmodule Kantele.World.LPCConverter do
         case parts do
           [before, _rest] ->
             open_brace_pos = String.length(before) + String.length(match) - 1
-            find_matching_brace(content, open_brace_pos)
+            case find_matching_brace(content, open_brace_pos) do
+              nil -> ""
+              body -> body
+            end
           _ ->
             ""
         end
@@ -361,7 +422,15 @@ defmodule Kantele.World.LPCConverter do
     heredocs =
       Regex.scan(~r/set\s*\(\s*(["'])([^"']+)\1\s*,\s*@(\w+)\s*\n([\s\S]*?)\n\3\s*\)\s*;/, content)
       |> Enum.map(fn [_, _, key, delimiter, content] ->
-        {key, %{type: :heredoc, delimiter: delimiter, content: String.trim(content)}}
+        # 清理 heredoc 末尾可能泄露的 LPC 字符串结束符（如 \n"、\n'、";、';）
+        cleaned = content
+        |> String.trim()
+        |> String.replace(~r/\\?[\"\']\s*$/, "")   # 末尾的 " 或 '（可能前带转义）
+        |> String.replace(~r/;+\s*$/, "")          # 末尾的分号
+        |> String.trim()
+        # 将 heredoc 内容中的字面 " 替换为 '，避免 UCL 转义为 \" 后跟非 ASCII 字符导致 elias 解析报错
+        |> String.replace("\"", "'")
+        {key, %{type: :heredoc, delimiter: delimiter, content: cleaned}}
       end)
       |> Enum.into(%{})
 
@@ -1736,11 +1805,8 @@ c ->
   # --------------------------------------------------------------------------
 
   defp generate_ucl(ast, zone_id, include_comments) do
-    header = if include_comments do
-      "# Generated from #{ast.source_path} by LPCConverter\n# Zone: #{zone_id}\n\n"
-    else
-      ""
-    end
+    # Always include source tracking header for debugging/audit purposes
+    header = "# Generated from #{ast.source_path} by LPCConverter\n# Zone: #{zone_id}\n\n"
 
     # 沿继承链合并父类属性（子类优先），并据此判定类型
     merged = merge_inherit_chain(ast)
@@ -1764,7 +1830,7 @@ c ->
     # 非类型标记的 inherit（如 F_DEALER、F_CLEAN_UP）以注释保留原行；
     # 仅对已转换类型输出（generic 整文件已是注释，无需重复）
     inherit_comments =
-      if include_comments and obj_type != :generic do
+      if obj_type != :generic do
         ast.inherits
         |> Enum.reject(&type_marker_inherit?(&1, obj_type))
         |> Enum.map(&"# inherit #{&1};")
@@ -1778,7 +1844,8 @@ c ->
 
     header <>
       inherit_prefix <>
-      Enum.join(new_sections, "\n\n") <> generate_unhandled_comments(ast.unhandled)
+      Enum.join(new_sections, "\n\n") <>
+      generate_unhandled_comments(ast.unhandled)
   end
 
   # 沿继承链向上合并属性：
@@ -2125,6 +2192,10 @@ c ->
     create = ast.create_fn
     sets = Map.get(create, :sets, %{})
     heredocs = Map.get(ast.heredocs, :heredocs, %{})
+    long_val = Map.get(sets, "long")
+    heredoc_keys = Map.keys(heredocs)
+    IO.puts("DEBUG generate_room_ucl: heredocs keys = #{inspect(heredoc_keys)}")
+    IO.puts("DEBUG generate_room_ucl: sets long = #{inspect(long_val)}")
 
     room_id =
       ast.source_path
@@ -2207,6 +2278,8 @@ room_block = room_block <> coords_block <> flags_block
           exit_lines =
             Enum.map_join(exits, "\n", fn {key, val} ->
               direction = exit_key(key)
+              # 确保方向键无引号，避免 elias 解析器报错
+              direction = String.replace(direction, ~r/^"|"$/, "")
               target = resolve_exit_target(val)
               "  #{direction} = #{target}"
             end)
@@ -2348,11 +2421,18 @@ room_block = room_block <> coords_block <> flags_block
     |> String.downcase()
   end
 
-defp exit_key({:string, s}), do: s
+defp exit_key({:string, s}), do: strip_exit_c_comments(s)
   defp exit_key({:int, n}), do: to_string(n)
-  defp exit_key({:var, v}), do: v
-  defp exit_key(s) when is_binary(s), do: s
+  defp exit_key({:var, v}), do: strip_exit_c_comments(v)
+  defp exit_key(s) when is_binary(s), do: strip_exit_c_comments(s)
   defp exit_key(_), do: "unknown"
+
+  defp strip_exit_c_comments(s) when is_binary(s) do
+    s
+    |> String.replace(~r/\/\*[\s\S]*?\*\//, "")
+    |> String.trim()
+  end
+  defp strip_exit_c_comments(_), do: "unknown"
 
   defp get_string(value) do
     case value do
@@ -2390,10 +2470,10 @@ defp exit_key({:string, s}), do: s
     Enum.reverse(flags)
   end
 
-  defp get_heredoc_or_set(heredocs, sets, key, default) do
+defp get_heredoc_or_set(heredocs, sets, key, default) do
     case Map.get(sets, key) do
-      {:string, s} -> escape_set_string(s)
-      # set("long", @LONG ... LONG) 的占位值会被 parse_set_calls 抓成活字变量，回退到 heredocs
+      {:string, s} when s != "" -> escape_set_string(s)
+      {:string, ""} -> get_heredoc(heredocs, key, default)
       {:var, v} when is_binary(v) -> maybe_heredoc(heredocs, key, default, v)
       nil -> get_heredoc(heredocs, key, default)
     end
@@ -2410,9 +2490,9 @@ defp exit_key({:string, s}), do: s
     end
   end
 
-  # Heredoc content is raw LPC text (real newlines, real quotes).
-  # UCL/Elias accepts "\n" as literal backslash-n and "\"" as a quote.
   defp escape_heredoc_content(str) do
+    # Heredoc content is raw LPC text (real newlines, real quotes).
+    # UCL/Elias accepts "\n" as literal backslash-n and "\"" as a quote.
     str
     |> String.replace("\\", "\\\\")
     |> String.replace("\n", "\\n")
@@ -2422,10 +2502,11 @@ defp exit_key({:string, s}), do: s
   # Set-string values already carry LPC escapes (\"" for a literal quote, \n
   # for a line break, ...). Only real newline chars (from multi-line LPC
   # literals that our parser joined) need converting to "\n".
+  # 但 UCL 解析器在遇到 \" 后跟非 ASCII 字符会报错，因此把 " 统一替换为 ' 避免转义
   defp escape_set_string(str) do
     str
     |> String.replace("\\", "\\\\")
-    |> String.replace("\"", "\\\"")
+    |> String.replace("\"", "'")
     |> String.replace(";", "\\;")
     |> String.replace("\n", "\\n")
   end

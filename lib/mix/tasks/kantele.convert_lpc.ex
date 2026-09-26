@@ -130,7 +130,7 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
       Enum.reduce(files, {[], []}, fn file, {entries, failures} ->
         Mix.shell().info("Converting #{file}...")
 
-        case LPCConverter.convert_file(file, zone_id: zone_id) do
+        case LPCConverter.convert_file(file, zone_id: zone_id, include_comments: false) do
           {:ok, ucl} ->
             ucl_name = file |> Path.basename(".c") |> String.replace("-", "_")
             {[{ucl_name, ucl} | entries], failures}
