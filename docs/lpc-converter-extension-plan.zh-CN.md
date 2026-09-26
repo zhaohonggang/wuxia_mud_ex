@@ -448,3 +448,28 @@ CONDITIONALS` 之上；`COMPLEX CONDITIONALS` 保留为原文兜底。
 >   `chat_chance = N` + `chats = [...]`，接入既有 `chat_node`/`ChatAction`（NPC 概率闲聊）。
 
 **遗留（二期，见 §4.4）**：`accept_ask(topic)` 连续 if/switch 台词 → `inquiries` 表未实现。
+
+---
+
+## 十一、追加：继承链合并与宏继承解析（liandan_lin1 案例）
+
+> 2026-09-25。`d/beijing/liandan_lin1..8.c` 以 `#define LIANDAN_LIN __DIR__"liandan_lin"` +
+> `inherit LIANDAN_LIN;` 继承父房间，之前被误判为 generic。本次实现链式继承解析与属性合并。
+
+- [x] `parse_defines/1`：抽取 `#define NAME value`（值可为 `__DIR__"路径"` / `"路径"` / 裸 token）
+- [x] `parse_inherit_files/2`：把 `inherit X;` 的 token 解析为同目录相对路径（引号字面量 / `__DIR__`
+      宏→相对路径），ROOM/NPC 等裸标记不解析；结果入 AST 新字段 `:inherit_files`
+- [x] `merge_inherit_chain/1`：沿链向上读父文件（`File.read` + 递归 `parse_lpc`），父层为底、子层覆盖
+      （`sets`/`set_name`/`heredocs` 用 `Map.merge`），`inherits` 扁平化为 child ++ parent（类型判定子层优先），
+      `exit_vetoes`/`valid_leave` 子层有则用之否则回退父层；`source_path` 集合防循环继承
+- [x] `generate_ucl/3`：先合并再 `determine_object_type`（链上任一 ROOM/NPC/item/skill 标记生效），
+      room 走合并后的属性；非 room 类沿用原文件属性（避免父层 room set 误入）
+- [x] 从 `d/beijing` 复制 `liandan_lin.c`（父，inherit ROOM）与 `liandan_lin1.c`（子）到
+      `test_minimal_world_v2_modified/special/`；test.ucl 重生成仅 +2 房间，既有内容零改动
+- [x] 测试：liandan_lin1 → `rooms "liandan_lin1"`（name=城西后林、long 继承多行短句、exits 四向原样输出、
+      悬挂目标由 loader 丢弃 exits==[]）；合成三链（子覆盖父、父的父属性并入）、互指循环（twoc↔twin）
+      不无限递归；loader 加载断言入 loader_meta_test
+- [x] check_loss：sources=143、lost_chunks=81（不变）、exempt_fns=91（+do_cai/cai）；`room_exits` 为块语法
+      （`room_exits "id" { ... }`），非列表
+- [ ] 可选：重跑 `d` corpus 普查（需容器挂载 `C:\files\git\mud\d`），确认 `beijing/liandan_lin1..8.c`
+      由 generic → room

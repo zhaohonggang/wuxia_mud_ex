@@ -283,4 +283,23 @@ defmodule Kantele.World.LoaderMetaTest do
     assert Enum.any?(kedian.exit_vetoes, &(&1.direction == "up"))
     assert Enum.any?(kedian.exit_vetoes, &(&1.direction == "west"))
   end
+
+  test "liandan_lin1 房间：宏继承合并属性生效（名称/描述），悬挂出口被丢弃" do
+    world = Kantele.World.Loader.load()
+    room = Enum.find(world.rooms, &(&1.key == "liandan_lin1"))
+
+    assert room != nil
+    assert room.name == "城西后林"
+    assert room.description =~ "这是一片茂密的树林"
+    assert room.description =~ "遮蔽得暗然无光"
+
+    # 四个出口目标在库中均不存在，loader 全部丢弃
+    assert room.exits == []
+  end
+
+  test "liandan_lin 房间：父类（inherit ROOM）也正常加载" do
+    world = Kantele.World.Loader.load()
+    room = Enum.find(world.rooms, &(&1.key == "liandan_lin"))
+    assert room != nil
+  end
 end

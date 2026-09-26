@@ -19,7 +19,8 @@ defmodule Kantele.World.LPCConverter.AST do
     :accept,
     :guard,
     :engage,
-    :unhandled
+    :unhandled,
+    :inherit_files
   ]
 
   @type t :: %__MODULE__{
@@ -34,7 +35,8 @@ defmodule Kantele.World.LPCConverter.AST do
     function_calls: map(),
     enter: map() | nil,
     greetings: [String.t()] | nil,
-    accept: [map()] | nil
+    accept: [map()] | nil,
+    inherit_files: [String.t()]
   }
 
   def new(params) do

@@ -143,6 +143,7 @@ defmodule Kantele.World.LPCConverter do
     
     %{
       inherits: parse_inherits(content),
+      inherit_files: parse_inherit_files(content, source_path),
       create_fn: create_fn,
       other_fns: other_fns,
       globals: parse_globals(content),
@@ -186,6 +187,79 @@ defmodule Kantele.World.LPCConverter do
     # Match: inherit PATH;
     Regex.scan(~r/inherit\s+(["']?)([^;"']+)\1\s*;/, content)
     |> Enum.map(fn [_, _, path] -> String.trim(path) end)
+    |> Enum.uniq()
+  end
+
+  # 解析 #define NAME value（值可为 __DIR__"相对路径" / "路径" / 裸 token）
+  def parse_defines(content) do
+    Regex.scan(~r/#\s*define\s+([A-Za-z_]\w*)\s+([^\s;()]+)/, content)
+    |> Enum.into(%{}, fn [_, name, value] ->
+      {name, String.trim(value)}
+    end)
+  end
+
+  # 将 `inherit X;` 中的 token 解析为同目录下的相对文件路径（无 .c 后缀）；
+  # 仅当它是引号字面量或 #define 映射到路径时才解析，ROOM/NPC 等裸标记返回 nil。
+  defp resolve_inherit_ref(token, defines) do
+    token = String.trim(token)
+
+    path =
+      cond do
+        # parse_inherits 已剥掉引号："相对路径" 或 "/绝对路径"
+        String.starts_with?(token, "/") ->
+          token
+
+        Map.has_key?(defines, token) ->
+          value = Map.get(defines, token)
+
+          cond do
+            capture_group(~r/^\s*__DIR__\s*["']([^"']+)["']\s*$/, value) != nil
+            -> capture_group(~r/^\s*__DIR__\s*["']([^"']+)["']\s*$/, value)
+
+            Regex.match?(~r/^["']([^"']+)["']\s*$/, value) ->
+              value |> String.replace(~r/^["']|["']$/, "") |> String.trim()
+
+            true ->
+              nil
+          end
+
+        true ->
+          nil
+      end
+
+    case path do
+      nil ->
+        nil
+
+      p when p == "" ->
+        nil
+
+      # 绝对路径（如 "/d/beijing/x"）剥去前导 "/"，视为相对源码根
+      p ->
+        if String.starts_with?(p, "/"), do: String.trim_leading(p, "/"), else: p
+    end
+  end
+
+  defp capture_group(regex, string) do
+    case Regex.run(regex, string) do
+      [_, group] -> group
+      _ -> nil
+    end
+  end
+
+  # 收集当前文件可解析的继承文件路径（相对仓库根，无扩展名）。
+  # 配合 merge_inherit_chain 让子类获得父类属性（子类优先）。
+  def parse_inherit_files(content, source_path) do
+    dir = Path.dirname(source_path)
+    defines = parse_defines(content)
+
+    parse_inherits(content)
+    |> Enum.flat_map(fn token ->
+      case resolve_inherit_ref(token, defines) do
+        nil -> []
+        rel -> [Path.join(dir, rel)]
+      end
+    end)
     |> Enum.uniq()
   end
 
@@ -1668,14 +1742,16 @@ c ->
       ""
     end
 
-    # Determine object type from inherits and create function
-    obj_type = determine_object_type(ast)
+    # 沿继承链合并父类属性（子类优先），并据此判定类型
+    merged = merge_inherit_chain(ast)
+    obj_type = determine_object_type(merged)
 
     new_sections =
       case obj_type do
         :room ->
-          [generate_room_ucl(ast, zone_id)]
+          [generate_room_ucl(merged, zone_id)]
         :npc ->
+          # 非 room 类沿用原文件属性（避免父层 room 类 set 误入）
           [generate_npc_ucl(ast, zone_id)]
         :item ->
           [generate_item_ucl(ast, zone_id)]
@@ -1686,6 +1762,110 @@ c ->
       end
 
     header <> Enum.join(new_sections, "\n\n") <> generate_unhandled_comments(ast.unhandled)
+  end
+
+  # 沿继承链向上合并属性：
+  #   - sets / set_name / heredocs：父层为底、子层覆盖（Map.merge(parent, child)）
+  #   - inherits：扁平化为 child ++ parent（类型判定时子层优先）
+  #   - exit_vetoes / valid_leave：子层有则用之，否则取父层
+  # 循环继承（A→B→A）以 source_path 去重防死循环；父文件缺失/解析失败静默跳过。
+  defp merge_inherit_chain(ast) do
+    merge_inherit_level(ast, MapSet.new())
+  end
+
+  defp merge_inherit_level(ast, visited) do
+    source = ast.source_path
+    create = ast.create_fn || %{}
+
+    child_vals = %{
+      inherits: ast.inherits || [],
+      sets: Map.get(create, :sets, %{}),
+      set_name: Map.get(create, :set_name, %{}),
+      heredocs: Map.get(ast.heredocs || %{}, :heredocs, %{}),
+      exit_vetoes: ast.exit_vetoes || [],
+      valid_leave: ast.valid_leave
+    }
+
+    parents = ast.inherit_files || []
+
+    if MapSet.member?(visited, source) or parents == [] do
+      finalize_merged(ast, child_vals, child_vals)
+    else
+      base_vals =
+        Enum.reduce(parents, %{
+          inherits: [],
+          sets: %{},
+          set_name: %{},
+          heredocs: %{},
+          exit_vetoes: [],
+          valid_leave: nil
+        }, fn parent_ref, acc ->
+          path = parent_ref <> ".c"
+
+          case File.read(path) do
+            {:ok, content} ->
+              case parse_lpc(content, path, Path.dirname(path)) do
+                {:ok, parent_ast} ->
+                  parent_vals = child_of(merge_inherit_level(parent_ast, MapSet.put(visited, source)))
+                  merge_vals(acc, parent_vals)
+
+                _ ->
+                  acc
+              end
+
+            _ ->
+              acc
+          end
+        end)
+
+      merged_vals = merge_vals(base_vals, child_vals)
+
+      # 阻挡/守门：子层有则保留子层，否则回退父层
+      merged_vals =
+        if child_vals.exit_vetoes == [] do
+          %{merged_vals | exit_vetoes: base_vals.exit_vetoes}
+        else
+          merged_vals
+        end
+
+      merged_vals =
+        if is_nil(child_vals.valid_leave) do
+          %{merged_vals | valid_leave: base_vals.valid_leave}
+        else
+          merged_vals
+        end
+
+      finalize_merged(ast, merged_vals, child_vals)
+    end
+  end
+
+  defp child_of(ast), do: %{
+    inherits: ast.inherits || [],
+    sets: Map.get(ast.create_fn || %{}, :sets, %{}),
+    set_name: Map.get(ast.create_fn || %{}, :set_name, %{}),
+    heredocs: Map.get(ast.heredocs || %{}, :heredocs, %{}),
+    exit_vetoes: ast.exit_vetoes || [],
+    valid_leave: ast.valid_leave
+  }
+
+  defp merge_vals(base, newer) do
+    %{
+      inherits: newer.inherits ++ base.inherits,
+      sets: Map.merge(base.sets, newer.sets),
+      set_name: Map.merge(base.set_name, newer.set_name),
+      heredocs: Map.merge(base.heredocs, newer.heredocs),
+      exit_vetoes: newer.exit_vetoes, # 顶层 child 才处理回退，这里原样携带
+      valid_leave: newer.valid_leave
+    }
+  end
+
+  defp finalize_merged(ast, vals, _child_vals) do
+    %{ast |
+      inherits: vals.inherits,
+      create_fn: %{sets: vals.sets, set_name: vals.set_name},
+      heredocs: %{heredocs: vals.heredocs},
+      exit_vetoes: vals.exit_vetoes,
+      valid_leave: vals.valid_leave}
   end
 
   defp generate_unhandled_comments(unhandled) do
@@ -1842,10 +2022,17 @@ c ->
       Enum.any?(inherits, &String.contains?(&1, "ROOM")) -> :room
       Enum.any?(inherits, &String.contains?(&1, "NPC")) -> :npc
       Enum.any?(inherits, &is_item_inherit?(&1)) -> :item
-      Enum.any?(inherits, &String.contains?(&1, "SKILL") or String.contains?(&1, "FORCE")) -> :skill
+      Enum.any?(inherits, &skill_inherit?/1) -> :skill
       item_like?(ast) -> :item
       true -> :generic
     end
+  end
+
+  # 技能继承名大小写不敏感：真实 corpus 多用小写路径（如 "/adm/skills/parry"），
+  # 大小写敏感搜索会全部落空而归为 generic。
+  defp skill_inherit?(inherit) do
+    up = String.upcase(inherit)
+    String.contains?(up, "SKILL") or String.contains?(up, "FORCE")
   end
 
   # 常见武器/防具/杂物类型的继承名；命中即视为物品。

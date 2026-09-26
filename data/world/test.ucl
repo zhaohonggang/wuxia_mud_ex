@@ -4147,6 +4147,60 @@ item_desc = {
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
+# Generated from test_minimal_world_v2_modified/special/liandan_lin.c by LPCConverter
+# Zone: test
+
+    rooms "liandan_lin" {
+      name = "Room"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((int)me->query_temp("caiyao") == 2)  →  
+  # if ((int)me->query("qi") < 40)  →  
+  # if ((int)me->query("jing") < 40)  →  
+  # if (me->is_busy())  →  
+  # if (me->is_fighting())  →  
+  # if (! arg || arg != "yao")  →  
+  # if ((int)me->query_temp("caiyao") < 1)  →  
+# ==== CONDITIONAL BRANCHES (do_cai) ====
+  # else  →  message_vision(HIG \\"$N\\" HIG \\"找了半天，终于发现其中一株草苗与其\\" \\"它的草略有不同，小心翼翼地掘了出来。\\\$0\\" NOR, me); tell_object(me, HIC \\"在采药过程中你的「本草常识」提高了！\\\$0\\" NOR);
+  # else if (random(10) > 5)  →  message_vision(CYN \\"一翻摸索后，草丛中似乎没有$N\\" CYN \\"要找的东西，$N\\" CYN \\"失望的叹了口气。\\\$0\\" NOR, me);
+  # else if (random(skill) > 70)  →  message_vision(HIW \\"$N\\" HIW \\"精通百草之道，一眼就发现其中一株\\" \\"草苗与众不同，小心翼翼地将它掘了出来。\\\$0\\" NOR, me); tell_object(me, HIC \\"在采药过程中你的「本草常识」提高了！\\\$0\\" NOR);
+  # else if (random(10) == 1 && (string)me->query("family/family_name") != "五毒教")  →  
+  # if (random(8) == 1 && (int)me->query_skill("shedu-qiqiao", 1) < 100)  →  
+  # if (! objectp(me) || ! living(me) || me->is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (cai) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: cai
+  # UNHANDLED FUNCTION: do_cai
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from test_minimal_world_v2_modified/special/liandan_lin1.c by LPCConverter
+# Zone: test
+
+    rooms "liandan_lin1" {
+      name = "城西后林"
+      description = "这是一片茂密的树林。很多棵几十丈高的大树聚在一块，象一把把琼天大\n伞，连日月都被遮蔽得暗然无光。树林中还不时可以听到大自然发出的声响。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "liandan_lin1" {
+    room_id = rooms.liandan_lin1.id
+  south = rooms.ximenwai.id
+  north = rooms.liandan_lin3.id
+  east = rooms.liandan_lin5.id
+  west = rooms.liandan_lin4.id  }
+
 # Generated from test_minimal_world_v2_modified/special/shenyan.c by LPCConverter
 # Zone: test
 
