@@ -134,6 +134,71 @@ defmodule Kantele.World.LPCConverterRoomTest do
     end
   end
 
+  describe "KNOWER / npc 子目录判定与额外 inherit 保留" do
+    test "inherit KNOWER; → 按 npc 转换（非 generic）" do
+      dir = Path.join(System.tmp_dir!(), "lpc_knower_#{System.unique_integer([:positive])}")
+      File.mkdir_p!(dir)
+      path = Path.join(dir, "xiaofan.c")
+      File.write!(path, "inherit KNOWER;\n\nvoid create() { set_name(\"小贩\", ({\"xiaofan\"})); }")
+
+      try do
+        {:ok, ucl} = LPCConverter.convert_file(path)
+        assert ucl =~ ~s(characters "xiaofan")
+        refute ucl =~ "# Generic LPC file"
+      after
+        File.rm_rf!(dir)
+      end
+    end
+
+    test "位于 npc/ 子目录下的普通文件 → 按 npc 转换" do
+      dir =
+        Path.join(System.tmp_dir!(), "lpc_npc_dir_#{System.unique_integer([:positive])}")
+
+      File.mkdir_p!(Path.join(dir, "npc"))
+      path = Path.join(dir, "npc/xiaofan.c")
+      File.write!(path, "inherit F_DEALER;\n\nvoid create() { set_name(\"小贩\", ({\"xiaofan\"})); }")
+
+      try do
+        {:ok, ucl} = LPCConverter.convert_file(path)
+        assert ucl =~ ~s(characters "xiaofan")
+        refute ucl =~ "# Generic LPC file"
+      after
+        File.rm_rf!(dir)
+      end
+    end
+
+    test "类型标记之外的 inherit 以注释保留原行" do
+      dir = Path.join(System.tmp_dir!(), "lpc_knower2_#{System.unique_integer([:positive])}")
+      File.mkdir_p!(dir)
+      path = Path.join(dir, "xs.c")
+      File.write!(path, "inherit KNOWER;\ninherit F_DEALER;\n\nvoid create() { set_name(\"小贩\", ({\"x\"})); }")
+
+      try do
+        {:ok, ucl} = LPCConverter.convert_file(path)
+        # KNOWER 是 npc 类型标记，不注释；F_DEALER 保留
+        assert ucl =~ "# inherit F_DEALER;"
+        refute ucl =~ "# inherit KNOWER;"
+      after
+        File.rm_rf!(dir)
+      end
+    end
+
+    test "vendor_goods 数组中系统中找不到的路径保留为注释" do
+      dir = Path.join(System.tmp_dir!(), "lpc_goods_#{System.unique_integer([:positive])}")
+      File.mkdir_p!(Path.join(dir, "npc"))
+      path = Path.join(dir, "npc/x.c")
+      File.write!(path, "inherit KNOWER;\nvoid create() {\n  set(\"vendor_goods\", ({ \"/d/xiyu/obj/nang\", \"/d/xiyu/obj/hu\" }));\n}")
+
+      try do
+        {:ok, ucl} = LPCConverter.convert_file(path)
+        assert ucl =~ ~s[# vendor_goods: "/d/xiyu/obj/nang" (file not found)]
+        assert ucl =~ ~s[# vendor_goods: "/d/xiyu/obj/hu" (file not found)]
+      after
+        File.rm_rf!(dir)
+      end
+    end
+  end
+
   describe "继承链 / 宏继承（inherit __DIR__...，子类属性优先）" do
     @liandan1_path "test_minimal_world_v2_modified/special/liandan_lin1.c"
     @liandan_path "test_minimal_world_v2_modified/special/liandan_lin.c"

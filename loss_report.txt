@@ -24,6 +24,8 @@
     背的是什么人？还不给我放下来。
 == npc/xiaoer.c
     小二哥
+== npc/xiaoer2.c
+    小二哥
 == obj/blade.c
     插入腰间的刀鞘。
 == obj/blade2.c

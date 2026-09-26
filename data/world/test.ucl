@@ -827,6 +827,56 @@ chats = [
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
+# Generated from test_minimal_world_v2_modified/npc/xiaoer2.c by LPCConverter
+# Zone: test
+
+# inherit F_DEALER;
+
+    characters "xiaoer2" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。\n"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  # vendor_goods: "/d/xiyu/obj/nang" (file not found)
+  # vendor_goods: "/d/xiyu/obj/hu" (file not found)
+  # vendor_goods: "/d/xiyu/obj/yangrou" (file not found)
+  # vendor_goods: "obj/paomo" (file not found)
+  # vendor_goods: "obj/kaoyangtui" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(2)) { case 0: say("店小二笑咪咪地说道：这位" + RANK_D->query_respect(ob) + "，进来喝杯茶，歇歇腿吧。\n"); break; case 1: say("店小二用脖子上的毛巾抹了抹手，说道：这位" + RANK_D->query_respect(ob) + "，请进请进。\n"); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
 # Generated from test_minimal_world_v2_modified/npc/xingzhe.c by LPCConverter
 # Zone: test
 
@@ -1055,6 +1105,8 @@ chats = [
 
 # Generated from test_minimal_world_v2_modified/obj/bottle.c by LPCConverter
 # Zone: test
+
+# inherit F_LIQUID;
 
     items "bottle" {
       name = "水壶"
@@ -1303,6 +1355,8 @@ chats = [
 
 # Generated from test_minimal_world_v2_modified/obj/fork.c by LPCConverter
 # Zone: test
+
+# inherit FORK;
 
     items "fork" {
       name = "钢叉"
@@ -1571,6 +1625,8 @@ chats = [
 # Generated from test_minimal_world_v2_modified/obj/potion.c by LPCConverter
 # Zone: test
 
+# inherit F_LIQUID;
+
     items "potion" {
       name = "治疗药水"
       description = "一瓶神奇的治疗药水，喝下后可以恢复气血。\n"
@@ -1722,6 +1778,8 @@ chats = [
 # Generated from test_minimal_world_v2_modified/obj/water.c by LPCConverter
 # Zone: test
 
+# inherit F_LIQUID;
+
     items "water" {
       name = "杯盏"
       description = "还没定义，等下层调用。\n"
@@ -1763,6 +1821,8 @@ chats = [
 
 # Generated from test_minimal_world_v2_modified/obj/wine.c by LPCConverter
 # Zone: test
+
+# inherit F_LIQUID;
 
     items "wine" {
       name = "酒杯"
@@ -4186,6 +4246,8 @@ item_desc = {
 
 # Generated from test_minimal_world_v2_modified/special/liandan_lin1.c by LPCConverter
 # Zone: test
+
+# inherit LIANDAN_LIN;
 
     rooms "liandan_lin1" {
       name = "城西后林"

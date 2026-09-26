@@ -89,7 +89,8 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
         if File.exists?(output_file) do
           existing = File.read!(output_file)
           # Check if already exists
-          if String.contains?(existing, "rooms \"#{ucl_name}\"") or
+          if String.contains?(existing, "# Generated from #{lpc_path} by LPCConverter") or
+             String.contains?(existing, "rooms \"#{ucl_name}\"") or
              String.contains?(existing, "characters \"#{ucl_name}\"") or
              String.contains?(existing, "items \"#{ucl_name}\"") do
             Mix.shell().info("#{base_name} already exists in #{output_file}, skipping append")

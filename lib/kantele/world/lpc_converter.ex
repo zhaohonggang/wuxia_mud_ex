@@ -1761,7 +1761,24 @@ c ->
           [generate_generic_ucl(ast, zone_id)]
       end
 
-    header <> Enum.join(new_sections, "\n\n") <> generate_unhandled_comments(ast.unhandled)
+    # 非类型标记的 inherit（如 F_DEALER、F_CLEAN_UP）以注释保留原行；
+    # 仅对已转换类型输出（generic 整文件已是注释，无需重复）
+    inherit_comments =
+      if include_comments and obj_type != :generic do
+        ast.inherits
+        |> Enum.reject(&type_marker_inherit?(&1, obj_type))
+        |> Enum.map(&"# inherit #{&1};")
+        |> Enum.join("\n")
+      else
+        ""
+      end
+
+    inherit_prefix =
+      if inherit_comments != "", do: inherit_comments <> "\n\n", else: ""
+
+    header <>
+      inherit_prefix <>
+      Enum.join(new_sections, "\n\n") <> generate_unhandled_comments(ast.unhandled)
   end
 
   # 沿继承链向上合并属性：
@@ -2021,10 +2038,33 @@ c ->
     cond do
       Enum.any?(inherits, &String.contains?(&1, "ROOM")) -> :room
       Enum.any?(inherits, &String.contains?(&1, "NPC")) -> :npc
+      Enum.any?(inherits, &String.contains?(&1, "KNOWER")) -> :npc
+      npc_subdir?(ast.source_path) -> :npc
       Enum.any?(inherits, &is_item_inherit?(&1)) -> :item
       Enum.any?(inherits, &skill_inherit?/1) -> :skill
       item_like?(ast) -> :item
       true -> :generic
+    end
+  end
+
+  # 位于 npc/ 子目录下的文件按 npc 转换（如 npc/xiaoer2.c）。
+  # 用整段路径成分匹配，避免误伤 room/obj 等路径中的 "npc" 子串。
+  defp npc_subdir?(source_path) do
+    source_path
+    |> String.replace("\\", "/")
+    |> Path.split()
+    |> Enum.any?(&(&1 == "npc"))
+  end
+
+  # 判定某 inherit 是否属于该对象类型的"类型标记"（决定文件被转成哪种类型）。
+  # 非标记的继承（如 npc 文件里的 F_DEALER、F_CLEAN_UP）在 UCL 输出中以 # 注释保留原行。
+  defp type_marker_inherit?(inherit, obj_type) do
+    case obj_type do
+      :room -> String.contains?(inherit, "ROOM")
+      :npc -> String.contains?(inherit, "NPC") or String.contains?(inherit, "KNOWER")
+      :item -> is_item_inherit?(inherit)
+      :skill -> skill_inherit?(inherit)
+      _ -> false
     end
   end
 
@@ -2395,8 +2435,8 @@ defp exit_key({:string, s}), do: s
     # Combat config
     combat = build_npc_combat(sets)
 
-    # Goods
-    goods = build_goods(sets)
+    # Goods / vendor goods（找不到的路径以注释保留）
+    {goods, goods_comments} = build_goods(sets, ast)
 
     # Inquiries (handle both "inquiry" and "inquiries")
     inquiries = build_inquiries(sets)
@@ -2419,6 +2459,7 @@ defp exit_key({:string, s}), do: s
     ucl <> basic_block <> brain_line <>
       (if combat != "", do: "\n  combat = {\n#{combat}\n  }\n", else: "") <>
       (if goods != [], do: "\n  goods = [\n" <> Enum.map_join(goods, "\n", &"    { id = #{&1} }") <> "\n  ]\n", else: "") <>
+      (if goods_comments != [], do: "\n" <> Enum.map_join(goods_comments, "\n", &("  # " <> &1)) <> "\n", else: "") <>
       (if inquiries != %{}, do: "\n  inquiries = [\n" <> generate_inquiries(inquiries) <> "\n  ]\n", else: "") <>
       (if chat != nil, do: "\n  #{chat}\n", else: "") <>
       (if skills_block != "", do: "\n#{skills_block}\n", else: "") <>
@@ -2639,17 +2680,77 @@ defp exit_key({:string, s}), do: s
     |> Enum.join("\n")
   end
 
-  defp build_goods(sets) do
-    case Map.get(sets, "goods") do
-      {:array, items} ->
-        Enum.map(items, fn
-          {:string, s} -> "items.#{s}.id"
-          {:var, v} -> v
-          _ -> "items.unknown.id"
-        end)
-      _ -> []
-    end
+  defp build_goods(sets, ast) do
+    items =
+      for key <- ["goods", "vendor_goods"],
+          {:array, list} <- [Map.get(sets, key, [])],
+          item <- list do
+        {key, item}
+      end
+
+    items
+    |> Enum.reduce({[], []}, fn {key, item}, {entries, comments} ->
+      case item do
+        {:string, s} ->
+          # 仅对"形似对象路径"的条目做存在性检查（含目录分隔符 / 或以 .c 结尾），
+          # 纯短 id/名称（如 "yangrou"）不校验，保持原有直接引用。
+          if object_path?(s) and not object_file_known?(s, ast) do
+            {entries, ["#{key}: \"#{s}\" (file not found)" | comments]}
+          else
+            {["items.#{object_path_id(s)}.id" | entries], comments}
+          end
+
+        {:var, v} ->
+          {[v | entries], comments}
+
+        _ ->
+          {entries, comments}
+      end
+    end)
+    |> reverse_goods()
   end
+
+  defp reverse_goods({entries, comments}),
+    do: {Enum.reverse(entries), Enum.reverse(comments)}
+
+  defp object_path?(s) do
+    String.contains?(s, "/") or String.ends_with?(s, ".c") or String.starts_with?(s, "__DIR__")
+  end
+
+  # 判断 LPC 对象路径在当前源码树中是否存在（带不带 .c 后缀都算命中）。
+  # 尝试相对 base_path / 源文件目录解析，__DIR__ 前缀已由解析归一为相对路径。
+  defp object_file_known?(path, ast) do
+    stripped = strip_object_dir_prefix(path)
+    base = ast.base_path
+    dir = Path.dirname(ast.source_path)
+
+    candidates =
+      if String.starts_with?(stripped, "/") do
+        ["." <> stripped | [stripped]]
+      else
+        rel =
+          stripped
+          |> String.replace(~r/^"\/d\//, "")
+          |> String.trim_leading("/")
+
+        [Path.join(base, rel), Path.join(dir, rel), Path.join(".", rel)]
+      end
+
+    Enum.any?(candidates, fn cand ->
+      File.exists?(cand) or File.exists?(cand <> ".c")
+    end)
+  end
+
+  # 剥离 __DIR__"..." 残留的引号与 __DIR__ 标记；绝对 /d/ 路径直接保留
+  defp strip_object_dir_prefix(path) do
+    path
+    |> String.replace(~r/^__DIR__"/, "")
+    |> String.replace(~r/"$/, "")
+    |> String.trim()
+  end
+
+  # 对象路径 → 目标物品 id（沿用房间/出口的 basename 规则）
+  defp object_path_id(path), do: room_id_from_path(path)
 
   defp build_inquiries(sets) do
     # Look for inquiry-like mappings (LPC uses "inquiry", we normalize to "inquiries")

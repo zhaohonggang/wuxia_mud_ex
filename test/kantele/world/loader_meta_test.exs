@@ -189,6 +189,16 @@ defmodule Kantele.World.LoaderMetaTest do
     assert Map.fetch!(test_zone.characters, :duke).meta.guarder == nil
   end
 
+  test "xiaoer2：KNOWER+dealer 结构，goods 无果路径转注释不影响加载" do
+    world = Kantele.World.Loader.load()
+    test_zone = Enum.find(world.zones, &(&1.id == "test"))
+    xiaoer2 = Map.fetch!(test_zone.characters, :xiaoer2)
+
+    assert xiaoer2.meta.init.add_actions == ["buy", "list"]
+    assert length(xiaoer2.meta.greetings) == 2
+    assert xiaoer2.meta.goods == nil
+  end
+
   # ---- engage（accept_fight/hit/kill 抽取 → meta 落位） ----
 
   test "shouwei：engage 三键均拒绝、台词占位、继承回退注入" do

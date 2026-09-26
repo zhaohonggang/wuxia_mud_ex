@@ -63,6 +63,11 @@ defmodule Kantele.Brain do
     parse_node(brains[key_path], brains)
   end
 
+  # 缺失/未定义的 brain 名（如 infer 出的 dealer 无对应 definitions）→ 空脑，安全降级
+  defp parse_node(nil, _brains) do
+    %Kalevala.Brain.NullNode{}
+  end
+
   # A ref `{ ref = brains.town_crier }`
   defp parse_node(%{ref: "brains." <> key_path}, brains) do
     parse_node(brains[key_path], brains)
