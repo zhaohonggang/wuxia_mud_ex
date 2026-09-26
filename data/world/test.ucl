@@ -1900,6 +1900,11 @@ chats = [
   # if (objectp(NPC2) && ! objectp(NPC1))  →  
   # if (objectp(NPC1))  →  
 # ==== CONDITIONAL BRANCHES (query_introduce) ====
+  # if (objectp(NPC3))  →  
+  # if (objectp(NPC2))  →  
+  # if (objectp(NPC1))  →  
+  # if (! mapp(my))  →  
+# ==== CONDITIONAL BRANCHES (cancel_quest) ====
   # if (me->query("combat_exp") < NPC3->query("combat_exp") / 2)  →  
   # if (! objectp(NPC3))  →  
   # if (objectp(NPC1) || objectp(NPC2))  →  
@@ -2217,7 +2222,7 @@ item_desc = {
 # UNHANDLED CONTENT (for manual review)
 # ========================================
   # COMPLEX IF: if (r==3 || r==5 || r==9 || r==11) { total = 3; win = "sx"; } else { total = 0; win = "none of them"; }
-  # COMPLEX IF: if (dir == "south") { if (me->query_temp ("gamble_bet/amount") > 0) message_vision (CYN "$N" CYN "扔下押骰的钱，不要了。\n" NOR, me); me->delete_temp("gamble_bet"); } return ::valid_leave(me,dir); } void display_bet(object room, int i) { string str; switch (i) { case 1: str = "┌-----┐\n"+ "│ │\n"+ "│ ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 2: str = "┌-----┐\n"+ "│ │\n"+ "│ ● ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 3: str = "┌-----┐\n"+ "│● │\n"+ "│ ● │\n"+ "│ ●│\n"+ "└-----┘\n"; break; case 4: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; case 5: str = "┌-----┐\n"+ "│● ●│\n"+ "│ ● │\n"+ "│● ●│\n"+ "└-----┘\n"; break; case 6: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; } tell_room(room,str); } int rdm() { return random2(6) + 1; } void gamble_prepare() { object room = this_object(); tell_room (room, CYN "庄家唱道：新开盘！预叫头彩！\n" NOR); tell_room (room, CYN "庄家将两枚玉骰往银盘中一撒。\n" NOR); big[0] = rdm(); big[1] = rdm(); // keep two numbers different for a probability == 1/36 while (big[0] == big[1]) { reset_eval_cost(); big[1] = rdm(); } display_bet(room,big[0]); display_bet(room,big[1]); tell_room(room, CYN "\n庄家叫道：头彩骰号是「" HIY + chinese_number(big[0]) + NOR + CYN "」和「" HIY + chinese_number(big[1]) + NOR + CYN "」。\n\n" NOR); tell_room(room, CYN "接着庄家麻利地顺手将玉骰从盘中收回：现在开盘押钱！\n" NOR); room_status = 1; call_out("gamble_start",24); delete_temp("better"); } void gamble_start() { object room = this_object(); tell_room (room, CYN "庄家喊声：封盘停押！\n" NOR); tell_room (room, CYN "\n接着庄家又补叫道：本盘头彩骰号是「" HIY + chinese_number(big[0]) + NOR + CYN "」和「" HIY + chinese_number(big[1]) + NOR + CYN "」。\n\n" NOR); tell_room (room, CYN "然后庄家将两枚玉骰扔进两个金盅，一手持一盅摇将起来。\n" NOR); room_status = 2; call_out("gamble_perform", 6, 0); call_out("gamble_perform", 12, 1); call_out("gamble_finish", 18); } void gamble_perform (int i) { object room = this_object(); tell_room(room, HIY "\n金盅倒扣在银盘上，玉骰滚了出来。\n" NOR); res[i] = rdm(); display_bet (room,res[i]); } void player_wins(object who, int total) { object money = new("/clone/money/" + who->query_temp("gamble_bet/money")); int amount = who->query_temp("gamble_bet/amount"); total = total * amount; money->set_amount(total); message_vision(sprintf("$N赢了%s%s%s！\n", chinese_number(total), money->query("base_unit"), money->query("name")), who); money->move(who); } void player_loses(object who, int total) { object money = new("/clone/money/" + who->query_temp("gamble_bet/money")); total = who->query_temp("gamble_bet/amount"); message_vision(sprintf("庄家将$N押在银盘中的%s%s%s收走。\n", chinese_number(total), money->query("base_unit"), money->query("name")), who); destruct(money); } void gamble_finish() { string win; int total, i; object room = this_object(); object *list; if (res[0]==big[0] && res[1]==big[1]) { total = 36; win = "tc"; } else if (res[0]==res[1] && (res[0]/2*2 == res[0])) { total = 12; win = "sd"; } else { int r = res[0]+res[1]; if (r==7) { total = 6; win = "qx"; }
+  # COMPLEX IF: if (dir == "south") { if (me->query_temp ("gamble_bet/amount") > 0) message_vision (CYN "$N" CYN "扔下押骰的钱，不要了。\n" NOR, me); me->delete_temp("gamble_bet"); } return ::valid_leave(me,dir); } void display_bet(object room, int i) { string str; switch (i) { case 1: str = "┌-----┐\n"+ "│ │\n"+ "│ ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 2: str = "┌-----┐\n"+ "│ │\n"+ "│ ● ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 3: str = "┌-----┐\n"+ "│● │\n"+ "│ ● │\n"+ "│ ●│\n"+ "└-----┘\n"; break; case 4: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; case 5: str = "┌-----┐\n"+ "│● ●│\n"+ "│ ● │\n"+ "│● ●│\n"+ "└-----┘\n"; break; case 6: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; } tell_room(room,str); } int rdm() { return random2(6) + 1; } void gamble_prepare() { object room = this_object(); tell_room (room, CYN "庄家唱道：新开盘！预叫头彩！\n" NOR); tell_room (room, CYN "庄家将两枚玉骰往银盘中一撒。\n" NOR); big[0] = rdm(); big[1] = rdm(); while (big[0] == big[1]) { reset_eval_cost(); big[1] = rdm(); } display_bet(room,big[0]); display_bet(room,big[1]); tell_room(room, CYN "\n庄家叫道：头彩骰号是「" HIY + chinese_number(big[0]) + NOR + CYN "」和「" HIY + chinese_number(big[1]) + NOR + CYN "」。\n\n" NOR); tell_room(room, CYN "接着庄家麻利地顺手将玉骰从盘中收回：现在开盘押钱！\n" NOR); room_status = 1; call_out("gamble_start",24); delete_temp("better"); } void gamble_start() { object room = this_object(); tell_room (room, CYN "庄家喊声：封盘停押！\n" NOR); tell_room (room, CYN "\n接着庄家又补叫道：本盘头彩骰号是「" HIY + chinese_number(big[0]) + NOR + CYN "」和「" HIY + chinese_number(big[1]) + NOR + CYN "」。\n\n" NOR); tell_room (room, CYN "然后庄家将两枚玉骰扔进两个金盅，一手持一盅摇将起来。\n" NOR); room_status = 2; call_out("gamble_perform", 6, 0); call_out("gamble_perform", 12, 1); call_out("gamble_finish", 18); } void gamble_perform (int i) { object room = this_object(); tell_room(room, HIY "\n金盅倒扣在银盘上，玉骰滚了出来。\n" NOR); res[i] = rdm(); display_bet (room,res[i]); } void player_wins(object who, int total) { object money = new("/clone/money/" + who->query_temp("gamble_bet/money")); int amount = who->query_temp("gamble_bet/amount"); total = total * amount; money->set_amount(total); message_vision(sprintf("$N赢了%s%s%s！\n", chinese_number(total), money->query("base_unit"), money->query("name")), who); money->move(who); } void player_loses(object who, int total) { object money = new("/clone/money/" + who->query_temp("gamble_bet/money")); total = who->query_temp("gamble_bet/amount"); message_vision(sprintf("庄家将$N押在银盘中的%s%s%s收走。\n", chinese_number(total), money->query("base_unit"), money->query("name")), who); destruct(money); } void gamble_finish() { string win; int total, i; object room = this_object(); object *list; if (res[0]==big[0] && res[1]==big[1]) { total = 36; win = "tc"; } else if (res[0]==res[1] && (res[0]/2*2 == res[0])) { total = 12; win = "sd"; } else { int r = res[0]+res[1]; if (r==7) { total = 6; win = "qx"; }
 # ==== COMPLEX CONDITIONALS ====
   # if (dir == "south")  →  message_vision (CYN \\"$N\\" CYN \\"扔下押骰的钱，不要了。\\\$0\\" NOR, me);
 # ==== CONDITIONAL BRANCHES (valid_leave) ====
@@ -3740,6 +3745,22 @@ item_desc = {
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
+  # if (random(2) == 1 && ! target->is_busy())  →  
+  # if (! me->is_fighting(target))  →  
+  # else  →  
+  # if (ap / 2 + random(ap) > dp)  →  
+  # if (! living(target))  →  
+  # if (me->query_temp("weapon"))  →  
+  # if (me->query("neili") < 500)  →  
+  # if (me->query("max_neili") < 7000)  →  
+  # if (me->query_skill("force") < 400)  →  
+  # if (skill < 220)  →  
+  # if (me->query_skill_prepared("finger") != "liumai-shenjian")  →  
+  # if (! target || ! me->is_fighting(target))  →  
+  # if (userp(me) && ! me->query("can_perform/liumai-shenjian/six"))  →  
+  # if (! target)  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
+# ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: perform
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -3755,6 +3776,14 @@ item_desc = {
 # ========================================
   # if (me->query_temp("tjj_sui"))  →  tell_object(me, \\"你的\\" SUI \\"运行完毕，将内力收回丹田。\\\$0\\");
 # ==== CONDITIONAL BRANCHES (remove_effect) ====
+  # if (me->is_fighting())  →  
+  # if ((int)me->query("neili") < 300)  →  
+  # if (me->query_skill_mapped("sword") != "taiji-jian")  →  
+  # if ((int)me->query_skill("taiji-jian", 1) < 60)  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "sword")  →  
+  # if ((int)me->query_temp("tjj_sui"))  →  
+  # if (userp(me) && ! me->query("can_perform/taiji-jian/sui"))  →  
+# ==== CONDITIONAL BRANCHES (perform) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: perform
   # UNHANDLED FUNCTION: remove_effect

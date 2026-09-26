@@ -85,8 +85,8 @@ defmodule Kantele.World.LPCConverter do
 
   def preprocess(content) do
     content
-    |> strip_c_comments()
     |> strip_cpp_comments()
+    |> strip_c_comments()
     |> normalize_whitespace()
   end
 
@@ -99,13 +99,13 @@ defmodule Kantele.World.LPCConverter do
     # Remove // ... comments
     text
     |> String.split("\n")
-    |> Enum.map(fn line ->
-      case Regex.run(~r/\/\/.*/, line) do
-        nil -> line
-        [match] ->
-          # Find position of match manually
-          pos = String.length(line) - String.length(match)
-          String.slice(line, 0..(pos - 1))
+    |> Enum.flat_map(fn line ->
+      case Regex.split(~r/\/\/.*/, line, parts: 2) do
+        [before, _comment] ->
+          [before]
+
+        _ ->
+          [line]
       end
     end)
     |> Enum.join("\n")
