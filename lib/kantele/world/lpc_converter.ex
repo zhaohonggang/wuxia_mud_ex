@@ -2518,52 +2518,40 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
     end
   end
 
-defp escape_heredoc_content(str) do
-    # Heredoc content is raw LPC text (real newlines, real quotes).
-    # UCL/Elias accepts "\n" as literal backslash-n and "\"" as a quote.
-    # 但 elias 解析器在遇到 \" 后跟非 ASCII 字符会报错，因此把 " 统一替换为 ' 避免转义
-    # 同时处理原文中已有的 \" 序列和 \n" 序列
-    # 处理顺序：先处理特定序列，再统一处理剩余的 "
-    # 不转义换行符，改为空格，避免 \n' 等序列干扰解析器，并去除首尾空格
+# Heredoc content is raw LPC text (real newlines, real quotes).
+  # elias（UCL 解析器）的字符串规则：
+  #   - 字符串内真实换行会崩 → 换为空格
+  #   - 字面 \n \t \r（反斜杠+字母）可接受、保留为字面文本
+  #   - 双反斜杠 \\ 会崩 → 折叠为单反斜杠
+  #   - \" 可被解析为 "，但有非 ASCII 结尾时易报错 → 统一把 " 换为 '，避免任何转义
+  #   - 分号 ; 即使在字符串内也被当语句分隔 → 换为空格
+  # 统一入口 sanitize_ucl_sval/1：对"值内容"做上述清洗，结果可安全放进 "..."。
+  defp sanitize_ucl_sval(str) do
     str
-    |> String.replace("\\n\"", " ")
-    |> String.replace("\\n'", " ")
+    # 先折叠多重反斜杠（4→2→1），防止 \\ 系列
+    |> String.replace("\\\\\\\\", "\\\\")
+    |> String.replace("\\\\", "\\")
+    # 转义引号语义：\" → " → 最终统一为 '
     |> String.replace("\\\"", "'")
-    # 处理完特定序列后，统一处理剩余的反斜杠和引号
-    |> String.replace("\\", "\\\\")
-    |> String.replace("\n", " ")
-    # 去除首尾空格，避免结尾空格导致 \ " 序列
-    |> String.trim()
-    # 最后统一处理剩余的双引号（包括原文中的 " 和转义后遗留的 \" 或 \\"）
-    |> String.replace("\\\"", "'")
-    |> String.replace("\\\\\"", "'")
     |> String.replace("\"", "'")
+    # 分号危险：字符串内也会被 elias 当分隔符
+    |> String.replace(";", " ")
+    # 真实换行/回车 → 空格
+    |> String.replace("\n", " ")
+    |> String.replace("\r", " ")
+    |> String.trim()
   end
+
+  defp escape_heredoc_content(str), do: sanitize_ucl_sval(str)
 
   # Set-string values already carry LPC escapes (\"" for a literal quote, \n
   # for a line break, ...). Only real newline chars (from multi-line LPC
-  # literals that our parser joined) need converting to "\n".
-  # 但 UCL 解析器在遇到 \" 后跟非 ASCII 字符会报错，因此把 " 统一替换为 ' 避免转义
-defp escape_set_string(str) do
-    str
-    |> String.replace("\\", "\\\\")
-    |> String.replace("\"", "'")
-    |> String.replace(";", "\\;")
-    # 不转义换行符，改为空格，避免 \n' 等序列干扰解析器
-    |> String.replace("\n", " ")
-    |> String.trim()
-  end
+  # literals that our parser joined) need converting to a space.
+  defp escape_set_string(str), do: sanitize_ucl_sval(str)
 
   defp ucl_string(str) do
-    # Properly escape a string for UCL output: escape backslashes and quotes, wrap in double quotes
-    "\"" <>
-    (str
-    |> String.replace("\\", "\\\\")
-    |> String.replace("\"", "\\\"")
-    |> String.replace("\n", "\\n")
-    |> String.replace("\r", "\\r")
-    |> String.replace("\t", "\\t")) <>
-    "\""
+    # Properly escape a string for UCL output: sanitize value content, then wrap in double quotes
+    "\"" <> sanitize_ucl_sval(str) <> "\""
   end
 
   defp generate_npc_ucl(ast, zone_id) do

@@ -175,15 +175,11 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
       deduped
       |> Enum.filter(fn {_ucl_name, ucl, _comments} -> String.trim(ucl) != "" end)
       |> Enum.map_join("\n\n", fn {_ucl_name, ucl, _comments} -> String.trim_trailing(ucl) end)
-    body = sanitize_ucl_body(body)
     if body == "" do
       File.write!(output_file, zone_header)
     else
       File.write!(output_file, zone_header <> body <> "\n")
     end
-
-    # Fix UCL file to avoid elias parser issues
-    fix_ucl_file(output_file)
 
     # Write comments to separate .txt file
     comments_body = Enum.map_join(deduped, "\n\n", fn {_ucl_name, _ucl, comments} -> String.trim_trailing(comments) end)
@@ -193,35 +189,6 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
     Mix.shell().info("Wrote comments to #{comments_file}")
     if failures != [], do: Mix.shell().error("Failed on #{length(failures)} files: #{inspect(failures)}")
     Mix.shell().info("Done.")
-
-    # Post-process the generated UCL file to fix elias parser issues
-    fix_ucl_file(output_file)
-  end
-
-  defp sanitize_ucl_body(body) do
-    body
-    |> String.replace("\\\"", "'")
-    |> String.replace("\\\\\"", "'")
-    |> String.replace("\\n\"", " ")
-    |> String.replace("\\t\"", " ")
-    |> String.replace("\\r\"", " ")
-  end
-
-  defp fix_ucl_file(path) do
-    content = File.read!(path)
-    # Fix problematic escape sequences that confuse elias parser
-    fixed =
-      content
-      |> String.replace("\\n\"", "\\n'")
-      |> String.replace("\\\"", "'")
-      |> String.replace("\\\\\"", "'")
-      # Fix trailing backslash-space at end of lines
-      |> String.replace("\\\\ \n", "\n")
-      |> String.replace("\\ \n", "\n")
-      # Fix multiline string values that break UCL parsing
-      |> String.replace("\\\\\n", "\\n")
-      |> String.replace("\\\n", "\\n")
-    File.write!(path, fixed)
   end
 
   defp infer_zone_id(lpc_path) do

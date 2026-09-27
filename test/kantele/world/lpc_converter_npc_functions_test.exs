@@ -75,7 +75,7 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
     end
 
     test "xiaoer：build_accept_ucl 台词池输出 msg 列表" do
-      {:ok, ucl} = LPCConverter.convert_string(File.read!(@xiaoer_path),
+      {:ok, {ucl, _comments}} = LPCConverter.convert_string(File.read!(@xiaoer_path),
         base_path: "test_minimal_world_v2_modified/npc")
       assert ucl =~ "msg = [\"好！好！\", \"不需要的东西全给我！\"]"
     end
@@ -120,7 +120,7 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
     end
 
     test "jinhua：build_accept_ucl 输出 fail_msg 台词池" do
-      {:ok, ucl} = LPCConverter.convert_string(File.read!(@jinhua_path),
+      {:ok, {ucl, _comments}} = LPCConverter.convert_string(File.read!(@jinhua_path),
         base_path: "test_minimal_world_v2_modified/npc")
       assert ucl =~ "fail_msg = [\"你没有这件东西。\", \"金花说道：你给我这个东西干嘛？\", \"金花说道：我已经有绣花鞋了。\"]"
     end
@@ -141,7 +141,7 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
     end
 
     test "jinhua：build_chat 输出 chat_chance + chats 列表" do
-      {:ok, ucl} = LPCConverter.convert_string(File.read!(@jinhua_path),
+      {:ok, {ucl, _comments}} = LPCConverter.convert_string(File.read!(@jinhua_path),
         base_path: "test_minimal_world_v2_modified/npc")
       assert ucl =~ "chat_chance = 5"
       assert ucl =~ "\"金花哭泣着：我的命怎么这么苦哟。\""
@@ -219,7 +219,7 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
     end
 
     test "generate_npc_ucl：engage 块输出完整" do
-      {:ok, ucl} = LPCConverter.convert_string(File.read!(@shouwei_path),
+      {:ok, {ucl, _comments}} = LPCConverter.convert_string(File.read!(@shouwei_path),
         base_path: "test_minimal_world_v2_modified/npc")
 
       assert String.contains?(ucl, "engage = {")
@@ -291,12 +291,12 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
 
     test "UCL 注释含 CONDITIONAL BRANCHES 节" do
       path = "test_minimal_world_v2_modified/condition/hunger.c"
-      {:ok, ucl} = LPCConverter.convert_string(File.read!(path),
+      {:ok, {ucl, _comments}} = LPCConverter.convert_string(File.read!(path),
         base_path: "test_minimal_world_v2_modified/condition")
 
-      assert String.contains?(ucl, "# ==== CONDITIONAL BRANCHES ====")
-      assert String.contains?(ucl, "# ==== CONDITIONAL BRANCHES (update_condition) ====")
-      assert String.contains?(ucl, "if (me->query(\"food\") > 0 && me->query(\"water\") > 0)")
+      assert String.contains?(_comments, "# ==== CONDITIONAL BRANCHES ====")
+      assert String.contains?(_comments, "# ==== CONDITIONAL BRANCHES (update_condition) ====")
+      assert String.contains?(_comments, "if (me->query(\"food\") > 0 && me->query(\"water\") > 0)")
     end
   end
 end

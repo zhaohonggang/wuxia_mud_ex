@@ -54,7 +54,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
     end
 
     test "emission：valid_leave 块进房间 UCL" do
-      {:ok, ucl} =
+      {:ok, {ucl, _comments}} =
         LPCConverter.convert_string(File.read!(@cave_path),
           base_path: "test_minimal_world_v2_modified/room"
         )
@@ -67,7 +67,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
 
   describe "set(" <> "item_desc" <> ") 墙牌/菜单抽取" do
     test "bet：paizi 规则板完整拼接，颜色宏剥离" do
-      {:ok, ucl} =
+      {:ok, {ucl, _comments}} =
         LPCConverter.convert_string(File.read!(@bet_path),
           base_path: "test_minimal_world_v2_modified/room"
         )
@@ -82,7 +82,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
     end
 
     test "furong：menu 菜单完整保留" do
-      {:ok, ucl} =
+      {:ok, {ucl, _comments}} =
         LPCConverter.convert_string(File.read!(@furong_path),
           base_path: "test_minimal_world_v2_modified/room"
         )
@@ -96,7 +96,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
 
   describe "文件类型判定（determine_object_type，技能继承名大小写不敏感）" do
     test "大写 SKILL 继承 → skill" do
-      {:ok, ucl} =
+      {:ok, {ucl, _comments}} =
         LPCConverter.convert_string("inherit SKILL;\n\nvoid create() { set(\"name\", \"x\"); }",
           base_path: "."
         )
@@ -105,7 +105,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
     end
 
     test "小写路径继承含 skill（/adm/skills/...）→ skill，不再落 generic" do
-      {:ok, ucl} =
+      {:ok, {ucl, _comments}} =
         LPCConverter.convert_string("inherit \"/adm/skills/sword\";\n\nvoid create() { }",
           base_path: "."
         )
@@ -114,7 +114,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
     end
 
     test "小写 force 继承（心法）→ skill" do
-      {:ok, ucl} =
+      {:ok, {ucl, _comments}} =
         LPCConverter.convert_string("inherit \"/adm/skills/force\";\n\nvoid create() { }",
           base_path: "."
         )
@@ -124,13 +124,14 @@ defmodule Kantele.World.LPCConverterRoomTest do
 
     test "回归：仅技能判定改为大小写不敏感，房间/物品判定不受影响" do
       # 小写房间继承路径不含 skill/force：仍按原标准落 generic（非 rooms）
-      {:ok, ucl} =
+      {:ok, {ucl, _comments}} =
         LPCConverter.convert_string("inherit \"/d/city/entry\";\n\nvoid create() { }",
           base_path: "."
         )
 
       refute ucl =~ "rooms \""
-      assert ucl =~ "# Generic LPC file"
+      # generic 判定：ucl 无 rooms/characters，注释落在 comments
+      assert _comments =~ "# Generic LPC file"
     end
   end
 
@@ -142,7 +143,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
       File.write!(path, "inherit KNOWER;\n\nvoid create() { set_name(\"小贩\", ({\"xiaofan\"})); }")
 
       try do
-        {:ok, ucl} = LPCConverter.convert_file(path)
+        {:ok, {ucl, _comments}} = LPCConverter.convert_file(path)
         assert ucl =~ ~s(characters "xiaofan")
         refute ucl =~ "# Generic LPC file"
       after
@@ -159,7 +160,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
       File.write!(path, "inherit F_DEALER;\n\nvoid create() { set_name(\"小贩\", ({\"xiaofan\"})); }")
 
       try do
-        {:ok, ucl} = LPCConverter.convert_file(path)
+        {:ok, {ucl, _comments}} = LPCConverter.convert_file(path)
         assert ucl =~ ~s(characters "xiaofan")
         refute ucl =~ "# Generic LPC file"
       after
@@ -174,10 +175,10 @@ defmodule Kantele.World.LPCConverterRoomTest do
       File.write!(path, "inherit KNOWER;\ninherit F_DEALER;\n\nvoid create() { set_name(\"小贩\", ({\"x\"})); }")
 
       try do
-        {:ok, ucl} = LPCConverter.convert_file(path)
-        # KNOWER 是 npc 类型标记，不注释；F_DEALER 保留
-        assert ucl =~ "# inherit F_DEALER;"
-        refute ucl =~ "# inherit KNOWER;"
+        {:ok, {ucl, _comments}} = LPCConverter.convert_file(path)
+        # KNOWER 是 npc 类型标记，不注释；F_DEALER 保留（进 comments）
+        assert _comments =~ "# inherit F_DEALER;"
+        refute _comments =~ "# inherit KNOWER;"
       after
         File.rm_rf!(dir)
       end
@@ -190,7 +191,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
       File.write!(path, "inherit KNOWER;\nvoid create() {\n  set(\"vendor_goods\", ({ \"/d/xiyu/obj/nang\", \"/d/xiyu/obj/hu\" }));\n}")
 
       try do
-        {:ok, ucl} = LPCConverter.convert_file(path)
+        {:ok, {ucl, _comments}} = LPCConverter.convert_file(path)
         assert ucl =~ ~s[# vendor_goods: "/d/xiyu/obj/nang" (file not found)]
         assert ucl =~ ~s[# vendor_goods: "/d/xiyu/obj/hu" (file not found)]
       after
@@ -204,14 +205,14 @@ defmodule Kantele.World.LPCConverterRoomTest do
     @liandan_path "test_minimal_world_v2_modified/special/liandan_lin.c"
 
     test "liandan_lin1：宏继承 LIANDAN_LIN（→liandan_lin.c→ROOM）判为 room，非 generic" do
-      {:ok, ucl} = LPCConverter.convert_file(@liandan1_path)
+      {:ok, {ucl, _comments}} = LPCConverter.convert_file(@liandan1_path)
 
       assert ucl =~ ~s(rooms "liandan_lin1")
       refute ucl =~ "# Generic LPC file"
     end
 
     test "liandan_lin1：合并父类与子类 create 属性（子类优先）" do
-      {:ok, ucl} = LPCConverter.convert_file(@liandan1_path)
+      {:ok, {ucl, _comments}} = LPCConverter.convert_file(@liandan1_path)
 
       assert ucl =~ ~s(name = "城西后林")
       assert ucl =~ "这是一片茂密的树林"
@@ -220,7 +221,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
     end
 
     test "liandan_lin1：exits 原样写入 UCL（悬挂目标由 loader 丢弃）" do
-      {:ok, ucl} = LPCConverter.convert_file(@liandan1_path)
+      {:ok, {ucl, _comments}} = LPCConverter.convert_file(@liandan1_path)
 
       assert ucl =~ ~s(room_exits "liandan_lin1")
       assert ucl =~ "south = rooms.ximenwai"
@@ -230,7 +231,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
     end
 
     test "liandan_lin（父）自身仍按继承 ROOM 判为 room" do
-      {:ok, ucl} = LPCConverter.convert_file(@liandan_path)
+      {:ok, {ucl, _comments}} = LPCConverter.convert_file(@liandan_path)
       assert ucl =~ ~s(rooms "liandan_lin")
     end
 
@@ -256,7 +257,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
       File.write!(Path.join(dir, "child.c"), child)
 
       try do
-        {:ok, ucl} = LPCConverter.convert_file(Path.join(dir, "child.c"))
+        {:ok, {ucl, _comments}} = LPCConverter.convert_file(Path.join(dir, "child.c"))
 
         # 子类 short 覆盖父类；父类独有 long 透传
         assert ucl =~ ~s(name = "子房间")
@@ -288,7 +289,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
       File.write!(Path.join(dir, "twin.c"), twin)
 
       try do
-        {:ok, ucl} = LPCConverter.convert_file(Path.join(dir, "twoc.c"))
+        {:ok, {ucl, _comments}} = LPCConverter.convert_file(Path.join(dir, "twoc.c"))
         assert ucl =~ ~s(rooms "twoc")
         assert ucl =~ ~s(name = "双子")
       after

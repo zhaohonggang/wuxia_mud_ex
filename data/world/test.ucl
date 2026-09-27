@@ -1240,7 +1240,8 @@ direction = "in"
 
     rooms "didao6" {
       name = "秘道尽头"
-      description = "你忽觉前方一亮，身前真是别有洞天，前方好想有作花园。 不知是什么地方。\n  x = 0
+      description = "你忽觉前方一亮，身前真是别有洞天，前方好想有作花园。 不知是什么地方。\n"
+  x = 0
   y = 0
   z = 0
     }
