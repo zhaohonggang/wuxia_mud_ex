@@ -1,0 +1,1981 @@
+zones "test" {
+  name = "test"
+}
+
+# Generated from test_minimal_world_v2_modified/npc/duke.c by LPCConverter
+# Zone: test
+
+    characters "duke" {
+      name = "赌场管事"
+      description = "他是赌场的管事，精明干练，眼神锐利。"
+  gender = "男性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/furen.c by LPCConverter
+# Zone: test
+
+    characters "furen" {
+      name = "庄夫人"
+      description = "只见她约莫二十六七年纪,全身缟素,不施脂粉,脸色苍白."
+  title = "庄家三少奶奶"
+  nickname = "未亡人"
+  gender = "女性"
+  age = 25
+  shen_type = 1
+  score = 50000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    con = 25
+    dex = 30
+    int = 25
+    max_jing = 400
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  inquiries = [
+    { key = "双儿" value = "这小丫头跟随我多年，做事也还妥当。" },
+    { key = "吴之荣" value = "我一定要手刃了这个奸贼。" },
+    { key = "礼物" value = "这样礼物可不一般，她就是我的好丫环双儿。" },
+    { key = "鳌拜" value = "鳌拜是我家的大仇人。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 90 },
+    { skill = "dodge" level = 90 },
+    { skill = "unarmed" level = 90 },
+    { skill = "sword" level = 90 },
+    { skill = "taiji-jian" level = 80 },
+    { skill = "tiyunzong" level = 90 },
+    { type = "dodge" skill = "tiyunzong" },
+    { type = "parry" skill = "tiaji-jian" },
+    { type = "sword" skill = "tiaji-jian" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.changjian.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "庄夫人说道：很久没有人来了，这位{respect}，可知道我相公的下落吗？" }
+  ]
+
+  accept = [
+    { kind = "item_id" id = "wu zhi rong" accept = true msg = ["庄夫人大喜道：狗贼，死去吧！想不到你也有今天！", "{npc}的江湖威望提高了！", "庄夫人对{npc}说道：这位，如此大恩大德，妾身实不知何以为报。庄夫人微一沉思，道：我想送恩公一件礼物，务请勿却是幸。", "庄夫人说道：这位，多谢了！", "庄夫人感叹道：唉！你要能帮我找到吴之荣这狗贼就好了。"] },
+    { kind = "item_name" name = "明史辑略" accept = true msg = ["庄夫人大喜道：狗贼，死去吧！想不到你也有今天！", "{npc}的江湖威望提高了！", "庄夫人对{npc}说道：这位，如此大恩大德，妾身实不知何以为报。庄夫人微一沉思，道：我想送恩公一件礼物，务请勿却是幸。", "庄夫人说道：这位，多谢了！", "庄夫人感叹道：唉！你要能帮我找到吴之荣这狗贼就好了。"] },
+    { kind = "item_name" name = "庄允城" accept = true msg = ["庄夫人大喜道：狗贼，死去吧！想不到你也有今天！", "{npc}的江湖威望提高了！", "庄夫人对{npc}说道：这位，如此大恩大德，妾身实不知何以为报。庄夫人微一沉思，道：我想送恩公一件礼物，务请勿却是幸。", "庄夫人说道：这位，多谢了！", "庄夫人感叹道：唉！你要能帮我找到吴之荣这狗贼就好了。"] },
+    { kind = "any" accept = true msg = ["庄夫人大喜道：狗贼，死去吧！想不到你也有今天！", "{npc}的江湖威望提高了！", "庄夫人对{npc}说道：这位，如此大恩大德，妾身实不知何以为报。庄夫人微一沉思，道：我想送恩公一件礼物，务请勿却是幸。", "庄夫人说道：这位，多谢了！", "庄夫人感叹道：唉！你要能帮我找到吴之荣这狗贼就好了。"] }
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/huangyi.c by LPCConverter
+# Zone: test
+
+    characters "huangyi" {
+      name = "黄衣"
+      description = "一个全身上下穿着黄装，领露酥胸的美女。"
+  title = "群玉八娇"
+  gender = "女性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10
+    str = 30
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  engage = {
+    fight = { accept = false msg = "小女子哪里是您的对手？" }
+    kill = { accept = false msg = "要杀人了，快来人救命啊！" spawn = ["baobiao"] }
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/jiang.c by LPCConverter
+# Zone: test
+
+    characters "jiang" {
+      name = "江百胜"
+      description = "当今武林盟主魏无双之手下之亲兵队长。"
+  gender = "男性"
+  age = 30
+  shen_type = 0
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 50000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 200
+    max_neili = 300
+    max_qi = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "unarmed" level = 100 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 80 }
+  ]
+
+
+  engage = {
+    fight = { accept = true }
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/jinhua.c by LPCConverter
+# Zone: test
+
+    characters "jinhua" {
+      name = "金花"
+      description = "一个年少貌美的姑娘。"
+  gender = "女性"
+  age = 24
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 800
+    con = 18
+    dex = 18
+    int = 18
+    str = 18
+  }
+
+  inquiries = [
+    { key = "张妈" value = "你知道我娘？你可有她给你的信物？快给我看看。" },
+    { key = "绣花鞋" value = "你真有绣花鞋吗？快给我看看。" }
+  ]
+
+  chat_chance = 5
+chats = [
+    "金花哭泣着：我的命怎么这么苦哟。",
+    "金花抹着眼泪：娘呀，我好想你呀！",
+    "金花叹口气说道：不知今生今世能否再见到我娘。"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "金花道：这位{respect}，我娘是白驼山庄的老佣人。你可有她消息？" }
+  ]
+
+  accept = [
+    { kind = "any" accept = true msg = ["金花抹了把眼泪，不好意思道：这位见笑了。我实在没什么东西报答你，不过我知道山贼头有个钱箱藏在床下。我这就搬出来给你。", "{npc}帮金花从床下搬出来一只钱箱，迫不及待地打开一看，里面竟然搁着一大堆白银。{npc}毫不客气地把白银装进衣服里。", "金花双手捧着绣花鞋，泪如雨下道：娘，您还挂着女儿啊。"] fail_msg = ["你没有这件东西。", "金花说道：你给我这个东西干嘛？", "金花说道：我已经有绣花鞋了。"] }
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/menwei.c by LPCConverter
+# Zone: test
+
+    characters "menwei" {
+      name = "门卫"
+      description = "他是白驼山庄的门卫，身材魁梧，手持钢叉，目光如炬。"
+  gender = "男性"
+  age = 35
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 120000
+    max_jing = 800
+    max_neili = 1500
+    max_qi = 1500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 120 },
+    { skill = "dodge" level = 120 },
+    { skill = "parry" level = 120 },
+    { skill = "blade" level = 120 },
+    { skill = "force" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.blade.id },
+    { id = items.cloth.id }
+  ]
+
+
+  meta = {
+    guarder = {
+      family = "白驼山庄"
+      msgs = { refuse_other = "{npc}拦住{name}，冷笑道：白驼山庄重地，闲杂人等不得入内！" }
+    }
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/shouwei.c by LPCConverter
+# Zone: test
+
+    characters "shouwei" {
+      name = "守卫"
+      description = "这是看护庄园的守卫，看上去似乎身怀绝技。"
+  gender = "男性"
+  age = 30
+
+  combat = {
+    attitude = "friendly"
+    max_jing = 2400
+    max_neili = 5200
+    max_qi = 4800
+  }
+
+  accept = [
+    { kind = "money" accept = true msg = "{npc}对{name}施了一礼。" },
+    { kind = "any" accept = false msg = ["{npc}对{name}施了一礼。"] }
+  ]
+
+  engage = {
+    fight = { accept = false msg = "{npc}吓了一跳，慌忙对{name}道：“小的不敢，小的不敢！”" }
+    hit = { accept = false msg = "{npc}连忙摆摆手，对{name}道：“可不要和我开这种玩笑！”" }
+    kill = { accept = false msg = "{npc}一声长叹，道：“既然主人不留我了，罢罢罢！合则留，不合则去！我走了。” 说罢，{npc}一扬手，切下一角衣抉，飘然而去。" }
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/worker-liu.c by LPCConverter
+# Zone: test
+
+    characters "worker_liu" {
+      name = "刘工匠"
+      description = "一个毫不起眼的老匠人，但是却有着难以言喻的威严。从旁边学徒工 人们的眼神中你感觉他不是一般的人物。"
+  title = "天国大匠"
+  gender = "男性"
+  age = 52
+
+  combat = {
+    attitude = "friendly"
+    str = 33
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    heartbeat = 1
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/wudunru.c by LPCConverter
+# Zone: test
+
+    characters "wudunru" {
+      name = "武敦儒"
+      description = "他是郭靖大弟子，相貌和蔼，一天到晚笑呵呵的。"
+  title = "郭靖大弟子"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 23
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 400000
+    max_jing = 2500
+    max_neili = 2800
+    max_qi = 3000
+  }
+
+  inquiries = [
+    { key = "郭靖" value = "那是我师父。" },
+    { key = "黄蓉" value = "那是我师母。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 160 },
+    { skill = "dodge" level = 160 },
+    { skill = "unarmed" level = 160 },
+    { skill = "parry" level = 160 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["join", "hit", "kill", "touxi", "fight"]
+  }
+
+  engage = {
+    fight = { accept = false msg = "给我滚进去，跑到这里来瞎胡闹什么！" }
+    hit = { accept = true msg = "给我滚进去，跑到这里来瞎胡闹什么！" retaliate = true }
+    kill = { accept = true msg = "给我滚进去，跑到这里来瞎胡闹什么！" retaliate = true }
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/xiaoer.c by LPCConverter
+# Zone: test
+
+    characters "xiaoer" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  gender = "男性"
+  age = 22
+  startroom = "/d/city/kedian"
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  init = {
+    greet_delay = 1
+    add_actions = ["drop", "exchange", "duihuan"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+
+  accept = [
+    { kind = "money" min = 1000 accept = true msg = "小二一哈腰，说道：多谢您老，客官请上楼歇息。" },
+    { kind = "any" accept = true msg = ["好！好！", "不需要的东西全给我！"] }
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/xiaoer2.c by LPCConverter
+# Zone: test
+
+    characters "xiaoer2" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  # vendor_goods: "/d/xiyu/obj/nang" (file not found)
+  # vendor_goods: "/d/xiyu/obj/hu" (file not found)
+  # vendor_goods: "/d/xiyu/obj/yangrou" (file not found)
+  # vendor_goods: "obj/paomo" (file not found)
+  # vendor_goods: "obj/kaoyangtui" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/xingzhe.c by LPCConverter
+# Zone: test
+
+    characters "xingzhe" {
+      name = "行者"
+      description = "他是少林寺的俗家弟子，在此打坐修行。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    max_jing = 600
+    max_neili = 1000
+    max_qi = 800
+  }
+
+  skills = [
+    { skill = "unarmed" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "buddhism" level = 80 },
+    { skill = "shaolin-xinfa" level = 100 },
+    { type = "force" skill = "shaolin-xinfa" },
+    { type = "unarmed" skill = "shaolin-xinfa" },
+    { type = "parry" skill = "shaolin-xinfa" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from test_minimal_world_v2_modified/npc/zhuangjia.c by LPCConverter
+# Zone: test
+
+    characters "zhuangjia" {
+      name = "庄家"
+      description = "他是赌场的庄家，一脸精明相，手里拿着骰盅。"
+  gender = "男性"
+  age = 50
+  shen_type = 0
+
+  combat = {
+    attitude = "neutral"
+    combat_exp = 80000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "throwing" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "money" accept = true msg = "{npc}接过{name}给的钱，笑道：好！请押注。" },
+    { kind = "any" accept = false msg = ["{npc}接过{name}给的钱，笑道：好！请押注。"] }
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/axe.c by LPCConverter
+# Zone: test
+
+    items "axe" {
+      name = "大板斧"
+      description = "这是一把沉重的大板斧，砍起东西来非常顺手。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "$N拿出一把$n，握在手中当作武器。"
+    unwield = "$N放下手中的$n。"
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/bigbox.c by LPCConverter
+# Zone: test
+
+    items "bigbox" {
+      name = "大铁盒"
+      description = "这盒子高约一尺，然而入手轻飘飘地，似乎盒里并没藏着甚么 东西。打开盒盖，那盒子竟浅得出奇，离底仅只一寸，一只尺 来高的盒子，怎地盒里却这般浅？料得必有夹层。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/blade.c by LPCConverter
+# Zone: test
+
+    items "blade" {
+      name = "钢刀"
+      description = "这是一寻常的单刀，份量大约六、七斤重。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "$N抽出一把明晃晃的$n握在手中。"
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/blade1.c by LPCConverter
+# Zone: test
+
+    items "blade1" {
+      name = "钢刀"
+      description = "一柄钢铁打造的刀。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/blade2.c by LPCConverter
+# Zone: test
+
+    items "blade2" {
+      name = "短刀"
+      description = "一柄锈迹斑斑的短刀，看样子值不了两个钱。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/blade3.c by LPCConverter
+# Zone: test
+
+    items "blade3" {
+      name = "大刀"
+      description = "一柄锋利的大刀。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/bottle.c by LPCConverter
+# Zone: test
+
+    items "bottle" {
+      name = "水壶"
+      description = "一个不知道用什么动物的皮制成的水壶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/box.c by LPCConverter
+# Zone: test
+
+    items "box" {
+      name = "功德箱"
+      description = "这是一个小庙里常见的功德箱，专门用来接受善男信女们的捐款。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/cloth.c by LPCConverter
+# Zone: test
+
+    items "cloth" {
+      name = "布衣"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/cloth1.c by LPCConverter
+# Zone: test
+
+    items "cloth1" {
+      name = "青布长衫"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/cloth2.c by LPCConverter
+# Zone: test
+
+    items "cloth2" {
+      name = "灰白长衫"
+      description = "一件灰白色的普通长衫。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/cloth3.c by LPCConverter
+# Zone: test
+
+    items "cloth3" {
+      name = "马褂"
+      description = "一件普通的马褂。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/cloth4.c by LPCConverter
+# Zone: test
+
+    items "cloth4" {
+      name = "白色长衫"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/cloth5.c by LPCConverter
+# Zone: test
+
+    items "cloth5" {
+      name = "粗布衣"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/cloth6.c by LPCConverter
+# Zone: test
+
+    items "cloth6" {
+      name = "短打劲装"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/dagger.c by LPCConverter
+# Zone: test
+
+    items "dagger" {
+      name = "普通匕首"
+      description = "这是一把普通的小匕首。用来暗算别人比较合适。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "$N从兜里掏出一把$n握在手中。"
+    unwield = "$N将手中的$n放回兜里。"
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/food.c by LPCConverter
+# Zone: test
+
+    items "food" {
+      name = "食物"
+      description = "还没定义，给下层调用。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/fork.c by LPCConverter
+# Zone: test
+
+    items "fork" {
+      name = "钢叉"
+      description = "一柄锋利的钢叉。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "$N抄起一柄$n，还拿衣服擦了擦叉尖。"
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/gangdao.c by LPCConverter
+# Zone: test
+
+    items "gangdao" {
+      name = "钢刀"
+      description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "$N「唰」的一声抽出一柄$n握在手中。"
+    unwield = "$N将手中的$n插回刀鞘。"
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/goldcloth1.c by LPCConverter
+# Zone: test
+
+    items "goldcloth1" {
+      name = "黄马褂"
+      description = "皇上御赐的黄马褂。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/goldcloth2.c by LPCConverter
+# Zone: test
+
+    items "goldcloth2" {
+      name = "镶边黄马褂"
+      description = "皇上御赐的黄马褂。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/hammer.c by LPCConverter
+# Zone: test
+
+    items "hammer" {
+      name = "铁锤"
+      description = "这是一把沈重的铁锤，打造的相当坚实。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "$N拿出一把$n，试了试重量，然後握在手中。"
+    unwield = "$N放下手中的$n。"
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/head.c by LPCConverter
+# Zone: test
+
+    items "head" {
+      name = "钢盔"
+      description = "一顶结实的钢盔。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/jinship.c by LPCConverter
+# Zone: test
+
+    items "jinship" {
+      name = "金国战船模型"
+      description = "这是一艘金国战船的精致模型，船身雕龙画凤，威武雄壮。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/jinvcloth.c by LPCConverter
+# Zone: test
+
+    items "jinvcloth" {
+      name = "胸部半开纱衣"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/longsword.c by LPCConverter
+# Zone: test
+
+    items "longsword" {
+      name = "长剑"
+      description = "一把精工打造的长剑，剑身修长，寒光凛凛。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "$N「唰」地一声抽出一柄$n握在手中。"
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/mace.c by LPCConverter
+# Zone: test
+
+    items "mace" {
+      name = "熟铜锏"
+      description = "一柄沉甸甸的熟铜锏，上面铜锈斑斑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "$N举起一柄$n，在地上撞出点点火星。"
+    unwield = "$N抹了抹$n上的锈，把它收了起来。"
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/mingshijilue.c by LPCConverter
+# Zone: test
+
+    items "mingshijilue" {
+      name = "明史辑略"
+      description = "这是一本《明史辑略》，记载了明朝历史的精要。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/nvcloth.c by LPCConverter
+# Zone: test
+
+    items "nvcloth" {
+      name = "短裙"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/potion.c by LPCConverter
+# Zone: test
+
+    items "potion" {
+      name = "治疗药水"
+      description = "一瓶神奇的治疗药水，喝下后可以恢复气血。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/rice.c by LPCConverter
+# Zone: test
+
+    items "rice" {
+      name = "黄米饭"
+      description = "一碗香喷喷的黄米饭。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/ship.c by LPCConverter
+# Zone: test
+
+    items "ship" {
+      name = "战船模型"
+      description = "这是一艘战船的精致模型，船身结实，桅杆高耸。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/smallbox.c by LPCConverter
+# Zone: test
+
+    items "smallbox" {
+      name = "小铁盒"
+      description = "这只盒子小得多，只一尺见方。盒中一张笺上写道：“君 是忠厚仁者，葬我骸骨，当酬以重宝秘术。大铁盒开启时 有毒箭射出，愈中书谱地图均假，上有剧毒，以惩贪欲恶 徒。真者在此小铁盒内。”"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/staff.c by LPCConverter
+# Zone: test
+
+    items "staff" {
+      name = "禅杖"
+      description = "这是一把禅杖，上面几个铁环叮当作响．"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "$N拿出一把$n，握在手中。"
+    unwield = "$N放下手中的$n。"
+  }
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/throwing.c by LPCConverter
+# Zone: test
+
+    items "throwing" {
+      name = "飞璜石"
+      description = "飞璜石是一种十分常见的暗器。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/waist.c by LPCConverter
+# Zone: test
+
+    items "waist" {
+      name = "护心镜"
+      description = "一面黄铜做的护心镜。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/water.c by LPCConverter
+# Zone: test
+
+    items "water" {
+      name = "杯盏"
+      description = "还没定义，等下层调用。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/whip.c by LPCConverter
+# Zone: test
+
+    items "whip" {
+      name = "皮鞭"
+      description = "一条长长的皮鞭．"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/wine.c by LPCConverter
+# Zone: test
+
+    items "wine" {
+      name = "酒杯"
+      description = "还没定义，等下层调用。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/wuzhirong.c by LPCConverter
+# Zone: test
+
+    items "wuzhirong" {
+      name = "吴之荣"
+      description = "这是吴之荣的首级，面容狰狞，双眼圆睁。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/yuanzi_ornament1.c by LPCConverter
+# Zone: test
+
+    items "yuanzi_ornament1" {
+      name = "金色装饰品"
+      description = "这是一件精美的金色装饰品，闪闪发光。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/obj/zhuangyuncheng.c by LPCConverter
+# Zone: test
+
+    items "zhuangyuncheng" {
+      name = "庄允城"
+      description = "这是一尊庄允城的塑像，栩栩如生，眼神中透着坚毅。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from test_minimal_world_v2_modified/room/beidajie1.c by LPCConverter
+# Zone: test
+
+    rooms "beidajie1" {
+      name = "北大街"
+      description = "这是一条宽阔的青石大街，两旁店铺林立，行人熙熙攘攘。 北边是玫瑰宴厅，西边是牡丹宴厅，东边通往客店。"
+  x = 0
+  y = 0
+  z = 1
+    }
+  room_exits "beidajie1" {
+    room_id = rooms.beidajie1.id
+    up = rooms.bet.id
+    down = rooms.damen.id
+    east = rooms.kedian.id
+    north = rooms.furong.id
+    west = rooms.mudan.id
+    }
+
+
+  room_items "beidajie1" {
+    room_id = rooms.beidajie1.id
+    items = [
+      { id = items.cloth.id },
+      { id = items.blade1.id },
+      { id = items.food.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/bet.c by LPCConverter
+# Zone: test
+
+    rooms "bet" {
+      name = "赌场"
+      description = "大厅里摆满大大小小的赌桌，只要能说出名的赌具，这里 都有。进来这里你首先听到的就是少女们吃吃的笑声和男人们 的吹牛声，掷骰子声……在这里，你几乎就可以听到世上所有 不规矩的声音。墙上挂着一块牌子(paizi)。"
+  x = 0
+  y = 0
+  z = 2
+item_desc = {
+      paizi = "##==================================##         ##                                  ##         ##             赌博规则             ##         ##                                  ##         ##                                  ##         ##  头彩 <tc> 骰数由每次开盘前确定  ##         ##            赔率：一赢三十六      ##         ##                                  ##         ##  双对 <sd> 两骰号相同，且为偶数  ##         ##            赔率：一赢十二        ##         ##                                  ##         ##  七星 <qx> 两个骰数之和为七      ##         ##            赔率：一赢六          ##         ##                                  ##         ##  散星 <sx> 和为三，五，九，十一  ##         ##            赔率：一赢三          ##         ##                                  ##         ##  开赌：                          ##         ##                                  ##         ##                                  ##         ##   bet  压盘种类  数量  货币种类  ##         ##                                  ##         ##                                  ##         ##                                  ##         ##==================================##"
+}
+    }
+  room_exits "bet" {
+    room_id = rooms.bet.id
+    up = rooms.cave.id
+    down = rooms.beidajie1.id
+    south = rooms.duchang.id
+    }
+
+  room_characters "bet" {
+    room_id = rooms.bet.id
+    characters = [
+      { id = characters.duke.id },
+      { id = characters.duke.id },
+      { id = characters.zhuangjia.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/cave.c by LPCConverter
+# Zone: test
+
+    rooms "cave" {
+      name = "岩洞"
+      description = "这里是一个大岩洞，在白驼山特殊的地质条件下经过漫长 的年代形成的。洞内蜿蜒曲折，也不知延伸到了何处。"
+  x = 0
+  y = 0
+  z = 3
+valid_leave = [
+{
+    # 阻挡条件（原样保留）：dir == "in" && objectp(present("mang she", environment(me)))
+direction = "in"
+  message = "蟒蛇盘在岩洞口，将路封了个严实。"
+}
+
+]
+    }
+  room_exits "cave" {
+    room_id = rooms.cave.id
+    up = rooms.didao6.id
+    down = rooms.bet.id
+    in = rooms.cave1.id
+    southdown = rooms.zhulin.id
+    }
+
+
+  room_items "cave" {
+    room_id = rooms.cave.id
+    items = [
+      { id = items.mangshe.id },
+      { id = items.dagger.id },
+      { id = items.staff.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/cave1.c by LPCConverter
+# Zone: test
+
+    rooms "cave1" {
+      name = "岩洞深处"
+      description = "岩洞越往里越宽敞，洞壁上长满了发光的苔藓，泛着幽幽的 蓝绿色光芒。地下有清澈的地下河流过，水声潺潺。洞顶垂下 无数钟乳石，形态各异。出口在南边。"
+  x = 0
+  y = 0
+  z = 3
+    }
+  room_exits "cave1" {
+    room_id = rooms.cave1.id
+    out = rooms.cave.id
+    }
+
+
+  room_items "cave1" {
+    room_id = rooms.cave1.id
+    items = [
+      { id = items.throwing.id },
+      { id = items.dagger.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/damen.c by LPCConverter
+# Zone: test
+
+    rooms "damen" {
+      name = "大门"
+      description = "这就是闻名天下的白驼山庄的大门。只见大门梁上雕龙刻 凤，美奂美仑，不知凝聚着多少能工巧匠的心血。更显出庄主 的富有与显贵。门前左右各蹲着一只威武庄严的石狮子。"
+  x = 0
+  y = 0
+  z = 0
+  behavior = "guarded_exit"
+  behavior_config = {
+    guard_npc = "men wei"
+    direction = "north"
+    permit_module = "Kantele.Npc.Guarder"
+    permit_function = "permit_pass"
+  }
+    }
+  room_exits "damen" {
+    room_id = rooms.damen.id
+    up = rooms.beidajie1.id
+    north = rooms.yuanzi.id
+    southdown = rooms.shijie.id
+    }
+
+  room_characters "damen" {
+    room_id = rooms.damen.id
+    characters = [
+      { id = characters.menwei.id },
+      { id = characters.menwei.id }    ]
+  }
+
+  room_items "damen" {
+    room_id = rooms.damen.id
+    items = [
+      { id = items.blade2.id },
+      { id = items.blade3.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/dating.c by LPCConverter
+# Zone: test
+
+    rooms "dating" {
+      name = "白驼山庄大厅"
+      description = "这是白驼山庄的大厅，气派非凡。大厅正中悬挂着一块匾额， 上书'毒中之王'四个大字。厅内陈设奢华，两侧排列着太师椅， 正中设有太师椅一把，乃是庄主议事之处。两侧各有侧门通往 内院。"
+  x = 0
+  y = 2
+  z = 0
+    }
+  room_exits "dating" {
+    room_id = rooms.dating.id
+    north = rooms.houyuan.id
+    south = rooms.yuanzi.id
+    }
+
+  room_characters "dating" {
+    room_id = rooms.dating.id
+    characters = [
+      { id = characters.furen.id }    ]
+  }
+
+  room_items "dating" {
+    room_id = rooms.dating.id
+    items = [
+      { id = items.mingshijilue.id },
+      { id = items.wuzhirong.id },
+      { id = items.zhuangyuncheng.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/didao6.c by LPCConverter
+# Zone: test
+
+    rooms "didao6" {
+      name = "秘道尽头"
+      description = "你忽觉前方一亮，身前真是别有洞天，前方好想有作花园。 不知是什么地方。\n"
+  x = 0
+  y = 0
+  z = 4
+    }
+  room_exits "didao6" {
+    room_id = rooms.didao6.id
+    up = rooms.dir_macro_test.id
+    down = rooms.cave.id
+    north = rooms.xiaohuayuan.id
+    northdown = rooms.didao4.id
+    }
+
+# Generated from test_minimal_world_v2_modified/room/dir_macro_test.c by LPCConverter
+# Zone: test
+
+    rooms "dir_macro_test" {
+      name = "测试房间"
+      description = "这是一个测试房间，用于验证各种 __DIR__ 宏变体。"
+  x = 0
+  y = 0
+  z = 5
+item_desc = {
+      sign = "obj/signboard/sign"
+}
+    }
+  room_exits "dir_macro_test" {
+    room_id = rooms.dir_macro_test.id
+    down = rooms.didao6.id
+    up = rooms.room_above.id
+    down = rooms.room_below.id
+    }
+
+  room_characters "dir_macro_test" {
+    room_id = rooms.dir_macro_test.id
+    characters = [
+      { id = characters.guard.id }    ]
+  }
+
+  room_items "dir_macro_test" {
+    room_id = rooms.dir_macro_test.id
+    items = [
+      { id = items.sword.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/duchang.c by LPCConverter
+# Zone: test
+
+    rooms "duchang" {
+      name = "赌场大厅"
+      description = "这里是赌场的大厅，人声鼎沸，烟雾缭绕。四周摆满了各式 赌桌，骰子、牌九、马吊应有尽有。空气中弥漫着酒气和汗味， 夹杂着金银碰撞的清脆声响。北边是贵宾厅。"
+  x = 0
+  y = -1
+  z = 2
+    }
+  room_exits "duchang" {
+    room_id = rooms.duchang.id
+    north = rooms.bet.id
+    }
+
+# Generated from test_minimal_world_v2_modified/room/duwushi.c by LPCConverter
+# Zone: test
+
+    rooms "duwushi" {
+      name = "毒物室"
+      description = "这里是白驼山庄的毒物室，四周摆满了各式瓶瓶罐罐，装着 各色毒药、毒虫、毒草。空气中弥漫着刺鼻的药味，令人作呕。 墙上挂着一张'毒物配方表'。角落里养着几只毒蛇、蝎子。"
+  x = -1
+  y = 3
+  z = 0
+    }
+  room_exits "duwushi" {
+    room_id = rooms.duwushi.id
+    east = rooms.houyuan.id
+    }
+
+  room_characters "duwushi" {
+    room_id = rooms.duwushi.id
+    characters = [
+      { id = characters.jinhua.id }    ]
+  }
+
+  room_items "duwushi" {
+    room_id = rooms.duwushi.id
+    items = [
+      { id = items.bottle.id },
+      { id = items.poison.id },
+      { id = items.throwing.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/encoding_test.c by LPCConverter
+# Zone: test
+
+    rooms "encoding_test" {
+      name = "编码测试房间"
+      description = "这是一个包含特殊中文字符的房间： - 常用字：中文测试 - 生僻字：龘靐齉爨 - 标点符号：。、；：「」『』（）［］〔〕 - 数字：１２３４５６７８９０ - 英文：ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+  x = 0
+  y = 0
+  z = 6
+    }
+  room_exits "encoding_test" {
+    room_id = rooms.encoding_test.id
+    up = rooms.large_room_test.id
+    down = rooms.room_above.id
+    north = rooms.room1.id
+    }
+
+# Generated from test_minimal_world_v2_modified/room/furong.c by LPCConverter
+# Zone: test
+
+    rooms "furong" {
+      name = "芙蓉宴厅"
+      description = "这里是醉仙楼的芙蓉宴厅。你走进门，绕过了一道淡绿绸 屏风，迎面的墙上挂着一副『芙蓉出水图』，工笔彩绘，状极 清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌 玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼 生辉，桌上铺着份菜单(menu)。"
+  x = 0
+  y = 1
+  z = 1
+item_desc = {
+      menu = "##==========================##         ##                          ##         ##         承办酒席         ##         ##                          ##         ##  祝寿宴：order birthday  ##         ##                          ##         ##                二两黄金  ##         ##                          ##         ##  订婚宴：order marry     ##         ##                          ##         ##                三两黄金  ##         ##                          ##         ##  群豪宴：order player    ##         ##                          ##         ##                五两黄金  ##         ##                          ##         ##  结  束：order end       ##         ##                          ##         ##                          ##         ##                          ##         ##==========================##"
+}
+valid_leave = [
+{
+  direction = ~
+  message = "请先用 order end 结束宴会后才能离开。"
+}
+
+]
+    }
+  room_exits "furong" {
+    room_id = rooms.furong.id
+    east = rooms.zxlpath.id
+    }
+
+
+  room_items "furong" {
+    room_id = rooms.furong.id
+    items = [
+      { id = items.food.id },
+      { id = items.water.id },
+      { id = items.wine.id },
+      { id = items.box.id },
+      { id = items.bottle.id },
+      { id = items.bigbox.id },
+      { id = items.smallbox.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/houyuan.c by LPCConverter
+# Zone: test
+
+    rooms "houyuan" {
+      name = "后院"
+      description = "这里是白驼山庄的后院，种着各种奇花异草，还有一口古井。 井边立着一块石碑，上刻'毒经'二字。四周种满了各种毒草， 散发着诡异的香气。东边是练功房，西边是毒物室。"
+  x = 0
+  y = 3
+  z = 0
+    }
+  room_exits "houyuan" {
+    room_id = rooms.houyuan.id
+    west = rooms.duwushi.id
+    east = rooms.liangong.id
+    south = rooms.dating.id
+    }
+
+
+  room_items "houyuan" {
+    room_id = rooms.houyuan.id
+    items = [
+      { id = items.rice.id },
+      { id = items.rice.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/kedian.c by LPCConverter
+# Zone: test
+
+    rooms "kedian" {
+      name = "客店"
+      description = "这是一家价钱低廉的客栈，生意却是非常兴隆。外地游客 多选择这里落脚，你可以在这里打听到各地的风土人情。店小 二里里外外忙得团团转，接待着南腔北调的客人。客店的主人 从不露面，他究竟是谁，有各种各样的猜测。客店的西墙上挂 着一个牌子(paizi)。"
+  x = 1
+  y = 0
+  z = 1
+item_desc = {
+      paizi = "##==============================##         ##                              ##         ##    楼上雅房，每夜十两白银。  ##         ##                              ##         ##==============================##"
+}
+valid_leave = [
+{
+    # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "up"
+direction = "up"
+  message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊？"
+}
+,
+{
+    # 阻挡条件（原样保留）：me->query_temp("rent_paid") && dir == "west"
+direction = "west"
+  message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就走了呢！"
+}
+
+]
+    }
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+    east = rooms.damen.id
+    south = rooms.liaotian.id
+    up = rooms.kedian2.id
+    west = rooms.beidajie1.id
+    }
+
+  room_characters "kedian" {
+    room_id = rooms.kedian.id
+    characters = [
+      { id = characters.xiaoer.id }    ]
+  }
+
+  room_items "kedian" {
+    room_id = rooms.kedian.id
+    items = [
+      { id = items.axe.id },
+      { id = items.blade.id },
+      { id = items.dagger.id },
+      { id = items.cloth.id },
+      { id = items.cloth1.id },
+      { id = items.food.id },
+      { id = items.water.id },
+      { id = items.wine.id },
+      { id = items.box.id },
+      { id = items.bottle.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/kedian2.c by LPCConverter
+# Zone: test
+
+    rooms "kedian2" {
+      name = "客店二楼"
+      description = "你正走在客店二楼的走廊上，可以听到从客房里不时地呼 呼的打酣声，一阵高过一阵。不时有睡意朦胧的旅客进进出出 到楼下的掌柜处付了钱再上来睡觉。"
+  x = 1
+  y = 0
+  z = 2
+    }
+  room_exits "kedian2" {
+    room_id = rooms.kedian2.id
+    in = rooms.kedian3.id
+    down = rooms.kedian.id
+    }
+
+  room_characters "kedian2" {
+    room_id = rooms.kedian2.id
+    characters = [
+      { id = characters.xingzhe.id }    ]
+  }
+
+  room_items "kedian2" {
+    room_id = rooms.kedian2.id
+    items = [
+      { id = items.food.id },
+      { id = items.water.id },
+      { id = items.wine.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/kedian3.c by LPCConverter
+# Zone: test
+
+    rooms "kedian3" {
+      name = "客店二楼"
+      description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小 木床，不少客人正和衣而卧，满屋子都是呼呼的打酣声。西边 有张床是空的，你蹑手蹑脚地走了过去。"
+  x = 1
+  y = 0
+  z = 2
+    }
+  room_exits "kedian3" {
+    room_id = rooms.kedian3.id
+    out = rooms.kedian2.id
+    }
+
+
+  room_items "kedian3" {
+    room_id = rooms.kedian3.id
+    items = [
+      { id = items.food.id },
+      { id = items.water.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/large_room_test.c by LPCConverter
+# Zone: test
+
+    rooms "large_room_test" {
+      name = "大型测试房间"
+      description = "这是一个模拟大型房间文件的测试文件。"
+  x = 0
+  y = 0
+  z = 7
+    }
+  room_exits "large_room_test" {
+    room_id = rooms.large_room_test.id
+    down = rooms.encoding_test.id
+    north = rooms.room1.id
+    south = rooms.room2.id
+    east = rooms.room3.id
+    west = rooms.room4.id
+    up = rooms.room_up.id
+    down = rooms.room_down.id
+    }
+
+  room_characters "large_room_test" {
+    room_id = rooms.large_room_test.id
+    characters = [
+      { id = characters.guard1.id },
+      { id = characters.guard2.id },
+      { id = characters.merchant.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/liangong.c by LPCConverter
+# Zone: test
+
+    rooms "liangong" {
+      name = "练功房"
+      description = "这里是白驼山庄的练功房，地上铺着厚厚的软垫，墙上挂着 各种兵器架。正中央竖着一个木人桩，四周墙壁上刻满了拳法 剑法的招式图解。空气中弥漫着淡淡的药香。"
+  x = 1
+  y = 3
+  z = 0
+    }
+  room_exits "liangong" {
+    room_id = rooms.liangong.id
+    west = rooms.houyuan.id
+    }
+
+  room_characters "liangong" {
+    room_id = rooms.liangong.id
+    characters = [
+      { id = characters.worker_liu.id }    ]
+  }
+
+  room_items "liangong" {
+    room_id = rooms.liangong.id
+    items = [
+      { id = items.axe.id },
+      { id = items.staff.id },
+      { id = items.hammer.id },
+      { id = items.throwing.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/liaotian.c by LPCConverter
+# Zone: test
+
+    rooms "liaotian" {
+      name = "聊天室"
+      description = "这是客店后院的一间小屋，供住客休息聊天。墙上挂着几幅 山水画，角落里摆着一张八仙桌，几把竹椅。窗外是一片小花园， 鸟语花香，环境幽静。"
+  x = 1
+  y = -1
+  z = 1
+    }
+  room_exits "liaotian" {
+    room_id = rooms.liaotian.id
+    north = rooms.kedian.id
+    }
+
+
+  room_items "liaotian" {
+    room_id = rooms.liaotian.id
+    items = [
+      { id = items.food.id },
+      { id = items.water.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/meigui.c by LPCConverter
+# Zone: test
+
+    rooms "meigui" {
+      name = "玫瑰宴厅"
+      description = "这里是醉仙楼的玫瑰宴厅。你走进门，绕过了一道淡绿绸 屏风，迎面的墙上挂着一副『玫瑰含露图』，工笔彩绘，状极 清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌 玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼 生辉，桌上铺着份菜单(menu)。"
+  x = 0
+  y = 0
+  z = 8
+item_desc = {
+      menu = "##==========================##         ##                          ##         ##         承办酒席         ##         ##                          ##         ##  祝寿宴：order birthday  ##         ##                          ##         ##                二两黄金  ##         ##                          ##         ##  订婚宴：order marry     ##         ##                          ##         ##                三两黄金  ##         ##                          ##         ##  群豪宴：order player    ##         ##                          ##         ##                五两黄金  ##         ##                          ##         ##  结  束：order end       ##         ##                          ##         ##                          ##         ##                          ##         ##==========================##"
+}
+valid_leave = [
+{
+  direction = ~
+  message = "请先用 order end 结束宴会后才能离开。"
+}
+
+]
+    }
+  room_exits "meigui" {
+    room_id = rooms.meigui.id
+    up = rooms.multi_include_test.id
+    down = rooms.room_up.id
+    east = rooms.zxlpath.id
+    }
+
+
+  room_items "meigui" {
+    room_id = rooms.meigui.id
+    items = [
+      { id = items.food.id },
+      { id = items.water.id },
+      { id = items.wine.id },
+      { id = items.box.id },
+      { id = items.bottle.id },
+      { id = items.bigbox.id },
+      { id = items.smallbox.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/mudan.c by LPCConverter
+# Zone: test
+
+    rooms "mudan" {
+      name = "牡丹宴厅"
+      description = "这里是醉仙楼的牡丹宴厅。你走进门，绕过了一道淡绿绸 屏风，迎面的墙上挂着一副『牡丹争艳图』，工笔彩绘，状极 清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌 玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼 生辉，桌上铺着份菜单(menu)。"
+  x = -1
+  y = 0
+  z = 1
+item_desc = {
+      menu = "##==========================##         ##                          ##         ##         承办酒席         ##         ##                          ##         ##  祝寿宴：order birthday  ##         ##                          ##         ##                二两黄金  ##         ##                          ##         ##  订婚宴：order marry     ##         ##                          ##         ##                三两黄金  ##         ##                          ##         ##  群豪宴：order player    ##         ##                          ##         ##                五两黄金  ##         ##                          ##         ##  结  束：order end       ##         ##                          ##         ##                          ##         ##                          ##         ##==========================##"
+}
+valid_leave = [
+{
+  direction = ~
+  message = "请先用 order end 结束宴会后才能离开。"
+}
+
+]
+    }
+  room_exits "mudan" {
+    room_id = rooms.mudan.id
+    north = rooms.zxlpath.id
+    }
+
+
+  room_items "mudan" {
+    room_id = rooms.mudan.id
+    items = [
+      { id = items.food.id },
+      { id = items.water.id },
+      { id = items.wine.id },
+      { id = items.box.id },
+      { id = items.bottle.id },
+      { id = items.bigbox.id },
+      { id = items.smallbox.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/multi_include_test.c by LPCConverter
+# Zone: test
+
+    rooms "multi_include_test" {
+      name = "多重包含测试"
+      description = "测试多重 #include 指令的解析。"
+  x = 0
+  y = 0
+  z = 9
+    }
+  room_exits "multi_include_test" {
+    room_id = rooms.multi_include_test.id
+    up = rooms.northgate.id
+    down = rooms.meigui.id
+    north = rooms.room1.id
+    }
+
+# Generated from test_minimal_world_v2_modified/room/northgate.c by LPCConverter
+# Zone: test
+
+    rooms "northgate" {
+      name = "北门"
+      description = "阳苜咩城，或简称苜咩城，是大理国的都城。自南诏于初创，历 经陈氏“长大和国”、赵氏“大天兴国”、杨氏“大义宁国”诸代而 至当今的段氏的“大理国”，均以此城为都。此处乃是北城门，以梅 '溪为护河，城墙建在溪南，由石块和土垒成，高二丈五，厚达二丈， 门上有重楼，驻有了哨。青石官道从城里直向北延伸，另有一条黄土 大路向西通去。"
+  x = 0
+  y = 0
+  z = 10
+    }
+  room_exits "northgate" {
+    room_id = rooms.northgate.id
+    up = rooms.river_chuanchang.id
+    down = rooms.multi_include_test.id
+    south = rooms.paifang.id
+    north = rooms.dalinorth.id
+    east = rooms.chahuashan1.id
+    west = rooms.shanlu3.id
+    }
+
+  room_characters "northgate" {
+    room_id = rooms.northgate.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.jiang.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/river_chuanchang.c by LPCConverter
+# Zone: test
+
+    rooms "river_chuanchang" {
+      name = "船厂"
+      description = "这里是古镇船厂。船厂是位于关外大平原中部的一个古老 的小镇，此镇西、南、北、三面是以高墙垒筑利于坚守。东面 临松花江天成天险，乃兵家必争的要地。松花江 (river)在冬 春时结冰可通行，夏秋化冻你只好找船家帮忙了。"
+  x = 0
+  y = 0
+  z = 11
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+  room_exits "river_chuanchang" {
+    room_id = rooms.river_chuanchang.id
+    up = rooms.sanglin.id
+    down = rooms.northgate.id
+    south = rooms.xuedi3.id
+    river = rooms.damenkan.id
+    }
+
+  room_characters "river_chuanchang" {
+    room_id = rooms.river_chuanchang.id
+    characters = [
+      { id = characters.chuanfu.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/sanglin.c by LPCConverter
+# Zone: test
+
+    rooms "sanglin" {
+      name = "桑林"
+      description = "一大片桑树林生长在低山的缓坡山腰上。养蚕、纺丝是摆夷族的 重要副业，摆夷妇女大都擅织丝，编织自己穿着的短裙，也用来和临 '近部落交换些其它物品。一群摆夷姑娘正在林间忙着采摘桑叶。"
+  x = 0
+  y = 0
+  z = 12
+    }
+  room_exits "sanglin" {
+    room_id = rooms.sanglin.id
+    up = rooms.test_dating.id
+    down = rooms.river_chuanchang.id
+    northdown = rooms.yangzong.id
+    }
+
+  room_characters "sanglin" {
+    room_id = rooms.sanglin.id
+    characters = [
+      { id = characters.caisangnu.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/shijie.c by LPCConverter
+# Zone: test
+
+    rooms "shijie" {
+      name = "山间石阶"
+      description = "这是一条蜿蜒的山间石阶，两旁杂草丛生，古树遮天蔽日。 石阶蜿蜒向上，通向白驼山庄大门，向下通往山脚。"
+  x = 0
+  y = -1
+  z = -1
+    }
+  room_exits "shijie" {
+    room_id = rooms.shijie.id
+    southdown = rooms.shanlu.id
+    northup = rooms.damen.id
+    }
+
+
+  room_items "shijie" {
+    room_id = rooms.shijie.id
+    items = [
+      { id = items.staff.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/test_dating.c by LPCConverter
+# Zone: test
+
+    rooms "test_dating" {
+      name = "测试大厅"
+      description = "这是一个测试大厅。"
+  x = 0
+  y = 0
+  z = 13
+    }
+  room_exits "test_dating" {
+    room_id = rooms.test_dating.id
+    up = rooms.test_guangchang.id
+    down = rooms.sanglin.id
+    south = rooms.yuanzi.id
+    north = rooms.houyuan.id
+    }
+
+# Generated from test_minimal_world_v2_modified/room/test_guangchang.c by LPCConverter
+# Zone: test
+
+    rooms "test_guangchang" {
+      name = "镇广场"
+      description = "这里是柳溪镇的中央广场，青石板铺就的地面被岁月磨得 光可鉴人。广场中央竖着一根高大的旗杆(qigan)，上书「柳 溪」二字的杏黄旗在风中猎猎作响。来往的乡民、行脚商人和 江湖客在此穿行，不时传来小贩的吆喝声。东面是一间热闹的 客栈，南边传来隐隐的喝喝之声，似乎有人在练武。镇口东北 方向的官道(yangzhou)直通扬州府。"
+  x = 0
+  y = 0
+  z = 14
+item_desc = {
+      qigan = "一根碗口粗的旗杆，旗面上绣着「柳溪」两个大字。"
+}
+    }
+  room_exits "test_guangchang" {
+    room_id = rooms.test_guangchang.id
+    up = rooms.yujia.id
+    down = rooms.test_dating.id
+    east = rooms.kedian.id
+    west = rooms.chaguan.id
+    north = rooms.tiepupu.id
+    south = rooms.lianwuchang.id
+    yangzhou = rooms.guangchang.id
+    }
+
+# Generated from test_minimal_world_v2_modified/room/yuanzi.c by LPCConverter
+# Zone: test
+
+    rooms "yuanzi" {
+      name = "白驼山庄大院"
+      description = "这里是白驼山庄的大院，占地极广，青砖绿瓦，古树参天。 院子中央摆着几个大水缸，四周种着几株古松。北边是大厅， 南边通向大门。"
+  x = 0
+  y = 1
+  z = 0
+    }
+  room_exits "yuanzi" {
+    room_id = rooms.yuanzi.id
+    north = rooms.dating.id
+    south = rooms.damen.id
+    }
+
+
+  room_items "yuanzi" {
+    room_id = rooms.yuanzi.id
+    items = [
+      { id = items.yuanzi_ornament1.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/yujia.c by LPCConverter
+# Zone: test
+
+    rooms "yujia" {
+      name = "渔家"
+      description = "休猎部专事渔猎，很少蓄养牲畜或耕作。这是一座普通的竹楼， 下层通常的牲畜圈是修补竹筏渔网的工棚，一位台夷妇女正在细心地 '编织渔网。楼边有一排木架，挂满开过膛的鱼，正在凉晒鱼干。"
+  x = 0
+  y = 0
+  z = 15
+    }
+  room_exits "yujia" {
+    room_id = rooms.yujia.id
+    up = rooms.liandan_lin.id
+    down = rooms.test_guangchang.id
+    east = rooms.hexi.id
+    }
+
+  room_characters "yujia" {
+    room_id = rooms.yujia.id
+    characters = [
+      { id = characters.funu.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/zhulin.c by LPCConverter
+# Zone: test
+
+    rooms "zhulin" {
+      name = "竹林"
+      description = "这是一片茂密的竹林，翠竹成荫，微风吹过，竹叶沙沙作响， 清爽宜人。几只小鸟在竹枝间跳跃鸣叫。南边是一条小路通向岩洞。"
+  x = 0
+  y = -1
+  z = 2
+    }
+  room_exits "zhulin" {
+    room_id = rooms.zhulin.id
+    northup = rooms.cave.id
+    }
+
+
+  room_items "zhulin" {
+    room_id = rooms.zhulin.id
+    items = [
+      { id = items.staff.id },
+      { id = items.throwing.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/room/zxlpath.c by LPCConverter
+# Zone: test
+
+    rooms "zxlpath" {
+      name = "醉仙楼大道"
+      description = "这是通往醉仙楼的青石大道，两旁种满了桃树杨柳，春天桃红 柳绿，美不胜收。大道笔直通向北边的醉仙楼大门，南边是客店 北大街，西边是玫瑰宴厅，东边是牡丹宴厅。"
+  x = 1
+  y = 1
+  z = 1
+    }
+  room_exits "zxlpath" {
+    room_id = rooms.zxlpath.id
+    east = rooms.mudan.id
+    west = rooms.furong.id
+    north = rooms.damen.id
+    south = rooms.beidajie1.id
+    }
+
+
+  room_items "zxlpath" {
+    room_id = rooms.zxlpath.id
+    items = [
+      { id = items.food.id },
+      { id = items.water.id },
+      { id = items.wine.id }    ]
+  }
+
+# Generated from test_minimal_world_v2_modified/special/liandan_lin.c by LPCConverter
+# Zone: test
+
+    rooms "liandan_lin" {
+      name = "Room"
+      description = ""
+  x = 0
+  y = 0
+  z = 16
+    }
+
+# Generated from test_minimal_world_v2_modified/special/liandan_lin1.c by LPCConverter
+# Zone: test
+
+    rooms "liandan_lin1" {
+      name = "城西后林"
+      description = "这是一片茂密的树林。很多棵几十丈高的大树聚在一块，象一把把琼天大 伞，连日月都被遮蔽得暗然无光。树林中还不时可以听到大自然发出的声响。"
+  x = 0
+  y = 0
+  z = 17
+    }
+  room_exits "liandan_lin1" {
+    room_id = rooms.liandan_lin1.id
+    down = rooms.liandan_lin.id
+    south = rooms.ximenwai.id
+    north = rooms.liandan_lin3.id
+    east = rooms.liandan_lin5.id
+    west = rooms.liandan_lin4.id
+    }

@@ -7,13 +7,16 @@
 # origin on increasing z levels, each orphan-rooted component at (0,0,level).
 #
 # Usage:
-#   mix run scripts/assign_room_coords.exs <zone.ucl> <start_room_id>
+#   mix run scripts/assign_room_coords.exs <zone.ucl> <start_room_id> [--dry-run|--output <output_file>]
 #
-# Example:
+# Options:
+#   --dry-run          Print the new content to stdout, don't write any file
+#   --output <file>    Write new content to <output_file> instead of overwriting input
+#
+# Examples:
 #   mix run scripts/assign_room_coords.exs data/world/test.ucl test_guangchang
-#
-# The file is rewritten in place. Only x/y/z lines inside `rooms "X"` blocks
-# are replaced; every other line is preserved verbatim.
+#   mix run scripts/assign_room_coords.exs data/world/test.ucl test_guangchang --dry-run
+#   mix run scripts/assign_room_coords.exs data/world/test.ucl test_guangchang --output /tmp/test_new.ucl
 
 defmodule AssignRoomCoords do
   # direction -> {dx, dy, dz}; NB projected so minimap renders north-up
@@ -35,13 +38,23 @@ defmodule AssignRoomCoords do
     "northdown" => {0, 1, -1},
     "southdown" => {0, -1, -1},
     "eastdown" => {1, 0, -1},
-    "westdown" => {-1, 0, -1}
+    "westdown" => {-1, 0, -1},
+    # Portal-like exits that don't change spatial coordinates
+    "enter" => {0, 0, 0},
+    "out" => {0, 0, 0},
+    "in" => {0, 0, 0},
+    "go_in" => {0, 0, 0},
+    # climb acts like up
+    "climb" => {0, 0, 1}
   }
 
-  # Non-geometric exit names (in/out/zone portals) do not move coordinates.
-  @skip_dirs ~w(in out)
+  # Non-geometric exit names that should be skipped for coordinate purposes
+  # (but they're still traversed for graph connectivity)
+  @skip_dirs ~w()
 
-  def run(path, start_id) do
+  def run(args) do
+    {opts, [path, start_id], _} = OptionParser.parse(args, switches: [dry_run: :boolean, output: :string], strict: false)
+
     content = File.read!(path)
     lines = String.split(content, "\n")
 
@@ -52,10 +65,21 @@ defmodule AssignRoomCoords do
       exit({:shutdown, 1})
     end
 
-    assigned = assign_coords(room_ids, fields, exits_map, start_id)
-    new_content = rewrite(lines, fields, assigned)
-    File.write!(path, new_content)
+    {assigned, final_exits_map} = assign_coords(room_ids, fields, exits_map, start_id)
+    new_content = rewrite(lines, fields, assigned, final_exits_map)
     report(fields, assigned, start_id, path)
+
+    cond do
+      Keyword.get(opts, :dry_run) ->
+        IO.puts(new_content)
+
+      output = Keyword.get(opts, :output) ->
+        File.write!(output, new_content)
+        IO.puts("Written to #{output}")
+
+      true ->
+        File.write!(path, new_content)
+    end
   end
 
   # ---- scanning ----
@@ -166,11 +190,15 @@ defmodule AssignRoomCoords do
     end)
   end
 
-  # -> {dir, {:local, id}} | {dir, :external}
+  # -> {dir, {:local, id}} | {dir, {:external, target_string}}
   defp parse_exit_row(line) do
     line = String.replace(line, ~r/[ \t]+\}$/, " ")
 
     case Regex.run(~r/^[ \t]*(\w+)[ \t]*=[ \t]*(.+?)[ \t]*$/, line) do
+      [_, "room_id", _] ->
+        # room_id = rooms.xxx.id is metadata, not an exit
+        nil
+
       [_, dir, raw] ->
         target = raw |> String.trim() |> String.replace(~r/^"|"$/, "")
 
@@ -179,7 +207,7 @@ defmodule AssignRoomCoords do
            id = target |> String.replace(~r/^rooms\./, "") |> String.replace(~r/\.id$/, "")
            {:local, id}
          else
-           :external
+           {:external, target}
          end}
 
       nil ->
@@ -196,7 +224,9 @@ defmodule AssignRoomCoords do
       layer: 1,
       queue: [start_id],
       fields: fields,
-      exits_map: exits_map
+      exits_map: exits_map,
+      layer_anchors: %{0 => start_id},  # z level -> room_id at that level
+      new_exits: %{}  # room_id -> [{dir, target_room_id}] to add
     }
 
     state =
@@ -204,33 +234,88 @@ defmodule AssignRoomCoords do
       |> drain()
       |> orphans(room_ids)
 
-    state.assigned
+    # Merge new_exits into exits_map for writing
+    final_exits_map = merge_new_exits(state.exits_map, state.new_exits)
+
+    {state.assigned, final_exits_map}
   end
 
   # Rooms that already had a non-zero coordinate act as anchors and are simply
   # visited (their coordinates are preserved). Rooms left with only zeros get a
   # fresh component root stacked at (0,0,layer).
-  defp orphans(state, room_ids) do
-    Enum.reduce(room_ids, state, fn id, st ->
-      if MapSet.member?(st.visited, id) or Map.has_key?(st.assigned, id) do
-        st
-      else
-        current = current_coord(Map.get(st.fields, id, %{}))
+  # When a new layer is created, connect it vertically to the previous layer's anchor.
+    defp orphans(state, room_ids) do
+    Enum.reduce(room_ids, state, &process_orphan_room/2)
+  end
 
-        st =
-          if current != {0, 0, 0} do
-            Map.put(st, :assigned, Map.put(st.assigned, id, current))
-          else
-            Map.put(st, :assigned, Map.put(st.assigned, id, {0, 0, st.layer}))
+defp process_orphan_room(id, st) do
+    if MapSet.member?(st.visited, id) or Map.has_key?(st.assigned, id) do
+      st
+    else
+      current = current_coord(Map.get(st.fields, id, {}))
+
+      st =
+        if current != {0, 0, 0} do
+          Map.put(st, :assigned, Map.put(st.assigned, id, current))
+        else
+          # New orphan at new z layer
+          new_z = st.layer
+          prev_anchor = Map.get(st.layer_anchors, new_z - 1)
+
+          st =
+            Map.put(st, :assigned, Map.put(st.assigned, id, {0, 0, new_z}))
             |> Map.update!(:layer, &(&1 + 1))
-          end
+            |> Map.put(:layer_anchors, Map.put(st.layer_anchors, new_z, id))
 
-        st
-        |> Map.update!(:visited, &MapSet.put(&1, id))
-        |> Map.put(:queue, [id])
-        |> drain()
-      end
-    end)
+          # Add vertical connection: up from topmost of previous anchor's up-chain, down from this orphan
+          if prev_anchor do
+            topmost = find_topmost_via_up(prev_anchor, st.exits_map, st.new_exits)
+            add_vertical_exits(st, topmost, id)
+          else
+            st
+          end
+        end
+
+      st
+      |> Map.update!(:visited, &MapSet.put(&1, id))
+      |> Map.put(:queue, [id])
+      |> drain()
+    end
+  end
+  defp add_vertical_exits(state, from_id, to_id) do
+    # Add up exit from from_id to to_id
+    new_exits_from = Map.get(state.new_exits, from_id, []) ++ [{"up", {:local, to_id}}]
+    # Add down exit from to_id to from_id
+    new_exits_to = Map.get(state.new_exits, to_id, []) ++ [{"down", {:local, from_id}}]
+
+    %{state
+      | new_exits: Map.put(state.new_exits, from_id, new_exits_from)
+              |> Map.put(to_id, new_exits_to)}
+  end
+
+  # Find the topmost room by following "up" exits from the given room
+  # Returns the room_id at the top of the up-chain
+  defp find_topmost_via_up(start_id, exits_map, new_exits) do
+    find_topmost_via_up(start_id, exits_map, new_exits, MapSet.new([start_id]))
+  end
+
+  defp find_topmost_via_up(current, exits_map, new_exits, visited) do
+    # Check both original exits_map and new_exits for "up" exits
+    exits = Map.get(exits_map, current, []) ++ Map.get(new_exits, current, [])
+
+    up_exit = Enum.find(exits, fn {dir, _} -> dir == "up" end)
+
+    case up_exit do
+      {"up", {:local, next_id}} ->
+        if MapSet.member?(visited, next_id) do
+          current
+        else
+          find_topmost_via_up(next_id, exits_map, new_exits, MapSet.put(visited, next_id))
+        end
+
+      _ ->
+        current
+    end
   end
 
   defp drain(state) do
@@ -268,8 +353,6 @@ defmodule AssignRoomCoords do
 
         cond do
           candidate == {0, 0, 0} ->
-            # a zero-coordinate room reached from the start would overlay
-            # the origin; leave it for the orphans pass to stack on z
             {st, q}
 
           current == {0, 0, 0} ->
@@ -282,7 +365,6 @@ defmodule AssignRoomCoords do
             {st, [tid | q]}
 
           true ->
-            # anchor: keep existing non-zero coordinates, continue walking
             st = %{
               st
               | assigned: Map.put(st.assigned, tid, current),
@@ -298,26 +380,48 @@ defmodule AssignRoomCoords do
   defp current_coord(%{x: x, y: y, z: z}), do: {x, y, z}
   defp current_coord(_), do: {0, 0, 0}
 
-  # ---- writing ----
-  # Rebuild the file, replacing x/y/z lines inside every `rooms "id"` block.
-  # The start room is always normalised to (0,0,0); other rooms get their
-  # assigned coordinate only when it differs from the file content (existing
-  # non-zero anchors are therefore kept verbatim).
+  # Merge new_exits into the original exits_map
+  defp merge_new_exits(exits_map, new_exits) do
+    Enum.reduce(new_exits, exits_map, fn {room_id, new_exit_list}, acc ->
+      existing = Map.get(acc, room_id, [])
+      # Avoid duplicates: only add if not already present
+      merged =
+        Enum.reduce(new_exit_list, existing, fn {dir, target}, existing_list ->
+          if Enum.any?(existing_list, fn {d, t} -> d == dir && t == target end) do
+            existing_list
+          else
+            [{dir, target} | existing_list]
+          end
+        end)
+      Map.put(acc, room_id, Enum.reverse(merged))
+    end)
+  end
 
-  defp rewrite(lines, fields, assigned) do
+  defp current_coord(%{x: x, y: y, z: z}), do: {x, y, z}
+  defp current_coord(_), do: {0, 0, 0}
+
+  # ---- writing ----
+  # Rebuild the file, replacing x/y/z lines inside every `rooms "id"` block,
+  # and updating `room_exits "id"` blocks with new exits.
+
+  defp rewrite(lines, fields, assigned, exits_map) do
     lines
-    |> Enum.reduce({[], nil}, &rewrite_line(&1, &2, fields, assigned))
+    |> Enum.reduce({[], nil}, &rewrite_line(&1, &2, fields, assigned, exits_map))
     |> elem(0)
     |> Enum.reverse()
     |> Enum.join("\n")
   end
 
-  defp rewrite_line(line, {out, state}, fields, assigned) do
+  defp rewrite_line(line, {out, state}, fields, assigned, exits_map) do
     cond do
       is_nil(state) ->
         case Regex.run(~r/^[ \t]*rooms "([^"]+)"[ \t]*\{/, line) do
           [_, id] -> {[line | out], {:room, id, 1, []}}
-          nil -> {[line | out], nil}
+          nil ->
+            case Regex.run(~r/^[ \t]*room_exits "([^"]+)"[ \t]*\{/, line) do
+              [_, id] -> {[line | out], {:exits, id, 1, []}}
+              nil -> {[line | out], nil}
+            end
         end
 
       match?({:room, _, _, _}, state) ->
@@ -332,6 +436,20 @@ defmodule AssignRoomCoords do
           {Enum.reverse(new_block) ++ out, nil}
         else
           {out, {:room, id, depth2, [line | acc]}}
+        end
+
+      match?({:exits, _, _, _}, state) ->
+        {:exits, eid, edepth, eacc} = state
+        {open, close} = brace_counts(line)
+        depth2 = edepth + open - close
+
+        if depth2 == 0 do
+          # closing brace line of the exits block
+          block = Enum.reverse([line | eacc])
+          new_block = build_exits_block(block, eid, exits_map)
+          {Enum.reverse(new_block) ++ out, nil}
+        else
+          {out, {:exits, eid, depth2, [line | eacc]}}
         end
 
       true ->
@@ -352,6 +470,100 @@ defmodule AssignRoomCoords do
 
       true ->
         replace_or_insert(content, coord)
+    end
+  end
+
+  # Replace the x/y/z lines with the assigned values; if a coordinate line is
+  # absent from the block, insert the missing ones at the top of the block.
+  defp replace_or_insert(content, {x, y, z}) do
+    replaced =
+      Enum.map(content, fn line ->
+        cond do
+          m = Regex.run(~r/^([ \t]*)x[ \t]*=[ \t]*-?\d+/, line) ->
+            Enum.at(m, 1) <> "x = #{x}"
+
+          m = Regex.run(~r/^([ \t]*)y[ \t]*=[ \t]*-?\d+/, line) ->
+            Enum.at(m, 1) <> "y = #{y}"
+
+          m = Regex.run(~r/^([ \t]*)z[ \t]*=[ \t]*-?\d+/, line) ->
+            Enum.at(m, 1) <> "z = #{z}"
+
+          true ->
+            line
+        end
+      end)
+
+    missing =
+      for {k, v} <- [{:x, x}, {:y, y}, {:z, z}], not exists?(replaced, k) do
+        "#{k} = #{v}"
+      end
+
+    indent =
+      case Enum.find(content, fn l -> Regex.match?(~r/^[ \t]*\S/, l) end) do
+        nil -> "  "
+        l -> Regex.run(~r/^([ \t]*)\S/, l) |> Enum.at(1)
+      end
+
+    inserted = Enum.map(missing, &(indent <> &1))
+    inserted ++ replaced
+  end
+
+  defp exists?(replaced, k) do
+    Enum.any?(replaced, &String.match?(&1, ~r/^[ \t]*#{k}[ \t]*=/))
+  end
+
+  # Build/update room_exits block with new exits
+  defp build_exits_block(content, eid, exits_map) do
+    new_exits = Map.get(exits_map, eid)
+    if new_exits == nil do
+      content
+    else
+      # Parse existing exits from content
+      existing =
+        Enum.reduce(content, [], fn line, acc ->
+          case parse_exit_row(line) do
+            nil -> acc
+            row -> [row | acc]
+          end
+        end)
+        |> Enum.reverse()
+
+      # Merge new exits, avoiding duplicates
+      merged =
+        Enum.reduce(existing, new_exits, fn {dir, target}, acc ->
+          if Enum.any?(acc, fn {d, t} -> d == dir && t == target end) do
+            acc
+          else
+            [{dir, target} | acc]
+          end
+        end)
+        |> Enum.reverse()
+
+      # Rebuild block: keep non-exit lines (like room_id = ...) and replace exit lines
+      indent =
+        case Enum.find(content, fn l -> Regex.match?(~r/^[ \t]*\S/, l) end) do
+          nil -> "  "
+          l -> Regex.run(~r/^([ \t]*)\S/, l) |> Enum.at(1)
+        end
+
+      # Keep non-exit lines (room_id = ...) and add merged exits
+      non_exit_lines =
+        Enum.filter(content, fn line ->
+          parse_exit_row(line) == nil
+        end)
+
+      exit_lines =
+        Enum.map(merged, fn
+          {dir, {:local, target}} ->
+            indent <> dir <> " = rooms." <> target <> ".id"
+          {dir, {:external, target}} ->
+            indent <> dir <> " = " <> target
+        end)
+
+      # Add closing brace
+      closing_brace = Enum.find(content, fn line -> String.match?(line, ~r/^[ \t]*\}[ \t]*$/) end) || indent <> "}"
+
+      non_exit_lines ++ exit_lines ++ [closing_brace]
     end
   end
 
@@ -421,9 +633,14 @@ end
 
 case System.argv() do
   [path, start_id] ->
-    AssignRoomCoords.run(path, start_id)
+    AssignRoomCoords.run([path, start_id])
+
+  [path, start_id | rest] ->
+    AssignRoomCoords.run([path, start_id | rest])
 
   _ ->
-    IO.puts("usage: mix run scripts/assign_room_coords.exs <zone.ucl> <start_room_id>")
+    IO.puts("usage: mix run scripts/assign_room_coords.exs <zone.ucl> <start_room_id> [--dry-run|--output <output_file>]")
+    IO.puts("  --dry-run          Print new content to stdout")
+    IO.puts("  --output <file>    Write to output file instead of overwriting input")
     exit({:shutdown, 1})
 end
