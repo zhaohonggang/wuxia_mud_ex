@@ -585,6 +585,74 @@ defmodule Kantele.Character.Commands do
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
+    # 斜向/组合方向（drive_command 复用同一套 atom）
+    parse("northeast", :northeast, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("northwest", :northwest, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("southeast", :southeast, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("southwest", :southwest, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("northup", :northup, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("southup", :southup, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("eastup", :eastup, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("westup", :westup, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("northdown", :northdown, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("southdown", :southdown, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("eastdown", :eastdown, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("westdown", :westdown, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    # 中文斜向别名
+    parse("东北", :northeast, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("西北", :northwest, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("东南", :southeast, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("西南", :southwest, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
   end
 
   module(PerformCommand) do
