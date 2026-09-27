@@ -109,4 +109,29 @@ defmodule Kantele.Character.MoveCommand do
     |> request_movement("westdown")
     |> assign(:prompt, false)
   end
+
+  # 特殊方向
+  def enter(conn, _params) do
+    conn
+    |> request_movement("enter")
+    |> assign(:prompt, false)
+  end
+
+  def out(conn, _params) do
+    conn
+    |> request_movement("out")
+    |> assign(:prompt, false)
+  end
+
+  def go_in(conn, _params) do
+    conn
+    |> request_movement("in")
+    |> assign(:prompt, false)
+  end
+
+  def climb(conn, _params) do
+    conn
+    |> request_movement("climb")
+    |> assign(:prompt, false)
+  end
 end

@@ -216,6 +216,10 @@ defp show_move_messages(conn, character, vehicle_item, direction) do
       "northwest" -> "southeast"
       "southeast" -> "northwest"
       "southwest" -> "northeast"
+      "enter" -> "out"
+      "out" -> "enter"
+      "in" -> "out"
+      "climb" -> "climb"
       _ -> dir
     end
   end

@@ -653,6 +653,40 @@ defmodule Kantele.Character.Commands do
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
+    # 特殊方向：enter/out/in/climb
+    parse("enter", :enter, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("out", :out, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("in", :go_in, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("climb", :climb, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("爬", :climb, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("进入", :enter, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("出去", :out, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+    parse("进去", :go_in, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
   end
 
   module(PerformCommand) do
