@@ -1074,7 +1074,7 @@ chats = [
       description = "这是一条宽阔的青石大街，两旁店铺林立，行人熙熙攘攘。 北边是玫瑰宴厅，西边是牡丹宴厅，东边通往客店。"
   x = 0
   y = 0
-  z = 0
+  z = 1
     }
   room_exits "beidajie1" {
     room_id = rooms.beidajie1.id
@@ -1099,7 +1099,7 @@ chats = [
       description = "大厅里摆满大大小小的赌桌，只要能说出名的赌具，这里 都有。进来这里你首先听到的就是少女们吃吃的笑声和男人们 的吹牛声，掷骰子声……在这里，你几乎就可以听到世上所有 不规矩的声音。墙上挂着一块牌子(paizi)。"
   x = 0
   y = 0
-  z = 0
+  z = 2
 item_desc = {
       paizi = "##==================================##         ##                                  ##         ##             赌博规则             ##         ##                                  ##         ##                                  ##         ##  头彩 <tc> 骰数由每次开盘前确定  ##         ##            赔率：一赢三十六      ##         ##                                  ##         ##  双对 <sd> 两骰号相同，且为偶数  ##         ##            赔率：一赢十二        ##         ##                                  ##         ##  七星 <qx> 两个骰数之和为七      ##         ##            赔率：一赢六          ##         ##                                  ##         ##  散星 <sx> 和为三，五，九，十一  ##         ##            赔率：一赢三          ##         ##                                  ##         ##  开赌：                          ##         ##                                  ##         ##                                  ##         ##   bet  压盘种类  数量  货币种类  ##         ##                                  ##         ##                                  ##         ##                                  ##         ##==================================##"
 }
@@ -1124,7 +1124,7 @@ item_desc = {
       description = "这里是一个大岩洞，在白驼山特殊的地质条件下经过漫长 的年代形成的。洞内蜿蜒曲折，也不知延伸到了何处。"
   x = 0
   y = 0
-  z = 0
+  z = 3
 valid_leave = [
 {
     # 阻挡条件（原样保留）：dir == "in" && objectp(present("mang she", environment(me)))
@@ -1156,7 +1156,7 @@ direction = "in"
       description = "岩洞越往里越宽敞，洞壁上长满了发光的苔藓，泛着幽幽的 蓝绿色光芒。地下有清澈的地下河流过，水声潺潺。洞顶垂下 无数钟乳石，形态各异。出口在南边。"
   x = 0
   y = 0
-  z = 0
+  z = 4
     }
   room_exits "cave1" {
     room_id = rooms.cave1.id
@@ -1213,7 +1213,7 @@ direction = "in"
       name = "白驼山庄大厅"
       description = "这是白驼山庄的大厅，气派非凡。大厅正中悬挂着一块匾额， 上书'毒中之王'四个大字。厅内陈设奢华，两侧排列着太师椅， 正中设有太师椅一把，乃是庄主议事之处。两侧各有侧门通往 内院。"
   x = 0
-  y = 0
+  y = 2
   z = 0
     }
   room_exits "dating" {
@@ -1243,7 +1243,7 @@ direction = "in"
       description = "你忽觉前方一亮，身前真是别有洞天，前方好想有作花园。 不知是什么地方。\n"
   x = 0
   y = 0
-  z = 0
+  z = 5
     }
   room_exits "didao6" {
     room_id = rooms.didao6.id
@@ -1258,7 +1258,7 @@ direction = "in"
       description = "这是一个测试房间，用于验证各种 __DIR__ 宏变体。"
   x = 0
   y = 0
-  z = 0
+  z = 6
 item_desc = {
       sign = "obj/signboard/sign"
 }
@@ -1287,8 +1287,8 @@ item_desc = {
       name = "赌场大厅"
       description = "这里是赌场的大厅，人声鼎沸，烟雾缭绕。四周摆满了各式 赌桌，骰子、牌九、马吊应有尽有。空气中弥漫着酒气和汗味， 夹杂着金银碰撞的清脆声响。北边是贵宾厅。"
   x = 0
-  y = 0
-  z = 0
+  y = -1
+  z = 2
     }
   room_exits "duchang" {
     room_id = rooms.duchang.id
@@ -1300,8 +1300,8 @@ item_desc = {
     rooms "duwushi" {
       name = "毒物室"
       description = "这里是白驼山庄的毒物室，四周摆满了各式瓶瓶罐罐，装着 各色毒药、毒虫、毒草。空气中弥漫着刺鼻的药味，令人作呕。 墙上挂着一张'毒物配方表'。角落里养着几只毒蛇、蝎子。"
-  x = 0
-  y = 0
+  x = -1
+  y = 3
   z = 0
     }
   room_exits "duwushi" {
@@ -1330,7 +1330,7 @@ item_desc = {
       description = "这是一个包含特殊中文字符的房间： - 常用字：中文测试 - 生僻字：龘靐齉爨 - 标点符号：。、；：「」『』（）［］〔〕 - 数字：１２３４５６７８９０ - 英文：ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
   x = 0
   y = 0
-  z = 0
+  z = 7
     }
   room_exits "encoding_test" {
     room_id = rooms.encoding_test.id
@@ -1343,8 +1343,8 @@ item_desc = {
       name = "芙蓉宴厅"
       description = "这里是醉仙楼的芙蓉宴厅。你走进门，绕过了一道淡绿绸 屏风，迎面的墙上挂着一副『芙蓉出水图』，工笔彩绘，状极 清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌 玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼 生辉，桌上铺着份菜单(menu)。"
   x = 0
-  y = 0
-  z = 0
+  y = 1
+  z = 1
 item_desc = {
       menu = "##==========================##         ##                          ##         ##         承办酒席         ##         ##                          ##         ##  祝寿宴：order birthday  ##         ##                          ##         ##                二两黄金  ##         ##                          ##         ##  订婚宴：order marry     ##         ##                          ##         ##                三两黄金  ##         ##                          ##         ##  群豪宴：order player    ##         ##                          ##         ##                五两黄金  ##         ##                          ##         ##  结  束：order end       ##         ##                          ##         ##                          ##         ##                          ##         ##==========================##"
 }
@@ -1380,7 +1380,7 @@ valid_leave = [
       name = "后院"
       description = "这里是白驼山庄的后院，种着各种奇花异草，还有一口古井。 井边立着一块石碑，上刻'毒经'二字。四周种满了各种毒草， 散发着诡异的香气。东边是练功房，西边是毒物室。"
   x = 0
-  y = 0
+  y = 3
   z = 0
     }
   room_exits "houyuan" {
@@ -1403,9 +1403,9 @@ valid_leave = [
     rooms "kedian" {
       name = "客店"
       description = "这是一家价钱低廉的客栈，生意却是非常兴隆。外地游客 多选择这里落脚，你可以在这里打听到各地的风土人情。店小 二里里外外忙得团团转，接待着南腔北调的客人。客店的主人 从不露面，他究竟是谁，有各种各样的猜测。客店的西墙上挂 着一个牌子(paizi)。"
-  x = 0
+  x = 1
   y = 0
-  z = 0
+  z = 1
 item_desc = {
       paizi = "##==============================##         ##                              ##         ##    楼上雅房，每夜十两白银。  ##         ##                              ##         ##==============================##"
 }
@@ -1458,9 +1458,9 @@ direction = "west"
     rooms "kedian2" {
       name = "客店二楼"
       description = "你正走在客店二楼的走廊上，可以听到从客房里不时地呼 呼的打酣声，一阵高过一阵。不时有睡意朦胧的旅客进进出出 到楼下的掌柜处付了钱再上来睡觉。"
-  x = 0
+  x = 1
   y = 0
-  z = 0
+  z = 2
     }
   room_exits "kedian2" {
     room_id = rooms.kedian2.id
@@ -1489,7 +1489,7 @@ direction = "west"
       description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小 木床，不少客人正和衣而卧，满屋子都是呼呼的打酣声。西边 有张床是空的，你蹑手蹑脚地走了过去。"
   x = 0
   y = 0
-  z = 0
+  z = 8
     }
   room_exits "kedian3" {
     room_id = rooms.kedian3.id
@@ -1511,7 +1511,7 @@ direction = "west"
       description = "这是一个模拟大型房间文件的测试文件。"
   x = 0
   y = 0
-  z = 0
+  z = 9
     }
   room_exits "large_room_test" {
     room_id = rooms.large_room_test.id
@@ -1536,8 +1536,8 @@ direction = "west"
     rooms "liangong" {
       name = "练功房"
       description = "这里是白驼山庄的练功房，地上铺着厚厚的软垫，墙上挂着 各种兵器架。正中央竖着一个木人桩，四周墙壁上刻满了拳法 剑法的招式图解。空气中弥漫着淡淡的药香。"
-  x = 0
-  y = 0
+  x = 1
+  y = 3
   z = 0
     }
   room_exits "liangong" {
@@ -1565,9 +1565,9 @@ direction = "west"
     rooms "liaotian" {
       name = "聊天室"
       description = "这是客店后院的一间小屋，供住客休息聊天。墙上挂着几幅 山水画，角落里摆着一张八仙桌，几把竹椅。窗外是一片小花园， 鸟语花香，环境幽静。"
-  x = 0
-  y = 0
-  z = 0
+  x = 1
+  y = -1
+  z = 1
     }
   room_exits "liaotian" {
     room_id = rooms.liaotian.id
@@ -1589,7 +1589,7 @@ direction = "west"
       description = "这里是醉仙楼的玫瑰宴厅。你走进门，绕过了一道淡绿绸 屏风，迎面的墙上挂着一副『玫瑰含露图』，工笔彩绘，状极 清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌 玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼 生辉，桌上铺着份菜单(menu)。"
   x = 0
   y = 0
-  z = 0
+  z = 10
 item_desc = {
       menu = "##==========================##         ##                          ##         ##         承办酒席         ##         ##                          ##         ##  祝寿宴：order birthday  ##         ##                          ##         ##                二两黄金  ##         ##                          ##         ##  订婚宴：order marry     ##         ##                          ##         ##                三两黄金  ##         ##                          ##         ##  群豪宴：order player    ##         ##                          ##         ##                五两黄金  ##         ##                          ##         ##  结  束：order end       ##         ##                          ##         ##                          ##         ##                          ##         ##==========================##"
 }
@@ -1624,9 +1624,9 @@ valid_leave = [
     rooms "mudan" {
       name = "牡丹宴厅"
       description = "这里是醉仙楼的牡丹宴厅。你走进门，绕过了一道淡绿绸 屏风，迎面的墙上挂着一副『牡丹争艳图』，工笔彩绘，状极 清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌 玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼 生辉，桌上铺着份菜单(menu)。"
-  x = 0
+  x = -1
   y = 0
-  z = 0
+  z = 1
 item_desc = {
       menu = "##==========================##         ##                          ##         ##         承办酒席         ##         ##                          ##         ##  祝寿宴：order birthday  ##         ##                          ##         ##                二两黄金  ##         ##                          ##         ##  订婚宴：order marry     ##         ##                          ##         ##                三两黄金  ##         ##                          ##         ##  群豪宴：order player    ##         ##                          ##         ##                五两黄金  ##         ##                          ##         ##  结  束：order end       ##         ##                          ##         ##                          ##         ##                          ##         ##==========================##"
 }
@@ -1663,7 +1663,7 @@ valid_leave = [
       description = "测试多重 #include 指令的解析。"
   x = 0
   y = 0
-  z = 0
+  z = 11
     }
   room_exits "multi_include_test" {
     room_id = rooms.multi_include_test.id
@@ -1677,7 +1677,7 @@ valid_leave = [
       description = "阳苜咩城，或简称苜咩城，是大理国的都城。自南诏于初创，历 经陈氏“长大和国”、赵氏“大天兴国”、杨氏“大义宁国”诸代而 至当今的段氏的“大理国”，均以此城为都。此处乃是北城门，以梅 '溪为护河，城墙建在溪南，由石块和土垒成，高二丈五，厚达二丈， 门上有重楼，驻有了哨。青石官道从城里直向北延伸，另有一条黄土 大路向西通去。"
   x = 0
   y = 0
-  z = 0
+  z = 12
     }
   room_exits "northgate" {
     room_id = rooms.northgate.id
@@ -1705,7 +1705,7 @@ valid_leave = [
       description = "这里是古镇船厂。船厂是位于关外大平原中部的一个古老 的小镇，此镇西、南、北、三面是以高墙垒筑利于坚守。东面 临松花江天成天险，乃兵家必争的要地。松花江 (river)在冬 春时结冰可通行，夏秋化冻你只好找船家帮忙了。"
   x = 0
   y = 0
-  z = 0
+  z = 13
   # River actions: yell [boat] / cross
   # - yell boat: summons river_boat to arrive_room (3s)
   # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
@@ -1729,7 +1729,7 @@ valid_leave = [
       description = "一大片桑树林生长在低山的缓坡山腰上。养蚕、纺丝是摆夷族的 重要副业，摆夷妇女大都擅织丝，编织自己穿着的短裙，也用来和临 '近部落交换些其它物品。一群摆夷姑娘正在林间忙着采摘桑叶。"
   x = 0
   y = 0
-  z = 0
+  z = 14
     }
   room_exits "sanglin" {
     room_id = rooms.sanglin.id
@@ -1748,8 +1748,8 @@ valid_leave = [
       name = "山间石阶"
       description = "这是一条蜿蜒的山间石阶，两旁杂草丛生，古树遮天蔽日。 石阶蜿蜒向上，通向白驼山庄大门，向下通往山脚。"
   x = 0
-  y = 0
-  z = 0
+  y = -1
+  z = -1
     }
   room_exits "shijie" {
     room_id = rooms.shijie.id
@@ -1771,7 +1771,7 @@ valid_leave = [
       description = "这是一个测试大厅。"
   x = 0
   y = 0
-  z = 0
+  z = 15
     }
   room_exits "test_dating" {
     room_id = rooms.test_dating.id
@@ -1786,7 +1786,7 @@ valid_leave = [
       description = "这里是柳溪镇的中央广场，青石板铺就的地面被岁月磨得 光可鉴人。广场中央竖着一根高大的旗杆(qigan)，上书「柳 溪」二字的杏黄旗在风中猎猎作响。来往的乡民、行脚商人和 江湖客在此穿行，不时传来小贩的吆喝声。东面是一间热闹的 客栈，南边传来隐隐的喝喝之声，似乎有人在练武。镇口东北 方向的官道(yangzhou)直通扬州府。"
   x = 0
   y = 0
-  z = 0
+  z = 16
 item_desc = {
       qigan = "一根碗口粗的旗杆，旗面上绣着「柳溪」两个大字。"
 }
@@ -1806,7 +1806,7 @@ item_desc = {
       name = "白驼山庄大院"
       description = "这里是白驼山庄的大院，占地极广，青砖绿瓦，古树参天。 院子中央摆着几个大水缸，四周种着几株古松。北边是大厅， 南边通向大门。"
   x = 0
-  y = 0
+  y = 1
   z = 0
     }
   room_exits "yuanzi" {
@@ -1829,7 +1829,7 @@ item_desc = {
       description = "休猎部专事渔猎，很少蓄养牲畜或耕作。这是一座普通的竹楼， 下层通常的牲畜圈是修补竹筏渔网的工棚，一位台夷妇女正在细心地 '编织渔网。楼边有一排木架，挂满开过膛的鱼，正在凉晒鱼干。"
   x = 0
   y = 0
-  z = 0
+  z = 17
     }
   room_exits "yujia" {
     room_id = rooms.yujia.id
@@ -1848,8 +1848,8 @@ item_desc = {
       name = "竹林"
       description = "这是一片茂密的竹林，翠竹成荫，微风吹过，竹叶沙沙作响， 清爽宜人。几只小鸟在竹枝间跳跃鸣叫。南边是一条小路通向岩洞。"
   x = 0
-  y = 0
-  z = 0
+  y = -1
+  z = 2
     }
   room_exits "zhulin" {
     room_id = rooms.zhulin.id
@@ -1869,9 +1869,9 @@ item_desc = {
     rooms "zxlpath" {
       name = "醉仙楼大道"
       description = "这是通往醉仙楼的青石大道，两旁种满了桃树杨柳，春天桃红 柳绿，美不胜收。大道笔直通向北边的醉仙楼大门，南边是客店 北大街，西边是玫瑰宴厅，东边是牡丹宴厅。"
-  x = 0
-  y = 0
-  z = 0
+  x = 1
+  y = 1
+  z = 1
     }
   room_exits "zxlpath" {
     room_id = rooms.zxlpath.id
@@ -1897,7 +1897,7 @@ item_desc = {
       description = ""
   x = 0
   y = 0
-  z = 0
+  z = 18
     }
 
 # Generated from test_minimal_world_v2_modified/special/liandan_lin1.c by LPCConverter
@@ -1908,7 +1908,7 @@ item_desc = {
       description = "这是一片茂密的树林。很多棵几十丈高的大树聚在一块，象一把把琼天大 伞，连日月都被遮蔽得暗然无光。树林中还不时可以听到大自然发出的声响。"
   x = 0
   y = 0
-  z = 0
+  z = 19
     }
   room_exits "liandan_lin1" {
     room_id = rooms.liandan_lin1.id
