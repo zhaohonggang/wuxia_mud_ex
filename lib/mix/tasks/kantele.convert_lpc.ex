@@ -72,8 +72,8 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
   defp convert_file(lpc_path, zone_id, output_dir) do
     Mix.shell().info("Converting #{lpc_path}...")
 
-    case LPCConverter.convert_file(lpc_path, zone_id: zone_id) do
-      {:ok, ucl} ->
+    case LPCConverter.convert_file(lpc_path, zone_id: zone_id, include_comments: true) do
+      {:ok, {ucl, comments}} ->
         # Determine output filename
         base_name = Path.basename(lpc_path, ".c")
         # 输出侧 ID 统一做 "-" → "_" 规范化（见 lpc_converter.ex 的 npc_id/room_id/item_id），
@@ -81,11 +81,12 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
         ucl_name = String.replace(base_name, "-", "_")
         zone_id = zone_id || infer_zone_id(lpc_path)
         output_file = Path.join(output_dir, "#{zone_id}.ucl")
+        comments_file = Path.join(output_dir, "#{zone_id}.comments.txt")
 
         # Ensure directory exists
         File.mkdir_p!(output_file |> Path.dirname())
 
-        # Append or create
+        # Append or create UCL file
         if File.exists?(output_file) do
           existing = File.read!(output_file)
           # Check if already exists
@@ -109,6 +110,11 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
           Mix.shell().info("Created #{output_file}")
         end
 
+        # Write comments to separate .txt file
+        comments_file = Path.join(output_dir, "#{zone_id}.comments.txt")
+        File.write!(comments_file, comments <> "\n")
+        Mix.shell().info("Wrote comments to #{comments_file}")
+
         {:ok, output_file}
 
       {:error, reason} ->
@@ -130,10 +136,10 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
       Enum.reduce(files, {[], []}, fn file, {entries, failures} ->
         Mix.shell().info("Converting #{file}...")
 
-        case LPCConverter.convert_file(file, zone_id: zone_id, include_comments: false) do
-          {:ok, ucl} ->
+        case LPCConverter.convert_file(file, zone_id: zone_id, include_comments: true) do
+          {:ok, {ucl, comments}} ->
             ucl_name = file |> Path.basename(".c") |> String.replace("-", "_")
-            {[{ucl_name, ucl} | entries], failures}
+            {[{ucl_name, ucl, comments} | entries], failures}
 
           {:error, reason} ->
             Mix.shell().error("Conversion failed: #{reason}")
@@ -147,28 +153,75 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
     entries_in_order = Enum.reverse(entries)
     deduped =
       entries_in_order
-      |> Enum.reduce({[], MapSet.new()}, fn {ucl_name, ucl}, {acc, seen} ->
+      |> Enum.reduce({[], MapSet.new()}, fn {ucl_name, ucl, comments}, {acc, seen} ->
         if MapSet.member?(seen, ucl_name) do
           Mix.shell().info("#{ucl_name} already converted, skipping duplicate")
           {acc, seen}
         else
           Mix.shell().info("Appended #{ucl_name}")
-          {[{ucl_name, ucl} | acc], MapSet.put(seen, ucl_name)}
+          {[{ucl_name, ucl, comments} | acc], MapSet.put(seen, ucl_name)}
         end
       end)
       |> elem(0)
       |> Enum.reverse()
 
     output_file = Path.join(output_dir, "#{zone_id}.ucl")
+    comments_file = Path.join(output_dir, "#{zone_id}.comments.txt")
     File.mkdir_p!(Path.dirname(output_file))
 
     zone_header = ~s(zones "#{zone_id}" {\n  name = "#{zone_id}"\n}\n\n)
-    body = Enum.map_join(deduped, "\n\n", fn {_ucl_name, ucl} -> String.trim_trailing(ucl) end)
-    File.write!(output_file, zone_header <> body <> "\n")
+    # generic 文件不产生 UCL 段，其整块注释只进 comments.txt
+    body =
+      deduped
+      |> Enum.filter(fn {_ucl_name, ucl, _comments} -> String.trim(ucl) != "" end)
+      |> Enum.map_join("\n\n", fn {_ucl_name, ucl, _comments} -> String.trim_trailing(ucl) end)
+    body = sanitize_ucl_body(body)
+    if body == "" do
+      File.write!(output_file, zone_header)
+    else
+      File.write!(output_file, zone_header <> body <> "\n")
+    end
+
+    # Fix UCL file to avoid elias parser issues
+    fix_ucl_file(output_file)
+
+    # Write comments to separate .txt file
+    comments_body = Enum.map_join(deduped, "\n\n", fn {_ucl_name, _ucl, comments} -> String.trim_trailing(comments) end)
+    File.write!(comments_file, comments_body <> "\n")
 
     Mix.shell().info("Wrote #{length(deduped)} objects to #{output_file}")
+    Mix.shell().info("Wrote comments to #{comments_file}")
     if failures != [], do: Mix.shell().error("Failed on #{length(failures)} files: #{inspect(failures)}")
     Mix.shell().info("Done.")
+
+    # Post-process the generated UCL file to fix elias parser issues
+    fix_ucl_file(output_file)
+  end
+
+  defp sanitize_ucl_body(body) do
+    body
+    |> String.replace("\\\"", "'")
+    |> String.replace("\\\\\"", "'")
+    |> String.replace("\\n\"", " ")
+    |> String.replace("\\t\"", " ")
+    |> String.replace("\\r\"", " ")
+  end
+
+  defp fix_ucl_file(path) do
+    content = File.read!(path)
+    # Fix problematic escape sequences that confuse elias parser
+    fixed =
+      content
+      |> String.replace("\\n\"", "\\n'")
+      |> String.replace("\\\"", "'")
+      |> String.replace("\\\\\"", "'")
+      # Fix trailing backslash-space at end of lines
+      |> String.replace("\\\\ \n", "\n")
+      |> String.replace("\\ \n", "\n")
+      # Fix multiline string values that break UCL parsing
+      |> String.replace("\\\\\n", "\\n")
+      |> String.replace("\\\n", "\\n")
+    File.write!(path, fixed)
   end
 
   defp infer_zone_id(lpc_path) do

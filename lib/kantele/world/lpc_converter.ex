@@ -1842,10 +1842,38 @@ c ->
     inherit_prefix =
       if inherit_comments != "", do: inherit_comments <> "\n\n", else: ""
 
-    header <>
-      inherit_prefix <>
-      Enum.join(new_sections, "\n\n") <>
-      generate_unhandled_comments(ast.unhandled)
+    # UCL content: header + actual UCL sections (generic 文件不产生任何 UCL 段)
+    ucl_content =
+      if obj_type == :generic do
+        ""
+      else
+        header <> Enum.join(new_sections, "\n\n")
+      end
+
+    # Comments content: header + generic marker + inherit comments + unhandled comments
+    comments_content =
+      if include_comments do
+        generic_marker =
+          if obj_type == :generic do
+            ["# Generic LPC file: #{ast.source_path}", "# Requires manual conversion"]
+          else
+            []
+          end
+
+        inherit_parts =
+          if inherit_comments != "", do: [inherit_comments], else: []
+
+        unhandled_text = generate_unhandled_comments(ast.unhandled)
+        unhandled_parts =
+          if unhandled_text != "", do: [unhandled_text], else: []
+
+        extra = (generic_marker ++ inherit_parts ++ unhandled_parts) |> Enum.join("\n\n")
+        if extra == "", do: "", else: header <> extra <> "\n"
+      else
+        ""
+      end
+
+    {ucl_content, comments_content}
   end
 
   # 沿继承链向上合并属性：
@@ -2209,8 +2237,8 @@ c ->
 
     room_block = """
     rooms "#{room_id}" {
-      name = "#{extract_string(Map.get(sets, "short"), "Room")}"
-      description = "#{get_heredoc_or_set(heredocs, sets, "long", "")}"
+      name = #{ucl_string(extract_string(Map.get(sets, "short"), "Room"))}
+      description = #{ucl_string(get_heredoc_or_set(heredocs, sets, "long", ""))}
 """
 
     # Coordinates (default to origin; Loader requires x/y/z)
@@ -2490,25 +2518,52 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
     end
   end
 
-  defp escape_heredoc_content(str) do
+defp escape_heredoc_content(str) do
     # Heredoc content is raw LPC text (real newlines, real quotes).
     # UCL/Elias accepts "\n" as literal backslash-n and "\"" as a quote.
+    # 但 elias 解析器在遇到 \" 后跟非 ASCII 字符会报错，因此把 " 统一替换为 ' 避免转义
+    # 同时处理原文中已有的 \" 序列和 \n" 序列
+    # 处理顺序：先处理特定序列，再统一处理剩余的 "
+    # 不转义换行符，改为空格，避免 \n' 等序列干扰解析器，并去除首尾空格
     str
+    |> String.replace("\\n\"", " ")
+    |> String.replace("\\n'", " ")
+    |> String.replace("\\\"", "'")
+    # 处理完特定序列后，统一处理剩余的反斜杠和引号
     |> String.replace("\\", "\\\\")
-    |> String.replace("\n", "\\n")
-    |> String.replace("\"", "\\\"")
+    |> String.replace("\n", " ")
+    # 去除首尾空格，避免结尾空格导致 \ " 序列
+    |> String.trim()
+    # 最后统一处理剩余的双引号（包括原文中的 " 和转义后遗留的 \" 或 \\"）
+    |> String.replace("\\\"", "'")
+    |> String.replace("\\\\\"", "'")
+    |> String.replace("\"", "'")
   end
 
   # Set-string values already carry LPC escapes (\"" for a literal quote, \n
   # for a line break, ...). Only real newline chars (from multi-line LPC
   # literals that our parser joined) need converting to "\n".
   # 但 UCL 解析器在遇到 \" 后跟非 ASCII 字符会报错，因此把 " 统一替换为 ' 避免转义
-  defp escape_set_string(str) do
+defp escape_set_string(str) do
     str
     |> String.replace("\\", "\\\\")
     |> String.replace("\"", "'")
     |> String.replace(";", "\\;")
+    # 不转义换行符，改为空格，避免 \n' 等序列干扰解析器
+    |> String.replace("\n", " ")
+    |> String.trim()
+  end
+
+  defp ucl_string(str) do
+    # Properly escape a string for UCL output: escape backslashes and quotes, wrap in double quotes
+    "\"" <>
+    (str
+    |> String.replace("\\", "\\\\")
+    |> String.replace("\"", "\\\"")
     |> String.replace("\n", "\\n")
+    |> String.replace("\r", "\\r")
+    |> String.replace("\t", "\\t")) <>
+    "\""
   end
 
   defp generate_npc_ucl(ast, zone_id) do
@@ -2529,8 +2584,8 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
 
     ucl = """
     characters "#{npc_id}" {
-      name = "#{name}"
-      description = "#{get_heredoc_or_set(heredocs, sets, "long", "")}"
+      name = #{ucl_string(name)}
+      description = #{ucl_string(get_heredoc_or_set(heredocs, sets, "long", ""))}
 """
 
     # Basic attributes from set()
@@ -2951,8 +3006,8 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
 
     ucl = """
     items "#{item_id}" {
-      name = "#{name}"
-      description = "#{get_heredoc_or_set(heredocs, sets, "long", "")}"
+      name = #{ucl_string(name)}
+      description = #{ucl_string(get_heredoc_or_set(heredocs, sets, "long", ""))}
 """
 
     # Verbs
@@ -3076,11 +3131,11 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
 defp sanitize_comment_text(text) do
     text
     |> String.replace("\\", "\\\\")
-    |> String.replace("\"", "\\\"")
+    |> String.replace("\"", "'")
     |> String.replace("\n", " ")
     |> String.replace("\r", " ")
     # Aggressively escape/remove sequences that confuse UCL parser in comments
-    |> String.replace("\\\"", "\\\\\"")
+    |> String.replace("\\\"", "'")
     |> String.replace("\\n", "\\\\n")
     |> String.replace("\\t", "\\\\t")
     |> String.replace("\\r", "\\\\r")
