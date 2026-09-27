@@ -147,6 +147,11 @@ defmodule Kalevala.Character.Foreman do
     end
   end
 
+  def handle_info({:room_message, message}, state) do
+    state.callback_module.send_output(state, [%Kalevala.Character.Conn.Text{data: message, newline: true}])
+    {:noreply, state}
+  end
+
   def handle_info(:terminate, state) do
     state.callback_module.terminating(state)
     DynamicSupervisor.terminate_child(state.supervisor_name, self())
