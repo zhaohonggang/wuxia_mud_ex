@@ -1078,12 +1078,9 @@ chats = [
     }
   room_exits "beidajie1" {
     room_id = rooms.beidajie1.id
-    up = rooms.bet.id
-    down = rooms.damen.id
-    east = rooms.kedian.id
-    north = rooms.furong.id
-    west = rooms.mudan.id
-    }
+  east = rooms.kedian.id
+  north = rooms.furong.id
+  west = rooms.mudan.id  }
 
 
   room_items "beidajie1" {
@@ -1109,10 +1106,7 @@ item_desc = {
     }
   room_exits "bet" {
     room_id = rooms.bet.id
-    up = rooms.cave.id
-    down = rooms.beidajie1.id
-    south = rooms.duchang.id
-    }
+  south = rooms.duchang.id  }
 
   room_characters "bet" {
     room_id = rooms.bet.id
@@ -1142,11 +1136,8 @@ direction = "in"
     }
   room_exits "cave" {
     room_id = rooms.cave.id
-    up = rooms.didao6.id
-    down = rooms.bet.id
-    in = rooms.cave1.id
-    southdown = rooms.zhulin.id
-    }
+  in = rooms.cave1.id
+  southdown = rooms.zhulin.id  }
 
 
   room_items "cave" {
@@ -1165,12 +1156,11 @@ direction = "in"
       description = "岩洞越往里越宽敞，洞壁上长满了发光的苔藓，泛着幽幽的 蓝绿色光芒。地下有清澈的地下河流过，水声潺潺。洞顶垂下 无数钟乳石，形态各异。出口在南边。"
   x = 0
   y = 0
-  z = 3
+  z = 4
     }
   room_exits "cave1" {
     room_id = rooms.cave1.id
-    out = rooms.cave.id
-    }
+  out = rooms.cave.id  }
 
 
   room_items "cave1" {
@@ -1199,10 +1189,8 @@ direction = "in"
     }
   room_exits "damen" {
     room_id = rooms.damen.id
-    up = rooms.beidajie1.id
-    north = rooms.yuanzi.id
-    southdown = rooms.shijie.id
-    }
+  north = rooms.yuanzi.id
+  southdown = rooms.shijie.id  }
 
   room_characters "damen" {
     room_id = rooms.damen.id
@@ -1230,9 +1218,8 @@ direction = "in"
     }
   room_exits "dating" {
     room_id = rooms.dating.id
-    north = rooms.houyuan.id
-    south = rooms.yuanzi.id
-    }
+  south = rooms.yuanzi.id
+  north = rooms.houyuan.id  }
 
   room_characters "dating" {
     room_id = rooms.dating.id
@@ -1256,15 +1243,12 @@ direction = "in"
       description = "你忽觉前方一亮，身前真是别有洞天，前方好想有作花园。 不知是什么地方。\n"
   x = 0
   y = 0
-  z = 4
+  z = 5
     }
   room_exits "didao6" {
     room_id = rooms.didao6.id
-    up = rooms.dir_macro_test.id
-    down = rooms.cave.id
-    north = rooms.xiaohuayuan.id
-    northdown = rooms.didao4.id
-    }
+  north = rooms.xiaohuayuan.id
+  northdown = rooms.didao4.id  }
 
 # Generated from test_minimal_world_v2_modified/room/dir_macro_test.c by LPCConverter
 # Zone: test
@@ -1274,18 +1258,15 @@ direction = "in"
       description = "这是一个测试房间，用于验证各种 __DIR__ 宏变体。"
   x = 0
   y = 0
-  z = 5
+  z = 6
 item_desc = {
       sign = "obj/signboard/sign"
 }
     }
   room_exits "dir_macro_test" {
     room_id = rooms.dir_macro_test.id
-    up = rooms.encoding_test.id
-    down = rooms.didao6.id
-    # up = rooms.room_above.id
-    # down = rooms.room_below.id
-    }
+  up = rooms.room_above.id
+  down = rooms.room_below.id  }
 
   room_characters "dir_macro_test" {
     room_id = rooms.dir_macro_test.id
@@ -1311,8 +1292,7 @@ item_desc = {
     }
   room_exits "duchang" {
     room_id = rooms.duchang.id
-    north = rooms.bet.id
-    }
+  north = rooms.bet.id  }
 
 # Generated from test_minimal_world_v2_modified/room/duwushi.c by LPCConverter
 # Zone: test
@@ -1326,8 +1306,7 @@ item_desc = {
     }
   room_exits "duwushi" {
     room_id = rooms.duwushi.id
-    east = rooms.houyuan.id
-    }
+  east = rooms.houyuan.id  }
 
   room_characters "duwushi" {
     room_id = rooms.duwushi.id
@@ -1351,14 +1330,11 @@ item_desc = {
       description = "这是一个包含特殊中文字符的房间： - 常用字：中文测试 - 生僻字：龘靐齉爨 - 标点符号：。、；：「」『』（）［］〔〕 - 数字：１２３４５６７８９０ - 英文：ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
   x = 0
   y = 0
-  z = 6
+  z = 7
     }
   room_exits "encoding_test" {
     room_id = rooms.encoding_test.id
-    up = rooms.large_room_test.id
-    down = rooms.dir_macro_test.id
-    north = rooms.room1.id
-    }
+  north = rooms.room1.id  }
 
 # Generated from test_minimal_world_v2_modified/room/furong.c by LPCConverter
 # Zone: test
@@ -1382,8 +1358,7 @@ valid_leave = [
     }
   room_exits "furong" {
     room_id = rooms.furong.id
-    east = rooms.zxlpath.id
-    }
+  east = rooms.zxlpath.id  }
 
 
   room_items "furong" {
@@ -1410,10 +1385,9 @@ valid_leave = [
     }
   room_exits "houyuan" {
     room_id = rooms.houyuan.id
-    west = rooms.duwushi.id
-    east = rooms.liangong.id
-    south = rooms.dating.id
-    }
+  south = rooms.dating.id
+  east = rooms.liangong.id
+  west = rooms.duwushi.id  }
 
 
   room_items "houyuan" {
@@ -1452,11 +1426,10 @@ direction = "west"
     }
   room_exits "kedian" {
     room_id = rooms.kedian.id
-    east = rooms.damen.id
-    south = rooms.liaotian.id
-    up = rooms.kedian2.id
-    west = rooms.beidajie1.id
-    }
+  west = rooms.beidajie1.id
+  up = rooms.kedian2.id
+  south = rooms.liaotian.id
+  east = rooms.damen.id  }
 
   room_characters "kedian" {
     room_id = rooms.kedian.id
@@ -1491,9 +1464,8 @@ direction = "west"
     }
   room_exits "kedian2" {
     room_id = rooms.kedian2.id
-    in = rooms.kedian3.id
-    down = rooms.kedian.id
-    }
+  down = rooms.kedian.id
+  in = rooms.kedian3.id  }
 
   room_characters "kedian2" {
     room_id = rooms.kedian2.id
@@ -1515,14 +1487,13 @@ direction = "west"
     rooms "kedian3" {
       name = "客店二楼"
       description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小 木床，不少客人正和衣而卧，满屋子都是呼呼的打酣声。西边 有张床是空的，你蹑手蹑脚地走了过去。"
-  x = 1
+  x = 0
   y = 0
-  z = 2
+  z = 8
     }
   room_exits "kedian3" {
     room_id = rooms.kedian3.id
-    out = rooms.kedian2.id
-    }
+  out = rooms.kedian2.id  }
 
 
   room_items "kedian3" {
@@ -1540,19 +1511,16 @@ direction = "west"
       description = "这是一个模拟大型房间文件的测试文件。"
   x = 0
   y = 0
-  z = 7
+  z = 9
     }
   room_exits "large_room_test" {
     room_id = rooms.large_room_test.id
-    up = rooms.meigui.id
-    down = rooms.encoding_test.id
-    north = rooms.room1.id
-    south = rooms.room2.id
-    east = rooms.room3.id
-    west = rooms.room4.id
-    # up = rooms.room_up.id
-    # down = rooms.room_down.id
-    }
+  north = rooms.room1.id
+  south = rooms.room2.id
+  east = rooms.room3.id
+  west = rooms.room4.id
+  up = rooms.room_up.id
+  down = rooms.room_down.id  }
 
   room_characters "large_room_test" {
     room_id = rooms.large_room_test.id
@@ -1574,8 +1542,7 @@ direction = "west"
     }
   room_exits "liangong" {
     room_id = rooms.liangong.id
-    west = rooms.houyuan.id
-    }
+  west = rooms.houyuan.id  }
 
   room_characters "liangong" {
     room_id = rooms.liangong.id
@@ -1604,8 +1571,7 @@ direction = "west"
     }
   room_exits "liaotian" {
     room_id = rooms.liaotian.id
-    north = rooms.kedian.id
-    }
+  north = rooms.kedian.id  }
 
 
   room_items "liaotian" {
@@ -1623,7 +1589,7 @@ direction = "west"
       description = "这里是醉仙楼的玫瑰宴厅。你走进门，绕过了一道淡绿绸 屏风，迎面的墙上挂着一副『玫瑰含露图』，工笔彩绘，状极 清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌 玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼 生辉，桌上铺着份菜单(menu)。"
   x = 0
   y = 0
-  z = 8
+  z = 10
 item_desc = {
       menu = "##==========================##         ##                          ##         ##         承办酒席         ##         ##                          ##         ##  祝寿宴：order birthday  ##         ##                          ##         ##                二两黄金  ##         ##                          ##         ##  订婚宴：order marry     ##         ##                          ##         ##                三两黄金  ##         ##                          ##         ##  群豪宴：order player    ##         ##                          ##         ##                五两黄金  ##         ##                          ##         ##  结  束：order end       ##         ##                          ##         ##                          ##         ##                          ##         ##==========================##"
 }
@@ -1637,10 +1603,7 @@ valid_leave = [
     }
   room_exits "meigui" {
     room_id = rooms.meigui.id
-    up = rooms.multi_include_test.id
-    down = rooms.large_room_test.id
-    east = rooms.zxlpath.id
-    }
+  east = rooms.zxlpath.id  }
 
 
   room_items "meigui" {
@@ -1677,8 +1640,7 @@ valid_leave = [
     }
   room_exits "mudan" {
     room_id = rooms.mudan.id
-    north = rooms.zxlpath.id
-    }
+  north = rooms.zxlpath.id  }
 
 
   room_items "mudan" {
@@ -1701,14 +1663,11 @@ valid_leave = [
       description = "测试多重 #include 指令的解析。"
   x = 0
   y = 0
-  z = 9
+  z = 11
     }
   room_exits "multi_include_test" {
     room_id = rooms.multi_include_test.id
-    up = rooms.northgate.id
-    down = rooms.meigui.id
-    north = rooms.room1.id
-    }
+  north = rooms.room1.id  }
 
 # Generated from test_minimal_world_v2_modified/room/northgate.c by LPCConverter
 # Zone: test
@@ -1718,17 +1677,14 @@ valid_leave = [
       description = "阳苜咩城，或简称苜咩城，是大理国的都城。自南诏于初创，历 经陈氏“长大和国”、赵氏“大天兴国”、杨氏“大义宁国”诸代而 至当今的段氏的“大理国”，均以此城为都。此处乃是北城门，以梅 '溪为护河，城墙建在溪南，由石块和土垒成，高二丈五，厚达二丈， 门上有重楼，驻有了哨。青石官道从城里直向北延伸，另有一条黄土 大路向西通去。"
   x = 0
   y = 0
-  z = 10
+  z = 12
     }
   room_exits "northgate" {
     room_id = rooms.northgate.id
-    up = rooms.river_chuanchang.id
-    down = rooms.multi_include_test.id
-    south = rooms.paifang.id
-    north = rooms.dalinorth.id
-    east = rooms.chahuashan1.id
-    west = rooms.shanlu3.id
-    }
+  south = rooms.paifang.id
+  north = rooms.dalinorth.id
+  east = rooms.chahuashan1.id
+  west = rooms.shanlu3.id  }
 
   room_characters "northgate" {
     room_id = rooms.northgate.id
@@ -1749,18 +1705,15 @@ valid_leave = [
       description = "这里是古镇船厂。船厂是位于关外大平原中部的一个古老 的小镇，此镇西、南、北、三面是以高墙垒筑利于坚守。东面 临松花江天成天险，乃兵家必争的要地。松花江 (river)在冬 春时结冰可通行，夏秋化冻你只好找船家帮忙了。"
   x = 0
   y = 0
-  z = 11
+  z = 13
   # River actions: yell [boat] / cross
   # - yell boat: summons river_boat to arrive_room (3s)
   # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
     }
   room_exits "river_chuanchang" {
     room_id = rooms.river_chuanchang.id
-    up = rooms.sanglin.id
-    down = rooms.northgate.id
-    south = rooms.xuedi3.id
-    river = rooms.damenkan.id
-    }
+  south = rooms.xuedi3.id
+  river = rooms.damenkan.id  }
 
   room_characters "river_chuanchang" {
     room_id = rooms.river_chuanchang.id
@@ -1776,14 +1729,11 @@ valid_leave = [
       description = "一大片桑树林生长在低山的缓坡山腰上。养蚕、纺丝是摆夷族的 重要副业，摆夷妇女大都擅织丝，编织自己穿着的短裙，也用来和临 '近部落交换些其它物品。一群摆夷姑娘正在林间忙着采摘桑叶。"
   x = 0
   y = 0
-  z = 12
+  z = 14
     }
   room_exits "sanglin" {
     room_id = rooms.sanglin.id
-    up = rooms.test_dating.id
-    down = rooms.river_chuanchang.id
-    northdown = rooms.yangzong.id
-    }
+  northdown = rooms.yangzong.id  }
 
   room_characters "sanglin" {
     room_id = rooms.sanglin.id
@@ -1803,9 +1753,8 @@ valid_leave = [
     }
   room_exits "shijie" {
     room_id = rooms.shijie.id
-    southdown = rooms.shanlu.id
-    northup = rooms.damen.id
-    }
+  northup = rooms.damen.id
+  southdown = rooms.shanlu.id  }
 
 
   room_items "shijie" {
@@ -1822,15 +1771,12 @@ valid_leave = [
       description = "这是一个测试大厅。"
   x = 0
   y = 0
-  z = 13
+  z = 15
     }
   room_exits "test_dating" {
     room_id = rooms.test_dating.id
-    up = rooms.test_guangchang.id
-    down = rooms.sanglin.id
-    south = rooms.yuanzi.id
-    north = rooms.houyuan.id
-    }
+  south = rooms.yuanzi.id
+  north = rooms.houyuan.id  }
 
 # Generated from test_minimal_world_v2_modified/room/test_guangchang.c by LPCConverter
 # Zone: test
@@ -1840,21 +1786,18 @@ valid_leave = [
       description = "这里是柳溪镇的中央广场，青石板铺就的地面被岁月磨得 光可鉴人。广场中央竖着一根高大的旗杆(qigan)，上书「柳 溪」二字的杏黄旗在风中猎猎作响。来往的乡民、行脚商人和 江湖客在此穿行，不时传来小贩的吆喝声。东面是一间热闹的 客栈，南边传来隐隐的喝喝之声，似乎有人在练武。镇口东北 方向的官道(yangzhou)直通扬州府。"
   x = 0
   y = 0
-  z = 14
+  z = 16
 item_desc = {
       qigan = "一根碗口粗的旗杆，旗面上绣着「柳溪」两个大字。"
 }
     }
   room_exits "test_guangchang" {
     room_id = rooms.test_guangchang.id
-    up = rooms.yujia.id
-    down = rooms.test_dating.id
-    east = rooms.kedian.id
-    west = rooms.chaguan.id
-    north = rooms.tiepupu.id
-    south = rooms.lianwuchang.id
-    yangzhou = rooms.guangchang.id
-    }
+  east = rooms.kedian.id
+  west = rooms.chaguan.id
+  north = rooms.tiepupu.id
+  south = rooms.lianwuchang.id
+  yangzhou = rooms.guangchang.id  }
 
 # Generated from test_minimal_world_v2_modified/room/yuanzi.c by LPCConverter
 # Zone: test
@@ -1868,9 +1811,8 @@ item_desc = {
     }
   room_exits "yuanzi" {
     room_id = rooms.yuanzi.id
-    north = rooms.dating.id
-    south = rooms.damen.id
-    }
+  south = rooms.damen.id
+  north = rooms.dating.id  }
 
 
   room_items "yuanzi" {
@@ -1887,14 +1829,11 @@ item_desc = {
       description = "休猎部专事渔猎，很少蓄养牲畜或耕作。这是一座普通的竹楼， 下层通常的牲畜圈是修补竹筏渔网的工棚，一位台夷妇女正在细心地 '编织渔网。楼边有一排木架，挂满开过膛的鱼，正在凉晒鱼干。"
   x = 0
   y = 0
-  z = 15
+  z = 17
     }
   room_exits "yujia" {
     room_id = rooms.yujia.id
-    up = rooms.liandan_lin.id
-    down = rooms.test_guangchang.id
-    east = rooms.hexi.id
-    }
+  east = rooms.hexi.id  }
 
   room_characters "yujia" {
     room_id = rooms.yujia.id
@@ -1914,8 +1853,7 @@ item_desc = {
     }
   room_exits "zhulin" {
     room_id = rooms.zhulin.id
-    northup = rooms.cave.id
-    }
+  northup = rooms.cave.id  }
 
 
   room_items "zhulin" {
@@ -1937,11 +1875,10 @@ item_desc = {
     }
   room_exits "zxlpath" {
     room_id = rooms.zxlpath.id
-    east = rooms.mudan.id
-    west = rooms.furong.id
-    north = rooms.damen.id
-    south = rooms.beidajie1.id
-    }
+  south = rooms.beidajie1.id
+  north = rooms.damen.id
+  west = rooms.furong.id
+  east = rooms.mudan.id  }
 
 
   room_items "zxlpath" {
@@ -1960,12 +1897,7 @@ item_desc = {
       description = ""
   x = 0
   y = 0
-  z = 16
-    }
-  room_exits "liandan_lin" {
-    room_id = rooms.liandan_lin.id
-    down = rooms.yujia.id
-    up = rooms.liandan_lin1.id
+  z = 18
     }
 
 # Generated from test_minimal_world_v2_modified/special/liandan_lin1.c by LPCConverter
@@ -1976,13 +1908,11 @@ item_desc = {
       description = "这是一片茂密的树林。很多棵几十丈高的大树聚在一块，象一把把琼天大 伞，连日月都被遮蔽得暗然无光。树林中还不时可以听到大自然发出的声响。"
   x = 0
   y = 0
-  z = 17
+  z = 19
     }
   room_exits "liandan_lin1" {
     room_id = rooms.liandan_lin1.id
-    down = rooms.liandan_lin.id
-    south = rooms.ximenwai.id
-    north = rooms.liandan_lin3.id
-    east = rooms.liandan_lin5.id
-    west = rooms.liandan_lin4.id
-    }
+  south = rooms.ximenwai.id
+  north = rooms.liandan_lin3.id
+  east = rooms.liandan_lin5.id
+  west = rooms.liandan_lin4.id  }
