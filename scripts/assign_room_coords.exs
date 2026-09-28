@@ -158,16 +158,34 @@ defmodule AssignRoomCoords do
     end
   end
 
-  # Count { and } in a line, ignoring braces inside "..."
-  defp brace_counts(line) do
-    {o, c, _q} =
+  # Count { and } in a line, ignoring braces inside "..." and comments (// or /* */)
+  defp brace_counts(line, in_multiline_comment \\ false) do
+    {o, c, _q, _mlc, _slc} =
       line
       |> String.to_charlist()
-      |> Enum.reduce({0, 0, false}, fn
-        ?", {o, c, q} -> {o, c, not q}
-        ?{, {o, c, false} -> {o + 1, c, false}
-        ?}, {o, c, false} -> {o, c + 1, false}
-        _, acc -> acc
+      |> Enum.reduce({0, 0, false, in_multiline_comment, false}, fn
+        ?/, {o, c, q, true, _slc} ->
+          # End of multiline comment */
+          {o, c, q, false, false}
+        ?*, {o, c, q, false, false} ->
+          # Potential start of multiline comment /*
+          {o, c, q, true, false}
+        ?/, {o, c, q, false, false} ->
+          # Potential start of single-line comment //
+          {o, c, q, false, true}
+        ?\n, {o, c, q, _mlc, true} ->
+          # End of single-line comment at newline
+          {o, c, q, _mlc, false}
+        ?", {o, c, q, _mlc, false} ->
+          # Toggle string state (only when not in comment)
+          {o, c, not q, _mlc, false}
+        ?{, {o, c, false, false, false} ->
+          # Only count braces when not in string or comment
+          {o + 1, c, false, false, false}
+        ?}, {o, c, false, false, false} ->
+          {o, c + 1, false, false, false}
+        _, {o, c, q, mlc, slc} ->
+          {o, c, q, mlc, slc}
       end)
 
     {o, c}
