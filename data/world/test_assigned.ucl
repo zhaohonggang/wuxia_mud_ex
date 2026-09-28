@@ -1283,8 +1283,8 @@ item_desc = {
     room_id = rooms.dir_macro_test.id
     up = rooms.encoding_test.id
     down = rooms.didao6.id
-    up = rooms.room_above.id
-    down = rooms.room_below.id
+    # up = rooms.room_above.id
+    # down = rooms.room_below.id
     }
 
   room_characters "dir_macro_test" {
@@ -1550,8 +1550,8 @@ direction = "west"
     south = rooms.room2.id
     east = rooms.room3.id
     west = rooms.room4.id
-    up = rooms.room_up.id
-    down = rooms.room_down.id
+    # up = rooms.room_up.id
+    # down = rooms.room_down.id
     }
 
   room_characters "large_room_test" {

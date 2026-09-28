@@ -66,7 +66,8 @@ defmodule AssignRoomCoords do
     end
 
     {assigned, final_exits_map} = assign_coords(room_ids, fields, exits_map, start_id)
-    new_content = rewrite(lines, fields, assigned, final_exits_map)
+    room_set = MapSet.new(room_ids)
+    new_content = rewrite(lines, fields, assigned, final_exits_map, room_set)
     |> add_missing_exit_blocks(final_exits_map)
     report(fields, assigned, start_id, path)
 
@@ -444,15 +445,15 @@ defp process_orphan_room(id, st) do
   # Rebuild the file, replacing x/y/z lines inside every `rooms "id"` block,
   # and updating `room_exits "id"` blocks with new exits.
 
-  defp rewrite(lines, fields, assigned, exits_map) do
+  defp rewrite(lines, fields, assigned, exits_map, room_set) do
     lines
-    |> Enum.reduce({[], nil}, &rewrite_line(&1, &2, fields, assigned, exits_map))
+    |> Enum.reduce({[], nil}, &rewrite_line(&1, &2, fields, assigned, exits_map, room_set))
     |> elem(0)
     |> Enum.reverse()
     |> Enum.join("\n")
   end
 
-  defp rewrite_line(line, {out, state}, fields, assigned, exits_map) do
+  defp rewrite_line(line, {out, state}, fields, assigned, exits_map, room_set) do
     cond do
       is_nil(state) ->
         case Regex.run(~r/^[ \t]*rooms "([^"]+)"[ \t]*\{/, line) do
@@ -486,7 +487,7 @@ defp process_orphan_room(id, st) do
         if depth2 == 0 do
           # closing brace line of the exits block
           block = Enum.reverse([line | eacc])
-          new_block = build_exits_block(block, eid, exits_map)
+          new_block = build_exits_block(block, eid, exits_map, room_set)
           {Enum.reverse(new_block) ++ out, nil}
         else
           {out, {:exits, eid, depth2, [line | eacc]}}
@@ -625,7 +626,7 @@ defp process_orphan_room(id, st) do
   end
 
   # Build/update room_exits block with new exits
-  defp build_exits_block(content, eid, exits_map) do
+  defp build_exits_block(content, eid, exits_map, room_set) do
     new_exits = Map.get(exits_map, eid)
     if new_exits == nil do
       content
@@ -664,12 +665,13 @@ defp process_orphan_room(id, st) do
           parse_exit_row(line) == nil
         end)
 
+      # An up/down exit whose target is a room not present in this zone is a
+      # phantom reference (test data like room_above/room_below). When the new
+      # z-axis link replaces it with a real room, comment the phantom out.
       exit_lines =
-        Enum.map(merged, fn
-          {dir, {:local, target}} ->
-            indent <> dir <> " = rooms." <> target <> ".id"
-          {dir, {:external, target}} ->
-            indent <> dir <> " = " <> target
+        Enum.map(merged, fn {dir, target} = row ->
+          comment = phantom_updown?(row, merged, room_set)
+          render_exit_row(dir, target, indent, comment)
         end)
 
       # Add closing brace
@@ -678,6 +680,32 @@ defp process_orphan_room(id, st) do
       non_exit_lines ++ exit_lines ++ [closing_brace]
     end
   end
+
+  defp render_exit_row(dir, {:local, target}, indent, comment) do
+    prefix = if comment, do: indent <> "# ", else: indent
+    prefix <> dir <> " = rooms." <> target <> ".id"
+  end
+
+  defp render_exit_row(dir, {:external, target}, indent, _comment) do
+    indent <> dir <> " = " <> target
+  end
+
+  # True when {dir,target} is a phantom up/down (points to a room not in this
+  # zone) AND a real replacement exists for the same direction in merged.
+  defp phantom_updown?({dir, {:local, target_id}}, merged, room_set) do
+    if dir in ["up", "down"] and not MapSet.member?(room_set, target_id) do
+      has_real_replacement =
+        Enum.any?(merged, fn {d, {:local, tid}} ->
+          d == dir and tid != target_id and MapSet.member?(room_set, tid)
+        end)
+
+      has_real_replacement
+    else
+      false
+    end
+  end
+
+  defp phantom_updown?(_other, _merged, _room_set), do: false
 
   # Replace the x/y/z lines with the assigned values; if a coordinate line is
   # absent from the block, insert the missing ones at the top of the block.
