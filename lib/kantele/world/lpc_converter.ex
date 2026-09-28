@@ -2263,7 +2263,7 @@ c ->
 
 room_block = room_block <> coords_block <> flags_block
 
-    # Behavior from valid_leave (guarded exits)
+# Behavior from valid_leave (guarded exits)
     behavior_block =
       case ast.valid_leave do
         nil -> ""
@@ -2272,11 +2272,11 @@ room_block = room_block <> coords_block <> flags_block
           behavior = "guarded_exit"
           behavior_config = {
             guard_npc = "#{vl.guard_npc}"
-            direction = "#{vl.direction}"
+            direction = "#{ucl_string(vl.direction)}"
             permit_module = "#{vl.permit_module}"
             permit_function = "#{vl.permit_function}"
           }
-        """
+          """
       end
 
     # Wall signs / menus from set("item_desc", ([ keyword : "..." ]))
@@ -2552,6 +2552,25 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
   defp ucl_string(str) do
     # Properly escape a string for UCL output: sanitize value content, then wrap in double quotes
     "\"" <> sanitize_ucl_sval(str) <> "\""
+  end
+
+  # Escape a string for use as a UCL object key (unquoted identifier)
+  defp ucl_key(key) do
+    key
+    |> String.replace(~r/[^a-zA-Z0-9_]/, "_")
+    |> String.replace(~r/^_+|_+$/, "")
+    |> String.trim()
+  end
+
+  # Escape a string for use as a UCL value - handles special chars that break UCL parsing
+  defp ucl_value(str) do
+    # Escape for use inside double-quoted string: escape backslash, quote, and special UCL chars
+    str
+    |> String.replace("\\", "\\\\")
+    |> String.replace("\"", "\\\"")
+    |> String.replace("\n", "\\n")
+    |> String.replace("\r", "")
+    |> String.replace("\t", "\\t")
   end
 
   defp generate_npc_ucl(ast, zone_id) do
@@ -3156,8 +3175,10 @@ defp sanitize_comment_text(text) do
         if entries == [] do
           ""
         else
+          # For UCL compatibility: item_desc values with complex chars (#, {, }, etc.)
+          # are serialized as a JSON-like string to avoid UCL parsing issues
           rendered = Enum.map_join(entries, ",\n", fn {keyword, text} ->
-            "      #{normalize_item_keyword(keyword)} = \"#{escape_set_string(text)}\""
+            "      #{ucl_key(keyword)} = #{ucl_string(ucl_value(text))}"
           end)
 
           """
@@ -3205,10 +3226,11 @@ defp sanitize_comment_text(text) do
       vetoes ->
         rendered =
           Enum.map_join(vetoes, ",\n", fn veto ->
-            dir = if veto.dir, do: ~s("#{veto.dir}"), else: "~"
-            message = ~s("#{escape_set_string(veto.message)}")
+            # Always quote direction (including "~" for any direction)
+            dir = if veto.dir, do: ucl_string(veto.dir), else: ucl_string("~")
+            message = ucl_string(ucl_value(veto.message))
 
-            # UCL 字符串不允许 `(`/`)`/`,` 等符号，条件原样保留为注释（仅档案用途）
+            # Condition is kept as comment outside the structure for UCL compatibility
             condition_comment =
               if veto.condition do
                 "  # 阻挡条件（原样保留）：#{veto.condition}\n"
