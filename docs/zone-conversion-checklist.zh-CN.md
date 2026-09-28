@@ -2,6 +2,8 @@
 
 > 基于 `docs/zone-conversion-plan.zh-CN.md`，**跳过 `minimal_world` 与 `minimal_world_v2`**（测试区，不接入正式世界）。
 > 共 71 个正式区域，按 BFS 层序逐个勾选。
+>
+> **游戏环境与热更/测试详见：** `docs/dev-reload-guide.zh-CN.md`
 
 ---
 
