@@ -2,5459 +2,1018 @@ zones "city" {
   name = "city"
 }
 
-# Generated from /mud/d/city/beidajie1.c by LPCConverter
-# Zone: city
-
     rooms "beidajie1" {
-      name = "北大街"
-      description = "你走在一条繁忙的街道上，看着操着南腔北调的人们行色 匆匆，许多人都往南边走去，那里有一个热闹的广场。东边是 一家生意兴隆的客栈，来自各地的人们进进出出，据说也是情 人们的幽会地点。西边是一家钱庄，可以听到叮叮当当的金银 声音。"
-  x = 0
-  y = 1
-  z = 0
+      name = "beidajie1"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "beidajie1" {
-    room_id = rooms.beidajie1.id
-  east = rooms.kedian.id
-  south = rooms.guangchang.id
-  west = rooms.qianzhuang.id
-  north = rooms.beidajie2.id  }
-
-
-
-# Generated from /mud/d/city/beidajie2.c by LPCConverter
-# Zone: city
 
     rooms "beidajie2" {
-      name = "北大街"
-      description = "这是一条宽阔的青石街道，向南北两头延伸。北边则是由 北城门通向城外。街道南边显得很繁忙。东边是一座两层的大 楼阁，挂着「太白遗风」的招帘，门额上悬挂一方横匾「醉仙 楼」三字擦得闪闪发亮，乃是苏学士的手笔。阵阵酒肉香酒香 让你垂涎欲滴。西边是一座古朴的庙宇，香火缭绕，那就是天 下学武之人所共同敬仰的武庙了。"
-  x = 0
-  y = 2
-  z = 0
+      name = "beidajie2"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "beidajie2" {
-    room_id = rooms.beidajie2.id
-  east = rooms.zuixianlou.id
-  south = rooms.beidajie1.id
-  west = rooms.wumiao.id
-  north = rooms.beimen.id  }
-
-# Generated from /mud/d/city/beimen.c by LPCConverter
-# Zone: city
 
     rooms "beimen" {
-      name = "北门"
-      description = "这是扬州城的北城门，因为曾经失火，到现在城墙还是黑 乎乎的，因此白纸黑字的官府告示 (gaoshi) 就显得特别现眼。 北方是一片崇山峻岭，一条黄土小径在山里蜿蜒而上。"
-  x = 0
-  y = 3
-  z = 0
+      name = "beimen"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "beimen" {
-    room_id = rooms.beimen.id
-  south = rooms.beidajie2.id
-  north = rooms.yidao.id
-  west = rooms.caodi1.id  }
-
-
-
-# Generated from /mud/d/city/bet.c by LPCConverter
-# Zone: city
 
     rooms "bet" {
-      name = "赌场"
-      description = "大厅里摆满大大小小的赌桌，只要能说出名的赌具，这里 都有。进来这里你首先听到的就是少女们吃吃的笑声和男人们 的吹牛声，掷骰子声……在这里，你几乎就可以听到世上所有 不规矩的声音。墙上挂着一块牌子(paizi)。"
-  x = 0
-  y = 0
-  z = 1
-item_desc = {
-      paizi = "##==================================##         ##                                  ##         ##             赌博规则             ##         ##                                  ##         ##                                  ##         ##  头彩 <tc> 骰数由每次开盘前确定  ##         ##            赔率：一赢三十六      ##         ##                                  ##         ##  双对 <sd> 两骰号相同，且为偶数  ##         ##            赔率：一赢十二        ##         ##                                  ##         ##  七星 <qx> 两个骰数之和为七      ##         ##            赔率：一赢六          ##         ##                                  ##         ##  散星 <sx> 和为三，五，九，十一  ##         ##            赔率：一赢三          ##         ##                                  ##         ##  开赌：                          ##         ##                                  ##         ##                                  ##         ##   bet  压盘种类  数量  货币种类  ##         ##                                  ##         ##                                  ##         ##                                  ##         ##==================================##"
-}
+      name = "bet"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "bet" {
-    room_id = rooms.bet.id
-  south = rooms.duchang.id  }
-
-
-# Generated from /mud/d/city/cangku.c by LPCConverter
-# Zone: city
 
     rooms "cangku" {
-      name = "仓库"
-      description = "这里是一间黑黝黝的仓库，堆满了唐家的各种杂物，塞了 满满一仓库。看来你是被人拐卖到这里来的。"
-  x = 0
-  y = 0
-  z = 2
+      name = "cangku"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-
-
-
-# Generated from /mud/d/city/chaguan.c by LPCConverter
-# Zone: city
 
     rooms "chaguan" {
-      name = "春来茶馆"
-      description = "你走进来就闻到一股茶香沁入心脾，精神为之一爽。几张 八仙桌一字排开，坐满了客人，或高声谈笑，或交头接耳。你 要想打听江湖掌故和谣言，这里是个好所在。"
-  x = -1
-  y = -1
-  z = 0
+      name = "chaguan"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "chaguan" {
-    room_id = rooms.chaguan.id
-  east = rooms.nandajie2.id  }
-
-
-# Generated from /mud/d/city/dangpu.c by LPCConverter
-# Zone: city
 
     rooms "dangpu" {
-      name = "当铺"
-      description = "这里是扬州城内一家以买卖公平著称的当铺，一个五尺高 的柜台挡在你的面前，柜台上摆着一个牌子 (paizi)，柜台后 坐着唐老板，一双精明的上上下下打量着你。"
-  x = 1
-  y = -1
-  z = 0
-item_desc = {
-      paizi = "##==================##         ##                  ##         ##     公平交易     ##         ##                  ##         ##  卖出：   sell   ##         ##                  ##         ##  买进：   buy    ##         ##                  ##         ##  估价：   value  ##         ##                  ##         ##                  ##         ##==================##"
-}
+      name = "dangpu"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "dangpu" {
-    room_id = rooms.dangpu.id
-  west = rooms.nandajie1.id  }
-
-
-# Generated from /mud/d/city/datiepu.c by LPCConverter
-# Zone: city
 
     rooms "datiepu" {
-      name = "打铁铺"
-      description = "这是一家简陋的打铁铺，中心摆着一个火炉，炉火把四周 照得一片通红，你一走进去就感到浑身火热。墙角堆满了已完 工和未完工的菜刀、铁锤、铁棍、匕首、盔甲等物。一位铁匠 满头大汗挥舞着铁锤，专心致志地在打铁。打铁铺东首的墙壁 上悬挂着一个牌子(paizi)。"
-  x = 2
-  y = -1
-  z = 0
-item_desc = {
-      paizi = "##====================##         ##                    ##         ##      负责维修      ##         ##                    ##         ##  repair  <兵器id>  ##         ##                    ##         ##                    ##         ##====================##"
-}
+      name = "datiepu"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "datiepu" {
-    room_id = rooms.datiepu.id
-  north = rooms.dongdajie2.id  }
-
-
-# Generated from /mud/d/city/daxiao.c by LPCConverter
-# Zone: city
 
     rooms "daxiao" {
-      name = "赌场"
-      description = "这里是赌大小的房间，四周的赌房里传出来吆五喝六的赌 博声。这个赌场规模虽算不上很大，但赌的种类却很齐全，服 务也非常周到。这里的墙上挂着一块牌子(paizi)。"
-  x = -1
-  y = -1
-  z = 1
-item_desc = {
-      paizi = "##==========================##         ##                          ##         ##         赌博规则         ##         ##                          ##         ##      用三粒色子撒在一只  ##         ##  碗里，色子点数总和在四  ##         ##  至十间为小，十一至十七  ##         ##  为大。如三粒色子点数相  ##         ##  同，则大小通吃。开大赔  ##         ##  大开小赔小，赔率一。接  ##         ##  受各种货币为赌注。限额  ##         ##  为五十到五百。          ##         ##                          ##         ##  开赌：                  ##         ##                          ##         ##          big             ##         ##   gamble  |  数量  货币  ##         ##         small            ##         ##                          ##         ##                          ##         ##=========================##"
-}
+      name = "daxiao"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "daxiao" {
-    room_id = rooms.daxiao.id
-  east = rooms.duchang.id  }
-
-
-# Generated from /mud/d/city/dongdajie1.c by LPCConverter
-# Zone: city
 
     rooms "dongdajie1" {
-      name = "东大街"
-      description = "这是一条宽阔的青石板街道，向东西两头延伸。东边不时 地传来金属撞击声，西边人声嘈杂。北边是一座院子，半月形 的大门上方写着「白鹿书院」四个烫金大字，苍劲有力。里面 不时地传来学生们抑扬顿挫的读书声。南边是一家杂货铺。"
-  x = 1
-  y = 0
-  z = 0
+      name = "dongdajie1"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "dongdajie1" {
-    room_id = rooms.dongdajie1.id
-  east = rooms.dongdajie2.id
-  south = rooms.zahuopu.id
-  west = rooms.guangchang.id
-  north = rooms.shuyuan.id  }
-
-
-# Generated from /mud/d/city/dongdajie2.c by LPCConverter
-# Zone: city
 
     rooms "dongdajie2" {
-      name = "东大街"
-      description = "东大街上，踩着坚实的青石板地面。东边是东城门，可以 听到守城官兵的吆喝声，与西边朗朗的读书声混杂在一起。北 边是一家老字号的药铺，南边是打铁铺，叮叮当当的声音老远 就能听到。"
-  x = 2
-  y = 0
-  z = 0
+      name = "dongdajie2"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "dongdajie2" {
-    room_id = rooms.dongdajie2.id
-  east = rooms.dongmen.id
-  south = rooms.datiepu.id
-  west = rooms.dongdajie1.id
-  north = rooms.yaopu.id  }
-
-# Generated from /mud/d/city/dongmen.c by LPCConverter
-# Zone: city
 
     rooms "dongmen" {
-      name = "东门"
-      description = "这是东城门，城门正上方刻着“东门”两个楷书大字，城 墙上贴着几张官府告示(gaoshi)。官兵们警惕地注视着过往行 人，你最好小心为妙。一条笔直的青石板大道向东西两边延伸。 东边是郊外，隐约可见一片一望无际的树林，神秘莫测。西边 是城里。北面有一片茂盛的青竹林。"
-  x = 3
-  y = 0
-  z = 0
+      name = "dongmen"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "dongmen" {
-    room_id = rooms.dongmen.id
-  east = rooms.yidao.id
-  north = rooms.ml1.id
-  south = rooms.jiaowai1.id
-  west = rooms.dongdajie2.id  }
-
-
-# Generated from /mud/d/city/dongting.c by LPCConverter
-# Zone: city
 
     rooms "dongting" {
-      name = "东厅"
-      description = "这里是衙门东厅，是知府招待客人的所在。厅中摆着一张 杉木圆桌和几张椅子，桌上是一套精致的宜兴瓷器。墙上挂着 一幅中堂，画的是猛虎下山，乃是知府的手笔。"
-  x = 0
-  y = 0
-  z = 3
+      name = "dongting"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "dongting" {
-    room_id = rooms.dongting.id
-  west = rooms.ymzhengting.id  }
-
-# Generated from /mud/d/city/duchang.c by LPCConverter
-# Zone: city
 
     rooms "duchang" {
-      name = "赌场"
-      description = "这里是赌场的大堂，四周的房间里传出来吆五喝六的赌博 声。这个赌场规模虽算不上很大，但赌的种类却很齐全，服务 也非常周到。"
-  x = 0
-  y = -1
-  z = 1
+      name = "duchang"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "duchang" {
-    room_id = rooms.duchang.id
-  west = rooms.daxiao.id
-  up = rooms.duchang2.id
-  north = rooms.bet.id
-  east = rooms.nandajie1.id  }
-
-
-
-# Generated from /mud/d/city/duchang2.c by LPCConverter
-# Zone: city
 
     rooms "duchang2" {
-      name = "赌场"
-      description = "这里是赌场的二楼，有四条走廊通向不同的房间。四周的 赌房里传出来吆五喝六的赌博声。赌场规模虽算不上大，但赌 的种类却很齐全，服务也非常周到。在这里，世上的各行各色 的人夹杂在一起。"
-  x = 0
-  y = -1
-  z = 2
+      name = "duchang2"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "duchang2" {
-    room_id = rooms.duchang2.id
-  east = rooms.eproom.id
-  west = rooms.wproom.id
-  south = rooms.sproom.id
-  north = rooms.nproom.id
-  down = rooms.duchang.id
-  
-
-  room_characters "duchang2" {
-    room_id = rooms.duchang2.id
-    characters = [
-      { id = characters.duke.id },
-      { id = characters.duke.id },
-      { id = characters.dipi.id }    ]
-  }
-
-# Generated from /mud/d/city/duchuan.c by LPCConverter
-# Zone: city
-
-    rooms "duchuan" {
-      name = "渡船"
-      description = "一叶小舟，最多也就能载七、八个人。一名六十多岁的老 艄公手持长竹篙，正在船尾吃力地撑着船。"
-  x = 0
-  y = 0
-  z = 0
-    }
-
-# Generated from /mud/d/city/eproom.c by LPCConverter
-# Zone: city
 
     rooms "eproom" {
-      name = "拱猪房"
-      description = "这是一间专门为拱猪而特别设计的拱猪房。房间里面灯火 通明，仿佛永远准备着为拱猪狂们服务似的。房间的中心放着 一张用百年老松树木材特制的拱猪桌 (table)，周围放着四把 楠木靠背椅。桌子上摆着一本记分簿(scoreboard)，北边的墙 上贴着一张纸(paper)。"
-  x = 2
-  y = 1
-  z = 1
-item_desc = {
-      paper = "请务必读 help pig_cmds 和 help pig_rules。"
-}
-valid_leave = [
-{
-    # 阻挡条件（原样保留）：me->query_temp("pigging_seat")
-direction = ~
-  message = "先离开拱猪桌才能行动。"
-}
-
-]
+      name = "eproom"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "eproom" {
-    room_id = rooms.eproom.id
-  west = rooms.duchang2.id  }
-
-# Generated from /mud/d/city/furong.c by LPCConverter
-# Zone: city
 
     rooms "furong" {
-      name = "芙蓉宴厅"
-      description = "这里是醉仙楼的芙蓉宴厅。你走进门，绕过了一道淡绿绸 屏风，迎面的墙上挂着一副『芙蓉出水图』，工笔彩绘，状极 清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌 玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼 生辉，桌上铺着份菜单(menu)。"
-  x = 0
-  y = 0
-  z = 4
-item_desc = {
-      menu = "##==========================##         ##                          ##         ##         承办酒席         ##         ##                          ##         ##  祝寿宴：order birthday  ##         ##                          ##         ##                二两黄金  ##         ##                          ##         ##  订婚宴：order marry     ##         ##                          ##         ##                三两黄金  ##         ##                          ##         ##  群豪宴：order player    ##         ##                          ##         ##                五两黄金  ##         ##                          ##         ##  结  束：order end       ##         ##                          ##         ##                          ##         ##                          ##         ##==========================##"
-}
-valid_leave = [
-{
-  direction = ~
-  message = "请先用 order end 结束宴会后才能离开。"
-}
-
-]
+      name = "furong"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "furong" {
-    room_id = rooms.furong.id
-  south = rooms.zxlpath.id  }
-
-# Generated from /mud/d/city/garments.c by LPCConverter
-# Zone: city
-
-    rooms "garments" {
-      name = "成衣店"
-      description = "这里是扬州名媛贵妇常到之处，现在也挤得凄凄惨惨，脂 粉横飞。因为这里卖的时尚，一直是她们最热衷的装扮。店主 是个很可人的小女孩，你认真一看，顿时发现满个店堂里的女 人加在一起，还不如她靓丽。"
-  x = 0
-  y = 0
-  z = 0
-    }
-  room_exits "garments" {
-    room_id = rooms.garments.id
-  down = rooms.zahuopu.id  }
-
-  room_characters "garments" {
-    room_id = rooms.garments.id
-    characters = [
-      { id = characters.zeng.id }    ]
-  }
-
-# Generated from /mud/d/city/gbxiaowu.c by LPCConverter
-# Zone: city
-
-    rooms "gbxiaowu" {
-      name = "破庙内部"
-      description = "你走进了土地庙。四周墙壁都由青竹篾编成，窗外是一望 无际的竹林。屋里的桌椅、床铺均为竹制。但一阵扑鼻而来的 狗肉香味，却显得与这清雅的气纷格格不入。"
-  x = 0
-  y = 0
-  z = 0
-    }
-  room_exits "gbxiaowu" {
-    room_id = rooms.gbxiaowu.id
-  out = rooms.pomiao.id  }
-
-
-  room_items "gbxiaowu" {
-    room_id = rooms.gbxiaowu.id
-    items = [
-      { id = items.hong.id }    ]
-  }
-
-# Generated from /mud/d/city/guangchang.c by LPCConverter
-# Zone: city
 
     rooms "guangchang" {
-      name = "中央广场"
-      description = "这里是城市的正中心，一个很宽阔的广场，铺着青石地面。 游手好闲的人常在这里溜溜达达，经常有艺人在这里表演。中 央一棵大榕树(tree)盘根错节，据传已有千年的树龄，是这座 城市的历史见证，树干底部有一个很大的树洞(dong)，树干显 眼的位置贴有一张告示(gaoshi)。你可以看到北边有来自各地 的行人来来往往，南面人声鼎沸，一派繁华景象，东边不时地 传来朗朗的读书声，西边则见不到几个行人，一片肃静。广场 西南角新辟了一条青石小径(liuxi)，路牌上写着「柳溪镇」。"
-  x = 0
-  y = 0
-  z = 0
-item_desc = {
-      dong = "这是一个黑不溜湫的大洞，里面不知道有些什么古怪。",
-      tree = "这是一棵巨大古老的大榕树，枝叶非常的茂密。"
-}
+      name = "guangchang"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "guangchang" {
-    room_id = rooms.guangchang.id
-  east = rooms.dongdajie1.id
-  south = rooms.nandajie1.id
-  west = rooms.xidajie1.id
-  north = rooms.beidajie1.id
-  in = rooms.inhole.id
-  liuxi = rooms.guangchang.id  }
-
-  room_characters "guangchang" {
-    room_id = rooms.guangchang.id
-    characters = [
-      { id = characters.jian_ke.id },
-      { id = characters.haoke1.id }    ]
-  }
-
-# Generated from /mud/d/city/jiaowai1.c by LPCConverter
-# Zone: city
 
     rooms "jiaowai1" {
-      name = "草地"
-      description = "这是扬州郊外的一片芳草地，落英缤纷，蜂歌蝶舞，朝露 夕光，沁人心脾。真是好时光。偶有几对小男女结伴踏青，莺 声丽影，嬉闹动人。"
-  x = -3
-  y = -1
-  z = 0
+      name = "jiaowai1"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "jiaowai1" {
-    room_id = rooms.jiaowai1.id
-  north = rooms.dongmen.id
-  south = rooms.jiaowai2.id  }
-
-# Generated from /mud/d/city/jiaowai10.c by LPCConverter
-# Zone: city
 
     rooms "jiaowai10" {
-      name = "密林"
-      description = "扬州郊外的茂密树林，阴森可怖。抬头不见天日。这里也 是扬州命案发生最多的地方。鸟兽蛇虫游荡不穷。"
-  x = 0
-  y = 0
-  z = 5
+      name = "jiaowai10"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "jiaowai10" {
-    room_id = rooms.jiaowai10.id
-  east = rooms.jiaowai9.id
-  west = rooms.jiaowai11.id
-  north = rooms.jiaowai12.id  }
-
-# Generated from /mud/d/city/jiaowai11.c by LPCConverter
-# Zone: city
 
     rooms "jiaowai11" {
-      name = "密林"
-      description = "扬州郊外的茂密树林，阴森可怖。抬头不见天日。这里也 是扬州命案发生最多的地方。鸟兽蛇虫游荡不穷。"
-  x = 0
-  y = 0
-  z = 6
+      name = "jiaowai11"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "jiaowai11" {
-    room_id = rooms.jiaowai11.id
-  east = rooms.jiaowai10.id
-  north = rooms.jiaowai13.id  }
-
-
-  room_items "jiaowai11" {
-    room_id = rooms.jiaowai11.id
-    items = [
-      { id = items.dushe.id },
-      { id = items.shitou.id }    ]
-  }
-
-# Generated from /mud/d/city/jiaowai12.c by LPCConverter
-# Zone: city
 
     rooms "jiaowai12" {
-      name = "密林"
-      description = "扬州郊外的茂密树林，阴森可怖。抬头不见天日。这里也 是扬州命案发生最多的地方。鸟兽蛇虫游荡不穷。"
-  x = 0
-  y = 0
-  z = 7
+      name = "jiaowai12"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "jiaowai12" {
-    room_id = rooms.jiaowai12.id
-  south = rooms.jiaowai10.id
-  west = rooms.jiaowai13.id  }
-
-
-  room_items "jiaowai12" {
-    room_id = rooms.jiaowai12.id
-    items = [
-      { id = items.dushe.id },
-      { id = items.shuzhi.id }    ]
-  }
-
-# Generated from /mud/d/city/jiaowai13.c by LPCConverter
-# Zone: city
 
     rooms "jiaowai13" {
-      name = "密林"
-      description = "扬州郊外的茂密树林，阴森可怖。抬头不见天日。这里也 是扬州命案发生最多的地方。鸟兽蛇虫游荡不穷。"
-  x = 0
-  y = 0
-  z = 8
+      name = "jiaowai13"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "jiaowai13" {
-    room_id = rooms.jiaowai13.id
-  south = rooms.jiaowai11.id
-  east = rooms.jiaowai12.id  }
-
-# Generated from /mud/d/city/jiaowai2.c by LPCConverter
-# Zone: city
 
     rooms "jiaowai2" {
-      name = "树林"
-      description = "扬州郊外的树林，松枝挺拔，乔木横斜。林间小道，逶迤 随远。林中蝉鸣厮闹，鸟啼宛转，使你顿时烦意尽消。地上落 了很多树枝石块。"
-  x = 0
-  y = 0
-  z = 9
+      name = "jiaowai2"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "jiaowai2" {
-    room_id = rooms.jiaowai2.id
-  north = rooms.jiaowai1.id
-  south = rooms.jiaowai3.id  }
-
-# Generated from /mud/d/city/jiaowai3.c by LPCConverter
-# Zone: city
 
     rooms "jiaowai3" {
-      name = "树林"
-      description = "扬州郊外的树林，松枝挺拔，乔木横斜。林间小道，逶迤 随远。林中蝉鸣厮闹，鸟啼宛转，使你顿时烦意尽消。地上落 了很多树枝石块。"
-  x = 0
-  y = 0
-  z = 10
+      name = "jiaowai3"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "jiaowai3" {
-    room_id = rooms.jiaowai3.id
-  north = rooms.jiaowai2.id
-  south = rooms.jiaowai4.id  }
-
-
-  room_items "jiaowai3" {
-    room_id = rooms.jiaowai3.id
-    items = [
-      { id = items.shitou.id }    ]
-  }
-
-# Generated from /mud/d/city/jiaowai4.c by LPCConverter
-# Zone: city
 
     rooms "jiaowai4" {
-      name = "密林"
-      description = "扬州郊外的茂密树林，阴森可怖。抬头不见天日。这里也 是扬州命案发生最多的地方。鸟兽蛇虫游荡不穷。"
-  x = 0
-  y = 0
-  z = 11
+      name = "jiaowai4"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "jiaowai4" {
-    room_id = rooms.jiaowai4.id
-  north = rooms.jiaowai3.id
-  west = rooms.jiaowai5.id
-  southeast = rooms.shulin1.id  }
-
-
-  room_items "jiaowai4" {
-    room_id = rooms.jiaowai4.id
-    items = [
-      { id = items.shuzhi.id },
-      { id = items.shitou.id }    ]
-  }
-
-# Generated from /mud/d/city/jiaowai5.c by LPCConverter
-# Zone: city
 
     rooms "jiaowai5" {
-      name = "密林"
-      description = "扬州郊外的茂密树林，阴森可怖。抬头不见天日。这里也 是扬州命案发生最多的地方。鸟兽蛇虫游荡不穷。"
-  x = 0
-  y = 0
-  z = 12
+      name = "jiaowai5"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "jiaowai5" {
-    room_id = rooms.jiaowai5.id
-  east = rooms.jiaowai4.id
-  west = rooms.jiaowai6.id  }
-
-
-  room_items "jiaowai5" {
-    room_id = rooms.jiaowai5.id
-    items = [
-      { id = items.shuzhi.id },
-      { id = items.dushe.id }    ]
-  }
-
-# Generated from /mud/d/city/jiaowai6.c by LPCConverter
-# Zone: city
 
     rooms "jiaowai6" {
-      name = "树林"
-      description = "扬州郊外的树林，松枝挺拔，乔木横斜。林间小道，逶迤 随远。林中蝉鸣厮闹，鸟啼宛转，使你顿时烦意尽消。地上落 了很多树枝石块。"
-  x = 0
-  y = 0
-  z = 13
+      name = "jiaowai6"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "jiaowai6" {
-    room_id = rooms.jiaowai6.id
-  east = rooms.jiaowai5.id
-  west = rooms.jiaowai7.id  }
-
-# Generated from /mud/d/city/jiaowai7.c by LPCConverter
-# Zone: city
 
     rooms "jiaowai7" {
-      name = "草地"
-      description = "这是扬州郊外的一片芳草地，落英缤纷，蜂歌蝶舞，朝露 夕光，沁人心脾。真是踏青远足好时光。"
-  x = 0
-  y = 0
-  z = 14
+      name = "jiaowai7"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "jiaowai7" {
-    room_id = rooms.jiaowai7.id
-  east = rooms.jiaowai6.id
-  west = rooms.nanmen.id  }
-
-# Generated from /mud/d/city/jiaowai8.c by LPCConverter
-# Zone: city
 
     rooms "jiaowai8" {
-      name = "草地"
-      description = "这是扬州郊外的一片芳草地，落英缤纷，蜂歌蝶舞，朝露 夕光，沁人心脾。呼朋唤友开怀欢乐正其时。"
-  x = 0
-  y = 0
-  z = 15
+      name = "jiaowai8"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "jiaowai8" {
-    room_id = rooms.jiaowai8.id
-  east = rooms.nanmen.id
-  west = rooms.jiaowai9.id  }
-
-# Generated from /mud/d/city/jiaowai9.c by LPCConverter
-# Zone: city
 
     rooms "jiaowai9" {
-      name = "密林"
-      description = "扬州郊外的茂密树林，阴森可怖。抬头不见天日。这里也 是扬州命案发生最多的地方。鸟兽蛇虫游荡不穷。"
-  x = 0
-  y = 0
-  z = 16
+      name = "jiaowai9"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "jiaowai9" {
-    room_id = rooms.jiaowai9.id
-  east = rooms.jiaowai8.id
-  west = rooms.jiaowai10.id  }
-
-
-  room_items "jiaowai9" {
-    room_id = rooms.jiaowai9.id
-    items = [
-      { id = items.shuzhi.id },
-      { id = items.dushe.id }    ]
-  }
-
-# Generated from /mud/d/city/kedian.c by LPCConverter
-# Zone: city
 
     rooms "kedian" {
-      name = "客店"
-      description = "这是一家价钱低廉的客栈，生意却是非常兴隆。外地游客 多选择这里落脚，你可以在这里打听到各地的风土人情。店小 二里里外外忙得团团转，接待着南腔北调的客人。客店的主人 从不露面，他究竟是谁，有各种各样的猜测。客店的西墙上挂 着一个牌子(paizi)。"
-  x = 1
-  y = 1
-  z = 0
-item_desc = {
-      paizi = "##==============================##         ##                              ##         ##    楼上雅房，每夜十两白银。  ##         ##                              ##         ##==============================##"
-}
-valid_leave = [
-{
-    # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "up"
-direction = "up"
-  message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊？"
-}
-,
-{
-    # 阻挡条件（原样保留）：me->query_temp("rent_paid") && dir == "west"
-direction = "west"
-  message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就走了呢！"
-}
-
-]
+      name = "kedian"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "kedian" {
-    room_id = rooms.kedian.id
-  west = rooms.beidajie1.id
-  up = rooms.kedian2.id
-  south = rooms.liaotian.id  }
-
-  room_characters "kedian" {
-    room_id = rooms.kedian.id
-    characters = [
-      { id = characters.xiaoer.id }    ]
-  }
-
-# Generated from /mud/d/city/kedian2.c by LPCConverter
-# Zone: city
 
     rooms "kedian2" {
-      name = "客店二楼"
-      description = "你正走在客店二楼的走廊上，可以听到从客房里不时地呼 呼的打酣声，一阵高过一阵。不时有睡意朦胧的旅客进进出出 到楼下的掌柜处付了钱再上来睡觉。"
-  x = 1
-  y = 1
-  z = 1
+      name = "kedian2"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "kedian2" {
-    room_id = rooms.kedian2.id
-  down = rooms.kedian.id
-  in = rooms.kedian3.id  }
-
-
-  room_items "kedian2" {
-    room_id = rooms.kedian2.id
-    items = [
-      { id = items.xingzhe.id }    ]
-  }
-
-# Generated from /mud/d/city/kedian3.c by LPCConverter
-# Zone: city
 
     rooms "kedian3" {
-      name = "客店二楼"
-      description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小 木床，不少客人正和衣而卧，满屋子都是呼呼的打酣声。西边 有张床是空的，你蹑手蹑脚地走了过去。"
-  x = 1
-  y = 1
-  z = 1
+      name = "kedian3"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "kedian3" {
-    room_id = rooms.kedian3.id
-  out = rooms.kedian2.id  }
-
-# Generated from /mud/d/city/leitai.c by LPCConverter
-# Zone: city
-
-    rooms "leitai" {
-      name = "擂台"
-      description = "这是一个四丈见方的擂台。粗壮结实的木柱撑起一片平台， 四角的支柱上高挂着四副对联，四面的观众都能清楚地看到台 上的手起脚落。梁上贴着一长条幅(tiaofu)。"
-  x = 0
-  y = 0
-  z = 0
-    }
-  room_exits "leitai" {
-    room_id = rooms.leitai.id
-  eastdown = rooms.wudao1.id
-  westdown = rooms.wudao2.id
-  southdown = rooms.wudao3.id
-  northdown = rooms.wudao4.id  }
-
-  room_characters "leitai" {
-    room_id = rooms.leitai.id
-    characters = [
-      { id = characters.referee.id }    ]
-  }
-
-# Generated from /mud/d/city/liaotian.c by LPCConverter
-# Zone: city
-
-    rooms "liaotian" {
-      name = "客店茶房"
-      description = "这里是扬州客栈的茶园，有许多无所事事的人都爱呆在这 里，店小二穿梭在客人中间，忙个不停。许多商人小贩也喜欢 在这里摆摊(指令：baitan)向大家兜售货物。"
-  x = 0
-  y = 0
-  z = 0
-    }
-  room_exits "liaotian" {
-    room_id = rooms.liaotian.id
-  north = rooms.kedian.id
-  east = rooms.qiyuan1.id  }
-
-  room_characters "liaotian" {
-    room_id = rooms.liaotian.id
-    characters = [
-      { id = characters.qichangfa.id }    ]
-  }
-
-  room_items "liaotian" {
-    room_id = rooms.liaotian.id
-    items = [
-      { id = items.peanut.id },
-      { id = items.fruit.id },
-      { id = items.mint.id }    ]
-  }
-
-# Generated from /mud/d/city/lichunyuan.c by LPCConverter
-# Zone: city
-
-    rooms "lichunyuan" {
-      name = "丽春院"
-      description = "你刚走进来，第一眼看到的就是大厅墙上挂着的一幅幅春 宫仕女图，一下子就明白了这里是什么地方。只见厅内到处张 灯结彩，香气扑鼻。几名打扮得妖里妖气的女人分站两旁对你 发出媚笑。主人韦春芳上上下下、前前后后招呼着客人。从楼 上传来了阵阵打情骂俏的声音。"
-  x = 0
-  y = 0
-  z = 0
-    }
-  room_exits "lichunyuan" {
-    room_id = rooms.lichunyuan.id
-  west = rooms.nandajie2.id
-  up = rooms.lichunyuan2.id  }
-
-  room_characters "lichunyuan" {
-    room_id = rooms.lichunyuan.id
-    characters = [
-      { id = characters.wei.id },
-      { id = characters.mao18.id }    ]
-  }
-
-# Generated from /mud/d/city/lichunyuan2.c by LPCConverter
-# Zone: city
-
-    rooms "lichunyuan2" {
-      name = "丽春院二楼"
-      description = "你站在丽春院二楼。满耳的淫声秽响不绝如缕。布置的绝 对精致的床上地下，突然对你产生莫名的诱惑和冲动。几个可 怜兮兮的千娇百媚在点手儿招你，你想到她们可能就是昔日江 湖中的眼高于顶，顿时大为开心。"
-  x = 0
-  y = 0
-  z = 0
-valid_leave = [
-{
-    # 阻挡条件（原样保留）：me->query_condition("prostitute")
-direction = ~
-  message = "龟公一把抱住你，喝道：看你往哪里逃！"
-}
-
-]
-    }
-  room_exits "lichunyuan2" {
-    room_id = rooms.lichunyuan2.id
-  down = rooms.lichunyuan.id  }
-
-  room_characters "lichunyuan2" {
-    room_id = rooms.lichunyuan2.id
-    characters = [
-      { id = characters.guigong.id }    ]
-  }
-
-# Generated from /mud/d/city/ma_bingqi.c by LPCConverter
-# Zone: city
 
     rooms "ma_bingqi" {
-      name = "兵器库"
-      description = "这里是马庄内存放兵器的重地，房里摆满了兵器架十八般 兵刃样样齐全。架子旁边挂着数十副闪闪发光的盔甲腰带和战 靴等物。一位丐帮五袋弟子正闭目养神，看守着这里。"
-  x = 0
-  y = 0
-  z = 17
+      name = "ma_bingqi"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ma_bingqi" {
-    room_id = rooms.ma_bingqi.id
-  east = rooms.ma_lianwu1.id  }
-
-  room_characters "ma_bingqi" {
-    room_id = rooms.ma_bingqi.id
-    characters = [
-      { id = characters.5dai.id },
-      { id = characters.staff.id },
-      { id = characters.staff.id },
-      { id = characters.staff.id }    ]
-  }
-
-  room_items "ma_bingqi" {
-    room_id = rooms.ma_bingqi.id
-    items = [
-      { id = items.changjian.id },
-      { id = items.gangdao.id }    ]
-  }
-
-# Generated from /mud/d/city/ma_chufang.c by LPCConverter
-# Zone: city
 
     rooms "ma_chufang" {
-      name = "柴房"
-      description = "这是一间矮小的瓦房，平时作为堆放杂物所用。房屋里布 满了蛛网，地面满是灰尘。看样子已经很久没有人打扫了。柴 房的一角斜放着几捆干柴。"
-  x = 0
-  y = 0
-  z = 18
+      name = "ma_chufang"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ma_chufang" {
-    room_id = rooms.ma_chufang.id
-  west = rooms.ma_dayuan.id  }
-
-
-  room_items "ma_chufang" {
-    room_id = rooms.ma_chufang.id
-    items = [
-      { id = items.ganchai.id }    ]
-  }
-
-# Generated from /mud/d/city/ma_damen.c by LPCConverter
-# Zone: city
 
     rooms "ma_damen" {
-      name = "马庄"
-      description = "这里一座颇为豪华的大宅院出现在你的眼前，两头高大的 石狮子镇住了大门两侧，朱漆大门足足有三寸厚。门上挂着两 个灯笼，写着「马庄」二字。马大元乃丐帮副帮主，以其家传 绝技三十二势锁喉擒拿手震烁江湖，在武林中威名远扬。"
-  x = 2
-  y = 1
-  z = 0
+      name = "ma_damen"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ma_damen" {
-    room_id = rooms.ma_damen.id
-  south = rooms.xidajie2.id
-  north = rooms.ma_dayuan.id  }
-
-  room_characters "ma_damen" {
-    room_id = rooms.ma_damen.id
-    characters = [
-      { id = characters.1dai.id },
-      { id = characters.2dai.id }    ]
-  }
-
-# Generated from /mud/d/city/ma_dayuan.c by LPCConverter
-# Zone: city
 
     rooms "ma_dayuan" {
-      name = "马庄大院"
-      description = "你走进大院，迎面是一个假山水池，池上摆着一块奇形怪 状的石头，据说是当年花石纲的遗石。水池的两旁种满了花草。 东边是一棵槐树，郁郁葱葱，遮盖了大半个院子。前方是一条 长廊走道通往后院，有几个丐帮弟子把守。"
-  x = 0
-  y = 0
-  z = 19
+      name = "ma_dayuan"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ma_dayuan" {
-    room_id = rooms.ma_dayuan.id
-  east = rooms.ma_chufang.id
-  north = rooms.ma_houyuan.id
-  south = rooms.ma_damen.id  }
-
-  room_characters "ma_dayuan" {
-    room_id = rooms.ma_dayuan.id
-    characters = [
-      { id = characters.3dai.id },
-      { id = characters.4dai.id }    ]
-  }
-
-# Generated from /mud/d/city/ma_houyuan.c by LPCConverter
-# Zone: city
 
     rooms "ma_houyuan" {
-      name = "马庄后院"
-      description = "这里是马庄的后院，布景和大院差不多。四周虽然聚集着 许多乞丐，但院内却是打整得很干净，便似一个大户人家的庭 园一般。通往大厅的门前守卫着几个乞丐。"
-  x = 0
-  y = 0
-  z = 20
+      name = "ma_houyuan"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ma_houyuan" {
-    room_id = rooms.ma_houyuan.id
-  north = rooms.ma_zhengting.id
-  south = rooms.ma_dayuan.id  }
-
-  room_characters "ma_houyuan" {
-    room_id = rooms.ma_houyuan.id
-    characters = [
-      { id = characters.6dai.id },
-      { id = characters.7dai.id }    ]
-  }
-
-  room_items "ma_houyuan" {
-    room_id = rooms.ma_houyuan.id
-    items = [
-      { id = items.quan.id }    ]
-  }
-
-# Generated from /mud/d/city/ma_huayuan.c by LPCConverter
-# Zone: city
 
     rooms "ma_huayuan" {
-      name = "花园"
-      description = "这里是一个小花园，虽比不上富豪大院里的万紫千红，但 却也布置得精致可人。丐帮里显然不乏高雅之士。春天里桃花 盛开，夏日池塘里荷花田田，秋天里菊花争艳，冬天则是一片 香雪海。花园旁站着一位老丐，也不知道在干什么。"
-  x = 0
-  y = 0
-  z = 21
+      name = "ma_huayuan"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ma_huayuan" {
-    room_id = rooms.ma_huayuan.id
-  west = rooms.ma_xiaojing.id  }
-
-
-  room_items "ma_huayuan" {
-    room_id = rooms.ma_huayuan.id
-    items = [
-      { id = items.bai.id }    ]
-  }
-
-# Generated from /mud/d/city/ma_lianwu1.c by LPCConverter
-# Zone: city
 
     rooms "ma_lianwu1" {
-      name = "练武场"
-      description = "空阔的场地上铺满了细细的黄土，正好适合演武。四面有 几个丐帮的弟子正在练武。练武场的中心竖着几根木桩，木桩 周围还挖了若干个大沙坑。西边是兵器库。而右边有一扇小门。"
-  x = 0
-  y = 0
-  z = 22
+      name = "ma_lianwu1"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ma_lianwu1" {
-    room_id = rooms.ma_lianwu1.id
-  west = rooms.ma_bingqi.id
-  east = rooms.ma_xiaojing.id
-  south = rooms.ma_zoulang2.id  }
-
-  room_characters "ma_lianwu1" {
-    room_id = rooms.ma_lianwu1.id
-    characters = [
-      { id = characters.1dai.id },
-      { id = characters.2dai.id },
-      { id = characters.6dai.id },
-      { id = characters.7dai.id }    ]
-  }
-
-# Generated from /mud/d/city/ma_xiaojing.c by LPCConverter
-# Zone: city
 
     rooms "ma_xiaojing" {
-      name = "小径"
-      description = "小路是用五彩缤纷的石子铺成的。石子组成各种花纹，甚 是好看。路边池塘里荷花亭亭，蜻蜓飞来飞去，只有偶尔传来 的几声蛙鸣打破了四周的宁静。"
-  x = 0
-  y = 0
-  z = 23
+      name = "ma_xiaojing"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ma_xiaojing" {
-    room_id = rooms.ma_xiaojing.id
-  west = rooms.ma_lianwu1.id
-  east = rooms.ma_huayuan.id  }
-
-# Generated from /mud/d/city/ma_yantinge.c by LPCConverter
-# Zone: city
 
     rooms "ma_yantinge" {
-      name = "马庄宴厅"
-      description = "这里是马庄的正厅，布置的颇为优雅，丝毫没有正厅上的 严肃气氛。一张红木大桌边上有个书柜，柜里摆了各式各样的 书。几个丐帮的乞丐围聚在这里。"
-  x = 0
-  y = 0
-  z = 24
+      name = "ma_yantinge"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ma_yantinge" {
-    room_id = rooms.ma_yantinge.id
-  west = rooms.ma_zhengting.id  }
-
-  room_characters "ma_yantinge" {
-    room_id = rooms.ma_yantinge.id
-    characters = [
-      { id = characters.5dai.id },
-      { id = characters.6dai.id },
-      { id = characters.7dai.id }    ]
-  }
-
-# Generated from /mud/d/city/ma_yantingw.c by LPCConverter
-# Zone: city
 
     rooms "ma_yantingw" {
-      name = "马庄宴厅"
-      description = "这里是马庄的正厅，布置的颇为优雅，丝毫没有正厅上的 严肃气氛。一张红木大桌边上有个书柜，柜里摆了各式各样的 书。几个丐帮的乞丐围聚在这里。"
-  x = 0
-  y = 0
-  z = 25
+      name = "ma_yantingw"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ma_yantingw" {
-    room_id = rooms.ma_yantingw.id
-  east = rooms.ma_zhengting.id  }
-
-  room_characters "ma_yantingw" {
-    room_id = rooms.ma_yantingw.id
-    characters = [
-      { id = characters.2dai.id },
-      { id = characters.3dai.id },
-      { id = characters.4dai.id }    ]
-  }
-
-# Generated from /mud/d/city/ma_zhengting.c by LPCConverter
-# Zone: city
 
     rooms "ma_zhengting" {
-      name = "马庄正厅"
-      description = "这里是马庄的正厅，厅内非常宽敞明亮。正中摆放着一张 八仙桌，四周墙壁上挂着一些字画。几个年龄较大的乞丐正坐 在大厅的中央，大声谈论着些什么。"
-  x = 0
-  y = 0
-  z = 26
+      name = "ma_zhengting"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ma_zhengting" {
-    room_id = rooms.ma_zhengting.id
-  west = rooms.ma_yantingw.id
-  east = rooms.ma_yantinge.id
-  north = rooms.ma_zoulang1.id
-  south = rooms.ma_houyuan.id  }
-
-  room_characters "ma_zhengting" {
-    room_id = rooms.ma_zhengting.id
-    characters = [
-      { id = characters.6dai.id },
-      { id = characters.7dai.id }    ]
-  }
-
-  room_items "ma_zhengting" {
-    room_id = rooms.ma_zhengting.id
-    items = [
-      { id = items.ma.id },
-      { id = items.xi.id },
-      { id = items.wu.id }    ]
-  }
-
-# Generated from /mud/d/city/ma_zoulang1.c by LPCConverter
-# Zone: city
 
     rooms "ma_zoulang1" {
-      name = "走廊"
-      description = "这是马庄内的一条木制的走廊，红漆地面很是光滑。整个 走廊被打整得一尘不染。你不时能够看到几个丐帮的弟子在此 走动，忙碌个不停。"
-  x = 0
-  y = 0
-  z = 27
+      name = "ma_zoulang1"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ma_zoulang1" {
-    room_id = rooms.ma_zoulang1.id
-  south = rooms.ma_zhengting.id
-  north = rooms.ma_zoulang2.id  }
-
-  room_characters "ma_zoulang1" {
-    room_id = rooms.ma_zoulang1.id
-    characters = [
-      { id = characters.1dai.id }    ]
-  }
-
-# Generated from /mud/d/city/ma_zoulang2.c by LPCConverter
-# Zone: city
 
     rooms "ma_zoulang2" {
-      name = "走廊"
-      description = "这是马庄内的一条木制的走廊，红漆地面很是光滑。整个 走廊被打整得一尘不染。你不时能够看到几个丐帮的弟子在此 走动，忙碌个不停。往北是个练武场。"
-  x = 0
-  y = 0
-  z = 28
+      name = "ma_zoulang2"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ma_zoulang2" {
-    room_id = rooms.ma_zoulang2.id
-  north = rooms.ma_lianwu1.id
-  south = rooms.ma_zoulang1.id  }
-
-  room_characters "ma_zoulang2" {
-    room_id = rooms.ma_zoulang2.id
-    characters = [
-      { id = characters.2dai.id }    ]
-  }
-
-# Generated from /mud/d/city/majiu.c by LPCConverter
-# Zone: city
 
     rooms "majiu" {
-      name = "马厩"
-      description = "这里是扬州客店后的马厩，常年供应新鲜草料。扬州民风 淳朴，马夫们会把马牵到马厩好生照看，将它们喂饱饮足，再 洗刷得干乾净净，一直伺候到客人上路。马厩雨檐下的烂木柱 上钉着一块破木牌 (paizi)。马厩中堆放著几堆草料。"
-  x = 0
-  y = 0
-  z = 29
+      name = "majiu"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "majiu" {
-    room_id = rooms.majiu.id
-  west = rooms.zuixianlou.id
-  north = rooms.zhujuan.id
-  up = rooms.yangzhou_shop.id  }
-
-  room_characters "majiu" {
-    room_id = rooms.majiu.id
-    characters = [
-      { id = characters.mafu.id }    ]
-  }
-
-  room_items "majiu" {
-    room_id = rooms.majiu.id
-    items = [
-      { id = items.zaohongma.id },
-      { id = items.huangbiaoma.id },
-      { id = items.ziliuma.id }    ]
-  }
-
-# Generated from /mud/d/city/meigui.c by LPCConverter
-# Zone: city
 
     rooms "meigui" {
-      name = "玫瑰宴厅"
-      description = "这里是醉仙楼的玫瑰宴厅。你走进门，绕过了一道淡绿绸 屏风，迎面的墙上挂着一副『玫瑰含露图』，工笔彩绘，状极 清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌 玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼 生辉，桌上铺着份菜单(menu)。"
-  x = 0
-  y = 0
-  z = 30
-item_desc = {
-      menu = "##==========================##         ##                          ##         ##         承办酒席         ##         ##                          ##         ##  祝寿宴：order birthday  ##         ##                          ##         ##                二两黄金  ##         ##                          ##         ##  订婚宴：order marry     ##         ##                          ##         ##                三两黄金  ##         ##                          ##         ##  群豪宴：order player    ##         ##                          ##         ##                五两黄金  ##         ##                          ##         ##  结  束：order end       ##         ##                          ##         ##                          ##         ##                          ##         ##==========================##"
-}
-valid_leave = [
-{
-  direction = ~
-  message = "请先用 order end 结束宴会后才能离开。"
-}
-
-]
+      name = "meigui"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "meigui" {
-    room_id = rooms.meigui.id
-  west = rooms.zxlpath.id  }
-
-# Generated from /mud/d/city/ml1.c by LPCConverter
-# Zone: city
 
     rooms "ml1" {
-      name = "青竹林"
-      description = "这是一片茂密的青竹林，一走进来，你仿佛迷失了方向。"
-  x = 0
-  y = 0
-  z = 31
+      name = "ml1"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ml1" {
-    room_id = rooms.ml1.id
-  east = rooms.ml2.id
-  west = rooms.__file__.id
-  south = rooms.dongmen.id
-  north = rooms.__file__.id  }
-
-# Generated from /mud/d/city/ml2.c by LPCConverter
-# Zone: city
 
     rooms "ml2" {
-      name = "青竹林"
-      description = "这是一片茂密的青竹林，一走进来，你仿佛迷失了方向。"
-  x = 0
-  y = 0
-  z = 32
+      name = "ml2"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ml2" {
-    room_id = rooms.ml2.id
-  east = rooms.__file__.id
-  west = rooms.__file__.id
-  south = rooms.dongmen.id
-  north = rooms.ml3.id  }
-
-# Generated from /mud/d/city/ml3.c by LPCConverter
-# Zone: city
 
     rooms "ml3" {
-      name = "青竹林"
-      description = "这是一片茂密的青竹林，一走进来，你仿佛迷失了方向。"
-  x = 0
-  y = 0
-  z = 33
+      name = "ml3"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ml3" {
-    room_id = rooms.ml3.id
-  east = rooms.__file__.id
-  west = rooms.ml4.id
-  south = rooms.dongmen.id
-  north = rooms.__file__.id  }
-
-# Generated from /mud/d/city/ml4.c by LPCConverter
-# Zone: city
 
     rooms "ml4" {
-      name = "青竹林"
-      description = "这是一片茂密的青竹林，一走进来，你仿佛迷失了方向。"
-  x = 0
-  y = 0
-  z = 34
+      name = "ml4"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ml4" {
-    room_id = rooms.ml4.id
-  east = rooms.__file__.id
-  west = rooms.__file__.id
-  south = rooms.dongmen.id
-  north = rooms.ml5.id  }
-
-# Generated from /mud/d/city/ml5.c by LPCConverter
-# Zone: city
 
     rooms "ml5" {
-      name = "青竹林"
-      description = "这是一片茂密的青竹林，一走进来，你仿佛迷失了方向。"
-  x = 0
-  y = 0
-  z = 35
+      name = "ml5"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ml5" {
-    room_id = rooms.ml5.id
-  east = rooms.ml6.id
-  west = rooms.__file__.id
-  south = rooms.dongmen.id
-  north = rooms.__file__.id  }
-
-# Generated from /mud/d/city/ml6.c by LPCConverter
-# Zone: city
 
     rooms "ml6" {
-      name = "青竹林"
-      description = "这是一片茂密的青竹林，一走进来，你仿佛迷失了方向。"
-  x = 0
-  y = 0
-  z = 36
+      name = "ml6"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ml6" {
-    room_id = rooms.ml6.id
-  east = rooms.__file__.id
-  west = rooms.ml7.id
-  south = rooms.dongmen.id
-  north = rooms.__file__.id  }
-
-# Generated from /mud/d/city/ml7.c by LPCConverter
-# Zone: city
 
     rooms "ml7" {
-      name = "青竹林"
-      description = "这是一片茂密的青竹林，一走进来，你仿佛迷失了方向。"
-  x = 0
-  y = 0
-  z = 37
+      name = "ml7"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ml7" {
-    room_id = rooms.ml7.id
-  east = rooms.__file__.id
-  west = rooms.__file__.id
-  south = rooms.dongmen.id
-  north = rooms.pomiao.id  }
-
-# Generated from /mud/d/city/mudan.c by LPCConverter
-# Zone: city
 
     rooms "mudan" {
-      name = "牡丹宴厅"
-      description = "这里是醉仙楼的牡丹宴厅。你走进门，绕过了一道淡绿绸 屏风，迎面的墙上挂着一副『牡丹争艳图』，工笔彩绘，状极 清雅，气质卓绝。厅内陈列奢华，正中央一张雕花楠木青漆嵌 玉大圆桌。四周十二张镶银象牙扶手红木椅，杯碗勺箸，入眼 生辉，桌上铺着份菜单(menu)。"
-  x = 0
-  y = 0
-  z = 38
-item_desc = {
-      menu = "##==========================##         ##                          ##         ##         承办酒席         ##         ##                          ##         ##  祝寿宴：order birthday  ##         ##                          ##         ##                二两黄金  ##         ##                          ##         ##  订婚宴：order marry     ##         ##                          ##         ##                三两黄金  ##         ##                          ##         ##  群豪宴：order player    ##         ##                          ##         ##                五两黄金  ##         ##                          ##         ##  结  束：order end       ##         ##                          ##         ##                          ##         ##                          ##         ##==========================##"
-}
-valid_leave = [
-{
-  direction = ~
-  message = "请先用 order end 结束宴会后才能离开。"
-}
-
-]
+      name = "mudan"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "mudan" {
-    room_id = rooms.mudan.id
-  north = rooms.zxlpath.id  }
-
-# Generated from /mud/d/city/mudren.c by LPCConverter
-# Zone: city
-
-    rooms "mudren" {
-      name = "武林外传"
-      description = "武林外传是炎黄群侠传中为大家提供休闲娱乐服务的组织，这里是办公 区，这里由游戏管理员雪风负责，话说在酒楼长租办公区真是够奢侈的，也 不明白他究竟在干些什么。你可以看见在右边有一个奇怪的传送门（door）， 左边有一个服务台（serve）。"
-  x = 0
-  y = 0
-  z = 0
-item_desc = {
-      door = "〖武林外传〗这是通向新世界的大门，你可以进去(enter)看看。",
-      serve = "服务台上写着：     广大的泥友们，你们好！     欢迎访问--bbs.mud.ren                                          秋林拾叶"
-}
-valid_leave = [
-{
-    # 阻挡条件（原样保留）：dir == "enter" && !userp(me)
-direction = "enter"
-  message = "你感觉前方有一种奇异的力场拦住了你的去路。"
-}
-
-]
-    }
-  room_exits "mudren" {
-    room_id = rooms.mudren.id
-  south = rooms.zuixianlou.id
-  enter = rooms.([ "filename" : _dir_area_"world.id
-  x_axis = "unknown"
-  y_axis = rooms.69
-                ]).id  }
-
-  room_characters "mudren" {
-    room_id = rooms.mudren.id
-    characters = [
-      { id = characters.mudren_mm.id },
-      { id = characters.mudren_mm.id }    ]
-  }
-
-  room_items "mudren" {
-    room_id = rooms.mudren.id
-    items = [
-      { id = items.poem_book.id },
-      { id = items.idiom_book.id }    ]
-  }
-
-# Generated from /mud/d/city/nandajie1.c by LPCConverter
-# Zone: city
 
     rooms "nandajie1" {
-      name = "南大街"
-      description = "南大街是城里的繁华地段，一到晚上，一派灯红酒绿，尤 为热闹。笑声、琴声、箫声汇成一片送入了你的耳朵，你不禁 心猿意马，很想就此停步享受一番。北边是个热闹的广场。东 边是一家店铺，墙上写着一个大大的「当」字，仔细倾听，可 以听到压低的讨价还价的声音。西边则是一片喧嚣，夹杂着一 五一十的数钱声，原来那是方圆千里之内最大的一家赌场。"
-  x = 0
-  y = -1
-  z = 0
+      name = "nandajie1"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "nandajie1" {
-    room_id = rooms.nandajie1.id
-  east = rooms.dangpu.id
-  south = rooms.nandajie2.id
-  west = rooms.duchang.id
-  north = rooms.guangchang.id  }
-
-  room_characters "nandajie1" {
-    room_id = rooms.nandajie1.id
-    characters = [
-      { id = characters.hunhun.id },
-      { id = characters.liumang.id },
-      { id = characters.liumang.id },
-      { id = characters.liumang.id },
-      { id = characters.liumang.id },
-      { id = characters.liumangtou.id },
-      { id = characters.xunbu.id }    ]
-  }
-
-# Generated from /mud/d/city/nandajie2.c by LPCConverter
-# Zone: city
 
     rooms "nandajie2" {
-      name = "南大街"
-      description = "你走在一条繁华的街道上，向南北两头延伸。南边是南城 门，北边通往市中心，西边是一家顾客众多的茶馆，三教九流 人士都在那谈天说地。东边一座两层的楼房传来阵阵浪笑，那 就是天下闻名的丽春院。"
-  x = 0
-  y = -1
-  z = 0
+      name = "nandajie2"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "nandajie2" {
-    room_id = rooms.nandajie2.id
-  east = rooms.lichunyuan.id
-  south = rooms.nanmen.id
-  west = rooms.chaguan.id
-  north = rooms.nandajie1.id  }
-
-
-  room_items "nandajie2" {
-    room_id = rooms.nandajie2.id
-    items = [
-      { id = items.tuoboseng.id }    ]
-  }
-
-# Generated from /mud/d/city/nanmen.c by LPCConverter
-# Zone: city
 
     rooms "nanmen" {
-      name = "南门"
-      description = "这是扬州城的南城门，城墙被当成了广告牌，贴满了花花 绿绿各行各业的广告，官府的告示(gaoshi)因此不太显目。官 兵们被近处的欢声笑语所吸引，似乎不是很认真在执勤。一条 笔直的青石板大道向南北两边延伸。"
-  x = 0
-  y = -2
-  z = 0
-    }
-  room_exits "nanmen" {
-    room_id = rooms.nanmen.id
-  south = rooms.wdroad1.id
-  north = rooms.nandajie2.id
-  west = rooms.jiaowai8.id
-  east = rooms.jiaowai7.id  }
-
-  room_characters "nanmen" {
-    room_id = rooms.nanmen.id
-    characters = [
-      { id = characters.wujiang.id },
-      { id = characters.wujiang.id },
-      { id = characters.bing.id },
-      { id = characters.bing.id },
-      { id = characters.bing.id },
-      { id = characters.bing.id },
-      { id = characters.shisong.id },
-      { id = characters.walker.id }    ]
-  }
-
-# Generated from /mud/d/city/neizhai.c by LPCConverter
-# Zone: city
-
-    rooms "neizhai" {
-      name = "内宅"
-      description = "这里是衙门内宅，住着知府的家眷。外人到此就该止步了。"
-  x = 0
-  y = 0
-  z = 0
-    }
-  room_exits "neizhai" {
-    room_id = rooms.neizhai.id
-  south = rooms.ymzhengting.id  }
-
-  room_characters "neizhai" {
-    room_id = rooms.neizhai.id
-    characters = [
-      { id = characters.yuhuan.id }    ]
-  }
-
-# Generated from /mud/d/city/npc/aqingsao.c by LPCConverter
-# Zone: city
-
-    characters "aqingsao" {
-      name = "阿庆嫂"
-      description = "阿庆嫂是扬州城里有名的大美人，因为爷儿们总喜欢往她这儿逛， 所以她对城里的一举一动都了如指掌。"
-  title = "茶馆老板娘"
-  nickname = "消息灵通"
-  gender = "女性"
-  age = 25
-  shen_type = 1
-  brain = brains.dealer
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 500
-    str = 30
-  }
-
-  goods = [
-    { id = items.peanut.id }
-    { id = items.tofu.id }
-  ]
-
-  inquiries = [
-    { key = "生意" value = "这个么……
-" },
-    { key = "阿庆" value = "我们家阿庆去北边做生意去了耶。
-" }
-  ]
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-
-  init = {
-    greet_delay = 1
-    add_actions = ["list", "buy"]
-  }
-
-  greetings = [
-    { line = "阿庆嫂笑眯眯地说道：这位{respect}，快请进来喝杯热茶。" },
-    { line = "阿庆嫂说道：哟！这位{respect}您来了啊！本店有刚炸好的五香花生出售。" }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/baibian.c by LPCConverter
-# Zone: city
-
-    characters "baibian" {
-      name = "张三"
-      description = "一位邋邋遢遢的道士。"
-  title = "百变道人"
-  gender = "男性"
-  age = 50
-
-  combat = {
-    attitude = "heroism"
-    combat_exp = 25000
-    con = 30
-    dex = 23
-    int = 27
-    max_jing = 300
-    max_neili = 600
-    max_qi = 600
-    str = 21
-  }
-
-  skills = [
-    { skill = "force" level = 43 },
-    { skill = "unarmed" level = 51 },
-    { skill = "sword" level = 37 },
-    { skill = "dodge" level = 59 },
-    { skill = "parry" level = 40 },
-    { skill = "taiji-quan" level = 42 },
-    { skill = "taiji-jian" level = 41 },
-    { skill = "taiji-shengong" level = 40 },
-    { skill = "tiyunzong" level = 53 },
-    { type = "force" skill = "taiji-shengong" },
-    { type = "unarmed" skill = "taiji-quan" },
-    { type = "parry" skill = "taiji-quan" },
-    { type = "sword" skill = "taiji-jian" },
-    { type = "dodge" skill = "tiyunzong" }
-  ]
-
-
-  carry = [
-    { id = items.mask.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/npc/biaotou.c by LPCConverter
-# Zone: city
-
-    characters "biaotou" {
-      name = "镖头"
+      name = "nanmen"
       description = ""
-  gender = "男性"
-  age = 35
-  shen_type = 1
-
-  combat = {
-    combat_exp = 5000
-  }
-
-  skills = [
-    { skill = "unarmed" level = 30 },
-    { skill = "blade" level = 40 },
-    { skill = "parry" level = 30 },
-    { skill = "dodge" level = 30 }
-  ]
-
-
-  carry = [
-    { id = items.gangdao.id },
-    { id = items.cloth.id }
-  ]
-
+      x = 0
+      y = 0
+      z = 0
     }
-
-# Generated from /mud/d/city/npc/bing.c by LPCConverter
-# Zone: city
-
-    characters "bing" {
-      name = "官兵"
-      description = "虽然官兵的武艺不能和武林人士相比，可是他们讲究的是人多力量大。"
-  gender = "男性"
-  age = 22
-  shen_type = 1
-
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    dex = 16
-    str = 24
-  }
-
-  skills = [
-    { skill = "unarmed" level = 40 },
-    { skill = "dodge" level = 40 },
-    { skill = "parry" level = 40 },
-    { skill = "blade" level = 40 },
-    { skill = "force" level = 40 }
-  ]
-
-
-  carry = [
-    { id = items.blade.id },
-    { id = items.junfu.id }
-  ]
-
-
-  engage = {
-    fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
-  }
-    }
-
-# Generated from /mud/d/city/npc/chen.c by LPCConverter
-# Zone: city
-
-    characters "chen" {
-      name = "陈有德"
-      description = "陈有德是扬州武馆馆长。"
-  gender = "男性"
-  age = 45
-  shen_type = 1
-  brain = brains.dealer
-
-  combat = {
-    combat_exp = 400000
-  }
-
-  skills = [
-    { skill = "dodge" level = 80 },
-    { skill = "force" level = 80 },
-    { skill = "parry" level = 80 },
-    { skill = "claw" level = 80 },
-    { skill = "hand" level = 80 },
-    { skill = "strike" level = 80 },
-    { skill = "finger" level = 80 },
-    { skill = "cuff" level = 80 },
-    { skill = "blade" level = 80 },
-    { skill = "club" level = 80 },
-    { skill = "staff" level = 80 },
-    { skill = "sword" level = 80 },
-    { skill = "throwing" level = 80 }
-  ]
-
-
-  carry = [
-    { id = items.basic_sword.id },
-    { id = items.basic_sword.id },
-    { id = items.basic_sword.id },
-    { id = items.basic_sword.id },
-    { id = items.basic_sword.id },
-    { id = items.basic_blade.id },
-    { id = items.basic_blade.id },
-    { id = items.basic_blade.id },
-    { id = items.basic_blade.id },
-    { id = items.basic_blade.id },
-    { id = items.basic_dagger.id },
-    { id = items.basic_dagger.id },
-    { id = items.basic_dagger.id },
-    { id = items.basic_dagger.id },
-    { id = items.basic_dagger.id },
-    { id = items.basic_unarmed.id },
-    { id = items.basic_unarmed.id },
-    { id = items.basic_unarmed.id },
-    { id = items.basic_unarmed.id },
-    { id = items.basic_unarmed.id },
-    { id = items.basic_dodge.id },
-    { id = items.basic_dodge.id },
-    { id = items.basic_dodge.id },
-    { id = items.basic_dodge.id },
-    { id = items.basic_dodge.id },
-    { id = items.basic_parry.id },
-    { id = items.basic_parry.id },
-    { id = items.basic_parry.id },
-    { id = items.basic_parry.id },
-    { id = items.basic_parry.id },
-    { id = items.basic_force.id },
-    { id = items.basic_force.id },
-    { id = items.basic_force.id },
-    { id = items.basic_force.id },
-    { id = items.basic_force.id },
-    { id = items.basic_staff.id },
-    { id = items.basic_staff.id },
-    { id = items.basic_staff.id },
-    { id = items.basic_staff.id },
-    { id = items.basic_staff.id },
-    { id = items.basic_whip.id },
-    { id = items.basic_whip.id },
-    { id = items.basic_whip.id },
-    { id = items.basic_whip.id },
-    { id = items.basic_whip.id },
-    { id = items.basic_throwing.id },
-    { id = items.basic_throwing.id },
-    { id = items.basic_throwing.id },
-    { id = items.basic_throwing.id },
-    { id = items.basic_throwing.id }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["buy", "list"]
-  }
-
-  accept = [
-    { kind = "money" min = 500 accept = true msg = "陈有德望着{npc}说：你的武功应该历练江湖才能再长进，不能埋没在这里了。" },
-    { kind = "any" accept = false msg = ["陈有德望着{npc}说：你的武功应该历练江湖才能再长进，不能埋没在这里了。", "陈有德对{npc}说：好！这位想学什么呢？", "陈有德皱眉对{npc}说：钱我不在乎。可你也给的也太少了点儿吧？"] }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/cheng.c by LPCConverter
-# Zone: city
-
-    characters "cheng" {
-      name = "程药发"
-      description = "他就是程药发，扬州现任知府。"
-  title = "扬州知府"
-  gender = "男性"
-  age = 43
-  shen_type = 0
-
-  combat = {
-    attitude = "heroism"
-    combat_exp = 30000
-    dex = 20
-    max_neili = 500
-    str = 20
-  }
-
-  skills = [
-    { skill = "unarmed" level = 50 },
-    { skill = "force" level = 50 },
-    { skill = "sword" level = 50 },
-    { skill = "dodge" level = 50 },
-    { skill = "parry" level = 50 }
-  ]
-
-
-  carry = [
-    { id = items.gangjian.id },
-    { id = items.cloth.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/npc/chuanfu1.c by LPCConverter
-# Zone: city
-
-    characters "chuanfu1" {
-      name = "老船夫"
-      description = ""
-  gender = "男性"
-  age = 56
-  shen_type = 1
-
-  combat = {
-    combat_exp = 1000000
-    max_neili = 100
-    str = 800
-  }
-
-  skills = [
-    { skill = "force" level = 100 },
-    { skill = "unarmed" level = 300 },
-    { skill = "dodge" level = 100 },
-    { skill = "parry" level = 100 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-
-  accept = [
-    { kind = "money" min = 2000 accept = true msg = "老船夫对{npc}说：好！这位请上船吧。" },
-    { kind = "any" accept = false }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/chuanfu2.c by LPCConverter
-# Zone: city
-
-    characters "chuanfu2" {
-      name = "老船夫"
-      description = ""
-  gender = "男性"
-  age = 56
-  shen_type = 1
-
-  combat = {
-    combat_exp = 1000000
-    max_neili = 100
-    str = 800
-  }
-
-  skills = [
-    { skill = "force" level = 100 },
-    { skill = "unarmed" level = 300 },
-    { skill = "dodge" level = 100 },
-    { skill = "parry" level = 100 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-
-  accept = [
-    { kind = "money" min = 2000 accept = true msg = "老船夫对{npc}说：好！这位请上船吧。" },
-    { kind = "any" accept = false }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/cloth/belt.c by LPCConverter
-# Zone: city
-
-    characters "belt" {
-      name = "软金束带"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/boots.c by LPCConverter
-# Zone: city
-
-    characters "boots" {
-      name = "羊皮靴"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/bu-shoes.c by LPCConverter
-# Zone: city
-
-    characters "bu_shoes" {
-      name = "布鞋"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/cloth.c by LPCConverter
-# Zone: city
-
-    characters "cloth" {
-      name = "浅蓝色马褂"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/color-dress.c by LPCConverter
-# Zone: city
-
-    characters "color_dress" {
-      name = "五彩绣花裙"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/dress.c by LPCConverter
-# Zone: city
-
-    characters "dress" {
-      name = "梨花飘雪裳"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/feature.c by LPCConverter
-# Zone: city
-
-    characters "feature" {
-      name = "孔雀羽衣"
-      description = "这是一件出自天宫织女妙手神裁的羽纱轻衣。款式新颖别致，\n轻柔飘逸的。放在手中简直轻若无物，真是一件服饰极品。\n"
-    }
-
-# Generated from /mud/d/city/npc/cloth/fu-cloth.c by LPCConverter
-# Zone: city
-
-    characters "fu_cloth" {
-      name = "富贵团金褂"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/gui-dress.c by LPCConverter
-# Zone: city
-
-    characters "gui_dress" {
-      name = "桂花浮玉衫"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/hat.c by LPCConverter
-# Zone: city
-
-    characters "hat" {
-      name = "缨子帽"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/jade-belt.c by LPCConverter
-# Zone: city
-
-    characters "jade_belt" {
-      name = "蓝宝石腰带"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/liu-dress.c by LPCConverter
-# Zone: city
-
-    characters "liu_dress" {
-      name = "翠柳鹦鹉服"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/marry-dress.c by LPCConverter
-# Zone: city
-
-    characters "marry_dress" {
-      name = "结婚礼服"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/mini-dress.c by LPCConverter
-# Zone: city
-
-    characters "mini_dress" {
-      name = "彩缎紧身袄"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/moon-dress.c by LPCConverter
-# Zone: city
-
-    characters "moon_dress" {
-      name = "琼花皎月裳"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/pink-dress.c by LPCConverter
-# Zone: city
-
-    characters "pink_dress" {
-      name = "梨花飘雪裳"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/qi-dress.c by LPCConverter
-# Zone: city
-
-    characters "qi_dress" {
-      name = "七彩霞云衣"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/red-dress.c by LPCConverter
-# Zone: city
-
-    characters "red_dress" {
-      name = "霓红连衣裙"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/scarf.c by LPCConverter
-# Zone: city
-
-    characters "scarf" {
-      name = "一字逍遥巾"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/sha-dress.c by LPCConverter
-# Zone: city
-
-    characters "sha_dress" {
-      name = "梨芯淡烟纱"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/shoes.c by LPCConverter
-# Zone: city
-
-    characters "shoes" {
-      name = "绣花鞋"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/xian-cloth.c by LPCConverter
-# Zone: city
-
-    characters "xian_cloth" {
-      name = "玄色紧身袄"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/xiu-cloth.c by LPCConverter
-# Zone: city
-
-    characters "xiu_cloth" {
-      name = "淡烟秀才装"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/xiu-scarf.c by LPCConverter
-# Zone: city
-
-    characters "xiu_scarf" {
-      name = "绣花小方巾"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/yan-dress.c by LPCConverter
-# Zone: city
-
-    characters "yan_dress" {
-      name = "艳露凝香衣"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/cloth/zi-dress.c by LPCConverter
-# Zone: city
-
-    characters "zi_dress" {
-      name = "紫绫纱湘裙"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/douji.c by LPCConverter
-# Zone: city
-
-    characters "douji" {
-      name = "斗鸡"
-      description = "一只雄赳赳的斗鸡。"
-  gender = "雄性"
-  age = 2
-
-  combat = {
-    attitude = "friendly"
-    con = 5
-    int = 5
-    max_jing = 50
-    max_qi = 50
-    str = 10
-  }
-    }
-
-# Generated from /mud/d/city/npc/guanjia.c by LPCConverter
-# Zone: city
-
-    characters "guanjia" {
-      name = "管家"
-      description = ""
-  gender = "男性"
-  age = 65
-
-  combat = {
-    combat_exp = 7500
-  }
-
-  skills = [
-    { skill = "unarmed" level = 35 },
-    { skill = "force" level = 35 },
-    { skill = "dodge" level = 40 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/npc/guidao.c by LPCConverter
-# Zone: city
-
-    characters "guidao" {
-      name = "王五"
-      description = "这是个喝得醉醺醺的酒鬼，正盯着手中的酒杯喃喃地念叨着什麽。"
-  title = "醉仙楼酒客"
-  gender = "男性"
-  age = 40
-
-  combat = {
-    attitude = "heroism"
-    combat_exp = 100000
-    con = 25
-    dex = 25
-    int = 25
-    max_jing = 500
-    max_neili = 500
-    max_qi = 800
-    str = 25
-  }
-
-  inquiries = [
-    { key = "王老五" value = "哈哈哈！有趣有趣，可惜你认错人了。" },
-    { key = "鬼刀" value = (: ask_me :) }
-  ]
-
-  skills = [
-    { skill = "blade" level = 100 },
-    { skill = "dodge" level = 80 },
-    { skill = "unarmed" level = 80 },
-    { skill = "parry" level = 80 },
-    { skill = "literate" level = 60 },
-    { skill = "lamaism" level = 80 },
-    { skill = "martial-cognize" level = 80 }
-  ]
-
-
-  carry = [
-    { id = items.gangdao.id },
-    { id = items.cloth.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/npc/guigong.c by LPCConverter
-# Zone: city
-
-    characters "guigong" {
-      name = "龟公"
-      description = "一个满脸狠肉的汉子，在丽春院日子久了，养的白白肥肥。"
-  gender = "男性"
-  age = 25
-  shen_type = 2
-
-  combat = {
-    combat_exp = 30000
-  }
-
-  skills = [
-    { skill = "unarmed" level = 70 },
-    { skill = "dodge" level = 70 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/npc/horseboss.c by LPCConverter
-# Zone: city
-
-    characters "horseboss" {
-      name = "老板"
-      description = "一个身着朴素的老板，是关东大风堂设在长安东郊提供各类坐骑的。 在这里你可以选择(choose)自己称心如意的坐骑。"
-  title = "宠物店老板"
-  gender = "男性"
-  age = 32
-
-  combat = {
-    attitude = "peaceful"
-  }
-
-  skills = [
-    { skill = "training" level = 400 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["choose"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/hunhun.c by LPCConverter
-# Zone: city
-
-    characters "hunhun" {
-      name = "小混混"
-      description = "他是扬州里的小混混，整天闲着没事干。"
-  gender = "男性"
-  age = 15
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 200
-    con = 15
-    dex = 16
-    int = 14
-    max_jing = 100
-    max_neili = 10
-    max_qi = 100
-    str = 15
-  }
-
-  chat_chance = 2
-chats = [
-    "小混混唱道: 一二三四五，上山打老虎，老虎没吃饭，专吃大坏蛋！",
-    "小混混哼道：大事不好，房子要倒，母猪母猪，我看你往哪跑！"
-]
-
-
-  skills = [
-    { skill = "unarmed" level = 10 },
-    { skill = "dodge" level = 10 },
-    { skill = "parry" level = 10 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/npc/huoji.c by LPCConverter
-# Zone: city
-
-    characters "huoji" {
-      name = "药铺伙计"
-      description = "他是平神医从乡下招来帮忙的。"
-  gender = "男性"
-  age = 18
-  brain = brains.dealer
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 250
-    str = 20
-  }
-
-  # vendor_goods: "/clone/misc/jinchuang" (file not found)
-  # vendor_goods: "/clone/misc/yangjing" (file not found)
-  # vendor_goods: "/clone/misc/dust" (file not found)
-  # vendor_goods: "/clone/misc/fashao" (file not found)
-  # vendor_goods: "/clone/misc/shanghan" (file not found)
-  # vendor_goods: "/clone/misc/xiaoshu" (file not found)
-  # vendor_goods: "/clone/misc/dongshang" (file not found)
-  # vendor_goods: "/clone/misc/zhike" (file not found)
-  # vendor_goods: "/d/shenlong/obj/xionghuang" (file not found)
-  # vendor_goods: "/clone/fam/pill/food1" (file not found)
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["list", "buy"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/huoji2.c by LPCConverter
-# Zone: city
-
-    characters "huoji2" {
-      name = "药铺伙计"
-      description = "他十分强壮，看上去会几分武功，对药铺生意似乎并不在乎。"
-  gender = "男性"
-  age = 18
-  brain = brains.dealer
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 2500
-    str = 20
-  }
-
-  # vendor_goods: "/d/city/obj/jinchuang" (file not found)
-  # vendor_goods: "/d/city/obj/yangjing" (file not found)
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["list", "buy"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/jiading.c by LPCConverter
-# Zone: city
-
-    characters "jiading" {
-      name = "家丁"
-      description = ""
-  gender = "男性"
-  age = 35
-
-  combat = {
-    combat_exp = 4000
-  }
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/npc/jixian.c by LPCConverter
-# Zone: city
-
-    characters "jixian" {
-      name = "白髯鸡仙"
-      description = "一位留着白髯的鸡仙。"
-  gender = "男性"
-  age = 60
-
-  combat = {
-    combat_exp = 5000
-  }
-
-  skills = [
-    { skill = "force" level = 50 },
-    { skill = "unarmed" level = 50 },
-    { skill = "dodge" level = 50 },
-    { skill = "parry" level = 50 }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["fight", "kill"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/liapo.c by LPCConverter
-# Zone: city
-
-    characters "liapo" {
-      name = "李阿婆"
-      description = "李阿婆在扬州活了几十年，就靠走街串巷卖净菜过日子。"
-  gender = "女性"
-  age = 58
-  startroom = "/d/city/guangchang"
-  brain = brains.dealer
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 250
-    str = 18
-  }
-
-  # vendor_goods: "/clone/misc/cailiao" (file not found)
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["list", "buy"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/liumang.c by LPCConverter
-# Zone: city
-
-    characters "liumang" {
-      name = "流氓"
-      description = "他是一个成天游手好闲的流氓，长得倒是白白胖胖的，也许以前有过钱。"
-  gender = "男性"
-  age = 19
-
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 1000
-  }
-
-  skills = [
-    { skill = "unarmed" level = 20 },
-    { skill = "dodge" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/npc/liumangtou.c by LPCConverter
-# Zone: city
-
-    characters "liumangtou" {
-      name = "流氓头"
-      description = "他长得奸嘴猴腮的，一看就不像是个好人。"
-  gender = "男性"
-  age = 25
-
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 7000
-  }
-
-  skills = [
-    { skill = "unarmed" level = 40 },
-    { skill = "dodge" level = 40 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/npc/liususu.c by LPCConverter
-# Zone: city
-
-    characters "liususu" {
-      name = "刘素素"
-      description = "她是一个清秀素雅的苏州女子，后来转到扬州来做生意。"
-  title = "西花扇庄老板"
-  nickname = "轻罗小扇"
-  gender = "女性"
-  age = 18
-  brain = brains.dealer
-
-  combat = {
-    attitude = "friendly"
-  }
-
-  goods = [
-    { id = items.shan_book.id }
-    { id = items.yumao_shan.id }
-    { id = items.tuan_shan.id }
-    { id = items.zhe_shan.id }
-    { id = items.yuban_shan.id }
-    { id = items.chouwu_shan.id }
-    { id = items.bajiao_shan.id }
-    { id = items.tanxiang_shan.id }
-  ]
-
-  chat_chance = 1
-chats = [
-    "刘素素道：中华扇文化历史悠久，扇品扇样更是繁多，应该好好光大。"
-]
-
-
-  carry = [
-    { id = items.gui_dress.id }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["list", "buy"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/mao18.c by LPCConverter
-# Zone: city
-
-    characters "mao18" {
-      name = "茅十八"
-      description = "他虬髯如乱草，满脸血污，好象曾受过很重的 伤，可以看得见他左腿上血迹未干。但他双目 炯炯，却又有着说不出的威风。"
-  title = "官府通缉要犯"
-  gender = "男性"
-  age = 30
-  shen_type = 1
-
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 300000
-    dex = 16
-    max_jing = 300
-    max_neili = 800
-    max_qi = 500
-    str = 25
-  }
-
-  inquiries = [
-    { key = "史松" value = "谁杀了史松这奸贼，我可以帮他提高江湖威望。" },
-    { key = "断字诀" value = (: ask_skill1 :) },
-    { key = 
-  ]
-
-  chat_chance = 2
-chats = [
-    "茅十八说道: 他奶奶的，我就不信鳌拜有这等厉害，我正要上北京去斗他一斗。",
-    "茅十八叹道: 我这五虎断门刀法对付盐枭可是绰绰有余，不知对付鳌拜行不行。",
-    "茅十八说道: 他奶奶的，要谁帮我杀了史松，兄弟我就谢谢了。",
-    "茅十八朗声说道：江湖有言为人不识陈近南，就称英雄也枉然。"
-]
-
-
-  skills = [
-    { skill = "force" level = 100 },
-    { skill = "bagua-xinfa" level = 100 },
-    { skill = "blade" level = 120 },
-    { skill = "wuhu-duanmendao" level = 120 },
-    { skill = "cuff" level = 120 },
-    { skill = "hua-quan" level = 120 },
-    { skill = "dodge" level = 100 },
-    { skill = "feiyan-zoubi" level = 100 },
-    { skill = "parry" level = 100 },
-    { skill = "literate" level = 60 },
-    { skill = "martial-cognize" level = 80 },
-    { type = "blade" skill = "wuhu-duanmendao" },
-    { type = "parry" skill = "wuhu-duanmendao" },
-    { type = "force" skill = "bagua-xinfa" },
-    { type = "dodge" skill = "feiyan-zoubi" },
-    { type = "cuff" skill = "hua-quan" }
-  ]
-
-
-  carry = [
-    { id = items.gangdao.id },
-    { id = items.cloth.id }
-  ]
-
-
-  accept = [
-    { kind = "any" accept = true msg = ["你给我这种东西干什么？", "haha"] }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/mudren-mm.c by LPCConverter
-# Zone: city
-
-    characters "mudren_mm" {
-      name = "迎宾小姐"
-      description = "这是一位美丽的迎宾小姐，她正对着你甜甜的笑呢。"
-  title = "【武林外传】"
-  gender = "女性"
-  age = 21
-
-  carry = [
-    { id = items.qunzi.id }
-  ]
-
-
-  init = {
-    greet_delay = 1
-  }
-
-  greetings = [
-    { line = "迎宾小姐笑咪咪地说道：这位{respect}，欢迎光临。" },
-    { line = "迎宾小姐甜甜的说道：这位{respect}，请进请进。" }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/obj/baozi.c by LPCConverter
-# Zone: city
-
-    characters "baozi" {
-      name = "包子"
-      description = "一个香喷喷的肉包子。"
-    }
-
-# Generated from /mud/d/city/npc/obj/beixin.c by LPCConverter
-# Zone: city
-
-    characters "beixin" {
-      name = "皮背心"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/obj/box.c by LPCConverter
-# Zone: city
-
-    characters "box" {
-      name = "功德箱"
-      description = "这是一个小庙里常见的功德箱，专门用来接受善男信女们的捐款。"
-
-  init = {
-    greet_delay = 0
-    add_actions = ["put"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/obj/caoxie.c by LPCConverter
-# Zone: city
-
-    characters "caoxie" {
-      name = "草鞋"
-      description = "这是一双草编的草鞋，用以保护足部。"
-    }
-
-# Generated from /mud/d/city/npc/obj/changjian.c by LPCConverter
-# Zone: city
-
-    characters "changjian" {
-      name = "长剑"
-      description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
-    }
-
-# Generated from /mud/d/city/npc/obj/cycle.c by LPCConverter
-# Zone: city
-
-    characters "cycle" {
-      name = "武者项圈"
-      description = "这是一串铁质的项链，用以保护颈部。"
-    }
-
-# Generated from /mud/d/city/npc/obj/dagger.c by LPCConverter
-# Zone: city
-
-    characters "dagger" {
-      name = "普通匕首"
-      description = "这是一把普通的小匕首。用来暗算别人比较合适。"
-    }
-
-# Generated from /mud/d/city/npc/obj/duanjian.c by LPCConverter
-# Zone: city
-
-    characters "duanjian" {
-      name = "短剑"
-      description = "这是一柄剑身短小的精钢剑，一般的剑客都配带此剑。"
-    }
-
-# Generated from /mud/d/city/npc/obj/fake-zi.c by LPCConverter
-# Zone: city
-
-    characters "fake_zi" {
-      name = "菩提子"
-      description = "这是一颗晶莹如玉的菩提子，采自灵山佛祖座前，珍稀无比， 乃万年菩提树之实，功能化百劫，渡千灾，与天地同寿。"
-    }
-
-# Generated from /mud/d/city/npc/obj/flower_shoe.c by LPCConverter
-# Zone: city
-
-    characters "flower_shoe" {
-      name = "绣花小鞋"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/obj/gangdao.c by LPCConverter
-# Zone: city
-
-    characters "gangdao" {
-      name = "钢刀"
-      description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
-    }
-
-# Generated from /mud/d/city/npc/obj/gangjian.c by LPCConverter
-# Zone: city
-
-    characters "gangjian" {
-      name = "钢剑"
-      description = "这是一柄精工制成的钢剑，这种剑在将领之间非常流行。"
-    }
-
-# Generated from /mud/d/city/npc/obj/goldring.c by LPCConverter
-# Zone: city
-
-    characters "goldring" {
-      name = "金戒指"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/obj/goupi.c by LPCConverter
-# Zone: city
-
-    characters "goupi" {
-      name = "狗皮"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/obj/gourou.c by LPCConverter
-# Zone: city
-
-    characters "gourou" {
-      name = "红烧狗肉"
-      description = "一碗香喷喷的红烧狗肉"
-    }
-
-# Generated from /mud/d/city/npc/obj/hammer.c by LPCConverter
-# Zone: city
-
-    characters "hammer" {
-      name = "铁锤"
-      description = "这是一把沈重的铁锤，打造的相当坚实。"
-    }
-
-# Generated from /mud/d/city/npc/obj/hdjiudai.c by LPCConverter
-# Zone: city
-
-    characters "hdjiudai" {
-      name = "花雕酒袋"
-      description = "一个用来装高级花雕酒的大酒袋。"
-    }
-
-# Generated from /mud/d/city/npc/obj/hlbian.c by LPCConverter
-# Zone: city
-
-    characters "hlbian" {
-      name = "黑龙鞭"
-      description = "这是一柄墨黑长鞭，坚韧无比。"
-    }
-
-# Generated from /mud/d/city/npc/obj/huwan.c by LPCConverter
-# Zone: city
-
-    characters "huwan" {
-      name = "护腕"
-      description = "这是一件布质的护腕，用以保护腕部。"
-    }
-
-# Generated from /mud/d/city/npc/obj/huyao.c by LPCConverter
-# Zone: city
-
-    characters "huyao" {
-      name = "护腰"
-      description = "这是一条皮质的护腰，用以保护腰部。"
-    }
-
-# Generated from /mud/d/city/npc/obj/jiaohuaji.c by LPCConverter
-# Zone: city
-
-    characters "jiaohuaji" {
-      name = "叫化鸡"
-      description = "一只烤得香喷喷的叫化鸡"
-    }
-
-# Generated from /mud/d/city/npc/obj/jinsijia.c by LPCConverter
-# Zone: city
-
-    characters "jinsijia" {
-      name = "金丝甲"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/obj/jitui.c by LPCConverter
-# Zone: city
-
-    characters "jitui" {
-      name = "烤鸡腿"
-      description = "一枝烤得香喷喷的鸡腿。"
-    }
-
-# Generated from /mud/d/city/npc/obj/jiudai.c by LPCConverter
-# Zone: city
-
-    characters "jiudai" {
-      name = "牛皮酒袋"
-      description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
-    }
-
-# Generated from /mud/d/city/npc/obj/junfu.c by LPCConverter
-# Zone: city
-
-    characters "junfu" {
-      name = "军服"
-      description = "这是一件有点旧的官兵服。"
-    }
-
-# Generated from /mud/d/city/npc/obj/kaoya.c by LPCConverter
-# Zone: city
-
-    characters "kaoya" {
-      name = "烤鸭"
-      description = "一只肥得流油的北京烤鸭。"
-    }
-
-# Generated from /mud/d/city/npc/obj/lbook3.c by LPCConverter
-# Zone: city
-
-    characters "lbook3" {
-      name = "千字文"
-      description = "读书人必读的千字文。"
-    }
-
-# Generated from /mud/d/city/npc/obj/mabudai.c by LPCConverter
-# Zone: city
-
-    characters "mabudai" {
-      name = "麻布袋"
-      description = "一只用麻布织成的袋子，好像可以装东西。"
-    }
-
-# Generated from /mud/d/city/npc/obj/mian.c by LPCConverter
-# Zone: city
-
-    characters "mian" {
-      name = "面"
-      description = "一碗热气腾腾的面条。"
-    }
-
-# Generated from /mud/d/city/npc/obj/mianju.c by LPCConverter
-# Zone: city
-
-    characters "mianju" {
-      name = "面具"
-      description = "这似乎是一个由人皮制成的面具。"
-
-  init = {
-    greet_delay = 0
-    add_actions = ["pretend"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/obj/necklace.c by LPCConverter
-# Zone: city
-
-    characters "necklace" {
-      name = "金项链"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/obj/peanut.c by LPCConverter
-# Zone: city
-
-    characters "peanut" {
-      name = "五香花生"
-      description = "一碟香喷喷的花生米。"
-    }
-
-# Generated from /mud/d/city/npc/obj/pink_cloth.c by LPCConverter
-# Zone: city
-
-    characters "pink_cloth" {
-      name = "粉红绸衫"
-      description = "这件粉红色的绸衫上面绣着几只黄鹊，闻起来还有一股淡香。"
-    }
-
-# Generated from /mud/d/city/npc/obj/pixue.c by LPCConverter
-# Zone: city
-
-    characters "pixue" {
-      name = "皮靴"
-      description = "这是一双用上好牛皮作的皮靴，据说由上海进口。用以保护足部。"
-    }
-
-# Generated from /mud/d/city/npc/obj/qunzi.c by LPCConverter
-# Zone: city
-
-    characters "qunzi" {
-      name = "连衣裙"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/obj/shanshen.c by LPCConverter
-# Zone: city
-
-    characters "shanshen" {
-      name = "老山叁"
-      description = "这是一株沾满山泥的长白老山叁。"
-    }
-
-# Generated from /mud/d/city/npc/obj/shield.c by LPCConverter
-# Zone: city
-
-    characters "shield" {
-      name = "牛皮盾"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/obj/shoutao.c by LPCConverter
-# Zone: city
-
-    characters "shoutao" {
-      name = "皮手套"
-      description = "这是一双皮手套，上面有硬物刻勒的痕迹。"
-    }
-
-# Generated from /mud/d/city/npc/obj/shouwu.c by LPCConverter
-# Zone: city
-
-    characters "shouwu" {
-      name = "何首乌"
-      description = "这是一棵初具人形的何首乌。"
-    }
-
-# Generated from /mud/d/city/npc/obj/surcoat.c by LPCConverter
-# Zone: city
-
-    characters "surcoat" {
-      name = "肚带"
-      description = "这是一件皮质的肚带，用以保护腹部。"
-    }
-
-# Generated from /mud/d/city/npc/obj/tiejia.c by LPCConverter
-# Zone: city
-
-    characters "tiejia" {
-      name = "铁甲"
-      description = ""
-    }
-
-# Generated from /mud/d/city/npc/obj/tieshou.c by LPCConverter
-# Zone: city
-
-    characters "tieshou" {
-      name = "铁手掌"
-      description = "这是一块铁质的手掌形护具，用以保护手掌。"
-    }
-
-# Generated from /mud/d/city/npc/obj/tofu.c by LPCConverter
-# Zone: city
-
-    characters "tofu" {
-      name = "翡翠豆腐"
-      description = "一块水灵灵的大豆腐，嫩的令人不禁想到阿庆嫂的脸蛋儿。"
-    }
-
-# Generated from /mud/d/city/npc/obj/toukui.c by LPCConverter
-# Zone: city
-
-    characters "toukui" {
-      name = "头盔"
-      description = "这是一顶铁质的肚带，用以保护头部。"
-    }
-
-# Generated from /mud/d/city/npc/obj/yang.c by LPCConverter
-# Zone: city
-
-    characters "yang" {
-      name = "杨永福"
-      description = "杨老板是土生土长的扬州人，做了几十年的小买卖。"
-  title = "杂货铺老板"
-  gender = "男性"
-  age = 45
-  shen_type = 1
-  brain = brains.dealer
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 40000
-  }
-
-  # vendor_goods: "obj/mabudai" (file not found)
-  # vendor_goods: "obj/beixin" (file not found)
-  # vendor_goods: "obj/toukui" (file not found)
-  # vendor_goods: "obj/necklace" (file not found)
-  # vendor_goods: "obj/surcoat" (file not found)
-  # vendor_goods: "obj/shield" (file not found)
-  # vendor_goods: "obj/huwan" (file not found)
-  # vendor_goods: "obj/zhitao" (file not found)
-  # vendor_goods: "obj/huyao" (file not found)
-  # vendor_goods: "obj/caoxie" (file not found)
-  # vendor_goods: "obj/pixue" (file not found)
-  # vendor_goods: "obj/shoutao" (file not found)
-  # vendor_goods: "obj/tieshou" (file not found)
-
-  skills = [
-    { skill = "unarmed" level = 50 },
-    { skill = "dodge" level = 50 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["list", "buy"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/obj/yangxin.c by LPCConverter
-# Zone: city
-
-    characters "yangxin" {
-      name = "养心丸"
-      description = "这是一颗暗红发亮的养心丸。"
-    }
-
-# Generated from /mud/d/city/npc/obj/yaoshi.c by LPCConverter
-# Zone: city
-
-    characters "yaoshi" {
-      name = "牢房钥匙"
-      description = "这是一把很普通的钥匙。"
-    }
-
-# Generated from /mud/d/city/npc/obj/yayifu.c by LPCConverter
-# Zone: city
-
-    characters "yayifu" {
-      name = "衙役服"
-      description = "这是一件崭新的白棉布衙役服。"
-    }
-
-# Generated from /mud/d/city/npc/obj/zaisheng.c by LPCConverter
-# Zone: city
-
-    characters "zaisheng" {
-      name = "白莲子"
-      description = "这是一颗洁白如玉的白莲子。"
-    }
-
-# Generated from /mud/d/city/npc/obj/zhangpanzi.c by LPCConverter
-# Zone: city
-
-    characters "zhangpanzi" {
-      name = "脏盘子"
-      description = "一叠刚刚用过的脏盘子。\n"
-    }
-
-# Generated from /mud/d/city/npc/obj/zhitao.c by LPCConverter
-# Zone: city
-
-    characters "zhitao" {
-      name = "指套"
-      description = "这是五个环环相链的铁指套，前端锋利如刃，既可暗藏掌中伤人，又可保护指关节。"
-    }
-
-# Generated from /mud/d/city/npc/obj/zhubang.c by LPCConverter
-# Zone: city
-
-    characters "zhubang" {
-      name = "竹棒"
-      description = "这是一根发黄的竹棒，入手沉甸甸的，似乎相当结实。"
-    }
-
-# Generated from /mud/d/city/npc/ping.c by LPCConverter
-# Zone: city
-
-    characters "ping" {
-      name = "平一指"
-      description = "他就是医术高超的「杀人神医」平一指。可是他性格古 怪，不是什么人都医的。"
-  title = "日月神教前辈"
-  nickname = "杀人神医"
-  gender = "男性"
-  age = 65
-  shen_type = 1
-  brain = brains.dealer
-
-  combat = {
-    attitude = "heroism"
-    combat_exp = 500000
-    int = 38
-    max_jing = 1000
-    max_qi = 1000
-  }
-
-  goods = [
-    { id = items.chaihu.id }
-    { id = 
-        HERB("chenpi") }
-    { id = 
-        HERB("chongcao") }
-    { id = 
-        HERB("chuanwu") }
-    { id = 
-        HERB("dahuang") }
-    { id = 
-        HERB("dangui") }
-    { id = 
-        HERB("duhuo") }
-    { id = 
-        HERB("fangfeng") }
-    { id = 
-        HERB("fuzi") }
-    { id = 
-        HERB("gsliu") }
-    { id = 
-        HERB("guiwei") }
-    { id = 
-        HERB("hafen") }
-    { id = 
-        HERB("heshouwu") }
-    { id = 
-        HERB("honghua") }
-    { id = 
-        HERB("huangqi") }
-    { id = 
-        HERB("hugu") }
-    { id = 
-        HERB("juhua") }
-    { id = 
-        HERB("lanhua") }
-    { id = 
-        HERB("lingxian") }
-    { id = 
-        HERB("lingzhi") }
-    { id = 
-        HERB("lurong") }
-    { id = 
-        HERB("mahuang") }
-    { id = 
-        HERB("moyao") }
-    { id = 
-        HERB("niuhuang") }
-    { id = 
-        HERB("niuxi") }
-    { id = 
-        HERB("qianjinzi") }
-    { id = 
-        HERB("renshen") }
-    { id = 
-        HERB("ruxiang") }
-    { id = 
-        HERB("shadan") }
-    { id = 
-        HERB("shancha") }
-    { id = 
-        HERB("shanjia") }
-    { id = 
-        HERB("shengdi") }
-    { id = 
-        HERB("shenglg") }
-    { id = 
-        HERB("sumu") }
-    { id = 
-        HERB("taoxian") }
-    { id = 
-        HERB("tenghuang") }
-    { id = 
-        HERB("tianqi") }
-    { id = 
-        HERB("tugou") }
-    { id = 
-        HERB("wulingzhi") }
-    { id = 
-        HERB("xiefen") }
-    { id = 
-        HERB("xijiao") }
-    { id = 
-        HERB("xiongdan") }
-    { id = 
-        HERB("xionghuang") }
-    { id = 
-        HERB("xuejie") }
-    { id = 
-        HERB("xuelian") }
-    { id = 
-        HERB("yanwo") }
-    { id = 
-        HERB("yjhua") }
-    { id = 
-        HERB("yuanzhi") }
-    { id = 
-        HERB("zihua") }
-    { id = 
-        HERB("zzfen") }
-    { id = 
-
-        "/clone/misc/yanbo" }
-    { id = 
-        "/d/shenlong/obj/hua4" }
-    { id = 
-  ]
-
-  inquiries = [
-    { key = "job" value = (: ask_job :) },
-    { key = "工作" value = (: ask_job :) },
-    { key = "配药" value = (: ask_job :) }
-  ]
-
-  skills = [
-    { skill = "unarmed" level = 80 },
-    { skill = "dodge" level = 80 },
-    { skill = "parry" level = 60 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["peiyao", "list", "buy"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/qian.c by LPCConverter
-# Zone: city
-
-    characters "qian" {
-      name = "钱眼开"
-      description = ""
-  title = "钱庄老板"
-  nickname = "铁公鸡"
-  gender = "男性"
-  age = 34
-  shen_type = 1
-  brain = brains.banker
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 50000
-    con = 18
-    dex = 18
-    int = 24
-    max_jing = 100
-    max_qi = 500
-    str = 22
-  }
-
-  chat_chance = 1
-chats = [
-    "钱眼开骄傲的说道：本银号已经有上百年的历史，在江南可以说是第一家。",
-    "钱眼开笑着说道：在本店存钱无利息，取钱也不收手续费，客官您看着办吧。"
-]
-
-
-  skills = [
-    { skill = "unarmed" level = 50 },
-    { skill = "dodge" level = 50 }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["check", "chazhang", "convert", "duihuan", "deposit", "cun", "withdraw", "qu", "transfer", "zhuan"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/qichangfa.c by LPCConverter
-# Zone: city
-
-    characters "qichangfa" {
-      name = "戚长发"
-      description = "戚老板最近暴发横财，所谓是三年不开张，开张管三年。"
-  title = "奇货商人"
-  nickname = "宰人不用刀，愿者上钩"
-  gender = "男性"
-  age = 48
-  brain = brains.dealer
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 800000
-    str = 100
-  }
-
-  inquiries = [
-    { key = "东西" value = "扔掉就没了！嘿嘿。" },
-    { key = "天王保命丹" value = "卖！卖！二百两黄金一粒！" },
-    { key = "宝物" value = (: do_answer :) },
-    { key = "我的钱" value = "什么你的钱，地上的就是我的！" },
-    { key = "朱睛冰蟾" value = "虽然不象翡翠兰那样可起死回生，但是能解百毒！" },
-    { key = "翡翠兰" value = "可治百毒啊！有气就能活！" },
-    { key = "还我" value = "哼！我这里是有进无出！" },
-    { key = "马哨" value = "我这的马哨可要比镇远镖局的质量更好哦。" }
-  ]
-
-  skills = [
-    { skill = "unarmed" level = 50 },
-    { skill = "dodge" level = 50 },
-    { skill = "higgling" level = 500 }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["buy", "list", "drop"]
-  }
-
-  accept = [
-    { kind = "any" accept = false msg = ["好！好！", "不要就给我！"] }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/qigai.c by LPCConverter
-# Zone: city
-
-    characters "qigai" {
-      name = "空空儿"
-      description = "一个满脸风霜之色的老乞丐。"
-  title = "乞丐"
-  gender = "男性"
-  age = 53
-  shen_type = 0
-
-  combat = {
-    combat_exp = 20000
-    con = 25
-    dex = 25
-    int = 25
-    max_jing = 100
-    max_neili = 500
-    max_qi = 500
-    str = 27
-  }
-
-  chat_chance = 15
-chats = [
-    "空空儿说道: 好心的大爷哪~~ 赏我要饭的几个铜板吧~~",
-    "空空儿懒洋洋地打了个哈欠。",
-    "空空儿伸手捉住了身上的虱子，骂道: 老子身上没几两肉，全叫你们给咬糜了。"
-]
-
-
-  skills = [
-    { skill = "unarmed" level = 50 },
-    { skill = "sword" level = 50 },
-    { skill = "dodge" level = 80 },
-    { skill = "parry" level = 80 },
-    { skill = "stealing" level = 100 }
-  ]
-
-
-  carry = [
-    { id = items.jitui.id },
-    { id = items.jiudai.id }
-  ]
-
-
-  accept = [
-    { kind = "money" min = 1 accept = true msg = "多谢啦！其实我还是有点钱的，这次只不过试试你罢了！" },
-    { kind = "any" accept = true msg = ["多谢啦！其实我还是有点钱的，这次只不过试试你罢了！", "这种东西鬼才要！滚一边去！", "smile", "shake"] }
-  ]
-
-  engage = {
-    fight = { accept = false }
-  }
-    }
-
-# Generated from /mud/d/city/npc/shanzi/bajiao-shan.c by LPCConverter
-# Zone: city
-
-    characters "bajiao_shan" {
-      name = "芭蕉扇"
-      description = "芭蕉扇蒲扇，轻便风大，价格低廉。\n"
-    }
-
-# Generated from /mud/d/city/npc/shanzi/chouwu-shan.c by LPCConverter
-# Zone: city
-
-    characters "chouwu_shan" {
-      name = "绸舞扇"
-      description = "这是一把丝绸扇面，彩绘花草，舞动时绚丽多彩的绸舞扇。\n"
-    }
-
-# Generated from /mud/d/city/npc/shanzi/shan-book.c by LPCConverter
-# Zone: city
-
-    characters "shan_book" {
-      name = "「扇赏」"
-      description = "这是一本介绍扇的小册，没事可以看看(read)。\n"
-
-  init = {
-    greet_delay = 0
-    add_actions = ["read"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/shanzi/tanxiang-shan.c by LPCConverter
-# Zone: city
-
-    characters "tanxiang_shan" {
-      name = "NPC"
-      description = "这是一把由紫檀木刻制的香木扇，芬芳馥郁。\n"
-    }
-
-# Generated from /mud/d/city/npc/shanzi/tuan-shan.c by LPCConverter
-# Zone: city
-
-    characters "tuan_shan" {
-      name = "团扇"
-      description = "这是一把用上好绢丝制作的团宫，绣着精细的花鸟。\n"
-    }
-
-# Generated from /mud/d/city/npc/shanzi/yuban-shan.c by LPCConverter
-# Zone: city
-
-    characters "yuban_shan" {
-      name = "玉版扇"
-      description = "这是一把由苍山巨竹雕琢为扇骨，色白润如玉，因此叫做玉版扇。\n"
-    }
-
-# Generated from /mud/d/city/npc/shanzi/yumao-shan.c by LPCConverter
-# Zone: city
-
-    characters "yumao_shan" {
-      name = "羽毛扇"
-      description = "这是一把用雪白色的鹤翅硬翎制作的羽毛扇。\n"
-    }
-
-# Generated from /mud/d/city/npc/shanzi/zhe-shan.c by LPCConverter
-# Zone: city
-
-    characters "zhe_shan" {
-      name = "NPC"
-      description = "这是一把做工精巧的纸面折扇。\n"
-    }
-
-# Generated from /mud/d/city/npc/shisong.c by LPCConverter
-# Zone: city
-
-    characters "shisong" {
-      name = "史松"
-      description = "这是一个精壮汉子，军官模样，腰间围一条长鞭。"
-  title = "巡捕首领"
-  nickname = "黑龙鞭"
-  gender = "男性"
-  age = 35
-
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 300000
-    dex = 20
-    max_jing = 300
-    max_neili = 800
-    max_qi = 500
-    str = 25
-  }
-
-  inquiries = [
-    { key = "缠字诀" value = "我总得留两手吧？" },
-    { key = "茅十八" value = "谁帮我干掉这恶贼，我一定保他前程似锦。" }
-  ]
-
-  chat_chance = 1
-chats = [
-    "史松说道：在下黑龙鞭史松，奉鳌少保将令，擒拿天地会反贼。",
-    "史松说道：鳌少保天生神勇，曾在北京街上一拳打死一头疯牛。"
-]
-
-
-  skills = [
-    { skill = "force" level = 120 },
-    { skill = "bagua-xinfa" level = 120 },
-    { skill = "whip" level = 120 },
-    { skill = "yunlong-bian" level = 120 },
-    { skill = "cuff" level = 100 },
-    { skill = "bagua-quan" level = 100 },
-    { skill = "dodge" level = 100 },
-    { skill = "feiyan-zoubi" level = 100 },
-    { skill = "parry" level = 100 },
-    { skill = "literate" level = 80 },
-    { skill = "martial-cognize" level = 80 },
-    { type = "force" skill = "bagua-xinfa" },
-    { type = "dodge" skill = "feiyan-zoubi" },
-    { type = "cuff" skill = "bagua-quan" },
-    { type = "whip" skill = "yunlong-bian" },
-    { type = "parry" skill = "yunlong-bian" }
-  ]
-
-
-  carry = [
-    { id = items.guanfu3.id }
-  ]
-
-
-  accept = [
-    { kind = "any" accept = true msg = ["你给我这种东西干什么？", "haha"] }
-  ]
-
-  engage = {
-    fight = { accept = false msg = "没兴趣。" }
-    hit = { accept = true msg = "他奶奶的，连我你都敢惹？" retaliate = true }
-  }
-    }
-
-# Generated from /mud/d/city/npc/shiye.c by LPCConverter
-# Zone: city
-
-    characters "shiye" {
-      name = "谭友纪"
-      description = ""
-  title = "知府师爷"
-  gender = "男性"
-  age = 57
-  shen_type = 0
-
-  combat = {
-    combat_exp = 30000
-  }
-
-  skills = [
-    { skill = "unarmed" level = 50 },
-    { skill = "dodge" level = 60 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/npc/shutong.c by LPCConverter
-# Zone: city
-
-    characters "shutong" {
-      name = "书童"
-      description = "这是朱先生身边的小书童，看上去年纪还小。"
-  gender = "男性"
-  age = 15
-
-  combat = {
-    combat_exp = 1000
-  }
-
-  inquiries = [
-    { key = "job" value = (: ask_job :) },
-    { key = "书" value = "先生那里书多得很。" },
-    { key = "买书" value = "还是找朱先生吧！我这里可不管。" },
-    { key = "借书" value = "借？我可没有书借给你呀！" },
-    { key = "工作" value = (: ask_job :) },
-    { key = "抄书" value = (: ask_job :) }
-  ]
-
-  skills = [
-    { skill = "literate" level = 50 }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["copy"]
-  }
-
-  accept = [
-    { kind = "any" accept = false }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/smith.c by LPCConverter
-# Zone: city
-
-    characters "smith" {
-      name = "铁匠"
-      description = "铁匠正用铁钳夹住一块红热的铁块放进炉中。"
-  title = "铁匠铺老板"
-  gender = "男性"
-  age = 33
-  shen_type = 1
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 400
-  }
-
-  goods = [
-    { id = 
-                "/clone/weapon/longbow" }
-  ]
-
-  # vendor_goods: "/clone/weapon/changjian" (file not found)
-  # vendor_goods: "/clone/weapon/gangzhang" (file not found)
-  # vendor_goods: "/clone/weapon/changbian" (file not found)
-  # vendor_goods: "/clone/weapon/gangdao" (file not found)
-  # vendor_goods: "/clone/weapon/hammer" (file not found)
-  # vendor_goods: "/clone/weapon/dagger" (file not found)
-  # vendor_goods: "/clone/weapon/tiegun" (file not found)
-  # vendor_goods: "/clone/weapon/arrow" (file not found)
-  # vendor_goods: "/clone/weapon/bow" (file not found)
-  # vendor_goods: "/clone/weapon/wolfarrow" (file not found)
-  # vendor_goods: "/clone/cloth/tiejia" (file not found)
-  # vendor_goods: "/d/item/obj/jingtie" (file not found)
-
-  inquiries = [
-    { key = "job" value = (: ask_me :) },
-    { key = "工作" value = (: ask_me :) },
-    { key = "血海无边" value = (: ask_back :) }
-  ]
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/npc/tang.c by LPCConverter
-# Zone: city
-
-    characters "tang" {
-      name = "唐楠"
-      description = "据说唐楠是四川唐家的后代。"
-  title = "当铺老板"
-  gender = "男性"
-  age = 35
-  shen_type = 0
-  brain = brains.dealer
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 50000
-    str = 100
-  }
-
-  inquiries = [
-    { key = "金轮九转" value = (: ask_back :) }
-  ]
-
-  skills = [
-    { skill = "unarmed" level = 60 },
-    { skill = "dodge" level = 60 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["list", "buy", "sell", "value"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/tao1.c by LPCConverter
-# Zone: city
-
-    characters "tao1" {
-      name = "桃根仙"
-      description = ""
-  title = "桃谷六仙"
-  gender = "男性"
-  age = 66
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 1000000
-  }
-
-  init = {
-    greet_delay = 1
-    add_actions = ["hit", "kill", "fight"]
-  }
-
-  greetings = [
-    { line = "桃谷六仙争先恐后地朝{npc}招呼：过来和我们六兄弟喝酒！ 桃干仙，斜了{npc}一眼，突然大喊起来：快拿酒来！ 桃枝仙拍着桌子，喊道：老子今天要一边喝酒，一边看着人把{npc}分成九块！ 桃叶仙跳了过来，一把抓住{npc}，嚷道：我第一，我第一！ 桃花仙横着短棍进来，一屁股坐下，提酒就喝。 桃实仙冲着{npc}挤挤橘皮老脸，一串串酒嗝冲着{npc}直冒。 {expr}" }
-  ]
-
-  accept = [
-    { kind = "any" accept = false }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/tao2.c by LPCConverter
-# Zone: city
-
-    characters "tao2" {
-      name = "桃干仙"
-      description = ""
-  title = "桃谷六仙"
-  gender = "男性"
-  age = 66
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 1000000
-  }
-
-  accept = [
-    { kind = "any" accept = false }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/tao3.c by LPCConverter
-# Zone: city
-
-    characters "tao3" {
-      name = "桃枝仙"
-      description = ""
-  title = "桃谷六仙"
-  gender = "男性"
-  age = 66
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 1000000
-  }
-
-  accept = [
-    { kind = "any" accept = false }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/tao4.c by LPCConverter
-# Zone: city
-
-    characters "tao4" {
-      name = "桃叶仙"
-      description = ""
-  title = "桃谷六仙"
-  gender = "男性"
-  age = 66
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 1000000
-  }
-
-  accept = [
-    { kind = "any" accept = false }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/tao5.c by LPCConverter
-# Zone: city
-
-    characters "tao5" {
-      name = "桃花仙"
-      description = ""
-  title = "桃谷六仙"
-  gender = "男性"
-  age = 66
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 1000000
-  }
-
-  accept = [
-    { kind = "any" accept = false }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/tao6.c by LPCConverter
-# Zone: city
-
-    characters "tao6" {
-      name = "桃实仙"
-      description = ""
-  title = "桃谷六仙"
-  gender = "男性"
-  age = 66
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 1000000
-  }
-
-  accept = [
-    { kind = "any" accept = false }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/txbw.c by LPCConverter
-# Zone: city
-
-    characters "txbw" {
-      name = "使者"
-      description = "天下布武负责人。"
-  title = "天下布武"
-  gender = "男性"
-  age = 45
-  brain = brains.dealer
-
-  inquiries = [
-    { key = "天下布武" value = (: show_all :) },
-    { key = "学技能" value = (: show_all :) }
-  ]
-
-  init = {
-    greet_delay = 0
-    add_actions = ["txbw"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/wei.c by LPCConverter
-# Zone: city
-
-    characters "wei" {
-      name = "韦春芳"
-      description = "韦春芳是当朝鹿鼎公兼红花会总舵主韦小宝他娘，虽是徐 娘半老，但风韵犹存。"
-  title = "丽春院老板娘"
-  gender = "女性"
-  age = 42
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 25000
-    con = 25
-    dex = 25
-    int = 25
-    max_jing = 100
-    max_neili = 500
-    max_qi = 300
-    str = 25
-  }
-
-  inquiries = [
-    { key = "here" value = "我们丽春院可是扬州城里头一份的找乐子去处。" },
-    { key = "name" value = "老娘我就是韦春芳。" },
-    { key = "丽春院" value = "我们丽春院可是扬州城里头一份的找乐子去处。" },
-    { key = "韦小宝" value = "那是我的乖儿子，长得就像你。" }
-  ]
-
-  chat_chance = 1
-chats = [
-    "韦春芳得意地说道：当年老娘我标致得很，每天有好几个客人。",
-    "韦春芳怒骂道：辣块妈妈，要是罗刹鬼、红毛鬼子到丽春院来，老娘用大扫帚拍了出去。",
-    "韦春芳对你说道：你一双眼睛贼忒嘻嘻的，真像那个喇嘛！"
-]
-
-
-  skills = [
-    { skill = "unarmed" level = 20 },
-    { skill = "force" level = 20 },
-    { skill = "dodge" level = 35 }
-  ]
-
-
-  carry = [
-    { id = items.flower_shoe.id },
-    { id = items.pink_cloth.id }
-  ]
-
-
-  init = {
-    greet_delay = 1
-  }
-    }
-
-# Generated from /mud/d/city/npc/wujiang.c by LPCConverter
-# Zone: city
-
-    characters "wujiang" {
-      name = "武将"
-      description = "他站在那里，的确有说不出的威风。"
-  gender = "男性"
-  shen_type = 1
-
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 75000
-    dex = 16
-    max_neili = 400
-    str = 25
-  }
-
-  skills = [
-    { skill = "unarmed" level = 60 },
-    { skill = "force" level = 60 },
-    { skill = "sword" level = 60 },
-    { skill = "dodge" level = 60 },
-    { skill = "parry" level = 60 }
-  ]
-
-
-  carry = [
-    { id = items.gangjian.id },
-    { id = items.tiejia.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/npc/xian.c by LPCConverter
-# Zone: city
-
-    characters "xian" {
-      name = "冼老板"
-      description = "洗老板经营祖传下来的醉仙楼已有多年。"
-  title = "醉仙楼老板"
-  gender = "男性"
-  age = 45
-  shen_type = 1
-  brain = brains.dealer
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 50000
-    max_qi = 300
-    str = 20
-  }
-
-  goods = [
-    { id = items.hdjiudai.id }
-    { id = items.kaoya.id }
-  ]
-
-  skills = [
-    { skill = "unarmed" level = 60 },
-    { skill = "dodge" level = 60 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["list", "buy"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/xiaoer.c by LPCConverter
-# Zone: city
-
-    characters "xiaoer" {
-      name = "店小二"
-      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
-  gender = "男性"
-  age = 22
-  startroom = "/d/city/kedian"
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 100
-  }
-
-  init = {
-    greet_delay = 1
-    add_actions = ["drop", "exchange", "duihuan"]
-  }
-
-  greetings = [
-    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
-    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
-  ]
-
-  accept = [
-    { kind = "money" min = 1000 accept = true msg = "小二一哈腰，说道：多谢您老，客官请上楼歇息。" },
-    { kind = "any" accept = true msg = ["好！好！", "不需要的东西全给我！"] }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/xiaoer2.c by LPCConverter
-# Zone: city
-
-    characters "xiaoer2" {
-      name = "店小二"
-      description = ""
-  nickname = "消息灵通"
-  gender = "男性"
-  age = 22
-  brain = brains.dealer
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 100
-  }
-
-  goods = [
-    { id = items.jitui.id }
-    { id = items.jiudai.id }
-    { id = items.baozi.id }
-    { id = items.kaoya.id }
-  ]
-
-  # vendor_goods: "/clone/fam/pill/food" (file not found)
-  # vendor_goods: "/clone/fam/pill/water" (file not found)
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-
-  init = {
-    greet_delay = 1
-    add_actions = ["buy", "list"]
-  }
-
-  greetings = [
-    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
-    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/xiaoguiz.c by LPCConverter
-# Zone: city
-
-    characters "xiaoguiz" {
-      name = "小桂子"
-      description = "这位小太监在一旁小心侍侯着，手里拿着一包药。"
-  gender = "无性"
-  age = 13
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 1000
-  }
-
-  chat_chance = 5
-chats = [
-    "小桂子说道：公公，再服一剂药，好不好？",
-    "小桂子道: 再服半剂，多半不打紧。"
-]
-
-
-  skills = [
-    { skill = "unarmed" level = 20 },
-    { skill = "parry" level = 20 },
-    { skill = "dodge" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id },
-    { id = items.yaofen.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/npc/yanruyu.c by LPCConverter
-# Zone: city
-
-    characters "yanruyu" {
-      name = "颜如玉"
-      description = "她有倾国倾城之貌，容色丽郁，娇艳绝伦，堪称人间仙子！"
-  title = "「一笑倾城」"
-  gender = "女性"
-  age = 23
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 3000000
-    con = 30
-    dex = 40
-    int = 40
-    max_jing = 1000
-    max_neili = 3000
-    max_qi = 1000
-    str = 30
-  }
-
-  inquiries = [
-    { key = "养颜术" value = "爱美之心，人皆有之，来学点养颜术(yangyan-shu)吧。" },
-    { key = "学费" value = "学费至少要白银二十两，给的越多学时越长。" }
-  ]
-
-  chat_chance = 5
-chats = [
-    "颜如玉说道：爱美之心，人皆有之。",
-    "颜如玉说道：和我学美容养颜之术吧，能让你从内到外都变漂亮。",
-    "颜如玉得意地说道：回眸一笑百媚生，六宫粉黛无颜色。",
-    "颜如玉说道：云想衣裳花想容，春风指槛露华浓，若非群玉山头见，会向瑶台月下逢。"
-]
-
-
-  skills = [
-    { skill = "literate" level = 300 },
-    { skill = "yangyan-shu" level = 300 },
-    { skill = "force" level = 150 },
-    { skill = "yunv-xinjing" level = 150 },
-    { skill = "dodge" level = 150 },
-    { skill = "rouyun-steps" level = 150 },
-    { skill = "unarmed" level = 150 },
-    { skill = "parry" level = 150 },
-    { skill = "meinv-quan" level = 150 },
-    { type = "force" skill = "yunv-xinjing" },
-    { type = "dodge" skill = "rouyun-steps" },
-    { type = "parry" skill = "meinv-quan" },
-    { type = "unarmed" skill = "meinv-quan" }
-  ]
-
-
-  carry = [
-    { id = items.skirt.id }
-  ]
-
-
-  init = {
-    greet_delay = 1
-  }
-
-  accept = [
-    { kind = "money" min = 2000 accept = true msg = "学费至少要二十两白银，嘻嘻~" },
-    { kind = "any" accept = false msg = ["学费至少要二十两白银，嘻嘻~", "颜如玉同意传授{npc}一些美容养颜\(yangyan-shu\)的经验。"] }
-  ]
-    }
-
-# Generated from /mud/d/city/npc/yayi.c by LPCConverter
-# Zone: city
-
-    characters "yayi" {
-      name = "衙役"
-      description = "一个高大威猛的汉子，因为久在官府做事，脸上已经磨炼得毫无表情。"
-  gender = "男性"
-  age = 25
-  shen_type = 1
-
-  combat = {
-    combat_exp = 7500
-  }
-
-  skills = [
-    { skill = "unarmed" level = 30 },
-    { skill = "dodge" level = 30 }
-  ]
-
-
-  carry = [
-    { id = items.yayifu.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/npc/yuhuan.c by LPCConverter
-# Zone: city
-
-    characters "yuhuan" {
-      name = "程玉环"
-      description = "她就是程知府的独生女儿，长得如花似玉，貌赛天仙的程玉环。 据说她曾经在武当门下学过剑法。"
-  title = "知府千金"
-  nickname = "玉仙姑"
-  gender = "女性"
-  age = 18
-  shen_type = 1
-
-  combat = {
-    combat_exp = 50000
-    max_jing = 200
-    max_neili = 400
-    max_qi = 400
-  }
-
-  skills = [
-    { skill = "force" level = 50 },
-    { skill = "unarmed" level = 40 },
-    { skill = "dodge" level = 60 },
-    { skill = "parry" level = 60 },
-    { skill = "sword" level = 60 },
-    { skill = "taiji-jian" level = 40 },
-    { type = "sword" skill = "taiji-jian" },
-    { type = "parry" skill = "taiji-jian" }
-  ]
-
-
-  carry = [
-    { id = items.goldring.id },
-    { id = items.necklace.id },
-    { id = items.changjian.id },
-    { id = items.pink_cloth.id },
-    { id = items.flower_shoe.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/npc/zeng.c by LPCConverter
-# Zone: city
-
-    characters "zeng" {
-      name = "曾柔"
-      description = "她是韦爵爷不知道第几房的小妾，在这里开个成衣铺，卖些不知道 哪来的衣服。有人说那都是韦爵爷从宫中弄出来的禁品。话这么说， 生意照样红活。"
-  gender = "女性"
-  age = 16
-  brain = brains.dealer
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 50000
-    con = 25
-    dex = 25
-    int = 25
-    str = 25
-  }
-
-  goods = [
-    { id = items.belt.id }
-    { id = items.boots.id }
-    { id = items.bu_shoes.id }
-    { id = items.cloth.id }
-    { id = items.color_dress.id }
-    { id = items.fu_cloth.id }
-    { id = items.gui_dress.id }
-    { id = items.hat.id }
-    { id = items.jade_belt.id }
-    { id = items.liu_dress.id }
-    { id = items.marry_dress.id }
-    { id = items.mini_dress.id }
-    { id = items.moon_dress.id }
-    { id = items.pink_dress.id }
-    { id = items.qi_dress.id }
-    { id = items.red_dress.id }
-    { id = items.scarf.id }
-    { id = items.sha_dress.id }
-    { id = items.shoes.id }
-    { id = items.xian_cloth.id }
-    { id = items.xiu_cloth.id }
-    { id = items.xiu_scarf.id }
-    { id = items.yan_dress.id }
-    { id = items.zi_dress.id }
-  ]
-
-  inquiries = [
-    { key = "job" value = (: ask_job :) },
-    { key = "工作" value = (: ask_job :) }
-  ]
-
-  skills = [
-    { skill = "unarmed" level = 60 },
-    { skill = "changquan" level = 60 },
-    { type = "unarmed" skill = "changquan" }
-  ]
-
-
-  carry = [
-    { id = items.feature.id },
-    { id = items.feature.id }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["list", "buy", "sew"]
-  }
-    }
-
-# Generated from /mud/d/city/npc/zhu.c by LPCConverter
-# Zone: city
-
-    characters "zhu" {
-      name = "朱熹"
-      description = "朱先生被称为当世第一大文学家，肚子里的墨水比海还要深。"
-  title = "文学大宗师"
-  gender = "男性"
-  age = 65
-  shen_type = 1
-  brain = brains.dealer
-
-  combat = {
-    combat_exp = 400000
-  }
-
-  # vendor_goods: "/clone/book/lbook0" (file not found)
-  # vendor_goods: "/clone/book/lbook1" (file not found)
-  # vendor_goods: "/clone/book/lbook2" (file not found)
-  # vendor_goods: "/clone/book/lbook3" (file not found)
-
-  inquiries = [
-    { key = "job" value = (: ask_job :) },
-    { key = "书" value = "唉！书到用时方恨少。" },
-    { key = "买书" value = (: ask_buy :) },
-    { key = "借书" value = "借？你不还我到哪里找你？哼！" },
-    { key = "工作" value = (: ask_job :) },
-    { key = "抄书" value = (: ask_job :) }
-  ]
-
-  chat_chance = 1
-chats = [
-    "朱熹说道：普天之下，莫非王土；率土之滨，莫非王臣。",
-    "朱熹说道：出家人，小过损益焉；无妄大过，未济咸困之。",
-    "朱熹说道：大学之道，在明明德。在亲民，在止于至善。",
-    "朱熹说道：格物致知，诚意正心，修身齐家，治国平天下。"
-]
-
-
-  skills = [
-    { skill = "literate" level = 600 },
-    { skill = "unarmed" level = 80 },
-    { skill = "dodge" level = 80 },
-    { skill = "parry" level = 80 }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["copy", "list", "buy"]
-  }
-
-  accept = [
-    { kind = "money" min = 2000 accept = true msg = "看清楚学规，至少要二十两白银！" },
-    { kind = "any" accept = false msg = ["看清楚学规，至少要二十两白银！", "朱熹同意指点{npc}一些读书写字的问题。"] }
-  ]
-    }
-
-# Generated from /mud/d/city/nproom.c by LPCConverter
-# Zone: city
 
     rooms "nproom" {
-      name = "拱猪房"
-      description = "这是一间专门为拱猪而特别设计的拱猪房。房间里面灯火 通明，仿佛永远准备着为拱猪狂们服务似的。房间的中心放着 一张用百年老松树木材特制的拱猪桌 (table)，周围放着四把 楠木靠背椅。桌子上摆着一本记分簿(scoreboard)，北边的墙 上贴着一张纸(paper)。"
-  x = 1
-  y = 2
-  z = 1
-item_desc = {
-      paper = "请务必读 help pig_cmds 和 help pig_rules。"
-}
-valid_leave = [
-{
-    # 阻挡条件（原样保留）：me->query_temp("pigging_seat")
-direction = ~
-  message = "先离开拱猪桌才能行动。"
-}
-
-]
-    }
-  room_exits "nproom" {
-    room_id = rooms.nproom.id
-  south = rooms.duchang2.id  }
-
-# Generated from /mud/d/city/obj/bone.c by LPCConverter
-# Zone: city
-
-    items "bone" {
-      name = "啃得精光的鸡腿骨头"
-      description = "一根啃得精光的鸡腿骨头。"
-  verbs = [
-    "get",
-    "drop",
-    "wield",
-    "unwield"
-  ]
-
-  messages = {
-    wield = "$N抓起一根$n，握在手中当武器。"
-  }
-    }
-
-# Generated from /mud/d/city/obj/cgift/ccloth.c by LPCConverter
-# Zone: city
-
-    items "ccloth" {
-      name = "Item"
+      name = "nproom"
       description = ""
-  verbs = [
-    "get",
-    "drop"
-  ]
+      x = 0
+      y = 0
+      z = 0
     }
-
-# Generated from /mud/d/city/obj/cgift/chang.c by LPCConverter
-# Zone: city
-
-    items "chang" {
-      name = "圣诞烤肠"
-      description = "上面写着「Merry Christmas！祝：圣诞快乐！」。\n"
-  verbs = [
-    "get",
-    "drop"
-  ]
-    }
-
-# Generated from /mud/d/city/obj/cgift/christmasman.c by LPCConverter
-# Zone: city
-
-    characters "christmasman" {
-      name = "NPC"
-      description = "圣诞老人背着一个大口袋，笑嘻嘻地看着你！\n"
-  gender = "男性"
-  age = 65
-  score = 100000
-
-  combat = {
-    attitude = "friendly"
-    combat_exp = 15000000
-    con = 80
-    dex = 82
-    int = 81
-    max_jing = 18000
-    max_neili = 32000
-    max_qi = 30000
-    str = 80
-  }
-
-  inquiries = [
-    { key = "圣诞快乐" value = (: give_gift :) }
-  ]
-
-  skills = [
-    { skill = "force" level = 600 },
-    { skill = "kuihua-mogong" level = 600 },
-    { skill = "dodge" level = 600 },
-    { skill = "unarmed" level = 600 },
-    { skill = "parry" level = 600 },
-    { skill = "literate" level = 600 },
-    { skill = "martial-cognize" level = 460 },
-    { type = "force" skill = "kuihua-mogong" },
-    { type = "dodge" skill = "kuihua-mogong" },
-    { type = "unarmed" skill = "kuihua-mogong" },
-    { type = "parry" skill = "kuihua-mogong" }
-  ]
-
-
-  carry = [
-    { id = items.ccloth.id }
-  ]
-
-    }
-
-# Generated from /mud/d/city/obj/cgift/dabing.c by LPCConverter
-# Zone: city
-
-    items "dabing" {
-      name = "圣诞大饼"
-      description = "上面写着「Merry Christmas！祝：圣诞快乐！」。\n"
-  verbs = [
-    "get",
-    "drop"
-  ]
-    }
-
-# Generated from /mud/d/city/obj/cgift/hanbao.c by LPCConverter
-# Zone: city
-
-    items "hanbao" {
-      name = "圣诞汉堡"
-      description = "上面写着「Merry Christmas！祝：圣诞快乐！」。\n"
-  verbs = [
-    "get",
-    "drop"
-  ]
-    }
-
-# Generated from /mud/d/city/obj/cgift/maozi.c by LPCConverter
-# Zone: city
-
-    items "maozi" {
-      name = "Item"
-      description = "一顶圣诞帽子，洋溢着节日的气氛。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-    }
-
-# Generated from /mud/d/city/obj/food.c by LPCConverter
-# Zone: city
-
-    items "food" {
-      name = "食物"
-      description = "还没定义，给下层调用。"
-  verbs = [
-    "get",
-    "drop",
-    "eat"
-  ]
-    }
-
-# Generated from /mud/d/city/obj/jiaonei.c by LPCConverter
-# Zone: city
-
-    rooms "jiaonei" {
-      name = "轿内"
-      description = "你在轿里刚坐稳，快轿摇了摇，抬起来往前走了。你只觉的轿子 慢慢摇啊摇啊，也不知道走了多久，一路上老觉得昏昏欲睡......"
-  x = 0
-  y = 0
-  z = 0
-    }
-
-# Generated from /mud/d/city/obj/rrose.c by LPCConverter
-# Zone: city
-
-    items "rrose" {
-      name = "玫瑰"
-      description = "一朵红色的玫瑰，花瓣里透出一股凄然。\n"
-  verbs = [
-    "get",
-    "drop",
-    "wear",
-    "remove"
-  ]
-    }
-
-# Generated from /mud/d/city/obj/shitou.c by LPCConverter
-# Zone: city
-
-    items "shitou" {
-      name = "大石头"
-      description = "这是一平平常常的大石头。"
-  verbs = [
-    "get",
-    "drop",
-    "wield",
-    "unwield"
-  ]
-
-  messages = {
-    wield = "$N搬起一块$n准备战斗。"
-    unwield = "$N放下手中的$n。"
-  }
-    }
-
-# Generated from /mud/d/city/obj/shuzhi.c by LPCConverter
-# Zone: city
-
-    items "shuzhi" {
-      name = "大树枝"
-      description = "这是一根爬山用的树枝。"
-  verbs = [
-    "get",
-    "drop",
-    "wield",
-    "unwield"
-  ]
-
-  messages = {
-    wield = "$N拿出一根$n，握在手中。"
-    unwield = "$N放下手中的$n。"
-  }
-    }
-
-# Generated from /mud/d/city/obj/water.c by LPCConverter
-# Zone: city
-
-    items "water" {
-      name = "杯盏"
-      description = "还没定义，等下层调用。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-    }
-
-# Generated from /mud/d/city/obj/wine.c by LPCConverter
-# Zone: city
-
-    items "wine" {
-      name = "酒杯"
-      description = "还没定义，等下层调用。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-    }
-
-# Generated from /mud/d/city/obj/yaofen.c by LPCConverter
-# Zone: city
-
-    items "yaofen" {
-      name = "药粉"
-      description = "这是一包专治内伤的药粉。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-    }
-
-# Generated from /mud/d/city/obj/yrose.c by LPCConverter
-# Zone: city
-
-    items "yrose" {
-      name = "玫瑰"
-      description = "一朵黄色的玫瑰。\n"
-  verbs = [
-    "get",
-    "drop",
-    "wear",
-    "remove"
-  ]
-    }
-
-# Generated from /mud/d/city/pomiao.c by LPCConverter
-# Zone: city
 
     rooms "pomiao" {
-      name = "破庙"
-      description = "这是一间破破烂烂的土地庙，庙里破败不堪，土地神像推 在一旁，梁上地下也布满了灰尘。一看就知道已经很久没有人 来清理过了。正中放着个大香案，上面零乱地扔着几根剩下的 鸡骨头。丐帮江南分舵就被设在此处。"
-  x = 0
-  y = 0
-  z = 39
+      name = "pomiao"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "pomiao" {
-    room_id = rooms.pomiao.id
-  south = rooms.ml4.id
-  in = rooms.gbxiaowu.id  }
-
-
-  room_items "pomiao" {
-    room_id = rooms.pomiao.id
-    items = [
-      { id = items.lu.id },
-      { id = items.peng.id }    ]
-  }
-
-# Generated from /mud/d/city/qianzhuang.c by LPCConverter
-# Zone: city
 
     rooms "qianzhuang" {
-      name = "钱庄"
-      description = "这是一家老字号的钱庄，已有几百年的历史，在全国各地 都有分店。它发行的银票信誉非常好，通行全国。在对面的墙 上挂了块牌子(paizi)。"
-  x = -1
-  y = 1
-  z = 0
-item_desc = {
-      paizi = "##==================##         ##                  ##         ##     公平交易     ##         ##                  ##         ##  存钱： deposit  ##         ##                  ##         ##  取钱： withdraw ##         ##                  ##         ##  兑换： convert  ##         ##                  ##         ##  查帐： check    ##         ##                  ##         ##  转账： transfer ##         ##                  ##         ##==================##"
-}
+      name = "qianzhuang"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "qianzhuang" {
-    room_id = rooms.qianzhuang.id
-  east = rooms.beidajie1.id  }
-
-  room_characters "qianzhuang" {
-    room_id = rooms.qianzhuang.id
-    characters = [
-      { id = characters.qian.id }    ]
-  }
-
-# Generated from /mud/d/city/qiyuan/obj/cch.c by LPCConverter
-# Zone: city
-
-    items "cch" {
-      name = "中国象棋盘"
-      description = "这是一张中国象棋盘，用来下象棋的。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-    }
-
-# Generated from /mud/d/city/qiyuan/obj/seat.c by LPCConverter
-# Zone: city
-
-    items "seat" {
-      name = "石凳"
-      description = "这是张大理石制的凳子。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-    }
-
-# Generated from /mud/d/city/qiyuan/obj/table.c by LPCConverter
-# Zone: city
-
-    items "table" {
-      name = "石桌"
-      description = "这是张大理石制的桌子。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-    }
-
-# Generated from /mud/d/city/qiyuan/qiyuan1.c by LPCConverter
-# Zone: city
 
     rooms "qiyuan1" {
-      name = "棋苑"
-      description = "棋苑共分四个大间，是手谈休栖的好地方。这里的南北和东三个方 向各有一间棋室，在每个棋室的门外都贴着请勿打扰棋局的牌子。"
-  x = 0
-  y = 0
-  z = 40
-valid_leave = [
-{
-    # 阻挡条件（原样保留）： room->query_temp("action") == 1 
-direction = ~
-  message = "那间棋室已经有人开始下棋了，请勿打扰"
-}
-
-]
+      name = "qiyuan1"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "qiyuan1" {
-    room_id = rooms.qiyuan1.id
-  east = rooms.qiyuan2.id
-  south = rooms.qiyuan3.id
-  north = rooms.qiyuan4.id
-  west = rooms.liaotian.id  }
-
-
-  room_items "qiyuan1" {
-    room_id = rooms.qiyuan1.id
-    items = [
-      { id = items.cch.id },
-      { id = items.fxq.id },
-      { id = items.seaf.id }    ]
-  }
-
-# Generated from /mud/d/city/qiyuan/qiyuan2.c by LPCConverter
-# Zone: city
 
     rooms "qiyuan2" {
-      name = "棋室"
-      description = "棋苑共分四个大间，是手谈休栖的好地方。这个房间里有一张石桌，上面划着 一张围棋盘。桌角摆放着棋子。另外还有两张石凳，颜色一白一黑。在门口的墙壁 上贴着一张下棋指南(help)。"
-  x = 0
-  y = 0
-  z = 41
-valid_leave = [
-{
-    # 阻挡条件（原样保留）： me->query_temp("weiqi_seat") 
-direction = ~
-  message = "你现在还坐着呢，怎么离开啊？"
-}
-
-]
+      name = "qiyuan2"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "qiyuan2" {
-    room_id = rooms.qiyuan2.id
-  west = rooms.qiyuan1.id  }
-
-
-  room_items "qiyuan2" {
-    room_id = rooms.qiyuan2.id
-    items = [
-      { id = items.table.id },
-      { id = items.seat.id }    ]
-  }
-
-# Generated from /mud/d/city/qiyuan/qiyuan3.c by LPCConverter
-# Zone: city
 
     rooms "qiyuan3" {
-      name = "棋室"
-      description = "棋苑共分四个大间，是手谈休栖的好地方。这个房间里有一张石桌，上面划着 一张围棋盘。桌角摆放着棋子。另外还有两张石凳，颜色一白一黑。在门口的墙壁 上贴着一张下棋指南(help)。"
-  x = 0
-  y = 0
-  z = 42
-valid_leave = [
-{
-    # 阻挡条件（原样保留）： me->query_temp("weiqi_seat") 
-direction = ~
-  message = "你现在还坐着呢，怎么离开啊？"
-}
-
-]
+      name = "qiyuan3"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "qiyuan3" {
-    room_id = rooms.qiyuan3.id
-  north = rooms.qiyuan1.id  }
-
-
-  room_items "qiyuan3" {
-    room_id = rooms.qiyuan3.id
-    items = [
-      { id = items.table.id },
-      { id = items.seat.id }    ]
-  }
-
-# Generated from /mud/d/city/qiyuan/qiyuan4.c by LPCConverter
-# Zone: city
 
     rooms "qiyuan4" {
-      name = "棋室"
-      description = "棋苑共分四个大间，是手谈休栖的好地方。这个房间里有一张石桌，上面划着 一张围棋盘。桌角摆放着棋子。另外还有两张石凳，颜色一白一黑。在门口的墙壁 上贴着一张下棋指南(help)。"
-  x = 0
-  y = 0
-  z = 43
-valid_leave = [
-{
-    # 阻挡条件（原样保留）： me->query_temp("weiqi_seat") 
-direction = ~
-  message = "你现在还坐着呢，怎么离开啊？"
-}
-
-]
+      name = "qiyuan4"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "qiyuan4" {
-    room_id = rooms.qiyuan4.id
-  south = rooms.qiyuan1.id  }
-
-
-  room_items "qiyuan4" {
-    room_id = rooms.qiyuan4.id
-    items = [
-      { id = items.table.id },
-      { id = items.seat.id }    ]
-  }
-
-# Generated from /mud/d/city/shan.c by LPCConverter
-# Zone: city
 
     rooms "shan" {
-      name = "西花扇庄"
-      description = "西花扇庄是全国最大的扇行，扇子全是从苏州运来。这里 出售的扇子不仅种类繁多，款式质量面料都非常精致。这些团 扇宫扇也是苏州府每年进贡的物品。来扬州的游客都不忘光顾 此处参观购买旅游纪念品。门口挂着幅烫金对联(lian)，宽敞 明亮的店堂里陈列满各种纱丝、绸缎、锦、绢绡、羽毛、檀香 木质地的扇样，当真是琳琅满目。"
-  x = 0
-  y = 0
-  z = 44
+      name = "shan"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "shan" {
-    room_id = rooms.shan.id
-  north = rooms.xidajie1.id  }
-
-  room_characters "shan" {
-    room_id = rooms.shan.id
-    characters = [
-      { id = characters.liususu.id }    ]
-  }
-
-# Generated from /mud/d/city/shuyuan.c by LPCConverter
-# Zone: city
 
     rooms "shuyuan" {
-      name = "书院"
-      description = "这里是书院的讲堂，窗明几净，一尘不染。一位庄重严肃 的老者坐在太师椅上讲学，那就是当今大儒朱先生了。在他的 两侧坐满了求学的学生。一张古意盎然的书案放在朱先生的前 面，案上摆着几本翻开了的线装书籍。朱先生的身后是一个书 架讲堂内多历代楹联石刻，足见书院历史的悠久。值得提及的 是嵌在讲堂前左壁的学规(xuegui)。"
-  x = 1
-  y = 1
-  z = 0
-item_desc = {
-      xuegui = "##====##  ##====##  ##====##  ##====##  ##====##  ##====##  ##====##  ##====##   ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##   ## 日 ##  ## 日 ##  ## 通 ##  ## 参 ##  ## 读 ##  ## 会 ##  ## 夜 ##  ## 疑 ##   ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##   ## 讲 ##  ## 看 ##  ## 晓 ##  ## 读 ##  ## 书 ##  ## 课 ##  ## 读 ##  ## 误 ##   ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##   ## 经 ##  ## 纲 ##  ## 时 ##  ## 古 ##  ## 必 ##  ## 按 ##  ## 仍 ##  ## 定 ##   ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##   ## 书 ##  ## 目 ##  ## 务 ##  ## 文 ##  ## 须 ##  ## 时 ##  ## 戒 ##  ## 要 ##   ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##   ## 三 ##  ## 数 ##  ## 物 ##  ## 诗 ##  ## 过 ##  ## 蚤 ##  ## 晏 ##  ## 力 ##   ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##   ## 起 ##  ## 页 ##  ## 理 ##  ## 赋 ##  ## 笔 ##  ## 完 ##  ## 起 ##  ## 争 ##   ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##  ##    ##   ##====##  ##====##  ##====##  ##====##  ##====##  ##====##  ##====##  ##====##     每次求学需缴学费纹银二十两。"
-}
+      name = "shuyuan"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "shuyuan" {
-    room_id = rooms.shuyuan.id
-  up = rooms.shuyuan2.id
-  south = rooms.dongdajie1.id  }
-
-  room_characters "shuyuan" {
-    room_id = rooms.shuyuan.id
-    characters = [
-      { id = characters.zhu.id }    ]
-  }
-
-  room_items "shuyuan" {
-    room_id = rooms.shuyuan.id
-    items = [
-      { id = items.idiom_book.id }    ]
-  }
-
-# Generated from /mud/d/city/shuyuan2.c by LPCConverter
-# Zone: city
 
     rooms "shuyuan2" {
-      name = "书院书库"
-      description = "这里是书院的图书馆，窗明几净，一尘不染。壁上的书架(shelf) 堆满诸子百家的先贤们的文选，记录了炎黄数千年的风风雨雨和无数 的璀璨传说。"
-  x = 0
-  y = 0
-  z = 45
-item_desc = {
-      shelf = "书架上放着大量经典书籍，你可以随意阅读(如：read shi jing)。"
-}
+      name = "shuyuan2"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "shuyuan2" {
-    room_id = rooms.shuyuan2.id
-  down = rooms.shuyuan.id  }
-
-
-  room_items "shuyuan2" {
-    room_id = rooms.shuyuan2.id
-    items = [
-      { id = items.dizigui_book.id },
-      { id = items.qianjiashi_book.id },
-      { id = items.shijing_book.id }    ]
-  }
-
-# Generated from /mud/d/city/sproom.c by LPCConverter
-# Zone: city
 
     rooms "sproom" {
-      name = "拱猪房"
-      description = "这是一间专门为拱猪而特别设计的拱猪房。房间里面灯火 通明，仿佛永远准备着为拱猪狂们服务似的。房间的中心放着 一张用百年老松树木材特制的拱猪桌 (table)，周围放着四把 楠木靠背椅。桌子上摆着一本记分簿(scoreboard)，北边的墙 上贴着一张纸(paper)。"
-  x = 1
-  y = 0
-  z = 1
-item_desc = {
-      paper = "请务必读 help pig_cmds 和 help pig_rules。"
-}
-valid_leave = [
-{
-    # 阻挡条件（原样保留）：me->query_temp("pigging_seat")
-direction = ~
-  message = "先离开拱猪桌才能行动。"
-}
-
-]
+      name = "sproom"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "sproom" {
-    room_id = rooms.sproom.id
-  north = rooms.duchang2.id  }
-
-# Generated from /mud/d/city/tree.c by LPCConverter
-# Zone: city
 
     rooms "tree" {
-      name = "大榕树上"
-      description = "这里是大树的顶端，四周全是浓密的枝叶和湿漉漉的苔藓。 一阵微风吹来，树叶发出唰啦啦的声音。从上面望下去你只觉 得一阵眼晕，心想还是赶快下去吧。"
-  x = 0
-  y = 0
-  z = 46
-item_desc = {
-      tree = "这是一棵巨大古老的大榕树，枝叶非常的茂密。"
-}
+      name = "tree"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "tree" {
-    room_id = rooms.tree.id
-  down = rooms.guangchang.id  }
-
-
-  room_items "tree" {
-    room_id = rooms.tree.id
-    items = [
-      { id = items.shi.id }    ]
-  }
-
-# Generated from /mud/d/city/underlt.c by LPCConverter
-# Zone: city
 
     rooms "underlt" {
-      name = "Room"
+      name = "underlt"
       description = ""
-  x = 0
-  y = 0
-  z = 47
-valid_leave = [
-{
-    # 阻挡条件（原样保留）：ob->refuse(me)
-direction = ~
-  message = "你凑什么热闹，现在不是你上去的时候。"
-}
-
-]
+      x = 0
+      y = 0
+      z = 0
     }
-
-# Generated from /mud/d/city/wproom.c by LPCConverter
-# Zone: city
 
     rooms "wproom" {
-      name = "拱猪房"
-      description = "这是一间专门为拱猪而特别设计的拱猪房。房间里面灯火 通明，仿佛永远准备着为拱猪狂们服务似的。房间的中心放着 一张用百年老松树木材特制的拱猪桌 (table)，周围放着四把 楠木靠背椅。桌子上摆着一本记分簿(scoreboard)，北边的墙 上贴着一张纸(paper)。"
-  x = 0
-  y = 1
-  z = 1
-item_desc = {
-      paper = "请务必读 help pig_cmds 和 help pig_rules。"
-}
-valid_leave = [
-{
-    # 阻挡条件（原样保留）：me->query_temp("pigging_seat")
-direction = ~
-  message = "先离开拱猪桌才能行动。"
-}
-
-]
+      name = "wproom"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "wproom" {
-    room_id = rooms.wproom.id
-  east = rooms.duchang2.id  }
-
-# Generated from /mud/d/city/wuguan.c by LPCConverter
-# Zone: city
 
     rooms "wuguan" {
-      name = "扬州武馆"
-      description = "扬州武馆是专为初出江湖的少年设立的。由于江湖叛师是 十分为人不齿的，初出道的少年可以在此学习一些基本的防身 武功，一来不会让光阴虚度，二来也好为今后选定一个心慕的 门派。墙上贴着个贴子。"
-  x = 0
-  y = 0
-  z = 48
+      name = "wuguan"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "wuguan" {
-    room_id = rooms.wuguan.id
-  north = rooms.xidajie2.id  }
-
-  room_characters "wuguan" {
-    room_id = rooms.wuguan.id
-    characters = [
-      { id = characters.chen.id },
-      { id = characters.txbw.id }    ]
-  }
-
-# Generated from /mud/d/city/wumiao.c by LPCConverter
-# Zone: city
 
     rooms "wumiao" {
-      name = "武庙"
-      description = "这里是扬州岳王庙的正殿，内有岳飞像，像上方悬挂岳飞手书“还我河 山”的横匾。殿两侧壁上嵌着“尽忠报国”四个大字。武人到此，都放下武 器，毕恭毕敬地上香礼拜。旁边有一道侧门可上二楼祈福。"
-  x = -1
-  y = 1
-  z = 0
+      name = "wumiao"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "wumiao" {
-    room_id = rooms.wumiao.id
-  east = rooms.beidajie2.id
-  up = rooms.wumiao2.id
-  down = rooms.herodoor.id  }
-
-  room_characters "wumiao" {
-    room_id = rooms.wumiao.id
-    characters = [
-      { id = characters.shensuan.id }    ]
-  }
-
-  room_items "wumiao" {
-    room_id = rooms.wumiao.id
-    items = [
-      { id = items.box.id }    ]
-  }
-
-# Generated from /mud/d/city/wumiao2.c by LPCConverter
-# Zone: city
 
     rooms "wumiao2" {
-      name = "武庙二楼"
-      description = "这里是岳王庙的二楼，这里供的是岳飞的长子岳云和义子 张宪，两尊塑像金盔银铠，英气勃勃。听说在炎黄子孙的传统 节假日来这里祈祷(指令：pray)会得到祝福。"
-  x = -2
-  y = 1
-  z = 0
+      name = "wumiao2"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "wumiao2" {
-    room_id = rooms.wumiao2.id
-  down = rooms.wumiao.id  }
-
-  room_characters "wumiao2" {
-    room_id = rooms.wumiao2.id
-    characters = [
-      { id = characters.zixu.id }    ]
-  }
-
-# Generated from /mud/d/city/xdmidao1.c by LPCConverter
-# Zone: city
 
     rooms "xdmidao1" {
-      name = "密道"
-      description = "这是血刀门的僧人为了方便往来中原，特地设置了的密道 以便神不知鬼不觉的往来西域。"
-  x = 0
-  y = 0
-  z = 49
+      name = "xdmidao1"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "xdmidao1" {
-    room_id = rooms.xdmidao1.id
-  up = rooms.sroad8.id
-  north = rooms.xdmidao2.id  }
-
-# Generated from /mud/d/city/xdmidao2.c by LPCConverter
-# Zone: city
 
     rooms "xdmidao2" {
-      name = "密道"
-      description = "这是血刀门的僧人为了方便往来中原，特地设置了的密道 以便神不知鬼不觉的往来西域。"
-  x = 0
-  y = 0
-  z = 50
+      name = "xdmidao2"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "xdmidao2" {
-    room_id = rooms.xdmidao2.id
-  north = rooms.xdmidao3.id
-  south = rooms.xdmidao1.id  }
-
-# Generated from /mud/d/city/xdmidao3.c by LPCConverter
-# Zone: city
 
     rooms "xdmidao3" {
-      name = "密道"
-      description = "这是血刀门的僧人为了方便往来中原，特地设置了的密道 以便神不知鬼不觉的往来西域。"
-  x = 0
-  y = 0
-  z = 51
+      name = "xdmidao3"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "xdmidao3" {
-    room_id = rooms.xdmidao3.id
-  east = rooms.xdmidao4.id
-  south = rooms.xdmidao2.id  }
-
-# Generated from /mud/d/city/xdmidao4.c by LPCConverter
-# Zone: city
 
     rooms "xdmidao4" {
-      name = "密道"
-      description = "这是血刀门的僧人为了方便往来中原，特地设置了的密道 以便神不知鬼不觉的往来西域。"
-  x = 0
-  y = 0
-  z = 52
+      name = "xdmidao4"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "xdmidao4" {
-    room_id = rooms.xdmidao4.id
-  up = rooms.datiepu.id
-  west = rooms.xdmidao3.id  }
-
-# Generated from /mud/d/city/xidajie1.c by LPCConverter
-# Zone: city
 
     rooms "xidajie1" {
-      name = "西大街"
-      description = "这是一条宽阔的青石板街道，向东西两头延伸。西大街是 衙门所在，行人稀少，静悄悄地很是冷清。东边是一个热闹的 广场。南边是一家扇庄。北边就是衙门了。"
-  x = -1
-  y = 0
-  z = 0
+      name = "xidajie1"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "xidajie1" {
-    room_id = rooms.xidajie1.id
-  east = rooms.guangchang.id
-  south = rooms.shan.id
-  west = rooms.xidajie2.id
-  north = rooms.yamen.id  }
-
-# Generated from /mud/d/city/xidajie2.c by LPCConverter
-# Zone: city
 
     rooms "xidajie2" {
-      name = "西大街"
-      description = "你走在西大街上，感到这里的街面要比别处的干净、整洁。 大概因为靠近衙门、兵营可受保护的缘故，富人们都喜欢住在 这里。东边静悄悄地没有几个行人，西边是西城门。南边是座 武馆，北边是一所大宅院，门前还聚着一些叫花子。"
-  x = -2
-  y = 0
-  z = 0
+      name = "xidajie2"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "xidajie2" {
-    room_id = rooms.xidajie2.id
-  east = rooms.xidajie1.id
-  south = rooms.wuguan.id
-  west = rooms.ximen.id
-  north = rooms.ma_damen.id  }
-
-  room_characters "xidajie2" {
-    room_id = rooms.xidajie2.id
-    characters = [
-      { id = characters.1dai.id }    ]
-  }
-
-# Generated from /mud/d/city/ximen.c by LPCConverter
-# Zone: city
 
     rooms "ximen" {
-      name = "西门"
-      description = "这里是扬州城的西城门，几年前曾经遭到土匪的攻打，因 此显得有些破败。城门正上方勉勉强强可以认出「西门」两个 大字，城墙上贴着几张通缉告示(gaoshi)。这里是罪犯逃往西 域的必经之地，官兵们戒备森严，动不动就截住行人盘问。笔 直的青石板大道向东西两边延伸。西边是郊外，骑马的、座轿 的、走路的，行人匆匆。东边是城里。南边是滚滚长江，江边 是一个小小的渡口，可以通往中州府。"
-  x = -1
-  y = 0
-  z = 0
+      name = "ximen"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ximen" {
-    room_id = rooms.ximen.id
-  east = rooms.xidajie2.id
-  west = rooms.ximenroad.id
-  south = rooms.yangzhoudu.id  }
-
-  room_characters "ximen" {
-    room_id = rooms.ximen.id
-    characters = [
-      { id = characters.ducha.id },
-      { id = characters.bing.id },
-      { id = characters.bing.id },
-      { id = characters.bing.id },
-      { id = characters.bing.id },
-      { id = characters.fenggongying.id },
-      { id = characters.walker.id }    ]
-  }
-
-# Generated from /mud/d/city/ximenroad.c by LPCConverter
-# Zone: city
 
     rooms "ximenroad" {
-      name = "西门大道"
-      description = "这里是扬州西城门外大道。西通洛阳城，向东就是西门了。 南边，新开了个武道大会场，每到比武之期，人声鼎沸，你不 禁想去见识一下当今的成名人物。"
-  x = -2
-  y = 0
-  z = 0
+      name = "ximenroad"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ximenroad" {
-    room_id = rooms.ximenroad.id
-  east = rooms.ximen.id
-  west = rooms.road8.id
-  south = rooms.wudao4.id
-  southwest = rooms.road1.id  }
-
-  room_characters "ximenroad" {
-    room_id = rooms.ximenroad.id
-    characters = [
-      { id = characters.boy.id },
-      { id = characters.boy.id },
-      { id = characters.boy.id }    ]
-  }
-
-# Generated from /mud/d/city/xiting.c by LPCConverter
-# Zone: city
 
     rooms "xiting" {
-      name = "西厅"
-      description = "这里是衙门的西厅，乃是知府的书房。书案上凌乱地放着 几本发黄的古籍。引起你的注意的是墙上挂着一幅很大的地图。"
-  x = 0
-  y = 0
-  z = 53
-item_desc = {
-      ditu = "这是一幅扬州市区和市郊的地图，上面有各种颜色的圈圈点点。"
-}
+      name = "xiting"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "xiting" {
-    room_id = rooms.xiting.id
-  east = rooms.ymzhengting.id  }
-
-# Generated from /mud/d/city/xsmidao.c by LPCConverter
-# Zone: city
 
     rooms "xsmidao" {
-      name = "密道"
-      description = "这是雪山寺的僧人为了方便往来中原，特地设置了的密道 以便神不知鬼不觉的往来西域。"
-  x = 0
-  y = 0
-  z = 54
+      name = "xsmidao"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "xsmidao" {
-    room_id = rooms.xsmidao.id
-  up = rooms.dangpu.id
-  west = rooms.xsmidao1.id  }
-
-# Generated from /mud/d/city/xsmidao1.c by LPCConverter
-# Zone: city
 
     rooms "xsmidao1" {
-      name = "密道"
-      description = "这是雪山寺的僧人为了方便往来中原，特地设置了的密道 以便神不知鬼不觉的往来西域。"
-  x = 0
-  y = 0
-  z = 55
+      name = "xsmidao1"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "xsmidao1" {
-    room_id = rooms.xsmidao1.id
-  east = rooms.xsmidao.id
-  west = rooms.xsmidao2.id  }
-
-# Generated from /mud/d/city/xsmidao2.c by LPCConverter
-# Zone: city
 
     rooms "xsmidao2" {
-      name = "密道"
-      description = "这是雪山寺的僧人为了方便往来中原，特地设置了的密道 以便神不知鬼不觉的往来西域。"
-  x = 0
-  y = 0
-  z = 56
+      name = "xsmidao2"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "xsmidao2" {
-    room_id = rooms.xsmidao2.id
-  east = rooms.xsmidao1.id
-  south = rooms.xsmidao3.id  }
-
-# Generated from /mud/d/city/xsmidao3.c by LPCConverter
-# Zone: city
 
     rooms "xsmidao3" {
-      name = "密道"
-      description = "这是雪山寺的僧人为了方便往来中原，特地设置了的密道 以便神不知鬼不觉的往来西域。"
-  x = 0
-  y = 0
-  z = 57
+      name = "xsmidao3"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "xsmidao3" {
-    room_id = rooms.xsmidao3.id
-  north = rooms.xsmidao2.id
-  west = rooms.xsmidao4.id  }
-
-# Generated from /mud/d/city/xsmidao4.c by LPCConverter
-# Zone: city
 
     rooms "xsmidao4" {
-      name = "密道"
-      description = "这是雪山寺的僧人为了方便往来中原，特地设置了的密道 以便神不知鬼不觉的往来西域。"
-  x = 0
-  y = 0
-  z = 58
+      name = "xsmidao4"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "xsmidao4" {
-    room_id = rooms.xsmidao4.id
-  east = rooms.xsmidao3.id
-  south = rooms.xsmidao5.id  }
-
-# Generated from /mud/d/city/xsmidao5.c by LPCConverter
-# Zone: city
 
     rooms "xsmidao5" {
-      name = "密道"
-      description = "这是雪山寺的僧人为了方便往来中原，特地设置了的密道 以便神不知鬼不觉的往来西域。"
-  x = 0
-  y = 0
-  z = 59
+      name = "xsmidao5"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "xsmidao5" {
-    room_id = rooms.xsmidao5.id
-  north = rooms.xsmidao4.id
-  south = rooms.mishi.id  }
-
-# Generated from /mud/d/city/yamen.c by LPCConverter
-# Zone: city
 
     rooms "yamen" {
-      name = "衙门大门"
-      description = "这里是衙门大门，两扇朱木大门紧紧关闭着。「肃静」和 「回避」的牌子分放两头石狮子的旁边。前面有一个大鼓，显 然是供小民鸣冤用的。几名衙役在门前巡逻。"
-  x = -1
-  y = -1
-  z = 3
-valid_leave = [
-{
-    # 阻挡条件（原样保留）：objectp(present("ya yi", environment(me))) && dir == "north"
-direction = "north"
-  message = "衙役齐声喝道：威……武……"
-}
-
-]
+      name = "yamen"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "yamen" {
-    room_id = rooms.yamen.id
-  south = rooms.xidajie1.id
-  north = rooms.ymzhengting.id  }
-
-  room_characters "yamen" {
-    room_id = rooms.yamen.id
-    characters = [
-      { id = characters.yayi.id },
-      { id = characters.yayi.id },
-      { id = characters.yayi.id },
-      { id = characters.yayi.id }    ]
-  }
-
-# Generated from /mud/d/city/yaopu.c by LPCConverter
-# Zone: city
 
     rooms "yaopu" {
-      name = "药铺"
-      description = "这是一家药铺，一股浓浓的药味让你几欲窒息，那是从药 柜上的几百个小抽屉里散发出来的。一名小伙计站在柜台后招 呼着顾客。柜台上贴着一张发黄的广告。"
-  x = 2
-  y = 1
-  z = 0
+      name = "yaopu"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "yaopu" {
-    room_id = rooms.yaopu.id
-  south = rooms.dongdajie2.id  }
-
-  room_characters "yaopu" {
-    room_id = rooms.yaopu.id
-    characters = [
-      { id = characters.huoji.id }    ]
-  }
-
-# Generated from /mud/d/city/ymzhengting.c by LPCConverter
-# Zone: city
 
     rooms "ymzhengting" {
-      name = "衙门正厅"
-      description = "这里便是衙门的正厅了，堂上东西有两根楹住，挂着一幅 对联，但是你无心细看。正墙上悬挂一个横匾，上书「正大光 明」四个金光闪闪的大字。知府正坐在文案后批阅文书，师爷 随侍在后。"
-  x = -1
-  y = 0
-  z = 3
+      name = "ymzhengting"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "ymzhengting" {
-    room_id = rooms.ymzhengting.id
-  east = rooms.dongting.id
-  west = rooms.xiting.id
-  north = rooms.neizhai.id
-  south = rooms.yamen.id  }
-
-  room_characters "ymzhengting" {
-    room_id = rooms.ymzhengting.id
-    characters = [
-      { id = characters.cheng.id },
-      { id = characters.shiye.id }    ]
-  }
-
-# Generated from /mud/d/city/zahuopu.c by LPCConverter
-# Zone: city
 
     rooms "zahuopu" {
-      name = "杂货铺"
-      description = "这是一家小小的杂货铺，大箱小箱堆满了一地，都是一些 日常用品。杨掌柜懒洋洋地躺在一只躺椅上，招呼着过往行人。 据说私底下他也卖一些贵重的东西。"
-  x = 1
-  y = -1
-  z = 0
+      name = "zahuopu"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "zahuopu" {
-    room_id = rooms.zahuopu.id
-  north = rooms.dongdajie1.id
-  up = rooms.garments.id  }
-
-  room_characters "zahuopu" {
-    room_id = rooms.zahuopu.id
-    characters = [
-      { id = characters.yang.id }    ]
-  }
-
-# Generated from /mud/d/city/zhujuan.c by LPCConverter
-# Zone: city
-
-    rooms "zhujuan" {
-      name = "猪圈"
-      description = "这里是一个供懒猪玩家发呆的地方，栏上挂着一个牌子(paizi)。"
-  x = 0
-  y = 0
-  z = 0
-item_desc = {
-      paizi = "大家一起发呆，把泥潭变成猪的世界。"
-}
-    }
-  room_exits "zhujuan" {
-    room_id = rooms.zhujuan.id
-  south = rooms.majiu.id  }
-
-  room_characters "zhujuan" {
-    room_id = rooms.zhujuan.id
-    characters = [
-      { id = characters.horseboss.id }    ]
-  }
-
-# Generated from /mud/d/city/zuixianlou.c by LPCConverter
-# Zone: city
 
     rooms "zuixianlou" {
-      name = "醉仙楼"
-      description = "方圆数百里内提起扬州城醉仙楼可以说是无人不知，无人 不晓。当年苏学士云游到此，对醉仙楼的花雕酒赞不绝口，欣 然为其题匾，流下一段传遍海内的佳话，从此醉仙楼名声大震。 楼下布置简易，顾客多是匆匆的行人，买(指令：buy)点包子、 鸡腿、米酒就赶路去了。楼上是雅座。"
-  x = 1
-  y = 1
-  z = 0
+      name = "zuixianlou"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "zuixianlou" {
-    room_id = rooms.zuixianlou.id
-  east = rooms.majiu.id
-  west = rooms.beidajie2.id
-  up = rooms.zuixianlou2.id
-  north = rooms.mudren.id  }
-
-  room_characters "zuixianlou" {
-    room_id = rooms.zuixianlou.id
-    characters = [
-      { id = characters.xiaoer2.id }    ]
-  }
-
-# Generated from /mud/d/city/zuixianlou2.c by LPCConverter
-# Zone: city
 
     rooms "zuixianlou2" {
-      name = "醉仙楼二楼"
-      description = "这里是雅座，文人学士经常在这里吟诗作画，富商土豪也 喜欢在这里边吃喝边作交易。这里也是城里举办喜宴的最佳场 所。你站在楼上眺望，只觉得心旷神怡。东面是一池湖水，碧 波荡漾。北面是崇山峻岭，而南面可以看到闻名全国的白鹿书 院的后庭。喜宴庆典在东边大堂。"
-  x = 1
-  y = 1
-  z = 1
-item_desc = {
-      paizi = "本店出售烤鸭及上等花雕酒。"
-}
+      name = "zuixianlou2"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "zuixianlou2" {
-    room_id = rooms.zuixianlou2.id
-  down = rooms.zuixianlou.id
-  up = rooms.zuixianlou3.id
-  east = rooms.zxlpath.id  }
-
-  room_characters "zuixianlou2" {
-    room_id = rooms.zuixianlou2.id
-    characters = [
-      { id = characters.xian.id },
-      { id = characters.guidao.id }    ]
-  }
-
-# Generated from /mud/d/city/zuixianlou3.c by LPCConverter
-# Zone: city
 
     rooms "zuixianlou3" {
-      name = "醉仙楼三楼"
-      description = "这里是三楼，一上来就觉得喧闹无比，和二楼的清雅恰成 反比，简直让你不能相信。几张原本干净整洁的桌子也被糟蹋 的一塌糊涂。汤水淌得满地，酒呃臭屁满屋都是。地上还有残 留的血迹。"
-  x = 1
-  y = 1
-  z = 2
+      name = "zuixianlou3"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "zuixianlou3" {
-    room_id = rooms.zuixianlou3.id
-  down = rooms.zuixianlou2.id  }
-
-  room_characters "zuixianlou3" {
-    room_id = rooms.zuixianlou3.id
-    characters = [
-      { id = characters.tao1.id },
-      { id = characters.tao2.id },
-      { id = characters.tao3.id },
-      { id = characters.tao4.id },
-      { id = characters.tao5.id },
-      { id = characters.tao6.id }    ]
-  }
-
-# Generated from /mud/d/city/zxlpath.c by LPCConverter
-# Zone: city
 
     rooms "zxlpath" {
-      name = "醉仙楼大堂"
-      description = "这是醉仙楼大堂，来来往往的人客和跑堂小二，夹杂着三 个宴会厅刺耳的呼叫声，碰杯声，打闹声，赖酒声，热闹非凡。 你在三个宴会厅前打量着进哪个凑个热闹，蹭点白食。东边是 玫瑰厅，朝南的是牡丹厅，向北是芙蓉厅。"
-  x = 0
-  y = 0
-  z = 60
+      name = "zxlpath"
+      description = ""
+      x = 0
+      y = 0
+      z = 0
     }
-  room_exits "zxlpath" {
-    room_id = rooms.zxlpath.id
-  east = rooms.meigui.id
-  north = rooms.furong.id
-  south = rooms.mudan.id
-  west = rooms.zuixianlou2.id  }
 
-  room_characters "zxlpath" {
-    room_id = rooms.zxlpath.id
-    characters = [
-      { id = characters.xiaoer2.id }    ]
+  room_exits "beidajie1" {
+    room_id = rooms.beidajie1.id
+    north = rooms.beidajie2.id
+    south = rooms.guangchang.id
+    east = rooms.kedian.id
+    west = rooms.qianzhuang.id
+  }
+
+  room_exits "beidajie2" {
+    room_id = rooms.beidajie2.id
+    north = rooms.beimen.id
+    south = rooms.beidajie1.id
+    east = rooms.zuixianlou.id
+    west = rooms.wumiao.id
+  }
+
+  room_exits "beimen" {
+    room_id = rooms.beimen.id
+    south = rooms.beidajie2.id
+  }
+
+  room_exits "bet" {
+    room_id = rooms.bet.id
+    south = rooms.duchang.id
+  }
+
+  room_exits "chaguan" {
+    room_id = rooms.chaguan.id
+    east = rooms.nandajie2.id
+  }
+
+  room_exits "dangpu" {
+    room_id = rooms.dangpu.id
+    east = rooms.nandajie1.id
+  }
+
+  room_exits "datiepu" {
+    room_id = rooms.datiepu.id
+    north = rooms.dongdajie2.id
+  }
+
+  room_exits "daxiao" {
+    room_id = rooms.daxiao.id
+    east = rooms.duchang.id
+  }
+
+  room_exits "dongdajie1" {
+    room_id = rooms.dongdajie1.id
+    east = rooms.dongdajie2.id
+    west = rooms.guangchang.id
+    south = rooms.zahuopu.id
+    north = rooms.shuyuan.id
+  }
+
+  room_exits "dongdajie2" {
+    room_id = rooms.dongdajie2.id
+    east = rooms.dongmen.id
+    west = rooms.dongdajie1.id
+    south = rooms.datiepu.id
+    north = rooms.yaopu.id
+  }
+
+  room_exits "dongmen" {
+    room_id = rooms.dongmen.id
+    west = rooms.dongdajie2.id
+  }
+
+  room_exits "dongting" {
+    room_id = rooms.dongting.id
+    west = rooms.ymzhengting.id
+  }
+
+  room_exits "duchang" {
+    room_id = rooms.duchang.id
+    north = rooms.bet.id
+    west = rooms.daxiao.id
+    east = rooms.nandajie1.id
+    up = rooms.duchang2.id
+  }
+
+  room_exits "duchang2" {
+    room_id = rooms.duchang2.id
+    down = rooms.duchang.id
+    east = rooms.eproom.id
+    west = rooms.wproom.id
+    south = rooms.sproom.id
+    north = rooms.nproom.id
+  }
+
+  room_exits "guangchang" {
+    room_id = rooms.guangchang.id
+    east = rooms.dongdajie1.id
+    west = rooms.xidajie1.id
+    north = rooms.beidajie1.id
+    south = rooms.nandajie1.id
+    northeast = rooms.zuixianlou.id
+    northwest = rooms.wumiao.id
+    southeast = rooms.dangpu.id
+    southwest = rooms.chaguan.id
+  }
+
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+    east = rooms.ma_damen.id
+    west = rooms.beidajie1.id
+    up = rooms.kedian2.id
+  }
+
+  room_exits "kedian2" {
+    room_id = rooms.kedian2.id
+    down = rooms.kedian.id
+    in = rooms.kedian3.id
+  }
+
+  room_exits "kedian3" {
+    room_id = rooms.kedian3.id
+    out = rooms.kedian2.id
+  }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+    up = rooms.majiu.id
+  }
+
+  room_exits "nandajie1" {
+    room_id = rooms.nandajie1.id
+    east = rooms.dangpu.id
+    west = rooms.guangchang.id
+    south = rooms.nanmen.id
+  }
+
+  room_exits "nandajie2" {
+    room_id = rooms.nandajie2.id
+    east = rooms.chaguan.id
+    west = rooms.guangchang.id
+    north = rooms.nandajie1.id
+  }
+
+  room_exits "nanmen" {
+    room_id = rooms.nanmen.id
+    north = rooms.nandajie1.id
+  }
+
+  room_exits "qianzhuang" {
+    room_id = rooms.qianzhuang.id
+    west = rooms.nandajie1.id
+  }
+
+  room_exits "wumiao" {
+    room_id = rooms.wumiao.id
+    north = rooms.beidajie2.id
+  }
+
+  room_exits "xidajie1" {
+    room_id = rooms.xidajie1.id
+    east = rooms.guangchang.id
+    west = rooms.xidajie2.id
+    north = rooms.wumiao.id
+    south = rooms.zahuopu.id
+  }
+
+  room_exits "xidajie2" {
+    room_id = rooms.xidajie2.id
+    east = rooms.ximen.id
+    west = rooms.xidajie1.id
+    north = rooms.wumiao2.id
+    south = rooms.yaopu.id
+  }
+
+  room_exits "ximen" {
+    room_id = rooms.ximen.id
+    west = rooms.ximenroad.id
+    east = rooms.guangchang.id
+  }
+
+  room_exits "ximenroad" {
+    room_id = rooms.ximenroad.id
+    southwest = rooms.jiaowai1.id
+  }
+
+  room_exits "yamen" {
+    room_id = rooms.yamen.id
+    north = rooms.ymzhengting.id
+  }
+
+  room_exits "yaopu" {
+    room_id = rooms.yaopu.id
+    south = rooms.xidajie2.id
+  }
+
+  room_exits "ymzhengting" {
+    room_id = rooms.ymzhengting.id
+    south = rooms.yamen.id
+    east = rooms.dongting.id
+  }
+
+  room_exits "zuixianlou" {
+    room_id = rooms.zuixianlou.id
+    up = rooms.zuixianlou2.id
+  }
+
+  room_exits "zuixianlou2" {
+    room_id = rooms.zuixianlou2.id
+    down = rooms.zuixianlou.id
+    up = rooms.zuixianlou3.id
+    east = rooms.eproom.id
+    west = rooms.wproom.id
+    south = rooms.sproom.id
+    north = rooms.nproom.id
+  }
+
+  room_exits "zuixianlou3" {
+    room_id = rooms.zuixianlou3.id
+    down = rooms.zuixianlou2.id
   }
