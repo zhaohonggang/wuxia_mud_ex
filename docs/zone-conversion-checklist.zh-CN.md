@@ -4,6 +4,8 @@
 > 共 71 个正式区域，按 BFS 层序逐个勾选。
 >
 > **游戏环境与热更/测试详见：** `docs/dev-reload-guide.zh-CN.md`
+>
+> **标准化转换流程（SOP）详见：** `docs/zone-conversion-sop.zh-CN.md`
 
 ---
 

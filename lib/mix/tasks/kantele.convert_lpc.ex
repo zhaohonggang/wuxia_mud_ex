@@ -86,6 +86,10 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
         # Ensure directory exists
         File.mkdir_p!(output_file |> Path.dirname())
 
+        # Ensure UTF-8 output (no BOM)
+        ucl_utf8 = :unicode.characters_to_binary(ucl, :utf8)
+        comments_utf8 = :unicode.characters_to_binary(comments, :utf8)
+
         # Append or create UCL file
         if File.exists?(output_file) do
           existing = File.read!(output_file)
@@ -96,7 +100,7 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
              String.contains?(existing, "items \"#{ucl_name}\"") do
             Mix.shell().info("#{base_name} already exists in #{output_file}, skipping append")
           else
-            File.write!(output_file, String.trim_trailing(existing) <> "\n\n" <> String.trim_trailing(ucl) <> "\n")
+            File.write!(output_file, String.trim_trailing(existing) <> "\n\n" <> String.trim_trailing(ucl_utf8) <> "\n")
             Mix.shell().info("Appended to #{output_file}")
           end
         else
@@ -106,13 +110,13 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
           }
 
           """
-          File.write!(output_file, zone_header <> String.trim_trailing(ucl) <> "\n")
+          File.write!(output_file, zone_header <> String.trim_trailing(ucl_utf8) <> "\n")
           Mix.shell().info("Created #{output_file}")
         end
 
         # Write comments to separate .txt file
         comments_file = Path.join(output_dir, "#{zone_id}.comments.txt")
-        File.write!(comments_file, comments <> "\n")
+        File.write!(comments_file, comments_utf8 <> "\n")
         Mix.shell().info("Wrote comments to #{comments_file}")
 
         {:ok, output_file}
@@ -139,7 +143,10 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
         case LPCConverter.convert_file(file, zone_id: zone_id, include_comments: true) do
           {:ok, {ucl, comments}} ->
             ucl_name = file |> Path.basename(".c") |> String.replace("-", "_")
-            {[{ucl_name, ucl, comments} | entries], failures}
+            # Ensure UTF-8 output (no BOM)
+            ucl_utf8 = :unicode.characters_to_binary(ucl, :utf8)
+            comments_utf8 = :unicode.characters_to_binary(comments, :utf8)
+            {[{ucl_name, ucl_utf8, comments_utf8} | entries], failures}
 
           {:error, reason} ->
             Mix.shell().error("Conversion failed: #{reason}")
