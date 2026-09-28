@@ -1281,6 +1281,7 @@ item_desc = {
     }
   room_exits "dir_macro_test" {
     room_id = rooms.dir_macro_test.id
+    up = rooms.encoding_test.id
     down = rooms.didao6.id
     up = rooms.room_above.id
     down = rooms.room_below.id
@@ -1355,7 +1356,7 @@ item_desc = {
   room_exits "encoding_test" {
     room_id = rooms.encoding_test.id
     up = rooms.large_room_test.id
-    down = rooms.room_above.id
+    down = rooms.dir_macro_test.id
     north = rooms.room1.id
     }
 
@@ -1543,6 +1544,7 @@ direction = "west"
     }
   room_exits "large_room_test" {
     room_id = rooms.large_room_test.id
+    up = rooms.meigui.id
     down = rooms.encoding_test.id
     north = rooms.room1.id
     south = rooms.room2.id
@@ -1636,7 +1638,7 @@ valid_leave = [
   room_exits "meigui" {
     room_id = rooms.meigui.id
     up = rooms.multi_include_test.id
-    down = rooms.room_up.id
+    down = rooms.large_room_test.id
     east = rooms.zxlpath.id
     }
 
@@ -1959,6 +1961,11 @@ item_desc = {
   x = 0
   y = 0
   z = 16
+    }
+  room_exits "liandan_lin" {
+    room_id = rooms.liandan_lin.id
+    down = rooms.yujia.id
+    up = rooms.liandan_lin1.id
     }
 
 # Generated from test_minimal_world_v2_modified/special/liandan_lin1.c by LPCConverter

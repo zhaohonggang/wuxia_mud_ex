@@ -67,6 +67,7 @@ defmodule AssignRoomCoords do
 
     {assigned, final_exits_map} = assign_coords(room_ids, fields, exits_map, start_id)
     new_content = rewrite(lines, fields, assigned, final_exits_map)
+    |> add_missing_exit_blocks(final_exits_map)
     report(fields, assigned, start_id, path)
 
     cond do
@@ -283,14 +284,21 @@ defp process_orphan_room(id, st) do
     end
   end
   defp add_vertical_exits(state, from_id, to_id) do
-    # Add up exit from from_id to to_id
-    new_exits_from = Map.get(state.new_exits, from_id, []) ++ [{"up", {:local, to_id}}]
-    # Add down exit from to_id to from_id
-    new_exits_to = Map.get(state.new_exits, to_id, []) ++ [{"down", {:local, from_id}}]
+    # Find the topmost room by following "up" exits from the previous anchor
+    topmost = find_topmost_via_up(from_id, state.exits_map, state.new_exits)
+
+    # Find the bottommost room by following "down" exits from the new orphan
+    bottommost = find_bottommost_via_down(to_id, state.exits_map, state.new_exits)
+
+    # Add up exit from topmost to new orphan
+    new_exits_from = Map.get(state.new_exits, topmost, []) ++ [{"up", {:local, to_id}}]
+    # Add down exit from bottommost to topmost
+    new_exits_to = Map.get(state.new_exits, bottommost, []) ++ [{"down", {:local, topmost}}]
 
     %{state
-      | new_exits: Map.put(state.new_exits, from_id, new_exits_from)
-              |> Map.put(to_id, new_exits_to)}
+      | new_exits: state.new_exits
+              |> Map.put(topmost, new_exits_from)
+              |> Map.put(bottommost, new_exits_to)}
   end
 
   # Find the topmost room by following "up" exits from the given room
@@ -307,7 +315,7 @@ defp process_orphan_room(id, st) do
 
     case up_exit do
       {"up", {:local, next_id}} ->
-        if MapSet.member?(visited, next_id) do
+        if MapSet.member?(visited, next_id) or not real_room?(next_id, exits_map, new_exits) do
           current
         else
           find_topmost_via_up(next_id, exits_map, new_exits, MapSet.put(visited, next_id))
@@ -316,6 +324,38 @@ defp process_orphan_room(id, st) do
       _ ->
         current
     end
+  end
+
+  # Find the bottommost room by following "down" exits from the given room
+  # Returns the room_id at the bottom of the down-chain
+  defp find_bottommost_via_down(start_id, exits_map, new_exits) do
+    find_bottommost_via_down(start_id, exits_map, new_exits, MapSet.new([start_id]))
+  end
+
+  defp find_bottommost_via_down(current, exits_map, new_exits, visited) do
+    # Check both original exits_map and new_exits for "down" exits
+    exits = Map.get(exits_map, current, []) ++ Map.get(new_exits, current, [])
+
+    down_exit = Enum.find(exits, fn {dir, _} -> dir == "down" end)
+
+    case down_exit do
+      {"down", {:local, next_id}} ->
+        if MapSet.member?(visited, next_id) or not real_room?(next_id, exits_map, new_exits) do
+          current
+        else
+          find_bottommost_via_down(next_id, exits_map, new_exits, MapSet.put(visited, next_id))
+        end
+
+      _ ->
+        current
+    end
+  end
+
+  # A "real" room is one that either has an exit block in this zone (exits_map)
+  # or already received a new exit entry (new_exits). Phantom targets referenced
+  # by test data (room_above, room_below...) are not followed.
+  defp real_room?(id, exits_map, new_exits) do
+    Map.has_key?(exits_map, id) or Map.has_key?(new_exits, id)
   end
 
   defp drain(state) do
@@ -455,6 +495,78 @@ defp process_orphan_room(id, st) do
       true ->
         {[line | out], nil}
     end
+  end
+
+  # Generate a `room_exits` block for rooms that have exits in the final map but
+  # no `room_exits` block in the source file (their new vertical exits would
+  # otherwise be silently lost). The block is placed right after the room's
+  # own `rooms "id"` block.
+  defp add_missing_exit_blocks(content, exits_map) do
+    lines = String.split(content, "\n")
+
+    block_ids =
+      Enum.reduce(lines, MapSet.new(), fn line, acc ->
+        case Regex.run(~r/^[ \t]*room_exits "([^"]+)"[ \t]*\{/, line) do
+          [_, id] -> MapSet.put(acc, id)
+          _ -> acc
+        end
+      end)
+
+    missing =
+      exits_map
+      |> Enum.filter(fn {id, exits} ->
+        exits != [] and not MapSet.member?(block_ids, id)
+      end)
+      |> Map.new()
+
+    if map_size(missing) == 0 do
+      content
+    else
+      {out, _state} =
+        Enum.reduce(lines, {[], nil}, fn line, {out, state} ->
+          cond do
+            is_nil(state) ->
+              case Regex.run(~r/^[ \t]*rooms "([^"]+)"[ \t]*\{/, line) do
+                [_, id] -> {[line | out], {id, 1}}
+                _ -> {[line | out], nil}
+              end
+
+            match?({_, depth} when is_integer(depth), state) ->
+              {id, depth} = state
+              {open, close} = brace_counts(line)
+              depth2 = depth + open - close
+
+              if depth2 <= 0 do
+                block_lines =
+                  if Map.has_key?(missing, id),
+                    do: build_new_exits_block(id, Map.fetch!(missing, id)),
+                    else: []
+
+                {Enum.reverse(block_lines) ++ [line | out], nil}
+              else
+                {[line | out], {id, depth2}}
+              end
+
+            true ->
+              {[line | out], nil}
+          end
+        end)
+
+      Enum.reverse(out) |> Enum.join("\n")
+    end
+  end
+
+  defp build_new_exits_block(id, exits) do
+    header = "  room_exits \"#{id}\" {"
+    room_id_line = "    room_id = rooms.#{id}.id"
+
+    exit_lines =
+      Enum.map(exits, fn
+        {dir, {:local, target}} -> "    #{dir} = rooms.#{target}.id"
+        {dir, {:external, target}} -> "    #{dir} = #{target}"
+      end)
+
+    [header, room_id_line] ++ exit_lines ++ ["    }"]
   end
 
   defp build_block(content, fields, assigned, id) do
