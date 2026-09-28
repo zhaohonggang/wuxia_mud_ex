@@ -1,0 +1,151 @@
+# 区域转换核对单（Checklist）
+
+> 基于 `docs/zone-conversion-plan.zh-CN.md`，**跳过 `minimal_world` 与 `minimal_world_v2`**（测试区，不接入正式世界）。
+> 共 71 个正式区域，按 BFS 层序逐个勾选。
+
+---
+
+## 使用说明
+- 每个区域一个复选框组，**全部 ✅ 才能进下一区域**
+- 完成即在对应 `- [ ]` 改为 `- [x]` 并 `git commit --amend` 更新本文件
+- 关键产出文件：`data/ucl/<zone>.ucl`、`data/ucl/<zone>_comments.txt`、`test_logs/<zone>_*.md`
+
+---
+
+## Layer 0 · 世界中枢
+
+- [ ] **city** · 中心 `guangchang` · 产出 `city.ucl` `city_comments.txt`
+
+---
+
+## Layer 1 · 直连扬州（20 个，已去掉 minimal_world*）
+
+- [ ] **baituo** · 中心 `guangchang`
+- [ ] **death** · 中心 `yanluodian`
+- [ ] **gaibang** · 中心 `undertre`
+- [ ] **guiyun** · 中心 `dating`
+- [ ] **gumu** · 中心 `daxiaochang`
+- [ ] **huanghe** · 中心 `guangchang`
+- [ ] **jingzhou** · 中心 `guangchang`
+- [ ] **luoyang** · 中心 `center`
+- [ ] **quanzhen** · 中心 `datang1`
+- [ ] **register** · 中心 `entry`
+- [ ] **shaolin** · 中心 `guangchang2`
+- [ ] **taishan** · 中心 `nantian`
+- [ ] **wizard** · 中心 `hall`
+- [ ] **wudang** · 中心 `guangchang`
+- [ ] **wudu** · 中心 `nanyuan`
+- [ ] **xuedao** · 中心 `sroad3`
+- [ ] **xueshan** · 中心 `guangchang`
+- [ ] **zhongzhou** · 中心 `shizhongxin`
+
+---
+
+## Layer 2 · 距离 2（23 个）
+
+- [ ] **beijing** · 中心 `di_dajie1`
+- [ ] **changan** · 中心 `beian-daokou`
+- [ ] **chengdu** · 中心 `guangchang`
+- [ ] **dali** · 中心 `zhengdian`
+- [ ] **emei** · 中心 `hcaguangchang`
+- [ ] **foshan** · 中心 `street4`
+- [ ] **fuzhou** · 中心 `dongjiekou`
+- [ ] **hangzhou** · 中心 `duanqiao`
+- [ ] **heimuya** · 中心 `chengdedian`
+- [ ] **hengyang** · 中心 `zhurongdian`
+- [ ] **kaifeng** · 中心 `hh_zhengting`
+- [ ] **kunming** · 中心 `jinrilou`
+- [ ] **lanzhou** · 中心 `guangchang`
+- [ ] **lingxiao** · 中心 `dadian`
+- [ ] **room** · 中心 `xiaoyuan`
+- [ ] **songshan** · 中心 `dadian`
+- [ ] **suzhou** · 中心 `zhongxin`
+- [ ] **village** · 中心 `square`
+- [ ] **xiangyang** · 中心 `guangchang`
+- [ ] **xiaoyao** · 中心 `qingcaop`
+- [ ] **xiyu** · 中心 `shanjiao`
+- [ ] **quanzhou** · 中心 `zhongxin`
+
+---
+
+## Layer 3 · 距离 3（21 个）
+
+- [ ] **guanwai** · 中心 `longmen`
+- [ ] **hengshan** · 中心 `beiyuemiao`
+- [ ] **huashan** · 中心 `square`
+- [ ] **item** · 中心 `road1`
+- [ ] **jinshe** · 中心 `shandong`
+- [ ] **jueqing** · 中心 `dating`
+- [ ] **lingjiu** · 中心 `damen`
+- [ ] **meizhuang** · 中心 `gate`
+- [ ] **mingjiao** · 中心 `dadian`
+- [ ] **motianya** · 中心 `mtdating`
+- [ ] **pk** · 中心 `entry`
+- [ ] **qingcheng** · 中心 `sanqingdian`
+- [ ] **shenfeng** · 中心 `dadian`
+- [ ] **tianlongsi** · 中心 `baodian`
+- [ ] **tiezhang** · 中心 `guangchang`
+- [ ] **tulong** · 中心 `yubifeng/damen`（容器区，三子区统一）
+- [ ] **wanjiegu** · 中心 `hall`
+- [ ] **wuguan** · 中心 `guofu_dating`
+- [ ] **xiakedao** · 中心 `dating`
+- [ ] **yanziwu** · 中心 `canheju`
+
+---
+
+## Layer 4 · 距离 4（3 个）
+
+- [ ] **gaochang** · 中心 `dadian`
+- [ ] **jinshe** 已在 Layer 3 列出
+- [ ] **kunlun** · 中心 `guangchang`
+
+---
+
+## Unreachable · 不可达孤立区（8 个）
+
+- [ ] **huanggong** · 中心 `qihedian`
+- [ ] **lingzhou** · 中心 `center`
+- [ ] **shenlong** · 中心 `dating`
+- [ ] **sky** · 中心 `tianmen`
+- [ ] **special** · 无房间（仅六道轮回展示）
+- [ ] **tangmen** · 无房间（仅 obj）
+- [ ] **taohua** · 中心 `dating`
+- [ ] **xuanminggu** · 中心 `xuanminggu`
+
+---
+
+## 单区域执行步骤（每区必做）
+
+| 步骤 | 动作 | 产出/验证 | 勾选 |
+|------|------|-----------|------|
+| 1 | `lpc_converter.ex --zone <zone>` | `<zone>.ucl` `<zone>_comments.txt` | - [ ] |
+| 2 | `assign_room_coords.exs <zone>.ucl <center> <zone>` | `.ucl` 带 `coord` | - [ ] |
+| 3 | `git add/commit` 两文件 | commit 记录 | - [ ] |
+| 4 | 热更加载 `World.load_zone("<zone>")` | 无报错 | - [ ] |
+| 5 | 自动化测试 `mix test test/zone_<zone>_test.exs` | 全绿 | - [ ] |
+| 6 | 巫师测试（goto/walk/call/任务） | `test_logs/<zone>_wizard_<date>.md` | - [ ] |
+| 7 | 玩家测试（主线/战斗/技能/传送） | `test_logs/<zone>_player_<date>.md` | - [ ] |
+| 8 | 本文件把该区域大项标 ✅ | `git commit --amend` | - [ ] |
+
+---
+
+## 统计汇总
+
+| 指标 | 数值 |
+|------|------|
+| 总区域数 | 71 |
+| 已完成 | 0 |
+| 进行中 | 0 |
+| 待处理 | 71 |
+
+> 实时更新：每完成一个区域，在对应大项打勾，并在下方填入完成日期、测试人、关键修复 commit。
+
+---
+
+## 完成记录（示例）
+
+| 区域 | 完成日期 | 巫师测试 | 玩家测试 | 关键修复 commit |
+|------|----------|----------|----------|-----------------|
+| city |  |  |  |  |
+| baituo |  |  |  |  |
+| ... |  |  |  |  |
