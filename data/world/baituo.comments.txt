@@ -1,0 +1,820 @@
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/baituo/cave.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "in" && objectp(present("mang she", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/baituo/damen.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (objectp(guarder = present("men wei", this_object())) && dir == "north")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/baituo/neishi.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "pen")  →  
+  # if (me->query("born_family") != "欧阳世家")  →  
+  # else  →  message_vision(HIY '\\\\\n$N' HIY '把花盆搬回原位，洞口顿' '时被封住了。\\\\\n\\\\\n' NOR, me);
+  # if (! query("exits/down"))  →  message_vision(HIY '\\\\\n$N' HIY '移动花盆，只见花盆下面' '露出一个黑幽幽的洞口。\\\\\n\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/baituo/ximen.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! objectp(guarder = present("men wei", this_object())))  →  
+  # if (dir == "east")  →  
+  # if (dir == "west" && (int)me->query("combat_exp") < 600 && guarder)  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/baituo/npc/jinhua.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! who || environment(who) != environment())  →  
+  # if (! objectp(ob))  →  
+  # if (! present(ob, who))  →  
+  # if ((string)ob->query("id") != "xiuhua xie")  →  
+  # if (query("gold_times") < 1)  →  
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: unconcious
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/baituo/npc/li.c by LPCConverter
+# Zone: baituo
+
+# inherit F_GUARDER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (ob->query("born_family") != "欧阳世家")  →  command('shake'); command('say 你是哪里来的？居然敢来白驼山添乱？');
+# ==== CONDITIONAL BRANCHES (attempt_apprentice) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/npc/lingshe.c by LPCConverter
+# Zone: baituo
+
+# inherit SNAKE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "ling she")  →  
+  # if (me->query("family/family_name") != "欧阳世家")  →  
+  # if (me->query_skill("training", 1) < 70 + random(70))  →  
+# ==== CONDITIONAL BRANCHES (convert) ====
+  # if (interactive(ob = this_player()) && ob->query("family/family_name") != "欧阳世家" && !present("xiong huang", environment(ob)))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: convert
+  # UNHANDLED FUNCTION: unconcious
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/baituo/npc/menwei.c by LPCConverter
+# Zone: baituo
+
+# inherit F_GUARDER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+  # if (check_family(ob, "欧阳世家"))  →  say(CYN '门卫笑吟吟地道：这位' + RANK_D->query_respect(ob) + CYN '您辛苦了，快请进吧。\\\\\n' NOR);
+  # if ((int)ob->query("shen") > 200)  →  say(CYN '门卫两眼一瞪道：这位' + RANK_D->query_respect(ob) + CYN '你是来找麻烦的吧？\\\\\n');
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/baituo/npc/shanzei2.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob = this_player()))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/baituo/npc/smith.c by LPCConverter
+# Zone: baituo
+
+# inherit /inherit/char/smith.c;
+
+# Generated from C:/files/git/mud/d/baituo/npc/snake.c by LPCConverter
+# Zone: baituo
+
+# inherit SNAKE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "snake" && arg != "she")  →  
+  # if (me->query("family/family_name") != "欧阳世家")  →  
+  # if (random(me->query_skill("training", 1)) < 20)  →  
+# ==== CONDITIONAL BRANCHES (convert) ====
+  # if (interactive(ob = this_player()) && ob->query("family/family_name") != "欧阳世家" && random(ob->query_kar() + ob->query_per()) < 30)  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: convert
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/npc/snaker.c by LPCConverter
+# Zone: baituo
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! objectp(present("mang she", environment(ob))))  →  message_vision(CYN '舞蛇人愣了愣，说道：嗯…今天俺' '没抄家伙，算了吧。\\\\\n' NOR, ob); message_vision(CYN '舞蛇人大叫一声：竟敢跟老子过不去，尝尝' '蛇的厉害。\\\\\n' NOR, ob);
+# ==== CONDITIONAL BRANCHES (accept_fight) ====
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_fight
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/npc/trainer.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (ob->query("born_family") != "欧阳世家")  →  command('shake'); command('say 哪里来的家伙居然敢来白驼山添乱？');
+# ==== CONDITIONAL BRANCHES (accept_fight) ====
+  # if (ob->query("born_family") != "欧阳世家")  →  command('shake'); command('say 哪里来的家伙？居然敢来白驼山添乱？');
+# ==== CONDITIONAL BRANCHES (attempt_apprentice) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: attempt_apprentice
+  # UNHANDLED FUNCTION: accept_fight
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/baituo/npc/zhangma.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (query_temp("shoe") == 0)  →  message_vision(CYN '张妈又道：今日我已经托人去寻找了，也不' '知道怎么样了。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (inquiry_hua) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: inquiry_hua
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/baipao.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/bowl.c by LPCConverter
+# Zone: baituo
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/cake.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/caomei.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/chai.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/chaidao.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/dadao.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/doujiang.c by LPCConverter
+# Zone: baituo
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/fen.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("eff_qi") >= me->query("max_qi") - 20)  →  
+  # if (random(2) == 0)  →  message_vision(WHT '$N' WHT '吃下一包蛇胆粉，觉得' '象是土豆粉，连呼上当。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/jindan.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!id(arg))  →  
+# ==== CONDITIONAL BRANCHES (do_eat) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_eat
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/key.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/lingshezhang.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg!="shezhang" && arg!="staff" && arg!="zhang")  →  
+  # if (me->query("family/family_name") != "欧阳世家")  →  
+  # if ((int)me->query("jing") < 100)  →  
+  # if (!present("lingshe zhang", me))  →  
+  # if (me->query_skill("training",1) < 70+random(70))  →  message_vision('$N手握灵蛇杖手舞足蹈，好像发疯一般。\\\\\n' ,me);
+# ==== CONDITIONAL BRANCHES (convert) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: convert
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/mangshe-dan.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (interactive(where))  →  
+# ==== CONDITIONAL BRANCHES (decay) ====
+  # if (!living(this_player()))  →  
+  # if (used)  →  
+  # if (me->is_busy())  →  
+  # if ((int)me->query_condition("bonze_drug") > 0 || (int)me->query_condition("mang_shedan") > 0)  →  message_vision(HIR '$N吃下一颗蛇胆，只觉得头重脚轻，摇摇欲倒，原来服食太急太多，药效适得其反！\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (cure_ob) ====
+  # if (used)  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: delete_benefit
+  # UNHANDLED FUNCTION: decay
+  # UNHANDLED FUNCTION: cure_ob
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/qingdan.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!id(arg))  →  
+# ==== CONDITIONAL BRANCHES (do_eat) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_eat
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/qingpao.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/shebian.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/shedan.c by LPCConverter
+# Zone: baituo
+
+# inherit POWDER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (ob->query("liquid/type") == "alcohol")  →  tell_object(this_player(), MAG'你感到一股真气缓缓注入丹田，混身上下暖哄哄的。\\\\\n'NOR);
+# ==== CONDITIONAL BRANCHES (effect_in_liquid) ====
+  # if ((int)me->query_condition("snake_poison") > 7)  →  
+# ==== CONDITIONAL BRANCHES (cure_ob) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: effect_in_liquid
+  # UNHANDLED FUNCTION: cure_ob
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/shedangao.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!id(arg))  →  
+  # if ((me->query("max_jing")>=200)||(me->query("max_qi")>=200))  →  
+  # else  →  
+  # if (me->query("max_jing")<180)  →  
+# ==== CONDITIONAL BRANCHES (do_eat) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_eat
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/shenshe.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (env->short() != "大沙漠")  →  
+  # if ( me->query("family/family_name") !="欧阳世家")  →  
+# ==== CONDITIONAL BRANCHES (do_home) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_home
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/shepi.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/sherou.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/shezhang.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg!="shezhang" && arg!="staff" && arg!="zhang")  →  
+  # if (me->query("family/family_name") != "欧阳世家")  →  
+  # if ((int)me->query("jing") < 100)  →  
+  # if (!present("shezhang", me))  →  
+  # if (random(me->query_skill("training",1)) <20)  →  message_vision('$N手握蛇杖手舞足蹈，好像发疯一般。\\\\\n' ,me);
+# ==== CONDITIONAL BRANCHES (convert) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: convert
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/shoe.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/tiezheng.c by LPCConverter
+# Zone: baituo
+
+# inherit MI_ZHENG;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/turou.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/zheng.c by LPCConverter
+# Zone: baituo
+
+# inherit MI_ZHENG;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/baituo/obj/zhulou.c by LPCConverter
+# Zone: baituo
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (ob->query("race") == "蛇类")  →  
+# ==== CONDITIONAL BRANCHES (reject) ====
+  # if ( !arg )  →  
+  # if ( me->is_busy() )  →  
+  # if ( obj->query("keeper") != me->query("id") )  →  
+  # if (arg=="all")  →  message_vision('$N将一条$n放出竹篓。\\\\\n'NOR, me, inv[i]); write('竹篓里的蛇全被放出来了。\\\\\n');
+  # if ( !objectp(snake = present(arg, obj)) )  →  
+  # if ( !snake->is_character() || snake->is_corpse() )  →  
+  # if ( me->is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (do_free) ====
+  # if (me->is_busy() || me->query_temp("pending/exercising"))  →  
+  # if (me->is_fighting())  →  
+  # if ( !arg )  →  
+  # if ( !objectp(snake = present(arg, me)) && !objectp(snake = present(arg, environment(me))))  →  
+  # if (snake->query("race") != "蛇类")  →  
+  # if ( obj->query("keeper") != me->query("id") )  →  
+  # if ( snake->query("who_breed") )  →  
+  # if ( snake->query_lord() != me && living(snake) && snake->query("caught") != me->query("id") )  →  
+  # if (!snake->query("bt_snake"))  →  
+  # else  →  
+  # if ( snake->move(obj) )  →  message_vision('$N将'+snake->name()+'捉了起来，从尾巴起慢慢放进竹篓。\\\\\n', me, snake);
+# ==== CONDITIONAL BRANCHES (do_catch) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: is_container
+  # UNHANDLED FUNCTION: no_limit_amount
+  # UNHANDLED FUNCTION: do_catch
+  # UNHANDLED FUNCTION: do_free
+  # UNHANDLED FUNCTION: reject
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================

@@ -24,7 +24,7 @@
 
 ## Layer 1 · 直连扬州（20 个，已去掉 minimal_world*）
 
-- [ ] **baituo** · 中心 `guangchang`
+- [x] **baituo** · 中心 `guangchang` · 产出 `baituo.ucl` `baituo.comments.txt` ✅ 2026-09-29
 - [ ] **death** · 中心 `yanluodian`
 - [ ] **gaibang** · 中心 `undertre`
 - [ ] **guiyun** · 中心 `dating`
@@ -152,5 +152,5 @@
 | 区域 | 完成日期 | 巫师测试 | 玩家测试 | 关键修复 commit |
 |------|----------|----------|----------|-----------------|
 | city | 2026-09-29 | ✅ | ✅ | 完整 Python 转换：111 rooms, 111 room_exits, 187 characters, 45 items (含 coords) |
-| baituo |  |  |  |  |
+| baituo | 2026-09-29 | ? | ? | 完整 Python 转换：49 rooms, 49 room_exits (含 coords) |
 | ... |  |  |  |  |
