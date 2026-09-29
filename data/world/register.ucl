@@ -1,0 +1,331 @@
+zones "register" {
+  name = "register"
+}
+
+# Generated from C:/files/git/mud/d/register/entry.c by LPCConverter
+# Zone: register
+
+    rooms "entry" {
+      name = "世外桃源"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ paizi = "请从这里不同方向的出口选择你的内在品质(help gift)。"
+}
+    }
+
+  room_exits "entry" {
+    room_id = rooms.entry.id
+    up = rooms.prison.id
+    east = rooms.roome.id
+    south = rooms.rooms.id
+    west = rooms.roomw.id
+    north = rooms.roomn.id
+    }
+
+
+  room_characters "entry" {
+    room_id = rooms.entry.id
+    characters = [
+      { id = characters.shuisheng.id },
+      { id = characters.diyun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/register/prison.c by LPCConverter
+# Zone: register
+
+    rooms "prison" {
+      name = "第十八层地狱"
+      description = "这里极度阴森，你感到无数的鬼魂到处游荡，骇得你大气也不敢透 一口，只想赶快离开这里。也不知道在这里会呆多久，想到这里，你不 禁感到深深的懊恼。     旁边有一个牌子(paizi)。"
+  x = 0
+  y = 0
+  z = 1
+item_desc = {
+ paizi = "第十八层地狱，你想翻身？那就试试！"
+}
+    }
+  room_exits "prison" {
+    room_id = rooms.prison.id
+    down = rooms.entry.id
+    up = rooms.yanluodian.id
+    }
+
+# Generated from C:/files/git/mud/d/register/roome.c by LPCConverter
+# Zone: register
+
+    rooms "roome" {
+      name = "桃源竹屋"
+      description = ""
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "roome" {
+    room_id = rooms.roome.id
+    out = rooms.guangchang.id
+    west = rooms.entry.id
+    }
+
+
+  room_characters "roome" {
+    room_id = rooms.roome.id
+    characters = [
+      { id = characters.lu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/register/roomn.c by LPCConverter
+# Zone: register
+
+    rooms "roomn" {
+      name = "桃源茅屋"
+      description = ""
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "roomn" {
+    room_id = rooms.roomn.id
+    out = rooms.guangchang.id
+    south = rooms.entry.id
+    }
+
+
+  room_characters "roomn" {
+    room_id = rooms.roomn.id
+    characters = [
+      { id = characters.li.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/register/rooms.c by LPCConverter
+# Zone: register
+
+    rooms "rooms" {
+      name = "桃源瓦房"
+      description = ""
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "rooms" {
+    room_id = rooms.rooms.id
+    out = rooms.guangchang.id
+    north = rooms.entry.id
+    }
+
+
+  room_characters "rooms" {
+    room_id = rooms.rooms.id
+    characters = [
+      { id = characters.wei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/register/roomw.c by LPCConverter
+# Zone: register
+
+    rooms "roomw" {
+      name = "桃源石屋"
+      description = ""
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "roomw" {
+    room_id = rooms.roomw.id
+    out = rooms.guangchang.id
+    east = rooms.entry.id
+    }
+
+
+  room_characters "roomw" {
+    room_id = rooms.roomw.id
+    characters = [
+      { id = characters.hua.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/register/yanluodian.c by LPCConverter
+# Zone: register
+
+    rooms "yanluodian" {
+      name = "阎罗殿"
+      description = ""
+  x = 0
+  y = 0
+  z = 2
+item_desc = {
+ paizi = "投胎乃人生大事，切记不可草率！  选好先天属性(指令：washto)之后再投胎(指令：born <中文地名>)吧。"
+}
+    }
+  room_exits "yanluodian" {
+    room_id = rooms.yanluodian.id
+    down = rooms.prison.id
+    }
+
+  room_characters "yanluodian" {
+    room_id = rooms.yanluodian.id
+    characters = [
+      { id = characters.dizangwang.id },
+      { id = characters.niutou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/register/npc/diyun.c by LPCConverter
+# Zone: register
+
+    characters "diyun" {
+      name = "狄云"
+      description = "他英武刚正，有一股豪迈之气。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/register/npc/dizangwang.c by LPCConverter
+# Zone: register
+
+    characters "dizangwang" {
+      name = "地藏王"
+      description = "他容貌威严，不可一世，乃是掌管人间生死的神仙。"
+  title = "幽冥地府生死之神"
+  nickname = "幽冥之主"
+  gender = "男性"
+  age = 9999
+  shen_type = 0
+
+  combat = {
+    attitude = "peaceful"
+  }
+
+  carry = [
+    { id = items.cloth2.id }
+  ]
+
+
+  greetings = [
+    { line = "{npc}一脚把{name}踢得无影无踪。  {expr}" },
+    { line = "{npc}跌落地上，捂着屁股哇哇叫了几声。 {expr}" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/register/npc/hua.c by LPCConverter
+# Zone: register
+
+    characters "hua" {
+      name = "花铁干"
+      description = "他一脸来上去大义凛然，却总让感觉有点什么不对。"
+  gender = "男性"
+  age = 41
+
+  combat = {
+    attitude = "peaceful"
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/register/npc/li.c by LPCConverter
+# Zone: register
+
+    characters "li" {
+      name = "李自成"
+      description = "他面透煞气，暴戾异常，看得你心里毛毛的。"
+  gender = "男性"
+  age = 49
+
+  combat = {
+    attitude = "peaceful"
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/register/npc/lu.c by LPCConverter
+# Zone: register
+
+    characters "lu" {
+      name = "陆天抒"
+      description = "他一脸正气，眉宇之间乃显侠义雄风。"
+  gender = "男性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/register/npc/shuisheng.c by LPCConverter
+# Zone: register
+
+    characters "shuisheng" {
+      name = "水笙"
+      description = "她轻妆淡抹，眉目之中深深的透露哀思。"
+  gender = "女性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["register", "decide"]
+  }
+
+  greetings = [
+    { line = "{npc}被昏昏沉沉的扔了出去。 {expr}" },
+    { line = "啪的一声，{npc}被扔到了地上。 {expr}" },
+    { line = "{npc}被昏昏沉沉的扔了出去。 {expr}" },
+    { line = "啪的一声，{npc}被扔到了地上。 {expr}" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/register/npc/wei.c by LPCConverter
+# Zone: register
+
+    characters "wei" {
+      name = "韦小宝"
+      description = "他一脸顽皮像，眼神中透露着狡黠，没有半点正经。"
+  gender = "男性"
+  age = 21
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }

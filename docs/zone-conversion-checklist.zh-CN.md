@@ -32,9 +32,9 @@
 - [x] **huanghe** · 中心 `guangchang` · 产出 `huanghe.ucl` `huanghe.comments.txt` ✅ 2026-09-29
 - [x] **jingzhou** · 中心 `guangchang` · 产出 `jingzhou.ucl` `jingzhou.comments.txt` ✅ 2026-09-29
 - [x] **luoyang** · 中心 `center` · 产出 `luoyang.ucl` `luoyang.comments.txt` ✅ 2026-09-29
-- [ ] **quanzhen** · 中心 `datang1`
-- [ ] **register** · 中心 `entry`
-- [ ] **shaolin** · 中心 `guangchang2`
+- [x] **quanzhen** · 中心 `datang1` · 产出 `quanzhen.ucl` `quanzhen.comments.txt` ✅ 2026-09-29
+- [x] **register** · 中心 `entry` · 产出 `register.ucl` `register.comments.txt` ✅ 2026-09-29
+- [x] **shaolin** · 中心 `guangchang2` · 产出 `shaolin.ucl` `shaolin.comments.txt` ✅ 2026-09-29
 - [ ] **taishan** · 中心 `nantian`
 - [ ] **wizard** · 中心 `hall`
 - [ ] **wudang** · 中心 `guangchang`
@@ -160,4 +160,7 @@
 | huanghe | 2026-09-29 | ? | ? | 完整 Python 转换：56 rooms, 56 room_exits (含 coords) |
 | jingzhou | 2026-09-29 | ? | ? | 完整 Python 转换：90 rooms, 90 room_exits (含 coords) |
 | luoyang | 2026-09-29 | ? | ? | 完整 Python 转换：157 rooms, 157 room_exits (含 coords) |
+| quanzhen | 2026-09-29 | ? | ? | 完整 Python 转换：109 rooms, 109 room_exits (含 coords) |
+| register | 2026-09-29 | ? | ? | 完整 Python 转换：7 rooms, 7 room_exits (含 coords) |
+| shaolin | 2026-09-29 | ? | ? | 完整 Python 转换：206 rooms, 206 room_exits (含 coords) |
 | ... |  |  |  |  |

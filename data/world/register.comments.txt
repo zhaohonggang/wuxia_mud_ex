@@ -1,0 +1,258 @@
+# Generated from C:/files/git/mud/d/register/entry.c by LPCConverter
+# Zone: register
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! objectp(ob = present("shui sheng", this_object())))  →  
+  # if (! objectp(ob = present("di yun", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/register/prison.c by LPCConverter
+# Zone: register
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (me->is_ghost())  →  
+# ==== CONDITIONAL BRANCHES (free_ob) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_suicide
+  # UNHANDLED FUNCTION: free_ob
+  # UNHANDLED FUNCTION: do_drop
+  # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: do_give
+  # UNHANDLED FUNCTION: catch_back
+  # UNHANDLED FUNCTION: do_drink
+  # UNHANDLED FUNCTION: catch_ob
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/register/roome.c by LPCConverter
+# Zone: register
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! objectp(ob = present("lu tianshu", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/register/roomn.c by LPCConverter
+# Zone: register
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!objectp(ob = present("li zicheng", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/register/rooms.c by LPCConverter
+# Zone: register
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!objectp(ob = present("wei xiaobao", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/register/roomw.c by LPCConverter
+# Zone: register
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!objectp(ob = present("hua tiegan", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/register/yanluodian.c by LPCConverter
+# Zone: register
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!objectp(me = this_player()) || !userp(me))  →  
+  # if (!me->query_temp("washed") && !me->query("reborn"))  →  
+  # if (arg && arg[0] < 160)  →  
+  # if (arg)  →  
+  # if (!arg || (!stringp(dest = born[arg]) && !mapp(dest)))  →  message_vision(CYN '牛头恶狠狠的对$N' CYN '说：你要干什么！投胎去哪里？\\\\\n' NOR, me);
+  # if (mapp(dest) && stringp(dest["notice"]))  →  
+  # else  →  write(msg); write('你可以考虑在投入世家的时候重新选择名字：born <世家> <名字>\\\\\n');
+  # if (stringp(dest))  →  
+  # if (!objectp(obj))  →  message_vision(CYN '牛头一呆，搔搔头说道：怎么好像有问题……\\\\\n' NOR, me);
+  # if (!item->query("armor_type") && !(item->query("id") == "heros book"))  →  
+  # if (!me->query("reborn"))  →  
+# ==== CONDITIONAL BRANCHES (do_born) ====
+  # if (!objectp(me = this_player()) || !userp(me))  →  
+  # if (!arg || sscanf(arg, "%d %d %d %d", tmpstr, tmpint, tmpcon, tmpdex) != 4)  →  
+  # if (tmpstr > 30)  →  
+  # if (tmpstr < 10)  →  
+  # if (tmpint > 30)  →  
+  # if (tmpint < 10)  →  
+  # if (tmpcon > 30)  →  
+  # if (tmpcon < 10)  →  
+  # if (tmpdex > 30)  →  
+  # if (tmpdex < 10)  →  
+  # if ((tmpstr + tmpint + tmpcon + tmpdex) != 80)  →  
+# ==== CONDITIONAL BRANCHES (do_wash) ====
+  # if (!stringp(born[position[i]]))  →  
+  # if (!mapp(born[position[i]]))  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # COMPLEX MAPPING: ([ "扬州人氏":"/d/city/kedian", "欧阳世家":([ "born":"西域人氏", "surname":"欧阳", "startroom":"/d/baituo/dating", ]
+# ==== COMPLEX MAPPINGS ====
+  # UNHANDLED FUNCTION: do_wash
+  # UNHANDLED FUNCTION: do_born
+  # UNHANDLED FUNCTION: is_chat_room
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/register/npc/dizangwang.c by LPCConverter
+# Zone: register
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!ob->query("born"))  →  command('say 你快投胎去，在这里瞎搅和什么？');
+# ==== CONDITIONAL BRANCHES (attempt_apprentice) ====
+  # if (!objectp(me) || environment(me) != environment(this_object()))  →  
+  # if (!me->query("startroom") || base_name(environment()) != me->query("startroom"))  →  
+  # else  →  command('heihei ' + me->query('id')); command('kick ' + me->query('id')); command('say 凡人跑到这里来干什么？'); message_vision('$N一脚把$n踢得无影无踪。\\\\\n\\\\\n', this_object(), me); message_vision('\\\\\n$N跌落地上，捂着屁股哇哇叫了几声。\\\\\n', me);
+  # if (undefinedp(me->query("born")))  →  command('say ' + me->query('name') + NOR CYN'，你快快在无忧池中洗脱筋骨(' NOR + HIY '指令：washto' NOR + CYN ')，然后投胎去吧！' NOR);
+  # if (undefinedp(me->query("born")) && !objectp(present("heros book", me)))  →  tell_object(me, WHT '\\\\\n地藏王在你耳边悄声说道：本座瞧你人不' '错，这里有一本天书，相信你拿去后有用。\\\\\n' NOR); command('grin'); tell_object(me, HIC '地藏王悄悄塞了一本天书给你。\\\\\n' NOR); command('ke');
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (!objectp(me) || !userp(me))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/register/npc/hua.c by LPCConverter
+# Zone: register
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else if (dir == "east")  →  command('sneer'); command('say 哼，没眼光！');
+  # if (dir == "out")  →  message_vision(CYN '$N' CYN '对$n' CYN '奸笑道：上路吧' '。\\\\\n' NOR, this_object(), me); tell_object(me, HIC '你领悟了特技' + SPECIAL_D('trick')->name() + '(help special)。\\\\\n');
+# ==== CONDITIONAL BRANCHES (check_leave) ====
+  # if (!objectp(me) || !userp(me))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: check_leave
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/register/npc/li.c by LPCConverter
+# Zone: register
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else if (dir == "south")  →  command('sneer'); command('say 胆小鬼！');
+  # if (dir == "out")  →  message_vision(CYN '$N' CYN '对$n' CYN '狂笑道：哈哈哈！' '杀光那帮伪君子！\\\\\n' NOR, this_object(), me); tell_object(me, HIC '你领悟了特技' + SPECIAL_D('wrath')->name() + '(help special)。\\\\\n');
+# ==== CONDITIONAL BRANCHES (check_leave) ====
+  # if (! objectp(me) || ! userp(me))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: check_leave
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/register/npc/lu.c by LPCConverter
+# Zone: register
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else if (dir == "west")  →  command('sigh'); command('say 可惜啊可惜，光明大道岂能不走？');
+  # if (dir == "out")  →  message_vision(CYN '$N' CYN '对$n' CYN '笑道：去吧！去吧' '！\\\\\n' NOR, this_object(), me); tell_object(me, HIG '你领悟了特技' + SPECIAL_D('wrath')->name() + '(help special)。\\\\\n');
+# ==== CONDITIONAL BRANCHES (check_leave) ====
+  # if (! objectp(me) || ! userp(me))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: check_leave
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/register/npc/shuisheng.c by LPCConverter
+# Zone: register
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! objectp(me = this_player()))  →  
+  # if (me->query("registered"))  →  command('say 行了行了，我已经知道你的地址了，不用再说啦！\\\\\n');
+  # if (! stringp(me->query_temp("email")))  →  command('say 你要决定什么？是决定注册吗？要是那' '样请你先注册你的email地址。');
+# ==== CONDITIONAL BRANCHES (do_decide) ====
+  # if (! objectp(me = this_player()))  →  
+  # if (me->query("registered"))  →  command('say 你不是已经注册过了吗？不用再注册了。');
+  # if (! arg || ! stringp(arg))  →  command('shake ' + me->query('id')); command('say 注册的email地址你得给我啊。请输入' HIY 'register' NOR + CYN '你的email地址。' NOR);
+  # if (strlen(arg) > 64 || sscanf(arg, "%s@%s", id, address) != 2)  →  command('say 我怎么没有见过这么怪的email地址？你看看清楚好吗？');
+# ==== CONDITIONAL BRANCHES (do_register) ====
+  # if (! objectp(me) || environment(me) != environment(this_object()))  →  
+  # if (! stringp(me->query("character")))  →  command('whisper ' + me->query('id') + ' 你还没有选择品质，快去' '附近选选吧。'); command('whisper ' + me->query('id') + ' 关于如何选择理想的天赋' '，你可以看看(' HIY 'help gift' NOR + WHT ')帮助文件。' NOR);
+  # if (! wizardp(me))  →  command('tell ' + me->query('id') + ' 咦，你怎么跑到这里来了？'); message_vision('$N被昏昏沉沉的扔了出去。\\\\\n', me); message_vision('啪的一声，$N被扔到了地上。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (! objectp(me) || ! userp(me))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_decide
+  # UNHANDLED FUNCTION: do_register
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/register/npc/wei.c by LPCConverter
+# Zone: register
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else if (dir == "north")  →  command('shake'); command('say 不好玩儿。');
+  # if (dir == "out")  →  message_vision(CYN '$N' CYN '对$n' CYN '笑道：走！多捣点' '乱，那多有意思？\\\\\n' NOR, this_object(), me); tell_object(me, HIC '你领悟了特技' + SPECIAL_D('trick')->name() + '(help special)。\\\\\n');
+# ==== CONDITIONAL BRANCHES (check_leave) ====
+  # if (!objectp(me) || !userp(me))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: check_leave
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
