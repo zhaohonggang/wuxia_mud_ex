@@ -29,13 +29,13 @@
 │ 1. RUN CONVERTER          │  python scripts\lpc_converter.py        │
 │      (LPC → UCL)          │  输出：<zone>.ucl + <zone>.comments.txt  │
 ├─────────────────────────────────────────────────────────────────────┤
-│ 2. VALIDATE OUTPUT        │  python scripts\validate_ucl.py         │
-│      (编码/语法/结构)     │  必须全绿才能进下一步                   │
+│ 2. VALIDATE + LOAD TEST   │  python validate_ucl.py + reload_zone   │
+│      (静态+动态校验)      │  全绿 + 容器能加载才能进下一步           │
 ├─────────────────────────────────────────────────────────────────────┤
-│ 3. RUN COORDINATES        │  python scripts\assign_room_coords.py   │
-│      (赋坐标)             │  输出：<zone>_coords.ucl                │
+│ 3. RUN COORDINATES        │  python assign_room_coords.py           │
+│      (就地赋坐标+备份)    │  先备份 world_backup，再原地改写         │
 ├─────────────────────────────────────────────────────────────────────┤
-│ 4. VALIDATE COORDS        │  python scripts\validate_ucl.py         │
+│ 4. VALIDATE COORDS        │  python validate_ucl.py                 │
 │      (坐标/编码/语法)     │  必须全绿才能进下一步                   │
 ├─────────────────────────────────────────────────────────────────────┤
 │ 5. LOAD & SMOKE TEST      │  热更加载 + 自动冒烟测试 + 人工巡游      │
@@ -60,9 +60,14 @@ python scripts\lpc_converter.py C:\files\git\mud\d\<zone> --zone <zone> --output
 > ⚠️ **重跑会清掉坐标**：目录模式是**整体覆盖** `<zone>.ucl`，不保留已赋的 `x/y/z`。
 > 需要保留坐标时，先 `git stash`/备份，或改用 Step 3 的产物作为基准。
 
-### Step 2 — 产出校验（自动化脚本 `validate_ucl.py`）
+### Step 2 — 产出校验（自动化脚本 `validate_ucl.py` + 游戏加载验证）
 ```powershell
+# 2.1 静态校验（5 项全绿）
 python scripts\validate_ucl.py data\world\<zone>.ucl
+
+# 2.2 动态加载校验（确认 Elixir/Elias 真正能解析并加载）
+#     无需重启容器：data\world 与容器 /app/data\world 是 bind mount 同一份
+docker exec wuxia_mud_dev-app-1 iex --remsh app@<host> -e 'World.reload_zone("<zone>")'
 ```
 **校验项**（5 项全部执行、互不短路；失败时逐行打印 `❌ <Check>: <detail>`）：
 
@@ -82,18 +87,22 @@ python scripts\validate_ucl.py data\world\<zone>.ucl
 
 > **失败处理**：定位是转换器 bug（如字符串未转义、括号不匹配） → 修 `scripts\lpc_converter.py` → **重跑 Step 1**，不得手改 `.ucl`。
 
-### Step 3 — 运行坐标脚本
+### Step 3 — 运行坐标脚本（就地覆盖 <zone>.ucl，备份到 world_backup）
 ```powershell
-python scripts\assign_room_coords.py data\world\<zone>.ucl <center_room> --output data\world\<zone>_coords.ucl
+# 3.1 先备份原始转换产物（供对比/回滚）
+Copy-Item data\world\<zone>.ucl data\world_backup\<zone>.ucl -Force
+
+# 3.2 直接就地赋坐标（不再产出 <zone>_coords.ucl）
+python scripts\assign_room_coords.py data\world\<zone>.ucl <center_room>
 ```
 - `<center_room>` 取自 `docs/mud-d-zone-center-connections.zh-CN.md`
 - 只接受 `<zone.ucl> <start_room_id>` 两个位置参数（**没有** zone 名参数）
-- 产出：`data\world\<zone>_coords.ucl`；省略 `--output` 会**就地覆盖输入**，务必显式指定
-- 选项只认长形式：`--dry-run`（打印不写盘）、`--output <file>` 或 `--output=<file>`。**`-o` 不存在且会被静默吞掉**，误用会导致就地覆盖
+- **不带 `--output` 即就地覆盖输入文件**（原有 `--output` 仍可用，但新流程不再需要中间文件）
+- 选项只认长形式：`--dry-run`（打印不写盘）、**`--output <file>` 或 `--output=<file>`**。**`-o` 不存在且会被静默吞掉**，误用会导致就地覆盖
 
 ### Step 4 — 坐标产出校验（复用 `validate_ucl.py` + 额外人工检查）
 ```powershell
-python scripts\validate_ucl.py data\world\<zone>_coords.ucl
+python scripts\validate_ucl.py data\world\<zone>.ucl
 ```
 赋坐标后 Step 2 的 Integrity 应当**转为通过**（孤儿房已补 `room_exits` 块）。
 
@@ -194,15 +203,16 @@ python scripts\lpc_converter.py C:\files\git\mud\d\baituo --zone baituo --output
 
 # 2. 校验转换产出（赋坐标前 Integrity 失败属正常，见 Step 2 说明）
 python scripts\validate_ucl.py data\world\baituo.ucl
+docker exec wuxia_mud_dev-app-1 iex --remsh app@<host> -e 'World.reload_zone("baituo")'
 
-# 3. 赋坐标
-python scripts\assign_room_coords.py data\world\baituo.ucl guangchang --output data\world\baituo_coords.ucl
+# 3. 备份 + 赋坐标（就地覆盖）
+Copy-Item data\world\baituo.ucl data\world_backup\baituo.ucl -Force
+python scripts\assign_room_coords.py data\world\baituo.ucl guangchang
 
 # 4. 校验坐标产出（应全绿）
-python scripts\validate_ucl.py data\world\baituo_coords.ucl
+python scripts\validate_ucl.py data\world\baituo.ucl
 
 # 5. 热更 + 冒烟（这两步才需要进容器）
-#    5.1 免 cp：把 baituo_coords.ucl 就位为 data\world\baituo.ucl（同一份 bind mount）
 docker exec wuxia_mud_dev-app-1 iex --remsh app@<host> -e 'World.reload_zone("baituo")'
 docker exec -w /app wuxia_mud_dev-app-1 mix test test/zone_baituo_test.exs
 ```

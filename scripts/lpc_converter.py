@@ -470,16 +470,14 @@ def _process_literal_string(s):
 
 def _parse_array_elements(inner):
     out = []
-    for part in inner.split(","):
-        part = part.strip()
-        if part != "":
-            out.append(_parse_lpc_value(part))
+    for part in _split_top_level(inner):
+        out.append(_parse_lpc_value(part))
     return out
 
 
 def _parse_mapping_pairs(inner):
     pairs = []
-    for pair in _split_mapping_pairs(inner):
+    for pair in _split_top_level(inner):
         parts = pair.split(":", 1)
         if len(parts) == 2:
             pairs.append((_parse_lpc_value(parts[0].strip()), _parse_lpc_value(parts[1].strip())))
@@ -488,8 +486,49 @@ def _parse_mapping_pairs(inner):
     return pairs
 
 
-def _split_mapping_pairs(inner):
-    return [p.strip() for p in inner.split(",") if p.strip() != ""]
+def _split_top_level(inner):
+    """Split on commas that sit outside any bracket, paren, brace or string.
+
+    A plain ``inner.split(",")`` shreds a nested mapping such as the portal
+    descriptor in ``city/mudren.c``::
+
+        "enter" : ([ "filename" : _DIR_AREA_"world.c",
+                     "x_axis" : 75,
+                     "y_axis" : 69
+                ])
+
+    into three bogus sibling pairs, so the inner keys leaked out as exits of
+    the enclosing room.  Only top-level commas separate entries.
+    """
+    parts = []
+    cur = []
+    depth = 0
+    i = 0
+    n = len(inner)
+    while i < n:
+        c = inner[i]
+        if c == '"':
+            j = _skip_string(inner, i)
+            if j is None:  # unterminated: take the rest verbatim
+                cur.append(inner[i:])
+                i = n
+                break
+            cur.append(inner[i:j])
+            i = j
+            continue
+        if c in "([{":
+            depth += 1
+        elif c in ")]}":
+            depth = max(depth - 1, 0)
+        if c == "," and depth == 0:
+            parts.append("".join(cur))
+            cur = []
+            i += 1
+            continue
+        cur.append(c)
+        i += 1
+    parts.append("".join(cur))
+    return [p.strip() for p in parts if p.strip() != ""]
 
 
 def _parse_set_calls(body):
@@ -1572,7 +1611,7 @@ def _generate_room_item_desc(sets):
             entries.append((keyword, text))
     if not entries:
         return ""
-    rendered = ",\n".join(
+    rendered = "\n".join(
         f" {_normalize_item_keyword(kw)} = \"{_escape_set_string(text)}\"" for kw, text in entries
     )
     return f"item_desc = {{\n{rendered}\n}}\n"
@@ -1669,9 +1708,17 @@ def _generate_room_ucl(ast, zone_id):
     exits = sets.get("exits")
     if isinstance(exits, tuple) and exits[0] == "mapping":
         exit_lines = []
+        skipped = []
         for key, val in exits[1]:
             direction = _exit_key(key)
             direction = re.sub(r'^"|"$', "", direction)
+            if isinstance(val, tuple) and val[0] == "mapping":
+                # A portal descriptor such as city/mudren.c's "enter" points at
+                # a raw LPC file plus x_axis/y_axis instead of at a room in this
+                # zone, so it has no rooms.<id>.id form.  Record it and move on
+                # rather than emitting a dangling target the loader would follow.
+                skipped.append(direction)
+                continue
             target = _resolve_exit_target(val)
             exit_lines.append(f"  {direction} = {target}")
         river_exit = ""
@@ -1685,6 +1732,12 @@ def _generate_room_ucl(ast, zone_id):
                 f'  room_exits "{room_id}" {{\n'
                 f"    room_id = rooms.{room_id}.id\n"
                 f"{all_exit_lines}  }}\n"
+            )
+        # Emitted after the closing brace: a '#' comment runs to end of line and
+        # would otherwise swallow that brace.
+        for direction in skipped:
+            exits_block += (
+                f"  # skipped non-room exit '{direction}': LPC portal/mapping target\n"
             )
     else:
         if is_river and arrive_room:
@@ -1863,13 +1916,13 @@ def _build_inquiries(sets):
 
 def _get_string(value):
     if isinstance(value, tuple) and value[0] == "string":
-        return f'"{value[1]}"'
+        return _ucl_string(value[1])
     if isinstance(value, tuple) and value[0] == "int":
         return str(value[1])
     if isinstance(value, tuple) and value[0] == "var":
-        return value[1]
+        return _ucl_string(value[1])
     if isinstance(value, str):
-        return f'"{value}"'
+        return _ucl_string(value)
     return '"unknown"'
 
 
@@ -2069,7 +2122,7 @@ def _generate_npc_ucl(ast, zone_id):
     if combat:
         out += f"\n  combat = {{\n{combat}\n  }}\n"
     if goods:
-        out += "\n  goods = [\n" + "\n".join(f"    {{ id = {x} }}" for x in goods) + "\n  ]\n"
+        out += "\n  goods = [\n" + ",\n".join(f"    {{ id = {x} }}" for x in goods) + "\n  ]\n"
     if goods_comments:
         out += "\n" + "\n".join(f"  # {x}" for x in goods_comments) + "\n"
     if inquiries:

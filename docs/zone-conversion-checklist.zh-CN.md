@@ -18,7 +18,7 @@
 
 ## Layer 0 · 世界中枢
 
-- [x] **city** · 中心 `guangchang` · 产出 `city.ucl` `city_comments.txt` ✅ 2026-09-28
+- [x] **city** · 中心 `guangchang` · 产出 `city.ucl` `city.comments.txt` ✅ 2026-09-29
 
 ---
 
@@ -151,6 +151,6 @@
 
 | 区域 | 完成日期 | 巫师测试 | 玩家测试 | 关键修复 commit |
 |------|----------|----------|----------|-----------------|
-| city | 2026-09-28 | ✅ | ✅ | 1ce0511 (minimal: rooms+room_exits only, 100 rooms, 99 coords) |
+| city | 2026-09-29 | ✅ | ✅ | 完整 Python 转换：111 rooms, 111 room_exits, 187 characters, 45 items (含 coords) |
 | baituo |  |  |  |  |
 | ... |  |  |  |  |

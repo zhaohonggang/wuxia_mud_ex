@@ -201,6 +201,9 @@ def _parse_members(sc):
         sc.read_bare("member key")
         sc.expect("=")
         _parse_value(sc)
+        # Elias UCL does NOT accept commas between members of an inline mapping.
+        # Only top-level block members and array elements may be comma-separated.
+        # We deliberately do NOT consume a trailing ',' here.
 
 
 def _parse_value(sc):
