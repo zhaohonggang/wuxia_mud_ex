@@ -5,6 +5,23 @@
 > `lib/kantele/character.ex`（NonPlayerMeta）、`lib/kantele/world/room.ex`、
 > `lib/kantele/npc/guarder.ex`
 > 语料：`C:\files\git\mud\d\`（7140 个 .c，6.78 MB）
+>
+> ---
+>
+> ## ⚠️ 实现归属说明（2026-09 补充，原文技术描述不动）
+>
+> **转换器主用实现已改为 `scripts/lpc_converter.py`（Python，2608 行）。**
+> 本文正文描述的 `lpc_converter.ex` / `lpc_converter/ast.ex` **仍然存在，是遗留实现**，未被删除：
+> mix task `lib/mix/tasks/kantele.convert_lpc.ex`、仓库根的 `classify_file.exs` /
+> `batch_classify.exs` / `_genlist.exs`、以及 `test/kantele/world/lpc_converter_*_test.exs`
+> 仍在调用 Elixir 版，所以**两边都得活着**。
+>
+> 因此：**新增或修改任何解析行为时，两个实现必须同步改**（`lpc_converter.py` 是 Python 移植，
+> AST 字段与 Elixir `ast.ex` 一一对应，见 usage 文档 §三）。只改一边会让 mix task / Elixir
+> 单测 / dev 辅助脚本的行为与日常 Python 转换流程**分叉**。
+>
+> 正文里 `lpc_converter.ex` / `ast.ex` 的字段名、函数名、技术描述**保持原样**——它们描述的是
+> 仍然存在的那份 Elixir 实现，语义仍有效。
 
 ---
 
@@ -339,6 +356,8 @@ CONDITIONALS` 之上；`COMPLEX CONDITIONALS` 保留为原文兜底。
 > - 全量 `MIX_ENV=test mix test`：**2960 tests 全绿**（新增 item_desc / exit_vetoes / run_bare 单测）。
 > - 内容丢失 `scripts/check_loss.exs`：`sources=141 files_with_loss=40 lost_chunks=81 exempt_fns=89`
 >   （恢复轨迹：~147 → 137 → 135 → 132 → 129 → **81**）。
+>   （2026-09 核对：该脚本在仓库里**已不存在**，`check_loss.py` 也没有；此处保留为历史记录，
+>   本轮流失统计无现成工具可复跑。）
 > - 本轮新增/修复：
 >   - 括号配平抽取 `extract_calls_balanced` 修复 `message_sort`/`write`/`notify_fail` 跨语句乱码
 >     （`test.ucl:460` elias 解析崩溃根因）。
@@ -389,7 +408,12 @@ CONDITIONALS` 之上；`COMPLEX CONDITIONALS` 保留为原文兜底。
 - [x] loader/meta 单测
 - [ ] room 运行时 e2e（未写，见上）
 - [x] 全量 `MIX_ENV=test mix test` 保持全绿（基线 2915 → 2936）
+      （仍在容器内跑：`docker exec -w /app -e MIX_ENV=test wuxia_mud_dev-app-1 mix test`；
+      容器无 Python，Elixir 单测是 Elixir 转换器的回归网，故保留）
 - [x] 重新生成 `test.ucl`；抽查新 4 NPC（shouwei/wudunru/jiang/huangyi）输出
+      （现在重生成走 **Python**，宿主机 PowerShell：
+      `python scripts\lpc_converter.py test_minimal_world_v2_modified --zone test`。
+      ⚠️ `data\world\*.ucl` 是生成产物，转换前后先备份/比对，别手改。）
 
 ---
 
@@ -471,5 +495,9 @@ CONDITIONALS` 之上；`COMPLEX CONDITIONALS` 保留为原文兜底。
       不无限递归；loader 加载断言入 loader_meta_test
 - [x] check_loss：sources=143、lost_chunks=81（不变）、exempt_fns=91（+do_cai/cai）；`room_exits` 为块语法
       （`room_exits "id" { ... }`），非列表
-- [ ] 可选：重跑 `d` corpus 普查（需容器挂载 `C:\files\git\mud\d`），确认 `beijing/liandan_lin1..8.c`
-      由 generic → room
+- [ ] 可选：重跑 `d` corpus 普查，确认 `beijing/lianden_lin1..8.c` 由 generic → room
+      （旧写法"需容器挂载 `C:\files\git\mud\d`"**已不适用**：容器 `wuxia_mud_dev-app-1` 内没有
+      Python，且 `/mud/d` 不是 bind mount、只有 `city` 一个目录。现在直接在**宿主机** PowerShell 跑：
+      `python scripts\lpc_converter.py C:\files\git\mud\d\beijing --zone beijing --output C:\temp\ucl_out`。
+      `classify_file.exs` / `batch_classify.exs` / `_genlist.exs` 三个 legacy 分类脚本若要用，
+      得在宿主机把语料路径挂进容器才能跑 Elixir 侧。）

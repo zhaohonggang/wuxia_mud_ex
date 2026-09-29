@@ -122,14 +122,15 @@
 
 | 步骤 | 动作 | 产出/验证 | 勾选 |
 |------|------|-----------|------|
-| 1 | `lpc_converter.ex --zone <zone>` | `<zone>.ucl` `<zone>_comments.txt` | - [ ] |
-| 2 | `assign_room_coords.exs <zone>.ucl <center> <zone>` | `.ucl` 带 `coord` | - [ ] |
-| 3 | `git add/commit` 两文件 | commit 记录 | - [ ] |
-| 4 | 热更加载 `World.load_zone("<zone>")` | 无报错 | - [ ] |
-| 5 | 自动化测试 `mix test test/zone_<zone>_test.exs` | 全绿 | - [ ] |
-| 6 | 巫师测试（goto/walk/call/任务） | `test_logs/<zone>_wizard_<date>.md` | - [ ] |
-| 7 | 玩家测试（主线/战斗/技能/传送） | `test_logs/<zone>_player_<date>.md` | - [ ] |
-| 8 | 本文件把该区域大项标 ✅ | `git commit --amend` | - [ ] |
+| 1 | `python scripts\lpc_converter.py C:\files\git\mud\d\<zone> --zone <zone>` | `<zone>.ucl` `<zone>.comments.txt` | - [ ] |
+| 2 | `python scripts\assign_room_coords.py data\world\<zone>.ucl <center>` | `.ucl` 写入 `x`/`y`/`z` 坐标 | - [ ] |
+| 3 | `python scripts\validate_ucl.py data\world\<zone>.ucl` | 5 项全绿、退出码 0（`✅ All checks passed`）。本步在赋坐标**之后**；若在步骤 1 之后提前跑一次，**Integrity 失败属正常**（孤儿房尚无 `room_exits` 块） | - [ ] |
+| 4 | `git add/commit` 两文件 | commit 记录 | - [ ] |
+| 5 | 热更加载 `World.load_zone("<zone>")` | 无报错 | - [ ] |
+| 6 | 自动化测试 `mix test test/zone_<zone>_test.exs` | 全绿 | - [ ] |
+| 7 | 巫师测试（goto/walk/call/任务） | `test_logs/<zone>_wizard_<date>.md` | - [ ] |
+| 8 | 玩家测试（主线/战斗/技能/传送） | `test_logs/<zone>_player_<date>.md` | - [ ] |
+| 9 | 本文件把该区域大项标 ✅ | `git commit --amend` | - [ ] |
 
 ---
 

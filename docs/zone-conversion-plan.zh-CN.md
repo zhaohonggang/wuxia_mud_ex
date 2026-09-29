@@ -10,13 +10,13 @@
 ```
 源区域 (d/<zone>/) 
    │
-   ├─▶ lpc_converter.ex  ──▶  <zone>.ucl  +  <zone>_comments.txt
-   │       (Elixir 脚本，解析 LPC .c → UCL)
+   ├─▶ lpc_converter.py  ──▶  <zone>.ucl  +  <zone>.comments.txt
+   │       (Python 脚本，解析 LPC .c → UCL)
    │
-   ├─▶ assign_room_coords.exs  ──▶  给 <zone>.ucl 里每个 room 打 (x,y,z)
+   ├─▶ assign_room_coords.py  ──▶  给 <zone>.ucl 里每个 room 打 (x,y,z)
    │       从“中心 room”开始 BFS，步长 1，避开重叠
    │
-   ├─▶ git add / commit <zone>.ucl <zone>_comments.txt
+   ├─▶ git add / commit <zone>.ucl <zone>.comments.txt
    │
    ├─▶ 热更加载到游戏  (mix run 或 remote shell)
    │
@@ -55,31 +55,39 @@
 - [ ] 确认源目录 `C:\files\git\mud\d\<zone>\` 存在 `.c` 文件
 - [ ] 读取 `docs/mud-d-zone-center-connections.zh-CN.md` 中该区域的 **中心 room** 与 **跨区连接表**
 
-### 3.2 运行 lpc_converter.ex
-```bash
-# 在 Elixir 容器内（或宿主 mix 环境）
-cd /path/to/wuxia_mud_ex
-mix run lib/lpc_converter.ex --zone <zone> --source /mud/d/<zone> --output /mud/ucl/<zone>.ucl --comments /mud/ucl/<zone>_comments.txt
+### 3.2 运行 lpc_converter.py
+```powershell
+# 三个 Python 脚本都在【宿主机】运行 —— 容器 wuxia_mud_dev-app-1 内没有 Python
+# （python3: not found）。LPC 语料也在宿主机：C:\files\git\mud\d\<zone>
+cd C:\files\git\wuxia_mud_ex
+python scripts\lpc_converter.py C:\files\git\mud\d\<zone> --zone <zone> --output data\world
 ```
-产出：
-- `<zone>.ucl` —— 房间/物品/NPC/区域元数据
-- `<zone>_comments.txt` —— 转换日志，**含 `UNHANDLED:` 行**（语法不支持、动态 exits、call_other 等）
+> `PATH` 传目录即**自动递归**该目录下所有 `.c` 文件。
+> 容器 `/app` 是仓库 `C:\files\git\wuxia_mud_ex` 的 bind mount，所以 `data\world` 与容器 `/app/data/world` 共享同一份文件，**不需要 `docker cp`**。
 
-### 3.3 运行 assign_room_coords.exs
-```elixir
-# assign_room_coords.exs 接受参数：ucl_path, center_room, zone_name
-mix run assign_room_coords.exs /mud/ucl/<zone>.ucl <center_room> <zone>
+产出：
+- `data\world\<zone>.ucl` —— 房间/物品/NPC/区域元数据
+- `data\world\<zone>.comments.txt` —— 转换日志，**含 `UNHANDLED:` 行**（语法不支持、动态 exits、call_other 等）
+
+### 3.3 运行 assign_room_coords.py
+```powershell
+# 只接受 2 个位置参数：ucl_path, start_room_id（没有第 3 个 zone_name 参数）
+python scripts\assign_room_coords.py data\world\<zone>.ucl <center_room>
 ```
 算法：
 1. 读取 `.ucl` 所有 room 节点及 exits
 2. 以 `center_room` 为 (0,0,0) 起点 BFS
 3. 每条 exit 按方向增减坐标（`east:+x`, `west:-x`, `north:+y`, `south:-y`, `up:+z`, `down:-z`，斜向 ±1±1）
 4. 遇到已赋坐标冲突 → 自动微调（+2 步长）并记录 WARNING 到 `_comments.txt`
-5. 写回 `.ucl`（给每个 room 加 `coord: {x,y,z}`）
+5. 写回 `.ucl`（给每个 room 写入 `x` / `y` / `z` **三个独立字段**，不是 `coord: {x,y,z}`）
+
+> 省略 `--output` 时**就地覆盖**输入 `.ucl`；想保留原文件请显式加
+> `--output data\world\<zone>.coords.ucl`。
+> 完整用法与测试流程见 `ASSIGN_ROOM_COORDS_TEST.md`。
 
 ### 3.4 提交版本控制
 ```bash
-git add data/ucl/<zone>.ucl data/ucl/<zone>_comments.txt
+git add data/world/<zone>.ucl data/world/<zone>.comments.txt
 git commit -m "add <zone>.ucl + coords (center: <center_room>)"
 ```
 
@@ -199,7 +207,7 @@ mix test test/zone_<zone>_test.exs
 
 ### 6.5 回滚/热修复
 - 发现阻塞性 bug → `git revert <commit>` 或 直接改 `.ucl` → `reload <zone>` → 继续测试
-- 坐标冲突 → 改 `assign_room_coords.exs` 参数重跑 → 覆盖 `.ucl` → `reload`
+- 坐标冲突 → 改 `assign_room_coords.py` 参数重跑 → 覆盖 `.ucl` → `reload`
 
 ---
 
@@ -230,7 +238,7 @@ mix test test/zone_<zone>_test.exs
 | 风险 | 对策 |
 |------|------|
 | 跨区出口目标区域尚未转换 | 先转换目标区域、或在 `_comments.txt` 标注 `PENDING_TARGET_ZONE`，后补 |
-| 坐标碰撞（不同区域房间落在同坐标） | `assign_room_coords.exs` 预留 zone 包围盒（每区 ±500），冲突自动偏移 |
+| 坐标碰撞（不同区域房间落在同坐标） | `assign_room_coords.py` 预留 zone 包围盒（每区 ±500），冲突自动偏移 |
 | 动态 exits 导致运行时连通性与静态不符 | UNHANDLED 清理阶段专门处理，必要时引入运行时钩子 |
 | 测试人力不足 | 自动化覆盖 80% 以上；玩家测试仅核心主线 |
 
@@ -246,17 +254,17 @@ docker-compose up -d
 # 1. 进容器编译
 docker exec -it <app> bash -c "cd /app && mix deps.get && mix compile"
 
-# 2. 单区域转换示例（city）
-docker exec -it <app> bash -c "
-  cd /app &&
-  mix run lib/lpc_converter.ex --zone city --source /mud/d/city --output /app/data/ucl/city.ucl --comments /app/data/ucl/city_comments.txt &&
-  mix run assign_room_coords.exs /app/data/ucl/city.ucl guangchang city
-"
+# 2. 单区域转换示例（city）—— 下面三条都在【宿主机 PowerShell】跑，容器里没有 Python
+#    （PowerShell 不支持 &&，所以分行顺序执行）
+python scripts\lpc_converter.py C:\files\git\mud\d\city --zone city --output data\world
+python scripts\assign_room_coords.py data\world\city.ucl guangchang
+python scripts\validate_ucl.py data\world\city.ucl
 
 # 3. 热更加载
 docker exec -it <app> iex --remsh app@<host>
 # 在 shell:
 World.load_zone("city")
+
 
 # 4. 跑自动化测试
 docker exec -it <app> bash -c "cd /app && mix test test/zone_city_test.exs"

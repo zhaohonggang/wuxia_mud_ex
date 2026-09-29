@@ -1,8 +1,12 @@
 # LPC→UCL 转换器使用文档（LPCConverter）
 
-> 关联代码：`lib/kantele/world/lpc_converter.ex`（约 3240 行）、`lib/mix/tasks/kantele.convert_lpc.ex`
+> 关联代码：**主用实现** `scripts/lpc_converter.py`（2608 行，Python）；**遗留/参考** `lib/kantele/world/lpc_converter.ex`（3166 行，Elixir）、`lib/mix/tasks/kantele.convert_lpc.ex`（Mix task）
 > 消费方：`lib/kantele/world/loader.ex`（载入 `data/world/*.ucl`）
 > 语料：`C:\files\git\mud\d\`（7140 个 `.c`）→ 分析样本见 `lpc_example/`，测试世界见 `test_minimal_world_v2_modified/`
+>
+> Elixir 版**仍然存在且仍被使用**（mix task、仓库根的 `classify_file.exs` / `batch_classify.exs` / `_genlist.exs`、Elixir 单测都还调它），
+> 但**日常转换走 Python**：容器 `wuxia_mud_dev-app-1` 内没有 Python，Python 只能在宿主机跑。
+> 两个实现需**同步维护**，改动解析行为时两边都要改（详见 `lpc-converter-extension-plan.zh-CN.md` 顶部说明）。
 
 ---
 
@@ -23,66 +27,128 @@
 
 ---
 
-## 二、最简用法：Mix Task
+## 二、最简用法：Python CLI
 
-```bash
+> ⚠️ **务必在宿主机 PowerShell 里跑，不要 `docker exec`**。
+> - 容器 `wuxia_mud_dev-app-1` **没有 Python**（`python3: not found`），只有 Elixir/OTP。
+> - LPC 语料在**宿主机** `C:\files\git\mud\d\<zone>`（7140 个 `.c`）；容器内 `/mud/d` 只有一个 `city` 目录且**不是 bind mount**，容器里读不到全量语料。
+> - 容器 `/app` 就是仓库 `C:\files\git\wuxia_mud_ex` 的 **bind mount**，所以宿主机 `data\world\x.ucl` ≡ 容器 `/app/data/world/x.ucl` —— **不需要 `docker cp`**，宿主机转换完，容器内 `Kantele.World.Loader` 立刻就能读到。
+> - 宿主机需自备 Python 3（本机为 3.14）。PowerShell **不支持 `&&`**；需要写文件时请用 Python 或 `Set-Content -Encoding UTF8`（PowerShell 的 `>` 会产出 UTF-16 文件）。
+
+```powershell
 # 单个文件
-mix kantele.convert_lpc lpc_example/room/room_qianting.c --zone liuxi
+python scripts\lpc_converter.py lpc_example\room\room_qianting.c --zone liuxi
 
-# 目录递归（所有 .c）
-mix kantele.convert_lpc lpc_example/room --recursive --zone liuxi
+# 目录（自动递归，无需任何递归开关）
+python scripts\lpc_converter.py lpc_example\room --zone liuxi
+
+# 真实语料：整个区域一次性转换
+python scripts\lpc_converter.py C:\files\git\mud\d\beijing --zone beijing
+
+# 换输出目录（默认 data\world；仅调试用，别把产物写进 data\world 以外的正式路径）
+python scripts\lpc_converter.py C:\files\git\mud\d\wudang --zone wudang --output C:\temp\ucl_out
 ```
 
 ### 参数
 
 | 参数 | 说明 | 默认 |
 |---|---|---|
-| `--zone <id>` | 输出 zone id | 由路径推断 |
+| `PATH`（位置参数） | 单个 `.c` 文件，或一个目录 | 必填 |
+| `--zone <id>` | 输出 zone id | 目录模式按**父目录名**推断；单文件模式也按父目录名推断（见下方说明） |
 | `--output <dir>` | UCL 输出目录 | `data/world` |
-| `--recursive` | 目录下递归转换所有 `.c` | `false`（默认单文件） |
-| `--single` | 单文件模式标记 | `true`（保留，无实际分支） |
 
-### Mix Task 行为
+**没有 `--recursive`，也没有 `--single`。** `PATH` 是目录就**自动递归**遍历其下所有 `.c`（等价 `Path.wildcard(dir/**.c)`：先目录、后文件，各自字典序）；`PATH` 是文件就只转这一个。Python CLI 源码里虽然会解析 `--recursive` 开关，但该变量从未被使用（死代码），**写了也没有任何效果**，不要依赖它。
 
-- 文件 `foo.c` → 对象 id 取 `foo`（`-` 规范化为 `_`，如 `worker-liu.c` → `worker_liu`）。
-- 输出文件：`<output>/<zone>.ucl`，zone 头自动补 `zones "<zone>" { name = "<zone>" }`。
-- **去重**：目标 `.ucl` 已含 `# Generated from <path>` 或同名 `rooms/characters/items "..."` 则跳过，不重复追加。
-- 注释额外写到 `<zone>.comments.txt`（两套输出，正文带注释的才进 ucl）。
-- `--zone` 未给时，zone id 推断规则：**父目录名**，`-` → `_`（注意与模块 API 的推断规则不同，见 §四）。
+### Python 脚本行为
+
+- 对象 id 取文件 rootname，`-` → `_`（`worker-liu.c` → `worker_liu`），用于目录模式内的同名去重。
+- 输出文件：`<output>\<zone>.ucl`，首行自动补 `zones "<zone>" { name = "<zone>" }`。
+- **注释单独写 `<output>\<zone>.comments.txt`**（注意是**点号** `.comments.txt`，不是下划线 `_comments.txt`）。ucl 正文只放数据型内容，注释型内容（generic/skill 提示、UNHANDLED 兜底）只进 comments 文件。
+- **去重**（⚠️ 两种模式行为不同，务必分清）：
+  - **单文件模式**：会读已存在的 `<zone>.ucl`，若其中已含 `# Generated from <path> by LPCConverter` 或同名 `rooms "..."` / `characters "..."` / `items "..."`，打印 `<id> already exists in <file>, skipping append` 并**跳过追加**；否则打印 `Appended to <file>`；文件不存在则打印 `Created <file>`。
+  - **目录模式**：先把所有对象在内存里累积、按对象 id 去重（同 id 只保留首次出现），最后**整体覆盖**写出 `<zone>.ucl` 和 `<zone>.comments.txt`，结束打印 `Wrote N objects to <file>` 与 `Wrote comments to <file>`（有失败文件再补一行 `Failed on N files: [...]`）。**目录模式不做"已存在就跳过"检查，也不追加** —— 它每次都重写整个 zone 文件。混用两种模式时注意这个差别。
+- **`--zone` 推断规则**：CLI 一律按 **PATH 的父目录名**（`-` → `_`）。这与模块 API 不同（`convert_file` 省略 `zone_id` 时按**文件名**推断），见 §三。
 
 ---
 
 ## 三、直接调用模块 API
 
-### `convert_file/2`
+### `convert_file(lpc_path, zone_id=None, base_path=None, include_comments=True, include_header=True)`
 
-```elixir
-alias Kantele.World.LPCConverter
+Python 版返回**三元组** `(ucl, comments, err)` —— **不是** Elixir 的 `{:ok, _}` / `{:error, _}`。成功时 `err is None`，失败时前两项为 `None`、`err` 为错误字符串。
 
-{:ok, {ucl, comments}} = LPCConverter.convert_file(
-  "test_minimal_world_v2_modified/room/bet.c",
-  zone_id: "test",          # 缺省则按文件名推断（basename rootname，`-`→`_`）
-  base_path: "test_minimal_world_v2_modified/room",   # 解析 __DIR__ / inherit 的相对根
-  include_comments: true    # 缺省 true
+在**仓库根目录**下，两种导入方式都可用（已实测）：
+
+```python
+# 方式 A：仓库根当作包根（scripts/ 无 __init__.py，靠 Python 3.3+ 隐式命名空间包）
+from scripts.lpc_converter import convert_file
+
+# 方式 B：把 scripts/ 直接挂到 sys.path
+import sys
+sys.path.insert(0, "scripts")
+import lpc_converter
+convert_file = lpc_converter.convert_file
+```
+
+用法：
+
+```python
+ucl, comments, err = convert_file(
+    r"test_minimal_world_v2_modified\room\bet.c",
+    zone_id="test",              # 缺省则按【文件名】rootname 推断（- → _），如上例会推断成 "bet"
+    base_path=None,              # 缺省取 lpc_path 的 dirname；用于解析 __DIR__ / inherit 的相对根
+    include_comments=True,       # 缺省 True
+    include_header=True,         # 缺省 True，控制是否写 "# Generated from ..." 头
 )
+if err is not None:
+    print("转换失败:", err)      # err 是字符串，不是异常
+else:
+    print(ucl[:200])
+    print(comments[:200])
 ```
 
-- 实际返回 `{:ok, {ucl_string, comments_string}}`（模块 moduledoc 里写的 `{:ok, ucl_string}` 已过时，以 Mix Task 与测试的模式匹配为准）。
-- 出错返回 `{:error, reason}`。
+- ⚠️ **zone 推断与 CLI 不同**：CLI 按**父目录名**推断（§二），`convert_file` 按**文件名**推断。批处理时若不想每个文件都落到各自的 `<文件名>.ucl`，请显式传 `zone_id`。
+- 这三个脚本（`lpc_converter.py` / `assign_room_coords.py` / `validate_ucl.py`）都**只能在宿主机跑**，因为容器内没有 Python。
 
-### `convert_string/2`
+### `convert_string` —— Python 版**没有**这个便捷入口
 
-与 `convert_file/2` 同构，输入换成 LPC 字符串（测试用）：
+Elixir 的 `LPCConverter.convert_string/2`（`lib/kantele/world/lpc_converter.ex:56`）在 Python 侧**没有对应实现**。要按字符串转换，直接用内部 `_parse_lpc`（`scripts/lpc_converter.py:2341`）自己拼装：
 
-```elixir
-{:ok, {ucl, _comments}} =
-  LPCConverter.convert_string(File.read!("test_minimal_world_v2_modified/room/cave.c"),
-    base_path: "test_minimal_world_v2_modified/room")
+```python
+from scripts.lpc_converter import _parse_lpc, _generate_ucl
+
+content = open(r"test_minimal_world_v2_modified\room\cave.c", "rb").read()   # 必须是 bytes
+ast = _parse_lpc(content, r"test_minimal_world_v2_modified\room\cave.c",
+                 r"test_minimal_world_v2_modified\room")
+if ast is None:
+    ...  # 解析失败
+else:
+    ucl, comments = _generate_ucl(ast, "test", True, True)
 ```
 
-### `parse_ast/3`（内部，测试常用）
+- `_parse_lpc(content: bytes, source_path: str, base_path: str)` 的入参是 **bytes**（编码转换在它内部完成：源文件多为 GBK/GB2312，自动转 UTF-8），返回 `AST` 或 `None`。
+- `_generate_ucl(ast, zone_id, include_comments, include_header=True)` 返回 `(ucl, comments)` 二元组。
+- 这两个都是**下划线私有函数**，没有兼容性保证；`convert_file` 就是它们的薄封装，优先用 `convert_file`。
 
-返回 AST 结构，可在断言中直接取字段（如 `ast.exit_vetoes`、`ast.engage`、`ast.accept`），见测试文件 `test/kantele/world/lpc_converter_room_test.exs`。
+### AST 产出（替代 Elixir 的 `parse_ast/3`）
+
+Python **没有** `parse_ast/3` 这个函数。AST 由 `_parse_lpc` 产出，类型是 `scripts/lpc_converter.py:161` 的 `AST` 类实例，字段名与 Elixir `lpc_converter/ast.ex` 的 struct **一一对应**，但是**普通属性**（不是 map 键，也不是 `ast.exit_vetoes` 这种访问——Elixir 那边 `ast` 是 map 才能用点语法，Python 侧 `ast` 是对象，点语法同样可用）：
+
+```python
+ast.exit_vetoes      # list，出口阻挡条件（→ UCL valid_leave）
+ast.valid_leave      # 同上
+ast.engage           # dict | None，accept_fight/hit/kill 抽取结果
+ast.accept           # dict | None，accept_object 抽取结果
+ast.guard            # dict | None，permit_pass 守卫
+ast.greetings        # list | None
+ast.enter            # list | None，init() 台词
+ast.inherit_files    # list，已解析的 inherit 目标
+ast.source_path      # str
+ast.unhandled        # dict，UNHANDLED 兜底桶（functions / switch_tables / switch_pools /
+                     #   conditional_branches / complex_conditionals / raw_code_blocks ...）
+```
+
+Elixir 侧的字段级断言仍在 `test/kantele/world/lpc_converter_room_test.exs` 等测试里，Python 侧**没有对应的单测**，靠 `test\fixtures\validate_ucl\expected.json` + 真实产物回归兜底（见 §七）。
 
 ---
 
@@ -166,28 +232,40 @@ valid_leave = [
 
 ## 六、辅助脚本（仓库根目录）
 
+> ⚠️ **这三个仍是遗留 Elixir 脚本**，且仍在调用 Elixir 的 `Kantele.World.LPCConverter`。
+> **日常转换走 Python**（§二 / §三）；这几个脚本只在需要 Elixir 侧的 dev 排查时用。
+
 | 脚本 | 作用 |
 |---|---|
 | `classify_file.exs <path>` | 单个 LPC 文件 → 打印 `ROOM / NPC / ITEM / SKILL / GENERIC / ERROR` |
 | `batch_classify.exs <file_list>` | 批量分类并打印统计（需要容器挂载语料路径） |
 | `_genlist.exs` | 在容器里对 `/corpus/d` 全量普查 generic 文件列表 |
 
-用 `mix run` 执行：
+用 `mix run` 执行（`mix` 只在容器内可用，宿主机没装 Elixir）：
 
 ```bash
-mix run classify_file.exs test_minimal_world_v2_modified/room/bet.c
+docker exec -w /app wuxia_mud_dev-app-1 mix run classify_file.exs test_minimal_world_v2_modified/room/bet.c
 ```
 
 ---
 
 ## 七、测试
 
+**Elixir 单测仍然存在且仍可跑**（容器内执行，Python 不参与）：
+
 ```bash
-MIX_ENV=test mix test test/kantele/world/lpc_converter_room_test.exs
-MIX_ENV=test mix test test/kantele/world/lpc_converter_npc_functions_test.exs
+docker exec -w /app -e MIX_ENV=test wuxia_mud_dev-app-1 mix test test/kantele/world/lpc_converter_room_test.exs
+docker exec -w /app -e MIX_ENV=test wuxia_mud_dev-app-1 mix test test/kantele/world/lpc_converter_npc_functions_test.exs
 ```
 
 用例覆盖：valid_leave 出口阻挡、item_desc 拼接、engage（accept_fight/hit/kill）、杂货/守卫/闲谈抽取、继承链合并（子覆盖父、父的父并入、循环不递归）等。
+
+**Python 侧没有等价的单元测试。** 回归靠两条线兜底：
+
+1. **产物格式校验**：`python scripts\validate_ucl.py data\world\<zone>.ucl`，判定基准是 `test\fixtures\validate_ucl\expected.json`（含各检查项的实测 ground truth）。
+2. **真实产物比对**：拿 `scripts\lpc_converter.py` 重新生成 zone，与既有 `data\world\<zone>.ucl` 逐项对照。
+
+> `data\world\*.ucl` 是**生成产物**：不要手改，也不要为了"清理"而删除或重生成到别的路径。
 
 ---
 
@@ -196,4 +274,6 @@ MIX_ENV=test mix test test/kantele/world/lpc_converter_npc_functions_test.exs
 - **启发式解析**：`get_last_return` 对复杂嵌套可能取错 → `accept` 置 nil 不输出（运行时按缺省放行）。
 - **`::` 继承回退**（父类函数不可见）：只进 `note` 注释，不猜测。
 - **skill / generic**：不做数据化输出，原文进注释。
+- **目录模式整体覆盖**：见 §二 —— 目录转换每次重写整个 `<zone>.ucl`，不追加、不做"已存在就跳过"检查。
+- **zone 推断双规则**：CLI 按父目录名、模块 API 按文件名，见 §二 / §三。
 - **Windows / Docker bind mount** 下 UCL 重生成偶发 `File.Error: invalid argument`，重试即可。

@@ -4,6 +4,8 @@
   "checker": {
     "cli": "python scripts/validate_ucl.py <file.ucl>",
     "check_order": ["encoding", "syntax", "structure", "integrity", "chars"],
+    "check_tokens": ["Encoding", "Syntax", "Structure", "Integrity", "Chars"],
+    "token_note": "The keys under \"checks\" and the entries in \"check_order\" are lowercase logical ids. The \"failing_checks\" arrays below use the exact capitalised tokens that the tool prints on stdout, e.g. `❌ Syntax: ...`.",
     "exit_codes": {
       "0": "all 5 checks passed",
       "1": "at least one check failed (also used for unreadable file)",
@@ -86,75 +88,90 @@
       "file": "10_bad_syntax_unclosed.ucl",
       "why": "unclosed `{`",
       "exit_code": 1,
-      "failing_checks": ["syntax"]
+      "failing_checks": ["Syntax"]
     },
     {
       "file": "11_bad_syntax_double_quote.ucl",
       "why": "regression fixture for the real lpc_converter bug: `direction = \"\"north\"\"`. Also has consecutive `}`-only lines, so the current .exs check_chars false-positives here too; only `syntax` may be reported.",
       "exit_code": 1,
-      "failing_checks": ["syntax"]
+      "failing_checks": ["Syntax"]
     },
     {
       "file": "12_bad_syntax_unbalanced_quote.ucl",
       "why": "unterminated string literal in `name = \"odd'`",
       "exit_code": 1,
-      "failing_checks": ["syntax", "chars"]
+      "failing_checks": ["Syntax", "Chars"]
     },
     {
       "file": "20_bad_structure_no_zone.ucl",
       "why": "no `zones \"...\"` block",
       "exit_code": 1,
-      "failing_checks": ["structure"]
+      "failing_checks": ["Structure"]
     },
     {
       "file": "21_bad_structure_no_exits.ucl",
       "why": "no `room_exits \"...\"` block, so rooms(1) != room_exits(0)",
       "exit_code": 1,
-      "failing_checks": ["structure", "integrity"]
+      "failing_checks": ["Structure", "Integrity"]
     },
     {
       "file": "22_bad_integrity_zero_rooms.ucl",
       "why": "only a zones block; pins the `rooms > 0` branch of the integrity rule (0 == 0 must still fail)",
       "exit_code": 1,
-      "failing_checks": ["structure", "integrity"]
+      "failing_checks": ["Structure", "Integrity"]
     },
     {
       "file": "30_bad_integrity_mismatch.ucl",
       "why": "2 rooms vs 1 room_exits",
       "exit_code": 1,
-      "failing_checks": ["integrity"]
+      "failing_checks": ["Integrity"]
     },
     {
       "file": "40_bad_chars_double_close.ucl",
       "why": "a genuine stray `} }` on one line, which is both a syntax error and a chars violation",
       "exit_code": 1,
-      "failing_checks": ["syntax", "chars"]
+      "failing_checks": ["Syntax", "Chars"]
     },
     {
       "file": "50_bad_encoding_crlf.ucl",
       "why": "CRLF line endings. Measured: Elias parses it SUCCESSFULLY, so only `encoding` may be reported.",
       "exit_code": 1,
-      "failing_checks": ["encoding"]
+      "failing_checks": ["Encoding"]
     },
     {
       "file": "51_bad_encoding_bom.ucl",
       "why": "UTF-8 BOM. The current .exs check_encoding MISSES this (it only tests FF FE); the Python MUST reject it. Measured: Elias parses the BOM file successfully, so only `encoding` may be reported.",
       "exit_code": 1,
-      "failing_checks": ["encoding"]
+      "failing_checks": ["Encoding"]
     },
     {
       "file": "52_bad_encoding_invalid_utf8.ucl",
       "why": "trailing comment contains raw FF FE bytes. Must produce a clean verdict, not a traceback. Measured: Elias raises `invalid encoding starting at <<255, 254, 10>>`.",
       "exit_code": 1,
-      "failing_checks": ["encoding", "syntax"]
+      "failing_checks": ["Encoding", "Syntax"]
     }
   ],
   "real_world_regression": {
-    "description": "these must all exit 0 with the success line",
-    "files": [
-      "data/world/test.ucl",
-      "data/world_backup/test_before.ucl",
-      "data/world_backup/test_after.ucl"
+    "description": "Verified end-to-end on 2026-09-29. Note that the pre-coords file is EXPECTED to fail: that failure is the point of the coords step, not a regression.",
+    "cases": [
+      {
+        "file": "data/world/test.ucl",
+        "exit_code": 0,
+        "failing_checks": [],
+        "why": "full converter output for the test zone, coordinates already present"
+      },
+      {
+        "file": "data/world_backup/test_before.ucl",
+        "exit_code": 1,
+        "failing_checks": ["Integrity"],
+        "why": "PRE-coords converter output. rooms(34) != room_exits(33): room `liandan_lin` is an orphan with no `room_exits` block at all. assign_room_coords.py synthesises the missing block for orphan rooms, so this file is legitimately 'unfinished' and the validator is right to reject it. This is the evidence that the SOP order (validate -> assign coords -> validate) is meaningful."
+      },
+      {
+        "file": "data/world_backup/test_after.ucl",
+        "exit_code": 0,
+        "failing_checks": [],
+        "why": "the same file after assign_room_coords.py; rooms(34) == room_exits(34), all rooms covered"
+      }
     ]
   },
   "known_exs_defects_do_not_reproduce": [
