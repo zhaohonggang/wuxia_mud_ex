@@ -1647,7 +1647,7 @@ def _generate_room_ucl(ast, zone_id):
             'behavior = "guarded_exit"\n'
             "behavior_config = {\n"
             f'  guard_npc = "{vl["guard_npc"]}"\n'
-            f'  direction = "{_ucl_string(vl["direction"])}"\n'
+            f'  direction = "{_escape_set_string(vl["direction"])}"\n'
             f'  permit_module = "{vl["permit_module"]}"\n'
             f'  permit_function = "{vl["permit_function"]}"\n'
             "}\n"

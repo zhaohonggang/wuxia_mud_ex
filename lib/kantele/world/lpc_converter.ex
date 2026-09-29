@@ -2276,7 +2276,7 @@ room_block = room_block <> coords_block <> flags_block
           behavior = "guarded_exit"
           behavior_config = {
             guard_npc = "#{vl.guard_npc}"
-            direction = "#{ucl_string(vl.direction)}"
+            direction = "#{sanitize_ucl_sval(vl.direction)}"
             permit_module = "#{vl.permit_module}"
             permit_function = "#{vl.permit_function}"
           }
@@ -2334,20 +2334,21 @@ room_block = room_block <> coords_block <> flags_block
           }
         """
         _ ->
-          # River room might only have river exit
+          # Always emit a room_exits block; river rooms may only have a river exit
           river_exit =
             if is_river and arrive_room do
               target = resolve_exit_target(arrive_room)
-              """
-              room_exits "#{room_id}" {
-                room_id = rooms.#{room_id}.id
-                river = #{target}
-              }
-              """
+              "  river = #{target}"
             else
               ""
             end
-          river_exit
+
+          """
+          room_exits "#{room_id}" {
+            room_id = rooms.#{room_id}.id
+        """ <> river_exit <> """
+          }
+        """
       end
 
     objects_block = generate_room_objects(room_id, Map.get(sets, "objects"))

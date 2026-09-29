@@ -1193,7 +1193,7 @@ direction = "in"
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "men wei"
-  direction = ""north""
+  direction = "north"
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
@@ -1977,6 +1977,10 @@ item_desc = {
   y = 0
   z = 0
     }
+
+  room_exits "liandan_lin" {
+    room_id = rooms.liandan_lin.id
+  }
 
 # Generated from test_minimal_world_v2_modified/special/liandan_lin1.c by LPCConverter
 # Zone: test
