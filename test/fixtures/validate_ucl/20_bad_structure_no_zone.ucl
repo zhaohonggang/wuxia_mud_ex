@@ -1,0 +1,10 @@
+rooms "solo" {
+  name = "无区头房间"
+  x = 0
+  y = 0
+  z = 0
+}
+
+  room_exits "solo" {
+    room_id = rooms.solo.id
+  north = rooms.other.id  }

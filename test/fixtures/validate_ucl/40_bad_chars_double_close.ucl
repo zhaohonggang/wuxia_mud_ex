@@ -1,0 +1,14 @@
+zones "test" {
+  name = "test"
+}
+
+    rooms "stray" {
+      name = "游离括号"
+  x = 0
+  y = 0
+  z = 0
+    } }
+
+  room_exits "stray" {
+    room_id = rooms.stray.id
+  north = rooms.other.id  }

@@ -1,0 +1,10 @@
+zones "test" {
+  name = "test"
+}
+
+    rooms "broken" {
+      name = "未闭合"
+  x = 0
+
+  room_exits "broken" {
+    room_id = rooms.broken.id

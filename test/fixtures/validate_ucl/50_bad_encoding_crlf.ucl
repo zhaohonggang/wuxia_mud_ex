@@ -1,0 +1,15 @@
+zones "test" {
+  name = "test"
+}
+
+    rooms "guangchang" {
+      name = "广场"
+      description = "测试用最小房间"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guangchang" {
+    room_id = rooms.guangchang.id
+    north = rooms.beidajie1.id  }

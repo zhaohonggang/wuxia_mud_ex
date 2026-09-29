@@ -1,0 +1,41 @@
+zones "test" {
+  name = "test"
+}
+
+# Generated from /app/test_minimal_world_v2_modified/room/damen.c by LPCConverter
+# Zone: test
+
+    rooms "damen" {
+      name = "大门"
+      description = "白驼山庄的大门"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+  paizi = "## 赌博规则 ##"
+ }
+    }
+
+  room_exits "damen" {
+    room_id = rooms.damen.id
+  north = rooms.yuanzi.id
+  southdown = rooms.shijie.id  }
+
+
+  room_items "damen" {
+    room_id = rooms.damen.id
+    items = [
+      { id = items.blade2.id },
+      { id = items.blade3.id }    ]
+  }
+
+    rooms "yuanzi" {
+      name = "院子"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yuanzi" {
+    room_id = rooms.yuanzi.id
+  south = rooms.damen.id  }

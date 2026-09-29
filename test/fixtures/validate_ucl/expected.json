@@ -1,0 +1,177 @@
+{
+  "spec_version": 1,
+  "description": "Ground truth for scripts/validate_ucl.py. Every value below was measured empirically on 2026-09-29 by running Elias 1.x inside wuxia_mud_dev-app-1 against the fixtures in this directory, plus the corrected check semantics (NOT the current buggy .exs).",
+  "checker": {
+    "cli": "python scripts/validate_ucl.py <file.ucl>",
+    "check_order": ["encoding", "syntax", "structure", "integrity", "chars"],
+    "exit_codes": {
+      "0": "all 5 checks passed",
+      "1": "at least one check failed (also used for unreadable file)",
+      "2": "wrong argument count; usage printed to stderr"
+    },
+    "stdout_on_success": "✅ All checks passed: <path exactly as passed on the command line>",
+    "stdout_on_failure": "one line per failing check, in check_order, formatted as `❌ <Check>: <detail>` with <Check> = Encoding|Syntax|Structure|Integrity|Chars",
+    "invariants": [
+      "All 5 checks always run. A failure never short-circuits the remaining checks.",
+      "The tool must never raise an uncaught exception or print a traceback, for ANY input (including invalid UTF-8 and truncated files).",
+      "The failing check NAMES and the exit code are normative. The free-text <detail> is not, except that Syntax details must include a 1-based line number.",
+      "Over-reporting and under-reporting are both failures: the failing set must match exactly."
+    ]
+  },
+  "checks": {
+    "encoding": {
+      "input": "raw bytes",
+      "rules": [
+        "bytes must decode as UTF-8",
+        "must NOT start with EF BB BF (UTF-8 BOM)",
+        "must NOT start with FF FE (UTF-16LE BOM)",
+        "must NOT contain any 0x0D byte (LF-only)"
+      ]
+    },
+    "syntax": {
+      "input": "UTF-8 decoded text (decode failures are reported as an encoding failure and also make syntax fail)",
+      "rules": [
+        "A hand-written minimal UCL recursive-descent parser covering the syntax subset that scripts/lpc_converter.py actually emits.",
+        "Must support: top-level `name \"v\" { ... }` and `name { ... }` blocks; block members `key = value`; nested inline objects `key = { ... }` (recursive); arrays `[ ... ]` (possibly empty, multi-line, elements may be `{ k = v }`); scalars = double-quoted string (with \\\" escapes), number, bare identifier including dotted references like rooms.damen.id, `[]`, `{}`.",
+        "Comments: `#` to end of line. A closing brace may be glued to the end of a value, e.g. `north = rooms.a.id  }`.",
+        "Must ACCEPT every `*_ok_*` fixture, and must REJECT 10, 11, 12, 40 and 52."
+      ]
+    },
+    "structure": {
+      "input": "raw bytes",
+      "rules": [
+        "these three patterns must each be found somewhere in the file (multiline search): ^\\s*zones\\s+\"\\w+\" ; ^\\s*rooms\\s+\"\\w+\" ; ^\\s*room_exits\\s+\"\\w+\"",
+        "the detail must list which ones are missing"
+      ]
+    },
+    "integrity": {
+      "input": "raw bytes",
+      "rules": [
+        "rooms_count = number of matches of ^\\s*rooms\\s+\"(\\w+)\"",
+        "room_exits_count = number of matches of ^\\s*room_exits\\s+\"(\\w+)\"",
+        "PASS requires rooms_count == room_exits_count AND rooms_count > 0",
+        "detail is `rooms(N) != room_exits(M)` or `no rooms defined`"
+      ]
+    },
+    "chars": {
+      "input": "raw bytes",
+      "rules": [
+        "NOTE: use [ \\t] (horizontal whitespace) here, NOT \\s.",
+        "^[ \\t]*}[ \\t]*}  ->  double closing brace `} }`",
+        ",[ \\t]*}          ->  trailing comma before `}`",
+        "an odd total number of `\"` bytes in the file  ->  unpaired double quote"
+      ]
+    }
+  },
+  "cases": [
+    {
+      "file": "01_ok_minimal.ucl",
+      "why": "minimal well-formed zone: 1 room, 1 room_exits",
+      "exit_code": 0,
+      "failing_checks": []
+    },
+    {
+      "file": "02_ok_nested_consecutive_braces.ucl",
+      "why": "valid, and it reproduces a real lpc_converter layout where item_desc's ` }` is immediately followed by the rooms block's `    }` on consecutive lines. The current .exs check_chars FALSE-POSITIVES on this; the Python MUST let it pass.",
+      "exit_code": 0,
+      "failing_checks": []
+    },
+    {
+      "file": "03_ok_comments_with_quotes.ucl",
+      "why": "valid; comments contain an even number of double quotes, so the quote-parity rule must not fire",
+      "exit_code": 0,
+      "failing_checks": []
+    },
+    {
+      "file": "10_bad_syntax_unclosed.ucl",
+      "why": "unclosed `{`",
+      "exit_code": 1,
+      "failing_checks": ["syntax"]
+    },
+    {
+      "file": "11_bad_syntax_double_quote.ucl",
+      "why": "regression fixture for the real lpc_converter bug: `direction = \"\"north\"\"`. Also has consecutive `}`-only lines, so the current .exs check_chars false-positives here too; only `syntax` may be reported.",
+      "exit_code": 1,
+      "failing_checks": ["syntax"]
+    },
+    {
+      "file": "12_bad_syntax_unbalanced_quote.ucl",
+      "why": "unterminated string literal in `name = \"odd'`",
+      "exit_code": 1,
+      "failing_checks": ["syntax", "chars"]
+    },
+    {
+      "file": "20_bad_structure_no_zone.ucl",
+      "why": "no `zones \"...\"` block",
+      "exit_code": 1,
+      "failing_checks": ["structure"]
+    },
+    {
+      "file": "21_bad_structure_no_exits.ucl",
+      "why": "no `room_exits \"...\"` block, so rooms(1) != room_exits(0)",
+      "exit_code": 1,
+      "failing_checks": ["structure", "integrity"]
+    },
+    {
+      "file": "22_bad_integrity_zero_rooms.ucl",
+      "why": "only a zones block; pins the `rooms > 0` branch of the integrity rule (0 == 0 must still fail)",
+      "exit_code": 1,
+      "failing_checks": ["structure", "integrity"]
+    },
+    {
+      "file": "30_bad_integrity_mismatch.ucl",
+      "why": "2 rooms vs 1 room_exits",
+      "exit_code": 1,
+      "failing_checks": ["integrity"]
+    },
+    {
+      "file": "40_bad_chars_double_close.ucl",
+      "why": "a genuine stray `} }` on one line, which is both a syntax error and a chars violation",
+      "exit_code": 1,
+      "failing_checks": ["syntax", "chars"]
+    },
+    {
+      "file": "50_bad_encoding_crlf.ucl",
+      "why": "CRLF line endings. Measured: Elias parses it SUCCESSFULLY, so only `encoding` may be reported.",
+      "exit_code": 1,
+      "failing_checks": ["encoding"]
+    },
+    {
+      "file": "51_bad_encoding_bom.ucl",
+      "why": "UTF-8 BOM. The current .exs check_encoding MISSES this (it only tests FF FE); the Python MUST reject it. Measured: Elias parses the BOM file successfully, so only `encoding` may be reported.",
+      "exit_code": 1,
+      "failing_checks": ["encoding"]
+    },
+    {
+      "file": "52_bad_encoding_invalid_utf8.ucl",
+      "why": "trailing comment contains raw FF FE bytes. Must produce a clean verdict, not a traceback. Measured: Elias raises `invalid encoding starting at <<255, 254, 10>>`.",
+      "exit_code": 1,
+      "failing_checks": ["encoding", "syntax"]
+    }
+  ],
+  "real_world_regression": {
+    "description": "these must all exit 0 with the success line",
+    "files": [
+      "data/world/test.ucl",
+      "data/world_backup/test_before.ucl",
+      "data/world_backup/test_after.ucl"
+    ]
+  },
+  "known_exs_defects_do_not_reproduce": [
+    {
+      "defect": "check_syntax/1 matches {:ok, _} / {:error, err}, but Elias.parse/1 returns a BARE MAP on success and RAISES on failure.",
+      "measured": "running scripts/validate_ucl.exs on the fully valid 01_ok_minimal.ucl aborts with `** (CaseClauseError) no case clause matching: %{zones: %{test: %{...}}, rooms: %{...}, room_exits: %{...}}`. The .exs therefore fails on 100% of inputs.",
+      "python_must": "return a verdict for every input, never crash"
+    },
+    {
+      "defect": "check_chars/1 uses ~r/^\\s*}\\s*}/m and ~r/,\\s*}/m; \\s matches newlines.",
+      "measured": "false-positives on 02_ok_nested_consecutive_braces.ucl and on 11_bad_syntax_double_quote.ucl (charsEXS=true, charsFIX=false)",
+      "python_must": "use [ \\t] so consecutive `}`-only lines are legal"
+    },
+    {
+      "defect": "check_encoding/1 only rejects a FF FE prefix; it never checks the UTF-8 BOM.",
+      "measured": "51_bad_encoding_bom.ucl is reported as PASSING by the current logic",
+      "python_must": "reject EF BB BF"
+    }
+  ]
+}

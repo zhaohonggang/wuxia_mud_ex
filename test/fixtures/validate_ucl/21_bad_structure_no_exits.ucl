@@ -1,0 +1,10 @@
+zones "test" {
+  name = "test"
+}
+
+    rooms "solo" {
+      name = "无出口块房间"
+  x = 0
+  y = 0
+  z = 0
+    }

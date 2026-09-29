@@ -1,0 +1,21 @@
+zones "test" {
+  name = "test"
+}
+
+    rooms "a" {
+      name = "A"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "a" {
+    room_id = rooms.a.id
+  north = rooms.b.id  }
+
+    rooms "b" {
+      name = "B"
+  x = 0
+  y = 0
+  z = 0
+    }

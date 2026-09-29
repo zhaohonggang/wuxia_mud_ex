@@ -1,0 +1,19 @@
+zones "test" {
+  name = "test"
+}
+
+# 阻挡条件（原样保留）：dir == "north" && objectp(present("meng she", environment(me)))
+# 触发条件：count == "3"
+# 说明：本行注释里带 4 个引号，引号总数必须仍然成对
+
+    rooms "cave" {
+      name = "洞口"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "cave" {
+    room_id = rooms.cave.id
+    north = rooms.didao6.id
+    up = rooms.didao6.id  }
