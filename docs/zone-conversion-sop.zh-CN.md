@@ -237,3 +237,4 @@ docker exec -w /app wuxia_mud_dev-app-1 mix test test/zone_baituo_test.exs
 - 本文档位于 `docs/zone-conversion-sop.zh-CN.md`
 - 每完成一个区域，在 `docs/zone-conversion-checklist.zh-CN.md` 打勾并记录：区域、日期、关键修复 commit
 - 发现新错误模式 → 追加到「错误分类与定位表」 → 修对应脚本 → 回滚重跑
+- **发现任何新的语言错误（包括用户报告的 Elias 解析错误、容器加载失败等） → 必须在 `scripts/validate_ucl.py` 中新增对应检查项，并更新 `test/fixtures/validate_ucl/expected.json` 回归用例 → 重跑全部回归测试确认无误后方可继续**
