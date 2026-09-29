@@ -32,12 +32,13 @@ defmodule Kantele.World.LPCConverter do
     base_path = Keyword.get(opts, :base_path, Path.dirname(lpc_path))
     zone_id = Keyword.get(opts, :zone_id, infer_zone_id(lpc_path, base_path))
     include_comments = Keyword.get(opts, :include_comments, true)
+    include_header = Keyword.get(opts, :include_header, true)
 
     case File.read(lpc_path) do
       {:ok, content} ->
         case parse_lpc(content, lpc_path, base_path) do
           {:ok, ast} ->
-            ucl = generate_ucl(ast, zone_id, include_comments)
+            ucl = generate_ucl(ast, zone_id, include_comments, include_header)
             {:ok, ucl}
 
           {:error, reason} ->
@@ -59,7 +60,7 @@ defmodule Kantele.World.LPCConverter do
 
     case parse_lpc(lpc_content, "<string>", base_path) do
       {:ok, ast} ->
-        ucl = generate_ucl(ast, zone_id, include_comments)
+        ucl = generate_ucl(ast, zone_id, include_comments, true)
         {:ok, ucl}
 
       {:error, reason} ->
@@ -80,6 +81,9 @@ defmodule Kantele.World.LPCConverter do
     # Create a version with heredocs replaced for brace matching
     content_for_brace = strip_heredocs_for_brace(utf8_content)
     create_body = extract_create_body(content_for_brace)
+
+    # Strip // comments from create_body (contains mappings with inline comments)
+    create_body = strip_cpp_comments(create_body)
 
     # Preprocess: strip comments, normalize whitespace
     cleaned = preprocess(utf8_content)
@@ -1804,7 +1808,7 @@ c ->
   # UCL Generation
   # --------------------------------------------------------------------------
 
-  defp generate_ucl(ast, zone_id, include_comments) do
+  defp generate_ucl(ast, zone_id, include_comments, include_header \\ true) do
     # Always include source tracking header for debugging/audit purposes
     header = "# Generated from #{ast.source_path} by LPCConverter\n# Zone: #{zone_id}\n\n"
 
@@ -1847,7 +1851,7 @@ c ->
       if obj_type == :generic do
         ""
       else
-        header <> Enum.join(new_sections, "\n\n")
+        (if include_header, do: header, else: "") <> Enum.join(new_sections, "\n\n")
       end
 
     # Comments content: header + generic marker + inherit comments + unhandled comments
@@ -2348,7 +2352,7 @@ room_block = room_block <> coords_block <> flags_block
 
     objects_block = generate_room_objects(room_id, Map.get(sets, "objects"))
 
-    Enum.join([room_block, exits_block, objects_block], "\n")
+    Enum.join([room_block, exits_block, objects_block], "\n\n")
   end
 
   # --------------------------------------------------------------------------
@@ -2406,7 +2410,7 @@ room_block = room_block <> coords_block <> flags_block
         ""
       end
 
-    Enum.join([char_block, item_block], "\n")
+    Enum.join([char_block, item_block], "\n\n")
   end
 
   defp generate_room_objects(_room_id, _), do: ""
@@ -2552,25 +2556,6 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
   defp ucl_string(str) do
     # Properly escape a string for UCL output: sanitize value content, then wrap in double quotes
     "\"" <> sanitize_ucl_sval(str) <> "\""
-  end
-
-  # Escape a string for use as a UCL object key (unquoted identifier)
-  defp ucl_key(key) do
-    key
-    |> String.replace(~r/[^a-zA-Z0-9_]/, "_")
-    |> String.replace(~r/^_+|_+$/, "")
-    |> String.trim()
-  end
-
-  # Escape a string for use as a UCL value - handles special chars that break UCL parsing
-  defp ucl_value(str) do
-    # Escape for use inside double-quoted string: escape backslash, quote, and special UCL chars
-    str
-    |> String.replace("\\", "\\\\")
-    |> String.replace("\"", "\\\"")
-    |> String.replace("\n", "\\n")
-    |> String.replace("\r", "")
-    |> String.replace("\t", "\\t")
   end
 
   defp generate_npc_ucl(ast, zone_id) do
@@ -3172,14 +3157,12 @@ defp sanitize_comment_text(text) do
           end)
           |> Enum.reject(fn {key, text} -> key == "" or text == "" end)
 
-        if entries == [] do
-          ""
-        else
-          # For UCL compatibility: item_desc values with complex chars (#, {, }, etc.)
-          # are serialized as a JSON-like string to avoid UCL parsing issues
-          rendered = Enum.map_join(entries, ",\n", fn {keyword, text} ->
-            "      #{ucl_key(keyword)} = #{ucl_string(ucl_value(text))}"
-          end)
+if entries == [] do
+           ""
+         else
+           rendered = Enum.map_join(entries, ",\n", fn {keyword, text} ->
+             " #{normalize_item_keyword(keyword)} = \"#{escape_set_string(text)}\""
+           end)
 
           """
           item_desc = {
@@ -3226,14 +3209,13 @@ defp sanitize_comment_text(text) do
       vetoes ->
         rendered =
           Enum.map_join(vetoes, ",\n", fn veto ->
-            # Always quote direction (including "~" for any direction)
-            dir = if veto.dir, do: ucl_string(veto.dir), else: ucl_string("~")
-            message = ucl_string(ucl_value(veto.message))
+            dir = if veto.dir, do: ~s("#{veto.dir}"), else: "~"
+            message = ~s("#{escape_set_string(veto.message)}")
 
-            # Condition is kept as comment outside the structure for UCL compatibility
+            # UCL 字符串不允许 `(`/`)`/`,` 等符号，条件原样保留为注释（仅档案用途）
             condition_comment =
               if veto.condition do
-                "  # 阻挡条件（原样保留）：#{veto.condition}\n"
+                " # 阻挡条件（原样保留）：#{veto.condition}\n"
               else
                 ""
               end

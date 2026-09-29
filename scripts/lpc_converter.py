@@ -1,0 +1,2608 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+LPC -> UCL Converter (Python port of lib/kantele/world/lpc_converter.ex + mix task).
+
+Byte-exact port of the Elixir implementation (T1). Converts LPC source files
+(.c) to UCL format compatible with Kantele.World.Loader, preserving logic
+content as comments.
+
+Usage (mirrors the mix task recursive mode):
+  python scripts/lpc_converter.py PATH [--zone ZONE] [--output DIR]
+      PATH may be a single .c file or a directory (recursive, all **/*.c)
+"""
+
+import os
+import re
+import sys
+from pathlib import Path
+
+# ---------------------------------------------------------------------------
+# ASCII semantics: Elixir PCRE (no /u) treats \w \s \d as ASCII-only.  Python
+# re treats them as Unicode by default.  All patterns in this module use the
+# re.ASCII flag unless they explicitly need Unicode (Chinese text).
+# ---------------------------------------------------------------------------
+_A = re.ASCII
+
+# ---------------------------------------------------------------------------
+# Regex helpers (faithful to the Elixir regexes, which are all ASCII-flavoured)
+# ---------------------------------------------------------------------------
+
+# strip_heredocs_for_brace: set("key", @DELIM ... DELIM); -> set("key", "");
+_HEREDOC_PLACEHOLDER = re.compile(
+    r'set\s*\(\s*(["\'])([^"\']+)\1\s*,\s*@(\w+)\s*\n[\s\S]*?\n\3\s*\)\s*;'
+)
+
+# parse_heredocs_from_raw: capture the heredoc content
+_HEREDOC_RAW = re.compile(
+    r'set\s*\(\s*(["\'])([^"\']+)\1\s*,\s*@(\w+)\s*\n([\s\S]*?)\n\3\s*\)\s*;'
+)
+
+_C_COMMENT = re.compile(r"/\*[\s\S]*?\*/")
+_CPP_LINE_COMMENT = re.compile(r"//.*")
+
+_CREATE_SIG = re.compile(r"void\s+create\s*\(\s*\)\s*\{")
+_INHERIT = re.compile(r'inherit\s+(["\']?)([^;"\']+)\1\s*;')
+_DEFINE = re.compile(r"#\s*define\s+([A-Za-z_]\w*)\s+([^\s;()]+)")
+_DIR_STR = re.compile(r'^\s*__DIR__\s*["\']([^"\']+)["\']\s*$')
+_QUOTED_STR = re.compile(r'^["\']([^"\']+)["\']\s*$')
+
+_SET_CALL = re.compile(r'set\s*\(\s*(["\'])([^"\']+)\1\s*,\s*([\s\S]*?)\s*\)\s*;', re.M)
+_SET_NAME = re.compile(
+    r'set_name\s*\(\s*(?:[A-Z_]+)?\s*(["\'])([^"\']+)\1\s*(?:[A-Z_]+)?\s*,\s*\(\s*\{([^}]+)\}\s*\)\s*\)\s*;'
+)
+_DIRECT_ASSIGN = re.compile(r"(\w+)\s*=\s*([^;]+);")
+_FUNC_CALL = re.compile(r"(\w+)\s*\(([^)]*)\)\s*(?:->\s*\w+\s*\(\s*\))?\s*;")
+_OTHER_FN = re.compile(r"(int|string|void|mapping|object)\s+(\w+)\s*\([^)]*\)")
+_GLOBAL_DECL = re.compile(r"(int|string|mapping|object|mixed)\s+(\w+)\s*[=;]")
+_COMPLEX_GLOBAL = re.compile(r"(int|string|mapping|object|mixed)\s+(\w+)\s*=\s*[^;]+;")
+_COMPLEX_MAPPING = re.compile(r"\(\s*\[[^]]*\[[^]]*\]")
+_SWITCH_STMT = re.compile(r'switch\s*\(\s*[^()]*(?:\([^()]*\)[^()]*)*\)\s*\{[\s\S]*?\}', re.M)
+_SWITCH_TABLE_ROW = re.compile(r'case\s+["\']([^"\']+)["\']\s*:\s*([\s\S]*?)(?=case\s+["\']|default\s*:)')
+_SWITCH_TABLE_COL = re.compile(r"(\w+)\s*=\s*([^;]+);")
+_IF_ELSE_BLOCK = re.compile(r'if\s*\([^)]+\)\s*\{[\s\S]*?\}\s*else\s*\{[\s\S]*?\}', re.M)
+_RAW_BLOCK = re.compile(r"(void|int)\s+(heart_beat|reset|clean_up)\s*\([^)]*\)\s*\{([\s\S]*?)\}", re.M)
+_BODY_SIG = re.compile(r"(?:int|string|void|mixed|mapping|object|protected)\s+(\w+)\s*\([^)]*\)\s*\n*\s*\{")
+_FN_SIG = re.compile(r"(?:int|string|void|mixed|mapping|object|protected)\s+{name}\s*\([^)]*\)\s*\n*\s*\{{")
+
+_BRANCH_ACTION = re.compile(r"(command|say|tell_object|message_vision|write)\s*\([\s\S]*?\);")
+_WS_RE = re.compile(r"\s+", _A)
+
+# valid_leave
+_VALID_LEAVE_SIG = re.compile(r"int\s+valid_leave\s*\([^)]*\)\s*\{")
+_PRESENT = re.compile(r'present\s*\(\s*(["\'])([^"\']+)\1\s*,\s*this_object\s*\(\s*\)')
+_DIR_EQ = re.compile(r'dir\s*==\s*(["\'])([^"\']+)\1')
+
+# greeting / dialogue
+_DIALOGUE_CALL = re.compile(r"(?:say|message_vision)\s*\(([\s\S]*?)\)\s*;", re.M)
+_STR_TOKEN = re.compile(r'("(?:[^"\\]|\\.)*")')
+_STR_LITERAL = re.compile(r'"((?:\\.|[^"\\])*)"')
+
+# accept_object
+_ACCEPT_DIALOGUE_TELL = re.compile(r"tell_object\s*\([^)]+\)")
+_ACCEPT_CMD_SAY = re.compile(r'command\s*\(\s*["\']say\s+([^"\']+)["\']\s*\)')
+_ACCEPT_CMD_OTHER = re.compile(r'command\s*\(\s*["\']([^"\']+)["\']\s*\)')
+_MESSAGE_CALL = re.compile(r"message_(?:vision|sort)\s*\(")
+_SAY_CALL = re.compile(r"(?<!\w)say\s*\(")
+_NOTIFY_FAIL_CALL = re.compile(r"notify_fail\s*\(")
+_WRITE_CALL = re.compile(r"write\s*\(")
+_MONEY_ID = re.compile(r"->value\s*\(\s*\)\s*>=\s*(\d+)")
+_ITEM_ID_QUERY = re.compile(r'(\w+->)?query\s*\(\s*["\']id["\']\s*\)\s*==\s*["\']([^"\']+)["\']')
+_ITEM_NAME_QUERY = re.compile(r'(\w+->)?query\s*\(\s*["\']name["\']\s*\)\s*==\s*["\']([^"\']+)["\']')
+_RETURN_01 = re.compile(r"return\s+([01])\s*;")
+
+# engage
+_ENGAGE_KIND = re.compile(r"::\s*accept_(fight|hit|kill)\s*\(")
+_KILL_OB = re.compile(r"(?<!->)kill_ob\s*\(")
+_SPAWN_NEW = re.compile(r'new\s*\(\s*(?:__DIR__)?\s*["\']([^"\']+)["\']\s*\)')
+_CMD_SAY = re.compile(r'command\s*\(\s*["\']say\s+([^"\']+)["\']\s*\)')
+_MESSAGE_VISION_LIT = re.compile(r'message_vision\s*\(\s*((?:"(?:\\.|[^"\\])*"\s*)+)')
+
+# guard
+_GUARD_FAMILY = re.compile(r'query\s*\(\s*["\']family/family_name["\']\s*\)\s*==\s*["\']([^"\']+)["\']')
+_GUARD_REFUSE = re.compile(r'message_vision\s*\(\s*["\']([^"\']+)["\']')
+
+# init
+_ADD_ACTION = re.compile(r'add_action\s*\(\s*["\']([^"\']+)["\']\s*,\s*["\']([^"\']+)["\']\s*\)')
+_CALL_OUT_GREET = re.compile(r'call_out\s*\(\s*["\']greeting["\']\s*,\s*(\d+)')
+_HEARTBEAT = re.compile(r"set_heart_beat\s*\(\s*(\d+)")
+
+# item_desc
+_MACRO_STRING = re.compile(r'"((?:\\.|[^"\\])*)"')
+_WS_COLLAPSE = re.compile(r"\s+", _A)
+
+# exit veto / unhandled helpers
+_NOTIFY_FAIL_WORD = re.compile(r"notify_fail")
+
+# sanitize regexes
+_ESC_SEQ = re.compile(r"\\([a-zA-Z])")
+_TRAILING_QUOTE = re.compile(r"\\?[\"\']\s*$")
+_TRAILING_SEMI = re.compile(r";+\s*$")
+
+
+def _ascii_ws_collapse(s):
+    return _WS_RE.sub(" ", s)
+
+
+def _trim(s):
+    return s.strip() if s is not None else None
+
+
+def _path_basename_rootname(p):
+    """Path.basename |> Path.rootname (strip last extension)."""
+    base = os.path.basename(p)
+    return os.path.splitext(base)[0]
+
+
+def _norm_id(s):
+    """String.replace("-", "_")"""
+    return s.replace("-", "_")
+
+
+def _to_utf8(data: bytes) -> str:
+    """Mirror :unicode.characters_to_binary GBK-first logic."""
+    # GBK first
+    try:
+        return data.decode("gbk")
+    except (UnicodeDecodeError, LookupError):
+        pass
+    # then UTF-8
+    try:
+        return data.decode("utf-8")
+    except UnicodeDecodeError:
+        pass
+    # replacement fallback
+    return data.decode("utf-8", errors="replace")
+
+
+# ---------------------------------------------------------------------------
+# AST representation (mirrors the Elixir maps)
+# ---------------------------------------------------------------------------
+class AST:
+    def __init__(self, **kw):
+        self.inherits = kw.get("inherits", [])
+        self.inherit_files = kw.get("inherit_files", [])
+        self.create_fn = kw.get("create_fn", {})
+        self.other_fns = kw.get("other_fns", [])
+        self.globals = kw.get("globals", {})
+        self.heredocs = kw.get("heredocs", {})
+        self.source_path = kw.get("source_path", "")
+        self.base_path = kw.get("base_path", ".")
+        self.valid_leave = kw.get("valid_leave", None)
+        self.exit_vetoes = kw.get("exit_vetoes", [])
+        self.function_calls = kw.get("function_calls", {})
+        self.enter = kw.get("enter", None)
+        self.greetings = kw.get("greetings", None)
+        self.accept = kw.get("accept", None)
+        self.guard = kw.get("guard", None)
+        self.engage = kw.get("engage", None)
+        self.unhandled = kw.get("unhandled", {
+            "functions": [], "globals": [], "complex_mappings": [],
+            "switch_tables": [], "switch_statements": [], "switch_pools": [],
+            "conditional_branches": {}, "complex_conditionals": [],
+            "raw_code_blocks": [],
+        })
+
+    def __repr__(self):
+        return f"AST(source_path={self.source_path})"
+
+
+# ---------------------------------------------------------------------------
+# Low-level character-stream helpers (port of the Elixir char-list scanners)
+# ---------------------------------------------------------------------------
+def _is_ident(c):
+    return c == "_" or ("a" <= c <= "z") or ("A" <= c <= "Z") or ("0" <= c <= "9")
+
+
+def _word_at(chars, i, w):
+    """True when w occurs as a whole word at index i."""
+    wlen = len(w)
+    if i < 0 or i + wlen > len(chars):
+        return False
+    if chars[i:i + wlen] != list(w):
+        return False
+    if i > 0 and _is_ident(chars[i - 1]):
+        return False
+    if i + wlen < len(chars) and _is_ident(chars[i + wlen]):
+        return False
+    return True
+
+
+def _skip_string(chars, i):
+    """Skip a double-quoted string (with escapes); return index after closing quote."""
+    i = i + 1
+    escaped = False
+    while i < len(chars):
+        c = chars[i]
+        if c == "\\" and not escaped:
+            escaped = True
+        elif c == '"' and not escaped:
+            return i + 1
+        else:
+            escaped = False
+        i += 1
+    return None
+
+
+def _skip_line_comment(chars, i):
+    while i < len(chars):
+        if chars[i] == "\n":
+            return i + 1
+        i += 1
+    return i
+
+
+def _skip_block_comment(chars, i):
+    while i < len(chars):
+        if chars[i] == "*" and i + 1 < len(chars) and chars[i + 1] == "/":
+            return i + 2
+        i += 1
+    return i
+
+
+def _skip_trivia(chars, i):
+    """Skip whitespace / // / /* */ ; return index of next substantive char."""
+    while i < len(chars):
+        c = chars[i]
+        if c in " \t\n\r":
+            i += 1
+        elif c == "/":
+            if i + 1 < len(chars) and chars[i + 1] == "/":
+                i = _skip_line_comment(chars, i + 2)
+            elif i + 1 < len(chars) and chars[i + 1] == "*":
+                i = _skip_block_comment(chars, i + 2)
+            else:
+                return i
+        else:
+            return i
+    return None
+
+
+def _read_ident(chars, i):
+    acc = []
+    while i < len(chars):
+        c = chars[i]
+        if _is_ident(c):
+            acc.append(c)
+            i += 1
+        else:
+            break
+    return "".join(acc), i
+
+
+def _next_word(chars, i):
+    """Return (word, start, end) or None."""
+    j = _skip_trivia(chars, i)
+    if j is None:
+        return None
+    c = chars[j]
+    if c == '"':
+        k = _skip_string(chars, j)
+        if k is None:
+            return None
+        return ("<str>", j, k)
+    if _is_ident(c):
+        w, k = _read_ident(chars, j)
+        return (w, j, k)
+    return ("", j, j + 1)
+
+
+def _match_delim(chars, i, open_c, close_c, depth):
+    """Balance open/close, skipping strings/comments; return closing index."""
+    while i < len(chars):
+        c = chars[i]
+        if c == '"':
+            k = _skip_string(chars, i)
+            if k is None:
+                return None
+            i = k
+        elif c == "/":
+            if i + 1 < len(chars) and chars[i + 1] == "/":
+                i = _skip_line_comment(chars, i + 2)
+            elif i + 1 < len(chars) and chars[i + 1] == "*":
+                i = _skip_block_comment(chars, i + 2)
+            else:
+                i += 1
+        elif c == open_c:
+            depth += 1
+            i += 1
+        elif c == close_c:
+            if depth == 1:
+                return i
+            depth -= 1
+            i += 1
+        else:
+            i += 1
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Preprocessing
+# ---------------------------------------------------------------------------
+def _strip_c_comments(text):
+    return _C_COMMENT.sub("", text)
+
+
+def _strip_cpp_comments(text):
+    out = []
+    for line in text.split("\n"):
+        parts = _CPP_LINE_COMMENT.split(line, maxsplit=1)
+        out.append(parts[0] if len(parts) > 1 else line)
+    return "\n".join(out)
+
+
+def _normalize_whitespace(text):
+    return _WS_RE.sub(" ", text).strip()
+
+
+def _preprocess(content):
+    return _normalize_whitespace(_strip_c_comments(_strip_cpp_comments(content)))
+
+
+def _strip_heredocs_for_brace(content):
+    return _HEREDOC_PLACEHOLDER.sub(lambda m: f'set("{m.group(2)}", "");', content)
+
+
+def _parse_heredocs_from_raw(content):
+    heredocs = {}
+    for m in _HEREDOC_RAW.finditer(content):
+        key = m.group(2)
+        delimiter = m.group(3)
+        raw = m.group(4)
+        # strip trailing quote / semicolon leaks
+        cleaned = raw.strip()
+        cleaned = _TRAILING_QUOTE.sub("", cleaned)
+        cleaned = _TRAILING_SEMI.sub("", cleaned)
+        cleaned = cleaned.strip()
+        # literal " -> ' (elias safety)
+        cleaned = cleaned.replace('"', "'")
+        heredocs[key] = {"type": "heredoc", "delimiter": delimiter, "content": cleaned}
+    return {"heredocs": heredocs}
+
+
+# ---------------------------------------------------------------------------
+# Brace matching
+# ---------------------------------------------------------------------------
+def _find_quote_end(content, start):
+    i = start
+    while i < len(content):
+        c = content[i]
+        if c == "\\":
+            i += 2
+        elif c == '"':
+            return i + 1
+        else:
+            i += 1
+    return None
+
+
+def _find_matching_brace(content, start_index):
+    """start_index = position of opening {. Returns body between braces or None."""
+    i = start_index + 1
+    brace_count = 1
+    while i < len(content):
+        c = content[i]
+        if c == "{":
+            brace_count += 1
+            i += 1
+        elif c == "}":
+            brace_count -= 1
+            if brace_count == 0:
+                return content[start_index + 1:i]
+            i += 1
+        elif c == '"':
+            new_i = _find_quote_end(content, i + 1)
+            if new_i is None:
+                return None
+            i = new_i
+        else:
+            i += 1
+    return None
+
+
+def _extract_create_body(content):
+    m = _CREATE_SIG.search(content)
+    if m is None:
+        return ""
+    start_pos = m.end() - 1  # position of '{'
+    body = _find_matching_brace(content, start_pos)
+    return body if body is not None else ""
+
+
+# ---------------------------------------------------------------------------
+# Parse layer
+# ---------------------------------------------------------------------------
+def _parse_lpc_value(value_str):
+    value_str = value_str.strip()
+
+    # color-macro wrapped string: HIW "未亡人" NOR
+    if re.match(r"^[A-Z_]+", value_str, _A):
+        extracted = _extract_strings_from_macro_wrapped(value_str)
+        if extracted != "":
+            return ("string", extracted)
+
+    if value_str.startswith('"') and value_str.endswith('"'):
+        return ("string", _parse_lpc_string(value_str))
+
+    if re.fullmatch(r"\d+", value_str, _A):
+        return ("int", int(value_str))
+
+    if re.fullmatch(r"\d+\.\d+", value_str, _A):
+        return ("float", float(value_str))
+
+    if value_str.startswith("({") and value_str.endswith("})"):
+        inner = value_str[2:-2]
+        return ("array", _parse_array_elements(inner))
+
+    if value_str.startswith("([") and value_str.endswith("])"):
+        inner = value_str[2:-2]
+        return ("mapping", _parse_mapping_pairs(inner))
+
+    if re.fullmatch(r"\w+\(.*\)", value_str, _A):
+        return ("call", value_str)
+
+    return ("var", value_str)
+
+
+def _extract_strings_from_macro_wrapped(value_str):
+    segs = [m.group(1) for m in _STR_LITERAL.finditer(value_str)]
+    return "".join(segs)
+
+
+def _parse_lpc_string(value_str):
+    segs = [_process_lpc_escapes(m.group(1)) for m in _STR_LITERAL.finditer(value_str)]
+    return "".join(segs)
+
+
+def _process_lpc_escapes(s):
+    s = s.replace("\\n", "\n")
+    s = s.replace("\\t", "\t")
+    s = s.replace("\\r", "\r")
+    s = s.replace('\\"', '"')
+    s = s.replace("\\'", "'")
+    s = s.replace("\\\\", "\\")
+    return s
+
+
+def _process_literal_string(s):
+    return _process_lpc_escapes(s).replace("$N", "{npc}").replace("$n", "{name}").strip()
+
+
+def _parse_array_elements(inner):
+    out = []
+    for part in inner.split(","):
+        part = part.strip()
+        if part != "":
+            out.append(_parse_lpc_value(part))
+    return out
+
+
+def _parse_mapping_pairs(inner):
+    pairs = []
+    for pair in _split_mapping_pairs(inner):
+        parts = pair.split(":", 1)
+        if len(parts) == 2:
+            pairs.append((_parse_lpc_value(parts[0].strip()), _parse_lpc_value(parts[1].strip())))
+        else:
+            pairs.append((_parse_lpc_value(pair.strip()), ("var", "nil")))
+    return pairs
+
+
+def _split_mapping_pairs(inner):
+    return [p.strip() for p in inner.split(",") if p.strip() != ""]
+
+
+def _parse_set_calls(body):
+    sets = {}
+    for m in _SET_CALL.finditer(body):
+        key = m.group(2)
+        value = _parse_lpc_value(m.group(3).strip())
+        sets[key] = value
+    return {"sets": sets}
+
+
+def _parse_set_name(body):
+    m = _SET_NAME.search(body)
+    if m is None:
+        return {}
+    name = m.group(2)
+    aliases_str = m.group(3)
+    aliases = []
+    for a in aliases_str.split(","):
+        a = a.strip()
+        a = re.sub(r'^["\']|["\']$', "", a)
+        if a != "":
+            aliases.append(a)
+    return {"set_name": {"name": name, "aliases": aliases}}
+
+
+def _parse_direct_assignments(body):
+    assigns = {}
+    for m in _DIRECT_ASSIGN.finditer(body):
+        var = m.group(1)
+        value = _parse_lpc_value(m.group(2).strip())
+        assigns[var] = value
+    return {"assigns": assigns}
+
+
+def _parse_create_body(body):
+    result = {}
+    result.update(_parse_set_calls(body))
+    result.update(_parse_set_name(body))
+    result.update(_parse_direct_assignments(body))
+    return result
+
+
+def _parse_function_calls(body):
+    calls = {}
+    for m in _FUNC_CALL.finditer(body):
+        func = m.group(1)
+        args_str = m.group(2)
+        args = [_parse_lpc_value(a.strip()) for a in args_str.split(",")]
+        # Elixir: Map.update(acc, func, [args], fn existing -> existing ++ [args] end)
+        calls.setdefault(func, [])
+        calls[func] = calls[func] + [args]
+    return calls
+
+
+def _parse_other_functions(content):
+    seen = set()
+    out = []
+    for m in _OTHER_FN.finditer(content):
+        name = m.group(2)
+        if name not in seen:
+            seen.add(name)
+            out.append({"name": name, "return_type": m.group(1)})
+    return out
+
+
+def _parse_globals(content):
+    globals_ = {}
+    for m in _GLOBAL_DECL.finditer(content):
+        globals_[m.group(2)] = m.group(1)
+    return globals_
+
+
+def _parse_inherits(content):
+    out = []
+    for m in _INHERIT.finditer(content):
+        path = m.group(2).strip()
+        if path not in out:
+            out.append(path)
+    return out
+
+
+def _parse_defines(content):
+    defines = {}
+    for m in _DEFINE.finditer(content):
+        defines[m.group(1)] = m.group(2).strip()
+    return defines
+
+
+def _resolve_inherit_ref(token, defines):
+    token = token.strip()
+    if token.startswith("/"):
+        path = token
+    elif token in defines:
+        value = defines[token]
+        m = _DIR_STR.match(value)
+        if m:
+            path = m.group(1)
+        elif _QUOTED_STR.match(value):
+            path = re.sub(r'^["\']|["\']$', "", value).strip()
+        else:
+            path = None
+    else:
+        path = None
+
+    if path is None or path == "":
+        return None
+    if path.startswith("/"):
+        return path.lstrip("/")
+    return path
+
+
+def _parse_inherit_files(content, source_path):
+    dir_ = os.path.dirname(source_path)
+    defines = _parse_defines(content)
+    out = []
+    for token in _parse_inherits(content):
+        rel = _resolve_inherit_ref(token, defines)
+        if rel is None:
+            continue
+        joined = _normpath_forward(os.path.join(dir_, rel))
+        if joined not in out:
+            out.append(joined)
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Unhandled content extraction
+# ---------------------------------------------------------------------------
+def _is_switch_table(stmt):
+    return re.search(r'case\s+["\'][^"\']+["\']\s*:\s*\w+\s*=', stmt, re.S) is not None
+
+
+def _parse_switch_table(stmt):
+    m = re.search(r"switch\s*\(\s*([^)]+)\s*\)", stmt, _A)
+    expr = m.group(1).strip() if m else None
+    rows = []
+    for m in _SWITCH_TABLE_ROW.finditer(stmt):
+        key = m.group(1)
+        body = m.group(2)
+        cols = []
+        for cm in _SWITCH_TABLE_COL.finditer(body):
+            cols.append((cm.group(1).strip(), cm.group(2).strip()))
+        rows.append({"key": key, "cols": cols})
+    if not rows:
+        return None
+    return {"expr": expr, "rows": rows}
+
+
+def _function_bodies(content):
+    out = []
+    for m in _BODY_SIG.finditer(content):
+        name = m.group(1)
+        match_start = m.start()
+        brace_pos = m.end() - 1
+        body = _find_matching_brace(content, brace_pos)
+        if body is not None:
+            out.append((name, body))
+    return out
+
+
+def _scan_chains(chars, i, acc, prev):
+    while True:
+        nw = _next_word(chars, i)
+        if nw is None:
+            return list(reversed(acc))
+        w, j, k = nw
+        if w == "if" and prev != "else":
+            parsed = _parse_chain(chars, j)
+            if parsed is None:
+                i = j + 2
+                prev = "if"
+            else:
+                chain, after_i = parsed
+                acc.append(chain)
+                i = after_i
+                prev = None
+        else:
+            i = k
+            prev = w
+
+
+def _extract_condition(chars, if_pos):
+    j = _skip_trivia(chars, if_pos + 2)
+    if j is not None and j < len(chars) and chars[j] == "(":
+        close = _match_delim(chars, j + 1, "(", ")", 1)
+        if close is None:
+            return None
+        inner = "".join(chars[j + 1:close])
+        cond = _ascii_ws_collapse(inner)
+        after = _skip_trivia(chars, close + 1)
+        return (cond, after)
+    return None
+
+
+def _read_block(chars, i):
+    if i >= len(chars):
+        return None
+    c = chars[i]
+    if c == "{":
+        close = _match_delim(chars, i + 1, "{", "}", 1)
+        if close is None:
+            return None
+        return ("".join(chars[i + 1:close]), close + 1)
+    if c != ";":
+        return _read_statement(chars, i)
+    return None
+
+
+def _read_statement(chars, i):
+    fwd, next_ = _do_read_statement(chars, i, [], 0)
+    return ("".join(reversed(fwd)), next_)
+
+
+def _do_read_statement(chars, i, acc, depth):
+    while i < len(chars):
+        c = chars[i]
+        if c == ";" and depth == 0:
+            return acc, i + 1
+        if c == '"':
+            k = _skip_string(chars, i)
+            if k is None:
+                return acc, i
+            seg = chars[i:k]
+            acc = list(reversed(seg)) + acc
+            i = k
+        elif c == "{":
+            acc = ["{"] + acc
+            depth += 1
+            i += 1
+        elif c == "}":
+            acc = ["}"] + acc
+            depth = max(depth - 1, 0)
+            i += 1
+        elif c == "(":
+            acc = ["("] + acc
+            depth += 1
+            i += 1
+        elif c == ")":
+            acc = [")"] + acc
+            depth = max(depth - 1, 0)
+            i += 1
+        else:
+            acc = [c] + acc
+            i += 1
+    return acc, i
+
+
+def _collect_else(chars, i, acc):
+    nw = _next_word(chars, i)
+    if nw is None:
+        return acc, i
+    w, _, next_ = nw
+    if w != "else":
+        return acc, i
+    k = _skip_trivia(chars, next_)
+    if k is None:
+        return acc, i
+    if _word_at(chars, k, "if"):
+        cond_res = _extract_condition(chars, k)
+        if cond_res is None:
+            return acc, i
+        cond, after_paren = cond_res
+        block = _read_block(chars, after_paren)
+        if block is None:
+            return acc, i
+        body, after_idx = block
+        branch = {"kind": "elif", "cond": cond, "actions": _branch_actions(body)}
+        return _collect_else(chars, after_idx, acc + [branch])
+    else:
+        block = _read_block(chars, k)
+        if block is None:
+            return acc, k
+        body, after_idx = block
+        branch = {"kind": "else", "actions": _branch_actions(body)}
+        return acc + [branch], after_idx
+
+
+def _parse_chain(chars, if_pos):
+    cond_res = _extract_condition(chars, if_pos)
+    if cond_res is None:
+        return None
+    cond, after_paren = cond_res
+    block = _read_block(chars, after_paren)
+    if block is None:
+        return None
+    body1, after1 = block
+    head = {"kind": "if", "cond": cond, "actions": _branch_actions(body1)}
+    acc, final_i = _collect_else(chars, after1, [head])
+    return acc, final_i
+
+
+def _branch_actions(body):
+    actions = []
+    for m in _BRANCH_ACTION.finditer(body):
+        full = m.group(0)
+        actions.append(re.sub(r"\s+", " ", full, flags=_A).strip())
+    # uniq (order-preserving)
+    seen = set()
+    out = []
+    for a in actions:
+        if a not in seen:
+            seen.add(a)
+            out.append(a)
+    return out
+
+
+def _split_condition_branches(body):
+    chars = list(body)
+    return _scan_chains(chars, 0, [], None)
+
+
+def _extract_unhandled_content(content, unhandled_fn_names):
+    unhandled = {
+        "functions": [],
+        "globals": [],
+        "complex_mappings": [],
+        "switch_tables": [],
+        "switch_statements": [],
+        "switch_pools": [],
+        "conditional_branches": {},
+        "complex_conditionals": [],
+        "raw_code_blocks": [],
+    }
+
+    # 1. unhandled functions
+    for fn_name in unhandled_fn_names:
+        unhandled["functions"] = [fn_name] + unhandled["functions"]
+
+    # 2. globals
+    simple_globals = {}
+    for m in _GLOBAL_DECL.finditer(content):
+        simple_globals[m.group(2)] = m.group(1)
+    complex_globals = []
+    for m in _COMPLEX_GLOBAL.finditer(content):
+        name = m.group(2)
+        if name not in simple_globals:
+            complex_globals.append({"name": name, "type": m.group(1)})
+    unhandled["globals"] = complex_globals
+
+    # 3. complex mappings
+    complex_mappings = []
+    seen = set()
+    for m in _COMPLEX_MAPPING.finditer(content):
+        val = m.group(0)
+        if val not in seen:
+            seen.add(val)
+            complex_mappings.append(val)
+    unhandled["complex_mappings"] = complex_mappings
+
+    # 4. switch statements
+    all_switches = [_trim(m.group(0)) for m in _SWITCH_STMT.finditer(content)]
+    switch_tables = []
+    for stmt in all_switches:
+        if _is_switch_table(stmt):
+            parsed = _parse_switch_table(stmt)
+            if parsed is not None:
+                switch_tables.append(parsed)
+    switch_pools = [s for s in all_switches if not _is_switch_table(s) and re.search(r"switch\s*\(\s*random\s*\(", s, re.S)]
+    switch_others = [s for s in all_switches if not _is_switch_table(s) and not re.search(r"switch\s*\(\s*random\s*\(", s, re.S)]
+    unhandled["switch_tables"] = switch_tables
+    unhandled["switch_pools"] = switch_pools
+    unhandled["switch_statements"] = switch_others
+
+    # 5. conditional branches
+    conditional_branches = {}
+    for name, body in _function_bodies(content):
+        chains = _split_condition_branches(body)
+        if chains:
+            conditional_branches[name] = chains
+    unhandled["conditional_branches"] = conditional_branches
+
+    # 6. complex if/else
+    complex_ifs = [_trim(m.group(0)) for m in _IF_ELSE_BLOCK.finditer(content)]
+    unhandled["complex_conditionals"] = complex_ifs
+
+    # 7. raw blocks
+    raw_blocks = []
+    for m in _RAW_BLOCK.finditer(content):
+        raw_blocks.append({"name": m.group(2), "body": _trim(m.group(3))})
+    unhandled["raw_code_blocks"] = raw_blocks
+
+    return unhandled
+
+
+# ---------------------------------------------------------------------------
+# valid_leave / exit vetoes / enter / greeting / accept / guard / engage
+# ---------------------------------------------------------------------------
+def _extract_function_body(content, name):
+    sig = re.compile(r"(?:int|string|void|mixed|mapping|object|protected)\s+" + re.escape(name) + r"\s*\([^)]*\)\s*\n*\s*\{")
+    m = sig.search(content)
+    if m is None:
+        return None
+    brace_pos = m.end() - 1
+    return _find_matching_brace(content, brace_pos)
+
+
+def _parse_valid_leave(content):
+    m = _VALID_LEAVE_SIG.search(content)
+    if m is None:
+        return None
+    brace_pos = m.end() - 1
+    body = _find_matching_brace(content, brace_pos)
+    if body is None:
+        return None
+    return _parse_valid_leave_body(body)
+
+
+def _parse_valid_leave_body(body):
+    gm = _PRESENT.search(body)
+    guard_npc = gm.group(2) if gm else None
+    dm = _DIR_EQ.search(body)
+    direction = dm.group(2) if dm else None
+    has_permit_pass = "permit_pass" in body
+    if guard_npc and direction and has_permit_pass:
+        return {
+            "guard_npc": guard_npc,
+            "direction": direction,
+            "permit_module": "Kantele.Npc.Guarder",
+            "permit_function": "permit_pass",
+        }
+    return None
+
+
+def _parse_exit_vetoes(content):
+    body = _extract_function_body(content, "valid_leave")
+    if body is None:
+        return []
+    return _parse_exit_vetoes_body(body)
+
+
+def _notify_fail_sites(chars, i, acc):
+    while True:
+        j = _skip_trivia(chars, i)
+        if j is None:
+            return acc
+        nw = _next_word(chars, j)
+        if nw is None:
+            return acc
+        w, _start, k = nw
+        if w == "notify_fail":
+            m = _skip_trivia(chars, k)
+            if m is not None and m < len(chars) and chars[m] == "(":
+                acc.append(m)
+                i = m + 1
+            else:
+                i = k
+        else:
+            i = k
+
+
+def _preceding_if_condition(chars, open_idx):
+    for i in range(open_idx - 1, -1, -1):
+        if _word_at(chars, i, "if"):
+            j = _skip_trivia(chars, i + 2)
+            if j is not None and j < len(chars) and chars[j] == "(":
+                close = _match_delim(chars, j + 1, "(", ")", 1)
+                if close is not None:
+                    text = _ascii_ws_collapse("".join(chars[j + 1:close]))
+                    return {"text": text, "close": close}
+    return None
+
+
+def _exit_veto_direction(cond_text):
+    if cond_text is None:
+        return None
+    m = _DIR_EQ.search(cond_text)
+    return m.group(2) if m else None
+
+
+def _exit_veto_at(chars, open_idx):
+    close = _match_delim(chars, open_idx + 1, "(", ")", 1)
+    if close is None:
+        return None
+    msg_arg = "".join(chars[open_idx + 1:close])
+
+    cond = _preceding_if_condition(chars, open_idx)
+    in_if = False
+    if cond is not None:
+        mid = "".join(chars[cond["close"] + 1:open_idx])
+        trimmed = mid.strip()
+        in_if = trimmed.startswith("return notify_fail") or trimmed.startswith("notify_fail")
+
+    dir_ = _exit_veto_direction(cond["text"] if cond else None)
+    condition = cond["text"] if in_if else None
+
+    message = _process_literal_string(_extract_strings_from_macro_wrapped(msg_arg))
+    if message == "":
+        return None
+    return {"dir": dir_, "condition": condition, "message": message}
+
+
+def _parse_exit_vetoes_body(body):
+    chars = list(body)
+    sites = _notify_fail_sites(chars, 0, [])
+    out = []
+    for open_idx in sites:
+        veto = _exit_veto_at(chars, open_idx)
+        if veto is not None:
+            out.append(veto)
+    return out
+
+
+def _parse_enter_body(body):
+    add_actions = []
+    for m in _ADD_ACTION.finditer(body):
+        add_actions.append(m.group(2))
+    # uniq
+    seen = set()
+    ua = []
+    for v in add_actions:
+        if v not in seen:
+            seen.add(v)
+            ua.append(v)
+
+    gm = _CALL_OUT_GREET.search(body)
+    greet_delay = int(gm.group(1)) if gm else 0
+    hm = _HEARTBEAT.search(body)
+    heartbeat = int(hm.group(1)) if hm else 0
+
+    if not ua and greet_delay == 0 and heartbeat == 0:
+        return None
+    return {"greet_delay": greet_delay, "add_actions": ua, "heartbeat": heartbeat}
+
+
+def _extract_enter(content):
+    body = _extract_function_body(content, "init")
+    if body is None:
+        return None
+    return _parse_enter_body(body)
+
+
+def _render_dialogue_expr(raw):
+    expr = raw.strip()
+    if expr == "":
+        return ""
+    if re.fullmatch(r"[A-Z][A-Z0-9_]*", expr, _A):
+        return ""
+    if "RANK_D->query_respect" in expr:
+        return "{respect}"
+    if "RANK_D->query_rude" in expr:
+        return "{rude}"
+    if "->name()" in expr or 'query("name")' in expr:
+        return "{name}"
+    if _only_ansi_constants(expr):
+        return ""
+    return "{expr}"
+
+
+def _only_ansi_constants(expr):
+    cleaned = re.sub(r"[A-Z][A-Z0-9_]*", "", expr, flags=_A)
+    cleaned = cleaned.replace("+", "")
+    return cleaned.strip() == ""
+
+
+def _render_dialogue(args):
+    parts = [p for p in _STR_TOKEN.split(args) if p != ""]
+    out = []
+    for token in parts:
+        if token.startswith('"'):
+            inner = token[1:-1] if len(token) >= 2 else ""
+            inner = inner.replace("\\n", "\n").replace("$N", "{npc}").replace("$n", "{name}")
+            out.append(inner)
+        else:
+            out.append(_render_dialogue_expr(token))
+    return "".join(out)
+
+
+def _extract_greetings(content):
+    body = _extract_function_body(content, "greeting")
+    if body is None:
+        return None
+    lines = []
+    for m in _DIALOGUE_CALL.finditer(body):
+        lines.append(_render_dialogue(m.group(1)))
+    clean = [_trim(x) for x in lines]
+    clean = [x for x in clean if x != ""]
+    return clean if clean else None
+
+
+def _extract_accept(content):
+    body = _extract_function_body(content, "accept_object")
+    if body is None:
+        return None
+    return _parse_accept_body(body)
+
+
+def _extract_guard(content):
+    body = _extract_function_body(content, "permit_pass")
+    if body is None:
+        return None
+    return _parse_guard_body(body)
+
+
+def _parse_guard_body(body):
+    fm = _GUARD_FAMILY.search(body)
+    family = fm.group(1) if fm else None
+    rm = _GUARD_REFUSE.search(body)
+    refuse_msg = None
+    if rm:
+        refuse_msg = rm.group(1).replace("\\n", "\n").replace("$N", "{npc}").replace("$n", "{name}").strip()
+    if family is None and refuse_msg is None:
+        return None
+    return {"family": family, "refuse_other": refuse_msg}
+
+
+def _extract_engage(content):
+    engage = {}
+    for kind in ["fight", "hit", "kill"]:
+        body = _extract_function_body(content, f"accept_{kind}")
+        if body is None:
+            continue
+        parsed = _parse_engage_kind(body)
+        if parsed is not None:
+            engage[kind] = parsed
+    return engage if engage else None
+
+
+def _parse_engage_kind(body):
+    last_return = _get_last_return(body)
+    has_return = last_return is not None
+    has_kill_ob = _KILL_OB.search(body) is not None
+    has_inherit = _ENGAGE_KIND.search(body) is not None
+    msg = _extract_engage_msg(body)
+    spawn = _extract_spawn_ids(body)
+
+    if has_return:
+        return {"accept": last_return == 1, "msg": msg, "retaliate": has_kill_ob,
+                "spawn": spawn, "inherit": has_inherit, "note": body}
+    if has_inherit:
+        return {"accept": None, "msg": msg, "retaliate": has_kill_ob,
+                "spawn": spawn, "inherit": True, "note": body}
+    return {"accept": None, "msg": msg, "retaliate": False, "spawn": spawn,
+            "inherit": False, "note": body}
+
+
+def _get_last_return(body):
+    matches = _RETURN_01.findall(body)
+    if not matches:
+        return None
+    return int(matches[-1])
+
+
+def _extract_engage_msg(body):
+    m = _CMD_SAY.search(body)
+    if m:
+        return _process_literal_string(m.group(1))
+    return _extract_message_vision_literal(body)
+
+
+def _extract_message_vision_literal(body):
+    m = _MESSAGE_VISION_LIT.search(body)
+    if m is None:
+        return None
+    group = m.group(1)
+    segs = [mm.group(1) for mm in _STR_LITERAL.finditer(group)]
+    joined = "".join(segs)
+    processed = _process_literal_string(joined)
+    return processed if processed != "" else None
+
+
+def _extract_spawn_ids(body):
+    out = []
+    for m in _SPAWN_NEW.finditer(body):
+        path = m.group(1)
+        out.append(_path_basename_rootname(path))
+    return [x for x in out if x != ""]
+
+
+def _parse_accept_body(body):
+    accept_dialogues = _extract_accept_dialogues(body)
+
+    money_rule = None
+    if "money_id" in body:
+        vm = _MONEY_ID.search(body)
+        min_ = int(vm.group(1)) if vm else None
+        msg = accept_dialogues["money"] or (accept_dialogues["default"][0] if accept_dialogues["default"] else None)
+        money_rule = {"kind": "money", "min": min_, "msg": msg}
+
+    reject_msgs = accept_dialogues["reject"]
+
+    item_id_rules = []
+    for m in _ITEM_ID_QUERY.finditer(body):
+        item_id_rules.append({
+            "kind": "item_id",
+            "id": m.group(2),
+            "msg": accept_dialogues.get(f"item_id_{m.group(2)}") or accept_dialogues["default"],
+        })
+
+    item_name_rules = []
+    for m in _ITEM_NAME_QUERY.finditer(body):
+        item_name_rules.append({
+            "kind": "item_name",
+            "name": m.group(2),
+            "msg": accept_dialogues.get(f"item_name_{m.group(2)}") or accept_dialogues["default"],
+        })
+
+    has_return_0 = re.search(r"return\s+0\s*;", body, _A) is not None
+    has_return_1 = re.search(r"return\s+1\s*;", body, _A) is not None
+    has_specific_rules = money_rule is not None or item_id_rules or item_name_rules
+    last_return = _get_last_return(body)
+
+    default_rule = None
+    if has_return_0 and not has_return_1:
+        default_rule = {"kind": "any", "accept": False, "msg": accept_dialogues["reject"]}
+    elif has_return_1 and not has_return_0:
+        default_rule = {"kind": "any", "accept": has_specific_rules, "msg": accept_dialogues["default"]}
+    elif has_return_0 and has_return_1:
+        accept_default = last_return == 1
+        reject_pool = accept_dialogues["reject"]
+        if last_return == 1:
+            msg = accept_dialogues["default"]
+        else:
+            msg = accept_dialogues["default"] if not reject_pool else reject_pool
+        default_rule = {"kind": "any", "accept": accept_default,
+                        "msg": msg or accept_dialogues["default"]}
+
+    if default_rule is not None and reject_msgs and default_rule.get("msg") != reject_msgs:
+        default_rule["fail_msg"] = reject_msgs
+
+    rules = [r for r in [money_rule] + item_id_rules + item_name_rules + [default_rule] if r is not None]
+    return rules if rules else None
+
+
+def _extract_all_strings_with_context(body):
+    out = []
+
+    # tell_object
+    for tm in _ACCEPT_DIALOGUE_TELL.finditer(body):
+        call = tm.group(0)
+        for sm in _STR_LITERAL.finditer(call):
+            out.append(("tell_object", _process_literal_string(sm.group(1))))
+
+    # command("say ...")
+    for cm in _ACCEPT_CMD_SAY.finditer(body):
+        out.append(("command_say", _process_literal_string(cm.group(1))))
+
+    # message_vision / message_sort
+    out.extend(_extract_pool_calls(body, _MESSAGE_CALL, "message_vision"))
+    # say
+    out.extend(_extract_pool_calls(body, _SAY_CALL, "say"))
+    # notify_fail -> reject
+    out.extend(_extract_pool_calls(body, _NOTIFY_FAIL_CALL, "reject"))
+    # write -> default
+    out.extend(_extract_pool_calls(body, _WRITE_CALL, "default"))
+
+    # command("msg") without say
+    for cm in _ACCEPT_CMD_OTHER.finditer(body):
+        out.append(("command_other", _process_literal_string(cm.group(1))))
+
+    return out
+
+
+def _extract_pool_calls(body, re_call, context):
+    try:
+        result = []
+        for call in _extract_calls_balanced(body, re_call):
+            text = _extract_quoted_strings(call)
+            text = _sanitize_message_text(text)
+            if text != "":
+                result.append((context, text))
+        return result
+    except Exception:
+        return []
+
+
+def _extract_quoted_strings(call):
+    return "".join(_process_literal_string(m.group(1)) for m in _STR_LITERAL.finditer(call))
+
+
+def _extract_calls_balanced(body, re_call):
+    out = []
+    for m in re_call.finditer(body):
+        call = _take_balanced_call(body[m.start():])
+        if call != "":
+            out.append(call)
+    return out
+
+
+def _take_balanced_call(call):
+    chars = list(call)
+    depth = 0
+    acc = []
+    for h in chars:
+        if h == "(":
+            depth += 1
+            acc.insert(0, h)
+        elif h == ")":
+            if depth <= 1:
+                return "".join(reversed(acc)) + ")"
+            depth -= 1
+            acc.insert(0, h)
+        else:
+            acc.insert(0, h)
+    return "".join(reversed(acc))
+
+
+def _extract_accept_dialogues(body):
+    all_strings = _extract_all_strings_with_context(body)
+    money_msgs = [s for ctx, s in all_strings if ctx in ("tell_object", "money")]
+    default_msgs = [s for ctx, s in all_strings if ctx in ("command_say", "say", "message_vision", "command_other", "default")]
+    reject_msgs = [s for ctx, s in all_strings if ctx == "reject"]
+
+    money_msg = money_msgs[0] if money_msgs else (default_msgs[0] if default_msgs else None)
+    default_msgs = [s for s in default_msgs if not s.startswith("say ")]
+    default_msgs = list(dict.fromkeys(default_msgs))
+    reject_msgs = list(dict.fromkeys(reject_msgs))
+
+    return {"money": money_msg, "default": default_msgs, "reject": reject_msgs}
+
+
+def _sanitize_message_text(text):
+    text = re.sub(r"message_(?:vision|sort)\s*\(.*", "", text, flags=re.S)
+    text = re.sub(r"\s*\)\;.*", "", text, flags=re.S)
+    text = text.replace(";", "\\;").replace(")", "\\)").replace("(", "\\(")
+    return text.strip()
+
+
+# ---------------------------------------------------------------------------
+# Inherit chain merge
+# ---------------------------------------------------------------------------
+def _child_of(ast):
+    create = ast.create_fn or {}
+    return {
+        "inherits": ast.inherits or [],
+        "sets": create.get("sets", {}),
+        "set_name": create.get("set_name", {}),
+        "heredocs": (ast.heredocs or {}).get("heredocs", {}),
+        "exit_vetoes": ast.exit_vetoes or [],
+        "valid_leave": ast.valid_leave,
+    }
+
+
+def _merge_vals(base, newer):
+    return {
+        "inherits": newer["inherits"] + base["inherits"],
+        "sets": {**base["sets"], **newer["sets"]},
+        "set_name": {**base["set_name"], **newer["set_name"]},
+        "heredocs": {**base["heredocs"], **newer["heredocs"]},
+        "exit_vetoes": newer["exit_vetoes"],
+        "valid_leave": newer["valid_leave"],
+    }
+
+
+def _merge_inherit_level(ast, visited):
+    source = ast.source_path
+    create = ast.create_fn or {}
+    child_vals = {
+        "inherits": ast.inherits or [],
+        "sets": create.get("sets", {}),
+        "set_name": create.get("set_name", {}),
+        "heredocs": (ast.heredocs or {}).get("heredocs", {}),
+        "exit_vetoes": ast.exit_vetoes or [],
+        "valid_leave": ast.valid_leave,
+    }
+    parents = ast.inherit_files or []
+
+    if source in visited or not parents:
+        return _finalize_merged(ast, child_vals)
+
+    base_vals = {
+        "inherits": [], "sets": {}, "set_name": {}, "heredocs": {},
+        "exit_vetoes": [], "valid_leave": None,
+    }
+    for parent_ref in parents:
+        path = parent_ref + ".c"
+        try:
+            with open(path, "rb") as f:
+                content = f.read()
+        except OSError:
+            continue
+        parent_ast = _parse_lpc(content, path, os.path.dirname(path))
+        if parent_ast is None:
+            continue
+        parent_vals = _child_of(_merge_inherit_level(parent_ast, visited | {source}))
+        base_vals = _merge_vals(base_vals, parent_vals)
+
+    merged_vals = _merge_vals(base_vals, child_vals)
+
+    if child_vals["exit_vetoes"] == []:
+        merged_vals["exit_vetoes"] = base_vals["exit_vetoes"]
+    if child_vals["valid_leave"] is None:
+        merged_vals["valid_leave"] = base_vals["valid_leave"]
+
+    return _finalize_merged(ast, merged_vals)
+
+
+def _finalize_merged(ast, vals):
+    ast.inherits = vals["inherits"]
+    ast.create_fn = {"sets": vals["sets"], "set_name": vals["set_name"]}
+    ast.heredocs = {"heredocs": vals["heredocs"]}
+    ast.exit_vetoes = vals["exit_vetoes"]
+    ast.valid_leave = vals["valid_leave"]
+    return ast
+
+
+# ---------------------------------------------------------------------------
+# Object type detection
+# ---------------------------------------------------------------------------
+_ITEM_KWS = ["WEAPON", "SWORD", "BLADE", "DAGGER", "STAFF", "CLUB", "HAMMER", "AXE",
+             "THROWING", "WHIP", "FORCE ?", "ARMOR", "CLOTH", "BOOTS", "FINGER",
+             "HANDS", "HEAD", "HELMET", "NECK", "RING", "SHIELD", "SURCOAT",
+             "WAIST", "WRIST", "ARMOR ?", "ITEM", "MONEY", "CONTAINER", "FOOD",
+             "MEDICINE", "BOOK", "GOLD", "SILVER"]
+
+
+def _npc_subdir(source_path):
+    norm = source_path.replace("\\", "/")
+    return "npc" in [p for p in norm.split("/")]
+
+
+def _is_item_inherit(inherit):
+    return any(kw in inherit for kw in _ITEM_KWS)
+
+
+def _skill_inherit(inherit):
+    up = inherit.upper()
+    return "SKILL" in up or "FORCE" in up
+
+
+def _item_features(ast):
+    create = ast.create_fn or {}
+    sets = create.get("sets", {})
+    set_name = create.get("set_name", {})
+    return ("material" in sets or "unit" in sets or "value" in sets or
+            "weight" in sets or "name" in set_name)
+
+
+def _item_like(ast):
+    source = ast.source_path
+    if "obj" + "/" in source or "obj" + os.sep in source:
+        return _item_features(ast)
+    return False
+
+
+def _determine_object_type(ast):
+    inherits = ast.inherits
+    if any("ROOM" in i for i in inherits):
+        return "room"
+    if any("RIVER" in i for i in inherits):
+        return "room"
+    if any("NPC" in i for i in inherits):
+        return "npc"
+    if any("KNOWER" in i for i in inherits):
+        return "npc"
+    if _npc_subdir(ast.source_path):
+        return "npc"
+    if any(_is_item_inherit(i) for i in inherits):
+        return "item"
+    if any(_skill_inherit(i) for i in inherits):
+        return "skill"
+    if _item_like(ast):
+        return "item"
+    return "generic"
+
+
+def _type_marker_inherit(inherit, obj_type):
+    if obj_type == "room":
+        return "ROOM" in inherit or "RIVER" in inherit
+    if obj_type == "npc":
+        return "NPC" in inherit or "KNOWER" in inherit
+    if obj_type == "item":
+        return _is_item_inherit(inherit)
+    if obj_type == "skill":
+        return _skill_inherit(inherit)
+    return False
+
+
+# ---------------------------------------------------------------------------
+# UCL generation
+# ---------------------------------------------------------------------------
+def _extract_string(value, default):
+    if isinstance(value, tuple) and value[0] == "string":
+        return value[1]
+    if isinstance(value, str):
+        return value
+    return default
+
+
+def _ucl_string(s):
+    return '"' + _sanitize_ucl_sval(s) + '"'
+
+
+def _sanitize_ucl_sval(s):
+    s = s.replace("\\\\\\\\", "\\\\")
+    s = s.replace("\\\\", "\\")
+    s = s.replace('\\"', "'")
+    s = s.replace('"', "'")
+    s = s.replace(";", " ")
+    s = s.replace("\n", " ")
+    s = s.replace("\r", " ")
+    return s.strip()
+
+
+def _escape_heredoc_content(s):
+    return _sanitize_ucl_sval(s)
+
+
+def _escape_set_string(s):
+    return _sanitize_ucl_sval(s)
+
+
+def _get_heredoc_or_set(heredocs, sets, key, default):
+    v = sets.get(key)
+    if isinstance(v, tuple) and v[0] == "string":
+        if v[1] != "":
+            return _escape_set_string(v[1])
+        return _get_heredoc(heredocs, key, default)
+    if isinstance(v, tuple) and v[0] == "var":
+        if re.match(r"^@\w+", v[1], _A):
+            return _get_heredoc(heredocs, key, default)
+        return default
+    if v is None:
+        return _get_heredoc(heredocs, key, default)
+    return default
+
+
+def _get_heredoc(heredocs, key, default):
+    h = heredocs.get(key)
+    if h is not None:
+        return _escape_heredoc_content(h["content"])
+    return default
+
+
+def _coord_of(value):
+    if isinstance(value, tuple) and value[0] == "int":
+        return value[1]
+    return 0
+
+
+def _room_id_from_path(path):
+    stripped = path.replace('__DIR__"', "")
+    stripped = stripped.replace('"$', "")
+    stripped = re.sub(r'^"/d/', "", stripped)
+    base = os.path.splitext(os.path.basename(stripped))[0]
+    return _norm_id(base).lower()
+
+
+def _resolve_exit_target(val):
+    if isinstance(val, tuple) and val[0] == "string":
+        return "rooms." + _room_id_from_path(val[1]) + ".id"
+    if isinstance(val, tuple) and val[0] == "var":
+        v = val[1].strip()
+        return "rooms." + _room_id_from_path(v) + ".id"
+    return '"unknown"'
+
+
+def _exit_key(key):
+    if isinstance(key, tuple) and key[0] == "string":
+        return _strip_exit_c_comments(key[1])
+    if isinstance(key, tuple) and key[0] == "int":
+        return str(key[1])
+    if isinstance(key, tuple) and key[0] == "var":
+        return _strip_exit_c_comments(key[1])
+    if isinstance(key, str):
+        return _strip_exit_c_comments(key)
+    return "unknown"
+
+
+def _strip_exit_c_comments(s):
+    s = _C_COMMENT.sub("", s)
+    return s.strip()
+
+
+def _build_room_flags(sets):
+    # Elixir build_room_flags: all `flags = [...]` rebindings sit inside `if`
+    # blocks whose scope discards them -> flags is always [] -> no flags block.
+    return []
+
+
+def _generate_room_item_desc(sets):
+    v = sets.get("item_desc")
+    if not (isinstance(v, tuple) and v[0] == "mapping"):
+        return ""
+    entries = []
+    for k, val in v[1]:
+        keyword = _item_desc_keyword(k)
+        text = _item_desc_text(val)
+        if keyword != "" and text != "":
+            entries.append((keyword, text))
+    if not entries:
+        return ""
+    rendered = ",\n".join(
+        f" {_normalize_item_keyword(kw)} = \"{_escape_set_string(text)}\"" for kw, text in entries
+    )
+    return f"item_desc = {{\n{rendered}\n}}\n"
+
+
+def _item_desc_text(value):
+    if isinstance(value, tuple) and value[0] == "array":
+        parts = "".join(s for tag, s in value[1] if tag == "string")
+        return _process_literal_string(parts)
+    if isinstance(value, tuple) and value[0] == "string":
+        return _process_literal_string(value[1])
+    if isinstance(value, str):
+        return _process_literal_string(value)
+    return ""
+
+
+def _item_desc_keyword(key):
+    if isinstance(key, tuple) and key[0] == "string":
+        return key[1]
+    if isinstance(key, str):
+        return key
+    return ""
+
+
+def _normalize_item_keyword(keyword):
+    keyword = re.sub(r"[^a-zA-Z0-9_]", "_", keyword)
+    keyword = re.sub(r"^_+|_+$", "", keyword)
+    return keyword
+
+
+def _generate_room_exit_vetoes(ast):
+    if not ast.exit_vetoes:
+        return ""
+    rendered = ",\n".join(_render_veto(v) for v in ast.exit_vetoes)
+    return f"valid_leave = [\n{rendered}\n]\n"
+
+
+def _render_veto(veto):
+    dir_ = f'"{veto["dir"]}"' if veto["dir"] else "~"
+    message = f'"{_escape_set_string(veto["message"])}"'
+    condition_comment = f' # 阻挡条件（原样保留）：{veto["condition"]}\n' if veto.get("condition") else ""
+    return f"{{\n  {condition_comment}direction = {dir_}\n  message = {message}\n}}\n"
+
+
+def _generate_room_ucl(ast, zone_id):
+    create = ast.create_fn
+    sets = create.get("sets", {})
+    heredocs = (ast.heredocs or {}).get("heredocs", {})
+    long_val = sets.get("long")
+
+    room_id = _norm_id(_path_basename_rootname(ast.source_path))
+
+    is_river = any("RIVER" in i for i in ast.inherits)
+    arrive_room = sets.get("arrive_room") if is_river else None
+
+    room_block = (
+        f'    rooms "{room_id}" {{\n'
+        f"      name = {_ucl_string(_extract_string(sets.get('short'), 'Room'))}\n"
+        f"      description = {_ucl_string(_get_heredoc_or_set(heredocs, sets, 'long', ''))}\n"
+        f"  x = {_coord_of(sets.get('x'))}\n"
+        f"  y = {_coord_of(sets.get('y'))}\n"
+        f"  z = {_coord_of(sets.get('z'))}\n"
+    )
+
+    flags = _build_room_flags(sets)
+    if flags:
+        room_block += "  flags = [\n" + "\n".join(f'            "{f}"' for f in flags) + "\n          ]\n"
+
+    if ast.valid_leave is not None:
+        vl = ast.valid_leave
+        room_block += (
+            'behavior = "guarded_exit"\n'
+            "behavior_config = {\n"
+            f'  guard_npc = "{vl["guard_npc"]}"\n'
+            f'  direction = "{_ucl_string(vl["direction"])}"\n'
+            f'  permit_module = "{vl["permit_module"]}"\n'
+            f'  permit_function = "{vl["permit_function"]}"\n'
+            "}\n"
+        )
+
+    room_block += _generate_room_item_desc(sets)
+    room_block += _generate_room_exit_vetoes(ast)
+
+    if is_river:
+        room_block += (
+            "  # River actions: yell [boat] / cross\n"
+            "  # - yell boat: summons river_boat to arrive_room (3s)\n"
+            "  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room\n"
+        )
+
+    room_block += "    }"
+
+    exits_block = ""
+    exits = sets.get("exits")
+    if isinstance(exits, tuple) and exits[0] == "mapping":
+        exit_lines = []
+        for key, val in exits[1]:
+            direction = _exit_key(key)
+            direction = re.sub(r'^"|"$', "", direction)
+            target = _resolve_exit_target(val)
+            exit_lines.append(f"  {direction} = {target}")
+        river_exit = ""
+        if is_river and arrive_room:
+            river_exit = "  river = " + _resolve_exit_target(arrive_room)
+        all_exit_lines = "\n".join(exit_lines)
+        if river_exit != "":
+            all_exit_lines = all_exit_lines + "\n" + river_exit if all_exit_lines else river_exit
+        if all_exit_lines:
+            exits_block = (
+                f'  room_exits "{room_id}" {{\n'
+                f"    room_id = rooms.{room_id}.id\n"
+                f"{all_exit_lines}  }}\n"
+            )
+    else:
+        if is_river and arrive_room:
+            target = _resolve_exit_target(arrive_room)
+            exits_block = (
+                f'  room_exits "{room_id}" {{\n'
+                f"    room_id = rooms.{room_id}.id\n"
+                f"  river = {target}\n"
+                "  }\n"
+            )
+
+    objects_block = _generate_room_objects(room_id, sets.get("objects"))
+
+    return "\n\n".join([x for x in [room_block, exits_block, objects_block] if x != ""])
+
+
+def _contains_npc(path):
+    return "npc" in path
+
+
+def _count_or_one(value):
+    if isinstance(value, tuple) and value[0] == "int":
+        return max(value[1], 1)
+    return 1
+
+
+def _extract_key_path(key):
+    if isinstance(key, tuple) and key[0] == "var":
+        return key[1]
+    if isinstance(key, tuple) and key[0] == "string":
+        return key[1]
+    return ""
+
+
+def _generate_room_objects(room_id, value):
+    if value is None:
+        return ""
+    if not (isinstance(value, tuple) and value[0] == "mapping"):
+        return ""
+    char_links = []
+    item_links = []
+    for key, count in value[1]:
+        path = _extract_key_path(key)
+        id_ = _room_id_from_path(path)
+        if _contains_npc(path):
+            n = _count_or_one(count)
+            char_links.extend([f"      {{ id = characters.{id_}.id }}" for _ in range(n)])
+        else:
+            item_links.append(f"      {{ id = items.{id_}.id }}")
+
+    char_block = ""
+    if char_links:
+        char_block = (
+            f'  room_characters "{room_id}" {{\n'
+            f"    room_id = rooms.{room_id}.id\n"
+            "    characters = [\n"
+            + ",\n".join(char_links)
+            + "    ]\n  }\n"
+        )
+
+    item_block = ""
+    if item_links:
+        item_block = (
+            f'\n\n  room_items "{room_id}" {{\n'
+            f"    room_id = rooms.{room_id}.id\n"
+            "    items = [\n"
+            + ",\n".join(item_links)
+            + "    ]\n  }\n"
+        )
+
+    return "\n".join([x for x in [char_block, item_block] if x != ""])
+
+
+# ---------------------------------------------------------------------------
+# NPC generation
+# ---------------------------------------------------------------------------
+def _add_if_present(acc, sets, key, type_):
+    v = sets.get(key)
+    if isinstance(v, tuple) and v[0] == "string":
+        return [f'  {key} = "{_escape_set_string(v[1])}"'] + acc
+    if isinstance(v, tuple) and v[0] == "int":
+        return [f"  {key} = {v[1]}"] + acc
+    return acc
+
+
+def _infer_brain(inherits):
+    for kw, brain in [("VENDOR", "vendor"), ("DEALER", "dealer"), ("GUARD", "guarder"),
+                      ("BANKER", "banker"), ("HORSE", "horseboss"), ("QUEST", "quester")]:
+        if any(kw in i for i in inherits):
+            return brain
+    return None
+
+
+def _build_npc_combat(sets):
+    # Elixir small maps iterate in Erlang term order (bytewise-sorted keys)
+    combat_fields = [
+        ("attitude", ("string", "peaceful")),
+        ("combat_exp", ("int", 0)),
+        ("con", ("int", 10)),
+        ("dex", ("int", 10)),
+        ("int", ("int", 10)),
+        ("max_jing", ("int", 100)),
+        ("max_neili", ("int", 0)),
+        ("max_qi", ("int", 100)),
+        ("no_kill", ("bool", False)),
+        ("respawn_delay", ("int", 0)),
+        ("str", ("int", 10)),
+    ]
+    fields = []
+    for key, _default in combat_fields:
+        v = sets.get(key)
+        if isinstance(v, tuple) and v[0] == "int":
+            fields.append(f"    {key} = {v[1]}")
+        elif isinstance(v, tuple) and v[0] == "string":
+            fields.append(f'    {key} = "{v[1]}"')
+        elif isinstance(v, tuple) and v[0] == "bool":
+            fields.append(f"    {key} = {'true' if v[1] else 'false'}")
+    return "\n".join(fields)
+
+
+def _object_path(s):
+    return "/" in s or s.endswith(".c") or s.startswith("__DIR__")
+
+
+def _strip_object_dir_prefix(path):
+    path = re.sub(r'^__DIR__"', "", path)
+    path = re.sub(r'"$', "", path)
+    return path.strip()
+
+
+def _object_file_known(path, ast):
+    stripped = _strip_object_dir_prefix(path)
+    base = ast.base_path
+    dir_ = os.path.dirname(ast.source_path)
+    if stripped.startswith("/"):
+        candidates = ["." + stripped, stripped]
+    else:
+        rel = re.sub(r'^"/d/', "", stripped)
+        rel = rel.lstrip("/")
+        candidates = [_normpath_forward(os.path.join(base, rel)),
+                      _normpath_forward(os.path.join(dir_, rel)),
+                      _normpath_forward(os.path.join(".", rel))]
+    for cand in candidates:
+        if os.path.exists(cand) or os.path.exists(cand + ".c"):
+            return True
+    return False
+
+
+def _build_goods(sets, ast):
+    entries = []
+    comments = []
+    for key in ["goods", "vendor_goods"]:
+        v = sets.get(key, [])
+        if isinstance(v, tuple) and v[0] == "array":
+            for item in v[1]:
+                if isinstance(item, tuple) and item[0] == "string":
+                    s = item[1]
+                    if _object_path(s) and not _object_file_known(s, ast):
+                        comments.append(f'{key}: "{s}" (file not found)')
+                    else:
+                        entries.append(f"items.{_room_id_from_path(s)}.id")
+                elif isinstance(item, tuple) and item[0] == "var":
+                    entries.append(item[1])
+    return entries, comments
+
+
+def _build_inquiries(sets):
+    inquiry_data = sets.get("inquiry") or sets.get("inquiries")
+    if isinstance(inquiry_data, tuple) and inquiry_data[0] == "mapping":
+        out = {}
+        for k, v in inquiry_data[1]:
+            out[_get_string(k)] = _get_string(v)
+        return out
+    return {}
+
+
+def _get_string(value):
+    if isinstance(value, tuple) and value[0] == "string":
+        return f'"{value[1]}"'
+    if isinstance(value, tuple) and value[0] == "int":
+        return str(value[1])
+    if isinstance(value, tuple) and value[0] == "var":
+        return value[1]
+    if isinstance(value, str):
+        return f'"{value}"'
+    return '"unknown"'
+
+
+def _generate_inquiries(inquiries):
+    # Elixir map iteration = Erlang term order = bytewise-sorted keys
+    items = sorted(inquiries.items(), key=lambda kv: kv[0].encode("utf-8"))
+    return ",\n".join(f"    {{ key = {q} value = {a} }}" for q, a in items)
+
+
+def _build_chat(sets):
+    chance = sets.get("chat_chance")
+    chats = sets.get("chats") or sets.get("chat_msg")
+    if isinstance(chance, tuple) and chance[0] == "int" and chance[1] > 0 and \
+            isinstance(chats, tuple) and chats[0] == "array":
+        chat_lines = []
+        for item in chats[1]:
+            if isinstance(item, tuple) and item[0] == "string":
+                chat_lines.append(_sanitize_message_text(_process_literal_string(item[1])))
+        chat_lines = [x for x in chat_lines if x != ""]
+        chat_lines = list(dict.fromkeys(chat_lines))
+        if not chat_lines:
+            return None
+        rendered = ",\n".join(f'    "{_escape_set_string(x)}"' for x in chat_lines)
+        return f"chat_chance = {chance[1]}\nchats = [\n{rendered}\n]\n"
+    return None
+
+
+def _build_enter_ucl(init):
+    if init is None:
+        return ""
+    add_actions = init.get("add_actions", [])
+    heartbeat = init.get("heartbeat", 0)
+    greet_delay = init.get("greet_delay", 0)
+    s = f"  init = {{\n    greet_delay = {greet_delay}\n"
+    if heartbeat > 0:
+        s += f"    heartbeat = {heartbeat}\n"
+    if add_actions:
+        s += "    add_actions = [" + ", ".join(f'"{a}"' for a in add_actions) + "]\n"
+    s += "  }"
+    return s
+
+
+def _build_greetings_ucl(lines):
+    if not lines:
+        return ""
+    rendered = ",\n".join(f'    {{ line = "{_escape_heredoc_content(line)}" }}' for line in lines)
+    return f"  greetings = [\n{rendered}\n  ]"
+
+
+def _render_accept_msg(msg):
+    if isinstance(msg, list) and msg:
+        return "[" + ", ".join(f'"{_escape_set_string(x)}"' for x in msg) + "]"
+    if isinstance(msg, str):
+        return f'"{_escape_set_string(msg)}"'
+    return None
+
+
+def _build_accept_ucl(rules):
+    if not rules:
+        return ""
+    entries = []
+    for rule in rules:
+        s = f'    {{ kind = "{rule["kind"]}"'
+        if rule.get("min") is not None:
+            s += f' min = {rule["min"]}'
+        if rule.get("id") is not None:
+            s += f' id = "{rule["id"]}"'
+        if rule.get("name") is not None:
+            s += f' name = "{rule["name"]}"'
+        if rule.get("accept") is not None:
+            s += f" accept = {str(rule['accept']).lower()}"
+        else:
+            s += " accept = true"
+        msg = _render_accept_msg(rule.get("msg"))
+        if msg is not None:
+            s += f" msg = {msg}"
+        fail_msg = _render_accept_msg(rule.get("fail_msg"))
+        if fail_msg is not None:
+            s += f" fail_msg = {fail_msg}"
+        s += " }"
+        entries.append(s)
+    return "  accept = [\n" + ",\n".join(entries) + "\n  ]"
+
+
+def _build_guarder_ucl(guard):
+    if not guard:
+        return ""
+    family = guard.get("family")
+    refuse_other = guard.get("refuse_other")
+    if family is None:
+        return ""
+    s = f'  meta = {{\n    guarder = {{\n      family = "{family}"\n'
+    if refuse_other:
+        s += f'      msgs = {{ refuse_other = "{_escape_set_string(refuse_other)}" }}\n'
+    s += "    }\n  }"
+    return s
+
+
+def _build_engage_ucl(engage):
+    if not engage:
+        return ""
+    entries = []
+    for kind in ["fight", "hit", "kill"]:
+        rule = engage.get(kind)
+        if rule is None:
+            continue
+        accept = rule.get("accept")
+        if accept is None:
+            continue
+        s = f"    {kind} = {{ accept = {str(accept).lower()}"
+        if rule.get("msg"):
+            s += f' msg = "{_escape_set_string(rule["msg"])}"'
+        if rule.get("retaliate"):
+            s += " retaliate = true"
+        if rule.get("spawn"):
+            s += " spawn = [" + ", ".join(f'"{x}"' for x in rule["spawn"]) + "]"
+        s += " }"
+        entries.append(s)
+    if not entries:
+        return ""
+    return "  engage = {\n" + "\n".join(entries) + "\n  }"
+
+
+def _build_skills_block(calls):
+    skills = calls.get("set_skill", [])
+    map_skills = calls.get("map_skill", [])
+    skill_lines = []
+    for args in skills:
+        if len(args) == 2 and args[0][0] == "string" and args[1][0] in ("int", "string"):
+            skill_lines.append(f'    {{ skill = "{args[0][1]}" level = {args[1][1]} }}')
+    map_lines = []
+    for args in map_skills:
+        if len(args) == 2 and args[0][0] == "string" and args[1][0] == "string":
+            map_lines.append(f'    {{ type = "{args[0][1]}" skill = "{args[1][1]}" }}')
+    all_lines = skill_lines + map_lines
+    if not all_lines:
+        return ""
+    return "  skills = [\n" + ",\n".join(all_lines) + "\n  ]\n"
+
+
+def _build_carry_block(calls):
+    carry_objects = calls.get("carry_object", [])
+    if not carry_objects:
+        return ""
+    items = []
+    for args in carry_objects:
+        if args and args[0][0] in ("string", "var"):
+            items.append(f"items.{_room_id_from_path(args[0][1])}.id")
+        else:
+            items.append("items.unknown.id")
+    return "  carry = [\n" + ",\n".join(f"    {{ id = {x} }}" for x in items) + "\n  ]\n"
+
+
+def _generate_npc_ucl(ast, zone_id):
+    create = ast.create_fn
+    sets = create.get("sets", {})
+    set_name = create.get("set_name", {})
+    heredocs = (ast.heredocs or {}).get("heredocs", {})
+
+    npc_id = _norm_id(_path_basename_rootname(ast.source_path))
+    name = _extract_string(set_name.get("name"), _extract_string(sets.get("name"), "NPC"))
+    aliases = set_name.get("aliases", [])
+
+    ucl = (
+        f'    characters "{npc_id}" {{\n'
+        f"      name = {_ucl_string(name)}\n"
+        f"      description = {_ucl_string(_get_heredoc_or_set(heredocs, sets, 'long', ''))}\n"
+    )
+
+    basic_attrs = []
+    for key in ["title", "nickname", "gender", "age", "shen_type", "score", "startroom"]:
+        basic_attrs = _add_if_present(basic_attrs, sets, key, "int" if key in ("age", "shen_type", "score") else "string")
+
+    # Elixir generate_npc_ucl: the aliases rebinding sits inside an `if`
+    # block whose scope discards it -> aliases never emitted. Reproduce that.
+    basic_block = ""
+    if basic_attrs:
+        basic_block = "\n".join(list(reversed(basic_attrs))) + "\n"
+
+    brain = _infer_brain(ast.inherits)
+    brain_line = f"  brain = brains.{brain}\n" if brain else ""
+
+    combat = _build_npc_combat(sets)
+    goods, goods_comments = _build_goods(sets, ast)
+    inquiries = _build_inquiries(sets)
+    chat = _build_chat(sets)
+    function_calls = ast.function_calls
+    skills_block = _build_skills_block(function_calls)
+    carry_block = _build_carry_block(function_calls)
+    init_block = _build_enter_ucl(ast.enter)
+    greetings_block = _build_greetings_ucl(ast.greetings)
+    accept_block = _build_accept_ucl(ast.accept)
+    guarder_block = _build_guarder_ucl(ast.guard)
+    engage_block = _build_engage_ucl(ast.engage)
+
+    out = ucl + basic_block + brain_line
+    if combat:
+        out += f"\n  combat = {{\n{combat}\n  }}\n"
+    if goods:
+        out += "\n  goods = [\n" + "\n".join(f"    {{ id = {x} }}" for x in goods) + "\n  ]\n"
+    if goods_comments:
+        out += "\n" + "\n".join(f"  # {x}" for x in goods_comments) + "\n"
+    if inquiries:
+        out += "\n  inquiries = [\n" + _generate_inquiries(inquiries) + "\n  ]\n"
+    if chat:
+        out += f"\n  {chat}\n"
+    if skills_block:
+        out += f"\n{skills_block}\n"
+    if carry_block:
+        out += f"\n{carry_block}\n"
+    if init_block:
+        out += f"\n{init_block}\n"
+    if greetings_block:
+        out += f"\n{greetings_block}\n"
+    if accept_block:
+        out += f"\n{accept_block}\n"
+    if guarder_block:
+        out += f"\n{guarder_block}\n"
+    if engage_block:
+        out += f"\n{engage_block}\n"
+    out += "    }"
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Item generation
+# ---------------------------------------------------------------------------
+def _infer_verbs(inherits, sets):
+    base = ["get", "drop"]
+    if any(("WEAPON" in i or "SWORD" in i or "BLADE" in i) for i in inherits):
+        return base + ["wield", "unwield"]
+    if any("ARMOR" in i for i in inherits):
+        return base + ["wear", "remove"]
+    if any(("FOOD" in i or "EDIBLE" in i) for i in inherits):
+        return base + ["eat"]
+    if "wield_msg" in sets:
+        return base + ["wield", "unwield"]
+    if "wear_msg" in sets:
+        return base + ["wear", "remove"]
+    return base
+
+
+def _infer_skill_type(inherits):
+    for kws, sk in [
+        (["SWORD"], "sword"),
+        (["BLADE", "DAO"], "blade"),
+        (["STAFF", "GUN"], "staff"),
+        (["WHIP", "BIAN"], "whip"),
+        (["DAGGER"], "dagger"),
+        (["THROWING"], "throwing"),
+        (["HAMMER"], "hammer"),
+        (["AXE"], "axe"),
+        (["FIST", "UNARMED"], "unarmed"),
+        (["FINGER"], "finger"),
+        (["CLAW"], "claw"),
+        (["PALM", "STRIKE"], "strike"),
+    ]:
+        if any(kw in i for i in inherits for kw in kws):
+            return sk
+    return "sword"
+
+
+def _build_item_meta(sets, inherits):
+    meta = {}
+    for key in ["weapon_prop", "damage"]:
+        if sets.get(key) is not None:
+            meta["damage"] = sets[key]
+    if sets.get("skill_type") is not None:
+        meta["skill_type"] = sets["skill_type"]
+    else:
+        meta["skill_type"] = ("string", _infer_skill_type(inherits))
+    if sets.get("armor") is not None:
+        meta["armor"] = sets["armor"]
+    if sets.get("armor_type") is not None:
+        meta["armor_type"] = sets["armor_type"]
+    for key in ["value", "weight", "unit", "material"]:
+        if sets.get(key) is not None:
+            meta[key] = sets[key]
+    if sets.get("flag") is not None:
+        meta["flag"] = sets["flag"]
+    for key in ["food", "medicine", "book"]:
+        if sets.get(key) is not None:
+            meta[key] = sets[key]
+    if sets.get("weapon_prop") is not None:
+        meta["weapon_prop"] = sets["weapon_prop"]
+    if sets.get("armor_prop") is not None:
+        meta["armor_prop"] = sets["armor_prop"]
+    return meta
+
+
+def _format_meta_value(value):
+    if isinstance(value, tuple) and value[0] == "string":
+        return f'"{_escape_set_string(value[1])}"'
+    if isinstance(value, tuple) and value[0] == "int":
+        return str(value[1])
+    if isinstance(value, tuple) and value[0] == "float":
+        return str(value[1])
+    if isinstance(value, tuple) and value[0] == "bool":
+        return "true" if value[1] else "false"
+    if isinstance(value, tuple) and value[0] == "array":
+        return "[\n" + ",\n".join(_format_meta_value(x) for x in value[1]) + "\n    ]"
+    if isinstance(value, tuple) and value[0] == "mapping":
+        return "{\n" + ",\n".join(
+            f"      {_format_meta_value(k)} = {_format_meta_value(v)}" for k, v in value[1]
+        ) + "\n    }"
+    if isinstance(value, tuple) and value[0] == "var":
+        return value[1]
+    return "nil"
+
+
+def _generate_meta(meta):
+    return "\n".join(f"    {k} = {_format_meta_value(v)}" for k, v in meta.items())
+
+
+def _generate_item_ucl(ast, zone_id):
+    create = ast.create_fn
+    sets = create.get("sets", {})
+    set_name = create.get("set_name", {})
+    heredocs = (ast.heredocs or {}).get("heredocs", {})
+
+    item_id = _norm_id(_path_basename_rootname(ast.source_path))
+
+    name = "Item"
+    sv = set_name.get("name")
+    if isinstance(sv, tuple) and sv[0] == "string":
+        name = sv[1]
+    elif isinstance(sv, str):
+        name = sv
+    else:
+        nv = sets.get("name")
+        if isinstance(nv, tuple) and nv[0] == "string":
+            name = nv[1]
+        elif isinstance(nv, str):
+            name = nv
+
+    ucl = (
+        f'    items "{item_id}" {{\n'
+        f"      name = {_ucl_string(name)}\n"
+        f"      description = {_ucl_string(_get_heredoc_or_set(heredocs, sets, 'long', ''))}\n"
+    )
+
+    verbs = _infer_verbs(ast.inherits, sets)
+
+    out = ucl + "  verbs = [\n" + ",\n".join(f'    "{v}"' for v in verbs) + "\n  ]\n"
+    if "wield_msg" in sets or "unwield_msg" in sets:
+        wield_str = _escape_set_string(_extract_string(sets.get("wield_msg"), ""))
+        unwield_str = _escape_set_string(_extract_string(sets.get("unwield_msg"), ""))
+        out += "\n  messages = {\n"
+        if wield_str != "":
+            out += f'    wield = "{wield_str}"\n'
+        if unwield_str != "":
+            out += f'    unwield = "{unwield_str}"\n'
+        out += "  }\n"
+    out += "    }"
+    return out
+
+
+def _generate_skill_ucl(ast, zone_id):
+    return (f"# Skill file: {ast.source_path}\n"
+            "# Skills are implemented as Elixir modules in lib/kantele/combat/skills/")
+
+
+def _generate_generic_ucl(ast, zone_id):
+    return f"# Generic LPC file: {ast.source_path}\n# Requires manual conversion"
+
+
+# ---------------------------------------------------------------------------
+# Unhandled comments
+# ---------------------------------------------------------------------------
+def _sanitize_comment_text(text):
+    text = text.replace("\\", "\\\\")
+    text = text.replace('"', "'")
+    text = text.replace("\n", " ")
+    text = text.replace("\r", " ")
+    text = text.replace('\\"', "'")
+    text = text.replace("\\n", "\\\\n")
+    text = text.replace("\\t", "\\\\t")
+    text = text.replace("\\r", "\\\\r")
+    text = _ESC_SEQ.sub(r"\\\\\g<0>", text)
+    return text
+
+
+def _generate_unhandled_comments(unhandled):
+    sections = []
+
+    if unhandled.get("functions"):
+        sections.append(["# ==== UNHANDLED FUNCTIONS ===="] +
+                        [f"  # UNHANDLED FUNCTION: {name}" for name in unhandled["functions"]])
+
+    if unhandled.get("globals"):
+        sections.append(["# ==== UNHANDLED GLOBAL VARIABLES ===="] +
+                        [f"  # UNHANDLED GLOBAL: {g['type']} {g['name']}" for g in unhandled["globals"]])
+
+    if unhandled.get("complex_mappings"):
+        sections.append(["# ==== COMPLEX MAPPINGS ===="] +
+                        [f"  # COMPLEX MAPPING: {_trim(m)}" for m in unhandled["complex_mappings"]])
+
+    if unhandled.get("switch_tables"):
+        table_list = []
+        for t in unhandled["switch_tables"]:
+            table_list.append(f"  # SWITCH TABLE (expr: {t['expr']})")
+            table_list.append("  # " + "-" * 64)
+            for row in t["rows"]:
+                cols_str = " ".join(f"{v}={val}" for v, val in row["cols"])
+                table_list.append(f"  #   {row['key']}: {cols_str}")
+        sections.append(["# ==== SWITCH TABLES ===="] + table_list)
+
+    if unhandled.get("switch_pools"):
+        pool_list = []
+        for stmt in unhandled["switch_pools"]:
+            lines = [f"  # SWITCH POOL: {_trim(l)}" for l in stmt.split("\n")]
+            pool_list.append("\n".join(lines))
+        sections.append(["# ==== SWITCH POOLS ===="] + pool_list)
+
+    if unhandled.get("switch_statements"):
+        switch_list = []
+        for stmt in unhandled["switch_statements"]:
+            lines = [f"  # SWITCH: {_trim(l)}" for l in stmt.split("\n")]
+            switch_list.append("\n".join(lines))
+        sections.append(["# ==== SWITCH STATEMENTS ===="] + switch_list)
+
+    if unhandled.get("conditional_branches"):
+        branch_sections = []
+        for fn_name, chains in unhandled["conditional_branches"].items():
+            header = f"# ==== CONDITIONAL BRANCHES ({fn_name}) ===="
+            chain_lines = []
+            for chain in chains:
+                for branch in chain:
+                    kind = branch["kind"]
+                    if kind == "if":
+                        prefix = f"if ({branch['cond']})"
+                    elif kind == "elif":
+                        prefix = f"else if ({branch['cond']})"
+                    else:
+                        prefix = "else"
+                    actions = " ".join(branch["actions"])
+                    sanitized_actions = _sanitize_comment_text(actions)
+                    chain_lines.append(f"  # {prefix}  →  {sanitized_actions}")
+            branch_sections.append([header] + chain_lines)
+        sections.append(["# ==== CONDITIONAL BRANCHES ===="] +
+                        [l for sec in branch_sections for l in sec])
+
+    if unhandled.get("complex_conditionals"):
+        cond_list = []
+        for stmt in unhandled["complex_conditionals"]:
+            lines = [f"  # COMPLEX IF: {_trim(l)}" for l in stmt.split("\n")]
+            cond_list.append("\n".join(lines))
+        sections.append(["# ==== COMPLEX CONDITIONALS ===="] + cond_list)
+
+    if unhandled.get("raw_code_blocks"):
+        block_list = []
+        for b in unhandled["raw_code_blocks"]:
+            lines = [f"  # {b['name']}: {_trim(l)}" for l in b["body"].split("\n")]
+            block_list.append("\n".join(["  # RAW BLOCK: " + b["name"]] + lines))
+        sections.append(["# ==== RAW CODE BLOCKS ===="] + block_list)
+
+    flat = [x for sec in sections for x in sec]
+    if not flat:
+        return ""
+    header = "\n\n# ========================================\n# UNHANDLED CONTENT (for manual review)\n# ========================================\n"
+    body = "\n".join(reversed(flat))
+    footer = "\n# ========================================\n"
+    return header + body + footer
+
+
+# ---------------------------------------------------------------------------
+# Main convert path
+# ---------------------------------------------------------------------------
+def _parse_lpc(content: bytes, source_path: str, base_path: str):
+    """Return AST or None on failure."""
+    try:
+        utf8_content = _to_utf8(content)
+
+        heredocs = _parse_heredocs_from_raw(utf8_content)
+        content_for_brace = _strip_heredocs_for_brace(utf8_content)
+        create_body = _extract_create_body(content_for_brace)
+        create_body = _strip_cpp_comments(create_body)
+
+        cleaned = _preprocess(utf8_content)
+
+        create_fn = _parse_create_function(cleaned, create_body)
+        # Elixir: create_body || find_create_body(content) — "" is truthy, so
+        # create_body (always a string) wins; find_create_body only for nil.
+        function_calls = _parse_function_calls(create_body if create_body is not None else (_find_create_body(cleaned) or ""))
+
+        handled = {"create", "init", "greeting", "accept_object", "permit_pass", "valid_leave"}
+        other_fns = _parse_other_functions(cleaned)
+        other_fn_names = {f["name"] for f in other_fns}
+        unhandled_fns = other_fn_names - handled
+
+        unhandled = _extract_unhandled_content(cleaned, unhandled_fns)
+        inherits = _parse_inherits(cleaned)
+        inherit_files = _parse_inherit_files(cleaned, source_path)
+        globals_ = _parse_globals(cleaned)
+        valid_leave = _parse_valid_leave(cleaned)
+        exit_vetoes = _parse_exit_vetoes(cleaned)
+        enter = _extract_enter(cleaned)
+        greetings = _extract_greetings(cleaned)
+        accept = _extract_accept(cleaned)
+        guard = _extract_guard(cleaned)
+        engage = _extract_engage(cleaned)
+
+        return AST(
+            inherits=inherits,
+            inherit_files=inherit_files,
+            create_fn=create_fn,
+            other_fns=other_fns,
+            globals=globals_,
+            heredocs=heredocs,
+            source_path=source_path,
+            base_path=base_path,
+            valid_leave=valid_leave,
+            exit_vetoes=exit_vetoes,
+            function_calls=function_calls,
+            enter=enter,
+            greetings=greetings,
+            accept=accept,
+            guard=guard,
+            engage=engage,
+            unhandled=unhandled,
+        )
+    except Exception:
+        return None
+
+
+def _parse_create_function(content, create_body=None):
+    body = create_body if create_body is not None else _find_create_body(content)
+    if body is None:
+        return {}
+    return _parse_create_body(body)
+
+
+def _find_create_body(content):
+    m = _CREATE_SIG.search(content)
+    if m is None:
+        return None
+    brace_pos = m.end() - 1
+    return _find_matching_brace(content, brace_pos)
+
+
+def _generate_ucl(ast, zone_id, include_comments, include_header=True):
+    header = f"# Generated from {ast.source_path} by LPCConverter\n# Zone: {zone_id}\n\n"
+
+    merged = _merge_inherit_chain(ast)
+    obj_type = _determine_object_type(merged)
+
+    if obj_type == "room":
+        new_sections = [_generate_room_ucl(merged, zone_id)]
+    elif obj_type == "npc":
+        new_sections = [_generate_npc_ucl(ast, zone_id)]
+    elif obj_type == "item":
+        new_sections = [_generate_item_ucl(ast, zone_id)]
+    elif obj_type == "skill":
+        new_sections = [_generate_skill_ucl(ast, zone_id)]
+    else:
+        new_sections = [_generate_generic_ucl(ast, zone_id)]
+
+    inherit_comments = ""
+    if obj_type != "generic":
+        parts = [i for i in ast.inherits if not _type_marker_inherit(i, obj_type)]
+        inherit_comments = "\n".join(f"# inherit {i};" for i in parts)
+
+    if obj_type == "generic":
+        ucl_content = ""
+    else:
+        ucl_content = (header if include_header else "") + "\n\n".join(new_sections)
+
+    comments_content = ""
+    if include_comments:
+        generic_marker = []
+        if obj_type == "generic":
+            generic_marker = [f"# Generic LPC file: {ast.source_path}", "# Requires manual conversion"]
+        inherit_parts = [inherit_comments] if inherit_comments != "" else []
+        unhandled_text = _generate_unhandled_comments(ast.unhandled)
+        unhandled_parts = [unhandled_text] if unhandled_text != "" else []
+        extra = "\n\n".join([x for x in generic_marker + inherit_parts + unhandled_parts if x != ""])
+        if extra != "":
+            comments_content = header + extra + "\n"
+
+    return ucl_content, comments_content
+
+
+def _merge_inherit_chain(ast):
+    return _merge_inherit_level(ast, set())
+
+
+def convert_file(lpc_path, zone_id=None, base_path=None, include_comments=True, include_header=True):
+    if base_path is None:
+        base_path = os.path.dirname(lpc_path)
+    if zone_id is None:
+        zone_id = _infer_zone_id(lpc_path, base_path)
+    try:
+        with open(lpc_path, "rb") as f:
+            content = f.read()
+    except OSError as e:
+        return (None, None, f"File read failed: {e}")
+    ast = _parse_lpc(content, lpc_path, base_path)
+    if ast is None:
+        return (None, None, "Parse failed")
+    ucl, comments = _generate_ucl(ast, zone_id, include_comments, include_header)
+    return (ucl, comments, None)
+
+
+def _infer_zone_id(lpc_path, base_path=None):
+    return _norm_id(_path_basename_rootname(lpc_path))
+
+
+# ---------------------------------------------------------------------------
+# CLI (mirrors mix kantele.convert_lpc recursive directory mode)
+# ---------------------------------------------------------------------------
+def _normpath_forward(p):
+    """Elixir Path.join / Path.dirname always yield forward slashes."""
+    return os.path.normpath(p).replace("\\", "/")
+
+
+def _walk_c_files(path):
+    """Path.wildcard(Path.join(dir, "**/*.c")) ordering: sorted, dirs first."""
+    files = []
+    for root, dirs, names in os.walk(path):
+        dirs.sort()
+        for name in sorted(names):
+            if name.endswith(".c"):
+                files.append(_normpath_forward(os.path.join(root, name)))
+    return files
+
+
+def main(argv):
+    args = []
+    opts = {}
+    i = 0
+    while i < len(argv):
+        a = argv[i]
+        if a.startswith("--"):
+            if "=" in a:
+                k, v = a[2:].split("=", 1)
+                opts[k] = v
+            elif i + 1 < len(argv) and not argv[i + 1].startswith("--"):
+                opts[a[2:]] = argv[i + 1]
+                i += 1
+            else:
+                opts[a[2:]] = True
+        else:
+            args.append(a)
+        i += 1
+
+    if not args:
+        print("Usage: python scripts/lpc_converter.py PATH [--zone ZONE] [--output DIR]")
+        return 1
+
+    path = args[0]
+    zone_id = opts.get("zone")
+    output_dir = opts.get("output", "data/world")
+    recursive = opts.get("recursive", True)
+
+    if os.path.isdir(path):
+        files = _walk_c_files(path)
+        print(f"Found {len(files)} LPC files in {path}")
+        if zone_id is None:
+            zone_id = _norm_id(os.path.basename(os.path.dirname(path)))
+        entries = []
+        failures = []
+        for file in files:
+            print(f"Converting {file}...")
+            ucl, comments, err = convert_file(file, zone_id=zone_id, include_comments=True)
+            if err is not None:
+                print(f"Conversion failed: {err}")
+                failures.append((file, err))
+                continue
+            ucl_name = _norm_id(_path_basename_rootname(file))
+            entries.append((ucl_name, ucl, comments))
+
+        seen = set()
+        deduped = []
+        for e in entries:
+            if e[0] not in seen:
+                seen.add(e[0])
+                deduped.append(e)
+
+        output_file = os.path.join(output_dir, f"{zone_id}.ucl")
+        comments_file = os.path.join(output_dir, f"{zone_id}.comments.txt")
+        os.makedirs(os.path.dirname(output_file), exist_ok=True)
+
+        zone_header = f'zones "{zone_id}" {{\n  name = "{zone_id}"\n}}\n\n'
+        body = "\n\n".join(u.rstrip() for _n, u, _c in deduped if u.strip() != "")
+        if body == "":
+            with open(output_file, "w", encoding="utf-8", newline="") as f:
+                f.write(zone_header)
+        else:
+            with open(output_file, "w", encoding="utf-8", newline="") as f:
+                f.write(zone_header + body + "\n")
+
+        comments_body = "\n\n".join(c.rstrip() for _n, _u, c in deduped)
+        with open(comments_file, "w", encoding="utf-8", newline="") as f:
+            f.write(comments_body + "\n")
+
+        print(f"Wrote {len(deduped)} objects to {output_file}")
+        print(f"Wrote comments to {comments_file}")
+        if failures:
+            print(f"Failed on {len(failures)} files: {failures}")
+        print("Done.")
+        return 0 if not failures else 1
+    else:
+        if zone_id is None:
+            zone_id = _norm_id(os.path.basename(os.path.dirname(path)))
+        ucl, comments, err = convert_file(path, zone_id=zone_id, include_comments=True)
+        if err is not None:
+            print(f"Conversion failed: {err}")
+            return 1
+        output_file = os.path.join(output_dir, f"{zone_id}.ucl")
+        comments_file = os.path.join(output_dir, f"{zone_id}.comments.txt")
+        os.makedirs(os.path.dirname(output_file), exist_ok=True)
+        ucl_name = _norm_id(_path_basename_rootname(path))
+        if os.path.exists(output_file):
+            existing = open(output_file, encoding="utf-8").read()
+            if f"# Generated from {path} by LPCConverter" in existing or \
+               f'rooms "{ucl_name}"' in existing or \
+               f'characters "{ucl_name}"' in existing or \
+               f'items "{ucl_name}"' in existing:
+                print(f"{ucl_name} already exists in {output_file}, skipping append")
+            else:
+                with open(output_file, "w", encoding="utf-8", newline="") as f:
+                    f.write(existing.rstrip() + "\n\n" + ucl.rstrip() + "\n")
+                print(f"Appended to {output_file}")
+        else:
+            zone_header = f'zones "{zone_id}" {{\n  name = "{zone_id}"\n}}\n\n'
+            with open(output_file, "w", encoding="utf-8", newline="") as f:
+                f.write(zone_header + ucl.rstrip() + "\n")
+            print(f"Created {output_file}")
+        with open(comments_file, "w", encoding="utf-8", newline="") as f:
+            f.write(comments + "\n")
+        print(f"Wrote comments to {comments_file}")
+        return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
