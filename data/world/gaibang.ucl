@@ -1,0 +1,544 @@
+zones "gaibang" {
+  name = "gaibang"
+}
+
+# Generated from C:/files/git/mud/d/gaibang/chucang.c by LPCConverter
+# Zone: gaibang
+
+    rooms "chucang" {
+      name = "储藏室"
+      description = "这里是丐帮的储藏室，你可以看见一个个锁着的箱子。周 围还悬挂着一些武器和装备。这时有一位丐帮五袋弟子正闭目 养神，看守着这里。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "chucang" {
+    room_id = rooms.chucang.id
+    west = rooms.undertre.id
+    }
+
+
+  room_characters "chucang" {
+    room_id = rooms.chucang.id
+    characters = [
+      { id = characters.5dai.id },
+      { id = characters.staff.id },
+      { id = characters.staff.id },
+      { id = characters.staff.id }    ]
+  }
+
+
+
+  room_items "chucang" {
+    room_id = rooms.chucang.id
+    items = [
+      { id = items.gangdao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gaibang/inhole.c by LPCConverter
+# Zone: gaibang
+
+    rooms "inhole" {
+      name = "树洞内部"
+      description = "这是杨州城中央广场的老榕树内部，也是丐帮秘密的地下 通道的总交汇处。树洞里丢满了各种垃圾，弭漫着一股臭哄哄 的味道。树洞壁上钉着一块非常醒目的木牌。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "inhole" {
+    room_id = rooms.inhole.id
+    down = rooms.undertre.id
+    out = rooms.guangchang.id
+    }
+
+
+  room_characters "inhole" {
+    room_id = rooms.inhole.id
+    characters = [
+      { id = characters.2dai.id },
+      { id = characters.1dai.id }    ]
+  }
+
+
+
+  room_items "inhole" {
+    room_id = rooms.inhole.id
+    items = [
+      { id = items.li.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gaibang/midao.c by LPCConverter
+# Zone: gaibang
+
+    items "midao" {
+      name = "丐帮密道"
+      description = "这是丐帮极其秘密的地下通道，乃用丐帮几辈人心血掘成。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/gaibang/mishi.c by LPCConverter
+# Zone: gaibang
+
+    rooms "mishi" {
+      name = "密室"
+      description = "这是一间光线阴暗的密室，从地上厚厚的灰尘看得出来这 里很少有人出入，靠西边的地上放着一副脚镣，连着一条铁链 镶在墙上，不知道是用来锁什麽人，南面的墙(wall)是用红杉 木做的，跟另外三面的灰土墙比起来显得有些不寻常。"
+  x = -1
+  y = 0
+  z = 0
+item_desc = {
+ wall = "这是一堵斑剥淋漓的墙，墙上密密麻麻写满了小字，似乎均与杖法有关。"
+}
+    }
+
+  room_exits "mishi" {
+    room_id = rooms.mishi.id
+    east = rooms.undertre.id
+    }
+
+# Generated from C:/files/git/mud/d/gaibang/undertre.c by LPCConverter
+# Zone: gaibang
+
+    rooms "undertre" {
+      name = "树洞下"
+      description = "这是老槐树底部，四周光线昏暗，人影晃晃，似乎有几个 黑暗的洞口在你身边，通向四面八方。一位老乞丐大咧咧地坐 在正中的地上。墙壁上画着幅粗糙的路线(map)草图。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "undertre" {
+    room_id = rooms.undertre.id
+    east = rooms.chucang.id
+    west = rooms.mishi.id
+    up = rooms.inhole.id
+    }
+
+
+  room_characters "undertre" {
+    room_id = rooms.undertre.id
+    characters = [
+      { id = characters.5dai.id },
+      { id = characters.6dai.id },
+      { id = characters.7dai.id }    ]
+  }
+
+
+
+  room_items "undertre" {
+    room_id = rooms.undertre.id
+    items = [
+      { id = items.liang.id },
+      { id = items.jian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gaibang/npc/1dai.c by LPCConverter
+# Zone: gaibang
+
+    characters "1dai" {
+      name = "NPC"
+      description = "这是位丐帮一袋弟子，身着破破烂烂，满身油腻。"
+  title = "丐帮一袋弟子"
+  gender = "男性"
+  age = 18
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 25000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 300
+    max_neili = 800
+    max_qi = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "jiaohua-neigong" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "feiyan-zoubi" level = 50 },
+    { skill = "staff" level = 50 },
+    { skill = "jiaohua-bangfa" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "changquan" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "begging" level = 80 },
+    { skill = "checking" level = 80 },
+    { skill = "literate" level = 30 },
+    { skill = "martial-cognize" level = 30 },
+    { type = "force" skill = "jiaohua-neigong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "staff" skill = "jiaohua-bangfa" },
+    { type = "unarmed" skill = "changquan" },
+    { type = "parry" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.staff.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/gaibang/npc/2dai.c by LPCConverter
+# Zone: gaibang
+
+    characters "2dai" {
+      name = "NPC"
+      description = "这是位丐帮二袋弟子，身着破破烂烂，满身油腻。"
+  title = "丐帮二袋弟子"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 400
+    max_neili = 1000
+    max_qi = 650
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "jiaohua-neigong" level = 80 },
+    { skill = "dodge" level = 60 },
+    { skill = "feiyan-zoubi" level = 60 },
+    { skill = "staff" level = 60 },
+    { skill = "jiaohua-bangfa" level = 60 },
+    { skill = "unarmed" level = 60 },
+    { skill = "changquan" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "begging" level = 100 },
+    { skill = "checking" level = 100 },
+    { skill = "literate" level = 50 },
+    { skill = "martial-cognize" level = 50 },
+    { type = "force" skill = "jiaohua-neigong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "staff" skill = "jiaohua-bangfa" },
+    { type = "unarmed" skill = "changquan" },
+    { type = "parry" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.staff.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/gaibang/npc/3dai.c by LPCConverter
+# Zone: gaibang
+
+    characters "3dai" {
+      name = "NPC"
+      description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
+  title = "丐帮三袋弟子"
+  gender = "男性"
+  age = 26
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 80000
+    con = 22
+    dex = 22
+    int = 22
+    max_jing = 600
+    max_neili = 1200
+    max_qi = 900
+    str = 22
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "jiaohua-neigong" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "feiyan-zoubi" level = 80 },
+    { skill = "staff" level = 80 },
+    { skill = "jiaohua-bangfa" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "begging" level = 120 },
+    { skill = "checking" level = 120 },
+    { skill = "literate" level = 60 },
+    { skill = "martial-cognize" level = 60 },
+    { type = "force" skill = "jiaohua-neigong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "staff" skill = "jiaohua-bangfa" },
+    { type = "unarmed" skill = "changquan" },
+    { type = "parry" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.staff.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/gaibang/npc/4dai.c by LPCConverter
+# Zone: gaibang
+
+    characters "4dai" {
+      name = "NPC"
+      description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
+  title = "丐帮四袋弟子"
+  gender = "男性"
+  age = 30
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 200000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 800
+    max_neili = 1300
+    max_qi = 1200
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 120 },
+    { skill = "jiaohua-neigong" level = 120 },
+    { skill = "dodge" level = 100 },
+    { skill = "feiyan-zoubi" level = 100 },
+    { skill = "staff" level = 100 },
+    { skill = "jiaohua-bangfa" level = 100 },
+    { skill = "unarmed" level = 120 },
+    { skill = "jueming-tui" level = 120 },
+    { skill = "strike" level = 120 },
+    { skill = "tongchui-zhang" level = 120 },
+    { skill = "parry" level = 100 },
+    { skill = "begging" level = 140 },
+    { skill = "checking" level = 140 },
+    { skill = "literate" level = 80 },
+    { skill = "martial-cognize" level = 80 },
+    { type = "force" skill = "jiaohua-neigong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "staff" skill = "jiaohua-bangfa" },
+    { type = "strike" skill = "tongchui-zhang" },
+    { type = "unarmed" skill = "jueming-tui" },
+    { type = "parry" skill = "tongchui-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/gaibang/npc/5dai.c by LPCConverter
+# Zone: gaibang
+
+    characters "5dai" {
+      name = "NPC"
+      description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
+  title = "丐帮五袋弟子"
+  gender = "男性"
+  age = 36
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 350000
+    con = 28
+    dex = 28
+    int = 28
+    max_jing = 1000
+    max_neili = 1500
+    max_qi = 1500
+    str = 28
+  }
+
+  skills = [
+    { skill = "force" level = 140 },
+    { skill = "jiaohua-neigong" level = 140 },
+    { skill = "dodge" level = 120 },
+    { skill = "feiyan-zoubi" level = 120 },
+    { skill = "staff" level = 120 },
+    { skill = "jiaohua-bangfa" level = 120 },
+    { skill = "unarmed" level = 140 },
+    { skill = "jueming-tui" level = 140 },
+    { skill = "strike" level = 140 },
+    { skill = "tongchui-zhang" level = 140 },
+    { skill = "parry" level = 120 },
+    { skill = "begging" level = 160 },
+    { skill = "checking" level = 160 },
+    { skill = "literate" level = 120 },
+    { skill = "martial-cognize" level = 120 },
+    { type = "force" skill = "jiaohua-neigong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "staff" skill = "jiaohua-bangfa" },
+    { type = "strike" skill = "tongchui-zhang" },
+    { type = "unarmed" skill = "jueming-tui" },
+    { type = "parry" skill = "tongchui-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/gaibang/npc/6dai.c by LPCConverter
+# Zone: gaibang
+
+    characters "6dai" {
+      name = "NPC"
+      description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
+  title = "丐帮六袋弟子"
+  gender = "男性"
+  age = 38
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1200
+    max_neili = 1600
+    max_qi = 1800
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 150 },
+    { skill = "jiaohua-neigong" level = 150 },
+    { skill = "dodge" level = 150 },
+    { skill = "feiyan-zoubi" level = 150 },
+    { skill = "staff" level = 150 },
+    { skill = "fengmo-zhang" level = 150 },
+    { skill = "unarmed" level = 150 },
+    { skill = "jueming-tui" level = 150 },
+    { skill = "strike" level = 150 },
+    { skill = "tongchui-zhang" level = 150 },
+    { skill = "parry" level = 150 },
+    { skill = "begging" level = 180 },
+    { skill = "checking" level = 180 },
+    { skill = "literate" level = 130 },
+    { skill = "martial-cognize" level = 130 },
+    { type = "force" skill = "jiaohua-neigong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "staff" skill = "fengmo-zhang" },
+    { type = "strike" skill = "tongchui-zhang" },
+    { type = "unarmed" skill = "jueming-tui" },
+    { type = "parry" skill = "fengmo-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.staff.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/gaibang/npc/7dai.c by LPCConverter
+# Zone: gaibang
+
+    characters "7dai" {
+      name = "NPC"
+      description = "这是位丐帮七袋弟子，只见他身材魁梧，双目精光四射。"
+  title = "丐帮七袋弟子"
+  gender = "男性"
+  age = 38
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 800000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1500
+    max_neili = 1800
+    max_qi = 2000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 160 },
+    { skill = "huntian-qigong" level = 160 },
+    { skill = "dodge" level = 160 },
+    { skill = "feiyan-zoubi" level = 160 },
+    { skill = "staff" level = 160 },
+    { skill = "fengmo-zhang" level = 160 },
+    { skill = "unarmed" level = 160 },
+    { skill = "jueming-tui" level = 160 },
+    { skill = "strike" level = 160 },
+    { skill = "tongchui-zhang" level = 160 },
+    { skill = "parry" level = 160 },
+    { skill = "begging" level = 200 },
+    { skill = "checking" level = 200 },
+    { skill = "literate" level = 150 },
+    { skill = "martial-cognize" level = 150 },
+    { type = "force" skill = "huntian-qigong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "staff" skill = "fengmo-zhang" },
+    { type = "strike" skill = "tongchui-zhang" },
+    { type = "unarmed" skill = "jueming-tui" },
+    { type = "parry" skill = "fengmo-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.staff.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/gaibang/npc/obj/cloth.c by LPCConverter
+# Zone: gaibang
+
+    characters "cloth" {
+      name = "NPC"
+      description = "这是一件满是油腻的破布衣。"
+    }
+
+# Generated from C:/files/git/mud/d/gaibang/npc/obj/jiaohuaji.c by LPCConverter
+# Zone: gaibang
+
+    characters "jiaohuaji" {
+      name = "叫化鸡"
+      description = "这是一只被烤得流油，香味扑鼻的叫化鸡。"
+    }
+
+# Generated from C:/files/git/mud/d/gaibang/npc/obj/po-bu.c by LPCConverter
+# Zone: gaibang
+
+    characters "po_bu" {
+      name = "NPC"
+      description = "这是一块破布，不知道有什么用。"
+    }
+
+# Generated from C:/files/git/mud/d/gaibang/npc/obj/qingzhu-ling.c by LPCConverter
+# Zone: gaibang
+
+    characters "qingzhu_ling" {
+      name = "NPC"
+      description = "这是一面用青竹做成的令牌，凭此可向帮内师兄挑战。"
+    }
+
+# Generated from C:/files/git/mud/d/gaibang/npc/obj/staff.c by LPCConverter
+# Zone: gaibang
+
+    characters "staff" {
+      name = "NPC"
+      description = "这是一根颇为破旧的竹棒，可以作为手杖使用。"
+    }

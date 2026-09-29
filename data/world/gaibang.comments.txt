@@ -1,0 +1,216 @@
+
+
+# Generated from C:/files/git/mud/d/gaibang/inhole.c by LPCConverter
+# Zone: gaibang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "down" || ! objectp(guard = present("li sheng", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaibang/midao.c by LPCConverter
+# Zone: gaibang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: destruct_me
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaibang/mishi.c by LPCConverter
+# Zone: gaibang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! living(me))  →  
+  # if (! living(this_player()) || arg != "wall")  →  
+  # if (me->is_busy())  →  
+  # if ((int)me->query_skill("staff", 1) < 80)  →  
+  # if ((int)me->query_skill("staff", 1) > 180)  →  
+  # if ((int)me->query("jing") < 120)  →  
+  # else  →  
+  # if ( me->query( "special_skill/clever" ) )  →  
+  # if (me->can_improve_skill("staff"))  →  
+# ==== CONDITIONAL BRANCHES (do_think) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_think
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaibang/undertre.c by LPCConverter
+# Zone: gaibang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("family/family_name") != "丐帮")  →  
+  # if (! arg || arg == "")  →  
+  # if (! arrive)  →  
+# ==== CONDITIONAL BRANCHES (do_goto) ====
+# ==== CONDITIONAL BRANCHES ====
+  #   luoyang: room="/d/luoyang/nantou" name="洛阳"
+  #   洛阳: 
+  #   zhongzhou: room="/d/zhongzhou/inpomiao" name="中州"
+  #   中州: 
+  #   kaifeng: room="/d/kaifeng/jiaomen" name="开封"
+  #   开封: 
+  #   beijing: room="/d/beijing/minju_y" name="北京"
+  #   北京: 
+  #   changan: room="/d/changan/minju3" name="长安"
+  #   长安: 
+  #   hengyang: room="/d/hengyang/hengyang1" name="衡阳"
+  #   衡阳: 
+  #   dali: room="/d/dali/dahejieeast" name="大理"
+  #   大理: 
+  #   foshan: room="/d/foshan/youtiaopu" name="佛山"
+  #   佛山: 
+  #   nanyang: room="/d/shaolin/ruzhou" name="南阳"
+  #   南阳: 
+  #   jingzhou: room="/d/jingzhou/xxend" name="荆州"
+  #   荆州: 
+  #   chengdu: room="/d/chengdu/wuhouci" name="成都"
+  #   成都: 
+  #   hangzhou: room="/d/hangzhou/yuhuangshan" name="杭州"
+  #   杭州: 
+  #   suzhou: room="/d/suzhou/chitang" name="苏州"
+  #   苏州: 
+  #   xiangyang: room="/d/xiangyang/xiaorong1" name="襄阳"
+  #   襄阳: 
+  #   fuzhou: room="/d/fuzhou/yushan" name="福州"
+  #   福州: 
+  # ----------------------------------------------------------------
+  # SWITCH TABLE (expr: arg)
+# ==== SWITCH TABLES ====
+  # UNHANDLED FUNCTION: do_goto
+  # UNHANDLED FUNCTION: look_map
+  # UNHANDLED FUNCTION: arrival
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaibang/npc/1dai.c by LPCConverter
+# Zone: gaibang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (random(3) > 1)  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/gaibang/npc/obj/cloth.c by LPCConverter
+# Zone: gaibang
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaibang/npc/obj/jiaohuaji.c by LPCConverter
+# Zone: gaibang
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaibang/npc/obj/po-bu.c by LPCConverter
+# Zone: gaibang
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (query("owner") && query("from"))  →  
+# ==== CONDITIONAL BRANCHES (long) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: long
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaibang/npc/obj/qingzhu-ling.c by LPCConverter
+# Zone: gaibang
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaibang/npc/obj/staff.c by LPCConverter
+# Zone: gaibang
+
+# inherit STAFF;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
