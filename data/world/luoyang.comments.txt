@@ -1,0 +1,946 @@
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/luoyang/bingyindamen.c by LPCConverter
+# Zone: luoyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! wizardp(me) && objectp(present("guan bing", environment(me))) && dir == "north")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/luoyang/miaoyuan.c by LPCConverter
+# Zone: luoyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("jing") < 50)  →  tell_object(me, '你已经很疲惫了，休息一下再接着种吧。\\\\\n');
+  # if (me->is_busy())  →  tell_object(me, '你正忙着呢，别着急。\\\\\n');
+  # if (!me->query_temp("peiyu") == 1)  →  tell_object(me, '你没事干浇什么水啊！\\\\\n');
+  # if (me->query_temp("peiyu") == 2)  →  message_vision(HIY '$N' HIY '种出了一朵翡翠兰。\\\\\n' NOR, me); message_vision(HIY '$N' HIY '种出了一朵无名花。\\\\\n' NOR, me); message_vision(HIC '$N' HIC '十分小心的给小坑里浇了一些' '水，突然一朵' + ob->query('name') + HIC '从坑里冒了出来。\\\\\n' NOR, me); message_vision(HIY '$N' HIY '把它摘了下来，拿在手里。\\\\\n' NOR, me); tell_object(me, HIC '通过这次训练，你获得了' + chinese_number(exp) + '点经验和' + chinese_number(pot) + '点潜能。\\\\\n' NOR); message_vision(HIR '$N' HIR '笨手笨脚的拿起水壶给小坑里浇水，结' '果水洒的太多把花给毁了。\\\\\n', me);
+  # if (me->query_temp("jiaoshui") == 1)  →  message_vision(HIC '$N' HIC '拿起水壶给小坑浇了一些水。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_jiaoshui) ====
+  # if (!me->query_temp("zhonghua"))  →  tell_object(me, '你种子都没有，还想种花？\\\\\n');
+  # if (me->query_temp("jiaoshui") == 1)  →  tell_object(me, '你已经完成了培育这道程序，现在可以浇水' HIY '(jiaoshui)' NOR '。\\\\\n');
+  # if (me->query("combat_exp") < 5000)  →  tell_object(me, '你的经验尚浅，还是先到处多走动走动吧。\\\\\n');
+  # if (me->query("combat_exp") > 30000 && me->query("mark/job_zhonghua") > 1000)  →  tell_object(me, '以你的身份大概不适合种花了吧。\\\\\n');
+  # if (me->query("jing") < 50)  →  tell_object(me, '你已经很疲惫了，休息一下再接着种吧。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_peiyu) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(5)) { case 1: ob = new ("/d/changan/npc/obj/hmeigui"); break; case 2: ob = new ("/d/changan/npc/obj/zi-luolan"); break; case 3: ob = new ("/d/changan/npc/obj/bai-chahua"); break; case 4: ob = new ("/d/changan/npc/obj/huang-meigui"); break; case 0: ob = new ("/d/changan/npc/obj/lan-tiane"); break; }
+# ==== SWITCH POOLS ====
+  # UNHANDLED FUNCTION: do_jiaoshui
+  # UNHANDLED FUNCTION: do_peiyu
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/luoyang/yuchi.c by LPCConverter
+# Zone: luoyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("gender") == "女性" && dir == "east")  →  
+  # if (me->query("gender") != "女性" && dir == "up")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/luoyang/npc/han.c by LPCConverter
+# Zone: luoyang
+
+# inherit F_VENDOR;
+
+# Generated from C:/files/git/mud/d/luoyang/npc/hu.c by LPCConverter
+# Zone: luoyang
+
+# inherit F_BANKER;
+
+# Generated from C:/files/git/mud/d/luoyang/npc/huanong.c by LPCConverter
+# Zone: luoyang
+
+# inherit F_DEALER;
+
+# Generated from C:/files/git/mud/d/luoyang/npc/lang.c by LPCConverter
+# Zone: luoyang
+
+# inherit F_MASTER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (random(4) == 1)  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/laobao.c by LPCConverter
+# Zone: luoyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  command('say 呦，' + RANK_D->query_respect(me) + '也来光顾我们春月楼啊。'); command('say 想当年我接过一个西藏喇嘛，他上床前一' '定要念经，一面念经，眼珠子就骨溜溜的瞧着' '我。'); command('say 哎呀，这年月大姑娘也逛窑子，成何体统。'); command('sigh'); command('say 可惜我儿子不在，不然让他伺候你。'); command('say 楼上楼下的姑娘们，客人来了！');
+  # if (me->query("gender") == "无性")  →  command('say 你当我们春月楼是什么地方？我的姑娘满汉蒙藏' '回都接，就是不伺候太监！'); command('kick ' + me->query('id'));
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && !is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/luoyang/npc/libai.c by LPCConverter
+# Zone: luoyang
+
+# inherit F_DEALER;
+
+# Generated from C:/files/git/mud/d/luoyang/npc/lu.c by LPCConverter
+# Zone: luoyang
+
+# inherit F_VENDOR;
+
+
+
+# Generated from C:/files/git/mud/d/luoyang/npc/qi.c by LPCConverter
+# Zone: luoyang
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: unconcious
+  # UNHANDLED FUNCTION: redeem
+  # UNHANDLED FUNCTION: die
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/qin.c by LPCConverter
+# Zone: luoyang
+
+# inherit F_VENDOR;
+
+# Generated from C:/files/git/mud/d/luoyang/npc/shudianboss.c by LPCConverter
+# Zone: luoyang
+
+# inherit F_VENDOR;
+
+# Generated from C:/files/git/mud/d/luoyang/npc/smith.c by LPCConverter
+# Zone: luoyang
+
+# inherit /inherit/char/smith.c;
+
+# Generated from C:/files/git/mud/d/luoyang/npc/tianlong.c by LPCConverter
+# Zone: luoyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/xiao.c by LPCConverter
+# Zone: luoyang
+
+# inherit F_DEALER;
+
+# Generated from C:/files/git/mud/d/luoyang/npc/xiaofan.c by LPCConverter
+# Zone: luoyang
+
+# inherit F_VENDOR;
+
+
+
+# Generated from C:/files/git/mud/d/luoyang/npc/zhou.c by LPCConverter
+# Zone: luoyang
+
+# inherit F_DEALER;
+
+# Generated from C:/files/git/mud/d/luoyang/npc/zhu.c by LPCConverter
+# Zone: luoyang
+
+# inherit F_DEALER;
+
+# Generated from C:/files/git/mud/d/luoyang/npc/zhu2.c by LPCConverter
+# Zone: luoyang
+
+# inherit F_DEALER;
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/armor1.c by LPCConverter
+# Zone: luoyang
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: owner_is_killed
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/blade1.c by LPCConverter
+# Zone: luoyang
+
+# inherit BLADE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: owner_is_killed
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/club1.c by LPCConverter
+# Zone: luoyang
+
+# inherit CLUB;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: owner_is_killed
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/dagger1.c by LPCConverter
+# Zone: luoyang
+
+# inherit DAGGER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: owner_is_killed
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/finger.c by LPCConverter
+# Zone: luoyang
+
+# inherit HANDS;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: owner_is_killed
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/guo1.c by LPCConverter
+# Zone: luoyang
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/guo2.c by LPCConverter
+# Zone: luoyang
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/guo3.c by LPCConverter
+# Zone: luoyang
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/guo4.c by LPCConverter
+# Zone: luoyang
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/guo5.c by LPCConverter
+# Zone: luoyang
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/hammer1.c by LPCConverter
+# Zone: luoyang
+
+# inherit HAMMER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: owner_is_killed
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/hand.c by LPCConverter
+# Zone: luoyang
+
+# inherit HANDS;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: owner_is_killed
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/head1.c by LPCConverter
+# Zone: luoyang
+
+# inherit HEAD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: owner_is_killed
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/huazhong.c by LPCConverter
+# Zone: luoyang
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((string)where->query("short") != "苗园")  →  
+  # if (me->query("combat_exp") < 5000)  →  tell_object(me, '你的经验尚浅，还是先到处多走动走动吧。\\\\\n');
+  # if (me->query("combat_exp") > 30000 && me->query("mark/job_zhonghua") > 1000)  →  tell_object(me, '以你的身份大概不适合种花了吧。\\\\\n');
+  # if (me->query_temp("zhonghua") == 1)  →  tell_object(me, '种子已经播种了，现在该培育' HIY '(peiyu)' NOR '花种了。' '\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_zhonghua) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_zhonghua
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/staff1.c by LPCConverter
+# Zone: luoyang
+
+# inherit STAFF;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: owner_is_killed
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/sword1.c by LPCConverter
+# Zone: luoyang
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: owner_is_killed
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci.c by LPCConverter
+# Zone: luoyang
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci2.c by LPCConverter
+# Zone: luoyang
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci3.c by LPCConverter
+# Zone: luoyang
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci4.c by LPCConverter
+# Zone: luoyang
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci5.c by LPCConverter
+# Zone: luoyang
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci6.c by LPCConverter
+# Zone: luoyang
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci7.c by LPCConverter
+# Zone: luoyang
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci8.c by LPCConverter
+# Zone: luoyang
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/wanlun1.c by LPCConverter
+# Zone: luoyang
+
+# inherit WRISTS;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: owner_is_killed
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/luoyang/npc/obj/whip1.c by LPCConverter
+# Zone: luoyang
+
+# inherit WHIP;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: owner_is_killed
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================

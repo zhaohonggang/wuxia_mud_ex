@@ -31,7 +31,7 @@
 - [x] **gumu** · 中心 `daxiaochang` · 产出 `gumu.ucl` `gumu.comments.txt` ✅ 2026-09-29
 - [x] **huanghe** · 中心 `guangchang` · 产出 `huanghe.ucl` `huanghe.comments.txt` ✅ 2026-09-29
 - [x] **jingzhou** · 中心 `guangchang` · 产出 `jingzhou.ucl` `jingzhou.comments.txt` ✅ 2026-09-29
-- [ ] **luoyang** · 中心 `center`
+- [x] **luoyang** · 中心 `center` · 产出 `luoyang.ucl` `luoyang.comments.txt` ✅ 2026-09-29
 - [ ] **quanzhen** · 中心 `datang1`
 - [ ] **register** · 中心 `entry`
 - [ ] **shaolin** · 中心 `guangchang2`
@@ -159,4 +159,5 @@
 | gumu | 2026-09-29 | ? | ? | 完整 Python 转换：74 rooms, 74 room_exits (含 coords) |
 | huanghe | 2026-09-29 | ? | ? | 完整 Python 转换：56 rooms, 56 room_exits (含 coords) |
 | jingzhou | 2026-09-29 | ? | ? | 完整 Python 转换：90 rooms, 90 room_exits (含 coords) |
+| luoyang | 2026-09-29 | ? | ? | 完整 Python 转换：157 rooms, 157 room_exits (含 coords) |
 | ... |  |  |  |  |
