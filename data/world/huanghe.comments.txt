@@ -1,0 +1,378 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/huanghe/kedian.c by LPCConverter
+# Zone: huanghe
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !me->query_temp("rent_paid") && dir == "up" )  →  
+  # if ( me->query_temp("rent_paid") && dir == "west" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/huanghe/kedian3.c by LPCConverter
+# Zone: huanghe
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( dir == "out" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/huanghe/shamo.c by LPCConverter
+# Zone: huanghe
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "north")  →  
+  # if (dir == "south")  →  
+  # if (me->query_temp("shamo/steps") == total_steps)  →  write('你走了半天，终于走出了西夏沙漠。\\\\\n');
+  # if (me->query_temp("shamo/steps") == -total_steps)  →  write('你走了半天，终于走出了西夏沙漠。\\\\\n');
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # else  →  
+  # if (ob->query("water") > 10)  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/huanghe/shamo1.c by LPCConverter
+# Zone: huanghe
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "north")  →  
+  # if (dir == "south")  →  
+  # if (me->query_temp("shamo/steps") == total_steps)  →  write('你走了半天，终于走出了西夏沙漠。\\\\\n');
+  # if (me->query_temp("shamo/steps") == -total_steps)  →  write('你走了半天，终于走出了西夏沙漠。\\\\\n');
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # else  →  
+  # if (ob->query("water") > 10)  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/huanghe/npc/huoji.c by LPCConverter
+# Zone: huanghe
+
+# inherit F_DEALER;
+
+
+
+
+
+# Generated from C:/files/git/mud/d/huanghe/npc/mazei.c by LPCConverter
+# Zone: huanghe
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (ob->query("money_id") && ob->value() >= 5000)  →  say( '马贼大喊一声：既然交了钱，就请马前过。\\\\\n');
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if ( !ob || environment(ob) != environment() )  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && (int)ob->query_temp("mazei"))  →  say( '马贼对着你大吼：你竟敢不交！老子宰了你！\\\\\n');
+  # if ( interactive(ob) && !is_fighting() && !(int)ob->query_temp("mazei"))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/huanghe/npc/wudong.c by LPCConverter
+# Zone: huanghe
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/huanghe/npc/xiucai.c by LPCConverter
+# Zone: huanghe
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!(int)who->query_temp("mark/朱"))  →  
+  # if (ob->query("money_id") && ob->value() >= 5000)  →  message_vision('老秀才同意指点$N一些问题。\\\\\n', who);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if (!(int)ob->query_temp("mark/朱"))  →  
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: recognize_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/axe.c by LPCConverter
+# Zone: huanghe
+
+# inherit AXE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/bi.c by LPCConverter
+# Zone: huanghe
+
+# inherit DAGGER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/changpao.c by LPCConverter
+# Zone: huanghe
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/fenshuici.c by LPCConverter
+# Zone: huanghe
+
+# inherit DAGGER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/fork.c by LPCConverter
+# Zone: huanghe
+
+# inherit CLUB;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/futou.c by LPCConverter
+# Zone: huanghe
+
+# inherit AXE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/shuikao.c by LPCConverter
+# Zone: huanghe
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/tieqiao.c by LPCConverter
+# Zone: huanghe
+
+# inherit CLUB;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

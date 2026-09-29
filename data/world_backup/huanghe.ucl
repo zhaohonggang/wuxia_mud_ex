@@ -1,0 +1,1839 @@
+zones "huanghe" {
+  name = "huanghe"
+}
+
+# Generated from C:/files/git/mud/d/huanghe/bingcao.c by LPCConverter
+# Zone: huanghe
+
+    rooms "bingcao" {
+      name = "冰草湾"
+      description = "冰草湾在营盘水的西南，平时人迹少至，因当地沙漠里长 着一种神奇的药草--冰草而得名。据说这种药草能解百毒，所 以偶有人来采这种草，不过常有毒虫出没，极为危险。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bingcao" {
+    room_id = rooms.bingcao.id
+  southwest = rooms.shixiazi.id
+  northeast = rooms.yinpanshui.id  }
+
+
+
+
+  room_items "bingcao" {
+    room_id = rooms.bingcao.id
+    items = [
+      { id = items.qianjiewugong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/caodi1.c by LPCConverter
+# Zone: huanghe
+
+    rooms "caodi1" {
+      name = "草地"
+      description = "这里是一遍绿茵茵的草地，像是一方绿色的毯子铺在地上。草丛中 开着一些不知名的小花，有红的、黄的，还有紫的。花瓣上、草叶上的 露珠闪着晶莹的光。东面是扬州城的北门。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caodi1" {
+    room_id = rooms.caodi1.id
+  east = rooms.beimen.id
+  west = rooms.caodi2.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/caodi2.c by LPCConverter
+# Zone: huanghe
+
+    rooms "caodi2" {
+      name = "草地"
+      description = "这里是一遍绿茵茵的草地，像是一方绿色的毯子铺在地上。草丛中 开着一些不知名的小花，有红的、黄的，还有紫的。花瓣上、草叶上的 露珠闪着晶莹的光。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caodi2" {
+    room_id = rooms.caodi2.id
+  east = rooms.caodi1.id
+  west = rooms.shulin1.id  }
+
+
+
+
+  room_items "caodi2" {
+    room_id = rooms.caodi2.id
+    items = [
+      { id = items.eluanshi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/dacaigou.c by LPCConverter
+# Zone: huanghe
+
+    rooms "dacaigou" {
+      name = "打柴沟"
+      description = "打柴沟地势不如乌鞘岭那样险要，比较平坦，官道两边全是密林， 时常有樵夫砍柴的声音从林中传出。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dacaigou" {
+    room_id = rooms.dacaigou.id
+  southwest = rooms.gulang.id
+  north = rooms.wuqiao.id  }
+
+
+  room_characters "dacaigou" {
+    room_id = rooms.dacaigou.id
+    characters = [
+      { id = characters.qiaofu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/duchuan.c by LPCConverter
+# Zone: huanghe
+
+    rooms "duchuan" {
+      name = "渡船"
+      description = "黄河上的小舟都是这种很简陋的小舟。一位中年艄公正站在船尾 吃力地掌舵，一位膀子壮硕的小伙子也在船头用劲地划水撑船。黄河 水流湍急，船下滑很快，横渡却很慢。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/guangchang.c by LPCConverter
+# Zone: huanghe
+
+    rooms "guangchang" {
+      name = "广场"
+      description = "广场占地甚大，部置严谨。往西过去可达黄河帮的「侠义厅」。 周围则是些房舍，供帮众居住。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guangchang" {
+    room_id = rooms.guangchang.id
+  east = rooms.huanghegate.id
+  west = rooms.xiayiting.id  }
+
+
+  room_characters "guangchang" {
+    room_id = rooms.guangchang.id
+    characters = [
+      { id = characters.wu.id },
+      { id = characters.qian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/guchangcheng.c by LPCConverter
+# Zone: huanghe
+
+    rooms "guchangcheng" {
+      name = "古长城"
+      description = "这里是一段古长城。相传是当年秦始皇派他的心腹爱将蒙 恬率三十万大军所修。世事变迁、沧海桑田，如今这里已是片 废墟，唯一依稀可见的是夯土制成的烽火台象个小土包一样矗 立在那里。黄河从西向东流去，河上(river)有一叶小舟。"
+  x = 0
+  y = 0
+  z = 0
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "guchangcheng" {
+    room_id = rooms.guchangcheng.id
+  southwest = rooms.yinpanshui.id
+  southeast = rooms.shimen.id
+  river = rooms.xuanhebao.id  }
+
+
+  room_characters "guchangcheng" {
+    room_id = rooms.guchangcheng.id
+    characters = [
+      { id = characters.menmian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/gulang.c by LPCConverter
+# Zone: huanghe
+
+    rooms "gulang" {
+      name = "古浪"
+      description = "古浪城建于西周，本名鬼武，后整修于汉，更名古浪。古浪是西北 地区的毛皮集散地，当初的紫羊羔皮袄，一出于张家口，另一出处就是 古浪了，过了古浪再往西四十里，跨过纪水河即到兰州。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "gulang" {
+    room_id = rooms.gulang.id
+  south = rooms.yongdeng.id
+  north = rooms.xueguan.id
+  east = rooms.yaocaidian.id
+  west = rooms.xiaojiaqiao.id
+  northeast = rooms.dacaigou.id  }
+
+
+  room_characters "gulang" {
+    room_id = rooms.gulang.id
+    characters = [
+      { id = characters.dao_ke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/hetao.c by LPCConverter
+# Zone: huanghe
+
+    rooms "hetao" {
+      name = "河套"
+      description = "常言到“黄河九害，富了一套”。河套地区灌溉系统发达，土地肥 沃，是种庄稼的好地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hetao" {
+    room_id = rooms.hetao.id
+  southwest = rooms.huangtu.id
+  east = rooms.huanghe_1.id
+  west = rooms.qingcheng.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/hongshanxia.c by LPCConverter
+# Zone: huanghe
+
+    rooms "hongshanxia" {
+      name = "红山峡"
+      description = "红山峡是个非常险峻的峡谷，两边是数十丈的黄土坡，很是陡峭，中 间只有一条可以通行一人一马的窄道，俗称“一线天”。附近没有什么生 物，却有商旅常在这里失踪。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hongshanxia" {
+    room_id = rooms.hongshanxia.id
+  north = rooms.shimen.id
+  south = rooms.jingyuan.id  }
+
+
+  room_characters "hongshanxia" {
+    room_id = rooms.hongshanxia.id
+    characters = [
+      { id = characters.mazei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/huanghe1.c by LPCConverter
+# Zone: huanghe
+
+    rooms "huanghe1" {
+      name = "黄河岸边"
+      description = "这里是黄河岸边。黄河流淌到这里，已经泥沙浑浊了。黄色的河水 在河床里翻滚着，咆哮着，卷起一个个巨大的漩窝。西边有个寨子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huanghe1" {
+    room_id = rooms.huanghe1.id
+  south = rooms.tiandi4.id
+  north = rooms.weifen.id
+  east = rooms.huanghe2.id
+  west = rooms.huanghegate.id  }
+
+
+  room_characters "huanghe1" {
+    room_id = rooms.huanghe1.id
+    characters = [
+      { id = characters.hou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/huanghe2.c by LPCConverter
+# Zone: huanghe
+
+    rooms "huanghe2" {
+      name = "黄河岸边"
+      description = "这里是黄河岸边。黄河流淌到这里，已经泥沙浑浊了。黄色的河水 在河床里翻滚着，咆哮着，卷起一个个巨大的漩窝。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huanghe2" {
+    room_id = rooms.huanghe2.id
+  east = rooms.huanghe3.id
+  west = rooms.huanghe1.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/huanghe3.c by LPCConverter
+# Zone: huanghe
+
+    rooms "huanghe3" {
+      name = "黄河岸边"
+      description = "这里是黄河岸边。黄河流淌到这里，已经泥沙浑浊了。黄色的河水 在河床里翻滚着，咆哮着，卷起一个个巨大的漩窝。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huanghe3" {
+    room_id = rooms.huanghe3.id
+  east = rooms.huanghe4.id
+  west = rooms.huanghe2.id  }
+
+
+  room_characters "huanghe3" {
+    room_id = rooms.huanghe3.id
+    characters = [
+      { id = characters.bangzong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/huanghe4.c by LPCConverter
+# Zone: huanghe
+
+    rooms "huanghe4" {
+      name = "黄河岸边"
+      description = "这里是黄河岸边。黄河流淌到这里，已经泥沙浑浊了。黄色的河水 在河床里翻滚着，咆哮着，卷起一个个巨大的漩窝。黄河在这里由於受 到东面泰山的阻挡，转而向北。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huanghe4" {
+    room_id = rooms.huanghe4.id
+  west = rooms.huanghe3.id
+  northeast = rooms.huanghe5.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/huanghe5.c by LPCConverter
+# Zone: huanghe
+
+    rooms "huanghe5" {
+      name = "黄河岸边"
+      description = "这里是黄河岸边。黄河流淌到这里，河床宽阔。黄色的河水在静静 地向东流去，使人忘记它发洪水时的狂威。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huanghe5" {
+    room_id = rooms.huanghe5.id
+  east = rooms.daizong.id
+  northeast = rooms.huanghe6.id
+  southwest = rooms.huanghe4.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/huanghe6.c by LPCConverter
+# Zone: huanghe
+
+    rooms "huanghe6" {
+      name = "黄河岸边"
+      description = "这里是黄河岸边。黄河流淌到这里，河床宽阔。黄色的河水在静静 地向东流去，使人忘记它发洪水时的狂威。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huanghe6" {
+    room_id = rooms.huanghe6.id
+  northeast = rooms.huanghe7.id
+  southwest = rooms.huanghe5.id  }
+
+
+  room_characters "huanghe6" {
+    room_id = rooms.huanghe6.id
+    characters = [
+      { id = characters.zu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/huanghe7.c by LPCConverter
+# Zone: huanghe
+
+    rooms "huanghe7" {
+      name = "黄河岸边"
+      description = "这里是黄河岸边。黄河流淌到这里，河床宽阔。黄色的河水在静静 地向东流去，使人忘记它发洪水时的狂威。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huanghe7" {
+    room_id = rooms.huanghe7.id
+  northeast = rooms.huanghe8.id
+  southwest = rooms.huanghe6.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/huanghe8.c by LPCConverter
+# Zone: huanghe
+
+    rooms "huanghe8" {
+      name = "黄河入海口"
+      description = "黄河流经青藏高原、黄土高原、华北平原，总长一万零九百里， 在这里汇入大海。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huanghe8" {
+    room_id = rooms.huanghe8.id
+  southwest = rooms.huanghe7.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/huanghe_1.c by LPCConverter
+# Zone: huanghe
+
+    rooms "huanghe_1" {
+      name = "黄河"
+      description = "黄河沿蒙古高原南边向东流淌，遇太行山脉的阻拦，便转头南下， 形成晋陕的分界。东北方向好象有个渡口。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huanghe_1" {
+    room_id = rooms.huanghe_1.id
+  south = rooms.weifen.id
+  west = rooms.hetao.id
+  northeast = rooms.dukou2.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/huanghe_2.c by LPCConverter
+# Zone: huanghe
+
+    rooms "huanghe_2" {
+      name = "黄河"
+      description = "黄河出了青海，经甘肃之后，向东受到黄土高原的阻挡，转而向东 北流去。在流经黄土高原的过程中泥沙含量猛增，水色澄黄，就被称为 黄河。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huanghe_2" {
+    room_id = rooms.huanghe_2.id
+  west = rooms.huanghe_3.id
+  northeast = rooms.huangtu.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/huanghe_3.c by LPCConverter
+# Zone: huanghe
+
+    rooms "huanghe_3" {
+      name = "黄河"
+      description = "葛水过了古浪，和源于酒泉西北的洪水河于新城合流。到了这里， 河水的去势逐渐加强，挟带着千万吨的高原泥沙，势不可挡地向西南奔 去。由于此处水流湍急，这里的鱼大多肉厚脂丰。名扬天下的黄河大鲤 鱼即产于此。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huanghe_3" {
+    room_id = rooms.huanghe_3.id
+  east = rooms.huanghe_2.id
+  west = rooms.yongdeng.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/huanghegate.c by LPCConverter
+# Zone: huanghe
+
+    rooms "huanghegate" {
+      name = "黄河帮寨门"
+      description = "这是一所气势壮观的寨门，正中高挂着一面扁额--写着「黄河帮」 三个大字。寨里旗帜高挂，规模不小。黄河帮是黄河沿岸的一个大帮会， 平日飞扬跋扈，欺压百姓，做恶多端。帮主沙通天武功深湛，并与彭连 虎、梁子翁和灵智上人等高手结交，因此声势浩大。据闻其与金人勾结， 欲侵略中土。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huanghegate" {
+    room_id = rooms.huanghegate.id
+  east = rooms.huanghe1.id
+  west = rooms.guangchang.id  }
+
+
+  room_characters "huanghegate" {
+    room_id = rooms.huanghegate.id
+    characters = [
+      { id = characters.ma.id },
+      { id = characters.shen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/huangtu.c by LPCConverter
+# Zone: huanghe
+
+    rooms "huangtu" {
+      name = "黄土高原"
+      description = "黄河像一把厉刃将黄土高原切开。无数条小溪流夹带着泥沙汇入黄 河，形成千沟万壑。沟壑之间的一块块平地叫做台塬。黄河沿蒙古高原 南边向东流淌，遇太行山脉的阻拦，便转头南下，形成晋陕的分界。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huangtu" {
+    room_id = rooms.huangtu.id
+  northeast = rooms.hetao.id
+  southwest = rooms.huanghe_2.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/jingyuan.c by LPCConverter
+# Zone: huanghe
+
+    rooms "jingyuan" {
+      name = "靖远"
+      description = "靖远是个不大不小的城镇，黄沙在离城四十里的地方被一排排的钻天 白杨树给挡住了。因此这里有了一块较大的绿洲，聚集了不少从别处来的 移民。这些白杨据说是当年唐朝李靖赶走了突厥后在这里屯兵时所种。这 也是靖远得名的由来。西边不远就是黄河，南面是一大片沙漠。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jingyuan" {
+    room_id = rooms.jingyuan.id
+  north = rooms.hongshanxia.id
+  south = rooms.shamo.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/kedian.c by LPCConverter
+# Zone: huanghe
+
+    rooms "kedian" {
+      name = "客店"
+      description = "这是一家当地居民开的鸡毛小店，楼下卖些卤菜和劣酒，楼上则是 客房。这是在进祈连山区前的唯一休息之处，贩夫走卒，采药客等皆在 此休憩，不时还可看见一两个寻仙访道之辈。墙上有一块牌子(paizi)， 西面是一间马厩。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ paizi = "楼上雅房，每夜五两白银。"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）： !me->query_temp("rent_paid") && dir == "up" 
+direction = "up"
+  message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊！"
+}
+,
+{
+   # 阻挡条件（原样保留）： me->query_temp("rent_paid") && dir == "west" 
+direction = "west"
+  message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就住 旁人还以为小店伺候不周呢！"
+}
+
+]
+    }
+
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+  west = rooms.majiu.id
+  east = rooms.yongdeng.id
+  up = rooms.kedian2.id  }
+
+
+  room_characters "kedian" {
+    room_id = rooms.kedian.id
+    characters = [
+      { id = characters.xiaoer.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/kedian2.c by LPCConverter
+# Zone: huanghe
+
+    rooms "kedian2" {
+      name = "客店二楼"
+      description = "你正走在客店二楼的走廊上，可以听到从客房里不时地呼呼的打酣 声，一阵高过一阵。不时有睡意朦胧的旅客进进出出，到楼下的掌柜处 付了钱再上来睡觉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kedian2" {
+    room_id = rooms.kedian2.id
+  down = rooms.kedian.id
+  in = rooms.kedian3.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/kedian3.c by LPCConverter
+# Zone: huanghe
+
+    rooms "kedian3" {
+      name = "客店二楼"
+      description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小木床，不 少客人正和衣而卧，满屋子都是呼呼的打酣声。西边有张床是空的，你 蹑手蹑脚地走了过去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kedian3" {
+    room_id = rooms.kedian3.id
+  out = rooms.kedian2.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/liupanshan.c by LPCConverter
+# Zone: huanghe
+
+    rooms "liupanshan" {
+      name = "六盘山"
+      description = "这是一座不太高的小山。山顶望去，瓦蓝的天空(sky)飘着几朵淡淡 的白云。一群大雁发出「嘎嘎」的叫声，从头上飞过。西面山下长城的残 垣断壁依稀可辨。路旁有一处悬崖之上刻着首词(poem)。北边山下是永登 城，东面山下是一处小村庄。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ poem = "崖壁上刻着一首清平乐：    何  今  红  六  屈  不  望  天   时  日  旗  盘  指  到  断  高   缚  长  漫  山  行  长  南  云   得  缨  卷  上  程  城  飞  淡   苍  在  西  高  二  非  雁   龙  手  风  峰  万  好                       汉  你现在是好汉了！"
+}
+    }
+
+  room_exits "liupanshan" {
+    room_id = rooms.liupanshan.id
+  northdown = rooms.yongdeng.id
+  eastdown = rooms.wexit.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/majiu.c by LPCConverter
+# Zone: huanghe
+
+    rooms "majiu" {
+      name = "马厩"
+      description = "这是客栈边上的马厩，常年供应新鲜草料。据说此地民风淳朴，客 人只要住店，马夫们就会把马牵到马厩好生照看，将它们喂饱饮足，再 洗刷得干乾净净。一直伺候到客人离店上路。马厩中堆放著几堆草料， 正中有一口泔槽。马厩雨檐下的烂木柱上钉着一块破木牌(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+  east = rooms.kedian.id  }
+
+
+  room_characters "majiu" {
+    room_id = rooms.majiu.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu" {
+    room_id = rooms.majiu.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/qingcheng.c by LPCConverter
+# Zone: huanghe
+
+    rooms "qingcheng" {
+      name = "青城"
+      description = "青城位于靖远以南三百二十里，西南八十里就是兰州，名为青城， 其实只是个小镇，因为地处北去西夏的要冲，许多往来西夏和大宋的商 旅都必须经过这儿，人来人往很是热闹。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qingcheng" {
+    room_id = rooms.qingcheng.id
+  north = rooms.shamo.id
+  east = rooms.hetao.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/shamo.c by LPCConverter
+# Zone: huanghe
+
+    rooms "shamo" {
+      name = "沙漠"
+      description = "这是一片没边际的沙漠，到处是近百米高的巨大沙丘。你一走进来 就仿佛迷了路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shamo" {
+    room_id = rooms.shamo.id
+  north = rooms.__file__.id
+  south = rooms.shamo1.id
+  east = rooms.__file__.id
+  west = rooms.__file__.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/shamo1.c by LPCConverter
+# Zone: huanghe
+
+    rooms "shamo1" {
+      name = "沙漠"
+      description = "这是一片没边际的沙漠，到处是近百米高的巨大沙丘。你一走进来 就仿佛迷了路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shamo1" {
+    room_id = rooms.shamo1.id
+  north = rooms.__file__.id
+  south = rooms.shamo1.id
+  east = rooms.__file__.id
+  west = rooms.__file__.id
+  in = rooms.shidong.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/shidong.c by LPCConverter
+# Zone: huanghe
+
+    rooms "shidong" {
+      name = "石洞"
+      description = "这是沙漠中天然形成的一个石洞，洞中光线昏暗，但却十分干燥， 地下铺者几堆稻草，似乎是供人睡卧之用，静心凝听，洞中仿佛有阵阵 水声。洞的一角放着数堆人头骨(skulls)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ skulls = "一堆整整齐齐的骷髅头，上一中三下五，不多不少，恰是 九颗白骨骷髅头。"
+}
+    }
+
+  room_exits "shidong" {
+    room_id = rooms.shidong.id
+  out = rooms.shamo1.id  }
+
+
+
+
+  room_items "shidong" {
+    room_id = rooms.shidong.id
+    items = [
+      { id = items.mei.id },
+      { id = items.chen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/shimen.c by LPCConverter
+# Zone: huanghe
+
+    rooms "shimen" {
+      name = "石门"
+      description = "这里是石门，是西夏的采石场，当地没有别的物产，只有遍地的白玉 石，西夏王宫里的玉石地板就是用这里出产的白玉石铺成的。时常有大批 的苦力被官府征到这儿来，没日没夜的开采白玉石矿，许多人倒下后就没 有再站起来。北面有一座寺庙。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shimen" {
+    room_id = rooms.shimen.id
+  northwest = rooms.guchangcheng.id
+  south = rooms.hongshanxia.id
+  north = rooms.wufosi.id  }
+
+
+  room_characters "shimen" {
+    room_id = rooms.shimen.id
+    characters = [
+      { id = characters.xixiabing.id },
+      { id = characters.caishiren.id },
+      { id = characters.caishiren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/shixiazi.c by LPCConverter
+# Zone: huanghe
+
+    rooms "shixiazi" {
+      name = "石峡子"
+      description = "石峡子是以前的黄河故道，现在遍地是大大小小的鹅卵石，两边 是数丈高的高坡，千沟万壑，向你诉说着世事的沧桑。要是运气好的话 你可以在这里拣到非常漂亮、非常珍贵的雨花石。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shixiazi" {
+    room_id = rooms.shixiazi.id
+  southwest = rooms.tumenzi.id
+  northeast = rooms.bingcao.id  }
+
+
+
+
+  room_items "shixiazi" {
+    room_id = rooms.shixiazi.id
+    items = [
+      { id = items.shitou.id },
+      { id = items.eluanshi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/shulin1.c by LPCConverter
+# Zone: huanghe
+
+    rooms "shulin1" {
+      name = "树林"
+      description = "树林里光线暗淡，只能听见头顶上传来一些鸟儿的啼鸣。偶而从茂 密的叶间透过的一线光伴着落叶在飞舞。朽木腐烂的气味和身後传来野 兽的啸声使人不觉犹豫了前进的脚步。林中立着一块牌子(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ paizi = "非黄河帮众者    擅入格杀勿论"
+}
+    }
+
+  room_exits "shulin1" {
+    room_id = rooms.shulin1.id
+  west = rooms.shulin2.id
+  east = rooms.caodi2.id
+  north = rooms.shulin3.id  }
+
+
+
+
+  room_items "shulin1" {
+    room_id = rooms.shulin1.id
+    items = [
+      { id = items.dushe.id },
+      { id = items.shuzhi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/shulin2.c by LPCConverter
+# Zone: huanghe
+
+    rooms "shulin2" {
+      name = "树林"
+      description = "树林里光线暗淡，只能听见头顶传来一些鸟儿的啼鸣。偶 而从茂密的叶间透过的一线光伴着落叶在飞舞。朽木腐烂的气 味和身後传来野兽的啸声使人不觉犹豫了前进的脚步。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin2" {
+    room_id = rooms.shulin2.id
+  east = rooms.shulin1.id
+  north = rooms.shulin4.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/shulin3.c by LPCConverter
+# Zone: huanghe
+
+    rooms "shulin3" {
+      name = "树林"
+      description = "树林里光线暗淡，只能听见头顶上传来一些鸟儿的啼鸣。偶而从茂 密的叶间透过的一线光伴着落叶在飞舞。朽木腐烂的气味和身後传来野 兽的啸声使人不觉犹豫了前进的脚步。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin3" {
+    room_id = rooms.shulin3.id
+  west = rooms.shulin4.id
+  south = rooms.shulin1.id
+  north = rooms.tiandi1.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/shulin4.c by LPCConverter
+# Zone: huanghe
+
+    rooms "shulin4" {
+      name = "树林"
+      description = "树林里光线暗淡，只能听见头顶传来一些鸟儿的啼鸣。偶 而从茂密的叶间透过的一线光伴着落叶在飞舞。朽木腐烂的气 味和身後传来野兽的啸声使人不觉犹豫了前进的脚步。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin4" {
+    room_id = rooms.shulin4.id
+  northwest = rooms.shulin5.id
+  east = rooms.shulin3.id
+  south = rooms.shulin2.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/shulin5.c by LPCConverter
+# Zone: huanghe
+
+    rooms "shulin5" {
+      name = "树林"
+      description = "树林里光线暗淡，只能听见头顶上传来些鸟儿的啼鸣。偶 而从茂密的叶间透过的一线光伴着落叶在飞舞。朽木腐烂的气 味和身後传来野兽的啸声使人不觉犹豫了前进的脚步。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin5" {
+    room_id = rooms.shulin5.id
+  west = rooms.shulin6.id
+  southeast = rooms.shulin4.id
+  northeast = rooms.tiandi2.id  }
+
+
+  room_characters "shulin5" {
+    room_id = rooms.shulin5.id
+    characters = [
+      { id = characters.tangzi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/shulin6.c by LPCConverter
+# Zone: huanghe
+
+    rooms "shulin6" {
+      name = "树林"
+      description = "树林里光线暗淡，只能听见头顶上传来一些鸟儿的啼鸣。偶而从茂 密的叶间透过的一线光伴着落叶在飞舞。朽木腐烂的气味和身後传来野 兽的啸声使人不觉犹豫了前进的脚步。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin6" {
+    room_id = rooms.shulin6.id
+  east = rooms.shulin5.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/tiandi1.c by LPCConverter
+# Zone: huanghe
+
+    rooms "tiandi1" {
+      name = "田地"
+      description = "这里林木渐渐稀疏，不远处有一些村庄，炊烟袅袅升起。村庄周围 是一块块的田地，田里有一些正在耕作的农人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tiandi1" {
+    room_id = rooms.tiandi1.id
+  south = rooms.shulin3.id
+  west = rooms.tiandi2.id
+  east = rooms.tiandi3.id  }
+
+
+  room_characters "tiandi1" {
+    room_id = rooms.tiandi1.id
+    characters = [
+      { id = characters.poorman.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/tiandi2.c by LPCConverter
+# Zone: huanghe
+
+    rooms "tiandi2" {
+      name = "田地"
+      description = "这里林木渐渐稀疏，不远处有些村庄，炊烟袅袅升起。村 庄周围是一块块的田地，田里有一些正在耕作的农人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tiandi2" {
+    room_id = rooms.tiandi2.id
+  southwest = rooms.shulin5.id
+  east = rooms.tiandi1.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/tiandi3.c by LPCConverter
+# Zone: huanghe
+
+    rooms "tiandi3" {
+      name = "田地"
+      description = "这里是一大片农田。不远处有一些村庄，炊烟袅袅升起。村庄周围 是一块块的田地，田里有一些正在耕作的农人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tiandi3" {
+    room_id = rooms.tiandi3.id
+  west = rooms.tiandi1.id
+  northeast = rooms.tiandi4.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/tiandi4.c by LPCConverter
+# Zone: huanghe
+
+    rooms "tiandi4" {
+      name = "田地"
+      description = "这里是一大片农田。不远处有些村庄，炊烟袅袅升起。村 庄周围是一块块的田地，田里有一些正在耕作的农人。村里不 时传出一声声的犬吠。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tiandi4" {
+    room_id = rooms.tiandi4.id
+  southwest = rooms.tiandi3.id
+  north = rooms.huanghe1.id  }
+
+
+
+
+  room_items "tiandi4" {
+    room_id = rooms.tiandi4.id
+    items = [
+      { id = items.gou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/tumenzi.c by LPCConverter
+# Zone: huanghe
+
+    rooms "tumenzi" {
+      name = "土门子"
+      description = "土门子也是以前驻军的地方，周围全是沙漠，中间一块小小的绿洲， 本来这里有当地的牧民居住，可是前不就来了一伙马贼占据了这里以这 里为大本营四出劫掠，无恶不做。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tumenzi" {
+    room_id = rooms.tumenzi.id
+  south = rooms.wuwei.id
+  northeast = rooms.shixiazi.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/weifen.c by LPCConverter
+# Zone: huanghe
+
+    rooms "weifen" {
+      name = "渭汾流域"
+      description = "汾河和渭河汇入黄河，增大了其水势，也带来了更多的泥 沙。这里河东是晋，河西是陕。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "weifen" {
+    room_id = rooms.weifen.id
+  south = rooms.huanghe1.id
+  north = rooms.huanghe_1.id
+  southwest = rooms.road5.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/wufosi.c by LPCConverter
+# Zone: huanghe
+
+    rooms "wufosi" {
+      name = "五佛寺"
+      description = "这里是一个被废弃的破庙，周围全是沙丘，破庙的寺门已经倒塌，地 上有块半埋在沙里的匾，从剥落的金字上你依稀可以辨别出“五佛寺”三 个字，唯一尚算完整的建筑是大殿，但屋顶上全是窟窿，强劲的西北风吹 过发出难听的“呜---呜---”声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wufosi" {
+    room_id = rooms.wufosi.id
+  south = rooms.shimen.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/wuqiao.c by LPCConverter
+# Zone: huanghe
+
+    rooms "wuqiao" {
+      name = "乌鞘岭"
+      description = "乌鞘岭是武威东南的一个险要地段，黑石山上密林重重，时常有野 兽出没。一条官道从山下蜿蜒而过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuqiao" {
+    room_id = rooms.wuqiao.id
+  south = rooms.dacaigou.id
+  northwest = rooms.wuwei.id  }
+
+
+  room_characters "wuqiao" {
+    room_id = rooms.wuqiao.id
+    characters = [
+      { id = characters.wudong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/wuwei.c by LPCConverter
+# Zone: huanghe
+
+    rooms "wuwei" {
+      name = "武威"
+      description = "武威是西夏国的西南重镇，驻有重兵，城楼高达三丈，门口有两排 官兵正在认真的盘查过往行人，城门口的告示上画着最近通缉的江洋大 盗的图形，城里头看上去还挺热闹。东南就是去永登的方向了，西南面 就是祁连山脉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuwei" {
+    room_id = rooms.wuwei.id
+  southeast = rooms.wuqiao.id
+  north = rooms.tumenzi.id  }
+
+
+  room_characters "wuwei" {
+    room_id = rooms.wuwei.id
+    characters = [
+      { id = characters.xixiabing.id },
+      { id = characters.xixiabing.id },
+      { id = characters.xixiabing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/xiaojiaqiao.c by LPCConverter
+# Zone: huanghe
+
+    rooms "xiaojiaqiao" {
+      name = "萧家桥"
+      description = "在兰州和古浪中间，纪永河水咆哮而过，河水湍激，河床 最宽处九丈四尺，窄处七丈余，度船难过。相传汉年间，本地 一位萧姓大财主，穷六年之功，遍集巧匠，费尽家私，方建成 桥，欲到兰州，必先度本桥。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaojiaqiao" {
+    room_id = rooms.xiaojiaqiao.id
+  east = rooms.gulang.id
+  south = rooms.river_bei.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/xiayiting.c by LPCConverter
+# Zone: huanghe
+
+    rooms "xiayiting" {
+      name = "侠义厅"
+      description = "这是黄河帮议事的大厅，厅上挂着「侠义厅」三字匾额。厅里靠 北朝南放着一张虎皮交椅，两边摆设着几副红木桌椅，非常有气派。 墙上附庸风雅地挂了几幅丹青书法。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiayiting" {
+    room_id = rooms.xiayiting.id
+  east = rooms.guangchang.id  }
+
+
+  room_characters "xiayiting" {
+    room_id = rooms.xiayiting.id
+    characters = [
+      { id = characters.sha.id },
+      { id = characters.peng.id },
+      { id = characters.liang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/xueguan.c by LPCConverter
+# Zone: huanghe
+
+    rooms "xueguan" {
+      name = "学馆"
+      description = "一间简陋的私塾，四壁皆空，屋子中摆满了学生从自己家里抬来的 方桌、长凳。一张书案放在屋子的一头，案上摆着几本翻开了的〖三字 经〗、〖百家姓〗和一把戒尺。至圣先师孔老夫子的石刻拓片侧身像贴 在书案的後面。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xueguan" {
+    room_id = rooms.xueguan.id
+  south = rooms.gulang.id  }
+
+
+  room_characters "xueguan" {
+    room_id = rooms.xueguan.id
+    characters = [
+      { id = characters.xiucai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/yaocaidian.c by LPCConverter
+# Zone: huanghe
+
+    rooms "yaocaidian" {
+      name = "皮货药材店"
+      description = "这是古浪城里唯一的一家店铺，一踏进铺内就可闻到一股淡淡的膻 味，隐隐可以看见堆放在后院翻晒的各式皮货，怕有不下千余件。在西 墙边，立了一个大红木药柜，里面盛放了草药。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yaocaidian" {
+    room_id = rooms.yaocaidian.id
+  west = rooms.gulang.id  }
+
+
+  room_characters "yaocaidian" {
+    room_id = rooms.yaocaidian.id
+    characters = [
+      { id = characters.huoji.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/yinpanshui.c by LPCConverter
+# Zone: huanghe
+
+    rooms "yinpanshui" {
+      name = "营盘水"
+      description = "这里是当年蒙恬修长城时驻军的地方，蒙恬治军有方，当年他亲 自带人在驻地挖了好几口甜水井，使士卒们不用喝又苦又涩的咸水， 后来此地的百姓们叫这里为营盘水，称这里的井为“蒙恬井”。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinpanshui" {
+    room_id = rooms.yinpanshui.id
+  southwest = rooms.bingcao.id
+  northeast = rooms.guchangcheng.id  }
+
+# Generated from C:/files/git/mud/d/huanghe/yongdeng.c by LPCConverter
+# Zone: huanghe
+
+    rooms "yongdeng" {
+      name = "永登"
+      description = "这里就是西北的军事重镇永登。一座孤城耸立在茫茫荒野之上。此 城建于汉光武年间，据闻大将军霍去病曾在此练兵三年，后一举平定大 西北。历代而来，这里都有军队长驻。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yongdeng" {
+    room_id = rooms.yongdeng.id
+  southup = rooms.tulu4.id
+  north = rooms.gulang.id
+  east = rooms.huanghe_3.id
+  west = rooms.kedian.id  }
+
+
+  room_characters "yongdeng" {
+    room_id = rooms.yongdeng.id
+    characters = [
+      { id = characters.wujiang.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/bangzong.c by LPCConverter
+# Zone: huanghe
+
+    characters "bangzong" {
+      name = "大汉"
+      description = "一名身材高大的壮汉，满脸杀气，一付凶神恶煞的模样。"
+  title = "黄河帮帮众"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000
+    dex = 16
+    max_neili = 100
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "force" level = 30 },
+    { skill = "axe" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/caishiren.c by LPCConverter
+# Zone: huanghe
+
+    characters "caishiren" {
+      name = "采石人"
+      description = "这是一个精壮汉子。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 6000
+    dex = 16
+    str = 25
+  }
+
+  carry = [
+    { id = items.tieqiao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/hou.c by LPCConverter
+# Zone: huanghe
+
+    characters "hou" {
+      name = "侯通海"
+      description = "侯通海是个青脸瘦子，面颊极长，额角上肿起了三个大肉瘤，非 常难看。"
+  nickname = "三头蛟"
+  gender = "男性"
+  age = 43
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "club" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.fork.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/huoji.c by LPCConverter
+# Zone: huanghe
+
+    characters "huoji" {
+      name = "伙计"
+      description = "他是这儿的伙计，正在店里忙里忙外。"
+  gender = "男性"
+  age = 18
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 250
+    str = 20
+  }
+
+  # vendor_goods: "/d/city/obj/goupi" (file not found)
+  # vendor_goods: "/d/city/obj/beixin" (file not found)
+  # vendor_goods: "/clone/misc/gaoyao" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/liang.c by LPCConverter
+# Zone: huanghe
+
+    characters "liang" {
+      name = "梁子翁"
+      description = "梁子翁身材中等，满头白发如银，但脸色光润，神采弈弈，穿一 件葛布长袍，打扮非道非俗。他是长白山武学的一派宗师。"
+  nickname = "参仙老怪"
+  gender = "男性"
+  age = 43
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 200000
+    dex = 16
+    max_neili = 800
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.changpao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/ma.c by LPCConverter
+# Zone: huanghe
+
+    characters "ma" {
+      name = "马青雄"
+      description = "马青雄是黄河四鬼的老三，是鬼门龙王沙通天的三弟子，擅 于鞭法。"
+  title = "黄河四鬼老三"
+  nickname = "夺魄鞭"
+  gender = "男性"
+  age = 32
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "force" level = 30 },
+    { skill = "whip" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.changbian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/mazei.c by LPCConverter
+# Zone: huanghe
+
+    characters "mazei" {
+      name = "马贼"
+      description = "一个彪悍的马贼。"
+  gender = "男性"
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.tiejia.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "马贼横刀当道，一声大喊：此山是我开，此树是我栽，若要 从此过，留下买路财 !" },
+    { line = "马贼说道：识相点儿，宝贝儿留下来就让你小子走！" }
+  ]
+
+  accept = [
+    { kind = "money" min = 5000 accept = true msg = "马贼大喊一声：既然交了钱，就请马前过。" },
+    { kind = "any" accept = false msg = ["马贼大喊一声：既然交了钱，就请马前过。", "马贼大怒：就这么点钱？"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/menmian.c by LPCConverter
+# Zone: huanghe
+
+    characters "menmian" {
+      name = "蒙面人"
+      description = "一个黑布蒙面，神秘兮兮的家伙。"
+  gender = "男性"
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "force" level = 30 },
+    { skill = "dagger" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.fenshuici.id },
+    { id = items.shuikao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/peng.c by LPCConverter
+# Zone: huanghe
+
+    characters "peng" {
+      name = "彭连虎"
+      description = "彭连虎五短身材，满眼红丝，目光如电，上唇短须翘起。他生性 残暴，和沙通天有深厚的交情。"
+  nickname = "千手人屠"
+  gender = "男性"
+  age = 43
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 200000
+    dex = 16
+    max_neili = 800
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "dagger" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.bi.id },
+    { id = items.beixin.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/qian.c by LPCConverter
+# Zone: huanghe
+
+    characters "qian" {
+      name = "钱青健"
+      description = "钱青健是黄河四鬼的老四，是鬼门龙王沙通天的四弟子，擅 于斧法。"
+  title = "黄河四鬼老四"
+  nickname = "丧门斧"
+  gender = "男性"
+  age = 32
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "force" level = 30 },
+    { skill = "axe" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.axe.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/qiaofu.c by LPCConverter
+# Zone: huanghe
+
+    characters "qiaofu" {
+      name = "樵夫"
+      description = "这是一个精壮老汉。"
+  gender = "男性"
+  age = 52
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 5000
+    dex = 16
+    str = 25
+  }
+
+  carry = [
+    { id = items.futou.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/sha.c by LPCConverter
+# Zone: huanghe
+
+    characters "sha" {
+      name = "沙通天"
+      description = "沙通天是个秃子，头上油光光地没半根头发，双目布满红丝，眼 珠突出，生就一副异相。性子暴躁，武功却是出奇地高，江湖上 无人不晓。"
+  title = "黄河帮帮主"
+  nickname = "鬼门龙王"
+  gender = "男性"
+  age = 43
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 200000
+    dex = 16
+    max_neili = 800
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "club" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.tiejiang.id },
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/shen.c by LPCConverter
+# Zone: huanghe
+
+    characters "shen" {
+      name = "沈青刚"
+      description = "沈青刚是黄河四鬼的老大，是鬼门龙王沙通天的大弟子，擅 使单刀。"
+  title = "黄河四鬼老大"
+  nickname = "断魂刀"
+  gender = "男性"
+  age = 32
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "force" level = 30 },
+    { skill = "blade" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/wu.c by LPCConverter
+# Zone: huanghe
+
+    characters "wu" {
+      name = "吴青烈"
+      description = "吴青烈是黄河四鬼的老二，是鬼门龙王沙通天的二弟子，擅 使长枪。"
+  title = "黄河四鬼老二"
+  nickname = "追命枪"
+  gender = "男性"
+  age = 32
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "force" level = 30 },
+    { skill = "club" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.changqiang.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/wudong.c by LPCConverter
+# Zone: huanghe
+
+    characters "wudong" {
+      name = "无洞上人"
+      description = ""
+  nickname = "祁连山"
+  gender = "男性"
+  age = 42
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000000
+    con = 38
+    dex = 33
+    int = 35
+    max_jing = 3000
+    max_neili = 6000
+    max_qi = 5200
+    str = 33
+  }
+
+  inquiries = [
+    { key = "祁连五绝指" value = "这正是在下的绝学，阁下为何知晓？" }
+  ]
+
+  skills = [
+    { skill = "force" level = 280 },
+    { skill = "hunyuan-yiqi" level = 280 },
+    { skill = "dodge" level = 280 },
+    { skill = "lingxu-bu" level = 280 },
+    { skill = "parry" level = 280 },
+    { skill = "qilian-zhi" level = 320 },
+    { skill = "finger" level = 320 },
+    { skill = "literate" level = 220 },
+    { skill = "martial-cognize" level = 220 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "qilian-zhi" },
+    { type = "finger" skill = "qilian-zhi" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/xiucai.c by LPCConverter
+# Zone: huanghe
+
+    characters "xiucai" {
+      name = "老秀才"
+      description = "一个穷困潦倒的落第秀才，在这里开堂授课为生。"
+  gender = "男性"
+  age = 65
+  shen_type = 1
+
+  combat = {
+    combat_exp = 40000
+  }
+
+  skills = [
+    { skill = "literate" level = 100 },
+    { skill = "taoism" level = 100 },
+    { skill = "unarmed" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 80 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "money" min = 5000 accept = true msg = "老秀才同意指点{npc}一些问题。" },
+    { kind = "any" accept = false msg = ["老秀才同意指点{npc}一些问题。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/xixiabing.c by LPCConverter
+# Zone: huanghe
+
+    characters "xixiabing" {
+      name = "西夏兵"
+      description = "一个魁武的西夏士兵。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 8000
+    dex = 16
+    max_neili = 100
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "force" level = 30 },
+    { skill = "club" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.changqiang.id },
+    { id = items.junfu.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/zu.c by LPCConverter
+# Zone: huanghe
+
+    characters "zu" {
+      name = "祖千秋"
+      description = "一个衣衫褴偻的落魄书生。焦黄脸皮，一个酒糟鼻，疏疏落落的 几根胡子，两眼无神。衣衫上一片油光，右手拿了一把破折扇。"
+  title = "黄河老祖"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 52
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 30
+    int = 25
+    max_jing = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "literate" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "unarmed" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/axe.c by LPCConverter
+# Zone: huanghe
+
+    characters "axe" {
+      name = "丧门斧"
+      description = "这是一杆三尖开刃的三股叉。"
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/bi.c by LPCConverter
+# Zone: huanghe
+
+    characters "bi" {
+      name = "判官笔"
+      description = "这是一枝精铁打就的判官笔。"
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/changpao.c by LPCConverter
+# Zone: huanghe
+
+    characters "changpao" {
+      name = "葛布长袍"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/fenshuici.c by LPCConverter
+# Zone: huanghe
+
+    characters "fenshuici" {
+      name = "分水刺"
+      description = "这是一只水中分水峨嵋刺。"
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/fork.c by LPCConverter
+# Zone: huanghe
+
+    characters "fork" {
+      name = "三股叉"
+      description = "这是一杆三尖开刃的三股叉。"
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/futou.c by LPCConverter
+# Zone: huanghe
+
+    characters "futou" {
+      name = "大斧头"
+      description = "这是一把砍柴的大斧头。"
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/shuikao.c by LPCConverter
+# Zone: huanghe
+
+    characters "shuikao" {
+      name = "夜行水靠"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/huanghe/npc/obj/tieqiao.c by LPCConverter
+# Zone: huanghe
+
+    characters "tieqiao" {
+      name = "铁锹"
+      description = "这是一把挖矿的铁锹。"
+    }
