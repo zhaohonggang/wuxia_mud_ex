@@ -1,0 +1,5534 @@
+zones "death" {
+  name = "death"
+}
+
+# Generated from C:/files/git/mud/d/death/baihuxue.c by LPCConverter
+# Zone: death
+
+    rooms "baihuxue" {
+      name = "【白虎穴】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baihuxue" {
+    room_id = rooms.baihuxue.id
+  south = rooms.exit.id  }
+
+
+  room_characters "baihuxue" {
+    room_id = rooms.baihuxue.id
+    characters = [
+      { id = characters.baihu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/block.c by LPCConverter
+# Zone: death
+
+    rooms "block" {
+      name = "空房间"
+      description = "你完了..."
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/death/diyin.c by LPCConverter
+# Zone: death
+
+    rooms "diyin" {
+      name = "【 地 阴 】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ jingti = "一块血红色的巨大晶体，发出血色光芒，你忍不住想敲(qiao)一块下来。"
+}
+    }
+
+  room_exits "diyin" {
+    room_id = rooms.diyin.id
+  up = rooms.diyin_road2.id  }
+
+# Generated from C:/files/git/mud/d/death/diyin_road1.c by LPCConverter
+# Zone: death
+
+    rooms "diyin_road1" {
+      name = "【地阴通道】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+  direction = ~
+  message = "你向下走着这深不见底的阶梯……只觉阶梯似乎在无限延伸，永远到达不了尽头一般。"
+}
+
+]
+    }
+
+  room_exits "diyin_road1" {
+    room_id = rooms.diyin_road1.id
+  up = rooms.lunhuisi.id
+  down = rooms.diyin_road2.id  }
+
+# Generated from C:/files/git/mud/d/death/diyin_road2.c by LPCConverter
+# Zone: death
+
+    rooms "diyin_road2" {
+      name = "【地阴通道】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+  direction = ~
+  message = "你攀爬着这段一眼望不到头的阶梯……只觉阶梯似乎在无限延伸，永远到达不了尽头一般。"
+}
+
+]
+    }
+
+  room_exits "diyin_road2" {
+    room_id = rooms.diyin_road2.id
+  up = rooms.diyin_road1.id
+  down = rooms.diyin.id  }
+
+# Generated from C:/files/git/mud/d/death/emptyroom.c by LPCConverter
+# Zone: death
+
+    rooms "emptyroom" {
+      name = "背阴山后"
+      description = "这里是阴司背阴山下，周围一片荒凉，不见草木，一片寂静中 只有阴风呼呼地刮着。山脚下淡发红光鬼焰，传说中的阴司十 八层地狱就在那里。从没有人从那里活着出去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/death/gate.c by LPCConverter
+# Zone: death
+
+    rooms "gate" {
+      name = "【鬼门关】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "gate" {
+    room_id = rooms.gate.id
+  north = rooms.gateway.id  }
+
+
+  room_characters "gate" {
+    room_id = rooms.gate.id
+    characters = [
+      { id = characters.bai.id },
+      { id = characters.ghost.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/gateway.c by LPCConverter
+# Zone: death
+
+    rooms "gateway" {
+      name = "【酆都城门】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+  direction = "south"
+  message = "一个空洞的声音在你耳边响起……没有回头路了……"
+}
+
+]
+    }
+
+  room_exits "gateway" {
+    room_id = rooms.gateway.id
+  north = rooms.road1.id
+  south = rooms.gate.id  }
+
+
+  room_characters "gateway" {
+    room_id = rooms.gateway.id
+    characters = [
+      { id = characters.hei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/god1.c by LPCConverter
+# Zone: death
+
+    rooms "god1" {
+      name = "天堂"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/death/god2.c by LPCConverter
+# Zone: death
+
+    rooms "god2" {
+      name = "圣殿"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/death/hantan1.c by LPCConverter
+# Zone: death
+
+    rooms "hantan1" {
+      name = "【碧水寒潭】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hantan1" {
+    room_id = rooms.hantan1.id
+  east = rooms.hantan1.id
+  west = rooms.hantan1.id
+  south = rooms.hantan1.id
+  north = rooms.hantan2.id  }
+
+# Generated from C:/files/git/mud/d/death/hantan2.c by LPCConverter
+# Zone: death
+
+    rooms "hantan2" {
+      name = "【碧水寒潭】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hantan2" {
+    room_id = rooms.hantan2.id
+  east = rooms.hantan1.id
+  west = rooms.hantan2.id
+  south = rooms.hantan3.id
+  north = rooms.hantan2.id  }
+
+# Generated from C:/files/git/mud/d/death/hantan3.c by LPCConverter
+# Zone: death
+
+    rooms "hantan3" {
+      name = "【碧水寒潭】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hantan3" {
+    room_id = rooms.hantan3.id
+  east = rooms.hantan3.id
+  west = rooms.hantan4.id
+  south = rooms.hantan2.id
+  north = rooms.hantan1.id  }
+
+# Generated from C:/files/git/mud/d/death/hantan4.c by LPCConverter
+# Zone: death
+
+    rooms "hantan4" {
+      name = "【碧水寒潭】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hantan4" {
+    room_id = rooms.hantan4.id
+  east = rooms.hantan2.id
+  west = rooms.hantan3.id
+  south = rooms.hantan1.id
+  north = rooms.hantan5.id  }
+
+# Generated from C:/files/git/mud/d/death/hantan5.c by LPCConverter
+# Zone: death
+
+    rooms "hantan5" {
+      name = "【碧水寒潭】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hantan5" {
+    room_id = rooms.hantan5.id
+  east = rooms.hantan4.id
+  west = rooms.hantan6.id
+  south = rooms.hantan5.id
+  north = rooms.hantan6.id  }
+
+# Generated from C:/files/git/mud/d/death/hantan6.c by LPCConverter
+# Zone: death
+
+    rooms "hantan6" {
+      name = "【碧水寒潭】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hantan6" {
+    room_id = rooms.hantan6.id
+  east = rooms.hantan1.id
+  west = rooms.hantan3.id
+  south = rooms.hantan7.id
+  north = rooms.hantan1.id  }
+
+# Generated from C:/files/git/mud/d/death/hantan7.c by LPCConverter
+# Zone: death
+
+    rooms "hantan7" {
+      name = "【碧水寒潭】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hantan7" {
+    room_id = rooms.hantan7.id
+  east = rooms.hantan8.id
+  west = rooms.hantan3.id
+  south = rooms.hantan2.id
+  north = rooms.hantan6.id  }
+
+# Generated from C:/files/git/mud/d/death/hantan8.c by LPCConverter
+# Zone: death
+
+    rooms "hantan8" {
+      name = "【碧水寒潭】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hantan8" {
+    room_id = rooms.hantan8.id
+  in = rooms.qinglongtan.id
+  east = rooms.hantan1.id
+  west = rooms.hantan1.id
+  south = rooms.hantan1.id
+  north = rooms.hantan1.id  }
+
+# Generated from C:/files/git/mud/d/death/inn1.c by LPCConverter
+# Zone: death
+
+    rooms "inn1" {
+      name = "【小店】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "inn1" {
+    room_id = rooms.inn1.id
+  east = rooms.road1.id  }
+
+
+  room_characters "inn1" {
+    room_id = rooms.inn1.id
+    characters = [
+      { id = characters.ghost.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/inn2.c by LPCConverter
+# Zone: death
+
+    rooms "inn2" {
+      name = "【黑店】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "inn2" {
+    room_id = rooms.inn2.id
+  west = rooms.road1.id  }
+
+
+  room_characters "inn2" {
+    room_id = rooms.inn2.id
+    characters = [
+      { id = characters.ghost.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/jimiesi.c by LPCConverter
+# Zone: death
+
+    rooms "jimiesi" {
+      name = "【寂灭司】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ table = "一个青石制成的桌案，上面有几许裂缝，看样子已搁在这里很久了。"
+}
+    }
+
+  room_exits "jimiesi" {
+    room_id = rooms.jimiesi.id
+  east = rooms.lunhuisi_road1.id
+  west = rooms.yanluodian.id
+  north = rooms.entry.id  }
+
+# Generated from C:/files/git/mud/d/death/lunhuisi.c by LPCConverter
+# Zone: death
+
+    rooms "lunhuisi" {
+      name = "【轮回司】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ table = "一个青石制成的桌案，上面有几许裂缝，看样子已搁在这里很久了。"
+}
+    }
+
+  room_exits "lunhuisi" {
+    room_id = rooms.lunhuisi.id
+  out = rooms.lunhuisi_road1.id  }
+
+# Generated from C:/files/git/mud/d/death/lunhuisi_road1.c by LPCConverter
+# Zone: death
+
+    rooms "lunhuisi_road1" {
+      name = "【轮回道】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ door = "一扇厚厚的铜门，上面布满了蛛网和灰尘。"
+}
+    }
+
+  room_exits "lunhuisi_road1" {
+    room_id = rooms.lunhuisi_road1.id
+  in = rooms.lunhuisi.id
+  west = rooms.jimiesi.id  }
+
+# Generated from C:/files/git/mud/d/death/qiao1.c by LPCConverter
+# Zone: death
+
+    rooms "qiao1" {
+      name = "【奈河桥】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：! me->query_temp("last_eat/mengpo_tang") && me->query_skill("force") < 500 && objectp(present("meng po", environment(me))) 
+direction = ~
+  message = "孟婆说道：这位，你还是请回吧。"
+}
+
+]
+    }
+
+  room_exits "qiao1" {
+    room_id = rooms.qiao1.id
+  north = rooms.qiao2.id
+  south = rooms.road6.id  }
+
+
+  room_characters "qiao1" {
+    room_id = rooms.qiao1.id
+    characters = [
+      { id = characters.mengpo.id },
+      { id = characters.ghost.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/qiao2.c by LPCConverter
+# Zone: death
+
+    rooms "qiao2" {
+      name = "【奈河桥】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ north = "奈河桥的另一端被烟雾所笼罩，仿佛没有尽头，你什么都看不清。"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：objectp(present("niu tou", environment(me)))
+direction = ~
+  message = "牛头看了你一眼，喝道：你还不滚回去还阳，来这里凑什么热闹！"
+}
+
+]
+    }
+
+  room_exits "qiao2" {
+    room_id = rooms.qiao2.id
+  north = rooms.youmingjie.id
+  south = rooms.qiao1.id  }
+
+
+  room_characters "qiao2" {
+    room_id = rooms.qiao2.id
+    characters = [
+      { id = characters.niutou.id },
+      { id = characters.ghost.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/qinglongtan.c by LPCConverter
+# Zone: death
+
+    rooms "qinglongtan" {
+      name = "【青龙洞】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ xuanwo = "一股由寒流形成的旋涡，你似乎可以通过它回到地面。"
+}
+    }
+
+
+
+  room_items "qinglongtan" {
+    room_id = rooms.qinglongtan.id
+    items = [
+      { id = items.shuizao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/road1.c by LPCConverter
+# Zone: death
+
+    rooms "road1" {
+      name = "【鬼门大道】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road1" {
+    room_id = rooms.road1.id
+  north = rooms.road2.id
+  south = rooms.gateway.id
+  west = rooms.inn1.id
+  east = rooms.inn2.id  }
+
+# Generated from C:/files/git/mud/d/death/road2.c by LPCConverter
+# Zone: death
+
+    rooms "road2" {
+      name = "【鬼门大道】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road2" {
+    room_id = rooms.road2.id
+  north = rooms.road3.id
+  south = rooms.road1.id  }
+
+# Generated from C:/files/git/mud/d/death/road3.c by LPCConverter
+# Zone: death
+
+    rooms "road3" {
+      name = "【鬼门大道】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road3" {
+    room_id = rooms.road3.id
+  north = rooms.road4.id
+  south = rooms.road2.id  }
+
+# Generated from C:/files/git/mud/d/death/road4.c by LPCConverter
+# Zone: death
+
+    rooms "road4" {
+      name = "【鬼门大道】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road4" {
+    room_id = rooms.road4.id
+  north = rooms.road5.id
+  south = rooms.road3.id  }
+
+# Generated from C:/files/git/mud/d/death/road5.c by LPCConverter
+# Zone: death
+
+    rooms "road5" {
+      name = "【鬼门大道】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+  direction = ~
+  message = "你走著走著……发现四周景色居然都没有变……"
+}
+
+]
+    }
+
+  room_exits "road5" {
+    room_id = rooms.road5.id
+  north = rooms.road6.id
+  south = rooms.road4.id  }
+
+# Generated from C:/files/git/mud/d/death/road6.c by LPCConverter
+# Zone: death
+
+    rooms "road6" {
+      name = "【鬼门大道】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road6" {
+    room_id = rooms.road6.id
+  north = rooms.qiao1.id
+  south = rooms.road5.id  }
+
+# Generated from C:/files/git/mud/d/death/xuechi1.c by LPCConverter
+# Zone: death
+
+    rooms "xuechi1" {
+      name = "血池地狱"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：! present("qilin xue", me) || ! objectp(ob = me->query_temp("armor/boots")) || ob->query("id") != "qilin xue"
+direction = ~
+  message = "你没有穿麒麟靴无法进入沸腾的血池中！"
+}
+
+]
+    }
+
+  room_exits "xuechi1" {
+    room_id = rooms.xuechi1.id
+  south = rooms.yanluodian.id
+  down = rooms.xuechi2.id  }
+
+# Generated from C:/files/git/mud/d/death/xuechi2.c by LPCConverter
+# Zone: death
+
+    rooms "xuechi2" {
+      name = "血池地狱"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xuechi2" {
+    room_id = rooms.xuechi2.id
+  up = rooms.xuechi1.id  }
+
+
+  room_characters "xuechi2" {
+    room_id = rooms.xuechi2.id
+    characters = [
+      { id = characters.xuanwu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/yanluodian.c by LPCConverter
+# Zone: death
+
+    rooms "yanluodian" {
+      name = "阎罗殿"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：objectp(present("dizang", environment(me))) && ! me->query("hell_quest/锁阳丹") && ! me->query("DiZangPass")
+direction = ~
+  message = "地藏王看了你一眼，喝道：你还不滚回去还阳，来这里凑什么热闹！"
+}
+
+]
+    }
+
+  room_exits "yanluodian" {
+    room_id = rooms.yanluodian.id
+  east = rooms.jimiesi.id
+  south = rooms.youmingdian.id
+  west = rooms.yinyangta1.id
+  north = rooms.xuechi1.id  }
+
+
+  room_characters "yanluodian" {
+    room_id = rooms.yanluodian.id
+    characters = [
+      { id = characters.dizangwang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta1.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta1" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta1" {
+    room_id = rooms.yinyangta1.id
+  up = rooms.yinyangta2.id
+  east = rooms.yanluodian.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta10.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta10" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta10" {
+    room_id = rooms.yinyangta10.id
+  up = rooms.yinyangta11.id
+  down = rooms.yinyangta9.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta11.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta11" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta11" {
+    room_id = rooms.yinyangta11.id
+  up = rooms.yinyangta12.id
+  down = rooms.yinyangta10.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta12.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta12" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta12" {
+    room_id = rooms.yinyangta12.id
+  up = rooms.yinyangta13.id
+  down = rooms.yinyangta11.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta13.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta13" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta13" {
+    room_id = rooms.yinyangta13.id
+  up = rooms.yinyangta14.id
+  down = rooms.yinyangta12.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta14.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta14" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta14" {
+    room_id = rooms.yinyangta14.id
+  up = rooms.yinyangta15.id
+  down = rooms.yinyangta13.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta15.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta15" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta15" {
+    room_id = rooms.yinyangta15.id
+  up = rooms.yinyangta16.id
+  down = rooms.yinyangta14.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta16.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta16" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta16" {
+    room_id = rooms.yinyangta16.id
+  up = rooms.yinyangta17.id
+  down = rooms.yinyangta15.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta17.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta17" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：objectp(present("ma mian", environment(me)))
+direction = ~
+  message = "马面看了你一眼，喝道：你还不滚回去还阳，来这里凑什么热闹！"
+}
+
+]
+    }
+
+  room_exits "yinyangta17" {
+    room_id = rooms.yinyangta17.id
+  up = rooms.yinyangta18.id
+  down = rooms.yinyangta16.id  }
+
+
+  room_characters "yinyangta17" {
+    room_id = rooms.yinyangta17.id
+    characters = [
+      { id = characters.mamian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta18.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta18" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ stone = "上面好象可以放(put)物品。"
+}
+    }
+
+  room_exits "yinyangta18" {
+    room_id = rooms.yinyangta18.id
+  down = rooms.yinyangta17.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta2.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta2" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta2" {
+    room_id = rooms.yinyangta2.id
+  up = rooms.yinyangta3.id
+  down = rooms.yinyangta1.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta3.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta3" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta3" {
+    room_id = rooms.yinyangta3.id
+  up = rooms.yinyangta4.id
+  down = rooms.yinyangta2.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta4.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta4" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta4" {
+    room_id = rooms.yinyangta4.id
+  up = rooms.yinyangta5.id
+  down = rooms.yinyangta3.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta5.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta5" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta5" {
+    room_id = rooms.yinyangta5.id
+  up = rooms.yinyangta6.id
+  down = rooms.yinyangta4.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta6.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta6" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta6" {
+    room_id = rooms.yinyangta6.id
+  up = rooms.yinyangta7.id
+  down = rooms.yinyangta5.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta7.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta7" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta7" {
+    room_id = rooms.yinyangta7.id
+  up = rooms.yinyangta8.id
+  down = rooms.yinyangta6.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta8.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta8" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta8" {
+    room_id = rooms.yinyangta8.id
+  up = rooms.yinyangta9.id
+  down = rooms.yinyangta7.id  }
+
+# Generated from C:/files/git/mud/d/death/yinyangta9.c by LPCConverter
+# Zone: death
+
+    rooms "yinyangta9" {
+      name = "阴阳塔"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yinyangta9" {
+    room_id = rooms.yinyangta9.id
+  up = rooms.yinyangta10.id
+  down = rooms.yinyangta8.id  }
+
+# Generated from C:/files/git/mud/d/death/youmingdian.c by LPCConverter
+# Zone: death
+
+    rooms "youmingdian" {
+      name = "幽冥殿"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：! me->query("hell_quest/锁阳丹") && ! me->query("HellZhenPass")
+direction = ~
+  message = "十殿阎罗看了你一眼，喝道：你还不滚回去还阳，来这里凑什么热闹！"
+}
+
+]
+    }
+
+  room_exits "youmingdian" {
+    room_id = rooms.youmingdian.id
+  south = rooms.youmingjie.id
+  north = rooms.yanluodian.id  }
+
+
+  room_characters "youmingdian" {
+    room_id = rooms.youmingdian.id
+    characters = [
+      { id = characters.yanluo.id },
+      { id = characters.yinchangsheng.id },
+      { id = characters.wangfangping.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/youmingjie.c by LPCConverter
+# Zone: death
+
+    rooms "youmingjie" {
+      name = "幽冥界"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "youmingjie" {
+    room_id = rooms.youmingjie.id
+  north = rooms.youmingdian.id
+  south = rooms.qiao2.id  }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/1.c by LPCConverter
+# Zone: death
+
+    characters "1" {
+      name = "NPC"
+      description = ""
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "mizong-neigong" level = 600 },
+    { skill = "unarmed" level = 600 },
+    { skill = "longxiang-gong" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "shenkong-xing" level = 600 },
+    { skill = "hammer" level = 600 },
+    { skill = "riyue-lun" level = 600 },
+    { skill = "staff" level = 600 },
+    { skill = "xiangmo-chu" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "mingwang-jian" level = 600 },
+    { skill = "dagger" level = 600 },
+    { skill = "finger" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "dashou-yin" level = 600 },
+    { skill = "cuff" level = 600 },
+    { skill = "yujiamu-quan" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "lamaism" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "sanscrit" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "longxiang-gong" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "parry" skill = "longxiang-gong" },
+    { type = "unarmed" skill = "longxiang-gong" },
+    { type = "hammer" skill = "riyue-lun" },
+    { type = "dagger" skill = "poxu-daxuefa" },
+    { type = "sword" skill = "mingwang-jian" },
+    { type = "finger" skill = "poxu-daxuefa" },
+    { type = "hand" skill = "dashou-yin" },
+    { type = "cuff" skill = "yujiamu-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/10.c by LPCConverter
+# Zone: death
+
+    characters "10" {
+      name = "NPC"
+      description = ""
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "mizong-neigong" level = 600 },
+    { skill = "unarmed" level = 600 },
+    { skill = "longxiang-gong" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "shenkong-xing" level = 600 },
+    { skill = "hammer" level = 600 },
+    { skill = "riyue-lun" level = 600 },
+    { skill = "staff" level = 600 },
+    { skill = "xiangmo-chu" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "mingwang-jian" level = 600 },
+    { skill = "dagger" level = 600 },
+    { skill = "finger" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "dashou-yin" level = 600 },
+    { skill = "cuff" level = 600 },
+    { skill = "yujiamu-quan" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "lamaism" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "sanscrit" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "longxiang-gong" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "parry" skill = "longxiang-gong" },
+    { type = "unarmed" skill = "longxiang-gong" },
+    { type = "hammer" skill = "riyue-lun" },
+    { type = "dagger" skill = "poxu-daxuefa" },
+    { type = "sword" skill = "mingwang-jian" },
+    { type = "finger" skill = "poxu-daxuefa" },
+    { type = "hand" skill = "dashou-yin" },
+    { type = "cuff" skill = "yujiamu-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/11.c by LPCConverter
+# Zone: death
+
+    characters "11" {
+      name = "NPC"
+      description = ""
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "mizong-neigong" level = 600 },
+    { skill = "unarmed" level = 600 },
+    { skill = "longxiang-gong" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "shenkong-xing" level = 600 },
+    { skill = "hammer" level = 600 },
+    { skill = "riyue-lun" level = 600 },
+    { skill = "staff" level = 600 },
+    { skill = "xiangmo-chu" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "mingwang-jian" level = 600 },
+    { skill = "dagger" level = 600 },
+    { skill = "finger" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "dashou-yin" level = 600 },
+    { skill = "cuff" level = 600 },
+    { skill = "yujiamu-quan" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "lamaism" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "sanscrit" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "longxiang-gong" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "parry" skill = "longxiang-gong" },
+    { type = "unarmed" skill = "longxiang-gong" },
+    { type = "hammer" skill = "riyue-lun" },
+    { type = "dagger" skill = "poxu-daxuefa" },
+    { type = "sword" skill = "mingwang-jian" },
+    { type = "finger" skill = "poxu-daxuefa" },
+    { type = "hand" skill = "dashou-yin" },
+    { type = "cuff" skill = "yujiamu-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/12.c by LPCConverter
+# Zone: death
+
+    characters "12" {
+      name = "NPC"
+      description = ""
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "mizong-neigong" level = 600 },
+    { skill = "unarmed" level = 600 },
+    { skill = "longxiang-gong" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "shenkong-xing" level = 600 },
+    { skill = "hammer" level = 600 },
+    { skill = "riyue-lun" level = 600 },
+    { skill = "staff" level = 600 },
+    { skill = "xiangmo-chu" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "mingwang-jian" level = 600 },
+    { skill = "dagger" level = 600 },
+    { skill = "finger" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "dashou-yin" level = 600 },
+    { skill = "cuff" level = 600 },
+    { skill = "yujiamu-quan" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "lamaism" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "sanscrit" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "longxiang-gong" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "parry" skill = "longxiang-gong" },
+    { type = "unarmed" skill = "longxiang-gong" },
+    { type = "hammer" skill = "riyue-lun" },
+    { type = "dagger" skill = "poxu-daxuefa" },
+    { type = "sword" skill = "mingwang-jian" },
+    { type = "finger" skill = "poxu-daxuefa" },
+    { type = "hand" skill = "dashou-yin" },
+    { type = "cuff" skill = "yujiamu-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/13.c by LPCConverter
+# Zone: death
+
+    characters "13" {
+      name = "NPC"
+      description = ""
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "mizong-neigong" level = 600 },
+    { skill = "unarmed" level = 600 },
+    { skill = "longxiang-gong" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "shenkong-xing" level = 600 },
+    { skill = "hammer" level = 600 },
+    { skill = "riyue-lun" level = 600 },
+    { skill = "staff" level = 600 },
+    { skill = "xiangmo-chu" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "mingwang-jian" level = 600 },
+    { skill = "dagger" level = 600 },
+    { skill = "finger" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "dashou-yin" level = 600 },
+    { skill = "cuff" level = 600 },
+    { skill = "yujiamu-quan" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "lamaism" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "sanscrit" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "longxiang-gong" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "parry" skill = "longxiang-gong" },
+    { type = "unarmed" skill = "longxiang-gong" },
+    { type = "hammer" skill = "riyue-lun" },
+    { type = "dagger" skill = "poxu-daxuefa" },
+    { type = "sword" skill = "mingwang-jian" },
+    { type = "finger" skill = "poxu-daxuefa" },
+    { type = "hand" skill = "dashou-yin" },
+    { type = "cuff" skill = "yujiamu-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/14.c by LPCConverter
+# Zone: death
+
+    characters "14" {
+      name = "NPC"
+      description = ""
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "mizong-neigong" level = 600 },
+    { skill = "unarmed" level = 600 },
+    { skill = "longxiang-gong" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "shenkong-xing" level = 600 },
+    { skill = "hammer" level = 600 },
+    { skill = "riyue-lun" level = 600 },
+    { skill = "staff" level = 600 },
+    { skill = "xiangmo-chu" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "mingwang-jian" level = 600 },
+    { skill = "dagger" level = 600 },
+    { skill = "finger" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "dashou-yin" level = 600 },
+    { skill = "cuff" level = 600 },
+    { skill = "yujiamu-quan" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "lamaism" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "sanscrit" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "longxiang-gong" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "parry" skill = "longxiang-gong" },
+    { type = "unarmed" skill = "longxiang-gong" },
+    { type = "hammer" skill = "riyue-lun" },
+    { type = "dagger" skill = "poxu-daxuefa" },
+    { type = "sword" skill = "mingwang-jian" },
+    { type = "finger" skill = "poxu-daxuefa" },
+    { type = "hand" skill = "dashou-yin" },
+    { type = "cuff" skill = "yujiamu-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/15.c by LPCConverter
+# Zone: death
+
+    characters "15" {
+      name = "NPC"
+      description = ""
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "mizong-neigong" level = 600 },
+    { skill = "unarmed" level = 600 },
+    { skill = "longxiang-gong" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "shenkong-xing" level = 600 },
+    { skill = "hammer" level = 600 },
+    { skill = "riyue-lun" level = 600 },
+    { skill = "staff" level = 600 },
+    { skill = "xiangmo-chu" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "mingwang-jian" level = 600 },
+    { skill = "dagger" level = 600 },
+    { skill = "finger" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "dashou-yin" level = 600 },
+    { skill = "cuff" level = 600 },
+    { skill = "yujiamu-quan" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "lamaism" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "sanscrit" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "longxiang-gong" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "parry" skill = "longxiang-gong" },
+    { type = "unarmed" skill = "longxiang-gong" },
+    { type = "hammer" skill = "riyue-lun" },
+    { type = "dagger" skill = "poxu-daxuefa" },
+    { type = "sword" skill = "mingwang-jian" },
+    { type = "finger" skill = "poxu-daxuefa" },
+    { type = "hand" skill = "dashou-yin" },
+    { type = "cuff" skill = "yujiamu-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/16.c by LPCConverter
+# Zone: death
+
+    characters "16" {
+      name = "NPC"
+      description = ""
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "mizong-neigong" level = 600 },
+    { skill = "unarmed" level = 600 },
+    { skill = "longxiang-gong" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "shenkong-xing" level = 600 },
+    { skill = "hammer" level = 600 },
+    { skill = "riyue-lun" level = 600 },
+    { skill = "staff" level = 600 },
+    { skill = "xiangmo-chu" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "mingwang-jian" level = 600 },
+    { skill = "dagger" level = 600 },
+    { skill = "finger" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "dashou-yin" level = 600 },
+    { skill = "cuff" level = 600 },
+    { skill = "yujiamu-quan" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "lamaism" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "sanscrit" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "longxiang-gong" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "parry" skill = "longxiang-gong" },
+    { type = "unarmed" skill = "longxiang-gong" },
+    { type = "hammer" skill = "riyue-lun" },
+    { type = "dagger" skill = "poxu-daxuefa" },
+    { type = "sword" skill = "mingwang-jian" },
+    { type = "finger" skill = "poxu-daxuefa" },
+    { type = "hand" skill = "dashou-yin" },
+    { type = "cuff" skill = "yujiamu-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/17.c by LPCConverter
+# Zone: death
+
+    characters "17" {
+      name = "NPC"
+      description = ""
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "mizong-neigong" level = 600 },
+    { skill = "unarmed" level = 600 },
+    { skill = "longxiang-gong" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "shenkong-xing" level = 600 },
+    { skill = "hammer" level = 600 },
+    { skill = "riyue-lun" level = 600 },
+    { skill = "staff" level = 600 },
+    { skill = "xiangmo-chu" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "mingwang-jian" level = 600 },
+    { skill = "dagger" level = 600 },
+    { skill = "finger" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "dashou-yin" level = 600 },
+    { skill = "cuff" level = 600 },
+    { skill = "yujiamu-quan" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "lamaism" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "sanscrit" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "longxiang-gong" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "parry" skill = "longxiang-gong" },
+    { type = "unarmed" skill = "longxiang-gong" },
+    { type = "hammer" skill = "riyue-lun" },
+    { type = "dagger" skill = "poxu-daxuefa" },
+    { type = "sword" skill = "mingwang-jian" },
+    { type = "finger" skill = "poxu-daxuefa" },
+    { type = "hand" skill = "dashou-yin" },
+    { type = "cuff" skill = "yujiamu-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/18.c by LPCConverter
+# Zone: death
+
+    characters "18" {
+      name = "NPC"
+      description = ""
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "mizong-neigong" level = 600 },
+    { skill = "unarmed" level = 600 },
+    { skill = "longxiang-gong" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "shenkong-xing" level = 600 },
+    { skill = "hammer" level = 600 },
+    { skill = "riyue-lun" level = 600 },
+    { skill = "staff" level = 600 },
+    { skill = "xiangmo-chu" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "mingwang-jian" level = 600 },
+    { skill = "dagger" level = 600 },
+    { skill = "finger" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "dashou-yin" level = 600 },
+    { skill = "cuff" level = 600 },
+    { skill = "yujiamu-quan" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "lamaism" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "sanscrit" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "longxiang-gong" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "parry" skill = "longxiang-gong" },
+    { type = "unarmed" skill = "longxiang-gong" },
+    { type = "hammer" skill = "riyue-lun" },
+    { type = "dagger" skill = "poxu-daxuefa" },
+    { type = "sword" skill = "mingwang-jian" },
+    { type = "finger" skill = "poxu-daxuefa" },
+    { type = "hand" skill = "dashou-yin" },
+    { type = "cuff" skill = "yujiamu-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/2.c by LPCConverter
+# Zone: death
+
+    characters "2" {
+      name = "NPC"
+      description = ""
+  gender = "女性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "mizong-neigong" level = 600 },
+    { skill = "xuehai-mogong" level = 600 },
+    { skill = "blade" level = 600 },
+    { skill = "xuedao-dafa" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "mingwang-jian" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "shenkong-xing" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "dashou-yin" level = 600 },
+    { skill = "cuff" level = 600 },
+    { skill = "yujiamu-quan" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "lamaism" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "xuehai-mogong" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "hand" skill = "dashou-yin" },
+    { type = "cuff" skill = "yujiamu-quan" },
+    { type = "parry" skill = "xuedao-dafa" },
+    { type = "blade" skill = "xuedao-dafa" },
+    { type = "sword" skill = "mingwang-jian" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.blade.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/3.c by LPCConverter
+# Zone: death
+
+    characters "3" {
+      name = "NPC"
+      description = ""
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "shenlong-xinfa" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "yixingbu" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "shenlong-bashi" level = 600 },
+    { skill = "strike" level = 600 },
+    { skill = "huagu-mianzhang" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "staff" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "shedao-qigong" level = 600 },
+    { skill = "unarmed" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "medical" level = 600 },
+    { skill = "shenlong-mixin" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "shenlong-xinfa" },
+    { type = "dodge" skill = "yixingbu" },
+    { type = "hand" skill = "shenlong-bashi" },
+    { type = "strike" skill = "huagu-mianzhang" },
+    { type = "parry" skill = "shedao-qigong" },
+    { type = "staff" skill = "shedao-qigong" },
+    { type = "unarmed" skill = "shedao-qigong" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.gangzhang.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/4.c by LPCConverter
+# Zone: death
+
+    characters "4" {
+      name = "NPC"
+      description = ""
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "xiaowuxiang" level = 600 },
+    { skill = "beiming-shengong" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "lingbo-weibu" level = 600 },
+    { skill = "feiyan-zoubi" level = 600 },
+    { skill = "strike" level = 600 },
+    { skill = "liuyang-zhang" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "qingyun-shou" level = 600 },
+    { skill = "zhemei-shou" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "liuyue-jian" level = 600 },
+    { skill = "blade" level = 600 },
+    { skill = "ruyi-dao" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "medical" level = 600 },
+    { skill = "xiaoyao-qixue" level = 600 },
+    { skill = "mathematics" level = 600 },
+    { skill = "qimen-wuxing" level = 600 },
+    { skill = "drawing" level = 500 },
+    { skill = "chuixiao-jifa" level = 600 },
+    { skill = "tanqin-jifa" level = 600 },
+    { skill = "chess" level = 600 },
+    { skill = "calligraphy" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "beiming-shengong" },
+    { type = "dodge" skill = "lingbo-weibu" },
+    { type = "hand" skill = "zhemei-shou" },
+    { type = "strike" skill = "liuyang-zhang" },
+    { type = "parry" skill = "zhemei-jian" },
+    { type = "sword" skill = "liuyue-jian" },
+    { type = "blade" skill = "ruyi-dao" },
+    { type = "medical" skill = "xiaoyao-qixue" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/5.c by LPCConverter
+# Zone: death
+
+    characters "5" {
+      name = "NPC"
+      description = ""
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "hunyuan-yiqi" level = 600 },
+    { skill = "yijinjing" level = 600 },
+    { skill = "blade" level = 600 },
+    { skill = "xiuluo-dao" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "damo-jian" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "shaolin-shenfa" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "fengyun-shou" level = 600 },
+    { skill = "cuff" level = 600 },
+    { skill = "jingang-quan" level = 600 },
+    { skill = "claw" level = 600 },
+    { skill = "longzhua-gong" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "buddhism" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "hand" skill = "fengyun-shou" },
+    { type = "claw" skill = "longzhua-gong" },
+    { type = "parry" skill = "longzhua-gong" },
+    { type = "blade" skill = "xiuluo-dao" },
+    { type = "sword" skill = "damo-jian" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/6.c by LPCConverter
+# Zone: death
+
+    characters "6" {
+      name = "NPC"
+      description = ""
+  gender = "女性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "xiaowuxiang" level = 600 },
+    { skill = "beiming-shengong" level = 600 },
+    { skill = "blade" level = 600 },
+    { skill = "ruyi-dao" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "liuyue-jian" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "lingbo-weibu" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "zhemei-shou" level = 600 },
+    { skill = "strike" level = 600 },
+    { skill = "liuyang-zhang" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "lamaism" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "beiming-shengong" },
+    { type = "dodge" skill = "lingbo-weibu" },
+    { type = "hand" skill = "zhemei-shou" },
+    { type = "strike" skill = "liuyang-zhang" },
+    { type = "parry" skill = "zhemei-shou" },
+    { type = "blade" skill = "ruyi-dao" },
+    { type = "sword" skill = "liuyue-jian" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/7.c by LPCConverter
+# Zone: death
+
+    characters "7" {
+      name = "NPC"
+      description = ""
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "huntian-qigong" level = 600 },
+    { skill = "yijin-duangu" level = 600 },
+    { skill = "blade" level = 600 },
+    { skill = "liuhe-dao" level = 600 },
+    { skill = "staff" level = 600 },
+    { skill = "dagou-bang" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "xiaoyaoyou" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "strike" level = 600 },
+    { skill = "xianglong-zhang" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "checking" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "huntian-qigong" },
+    { type = "dodge" skill = "xiaoyaoyou" },
+    { type = "strike" skill = "xianglong-zhang" },
+    { type = "parry" skill = "xianglong-zhang" },
+    { type = "blade" skill = "liuhe-dao" },
+    { type = "staff" skill = "dagou-bang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/8.c by LPCConverter
+# Zone: death
+
+    characters "8" {
+      name = "NPC"
+      description = ""
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "xiantian-gong" level = 600 },
+    { skill = "quanzhen-xinfa" level = 600 },
+    { skill = "finger" level = 600 },
+    { skill = "zhongnan-zhi" level = 600 },
+    { skill = "sword" level = 600 },
+    { skill = "quanzhen-jian" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "jinyan-gong" level = 600 },
+    { skill = "unarmed" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "taoism" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "xiantian-gong" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "finger" skill = "zhongnan-zhi" },
+    { type = "unarmed" skill = "xiantian-gong" },
+    { type = "parry" skill = "xiantian-gong" },
+    { type = "sword" skill = "quanzhen-jian" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/HellZhen/9.c by LPCConverter
+# Zone: death
+
+    characters "9" {
+      name = "NPC"
+      description = ""
+  gender = "女性"
+  age = 40
+
+  combat = {
+    attitude = "killer"
+    int = 20
+    max_jing = 1200000
+    max_neili = 8000000
+    max_qi = 12000000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 600 },
+    { skill = "unarmed" level = 600 },
+    { skill = "dodge" level = 500 },
+    { skill = "parry" level = 600 },
+    { skill = "cuff" level = 600 },
+    { skill = "finger" level = 600 },
+    { skill = "staff" level = 600 },
+    { skill = "training" level = 600 },
+    { skill = "poison" level = 600 },
+    { skill = "shedu-qiqiao" level = 600 },
+    { skill = "hamagong" level = 600 },
+    { skill = "chanchu-bufa" level = 600 },
+    { skill = "lingshe-quan" level = 600 },
+    { skill = "lingshe-zhangfa" level = 600 },
+    { skill = "baibian-daxue" level = 600 },
+    { skill = "guzheng-jifa" level = 600 },
+    { skill = "xiyu-tiezheng" level = 600 },
+    { skill = "wushe-qu" level = 600 },
+    { skill = "literate" level = 600 },
+    { skill = "martial-cognize" level = 600 },
+    { type = "force" skill = "hamagong" },
+    { type = "dodge" skill = "chanchu-bufa" },
+    { type = "cuff" skill = "lingshe-quan" },
+    { type = "parry" skill = "lingshe-zhangfa" },
+    { type = "staff" skill = "lingshe-zhangfa" },
+    { type = "unarmed" skill = "hamagong" },
+    { type = "finger" skill = "shedu-qiqiao" },
+    { type = "poison" skill = "shedu-qiqiao" },
+    { type = "medical" skill = "baituo-michuan" },
+    { type = "guzheng-jifa" skill = "xiyu-tiezheng" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/liudaolunhui/chushengdao.c by LPCConverter
+# Zone: death
+
+    rooms "chushengdao" {
+      name = "畜        生        道"
+      description = "飞禽走兽，弱肉强食。因学习邪见、邪法而生慢心的众生，喜 欢以邪见与人争论，因为怀着怨憎心，就会投生喜欢互相残害 的畜生道。性情怯弱，常怀惊恐的动物，也是因过去生惊吓他 人在先，而得出这样的果报。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/death/liudaolunhui/diyudao.c by LPCConverter
+# Zone: death
+
+    rooms "diyudao" {
+      name = "地        狱        道"
+      description = "极寒极冷，受尽各种折磨，毫无喜乐之所。若与人间比较，第 一狱以人间三千七百五十年为一年，在此须受困一万年，相当 于人间一百三十五亿年。而到了第十八地狱，便以亿亿亿年为 单位，如此长期的受刑可谓是名符其实的万劫不复。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/death/liudaolunhui/eguidao.c by LPCConverter
+# Zone: death
+
+    rooms "eguidao" {
+      name = "饿        鬼        道"
+      description = "哀嚎四起，环顾周围，遍是咽细如针，口大如炬，腹鼓如山的 饿鬼。前世造作的善恶业不同，在饿鬼道所受的果报也会不同。 饿鬼多是汲汲于饮食，但却四处奔走求食不能，所见池水却都 变成脓血而不能饮用，不是遇水成火就是喉细无法咽食。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/death/liudaolunhui/rendao.c by LPCConverter
+# Zone: death
+
+    rooms "rendao" {
+      name = "人        间        道"
+      description = "仿佛踏进了嘈杂的闹市，又如闯进了民家大院。欢笑声、哭泣 声、怒骂声相互交杂。喜怒哀乐、恩怨情仇，世间百态尽集于 此。尝尽人间种种酸甜苦辣，悲欢离合。于痛苦中诞生，又于 痛苦中消逝。怜我世人，忧患实多。怜我世人，忧患实多。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/death/liudaolunhui/tiandao.c by LPCConverter
+# Zone: death
+
+    rooms "tiandao" {
+      name = "天        极        道"
+      description = "茫茫云海，渺无边际。四周金光散布，祥云朵朵，远处有凤凰 盘绕，麒麟逐戏。耳边传来阵阵梵音，令你茫然不知所措。天 道众生遍及欲界、色界及无色界三界。欲界有六欲天，色界有 四禅十八天，无色界四天，共有二十八天。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/death/liudaolunhui/wujiandao.c by LPCConverter
+# Zone: death
+
+    rooms "wujiandao" {
+      name = "无        间        道"
+      description = "这里是天地人三界不管的终极无间，这里没有任何出路，只有黑暗。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/death/liudaolunhui/xiuluodao.c by LPCConverter
+# Zone: death
+
+    rooms "xiuluodao" {
+      name = "修        罗        道"
+      description = "阿修罗原是印度远古诸神之一，被视为恶神，属于凶猛好斗的 鬼神，经常与帝释天争斗不休。因有福报而没有德性有的说法 只是将他纳入鬼神中，或说是堕落的天人，而北传佛教将他列 为善道，南传佛教则归类入恶道中。福如天人，德非天人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/bai.c by LPCConverter
+# Zone: death
+
+    characters "bai" {
+      name = "白无常"
+      description = "白无常瞪著你，焦黄的脸上看不出任何喜怒哀乐。"
+  title = "冥府地藏王殿前"
+  age = 217
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000000
+    max_jing = 9999
+    max_neili = 9999
+    max_qi = 9999
+  }
+
+  chat_chance = 15
+chats = [
+    "白无常狠狠的敲了敲你的脑袋，你觉得头晕晕的。",
+    "白无常嘿嘿奸笑两声。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 500 },
+    { skill = "sword" level = 500 },
+    { skill = "blade" level = 500 },
+    { skill = "staff" level = 500 },
+    { skill = "hammer" level = 500 },
+    { skill = "club" level = 500 },
+    { skill = "whip" level = 500 },
+    { skill = "dagger" level = 500 },
+    { skill = "throwing" level = 500 },
+    { skill = "parry" level = 500 },
+    { skill = "dodge" level = 500 },
+    { skill = "force" level = 500 },
+    { skill = "never-defeated" level = 1000 },
+    { skill = "magic" level = 1000 },
+    { type = "sword" skill = "never-defeated" },
+    { type = "blade" skill = "never-defeated" },
+    { type = "staff" skill = "never-defeated" },
+    { type = "hammer" skill = "never-defeated" },
+    { type = "club" skill = "never-defeated" },
+    { type = "whip" skill = "never-defeated" },
+    { type = "dagger" skill = "never-defeated" },
+    { type = "parry" skill = "never-defeated" },
+    { type = "dodge" skill = "never-defeated" },
+    { type = "force" skill = "never-defeated" }
+  ]
+
+
+  carry = [
+    { id = items.cloth1.id },
+    { id = items.suolian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/baihu.c by LPCConverter
+# Zone: death
+
+    characters "baihu" {
+      name = "白虎"
+      description = "一只长达丈许的巨型猛虎，乃四神兽之一的白虎。 它全身毛皮洁白无暇，很是高贵。"
+  title = "神兽"
+  age = 10000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 8000000
+    con = 45
+    dex = 45
+    int = 45
+    max_jing = 18000
+    max_neili = 18000
+    max_qi = 22000
+    str = 45
+  }
+
+  skills = [
+    { skill = "unarmed" level = 800 },
+    { skill = "sword" level = 800 },
+    { skill = "parry" level = 800 },
+    { skill = "dodge" level = 800 },
+    { skill = "force" level = 800 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/bgargoyle.c by LPCConverter
+# Zone: death
+
+    characters "bgargoyle" {
+      name = "黑无常"
+      description = "黑无常瞪著你，焦黄的脸上看不出任何喜怒哀乐。"
+  title = "冥府地藏王殿前"
+  age = 217
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    max_jing = 900
+    max_qi = 900
+  }
+
+  chat_chance = 15
+chats = [
+    "黑无常嘿嘿干笑数声：你可终于落到我的手里了...",
+    "黑无常东张西望，不知道在打什么主意。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/dizangwang.c by LPCConverter
+# Zone: death
+
+    characters "dizangwang" {
+      name = "地藏王"
+      description = "他容貌威严，不可一世。哇！他可是掌管人间生死的神仙。"
+  title = "幽冥之主"
+  gender = "男性"
+  age = 99
+  shen_type = 0
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000000
+    con = 34
+    dex = 36
+    int = 39
+    max_jing = 29999
+    max_neili = 49999
+    max_qi = 49999
+    str = 31
+  }
+
+  inquiries = [
+    { key = "转世" value = "(: ask_zhuan :)" },
+    { key = "麒麟靴" value = "(: ask_xue :)" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 800 },
+    { skill = "finger" level = 800 },
+    { skill = "parry" level = 800 },
+    { skill = "dodge" level = 800 },
+    { skill = "force" level = 800 },
+    { skill = "sword" level = 800 },
+    { skill = "count" level = 800 },
+    { skill = "kuihua-mogong" level = 800 },
+    { skill = "martial-cognize" level = 800 },
+    { skill = "literate" level = 220 },
+    { type = "parry" skill = "kuihua-mogong" },
+    { type = "force" skill = "kuihua-mogong" },
+    { type = "dodge" skill = "kuihua-mogong" },
+    { type = "finger" skill = "kuihua-mogong" },
+    { type = "sword" skill = "kuihua-mogong" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.spin.id }
+  ]
+
+
+  accept = [
+    { kind = "any" accept = true msg = ["地藏王摇了摇头，道：你给我这个干什么？", "地藏王道：无功不受禄，这个你还是自己留着吧。", "地藏王道：很好很好！没有想到你连十二重天这一关也过了，这是天意。老夫也只能顺天意而行了，去吧。", "地藏王随手一招，突然刮起一阵阴风，精元丹护住你的元神帮你进入六道轮回。"] fail_msg = ["你没有这件东西。"] }
+  ]
+
+  engage = {
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/ghost.c by LPCConverter
+# Zone: death
+
+    characters "ghost" {
+      name = "亡魂"
+      description = "一个死者的魂魄。"
+  title = "(鬼气)"
+
+  combat = {
+    attitude = "peaceful"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/hei.c by LPCConverter
+# Zone: death
+
+    characters "hei" {
+      name = "黑无常"
+      description = "黑无常瞪著你，焦黄的脸上看不出任何喜怒哀乐。"
+  title = "冥府地藏王殿前"
+  age = 217
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000000
+    max_jing = 9999
+    max_neili = 9999
+    max_qi = 9999
+  }
+
+  chat_chance = 15
+chats = [
+    "黑无常嘿嘿干笑数声：你可终于落到我的手里了……",
+    "黑无常东张西望，不知道在打什么主意。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 500 },
+    { skill = "sword" level = 500 },
+    { skill = "blade" level = 500 },
+    { skill = "staff" level = 500 },
+    { skill = "hammer" level = 500 },
+    { skill = "club" level = 500 },
+    { skill = "whip" level = 500 },
+    { skill = "dagger" level = 500 },
+    { skill = "throwing" level = 500 },
+    { skill = "parry" level = 500 },
+    { skill = "dodge" level = 500 },
+    { skill = "force" level = 500 },
+    { skill = "never-defeated" level = 1000 },
+    { skill = "magic" level = 1000 },
+    { type = "sword" skill = "never-defeated" },
+    { type = "blade" skill = "never-defeated" },
+    { type = "staff" skill = "never-defeated" },
+    { type = "hammer" skill = "never-defeated" },
+    { type = "club" skill = "never-defeated" },
+    { type = "whip" skill = "never-defeated" },
+    { type = "dagger" skill = "never-defeated" },
+    { type = "parry" skill = "never-defeated" },
+    { type = "dodge" skill = "never-defeated" },
+    { type = "force" skill = "never-defeated" }
+  ]
+
+
+  carry = [
+    { id = items.cloth1.id },
+    { id = items.suolian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/mamian.c by LPCConverter
+# Zone: death
+
+    characters "mamian" {
+      name = "马面"
+      description = "一个高达丈许，马面人身的怪物，看起来很不好惹。"
+  title = "冥府地藏王殿前"
+  nickname = "金盔银甲"
+  gender = "男性"
+  age = 623
+
+  combat = {
+    combat_exp = 8000000
+    con = 35
+    dex = 35
+    int = 35
+    max_jing = 5000
+    max_neili = 9000
+    max_qi = 7000
+    str = 35
+  }
+
+  skills = [
+    { skill = "unarmed" level = 450 },
+    { skill = "sword" level = 450 },
+    { skill = "blade" level = 450 },
+    { skill = "staff" level = 450 },
+    { skill = "hammer" level = 450 },
+    { skill = "club" level = 450 },
+    { skill = "whip" level = 450 },
+    { skill = "dagger" level = 450 },
+    { skill = "throwing" level = 450 },
+    { skill = "parry" level = 450 },
+    { skill = "dodge" level = 450 },
+    { skill = "force" level = 450 },
+    { skill = "count" level = 450 },
+    { skill = "never-defeated" level = 450 },
+    { skill = "martial-cognize" level = 450 },
+    { type = "sword" skill = "never-defeated" },
+    { type = "blade" skill = "never-defeated" },
+    { type = "staff" skill = "never-defeated" },
+    { type = "hammer" skill = "never-defeated" },
+    { type = "club" skill = "never-defeated" },
+    { type = "whip" skill = "never-defeated" },
+    { type = "dagger" skill = "never-defeated" },
+    { type = "parry" skill = "never-defeated" },
+    { type = "dodge" skill = "never-defeated" },
+    { type = "force" skill = "never-defeated" }
+  ]
+
+
+  carry = [
+    { id = items.armor1.id },
+    { id = items.armor2.id },
+    { id = items.blade1.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true }
+    hit = { accept = true }
+    kill = { accept = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/mengpo.c by LPCConverter
+# Zone: death
+
+    characters "mengpo" {
+      name = "孟婆"
+      description = "这就是奈河桥的孟婆，她面颊深陷，瘦骨零丁。"
+  title = "奈河桥渡者"
+  gender = "女性"
+  age = 390
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2500000
+  }
+
+  inquiries = [
+    { key = "tang" value = "(: ask_me :)" },
+    { key = "喝汤" value = "(: ask_me :)" },
+    { key = "孟婆汤" value = "(: ask_me :)" },
+    { key = "汤" value = "(: ask_me :)" }
+  ]
+
+  chat_chance = 1
+chats = [
+    "孟婆说道：孩子，喝碗汤吧。",
+    "孟婆说道：过了奈河桥，前途就艰难了。",
+    "孟婆弓着腰煮着孟婆汤。",
+    "孟婆轻轻咳嗽了几声。"
+]
+
+
+  carry = [
+    { id = items.cloth3.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/niutou.c by LPCConverter
+# Zone: death
+
+    characters "niutou" {
+      name = "牛头"
+      description = "一个高达丈许，牛头人身的怪物，看起来很不好惹。"
+  title = "冥府地藏王殿前"
+  nickname = "金盔银甲"
+  gender = "男性"
+  age = 623
+
+  combat = {
+    combat_exp = 8000000
+    con = 35
+    dex = 35
+    int = 35
+    max_jing = 6000
+    max_neili = 9000
+    max_qi = 7000
+    str = 35
+  }
+
+  skills = [
+    { skill = "unarmed" level = 400 },
+    { skill = "sword" level = 400 },
+    { skill = "blade" level = 400 },
+    { skill = "staff" level = 400 },
+    { skill = "hammer" level = 400 },
+    { skill = "club" level = 400 },
+    { skill = "whip" level = 400 },
+    { skill = "dagger" level = 400 },
+    { skill = "throwing" level = 400 },
+    { skill = "parry" level = 400 },
+    { skill = "dodge" level = 400 },
+    { skill = "force" level = 400 },
+    { skill = "count" level = 400 },
+    { skill = "never-defeated" level = 400 },
+    { skill = "martial-cognize" level = 400 },
+    { type = "sword" skill = "never-defeated" },
+    { type = "blade" skill = "never-defeated" },
+    { type = "staff" skill = "never-defeated" },
+    { type = "hammer" skill = "never-defeated" },
+    { type = "club" skill = "never-defeated" },
+    { type = "whip" skill = "never-defeated" },
+    { type = "dagger" skill = "never-defeated" },
+    { type = "parry" skill = "never-defeated" },
+    { type = "dodge" skill = "never-defeated" },
+    { type = "force" skill = "never-defeated" }
+  ]
+
+
+  carry = [
+    { id = items.armor1.id },
+    { id = items.armor2.id },
+    { id = items.blade1.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true }
+    hit = { accept = true }
+    kill = { accept = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/qinglong.c by LPCConverter
+# Zone: death
+
+    characters "qinglong" {
+      name = "青龙"
+      description = "一条长达数十丈的神龙，乃四神兽之一。它腾 云驾雾，张牙舞爪，口中喷着熊熊烈火。"
+  title = "神兽"
+  age = 10000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000000
+    con = 50
+    dex = 50
+    int = 50
+    max_jing = 20000
+    max_neili = 20000
+    max_qi = 25000
+    str = 50
+  }
+
+  skills = [
+    { skill = "unarmed" level = 800 },
+    { skill = "sword" level = 800 },
+    { skill = "parry" level = 800 },
+    { skill = "dodge" level = 800 },
+    { skill = "force" level = 800 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/qinguangwang.c by LPCConverter
+# Zone: death
+
+    characters "qinguangwang" {
+      name = "秦广王"
+      description = "秦广王乃是阴间十王之一。"
+  title = "冥府地藏王殿前"
+  nickname = "魂王"
+  gender = "男性"
+  age = 475
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 25000000
+    con = 50
+    dex = 50
+    int = 50
+    max_jing = 30000
+    max_neili = 30000
+    max_qi = 30000
+    str = 50
+  }
+
+  skills = [
+    { skill = "unarmed" level = 600 },
+    { skill = "finger" level = 600 },
+    { skill = "claw" level = 600 },
+    { skill = "strike" level = 600 },
+    { skill = "hand" level = 600 },
+    { skill = "cuff" level = 600 },
+    { skill = "parry" level = 600 },
+    { skill = "dodge" level = 600 },
+    { skill = "force" level = 600 },
+    { skill = "jiuyin-shengong" level = 600 },
+    { skill = "magic" level = 600 },
+    { skill = "literate" level = 600 },
+    { type = "parry" skill = "jiuyin-shengong" },
+    { type = "force" skill = "jiuyin-shengong" },
+    { type = "dodge" skill = "jiuyin-shengong" },
+    { type = "unarmed" skill = "jiuyin-shengong" },
+    { type = "finger" skill = "jiuyin-shengong" },
+    { type = "strike" skill = "jiuyin-shengong" },
+    { type = "hand" skill = "jiuyin-shengong" },
+    { type = "cuff" skill = "jiuyin-shengong" },
+    { type = "claw" skill = "jiuyin-shengong" }
+  ]
+
+
+  carry = [
+    { id = items.cloth4.id },
+    { id = items.qise.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/wangfangping.c by LPCConverter
+# Zone: death
+
+    characters "wangfangping" {
+      name = "王方平"
+      description = "王方平本是山中道士，后在丰都山修炼成仙，御封「鬼王」。"
+  title = "冥府地藏王殿前"
+  nickname = "鬼王"
+  gender = "男性"
+  age = 475
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 20000000
+  }
+
+  # vendor_goods: "/d/death/obj/weapon1" (file not found)
+  # vendor_goods: "/d/death/obj/weapon2" (file not found)
+  # vendor_goods: "/d/death/obj/weapon3" (file not found)
+  # vendor_goods: "/d/death/obj/weapon4" (file not found)
+  # vendor_goods: "/d/death/obj/weapon5" (file not found)
+  # vendor_goods: "/d/death/obj/weapon6" (file not found)
+  # vendor_goods: "/d/death/obj/weapon7" (file not found)
+  # vendor_goods: "/d/death/obj/weapon8" (file not found)
+  # vendor_goods: "/d/death/obj/weapon9" (file not found)
+  # vendor_goods: "/d/death/obj/weapon10" (file not found)
+  # vendor_goods: "/d/death/obj/weapon11" (file not found)
+  # vendor_goods: "/d/death/obj/weapon12" (file not found)
+  # vendor_goods: "/d/death/obj/weapon13" (file not found)
+  # vendor_goods: "/d/death/obj/weapon14" (file not found)
+  # vendor_goods: "/d/death/obj/weapon15" (file not found)
+  # vendor_goods: "/d/death/obj/weapon16" (file not found)
+  # vendor_goods: "/d/death/obj/weapon17" (file not found)
+  # vendor_goods: "/d/death/obj/weapon18" (file not found)
+  # vendor_goods: "/d/death/obj/weapon19" (file not found)
+  # vendor_goods: "/d/death/obj/weapon20" (file not found)
+  # vendor_goods: "/d/death/obj/weapon21" (file not found)
+  # vendor_goods: "/d/death/obj/weapon22" (file not found)
+  # vendor_goods: "/d/death/obj/weapon23" (file not found)
+  # vendor_goods: "/d/death/obj/weapon24" (file not found)
+  # vendor_goods: "/d/death/obj/weapon25" (file not found)
+  # vendor_goods: "/d/death/obj/weapon26" (file not found)
+  # vendor_goods: "/d/death/obj/weapon27" (file not found)
+  # vendor_goods: "/d/death/obj/weapon28" (file not found)
+  # vendor_goods: "/d/death/obj/weapon29" (file not found)
+  # vendor_goods: "/d/death/obj/weapon30" (file not found)
+  # vendor_goods: "/d/death/obj/weapon31" (file not found)
+  # vendor_goods: "/d/death/obj/weapon32" (file not found)
+  # vendor_goods: "/d/death/obj/weapon33" (file not found)
+  # vendor_goods: "/d/death/obj/weapon34" (file not found)
+  # vendor_goods: "/d/death/obj/weapon35" (file not found)
+  # vendor_goods: "/d/death/obj/weapon36" (file not found)
+  # vendor_goods: "/d/death/obj/weapon37" (file not found)
+  # vendor_goods: "/d/death/obj/weapon38" (file not found)
+  # vendor_goods: "/d/death/obj/weapon39" (file not found)
+  # vendor_goods: "/d/death/obj/weapon40" (file not found)
+  # vendor_goods: "/d/death/obj/weapon41" (file not found)
+  # vendor_goods: "/d/death/obj/weapon42" (file not found)
+  # vendor_goods: "/d/death/obj/weapon43" (file not found)
+  # vendor_goods: "/d/death/obj/weapon44" (file not found)
+  # vendor_goods: "/d/death/obj/weapon45" (file not found)
+  # vendor_goods: "/d/death/obj/weapon46" (file not found)
+  # vendor_goods: "/d/death/obj/weapon47" (file not found)
+  # vendor_goods: "/d/death/obj/weapon48" (file not found)
+  # vendor_goods: "/d/death/obj/weapon49" (file not found)
+  # vendor_goods: "/d/death/obj/weapon50" (file not found)
+  # vendor_goods: "/d/death/obj/weapon51" (file not found)
+  # vendor_goods: "/d/death/obj/weapon52" (file not found)
+  # vendor_goods: "/d/death/obj/weapon53" (file not found)
+  # vendor_goods: "/d/death/obj/weapon54" (file not found)
+  # vendor_goods: "/d/death/obj/weapon55" (file not found)
+  # vendor_goods: "/d/death/obj/weapon56" (file not found)
+  # vendor_goods: "/d/death/obj/weapon57" (file not found)
+  # vendor_goods: "/d/death/obj/weapon58" (file not found)
+  # vendor_goods: "/d/death/obj/weapon59" (file not found)
+  # vendor_goods: "/d/death/obj/weapon60" (file not found)
+  # vendor_goods: "/d/death/obj/weapon61" (file not found)
+  # vendor_goods: "/d/death/obj/weapon62" (file not found)
+  # vendor_goods: "/d/death/obj/weapon63" (file not found)
+  # vendor_goods: "/d/death/obj/weapon64" (file not found)
+  # vendor_goods: "/d/death/obj/weapon65" (file not found)
+  # vendor_goods: "/d/death/obj/weapon66" (file not found)
+  # vendor_goods: "/d/death/obj/weapon67" (file not found)
+  # vendor_goods: "/d/death/obj/weapon68" (file not found)
+  # vendor_goods: "/d/death/obj/weapon69" (file not found)
+  # vendor_goods: "/d/death/obj/weapon70" (file not found)
+  # vendor_goods: "/d/death/obj/weapon71" (file not found)
+  # vendor_goods: "/d/death/obj/weapon72" (file not found)
+  # vendor_goods: "/d/death/obj/weapon73" (file not found)
+  # vendor_goods: "/d/death/obj/weapon74" (file not found)
+  # vendor_goods: "/d/death/obj/weapon75" (file not found)
+  # vendor_goods: "/d/death/obj/weapon76" (file not found)
+  # vendor_goods: "/d/death/obj/weapon77" (file not found)
+  # vendor_goods: "/d/death/obj/weapon78" (file not found)
+  # vendor_goods: "/d/death/obj/weapon79" (file not found)
+  # vendor_goods: "/d/death/obj/weapon80" (file not found)
+
+  skills = [
+    { skill = "unarmed" level = 500 },
+    { skill = "dodge" level = 500 },
+    { skill = "force" level = 500 },
+    { skill = "parry" level = 500 },
+    { skill = "magic" level = 500 }
+  ]
+
+
+  carry = [
+    { id = items.cloth4.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/wgargoyle.c by LPCConverter
+# Zone: death
+
+    characters "wgargoyle" {
+      name = "白无常"
+      description = "白无常瞪著你，死白的脸上看不出任何喜怒哀乐。"
+  title = "冥府地藏王殿前"
+  age = 217
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    max_jing = 900
+    max_qi = 900
+  }
+
+  chat_chance = 1
+chats = [
+    "白无常无聊的打了个哈欠。",
+    "白无常嘿嘿奸笑两声。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/xuanwu.c by LPCConverter
+# Zone: death
+
+    characters "xuanwu" {
+      name = "玄武"
+      description = "一只龙头龟身的庞然大物，乃四神兽之一的玄武。 它全身被厚厚的甲壳保护着。"
+  title = "神兽"
+  age = 10000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 8000000
+    con = 80
+    dex = 20
+    int = 40
+    max_jing = 20000
+    max_neili = 25000
+    max_qi = 30000
+    str = 40
+  }
+
+  skills = [
+    { skill = "unarmed" level = 800 },
+    { skill = "sword" level = 800 },
+    { skill = "parry" level = 800 },
+    { skill = "dodge" level = 800 },
+    { skill = "force" level = 1000 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/yanluo.c by LPCConverter
+# Zone: death
+
+    characters "yanluo" {
+      name = "十殿阎罗"
+      description = "一位面如锅底，须若钢针，身穿红袍的大汉。 这就是阴间的十殿阎罗。"
+  title = "冥府地藏王殿前"
+  nickname = "阴司总管"
+  gender = "男性"
+  age = 3000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000000
+    con = 50
+    dex = 50
+    int = 50
+    max_jing = 30000
+    max_neili = 50000
+    max_qi = 30000
+    str = 50
+  }
+
+  inquiries = [
+    { key = "here" value = "这便是阎罗地府，到阳间一谈，嘿嘿，没人不怕！" },
+    { key = "name" value = "哼！连老夫都不认得，想来是活的太久了！" },
+    { key = "七色璎珞" value = "听传闻，这东西好象是落在了秦广王的手里。" },
+    { key = "交差" value = "(: ask_quest :)" },
+    { key = "任务" value = "(: ask_quest :)" },
+    { key = "原料" value = "(: ask_quest :)" },
+    { key = "地藏王" value = "他是这里的老大，没人惹得起他。" },
+    { key = "地阴血脉" value = "这东西可以在地府轮回司里寻找到。…嗯…要诀是‘三三逢缘’。" },
+    { key = "宝物" value = "地府有个神石名曰「七色璎珞」，倒是个不得多见的宝物。" },
+    { key = "寂灭司" value = "寂灭司就在阎罗殿的东边。" },
+    { key = "指南车" value = "那是黄帝流传下来的法宝之一，后来流落到了这里，不过我没见过。" },
+    { key = "期限" value = "(: ask_quest :)" },
+    { key = "朱羽" value = "那东西本身是没什么用的，可却是我制作锁阳丹的原料。" },
+    { key = "朱雀" value = "有人在阴阳塔顶见到过神兽朱雀，不过听说那扁毛畜生不落无宝之地，要寻它身上必须要带有宝物。" },
+    { key = "朱雀羽毛" value = "那东西本身是没什么用的，可却是我制作锁阳丹的原料。" },
+    { key = "武甲" value = "玄武甲壳用来铸盔甲倒是挺好，可难弄啊！我找了好久都没找到。" },
+    { key = "死人肉" value = "我操，这个你也问我？你去称两斤吃吃看就知道了。" },
+    { key = "炼丹" value = "(: ask_quest :)" },
+    { key = "炼制" value = "(: ask_quest :)" },
+    { key = "玄武" value = "那臭乌龟整年躲在血池地狱里吃死人肉，怎么弄都不出来。" },
+    { key = "玄武甲壳" value = "那壳用来铸盔甲倒是挺好，可难弄啊！我找了好久都没找到。" },
+    { key = "甲壳" value = "玄武甲壳用来铸盔甲倒是挺好，可难弄啊！我找了好久都没找到。" },
+    { key = "白虎" value = "那大虫就栖息在寂灭司后面的黑森林里，我派了好几个手下去捉它，结果全都挂了。" },
+    { key = "白虎骨" value = "我正需要一根白虎的骨头来炼锁阳丹，怎么，你有么？" },
+    { key = "碧水寒潭" value = "碧水寒潭就在奈河桥下面，你站在桥上往下跳就到了，不过你下去最好带上「地阴血脉」。" },
+    { key = "秦广王" value = "他和我一样，也是阴间十王之一。" },
+    { key = "药引" value = "(: ask_quest :)" },
+    { key = "虎骨" value = "我正需要一根白虎的骨头来炼锁阳丹，怎么，你有么？" },
+    { key = "血池地狱" value = "血池地狱就在阎罗殿的北边，你要下去必须得穿上「麒麟靴」。" },
+    { key = "转世" value = "(: ask_zhuan :)" },
+    { key = "轮回司" value = "轮回司就在阎罗殿的东边。" },
+    { key = "锁阳丹" value = "(: ask_quest :)" },
+    { key = "阎罗殿" value = "这个你也问我？你是笨死的啊？" },
+    { key = "阳间" value = "还阳容易，想不有损失就难了！" },
+    { key = "阴阳塔" value = "就是西边的那座塔，是地府里最高的建筑，平时由马面看守。" },
+    { key = "青龙" value = "神兽青龙有时候会在碧水寒潭出没，不过我去捉时却没见到。" },
+    { key = "青龙胆" value = "龙胆就是神兽青龙的胆，凡人吃了可以平增功力，我也正需要一个来炼丹。" },
+    { key = "马面" value = "和看守奈河桥的牛头一样，是地府的守卫。" },
+    { key = "麒麟靴" value = "那是地藏王的东西，我也只瞧见过一次。" },
+    { key = "黑森林" value = "黑森林里全是阴雾，除非有「指南车」，要不根本没法辨认方向。" },
+    { key = "龙胆" value = "龙胆就是神兽青龙的胆，凡人吃了可以平增功力，我也正需要一个来炼丹。" }
+  ]
+
+  chat_chance = 1
+chats = [
+    "十殿阎罗深深的叹了口气。",
+    "十殿阎罗叹道：玄武甲壳和朱雀羽毛还好点，可是青龙胆和白虎骨难弄啊……",
+    "十殿阎罗叹道：武甲、朱羽、龙胆还有虎骨，这可真难办啊。",
+    "十殿阎罗叹道：期限就要到了，地藏老大要我炼制的锁阳丹原料还没备齐，这可如何是好啊。",
+    "十殿阎罗叹道：地藏老大的任务可真是要命啊。",
+    "十殿阎罗抱怨道：平白无故的要什么锁阳丹，老大也真是的。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 999 },
+    { skill = "finger" level = 999 },
+    { skill = "claw" level = 999 },
+    { skill = "strike" level = 999 },
+    { skill = "hand" level = 999 },
+    { skill = "cuff" level = 999 },
+    { skill = "parry" level = 999 },
+    { skill = "dodge" level = 999 },
+    { skill = "force" level = 999 },
+    { skill = "jiuyin-shengong" level = 999 },
+    { skill = "magic" level = 999 },
+    { skill = "literate" level = 999 },
+    { type = "parry" skill = "jiuyin-shengong" },
+    { type = "force" skill = "jiuyin-shengong" },
+    { type = "dodge" skill = "jiuyin-shengong" },
+    { type = "unarmed" skill = "jiuyin-shengong" },
+    { type = "finger" skill = "jiuyin-shengong" },
+    { type = "strike" skill = "jiuyin-shengong" },
+    { type = "hand" skill = "jiuyin-shengong" },
+    { type = "cuff" skill = "jiuyin-shengong" },
+    { type = "claw" skill = "jiuyin-shengong" }
+  ]
+
+
+  carry = [
+    { id = items.cloth2.id }
+  ]
+
+
+  accept = [
+    { kind = "item_id" id = "long dan" accept = true msg = ["十殿阎罗摇了摇头，道：你给我这个干什么？", "十殿阎罗对{npc}笑道：你已经替我备齐所有的原料了，这个还是你留着自己用吧。", "十殿阎罗道：无功不受禄，这个你还是自己留着吧。", "十殿阎罗见是龙胆，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是龙胆，对{npc}摇头道：龙胆你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是虎骨，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是虎骨，对{npc}摇头道：虎骨你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是朱羽，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是朱羽，对{npc}摇头道：朱羽你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是玄武甲壳，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有 你的帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是玄武甲壳，对{npc}摇头道：这东西你已经给过我了，你还是快去寻找其它原料吧。"] },
+    { kind = "item_id" id = "hu gu" accept = true msg = ["十殿阎罗摇了摇头，道：你给我这个干什么？", "十殿阎罗对{npc}笑道：你已经替我备齐所有的原料了，这个还是你留着自己用吧。", "十殿阎罗道：无功不受禄，这个你还是自己留着吧。", "十殿阎罗见是龙胆，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是龙胆，对{npc}摇头道：龙胆你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是虎骨，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是虎骨，对{npc}摇头道：虎骨你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是朱羽，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是朱羽，对{npc}摇头道：朱羽你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是玄武甲壳，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有 你的帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是玄武甲壳，对{npc}摇头道：这东西你已经给过我了，你还是快去寻找其它原料吧。"] },
+    { kind = "item_id" id = "zhu yu" accept = true msg = ["十殿阎罗摇了摇头，道：你给我这个干什么？", "十殿阎罗对{npc}笑道：你已经替我备齐所有的原料了，这个还是你留着自己用吧。", "十殿阎罗道：无功不受禄，这个你还是自己留着吧。", "十殿阎罗见是龙胆，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是龙胆，对{npc}摇头道：龙胆你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是虎骨，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是虎骨，对{npc}摇头道：虎骨你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是朱羽，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是朱羽，对{npc}摇头道：朱羽你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是玄武甲壳，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有 你的帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是玄武甲壳，对{npc}摇头道：这东西你已经给过我了，你还是快去寻找其它原料吧。"] },
+    { kind = "item_id" id = "xuanwu jiake" accept = true msg = ["十殿阎罗摇了摇头，道：你给我这个干什么？", "十殿阎罗对{npc}笑道：你已经替我备齐所有的原料了，这个还是你留着自己用吧。", "十殿阎罗道：无功不受禄，这个你还是自己留着吧。", "十殿阎罗见是龙胆，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是龙胆，对{npc}摇头道：龙胆你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是虎骨，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是虎骨，对{npc}摇头道：虎骨你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是朱羽，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是朱羽，对{npc}摇头道：朱羽你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是玄武甲壳，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有 你的帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是玄武甲壳，对{npc}摇头道：这东西你已经给过我了，你还是快去寻找其它原料吧。"] },
+    { kind = "any" accept = true msg = ["十殿阎罗摇了摇头，道：你给我这个干什么？", "十殿阎罗对{npc}笑道：你已经替我备齐所有的原料了，这个还是你留着自己用吧。", "十殿阎罗道：无功不受禄，这个你还是自己留着吧。", "十殿阎罗见是龙胆，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是龙胆，对{npc}摇头道：龙胆你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是虎骨，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是虎骨，对{npc}摇头道：虎骨你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是朱羽，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是朱羽，对{npc}摇头道：朱羽你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是玄武甲壳，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有 你的帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是玄武甲壳，对{npc}摇头道：这东西你已经给过我了，你还是快去寻找其它原料吧。"] fail_msg = ["你没有这件东西。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/yinchangsheng.c by LPCConverter
+# Zone: death
+
+    characters "yinchangsheng" {
+      name = "阴长生"
+      description = "阴长生本是个落弟秀才，后在丰都山修练成仙，御封「阴王」。"
+  title = "冥府地藏王殿前"
+  nickname = "阴王"
+  gender = "男性"
+  age = 475
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 20000000
+  }
+
+  # vendor_goods: "/d/death/obj/armor1" (file not found)
+
+  skills = [
+    { skill = "unarmed" level = 500 },
+    { skill = "dodge" level = 500 },
+    { skill = "force" level = 500 },
+    { skill = "parry" level = 500 },
+    { skill = "magic" level = 500 }
+  ]
+
+
+  carry = [
+    { id = items.cloth5.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/zhuque.c by LPCConverter
+# Zone: death
+
+    characters "zhuque" {
+      name = "朱雀"
+      description = "一只宽达丈许的浴火凤凰，乃四神兽之一的朱雀。 它全身羽毛血红似火，整个身体便如一团火焰。"
+  title = "神兽"
+  age = 10000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 8000000
+    con = 20
+    dex = 80
+    int = 30
+    max_jing = 10000
+    max_neili = 15000
+    max_qi = 13000
+    str = 30
+  }
+
+  skills = [
+    { skill = "unarmed" level = 1000 },
+    { skill = "sword" level = 1000 },
+    { skill = "parry" level = 1000 },
+    { skill = "dodge" level = 1000 },
+    { skill = "force" level = 500 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/obj/armor1.c by LPCConverter
+# Zone: death
+
+    characters "armor1" {
+      name = "银甲"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/obj/armor2.c by LPCConverter
+# Zone: death
+
+    characters "armor2" {
+      name = "金盔"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/obj/bi.c by LPCConverter
+# Zone: death
+
+    characters "bi" {
+      name = "判官笔"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/obj/blade1.c by LPCConverter
+# Zone: death
+
+    characters "blade1" {
+      name = "枯骨刀"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/obj/book.c by LPCConverter
+# Zone: death
+
+    characters "book" {
+      name = "生死薄"
+      description = "一本记载人间生死的名册。"
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/obj/cloth1.c by LPCConverter
+# Zone: death
+
+    characters "cloth1" {
+      name = "无常袍"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/obj/cloth2.c by LPCConverter
+# Zone: death
+
+    characters "cloth2" {
+      name = "阎罗袍"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/obj/cloth3.c by LPCConverter
+# Zone: death
+
+    characters "cloth3" {
+      name = "云裳"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/obj/cloth4.c by LPCConverter
+# Zone: death
+
+    characters "cloth4" {
+      name = "鬼王袍"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/obj/cloth5.c by LPCConverter
+# Zone: death
+
+    characters "cloth5" {
+      name = "阴王袍"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/obj/jiasuo.c by LPCConverter
+# Zone: death
+
+    characters "jiasuo" {
+      name = "枷锁"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/death/npc/obj/suolian.c by LPCConverter
+# Zone: death
+
+    characters "suolian" {
+      name = "锁链"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/hugu.c by LPCConverter
+# Zone: death
+
+    items "hugu" {
+      name = "虎骨"
+      description = "一根新鲜的虎骨，从神兽白虎的身体里取出，可以入药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/hupi.c by LPCConverter
+# Zone: death
+
+    items "hupi" {
+      name = "白虎皮"
+      description = "一张从神兽白虎身上剥下的皮，雪白无暇，无比的坚韧。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/jiake.c by LPCConverter
+# Zone: death
+
+    items "jiake" {
+      name = "玄武甲壳"
+      description = "一块神兽玄武的甲壳，相当的坚韧。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/jingyuandan.c by LPCConverter
+# Zone: death
+
+    items "jingyuandan" {
+      name = "精元丹"
+      description = "一颗神秘的神丹，散发出隐隐血光。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/longdan.c by LPCConverter
+# Zone: death
+
+    items "longdan" {
+      name = "龙胆"
+      description = "一只血淋淋的新鲜龙胆，从神兽青龙的身体里取出，可以入药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/longjin.c by LPCConverter
+# Zone: death
+
+    items "longjin" {
+      name = "龙筋"
+      description = "一根从神兽青龙身上取出的筋，相当的坚韧。晶莹剔透，隐然泛出白光。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/qilinxue.c by LPCConverter
+# Zone: death
+
+    items "qilinxue" {
+      name = "麒麟靴"
+      description = "这是一双用上麒麟皮作的皮靴，据说可以赴汤蹈火。用以保护足部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/qise.c by LPCConverter
+# Zone: death
+
+    items "qise" {
+      name = "七色璎珞"
+      description = "一块纯白色的水晶，晶莹剔透，无暇的表面射 出耀眼的光泽。其中仿佛蕴藏着千千万万的生 命，生命流动不息，散发出宇宙的力量。这便 是传说中的至宝----七色璎珞，相传只有在地 狱中才会出现。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/shuizao.c by LPCConverter
+# Zone: death
+
+    items "shuizao" {
+      name = "水藻"
+      description = "一丛生长在碧水寒潭里的耐寒水藻。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/tang.c by LPCConverter
+# Zone: death
+
+    items "tang" {
+      name = "孟婆汤"
+      description = "一碗热气腾腾的孟婆汤，散发着浓烈的草药气味。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/tianjing.c by LPCConverter
+# Zone: death
+
+    items "tianjing" {
+      name = "寰宇天晶"
+      description = "一块纯白色的水晶，晶莹剔透，无暇的表面射 出耀眼的光泽。其中仿佛蕴藏着千千万万的生 命，生命流动不息，散发出宇宙的力量。这便 是传说中的至宝----寰宇天晶，相传只有在天 宫中才会出现。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon1.c by LPCConverter
+# Zone: death
+
+    items "weapon1" {
+      name = "如意盘龙棍"
+      description = "一根沉甸甸雕着盘龙的长棍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon10.c by LPCConverter
+# Zone: death
+
+    items "weapon10" {
+      name = "定海神针·破九域"
+      description = "定海神针·破九域乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon11.c by LPCConverter
+# Zone: death
+
+    items "weapon11" {
+      name = "天罗锤"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon12.c by LPCConverter
+# Zone: death
+
+    items "weapon12" {
+      name = "定妖神锤"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon13.c by LPCConverter
+# Zone: death
+
+    items "weapon13" {
+      name = "盘龙杖"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon14.c by LPCConverter
+# Zone: death
+
+    items "weapon14" {
+      name = "九凰杖"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon15.c by LPCConverter
+# Zone: death
+
+    items "weapon15" {
+      name = "天涯拐"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon16.c by LPCConverter
+# Zone: death
+
+    items "weapon16" {
+      name = "八仙杖"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon17.c by LPCConverter
+# Zone: death
+
+    items "weapon17" {
+      name = "七星杖·轮回"
+      description = "七星杖·轮回乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon18.c by LPCConverter
+# Zone: death
+
+    items "weapon18" {
+      name = "七星杖·诛天"
+      description = "七星杖·诛天乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon19.c by LPCConverter
+# Zone: death
+
+    items "weapon19" {
+      name = "七星杖·寂灭"
+      description = "七星杖·寂灭乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon2.c by LPCConverter
+# Zone: death
+
+    items "weapon2" {
+      name = "方天画戟"
+      description = "一杆玄铁打制的方天画戟，传说是三国名将吕布所用过的武器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}提起{name}握在手中，威风凛凛。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon20.c by LPCConverter
+# Zone: death
+
+    items "weapon20" {
+      name = "七星杖·麒麟火"
+      description = "七星杖·麒麟火乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon21.c by LPCConverter
+# Zone: death
+
+    items "weapon21" {
+      name = "老君绝灭杖·三味火"
+      description = "老君绝灭杖·三味火乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon22.c by LPCConverter
+# Zone: death
+
+    items "weapon22" {
+      name = "仙鹤神针"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon23.c by LPCConverter
+# Zone: death
+
+    items "weapon23" {
+      name = "天穹神针"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon24.c by LPCConverter
+# Zone: death
+
+    items "weapon24" {
+      name = "龙翔神针"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon25.c by LPCConverter
+# Zone: death
+
+    items "weapon25" {
+      name = "雷霆神针"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon26.c by LPCConverter
+# Zone: death
+
+    items "weapon26" {
+      name = "缠魂丝"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon27.c by LPCConverter
+# Zone: death
+
+    items "weapon27" {
+      name = "盘龙索"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon28.c by LPCConverter
+# Zone: death
+
+    items "weapon28" {
+      name = "烈火神鞭"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon29.c by LPCConverter
+# Zone: death
+
+    items "weapon29" {
+      name = "麒麟鞭"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon3.c by LPCConverter
+# Zone: death
+
+    items "weapon3" {
+      name = "天雷神挡"
+      description = "一杆上古神木所铸造的棍子，乃不世之神兵。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}提起{name}握在手中，威风凛凛。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon30.c by LPCConverter
+# Zone: death
+
+    items "weapon30" {
+      name = "馄饨灵索"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon31.c by LPCConverter
+# Zone: death
+
+    items "weapon31" {
+      name = "玄冰索"
+      description = "玄冰索乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon32.c by LPCConverter
+# Zone: death
+
+    items "weapon32" {
+      name = "神蛟丝·天残"
+      description = "神蛟丝·天残乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon33.c by LPCConverter
+# Zone: death
+
+    items "weapon33" {
+      name = "神蛟丝·天缺"
+      description = "神蛟丝·天缺乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon34.c by LPCConverter
+# Zone: death
+
+    items "weapon34" {
+      name = "神蛟丝·噬月"
+      description = "神蛟丝·噬月乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon35.c by LPCConverter
+# Zone: death
+
+    items "weapon35" {
+      name = "神蛟丝·吞日"
+      description = "神蛟丝·吞日乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon36.c by LPCConverter
+# Zone: death
+
+    items "weapon36" {
+      name = "乌龙神蛟丝"
+      description = "乌龙神蛟丝乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon37.c by LPCConverter
+# Zone: death
+
+    items "weapon37" {
+      name = "鱼肠剑"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon38.c by LPCConverter
+# Zone: death
+
+    items "weapon38" {
+      name = "毒绫子"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon39.c by LPCConverter
+# Zone: death
+
+    items "weapon39" {
+      name = "青阳神匕"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon4.c by LPCConverter
+# Zone: death
+
+    items "weapon4" {
+      name = "玄天棍·鬼虐"
+      description = "玄天棍·鬼虐乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon40.c by LPCConverter
+# Zone: death
+
+    items "weapon40" {
+      name = "缺月刃"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon41.c by LPCConverter
+# Zone: death
+
+    items "weapon41" {
+      name = "蝉翼刀"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon42.c by LPCConverter
+# Zone: death
+
+    items "weapon42" {
+      name = "齐王天刀"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon43.c by LPCConverter
+# Zone: death
+
+    items "weapon43" {
+      name = "凤凰镢"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon44.c by LPCConverter
+# Zone: death
+
+    items "weapon44" {
+      name = "厚背鹰刀"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon45.c by LPCConverter
+# Zone: death
+
+    items "weapon45" {
+      name = "青龙牙"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon46.c by LPCConverter
+# Zone: death
+
+    items "weapon46" {
+      name = "青雕玉琢"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon47.c by LPCConverter
+# Zone: death
+
+    items "weapon47" {
+      name = "五鬼月华刃"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon48.c by LPCConverter
+# Zone: death
+
+    items "weapon48" {
+      name = "七煞阴阳刃"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon49.c by LPCConverter
+# Zone: death
+
+    items "weapon49" {
+      name = "金阳神刀"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon5.c by LPCConverter
+# Zone: death
+
+    items "weapon5" {
+      name = "如意棍·千钧"
+      description = "如意棍·千钧乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon50.c by LPCConverter
+# Zone: death
+
+    items "weapon50" {
+      name = "碧海残镢"
+      description = "碧海残镢乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon51.c by LPCConverter
+# Zone: death
+
+    items "weapon51" {
+      name = "青天羽·七重天"
+      description = "青天羽·七重天乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon52.c by LPCConverter
+# Zone: death
+
+    items "weapon52" {
+      name = "青天羽·九重天"
+      description = "青天羽·九重天乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon53.c by LPCConverter
+# Zone: death
+
+    items "weapon53" {
+      name = "青天羽·十二重天"
+      description = "青天羽·十二重天乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon54.c by LPCConverter
+# Zone: death
+
+    items "weapon54" {
+      name = "玄金斩·九馄阳"
+      description = "玄金斩·九馄阳乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon55.c by LPCConverter
+# Zone: death
+
+    items "weapon55" {
+      name = "玄金斩·披靡一阳"
+      description = "玄金斩·披靡一阳乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon56.c by LPCConverter
+# Zone: death
+
+    items "weapon56" {
+      name = "玄金斩·虚空"
+      description = "玄金斩·虚空乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon57.c by LPCConverter
+# Zone: death
+
+    items "weapon57" {
+      name = "乾坤刀·乾坤"
+      description = "乾坤刀·乾坤乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon58.c by LPCConverter
+# Zone: death
+
+    items "weapon58" {
+      name = "乾坤刀·逆乾坤"
+      description = "乾坤刀·逆乾坤乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon59.c by LPCConverter
+# Zone: death
+
+    items "weapon59" {
+      name = "七狱地藏斩"
+      description = "七狱地藏斩乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon6.c by LPCConverter
+# Zone: death
+
+    items "weapon6" {
+      name = "七星锤·镇邪"
+      description = "七星锤·镇邪乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon60.c by LPCConverter
+# Zone: death
+
+    items "weapon60" {
+      name = "九仪天尊剑"
+      description = "九仪天尊剑乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon61.c by LPCConverter
+# Zone: death
+
+    items "weapon61" {
+      name = "轩辕神剑"
+      description = "轩辕神剑乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon62.c by LPCConverter
+# Zone: death
+
+    items "weapon62" {
+      name = "苍穹神剑"
+      description = "苍穹神剑乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon63.c by LPCConverter
+# Zone: death
+
+    items "weapon63" {
+      name = "金刚剑·鬼龙"
+      description = "金刚剑·鬼龙乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon64.c by LPCConverter
+# Zone: death
+
+    items "weapon64" {
+      name = "太阿"
+      description = "太阿乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon65.c by LPCConverter
+# Zone: death
+
+    items "weapon65" {
+      name = "麒麟金·破"
+      description = "麒麟金·破乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon66.c by LPCConverter
+# Zone: death
+
+    items "weapon66" {
+      name = "麒麟金·曦"
+      description = "麒麟金·曦乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon67.c by LPCConverter
+# Zone: death
+
+    items "weapon67" {
+      name = "麒麟金·鲸吞"
+      description = "麒麟金·鲸吞乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon68.c by LPCConverter
+# Zone: death
+
+    items "weapon68" {
+      name = "龙凰紫珠"
+      description = "龙凰紫珠乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon69.c by LPCConverter
+# Zone: death
+
+    items "weapon69" {
+      name = "凤凰琴"
+      description = "凤凰琴乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon7.c by LPCConverter
+# Zone: death
+
+    items "weapon7" {
+      name = "七星锤·紫苍"
+      description = "七星锤·紫苍乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon70.c by LPCConverter
+# Zone: death
+
+    items "weapon70" {
+      name = "九天艳阳尺"
+      description = "九天艳阳尺乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon71.c by LPCConverter
+# Zone: death
+
+    items "weapon71" {
+      name = "量天尺"
+      description = "量天尺乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon72.c by LPCConverter
+# Zone: death
+
+    items "weapon72" {
+      name = "盘龙七刹剑"
+      description = "盘龙七刹剑乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon73.c by LPCConverter
+# Zone: death
+
+    items "weapon73" {
+      name = "青鲨嗜"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon74.c by LPCConverter
+# Zone: death
+
+    items "weapon74" {
+      name = "天月寒镢"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon75.c by LPCConverter
+# Zone: death
+
+    items "weapon75" {
+      name = "蹊云寒镢"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon76.c by LPCConverter
+# Zone: death
+
+    items "weapon76" {
+      name = "古松残镢"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon77.c by LPCConverter
+# Zone: death
+
+    items "weapon77" {
+      name = "吴阳剑"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon78.c by LPCConverter
+# Zone: death
+
+    items "weapon78" {
+      name = "黄龙剑"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon79.c by LPCConverter
+# Zone: death
+
+    items "weapon79" {
+      name = "吴钩剑"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon8.c by LPCConverter
+# Zone: death
+
+    items "weapon8" {
+      name = "七星锤·刹神"
+      description = "七星锤·刹神乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon80.c by LPCConverter
+# Zone: death
+
+    items "weapon80" {
+      name = "孤星剑"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/weapon9.c by LPCConverter
+# Zone: death
+
+    items "weapon9" {
+      name = "冥王破狱锤"
+      description = "冥王破狱锤乃九穹七狱神兵之一。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/wujian.c by LPCConverter
+# Zone: death
+
+    items "wujian" {
+      name = "无间闪电"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}(噌)的一声抽出一把无间闪电，漫天乌云，电闪雷鸣，杀气四溅。"
+    unwield = "{npc}把手中的无间闪电插入剑鞘，乌云速散，雷电消失，杀气顿无。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/obj/yumao.c by LPCConverter
+# Zone: death
+
+    items "yumao" {
+      name = "朱羽"
+      description = "一束神兽朱雀的羽毛，不知道有什么用。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/sky1.c by LPCConverter
+# Zone: death
+
+    rooms "sky1" {
+      name = "【一重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+
+  room_exits "sky1" {
+    room_id = rooms.sky1.id
+  out = rooms.tianmen.id  }
+
+
+  room_characters "sky1" {
+    room_id = rooms.sky1.id
+    characters = [
+      { id = characters.tianshen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/sky/sky10.c by LPCConverter
+# Zone: death
+
+    rooms "sky10" {
+      name = "【十重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+
+  room_characters "sky10" {
+    room_id = rooms.sky10.id
+    characters = [
+      { id = characters.tianshen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/sky/sky11.c by LPCConverter
+# Zone: death
+
+    rooms "sky11" {
+      name = "【十一重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+
+  room_characters "sky11" {
+    room_id = rooms.sky11.id
+    characters = [
+      { id = characters.tianshen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/sky/sky12.c by LPCConverter
+# Zone: death
+
+    rooms "sky12" {
+      name = "【十二重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+
+  room_characters "sky12" {
+    room_id = rooms.sky12.id
+    characters = [
+      { id = characters.tianshen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/sky/sky2.c by LPCConverter
+# Zone: death
+
+    rooms "sky2" {
+      name = "【二重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+
+  room_characters "sky2" {
+    room_id = rooms.sky2.id
+    characters = [
+      { id = characters.tianshen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/sky/sky3.c by LPCConverter
+# Zone: death
+
+    rooms "sky3" {
+      name = "【三重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+
+  room_characters "sky3" {
+    room_id = rooms.sky3.id
+    characters = [
+      { id = characters.tianshen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/sky/sky4.c by LPCConverter
+# Zone: death
+
+    rooms "sky4" {
+      name = "【四重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+
+  room_characters "sky4" {
+    room_id = rooms.sky4.id
+    characters = [
+      { id = characters.tianshen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/sky/sky5.c by LPCConverter
+# Zone: death
+
+    rooms "sky5" {
+      name = "【五重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+
+  room_characters "sky5" {
+    room_id = rooms.sky5.id
+    characters = [
+      { id = characters.tianshen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/sky/sky6.c by LPCConverter
+# Zone: death
+
+    rooms "sky6" {
+      name = "【六重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+
+  room_characters "sky6" {
+    room_id = rooms.sky6.id
+    characters = [
+      { id = characters.tianshen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/sky/sky7.c by LPCConverter
+# Zone: death
+
+    rooms "sky7" {
+      name = "【七重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+
+  room_characters "sky7" {
+    room_id = rooms.sky7.id
+    characters = [
+      { id = characters.tianshen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/sky/sky8.c by LPCConverter
+# Zone: death
+
+    rooms "sky8" {
+      name = "【八重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+
+  room_characters "sky8" {
+    room_id = rooms.sky8.id
+    characters = [
+      { id = characters.tianshen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/sky/sky9.c by LPCConverter
+# Zone: death
+
+    rooms "sky9" {
+      name = "【九重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+
+  room_characters "sky9" {
+    room_id = rooms.sky9.id
+    characters = [
+      { id = characters.tianshen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/sky/skylocal.c by LPCConverter
+# Zone: death
+
+    rooms "skylocal" {
+      name = "【天庭】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_characters "skylocal" {
+    room_id = rooms.skylocal.id
+    characters = [
+      { id = characters.lonely.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/sky/tianmen.c by LPCConverter
+# Zone: death
+
+    rooms "tianmen" {
+      name = "【通天门】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tianmen" {
+    room_id = rooms.tianmen.id
+  in = rooms.sky1.id  }
+
+
+  room_characters "tianmen" {
+    room_id = rooms.tianmen.id
+    characters = [
+      { id = characters.tianshen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/beichou.c by LPCConverter
+# Zone: death
+
+    characters "beichou" {
+      name = "北丑"
+      description = "这是一个身着戏子打扮的瘦小老头，长得尖 嘴猴腮，天生一副奸相。这便是当今武林中 号称「南贤北丑」戏子北丑。"
+  title = "武林泰斗"
+  nickname = "北戏子"
+  gender = "男性"
+  age = 68
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 12000000
+    con = 50
+    dex = 50
+    int = 50
+    max_jing = 25000
+    max_neili = 50000
+    max_qi = 25000
+    str = 50
+  }
+
+  skills = [
+    { skill = "dodge" level = 500 },
+    { skill = "unarmed" level = 500 },
+    { skill = "force" level = 500 },
+    { skill = "parry" level = 500 },
+    { skill = "sword" level = 500 },
+    { skill = "poison" level = 500 },
+    { skill = "medical" level = 500 },
+    { skill = "hand" level = 500 },
+    { skill = "strike" level = 500 },
+    { skill = "staff" level = 500 },
+    { skill = "finger" level = 500 },
+    { skill = "claw" level = 500 },
+    { skill = "blade" level = 500 },
+    { skill = "pixie-jian" level = 500 },
+    { skill = "literate" level = 500 },
+    { skill = "taoism" level = 500 },
+    { skill = "buddhism" level = 500 },
+    { skill = "jiuyang-shengong" level = 500 },
+    { skill = "lingbo-weibu" level = 500 },
+    { skill = "qiankun-danuoyi" level = 500 },
+    { skill = "xuanming-zhang" level = 500 },
+    { skill = "jiuyin-baiguzhao" level = 500 },
+    { skill = "dugu-jiujian" level = 500 },
+    { skill = "six-finger" level = 500 },
+    { skill = "qianzhu-wandushou" level = 500 },
+    { skill = "ranmu-daofa" level = 500 },
+    { skill = "dagou-bang" level = 500 },
+    { skill = "shaolin-yishu" level = 500 },
+    { skill = "wudu-qishu" level = 500 },
+    { skill = "throwing" level = 500 },
+    { skill = "mantian-xing" level = 500 },
+    { skill = "idle-force" level = 500 },
+    { type = "unarmed" skill = "pixie-jian" },
+    { type = "force" skill = "jiuyang-shengong" },
+    { type = "dodge" skill = "lingbo-weibu" },
+    { type = "parry" skill = "qiankun-danuoyi" },
+    { type = "hand" skill = "qianzhu-wandushou" },
+    { type = "strike" skill = "xuanming-zhang" },
+    { type = "claw" skill = "jiuyin-baiguzhao" },
+    { type = "finger" skill = "six-finger" },
+    { type = "sword" skill = "dugu-jiujian" },
+    { type = "blade" skill = "ranmu-daofa" },
+    { type = "staff" skill = "dagou-bang" },
+    { type = "throwing" skill = "mantian-xing" },
+    { type = "poison" skill = "wudu-qishu" },
+    { type = "medical" skill = "shaolin-yishu" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/hua.c by LPCConverter
+# Zone: death
+
+    characters "hua" {
+      name = "华英雄"
+      description = "一个俊俏的中年男子，衣着长衫，他就是华英雄。 传说他命犯天煞孤星，一生漂泊，落于异地。尔后 习得一身绝技，兼修炼「中华傲决」，大败「东洋 战神」无敌。"
+  title = "大宗师"
+  nickname = "中华英雄"
+  gender = "男性"
+  age = 26
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000000
+    con = 40
+    dex = 40
+    int = 40
+    max_jing = 6000
+    max_neili = 12000
+    max_qi = 8000
+    str = 40
+  }
+
+  skills = [
+    { skill = "dodge" level = 460 },
+    { skill = "strike" level = 460 },
+    { skill = "parry" level = 460 },
+    { skill = "unarmed" level = 460 },
+    { skill = "force" level = 460 },
+    { skill = "sword" level = 460 },
+    { skill = "siji-jianfa" level = 460 },
+    { skill = "zhonghua-aojue" level = 460 },
+    { skill = "literate" level = 200 },
+    { type = "force" skill = "zhonghua-aojue" },
+    { type = "sword" skill = "zhonghua-aojue" },
+    { type = "dodge" skill = "zhonghua-aojue" },
+    { type = "parry" skill = "zhonghua-aojue" },
+    { type = "strike" skill = "zhonghua-aojue" },
+    { type = "unarmed" skill = "zhonghua-aojue" }
+  ]
+
+
+  carry = [
+    { id = items.cloth3.id },
+    { id = items.chijian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/kou.c by LPCConverter
+# Zone: death
+
+    characters "kou" {
+      name = "寇仲"
+      description = "一个身着龙袍的魁梧少年，他就是少帅军的统帅寇仲。"
+  title = "大宗师"
+  nickname = "大唐双龙"
+  gender = "男性"
+  age = 27
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 8000000
+    con = 35
+    dex = 35
+    int = 35
+    max_jing = 5000
+    max_neili = 9000
+    max_qi = 7000
+    str = 35
+  }
+
+  skills = [
+    { skill = "dodge" level = 320 },
+    { skill = "parry" level = 320 },
+    { skill = "hand" level = 240 },
+    { skill = "unarmed" level = 240 },
+    { skill = "shou-yin" level = 240 },
+    { skill = "wudu-shu" level = 320 },
+    { skill = "force" level = 400 },
+    { skill = "changsheng-jue" level = 400 },
+    { skill = "blade" level = 320 },
+    { skill = "jingzhong-bafa" level = 320 },
+    { skill = "literate" level = 100 },
+    { type = "force" skill = "changsheng-jue" },
+    { type = "blade" skill = "jingzhong-bafa" },
+    { type = "dodge" skill = "wudu-shu" },
+    { type = "parry" skill = "jingzhong-bafa" },
+    { type = "hand" skill = "shou-yin" },
+    { type = "unarmed" skill = "shou-yin" }
+  ]
+
+
+  carry = [
+    { id = items.cloth2.id },
+    { id = items.jingzhongyue.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/li.c by LPCConverter
+# Zone: death
+
+    characters "li" {
+      name = "李寻欢"
+      description = "一个身着白衫的中年男子，俊俏的面庞 毫无血色，似乎因酒色过度而苍白。他手中 握着一柄小刀，静静雕刻着一个木人。周围 发生的一切他仿佛都看不见。"
+  title = "大宗师"
+  nickname = "小李探花"
+  gender = "男性"
+  age = 34
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 5000000
+    con = 35
+    dex = 35
+    int = 35
+    max_jing = 3000
+    max_neili = 6000
+    max_qi = 6000
+    str = 35
+  }
+
+  chat_chance = 1
+chats = [
+    "李寻欢深深的叹了口气。",
+    "李寻欢静静地雕刻着手中的木偶。",
+    "李寻欢咳嗽了几声。",
+    "李寻欢：“咳…咳…”"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 350 },
+    { skill = "parry" level = 350 },
+    { skill = "unarmed" level = 350 },
+    { skill = "throwing" level = 350 },
+    { skill = "xiaoli-feidao" level = 350 },
+    { skill = "changquan" level = 350 },
+    { skill = "shexing-lifan" level = 350 },
+    { skill = "force" level = 350 },
+    { skill = "yijinjing" level = 350 },
+    { skill = "literate" level = 250 },
+    { type = "force" skill = "yijinjing" },
+    { type = "dodge" skill = "shexing-lifan" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xiaoli-feidao" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth1.id },
+    { id = items.renou.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/li2.c by LPCConverter
+# Zone: death
+
+    characters "li2" {
+      name = "李逍遥"
+      description = "仙剑奇侠传中的传奇人物，少年得蜀山剑派 高人授艺，兼习家传绝学飞龙探云手以及冰 心决，乃一代不世的剑侠。"
+  title = "大宗师"
+  nickname = "蜀山剑神"
+  gender = "男性"
+  age = 24
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000000
+    con = 50
+    dex = 50
+    int = 50
+    max_jing = 6000
+    max_neili = 12000
+    max_qi = 9000
+    str = 50
+  }
+
+  skills = [
+    { skill = "dodge" level = 460 },
+    { skill = "parry" level = 460 },
+    { skill = "unarmed" level = 460 },
+    { skill = "hand" level = 460 },
+    { skill = "sword" level = 460 },
+    { skill = "yujian-shu" level = 460 },
+    { skill = "feilong-shou" level = 460 },
+    { skill = "zuixian-bu" level = 460 },
+    { skill = "force" level = 460 },
+    { skill = "bingxin-jue" level = 460 },
+    { skill = "literate" level = 200 },
+    { type = "force" skill = "bingxin-jue" },
+    { type = "dodge" skill = "zuixian-bu" },
+    { type = "parry" skill = "yujian-shu" },
+    { type = "sword" skill = "yujian-shu" },
+    { type = "unarmed" skill = "feilong-shou" },
+    { type = "hand" skill = "feilong-shou" }
+  ]
+
+
+  carry = [
+    { id = items.pangukai.id },
+    { id = items.chiyoujian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/lonely.c by LPCConverter
+# Zone: death
+
+    characters "lonely" {
+      name = "高处不胜寒"
+      description = "他就是泥潭世界的大boss----高处不胜寒。"
+  title = "三界之主"
+  gender = "男性"
+  age = 2100
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000000
+    con = 50
+    dex = 50
+    int = 50
+    max_jing = 25000
+    max_neili = 50000
+    max_qi = 25000
+    str = 50
+  }
+
+  inquiries = [
+    { key = "精元丹" value = "精元丹我的确有，不过赠给有能力之人，你先露一手给我瞧瞧。" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 999 },
+    { skill = "sword" level = 999 },
+    { skill = "blade" level = 999 },
+    { skill = "staff" level = 999 },
+    { skill = "hammer" level = 999 },
+    { skill = "club" level = 999 },
+    { skill = "whip" level = 999 },
+    { skill = "dagger" level = 999 },
+    { skill = "throwing" level = 999 },
+    { skill = "parry" level = 999 },
+    { skill = "dodge" level = 999 },
+    { skill = "force" level = 999 },
+    { skill = "count" level = 999 },
+    { skill = "never-defeated" level = 999 },
+    { skill = "martial-cognize" level = 999 },
+    { type = "sword" skill = "never-defeated" },
+    { type = "blade" skill = "never-defeated" },
+    { type = "staff" skill = "never-defeated" },
+    { type = "hammer" skill = "never-defeated" },
+    { type = "club" skill = "never-defeated" },
+    { type = "whip" skill = "never-defeated" },
+    { type = "dagger" skill = "never-defeated" },
+    { type = "parry" skill = "never-defeated" },
+    { type = "dodge" skill = "never-defeated" },
+    { type = "force" skill = "never-defeated" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.zhujian.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true msg = "你等会，让我把面前的这个家伙放倒再说。" }
+    kill = { accept = true msg = "很好！近年还真没有遇到什么敢和我较量的高手！" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/tianshen.c by LPCConverter
+# Zone: death
+
+    characters "tianshen" {
+      name = "天神"
+      description = "他就是跟随泥潭世界大boss----高处不胜寒的仆人，如今成了天神。"
+  title = "天界总管"
+  gender = "男性"
+  age = 2100
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 60000000
+    con = 50
+    dex = 50
+    int = 50
+    max_jing = 25000
+    max_neili = 50000
+    max_qi = 25000
+    str = 50
+  }
+
+  skills = [
+    { skill = "unarmed" level = 800 },
+    { skill = "sword" level = 800 },
+    { skill = "blade" level = 800 },
+    { skill = "staff" level = 800 },
+    { skill = "hammer" level = 800 },
+    { skill = "club" level = 800 },
+    { skill = "whip" level = 800 },
+    { skill = "dagger" level = 800 },
+    { skill = "throwing" level = 800 },
+    { skill = "parry" level = 800 },
+    { skill = "dodge" level = 800 },
+    { skill = "force" level = 800 },
+    { skill = "never-defeated" level = 800 },
+    { skill = "martial-cognize" level = 800 },
+    { type = "sword" skill = "never-defeated" },
+    { type = "blade" skill = "never-defeated" },
+    { type = "staff" skill = "never-defeated" },
+    { type = "hammer" skill = "never-defeated" },
+    { type = "club" skill = "never-defeated" },
+    { type = "whip" skill = "never-defeated" },
+    { type = "dagger" skill = "never-defeated" },
+    { type = "parry" skill = "never-defeated" },
+    { type = "dodge" skill = "never-defeated" },
+    { type = "force" skill = "never-defeated" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/tie.c by LPCConverter
+# Zone: death
+
+    characters "tie" {
+      name = "铁传甲"
+      description = "一个身材魁梧的汉子。"
+  title = "忠心护卫"
+  nickname = "铁甲金刚"
+  gender = "男性"
+  age = 42
+  shen_type = 1
+  score = 5000
+  brain = brains.guarder
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1800000
+    con = 30
+    dex = 30
+    int = 20
+    max_jing = 3000
+    max_neili = 5000
+    max_qi = 4000
+    str = 40
+  }
+
+  skills = [
+    { skill = "unarmed" level = 220 },
+    { skill = "force" level = 220 },
+    { skill = "parry" level = 180 },
+    { skill = "dodge" level = 180 },
+    { skill = "cuff" level = 220 },
+    { skill = "literate" level = 100 },
+    { skill = "yijinjing" level = 220 },
+    { skill = "tiexian-quan" level = 220 },
+    { skill = "feiyan-huixiang" level = 180 },
+    { type = "parry" skill = "tiexian-quan" },
+    { type = "force" skill = "yijinjing" },
+    { type = "unarmed" skill = "tiexian-quan" },
+    { type = "cuff" skill = "tiexian-quan" },
+    { type = "dodge" skill = "feiyan-huixiang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/xu.c by LPCConverter
+# Zone: death
+
+    characters "xu" {
+      name = "徐子陵"
+      description = "一个俊俏的白衣少年，他就是名震天下的徐子陵。"
+  title = "大宗师"
+  nickname = "大唐双龙"
+  gender = "男性"
+  age = 26
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 8000000
+    con = 35
+    dex = 35
+    int = 35
+    max_jing = 5000
+    max_neili = 9000
+    max_qi = 7000
+    str = 35
+  }
+
+  skills = [
+    { skill = "dodge" level = 320 },
+    { skill = "hand" level = 320 },
+    { skill = "parry" level = 320 },
+    { skill = "unarmed" level = 320 },
+    { skill = "shou-yin" level = 320 },
+    { skill = "wudu-shu" level = 320 },
+    { skill = "force" level = 400 },
+    { skill = "changsheng-jue" level = 400 },
+    { skill = "blade" level = 240 },
+    { skill = "badao-daofa" level = 240 },
+    { skill = "literate" level = 100 },
+    { type = "force" skill = "changsheng-jue" },
+    { type = "blade" skill = "badao-daofa" },
+    { type = "dodge" skill = "wudu-shu" },
+    { type = "parry" skill = "shou-yin" },
+    { type = "hand" skill = "shou-yin" },
+    { type = "unarmed" skill = "shou-yin" }
+  ]
+
+
+  carry = [
+    { id = items.cloth1.id },
+    { id = items.hands.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/obj/chijian.c by LPCConverter
+# Zone: death
+
+    characters "chijian" {
+      name = "赤剑"
+      description = "一柄四尺来长的长剑，整个剑身呈红色。"
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/obj/chiyoujian.c by LPCConverter
+# Zone: death
+
+    characters "chiyoujian" {
+      name = "玄蚩神剑"
+      description = "一柄玄铁铸造的长剑，剑柄上雕有蚩尤的头像。"
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/obj/feidao.c by LPCConverter
+# Zone: death
+
+    characters "feidao" {
+      name = "小李飞刀"
+      description = "一柄看似普通的飞刀，刀柄上刻了个小小的“李”字。"
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/obj/hands.c by LPCConverter
+# Zone: death
+
+    characters "hands" {
+      name = "残血手套"
+      description = "传说中的上古神器。"
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/obj/jingzhongyue.c by LPCConverter
+# Zone: death
+
+    characters "jingzhongyue" {
+      name = "井中月"
+      description = "一柄四尺来长的单刀，重达百斤，刀身散发着乌黑的光泽。"
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/obj/pangukai.c by LPCConverter
+# Zone: death
+
+    characters "pangukai" {
+      name = "盘古铠"
+      description = "一见黑黝黝的铁甲，上面雕有盘古的头像。"
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/npc/obj/renou.c by LPCConverter
+# Zone: death
+
+    characters "renou" {
+      name = "人偶"
+      description = "一块未完工的木偶，但已经可以辨认出是个女子的雕像。"
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/obj/heshibi.c by LPCConverter
+# Zone: death
+
+    items "heshibi" {
+      name = "何氏壁"
+      description = "一块晶莹剔透的宝玉，其中一角镶嵌着一块黄 金，宝玉上雕刻着盘龙，这便是传说可以号令 天下的何氏壁。相传宝玉中蕴藏着奇异的能源， 武功高强者可以吸取(xi)其中的能量来增强功 力。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/obj/jue.c by LPCConverter
+# Zone: death
+
+    items "jue" {
+      name = "长生决"
+      description = "这便是四大奇书之一的长生决，传说可以修炼至高无上的武学。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/obj/miji1.c by LPCConverter
+# Zone: death
+
+    items "miji1" {
+      name = "铁线拳密芨"
+      description = "这是一本薄薄的小册，上面记载了不少精妙的拳法。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/obj/miji2.c by LPCConverter
+# Zone: death
+
+    items "miji2" {
+      name = "四季剑法"
+      description = "这是一本薄薄的小册，上面记载了四季剑法的奥决。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/obj/miji3.c by LPCConverter
+# Zone: death
+
+    items "miji3" {
+      name = "飞龙探云秘芨"
+      description = "李逍遥的家传绝学。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/obj/sheli.c by LPCConverter
+# Zone: death
+
+    items "sheli" {
+      name = "魔尊舍利"
+      description = "一个浑圆的暗色球体，通体透明。这便是传说 中的魔教至宝----魔尊舍利。相传其中蕴藏着 无比巨大的能量，武功高强者可以吸取(xi)其 中的能量来增强功力。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/obj/shenjiu.c by LPCConverter
+# Zone: death
+
+    items "shenjiu" {
+      name = "天乙神酒"
+      description = "这是一瓶天乙神酒，便是只闻闻也让你昏昏欲醉。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/obj/tianxiadan.c by LPCConverter
+# Zone: death
+
+    items "tianxiadan" {
+      name = "天霞神丹"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/death/sky/obj/yishu.c by LPCConverter
+# Zone: death
+
+    items "yishu" {
+      name = "岳山遗书"
+      description = "这便是当年「霸刀」岳山临死前的遗书，上面记载了他对刀法的体会。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

@@ -1,0 +1,3335 @@
+
+
+# Generated from C:/files/git/mud/d/death/block.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!wizardp(this_player()))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: block_cmd
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/diyin.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( (!arg) || !((arg == "jingti") || (arg == "晶体")))  →  
+  # if (query("not_xuemai") || me->query("combat_exp") < 1500000 )  →  
+# ==== CONDITIONAL BRANCHES (do_qiao) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_qiao
+  # UNHANDLED FUNCTION: regenerate
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/diyin_road1.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (dir == "down") { i = (int)me->query_temp("long_road"); i = i + 1; if (i == 10) { me->delete_temp("long_road"); return 1; } else { me->set_temp("long_road",i); return notify_fail( RED "\n你向下走着这深不见底的阶梯……" "只觉阶梯似乎在无限延伸，永远到达不了尽头" "一般。\n" NOR); }
+# ==== COMPLEX CONDITIONALS ====
+  # else  →  
+  # if (dir == "down")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/diyin_road2.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (dir == "up") { i = (int)me->query_temp("long_road"); i = i + 1; if (i == 10) { me->delete_temp("long_road"); return 1; } else { me->set_temp("long_road",i); return notify_fail( RED "\n你攀爬着这段一眼望不到头的阶梯……" "只觉阶梯似乎在无限延伸，永远到达不了尽头" "一般。\n" NOR); }
+# ==== COMPLEX CONDITIONALS ====
+  # else  →  
+  # if (dir == "up")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/emptyroom.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: do_get
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/death/gateway.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( wizardp(me) || !userp(me) )  →  
+  # else  →  
+  # if (dir == "south")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/god1.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: reset
+  # reset: ::reset(); set("exits", ([ "up" : __DIR__"god2", "down": "/d/city/wumiao", ]));
+# ==== RAW CODE BLOCKS ====
+  # UNHANDLED FUNCTION: reset
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/death/hantan1.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if(meqi > 0) { me->set("qi", meqi); } else { me->set_temp("die_reason", "在碧水寒潭给活活冻死了"); me->die(); }
+# ==== COMPLEX CONDITIONALS ====
+  # if ( present("diyin xuemai", me))  →  tell_object(me, RED '你怀中的地阴血脉发出一阵阵热量，护住了周身的' '经脉！\\\\\n' NOR);
+  # else  →  
+  # if (meqi > 0)  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/hantan2.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if(meqi > 0) { me->set("qi", meqi); } else { me->set_temp("die_reason", "在碧水寒潭给活活冻死了"); me->die(); }
+# ==== COMPLEX CONDITIONALS ====
+  # if ( present("diyin xuemai", me))  →  tell_object(me, RED '你怀中的地阴血脉发出一阵阵热量，护住了周身的' '经脉！\\\\\n' NOR);
+  # else  →  
+  # if (meqi > 0)  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/hantan3.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if(meqi > 0) { me->set("qi", meqi); } else { me->set_temp("die_reason", "在碧水寒潭给活活冻死了"); me->die(); }
+# ==== COMPLEX CONDITIONALS ====
+  # if ( present("diyin xuemai", me))  →  tell_object(me, RED '你怀中的地阴血脉发出一阵阵热量，护住了周身的' '经脉！\\\\\n' NOR);
+  # else  →  
+  # if (meqi > 0)  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/hantan4.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if(meqi > 0) { me->set("qi", meqi); } else { me->set_temp("die_reason", "在碧水寒潭给活活冻死了"); me->die(); }
+# ==== COMPLEX CONDITIONALS ====
+  # if ( present("diyin xuemai", me))  →  tell_object(me, RED '你怀中的地阴血脉发出一阵阵热量，护住了周身的' '经脉！\\\\\n' NOR);
+  # else  →  
+  # if (meqi > 0)  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/hantan5.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if(meqi > 0) { me->set("qi", meqi); } else { me->set_temp("die_reason", "在碧水寒潭给活活冻死了"); me->die(); }
+# ==== COMPLEX CONDITIONALS ====
+  # if ( present("diyin xuemai", me))  →  tell_object(me, RED '你怀中的地阴血脉发出一阵阵热量，护住了周身的' '经脉！\\\\\n' NOR);
+  # else  →  
+  # if (meqi > 0)  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/hantan6.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if(meqi > 0) { me->set("qi", meqi); } else { me->set_temp("die_reason", "在碧水寒潭给活活冻死了"); me->die(); }
+# ==== COMPLEX CONDITIONALS ====
+  # if ( present("diyin xuemai", me))  →  tell_object(me, RED '你怀中的地阴血脉发出一阵阵热量，护住了周身的' '经脉！\\\\\n' NOR);
+  # else  →  
+  # if (meqi > 0)  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/hantan7.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if(meqi > 0) { me->set("qi", meqi); } else { me->set_temp("die_reason", "在碧水寒潭给活活冻死了"); me->die(); }
+# ==== COMPLEX CONDITIONALS ====
+  # if ( present("diyin xuemai", me))  →  tell_object(me, RED '你怀中的地阴血脉发出一阵阵热量，护住了周身的' '经脉！\\\\\n' NOR);
+  # else  →  
+  # if (meqi > 0)  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/hantan8.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (meqi > 0) { me->set("qi", meqi); } else { me->set_temp("die_reason", "在碧水寒潭给活活冻死了"); me->die(); }
+# ==== COMPLEX CONDITIONALS ====
+  # if (present("diyin xuemai", me))  →  tell_object(me, RED '你怀中的地阴血脉发出一阵阵热量，护住了周身的' '经脉！\\\\\n' NOR);
+  # else  →  
+  # if (meqi > 0)  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/heisenlin.c by LPCConverter
+# Zone: death
+
+# Generic LPC file: C:/files/git/mud/d/death/heisenlin.c
+
+# Requires manual conversion
+
+# Generated from C:/files/git/mud/d/death/inn1.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!str )  →  
+  # else  →  
+  # if (sscanf(str,"%s about %s",tmp1, tmp2) == 2)  →  
+# ==== CONDITIONAL BRANCHES (redirect_ask) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_stuff
+  # UNHANDLED FUNCTION: redirect_ask
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/inn2.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: do_stuff
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/death/lunhuisi.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: reset
+  # reset: ::reset(); delete ("zuo"); delete ("you");
+# ==== RAW CODE BLOCKS ====
+  # COMPLEX IF: if (arg == "table") { write(HIY "\n你用尽了全身力气想移动石桌，可是它犹如在地面" "生根一般，纹丝不动。\n" NOR); return 1; } } void check_trigger() { if ((int)query("zuo") == 3 && (int)query("you") == 3 && !query("exits/down")) { message("vision", WHT "\n石桌忽然「轧轧轧」一阵响动，向" "一侧缓缓移开，石桌下豁然露出一个黑" "洞洞的阶梯。\n" NOR, this_object()); set("exits/down", __DIR__ "diyin_road1"); delete ("zuo"); delete ("you"); remove_call_out("close_passage"); call_out("close_passage", 10); } } void close_passage() { if (!query("exits/down")) return; message("vision", WHT "\n石桌忽然「轧轧轧」一阵响动，缓缓地移回" "原处，将向下的阶梯盖了个严实。\n" NOR, this_object()); delete ("exits/down"); } int do_turn(string arg) { string dir; if (!arg || arg == "") return 0; if (arg == "lunpan" && (int)query("poem_said") == 1) { write(HIC "你试着触动轮盘，发现它可以左右转动。\n" NOR); return 1; } if (sscanf(arg, "lunpan %s", dir) == 1 && (int)query("poem_said") == 1) { if (dir == "left") { message_vision(HIW "$N" HIW "将轮盘向左转动了一圈" "……忽然「喀喀喀」几声轻响，轮盘又" "转了回原位。\n" NOR, this_player()); add("zuo", 1); check_trigger(); return 1; } if (dir == "right") { message_vision(HIR "$N" HIR "将轮盘向右转动了一圈" "……忽然「喀喀喀」几声轻响，轮盘又" "转了回原位。\n" NOR, this_player()); add("you", 1); check_trigger(); return 1; } else { write(HIC "你要将轮盘向着哪个方向转动？\n" NOR); return 1; }
+# ==== COMPLEX CONDITIONALS ====
+  # if (!arg || arg == "")  →  
+  # if (arg == "天地崩裂时" && (int)query("poem_said") != 1)  →  message_vision(HIW '\\\\\n只听$N' HIW '猛然高声喝道：“天地崩' '裂时！”\\\\\n' NOR + HIR '\\\\\n$N' HIR '话音刚' '落，地面突然「轰隆隆」晃动了几下。青石桌案' '表层的石屑登时脱落，露出了一个石盘。\\\\\n\\\\\n' NOR, this_player());
+  # if (arg == "天地崩裂时" && (int)query("poem_said") == 1)  →  write(HIC '\\\\\n你对着大堂一声猛喝，声音在司内回荡了好一阵才消逝。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_say) ====
+  # if (!arg || arg == "")  →  
+  # if (arg == "lunpan" && (int)query("poem_said") == 1)  →  write(HIC '你试着触动轮盘，发现它可以左右转动。\\\\\n' NOR);
+  # if (sscanf(arg, "lunpan %s", dir) == 1 && (int)query("poem_said") == 1)  →  message_vision(HIW '$N' HIW '将轮盘向左转动了一圈' '……忽然「喀喀喀」几声轻响，轮盘又' '转了回原位。\\\\\n' NOR, this_player()); message_vision(HIR '$N' HIR '将轮盘向右转动了一圈' '……忽然「喀喀喀」几声轻响，轮盘又' '转了回原位。\\\\\n' NOR, this_player()); write(HIC '你要将轮盘向着哪个方向转动？\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_turn) ====
+  # if (!query("exits/down"))  →  
+# ==== CONDITIONAL BRANCHES (close_passage) ====
+  # if ((int)query("zuo") == 3 && (int)query("you") == 3 && !query("exits/down"))  →  
+# ==== CONDITIONAL BRANCHES (check_trigger) ====
+  # if (!arg || arg == "")  →  
+  # if (arg == "table")  →  write(HIY '\\\\\n你用尽了全身力气想移动石桌，可是它犹如在地面' '生根一般，纹丝不动。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: check_trigger
+  # UNHANDLED FUNCTION: do_turn
+  # UNHANDLED FUNCTION: recreate
+  # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: do_say
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/lunhuisi_road1.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_duilian
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/qiao1.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "qiao" || arg == "桥" || arg == "奈河桥")  →  write(CYN '只见孟婆一把拦住你，说道：这位' + RANK_D->query_respect(me) + CYN '，这桥下不得，下不得！下了可就回不' '来了。\\\\\n' NOR); message_vision(HIC '\\\\\n只见$N' HIC '咬了咬牙，一纵' '身从奈河桥上跳了下去……\\\\\n' NOR, this_player()); message_vision(HIC '\\\\\n只听“扑通”一声，$N' HIC '从上面奈河桥跳了下来。\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+  # if (dir == "north")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/qiao2.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "north")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/qinglongtan.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "xuanwo")  →  write(HIW '\\\\\n青龙一声怒嚎，龙尾直扫而出，劈打在你' '身旁的岩壁上，石屑飞绽，挡住了去路。\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '你一纵身，跳进了寒流旋涡……\\\\\n' NOR, me); message_vision(HIW '\\\\\n只见$N' HIW '被奈河桥下的寒流旋涡抛到空' '中，然后重重的跌落在奈河桥上。\\\\\n' NOR, me); tell_object(me, HIR '你被跌得头晕目旋，两耳轰鸣，“哇”的喷出' '一大口鲜血。\\\\\n' NOR); tell_object(me, HIC '\\\\\n你怀中的' NOR + RED '地阴血脉' NOR + HIC '耗尽能源，化作了一屡气体飘出。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_move) ====
+  # if (random(10) < 6)  →  message_vision(WHT '$N' WHT '寻觅了半天，还是没发现青' '龙出没的迹象，一口气再也憋不住，连忙' '游到洞的上部换气。\\\\\n' NOR, me);
+  # else  →  message_vision(HIW '\\\\\n\\\\\n只听洞穴深处传来震天动地的一声' '怒嚎，叫声震得你两耳轰鸣，鼓膜隐隐' '作\\\\\n痛。你周围的碧潭寒水急速卷动，' '激起滔天波浪，眼前一花，一个庞然大' '物\\\\\n出现在你面前，四神兽之首的青龙' '终于现身了。\\\\\n\\\\\n' NOR, me);
+  # else if (random(10) < 4)  →  message_vision(HIR '结果$N' HIR '翻转身体时，“砰”的一' '声，头撞在了尖突的岩壁上，登时鲜血飞溅，' '痛得$N' HIR '“嗷嗷”怪叫不止。\\\\\n' NOR, me);
+  # if (random(10) < 5)  →  message_vision(HIY '结果$N' HIY '一转身，双脚不小心被' '岩壁上伸出的水藻缠住，费了好大劲才挣扎' '开。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (xun) ====
+  # if (objectp(present("qing long", environment(me))))  →  
+  # if (query("qinglong") < 1)  →  
+  # if (me->is_busy())  →  
+  # if ((int)me->query("jing") < 100)  →  
+  # if ((int)me->query("qi") < 100)  →  
+# ==== CONDITIONAL BRANCHES (do_xun) ====
+  # if (me->query("id") == "qing long" || present("diyin xuemai", me))  →  tell_object(me, RED '你怀中的地阴血脉发出一阵阵热' '量，护住了周身的经脉！\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: xun
+  # UNHANDLED FUNCTION: do_xun
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/death/road5.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (dir == "north") { i = (int)me->query_temp("long_road"); i = i + 1; if (i == 35) { me->delete_temp("long_road"); return 1; } else { me->set_temp("long_road",i); return notify_fail( HIB "\n你走著走著……发现四周景色居然都没有变……\n" NOR); }
+# ==== COMPLEX CONDITIONALS ====
+  # else  →  
+  # if (dir == "north")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/death/xuechi1.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "down")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/death/yanluodian.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "south")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/death/yinyangta17.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "up")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/yinyangta18.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->is_busy())  →  
+  # if (objectp(present("zhu que", environment(me))))  →  
+  # if (query("zhuque") < 1)  →  
+  # if (arg != "qise yingluo")  →  
+  # if (! objectp(ob = present("qise yingluo", me)))  →  
+# ==== CONDITIONAL BRANCHES (do_fang) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_fang
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/death/youmingdian.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "north")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/youmingjie.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: reset
+  # reset: ::reset(); num_of_killer = 5;
+# ==== RAW CODE BLOCKS ====
+  # if (num_of_killer == 0)  →  
+  # else  →  
+  # if (num_of_killer == 1)  →  
+# ==== CONDITIONAL BRANCHES (call_killer) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: call_killer
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/1.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (ap + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/10.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (ap + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/11.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (ap + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/12.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (ap + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/13.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (ap + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/14.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (ap + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/15.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (ap + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/16.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (ap + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/17.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (ap + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/18.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (ap + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/2.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (ap + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/3.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # else if (ap / 2 + random(ap) < dp)  →  
+  # if (ap / 2 + random(ap) < fp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/4.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (ap + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/5.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (ap / 2 + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/6.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (target->is_bad() || ! userp(target))  →  
+  # else  →  
+  # if (ap / 2 + random(ap) + random(20) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/7.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  message_vision(msg, me, target);
+  # if (ap / 2 + random(ap) > dp)  →  message_vision(msg, me, target);
+  # else  →  message_vision(msg, me, target);
+  # if (ap / 2 + random(ap) > dp)  →  message_vision(msg, me, target);
+  # else  →  message_vision(msg, me, target);
+  # if (ap / 2 + random(ap) > dp)  →  message_vision(msg, me, target);
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/8.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (ap * 3 / 2 + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: invocation
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/HellZhen/9.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  tell_object(target, HIY'你用尽全身力量向右一纵一滚，摇摇欲倒地站了起来，但总算躲开了这致命的一击！\\\\\n' NOR);
+  # if (ap * 2 + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (perform3) ====
+  # else  →  tell_object(target, HIY'你喘息未定，又觉一股劲风扑面而来，连忙跃开数尺，狼狈地避开。\\\\\n' NOR);
+  # if (ap * 2 + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (perform2) ====
+  # else  →  tell_object(target, HIY'你但觉一股微风扑面而来，风势虽然不劲，然已逼得自己呼吸不畅，知道不妙，连忙跃开数尺。\\\\\n' NOR);
+  # if (ap * 2 + random(ap) > dp)  →  
+# ==== CONDITIONAL BRANCHES (invocation) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: perform2
+  # UNHANDLED FUNCTION: invocation
+  # UNHANDLED FUNCTION: perform3
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/death/liudaolunhui/wujiandao.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! objectp(weapon = me->query_temp("weapon")) || weapon->query("id") != "wujian shandian")  →  
+  # if (! arg)  →  
+  # if (! ob )  →  
+  # if (! ob->is_character())  →  message_vision(HIM + ob->name() + HIM '从这个世界上消失了...\\\\\n\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_smash) ====
+  # else  →  
+  # if (n == sizeof(enter_msg) - 1)  →  message_vision('$N丢下了$n。\\\\\n', me, item);
+# ==== CONDITIONAL BRANCHES (entering_world) ====
+  # if (! query("poem_said"))  →  
+  # if (! me->query("HellZhenPass"))  →  
+  # if (me->query_skill("martial-cognize", 1) < 600 && me->query_skill("force") < 800)  →  
+  # if (objectp(present("ghost", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (do_enter) ====
+  # if ( ! arg || arg == "" )  →  
+  # if ( arg == "潜能无限，精意神通，身居祸福，自我主宰！" && (int)query("poem_said") != 1 )  →  message_vision(HIW '\\\\\n只听$N' HIW '猛然高声喝道：“潜能无' '限，精意神通，身居祸福，自我主宰！”\\\\\n' NOR + HIR '\\\\\n$N' HIR '话音刚' '落，地面突然「轰隆隆」晃动了几下。眼前出' '现了一个镜子。\\\\\n\\\\\n' NOR, this_player()); message_vision(HIW '突然间电闪雷鸣，宇宙无敌之剑无间闪电伴随着道道闪电穿进$N的怀中！\\\\\n', this_player());
+  # if ( arg == "潜能无限，精意神通，身居祸福，自我主宰！" && (int)query("poem_said") == 1 )  →  write(HIC '\\\\\n你对着黑暗一声猛喝，声音在司内回荡了好一阵才消逝。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_say) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: recreate
+  # UNHANDLED FUNCTION: do_smash
+  # UNHANDLED FUNCTION: entering_world
+  # UNHANDLED FUNCTION: do_say
+  # UNHANDLED FUNCTION: do_enter
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/death/npc/bai.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!ob || !present(ob))  →  
+  # else  →  
+  # if (++stage < sizeof(death_msg))  →  
+  # if (!wizardp(ob))  →  
+# ==== CONDITIONAL BRANCHES (death_stage) ====
+  # if (!previous_object() || !userp(previous_object()) || !previous_object()->is_ghost() || wizardp(previous_object()))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: death_stage
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/baihu.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( objectp(me = query_last_damage_from()) && me->query("wang_get/虎骨") && me->query("wang_get/虎皮") && userp(me) )  →  message_vision(HIC '$N' HIC '从白虎的尸体上除下了一张白虎' '皮和一根虎骨。\\\\\n', me); tell_object(me, HIC '由于你斩杀神兽白虎，你获得了' + chinese_number(exp) + '点经验和' + chinese_number(pot) + '点潜能。\\\\\n' NOR);
+  # if ( objectp(me = query_last_damage_from()) && me->query("wang_get/虎骨") && userp(me) )  →  message_vision(HIC '$N' HIC '从白虎的尸体上除下了一根虎骨。\\\\\n', me); tell_object(me, HIC '由于你斩杀神兽白虎，你获得了' + chinese_number(exp) + '点经验和' + chinese_number(pot) + '点潜能。\\\\\n' NOR);
+  # if ( objectp(me = query_last_damage_from()) && me->query("wang_get/虎皮") && userp(me) )  →  message_vision(HIC '$N' HIC '从白虎的尸体上除下了一张白虎皮。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (die) ====
+  # if (interactive(me = this_player()))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: die
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/bgargoyle.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || ! present(ob))  →  
+  # else  →  
+  # if (++stage < sizeof(death_msg))  →  
+  # if (! wizardp(ob))  →  
+# ==== CONDITIONAL BRANCHES (death_stage) ====
+  # if (! previous_object() || ! userp(previous_object()) || ! previous_object()->is_ghost() || ! wizardp(previous_object()))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: death_stage
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/dizangwang.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !me || environment(me) != environment() )  →  
+  # if ( !objectp(ob) )  →  
+  # if ( !present(ob, me) )  →  
+  # if ( (string)ob->query("id") != "jingyuan dan" )  →  message_vision(CYN '地藏王摇了摇头，道：你给我这个干什么？\\\\\n' NOR, me);
+  # if (! me->query("SkyPass") || ! me->query("DiZangPass"))  →  message_vision(CYN '地藏王道：无功不受禄，这个你还是自己留着吧。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if (! objectp(ob = query_competitor()))  →  
+# ==== CONDITIONAL BRANCHES (lost) ====
+  # if (! objectp(ob = query_competitor()))  →  
+# ==== CONDITIONAL BRANCHES (win) ====
+  # if (is_fighting(ob))  →  
+# ==== CONDITIONAL BRANCHES (fight_ob) ====
+  # if (! who->query("HellZhenPass"))  →  message_vision('$N对$n一拱手，道：你想转世先过了十八层地狱这一关再说！\\\\\n', this_object(), who);
+  # if (who->query("SkyPass"))  →  message_vision('$N对$n一拱手，道：精元丹你取来了吗？取来了就快给我！\\\\\n', this_object(), who);
+# ==== CONDITIONAL BRANCHES (ask_zhuan) ====
+  # if (! me->query("hell_quest/锁阳丹"))  →  
+  # if (! ob)  →  
+  # if (owner->is_character() || ! environment(owner))  →  
+  # if (owner == me)  →  
+  # if (objectp(owner) && owner != this_object())  →  
+# ==== CONDITIONAL BRANCHES (ask_xue) ====
+  # if (! ob->query("born"))  →  command('say 你快投胎去，在这里瞎搅和什么？');
+# ==== CONDITIONAL BRANCHES (attempt_apprentice) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: attempt_apprentice
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: fight_ob
+  # UNHANDLED FUNCTION: ob_die
+  # UNHANDLED FUNCTION: win
+  # UNHANDLED FUNCTION: lost
+  # UNHANDLED FUNCTION: accept_kill
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/ghost.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: receive_wound
+  # UNHANDLED FUNCTION: receive_damage
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/hei.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || ! present(ob))  →  
+  # else  →  
+  # if (++stage < sizeof(death_msg))  →  
+  # if (! wizardp(ob))  →  
+# ==== CONDITIONAL BRANCHES (death_stage) ====
+  # if (! previous_object() || ! userp(previous_object()) || ! previous_object()->is_ghost() || wizardp(previous_object()))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: death_stage
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/mamian.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (is_fighting(ob))  →  
+  # if (! is_killing(ob->query("id")))  →  
+# ==== CONDITIONAL BRANCHES (fight_ob) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: fight_ob
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: accept_fight
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/mengpo.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( ! me->is_ghost() && ! wizardp(me))  →  
+  # if (me->query("combat_exp") < 10000000)  →  
+  # if ( present("mengpo tang", this_player()) )  →  
+  # if (time() - me->query_temp("last_eat/mengpo_tang") < 200)  →  
+  # if (query("count") < 1)  →  
+# ==== CONDITIONAL BRANCHES (ask_me) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/niutou.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (is_fighting(ob))  →  
+  # if (! is_killing(ob->query("id")))  →  
+# ==== CONDITIONAL BRANCHES (fight_ob) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: fight_ob
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: accept_fight
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/qinglong.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( objectp(me = query_last_damage_from()) && me->query("wang_get/龙胆") && me->query("wang_get/龙筋") && userp(me) )  →  message_vision(HIC '$N' HIC '从青龙的尸体上除下了一根龙筋和' '一只龙胆。\\\\\n', me); tell_object(me, HIC '由于你斩杀神兽青龙，你获得了' + chinese_number(exp) + '点经验和' + chinese_number(pot) + '点潜能。\\\\\n' NOR);
+  # if ( objectp(me = query_last_damage_from()) && me->query("wang_get/龙胆") && userp(me) )  →  message_vision(HIC '$N' HIC '从青龙的尸体上除下了一只龙胆。\\\\\n', me); tell_object(me, HIC '由于你斩杀神兽青龙，你获得了' + chinese_number(exp) + '点经验和' + chinese_number(pot) + '点潜能。\\\\\n' NOR);
+  # if ( objectp(me = query_last_damage_from()) && me->query("wang_get/龙筋") && userp(me) )  →  message_vision(HIC '$N' HIC '从青龙的尸体上除下了一根龙筋。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (die) ====
+  # if (interactive(me = this_player()))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: die
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/death/npc/wangfangping.c by LPCConverter
+# Zone: death
+
+# inherit F_DEALER;
+
+# Generated from C:/files/git/mud/d/death/npc/wgargoyle.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || ! present(ob))  →  
+  # else  →  
+  # if (++stage < sizeof(death_msg))  →  
+  # if (! wizardp(ob))  →  
+# ==== CONDITIONAL BRANCHES (death_stage) ====
+  # if (! previous_object() || ! userp(previous_object()) || ! previous_object()->is_ghost() || wizardp(previous_object()))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: death_stage
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/xuanwu.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( objectp(me = query_last_damage_from()) && me->query("wang_get/武甲") && userp(me) )  →  message_vision(HIC '$N' HIC '从玄武的尸体上除下了一块玄武甲壳。\\\\\n', me); tell_object(me, HIC '由于你斩杀神兽玄武，你获得了' + chinese_number(exp) + '点经验和' + chinese_number(pot) + '点潜能。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (die) ====
+  # if (interactive(me = this_player()))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: die
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/yanluo.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! (empty = find_object("/d/death/emptyroom")))  →  
+  # if (empty = find_object("/d/death/emptyroom"))  →  
+# ==== CONDITIONAL BRANCHES (remove_all) ====
+  # if ((int)who->query("qi") < 500 || (int)who->query("eff_qi") < 500)  →  
+# ==== CONDITIONAL BRANCHES (check_status) ====
+  # if ((int)who->query("combat_exp") < 20000000 || ! ultrap(who))  →  message_vision('$N对$n一拱手，道：经验不够，技能不熟，强求亦是枉然。\\\\\n', this_object(), who);
+  # if (! who->query("animaout"))  →  message_vision('$N对$n一拱手，道：你还没有修炼成元婴出世呢。\\\\\n', this_object(), who);
+  # if (who->query("couple"))  →  message_vision('$N对$n一拱手，道：你还是先和你的家庭做个交代再转世吧。\\\\\n', this_object(), who);
+  # if (who->query("bunch"))  →  message_vision('$N对$n一拱手，道：你还是先和你的帮派做个交代再转世吧。\\\\\n', this_object(), who);
+  # if (who->query("brothers"))  →  message_vision('$N对$n一拱手，道：你还是先和你的结义兄弟做个交代再转世吧。\\\\\n', this_object(), who);
+  # if (who->query("league"))  →  message_vision('$N对$n一拱手，道：你还是先和你的同盟做个交代再转世吧。\\\\\n', this_object(), who);
+  # if (! who->query("over_quest/hell_quest/锁阳丹"))  →  message_vision('$N对$n一拱手，道：你先帮我找到锁阳丹的药引，才能得到转世的机会。\\\\\n', this_object(), who);
+  # if (who->query("HellZhenPass"))  →  message_vision('$N对$n一拱手，道：既是武功高强，我等佩服便是，这。。。便是免了吧！\\\\\n', this_object(), who);
+  # if (this_object()->query_temp("SomeonePassing"))  →  message_vision('$N对$n一拱手，道：真时机缘不巧，改日再来吧。\\\\\n', this_object(), who);
+# ==== CONDITIONAL BRANCHES (ask_zhuan) ====
+  # if ( !me || environment(me) != environment() )  →  
+  # if ( !objectp(ob) )  →  
+  # if ( !present(ob, me) )  →  
+  # if ( (string)ob->query("id") != "long dan" && (string)ob->query("id") != "hu gu" && (string)ob->query("id") != "zhu yu" && (string)ob->query("id") != "xuanwu jiake" )  →  message_vision(CYN '十殿阎罗摇了摇头，道：你给我这个干什么？\\\\\n' NOR, me);
+  # if (me->query("over_quest/hell_quest/锁阳丹"))  →  message_vision(CYN '十殿阎罗对$N' CYN '笑道：你已经替我备齐所有的原料' '了，这个还是你留着自己用吧。\\\\\n' NOR, me);
+  # if (! me->query("hell_quest/锁阳丹"))  →  message_vision(CYN '十殿阎罗道：无功不受禄，这个你还是自己留着吧。\\\\\n' NOR, me);
+  # if ( (string)ob->query("id") == "long dan" )  →  message_vision(HIW '十殿阎罗见是龙胆，大喜道：“这下四种原料都' '已备齐，终于可以开始炼制老大要的锁阳丹了！多' '亏有你的\\\\\n帮助啊，这个是以前我从蓬莱仙山得来' '的宝物，留着也没用，就当是酬劳好了。”\\\\\n' NOR, me); tell_object(me, HIR '\\\\\n你成功的为十殿阎罗备齐了锁阳丹原料。\\\\\n' NOR); tell_object(me, HIC '\\\\\n你获得了一块' NOR + HIW '寰宇天晶' NOR + HIC '。\\\\\n' NOR); tell_object(me, HIC '你获得了' + chinese_number(exp) + '点' '经验、' + chinese_number(pot) + '点潜能以' '及' + chinese_number(mp) + '点灵慧。\\\\\n' NOR); message_vision( HIY '十殿阎罗见是龙胆，对$N' HIY '摇' '头道：龙胆你已经给过我了，你还是快去' '寻找其它原料吧。\\\\\n' NOR, me);
+  # if ( (string)ob->query("id") == "hu gu" )  →  message_vision(HIW '十殿阎罗见是虎骨，大喜道：“这下四种原料都' '已备齐，终于可以开始炼制老大要的锁阳丹了！多' '亏有你的\\\\\n帮助啊，这个是以前我从蓬莱仙山得来' '的宝物，留着也没用，就当是酬劳好了。”\\\\\n' NOR, me); tell_object(me, HIR '\\\\\n你成功的为十殿阎罗备齐了锁阳丹原料。\\\\\n' NOR); tell_object(me, HIC '\\\\\n你获得了一块' NOR + HIW '寰宇天晶' NOR + HIC '。\\\\\n' NOR); tell_object(me, HIC '你获得了' + chinese_number(exp) + '点' '经验、' + chinese_number(pot) + '点潜能以' '及' + chinese_number(mp) + '点灵慧。\\\\\n' NOR); message_vision( HIY '十殿阎罗见是虎骨，对$N' HIY '摇' '头道：虎骨你已经给过我了，你还是快去' '寻找其它原料吧。\\\\\n' NOR, me);
+  # if ( (string)ob->query("id") == "zhu yu" )  →  message_vision(HIW '十殿阎罗见是朱羽，大喜道：“这下四种原料都' '已备齐，终于可以开始炼制老大要的锁阳丹了！多' '亏有你的\\\\\n帮助啊，这个是以前我从蓬莱仙山得来' '的宝物，留着也没用，就当是酬劳好了。”\\\\\n' NOR, me); tell_object(me, HIR '\\\\\n你成功的为十殿阎罗备齐了锁阳丹原料。\\\\\n' NOR); tell_object(me, HIC '\\\\\n你获得了一块' NOR + HIW '寰宇天晶' NOR + HIC '。\\\\\n' NOR); tell_object(me, HIC '你获得了' + chinese_number(exp) + '点' '经验、' + chinese_number(pot) + '点潜能以' '及' + chinese_number(mp) + '点灵慧。\\\\\n' NOR); message_vision( HIY '十殿阎罗见是朱羽，对$N' HIY '摇' '头道：朱羽你已经给过我了，你还是快去' '寻找其它原料吧。\\\\\n' NOR, me);
+  # if ( (string)ob->query("id") == "xuanwu jiake" )  →  message_vision(HIW '十殿阎罗见是玄武甲壳，大喜道：“这下四种' '原料都已备齐，终于可以开始炼制老大要的锁阳丹' '了！多亏有\\\\\n你的帮助啊，这个是以前我从蓬莱仙' '山得来的宝物，留着也没用，就当是酬劳好了。”\\\\\n' NOR, me); tell_object(me, HIR '\\\\\n你成功的为十殿阎罗备齐了锁阳丹原料。\\\\\n' NOR); tell_object(me, HIC '\\\\\n你获得了一块' NOR + HIW '寰宇天晶' NOR + HIC '。\\\\\n' NOR); tell_object(me, HIC '你获得了' + chinese_number(exp) + '点' '经验、' + chinese_number(pot) + '点潜能以' '及' + chinese_number(mp) + '点灵慧。\\\\\n' NOR); message_vision( HIY '十殿阎罗见是玄武甲壳，对$N' HIY '摇' '头道：这东西你已经给过我了，你还是快去' '寻找其它原料吧。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if (me->query_temp("to_answer"))  →  tell_object(me, HIR '\\\\\n你决定帮助十殿阎罗寻找锁阳丹的' '四种原料。\\\\\n' NOR); message_vision( CYN '\\\\\n十殿阎罗「哈哈哈」大笑几声。\\\\\n' NOR, me); message_vision( CYN '十殿阎罗对$N' CYN '说道：那老夫就' '多谢谢你了。\\\\\n'NOR, me);
+# ==== CONDITIONAL BRANCHES (do_accept) ====
+  # if (me->query_temp("to_answer"))  →  
+  # if (me->query("over_quest/hell_quest/锁阳丹"))  →  
+  # if (me->query("hell_quest/锁阳丹"))  →  
+  # if ( ! me->is_ghost() && ! wizardp(me))  →  
+  # if (query("over") > 1)  →  
+  # if (query("count") < 1)  →  
+  # if (me->query("combat_exp") < 10000000)  →  
+# ==== CONDITIONAL BRANCHES (ask_quest) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch(random(5)) { case 0: tell_room(environment(who), "\n你觉得自己不断下降，周围景物如彩蝶翻飞，不可注目。\n"); break; case 1: tell_room(environment(who), "\n你觉得自己不断下降。\n"); break; case 2: tell_room(environment(who),"\n你觉得自己不断下降，天地似乎没了界限。。。\n"); break; case 3: tell_room(environment(who),"\n你觉得自己不断下降，周围一切都在旋转。。。\n"); break; case 4: tell_room(environment(who),"\n你觉得自己不断下降，下降，似乎落向了无尽的深渊。\n"); break; }
+# ==== SWITCH POOLS ====
+  # UNHANDLED FUNCTION: round_2
+  # UNHANDLED FUNCTION: winning
+  # UNHANDLED FUNCTION: attempt_apprentice
+  # UNHANDLED FUNCTION: round_5
+  # UNHANDLED FUNCTION: round_10
+  # UNHANDLED FUNCTION: round_12
+  # UNHANDLED FUNCTION: do_accept
+  # UNHANDLED FUNCTION: round_4
+  # UNHANDLED FUNCTION: round_16
+  # UNHANDLED FUNCTION: round_1
+  # UNHANDLED FUNCTION: round_17
+  # UNHANDLED FUNCTION: answer
+  # UNHANDLED FUNCTION: give_gold
+  # UNHANDLED FUNCTION: round_11
+  # UNHANDLED FUNCTION: round_13
+  # UNHANDLED FUNCTION: remove_all
+  # UNHANDLED FUNCTION: round_3
+  # UNHANDLED FUNCTION: round_18
+  # UNHANDLED FUNCTION: check_status
+  # UNHANDLED FUNCTION: message_ob
+  # UNHANDLED FUNCTION: round_6
+  # UNHANDLED FUNCTION: round_14
+  # UNHANDLED FUNCTION: round_7
+  # UNHANDLED FUNCTION: failed
+  # UNHANDLED FUNCTION: round_9
+  # UNHANDLED FUNCTION: round_8
+  # UNHANDLED FUNCTION: round_15
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/yinchangsheng.c by LPCConverter
+# Zone: death
+
+# inherit F_DEALER;
+
+# Generated from C:/files/git/mud/d/death/npc/zhuque.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( objectp(me = query_last_damage_from()) && me->query("wang_get/朱羽") && userp(me) )  →  message_vision(HIC '$N' HIC '从朱雀的尸体上拔下了一束羽毛。\\\\\n', me); tell_object(me, HIC '由于你斩杀神兽朱雀，你获得了' + chinese_number(exp) + '点经验和' + chinese_number(pot) + '点潜能。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (die) ====
+  # if (interactive(me = this_player()))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: die
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/obj/armor1.c by LPCConverter
+# Zone: death
+
+# inherit ARMOR;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: owner_is_killed
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/obj/armor2.c by LPCConverter
+# Zone: death
+
+# inherit HEAD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: owner_is_killed
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/obj/bi.c by LPCConverter
+# Zone: death
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: setup
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/obj/blade1.c by LPCConverter
+# Zone: death
+
+# inherit BLADE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: owner_is_killed
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/obj/book.c by LPCConverter
+# Zone: death
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: setup
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/obj/cloth1.c by LPCConverter
+# Zone: death
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/obj/cloth2.c by LPCConverter
+# Zone: death
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/obj/cloth3.c by LPCConverter
+# Zone: death
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/obj/cloth4.c by LPCConverter
+# Zone: death
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/obj/cloth5.c by LPCConverter
+# Zone: death
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/obj/jiasuo.c by LPCConverter
+# Zone: death
+
+# inherit HAMMER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/npc/obj/suolian.c by LPCConverter
+# Zone: death
+
+# inherit WHIP;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/hugu.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( me->is_busy() )  →  
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/hupi.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: query_autoload
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/jiake.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: query_autoload
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/jingyuandan.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/longdan.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( me->is_busy() )  →  
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/longjin.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: query_autoload
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/qilinxue.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/qise.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: query_autoload
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/shuizao.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/tang.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( me->is_busy() )  →  
+# ==== CONDITIONAL BRANCHES (do_eat) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: setup
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/tianjing.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: query_autoload
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon1.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon10.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon11.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon12.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon13.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon14.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon15.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon16.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon17.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon18.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon19.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon2.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon20.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon21.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon22.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon23.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon24.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon25.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon26.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon27.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon28.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon29.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon3.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon30.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon31.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon32.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon33.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon34.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon35.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon36.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon37.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon38.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon39.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon4.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon40.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon41.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon42.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon43.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon44.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon45.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon46.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon47.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon48.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon49.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon5.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon50.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon51.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon52.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon53.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon54.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon55.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon56.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon57.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon58.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon59.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon6.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon60.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon61.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon62.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon63.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon64.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon65.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon66.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon67.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon68.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon69.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon7.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon70.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon71.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon72.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon73.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon74.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon75.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon76.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon77.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon78.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon79.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon8.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon80.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/weapon9.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/wujian.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/obj/yumao.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/sky1.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(CYN '只听天神一声暴喝：“这位' + RANK_D->query_respect(me) + CYN '，请停步。”\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/sky10.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(CYN '只见一个人影突然晃动，挡在你面前。\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/sky11.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(CYN '只见一个人影突然晃动，挡在你面前。\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/sky12.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(CYN '只见一个人影突然晃动，挡在你面前。\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/sky2.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(HIC '只见天神身形一晃，剑如闪电，一' '剑凌空刺出，剑气纵横，挡住了去路。\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/sky3.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(CYN '只听天神说道：“这位' + RANK_D->query_respect(me) + CYN '，你还是下来吧。”\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/sky4.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(CYN '只见一个人影突然晃动，挡在你面前。\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/sky5.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(CYN '只见一个人影突然晃动，挡在你面前。\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/sky6.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(CYN '只见一个人影突然晃动，挡在你面前。\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/sky7.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(CYN '只见一个人影突然晃动，挡在你面前。\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/sky8.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(CYN '只见一个人影突然晃动，挡在你面前。\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/sky9.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(CYN '只见一个人影突然晃动，挡在你面前。\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/death/sky/npc/hua.c by LPCConverter
+# Zone: death
+
+# inherit F_UNIQUE;
+# inherit F_COAGENT;
+
+# Generated from C:/files/git/mud/d/death/sky/npc/kou.c by LPCConverter
+# Zone: death
+
+# inherit F_UNIQUE;
+# inherit F_COAGENT;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (guard && !guard->is_fighting())  →  message_vision (CYN '$N大怒道：阁下欺人太甚，别怪我无情！\\\\\n' NOR, guard);
+# ==== CONDITIONAL BRANCHES (kill_ob) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: kill_ob
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/npc/li.c by LPCConverter
+# Zone: death
+
+# inherit F_UNIQUE;
+# inherit F_COAGENT;
+
+# Generated from C:/files/git/mud/d/death/sky/npc/li2.c by LPCConverter
+# Zone: death
+
+# inherit F_UNIQUE;
+# inherit F_COAGENT;
+
+# Generated from C:/files/git/mud/d/death/sky/npc/lonely.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("combat_exp") < 20000000)  →  message_vision(CYN '$N' CYN '大怒道：“无名小辈捣' '什么乱？给我滚！”说罢一掌把$n' CYN '劈倒在地。\\\\\n' NOR, this_object(), me);
+# ==== CONDITIONAL BRANCHES (accept_kill) ====
+  # if (! objectp(me))  →  command('heihei');
+# ==== CONDITIONAL BRANCHES (win) ====
+  # if (query_competitor() == ob)  →  
+  # if (is_fighting())  →  command('say 你等会，让我把面前的这个家伙放倒再说。');
+  # if (query("qi") < query("eff_qi") * 2 / 3 || query("jing") < query("eff_jing") * 2 / 3 || query("neili") < query("max_neili") * 2 / 3)  →  command('say 我现在有点疲倦，待我歇会儿再说。');
+# ==== CONDITIONAL BRANCHES (accept_fight) ====
+  # if (! interactive(me = this_player()))  →  
+  # if (ultrap(me))  →  message_vision(CYN '$N' CYN '微微一笑，对$n' CYN '点了点头。\\\\\n' NOR, this_object(), me);
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: win
+  # UNHANDLED FUNCTION: lost
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/death/sky/npc/tie.c by LPCConverter
+# Zone: death
+
+# inherit F_GUARDER;
+
+# Generated from C:/files/git/mud/d/death/sky/npc/xu.c by LPCConverter
+# Zone: death
+
+# inherit F_UNIQUE;
+# inherit F_COAGENT;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (guard && !guard->is_fighting())  →  message_vision (CYN '$N大怒道：阁下欺人太甚，别怪我无情！\\\\\n' NOR, guard);
+# ==== CONDITIONAL BRANCHES (kill_ob) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: kill_ob
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/npc/obj/chijian.c by LPCConverter
+# Zone: death
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/npc/obj/chiyoujian.c by LPCConverter
+# Zone: death
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/npc/obj/feidao.c by LPCConverter
+# Zone: death
+
+# inherit THROWING;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/npc/obj/hands.c by LPCConverter
+# Zone: death
+
+# inherit HANDS;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/npc/obj/jingzhongyue.c by LPCConverter
+# Zone: death
+
+# inherit BLADE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/npc/obj/pangukai.c by LPCConverter
+# Zone: death
+
+# inherit ARMOR;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/npc/obj/renou.c by LPCConverter
+# Zone: death
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: setup
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/obj/heshibi.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  message_vision(HIR '\\\\\n只听$N' HIR '一声惨叫，经受不住能' '量的冲击，顿时全身筋脉尽断，鲜血狂喷，身' '体被炸了个粉碎。\\\\\n' NOR, me);
+  # if ( me->query("max_neili") > 5000 && me->query("max_jingli") > 1200 && me->query("combat_exp") > 2000000 && (int)me->query_skill("force") > 330)  →  message_vision(HIC '\\\\\n光华稍退，犹见$N' HIC '全身晶莹' '剔透，竟发出宝石光泽，似乎已和何氏壁' '合为一体了。\\\\\n\\\\\n' NOR, me); tell_object(me, HIY '你感到何氏壁中的能量源源不绝的流' '入了你的丹田，全身暖洋洋的，说不出的' '舒服受用。\\\\\n' NOR); tell_object(me, HIC '你获得了' + chinese_number(exp) + '点经验、' + chinese_number(pot) + '点' '潜能、' + chinese_number(li1) + '点最' '大内力和\\\\\n' + chinese_number(li2) + '点' '最大精力。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (xiqu7) ====
+  # if (!id(arg))  →  
+  # if ( me->is_busy() )  →  
+  # if ( me->query("power/何氏壁") )  →  
+# ==== CONDITIONAL BRANCHES (do_eat) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: xiqu7
+  # UNHANDLED FUNCTION: xiqu4
+  # UNHANDLED FUNCTION: xiqu2
+  # UNHANDLED FUNCTION: xiqu6
+  # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: xiqu5
+  # UNHANDLED FUNCTION: xiqu1
+  # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: xiqu3
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/obj/jue.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/obj/miji1.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/obj/miji2.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/obj/miji3.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/obj/sheli.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  message_vision(HIR '\\\\\n只听$N' HIR '一声惨叫，经受不住能' '量的冲击，顿时全身筋脉尽断，鲜血狂喷，身' '体被炸了个粉碎。\\\\\n' NOR, me);
+  # if ( me->query("max_neili") > 5000 && me->query("max_jingli") > 1200 && me->query("combat_exp") > 2000000 && (int)me->query_skill("force") > 330 && me->query("power/何氏壁") )  →  message_vision(HIW '\\\\\n光华稍退，犹见$N' HIW '全身晶莹' '剔透，竟发出宝石光泽，似乎已和魔尊舍利' '合为一体了。\\\\\n\\\\\n' NOR, me); tell_object(me, HIY '你感到魔尊舍利中的能量源源不绝的流' '入了你的丹田，顿时有一阵说不出的舒服。\\\\\n' NOR); tell_object(me, HIC '你获得了' + chinese_number(exp) + '点经验、' + chinese_number(pot) + '点' '潜能、' + chinese_number(li1) + '点最' '大内力和' + chinese_number(li2) + '点' '最\\\\\n大精力。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (xiqu7) ====
+  # if (!id(arg))  →  
+  # if ( me->is_busy() )  →  
+  # if ( me->query("power/魔尊舍利") )  →  
+# ==== CONDITIONAL BRANCHES (do_eat) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: xiqu7
+  # UNHANDLED FUNCTION: xiqu4
+  # UNHANDLED FUNCTION: xiqu2
+  # UNHANDLED FUNCTION: xiqu6
+  # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: xiqu5
+  # UNHANDLED FUNCTION: xiqu1
+  # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: xiqu3
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/obj/shenjiu.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! id(arg) && arg != "tianyi shenjiu" && arg != "jiu" && arg != "shenjiu" && arg != "tianyi")  →  
+  # if (me->is_busy())  →  
+  # if (random(30) > 1)  →  message_vision(WHT '$N' WHT '喝了几口，却发现瓶内所装不' '过是普通的女儿红。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_eat) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_eat
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/obj/tianxiadan.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( me->is_busy() )  →  
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/death/sky/obj/yishu.c by LPCConverter
+# Zone: death
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

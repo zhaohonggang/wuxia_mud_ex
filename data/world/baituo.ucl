@@ -2030,7 +2030,7 @@ chats = [
 
     items "baipao" {
       name = "白色长袍"
-      description = "这是件质量上佳的白色长袍。\n"
+      description = "这是件质量上佳的白色长袍。"
   verbs = [
     "get",
     "drop"
@@ -2054,7 +2054,7 @@ chats = [
 
     items "cake" {
       name = "Item"
-      description = "这是一块香喷喷的大烘饼。\n"
+      description = "这是一块香喷喷的大烘饼。"
   verbs = [
     "get",
     "drop",
@@ -2101,7 +2101,7 @@ chats = [
   ]
 
   messages = {
-    wield = "$N抽出一把$n握在手中。"
+    wield = "{npc}抽出一把{name}握在手中。"
   }
     }
 
@@ -2119,7 +2119,7 @@ chats = [
   ]
 
   messages = {
-    wield = "$N抽出一把$n握在手中。"
+    wield = "{npc}抽出一把{name}握在手中。"
   }
     }
 
@@ -2140,7 +2140,7 @@ chats = [
 
     items "fen" {
       name = "Item"
-      description = "这是一包治疗外伤的蛇胆粉。\n"
+      description = "这是一包治疗外伤的蛇胆粉。"
   verbs = [
     "get",
     "drop"
@@ -2185,8 +2185,8 @@ chats = [
   ]
 
   messages = {
-    wield = "$N抽出一根$n握在手中，杖端的银蛇呲呲做响。"
-    unwield = "$N将手中的$n放了下来。"
+    wield = "{npc}抽出一根{name}握在手中，杖端的银蛇呲呲做响。"
+    unwield = "{npc}将手中的{name}放了下来。"
   }
     }
 
@@ -2240,8 +2240,8 @@ chats = [
   ]
 
   messages = {
-    wield = "$N「唰」的一声抖出一柄$n握在手中。"
-    unwield = "$N将手中的$n卷回腰间。"
+    wield = "{npc}「唰」的一声抖出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}卷回腰间。"
   }
     }
 
@@ -2320,8 +2320,8 @@ chats = [
   ]
 
   messages = {
-    wield = "$N抽出一根$n握在手中，杖端的蛇头呲呲做响。"
-    unwield = "$N将手中的$n放了下来。"
+    wield = "{npc}抽出一根{name}握在手中，杖端的蛇头呲呲做响。"
+    unwield = "{npc}将手中的{name}放了下来。"
   }
     }
 
@@ -2342,7 +2342,7 @@ chats = [
 
     items "tiezheng" {
       name = "Item"
-      description = "这是一台黑黝黝的铁筝。\n"
+      description = "这是一台黑黝黝的铁筝。"
   verbs = [
     "get",
     "drop"
@@ -2367,7 +2367,7 @@ chats = [
 
     items "zheng" {
       name = "Item"
-      description = "这是一台看上去有些陈旧的古筝。\n"
+      description = "这是一台看上去有些陈旧的古筝。"
   verbs = [
     "get",
     "drop"

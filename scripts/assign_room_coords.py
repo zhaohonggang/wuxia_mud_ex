@@ -287,6 +287,12 @@ def _assign_coords(room_ids, fields, exits_map, start_id):
     # Merge new_exits into exits_map for writing
     final_exits_map = _merge_new_exits(state["exits_map"], state["new_exits"])
 
+    # Ensure ALL rooms from room_ids are in the final exits_map, even with empty exits.
+    # The validator requires every room to have a room_exits block.
+    for rid in room_ids:
+        if rid not in final_exits_map:
+            final_exits_map[rid] = []
+
     return (state["assigned"], final_exits_map)
 
 
@@ -522,7 +528,9 @@ def _add_missing_exit_blocks(content, exits_map):
 
     missing = {}
     for id_, exits in exits_map.items():
-        if exits != [] and id_ not in block_ids:
+        # Always add missing exit blocks, even for rooms with no exits (empty list).
+        # The validator requires every room to have a room_exits block.
+        if id_ not in block_ids:
             missing[id_] = exits
 
     if len(missing) == 0:

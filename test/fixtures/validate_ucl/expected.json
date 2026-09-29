@@ -61,7 +61,9 @@
         "NOTE: use [ \\t] (horizontal whitespace) here, NOT \\s.",
         "^[ \\t]*}[ \\t]*}  ->  double closing brace `} }`",
         ",[ \\t]*}          ->  trailing comma before `}`",
-        "an odd total number of `\"` bytes in the file  ->  unpaired double quote"
+        "an odd total number of `\"` bytes in the file  ->  unpaired double quote",
+        "raw `$N` or `$n` placeholders not replaced by converter (must be {npc}/{name})",
+        "square brackets inside string literals (elias parser rejects them; converter should emit ( ) )"
       ]
     }
   },
@@ -156,21 +158,28 @@
     "cases": [
       {
         "file": "data/world/test.ucl",
-        "exit_code": 0,
-        "failing_checks": [],
-        "why": "full converter output for the test zone, coordinates already present"
+        "exit_code": 1,
+        "failing_checks": [
+          "Chars"
+        ],
+        "why": "full converter output for the test zone, coordinates already present. Contains raw $N/$n placeholders from legacy converter (should be {npc}/{name})."
       },
       {
         "file": "data/world_backup/test_before.ucl",
         "exit_code": 1,
-        "failing_checks": ["Integrity"],
-        "why": "PRE-coords converter output. rooms(34) != room_exits(33): room `liandan_lin` is an orphan with no `room_exits` block at all. assign_room_coords.py synthesises the missing block for orphan rooms, so this file is legitimately 'unfinished' and the validator is right to reject it. This is the evidence that the SOP order (validate -> assign coords -> validate) is meaningful."
+        "failing_checks": [
+          "Integrity",
+          "Chars"
+        ],
+        "why": "PRE-coords converter output. rooms(34) != room_exits(33): room `liandan_lin` is an orphan with no `room_exits` block at all. assign_room_coords.py synthesises the missing block for orphan rooms, so this file is legitimately 'unfinished' and the validator is right to reject it. This is the evidence that the SOP order (validate -> assign coords -> validate) is meaningful. Also contains raw $N/$n placeholders from legacy converter."
       },
       {
         "file": "data/world_backup/test_after.ucl",
-        "exit_code": 0,
-        "failing_checks": [],
-        "why": "the same file after assign_room_coords.py; rooms(34) == room_exits(34), all rooms covered"
+        "exit_code": 1,
+        "failing_checks": [
+          "Chars"
+        ],
+        "why": "the same file after assign_room_coords.py; rooms(34) == room_exits(34), all rooms covered. Contains raw $N/$n placeholders from legacy converter (should be {npc}/{name})."
       }
     ]
   },

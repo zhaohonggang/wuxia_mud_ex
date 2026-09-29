@@ -445,8 +445,8 @@ def _parse_lpc_value(value_str):
 
 
 def _extract_strings_from_macro_wrapped(value_str):
-    segs = [m.group(1) for m in _STR_LITERAL.finditer(value_str)]
-    return "".join(segs)
+    segs = [_process_lpc_escapes(m.group(1)) for m in _STR_LITERAL.finditer(value_str)]
+    return _sanitize_ucl_sval("".join(segs))
 
 
 def _parse_lpc_string(value_str):
@@ -1520,6 +1520,12 @@ def _sanitize_ucl_sval(s):
     s = s.replace(";", " ")
     s = s.replace("\n", " ")
     s = s.replace("\r", " ")
+    # LPC message placeholders used in wield/unwield/emote strings
+    s = s.replace("$N", "{npc}")
+    s = s.replace("$n", "{name}")
+    # elias parser chokes on [ ] inside strings (used in sound effects like $N[噌])
+    s = s.replace("[", "(")
+    s = s.replace("]", ")")
     return s.strip()
 
 
@@ -1561,7 +1567,9 @@ def _coord_of(value):
 
 def _room_id_from_path(path):
     stripped = path.replace('__DIR__"', "")
-    stripped = stripped.replace('"$', "")
+    # The path may end with a bare quote (from __DIR__"npc/foo")
+    # Original code looked for "$ but path ends with just "
+    stripped = stripped.replace('"', "")
     stripped = re.sub(r'^"/d/', "", stripped)
     base = os.path.splitext(os.path.basename(stripped))[0]
     return _norm_id(base).lower()

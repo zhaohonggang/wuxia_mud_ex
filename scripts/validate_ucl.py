@@ -303,7 +303,7 @@ def check_integrity(data):
 
 
 # ---------------------------------------------------------------------------
-# 5. Chars
+# 5. Chars + Elias-compatibility
 # ---------------------------------------------------------------------------
 def check_chars(data):
     issues = []
@@ -313,9 +313,63 @@ def check_chars(data):
         issues.append("trailing comma before }")
     if data.count(b'"') % 2 != 0:
         issues.append("unpaired double quote")
+    # Elias parser issues that Python validator doesn't catch but elias chokes on:
+    # - $N / $n placeholders not replaced by converter (must be {npc} / {name})
+    # - [ ] inside quoted strings (elias chokes; converter should emit ( ) )
+    if b'$N' in data:
+        issues.append("raw $N placeholder (should be {npc})")
+    if b'$n' in data:
+        issues.append("raw $n placeholder (should be {name})")
+    # Check for [ ] inside quoted strings (elias parser error "syntax error before: [")
+    if _has_brackets_in_strings(data):
+        issues.append("square brackets inside strings (elias parser rejects them)")
     if issues:
         return (False, "; ".join(issues))
     return (True, None)
+
+
+def _has_brackets_in_strings(data):
+    """Return True if any quoted string contains [ or ] not part of array/object syntax.
+
+    We scan through the file tracking whether we're inside a string literal.
+    Only brackets inside string literals are problematic for elias.
+    """
+    i = 0
+    n = len(data)
+    in_string = False
+    brace_depth = 0
+    bracket_depth = 0
+    while i < n:
+        c = data[i]
+        if c == 0x22:  # "
+            if not in_string:
+                in_string = True
+                i += 1
+                continue
+            # potential end of string
+            # check if escaped
+            if i > 0 and data[i-1] == 0x5c:  # \
+                # check if the backslash itself is escaped
+                j = i - 2
+                escaped = False
+                while j >= 0 and data[j] == 0x5c:
+                    escaped = not escaped
+                    j -= 1
+                if escaped:
+                    in_string = False
+            else:
+                in_string = False
+            i += 1
+            continue
+        if in_string:
+            if c == 0x5b or c == 0x5d:  # [ or ]
+                return True
+        else:
+            # Track bracket/brace depth for array/object context (not strictly needed
+            # since we only care about in_string, but kept for clarity)
+            pass
+        i += 1
+    return False
 
 
 # ---------------------------------------------------------------------------

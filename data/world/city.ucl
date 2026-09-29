@@ -4754,7 +4754,7 @@ chats = [
 
     characters "feature" {
       name = "孔雀羽衣"
-      description = "这是一件出自天宫织女妙手神裁的羽纱轻衣。款式新颖别致，\n轻柔飘逸的。放在手中简直轻若无物，真是一件服饰极品。\n"
+      description = "这是一件出自天宫织女妙手神裁的羽纱轻衣。款式新颖别致， 轻柔飘逸的。放在手中简直轻若无物，真是一件服饰极品。"
     }
 
 # Generated from C:/files/git/mud/d/city/npc/cloth/fu-cloth.c by LPCConverter
@@ -5308,7 +5308,7 @@ chats = [
 
     characters "zhangpanzi" {
       name = "脏盘子"
-      description = "一叠刚刚用过的脏盘子。\n"
+      description = "一叠刚刚用过的脏盘子。"
     }
 
 # Generated from C:/files/git/mud/d/city/npc/obj/zhitao.c by LPCConverter
@@ -5332,7 +5332,7 @@ chats = [
 
     characters "bajiao_shan" {
       name = "芭蕉扇"
-      description = "芭蕉扇蒲扇，轻便风大，价格低廉。\n"
+      description = "芭蕉扇蒲扇，轻便风大，价格低廉。"
     }
 
 # Generated from C:/files/git/mud/d/city/npc/shanzi/chouwu-shan.c by LPCConverter
@@ -5340,7 +5340,7 @@ chats = [
 
     characters "chouwu_shan" {
       name = "绸舞扇"
-      description = "这是一把丝绸扇面，彩绘花草，舞动时绚丽多彩的绸舞扇。\n"
+      description = "这是一把丝绸扇面，彩绘花草，舞动时绚丽多彩的绸舞扇。"
     }
 
 # Generated from C:/files/git/mud/d/city/npc/shanzi/shan-book.c by LPCConverter
@@ -5348,7 +5348,7 @@ chats = [
 
     characters "shan_book" {
       name = "「扇赏」"
-      description = "这是一本介绍扇的小册，没事可以看看(read)。\n"
+      description = "这是一本介绍扇的小册，没事可以看看(read)。"
 
   init = {
     greet_delay = 0
@@ -5361,7 +5361,7 @@ chats = [
 
     characters "tanxiang_shan" {
       name = "NPC"
-      description = "这是一把由紫檀木刻制的香木扇，芬芳馥郁。\n"
+      description = "这是一把由紫檀木刻制的香木扇，芬芳馥郁。"
     }
 
 # Generated from C:/files/git/mud/d/city/npc/shanzi/tuan-shan.c by LPCConverter
@@ -5369,7 +5369,7 @@ chats = [
 
     characters "tuan_shan" {
       name = "团扇"
-      description = "这是一把用上好绢丝制作的团宫，绣着精细的花鸟。\n"
+      description = "这是一把用上好绢丝制作的团宫，绣着精细的花鸟。"
     }
 
 # Generated from C:/files/git/mud/d/city/npc/shanzi/yuban-shan.c by LPCConverter
@@ -5377,7 +5377,7 @@ chats = [
 
     characters "yuban_shan" {
       name = "玉版扇"
-      description = "这是一把由苍山巨竹雕琢为扇骨，色白润如玉，因此叫做玉版扇。\n"
+      description = "这是一把由苍山巨竹雕琢为扇骨，色白润如玉，因此叫做玉版扇。"
     }
 
 # Generated from C:/files/git/mud/d/city/npc/shanzi/yumao-shan.c by LPCConverter
@@ -5385,7 +5385,7 @@ chats = [
 
     characters "yumao_shan" {
       name = "羽毛扇"
-      description = "这是一把用雪白色的鹤翅硬翎制作的羽毛扇。\n"
+      description = "这是一把用雪白色的鹤翅硬翎制作的羽毛扇。"
     }
 
 # Generated from C:/files/git/mud/d/city/npc/shanzi/zhe-shan.c by LPCConverter
@@ -5393,7 +5393,7 @@ chats = [
 
     characters "zhe_shan" {
       name = "NPC"
-      description = "这是一把做工精巧的纸面折扇。\n"
+      description = "这是一把做工精巧的纸面折扇。"
     }
 
 # Generated from C:/files/git/mud/d/city/obj/bone.c by LPCConverter
@@ -5410,7 +5410,7 @@ chats = [
   ]
 
   messages = {
-    wield = "$N抓起一根$n，握在手中当武器。"
+    wield = "{npc}抓起一根{name}，握在手中当武器。"
   }
     }
 
@@ -5447,7 +5447,7 @@ chats = [
 
     items "rrose" {
       name = "玫瑰"
-      description = "一朵红色的玫瑰，花瓣里透出一股凄然。\n"
+      description = "一朵红色的玫瑰，花瓣里透出一股凄然。"
   verbs = [
     "get",
     "drop",
@@ -5470,8 +5470,8 @@ chats = [
   ]
 
   messages = {
-    wield = "$N搬起一块$n准备战斗。"
-    unwield = "$N放下手中的$n。"
+    wield = "{npc}搬起一块{name}准备战斗。"
+    unwield = "{npc}放下手中的{name}。"
   }
     }
 
@@ -5489,8 +5489,8 @@ chats = [
   ]
 
   messages = {
-    wield = "$N拿出一根$n，握在手中。"
-    unwield = "$N放下手中的$n。"
+    wield = "{npc}拿出一根{name}，握在手中。"
+    unwield = "{npc}放下手中的{name}。"
   }
     }
 
@@ -5535,7 +5535,7 @@ chats = [
 
     items "yrose" {
       name = "玫瑰"
-      description = "一朵黄色的玫瑰。\n"
+      description = "一朵黄色的玫瑰。"
   verbs = [
     "get",
     "drop",
@@ -5561,7 +5561,7 @@ chats = [
 
     items "chang" {
       name = "圣诞烤肠"
-      description = "上面写着「Merry Christmas！祝：圣诞快乐！」。\n"
+      description = "上面写着「Merry Christmas！祝：圣诞快乐！」。"
   verbs = [
     "get",
     "drop"
@@ -5573,7 +5573,7 @@ chats = [
 
     characters "christmasman" {
       name = "NPC"
-      description = "圣诞老人背着一个大口袋，笑嘻嘻地看着你！\n"
+      description = "圣诞老人背着一个大口袋，笑嘻嘻地看着你！"
   gender = "男性"
   age = 65
   score = 100000
@@ -5620,7 +5620,7 @@ chats = [
 
     items "dabing" {
       name = "圣诞大饼"
-      description = "上面写着「Merry Christmas！祝：圣诞快乐！」。\n"
+      description = "上面写着「Merry Christmas！祝：圣诞快乐！」。"
   verbs = [
     "get",
     "drop"
@@ -5632,7 +5632,7 @@ chats = [
 
     items "hanbao" {
       name = "圣诞汉堡"
-      description = "上面写着「Merry Christmas！祝：圣诞快乐！」。\n"
+      description = "上面写着「Merry Christmas！祝：圣诞快乐！」。"
   verbs = [
     "get",
     "drop"
