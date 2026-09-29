@@ -28,7 +28,7 @@
 - [x] **death** · 中心 `yanluodian` · 产出 `death.ucl` `death.comments.txt` ✅ 2026-09-29
 - [x] **gaibang** · 中心 `undertre` · 产出 `gaibang.ucl` `gaibang.comments.txt` ✅ 2026-09-29
 - [x] **guiyun** · 中心 `dating` · 产出 `guiyun.ucl` `guiyun.comments.txt` ✅ 2026-09-29
-- [ ] **gumu** · 中心 `daxiaochang`
+- [x] **gumu** · 中心 `daxiaochang` · 产出 `gumu.ucl` `gumu.comments.txt` ✅ 2026-09-29
 - [ ] **huanghe** · 中心 `guangchang`
 - [ ] **jingzhou** · 中心 `guangchang`
 - [ ] **luoyang** · 中心 `center`
@@ -156,4 +156,5 @@
 | death | 2026-09-29 | ? | ? | 完整 Python 转换：76 rooms, 76 room_exits (含 coords) |
 | gaibang | 2026-09-29 | ? | ? | 完整 Python 转换：4 rooms, 4 room_exits (含 coords) |
 | guiyun | 2026-09-29 | ? | ? | 完整 Python 转换：25 rooms, 25 room_exits (含 coords) |
+| gumu | 2026-09-29 | ? | ? | 完整 Python 转换：74 rooms, 74 room_exits (含 coords) |
 | ... |  |  |  |  |

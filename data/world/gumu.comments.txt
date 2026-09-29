@@ -1,0 +1,423 @@
+# Generated from C:/files/git/mud/d/gumu/baimatan.c by LPCConverter
+# Zone: gumu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/gumu/hanshuitan.c by LPCConverter
+# Zone: gumu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg != "tan" )  →  
+# ==== CONDITIONAL BRANCHES (do_qian) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_qian
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/gumu/houting.c by LPCConverter
+# Zone: gumu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg != "lock" || ! me->query_temp("tmarks/棺"))  →  
+# ==== CONDITIONAL BRANCHES (do_niu) ====
+  # if (! arg || arg != "coffin")  →  
+  # if (me->query_temp("tmarks/棺"))  →  
+  # else  →  
+  # else if (query("getbook") >= 1)  →  
+  # if (query("getbook") >= 1 && objectp(paper) && paper->query("can_draw") >= 1)  →  tell_object(me, HIC '你得到了一本' NOR + ob->name() + HIC '。\\\\\n\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_tang) ====
+  # if (random(10) > 8)  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_tang
+  # UNHANDLED FUNCTION: do_niu
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gumu/huangshalin.c by LPCConverter
+# Zone: gumu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/gumu/mishi1.c by LPCConverter
+# Zone: gumu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !arg || arg != "brick" || me->query_temp("tmarks/砖",1) < 1)  →  
+# ==== CONDITIONAL BRANCHES (do_zhan) ====
+  # if ( !arg || arg != "brick" )  →  
+  # if (!objectp(weapon = me->query_temp("weapon")))  →  
+# ==== CONDITIONAL BRANCHES (do_ci) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_ci
+  # UNHANDLED FUNCTION: do_zhan
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gumu/mishi2.c by LPCConverter
+# Zone: gumu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! here = find_object(__DIR__"mishi2"))  →  
+  # else  →  
+  # if (me->query("special_skill/clever"))  →  
+  # if (! living(me) || arg != "wall")  →  
+  # if (me->is_busy() || me->is_fighting())  →  
+  # if ((int)me->query_skill("force", 1) < 30)  →  
+  # if (! me->query("can_learn/yunv-xinjing/wall"))  →  
+  # if ((int)me->query_skill("yunv-xinjing", 1) < 180)  →  
+  # if ((int)me->query_skill("yunv-xinjing", 1) > 240)  →  
+  # if ((int)me->query("jing") < 35)  →  
+  # if (me->can_improve_skill("yunv-xinjing"))  →  
+# ==== CONDITIONAL BRANCHES (do_think) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_think
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/gumu/mumen.c by LPCConverter
+# Zone: gumu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "south" || ! objectp(guard = present("sun popo", this_object())) || ! me->query("family"))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if ( !arg || arg != "shi" )  →  
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/gumu/shandong.c by LPCConverter
+# Zone: gumu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "westdown" && me->query("family/family_name") != "古墓派")  →  
+  # if (dir == "westdown" && me->query("family/family_name") == "古墓派")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/gumu/taiyi1.c by LPCConverter
+# Zone: gumu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !arg || arg != "chi")  →  write('你往哪里跳呀? \\\\\n');
+# ==== CONDITIONAL BRANCHES (do_jump) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_jump
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gumu/taiyi2.c by LPCConverter
+# Zone: gumu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("qi") < 40)  →  
+  # if (c_skill < 1)  →  
+  # if (me->can_improve_skill("jinyan-gong") && c_skill < 51)  →  
+# ==== CONDITIONAL BRANCHES (do_swim) ====
+  # if ( !arg || arg != "up")  →  write('那个方向没法爬。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_climb) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_climb
+  # UNHANDLED FUNCTION: do_swim
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/gumu/zhengting.c by LPCConverter
+# Zone: gumu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (lvl_force > 100) { if ( me->query("max_neili") < 200 ) { write(HIR"你现在的内力修为太低无法抵御寒玉床的寒气，去练练再来吧。\n"NOR); return 1; } if ( me->query("max_neili") > 2000 && me->query("family/family_name") != "古墓派" ) { write(HIR"以你现在的内力修为再躺寒玉床已经没什么用了。\n"NOR); return 1; } else if ( me->query("max_neili") > 4000) { write(HIR"以你现在的内力修为再躺寒玉床已经没什么用了。\n"NOR); return 1; } message_vision(HIC "\n$N" HIC "躺上了寒玉床，开始潜运内功，使内" "息遍行大小周天。\n", this_player()); if (random(20) > 10 && (int)me->query("max_neili") < (int)me->query_neili_limit()) { message_vision(HIM "\n$N" HIM" 调息完毕，只觉得精神健旺" "，内息充沛欲奔腾而出。\n" NOR, this_player()); me->add("max_neili", 1); me->start_busy(1 + random(3)); me->receive_damage("qi", lvl_force / 3 + random(lvl_force / 3)); } else { message_vision(HIY "\n$N" HIY "调息完毕，站起身来，提了提内力" "，好象没什么长进。\n" NOR, this_player()); me->start_busy(1); me->receive_damage("qi", 10 + random(10)); }
+# ==== COMPLEX CONDITIONALS ====
+  # if (me->is_busy())  →  tell_object(me, RED '你觉得现在内息未定，经脉隐隐还能感到真气冲荡，不敢继续调息。\\\\\n' NOR);
+  # else  →  message_vision(HIW '\\\\\n$N' HIW '躺上寒玉床，只觉得冰冷刺骨，‘啊’' '的一声狼狈不堪地跳了起来。\\\\\n', this_player());
+  # if (lvl_force > 100)  →  write(HIR'你现在的内力修为太低无法抵御寒玉床的寒气，去练练再来吧。\\\\\n'NOR); write(HIR'以你现在的内力修为再躺寒玉床已经没什么用了。\\\\\n'NOR); message_vision(HIC '\\\\\n$N' HIC '躺上了寒玉床，开始潜运内功，使内' '息遍行大小周天。\\\\\n', this_player()); message_vision(HIM '\\\\\n$N' HIM' 调息完毕，只觉得精神健旺' '，内息充沛欲奔腾而出。\\\\\n' NOR, this_player()); message_vision(HIY '\\\\\n$N' HIY '调息完毕，站起身来，提了提内力' '，好象没什么长进。\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_sleep) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_sleep
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/gumu/npc/sun.c by LPCConverter
+# Zone: gumu
+
+# inherit F_GUARDER;
+
+# Generated from C:/files/git/mud/d/gumu/npc/obj/baipao.c by LPCConverter
+# Zone: gumu
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gumu/obj/bingpo-zhen.c by LPCConverter
+# Zone: gumu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gumu/obj/fengmi.c by LPCConverter
+# Zone: gumu
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (query("mi_count") < 1)  →  write('罐子里的玉蜂蜜已经被喝得一滴不剩了。\\\\\n');
+  # if (me->query("water") >= me->max_water_capacity() && me->query("food") >= me->max_food_capacity())  →  write('你已经吃太饱了，再也塞不下任何东西了。\\\\\n');
+  # if ((int)me->query_condition("yufengdu"))  →  tell_object(me, HIC '你只觉体内残存的玉蜂毒慢慢消退，气脉随之一畅。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gumu/obj/ping.c by LPCConverter
+# Zone: gumu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (environment(me)->query("no_fight"))  →  
+  # if (! arg)  →  
+  # if (this_object()->query("jian") < 1)  →  
+  # if (! objectp(obj = present(arg, environment(me))))  →  
+  # if (! obj->is_character() || obj->is_corpse())  →  
+  # if (me->is_busy())  →  
+  # if (obj == me)  →  
+  # if (! me->is_fighting(obj))  →  
+  # if (mylev <= 0)  →  
+  # if (myexp < 30)  →  
+  # if ((int) me->query("jing") < myexp)  →  
+  # if (myforce + 15 <= obforce)  →  
+  # if (steps < 2)  →  
+  # if (steps > 6)  →  
+  # else  →  tell_object(obj, HIR '你周围刹那间尽是玉蜂围绕，一只只玉蜂悍不畏死地向你\\\\\n' '蜇了过来，你只觉得背心微微一痛，已被玉蜂蜇中！\\\\\n' NOR ) ; obj->receive_damage('jing', steps * 5, me);
+  # if (random(mylev) < objlev * 2 / 3)  →  
+# ==== CONDITIONAL BRANCHES (do_qufeng) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_qufeng
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gumu/obj/yufeng-zhen.c by LPCConverter
+# Zone: gumu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

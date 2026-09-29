@@ -1,0 +1,1478 @@
+zones "gumu" {
+  name = "gumu"
+}
+
+# Generated from C:/files/git/mud/d/gumu/baimatan.c by LPCConverter
+# Zone: gumu
+
+    rooms "baimatan" {
+      name = "白马潭"
+      description = "这个潭为於终南山主峰一带，一条名叫库峪河的上游。潭 边有一块比三间房子还要大的白石头，此石中间低两头高，石 头的前半截伸在水里，後半截留在岸上。由伸在水中的那半截 石头下面还不时冒出一串串白沫，老远看去活似一匹腾空欲飞 的烈马，因此当地人都叫此潭为白马潭。往北是一条崎岖的山 路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baimatan" {
+    room_id = rooms.baimatan.id
+  northup = rooms.shanlu6.id  }
+
+# Generated from C:/files/git/mud/d/gumu/baoziyan.c by LPCConverter
+# Zone: gumu
+
+    rooms "baoziyan" {
+      name = "抱子岩"
+      description = "一路过来，山路是越来越险。只见光秃秃的山路，左旁尽 是怪石，而右则是万丈深渊，渺不见底。前方不远处的一块巨 石，便是有名的抱子岩。再看几眼，觉那岩生得甚是奇怪，就 如一个妇人抱着个孩子般，细心呵护。往南和西各是一片密林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baoziyan" {
+    room_id = rooms.baoziyan.id
+  west = rooms.shulin8.id
+  south = rooms.shulin9.id  }
+
+
+
+
+  room_items "baoziyan" {
+    room_id = rooms.baoziyan.id
+    items = [
+      { id = items.chen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gumu/caodi.c by LPCConverter
+# Zone: gumu
+
+    rooms "caodi" {
+      name = "草地"
+      description = "这里是一片草地，草很深，几乎淹没了小腿。草间散布着 一些奇花，微风吹过，芬芳扑鼻。你听到时而有“嗡嗡嗡”的 声音，看见有一些个头奇大的白色的蜜蜂在草地上飞舞盘旋。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caodi" {
+    room_id = rooms.caodi.id
+  south = rooms.mumen.id
+  east = rooms.caodi2.id
+  north = rooms.shulin3.id  }
+
+# Generated from C:/files/git/mud/d/gumu/caodi2.c by LPCConverter
+# Zone: gumu
+
+    rooms "caodi2" {
+      name = "草地"
+      description = "这里是一片草地，草很深，几乎淹没了小腿。草间散布着 一些奇花，微风吹过，芬芳扑鼻。你听到时而有“嗡嗡嗡”的 声音，看见有一些个头奇大的白色的蜜蜂在草地上飞舞盘旋。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caodi2" {
+    room_id = rooms.caodi2.id
+  west = rooms.caodi.id
+  southeast = rooms.hanshuitan.id  }
+
+# Generated from C:/files/git/mud/d/gumu/caotangsi.c by LPCConverter
+# Zone: gumu
+
+    rooms "caotangsi" {
+      name = "草堂寺"
+      description = "这是一座位於终南山北麓的小寺。寺院中的一口古井，名 为烟雾井。因为每天清晨都会有一股巨大的烟雾，自井里袅袅 升起，不少游客来此，就是为了一观此奇景。往南上是一条崎 岖的山道。往北是一条阴森森的小径。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caotangsi" {
+    room_id = rooms.caotangsi.id
+  southup = rooms.shanlu7.id  }
+
+# Generated from C:/files/git/mud/d/gumu/chongyanggate.c by LPCConverter
+# Zone: gumu
+
+    rooms "chongyanggate" {
+      name = "重阳宫大门"
+      description = "你已走到了终南山半山腰，前面就是全真教的总部重阳宫 了。殿宇依山而筑，高低错落有致。但见周围古木森森，翠竹 成林，景色清幽。前方黄墙碧瓦，飞檐翘檩，正中一道三丈来 高的朱红杉木包铜大门(door)。上方一块大匾，龙飞凤舞地书 着『重阳宫』三个大字。南下是广场。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chongyanggate" {
+    room_id = rooms.chongyanggate.id
+  southdown = rooms.daxiaochang.id  }
+
+# Generated from C:/files/git/mud/d/gumu/daxiaochang.c by LPCConverter
+# Zone: gumu
+
+    rooms "daxiaochang" {
+      name = "大校场"
+      description = "这是一个位於终南山山腰的圆坪，四周群山环抱。山脚下 有一大池。每年腊月，全真派便於此地举行大校，以考察门下 弟子在这一年间的进境。往南是一条崎岖的山道。往西是一条 通往峰顶的山路。往北行便是重阳宫。只见远处十馀幢道观屋 宇疏疏落落的散处山间。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "daxiaochang" {
+    room_id = rooms.daxiaochang.id
+  northup = rooms.shijie1.id
+  westup = rooms.shanlu7.id
+  southdown = rooms.shanlu8.id  }
+
+
+
+
+  room_items "daxiaochang" {
+    room_id = rooms.daxiaochang.id
+    items = [
+      { id = items.pi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gumu/foyezhang.c by LPCConverter
+# Zone: gumu
+
+    rooms "foyezhang" {
+      name = "佛爷掌"
+      description = "只见此处颇为荒凉，是一处寺院的遗址。四周青松翠柏环 绕，寺院的断垣残璧依稀可见，似乎还是一座不小的寺院。往 北是一片平原。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "foyezhang" {
+    room_id = rooms.foyezhang.id
+  east = rooms.shenheyuan.id  }
+
+# Generated from C:/files/git/mud/d/gumu/hanshuitan.c by LPCConverter
+# Zone: gumu
+
+    rooms "hanshuitan" {
+      name = "寒水潭"
+      description = "这里是草地的边缘，青草已经很稀疏了，仍然有些许玉蜂 飞过寻觅食物。不远处是一个清波荡漾的大水潭 (tan)，水很 清，隐约可以见过水底的怪石嶙峋，一二游鱼倏地从水底游过， 又不知道躲到哪块石头后面藏身去了。阳光映照下，水面泛起 了一道七色彩虹，望着这般美景，你俗念尽消。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ tan = "一口很深的水摊，不知道可不可以潜(qian)下到这水底世界去？"
+}
+    }
+
+  room_exits "hanshuitan" {
+    room_id = rooms.hanshuitan.id
+  northwest = rooms.caodi2.id  }
+
+# Generated from C:/files/git/mud/d/gumu/heifengdong.c by LPCConverter
+# Zone: gumu
+
+    rooms "heifengdong" {
+      name = "黑凤洞"
+      description = "此处位於终南山脉东部的太阳山上。山峰直上直下，像刀 切般的陡峭，山腰上有一个碾盘子粗的石洞，不时冒出一股黑 气，怪可怕的。往西是一片树林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "heifengdong" {
+    room_id = rooms.heifengdong.id
+  westup = rooms.shulin7.id  }
+
+# Generated from C:/files/git/mud/d/gumu/houting.c by LPCConverter
+# Zone: gumu
+
+    rooms "houting" {
+      name = "后厅"
+      description = "这是古墓的后厅，密封得严严实实，没有一丝的缝隙。在 昏暗的灯光下，你发现墙上悬挂着一幅画 (picture)，似乎是 一幅人物的肖像。在厅的中央，摆放着几具棺材(coffin)，其 中只有一具棺材的棺板没有合上，棺材中好象空空如也。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ picture = "画中是一个中年道士的背影，看不出什么相貌，画中人一手指 天，画角题着「活死人像」四个大字。"
+ coffin = "用厚厚的石板做成的棺材，棺板合上后，就没有一丝的缝隙了。"
+}
+    }
+
+  room_exits "houting" {
+    room_id = rooms.houting.id
+  north = rooms.zhengting.id  }
+
+
+
+
+  room_items "houting" {
+    room_id = rooms.houting.id
+    items = [
+      { id = items.longnv.id },
+      { id = items.yang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gumu/huangshalin.c by LPCConverter
+# Zone: gumu
+
+    rooms "huangshalin" {
+      name = "黄沙岭"
+      description = "此处位於终南山西部。只见远处王曲原上，孤立着一座由 荒沙堆积而成的山岭，波纹为奇特。据当地人说，这是在商朝， 一位名叫陆亚仙的人，用法力遣来一股黄沙而成。往东是一片 密林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huangshalin" {
+    room_id = rooms.huangshalin.id
+  east = rooms.mumen.id  }
+
+# Generated from C:/files/git/mud/d/gumu/jinliange.c by LPCConverter
+# Zone: gumu
+
+    rooms "jinliange" {
+      name = "金莲阁"
+      description = "这金莲阁位於终南山山腰间，形势颇为险要。金莲阁後有 一口碗口粗的涌泉，泉水碧绿透明，香甜诱人，在当地颇为有 名，不少人特别来此，只为了取这ㄦ的水来泡茶。那寺前的一 块石碑(shibei)，刻了一收首王维的诗。往南看去是一条山路。 往西走是一条蜿蜒的山路。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ shibei = "欲 分 白 太                 投 野 云 乙                 何 中 回 近  终                 处 峰 望 天  南                 宿 变 合 都  山                 ， ， ， ，                 隔 阴 青 连                 水 晴 霭 山  王                 问 众 入 到  维                 樵 壑 看 海                 夫 殊 无 隅                 。 ； 。 ；"
+}
+    }
+
+  room_exits "jinliange" {
+    room_id = rooms.jinliange.id
+  westup = rooms.shanlu10.id
+  southdown = rooms.shanlu11.id  }
+
+# Generated from C:/files/git/mud/d/gumu/juyan.c by LPCConverter
+# Zone: gumu
+
+    rooms "juyan" {
+      name = "老妪岩"
+      description = "一路过来，山路是越来越险。只见一块大岩石挡在路中， 自空凭临，宛似一个老妇弯腰俯视，但形状阴森可怖，令人 望而生畏。不少游客在此驻足观看，往南是一片茂密的松林。 往北上是一条陡峭的山路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "juyan" {
+    room_id = rooms.juyan.id
+  northup = rooms.shanlu8.id
+  southdown = rooms.shulin7.id  }
+
+
+
+
+  room_items "juyan" {
+    room_id = rooms.juyan.id
+    items = [
+      { id = items.ji.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gumu/kongdi.c by LPCConverter
+# Zone: gumu
+
+    rooms "kongdi" {
+      name = "空地"
+      description = "这是终南山山腰处的一块空地，地势平坦。北面一条小路 直攀山璧而上，通往是终南山主峰。南边和西边是一大片密林， 只闻阵阵琴声自林中传出。往北是一条山路。往南和西各有一 条小径。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kongdi" {
+    room_id = rooms.kongdi.id
+  west = rooms.shulin5.id
+  south = rooms.shulin4.id
+  northup = rooms.shanlu1.id  }
+
+# Generated from C:/files/git/mud/d/gumu/liangong.c by LPCConverter
+# Zone: gumu
+
+    rooms "liangong" {
+      name = "北练功室"
+      description = "这座石室形状甚是奇特，前窄後宽，成为梯形，东边半圆 西边却作三角形状，原来这是以前重阳祖师的练功室，前窄练 掌，後宽使拳，东圆研剑，西角发镖。南面有个小门洞，通向 里面的练功室。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liangong" {
+    room_id = rooms.liangong.id
+  east = rooms.zhengting.id
+  south = rooms.liangong2.id  }
+
+# Generated from C:/files/git/mud/d/gumu/liangong2.c by LPCConverter
+# Zone: gumu
+
+    rooms "liangong2" {
+      name = "南练功室"
+      description = "这座石室形状甚是奇特，前窄後宽，成为梯形，东边半圆西 边却作三角形状，原来这里是以前重阳祖师的练功室，前窄练掌， 後宽使拳，东圆研剑，西角发镖。北面有个小门洞，通向外面的 练功室和古墓内部。南面有一个小石室。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liangong2" {
+    room_id = rooms.liangong2.id
+  north = rooms.liangong.id
+  south = rooms.liangong3.id  }
+
+# Generated from C:/files/git/mud/d/gumu/liangong3.c by LPCConverter
+# Zone: gumu
+
+    rooms "liangong3" {
+      name = "小练功室"
+      description = "这里是一个小小的石室，地方狭窄，却摆了几个木人，不 知是练功房摆不下还是因别的什么原因。地上有些杂乱，看来 不是经常打扫。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liangong3" {
+    room_id = rooms.liangong3.id
+  north = rooms.liangong2.id  }
+
+
+
+
+  room_items "liangong3" {
+    room_id = rooms.liangong3.id
+    items = [
+      { id = items.li.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gumu/mishi1.c by LPCConverter
+# Zone: gumu
+
+    rooms "mishi1" {
+      name = "密室"
+      description = "这里是古墓中的密室，四周密不透风，你只能借着墙上昏 暗的灯光来勉强分辨方向。墙是用整块的青石砌合起来的，接 合的甚是完美，你难以从中找出一丝缝隙。你正在欣赏，突然 间发觉墙上似乎有几块砖 (brick)高高凸起，与周围的砖很不 和谐。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ brick = "几块普通的青砖，看不出有什么特别的。"
+}
+    }
+
+  room_exits "mishi1" {
+    room_id = rooms.mishi1.id
+  up = rooms.hanshuitan.id  }
+
+# Generated from C:/files/git/mud/d/gumu/mishi2.c by LPCConverter
+# Zone: gumu
+
+    rooms "mishi2" {
+      name = "密室"
+      description = "这里是古墓中的密室，四周密不透风，你只能借着墙上昏 暗的灯光来勉强分辨方向。墙是用整块的青石砌合起来的，接 合的甚是完美，你难以从中找出一丝缝隙。墙上(wall)好象雕 有一些文字。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ wall = "一堵用整块青石砌合而成的墙，上面雕刻着很多文字，似乎记 载了一些心法的窍决所在。"
+}
+    }
+
+  room_exits "mishi2" {
+    room_id = rooms.mishi2.id
+  east = rooms.mishi3.id
+  north = rooms.__file__.id
+  south = rooms.__file__.id
+  up = rooms.houting.id  }
+
+# Generated from C:/files/git/mud/d/gumu/mishi3.c by LPCConverter
+# Zone: gumu
+
+    rooms "mishi3" {
+      name = "密室"
+      description = "这里是古墓中的密室，四周密不透风，你只能借着墙上昏 暗的灯光来勉强分辨方向。墙是用整块的青石砌合起来的，接 合的甚是完美，你难以从中找出一丝缝隙。墙上好象雕有一些 图形。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mishi3" {
+    room_id = rooms.mishi3.id
+  east = rooms.mishi4.id
+  north = rooms.mishi5.id
+  south = rooms.mishi6.id
+  west = rooms.mishi2.id  }
+
+# Generated from C:/files/git/mud/d/gumu/mishi4.c by LPCConverter
+# Zone: gumu
+
+    rooms "mishi4" {
+      name = "密室"
+      description = "这里是古墓中的密室，四周密不透风，你只能借着墙上昏 暗的灯光来勉强分辨方向。墙是用整块的青石砌合起来的，接 合的甚是完美，你难以从中找出一丝缝隙。墙上好象雕有一些 诗句。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mishi4" {
+    room_id = rooms.mishi4.id
+  west = rooms.mishi3.id
+  east = rooms.__file__.id
+  north = rooms.__file__.id
+  south = rooms.__file__.id  }
+
+# Generated from C:/files/git/mud/d/gumu/mishi5.c by LPCConverter
+# Zone: gumu
+
+    rooms "mishi5" {
+      name = "密室"
+      description = "这里是古墓中的密室，四周密不透风，你只能借着墙上昏 暗的灯光来勉强分辨方向。墙是用整块的青石砌合起来的，接 合的甚是完美，你难以从中找出一丝缝隙。墙上好象雕有一些 符号。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mishi5" {
+    room_id = rooms.mishi5.id
+  south = rooms.mishi3.id
+  north = rooms.__file__.id
+  west = rooms.__file__.id
+  east = rooms.__file__.id  }
+
+# Generated from C:/files/git/mud/d/gumu/mishi6.c by LPCConverter
+# Zone: gumu
+
+    rooms "mishi6" {
+      name = "密室"
+      description = "这里是古墓中的密室，四周密不透风，你只能借着墙上昏 暗的灯光来勉强分辨方向。墙是用整块的青石砌合起来的，接 合的甚是完美，你难以从中找出一丝缝隙。墙上好象雕有一些 浮雕。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mishi6" {
+    room_id = rooms.mishi6.id
+  east = rooms.__file__.id
+  north = rooms.mishi3.id
+  south = rooms.mishi7.id
+  west = rooms.__file__.id  }
+
+# Generated from C:/files/git/mud/d/gumu/mishi7.c by LPCConverter
+# Zone: gumu
+
+    rooms "mishi7" {
+      name = "密室"
+      description = "这里是古墓中的密室，四周密不透风，你只能借着墙上昏 暗的灯光来勉强分辨方向。墙是用整块的青石砌合起来的，接 合的甚是完美，你难以从中找出一丝缝隙。墙上好象雕有一些 飞禽。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mishi7" {
+    room_id = rooms.mishi7.id
+  east = rooms.mishi8.id
+  north = rooms.mishi6.id
+  south = rooms.__file__.id
+  west = rooms.__file__.id  }
+
+# Generated from C:/files/git/mud/d/gumu/mishi8.c by LPCConverter
+# Zone: gumu
+
+    rooms "mishi8" {
+      name = "密室"
+      description = "这里是古墓中的密室，四周密不透风，你只能借着墙上昏 暗的灯光来勉强分辨方向。墙是用整块的青石砌合起来的，接 合的甚是完美，你难以从中找出一丝缝隙。密室中摆放着一些 简单的家居用具，原来这是古墓派祖师林朝英的居室。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mishi8" {
+    room_id = rooms.mishi8.id
+  west = rooms.mishi7.id
+  out = rooms.guangchang.id  }
+
+
+
+
+  room_items "mishi8" {
+    room_id = rooms.mishi8.id
+    items = [
+      { id = items.lin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gumu/mumen.c by LPCConverter
+# Zone: gumu
+
+    rooms "mumen" {
+      name = "墓门"
+      description = "你走过了草地，眼前突然了一片开阔地，突兀地耸立着一 座大墓，墓上砌的石头已经班驳了，看的出来这是座古墓。墓 前没有立碑，也没有任何的标记，不知道这是前朝哪位王公大 臣的墓穴。墓门口被一块的大石头(shi)封闭得丝毫不透。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ shi = "这是块巨石，怕不有万斤上下，好象锩着「降龙石」几个字。"
+}
+    }
+
+  room_exits "mumen" {
+    room_id = rooms.mumen.id
+  north = rooms.caodi.id
+  west = rooms.huangshalin.id  }
+
+
+  room_characters "mumen" {
+    room_id = rooms.mumen.id
+    characters = [
+      { id = characters.sun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gumu/puguangsi.c by LPCConverter
+# Zone: gumu
+
+    rooms "puguangsi" {
+      name = "普光寺"
+      description = "这是一个位於终南山下的小寺庙，庙门横额写着 '普光寺' 三个大字。由於此庙是上终南山的必经之路，大多数的游客都 会在此落脚休息，也因此此处香火也颇为鼎盛。庙前的几株松 树下，立着一块石碑(shibei)，几乎快被周围的长草给遮掩了。 往西走是一条小路."
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "puguangsi" {
+    room_id = rooms.puguangsi.id
+  west = rooms.shanlu13.id  }
+
+# Generated from C:/files/git/mud/d/gumu/qianting.c by LPCConverter
+# Zone: gumu
+
+    rooms "qianting" {
+      name = "前厅"
+      description = "这里是古墓的前厅，黑黝黝的，你几乎什么也看不清。全 靠大厅正中间的梁上悬挂着一颗夜明珠，映射出淡淡黄光。厅 柱都是由硕大的石柱砌成的，上面似乎还写着一些什么字--你 怎么也看不清楚了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qianting" {
+    room_id = rooms.qianting.id
+  south = rooms.xiaoting.id
+  north = rooms.mumen.id  }
+
+# Generated from C:/files/git/mud/d/gumu/riyueyan.c by LPCConverter
+# Zone: gumu
+
+    rooms "riyueyan" {
+      name = "日月岩"
+      description = "一路过来，只见光秃秃的山路两旁，怪石林立，颇为吓人。 尤其是前方不远处的两块巨石，左边的一块像月亮，右边的那 块像太阳，夹道而立，便如一对门神，只留当中一条宽约一人 多的小道，让人通过。往东下和北上走都是一条蜿蜒的山路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "riyueyan" {
+    room_id = rooms.riyueyan.id
+  eastdown = rooms.shanlu10.id
+  northup = rooms.shanlu9.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shandao1.c by LPCConverter
+# Zone: gumu
+
+    rooms "shandao1" {
+      name = "山道"
+      description = "此段山路是沿着峭壁开凿出来的，特别崎岖难行。有时峭 壁边必须面贴山璧，侧身而过。尤其是当山凤吹来时，更需特 别小心，不然一失足，就要掉进万丈深渊了。往东南是一块广 大的空地。往北下通往后山脚，远远可以望见一个较大的湖。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shandao1" {
+    room_id = rooms.shandao1.id
+  southeast = rooms.shanlu7.id
+  northdown = rooms.shandao2.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shandao2.c by LPCConverter
+# Zone: gumu
+
+    rooms "shandao2" {
+      name = "山道"
+      description = "此段山路是沿着峭壁开凿出来的，特别崎岖难行。有时峭 壁边必须面贴山璧，侧身而过。尤其当山凤吹来时，更需特别 小心，不然一失足，就要掉进万丈深渊了。再往东南是一块广 大的空地。往北下通往后山脚，远远可以望见一个较大的湖。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shandao2" {
+    room_id = rooms.shandao2.id
+  southup = rooms.shandao1.id
+  northdown = rooms.shulin10.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shandao3.c by LPCConverter
+# Zone: gumu
+
+    rooms "shandao3" {
+      name = "山道"
+      description = "此段山路是通往后山脚。往南上是一大片树林。往北下可 以望见一个较大的湖。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shandao3" {
+    room_id = rooms.shandao3.id
+  southup = rooms.shulin12.id
+  northdown = rooms.taiyi1.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shandong.c by LPCConverter
+# Zone: gumu
+
+    rooms "shandong" {
+      name = "山洞"
+      description = "在这小山洞的深处，一股强大的水流自地上流出，形成一 条小河流向洞外。如果想再进一步深入的话，就得要跳入水中 了。往外可到小河边。往里就要潜水了。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ dong = "一个深邃、幽暗、恐怖的小山洞。"
+}
+valid_leave = [
+{
+  direction = "westdown"
+  message = "这么急的水，你想跳下去自杀呀？"
+}
+
+]
+    }
+
+  room_exits "shandong" {
+    room_id = rooms.shandong.id
+  out = rooms.xiaohebian.id
+  westdown = rooms.mishi7.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu1.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu1" {
+      name = "山路"
+      description = "这条山路盘终南山主峰而上，山路贴着石璧凿出，只容一 人可过，形势极为险峻。往远处望去。但见群山环绕，列於脚 下，百里美景尽收眼底，顿时令人豪气陡声。往南下是一片空 地。往北上就是终南山主峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu1" {
+    room_id = rooms.shanlu1.id
+  southdown = rooms.kongdi.id
+  northup = rooms.zhufeng.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu10.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu10" {
+      name = "山路"
+      description = "这是一条非常崎岖难行的山路，一路上蜿蜒盘山而上，沿 途均是葱郁的古柏山林，蔚然森秀。在此处可眺望终南山的景 色，只见山险岭峻，山川毓秀，不少鸟ㄦ在枝头高声啼唱不绝。 往东下是莲花寺。往西上是一条山路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu10" {
+    room_id = rooms.shanlu10.id
+  westup = rooms.riyueyan.id
+  eastdown = rooms.jinliange.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu11.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu11" {
+      name = "山路"
+      description = "这是一条非常崎岖难行的山路，一路上蜿蜒盘山而上，沿 途均是葱郁的古柏山林，蔚然森秀。在此处可眺望终南山的景 色，只见山险岭峻，山川毓秀。往北上走是金莲阁。往南走是 崎岖的山路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu11" {
+    room_id = rooms.shanlu11.id
+  northup = rooms.jinliange.id
+  southdown = rooms.shanlu12.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu12.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu12" {
+      name = "山路"
+      description = "这是一条非常崎岖难行的山路，一路上蜿蜒盘山而上，沿 途均是葱郁的古柏山林，蔚然森秀。在此处可眺望终南山的景 色，只见山险岭峻，山川毓秀，往南下是一条道路。往北上走 是一条蜿蜒的山路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu12" {
+    room_id = rooms.shanlu12.id
+  northup = rooms.shanlu11.id
+  southdown = rooms.shanlu13.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu13.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu13" {
+      name = "道路"
+      description = "此处位於终南山山脚。巍峨的终南山，自古以来就是历代 名人游览的圣地。它西起甘肃的岐山，东至陕西的潼关，其间 跨越十馀县，连绵八百馀里。素有万里终南山之称。往东可看 见一座寺庙。往西是一条通往密林的幽静小路。往北可上终南 山。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu13" {
+    room_id = rooms.shanlu13.id
+  northup = rooms.shanlu12.id
+  east = rooms.puguangsi.id
+  west = rooms.shanlu14.id
+  south = rooms.shanjiao.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu14.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu14" {
+      name = "山间小径"
+      description = "这是一条位於终南山脚，鲜为人知的小径。但见四周古木 叁天，树林苍翠，遍地山花，枝头啼鸟唱和不绝。往东可看到 一条道路。往西北可通往山林深处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu14" {
+    room_id = rooms.shanlu14.id
+  east = rooms.shanlu13.id
+  northwest = rooms.shanlu15.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu15.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu15" {
+      name = "山间小径"
+      description = "这是一条位於终南山脚，鲜为人知的小径。但见四周古木 叁天，树林苍翠，遍地山花，枝头啼鸟唱和不绝。往西和东南 可通往山林深处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu15" {
+    room_id = rooms.shanlu15.id
+  southeast = rooms.shanlu14.id
+  west = rooms.shanlu16.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu16.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu16" {
+      name = "山间小径"
+      description = "这是一条位於终南山脚，鲜为人知的小径。但见四周古木 叁天，树林苍翠，遍地山花，枝头啼鸟唱和不绝。往南可看到 一条小河。往东可通往山林深处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu16" {
+    room_id = rooms.shanlu16.id
+  east = rooms.shanlu15.id
+  south = rooms.xiaohebian.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu2.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu2" {
+      name = "山路"
+      description = "这条山路盘终南山主峰而上，山路贴着石璧凿出，只容一 人可过，形势极为险峻。往远处望去。但见群山环绕，列於脚 下，百里美景尽收眼底，顿时令人豪气陡声，往北下是一条山 路。往东上就是终南山主峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu2" {
+    room_id = rooms.shanlu2.id
+  northdown = rooms.shanlu3.id
+  eastup = rooms.zhufeng.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu3.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu3" {
+      name = "山路"
+      description = "这条山路盘终南山主峰而上，山路贴着石璧凿出，只容一 人可过，形势极为险峻。往远处望去。群山环绕，列於脚 下，百里美景尽收眼底，顿时令人豪气陡声，往东下和南 上各是一条山路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu3" {
+    room_id = rooms.shanlu3.id
+  southup = rooms.shanlu2.id
+  eastdown = rooms.shanlu4.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu4.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu4" {
+      name = "山路"
+      description = "这条山路盘终南山主峰而上，山路贴着石璧凿出，只容一 人可过，形势极为险峻。往远处望去。但见群山环绕，列於脚 下，百里美景尽收眼底，顿时令人豪气陡声，往东下和西上各 是一条山路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu4" {
+    room_id = rooms.shanlu4.id
+  westup = rooms.shanlu3.id
+  eastdown = rooms.shanlu5.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu5.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu5" {
+      name = "山路"
+      description = "这条山路盘终南山主峰而上，山路贴着石璧凿出，只容一 人可过，形势极为险峻。往远处望去。但见群山环绕，列於脚 下，百里美景尽收眼底，顿时令人豪气陡声，往南下和西上各 是一条山路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu5" {
+    room_id = rooms.shanlu5.id
+  westup = rooms.shanlu4.id
+  southdown = rooms.shanlu6.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu6.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu6" {
+      name = "山路"
+      description = "这条山路盘终南山主峰而上，山路贴着石璧凿出，只容一 人可过，形势极为险峻。往远处望去。但见群山环绕，列於脚 下，百里美景尽收眼底，顿时令人豪气陡声，往东下和北上各 是一条山路。往南下是白马潭。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu6" {
+    room_id = rooms.shanlu6.id
+  northup = rooms.shanlu5.id
+  eastdown = rooms.shanlu7.id
+  southdown = rooms.baimatan.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu7.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu7" {
+      name = "山路"
+      description = "这是一条非常崎岖难行的山路，一路上蜿蜒盘山而上，沿 途均是葱郁的古柏山林，蔚然森秀。在此处可眺望终南山的景 色，只见山险岭峻，山川毓秀，不少鸟ㄦ在枝头高声啼唱不绝。 往北下是草堂寺。往西上是一条山路。往东是一块广大的空地。 往西北通往后山下。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu7" {
+    room_id = rooms.shanlu7.id
+  westup = rooms.shanlu6.id
+  northdown = rooms.caotangsi.id
+  northwest = rooms.shandao1.id
+  eastdown = rooms.daxiaochang.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu8.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu8" {
+      name = "山道"
+      description = "此段山路是沿着峭壁开凿出来的，特别崎岖难行。有时峭 壁边必须面贴山璧，侧身而过。尤其当山凤吹来之时，更需特 别小心，不然一失足，就要掉进万丈深渊了。往北是一块广大 的空地。往南下是一块巨岩。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu8" {
+    room_id = rooms.shanlu8.id
+  northup = rooms.daxiaochang.id
+  southdown = rooms.juyan.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shanlu9.c by LPCConverter
+# Zone: gumu
+
+    rooms "shanlu9" {
+      name = "山路"
+      description = "这是一条非常崎岖难行的山路，一路上蜿蜒盘山而上，沿 途均是葱郁的古柏山林，蔚然森秀。在此处可眺望终南山的景 色，只见山险岭峻，山川毓秀，不少鸟ㄦ在枝头高声啼唱不绝。 往南下是两块耸天而立的巨石。往北是一片蓊郁的山林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu9" {
+    room_id = rooms.shanlu9.id
+  northup = rooms.shulin9.id
+  southdown = rooms.riyueyan.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shenheyuan.c by LPCConverter
+# Zone: gumu
+
+    rooms "shenheyuan" {
+      name = "神禾原"
+      description = "此处位於终南山中部的翠华山附近。放眼望去，只见一片 坦荡无垠的大平原，夹在群山之间。传说在商朝末年，姜子牙 率兵伐纣攻打长安时，粮草短缺，在此获神禾老汉之助，得米 万斛，因此命名为神禾原。往东南和北上各是一片树林。往南 是一处遗迹。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shenheyuan" {
+    room_id = rooms.shenheyuan.id
+  west = rooms.foyezhang.id
+  north = rooms.shulin7.id
+  southeast = rooms.shulin8.id  }
+
+
+  room_characters "shenheyuan" {
+    room_id = rooms.shenheyuan.id
+    characters = [
+      { id = characters.seller.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gumu/shulin0.c by LPCConverter
+# Zone: gumu
+
+    rooms "shulin0" {
+      name = "小树林"
+      description = "走在林中，你只闻铮铮琴声，一股淡淡白烟，带着极甜的 花香，自密林深处传出。一群乳白色的蜜蜂在你身旁飞来飞去。 只见一块石碑(shibei)立在当眼ㄦ处。往东是一块空地。其它 方向尽是茂密的树林。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ shibei = "终南古墓，                         外人止步。"
+}
+    }
+
+  room_exits "shulin0" {
+    room_id = rooms.shulin0.id
+  southup = rooms.shulin1.id
+  north = rooms.shulin4.id
+  west = rooms.shulin5.id
+  east = rooms.shulin6.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shulin1.c by LPCConverter
+# Zone: gumu
+
+    rooms "shulin1" {
+      name = "小树林"
+      description = "这是一片小树林，周围的树木都很高。间杂着一些叫不出 名字的鲜花，五彩缤纷。你隐隐地有些担心起来：不会迷路了 吧，转头间却看见东南边似乎有一条小路，隐藏在树丛之中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin1" {
+    room_id = rooms.shulin1.id
+  northdown = rooms.shulin0.id
+  southwest = rooms.shulin2.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shulin10.c by LPCConverter
+# Zone: gumu
+
+    rooms "shulin10" {
+      name = "树林"
+      description = "这位於终南山间的一大片树林，生的颇为茂密。走在其间 只听得脚下沙沙的落叶声，四周昏昏暗暗的，不时几道日光穿 过浓密的枝头，投射而下。偶而远处几声兽吼声，更添了一份 神密感。往北、南各有一条小径。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin10" {
+    room_id = rooms.shulin10.id
+  southup = rooms.shandao2.id
+  north = rooms.shulin11.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shulin11.c by LPCConverter
+# Zone: gumu
+
+    rooms "shulin11" {
+      name = "树林"
+      description = "这位於终南山间的一大片树林，生的颇为茂密。走在其间， 只听得脚下沙沙的落叶声，四周昏昏暗暗的，不时几道日光穿 过浓密的枝头，投射而下。偶而远处几声兽吼声，更添了一份 神密感。往北、南各有一条小径。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin11" {
+    room_id = rooms.shulin11.id
+  south = rooms.shulin10.id
+  northdown = rooms.shulin12.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shulin12.c by LPCConverter
+# Zone: gumu
+
+    rooms "shulin12" {
+      name = "树林"
+      description = "这位於终南山间的一大片树林，生的颇为茂密。走在其间 只听得脚下沙沙的落叶声，四周昏昏暗暗的，不时几道日光穿 过浓密的枝头，投射而下。偶而远处几声兽吼声，更添了一份 神密感。往北、南各有一条小径。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin12" {
+    room_id = rooms.shulin12.id
+  southup = rooms.shulin11.id
+  northdown = rooms.shandao3.id  }
+
+
+
+
+  room_items "shulin12" {
+    room_id = rooms.shulin12.id
+    items = [
+      { id = items.hou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gumu/shulin2.c by LPCConverter
+# Zone: gumu
+
+    rooms "shulin2" {
+      name = "小树林"
+      description = "你走在一条林间的小道上，四周都是树。远处似乎有一角 建筑的飞檐从树丛中露了出来，也许附近的山上有一座道观之 类。这些树你大都叫不出名字来，树龄都已经很长了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin2" {
+    room_id = rooms.shulin2.id
+  southwest = rooms.shulin3.id
+  northeast = rooms.shulin1.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shulin3.c by LPCConverter
+# Zone: gumu
+
+    rooms "shulin3" {
+      name = "小树林"
+      description = "这里是树林的边缘，参天古树已经很稀少了。东面有一座 高山，隐约看见山间云雾缭绕中，似乎有什么廊檐的建筑。山 势缓和，但山上郁郁葱葱地栽满了树木。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin3" {
+    room_id = rooms.shulin3.id
+  south = rooms.caodi.id
+  northeast = rooms.shulin2.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shulin4.c by LPCConverter
+# Zone: gumu
+
+    rooms "shulin4" {
+      name = "小树林"
+      description = "走在林中，你只闻铮铮琴声，一股淡淡白烟，带着极甜的 花香，自密林深处传出。一群乳白色的蜜蜂在你身旁飞来飞去。 不论往哪ㄦ走尽是茂密的树林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin4" {
+    room_id = rooms.shulin4.id
+  north = rooms.kongdi.id
+  south = rooms.shulin0.id
+  east = rooms.shulin6.id
+  west = rooms.shulin5.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shulin5.c by LPCConverter
+# Zone: gumu
+
+    rooms "shulin5" {
+      name = "小树林"
+      description = "走在林中，你只闻铮铮琴声，一股淡淡白烟，带着极甜的 花香，自密林深处传出。一群乳白色的蜜蜂在你身旁飞来飞去。 不论往哪ㄦ走尽是茂密的树林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin5" {
+    room_id = rooms.shulin5.id
+  east = rooms.shulin0.id
+  south = rooms.shulin4.id
+  north = rooms.__file__.id
+  west = rooms.__file__.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shulin6.c by LPCConverter
+# Zone: gumu
+
+    rooms "shulin6" {
+      name = "小树林"
+      description = "走在林中，你只闻铮铮琴声，一股淡淡白烟，带着极甜的 花香，自密林深处传出。一群乳白色的蜜蜂在你身旁飞来飞去。 不论往哪ㄦ走尽是茂密的树林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin6" {
+    room_id = rooms.shulin6.id
+  west = rooms.shulin0.id
+  north = rooms.shulin4.id
+  south = rooms.__file__.id
+  east = rooms.__file__.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shulin7.c by LPCConverter
+# Zone: gumu
+
+    rooms "shulin7" {
+      name = "树林"
+      description = "这位於终南山间的一大片树林，生的颇为茂密。走在其间， 只听得脚下沙沙的落叶声，四周昏昏暗暗的，不时几道日光穿 过浓密的枝头，投射而下。偶而远处几声兽吼声，更添了一份 神密感。往北、南、和东各有一条小径。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin7" {
+    room_id = rooms.shulin7.id
+  south = rooms.shenheyuan.id
+  northup = rooms.juyan.id
+  eastdown = rooms.heifengdong.id  }
+
+# Generated from C:/files/git/mud/d/gumu/shulin8.c by LPCConverter
+# Zone: gumu
+
+    rooms "shulin8" {
+      name = "树林"
+      description = "这位於终南山间的一大片树林，生的颇为茂密。走在其间 只听得脚下沙沙的落叶声，四周昏昏暗暗的，不时几道日光穿 过浓密的枝头，投射而下。偶而远处几声兽吼声，更添了一份 神密感。往西北和往东各有一条小径。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin8" {
+    room_id = rooms.shulin8.id
+  northwest = rooms.shenheyuan.id
+  east = rooms.baoziyan.id  }
+
+
+
+
+  room_items "shulin8" {
+    room_id = rooms.shulin8.id
+    items = [
+      { id = items.lu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gumu/shulin9.c by LPCConverter
+# Zone: gumu
+
+    rooms "shulin9" {
+      name = "树林"
+      description = "这位於终南山间的一大片树林，生的颇为茂密。走在其间， 只听得脚下沙沙的落叶声，四周昏昏暗暗的，不时几道日光穿 过浓密的枝头，投射而下。偶而远处几声兽吼声，更添了一份 神密感。往北和往南各有一条小径。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin9" {
+    room_id = rooms.shulin9.id
+  north = rooms.baoziyan.id
+  southdown = rooms.shanlu9.id  }
+
+# Generated from C:/files/git/mud/d/gumu/taiyi1.c by LPCConverter
+# Zone: gumu
+
+    rooms "taiyi1" {
+      name = "太乙池"
+      description = "你眼前出现一个山间湖泊，这是著名的太乙池(chi)，传 说为唐天宝年间地震造成，但见四周高峰环列，池面碧波荡漾， 山光水影，风景十分优美。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ chi = "这是一个很大的山间湖，碧波荡漾，湖水清 澈见底，让人忍不住想跳(jump)下去畅游一番。"
+}
+    }
+
+  room_exits "taiyi1" {
+    room_id = rooms.taiyi1.id
+  southup = rooms.shandao3.id  }
+
+
+  room_characters "taiyi1" {
+    room_id = rooms.taiyi1.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gumu/taiyi2.c by LPCConverter
+# Zone: gumu
+
+    rooms "taiyi2" {
+      name = "太乙池"
+      description = "你身在湖水里，只觉得湖水冰凉透骨。但见四周高峰环列， 池面碧波荡漾，山光水影，风景贻人。这里原来是太乙池的东 岸，太累的话，你可以爬(climb) 上岸。远远望去，西边的山 峰之间似乎有一个大洞。想不想游(swim)过去看？"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/gumu/xiaohebian.c by LPCConverter
+# Zone: gumu
+
+    rooms "xiaohebian" {
+      name = "小河边"
+      description = "此处位於终南山角一偏僻处，浓荫匝地，花光浮动，周围 尽是叁天古木，颇具幽静之美。不远处的小河由山洞(dong)中 涌出的泉水所形成，淙淙的水声更让你觉得身心顺畅。往北可 通往山林深处。往西可进入山洞中。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ dong = "一个深邃、幽暗、恐怖的小山洞。"
+}
+    }
+
+  room_exits "xiaohebian" {
+    room_id = rooms.xiaohebian.id
+  in = rooms.shandong.id
+  north = rooms.shanlu16.id  }
+
+# Generated from C:/files/git/mud/d/gumu/xiaoting.c by LPCConverter
+# Zone: gumu
+
+    rooms "xiaoting" {
+      name = "小厅"
+      description = "这里是一个小小的厅堂，也许是为了连接前厅与正厅用的。 你走到这里，周围的光线亮了一些，你发觉壁上燃点着一些油 灯。厅里的布置整洁而不简陋，一桌一椅都收拾的井井有条。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaoting" {
+    room_id = rooms.xiaoting.id
+  south = rooms.zhengting.id
+  north = rooms.qianting.id
+  west = rooms.xiaowu1.id
+  east = rooms.xiaowu2.id  }
+
+# Generated from C:/files/git/mud/d/gumu/xiaowu1.c by LPCConverter
+# Zone: gumu
+
+    rooms "xiaowu1" {
+      name = "小屋"
+      description = "你走进了一间小屋，房间很小，除了一张小床放不下别的 东西了。床上好象有几件叠得整整齐齐的粗布衫，洗的干干净 净。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaowu1" {
+    room_id = rooms.xiaowu1.id
+  northwest = rooms.xiuxishi.id
+  east = rooms.xiaoting.id  }
+
+
+
+
+  room_items "xiaowu1" {
+    room_id = rooms.xiaowu1.id
+    items = [
+      { id = items.fengmi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gumu/xiaowu2.c by LPCConverter
+# Zone: gumu
+
+    rooms "xiaowu2" {
+      name = "蜂屋"
+      description = "这里是小龙女喂养训练玉蜂的蜂屋，屋角上挂着很多个六 角形的蜂巢，还未进门，就闻得到一阵蜂蜜的甜香。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaowu2" {
+    room_id = rooms.xiaowu2.id
+  west = rooms.xiaoting.id
+  east = rooms.xiaowu3.id  }
+
+
+
+
+  room_items "xiaowu2" {
+    room_id = rooms.xiaowu2.id
+    items = [
+      { id = items.fengmi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gumu/xiaowu3.c by LPCConverter
+# Zone: gumu
+
+    rooms "xiaowu3" {
+      name = "小屋"
+      description = "这里是远离正厅的一间小屋，但见收拾得整整洁洁一尘不 染。摆设就如普通人家一般，红木的桌椅，细磁的杯壶，沉香 的大床。你简直想象不到这幽深的古墓之中还有这等摆设。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaowu3" {
+    room_id = rooms.xiaowu3.id
+  west = rooms.xiaowu2.id  }
+
+
+
+
+  room_items "xiaowu3" {
+    room_id = rooms.xiaowu3.id
+    items = [
+      { id = items.ping.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gumu/xiuxishi.c by LPCConverter
+# Zone: gumu
+
+    rooms "xiuxishi" {
+      name = "休息室"
+      description = "这是间很大的房间，光线非常昏暗。房里没有什么别的东 西，只有中间放着一张收拾得舒舒服服的大床，床上的被褥也 整理得整整洁洁，看着就让人想睡觉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiuxishi" {
+    room_id = rooms.xiuxishi.id
+  southeast = rooms.xiaowu1.id  }
+
+# Generated from C:/files/git/mud/d/gumu/zhengting.c by LPCConverter
+# Zone: gumu
+
+    rooms "zhengting" {
+      name = "正厅"
+      description = "这里是古墓的正厅，本来应停放灵柩棺木之类的东西，却 不知道被人搬到哪里去了。厅正中端坐着一位白衣少女，厅角 上摆放着一张石头做成的大床(chuang)，厅中横系着一条绳子， 不知道做什么用的，除此之外，别无摆设。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ chuang = "这是一张用千年寒玉雕成的寒玉床。"
+}
+    }
+
+  room_exits "zhengting" {
+    room_id = rooms.zhengting.id
+  west = rooms.liangong.id
+  north = rooms.xiaoting.id
+  south = rooms.houting.id  }
+
+
+
+
+  room_items "zhengting" {
+    room_id = rooms.zhengting.id
+    items = [
+      { id = items.longnv.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gumu/zhufeng.c by LPCConverter
+# Zone: gumu
+
+    rooms "zhufeng" {
+      name = "终南山主峰"
+      description = "此时你已身在终南山主峰，视野更为广阔。往低望去，群 山尽皆匍匐在脚下。重阳宫翠绿琉瓦在山腰处，晶莹生辉。不 少殿宇散布於山坳间，景色却颇为美妙。 一块巨石(shi)立在 一旁，似乎刻了什麽东西。往西和南各是一条山路。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ shi = "於人妄矫重异要佐子                 今传迹矫阳人伴汉房                 终入复英起与赤开志                 南道知雄全异松鸿亡                 山初非姿真书游举秦                 ，，，，，，，，，                 殿二收乘高造功屹曾                 阁仙心时视物成然进                 凌此活或仍不拂天桥                 烟相死割阔轻衣一下                 雾遇墓据步付去柱履                 。。。。。。。。。"
+}
+    }
+
+  room_exits "zhufeng" {
+    room_id = rooms.zhufeng.id
+  westdown = rooms.shanlu2.id
+  southdown = rooms.shanlu1.id  }
+
+# Generated from C:/files/git/mud/d/gumu/npc/sun.c by LPCConverter
+# Zone: gumu
+
+    characters "sun" {
+      name = "孙婆婆"
+      description = "这是一位慈祥的老婆婆，正看着你微微一笑。"
+  gender = "女性"
+  age = 55
+  score = 0
+  brain = brains.guarder
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 150000
+    max_jing = 400
+    max_neili = 1500
+    max_qi = 1200
+  }
+
+  skills = [
+    { skill = "force" level = 160 },
+    { skill = "yunv-xinjing" level = 160 },
+    { skill = "sword" level = 140 },
+    { skill = "suxin-jue" level = 160 },
+    { skill = "dodge" level = 160 },
+    { skill = "yunv-shenfa" level = 160 },
+    { skill = "parry" level = 140 },
+    { skill = "unarmed" level = 140 },
+    { skill = "meinv-quan" level = 140 },
+    { skill = "literate" level = 140 },
+    { skill = "martial-cognize" level = 140 },
+    { type = "force" skill = "suxin-jue" },
+    { type = "sword" skill = "yunv-jian" },
+    { type = "dodge" skill = "yunv-shenfa" },
+    { type = "parry" skill = "yunv-jian" },
+    { type = "unarmed" skill = "meinv-quan" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/gumu/npc/obj/baipao.c by LPCConverter
+# Zone: gumu
+
+    characters "baipao" {
+      name = "白袍"
+      description = "这是件轻纱制成的白色长袍。"
+    }
+
+# Generated from C:/files/git/mud/d/gumu/obj/bingpo-zhen.c by LPCConverter
+# Zone: gumu
+
+    items "bingpo_zhen" {
+      name = "冰魄银针"
+      description = "这是一根细长的银针，针尖透出阵阵寒气。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/gumu/obj/fengmi.c by LPCConverter
+# Zone: gumu
+
+    items "fengmi" {
+      name = "玉蜂蜜"
+      description = "这是一罐玉蜂酿成的蜜，可解玉蜂毒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/gumu/obj/ping.c by LPCConverter
+# Zone: gumu
+
+    items "ping" {
+      name = "蜂浆瓶"
+      description = "这是一个用上古美玉雕成的小瓶，还未拔开瓶塞，就可以闻到 一股浓郁的香味，可以用来驱蜂。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/gumu/obj/yufeng-zhen.c by LPCConverter
+# Zone: gumu
+
+    items "yufeng_zhen" {
+      name = "玉蜂针"
+      description = "这是一根细长的银针，散发着淡淡的清香。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
