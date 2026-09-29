@@ -1,0 +1,3157 @@
+zones "jingzhou" {
+  name = "jingzhou"
+}
+
+# Generated from C:/files/git/mud/d/jingzhou/afang.c by LPCConverter
+# Zone: jingzhou
+
+    characters "afang" {
+      name = "阿芳"
+      description = "阿芳貌似鲜花，可不知道的原因，迟迟不嫁，惹得爷儿们心痒痒。"
+  title = "茶僚老板"
+  nickname = "消息灵通"
+  gender = "女性"
+  age = 20
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 500
+    str = 30
+  }
+
+  goods = [
+    { id = items.peanut.id },
+    { id = items.tofu.id }
+  ]
+
+  inquiries = [
+    { key = "生意" value = "这个么……。还将就。" },
+    { key = "结婚" value = "结婚？你有几万两黄金？？筹够了来找我吧。嘻嘻！" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["list", "buy"]
+  }
+
+  greetings = [
+    { line = "阿芳笑眯眯地说道：这位{respect}，快请进来喝杯热茶。" },
+    { line = "阿芳说道：哟！这位{respect}您来了啊！" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/baita.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "baita" {
+      name = "白塔"
+      description = "这里是一座三层高的白塔，相传是前朝一位状元郎考取功 名后，卫报答母恩修建的报恩塔。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baita" {
+    room_id = rooms.baita.id
+  up = rooms.baita1.id
+  south = rooms.dongdajie1.id  }
+
+
+  room_characters "baita" {
+    room_id = rooms.baita.id
+    characters = [
+      { id = characters.shusheng2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/baita1.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "baita1" {
+      name = "白塔二楼"
+      description = "这里是报恩塔的第二楼，相传是前朝一位状元郎考取功名 后，卫报答母恩修建的报恩塔。由于这里地势高，让人忍不住 要登高眺望。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baita1" {
+    room_id = rooms.baita1.id
+  up = rooms.baita2.id
+  down = rooms.baita.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/baita2.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "baita2" {
+      name = "白塔三楼"
+      description = "这里是报恩塔三楼，由于这里地势高，一阵微风吹来，说 不出的凉爽，荆州城的风光也尽收眼底。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baita2" {
+    room_id = rooms.baita2.id
+  down = rooms.baita1.id  }
+
+
+  room_characters "baita2" {
+    room_id = rooms.baita2.id
+    characters = [
+      { id = characters.shiren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/beidajie1.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "beidajie1" {
+      name = "北大街"
+      description = "你走在一条繁忙的街道上，看着操着南腔北调的人们行色 匆匆，许多人都往南边走去，那里有一个热闹的广场。东边是 一家生意兴隆的客栈，来自各地的人们进进出出，西边是一家 钱庄，可以听到叮叮当当的金银声音。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "beidajie1" {
+    room_id = rooms.beidajie1.id
+  east = rooms.kedian.id
+  south = rooms.guangchang.id
+  west = rooms.qianzhuang.id
+  north = rooms.beidajie2.id  }
+
+
+  room_characters "beidajie1" {
+    room_id = rooms.beidajie1.id
+    characters = [
+      { id = characters.girl1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/beidajie2.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "beidajie2" {
+      name = "北大街"
+      description = "这是一条宽阔的青石街道，向南北两头延伸。北边是北城 门通向城外。南边显得很繁忙。东边是一家小饭馆，门额上写 着“唐氏饭庄”几个字，阵阵酒肉香酒香让你垂涎欲滴。西边 是一间药店。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "beidajie2" {
+    room_id = rooms.beidajie2.id
+  east = rooms.libailou.id
+  south = rooms.beidajie1.id
+  west = rooms.yaopu.id
+  north = rooms.jzbeimen.id  }
+
+
+  room_characters "beidajie2" {
+    room_id = rooms.beidajie2.id
+    characters = [
+      { id = characters.liumang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/bqkumen.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "bqkumen" {
+      name = "兵器库大门"
+      description = "你正站在荆州兵器库的门口，可以看到两个穿着制服的官 兵正在此地巡逻，不时地传来呐喊声。老百姓是不允许在此观 看的，你最好赶快走开。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bqkumen" {
+    room_id = rooms.bqkumen.id
+  east = rooms.nandajie2.id  }
+
+
+  room_characters "bqkumen" {
+    room_id = rooms.bqkumen.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/caidi.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "caidi" {
+      name = "菜地"
+      description = "你看到一片绿油油的菜地，种满了各种各样的菜，有大头 菜、白菜、空心菜……"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caidi" {
+    room_id = rooms.caidi.id
+  east = rooms.whouyuan.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/chaliao.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "chaliao" {
+      name = "荆州茶僚"
+      description = "这里是荆州的茶僚，过往的路人多半都在这里歇脚、补充 干粮，水袋，屋里正坐着些歇脚的人，或高声谈笑，或交头接 耳。你要想打听江湖掌故和谣言，这里是个好所在。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chaliao" {
+    room_id = rooms.chaliao.id
+  east = rooms.nandajie1.id  }
+
+
+  room_characters "chaliao" {
+    room_id = rooms.chaliao.id
+    characters = [
+      { id = characters.afang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/chibi1.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "chibi1" {
+      name = "小路"
+      description = "这是一条通向江边的小路，路十分的陡，走起来得小心一 点，四周静悄悄的，只闻的鸟儿歌唱的声音。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chibi1" {
+    room_id = rooms.chibi1.id
+  northup = rooms.qingshan.id
+  southdown = rooms.chibi2.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/chibi2.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "chibi2" {
+      name = "小路"
+      description = "这是一条通向江边的小路，路十分的陡，走起来得小心一 点，四周静悄悄的，只闻的鸟儿歌唱的声音。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chibi2" {
+    room_id = rooms.chibi2.id
+  northup = rooms.chibi1.id
+  southdown = rooms.chibi3.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/chibi3.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "chibi3" {
+      name = "小路"
+      description = "这是一条通向江边的小路，路十分的陡，走起来得小心一 点，四周静悄悄的，只闻的鸟儿歌唱的声音。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chibi3" {
+    room_id = rooms.chibi3.id
+  northup = rooms.chibi2.id
+  southdown = rooms.chibi4.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/chibi4.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "chibi4" {
+      name = "长江岸边"
+      description = "这里是长江北岸，江水在你身边哗哗的流淌，不时可以看 见有山木从上游漂来，在水中打了个圈，向下游漂去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chibi4" {
+    room_id = rooms.chibi4.id
+  northup = rooms.chibi3.id
+  west = rooms.chibi5.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/chibi5.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "chibi5" {
+      name = "长江岸边"
+      description = "这里是长江北岸，江水在你身边哗哗的流淌，偶尔你会在 沙滩上发现有一些残刀断戟，原来西边不远就是有名的古战场 赤壁。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chibi5" {
+    room_id = rooms.chibi5.id
+  east = rooms.chibi4.id
+  west = rooms.chibi6.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/chibi6.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "chibi6" {
+      name = "赤壁古战场"
+      description = "这里就是有名的古赤壁战场，对岸一面巨大的悬崖绝壁之 上书有「赤壁」两个大字，想当年曹操百万精兵在此被周愈杀 的片甲不留，含恨而归。文学家苏东坡游临此地，便感慨的留 下了“遥想公谨当年，小乔初嫁了，羽扇纶巾，雄姿英发，谈 笑间，强虏灰飞烟灭……”令后人引为佳句。从这里向江面看 去，只见滚滚江水东流去，江面上若隐若现一条条大铁索，原 来是当年吴国为了抵御曹操而修的锁江链。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ tiesuo = "只见一条条铁锁链横在江中，多年江水冲击依然不朽。"
+}
+    }
+
+  room_exits "chibi6" {
+    room_id = rooms.chibi6.id
+  east = rooms.chibi5.id  }
+
+
+  room_characters "chibi6" {
+    room_id = rooms.chibi6.id
+    characters = [
+      { id = characters.shiren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/datiepu.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "datiepu" {
+      name = "打铁铺"
+      description = "这是一家简陋的打铁铺，中心摆着一个火炉，炉火把四周 照得一片通红，你一走进去就感到浑身火热。墙角堆满了已完 工和未完工的菜刀、铁锤、铁棍、匕首、盔甲等物。一位铁匠 满头大汗挥舞着铁锤，专心致志地在打铁。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "datiepu" {
+    room_id = rooms.datiepu.id
+  west = rooms.nandajie1.id  }
+
+
+  room_characters "datiepu" {
+    room_id = rooms.datiepu.id
+    characters = [
+      { id = characters.smith.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/dayuan.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "dayuan" {
+      name = "大院"
+      description = "你走进大院，迎面是一个假山水池，池上摆着一块奇形怪 状的石头，据说是当年花石纲的遗石。水池的两旁种满了花草。 东边是一棵槐树，郁郁葱葱，遮盖了大半个院子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dayuan" {
+    room_id = rooms.dayuan.id
+  south = rooms.wanghouse.id
+  west = rooms.xting.id
+  east = rooms.dting.id
+  north = rooms.whouyuan.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/dongdajie1.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "dongdajie1" {
+      name = "东大街"
+      description = "这是一条宽阔的青石板街道，南边是一座简朴的院子，半 月形的大门上方写着“萧湘书院”四个烫金的大字，苍劲挺拔 有力。里面不时地传来学生们抑扬顿挫的读书声。北边是一座 几层高的白塔，相传是一位状元为报母养育之恩而建造的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongdajie1" {
+    room_id = rooms.dongdajie1.id
+  east = rooms.dongdajie2.id
+  south = rooms.shuyuan.id
+  west = rooms.guangchang.id
+  north = rooms.baita.id  }
+
+
+  room_characters "dongdajie1" {
+    room_id = rooms.dongdajie1.id
+    characters = [
+      { id = characters.shusheng1.id },
+      { id = characters.shusheng1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/dongdajie2.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "dongdajie2" {
+      name = "东大街"
+      description = "你走在东大街上，踩着坚实的青石板地面。东边不远是东 城门，可以听到守城官兵的吆喝声，与西边朗朗的读书声混杂 在一起。北边是一家小小的杂货铺。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongdajie2" {
+    room_id = rooms.dongdajie2.id
+  east = rooms.jzdongmen.id
+  west = rooms.dongdajie1.id
+  north = rooms.shop.id
+  south = rooms.xxiang.id  }
+
+
+  room_characters "dongdajie2" {
+    room_id = rooms.dongdajie2.id
+    characters = [
+      { id = characters.boy3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/dongxiang.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "dongxiang" {
+      name = "闺房"
+      description = "这是凌小姐的闺房，一股幽香扑面而来。一张绣榻放在墙角，垂着细 纱。凌小姐正对着一盆菊花在沉思。北面是座花园。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongxiang" {
+    room_id = rooms.dongxiang.id
+  west = rooms.houyuan.id
+  north = rooms.huayuan.id  }
+
+
+  room_characters "dongxiang" {
+    room_id = rooms.dongxiang.id
+    characters = [
+      { id = characters.shuanghua.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/dting.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "dting" {
+      name = "东厅"
+      description = "这里是万俯内的东厅，房间里摆着一张桌子，以及一个书 架，书架上放着很多书籍，墙上挂着几幅字画，这里好像是万 门弟子练功的地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dting" {
+    room_id = rooms.dting.id
+  west = rooms.dayuan.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/guandao1.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "guandao1" {
+      name = "官道"
+      description = "你走在一条大官道上，两旁不时有人从你身边走过，西面 通向荆州，东边是一条小路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guandao1" {
+    room_id = rooms.guandao1.id
+  east = rooms.road7.id
+  west = rooms.guandao2.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/guandao2.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "guandao2" {
+      name = "官道"
+      description = "你走在一条大官道上，两旁不时有人从你身边走过，可以 分辩出有几个是江湖中人。西面隐约可以看见荆州，东边和一 条小路相连。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guandao2" {
+    room_id = rooms.guandao2.id
+  east = rooms.guandao1.id
+  west = rooms.guandao3.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/guandao3.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "guandao3" {
+      name = "青石道"
+      description = "接近荆州，路由黄土变成了青石铺路，两旁渐渐可以看见 一些农舍，农田肥沃，稻香四飘。古称荆州为军事要地，地理 为其一，肥沃为其二啊！往西望去，可见荆州的城楼了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guandao3" {
+    room_id = rooms.guandao3.id
+  east = rooms.guandao2.id
+  west = rooms.jzdongmen.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/guangchang.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "guangchang" {
+      name = "荆州中心"
+      description = "这是荆州的中心要地十字路口，人来人往，很是热闹，南 边住着一些本城的富人，北边是官府，真是一个好地方啊。许 多从四川来的人都在此落脚，休息以后再赶路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guangchang" {
+    room_id = rooms.guangchang.id
+  east = rooms.dongdajie1.id
+  west = rooms.xidajie1.id
+  north = rooms.beidajie1.id
+  south = rooms.nandajie1.id  }
+
+
+  room_characters "guangchang" {
+    room_id = rooms.guangchang.id
+    characters = [
+      { id = characters.haoke1.id },
+      { id = characters.maiyi1.id },
+      { id = characters.boy1.id },
+      { id = characters.old2.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/guanmiao.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "guanmiao" {
+      name = "关圣庙"
+      description = "相传关老爷子旧年曾在这里和周仓争关庙首席之位。周仓 说提议谁先跑到庙里，谁就为大。关公答应后，待周仓跑到门 口大叫：别占我的门旮。周仓本是你说不，我偏要之人，往门 旮旮一站，关公也就到前面去了。这些不表，且看这庙里，香 火缭绕，长年不断，来进香的人络绎不绝，也可知关二爷在当 地人心中是多英雄的人物。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guanmiao" {
+    room_id = rooms.guanmiao.id
+  south = rooms.xidajie2.id
+  north = rooms.houdian.id  }
+
+
+  room_characters "guanmiao" {
+    room_id = rooms.guanmiao.id
+    characters = [
+      { id = characters.xiangke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/houdian.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "houdian" {
+      name = "后殿"
+      description = "这里是关帝庙的后殿，殿中堆放着香、烛等杂物。墙上的 幔布看起来满新的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houdian" {
+    room_id = rooms.houdian.id
+  north = rooms.houmen.id
+  south = rooms.guanmiao.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/houmen.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "houmen" {
+      name = "后门"
+      description = "这里是关帝庙的后门，朝望北去，不远处是一个小山坡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houmen" {
+    room_id = rooms.houmen.id
+  south = rooms.houdian.id
+  northup = rooms.xiaoshan.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/houyuan.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "houyuan" {
+      name = "衙门后院"
+      description = "这里是衙门的后院，打扫得非常干净，四周是过人的围墙，院子里种 了不少的各种奇花异草，尤以各色菊花为多。院西是丫鬟的房间，东侧有 一扇门(men)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ men = "这扇门后便是凌小姐的闺房。"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：!wizardp(me) && objectp(present("guan jia", environment(me))) && (dir == "west" || dir =="east")
+direction = "west"
+  message = "管家挡住了你：请勿入内宅。"
+}
+
+]
+    }
+
+  room_exits "houyuan" {
+    room_id = rooms.houyuan.id
+  west = rooms.xixiang.id
+  north = rooms.ymzhengting.id
+  east = rooms.dongxiang.id  }
+
+
+  room_characters "houyuan" {
+    room_id = rooms.houyuan.id
+    characters = [
+      { id = characters.guanjia.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/huayuan.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "huayuan" {
+      name = "花园"
+      description = "这里是翰林府的花园。院子里种了各色名贵的菊花。黄菊有都胜、金 芍药、报君知。白菊有月下白、一团雪、貂蝉拜月。紫菊有双飞燕、紫玉 莲、玛瑙盘。红菊有美人红、醉贵妃、绣芙蓉。。。院中有几盆颜色特别 娇艳的黄花，花瓣黄得像金子一样，花朵的样子很像荷花。那就是从天竺 传来的金波旬花。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+  direction = ~
+  message = "你突然头晕目旋摔倒在地。"
+}
+
+]
+    }
+
+  room_exits "huayuan" {
+    room_id = rooms.huayuan.id
+  south = rooms.dongxiang.id  }
+
+
+  room_characters "huayuan" {
+    room_id = rooms.huayuan.id
+    characters = [
+      { id = characters.juhua1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/jail.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "jail" {
+      name = "监狱"
+      description = "这里是监狱，约莫两丈见方的一间大石室，墙壁和顶板都是大石所砌。 墙角里放着一只粪桶，鼻中闻到的尽是臭气和霉气。从西面墙上的小窗望 去，可以见到翰林府的一角。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jail" {
+    room_id = rooms.jail.id
+  west = rooms.ymzhengting.id  }
+
+
+  room_characters "jail" {
+    room_id = rooms.jail.id
+    characters = [
+      { id = characters.dingdian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/jing.c by LPCConverter
+# Zone: jingzhou
+
+    characters "jing" {
+      name = "凌思退"
+      description = "他就是凌思退，荆州现任知府。"
+  title = "荆州知府"
+  gender = "男性"
+  age = 35
+  shen_type = 0
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 30000
+    dex = 20
+    max_neili = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "force" level = 50 },
+    { skill = "sword" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/jzbeimen.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "jzbeimen" {
+      name = "荆州北门"
+      description = "这里是荆州的北门，由于荆州历来都是军事要地，因此城 墙坚实无比，城楼高高耸立，由于北门以外，人烟稀少，来往 的人不多，所以官兵的防卫也就不十分严密。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jzbeimen" {
+    room_id = rooms.jzbeimen.id
+  northup = rooms.wdroad5.id
+  south = rooms.beidajie2.id  }
+
+
+  room_characters "jzbeimen" {
+    room_id = rooms.jzbeimen.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.xunbu.id },
+      { id = characters.ducha.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/jzdongmen.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "jzdongmen" {
+      name = "荆州东门"
+      description = "这里便是荆州东门，荆州历来都是军事要地，因此城墙坚 实无比，城楼高高耸立，来往的人很多，荆州也是从蜀地进入 中原的必经之路，所以各色人等混杂，你还是小心一点。东去 则是通往扬州的交通要道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jzdongmen" {
+    room_id = rooms.jzdongmen.id
+  east = rooms.guandao3.id
+  west = rooms.dongdajie2.id  }
+
+
+  room_characters "jzdongmen" {
+    room_id = rooms.jzdongmen.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.ducha.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/jznanmen.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "jznanmen" {
+      name = "荆州南门"
+      description = "你来到荆州的南门，荆州历来都是军事要地，因此城墙坚 实无比，城楼高高耸立，由此向南，是去云南的路，不过那边 山高路远，很不好走，你可得多多注意一些。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jznanmen" {
+    room_id = rooms.jznanmen.id
+  north = rooms.nandajie2.id
+  south = rooms.nanshilu.id  }
+
+
+  room_characters "jznanmen" {
+    room_id = rooms.jznanmen.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.ducha.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/jzximen.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "jzximen" {
+      name = "荆州西门"
+      description = "你来到荆州的西门，荆州历来都是军事要地，因此城墙坚 实无比，城楼高高耸立，出了西门，就踏上了艰险的蜀道，一 直向天俯之国而去，路上多有险阻，如果你要去的话，务必多 加小心。入了城门，进入荆州，你就等于到了中原了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jzximen" {
+    room_id = rooms.jzximen.id
+  east = rooms.xidajie2.id
+  west = rooms.shudao1.id  }
+
+
+  room_characters "jzximen" {
+    room_id = rooms.jzximen.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.xunbu.id },
+      { id = characters.ducha.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/jzyamen.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "jzyamen" {
+      name = "荆州衙门"
+      description = "这里是荆州衙门大门所在，衙门的两扇朱木大门紧紧关闭 着。“肃静”“回避”的牌子分放两头石狮子的旁边。前面有 一个大鼓，显然是供小民鸣冤用的。几名衙役在门前巡逻。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "south" && objectp(present("ya yi", environment(me)))
+direction = "south"
+  message = "衙役齐声喝道：威……武……"
+}
+
+]
+    }
+
+  room_exits "jzyamen" {
+    room_id = rooms.jzyamen.id
+  south = rooms.ymzhengting.id
+  north = rooms.xidajie1.id  }
+
+
+  room_characters "jzyamen" {
+    room_id = rooms.jzyamen.id
+    characters = [
+      { id = characters.yayi.id },
+      { id = characters.yayi.id },
+      { id = characters.yayi.id },
+      { id = characters.yayi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/kedian.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "kedian" {
+      name = "客店"
+      description = "这是一家价钱低廉的客栈，生意很是清淡。外地游客偶尔 选择这里落脚，你在这里住可要小心，听说荆州有黑店。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ paizi = "楼上雅房，每夜五十两白银。"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "up" 
+direction = "up"
+  message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊！"
+}
+
+]
+    }
+
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+  east = rooms.majiu.id
+  west = rooms.beidajie1.id
+  up = rooms.kedian2.id  }
+
+
+  room_characters "kedian" {
+    room_id = rooms.kedian.id
+    characters = [
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/kedian2.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "kedian2" {
+      name = "客店二楼"
+      description = "你正走在客店二楼的走廊上，可以听到从客房里不时地呼 呼的打酣声，一阵高过一阵。不时有睡意朦胧的旅客进进出出。 到楼下的掌柜处付了钱再上来睡觉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kedian2" {
+    room_id = rooms.kedian2.id
+  down = rooms.kedian.id
+  in = rooms.kedian3.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/kedian3.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "kedian3" {
+      name = "客店二楼"
+      description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小木床，不少客人正 和衣而卧，满屋子都是呼呼的打酣声。西边有张床是空的，你蹑手蹑脚地走了过 去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kedian3" {
+    room_id = rooms.kedian3.id
+  out = rooms.kedian2.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/lcmen.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "lcmen" {
+      name = "粮仓大门"
+      description = "你正站在荆州粮仓的门口，可以看到两个穿着制服的官兵 正在此地巡逻，不时地传来呐喊声。老百姓是不允许在此观看 的，你最好赶快走开。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "east" && objectp(present("guan bing", environment(me)))
+direction = "east"
+  message = "官兵一把拦住你，骂道：粮仓重地，岂是你们这些泥腿子随便来得的？"
+}
+
+]
+    }
+
+  room_exits "lcmen" {
+    room_id = rooms.lcmen.id
+  west = rooms.nandajie2.id
+  east = rooms.liangcang.id  }
+
+
+  room_characters "lcmen" {
+    room_id = rooms.lcmen.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/liangcang.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "liangcang" {
+      name = "粮仓"
+      description = "这里就是荆州粮仓了，地上堆着许多麻袋，大概装的是包 谷大米之类的粮食。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liangcang" {
+    room_id = rooms.liangcang.id
+  west = rooms.lcmen.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/libailou.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "libailou" {
+      name = "饭馆"
+      description = "这是一家湘西的小饭馆，布置颇为简易，顾客多是匆匆的 行人，买点包子、鸡腿、米酒就赶路去了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "libailou" {
+    room_id = rooms.libailou.id
+  west = rooms.beidajie2.id  }
+
+
+  room_characters "libailou" {
+    room_id = rooms.libailou.id
+    characters = [
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/libailou2.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "libailou2" {
+      name = "李白楼二楼"
+      description = "这里是雅座，文人学士经常在这里吟诗作画，富商土豪也在这里边吃喝边作 交易。这里是城里举办喜宴的最佳场所。你站在楼上眺望，只觉得心旷神怡。东 面是一池湖水，碧波荡漾。北面是崇山峻岭，而南面可以看到闻名全国的白鹿书 院的后庭。墙上挂着价格牌子(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ paizi = "本店出售烤鸭及上等花雕酒。"
+}
+    }
+
+  room_exits "libailou2" {
+    room_id = rooms.libailou2.id
+  down = rooms.libailou.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/luan.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "luan" {
+      name = "乱坟岗"
+      description = "这里是一处乱坟岗，到处长满了过人高的长草，听说经常 闹鬼，所以没人敢来。一阵冷风刮来，吓的你根根体毛竖起。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "luan" {
+    room_id = rooms.luan.id
+  westup = rooms.xiaoshan.id
+  east = rooms.luan2.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/luan2.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "luan2" {
+      name = "乱坟岗"
+      description = "这里是一处乱坟岗，到处长满了过人高的长草，听说这里 经常闹鬼，所以没人敢来。一阵冷风刮来，吓的你根根体毛竖 起。前方好像有一座新坟，坟上立有一块碑(bei)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "luan2" {
+    room_id = rooms.luan2.id
+  west = rooms.luan.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/lydao1.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "lydao1" {
+      name = "林荫道"
+      description = "这是一条安静的林荫道，地上铺着奇奇怪怪五颜六色的石 子，向南北两头延伸。北边是热闹的西大街，南边远处有几个 孩童在玩耍。西面是高大的荆州城墙。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lydao1" {
+    room_id = rooms.lydao1.id
+  north = rooms.xidajie2.id
+  south = rooms.lydao2.id  }
+
+
+  room_characters "lydao1" {
+    room_id = rooms.lydao1.id
+    characters = [
+      { id = characters.kid1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/lydao2.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "lydao2" {
+      name = "林荫道"
+      description = "这是一条安静的林荫道，地上铺着奇奇怪怪五颜六色的石 子，向南北两头延伸。西面是高大的荆州城墙。南边好像有一 眼温泉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lydao2" {
+    room_id = rooms.lydao2.id
+  north = rooms.lydao1.id
+  southdown = rooms.wenquan.id  }
+
+
+  room_characters "lydao2" {
+    room_id = rooms.lydao2.id
+    characters = [
+      { id = characters.qigai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/lydao3.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "lydao3" {
+      name = "林荫道"
+      description = "这是一条安静的林荫道，地上铺着奇奇怪怪五颜六色的石 子，向东西两头延伸。东面是一条林荫道。径直通南大街。西 边好像有一眼温泉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lydao3" {
+    room_id = rooms.lydao3.id
+  east = rooms.lydao4.id
+  westdown = rooms.wenquan.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/lydao4.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "lydao4" {
+      name = "林荫道"
+      description = "这是一条安静的林荫道，地上铺着奇奇怪怪五颜六色的石 子，向东西两头延伸。东面就是热闹的南大街了。西边有几个 小孩在玩耍，安静，和谐，微风吹来，使人忘却了江湖上的生 死情仇。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lydao4" {
+    room_id = rooms.lydao4.id
+  eastup = rooms.nandajie2.id
+  west = rooms.lydao3.id  }
+
+
+  room_characters "lydao4" {
+    room_id = rooms.lydao4.id
+    characters = [
+      { id = characters.kid1.id },
+      { id = characters.kid1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/majiu.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "majiu" {
+      name = "马厩"
+      description = "这是客店后的马厩，常年供应着新鲜的草料。荆州城民风 淳朴，马夫们会把马牵到马厩好生照看，将它们喂饱饮足，再 洗刷得干乾净净，一直伺候到客人上路。马厩雨檐下的烂木柱 上钉着一块破木牌 (paizi)。马厩中堆放著几堆草料。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+  west = rooms.kedian.id
+  up = rooms.jingzhou_shop.id  }
+
+
+  room_characters "majiu" {
+    room_id = rooms.majiu.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu" {
+    room_id = rooms.majiu.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/nandajie1.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "nandajie1" {
+      name = "南大街"
+      description = "南大街乃是城里的繁华地段，北边是一个热闹的广场。东 边是一家打铁铺。西边是荆州的驿馆，过往的路人多半都在这 里歇歇脚。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nandajie1" {
+    room_id = rooms.nandajie1.id
+  east = rooms.datiepu.id
+  south = rooms.nandajie2.id
+  west = rooms.chaliao.id
+  north = rooms.guangchang.id  }
+
+
+  room_characters "nandajie1" {
+    room_id = rooms.nandajie1.id
+    characters = [
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/nandajie2.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "nandajie2" {
+      name = "南大街"
+      description = "你走在一条繁华的街道上，向南北两头延伸。南边是南城 门，北边通往市中心，西边是一家顾客众多荆州的兵器库，东 边是荆州粮仓，荆州向来是军事要地，所以兵器粮草屯积丰厚。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nandajie2" {
+    room_id = rooms.nandajie2.id
+  east = rooms.lcmen.id
+  south = rooms.jznanmen.id
+  west = rooms.bqkumen.id
+  north = rooms.nandajie1.id
+  westdown = rooms.lydao4.id  }
+
+
+  room_characters "nandajie2" {
+    room_id = rooms.nandajie2.id
+    characters = [
+      { id = characters.old1.id },
+      { id = characters.boy2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/nanshilu.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "nanshilu" {
+      name = "碎石路"
+      description = "这是一条由碎石铺成的路，虽然有些颠簸，却很宽阔，再 往南去就是长江了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nanshilu" {
+    room_id = rooms.nanshilu.id
+  north = rooms.jznanmen.id
+  south = rooms.nanshilu1.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/nanshilu1.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "nanshilu1" {
+      name = "碎石路"
+      description = "这是一条由碎石铺成的路，虽然有些颠簸，却很宽阔，南 去就是长江了。不过前面一片乱石，拦住了去路，据说是当年 诸葛亮为了阻止吴兵追赶而设的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nanshilu1" {
+    room_id = rooms.nanshilu1.id
+  north = rooms.nanshilu.id
+  south = rooms.road1.id  }
+
+
+  room_characters "nanshilu1" {
+    room_id = rooms.nanshilu1.id
+    characters = [
+      { id = characters.boy.id },
+      { id = characters.girl.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/qianzhuang.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "qianzhuang" {
+      name = "钱庄"
+      description = "这是一家老字号的钱庄，已有几百年的历史，在全国各地 都有分店。它发行的银票信誉非常好，通行全国。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qianzhuang" {
+    room_id = rooms.qianzhuang.id
+  east = rooms.beidajie1.id  }
+
+
+  room_characters "qianzhuang" {
+    room_id = rooms.qianzhuang.id
+    characters = [
+      { id = characters.qian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/qingshan.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "qingshan" {
+      name = "山顶"
+      description = "爬上山顶，只觉空气清新，登高望远，心旷神怡。向东望 去，只见扬洲城有如一个小小的黑点，极目向西，却茫茫而不 见。南面，只见一条大江如彩带一般，那就是长江了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qingshan" {
+    room_id = rooms.qingshan.id
+  eastdown = rooms.qingshan2.id
+  westdown = rooms.qingshan1.id
+  southdown = rooms.chibi1.id  }
+
+
+  room_characters "qingshan" {
+    room_id = rooms.qingshan.id
+    characters = [
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/qingshan1.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "qingshan1" {
+      name = "青山"
+      description = "顺山而走，山势渐渐陡了起来，杂草荆棘丛生， 使你难 以行走。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qingshan1" {
+    room_id = rooms.qingshan1.id
+  southwest = rooms.road5.id
+  eastup = rooms.qingshan.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/qingshan2.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "qingshan2" {
+      name = "青山"
+      description = "顺山而走，山势渐渐陡了起来，杂草荆棘丛生， 使你难 以行走。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qingshan2" {
+    room_id = rooms.qingshan2.id
+  westup = rooms.qingshan.id
+  eastdown = rooms.road4.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/road1.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "road1" {
+      name = "大道"
+      description = "这是一条宽阔笔直的官道，足可容得下十马并驰。往东通 向脂粉之都的扬州，折向西南则通往西南重镇荆洲。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road1" {
+    room_id = rooms.road1.id
+  northeast = rooms.ximenroad.id
+  southwest = rooms.road2.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/road2.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "road2" {
+      name = "大道"
+      description = "这是一条青石大道。东面隐约可以看到扬州城的城墙。向 西看去，只见群山起伏，青翠碧绿，不知通向哪里。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road2" {
+    room_id = rooms.road2.id
+  northeast = rooms.road1.id
+  southwest = rooms.road3.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/road3.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "road3" {
+      name = "大道"
+      description = "这是一条青石大道。向东通往扬州。向西而去，只见一座 高山青松古柏，一片大好风景。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road3" {
+    room_id = rooms.road3.id
+  northeast = rooms.road2.id
+  southwest = rooms.road4.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/road4.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "road4" {
+      name = "青山"
+      description = "山中树木茂密，花开万朵，这里风景秀美，小鸟在喳喳地 叫着，阳光从树页的缝隙中照进来，形成五彩的斑斓，你的心 情不由的高兴起来，跟着小鸟的歌声，向前走去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road4" {
+    room_id = rooms.road4.id
+  northeast = rooms.road3.id
+  westup = rooms.qingshan2.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/road5.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "road5" {
+      name = "青山"
+      description = "山中树木茂密，花开万朵，倾耳细听，可以听见山溪流水 的声音，风吹树页的声音，如同一首大自然的乐曲，美妙动听。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road5" {
+    room_id = rooms.road5.id
+  northeast = rooms.qingshan1.id
+  west = rooms.road6.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/road6.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "road6" {
+      name = "小路"
+      description = "这里是一条崎岖的黄土小路，路旁杂草丛生，西边只见黄 土飞扬，好象是条大官道。东面则有一座青山，山上树木茂密。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road6" {
+    room_id = rooms.road6.id
+  east = rooms.road5.id
+  west = rooms.road7.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/road7.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "road7" {
+      name = "小路"
+      description = "一条崎岖的黄土小路，路旁杂草丛生，西边可以看见荆州 的官道，向东去则可一到达扬州。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road7" {
+    room_id = rooms.road7.id
+  east = rooms.road6.id
+  west = rooms.guandao1.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/sec1.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "sec1" {
+      name = "坟墓内部"
+      description = "你试着继续往前走，远处似乎有老鼠吱吱的叫声，但有不 是很真切。由于光线太暗你只能看到模模糊糊的东西。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sec1" {
+    room_id = rooms.sec1.id
+  south = rooms.sec2.id
+  north = rooms.tomb.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/sec2.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "sec2" {
+      name = "坟墓内部"
+      description = "你试着继续往前走，远处似乎有老鼠吱吱的叫声，但有不 是很真切。由于光线太暗你只能看到模模糊糊的东西。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sec2" {
+    room_id = rooms.sec2.id
+  south = rooms.sec3.id
+  north = rooms.sec1.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/sec3.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "sec3" {
+      name = "坟墓内部"
+      description = "这里放着一具棺材，大概就是墓碑上所写「凌霜华」的棺 材了。奇怪的是棺材已被打开，旁边放着棺盖(cover)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ cover = "你抹去上面的灰尘，只看见上面竟然刻着些奇奇怪怪的数 字「三十三、五十七、一十八、二十六、四十八……」"
+}
+    }
+
+  room_exits "sec3" {
+    room_id = rooms.sec3.id
+  north = rooms.sec2.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/shijie.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "shijie" {
+      name = "石阶"
+      description = "这里是一排青石铺砌的石阶，往北可以通往萧湘书院，往 南则是一片翠绿的竹林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shijie" {
+    room_id = rooms.shijie.id
+  southdown = rooms.zizhulin.id
+  north = rooms.shuyuan1.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/shikuang1.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "shikuang1" {
+      name = "石矿"
+      description = "这里郊外一座荒山，怪石嶙峋，在山的另一边不断传来一阵阵的爆炸声，原 来已经有很多人在那边炸(zha)山开采矿石。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(dir == "southdown" || dir == "northeast") && me->query("zha/山") == 1
+direction = "southdown"
+  message = "你的雷管还插在那里，想留下来害人吗？"
+}
+
+]
+    }
+
+  room_exits "shikuang1" {
+    room_id = rooms.shikuang1.id
+  southdown = rooms.shikuang2.id
+  northeast = rooms.road2.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/shikuang2.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "shikuang2" {
+      name = "石矿"
+      description = "这里郊外一座荒山，怪石嶙峋，在山的另一边不断传来一阵阵的爆炸声，原 来已经有很多人在那边炸(zha)山开采矿石。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "northup" && me->query_temp("zha/山") == 1
+direction = "northup"
+  message = "你的雷管还插在那里，想留下来害人吗？"
+}
+
+]
+    }
+
+  room_exits "shikuang2" {
+    room_id = rooms.shikuang2.id
+  northup = rooms.shikuang1.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/shop.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "shop" {
+      name = "废园"
+      description = "你看到四周芳草萋萋，这里是一座废弃了多年的园子，到 处都是老鼠和灰尘，使人不由得黯然神伤。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shop" {
+    room_id = rooms.shop.id
+  south = rooms.dongdajie2.id  }
+
+
+  room_characters "shop" {
+    room_id = rooms.shop.id
+    characters = [
+      { id = characters.qigai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/shuyuan.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "shuyuan" {
+      name = "萧湘书院"
+      description = "这里是书院的讲堂，窗明几净，一尘不染。一位庄重严肃 的老者坐在太师椅上讲学，那就是当今大儒韩先生了。在他的 两侧坐满了求学的学生。一张古意盎然的书案放在朱先生的前 面，案上摆着几本翻开了的线装书籍。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shuyuan" {
+    room_id = rooms.shuyuan.id
+  north = rooms.dongdajie1.id
+  south = rooms.shuyuan1.id  }
+
+
+  room_characters "shuyuan" {
+    room_id = rooms.shuyuan.id
+    characters = [
+      { id = characters.xiaoxiang.id },
+      { id = characters.xuetong.id },
+      { id = characters.xuetong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/shuyuan1.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "shuyuan1" {
+      name = "书院后院"
+      description = "这里是萧湘书院的后院，打扫得非常干净，四周是过人高 的围墙，偶尔传来几声鸟语，让人觉得安静和谐，南边有一道 小门，通往一片竹林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shuyuan1" {
+    room_id = rooms.shuyuan1.id
+  north = rooms.shuyuan.id
+  south = rooms.shijie.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/tiesuo.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "tiesuo" {
+      name = "江中铁索"
+      description = "你站在一江水之中的一条铁索上，铁索随水起伏不停，你站在这里，若没顶 尖的轻功，是坚持不了多久的。从这里向江中看去，更觉得气势宏大，江水奔流， 向江心看去，好象水低有一些古怪的东西。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/tomb.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "tomb" {
+      name = "坟墓内部"
+      description = "你用力往墓碑一推，忽然眼前一黑，掉进了一个大坑，这 里黑乎乎的，似乎看不见任何东西。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tomb" {
+    room_id = rooms.tomb.id
+  south = rooms.sec1.id
+  out = rooms.luan2.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/wanghouse.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "wanghouse" {
+      name = "万府大门"
+      description = "走到这里，一座富丽堂皇的大宅院出现在你的眼前，两头 高大的石狮子镇住了大门两侧，朱漆大门足足有三寸厚。门上 挂着两个灯笼，写着「荆州万府」四个金漆大字。只见两个衣 衫华丽的青年站在大门两侧，警惕地注视着行人。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "north" && objectp(present("jia ding", environment(me)))
+direction = "north"
+  message = "家丁拦住你骂道：什么东西，居然连万老爷的府邸都敢乱闯！"
+}
+
+]
+    }
+
+  room_exits "wanghouse" {
+    room_id = rooms.wanghouse.id
+  south = rooms.xidajie1.id
+  north = rooms.dayuan.id  }
+
+
+  room_characters "wanghouse" {
+    room_id = rooms.wanghouse.id
+    characters = [
+      { id = characters.shang2.id },
+      { id = characters.shang2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/wenquan.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "wenquan" {
+      name = "温泉井"
+      description = "你看到一眼温泉呈现在你的面前，汩汩往外冒着热气和泉 水，温泉虽不大，但足以使人想到下去泡一泡，据说还可以疗 伤治病。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wenquan" {
+    room_id = rooms.wenquan.id
+  northup = rooms.lydao2.id
+  eastup = rooms.lydao3.id  }
+
+
+  room_characters "wenquan" {
+    room_id = rooms.wenquan.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/whouyuan.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "whouyuan" {
+      name = "后院"
+      description = "这里是万府的后院，院子里有一棵高大的松树，遮天蔽日。 西面有一道小门，门外是一片绿油油的菜地。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "whouyuan" {
+    room_id = rooms.whouyuan.id
+  south = rooms.dayuan.id
+  west = rooms.caidi.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/xiaoshan.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "xiaoshan" {
+      name = "小山坡"
+      description = "这里是一处小山，到处长满了过人高的长草，东面是一处 乱坟岗，听说经常闹鬼，所以没人敢去。一阵冷风刮来，吓的 你根根体毛竖起！"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaoshan" {
+    room_id = rooms.xiaoshan.id
+  southdown = rooms.houmen.id
+  eastdown = rooms.luan.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/xiaoyuan.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "xiaoyuan" {
+      name = "卉园"
+      description = "这里是一处幽静的环境所在，偶尔听到外面竹林中传来几 声清脆的鸟叫，园子里种着各式各样的珍奇花草。有绿菊，兰 花，杜鹃、牡丹……"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaoyuan" {
+    room_id = rooms.xiaoyuan.id
+  out = rooms.zizhulin1.id  }
+
+
+  room_characters "xiaoyuan" {
+    room_id = rooms.xiaoyuan.id
+    characters = [
+      { id = characters.juhua.id }    ]
+  }
+
+
+
+  room_items "xiaoyuan" {
+    room_id = rooms.xiaoyuan.id
+    items = [
+      { id = items.lvju.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/xidajie1.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "xidajie1" {
+      name = "西大街"
+      description = "这是一条宽阔的青石板街道，向东西两头延伸。这里行人 稀少，静悄悄地很是冷清。东边是一个热闹的广场。南边是荆 州府衙。北边是一座豪华大院，那就是万门万府了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xidajie1" {
+    room_id = rooms.xidajie1.id
+  east = rooms.guangchang.id
+  south = rooms.jzyamen.id
+  west = rooms.xidajie2.id
+  north = rooms.wanghouse.id  }
+
+
+  room_characters "xidajie1" {
+    room_id = rooms.xidajie1.id
+    characters = [
+      { id = characters.kid1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/xidajie2.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "xidajie2" {
+      name = "西大街"
+      description = "这是一条宽阔的青石板街道，向东西两头延伸。行人络绎 不绝，北边是当地有名的关圣庙，东边有一个热闹的广场。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xidajie2" {
+    room_id = rooms.xidajie2.id
+  east = rooms.xidajie1.id
+  west = rooms.jzximen.id
+  north = rooms.guanmiao.id
+  south = rooms.lydao1.id  }
+
+
+  room_characters "xidajie2" {
+    room_id = rooms.xidajie2.id
+    characters = [
+      { id = characters.hunhun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/xixiang.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "xixiang" {
+      name = "丫鬟卧房"
+      description = "这是丫鬟的房间。房中陈设简单，没什么东西。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xixiang" {
+    room_id = rooms.xixiang.id
+  east = rooms.houyuan.id  }
+
+
+  room_characters "xixiang" {
+    room_id = rooms.xixiang.id
+    characters = [
+      { id = characters.juyou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/xting.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "xting" {
+      name = "西厅"
+      description = "这里是万府内的西厅，房间里摆着一张桌子，以及一个书 架，书架上放着很多书籍，是万门弟子读书的地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xting" {
+    room_id = rooms.xting.id
+  east = rooms.dayuan.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/xxend.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "xxend" {
+      name = "小巷尽头"
+      description = "这是一条又深又黑的巷子，散发出一阵阵污水的味道和食 物发霉的味道，又脏又臭。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xxend" {
+    room_id = rooms.xxend.id
+  north = rooms.xxiang.id  }
+
+
+  room_characters "xxend" {
+    room_id = rooms.xxend.id
+    characters = [
+      { id = characters.qigai.id },
+      { id = characters.qigai.id },
+      { id = characters.dipi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/xxiang.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "xxiang" {
+      name = "小巷"
+      description = "这是一条又深又黑的巷子，散发出一阵阵污水的味道和食 物发霉的味道，又脏又臭。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xxiang" {
+    room_id = rooms.xxiang.id
+  south = rooms.xxend.id
+  north = rooms.dongdajie2.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/yaopu.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "yaopu" {
+      name = "药铺"
+      description = "这里是一家药铺，一股浓浓的药味让你几欲窒息，那是从 药柜上的几百个小抽屉里散发出来的。神医华陀二世坐在茶几 旁，独自喝着茶，看也不看你一眼。一名小伙计站在柜台后招 呼着顾客。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yaopu" {
+    room_id = rooms.yaopu.id
+  east = rooms.beidajie2.id  }
+
+
+  room_characters "yaopu" {
+    room_id = rooms.yaopu.id
+    characters = [
+      { id = characters.huatuo.id },
+      { id = characters.huoji.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/ymzhengting.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "ymzhengting" {
+      name = "衙门正厅"
+      description = "只见堂上东西有两根楹住，挂着一幅对联，但是你无心细 看。正墙上悬挂一个横匾，上书“明镜高悬”四个金光闪闪的 大字。知府正坐在文案后批阅文书，师爷随侍在后。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：! wizardp(me) && objectp(present("ling tuisi", environment(me))) && dir == "east"
+direction = "east"
+  message = "凌翰林挡住了你：请勿入牢房。"
+}
+
+]
+    }
+
+  room_exits "ymzhengting" {
+    room_id = rooms.ymzhengting.id
+  north = rooms.jzyamen.id
+  south = rooms.houyuan.id
+  east = rooms.jail.id  }
+
+
+  room_characters "ymzhengting" {
+    room_id = rooms.ymzhengting.id
+    characters = [
+      { id = characters.jing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/zizhulin.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "zizhulin" {
+      name = "紫竹林"
+      description = "你来到一片翠绿的紫竹林中，四周全被紫竹所包围，你仿 似迷失了方向。耳旁不时传来一阵阵悦耳的鸟叫声，不禁让人 感到心旷神怡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zizhulin" {
+    room_id = rooms.zizhulin.id
+  northup = rooms.shijie.id
+  south = rooms.zizhulin1.id  }
+
+
+  room_characters "zizhulin" {
+    room_id = rooms.zizhulin.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jingzhou/zizhulin1.c by LPCConverter
+# Zone: jingzhou
+
+    rooms "zizhulin1" {
+      name = "紫竹林"
+      description = "你眼前突然一遍光明，你来到了一座有许多紫竹搭成的花 园(yuan)面前，里面飘出阵阵花香，四周紫竹环抱，说不出的 诗情画意。隐约看到里面种有些花卉。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ yuan = "这里看来是一处种花的好地方，可隐约看到里面种有许许多多 的花卉，由许多的紫竹搭建而成。"
+}
+    }
+
+  room_exits "zizhulin1" {
+    room_id = rooms.zizhulin1.id
+  north = rooms.zizhulin.id
+  in = rooms.xiaoyuan.id  }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/bing.c by LPCConverter
+# Zone: jingzhou
+
+    characters "bing" {
+      name = "官兵"
+      description = "虽然官兵的武艺不能和武林人士相比，可是他们讲究的是人多力量大。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    dex = 16
+    str = 24
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "blade" level = 40 },
+    { skill = "force" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.junfu.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/boy.c by LPCConverter
+# Zone: jingzhou
+
+    characters "boy" {
+      name = "男孩"
+      description = "这是个城里的少年。"
+  gender = "男性"
+  age = 13
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100
+    con = 15
+    dex = 16
+    int = 17
+    str = 17
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/dingdian.c by LPCConverter
+# Zone: jingzhou
+
+    characters "dingdian" {
+      name = "丁典"
+      description = "这人满脸虬髯，头发长长的直垂至颈，衣衫破烂不堪，简直如同荒山中的野人。"
+  gender = "男性"
+  age = 35
+  shen_type = 1
+
+  combat = {
+    combat_exp = 600000
+    max_neili = 2000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 120 },
+    { skill = "dodge" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "feiyan-zoubi" level = 120 },
+    { skill = "shenzhaojing" level = 120 },
+    { type = "force" skill = "shenzhaojing" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "unarmed" skill = "shenzhaojing" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "item_id" id = "lv juhua" accept = true msg = ["我已经托人把书带给霜华了，不劳您大驾了。", "这本书就是我练功打坐用的《神照经》，你拿去带给霜华吧。", "{name}递给{npc}一本书。"] },
+    { kind = "any" accept = false msg = ["我已经托人把书带给霜华了，不劳您大驾了。", "这本书就是我练功打坐用的《神照经》，你拿去带给霜华吧。", "{name}递给{npc}一本书。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/girl.c by LPCConverter
+# Zone: jingzhou
+
+    characters "girl" {
+      name = "女孩"
+      description = "这是个农家少女，虽然只有十二、三岁，身材已经开始发育。"
+  gender = "女性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 70
+    con = 16
+    dex = 15
+    int = 15
+    str = 14
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/guanjia.c by LPCConverter
+# Zone: jingzhou
+
+    characters "guanjia" {
+      name = "管家"
+      description = ""
+  gender = "男性"
+  age = 65
+
+  combat = {
+    combat_exp = 7500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 35 },
+    { skill = "force" level = 35 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/huatuo.c by LPCConverter
+# Zone: jingzhou
+
+    characters "huatuo" {
+      name = "华陀二世"
+      description = "他就是医术高超的华陀后裔。可是他性格古怪，不是什么人都医的。"
+  title = "药铺老板"
+  gender = "男性"
+  age = 65
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 500000
+    int = 30
+    max_jing = 1000
+    max_qi = 1000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.mbook5.id },
+    { id = items.mbook5.id },
+    { id = items.mbook5.id },
+    { id = items.mbook6.id },
+    { id = items.mbook6.id },
+    { id = items.mbook6.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/huoji.c by LPCConverter
+# Zone: jingzhou
+
+    characters "huoji" {
+      name = "药铺伙计"
+      description = "他是华神医从乡下招来帮忙的。"
+  gender = "男性"
+  age = 18
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 250
+    str = 20
+  }
+
+  # vendor_goods: "/d/beijing/obj/yao3" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/juyou.c by LPCConverter
+# Zone: jingzhou
+
+    characters "juyou" {
+      name = "菊友"
+      description = "她是一个长得很好看的小姑娘，正在忙着浇一盆菊花。"
+  title = "丫鬟"
+  gender = "女性"
+  age = 15
+  shen_type = 1
+
+  combat = {
+    combat_exp = 3000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 },
+    { skill = "parry" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.pink_cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "item_id" id = "ye juhua" accept = true msg = ["想必你也没见过绿菊花罢。我家小姐闺房后面种了有，你可以去看看。", "{name}递给{npc}一把钥匙。"] },
+    { kind = "any" accept = false msg = ["想必你也没见过绿菊花罢。我家小姐闺房后面种了有，你可以去看看。", "{name}递给{npc}一把钥匙。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/kid.c by LPCConverter
+# Zone: jingzhou
+
+    characters "kid" {
+      name = "小孩"
+      description = "这是个农家小孩子"
+  gender = "男性"
+  age = 6
+  shen_type = 0
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/qian.c by LPCConverter
+# Zone: jingzhou
+
+    characters "qian" {
+      name = "钱得发"
+      description = ""
+  title = "钱庄老板"
+  gender = "男性"
+  age = 34
+  shen_type = 1
+  brain = brains.banker
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    con = 18
+    dex = 18
+    int = 24
+    max_jing = 100
+    max_qi = 500
+    str = 22
+  }
+
+  chat_chance = 2
+chats = [
+    "钱得发骄傲的说道：本银号已经有上百年的历史，在江南可以说是第一家。",
+    "钱得发笑着说道：在本店存钱无利息，客官您看着办吧。 钱得发微微一笑，说道：本店还办理不同面额货币的兑换业务。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["check", "chazhang", "convert", "duihuan", "deposit", "cun", "withdraw", "qu"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/shuanghua.c by LPCConverter
+# Zone: jingzhou
+
+    characters "shuanghua" {
+      name = "凌霜华"
+      description = "她长得清秀脱俗，真是人淡如菊。"
+  gender = "女性"
+  age = 18
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2000
+  }
+
+  inquiries = [
+    { key = "丁典" value = "(: ask_me :)" },
+    { key = "丁大哥" value = "(: ask_me :)" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.necklace.id },
+    { id = items.pink_cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  engage = {
+    kill = { accept = true retaliate = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/smith.c by LPCConverter
+# Zone: jingzhou
+
+    characters "smith" {
+      name = "铁匠"
+      description = "铁匠正用铁钳夹住一块红热的铁块放进炉中。"
+  title = "铁匠铺老板"
+  gender = "男性"
+  age = 33
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 400
+  }
+
+  # vendor_goods: "/d/jingzhou/obj/changjian" (file not found)
+  # vendor_goods: "/d/jingzhou/obj/gangdao" (file not found)
+  # vendor_goods: "/d/jingzhou/obj/armor" (file not found)
+  # vendor_goods: "/d/jingzhou/obj/beixin" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/wan.c by LPCConverter
+# Zone: jingzhou
+
+    characters "wan" {
+      name = "万震山"
+      description = "他就是万震山，荆州万门的老大。"
+  title = "万门大当家"
+  gender = "男性"
+  age = 50
+  shen_type = 0
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 35000
+    dex = 28
+    max_neili = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "force" level = 50 },
+    { skill = "sword" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/xiaoxiang.c by LPCConverter
+# Zone: jingzhou
+
+    characters "xiaoxiang" {
+      name = "萧湘子"
+      description = "萧湘先生被称为当世第二大文学家，肚子里的墨水比海还要深。"
+  gender = "男性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    combat_exp = 400000
+  }
+
+  chat_chance = 3
+chats = [
+    "萧湘子说道：普天之下，莫非王土；率土之滨，莫非王臣。",
+    "萧湘子说道：出家人，小过损益焉；无妄大过，未济咸困之。",
+    "萧湘子说道：大学之道，在明明德。在亲民，在止于至善。",
+    "萧湘子说道：格物致知，诚意正心，修身齐家，治国平天下。"
+]
+
+
+  skills = [
+    { skill = "literate" level = 300 },
+    { skill = "taoism" level = 300 },
+    { skill = "unarmed" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 80 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/yayi.c by LPCConverter
+# Zone: jingzhou
+
+    characters "yayi" {
+      name = "衙役"
+      description = "一个高大威猛的汉子，因为久在官府做事，脸上已经磨炼得毫无表情。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    combat_exp = 7500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "dodge" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.yayifu.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/obj/baozi.c by LPCConverter
+# Zone: jingzhou
+
+    characters "baozi" {
+      name = "包子"
+      description = "一个香喷喷的肉包子。"
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/obj/cloth.c by LPCConverter
+# Zone: jingzhou
+
+    characters "cloth" {
+      name = "布衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/obj/gangdao.c by LPCConverter
+# Zone: jingzhou
+
+    characters "gangdao" {
+      name = "钢刀"
+      description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/obj/gangjian.c by LPCConverter
+# Zone: jingzhou
+
+    characters "gangjian" {
+      name = "钢剑"
+      description = "这是一柄精工制成的钢剑，这种剑在将领之间非常流行。"
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/obj/gfkey.c by LPCConverter
+# Zone: jingzhou
+
+    characters "gfkey" {
+      name = "闺房钥匙"
+      description = "这是一把很普通的钥匙。"
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/obj/jitui.c by LPCConverter
+# Zone: jingzhou
+
+    characters "jitui" {
+      name = "烤鸡腿"
+      description = "一枝烤得香喷喷的鸡腿。"
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/obj/jiudai.c by LPCConverter
+# Zone: jingzhou
+
+    characters "jiudai" {
+      name = "牛皮酒袋"
+      description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/obj/juhua.c by LPCConverter
+# Zone: jingzhou
+
+    characters "juhua" {
+      name = "野菊花"
+      description = "一朵平平常常的野菊花，香味淡淡的。"
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/obj/juhua1.c by LPCConverter
+# Zone: jingzhou
+
+    characters "juhua1" {
+      name = "绿菊花"
+      description = "一盆淡绿的菊花，叫做“春水碧波”。"
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/obj/junfu.c by LPCConverter
+# Zone: jingzhou
+
+    characters "junfu" {
+      name = "军服"
+      description = "这是一件有点旧的官兵服。"
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/obj/necklace.c by LPCConverter
+# Zone: jingzhou
+
+    characters "necklace" {
+      name = "金项链"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/obj/pink_cloth.c by LPCConverter
+# Zone: jingzhou
+
+    characters "pink_cloth" {
+      name = "NPC"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/npc/obj/yayifu.c by LPCConverter
+# Zone: jingzhou
+
+    characters "yayifu" {
+      name = "衙役服"
+      description = "这是一件崭新的白棉布衙役服。"
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/armor.c by LPCConverter
+# Zone: jingzhou
+
+    items "armor" {
+      name = "铁甲"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/beixin.c by LPCConverter
+# Zone: jingzhou
+
+    items "beixin" {
+      name = "皮背心"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/caoxie.c by LPCConverter
+# Zone: jingzhou
+
+    items "caoxie" {
+      name = "草鞋"
+      description = "这是一双草编的草鞋，用以保护足部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/changjian.c by LPCConverter
+# Zone: jingzhou
+
+    items "changjian" {
+      name = "长剑"
+      description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/cycle.c by LPCConverter
+# Zone: jingzhou
+
+    items "cycle" {
+      name = "武者项圈"
+      description = "这是一串铁质的项链，用以保护颈部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/dagger.c by LPCConverter
+# Zone: jingzhou
+
+    items "dagger" {
+      name = "普通匕首"
+      description = "这是一把普通的小匕首。用来暗算别人比较合适。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从兜里掏出一把{name}握在手中。"
+    unwield = "{npc}将手中的{name}放会兜里。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/duanjian.c by LPCConverter
+# Zone: jingzhou
+
+    items "duanjian" {
+      name = "短剑"
+      description = "这是一柄剑身短小的精钢剑，一般的剑客都配带此剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/fake-zi.c by LPCConverter
+# Zone: jingzhou
+
+    items "fake_zi" {
+      name = "菩提子"
+      description = "这是一颗晶莹如玉的菩提子，采自灵山佛祖座前，珍稀无比， 乃万年菩提树之实，功能化百劫，渡千灾，与天地同寿。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/flower_shoe.c by LPCConverter
+# Zone: jingzhou
+
+    items "flower_shoe" {
+      name = "绣花小鞋"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/goldarmor.c by LPCConverter
+# Zone: jingzhou
+
+    items "goldarmor" {
+      name = "黄金甲"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/goupi.c by LPCConverter
+# Zone: jingzhou
+
+    items "goupi" {
+      name = "狗皮"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/gourou.c by LPCConverter
+# Zone: jingzhou
+
+    items "gourou" {
+      name = "红烧狗肉"
+      description = "一碗香喷喷的红烧狗肉"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/guiyuan.c by LPCConverter
+# Zone: jingzhou
+
+    items "guiyuan" {
+      name = "归元丹"
+      description = "这是一颗莹白溜圆的归元丹。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/hammer.c by LPCConverter
+# Zone: jingzhou
+
+    items "hammer" {
+      name = "铁锤"
+      description = "这是一把沈重的铁锤，打造的相当坚实。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一把{name}，试了试重量，然後握在手中。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/hdjiudai.c by LPCConverter
+# Zone: jingzhou
+
+    items "hdjiudai" {
+      name = "花雕酒袋"
+      description = "一个用来装高级花雕酒的大酒袋。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/huwan.c by LPCConverter
+# Zone: jingzhou
+
+    items "huwan" {
+      name = "护腕"
+      description = "这是一件布质的护腕，用以保护腕部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/huyao.c by LPCConverter
+# Zone: jingzhou
+
+    items "huyao" {
+      name = "护腰"
+      description = "这是一条皮质的护腰，用以保护腰部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/jiaohuaji.c by LPCConverter
+# Zone: jingzhou
+
+    items "jiaohuaji" {
+      name = "叫化鸡"
+      description = "一只烤得香喷喷的叫化鸡"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/jinchuang.c by LPCConverter
+# Zone: jingzhou
+
+    items "jinchuang" {
+      name = "金创药"
+      description = "这是一包武林人士必备的金创药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/kaoya.c by LPCConverter
+# Zone: jingzhou
+
+    items "kaoya" {
+      name = "烤鸭"
+      description = "一只肥得流油的北京烤鸭。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/lvju.c by LPCConverter
+# Zone: jingzhou
+
+    items "lvju" {
+      name = "绿菊"
+      description = "这是一盆品种珍贵的绿菊花。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/mabudai.c by LPCConverter
+# Zone: jingzhou
+
+    items "mabudai" {
+      name = "麻布袋"
+      description = "一只用麻布织成的袋子，好像可以装东西。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/mian.c by LPCConverter
+# Zone: jingzhou
+
+    items "mian" {
+      name = "面"
+      description = "一碗热气腾腾的面条。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/mianju.c by LPCConverter
+# Zone: jingzhou
+
+    items "mianju" {
+      name = "面具"
+      description = "这似乎是一个由人皮制成的面具。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/peanut.c by LPCConverter
+# Zone: jingzhou
+
+    items "peanut" {
+      name = "五香花生"
+      description = "一碟香喷喷的花生米。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/pixue.c by LPCConverter
+# Zone: jingzhou
+
+    items "pixue" {
+      name = "皮靴"
+      description = "这是一双用上好牛皮作的皮靴，据说由上海进口。用以保护足部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/shanshen.c by LPCConverter
+# Zone: jingzhou
+
+    items "shanshen" {
+      name = "老山叁"
+      description = "这是一株沾满山泥的长白老山叁。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/shield.c by LPCConverter
+# Zone: jingzhou
+
+    items "shield" {
+      name = "牛皮盾"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/shoutao.c by LPCConverter
+# Zone: jingzhou
+
+    items "shoutao" {
+      name = "皮手套"
+      description = "这是一双皮手套，上面有硬物刻勒的痕迹。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/shouwu.c by LPCConverter
+# Zone: jingzhou
+
+    items "shouwu" {
+      name = "何首乌"
+      description = "这是一棵初具人形的何首乌。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/silverarmor.c by LPCConverter
+# Zone: jingzhou
+
+    items "silverarmor" {
+      name = "亮银甲"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/surcoat.c by LPCConverter
+# Zone: jingzhou
+
+    items "surcoat" {
+      name = "肚带"
+      description = "这是一件皮质的肚带，用以保护腹部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/tiejia.c by LPCConverter
+# Zone: jingzhou
+
+    items "tiejia" {
+      name = "铁甲"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/tieshou.c by LPCConverter
+# Zone: jingzhou
+
+    items "tieshou" {
+      name = "铁手掌"
+      description = "这是一块铁质的手掌形护具，用以保护手掌。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/tofu.c by LPCConverter
+# Zone: jingzhou
+
+    items "tofu" {
+      name = "翡翠豆腐"
+      description = "一块水灵灵的大豆腐，嫩的令人不禁想到阿庆嫂的脸蛋儿。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/toukui.c by LPCConverter
+# Zone: jingzhou
+
+    items "toukui" {
+      name = "头盔"
+      description = "这是一顶铁质的肚带，用以保护头部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/xblade.c by LPCConverter
+# Zone: jingzhou
+
+    items "xblade" {
+      name = "血刀"
+      description = "这是一把缠在腰间的宝刀，刀锋带着淡淡的血影。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回刀鞘。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/xuedao-jing.c by LPCConverter
+# Zone: jingzhou
+
+    items "xuedao_jing" {
+      name = "【血刀刀谱】"
+      description = "封面上写著 【血刀刀谱】，还画着一些奇形怪状的倒立人形。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/yangjing.c by LPCConverter
+# Zone: jingzhou
+
+    items "yangjing" {
+      name = "养精丹"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/yangxin.c by LPCConverter
+# Zone: jingzhou
+
+    items "yangxin" {
+      name = "养心丸"
+      description = "这是一颗暗红发亮的养心丸。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/yaoshi.c by LPCConverter
+# Zone: jingzhou
+
+    items "yaoshi" {
+      name = "牢房钥匙"
+      description = "这是一把很普通的钥匙。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/zaisheng.c by LPCConverter
+# Zone: jingzhou
+
+    items "zaisheng" {
+      name = "再生丸"
+      description = "这是一颗洁白如玉的再生丸。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/zhitao.c by LPCConverter
+# Zone: jingzhou
+
+    items "zhitao" {
+      name = "指套"
+      description = "这是五个环环相链的铁指套，前端锋利如刃，既可暗藏掌中伤人，又可保护指关节。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/zhubang.c by LPCConverter
+# Zone: jingzhou
+
+    items "zhubang" {
+      name = "竹棒"
+      description = "这是一根发黄的竹棒，入手沉甸甸的，似乎相当结实。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+    }
