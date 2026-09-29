@@ -1,0 +1,1740 @@
+zones "guiyun" {
+  name = "guiyun"
+}
+
+# Generated from C:/files/git/mud/d/guiyun/chufang.c by LPCConverter
+# Zone: guiyun
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "这里是归云庄厨房，一个乡下妇人正在灶边忙来忙去，看 来她就是这里的厨娘了。你可以找厨娘要(serve)些吃的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+  south = rooms.huayuan.id  }
+
+# Generated from C:/files/git/mud/d/guiyun/damen.c by LPCConverter
+# Zone: guiyun
+
+    rooms "damen" {
+      name = "大门"
+      description = "面前是一座庄院，门楼不甚高大，青砖绿瓦，灰色底的匾上写 着『归云庄』三个大黑字。牌匾较为陈旧，边角处的漆皮已剥落， 露出暗黄色的木质。看来挂在那已不下二十个春秋了。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(!myfam || myfam["family_name"] != "桃花岛") && !me->query_temp("marks/guiyun") && dir == "in" && objectp(present("jia ding", environment(me)))
+direction = "in"
+  message = "家丁做了个揖，说道：尊驾与敝庄素无往来，庄主不见外客，还是请回吧。"
+}
+
+]
+    }
+
+  room_exits "damen" {
+    room_id = rooms.damen.id
+  in = rooms.qianyuan.id
+  south = rooms.matou.id  }
+
+
+  room_characters "damen" {
+    room_id = rooms.damen.id
+    characters = [
+      { id = characters.jiading.id },
+      { id = characters.jiading.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guiyun/dating.c by LPCConverter
+# Zone: guiyun
+
+    rooms "dating" {
+      name = "大厅"
+      description = "这是归云庄的正厅，由于修建年代久远，看起来已颇为陈旧， 但打扫得十分干净，光线也较为充足，完全没有陈年旧宅的阴晦之 气。四壁挂着一些古人书画精品，皆为上乘之作，显得主人眼光不 凡，胸中大有丘壑。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dating" {
+    room_id = rooms.dating.id
+  north = rooms.huating.id
+  south = rooms.qianyuan.id
+  east = rooms.shufang.id  }
+
+
+  room_characters "dating" {
+    room_id = rooms.dating.id
+    characters = [
+      { id = characters.kezhene.id },
+      { id = characters.zhucong.id },
+      { id = characters.hanbaoju.id },
+      { id = characters.nanxiren.id },
+      { id = characters.zhangasheng.id },
+      { id = characters.quanjinfa.id },
+      { id = characters.hanxiaoyin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guiyun/duchuan.c by LPCConverter
+# Zone: guiyun
+
+    rooms "duchuan" {
+      name = "渡船"
+      description = "离岸渐远，四望空阔，真是莫知天地之在湖海，抑或是湖海之 在天地。老梢公在船尾悠闲地划着水。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/huating.c by LPCConverter
+# Zone: guiyun
+
+    rooms "huating" {
+      name = "花厅"
+      description = "这是一间四方型的厅亭，没有牌匾，正面两方木柱，柱上挂了 幅缺了半阙的『诗词』(poem)。厅内摆设了几张桌椅。一个丫环正 在抹拭桌面。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ poem = "┌--┐             ┌--┐       │兵│             │  │       │火│             │  │       │有│             │  │       │馀│             │  │       │烬│             │  │       │贫│             │  │       │村│             │  │       │才│             │  │       │数│             │  │       │家│             │  │       └--┘             └--┘"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(!myfam || myfam["family_name"] != "桃花岛") && (dir == "east" || dir == "west") 
+direction = "east"
+  message = "归云庄不留外客，你不能住在这里！"
+}
+,
+{
+   # 阻挡条件（原样保留）：me->query("gender") != "男性" && dir == "east"
+direction = "east"
+  message = "男女有别，请到对面住！"
+}
+,
+{
+   # 阻挡条件（原样保留）：me->query("gender") != "女性" && dir == "west"
+direction = "west"
+  message = "男女有别，请到对面住！"
+}
+
+]
+    }
+
+  room_exits "huating" {
+    room_id = rooms.huating.id
+  north = rooms.huayuan.id
+  south = rooms.dating.id
+  east = rooms.nanxiangfang.id
+  west = rooms.nvxiangfang.id  }
+
+
+  room_characters "huating" {
+    room_id = rooms.huating.id
+    characters = [
+      { id = characters.xiaolan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guiyun/huayuan.c by LPCConverter
+# Zone: guiyun
+
+    rooms "huayuan" {
+      name = "花园"
+      description = "这是一处典型的江南园林，规模虽不大，构造得却颇为精致， 想必当年建园之人很费了一番心力。园中花气袭人，莺啼燕舞，柳 条随风，绿波荡漾，只待得片刻便令人如沐春风，流连忘返。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(!myfam || myfam["family_name"] != "桃花岛") && (dir == "east") 
+direction = "east"
+  message = "归云庄不留外客，你不能往那里走！"
+}
+
+]
+    }
+
+  room_exits "huayuan" {
+    room_id = rooms.huayuan.id
+  north = rooms.chufang.id
+  south = rooms.huating.id
+  east = rooms.liangong.id  }
+
+
+  room_characters "huayuan" {
+    room_id = rooms.huayuan.id
+    characters = [
+      { id = characters.xiaoju.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guiyun/jinship.c by LPCConverter
+# Zone: guiyun
+
+    rooms "jinship" {
+      name = "金国战船"
+      description = "这里是大金国钦使的战船，船中旗杆上分明扯着旗号，飞扬跋 扈已极。船舱内汉奸们一脸媚笑，金兵一个个都趾高气扬。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jinship" {
+    room_id = rooms.jinship.id
+  out = rooms.ship.id  }
+
+
+  room_characters "jinship" {
+    room_id = rooms.jinship.id
+    characters = [
+      { id = characters.peng.id },
+      { id = characters.sha.id },
+      { id = characters.liang.id },
+      { id = characters.hou.id },
+      { id = characters.ma.id },
+      { id = characters.qian.id },
+      { id = characters.shen.id },
+      { id = characters.wu.id },
+      { id = characters.duantiande.id },
+      { id = characters.wanyankang.id },
+      { id = characters.wanyanhonglie.id },
+      { id = characters.jinbing.id }    ]
+  }
+
+
+
+  room_items "jinship" {
+    room_id = rooms.jinship.id
+    items = [
+      { id = items.ouyangfeng.id },
+      { id = items.ouyangke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guiyun/liangong.c by LPCConverter
+# Zone: guiyun
+
+    rooms "liangong" {
+      name = "练功房"
+      description = "这里是归云庄陆少庄主的练功房。由与陆少庄主乃少林旁支仙 霞派出身，所以房中布置尽是为习练外门硬功之用，竖立着不少木 桩和草靶。西边角上还有两个大沙坑，天花板上吊着一支大沙袋。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liangong" {
+    room_id = rooms.liangong.id
+  west = rooms.huayuan.id  }
+
+# Generated from C:/files/git/mud/d/guiyun/matou.c by LPCConverter
+# Zone: guiyun
+
+    rooms "matou" {
+      name = "码头"
+      description = "这是一个在江南水乡极常见的码头，由粗糙的大青条石搭成。 北面似乎有一个极大的庄院。靠岸停有一艘大渔船(ship)，大篷斜 挂，风帆大张，看那样子不是为了出湖，倒象是征战用的。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ ship = "这是太湖水盗劫富济贫的战船。上去(shang ship)就出发。"
+}
+    }
+
+  room_exits "matou" {
+    room_id = rooms.matou.id
+  north = rooms.damen.id  }
+
+# Generated from C:/files/git/mud/d/guiyun/nanxiangfang.c by LPCConverter
+# Zone: guiyun
+
+    rooms "nanxiangfang" {
+      name = "男厢房"
+      description = "这里是归云庄男弟子的休息室，摆着几张木床。床旁都有一支 高脚架子，用来挂衣物。西首一扇小窗。外面是花园。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nanxiangfang" {
+    room_id = rooms.nanxiangfang.id
+  west = rooms.huating.id  }
+
+# Generated from C:/files/git/mud/d/guiyun/nanxun.c by LPCConverter
+# Zone: guiyun
+
+    rooms "nanxun" {
+      name = "南浔镇"
+      description = "湖州府自来文风甚盛，历代才士辈出，梁时将中国字分为平上去 入四声的沈约，元代书画皆臻极品的赵孟兆都是湖州人氏。当地又以 产笔著名，湖州之笔，徽州之墨，宣城之纸，肇庆端溪之砚，文房四 宝，天下驰名。南浔镇虽是湖州府的一个镇，却比寻常州县还大，镇 上富户极多，著名的富室大族之中有一家姓庄。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nanxun" {
+    room_id = rooms.nanxun.id
+  north = rooms.yixing.id  }
+
+# Generated from C:/files/git/mud/d/guiyun/nvxiangfang.c by LPCConverter
+# Zone: guiyun
+
+    rooms "nvxiangfang" {
+      name = "女厢房"
+      description = "这里是归云庄女弟子的休息室，摆着几张木床。床旁都有一支高脚 架子，用来挂衣物。屋角一张几凳，放了一盆兰花，散着淡淡幽香。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nvxiangfang" {
+    room_id = rooms.nvxiangfang.id
+  east = rooms.huating.id  }
+
+# Generated from C:/files/git/mud/d/guiyun/qianyuan.c by LPCConverter
+# Zone: guiyun
+
+    rooms "qianyuan" {
+      name = "前院"
+      description = "这里是归云庄的前院，相当宽敞。左右靠墙各建有几间低 矮的平房，像是家人的住处。正前方几棵树木，湖中清风吹来 落叶萧萧而下。右首有一对白雕(diao)，毛羽如雪。原来这里 是桃花岛为方便弟子回岛的。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ diao = "这一对白雕正展翅欲飞。如果是桃花岛的弟子，骑上(ride)就 可以飞到桃花岛，非常便利。"
+}
+    }
+
+  room_exits "qianyuan" {
+    room_id = rooms.qianyuan.id
+  out = rooms.damen.id
+  north = rooms.dating.id  }
+
+# Generated from C:/files/git/mud/d/guiyun/shanlu1.c by LPCConverter
+# Zone: guiyun
+
+    rooms "shanlu1" {
+      name = "山路"
+      description = "这里是一片农田。不远处有一些村庄，炊烟袅袅升起。村庄周围 是一块块的田地，田里有一些正在耕作的农人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu1" {
+    room_id = rooms.shanlu1.id
+  north = rooms.shulin4.id
+  south = rooms.taihu.id
+  northeast = rooms.shanlu2.id  }
+
+
+  room_characters "shanlu1" {
+    room_id = rooms.shanlu1.id
+    characters = [
+      { id = characters.poorman.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guiyun/shanlu2.c by LPCConverter
+# Zone: guiyun
+
+    rooms "shanlu2" {
+      name = "山路"
+      description = "这里是一片农田。不远处有一些村庄，炊烟袅袅升起。村庄周围 是一块块的田地，田里有一些正在耕作的农人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu2" {
+    room_id = rooms.shanlu2.id
+  southwest = rooms.shanlu1.id
+  southeast = rooms.road1.id  }
+
+# Generated from C:/files/git/mud/d/guiyun/ship.c by LPCConverter
+# Zone: guiyun
+
+    rooms "ship" {
+      name = "战船"
+      description = "这是一艘大渔船，船上的人白天打鱼，晚上就干些没本钱的买 卖，接济沿湖的百姓。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_characters "ship" {
+    room_id = rooms.ship.id
+    characters = [
+      { id = characters.haojie.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guiyun/shufang.c by LPCConverter
+# Zone: guiyun
+
+    rooms "shufang" {
+      name = "书房"
+      description = "这是陆庄主的书房，琳琅满目，全是诗书典籍，几上桌上摆着 许多铜器玉器，看来尽是古物，壁上挂着一幅水墨画，画的是个中 年书生在月明之夜中庭伫立，手按剑柄，仰天长吁，神情寂寞，左 上角题着一首『词』(poem)。门楣上歪歪斜斜嵌着一个铁八卦，看 起来和房间不太相衬。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ poem = "昨夜寒蛩不住鸣。惊回千里梦，巳三更。 起来独自绕阶行。人悄悄，帘外月胧明。  白首为功名。旧山松竹老，阻归程。 欲将心事付瑶琴，知音少，弦断有谁听？                  五湖废人病中涂鸦"
+}
+    }
+
+  room_exits "shufang" {
+    room_id = rooms.shufang.id
+  west = rooms.dating.id  }
+
+
+  room_characters "shufang" {
+    room_id = rooms.shufang.id
+    characters = [
+      { id = characters.shutong.id }    ]
+  }
+
+
+
+  room_items "shufang" {
+    room_id = rooms.shufang.id
+    items = [
+      { id = items.lu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guiyun/shulin1.c by LPCConverter
+# Zone: guiyun
+
+    rooms "shulin1" {
+      name = "树林"
+      description = "树林里光线暗淡，只能听见头顶上传来一些鸟儿的啼鸣。偶而从 茂密的叶间透过的一线光伴着落叶在飞舞。朽木腐烂的气味和身後传 来野兽的啸声使人不觉犹豫了前进的脚步。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin1" {
+    room_id = rooms.shulin1.id
+  southeast = rooms.shulin2.id
+  northwest = rooms.jiaowai4.id  }
+
+# Generated from C:/files/git/mud/d/guiyun/shulin2.c by LPCConverter
+# Zone: guiyun
+
+    rooms "shulin2" {
+      name = "树林"
+      description = "树林里光线暗淡，只能听见头顶上传来一些鸟儿的啼鸣。偶而从 茂密的叶间透过的一线光伴着落叶在飞舞。朽木腐烂的气味和身後传 来野兽的啸声使人不觉犹豫了前进的脚步。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin2" {
+    room_id = rooms.shulin2.id
+  southeast = rooms.shulin3.id
+  northwest = rooms.shulin1.id
+  west = rooms.shulin5.id  }
+
+
+  room_characters "shulin2" {
+    room_id = rooms.shulin2.id
+    characters = [
+      { id = characters.gaosan.id },
+      { id = characters.fengliang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guiyun/shulin3.c by LPCConverter
+# Zone: guiyun
+
+    rooms "shulin3" {
+      name = "树林"
+      description = "树林里光线暗淡，只能听见头顶上传来一些鸟儿的啼鸣。偶而从 茂密的叶间透过的一线光伴着落叶在飞舞。朽木腐烂的气味和身後传 来野兽的啸声使人不觉犹豫了前进的脚步。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin3" {
+    room_id = rooms.shulin3.id
+  east = rooms.shulin4.id
+  northwest = rooms.shulin2.id  }
+
+
+  room_characters "shulin3" {
+    room_id = rooms.shulin3.id
+    characters = [
+      { id = characters.fanyifei.id },
+      { id = characters.luzhengping.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guiyun/shulin4.c by LPCConverter
+# Zone: guiyun
+
+    rooms "shulin4" {
+      name = "树林"
+      description = "树林里光线暗淡，只能听见头顶上传来一些鸟儿的啼鸣。偶而从 茂密的叶间透过的一线光伴着落叶在飞舞。朽木腐烂的气味和身後传 来野兽的啸声使人不觉犹豫了前进的脚步。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin4" {
+    room_id = rooms.shulin4.id
+  south = rooms.shanlu1.id
+  west = rooms.shulin3.id  }
+
+
+  room_characters "shulin4" {
+    room_id = rooms.shulin4.id
+    characters = [
+      { id = characters.dabei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guiyun/shulin5.c by LPCConverter
+# Zone: guiyun
+
+    rooms "shulin5" {
+      name = "树林"
+      description = "树林里光线暗淡，只能听见头顶上传来一些鸟儿的啼鸣。偶而从 茂密的叶间透过的一线光伴着落叶在飞舞。朽木腐烂的气味和身後传 来野兽的啸声使人不觉犹豫了前进的脚步。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin5" {
+    room_id = rooms.shulin5.id
+  southwest = rooms.tiandi.id
+  east = rooms.shulin2.id  }
+
+# Generated from C:/files/git/mud/d/guiyun/taihu.c by LPCConverter
+# Zone: guiyun
+
+    rooms "taihu" {
+      name = "太湖"
+      description = "太湖古称五湖，襟带三州，周行五百里，东南之水皆归于此。 其时但见长天无波，放眼皆碧，七十二峰苍翠挺立于三万六千顷波 涛之中，不觉令人心怀大畅。由此登船可前往太湖之中的归云庄。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "taihu" {
+    room_id = rooms.taihu.id
+  north = rooms.shanlu1.id  }
+
+
+  room_characters "taihu" {
+    room_id = rooms.taihu.id
+    characters = [
+      { id = characters.xiaolu.id },
+      { id = characters.seller.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guiyun/tiandi.c by LPCConverter
+# Zone: guiyun
+
+    rooms "tiandi" {
+      name = "田地"
+      description = "这里是一片农田。不远处有一些村庄，炊烟袅袅升起。村 庄周围是一块块的田地，很有次序的排成一个个井字，田里有 些正在耕作的农人，过路人贪近路也可从田间穿过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tiandi" {
+    room_id = rooms.tiandi.id
+  northeast = rooms.shulin5.id
+  west = rooms.yixing.id  }
+
+
+
+
+  room_items "tiandi" {
+    room_id = rooms.tiandi.id
+    items = [
+      { id = items.niao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guiyun/yixing.c by LPCConverter
+# Zone: guiyun
+
+    rooms "yixing" {
+      name = "宜兴"
+      description = "这儿便是天下闻名的陶都，青山绿水之间掩映着一堆堆紫砂陶坯， 另有一番景色。向东行，不远处就是太湖边。南方便是湖州府了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yixing" {
+    room_id = rooms.yixing.id
+  east = rooms.tiandi.id
+  south = rooms.nanxun.id
+  northwest = rooms.wdroad2.id  }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/dabei.c by LPCConverter
+# Zone: guiyun
+
+    characters "dabei" {
+      name = "大悲老人"
+      description = "他是个红面老者，白发拂胸，甚是雄伟。"
+  title = "白鲸岛岛主"
+  gender = "男性"
+  age = 70
+  shen_type = 1
+  score = 500000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 3000
+    max_neili = 3800
+    max_qi = 3500
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 220 },
+    { skill = "luohan-fumogong" level = 220 },
+    { skill = "dodge" level = 200 },
+    { skill = "feiyan-zoubi" level = 200 },
+    { skill = "strike" level = 220 },
+    { skill = "dabei-zhang" level = 220 },
+    { skill = "parry" level = 220 },
+    { skill = "martial-cognize" level = 240 },
+    { type = "force" skill = "luohan-fumogong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "strike" skill = "dabei-zhang" },
+    { type = "parry" skill = "dabei-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.18niou.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/duantiande.c by LPCConverter
+# Zone: guiyun
+
+    characters "duantiande" {
+      name = "段天德"
+      description = "他是大宋临安兵马指挥使。"
+  title = "大宋兵马指挥使"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    combat_exp = 4000
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.junfu.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/fanyifei.c by LPCConverter
+# Zone: guiyun
+
+    characters "fanyifei" {
+      name = "范一飞"
+      description = "他是一个矮瘦的老者，一张黑脸。腰里插着判官 笔，人称‘辽东鹤’。"
+  title = "鹤笔门掌门人"
+  gender = "男性"
+  age = 51
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 30
+    int = 25
+    max_jing = 200
+    max_neili = 1000
+    max_qi = 1000
+    str = 15
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "dagger" level = 50 },
+    { skill = "shigu-bifa" level = 50 },
+    { skill = "lingxu-bu" level = 50 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "shigu-bifa" },
+    { type = "dagger" skill = "shigu-bifa" }
+  ]
+
+
+  carry = [
+    { id = items.panguan_bi.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/fengliang.c by LPCConverter
+# Zone: guiyun
+
+    characters "fengliang" {
+      name = "风良"
+      description = "他是个高大的中年汉子，腰里缠九节鞭。"
+  title = "青龙门掌门人"
+  gender = "男性"
+  age = 41
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 30
+    int = 25
+    max_jing = 200
+    max_neili = 1000
+    max_qi = 1000
+    str = 15
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "whip" level = 50 },
+    { skill = "riyue-bian" level = 50 },
+    { skill = "lingxu-bu" level = 50 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "riyue-bian" },
+    { type = "whip" skill = "riyue-bian" }
+  ]
+
+
+  carry = [
+    { id = items.jiujiebian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/gaosan.c by LPCConverter
+# Zone: guiyun
+
+    characters "gaosan" {
+      name = "高三娘子"
+      description = "这女子颇有几分姿色，两幅罗裙外面系着绣花鸾带。 腰间整整齐齐插着两排短刀。"
+  title = "万马庄女庄主"
+  gender = "女性"
+  age = 31
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 30
+    int = 25
+    max_jing = 200
+    max_neili = 1000
+    max_qi = 1000
+    str = 15
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "throwing" level = 50 },
+    { skill = "feixing-shu" level = 50 },
+    { skill = "lingxu-bu" level = 50 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "feixing-shu" },
+    { type = "throwing" skill = "feixing-shu" }
+  ]
+
+
+  carry = [
+    { id = items.shortblade.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/hanbaoju.c by LPCConverter
+# Zone: guiyun
+
+    characters "hanbaoju" {
+      name = "韩宝驹"
+      description = "他是个又矮又胖的猥琐汉子，犹如一个大肉团一般。他手短足短， 没有脖子，一个头大的出奇，却又缩在双肩之中。一个酒糟鼻又 大又圆，就如一只红柿子旒在脸上。"
+  title = "江南七侠"
+  nickname = "马王神"
+  gender = "男性"
+  age = 35
+  shen_type = 1
+  score = 6000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 300000
+    con = 28
+    dex = 28
+    int = 28
+    max_jing = 500
+    max_neili = 1200
+    max_qi = 1200
+    str = 28
+  }
+
+  inquiries = [
+    { key = "丘处机" value = "丘道长豪侠仗义，是条汉子！" },
+    { key = "全金发" value = "那是我六弟。" },
+    { key = "南希仁" value = "那是我四弟。" },
+    { key = "张阿生" value = "那是我五弟。" },
+    { key = "朱聪" value = "那是我二哥。" },
+    { key = "柯镇恶" value = "那是我大哥。" },
+    { key = "江南七侠" value = "七侠可不敢当，我们七兄妹江湖上有个匪号叫江南七怪！" },
+    { key = "江南七怪" value = "七怪也是你叫的？！" },
+    { key = "郭靖" value = "靖儿是我们的乖徒儿！" },
+    { key = "韩宝驹" value = "就是我了。" },
+    { key = "韩小莹" value = "那是我七妹。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "taixuan-gong" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "lingxu-bu" level = 70 },
+    { skill = "unarmed" level = 70 },
+    { skill = "changquan" level = 70 },
+    { skill = "whip" level = 70 },
+    { skill = "riyue-bian" level = 70 },
+    { type = "force" skill = "taixuan-gong" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "unarmed" skill = "changquan" },
+    { type = "whip" skill = "riyue-bian" },
+    { type = "parry" skill = "riyue-bian" }
+  ]
+
+
+  carry = [
+    { id = items.changbian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/hanxiaoyin.c by LPCConverter
+# Zone: guiyun
+
+    characters "hanxiaoyin" {
+      name = "韩小莹"
+      description = "她大约十八九岁年纪，身形苗条，大眼睛，皮肤如雪，露出一 头乌云般的秀发。正是江南水乡的人物。"
+  title = "江南七侠"
+  nickname = "越女剑"
+  gender = "女性"
+  age = 18
+  shen_type = 1
+  score = 6000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 200000
+    con = 28
+    dex = 28
+    int = 28
+    max_jing = 500
+    max_neili = 1000
+    max_qi = 1000
+    str = 28
+  }
+
+  inquiries = [
+    { key = "丘处机" value = "丘道长豪侠仗义，是条汉子！" },
+    { key = "全金发" value = "那是我六哥。" },
+    { key = "南希仁" value = "那是我四哥。" },
+    { key = "张阿生" value = "那是我五哥。" },
+    { key = "朱聪" value = "那是我二哥。" },
+    { key = "柯镇恶" value = "那是我大哥。" },
+    { key = "江南七侠" value = "七侠可不敢当，我们七兄妹江湖上有个匪号叫江南七怪！" },
+    { key = "江南七怪" value = "七怪也是你叫的？！" },
+    { key = "郭靖" value = "靖儿是我们的乖徒儿！" },
+    { key = "韩宝驹" value = "那是我三哥。" },
+    { key = "韩小莹" value = "就是我了。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 60 },
+    { skill = "taixuan-gong" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "lingxu-bu" level = 60 },
+    { skill = "unarmed" level = 60 },
+    { skill = "changquan" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "yunu-sword" level = 60 },
+    { type = "force" skill = "taixuan-gong" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "unarmed" skill = "changquan" },
+    { type = "sword" skill = "yunu-sword" },
+    { type = "parry" skill = "yunu-sword" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/haojie.c by LPCConverter
+# Zone: guiyun
+
+    characters "haojie" {
+      name = "太湖豪杰"
+      description = "这是归云庄属下的在太湖劫富济贫的太湖豪杰。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    combat_exp = 100000
+  }
+
+  skills = [
+    { skill = "dodge" level = 50 },
+    { skill = "lingxu-bu" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "changquan" level = 50 },
+    { type = "unarmed" skill = "changquan" },
+    { type = "parry" skill = "changquan" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/jiading.c by LPCConverter
+# Zone: guiyun
+
+    characters "jiading" {
+      name = "家丁"
+      description = "归云庄家丁。"
+  gender = "男性"
+  age = 35
+  shen_type = 1
+
+  combat = {
+    combat_exp = 40000
+  }
+
+  skills = [
+    { skill = "dodge" level = 50 },
+    { skill = "unarmed" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "item_id" id = "guiyun shuxin" accept = true msg = ["家丁说道：原来是少庄主的朋友，快快请进。"] },
+    { kind = "any" accept = false msg = ["家丁说道：原来是少庄主的朋友，快快请进。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/jinbing.c by LPCConverter
+# Zone: guiyun
+
+    characters "jinbing" {
+      name = "大金兵"
+      description = "那些大汉个个虎背熊腰，甚是剽健。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    combat_exp = 40000
+  }
+
+  skills = [
+    { skill = "dodge" level = 50 },
+    { skill = "unarmed" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/kezhene.c by LPCConverter
+# Zone: guiyun
+
+    characters "kezhene" {
+      name = "柯镇恶"
+      description = "他是一个衣衫褴褛的瞎子，右手握着一根粗大的铁杖。只见他 尖嘴削腮，脸色灰扑扑地，颇有凶恶之态。"
+  title = "江南七侠"
+  nickname = "飞天蝙蝠"
+  gender = "男性"
+  age = 44
+  shen_type = 1
+  score = 6000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 400000
+    con = 28
+    dex = 28
+    int = 28
+    max_jing = 500
+    max_neili = 1500
+    max_qi = 1500
+    str = 28
+  }
+
+  inquiries = [
+    { key = "丘处机" value = "丘道长豪侠仗义，是条汉子！" },
+    { key = "全金发" value = "那是我六弟。" },
+    { key = "南希仁" value = "那是我四弟。" },
+    { key = "张阿生" value = "那是我五弟。" },
+    { key = "朱聪" value = "那是我二弟。" },
+    { key = "柯镇恶" value = "就是瞎子我，你要怎的？！" },
+    { key = "梅超风" value = "这个铁尸害死我大哥，此仇一定要报。" },
+    { key = "江南七侠" value = "七侠可不敢当，我们七兄妹江湖上有个匪号叫江南七怪！" },
+    { key = "江南七怪" value = "七怪也是你叫的？！" },
+    { key = "郭靖" value = "靖儿是我们的乖徒儿！" },
+    { key = "韩宝驹" value = "那是我三弟。" },
+    { key = "韩小莹" value = "那是我七妹。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "taixuan-gong" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "staff" level = 80 },
+    { skill = "juemen-gun" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "feixing-shu" level = 80 },
+    { type = "force" skill = "taixuan-gong" },
+    { type = "unarmed" skill = "changquan" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "staff" skill = "juemen-gun" },
+    { type = "parry" skill = "juemen-gun" },
+    { type = "blade" skill = "feixing-shu" }
+  ]
+
+
+  carry = [
+    { id = items.gangzhang.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/luzhengping.c by LPCConverter
+# Zone: guiyun
+
+    characters "luzhengping" {
+      name = "吕正平"
+      description = "只见他一张国字方脸，腮上一部虬髯，将大半张脸都遮没了。"
+  title = "快刀门掌门人"
+  gender = "男性"
+  age = 41
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 30
+    int = 25
+    max_jing = 200
+    max_neili = 1000
+    max_qi = 1000
+    str = 15
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "blade" level = 50 },
+    { skill = "kuangfeng-blade" level = 50 },
+    { skill = "lingxu-bu" level = 50 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "kuangfeng-blade" },
+    { type = "blade" skill = "kuangfeng-blade" }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/nanxiren.c by LPCConverter
+# Zone: guiyun
+
+    characters "nanxiren" {
+      name = "南希仁"
+      description = "他是个挑柴模样的汉子，三十岁上下年纪，一身青布衣裤，腰里 束了根粗草绳，足穿草鞋，粗手大脚，神请木讷。"
+  title = "江南七侠"
+  nickname = "南山樵子"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+  score = 6000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 300000
+    con = 28
+    dex = 28
+    int = 28
+    max_jing = 500
+    max_neili = 1200
+    max_qi = 1200
+    str = 28
+  }
+
+  inquiries = [
+    { key = "丘处机" value = "丘道长豪侠仗义，是条汉子！" },
+    { key = "全金发" value = "那是我六弟。" },
+    { key = "南希仁" value = "就是我了。" },
+    { key = "张阿生" value = "那是我五弟。" },
+    { key = "朱聪" value = "那是我二哥。" },
+    { key = "柯镇恶" value = "那是我大哥。" },
+    { key = "江南七侠" value = "七侠可不敢当，我们七兄妹江湖上有个匪号叫江南七怪！" },
+    { key = "江南七怪" value = "七怪也是你叫的？！" },
+    { key = "郭靖" value = "靖儿是我们的乖徒儿！" },
+    { key = "韩宝驹" value = "那是我三哥。" },
+    { key = "韩小莹" value = "那是我七妹。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "taixuan-gong" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "lingxu-bu" level = 70 },
+    { skill = "unarmed" level = 70 },
+    { skill = "changquan" level = 70 },
+    { skill = "staff" level = 70 },
+    { skill = "juemen-gun" level = 70 },
+    { skill = "axe" level = 70 },
+    { skill = "duanyun-fu" level = 70 },
+    { type = "force" skill = "taixuan-gong" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "unarmed" skill = "changquan" },
+    { type = "staff" skill = "juemen-gun" },
+    { type = "parry" skill = "juemen-gun" },
+    { type = "axe" skill = "duanyun-fu" }
+  ]
+
+
+  carry = [
+    { id = items.biandan.id },
+    { id = items.axe.id },
+    { id = items.green_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/qiuqianzhang.c by LPCConverter
+# Zone: guiyun
+
+    characters "qiuqianzhang" {
+      name = "裘千丈"
+      description = "他有个弟弟叫裘千仞，他还有个妹妹叫裘千尺。他自己，虽然比弟弟 多了三千尺，比妹妹更是多了九千尺，手上的功夫呢却比他们稀松至 少九万尺。"
+  nickname = "肉掌水底钻"
+  gender = "男性"
+  age = 65
+
+  combat = {
+    combat_exp = 50000
+  }
+
+  skills = [
+    { skill = "dodge" level = 50 },
+    { skill = "lingxu-bu" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "changquan" level = 50 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/quanjinfa.c by LPCConverter
+# Zone: guiyun
+
+    characters "quanjinfa" {
+      name = "全金发"
+      description = "那人五短身材，头戴小毡帽，白净面皮，手里提了一杆秤，一 个竹篓，似是个小商贩。"
+  title = "江南七侠"
+  nickname = "闹市侠隐"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+  score = 6000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 250000
+    con = 28
+    dex = 28
+    int = 28
+    max_jing = 500
+    max_neili = 1200
+    max_qi = 1200
+    str = 28
+  }
+
+  inquiries = [
+    { key = "丘处机" value = "丘道长豪侠仗义，是条汉子！" },
+    { key = "全金发" value = "就是我了。" },
+    { key = "南希仁" value = "那是我四哥。" },
+    { key = "张阿生" value = "那是我五哥。" },
+    { key = "朱聪" value = "那是我二哥。" },
+    { key = "柯镇恶" value = "那是我大哥。" },
+    { key = "江南七侠" value = "七侠可不敢当，我们七兄妹江湖上有个匪号叫江南七怪！" },
+    { key = "江南七怪" value = "七怪也是你叫的？！" },
+    { key = "郭靖" value = "靖儿是我们的乖徒儿！" },
+    { key = "韩宝驹" value = "那是我三哥。" },
+    { key = "韩小莹" value = "那是我七妹。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 65 },
+    { skill = "taixuan-gong" level = 65 },
+    { skill = "dodge" level = 65 },
+    { skill = "lingxu-bu" level = 65 },
+    { skill = "unarmed" level = 65 },
+    { skill = "changquan" level = 65 },
+    { skill = "club" level = 65 },
+    { skill = "zhongping-qiang" level = 65 },
+    { type = "force" skill = "taixuan-gong" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "unarmed" skill = "changquan" },
+    { type = "club" skill = "zhongping-qiang" },
+    { type = "parry" skill = "zhongping-qiang" }
+  ]
+
+
+  carry = [
+    { id = items.gancheng.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/seller.c by LPCConverter
+# Zone: guiyun
+
+    characters "seller" {
+      name = "小贩"
+      description = "这是个小贩，别看他长的老老实实，可你 别想从他那儿掏便宜。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 32
+  brain = brains.vendor
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  # vendor_goods: "/d/village/npc/obj/shoes" (file not found)
+  # vendor_goods: "/d/village/npc/obj/bottle" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/shutong.c by LPCConverter
+# Zone: guiyun
+
+    characters "shutong" {
+      name = "书童"
+      description = "他是庄主的随身书童，平素看管藏书。"
+  gender = "男性"
+  age = 35
+
+  combat = {
+    combat_exp = 10000
+  }
+
+  skills = [
+    { skill = "dodge" level = 50 },
+    { skill = "unarmed" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/wanyanhonglie.c by LPCConverter
+# Zone: guiyun
+
+    characters "wanyanhonglie" {
+      name = "完颜洪烈"
+      description = ""
+  title = "大金国赵王爷"
+  gender = "男性"
+  age = 48
+  score = 10000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 30000
+    con = 25
+    dex = 26
+    int = 25
+    max_jing = 200
+    max_neili = 300
+    max_qi = 300
+    str = 26
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "changquan" level = 40 },
+    { type = "unarmed" skill = "changquan" },
+    { type = "parry" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.male1_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/wanyankang.c by LPCConverter
+# Zone: guiyun
+
+    characters "wanyankang" {
+      name = "完颜康"
+      description = "他本名杨康。随母包惜弱嫁完颜洪烈后，成了小王子， 贪图富贵，至死不改。"
+  title = "大金国小王爷"
+  gender = "男性"
+  age = 24
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 160000
+    con = 25
+    dex = 26
+    int = 25
+    max_jing = 400
+    max_neili = 1000
+    max_qi = 500
+    str = 26
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "quanzhen-xinfa" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "quanzhen-jian" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "jinyan-gong" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "strike" level = 80 },
+    { skill = "haotian-zhang" level = 80 },
+    { skill = "claw" level = 80 },
+    { skill = "jiuyin-baiguzhao" level = 80 },
+    { skill = "literate" level = 100 },
+    { skill = "taoism" level = 20 },
+    { type = "force" skill = "quanzhen-xinfa" },
+    { type = "sword" skill = "quanzhen-jian" },
+    { type = "dodge" skill = "jinyan-gong" },
+    { type = "parry" skill = "quanzhen-jian" },
+    { type = "strike" skill = "haotian-zhang" },
+    { type = "claw" skill = "jiuyin-baiguzhao" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.male1_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/xiaoju.c by LPCConverter
+# Zone: guiyun
+
+    characters "xiaoju" {
+      name = "小菊"
+      description = "一个模样乖巧的小丫环，瓜子脸，肤色白晰。细看时，嘴角有一颗小痣。"
+  gender = "女性"
+  age = 15
+  shen_type = 1
+
+  combat = {
+    combat_exp = 1000
+  }
+
+  skills = [
+    { skill = "dodge" level = 10 },
+    { skill = "unarmed" level = 10 }
+  ]
+
+
+  carry = [
+    { id = items.red_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/xiaolan.c by LPCConverter
+# Zone: guiyun
+
+    characters "xiaolan" {
+      name = "小兰"
+      description = "一个模样乖巧的小丫环，扎两个发环，眼睛大大的，嘴角浅浅一对酒窝。"
+  gender = "女性"
+  age = 15
+  shen_type = 1
+
+  combat = {
+    combat_exp = 1000
+  }
+
+  skills = [
+    { skill = "dodge" level = 10 },
+    { skill = "unarmed" level = 10 }
+  ]
+
+
+  carry = [
+    { id = items.red_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/xiaolu.c by LPCConverter
+# Zone: guiyun
+
+    characters "xiaolu" {
+      name = "陆冠英"
+      description = "他是归云庄少庄主陆冠英。他肩宽背阔，躯体甚是壮健， 但行动之间温文尔雅，谦恭有礼，一派世家子弟风范。 传闻他就是太湖群盗的首领，不知是真是假。"
+  title = "归云庄少庄主"
+  gender = "男性"
+  age = 21
+  shen_type = 1
+  score = 6000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 150000
+    con = 28
+    dex = 28
+    int = 28
+    max_jing = 500
+    max_neili = 1000
+    max_qi = 600
+    str = 28
+  }
+
+  inquiries = [
+    { key = "归云庄" value = "(: ask_me :)" }
+  ]
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "hunyuan-yiqi" level = 50 },
+    { skill = "dodge" level = 80 },
+    { skill = "shaolin-shenfa" level = 50 },
+    { skill = "strike" level = 50 },
+    { skill = "banruo-zhang" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "blade" level = 50 },
+    { skill = "cibei-dao" level = 50 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "strike" skill = "banruo-zhang" },
+    { type = "parry" skill = "cibei-dao" },
+    { type = "blade" skill = "cibei-dao" }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["decide"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/zhangasheng.c by LPCConverter
+# Zone: guiyun
+
+    characters "zhangasheng" {
+      name = "张阿生"
+      description = "一人身材魁梧，少说也有二百五六十斤，围着一条长围裙，全 身油腻，敞开衣襟，露出毛茸茸的胸膛，袖子卷得高高的，手 臂上全是寸许长的黑毛，腰间皮带上别着柄尺来长的尖刀，瞧 模样是个杀猪宰羊的屠夫。"
+  title = "江南七侠"
+  nickname = "笑弥陀"
+  gender = "男性"
+  age = 28
+  shen_type = 1
+  score = 6000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 250000
+    con = 28
+    dex = 28
+    int = 28
+    max_jing = 500
+    max_neili = 1200
+    max_qi = 1200
+    str = 28
+  }
+
+  inquiries = [
+    { key = "丘处机" value = "丘道长豪侠仗义，是条汉子！" },
+    { key = "全金发" value = "那是我六弟。" },
+    { key = "南希仁" value = "那是我四哥。" },
+    { key = "张阿生" value = "就是我了。" },
+    { key = "朱聪" value = "那是我二哥。" },
+    { key = "柯镇恶" value = "那是我大哥。" },
+    { key = "江南七侠" value = "七侠可不敢当，我们七兄妹江湖上有个匪号叫江南七怪！" },
+    { key = "江南七怪" value = "七怪也是你叫的？！" },
+    { key = "郭靖" value = "靖儿是我们的乖徒儿！" },
+    { key = "韩宝驹" value = "那是我三哥。" },
+    { key = "韩小莹" value = "那是我七妹。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 65 },
+    { skill = "taixuan-gong" level = 65 },
+    { skill = "dodge" level = 65 },
+    { skill = "lingxu-bu" level = 65 },
+    { skill = "unarmed" level = 65 },
+    { skill = "changquan" level = 65 },
+    { skill = "blade" level = 65 },
+    { skill = "hujia-daofa" level = 65 },
+    { type = "force" skill = "taixuan-gong" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "unarmed" skill = "changquan" },
+    { type = "blade" skill = "hujia-daofa" },
+    { type = "parry" skill = "hujia-daofa" }
+  ]
+
+
+  carry = [
+    { id = items.jiandao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/zhucong.c by LPCConverter
+# Zone: guiyun
+
+    characters "zhucong" {
+      name = "朱聪"
+      description = "他看起来象一个中年士人，拖着鞋皮，踢踏踢踏的直响，一路打 着哈欠。似笑非笑，挤眉弄眼，一副惫懒神气，全身油腻，衣冠 不整，满脸污垢，看来少说也有十多天没洗脸了，拿着一柄破烂 的油纸黑扇，边摇边行。突听干笑数声，声音甚是刺耳。"
+  title = "江南七侠"
+  nickname = "妙手书生"
+  gender = "男性"
+  age = 38
+  shen_type = 1
+  score = 6000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 350000
+    con = 28
+    dex = 28
+    int = 28
+    max_jing = 500
+    max_neili = 1200
+    max_qi = 1200
+    str = 28
+  }
+
+  inquiries = [
+    { key = "丘处机" value = "丘道长豪侠仗义，是条汉子！" },
+    { key = "全金发" value = "那是我六弟。" },
+    { key = "南希仁" value = "那是我四弟。" },
+    { key = "张阿生" value = "那是我五弟。" },
+    { key = "朱聪" value = "就是我了。" },
+    { key = "柯镇恶" value = "那是我大哥。" },
+    { key = "江南七侠" value = "七侠可不敢当，我们七兄妹江湖上有个匪号叫江南七怪！" },
+    { key = "江南七怪" value = "七怪也是你叫的？！" },
+    { key = "郭靖" value = "靖儿是我们的乖徒儿！" },
+    { key = "韩宝驹" value = "那是我三弟。" },
+    { key = "韩小莹" value = "那是我七妹。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 75 },
+    { skill = "taixuan-gong" level = 75 },
+    { skill = "dodge" level = 75 },
+    { skill = "lingxu-bu" level = 75 },
+    { skill = "unarmed" level = 75 },
+    { skill = "changquan" level = 75 },
+    { skill = "dagger" level = 75 },
+    { skill = "shigu-bifa" level = 75 },
+    { skill = "parry" level = 75 },
+    { skill = "stealing" level = 75 },
+    { type = "force" skill = "taixuan-gong" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "dagger" skill = "shigu-bifa" },
+    { type = "parry" skill = "shigu-bifa" }
+  ]
+
+
+  carry = [
+    { id = items.zheshan.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/axe.c by LPCConverter
+# Zone: guiyun
+
+    characters "axe" {
+      name = "砍柴斧"
+      description = "一柄砍柴用的短斧，斧刃上有几个缺口。"
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/biandan.c by LPCConverter
+# Zone: guiyun
+
+    characters "biandan" {
+      name = "熟铁扁担"
+      description = "通身黑油油地，中间微弯，两头各有一个突起的鞘子。"
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/gancheng.c by LPCConverter
+# Zone: guiyun
+
+    characters "gancheng" {
+      name = "杆秤"
+      description = "一杆闹市货物常用的杆秤。"
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/green_cloth.c by LPCConverter
+# Zone: guiyun
+
+    characters "green_cloth" {
+      name = "青布衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/jiandao.c by LPCConverter
+# Zone: guiyun
+
+    characters "jiandao" {
+      name = "尖刀"
+      description = "一柄杀猪刀。"
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/jiujiebian.c by LPCConverter
+# Zone: guiyun
+
+    characters "jiujiebian" {
+      name = "九节鞭"
+      description = "这是一条九节鞭，由精钢铸就而成。"
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/red_cloth.c by LPCConverter
+# Zone: guiyun
+
+    characters "red_cloth" {
+      name = "红绫袄"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/shortblade.c by LPCConverter
+# Zone: guiyun
+
+    characters "shortblade" {
+      name = "短刀"
+      description = "这是一捆飞刀。"
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/xin.c by LPCConverter
+# Zone: guiyun
+
+    characters "xin" {
+      name = "书信"
+      description = "这是一封陆冠英写的邀请进入归云庄的书信。"
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/zheshan.c by LPCConverter
+# Zone: guiyun
+
+    characters "zheshan" {
+      name = "油纸折扇"
+      description = "这是一对用镔铁为骨的油纸折扇。"
+    }
+
+# Generated from C:/files/git/mud/d/guiyun/obj/zongzi.c by LPCConverter
+# Zone: guiyun
+
+    items "zongzi" {
+      name = "粽子"
+      description = "一个香喷喷的肉粽子，包它的粽子叶泛出一股清香。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }

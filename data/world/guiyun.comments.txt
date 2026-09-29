@@ -1,0 +1,509 @@
+# Generated from C:/files/git/mud/d/guiyun/chufang.c by LPCConverter
+# Zone: guiyun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("family/family_name") != "桃花岛")  →  
+  # if (present("zongzi", me) || present("tea", me))  →  
+  # else  →  
+  # if (query("ricewater") > 0)  →  message_vision(CYN '厨娘连声答应，递给$N' CYN '一杯香' '茶和一个粽子。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_serve) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_serve
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/guiyun/damen.c by LPCConverter
+# Zone: guiyun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((!myfam || myfam["family_name"] != "桃花岛") && !me->query_temp("marks/guiyun") && dir == "in" && objectp(present("jia ding", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/guiyun/huating.c by LPCConverter
+# Zone: guiyun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((!myfam || myfam["family_name"] != "桃花岛") && (dir == "east" || dir == "west") )  →  
+  # if (me->query("gender") != "男性" && dir == "east")  →  
+  # if (me->query("gender") != "女性" && dir == "west")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/guiyun/huayuan.c by LPCConverter
+# Zone: guiyun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((!myfam || myfam["family_name"] != "桃花岛") && (dir == "east") )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/guiyun/matou.c by LPCConverter
+# Zone: guiyun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: reset
+  # reset: object room; ::reset(); if (room = find_object(__DIR__"duchuan")) room->delete("yell_trigger");
+# ==== RAW CODE BLOCKS ====
+  # if (! (ship = find_object("/d/guiyun/ship")))  →  
+  # if (!( jinship = find_object("/d/guiyun/jinship")))  →  
+# ==== CONDITIONAL BRANCHES (rjinbing) ====
+  # if (! arg || arg != "ship")  →  tell_object(this_player() , '你要 enter 哪儿？\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_shang) ====
+  # if (room = find_object(__DIR__"duchuan"))  →  
+# ==== CONDITIONAL BRANCHES (reset) ====
+  # if (me->query_skill("dodge") < 100)  →  tell_object(me, random(2) ? '你觉得湖面太宽，没有十足的把握跃过去。\\\\\n' : '你看着浩瀚的太湖，心里不禁打了个突，没敢乱来。\\\\\n');
+  # if (me->query("neili") < 100)  →  tell_object(me, '你的内力不够，还是休息一下再说吧。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_cross) ====
+  # if (! arg || arg == "")  →  
+  # if (arg == "boat")  →  
+  # else  →  
+  # else if ((int)this_player()->query("neili") > 500)  →  
+  # if ((int)this_player()->query("age") < 16)  →  
+  # else  →  
+  # if (arg == "船家")  →  
+# ==== CONDITIONAL BRANCHES (do_yell) ====
+  # if (room = find_object(__DIR__"duchuan"))  →  
+# ==== CONDITIONAL BRANCHES (close_passage) ====
+  # if (room = find_object(__DIR__"duchuan"))  →  
+# ==== CONDITIONAL BRANCHES (arrive) ====
+  # if (! query("exits/enter"))  →  
+  # if (room = find_object(__DIR__"duchuan"))  →  
+# ==== CONDITIONAL BRANCHES (on_board) ====
+  # else  →  
+  # if (! query("exits/enter"))  →  
+# ==== CONDITIONAL BRANCHES (check_trigger) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: do_yell
+  # UNHANDLED FUNCTION: arrive
+  # UNHANDLED FUNCTION: do_shang
+  # UNHANDLED FUNCTION: do_cross
+  # UNHANDLED FUNCTION: rjinbing
+  # UNHANDLED FUNCTION: check_trigger
+  # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: on_board
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/guiyun/qianyuan.c by LPCConverter
+# Zone: guiyun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg != "diao" )  →  
+  # if ((int)query("sb_ride"))  →  
+  # if (ob->query("family/family_name") != "桃花岛")  →  message_vision(HIW '\\\\\n$N' HIW '一跃身跨上了白雕。只见白雕' '仰天长唳，突然猛然一颠……\\\\\n' HIR '结果$N' HIR '摔了个鼻青脸肿，看来白雕对$N' HIR '并' '不太感兴趣。\\\\\n' NOR, ob);
+# ==== CONDITIONAL BRANCHES (do_ride) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_ride
+  # UNHANDLED FUNCTION: taohua
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/guiyun/taihu.c by LPCConverter
+# Zone: guiyun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: reset
+  # reset: object room; ::reset(); if (room = find_object(__DIR__"duchuan")) room->delete("yell_trigger");
+# ==== RAW CODE BLOCKS ====
+  # if (room = find_object(__DIR__"duchuan"))  →  
+# ==== CONDITIONAL BRANCHES (reset) ====
+  # if (me->query_skill("dodge") < 100)  →  tell_object(me, random(2) ? '你觉得湖面太宽，没有十足的把握跃过去。\\\\\n' : '你看着浩瀚的太湖，心里不禁打了个突，没敢乱来。\\\\\n');
+  # if (me->query("neili") < 100)  →  tell_object(me, '你的内力不够，还是休息一下再说吧。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_cross) ====
+  # if (! arg || arg == "")  →  
+  # if (arg == "boat")  →  
+  # else  →  
+  # else if ((int)this_player()->query("neili") > 500)  →  
+  # if ((int)this_player()->query("age") < 16)  →  
+  # else  →  
+  # if (arg == "船家")  →  
+# ==== CONDITIONAL BRANCHES (do_yell) ====
+  # if (room = find_object(__DIR__"duchuan"))  →  
+# ==== CONDITIONAL BRANCHES (close_passage) ====
+  # if (room = find_object(__DIR__"duchuan"))  →  
+# ==== CONDITIONAL BRANCHES (arrive) ====
+  # if (! query("exits/enter"))  →  
+  # if (room = find_object(__DIR__"duchuan"))  →  
+# ==== CONDITIONAL BRANCHES (on_board) ====
+  # else  →  
+  # if (! query("exits/enter"))  →  
+# ==== CONDITIONAL BRANCHES (check_trigger) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: do_yell
+  # UNHANDLED FUNCTION: arrive
+  # UNHANDLED FUNCTION: do_cross
+  # UNHANDLED FUNCTION: check_trigger
+  # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: on_board
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/guiyun/npc/dabei.c by LPCConverter
+# Zone: guiyun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("eff_qi") > me->query("max_qi") * 2 / 3 ||! objectp(present("18 niou", me)))  →  
+# ==== CONDITIONAL BRANCHES (check_body) ====
+  # if (random(2) == 1)  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: check_body
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/guiyun/npc/fanyifei.c by LPCConverter
+# Zone: guiyun
+
+# inherit F_UNIQUE;
+
+# Generated from C:/files/git/mud/d/guiyun/npc/fengliang.c by LPCConverter
+# Zone: guiyun
+
+# inherit F_UNIQUE;
+
+# Generated from C:/files/git/mud/d/guiyun/npc/gaosan.c by LPCConverter
+# Zone: guiyun
+
+# inherit F_UNIQUE;
+
+# Generated from C:/files/git/mud/d/guiyun/npc/hanbaoju.c by LPCConverter
+# Zone: guiyun
+
+# inherit F_MASTER;
+
+# Generated from C:/files/git/mud/d/guiyun/npc/hanxiaoyin.c by LPCConverter
+# Zone: guiyun
+
+# inherit F_MASTER;
+
+
+
+# Generated from C:/files/git/mud/d/guiyun/npc/jiading.c by LPCConverter
+# Zone: guiyun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((string)ob->query("id")=="guiyun shuxin")  →  command('bow '+this_player()->query('id')); write('家丁说道：' + RANK_D->query_respect(ob) + '原来是少庄主的朋友，快快请进。\\\\\n');
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/guiyun/npc/kezhene.c by LPCConverter
+# Zone: guiyun
+
+# inherit F_MASTER;
+
+# Generated from C:/files/git/mud/d/guiyun/npc/luzhengping.c by LPCConverter
+# Zone: guiyun
+
+# inherit F_UNIQUE;
+
+# Generated from C:/files/git/mud/d/guiyun/npc/nanxiren.c by LPCConverter
+# Zone: guiyun
+
+# inherit F_MASTER;
+
+
+
+# Generated from C:/files/git/mud/d/guiyun/npc/quanjinfa.c by LPCConverter
+# Zone: guiyun
+
+# inherit F_MASTER;
+
+# Generated from C:/files/git/mud/d/guiyun/npc/seller.c by LPCConverter
+# Zone: guiyun
+
+# inherit F_VENDOR;
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/guiyun/npc/xiaolu.c by LPCConverter
+# Zone: guiyun
+
+# inherit F_MASTER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!me->query_temp("guiyun/decide"))  →  message_vision('$N对$n奇怪地说道：你要决定干嘛？\\\\\n', this_object(), me);
+# ==== CONDITIONAL BRANCHES (do_decide) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_decide
+  # UNHANDLED FUNCTION: ask_me
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/guiyun/npc/zhangasheng.c by LPCConverter
+# Zone: guiyun
+
+# inherit F_MASTER;
+
+# Generated from C:/files/git/mud/d/guiyun/npc/zhucong.c by LPCConverter
+# Zone: guiyun
+
+# inherit F_MASTER;
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/axe.c by LPCConverter
+# Zone: guiyun
+
+# inherit AXE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/biandan.c by LPCConverter
+# Zone: guiyun
+
+# inherit STAFF;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/gancheng.c by LPCConverter
+# Zone: guiyun
+
+# inherit CLUB;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/green_cloth.c by LPCConverter
+# Zone: guiyun
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/jiandao.c by LPCConverter
+# Zone: guiyun
+
+# inherit BLADE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/jiujiebian.c by LPCConverter
+# Zone: guiyun
+
+# inherit WHIP;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/red_cloth.c by LPCConverter
+# Zone: guiyun
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/shortblade.c by LPCConverter
+# Zone: guiyun
+
+# inherit THROWING;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/xin.c by LPCConverter
+# Zone: guiyun
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/guiyun/npc/obj/zheshan.c by LPCConverter
+# Zone: guiyun
+
+# inherit DAGGER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/guiyun/obj/zongzi.c by LPCConverter
+# Zone: guiyun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
