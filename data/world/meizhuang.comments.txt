@@ -23,8 +23,8 @@
   # if (arg == "floor")  →  write('地上的木板现在已经拉开了。\\\\\n'); message_vision('$N拉起地上的木板，发现下面是空的。\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (do_open) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_open
   # UNHANDLED FUNCTION: close_path
+  # UNHANDLED FUNCTION: do_open
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -256,8 +256,8 @@
   # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "sword")  →  command('say 你不拿剑我还和你比什么？');
 # ==== CONDITIONAL BRANCHES (ask_bijian) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: ask_bijian
   # UNHANDLED FUNCTION: do_accept
+  # UNHANDLED FUNCTION: ask_bijian
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

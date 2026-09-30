@@ -173,12 +173,12 @@
   # if (random(10) > 5)  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_climb
-  # UNHANDLED FUNCTION: do_fire
-  # UNHANDLED FUNCTION: precreate
-  # UNHANDLED FUNCTION: do_use
-  # UNHANDLED FUNCTION: recreate
   # UNHANDLED FUNCTION: do_insert
+  # UNHANDLED FUNCTION: do_use
+  # UNHANDLED FUNCTION: precreate
+  # UNHANDLED FUNCTION: recreate
+  # UNHANDLED FUNCTION: do_fire
+  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -198,8 +198,8 @@
   # if (query("exits/down"))  →  
 # ==== CONDITIONAL BRANCHES (do_move) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_move
   # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_move
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -246,8 +246,8 @@
   # if (query("not_tongpai"))  →  
 # ==== CONDITIONAL BRANCHES (do_search) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_search
   # UNHANDLED FUNCTION: regenerate
+  # UNHANDLED FUNCTION: do_search
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -392,8 +392,8 @@
   # if ( query("mishi_book") == 1 && me->query("can_learn/qianzhu-wandushou") )  →  message_vision(HIC '$P' HIC '打开石匣，发现内有一束绢' '册，连忙取了出来。\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_open) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_think
   # UNHANDLED FUNCTION: do_open
+  # UNHANDLED FUNCTION: do_think
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1128,12 +1128,12 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_yanjiu
-  # UNHANDLED FUNCTION: wan
   # UNHANDLED FUNCTION: suck
   # UNHANDLED FUNCTION: setup
-  # UNHANDLED FUNCTION: zhugu
+  # UNHANDLED FUNCTION: wan
   # UNHANDLED FUNCTION: do_du
+  # UNHANDLED FUNCTION: zhugu
+  # UNHANDLED FUNCTION: do_yanjiu
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1215,8 +1215,8 @@
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
-  # UNHANDLED FUNCTION: do_read
   # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_read
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

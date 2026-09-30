@@ -27,6 +27,9 @@ zones "wudang" {
       { id = items.daotong.id }    ]
   }
 
+  # skipped unresolvable object path '"/clone/book/" + books[random(sizeof(books))]': no determinate object id
+  # skipped unresolvable object path '"/clone/book/" + books[random(sizeof(books))]': no determinate object id
+
 # Generated from C:/files/git/mud/d/wudang/caolian1.c by LPCConverter
 # Zone: wudang
 

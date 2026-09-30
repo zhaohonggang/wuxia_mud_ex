@@ -318,15 +318,15 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
-  # UNHANDLED FUNCTION: xiqu3
-  # UNHANDLED FUNCTION: xiqu1
   # UNHANDLED FUNCTION: xiqu7
+  # UNHANDLED FUNCTION: do_eat
   # UNHANDLED FUNCTION: xiqu4
   # UNHANDLED FUNCTION: xiqu6
+  # UNHANDLED FUNCTION: xiqu1
+  # UNHANDLED FUNCTION: xiqu3
+  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: xiqu5
   # UNHANDLED FUNCTION: xiqu2
-  # UNHANDLED FUNCTION: do_eat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -405,15 +405,15 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
-  # UNHANDLED FUNCTION: xiqu3
-  # UNHANDLED FUNCTION: xiqu1
   # UNHANDLED FUNCTION: xiqu7
+  # UNHANDLED FUNCTION: do_eat
   # UNHANDLED FUNCTION: xiqu4
   # UNHANDLED FUNCTION: xiqu6
+  # UNHANDLED FUNCTION: xiqu1
+  # UNHANDLED FUNCTION: xiqu3
+  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: xiqu5
   # UNHANDLED FUNCTION: xiqu2
-  # UNHANDLED FUNCTION: do_eat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

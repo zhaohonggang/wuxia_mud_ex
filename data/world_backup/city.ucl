@@ -910,8 +910,8 @@ direction = "west"
 
   room_exits "liaotian" {
     room_id = rooms.liaotian.id
-  north = rooms.kedian.id  }
-  # skipped exit east: unrecognised relative path: qiyuan/qiyuan1: no data/world zone to reference
+  north = rooms.kedian.id
+  east = rooms.qiyuan1.id  }
 
 
   room_characters "liaotian" {

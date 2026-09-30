@@ -427,6 +427,9 @@ item_desc = {
     south = rooms.backyard.id
     }
 
+
+  # skipped unresolvable object path '/* sizeof() == 1 */\n            __DIR__"npc/mu"': no determinate object id
+
 # Generated from C:/files/git/mud/d/wanjiegu/tree_hole.c by LPCConverter
 # Zone: wanjiegu
 

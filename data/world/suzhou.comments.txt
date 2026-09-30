@@ -486,7 +486,7 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: is_container
   # UNHANDLED FUNCTION: do_put
+  # UNHANDLED FUNCTION: is_container
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

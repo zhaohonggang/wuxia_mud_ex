@@ -356,6 +356,8 @@ item_desc = {
       { id = characters.guanbing.id }    ]
   }
 
+  # skipped unresolvable object path '/* sizeof() == 5 */\n             __DIR__"npc/fujiang"': no determinate object id
+
 # Generated from C:/files/git/mud/d/changan/bingying2.c by LPCConverter
 # Zone: changan
 
@@ -381,6 +383,8 @@ item_desc = {
       { id = characters.guanbing.id },
       { id = characters.guanbing.id }    ]
   }
+
+  # skipped unresolvable object path '/* sizeof() == 5 */\n             __DIR__"npc/fujiang"': no determinate object id
 
 # Generated from C:/files/git/mud/d/changan/bingying3.c by LPCConverter
 # Zone: changan
@@ -408,6 +412,8 @@ item_desc = {
       { id = characters.guanbing.id }    ]
   }
 
+  # skipped unresolvable object path '/* sizeof() == 5 */\n             __DIR__"npc/fujiang"': no determinate object id
+
 # Generated from C:/files/git/mud/d/changan/bingying4.c by LPCConverter
 # Zone: changan
 
@@ -433,6 +439,8 @@ item_desc = {
       { id = characters.guanbing.id },
       { id = characters.guanbing.id }    ]
   }
+
+  # skipped unresolvable object path '/* sizeof() == 5 */\n             __DIR__"npc/fujiang"': no determinate object id
 
 # Generated from C:/files/git/mud/d/changan/bingying5.c by LPCConverter
 # Zone: changan
@@ -460,6 +468,8 @@ item_desc = {
       { id = characters.guanbing.id }    ]
   }
 
+  # skipped unresolvable object path '/* sizeof() == 5 */\n             __DIR__"npc/fujiang"': no determinate object id
+
 # Generated from C:/files/git/mud/d/changan/bingying6.c by LPCConverter
 # Zone: changan
 
@@ -485,6 +495,8 @@ item_desc = {
       { id = characters.guanbing.id },
       { id = characters.guanbing.id }    ]
   }
+
+  # skipped unresolvable object path '/* sizeof() == 5 */\n             __DIR__"npc/fujiang"': no determinate object id
 
 # Generated from C:/files/git/mud/d/changan/bridge1.c by LPCConverter
 # Zone: changan
@@ -587,6 +599,9 @@ item_desc = {
     room_id = rooms.dangpu.id
     north = rooms.qixiang3.id
     }
+
+
+  # skipped unresolvable object path '/* sizeof() == 1 */\n            __DIR__"npc/wanxi"': no determinate object id
 
 # Generated from C:/files/git/mud/d/changan/dong-chengmen.c by LPCConverter
 # Zone: changan
@@ -1341,6 +1356,9 @@ direction = "up"
     up = rooms.kzsleep.id
     north = rooms.qixiang1.id
     }
+
+
+  # skipped unresolvable object path '/* sizeof() == 1 */\n            __DIR__"npc/xiaoer"': no determinate object id
 
 # Generated from C:/files/git/mud/d/changan/kzsleep.c by LPCConverter
 # Zone: changan

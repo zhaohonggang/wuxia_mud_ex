@@ -20,6 +20,9 @@ zones "meizhuang" {
     east = rooms.zoulang3.id
     }
 
+
+  # skipped unresolvable object path '/* sizeof() == 1 */\n            __DIR__"npc/chushi"': no determinate object id
+
 # Generated from C:/files/git/mud/d/meizhuang/dating.c by LPCConverter
 # Zone: meizhuang
 
@@ -188,6 +191,9 @@ item_desc = {
     down = rooms.mishi.id
     }
 
+
+  # skipped unresolvable object path '/* sizeof() == 1 */\n            __DIR__"obj/hongchou"': no determinate object id
+
 # Generated from C:/files/git/mud/d/meizhuang/gate.c by LPCConverter
 # Zone: meizhuang
 
@@ -338,6 +344,9 @@ item_desc = {
     out = rooms.hupan.id
     }
 
+
+  # skipped unresolvable object path '/* sizeof() == 1 */\n            "/clone/book/qunxing-tu.c"': no determinate object id
+
 # Generated from C:/files/git/mud/d/meizhuang/mishi.c by LPCConverter
 # Zone: meizhuang
 
@@ -429,6 +438,9 @@ item_desc = {
     north = rooms.zoulang1.id
     south = rooms.senlin1.id
     }
+
+
+  # skipped unresolvable object path '/* sizeof() == 1 */\n            __DIR__"npc/huyuan.c"': no determinate object id
 
 # Generated from C:/files/git/mud/d/meizhuang/qhpo.c by LPCConverter
 # Zone: meizhuang
@@ -568,6 +580,9 @@ item_desc = {
     room_id = rooms.tianjing.id
     north = rooms.dating.id
     }
+
+
+  # skipped unresolvable object path '/* sizeof() == 2 */\n            __DIR__"npc/huyuan"': no determinate object id
 
 # Generated from C:/files/git/mud/d/meizhuang/xiaodao.c by LPCConverter
 # Zone: meizhuang

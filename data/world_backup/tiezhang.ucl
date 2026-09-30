@@ -28,6 +28,8 @@ zones "tiezhang" {
       { id = items.changbian.id }    ]
   }
 
+  # skipped unresolvable object path '/* sizeof() == 4 */\n  __DIR__"obj/gangdao"': no determinate object id
+
 # Generated from C:/files/git/mud/d/tiezhang/chufang.c by LPCConverter
 # Zone: tiezhang
 
@@ -298,8 +300,8 @@ direction = ~
 
   room_exits "hunanroad1" {
     room_id = rooms.hunanroad1.id
+  east = xiangyang.rooms.caodi6.id
   southwest = rooms.hunanroad2.id  }
-  # skipped exit east: unrecognised relative path: d/xiangyang/caodi6: no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/tiezhang/hunanroad2.c by LPCConverter
 # Zone: tiezhang
@@ -694,6 +696,9 @@ item_desc = {
   north = rooms.guangchang.id
   south = rooms.shanlu_1.id  }
 
+
+  # skipped unresolvable object path '/* sizeof() == 3 */\n      __DIR__"npc/huiyi"': no determinate object id
+
 # Generated from C:/files/git/mud/d/tiezhang/shanlu-3.c by LPCConverter
 # Zone: tiezhang
 
@@ -829,6 +834,9 @@ direction = "northup"
     room_id = rooms.shanmen.id
   northup = rooms.shanlu_1.id
   southdown = rooms.shanjiao.id  }
+
+
+  # skipped unresolvable object path '/* sizeof() == 2 */\n    __DIR__"npc/heiyi"': no determinate object id
 
 # Generated from C:/files/git/mud/d/tiezhang/shijie-1.c by LPCConverter
 # Zone: tiezhang

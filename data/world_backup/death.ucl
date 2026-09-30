@@ -13,7 +13,9 @@ zones "death" {
   z = 0
     }
 
-  # skipped exit south: unrecognised relative path: heisenlin/exit: no data/world zone to reference
+  room_exits "baihuxue" {
+    room_id = rooms.baihuxue.id
+  south = rooms.exit.id  }
 
 
   room_characters "baihuxue" {
@@ -389,8 +391,8 @@ item_desc = {
   room_exits "jimiesi" {
     room_id = rooms.jimiesi.id
   east = rooms.lunhuisi_road1.id
-  west = rooms.yanluodian.id  }
-  # skipped exit north: unrecognised relative path: heisenlin/entry: no data/world zone to reference
+  west = rooms.yanluodian.id
+  north = rooms.entry.id  }
 
 # Generated from C:/files/git/mud/d/death/lunhuisi.c by LPCConverter
 # Zone: death
@@ -1038,6 +1040,8 @@ direction = ~
       { id = characters.yinchangsheng.id },
       { id = characters.wangfangping.id }    ]
   }
+
+  # skipped unresolvable object path '/* sizeof() == 2 */\n                __DIR__"npc/yanluo"': no determinate object id
 
 # Generated from C:/files/git/mud/d/death/youmingjie.c by LPCConverter
 # Zone: death

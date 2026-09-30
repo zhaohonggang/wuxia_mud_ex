@@ -183,13 +183,6 @@
   ],
   "documented": [
    {
-    "room": "liaotian",
-    "dir": "east",
-    "raw": "rooms.qiyuan1.id",
-    "kind": "dangling (no such room)",
-    "why": "comment"
-   },
-   {
     "room": "majiu",
     "dir": "up",
     "raw": "rooms.yangzhou_shop.id",
@@ -215,20 +208,6 @@
   "zone": "death",
   "lost": [],
   "documented": [
-   {
-    "room": "baihuxue",
-    "dir": "south",
-    "raw": "rooms.exit.id",
-    "kind": "dangling (no such room)",
-    "why": "comment"
-   },
-   {
-    "room": "jimiesi",
-    "dir": "north",
-    "raw": "rooms.entry.id",
-    "kind": "dangling (no such room)",
-    "why": "comment"
-   },
    {
     "room": "youmingdian",
     "ident": "characters.yanluo.id",
@@ -598,33 +577,6 @@
   "documented": []
  },
  {
-  "zone": "room",
-  "lost": [],
-  "documented": [
-   {
-    "room": "xiaoyuan",
-    "dir": "dule",
-    "raw": "rooms.xiaoyuan.id",
-    "kind": "dangling (no such room)",
-    "why": "comment"
-   },
-   {
-    "room": "xiaoyuan",
-    "dir": "caihong",
-    "raw": "rooms.xiaoyuan.id",
-    "kind": "dangling (no such room)",
-    "why": "comment"
-   },
-   {
-    "room": "xiaoyuan",
-    "dir": "panlong",
-    "raw": "rooms.dayuan.id",
-    "kind": "dangling (no such room)",
-    "why": "comment"
-   }
-  ]
- },
- {
   "zone": "shaolin",
   "lost": [
    {
@@ -735,15 +687,7 @@
     "why": "no comment"
    }
   ],
-  "documented": [
-   {
-    "room": "hunanroad1",
-    "dir": "east",
-    "raw": "rooms.caodi6.id",
-    "kind": "dangling (no such room)",
-    "why": "comment"
-   }
-  ]
+  "documented": []
  },
  {
   "zone": "xiakedao",

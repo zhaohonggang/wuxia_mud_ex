@@ -32,10 +32,10 @@ zones "room" {
 
   room_exits "xiaoyuan" {
     room_id = rooms.xiaoyuan.id
-  west = shaolin.rooms.yidao2.id  }
-  # skipped exit dule: unrecognised relative path: dule/xiaoyuan: no data/world zone to reference
-  # skipped exit caihong: unrecognised relative path: caihong/xiaoyuan: no data/world zone to reference
-  # skipped exit panlong: unrecognised relative path: panlong/dayuan: no data/world zone to reference
+  west = shaolin.rooms.yidao2.id
+  dule = rooms.xiaoyuan.id
+  caihong = rooms.xiaoyuan.id
+  panlong = rooms.dayuan.id  }
 
 
   room_characters "xiaoyuan" {

@@ -25,8 +25,8 @@
 
 | 项 | 内容 | 优先级 | 状态 |
 |----|------|--------|------|
-| **A** | 修 `_classify_exit_path` 三处分类错误 | 高 | ☐ |
-| **B** | `__FILE__` 丢弃补注释 | 低 | ☐ |
+| **A** | 修 `_classify_exit_path` 三处分类错误 | 高 | ✅ 2026-09-30 |
+| **B** | `__FILE__` 丢弃补注释 | 低 | ✅ 2026-09-30 |
 | **C** | 动态选房 103 条悬空引用策略 | 中 | ☐ 待决策 |
 | **D** | 修正八卦方向注释文案 | 低 | ☐ |
 | **E** | 2 条 LPC 源本身悬空 | — | ☐ 需决策 |
@@ -39,52 +39,52 @@
 
 ## 一、转换器缺陷修复
 
-### ☐ A. 修 `_classify_exit_path` 三处分类错误
+### [x] A. 修 `_classify_exit_path` 三处分类错误
 
 高优先级。三项同源于 `scripts/lpc_converter.py`，一起改。
 
 **A-1　`+random(n)` 的物件路径被整体丢弃（问题 13）**
 
-- [ ] `_is_dynamic_expr()` 判据从「含括号」改为「剥掉 `+ <表达式>` 后仍有可解析路径主体」
-- [ ] `random(n)` 展开为 n 个候选 id，全部写入 `room_items`
-- [ ] `shaolin/cjlou` 的 `room_items` 恢复含 `items.fojing1.id` / `items.fojing2.id`
-- [ ] `shaolin/jianyu` 同上
-- [ ] 确认加载器对同一房间多物品的处理无副作用
-- [ ] 新增 fixture 锁定该行为
+- [x] `_is_dynamic_expr()` 判据从「含括号」改为「剥掉 `+ <表达式>` 后仍有可解析路径主体」
+- [x] `random(n)` 展开为 n 个候选 id，全部写入 `room_items`
+- [x] `shaolin/cjlou` 的 `room_items` 恢复含 `items.fojing1.id` / `items.fojing2.id`
+- [x] `shaolin/jianyu` 同上
+- [x] 确认加载器对同一房间多物品的处理无副作用
+- [x] 新增 fixture 锁定该行为
 
 **A-2　同区子目录路径被误判为跨区（问题 15）**
 
-- [ ] 含 `/` 且首段非已知区名时，按本区子目录处理（取 basename）
-- [ ] `city/liaotian` 出现 `east = rooms.qiyuan1.id`
-- [ ] `room/xiaoyuan` 出现 `panlong = rooms.dayuan.id`
-- [ ] `room/xiaoyuan` 的 `dule` / `caihong` 两条能解析（注意：因三子区
+- [x] 含 `/` 且首段非已知区名时，按本区子目录处理（取 basename）
+- [x] `city/liaotian` 出现 `east = rooms.qiyuan1.id`
+- [x] `room/xiaoyuan` 出现 `panlong = rooms.dayuan.id`
+- [x] `room/xiaoyuan` 的 `dule` / `caihong` 两条能解析（注意：因三子区
       都有 `xiaoyuan.c` 拍平撞名，解析结果是自环，与改动前一致，属已知限制）
 
 **A-3　`d/<区名>/` 缺前导斜杠未被识别（问题 16）**
 
-- [ ] `_classify_exit_path()` 识别缺前导斜杠的 `d/<区名>/...`
-- [ ] `tiezhang/hunanroad1` 出现 `east = xiangyang.rooms.caodi6.id`
-- [ ] 恢复铁掌帮 ↔ 襄阳的连接
+- [x] `_classify_exit_path()` 识别缺前导斜杠的 `d/<区名>/...`
+- [x] `tiezhang/hunanroad1` 出现 `east = xiangyang.rooms.caodi6.id`
+- [x] 恢复铁掌帮 ↔ 襄阳的连接
 
 **A 的整体验证**
 
-- [ ] 71 区全部重跑 SOP
-- [ ] 71 区 `validate_ucl.py` 全 exit 0
-- [ ] 71 区 `check_room_coords.py` 全 exit 0
-- [ ] 容器内 `Elias.parse/1` 逐个解析全 exit OK
-- [ ] `mix test test/kantele/world/` 无新增失败
-- [ ] `mix test` 无新增失败
-- [ ] `test/cross_zone_wiring_test.exs` 的 15 条同名撞车边仍全绿
-- [ ] 重新生成信息丢失报告，「无注释丢失」降到 **0**
+- [x] 71 区全部重跑 SOP
+- [x] 71 区 `validate_ucl.py` 全 exit 0
+- [x] 71 区 `check_room_coords.py` 全 exit 0
+- [x] 容器内 `Elias.parse/1` 逐个解析全 exit OK
+- [x] `mix test test/kantele/world/` 无新增失败
+- [x] `mix test` 无新增失败
+- [x] `test/cross_zone_wiring_test.exs` 的 15 条同名撞车边仍全绿
+- [x] 重新生成信息丢失报告，「无注释丢失」降到 **0**
 
-### ☐ B. `__FILE__` 丢弃补注释
+### [x] B. `__FILE__` 丢弃补注释
 
 低优先级。运行时无倒退（旧的 133 条本就被加载器丢弃），只为消除静默删除。
 
-- [ ] `_resolve_exit_target()` 的 `("self", None)` 分支输出注释
-- [ ] 注释形如 `# skipped exit west: self-referential (__FILE__): ...`
-- [ ] 重跑后 133 条在产物里都有对应注释
-- [ ] 信息丢失报告中「`__FILE__` self-reference」归零
+- [x] `_resolve_exit_target()` 的 `("self", None)` 分支输出注释
+- [x] 注释形如 `# skipped exit west: self-referential (__FILE__): ...`
+- [x] 重跑后 133 条在产物里都有对应注释
+- [x] 信息丢失报告中「`__FILE__` self-reference」归零
 
 ### ☐ D. 修正八卦方向被跳过的注释文案
 
@@ -280,10 +280,10 @@ mix test test/kantele/world/
 |------|------|
 | 待办大项 | 9（A–I） |
 | 已完成问题 | 20 |
-| 未完成问题 | 5（13 / 14 / 15 / 16 / 17） |
+| 未完成问题 | 2（14 / 17） |
 | 待验收区域 | 71 |
-| 无注释丢失 | 136 |
-| 有注释的省略 | 25 |
+| 无注释丢失 | **0**（A+B 修复后） |
+| 有注释的省略 | 18 |
 | 同区悬空引用 | 103 |
 | 不可达房间 | 380 / 4441 |
 
@@ -296,4 +296,5 @@ mix test test/kantele/world/
 | 2026-09-30 | 跨区接通 | 206 条跨区引用接通；15 条静默连错修正；可达率 0 → 91.4% | `mix test` 2988/1；elias 70 文件全过 |
 | 2026-09-30 | NPC 闲聊刷屏 | `ChatChance` 冷却 500ms 切断指数发散 | `chat_runtime_test.exs` 12/12 |
 | 2026-09-30 | 测试脆弱性 | 6 处物品名模糊匹配改 id 精确匹配，顺带修好 3 个失败 | `mix test` 2988/1 |
+| 2026-09-30 | A+B 修复 | `random(n)` 展开候选（shaolin 4 件佛经恢复）、同区子目录路径恢复 4 条、`d/<区名>/` 补前导斜杠恢复铁掌帮↔襄阳；`__FILE__` 133 条补注释 | 无注释丢失 136 → **0**；70 区 val/chk/elias 全绿；`test_lpc_path_rules.py` 28/28；`mix test` 2988/1 |
 | | | | |

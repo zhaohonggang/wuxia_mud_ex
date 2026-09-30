@@ -265,7 +265,24 @@ phantom，跳过合成；改成「跨区即占用」后又会**重复写 `up` �
 
 ---
 
-## 13. `+random(n)` 的物件路径被整体丢弃（**未修**）
+## 13. `+random(n)` 的物件路径被整体丢弃（已修）
+
+**修复（A-1，2026-09-30）**　新增 `_split_runtime_suffix()` / `_random_candidates()`：把 `"<路径>" + random(n)` 拆成「字面路径 + 候选枚举」，不再因路径含括号就整体丢弃。
+
+关键点是 LPC 的 `+` 为**字符串直接拼接十进制数字**，所以
+
+```c
+"d/shaolin/obj/fojing1" + random(2)   ->  "...fojing10" 或 "...fojing11"
+```
+
+这与磁盘上的文件完全吻合——`shaolin/obj/` 只有 `fojing10.c` `fojing11.c` `fojing20.c` `fojing21.c`，**没有** `fojing1.c` / `fojing2.c`（若按 stem+序号 理解会错生成 `fojing1` / `fojing11`）。
+
+同时修掉一个被暴露的回归：`CLASS_D("...") + "/dao-yi"` 这类惯用写法（前缀含括号，原先匹配不上拼接正则）改为取末段字面量，`dao_yi` / `wuming` / `tao_yi` 等常规物件不再被误判为动态。
+
+无法枚举的表达式（如 `"/clone/book/" + books[random(sizeof(books))]`）仍会跳过，但**现在会留注释**。
+
+新增 `scripts/test_lpc_path_rules.py` 锁定该行为（28 项）。
+
 
 **现象**　`shaolin` 的 `cjlou` 与 `jianyu` 少了两件佛经：
 
@@ -295,7 +312,13 @@ LPC 里 `random(2)` 只返回 0/1，即在 fojing1/fojing2 间二选一——完
 
 ---
 
-## 14. `__FILE__` 自引用产生悬空房间名（**未修**）
+## 14. `__FILE__` 自引用产生悬空房间名（已修）
+
+**修复（A 项，2026-09-30）**　新增 `_split_runtime_suffix()` / `_random_candidates()`：把 `"<路径>" + random(n)` 拆成字面路径 + 候选枚举，不再因含括号整体丢弃。
+LPC 的 `+` 是**字符串直接拼接十进制数字**，所以 `"d/shaolin/obj/fojing1" + random(2)` 实际指向 `fojing10` / `fojing11`——这与磁盘上的文件完全吻合（`shaolin/obj/` 只有 `fojing10.c` `fojing11.c` `fojing20.c` `fojing21.c`，**没有** `fojing1.c` / `fojing2.c`）。
+同时修掉一个由此暴露的回归：`CLASS_D("...") + "/dao-yi"` 这类惯用写法（前缀含括号，原先匹配不上拼接正则）改取末段字面量，`dao_yi` / `wuming` 等常规物件不再被误判为动态。
+新增 `scripts/test_lpc_path_rules.py` 锁定该行为。
+
 
 **现象**　133 条出口从 `rooms.__file__.id` 变成被跳过。
 
@@ -314,7 +337,13 @@ LPC 里 `random(2)` 只返回 0/1，即在 fojing1/fojing2 间二选一——完
 
 ---
 
-## 15. 同区子目录路径被误判为跨区（**未修**）
+## 15. 同区子目录路径被误判为跨区（已修）
+
+**修复（A 项，2026-09-30）**　新增 `_split_runtime_suffix()` / `_random_candidates()`：把 `"<路径>" + random(n)` 拆成字面路径 + 候选枚举，不再因含括号整体丢弃。
+LPC 的 `+` 是**字符串直接拼接十进制数字**，所以 `"d/shaolin/obj/fojing1" + random(2)` 实际指向 `fojing10` / `fojing11`——这与磁盘上的文件完全吻合（`shaolin/obj/` 只有 `fojing10.c` `fojing11.c` `fojing20.c` `fojing21.c`，**没有** `fojing1.c` / `fojing2.c`）。
+同时修掉一个由此暴露的回归：`CLASS_D("...") + "/dao-yi"` 这类惯用写法（前缀含括号，原先匹配不上拼接正则）改取末段字面量，`dao_yi` / `wuming` 等常规物件不再被误判为动态。
+新增 `scripts/test_lpc_path_rules.py` 锁定该行为。
+
 
 **现象**　3 条**同区**链接被跳过并留下误导性注释：
 
@@ -335,7 +364,13 @@ LPC 里 `random(2)` 只返回 0/1，即在 fojing1/fojing2 间二选一——完
 
 ---
 
-## 16. `d/<区名>/` 缺前导斜杠未被识别（**未修**）
+## 16. `d/<区名>/` 缺前导斜杠未被识别（已修）
+
+**修复（A 项，2026-09-30）**　新增 `_split_runtime_suffix()` / `_random_candidates()`：把 `"<路径>" + random(n)` 拆成字面路径 + 候选枚举，不再因含括号整体丢弃。
+LPC 的 `+` 是**字符串直接拼接十进制数字**，所以 `"d/shaolin/obj/fojing1" + random(2)` 实际指向 `fojing10` / `fojing11`——这与磁盘上的文件完全吻合（`shaolin/obj/` 只有 `fojing10.c` `fojing11.c` `fojing20.c` `fojing21.c`，**没有** `fojing1.c` / `fojing2.c`）。
+同时修掉一个由此暴露的回归：`CLASS_D("...") + "/dao-yi"` 这类惯用写法（前缀含括号，原先匹配不上拼接正则）改取末段字面量，`dao_yi` / `wuming` 等常规物件不再被误判为动态。
+新增 `scripts/test_lpc_path_rules.py` 锁定该行为。
+
 
 **现象**　`tiezhang/hunanroad1 -east->` 被跳过。
 

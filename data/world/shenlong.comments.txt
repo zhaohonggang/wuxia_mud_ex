@@ -96,8 +96,8 @@
 # ==== CONDITIONAL BRANCHES ====
   # COMPLEX MAPPING: ([ "/clone/beast/dushe" : 1 + random(2), npcs[random(sizeof(npcs))]
 # ==== COMPLEX MAPPINGS ====
-  # UNHANDLED FUNCTION: close
   # UNHANDLED FUNCTION: do_kan
+  # UNHANDLED FUNCTION: close
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -209,8 +209,8 @@
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
-  # UNHANDLED FUNCTION: do_skills
   # UNHANDLED FUNCTION: do_join
+  # UNHANDLED FUNCTION: do_skills
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

@@ -961,9 +961,9 @@ direction = "west"
 
   room_exits "liaotian" {
     room_id = rooms.liaotian.id
+    east = rooms.qiyuan1.id
     north = rooms.kedian.id
     }
-  # skipped exit east: unrecognised relative path: qiyuan/qiyuan1: no data/world zone to reference
 
 
   room_characters "liaotian" {
@@ -5440,7 +5440,6 @@ chats = [
   room_exits "jiaonei" {
     room_id = rooms.jiaonei.id
     down = rooms.dangpu.id
-    up = rooms.qiyuan1.id
     }
 
 # Generated from C:/files/git/mud/d/city/obj/rrose.c by LPCConverter
@@ -5658,9 +5657,9 @@ chats = [
     rooms "qiyuan1" {
       name = "棋苑"
       description = "棋苑共分四个大间，是手谈休栖的好地方。这里的南北和东三个方 向各有一间棋室，在每个棋室的门外都贴着请勿打扰棋局的牌子。"
-  x = 0
+  x = 2
   y = 0
-  z = 9
+  z = 0
 valid_leave = [
 {
    # 阻挡条件（原样保留）： room->query_temp("action") == 1 
@@ -5673,11 +5672,10 @@ direction = ~
 
   room_exits "qiyuan1" {
     room_id = rooms.qiyuan1.id
-    down = rooms.jiaonei.id
-    east = rooms.qiyuan2.id
-    south = rooms.qiyuan3.id
-    north = rooms.qiyuan4.id
     west = rooms.liaotian.id
+    north = rooms.qiyuan4.id
+    south = rooms.qiyuan3.id
+    east = rooms.qiyuan2.id
     }
 
 # Generated from C:/files/git/mud/d/city/qiyuan/qiyuan2.c by LPCConverter
@@ -5686,9 +5684,9 @@ direction = ~
     rooms "qiyuan2" {
       name = "棋室"
       description = "棋苑共分四个大间，是手谈休栖的好地方。这个房间里有一张石桌，上面划着 一张围棋盘。桌角摆放着棋子。另外还有两张石凳，颜色一白一黑。在门口的墙壁 上贴着一张下棋指南(help)。"
-  x = 1
+  x = 3
   y = 0
-  z = 9
+  z = 0
 valid_leave = [
 {
    # 阻挡条件（原样保留）： me->query_temp("weiqi_seat") 
@@ -5720,9 +5718,9 @@ direction = ~
     rooms "qiyuan3" {
       name = "棋室"
       description = "棋苑共分四个大间，是手谈休栖的好地方。这个房间里有一张石桌，上面划着 一张围棋盘。桌角摆放着棋子。另外还有两张石凳，颜色一白一黑。在门口的墙壁 上贴着一张下棋指南(help)。"
-  x = 0
+  x = 2
   y = -1
-  z = 9
+  z = 0
 valid_leave = [
 {
    # 阻挡条件（原样保留）： me->query_temp("weiqi_seat") 
@@ -5754,9 +5752,9 @@ direction = ~
     rooms "qiyuan4" {
       name = "棋室"
       description = "棋苑共分四个大间，是手谈休栖的好地方。这个房间里有一张石桌，上面划着 一张围棋盘。桌角摆放着棋子。另外还有两张石凳，颜色一白一黑。在门口的墙壁 上贴着一张下棋指南(help)。"
-  x = 0
+  x = 2
   y = 1
-  z = 9
+  z = 0
 valid_leave = [
 {
    # 阻挡条件（原样保留）： me->query_temp("weiqi_seat") 

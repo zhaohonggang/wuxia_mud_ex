@@ -102,10 +102,10 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: unconcious
-  # UNHANDLED FUNCTION: do_sign
   # UNHANDLED FUNCTION: attempt_apprentice
-  # UNHANDLED FUNCTION: do_join
+  # UNHANDLED FUNCTION: do_sign
+  # UNHANDLED FUNCTION: unconcious
   # UNHANDLED FUNCTION: recognize_apprentice
+  # UNHANDLED FUNCTION: do_join
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

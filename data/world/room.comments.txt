@@ -28,9 +28,9 @@
   # if (me && (! ob || ! living(ob) || ob->is_owner_permit(me)))  →  message_vision('$N用力一推大门，就听见大门“吱呀呀”的开了。\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (do_push) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: long
   # UNHANDLED FUNCTION: do_push
   # UNHANDLED FUNCTION: do_close
+  # UNHANDLED FUNCTION: long
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -100,8 +100,8 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: long
   # UNHANDLED FUNCTION: query_autoload
+  # UNHANDLED FUNCTION: long
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -117,8 +117,8 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: long
   # UNHANDLED FUNCTION: query_autoload
+  # UNHANDLED FUNCTION: long
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -154,10 +154,10 @@
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: autoload
-  # UNHANDLED FUNCTION: long
   # UNHANDLED FUNCTION: query_autoload
-  # UNHANDLED FUNCTION: do_clear
   # UNHANDLED FUNCTION: do_draw
+  # UNHANDLED FUNCTION: do_clear
+  # UNHANDLED FUNCTION: long
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -173,8 +173,8 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: long
   # UNHANDLED FUNCTION: query_autoload
+  # UNHANDLED FUNCTION: long
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -313,11 +313,11 @@
   # if (is_owner(who))  →  message_vision(name() + '对$N施了一礼。\\\\\n', who);
 # ==== CONDITIONAL BRANCHES (accept_object) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_unwield
-  # UNHANDLED FUNCTION: do_wield
   # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: do_unwield
   # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: do_wield
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -357,9 +357,9 @@
   # if (is_owner(who))  →  message_vision(name() + '对$N施了一礼。\\\\\n', who);
 # ==== CONDITIONAL BRANCHES (accept_object) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: accept_hit
-  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: accept_hit
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

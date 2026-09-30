@@ -1647,6 +1647,15 @@ def _classify_exit_path(path, zone_id):
 
     t = raw.replace("__DIR__", "").replace('"', "").strip()
 
+    # A `d/<zone>/<file>` path written WITHOUT the leading slash.  This is a known
+    # data bug in the corpus - tiezhang/hunanroad1.c has
+    #   "east" : "d/xiangyang/caodi6",
+    # which therefore never resolved and left 铁掌帮 -> 襄阳 a one-way dead end
+    # (documented in docs/mud-d-zone-center-connections.zh-CN.md, "数据 bug").
+    # Treating it as the /d/ path it was meant to be repairs that link.
+    if re.match(r"^d/[A-Za-z0-9_]+/", t):
+        t = "/" + t
+
     if t.startswith("/d/"):
         parts = t[3:].split("/")
         tzone = parts[0]
@@ -1669,13 +1678,17 @@ def _classify_exit_path(path, zone_id):
         return ("skip", "empty target")
 
     if "/" in t:
-        # Same-zone reference written with a subdirectory, e.g. room/xiaoyuan's
-        # "dule" : "dule/xiaoyuan", city's "qiyuan/qiyuan1", death's
-        # "heisenlin/entry".  The basename is the room id.
-        head = t.split("/")[0]
-        if head == zone_id:
-            return ("local", _room_id_from_path(t))
-        return ("skip", "unrecognised relative path: %s" % t)
+        # A same-zone reference written with a subdirectory.  The zone prefix is
+        # optional and, when absent, the head segment is simply a subdirectory of
+        # THIS zone - the basename is the room id:
+        #   room/xiaoyuan.c     "panlong" : __DIR__"panlong/dayuan"
+        #   room/xiaoyuan.c     "dule"    : __DIR__"dule/xiaoyuan"
+        #   city/liaotian.c     "east"    : __DIR__ "qiyuan/qiyuan1"
+        #   death/jimiesi.c     "north"   : "heisenlin/entry"
+        # Previously anything whose head was not the zone name was rejected as an
+        # "unrecognised relative path", which silently dropped those four working
+        # links.
+        return ("local", _room_id_from_path(t))
 
     return ("local", _room_id_from_path(t))
 
@@ -1964,34 +1977,124 @@ def _looks_like_path(s):
 
 # Characters that mark a path fragment as a runtime expression rather than a
 # literal file path: array subscript (books[random(...)]), interpolation ($x),
-# parentheses (sizeof(...)), or a bare + concatenation whose right-hand side is
-# not a plain path literal.
+# parentheses (sizeof(...)).
 _DYNAMIC_EXPR_RE = re.compile(r'[\[\]()]|\$[A-Za-z_]')
+
+# A trailing runtime operand appended to a literal path:
+#     "/clone/book/" + books[random(sizeof(books))]
+#     "d/shaolin/obj/fojing1" + random(2)
+# The literal prefix is still a perfectly good path; only the operand is dynamic.
+_PATH_CONCAT_RE = re.compile(r'^(?P<prefix>[^+\[\]()$]*?)\s*\+\s*(?P<operand>.+)$')
+
+# `random(n)` - the LPC driver returns an int in [0, n-1], and `+` on a string
+# CONCATENATES its decimal form.  So a key written as
+#     "d/shaolin/obj/fojing1" + random(2)
+# names exactly these two files:
+#     d/shaolin/obj/fojing10   (random(2) -> 0)
+#     d/shaolin/obj/fojing11   (random(2) -> 1)
+# which is precisely the object set that exists on disk (shaolin/obj/ has
+# fojing10.c, fojing11.c, fojing20.c, fojing21.c and no fojing1.c/fojing2.c).
+_RANDOM_CALL_RE = re.compile(r'^random\(\s*(\d+)\s*\)$')
 
 # Object ids must be bare UCL identifiers: lowercase letters, digits, underscore.
 _SAFE_ID_RE = re.compile(r'^[a-z0-9_]+$')
 
 
+def _random_candidates(base, operand):
+    """Candidate object ids for `"<base>" + random(n)`, or None if not that shape.
+
+    The operand is concatenated verbatim (``str(random(n))``), NOT treated as a
+    file-stem suffix.  shaolin/cjlou.c writes
+
+        "d/shaolin/obj/fojing1" + random(2) : 1,
+        "d/shaolin/obj/fojing2" + random(2) : 1,
+
+    so the driver picks one of fojing10 / fojing11 and one of fojing20 /
+    fojing21 - all four of which exist.  Emitting every candidate keeps that
+    information instead of dropping the key, which is what the previous
+    "contains a paren -> dynamic" rule did, silently and with no comment.
+    """
+    m = _RANDOM_CALL_RE.match(operand.strip())
+    if not m or not base:
+        return None
+    n = int(m.group(1))
+    if n <= 0:
+        return None
+    return ["%s%d" % (base, i) for i in range(n)]
+
+
+def _split_runtime_suffix(path):
+    """Split `"<literal path>" + <operand>` into (path, candidate ids or None).
+
+    Returns ``(path, None)`` when there is no concatenation, and
+    ``(path, [ids...])`` when the operand is an enumerable ``random(n)``.
+    Returns ``(None, None)`` when the path cannot be resolved statically.
+
+    The concatenation is examined BEFORE the bracket check on purpose: an
+    operand such as ``random(2)`` contains parentheses, so testing for brackets
+    first would reject every ``"<path>" + random(n)`` key before the split ever
+    ran - which is exactly the bug that dropped shaolin's fojing entries.
+    """
+    if not isinstance(path, str):
+        return None, None
+
+    stripped = path.strip()
+    if "+" in stripped:
+        m = _PATH_CONCAT_RE.match(stripped)
+        if m:
+            prefix = m.group("prefix").strip().replace('"', "").replace("'", "")
+            operand = m.group("operand").strip()
+            if prefix:
+                cands = _random_candidates(prefix, operand)
+                if cands is not None:
+                    return prefix, cands
+                # A concatenation whose right-hand side is itself a plain path
+                # literal is still resolvable; anything else (a variable, a
+                # nested call, an array subscript) names no determinate file.
+                if operand.startswith('"') or "__DIR__" in operand or "/" in operand:
+                    return stripped, None
+                return None, None
+
+        # The prefix could not be split off because it is itself an expression,
+        # most often the CLASS_D(...) idiom:
+        #     CLASS_D("shaolin") + "/dao-yi"
+        # Here the RIGHT-hand side is a plain literal and decides the object id
+        # (the class prefix only supplies the directory), so take the basename of
+        # the last operand.  This is what keeps dao_yi / wuming / tao_yi in the
+        # room_items lists.
+        tail = stripped.rsplit("+", 1)[-1].strip().replace('"', "").replace("'", "")
+        if tail.startswith("/") or tail.startswith("__DIR__"):
+            return tail, None
+
+        return None, None
+
+    return stripped, None
+
+
+
 def _is_dynamic_expr(path):
-    """True when a key path embeds a runtime expression instead of a literal path.
+    """True when a key path cannot be resolved to any object id at all.
 
     ``"/clone/book/" + books[random(sizeof(books))]`` is a *string* whose text
     contains "/", so :func:`_looks_like_path` accepts it, but the trailing
-    ``books[random(sizeof(books))]`` cannot be resolved to a single object id at
-    conversion time.  Such keys must be skipped instead of leaking LPC source
-    into the generated UCL.
+    ``books[random(sizeof(books))]`` names no determinate file.  Such keys must be
+    skipped rather than leak LPC source into the generated UCL.
+
+    Note this deliberately no longer rejects a merely-parenthesised path:
+    ``"d/shaolin/obj/fojing1"+random(2)`` *is* resolvable (see
+    :func:`_random_candidates`), and dropping it lost real content silently.
     """
     if not isinstance(path, str):
         return False
-    if _DYNAMIC_EXPR_RE.search(path):
+    literal, cands = _split_runtime_suffix(path)
+    if literal is None:
         return True
-    # A trailing concatenation operand that is itself not a path literal,
-    # e.g. `"/clone/book/" + somevar` (var without __DIR__ or a leading quote).
-    if "+" in path:
-        tail = path.rsplit("+", 1)[1].strip()
-        if not (tail.startswith('"') or "__DIR__" in tail or "/" in tail):
-            return True
-    return False
+    if cands is not None:
+        return False
+    # Still dynamic when a bracket/interpolation survives in the literal part,
+    # e.g. "/clone/book/" + books[random(sizeof(books))].
+    return bool(_DYNAMIC_EXPR_RE.search(literal))
+
 
 
 def _generate_room_objects(room_id, value):
@@ -2001,26 +2104,36 @@ def _generate_room_objects(room_id, value):
         return ""
     char_links = []
     item_links = []
+    skipped_dynamic = []
     for key, count in value[1]:
         path = _extract_key_path(key)
         if path is None or not _looks_like_path(path):
             # Skip keys that are expressions (like names[random(sizeof(names))])
             # rather than simple file paths
             continue
-        if _is_dynamic_expr(path):
-            # Path is built at runtime (e.g. "/clone/book/" + books[random(...)]).
-            # No single object id can be resolved; emitting it would leak LPC
-            # source into the UCL and break the parser.
+
+        # A key may be "<literal path>" + random(n).  The literal part is a real
+        # path and random(n) enumerates n candidates, so emit all of them instead
+        # of dropping the key (shaolin/cjlou.c's fojing1/fojing2 pair).
+        literal, cands = _split_runtime_suffix(path)
+        if literal is None or _is_dynamic_expr(path):
+            # Not resolvable to any id (e.g. "/clone/book/" + books[random(...)]).
+            # Emitting it would leak LPC source into the UCL and break the parser.
+            skipped_dynamic.append(path)
             continue
-        id_ = _room_id_from_path(path)
-        if not _SAFE_ID_RE.match(id_):
-            # Defensive: never emit an id that is not a bare UCL identifier.
-            continue
-        if _contains_npc(path):
-            n = _count_or_one(count)
-            char_links.extend([f"      {{ id = characters.{id_}.id }}" for _ in range(n)])
-        else:
-            item_links.append(f"      {{ id = items.{id_}.id }}")
+
+        id_list = cands if cands is not None else [literal]
+        for candidate in id_list:
+            id_ = _room_id_from_path(candidate)
+            if not _SAFE_ID_RE.match(id_):
+                # Defensive: never emit an id that is not a bare UCL identifier.
+                continue
+            if _contains_npc(candidate):
+                n = _count_or_one(count)
+                char_links.extend(
+                    [f"      {{ id = characters.{id_}.id }}" for _ in range(n)])
+            else:
+                item_links.append(f"      {{ id = items.{id_}.id }}")
 
     char_block = ""
     if char_links:
@@ -2042,7 +2155,14 @@ def _generate_room_objects(room_id, value):
             + "    ]\n  }\n"
         )
 
-    return "\n".join([x for x in [char_block, item_block] if x != ""])
+    note_block = ""
+    if skipped_dynamic:
+        note_block = "\n".join(
+            "  # skipped unresolvable object path %r: no determinate object id"
+            % p for p in skipped_dynamic)
+
+    return "\n".join(
+        [x for x in [char_block, item_block, note_block] if x != ""])
 
 
 # ---------------------------------------------------------------------------

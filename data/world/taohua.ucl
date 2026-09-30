@@ -446,6 +446,14 @@ item_desc = {
   room_items "shufang" {
     room_id = rooms.shufang.id
     items = [
+      { id = items.yijing0.id },
+      { id = items.yijing1.id },
+      { id = items.yijing2.id },
+      { id = items.yijing3.id },
+      { id = items.yijing0.id },
+      { id = items.yijing1.id },
+      { id = items.yijing2.id },
+      { id = items.yijing3.id },
       { id = items.jiuzhang.id },
       { id = items.qu.id }    ]
   }

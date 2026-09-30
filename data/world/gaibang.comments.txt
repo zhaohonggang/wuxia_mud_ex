@@ -99,8 +99,8 @@
   # SWITCH TABLE (expr: arg)
 # ==== SWITCH TABLES ====
   # UNHANDLED FUNCTION: do_goto
-  # UNHANDLED FUNCTION: arrival
   # UNHANDLED FUNCTION: look_map
+  # UNHANDLED FUNCTION: arrival
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

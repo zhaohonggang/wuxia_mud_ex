@@ -59,10 +59,10 @@
   # if (me->query_temp("pick_gift"))  →  write('你刚拣过了，等等再拣吧！\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_get) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: clear_flag
-  # UNHANDLED FUNCTION: do_eat
   # UNHANDLED FUNCTION: do_get
   # UNHANDLED FUNCTION: do_drink
+  # UNHANDLED FUNCTION: clear_flag
+  # UNHANDLED FUNCTION: do_eat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -352,11 +352,11 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH: switch (me->query_temp("job/step")) { case 1: msg = "$N看看菜差不多够了，站起身来走到水盆边开始洗菜。"; break; case 2: msg = "哗----，$N将水盆中的污水倒掉，菜也洗干净了。"; break; case 3: msg = "$N走到灶台前开始切菜，嚓----嚓-----。"; break; case 4: case 6: msg = "$N将油到入锅中，继续切菜。"; break; case 5: msg = "油热了，冒出阵阵清烟，$N将切好的菜到入锅中！滋------"; break; case 7: msg = "$N不断翻动锅中的菜，慢慢的，一阵香味散发出来。"; break; default: msg = "$N在锅中加入调料，又翻动了几下，将炒好的菜铲到盘中，拿给$n。"; finish = 1; break; }
 # ==== SWITCH STATEMENTS ====
-  # UNHANDLED FUNCTION: recognize_apprentice
-  # UNHANDLED FUNCTION: ask_job
   # UNHANDLED FUNCTION: halt_cooking
+  # UNHANDLED FUNCTION: ask_job
   # UNHANDLED FUNCTION: cooking
   # UNHANDLED FUNCTION: do_cook
+  # UNHANDLED FUNCTION: recognize_apprentice
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

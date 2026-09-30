@@ -50,8 +50,8 @@
   # if (query("ricewater") > 0)  →  message_vision(CYN '小二哥连声答应，从内厅一溜烟跑出来。\\\\\n' HIY '不多' '时，便端着一碗米饭和一碗水拿了给$N' HIY '。\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_order) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_order
   # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: do_order
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -112,9 +112,9 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH: switch (this_player()->query("gender")) { case "男性": return "眼前是如此一位美貌女子，无法用言辞形容。便是天" "上仙女，只怕也不过如此。\n"; case "女性": return "你心前如遭痛击，眼前女子如此美貌，大概自己再长" "一百年也比不上了。\n"; default: return "一位仙女般的女子里在面前，不带一丝人间烟火气，" "你真后悔当初一刀爽快了。\n"; }
 # ==== SWITCH STATEMENTS ====
-  # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: long
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: accept_hit
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

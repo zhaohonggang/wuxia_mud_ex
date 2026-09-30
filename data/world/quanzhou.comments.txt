@@ -17,8 +17,8 @@
   # if (arg !="zhou")  →  tell_object(this_player() , '你要 enter 哪儿？\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_enter) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: tpenghu
   # UNHANDLED FUNCTION: do_enter
+  # UNHANDLED FUNCTION: tpenghu
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -39,8 +39,8 @@
   # if (arg !="chuan")  →  tell_object(ob, '你要去哪儿？\\\\\n' );
 # ==== CONDITIONAL BRANCHES (do_enter) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: tpenghu
   # UNHANDLED FUNCTION: do_enter
+  # UNHANDLED FUNCTION: tpenghu
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -82,8 +82,8 @@
 # ==== CONDITIONAL BRANCHES (do_enter) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: tdalu
-  # UNHANDLED FUNCTION: ttaiwan
   # UNHANDLED FUNCTION: do_enter
+  # UNHANDLED FUNCTION: ttaiwan
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

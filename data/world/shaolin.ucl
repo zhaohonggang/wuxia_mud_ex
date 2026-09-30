@@ -1010,7 +1010,11 @@ valid_leave = [
     room_id = rooms.cjlou.id
     items = [
       { id = items.dao_yi.id },
-      { id = items.wuming.id }    ]
+      { id = items.wuming.id },
+      { id = items.fojing10.id },
+      { id = items.fojing11.id },
+      { id = items.fojing20.id },
+      { id = items.fojing21.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/shaolin/cjlou1.c by LPCConverter
@@ -2159,7 +2163,9 @@ valid_leave = [
   room_items "jianyu" {
     room_id = rooms.jianyu.id
     items = [
-      { id = items.qing_yuan.id }    ]
+      { id = items.qing_yuan.id },
+      { id = items.fojing10.id },
+      { id = items.fojing11.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/shaolin/jianyu1.c by LPCConverter

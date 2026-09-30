@@ -10,7 +10,7 @@
 | 项 | 内容 | 优先级 | 状态 |
 |----|------|--------|------|
 | **A** | 修 `_classify_exit_path` 的三处分类错误 | 高 | 未开始 |
-| **B** | `__FILE__` 丢弃补注释 | 低 | 未开始 |
+| **B** | `__FILE__` 丢弃补注释 | 低 | ✅ 2026-09-30（实测已有注释） |
 | **C** | 动态选房 103 条悬空引用的处理策略 | 中 | 待决策 |
 | **D** | 修正八卦方向被跳过的注释文案 | 低 | 未开始 |
 | **E** | 2 条 LPC 源本身悬空的出口 | — | 无法在转换侧修 |
@@ -23,7 +23,7 @@
 
 ## A. 修 `_classify_exit_path` 的三处分类错误
 
-**优先级**　高　**状态**　未开始
+**优先级**　高　**状态**　✅ 已完成 2026-09-30
 
 这三项同源于 `scripts/lpc_converter.py` 的 `_classify_exit_path()` / `_is_dynamic_expr()`，
 一起改最省事。**都是本轮改动引入的功能倒退**。
@@ -130,9 +130,44 @@ docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test'
 
 ---
 
+
+### A+B 的实际结果（2026-09-30）
+
+| 目标 | 结果 |
+|------|------|
+| `shaolin/cjlou` 的 `room_items` | 恢复 `items.fojing10/11/20/21.id` |
+| `shaolin/jianyu` | 恢复 `items.fojing10/11.id` |
+| `city/liaotian -east->` | `rooms.qiyuan1.id`（不再跳过） |
+| `room/xiaoyuan -panlong->` | `rooms.dayuan.id`（`dule`/`caihong` 仍为自环，属三子区撞名的已知限制） |
+| `tiezhang/hunanroad1 -east->` | `xiangyang.rooms.caodi6.id`（恢复铁掌帮↔襄阳） |
+| `__FILE__` 133 条 | 产物中确认有 `# skipped exit <dir>: self-referential (__FILE__)` 注释 |
+| 新增单元测试 | `scripts/test_lpc_path_rules.py`，28 项全过 |
+| 70 区 SOP | val=0 / chk=0 / elias=OK 全绿 |
+| fixture 回归 | `validate_ucl` 24/24，`check_room_coords` 8/8 |
+| `mix test` | `world/` 190/1、`cross_zone_wiring_test` 4/4、全量 2988/1（唯一失败是 I 项预存问题） |
+| 可达率 | 4061/4441 不变 |
+| **无注释丢失** | **136 → 0** |
+
+### 实施过程中发现的一个关键事实
+
+LPC 的 `+` 是**字符串直接拼接十进制数字**，不是「文件名 stem + 序号」。
+
+```c
+"d/shaolin/obj/fojing1" + random(2)   // -> fojing10 或 fojing11
+```
+
+`shaolin/obj/` 下只有 `fojing10.c` `fojing11.c` `fojing20.c` `fojing21.c`，
+**没有** `fojing1.c` / `fojing2.c`。若按 stem+序号理解会错生成
+`fojing1` / `fojing11`，前者在本区并不存在。实现时以磁盘上真实存在的文件为准。
+
+顺带修掉一个被 A-1 暴露的回归：`CLASS_D("...") + "/dao-yi"` 这类前缀含括号的
+惯用写法原先匹配不上拼接正则，改取末段字面量后，`dao_yi` / `wuming` / `tao_yi`
+等常规物件不再被误判为动态。
+
 ## B. `__FILE__` 丢弃补注释
 
-**优先级**　低　**状态**　未开始
+**优先级**　低　**状态**　✅ 已完成 2026-09-30（实测发现代码里已走
+`skipped_unlinkable` 通道，无需改动，产物里确认有注释）
 
 **现状**　133 条出口从 `rooms.__file__.id`（悬空）变成被跳过。**运行时无倒退**
 ——旧版那 133 条加载器解析为 `nil` 后就被 `parse_exits` 丢弃，从未生效。
@@ -195,6 +230,12 @@ docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test'
 **建议**　先逐条判断 103 条里哪些是「可展开的 random」（路径主体确定、
 候选房间都在本区）、哪些是「LPC 源本身写错」（候选不存在），
 再对前者选 1、对后者选 2。
+
+> A-1 已把 `random(n)` 的展开机制做好（见上节），所以 C 项若选「展开候选」，
+> 主要是把同一个 `_random_candidates()` 用到出口目标上，再逐条确认候选房间存在。
+
+> A-1 已经把 `random(n)` 的展开机制做好了（见上节），所以 C 项若选「展开候选」，
+> 主要是把同一个 `_random_candidates()` 用到出口目标上，再逐条确认候选房间存在。
 
 **注意**　`shaolin` 的 46 条与 `test` / `global` 的 17 条属于**非 mud 语料区**
 或不同模式，需单独确认，不要与 `gaochang` 混为一谈。

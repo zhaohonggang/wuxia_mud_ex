@@ -10,8 +10,8 @@
   # if (me->query("neili") < 100)  →  message_vision(HIY '结果只听一声闷哼，$N被土层的反弹力震得眼前一黑....\\\\\n'NOR,me);
 # ==== CONDITIONAL BRANCHES (do_break) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close
   # UNHANDLED FUNCTION: do_break
+  # UNHANDLED FUNCTION: close
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -35,8 +35,8 @@
   # if (! ob = find_object(SWORD))  →  
 # ==== CONDITIONAL BRANCHES (do_pull) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_pull
   # UNHANDLED FUNCTION: do_think
+  # UNHANDLED FUNCTION: do_pull
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

@@ -494,8 +494,8 @@
   # if (this_player()->query_temp("allsit") == 1)  →  
 # ==== CONDITIONAL BRANCHES (do_sit) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_sit
   # UNHANDLED FUNCTION: do_push
+  # UNHANDLED FUNCTION: do_sit
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -518,8 +518,8 @@
   # if (me->query_skill("force", 1) < 300)  →  message_vision(CYN '$N' CYN '呀呀嘿嘿废了半天力气，结果' '没什么动静。\\\\\n', me); tell_object(me, '看来是自己的内功火候还不够。\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_break) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close
   # UNHANDLED FUNCTION: do_break
+  # UNHANDLED FUNCTION: close
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
