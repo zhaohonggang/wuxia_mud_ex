@@ -1,0 +1,1098 @@
+zones "taohua" {
+  name = "taohua"
+}
+
+# Generated from C:/files/git/mud/d/taohua/bingqi.c by LPCConverter
+# Zone: taohua
+
+    rooms "bingqi" {
+      name = "兵器室"
+      description = "这是一间存放兵器的屋子。刀、枪、剑、戟等各种兵器都 按类放在各自的兵器架上。整个屋子落满灰尘，显然已经好久 没人来过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bingqi" {
+    room_id = rooms.bingqi.id
+  west = rooms.qianyuan.id  }
+
+
+
+
+  room_items "bingqi" {
+    room_id = rooms.bingqi.id
+    items = [
+      { id = items.taojian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taohua/chufang.c by LPCConverter
+# Zone: taohua
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "这是桃花岛的厨房，中央摆着大圆桌，周围则放着几张竹 椅。窗口还摆着几盆水仙花。你吸了一下鼻子，好香。也不知 是花香还是饭香。平时桃花岛的弟子和仆人都在这里用餐。看 着可口的饭菜，你忍不住也想叫(serve)一份。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+  east = rooms.qianyuan.id  }
+
+
+  room_characters "chufang" {
+    room_id = rooms.chufang.id
+    characters = [
+      { id = characters.cheng.id },
+      { id = characters.yapu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taohua/dahai.c by LPCConverter
+# Zone: taohua
+
+    rooms "dahai" {
+      name = "大海"
+      description = "你正处在茫茫大海之中。你极目远望，只见海天一线，周 围连个黑点都没有。耳边只有海浪的拍打声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dahai" {
+    room_id = rooms.dahai.id
+  out = rooms.haitan.id  }
+
+# Generated from C:/files/git/mud/d/taohua/damen.c by LPCConverter
+# Zone: taohua
+
+    rooms "damen" {
+      name = "桃花山庄正门"
+      description = "这里是桃花岛的正门。门前疏落地种了几株桃花树，更显 得此地主人对桃花的偏爱。门口站着两个小童看守大门。看来 由于地处边远人烟罕至，人们对山庄的防卫不是特别谨慎。门 前有一对白雕(diao)，毛羽如雪，甚为可爱。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ diao = "这一对白雕正展翅欲飞。如果是桃花岛的弟子，骑上(ride)就 可以飞到中原，非常便利。"
+}
+    }
+
+  room_exits "damen" {
+    room_id = rooms.damen.id
+  south = rooms.qianyuan.id
+  north = rooms.tingzi.id
+  east = rooms.road1.id  }
+
+
+  room_characters "damen" {
+    room_id = rooms.damen.id
+    characters = [
+      { id = characters.shitong.id },
+      { id = characters.shitong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taohua/daojufang.c by LPCConverter
+# Zone: taohua
+
+    rooms "daojufang" {
+      name = "道具房"
+      description = "这是一间道具房。摆着一些桃花弟子们常用的东西。房里 好象黑乎乎的，靠窗处有一张斑驳长桌和一把靠背椅，虽是白 天还点着小油灯。哑仆看到你进来，就使劲瞪着你，虽然口不 能言，可你还是心中惴惴。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "daojufang" {
+    room_id = rooms.daojufang.id
+  west = rooms.dating.id
+  up = rooms.shufang.id  }
+
+
+  room_characters "daojufang" {
+    room_id = rooms.daojufang.id
+    characters = [
+      { id = characters.yapu.id },
+      { id = characters.yapu.id }    ]
+  }
+
+
+
+  room_items "daojufang" {
+    room_id = rooms.daojufang.id
+    items = [
+      { id = items.zhuxiao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taohua/dating.c by LPCConverter
+# Zone: taohua
+
+    rooms "dating" {
+      name = "大厅"
+      description = "这里是桃花山庄的正厅。整个大厅十分宽阔。厅中更挂满 了各种名家的书法真迹。但最为显眼的却是正中挂的一幅对联：             ##############################            ##                          ##            ##   桃 花 影 落 飞 神 剑   ##            ##                          ##            ##   碧 海 潮 生 按 玉 箫   ##            ##                          ##            ##############################  其字体遒劲挺拔，气势宏伟之极，想必应是出自黄药师的手笔。"
+  x = 0
+  y = 0
+  z = 0
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "huang yaoshi"
+  direction = "south"
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
+    }
+
+  room_exits "dating" {
+    room_id = rooms.dating.id
+  north = rooms.qianyuan.id
+  south = rooms.houyuan.id
+  east = rooms.daojufang.id
+  west = rooms.wofang.id  }
+
+
+
+
+  room_items "dating" {
+    room_id = rooms.dating.id
+    items = [
+      { id = items.huang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taohua/dong.c by LPCConverter
+# Zone: taohua
+
+    rooms "dong" {
+      name = "山洞"
+      description = "你正处在一个小山洞中。这里光线很暗，只能隐隐约约看 出地上有一堆干草。你突然闻到一股难闻的气味，显然是有人 长期住在这里却不打扫的缘故，可是现在没人在这里。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dong" {
+    room_id = rooms.dong.id
+  out = rooms.road5.id  }
+
+# Generated from C:/files/git/mud/d/taohua/haitan.c by LPCConverter
+# Zone: taohua
+
+    rooms "haitan" {
+      name = "海滩"
+      description = "这是桃花岛前的海滩。往北是一望无际的大海；往南则是一片桃花林。 蓝蓝的海蓝蓝的天，金黄色的沙滩，粉红的桃花，这一切都是那么美。海边 泊着一艘大船(chuan)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ chuan = "这是桃花岛对外联系的大船。岛上的客人或弟子只要 上船(enter)就可以回中原。"
+}
+    }
+
+  room_exits "haitan" {
+    room_id = rooms.haitan.id
+  south = rooms.tao_in.id  }
+
+# Generated from C:/files/git/mud/d/taohua/houyuan.c by LPCConverter
+# Zone: taohua
+
+    rooms "houyuan" {
+      name = "后院"
+      description = "这是山庄的后院。院后是桃花岛的唯一一座山峰：弹指峰。 整个桃花山庄倚山而立，险势天成。南边有两个露天小场，桃 花岛的弟子来来往往，非常忙碌，不少人衣衫尽湿，还有些弟 子鼻青脸肿、带伤而行。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houyuan" {
+    room_id = rooms.houyuan.id
+  north = rooms.dating.id
+  west = rooms.xiaowu.id
+  east = rooms.siguoshi.id
+  southeast = rooms.wuchang1.id
+  southwest = rooms.wuchang2.id
+  south = rooms.wuchang3.id  }
+
+
+
+
+  room_items "houyuan" {
+    room_id = rooms.houyuan.id
+    items = [
+      { id = items.shizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taohua/lantian.c by LPCConverter
+# Zone: taohua
+
+    rooms "lantian" {
+      name = "蓝天"
+      description = "四周是蓝蓝的天，洁白的云在飘；地上的行人看起来象蚂 蚁。你心中有一种感觉：君临天下一览人间小。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/taohua/mudao.c by LPCConverter
+# Zone: taohua
+
+    rooms "mudao" {
+      name = "墓道"
+      description = "这是通往墓室的通道。通道十分宽敞，顶部悬挂着一颗大 大的夜明珠，照得整个墓道如同白昼。墓道尽头便是墓室。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mudao" {
+    room_id = rooms.mudao.id
+  up = rooms.mudi.id
+  down = rooms.mushi.id  }
+
+# Generated from C:/files/git/mud/d/taohua/mudi.c by LPCConverter
+# Zone: taohua
+
+    rooms "mudi" {
+      name = "墓地"
+      description = "这里是桃花岛岛主夫人的墓地。墓地周围种了一些矮矮的 花树。树上的白花星星点点。白花中间是块石碑 (bei)，碑后 是两扇坚固的石门。墓地干干净净，显然天天有人打扫。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ bei = "石碑上刻着：「桃花岛女主冯氏埋香之墓」"
+}
+    }
+
+  room_exits "mudi" {
+    room_id = rooms.mudi.id
+  south = rooms.road3.id  }
+
+# Generated from C:/files/git/mud/d/taohua/mushi.c by LPCConverter
+# Zone: taohua
+
+    rooms "mushi" {
+      name = "墓室"
+      description = "这是一间宽敞的墓室。墓室顶上有一颗特别大的明珠闪闪 发光。中央放着一副玉棺，周围则堆放了无数的奇珍异玩。有 张供桌摆在玉棺前，桌上放着个盘子。墓室对面挂这幅青年少 妇的画像。画像上的少妇巧笑嫣然，和惨白的玉棺及碧油油的 珠光形成了一幅奇诡的画面。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mushi" {
+    room_id = rooms.mushi.id
+  up = rooms.mudao.id  }
+
+
+
+
+  room_items "mushi" {
+    room_id = rooms.mushi.id
+    items = [
+      { id = items.gold.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taohua/qianyuan.c by LPCConverter
+# Zone: taohua
+
+    rooms "qianyuan" {
+      name = "前院"
+      description = "你现在正站在一个宽敞的院子中。院子原来是作为练武场 用的。但自从桃花岛弟子被黄药师逐出岛外，就没人在此练武。 东面是兵器室，西面是厨房，往南是桃花山庄正厅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qianyuan" {
+    room_id = rooms.qianyuan.id
+  north = rooms.damen.id
+  south = rooms.dating.id
+  east = rooms.bingqi.id
+  west = rooms.chufang.id  }
+
+# Generated from C:/files/git/mud/d/taohua/road1.c by LPCConverter
+# Zone: taohua
+
+    rooms "road1" {
+      name = "小路"
+      description = "这是一条小径，弯弯曲曲向远方延伸。小径两边种植了些 桃花树。你只一瞥就发现：这些桃花全是白色的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road1" {
+    room_id = rooms.road1.id
+  east = rooms.road2.id
+  west = rooms.damen.id  }
+
+# Generated from C:/files/git/mud/d/taohua/road2.c by LPCConverter
+# Zone: taohua
+
+    rooms "road2" {
+      name = "小路"
+      description = "这是一条小径，弯弯曲曲向远方延伸。小径两边种植了些 桃花树。你只一瞥就发现：这些桃花全是白色的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road2" {
+    room_id = rooms.road2.id
+  west = rooms.road1.id
+  north = rooms.road3.id
+  south = rooms.road4.id  }
+
+# Generated from C:/files/git/mud/d/taohua/road3.c by LPCConverter
+# Zone: taohua
+
+    rooms "road3" {
+      name = "小路"
+      description = "这是一条小径，弯弯曲曲向远方延伸。小径两边种植了些 桃花树。你只一瞥就发现：这些桃花全是白色的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road3" {
+    room_id = rooms.road3.id
+  south = rooms.road2.id
+  north = rooms.mudi.id  }
+
+# Generated from C:/files/git/mud/d/taohua/road4.c by LPCConverter
+# Zone: taohua
+
+    rooms "road4" {
+      name = "小路"
+      description = "这是一条通往后山的小径。小路两旁长满了杂草。由于人 们很少走这条路，甚至连路中央也稀稀疏疏冒出了草芽。东边 有一个小山洞。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road4" {
+    room_id = rooms.road4.id
+  east = rooms.road5.id
+  north = rooms.road2.id  }
+
+
+
+
+  room_items "road4" {
+    room_id = rooms.road4.id
+    items = [
+      { id = items.dushe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taohua/road5.c by LPCConverter
+# Zone: taohua
+
+    rooms "road5" {
+      name = "洞口"
+      description = "这是一条后山上的一个小山洞。洞口很小，但能容一个人 钻进去。里面黑黝黝的什么也看不见。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road5" {
+    room_id = rooms.road5.id
+  west = rooms.road4.id
+  in = rooms.dong.id  }
+
+# Generated from C:/files/git/mud/d/taohua/shufang.c by LPCConverter
+# Zone: taohua
+
+    rooms "shufang" {
+      name = "书房"
+      description = "这是一间干干净净的书房。当中一个大檀木桌，桌上放着 不少书籍。靠墙的地方还有一个书架，架上满满的全是各种封 装的书。其中不少书看上去古意盎然，显然年代已久。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shufang" {
+    room_id = rooms.shufang.id
+  down = rooms.daojufang.id  }
+
+
+
+
+  room_items "shufang" {
+    room_id = rooms.shufang.id
+    items = [
+      { id = items.jiuzhang.id },
+      { id = items.qu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taohua/siguoshi.c by LPCConverter
+# Zone: taohua
+
+    rooms "siguoshi" {
+      name = "思过室"
+      description = "这是桃花岛上供本门弟子闭门思过的地方。屋里仅仅放着 张床，显得空荡荡的。四面则是光秃秃的墙壁，看上去黑黝黝 的，原来却是铁筑的。靠门的地方有一小洞，洞边放着一只碗。 往东是一间不起眼的小屋。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "siguoshi" {
+    room_id = rooms.siguoshi.id
+  west = rooms.houyuan.id
+  east = rooms.xiuxishi.id  }
+
+# Generated from C:/files/git/mud/d/taohua/tao0.c by LPCConverter
+# Zone: taohua
+
+    rooms "tao0" {
+      name = "桃花迷阵"
+      description = "这是片桃花的海洋。四周一望无际全是盛开的桃花。微风 拂过，落英缤纷。周围静悄悄的。远处偶尔传来一声鸟叫。你 心中不禁慌乱起来：还是早点出去的好。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tao0" {
+    room_id = rooms.tao0.id
+  east = rooms.__file__.id
+  west = rooms.__file__.id
+  south = rooms.__file__.id
+  north = rooms.__file__.id  }
+
+# Generated from C:/files/git/mud/d/taohua/tao_in.c by LPCConverter
+# Zone: taohua
+
+    rooms "tao_in" {
+      name = "迷阵入口"
+      description = "这是片桃花的海洋。四周一望无际全是盛开的桃花。微风 拂过，落英缤纷。周围静悄悄的。远处偶尔传来一声鸟叫。往 北是一片桃花林，往南则是一个小亭子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tao_in" {
+    room_id = rooms.tao_in.id
+  south = rooms.tao0.id
+  north = rooms.haitan.id  }
+
+
+
+
+  room_items "tao_in" {
+    room_id = rooms.tao_in.id
+    items = [
+      { id = items.feng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taohua/tao_out.c by LPCConverter
+# Zone: taohua
+
+    rooms "tao_out" {
+      name = "桃林边"
+      description = "这是片桃花的海洋。四周一望无际全是盛开的桃花。微风 拂过，落英缤纷。周围静悄悄的。远处偶尔传来一声鸟叫。往 北是一片桃花林，往南则是一个小亭子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tao_out" {
+    room_id = rooms.tao_out.id
+  south = rooms.tingzi.id
+  north = rooms.tao0.id  }
+
+# Generated from C:/files/git/mud/d/taohua/tingzi.c by LPCConverter
+# Zone: taohua
+
+    rooms "tingzi" {
+      name = "试剑亭"
+      description = "这里是一个用白玉石砌成的亭子，亭子砌得小巧玲珑，十 分精巧。亭子的北面是一片桃花林，南面则是桃花山庄的正门。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tingzi" {
+    room_id = rooms.tingzi.id
+  south = rooms.damen.id
+  north = rooms.tao_out.id  }
+
+# Generated from C:/files/git/mud/d/taohua/wofang.c by LPCConverter
+# Zone: taohua
+
+    rooms "wofang" {
+      name = "卧房"
+      description = "你走进了一间卧房。一股若有若无的甜香扑鼻而来。琴剑 书画，挂在墙上。锦笼纱罩，金彩珠光。小几上汝窑美人瓶内 的桃花正自盛开。右首一张床，床头放着五彩鸾纹被。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wofang" {
+    room_id = rooms.wofang.id
+  east = rooms.dating.id  }
+
+
+  room_characters "wofang" {
+    room_id = rooms.wofang.id
+    characters = [
+      { id = characters.binu.id },
+      { id = characters.binu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taohua/wuchang1.c by LPCConverter
+# Zone: taohua
+
+    rooms "wuchang1" {
+      name = "修行场"
+      description = "这里是桃花岛弹指山庄修行的场所，大部分的桃花岛弟子 武功有了一定的根基以后就在这里苦修，领悟上乘武学。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuchang1" {
+    room_id = rooms.wuchang1.id
+  northwest = rooms.houyuan.id  }
+
+# Generated from C:/files/git/mud/d/taohua/wuchang2.c by LPCConverter
+# Zone: taohua
+
+    rooms "wuchang2" {
+      name = "修行场"
+      description = "这里是桃花岛弹指山庄修行的场所，大部分的桃花岛弟子 武功有了一定的根基以后就在这里苦修，领悟上乘武学。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuchang2" {
+    room_id = rooms.wuchang2.id
+  northeast = rooms.houyuan.id  }
+
+# Generated from C:/files/git/mud/d/taohua/wuchang3.c by LPCConverter
+# Zone: taohua
+
+    rooms "wuchang3" {
+      name = "修行场"
+      description = "这里是桃花岛弹指山庄修行的场所，大部分的桃花岛弟子 武功有了一定的根基以后就在这里苦修，领悟上乘武学。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuchang3" {
+    room_id = rooms.wuchang3.id
+  north = rooms.houyuan.id  }
+
+# Generated from C:/files/git/mud/d/taohua/xiaowu.c by LPCConverter
+# Zone: taohua
+
+    rooms "xiaowu" {
+      name = "小屋"
+      description = "这是专供仆人休息的小屋。屋里放着五六张床，挤挤地占 掉了屋子的一大半地方。屋角很散乱地放了一些日常生活用具。 中央放着一张桌子，上面摆一茶壶和几个杯子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaowu" {
+    room_id = rooms.xiaowu.id
+  east = rooms.houyuan.id  }
+
+
+  room_characters "xiaowu" {
+    room_id = rooms.xiaowu.id
+    characters = [
+      { id = characters.puren.id },
+      { id = characters.puren.id },
+      { id = characters.puren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taohua/xiuxishi.c by LPCConverter
+# Zone: taohua
+
+    rooms "xiuxishi" {
+      name = "桃花轩"
+      description = "这是间整洁的厢房，因门窗常闭着，光线很昏暗。房里别 无他物，只有中间放着一张收拾得舒舒服服的大床，看着就让 人想睡觉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiuxishi" {
+    room_id = rooms.xiuxishi.id
+  west = rooms.siguoshi.id  }
+
+# Generated from C:/files/git/mud/d/taohua/npc/binu.c by LPCConverter
+# Zone: taohua
+
+    characters "binu" {
+      name = "婢奴"
+      description = "桃花岛主的独生女的婢奴清丽可人。"
+  gender = "女性"
+  age = 16
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  skills = [
+    { skill = "unarmed" level = 10 },
+    { skill = "dodge" level = 10 },
+    { skill = "parry" level = 10 },
+    { skill = "sword" level = 10 },
+    { skill = "force" level = 10 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taohua/npc/cheng.c by LPCConverter
+# Zone: taohua
+
+    characters "cheng" {
+      name = "程英"
+      description = "程英是黄药师从小收养的孤女。由黄药师亲手 教得了一手人人称绝的烹调手法，因此桃花岛 的膳食就由她负责。"
+  gender = "女性"
+  age = 18
+
+  combat = {
+    combat_exp = 10000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "luoying-shenzhang" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "anying-fuxiang" level = 50 },
+    { skill = "force" level = 50 },
+    { type = "dodge" skill = "anying-fuxiang" },
+    { type = "unarmed" skill = "luoying-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taohua/npc/chuanfu.c by LPCConverter
+# Zone: taohua
+
+    characters "chuanfu" {
+      name = "老船夫"
+      description = "这是一个老船夫。饱经风霜的脸上透出一丝狡猾。他经常出海，以前 曾经去过桃花岛。现在他拥有一艘大船可以出海。"
+  gender = "男性"
+  age = 56
+  shen_type = 1
+
+  combat = {
+    combat_exp = 1000000
+    max_neili = 1000
+  }
+
+  inquiries = [
+    { key = "出海" value = "(: chu_hai :)" },
+    { key = "桃花岛" value = "桃花岛上是一群妖魔！不过有个小妖女很美丽，啧啧！" }
+  ]
+
+  skills = [
+    { skill = "force" level = 200 },
+    { skill = "unarmed" level = 400 },
+    { skill = "dodge" level = 200 },
+    { skill = "parry" level = 200 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "money" min = 10000 accept = true msg = "你在海上航行了很久很久......." },
+    { kind = "any" accept = false msg = ["老船夫笑着对{npc}说：无功不受禄，您还是自己留着吧！", "老船夫对{npc}说：好！既然这位如此看得起我， 那我也拼上这条破船，舍命陪君子便了！", "老船夫一招手，叫来几个年轻船夫。", "年轻船夫和{npc}上了船，一声「起锚」船就开走了，但老船夫却没上船......", "老船夫皱眉对{npc}说：您给的也太少了吧？"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/npc/puren.c by LPCConverter
+# Zone: taohua
+
+    characters "puren" {
+      name = "仆人"
+      description = "这是一个桃花岛的仆人。"
+  gender = "男性"
+  age = 18
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000
+    dex = 16
+    str = 24
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "blade" level = 80 },
+    { skill = "force" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taohua/npc/shitong.c by LPCConverter
+# Zone: taohua
+
+    characters "shitong" {
+      name = "侍童"
+      description = "这是一个桃花岛试剑亭的侍童。"
+  gender = "男性"
+  age = 8
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000
+    dex = 16
+    str = 24
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "blade" level = 80 },
+    { skill = "force" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taohua/npc/shoumu.c by LPCConverter
+# Zone: taohua
+
+    characters "shoumu" {
+      name = "守墓家奴"
+      description = "他是桃花岛岛主夫人的守墓家奴。"
+  gender = "男性"
+  age = 28
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    dex = 16
+    str = 24
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 40 },
+    { skill = "sword" level = 80 },
+    { skill = "literate" level = 20 },
+    { skill = "jiuyin-baiguzhao" level = 90 },
+    { skill = "luoying-shenjian" level = 90 },
+    { skill = "bibo-shengong" level = 90 },
+    { skill = "anying-fuxiang" level = 90 },
+    { type = "force" skill = "bibo-shengong" },
+    { type = "parry" skill = "luoying-shenjian" },
+    { type = "sword" skill = "luoying-shenjian" },
+    { type = "dodge" skill = "anying-fuxiang" },
+    { type = "unarmed" skill = "jiuyin-baiguzhao" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taohua/npc/yapu.c by LPCConverter
+# Zone: taohua
+
+    characters "yapu" {
+      name = "哑仆"
+      description = "这是一个桃花岛的哑仆。他们全是十恶不赦的混蛋，黄药师刺哑他们，  充为下御。"
+  gender = "男性"
+  age = 18
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000
+    dex = 16
+    str = 24
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "blade" level = 80 },
+    { skill = "force" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/bagua.c by LPCConverter
+# Zone: taohua
+
+    items "bagua" {
+      name = "Item"
+      description = "这是一个生铁所铸的八卦盘，盘上雕满了太极八卦 纹样，制作得非常精致。风水师常常借此来观测风 水和卜卦，也可以用来破除(break)各种奇门阵法。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/baichou.c by LPCConverter
+# Zone: taohua
+
+    items "baichou" {
+      name = "白绸裙"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/baipao.c by LPCConverter
+# Zone: taohua
+
+    items "baipao" {
+      name = "白袍"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/baiyi.c by LPCConverter
+# Zone: taohua
+
+    items "baiyi" {
+      name = "白丝衣"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/bupao.c by LPCConverter
+# Zone: taohua
+
+    items "bupao" {
+      name = "青布袍"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/cha.c by LPCConverter
+# Zone: taohua
+
+    items "cha" {
+      name = "醉仙茶"
+      description = "这是一杯颜色碧绿、香味浓郁上等好茶。是招待桃花岛来客的。!"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/cubupao.c by LPCConverter
+# Zone: taohua
+
+    items "cubupao" {
+      name = "粗布袍"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/gao.c by LPCConverter
+# Zone: taohua
+
+    items "gao" {
+      name = "桃花糕"
+      description = "这是一块粉红色的点心，做成了桃花状，引人食欲大增。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/huaban.c by LPCConverter
+# Zone: taohua
+
+    items "huaban" {
+      name = "桃花瓣"
+      description = "新鲜的桃花花瓣，上面还挂这晶莹的露珠。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/jindai.c by LPCConverter
+# Zone: taohua
+
+    items "jindai" {
+      name = "束发金带"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/mingzhu.c by LPCConverter
+# Zone: taohua
+
+    items "mingzhu" {
+      name = "明珠"
+      description = "这是一颗罕见的上好明珠，看来值不少钱。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/ruanwei.c by LPCConverter
+# Zone: taohua
+
+    items "ruanwei" {
+      name = "软猬甲"
+      description = "一件轻飘飘的、生满尖锐倒刺的护甲。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/shizi.c by LPCConverter
+# Zone: taohua
+
+    items "shizi" {
+      name = "石子"
+      description = "一颗不同的小石子。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/shudai.c by LPCConverter
+# Zone: taohua
+
+    items "shudai" {
+      name = "束发金带"
+      description = "这是一条用金丝织成的束发带子"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/taojian.c by LPCConverter
+# Zone: taohua
+
+    items "taojian" {
+      name = "桃木剑"
+      description = "这是一把练习剑法用的桃木剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一把练剑用的{name}，握在手中。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/xiang.c by LPCConverter
+# Zone: taohua
+
+    items "xiang" {
+      name = "Item"
+      description = "这是一个颇为陈旧的墨漆木箱，箱中装有各种各样 的道具，大非寻常。可以用来布阵(array)惑敌。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/yuxiao.c by LPCConverter
+# Zone: taohua
+
+    items "yuxiao" {
+      name = "玉萧"
+      description = "一支白玉做成的长萧，看上去晶莹温润。武林中人经常以萧代剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}大袖一挥，手中已多了一支晶莹温润的玉萧。"
+    unwield = "{npc}手中玉萧一转，眨眼间玉萧已然不见影踪。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/taohua/obj/zhuxiao.c by LPCConverter
+# Zone: taohua
+
+    items "zhuxiao" {
+      name = "竹萧"
+      description = "一根普普通通的竹萧，但是也能吹出动人的曲子。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

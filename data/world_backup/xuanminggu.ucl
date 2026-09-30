@@ -1,0 +1,249 @@
+zones "xuanminggu" {
+  name = "xuanminggu"
+}
+
+# Generated from C:/files/git/mud/d/xuanminggu/shanjiao.c by LPCConverter
+# Zone: xuanminggu
+
+    rooms "shanjiao" {
+      name = "玄冥峰山脚"
+      description = "这是玄冥峰山脚，再往前走就是玄冥谷了。四周树木葱绿，绿草深 长。山鸡野兔肆意奔跑。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanjiao" {
+    room_id = rooms.shanjiao.id
+  eastdown = rooms.xiaolu1.id
+  northwest = rooms.shanlu1.id  }
+
+# Generated from C:/files/git/mud/d/xuanminggu/shanlu1.c by LPCConverter
+# Zone: xuanminggu
+
+    rooms "shanlu1" {
+      name = "山路"
+      description = "这是玄冥峰的山路，四周树木高耸，走兽成群。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu1" {
+    room_id = rooms.shanlu1.id
+  southeast = rooms.shanjiao.id
+  northwest = rooms.xiaolu2.id  }
+
+# Generated from C:/files/git/mud/d/xuanminggu/shanlu2.c by LPCConverter
+# Zone: xuanminggu
+
+    rooms "shanlu2" {
+      name = "山路"
+      description = "这是玄冥峰的山路，四周树木高耸，走兽成群。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu2" {
+    room_id = rooms.shanlu2.id
+  northup = rooms.shanlu3.id
+  southeast = rooms.zulin1.id  }
+
+# Generated from C:/files/git/mud/d/xuanminggu/shanlu3.c by LPCConverter
+# Zone: xuanminggu
+
+    rooms "shanlu3" {
+      name = "山路"
+      description = "这是玄冥峰的山路，四周树木高耸，走兽成群。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu3" {
+    room_id = rooms.shanlu3.id
+  northdown = rooms.xuanminggu.id
+  southdown = rooms.shanlu2.id  }
+
+# Generated from C:/files/git/mud/d/xuanminggu/shanlu4.c by LPCConverter
+# Zone: xuanminggu
+
+    rooms "shanlu4" {
+      name = "山路"
+      description = "这是玄冥峰的山路，四周树木高耸，走兽成群。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu4" {
+    room_id = rooms.shanlu4.id
+  northup = rooms.xuanmingfeng.id
+  southeast = rooms.xuanminggu.id  }
+
+# Generated from C:/files/git/mud/d/xuanminggu/xiaolu1.c by LPCConverter
+# Zone: xuanminggu
+
+    rooms "xiaolu1" {
+      name = "小路"
+      description = "这是陡坡上的一条杂草丛生的羊肠小路，看起来平时没什 么人迹，路边开着不知名野花，两边松树依然高大挺拔。阳光 透下来照的你身上是斑斑驳驳的影子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaolu1" {
+    room_id = rooms.xiaolu1.id
+  east = rooms.ximen.id
+  westup = rooms.shanjiao.id  }
+
+# Generated from C:/files/git/mud/d/xuanminggu/xiaolu2.c by LPCConverter
+# Zone: xuanminggu
+
+    rooms "xiaolu2" {
+      name = "小路"
+      description = "这是陡坡上的一条杂草丛生的羊肠小路，看起来平时没什 么人迹，路边开着不知名野花，两边松树依然高大挺拔。阳光 透下来照的你身上是斑斑驳驳的影子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaolu2" {
+    room_id = rooms.xiaolu2.id
+  southeast = rooms.shanlu1.id
+  westup = rooms.xiaolu3.id  }
+
+# Generated from C:/files/git/mud/d/xuanminggu/xiaolu3.c by LPCConverter
+# Zone: xuanminggu
+
+    rooms "xiaolu3" {
+      name = "小路"
+      description = "这是陡坡上的一条杂草丛生的羊肠小路，看起来平时没什 么人迹，路边开着不知名野花，两边松树依然高大挺拔。阳光 透下来照的你身上是斑斑驳驳的影子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaolu3" {
+    room_id = rooms.xiaolu3.id
+  eastdown = rooms.xiaolu2.id
+  westup = rooms.zulin1.id  }
+
+# Generated from C:/files/git/mud/d/xuanminggu/xiaowu.c by LPCConverter
+# Zone: xuanminggu
+
+    rooms "xiaowu" {
+      name = "休息室"
+      description = "这里是玄冥谷中的一间茅草屋，供平时休息之用。此处虽 然简陋了点，但也还算景色宜人，比之豪华的卧房更有一分清 新脱俗的感觉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaowu" {
+    room_id = rooms.xiaowu.id
+  out = rooms.xuanminggu.id  }
+
+# Generated from C:/files/git/mud/d/xuanminggu/xuanmingfeng.c by LPCConverter
+# Zone: xuanminggu
+
+    rooms "xuanmingfeng" {
+      name = "玄冥峰"
+      description = "这里便是玄冥峰了，只见四周白雪覆盖，远处群山却是葱 绿一片。举目四望，但见不远处玄冥谷中炊烟了了，偶有猴子 松鼠之类小生灵忽而跃出，而后又隐没与群山之间。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xuanmingfeng" {
+    room_id = rooms.xuanmingfeng.id
+  southdown = rooms.shanlu4.id  }
+
+
+
+
+  room_items "xuanmingfeng" {
+    room_id = rooms.xuanmingfeng.id
+    items = [
+      { id = items.bai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xuanminggu/xuanminggu.c by LPCConverter
+# Zone: xuanminggu
+
+    rooms "xuanminggu" {
+      name = "玄冥谷"
+      description = "这是玄冥谷了，但见四周群峰围绕，山石掩映，前方不远 处有几间小屋(room)，偶有山鹿追逐嬉戏，飞鸟齐鸣，犹如置 身于世外桃源一般。远远望见玄冥峰上白雪一片，云雾缭绕于 四周，令人心旷神怡。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ room = "一间简陋的茅草屋，可以在里面休息练功。"
+}
+    }
+
+  room_exits "xuanminggu" {
+    room_id = rooms.xuanminggu.id
+  southup = rooms.shanlu3.id
+  northwest = rooms.shanlu4.id
+  in = rooms.xiaowu.id  }
+
+
+
+
+  room_items "xuanminggu" {
+    room_id = rooms.xuanminggu.id
+    items = [
+      { id = items.lu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xuanminggu/zulin1.c by LPCConverter
+# Zone: xuanminggu
+
+    rooms "zulin1" {
+      name = "翠竹林"
+      description = "这是玄冥峰山腰的一片翠竹林，四处青翠掩映，鸟语花香。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zulin1" {
+    room_id = rooms.zulin1.id
+  eastdown = rooms.xiaolu3.id
+  westup = rooms.zulin2.id
+  northwest = rooms.shanlu2.id  }
+
+
+
+
+  room_items "zulin1" {
+    room_id = rooms.zulin1.id
+    items = [
+      { id = items.wuwang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xuanminggu/zulin2.c by LPCConverter
+# Zone: xuanminggu
+
+    rooms "zulin2" {
+      name = "翠竹林"
+      description = "这是玄冥峰山腰的一片翠竹林，四处青翠掩映，鸟语花香。 此处比之竹林入口处景色更佳，竹子的幽香气息扑鼻而来。实在 是练武静思之宝地。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zulin2" {
+    room_id = rooms.zulin2.id
+  eastdown = rooms.zulin1.id  }
+
+
+
+
+  room_items "zulin2" {
+    room_id = rooms.zulin2.id
+    items = [
+      { id = items.he.id }    ]
+  }
