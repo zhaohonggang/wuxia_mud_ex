@@ -266,8 +266,8 @@
   # if (sscanf(str,"%s about %s",tmp1, tmp2) == 2)  →  
 # ==== CONDITIONAL BRANCHES (redirect_ask) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_stuff
   # UNHANDLED FUNCTION: redirect_ask
+  # UNHANDLED FUNCTION: do_stuff
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -314,13 +314,13 @@
   # if (arg == "table")  →  write(HIY '\\\\\n你用尽了全身力气想移动石桌，可是它犹如在地面' '生根一般，纹丝不动。\\\\\n' NOR);
 # ==== CONDITIONAL BRANCHES (do_move) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_turn
-  # UNHANDLED FUNCTION: reset
-  # UNHANDLED FUNCTION: do_move
   # UNHANDLED FUNCTION: do_say
-  # UNHANDLED FUNCTION: recreate
   # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: recreate
   # UNHANDLED FUNCTION: check_trigger
+  # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: do_turn
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -393,8 +393,8 @@
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: xun
-  # UNHANDLED FUNCTION: do_move
   # UNHANDLED FUNCTION: do_xun
+  # UNHANDLED FUNCTION: do_move
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -846,9 +846,9 @@
   # if (ap * 2 + random(ap) > dp)  →  
 # ==== CONDITIONAL BRANCHES (invocation) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: invocation
-  # UNHANDLED FUNCTION: perform2
   # UNHANDLED FUNCTION: perform3
+  # UNHANDLED FUNCTION: perform2
+  # UNHANDLED FUNCTION: invocation
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -888,11 +888,11 @@
   # if ( arg == "潜能无限，精意神通，身居祸福，自我主宰！" && (int)query("poem_said") == 1 )  →  write(HIC '\\\\\n你对着黑暗一声猛喝，声音在司内回荡了好一阵才消逝。\\\\\n' NOR);
 # ==== CONDITIONAL BRANCHES (do_say) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: entering_world
-  # UNHANDLED FUNCTION: do_enter
   # UNHANDLED FUNCTION: do_say
   # UNHANDLED FUNCTION: recreate
+  # UNHANDLED FUNCTION: do_enter
   # UNHANDLED FUNCTION: do_smash
+  # UNHANDLED FUNCTION: entering_world
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -989,13 +989,13 @@
   # if (! ob->query("born"))  →  command('say 你快投胎去，在这里瞎搅和什么？');
 # ==== CONDITIONAL BRANCHES (attempt_apprentice) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: lost
-  # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: accept_hit
-  # UNHANDLED FUNCTION: win
-  # UNHANDLED FUNCTION: attempt_apprentice
   # UNHANDLED FUNCTION: ob_die
+  # UNHANDLED FUNCTION: attempt_apprentice
+  # UNHANDLED FUNCTION: lost
+  # UNHANDLED FUNCTION: win
+  # UNHANDLED FUNCTION: accept_hit
   # UNHANDLED FUNCTION: fight_ob
+  # UNHANDLED FUNCTION: accept_kill
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1044,10 +1044,10 @@
   # if (! is_killing(ob->query("id")))  →  
 # ==== CONDITIONAL BRANCHES (fight_ob) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: fight_ob
   # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: accept_hit
-  # UNHANDLED FUNCTION: fight_ob
+  # UNHANDLED FUNCTION: accept_fight
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1080,10 +1080,10 @@
   # if (! is_killing(ob->query("id")))  →  
 # ==== CONDITIONAL BRANCHES (fight_ob) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: fight_ob
   # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: accept_hit
-  # UNHANDLED FUNCTION: fight_ob
+  # UNHANDLED FUNCTION: accept_fight
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1197,33 +1197,33 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH POOL: switch(random(5)) { case 0: tell_room(environment(who), "\n你觉得自己不断下降，周围景物如彩蝶翻飞，不可注目。\n"); break; case 1: tell_room(environment(who), "\n你觉得自己不断下降。\n"); break; case 2: tell_room(environment(who),"\n你觉得自己不断下降，天地似乎没了界限。。。\n"); break; case 3: tell_room(environment(who),"\n你觉得自己不断下降，周围一切都在旋转。。。\n"); break; case 4: tell_room(environment(who),"\n你觉得自己不断下降，下降，似乎落向了无尽的深渊。\n"); break; }
 # ==== SWITCH POOLS ====
-  # UNHANDLED FUNCTION: winning
-  # UNHANDLED FUNCTION: round_1
-  # UNHANDLED FUNCTION: round_11
-  # UNHANDLED FUNCTION: round_4
-  # UNHANDLED FUNCTION: give_gold
-  # UNHANDLED FUNCTION: attempt_apprentice
-  # UNHANDLED FUNCTION: round_10
-  # UNHANDLED FUNCTION: round_18
-  # UNHANDLED FUNCTION: round_2
-  # UNHANDLED FUNCTION: round_14
-  # UNHANDLED FUNCTION: round_15
-  # UNHANDLED FUNCTION: answer
-  # UNHANDLED FUNCTION: round_13
-  # UNHANDLED FUNCTION: do_accept
-  # UNHANDLED FUNCTION: failed
-  # UNHANDLED FUNCTION: round_12
-  # UNHANDLED FUNCTION: round_6
-  # UNHANDLED FUNCTION: remove_all
-  # UNHANDLED FUNCTION: round_7
-  # UNHANDLED FUNCTION: round_5
   # UNHANDLED FUNCTION: message_ob
-  # UNHANDLED FUNCTION: round_17
-  # UNHANDLED FUNCTION: round_3
-  # UNHANDLED FUNCTION: round_9
-  # UNHANDLED FUNCTION: check_status
-  # UNHANDLED FUNCTION: round_16
+  # UNHANDLED FUNCTION: answer
   # UNHANDLED FUNCTION: round_8
+  # UNHANDLED FUNCTION: round_12
+  # UNHANDLED FUNCTION: round_18
+  # UNHANDLED FUNCTION: failed
+  # UNHANDLED FUNCTION: give_gold
+  # UNHANDLED FUNCTION: winning
+  # UNHANDLED FUNCTION: round_17
+  # UNHANDLED FUNCTION: attempt_apprentice
+  # UNHANDLED FUNCTION: round_15
+  # UNHANDLED FUNCTION: round_10
+  # UNHANDLED FUNCTION: round_14
+  # UNHANDLED FUNCTION: round_4
+  # UNHANDLED FUNCTION: round_6
+  # UNHANDLED FUNCTION: round_1
+  # UNHANDLED FUNCTION: remove_all
+  # UNHANDLED FUNCTION: round_3
+  # UNHANDLED FUNCTION: check_status
+  # UNHANDLED FUNCTION: round_9
+  # UNHANDLED FUNCTION: round_5
+  # UNHANDLED FUNCTION: round_11
+  # UNHANDLED FUNCTION: round_13
+  # UNHANDLED FUNCTION: round_7
+  # UNHANDLED FUNCTION: round_16
+  # UNHANDLED FUNCTION: do_accept
+  # UNHANDLED FUNCTION: round_2
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -3022,10 +3022,10 @@
   # if (ultrap(me))  →  message_vision(CYN '$N' CYN '微微一笑，对$n' CYN '点了点头。\\\\\n' NOR, this_object(), me);
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: lost
-  # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: win
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: accept_fight
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -3183,14 +3183,14 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: xiqu6
+  # UNHANDLED FUNCTION: xiqu3
   # UNHANDLED FUNCTION: xiqu7
   # UNHANDLED FUNCTION: setup
-  # UNHANDLED FUNCTION: xiqu1
-  # UNHANDLED FUNCTION: xiqu6
-  # UNHANDLED FUNCTION: xiqu4
   # UNHANDLED FUNCTION: do_eat
-  # UNHANDLED FUNCTION: xiqu3
   # UNHANDLED FUNCTION: xiqu5
+  # UNHANDLED FUNCTION: xiqu1
+  # UNHANDLED FUNCTION: xiqu4
   # UNHANDLED FUNCTION: xiqu2
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -3270,14 +3270,14 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: xiqu6
+  # UNHANDLED FUNCTION: xiqu3
   # UNHANDLED FUNCTION: xiqu7
   # UNHANDLED FUNCTION: setup
-  # UNHANDLED FUNCTION: xiqu1
-  # UNHANDLED FUNCTION: xiqu6
-  # UNHANDLED FUNCTION: xiqu4
   # UNHANDLED FUNCTION: do_eat
-  # UNHANDLED FUNCTION: xiqu3
   # UNHANDLED FUNCTION: xiqu5
+  # UNHANDLED FUNCTION: xiqu1
+  # UNHANDLED FUNCTION: xiqu4
   # UNHANDLED FUNCTION: xiqu2
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

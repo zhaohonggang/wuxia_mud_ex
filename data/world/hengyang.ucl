@@ -499,7 +499,7 @@ valid_leave = [
   room_exits "hsroad1" {
     room_id = rooms.hsroad1.id
     southeast = rooms.hsroad2.id
-    northdown = rooms.wdroad4.id
+    northdown = wudang.rooms.wdroad4.id
     }
 
 # Generated from C:/files/git/mud/d/hengyang/hsroad2.c by LPCConverter
@@ -515,7 +515,7 @@ valid_leave = [
 
   room_exits "hsroad2" {
     room_id = rooms.hsroad2.id
-    southeast = rooms.fzroad7.id
+    southeast = fuzhou.rooms.fzroad7.id
     southwest = rooms.hsroad3.id
     northwest = rooms.hsroad1.id
     }
@@ -570,7 +570,7 @@ valid_leave = [
     southup = rooms.hsroad9.id
     north = rooms.hsroad6.id
     east = rooms.hsroad4.id
-    west = rooms.mtroad1.id
+    west = motianya.rooms.mtroad1.id
     }
 
 # Generated from C:/files/git/mud/d/hengyang/hsroad6.c by LPCConverter
@@ -631,7 +631,7 @@ valid_leave = [
   room_exits "hsroad8" {
     room_id = rooms.hsroad8.id
     south = rooms.hsroad7.id
-    northwest = rooms.wdroad9.id
+    northwest = wudang.rooms.wdroad9.id
     }
 
 # Generated from C:/files/git/mud/d/hengyang/hsroad9.c by LPCConverter
@@ -647,7 +647,7 @@ valid_leave = [
 
   room_exits "hsroad9" {
     room_id = rooms.hsroad9.id
-    southdown = rooms.nanling.id
+    southdown = foshan.rooms.nanling.id
     northdown = rooms.hsroad5.id
     }
 
@@ -1040,9 +1040,9 @@ item_desc = {
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-    up = rooms.hengyang_shop.id
     north = rooms.hengyang11.id
     }
+  # skipped exit up: target outside d/: /clone/shop/hengyang_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -1160,8 +1160,10 @@ item_desc = {
 
   room_exits "ontree" {
     room_id = rooms.ontree.id
-    up = rooms.ontree2.id
+    eastdown = rooms.outzigai.id
+    northdown = rooms.liufudating.id
     down = rooms.xuanyadi.id
+    up = rooms.ontree2.id
     }
 
 # Generated from C:/files/git/mud/d/hengyang/ontree2.c by LPCConverter

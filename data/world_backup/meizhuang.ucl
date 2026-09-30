@@ -247,7 +247,7 @@ item_desc = {
 
   room_exits "hupan" {
     room_id = rooms.hupan.id
-  west = rooms.nanhu1.id
+  west = quanzhou.rooms.nanhu1.id
   north = rooms.xiaolu.id  }
 
 # Generated from C:/files/git/mud/d/meizhuang/keting.c by LPCConverter
@@ -483,7 +483,7 @@ item_desc = {
 
   room_exits "shijie" {
     room_id = rooms.shijie.id
-  eastdown = rooms.gushan.id
+  eastdown = hangzhou.rooms.gushan.id
   north = rooms.xiaolu.id  }
 
 # Generated from C:/files/git/mud/d/meizhuang/shushi.c by LPCConverter

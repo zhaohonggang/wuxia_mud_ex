@@ -287,7 +287,7 @@ item_desc = {
     room_id = rooms.riverside2.id
     northdown = rooms.riverside3.id
     southdown = rooms.riverside1.id
-    southeast = rooms.road3.id
+    southeast = dali.rooms.road3.id
     }
 
 # Generated from C:/files/git/mud/d/wanjiegu/riverside3.c by LPCConverter

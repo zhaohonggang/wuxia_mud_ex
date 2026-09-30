@@ -926,7 +926,7 @@ valid_leave = [
 
   room_exits "ximen" {
     room_id = rooms.ximen.id
-  west = rooms.xiaolu1.id
+  west = xuanminggu.rooms.xiaolu1.id
   southeast = rooms.biaoqiyin.id  }
 
 # Generated from C:/files/git/mud/d/lingzhou/xuanhebao.c by LPCConverter
@@ -946,7 +946,7 @@ valid_leave = [
   room_exits "xuanhebao" {
     room_id = rooms.xuanhebao.id
   northeast = rooms.mingshazhou.id
-  river = rooms.guchangcheng.id  }
+  river = huanghe.rooms.guchangcheng.id  }
 
 # Generated from C:/files/git/mud/d/lingzhou/yamen.c by LPCConverter
 # Zone: lingzhou

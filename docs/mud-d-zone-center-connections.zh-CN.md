@@ -22,8 +22,8 @@
 | 本区房间 | 方向 | 目标 |
 |---|---|---|
 | `guangchang` | in | `gaibang/inhole`（丐帮 · 树洞内部） |
-| `guangchang` | liuxi | `minimal_world/guangchang`（柳溪镇 · 镇广场） |
-| `guangchang` | — | `minimal_world_v2/guangchang`（测试世界） |
+| `guangchang` | liuxi | 接入ex里的柳溪镇 （不做`minimal_world/guangchang`（柳溪镇 · 镇广场）） |
+| （不做 `guangchang` | — | `minimal_world_v2/guangchang`（测试世界）） |
 | `beimen` | north | `shaolin/yidao`（少林 · 大驿道） |
 | `beimen` | west | `huanghe/caodi1`（黄河 · 草地） |
 | `dongmen` | east | `taishan/yidao`（泰山 · 大驿道） |

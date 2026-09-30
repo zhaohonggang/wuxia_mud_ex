@@ -750,7 +750,7 @@ valid_leave = [
   room_exits "jzbeimen" {
     room_id = rooms.jzbeimen.id
     south = rooms.beidajie2.id
-    northup = rooms.wdroad5.id
+    northup = wudang.rooms.wdroad5.id
     }
 
 
@@ -835,7 +835,7 @@ valid_leave = [
 
   room_exits "jzximen" {
     room_id = rooms.jzximen.id
-    west = rooms.shudao1.id
+    west = chengdu.rooms.shudao1.id
     east = rooms.xidajie2.id
     }
 
@@ -1184,9 +1184,9 @@ item_desc = {
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-    up = rooms.jingzhou_shop.id
     west = rooms.kedian.id
     }
+  # skipped exit up: target outside d/: /clone/shop/jingzhou_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -1289,7 +1289,7 @@ item_desc = {
 
   room_exits "nanshilu1" {
     room_id = rooms.nanshilu1.id
-    south = rooms.road1.id
+    south = kunming.rooms.road1.id
     north = rooms.nanshilu.id
     }
 
@@ -1372,9 +1372,9 @@ item_desc = {
     rooms "qingshan2" {
       name = "青山"
       description = "顺山而走，山势渐渐陡了起来，杂草荆棘丛生， 使你难 以行走。"
-  x = -4
-  y = -9
-  z = 1
+  x = 12
+  y = 1
+  z = 0
     }
 
   room_exits "qingshan2" {
@@ -1389,15 +1389,15 @@ item_desc = {
     rooms "road1" {
       name = "大道"
       description = "这是一条宽阔笔直的官道，足可容得下十马并驰。往东通 向脂粉之都的扬州，折向西南则通往西南重镇荆洲。"
-  x = 0
-  y = -6
-  z = 0
+  x = 16
+  y = 4
+  z = -1
     }
 
   room_exits "road1" {
     room_id = rooms.road1.id
     southwest = rooms.road2.id
-    northeast = rooms.ximenroad.id
+    northeast = city.rooms.ximenroad.id
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/road2.c by LPCConverter
@@ -1406,9 +1406,9 @@ item_desc = {
     rooms "road2" {
       name = "大道"
       description = "这是一条青石大道。东面隐约可以看到扬州城的城墙。向 西看去，只见群山起伏，青翠碧绿，不知通向哪里。"
-  x = -1
-  y = -7
-  z = 0
+  x = 15
+  y = 3
+  z = -1
     }
 
   room_exits "road2" {
@@ -1423,9 +1423,9 @@ item_desc = {
     rooms "road3" {
       name = "大道"
       description = "这是一条青石大道。向东通往扬州。向西而去，只见一座 高山青松古柏，一片大好风景。"
-  x = -2
-  y = -8
-  z = 0
+  x = 14
+  y = 2
+  z = -1
     }
 
   room_exits "road3" {
@@ -1440,9 +1440,9 @@ item_desc = {
     rooms "road4" {
       name = "青山"
       description = "山中树木茂密，花开万朵，这里风景秀美，小鸟在喳喳地 叫着，阳光从树页的缝隙中照进来，形成五彩的斑斓，你的心 情不由的高兴起来，跟着小鸟的歌声，向前走去。"
-  x = -3
-  y = -9
-  z = 0
+  x = 13
+  y = 1
+  z = -1
     }
 
   room_exits "road4" {

@@ -527,7 +527,7 @@ item_desc = {
     room_id = rooms.jzroad1.id
     up = rooms.jzroad6.id
     down = rooms.jinshedong.id
-    southwest = rooms.hsroad2.id
+    southwest = village.rooms.hsroad2.id
     east = rooms.jzroad2.id
     }
 
@@ -959,8 +959,8 @@ item_desc = {
     room_id = rooms.path1.id
     southeast = rooms.shaluo.id
     north = rooms.yuquan.id
-    east = rooms.yezhulin.id
-    west = rooms.eexit.id
+    east = kaifeng.rooms.yezhulin.id
+    west = village.rooms.eexit.id
     }
 
 # Generated from C:/files/git/mud/d/huashan/pingdi.c by LPCConverter

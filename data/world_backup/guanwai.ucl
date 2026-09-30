@@ -452,7 +452,7 @@ direction = "west"
   room_exits "laolongtou" {
     room_id = rooms.laolongtou.id
   northwest = rooms.shanhaiguan.id
-  southwest = rooms.road3.id  }
+  southwest = beijing.rooms.road3.id  }
 
 # Generated from C:/files/git/mud/d/guanwai/liangong.c by LPCConverter
 # Zone: guanwai

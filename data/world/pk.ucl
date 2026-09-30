@@ -25,7 +25,7 @@ direction = "north"
     room_id = rooms.entry.id
     up = rooms.turen1.id
     north = rooms.ready.id
-    west = rooms.yongtai_dadao2.id
+    west = changan.rooms.yongtai_dadao2.id
     }
 
 

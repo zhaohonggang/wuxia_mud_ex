@@ -292,7 +292,7 @@ item_desc = {
     room_id = rooms.hupan.id
     up = rooms.muzhuang.id
     down = rooms.huanshi.id
-    northeast = rooms.road5.id
+    northeast = suzhou.rooms.road5.id
     river = rooms.bozhou.id
     }
 

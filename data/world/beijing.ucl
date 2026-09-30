@@ -1816,8 +1816,8 @@ direction = "north"
     room_id = rooms.huiying.id
     down = rooms.aofu_shufang.id
     north = rooms.yong_1.id
-    up = rooms.jiulou.id
     }
+  # skipped exit up: target outside d/: /b/yitian/jiulou: no data/world zone to reference
 
 
   room_characters "huiying" {
@@ -2428,9 +2428,9 @@ item_desc = {
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-    up = rooms.beijing_shop.id
     east = rooms.niaoshi.id
     }
+  # skipped exit up: target outside d/: /clone/shop/beijing_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -2907,17 +2907,17 @@ item_desc = {
     rooms "road10" {
       name = "小道"
       description = "你走在一条尘土飞扬的大驿道上。四周人来人往。挑担子 的、行商的、赶着大车的马夫、上京赶考的书生，熙熙攘攘非 常热闹。不时还有两三骑快马从身边飞驰而过，扬起一路尘埃。 道路两旁是整整齐齐的杨树林。东边就是大海之滨了。"
-  x = -7
-  y = -8
+  x = 9
+  y = -10
   z = 0
     }
 
   room_exits "road10" {
     room_id = rooms.road10.id
     north = rooms.road9.id
-    south = rooms.ruzhou.id
-    east = rooms.haigang.id
+    south = shaolin.rooms.ruzhou.id
     }
+  # skipped exit east: target outside d/: /b/tulong/haigang: no data/world zone to reference
 
 
   room_characters "road10" {
@@ -2932,8 +2932,8 @@ item_desc = {
     rooms "road2" {
       name = "大驿道"
       description = "你走在一条尘土飞扬的大驿道上。四周人来人往。挑担子的、 行商的、赶着大车的马夫、上京赶考的书生，熙熙攘攘，非常热闹。 不时还有两三骑快马从身边飞驰而过，扬起一路尘埃。马上的人个 个身着劲装，衣甲鲜明，有的还随身佩带着刀剑。看来都是些些习 武的江湖人。道路两旁是整整齐齐的杨树林。"
-  x = -8
-  y = -3
+  x = 8
+  y = -5
   z = 0
     }
 
@@ -2957,8 +2957,8 @@ item_desc = {
     rooms "road3" {
       name = "大驿道"
       description = "你走在一条尘土飞扬的大驿道上。四周人来人往。挑担子的、 行商的，赶着大车的马夫，上京赶考的书生，熙熙攘攘，非常热闹。 不时还有两三骑快马从身边飞驰而过，扬起一路尘埃。道路两旁是 整整齐齐的杨树林。东北方向是另一条大道。"
-  x = -7
-  y = -4
+  x = 9
+  y = -6
   z = 0
     }
 
@@ -2966,7 +2966,7 @@ item_desc = {
     room_id = rooms.road3.id
     south = rooms.road4.id
     northwest = rooms.road2.id
-    northeast = rooms.laolongtou.id
+    northeast = guanwai.rooms.laolongtou.id
     }
 
 
@@ -2982,8 +2982,8 @@ item_desc = {
     rooms "road4" {
       name = "大驿道"
       description = "你走在一条尘土飞扬的大驿道上。四周人来人往。挑担子的、 行商的、赶着大车的马夫、上京赶考的书生，熙熙攘攘，非常热闹。 不时还有两三骑快马从身边飞驰而过，扬起一路尘埃。道路两旁是 整整齐齐的杨树林。从这里向北向西都可以上京城。南边通往汝州 城。"
-  x = -7
-  y = -5
+  x = 9
+  y = -7
   z = 0
     }
 
@@ -3015,7 +3015,7 @@ item_desc = {
   room_exits "road5" {
     room_id = rooms.road5.id
     southeast = rooms.road6.id
-    west = rooms.bieyuan.id
+    west = xueshan.rooms.bieyuan.id
     north = rooms.yongdingmen.id
     }
 
@@ -3040,7 +3040,7 @@ item_desc = {
   room_exits "road6" {
     room_id = rooms.road6.id
     southeast = rooms.road7.id
-    southwest = rooms.jinlongxia.id
+    southwest = hengshan.rooms.jinlongxia.id
     northwest = rooms.road5.id
     }
 
@@ -3050,8 +3050,8 @@ item_desc = {
     rooms "road7" {
       name = "大驿道"
       description = "你走在一条尘土飞扬的大驿道上。四周人来人往。挑担子的、 行商的、赶着大车的马夫、上京赶考的书生，熙熙攘攘，非常热闹。 不时还有两三骑快马从身边飞驰而过，扬起一路尘埃。道路两旁是 整整齐齐的杨树林。"
-  x = -8
-  y = -5
+  x = 2
+  y = -15
   z = 0
     }
 
@@ -3074,8 +3074,8 @@ item_desc = {
     rooms "road8" {
       name = "大驿道"
       description = "你走在一条尘土飞扬的大驿道上。北上就是北京城。挑担子的、 行商的、赶着大车的马夫、上京赶考的书生，熙熙攘攘，非常热闹。 不时还有两三骑快马从身边飞驰而过，扬起一路尘埃。西边有个小 摊，许多人在那里歇息。"
-  x = -7
-  y = -6
+  x = 9
+  y = -8
   z = 0
     }
 
@@ -3092,8 +3092,8 @@ item_desc = {
     rooms "road9" {
       name = "大驿道"
       description = "你走在一条尘土飞扬的大驿道上。四周人来人往。挑担子的、 行商的、赶着大车的马夫、上京赶考的书生，熙熙攘攘，非常热闹。 不时还有两三骑快马从身边飞驰而过，扬起一路尘埃。马上的人个 个身着劲装，衣甲鲜明，有的还随身佩带着刀剑。看来都是些些习 武的江湖人。道路两旁是整整齐齐的杨树林。"
-  x = -7
-  y = -7
+  x = 9
+  y = -9
   z = 0
     }
 
@@ -4078,8 +4078,8 @@ direction = "west"
     rooms "xiaotan" {
       name = "小摊"
       description = "这是一临时搭成的小摊，生意却非常兴隆。路人都爱在这里落脚， 你可以在这里打听到京城的奇闻逸趣。小二匆匆忙忙地接待着南来北往 的客人。树荫下摆着几张小木桌，桌旁坐满了各种各样的游人。"
-  x = -8
-  y = -6
+  x = 8
+  y = -8
   z = 0
 valid_leave = [
 {
@@ -4225,7 +4225,7 @@ direction = "east"
     room_id = rooms.ximenwai.id
     south = rooms.liandan_lin2.id
     north = rooms.liandan_lin1.id
-    west = rooms.road3.id
+    west = heimuya.rooms.road3.id
     east = rooms.xichengmen.id
     }
 

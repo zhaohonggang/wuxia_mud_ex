@@ -40,7 +40,7 @@ zones "huanghe" {
 
   room_exits "caodi1" {
     room_id = rooms.caodi1.id
-  east = rooms.beimen.id
+  east = city.rooms.beimen.id
   west = rooms.caodi2.id  }
 
 # Generated from C:/files/git/mud/d/huanghe/caodi2.c by LPCConverter
@@ -144,7 +144,7 @@ zones "huanghe" {
     room_id = rooms.guchangcheng.id
   southwest = rooms.yinpanshui.id
   southeast = rooms.shimen.id
-  river = rooms.xuanhebao.id  }
+  river = lingzhou.rooms.xuanhebao.id  }
 
 
   room_characters "guchangcheng" {
@@ -312,7 +312,7 @@ zones "huanghe" {
 
   room_exits "huanghe5" {
     room_id = rooms.huanghe5.id
-  east = rooms.daizong.id
+  east = taishan.rooms.daizong.id
   northeast = rooms.huanghe6.id
   southwest = rooms.huanghe4.id  }
 
@@ -385,7 +385,7 @@ zones "huanghe" {
     room_id = rooms.huanghe_1.id
   south = rooms.weifen.id
   west = rooms.hetao.id
-  northeast = rooms.dukou2.id  }
+  northeast = heimuya.rooms.dukou2.id  }
 
 # Generated from C:/files/git/mud/d/huanghe/huanghe_2.c by LPCConverter
 # Zone: huanghe
@@ -564,7 +564,7 @@ item_desc = {
   room_exits "liupanshan" {
     room_id = rooms.liupanshan.id
   northdown = rooms.yongdeng.id
-  eastdown = rooms.wexit.id  }
+  eastdown = village.rooms.wexit.id  }
 
 # Generated from C:/files/git/mud/d/huanghe/majiu.c by LPCConverter
 # Zone: huanghe
@@ -627,10 +627,10 @@ item_desc = {
 
   room_exits "shamo" {
     room_id = rooms.shamo.id
-  north = rooms.__file__.id
-  south = rooms.shamo1.id
-  east = rooms.__file__.id
-  west = rooms.__file__.id  }
+  south = rooms.shamo1.id  }
+  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/huanghe/shamo1.c by LPCConverter
 # Zone: huanghe
@@ -645,11 +645,11 @@ item_desc = {
 
   room_exits "shamo1" {
     room_id = rooms.shamo1.id
-  north = rooms.__file__.id
   south = rooms.shamo1.id
-  east = rooms.__file__.id
-  west = rooms.__file__.id
   in = rooms.shidong.id  }
+  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/huanghe/shidong.c by LPCConverter
 # Zone: huanghe
@@ -962,7 +962,7 @@ item_desc = {
     room_id = rooms.weifen.id
   south = rooms.huanghe1.id
   north = rooms.huanghe_1.id
-  southwest = rooms.road5.id  }
+  southwest = heimuya.rooms.road5.id  }
 
 # Generated from C:/files/git/mud/d/huanghe/wufosi.c by LPCConverter
 # Zone: huanghe
@@ -1041,7 +1041,7 @@ item_desc = {
   room_exits "xiaojiaqiao" {
     room_id = rooms.xiaojiaqiao.id
   east = rooms.gulang.id
-  south = rooms.river_bei.id  }
+  south = lanzhou.rooms.river_bei.id  }
 
 # Generated from C:/files/git/mud/d/huanghe/xiayiting.c by LPCConverter
 # Zone: huanghe
@@ -1140,7 +1140,7 @@ item_desc = {
 
   room_exits "yongdeng" {
     room_id = rooms.yongdeng.id
-  southup = rooms.tulu4.id
+  southup = changan.rooms.tulu4.id
   north = rooms.gulang.id
   east = rooms.huanghe_3.id
   west = rooms.kedian.id  }

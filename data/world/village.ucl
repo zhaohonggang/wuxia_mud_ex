@@ -89,7 +89,7 @@ zones "village" {
 
   room_exits "eexit" {
     room_id = rooms.eexit.id
-    east = rooms.path1.id
+    east = huashan.rooms.path1.id
     west = rooms.eroad1.id
     }
 
@@ -221,7 +221,7 @@ zones "village" {
 
   room_exits "hsroad1" {
     room_id = rooms.hsroad1.id
-    south = rooms.guandaon4.id
+    south = luoyang.rooms.guandaon4.id
     north = rooms.hsroad2.id
     }
 
@@ -248,7 +248,7 @@ zones "village" {
 
   room_exits "hsroad2" {
     room_id = rooms.hsroad2.id
-    northeast = rooms.jzroad1.id
+    northeast = huashan.rooms.jzroad1.id
     northwest = rooms.hsroad3.id
     south = rooms.hsroad1.id
     }
@@ -641,7 +641,7 @@ item_desc = {
 
   room_exits "wexit" {
     room_id = rooms.wexit.id
-    northwest = rooms.road6.id
+    northwest = heimuya.rooms.road6.id
     north = rooms.shack.id
     east = rooms.nwroad1.id
     }

@@ -87,7 +87,7 @@ zones "wizard" {
     room_id = rooms.herodoor.id
     down = rooms.hall.id
     in = rooms.hall.id
-    up = rooms.wumiao.id
+    up = city.rooms.wumiao.id
     west = rooms.wenxuan.id
     }
 

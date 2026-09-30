@@ -81,7 +81,7 @@ zones "taishan" {
 
   room_exits "daizong" {
     room_id = rooms.daizong.id
-    west = rooms.huanghe5.id
+    west = huanghe.rooms.huanghe5.id
     south = rooms.taishanjiao.id
     northup = rooms.baihe.id
     }
@@ -560,7 +560,7 @@ direction = ~
   room_exits "yidao" {
     room_id = rooms.yidao.id
     east = rooms.yidao1.id
-    west = rooms.dongmen.id
+    west = city.rooms.dongmen.id
     }
 
 
@@ -585,7 +585,7 @@ direction = ~
 
   room_exits "yidao1" {
     room_id = rooms.yidao1.id
-    southeast = rooms.qzroad1.id
+    southeast = quanzhou.rooms.qzroad1.id
     northeast = rooms.yidao2.id
     west = rooms.yidao.id
     }

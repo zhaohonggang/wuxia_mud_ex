@@ -1454,7 +1454,7 @@ item_desc = {
 
   room_exits "midao5" {
     room_id = rooms.midao5.id
-    up = rooms.qingyanggong.id
+    up = chengdu.rooms.qingyanggong.id
     south = rooms.midao4.id
     }
 
@@ -1627,7 +1627,7 @@ item_desc = {
   room_exits "qsjie1" {
     room_id = rooms.qsjie1.id
     southwest = rooms.qsjie2.id
-    west = rooms.road1.id
+    west = chengdu.rooms.road1.id
     north = rooms.xiaolu2.id
     }
 
@@ -1654,7 +1654,7 @@ item_desc = {
     room_id = rooms.qsjie2.id
     west = rooms.caopeng.id
     southup = rooms.bgsgate.id
-    southwest = rooms.road1.id
+    southwest = dali.rooms.road1.id
     northeast = rooms.qsjie1.id
     }
 
@@ -1892,7 +1892,7 @@ item_desc = {
 
   room_exits "wdroad" {
     room_id = rooms.wdroad.id
-    northeast = rooms.sanbuguan.id
+    northeast = wudang.rooms.sanbuguan.id
     southwest = rooms.xiaolu1.id
     }
 

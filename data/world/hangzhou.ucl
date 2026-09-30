@@ -389,7 +389,7 @@ zones "hangzhou" {
     northwest = rooms.xilingqiao.id
     southup = rooms.gushanpingtai.id
     east = rooms.pinghuqiuyue.id
-    westup = rooms.shijie.id
+    westup = meizhuang.rooms.shijie.id
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/gushanpingtai.c by LPCConverter
@@ -1198,9 +1198,9 @@ valid_leave = [
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-    up = rooms.hangzhou_shop.id
     west = rooms.kedian.id
     }
+  # skipped exit up: target outside d/: /clone/shop/hangzhou_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -1427,7 +1427,7 @@ item_desc = {
     south = rooms.feilaifeng.id
     north = rooms.lingyinsi.id
     northeast = rooms.road2.id
-    northwest = rooms.jxnanmen.id
+    northwest = quanzhou.rooms.jxnanmen.id
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/road10.c by LPCConverter

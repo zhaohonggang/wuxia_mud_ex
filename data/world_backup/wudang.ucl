@@ -836,7 +836,7 @@ direction = "southup"
     room_id = rooms.sanbuguan.id
   east = rooms.wdroad8.id
   southeast = rooms.wdroad9.id
-  southwest = rooms.wdroad.id  }
+  southwest = emei.rooms.wdroad.id  }
 
 # Generated from C:/files/git/mud/d/wudang/sanlaofeng.c by LPCConverter
 # Zone: wudang
@@ -1722,7 +1722,7 @@ item_desc = {
   room_exits "wdroad1" {
     room_id = rooms.wdroad1.id
   south = rooms.wdroad2.id
-  north = rooms.nanmen.id  }
+  north = city.rooms.nanmen.id  }
 
 # Generated from C:/files/git/mud/d/wudang/wdroad10.c by LPCConverter
 # Zone: wudang
@@ -1763,7 +1763,7 @@ item_desc = {
     room_id = rooms.wdroad2.id
   south = rooms.wdroad3.id
   north = rooms.wdroad1.id
-  southeast = rooms.yixing.id  }
+  southeast = guiyun.rooms.yixing.id  }
 
 # Generated from C:/files/git/mud/d/wudang/wdroad3.c by LPCConverter
 # Zone: wudang
@@ -1795,8 +1795,8 @@ item_desc = {
   room_exits "wdroad4" {
     room_id = rooms.wdroad4.id
   west = rooms.wdroad5.id
-  east = rooms.shulin3.id
-  southup = rooms.hsroad1.id
+  east = xiaoyao.rooms.shulin3.id
+  southup = hengyang.rooms.hsroad1.id
   north = rooms.wdroad3.id  }
 
 # Generated from C:/files/git/mud/d/wudang/wdroad5.c by LPCConverter
@@ -1813,9 +1813,9 @@ item_desc = {
   room_exits "wdroad5" {
     room_id = rooms.wdroad5.id
   northwest = rooms.wdroad6.id
-  north = rooms.caodi6.id
+  north = xiangyang.rooms.caodi6.id
   east = rooms.wdroad4.id
-  southdown = rooms.jzbeimen.id  }
+  southdown = jingzhou.rooms.jzbeimen.id  }
 
 # Generated from C:/files/git/mud/d/wudang/wdroad6.c by LPCConverter
 # Zone: wudang
@@ -1890,7 +1890,7 @@ item_desc = {
     room_id = rooms.wdroad9.id
   northwest = rooms.sanbuguan.id
   south = rooms.wdroad10.id
-  southeast = rooms.hsroad8.id  }
+  southeast = hengyang.rooms.hsroad8.id  }
 
 # Generated from C:/files/git/mud/d/wudang/wulaofeng.c by LPCConverter
 # Zone: wudang

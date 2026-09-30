@@ -147,7 +147,7 @@ zones "qingcheng" {
 
   room_exits "qcroad1" {
     room_id = rooms.qcroad1.id
-  south = rooms.fuheqiaon.id
+  south = chengdu.rooms.fuheqiaon.id
   west = rooms.qcroad2.id  }
 
 # Generated from C:/files/git/mud/d/qingcheng/qcroad2.c by LPCConverter

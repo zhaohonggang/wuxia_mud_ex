@@ -550,16 +550,16 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: attack
-  # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: catch_ob
-  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: catch_killer
   # UNHANDLED FUNCTION: do_halt
-  # UNHANDLED FUNCTION: scan
   # UNHANDLED FUNCTION: do_chat
   # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: catch_ob
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: scan
+  # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: return_back
-  # UNHANDLED FUNCTION: catch_killer
+  # UNHANDLED FUNCTION: attack
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -602,16 +602,16 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: attack
-  # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: catch_ob
-  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: catch_killer
   # UNHANDLED FUNCTION: do_halt
-  # UNHANDLED FUNCTION: scan
   # UNHANDLED FUNCTION: do_chat
   # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: catch_ob
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: scan
+  # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: return_back
-  # UNHANDLED FUNCTION: catch_killer
+  # UNHANDLED FUNCTION: attack
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

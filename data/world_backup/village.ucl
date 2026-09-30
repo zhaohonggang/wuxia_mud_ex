@@ -86,7 +86,7 @@ zones "village" {
   room_exits "eexit" {
     room_id = rooms.eexit.id
   west = rooms.eroad1.id
-  east = rooms.path1.id  }
+  east = huashan.rooms.path1.id  }
 
 
   room_characters "eexit" {
@@ -212,7 +212,7 @@ zones "village" {
   room_exits "hsroad1" {
     room_id = rooms.hsroad1.id
   north = rooms.hsroad2.id
-  south = rooms.guandaon4.id  }
+  south = luoyang.rooms.guandaon4.id  }
 
 
   room_characters "hsroad1" {
@@ -239,7 +239,7 @@ zones "village" {
     room_id = rooms.hsroad2.id
   south = rooms.hsroad1.id
   northwest = rooms.hsroad3.id
-  northeast = rooms.jzroad1.id  }
+  northeast = huashan.rooms.jzroad1.id  }
 
 # Generated from C:/files/git/mud/d/village/hsroad3.c by LPCConverter
 # Zone: village
@@ -612,7 +612,7 @@ item_desc = {
     room_id = rooms.wexit.id
   east = rooms.nwroad1.id
   north = rooms.shack.id
-  northwest = rooms.road6.id  }
+  northwest = heimuya.rooms.road6.id  }
 
 
   room_characters "wexit" {

@@ -125,9 +125,9 @@ item_desc = {
 
   room_exits "caoyuan5" {
     room_id = rooms.caoyuan5.id
-    southwest = rooms.nanjiang2.id
-    south = rooms.nanjiang2.id
-    west = rooms.nanjiang1.id
+    southwest = xiyu.rooms.nanjiang2.id
+    south = xiyu.rooms.nanjiang2.id
+    west = xiyu.rooms.nanjiang1.id
     east = rooms.caoyuan4.id
     }
 
@@ -171,7 +171,7 @@ direction = "north"
     room_id = rooms.caoyuan7.id
     eastdown = rooms.caoyuan6.id
     westdown = rooms.shamo1.id
-    north = rooms.shulin1.id
+    north = gaochang.rooms.shulin1.id
     }
 
 # Generated from C:/files/git/mud/d/shenfeng/dadian.c by LPCConverter
@@ -330,7 +330,7 @@ item_desc = {
 
   room_exits "guandao1" {
     room_id = rooms.guandao1.id
-    east = rooms.road.id
+    east = lanzhou.rooms.road.id
     west = rooms.guandao2.id
     }
 

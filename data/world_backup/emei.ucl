@@ -1386,7 +1386,7 @@ item_desc = {
   room_exits "midao5" {
     room_id = rooms.midao5.id
   south = rooms.midao4.id
-  up = rooms.qingyanggong.id  }
+  up = chengdu.rooms.qingyanggong.id  }
 
 # Generated from C:/files/git/mud/d/emei/milin1.c by LPCConverter
 # Zone: emei
@@ -1548,7 +1548,7 @@ item_desc = {
   room_exits "qsjie1" {
     room_id = rooms.qsjie1.id
   north = rooms.xiaolu2.id
-  west = rooms.road1.id
+  west = chengdu.rooms.road1.id
   southwest = rooms.qsjie2.id  }
 
 
@@ -1573,7 +1573,7 @@ item_desc = {
   room_exits "qsjie2" {
     room_id = rooms.qsjie2.id
   northeast = rooms.qsjie1.id
-  southwest = rooms.road1.id
+  southwest = dali.rooms.road1.id
   southup = rooms.bgsgate.id
   west = rooms.caopeng.id  }
 
@@ -1790,7 +1790,7 @@ item_desc = {
   room_exits "wdroad" {
     room_id = rooms.wdroad.id
   southwest = rooms.xiaolu1.id
-  northeast = rooms.sanbuguan.id  }
+  northeast = wudang.rooms.sanbuguan.id  }
 
 # Generated from C:/files/git/mud/d/emei/wnachanfang.c by LPCConverter
 # Zone: emei

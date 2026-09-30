@@ -271,7 +271,7 @@ item_desc = {
 
   room_exits "hupan" {
     room_id = rooms.hupan.id
-  northeast = rooms.road5.id
+  northeast = suzhou.rooms.road5.id
   river = rooms.bozhou.id  }
 
 

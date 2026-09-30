@@ -997,7 +997,7 @@ item_desc = {
   room_exits "zhenyuanqiao" {
     room_id = rooms.zhenyuanqiao.id
   west = rooms.shanlu.id
-  eastdown = rooms.shanjiao.id  }
+  eastdown = mingjiao.rooms.shanjiao.id  }
 
 
   room_characters "zhenyuanqiao" {

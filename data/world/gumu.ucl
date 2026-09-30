@@ -127,7 +127,7 @@ zones "gumu" {
   room_exits "daxiaochang" {
     room_id = rooms.daxiaochang.id
     up = rooms.chongyanggate.id
-    northup = rooms.shijie1.id
+    northup = quanzhen.rooms.shijie1.id
     westup = rooms.shanlu7.id
     southdown = rooms.shanlu8.id
     }
@@ -399,10 +399,10 @@ item_desc = {
   room_exits "mishi2" {
     room_id = rooms.mishi2.id
     up = rooms.houting.id
-    south = rooms.__file__.id
-    north = rooms.__file__.id
     east = rooms.mishi3.id
     }
+  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/gumu/mishi3.c by LPCConverter
 # Zone: gumu
@@ -436,11 +436,11 @@ item_desc = {
 
   room_exits "mishi4" {
     room_id = rooms.mishi4.id
-    south = rooms.__file__.id
-    north = rooms.__file__.id
-    east = rooms.__file__.id
     west = rooms.mishi3.id
     }
+  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/gumu/mishi5.c by LPCConverter
 # Zone: gumu
@@ -455,11 +455,11 @@ item_desc = {
 
   room_exits "mishi5" {
     room_id = rooms.mishi5.id
-    east = rooms.__file__.id
-    west = rooms.__file__.id
-    north = rooms.__file__.id
     south = rooms.mishi3.id
     }
+  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/gumu/mishi6.c by LPCConverter
 # Zone: gumu
@@ -474,11 +474,11 @@ item_desc = {
 
   room_exits "mishi6" {
     room_id = rooms.mishi6.id
-    west = rooms.__file__.id
     south = rooms.mishi7.id
     north = rooms.mishi3.id
-    east = rooms.__file__.id
     }
+  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/gumu/mishi7.c by LPCConverter
 # Zone: gumu
@@ -493,11 +493,11 @@ item_desc = {
 
   room_exits "mishi7" {
     room_id = rooms.mishi7.id
-    west = rooms.__file__.id
-    south = rooms.__file__.id
     north = rooms.mishi6.id
     east = rooms.mishi8.id
     }
+  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/gumu/mishi8.c by LPCConverter
 # Zone: gumu
@@ -512,7 +512,7 @@ item_desc = {
 
   room_exits "mishi8" {
     room_id = rooms.mishi8.id
-    out = rooms.guangchang.id
+    out = city.rooms.guangchang.id
     west = rooms.mishi7.id
     }
 
@@ -761,7 +761,7 @@ valid_leave = [
 
   room_exits "shanlu13" {
     room_id = rooms.shanlu13.id
-    south = rooms.shanjiao.id
+    south = quanzhen.rooms.shanjiao.id
     west = rooms.shanlu14.id
     east = rooms.puguangsi.id
     northup = rooms.shanlu12.id
@@ -1148,11 +1148,11 @@ item_desc = {
 
   room_exits "shulin5" {
     room_id = rooms.shulin5.id
-    west = rooms.__file__.id
-    north = rooms.__file__.id
     south = rooms.shulin4.id
     east = rooms.shulin0.id
     }
+  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/gumu/shulin6.c by LPCConverter
 # Zone: gumu
@@ -1167,11 +1167,11 @@ item_desc = {
 
   room_exits "shulin6" {
     room_id = rooms.shulin6.id
-    east = rooms.__file__.id
-    south = rooms.__file__.id
     north = rooms.shulin4.id
     west = rooms.shulin0.id
     }
+  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/gumu/shulin7.c by LPCConverter
 # Zone: gumu

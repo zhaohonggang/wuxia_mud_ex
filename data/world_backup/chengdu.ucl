@@ -218,7 +218,7 @@ item_desc = {
 
   room_exits "fuheqiaon" {
     room_id = rooms.fuheqiaon.id
-  north = rooms.qcroad1.id
+  north = qingcheng.rooms.qcroad1.id
   south = rooms.northgate.id  }
 
 # Generated from C:/files/git/mud/d/chengdu/guangchang.c by LPCConverter
@@ -356,8 +356,8 @@ direction = "west"
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-  west = rooms.kedian.id
-  up = rooms.chengdu_shop.id  }
+  west = rooms.kedian.id  }
+  # skipped exit up: target outside d/: /clone/shop/chengdu_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -413,7 +413,7 @@ direction = "west"
 
   room_exits "nanheqiaos" {
     room_id = rooms.nanheqiaos.id
-  south = rooms.sroad1.id
+  south = xuedao.rooms.sroad1.id
   north = rooms.southgate.id  }
 
 # Generated from C:/files/git/mud/d/chengdu/nanheqiaow.c by LPCConverter
@@ -622,7 +622,7 @@ direction = "south"
 
   room_exits "road1" {
     room_id = rooms.road1.id
-  east = rooms.qsjie1.id
+  east = emei.rooms.qsjie1.id
   northwest = rooms.road2.id  }
 
 # Generated from C:/files/git/mud/d/chengdu/road2.c by LPCConverter
@@ -710,7 +710,7 @@ direction = "south"
 
   room_exits "shudao1" {
     room_id = rooms.shudao1.id
-  east = rooms.jzximen.id
+  east = jingzhou.rooms.jzximen.id
   west = rooms.shudao2.id  }
 
 # Generated from C:/files/git/mud/d/chengdu/shudao10.c by LPCConverter

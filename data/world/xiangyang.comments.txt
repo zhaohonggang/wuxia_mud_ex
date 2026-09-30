@@ -351,10 +351,10 @@
   # if (me->query("bad_vendor"))  →  
 # ==== CONDITIONAL BRANCHES (do_join) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_join
+  # UNHANDLED FUNCTION: do_yao
   # UNHANDLED FUNCTION: do_unjoin
   # UNHANDLED FUNCTION: do_decide
-  # UNHANDLED FUNCTION: do_yao
+  # UNHANDLED FUNCTION: do_join
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -378,9 +378,9 @@
   # if (!(int)ob->query_temp("mark/朱"))  →  
 # ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_buy
   # UNHANDLED FUNCTION: ask_degree
   # UNHANDLED FUNCTION: recognize_apprentice
-  # UNHANDLED FUNCTION: ask_buy
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

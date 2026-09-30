@@ -795,7 +795,7 @@ item_desc = {
 
   room_exits "shanjiao" {
     room_id = rooms.shanjiao.id
-    southdown = rooms.tianroad2.id
+    southdown = xiyu.rooms.tianroad2.id
     westup = rooms.ya.id
     }
 

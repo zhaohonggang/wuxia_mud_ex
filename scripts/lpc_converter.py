@@ -1625,13 +1625,88 @@ def _room_id_from_path(path):
     return _norm_id(base).lower()
 
 
-def _resolve_exit_target(val):
+# Roots that live outside d/ and therefore have no data/world/<zone>.ucl to
+# point at.  An exit into one of them cannot be expressed as a zone reference.
+_UNLINKABLE_ROOTS = ("/clone/", "/b/", "/u/", "/adm/", "/cmds/", "/include/")
+
+
+def _classify_exit_path(path, zone_id):
+    """Classify an LPC exit target path.
+
+    Returns one of:
+      ("local",  room_id)               same zone -> rooms.<room>.id
+      ("cross",  zone, room_id)         other d/ zone -> <zone>.rooms.<room>.id
+      ("sub",    room_id)               same zone, written with a subdirectory
+                                         (e.g. "dule/xiaoyuan", "heisenlin/entry")
+      ("self",   None)                  __FILE__ / the room itself
+      ("skip",   reason)                no data/world zone to point at
+    """
+    raw = path.strip()
+    if raw.startswith("__FILE__"):
+        return ("self", None)
+
+    t = raw.replace("__DIR__", "").replace('"', "").strip()
+
+    if t.startswith("/d/"):
+        parts = t[3:].split("/")
+        tzone = parts[0]
+        tail = "/".join(parts[1:])
+        if not tail:
+            return ("skip", "empty /d/ path")
+        room = _room_id_from_path(tail)
+        if tzone == zone_id:
+            return ("local", room)
+        return ("cross", tzone, room)
+
+    for root in _UNLINKABLE_ROOTS:
+        if t.startswith(root):
+            return ("skip", "target outside d/: %s" % t)
+
+    if t.startswith(".."):
+        return ("skip", "relative path: %s" % t)
+
+    if t == "":
+        return ("skip", "empty target")
+
+    if "/" in t:
+        # Same-zone reference written with a subdirectory, e.g. room/xiaoyuan's
+        # "dule" : "dule/xiaoyuan", city's "qiyuan/qiyuan1", death's
+        # "heisenlin/entry".  The basename is the room id.
+        head = t.split("/")[0]
+        if head == zone_id:
+            return ("local", _room_id_from_path(t))
+        return ("skip", "unrecognised relative path: %s" % t)
+
+    return ("local", _room_id_from_path(t))
+
+
+def _resolve_exit_target(val, zone_id):
+    """Render an exit value as a UCL reference.
+
+    Cross-zone targets become `<zone>.rooms.<room>.id` because that is the shape
+    Kantele.World.Loader.dereference/3 understands: it splits on "." and treats
+    a first segment that is not "rooms"/"characters"/"items" as a zone id to
+    look up (loader.ex:1315-1343).  Without the zone prefix a cross-zone exit
+    was written as `rooms.<room>.id`, which resolved *inside the source zone* -
+    either dangling (dropped by parse_exits' `not is_nil` filter) or, when the
+    source zone happened to own a room of that name, silently linked to the
+    wrong room (e.g. beijing/ximenwai -west-> /d/heimuya/road3 pointed at
+    beijing/road3).
+    """
     if isinstance(val, tuple) and val[0] == "string":
-        return "rooms." + _room_id_from_path(val[1]) + ".id"
-    if isinstance(val, tuple) and val[0] == "var":
-        v = val[1].strip()
-        return "rooms." + _room_id_from_path(v) + ".id"
-    return '"unknown"'
+        kind, *rest = _classify_exit_path(val[1], zone_id)
+    elif isinstance(val, tuple) and val[0] == "var":
+        kind, *rest = _classify_exit_path(val[1].strip(), zone_id)
+    else:
+        return None, "non-literal exit target"
+
+    if kind == "local" or kind == "sub":
+        return "rooms." + rest[0] + ".id", None
+    if kind == "cross":
+        return "%s.rooms.%s.id" % (rest[0], rest[1]), None
+    if kind == "self":
+        return None, "self-referential (__FILE__)"
+    return None, rest[0]
 
 
 def _exit_key(key):
@@ -1792,6 +1867,7 @@ def _generate_room_ucl(ast, zone_id):
         exit_lines = []
         skipped = []
         skipped_bad_dir = []
+        skipped_unlinkable = []
         for key, val in exits[1]:
             direction = _exit_key(key)
             direction = re.sub(r'^"|"$', "", direction)
@@ -1810,11 +1886,19 @@ def _generate_room_ucl(ast, zone_id):
                 # rather than emitting a dangling target the loader would follow.
                 skipped.append(direction)
                 continue
-            target = _resolve_exit_target(val)
+            target, why = _resolve_exit_target(val, zone_id)
+            if target is None:
+                # No data/world zone to point at (/clone/shop, /b/, __FILE__,
+                # a relative path, ...).  Dropping it is correct: a bare
+                # `rooms.<x>.id` would resolve inside THIS zone and could link
+                # to an unrelated local room.
+                skipped_unlinkable.append("%s: %s" % (direction, why))
+                continue
             exit_lines.append(f"  {direction} = {target}")
         river_exit = ""
         if is_river and arrive_room:
-            river_exit = "  river = " + _resolve_exit_target(arrive_room)
+            river_target, _ = _resolve_exit_target(arrive_room, zone_id)
+            river_exit = ("  river = " + river_target) if river_target else ""
         all_exit_lines = "\n".join(exit_lines)
         if river_exit != "":
             all_exit_lines = all_exit_lines + "\n" + river_exit if all_exit_lines else river_exit
@@ -1835,15 +1919,20 @@ def _generate_room_ucl(ast, zone_id):
                 f"  # skipped malformed exit direction '{direction}': "
                 f"not a bare identifier (C comment artefact)\n"
             )
+        for note in skipped_unlinkable:
+            exits_block += (
+                f"  # skipped exit {note}: no data/world zone to reference\n"
+            )
     else:
         if is_river and arrive_room:
-            target = _resolve_exit_target(arrive_room)
-            exits_block = (
-                f'  room_exits "{room_id}" {{\n'
-                f"    room_id = rooms.{room_id}.id\n"
-                f"  river = {target}\n"
-                "  }\n"
-            )
+            target, _ = _resolve_exit_target(arrive_room, zone_id)
+            if target:
+                exits_block = (
+                    f'  room_exits "{room_id}" {{\n'
+                    f"    room_id = rooms.{room_id}.id\n"
+                    f"  river = {target}\n"
+                    "  }\n"
+                )
 
     objects_block = _generate_room_objects(room_id, sets.get("objects"))
 

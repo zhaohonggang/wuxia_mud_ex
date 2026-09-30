@@ -303,7 +303,7 @@ zones "xiaoyao" {
 
   room_exits "shulin3" {
     room_id = rooms.shulin3.id
-    west = rooms.wdroad4.id
+    west = wudang.rooms.wdroad4.id
     east = rooms.shulin2.id
     north = rooms.shulin3.id
     south = rooms.shulin3.id

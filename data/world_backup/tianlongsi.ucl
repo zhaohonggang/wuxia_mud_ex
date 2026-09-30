@@ -62,7 +62,7 @@ zones "tianlongsi" {
 
   room_exits "dadao1" {
     room_id = rooms.dadao1.id
-  northeast = rooms.qsjie2.id
+  northeast = emei.rooms.qsjie2.id
   south = rooms.dadao2.id  }
 
 # Generated from C:/files/git/mud/d/tianlongsi/dadao2.c by LPCConverter
@@ -130,7 +130,7 @@ item_desc = {
   room_exits "damen" {
     room_id = rooms.damen.id
   south = rooms.talin.id
-  north = rooms.hongsheng.id  }
+  north = dali.rooms.hongsheng.id  }
 
 
   room_characters "damen" {

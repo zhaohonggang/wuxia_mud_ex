@@ -543,7 +543,7 @@ item_desc = {
 
   room_exits "shanjiao" {
     room_id = rooms.shanjiao.id
-    southdown = rooms.shanlu1.id
+    southdown = xiangyang.rooms.shanlu1.id
     northup = rooms.shulin1.id
     }
 

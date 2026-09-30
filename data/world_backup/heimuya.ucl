@@ -170,8 +170,8 @@ direction = "west"
 
   room_exits "bridge" {
     room_id = rooms.bridge.id
-  northwest = rooms.guangchang.id
-  east = rooms.xijie.id  }
+  northwest = baituo.rooms.guangchang.id
+  east = baituo.rooms.xijie.id  }
 
 
   room_characters "bridge" {
@@ -644,7 +644,7 @@ item_desc = {
 
   room_exits "dukou2" {
     room_id = rooms.dukou2.id
-  southwest = rooms.huanghe_1.id
+  southwest = huanghe.rooms.huanghe_1.id
   river = rooms.dukou1.id  }
 
 # Generated from C:/files/git/mud/d/heimuya/fen0.c by LPCConverter
@@ -1167,7 +1167,7 @@ direction = "south"
 
   room_exits "road3" {
     room_id = rooms.road3.id
-  east = rooms.ximenwai.id
+  east = beijing.rooms.ximenwai.id
   west = rooms.pingdingzhou.id  }
 
 # Generated from C:/files/git/mud/d/heimuya/road4.c by LPCConverter
@@ -1199,7 +1199,7 @@ direction = "south"
 
   room_exits "road5" {
     room_id = rooms.road5.id
-  northeast = rooms.weifen.id
+  northeast = huanghe.rooms.weifen.id
   south = rooms.road6.id  }
 
 # Generated from C:/files/git/mud/d/heimuya/road6.c by LPCConverter
@@ -1215,7 +1215,7 @@ direction = "south"
 
   room_exits "road6" {
     room_id = rooms.road6.id
-  southeast = rooms.wexit.id
+  southeast = village.rooms.wexit.id
   north = rooms.road5.id  }
 
 

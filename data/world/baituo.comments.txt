@@ -214,8 +214,8 @@
   # if (interactive(ob = this_player()) && ob->query("family/family_name") != "欧阳世家" && !present("xiong huang", environment(ob)))  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: convert
   # UNHANDLED FUNCTION: unconcious
+  # UNHANDLED FUNCTION: convert
   # UNHANDLED FUNCTION: die
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -325,8 +325,8 @@
   # if (ob->query("born_family") != "欧阳世家")  →  command('shake'); command('say 哪里来的家伙？居然敢来白驼山添乱？');
 # ==== CONDITIONAL BRANCHES (attempt_apprentice) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: attempt_apprentice
+  # UNHANDLED FUNCTION: accept_fight
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -558,9 +558,9 @@
   # if (used)  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: delete_benefit
   # UNHANDLED FUNCTION: decay
   # UNHANDLED FUNCTION: cure_ob
+  # UNHANDLED FUNCTION: delete_benefit
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -812,9 +812,9 @@
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: is_container
-  # UNHANDLED FUNCTION: do_free
-  # UNHANDLED FUNCTION: reject
   # UNHANDLED FUNCTION: do_catch
+  # UNHANDLED FUNCTION: reject
+  # UNHANDLED FUNCTION: do_free
   # UNHANDLED FUNCTION: no_limit_amount
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

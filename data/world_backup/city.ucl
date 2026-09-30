@@ -61,8 +61,8 @@ zones "city" {
   room_exits "beimen" {
     room_id = rooms.beimen.id
   south = rooms.beidajie2.id
-  north = rooms.yidao.id
-  west = rooms.caodi1.id  }
+  north = shaolin.rooms.yidao.id
+  west = huanghe.rooms.caodi1.id  }
 
 
   room_characters "beimen" {
@@ -286,7 +286,7 @@ item_desc = {
 
   room_exits "dongmen" {
     room_id = rooms.dongmen.id
-  east = rooms.yidao.id
+  east = taishan.rooms.yidao.id
   north = rooms.ml1.id
   south = rooms.jiaowai1.id
   west = rooms.dongdajie2.id  }
@@ -511,8 +511,8 @@ item_desc = {
   south = rooms.nandajie1.id
   west = rooms.xidajie1.id
   north = rooms.beidajie1.id
-  in = rooms.inhole.id
-  liuxi = rooms.guangchang.id  }
+  in = gaibang.rooms.inhole.id
+  liuxi = minimal_world.rooms.guangchang.id  }
 
 
   room_characters "guangchang" {
@@ -679,7 +679,7 @@ item_desc = {
     room_id = rooms.jiaowai4.id
   north = rooms.jiaowai3.id
   west = rooms.jiaowai5.id
-  southeast = rooms.shulin1.id  }
+  southeast = guiyun.rooms.shulin1.id  }
 
 
 
@@ -910,8 +910,8 @@ direction = "west"
 
   room_exits "liaotian" {
     room_id = rooms.liaotian.id
-  north = rooms.kedian.id
-  east = rooms.qiyuan1.id  }
+  north = rooms.kedian.id  }
+  # skipped exit east: unrecognised relative path: qiyuan/qiyuan1: no data/world zone to reference
 
 
   room_characters "liaotian" {
@@ -1334,8 +1334,8 @@ direction = ~
   room_exits "majiu" {
     room_id = rooms.majiu.id
   west = rooms.zuixianlou.id
-  north = rooms.zhujuan.id
-  up = rooms.yangzhou_shop.id  }
+  north = rooms.zhujuan.id  }
+  # skipped exit up: target outside d/: /clone/shop/yangzhou_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -1393,9 +1393,9 @@ valid_leave = [
   room_exits "ml1" {
     room_id = rooms.ml1.id
   east = rooms.ml2.id
-  west = rooms.__file__.id
-  south = rooms.dongmen.id
-  north = rooms.__file__.id  }
+  south = rooms.dongmen.id  }
+  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/city/ml2.c by LPCConverter
 # Zone: city
@@ -1410,10 +1410,10 @@ valid_leave = [
 
   room_exits "ml2" {
     room_id = rooms.ml2.id
-  east = rooms.__file__.id
-  west = rooms.__file__.id
   south = rooms.dongmen.id
   north = rooms.ml3.id  }
+  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/city/ml3.c by LPCConverter
 # Zone: city
@@ -1428,10 +1428,10 @@ valid_leave = [
 
   room_exits "ml3" {
     room_id = rooms.ml3.id
-  east = rooms.__file__.id
   west = rooms.ml4.id
-  south = rooms.dongmen.id
-  north = rooms.__file__.id  }
+  south = rooms.dongmen.id  }
+  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/city/ml4.c by LPCConverter
 # Zone: city
@@ -1446,10 +1446,10 @@ valid_leave = [
 
   room_exits "ml4" {
     room_id = rooms.ml4.id
-  east = rooms.__file__.id
-  west = rooms.__file__.id
   south = rooms.dongmen.id
   north = rooms.ml5.id  }
+  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/city/ml5.c by LPCConverter
 # Zone: city
@@ -1465,9 +1465,9 @@ valid_leave = [
   room_exits "ml5" {
     room_id = rooms.ml5.id
   east = rooms.ml6.id
-  west = rooms.__file__.id
-  south = rooms.dongmen.id
-  north = rooms.__file__.id  }
+  south = rooms.dongmen.id  }
+  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/city/ml6.c by LPCConverter
 # Zone: city
@@ -1482,10 +1482,10 @@ valid_leave = [
 
   room_exits "ml6" {
     room_id = rooms.ml6.id
-  east = rooms.__file__.id
   west = rooms.ml7.id
-  south = rooms.dongmen.id
-  north = rooms.__file__.id  }
+  south = rooms.dongmen.id  }
+  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/city/ml7.c by LPCConverter
 # Zone: city
@@ -1500,10 +1500,10 @@ valid_leave = [
 
   room_exits "ml7" {
     room_id = rooms.ml7.id
-  east = rooms.__file__.id
-  west = rooms.__file__.id
   south = rooms.dongmen.id
   north = rooms.pomiao.id  }
+  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/city/mudan.c by LPCConverter
 # Zone: city
@@ -1637,7 +1637,7 @@ direction = "enter"
 
   room_exits "nanmen" {
     room_id = rooms.nanmen.id
-  south = rooms.wdroad1.id
+  south = wudang.rooms.wdroad1.id
   north = rooms.nandajie2.id
   west = rooms.jiaowai8.id
   east = rooms.jiaowai7.id  }
@@ -1976,7 +1976,7 @@ direction = ~
     room_id = rooms.wumiao.id
   east = rooms.beidajie2.id
   up = rooms.wumiao2.id
-  down = rooms.herodoor.id  }
+  down = wizard.rooms.herodoor.id  }
 
 
 
@@ -2022,7 +2022,7 @@ direction = ~
 
   room_exits "xdmidao1" {
     room_id = rooms.xdmidao1.id
-  up = rooms.sroad8.id
+  up = xuedao.rooms.sroad8.id
   north = rooms.xdmidao2.id  }
 
 # Generated from C:/files/git/mud/d/city/xdmidao2.c by LPCConverter
@@ -2131,7 +2131,7 @@ direction = ~
     room_id = rooms.ximen.id
   east = rooms.xidajie2.id
   west = rooms.ximenroad.id
-  south = rooms.yangzhoudu.id  }
+  south = zhongzhou.rooms.yangzhoudu.id  }
 
 
   room_characters "ximen" {
@@ -2160,9 +2160,9 @@ direction = ~
   room_exits "ximenroad" {
     room_id = rooms.ximenroad.id
   east = rooms.ximen.id
-  west = rooms.road8.id
+  west = luoyang.rooms.road8.id
   south = rooms.wudao4.id
-  southwest = rooms.road1.id  }
+  southwest = jingzhou.rooms.road1.id  }
 
 
   room_characters "ximenroad" {
@@ -2285,7 +2285,7 @@ item_desc = {
   room_exits "xsmidao5" {
     room_id = rooms.xsmidao5.id
   north = rooms.xsmidao4.id
-  south = rooms.mishi.id  }
+  south = xueshan.rooms.mishi.id  }
 
 # Generated from C:/files/git/mud/d/city/yamen.c by LPCConverter
 # Zone: city

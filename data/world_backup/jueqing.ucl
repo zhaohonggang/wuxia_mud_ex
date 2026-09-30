@@ -500,7 +500,7 @@ item_desc = {
   room_exits "shanjiao" {
     room_id = rooms.shanjiao.id
   northup = rooms.shulin1.id
-  southdown = rooms.shanlu1.id  }
+  southdown = xiangyang.rooms.shanlu1.id  }
 
 # Generated from C:/files/git/mud/d/jueqing/shanlu1.c by LPCConverter
 # Zone: jueqing

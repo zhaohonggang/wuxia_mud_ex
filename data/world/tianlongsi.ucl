@@ -68,7 +68,7 @@ zones "tianlongsi" {
     room_id = rooms.dadao1.id
     up = rooms.tading.id
     down = rooms.baodian.id
-    northeast = rooms.qsjie2.id
+    northeast = emei.rooms.qsjie2.id
     south = rooms.dadao2.id
     }
 
@@ -139,7 +139,7 @@ item_desc = {
 
   room_exits "damen" {
     room_id = rooms.damen.id
-    north = rooms.hongsheng.id
+    north = dali.rooms.hongsheng.id
     south = rooms.talin.id
     }
 

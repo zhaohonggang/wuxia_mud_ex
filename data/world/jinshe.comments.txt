@@ -35,8 +35,8 @@
   # if (! ob = find_object(SWORD))  →  
 # ==== CONDITIONAL BRANCHES (do_pull) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_think
   # UNHANDLED FUNCTION: do_pull
+  # UNHANDLED FUNCTION: do_think
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

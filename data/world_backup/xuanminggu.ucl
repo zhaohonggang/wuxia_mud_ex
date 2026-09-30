@@ -95,7 +95,7 @@ zones "xuanminggu" {
 
   room_exits "xiaolu1" {
     room_id = rooms.xiaolu1.id
-  east = rooms.ximen.id
+  east = lingzhou.rooms.ximen.id
   westup = rooms.shanjiao.id  }
 
 # Generated from C:/files/git/mud/d/xuanminggu/xiaolu2.c by LPCConverter

@@ -347,7 +347,7 @@ item_desc = {
   room_exits "shanlu2" {
     room_id = rooms.shanlu2.id
   southwest = rooms.shanlu1.id
-  southeast = rooms.road1.id  }
+  southeast = suzhou.rooms.road1.id  }
 
 # Generated from C:/files/git/mud/d/guiyun/ship.c by LPCConverter
 # Zone: guiyun
@@ -413,7 +413,7 @@ item_desc = {
   room_exits "shulin1" {
     room_id = rooms.shulin1.id
   southeast = rooms.shulin2.id
-  northwest = rooms.jiaowai4.id  }
+  northwest = city.rooms.jiaowai4.id  }
 
 # Generated from C:/files/git/mud/d/guiyun/shulin2.c by LPCConverter
 # Zone: guiyun
@@ -566,7 +566,7 @@ item_desc = {
     room_id = rooms.yixing.id
   east = rooms.tiandi.id
   south = rooms.nanxun.id
-  northwest = rooms.wdroad2.id  }
+  northwest = wudang.rooms.wdroad2.id  }
 
 # Generated from C:/files/git/mud/d/guiyun/npc/dabei.c by LPCConverter
 # Zone: guiyun

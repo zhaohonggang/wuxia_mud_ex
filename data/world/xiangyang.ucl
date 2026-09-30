@@ -225,7 +225,7 @@ zones "xiangyang" {
 
   room_exits "caodi3" {
     room_id = rooms.caodi3.id
-    north = rooms.guandaos6.id
+    north = luoyang.rooms.guandaos6.id
     south = rooms.northgate2.id
     }
 
@@ -291,8 +291,8 @@ zones "xiangyang" {
 
   room_exits "caodi6" {
     room_id = rooms.caodi6.id
-    west = rooms.hunanroad1.id
-    south = rooms.wdroad5.id
+    west = tiezhang.rooms.hunanroad1.id
+    south = wudang.rooms.wdroad5.id
     north = rooms.southgate2.id
     }
 
@@ -436,7 +436,7 @@ item_desc = {
 
   room_exits "eastgate2" {
     room_id = rooms.eastgate2.id
-    east = rooms.toyy.id
+    east = zhongzhou.rooms.toyy.id
     west = rooms.eastgate1.id
     }
 
@@ -1177,9 +1177,9 @@ direction = "east"
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-    up = rooms.xiangyang_shop.id
     south = rooms.northroad2.id
     }
+  # skipped exit up: target outside d/: /clone/shop/xiangyang_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -1424,7 +1424,7 @@ direction = "east"
   room_exits "shanlu1" {
     room_id = rooms.shanlu1.id
     southwest = rooms.shulin.id
-    northup = rooms.shanjiao.id
+    northup = jueqing.rooms.shanjiao.id
     }
 
 # Generated from C:/files/git/mud/d/xiangyang/shudian.c by LPCConverter
@@ -2294,7 +2294,7 @@ direction = "east"
 
   room_exits "westjie1" {
     room_id = rooms.westjie1.id
-    north = rooms.guofu_gate.id
+    north = wuguan.rooms.guofu_gate.id
     south = rooms.dangpu.id
     west = rooms.westjie2.id
     east = rooms.guangchang.id

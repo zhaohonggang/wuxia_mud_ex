@@ -22,8 +22,8 @@
 # ==== CONDITIONAL BRANCHES (check_trigger) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_push
-  # UNHANDLED FUNCTION: pushstone
   # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: pushstone
   # UNHANDLED FUNCTION: check_trigger
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -65,8 +65,8 @@
   # if ( arg == "草丛" || arg == "grass" )  →  message_vision('$N拨开长草，树上出现一洞。\\\\\n', this_player() );
 # ==== CONDITIONAL BRANCHES (do_push) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_push
   # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: do_push
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -85,8 +85,8 @@
   # if (arg == "段" || arg == "duan")  →  message_vision('$N拿起铁锤在第二个字“段”上敲了一下。\\\\\n', this_player()); message_vision('只听里面有人应了一声，“来了！”\\\\\n', this_player()); message_vision('有人从里面将门打开了。\\\\\n', this_player());
 # ==== CONDITIONAL BRANCHES (do_knock) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_knock
   # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: do_knock
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

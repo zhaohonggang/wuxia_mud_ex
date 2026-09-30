@@ -102,9 +102,9 @@
   # if (me->query("max_neili") < 500)  →  message_vision(HIR '可是$N' HIR '累了个半死，石门却' '纹丝不动。\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_push) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close_out
   # UNHANDLED FUNCTION: close
   # UNHANDLED FUNCTION: do_push
+  # UNHANDLED FUNCTION: close_out
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -142,9 +142,9 @@
   # if (objectp(room))  →  
 # ==== CONDITIONAL BRANCHES (close_bridge) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_close
   # UNHANDLED FUNCTION: close_bridge
   # UNHANDLED FUNCTION: do_open
-  # UNHANDLED FUNCTION: do_close
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -361,9 +361,9 @@
   # if (me->query("neili") < 2000)  →  message_vision(HIR '结果只听一声闷哼，$N' HIR '被冰壁的寒气回侵经脉，眼前一黑……\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_break) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close_out
-  # UNHANDLED FUNCTION: close
   # UNHANDLED FUNCTION: do_break
+  # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: close_out
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -434,8 +434,8 @@
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
-  # UNHANDLED FUNCTION: redeem
   # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: redeem
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

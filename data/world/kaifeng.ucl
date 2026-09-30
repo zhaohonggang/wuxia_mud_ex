@@ -1871,9 +1871,9 @@ direction = ~
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-    up = rooms.kaifeng_shop.id
     west = rooms.daoxiang.id
     }
+  # skipped exit up: target outside d/: /clone/shop/kaifeng_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -2192,7 +2192,7 @@ direction = ~
   room_exits "shanlu2" {
     room_id = rooms.shanlu2.id
     eastup = rooms.shanlu1.id
-    north = rooms.taishique.id
+    north = songshan.rooms.taishique.id
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/shulin.c by LPCConverter
@@ -2326,7 +2326,7 @@ direction = ~
   room_exits "tokaifeng" {
     room_id = rooms.tokaifeng.id
     west = rooms.guandao1.id
-    east = rooms.wroad3.id
+    east = zhongzhou.rooms.wroad3.id
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/wroad.c by LPCConverter
@@ -2579,7 +2579,7 @@ direction = ~
 
   room_exits "yezhulin" {
     room_id = rooms.yezhulin.id
-    west = rooms.path1.id
+    west = huashan.rooms.path1.id
     northeast = rooms.dadao2.id
     }
 

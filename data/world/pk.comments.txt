@@ -103,9 +103,9 @@
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: unconcious
-  # UNHANDLED FUNCTION: do_join
-  # UNHANDLED FUNCTION: attempt_apprentice
-  # UNHANDLED FUNCTION: recognize_apprentice
   # UNHANDLED FUNCTION: do_sign
+  # UNHANDLED FUNCTION: attempt_apprentice
+  # UNHANDLED FUNCTION: do_join
+  # UNHANDLED FUNCTION: recognize_apprentice
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

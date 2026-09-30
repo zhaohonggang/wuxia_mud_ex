@@ -71,8 +71,8 @@ item_desc = {
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-  north = rooms.yingxionglou.id
-  up = rooms.foshan_shop.id  }
+  north = rooms.yingxionglou.id  }
+  # skipped exit up: target outside d/: /clone/shop/foshan_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -104,7 +104,7 @@ item_desc = {
 
   room_exits "nanling" {
     room_id = rooms.nanling.id
-  northup = rooms.hsroad9.id
+  northup = hengyang.rooms.hsroad9.id
   south = rooms.northgate.id  }
 
 # Generated from C:/files/git/mud/d/foshan/northgate.c by LPCConverter
@@ -181,7 +181,7 @@ direction = "south"
 
   room_exits "road1" {
     room_id = rooms.road1.id
-  northwest = rooms.road5.id
+  northwest = dali.rooms.road5.id
   east = rooms.road2.id  }
 
 
@@ -306,7 +306,7 @@ direction = "south"
 
   room_exits "road14" {
     room_id = rooms.road14.id
-  east = rooms.westbridge.id
+  east = quanzhou.rooms.westbridge.id
   southwest = rooms.road13.id  }
 
 
@@ -511,7 +511,7 @@ direction = "south"
   room_exits "southgate" {
     room_id = rooms.southgate.id
   north = rooms.street3.id
-  south = rooms.xkroad3.id  }
+  south = xiakedao.rooms.xkroad3.id  }
 
 
   room_characters "southgate" {

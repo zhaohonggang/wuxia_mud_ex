@@ -720,7 +720,7 @@ item_desc = {
 
   room_exits "guandaon4" {
     room_id = rooms.guandaon4.id
-  north = rooms.hsroad1.id
+  north = village.rooms.hsroad1.id
   south = rooms.guandaon3.id  }
 
 # Generated from C:/files/git/mud/d/luoyang/guandaos1.c by LPCConverter
@@ -817,7 +817,7 @@ item_desc = {
   room_exits "guandaos6" {
     room_id = rooms.guandaos6.id
   north = rooms.guandaos5.id
-  south = rooms.caodi3.id  }
+  south = xiangyang.rooms.caodi3.id  }
 
 # Generated from C:/files/git/mud/d/luoyang/guandaow1.c by LPCConverter
 # Zone: luoyang
@@ -881,7 +881,7 @@ item_desc = {
   room_exits "guandaow4" {
     room_id = rooms.guandaow4.id
   east = rooms.guandaow3.id
-  west = rooms.road2.id  }
+  west = changan.rooms.road2.id  }
 
 # Generated from C:/files/git/mud/d/luoyang/hanguguan.c by LPCConverter
 # Zone: luoyang
@@ -1351,8 +1351,8 @@ item_desc = {
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-  west = rooms.kezhan.id
-  up = rooms.luoyang_shop.id  }
+  west = rooms.kezhan.id  }
+  # skipped exit up: target outside d/: /clone/shop/luoyang_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -1886,7 +1886,7 @@ item_desc = {
 
   room_exits "road8" {
     room_id = rooms.road8.id
-  east = rooms.ximenroad.id
+  east = city.rooms.ximenroad.id
   west = rooms.road7.id  }
 
 # Generated from C:/files/git/mud/d/luoyang/roudian.c by LPCConverter

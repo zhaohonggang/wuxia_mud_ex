@@ -76,7 +76,7 @@ zones "mingjiao" {
 
   room_exits "didao2" {
     room_id = rooms.didao2.id
-  out = rooms.guangchang.id  }
+  out = lanzhou.rooms.guangchang.id  }
 
 # Generated from C:/files/git/mud/d/mingjiao/donglu.c by LPCConverter
 # Zone: mingjiao
@@ -679,12 +679,10 @@ valid_leave = [
 ]
     }
 
-  room_exits "jmqjiguan" {
-    room_id = rooms.jmqjiguan.id
-  east = rooms.__file__.id
-  west = rooms.__file__.id
-  south = rooms.__file__.id
-  north = rooms.__file__.id  }
+  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/mingjiao/jmqmen.c by LPCConverter
 # Zone: mingjiao
@@ -1686,7 +1684,7 @@ item_desc = {
   west = rooms.tomen2.id
   east = rooms.gebitan5.id
   north = rooms.donglu.id
-  westup = rooms.zhenyuanqiao.id  }
+  westup = kunlun.rooms.zhenyuanqiao.id  }
 
 
   room_characters "shanjiao" {
@@ -2319,7 +2317,7 @@ direction = ~
   room_exits "westroad1" {
     room_id = rooms.westroad1.id
   west = rooms.westroad2.id
-  east = rooms.silk2.id  }
+  east = xiyu.rooms.silk2.id  }
 
 # Generated from C:/files/git/mud/d/mingjiao/westroad2.c by LPCConverter
 # Zone: mingjiao

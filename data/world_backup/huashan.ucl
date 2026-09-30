@@ -493,7 +493,7 @@ item_desc = {
 
   room_exits "jzroad1" {
     room_id = rooms.jzroad1.id
-  southwest = rooms.hsroad2.id
+  southwest = village.rooms.hsroad2.id
   east = rooms.jzroad2.id  }
 
 
@@ -880,8 +880,8 @@ item_desc = {
 
   room_exits "path1" {
     room_id = rooms.path1.id
-  west = rooms.eexit.id
-  east = rooms.yezhulin.id
+  west = village.rooms.eexit.id
+  east = kaifeng.rooms.yezhulin.id
   north = rooms.yuquan.id
   southeast = rooms.shaluo.id  }
 

@@ -38,10 +38,10 @@ zones "baituo" {
 
   room_exits "cao1" {
     room_id = rooms.cao1.id
-  west = rooms.__file__.id
   north = rooms.cao2.id
-  east = rooms.ximen.id
-  south = rooms.__file__.id  }
+  east = rooms.ximen.id  }
+  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
 
 
 
@@ -65,10 +65,10 @@ zones "baituo" {
 
   room_exits "cao2" {
     room_id = rooms.cao2.id
-  west = rooms.__file__.id
   north = rooms.zhulin.id
   east = rooms.cao1.id
   south = rooms.cao1.id  }
+  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 
 
@@ -498,7 +498,7 @@ behavior_config = {
 
   room_exits "gebi" {
     room_id = rooms.gebi.id
-  east = rooms.shamo10.id
+  east = xiyu.rooms.shamo10.id
   west = rooms.dongjie.id  }
 
 
@@ -665,7 +665,7 @@ behavior_config = {
 
   room_exits "midao" {
     room_id = rooms.midao.id
-  east = rooms.beidajie1.id
+  east = city.rooms.beidajie1.id
   up = rooms.neishi.id  }
 
 # Generated from C:/files/git/mud/d/baituo/neishi.c by LPCConverter

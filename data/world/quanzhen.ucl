@@ -857,7 +857,7 @@ item_desc = {
 
   room_exits "guandao1" {
     room_id = rooms.guandao1.id
-    northeast = rooms.nan_chengmen.id
+    northeast = changan.rooms.nan_chengmen.id
     west = rooms.guandao2.id
     }
 
@@ -1478,7 +1478,7 @@ item_desc = {
     room_id = rooms.mishi.id
     down = rooms.fu_midao.id
     up = rooms.diziju.id
-    eastup = rooms.guangchang.id
+    eastup = city.rooms.guangchang.id
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/nairongdian.c by LPCConverter
@@ -1652,7 +1652,7 @@ item_desc = {
   room_exits "shanjiao" {
     room_id = rooms.shanjiao.id
     westdown = rooms.shanlu4.id
-    north = rooms.shanlu13.id
+    north = gumu.rooms.shanlu13.id
     }
 
 
@@ -1813,7 +1813,7 @@ item_desc = {
 
   room_exits "shijie1" {
     room_id = rooms.shijie1.id
-    southdown = rooms.daxiaochang.id
+    southdown = gumu.rooms.daxiaochang.id
     northup = rooms.shijie2.id
     }
 

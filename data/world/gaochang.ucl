@@ -214,7 +214,7 @@ item_desc = {
     west = rooms.shulin.id
     east = rooms.shulin2.id
     north = rooms.shulin.id
-    south = rooms.caoyuan7.id
+    south = shenfeng.rooms.caoyuan7.id
     }
 
 

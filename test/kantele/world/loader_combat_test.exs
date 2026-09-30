@@ -62,7 +62,10 @@ defmodule Kantele.World.LoaderCombatTest do
     assert sword.meta.damage == 22
     assert sword.meta.skill_type == "sword"
 
-    cloth = Enum.find(world.items, &String.contains?(&1.name, "布袍"))
+    # 按 id 精确取，不要用 name 模糊匹配：taohua 也有一件叫「布袍」的
+    # bupao（无 armor 字段），`String.contains?(&1.name, "布袍")` 会命中它
+    # 并遮住 liuxi 这件 armor=2 的，导致本测试随区域转换顺序而flaky。
+    cloth = Enum.find(world.items, &(&1.id == "liuxi:bupao"))
     assert cloth != nil
     assert cloth.meta.armor == 2
   end

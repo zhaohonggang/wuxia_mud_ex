@@ -79,7 +79,7 @@ zones "taishan" {
     room_id = rooms.daizong.id
   northup = rooms.baihe.id
   south = rooms.taishanjiao.id
-  west = rooms.huanghe5.id  }
+  west = huanghe.rooms.huanghe5.id  }
 
 # Generated from C:/files/git/mud/d/taishan/dongtian.c by LPCConverter
 # Zone: taishan
@@ -534,7 +534,7 @@ direction = ~
 
   room_exits "yidao" {
     room_id = rooms.yidao.id
-  west = rooms.dongmen.id
+  west = city.rooms.dongmen.id
   east = rooms.yidao1.id  }
 
 
@@ -561,7 +561,7 @@ direction = ~
     room_id = rooms.yidao1.id
   west = rooms.yidao.id
   northeast = rooms.yidao2.id
-  southeast = rooms.qzroad1.id  }
+  southeast = quanzhou.rooms.qzroad1.id  }
 
 
   room_characters "yidao1" {

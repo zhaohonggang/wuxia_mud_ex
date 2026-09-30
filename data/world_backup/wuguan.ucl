@@ -208,7 +208,7 @@ direction = "north"
 
   room_exits "guofu_gate" {
     room_id = rooms.guofu_gate.id
-  south = rooms.westjie1.id
+  south = xiangyang.rooms.westjie1.id
   north = rooms.guofu_dayuan.id  }
 
 

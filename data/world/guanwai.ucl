@@ -476,7 +476,7 @@ direction = "west"
 
   room_exits "laolongtou" {
     room_id = rooms.laolongtou.id
-    southwest = rooms.road3.id
+    southwest = beijing.rooms.road3.id
     northwest = rooms.shanhaiguan.id
     }
 

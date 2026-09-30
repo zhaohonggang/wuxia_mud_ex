@@ -121,7 +121,7 @@ zones "xuedao" {
   room_exits "nroad4" {
     room_id = rooms.nroad4.id
   north = rooms.nroad3.id
-  westup = rooms.shanmen.id  }
+  westup = xueshan.rooms.shanmen.id  }
 
 # Generated from C:/files/git/mud/d/xuedao/nroad5.c by LPCConverter
 # Zone: xuedao
@@ -184,7 +184,7 @@ zones "xuedao" {
 
   room_exits "nroad7" {
     room_id = rooms.nroad7.id
-  eastdown = rooms.shanjiao.id
+  eastdown = xueshan.rooms.shanjiao.id
   south = rooms.nroad6.id  }
 
 # Generated from C:/files/git/mud/d/xuedao/shandong1.c by LPCConverter
@@ -304,9 +304,9 @@ behavior_config = {
 
   room_exits "sroad1" {
     room_id = rooms.sroad1.id
-  north = rooms.nanheqiaos.id
+  north = chengdu.rooms.nanheqiaos.id
   west = rooms.sroad2.id
-  northwest = rooms.boot.id  }
+  northwest = lingxiao.rooms.boot.id  }
 
 # Generated from C:/files/git/mud/d/xuedao/sroad2.c by LPCConverter
 # Zone: xuedao

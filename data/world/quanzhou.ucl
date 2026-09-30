@@ -35,7 +35,7 @@ zones "quanzhou" {
   room_exits "beimen" {
     room_id = rooms.beimen.id
     south = rooms.zhongxin.id
-    north = rooms.puxian.id
+    north = fuzhou.rooms.puxian.id
     }
 
 # Generated from C:/files/git/mud/d/quanzhou/chating.c by LPCConverter
@@ -244,7 +244,7 @@ item_desc = {
 
   room_exits "jxnanmen" {
     room_id = rooms.jxnanmen.id
-    southeast = rooms.road1.id
+    southeast = hangzhou.rooms.road1.id
     southwest = rooms.majiu2.id
     south = rooms.qzroad4.id
     east = rooms.tieqiang.id
@@ -480,7 +480,7 @@ item_desc = {
   room_exits "qzroad1" {
     room_id = rooms.qzroad1.id
     south = rooms.qzroad2.id
-    northwest = rooms.yidao1.id
+    northwest = taishan.rooms.yidao1.id
     }
 
 # Generated from C:/files/git/mud/d/quanzhou/qzroad2.c by LPCConverter
@@ -496,7 +496,7 @@ item_desc = {
 
   room_exits "qzroad2" {
     room_id = rooms.qzroad2.id
-    west = rooms.dongmen.id
+    west = suzhou.rooms.dongmen.id
     east = rooms.jiaxing.id
     north = rooms.qzroad1.id
     south = rooms.qzroad3.id
@@ -533,7 +533,7 @@ item_desc = {
   room_exits "qzroad4" {
     room_id = rooms.qzroad4.id
     east = rooms.chating.id
-    southup = rooms.fzroad1.id
+    southup = fuzhou.rooms.fzroad1.id
     west = rooms.qzroad3.id
     north = rooms.jxnanmen.id
     }
@@ -613,7 +613,7 @@ item_desc = {
   room_exits "westbridge" {
     room_id = rooms.westbridge.id
     east = rooms.ximen.id
-    west = rooms.road14.id
+    west = foshan.rooms.road14.id
     }
 
 # Generated from C:/files/git/mud/d/quanzhou/xijie.c by LPCConverter

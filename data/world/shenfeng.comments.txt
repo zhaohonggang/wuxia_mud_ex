@@ -92,8 +92,8 @@
   # if (! arg || arg != "hole")  →  
 # ==== CONDITIONAL BRANCHES (do_zuan) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_zuan
   # UNHANDLED FUNCTION: do_climb
+  # UNHANDLED FUNCTION: do_zuan
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -201,9 +201,9 @@
   # if (! arg || arg != "down")  →  
 # ==== CONDITIONAL BRANCHES (do_climb) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_push
-  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: do_climb
+  # UNHANDLED FUNCTION: do_push
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -242,8 +242,8 @@
   # if (arg == "fire")  →  
 # ==== CONDITIONAL BRANCHES (do_use) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_tiao
   # UNHANDLED FUNCTION: do_use
+  # UNHANDLED FUNCTION: do_tiao
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -279,8 +279,8 @@
   # if (arg == "fire")  →  message_vision(HIR '\\\\\n$N' HIR '取出火折一晃，发现从这下去离地' '面至少有十七八丈，峰内地面远比外面的为低。\\\\\n' '\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_use) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_tiao
   # UNHANDLED FUNCTION: do_use
+  # UNHANDLED FUNCTION: do_tiao
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -340,8 +340,8 @@
   # if (this_player()->query_temp("marks/爬1"))  →  
 # ==== CONDITIONAL BRANCHES (do_climb) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

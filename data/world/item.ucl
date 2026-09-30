@@ -16,7 +16,7 @@ zones "item" {
   room_exits "road1" {
     room_id = rooms.road1.id
     eastup = rooms.road2.id
-    west = rooms.road5.id
+    west = suzhou.rooms.road5.id
     }
 
 
@@ -66,8 +66,8 @@ zones "item" {
     rooms "road4" {
       name = "小径"
       description = "这是一条蜿蜒的小径，曲曲折折通往山里。路面上光滑平实，看来是 经常有人来往。这里已经是山脚了，山坡上有一些梯田，附近间或有一些 茅屋。只有东边不远的地方有一见小砖房，烟筒里面时不时冒出一股股黑 烟，不象是炊火。"
-  x = -2
-  y = 0
+  x = 3
+  y = 1
   z = 0
     }
 
@@ -83,8 +83,8 @@ zones "item" {
     rooms "road5" {
       name = "小径"
       description = "这是一条蜿蜒的小径，曲曲折折通往山里。路旁有一间小砖房，烟筒 里面时不时冒出一股股黑烟，闻起来有些难受，你一时忍不住想打两个喷 嚏。屋里面传来阵阵的敲打声音，看来这里是给村民们打造菜刀、犁头的 铁匠铺。"
-  x = -1
-  y = 0
+  x = 4
+  y = 1
   z = 0
     }
 
@@ -100,8 +100,8 @@ zones "item" {
     rooms "xiaowu" {
       name = "铸剑室"
       description = "你一走进这个屋子，就感觉到有一股热浪扑面而来。屋角有一个炉子， 里面燃着熊熊火光，似乎无数的金蛇在你面前晃动。屋角堆放着一堆堆黑 乎乎的东西，不知道是什么。"
-  x = -1
-  y = 0
+  x = 4
+  y = 1
   z = 0
     }
 

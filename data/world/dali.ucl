@@ -1374,7 +1374,7 @@ zones "dali" {
 
   room_exits "heisenlin" {
     room_id = rooms.heisenlin.id
-    northeast = rooms.htroad3.id
+    northeast = kunming.rooms.htroad3.id
     south = rooms.dasenlin.id
     }
 
@@ -1450,7 +1450,7 @@ zones "dali" {
 
   room_exits "hongsheng" {
     room_id = rooms.hongsheng.id
-    south = rooms.damen.id
+    south = tianlongsi.rooms.damen.id
     in = rooms.hongsheng1.id
     west = rooms.cangshan.id
     }
@@ -2186,7 +2186,7 @@ direction = "west"
 
   room_exits "luyuxi" {
     room_id = rooms.luyuxi.id
-    south = rooms.road1.id
+    south = wudu.rooms.road1.id
     west = rooms.gudao.id
     east = rooms.shuangheqiao.id
     }
@@ -2204,9 +2204,9 @@ direction = "west"
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-    up = rooms.dali_shop.id
     east = rooms.bingying.id
     }
+  # skipped exit up: target outside d/: /clone/shop/dali_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -2642,16 +2642,16 @@ direction = "west"
     rooms "road1" {
       name = "官道"
       description = "这是一条蜿蜒崎岖的山间土路，是由中原通向大理的官道。 此处属川南，向西南去的盘山路通上云贵山区，继而可达南昭 大理国，此去向北不远就是蜀中名川峨嵋山。东去不远可以到 达云南昆明。"
-  x = 0
-  y = -11
+  x = 3
+  y = 2
   z = 0
     }
 
   room_exits "road1" {
     room_id = rooms.road1.id
-    east = rooms.xroad2.id
+    east = kunming.rooms.xroad2.id
     southwest = rooms.road2.id
-    northeast = rooms.qsjie2.id
+    northeast = emei.rooms.qsjie2.id
     }
 
 # Generated from C:/files/git/mud/d/dali/road2.c by LPCConverter
@@ -2688,7 +2688,7 @@ item_desc = {
 
   room_exits "road3" {
     room_id = rooms.road3.id
-    northwest = rooms.riverside2.id
+    northwest = wanjiegu.rooms.riverside2.id
     south = rooms.dehuabei.id
     northeast = rooms.road2.id
     }
@@ -2730,7 +2730,7 @@ item_desc = {
 
   room_exits "road5" {
     room_id = rooms.road5.id
-    southeast = rooms.road1.id
+    southeast = foshan.rooms.road1.id
     northwest = rooms.shuangheqiao.id
     }
 
@@ -4520,7 +4520,7 @@ behavior_config = {
 
   room_exits "zhulin2" {
     room_id = rooms.zhulin2.id
-    west = rooms.cun8.id
+    west = wudu.rooms.cun8.id
     north = rooms.hexi.id
     }
 

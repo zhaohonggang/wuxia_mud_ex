@@ -1738,8 +1738,8 @@ direction = "north"
 
   room_exits "huiying" {
     room_id = rooms.huiying.id
-  north = rooms.yong_1.id
-  up = rooms.jiulou.id  }
+  north = rooms.yong_1.id  }
+  # skipped exit up: target outside d/: /b/yitian/jiulou: no data/world zone to reference
 
 
   room_characters "huiying" {
@@ -2316,8 +2316,8 @@ item_desc = {
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-  east = rooms.niaoshi.id
-  up = rooms.beijing_shop.id  }
+  east = rooms.niaoshi.id  }
+  # skipped exit up: target outside d/: /clone/shop/beijing_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -2780,9 +2780,9 @@ item_desc = {
 
   room_exits "road10" {
     room_id = rooms.road10.id
-  east = rooms.haigang.id
-  south = rooms.ruzhou.id
+  south = shaolin.rooms.ruzhou.id
   north = rooms.road9.id  }
+  # skipped exit east: target outside d/: /b/tulong/haigang: no data/world zone to reference
 
 
   room_characters "road10" {
@@ -2828,7 +2828,7 @@ item_desc = {
 
   room_exits "road3" {
     room_id = rooms.road3.id
-  northeast = rooms.laolongtou.id
+  northeast = guanwai.rooms.laolongtou.id
   northwest = rooms.road2.id
   south = rooms.road4.id  }
 
@@ -2877,7 +2877,7 @@ item_desc = {
   room_exits "road5" {
     room_id = rooms.road5.id
   north = rooms.yongdingmen.id
-  west = rooms.bieyuan.id
+  west = xueshan.rooms.bieyuan.id
   southeast = rooms.road6.id  }
 
 
@@ -2901,7 +2901,7 @@ item_desc = {
   room_exits "road6" {
     room_id = rooms.road6.id
   northwest = rooms.road5.id
-  southwest = rooms.jinlongxia.id
+  southwest = hengshan.rooms.jinlongxia.id
   southeast = rooms.road7.id  }
 
 # Generated from C:/files/git/mud/d/beijing/road7.c by LPCConverter
@@ -4034,7 +4034,7 @@ direction = "east"
   room_exits "ximenwai" {
     room_id = rooms.ximenwai.id
   east = rooms.xichengmen.id
-  west = rooms.road3.id
+  west = heimuya.rooms.road3.id
   north = rooms.liandan_lin1.id
   south = rooms.liandan_lin2.id  }
 

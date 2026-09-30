@@ -367,7 +367,7 @@ zones "hangzhou" {
 
   room_exits "gushan" {
     room_id = rooms.gushan.id
-  westup = rooms.shijie.id
+  westup = meizhuang.rooms.shijie.id
   east = rooms.pinghuqiuyue.id
   southup = rooms.gushanpingtai.id
   northwest = rooms.xilingqiao.id
@@ -1141,8 +1141,8 @@ valid_leave = [
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-  west = rooms.kedian.id
-  up = rooms.hangzhou_shop.id  }
+  west = rooms.kedian.id  }
+  # skipped exit up: target outside d/: /clone/shop/hangzhou_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -1357,7 +1357,7 @@ item_desc = {
 
   room_exits "road1" {
     room_id = rooms.road1.id
-  northwest = rooms.jxnanmen.id
+  northwest = quanzhou.rooms.jxnanmen.id
   northeast = rooms.road2.id
   north = rooms.lingyinsi.id
   south = rooms.feilaifeng.id  }

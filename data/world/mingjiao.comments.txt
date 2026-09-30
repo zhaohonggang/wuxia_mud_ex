@@ -139,8 +139,8 @@
   # if (n < 15)  →  message_vision(HIW '$N' HIW '爬进数丈，忽见前面透进光' '亮，心中大喜，手足兼施，加速前行。\\\\\n\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_enter) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: do_enter
+  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -720,8 +720,8 @@
   # if (random(3) == 1)  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_lifeheal
   # UNHANDLED FUNCTION: unconcious
+  # UNHANDLED FUNCTION: do_lifeheal
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -748,8 +748,8 @@
   # if ((int)ob->query("eff_qi") == (int)ob->query("max_qi"))  →  command('?'+ob->query('id')); command('say 你没有受任何伤啊？\\\\\n');
 # ==== CONDITIONAL BRANCHES (ask_me) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: ask_me
   # UNHANDLED FUNCTION: recover
+  # UNHANDLED FUNCTION: ask_me
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

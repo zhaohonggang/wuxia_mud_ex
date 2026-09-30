@@ -314,7 +314,7 @@ item_desc = {
   room_exits "dongmen" {
     room_id = rooms.dongmen.id
   west = rooms.dongdajie2.id
-  east = rooms.qzroad2.id  }
+  east = quanzhou.rooms.qzroad2.id  }
 
 
   room_characters "dongmen" {
@@ -724,8 +724,8 @@ direction = "west"
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-  west = rooms.kedian.id
-  up = rooms.suzhou_shop.id  }
+  west = rooms.kedian.id  }
+  # skipped exit up: target outside d/: /clone/shop/suzhou_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -854,7 +854,7 @@ direction = "west"
     room_id = rooms.road1.id
   south = rooms.beimen.id
   southwest = rooms.huqiu.id
-  northwest = rooms.shanlu2.id  }
+  northwest = guiyun.rooms.shanlu2.id  }
 
 
   room_characters "road1" {
@@ -910,7 +910,7 @@ direction = "west"
     room_id = rooms.road4.id
   north = rooms.hanshansi.id
   east = rooms.road3.id
-  west = rooms.dongmeng.id  }
+  west = zhongzhou.rooms.dongmeng.id  }
 
 # Generated from C:/files/git/mud/d/suzhou/road5.c by LPCConverter
 # Zone: suzhou
@@ -926,8 +926,8 @@ direction = "west"
   room_exits "road5" {
     room_id = rooms.road5.id
   north = rooms.nanmen.id
-  southwest = rooms.hupan.id
-  east = rooms.road1.id  }
+  southwest = yanziwu.rooms.hupan.id
+  east = item.rooms.road1.id  }
 
 
   room_characters "road5" {
@@ -1053,7 +1053,7 @@ direction = "west"
   south = rooms.qzroad3.id
   north = rooms.qzroad1.id
   east = rooms.jiaxing.id
-  west = rooms.hupan.id  }
+  west = yanziwu.rooms.hupan.id  }
 
 # Generated from C:/files/git/mud/d/suzhou/tielingguan.c by LPCConverter
 # Zone: suzhou

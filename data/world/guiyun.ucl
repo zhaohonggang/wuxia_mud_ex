@@ -368,7 +368,7 @@ item_desc = {
 
   room_exits "shanlu2" {
     room_id = rooms.shanlu2.id
-    southeast = rooms.road1.id
+    southeast = suzhou.rooms.road1.id
     southwest = rooms.shanlu1.id
     }
 
@@ -439,7 +439,7 @@ item_desc = {
 
   room_exits "shulin1" {
     room_id = rooms.shulin1.id
-    northwest = rooms.jiaowai4.id
+    northwest = city.rooms.jiaowai4.id
     southeast = rooms.shulin2.id
     }
 
@@ -598,7 +598,7 @@ item_desc = {
 
   room_exits "yixing" {
     room_id = rooms.yixing.id
-    northwest = rooms.wdroad2.id
+    northwest = wudang.rooms.wdroad2.id
     south = rooms.nanxun.id
     east = rooms.tiandi.id
     }

@@ -718,7 +718,7 @@ valid_leave = [
 
   room_exits "jzbeimen" {
     room_id = rooms.jzbeimen.id
-  northup = rooms.wdroad5.id
+  northup = wudang.rooms.wdroad5.id
   south = rooms.beidajie2.id  }
 
 
@@ -802,7 +802,7 @@ valid_leave = [
   room_exits "jzximen" {
     room_id = rooms.jzximen.id
   east = rooms.xidajie2.id
-  west = rooms.shudao1.id  }
+  west = chengdu.rooms.shudao1.id  }
 
 
   room_characters "jzximen" {
@@ -1133,8 +1133,8 @@ item_desc = {
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-  west = rooms.kedian.id
-  up = rooms.jingzhou_shop.id  }
+  west = rooms.kedian.id  }
+  # skipped exit up: target outside d/: /clone/shop/jingzhou_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -1235,7 +1235,7 @@ item_desc = {
   room_exits "nanshilu1" {
     room_id = rooms.nanshilu1.id
   north = rooms.nanshilu.id
-  south = rooms.road1.id  }
+  south = kunming.rooms.road1.id  }
 
 
   room_characters "nanshilu1" {
@@ -1336,7 +1336,7 @@ item_desc = {
 
   room_exits "road1" {
     room_id = rooms.road1.id
-  northeast = rooms.ximenroad.id
+  northeast = city.rooms.ximenroad.id
   southwest = rooms.road2.id  }
 
 # Generated from C:/files/git/mud/d/jingzhou/road2.c by LPCConverter

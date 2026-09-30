@@ -543,7 +543,7 @@ item_desc = {
   room_exits "caroad2" {
     room_id = rooms.caroad2.id
   east = rooms.caroad1.id
-  northwest = rooms.caroad8.id  }
+  northwest = lanzhou.rooms.caroad8.id  }
 
 # Generated from C:/files/git/mud/d/changan/dangpu.c by LPCConverter
 # Zone: changan
@@ -1445,7 +1445,7 @@ direction = "up"
 
   room_exits "lzroad" {
     room_id = rooms.lzroad.id
-  west = rooms.dongmen.id
+  west = lanzhou.rooms.dongmen.id
   east = rooms.tulu2.id  }
 
 # Generated from C:/files/git/mud/d/changan/majiu.c by LPCConverter
@@ -1461,8 +1461,8 @@ direction = "up"
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-  south = rooms.huarui1.id
-  up = rooms.changan_shop.id  }
+  south = rooms.huarui1.id  }
+  # skipped exit up: target outside d/: /clone/shop/changan_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -1628,7 +1628,7 @@ direction = "up"
 
   room_exits "nan_chengmen" {
     room_id = rooms.nan_chengmen.id
-  southwest = rooms.guandao1.id
+  southwest = quanzhen.rooms.guandao1.id
   north = rooms.nanan_daokou.id  }
 
 
@@ -2213,7 +2213,7 @@ item_desc = {
 
   room_exits "road2" {
     room_id = rooms.road2.id
-  east = rooms.guandaow4.id
+  east = luoyang.rooms.guandaow4.id
   west = rooms.zhongnan.id  }
 
 # Generated from C:/files/git/mud/d/changan/road3.c by LPCConverter
@@ -2377,7 +2377,7 @@ item_desc = {
 
   room_exits "tulu4" {
     room_id = rooms.tulu4.id
-  northdown = rooms.yongdeng.id
+  northdown = huanghe.rooms.yongdeng.id
   southwest = rooms.tulu3.id  }
 
 # Generated from C:/files/git/mud/d/changan/weapon-shop.c by LPCConverter
@@ -2760,7 +2760,7 @@ item_desc = {
     room_id = rooms.yongtai_dadao2.id
   south = rooms.yongtai_dadao3.id
   north = rooms.yongtai_dadao1.id
-  east = rooms.entry.id  }
+  east = pk.rooms.entry.id  }
 
 # Generated from C:/files/git/mud/d/changan/yongtai-dadao3.c by LPCConverter
 # Zone: changan

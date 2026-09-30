@@ -101,18 +101,18 @@ direction = ~
 
 ]
     }
-
   room_exits "bagua0" {
     room_id = rooms.bagua0.id
-  乾 = rooms.bagua7.id
-  巽 = rooms.bagua6.id
-  离 = rooms.bagua5.id
-  艮 = rooms.bagua4.id
-  兑 = rooms.bagua3.id
-  坎 = rooms.bagua2.id
-  震 = rooms.bagua1.id
-  坤 = rooms.bagua0.id
     }
+
+  # skipped malformed exit direction '乾': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '巽': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '离': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '艮': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '兑': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坎': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '震': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坤': not a bare identifier (C comment artefact)
 
 # Generated from C:/files/git/mud/d/shaolin/bagua1.c by LPCConverter
 # Zone: shaolin
@@ -132,20 +132,20 @@ direction = ~
 
 ]
     }
-
   room_exits "bagua1" {
     room_id = rooms.bagua1.id
-  乾 = rooms.bagua7.id
-  巽 = rooms.bagua6.id
-  离 = rooms.bagua5.id
-  艮 = rooms.bagua4.id
-  兑 = rooms.bagua3.id
-  坎 = rooms.bagua2.id
-  震 = rooms.bagua1.id
-  坤 = rooms.bagua0.id
-    up = rooms.bagua2.id
     down = rooms.zhonglou6.id
+    up = rooms.bagua2.id
     }
+
+  # skipped malformed exit direction '乾': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '巽': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '离': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '艮': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '兑': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坎': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '震': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坤': not a bare identifier (C comment artefact)
 
 # Generated from C:/files/git/mud/d/shaolin/bagua2.c by LPCConverter
 # Zone: shaolin
@@ -165,20 +165,20 @@ direction = ~
 
 ]
     }
-
   room_exits "bagua2" {
     room_id = rooms.bagua2.id
-  乾 = rooms.bagua7.id
-  巽 = rooms.bagua6.id
-  离 = rooms.bagua5.id
-  艮 = rooms.bagua4.id
-  兑 = rooms.bagua3.id
-  坎 = rooms.bagua2.id
-  震 = rooms.bagua1.id
-  坤 = rooms.bagua0.id
-    up = rooms.bagua3.id
     down = rooms.bagua1.id
+    up = rooms.bagua3.id
     }
+
+  # skipped malformed exit direction '乾': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '巽': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '离': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '艮': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '兑': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坎': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '震': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坤': not a bare identifier (C comment artefact)
 
 # Generated from C:/files/git/mud/d/shaolin/bagua3.c by LPCConverter
 # Zone: shaolin
@@ -203,20 +203,20 @@ direction = ~
 
 ]
     }
-
   room_exits "bagua3" {
     room_id = rooms.bagua3.id
-  乾 = rooms.bagua7.id
-  巽 = rooms.bagua6.id
-  离 = rooms.bagua5.id
-  艮 = rooms.bagua4.id
-  兑 = rooms.bagua3.id
-  坎 = rooms.bagua2.id
-  震 = rooms.bagua1.id
-  坤 = rooms.bagua0.id
-    up = rooms.bagua4.id
     down = rooms.bagua2.id
+    up = rooms.bagua4.id
     }
+
+  # skipped malformed exit direction '乾': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '巽': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '离': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '艮': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '兑': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坎': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '震': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坤': not a bare identifier (C comment artefact)
 
 # Generated from C:/files/git/mud/d/shaolin/bagua4.c by LPCConverter
 # Zone: shaolin
@@ -236,20 +236,20 @@ direction = ~
 
 ]
     }
-
   room_exits "bagua4" {
     room_id = rooms.bagua4.id
-  乾 = rooms.bagua7.id
-  巽 = rooms.bagua6.id
-  离 = rooms.bagua5.id
-  艮 = rooms.bagua4.id
-  兑 = rooms.bagua3.id
-  坎 = rooms.bagua2.id
-  震 = rooms.bagua1.id
-  坤 = rooms.bagua0.id
-    up = rooms.bagua5.id
     down = rooms.bagua3.id
+    up = rooms.bagua5.id
     }
+
+  # skipped malformed exit direction '乾': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '巽': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '离': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '艮': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '兑': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坎': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '震': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坤': not a bare identifier (C comment artefact)
 
 # Generated from C:/files/git/mud/d/shaolin/bagua5.c by LPCConverter
 # Zone: shaolin
@@ -269,20 +269,20 @@ direction = ~
 
 ]
     }
-
   room_exits "bagua5" {
     room_id = rooms.bagua5.id
-  乾 = rooms.bagua7.id
-  巽 = rooms.bagua6.id
-  离 = rooms.bagua5.id
-  艮 = rooms.bagua4.id
-  兑 = rooms.bagua3.id
-  坎 = rooms.bagua2.id
-  震 = rooms.bagua1.id
-  坤 = rooms.bagua0.id
-    up = rooms.bagua6.id
     down = rooms.bagua4.id
+    up = rooms.bagua6.id
     }
+
+  # skipped malformed exit direction '乾': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '巽': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '离': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '艮': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '兑': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坎': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '震': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坤': not a bare identifier (C comment artefact)
 
 # Generated from C:/files/git/mud/d/shaolin/bagua6.c by LPCConverter
 # Zone: shaolin
@@ -302,20 +302,20 @@ direction = ~
 
 ]
     }
-
   room_exits "bagua6" {
     room_id = rooms.bagua6.id
-  乾 = rooms.bagua7.id
-  巽 = rooms.bagua6.id
-  离 = rooms.bagua5.id
-  艮 = rooms.bagua4.id
-  兑 = rooms.bagua3.id
-  坎 = rooms.bagua2.id
-  震 = rooms.bagua1.id
-  坤 = rooms.bagua0.id
-    up = rooms.bagua7.id
     down = rooms.bagua5.id
+    up = rooms.bagua7.id
     }
+
+  # skipped malformed exit direction '乾': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '巽': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '离': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '艮': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '兑': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坎': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '震': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坤': not a bare identifier (C comment artefact)
 
 # Generated from C:/files/git/mud/d/shaolin/bagua7.c by LPCConverter
 # Zone: shaolin
@@ -335,20 +335,20 @@ direction = ~
 
 ]
     }
-
   room_exits "bagua7" {
     room_id = rooms.bagua7.id
-  乾 = rooms.bagua7.id
-  巽 = rooms.bagua6.id
-  离 = rooms.bagua5.id
-  艮 = rooms.bagua4.id
-  兑 = rooms.bagua3.id
-  坎 = rooms.bagua2.id
-  震 = rooms.bagua1.id
-  坤 = rooms.bagua0.id
-    up = rooms.beilin3.id
     down = rooms.bagua6.id
+    up = rooms.beilin3.id
     }
+
+  # skipped malformed exit direction '乾': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '巽': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '离': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '艮': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '兑': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坎': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '震': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction '坤': not a bare identifier (C comment artefact)
 
 # Generated from C:/files/git/mud/d/shaolin/bamboo1.c by LPCConverter
 # Zone: shaolin
@@ -1010,9 +1010,7 @@ valid_leave = [
     room_id = rooms.cjlou.id
     items = [
       { id = items.dao_yi.id },
-      { id = items.wuming.id },
-      { id = items.fojing1+random(2).id },
-      { id = items.fojing2+random(2).id }    ]
+      { id = items.wuming.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/shaolin/cjlou1.c by LPCConverter
@@ -2161,8 +2159,7 @@ valid_leave = [
   room_items "jianyu" {
     room_id = rooms.jianyu.id
     items = [
-      { id = items.qing_yuan.id },
-      { id = items.fojing1+random(2).id }    ]
+      { id = items.qing_yuan.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/shaolin/jianyu1.c by LPCConverter
@@ -2781,9 +2778,9 @@ direction = ~
   room_exits "ruzhou" {
     room_id = rooms.ruzhou.id
     south = rooms.yidao3.id
-    north = rooms.road10.id
+    north = beijing.rooms.road10.id
     east = rooms.shang_road1.id
-    west = rooms.taishique.id
+    west = songshan.rooms.taishique.id
     }
 
 
@@ -3298,7 +3295,7 @@ direction = ~
     room_id = rooms.shijie1.id
     northup = rooms.shijie2.id
     west = rooms.xiaojing1.id
-    east = rooms.taishique.id
+    east = songshan.rooms.taishique.id
     }
 
 
@@ -4371,7 +4368,7 @@ direction = ~
   room_exits "yidao" {
     room_id = rooms.yidao.id
     north = rooms.yidao1.id
-    south = rooms.beimen.id
+    south = city.rooms.beimen.id
     }
 
 # Generated from C:/files/git/mud/d/shaolin/yidao1.c by LPCConverter
@@ -4404,7 +4401,7 @@ direction = ~
 
   room_exits "yidao2" {
     room_id = rooms.yidao2.id
-    east = rooms.xiaoyuan.id
+    east = room.rooms.xiaoyuan.id
     north = rooms.hanshui1.id
     south = rooms.yidao1.id
     }
@@ -4556,8 +4553,9 @@ direction = ~
 
   room_exits "zhonglou6" {
     room_id = rooms.zhonglou6.id
-    down = rooms.zhonglou5.id
+    northup = rooms.bagua1.id
     up = rooms.zhonglou7.id
+    down = rooms.zhonglou5.id
     }
 
 # Generated from C:/files/git/mud/d/shaolin/zhonglou7.c by LPCConverter

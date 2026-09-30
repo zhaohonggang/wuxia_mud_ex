@@ -88,7 +88,7 @@ item_desc = {
   room_exits "boot" {
     room_id = rooms.boot.id
     westup = rooms.sroad1.id
-    southeast = rooms.sroad1.id
+    southeast = xuedao.rooms.sroad1.id
     }
 
 

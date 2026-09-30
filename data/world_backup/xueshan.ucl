@@ -15,7 +15,7 @@ zones "xueshan" {
 
   room_exits "bieyuan" {
     room_id = rooms.bieyuan.id
-  east = rooms.road5.id  }
+  east = beijing.rooms.road5.id  }
 
 
   room_characters "bieyuan" {
@@ -81,7 +81,7 @@ zones "xueshan" {
   room_exits "caoyuan" {
     room_id = rooms.caoyuan.id
   west = rooms.tulu1.id
-  northeast = rooms.silk4.id  }
+  northeast = xiyu.rooms.silk4.id  }
 
 
 
@@ -581,7 +581,7 @@ item_desc = {
   room_exits "mishi" {
     room_id = rooms.mishi.id
   south = rooms.midao.id
-  north = rooms.xsmidao5.id  }
+  north = city.rooms.xsmidao5.id  }
 
 # Generated from C:/files/git/mud/d/xueshan/neidian.c by LPCConverter
 # Zone: xueshan
@@ -622,7 +622,7 @@ item_desc = {
 
   room_exits "shanjiao" {
     room_id = rooms.shanjiao.id
-  westup = rooms.nroad7.id
+  westup = xuedao.rooms.nroad7.id
   south = rooms.hubian4.id  }
 
 # Generated from C:/files/git/mud/d/xueshan/shanmen.c by LPCConverter
@@ -639,7 +639,7 @@ item_desc = {
   room_exits "shanmen" {
     room_id = rooms.shanmen.id
   north = rooms.guangchang.id
-  eastdown = rooms.nroad4.id  }
+  eastdown = xuedao.rooms.nroad4.id  }
 
 
   room_characters "shanmen" {
@@ -668,12 +668,10 @@ item_desc = {
   z = 0
     }
 
-  room_exits "shenghu" {
-    room_id = rooms.shenghu.id
-  east = rooms.__file__.id
-  west = rooms.__file__.id
-  south = rooms.__file__.id
-  north = rooms.__file__.id  }
+  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
+  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 
   room_characters "shenghu" {

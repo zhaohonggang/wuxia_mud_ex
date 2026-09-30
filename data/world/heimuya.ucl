@@ -185,8 +185,8 @@ direction = "west"
     room_id = rooms.bridge.id
     up = rooms.changtan.id
     down = rooms.basket.id
-    northwest = rooms.guangchang.id
-    east = rooms.xijie.id
+    northwest = baituo.rooms.guangchang.id
+    east = baituo.rooms.xijie.id
     }
 
 
@@ -695,7 +695,7 @@ item_desc = {
     room_id = rooms.dukou2.id
     up = rooms.road5.id
     down = rooms.duchuan1.id
-    southwest = rooms.huanghe_1.id
+    southwest = huanghe.rooms.huanghe_1.id
     river = rooms.dukou1.id
     }
 
@@ -1242,7 +1242,7 @@ direction = "south"
   room_exits "road3" {
     room_id = rooms.road3.id
     west = rooms.pingdingzhou.id
-    east = rooms.ximenwai.id
+    east = beijing.rooms.ximenwai.id
     }
 
 # Generated from C:/files/git/mud/d/heimuya/road4.c by LPCConverter
@@ -1277,7 +1277,7 @@ direction = "south"
     room_id = rooms.road5.id
     up = rooms.up2.id
     down = rooms.dukou2.id
-    northeast = rooms.weifen.id
+    northeast = huanghe.rooms.weifen.id
     south = rooms.road6.id
     }
 
@@ -1295,7 +1295,7 @@ direction = "south"
   room_exits "road6" {
     room_id = rooms.road6.id
     north = rooms.road5.id
-    southeast = rooms.wexit.id
+    southeast = village.rooms.wexit.id
     }
 
 

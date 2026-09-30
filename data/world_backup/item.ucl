@@ -15,7 +15,7 @@ zones "item" {
 
   room_exits "road1" {
     room_id = rooms.road1.id
-  west = rooms.road5.id
+  west = suzhou.rooms.road5.id
   eastup = rooms.road2.id  }
 
 

@@ -216,7 +216,7 @@ item_desc = {
 
   room_exits "htroad3" {
     room_id = rooms.htroad3.id
-    southwest = rooms.heisenlin.id
+    southwest = dali.rooms.heisenlin.id
     north = rooms.htroad2.id
     }
 
@@ -494,8 +494,8 @@ item_desc = {
     rooms "qiao" {
       name = "独木桥"
       description = "这里是一座独木桥，也不知是什么时候架起来的，走在上 面摇摇晃晃的，很是危险。如果你要过河的话，就只有走这里。 从桥上望下去，只见急流勇潺，一掉下去，肯定没命。"
-  x = -6
-  y = -5
+  x = 9
+  y = 11
   z = 0
     }
 
@@ -511,8 +511,8 @@ item_desc = {
     rooms "qiao2" {
       name = "独木桥"
       description = "这里是一座独木桥，也不知是什么时候架起来的，走在上 面摇摇晃晃的，很是危险。如果你要过河的话，就只有走这里。 从桥上望下去，只见急流勇潺，一掉下去，肯定没命。"
-  x = -6
-  y = -6
+  x = 9
+  y = 10
   z = 0
     }
 
@@ -536,8 +536,8 @@ item_desc = {
     rooms "qiao3" {
       name = "独木桥"
       description = "这里是一座独木桥，也不知是什么时候架起来的，走在上 面摇摇晃晃的，很是危险。如果你要过河的话，就只有走这里。 从桥上望下去，只见急流勇潺，一掉下去，肯定没命。"
-  x = -6
-  y = -7
+  x = 9
+  y = 9
   z = 0
     }
 
@@ -618,14 +618,14 @@ item_desc = {
     rooms "road1" {
       name = "乱石滩"
       description = "这里怪石林立，路极不好走，不小心就要摔个跟斗，过了 这片石滩，就是长江岸边。"
-  x = -5
-  y = 0
+  x = 10
+  y = 16
   z = 0
     }
 
   room_exits "road1" {
     room_id = rooms.road1.id
-    north = rooms.nanshilu1.id
+    north = jingzhou.rooms.nanshilu1.id
     south = rooms.road2.id
     }
 
@@ -635,8 +635,8 @@ item_desc = {
     rooms "road2" {
       name = "乱石滩"
       description = "这里怪石林立，路极不好走，不小心就要摔个跟斗，过了 这片石滩，就是长江岸边。"
-  x = -5
-  y = -1
+  x = 10
+  y = 15
   z = 0
     }
 
@@ -652,8 +652,8 @@ item_desc = {
     rooms "road3" {
       name = "乱石滩"
       description = "这里怪石林立，路极不好走，不小心就要摔个跟斗，过了 这片石滩，就是长江岸边。"
-  x = -5
-  y = -2
+  x = 10
+  y = 14
   z = 0
     }
 
@@ -669,8 +669,8 @@ item_desc = {
     rooms "road4" {
       name = "乱石滩"
       description = "这里怪石林立，路极不好走，不小心就要摔个跟斗，过了 这片石滩，就是长江岸边。"
-  x = -6
-  y = -3
+  x = 9
+  y = 13
   z = 0
     }
 
@@ -693,8 +693,8 @@ item_desc = {
     rooms "road5" {
       name = "长江北岸"
       description = "你快步来到了长江北岸，只见这里波涛滚滚，滔滔江水向 东流去。岸边立有一块碑(bei)，前面不远处有座独木桥。"
-  x = -6
-  y = -4
+  x = 9
+  y = 12
   z = 0
 item_desc = {
  bei = "################################             ##                            ##             ##     通      天      河     ##             ##                            ##             ################################"
@@ -721,8 +721,8 @@ item_desc = {
     rooms "road6" {
       name = "长江南岸"
       description = "你快步来到了长江南岸，只见这里波涛滚滚，滔滔江水向 东流去。岸边立有一块碑(bei)，前面不远处有座独木桥。"
-  x = -6
-  y = -8
+  x = 9
+  y = 8
   z = 0
 item_desc = {
  bei = "################################             ##                            ##             ##     通      天      河     ##             ##                            ##             ################################"
@@ -741,8 +741,8 @@ item_desc = {
     rooms "road7" {
       name = "山路"
       description = "你走在一条崎岖的山路上，再往南，就进入了云贵高原了。 北面是一条大河拦住去路。"
-  x = -6
-  y = -9
+  x = 9
+  y = 7
   z = 0
     }
 
@@ -1117,7 +1117,7 @@ direction = "west"
   room_exits "xroad2" {
     room_id = rooms.xroad2.id
     east = rooms.xroad1.id
-    west = rooms.road1.id
+    west = dali.rooms.road1.id
     }
 
 # Generated from C:/files/git/mud/d/kunming/yunnan.c by LPCConverter

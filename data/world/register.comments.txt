@@ -24,13 +24,13 @@
   # if (me->is_ghost())  →  
 # ==== CONDITIONAL BRANCHES (free_ob) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_drink
-  # UNHANDLED FUNCTION: free_ob
   # UNHANDLED FUNCTION: do_give
   # UNHANDLED FUNCTION: do_suicide
-  # UNHANDLED FUNCTION: do_eat
-  # UNHANDLED FUNCTION: do_drop
   # UNHANDLED FUNCTION: catch_ob
+  # UNHANDLED FUNCTION: do_drop
+  # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: free_ob
+  # UNHANDLED FUNCTION: do_drink
   # UNHANDLED FUNCTION: catch_back
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -125,9 +125,9 @@
 # ==== CONDITIONAL BRANCHES ====
   # COMPLEX MAPPING: ([ "扬州人氏":"/d/city/kedian", "欧阳世家":([ "born":"西域人氏", "surname":"欧阳", "startroom":"/d/baituo/dating", ]
 # ==== COMPLEX MAPPINGS ====
-  # UNHANDLED FUNCTION: is_chat_room
   # UNHANDLED FUNCTION: do_wash
   # UNHANDLED FUNCTION: do_born
+  # UNHANDLED FUNCTION: is_chat_room
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

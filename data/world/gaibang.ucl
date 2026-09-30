@@ -50,7 +50,7 @@ zones "gaibang" {
   room_exits "inhole" {
     room_id = rooms.inhole.id
     down = rooms.undertre.id
-    out = rooms.guangchang.id
+    out = city.rooms.guangchang.id
     }
 
 

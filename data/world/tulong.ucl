@@ -268,7 +268,7 @@ item_desc = {
   room_exits "haigang" {
     room_id = rooms.haigang.id
     north = rooms.haian.id
-    west = rooms.road10.id
+    west = beijing.rooms.road10.id
     }
 
 
@@ -963,8 +963,8 @@ item_desc = {
   room_exits "jiulou" {
     room_id = rooms.jiulou.id
     up = rooms.move1.id
-    down = rooms.huichang_back.id
-    # down = rooms.huiying.id
+    northdown = rooms.huichang_back.id
+    down = beijing.rooms.huiying.id
     }
 
 

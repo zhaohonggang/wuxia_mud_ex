@@ -31,9 +31,9 @@
   # if (me->query_skill("poison", 1) < 160)  →  
 # ==== CONDITIONAL BRANCHES (look_desk) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: look_pet
   # UNHANDLED FUNCTION: look_desk
   # UNHANDLED FUNCTION: do_pick
+  # UNHANDLED FUNCTION: look_pet
   # UNHANDLED FUNCTION: do_move
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -681,8 +681,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_ride
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

@@ -225,7 +225,7 @@ item_desc = {
   room_exits "dongmeng" {
     room_id = rooms.dongmeng.id
     west = rooms.yanlingdong2.id
-    east = rooms.road4.id
+    east = suzhou.rooms.road4.id
     }
 
 
@@ -558,9 +558,9 @@ item_desc = {
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-    up = rooms.zhongzhou_shop.id
     west = rooms.yinghao.id
     }
+  # skipped exit up: target outside d/: /clone/shop/zhongzhou_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -1106,7 +1106,7 @@ item_desc = {
   room_exits "toyy" {
     room_id = rooms.toyy.id
     north = rooms.nroad.id
-    west = rooms.eastgate2.id
+    west = xiangyang.rooms.eastgate2.id
     }
 
 # Generated from C:/files/git/mud/d/zhongzhou/wendingbei1.c by LPCConverter
@@ -1360,7 +1360,7 @@ item_desc = {
   room_exits "wroad3" {
     room_id = rooms.wroad3.id
     east = rooms.wroad2.id
-    west = rooms.tokaifeng.id
+    west = kaifeng.rooms.tokaifeng.id
     }
 
 # Generated from C:/files/git/mud/d/zhongzhou/xiaoxiang.c by LPCConverter
@@ -1598,7 +1598,7 @@ item_desc = {
   room_exits "yangzhoudu" {
     room_id = rooms.yangzhoudu.id
     down = rooms.guandao7.id
-    north = rooms.ximen.id
+    north = city.rooms.ximen.id
     river = rooms.zhongzhoudu.id
     }
 

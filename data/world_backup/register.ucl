@@ -59,7 +59,7 @@ item_desc = {
   room_exits "roome" {
     room_id = rooms.roome.id
   west = rooms.entry.id
-  out = rooms.guangchang.id  }
+  out = city.rooms.guangchang.id  }
 
 
   room_characters "roome" {
@@ -82,7 +82,7 @@ item_desc = {
   room_exits "roomn" {
     room_id = rooms.roomn.id
   south = rooms.entry.id
-  out = rooms.guangchang.id  }
+  out = city.rooms.guangchang.id  }
 
 
   room_characters "roomn" {
@@ -105,7 +105,7 @@ item_desc = {
   room_exits "rooms" {
     room_id = rooms.rooms.id
   north = rooms.entry.id
-  out = rooms.guangchang.id  }
+  out = city.rooms.guangchang.id  }
 
 
   room_characters "rooms" {
@@ -128,7 +128,7 @@ item_desc = {
   room_exits "roomw" {
     room_id = rooms.roomw.id
   east = rooms.entry.id
-  out = rooms.guangchang.id  }
+  out = city.rooms.guangchang.id  }
 
 
   room_characters "roomw" {

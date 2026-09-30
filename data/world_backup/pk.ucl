@@ -24,7 +24,7 @@ direction = "north"
   room_exits "entry" {
     room_id = rooms.entry.id
   north = rooms.ready.id
-  west = rooms.yongtai_dadao2.id  }
+  west = changan.rooms.yongtai_dadao2.id  }
 
 
   room_characters "entry" {

@@ -257,7 +257,7 @@ zones "lanzhou" {
 
   room_exits "caroad8" {
     room_id = rooms.caroad8.id
-    southeast = rooms.caroad2.id
+    southeast = changan.rooms.caroad2.id
     north = rooms.caroad7.id
     }
 
@@ -299,7 +299,7 @@ zones "lanzhou" {
 
   room_exits "dongmen" {
     room_id = rooms.dongmen.id
-    east = rooms.lzroad.id
+    east = changan.rooms.lzroad.id
     west = rooms.dongdajie1.id
     }
 
@@ -728,7 +728,7 @@ direction = "west"
     room_id = rooms.river_bei.id
     up = rooms.tudimiao.id
     down = rooms.kedian2.id
-    north = rooms.xiaojiaqiao.id
+    north = huanghe.rooms.xiaojiaqiao.id
     river = rooms.river_nan.id
     }
 
@@ -766,7 +766,7 @@ direction = "west"
   room_exits "road" {
     room_id = rooms.road.id
     east = rooms.nroad1.id
-    west = rooms.guandao1.id
+    west = shenfeng.rooms.guandao1.id
     }
 
 # Generated from C:/files/git/mud/d/lanzhou/tudimiao.c by LPCConverter
@@ -866,7 +866,7 @@ direction = "west"
   room_exits "ximen" {
     room_id = rooms.ximen.id
     east = rooms.xidajie1.id
-    west = rooms.xxroad3.id
+    west = xiyu.rooms.xxroad3.id
     }
 
 

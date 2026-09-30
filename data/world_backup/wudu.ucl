@@ -447,7 +447,7 @@ valid_leave = [
   room_exits "cun8" {
     room_id = rooms.cun8.id
   northwest = rooms.cun7.id
-  east = rooms.zhulin2.id  }
+  east = dali.rooms.zhulin2.id  }
 
 # Generated from C:/files/git/mud/d/wudu/damen.c by LPCConverter
 # Zone: wudu
@@ -955,7 +955,7 @@ item_desc = {
   room_exits "midao5" {
     room_id = rooms.midao5.id
   south = rooms.midao4.id
-  up = rooms.ma_chufang.id  }
+  up = city.rooms.ma_chufang.id  }
 
 # Generated from C:/files/git/mud/d/wudu/milin1.c by LPCConverter
 # Zone: wudu
@@ -1514,7 +1514,7 @@ direction = ~
   room_exits "road1" {
     room_id = rooms.road1.id
   south = rooms.road2.id
-  north = rooms.luyuxi.id  }
+  north = dali.rooms.luyuxi.id  }
 
 # Generated from C:/files/git/mud/d/wudu/road2.c by LPCConverter
 # Zone: wudu

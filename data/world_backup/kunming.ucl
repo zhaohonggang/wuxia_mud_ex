@@ -208,7 +208,7 @@ item_desc = {
   room_exits "htroad3" {
     room_id = rooms.htroad3.id
   north = rooms.htroad2.id
-  southwest = rooms.heisenlin.id  }
+  southwest = dali.rooms.heisenlin.id  }
 
 # Generated from C:/files/git/mud/d/kunming/jinmafang.c by LPCConverter
 # Zone: kunming
@@ -600,7 +600,7 @@ item_desc = {
   room_exits "road1" {
     room_id = rooms.road1.id
   south = rooms.road2.id
-  north = rooms.nanshilu1.id  }
+  north = jingzhou.rooms.nanshilu1.id  }
 
 # Generated from C:/files/git/mud/d/kunming/road2.c by LPCConverter
 # Zone: kunming
@@ -1069,7 +1069,7 @@ direction = "west"
 
   room_exits "xroad2" {
     room_id = rooms.xroad2.id
-  west = rooms.road1.id
+  west = dali.rooms.road1.id
   east = rooms.xroad1.id  }
 
 # Generated from C:/files/git/mud/d/kunming/yunnan.c by LPCConverter

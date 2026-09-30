@@ -18,7 +18,7 @@ item_desc = {
 
   room_exits "shanbi" {
     room_id = rooms.shanbi.id
-    up = rooms.ziqitai.id
+    up = huashan.rooms.ziqitai.id
     }
 
 # Generated from C:/files/git/mud/d/jinshe/shandong.c by LPCConverter

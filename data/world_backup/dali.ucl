@@ -1315,7 +1315,7 @@ zones "dali" {
   room_exits "heisenlin" {
     room_id = rooms.heisenlin.id
   south = rooms.dasenlin.id
-  northeast = rooms.htroad3.id  }
+  northeast = kunming.rooms.htroad3.id  }
 
 # Generated from C:/files/git/mud/d/dali/heshang.c by LPCConverter
 # Zone: dali
@@ -1388,7 +1388,7 @@ zones "dali" {
     room_id = rooms.hongsheng.id
   west = rooms.cangshan.id
   in = rooms.hongsheng1.id
-  south = rooms.damen.id  }
+  south = tianlongsi.rooms.damen.id  }
 
 
   room_characters "hongsheng" {
@@ -2089,7 +2089,7 @@ direction = "west"
     room_id = rooms.luyuxi.id
   east = rooms.shuangheqiao.id
   west = rooms.gudao.id
-  south = rooms.road1.id  }
+  south = wudu.rooms.road1.id  }
 
 # Generated from C:/files/git/mud/d/dali/majiu.c by LPCConverter
 # Zone: dali
@@ -2104,8 +2104,8 @@ direction = "west"
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-  east = rooms.bingying.id
-  up = rooms.dali_shop.id  }
+  east = rooms.bingying.id  }
+  # skipped exit up: target outside d/: /clone/shop/dali_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -2531,9 +2531,9 @@ direction = "west"
 
   room_exits "road1" {
     room_id = rooms.road1.id
-  northeast = rooms.qsjie2.id
+  northeast = emei.rooms.qsjie2.id
   southwest = rooms.road2.id
-  east = rooms.xroad2.id  }
+  east = kunming.rooms.xroad2.id  }
 
 # Generated from C:/files/git/mud/d/dali/road2.c by LPCConverter
 # Zone: dali
@@ -2570,7 +2570,7 @@ item_desc = {
     room_id = rooms.road3.id
   northeast = rooms.road2.id
   south = rooms.dehuabei.id
-  northwest = rooms.riverside2.id  }
+  northwest = wanjiegu.rooms.riverside2.id  }
 
 
   room_characters "road3" {
@@ -2609,7 +2609,7 @@ item_desc = {
   room_exits "road5" {
     room_id = rooms.road5.id
   northwest = rooms.shuangheqiao.id
-  southeast = rooms.road1.id  }
+  southeast = foshan.rooms.road1.id  }
 
 
 
@@ -4319,7 +4319,7 @@ behavior_config = {
   room_exits "zhulin2" {
     room_id = rooms.zhulin2.id
   north = rooms.hexi.id
-  west = rooms.cun8.id  }
+  west = wudu.rooms.cun8.id  }
 
 
   room_characters "zhulin2" {

@@ -245,7 +245,7 @@ zones "hengshan" {
 
   room_exits "jinlongxia" {
     room_id = rooms.jinlongxia.id
-    northeast = rooms.road6.id
+    northeast = beijing.rooms.road6.id
     southeast = rooms.cuipinggu1.id
     }
 

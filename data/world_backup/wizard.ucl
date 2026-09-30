@@ -81,7 +81,7 @@ zones "wizard" {
   room_exits "herodoor" {
     room_id = rooms.herodoor.id
   in = rooms.hall.id
-  up = rooms.wumiao.id
+  up = city.rooms.wumiao.id
   west = rooms.wenxuan.id  }
 
 # Generated from C:/files/git/mud/d/wizard/noname_room.c by LPCConverter

@@ -82,6 +82,16 @@ DIRS = {
 # (but they're still traversed for graph connectivity)
 SKIP_DIRS = []
 
+# Candidate directions for a SYNTHESISED vertical link, most natural first.
+# Plain "up"/"down" is preferred, but it may already be occupied - by a real
+# in-zone room (shaolin's zhonglou6.up) or by a real cross-zone link (the
+# converter now emits `<zone>.rooms.<room>.id`, e.g. city/xdmidao1 -up->
+# /d/xuedao/sroad8).  Rather than skipping the link and leaving the whole orphan
+# layer unreachable, fall through to a free compound direction.  See the
+# "赋坐标后孤儿房不可达" row in docs/zone-conversion-sop.zh-CN.md.
+UP_DIR_CANDIDATES = ("up", "northup", "eastup", "westup", "southup")
+DOWN_DIR_CANDIDATES = ("down", "northdown", "eastdown", "westdown", "southdown")
+
 # ---------------------------------------------------------------------------
 # Regexes (faithful to the Elixir regexes, all ASCII-flavoured)
 # ---------------------------------------------------------------------------
@@ -363,33 +373,63 @@ def _add_vertical_exits(state, from_id, to_id):
     bottommost = _find_bottommost_via_down(
         to_id, state["exits_map"], state["new_exits"])
 
-    # Whether the obvious "up"/"down" direction is already taken.  HEAD's rule
-    # (8fdc743, committed with shaolin) skips the whole link whenever the
-    # direction name is in use, which is right when the occupant is a REAL
-    # in-zone room (shaolin's zhonglou6.up = zhonglou7 must not be clobbered)
-    # but wrong when the occupant is a phantom: an up/down whose target is NOT
-    # a room of this zone (e.g. city's xdmidao1.up = /d/xuedao/sroad8).  The
-    # committed city.ucl shows the intended behaviour for that case: the new
-    # z-axis link is written using the plain "up"/"down" direction and the
-    # phantom is commented out (`# up = rooms.sroad8.id`) by _phantom_updown
-    # in _build_exits_block.  So a phantom occupant is NOT treated as "taken":
-    # the link is still synthesised, and the phantom line gets commented.
-
-    def _taken_by_real_room(eid, dir_):
+    # Whether the obvious "up"/"down" direction is already taken.  A direction is
+    # taken when the room already has an exit by that name, whatever it points
+    # at:
+    #
+    #   * a REAL in-zone room - shaolin's zhonglou6.up = zhonglou7 must not be
+    #     clobbered;
+    #   * a CROSS-ZONE room - the converter now emits `<zone>.rooms.<room>.id`
+    #     for e.g. city/xdmidao1 -up-> /d/xuedao/sroad8, wizard/herodoor
+    #     -up-> /d/city/wumiao, emei/midao5 -up-> /d/chengdu/qingyanggong and
+    #     wudu/midao5 -up-> /d/city/ma_chufang.  Those are real vertical links
+    #     in the MUD, so the direction is occupied.  Synthesising a second
+    #     `up` here would emit the same key twice in one room_exits block;
+    #     elias merges duplicate keys into an array and the loader's
+    #     String.split then crashes (the shaolin zhonglou6 bug).
+    #
+    # A target that is neither (a bare `rooms.<x>.id` naming a room this zone
+    # does not have - the "phantom" test data such as room_above/room_below) is
+    # NOT taken: the link is still synthesised and the phantom line is commented
+    # out by _phantom_updown in _render_exit_row.
+    def _dir_used(eid, dir_):
         exits = list(state["exits_map"].get(eid, [])) + \
             list(state["new_exits"].get(eid, []))
         for d, t in exits:
-            if d == dir_ and t[0] == LOCAL and t[1] in state["room_set"]:
+            if d != dir_:
+                continue
+            if t[0] == LOCAL:
+                if t[1] in state["room_set"]:
+                    return True
+            else:
+                # EXTERNAL: a cross-zone (or otherwise non-local) reference.
                 return True
         return False
 
-    if not _taken_by_real_room(topmost, "up"):
-        state["new_exits"][topmost] = \
-            state["new_exits"].get(topmost, []) + [("up", (LOCAL, to_id))]
+    def _free_vertical_dir(eid, candidates):
+        """First candidate direction this room is not already using.
 
-    if not _taken_by_real_room(bottommost, "down"):
+        Falling through to a compound direction is what keeps an orphan layer
+        attached.  city/xdmidao1's only path into the xsmidao* component used to
+        be a synthesised plain `up`; once its real cross-zone `up` is wired,
+        skipping instead would leave all six xsmidao* rooms unreachable
+        (check_room_coords hard failure).  See the "赋坐标后孤儿房不可达" row
+        in docs/zone-conversion-sop.zh-CN.md.
+        """
+        for dir_ in candidates:
+            if not _dir_used(eid, dir_):
+                return dir_
+        return None
+
+    up_dir = _free_vertical_dir(topmost, UP_DIR_CANDIDATES)
+    if up_dir is not None:
+        state["new_exits"][topmost] = \
+            state["new_exits"].get(topmost, []) + [(up_dir, (LOCAL, to_id))]
+
+    down_dir = _free_vertical_dir(bottommost, DOWN_DIR_CANDIDATES)
+    if down_dir is not None:
         state["new_exits"][bottommost] = \
-            state["new_exits"].get(bottommost, []) + [("down", (LOCAL, topmost))]
+            state["new_exits"].get(bottommost, []) + [(down_dir, (LOCAL, topmost))]
 
     return state
 

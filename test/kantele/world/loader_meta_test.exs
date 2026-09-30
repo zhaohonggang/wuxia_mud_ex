@@ -6,7 +6,8 @@ defmodule Kantele.World.LoaderMetaTest do
   test "食物物品解析 weight/unit/food 等通用字段" do
     world = Kantele.World.Loader.load()
 
-    baozi = Enum.find(world.items, &String.contains?(&1.name, "包子"))
+    # 按 id 精确取，避免同名物品（如各区的「包子」）随转换集合变化而遮蔽
+    baozi = Enum.find(world.items, &(&1.id == "liuxi:baozi"))
     assert baozi != nil
     assert baozi.meta.value == 15
     assert baozi.meta.weight == 80
@@ -20,7 +21,7 @@ defmodule Kantele.World.LoaderMetaTest do
   test "秘籍物品解析 book 五元组" do
     world = Kantele.World.Loader.load()
 
-    jianpu = Enum.find(world.items, &String.contains?(&1.name, "剑谱"))
+    jianpu = Enum.find(world.items, &(&1.id == "liuxi:jianpu"))
     assert jianpu != nil
     assert jianpu.meta.weight == 50
     assert jianpu.meta.unit == "本"
@@ -55,15 +56,18 @@ defmodule Kantele.World.LoaderMetaTest do
     assert changjian.meta.weapon_prop == %{attack: 3}
     assert changjian.meta.armor_type == nil
 
-    bupao = Enum.find(world.items, &String.contains?(&1.name, "布袍"))
+    # 按 id 精确取，不要用 name 模糊匹配：taohua 也有叫「布袍」的 bupao
+    # （无 armor_type/armor_prop），模糊匹配会命中它并遮住 liuxi 这件，
+    # 让本测试随已转换区域集合变化而flaky。
+    bupao = Enum.find(world.items, &(&1.id == "liuxi:bupao"))
     assert bupao.meta.armor_type == "cloth"
     assert bupao.meta.armor_prop == %{defense: 4}
 
-    douli = Enum.find(world.items, &String.contains?(&1.name, "斗笠"))
+    douli = Enum.find(world.items, &(&1.id == "liuxi:douli"))
     assert douli.meta.armor_type == "head"
     assert douli.meta.armor_prop == %{defense: 2, dodge: -1}
 
-    yaodai = Enum.find(world.items, &String.contains?(&1.name, "束腰"))
+    yaodai = Enum.find(world.items, &(&1.id == "liuxi:yaodai"))
     assert yaodai.meta.armor_type == "waist"
     assert yaodai.meta.armor_prop == %{dodge: 3}
   end

@@ -493,9 +493,9 @@ valid_leave = [
 
   room_exits "taishique" {
     room_id = rooms.taishique.id
-    south = rooms.shanlu2.id
-    west = rooms.shijie1.id
-    east = rooms.ruzhou.id
+    south = kaifeng.rooms.shanlu2.id
+    west = shaolin.rooms.shijie1.id
+    east = shaolin.rooms.ruzhou.id
     north = rooms.tianzhongge.id
     }
 

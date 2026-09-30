@@ -270,7 +270,7 @@ item_desc = {
     room_id = rooms.hupan.id
     up = rooms.lingmu.id
     down = rooms.dingduan.id
-    west = rooms.nanhu1.id
+    west = quanzhou.rooms.nanhu1.id
     north = rooms.xiaolu.id
     }
 
@@ -523,7 +523,7 @@ item_desc = {
   room_exits "shijie" {
     room_id = rooms.shijie.id
     north = rooms.xiaolu.id
-    eastdown = rooms.gushan.id
+    eastdown = hangzhou.rooms.gushan.id
     }
 
 # Generated from C:/files/git/mud/d/meizhuang/shushi.c by LPCConverter

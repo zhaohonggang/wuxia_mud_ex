@@ -468,7 +468,7 @@ valid_leave = [
 
   room_exits "cun8" {
     room_id = rooms.cun8.id
-    east = rooms.zhulin2.id
+    east = dali.rooms.zhulin2.id
     northwest = rooms.cun7.id
     }
 
@@ -1014,7 +1014,7 @@ item_desc = {
 
   room_exits "midao5" {
     room_id = rooms.midao5.id
-    up = rooms.ma_chufang.id
+    up = city.rooms.ma_chufang.id
     south = rooms.midao4.id
     }
 
@@ -1606,7 +1606,7 @@ direction = ~
 
   room_exits "road1" {
     room_id = rooms.road1.id
-    north = rooms.luyuxi.id
+    north = dali.rooms.luyuxi.id
     south = rooms.road2.id
     }
 

@@ -65,7 +65,7 @@ item_desc = {
 
   room_exits "roome" {
     room_id = rooms.roome.id
-    out = rooms.guangchang.id
+    out = city.rooms.guangchang.id
     west = rooms.entry.id
     }
 
@@ -89,7 +89,7 @@ item_desc = {
 
   room_exits "roomn" {
     room_id = rooms.roomn.id
-    out = rooms.guangchang.id
+    out = city.rooms.guangchang.id
     south = rooms.entry.id
     }
 
@@ -113,7 +113,7 @@ item_desc = {
 
   room_exits "rooms" {
     room_id = rooms.rooms.id
-    out = rooms.guangchang.id
+    out = city.rooms.guangchang.id
     north = rooms.entry.id
     }
 
@@ -137,7 +137,7 @@ item_desc = {
 
   room_exits "roomw" {
     room_id = rooms.roomw.id
-    out = rooms.guangchang.id
+    out = city.rooms.guangchang.id
     east = rooms.entry.id
     }
 

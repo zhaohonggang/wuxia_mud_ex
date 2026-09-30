@@ -272,7 +272,7 @@ item_desc = {
 
   room_exits "riverside2" {
     room_id = rooms.riverside2.id
-  southeast = rooms.road3.id
+  southeast = dali.rooms.road3.id
   southdown = rooms.riverside1.id
   northdown = rooms.riverside3.id  }
 

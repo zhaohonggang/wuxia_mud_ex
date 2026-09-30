@@ -104,8 +104,8 @@
   # if (! arg || arg != "cabinet")  →  
 # ==== CONDITIONAL BRANCHES (do_pull) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_pull
   # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_pull
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -142,8 +142,8 @@
   # if (! arg || arg != "drawer")  →  
 # ==== CONDITIONAL BRANCHES (do_pull) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_pull
   # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_pull
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

@@ -23,8 +23,8 @@
   # if (arg == "floor")  →  write('地上的木板现在已经拉开了。\\\\\n'); message_vision('$N拉起地上的木板，发现下面是空的。\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (do_open) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close_path
   # UNHANDLED FUNCTION: do_open
+  # UNHANDLED FUNCTION: close_path
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

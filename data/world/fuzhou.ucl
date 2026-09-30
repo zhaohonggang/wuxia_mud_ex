@@ -269,7 +269,7 @@ zones "fuzhou" {
   room_exits "fzroad1" {
     room_id = rooms.fzroad1.id
     south = rooms.erbapu.id
-    northdown = rooms.qzroad4.id
+    northdown = quanzhou.rooms.qzroad4.id
     }
 
 
@@ -452,7 +452,7 @@ zones "fuzhou" {
   room_exits "fzroad7" {
     room_id = rooms.fzroad7.id
     eastup = rooms.fzroad6.id
-    northwest = rooms.hsroad2.id
+    northwest = hengyang.rooms.hsroad2.id
     }
 
 
@@ -627,9 +627,9 @@ item_desc = {
 
   room_exits "majiu" {
     room_id = rooms.majiu.id
-    up = rooms.fuzhou_shop.id
     south = rooms.rongcheng.id
     }
+  # skipped exit up: target outside d/: /clone/shop/fuzhou_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -779,7 +779,7 @@ item_desc = {
 
   room_exits "puxian" {
     room_id = rooms.puxian.id
-    south = rooms.beimen.id
+    south = quanzhou.rooms.beimen.id
     north = rooms.zhongzhou.id
     }
 

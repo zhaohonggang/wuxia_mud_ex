@@ -247,7 +247,7 @@ zones "lanzhou" {
   room_exits "caroad8" {
     room_id = rooms.caroad8.id
   north = rooms.caroad7.id
-  southeast = rooms.caroad2.id  }
+  southeast = changan.rooms.caroad2.id  }
 
 # Generated from C:/files/git/mud/d/lanzhou/dongdajie1.c by LPCConverter
 # Zone: lanzhou
@@ -287,7 +287,7 @@ zones "lanzhou" {
   room_exits "dongmen" {
     room_id = rooms.dongmen.id
   west = rooms.dongdajie1.id
-  east = rooms.lzroad.id  }
+  east = changan.rooms.lzroad.id  }
 
 
   room_characters "dongmen" {
@@ -690,7 +690,7 @@ direction = "west"
 
   room_exits "river_bei" {
     room_id = rooms.river_bei.id
-  north = rooms.xiaojiaqiao.id
+  north = huanghe.rooms.xiaojiaqiao.id
   river = rooms.river_nan.id  }
 
 # Generated from C:/files/git/mud/d/lanzhou/river-nan.c by LPCConverter
@@ -725,7 +725,7 @@ direction = "west"
 
   room_exits "road" {
     room_id = rooms.road.id
-  west = rooms.guandao1.id
+  west = shenfeng.rooms.guandao1.id
   east = rooms.nroad1.id  }
 
 # Generated from C:/files/git/mud/d/lanzhou/tudimiao.c by LPCConverter
@@ -819,7 +819,7 @@ direction = "west"
 
   room_exits "ximen" {
     room_id = rooms.ximen.id
-  west = rooms.xxroad3.id
+  west = xiyu.rooms.xxroad3.id
   east = rooms.xidajie1.id  }
 
 

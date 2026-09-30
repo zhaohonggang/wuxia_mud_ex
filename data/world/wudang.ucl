@@ -872,7 +872,7 @@ direction = "southup"
 
   room_exits "sanbuguan" {
     room_id = rooms.sanbuguan.id
-    southwest = rooms.wdroad.id
+    southwest = emei.rooms.wdroad.id
     southeast = rooms.wdroad9.id
     east = rooms.wdroad8.id
     }
@@ -1806,7 +1806,7 @@ item_desc = {
 
   room_exits "wdroad1" {
     room_id = rooms.wdroad1.id
-    north = rooms.nanmen.id
+    north = city.rooms.nanmen.id
     south = rooms.wdroad2.id
     }
 
@@ -1848,7 +1848,7 @@ item_desc = {
 
   room_exits "wdroad2" {
     room_id = rooms.wdroad2.id
-    southeast = rooms.yixing.id
+    southeast = guiyun.rooms.yixing.id
     north = rooms.wdroad1.id
     south = rooms.wdroad3.id
     }
@@ -1884,8 +1884,8 @@ item_desc = {
   room_exits "wdroad4" {
     room_id = rooms.wdroad4.id
     north = rooms.wdroad3.id
-    southup = rooms.hsroad1.id
-    east = rooms.shulin3.id
+    southup = hengyang.rooms.hsroad1.id
+    east = xiaoyao.rooms.shulin3.id
     west = rooms.wdroad5.id
     }
 
@@ -1902,9 +1902,9 @@ item_desc = {
 
   room_exits "wdroad5" {
     room_id = rooms.wdroad5.id
-    southdown = rooms.jzbeimen.id
+    southdown = jingzhou.rooms.jzbeimen.id
     east = rooms.wdroad4.id
-    north = rooms.caodi6.id
+    north = xiangyang.rooms.caodi6.id
     northwest = rooms.wdroad6.id
     }
 
@@ -1982,7 +1982,7 @@ item_desc = {
 
   room_exits "wdroad9" {
     room_id = rooms.wdroad9.id
-    southeast = rooms.hsroad8.id
+    southeast = hengyang.rooms.hsroad8.id
     south = rooms.wdroad10.id
     northwest = rooms.sanbuguan.id
     }

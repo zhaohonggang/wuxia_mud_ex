@@ -60,8 +60,8 @@
   # if (n >= 200)  →  message_vision(WHT '只听轰然一声巨响，$N' WHT '把门给震' '开了。\\\\\n' NOR, this_player());
 # ==== CONDITIONAL BRANCHES (do_break) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_break
   # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_break
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -83,8 +83,8 @@
   # if (n >= 200)  →  message_vision(WHT '只听轰然一声巨响，$N' WHT '把门给震' '开了。\\\\\n' NOR, this_player());
 # ==== CONDITIONAL BRANCHES (do_break) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_break
   # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_break
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

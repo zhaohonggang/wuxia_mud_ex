@@ -428,8 +428,8 @@
   # if ((int)me->query("jing") < 80 || (int)me->query("qi") < 80)  →  
 # ==== CONDITIONAL BRANCHES (do_liandan) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: liandan
   # UNHANDLED FUNCTION: do_liandan
+  # UNHANDLED FUNCTION: liandan
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -457,8 +457,8 @@
   # if ((int)me->query_temp("caiyao") == 2)  →  
 # ==== CONDITIONAL BRANCHES (do_cai) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_cai
   # UNHANDLED FUNCTION: cai
+  # UNHANDLED FUNCTION: do_cai
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1090,8 +1090,8 @@
   # if ((int)me->query_str() > 30)  →  
 # ==== CONDITIONAL BRANCHES (ask_for_zigong) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: ask_for_gongzi
   # UNHANDLED FUNCTION: ask_for_zigong
+  # UNHANDLED FUNCTION: ask_for_gongzi
   # UNHANDLED FUNCTION: do_decide
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -1287,10 +1287,10 @@
   # if (me->query_temp("liandan"))  →  command('say 不是要去炼丹吗，怎么还在这呆着？\\\\\n'); message_vision(CYN '姚春对$N' CYN '微笑道：炼丹是个修身养性的' '过程，你能成功，很不错！\\\\\n' NOR, me); tell_object(me, HIC '你获得了' + chinese_number(exp) + '点经验和' + chinese_number(pot) + '点潜能。\\\\\n' NOR );
 # ==== CONDITIONAL BRANCHES (do_liandan) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_me
   # UNHANDLED FUNCTION: do_liandan
   # UNHANDLED FUNCTION: recognize_apprentice
   # UNHANDLED FUNCTION: ask_yinzhen
-  # UNHANDLED FUNCTION: ask_me
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1330,9 +1330,9 @@
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: receive_damage
+  # UNHANDLED FUNCTION: receive_wound
   # UNHANDLED FUNCTION: do_ride
   # UNHANDLED FUNCTION: give_mashao
-  # UNHANDLED FUNCTION: receive_wound
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1617,8 +1617,8 @@
   # if (interactive(ob = this_player()) && (int)ob->query_condition("killer"))  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: unconcious
+  # UNHANDLED FUNCTION: accept_fight
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1815,8 +1815,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: owner_is_killed
   # UNHANDLED FUNCTION: do_effect
+  # UNHANDLED FUNCTION: owner_is_killed
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1946,8 +1946,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: owner_is_killed
   # UNHANDLED FUNCTION: do_effect
+  # UNHANDLED FUNCTION: owner_is_killed
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -2054,8 +2054,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: owner_is_killed
   # UNHANDLED FUNCTION: do_effect
+  # UNHANDLED FUNCTION: owner_is_killed
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -2184,8 +2184,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: owner_is_killed
   # UNHANDLED FUNCTION: do_effect
+  # UNHANDLED FUNCTION: owner_is_killed
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -2298,8 +2298,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: owner_is_killed
   # UNHANDLED FUNCTION: do_effect
+  # UNHANDLED FUNCTION: owner_is_killed
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -2389,8 +2389,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: owner_is_killed
   # UNHANDLED FUNCTION: do_effect
+  # UNHANDLED FUNCTION: owner_is_killed
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -2409,8 +2409,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: owner_is_killed
   # UNHANDLED FUNCTION: do_effect
+  # UNHANDLED FUNCTION: owner_is_killed
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -2429,8 +2429,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: owner_is_killed
   # UNHANDLED FUNCTION: do_effect
+  # UNHANDLED FUNCTION: owner_is_killed
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -2449,8 +2449,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: owner_is_killed
   # UNHANDLED FUNCTION: do_effect
+  # UNHANDLED FUNCTION: owner_is_killed
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -2469,8 +2469,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: owner_is_killed
   # UNHANDLED FUNCTION: do_effect
+  # UNHANDLED FUNCTION: owner_is_killed
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -2489,8 +2489,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: owner_is_killed
   # UNHANDLED FUNCTION: do_effect
+  # UNHANDLED FUNCTION: owner_is_killed
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -3571,8 +3571,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_eat
   # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_eat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

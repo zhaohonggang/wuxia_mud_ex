@@ -290,7 +290,7 @@ zones "xiaoyao" {
   south = rooms.shulin3.id
   north = rooms.shulin3.id
   east = rooms.shulin2.id
-  west = rooms.wdroad4.id  }
+  west = wudang.rooms.wdroad4.id  }
 
 # Generated from C:/files/git/mud/d/xiaoyao/wuchang1.c by LPCConverter
 # Zone: xiaoyao
