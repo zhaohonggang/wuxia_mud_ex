@@ -83,7 +83,7 @@ defmodule Kantele.Brain.Conditions.ChatChance do
 
   alias Kalevala.Character.Conn
 
-  @default_cooldown_ms 3_000
+  @default_cooldown_ms 500
   @session_key "npc_chat_at"
 
   @doc "Session key holding the monotonic timestamp (ms) of the last chat."

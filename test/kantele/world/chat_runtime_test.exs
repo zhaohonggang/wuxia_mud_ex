@@ -115,11 +115,14 @@ defmodule Kantele.World.ChatRuntimeTest do
   end
 
   describe "Kantele.Brain.Conditions.ChatChance 冷却门控" do
+    # 引用模块默认值，避免硬编码：调 @default_cooldown_ms 时测试自动跟随
+    @cooldown Kantele.Brain.Conditions.ChatChance.default_cooldown_ms()
+
     test "无冷却时间戳时只看概率" do
       assert Kantele.Brain.Conditions.ChatChance.match?(
                %{},
                build_conn(npc()),
-               %{chance: 100, cooldown_ms: 3000}
+               %{chance: 100, cooldown_ms: @cooldown}
              )
     end
 
@@ -135,7 +138,7 @@ defmodule Kantele.World.ChatRuntimeTest do
       refute Kantele.Brain.Conditions.ChatChance.match?(
                %{},
                conn,
-               %{chance: 100, cooldown_ms: 3000}
+               %{chance: 100, cooldown_ms: @cooldown}
              )
     end
 
@@ -145,12 +148,12 @@ defmodule Kantele.World.ChatRuntimeTest do
       conn =
         npc()
         |> build_conn()
-        |> put_session(key, System.monotonic_time(:millisecond) - 5_000)
+        |> put_session(key, System.monotonic_time(:millisecond) - @cooldown - 100)
 
       assert Kantele.Brain.Conditions.ChatChance.match?(
                %{},
                conn,
-               %{chance: 100, cooldown_ms: 3000}
+               %{chance: 100, cooldown_ms: @cooldown}
              )
     end
 
@@ -158,7 +161,7 @@ defmodule Kantele.World.ChatRuntimeTest do
       refute Kantele.Brain.Conditions.ChatChance.match?(
                %{},
                build_conn(npc()),
-               %{chance: 0, cooldown_ms: 3000}
+               %{chance: 0, cooldown_ms: @cooldown}
              )
     end
   end
@@ -179,7 +182,7 @@ defmodule Kantele.World.ChatRuntimeTest do
       # 必须是 ChatChance（带冷却），不能是裸 Random —— 否则多 NPC 房间会自激刷屏
       assert %Kalevala.Brain.Condition{
                type: Kantele.Brain.Conditions.ChatChance,
-               data: %{chance: 5, cooldown_ms: 3000}
+               data: %{chance: 5, cooldown_ms: 500}
              } = cond
 
       assert %Kalevala.Brain.Action{
