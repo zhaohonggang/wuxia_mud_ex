@@ -4,6 +4,7 @@ defmodule Kantele.Character.GotoCommand do
   alias Kantele.Admin.Access
   alias Kantele.Character.CommandView
   alias Kantele.Character.Teleport
+  alias Kantele.World.ZoneCache
 
   def run(conn, %{"target" => target} = _params) do
     character = conn.character
@@ -54,37 +55,32 @@ defmodule Kantele.Character.GotoCommand do
     end
   end
 
-  # A room id that was never loaded has no registered `rooms:<id>` channel, so
-  # Teleport.teleport/2 would call Communication.subscribe/3 on it.  That returns
-  # the bare atom `:error` when the channel is missing from ETS
-  # (Kalevala.Communication.subscribe/4), and then
+  # A room id that was never loaded makes Teleport.teleport/2 call
+  # Communication.subscribe/3 on a channel that does not exist.
+  # Kalevala.Communication.subscribe/4 then returns the bare atom `:error`, and
   # Kalevala.Character.Foreman.Channel.handle_channel_change/3 - whose `case` only
-  # matches `:ok` and `{:error, reason}` - raises CaseClauseError, killing the
+  # matches `:ok` and `{:error, reason}` - raises CaseClauseError and kills the
   # character process.  The command's own "找不到目标地点" branch is the right
-  # place to stop it, so verify the channel exists before handing the id over.
+  # place to stop it.
   #
-  # The table is `Kantele.Communication.Channels`, not
-  # `Kalevala.Communication.Channels`: Kantele.Communication sets its own
-  # `channel_ets_key` via config overrides, so the module name differs even though
-  # kalevala's own default points at its module.  Looking in the wrong table would
-  # always answer "not loaded" and break every legal goto.
+  # The authority is ZoneCache, which Kantele.World.Kickoff.apply_world/3 fills
+  # with every zone *before* Loader.strip_zone/1 empties their :rooms, so it holds
+  # the full room list.  Two alternatives were tried and rejected:
+  #   * the `rooms:<id>` channel in ETS - that table only exists once the world
+  #     has been applied, so a process running before/without Kickoff sees an
+  #     empty table and would reject every legal target;
+  #   * `GenServer.whereis(Room.global_name(id))` - fine in production (Kickoff
+  #     starts a process per room) but there is no world at all under `mix test`.
   #
-  # A room that exists in data/world but whose channel has not been registered
-  # yet is genuinely unreachable right now, so reporting it is correct.
+  # An unknown zone is treated as "not loaded" rather than "allow": the cache is
+  # populated for every converted zone at boot, so a miss means the zone does not
+  # exist, and allowing it would let the crash through.
   defp room_loaded?(room_id) do
-    table = Kantele.Communication.Channels
+    [zone_id | _] = String.split(room_id, ":")
 
-    # The table is created at boot; in a bare process it may not exist yet and
-    # :ets.lookup/2 raises on a missing table.
-    case :ets.whereis(table) do
-      :undefined ->
-        false
-
-      _tid ->
-        case :ets.lookup(table, "rooms:" <> room_id) do
-          [_ | _] -> true
-          _ -> false
-        end
+    case ZoneCache.get(zone_id) do
+      {:ok, zone} -> Enum.any?(zone.rooms, &(&1.id == room_id))
+      _ -> false
     end
   end
 

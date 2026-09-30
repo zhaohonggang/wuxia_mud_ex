@@ -51,6 +51,25 @@ defmodule Kantele.Character.WizardGuardTest do
     tracked
   end
 
+
+  # A goto target is accepted only when its Room process is alive, so the fixture
+  # has to start one.  Kantele.World.Kickoff does the same for every room at boot
+  # (`Enum.each(world.rooms, &start_room/1)`).
+
+  # goto validates the target against ZoneCache, which Kantele.World.Kickoff
+  # fills with every zone (rooms included) before Loader.strip_zone/1 empties
+  # them.  Seed one room so the fixture does not need a running world.
+  defp seed_zone_room(zone_id, room_id) do
+    zone = %Kantele.World.Zone{
+      id: zone_id,
+      rooms: [%Kantele.World.Room{id: room_id, zone_id: zone_id}],
+      characters: [],
+      items: []
+    }
+
+    Kantele.World.ZoneCache.cache(zone)
+    room_id
+  end
   defp output_text(conn) do
     conn.output
     |> Enum.flat_map(fn
@@ -73,15 +92,7 @@ defmodule Kantele.Character.WizardGuardTest do
   test "goto 巫师可瞬移到房间" do
     room_id = "zone:room-#{System.unique_integer([:positive])}"
 
-    :ok =
-      Kantele.Communication.register("rooms:#{room_id}", Kantele.RoomChannel,
-        room_id: room_id
-      )
-
-    # No cleanup needed: the id is unique per run.  The channel table
-    # (Kantele.Communication.Channels, a config override) is :protected, so a
-    # test process cannot delete its own entry anyway.
-
+    room_id = seed_zone_room("zone", room_id)
     wizard = player(%{attributes: %{"wiz_level" => 1}})
     conn = GotoCommand.run(build_conn(wizard), %{"target" => room_id})
 
