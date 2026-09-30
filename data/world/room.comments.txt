@@ -1,0 +1,467 @@
+# Generated from C:/files/git/mud/d/room/qianting.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "north" || ! objectp(ob) || ! living(ob))  →  
+  # if (ob->is_owner(me))  →  message_vision('$N弯腰对$n道：“请进！”\\\\\n', ob, me);
+  # if (ob->is_owner_permit(me))  →  message_vision('$N对$n道：“即然是主人的朋友，但进无妨。”\\\\\n', ob, me);
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if (present("lao jiaren"))  →  
+  # else  →  
+  # if (query("gate") != "open")  →  
+# ==== CONDITIONAL BRANCHES (long) ====
+  # if (query("gate") == "close")  →  
+  # else  →  
+  # else if (ob && living(ob))  →  
+  # else if (! n && me && ob->is_owner(me))  →  message_vision('$n连忙跑上前来，对$N道：“主人何必' '亲劳，我来吧！”\\\\\n$n走上前去，用力合上大门。\\\\\n', me, ob);
+  # else if (! n && me && ! ob->is_owner(me))  →  message_vision('$N走上前去，用力合上大门。\\\\\n', me);
+  # if (! n && me && (! ob || ! living(ob)))  →  message_vision('$N用力一拉大门，就听见大门“吱呀呀”的关上了。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_close) ====
+  # if (query("gate") == "open")  →  
+  # else  →  
+  # else if (ob && living(ob))  →  message_vision('$n连忙跑上前来，对$N道：“主人何必亲' '劳，我来吧！”\\\\\n$n走上前去，用力将大门“吱呀' '呀”的推开了。\\\\\n', me, ob);
+  # else if (me && ! ob->is_owner(me))  →  message_vision('$N伸手拦住$n，客客气气道：“对不起，这位' + RANK_D->query_respect(me) + '还是请回' '吧！”\\\\\n', ob, me);
+  # if (me && (! ob || ! living(ob) || ob->is_owner_permit(me)))  →  message_vision('$N用力一推大门，就听见大门“吱呀呀”的开了。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_push) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: long
+  # UNHANDLED FUNCTION: do_close
+  # UNHANDLED FUNCTION: do_push
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/room/xiaoyuan.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: reset
+  # reset: ::reset(); "/adm/npc/luban"->come_here();
+# ==== RAW CODE BLOCKS ====
+  # if (arg && !undefinedp(room_type[arg]))  →  
+# ==== CONDITIONAL BRANCHES (query_room_id) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: query_room_id
+  # UNHANDLED FUNCTION: reset
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/room/caihong/houyuan.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_temp("has_sit"))  →  message_vision('$N掸掸尘土，站了起来。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if (me->query_temp("has_sit"))  →  message_vision('$N坐在那里摇啊摇，好不惬意。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_sit) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_sit
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/room/npc/jinlin.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: accept_ask
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/room/obj/advance.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: long
+  # UNHANDLED FUNCTION: query_autoload
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/room/obj/card.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: long
+  # UNHANDLED FUNCTION: query_autoload
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/room/obj/paper.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (lvl < 30) { tell_object(me, "可是你的画画技巧实在是太差了，" "无从落笔，只好胡乱涂抹一阵。\n"); set("draw/content", "上面乱七八糟的看不出画的是" "什么。\n"); set("draw/info", "unknow"); } else if (lvl < 80) { tell_object(me, "虽然你的画画技巧不怎么样，但是" "好在学过一点，勉强画得。\n"); set("draw/content", "上面画的虽然有些凌乱，但是" "还能看得出是" + ob->name() + "，有点神似。\n"); set("draw/info", ob->query("id")); } else { string msg; tell_object(me, "你随意挥洒，" + me->name() + "登时飘然跃在纸上。\n"); msg = "上面画的是" + ob->name() + "，逼真之极。\n"; set("draw/content", msg); set("draw/info", ob->query("id")); }
+  # COMPLEX IF: if (lvl < 30) { tell_object(me, "可是你的画画技巧实在是太差了，" "无从落笔，只好胡乱涂抹一阵。\n"); set("draw/content", "上面乱七八糟的看不出画的是" "什么。\n"); set("draw/info", "unknow"); } else if (lvl < 80) { tell_object(me, "虽然你的画画技巧不怎么样，但是" "好在学过一点，勉强画得。\n"); set("draw/content", "上面画的虽然有些凌乱，但是" "还能看得出是" + ob->name() + "，有点神似。\n"); set("draw/info", ob->query("id")); } else { string msg; object cloth; tell_object(me, "你随意挥洒，" + ob->name() + "登时飘然跃在纸上。\n"); msg = "摊看纸来，"; if (userp(ob)) { cloth = ob->query_temp("armor/cloth"); if (ob->query("gender") == "女性") { if (cloth) msg += "只见上面一名女子身着" + cloth->name() + "，"; else msg += "只见上面一名女子一丝不挂、未着寸缕，"; }
+  # COMPLEX IF: if (ob != me) { message("vision", me->name() + "不住的打量" + ob->name() + "，手下不知道在画些什么东西。\n", me, ob); tell_object(me, "你拿出一支笔，仔细的临摹" + ob->name() + "。\n"); } else { command("consider"); tell_object(me, "你拿出一支笔，仔细的按照记忆中的样子描绘自己。\n"); }
+  # COMPLEX IF: if (arg == "here") { tell_object(me, "你拿出一支笔，仔细的临摹这里的风景。\n"); if (lvl < 30) { tell_object(me, "可是你的画画技巧实在是太差了，" "无从落笔，只好胡乱涂抹一阵。\n"); set("draw/content", "上面乱七八糟的看不出画的是" "什么。\n"); set("draw/info", "unknow"); } else if (lvl < 80) { tell_object(me, "虽然你的画画技巧不怎么样，但是" "好在学过一点，勉强画得。\n"); set("draw/content", "上面画的虽然有些凌乱，但是" "还能看得出是" + environment(me)->short() + "的风景。\n"); set("draw/info", base_name(environment(me))); } else { tell_object(me, "你随意挥洒，风景登时飘然跃在纸" "上。\n"); set("draw/content", "上面画的是" + environment(me)->short() + "的风景，极为传神，宛若亲临。\n"); set("draw/info", base_name(environment(me))); }
+# ==== COMPLEX CONDITIONALS ====
+  # if (sscanf(param, "%s|%s|%s", type, content, info) != 3)  →  
+# ==== CONDITIONAL BRANCHES (autoload) ====
+  # if (! mapp(draw = query("draw")))  →  
+# ==== CONDITIONAL BRANCHES (query_autoload) ====
+  # if (! arg || ! id(arg))  →  
+  # if (! query("draw/type"))  →  write ('上面干干净净的什么也没有，不用再擦了。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_clear) ====
+  # if (! arg)  →  
+  # if (arg != "here" && ! objectp(ob = present(arg, environment(me))))  →  
+  # if (query("draw"))  →  
+  # else  →  tell_object(me, '你拿出一支笔，仔细的临摹' + ob->name() + '。\\\\\n'); tell_object(me, '可是你的画画技巧实在是太差了，' '无从落笔，只好胡乱涂抹一阵。\\\\\n'); tell_object(me, '虽然你的画画技巧不怎么样，但是' '好在学过一点，勉强画得。\\\\\n'); tell_object(me, '你随意挥洒，' + me->name() + '登时飘然跃在纸上。\\\\\n');
+  # else if (ob->is_character())  →  tell_object(me, '你拿出一支笔，仔细的临摹' + ob->name() + '。\\\\\n'); command('consider'); tell_object(me, '你拿出一支笔，仔细的按照记忆中的样子描绘自己。\\\\\n'); tell_object(me, '可是你的画画技巧实在是太差了，' '无从落笔，只好胡乱涂抹一阵。\\\\\n'); tell_object(me, '虽然你的画画技巧不怎么样，但是' '好在学过一点，勉强画得。\\\\\n'); tell_object(me, '你随意挥洒，' + ob->name() + '登时飘然跃在纸上。\\\\\n');
+  # if (arg == "here")  →  tell_object(me, '你拿出一支笔，仔细的临摹这里的风景。\\\\\n'); tell_object(me, '可是你的画画技巧实在是太差了，' '无从落笔，只好胡乱涂抹一阵。\\\\\n'); tell_object(me, '虽然你的画画技巧不怎么样，但是' '好在学过一点，勉强画得。\\\\\n'); tell_object(me, '你随意挥洒，风景登时飘然跃在纸' '上。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_draw) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: query_autoload
+  # UNHANDLED FUNCTION: do_draw
+  # UNHANDLED FUNCTION: autoload
+  # UNHANDLED FUNCTION: do_clear
+  # UNHANDLED FUNCTION: long
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/room/obj/super.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: long
+  # UNHANDLED FUNCTION: query_autoload
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/room/obj/ultracard.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: query_autoload
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/room/panlong/huayuan.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_temp("has_sit"))  →  message_vision('$N掸掸尘土，站了起来。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if (me->query_temp("has_sit"))  →  message_vision('$N坐在那里摇啊摇，好不惬意。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_sit) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_sit
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/room/panlong/shufang.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->is_busy())  →  
+# ==== CONDITIONAL BRANCHES (do_sign) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_sign
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/room/panlong/zhongting.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "north" || ! objectp(ob) || ! living(ob))  →  
+  # if (ob->is_owner(me))  →  message_vision('$N弯腰对$n道：“请进！”\\\\\n', ob, me);
+  # if (present(query("room_owner_id") + " pass", me))  →  message_vision('$N对$n道：“即然有主人的手谕，就请进吧。”\\\\\n', ob, me);
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/room/panlong/zoudao.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (! n) { me = this_player(); message("vision", me->name() + "走上前去，用力合上大门。\n", this_object()); } else { message("vision", "大门“吱呀呀”的被人关上了。\n", this_object()); }
+# ==== COMPLEX CONDITIONALS ====
+  # if (query("gate") == "close")  →  
+  # else  →  
+  # if (! n)  →  
+# ==== CONDITIONAL BRANCHES (do_close) ====
+  # if (query("gate") == "open")  →  
+# ==== CONDITIONAL BRANCHES (do_push) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_close
+  # UNHANDLED FUNCTION: do_push
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/room/roomnpc/laopu.c by LPCConverter
+# Zone: room
+
+# inherit F_GUARDER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (is_owner(ob))  →  message_vision('$N一声长叹，道：“既然主人不留我了，罢' '罢罢！合则留，不合则去！我走了。”\\\\\n' '说罢，老人丢下扫把，飘然而去。\\\\\n', this_object(), ob);
+# ==== CONDITIONAL BRANCHES (accept_kill) ====
+  # if (is_owner(ob))  →  message_vision('$N吓了一跳，慌忙对$n道：“小的不敢，小' '的不敢！”\\\\\n', this_object(), ob);
+# ==== CONDITIONAL BRANCHES (accept_fight) ====
+  # if (is_owner(ob))  →  message_vision('$N愁眉苦脸的对$n道：“可不要和我开这' '种玩笑！”\\\\\n', this_object(), ob);
+# ==== CONDITIONAL BRANCHES (accept_hit) ====
+  # if (! ob->query("money_id"))  →  
+  # if (is_owner(who))  →  message_vision(name() + '对$N施了一礼。\\\\\n', who);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_wield
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: do_unwield
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_kill
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/room/roomnpc/puren.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob->query("money_id"))  →  
+  # if (is_owner(who))  →  message_vision(name() + '对$N施了一礼。\\\\\n', who);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/room/roomnpc/shouwei.c by LPCConverter
+# Zone: room
+
+# Generic LPC file: C:/files/git/mud/d/room/roomnpc/shouwei.c
+
+# Requires manual conversion
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (is_owner(ob))  →  message_vision('$N一声长叹，道：“既然主人不留我了，罢' '罢罢！合则留，不合则去！我走了。”\\\\\n' '说罢，$N一扬手，切下一角衣抉，飘然而去。\\\\\n', this_object(), ob);
+# ==== CONDITIONAL BRANCHES (accept_kill) ====
+  # if (is_owner(ob))  →  message_vision('$N吓了一跳，慌忙对$n道：“小的不敢，小' '的不敢！”\\\\\n', this_object(), ob);
+# ==== CONDITIONAL BRANCHES (accept_fight) ====
+  # if (is_owner(ob))  →  message_vision('$N连忙摆摆手，对$n道：“可不要和我开这' '种玩笑！”\\\\\n', this_object(), ob);
+# ==== CONDITIONAL BRANCHES (accept_hit) ====
+  # if (! ob->query("money_id"))  →  
+  # if (is_owner(who))  →  message_vision(name() + '对$N施了一礼。\\\\\n', who);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_fight
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/room/roomnpc/teagirl.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob->query("money_id"))  →  
+  # if (is_owner(who))  →  message_vision(name() + '对$N施了一礼。\\\\\n', who);
+  # if (ob->value() < 1000)  →  say(name() + '不情愿的接下了' + ob->name() + '。\\\\\n'); message_vision(name() + '杏目园睁，喝道：“你以为是打' '发叫花子啊？”\\\\\n', who);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if (! ob || (environment(ob) != environment()))  →  
+  # if (is_owner(ob))  →  message_vision(name() + '对$N盈盈道了一个万福。\\\\\n', ob); command('say 有什么吩咐吗？');
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (is_busy())  →  
+  # if (environment(ob) == this_object())  →  
+# ==== CONDITIONAL BRANCHES (do_tea) ====
+  # if (interactive(ob = this_player()) && !is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_tea
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/room/roomnpc/yahuan.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob->query("money_id"))  →  
+  # if (is_owner(who))  →  message_vision(name() + '对$N施了一礼。\\\\\n', who);
+  # if (ob->value() < 1000)  →  say(name() + '不情愿的接下了' + ob->name() + '。\\\\\n'); message_vision(name() + '杏目园睁，喝道：“你以为是打' '发叫花子啊？”\\\\\n', who);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if (! ob || (environment(ob) != environment()))  →  
+  # if (is_owner(ob))  →  message_vision(name() + '对$N盈盈道了一个万福。\\\\\n', ob); command('say 有什么吩咐吗？');
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && !is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/room/roomobj/mantou.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/room/roomobj/pass.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/room/roomobj/rice.c by LPCConverter
+# Zone: room
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/room/roomobj/soup.c by LPCConverter
+# Zone: room
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

@@ -1,0 +1,291 @@
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/foshan/pm_restroom.c by LPCConverter
+# Zone: foshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "paizi")  →  
+  # if (! query("exits/south"))  →  write('现在尚未到拍卖店铺的时间。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_look) ====
+  # if (! query("exits/south"))  →  
+# ==== CONDITIONAL BRANCHES (do_close) ====
+  # if (query("exits/south"))  →  
+# ==== CONDITIONAL BRANCHES (do_open) ====
+  # if (query("exits/south"))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if (wiz_level(this_player()) >= 3)  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_look
+  # UNHANDLED FUNCTION: do_close
+  # UNHANDLED FUNCTION: do_open
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/foshan/pmc.c by LPCConverter
+# Zone: foshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "paizi" && arg != "board")  →  
+  # else  →  
+  # if (arg == "paizi")  →  
+# ==== CONDITIONAL BRANCHES (do_look) ====
+  # if (wiz_level(me) >= 3 && ! me->query_temp("to_pmc"))  →  tell_object(me, WHT '\\\\\n凤天南在你的耳边悄声说道：巫师操' '作手册(' HIY 'board' NOR + WHT ')就在这' '里，你老人家可以看看。\\\\\n\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_look
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/foshan/npc/chaofeng.c by LPCConverter
+# Zone: foshan
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: redeem
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/foshan/npc/fengqi.c by LPCConverter
+# Zone: foshan
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(2)) { case 0: say( "凤七笑咪咪地说道：这位" + RANK_D->query_respect(ob) + "，进来喝杯茶，歇歇腿吧。\n"); break; case 1: say( "凤七笑咪咪地说道：这位" + RANK_D->query_respect(ob) + "，快请进。\n"); break; }
+# ==== SWITCH POOLS ====
+  # UNHANDLED FUNCTION: unconcious
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/foshan/npc/youming.c by LPCConverter
+# Zone: foshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/foshan/npc/obj/caidao.c by LPCConverter
+# Zone: foshan
+
+# inherit BLADE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/foshan/npc/obj/goupi.c by LPCConverter
+# Zone: foshan
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/foshan/npc/obj/magcloth.c by LPCConverter
+# Zone: foshan
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/foshan/obj/hua1.c by LPCConverter
+# Zone: foshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/foshan/obj/hua2.c by LPCConverter
+# Zone: foshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/foshan/obj/hua3.c by LPCConverter
+# Zone: foshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/foshan/obj/shikuai.c by LPCConverter
+# Zone: foshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/foshan/obj/shuzhi.c by LPCConverter
+# Zone: foshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (environment()->query_temp("warm") >= 40)  →  
+# ==== CONDITIONAL BRANCHES (fire) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: fire
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================

@@ -1,0 +1,2610 @@
+zones "heimuya" {
+  name = "heimuya"
+}
+
+# Generated from C:/files/git/mud/d/heimuya/baigate.c by LPCConverter
+# Zone: heimuya
+
+    rooms "baigate" {
+      name = "白虎堂大门"
+      description = "这是日月神教下第二大堂白虎堂的大门，门前摆放着两座 石狮，镇守着朱漆大门。大门两旁站着数名轻装弟子，双手握 着钢刀，警惕地注视着周围的一切。"
+  x = 0
+  y = 0
+  z = 1
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：objectp(present("riyue dizi", environment(me))) && dir == "west" && me->query("family/family_name") != "日月神教"
+direction = "west"
+  message = "日月弟子将你拦住，说道：这里乃神教重地，他人不得入内。"
+}
+
+]
+    }
+
+  room_exits "baigate" {
+    room_id = rooms.baigate.id
+    up = rooms.basket.id
+    down = rooms.chengdedian.id
+    west = rooms.dating2.id
+    east = rooms.baigate1.id
+    }
+
+
+  room_characters "baigate" {
+    room_id = rooms.baigate.id
+    characters = [
+      { id = characters.dizi4.id },
+      { id = characters.dizi4.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/baigate1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "baigate1" {
+      name = "碎石小道"
+      description = "这里是一条碎石小道，向西可到达日月神教下第二大堂白 虎堂的大门，这里不时有白虎堂的弟子走动。"
+  x = 1
+  y = 0
+  z = 1
+    }
+
+  room_exits "baigate1" {
+    room_id = rooms.baigate1.id
+    south = rooms.baigate2.id
+    west = rooms.baigate.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/baigate2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "baigate2" {
+      name = "碎石小道"
+      description = "这里是一条碎石小道，向西可到达日月神教下第二大堂白 虎堂的大门，这里不时有白虎堂的弟子走动。"
+  x = 1
+  y = -1
+  z = 1
+    }
+
+  room_exits "baigate2" {
+    room_id = rooms.baigate2.id
+    south = rooms.linjxd3.id
+    north = rooms.baigate1.id
+    }
+
+
+  room_characters "baigate2" {
+    room_id = rooms.baigate2.id
+    characters = [
+      { id = characters.dizi4.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/baihutang.c by LPCConverter
+# Zone: heimuya
+
+    rooms "baihutang" {
+      name = "白虎堂后厅"
+      description = "这里是黑木崖的第二大堂白虎堂的后厅所在。堂内青砖铺 地，四周燃有熏香，非常的宽畅明亮，厅中设有一座，一中年 男子横眉座在当中。"
+  x = -2
+  y = -2
+  z = 1
+    }
+
+  room_exits "baihutang" {
+    room_id = rooms.baihutang.id
+    north = rooms.baistep2.id
+    }
+
+
+  room_characters "baihutang" {
+    room_id = rooms.baihutang.id
+    characters = [
+      { id = characters.dizi4.id },
+      { id = characters.dizi4.id },
+      { id = characters.dizi4.id },
+      { id = characters.dizi4.id }    ]
+  }
+
+
+
+  room_items "baihutang" {
+    room_id = rooms.baihutang.id
+    items = [
+      { id = items.shangguan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/baistep1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "baistep1" {
+      name = "长廊"
+      description = "这里是白虎堂的长廊，被打扫得非常的干净。不时有堂中 的下人白虎堂的弟子在此走动。"
+  x = -2
+  y = 0
+  z = 1
+    }
+
+  room_exits "baistep1" {
+    room_id = rooms.baistep1.id
+    south = rooms.baistep2.id
+    east = rooms.dating2.id
+    }
+
+
+  room_characters "baistep1" {
+    room_id = rooms.baistep1.id
+    characters = [
+      { id = characters.shinu.id },
+      { id = characters.shinu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/baistep2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "baistep2" {
+      name = "长廊"
+      description = "这里是白虎堂的长廊，被打扫得非常的干净。不时有堂中 的下人白虎堂的弟子在此走动。"
+  x = -2
+  y = -1
+  z = 1
+    }
+
+  room_exits "baistep2" {
+    room_id = rooms.baistep2.id
+    south = rooms.baihutang.id
+    north = rooms.baistep1.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/basket.c by LPCConverter
+# Zone: heimuya
+
+    rooms "basket" {
+      name = "吊篮"
+      description = "这是一只大竹篓，足可装得十来石米。抬头上望，只见头 顶有天风崖壁，这黑木崖着实高得厉害。"
+  x = 0
+  y = 0
+  z = 2
+    }
+  room_exits "basket" {
+    room_id = rooms.basket.id
+    down = rooms.baigate.id
+    up = rooms.bridge.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/bridge.c by LPCConverter
+# Zone: heimuya
+
+    rooms "bridge" {
+      name = "小桥"
+      description = "这是一座小竹桥，黑木崖顶上的冰雪融化形成一条清澈的小 溪，从桥下缓缓流过。不时有顽皮的小鱼跃出水面，在阳光下划 出一条银白色的弧线。"
+  x = 0
+  y = 0
+  z = 3
+    }
+
+  room_exits "bridge" {
+    room_id = rooms.bridge.id
+    up = rooms.changtan.id
+    down = rooms.basket.id
+    northwest = rooms.guangchang.id
+    east = rooms.xijie.id
+    }
+
+
+  room_characters "bridge" {
+    room_id = rooms.bridge.id
+    characters = [
+      { id = characters.cungu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/changtan.c by LPCConverter
+# Zone: heimuya
+
+    rooms "changtan" {
+      name = "长滩"
+      description = "这片长滩不时有日月教教众乘船往来，滩头插着一面日月 教的旗帜。对面的江 (river)上划着几艘日月神教的小船，外 来的船只很多，但是并没有船敢在这里停留，要过对岸只有靠 日月教自己的船只了。"
+  x = 0
+  y = 0
+  z = 4
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "changtan" {
+    room_id = rooms.changtan.id
+    up = rooms.didao1.id
+    down = rooms.bridge.id
+    westup = rooms.shandao1.id
+    river = rooms.xingxingtan.id
+    }
+
+
+  room_characters "changtan" {
+    room_id = rooms.changtan.id
+    characters = [
+      { id = characters.huang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/chengdedian.c by LPCConverter
+# Zone: heimuya
+
+    rooms "chengdedian" {
+      name = "成德殿"
+      description = "这就是日月神教教主平日发号施令的地方，殿中无窗，殿 口点着明晃晃的蜡烛，大殿彼端高设一座，座中坐着一个白发 老者，自是名震江湖的日月神教教主任我行了。高座正上方立 有一块大匾，写着三个金光耀眼的大字：          ##============================##         ##                            ##         ##     成      德      殿     ##         ##                            ##         ##============================##  殿内四周站满了日月神教的弟子和侍从，正在倾听教主宝训。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(string)me->query("family/family_name") != "日月神教" & objectp(present("ren woxing", environment(me)))
+direction = ~
+  message = "任我行喝道：阁下未免太过放肆，在老夫面前也敢这般横行！"
+}
+
+]
+    }
+
+  room_exits "chengdedian" {
+    room_id = rooms.chengdedian.id
+    up = rooms.baigate.id
+    north = rooms.zoulang.id
+    south = rooms.shanya1.id
+    }
+
+
+  room_characters "chengdedian" {
+    room_id = rooms.chengdedian.id
+    characters = [
+      { id = characters.dizi.id },
+      { id = characters.dizi.id },
+      { id = characters.dizi.id },
+      { id = characters.dizi.id }    ]
+  }
+
+
+
+  room_items "chengdedian" {
+    room_id = rooms.chengdedian.id
+    items = [
+      { id = items.ren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/chitang.c by LPCConverter
+# Zone: heimuya
+
+    rooms "chitang" {
+      name = "池塘"
+      description = "这里是天香堂堂后的一个小池塘，池塘里有数对鸳鸯悠游 其间，池边还有四只白鹤在觅食。"
+  x = 5
+  y = -7
+  z = 1
+    }
+
+  room_exits "chitang" {
+    room_id = rooms.chitang.id
+    east = rooms.chufang2.id
+    west = rooms.shenggu.id
+    north = rooms.tian1.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/chlang1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "chlang1" {
+      name = "长廊"
+      description = "这里是日月神教青龙堂内的长廊。只见长廊两边各站有数 十个刀斧手，警卫森严，透着腾腾杀气。"
+  x = -1
+  y = -6
+  z = 2
+    }
+
+  room_exits "chlang1" {
+    room_id = rooms.chlang1.id
+    south = rooms.chlang2.id
+    north = rooms.dating3.id
+    }
+
+
+  room_characters "chlang1" {
+    room_id = rooms.chlang1.id
+    characters = [
+      { id = characters.dizi5.id },
+      { id = characters.dizi5.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/chlang2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "chlang2" {
+      name = "长廊"
+      description = "这里是非常气派的长廊。但是却没什么人在这里，南边是 青龙堂的大厅。"
+  x = -1
+  y = -7
+  z = 2
+    }
+
+  room_exits "chlang2" {
+    room_id = rooms.chlang2.id
+    south = rooms.qing.id
+    north = rooms.chlang1.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/chufang1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "chufang1" {
+      name = "厨房"
+      description = "这是风雷堂堂后的厨房，一位美丽侍女满脸堆笑。整个房 间菜香胭脂香迷漫。"
+  x = 0
+  y = -8
+  z = 1
+    }
+
+  room_exits "chufang1" {
+    room_id = rooms.chufang1.id
+    east = rooms.grass2.id
+    }
+
+
+  room_characters "chufang1" {
+    room_id = rooms.chufang1.id
+    characters = [
+      { id = characters.shinu.id }    ]
+  }
+
+
+
+  room_items "chufang1" {
+    room_id = rooms.chufang1.id
+    items = [
+      { id = items.tea.id },
+      { id = items.sherou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/chufang2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "chufang2" {
+      name = "厨房"
+      description = "这是天香堂堂后的厨房，一位美丽侍女满脸堆笑。整个房 间菜香胭脂香迷漫。"
+  x = 6
+  y = -7
+  z = 1
+    }
+
+  room_exits "chufang2" {
+    room_id = rooms.chufang2.id
+    west = rooms.chitang.id
+    }
+
+
+  room_characters "chufang2" {
+    room_id = rooms.chufang2.id
+    characters = [
+      { id = characters.shinu.id }    ]
+  }
+
+
+
+  room_items "chufang2" {
+    room_id = rooms.chufang2.id
+    items = [
+      { id = items.tea.id },
+      { id = items.sherou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/dating1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "dating1" {
+      name = "堂厅"
+      description = "这是日月神教下第一大堂风雷堂的大厅，大厅内非常的宽 敞明亮。四目望去，满朴素的，堂梁上有一副联子。"
+  x = 1
+  y = -7
+  z = 1
+    }
+
+  room_exits "dating1" {
+    room_id = rooms.dating1.id
+    north = rooms.fenggate.id
+    south = rooms.grass2.id
+    }
+
+
+  room_characters "dating1" {
+    room_id = rooms.dating1.id
+    characters = [
+      { id = characters.dizi3.id },
+      { id = characters.dizi3.id },
+      { id = characters.dizi3.id },
+      { id = characters.dizi3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/dating2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "dating2" {
+      name = "白虎堂"
+      description = "这是日月神教下第二大堂白虎堂的大厅所在，大厅内非常 的宽畅明亮。几名日月弟子站立厅中，举目望去，一派肃然的 景象。堂梁上有一块旧木匾(bian)。"
+  x = -1
+  y = 0
+  z = 1
+item_desc = {
+ bian = "##========================##         ##                        ##         ##   长河落日  白虎在天   ##         ##                        ##         ##   千秋万载  一统江湖   ##         ##                        ##         ##========================##"
+}
+    }
+
+  room_exits "dating2" {
+    room_id = rooms.dating2.id
+    east = rooms.baigate.id
+    west = rooms.baistep1.id
+    }
+
+
+  room_characters "dating2" {
+    room_id = rooms.dating2.id
+    characters = [
+      { id = characters.dizi4.id },
+      { id = characters.dizi4.id },
+      { id = characters.dizi4.id },
+      { id = characters.dizi4.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/dating3.c by LPCConverter
+# Zone: heimuya
+
+    rooms "dating3" {
+      name = "青龙堂"
+      description = "这是日月神教下第三大堂青龙堂的大厅所在，大厅内非常 的宽畅明亮。几名日月弟子站立厅中，举目望去，一派肃然的 景象。堂梁上有一块旧木匾(bian)。"
+  x = -1
+  y = -5
+  z = 2
+item_desc = {
+ bian = "##========================##         ##                        ##         ##   长虹贯日  青龙飞天   ##         ##                        ##         ##   千秋万载  一统江湖   ##         ##                        ##         ##========================##"
+}
+    }
+
+  room_exits "dating3" {
+    room_id = rooms.dating3.id
+    north = rooms.qinggate.id
+    south = rooms.chlang1.id
+    }
+
+
+  room_characters "dating3" {
+    room_id = rooms.dating3.id
+    characters = [
+      { id = characters.dizi5.id },
+      { id = characters.dizi5.id },
+      { id = characters.dizi5.id },
+      { id = characters.dizi5.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/dating4.c by LPCConverter
+# Zone: heimuya
+
+    rooms "dating4" {
+      name = "天香堂"
+      description = "这是日月神教下第四大堂天香堂的大厅，大厅内非常的宽 畅明亮。远远望去郁郁渺渺，好似不食人间烟火。"
+  x = 5
+  y = -5
+  z = 1
+    }
+
+  room_exits "dating4" {
+    room_id = rooms.dating4.id
+    south = rooms.tian1.id
+    north = rooms.tiangate.id
+    }
+
+
+  room_characters "dating4" {
+    room_id = rooms.dating4.id
+    characters = [
+      { id = characters.shang1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/didao1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "didao1" {
+      name = "秘道"
+      description = "这是一条异常幽静的走廊，四周漆黑一团，你好象什么都看 不见似的走在里面，你不觉想到这似乎在每个角落都藏着无限杀 机，太恐怖了，四周毫无声息，好象掉下一根针都可能听到。"
+  x = 0
+  y = 0
+  z = 5
+    }
+
+  room_exits "didao1" {
+    room_id = rooms.didao1.id
+    up = rooms.duchuan.id
+    down = rooms.changtan.id
+    east = rooms.didao2.id
+    west = rooms.didao1.id
+    south = rooms.didao5.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/didao2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "didao2" {
+      name = "秘道"
+      description = "你来到了一条秘道，看样子它不太平常，若隐若显的几盏油 灯，昏暗如豆但是看上去前方似有光亮，你要是觉得害怕，现在 回头还是可以的，不过这异常的幽静却也极大激发了你的好奇心， 大丈夫死又何足道载，真是勇气可佳。"
+  x = 1
+  y = 0
+  z = 5
+    }
+
+  room_exits "didao2" {
+    room_id = rooms.didao2.id
+    south = rooms.didao5.id
+    west = rooms.didao1.id
+    down = rooms.mishi.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/didao3.c by LPCConverter
+# Zone: heimuya
+
+    rooms "didao3" {
+      name = "秘道"
+      description = "走在里面，你不觉想到这似乎在每个角落都藏着无限杀机， 你感到近了近了，越来越近了。"
+  x = 1
+  y = -1
+  z = 5
+    }
+
+  room_exits "didao3" {
+    room_id = rooms.didao3.id
+    south = rooms.didao1.id
+    north = rooms.didao4.id
+    west = rooms.didao3.id
+    east = rooms.didao3.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/didao4.c by LPCConverter
+# Zone: heimuya
+
+    rooms "didao4" {
+      name = "秘道尽头"
+      description = "你忽觉前方有一亮光，真是别有洞天，前方好想别有地方。"
+  x = 1
+  y = 0
+  z = 5
+    }
+
+  room_exits "didao4" {
+    room_id = rooms.didao4.id
+    southup = rooms.didao6.id
+    south = rooms.didao4.id
+    west = rooms.didao3.id
+    east = rooms.didao1.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/didao5.c by LPCConverter
+# Zone: heimuya
+
+    rooms "didao5" {
+      name = "秘道"
+      description = "走在里面，你不觉想到这似乎在每个角落都藏着无限杀机， 你感到近了近了，越来越近了。"
+  x = 0
+  y = -1
+  z = 5
+    }
+
+  room_exits "didao5" {
+    room_id = rooms.didao5.id
+    south = rooms.didao1.id
+    north = rooms.didao2.id
+    west = rooms.didao3.id
+    east = rooms.didao3.id
+    }
+
+
+
+
+  room_items "didao5" {
+    room_id = rooms.didao5.id
+    items = [
+      { id = items.dushe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/didao6.c by LPCConverter
+# Zone: heimuya
+
+    rooms "didao6" {
+      name = "秘道尽头"
+      description = "你忽觉前方一亮，身前真是别有洞天，前方好想有作花园。 不知是什么地方。\n"
+  x = 1
+  y = -1
+  z = 6
+    }
+
+  room_exits "didao6" {
+    room_id = rooms.didao6.id
+    northdown = rooms.didao4.id
+    north = rooms.xiaohuayuan.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/duchuan.c by LPCConverter
+# Zone: heimuya
+
+    rooms "duchuan" {
+      name = "渡船"
+      description = "黄河上的小舟都是这种很简陋的小舟。一位中年艄公正站 在船尾吃力地掌舵，一位膀子壮硕的小伙子也在船头用劲地划 水撑船。黄河水流湍急，船下滑很快，横渡却很慢。"
+  x = 0
+  y = 0
+  z = 6
+    }
+  room_exits "duchuan" {
+    room_id = rooms.duchuan.id
+    down = rooms.didao1.id
+    up = rooms.duchuan1.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/duchuan1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "duchuan1" {
+      name = "渡船"
+      description = "一叶小舟，一次就能载七、八个人。一名三十多岁日月教 徒装扮的艄公手持长竹篙，正在船尾撑着船，只见这艄公臂力 惊人，小舟在他的操控之下，一支箭般飞快地射向对岸。"
+  x = 0
+  y = 0
+  z = 7
+    }
+  room_exits "duchuan1" {
+    room_id = rooms.duchuan1.id
+    down = rooms.duchuan.id
+    up = rooms.dukou2.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/dukou1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "dukou1" {
+      name = "龙门渡口"
+      description = "渡口前就是汹涌澎湃的黄河 (river)了。浊流滚滚，泥沙 俱下，声震数里。两岸渡船来来往往，在波谷中穿行，甚为凶 险。过了黄河，就是陕西了。"
+  x = 3
+  y = -5
+  z = 1
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "dukou1" {
+    room_id = rooms.dukou1.id
+    river = rooms.dukou2.id
+    north = rooms.road4.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/dukou2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "dukou2" {
+      name = "龙门渡口"
+      description = "渡口前就是汹涌澎湃的黄河 (river)了。浊流滚滚，泥沙 俱下，声震数里。两岸渡船来来往往，在波谷中穿行，甚为凶 险。过了黄河，就是陕西了。"
+  x = 0
+  y = 0
+  z = 8
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "dukou2" {
+    room_id = rooms.dukou2.id
+    up = rooms.road5.id
+    down = rooms.duchuan1.id
+    southwest = rooms.huanghe_1.id
+    river = rooms.dukou1.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/fen0.c by LPCConverter
+# Zone: heimuya
+
+    rooms "fen0" {
+      name = "风雷堂"
+      description = "这里是日月神教教下第一大堂。这里距黑目崖不远，教下 第一大堂堂主童百熊把掌此堂。堂内站满了风雷堂的弟子，警 惕的注视着周围的一切。"
+  x = 1
+  y = -10
+  z = 1
+    }
+
+  room_exits "fen0" {
+    room_id = rooms.fen0.id
+    north = rooms.grass1.id
+    }
+
+
+  room_characters "fen0" {
+    room_id = rooms.fen0.id
+    characters = [
+      { id = characters.dizi3.id },
+      { id = characters.dizi3.id },
+      { id = characters.dizi3.id },
+      { id = characters.dizi3.id }    ]
+  }
+
+
+
+  room_items "fen0" {
+    room_id = rooms.fen0.id
+    items = [
+      { id = items.tong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/fenggate.c by LPCConverter
+# Zone: heimuya
+
+    rooms "fenggate" {
+      name = "风雷堂大门"
+      description = "这是日月神教下第一大堂风雷堂的大门，门前摆放着两座 石狮，镇守着朱漆大门。大门两旁站着数名轻装弟子，双手握 着钢刀，警惕地注视着周围的一切。"
+  x = 1
+  y = -6
+  z = 1
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：objectp(present("riyue dizi", environment(me))) && dir == "south" && me->query("family/family_name") != "日月神教"
+direction = "south"
+  message = "日月弟子将你拦住，说道：这里乃神教重地，他人不得入内。"
+}
+
+]
+    }
+
+  room_exits "fenggate" {
+    room_id = rooms.fenggate.id
+    south = rooms.dating1.id
+    north = rooms.fenggate1.id
+    }
+
+
+  room_characters "fenggate" {
+    room_id = rooms.fenggate.id
+    characters = [
+      { id = characters.dizi3.id },
+      { id = characters.dizi3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/fenggate1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "fenggate1" {
+      name = "林间小道"
+      description = "你走在一条颇为阴暗的林间小道上，两旁是阴森森的密树 林。向南不远便可到达日月神教下第一大堂风雷堂的大门，这 里不时有风雷堂的弟子走动。"
+  x = 1
+  y = -5
+  z = 1
+    }
+
+  room_exits "fenggate1" {
+    room_id = rooms.fenggate1.id
+    south = rooms.fenggate.id
+    north = rooms.linjxd2.id
+    }
+
+
+  room_characters "fenggate1" {
+    room_id = rooms.fenggate1.id
+    characters = [
+      { id = characters.dizi3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/grass1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "grass1" {
+      name = "草地"
+      description = "这里风雷堂中的小花园，你走这里，只觉得草地西边似乎 香气四逸，南边不远便是风雷堂的大厅了。"
+  x = 1
+  y = -9
+  z = 1
+    }
+
+  room_exits "grass1" {
+    room_id = rooms.grass1.id
+    north = rooms.grass2.id
+    south = rooms.fen0.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/grass2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "grass2" {
+      name = "花园小径"
+      description = "这里风雷堂中的小花园，你走这里，只觉得草地西边似乎 香气四逸，东边好象是另一个花园。"
+  x = 1
+  y = -8
+  z = 1
+    }
+
+  room_exits "grass2" {
+    room_id = rooms.grass2.id
+    south = rooms.grass1.id
+    north = rooms.dating1.id
+    east = rooms.hua1.id
+    west = rooms.chufang1.id
+    }
+
+
+  room_characters "grass2" {
+    room_id = rooms.grass2.id
+    characters = [
+      { id = characters.shinu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/guang.c by LPCConverter
+# Zone: heimuya
+
+    rooms "guang" {
+      name = "山谷"
+      description = "这里是一处山谷，上面种植着草坪。南面不远便是日月神 教的青龙堂。向西有一条上山的石道。"
+  x = -1
+  y = -3
+  z = 1
+    }
+
+  room_exits "guang" {
+    room_id = rooms.guang.id
+    west = rooms.shidao1.id
+    southup = rooms.qinggate.id
+    east = rooms.linjxd5.id
+    }
+
+
+  room_characters "guang" {
+    room_id = rooms.guang.id
+    characters = [
+      { id = characters.kid.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/house1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "house1" {
+      name = "内室"
+      description = "这是一个精雅的小舍，进门便可闻到一阵浓冽的花香。房 中挂着一幅五女向凤图，绘着五个宫装美女美目盼兮，艳丽脱 俗。屋里还有一张茶几，几张椅子，椅子上铺着绣花锦垫，西 面有一扇洞形门通向后厅。"
+  x = 0
+  y = 3
+  z = 0
+    }
+
+  room_exits "house1" {
+    room_id = rooms.house1.id
+    south = rooms.huoting.id
+    }
+
+
+  room_characters "house1" {
+    room_id = rooms.house1.id
+    characters = [
+      { id = characters.shinu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/hua1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "hua1" {
+      name = "花园"
+      description = "这里是风雷堂内的一个极精致的小花园。只见花园中红梅 绿竹，青松翠柏，布置得颇具匠心，往西去是一片青草地。"
+  x = 2
+  y = -8
+  z = 1
+    }
+
+  room_exits "hua1" {
+    room_id = rooms.hua1.id
+    west = rooms.grass2.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/huoting.c by LPCConverter
+# Zone: heimuya
+
+    rooms "huoting" {
+      name = "成德殿后厅"
+      description = "这里是日月神教成德殿的后厅。厅内非常的整洁，青石铺 砌的地板被打扫得一尘不染，周围燃着数十支蜡烛，把这里照 得灯火通明。时不时还有身着紫衣的侍者在此走动。"
+  x = 0
+  y = 2
+  z = 0
+    }
+
+  room_exits "huoting" {
+    room_id = rooms.huoting.id
+    north = rooms.house1.id
+    south = rooms.zoulang.id
+    west = rooms.restroom.id
+    east = rooms.restroom2.id
+    }
+
+
+  room_characters "huoting" {
+    room_id = rooms.huoting.id
+    characters = [
+      { id = characters.zish.id },
+      { id = characters.zish.id },
+      { id = characters.zish.id },
+      { id = characters.zish.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/linjxd1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "linjxd1" {
+      name = "林间小道"
+      description = "你走在一条颇为阴暗的林间小道上，两旁是阴森森的密树 林。一阵阵风吹过树梢，发出沙沙的响声，令你不寒而栗。不 过西边好象是一个山谷。"
+  x = 2
+  y = -3
+  z = 1
+    }
+
+  room_exits "linjxd1" {
+    room_id = rooms.linjxd1.id
+    west = rooms.linjxd4.id
+    east = rooms.road1.id
+    north = rooms.linjxd3.id
+    south = rooms.linjxd2.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/linjxd2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "linjxd2" {
+      name = "林间小道"
+      description = "你走在一条颇为阴暗的林间小道上，两旁是阴森森的密树 林。一阵阵风吹过树梢，发出沙沙的响声，令你不寒而栗。不 过西边好象是一个山谷。"
+  x = 1
+  y = -4
+  z = 1
+    }
+
+  room_exits "linjxd2" {
+    room_id = rooms.linjxd2.id
+    north = rooms.linjxd4.id
+    south = rooms.fenggate1.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/linjxd3.c by LPCConverter
+# Zone: heimuya
+
+    rooms "linjxd3" {
+      name = "林间小道"
+      description = "你走在一条颇为阴暗的林间小道上，两旁是阴森森的密树 林。一阵阵风吹过树梢，发出沙沙的响声，令你不寒而栗。不 过西边好象是一个山谷。"
+  x = 1
+  y = -2
+  z = 1
+    }
+
+  room_exits "linjxd3" {
+    room_id = rooms.linjxd3.id
+    north = rooms.baigate2.id
+    south = rooms.linjxd4.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/linjxd4.c by LPCConverter
+# Zone: heimuya
+
+    rooms "linjxd4" {
+      name = "林间小道"
+      description = "你走在一条颇为阴暗的林间小道上，两旁是阴森森的密树 林。一阵阵风吹过树梢，发出沙沙的响声，令你不寒而栗。不 过西边好象是一个山谷。你忽然发现树丛中有两点绿芒闪没。"
+  x = 1
+  y = -3
+  z = 1
+    }
+
+  room_exits "linjxd4" {
+    room_id = rooms.linjxd4.id
+    west = rooms.linjxd5.id
+    east = rooms.linjxd1.id
+    north = rooms.linjxd3.id
+    south = rooms.linjxd2.id
+    }
+
+
+
+
+  room_items "linjxd4" {
+    room_id = rooms.linjxd4.id
+    items = [
+      { id = items.lang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/linjxd5.c by LPCConverter
+# Zone: heimuya
+
+    rooms "linjxd5" {
+      name = "林间小道"
+      description = "你走在一条颇为阴暗的林间小道上，两旁是阴森森的密树 林。一阵阵风吹过树梢，发出沙沙的响声，令你不寒而栗。不 过西边好象是一个山谷。"
+  x = 0
+  y = -3
+  z = 1
+    }
+
+  room_exits "linjxd5" {
+    room_id = rooms.linjxd5.id
+    west = rooms.guang.id
+    east = rooms.linjxd4.id
+    north = rooms.linjxd3.id
+    south = rooms.linjxd2.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/neishi.c by LPCConverter
+# Zone: heimuya
+
+    rooms "neishi" {
+      name = "小舍内室"
+      description = "这里是小舍内室。收拾得精细异常。你一进去，就发现床 沿坐着一个打扮妖艳的人。那人也诧异地抬头，你发现他居然 是个男人，手里执着一枚绣花针！"
+  x = 2
+  y = 0
+  z = 6
+    }
+
+  room_exits "neishi" {
+    room_id = rooms.neishi.id
+    west = rooms.xiaoshe.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/pingdingzhou.c by LPCConverter
+# Zone: heimuya
+
+    rooms "pingdingzhou" {
+      name = "平定州"
+      description = "平定州在河北省境内，平定州州府不大，但由于是地处要 冲，十分重要。往来京城的客商穿梭频繁。但大街上日月教徒 横冲直撞出手抓人，虽近在京畿，却丝毫没将官府放在眼里。"
+  x = 4
+  y = -2
+  z = 1
+    }
+
+  room_exits "pingdingzhou" {
+    room_id = rooms.pingdingzhou.id
+    west = rooms.road2.id
+    east = rooms.road3.id
+    }
+
+
+  room_characters "pingdingzhou" {
+    room_id = rooms.pingdingzhou.id
+    characters = [
+      { id = characters.girl2.id },
+      { id = characters.kid1.id },
+      { id = characters.dizi7.id },
+      { id = characters.dizi7.id },
+      { id = characters.dizi7.id },
+      { id = characters.dizi7.id }    ]
+  }
+
+
+
+  room_items "pingdingzhou" {
+    room_id = rooms.pingdingzhou.id
+    items = [
+      { id = items.qin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/qing.c by LPCConverter
+# Zone: heimuya
+
+    rooms "qing" {
+      name = "青龙堂大厅"
+      description = "这里便是日月神教下第三大堂青龙堂的大厅。堂内青砖铺 地，四周燃有熏香，非常的宽畅明亮，厅中设有一座，一位长 者居中，神情恍惚。"
+  x = -1
+  y = -8
+  z = 2
+    }
+
+  room_exits "qing" {
+    room_id = rooms.qing.id
+    north = rooms.chlang2.id
+    }
+
+
+  room_characters "qing" {
+    room_id = rooms.qing.id
+    characters = [
+      { id = characters.dizi5.id },
+      { id = characters.dizi5.id },
+      { id = characters.dizi5.id },
+      { id = characters.dizi5.id }    ]
+  }
+
+
+
+  room_items "qing" {
+    room_id = rooms.qing.id
+    items = [
+      { id = items.jia.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/qinggate.c by LPCConverter
+# Zone: heimuya
+
+    rooms "qinggate" {
+      name = "青龙堂大门"
+      description = "这里是日月神教下第三大堂青龙堂的大门，门前摆放着两 座石狮，镇守着朱漆大门。大门两旁站着数名轻装弟子，双手 握着钢刀，警惕地注视着周围的一切。"
+  x = -1
+  y = -4
+  z = 2
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：objectp(present("riyue dizi", environment(me))) && dir == "south" && me->query("family/family_name") != "日月神教"
+direction = "south"
+  message = "日月弟子将你拦住，说道：这里乃神教重地，他人不得入内。"
+}
+
+]
+    }
+
+  room_exits "qinggate" {
+    room_id = rooms.qinggate.id
+    south = rooms.dating3.id
+    northdown = rooms.guang.id
+    }
+
+
+  room_characters "qinggate" {
+    room_id = rooms.qinggate.id
+    characters = [
+      { id = characters.dizi5.id },
+      { id = characters.dizi5.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/restroom.c by LPCConverter
+# Zone: heimuya
+
+    rooms "restroom" {
+      name = "西厢房"
+      description = "这里是日月神教成德殿的后厅西侧的厢房，房内摆有一张 熏香大床，上面铺着雕龙锦被。在这里睡觉非常舒服，没人能 打扰。南面是气派的长廊。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "restroom" {
+    room_id = rooms.restroom.id
+    east = rooms.huoting.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/restroom2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "restroom2" {
+      name = "东厢房"
+      description = "这里是日月神教成德殿的后厅东侧的厢房，房内摆有一张 熏香大床，上面铺着雕龙锦被。在这里睡觉非常舒服，没人能 打扰。南面是气派的长廊。"
+  x = 1
+  y = 2
+  z = 0
+    }
+
+  room_exits "restroom2" {
+    room_id = rooms.restroom2.id
+    west = rooms.huoting.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/road1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "road1" {
+      name = "乱石坡"
+      description = "这是一处乱石怪异的小山岗，向东北是通往平安州的小路。 据说前方经常有野兽出没，不可久留。"
+  x = 3
+  y = -3
+  z = 1
+    }
+
+  room_exits "road1" {
+    room_id = rooms.road1.id
+    east = rooms.tianroad1.id
+    west = rooms.linjxd1.id
+    south = rooms.road4.id
+    north = rooms.road2.id
+    }
+
+
+  room_characters "road1" {
+    room_id = rooms.road1.id
+    characters = [
+      { id = characters.laozhe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/road2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "road2" {
+      name = "黄土路"
+      description = "你走在一条尘土飞扬的黄土路上。西南是一个小高岗，地 势险恶，客旅断绝。东面隐隐可以看到平定州城。"
+  x = 3
+  y = -2
+  z = 1
+    }
+
+  room_exits "road2" {
+    room_id = rooms.road2.id
+    east = rooms.pingdingzhou.id
+    south = rooms.road1.id
+    }
+
+
+  room_characters "road2" {
+    room_id = rooms.road2.id
+    characters = [
+      { id = characters.tiaofu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/road3.c by LPCConverter
+# Zone: heimuya
+
+    rooms "road3" {
+      name = "黄土路"
+      description = "你走在一条尘土飞扬的黄土路上。西面望去，隐隐可以看 到平定州。望东，北京城快到了。"
+  x = 5
+  y = -2
+  z = 1
+    }
+
+  room_exits "road3" {
+    room_id = rooms.road3.id
+    west = rooms.pingdingzhou.id
+    east = rooms.ximenwai.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/road4.c by LPCConverter
+# Zone: heimuya
+
+    rooms "road4" {
+      name = "黄土路"
+      description = "你走在一条黄土路上。这里是山西地界，往东不远就进入 河北了。现在这里不是太平时节，还是快点走吧。"
+  x = 3
+  y = -4
+  z = 1
+    }
+
+  room_exits "road4" {
+    room_id = rooms.road4.id
+    south = rooms.dukou1.id
+    north = rooms.road1.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/road5.c by LPCConverter
+# Zone: heimuya
+
+    rooms "road5" {
+      name = "黄土路"
+      description = "你走在一条黄土路上。这里已经是陕西地面了，向南一条 黄土大道，两边望不尽的黄土高坡，没有一丝吝啬的绿色。东 北隐隐传来流水的声响。"
+  x = 0
+  y = 0
+  z = 9
+    }
+
+  room_exits "road5" {
+    room_id = rooms.road5.id
+    up = rooms.up2.id
+    down = rooms.dukou2.id
+    northeast = rooms.weifen.id
+    south = rooms.road6.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/road6.c by LPCConverter
+# Zone: heimuya
+
+    rooms "road6" {
+      name = "黄土路"
+      description = "你走在一条尘土飞扬的黄土路上。陕西的地面，就是看不 尽的黄土。向南方望，远远有高山插云，近处好象有个小小村 落。隐隐传来犬吠鸡啼，给你长途的奔波带来一丝生气。"
+  x = 0
+  y = -1
+  z = 9
+    }
+
+  room_exits "road6" {
+    room_id = rooms.road6.id
+    north = rooms.road5.id
+    southeast = rooms.wexit.id
+    }
+
+
+  room_characters "road6" {
+    room_id = rooms.road6.id
+    characters = [
+      { id = characters.seller.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/shandao1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "shandao1" {
+      name = "山道"
+      description = "西面是一座高山，地势极之险峻，一条窄小陡峭的山道通 往山上，东边山脚是一片长滩。"
+  x = -1
+  y = 0
+  z = 5
+    }
+
+  room_exits "shandao1" {
+    room_id = rooms.shandao1.id
+    westup = rooms.shandao2.id
+    eastdown = rooms.changtan.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/shandao2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "shandao2" {
+      name = "山道"
+      description = "这一路上山，地势极险，脚下是万丈深谷，而山道极之陡 峭窄小，倘若一不留神，必将命丧于此。"
+  x = -2
+  y = 0
+  z = 6
+    }
+
+  room_exits "shandao2" {
+    room_id = rooms.shandao2.id
+    westup = rooms.shijie1.id
+    eastdown = rooms.shandao1.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/shanya1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "shanya1" {
+      name = "成德殿大门"
+      description = "此处入云高耸，已是黑木崖上，两旁站满了日月神教的弟 子。两旁的刻着两行大字，右首是「文成武德」，左首是「仁 义英明」，横额上刻着「日月光明」四个大红字。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "shanya1" {
+    room_id = rooms.shanya1.id
+    north = rooms.chengdedian.id
+    south = rooms.shanya2.id
+    }
+
+
+  room_characters "shanya1" {
+    room_id = rooms.shanya1.id
+    characters = [
+      { id = characters.dizi.id },
+      { id = characters.dizi.id }    ]
+  }
+
+
+
+  room_items "shanya1" {
+    room_id = rooms.shanya1.id
+    items = [
+      { id = items.wang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/shanya2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "shanya2" {
+      name = "山崖"
+      description = "此处入云高耸，已是黑木崖上，两旁站满了日月神教的弟 子。两旁的刻着两行大字，右首是「文成武德」，左首是「仁 义英明」，横额上刻着「日月光明」四个大红字。"
+  x = 0
+  y = -2
+  z = 0
+    }
+
+  room_exits "shanya2" {
+    room_id = rooms.shanya2.id
+    north = rooms.shanya1.id
+    south = rooms.shanya3.id
+    }
+
+
+  room_characters "shanya2" {
+    room_id = rooms.shanya2.id
+    characters = [
+      { id = characters.dizi2.id },
+      { id = characters.dizi2.id },
+      { id = characters.dizi2.id },
+      { id = characters.dizi2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/shanya3.c by LPCConverter
+# Zone: heimuya
+
+    rooms "shanya3" {
+      name = "山崖"
+      description = "此处入云高耸，已是黑木崖上，两旁站满了日月神教的弟 子。崖边卷着几捆碗口粗的绳索，绳索的一端系有一个供人上 下的吊篮(basket)。"
+  x = 0
+  y = -3
+  z = 0
+item_desc = {
+ basket = "一个巨大的吊篮，是供给日月神教中人下山之用。"
+}
+    }
+
+  room_exits "shanya3" {
+    room_id = rooms.shanya3.id
+    north = rooms.shanya2.id
+    }
+
+
+  room_characters "shanya3" {
+    room_id = rooms.shanya3.id
+    characters = [
+      { id = characters.dizi2.id },
+      { id = characters.dizi2.id },
+      { id = characters.dizi2.id },
+      { id = characters.dizi2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/shenggu.c by LPCConverter
+# Zone: heimuya
+
+    rooms "shenggu" {
+      name = "圣姑堂"
+      description = "这里是黑木崖的「圣姑」任盈盈所在的圣姑堂。堂上五彩 云罗，煞是漂亮。堂中座有一位妙龄女子，青衫小袖，明艳不 可方物，含笑不怒而威。"
+  x = 4
+  y = -7
+  z = 1
+    }
+
+  room_exits "shenggu" {
+    room_id = rooms.shenggu.id
+    east = rooms.chitang.id
+    }
+
+
+
+
+  room_items "shenggu" {
+    room_id = rooms.shenggu.id
+    items = [
+      { id = items.ying.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/shidao1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "shidao1" {
+      name = "石道"
+      description = "你一路往北行，中间仅有一道宽约五尺的石道，两边石壁 如墙，一路上都有日月教徒模样的人物在走动，对往来的路人 都严密监视。"
+  x = -2
+  y = -3
+  z = 1
+    }
+
+  room_exits "shidao1" {
+    room_id = rooms.shidao1.id
+    north = rooms.shidao2.id
+    east = rooms.guang.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/shidao2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "shidao2" {
+      name = "石道"
+      description = "一路上日月教教众把守严密，经过三处山道，来到一处水 滩之前，西面有一道石阶通往水滩。"
+  x = -2
+  y = -2
+  z = 1
+    }
+
+  room_exits "shidao2" {
+    room_id = rooms.shidao2.id
+    south = rooms.shidao1.id
+    northdown = rooms.xingxingtan.id
+    }
+
+
+  room_characters "shidao2" {
+    room_id = rooms.shidao2.id
+    characters = [
+      { id = characters.dizi3.id },
+      { id = characters.dizi3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/shijie1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "shijie1" {
+      name = "石阶"
+      description = "行进至此，山路突然陡峭，两旁山峰笔立，中间留出一条 窄窄的石阶，仅能两人并肩而行。"
+  x = -3
+  y = 0
+  z = 7
+    }
+
+  room_exits "shijie1" {
+    room_id = rooms.shijie1.id
+    westup = rooms.shijie2.id
+    eastdown = rooms.shandao2.id
+    }
+
+
+
+
+  room_items "shijie1" {
+    room_id = rooms.shijie1.id
+    items = [
+      { id = items.yun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/shijie2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "shijie2" {
+      name = "石阶"
+      description = "行进至此，山路突然陡峭，两旁山峰笔立，中间留出一条 窄窄的石阶，仅能容下两人并肩而行。从这里往上望，隐约望 见一座石门。"
+  x = -4
+  y = 0
+  z = 8
+    }
+
+  room_exits "shijie2" {
+    room_id = rooms.shijie2.id
+    westup = rooms.shimen.id
+    eastdown = rooms.shijie1.id
+    }
+
+
+
+
+  room_items "shijie2" {
+    room_id = rooms.shijie2.id
+    items = [
+      { id = items.fan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/shimen.c by LPCConverter
+# Zone: heimuya
+
+    rooms "shimen" {
+      name = "石门"
+      description = "得到一道大石门前，只见两旁刻着两行大字，右首是「文 成武德」，左首是「仁义英明」，横额上刻着「日月光明」四 个大红字。"
+  x = -5
+  y = 0
+  z = 9
+    }
+
+  room_exits "shimen" {
+    room_id = rooms.shimen.id
+    westup = rooms.up1.id
+    eastdown = rooms.shijie2.id
+    }
+
+
+
+
+  room_items "shimen" {
+    room_id = rooms.shimen.id
+    items = [
+      { id = items.zhao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/tian1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "tian1" {
+      name = "天香堂"
+      description = "这里是黑木崖的第四大堂天香堂。大厅里宽畅明亮，厅中 设有一座，一中年妇人横眉座在当中。从南边出厅是一片波光 粼粼的池塘。"
+  x = 5
+  y = -6
+  z = 1
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：objectp(present("sang sanniang", environment(me))) && dir == "south" && me->query("family/family_name") && me->query("family/family_name") != "日月神教"
+direction = "south"
+  message = "桑三娘将你拦住，说道：后面是圣姑的住所，他人不得入内。"
+}
+,
+{
+   # 阻挡条件（原样保留）：objectp(present("sang sanniang", environment(me))) && (string)me->query("gender") != "女性" && dir == "south"
+direction = "south"
+  message = "桑三娘将你拦住，说道：后面是圣姑的住所，你一个男人进去干嘛？"
+}
+
+]
+    }
+
+  room_exits "tian1" {
+    room_id = rooms.tian1.id
+    east = rooms.tingpte.id
+    west = rooms.tingptw.id
+    south = rooms.chitang.id
+    north = rooms.dating4.id
+    }
+
+
+  room_characters "tian1" {
+    room_id = rooms.tian1.id
+    characters = [
+      { id = characters.dizi6.id },
+      { id = characters.dizi6.id },
+      { id = characters.dizi6.id },
+      { id = characters.dizi6.id }    ]
+  }
+
+
+
+  room_items "tian1" {
+    room_id = rooms.tian1.id
+    items = [
+      { id = items.sang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/tiangate.c by LPCConverter
+# Zone: heimuya
+
+    rooms "tiangate" {
+      name = "天香堂大门"
+      description = "这是日月神教下第四大堂天香堂的大门，门前摆放着两座 石狮，镇守着朱漆大门。大门两旁站着数名轻装女子，单手持 着长鞭，警惕地注视着周围的一切。"
+  x = 5
+  y = -4
+  z = 1
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：objectp(present("riyue dizi", environment(me))) && dir == "south" && me->query("family/family_name") && me->query("family/family_name") != "日月神教"
+direction = "south"
+  message = "日月弟子将你拦住，说道：这里乃神教重地，他人不得入内。"
+}
+
+]
+    }
+
+  room_exits "tiangate" {
+    room_id = rooms.tiangate.id
+    north = rooms.tianroad2.id
+    south = rooms.dating4.id
+    }
+
+
+  room_characters "tiangate" {
+    room_id = rooms.tiangate.id
+    characters = [
+      { id = characters.dizi6.id },
+      { id = characters.dizi6.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/tianroad1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "tianroad1" {
+      name = "乱石小径"
+      description = "这是一处乱石怪异的小径，向西再迂回转东北可以通往平 安州。据说前方经常有野兽出没，不可久留。东方不远有一座 建筑，颇为气派。"
+  x = 4
+  y = -3
+  z = 1
+    }
+
+  room_exits "tianroad1" {
+    room_id = rooms.tianroad1.id
+    east = rooms.tianroad2.id
+    west = rooms.road1.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/tianroad2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "tianroad2" {
+      name = "乱石小径"
+      description = "这是一处乱石怪异的小径，向西再迂回转东北可以通往平 安州。据说前方经常有野兽出没，不可久留。南方不远有一座 建筑，颇为气派。"
+  x = 5
+  y = -3
+  z = 1
+    }
+
+  room_exits "tianroad2" {
+    room_id = rooms.tianroad2.id
+    west = rooms.tianroad1.id
+    south = rooms.tiangate.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/tingpte.c by LPCConverter
+# Zone: heimuya
+
+    rooms "tingpte" {
+      name = "天香堂厢房"
+      description = "偏厅布置的颇为优雅，丝毫没有正厅上的严肃气氛。一张 红木大桌边上有个书柜，柜里摆了各式各样的书。墙上挂着几 幅字画。堂的一边摆着几张大床，让人看了就想睡觉。"
+  x = 6
+  y = -6
+  z = 1
+    }
+
+  room_exits "tingpte" {
+    room_id = rooms.tingpte.id
+    west = rooms.tian1.id
+    }
+
+
+  room_characters "tingpte" {
+    room_id = rooms.tingpte.id
+    characters = [
+      { id = characters.dizi6.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/tingptw.c by LPCConverter
+# Zone: heimuya
+
+    rooms "tingptw" {
+      name = "天香堂偏厅"
+      description = "偏厅布置的颇为优雅，丝毫没有正厅上的严肃气氛。一张 红木大桌边上有个书柜，柜里摆了各式各样的书。墙上挂着几 幅字画。"
+  x = 4
+  y = -6
+  z = 1
+    }
+
+  room_exits "tingptw" {
+    room_id = rooms.tingptw.id
+    east = rooms.tian1.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/up1.c by LPCConverter
+# Zone: heimuya
+
+    rooms "up1" {
+      name = "日月坪"
+      description = "这里是半山的一片小土坪，离崖顶还有一段路途，可到这 已经没有路上去，面前是如镜般的峭壁，仰头而望，但见崖顶 依稀耸立着楼阁，宛如仙境。可云烟缭绕，看不清晰。"
+  x = -6
+  y = 0
+  z = 10
+    }
+
+  room_exits "up1" {
+    room_id = rooms.up1.id
+    eastdown = rooms.shimen.id
+    }
+
+
+
+
+  room_items "up1" {
+    room_id = rooms.up1.id
+    items = [
+      { id = items.feng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/up2.c by LPCConverter
+# Zone: heimuya
+
+    rooms "up2" {
+      name = "悬崖"
+      description = "又一座陡峭的悬崖立在了你的面前。悬崖上仿佛有座白色的 建筑，可云烟缭绕，看不清晰。崖上又垂下一条绳索(rope)，看 上去象是悬崖上下互通消息的工具。绳索的上面似乎隐约有一个 吊篮(basket)，悬崖的墙上似乎有一个匣子(xiazi)。"
+  x = 0
+  y = 0
+  z = 10
+item_desc = {
+ basket = "那是一个吊篮，看样子有些古怪。"
+ rope = "绳子就是绳子，可能是向上的工具。"
+ xiazi = "这是一个匣子，看样子是一个开关，匣子的侧面有一个插孔。"
+}
+    }
+
+  room_exits "up2" {
+    room_id = rooms.up2.id
+    up = rooms.up3.id
+    down = rooms.road5.id
+    westdown = rooms.up1.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/up3.c by LPCConverter
+# Zone: heimuya
+
+    rooms "up3" {
+      name = "悬崖"
+      description = "又一座陡峭的悬崖立在了你的面前。悬崖上仿佛有座白色的 建筑，可云烟缭绕，看不清晰。崖上又垂下一条绳索(rope)，看 上去象是悬崖上下互通消息的工具，要想办法找其他的牌子啊。 绳索的上面似乎隐约有一个吊篮(basket)，悬崖的墙上似乎有一 个匣子(xiazi)。"
+  x = 0
+  y = 0
+  z = 11
+item_desc = {
+ basket = "那是一个吊篮，看样子有些古怪。"
+ rope = "绳子就是绳子，可能是向上的工具。"
+ xiazi = "这是一个匣子，看样子是一个开关，匣子的侧面有一个插孔。"
+}
+    }
+
+  room_exits "up3" {
+    room_id = rooms.up3.id
+    up = rooms.up4.id
+    down = rooms.up2.id
+    westdown = rooms.up2.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/up4.c by LPCConverter
+# Zone: heimuya
+
+    rooms "up4" {
+      name = "悬崖"
+      description = "又一座陡峭的悬崖立在了你的面前。悬崖上仿佛有座白色的 建筑，可云烟缭绕，看不清晰。崖上又垂下一条绳索(rope)，看 上去象是悬崖上下互通消息的工具，要想办法找其他的牌子啊。 绳索的上面似乎隐约有一个吊篮(basket)，悬崖的墙上似乎有一 个匣子(xiazi)。"
+  x = 0
+  y = 0
+  z = 12
+item_desc = {
+ basket = "那是一个吊篮，看样子有些古怪。"
+ rope = "绳子就是绳子，可能是向上的工具。"
+ xiazi = "这是一个匣子，看样子是一个开关，匣子的侧面有一个插孔。"
+}
+    }
+
+  room_exits "up4" {
+    room_id = rooms.up4.id
+    down = rooms.up3.id
+    westdown = rooms.up3.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/xiaohuayuan.c by LPCConverter
+# Zone: heimuya
+
+    rooms "xiaohuayuan" {
+      name = "小花园"
+      description = "从昏暗的地道中出来，你发现自己竟是置身于一个极精致的 小花园中，红梅绿竹，青松翠柏，布置得颇具匠心，往东去是一 间精雅小舍。"
+  x = 1
+  y = 0
+  z = 6
+    }
+
+  room_exits "xiaohuayuan" {
+    room_id = rooms.xiaohuayuan.id
+    in = rooms.xiaoshe.id
+    south = rooms.didao6.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/xiaoshe.c by LPCConverter
+# Zone: heimuya
+
+    rooms "xiaoshe" {
+      name = "小舍"
+      description = "这是一间用翠竹搭成的小舍。一进门，便闻到一阵浓烈的花 香，房中挂着一幅仕女图，椅上铺了绣花锦垫，东边有一扇门， 挂着绣了一丛牡丹的锦缎门帏。难道这是谁家姑娘的闺房？"
+  x = 1
+  y = 0
+  z = 6
+    }
+
+  room_exits "xiaoshe" {
+    room_id = rooms.xiaoshe.id
+    out = rooms.xiaohuayuan.id
+    east = rooms.neishi.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/xingxingtan.c by LPCConverter
+# Zone: heimuya
+
+    rooms "xingxingtan" {
+      name = "猩猩滩"
+      description = "只见一片长滩，山石殷红如血，水流湍急，这便是有名的 猩猩滩，对面的江 (river)上划着着几艘小船，要过对面就要 靠这几艘小船了。"
+  x = -2
+  y = -1
+  z = 0
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "xingxingtan" {
+    room_id = rooms.xingxingtan.id
+    river = rooms.changtan.id
+    southup = rooms.shidao2.id
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/zoulang.c by LPCConverter
+# Zone: heimuya
+
+    rooms "zoulang" {
+      name = "走廊"
+      description = "这是成德殿内的一条木制的走廊，红漆地面很是光滑，整 个走廊被打整得一尘不染。你不时能够看到几个成德殿的侍女 在此走动，忙碌个不停。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "zoulang" {
+    room_id = rooms.zoulang.id
+    south = rooms.chengdedian.id
+    north = rooms.huoting.id
+    }
+
+
+  room_characters "zoulang" {
+    room_id = rooms.zoulang.id
+    characters = [
+      { id = characters.zish.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/cungu.c by LPCConverter
+# Zone: heimuya
+
+    characters "cungu" {
+      name = "村姑"
+      description = "一个很清秀的年轻农村姑娘，挎着一只盖着布小篮子。"
+  gender = "女性"
+  age = 20
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 4000
+    con = 15
+    dex = 16
+    int = 17
+    str = 15
+  }
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.caomei.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/dizi.c by LPCConverter
+# Zone: heimuya
+
+    characters "dizi" {
+      name = "日月弟子"
+      description = "这是成德殿殿下弟子，他警惕地巡视着四周的情形。"
+  title = "成德殿"
+  gender = "男性"
+  score = 50000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 400
+    max_neili = 500
+    max_qi = 600
+    str = 30
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "literate" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "日月弟子高声呼喊道：日月神教，文成武德。千秋万载，一统江湖。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/dizi2.c by LPCConverter
+# Zone: heimuya
+
+    characters "dizi2" {
+      name = "日月弟子"
+      description = "这是驻扎黑木崖的弟子，他警惕地巡视着四周的情形。"
+  title = "黑木崖"
+  gender = "男性"
+  score = 50000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 400
+    max_neili = 500
+    max_qi = 600
+    str = 30
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "literate" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "日月弟子高声呼喊道：日月神教，文成武德。千秋万载，一统江湖。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/dizi3.c by LPCConverter
+# Zone: heimuya
+
+    characters "dizi3" {
+      name = "日月弟子"
+      description = "这是日月神教风雷堂下的弟子，他警惕地巡视着四周的情形。"
+  title = "风雷堂"
+  gender = "男性"
+  score = 50000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 400
+    max_neili = 500
+    max_qi = 600
+    str = 30
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "blade" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "literate" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "日月弟子高声呼喊道：日月神教，文成武德。千秋万载，一统江湖。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/dizi4.c by LPCConverter
+# Zone: heimuya
+
+    characters "dizi4" {
+      name = "日月弟子"
+      description = "这是日月神教白虎堂下的弟子，他警惕地巡视着四周的情形。"
+  title = "白虎堂"
+  gender = "男性"
+  score = 50000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 400
+    max_neili = 500
+    max_qi = 600
+    str = 30
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "blade" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "literate" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "日月弟子高声呼喊道：日月神教，文成武德。千秋万载，一统江湖。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/dizi5.c by LPCConverter
+# Zone: heimuya
+
+    characters "dizi5" {
+      name = "日月弟子"
+      description = "这是日月神教青龙堂下的弟子，他警惕地巡视着四周的情形。"
+  title = "青龙堂"
+  gender = "男性"
+  score = 50000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 400
+    max_neili = 500
+    max_qi = 600
+    str = 30
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "blade" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "literate" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "日月弟子高声呼喊道：日月神教，文成武德。千秋万载，一统江湖。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/dizi6.c by LPCConverter
+# Zone: heimuya
+
+    characters "dizi6" {
+      name = "日月弟子"
+      description = "这是日月神教天香堂下的弟子，他警惕地巡视着四周的情形。"
+  title = "天香堂"
+  gender = "女性"
+  score = 50000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 400
+    max_neili = 500
+    max_qi = 600
+    str = 30
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "whip" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "literate" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.changbian.id },
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "日月弟子高声呼喊道：日月神教，文成武德。千秋万载，一统江湖。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/dizi7.c by LPCConverter
+# Zone: heimuya
+
+    characters "dizi7" {
+      name = "青旗弟子"
+      description = "这是日月神教的青旗弟子。"
+  gender = "女性"
+  score = 50000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 400
+    max_neili = 500
+    max_qi = 600
+    str = 30
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "staff" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "literate" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.gangzhang.id },
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "青旗弟子高声呼喊道：日月神教，文成武德。千秋万载，一统江湖。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/huang.c by LPCConverter
+# Zone: heimuya
+
+    characters "huang" {
+      name = "黄伯流"
+      description = "这便是日月神教黄河帮帮主黄伯流，他看上去 已经甚为苍老了，但是双目精光四射，银髯飘 飘，模样威武之极。"
+  title = "黄河帮帮主"
+  nickname = "银髯蛟"
+  gender = "男性"
+  age = 81
+  score = 30000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2500000
+    con = 36
+    dex = 36
+    int = 36
+    max_jing = 3000
+    max_neili = 5500
+    max_qi = 4000
+    str = 36
+  }
+
+  skills = [
+    { skill = "force" level = 180 },
+    { skill = "tianhuan-shenjue" level = 180 },
+    { skill = "riyue-xinfa" level = 180 },
+    { skill = "dodge" level = 180 },
+    { skill = "juechen-shenfa" level = 180 },
+    { skill = "cuff" level = 180 },
+    { skill = "zhenyu-quan" level = 180 },
+    { skill = "claw" level = 180 },
+    { skill = "poyue-zhao" level = 180 },
+    { skill = "parry" level = 180 },
+    { skill = "blade" level = 180 },
+    { skill = "danding-dao" level = 180 },
+    { skill = "strike" level = 180 },
+    { skill = "qingmang-zhang" level = 180 },
+    { skill = "martial-cognize" level = 180 },
+    { skill = "literate" level = 140 },
+    { type = "dodge" skill = "juechen-shenfa" },
+    { type = "force" skill = "tianhuan-shenjue" },
+    { type = "blade" skill = "danding-dao" },
+    { type = "strike" skill = "qingmang-zhang" },
+    { type = "parry" skill = "danding-dao" },
+    { type = "cuff" skill = "zhenyu-quan" },
+    { type = "claw" skill = "poyue-zhao" }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/kid.c by LPCConverter
+# Zone: heimuya
+
+    characters "kid" {
+      name = "小孩"
+      description = "这是个农家小孩子"
+  gender = "男性"
+  age = 6
+  shen_type = 0
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/laozhe.c by LPCConverter
+# Zone: heimuya
+
+    characters "laozhe" {
+      name = "老者"
+      description = "这个老头正抽旱烟抽得上瘾呢。"
+  gender = "男性"
+  age = 70
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/seller.c by LPCConverter
+# Zone: heimuya
+
+    characters "seller" {
+      name = "小贩"
+      description = "这是个小贩，别看他长的老老实实，可你别 想从他那儿掏便宜。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 32
+  brain = brains.vendor
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/shinu.c by LPCConverter
+# Zone: heimuya
+
+    characters "shinu" {
+      name = "侍女"
+      description = "美目四盼，矫揉造作，让你恨不得在她脸蛋儿掐上一把。"
+  gender = "女性"
+  age = 20
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+    con = 20
+    dex = 22
+    int = 21
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/yang.c by LPCConverter
+# Zone: heimuya
+
+    characters "yang" {
+      name = "杨莲亭"
+      description = "他身形魁梧，满脸虬髯，形貌极为雄健。"
+  title = "日月神教成德堂总管"
+  gender = "男性"
+  age = 40
+
+  combat = {
+    combat_exp = 50000
+    max_qi = 500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.yaoshi.id },
+    { id = items.zaohong.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/zish.c by LPCConverter
+# Zone: heimuya
+
+    characters "zish" {
+      name = "紫衫侍者"
+      description = ""
+  title = "成德殿"
+  gender = "男性"
+  age = 18
+
+  combat = {
+    combat_exp = 1000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 70 },
+    { skill = "force" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.zichoush.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/bishou.c by LPCConverter
+# Zone: heimuya
+
+    characters "bishou" {
+      name = "月牙匕"
+      description = "一柄做工精细的玉制匕首。"
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/cloth.c by LPCConverter
+# Zone: heimuya
+
+    characters "cloth" {
+      name = "布衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/dadao.c by LPCConverter
+# Zone: heimuya
+
+    characters "dadao" {
+      name = "大刀"
+      description = "这是一柄铁打的大刀。"
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/dafu.c by LPCConverter
+# Zone: heimuya
+
+    characters "dafu" {
+      name = "开山斧"
+      description = "一柄十分锋利的大斧。"
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/hongchouxiaoshan.c by LPCConverter
+# Zone: heimuya
+
+    characters "hongchouxiaoshan" {
+      name = "红绸小杉"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/jinpao.c by LPCConverter
+# Zone: heimuya
+
+    characters "jinpao" {
+      name = "日月锦袍"
+      description = "这是一件日月神教长老所穿戴的华丽锦袍。"
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/leizhendang.c by LPCConverter
+# Zone: heimuya
+
+    characters "leizhendang" {
+      name = "雷震挡"
+      description = "一杆十分沉重的雷震挡。"
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/shenzhen.c by LPCConverter
+# Zone: heimuya
+
+    characters "shenzhen" {
+      name = "黑血神针"
+      description = "这是一些暗灰色的细长金针，长约寸许。"
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/shutonggun.c by LPCConverter
+# Zone: heimuya
+
+    characters "shutonggun" {
+      name = "熟铜棍"
+      description = "一杆十分灵便的熟铜棍。"
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/tongchui.c by LPCConverter
+# Zone: heimuya
+
+    characters "tongchui" {
+      name = "铜锤"
+      description = "这是一对由青铜铸造的大锤，显得极是沉重。"
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/yaoshi.c by LPCConverter
+# Zone: heimuya
+
+    characters "yaoshi" {
+      name = "地牢钥匙"
+      description = "这是一把很普通的钥匙。"
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/zaohong.c by LPCConverter
+# Zone: heimuya
+
+    characters "zaohong" {
+      name = "枣红缎面皮袍"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/zichoush.c by LPCConverter
+# Zone: heimuya
+
+    characters "zichoush" {
+      name = "紫绸衫"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/obj/heimu-ling.c by LPCConverter
+# Zone: heimuya
+
+    items "heimu_ling" {
+      name = "黑木令"
+      description = "这是一块是块枯焦的黑色木头，长约半尺，上 面雕刻有花纹文字，看来十分诡异。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/obj/sherou.c by LPCConverter
+# Zone: heimuya
+
+    items "sherou" {
+      name = "蛇肉"
+      description = "一条烧烤得香喷喷的蛇肉。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/heimuya/obj/tea.c by LPCConverter
+# Zone: heimuya
+
+    items "tea" {
+      name = "香茶"
+      description = "一杯香茶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

@@ -1,0 +1,1153 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kaifeng/hh_chufang.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("family/family_name") != "红花会")  →  
+  # if (present("rice", this_player()))  →  
+  # if (present("soup", this_object()))  →  
+  # else  →  
+  # if (query("ricewater") > 0)  →  message_vision(CYN '红花弟子将热气腾腾的饭菜递到你手中，笑' '道：你慢用。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_serve) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_serve
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/hh_damen.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "north" || ! objectp(guard = present("yang chengxie", this_object())) && ! objectp(guard = present("jiang sigen", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kaifeng/hh_jianlou1.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "up")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/hh_jianlou2.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( ! living(me))  →  
+  # if ( ! living(this_player()) || arg != "bagua" )  →  
+  # if (me->is_busy())  →  
+  # if ((int)me->query_skill("lianhuan-mizongtui", 1) < 10)  →  
+  # if ((int)me->query_skill("lianhuan-mizongtui", 1) > 180)  →  
+  # if ((int)me->query_skill("unarmed", 1) < (int)me->query_skill("lianhuan-mizongtui", 1))  →  
+  # if ((int)me->query("qi") < 30)  →  
+  # if (me->can_improve_skill("lianhuan-mizongtui"))  →  
+# ==== CONDITIONAL BRANCHES (do_zou) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_zou
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/hh_jianlou3.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( ! living(me))  →  
+  # if ( ! living(this_player()) || arg != "wall" )  →  
+  # if (me->is_busy())  →  
+  # if ((int)me->query_skill("sword", 1) < 50)  →  
+  # if ((int)me->query_skill("sword", 1) > 180)  →  
+  # if ((int)me->query("jing") < 100)  →  
+  # else  →  
+  # if ( me->query( "special_skill/clever" ) )  →  
+  # if (me->can_improve_skill("sword"))  →  
+# ==== CONDITIONAL BRANCHES (do_think) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_think
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kaifeng/hh_mishi.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! living(me))  →  
+  # if (! living(this_player()) || arg != "wall")  →  
+  # if (me->is_busy())  →  
+  # if ((int)me->query_skill("unarmed", 1) < 50)  →  
+  # if ((int)me->query_skill("unarmed", 1) > 180)  →  
+  # if ((int)me->query("jing") < 80)  →  
+  # else  →  
+  # if ( me->query( "special_skill/clever" ) )  →  
+  # if (me->can_improve_skill("unarmed"))  →  
+# ==== CONDITIONAL BRANCHES (do_think) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_think
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kaifeng/hh_xiaozhu.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "down" || ! objectp(yu = present("yu yutong", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if (! query("exits/down"))  →  
+# ==== CONDITIONAL BRANCHES (close_passage) ====
+  # if (! arg || arg != "zhuo")  →  
+  # if (query("exits/down"))  →  
+  # if (me->query("family/family_name") != "红花会" && objectp(present("yu yutong", environment(me))))  →  write(CYN '余鱼同眉头一皱，喝道：阁下什么来' '头，居然敢在这里猖狂？\\\\\n' NOR);
+  # if (me->query("max_neili") < 1000)  →  message_vision(HIR '结果哪知$N' HIR '内力不济，连吃奶' '的劲都用上了，石桌还是纹丝不动。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: close_passage
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kaifeng/hh_zhengting.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "east" && dir != "west" && dir != "north" || ! objectp(wen = present("wen tailai", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kaifeng/kaifeng.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "west")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/gaoyanei.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: accept_fight
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/guanbing.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob = this_player()) && (int)ob->query_condition("killer"))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_fight
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/hanzi.c by LPCConverter
+# Zone: kaifeng
+
+# inherit F_VENDOR;
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/huizhang.c by LPCConverter
+# Zone: kaifeng
+
+# inherit F_DEALER;
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/liuzhanggui.c by LPCConverter
+# Zone: kaifeng
+
+# inherit F_DEALER;
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/oldwomen.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+  # if (xiang)  →  message_vision(CYN '$N' CYN '恭敬地向$n' NOR + CYN '跪倒，嘴里念念有词。\\\\\n' NOR, this_object(), xiang);
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/pihuoshang.c by LPCConverter
+# Zone: kaifeng
+
+# inherit F_DEALER;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/zhanglong.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! objectp(ob = query_temp("catch_ob")))  →  message_vision(CYN '$N左顾右盼，悻悻的走了。\\\\\n' NOR, this_object());
+  # if (environment(ob) != environment() || environment(ob)->query("no_fight"))  →  message_vision(CYN '$N悻悻道：“哼，岂有此理。”\\\\\n' NOR, this_object());
+  # if (! living(ob))  →  
+  # if (! is_fighting(ob))  →  
+# ==== CONDITIONAL BRANCHES (scan) ====
+  # else  →  
+  # if (objectp(ob = query_temp("catch_ob")) && ! living(ob) && environment(ob) == environment())  →  
+# ==== CONDITIONAL BRANCHES (attack) ====
+  # if (! living(this_object()))  →  
+  # if (! stringp(query_temp("old_position")))  →  
+# ==== CONDITIONAL BRANCHES (return_back) ====
+  # if (! ob || environment(ob) != environment() || ! living(this_object()))  →  
+  # if (! living(ob))  →  
+  # if (is_killing(ob->query("id")))  →  
+  # if (ob->name() != ob->name(1) && random((int)ob->query_skill("pretending")) > 50)  →  
+# ==== CONDITIONAL BRANCHES (catch_killer) ====
+  # if (is_fighting())  →  message_vision(CYN '$N冷冷道：“我先要先回去交' '差了，改日再收拾你们几个！”\\\\\n' NOR, this_object());
+  # if (base_name(environment()) != "/d/changan/baihu1")  →  message_vision(HIR '$N轻声哼了一声，拖着$n' HIR '转身离去。\\\\\n' NOR, this_object(), ob);
+# ==== CONDITIONAL BRANCHES (catch_ob) ====
+  # if (is_busy() || is_fighting() || ! living(this_object()) || environment()->query("no_fight"))  →  
+  # if (ob == query_temp("catch_ob") || ! query_temp("catch_ob") && ob->query_condition("killer"))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+  # if (this_player() == query_temp("catch_ob"))  →  write(CYN + name() + '喝道：“贼子，哪里跑！”\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_halt) ====
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: attack
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: catch_ob
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: do_halt
+  # UNHANDLED FUNCTION: scan
+  # UNHANDLED FUNCTION: do_chat
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: return_back
+  # UNHANDLED FUNCTION: catch_killer
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/zhaohu.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! objectp(ob = query_temp("catch_ob")))  →  message_vision(CYN '$N左顾右盼，悻悻的走了。\\\\\n' NOR, this_object());
+  # if (environment(ob) != environment() || environment(ob)->query("no_fight"))  →  message_vision(CYN '$N悻悻道：“哼，岂有此理。”\\\\\n' NOR, this_object());
+  # if (! living(ob))  →  
+  # if (! is_fighting(ob))  →  
+# ==== CONDITIONAL BRANCHES (scan) ====
+  # else  →  
+  # if (objectp(ob = query_temp("catch_ob")) && ! living(ob) && environment(ob) == environment())  →  
+# ==== CONDITIONAL BRANCHES (attack) ====
+  # if (! living(this_object()))  →  
+  # if (! stringp(query_temp("old_position")))  →  
+# ==== CONDITIONAL BRANCHES (return_back) ====
+  # if (! ob || environment(ob) != environment() || ! living(this_object()))  →  
+  # if (! living(ob))  →  
+  # if (is_killing(ob->query("id")))  →  
+  # if (ob->name() != ob->name(1) && random((int)ob->query_skill("pretending")) > 50)  →  
+# ==== CONDITIONAL BRANCHES (catch_killer) ====
+  # if (is_fighting())  →  message_vision(CYN '$N冷冷道：“我先要先回去交' '差了，改日再收拾你们几个！”\\\\\n' NOR, this_object());
+  # if (base_name(environment()) != "/d/changan/baihu1")  →  message_vision(HIR '$N轻声哼了一声，拖着$n' HIR '转身离去。\\\\\n' NOR, this_object(), ob);
+# ==== CONDITIONAL BRANCHES (catch_ob) ====
+  # if (is_busy() || is_fighting() || ! living(this_object()) || environment()->query("no_fight"))  →  
+  # if (ob == query_temp("catch_ob") || ! query_temp("catch_ob") && ob->query_condition("killer"))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+  # if (this_player() == query_temp("catch_ob"))  →  write(CYN + name() + '喝道：“贼子，哪里跑！”\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_halt) ====
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: attack
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: catch_ob
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: do_halt
+  # UNHANDLED FUNCTION: scan
+  # UNHANDLED FUNCTION: do_chat
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: return_back
+  # UNHANDLED FUNCTION: catch_killer
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/zhike.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+  # if (ob->query("id") == "qi gai")  →  message_vision(CYN '$N' CYN '对着$n' CYN '连连挥袖：去，去' '去，一边去！' NOR, this_object(), ob);
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && ! is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/baicai.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/bibohu.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/caidao.c by LPCConverter
+# Zone: kaifeng
+
+# inherit BLADE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/caikuang.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: is_container
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/chaihe1.c by LPCConverter
+# Zone: kaifeng
+
+# inherit STAFF;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/cheng-cloth.c by LPCConverter
+# Zone: kaifeng
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/chuihuo.c by LPCConverter
+# Zone: kaifeng
+
+# inherit STAFF;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/ciwan.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/dao-cloth.c by LPCConverter
+# Zone: kaifeng
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/dayu.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/fozhu.c by LPCConverter
+# Zone: kaifeng
+
+# inherit HEAD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/guanyin.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/guanyu.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/jindi.c by LPCConverter
+# Zone: kaifeng
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/jing1.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/jing2.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/jing3.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/jing4.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/jinzhen.c by LPCConverter
+# Zone: kaifeng
+
+# inherit THROWING;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/luowenhai.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/milexiang.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/qingcai.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/rulaixiang.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/sanqingxiang.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/tiebian.c by LPCConverter
+# Zone: kaifeng
+
+# inherit STAFF;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/tiefutu.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/tiejiang.c by LPCConverter
+# Zone: kaifeng
+
+# inherit STAFF;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/xuan-cloth.c by LPCConverter
+# Zone: kaifeng
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/yudixiang.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/npc/obj/zaopeng.c by LPCConverter
+# Zone: kaifeng
+
+# inherit ITEM;
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/obj/rice.c by LPCConverter
+# Zone: kaifeng
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kaifeng/obj/soup.c by LPCConverter
+# Zone: kaifeng
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

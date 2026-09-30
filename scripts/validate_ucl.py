@@ -58,6 +58,17 @@ _CHARS_TRAILING_COMMA_RE = re.compile(rb',[ \t]*}', re.MULTILINE)
 _PY_REPR_RE = re.compile(rb"[\[{]\s*'|'[^'\n]*'\s*:\s*'")
 
 
+# A quoted value elias 0.2.8 cannot lex: a digit sitting immediately before a
+# comma.  elias's Word regex omits the comma from its exclusion set, so leex
+# normally swallows "a," into one word token, but a digit terminates the word
+# and the comma then becomes a standalone `comma` token, which the grammar's
+# `words` rules cannot consume.  Elias.parse/1 then fails with
+# `syntax error before: ', ['","']`, and the whole world fails to boot.
+# Measured: "(: a, 'b' :)" and "(: a_b, 'c' :)" parse; "(: a1, 'b' :)" and
+# "(: ask_me_1, 'b' :)" do not.
+_ELIAS_UNLEXABLE_RE = re.compile(rb'"[^"\n]*[0-9],[^"\n]*"')
+
+
 # ---------------------------------------------------------------------------
 # Output helpers: UTF-8 bytes plus a single LF (never CRLF on Windows).
 # ---------------------------------------------------------------------------
@@ -338,23 +349,58 @@ def check_chars(data):
     # Check for raw Python repr leaking into UCL (e.g. accept = [{'kind': 'item_name'}]).
     # UCL objects always use `key = value` with double quotes; a single-quoted token
     # right after `[`/`{`, or a `'k': 'v'` pair, can only come from str(dict)/str(list).
-    if _PY_REPR_RE.search(data):
+    code_only = _strip_comments(data)
+    if _PY_REPR_RE.search(code_only):
         line, snippet = _find_python_repr(data)
         issues.append("raw Python repr inside UCL value at line %s (converter leaked "
                       "str(dict)/str(list)): %s" % (line, snippet))
-    # Check for an unconverted LPC runtime expression leaking into a reference.
-    # The converter resolves object paths to bare ids; when a key is built at
-    # runtime (e.g. "/clone/book/" + books[random(sizeof(books))]) the basename
-    # is still an expression, and emitting it produces invalid UCL such as
-    # `items. + books[random(sizeof(books))].id`.
+    # Check for a quoted value that elias cannot lex.  elias 0.2.8 lexes with
+    #     Word = [^0-9{}\*\/#\n\[\]=\s'":\;\\-]+
+    # which does NOT exclude a comma, so leex's longest match swallows "a," into
+    # one word token.  A digit breaks that run, the comma then lexes as its own
+    # `comma` token, and elias_parser.yrl has no `words -> comma ...` rule, so
+    # Elias.parse/1 dies with `syntax error before: ', ['","']`.  This bit
+    # xiangyang/wuxiuwen.c, whose inquiry values are "(: ask_me_1, 'weibo' :)".
+    if _ELIAS_UNLEXABLE_RE.search(code_only):
+        line, snippet = _find_elias_unlexable(data)
+        issues.append("elias-unlexable value at line %s (digit immediately before a "
+                      "comma inside a quoted value): %s" % (line, snippet))
     if issues:
         return (False, "; ".join(issues))
     return (True, None)
 
 
+def _find_elias_unlexable(data):
+    """Return (line, snippet) for the first elias-unlexable value, else None."""
+    m = _ELIAS_UNLEXABLE_RE.search(_strip_comments(data))
+    if not m:
+        return None
+    return (_line_of_offset(data, m.start()), m.group(0).strip())
+
+
+def _strip_comments(data):
+    """Blank out `#` comment tails while preserving byte offsets and line numbers.
+
+    The converter documents skipped/unparseable constructs with `#` comments that
+    quote the very text it refused to emit, so a text-level scan must not look at
+    comment content.  Each stripped byte becomes a space, so every offset and
+    1-based line number still refers to the original data.
+    """
+    out = bytearray(data)
+    for line in data.split(b"\n"):
+        idx = data.find(line)
+        hash_at = line.find(b"#")
+        if hash_at == -1:
+            continue
+        for pos in range(idx + hash_at, idx + len(line)):
+            if out[pos] != 0x0A:
+                out[pos] = 0x20
+    return bytes(out)
+
+
 def _find_python_repr(data):
     """Return (line, snippet) for the first raw Python repr leak, else None."""
-    m = _PY_REPR_RE.search(data)
+    m = _PY_REPR_RE.search(_strip_comments(data))
     if not m:
         return None
     return (_line_of_offset(data, m.start()), m.group(0).strip())

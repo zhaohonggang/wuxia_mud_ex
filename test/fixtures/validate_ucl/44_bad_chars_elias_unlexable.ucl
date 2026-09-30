@@ -1,0 +1,22 @@
+zones "test" {
+  name = "test"
+}
+
+    characters "wuxiuwen" {
+      name = "吴修文"
+  inquiries = [
+    { key = "皮围脖" value = "(: ask_me_1, 'weibo' :)" },
+    { key = "铁护腕" value = "(: ask_me_1, 'huwan' :)" }
+  ]
+    }
+
+    rooms "start" {
+      name = "起始"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "start" {
+    room_id = rooms.start.id
+  }

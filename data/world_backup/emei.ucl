@@ -1,0 +1,2597 @@
+zones "emei" {
+  name = "emei"
+}
+
+# Generated from C:/files/git/mud/d/emei/bailongdong.c by LPCConverter
+# Zone: emei
+
+    rooms "bailongdong" {
+      name = "白龙洞"
+      description = "白龙洞据说是「白蛇传」中的白娘子修炼成仙之处。这里 楠木参天，林荫夹道，株株秀挺俊拔，枝叶分披上捧，如两手 拥佛，传为古时一高僧按「法华经」口诵一字植树一株，共植 六万九千七百七十七株，时称古德林。这里北上至万年庵，南 下是清音阁。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bailongdong" {
+    room_id = rooms.bailongdong.id
+  east = rooms.qingyinge.id
+  west = rooms.gudelin2.id
+  northup = rooms.wannianan.id
+  southeast = rooms.gudelin1.id  }
+
+# Generated from C:/files/git/mud/d/emei/bashisipan1.c by LPCConverter
+# Zone: emei
+
+    rooms "bashisipan1" {
+      name = "八十四盘"
+      description = "八十四盘，道路艰险陡峭，迂回盘折，令人不能喘息。路 左是蔽日遮天的冷杉林，路右是深不见底的绝壁峡谷。由此往 上至接引殿，北下到洗象池。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bashisipan1" {
+    room_id = rooms.bashisipan1.id
+  northdown = rooms.leidongping.id
+  southwest = rooms.bashisipan2.id
+  southeast = rooms.lengsl2.id  }
+
+# Generated from C:/files/git/mud/d/emei/bashisipan2.c by LPCConverter
+# Zone: emei
+
+    rooms "bashisipan2" {
+      name = "八十四盘"
+      description = "八十四盘，道路艰险陡峭，迂回盘折，令人不能喘息。路 左是蔽日遮天的冷杉林，路右是深不见底的绝壁峡谷。由此往 上至接引殿，北下到洗象池。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bashisipan2" {
+    room_id = rooms.bashisipan2.id
+  southup = rooms.bashisipan3.id
+  northeast = rooms.bashisipan1.id
+  east = rooms.lengsl3.id  }
+
+# Generated from C:/files/git/mud/d/emei/bashisipan3.c by LPCConverter
+# Zone: emei
+
+    rooms "bashisipan3" {
+      name = "八十四盘"
+      description = "八十四盘，道路艰险陡峭，迂回盘折，令人不能喘息。路 左是蔽日遮天的冷杉林，路右是深不见底的绝壁峡谷。由此往 上至接引殿，北下到洗象池。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bashisipan3" {
+    room_id = rooms.bashisipan3.id
+  northdown = rooms.bashisipan2.id
+  southeast = rooms.jieyindian.id
+  northeast = rooms.lengsl4.id  }
+
+# Generated from C:/files/git/mud/d/emei/bgs.c by LPCConverter
+# Zone: emei
+
+    rooms "bgs" {
+      name = "报国寺"
+      description = "报国寺是峨眉山最的大寺院之一。寺庙倚山建造，弥勒殿 大雄殿、七佛殿逐级升高，规模宏大。殿内佛像金光闪闪气宇 轩昂。寺内芳草迷径，花开不绝。这里有座华严塔(ta)。这里 向西，约二里可达伏虎寺。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bgs" {
+    room_id = rooms.bgs.id
+  west = rooms.bgsxq.id
+  in = rooms.dxdian.id
+  north = rooms.bgsgate.id
+  south = rooms.milin1.id  }
+
+
+  room_characters "bgs" {
+    room_id = rooms.bgs.id
+    characters = [
+      { id = characters.guest.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/bgschanfang.c by LPCConverter
+# Zone: emei
+
+    rooms "bgschanfang" {
+      name = "禅房"
+      description = "这儿是保国寺内的一间禅房，布局简单，供寺内和尚诵经 修行之用。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bgschanfang" {
+    room_id = rooms.bgschanfang.id
+  east = rooms.dxdian.id  }
+
+# Generated from C:/files/git/mud/d/emei/bgsgate.c by LPCConverter
+# Zone: emei
+
+    rooms "bgsgate" {
+      name = "报国寺山门"
+      description = "报国寺为峨嵋出入之门户。山门(gate)上有一块大匾。寺 外苍楠环卫，翠柏掩映。由此一路向西上开始登峨嵋山，北面 下山是一条弯弯的石阶路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bgsgate" {
+    room_id = rooms.bgsgate.id
+  northdown = rooms.qsjie2.id
+  south = rooms.bgs.id  }
+
+
+  room_characters "bgsgate" {
+    room_id = rooms.bgsgate.id
+    characters = [
+      { id = characters.guest.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/bgsxq.c by LPCConverter
+# Zone: emei
+
+    rooms "bgsxq" {
+      name = "西墙"
+      description = "这里是峨眉山报国寺的西墙。寺院里的钟声从墙那边飘来， 在空气中回响。一条山溪从西面山上的解脱桥下流经这里，向 山下淌去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bgsxq" {
+    room_id = rooms.bgsxq.id
+  east = rooms.bgs.id  }
+
+# Generated from C:/files/git/mud/d/emei/cangjingge.c by LPCConverter
+# Zone: emei
+
+    rooms "cangjingge" {
+      name = "藏经阁"
+      description = "小阁楼上便是峨嵋派的藏经阁了。这里都是密密麻麻，高 及顶棚的书架。窗口下有张大桌子，桌上放了几本佛经。有个 小师太正在向静道师太借书。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "cangjingge" {
+    room_id = rooms.cangjingge.id
+  down = rooms.chuwujian.id  }
+
+
+
+
+  room_items "cangjingge" {
+    room_id = rooms.cangjingge.id
+    items = [
+      { id = items.dao.id },
+      { id = items.fojing1.id },
+      { id = items.fojing2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/cangjinglou.c by LPCConverter
+# Zone: emei
+
+    rooms "cangjinglou" {
+      name = "藏经楼"
+      description = "这里是报国寺藏经楼。阁楼上密密麻麻排了好多书架，架 上摆满了经书。有两个身穿白衣的小师太正在一角静静地读着 经书。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "south" && present("shu", me) && objectp(present("dao ming", environment(me)))
+direction = "south"
+  message = "道明小师父见你想把经书拿走，上前轻声说道：本阁经书恕不外借。"
+}
+
+]
+    }
+
+  room_exits "cangjinglou" {
+    room_id = rooms.cangjinglou.id
+  south = rooms.dxdian.id  }
+
+
+
+
+  room_items "cangjinglou" {
+    room_id = rooms.cangjinglou.id
+    items = [
+      { id = items.daoming.id },
+      { id = items.fojing1.id },
+      { id = items.fojing2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/caopeng.c by LPCConverter
+# Zone: emei
+
+    rooms "caopeng" {
+      name = "草棚"
+      description = "这是峨嵋山脚下一个简单的草棚，地上堆著些上货。很多 上山的游客都在这里买些上山用品。草棚后有个口井，西面是 间简陋的马厩。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caopeng" {
+    room_id = rooms.caopeng.id
+  west = rooms.majiu1.id
+  east = rooms.qsjie2.id  }
+
+
+  room_characters "caopeng" {
+    room_id = rooms.caopeng.id
+    characters = [
+      { id = characters.xiao_fan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/chunyangdian.c by LPCConverter
+# Zone: emei
+
+    rooms "chunyangdian" {
+      name = "纯阳殿"
+      description = "纯阳殿海拔一千余米，四面古木苍翠，幽静宜人。殿前有 一石，叫普贤石，据说普贤菩萨登山时曾坐在这里休息过。在 此可纵观峨嵋诸峰，仰望金顶，悬崖峭壁，离天咫尺。这里西 上至神水庵，东下是归云阁。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chunyangdian" {
+    room_id = rooms.chunyangdian.id
+  eastdown = rooms.guiyunge.id
+  westup = rooms.shenshuian.id  }
+
+# Generated from C:/files/git/mud/d/emei/chuwujian.c by LPCConverter
+# Zone: emei
+
+    rooms "chuwujian" {
+      name = "储物间"
+      description = "这里便是峨嵋华藏庵的储物间，四周都是架子。一个架上 放满了各样兵器，有长剑，拂尘，长鞭等，琳琅满目。另一个 架上放了各种防具。还有一个架上摆了许多小柜子，原来是装 满药品的药柜。一位师太负责管理这里的物品，正忙碌着整理 防具。后面好象有个小楼梯。门外就是斋堂了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chuwujian" {
+    room_id = rooms.chuwujian.id
+  up = rooms.cangjingge.id
+  north = rooms.hcazhaitang.id  }
+
+
+
+
+  room_items "chuwujian" {
+    room_id = rooms.chuwujian.id
+    items = [
+      { id = items.feng.id },
+      { id = items.fuchen.id },
+      { id = items.zhujian.id },
+      { id = items.yaodai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/dgtsheshenya.c by LPCConverter
+# Zone: emei
+
+    rooms "dgtsheshenya" {
+      name = "睹光台舍身崖"
+      description = "从卧云庵出来，这里是看日出、云海、佛光、神灯之地。台下深崖万丈， 陡彻无底，云遮雾掩。极目四望，数百里外的大小雪山皆历历在目。因为这里 至高至洁，至险至奇，又至美至幻，常有人在这里舍身(sheshen)云海， 舍此 肉身尘世。金顶云海，迷迷茫茫，笼罩四野，远接天际。云海轻荡时，你在金 顶，脚踏白云，大有飘飘欲仙之感；当云涛迅猛涌来时，整个金顶都似在向前 浮动，令人有乘舟欲风之意。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dgtsheshenya" {
+    room_id = rooms.dgtsheshenya.id
+  north = rooms.duguangtai.id  }
+
+# Generated from C:/files/git/mud/d/emei/duguangtai.c by LPCConverter
+# Zone: emei
+
+    rooms "duguangtai" {
+      name = "睹光台"
+      description = "这里是看日出、云海、佛光、神灯之地。台下深崖万丈陡 彻无底，云遮雾掩。极目四望，数百里外的大小雪山皆历历在 目。金顶云海，迷迷茫茫，笼罩四野，远接天际。云海轻荡时， 你在金顶，脚踏白云，大有飘飘欲仙之感；当云涛迅猛涌来时 整个金顶都似在向前浮动，令人有乘舟欲风之意。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "duguangtai" {
+    room_id = rooms.duguangtai.id
+  northeast = rooms.huacangan.id
+  northwest = rooms.woyunan.id
+  south = rooms.dgtsheshenya.id  }
+
+
+
+
+  room_items "duguangtai" {
+    room_id = rooms.duguangtai.id
+    items = [
+      { id = items.bei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/dxdian.c by LPCConverter
+# Zone: emei
+
+    rooms "dxdian" {
+      name = "大雄殿"
+      description = "这里是报国寺大雄殿。报国寺是峨嵋山最大寺院之一。大 雄殿内供着金光灿灿的佛像，气宇轩昂。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dxdian" {
+    room_id = rooms.dxdian.id
+  out = rooms.bgs.id
+  west = rooms.bgschanfang.id
+  north = rooms.cangjinglou.id  }
+
+
+  room_characters "dxdian" {
+    room_id = rooms.dxdian.id
+    characters = [
+      { id = characters.guest.id },
+      { id = characters.guest.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/fhs.c by LPCConverter
+# Zone: emei
+
+    rooms "fhs" {
+      name = "伏虎寺"
+      description = "伏虎寺是入山第一大宝刹，隐伏在高大的乔木林间，四周 楠木参天，多达十万余株。伏虎寺气象庄严，规模宏盛，殿堂 宽敞，势度巍峨。寺刹虽掩覆于翠绿浓黛之中，但瓦却无一片 落叶。出寺西上解脱坡便是观音堂。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fhs" {
+    room_id = rooms.fhs.id
+  east = rooms.milin1.id
+  westup = rooms.milin2.id  }
+
+
+  room_characters "fhs" {
+    room_id = rooms.fhs.id
+    characters = [
+      { id = characters.boydizi.id },
+      { id = characters.girldizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/fsachanfang.c by LPCConverter
+# Zone: emei
+
+    rooms "fsachanfang" {
+      name = "禅房"
+      description = "这里是一间安静宽敞的禅房，乃是福寿庵中弟子打坐修行 之所。地下整整齐齐地放着许多蒲团。几位年轻师太和俗家女 弟子正肃容入定。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fsachanfang" {
+    room_id = rooms.fsachanfang.id
+  west = rooms.lingwenge.id  }
+
+# Generated from C:/files/git/mud/d/emei/fsaxiuxishi.c by LPCConverter
+# Zone: emei
+
+    rooms "fsaxiuxishi" {
+      name = "休息室"
+      description = "这是福寿庵接待峨嵋女侠们的休息室，峨嵋女弟子回山之 前通常在此借宿一宿，好备足体力上山。房内摆有一张桌，靠 墙设有几张木床。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fsaxiuxishi" {
+    room_id = rooms.fsaxiuxishi.id
+  south = rooms.fsazhaitang.id  }
+
+# Generated from C:/files/git/mud/d/emei/fsazhaitang.c by LPCConverter
+# Zone: emei
+
+    rooms "fsazhaitang" {
+      name = "斋堂"
+      description = "这里便是峨嵋福寿庵的斋堂。福寿庵本不大，但由于经常 接待其他庵的弟子，斋堂倒也不小。只见厅内摆满了长长的餐 桌和长凳，几位小师太正来回忙碌着布置素斋。桌上摆了几盆 豆腐，花生，青菜以及素鸭等美味素食。北面有一扇门。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fsazhaitang" {
+    room_id = rooms.fsazhaitang.id
+  east = rooms.lingwenge.id
+  north = rooms.fsaxiuxishi.id  }
+
+# Generated from C:/files/git/mud/d/emei/fushouan.c by LPCConverter
+# Zone: emei
+
+    rooms "fushouan" {
+      name = "福寿庵"
+      description = "福寿庵在神水庵南，是一个名叫天性的僧人建造的。庵前 有九曲渠、流杯池，古人曾据在此饮酒流杯观景赋诗，歌咏兴 叹不知夕日。庵旁有株海棠树，数百苍龄高达十余丈。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fushouan" {
+    room_id = rooms.fushouan.id
+  in = rooms.lingwenge.id
+  north = rooms.shenshuian.id  }
+
+
+  room_characters "fushouan" {
+    room_id = rooms.fushouan.id
+    characters = [
+      { id = characters.girldizi.id }    ]
+  }
+
+
+
+  room_items "fushouan" {
+    room_id = rooms.fushouan.id
+    items = [
+      { id = items.zhen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/guanyintang.c by LPCConverter
+# Zone: emei
+
+    rooms "guanyintang" {
+      name = "观音堂"
+      description = "观音堂高踞坡岗近临危崖，环境幽静，四周树木蓊郁，悦 目赏心。传说入山于此，解脱尘凡；出山于此，解脱险阻，又 故名解脱庵。进山的人在此焚香洗心，入山方可化险为夷步步 平安。这里东下可达伏虎寺，西上行约二里可到归云阁。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guanyintang" {
+    room_id = rooms.guanyintang.id
+  eastdown = rooms.jietuopo.id
+  westup = rooms.guiyunge.id  }
+
+# Generated from C:/files/git/mud/d/emei/gudelin1.c by LPCConverter
+# Zone: emei
+
+    rooms "gudelin1" {
+      name = "古德林"
+      description = "这是一片密密的楠木林，株株秀挺俊拔，枝叶分披上捧如 两手拥佛，据说有七万株，要是不熟悉地形很容易迷路。林中 有一片空地，几只楠木桩排成梅花模样。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "gudelin1" {
+    room_id = rooms.gudelin1.id
+  south = rooms.bailongdong.id
+  southeast = rooms.gudelin2.id
+  southwest = rooms.gudelin2.id
+  northeast = rooms.gudelin2.id
+  northwest = rooms.gudelin2.id  }
+
+# Generated from C:/files/git/mud/d/emei/gudelin2.c by LPCConverter
+# Zone: emei
+
+    rooms "gudelin2" {
+      name = "古德林"
+      description = "这是一片密密的楠木林，株株秀挺俊拔，枝叶分披上捧如 两手拥佛，据说有七万株，要是不熟悉地形很容易迷路。林中 有一片空地，几只楠木桩排成梅花模样。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "gudelin2" {
+    room_id = rooms.gudelin2.id
+  south = rooms.bailongdong.id
+  southeast = rooms.gudelin1.id
+  southwest = rooms.gudelin1.id
+  northeast = rooms.gudelin1.id
+  northwest = rooms.gudelin1.id  }
+
+# Generated from C:/files/git/mud/d/emei/guiyunge.c by LPCConverter
+# Zone: emei
+
+    rooms "guiyunge" {
+      name = "归云阁"
+      description = "归云阁，原是唐代福昌达道禅师的道场。宋代绍兴年间僧 人士性又率众重建。归云阁左有玉女峰，西上可抵纯阳殿，东 下是观音堂。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guiyunge" {
+    room_id = rooms.guiyunge.id
+  eastdown = rooms.guanyintang.id
+  westup = rooms.chunyangdian.id
+  southup = rooms.yunufeng.id  }
+
+
+  room_characters "guiyunge" {
+    room_id = rooms.guiyunge.id
+    characters = [
+      { id = characters.boydizi.id },
+      { id = characters.girldizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/hcachanfang.c by LPCConverter
+# Zone: emei
+
+    rooms "hcachanfang" {
+      name = "禅房"
+      description = "这里便是峨嵋华藏庵的禅房。地下散乱地放着许多蒲团木 鱼等，此处正是本派弟子打坐修行之所。几位年轻师太和俗家 女弟子正肃容入定。禅房后面有一道门通往华藏庵休息室，北 边的走廊通向广场。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hcachanfang" {
+    room_id = rooms.hcachanfang.id
+  north = rooms.hcawest2.id
+  south = rooms.hcaxiuxishi.id  }
+
+# Generated from C:/files/git/mud/d/emei/hcadadian.c by LPCConverter
+# Zone: emei
+
+    rooms "hcadadian" {
+      name = "大雄宝殿"
+      description = "这是峨嵋山华藏庵的大雄宝殿。正中供奉着普贤菩萨。有 群青衣小师太正在地上诵经。后面有道小门通往后殿。后殿是 峨嵋派第三代掌门人灭绝师太传功的地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hcadadian" {
+    room_id = rooms.hcadadian.id
+  north = rooms.hcaguangchang.id
+  south = rooms.hcahoudian.id  }
+
+
+
+
+  room_items "hcadadian" {
+    room_id = rooms.hcadadian.id
+    items = [
+      { id = items.xiang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/hcaeast.c by LPCConverter
+# Zone: emei
+
+    rooms "hcaeast" {
+      name = "东侧殿"
+      description = "这里是金顶华藏庵东侧殿，是接待香客及来宾的地方。殿 内摆着几张桌子，桌旁围放数把椅子。墙上悬着几幅字画，墙 边一排书架，架上摆满经书。有几位进香客正在品茶养神，欣 赏墙上的字画或翻阅架上的经书。还有两个二十来岁的姑娘在 向一位师太打听有关出家的事。一个十来岁的小师太正在忙前 忙后招待客人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hcaeast" {
+    room_id = rooms.hcaeast.id
+  west = rooms.hcazhengdian.id  }
+
+
+
+
+  room_items "hcaeast" {
+    room_id = rooms.hcaeast.id
+    items = [
+      { id = items.he.id },
+      { id = items.wenhui.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/hcaeast1.c by LPCConverter
+# Zone: emei
+
+    rooms "hcaeast1" {
+      name = "华藏庵东廊"
+      description = "这里是峨嵋华藏庵东廊。走廊往南通往斋堂，西通往广场。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hcaeast1" {
+    room_id = rooms.hcaeast1.id
+  south = rooms.hcaeast2.id
+  west = rooms.hcaguangchang.id  }
+
+# Generated from C:/files/git/mud/d/emei/hcaeast2.c by LPCConverter
+# Zone: emei
+
+    rooms "hcaeast2" {
+      name = "华藏庵东廊"
+      description = "这里是峨嵋华藏庵东廊。走廊往南通往斋堂，北通往广场。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hcaeast2" {
+    room_id = rooms.hcaeast2.id
+  south = rooms.hcazhaitang.id
+  north = rooms.hcaeast1.id  }
+
+# Generated from C:/files/git/mud/d/emei/hcaguangchang.c by LPCConverter
+# Zone: emei
+
+    rooms "hcaguangchang" {
+      name = "华藏庵广场"
+      description = "这里是峨嵋华藏庵的广场，地上铺着青砖。正前方有一道 台阶，通往大雄宝殿。殿前有个丈许高的大香炉，香炉前的香 台上，红烛高烧，香烟飘绕。广场上几个小师太正在练功。自 此左右各有一条走廊通向后殿。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hcaguangchang" {
+    room_id = rooms.hcaguangchang.id
+  north = rooms.hcazhengdian.id
+  south = rooms.hcadadian.id
+  west = rooms.hcawest1.id
+  east = rooms.hcaeast1.id  }
+
+
+
+
+  room_items "hcaguangchang" {
+    room_id = rooms.hcaguangchang.id
+    items = [
+      { id = items.xu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/hcahoudian.c by LPCConverter
+# Zone: emei
+
+    rooms "hcahoudian" {
+      name = "华藏庵后殿"
+      description = "这是峨嵋山华藏庵的后殿。是峨嵋派掌门人传教弟子功夫 的地方。这里供有一尊普贤菩萨像。两旁靠墙放着几张太师椅 地上放着几个蒲团。掌门人正在向几个女弟子传授武功。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hcahoudian" {
+    room_id = rooms.hcahoudian.id
+  north = rooms.hcadadian.id  }
+
+
+
+
+  room_items "hcahoudian" {
+    room_id = rooms.hcahoudian.id
+    items = [
+      { id = items.miejue.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/hcawest.c by LPCConverter
+# Zone: emei
+
+    rooms "hcawest" {
+      name = "西侧殿"
+      description = "这里是金顶华藏庵西侧殿，是接待香客及来宾的地方。殿 内摆着几张桌子，桌旁围放数把椅子。墙上悬着几幅字画，墙 边一排书架，架上摆满经书。几位进香客正在品茶养神，欣赏 墙上的字画或翻阅架上的经书。还有两个二十来岁的姑娘在向 一位师太打听有关出家的事。一个十来岁的小师太正在忙前忙 后招待客人。南边有扇窗子(chuang)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ chuang = "窗外可以看到峨眉山的秀丽山景。"
+}
+    }
+
+  room_exits "hcawest" {
+    room_id = rooms.hcawest.id
+  east = rooms.hcazhengdian.id  }
+
+
+
+
+  room_items "hcawest" {
+    room_id = rooms.hcawest.id
+    items = [
+      { id = items.wenqing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/hcawest1.c by LPCConverter
+# Zone: emei
+
+    rooms "hcawest1" {
+      name = "华藏庵西廊"
+      description = "这里是峨嵋华藏庵西廊。走廊往南通往禅房，东通往广场。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hcawest1" {
+    room_id = rooms.hcawest1.id
+  south = rooms.hcawest2.id
+  east = rooms.hcaguangchang.id  }
+
+# Generated from C:/files/git/mud/d/emei/hcawest2.c by LPCConverter
+# Zone: emei
+
+    rooms "hcawest2" {
+      name = "华藏庵西廊"
+      description = "这里是峨嵋华藏庵西廊。走廊往南禅房，北边通往广场。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hcawest2" {
+    room_id = rooms.hcawest2.id
+  south = rooms.hcachanfang.id
+  north = rooms.hcawest1.id  }
+
+# Generated from C:/files/git/mud/d/emei/hcaxiuxishi.c by LPCConverter
+# Zone: emei
+
+    rooms "hcaxiuxishi" {
+      name = "休息室"
+      description = "这里是峨嵋华藏庵的休息室。窗帘拉下来，房里整整齐齐 放了很多木床。有几个夜晚守庵的小师太正在睡觉。休息室外 就是禅房。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hcaxiuxishi" {
+    room_id = rooms.hcaxiuxishi.id
+  north = rooms.hcachanfang.id  }
+
+# Generated from C:/files/git/mud/d/emei/hcazhaitang.c by LPCConverter
+# Zone: emei
+
+    rooms "hcazhaitang" {
+      name = "斋堂"
+      description = "这里便是峨嵋华藏庵的斋堂。斋堂里摆满了长长的餐桌和 长凳，几位小师太正来回忙碌着布置素斋。桌上摆了几盆豆腐， 花生，青菜以及素鸭等美味素食。斋堂后面有一道门通往华藏 庵储物间，北边的走廊通向广场。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hcazhaitang" {
+    room_id = rooms.hcazhaitang.id
+  south = rooms.chuwujian.id
+  north = rooms.hcaeast2.id  }
+
+
+
+
+  room_items "hcazhaitang" {
+    room_id = rooms.hcazhaitang.id
+    items = [
+      { id = items.qingshui_hulu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/hcazhengdian.c by LPCConverter
+# Zone: emei
+
+    rooms "hcazhengdian" {
+      name = "正殿"
+      description = "这里是峨嵋山金顶华藏庵的正殿。华藏庵规模宏大，殿内 青砖铺地，中间有普贤菩萨像，两旁列有万佛。正前方放一红 木供桌，陈列香烛，以供叩拜。自此左右各有一间侧殿，是接 待香客的地方。南面是通往一个大广场。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hcazhengdian" {
+    room_id = rooms.hcazhengdian.id
+  out = rooms.huacangan.id
+  east = rooms.hcaeast.id
+  west = rooms.hcawest.id
+  south = rooms.hcaguangchang.id  }
+
+
+  room_characters "hcazhengdian" {
+    room_id = rooms.hcazhengdian.id
+    characters = [
+      { id = characters.guest.id }    ]
+  }
+
+
+
+  room_items "hcazhengdian" {
+    room_id = rooms.hcazhengdian.id
+    items = [
+      { id = items.xin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/heilong1.c by LPCConverter
+# Zone: emei
+
+    rooms "heilong1" {
+      name = "黑龙江栈道"
+      description = "黑龙江栈道沿黑龙江而建。这里一山中开，两崖并立，形 成一道宽仅数尺，长达几百米的深峡----白云峡。黑龙江栈道 就从狭窄的白云峡中转折穿过，架设在绝壁上。走在栈道上只 觉道窄人危；俯视深涧，急流飞旋，山静而觉动；仰观头顶天 光如隙，崖开而欲合。这就是天开画图的「一线天」。栈道南 通千佛庵，北至清音阁。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "heilong1" {
+    room_id = rooms.heilong1.id
+  south = rooms.heilong2.id
+  north = rooms.qingyinge.id  }
+
+# Generated from C:/files/git/mud/d/emei/heilong2.c by LPCConverter
+# Zone: emei
+
+    rooms "heilong2" {
+      name = "黑龙江栈道"
+      description = "黑龙江栈道沿黑龙江而建。这里一山中开，两崖并立，形 成一道宽仅数尺，长达几百米的深峡----白云峡。黑龙江栈道 就从狭窄的白云峡中转折穿过，架设在绝壁上。走在栈道上只 觉道窄人危；俯视深涧，急流飞旋，山静而觉动；仰观头顶天 光如隙，崖开而欲合。这就是天开画图的「一线天」。栈道南 通千佛庵，北至清音阁。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "heilong2" {
+    room_id = rooms.heilong2.id
+  west = rooms.qianfoan.id
+  north = rooms.heilong1.id  }
+
+# Generated from C:/files/git/mud/d/emei/huacangan.c by LPCConverter
+# Zone: emei
+
+    rooms "huacangan" {
+      name = "华藏庵"
+      description = "华藏庵是金顶的主要建筑，规模宏大，中祀普贤菩萨，旁 列万佛。华藏庵后边是睹光台，旁边是卧云庵。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huacangan" {
+    room_id = rooms.huacangan.id
+  northwest = rooms.jinding.id
+  southwest = rooms.duguangtai.id
+  in = rooms.hcazhengdian.id  }
+
+# Generated from C:/files/git/mud/d/emei/huayanding.c by LPCConverter
+# Zone: emei
+
+    rooms "huayanding" {
+      name = "华严顶"
+      description = "华严顶挺拔高峭，古刹云深，殿宇孤耸，风景奇险。这里 视野开阔，仰可见金顶巍巍，俯可望群峰罗列，许多蹲伏山间 的寺院也在眼底。由此向西过数坡，即到莲花石，东下过十二 盘可到万年寺。北面是一间马厩。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huayanding" {
+    room_id = rooms.huayanding.id
+  north = rooms.majiu2.id
+  westup = rooms.lianhuashi.id
+  eastdown = rooms.shierpan4.id  }
+
+
+  room_characters "huayanding" {
+    room_id = rooms.huayanding.id
+    characters = [
+      { id = characters.girldizi.id }    ]
+  }
+
+
+
+  room_items "huayanding" {
+    room_id = rooms.huayanding.id
+    items = [
+      { id = items.li.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/jietuopo.c by LPCConverter
+# Zone: emei
+
+    rooms "jietuopo" {
+      name = "解脱坡"
+      description = "这里是峨嵋胜地解脱坡。坡下一座小桥，叫解脱桥。行人 至此，坐桥上听泉声甚美。当此良辰美景，心无芥蒂，心即解 脱。坡上一座庵堂，东下一片密林。桥下山溪向东流淌到报国 寺的西面。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jietuopo" {
+    room_id = rooms.jietuopo.id
+  eastdown = rooms.milin2.id
+  westup = rooms.guanyintang.id  }
+
+# Generated from C:/files/git/mud/d/emei/jieyindian.c by LPCConverter
+# Zone: emei
+
+    rooms "jieyindian" {
+      name = "接引殿"
+      description = "接引殿右边濒崖，是金钢嘴。崖下有一块巨石，形状似钟 故名「钟石」。对面有一石，高耸十余丈，叫仙人石。由此向 上仰攀即到万行庵，北下经「八十四盘」至洗象池。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jieyindian" {
+    room_id = rooms.jieyindian.id
+  northwest = rooms.bashisipan3.id
+  westup = rooms.wanxingan.id  }
+
+# Generated from C:/files/git/mud/d/emei/jinding.c by LPCConverter
+# Zone: emei
+
+    rooms "jinding" {
+      name = "金顶"
+      description = "这就是峨嵋山的主峰金顶。此峰耸立大地，高入云表，秀 丽而又壮美，李白赞颂它：『青冥倚天开，彩错疑画出』登上 金顶，视野豁然开朗，鸟看脚下，但见群峰涌绿叠翠，三江如 丝如带；回首远眺，则见大雪山横亘天际，贡嘎山直插苍穹。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jinding" {
+    room_id = rooms.jinding.id
+  northdown = rooms.wanxingan.id
+  southwest = rooms.woyunan.id
+  southeast = rooms.huacangan.id  }
+
+
+
+
+  room_items "jinding" {
+    room_id = rooms.jinding.id
+    items = [
+      { id = items.fengling.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/jiulaodong.c by LPCConverter
+# Zone: emei
+
+    rooms "jiulaodong" {
+      name = "九老洞"
+      description = "这就是峨嵋第一大洞，洞内深窈无比，神秘难测。你一走 进来，便发觉洞中叉洞多如迷宫，怪异莫测似乎黝黑无底。还 是快快离开吧。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jiulaodong" {
+    room_id = rooms.jiulaodong.id
+  out = rooms.jldongkou.id
+  north = rooms.jldongnei.id  }
+
+
+
+
+  room_items "jiulaodong" {
+    room_id = rooms.jiulaodong.id
+    items = [
+      { id = items.fu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/jldongkou.c by LPCConverter
+# Zone: emei
+
+    rooms "jldongkou" {
+      name = "九老洞口"
+      description = "九老洞在仙峰寺外。传说远古时候，有九位仙叟住在这个 洞里，不知他们生于何年，终于何年。轩辕皇帝访道于此，见 一老叟，问曰：有侣乎？答曰：九人。这是九老洞的来历。这 个洞很深，很少有人进去，只有些人站在洞口谈笑呼叫。这里 向西经九十九道拐到千佛庵，一路向北到莲花石。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jldongkou" {
+    room_id = rooms.jldongkou.id
+  east = rooms.jsjdg4.id
+  in = rooms.jiulaodong.id
+  northwest = rooms.lianhuashi.id  }
+
+
+
+
+  room_items "jldongkou" {
+    room_id = rooms.jldongkou.id
+    items = [
+      { id = items.hou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/jldongnei.c by LPCConverter
+# Zone: emei
+
+    rooms "jldongnei" {
+      name = "九老洞"
+      description = "这就是峨嵋第一大洞，洞内深窈无比，神秘难测。你一走 进来，便发觉洞中叉叉洞多如迷宫，怪异莫测，似乎黝黑无底。 洞里隐隐传来鸡犬鼓乐之声，令人惊异间，忽有蝙蝠群涌而至 扑熄火炬。还是快快离开吧。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jldongnei" {
+    room_id = rooms.jldongnei.id
+  south = rooms.jiulaodong.id  }
+
+
+
+
+  room_items "jldongnei" {
+    room_id = rooms.jldongnei.id
+    items = [
+      { id = items.fu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/jsjdg1.c by LPCConverter
+# Zone: emei
+
+    rooms "jsjdg1" {
+      name = "九十九道拐"
+      description = "这是便是著名的「九十九道拐」，道路纡曲陡竖，千折百 回。据说过去曾有个百余岁的疯僧至此，见一巨蟒挡路，便念 咒驱蟒。但人们得知此处有巨蟒出没后，便再也无人敢碰这里 的草木，并以「龙居」名之。东可至千佛庵，西达九老洞。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jsjdg1" {
+    room_id = rooms.jsjdg1.id
+  westup = rooms.jsjdg2.id
+  eastdown = rooms.qianfoan.id  }
+
+# Generated from C:/files/git/mud/d/emei/jsjdg2.c by LPCConverter
+# Zone: emei
+
+    rooms "jsjdg2" {
+      name = "九十九道拐"
+      description = "这是著名的「九十九道拐」，道路纡曲陡竖千折百回。据 说过去曾有个百余岁的疯僧至此，见一巨蟒挡路，便念咒驱蟒。 但人们得知此处有巨蟒出没后，便再也无人敢碰这里的草木并 以「龙居」名之。由此东可至千佛庵，西达九老洞。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jsjdg2" {
+    room_id = rooms.jsjdg2.id
+  southwest = rooms.jsjdg3.id
+  eastdown = rooms.jsjdg1.id  }
+
+# Generated from C:/files/git/mud/d/emei/jsjdg3.c by LPCConverter
+# Zone: emei
+
+    rooms "jsjdg3" {
+      name = "九十九道拐"
+      description = "这是著名的「九十九道拐」，道路纡曲陡竖千折百回。据 说过去曾有个百余岁的疯僧至此，见一巨蟒挡路，便念咒驱蟒。 但人们得知此处有巨蟒出没后，便再也无人敢碰这里的草木并 以「龙居」名之。由此东可至千佛庵，西达九老洞。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jsjdg3" {
+    room_id = rooms.jsjdg3.id
+  northeast = rooms.jsjdg2.id
+  westup = rooms.jsjdg4.id  }
+
+# Generated from C:/files/git/mud/d/emei/jsjdg4.c by LPCConverter
+# Zone: emei
+
+    rooms "jsjdg4" {
+      name = "九十九道拐"
+      description = "这是著名的「九十九道拐」，道路纡曲陡竖千折百回。据 说过去曾有个百余岁的疯僧至此，见一巨蟒挡路，便念咒驱蟒。 但人们得知此处有巨蟒出没后，便再无人敢碰这里的草木，并 以「龙居」名之。由此东可至千佛庵，西达九老洞。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jsjdg4" {
+    room_id = rooms.jsjdg4.id
+  eastdown = rooms.jsjdg3.id
+  west = rooms.jldongkou.id  }
+
+# Generated from C:/files/git/mud/d/emei/leidongping.c by LPCConverter
+# Zone: emei
+
+    rooms "leidongping" {
+      name = "雷洞坪"
+      description = "雷洞坪一带道路艰险骇人，路左是蔽日遮天的冷杉林，路 右是深不见底的绝壁峡谷。这里长年云遮雾罩空蒙黑暗。岩上 建有雷神殿，旁边竖一铁碑。由此往上是「八十四盘」至接引 殿，北下到洗象池。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "leidongping" {
+    room_id = rooms.leidongping.id
+  northdown = rooms.lingyunti.id
+  southup = rooms.bashisipan1.id
+  east = rooms.lengsl1.id  }
+
+# Generated from C:/files/git/mud/d/emei/lengsl1.c by LPCConverter
+# Zone: emei
+
+    rooms "lengsl1" {
+      name = "冷杉林"
+      description = "这是片遮天蔽日的冷杉林。数人也合抱不过来的冷杉树簇 在一块，枝繁叶茂，象一蓬蓬巨伞般伸向天空，把阳光遮得丝 毫也无。看地上厚厚的枯枝烂叶，显然游客很少踏足此处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lengsl1" {
+    room_id = rooms.lengsl1.id
+  west = rooms.leidongping.id
+  northdown = rooms.lingyunti.id
+  southup = rooms.lengsl2.id  }
+
+# Generated from C:/files/git/mud/d/emei/lengsl2.c by LPCConverter
+# Zone: emei
+
+    rooms "lengsl2" {
+      name = "冷杉林"
+      description = "这是片遮天蔽日的冷杉林。数人也合抱不过来的冷杉树簇 在一块，枝繁叶茂，象一蓬蓬巨伞般伸向天空，把阳光遮得丝 毫也无。看地上厚厚的枯枝烂叶，显然游客很少踏足此处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lengsl2" {
+    room_id = rooms.lengsl2.id
+  east = rooms.bashisipan1.id
+  northdown = rooms.lengsl1.id
+  southwest = rooms.lengsl3.id  }
+
+# Generated from C:/files/git/mud/d/emei/lengsl3.c by LPCConverter
+# Zone: emei
+
+    rooms "lengsl3" {
+      name = "冷杉林"
+      description = "这是片遮天蔽日的冷杉林。数人也合抱不过来的冷杉树簇 在一块，枝繁叶茂，象一蓬蓬巨伞般伸向天空，把阳光遮得丝 毫也无。看地上厚厚的枯枝烂叶，显然游客很少踏足此处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lengsl3" {
+    room_id = rooms.lengsl3.id
+  west = rooms.bashisipan2.id
+  northeast = rooms.lengsl2.id
+  southup = rooms.lengsl4.id  }
+
+# Generated from C:/files/git/mud/d/emei/lengsl4.c by LPCConverter
+# Zone: emei
+
+    rooms "lengsl4" {
+      name = "冷杉林"
+      description = "这是片遮天蔽日的冷杉林。数人也合抱不过来的冷杉树簇 在一块，枝繁叶茂，象一蓬蓬巨伞般伸向天空，把阳光遮得丝 毫也无。看地上厚厚的枯枝烂叶，显然游客很少踏足此处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lengsl4" {
+    room_id = rooms.lengsl4.id
+  southwest = rooms.bashisipan3.id
+  northdown = rooms.lengsl3.id
+  southeast = rooms.jieyindian.id  }
+
+
+
+
+  room_items "lengsl4" {
+    room_id = rooms.lengsl4.id
+    items = [
+      { id = items.houwang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/lianhuashi.c by LPCConverter
+# Zone: emei
+
+    rooms "lianhuashi" {
+      name = "莲花石"
+      description = "这是莲花石。此处岩石纹理纵横，形似莲花颜如芙蓉，仿 佛萼瓣层叠，细蕊欲绽。上有一庵，叫「莲花社」。由此往西 上直达洗象池，东下左通华严顶，右通九老洞。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lianhuashi" {
+    room_id = rooms.lianhuashi.id
+  southeast = rooms.jldongkou.id
+  eastdown = rooms.huayanding.id
+  westup = rooms.ztpo1.id  }
+
+
+
+
+  room_items "lianhuashi" {
+    room_id = rooms.lianhuashi.id
+    items = [
+      { id = items.su.id },
+      { id = items.ling.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/lingwenge.c by LPCConverter
+# Zone: emei
+
+    rooms "lingwenge" {
+      name = "灵文阁"
+      description = "这里是福寿庵的灵文阁，是主持静照师太传授佛法的地方。 两名青衣小尼姑随侍在旁，似乎在聆听师太的教晦。阁内布置简 陋，靠墙放着几把竹椅，地上放着几个蒲团。东首有一禅房。西 面是一个斋厅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lingwenge" {
+    room_id = rooms.lingwenge.id
+  out = rooms.fushouan.id
+  east = rooms.fsachanfang.id
+  west = rooms.fsazhaitang.id  }
+
+
+
+
+  room_items "lingwenge" {
+    room_id = rooms.lingwenge.id
+    items = [
+      { id = items.zhao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/lingyunti.c by LPCConverter
+# Zone: emei
+
+    rooms "lingyunti" {
+      name = "凌云梯"
+      description = "这是凌云梯，最早是一位叫阿婆多的外国和尚在此缚木架 石，以渡行人，又叫「胡僧梯」。路边有梅子坡，可见满坡青 梅如豆，于疏枝密叶中逗引行人，甚有望梅止渴之功用。此梯 北通洗象池，南至雷洞坪。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lingyunti" {
+    room_id = rooms.lingyunti.id
+  northdown = rooms.xixiangchi.id
+  southup = rooms.leidongping.id  }
+
+# Generated from C:/files/git/mud/d/emei/majiu1.c by LPCConverter
+# Zone: emei
+
+    rooms "majiu1" {
+      name = "马厩"
+      description = "这是草棚边的马厩，常年供应新鲜草料。马夫们会把马牵 到马厩好生照看，将它们喂饱饮足，再洗刷得干乾净净，一直 伺候到客人上路。马厩中堆放著几堆草料正中有一口泔槽。马 厩雨檐下的烂木柱上钉着一块破木牌(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "majiu1" {
+    room_id = rooms.majiu1.id
+  east = rooms.caopeng.id  }
+
+
+  room_characters "majiu1" {
+    room_id = rooms.majiu1.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu1" {
+    room_id = rooms.majiu1.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/majiu2.c by LPCConverter
+# Zone: emei
+
+    rooms "majiu2" {
+      name = "马厩"
+      description = "这是草棚边的马厩，常年供应新鲜草料。马夫们会把马牵 到马厩好生照看，将它们喂饱饮足，再洗刷得干乾净净，一直 伺候到客人上路。马厩中堆放著几堆草料，正中有口泔槽。马 厩雨檐下的烂木柱上钉着一块破木牌(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "majiu2" {
+    room_id = rooms.majiu2.id
+  south = rooms.huayanding.id  }
+
+
+  room_characters "majiu2" {
+    room_id = rooms.majiu2.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu2" {
+    room_id = rooms.majiu2.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/midao.c by LPCConverter
+# Zone: emei
+
+    rooms "midao" {
+      name = "密道"
+      description = "这里是峨嵋华藏庵下面的一条狭窄的暗道。阴森可怕，到 处积满了灰尘，结满了蛛网，也不知道通往何处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "midao" {
+    room_id = rooms.midao.id
+  up = rooms.hcadadian.id
+  north = rooms.midao2.id  }
+
+# Generated from C:/files/git/mud/d/emei/midao2.c by LPCConverter
+# Zone: emei
+
+    rooms "midao2" {
+      name = "密道"
+      description = "这里是峨嵋华藏庵下面的一条狭窄的暗道。阴森可怕，到 处积满了灰尘，结满了蛛网，也不知道通往何处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "midao2" {
+    room_id = rooms.midao2.id
+  south = rooms.midao.id
+  north = rooms.midao3.id  }
+
+# Generated from C:/files/git/mud/d/emei/midao3.c by LPCConverter
+# Zone: emei
+
+    rooms "midao3" {
+      name = "密道"
+      description = "这里是峨嵋华藏庵下面的一条狭窄的暗道。阴森可怕，到 处积满了灰尘，结满了蛛网，也不知道通往何处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "midao3" {
+    room_id = rooms.midao3.id
+  south = rooms.midao2.id
+  east = rooms.midao4.id  }
+
+# Generated from C:/files/git/mud/d/emei/midao4.c by LPCConverter
+# Zone: emei
+
+    rooms "midao4" {
+      name = "密道"
+      description = "这里是峨嵋华藏庵下面的一条狭窄的暗道。阴森可怕，到 处积满了灰尘，结满了蛛网，也不知道通往何处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "midao4" {
+    room_id = rooms.midao4.id
+  west = rooms.midao3.id
+  north = rooms.midao5.id  }
+
+# Generated from C:/files/git/mud/d/emei/midao5.c by LPCConverter
+# Zone: emei
+
+    rooms "midao5" {
+      name = "密道"
+      description = "这里是峨嵋华藏庵下面的一条狭窄的暗道。阴森可怕，到 处积满了灰尘，结满了蛛网，也不知道通往何处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "midao5" {
+    room_id = rooms.midao5.id
+  south = rooms.midao4.id
+  up = rooms.qingyanggong.id  }
+
+# Generated from C:/files/git/mud/d/emei/milin1.c by LPCConverter
+# Zone: emei
+
+    rooms "milin1" {
+      name = "密林"
+      description = "这是黑森森的一片密林，楠木参天，浓阴蔽日。这里东下 二里是报国寺，西边林间隐藏着一座庙宇。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "milin1" {
+    room_id = rooms.milin1.id
+  north = rooms.bgs.id
+  west = rooms.fhs.id  }
+
+# Generated from C:/files/git/mud/d/emei/milin2.c by LPCConverter
+# Zone: emei
+
+    rooms "milin2" {
+      name = "密林"
+      description = "这是黑森森的一片密林，楠木参天，浓阴蔽日。这里西上 是报国寺，东边林间隐藏着一座庙宇。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "milin2" {
+    room_id = rooms.milin2.id
+  eastdown = rooms.fhs.id
+  westup = rooms.jietuopo.id  }
+
+# Generated from C:/files/git/mud/d/emei/qfachanfang.c by LPCConverter
+# Zone: emei
+
+    rooms "qfachanfang" {
+      name = "禅房"
+      description = "这里是一间安静宽敞的禅房，乃是千佛庵中弟子打坐修行 之所。地下整整齐齐放着许多蒲团。几位年轻师太和俗家女弟 子正肃容入定。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qfachanfang" {
+    room_id = rooms.qfachanfang.id
+  west = rooms.qfadadian.id  }
+
+# Generated from C:/files/git/mud/d/emei/qfadadian.c by LPCConverter
+# Zone: emei
+
+    rooms "qfadadian" {
+      name = "大殿"
+      description = "千佛庵内殿宇高广宏阔，清洁庄严。庵内有一具七万千佛 莲灯，有纹龙七条环于灯体，并有佛像数百周匝排列，雕缕精 致无比。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qfadadian" {
+    room_id = rooms.qfadadian.id
+  out = rooms.qianfoan.id
+  east = rooms.qfachanfang.id  }
+
+
+
+
+  room_items "qfadadian" {
+    room_id = rooms.qfadadian.id
+    items = [
+      { id = items.hui.id },
+      { id = items.wenyin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/qianfoan.c by LPCConverter
+# Zone: emei
+
+    rooms "qianfoan" {
+      name = "千佛庵"
+      description = "此处是洪椿坪千佛庵。山间小坪坝，四面层峦叠障，峰环 岭护；两侧深谷幽岚，溪涧玲叮。坪上古木扶疏，亭亭如盖山 阴沁透，白雾飘游，极为幽静清凉。此处常见雨雾霏霏，林中 迷迷蒙蒙，乃山中雾气所为。正所谓「山行本无雨，空翠湿人 衣」。这就是誉为奇观的「洪椿晓雨」。此处殿美景幽，气象 新异，令人心醉。沿途南上是「九十九道拐」，北下经黑龙江 栈道至清音阁。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qianfoan" {
+    room_id = rooms.qianfoan.id
+  westup = rooms.jsjdg1.id
+  east = rooms.heilong2.id
+  in = rooms.qfadadian.id  }
+
+# Generated from C:/files/git/mud/d/emei/qinggong.c by LPCConverter
+# Zone: emei
+
+    rooms "qinggong" {
+      name = "峨嵋寝宫"
+      description = "这是峨嵋山金顶华藏庵外的一片小树林峨嵋寝宫。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qinggong" {
+    room_id = rooms.qinggong.id
+  south = rooms.xiaoshulin4.id  }
+
+
+
+
+  room_items "qinggong" {
+    room_id = rooms.qinggong.id
+    items = [
+      { id = items.zhou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/qingyinge.c by LPCConverter
+# Zone: emei
+
+    rooms "qingyinge" {
+      name = "清音阁"
+      description = "这里是峨嵋山的清音阁。此阁位于牛心岭下，东有白龙江 西有黑龙江，两江之水交汇于清音阁下。江上有拱桥两座，分 夸黑龙白龙二江，这就是双飞桥。两江合流处，有一数米高的 黑褐色巨石傲然挺立，形似牛心，名之为「牛心石」。桥边立 有一石碑(shibei)。由此向西上，左行是黑龙江栈道，右路至 白龙洞，东去中峰寺。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qingyinge" {
+    room_id = rooms.qingyinge.id
+  west = rooms.bailongdong.id
+  east = rooms.zhongfengsi.id
+  south = rooms.heilong1.id  }
+
+
+  room_characters "qingyinge" {
+    room_id = rooms.qingyinge.id
+    characters = [
+      { id = characters.girldizi.id }    ]
+  }
+
+
+
+  room_items "qingyinge" {
+    room_id = rooms.qingyinge.id
+    items = [
+      { id = items.xian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/qsjie1.c by LPCConverter
+# Zone: emei
+
+    rooms "qsjie1" {
+      name = "青石阶"
+      description = "快到峨嵋山了。这是一条通往峨嵋山的青石阶，两旁绿树 荫蔽，空气十分清新。时常能见到些游人香客。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qsjie1" {
+    room_id = rooms.qsjie1.id
+  north = rooms.xiaolu2.id
+  west = rooms.road1.id
+  southwest = rooms.qsjie2.id  }
+
+
+  room_characters "qsjie1" {
+    room_id = rooms.qsjie1.id
+    characters = [
+      { id = characters.youngwoman.id },
+      { id = characters.puren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/qsjie2.c by LPCConverter
+# Zone: emei
+
+    rooms "qsjie2" {
+      name = "青石阶"
+      description = "已经是峨嵋山脚下了。南面一条通往峨嵋的青石阶，两旁 绿树荫蔽，空气十分清新。西南方通向南诏的大理国。西边好 象有人搭了个小草棚。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qsjie2" {
+    room_id = rooms.qsjie2.id
+  northeast = rooms.qsjie1.id
+  southwest = rooms.road1.id
+  southup = rooms.bgsgate.id
+  west = rooms.caopeng.id  }
+
+# Generated from C:/files/git/mud/d/emei/shenshuian.c by LPCConverter
+# Zone: emei
+
+    rooms "shenshuian" {
+      name = "神水庵"
+      description = "神水庵位于宝掌峰下，庵前有大峨石和玉液泉，泉出石下 清澈无比，终年不涸。一株大海棠树已是数百苍龄，抱可数围 高达十余丈。旁边有福寿庵；由此西上中峰寺东下纯阳殿。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shenshuian" {
+    room_id = rooms.shenshuian.id
+  eastdown = rooms.chunyangdian.id
+  westup = rooms.zhongfengsi.id
+  south = rooms.fushouan.id  }
+
+# Generated from C:/files/git/mud/d/emei/shierpan1.c by LPCConverter
+# Zone: emei
+
+    rooms "shierpan1" {
+      name = "十二盘"
+      description = "这里石阶陡折多弯，号称「十二盘」。由此西上可达华严 顶，东下则到万年庵。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shierpan1" {
+    room_id = rooms.shierpan1.id
+  eastdown = rooms.wannianan.id
+  southwest = rooms.shierpan2.id  }
+
+# Generated from C:/files/git/mud/d/emei/shierpan2.c by LPCConverter
+# Zone: emei
+
+    rooms "shierpan2" {
+      name = "十二盘"
+      description = "这里石阶陡折多弯，号称「十二盘」。由此西上可达华严 顶，东下则到万年庵。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shierpan2" {
+    room_id = rooms.shierpan2.id
+  northeast = rooms.shierpan1.id
+  westup = rooms.shierpan3.id  }
+
+# Generated from C:/files/git/mud/d/emei/shierpan3.c by LPCConverter
+# Zone: emei
+
+    rooms "shierpan3" {
+      name = "十二盘"
+      description = "这里石阶陡折多弯，号称「十二盘」。你见路边有个八音 池，有人正在向池中击掌(clap)。由此西上可达华严顶，东下 则到万年庵。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shierpan3" {
+    room_id = rooms.shierpan3.id
+  eastdown = rooms.shierpan2.id
+  southwest = rooms.shierpan4.id  }
+
+# Generated from C:/files/git/mud/d/emei/shierpan4.c by LPCConverter
+# Zone: emei
+
+    rooms "shierpan4" {
+      name = "十二盘"
+      description = "这里石阶陡折多弯，号称「十二盘」。由此西上可达华严 顶，东下则到万年庵。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shierpan4" {
+    room_id = rooms.shierpan4.id
+  northeast = rooms.shierpan3.id
+  westup = rooms.huayanding.id  }
+
+# Generated from C:/files/git/mud/d/emei/ssyb.c by LPCConverter
+# Zone: emei
+
+    rooms "ssyb" {
+      name = "舍身崖壁"
+      description = "你终于游到崖壁。抬头上望，微见天光。壁面潮湿，裂缝中微有水渗 出。脚下是污浊的臭水，旁边不远出有一个坟墓(fenmu)， 向东就是你来 时的水潭。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ fenmu = "看来这个坟墓已经在这里很久了，上面已长满了青苔，令人一看不禁沧然之意顿生。"
+}
+    }
+
+  room_exits "ssyb" {
+    room_id = rooms.ssyb.id
+  east = rooms.st0.id  }
+
+
+  room_characters "ssyb" {
+    room_id = rooms.ssyb.id
+    characters = [
+      { id = characters.frog.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/st0.c by LPCConverter
+# Zone: emei
+
+    rooms "st0" {
+      name = "深潭"
+      description = "你正好跌在舍身崖下深潭中。昏迷中醒来，四周黑蒙蒙什 么都看不清。潭水发着恶臭，偶尔还触及一两根不知是人是兽 的枯骨，让你全身直起鸡皮疙瘩。你漂浮在水中无助至极。情 急之下只有四处张望。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_characters "st0" {
+    room_id = rooms.st0.id
+    characters = [
+      { id = characters.frog.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/st1.c by LPCConverter
+# Zone: emei
+
+    rooms "st1" {
+      name = "深潭"
+      description = "四周黑蒙蒙，什么都看不清。潭水发着恶臭，偶尔还会触 及一两根不知是人是兽的枯骨，让你全身直起鸡皮疙瘩。你漂 浮在水中，无助至极。情急之下唯有四处张望。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_characters "st1" {
+    room_id = rooms.st1.id
+    characters = [
+      { id = characters.frog.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/st2.c by LPCConverter
+# Zone: emei
+
+    rooms "st2" {
+      name = "深潭"
+      description = "四周黑蒙蒙，什么都看不清。潭水发着恶臭，偶尔还会触 及一两根不知是人是兽的枯骨，让你全身直起鸡皮疙瘩。你漂 浮在水中，无助至极。情急之下唯有四处张望。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_characters "st2" {
+    room_id = rooms.st2.id
+    characters = [
+      { id = characters.frog.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/wannianan.c by LPCConverter
+# Zone: emei
+
+    rooms "wannianan" {
+      name = "万年庵"
+      description = "万年庵建在一座突起的山峰上，周围古木森森，清泉淙淙， 闲步无坎，吟游无坷，景色非常迷人。由此西上过十二盘可达 华严顶，南下至白龙洞。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wannianan" {
+    room_id = rooms.wannianan.id
+  southdown = rooms.bailongdong.id
+  westup = rooms.shierpan1.id
+  in = rooms.wnadian.id  }
+
+# Generated from C:/files/git/mud/d/emei/wanxingan.c by LPCConverter
+# Zone: emei
+
+    rooms "wanxingan" {
+      name = "万行庵"
+      description = "太子坪万行庵是古智禅师创建。庵外满山长满莎椤花，花 数芭合成一朵，叶包在花外，古人以其根坚难易而盛赞，以喻 洁身自好之高贵品质。由此向南上便至金顶，下至接引殿。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wanxingan" {
+    room_id = rooms.wanxingan.id
+  eastdown = rooms.jieyindian.id
+  southup = rooms.jinding.id  }
+
+
+
+
+  room_items "wanxingan" {
+    room_id = rooms.wanxingan.id
+    items = [
+      { id = items.jia.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/wdroad.c by LPCConverter
+# Zone: emei
+
+    rooms "wdroad" {
+      name = "大道"
+      description = "你走在一条黄土飞扬的大道上，不时地有人挂剑跨马匆匆 而过。东北通向武当。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wdroad" {
+    room_id = rooms.wdroad.id
+  southwest = rooms.xiaolu1.id
+  northeast = rooms.sanbuguan.id  }
+
+# Generated from C:/files/git/mud/d/emei/wnachanfang.c by LPCConverter
+# Zone: emei
+
+    rooms "wnachanfang" {
+      name = "禅房"
+      description = "这里是一间安静宽敞的禅房，乃是庵中弟子打坐修行之所。 地下整整齐齐地放着许多蒲团。几位年轻师太和俗家女弟子正 肃容入定。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wnachanfang" {
+    room_id = rooms.wnachanfang.id
+  west = rooms.wnadian.id  }
+
+# Generated from C:/files/git/mud/d/emei/wnadian.c by LPCConverter
+# Zone: emei
+
+    rooms "wnadian" {
+      name = "万年庵砖殿"
+      description = "这里是万年庵的拱顶无梁砖殿。砖殿四壁为正方形，顶为 穹窿圆拱形，殿内有普贤菩萨骑六牙白象的铜铸像一尊。拱顶 无梁砖殿四壁下方，有小龛二十四，内各供铁铸佛像一尊。四 壁上方则有横龛六道，列置铜铸小佛三百零七个。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wnadian" {
+    room_id = rooms.wnadian.id
+  east = rooms.wnachanfang.id
+  out = rooms.wannianan.id  }
+
+
+
+
+  room_items "wnadian" {
+    room_id = rooms.wnadian.id
+    items = [
+      { id = items.kong.id },
+      { id = items.wenfang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/woyunan.c by LPCConverter
+# Zone: emei
+
+    rooms "woyunan" {
+      name = "卧云庵"
+      description = "卧云庵旁边有个井络泉，据说以前曾因饮水人多了而干涸， 众尼为之诵经，于是泉水复出。出了卧云庵便是睹光台，旁边 便是华藏庵。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "woyunan" {
+    room_id = rooms.woyunan.id
+  northeast = rooms.jinding.id
+  southeast = rooms.duguangtai.id  }
+
+
+
+
+  room_items "woyunan" {
+    room_id = rooms.woyunan.id
+    items = [
+      { id = items.xuan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/xiaolu1.c by LPCConverter
+# Zone: emei
+
+    rooms "xiaolu1" {
+      name = "小路"
+      description = "这是四川与湖北的交界。一条静悄悄的小土路，两旁有疏 疏落落的农舍耕田，但路上行人很少，都匆匆赶路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaolu1" {
+    room_id = rooms.xiaolu1.id
+  west = rooms.xiaolu2.id
+  northeast = rooms.wdroad.id  }
+
+# Generated from C:/files/git/mud/d/emei/xiaolu2.c by LPCConverter
+# Zone: emei
+
+    rooms "xiaolu2" {
+      name = "小路"
+      description = "这是四川与湖北的交界。一条静悄悄的小土路，两旁有疏 疏落落的农舍耕田，但路上行人很少，都匆匆赶路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaolu2" {
+    room_id = rooms.xiaolu2.id
+  south = rooms.qsjie1.id
+  east = rooms.xiaolu1.id  }
+
+# Generated from C:/files/git/mud/d/emei/xiaoshulin1.c by LPCConverter
+# Zone: emei
+
+    rooms "xiaoshulin1" {
+      name = "小树林"
+      description = "这是峨嵋山金顶华藏庵外的一片小树林。林中没有路，但 地上依稀有些足迹，似乎刚有人走过。北面有一扇小窗。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaoshulin1" {
+    room_id = rooms.xiaoshulin1.id
+  south = rooms.xiaoshulin2.id  }
+
+# Generated from C:/files/git/mud/d/emei/xiaoshulin2.c by LPCConverter
+# Zone: emei
+
+    rooms "xiaoshulin2" {
+      name = "小树林"
+      description = "这是峨嵋山金顶华藏庵外的一片小树林。林中没有路，但 地上依稀有些足迹，似乎刚有人走过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaoshulin2" {
+    room_id = rooms.xiaoshulin2.id
+  south = rooms.xiaoshulin3.id
+  north = rooms.xiaoshulin1.id  }
+
+# Generated from C:/files/git/mud/d/emei/xiaoshulin3.c by LPCConverter
+# Zone: emei
+
+    rooms "xiaoshulin3" {
+      name = "小树林"
+      description = "这是峨嵋山金顶华藏庵外的一片小树林。林中没有路，但 地上依稀有些足迹，似乎刚有人走过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaoshulin3" {
+    room_id = rooms.xiaoshulin3.id
+  southeast = rooms.xiaoshulin4.id
+  north = rooms.xiaoshulin2.id  }
+
+# Generated from C:/files/git/mud/d/emei/xiaoshulin4.c by LPCConverter
+# Zone: emei
+
+    rooms "xiaoshulin4" {
+      name = "小树林"
+      description = "这是峨嵋山金顶华藏庵外的一片小树林。北边是峨嵋派女 弟子们的寝宫的窗户，窗下好像蹲着一个人。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(string)me->query("family/family_name") != "峨嵋派" & objectp(present("song qingshu", environment(me)))
+direction = ~
+  message = "宋青书一声冷喝：阁下什么人，在这里鬼头鬼脑的想干什么？"
+}
+
+]
+    }
+
+  room_exits "xiaoshulin4" {
+    room_id = rooms.xiaoshulin4.id
+  northwest = rooms.xiaoshulin3.id
+  north = rooms.qinggong.id  }
+
+
+  room_characters "xiaoshulin4" {
+    room_id = rooms.xiaoshulin4.id
+    characters = [
+      { id = characters.songqingshu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/xixiangchi.c by LPCConverter
+# Zone: emei
+
+    rooms "xixiangchi" {
+      name = "洗象池"
+      description = "洗象池原只是一亭，亭前有一个石砌的小池(pool)，池边 不远就是危岩。洗象池寓于一片冷杉林中，有若白云深处的仙 山琼阁。若是云收雾敛、碧空万里、月朗中天时，便觉万籁俱 寂，清光无限，宛若身在天宫，彻体生凉。这正是著名的「象 池池夜」。由此向南上攀，便至雷洞坪，东下至莲花石。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xixiangchi" {
+    room_id = rooms.xixiangchi.id
+  eastdown = rooms.ztpo2.id
+  southup = rooms.lingyunti.id  }
+
+# Generated from C:/files/git/mud/d/emei/yunufeng.c by LPCConverter
+# Zone: emei
+
+    rooms "yunufeng" {
+      name = "玉女峰"
+      description = "这是归云阁边的玉女峰，峰顶有一个四尺见方的小池，深 亦四尺，四季不枯，传为天女沐浴之器。古时州刺史冯楫，曾 在此结茅而居，发奋诵读「华严经」，不食人间烟火，于是玉 女下凡，为他馈赠食物。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yunufeng" {
+    room_id = rooms.yunufeng.id
+  northdown = rooms.guiyunge.id  }
+
+
+
+
+  room_items "yunufeng" {
+    room_id = rooms.yunufeng.id
+    items = [
+      { id = items.fang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/zhongfengsi.c by LPCConverter
+# Zone: emei
+
+    rooms "zhongfengsi" {
+      name = "中峰寺"
+      description = "中峰寺在白云峰下，始建于晋代，原为道观。传说观内的 道人每年在三月三日都献身给山中一条大蟒，以为可升仙。后 来有个从资州来的明果禅师，杀了那条大蟒，道士们始知上当， 感激不已，自愿改信佛教，从此改观为寺。这里往北可到清音 阁，东下至神水庵。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhongfengsi" {
+    room_id = rooms.zhongfengsi.id
+  west = rooms.qingyinge.id
+  eastdown = rooms.shenshuian.id  }
+
+
+  room_characters "zhongfengsi" {
+    room_id = rooms.zhongfengsi.id
+    characters = [
+      { id = characters.guest.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/emei/ztpo1.c by LPCConverter
+# Zone: emei
+
+    rooms "ztpo1" {
+      name = "钻天坡"
+      description = "莲花石与洗象池之间，道路陡绝石栈若齿，直上蓝天，石 蹬达一千三百多级，是在陡峭山壁上开凿出来的坡道。人行其 上，前后顶踵相接，一如登天。这段路叫「鹁鸽钻天」，这段 陡坡也因此而叫「钻天坡」。这里西上坡顶便到洗象池，东下 可达莲花石。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "ztpo1" {
+    room_id = rooms.ztpo1.id
+  eastdown = rooms.lianhuashi.id
+  westup = rooms.ztpo2.id  }
+
+# Generated from C:/files/git/mud/d/emei/ztpo2.c by LPCConverter
+# Zone: emei
+
+    rooms "ztpo2" {
+      name = "钻天坡"
+      description = "莲花石与洗象池之间，道路陡绝石栈若齿，直上蓝天，石 蹬达一千三百多级，是在陡峭山壁上开凿出来的坡道。人行其 上，前后顶踵相接，一如登天。这段路叫「鹁鸽钻天」，这段 陡坡也因此而叫「钻天坡」。这里西上坡顶便到洗象池，东下 可达莲花石。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "ztpo2" {
+    room_id = rooms.ztpo2.id
+  eastdown = rooms.ztpo1.id
+  westup = rooms.xixiangchi.id  }
+
+# Generated from C:/files/git/mud/d/emei/npc/boydizi.c by LPCConverter
+# Zone: emei
+
+    characters "boydizi" {
+      name = "男弟子"
+      description = "他是峨嵋派的第五代俗家弟子。"
+  gender = "男性"
+  age = 16
+  shen_type = 1
+  score = 1000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000
+    con = 22
+    dex = 25
+    int = 20
+    max_jing = 100
+    max_neili = 150
+    max_qi = 150
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 30 },
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 },
+    { skill = "parry" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/emei/npc/frog.c by LPCConverter
+# Zone: emei
+
+    characters "frog" {
+      name = "大青蛙"
+      description = "这是一只黑丝大青蛙，长在深不见日的水潭 里，全身恶臭，肥肥壮壮，一对血红的眼睛 十分恶心，你真想杀了它。"
+  age = 7
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50
+    con = 11
+    dex = 11
+    int = 11
+    str = 11
+  }
+    }
+
+# Generated from C:/files/git/mud/d/emei/npc/girldizi.c by LPCConverter
+# Zone: emei
+
+    characters "girldizi" {
+      name = "女弟子"
+      description = "她是峨嵋派的第五代俗家弟子。"
+  gender = "女性"
+  age = 15
+  shen_type = 1
+  score = 1000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000
+    con = 22
+    dex = 25
+    int = 20
+    max_jing = 100
+    max_neili = 150
+    max_qi = 150
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 30 },
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 },
+    { skill = "parry" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/emei/npc/guest.c by LPCConverter
+# Zone: emei
+
+    characters "guest" {
+      name = "进香客"
+      description = ""
+  gender = "男性"
+  shen_type = 1
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/emei/npc/puren.c by LPCConverter
+# Zone: emei
+
+    characters "puren" {
+      name = "仆人"
+      description = "这是一个长途陪伴侍侯少妇的仆人。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 18
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000
+    dex = 16
+    str = 24
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "blade" level = 80 },
+    { skill = "force" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/emei/npc/songqingshu.c by LPCConverter
+# Zone: emei
+
+    characters "songqingshu" {
+      name = "宋青书"
+      description = "他就是宋远桥的儿子宋青书。 他今年二十岁，乃是武当第三代中出类拔萃的人物。"
+  gender = "男性"
+  age = 20
+  score = 100000
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 1800000
+    con = 25
+    dex = 25
+    int = 28
+    max_jing = 2000
+    max_neili = 5000
+    max_qi = 4000
+    str = 25
+  }
+
+  inquiries = [
+    { key = "周芷若" value = "(: ask_for_zhou :)" }
+  ]
+
+  skills = [
+    { skill = "force" level = 200 },
+    { skill = "wudang-xinfa" level = 180 },
+    { skill = "taiji-shengong" level = 180 },
+    { skill = "yijin-duangu" level = 200 },
+    { skill = "dodge" level = 200 },
+    { skill = "shexing-lifan" level = 200 },
+    { skill = "tiyunzong" level = 180 },
+    { skill = "unarmed" level = 180 },
+    { skill = "taiji-quan" level = 180 },
+    { skill = "strike" level = 200 },
+    { skill = "zhenshan-zhang" level = 180 },
+    { skill = "cuixin-zhang" level = 200 },
+    { skill = "wudang-zhang" level = 180 },
+    { skill = "claw" level = 200 },
+    { skill = "jiuyin-baiguzhao" level = 200 },
+    { skill = "hand" level = 180 },
+    { skill = "paiyun-shou" level = 180 },
+    { skill = "parry" level = 180 },
+    { skill = "sword" level = 180 },
+    { skill = "wudang-jian" level = 180 },
+    { skill = "taiji-jian" level = 180 },
+    { skill = "taoism" level = 180 },
+    { skill = "literate" level = 180 },
+    { type = "force" skill = "yijin-duangu" },
+    { type = "dodge" skill = "shexing-lifan" },
+    { type = "unarmed" skill = "taiji-quan" },
+    { type = "hand" skill = "paiyun-shou" },
+    { type = "parry" skill = "taiji-quan" },
+    { type = "sword" skill = "taiji-jian" },
+    { type = "strike" skill = "cuixin-zhang" },
+    { type = "claw" skill = "jiuyin-baiguzhao" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/emei/npc/xiao-fan.c by LPCConverter
+# Zone: emei
+
+    characters "xiao_fan" {
+      name = "小贩"
+      description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 300
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  # vendor_goods: "/d/village/npc/obj/stick" (file not found)
+  # vendor_goods: "/d/village/npc/obj/shoes" (file not found)
+  # vendor_goods: "/d/village/npc/obj/bottle" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/emei/npc/youngwoman.c by LPCConverter
+# Zone: emei
+
+    characters "youngwoman" {
+      name = "年轻少妇"
+      description = "这是一个长途疲惫的年轻少妇。"
+  gender = "女性"
+  age = 16
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  skills = [
+    { skill = "unarmed" level = 10 },
+    { skill = "dodge" level = 10 },
+    { skill = "parry" level = 10 },
+    { skill = "sword" level = 10 },
+    { skill = "force" level = 10 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/bocai-fentiao.c by LPCConverter
+# Zone: emei
+
+    items "bocai_fentiao" {
+      name = "菠菜粉条"
+      description = "一盆白绿相间，清香可口的菠菜粉条。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/fojing10.c by LPCConverter
+# Zone: emei
+
+    items "fojing10" {
+      name = "Item"
+      description = "这是一册佛经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/fojing11.c by LPCConverter
+# Zone: emei
+
+    items "fojing11" {
+      name = "Item"
+      description = "这是一册佛经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/fojing20.c by LPCConverter
+# Zone: emei
+
+    items "fojing20" {
+      name = "Item"
+      description = "这是一册佛经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/fojing21.c by LPCConverter
+# Zone: emei
+
+    items "fojing21" {
+      name = "Item"
+      description = "这是一册佛经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/fuchen.c by LPCConverter
+# Zone: emei
+
+    items "fuchen" {
+      name = "拂尘"
+      description = "这是一柄拂尘，做工精细，是很阴毒的兵器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声从颈中抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}别回颈中。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/jiudai.c by LPCConverter
+# Zone: emei
+
+    items "jiudai" {
+      name = "牛皮酒袋"
+      description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/liuli-qiezi.c by LPCConverter
+# Zone: emei
+
+    items "liuli_qiezi" {
+      name = "琉璃茄子"
+      description = "一盆青红相间，金黄透烂，清香四溢的琉璃茄子。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/mala-doufu.c by LPCConverter
+# Zone: emei
+
+    items "mala_doufu" {
+      name = "麻辣豆腐"
+      description = "一盆颜色红亮，细中带嫩，香辣可口的麻辣豆腐。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/map.c by LPCConverter
+# Zone: emei
+
+    items "map" {
+      name = "『峨嵋旅游图』"
+      description = "『峨嵋旅游图』  　　　【地图一】　　　　　　　　　＾　　　＜　ｕｐ  　　　　　　　　　　　　　　　　北  　　　白　　　　　　　　　　　　　　　　　　　　　　　 　====== 　　　龙　　　　　　　　　　　　　　　　　　　　　　　 　==保==　山 　　　洞＼清　　　　　　　　　　　　　　　　　　　　　 　==国==<-- 　　　　　音　　　　　　　　　　　　　　　++++++++++++ ／==寺==　门 　　　　／阁＼中　神　纯　归　观　解　密++ 伏 ++密　====== 　黑龙江　　　峰--水--阳--云--音--脱-- <--虎-- 　栈道　　　　寺　阁　殿　阁　堂　坡　林++ 寺 ++林 　　　　 　　　　 ｜　　　　｜　　　　　 ++++++++++++++ 　　　　 　　　　 福 灵 　　玉 　　　　 　　　　 寿 文 　　女 　　　　 　　　　 庵 阁 　　峰   　　　【地图二】　                    　　　　　　　　　　　　　　　　十二盘<-万年庵== 　　　　　　　　　　　　　　　　　　　　　　　　　／　　　======== 　　　　　＾　　　　　　　　　　　　　　　　　　／　　　　　＾ 　　　　　北　　　　　　　　　　　　　　　　　／　　　古++++｜++++ 　　　　　　　　　　　　　　　　十二盘--十二盘　　　　德++白龙洞 　　　　　　　　　　　　　　　／　　　　　　　　　　　林++++++++＼ 　　　　　　　　　　　　　　／　　　　　　　　　　　　　　　　　　清音阁 　****<---华严顶<---十二盘　　　　　　　　　　　　　　　　　　　　／ 　**莲**　　　　　　　　　　　　　　　　　　　　　　　　　黑龙江栈道 　**　**　　　　　　　　　　　　　　　　　　　　　　　　　　　｜ 　**花**　　　　　　　 　　　　　　　　　　　 　　========== 　**　**　　　　　　　　　　　　　　　　　　　　　　　　　==千佛庵== 　**石**　　　　　　　　　　　　　　九十九道拐<-九十九道拐　======== 　　　＼　　　九十九道拐<-九十九道拐 　　　　＼　　／ 　　　||九老洞口|| 　　　||||||||||||     　　　　　　　　　　　　　　　~~洗象池<-坡道<-坡道<-**莲花石** 　　　【地图三】　　　　　　　~~~~~~~~　　　　　　　********** 　　　　　　　　　　　　　　　　　｜　　　　　　　　　　　　　＼|||||||||| 　　　　　　　　　　　　　　　　凌云梯　　　　　　　　　　　　　||九老洞|| 　　　　　＾　　　　　　　　　　　｜　　　++　　　　　　　　　　|||||||||| 　　　　　北　　　　　　　　　　雷洞坪　++++++ 　　　　　　　　　　　　　　　　　｜　　++++++++ 　　　　　　　　　　　　　　　　八十四盘++　冷++++ 　　　　　　　　　　　　　　　／　++++++++　　++++ 　　　　　　　　　　　　八十四盘　++++++++杉　++++ 　　　　　　　　　　　　　｜　　++++++++　　　++++ 　　　　　　　　　　　　　ˇ　　++++++++林　++++ 　　　　　　　　　　　　　　　八十四盘　++++++++++++++ 　　　　　　　　　　　　　　＼　++++++++++++ 　　　　　　　　　==========　＼ 　　　　　　　　　==万行庵==<-接引殿 　　　　　　　　　========== 　　　　　　　　　　　｜ 　　　　　　　　　　　ˇ 　　　　　 　　　金顶 　　　　　　　　　　／ 　　　　　==========　｜ 　　　　　==卧云庵==　｜ 　　　　　========　========== 　　　　　　　｜　　==华藏庵== 　　　　　　　｜　　========== 　　　　　　　｜　　　　｜ 　　　　　　~~~~~~~~~~~~~~~~~~ 　　　　　　~~　　　　　　　~~ 　　　　　　~~　睹　光　台　~~ 　　　　　　~~　　　　　　　~~ 　　　　　　~~~~~~~~~~~~~~~~~~"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/pantao.c by LPCConverter
+# Zone: emei
+
+    items "pantao" {
+      name = "蟠桃"
+      description = "一个火红色的大蟠桃，正散发着扑鼻的清香。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/qingshui-hulu.c by LPCConverter
+# Zone: emei
+
+    items "qingshui_hulu" {
+      name = "清水葫芦"
+      description = "一个用葫芦制成的水壶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/ruanjian.c by LPCConverter
+# Zone: emei
+
+    items "ruanjian" {
+      name = "软剑"
+      description = "这是一柄用特殊材料制成的钢剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/shanhu-baicai.c by LPCConverter
+# Zone: emei
+
+    items "shanhu_baicai" {
+      name = "珊瑚白菜"
+      description = "一盆红白相间，脆嫩爽口，清香诱人的珊瑚白菜。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/tianxiang-gao.c by LPCConverter
+# Zone: emei
+
+    items "tianxiang_gao" {
+      name = "天香断续膏"
+      description = "这是一盒黑色的疗伤膏药，可以擦涂（smear）。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/xiang.c by LPCConverter
+# Zone: emei
+
+    items "xiang" {
+      name = "普贤菩萨像"
+      description = "这是一尊普贤菩萨像，坐八宝莲花，神圣庄严。不过这尊菩萨 像看起来似乎曾有被移动(move)过的痕迹。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/yaodai.c by LPCConverter
+# Zone: emei
+
+    items "yaodai" {
+      name = "皮腰带"
+      description = "这是一件皮质的宽腰带，夹层透空，可以放各种软兵刃。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/ycloth.c by LPCConverter
+# Zone: emei
+
+    items "ycloth" {
+      name = "淡黄衫"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/emei/obj/zhujian.c by LPCConverter
+# Zone: emei
+
+    items "zhujian" {
+      name = "竹剑"
+      description = "这是一把练习剑法用的竹剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一把{name}，握在手中。"
+  }
+    }

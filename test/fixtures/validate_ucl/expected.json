@@ -156,6 +156,12 @@
       "failing_checks": ["Syntax"]
     },
     {
+      "file": "44_bad_chars_elias_unlexable.ucl",
+      "why": "regression fixture for the real xiangyang bug, found by the container rather than by any static check: wuxiuwen.c maps each item name to an LPC closure `(: ask_me_1, \"weibo\" :)`. elias 0.2.8 lexes with a Word pattern that does NOT exclude the comma, so leex's longest match normally swallows \"a,\" into one word token; the digit in `ask_me_1` terminates the word, the comma then lexes as its own `comma` token, and elias_parser.yrl has no `words -> comma ...` production. Elias.parse/1 therefore aborts with `syntax error before: ', ['\"']` and the whole world fails to boot (Kantele.World.Kickoff terminating). Measured: \"(: a, 'b' :)\" and \"(: a_b, 'c' :)\" parse; \"(: a1, 'b' :)\" and \"(: ask_me_1, 'b' :)\" do not. The syntax check cannot see this (the file is well-formed UCL), so `chars` is the only check that fires.",
+      "exit_code": 1,
+      "failing_checks": ["Chars"]
+    },
+    {
       "file": "50_bad_encoding_crlf.ucl",
       "why": "CRLF line endings. Measured: Elias parses it SUCCESSFULLY, so only `encoding` may be reported.",
       "exit_code": 1,

@@ -1,0 +1,304 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/village/temple1.c by LPCConverter
+# Zone: village
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (arg == "hole") { if (me->query_temp("marks/王")) { message("vision", me->name() + "一弯腰往洞里走了进去。\n", environment(me), ({me})); me->move("/d/village/temple2"); message("vision", me->name() + "从洞里走了进来。\n", environment(me), ({me}) ); return 1; } else { write("你没事那麽爱钻洞啊?!\n"); return 1; }
+# ==== COMPLEX CONDITIONALS ====
+  # if (! arg || arg == "")  →  
+  # if (arg == "hole")  →  write('你没事那麽爱钻洞啊?!\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_enter) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_enter
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/village/temple2.c by LPCConverter
+# Zone: village
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (this_player()->query_temp("marks/王"))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/village/npc/punk.c by LPCConverter
+# Zone: village
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  say( '流氓说道：王小二啊，他不是本村的人，几个月前来才我们这儿。\\\\\n' ' 跟王小二赌钱总是输，我看他有捣鬼。这小子拳脚挺厉害的。\\\\\n' ); write( '流氓悄声跟你说：你要找王小二的麻烦吧? 他就住在财神庙後面，\\\\\n' ' 他在那儿搭了个小棚子。\\\\\n');
+  # if ( this_player()->query_temp("marks/王") )  →  say('流氓说道：你还有完没完? 问话不要钱啊?\\\\\n');
+# ==== CONDITIONAL BRANCHES (ask_me) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_me
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/village/npc/seller.c by LPCConverter
+# Zone: village
+
+# inherit F_VENDOR;
+
+# Generated from C:/files/git/mud/d/village/npc/smith.c by LPCConverter
+# Zone: village
+
+# inherit /inherit/char/smith.c;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((string)ob->query("id") == "hand letter")  →  message_vision('$N说道：这把剑虽不起眼，可也是小人的心血，总算对得起岳掌门。\\\\\n' '$N把' + sword->query('name') + '交给了$n。\\\\\n', this_object(), this_player()); say('冯铁匠眼也不抬，说道：要剑自己进去拿。\\\\\n');
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/village/npc/wang.c by LPCConverter
+# Zone: village
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (query("book_count") < 1)  →  write('王小二冲着' + obj->name() + '白了白眼：老子没空，你快给我滚蛋，别搅大爷的清梦。\\\\\n');
+  # if (obj->query_temp("marks/王2"))  →  say('王小二对' + obj->name() + '说道：今儿您赢了我，您说什么我都得听着，' '我这就把\\\\\n钱给老太太送去。另外，这本书也' '是您的了。这是前些日子华山派从这\\\\\n路过，' '在庙里歇脚时落下的。\\\\\n' ); message_vision('$N交给$n一本书。\\\\\n', me, obj); say('王小二冲着' + obj->name() + '撇了撇嘴，说道：就你这点本事还来\\\\\n' '充英雄？给我乖乖的爬出去吧！\\\\\n' );
+# ==== CONDITIONAL BRANCHES (do_bihua) ====
+  # else  →  say( '王小二看了' + this_player()->name() + '一眼，满不在乎的说道：\\\\\n' '不错，鸡是我偷的，你要怎麽样！看你也是出来闯江湖的，难道\\\\\n' '不知江湖上谁的拳头大谁说话？你不服气？那好，咱俩练几招，\\\\\n' '要是你赢了，我马上按双倍价赔给老太太。而且我还另外送你点\\\\\n' '东西。你要输了，就给我爬着出去。怎麽着，敢不敢比划(bihua)几下？\\\\\n');
+  # if ((int)this_player()->query_temp("marks/王3"))  →  say( '王小二眼露凶光，对' + this_player()->name() + '喊道：杀人不过头点地，我已经\\\\\n' '服了软，你还不放过我，老子跟你拼了!\\\\\n');
+# ==== CONDITIONAL BRANCHES (ask_me) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_me
+  # UNHANDLED FUNCTION: do_bihua
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/village/npc/obj/bottle.c by LPCConverter
+# Zone: village
+
+# inherit ITEM;
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/village/npc/obj/cloth.c by LPCConverter
+# Zone: village
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/village/npc/obj/egg.c by LPCConverter
+# Zone: village
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/village/npc/obj/hammer.c by LPCConverter
+# Zone: village
+
+# inherit HAMMER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/village/npc/obj/hothammer.c by LPCConverter
+# Zone: village
+
+# inherit HAMMER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/village/npc/obj/shoes.c by LPCConverter
+# Zone: village
+
+# inherit BOOTS;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/village/npc/obj/stick.c by LPCConverter
+# Zone: village
+
+# inherit STAFF;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/village/npc/obj/youlong.c by LPCConverter
+# Zone: village
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/village/obj/zhujian.c by LPCConverter
+# Zone: village
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

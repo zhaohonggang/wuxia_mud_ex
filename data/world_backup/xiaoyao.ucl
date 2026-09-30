@@ -1,0 +1,603 @@
+zones "xiaoyao" {
+  name = "xiaoyao"
+}
+
+# Generated from C:/files/git/mud/d/xiaoyao/bingqif.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "bingqif" {
+      name = "打铁屋"
+      description = "这里是树林深处的一间小石屋，看来是打造兵器的，屋子 中有个大火炉好烫的呢，屋中还有一张石几，上面放在一些已 经打造好的兵器。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bingqif" {
+    room_id = rooms.bingqif.id
+  south = rooms.xiaodao2.id  }
+
+
+
+
+  room_items "bingqif" {
+    room_id = rooms.bingqif.id
+    items = [
+      { id = items.blade.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/liangong.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "liangong" {
+      name = "石屋"
+      description = "这是树林中的一间石屋，屋内显得什么清净和简朴，房间 中并没有什么特别的摆设在这里，不会受到任何的骚扰，是个 修炼内功的好地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liangong" {
+    room_id = rooms.liangong.id
+  south = rooms.xiaodao4.id  }
+
+
+
+
+  room_items "liangong" {
+    room_id = rooms.liangong.id
+    items = [
+      { id = items.wulingj.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/midao.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "midao" {
+      name = "秘密通道"
+      description = "这是一段又长又黑的秘密通道，隐约可以感觉到四周是冰 冷而坚硬的石壁，你什么了看不清楚，只能靠摸索着前进。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "midao" {
+    room_id = rooms.midao.id
+  out = rooms.qingcaop.id
+  down = rooms.shishi.id  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/mubanlu.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "mubanlu" {
+      name = "木板路"
+      description = "这是一条用木板铺成的小道，虽然不是很长，但是却看得 出铺得十分细心，连一些细微的疏忽也注意到了。道路两旁好 种着一些奇花异树，使过路人有心旷神怡的感觉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mubanlu" {
+    room_id = rooms.mubanlu.id
+  south = rooms.muwu3.id
+  north = rooms.xiaodao4.id  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/muwu1.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "muwu1" {
+      name = "木屋"
+      description = "这里是一间不大的木头屋子，但是麻雀虽小五藏俱全，屋 子中只是疏疏落落地摆着几件家具，所以也不显得怎么小。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "muwu1" {
+    room_id = rooms.muwu1.id
+  north = rooms.xiaodao5.id  }
+
+
+
+
+  room_items "muwu1" {
+    room_id = rooms.muwu1.id
+    items = [
+      { id = items.kanggl.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/muwu2.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "muwu2" {
+      name = "小木屋"
+      description = "这是一间不是很大的木头屋子，这里看起来象个药室，室 中摆放着各种不同的配药的用具和一些已经配好了的药。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "muwu2" {
+    room_id = rooms.muwu2.id
+  south = rooms.xiaodao3.id  }
+
+
+
+
+  room_items "muwu2" {
+    room_id = rooms.muwu2.id
+    items = [
+      { id = items.xuemuh.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/muwu3.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "muwu3" {
+      name = "工匠屋"
+      description = "这里也是一间木屋，屋子中的摆设什么简单，但是却有很 多工具，锯子啦，刨子啦，锤子啦，还有满地的木屑，一看就 知道是一个工匠的家。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "muwu3" {
+    room_id = rooms.muwu3.id
+  north = rooms.mubanlu.id  }
+
+
+
+
+  room_items "muwu3" {
+    room_id = rooms.muwu3.id
+    items = [
+      { id = items.fengas.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/qingcaop.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "qingcaop" {
+      name = "青草坪"
+      description = "这里是树林中的一片比较大的空地，名曰：青草坪。因为 处于密林之中所以这里平时很少有人来，但是不知道为什么今 天这里却有不少人。你看，又一个来了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qingcaop" {
+    room_id = rooms.qingcaop.id
+  north = rooms.xiaodao3.id
+  south = rooms.xiaodao5.id
+  east = rooms.xiaodao4.id
+  west = rooms.xiaodao1.id
+  in = rooms.midao.id  }
+
+
+  room_characters "qingcaop" {
+    room_id = rooms.qingcaop.id
+    characters = [
+      { id = characters.wangyuyan.id }    ]
+  }
+
+
+
+  room_items "qingcaop" {
+    room_id = rooms.qingcaop.id
+    items = [
+      { id = items.suxingh.id },
+      { id = items.duanyq.id },
+      { id = items.duanyu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/shantang.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "shantang" {
+      name = "酒家"
+      description = "这里是树林中的一间小小的酒家，地方虽然不大，但是也 有不少逍遥派的弟子光顾这里。你终于找到香味的来源了，看 着可口的饭菜，你忍不住也想叫(order)一份了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shantang" {
+    room_id = rooms.shantang.id
+  north = rooms.xiaodao2.id  }
+
+
+
+
+  room_items "shantang" {
+    room_id = rooms.shantang.id
+    items = [
+      { id = items.shiqingl.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/shishi.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "shishi" {
+      name = "石室"
+      description = "这是一个石头砌成的房间，因为好久没有人来过，散发着 些很难闻的气味，房间中到处可以看到蛛丝和虫迹。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shishi" {
+    room_id = rooms.shishi.id
+  up = rooms.midao.id  }
+
+
+
+
+  room_items "shishi" {
+    room_id = rooms.shishi.id
+    items = [
+      { id = items.wuyazi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/shulin1.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "shulin1" {
+      name = "树林"
+      description = "这是片茂密的树林。很多棵几十丈高的大树聚在一块，象 一把把琼天大伞，连日月都被遮蔽得暗然无光。树林中还不时 可以听到大自然发出的声响。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin1" {
+    room_id = rooms.shulin1.id
+  north = rooms.shulin1.id
+  south = rooms.shulin1.id
+  east = rooms.shulin2.id
+  west = rooms.xiaodao4.id  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/shulin2.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "shulin2" {
+      name = "树林"
+      description = "这是片茂密的树林。很多棵几十丈高的大树聚在一块，象 一把把琼天大伞，连日月都被遮蔽得暗然无光。树林中还不时 可以听到大自然发出的声响。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin2" {
+    room_id = rooms.shulin2.id
+  north = rooms.shulin3.id
+  south = rooms.shulin1.id
+  east = rooms.shulin2.id
+  west = rooms.shulin2.id  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/shulin3.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "shulin3" {
+      name = "树林"
+      description = "这是片茂密的树林。很多棵几十丈高的大树聚在一块，象 一把把琼天大伞，连日月都被遮蔽得暗然无光。树林中还不时 可以听到大自然发出的声响。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin3" {
+    room_id = rooms.shulin3.id
+  south = rooms.shulin3.id
+  north = rooms.shulin3.id
+  east = rooms.shulin2.id
+  west = rooms.wdroad4.id  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/wuchang1.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "wuchang1" {
+      name = "逍遥场"
+      description = "这是里没有多余的摆设，只是立着些练功用的木人，但年 久失修，早已损坏得差不多了。看来这里是供给逍遥派弟子练 功用的场所。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuchang1" {
+    room_id = rooms.wuchang1.id
+  south = rooms.xiaodao1.id
+  north = rooms.wuchang3.id  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/wuchang2.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "wuchang2" {
+      name = "逍遥场"
+      description = "这是里没有多余的摆设，只是立着些练功用的木人，但年 久失修，早已损坏得差不多了。看来这里是供给逍遥派弟子练 功用的场所。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuchang2" {
+    room_id = rooms.wuchang2.id
+  north = rooms.xiaodao1.id  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/wuchang3.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "wuchang3" {
+      name = "逍遥场"
+      description = "这是里没有多余的摆设，只是立着些练功用的木人，但年 久失修，早已损坏得差不多了。看来这里是供给逍遥派弟子练 功用的场所。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuchang3" {
+    room_id = rooms.wuchang3.id
+  south = rooms.wuchang1.id  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/xiaodao1.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "xiaodao1" {
+      name = "林间小道"
+      description = "这是一条长长的林间小道，从东边一直通到西边，一眼望 去，看不到路的尽头。两旁百花争艳。令人留连忘返。南北有 条小径，不断有逍遥派的弟子往来，隐隐还传来阵阵的打斗叫 喝声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaodao1" {
+    room_id = rooms.xiaodao1.id
+  east = rooms.qingcaop.id
+  west = rooms.xiaodao2.id
+  north = rooms.wuchang1.id
+  south = rooms.wuchang2.id  }
+
+
+
+
+  room_items "xiaodao1" {
+    room_id = rooms.xiaodao1.id
+    items = [
+      { id = items.fanbail.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/xiaodao2.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "xiaodao2" {
+      name = "林间小道"
+      description = "这是一条长长的林间小道，从东边一直通到西边，一眼望 去，看不到路的尽头。两旁百花争艳。令人留连忘返。南边好 象有香味散发出来，北边是个兵器房。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaodao2" {
+    room_id = rooms.xiaodao2.id
+  south = rooms.shantang.id
+  east = rooms.xiaodao1.id
+  west = rooms.xiuxis.id
+  north = rooms.bingqif.id  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/xiaodao3.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "xiaodao3" {
+      name = "林间小道"
+      description = "这是一条从南到北的林间小道，沿途风景极之清幽，参天 古树，拔地而起，两旁百花争艳。令人留连忘返。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaodao3" {
+    room_id = rooms.xiaodao3.id
+  south = rooms.qingcaop.id
+  north = rooms.muwu2.id  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/xiaodao4.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "xiaodao4" {
+      name = "林间小道"
+      description = "这是一条长长的林间小道，从东边一直通到西边，一眼望 去，看不到路的尽头。两旁百花争艳。令人留连忘返。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaodao4" {
+    room_id = rooms.xiaodao4.id
+  east = rooms.shulin1.id
+  west = rooms.qingcaop.id
+  north = rooms.liangong.id
+  south = rooms.mubanlu.id  }
+
+
+
+
+  room_items "xiaodao4" {
+    room_id = rooms.xiaodao4.id
+    items = [
+      { id = items.goudu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/xiaodao5.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "xiaodao5" {
+      name = "林间小道"
+      description = "这是一条从南到北的林间小道，沿途风景极之清幽，参天 古树，拔地而起，两旁百花争艳。令人留连忘返。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaodao5" {
+    room_id = rooms.xiaodao5.id
+  south = rooms.muwu1.id
+  north = rooms.qingcaop.id  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/xiuxis.c by LPCConverter
+# Zone: xiaoyao
+
+    rooms "xiuxis" {
+      name = "小屋"
+      description = "这是一间在树林中的小屋，屋子中间摆着几张大床，几张 桌子，看来是个休息的地方，室中光线柔和，使人更增睡意。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiuxis" {
+    room_id = rooms.xiuxis.id
+  east = rooms.xiaodao2.id  }
+
+# Generated from C:/files/git/mud/d/xiaoyao/npc/mengmianr.c by LPCConverter
+# Zone: xiaoyao
+
+    characters "mengmianr" {
+      name = "蒙面人"
+      description = "一个蒙着面部，身穿黑色夜行衣服的神秘人。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 200
+    max_neili = 300
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 30 },
+    { skill = "dodge" level = 25 },
+    { skill = "parry" level = 20 },
+    { skill = "blade" level = 30 },
+    { skill = "feiyan-zoubi" level = 25 },
+    { skill = "xiaoyao-xinfa" level = 30 },
+    { skill = "ruyi-dao" level = 30 },
+    { type = "blade" skill = "ruyi-dao" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "force" skill = "xiaoyao-xinfa" }
+  ]
+
+
+  carry = [
+    { id = items.blade.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiaoyao/npc/wangyuyan.c by LPCConverter
+# Zone: xiaoyao
+
+    characters "wangyuyan" {
+      name = "王语嫣"
+      description = ""
+  gender = "女性"
+  age = 20
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000
+    con = 22
+    dex = 20
+    int = 42
+    max_jing = 500
+    max_neili = 150
+    max_qi = 500
+    str = 16
+  }
+
+  skills = [
+    { skill = "force" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xiaoyao/npc/obj/blade.c by LPCConverter
+# Zone: xiaoyao
+
+    characters "blade" {
+      name = "钢刀"
+      description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
+    }
+
+# Generated from C:/files/git/mud/d/xiaoyao/npc/obj/cloth.c by LPCConverter
+# Zone: xiaoyao
+
+    characters "cloth" {
+      name = "布衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/xiaoyao/obj/bowl.c by LPCConverter
+# Zone: xiaoyao
+
+    items "bowl" {
+      name = "水碗"
+      description = "这是一个水碗，里面有什么呢？当然是水啦。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiaoyao/obj/menghan_yao.c by LPCConverter
+# Zone: xiaoyao
+
+    items "menghan_yao" {
+      name = "蒙汗药"
+      description = "这是极普通的蒙汗药"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiaoyao/obj/putuan.c by LPCConverter
+# Zone: xiaoyao
+
+    items "putuan" {
+      name = "小蒲团"
+      description = "一个普通的小蒲团。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiaoyao/obj/rice.c by LPCConverter
+# Zone: xiaoyao
+
+    items "rice" {
+      name = "米饭"
+      description = "一个碗香喷喷米饭。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }

@@ -1,0 +1,5537 @@
+zones "changan" {
+  name = "changan"
+}
+
+# Generated from C:/files/git/mud/d/changan/baihu1.c by LPCConverter
+# Zone: changan
+
+    rooms "baihu1" {
+      name = "白虎街"
+      description = "白虎街是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。西边是扶风道。北面 则是阴森森的大牢，有几个狱卒百无聊赖的呆在门口。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baihu1" {
+    room_id = rooms.baihu1.id
+  west = rooms.fufeng1.id
+  east = rooms.baihu2.id  }
+
+
+  room_characters "baihu1" {
+    room_id = rooms.baihu1.id
+    characters = [
+      { id = characters.xunbu.id },
+      { id = characters.xunbu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/baihu2.c by LPCConverter
+# Zone: changan
+
+    rooms "baihu2" {
+      name = "白虎街"
+      description = "白虎街是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。往南就是故皇宫的金水桥 了，北面有一条大路通向长安城北门。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baihu2" {
+    room_id = rooms.baihu2.id
+  south = rooms.bridge1.id
+  north = rooms.beian_dadao.id
+  west = rooms.baihu1.id
+  east = rooms.baihu3.id  }
+
+
+  room_characters "baihu2" {
+    room_id = rooms.baihu2.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/baihu3.c by LPCConverter
+# Zone: changan
+
+    rooms "baihu3" {
+      name = "白虎街"
+      description = "青龙街是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。北面东边传出朗朗的读书 声，那里是当朝的学府国子监。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baihu3" {
+    room_id = rooms.baihu3.id
+  north = rooms.guozijian.id
+  west = rooms.baihu2.id
+  east = rooms.fengxu1.id  }
+
+# Generated from C:/files/git/mud/d/changan/bank.c by LPCConverter
+# Zone: changan
+
+    rooms "bank" {
+      name = "四海钱庄"
+      description = "这是长安城的一家老字号钱庄，老板是山西人，这家钱庄从他的祖 先来到这里时就开始办起，一直传到他的手里。钱庄的信誉非常好，而 且在全国各地都开了分店。它发行的银票通行全国。钱庄的门口挂有一 块牌子(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ paizi = "本钱庄提供的服务有： -------------------------------- check(chazhang)        查帐 -------------------------------- deposit(cun)           存款 -------------------------------- withdraw(qu)           取款 -------------------------------- convert(duihuan)       兑换钱币 --------------------------------"
+}
+    }
+
+  room_exits "bank" {
+    room_id = rooms.bank.id
+  south = rooms.qixiang4.id  }
+
+
+  room_characters "bank" {
+    room_id = rooms.bank.id
+    characters = [
+      { id = characters.tiegongji.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/baodian.c by LPCConverter
+# Zone: changan
+
+    rooms "baodian" {
+      name = "大雄宝殿"
+      description = "大雄宝殿内，金壁辉煌，雕梁画洞，殿两侧共安放了六尊古佛，古 佛之後有释伽与天龙诸部的壁画。大雄宝殿为历朝皇帝招见僧侣、读经 念佛的所在，是以陈设与其馀诸殿大不相同，倒像是庄严肃穆的佛堂一 般。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baodian" {
+    room_id = rooms.baodian.id
+  north = rooms.baoxiangsi.id
+  west = rooms.piandian.id
+  east = rooms.fangzhangshi.id  }
+
+
+  room_characters "baodian" {
+    room_id = rooms.baodian.id
+    characters = [
+      { id = characters.xiangke.id },
+      { id = characters.xiangke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/baoxiangsi.c by LPCConverter
+# Zone: changan
+
+    rooms "baoxiangsi" {
+      name = "宝象寺"
+      description = "宝象寺规模宏大，房舍近千，别院处处。放眼所见，这里尽是高阁 石壁，佛彩龙像，绕不一会，已然分不清来时的道路。但见那一尊尊的 石刻似乎都裂著嘴在向你嘿嘿而笑，"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baoxiangsi" {
+    room_id = rooms.baoxiangsi.id
+  north = rooms.qinglong1.id
+  south = rooms.baodian.id  }
+
+
+  room_characters "baoxiangsi" {
+    room_id = rooms.baoxiangsi.id
+    characters = [
+      { id = characters.monk.id },
+      { id = characters.monk.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/baozipu.c by LPCConverter
+# Zone: changan
+
+    rooms "baozipu" {
+      name = "包子铺"
+      description = "铺子里的摆设并不是很讲究，横竖摆了几排圆木方桌，桌子四周零 乱的放了几把长条椅子。一个小伙计没精打采的靠在柜台边，看见你进 来，只是懒洋洋的向你打了个招呼。看起来这里的生意并不怎么好。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baozipu" {
+    room_id = rooms.baozipu.id
+  north = rooms.yongtai_nankou.id  }
+
+
+  room_characters "baozipu" {
+    room_id = rooms.baozipu.id
+    characters = [
+      { id = characters.huoji.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/bed.c by LPCConverter
+# Zone: changan
+
+    rooms "bed" {
+      name = "床上"
+      description = "一张白色的软榻，看上去极为精致，纱衾鸳枕之间散发出一丝丝幽香．"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bed" {
+    room_id = rooms.bed.id
+  out = rooms.kzsleep.id  }
+
+# Generated from C:/files/git/mud/d/changan/bei-chengmen.c by LPCConverter
+# Zone: changan
+
+    rooms "bei_chengmen" {
+      name = "长安北城门"
+      description = "长安城的北城门。这里的护城河既深又阔，而且城高墙厚，有一夫 当关，万夫莫开之势，城内还驻扎了两营士兵，远看军营延绵，旌期似 海，颇具慑人之势，仰望城楼，只见城楼高处满布哨兵，剑拔驽张，士 气昂扬。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bei_chengmen" {
+    room_id = rooms.bei_chengmen.id
+  north = rooms.tulu1.id
+  south = rooms.beian_daokou.id  }
+
+
+  room_characters "bei_chengmen" {
+    room_id = rooms.bei_chengmen.id
+    characters = [
+      { id = characters.wujiang.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/beian-dadao.c by LPCConverter
+# Zone: changan
+
+    rooms "beian_dadao" {
+      name = "北安大道"
+      description = "长安城的主街北安大道宽敞笔直，繁华热闹，许多外来的旅客和商 人都不断来往经过这里。北安大道再向北就是长安城的北城门，往南则 是故皇宫的白虎街。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "beian_dadao" {
+    room_id = rooms.beian_dadao.id
+  north = rooms.beian_daokou.id
+  south = rooms.baihu2.id  }
+
+# Generated from C:/files/git/mud/d/changan/beian-daokou.c by LPCConverter
+# Zone: changan
+
+    rooms "beian_daokou" {
+      name = "北安道口"
+      description = "长安城自古是繁华胜地，为数代皇朝建都之地，又为盐商大贾所聚 集，殷富甲于天下。北安道口是一个四通八达的路口，东西方向通往麒 祥街，北面是长安北城门，南方有一条大路通到故皇宫的金水桥。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "beian_daokou" {
+    room_id = rooms.beian_daokou.id
+  south = rooms.beian_dadao.id
+  north = rooms.bei_chengmen.id
+  west = rooms.qixiang3.id
+  east = rooms.qixiang4.id
+  southeast = rooms.bingying1.id
+  southwest = rooms.bingying2.id  }
+
+# Generated from C:/files/git/mud/d/changan/biaoju-damen.c by LPCConverter
+# Zone: changan
+
+    rooms "biaoju_damen" {
+      name = "河洛镖局"
+      description = "一座建构宏伟的宅第之前，左右两座石坛中各竖一根两丈来高的旗 杆，旗杆顶飘扬青旗。右首旗上黄色丝线绣著一头张牙舞爪、神态威猛 的金龙，旗子随风招展，显得金龙更奕奕若生。左首旗上绣著「河洛镖 局」四个黑字，银钩铁划，刚劲非凡。进门处两排长凳，分坐著八名劲 装结束的汉子，个个腰板笔挺，显出一股英悍之气。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "biaoju_damen" {
+    room_id = rooms.biaoju_damen.id
+  north = rooms.qixiang5.id
+  south = rooms.biaoju_dayuan.id  }
+
+
+  room_characters "biaoju_damen" {
+    room_id = rooms.biaoju_damen.id
+    characters = [
+      { id = characters.biaoshi.id },
+      { id = characters.tang.id },
+      { id = characters.tang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/biaoju-dating.c by LPCConverter
+# Zone: changan
+
+    rooms "biaoju_dating" {
+      name = "河洛镖局大厅"
+      description = "厅堂中的陈设，全是十分精致的紫檀木家具，单是那扇巨大的八摺 屏风，上面镶了各色宝玉，砌成极其生动的八仙图，已是罕见的古物。 上首一虎皮交椅，上面坐着一个相貌威猛的汉子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "biaoju_dating" {
+    room_id = rooms.biaoju_dating.id
+  north = rooms.biaoju_dayuan.id  }
+
+
+  room_characters "biaoju_dating" {
+    room_id = rooms.biaoju_dating.id
+    characters = [
+      { id = characters.zong_biaotou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/biaoju-dayuan.c by LPCConverter
+# Zone: changan
+
+    rooms "biaoju_dayuan" {
+      name = "河洛镖局大院"
+      description = "院子里面堆放着十几辆用草席盖着的空镖车，草席上积满了雪，东 面的屋檐下，斜插着一面酱色镶金边的镖旗，被风吹得蜡蜡作响，使人 几乎分辨不出用金线绣在那上面的是老虎，还是狮子。大院里不时镖师 进出。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "biaoju_dayuan" {
+    room_id = rooms.biaoju_dayuan.id
+  north = rooms.biaoju_damen.id
+  south = rooms.biaoju_dating.id  }
+
+
+  room_characters "biaoju_dayuan" {
+    room_id = rooms.biaoju_dayuan.id
+    characters = [
+      { id = characters.biaotou.id },
+      { id = characters.tang.id },
+      { id = characters.tang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/bingying1.c by LPCConverter
+# Zone: changan
+
+    rooms "bingying1" {
+      name = "兵营"
+      description = "这里是一座临街而建的兵营，距离开封的北城门只有几步之遥。兵 营门口旌旗飘扬，偶尔可以看见兵士进出换岗，并且不动声色地寻视着 四周。兵营里面到处都有官兵来来回回地走动，有一名武将正在指挥士 兵列队操练。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bingying1" {
+    room_id = rooms.bingying1.id
+  northwest = rooms.beian_daokou.id  }
+
+
+  room_characters "bingying1" {
+    room_id = rooms.bingying1.id
+    characters = [
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/bingying2.c by LPCConverter
+# Zone: changan
+
+    rooms "bingying2" {
+      name = "兵营"
+      description = "这里是一座临街而建的兵营，距离开封的北城门只有几步之遥。兵 营门口旌旗飘扬，偶尔可以看见兵士进出换岗，并且不动声色地寻视着 四周。兵营里面到处都有官兵来来回回地走动，有一名武将正在指挥士 兵列队操练。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bingying2" {
+    room_id = rooms.bingying2.id
+  northeast = rooms.beian_daokou.id  }
+
+
+  room_characters "bingying2" {
+    room_id = rooms.bingying2.id
+    characters = [
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/bingying3.c by LPCConverter
+# Zone: changan
+
+    rooms "bingying3" {
+      name = "兵营"
+      description = "这里是一座临街而建的兵营，距离开封的西城门只有几步之遥。兵 营门口旌旗飘扬，偶尔可以看见兵士进出换岗，并且不动声色地寻视着 四周。兵营里面到处都有官兵来来回回地走动，有一名武将正在指挥士 兵列队操练。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bingying3" {
+    room_id = rooms.bingying3.id
+  northwest = rooms.xian_daokou.id  }
+
+
+  room_characters "bingying3" {
+    room_id = rooms.bingying3.id
+    characters = [
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/bingying4.c by LPCConverter
+# Zone: changan
+
+    rooms "bingying4" {
+      name = "兵营"
+      description = "这里是一座临街而建的兵营，距离开封的南城门只有几步之遥。兵 营门口旌旗飘扬，偶尔可以看见兵士进出换岗，并且不动声色地寻视着 四周。兵营里面到处都有官兵来来回回地走动，有一名武将正在指挥士 兵列队操练。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bingying4" {
+    room_id = rooms.bingying4.id
+  southwest = rooms.nanan_daokou.id  }
+
+
+  room_characters "bingying4" {
+    room_id = rooms.bingying4.id
+    characters = [
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/bingying5.c by LPCConverter
+# Zone: changan
+
+    rooms "bingying5" {
+      name = "兵营"
+      description = "这里是一座临街而建的兵营，距离开封的南城门只有几步之遥。兵 营门口旌旗飘扬，偶尔可以看见兵士进出换岗，并且不动声色地寻视着 四周。兵营里面到处都有官兵来来回回地走动，有一名武将正在指挥士 兵列队操练。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bingying5" {
+    room_id = rooms.bingying5.id
+  southeast = rooms.nanan_daokou.id  }
+
+
+  room_characters "bingying5" {
+    room_id = rooms.bingying5.id
+    characters = [
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/bingying6.c by LPCConverter
+# Zone: changan
+
+    rooms "bingying6" {
+      name = "兵营"
+      description = "这里是一座临街而建的兵营，距离开封的东城门只有几步之遥。兵 营门口旌旗飘扬，偶尔可以看见兵士进出换岗，并且不动声色地寻视着 四周。兵营里面到处都有官兵来来回回地走动，有一名武将正在指挥士 兵列队操练。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bingying6" {
+    room_id = rooms.bingying6.id
+  northeast = rooms.dongan_daokou.id  }
+
+
+  room_characters "bingying6" {
+    room_id = rooms.bingying6.id
+    characters = [
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/bridge1.c by LPCConverter
+# Zone: changan
+
+    rooms "bridge1" {
+      name = "金水桥"
+      description = "金水桥是一条直通皇宫的大石桥，宽敞可容四马并驰，建造得鬼斧 神功，气势磅礴，使人生起一夫当关万夫莫敌的感觉。桥下有一条清澈 见底、蜿蜒地川流的小河，河水有时撞在石上，发出淙淙的流水声，悦 耳动听。桥北通向白虎街，南面是故皇宫。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bridge1" {
+    room_id = rooms.bridge1.id
+  south = rooms.huanggong.id
+  north = rooms.baihu2.id  }
+
+
+  room_characters "bridge1" {
+    room_id = rooms.bridge1.id
+    characters = [
+      { id = characters.yulinjun.id },
+      { id = characters.yulinjun.id },
+      { id = characters.tongling1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/bridge2.c by LPCConverter
+# Zone: changan
+
+    rooms "bridge2" {
+      name = "金水桥"
+      description = "金水桥是一条直通皇宫的大石桥，宽敞可容四马并驰，建造得鬼斧 神功，气势磅礴，使人生起一夫当关万夫莫敌的感觉。桥下有一条清澈 见底、蜿蜒地川流的小河，河水有时撞在石上，发出淙淙的流水声，悦 耳动听。桥北通向故皇宫，南面是青龙街。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bridge2" {
+    room_id = rooms.bridge2.id
+  south = rooms.qinglong2.id
+  north = rooms.huanggong.id  }
+
+
+  room_characters "bridge2" {
+    room_id = rooms.bridge2.id
+    characters = [
+      { id = characters.yulinjun.id },
+      { id = characters.yulinjun.id },
+      { id = characters.tongling2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/caroad1.c by LPCConverter
+# Zone: changan
+
+    rooms "caroad1" {
+      name = "大道"
+      description = "你走在一条青石大道上，尘土飞扬。西面可以通往军事重 镇兰州。东面是一座大城池，看城墙上旗帜飘扬，好象就是长 安了。西面望去一片黄土和荒野。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caroad1" {
+    room_id = rooms.caroad1.id
+  east = rooms.xi_chengmen.id
+  west = rooms.caroad2.id  }
+
+# Generated from C:/files/git/mud/d/changan/caroad2.c by LPCConverter
+# Zone: changan
+
+    rooms "caroad2" {
+      name = "青石大道"
+      description = "这是一条青石大道。西面可以通往军事重镇兰州。东面隐 约可以看到长安城的城墙。北面有座小山丘。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caroad2" {
+    room_id = rooms.caroad2.id
+  east = rooms.caroad1.id
+  northwest = rooms.caroad8.id  }
+
+# Generated from C:/files/git/mud/d/changan/dangpu.c by LPCConverter
+# Zone: changan
+
+    rooms "dangpu" {
+      name = "萧记当铺"
+      description = "这是长安城里最大的一家当铺了。素来以买卖公平著称。门口挂了 一块牌子 (paizi)。一个三尺高的柜台挡在你的面前，柜台后坐着掌柜 的冯老板，见你走了进来，一双精明的眼睛上上下下打量着你。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dangpu" {
+    room_id = rooms.dangpu.id
+  north = rooms.qixiang3.id  }
+
+# Generated from C:/files/git/mud/d/changan/dong-chengmen.c by LPCConverter
+# Zone: changan
+
+    rooms "dong_chengmen" {
+      name = "长安东城门"
+      description = "长安城的东城门。这里的护城河既深又阔，而且城高墙厚，有一夫 当关，万夫莫开之势，城内还驻扎了两营士兵，远看军营延绵，旌期似 海，颇具慑人之势，仰望城楼，只见城楼高处满布哨兵，剑拔驽张，士 气昂扬。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dong_chengmen" {
+    room_id = rooms.dong_chengmen.id
+  east = rooms.road4.id
+  west = rooms.dongan_daokou.id  }
+
+
+  room_characters "dong_chengmen" {
+    room_id = rooms.dong_chengmen.id
+    characters = [
+      { id = characters.wujiang.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/dongan-dadao.c by LPCConverter
+# Zone: changan
+
+    rooms "dongan_dadao" {
+      name = "东安大道"
+      description = "长安城的主街东安大道颇为热闹，除了本城的居民外，还有不少外 来的旅客和商人。东安大道再向东就是长安城的连德道口、东城门，往 西是故皇宫的冯诩道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongan_dadao" {
+    room_id = rooms.dongan_dadao.id
+  west = rooms.fengxu3.id
+  east = rooms.dongan_daokou.id  }
+
+# Generated from C:/files/git/mud/d/changan/dongan-daokou.c by LPCConverter
+# Zone: changan
+
+    rooms "dongan_daokou" {
+      name = "东安道口"
+      description = "长安城自古是繁华胜地，为数代皇朝建都之地，又为盐商大贾所聚 集，殷富甲于天下。东安道口是一个四通八达的路口，西方有一条大路 通往冯诩道，东面是长安东城门，南北方向是连德大道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongan_daokou" {
+    room_id = rooms.dongan_daokou.id
+  south = rooms.liande_dadao4.id
+  north = rooms.liande_dadao3.id
+  west = rooms.dongan_dadao.id
+  east = rooms.dong_chengmen.id
+  southwest = rooms.bingying6.id  }
+
+# Generated from C:/files/git/mud/d/changan/duchang.c by LPCConverter
+# Zone: changan
+
+    rooms "duchang" {
+      name = "赌场"
+      description = "大厅里摆满大大小小的赌桌，只要能说出名的赌具，这里 都有。进来这里你首先听到的就是少女们吃吃的笑声和男人们 的吹牛声，掷骰子声……在这里，你几乎就可以听到世上所有 不规矩的声音。墙上挂着一块牌子(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "duchang" {
+    room_id = rooms.duchang.id
+  south = rooms.qixiang3.id  }
+
+
+  room_characters "duchang" {
+    room_id = rooms.duchang.id
+    characters = [
+      { id = characters.zhuangjia.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/duchang2.c by LPCConverter
+# Zone: changan
+
+    rooms "duchang2" {
+      name = "赌场"
+      description = "大厅里摆满大大小小的赌桌，只要能说出名的赌具，这里 都有。进来这里你首先听到的就是少女们吃吃的笑声和男人们 的吹牛声，掷骰子声……在这里，你几乎就可以听到世上所有 不规矩的声音。墙上挂着一块牌子(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "duchang2" {
+    room_id = rooms.duchang2.id
+  south = rooms.qixiang3.id  }
+
+
+  room_characters "duchang2" {
+    room_id = rooms.duchang2.id
+    characters = [
+      { id = characters.zhuangjia.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/fangzhangshi.c by LPCConverter
+# Zone: changan
+
+    rooms "fangzhangshi" {
+      name = "方丈室"
+      description = "方丈室很是朴素，房中除了一个木榻和一个书桌之外，再就别无他 物。书桌上放着几本关于佛经的书籍，还有一个破旧的木鱼。木榻上叠 有几方棉布薄被。西面通往大雄宝殿。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fangzhangshi" {
+    room_id = rooms.fangzhangshi.id
+  west = rooms.baodian.id  }
+
+
+  room_characters "fangzhangshi" {
+    room_id = rooms.fangzhangshi.id
+    characters = [
+      { id = characters.huitong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/fengxu1.c by LPCConverter
+# Zone: changan
+
+    rooms "fengxu1" {
+      name = "冯诩道"
+      description = "冯诩道是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fengxu1" {
+    room_id = rooms.fengxu1.id
+  west = rooms.baihu3.id
+  south = rooms.fengxu2.id  }
+
+# Generated from C:/files/git/mud/d/changan/fengxu2.c by LPCConverter
+# Zone: changan
+
+    rooms "fengxu2" {
+      name = "冯诩道"
+      description = "冯诩道是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fengxu2" {
+    room_id = rooms.fengxu2.id
+  north = rooms.fengxu1.id
+  south = rooms.fengxu3.id  }
+
+# Generated from C:/files/git/mud/d/changan/fengxu3.c by LPCConverter
+# Zone: changan
+
+    rooms "fengxu3" {
+      name = "冯诩道"
+      description = "冯诩道是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。东面有一条大路通往长安 城的东城门。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fengxu3" {
+    room_id = rooms.fengxu3.id
+  north = rooms.fengxu2.id
+  south = rooms.fengxu4.id
+  east = rooms.dongan_dadao.id  }
+
+# Generated from C:/files/git/mud/d/changan/fengxu4.c by LPCConverter
+# Zone: changan
+
+    rooms "fengxu4" {
+      name = "冯诩道"
+      description = "冯诩道是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。东面是凌烟阁。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fengxu4" {
+    room_id = rooms.fengxu4.id
+  north = rooms.fengxu3.id
+  south = rooms.fengxu5.id
+  east = rooms.lingyange.id  }
+
+# Generated from C:/files/git/mud/d/changan/fengxu5.c by LPCConverter
+# Zone: changan
+
+    rooms "fengxu5" {
+      name = "冯诩道"
+      description = "冯诩道是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。西面是青龙街，东面是长 安城的巡捕房。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fengxu5" {
+    room_id = rooms.fengxu5.id
+  north = rooms.fengxu4.id
+  west = rooms.qinglong3.id
+  east = rooms.xunbufang.id  }
+
+# Generated from C:/files/git/mud/d/changan/fruit-shop.c by LPCConverter
+# Zone: changan
+
+    rooms "fruit_shop" {
+      name = "水果店"
+      description = "长安城唯一的一家水果店。店里面摆满了一排排的竹筐，筐里有各 式各样的水果。这儿的水果为了保持新鲜，都是每天从城外的果园用快 车运来的。水果店女老板张兰香正热情的招呼着客人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fruit_shop" {
+    room_id = rooms.fruit_shop.id
+  north = rooms.qixiang2.id  }
+
+
+  room_characters "fruit_shop" {
+    room_id = rooms.fruit_shop.id
+    characters = [
+      { id = characters.lanxiang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/fudian1.c by LPCConverter
+# Zone: changan
+
+    rooms "fudian1" {
+      name = "右翼殿"
+      description = "右翼殿虽较皇宫大殿为低，亦高出其他建筑物两丈有多，各由一二 十丈的长廊走道连接皇宫大殿。三座大殿一主二副，自成一个体系，气 象肃森。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fudian1" {
+    room_id = rooms.fudian1.id
+  west = rooms.huanggong.id  }
+
+
+  room_characters "fudian1" {
+    room_id = rooms.fudian1.id
+    characters = [
+      { id = characters.shiwei.id },
+      { id = characters.shiwei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/fudian2.c by LPCConverter
+# Zone: changan
+
+    rooms "fudian2" {
+      name = "左翼殿"
+      description = "左翼殿虽较皇宫大殿为低，亦高出其他建筑物两丈有多，各由一二 十丈的长廊走道连接皇宫大殿。三座大殿一主二副，自成一个体系，气 象肃森。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fudian2" {
+    room_id = rooms.fudian2.id
+  east = rooms.huanggong.id  }
+
+
+  room_characters "fudian2" {
+    room_id = rooms.fudian2.id
+    characters = [
+      { id = characters.shiwei.id },
+      { id = characters.shiwei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/fufeng1.c by LPCConverter
+# Zone: changan
+
+    rooms "fufeng1" {
+      name = "扶风道"
+      description = "扶风道是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。东边是白虎街。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fufeng1" {
+    room_id = rooms.fufeng1.id
+  south = rooms.fufeng2.id
+  east = rooms.baihu1.id  }
+
+# Generated from C:/files/git/mud/d/changan/fufeng2.c by LPCConverter
+# Zone: changan
+
+    rooms "fufeng2" {
+      name = "扶风道"
+      description = "扶风道是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fufeng2" {
+    room_id = rooms.fufeng2.id
+  south = rooms.fufeng3.id
+  north = rooms.fufeng1.id  }
+
+# Generated from C:/files/git/mud/d/changan/fufeng3.c by LPCConverter
+# Zone: changan
+
+    rooms "fufeng3" {
+      name = "扶风道"
+      description = "扶风道是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。西面有一条大路通往长安 城的西城门。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fufeng3" {
+    room_id = rooms.fufeng3.id
+  north = rooms.fufeng2.id
+  south = rooms.fufeng4.id
+  west = rooms.xian_dadao.id  }
+
+# Generated from C:/files/git/mud/d/changan/fufeng4.c by LPCConverter
+# Zone: changan
+
+    rooms "fufeng4" {
+      name = "扶风道"
+      description = "扶风道是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fufeng4" {
+    room_id = rooms.fufeng4.id
+  north = rooms.fufeng3.id
+  south = rooms.fufeng5.id  }
+
+# Generated from C:/files/git/mud/d/changan/fufeng5.c by LPCConverter
+# Zone: changan
+
+    rooms "fufeng5" {
+      name = "扶风道"
+      description = "扶风道是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。东面是青龙街。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fufeng5" {
+    room_id = rooms.fufeng5.id
+  north = rooms.fufeng4.id
+  east = rooms.qinglong1.id  }
+
+# Generated from C:/files/git/mud/d/changan/gongbu-shi.c by LPCConverter
+# Zone: changan
+
+    rooms "gongbu_shi" {
+      name = "工部石厂"
+      description = "这是工部的收集石料，选料打磨的地方。拣选来自全国各地运来的 石料，分门别类，供京城建筑使用。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "gongbu_shi" {
+    room_id = rooms.gongbu_shi.id
+  north = rooms.gongbu.id  }
+
+
+  room_characters "gongbu_shi" {
+    room_id = rooms.gongbu_shi.id
+    characters = [
+      { id = characters.worker_wang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/gongbu-tong.c by LPCConverter
+# Zone: changan
+
+    rooms "gongbu_tong" {
+      name = "工部铜厂"
+      description = "这是工部的冶铜场地，专门拣选来自全国各地运来的铜矿石，然后 溶化冶炼精铜，最后铸成铜锭发到全国各地，当然一个主要用途是用来 铸造国家发行的货币。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "gongbu_tong" {
+    room_id = rooms.gongbu_tong.id
+  south = rooms.gongbu.id  }
+
+
+  room_characters "gongbu_tong" {
+    room_id = rooms.gongbu_tong.id
+    characters = [
+      { id = characters.worker_liu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/gongbu.c by LPCConverter
+# Zone: changan
+
+    rooms "gongbu" {
+      name = "工部"
+      description = "这里是毗邻南安大道的工部工厂集中地区，并没有行政机构，但是 外地运来的各种珍贵资源都在这里加工形成上好的用材，然后封存入库 或是转运各地。附近的工厂里面尽是天下的能工巧匠。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "gongbu" {
+    room_id = rooms.gongbu.id
+  west = rooms.nanan_dadao.id
+  north = rooms.gongbu_tong.id
+  south = rooms.gongbu_shi.id  }
+
+# Generated from C:/files/git/mud/d/changan/guozijian.c by LPCConverter
+# Zone: changan
+
+    rooms "guozijian" {
+      name = "国子监"
+      description = "国子监是朝廷培养人才的地方。高高低低的桌子排了两排。在这里 不时可以看到三三两两的学生模样的人大声争辩着什么问题，还有一些 老先生们蹙着眉头匆匆的走过，象是在思考着什么问题。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guozijian" {
+    room_id = rooms.guozijian.id
+  south = rooms.baihu3.id  }
+
+
+  room_characters "guozijian" {
+    room_id = rooms.guozijian.id
+    characters = [
+      { id = characters.xueshi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/huadian.c by LPCConverter
+# Zone: changan
+
+    rooms "huadian" {
+      name = "花店"
+      description = "还没进门，你就已经闻到一股清新的花香。店中各种名花，玲琅满 目，不乏珍奇异种。来客不分高低贵贱，这里的主人总是笑脸相迎。许 多城中的小伙子都喜欢在这儿逗留，想挑选一些美丽的鲜花送给心上的 姑娘。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huadian" {
+    room_id = rooms.huadian.id
+  south = rooms.huarui3.id  }
+
+
+  room_characters "huadian" {
+    room_id = rooms.huadian.id
+    characters = [
+      { id = characters.girl.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/huanggong.c by LPCConverter
+# Zone: changan
+
+    rooms "huanggong" {
+      name = "皇宫大殿"
+      description = "皇宫大殿坐落全宫核心，左右是两个偏殿，各有一条约二十丈长的 廊道相连，如两边飞出雁翼。两个副殿，以左翼殿和右翼殿为名。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huanggong" {
+    room_id = rooms.huanggong.id
+  south = rooms.bridge2.id
+  north = rooms.bridge1.id
+  east = rooms.fudian1.id
+  west = rooms.fudian2.id  }
+
+
+  room_characters "huanggong" {
+    room_id = rooms.huanggong.id
+    characters = [
+      { id = characters.shiwei.id },
+      { id = characters.shiwei.id },
+      { id = characters.shiwei.id },
+      { id = characters.shiwei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/huarui1.c by LPCConverter
+# Zone: changan
+
+    rooms "huarui1" {
+      name = "华瑞街"
+      description = "华瑞街是长安城南一条东西向的大道，也是长安城的居民区。一条 碎石子铺成的街坊，南边可见一些民居住宅，街头有炊烟袅袅飘来青柴 的香味。不远处传来家家户户舂米的声音，还有大户人家榨香油的醇香 味。路边三五个小孩正在拍手唱歌玩耍着。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huarui1" {
+    room_id = rooms.huarui1.id
+  north = rooms.majiu.id
+  south = rooms.minju1.id
+  west = rooms.yongtai_nankou.id
+  east = rooms.huarui2.id  }
+
+# Generated from C:/files/git/mud/d/changan/huarui2.c by LPCConverter
+# Zone: changan
+
+    rooms "huarui2" {
+      name = "华瑞街"
+      description = "华瑞街是长安城南一条东西向的大道，也是长安城的居民区。一条 碎石子铺成的街坊，南边可见一些民居住宅，北面是一家小面馆，街头 有炊烟袅袅飘来青柴的香味。不远处传来家家户户舂米的声音，还有大 户人家榨香油的醇香味。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huarui2" {
+    room_id = rooms.huarui2.id
+  south = rooms.minju2.id
+  north = rooms.mianguan.id
+  west = rooms.huarui1.id
+  east = rooms.huarui3.id  }
+
+# Generated from C:/files/git/mud/d/changan/huarui3.c by LPCConverter
+# Zone: changan
+
+    rooms "huarui3" {
+      name = "华瑞街"
+      description = "华瑞街是长安城南一条东西向的大道，也是长安城的居民区。一条 碎石子铺成的街坊，南边可见一些民居住宅，北面是一家花店，街头有 炊烟袅袅飘来青柴的香味。不远处传来家家户户舂米的声音，还有大户 人家榨香油的醇香味。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huarui3" {
+    room_id = rooms.huarui3.id
+  south = rooms.minju3.id
+  north = rooms.huadian.id
+  west = rooms.huarui2.id
+  east = rooms.nanan_daokou.id  }
+
+# Generated from C:/files/git/mud/d/changan/huarui4.c by LPCConverter
+# Zone: changan
+
+    rooms "huarui4" {
+      name = "华瑞街"
+      description = "华瑞街是长安城南一条东西向的大道，也是长安城的居民区。一条 碎石子铺成的街坊，南边可见一些民居住宅，北面是小镜湖，街头有炊 烟袅袅飘来青柴的香味。不远处传来家家户户舂米的声音，还有大户人 家榨香油的醇香味。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huarui4" {
+    room_id = rooms.huarui4.id
+  south = rooms.minju4.id
+  north = rooms.xiaojinghu.id
+  west = rooms.nanan_daokou.id
+  east = rooms.huarui5.id  }
+
+# Generated from C:/files/git/mud/d/changan/huarui5.c by LPCConverter
+# Zone: changan
+
+    rooms "huarui5" {
+      name = "华瑞街"
+      description = "华瑞街是长安城南一条东西向的大道，也是长安城的居民区。一条 碎石子铺成的街坊，南边可见一些民居住宅，街头有炊烟袅袅飘来青柴 的香味。不远处传来家家户户舂米的声音，还有大户人家榨香油的醇香 味。路边三五个小孩正在拍手唱歌玩耍着。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huarui5" {
+    room_id = rooms.huarui5.id
+  south = rooms.minju5.id
+  west = rooms.huarui4.id
+  east = rooms.huarui6.id
+  north = rooms.zahuopu.id  }
+
+# Generated from C:/files/git/mud/d/changan/huarui6.c by LPCConverter
+# Zone: changan
+
+    rooms "huarui6" {
+      name = "华瑞街"
+      description = "华瑞街是长安城南一条东西向的大道，也是长安城的居民区。一条 碎石子铺成的街坊，南边可见一些民居住宅，街头有炊烟袅袅飘来青柴 的香味。不远处传来家家户户舂米的声音，还有大户人家榨香油的醇香 味。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huarui6" {
+    room_id = rooms.huarui6.id
+  south = rooms.minju6.id
+  north = rooms.tuchangguan.id
+  west = rooms.huarui5.id
+  east = rooms.liande_nankou.id  }
+
+# Generated from C:/files/git/mud/d/changan/huiwenge.c by LPCConverter
+# Zone: changan
+
+    rooms "huiwenge" {
+      name = "汇文阁"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huiwenge" {
+    room_id = rooms.huiwenge.id
+  west = rooms.yongtai_dadao3.id  }
+
+
+  room_characters "huiwenge" {
+    room_id = rooms.huiwenge.id
+    characters = [
+      { id = characters.shuchi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/huozhan.c by LPCConverter
+# Zone: changan
+
+    rooms "huozhan" {
+      name = "货栈"
+      description = "这是一家生意兴隆货栈。货栈门口车来车往，几个活计在忙忙碌碌 地工作着，地上放着一些刚刚运来的货物。屋里面整齐的排列着几排货 架，货架上堆着各式各样的杂货，有一个掌柜模样的人坐在柜台后面笑 容可鞠地招呼着客人。货栈的墙上贴着一张破旧的告示(gaoshi)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ gaoshi = "现在正紧缺人手，急需雇佣一批短工来干活。 work    开始工作。"
+}
+    }
+
+  room_exits "huozhan" {
+    room_id = rooms.huozhan.id
+  west = rooms.yongtai_dadao1.id  }
+
+
+  room_characters "huozhan" {
+    room_id = rooms.huozhan.id
+    characters = [
+      { id = characters.liang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/jiulou.c by LPCConverter
+# Zone: changan
+
+    rooms "jiulou" {
+      name = "望星楼"
+      description = "望星楼飞檐碧瓦，酒幌高挑，是个二层楼。楼上设有回廊，雕梁画 柱，华丽铺排。下面是青砖墙皮，洞开的小窗绘成红框，十分素雅。楼 上正中，挂着一块黑漆漆的横匾，上面的三个绣金大字“望星楼”是以 狂草书成，笔力雄劲，灵动欲飞。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jiulou" {
+    room_id = rooms.jiulou.id
+  south = rooms.qixiang1.id
+  up = rooms.jiulou2.id  }
+
+
+  room_characters "jiulou" {
+    room_id = rooms.jiulou.id
+    characters = [
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/jiulou2.c by LPCConverter
+# Zone: changan
+
+    rooms "jiulou2" {
+      name = "望星楼二楼"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jiulou2" {
+    room_id = rooms.jiulou2.id
+  down = rooms.jiulou.id  }
+
+
+  room_characters "jiulou2" {
+    room_id = rooms.jiulou2.id
+    characters = [
+      { id = characters.yang_laoban.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/kezhan.c by LPCConverter
+# Zone: changan
+
+    rooms "kezhan" {
+      name = "悦宾客栈"
+      description = "这家客栈长安城里最大的，最昂贵的客栈，也是花钱的客栈。你若 住在这客栈里，只要你有足够的钱，根本用不着走出客栈的门，就可以 获得一切最好的享受。在这里，只要你开口，就有人会将长安城里最好 的菜，最出名的歌妓，最美的女人送到你屋里来。墙上挂着一个牌子。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：!me->query_temp("rent_paid") && dir == "up" 
+direction = "up"
+  message = "店小二满脸堆笑地挡住了你：对不起，上面是客人的卧房，不是本店的客人，不能上去。"
+}
+
+]
+    }
+
+  room_exits "kezhan" {
+    room_id = rooms.kezhan.id
+  north = rooms.qixiang1.id
+  up = rooms.kzsleep.id  }
+
+# Generated from C:/files/git/mud/d/changan/kzsleep.c by LPCConverter
+# Zone: changan
+
+    rooms "kzsleep" {
+      name = "客店睡房"
+      description = "客栈的一间睡房，房间里打扫得干干净净，不时的可以听到从隔壁 客房里传出呼呼的打酣声，墙角有一张软塌（ｂｅｄ），是供客人们休 息睡觉用的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kzsleep" {
+    room_id = rooms.kzsleep.id
+  down = rooms.kezhan.id  }
+
+# Generated from C:/files/git/mud/d/changan/laofang.c by LPCConverter
+# Zone: changan
+
+    rooms "laofang" {
+      name = "牢房"
+      description = "这是一间牢房，室内昏暗无光，只有借着一碗口大的小洞射进来的 余光，才使人视力模糊的依稀见物。西边角落里堆放着一些已经腐烂的 稻草，室内并不暗潮，甚至还有一张简陋的旧床，牢门是用一根根手臂 粗的铁棍做成的，中间有许多的空隙，室外的光线可以射进来。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/changan/liande-beikou.c by LPCConverter
+# Zone: changan
+
+    rooms "liande_beikou" {
+      name = "连德北口"
+      description = "麒祥街的东尽头，一根三丈多高的旗杆之上，挑起了四盏斗大的灯 笼，每当暮色降临，这里灯火通明。北面有一座竹棚，里面隐隐传来唱 戏的声音。南方通向连德大道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liande_beikou" {
+    room_id = rooms.liande_beikou.id
+  west = rooms.qixiang6.id
+  north = rooms.xiyuan.id
+  south = rooms.liande_dadao1.id  }
+
+# Generated from C:/files/git/mud/d/changan/liande-dadao1.c by LPCConverter
+# Zone: changan
+
+    rooms "liande_dadao1" {
+      name = "连德大道"
+      description = "城内街道，以南北三条并行的大街，和东西的二条主街互相交错而 成。五条大街在这清朗的夜初，却见人来车往，灯火通明，别有一番热 闹。其他小街横巷，则依这些主街交错布置，井然有序。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liande_dadao1" {
+    room_id = rooms.liande_dadao1.id
+  south = rooms.liande_dadao2.id
+  north = rooms.liande_beikou.id  }
+
+# Generated from C:/files/git/mud/d/changan/liande-dadao2.c by LPCConverter
+# Zone: changan
+
+    rooms "liande_dadao2" {
+      name = "连德大道"
+      description = "城内街道，以南北三条并行的大街，和东西的二条主街互相交错而 成。五条大街在这清朗的夜初，却见人来车往，灯火通明，别有一番热 闹。其他小街横巷，则依这些主街交错布置，井然有序。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liande_dadao2" {
+    room_id = rooms.liande_dadao2.id
+  south = rooms.liande_dadao3.id
+  north = rooms.liande_dadao1.id  }
+
+# Generated from C:/files/git/mud/d/changan/liande-dadao3.c by LPCConverter
+# Zone: changan
+
+    rooms "liande_dadao3" {
+      name = "连德大道"
+      description = "城内街道，以南北三条并行的大街，和东西的二条主街互相交错而 成。五条大街在这清朗的夜初，却见人来车往，灯火通明，别有一番热 闹。其他小街横巷，则依这些主街交错布置，井然有序。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liande_dadao3" {
+    room_id = rooms.liande_dadao3.id
+  south = rooms.dongan_daokou.id
+  north = rooms.liande_dadao2.id  }
+
+# Generated from C:/files/git/mud/d/changan/liande-dadao4.c by LPCConverter
+# Zone: changan
+
+    rooms "liande_dadao4" {
+      name = "连德大道"
+      description = "城内街道，以南北三条并行的大街，和东西的二条主街互相交错而 成。五条大街在这清朗的夜初，却见人来车往，灯火通明，别有一番热 闹。其他小街横巷，则依这些主街交错布置，井然有序。东面是一座城 隍庙。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liande_dadao4" {
+    room_id = rooms.liande_dadao4.id
+  south = rooms.liande_dadao5.id
+  north = rooms.dongan_daokou.id  }
+
+# Generated from C:/files/git/mud/d/changan/liande-dadao5.c by LPCConverter
+# Zone: changan
+
+    rooms "liande_dadao5" {
+      name = "连德大道"
+      description = "城内街道，以南北三条并行的大街，和东西的二条主街互相交错而 成。五条大街在这清朗的夜初，却见人来车往，灯火通明，别有一番热 闹。其他小街横巷，则依这些主街交错布置，井然有序。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liande_dadao5" {
+    room_id = rooms.liande_dadao5.id
+  south = rooms.liande_nankou.id
+  north = rooms.liande_dadao4.id
+  east = rooms.xiaojia_qianyuan.id  }
+
+# Generated from C:/files/git/mud/d/changan/liande-nankou.c by LPCConverter
+# Zone: changan
+
+    rooms "liande_nankou" {
+      name = "连德南口"
+      description = "华瑞街的东尽头，一根三丈多高的旗杆之上，挑起了四盏斗大的灯 笼，每当暮色降临，这里灯火通明。南面有一家小酒馆，里面隐隐传来 划拳行令的声音。北方通向连德大道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liande_nankou" {
+    room_id = rooms.liande_nankou.id
+  west = rooms.huarui6.id
+  north = rooms.liande_dadao5.id
+  south = rooms.xiaojiuguan.id  }
+
+# Generated from C:/files/git/mud/d/changan/lingyange.c by LPCConverter
+# Zone: changan
+
+    rooms "lingyange" {
+      name = "凌烟阁"
+      description = "窄窄的门，窄窄的楼梯，布置清雅的房间，窗户都很宽大从窗内看 出去，满城秋色俱在眼前。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lingyange" {
+    room_id = rooms.lingyange.id
+  west = rooms.fengxu4.id  }
+
+# Generated from C:/files/git/mud/d/changan/lzroad.c by LPCConverter
+# Zone: changan
+
+    rooms "lzroad" {
+      name = "土路"
+      description = "这是一条黄土飞扬的路，不算太宽，给人一种落寞的感觉，路 边零零散散的分布着几片小田地，偶然也能看得见一些炊烟。四周 一片的荒寂。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lzroad" {
+    room_id = rooms.lzroad.id
+  west = rooms.dongmen.id
+  east = rooms.tulu2.id  }
+
+# Generated from C:/files/git/mud/d/changan/majiu.c by LPCConverter
+# Zone: changan
+
+    rooms "majiu" {
+      name = "马厩"
+      description = "这里是长安城的马厩，常年供应新鲜草料。长安民众富裕 来往商贾甚多，因此马夫们对马好生照看，将它们喂饱饮足再 洗刷得干乾净净，一直伺候到客人上路。马厩雨檐下的烂木柱 上钉着块破木牌 (paizi)。马厩中堆放著几堆草料。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+  south = rooms.huarui1.id
+  up = rooms.changan_shop.id  }
+
+
+  room_characters "majiu" {
+    room_id = rooms.majiu.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu" {
+    room_id = rooms.majiu.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/mianguan.c by LPCConverter
+# Zone: changan
+
+    rooms "mianguan" {
+      name = "面馆"
+      description = "据说这面馆十几年前就在这里了，而且不论刮风下雨，不论过年过 节，这面馆从未休息过一天。所以城里的夜游神都放心得很，因为就算 回家老婆不开门，至少还可以在老张的面馆里吃上一碗热气腾腾的牛肉 面。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mianguan" {
+    room_id = rooms.mianguan.id
+  south = rooms.huarui2.id  }
+
+
+  room_characters "mianguan" {
+    room_id = rooms.mianguan.id
+    characters = [
+      { id = characters.laozhang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/miao.c by LPCConverter
+# Zone: changan
+
+    rooms "miao" {
+      name = "城隍庙"
+      description = "庙有一大半倾塌了，本来就不大，现在就显得更小了，不过小无减 于它的慑人气氛。没有倾塌的是神殿的一角，而且刚好是神像所在的地 方，所以那尊土塑的山神还算是完好的。这也不知是比照哪一位尊神所 塑的像？青面潦牙，眼睛瞪得像两枚铜铃，而且还熠熠发光。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "miao" {
+    room_id = rooms.miao.id
+  west = rooms.yongtai_dadao4.id  }
+
+
+  room_characters "miao" {
+    room_id = rooms.miao.id
+    characters = [
+      { id = characters.keeper.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/minju1.c by LPCConverter
+# Zone: changan
+
+    rooms "minju1" {
+      name = "民居"
+      description = "这里是一家民居住房，窗台上放着大大小的小陶盆瓷罐，里面种着 花草之类的东西，两扇窗子大开，飘出一股花草的清香味。民居里十分 热闹，一张大木桌子，周围放着几把椅子，几个邻里凑在一起，不知在 谈什么。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "minju1" {
+    room_id = rooms.minju1.id
+  north = rooms.huarui1.id  }
+
+# Generated from C:/files/git/mud/d/changan/minju2.c by LPCConverter
+# Zone: changan
+
+    rooms "minju2" {
+      name = "民居"
+      description = "房间里甚是宽敞，里面摆设朴素而自然，左侧是一个古色古色的精 雅梳妆台，前面摆有两张红木圆椅。右侧墙壁上挂有一幅美女抚琴图， 上面配有几行笔迹清秀的隶体小字，内侧则是一张红色帐幔垂挂的低矮 木榻。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "minju2" {
+    room_id = rooms.minju2.id
+  north = rooms.huarui2.id  }
+
+# Generated from C:/files/git/mud/d/changan/minju3.c by LPCConverter
+# Zone: changan
+
+    rooms "minju3" {
+      name = "民居"
+      description = "这所房子看起来好像已经很久没人住了。雕花漆彩的门窗已是破败 不堪，满目蛛丝鼠粪，墙上地下到处都是灰尘，一只老鼠跑来跑去。院 子里杂草丛生，宅外墙满是青苔蜘网，显得既荒凉又阴森。四周死一般 的沉寂。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "minju3" {
+    room_id = rooms.minju3.id
+  north = rooms.huarui3.id  }
+
+# Generated from C:/files/git/mud/d/changan/minju4.c by LPCConverter
+# Zone: changan
+
+    rooms "minju4" {
+      name = "民居"
+      description = "这里是一家民居住房，窗台上放着大大小的小陶盆瓷罐，里面种着 花草之类的东西，两扇窗子大开，飘出一股花草的清香味。民居里十分 热闹，一张大木桌子，周围放着几把椅子，几个邻里凑在一起，不知在 谈什么。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "minju4" {
+    room_id = rooms.minju4.id
+  north = rooms.huarui4.id  }
+
+# Generated from C:/files/git/mud/d/changan/minju5.c by LPCConverter
+# Zone: changan
+
+    rooms "minju5" {
+      name = "民居"
+      description = "房间里甚是宽敞，里面摆设朴素而自然，左侧是一个古色古色的精 雅梳妆台，前面摆有两张红木圆椅。右侧墙壁上挂有一幅美女抚琴图， 上面配有几行笔迹清秀的隶体小字，内侧则是一张红色帐幔垂挂的低矮 木榻。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "minju5" {
+    room_id = rooms.minju5.id
+  north = rooms.huarui5.id  }
+
+# Generated from C:/files/git/mud/d/changan/minju6.c by LPCConverter
+# Zone: changan
+
+    rooms "minju6" {
+      name = "民居"
+      description = "这所房子看起来好像已经很久没人住了。雕花漆彩的门窗已是破败 不堪，满目蛛丝鼠粪，墙上地下到处都是灰尘，一只老鼠跑来跑去。院 子里杂草丛生，宅外墙满是青苔蜘网，显得既荒凉又阴森。四周死一般 的沉寂。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "minju6" {
+    room_id = rooms.minju6.id
+  north = rooms.huarui6.id  }
+
+# Generated from C:/files/git/mud/d/changan/nan-chengmen.c by LPCConverter
+# Zone: changan
+
+    rooms "nan_chengmen" {
+      name = "长安南城门"
+      description = "长安城的南城门。这里的护城河既深又阔，而且城高墙厚，有一夫 当关，万夫莫开之势，城内还驻扎了两营士兵，远看军营延绵，旌期似 海，颇具慑人之势，仰望城楼，只见城楼高处满布哨兵，剑拔驽张，士 气昂扬，从这里出去不远就是兵家要地武功镇。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nan_chengmen" {
+    room_id = rooms.nan_chengmen.id
+  southwest = rooms.guandao1.id
+  north = rooms.nanan_daokou.id  }
+
+
+  room_characters "nan_chengmen" {
+    room_id = rooms.nan_chengmen.id
+    characters = [
+      { id = characters.wujiang.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/nanan-dadao.c by LPCConverter
+# Zone: changan
+
+    rooms "nanan_dadao" {
+      name = "南安大道"
+      description = "长安城的主街南安大道颇为热闹，除了本城的居民外，还有不少外 来的旅客和商人。南安大道再向南就是长安城的南城门，往北是故皇宫 的青龙街。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nanan_dadao" {
+    room_id = rooms.nanan_dadao.id
+  south = rooms.nanan_daokou.id
+  north = rooms.qinglong2.id
+  east = rooms.gongbu.id  }
+
+# Generated from C:/files/git/mud/d/changan/nanan-daokou.c by LPCConverter
+# Zone: changan
+
+    rooms "nanan_daokou" {
+      name = "南安道口"
+      description = "长安城自古是繁华胜地，为数代皇朝建都之地，又为盐商大贾所聚 集，殷富甲于天下。南安道口是一个四通八达的路口，东西方向通往华 瑞街，南面是长安南城门，北方有一条大路通到故皇宫的金水桥。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nanan_daokou" {
+    room_id = rooms.nanan_daokou.id
+  south = rooms.nan_chengmen.id
+  north = rooms.nanan_dadao.id
+  west = rooms.huarui3.id
+  east = rooms.huarui4.id
+  northeast = rooms.bingying4.id
+  northwest = rooms.bingying5.id  }
+
+# Generated from C:/files/git/mud/d/changan/piandian.c by LPCConverter
+# Zone: changan
+
+    rooms "piandian" {
+      name = "偏殿"
+      description = "偏殿里气氛宁静，灵台高筑，依次摆列着八菩萨的佛象。这里香火 也是不断，地上铺着一些蒲团。但见南面两侧一动也不动地盘坐著两名 枯瘦的老僧，左首那僧脸色通红，左手捏个拈花抉，右手合指朝天；右 首那僧却脸色青绿，右手捏著拈花抉，左手合指朝天。二僧姿式一模一 样，却偏生左右相反。东边殿门通向大雄宝殿，"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "piandian" {
+    room_id = rooms.piandian.id
+  east = rooms.baodian.id  }
+
+
+  room_characters "piandian" {
+    room_id = rooms.piandian.id
+    characters = [
+      { id = characters.jingxuan.id },
+      { id = characters.jingming.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/prison.c by LPCConverter
+# Zone: changan
+
+    rooms "prison" {
+      name = "大牢"
+      description = "这里黑乎乎的，地上的茅草也是湿漉漉的，让你感到极不舒服，想 起在监外自由自在的日子，你心里真是万分难过。     旁边有一个牌子(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ paizi = "越狱者罪加一等。"
+}
+    }
+
+# Generated from C:/files/git/mud/d/changan/qinglong1.c by LPCConverter
+# Zone: changan
+
+    rooms "qinglong1" {
+      name = "青龙街"
+      description = "青龙街是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。南面有一座很具规模的寺 院。偶尔有颂经之声传出。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qinglong1" {
+    room_id = rooms.qinglong1.id
+  south = rooms.baoxiangsi.id
+  west = rooms.fufeng5.id
+  east = rooms.qinglong2.id  }
+
+# Generated from C:/files/git/mud/d/changan/qinglong2.c by LPCConverter
+# Zone: changan
+
+    rooms "qinglong2" {
+      name = "青龙街"
+      description = "青龙街是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。往北就是故皇宫的金水桥 了，南面有一条大路通向长安城南门。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qinglong2" {
+    room_id = rooms.qinglong2.id
+  north = rooms.bridge2.id
+  south = rooms.nanan_dadao.id
+  west = rooms.qinglong1.id
+  east = rooms.qinglong3.id  }
+
+
+  room_characters "qinglong2" {
+    room_id = rooms.qinglong2.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/qinglong3.c by LPCConverter
+# Zone: changan
+
+    rooms "qinglong3" {
+      name = "青龙街"
+      description = "青龙街是长安城中心大街，青石板路笔直的伸展出去，一路上行人 比肩，笙歌处处。景物之美，直如神仙境地。南面就是长安府的总督衙 门了。因为有它建在这里，所以这里的治安很好，大街上的行人也并不 用为安全担心。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qinglong3" {
+    room_id = rooms.qinglong3.id
+  south = rooms.yamen.id
+  west = rooms.qinglong2.id
+  east = rooms.fengxu5.id  }
+
+# Generated from C:/files/git/mud/d/changan/qixiang1.c by LPCConverter
+# Zone: changan
+
+    rooms "qixiang1" {
+      name = "麒祥街"
+      description = "麒祥街是长安城北一条东西向的大道，街面宽敞洁净，街上十分热 闹，人来人往川流不息。大街的两旁商家云集，大大小小的店铺比邻而 立。街的北边有一座酒楼，对面是一家客栈。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qixiang1" {
+    room_id = rooms.qixiang1.id
+  south = rooms.kezhan.id
+  north = rooms.jiulou.id
+  west = rooms.yongtai_beikou.id
+  east = rooms.qixiang2.id  }
+
+# Generated from C:/files/git/mud/d/changan/qixiang2.c by LPCConverter
+# Zone: changan
+
+    rooms "qixiang2" {
+      name = "麒祥街"
+      description = "麒祥街是长安城北一条东西向的大道，街面宽敞洁净，街上十分热 闹，人来人往川流不息。大街的两旁商家云集，大大小小的店铺比邻而 立。街的北边熙熙攘攘的是一家茶馆，茶馆的对面是一家水果店。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qixiang2" {
+    room_id = rooms.qixiang2.id
+  south = rooms.fruit_shop.id
+  north = rooms.tea_shop.id
+  west = rooms.qixiang1.id
+  east = rooms.qixiang3.id  }
+
+# Generated from C:/files/git/mud/d/changan/qixiang3.c by LPCConverter
+# Zone: changan
+
+    rooms "qixiang3" {
+      name = "麒祥街"
+      description = "麒祥街是长安城北一条东西向的大道，街面宽敞洁净，街上十分热 闹，人来人往川流不息。大街的两旁商家云集，大大小小的店铺比邻而 立。街的北边是一家赌场，出出入入的人有喜有忧。赌场的老板为了方 便客人，就又在麒祥街对面开了一家当铺。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qixiang3" {
+    room_id = rooms.qixiang3.id
+  south = rooms.dangpu.id
+  north = rooms.duchang.id
+  west = rooms.qixiang2.id
+  east = rooms.beian_daokou.id  }
+
+# Generated from C:/files/git/mud/d/changan/qixiang4.c by LPCConverter
+# Zone: changan
+
+    rooms "qixiang4" {
+      name = "麒祥街"
+      description = "麒祥街是长安城北一条东西向的大道，街面宽敞洁净，街上十分热 闹，人来人往川流不息。大街的两旁商家云集，大大小小的店铺比邻而 立。北边是一家钱庄，可以听到叮叮当当的金银声音。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qixiang4" {
+    room_id = rooms.qixiang4.id
+  south = rooms.qunyulou.id
+  north = rooms.bank.id
+  west = rooms.beian_daokou.id
+  east = rooms.qixiang5.id  }
+
+# Generated from C:/files/git/mud/d/changan/qixiang5.c by LPCConverter
+# Zone: changan
+
+    rooms "qixiang5" {
+      name = "麒祥街"
+      description = "麒祥街是长安城北一条东西向的大道，街面宽敞洁净，街上十分热 闹，人来人往川流不息。大街的两旁商家云集，大大小小的店铺比邻而 立。北边是一家首饰店，南边就是长安城有名的河洛镖局。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qixiang5" {
+    room_id = rooms.qixiang5.id
+  south = rooms.biaoju_damen.id
+  north = rooms.shoushi_dian.id
+  west = rooms.qixiang4.id
+  east = rooms.qixiang6.id  }
+
+# Generated from C:/files/git/mud/d/changan/qixiang6.c by LPCConverter
+# Zone: changan
+
+    rooms "qixiang6" {
+      name = "麒祥街"
+      description = "麒祥街是长安城北一条东西向的大道，街面宽敞洁净，街上十分热 闹，人来人往川流不息。大街的两旁商家云集，大大小小的店铺比邻而 立。北边是一家药店，往东就到了和连德大道交叉的连德北口。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qixiang6" {
+    room_id = rooms.qixiang6.id
+  south = rooms.weapon_shop.id
+  north = rooms.yaopu.id
+  west = rooms.qixiang5.id
+  east = rooms.liande_beikou.id  }
+
+# Generated from C:/files/git/mud/d/changan/qunyulou.c by LPCConverter
+# Zone: changan
+
+    rooms "qunyulou" {
+      name = "群玉楼"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(string)me->query("gender")=="女性"
+direction = ~
+  message = "一把抓住了你，说道:“这里不是女人该来的地方，你别进去。”"
+}
+,
+{
+   # 阻挡条件（原样保留）：(int)inv[i]->query("weapon_prop")
+direction = ~
+  message = "一把抓住了你，说道：“咱们这里是有规矩的地方，不准带武器进入。”"
+}
+
+]
+    }
+
+  room_exits "qunyulou" {
+    room_id = rooms.qunyulou.id
+  north = rooms.qixiang4.id
+  south = rooms.qunyulou1.id  }
+
+
+  room_characters "qunyulou" {
+    room_id = rooms.qunyulou.id
+    characters = [
+      { id = characters.dashou.id },
+      { id = characters.dashou.id },
+      { id = characters.dashou.id },
+      { id = characters.dashou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/qunyulou1.c by LPCConverter
+# Zone: changan
+
+    rooms "qunyulou1" {
+      name = "群玉楼大厅"
+      description = "群玉楼大厅。三面都糊着纱窗，窗棂纵横交错，分成大小格式的花 纹，每一格都有一方小玻璃镶嵌着，显得甚为雅致，玻璃内灯光流映生 辉，案头所供养的梅花，疏影横斜，也贴在玻璃窗上。炫目的朝阳从琉 璃窗格透入，微风轻拂，缕缕幽香，沁人心脾。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qunyulou1" {
+    room_id = rooms.qunyulou1.id
+  north = rooms.qunyulou.id
+  up = rooms.qunyulou2.id  }
+
+
+  room_characters "qunyulou1" {
+    room_id = rooms.qunyulou1.id
+    characters = [
+      { id = characters.lingfeixue.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/qunyulou2.c by LPCConverter
+# Zone: changan
+
+    rooms "qunyulou2" {
+      name = "群玉楼二楼"
+      description = "群玉楼二楼。这是一座三层高的小楼，本来是某一位大亨陪同夫人 赏月之处，现在已被群玉楼用重金买下。只听一声声划拳行令，加杂着 女人的娇笑，不时的从房间中传出。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qunyulou2" {
+    room_id = rooms.qunyulou2.id
+  north = rooms.qunyuys1.id
+  south = rooms.qunyuys2.id
+  west = rooms.qunyuys3.id
+  east = rooms.qunyuys4.id
+  down = rooms.qunyulou1.id
+  up = rooms.qunyulou3.id  }
+
+
+  room_characters "qunyulou2" {
+    room_id = rooms.qunyulou2.id
+    characters = [
+      { id = characters.fuyun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/qunyulou3.c by LPCConverter
+# Zone: changan
+
+    rooms "qunyulou3" {
+      name = "群玉楼三楼"
+      description = "群玉楼三楼。这是一座三层高的小楼，本来是某一位大亨陪同夫人 赏月之处，现在已被群玉楼用重金买下。只听一声声划拳行令，加杂着 女人的娇笑，不时的从房间中传出。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qunyulou3" {
+    room_id = rooms.qunyulou3.id
+  north = rooms.qunyuys5.id
+  south = rooms.qunyuys6.id
+  west = rooms.qunyuys7.id
+  east = rooms.qunyuys8.id
+  down = rooms.qunyulou2.id  }
+
+# Generated from C:/files/git/mud/d/changan/qunyums.c by LPCConverter
+# Zone: changan
+
+    rooms "qunyums" {
+      name = "群玉楼密室"
+      description = "屋子里面布置得简单而富有情趣。房间很宽敞，悬挂着几盆花花草 草，红绿相间，疏密有致，令人赏心悦目。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qunyums" {
+    room_id = rooms.qunyums.id
+  south = rooms.qunyuys8.id  }
+
+
+  room_characters "qunyums" {
+    room_id = rooms.qunyums.id
+    characters = [
+      { id = characters.dashou.id },
+      { id = characters.dashou.id },
+      { id = characters.dashou.id },
+      { id = characters.dashou.id },
+      { id = characters.xiangxiang.id },
+      { id = characters.huangyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/qunyuys1.c by LPCConverter
+# Zone: changan
+
+    rooms "qunyuys1" {
+      name = "群玉楼雅室"
+      description = "一间雅室。房中放着一张大床，床上铺着绣花的锦被和枕头。湘绣 驰名天下，大红锦被上绣的是一对戏水鸳鸯，颜色灿烂，栩栩欲活。几 上点着一根红烛，红烛旁是一面明镜，一只梳妆箱子。床前地下两对绣 花拖鞋，一对男的，一对女的，并排而置。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qunyuys1" {
+    room_id = rooms.qunyuys1.id
+  south = rooms.qunyulou2.id  }
+
+
+  room_characters "qunyuys1" {
+    room_id = rooms.qunyuys1.id
+    characters = [
+      { id = characters.hongyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/qunyuys2.c by LPCConverter
+# Zone: changan
+
+    rooms "qunyuys2" {
+      name = "群玉楼雅室"
+      description = "一间雅室。房中放着一张大床，床上铺着绣花的锦被和枕头。湘绣 驰名天下，大红锦被上绣的是一对戏水鸳鸯，颜色灿烂，栩栩欲活。几 上点着一根红烛，红烛旁是一面明镜，一只梳妆箱子。床前地下两对绣 花拖鞋，一对男的，一对女的，并排而置。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qunyuys2" {
+    room_id = rooms.qunyuys2.id
+  north = rooms.qunyulou2.id  }
+
+
+  room_characters "qunyuys2" {
+    room_id = rooms.qunyuys2.id
+    characters = [
+      { id = characters.luyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/qunyuys3.c by LPCConverter
+# Zone: changan
+
+    rooms "qunyuys3" {
+      name = "群玉楼雅室"
+      description = "一间雅室。房中放着一张大床，床上铺着绣花的锦被和枕头。湘绣 驰名天下，大红锦被上绣的是一对戏水鸳鸯，颜色灿烂，栩栩欲活。几 上点着一根红烛，红烛旁是一面明镜，一只梳妆箱子。床前地下两对绣 花拖鞋，一对男的，一对女的，并排而置。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qunyuys3" {
+    room_id = rooms.qunyuys3.id
+  east = rooms.qunyulou2.id  }
+
+
+  room_characters "qunyuys3" {
+    room_id = rooms.qunyuys3.id
+    characters = [
+      { id = characters.ziyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/qunyuys4.c by LPCConverter
+# Zone: changan
+
+    rooms "qunyuys4" {
+      name = "群玉楼雅室"
+      description = "一间雅室。房中放着一张大床，床上铺着绣花的锦被和枕头。湘绣 驰名天下，大红锦被上绣的是一对戏水鸳鸯，颜色灿烂，栩栩欲活。几 上点着一根红烛，红烛旁是一面明镜，一只梳妆箱子。床前地下两对绣 花拖鞋，一对男的，一对女的，并排而置。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qunyuys4" {
+    room_id = rooms.qunyuys4.id
+  west = rooms.qunyulou2.id  }
+
+
+  room_characters "qunyuys4" {
+    room_id = rooms.qunyuys4.id
+    characters = [
+      { id = characters.qingyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/qunyuys5.c by LPCConverter
+# Zone: changan
+
+    rooms "qunyuys5" {
+      name = "群玉楼雅室"
+      description = "一间雅室。房中放着一张大床，床上铺着绣花的锦被和枕头。湘绣 驰名天下，大红锦被上绣的是一对戏水鸳鸯，颜色灿烂，栩栩欲活。几 上点着一根红烛，红烛旁是一面明镜，一只梳妆箱子。床前地下两对绣 花拖鞋，一对男的，一对女的，并排而置。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qunyuys5" {
+    room_id = rooms.qunyuys5.id
+  south = rooms.qunyulou3.id  }
+
+
+  room_characters "qunyuys5" {
+    room_id = rooms.qunyuys5.id
+    characters = [
+      { id = characters.baiyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/qunyuys6.c by LPCConverter
+# Zone: changan
+
+    rooms "qunyuys6" {
+      name = "群玉楼雅室"
+      description = "一间雅室。房中放着一张大床，床上铺着绣花的锦被和枕头。湘绣 驰名天下，大红锦被上绣的是一对戏水鸳鸯，颜色灿烂，栩栩欲活。几 上点着一根红烛，红烛旁是一面明镜，一只梳妆箱子。床前地下两对绣 花拖鞋，一对男的，一对女的，并排而置。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qunyuys6" {
+    room_id = rooms.qunyuys6.id
+  north = rooms.qunyulou3.id  }
+
+
+  room_characters "qunyuys6" {
+    room_id = rooms.qunyuys6.id
+    characters = [
+      { id = characters.lanyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/qunyuys7.c by LPCConverter
+# Zone: changan
+
+    rooms "qunyuys7" {
+      name = "群玉楼雅室"
+      description = "一间雅室。房中放着一张大床，床上铺着绣花的锦被和枕头。湘绣 驰名天下，大红锦被上绣的是一对戏水鸳鸯，颜色灿烂，栩栩欲活。几 上点着一根红烛，红烛旁是一面明镜，一只梳妆箱子。床前地下两对绣 花拖鞋，一对男的，一对女的，并排而置。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qunyuys7" {
+    room_id = rooms.qunyuys7.id
+  east = rooms.qunyulou3.id  }
+
+
+  room_characters "qunyuys7" {
+    room_id = rooms.qunyuys7.id
+    characters = [
+      { id = characters.fenyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/qunyuys8.c by LPCConverter
+# Zone: changan
+
+    rooms "qunyuys8" {
+      name = "群玉楼雅室"
+      description = "一间雅室。房中放着一张大床，床上铺着绣花的锦被和枕头。湘绣 驰名天下，大红锦被上绣的是一对戏水鸳鸯，颜色灿烂，栩栩欲活。几 上点着一根红烛，红烛旁是一面明镜，一只梳妆箱子。床前地下两对绣 花拖鞋，一对男的，一对女的，并排而置。仔细看看你会发现这个房间 的床有些怪异。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ bed = "这张床似乎可以推开(push)。"
+}
+    }
+
+  room_exits "qunyuys8" {
+    room_id = rooms.qunyuys8.id
+  west = rooms.qunyulou3.id  }
+
+
+  room_characters "qunyuys8" {
+    room_id = rooms.qunyuys8.id
+    characters = [
+      { id = characters.dashou.id },
+      { id = characters.dashou.id },
+      { id = characters.dashou.id },
+      { id = characters.dashou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/road2.c by LPCConverter
+# Zone: changan
+
+    rooms "road2" {
+      name = "大官道"
+      description = "这是一条宽阔笔直，尘土飞扬的大官道，它连接了东都长安和西都洛 阳。官道很是宽广，足可容得下十马并驰。往西直达长安的东门，而东边 则是洛阳古城。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road2" {
+    room_id = rooms.road2.id
+  east = rooms.guandaow4.id
+  west = rooms.zhongnan.id  }
+
+# Generated from C:/files/git/mud/d/changan/road3.c by LPCConverter
+# Zone: changan
+
+    rooms "road3" {
+      name = "大官道"
+      description = "这是一条宽阔笔直的官道，足可容得下十马并驰。往东通向洛阳古 城，往西则直达长安城。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road3" {
+    room_id = rooms.road3.id
+  west = rooms.road4.id
+  east = rooms.zhongnan.id  }
+
+# Generated from C:/files/git/mud/d/changan/road4.c by LPCConverter
+# Zone: changan
+
+    rooms "road4" {
+      name = "大官道"
+      description = "这是一条宽阔笔直的官道，足可容得下十马并驰。往东通向洛阳古 城，往西则直达长安城。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road4" {
+    room_id = rooms.road4.id
+  west = rooms.dong_chengmen.id
+  east = rooms.road3.id  }
+
+# Generated from C:/files/git/mud/d/changan/shoushi-dian.c by LPCConverter
+# Zone: changan
+
+    rooms "shoushi_dian" {
+      name = "首饰店"
+      description = "一间首饰店。首饰店内放着一个长条桌子，桌子上摆有几只檀香 木盒，盒子是全开着的，里面各种金银首饰样样俱全，看得人眼花缭 乱，首饰店的老板正在查点货物。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shoushi_dian" {
+    room_id = rooms.shoushi_dian.id
+  south = rooms.qixiang5.id  }
+
+
+  room_characters "shoushi_dian" {
+    room_id = rooms.shoushi_dian.id
+    characters = [
+      { id = characters.chen_laoban.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/tea-shop.c by LPCConverter
+# Zone: changan
+
+    rooms "tea_shop" {
+      name = "茶馆"
+      description = "这间茶房是长安的闲人杂聚的场所，里面横七竖八的百放着一些木 制的桌椅。一个说书的老人正在滔滔不绝的讲着什么。一些茶客一边品 茶，一边听书，一边绘声绘色交头接耳，如果你要想打听江湖掌故和谣 言，来这里准没错。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tea_shop" {
+    room_id = rooms.tea_shop.id
+  south = rooms.qixiang2.id  }
+
+
+  room_characters "tea_shop" {
+    room_id = rooms.tea_shop.id
+    characters = [
+      { id = characters.teawaiter.id },
+      { id = characters.laoren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/tuchangguan.c by LPCConverter
+# Zone: changan
+
+    rooms "tuchangguan" {
+      name = "土娼馆"
+      description = "还没想好呢!呵呵!"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tuchangguan" {
+    room_id = rooms.tuchangguan.id
+  south = rooms.huarui6.id  }
+
+
+  room_characters "tuchangguan" {
+    room_id = rooms.tuchangguan.id
+    characters = [
+      { id = characters.jinu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/tulu1.c by LPCConverter
+# Zone: changan
+
+    rooms "tulu1" {
+      name = "土路"
+      description = "这是一条黄土飞扬的路，不算太宽，南边远远望过去可以看得 到巍峨的长安城墙，虽然这里离长安并不远，但是经常会受到北方 的游牧民族的骚扰，因此人烟并不茂盛。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tulu1" {
+    room_id = rooms.tulu1.id
+  northeast = rooms.tulu2.id
+  south = rooms.bei_chengmen.id  }
+
+# Generated from C:/files/git/mud/d/changan/tulu2.c by LPCConverter
+# Zone: changan
+
+    rooms "tulu2" {
+      name = "土路"
+      description = "这是一条黄土飞扬的路，不算太宽，给人一种落寞的感觉，路 边零零散散的分布着几片小田地，偶然也能看得见一些炊烟。四周 一片的荒寂。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tulu2" {
+    room_id = rooms.tulu2.id
+  northup = rooms.tulu3.id
+  southwest = rooms.tulu1.id
+  west = rooms.lzroad.id  }
+
+# Generated from C:/files/git/mud/d/changan/tulu3.c by LPCConverter
+# Zone: changan
+
+    rooms "tulu3" {
+      name = "土路"
+      description = "这是一条黄土飞扬的路，不算太宽，路上几乎没有行人，四周 一片荒寂。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tulu3" {
+    room_id = rooms.tulu3.id
+  northeast = rooms.tulu4.id
+  southdown = rooms.tulu2.id  }
+
+# Generated from C:/files/git/mud/d/changan/tulu4.c by LPCConverter
+# Zone: changan
+
+    rooms "tulu4" {
+      name = "土路"
+      description = "这是一条黄土飞扬的路，不算太宽，路上的行人也不多，大概 是地处偏远的缘故，几乎没有什么人烟。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tulu4" {
+    room_id = rooms.tulu4.id
+  northdown = rooms.yongdeng.id
+  southwest = rooms.tulu3.id  }
+
+# Generated from C:/files/git/mud/d/changan/weapon-shop.c by LPCConverter
+# Zone: changan
+
+    rooms "weapon_shop" {
+      name = "兵器店"
+      description = "这里是兵器店。店里到处银光闪闪，让人眼花缭乱。兵器架上摆着 各种兵器，十八般武器是应有尽有，样样俱全。兵器店老板是慕容世家 的传人。南墙上还写了一首诗(poem)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "weapon_shop" {
+    room_id = rooms.weapon_shop.id
+  north = rooms.qixiang6.id  }
+
+
+  room_characters "weapon_shop" {
+    room_id = rooms.weapon_shop.id
+    characters = [
+      { id = characters.murong_hao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/xi-chengmen.c by LPCConverter
+# Zone: changan
+
+    rooms "xi_chengmen" {
+      name = "长安西城门"
+      description = "长安城的西城门。这里的护城河既深又阔，而且城高墙厚，有一夫 当关，万夫莫开之势，城内还驻扎了两营士兵，远看军营延绵，旌期似 海，颇具慑人之势，仰望城楼，只见城楼高处满布哨兵，剑拔驽张，士 气昂扬。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xi_chengmen" {
+    room_id = rooms.xi_chengmen.id
+  west = rooms.caroad1.id
+  east = rooms.xian_daokou.id  }
+
+
+  room_characters "xi_chengmen" {
+    room_id = rooms.xi_chengmen.id
+    characters = [
+      { id = characters.wujiang.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/xian-dadao.c by LPCConverter
+# Zone: changan
+
+    rooms "xian_dadao" {
+      name = "西安大道"
+      description = "长安城的主街西安大道颇为热闹，除了本城的居民外，还有不少外 来的旅客和商人。西安大道再向西就是长安城的永泰道口、西城门，往 东是故皇宫的扶风道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xian_dadao" {
+    room_id = rooms.xian_dadao.id
+  east = rooms.fufeng3.id
+  west = rooms.xian_daokou.id  }
+
+# Generated from C:/files/git/mud/d/changan/xian-daokou.c by LPCConverter
+# Zone: changan
+
+    rooms "xian_daokou" {
+      name = "西安道口"
+      description = "长安城自古是繁华胜地，为数代皇朝建都之地，又为盐商大贾所聚 集，殷富甲于天下。西安道口是一个四通八达的路口，东方有一条大路 通往扶风道，西面是长安西城门，南北方向是永泰大道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xian_daokou" {
+    room_id = rooms.xian_daokou.id
+  south = rooms.yongtai_dadao4.id
+  north = rooms.yongtai_dadao3.id
+  west = rooms.xi_chengmen.id
+  east = rooms.xian_dadao.id
+  southeast = rooms.bingying3.id  }
+
+# Generated from C:/files/git/mud/d/changan/xiaojia-pianting.c by LPCConverter
+# Zone: changan
+
+    rooms "xiaojia_pianting" {
+      name = "偏厅"
+      description = "这里是萧家的偏厅，摆设很是华丽。几个丫鬟忙个不停，似乎出了 什么大事。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaojia_pianting" {
+    room_id = rooms.xiaojia_pianting.id
+  south = rooms.xiaojiadt.id  }
+
+
+  room_characters "xiaojia_pianting" {
+    room_id = rooms.xiaojia_pianting.id
+    characters = [
+      { id = characters.yahuan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/xiaojia-qianyuan.c by LPCConverter
+# Zone: changan
+
+    rooms "xiaojia_qianyuan" {
+      name = "萧家前院"
+      description = "来到这里，一座富丽堂皇的巨宅院出现在你的眼前，大门两侧是两 头高大的石狮子。门上挂着两个灯笼，赫然写着大大的“萧”字。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaojia_qianyuan" {
+    room_id = rooms.xiaojia_qianyuan.id
+  west = rooms.liande_dadao5.id
+  east = rooms.xiaojiadt.id  }
+
+
+  room_characters "xiaojia_qianyuan" {
+    room_id = rooms.xiaojia_qianyuan.id
+    characters = [
+      { id = characters.guanjia.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/xiaojia-sleep.c by LPCConverter
+# Zone: changan
+
+    rooms "xiaojia_sleep" {
+      name = "卧室"
+      description = "这里是萧家的卧室，摆设很是华丽。几个丫鬟忙个不停，似乎出了 什么大事。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaojia_sleep" {
+    room_id = rooms.xiaojia_sleep.id
+  north = rooms.xiaojiadt.id  }
+
+
+  room_characters "xiaojia_sleep" {
+    room_id = rooms.xiaojia_sleep.id
+    characters = [
+      { id = characters.yahuan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/xiaojiadt.c by LPCConverter
+# Zone: changan
+
+    rooms "xiaojiadt" {
+      name = "萧家大厅"
+      description = "这间大厅很朴素，房中除了一个铁箱之外，竟是既无家具，又无摆 设，只是墙上挂着一幅巨大的工笔画，画中一座大城，山环水绕，还点 缀有亭台楼阁、园林人物，看来是江南的一处名城。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaojiadt" {
+    room_id = rooms.xiaojiadt.id
+  west = rooms.xiaojia_qianyuan.id
+  north = rooms.xiaojia_pianting.id
+  south = rooms.xiaojia_sleep.id  }
+
+
+  room_characters "xiaojiadt" {
+    room_id = rooms.xiaojiadt.id
+    characters = [
+      { id = characters.yuanwai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/xiaojinghu.c by LPCConverter
+# Zone: changan
+
+    rooms "xiaojinghu" {
+      name = "小镜湖"
+      description = "这里就是长安城的小镜湖了。小镜湖的面积并不是很大，但亭台楼 阁，假山长廊却也是有的。建筑的朴素简单，而不奢华。湖水叮叮咚咚 的流，世人的烦恼在这里似乎都消失了。夕阳西下时悠闲的人们总是到 这来散步，聊天小憩。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaojinghu" {
+    room_id = rooms.xiaojinghu.id
+  south = rooms.huarui4.id  }
+
+# Generated from C:/files/git/mud/d/changan/xiaojiuguan.c by LPCConverter
+# Zone: changan
+
+    rooms "xiaojiuguan" {
+      name = "小酒馆"
+      description = "这是一家小酒馆，屋子并不是很宽敞，酒水也是长安城里最最廉价 的，可是却仍然有许多人来光顾，也不知道他们是来喝酒的，还是来欣 赏那位坐在柜台后面的老板娘。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaojiuguan" {
+    room_id = rooms.xiaojiuguan.id
+  north = rooms.liande_nankou.id  }
+
+
+  room_characters "xiaojiuguan" {
+    room_id = rooms.xiaojiuguan.id
+    characters = [
+      { id = characters.ruhua.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/xiyuan.c by LPCConverter
+# Zone: changan
+
+    rooms "xiyuan" {
+      name = "戏院"
+      description = "这里屋深幽暗，屋子西端搭有一座精巧但已有点退色的戏台。戏台 两边挂有数盏明亮的灯笼。前几排有些矮凳，后面是一些红油茶桌和宽 背扶手椅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiyuan" {
+    room_id = rooms.xiyuan.id
+  south = rooms.liande_beikou.id  }
+
+
+  room_characters "xiyuan" {
+    room_id = rooms.xiyuan.id
+    characters = [
+      { id = characters.xizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/xunbufang.c by LPCConverter
+# Zone: changan
+
+    rooms "xunbufang" {
+      name = "巡捕房"
+      description = "这里是长安城里维持治安的巡捕工作的地方。房门口放着两个青铜 狮，房内是一个大厅，墙上漆着白色的漆，漆得很厚，仿佛不愿人看出 这墙是石壁，是土，还是铜铁所做。有几个横眉立目，嘴脸凶顽的巡捕 坐在一起，似乎在商量着什么。南边有一个小门，似乎上了锁。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xunbufang" {
+    room_id = rooms.xunbufang.id
+  west = rooms.fengxu5.id  }
+
+
+  room_characters "xunbufang" {
+    room_id = rooms.xunbufang.id
+    characters = [
+      { id = characters.butou.id },
+      { id = characters.guanbing.id },
+      { id = characters.guanbing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/yamen-datang.c by LPCConverter
+# Zone: changan
+
+    rooms "yamen_datang" {
+      name = "长安府大堂"
+      description = "长安府大堂之上有一种威严之势，不由让你心惊胆颤。前方一张红 木大桌，后面坐着知府大人。上有一幅大匾，写着'廉明清正'四个烫金 大字。桌旁站立着一位老师爷。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yamen_datang" {
+    room_id = rooms.yamen_datang.id
+  north = rooms.yamen.id  }
+
+
+  room_characters "yamen_datang" {
+    room_id = rooms.yamen_datang.id
+    characters = [
+      { id = characters.zhifu.id },
+      { id = characters.shiye.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/yamen.c by LPCConverter
+# Zone: changan
+
+    rooms "yamen" {
+      name = "衙门大门"
+      description = "这是长安城的衙门大门，也是长安城最高的行政机构，这里负责管 理城里的大事小情。无论是偷鸡摸狗的小贼，还是放火杀人的强盗，都 会在这里受到应有的处罚。墙上贴着一张告示。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yamen" {
+    room_id = rooms.yamen.id
+  south = rooms.yamen_datang.id
+  north = rooms.qinglong3.id  }
+
+
+  room_characters "yamen" {
+    room_id = rooms.yamen.id
+    characters = [
+      { id = characters.yayi.id },
+      { id = characters.yayi.id },
+      { id = characters.yayi.id },
+      { id = characters.yayi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/yaopu.c by LPCConverter
+# Zone: changan
+
+    rooms "yaopu" {
+      name = "回春堂药铺"
+      description = "这是长安城一家刚刚开张不久的药铺，相传原来的老板是江湖中最 神秘的医谷中的神医，手段可知一二。药铺中的摆设也十分考究，桌椅 被勤快的伙计擦的干干净净。墙上挂满了别人送来的谢匾(bian)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ bian = "妙手回春"
+}
+    }
+
+  room_exits "yaopu" {
+    room_id = rooms.yaopu.id
+  south = rooms.qixiang6.id  }
+
+
+  room_characters "yaopu" {
+    room_id = rooms.yaopu.id
+    characters = [
+      { id = characters.doctor.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/yongtai-beikou.c by LPCConverter
+# Zone: changan
+
+    rooms "yongtai_beikou" {
+      name = "永泰北口"
+      description = "麒祥街的西尽头，一根三丈多高的旗杆之上，挑起了四盏斗大的灯 笼，每当暮色降临，这里灯火通明。北面是一家珠宝行，里面隐隐散出 诱人的珠光宝气，很多妇人路过这里都不免要往里瞧一瞧。南方通向永 泰大道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yongtai_beikou" {
+    room_id = rooms.yongtai_beikou.id
+  east = rooms.qixiang1.id
+  north = rooms.zhubaohang.id
+  south = rooms.yongtai_dadao1.id  }
+
+# Generated from C:/files/git/mud/d/changan/yongtai-dadao1.c by LPCConverter
+# Zone: changan
+
+    rooms "yongtai_dadao1" {
+      name = "永泰大道"
+      description = "城内街道，以南北三条并行的大街，和东西的二条主街互相交错而 成。五条大街在这清朗的夜初，却见人来车往，灯火通明，别有一番热 闹。其他小街横巷，则依这些主街交错布置，井然有序。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yongtai_dadao1" {
+    room_id = rooms.yongtai_dadao1.id
+  south = rooms.yongtai_dadao2.id
+  north = rooms.yongtai_beikou.id
+  east = rooms.huozhan.id  }
+
+# Generated from C:/files/git/mud/d/changan/yongtai-dadao2.c by LPCConverter
+# Zone: changan
+
+    rooms "yongtai_dadao2" {
+      name = "永泰大道"
+      description = "城内街道，以南北三条并行的大街，和东西的二条主街互相交错而 成。五条大街在这清朗的夜初，却见人来车往，灯火通明，别有一番热 闹。其他小街横巷，则依这些主街交错布置，井然有序。东面传来一阵 阵阴冷冷的寒气，不知道是什么地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yongtai_dadao2" {
+    room_id = rooms.yongtai_dadao2.id
+  south = rooms.yongtai_dadao3.id
+  north = rooms.yongtai_dadao1.id
+  east = rooms.entry.id  }
+
+# Generated from C:/files/git/mud/d/changan/yongtai-dadao3.c by LPCConverter
+# Zone: changan
+
+    rooms "yongtai_dadao3" {
+      name = "永泰大道"
+      description = "城内街道，以南北三条并行的大街，和东西的二条主街互相交错而 成。五条大街在这清朗的夜初，却见人来车往，灯火通明，别有一番热 闹。其他小街横巷，则依这些主街交错布置，井然有序。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yongtai_dadao3" {
+    room_id = rooms.yongtai_dadao3.id
+  south = rooms.xian_daokou.id
+  north = rooms.yongtai_dadao2.id
+  east = rooms.huiwenge.id  }
+
+# Generated from C:/files/git/mud/d/changan/yongtai-dadao4.c by LPCConverter
+# Zone: changan
+
+    rooms "yongtai_dadao4" {
+      name = "永泰大道"
+      description = "城内街道，以南北三条并行的大街，和东西的二条主街互相交错而 成。五条大街在这清朗的夜初，却见人来车往，灯火通明，别有一番热 闹。其他小街横巷，则依这些主街交错布置，井然有序。东面是一座城 隍庙。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yongtai_dadao4" {
+    room_id = rooms.yongtai_dadao4.id
+  south = rooms.yongtai_dadao5.id
+  north = rooms.xian_daokou.id
+  east = rooms.miao.id  }
+
+# Generated from C:/files/git/mud/d/changan/yongtai-dadao5.c by LPCConverter
+# Zone: changan
+
+    rooms "yongtai_dadao5" {
+      name = "永泰大道"
+      description = "城内街道，以南北三条并行的大街，和东西的二条主街互相交错而 成。五条大街在这清朗的夜初，却见人来车往，灯火通明，别有一番热 闹。其他小街横巷，则依这些主街交错布置，井然有序。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yongtai_dadao5" {
+    room_id = rooms.yongtai_dadao5.id
+  south = rooms.yongtai_nankou.id
+  north = rooms.yongtai_dadao4.id  }
+
+# Generated from C:/files/git/mud/d/changan/yongtai-nankou.c by LPCConverter
+# Zone: changan
+
+    rooms "yongtai_nankou" {
+      name = "永泰南口"
+      description = "华瑞街和永泰大道的交叉口，一根三丈多高的旗杆之上，挑起了四 盏斗大的灯笼，每当暮色降临，这里灯火通明。南面是一家包子铺，北 方通向永泰大道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yongtai_nankou" {
+    room_id = rooms.yongtai_nankou.id
+  east = rooms.huarui1.id
+  north = rooms.yongtai_dadao5.id
+  south = rooms.baozipu.id  }
+
+# Generated from C:/files/git/mud/d/changan/zahuopu.c by LPCConverter
+# Zone: changan
+
+    rooms "zahuopu" {
+      name = "杂货铺"
+      description = "一间老字号的杂货铺。祖孙三代经营下来，在长安城南一带已经有 了一些小名气。这里无论是油盐酱醋，还是大米白面，老百姓日常生活 需要的东西一样都不少。再加上这里的老掌柜待客如宾，杂货铺的生意 看来一天比一天好。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zahuopu" {
+    room_id = rooms.zahuopu.id
+  south = rooms.huarui5.id  }
+
+
+  room_characters "zahuopu" {
+    room_id = rooms.zahuopu.id
+    characters = [
+      { id = characters.liu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/zhongnan.c by LPCConverter
+# Zone: changan
+
+    rooms "zhongnan" {
+      name = "终南山口"
+      description = "终南山又称太乙山，距长安城八十多里，素有“锦秀巨屏拱长安”之 说。据传老子也曾在山中讲经。这条大官道穿越终南山口，两面秀峰入云， 这里却没有一条路可以上山。西面是往长安的大道，东面前往中原。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhongnan" {
+    room_id = rooms.zhongnan.id
+  east = rooms.road2.id
+  west = rooms.road3.id  }
+
+# Generated from C:/files/git/mud/d/changan/zhubaohang.c by LPCConverter
+# Zone: changan
+
+    rooms "zhubaohang" {
+      name = "珠宝行"
+      description = "珠宝行中珠光宝气四射，眩的人有些睁不开眼睛。精致的长柜中陈 设着各类首饰珠宝玉器，几个老行家正陪着客人挑选所需珠宝。一个雕 花木架上摆着颗三尺多高的玉树，珍贵之外又透着淡雅秀丽，曲折含蓄 之气。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhubaohang" {
+    room_id = rooms.zhubaohang.id
+  south = rooms.yongtai_beikou.id  }
+
+
+  room_characters "zhubaohang" {
+    room_id = rooms.zhubaohang.id
+    characters = [
+      { id = characters.jinfuhuan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/changan/npc/baiyi.c by LPCConverter
+# Zone: changan
+
+    characters "baiyi" {
+      name = "白衣"
+      description = "一个全身上下穿着粉装，领露酥胸的美女．"
+  title = "群玉八娇"
+  gender = "女性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10
+    str = 30
+  }
+
+  carry = [
+    { id = items.skirt.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/baobiao.c by LPCConverter
+# Zone: changan
+
+    characters "baobiao" {
+      name = "群玉楼保镖"
+      description = "他杀气腾腾，负责群玉楼所有女人的安全。"
+  gender = "男性"
+
+  combat = {
+    attitude = "herosim"
+    combat_exp = 100000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 700
+    max_neili = 600
+    max_qi = 700
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 70 },
+    { skill = "force" level = 70 },
+    { skill = "sword" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "parry" level = 70 }
+  ]
+
+
+  carry = [
+    { id = items.sword.id },
+    { id = items.zhanjia.id }
+  ]
+
+
+  engage = {
+    fight = { accept = false msg = "群玉楼保镖对{npc}喝道：是不是想死啊！" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/biaoshi.c by LPCConverter
+# Zone: changan
+
+    characters "biaoshi" {
+      name = "NPC"
+      description = "一位训练有素的镖师。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 50000
+    int = 20
+    str = 45
+  }
+
+  skills = [
+    { skill = "parry" level = 90 },
+    { skill = "dodge" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.jinzhuang.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/biaotou.c by LPCConverter
+# Zone: changan
+
+    characters "biaotou" {
+      name = "NPC"
+      description = "一位训练有素的镖头。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 70000
+    int = 20
+    str = 45
+  }
+
+  skills = [
+    { skill = "parry" level = 90 },
+    { skill = "dodge" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.jinzhuang.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/butou.c by LPCConverter
+# Zone: changan
+
+    characters "butou" {
+      name = "捕头"
+      description = "长安巡捕头领"
+  gender = "男性"
+  age = 40
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    max_jing = 600
+    max_neili = 500
+    max_qi = 600
+    str = 20
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "blade" level = 40 },
+    { skill = "force" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id },
+    { id = items.laofang_key.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/chen-laoban.c by LPCConverter
+# Zone: changan
+
+    characters "chen_laoban" {
+      name = "陈老板"
+      description = ""
+  title = "首饰店老板"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 43
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    max_jing = 300
+    max_neili = 300
+    max_qi = 300
+    str = 30
+  }
+
+  goods = [
+    { id = items.yinjie.id },
+    { id = items.zuanjie.id },
+    { id = items.baojie.id },
+    { id = items.jinjie.id },
+    { id = items.baijie.id }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.choupao.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/dashou.c by LPCConverter
+# Zone: changan
+
+    characters "dashou" {
+      name = "打手"
+      description = "一个为群玉楼效力，正在看门的打手"
+  title = "护花使者"
+  gender = "男性"
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 100000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 200 },
+    { skill = "blade" level = 200 },
+    { skill = "parry" level = 200 },
+    { skill = "dodge" level = 200 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.blade.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["kill"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/doctor.c by LPCConverter
+# Zone: changan
+
+    characters "doctor" {
+      name = "时九公"
+      description = "据说时九公原是江湖中的名医。"
+  title = "药铺掌柜"
+  gender = "男性"
+  age = 66
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 250
+    str = 60
+  }
+
+  goods = [
+    { id = items.jinchuang.id },
+    { id = items.yangjing.id }
+  ]
+
+  carry = [
+    { id = items.choupao.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/fenyi.c by LPCConverter
+# Zone: changan
+
+    characters "fenyi" {
+      name = "粉衣"
+      description = "一个全身上下穿着粉装，领露酥胸的美女．"
+  title = "群玉八娇"
+  gender = "女性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10
+    str = 30
+  }
+
+  carry = [
+    { id = items.skirt.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/fujiang.c by LPCConverter
+# Zone: changan
+
+    characters "fujiang" {
+      name = "NPC"
+      description = "一名战功累累的副将。如今太平了，便练练兵，以防边疆有变。"
+  title = "副将"
+  gender = "男性"
+
+  combat = {
+    max_jing = 700
+    max_qi = 700
+  }
+
+  skills = [
+    { skill = "dodge" level = 120 },
+    { skill = "parry" level = 120 },
+    { skill = "unarmed" level = 120 },
+    { skill = "force" level = 120 }
+  ]
+
+
+  carry = [
+    { id = items..id },
+    { id = items.zhanjia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/fuyun.c by LPCConverter
+# Zone: changan
+
+    characters "fuyun" {
+      name = "浮云"
+      description = "一切都是浮云。"
+  title = "门贡商人"
+  nickname = "多多益善"
+  gender = "男性"
+  age = 60
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 800000
+    str = 100
+  }
+
+  inquiries = [
+    { key = "贡献" value = "(: do_answer :)" },
+    { key = "门派贡献" value = "(: do_answer :)" },
+    { key = "门贡" value = "(: do_answer :)" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "higgling" level = 500 }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["duihuan", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/girl.c by LPCConverter
+# Zone: changan
+
+    characters "girl" {
+      name = "卖花姑娘"
+      description = ""
+  gender = "女性"
+  age = 17
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 4000
+  }
+
+  goods = [
+    { id = items.zi_luolan.id },
+    { id = items.hong_meigui.id },
+    { id = items.huang_meigui.id },
+    { id = items.lan_tiane.id },
+    { id = items.bai_chahua.id },
+    { id = items.hei_mudan.id }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.skirt.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "{npc}笑着说道：各种新鲜花朵，买些回去给你的心上人吧。 {expr}" },
+    { line = "{npc}笑咪咪地说道：这位{respect}要买什么花儿？ {expr}" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/guanbing.c by LPCConverter
+# Zone: changan
+
+    characters "guanbing" {
+      name = "官兵"
+      description = "正在守城的官兵，千万不要招惹他们，否则可能会有杀身之祸。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    max_jing = 400
+    max_neili = 200
+    max_qi = 400
+    str = 20
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "blade" level = 40 },
+    { skill = "force" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.bingfu.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true msg = "小兵对{npc}喝道：大胆刁民，竟敢攻击朝廷命官？" retaliate = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/guanjia.c by LPCConverter
+# Zone: changan
+
+    characters "guanjia" {
+      name = "管家"
+      description = ""
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 9000
+    max_jing = 300
+    max_neili = 400
+    max_qi = 300
+    str = 34
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.changpao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/hongyi.c by LPCConverter
+# Zone: changan
+
+    characters "hongyi" {
+      name = "红衣"
+      description = "一个全身上下穿着粉装，领露酥胸的美女．"
+  title = "群玉八娇"
+  gender = "女性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10
+    str = 30
+  }
+
+  carry = [
+    { id = items.skirt.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/huangyi.c by LPCConverter
+# Zone: changan
+
+    characters "huangyi" {
+      name = "黄衣"
+      description = "一个全身上下穿着黄装，领露酥胸的美女．"
+  title = "群玉八娇"
+  gender = "女性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10
+    str = 30
+  }
+
+  chat_chance = 15
+chats = [
+    "黄衣说道：我说湘湘妹子，你就从了吧！干我们这行有什么不好的，吃好的，穿好的，要什么有什么！",
+    "黄衣叹道：唉！已经劝了这丫头三天了，我这张嘴都磨破了，她就是不出去接客！",
+    "黄衣对湘湘说道：你就乖乖儿的听我的话吧！别指望有谁会来救你出去了！"
+]
+
+
+  carry = [
+    { id = items.skirt.id }
+  ]
+
+
+  engage = {
+    fight = { accept = false msg = "小女子哪里是您的对手？" }
+    kill = { accept = false msg = "要杀人了，快来人救命啊！" spawn = ["baobiao"] }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/huitong.c by LPCConverter
+# Zone: changan
+
+    characters "huitong" {
+      name = "慧通禅师"
+      description = "慧通禅师是宝象寺的主持，神色庄重，举止间自有一番威仪。"
+  title = "宝象寺主持"
+  gender = "男性"
+  age = 69
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 200000
+    max_jing = 900
+    max_neili = 900
+    max_qi = 900
+  }
+
+  skills = [
+    { skill = "force" level = 90 },
+    { skill = "unarmed" level = 90 },
+    { skill = "dodge" level = 90 },
+    { skill = "parry" level = 90 }
+  ]
+
+
+  carry = [
+    { id = items.sengpao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/huoji.c by LPCConverter
+# Zone: changan
+
+    characters "huoji" {
+      name = "小伙计"
+      description = "包子铺的伙计，懒洋洋的看着你。"
+  gender = "男性"
+  age = 18
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+  }
+
+  goods = [
+    { id = items.bao1.id },
+    { id = items.bao2.id },
+    { id = items.bao3.id }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.linen.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "{expr}带理不理地说道：这位{respect}，进来吃几个包子吧。" }
+  ]
+
+  engage = {
+    fight = { accept = false msg = "这位大侠，小人那敢跟您动手啊！" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/jinfuhuan.c by LPCConverter
+# Zone: changan
+
+    characters "jinfuhuan" {
+      name = "金复还"
+      description = ""
+  title = "珠宝行老板"
+  gender = "男性"
+  age = 45
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    str = 35
+  }
+
+  goods = [
+    { id = items.ring.id },
+    { id = items.wrists.id },
+    { id = items.neck.id }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.choupao.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/jingming.c by LPCConverter
+# Zone: changan
+
+    characters "jingming" {
+      name = "净明"
+      description = ""
+  title = "宝象寺长老"
+  gender = "男性"
+  age = 80
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 120000
+    int = 30
+    max_jing = 700
+    max_neili = 800
+    max_qi = 700
+  }
+
+  skills = [
+    { skill = "unarmed" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "parry" level = 70 },
+    { skill = "force" level = 70 }
+  ]
+
+
+  carry = [
+    { id = items.sengpao.id }
+  ]
+
+
+  engage = {
+    fight = { accept = false }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/jingxuan.c by LPCConverter
+# Zone: changan
+
+    characters "jingxuan" {
+      name = "净玄"
+      description = ""
+  title = "宝象寺长老"
+  gender = "男性"
+  age = 80
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 120000
+    int = 30
+    max_jing = 700
+    max_neili = 800
+    max_qi = 700
+  }
+
+  skills = [
+    { skill = "unarmed" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "parry" level = 70 },
+    { skill = "force" level = 70 }
+  ]
+
+
+  carry = [
+    { id = items.sengpao.id }
+  ]
+
+
+  engage = {
+    fight = { accept = false }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/jinu.c by LPCConverter
+# Zone: changan
+
+    characters "jinu" {
+      name = "妓女"
+      description = ""
+  gender = "女性"
+  age = 25
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10
+    str = 10
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/keeper.c by LPCConverter
+# Zone: changan
+
+    characters "keeper" {
+      name = "庙祝"
+      description = "这个老人看起来六十多岁了，精神却很好。"
+  gender = "男性"
+  age = 60
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "庙祝说道：这位{respect}，捐点香火钱吧。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/lanxiang.c by LPCConverter
+# Zone: changan
+
+    characters "lanxiang" {
+      name = "张兰香"
+      description = ""
+  gender = "女性"
+  age = 23
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 4000
+  }
+
+  goods = [
+    { id = items.pingguo.id },
+    { id = items.hamigua.id },
+    { id = items.juzi.id }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.skirt.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "张兰香笑咪咪地说道：这位{respect}，新到的各种水果，买点儿回家尝尝吧。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/lanyi.c by LPCConverter
+# Zone: changan
+
+    characters "lanyi" {
+      name = "蓝衣"
+      description = "一个全身上下穿着粉装，领露酥胸的美女．"
+  title = "群玉八娇"
+  gender = "女性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10
+    str = 30
+  }
+
+  carry = [
+    { id = items.skirt.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/laoren.c by LPCConverter
+# Zone: changan
+
+    characters "laoren" {
+      name = "说书老人"
+      description = "一位慈眉善目的老人，正在说书。"
+  gender = "男性"
+  age = 53
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 6000
+    str = 30
+  }
+
+  carry = [
+    { id = items.changpao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/laozhang.c by LPCConverter
+# Zone: changan
+
+    characters "laozhang" {
+      name = "老张"
+      description = ""
+  title = "面馆老板"
+  gender = "男性"
+  age = 35
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+    max_jing = 200
+    max_qi = 350
+  }
+
+  goods = [
+    { id = items.miantang.id },
+    { id = items.miantiao1.id },
+    { id = items.miantiao2.id },
+    { id = items.miantiao3.id }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.choupao.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "老张热情地说道：这位{respect}，进来吃碗热乎的面条吧!。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/liang.c by LPCConverter
+# Zone: changan
+
+    characters "liang" {
+      name = "梁喜禄"
+      description = ""
+  title = "货栈老板"
+  gender = "男性"
+  age = 35
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.choupao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/lingfeixue.c by LPCConverter
+# Zone: changan
+
+    characters "lingfeixue" {
+      name = "凌飞雪"
+      description = "凌飞雪原是一个青楼名妓，后来被当朝一位大官看中，据说这个 群玉楼也是那位官员给她开的。"
+  title = "千金一笑"
+  gender = "女性"
+  age = 23
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 25000
+    con = 40
+    dex = 40
+    int = 40
+    max_jing = 300
+    max_neili = 500
+    max_qi = 300
+    str = 40
+  }
+
+  inquiries = [
+    { key = "here" value = "这儿就是长安城里最最有名的群玉楼。" },
+    { key = "name" value = "我就是曾经“一笑博千金”的长安第一美女凌飞雪。" }
+  ]
+
+  chat_chance = 15
+chats = [
+    "凌飞雪得意地说道：当初我妩媚一笑，也不知有多少人曾经拜倒在我裙下。",
+    "凌飞雪若有所思的道：也不知到湘湘今天肯不肯出来接客。",
+    "凌飞雪对你说道：这位客官，你来我们群玉楼就算对了，您想要什么样的姑娘都有。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "force" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.skirt.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/liu.c by LPCConverter
+# Zone: changan
+
+    characters "liu" {
+      name = "刘老实"
+      description = ""
+  title = "杂货铺老板"
+  gender = "男性"
+  age = 55
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+  }
+
+  goods = [
+    { id = items.beixin.id },
+    { id = items.shield.id },
+    { id = items.muqin.id }
+  ]
+
+  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
+  # vendor_goods: "/d/item/obj/chanhs" (file not found)
+  # vendor_goods: "/clone/misc/wood" (file not found)
+  # vendor_goods: "/clone/misc/diaogan" (file not found)
+  # vendor_goods: "/clone/misc/yuer" (file not found)
+  # vendor_goods: "/clone/misc/yanwu" (file not found)
+  # vendor_goods: "/clone/misc/shexiang" (file not found)
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.changpao.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/luyi.c by LPCConverter
+# Zone: changan
+
+    characters "luyi" {
+      name = "绿衣"
+      description = "一个全身上下穿着粉装，领露酥胸的美女．"
+  title = "群玉八娇"
+  gender = "女性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10
+    str = 30
+  }
+
+  carry = [
+    { id = items.skirt.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/monk.c by LPCConverter
+# Zone: changan
+
+    characters "monk" {
+      name = "知客和尚"
+      description = ""
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 25000
+    max_jing = 300
+    max_qi = 500
+  }
+
+  carry = [
+    { id = items.sengyi.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/murong-hao.c by LPCConverter
+# Zone: changan
+
+    characters "murong_hao" {
+      name = "慕容豪"
+      description = "慕容豪是慕容世家的弟子。"
+  title = "老板"
+  gender = "男性"
+  age = 25
+  brain = brains.dealer
+
+  combat = {
+    attitude = "heroic"
+    combat_exp = 90000
+  }
+
+  goods = [
+    { id = items.changjian.id },
+    { id = items.blade.id },
+    { id = items.hammer.id }
+  ]
+
+  # vendor_goods: "/clone/weapon/arrow" (file not found)
+  # vendor_goods: "/clone/weapon/wolfarrow" (file not found)
+  # vendor_goods: "/clone/weapon/tudao" (file not found)
+  # vendor_goods: "/clone/weapon/longbow" (file not found)
+  # vendor_goods: "/clone/weapon/gangjian" (file not found)
+  # vendor_goods: "/clone/weapon/qimeigun" (file not found)
+  # vendor_goods: "/clone/weapon/changqiang" (file not found)
+
+  skills = [
+    { skill = "sword" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.jinzhuang.id },
+    { id = items.changjian.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["list", "buy"]
+  }
+
+  greetings = [
+    { line = "{expr}漫不经心的看了你一眼，顺手拿起了身旁的一把长剑用衣袖拭了拭。" }
+  ]
+
+  engage = {
+    fight = { accept = true msg = "他妈的！你一进来老子就知道你是冲着我来的！" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/qingyi.c by LPCConverter
+# Zone: changan
+
+    characters "qingyi" {
+      name = "青衣"
+      description = "一个全身上下穿着粉装，领露酥胸的美女．"
+  title = "群玉八娇"
+  gender = "女性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10
+    str = 30
+  }
+
+  carry = [
+    { id = items.skirt.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/ruhua.c by LPCConverter
+# Zone: changan
+
+    characters "ruhua" {
+      name = "如花"
+      description = ""
+  gender = "女性"
+  age = 34
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 4000
+  }
+
+  goods = [
+    { id = items.baijiu.id }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.skirt.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "如花笑咪咪地说道：这位{respect}，奴家给你倒杯酒尝尝吧!" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/shiwei.c by LPCConverter
+# Zone: changan
+
+    characters "shiwei" {
+      name = "NPC"
+      description = "这是位守护皇宫的带刀侍卫，身穿劲装，手持钢刀。他双目精光炯炯，警惕地巡视着四周的情形。"
+  title = "二品带刀侍卫"
+  age = 25
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 200000
+    max_jing = 1000
+    max_neili = 500
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "blade" level = 100 },
+    { skill = "unarmed" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "force" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.blade.id },
+    { id = items.jinzhuang.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/shiye.c by LPCConverter
+# Zone: changan
+
+    characters "shiye" {
+      name = "陈继盛"
+      description = ""
+  title = "知府师爷"
+  gender = "男性"
+  age = 60
+  shen_type = 0
+
+  combat = {
+    combat_exp = 40000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.choupao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/shuchi.c by LPCConverter
+# Zone: changan
+
+    characters "shuchi" {
+      name = "书痴"
+      description = ""
+  title = "汇文阁老板"
+  gender = "男性"
+  age = 40
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+  }
+
+  goods = [
+    { id = items.book_blade.id },
+    { id = items.book_unarmed.id }
+  ]
+
+  skills = [
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "literate" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.choupao.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/tang.c by LPCConverter
+# Zone: changan
+
+    characters "tang" {
+      name = "趟子手"
+      description = "一位训练有素的趟子手。"
+  gender = "男性"
+  age = 24
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 40000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "dodge" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.jinzhuang.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/teawaiter.c by LPCConverter
+# Zone: changan
+
+    characters "teawaiter" {
+      name = "茶馆小二"
+      description = ""
+  gender = "男性"
+  age = 26
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000
+  }
+
+  goods = [
+    { id = items.teapot.id }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 34 }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "小二儿笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "小二儿用毛巾抹了抹身边的一张桌子，说道：这位{respect}，快请进。" },
+    { line = "小二儿说道：这位{respect}，进来尝尝我们新采的茶叶吧。准保您满意。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/tiegongji.c by LPCConverter
+# Zone: changan
+
+    characters "tiegongji" {
+      name = "铁公鸡"
+      description = ""
+  title = "钱庄老板"
+  gender = "男性"
+  age = 46
+  brain = brains.banker
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+  }
+
+  chat_chance = 10
+chats = [
+    "铁公鸡嘿嘿嘿地笑了几声：我这把算盘几十年来可从来没算错过。",
+    "铁公鸡骄傲的说道：本银号已经有上百年的历史，在长安城可以说是第一家。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "dodge" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.choupao.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["check", "chazhang", "convert", "duihuan", "deposit", "cun", "withdraw", "qu"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/tongling1.c by LPCConverter
+# Zone: changan
+
+    characters "tongling1" {
+      name = "张衡"
+      description = ""
+  title = "御林军统领"
+  gender = "男性"
+  age = 30
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 200000
+    max_jing = 900
+    max_neili = 900
+    max_qi = 900
+    str = 35
+  }
+
+  skills = [
+    { skill = "hammer" level = 120 },
+    { skill = "unarmed" level = 120 },
+    { skill = "parry" level = 120 },
+    { skill = "dodge" level = 120 },
+    { skill = "force" level = 120 }
+  ]
+
+
+  carry = [
+    { id = items.hammer.id },
+    { id = items.zhanjia.id }
+  ]
+
+
+  engage = {
+    fight = { accept = false msg = "我贵为御林军统领，岂能与你一般见识！" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/tongling2.c by LPCConverter
+# Zone: changan
+
+    characters "tongling2" {
+      name = "萧群"
+      description = ""
+  title = "御林军统领"
+  gender = "男性"
+  age = 30
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 200000
+    max_jing = 900
+    max_neili = 900
+    max_qi = 900
+    str = 35
+  }
+
+  skills = [
+    { skill = "hammer" level = 120 },
+    { skill = "unarmed" level = 120 },
+    { skill = "parry" level = 120 },
+    { skill = "dodge" level = 120 },
+    { skill = "force" level = 120 }
+  ]
+
+
+  carry = [
+    { id = items.hammer.id },
+    { id = items.zhanjia.id }
+  ]
+
+
+  engage = {
+    fight = { accept = false msg = "我贵为御林军统领，岂能与你一般见识！" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/wanxi.c by LPCConverter
+# Zone: changan
+
+    characters "wanxi" {
+      name = "萧万喜"
+      description = "萧万喜是东城萧员外的胞弟。"
+  title = "当铺老板"
+  gender = "男性"
+  age = 34
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    str = 100
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.choupao.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy", "sell", "value"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/worker-liu.c by LPCConverter
+# Zone: changan
+
+    characters "worker_liu" {
+      name = "刘工匠"
+      description = "一个毫不起眼的老匠人，但是却有着难以言喻的威严。从旁边学徒工 人们的眼神中你感觉他不是一般的人物。"
+  title = "天国大匠"
+  gender = "男性"
+  age = 52
+
+  combat = {
+    attitude = "friendly"
+    str = 33
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    heartbeat = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/worker-wang.c by LPCConverter
+# Zone: changan
+
+    characters "worker_wang" {
+      name = "王石匠"
+      description = "一个满脸沧桑的老匠人，看上去依然强壮有力。眼神中透露出自信 与威严。"
+  title = "天国大匠"
+  gender = "男性"
+  age = 48
+
+  combat = {
+    attitude = "friendly"
+    str = 35
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    heartbeat = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/wujiang.c by LPCConverter
+# Zone: changan
+
+    characters "wujiang" {
+      name = "武将"
+      description = "他威风凛凛，杀气腾腾，虽然现在只是个守城小官，当年也曾经参加过几场大战役。"
+  gender = "男性"
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 80000
+    max_jing = 600
+    max_neili = 400
+    max_qi = 700
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 70 },
+    { skill = "force" level = 70 },
+    { skill = "sword" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "parry" level = 70 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.zhanjia.id }
+  ]
+
+
+  engage = {
+    fight = { accept = false msg = "武将对{npc}把眼一瞪，喝道：呔，放肆，敢跟我比试，是不是活的不耐了！" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/xiangke.c by LPCConverter
+# Zone: changan
+
+    characters "xiangke" {
+      name = "香客"
+      description = ""
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 30000
+    max_jing = 400
+    max_qi = 600
+  }
+
+  carry = [
+    { id = items.changpao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/xiangxiang.c by LPCConverter
+# Zone: changan
+
+    characters "xiangxiang" {
+      name = "湘湘"
+      description = ""
+  title = "萧员外之女"
+  gender = "女性"
+  age = 17
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 250000
+    int = 40
+  }
+
+  inquiries = [
+    { key = "letter" value = "(: execute_ask() :)" },
+    { key = "信" value = "(: execute_ask() :)" },
+    { key = "家" value = "(: execute_ask() :)" },
+    { key = "父亲" value = "(: execute_ask() :)" }
+  ]
+
+  chat_chance = 15
+chats = [
+    "湘湘想到伤心处，忍不住放声大哭。",
+    "湘湘若有所思的道：谁能给我爹捎个信叫他来救我。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "force" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.skirt.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/xiaoer.c by LPCConverter
+# Zone: changan
+
+    characters "xiaoer" {
+      name = "店小二"
+      description = ""
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 21
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 10 }
+  ]
+
+
+  carry = [
+    { id = items.linen.id }
+  ]
+
+
+  greetings = [
+    { line = "{expr}笑咪咪地说道：这位{respect}，进来歇歇脚，休息一下吧。" }
+  ]
+
+  accept = [
+    { kind = "money" min = 300 accept = true msg = "小二一哈腰，说道：多谢您老，客官请上楼歇息。" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/xiaoer2.c by LPCConverter
+# Zone: changan
+
+    characters "xiaoer2" {
+      name = "店小二"
+      description = ""
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 26
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000
+  }
+
+  goods = [
+    { id = items.jiudai.id },
+    { id = items.gourou.id },
+    { id = items.jitui.id }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 10 }
+  ]
+
+
+  carry = [
+    { id = items.linen.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝两盅，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/xizi.c by LPCConverter
+# Zone: changan
+
+    characters "xizi" {
+      name = "戏子"
+      description = "一位装扮极为奇特的戏子。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 10000
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 }
+  ]
+
+
+  carry = [
+    { id = items.changpao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/xueshi.c by LPCConverter
+# Zone: changan
+
+    characters "xueshi" {
+      name = "李博渊"
+      description = "李博渊是国子监大学士。"
+  title = "大学士"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 40000
+    int = 30
+    max_neili = 500
+    str = 25
+  }
+
+  inquiries = [
+    { key = "学习" value = "学习是要交学费的" },
+    { key = "读书识字" value = "对了，你是来对地方了！" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "literate" level = 400 },
+    { skill = "parry" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.choupao.id }
+  ]
+
+
+  accept = [
+    { kind = "money" min = 10000 accept = true msg = "李博渊同意指点{npc}一些读书写字的问题。" },
+    { kind = "any" accept = true msg = ["李博渊同意指点{npc}一些读书写字的问题。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/yahuan.c by LPCConverter
+# Zone: changan
+
+    characters "yahuan" {
+      name = "丫环"
+      description = "一个小丫环，正在打扫房间．"
+  gender = "女性"
+  age = 16
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 500
+  }
+
+  carry = [
+    { id = items.skirt.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/yang-laoban.c by LPCConverter
+# Zone: changan
+
+    characters "yang_laoban" {
+      name = "杨老板"
+      description = "杨老板不但是这儿的掌柜，还是这儿的大厨， 并且烧得一手好菜。"
+  title = "望星楼老板"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 55
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    str = 24
+  }
+
+  goods = [
+    { id = items.zuixunfeng.id },
+    { id = items.snxiangji.id },
+    { id = items.lhjiyu.id }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.choupao.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/yayi.c by LPCConverter
+# Zone: changan
+
+    characters "yayi" {
+      name = "NPC"
+      description = ""
+  title = "衙役"
+  gender = "男性"
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 40000
+    max_jing = 500
+    max_neili = 300
+    max_qi = 500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 40 },
+    { skill = "staff" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.yayifu.id },
+    { id = items.shawei.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true msg = "哼！长安府你也敢来闹事，看打！" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/yuanwai.c by LPCConverter
+# Zone: changan
+
+    characters "yuanwai" {
+      name = "萧员外"
+      description = ""
+  gender = "男性"
+  age = 50
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 300000
+    int = 40
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "force" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.choupao.id }
+  ]
+
+
+  accept = [
+    { kind = "item_id" id = "xin" accept = true },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/yulinjun.c by LPCConverter
+# Zone: changan
+
+    characters "yulinjun" {
+      name = "御林军"
+      description = "这是位守护皇城的御林军武士，身披战甲，手执钢刀。他双目精光炯炯，警惕地巡视着四周的情形。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 160000
+    max_jing = 600
+    max_neili = 400
+    max_qi = 750
+    str = 25
+  }
+
+  skills = [
+    { skill = "blade" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "force" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.blade.id },
+    { id = items.zhanjia.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true msg = "御林军士对{npc}大喝一声：你活得不耐烦了？皇宫前你也敢胡闹！" retaliate = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/zhifu.c by LPCConverter
+# Zone: changan
+
+    characters "zhifu" {
+      name = "梁兴禄"
+      description = "长安城现任知府。"
+  title = "长安知府"
+  gender = "男性"
+  age = 43
+  shen_type = 0
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 50000
+    dex = 20
+    max_neili = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.sword.id },
+    { id = items.choupao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/zhuangjia.c by LPCConverter
+# Zone: changan
+
+    characters "zhuangjia" {
+      name = "庄家"
+      description = "这是赌场的职业赌徒，骰子上的功夫出神入化。"
+  title = "骰子圣手"
+  gender = "男性"
+  age = 47
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300000
+    str = 40
+  }
+
+  skills = [
+    { skill = "parry" level = 170 },
+    { skill = "unarmed" level = 170 },
+    { skill = "force" level = 170 },
+    { skill = "dodge" level = 170 }
+  ]
+
+
+  carry = [
+    { id = items.choupao.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "庄家笑咪咪地说道：这位{respect}，过来赌两手，看看运气如何？" },
+    { line = "庄家晃了晃手中的骰子，叫道：这位{respect}，别犹豫了。来下一注吧！" },
+    { line = "庄家说道：这位{respect}，来！来！来！ 先押一把！" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/ziyi.c by LPCConverter
+# Zone: changan
+
+    characters "ziyi" {
+      name = "紫衣"
+      description = "一个全身上下穿着粉装，领露酥胸的美女．"
+  title = "群玉八娇"
+  gender = "女性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10
+    str = 30
+  }
+
+  carry = [
+    { id = items.skirt.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/zong-biaotou.c by LPCConverter
+# Zone: changan
+
+    characters "zong_biaotou" {
+      name = "万青山"
+      description = "河洛镖局总镖头，为人豪爽，不少走江湖的人物都是向他求教的武功。"
+  title = "龙行天下"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    int = 30
+  }
+
+  chat_chance = 10
+chats = [
+    "万青山说道：镖局的人手越来越少了！",
+    "万青山说道：护镖真是一件很危险的事！"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "literate" level = 40 },
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.jinzhuang.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/axe.c by LPCConverter
+# Zone: changan
+
+    characters "axe" {
+      name = "板斧"
+      description = "这是一把沉重的大板斧，砍起东西来非常顺手。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/bai-chahua.c by LPCConverter
+# Zone: changan
+
+    characters "bai_chahua" {
+      name = "白茶花"
+      description = "冰清玉洁的白茶花。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/baijie.c by LPCConverter
+# Zone: changan
+
+    characters "baijie" {
+      name = "白金戒指"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/baijiu.c by LPCConverter
+# Zone: changan
+
+    characters "baijiu" {
+      name = "粗劣酒瓶"
+      description = "一个用来装酒的酒瓶，能装两，三斤白酒。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/bao1.c by LPCConverter
+# Zone: changan
+
+    characters "bao1" {
+      name = "猪肉包子"
+      description = "一个香喷喷、热腾腾的猪肉灌汤包。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/bao2.c by LPCConverter
+# Zone: changan
+
+    characters "bao2" {
+      name = "海鲜包子"
+      description = "一个香喷喷、热腾腾的海鲜灌汤包。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/bao3.c by LPCConverter
+# Zone: changan
+
+    characters "bao3" {
+      name = "素菜包子"
+      description = "一个香喷喷、热腾腾的素菜灌汤包。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/baojie.c by LPCConverter
+# Zone: changan
+
+    characters "baojie" {
+      name = "宝石戒指"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/beixin.c by LPCConverter
+# Zone: changan
+
+    characters "beixin" {
+      name = "皮背心"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/bingfu.c by LPCConverter
+# Zone: changan
+
+    characters "bingfu" {
+      name = "兵服"
+      description = "一件兵服，前后有铜镜护心，中间绣了一个兵字．"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/blade.c by LPCConverter
+# Zone: changan
+
+    characters "blade" {
+      name = "钢刀"
+      description = "这是一寻常的单刀，份量大约六、七斤重。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/book.c by LPCConverter
+# Zone: changan
+
+    characters "book" {
+      name = "NPC"
+      description = "一本可以学习易容术的书。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/book_blade.c by LPCConverter
+# Zone: changan
+
+    characters "book_blade" {
+      name = "〖刀法简介〗"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/book_unarmed.c by LPCConverter
+# Zone: changan
+
+    characters "book_unarmed" {
+      name = "〖拳法简介〗"
+      description = "〖拳法简介〗"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/changbian.c by LPCConverter
+# Zone: changan
+
+    characters "changbian" {
+      name = "长鞭"
+      description = "这是一柄普通的长鞭，由水牛精工编织而成。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/changjian.c by LPCConverter
+# Zone: changan
+
+    characters "changjian" {
+      name = "长剑"
+      description = "这是一柄长长的精钢剑，剑口锋利无比。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/changpao.c by LPCConverter
+# Zone: changan
+
+    characters "changpao" {
+      name = "长袍"
+      description = "一件长袍。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/choupao.c by LPCConverter
+# Zone: changan
+
+    characters "choupao" {
+      name = "绸袍"
+      description = "一件丝绸长袍，质的和裁剪都不错．"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/cloth.c by LPCConverter
+# Zone: changan
+
+    characters "cloth" {
+      name = "布衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/gangdao.c by LPCConverter
+# Zone: changan
+
+    characters "gangdao" {
+      name = "钢刀"
+      description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/gangzhang.c by LPCConverter
+# Zone: changan
+
+    characters "gangzhang" {
+      name = "钢杖"
+      description = "这是一根粗重的钢杖。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/gourou.c by LPCConverter
+# Zone: changan
+
+    characters "gourou" {
+      name = "红烧狗肉"
+      description = "一碗香喷喷的红烧狗肉"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/hamigua.c by LPCConverter
+# Zone: changan
+
+    characters "hamigua" {
+      name = "哈密瓜"
+      description = "一颗散发清香的哈密瓜。�n"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/hammer.c by LPCConverter
+# Zone: changan
+
+    characters "hammer" {
+      name = "铁锤"
+      description = "这是一把沉重的铁锤，打造的相当坚实。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/hei-mudan.c by LPCConverter
+# Zone: changan
+
+    characters "hei_mudan" {
+      name = "黑牡丹"
+      description = "清高冷傲的黑牡丹。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/hmeigui.c by LPCConverter
+# Zone: changan
+
+    characters "hmeigui" {
+      name = "玫瑰"
+      description = "一朵红色的玫瑰，花瓣里透出一股凄然。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/hong-meigui.c by LPCConverter
+# Zone: changan
+
+    characters "hong_meigui" {
+      name = "红玫瑰"
+      description = "热奔奔放的红玫瑰。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/huang-meigui.c by LPCConverter
+# Zone: changan
+
+    characters "huang_meigui" {
+      name = "黄玫瑰"
+      description = "含情脉脉的黄玫瑰。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/jinchuang.c by LPCConverter
+# Zone: changan
+
+    characters "jinchuang" {
+      name = "金创药"
+      description = "这是一包武林人士必备的金创药。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/jinjie.c by LPCConverter
+# Zone: changan
+
+    characters "jinjie" {
+      name = "金戒指"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/jinzhuang.c by LPCConverter
+# Zone: changan
+
+    characters "jinzhuang" {
+      name = "蓝色劲装"
+      description = "这是一套短打劲装。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/jitui.c by LPCConverter
+# Zone: changan
+
+    characters "jitui" {
+      name = "炸鸡腿"
+      description = "一枝炸得香喷喷的鸡腿。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/jiudai.c by LPCConverter
+# Zone: changan
+
+    characters "jiudai" {
+      name = "牛皮酒袋"
+      description = "一个用来装竹叶青酒的大酒袋，大概装得八、九升的酒。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/juzi.c by LPCConverter
+# Zone: changan
+
+    characters "juzi" {
+      name = "桔子"
+      description = "一个黄橙橙的桔子。�n"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/lan-tiane.c by LPCConverter
+# Zone: changan
+
+    characters "lan_tiane" {
+      name = "蓝天鹅"
+      description = "庄重朴实的蓝天鹅。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/laofang-key.c by LPCConverter
+# Zone: changan
+
+    characters "laofang_key" {
+      name = "牢房钥匙"
+      description = "一把牢房钥匙。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/letter.c by LPCConverter
+# Zone: changan
+
+    characters "letter" {
+      name = "家书"
+      description = "一封滴满泪痕的信．"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/lhjiyu.c by LPCConverter
+# Zone: changan
+
+    characters "lhjiyu" {
+      name = "NPC"
+      description = "一盘令人垂涎的。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/linen.c by LPCConverter
+# Zone: changan
+
+    characters "linen" {
+      name = "布衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/miantang.c by LPCConverter
+# Zone: changan
+
+    characters "miantang" {
+      name = "面汤"
+      description = "一碗热气腾腾的面汤。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/miantiao1.c by LPCConverter
+# Zone: changan
+
+    characters "miantiao1" {
+      name = "刀削面"
+      description = "一碗热气腾腾的刀削面。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/miantiao2.c by LPCConverter
+# Zone: changan
+
+    characters "miantiao2" {
+      name = "牛肉面"
+      description = "一碗热气腾腾的牛肉面。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/miantiao3.c by LPCConverter
+# Zone: changan
+
+    characters "miantiao3" {
+      name = "排骨面"
+      description = "一碗热气腾腾的面条。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/muqin.c by LPCConverter
+# Zone: changan
+
+    characters "muqin" {
+      name = "木琴"
+      description = "一个平凡的木琴，没有什么特殊之处。"
+
+  init = {
+    greet_delay = 0
+    add_actions = ["play"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/neck.c by LPCConverter
+# Zone: changan
+
+    characters "neck" {
+      name = "白金项圈"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/pingguo.c by LPCConverter
+# Zone: changan
+
+    characters "pingguo" {
+      name = "苹果"
+      description = "一个大苹果。�n"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/ring.c by LPCConverter
+# Zone: changan
+
+    characters "ring" {
+      name = "紫金戒指"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/sengpao.c by LPCConverter
+# Zone: changan
+
+    characters "sengpao" {
+      name = "僧袍"
+      description = "这是一件寻常的僧袍，是和尚们的普通装束。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/sengyi.c by LPCConverter
+# Zone: changan
+
+    characters "sengyi" {
+      name = "僧衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/shawei.c by LPCConverter
+# Zone: changan
+
+    characters "shawei" {
+      name = "杀威棒"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/shield.c by LPCConverter
+# Zone: changan
+
+    characters "shield" {
+      name = "牛皮盾"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/skirt.c by LPCConverter
+# Zone: changan
+
+    characters "skirt" {
+      name = "轻纱长裙"
+      description = "一条朦朦胧胧的纱裙，闻起来还有一股淡香。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/snxiangji.c by LPCConverter
+# Zone: changan
+
+    characters "snxiangji" {
+      name = "NPC"
+      description = "一盘令人垂涎的。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/sword.c by LPCConverter
+# Zone: changan
+
+    characters "sword" {
+      name = "长剑"
+      description = "这是一把看起相当普通的长剑，份量大约有十来斤左右。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/teapot.c by LPCConverter
+# Zone: changan
+
+    characters "teapot" {
+      name = "茶壶"
+      description = "一个茶馆卖的茶壶，大概装得几升水。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/wrists.c by LPCConverter
+# Zone: changan
+
+    characters "wrists" {
+      name = "鎏金腕链"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/yangjing.c by LPCConverter
+# Zone: changan
+
+    characters "yangjing" {
+      name = "养精丹"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/yayifu.c by LPCConverter
+# Zone: changan
+
+    characters "yayifu" {
+      name = "衙役服"
+      description = "一件黑色短装，嵌以红边，是长安府的衙役穿的．"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/yinjie.c by LPCConverter
+# Zone: changan
+
+    characters "yinjie" {
+      name = "银戒指"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/yupei.c by LPCConverter
+# Zone: changan
+
+    characters "yupei" {
+      name = "龙凤玉佩"
+      description = "一枚玉佩，上面雕刻着龙凤图案．"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/zhanjia.c by LPCConverter
+# Zone: changan
+
+    characters "zhanjia" {
+      name = "战甲"
+      description = "一件精钢造就的战甲。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/zi-luolan.c by LPCConverter
+# Zone: changan
+
+    characters "zi_luolan" {
+      name = "紫罗兰"
+      description = "高贵典雅的紫罗兰，闻起来还有一股淡淡的香味儿。"
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/zuanjie.c by LPCConverter
+# Zone: changan
+
+    characters "zuanjie" {
+      name = "钻石戒指"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/changan/npc/obj/zuixunfeng.c by LPCConverter
+# Zone: changan
+
+    characters "zuixunfeng" {
+      name = "醉熏风"
+      description = "一壶巴蜀佳酿醉熏风，甜美醇绵。"
+    }

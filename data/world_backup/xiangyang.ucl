@@ -1,0 +1,3614 @@
+zones "xiangyang" {
+  name = "xiangyang"
+}
+
+# Generated from C:/files/git/mud/d/xiangyang/anfugate.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "anfugate" {
+      name = "安抚使衙门"
+      description = "这是安抚使衙门的大门，铜皮包门似乎极为沉重，上面有 两个明晃晃的铜环；大门紧闭，里面却传出一阵阵嬉笑声，和 门口的肃杀很不协调。想来这个安抚使大人的日子还是过得蛮 滋润的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "anfugate" {
+    room_id = rooms.anfugate.id
+  south = rooms.anfupailou.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/anfupailou.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "anfupailou" {
+      name = "安抚府牌楼"
+      description = "这里是安抚使府前的一座牌楼，高达二丈，由黄玉制成， 和东面的将军府屋顶的琉璃瓦在阳光的照耀下黄白掩映，金碧 辉煌，令人目为之眩，感觉分外巍峨庄严。你抬头望去，但见 牌楼上四个大金字“安抚使府”。牌楼下站着两派手那刀枪的 宋兵，紧紧盯着每一个靠近这儿的人。北面就是安抚府大院了。 南面就是襄阳的中央广场。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "anfupailou" {
+    room_id = rooms.anfupailou.id
+  south = rooms.guangchang.id
+  north = rooms.anfugate.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/biaoju.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "biaoju" {
+      name = "福威镖局"
+      description = "你来到一座结构宏伟的建筑前，左右石坛上各插着一根两 丈多高的旗杆，杆上青旗飘扬。右首旗子用金线绣着一头张牙 舞爪的狮子，狮子上头有一只蝙蝠飞翔。左首旗子上写着“福 威镖局襄阳分号”八个黑字，银钩铁划，刚劲非凡。入口排着 两条长凳，几名镖头坐着把守。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "biaoju" {
+    room_id = rooms.biaoju.id
+  southeast = rooms.eastroad1.id  }
+
+
+  room_characters "biaoju" {
+    room_id = rooms.biaoju.id
+    characters = [
+      { id = characters.biaotou.id },
+      { id = characters.biaotou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/bingying1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "bingying1" {
+      name = "兵营"
+      description = "这里是兵营，密密麻麻到处都是官兵，有的在武将的指挥 下列队操练，有的独自在练功，有的坐着、躺着正在休息。南 墙下坐着主帅，不动声色地寻视着四周。看到你进来，他们全 都向你瞪大眼睛盯着你。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bingying1" {
+    room_id = rooms.bingying1.id
+  east = rooms.northjie.id  }
+
+
+  room_characters "bingying1" {
+    room_id = rooms.bingying1.id
+    characters = [
+      { id = characters.pian.id },
+      { id = characters.zuo.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/bingying2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "bingying2" {
+      name = "兵营"
+      description = "这里是兵营，密密麻麻到处都是官兵，有的在武将的指挥 下列队操练，有的独自在练功，有的坐着、躺着正在休息。南 墙下坐着主帅，不动声色地寻视着四周。看到你进来，他们全 都向你瞪大眼睛盯着你。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bingying2" {
+    room_id = rooms.bingying2.id
+  south = rooms.eastjie3.id  }
+
+
+  room_characters "bingying2" {
+    room_id = rooms.bingying2.id
+    characters = [
+      { id = characters.pian.id },
+      { id = characters.zuo.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/bingying3.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "bingying3" {
+      name = "兵营"
+      description = "这里是兵营，密密麻麻到处都是官兵，有的在武将的指挥 下列队操练，有的独自在练功，有的坐着、躺着正在休息。南 墙下坐着主帅，不动声色地寻视着四周。看到你进来，他们全 都向你瞪大眼睛盯着你。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bingying3" {
+    room_id = rooms.bingying3.id
+  east = rooms.southjie3.id  }
+
+
+  room_characters "bingying3" {
+    room_id = rooms.bingying3.id
+    characters = [
+      { id = characters.pian.id },
+      { id = characters.zuo.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/bingying4.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "bingying4" {
+      name = "兵营"
+      description = "这里是兵营，密密麻麻到处都是官兵，有的在武将的指挥 下列队操练，有的独自在练功，有的坐着、躺着正在休息。南 墙下坐着主帅，不动声色地寻视着四周。看到你进来，他们全 都向你瞪大眼睛盯着你。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bingying4" {
+    room_id = rooms.bingying4.id
+  south = rooms.westjie3.id  }
+
+
+  room_characters "bingying4" {
+    room_id = rooms.bingying4.id
+    characters = [
+      { id = characters.pian.id },
+      { id = characters.zuo.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/caodi1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "caodi1" {
+      name = "草地"
+      description = "这是襄阳城外的草地。蒙古兵进犯以来，这里的百姓全进 城了，蒙古兵驰骋来去，以为牧场，尘土飞扬，甚是嚣张。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caodi1" {
+    room_id = rooms.caodi1.id
+  west = rooms.northgate2.id  }
+
+
+  room_characters "caodi1" {
+    room_id = rooms.caodi1.id
+    characters = [
+      { id = characters.tuolei.id },
+      { id = characters.menggubing.id },
+      { id = characters.menggubing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/caodi2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "caodi2" {
+      name = "草地"
+      description = "这是襄阳城外的草地。蒙古兵进犯以来，这里的百姓全进 城了，蒙古兵驰骋来去，以为牧场，尘土飞扬，甚是嚣张。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caodi2" {
+    room_id = rooms.caodi2.id
+  east = rooms.northgate2.id  }
+
+
+  room_characters "caodi2" {
+    room_id = rooms.caodi2.id
+    characters = [
+      { id = characters.menggubing.id },
+      { id = characters.menggubing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/caodi3.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "caodi3" {
+      name = "草地"
+      description = "这是襄阳城外的草地。蒙古兵进犯以来，这里的百姓全进 城了，蒙古兵驰骋来去，以为牧场，尘土飞扬，甚是嚣张。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caodi3" {
+    room_id = rooms.caodi3.id
+  south = rooms.northgate2.id
+  north = rooms.guandaos6.id  }
+
+
+  room_characters "caodi3" {
+    room_id = rooms.caodi3.id
+    characters = [
+      { id = characters.menggubing.id },
+      { id = characters.menggubing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/caodi4.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "caodi4" {
+      name = "草地"
+      description = "这是襄阳城外的草地。蒙古兵进犯以来，这里的百姓全进 城了，这里几十里都没了人烟。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caodi4" {
+    room_id = rooms.caodi4.id
+  west = rooms.southgate2.id  }
+
+
+
+
+  room_items "caodi4" {
+    room_id = rooms.caodi4.id
+    items = [
+      { id = items.cheng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/caodi5.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "caodi5" {
+      name = "草地"
+      description = "这是襄阳城外的草地。蒙古兵进犯以来，这里的百姓全进 城了，这里几十里都没了人烟。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caodi5" {
+    room_id = rooms.caodi5.id
+  east = rooms.southgate2.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/caodi6.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "caodi6" {
+      name = "草地"
+      description = "这是襄阳城外的草地。蒙古兵进犯以来，这里的百姓全进 城了，虽然蒙古兵没来到南门，但肃杀氛围丝毫不减。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caodi6" {
+    room_id = rooms.caodi6.id
+  north = rooms.southgate2.id
+  south = rooms.wdroad5.id
+  west = rooms.hunanroad1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/chaguan.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "chaguan" {
+      name = "茶馆"
+      description = "你一走进来，就闻到一股茶香沁入心脾，精神为之一爽。 几张八仙桌一字排开，坐满了客人，或高声谈论战局，或交头 接耳元兵势大。你要想打听什么，恐怕不是时候。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chaguan" {
+    room_id = rooms.chaguan.id
+  west = rooms.northjie.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/dajiaochang.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "dajiaochang" {
+      name = "大校场"
+      description = "这是襄阳守军用来校阅军士的地方。只见校场正中巍巍搭 着一座高台，台南排列着千余张椅子板凳。台前竖着两根旗杆， 旗杆顶上有着硕大的旗斗。校场里聚集着数百个四袋以上的丐 帮弟子。他们都是来竞选新任丐帮帮主的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dajiaochang" {
+    room_id = rooms.dajiaochang.id
+  north = rooms.westjie3.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/dangpu.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "dangpu" {
+      name = "当铺"
+      description = "这是家远近闻名的当铺，三开间的门面，一块写着『邱航 当铺』四个金字的黑匾，足足七尺高的紫檀木的柜台被磨得光 可照人，你一进去就有一种压抑和悲怅的感觉，柜台后的老板 邱航头也不抬的只顾拨拉着算盘，柜台上方挂着一块花木牌子 (paizi) 。据街坊们说铁面当铺给的价还不算最坏，并且从不 问货的来处，除了活人什么都收，所以生意很不错。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ paizi = "你情我愿，概不赊欠。"
+}
+    }
+
+  room_exits "dangpu" {
+    room_id = rooms.dangpu.id
+  north = rooms.westjie1.id  }
+
+
+  room_characters "dangpu" {
+    room_id = rooms.dangpu.id
+    characters = [
+      { id = characters.qiuhang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/dingzi.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "dingzi" {
+      name = "丁字街口"
+      description = "这里是襄阳城北部的丁字街口。向北一直通向玄武门，东 面和西面是一条笔直的青石大街，通向城内。南面是一堵上盖 红色琉璃瓦的高墙，里面是襄阳安抚使吕文德的府邸。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dingzi" {
+    room_id = rooms.dingzi.id
+  east = rooms.northroad2.id
+  west = rooms.northroad1.id
+  north = rooms.northjie.id  }
+
+
+  room_characters "dingzi" {
+    room_id = rooms.dingzi.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/duchang.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "duchang" {
+      name = "赌场"
+      description = "这里本是襄阳最大的赌场。可是大战当前，为免守军军心 动摇、军纪败坏，郭大侠早已下令关闭了赌场。门可罗雀的大 院，可以想象当时的规模，闲置破败的赌具，也不知道在无声 地诉说什么。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "duchang" {
+    room_id = rooms.duchang.id
+  east = rooms.southjie2.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/eastgate1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "eastgate1" {
+      name = "青龙内门"
+      description = "这里是襄阳城的东城门的内城门，只见城门上方是三个大 字。                        青龙门  近年来蒙古屡次侵犯襄阳城，故这儿把守相当严密，一些官兵 们正在盘查要离襄阳城的人。两边是上城头的石阶，向西进入 城区。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "eastgate1" {
+    room_id = rooms.eastgate1.id
+  southup = rooms.walle1.id
+  northup = rooms.walle2.id
+  west = rooms.eastjie3.id
+  east = rooms.eastgate2.id  }
+
+
+  room_characters "eastgate1" {
+    room_id = rooms.eastgate1.id
+    characters = [
+      { id = characters.pi.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/eastgate2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "eastgate2" {
+      name = "青龙外门"
+      description = "这里是襄阳城的东城门，只见城门上方是三个大字。                        青龙门  近年来蒙古屡次侵犯襄阳城，故这儿把守相当严密，一些官兵 们正在盘查要离襄阳城的人。两边是很大的草地。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "eastgate2" {
+    room_id = rooms.eastgate2.id
+  west = rooms.eastgate1.id
+  east = rooms.toyy.id  }
+
+
+  room_characters "eastgate2" {
+    room_id = rooms.eastgate2.id
+    characters = [
+      { id = characters.pi.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/eastjie1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "eastjie1" {
+      name = "东大街"
+      description = "这是一条宽阔的青石板街道，向东西两头延伸。东边是一 个大十字街口。西面是襄阳的中央广场，北边是襄阳守城大将 王坚的府邸大门，只见那儿守备森严，闲杂人等一般是不能接 近的。南面飘来一缕缕的药香，噢，原来是一家药铺。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "eastjie1" {
+    room_id = rooms.eastjie1.id
+  east = rooms.eastjie2.id
+  west = rooms.guangchang.id
+  south = rooms.yaopu.id
+  north = rooms.jiangjungate.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/eastjie2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "eastjie2" {
+      name = "东大街"
+      description = "这儿是很大的十字街口，北边是东内大街，南面是一条街 道，听说有钱人一般都住在里面，东面通向襄阳城的青龙门， 向西可到达中央广场。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "eastjie2" {
+    room_id = rooms.eastjie2.id
+  east = rooms.eastjie3.id
+  west = rooms.eastjie1.id
+  south = rooms.jiedao.id
+  north = rooms.eastroad1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/eastjie3.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "eastjie3" {
+      name = "东大街"
+      description = "这是一条宽阔的青石街道，向东西两头延伸。东面是青龙 内门，南边是木匠铺，锯木声、刨木声声声入耳。北面是襄阳 城的东兵营，隐隐能听见里面传来宋兵的操练声。西边是一个 十字街口，只见人来人往、络绎不绝。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "eastjie3" {
+    room_id = rooms.eastjie3.id
+  east = rooms.eastgate1.id
+  west = rooms.eastjie2.id
+  south = rooms.mujiang.id
+  north = rooms.bingying2.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/eastroad1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "eastroad1" {
+      name = "东内大街"
+      description = "这是一条青石铺就的大街。西面是一堵盖着红色琉璃瓦的 高墙，里面是襄阳守城大将王坚的府邸大院。东面是是一座镖 局，北面是用青石铺的大街道。南面是一个大的十字街道，只 见人来人往，非常热闹。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "eastroad1" {
+    room_id = rooms.eastroad1.id
+  northwest = rooms.biaoju.id
+  south = rooms.eastjie2.id
+  north = rooms.eastroad2.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/eastroad2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "eastroad2" {
+      name = "东内大街"
+      description = "这是一条青石铺就的大街。西面是一堵盖着红色琉璃瓦的 高墙，里面是襄阳守城大将王坚的府邸大院。东面是忠烈祠， 因为十余年来，为保卫襄阳、抵抗蒙古军的侵略而牺牲的人特 别多，前往上香祭奠的人络绎不绝。北面是一个十字街道，只 见人来人往，非常热闹，南面是用青石铺的街道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "eastroad2" {
+    room_id = rooms.eastroad2.id
+  east = rooms.zhonglie.id
+  south = rooms.eastroad1.id
+  north = rooms.jiekou2.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/guandao_1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "guandao_1" {
+      name = "大官道"
+      description = "你走在一条尘土飞扬的大官道上。不时有两三骑快马从身 边飞驰而过，扬起一路尘埃。道路两旁是整整齐齐的杨树林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guandao_1" {
+    room_id = rooms.guandao_1.id
+  east = rooms.westgate2.id
+  north = rooms.guandao_2.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/guandao_2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "guandao_2" {
+      name = "大官道"
+      description = "你走在一条尘土飞扬的大官道上。不时有两三骑快马从身 边飞驰而过，扬起一路尘埃。道路两旁是整整齐齐的杨树林。。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guandao_2" {
+    room_id = rooms.guandao_2.id
+  north = rooms.xiaodao1.id
+  south = rooms.guandao_1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/guangchang.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "guangchang" {
+      name = "中央广场"
+      description = "这里是襄阳的中央广场，铺着青石地面。东面通向青龙门， 西面通向白虎门，南面直达朱雀门，远远地你可看到北面是襄 阳安抚使衙门。近年来蒙古大军屡次攻打襄阳，官府为防止蒙 古奸细混杂进来，已经不允许人们在此聚集。只见一队官兵在 此往来巡逻，你还是快离开吧。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guangchang" {
+    room_id = rooms.guangchang.id
+  east = rooms.eastjie1.id
+  west = rooms.westjie1.id
+  south = rooms.southjie1.id
+  north = rooms.anfupailou.id  }
+
+
+  room_characters "guangchang" {
+    room_id = rooms.guangchang.id
+    characters = [
+      { id = characters.pian.id },
+      { id = characters.bing.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/guofugate.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "guofugate" {
+      name = "郭府大门"
+      description = "一座建筑古朴的大宅院出现在你的眼前。只见门楼高挑， 上书两个大字                      郭   府      全真教第二代弟子耶律齐和几个家丁站在门前接待前来保 卫襄阳的各方义士。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofugate" {
+    room_id = rooms.guofugate.id
+  south = rooms.westjie1.id
+  north = rooms.guofuyuan.id  }
+
+
+  room_characters "guofugate" {
+    room_id = rooms.guofugate.id
+    characters = [
+      { id = characters.yelvqi.id },
+      { id = characters.jiading.id },
+      { id = characters.jiading.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/guofuhuayuan.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "guofuhuayuan" {
+      name = "郭府后花园"
+      description = "这里是郭府的后花园，园内假山林立，西边种着一些青竹， 东边是几棵枝叶茂盛的木笔花树。你一走进来，就闻到一阵阵 清新的、淡淡的花香。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofuhuayuan" {
+    room_id = rooms.guofuhuayuan.id
+  east = rooms.guofuwoshi.id
+  west = rooms.guofukefang.id
+  south = rooms.guofuting.id
+  north = rooms.guofushufang.id  }
+
+
+
+
+  room_items "guofuhuayuan" {
+    room_id = rooms.guofuhuayuan.id
+    items = [
+      { id = items.rong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/guofukefang.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "guofukefang" {
+      name = "客房"
+      description = "这里是郭府客人们的住处，整整齐齐的一排平房。门的左 右两边各是一张床，床上的被褥被叠得整整齐齐。床头正对的 地方摆着一张桌子，旁边还放着一张椅子。桌上整齐地放着文 房四宝，旁边还放着几本书。地上摆着一盆牡丹花，一丝清香 萦绕房中。因为郭靖是当今的大英雄，所以江湖上有不少豪杰 每年都来拜访他。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofukefang" {
+    room_id = rooms.guofukefang.id
+  east = rooms.guofuhuayuan.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/guofushufang.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "guofushufang" {
+      name = "书房"
+      description = "这是郭靖的书房。右边是书架，上面陈列着道家和儒家的 一些典籍，却没有一本与武学有关的书。左边靠窗的地方摆着 一张木桌，上面放着笔墨纸砚，边上放着几本书，摆放得整整 齐齐，搽拭得一尘不染，阁里到处被打扫得一尘不染，窗明几 净，可以看到外面松竹掩映，时有微风入户，门后桌上还燃着 一炉檀香，氲氲的香气轻轻横散，使人俗念尽消，心情完全平 静下来。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofushufang" {
+    room_id = rooms.guofushufang.id
+  south = rooms.guofuhuayuan.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/guofuting.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "guofuting" {
+      name = "郭府客厅"
+      description = "这里是郭府的客厅。厅虽不大，却布置的挺雅致。东壁悬 挂着四幅屏条，绘的是梅兰菊竹四种花卉；西壁悬挂的是春夏 秋冬。内厅居中的是一张八仙桌。桌上端放着一套茶具，两旁 摆放着四张檀香椅，显得极为古朴。厅角各摆放着一盆牡丹花， 似乎给这里带来一丝暖意。北壁内墙的神龛供奉岳飞的画像， 上面是一条横幅，上书“还我河山”。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofuting" {
+    room_id = rooms.guofuting.id
+  south = rooms.guofuyuan.id
+  north = rooms.guofuhuayuan.id  }
+
+
+  room_characters "guofuting" {
+    room_id = rooms.guofuting.id
+    characters = [
+      { id = characters.guo.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/guofuwoshi.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "guofuwoshi" {
+      name = "卧室"
+      description = "这里就是郭靖和黄蓉的卧室。屋子里的陈设很简单。门的 左边有一张软床。床上的被褥被叠得整整齐齐。床头正对的地 方摆着一张梳妆台。桌上摆着一个光亮的铜镜，铜镜旁边的花 瓶里，有一束百合花，正在散发出淡淡的幽香。里边放着两张 木椅，中间是一茶几，上面摆着一盆山茶花。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofuwoshi" {
+    room_id = rooms.guofuwoshi.id
+  west = rooms.guofuhuayuan.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/guofuyuan.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "guofuyuan" {
+      name = "郭府大院"
+      description = "这里是郭府的大院，当面一堵宽阔的白玉照壁，上书“忠 心报国”四个大字，地下是一色的青砖铺地，四周种了几棵大 树，有几个仆役正在院中洒扫，北面是郭府的客厅,。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofuyuan" {
+    room_id = rooms.guofuyuan.id
+  south = rooms.guofugate.id
+  north = rooms.guofuting.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/hutong1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "hutong1" {
+      name = "胡同"
+      description = "这里是襄阳城内老百姓的居住区。只见胡同两边是有些小 店面，有米行、小杂货铺等。一些居民从这里进进出出。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hutong1" {
+    room_id = rooms.hutong1.id
+  east = rooms.jiekou1.id  }
+
+
+  room_characters "hutong1" {
+    room_id = rooms.hutong1.id
+    characters = [
+      { id = characters.kid.id },
+      { id = characters.boy.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/hutong2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "hutong2" {
+      name = "胡同"
+      description = "这里是襄阳城内老百姓的居住区。只见胡同两边是有些小 店面，有米行、小杂货铺等。一些居民从这里进进出出。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hutong2" {
+    room_id = rooms.hutong2.id
+  south = rooms.jiekou1.id  }
+
+
+  room_characters "hutong2" {
+    room_id = rooms.hutong2.id
+    characters = [
+      { id = characters.girl.id },
+      { id = characters.girl.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/jiangjungate.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "jiangjungate" {
+      name = "将军府大门"
+      description = "这是将军府的大门，门板不知是以什么材料制成，看上去 黝黑一片，似乎极为沉重，上面有两个擦得晶亮的铜环；在大 门的正上面有个夹着一个高大的木牌坊，上书「将军府」三个 大字，字迹娟秀飘逸，只是有些模糊了，想必是岁月留下的痕 迹。门内有一株老柏，生得苍劲挺拔，枝叶茂密。门前东西两 边各肃立着两个腰配大刀的宋兵。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "north" && objectp(present("song bing", environment(me)))
+direction = "north"
+  message = "宋兵向你喝道：什么人胆敢擅闯守备府衙门！"
+}
+
+]
+    }
+
+  room_exits "jiangjungate" {
+    room_id = rooms.jiangjungate.id
+  south = rooms.eastjie1.id
+  north = rooms.jiangjunyuan.id  }
+
+
+  room_characters "jiangjungate" {
+    room_id = rooms.jiangjungate.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/jiangjuntang.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "jiangjuntang" {
+      name = "将军府大堂"
+      description = "这里是将军府的大堂，公案后端坐着一个威猛的将军，但 一脸疲惫，看来征战刚归的模样。大堂两边摆着兵器架，架上 锋刃仍留血迹，映着架后的战旗，分外耀眼。两班将佐，虽征 尘未洗，但斗志昂扬，甚是雄壮。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jiangjuntang" {
+    room_id = rooms.jiangjuntang.id
+  south = rooms.jiangjunyuan.id  }
+
+
+  room_characters "jiangjuntang" {
+    room_id = rooms.jiangjuntang.id
+    characters = [
+      { id = characters.wang.id },
+      { id = characters.zuo.id },
+      { id = characters.pian.id },
+      { id = characters.ya.id },
+      { id = characters.pi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/jiangjunyuan.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "jiangjunyuan" {
+      name = "将军府大院"
+      description = "这里是将军府的大院，只见大理石铺就的地面一尘不染， 两个衣着光鲜的小丫鬟认真的在擦洗两边的栏杆和柱子，不时 有值班的卫士走过来。向里望去，可以看到将军府的大堂。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jiangjunyuan" {
+    room_id = rooms.jiangjunyuan.id
+  south = rooms.jiangjungate.id
+  north = rooms.jiangjuntang.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/jiedao.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "jiedao" {
+      name = "街道"
+      description = "这里是襄阳城内有钱人的居住区。街道两旁是一些豪华的 住宅，虽然襄阳历经战乱，但还有许多有钱人没搬走，为坚守 襄阳城出钱出力。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jiedao" {
+    room_id = rooms.jiedao.id
+  east = rooms.minju1.id
+  west = rooms.minju2.id
+  north = rooms.eastjie2.id  }
+
+
+  room_characters "jiedao" {
+    room_id = rooms.jiedao.id
+    characters = [
+      { id = characters.poorman.id },
+      { id = characters.poorman.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/jiekou1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "jiekou1" {
+      name = "大街口"
+      description = "因为这儿是十字街口，所以非常热闹。小商小贩们在向行 人吆喝着，兜售他们的商品。虽然襄阳饱受蒙古军侵扰，但这 儿看不出人们有丝毫的紧张，好象他们已司空见惯、习以为常 了。北面和西面是胡同，许多襄阳城的老百姓住在里面，东面 和南面是青石铺就的大街。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jiekou1" {
+    room_id = rooms.jiekou1.id
+  east = rooms.northroad1.id
+  south = rooms.westroad2.id
+  west = rooms.hutong1.id
+  north = rooms.hutong2.id  }
+
+
+  room_characters "jiekou1" {
+    room_id = rooms.jiekou1.id
+    characters = [
+      { id = characters.seller.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/jiekou2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "jiekou2" {
+      name = "大街口"
+      description = "因为这儿是十字街口，所以非常热闹。小商小贩们在向行 人吆喝着，兜售他们的商品。虽然襄阳饱受蒙古军侵扰，但这 儿看不出人们有丝毫的紧张，好象他们已司空见惯、习以为常 了。北面和东面是小弄，许多襄阳城的老百姓住在里面，南面 和西面是青石铺就的大街。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jiekou2" {
+    room_id = rooms.jiekou2.id
+  east = rooms.xiaorong1.id
+  south = rooms.eastroad2.id
+  west = rooms.northroad2.id
+  north = rooms.xiaorong2.id  }
+
+
+  room_characters "jiekou2" {
+    room_id = rooms.jiekou2.id
+    characters = [
+      { id = characters.kid.id },
+      { id = characters.seller.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/juyichufang.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "juyichufang" {
+      name = "厨房"
+      description = "这儿是聚义馆的厨房，一般只有白天有几个烧饭师傅在烧 火做饭，供应（serve）伙食，到了晚上就看你的运气了。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）： present("soup", me) || present("rice", me)
+direction = ~
+  message = "烧饭师傅瞪着一双怪眼：吃不了要兜着走啊？"
+}
+
+]
+    }
+
+  room_exits "juyichufang" {
+    room_id = rooms.juyichufang.id
+  north = rooms.juyihuayuan.id  }
+
+
+  room_characters "juyichufang" {
+    room_id = rooms.juyichufang.id
+    characters = [
+      { id = characters.shaofanshifu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/juyifemale.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "juyifemale" {
+      name = "女客房"
+      description = "这是间整洁的厢房，因门窗常闭着，光线很昏暗。房里别 无他物，只有两边放着几张收拾得舒舒服服的大床，看着就让 人想睡觉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "juyifemale" {
+    room_id = rooms.juyifemale.id
+  west = rooms.juyihuayuan.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/juyihuayuan.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "juyihuayuan" {
+      name = "花园"
+      description = "这是聚义馆的大花园。园内种着各种各样的花草，清风吹 来，你能闻到股股花香。园内东西两侧各有一排厢房，北面是 一湖池水，水上架着走廊，直通西大街。南面是馆内厨房，东 南方向有一间物品房。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：me->query("gender") != "男性" && dir == "west"
+direction = "west"
+  message = "男女有别，请到对面住！"
+}
+,
+{
+   # 阻挡条件（原样保留）：me->query("gender") != "女性" && dir == "east"
+direction = "east"
+  message = "男女有别，请到对面住！"
+}
+
+]
+    }
+
+  room_exits "juyihuayuan" {
+    room_id = rooms.juyihuayuan.id
+  east = rooms.juyifemale.id
+  west = rooms.juyimale.id
+  south = rooms.juyichufang.id
+  north = rooms.juyilang.id
+  southeast = rooms.juyiwupin.id  }
+
+
+  room_characters "juyihuayuan" {
+    room_id = rooms.juyihuayuan.id
+    characters = [
+      { id = characters.guofu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/juyilang.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "juyilang" {
+      name = "水上走廊"
+      description = "这时一条笔直的走廊，廊下是一湖池水。湖水映着长长垂 柳，碧绿清澈，你能看见一些鱼在游来游去。南面就是一个大 花园，圆内东西两侧各有一排厢房。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "juyilang" {
+    room_id = rooms.juyilang.id
+  south = rooms.juyihuayuan.id
+  north = rooms.juyiyuan.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/juyilianwu1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "juyilianwu1" {
+      name = "练功场"
+      description = "这里是聚义馆中用来练功的地方。有几个人正在专心致致 地练武，有几个手持兵器，在互相拆招。身法灵动，犹如穿花 蝴蝶一般，你不禁看花了眼，别的人则坐在地上的蒲团上苦练 内力。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "juyilianwu1" {
+    room_id = rooms.juyilianwu1.id
+  west = rooms.juyiyuan.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/juyilianwu2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "juyilianwu2" {
+      name = "练功场"
+      description = "这里是聚义馆中用来练功的地方。有几个人正在专心致致 地练武，有几个手持兵器，在互相拆招。身法灵动，犹如穿花 蝴蝶一般，你不禁看花了眼，别的人则坐在地上的蒲团上苦练 内力。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "juyilianwu2" {
+    room_id = rooms.juyilianwu2.id
+  east = rooms.juyiyuan.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/juyimale.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "juyimale" {
+      name = "男客房"
+      description = "这是间整洁的厢房，因门窗常闭着，光线很昏暗。房里别 无他物，只有两边放着几张收拾得舒舒服服的大床，看着就让 人想睡觉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "juyimale" {
+    room_id = rooms.juyimale.id
+  east = rooms.juyihuayuan.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/juyiwupin.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "juyiwupin" {
+      name = "物品房"
+      description = "这是聚义馆的堆放各种各样物品的房间。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "juyiwupin" {
+    room_id = rooms.juyiwupin.id
+  northwest = rooms.juyihuayuan.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/juyiyuan.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "juyiyuan" {
+      name = "大院"
+      description = "这里是襄阳安抚使按照郭靖、黄蓉的意思建的用来安置各 地前来效力的义士的地方。南面是一条长长的通廊，东西两边 是练武场。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "juyiyuan" {
+    room_id = rooms.juyiyuan.id
+  east = rooms.juyilianwu1.id
+  west = rooms.juyilianwu2.id
+  south = rooms.juyilang.id
+  north = rooms.westjie2.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/kedian.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "kedian" {
+      name = "襄阳客栈"
+      description = "这是一家对江湖人士来说很有名气的客栈。人们到襄阳来 一般都住在这里，一是便宜，二能听到江湖上的许多事情。近 年来，襄阳退敌数十次，南来北往的人们经过襄阳更是打尖在 这儿，顺便拜访一下郭靖等侠衣之士。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+  southwest = rooms.westroad1.id  }
+
+
+  room_characters "kedian" {
+    room_id = rooms.kedian.id
+    characters = [
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/majiu.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "majiu" {
+      name = "马厩"
+      description = "这里是襄阳城内唯一一家车马行。你可花钱租辆马车到各 个地方去，能节约不少体力。近来因为郭夫人----黄蓉正在组 织人力四处搜集防城材料，马夫积极响应，免费提供推车来运 送各种防城材料。雨檐下钉着块木牌(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+  south = rooms.northroad2.id
+  up = rooms.xiangyang_shop.id  }
+
+
+  room_characters "majiu" {
+    room_id = rooms.majiu.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu" {
+    room_id = rooms.majiu.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/minju1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "minju1" {
+      name = "民居"
+      description = "这是一家比较有钱人的住房，房子主人正在家里忙这忙那， 看见你进来，急忙站起身向你打招呼。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "minju1" {
+    room_id = rooms.minju1.id
+  west = rooms.jiedao.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/minju2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "minju2" {
+      name = "民居"
+      description = "这是一家比较有钱人的住房，房子主人正在家里忙这忙那， 看见你进来，急忙站起身向你打招呼。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "minju2" {
+    room_id = rooms.minju2.id
+  east = rooms.jiedao.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/mujiang.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "mujiang" {
+      name = "木匠铺"
+      description = "这是一家简陋的木匠铺，一个中年木匠正蹲在地上钉东西。 值此乱世，木匠们也只好制作些刀枪棍棒什么的以养家糊口。 地上和墙角凌乱地堆放着一些木剑，木刀，木棍什么的，还有 几件象锯子，刨子一类的木匠工具。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mujiang" {
+    room_id = rooms.mujiang.id
+  north = rooms.eastjie3.id  }
+
+
+  room_characters "mujiang" {
+    room_id = rooms.mujiang.id
+    characters = [
+      { id = characters.mujiang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/nixianglou.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "nixianglou" {
+      name = "觅香楼"
+      description = "襄阳城里没有不知道“觅香楼”的。虽是抗战时期，来往 公务却多，饭后谈资也富，生意反见兴隆。楼下布置简易，顾 客多是匆匆的行人，买点包子、鸡腿、米酒就赶路去了。楼上 是雅座。抗战期间，厉行节约，不许挥霍，就没啥生意，只好 关了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nixianglou" {
+    room_id = rooms.nixianglou.id
+  west = rooms.southjie2.id  }
+
+
+  room_characters "nixianglou" {
+    room_id = rooms.nixianglou.id
+    characters = [
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/northgate1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "northgate1" {
+      name = "玄武内门"
+      description = "这里是襄阳城的北城门的内城门，只见城门上方是三个大 字。                        玄武门  近年来蒙古屡次侵犯襄阳城，故这儿把守相当严密，一些官兵 们正在盘查要离襄阳城的人。两边是上城头的石阶，向南进入 城区。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "northgate1" {
+    room_id = rooms.northgate1.id
+  eastup = rooms.walln1.id
+  westup = rooms.walln2.id
+  south = rooms.northjie.id
+  north = rooms.northgate2.id  }
+
+
+  room_characters "northgate1" {
+    room_id = rooms.northgate1.id
+    characters = [
+      { id = characters.pi.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/northgate2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "northgate2" {
+      name = "玄武外门"
+      description = "这里是襄阳城的北城门，只见城门上方是三个大字。                        玄武门  近年来蒙古屡次侵犯襄阳城，故这儿把守相当严密，一些官兵 们正在盘查要离襄阳城的人。两边是很大的草地。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "northgate2" {
+    room_id = rooms.northgate2.id
+  south = rooms.northgate1.id
+  north = rooms.caodi3.id
+  east = rooms.caodi1.id
+  west = rooms.caodi2.id  }
+
+
+  room_characters "northgate2" {
+    room_id = rooms.northgate2.id
+    characters = [
+      { id = characters.pi.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/northjie.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "northjie" {
+      name = "北大街"
+      description = "这是一条宽阔的青石街道，向南北两头延伸。北面是玄武 内门，南边显得很繁忙。东边是一茶馆，一面上书“茶”的招 幡在风中轻轻地摇曳着，一股股茶香扑面而来。西面是襄阳城 的北兵营，隐隐能听见里面传来的操练声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "northjie" {
+    room_id = rooms.northjie.id
+  east = rooms.chaguan.id
+  south = rooms.dingzi.id
+  west = rooms.bingying1.id
+  north = rooms.northgate1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/northroad1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "northroad1" {
+      name = "北内大街"
+      description = "这是一条用青石铺就的大道。只见北面是一条铺面很大的 杂货铺，听说里面能买到许多东西。向东就是丁字街口，西面 也是一个大街口，你好象看到一条大街通向南面。南面是一堵 上盖红色琉璃瓦的高墙，里面是襄阳安抚使吕文德安排给他的 布衣客卿、人称郭大侠郭靖的府邸。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "northroad1" {
+    room_id = rooms.northroad1.id
+  west = rooms.jiekou1.id
+  east = rooms.dingzi.id
+  north = rooms.xinluofang.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/northroad2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "northroad2" {
+      name = "北内大街"
+      description = "这是一条用青石铺就的大道。只见北面不时的有马车飞奔 而出，噢，北面是车行。向西就是丁字街口，东面也是一个大 街口，你好象看到一条大街通向南面。南面是一堵上盖红色琉 璃瓦的高墙，里面是襄阳守城大将王坚的府邸。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "northroad2" {
+    room_id = rooms.northroad2.id
+  east = rooms.jiekou2.id
+  west = rooms.dingzi.id
+  north = rooms.majiu.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/qianzhuang.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "qianzhuang" {
+      name = "钱庄"
+      description = "这里是襄阳的钱庄，因为这里商业相当发达，各地的商号 都和这里有银钱来往。钱庄里有很多人在存取钱，也有人在兑 换银两。看着这么多的钱财滚来滚去，真是让人眼馋啊。但眼 下大敌当前，全城一致抵御元兵。钱庄的业务由华山弟子接管， 支援大侠郭靖和郭夫人。墙上贴着一个牌子(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qianzhuang" {
+    room_id = rooms.qianzhuang.id
+  east = rooms.southjie1.id  }
+
+
+  room_characters "qianzhuang" {
+    room_id = rooms.qianzhuang.id
+    characters = [
+      { id = characters.huangzhen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/shanlu1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "shanlu1" {
+      name = "山路"
+      description = "走在山路上，只听四下群鸟争鸣，前方群山耸立。令人心 旷神怡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu1" {
+    room_id = rooms.shanlu1.id
+  northup = rooms.shanjiao.id
+  southwest = rooms.shulin.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/shudian.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "shudian" {
+      name = "书店"
+      description = "这里的老板刚从南阳搬来，听说以前他曾在嵩山少林寺出 过家，后不知什么原因又还了俗，专门卖书为生。只见书店面 积很大，以前曾是一座勾栏。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shudian" {
+    room_id = rooms.shudian.id
+  east = rooms.westroad2.id  }
+
+
+  room_characters "shudian" {
+    room_id = rooms.shudian.id
+    characters = [
+      { id = characters.shudianboss.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/shulin.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "shulin" {
+      name = "树林"
+      description = "你走在树林中，只听见群鸟争鸣，四周景致宜人，想不到 襄阳城外竟有如此风景。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin" {
+    room_id = rooms.shulin.id
+  northeast = rooms.shanlu1.id
+  south = rooms.xiaodao1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/southgate1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "southgate1" {
+      name = "朱雀内门"
+      description = "这里是襄阳城的南城门的内城门，只见城门上方是三个大 字。                        朱雀门  近年来蒙古屡次侵犯襄阳城，故这儿把守相当严密，一些官兵 们正在盘查要离襄阳城的人。两边是上城头的石阶，向北进入 城区。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "southgate1" {
+    room_id = rooms.southgate1.id
+  eastup = rooms.walls2.id
+  westup = rooms.walls1.id
+  south = rooms.southgate2.id
+  north = rooms.southjie3.id  }
+
+
+  room_characters "southgate1" {
+    room_id = rooms.southgate1.id
+    characters = [
+      { id = characters.pi.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/southgate2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "southgate2" {
+      name = "朱雀外门"
+      description = "这里是襄阳城的南城门，只见城门上方是三个大字。                        朱雀门  近年来蒙古屡次侵犯襄阳城，故这儿把守相当严密，一些官兵 们正在盘查要离襄阳城的人。两边是很大的草地。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "southgate2" {
+    room_id = rooms.southgate2.id
+  east = rooms.caodi4.id
+  west = rooms.caodi5.id
+  south = rooms.caodi6.id
+  north = rooms.southgate1.id  }
+
+
+  room_characters "southgate2" {
+    room_id = rooms.southgate2.id
+    characters = [
+      { id = characters.pi.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/southjie1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "southjie1" {
+      name = "南大街"
+      description = "这是一条宽阔的青石板街道，向南北两头延伸。南边就是 朱雀门，北面是中央广场，西面是钱庄，东面是襄阳城内的唯 一一家学堂。虽然襄阳战火不断，你仍能听到学堂里传来学生 们朗朗地读书声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "southjie1" {
+    room_id = rooms.southjie1.id
+  east = rooms.xuetang.id
+  west = rooms.qianzhuang.id
+  south = rooms.southjie2.id
+  north = rooms.guangchang.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/southjie2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "southjie2" {
+      name = "南大街"
+      description = "这里是襄阳城里的繁华地段，虽然久经战火，但在郭靖等 人的保卫下，襄阳的老百姓过着非常安安稳稳的生活。西边是 襄阳城内最大的一家赌场。东边是一座两层的楼阁，挂着“酒” 的招帘，门额上悬挂一方横匾，上书“觅香楼”三字。一阵阵 酒肉香味扑鼻而来。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "southjie2" {
+    room_id = rooms.southjie2.id
+  east = rooms.nixianglou.id
+  west = rooms.duchang.id
+  south = rooms.southjie3.id
+  north = rooms.southjie1.id  }
+
+
+  room_characters "southjie2" {
+    room_id = rooms.southjie2.id
+    characters = [
+      { id = characters.liumang.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/southjie3.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "southjie3" {
+      name = "南大街"
+      description = "这里是襄阳城南大街的南头。南面就是朱雀内门，北边非 常热闹。东边是为襄阳城守军打制铠甲武器的兵器铺。十余年 来，由于蒙古军的侵犯，叮叮当当的打铁声音就一直响个不停。 西面是襄阳城的南兵营，隐隐能听见里面传来的兵士们的操练 声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "southjie3" {
+    room_id = rooms.southjie3.id
+  east = rooms.tiejiangpu.id
+  west = rooms.bingying3.id
+  south = rooms.southgate1.id
+  north = rooms.southjie2.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/tiejiangpu.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "tiejiangpu" {
+      name = "兵器铺"
+      description = "这里原来是一家极其简陋的铁匠铺。近年来蒙古大军屡次 进犯襄阳，这家铁匠铺被官府征用，作为官办作坊。目前规模 很大，一般用来为襄阳守军打造铠甲、兵器等，近来因襄阳需 筹备守城物资，奉郭夫人之命也生产一些铁钎、铁锤、伐木斧 头等。只见几十个铁匠正叮叮当当地忙个不停。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tiejiangpu" {
+    room_id = rooms.tiejiangpu.id
+  west = rooms.southjie3.id  }
+
+
+  room_characters "tiejiangpu" {
+    room_id = rooms.tiejiangpu.id
+    characters = [
+      { id = characters.smith.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walle1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walle1" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walle1" {
+    room_id = rooms.walle1.id
+  southup = rooms.walle3.id
+  northdown = rooms.eastgate1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walle2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walle2" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walle2" {
+    room_id = rooms.walle2.id
+  northup = rooms.walle4.id
+  southdown = rooms.eastgate1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walle3.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walle3" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walle3" {
+    room_id = rooms.walle3.id
+  southup = rooms.walle5.id
+  northdown = rooms.walle1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walle4.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walle4" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walle4" {
+    room_id = rooms.walle4.id
+  northup = rooms.walle6.id
+  southdown = rooms.walle2.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walle5.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walle5" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walle5" {
+    room_id = rooms.walle5.id
+  southup = rooms.walle7.id
+  northdown = rooms.walle3.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walle6.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walle6" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walle6" {
+    room_id = rooms.walle6.id
+  northup = rooms.walle8.id
+  southdown = rooms.walle4.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walle7.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walle7" {
+      name = "东城头"
+      description = "这里是襄阳的东城头。一些宋兵正在城头巡逻，一个牙将 正在这儿负责接受各种守城材料，一些弓箭手正拈弓搭箭紧盯 着城下的动静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walle7" {
+    room_id = rooms.walle7.id
+  southwest = rooms.walls8.id
+  northdown = rooms.walle5.id  }
+
+
+  room_characters "walle7" {
+    room_id = rooms.walle7.id
+    characters = [
+      { id = characters.ya.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walle8.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walle8" {
+      name = "东城头"
+      description = "这里是襄阳的东城头。一些宋兵正在城头巡逻，一个牙将 正在这儿负责接受各种守城材料，一些弓箭手正拈弓搭箭紧盯 着城下的动静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walle8" {
+    room_id = rooms.walle8.id
+  northwest = rooms.walln7.id
+  southdown = rooms.walle6.id  }
+
+
+  room_characters "walle8" {
+    room_id = rooms.walle8.id
+    characters = [
+      { id = characters.ya.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walln1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walln1" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walln1" {
+    room_id = rooms.walln1.id
+  eastup = rooms.walln3.id
+  westdown = rooms.northgate1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walln2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walln2" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walln2" {
+    room_id = rooms.walln2.id
+  westup = rooms.walln4.id
+  eastdown = rooms.northgate1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walln3.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walln3" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walln3" {
+    room_id = rooms.walln3.id
+  eastup = rooms.walln5.id
+  westdown = rooms.walln1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walln4.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walln4" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walln4" {
+    room_id = rooms.walln4.id
+  westup = rooms.walln6.id
+  eastdown = rooms.walln2.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walln5.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walln5" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walln5" {
+    room_id = rooms.walln5.id
+  eastup = rooms.walln7.id
+  westdown = rooms.walln3.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walln6.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walln6" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walln6" {
+    room_id = rooms.walln6.id
+  westup = rooms.walln8.id
+  eastdown = rooms.walln4.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walln7.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walln7" {
+      name = "北城头"
+      description = "这里是襄阳的北城头。一些宋兵正在城头巡逻，一个牙将 正在这儿负责接受各种守城材料，一些弓箭手正拈弓搭箭紧盯 着城下的动静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walln7" {
+    room_id = rooms.walln7.id
+  southeast = rooms.walle8.id
+  westdown = rooms.walln5.id  }
+
+
+  room_characters "walln7" {
+    room_id = rooms.walln7.id
+    characters = [
+      { id = characters.ya.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walln8.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walln8" {
+      name = "北城头"
+      description = "这里是襄阳的北城头。一些宋兵正在城头巡逻，一个牙将 正在这儿负责接受各种守城材料，一些弓箭手正拈弓搭箭紧盯 着城下的动静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walln8" {
+    room_id = rooms.walln8.id
+  southwest = rooms.wallw7.id
+  eastdown = rooms.walln6.id  }
+
+
+  room_characters "walln8" {
+    room_id = rooms.walln8.id
+    characters = [
+      { id = characters.ya.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walls1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walls1" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walls1" {
+    room_id = rooms.walls1.id
+  westup = rooms.walls3.id
+  eastdown = rooms.southgate1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walls2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walls2" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walls2" {
+    room_id = rooms.walls2.id
+  eastup = rooms.walls4.id
+  westdown = rooms.southgate1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walls3.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walls3" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walls3" {
+    room_id = rooms.walls3.id
+  westup = rooms.walls5.id
+  eastdown = rooms.walls1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walls4.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walls4" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walls4" {
+    room_id = rooms.walls4.id
+  eastup = rooms.walls6.id
+  westdown = rooms.walls2.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walls5.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walls5" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walls5" {
+    room_id = rooms.walls5.id
+  westup = rooms.walls7.id
+  eastdown = rooms.walls3.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walls6.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walls6" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walls6" {
+    room_id = rooms.walls6.id
+  eastup = rooms.walls8.id
+  westdown = rooms.walls4.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walls7.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walls7" {
+      name = "南城头"
+      description = "这里是襄阳的南城头。一些宋兵正在城头巡逻，一个牙将 正在这儿负责接受各种守城材料，一些弓箭手正拈弓搭箭紧盯 着城下的动静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walls7" {
+    room_id = rooms.walls7.id
+  northwest = rooms.wallw8.id
+  eastdown = rooms.walls5.id  }
+
+
+  room_characters "walls7" {
+    room_id = rooms.walls7.id
+    characters = [
+      { id = characters.ya.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/walls8.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "walls8" {
+      name = "南城头"
+      description = "这里是襄阳的南城头。一些宋兵正在城头巡逻，一个牙将 正在这儿负责接受各种守城材料，一些弓箭手正拈弓搭箭紧盯 着城下的动静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "walls8" {
+    room_id = rooms.walls8.id
+  northeast = rooms.walle7.id
+  westdown = rooms.walls6.id  }
+
+
+  room_characters "walls8" {
+    room_id = rooms.walls8.id
+    characters = [
+      { id = characters.ya.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/wallw1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "wallw1" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wallw1" {
+    room_id = rooms.wallw1.id
+  northup = rooms.wallw3.id
+  southdown = rooms.westgate1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/wallw2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "wallw2" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wallw2" {
+    room_id = rooms.wallw2.id
+  southup = rooms.wallw4.id
+  northdown = rooms.westgate1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/wallw3.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "wallw3" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wallw3" {
+    room_id = rooms.wallw3.id
+  northup = rooms.wallw5.id
+  southdown = rooms.wallw1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/wallw4.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "wallw4" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wallw4" {
+    room_id = rooms.wallw4.id
+  southup = rooms.wallw6.id
+  northdown = rooms.wallw2.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/wallw5.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "wallw5" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wallw5" {
+    room_id = rooms.wallw5.id
+  northup = rooms.wallw7.id
+  southdown = rooms.wallw3.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/wallw6.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "wallw6" {
+      name = "石阶"
+      description = "这是登向城头的石阶，因为城墙很高，所以很陡。石阶两 侧有可供拉车上下的斜坡道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wallw6" {
+    room_id = rooms.wallw6.id
+  southup = rooms.wallw8.id
+  northdown = rooms.wallw4.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/wallw7.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "wallw7" {
+      name = "西城头"
+      description = "这里是襄阳的西城头。一些宋兵正在城头巡逻，一个牙将 正在这儿负责接受各种守城材料，一些弓箭手正拈弓搭箭紧盯 着城下的动静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wallw7" {
+    room_id = rooms.wallw7.id
+  northeast = rooms.walln8.id
+  southdown = rooms.wallw5.id  }
+
+
+  room_characters "wallw7" {
+    room_id = rooms.wallw7.id
+    characters = [
+      { id = characters.ya.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/wallw8.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "wallw8" {
+      name = "西城头"
+      description = "这里是襄阳的西城头。一些宋兵正在城头巡逻，一个牙将 正在这儿负责接受各种守城材料，一些弓箭手正拈弓搭箭紧盯 着城下的动静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wallw8" {
+    room_id = rooms.wallw8.id
+  southeast = rooms.walls7.id
+  northdown = rooms.wallw6.id  }
+
+
+  room_characters "wallw8" {
+    room_id = rooms.wallw8.id
+    characters = [
+      { id = characters.ya.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/westgate1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "westgate1" {
+      name = "白虎内门"
+      description = "这里是襄阳城的西城门的内城门，只见城门上方是三个大 字。                        白虎门  近年来蒙古屡次侵犯襄阳城，故这儿把守相当严密，一些官兵 们正在盘查要离襄阳城的人。两边是上城头的石阶，向东进入 城区。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "westgate1" {
+    room_id = rooms.westgate1.id
+  southup = rooms.wallw2.id
+  northup = rooms.wallw1.id
+  east = rooms.westjie3.id
+  west = rooms.westgate2.id  }
+
+
+  room_characters "westgate1" {
+    room_id = rooms.westgate1.id
+    characters = [
+      { id = characters.pi.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/westgate2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "westgate2" {
+      name = "白虎外门"
+      description = "这里是襄阳城的西城门，只见城门上方是三个大字。                        白虎门  近年来蒙古屡次侵犯襄阳城，故这儿把守相当严密，一些官兵 们正在盘查要离襄阳城的人。两边是很大的草地。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "westgate2" {
+    room_id = rooms.westgate2.id
+  east = rooms.westgate1.id
+  west = rooms.guandao_1.id  }
+
+
+  room_characters "westgate2" {
+    room_id = rooms.westgate2.id
+    characters = [
+      { id = characters.pi.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/westjie1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "westjie1" {
+      name = "西大街"
+      description = "这是一条宽阔的青石板街道，向东西两头延伸。西边是一 个大十字街口。东面是襄阳的中央广场，北边是人称郭大侠郭 靖的府邸大门，不时地有人从那里进进出出。南面是一家当铺， 听说里面常能买到你所需的东西。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "westjie1" {
+    room_id = rooms.westjie1.id
+  east = rooms.guangchang.id
+  west = rooms.westjie2.id
+  south = rooms.dangpu.id
+  north = rooms.guofu_gate.id  }
+
+
+  room_characters "westjie1" {
+    room_id = rooms.westjie1.id
+    characters = [
+      { id = characters.poorman.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/westjie2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "westjie2" {
+      name = "西大街"
+      description = "这儿是很大的十字街口，北边是西内大街，南面是一座彩 楼，楼前高高的挂着一方大匾，上面用正楷写着「聚义馆」三 个大字。东边通向中央广场，西面可达白虎门。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "westjie2" {
+    room_id = rooms.westjie2.id
+  east = rooms.westjie1.id
+  west = rooms.westjie3.id
+  south = rooms.juyiyuan.id
+  north = rooms.westroad1.id  }
+
+
+  room_characters "westjie2" {
+    room_id = rooms.westjie2.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/westjie3.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "westjie3" {
+      name = "西大街"
+      description = "这是一条宽阔的青石街道，向东西两头延伸。西面是白虎 内门，东边是一个大十字街口，只见人来人往，络绎不绝。南 边是大校场。北面是襄阳城的西兵营，隐隐能听见里面传来的 宋兵的操练声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "westjie3" {
+    room_id = rooms.westjie3.id
+  east = rooms.westjie2.id
+  west = rooms.westgate1.id
+  south = rooms.dajiaochang.id
+  north = rooms.bingying4.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/westroad1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "westroad1" {
+      name = "西内大街"
+      description = "这是一条青石铺就的大街。隐隐地能望见南面是一座很高 的彩楼，东面是一堵盖着红色琉璃瓦的高墙，里面是郭府大院。 西面是襄阳城老字号的客店，北面是青石铺的大街。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "westroad1" {
+    room_id = rooms.westroad1.id
+  northeast = rooms.kedian.id
+  south = rooms.westjie2.id
+  north = rooms.westroad2.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/westroad2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "westroad2" {
+      name = "西内大街"
+      description = "这是一条青石铺就的大街。北面是十字街口。隐隐地能望 见南面是一座很高的彩楼，东面是一堵盖着红色琉璃瓦的高墙， 里面是郭府大院。西面是襄阳城内新开的一家书店，听说里面 能买到很好的书。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "westroad2" {
+    room_id = rooms.westroad2.id
+  west = rooms.shudian.id
+  south = rooms.westroad1.id
+  north = rooms.jiekou1.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/xiaodao1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "xiaodao1" {
+      name = "大官道"
+      description = "这是一条弯弯曲曲的小道，前放不远出是一片树林，不知 道通向何处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaodao1" {
+    room_id = rooms.xiaodao1.id
+  north = rooms.shulin.id
+  south = rooms.guandao_2.id  }
+
+# Generated from C:/files/git/mud/d/xiangyang/xiaorong1.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "xiaorong1" {
+      name = "胡同"
+      description = "这里是襄阳城内老百姓的居住区。只见小弄两边是有些小 店面，有米行、小杂货铺等。一些居民从这里进进出出。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaorong1" {
+    room_id = rooms.xiaorong1.id
+  west = rooms.jiekou2.id  }
+
+
+  room_characters "xiaorong1" {
+    room_id = rooms.xiaorong1.id
+    characters = [
+      { id = characters.kid.id },
+      { id = characters.kid.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/xiaorong2.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "xiaorong2" {
+      name = "胡同"
+      description = "这里是襄阳城内老百姓的居住区。只见小弄两边是有些小 店面，有米行、小杂货铺等。一些居民从这里进进出出。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaorong2" {
+    room_id = rooms.xiaorong2.id
+  south = rooms.jiekou2.id  }
+
+
+  room_characters "xiaorong2" {
+    room_id = rooms.xiaorong2.id
+    characters = [
+      { id = characters.boy.id },
+      { id = characters.girl.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/xinluofang.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "xinluofang" {
+      name = "新罗坊"
+      description = "新罗坊，顾名思义是给新罗人住的地方，不过其实现在新 罗已经被高丽所灭掉，这里应该叫做高丽坊的。可是大家已经 习惯了，于是便还这么叫。这里住着许多高丽商人，也有些高 丽的使臣进东京城路过襄阳，便也住在这里。这里的高丽商人 总有很多很好的货物，大家都喜欢来买，于是这里就非常的热 闹了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xinluofang" {
+    room_id = rooms.xinluofang.id
+  south = rooms.northroad1.id  }
+
+
+  room_characters "xinluofang" {
+    room_id = rooms.xinluofang.id
+    characters = [
+      { id = characters.gaoli.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/xuetang.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "xuetang" {
+      name = "学堂"
+      description = "这里是襄阳的学堂，窗明几净，一尘不染。一位庄重严肃 的老先生坐在太师椅上讲学。在他的两侧坐满了求学的学生。 一张古意盎然的书案放在老先生的前面，案上摆着几本翻开了 的线装书籍。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xuetang" {
+    room_id = rooms.xuetang.id
+  west = rooms.southjie1.id  }
+
+
+  room_characters "xuetang" {
+    room_id = rooms.xuetang.id
+    characters = [
+      { id = characters.laoxiansheng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/yaopu.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "yaopu" {
+      name = "药铺"
+      description = "药铺不大，却异常的整洁；正面是柜台，柜台后面是个大 柜子几百个小抽屉上一一用红纸标着药材的名称；靠近屋顶的 墙上悬着一块黑底金字的匾额，写着“妙手回春”。地下几个 伙计正在分拣刚刚收购来的草药。东边一张小矮桌儿，上面放 着笔墨纸砚，桌后坐着一位老郎中。一股刺鼻药味充满了整个 房间。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yaopu" {
+    room_id = rooms.yaopu.id
+  north = rooms.eastjie1.id  }
+
+
+  room_characters "yaopu" {
+    room_id = rooms.yaopu.id
+    characters = [
+      { id = characters.huoji.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/zhonglie.c by LPCConverter
+# Zone: xiangyang
+
+    rooms "zhonglie" {
+      name = "忠烈祠"
+      description = "这里是襄阳城的忠烈祠，十余年来为保卫襄阳而牺牲的烈 士遗骨都安葬在这里，每个有爱国心的好汉到这都会来祭奠一 下忠魂。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhonglie" {
+    room_id = rooms.zhonglie.id
+  west = rooms.eastroad2.id  }
+
+
+  room_characters "zhonglie" {
+    room_id = rooms.zhonglie.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/biaotou.c by LPCConverter
+# Zone: xiangyang
+
+    characters "biaotou" {
+      name = "镖头"
+      description = ""
+  gender = "男性"
+  age = 35
+  shen_type = 1
+
+  combat = {
+    combat_exp = 5000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "blade" level = 40 },
+    { skill = "parry" level = 30 },
+    { skill = "dodge" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/bing.c by LPCConverter
+# Zone: xiangyang
+
+    characters "bing" {
+      name = "宋兵"
+      description = "大宋官兵的武艺不能和武林人士相比，但襄阳守军之精，天下第一。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    dex = 16
+    str = 24
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "changquan" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "blade" level = 40 },
+    { skill = "wuhu-duanmendao" level = 40 },
+    { skill = "force" level = 40 },
+    { type = "unarmed" skill = "changquan" },
+    { type = "blade" skill = "wuhu-duanmendao" }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.junfu.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/boy.c by LPCConverter
+# Zone: xiangyang
+
+    characters "boy" {
+      name = "男孩"
+      description = "这是个平民少年，从小在城中混混，油条得很了。"
+  gender = "男性"
+  age = 13
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100
+    con = 15
+    dex = 16
+    int = 17
+    str = 17
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/gaoli.c by LPCConverter
+# Zone: xiangyang
+
+    characters "gaoli" {
+      name = "高丽商"
+      description = "这是个高丽商人，长得和中国人没啥区别。连卖的东西也差不多。"
+  title = "新罗坊老板"
+  gender = "男性"
+  age = 45
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 40000
+  }
+
+  # vendor_goods: "/d/city/npc/obj/mabudai" (file not found)
+  # vendor_goods: "/d/city/npc/obj/beixin" (file not found)
+  # vendor_goods: "/d/city/npc/obj/toukui" (file not found)
+  # vendor_goods: "/d/city/npc/obj/cycle" (file not found)
+  # vendor_goods: "/d/city/npc/obj/surcoat" (file not found)
+  # vendor_goods: "/d/city/npc/obj/shield" (file not found)
+  # vendor_goods: "/d/city/npc/obj/huwan" (file not found)
+  # vendor_goods: "/d/city/npc/obj/zhitao" (file not found)
+  # vendor_goods: "/d/city/npc/obj/huyao" (file not found)
+  # vendor_goods: "/d/city/npc/obj/caoxie" (file not found)
+  # vendor_goods: "/d/city/npc/obj/pixue" (file not found)
+  # vendor_goods: "/d/city/npc/obj/shoutao" (file not found)
+  # vendor_goods: "/d/city/npc/obj/tieshou" (file not found)
+  # vendor_goods: "/d/city/npc/obj/jinsijia" (file not found)
+  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/girl.c by LPCConverter
+# Zone: xiangyang
+
+    characters "girl" {
+      name = "女孩"
+      description = "这是个平民少女，只有十二、三岁，身材已经很成形了。"
+  gender = "女性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 70
+    con = 16
+    dex = 15
+    int = 15
+    str = 14
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/guo.c by LPCConverter
+# Zone: xiangyang
+
+    characters "guo" {
+      name = "郭靖"
+      description = "他就是人称北侠的郭靖，既是蒙古成吉思汗的金刀驸马，又是 江南七怪、全真派马钰道长、「北丐」洪七公和「老顽童」周 伯通等人的徒弟，身兼数门武功。 他身着一件灰色长袍，体态魁梧，敦厚的面目中透出一股威严 令人不由得产生一股钦佩之情。"
+  nickname = "北侠"
+  gender = "男性"
+  age = 41
+  score = 200000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2100000
+    con = 38
+    dex = 25
+    int = 20
+    max_jing = 2600
+    max_neili = 6000
+    max_qi = 5200
+    str = 40
+  }
+
+  inquiries = [
+    { key = "一灯大师" value = "在下对大师好生感激。" },
+    { key = "丐帮" value = "丐帮英雄几百年了，守卫襄阳多亏了他们。" },
+    { key = "丘处机" value = "邱道长义薄云天，是真豪杰。" },
+    { key = "全金发" value = "那是我六师父。" },
+    { key = "南希仁" value = "那是我四师父。" },
+    { key = "周伯通" value = "你见到我周大哥了？他现在可好？" },
+    { key = "张阿生" value = "那是我五师父。" },
+    { key = "拜师" value = "现在蒙古人围攻襄阳，我哪有心情收徒啊！" },
+    { key = "朱聪" value = "那是我二师父。" },
+    { key = "杨过" value = "过儿确实有出息。" },
+    { key = "柯镇恶" value = "那是我大师父。" },
+    { key = "欧阳锋" value = "这个老毒物，害死我六位师父，一待襄阳事了，决不与他干休。" },
+    { key = "洪七公" value = "师父除了吃，就是喜欢玩。到处玩，还是为了找吃的。" },
+    { key = "老顽童" value = "周大哥一贯这样，没点正经！" },
+    { key = "蓉儿" value = "蓉儿就是蓉儿了。你问这么多干嘛？" },
+    { key = "郭破虏" value = "那是我的小儿子。" },
+    { key = "郭芙" value = "这个女儿，又笨又不听话。" },
+    { key = "郭襄" value = "襄儿生于乱世，这辈子又多艰厄。但愿她能快乐一世。" },
+    { key = "韩宝驹" value = "那是我三师父。" },
+    { key = "韩小莹" value = "那是我七师父。" },
+    { key = "马钰" value = "马道长于我有半师之谊。" },
+    { key = "黄药师" value = "那是我泰山大人。他云游四海，神龙见首不见尾的。" },
+    { key = "黄蓉" value = "蓉儿是我的爱妻，你问她做甚？" }
+  ]
+
+  chat_chance = 1
+chats = [
+    "郭靖叹了口气道：“蒙古兵久攻襄阳不下，一定会再出诡计，蓉儿又不在身边，这....",
+    "郭靖说道：“华筝公主近来不知可好，抽空一定要回大漠去看看她。"
+]
+
+
+  skills = [
+    { skill = "force" level = 240 },
+    { skill = "huntian-qigong" level = 240 },
+    { skill = "strike" level = 260 },
+    { skill = "dragon-strike" level = 260 },
+    { skill = "dodge" level = 200 },
+    { skill = "jinyan-gong" level = 200 },
+    { skill = "parry" level = 260 },
+    { type = "force" skill = "huntian-qigong" },
+    { type = "strike" skill = "dragon-strike" },
+    { type = "dodge" skill = "jinyan-gong" },
+    { type = "parry" skill = "dragon-strike" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/guofu.c by LPCConverter
+# Zone: xiangyang
+
+    characters "guofu" {
+      name = "郭芙"
+      description = "她是郭靖黄蓉的大女儿，东邪黄药师的大外孙女，长得如花似玉。"
+  gender = "女性"
+  age = 19
+  score = 0
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000
+    con = 21
+    dex = 26
+    int = 30
+    max_jing = 500
+    max_neili = 500
+    max_qi = 1000
+    str = 18
+  }
+
+  skills = [
+    { skill = "force" level = 60 },
+    { skill = "bibo-shengong" level = 60 },
+    { skill = "strike" level = 60 },
+    { skill = "luoying-shenzhang" level = 60 },
+    { skill = "dodge" level = 80 },
+    { skill = "anying-fuxiang" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "luoying-shenjian" level = 60 },
+    { skill = "qimen-wuxing" level = 60 },
+    { type = "force" skill = "bibo-shengong" },
+    { type = "strike" skill = "luoying-shenzhang" },
+    { type = "dodge" skill = "anying-fuxiang" },
+    { type = "sword" skill = "luoying-shenjian" }
+  ]
+
+
+  carry = [
+    { id = items.ruanwei.id },
+    { id = items.shudai.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/huangzhen.c by LPCConverter
+# Zone: xiangyang
+
+    characters "huangzhen" {
+      name = "黄真"
+      description = "黄真是神剑仙猿穆人清的开门大弟子，也是这 个钱庄的老板，管理襄阳军饷。"
+  nickname = "铜笔铁算盘"
+  gender = "男性"
+  age = 59
+  shen_type = 1
+  brain = brains.banker
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 2000
+    max_neili = 300
+    max_qi = 3500
+    str = 26
+  }
+
+  inquiries = [
+    { key = "入会" value = "'在我这里，可以加入(' HIY 'join' NOR +                              CYN ')商业协会。\n' NOR" },
+    { key = "加入" value = "'在我这里，可以加入(' HIY 'join' NOR +                              CYN ')商业协会。\n' NOR" },
+    { key = "商业协会" value = "'在我这里，可以加入(' HIY 'join' NOR +                              CYN ')商业协会。\n' NOR" }
+  ]
+
+  skills = [
+    { skill = "strike" level = 140 },
+    { skill = "cuff" level = 140 },
+    { skill = "sword" level = 140 },
+    { skill = "force" level = 140 },
+    { skill = "parry" level = 140 },
+    { skill = "dodge" level = 140 },
+    { skill = "literate" level = 60 },
+    { skill = "huashan-jian" level = 140 },
+    { skill = "huashan-xinfa" level = 140 },
+    { skill = "poyu-quan" level = 140 },
+    { skill = "hunyuan-zhang" level = 140 },
+    { skill = "feiyan-huixiang" level = 140 },
+    { type = "sword" skill = "huashan-jian" },
+    { type = "parry" skill = "huashan-jian" },
+    { type = "force" skill = "huashan-xinfa" },
+    { type = "cuff" skill = "poyu-quan" },
+    { type = "strike" skill = "hunyuan-zhang" },
+    { type = "dodge" skill = "feiyan-huixiang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["check", "chazhang", "convert", "duihuan", "deposit", "cun", "withdraw", "qu", "join", "decide", "yao", "unjoin"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/jia.c by LPCConverter
+# Zone: xiangyang
+
+    characters "jia" {
+      name = "家丁"
+      description = "郭府家丁。"
+  gender = "男性"
+  age = 35
+  shen_type = 1
+
+  combat = {
+    combat_exp = 4000
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/jiading.c by LPCConverter
+# Zone: xiangyang
+
+    characters "jiading" {
+      name = "家丁"
+      description = "郭府家丁。"
+  gender = "男性"
+  age = 35
+  shen_type = 1
+
+  combat = {
+    combat_exp = 4000
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/kid.c by LPCConverter
+# Zone: xiangyang
+
+    characters "kid" {
+      name = "小孩"
+      description = "这是个襄阳城中贫民小孩，淘气得很。"
+  gender = "男性"
+  age = 7
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50
+    con = 11
+    dex = 11
+    int = 11
+    str = 11
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/laoxiansheng.c by LPCConverter
+# Zone: xiangyang
+
+    characters "laoxiansheng" {
+      name = "老先生"
+      description = "这位老先生曾中过状元，做过大官，现因年老回老家襄阳颐养天年，经 安抚使吕文德的再三邀请，在这儿为秀才们讲课。"
+  gender = "男性"
+  age = 65
+  shen_type = 1
+
+  combat = {
+    combat_exp = 4000
+  }
+
+  skills = [
+    { skill = "literate" level = 300 },
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 },
+    { skill = "parry" level = 20 }
+  ]
+
+
+  accept = [
+    { kind = "money" min = 1000 accept = true msg = "你现在已有一定的文化知识，也可以自己读书深造了。" },
+    { kind = "any" accept = true msg = ["老先生同意指点{npc}一些读书写字的问题。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/menggubing.c by LPCConverter
+# Zone: xiangyang
+
+    characters "menggubing" {
+      name = "蒙古兵"
+      description = "蒙古兵长年跃马横枪，十分骁勇。"
+  gender = "男性"
+  age = 18
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 60000
+    con = 20
+    dex = 20
+    int = 40
+    max_jing = 800
+    max_neili = 100
+    max_qi = 800
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "club" level = 40 },
+    { skill = "zhongping-qiang" level = 40 },
+    { type = "club" skill = "zhongping-qiang" }
+  ]
+
+
+  carry = [
+    { id = items.tiejia.id },
+    { id = items.changqiang.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/pi.c by LPCConverter
+# Zone: xiangyang
+
+    characters "pi" {
+      name = "裨将"
+      description = "这是一个大宋年轻将领，满脸征尘。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 45000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "changquan" level = 60 },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/pian.c by LPCConverter
+# Zone: xiangyang
+
+    characters "pian" {
+      name = "偏将"
+      description = "这是一个大宋将领，满脸征尘。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 75000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "changquan" level = 60 },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/poorman.c by LPCConverter
+# Zone: xiangyang
+
+    characters "poorman" {
+      name = "穷汉"
+      description = "一个骨瘦如柴，满脸菜色的穷汉。"
+  gender = "男性"
+  age = 33
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 250
+    con = 17
+    dex = 18
+    int = 13
+    str = 20
+  }
+
+  chat_chance = 15
+chats = [
+    "穷汉懒洋洋地打了个哈欠。",
+    "穷汉叹了口气：那些蒙古鞑子害得我家破人亡。"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/qiuhang.c by LPCConverter
+# Zone: xiangyang
+
+    characters "qiuhang" {
+      name = "邱航"
+      description = "一个老奸商，你要被宰了！"
+  title = "当铺老板"
+  nickname = "老滑头"
+  gender = "男性"
+  age = 55
+  shen_type = 0
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    str = 100
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy", "sell", "value"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/shaofanshifu.c by LPCConverter
+# Zone: xiangyang
+
+    characters "shaofanshifu" {
+      name = "烧饭师傅"
+      description = "他是聚义馆厨房的烧饭师傅。"
+  gender = "男性"
+  age = 18
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2000
+    str = 50
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/shudianboss.c by LPCConverter
+# Zone: xiangyang
+
+    characters "shudianboss" {
+      name = "书店老板"
+      description = "一个让孩子们一见就觉得可亲的老翁。"
+  gender = "男性"
+  age = 62
+  brain = brains.vendor
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 3000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  # vendor_goods: "/clone/book/parry_book" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/smith.c by LPCConverter
+# Zone: xiangyang
+
+    characters "smith" {
+      name = "铁匠"
+      description = "铁匠正用铁钳夹住一块红热的铁块放进炉中。"
+  title = "铁匠铺老板"
+  gender = "男性"
+  age = 33
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 400
+  }
+
+  # vendor_goods: "/clone/weapon/changjian" (file not found)
+  # vendor_goods: "/clone/weapon/hammer" (file not found)
+  # vendor_goods: "/clone/weapon/tudao" (file not found)
+  # vendor_goods: "/clone/weapon/dagger" (file not found)
+  # vendor_goods: "/clone/weapon/tiegun" (file not found)
+  # vendor_goods: "/clone/weapon/gangdao" (file not found)
+  # vendor_goods: "/clone/cloth/tiejia" (file not found)
+
+  inquiries = [
+    { key = "job" value = "(: ask_me :)" },
+    { key = "工作" value = "(: ask_me :)" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/tuolei.c by LPCConverter
+# Zone: xiangyang
+
+    characters "tuolei" {
+      name = "拖雷"
+      description = "拖雷是成吉思汗幼子，坚忍果决。此次带兵南来，势如破竹，兵锋毕露。"
+  gender = "男性"
+  age = 18
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 60000
+    con = 20
+    dex = 20
+    int = 40
+    max_jing = 800
+    max_neili = 100
+    max_qi = 800
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "unarmed" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/wang.c by LPCConverter
+# Zone: xiangyang
+
+    characters "wang" {
+      name = "王坚"
+      description = "这是一个大宋襄阳守备主将，满脸征尘。"
+  title = "襄阳守备大将"
+  gender = "男性"
+  age = 40
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 150000
+    dex = 36
+    max_neili = 1000
+    str = 35
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "changquan" level = 80 },
+    { type = "unarmed" skill = "changquan" },
+    { type = "parry" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/wudunru.c by LPCConverter
+# Zone: xiangyang
+
+    characters "wudunru" {
+      name = "武敦儒"
+      description = "他是郭靖大弟子，相貌和蔼，一天到晚笑呵呵的。"
+  title = "郭靖大弟子"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 23
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 80000
+    con = 30
+    dex = 25
+    int = 20
+    max_jing = 500
+    max_neili = 1000
+    max_qi = 1000
+    str = 20
+  }
+
+  inquiries = [
+    { key = "郭靖" value = "那是我师父。" },
+    { key = "黄蓉" value = "那是我师母。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "quanzhen-xinfa" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "changquan" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "jinyan-gong" level = 50 },
+    { skill = "parry" level = 50 },
+    { type = "force" skill = "quanzhen-xinfa" },
+    { type = "unarmed" skill = "changquana" },
+    { type = "dodge" skill = "jinyan-gong" },
+    { type = "parry" skill = "changquana" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/wusantong.c by LPCConverter
+# Zone: xiangyang
+
+    characters "wusantong" {
+      name = "武三通"
+      description = "一灯大师的四大弟子之一，现在襄阳协助郭靖、黄蓉守城。"
+  gender = "男性"
+  age = 55
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    con = 30
+    dex = 25
+    int = 20
+    max_jing = 500
+    max_neili = 1500
+    max_qi = 1500
+    str = 40
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "kurong-changong" level = 50 },
+    { skill = "finger" level = 50 },
+    { skill = "sun-finger" level = 50 },
+    { skill = "cuff" level = 50 },
+    { skill = "jinyu-quan" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "tiannan-step" level = 50 },
+    { skill = "parry" level = 50 },
+    { type = "force" skill = "duanshi-xinfa" },
+    { type = "cuff" skill = "jinyu-quan" },
+    { type = "dodge" skill = "tiannan-step" },
+    { type = "parry" skill = "jinyu-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/wuxiuwen.c by LPCConverter
+# Zone: xiangyang
+
+    characters "wuxiuwen" {
+      name = "武修文"
+      description = "他是郭靖的二弟子，精明强干，专门负责后勤。"
+  title = "郭靖二弟子"
+  gender = "男性"
+  age = 21
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 80000
+    con = 30
+    dex = 25
+    int = 20
+    max_jing = 500
+    max_neili = 1000
+    max_qi = 1000
+    str = 20
+  }
+
+  # skipped inquiry "铁护腕": value "(: ask_me_1, 'huwan' :)" is unparseable by elias (digit immediately before a comma)
+  # skipped inquiry "铁护腰": value "(: ask_me_1, 'huyao' :)" is unparseable by elias (digit immediately before a comma)
+  # skipped inquiry "皮手套": value "(: ask_me_1, 'shoutao' :)" is unparseable by elias (digit immediately before a comma)
+  # skipped inquiry "皮围脖": value "(: ask_me_1, 'weibo' :)" is unparseable by elias (digit immediately before a comma)
+  # skipped inquiry "铁指套": value "(: ask_me_1, 'zhitao' :)" is unparseable by elias (digit immediately before a comma)
+  # skipped inquiry "铁背心": value "(: ask_me_2, 'beixin' :)" is unparseable by elias (digit immediately before a comma)
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "quanzhen-xinfa" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "changquan" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "jinyan-gong" level = 50 },
+    { skill = "parry" level = 50 },
+    { type = "force" skill = "quanzhen-xinfa" },
+    { type = "unarmed" skill = "changquana" },
+    { type = "dodge" skill = "jinyan-gong" },
+    { type = "parry" skill = "changquana" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/xiaoer2.c by LPCConverter
+# Zone: xiangyang
+
+    characters "xiaoer2" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  # vendor_goods: "/clone/food/jitui" (file not found)
+  # vendor_goods: "/clone/food/jiudai" (file not found)
+  # vendor_goods: "/clone/food/baozi" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/ya.c by LPCConverter
+# Zone: xiangyang
+
+    characters "ya" {
+      name = "牙将"
+      description = "这是一个大宋将领，满脸征尘。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 35000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "changquan" level = 60 },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/yelvqi.c by LPCConverter
+# Zone: xiangyang
+
+    characters "yelvqi" {
+      name = "耶律齐"
+      description = ""
+  title = "全真教第二代弟子 丐帮第二十一代帮主"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    combat_exp = 600000
+    max_neili = 2000
+  }
+
+  skills = [
+    { skill = "force" level = 100 },
+    { skill = "sword" level = 100 },
+    { skill = "unarmed" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "haotian-zhang" level = 100 },
+    { skill = "quanzhen-jian" level = 100 },
+    { skill = "kongming-quan" level = 200 },
+    { type = "unarmed" skill = "kongming-quan" },
+    { type = "strike" skill = "haotian-zhang" },
+    { type = "sword" skill = "quanzhen-jian" },
+    { type = "parry" skill = "quanzhen-jian" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/zhuziliu.c by LPCConverter
+# Zone: xiangyang
+
+    characters "zhuziliu" {
+      name = "朱子柳"
+      description = "一灯大师的四大弟子之一，现在襄阳协助郭靖、黄蓉守城。"
+  gender = "男性"
+  age = 55
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    con = 30
+    dex = 25
+    int = 20
+    max_jing = 500
+    max_neili = 1500
+    max_qi = 1500
+    str = 40
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "kurong-changong" level = 50 },
+    { skill = "finger" level = 50 },
+    { skill = "sun-finger" level = 50 },
+    { skill = "cuff" level = 50 },
+    { skill = "jinyu-quan" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "tiannan-step" level = 50 },
+    { skill = "parry" level = 50 },
+    { type = "force" skill = "kurong-changong" },
+    { type = "finger" skill = "sun-finger" },
+    { type = "cuff" skill = "jinyu-quan" },
+    { type = "dodge" skill = "tiannan-step" },
+    { type = "parry" skill = "sun-finger" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/zuo.c by LPCConverter
+# Zone: xiangyang
+
+    characters "zuo" {
+      name = "佐将"
+      description = "这是一个大宋将领，满脸征尘。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 65000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "changquan" level = 60 },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/obj/mudao.c by LPCConverter
+# Zone: xiangyang
+
+    characters "mudao" {
+      name = "木刀"
+      description = "这是一柄木匠做的木刀，手工相当精细。"
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/obj/mugun.c by LPCConverter
+# Zone: xiangyang
+
+    characters "mugun" {
+      name = "木棍"
+      description = "这是一杆木匠做的木棍，手工相当精细。"
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/obj/mujian.c by LPCConverter
+# Zone: xiangyang
+
+    characters "mujian" {
+      name = "木剑"
+      description = "这是一柄木匠做的木剑，手工相当精细。"
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/obj/rice.c by LPCConverter
+# Zone: xiangyang
+
+    items "rice" {
+      name = "高粱米饭"
+      description = "一碗香喷喷的高粱米饭。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiangyang/obj/soup.c by LPCConverter
+# Zone: xiangyang
+
+    items "soup" {
+      name = "野菜汤碗"
+      description = "一碗新鲜野菜做的汤。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

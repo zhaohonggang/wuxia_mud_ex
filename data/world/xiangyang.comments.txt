@@ -1,0 +1,599 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/xiangyang/jiangjungate.c by LPCConverter
+# Zone: xiangyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "north" && objectp(present("song bing", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/xiangyang/juyichufang.c by LPCConverter
+# Zone: xiangyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (present("rice",this_player()) )  →  
+  # if (present("rice",this_object()) )  →  
+  # else  →  
+  # if (query("ricewater")>0)  →  message_vision('烧饭师傅给$N一碗高粱米饭和一碗野菜汤。\\\\\n',me);
+# ==== CONDITIONAL BRANCHES (do_serve) ====
+  # if ( present("soup", me) || present("rice", me))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_serve
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/xiangyang/juyihuayuan.c by LPCConverter
+# Zone: xiangyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("gender") != "男性" && dir == "west")  →  
+  # if (me->query("gender") != "女性" && dir == "east")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/bing.c by LPCConverter
+# Zone: xiangyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob = this_player()) && (int)ob->query_condition("killer"))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_fight
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/gaoli.c by LPCConverter
+# Zone: xiangyang
+
+# inherit F_DEALER;
+
+
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/guo.c by LPCConverter
+# Zone: xiangyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  command('say ' + ob->query('name') + '，你打听这干嘛？\\\\\n');
+  # if (ob->query_int()>=30)  →  command('say ' + ob->query('name') + '，你帮我带个口信去桃花岛吧！\\\\\n');
+# ==== CONDITIONAL BRANCHES (ask_rong) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_rong
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/guofu.c by LPCConverter
+# Zone: xiangyang
+
+# inherit F_MASTER;
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/huangzhen.c by LPCConverter
+# Zone: xiangyang
+
+# inherit F_BANKER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("bad_vendor"))  →  
+  # if (! me->query("is_vendor"))  →  
+  # if (present("shang ling", me))  →  
+  # if (me->query_temp("shang-ling"))  →  
+  # if (SHOP_D->is_owner(me->query("id")))  →  
+# ==== CONDITIONAL BRANCHES (do_yao) ====
+  # else if (me->query_temp("want_tuoli"))  →  message_vision(HIC '$N' CYN '对着$n' HIC '点点头，人各有' '志，从此以后你我再无瓜葛。\\\\\n' NOR, this_object(), me); message_vision(HIR '$N' HIR '将$n' HIR '的' NOR + ob->name(1) + HIR '注销了。\\\\\n' NOR, this_object(), me);
+  # if (me->query_temp("want_join"))  →  message_vision(HIC '$N' HIC '对着$n' HIC '微笑道：如今世' '道钱乃万能之物，以后好好干吧。\\\\\n' NOR, this_object(), me); command('give shang ling to ' + me->query('id'));
+# ==== CONDITIONAL BRANCHES (do_decide) ====
+  # if (! arg || arg != "商业协会")  →  
+  # if (! me->query("is_vendor"))  →  
+# ==== CONDITIONAL BRANCHES (do_unjoin) ====
+  # if (! arg || arg != "商业协会")  →  
+  # if (me->query("is_vendor"))  →  
+  # if (me->query("bad_vendor"))  →  
+# ==== CONDITIONAL BRANCHES (do_join) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_join
+  # UNHANDLED FUNCTION: do_unjoin
+  # UNHANDLED FUNCTION: do_decide
+  # UNHANDLED FUNCTION: do_yao
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/laoxiansheng.c by LPCConverter
+# Zone: xiangyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!(int)who->query_temp("mark/朱"))  →  
+  # if (ob->query("money_id") && ob->value() >= 1000)  →  message_vision('老先生同意指点$N一些读书写字的问题。\\\\\n', who); tell_object(me,'你现在已有一定的文化知识，也可以自己读书深造了。\\\\\n');
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if (!(int)ob->query_temp("mark/朱"))  →  
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_degree
+  # UNHANDLED FUNCTION: recognize_apprentice
+  # UNHANDLED FUNCTION: ask_buy
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/pi.c by LPCConverter
+# Zone: xiangyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob = this_player()) && (int)ob->query_condition("killer"))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/pian.c by LPCConverter
+# Zone: xiangyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob = this_player()) && (int)ob->query_condition("killer"))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/qiuhang.c by LPCConverter
+# Zone: xiangyang
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: die
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/shaofanshifu.c by LPCConverter
+# Zone: xiangyang
+
+# inherit F_DEALER;
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/shudianboss.c by LPCConverter
+# Zone: xiangyang
+
+# inherit F_VENDOR;
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/smith.c by LPCConverter
+# Zone: xiangyang
+
+# inherit /inherit/char/smith.c;
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/tuolei.c by LPCConverter
+# Zone: xiangyang
+
+# inherit F_MASTER;
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/wuxiuwen.c by LPCConverter
+# Zone: xiangyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (query("beixin_count") < 1)  →  
+# ==== CONDITIONAL BRANCHES (ask_me_2) ====
+  # if ( present(name, this_player()) )  →  
+  # if (query("huju_count") < 1)  →  
+# ==== CONDITIONAL BRANCHES (ask_me_1) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_me_1
+  # UNHANDLED FUNCTION: ask_me_2
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/xiaoer2.c by LPCConverter
+# Zone: xiangyang
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(2)) { case 0: say("店小二笑咪咪地说道：这位" + RANK_D->query_respect(ob) + "，进来喝杯茶，歇歇腿吧。\n"); break; case 1: say("店小二用脖子上的毛巾抹了抹手，说道：这位" + RANK_D->query_respect(ob) + "，请进请进。\n"); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/ya.c by LPCConverter
+# Zone: xiangyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob = this_player()) && (int)ob->query_condition("killer"))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/zuo.c by LPCConverter
+# Zone: xiangyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob = this_player()) && (int)ob->query_condition("killer"))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/obj/mudao.c by LPCConverter
+# Zone: xiangyang
+
+# inherit BLADE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/obj/mugun.c by LPCConverter
+# Zone: xiangyang
+
+# inherit CLUB;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xiangyang/npc/obj/mujian.c by LPCConverter
+# Zone: xiangyang
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xiangyang/obj/rice.c by LPCConverter
+# Zone: xiangyang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xiangyang/obj/soup.c by LPCConverter
+# Zone: xiangyang
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

@@ -1,0 +1,796 @@
+# Generated from C:/files/git/mud/d/heimuya/baigate.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (objectp(present("riyue dizi", environment(me))) && dir == "west" && me->query("family/family_name") != "日月神教")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/heimuya/chengdedian.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "south")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/heimuya/fenggate.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (objectp(present("riyue dizi", environment(me))) && dir == "south" && me->query("family/family_name") != "日月神教")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/heimuya/house1.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (random(6) == 1)  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/heimuya/huoting.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((arg != "wan") || ! arg)  →  
+  # if ((int)me->query("str") < 12)  →  
+  # if (! (room = find_object(__DIR__"didao1")))  →  
+  # if (!objectp(room))  →  
+  # if (! query("exits/down"))  →  message_vision('$N将碗旋开，见侧墙打开露，出一个黑幽幽的洞口.\\\\\n',me);
+  # if (! (room = find_object(__DIR__"didao1")))  →  
+  # if (! objectp(room))  →  
+  # else  →  message_vision('很快碗又搬回了原位。侧墙上的洞口又被封住了。\\\\\n',me);
+  # if (! query("exits/down"))  →  message_vision('$N旋动了碗，只见侧墙打开，露出一个黑幽幽的洞口。\\\\\n',me);
+# ==== CONDITIONAL BRANCHES (do_circle) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_circle
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/insert.c by LPCConverter
+# Zone: heimuya
+
+# Generic LPC file: C:/files/git/mud/d/heimuya/insert.c
+
+# Requires manual conversion
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !arg )  →  
+  # if ( mapp(cards) )  →  message_vision('$N将' + cards[dir]['name'] + '插入。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (main) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: main
+  # UNHANDLED FUNCTION: help
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/heimuya/qinggate.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (objectp(present("riyue dizi", environment(me))) && dir == "south" && me->query("family/family_name") != "日月神教")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/heimuya/shanya1.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "north" || ! objectp(wang = present("wang cheng", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/heimuya/shanya3.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_skill("juechen-shenfa", 1) < 120 || me->query_skill("dodge", 1) < 120)  →  message_vision('$N朝山崖下望去，沉思良久，叹了口气。\\\\\n', me);
+  # if (me->query("neili") < 100)  →  tell_object(me, '你的内力不够，还是休息一下再说吧。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_float) ====
+  # if (! arg || arg != "basket" )  →  
+  # if (me->query("family/family_name") != "日月神教")  →  
+# ==== CONDITIONAL BRANCHES (do_enter) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_float
+  # UNHANDLED FUNCTION: down1
+  # UNHANDLED FUNCTION: down2
+  # UNHANDLED FUNCTION: do_enter
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/heimuya/tian1.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (objectp(present("sang sanniang", environment(me))) && dir == "south" && me->query("family/family_name") && me->query("family/family_name") != "日月神教")  →  
+  # if (objectp(present("sang sanniang", environment(me))) && (string)me->query("gender") != "女性" && dir == "south")  →  
+  # if (objectp(present("sang sanniang", environment(me))) && ! me->query("family/family_name"))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/tiangate.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (objectp(present("riyue dizi", environment(me))) && dir == "south" && me->query("family/family_name") && me->query("family/family_name") != "日月神教")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/heimuya/up1.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_skill("juechen-shenfa", 1) < 160 || me->query_skill("dodge", 1) < 160)  →  message_vision('$N遥望山崖，沉思良久，叹了口气。\\\\\n', me);
+  # if (me->query("neili") < 100)  →  tell_object(me, '你的内力不够，还是休息一下再说吧。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_float) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_float
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/up2.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if( arg=="card2") { if( !objectp(ob = present(arg, me)) ) return notify_fail("你身上没有这样东西。\n"); if( !me->query_temp("mark/cards") ) me->set_temp("mark/cards",1); if( me->query_temp("mark/cards")==4) { check_trigger(); me->delete_temp("mark/cards"); } else { me->add_temp("mark/cards",1); message("vision", "噔的一声，你看到吊篮向下一节。\n",me ); }
+# ==== COMPLEX CONDITIONALS ====
+  # if ( !arg || arg=="" )  →  
+  # if ( arg=="卡" )  →  
+  # if ( arg=="card2")  →  
+# ==== CONDITIONAL BRANCHES (do_insert) ====
+  # if ( room = find_object(__DIR__"basket") )  →  
+# ==== CONDITIONAL BRANCHES (close_passage) ====
+  # if ( room = find_object(__DIR__"basket") )  →  
+# ==== CONDITIONAL BRANCHES (arrive) ====
+  # if ( !query("exits/enter") )  →  
+  # if ( room = find_object(__DIR__"basket") )  →  
+# ==== CONDITIONAL BRANCHES (on_board) ====
+  # if (!query("exits/enter") )  →  
+# ==== CONDITIONAL BRANCHES (check_trigger) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_insert
+  # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: on_board
+  # UNHANDLED FUNCTION: arrive
+  # UNHANDLED FUNCTION: check_trigger
+  # UNHANDLED FUNCTION: close_passage
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/up3.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if( arg=="card3") { if( !objectp(ob = present(arg, me)) ) return notify_fail("你身上没有这样东西。\n"); if( !me->query_temp("mark/cards") ) me->set_temp("mark/cards",1); if( me->query_temp("mark/cards")==4) { check_trigger(); me->delete_temp("mark/cards"); } else { me->add_temp("mark/cards",1); message("vision", "噔的一声，你看到吊篮向下一节。\n",me ); }
+# ==== COMPLEX CONDITIONALS ====
+  # if ( !arg || arg=="" )  →  
+  # if ( arg=="卡" )  →  
+  # if ( arg=="card3")  →  
+# ==== CONDITIONAL BRANCHES (do_insert) ====
+  # if ( room = find_object(__DIR__"basket") )  →  
+# ==== CONDITIONAL BRANCHES (close_passage) ====
+  # if ( room = find_object(__DIR__"basket") )  →  
+# ==== CONDITIONAL BRANCHES (arrive) ====
+  # if ( !query("exits/enter") )  →  
+  # if ( room = find_object(__DIR__"basket") )  →  
+# ==== CONDITIONAL BRANCHES (on_board) ====
+  # if (!query("exits/enter") )  →  
+# ==== CONDITIONAL BRANCHES (check_trigger) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_insert
+  # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: on_board
+  # UNHANDLED FUNCTION: arrive
+  # UNHANDLED FUNCTION: check_trigger
+  # UNHANDLED FUNCTION: close_passage
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/up4.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if( arg=="card4") { if( !objectp(ob = present(arg, me)) ) return notify_fail("你身上没有这样东西。\n"); if( !me->query_temp("mark/cards") ) me->set_temp("mark/cards",1); if( me->query_temp("mark/cards")==4) { check_trigger(); me->delete_temp("mark/cards"); } else { me->add_temp("mark/cards",1); message("vision", "噔的一声，你看到吊篮向下一节。\n",me ); }
+# ==== COMPLEX CONDITIONALS ====
+  # if ( !arg || arg=="" )  →  
+  # if ( arg=="卡" )  →  
+  # if ( arg=="card4")  →  
+# ==== CONDITIONAL BRANCHES (do_insert) ====
+  # if ( room = find_object(__DIR__"basket") )  →  
+# ==== CONDITIONAL BRANCHES (close_passage) ====
+  # if ( room = find_object(__DIR__"basket") )  →  
+# ==== CONDITIONAL BRANCHES (arrive) ====
+  # if ( !query("exits/enter") )  →  
+  # if ( room = find_object(__DIR__"basket") )  →  
+# ==== CONDITIONAL BRANCHES (on_board) ====
+  # if (!query("exits/enter") )  →  
+# ==== CONDITIONAL BRANCHES (check_trigger) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_insert
+  # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: on_board
+  # UNHANDLED FUNCTION: arrive
+  # UNHANDLED FUNCTION: check_trigger
+  # UNHANDLED FUNCTION: close_passage
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/heimuya/npc/dizi.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && !is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/dizi2.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && !is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/dizi3.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && !is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/dizi4.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/dizi5.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && !is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/dizi6.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && !is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/dizi7.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && !is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/huang.c by LPCConverter
+# Zone: heimuya
+
+# inherit F_MASTER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/heimuya/npc/seller.c by LPCConverter
+# Zone: heimuya
+
+# inherit F_VENDOR;
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/bishou.c by LPCConverter
+# Zone: heimuya
+
+# inherit DAGGER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/cloth.c by LPCConverter
+# Zone: heimuya
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/dadao.c by LPCConverter
+# Zone: heimuya
+
+# inherit BLADE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/dafu.c by LPCConverter
+# Zone: heimuya
+
+# inherit HAMMER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/hongchouxiaoshan.c by LPCConverter
+# Zone: heimuya
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/jinpao.c by LPCConverter
+# Zone: heimuya
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/leizhendang.c by LPCConverter
+# Zone: heimuya
+
+# inherit HAMMER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/shenzhen.c by LPCConverter
+# Zone: heimuya
+
+# inherit THROWING;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/shutonggun.c by LPCConverter
+# Zone: heimuya
+
+# inherit CLUB;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/tongchui.c by LPCConverter
+# Zone: heimuya
+
+# inherit HAMMER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/yaoshi.c by LPCConverter
+# Zone: heimuya
+
+# inherit ITEM;
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/zaohong.c by LPCConverter
+# Zone: heimuya
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/npc/obj/zichoush.c by LPCConverter
+# Zone: heimuya
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/obj/heimu-ling.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/obj/sherou.c by LPCConverter
+# Zone: heimuya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/heimuya/obj/tea.c by LPCConverter
+# Zone: heimuya
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

@@ -1,0 +1,3370 @@
+zones "hengyang" {
+  name = "hengyang"
+}
+
+# Generated from C:/files/git/mud/d/hengyang/baihuzhai.c by LPCConverter
+# Zone: hengyang
+
+    rooms "baihuzhai" {
+      name = "百狐斋"
+      description = "这里就是杜凤鄂的百狐斋，其实一看就知道这不过是一间 破旧的草堂， 只见堂内陈设简陋，墙上却挂满了画(hua)，这 些都是杜凤鄂自己画的他平时就靠卖这些画为生。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baihuzhai" {
+    room_id = rooms.baihuzhai.id
+  north = rooms.xiaoxiang2.id  }
+
+
+  room_characters "baihuzhai" {
+    room_id = rooms.baihuzhai.id
+    characters = [
+      { id = characters.dufeng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/banshan.c by LPCConverter
+# Zone: hengyang
+
+    rooms "banshan" {
+      name = "半山亭"
+      description = "终于到了半山亭。这里离到祝融峰无论高程还是行程，均 恰好是一半之径，路边小亭显然已极古久，但仍为过往客旅遮 风避雨。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "banshan" {
+    room_id = rooms.banshan.id
+  southdown = rooms.shanlu4.id
+  northwest = rooms.shanlu002.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/beimen.c by LPCConverter
+# Zone: hengyang
+
+    rooms "beimen" {
+      name = "正北门"
+      description = "南岳大庙正北门是大庙的后门，正在衡山山麓。回望大庙， 红墙黄瓦，金碧辉煌。北面是上山的六小路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "beimen" {
+    room_id = rooms.beimen.id
+  south = rooms.houdian.id
+  northup = rooms.shanlu1.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/cangjingdian.c by LPCConverter
+# Zone: hengyang
+
+    rooms "cangjingdian" {
+      name = "藏经殿"
+      description = "藏经殿深掩祥光峰下，因为藏明太祖所赠「大藏经」故名。 只见这里古木参天，殿宇飘翼，奇花异草，林壑幽深，景色秀 丽，「藏经殿之秀」是衡山大四绝之一。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "cangjingdian" {
+    room_id = rooms.cangjingdian.id
+  east = rooms.shanlu14.id
+  south = rooms.shuzhuangtai.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/chaguan.c by LPCConverter
+# Zone: hengyang
+
+    rooms "chaguan" {
+      name = "衡阳茶馆"
+      description = "你一进来，就闻到一股茶香沁入心脾，精神为之一爽。几 张八仙桌一字排开，四周坐满了客人，或高声谈笑，或交头接 耳。你要想打听江湖掌故和谣言，这里是个好所在。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chaguan" {
+    room_id = rooms.chaguan.id
+  north = rooms.hengyang.id  }
+
+
+  room_characters "chaguan" {
+    room_id = rooms.chaguan.id
+    characters = [
+      { id = characters.chaboshi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/changlang.c by LPCConverter
+# Zone: hengyang
+
+    rooms "changlang" {
+      name = "长廊"
+      description = "这是通往客房的长廊,不远处便是客房和厨房了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "changlang" {
+    room_id = rooms.changlang.id
+  west = rooms.zhurongdian.id
+  northeast = rooms.henshan_chufang.id
+  north = rooms.kefang.id  }
+
+
+  room_characters "changlang" {
+    room_id = rooms.changlang.id
+    characters = [
+      { id = characters.xiangke.id },
+      { id = characters.xiangke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/chating.c by LPCConverter
+# Zone: hengyang
+
+    rooms "chating" {
+      name = "茶亭"
+      description = "这是一家路边的小茶亭，赶山路的人常在此处歇歇脚。亭 子里有几张桌子和几支条凳。周围是一片树林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chating" {
+    room_id = rooms.chating.id
+  west = rooms.hsroad6.id  }
+
+
+  room_characters "chating" {
+    room_id = rooms.chating.id
+    characters = [
+      { id = characters.yuanziyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/chidifeng.c by LPCConverter
+# Zone: hengyang
+
+    rooms "chidifeng" {
+      name = "赤帝峰"
+      description = "相传祝融能以火施化，是黄帝的火正官，并主管南方的事 务，死后葬于此，故名赤帝峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chidifeng" {
+    room_id = rooms.chidifeng.id
+  southdown = rooms.shanlu2.id
+  eastdown = rooms.shanlu11.id
+  northdown = rooms.shanlu3.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/dadian.c by LPCConverter
+# Zone: hengyang
+
+    rooms "dadian" {
+      name = "大殿"
+      description = "这里是南岳大殿，供祭祀炎帝之用。大殿结构为重檐歇山 顶，顶覆七彩琉璃。殿高七十二尺，正面七间，有石柱七十二 根，合南岳七十二峰之数。殿中南岳圣帝宝相庄严。南岳庙之 雄为衡山小四绝之一。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dadian" {
+    room_id = rooms.dadian.id
+  south = rooms.yushulou.id
+  north = rooms.houdian.id  }
+
+
+  room_characters "dadian" {
+    room_id = rooms.dadian.id
+    characters = [
+      { id = characters.xiangke.id },
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/denggaotai.c by LPCConverter
+# Zone: hengyang
+
+    rooms "denggaotai" {
+      name = "登高台"
+      description = "这里是南天门登高望远的好去处。你站在这里，俯视诸峰， 丘垤如泥丸。遥看湘江北去，九向九背，时隐时现。周围烟霞， 碧罗，紫盖，天柱诸峰环抱，气象万千。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "denggaotai" {
+    room_id = rooms.denggaotai.id
+  northwest = rooms.nantian.id  }
+
+
+  room_characters "denggaotai" {
+    room_id = rooms.denggaotai.id
+    characters = [
+      { id = characters.youke.id },
+      { id = characters.youke.id },
+      { id = characters.youke.id },
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/fangguangsi.c by LPCConverter
+# Zone: hengyang
+
+    rooms "fangguangsi" {
+      name = "方广寺"
+      description = "方广寺在莲花峰之下。莲花峰有八个山头，犹如金莲瓣瓣， 方广寺就建在这莲花中心的一片平地上。深邃幽雅，有「不游 方广寺，不知南岳之深」之说，故「方广寺之深」为衡山大四 绝之一。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fangguangsi" {
+    room_id = rooms.fangguangsi.id
+  southdown = rooms.shanjian.id
+  eastup = rooms.shanlu10.id  }
+
+
+  room_characters "fangguangsi" {
+    room_id = rooms.fangguangsi.id
+    characters = [
+      { id = characters.youke.id },
+      { id = characters.youke.id },
+      { id = characters.youke.id },
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/furong.c by LPCConverter
+# Zone: hengyang
+
+    rooms "furong" {
+      name = "芙蓉洞外"
+      description = "只见此处有一个小洞，洞口狭小，只能容一人通过。洞中 却射出一缕阳光。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "furong" {
+    room_id = rooms.furong.id
+  in = rooms.furong1.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/furong1.c by LPCConverter
+# Zone: hengyang
+
+    rooms "furong1" {
+      name = "芙蓉洞"
+      description = "一进入洞中，阳光便射在头顶上，举目一望，原来洞顶有 一个小洞，阳光便是从中射进来的，一看四周，这里长满了芙 蓉花，正由于上面的小洞(dong)才使这些花不至于枯死也有充 足的阳光照射。不远处石壁(wall)上布满了蜘蛛网，看来这里 的主人已经很久没有来了。想到这里不禁苍凉之意顿起：「芙 蓉花开时，不见主人归」。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ dong = "阳光从洞外射进来，四周怪石(stone)突出，似乎可以从这里爬(climb)上去。"
+ stone = "只见这些突石有的坚韧如刀，有的层错如梯，各显其异。"
+}
+    }
+
+  room_exits "furong1" {
+    room_id = rooms.furong1.id
+  out = rooms.furong.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/furongfeng.c by LPCConverter
+# Zone: hengyang
+
+    rooms "furongfeng" {
+      name = "芙蓉峰"
+      description = "芙蓉峰是衡山五峰之一，据说芙蓉峰下有个山洞，洞中长 满了芙蓉花，长年不谢，芙蓉峰也因此得名。但见此处环境清 幽，草木葱绿，这里不如祝融峰高，冷暖适宜，实在是个人间 仙境。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "furongfeng" {
+    room_id = rooms.furongfeng.id
+  southeast = rooms.shanlu13.id  }
+
+
+
+
+  room_items "furongfeng" {
+    room_id = rooms.furongfeng.id
+    items = [
+      { id = items.liu.id },
+      { id = items.qu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/fuyansi.c by LPCConverter
+# Zone: hengyang
+
+    rooms "fuyansi" {
+      name = "福严寺"
+      description = "福严寺为禅宗七祖怀让的道场，怀让曾在此宏扬顿悟法门。 山门的上匾额「天下法院」正是当年写照，两边门联「六朝古 刹  七祖道场」字迹剥落颜色极古。只见山门的墙边上有古人 留字(zi)，年代古远，犹历历可辩。福严寺内的石柱上有一对 联(lian)，字迹圆润回转，不露机锋。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ zi = "诸峰翠少中峰翠  五寺名高此寺名           石路险盘岚霭滑  僧窗高倚济寥明           凌空殿阁由天设  遍地松杉是自生           更有上方难上处  紫苔红藓远峥嵘"
+}
+    }
+
+  room_exits "fuyansi" {
+    room_id = rooms.fuyansi.id
+  southdown = rooms.shanlu9.id
+  westup = rooms.sansheng.id  }
+
+
+  room_characters "fuyansi" {
+    room_id = rooms.fuyansi.id
+    characters = [
+      { id = characters.xiangke.id },
+      { id = characters.xiangke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/heishatan.c by LPCConverter
+# Zone: hengyang
+
+    rooms "heishatan" {
+      name = "黑沙潭"
+      description = "黑沙潭又称黑龙潭，深不见底，水色苍黑，瀑布流急，水 中黑泡共白沫徜徉，幽幽可怖。石壁上「海南龙湫」四字据载 为大宋徽宗赵佶所留。瘦金字体，一如往昔。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+  direction = "up"
+  message = "你使劲儿一蹦，离瀑布顶还有数丈远就掉了下来，摔的鼻青脸肿。"
+}
+,
+{
+  direction = "up"
+  message = "你奋力一跃，却离瀑布顶还有一丈多远，看来是白费力气。"
+}
+,
+{
+  direction = "up"
+  message = "你纵身而起，离瀑布顶只差一点点了，再加把劲。"
+}
+
+]
+    }
+
+  room_exits "heishatan" {
+    room_id = rooms.heishatan.id
+  up = rooms.shanjian.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/hengyang.c by LPCConverter
+# Zone: hengyang
+
+    rooms "hengyang" {
+      name = "衡阳城"
+      description = "这里就是衡阳县城。衡阳地处偏远，显见远不如中原繁华 了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hengyang" {
+    room_id = rooms.hengyang.id
+  east = rooms.hengyang2.id
+  west = rooms.hengyang1.id
+  south = rooms.chaguan.id
+  north = rooms.lingxingmen.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/hengyang1.c by LPCConverter
+# Zone: hengyang
+
+    rooms "hengyang1" {
+      name = "衡阳西街"
+      description = "你走在碎石铺就的狭小街道上。只见街上时常有人持剑疾 行，似乎这里出了啥事了。南边是一家小店，北面一座大宇巍 峨，重檐叠瓦， 门口彩灯高悬，管家家丁好象都是武林中人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hengyang1" {
+    room_id = rooms.hengyang1.id
+  east = rooms.hengyang.id
+  west = rooms.hengyang11.id
+  south = rooms.shop.id
+  north = rooms.liufugate.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/hengyang11.c by LPCConverter
+# Zone: hengyang
+
+    rooms "hengyang11" {
+      name = "衡阳西街"
+      description = "这里是衡阳城西街，这见路人匆匆向东而行，南边是有一 个马厩，北面是一家装饰很典雅的店铺，店铺入门处挂满了风 铃。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hengyang11" {
+    room_id = rooms.hengyang11.id
+  east = rooms.hengyang1.id
+  west = rooms.hsroad4.id
+  south = rooms.majiu.id
+  north = rooms.lingyinge.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/hengyang2.c by LPCConverter
+# Zone: hengyang
+
+    rooms "hengyang2" {
+      name = "衡阳东街"
+      description = "这里是衡阳东街，再往东走便出衡阳城了，北面是一家杂 货铺，南边是一条偏僻的小巷。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hengyang2" {
+    room_id = rooms.hengyang2.id
+  east = rooms.hsroad3.id
+  west = rooms.hengyang.id
+  south = rooms.xiaoxiang1.id
+  north = rooms.zahuopu.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/henshan_chufang.c by LPCConverter
+# Zone: hengyang
+
+    rooms "henshan_chufang" {
+      name = "厨房"
+      description = "这里是衡山派长廊东北侧的一间厨房，平常衡山的弟子们 饿了便可以到这里来要(serve)些食物吃。房中灶火正旺，一 个厨师正忙的满头大汗。屋角放着一个大水缸。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "henshan_chufang" {
+    room_id = rooms.henshan_chufang.id
+  southwest = rooms.changlang.id  }
+
+
+  room_characters "henshan_chufang" {
+    room_id = rooms.henshan_chufang.id
+    characters = [
+      { id = characters.chushi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/houdian.c by LPCConverter
+# Zone: hengyang
+
+    rooms "houdian" {
+      name = "后殿"
+      description = "后殿是南岳大庙的第八进，也是南岳大帝的寝宫。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houdian" {
+    room_id = rooms.houdian.id
+  south = rooms.dadian.id
+  north = rooms.beimen.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/hsroad1.c by LPCConverter
+# Zone: hengyang
+
+    rooms "hsroad1" {
+      name = "土路"
+      description = "你走在一条尘土飞扬的黄土路上，两旁满是阴森森的树林。 这里向北通往扬州，往南就进入湖南地界了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hsroad1" {
+    room_id = rooms.hsroad1.id
+  northdown = rooms.wdroad4.id
+  southeast = rooms.hsroad2.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/hsroad2.c by LPCConverter
+# Zone: hengyang
+
+    rooms "hsroad2" {
+      name = "土路"
+      description = "你走在一条尘土飞扬的黄土路上，两旁满是阴森森的树林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hsroad2" {
+    room_id = rooms.hsroad2.id
+  northwest = rooms.hsroad1.id
+  southwest = rooms.hsroad3.id
+  southeast = rooms.fzroad7.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/hsroad3.c by LPCConverter
+# Zone: hengyang
+
+    rooms "hsroad3" {
+      name = "土路"
+      description = "你走在一条尘土飞扬的黄土路上，两旁满是阴森森的树林。 西面不远就是衡阳县城了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hsroad3" {
+    room_id = rooms.hsroad3.id
+  northeast = rooms.hsroad2.id
+  west = rooms.hengyang2.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/hsroad4.c by LPCConverter
+# Zone: hengyang
+
+    rooms "hsroad4" {
+      name = "黄土路"
+      description = "你走在一条尘土飞扬的黄土路上，两旁满是阴森森的树林。 东面不远就是衡阳县城了。往西是另外一条大道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hsroad4" {
+    room_id = rooms.hsroad4.id
+  east = rooms.hengyang11.id
+  west = rooms.hsroad5.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/hsroad5.c by LPCConverter
+# Zone: hengyang
+
+    rooms "hsroad5" {
+      name = "林间大道"
+      description = "这里是一条林间大道。这里是湖南境内。南边通向南岭的 一个山口。路东隐隐可以看到一角城墙。西面是一座猛恶山林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hsroad5" {
+    room_id = rooms.hsroad5.id
+  west = rooms.mtroad1.id
+  east = rooms.hsroad4.id
+  north = rooms.hsroad6.id
+  southup = rooms.hsroad9.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/hsroad6.c by LPCConverter
+# Zone: hengyang
+
+    rooms "hsroad6" {
+      name = "林间大道"
+      description = "这里是一条林间大道，在树丛中蜿蜒。这里已是湖南境内。 北边是湖北。路边有可供路人休息的小茶亭。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hsroad6" {
+    room_id = rooms.hsroad6.id
+  east = rooms.chating.id
+  north = rooms.hsroad7.id
+  south = rooms.hsroad5.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/hsroad7.c by LPCConverter
+# Zone: hengyang
+
+    rooms "hsroad7" {
+      name = "林间大道"
+      description = "这里是一条林间大道，在树丛中蜿蜒。这里已是湖北境内。 南边是便湖南。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hsroad7" {
+    room_id = rooms.hsroad7.id
+  north = rooms.hsroad8.id
+  south = rooms.hsroad6.id  }
+
+
+
+
+  room_items "hsroad7" {
+    room_id = rooms.hsroad7.id
+    items = [
+      { id = items.gou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/hsroad8.c by LPCConverter
+# Zone: hengyang
+
+    rooms "hsroad8" {
+      name = "林间道"
+      description = "这里是一条林间小道，在树丛中蜿蜒。西北方连着一条黄 土路，南面的道路要宽一些。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hsroad8" {
+    room_id = rooms.hsroad8.id
+  northwest = rooms.wdroad9.id
+  south = rooms.hsroad7.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/hsroad9.c by LPCConverter
+# Zone: hengyang
+
+    rooms "hsroad9" {
+      name = "南岭山口"
+      description = "这里是南岭的一个山口。南面是岭南的大镇佛山，北面是 湖南的地界。岭南广东富庶繁盛，颇有豪侠之士。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hsroad9" {
+    room_id = rooms.hsroad9.id
+  northdown = rooms.hsroad5.id
+  southdown = rooms.nanling.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/huiyan.c by LPCConverter
+# Zone: hengyang
+
+    rooms "huiyan" {
+      name = "回雁楼"
+      description = "这里是衡阳回雁楼，是本地最大的酒楼。往日这时已经十 分忙碌的酒楼今天却有点异样。一个年近四十的白衣汉子，正 端坐自饮，桌面横放着一把快刀，旁边却坐着一个小尼姑，满 脸忧急愁苦之色，容貌却十分秀丽。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huiyan" {
+    room_id = rooms.huiyan.id
+  down = rooms.shop.id  }
+
+
+  room_characters "huiyan" {
+    room_id = rooms.huiyan.id
+    characters = [
+      { id = characters.tian.id },
+      { id = characters.yilin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/inhole.c by LPCConverter
+# Zone: hengyang
+
+    rooms "inhole" {
+      name = "水帘洞外洞"
+      description = "这里就是水莲洞外洞，只见洞内怪石突现，洞高丈许，甚 是开阔，身后便是瀑布(pubu)，随飞瀑而下的细小水末洒在脸 上，令人顿感凉爽之极，不断有水滴顺着洞内的怪石滴下，连 成一条条细线,远观之下犹如一幅幅窗帘， 水莲洞也因此得名。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ pubu = "你仰望瀑布，景致甚为壮观，可是你猛然发现外面的平地却在水莲洞上方，要跳出去却是万难做到。"
+}
+    }
+
+  room_exits "inhole" {
+    room_id = rooms.inhole.id
+  in = rooms.inhole1.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/inhole1.c by LPCConverter
+# Zone: hengyang
+
+    rooms "inhole1" {
+      name = "水帘洞内"
+      description = "这里是水莲洞内洞，虽然不如外洞高，但也甚为宽敞,此处 靠近外洞还隐隐地听得见瀑布落下拍打在石头上的声音。走到 这里入口便一分为二，出现两个洞口。从这里看去洞口漆黑无 光，令人不禁有些心寒。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "inhole1" {
+    room_id = rooms.inhole1.id
+  northwest = rooms.inhole2.id
+  northeast = rooms.inhole3.id
+  out = rooms.inhole.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/inhole2.c by LPCConverter
+# Zone: hengyang
+
+    rooms "inhole2" {
+      name = "水帘洞内"
+      description = "借着火光你发现这里有一些出口，但不知道通往何处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "inhole2" {
+    room_id = rooms.inhole2.id
+  out = rooms.inhole1.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/inhole3.c by LPCConverter
+# Zone: hengyang
+
+    rooms "inhole3" {
+      name = "水帘洞内"
+      description = "借着火光你看到洞中怪石嶙峋，前方出现一条路不知通向 何处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "inhole3" {
+    room_id = rooms.inhole3.id
+  out = rooms.inhole1.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/inzhushendong.c by LPCConverter
+# Zone: hengyang
+
+    rooms "inzhushendong" {
+      name = "诸神仙洞内"
+      description = "四周很空旷，偶尔说话也能听见回声，但这里靠近洞口光 线还算不错。千百年来的尘土已将周围山壁(bi)掩盖。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "inzhushendong" {
+    room_id = rooms.inzhushendong.id
+  out = rooms.outzhushendong.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/jiayingmen.c by LPCConverter
+# Zone: hengyang
+
+    rooms "jiayingmen" {
+      name = "嘉应门"
+      description = "这里是地方官迎接京师御史官来祭南岳的地方，是南岳大 庙第五进门了。门上雕塑也较精细些，悬彩灯笼时时换新。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jiayingmen" {
+    room_id = rooms.jiayingmen.id
+  south = rooms.yubeiting.id
+  north = rooms.yushulou.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/jigaoming.c by LPCConverter
+# Zone: hengyang
+
+    rooms "jigaoming" {
+      name = "极高明台"
+      description = "这里是福严寺最高处。唐邺侯李泌手书「极高明」三个大 字于此，意即佛相极高(高无见顶相)，佛光极明(明不借他光) ，佛是至高无上的，故曰极高明台。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jigaoming" {
+    room_id = rooms.jigaoming.id
+  northdown = rooms.sansheng.id  }
+
+
+  room_characters "jigaoming" {
+    room_id = rooms.jigaoming.id
+    characters = [
+      { id = characters.youke.id },
+      { id = characters.youke.id },
+      { id = characters.youke.id },
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/kefang.c by LPCConverter
+# Zone: hengyang
+
+    rooms "kefang" {
+      name = "衡山派客房"
+      description = "这是一间很大的客房，是衡山派供前来祭神的游客暂住的 房间陈设十分简陋。 靠墙放了十几张小木床。 虽然简陋了点 但是总比在荒山中露宿强得多了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kefang" {
+    room_id = rooms.kefang.id
+  south = rooms.changlang.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/kuixingge.c by LPCConverter
+# Zone: hengyang
+
+    rooms "kuixingge" {
+      name = "奎星阁"
+      description = "奎星阁是南岳大庙的第二进。阁为一个大舞台，阁左为鼓 亭，右是钟亭。乡俗年节唱戏，这里总是热闹非凡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kuixingge" {
+    room_id = rooms.kuixingge.id
+  south = rooms.lingxingmen.id
+  east = rooms.zhongting.id
+  north = rooms.zhengchuan.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/lingxingmen.c by LPCConverter
+# Zone: hengyang
+
+    rooms "lingxingmen" {
+      name = "棂星门"
+      description = "这里是南岳大庙的第一道门，由汉白玉，花岗石打就的石 牌坊。南岳衡山是祝融游息之地，道教奉为第三小洞天。在此 远望衡山，山势如飞，如云雾中凌空的大鸟。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lingxingmen" {
+    room_id = rooms.lingxingmen.id
+  north = rooms.kuixingge.id
+  south = rooms.hengyang.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/lingyinge.c by LPCConverter
+# Zone: hengyang
+
+    rooms "lingyinge" {
+      name = "铃音阁"
+      description = "此处是衡阳城唯一出售乐器的地方，店铺门口挂满了风铃， 微风吹过，玲音入耳，精神便为之一爽。进入店内，只见货柜 上摆满了各色乐器，琳琅满目，据说这里的老板娘以前是个歌 妓，虽然现在做起乐器生意，但偶尔也会拂琴高歌，每次都会 引来很多的路人驻足欣赏。门前挂着一幅对联(duilian)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lingyinge" {
+    room_id = rooms.lingyinge.id
+  south = rooms.hengyang11.id  }
+
+
+  room_characters "lingyinge" {
+    room_id = rooms.lingyinge.id
+    characters = [
+      { id = characters.feiyan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/liufudating.c by LPCConverter
+# Zone: hengyang
+
+    rooms "liufudating" {
+      name = "刘府大厅"
+      description = "刘府大厅里异常冷清。大厅正中放着一张茶几，上面铺了 锦缎。只见旁边一只金光灿烂、径长尺半的黄金盆子却被打翻 在地上。看来这里像是发生过打斗。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liufudating" {
+    room_id = rooms.liufudating.id
+  west = rooms.liufuwest.id
+  east = rooms.liufueast.id
+  south = rooms.liufudayuan.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/liufudayuan.c by LPCConverter
+# Zone: hengyang
+
+    rooms "liufudayuan" {
+      name = "刘府大院"
+      description = "刘府大院里现在挤着很多江湖豪客，原来今天是刘正风金 盆洗手的好日子。刘老爷子在衡阳人缘很好，来捧场的自然不 少，大院里已摆了很多张桌子，杯筷往来，很是热闹。但见他 们一个个都神情异常，今天这里像是出了什么事情。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liufudayuan" {
+    room_id = rooms.liufudayuan.id
+  north = rooms.liufudating.id
+  out = rooms.liufugate.id  }
+
+
+  room_characters "liufudayuan" {
+    room_id = rooms.liufudayuan.id
+    characters = [
+      { id = characters.dao_ke.id },
+      { id = characters.dao_ke.id },
+      { id = characters.jian_ke.id },
+      { id = characters.jian_ke.id },
+      { id = characters.jian_ke.id },
+      { id = characters.jian_ke.id },
+      { id = characters.haoke.id },
+      { id = characters.haoke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/liufueast.c by LPCConverter
+# Zone: hengyang
+
+    rooms "liufueast" {
+      name = "刘府东厢房"
+      description = "这儿是东厢房，这儿整理得干干净净，窗外露出点绿绿的 枝叶，家具上一尘不染，地上铺着很大块的青砖，一点灰尘也 不沾。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liufueast" {
+    room_id = rooms.liufueast.id
+  west = rooms.liufudating.id  }
+
+
+  room_characters "liufueast" {
+    room_id = rooms.liufueast.id
+    characters = [
+      { id = characters.liufuren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/liufugate.c by LPCConverter
+# Zone: hengyang
+
+    rooms "liufugate" {
+      name = "刘府大门"
+      description = "这里是刘府大门。刘府的主人，就是衡山派中的仅次于掌 门人莫大先生的第二号人物刘正风刘老爷子。今天兴许刘府有 事吧，大门(gate)紧闭，管家家丁也异样紧张，莫非今天出了 什么事情。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ gate = "朱红的大门紧闭着，敲敲(knock)看吧。"
+}
+    }
+
+  room_exits "liufugate" {
+    room_id = rooms.liufugate.id
+  south = rooms.hengyang1.id  }
+
+
+  room_characters "liufugate" {
+    room_id = rooms.liufugate.id
+    characters = [
+      { id = characters.haoke.id },
+      { id = characters.haoke.id },
+      { id = characters.haoke.id },
+      { id = characters.haoke.id },
+      { id = characters.jian_ke.id },
+      { id = characters.jian_ke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/liufuwest.c by LPCConverter
+# Zone: hengyang
+
+    rooms "liufuwest" {
+      name = "刘府西厢房"
+      description = "这儿是西厢房，这儿整理得干干净净，窗外露出点绿绿的 枝叶，家具上一尘不染，地上铺着很大块的青砖，一点灰尘也 不沾。刘府的小孩们不知在这里悄悄说着什么。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liufuwest" {
+    room_id = rooms.liufuwest.id
+  east = rooms.liufudating.id  }
+
+
+  room_characters "liufuwest" {
+    room_id = rooms.liufuwest.id
+    characters = [
+      { id = characters.liujing.id },
+      { id = characters.liuqin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/liuyunping.c by LPCConverter
+# Zone: hengyang
+
+    rooms "liuyunping" {
+      name = "流云坪"
+      description = "每逢雨霁，在后山深壑中升腾起来的云山雾海，涌过南天 门山脊向前山倾泻，直如银河飞泻，蔚为壮观，这就是南天门 的流云奇景。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liuyunping" {
+    room_id = rooms.liuyunping.id
+  westdown = rooms.nantian.id
+  eastup = rooms.shilinfeng.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/majiu.c by LPCConverter
+# Zone: hengyang
+
+    rooms "majiu" {
+      name = "马厩"
+      description = "这是衡阳城南的马厩，常年供应新鲜草料。衡阳地狭人稀 来往行人也很少。从这里可以乘马车到附近的城市，马厩雨檐 下的烂木柱上钉着一块破木牌(paizi)。 马厩中堆放著几堆草 料，正中有一口泔槽。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+  north = rooms.hengyang11.id
+  up = rooms.hengyang_shop.id  }
+
+
+  room_characters "majiu" {
+    room_id = rooms.majiu.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu" {
+    room_id = rooms.majiu.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/mojingtai.c by LPCConverter
+# Zone: hengyang
+
+    rooms "mojingtai" {
+      name = "磨镜台"
+      description = "磨镜台位于燕子岩下，与半山亭一沟相邻。台前峰回路转， 台旁古松苍翠，环境清幽。相传南宗禅宗怀让在此宣扬「顿悟 法门」，坐台高僧斗法，怀让磨镜，智服北宗道一，此台因而 传名。「磨镜台之幽」是衡山大四绝之一。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mojingtai" {
+    room_id = rooms.mojingtai.id
+  southdown = rooms.shanlu8.id
+  westup = rooms.shanlu7.id
+  northup = rooms.shanlu6.id  }
+
+
+  room_characters "mojingtai" {
+    room_id = rooms.mojingtai.id
+    characters = [
+      { id = characters.youke.id },
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/nantaisi.c by LPCConverter
+# Zone: hengyang
+
+    rooms "nantaisi" {
+      name = "南台寺"
+      description = "南台寺为禅宗七祖怀让的弟子石头希迁的道场，寺下紫云 峰上是石头和尚墓。寺周林荫夹道，曲径通幽，泉流叮咚，蜂 蝶纷飞，山风吹过时万叶悉索，真好去处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nantaisi" {
+    room_id = rooms.nantaisi.id
+  northdown = rooms.shanlu9.id  }
+
+
+  room_characters "nantaisi" {
+    room_id = rooms.nantaisi.id
+    characters = [
+      { id = characters.xiangke.id },
+      { id = characters.xiangke.id },
+      { id = characters.xiangke.id },
+      { id = characters.xiangke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/nantian.c by LPCConverter
+# Zone: hengyang
+
+    rooms "nantian" {
+      name = "南天门"
+      description = "到了南天门，才能望到衡山第一的祝融峰。南天门是花岗 岩做成的石碑坊，中门镌有「 南天门 」三字横额，左右二门 的门楣上，分别刻有「行云」和「施雨」二字。楹联(lian)破 陋，显见岁月已久。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nantian" {
+    room_id = rooms.nantian.id
+  eastup = rooms.liuyunping.id
+  northeast = rooms.shiziyan.id
+  northwest = rooms.shanlu14.id
+  southeast = rooms.denggaotai.id
+  southwest = rooms.shanlu13.id  }
+
+
+  room_characters "nantian" {
+    room_id = rooms.nantian.id
+    characters = [
+      { id = characters.dizi1.id },
+      { id = characters.dizi1.id },
+      { id = characters.dizi1.id },
+      { id = characters.dizi1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/ontree.c by LPCConverter
+# Zone: hengyang
+
+    rooms "ontree" {
+      name = "古树上"
+      description = "你极目远眺，四周尽是悬崖峭壁。一条树藤(teng)从高处 垂下。忽然见你看见前面峭壁上似乎有一个山洞(hole)，但是 距离甚远却是怎么也过不去。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ hole = "太远了，看得不太清楚，看来得想个办法过去。"
+ teng = "这些树藤看起来很结实，似乎是从树顶垂下来的。"
+}
+    }
+
+  room_exits "ontree" {
+    room_id = rooms.ontree.id
+  down = rooms.xuanyadi.id
+  up = rooms.ontree2.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/ontree2.c by LPCConverter
+# Zone: hengyang
+
+    rooms "ontree2" {
+      name = "古树顶"
+      description = "你极目远眺，四周尽是悬崖峭壁。一条树藤(teng)从你面 前垂下。忽然间你看见前面峭壁上似乎有一个山洞(hole)，但 是距离甚远却是怎么也过不去。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ hole = "太远了，看得不太清楚，看来得想个办法过去。"
+ teng = "这些树藤看起来很结实，看来可以拉着根树藤跳过去。"
+}
+    }
+
+  room_exits "ontree2" {
+    room_id = rooms.ontree2.id
+  down = rooms.ontree.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/outzhushendong.c by LPCConverter
+# Zone: hengyang
+
+    rooms "outzhushendong" {
+      name = "诸神仙洞"
+      description = "举目四望，周围尽是悬崖峭壁(bi)，猛一抬头看见洞口上 写着「诸神仙洞」四个大字。但是字体经过风雨的冲蚀已经磨 损，周围野草杂生，心中悲凉不已。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ bi = "光突突的峭壁上垂下数根长腾(teng)。"
+ teng = "看来很结实，可做攀爬之用。"
+}
+    }
+
+  room_exits "outzhushendong" {
+    room_id = rooms.outzhushendong.id
+  in = rooms.inzhushendong.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/outzigai.c by LPCConverter
+# Zone: hengyang
+
+    rooms "outzigai" {
+      name = "水莲洞内"
+      description = "走到这里就没有路了，四周都是突起的怪石(stone),洞壁 上渗出的水顺着突石流了下来，水滴溅在地上发出“啪嗒，啪 嗒”的声音，顺着水流向上望去发现水流源头处隐约有一丝光 亮。但是那里离地面很高，站在下面也看不清楚。你往周围一 看，已找不到来时的路了，不禁心下骇然。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ stone = "只见突石怪异嶙峋，水流正好顺其而下。石头上面却已经长满了青苔。"
+}
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/outzigai1.c by LPCConverter
+# Zone: hengyang
+
+    rooms "outzigai1" {
+      name = "突石上"
+      description = "站在这里向下望才发现自己已经离地面有十来丈高了，寻 望洞内发现四周虽都有突石，但是唯有脚下这块能容人站在上 面观望。仔细观察突石周围发现身后的石壁(bi)中竟有一丝细 小的裂缝，方才在下面看到的光亮就是从这裂缝中投射出来的。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir=="down"
+direction = "down"
+  message = "这里又没有路，看来只有跳下去了。"
+}
+
+]
+    }
+
+  room_exits "outzigai1" {
+    room_id = rooms.outzigai1.id
+  down = rooms.outzigai.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/sansheng.c by LPCConverter
+# Zone: hengyang
+
+    rooms "sansheng" {
+      name = "三生塔"
+      description = "三生塔是福严寺开山禅师慧思埋骨处，据说慧思禅师的三 生均埋骨这里，故称三生塔。不远处有棵银杏，据说曾受戒于 慧思禅师，树龄千年，仍亭亭华盖，岁岁青苍。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sansheng" {
+    room_id = rooms.sansheng.id
+  southup = rooms.jigaoming.id
+  northdown = rooms.shanlu8.id
+  eastdown = rooms.fuyansi.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanjian.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanjian" {
+      name = "山涧"
+      description = "顺山涧漂流而下，沿溪遍布珍稀树木，泉石，林木，花草 及峰峦均极宜人。涧流至崖折叠飞泄而下，声震山谷。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanjian" {
+    room_id = rooms.shanjian.id
+  down = rooms.heishatan.id
+  northup = rooms.fangguangsi.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu001.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu001" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。一直往西可通往磨镜台和天柱峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu001" {
+    room_id = rooms.shanlu001.id
+  east = rooms.shanlu002.id
+  west = rooms.shanlu5.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu002.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu002" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。一直往西可通往磨镜台和天柱峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu002" {
+    room_id = rooms.shanlu002.id
+  southeast = rooms.banshan.id
+  west = rooms.shanlu001.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu003.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu003" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。一直往西不远便是衡山五峰中最高 的祝融峰了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu003" {
+    room_id = rooms.shanlu003.id
+  eastdown = rooms.zhurongdian.id
+  westup = rooms.shanlu004.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu004.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu004" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。这里已经隐隐看到祝融峰了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu004" {
+    room_id = rooms.shanlu004.id
+  eastdown = rooms.shanlu003.id
+  westup = rooms.zhurongfeng.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu1.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu1" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu1" {
+    room_id = rooms.shanlu1.id
+  southdown = rooms.beimen.id
+  northwest = rooms.shanlu2.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu10.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu10" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉 飞瀑，云雾缭绕，不觉心胸大快。山路向西可以通向方广 寺。东面是天柱峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu10" {
+    room_id = rooms.shanlu10.id
+  eastup = rooms.tianzhu.id
+  westdown = rooms.fangguangsi.id  }
+
+
+  room_characters "shanlu10" {
+    room_id = rooms.shanlu10.id
+    characters = [
+      { id = characters.xiangke.id },
+      { id = characters.xiangke.id },
+      { id = characters.youke.id },
+      { id = characters.youke.id },
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu11.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu11" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。西边上山是赤帝峰。东边远远可以 看到衡山五峰之一的紫盖峰了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu11" {
+    room_id = rooms.shanlu11.id
+  westup = rooms.chidifeng.id
+  east = rooms.shanlu12.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu12.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu12" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。西边上山的路。东边隐隐听到水响。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu12" {
+    room_id = rooms.shanlu12.id
+  west = rooms.shanlu11.id
+  eastup = rooms.shuiliandong.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu13.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu13" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。东北方就是南天门了，高高矗立在 西北方的就是衡山五峰之一的芙蓉峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu13" {
+    room_id = rooms.shanlu13.id
+  northeast = rooms.nantian.id
+  southeast = rooms.shanlu5.id
+  northwest = rooms.furongfeng.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu14.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu14" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。山路转过芙蓉峰，西面远远看到藏 经阁，东南方向通往南天门。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu14" {
+    room_id = rooms.shanlu14.id
+  west = rooms.cangjingdian.id
+  southeast = rooms.nantian.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu15.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu15" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。再往前不远便是紫盖峰了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu15" {
+    room_id = rooms.shanlu15.id
+  southwest = rooms.shuiliandong.id
+  northup = rooms.shanlu16.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu16.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu16" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。再往前不远便是紫盖峰了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu16" {
+    room_id = rooms.shanlu16.id
+  southdown = rooms.shanlu15.id
+  northup = rooms.zigai.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu2.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu2" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu2" {
+    room_id = rooms.shanlu2.id
+  southeast = rooms.shanlu1.id
+  northup = rooms.chidifeng.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu3.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu3" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。再走一会儿就是半山亭了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu3" {
+    room_id = rooms.shanlu3.id
+  southup = rooms.chidifeng.id
+  northwest = rooms.shanlu4.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu4.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu4" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。抬头只见不远处有一个亭子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu4" {
+    room_id = rooms.shanlu4.id
+  southeast = rooms.shanlu3.id
+  northup = rooms.banshan.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu5.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu5" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。西边岔路通往磨镜台和天柱峰。往 西北不远就是南天门了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu5" {
+    room_id = rooms.shanlu5.id
+  east = rooms.shanlu001.id
+  west = rooms.shanlu6.id
+  northwest = rooms.shanlu13.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu6.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu6" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。南边山路就是 磨镜台 和 天柱峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu6" {
+    room_id = rooms.shanlu6.id
+  southdown = rooms.mojingtai.id
+  east = rooms.shanlu5.id
+  west = rooms.shulin1.id  }
+
+
+  room_characters "shanlu6" {
+    room_id = rooms.shanlu6.id
+    characters = [
+      { id = characters.xiangke.id },
+      { id = characters.xiangke.id },
+      { id = characters.xiangke.id },
+      { id = characters.xiangke.id },
+      { id = characters.youke.id },
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu7.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu7" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。山路东西通向磨镜台和天柱峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu7" {
+    room_id = rooms.shanlu7.id
+  westup = rooms.tianzhu.id
+  eastdown = rooms.mojingtai.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu8.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu8" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。南边就是福严寺。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu8" {
+    room_id = rooms.shanlu8.id
+  southup = rooms.sansheng.id
+  northup = rooms.mojingtai.id  }
+
+
+  room_characters "shanlu8" {
+    room_id = rooms.shanlu8.id
+    characters = [
+      { id = characters.xiangke.id },
+      { id = characters.xiangke.id },
+      { id = characters.youke.id },
+      { id = characters.youke.id },
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/shanlu9.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shanlu9" {
+      name = "山路"
+      description = "你走在衡山山路上，四望山峰错落，林壑幽深，溪泉飞瀑， 云雾缭绕，不觉心胸大快。南边是南台寺，北边通往福严寺。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu9" {
+    room_id = rooms.shanlu9.id
+  southup = rooms.nantaisi.id
+  northup = rooms.fuyansi.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shilinfeng.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shilinfeng" {
+      name = "石廪峰"
+      description = "芙蓉峰是衡山五峰之一，每逢下雨的时候，雨水打在峰中 的岩石上，发出巨大的回声，声音洪亮，犹如书院中的读书声， 是以该峰由此而来，衡山派的石廪剑法也由此而悟。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shilinfeng" {
+    room_id = rooms.shilinfeng.id
+  westdown = rooms.liuyunping.id  }
+
+
+  room_characters "shilinfeng" {
+    room_id = rooms.shilinfeng.id
+    characters = [
+      { id = characters.dizi1.id },
+      { id = characters.dizi1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/shiziyan.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shiziyan" {
+      name = "狮子岩"
+      description = "狮子岩布满奇形怪状的岩石，细究则绝类狮子，腾跃伏吼， 各肖其类。到狮子岩，祝融峰已经在望了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shiziyan" {
+    room_id = rooms.shiziyan.id
+  southwest = rooms.nantian.id
+  northup = rooms.wangritai.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shop.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shop" {
+      name = "小店"
+      description = "这里是衡阳县城的一间小店，卖些简单的饮食，专门赚那 些游客的钱。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shop" {
+    room_id = rooms.shop.id
+  north = rooms.hengyang1.id
+  up = rooms.huiyan.id  }
+
+
+  room_characters "shop" {
+    room_id = rooms.shop.id
+    characters = [
+      { id = characters.xiaoer.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/shuiliandong.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shuiliandong" {
+      name = "水帘洞外"
+      description = "水帘洞在紫盖峰下，紫盖峰之水经过山涧汇入紫盖仙洞之 中，深不可测，水满则溢，飞瀑(pubu)高二十余丈，数叠垂帘， 飘泄而下，蔚为壮观。明张居正诗曰「误疑瀛海翻琼波，莫拟 银河倒碧流，自是湘妃深隐处，水晶帘挂五云头。」以赞叹这 衡山大四绝之一的 水帘洞之奇 。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ pubu = "只见瀑布飞泻而下，气势磅礴，景致壮观，下面却是万丈深渊， 一望无底，水莲洞却偏偏生瀑布之后。"
+}
+    }
+
+  room_exits "shuiliandong" {
+    room_id = rooms.shuiliandong.id
+  westdown = rooms.shanlu12.id
+  northeast = rooms.shanlu15.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/shulin1.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shulin1" {
+      name = "树林"
+      description = "这里是衡山半山腰的一片树林，据说这里经常有野兽出没。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin1" {
+    room_id = rooms.shulin1.id
+  east = rooms.shanlu6.id  }
+
+
+  room_characters "shulin1" {
+    room_id = rooms.shulin1.id
+    characters = [
+      { id = characters.hunter.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/shuzhuangtai.c by LPCConverter
+# Zone: hengyang
+
+    rooms "shuzhuangtai" {
+      name = "梳妆台"
+      description = "藏经殿有一泓碧泉如镜，向称美容泉。相传为南陈后主妃 在此避乱时，对碧水照容颜梳妆打扮的地方。殿前胜迹有灵日， 昔时夜间常见飞光，或如繁星点点，或若万萤乱飞，煞是壮观。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shuzhuangtai" {
+    room_id = rooms.shuzhuangtai.id
+  north = rooms.cangjingdian.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/tianquan-hole.c by LPCConverter
+# Zone: hengyang
+
+    rooms "tianquan_hole" {
+      name = "天泉洞"
+      description = "一进洞，便听见了泉水（quanshui）流动的声音，只见这口泉水从洞中一 角落处涌出来，旁边却立有一碑（bei）。 山洞正前是个大石壁（bi），壁上 刻有图画，石壁旁却插有一把木剑（mu jian）， 像是有人曾经在这里练过剑 。山洞西面是一张石床（bed），由此断定曾经有人在这里住过。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ mu_jian = "一把木剑深深地插在石壁中，直至剑柄，可见当初插剑之人功力何等深厚，实属罕见。"
+ bed = "一张非常粗陋的石床，上面却沾满了灰尘。"
+ quanshui = "一股清泉源源地从底下涌出，水质清澈，令人忍不住想喝(he)上两口。"
+ bei = "上书：天 泉 之 水 字峰遒劲有力。"
+}
+    }
+
+  room_exits "tianquan_hole" {
+    room_id = rooms.tianquan_hole.id
+  out = rooms.xuanyadi.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/tianzhu.c by LPCConverter
+# Zone: hengyang
+
+    rooms "tianzhu" {
+      name = "天柱峰"
+      description = "你爬上衡山五峰之一的天柱峰，四望群山缥缈云雾中，每 每天阴地湿时候，这里就是天柱云气的所在了。衡山派绝学天 柱剑法便是从中领悟出来的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tianzhu" {
+    room_id = rooms.tianzhu.id
+  westdown = rooms.shanlu10.id
+  eastdown = rooms.shanlu7.id  }
+
+
+
+
+  room_items "tianzhu" {
+    room_id = rooms.tianzhu.id
+    items = [
+      { id = items.lu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/wangritai.c by LPCConverter
+# Zone: hengyang
+
+    rooms "wangritai" {
+      name = "望日台"
+      description = "望日台紧邻祝融殿。鸡鸣夜起，登台东望，遥见海门，云 水皆赤，倏忽异彩，日轮荡漾，若沉若浮，稍之奋涌而起，光 耀夺目。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wangritai" {
+    room_id = rooms.wangritai.id
+  southdown = rooms.shiziyan.id
+  northup = rooms.zhurongdian.id  }
+
+
+  room_characters "wangritai" {
+    room_id = rooms.wangritai.id
+    characters = [
+      { id = characters.youke.id },
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/wangyuetai.c by LPCConverter
+# Zone: hengyang
+
+    rooms "wangyuetai" {
+      name = "望月台"
+      description = "望月台是祝融殿后一高耸巨石。每当夜籁，皓月当空，犹 如玉盘冰轮，漫洒万里清辉，清冷月色，辉映低昂的群峰。此 时浩然万里，举七十二峰，峰峰贮冰壶中，始信下方无此月也。 前人因此有诗「人间朗魄已皆尽，此地清光犹未低。」"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wangyuetai" {
+    room_id = rooms.wangyuetai.id
+  southup = rooms.zhurongdian.id  }
+
+
+  room_characters "wangyuetai" {
+    room_id = rooms.wangyuetai.id
+    characters = [
+      { id = characters.youke.id },
+      { id = characters.youke.id },
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/xiaoxiang1.c by LPCConverter
+# Zone: hengyang
+
+    rooms "xiaoxiang1" {
+      name = "小巷"
+      description = "这是衡阳城内一条偏僻的小巷，平时很少有人来，只见这 条小巷弯弯曲曲不知道通向何处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaoxiang1" {
+    room_id = rooms.xiaoxiang1.id
+  south = rooms.xiaoxiang2.id
+  north = rooms.hengyang2.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/xiaoxiang2.c by LPCConverter
+# Zone: hengyang
+
+    rooms "xiaoxiang2" {
+      name = "小巷"
+      description = "这是衡阳城内一条偏僻的小巷，平时很少有人来，只见这 条小巷弯弯曲曲不知道通向何处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaoxiang2" {
+    room_id = rooms.xiaoxiang2.id
+  south = rooms.baihuzhai.id
+  north = rooms.xiaoxiang1.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/xuanya.c by LPCConverter
+# Zone: hengyang
+
+    rooms "xuanya" {
+      name = "悬崖边"
+      description = "这里是紫盖仙洞外的悬崖绝壁(xuanya)，站在此处向下望 去，云深锁雾，寒风吹来，你不由地打了个寒战。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ xuanya = "只见从绝壁上垂下一些树藤(teng)， 似乎可以顺着爬(climb) 上去。而下面却是万丈深渊，深不见底。"
+ teng = "这些树藤看起来很结实。"
+}
+    }
+
+  room_exits "xuanya" {
+    room_id = rooms.xuanya.id
+  south = rooms.zigaihole.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/xuanyadi.c by LPCConverter
+# Zone: hengyang
+
+    rooms "xuanyadi" {
+      name = "悬崖底"
+      description = "这里是衡山悬崖底，四周都被悬崖绝壁包围着，举目一望， 只见云雾深锁，崖壁陡峭，直没天际，几只老鹰在上空不断的 盘旋。绝壁上垂下几根树藤(teng)，看来可以顺着这里爬上崖 顶。耸立在你面前是一棵巨大的古树(tree)，刚才你幸好抓住 了这棵树的树枝，不然早就粉身碎骨了。你到处看了看，这里 似乎没有其他路可走。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ teng = "这根树藤看起来很结实，可以用它爬(climb)上悬崖。"
+ tree = "参天古树，树干粗大结实，但是有根树枝已经被折断了。"
+}
+    }
+
+
+
+  room_items "xuanyadi" {
+    room_id = rooms.xuanyadi.id
+    items = [
+      { id = items.tu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/yubeiting.c by LPCConverter
+# Zone: hengyang
+
+    rooms "yubeiting" {
+      name = "御碑亭"
+      description = "御碑为重修南岳庙大石碑，高数丈，石碑竖立在重三万八 千斤的大石龟上，龟身雕刻细腻，极为生动。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yubeiting" {
+    room_id = rooms.yubeiting.id
+  south = rooms.zhengchuan.id
+  north = rooms.jiayingmen.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/yushulou.c by LPCConverter
+# Zone: hengyang
+
+    rooms "yushulou" {
+      name = "御书楼"
+      description = "御书楼为南岳庙历代藏书之处，天子御赐，贤达乐捐，这 里早已洋洋大观。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yushulou" {
+    room_id = rooms.yushulou.id
+  south = rooms.jiayingmen.id
+  north = rooms.dadian.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/zahuopu.c by LPCConverter
+# Zone: hengyang
+
+    rooms "zahuopu" {
+      name = "杂货铺"
+      description = "这是一家小小的杂货铺，平时就卖些日常用品，只见货柜 上放着各式各样的货物，老板正忙着招呼客人，进门处放着一 个招牌(zhaopai)，上面写着些许小字。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ zhaopai = "请用 'list' 列出货物表，'buy' 向老板购物。"
+}
+    }
+
+  room_exits "zahuopu" {
+    room_id = rooms.zahuopu.id
+  south = rooms.hengyang2.id  }
+
+
+  room_characters "zahuopu" {
+    room_id = rooms.zahuopu.id
+    characters = [
+      { id = characters.qiang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/zhengchuan.c by LPCConverter
+# Zone: hengyang
+
+    rooms "zhengchuan" {
+      name = "正川门"
+      description = "正川门是南岳大庙的第三进。院内则是玄德宗殿，关圣殿， 观音阁等楼宇。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhengchuan" {
+    room_id = rooms.zhengchuan.id
+  south = rooms.kuixingge.id
+  north = rooms.yubeiting.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/zhongting.c by LPCConverter
+# Zone: hengyang
+
+    rooms "zhongting" {
+      name = "钟亭"
+      description = "钟亭内设铁钟一口，重九千斤。每逢山洪暴发，鸣钟镇洪， 亦以示警，声闻二十里外。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhongting" {
+    room_id = rooms.zhongting.id
+  west = rooms.kuixingge.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/zhurongdian.c by LPCConverter
+# Zone: hengyang
+
+    rooms "zhurongdian" {
+      name = "祝融殿"
+      description = "祝融殿，又名老圣殿，祠火神祝融。花岗石砌墙，铁瓦覆 顶，殿宇凌空傲雪，巍然屹立在衡山绝顶。殿门的石楹上刻着 有「寅宾日出，峻极于天」的字样，远远看去字峰雄浑而有力。 殿上还立有「圣德重华」的楣额。"
+  x = 0
+  y = 0
+  z = 0
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "mi weiyi"
+  direction = "northdown"
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
+    }
+
+  room_exits "zhurongdian" {
+    room_id = rooms.zhurongdian.id
+  southdown = rooms.wangritai.id
+  northdown = rooms.wangyuetai.id
+  westup = rooms.shanlu003.id
+  east = rooms.changlang.id  }
+
+
+  room_characters "zhurongdian" {
+    room_id = rooms.zhurongdian.id
+    characters = [
+      { id = characters.dizi1.id },
+      { id = characters.dizi1.id },
+      { id = characters.dizi1.id },
+      { id = characters.dizi1.id },
+      { id = characters.xiangke.id },
+      { id = characters.xiangke.id }    ]
+  }
+
+
+
+  room_items "zhurongdian" {
+    room_id = rooms.zhurongdian.id
+    items = [
+      { id = items.mi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/zhurongfeng.c by LPCConverter
+# Zone: hengyang
+
+    rooms "zhurongfeng" {
+      name = "祝融峰"
+      description = "祝融峰之高为衡山大四绝之首。在此俯瞰群峰，尽收眼底。 东望湘江，南及五岭，北瞰洞庭，西视雪山。唐朝杜甫望岳诗 中有「祝融五峰尊，峰峰次低昂」。著名诗人韩愈亦以「祝融 万丈拔地起，欲见不见轻烟里」极言其高。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhurongfeng" {
+    room_id = rooms.zhurongfeng.id
+  eastdown = rooms.shanlu004.id  }
+
+
+
+
+  room_items "zhurongfeng" {
+    room_id = rooms.zhurongfeng.id
+    items = [
+      { id = items.mo.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/zigai.c by LPCConverter
+# Zone: hengyang
+
+    rooms "zigai" {
+      name = "紫盖峰"
+      description = "这里便是衡山五峰中的紫盖峰，放眼望去，北方就是衡山 五峰中的最高峰祝融峰，东面临山，由于这里海拔较高，每到 春暖花开之时，山上的积雪便融化汇入紫盖仙洞中，水满则溢， 便有了紫盖峰下水莲洞外的瀑布。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zigai" {
+    room_id = rooms.zigai.id
+  southdown = rooms.shanlu16.id  }
+
+
+
+
+  room_items "zigai" {
+    room_id = rooms.zigai.id
+    items = [
+      { id = items.xiang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/zigai1.c by LPCConverter
+# Zone: hengyang
+
+    rooms "zigai1" {
+      name = "水莲洞内"
+      description = "越往里面走道路越是狭窄，洞里也是一丝阳光也射不进来， 如果没有火折的话，恐怕是寸步难行。不知道这条路是通向什 么地方，你只觉得这里阴风瑟瑟，不由地打了个寒颤。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zigai1" {
+    room_id = rooms.zigai1.id
+  east = rooms.inhole2.id  }
+
+
+
+
+  room_items "zigai1" {
+    room_id = rooms.zigai1.id
+    items = [
+      { id = items.yanjingshe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/zigai2.c by LPCConverter
+# Zone: hengyang
+
+    rooms "zigai2" {
+      name = "水莲洞内"
+      description = "这里四周空旷，比起外面来却没有那么潮湿。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zigai2" {
+    room_id = rooms.zigai2.id
+  south = rooms.inhole2.id  }
+
+
+
+
+  room_items "zigai2" {
+    room_id = rooms.zigai2.id
+    items = [
+      { id = items.yanjingshe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/zigai3.c by LPCConverter
+# Zone: hengyang
+
+    rooms "zigai3" {
+      name = "水莲洞内"
+      description = "这里四周空旷，比起外面来却没有那么潮湿，路到这里却 没有了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zigai3" {
+    room_id = rooms.zigai3.id
+  south = rooms.zigai2.id  }
+
+
+
+
+  room_items "zigai3" {
+    room_id = rooms.zigai3.id
+    items = [
+      { id = items.yanjingshe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/zigai4.c by LPCConverter
+# Zone: hengyang
+
+    rooms "zigai4" {
+      name = "水莲洞内"
+      description = "往前行段路后，道路也渐渐宽阔了起来。隐隐约约似乎有 水滴之声传来，你不禁想朝声音传来的方向走去 (zou)看看。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zigai4" {
+    room_id = rooms.zigai4.id
+  east = rooms.zigai1.id  }
+
+
+
+
+  room_items "zigai4" {
+    room_id = rooms.zigai4.id
+    items = [
+      { id = items.yanjingshe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengyang/zigaihole.c by LPCConverter
+# Zone: hengyang
+
+    rooms "zigaihole" {
+      name = "紫盖仙洞"
+      description = "这里便是紫盖仙洞。听这里的人说的由于这里处于紫盖峰 下，峰上融化的雪水便经过山涧汇如紫盖仙洞中，但是这里却 一点水也没有，耳边却传来来淙淙的水流声，你才发现雪水并 不是汇直接流入洞中，而是从洞壁上顺势向下流，经过一个较 深的低洼地带，积蓄起来，水满则溢，便形成了水莲洞外的飞 瀑。往光照来的的地方看去，已没有路可走，数丈远处便是悬 崖，原来这个洞竟生于一个峭壁之上。只见不远处摆着一个石 桌(desk)，显然这里曾经有人来过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zigaihole" {
+    room_id = rooms.zigaihole.id
+  north = rooms.xuanya.id  }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/chaboshi.c by LPCConverter
+# Zone: hengyang
+
+    characters "chaboshi" {
+      name = "茶博士"
+      description = "这个茶博士可是衡阳城里消息灵通人士，每日迎来送往， 所以对城里的一举一动都了如指掌。"
+  title = "茶馆老板"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 35
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 500
+    str = 30
+  }
+
+  # vendor_goods: "/d/city/npc/obj/peanut" (file not found)
+  # vendor_goods: "/d/city/npc/obj/tofu" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "茶博士揩了揩桌子说道：这位{respect}，哈你家快请进来喝杯热茶。" },
+    { line = "茶博士说道：哈你家！这位{respect}哈你家小店卖茶不卖酒，哈你家！" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/chushi.c by LPCConverter
+# Zone: hengyang
+
+    characters "chushi" {
+      name = "厨师"
+      description = "衡山派的厨师，你可以问他要(serve)一些吃的。"
+  gender = "男性"
+  age = 50
+  shen_type = 1
+
+  combat = {
+    combat_exp = 7500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 35 },
+    { skill = "force" level = 35 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/dao-ke.c by LPCConverter
+# Zone: hengyang
+
+    characters "dao_ke" {
+      name = "刀客"
+      description = "这家伙满脸横肉，一付凶神恶煞的模样，令人望而生畏。"
+  gender = "男性"
+  age = 20
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 15000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 45 },
+    { skill = "blade" level = 45 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/dizi1.c by LPCConverter
+# Zone: hengyang
+
+    characters "dizi1" {
+      name = "弟子"
+      description = ""
+  gender = "男性"
+  age = 23
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    con = 14
+    dex = 14
+    int = 14
+    max_jing = 300
+    max_neili = 200
+    max_qi = 600
+    str = 14
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "sword" level = 40 },
+    { skill = "force" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "henshan-jian" level = 40 },
+    { skill = "henshan-shenfa" level = 40 },
+    { type = "sword" skill = "henshan-jian" },
+    { type = "parry" skill = "henshan-jian" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/dufeng.c by LPCConverter
+# Zone: hengyang
+
+    characters "dufeng" {
+      name = "杜凤鄂"
+      description = "杜凤鄂一脸惆怅，不知道他心中所烦为何事。"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 400000
+  }
+
+  # vendor_goods: "/clone/tattoo/face1" (file not found)
+  # vendor_goods: "/clone/tattoo/face2" (file not found)
+  # vendor_goods: "/clone/tattoo/face3" (file not found)
+  # vendor_goods: "/clone/tattoo/face4" (file not found)
+  # vendor_goods: "/clone/tattoo/face5" (file not found)
+  # vendor_goods: "/clone/tattoo/face6" (file not found)
+  # vendor_goods: "/clone/tattoo/face7" (file not found)
+  # vendor_goods: "/clone/tattoo/face8" (file not found)
+  # vendor_goods: "/clone/tattoo/face9" (file not found)
+  # vendor_goods: "/clone/tattoo/face10" (file not found)
+  # vendor_goods: "/clone/tattoo/face11" (file not found)
+  # vendor_goods: "/clone/tattoo/face12" (file not found)
+  # vendor_goods: "/clone/tattoo/face13" (file not found)
+  # vendor_goods: "/clone/tattoo/face14" (file not found)
+  # vendor_goods: "/clone/tattoo/face15" (file not found)
+  # vendor_goods: "/clone/tattoo/face16" (file not found)
+  # vendor_goods: "/clone/tattoo/face17" (file not found)
+  # vendor_goods: "/clone/tattoo/face18" (file not found)
+  # vendor_goods: "/clone/tattoo/face19" (file not found)
+  # vendor_goods: "/clone/tattoo/face20" (file not found)
+
+  inquiries = [
+    { key = "狐仙" value = "听说狐能化成狐仙，我倒是遇见过一回。" },
+    { key = "绯胭" value = "绯胭姑娘好久没有来买我的画了，不知道她现在怎么样了？" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 200 },
+    { skill = "dodge" level = 200 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 2
+    add_actions = ["list", "buy"]
+  }
+
+  greetings = [
+    { line = "杜凤鄂摇了摇头道：这位{respect}你相信狐能化成狐仙吗？" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/feiyan.c by LPCConverter
+# Zone: hengyang
+
+    characters "feiyan" {
+      name = "绯胭"
+      description = "绯胭原本在青楼以卖唱为生，因为被逼无奈，误杀县老 爷的公子，险被处死，后来据说她被狐仙所救，从此隐 姓埋名，做起这乐器的买卖。还有的说她本身就是狐仙 所化，又由于她的一曲《恋八音》，所以人人都称她为 「八音狐仙」。"
+  title = "老板娘"
+  nickname = "八音狐仙"
+  gender = "女性"
+  age = 25
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 800000
+  }
+
+  # vendor_goods: "/d/hengyang/yueqi/shixuanqin-zhanguo" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/jiuxiaoqin" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/zhongnishi" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/jiaoyeqin" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/qin-jueyin" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/qin-konggu" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/qin-jimo" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/qin-tianlai" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/huqin" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/zhuxiao" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/honghuqin" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/zhuxiao-youlan" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/zhuxiao-shuiyun" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/zhuxiao-liuquan" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/zhuxiao-qingyin" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/yuepu-book" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/yueqi-book" (file not found)
+  # vendor_goods: "/d/hengyang/yueqi/huxian-book" (file not found)
+
+  inquiries = [
+    { key = "杜凤鄂" value = "杜公子，他还好吗？" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 200 },
+    { skill = "dodge" level = 200 }
+  ]
+
+
+  carry = [
+    { id = items.female_shoe.id },
+    { id = items.female1.id }
+  ]
+
+
+  init = {
+    greet_delay = 2
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "绯胭笑着说道：这位{respect}这里各种乐器应有尽有，请随便看看。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/guanjia.c by LPCConverter
+# Zone: hengyang
+
+    characters "guanjia" {
+      name = "管家"
+      description = ""
+  gender = "男性"
+  age = 65
+
+  combat = {
+    combat_exp = 7500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 35 },
+    { skill = "force" level = 35 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/haoke.c by LPCConverter
+# Zone: hengyang
+
+    characters "haoke" {
+      name = "江湖豪客"
+      description = "一名满脸彪捍之色的江湖豪客。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 2000
+    con = 25
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 300
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/hunter.c by LPCConverter
+# Zone: hengyang
+
+    characters "hunter" {
+      name = "猎人"
+      description = ""
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 12000000
+    con = 26
+    dex = 200
+    int = 28
+    max_jing = 2000
+    max_neili = 4000
+    max_qi = 4500
+    str = 200
+  }
+
+  inquiries = [
+    { key = "hunting" value = "(: teach_hunting:)" },
+    { key = "捕猎" value = "(: teach_hunting:)" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 300 },
+    { skill = "dodge" level = 300 },
+    { skill = "training" level = 300 },
+    { skill = "hunting" level = 300 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "item_id" id = "bushou jia" accept = true msg = ["这是什么东西，我不需要！", "nod", "shake"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/jiading.c by LPCConverter
+# Zone: hengyang
+
+    characters "jiading" {
+      name = "家丁"
+      description = ""
+  gender = "男性"
+  age = 35
+
+  combat = {
+    combat_exp = 4000
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/jian-ke.c by LPCConverter
+# Zone: hengyang
+
+    characters "jian_ke" {
+      name = "剑客"
+      description = "这是位中年武人，肩背长剑，长长的剑穗随风飘扬，看来似乎身怀绝艺。"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 20000
+  }
+
+  skills = [
+    { skill = "sword" level = 60 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/liufuren.c by LPCConverter
+# Zone: hengyang
+
+    characters "liufuren" {
+      name = "刘夫人"
+      description = "她是刘正风的夫人。"
+  gender = "女性"
+  age = 42
+
+  combat = {
+    attitude = "peaceful"
+    con = 30
+    dex = 30
+    int = 28
+    str = 26
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/liujing.c by LPCConverter
+# Zone: hengyang
+
+    characters "liujing" {
+      name = "刘菁"
+      description = "她是刘正风的女儿。"
+  gender = "女性"
+  age = 17
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 200
+    max_neili = 500
+    max_qi = 700
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "henshan-jian" level = 80 },
+    { skill = "henshan-shenfa" level = 40 },
+    { type = "sword" skill = "henshan-jian" },
+    { type = "parry" skill = "henshan-jian" },
+    { type = "dodge" skill = "henshan-shenfa" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.female1_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/liuqin.c by LPCConverter
+# Zone: hengyang
+
+    characters "liuqin" {
+      name = "刘芹"
+      description = "他是刘正风的最宠爱的小儿子。"
+  gender = "男性"
+  age = 15
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 15000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 300
+    max_neili = 200
+    max_qi = 300
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "sword" level = 50 },
+    { skill = "force" level = 20 },
+    { skill = "parry" level = 20 },
+    { skill = "dodge" level = 20 },
+    { skill = "henshan-jian" level = 50 },
+    { skill = "henshan-shenfa" level = 20 },
+    { type = "sword" skill = "henshan-jian" },
+    { type = "parry" skill = "henshan-jian" },
+    { type = "dodge" skill = "henshan-shenfa" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.male1_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/qiang.c by LPCConverter
+# Zone: hengyang
+
+    characters "qiang" {
+      name = "黄智强"
+      description = ""
+  title = "杂货铺老板"
+  nickname = "食人魔"
+  gender = "男性"
+  age = 20
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 800000
+  }
+
+  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
+  # vendor_goods: "/d/hengyang/obj/mujian" (file not found)
+  # vendor_goods: "/d/item/obj/chanhs" (file not found)
+  # vendor_goods: "/d/city/obj/rrose" (file not found)
+  # vendor_goods: "/d/city/obj/yrose" (file not found)
+  # vendor_goods: "/clone/misc/wood" (file not found)
+  # vendor_goods: "/clone/misc/bushoujia" (file not found)
+  # vendor_goods: "/clone/misc/shier" (file not found)
+
+  skills = [
+    { skill = "unarmed" level = 200 },
+    { skill = "dodge" level = 200 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 2
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "黄智强笑着说道：这位{respect}你需买些什么，请随便看。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/sherou.c by LPCConverter
+# Zone: hengyang
+
+    characters "sherou" {
+      name = "蟒蛇肉"
+      description = "一大块蟒蛇肉。"
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/tian.c by LPCConverter
+# Zone: hengyang
+
+    characters "tian" {
+      name = "田伯光"
+      description = "他一身飘逸的白色长衫，风流儒雅。"
+  nickname = "万里独行"
+  gender = "男性"
+  age = 37
+  score = 40000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 800000
+    con = 25
+    dex = 26
+    int = 24
+    max_jing = 800
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  chat_chance = 10
+chats = [
+    "田伯光笑道：尼姑也没关系嘛，蓄起头发，两个月就是小美人了。"
+]
+
+
+  skills = [
+    { skill = "blade" level = 100 },
+    { skill = "dodge" level = 150 },
+    { skill = "blade" level = 150 },
+    { skill = "parry" level = 120 },
+    { skill = "force" level = 120 },
+    { skill = "lingxu-bu" level = 150 },
+    { skill = "kuangfeng-blade" level = 150 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "kuangfeng-blade" },
+    { type = "blade" skill = "kuangfeng-blade" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id },
+    { id = items.gangdao.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "田伯光笑道：妙极，妙极，又来了一个小姑娘。" },
+    { line = "田伯光笑道：妙极，妙极，可惜太老了点，我可没胃口。" },
+    { line = "田伯光笑着招招手：这位{respect}来喝两杯，这个小尼姑嘛，反正也没什么事，就让她坐着就是。" }
+  ]
+
+  engage = {
+    fight = { accept = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/turou.c by LPCConverter
+# Zone: hengyang
+
+    characters "turou" {
+      name = "兔肉"
+      description = "一块鲜血淋漓肥的野兔肉。"
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/xiangke.c by LPCConverter
+# Zone: hengyang
+
+    characters "xiangke" {
+      name = "敬香客"
+      description = "这是来衡山朝拜的人。"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2000
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/xiaoer.c by LPCConverter
+# Zone: hengyang
+
+    characters "xiaoer" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  # vendor_goods: "/d/city/npc/obj/jitui" (file not found)
+  # vendor_goods: "/d/city/npc/obj/jiudai" (file not found)
+  # vendor_goods: "/d/city/npc/obj/baozi" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/xiaoer2.c by LPCConverter
+# Zone: hengyang
+
+    characters "xiaoer2" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  # vendor_goods: "/d/city/npc/obj/jitui" (file not found)
+  # vendor_goods: "/d/city/npc/obj/jiudai" (file not found)
+  # vendor_goods: "/d/city/npc/obj/baozi" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/yilin.c by LPCConverter
+# Zone: hengyang
+
+    characters "yilin" {
+      name = "仪琳"
+      description = "仪琳是恒山派定逸师太的心爱弟子。"
+  gender = "女性"
+  age = 16
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 40000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 300
+    max_qi = 600
+    str = 30
+  }
+
+  skills = [
+    { skill = "sword" level = 30 },
+    { skill = "force" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/youke.c by LPCConverter
+# Zone: hengyang
+
+    characters "youke" {
+      name = "游客"
+      description = "这是来衡山旅游的游客。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2000
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/yuanziyi.c by LPCConverter
+# Zone: hengyang
+
+    characters "yuanziyi" {
+      name = "袁紫衣"
+      description = "她是峨嵋派一个辈份极高的老尼的关门徒弟。 一张脸秀丽绝俗。身着一身淡紫衣裳。 这一路上去京师她夺了好几家掌门。"
+  title = "九家半门派总掌门"
+  gender = "女性"
+  age = 18
+  shen_type = 1
+  score = 1000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1500000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1000
+    max_neili = 3500
+    max_qi = 3500
+    str = 30
+  }
+
+  inquiries = [
+    { key = "掌门" value = "我就喜欢抢掌门！" },
+    { key = "胡斐" value = "我和胡大哥毕竟没有缘份的。" }
+  ]
+
+  skills = [
+    { skill = "persuading" level = 80 },
+    { skill = "force" level = 150 },
+    { skill = "dodge" level = 150 },
+    { skill = "finger" level = 150 },
+    { skill = "parry" level = 150 },
+    { skill = "unarmed" level = 150 },
+    { skill = "strike" level = 150 },
+    { skill = "sword" level = 150 },
+    { skill = "claw" level = 150 },
+    { skill = "literate" level = 150 },
+    { skill = "mahayana" level = 150 },
+    { skill = "jinding-zhang" level = 150 },
+    { skill = "jiuyin-baiguzhao" level = 150 },
+    { skill = "tiangang-zhi" level = 150 },
+    { skill = "huifeng-jian" level = 150 },
+    { skill = "zhutian-bu" level = 150 },
+    { skill = "linji-zhuang" level = 150 },
+    { type = "force" skill = "linji-zhuang" },
+    { type = "claw" skill = "jiuyin-baiguzhao" },
+    { type = "dodge" skill = "zhutian-bu" },
+    { type = "strike" skill = "jinding-zhang" },
+    { type = "sword" skill = "huifeng-jian" },
+    { type = "parry" skill = "huifeng-jian" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.ycloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/obj/blackcloth.c by LPCConverter
+# Zone: hengyang
+
+    characters "blackcloth" {
+      name = "黑色布衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/obj/female-shoe.c by LPCConverter
+# Zone: hengyang
+
+    characters "female_shoe" {
+      name = "绣花小鞋"
+      description = "一双女人穿的缝制得很精美的绣花鞋。"
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/obj/female1.c by LPCConverter
+# Zone: hengyang
+
+    characters "female1" {
+      name = "湖绿长裙"
+      description = "一件清新可人的湖绿长裙。"
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/obj/huqin.c by LPCConverter
+# Zone: hengyang
+
+    characters "huqin" {
+      name = "NPC"
+      description = "这是一把普通的胡琴。"
+
+  init = {
+    greet_delay = 0
+    add_actions = ["play"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/obj/luo_cloth.c by LPCConverter
+# Zone: hengyang
+
+    characters "luo_cloth" {
+      name = "熟罗长袍"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/obj/tanmuqin.c by LPCConverter
+# Zone: hengyang
+
+    characters "tanmuqin" {
+      name = "NPC"
+      description = "一把檀木所制的木琴，古典雅致。"
+
+  init = {
+    greet_delay = 0
+    add_actions = ["play"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/npc/obj/zhuxiao.c by LPCConverter
+# Zone: hengyang
+
+    characters "zhuxiao" {
+      name = "NPC"
+      description = "一把翠竹所制的洞萧，隐隐泛出绿光。"
+
+  init = {
+    greet_delay = 0
+    add_actions = ["play"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/obj/jia.c by LPCConverter
+# Zone: hengyang
+
+    items "jia" {
+      name = "捕兽夹"
+      description = "这是专门用来捕捉各种禽兽的，夹齿锋利无比。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/obj/longzi.c by LPCConverter
+# Zone: hengyang
+
+    items "longzi" {
+      name = "笼子"
+      description = "这个笼子不太大，看来只能装(zhuang)下较小的动物。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/obj/mantou.c by LPCConverter
+# Zone: hengyang
+
+    items "mantou" {
+      name = "馒头"
+      description = "一个馒头。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/obj/mujian.c by LPCConverter
+# Zone: hengyang
+
+    items "mujian" {
+      name = "木剑"
+      description = "这是一柄用树枝削成的木剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/obj/water.c by LPCConverter
+# Zone: hengyang
+
+    items "water" {
+      name = "清水"
+      description = "一碗清水。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/obj/zigai-book.c by LPCConverter
+# Zone: hengyang
+
+    items "zigai_book" {
+      name = "「紫盖剑谱」"
+      description = "封面上写著「紫盖剑谱」。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/honghuqin.c by LPCConverter
+# Zone: hengyang
+
+    items "honghuqin" {
+      name = "红木胡琴·五玄"
+      description = "一把精致的红木胡琴，琴身光滑，微泛红光。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/huxian-book.c by LPCConverter
+# Zone: hengyang
+
+    items "huxian_book" {
+      name = "「狐仙」"
+      description = "一本破旧的书，也不知道这是谁写的。没事可以看看(read)。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/jiaoyeqin.c by LPCConverter
+# Zone: hengyang
+
+    items "jiaoyeqin" {
+      name = "蕉叶古琴·明朝"
+      description = "此琴乃弘治嘉靖年间著名斫琴家祝海鹤所制 琴形旖旎秀逸，蕉叶卷边工雅生动，音色润 匀透静，为琴器中难得一见的珍品。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/jiuxiaoqin.c by LPCConverter
+# Zone: hengyang
+
+    items "jiuxiaoqin" {
+      name = "九霄环佩·唐朝"
+      description = "这是历史最悠久的传世之琴，盛唐开元之器。 此琴形体饱满，上髹紫漆，间杂朱砂后补之   色，贵在声形俱佳，为传世之器的极品。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/qin-jimo.c by LPCConverter
+# Zone: hengyang
+
+    items "qin_jimo" {
+      name = "七玄流银·寂寞"
+      description = "此琴通体泛出银光，耀眼夺目。上刻「寂寞」。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/qin-jueyin.c by LPCConverter
+# Zone: hengyang
+
+    items "qin_jueyin" {
+      name = "七玄流银·绝音"
+      description = "此琴通体泛出银光，耀眼夺目。上刻「绝音」。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/qin-konggu.c by LPCConverter
+# Zone: hengyang
+
+    items "qin_konggu" {
+      name = "七玄流银·空谷"
+      description = "此琴通体泛出银光，耀眼夺目。上刻「空谷」。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/qin-tianlai.c by LPCConverter
+# Zone: hengyang
+
+    items "qin_tianlai" {
+      name = "七玄流银·天籁"
+      description = "此琴通体泛出银光，耀眼夺目。上刻「天籁」。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/shixuanqin-zhanguo.c by LPCConverter
+# Zone: hengyang
+
+    items "shixuanqin_zhanguo" {
+      name = "十玄古琴·战国"
+      description = "这是迄今能看到的中国最早的琴类乐器，此 琴埋于战国曾候乙墓之中，琴长67公分，琴 面起伏有致。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/tanhuqin.c by LPCConverter
+# Zone: hengyang
+
+    items "tanhuqin" {
+      name = "檀木胡琴"
+      description = "一把精致的檀木胡琴。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/yuepu-book.c by LPCConverter
+# Zone: hengyang
+
+    items "yuepu_book" {
+      name = "「古乐谱篇」"
+      description = "记载着古代乐谱的笔记，你闲着没事儿可以看看(read)。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/yueqi-book.c by LPCConverter
+# Zone: hengyang
+
+    items "yueqi_book" {
+      name = "「古乐器篇」"
+      description = "记载着古代乐器的笔记，你闲着没事儿可以看看(read)。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/zhongnishi.c by LPCConverter
+# Zone: hengyang
+
+    items "zhongnishi" {
+      name = "仲尼式琴·宋朝"
+      description = "此琴体扁身薄，琴体怪异，琴轸右面垂下深 舌罗汉腿，漆色亮绿，微泛绿光，仲尼式琴 为元朝主流。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/zhuxiao-liuquan.c by LPCConverter
+# Zone: hengyang
+
+    items "zhuxiao_liuquan" {
+      name = "碧玉洞萧·流泉"
+      description = "一把碧玉所制的洞萧，隐隐泛出绿光。上刻「流泉」。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/zhuxiao-qingyin.c by LPCConverter
+# Zone: hengyang
+
+    items "zhuxiao_qingyin" {
+      name = "碧玉洞萧·清音"
+      description = "一把碧玉所制的洞萧，隐隐泛出绿光。上刻「清音」。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/zhuxiao-shuiyun.c by LPCConverter
+# Zone: hengyang
+
+    items "zhuxiao_shuiyun" {
+      name = "碧玉洞萧·水云"
+      description = "一把碧玉所制的洞萧，隐隐泛出绿光。上刻「水云」。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hengyang/yueqi/zhuxiao-youlan.c by LPCConverter
+# Zone: hengyang
+
+    items "zhuxiao_youlan" {
+      name = "碧玉洞萧·幽兰"
+      description = "一把碧玉所制的洞萧，隐隐泛出绿光。上刻「幽兰」。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

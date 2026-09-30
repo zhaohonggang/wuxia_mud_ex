@@ -1,0 +1,686 @@
+
+
+# Generated from C:/files/git/mud/d/lingxiao/bingti.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # else if (me->query_dex() > 20)  →  
+  # if (me->query_dex() > 25)  →  
+# ==== CONDITIONAL BRANCHES (do_jump) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_jump
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/book.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ __DIR__"npc/su" : 1, books[random(sizeof(books))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/lingxiao/car.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg != "che" )  →  
+  # if (me->query("family/family_name") != "凌霄城")  →  
+# ==== CONDITIONAL BRANCHES (do_take) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_take
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/lingxiao/cook.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("family/family_name") != "凌霄城")  →  
+  # if (present("rice", this_player()))  →  
+  # if (present("soup", this_object()))  →  
+  # else  →  
+  # if (query("ricewater") > 0)  →  message_vision(CYN '凌霄弟子将热气腾腾的饭菜递到你手中，笑' '道：你慢用。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_serve) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_serve
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/dadian.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "east" && dir != "west" && dir != "north" || ! objectp(lu = present("lu wantong", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: look_duilian
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/didi.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (query("exits/enter"))  →  
+# ==== CONDITIONAL BRANCHES (close_out) ====
+  # if (me->query("max_neili") < 500)  →  message_vision(HIR '可是$N' HIR '累了个半死，石门却' '纹丝不动。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_push) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: close_out
+  # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_push
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/lingxiao/gate.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((! myfam || myfam["family_name"] != "凌霄城" ) && dir == "north")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if (query("exits/south"))  →  
+  # if (! arg || (arg != "bridge" && arg != "south"))  →  
+  # if (! ( room = find_object(__DIR__"shanya")) )  →  
+  # if (objectp(room))  →  message_vision(HIY '$N' HIY '让凌霄弟子把吊桥放了下来。\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_open) ====
+  # if (! query("exits/south"))  →  
+  # if (!arg || (arg != "bridge" && arg != "south"))  →  
+# ==== CONDITIONAL BRANCHES (do_close) ====
+  # if (!( room = find_object(__DIR__"shanya")) )  →  
+  # if (objectp(room))  →  
+# ==== CONDITIONAL BRANCHES (close_bridge) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: close_bridge
+  # UNHANDLED FUNCTION: do_open
+  # UNHANDLED FUNCTION: do_close
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/lingxiao/jianyuting.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "down" || ! objectp(yan = present("yan wanpeng", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/lingxiao/juegu.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: do_pan
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/lingxiao/meiroad1.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (arg == "mei hua" || arg == "meihua")  →  message_vision('$N从路旁的树上摘了一朵' + ob->query('name') + '。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_pick) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_pick
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/meiroad2.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (arg == "mei hua" || arg == "meihua")  →  message_vision('$N从路旁的树上摘了一朵' + ob->query('name') + '。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_pick) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_pick
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/meiroad3.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (arg == "mei hua" || arg == "meihua")  →  message_vision('$N从路旁的树上摘了一朵' + ob->query('name') + '。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_pick) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_pick
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/lingxiao/qianyuan.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (arg == "mei hua" || arg == "meihua")  →  message_vision('$N从路旁的树上摘了一朵' + ob->query('name') + '。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_pick) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_pick
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/lingxiao/shanya.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg != "bridge" )  →  
+# ==== CONDITIONAL BRANCHES (do_open) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_open
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/lingxiao/water.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((arg != "quan" || ! arg))  →  
+  # else  →  message_vision(HIY '$N' HIY '只觉压力越来越大，立即强运内' '力，奋力支持，继续向下潜去……\\\\\n\\\\\n' NOR + HIC '只听水中哗啦一声，就平静下来了。\\\\\n' NOR, this_player());
+  # if ((int)me->query_skill("force") < 100)  →  message_vision(HIR '$N' HIY '刚下水不久，发现愈往下潜，水' '压愈大，再也忍受不住，猛地窜了上来。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_dive) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_dive
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/wave.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (objectp(present("xuanbing chimang", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if (query("exits/enter"))  →  
+# ==== CONDITIONAL BRANCHES (close_out) ====
+  # if (me->query("neili") < 2000)  →  message_vision(HIR '结果只听一声闷哼，$N' HIR '被冰壁的寒气回侵经脉，眼前一黑……\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_break) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: close_out
+  # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_break
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/a-xiu.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/daifu.c by LPCConverter
+# Zone: lingxiao
+
+# inherit F_DEALER;
+
+
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/feng.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: attempt_apprentice
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: accept_hit
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/laoban.c by LPCConverter
+# Zone: lingxiao
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: redeem
+  # UNHANDLED FUNCTION: die
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/shi.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else if (ob->query("family/master_name") == "白万剑")  →  command('say 你是白师哥的弟子吧，老爷子就在里面，他的病越来越不得了啦。');
+  # else if (ob->query("family/master_name") == "白自在")  →  command('say 师兄回来了，快去见师祖吧，不过小心点……没准他又犯病了。');
+  # if (ob->query("family/family_name") != "凌霄城")  →  command('heng'); command('say 你居然敢闯入本派禁地，受死吧！\\\\\n');
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/su.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/sun.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/wang-wanyi.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/yan.c by LPCConverter
+# Zone: lingxiao
+
+# inherit F_GUARDER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/zhu.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/ban.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/book-bamboo.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/book-iron.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( arg != "iron hand" && arg != "hand" )  →  
+  # if ( me->is_fighting() && (int)me->query_skill("parry", 1) >= 30 && (int)me->query_skill("parry", 1) <= 100 )  →  message_vision('$N一边战斗，一边抽空急急忙忙地拿出铁手掌仔细研究。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_study) ====
+  # if ( this_player() == environment() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_study
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/book-silk.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/book-stone.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # COMPLEX MAPPING: ([ "name": skills[i]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/ganjiang.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/hanyu.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/mei.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/moye.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/rice.c by LPCConverter
+# Zone: lingxiao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/soup.c by LPCConverter
+# Zone: lingxiao
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

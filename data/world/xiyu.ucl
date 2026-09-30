@@ -1,0 +1,2144 @@
+zones "xiyu" {
+  name = "xiyu"
+}
+
+# Generated from C:/files/git/mud/d/xiyu/beijiang.c by LPCConverter
+# Zone: xiyu
+
+    rooms "beijiang" {
+      name = "伊犁"
+      description = "这里是一座维吾尔族聚居的小镇。镇上人来人往，十分热 闹。只是他们说的话你听不懂。镇西有家小店铺，西北边人声 鼎沸，好像在举行什么比赛。东面有家院落，院门口有棵大树。 北边是一家马厩。"
+  x = -1
+  y = 1
+  z = 0
+    }
+
+  room_exits "beijiang" {
+    room_id = rooms.beijiang.id
+    southeast = rooms.shanjiao.id
+    northwest = rooms.saimachang.id
+    north = rooms.majiu.id
+    east = rooms.house.id
+    west = rooms.store.id
+    }
+
+
+  room_characters "beijiang" {
+    room_id = rooms.beijiang.id
+    characters = [
+      { id = characters.woman.id },
+      { id = characters.woman.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/btshan.c by LPCConverter
+# Zone: xiyu
+
+    rooms "btshan" {
+      name = "白驼山"
+      description = "这是传说中神秘的白驼山。远远望去，两座白沙堆积形成 的山峰好像一只骆驼的脊背。一座山门立在你的眼前。山门后 一条小路通向一座山腰上的山庄。那里是「西毒」欧阳锋的秘 宅，一般人闯进去非死即伤。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "btshan" {
+    room_id = rooms.btshan.id
+    up = rooms.mogaoku.id
+    down = rooms.shanjiao.id
+    east = rooms.shamo4.id
+    westup = rooms.btshan1.id
+    }
+
+
+
+
+  room_items "btshan" {
+    room_id = rooms.btshan.id
+    items = [
+      { id = items.jinshe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/btshan1.c by LPCConverter
+# Zone: xiyu
+
+    rooms "btshan1" {
+      name = "白驼山庄"
+      description = "这里是「西毒」欧阳锋练功的地方，屋内什么摆设也没有。"
+  x = -1
+  y = 0
+  z = 2
+    }
+
+  room_exits "btshan1" {
+    room_id = rooms.btshan1.id
+    eastdown = rooms.btshan.id
+    }
+
+
+
+
+  room_items "btshan1" {
+    room_id = rooms.btshan1.id
+    items = [
+      { id = items.qingshe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/cangku.c by LPCConverter
+# Zone: xiyu
+
+    rooms "cangku" {
+      name = "溶洞"
+      description = "这里原来是一个长在山壁上的天然溶洞，因为地点隐密而 且洞中十分干燥，星宿派把这里改造成了一个仓库。"
+  x = -2
+  y = 4
+  z = 2
+    }
+
+  room_exits "cangku" {
+    room_id = rooms.cangku.id
+    out = rooms.xxroad5.id
+    }
+
+
+
+
+  room_items "cangku" {
+    room_id = rooms.cangku.id
+    items = [
+      { id = items.hulu.id },
+      { id = items.menghan_yao.id },
+      { id = items.xxqingxin_san.id },
+      { id = items.shoutao.id },
+      { id = items.muding.id },
+      { id = items.dujing_1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/houdong.c by LPCConverter
+# Zone: xiyu
+
+    rooms "houdong" {
+      name = "日月后洞"
+      description = "这里是星宿派日月洞后洞，星宿老仙有时候会在这里闭关 练功。只见洞内灯火通明，似乎比日月洞宽敞了许多。正前方 有一个精致的石桌（desk），石桌上摆着各式水果，想必是星 宿派弟子送来孝敬老仙的。"
+  x = -1
+  y = 5
+  z = 0
+    }
+
+  room_exits "houdong" {
+    room_id = rooms.houdong.id
+    southwest = rooms.riyuedong1.id
+    south = rooms.riyuedong.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/house.c by LPCConverter
+# Zone: xiyu
+
+    rooms "house" {
+      name = "阿凡提家院"
+      description = "这是一个阿凡提的庭院。门口大树的树荫投到院子里，让 人觉得很凉快。院子东面是客厅，西边就是小镇大街。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "house" {
+    room_id = rooms.house.id
+    east = rooms.house1.id
+    west = rooms.beijiang.id
+    }
+
+
+  room_characters "house" {
+    room_id = rooms.house.id
+    characters = [
+      { id = characters.kid.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/house1.c by LPCConverter
+# Zone: xiyu
+
+    rooms "house1" {
+      name = "客厅"
+      description = "这是阿凡提家的客厅。地上铺着波斯地毯，木架上摆这中 原的瓷器。"
+  x = 1
+  y = 1
+  z = 0
+    }
+
+  room_exits "house1" {
+    room_id = rooms.house1.id
+    west = rooms.house.id
+    }
+
+
+  room_characters "house1" {
+    room_id = rooms.house1.id
+    characters = [
+      { id = characters.afanti.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/jiayuguan.c by LPCConverter
+# Zone: xiyu
+
+    rooms "jiayuguan" {
+      name = "嘉峪关"
+      description = "这是长城最西的关隘。岁月沧桑，仍掩不住它的风采。群 山环抱之下，更显它的雄浑。由于西域安定，久无战事，边关 守军已大为减少。一条大道向东延伸通向中原。出关向西，便 是著名的丝绸之路。"
+  x = 5
+  y = -2
+  z = 0
+    }
+
+  room_exits "jiayuguan" {
+    room_id = rooms.jiayuguan.id
+    west = rooms.silk1.id
+    eastup = rooms.xxroad3.id
+    }
+
+
+  room_characters "jiayuguan" {
+    room_id = rooms.jiayuguan.id
+    characters = [
+      { id = characters.wujiang.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/kedian.c by LPCConverter
+# Zone: xiyu
+
+    rooms "kedian" {
+      name = "客店"
+      description = "这是座落在丝绸之路上的一个小客栈，客栈虽小，不过如 果你要长途跋涉，在这里休息一下更好。墙上挂着一个牌子。"
+  x = 0
+  y = 1
+  z = 0
+item_desc = {
+ paizi = "楼上住宿，每夜五两白银。"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "up"
+direction = "up"
+  message = "维吾尔少女连忙挡在楼梯前，急道：客官，您得先付钱啊！"
+}
+,
+{
+   # 阻挡条件（原样保留）：me->query_temp("rent_paid") && dir == "west"
+direction = "west"
+  message = "维吾尔少女跑到门边拦住：您付了银子，怎麽不住店就走了呢？"
+}
+
+]
+    }
+
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+    up = rooms.kedian2.id
+    south = rooms.shanjiao.id
+    }
+
+
+  room_characters "kedian" {
+    room_id = rooms.kedian.id
+    characters = [
+      { id = characters.shaonv.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/kedian2.c by LPCConverter
+# Zone: xiyu
+
+    rooms "kedian2" {
+      name = "客店二楼"
+      description = "你正走在客店二楼的走廊上，可以听到从客房里不时地呼 呼的打酣声，一阵高过一阵。不时有睡意朦胧的旅客进进出出 到楼下那里处付了钱再上来睡觉。"
+  x = 0
+  y = 1
+  z = 1
+    }
+
+  room_exits "kedian2" {
+    room_id = rooms.kedian2.id
+    in = rooms.kedian3.id
+    down = rooms.kedian.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/kedian3.c by LPCConverter
+# Zone: xiyu
+
+    rooms "kedian3" {
+      name = "客店二楼"
+      description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小 木床，不少客人正和衣而卧，满屋子都是呼呼的打酣声。西边 有张床是空的，你蹑手蹑脚地走了过去。"
+  x = 0
+  y = 1
+  z = 1
+    }
+
+  room_exits "kedian3" {
+    room_id = rooms.kedian3.id
+    out = rooms.kedian2.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/luzhou.c by LPCConverter
+# Zone: xiyu
+
+    rooms "luzhou" {
+      name = "沙漠绿洲"
+      description = "你行至此地，发现在沙漠的尽头出现了一个绿洲。灌木丛 中有一眼坎儿井。井台上有一个木杯专供口渴的行人喝水。井 边是一块瓜地。"
+  x = -2
+  y = -1
+  z = 0
+    }
+
+  room_exits "luzhou" {
+    room_id = rooms.luzhou.id
+    southwest = rooms.nanjiang3.id
+    northeast = rooms.shanjiao.id
+    }
+
+
+
+
+  room_items "luzhou" {
+    room_id = rooms.luzhou.id
+    items = [
+      { id = items.hamigua.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/majiu.c by LPCConverter
+# Zone: xiyu
+
+    rooms "majiu" {
+      name = "马厩"
+      description = "这是北疆小镇的马厩，常年供应新鲜草料。这里地处会疆 边民古朴而好客，把所有远方来宾均作兄弟看待。马夫们会把 马牵到马厩好生照看，将它们喂饱饮足，再梳理得清清爽爽直 伺候到客人上路。马厩木柱钉着块破木牌 (paizi)。马厩中堆 放著几堆草料，正中有一口泔槽。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+    south = rooms.beijiang.id
+    }
+
+
+  room_characters "majiu" {
+    room_id = rooms.majiu.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu" {
+    room_id = rooms.majiu.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/mogaoku.c by LPCConverter
+# Zone: xiyu
+
+    rooms "mogaoku" {
+      name = "莫高窟"
+      description = "这里墙壁上绘制着与佛教相关的画面，有仙女飞天，还有 反弹琵琶。洞中还有很多佛像和经书。你被这些瑰丽的文化之 宝惊呆了。"
+  x = 0
+  y = 0
+  z = 2
+    }
+
+  room_exits "mogaoku" {
+    room_id = rooms.mogaoku.id
+    up = rooms.nanjiang1.id
+    down = rooms.btshan.id
+    out = rooms.yueerquan.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/nanjiang.c by LPCConverter
+# Zone: xiyu
+
+    rooms "nanjiang" {
+      name = "南疆沙漠"
+      description = "这就是浩瀚的塔克拉马干大沙漠，一走进来，你仿佛迷失 了方向。你感到口内十分焦渴，还是快些离开吧。"
+  x = -1
+  y = -1
+  z = 0
+    }
+
+  room_exits "nanjiang" {
+    room_id = rooms.nanjiang.id
+    west = rooms.luzhou.id
+    east = rooms.__file__.id
+    south = rooms.__file__.id
+    north = rooms.__file__.id
+    southwest = rooms.nanjiang3.id
+    northwest = rooms.__file__.id
+    northeast = rooms.shanjiao.id
+    southeast = rooms.__file__.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/nanjiang1.c by LPCConverter
+# Zone: xiyu
+
+    rooms "nanjiang1" {
+      name = "南疆沙漠"
+      description = "这就是浩瀚的塔克拉马干大沙漠，一走进来，你仿佛迷失 了方向。你感到口内十分焦渴，还是快些离开吧。"
+  x = 0
+  y = 0
+  z = 3
+    }
+
+  room_exits "nanjiang1" {
+    room_id = rooms.nanjiang1.id
+    up = rooms.shamo.id
+    down = rooms.mogaoku.id
+    northeast = rooms.__file__.id
+    southwest = rooms.__file__.id
+    northwest = rooms.__file__.id
+    southeast = rooms.nanjiang.id
+    north = rooms.__file__.id
+    south = rooms.nanjiang2.id
+    west = rooms.__file__.id
+    east = rooms.caoyuan5.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/nanjiang2.c by LPCConverter
+# Zone: xiyu
+
+    rooms "nanjiang2" {
+      name = "南疆沙漠"
+      description = "这就是浩瀚的塔克拉马干大沙漠，一走进来，你仿佛迷失 了方向。你感到口内十分焦渴，还是快些离开吧。"
+  x = 0
+  y = -1
+  z = 3
+    }
+
+  room_exits "nanjiang2" {
+    room_id = rooms.nanjiang2.id
+    west = rooms.__file__.id
+    east = rooms.luzhou.id
+    south = rooms.nanjiang3.id
+    north = rooms.__file__.id
+    southeast = rooms.__file__.id
+    northwest = rooms.__file__.id
+    southwest = rooms.__file__.id
+    northeast = rooms.caoyuan5.id
+    }
+
+
+  room_characters "nanjiang2" {
+    room_id = rooms.nanjiang2.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/nanjiang3.c by LPCConverter
+# Zone: xiyu
+
+    rooms "nanjiang3" {
+      name = "南疆沙漠"
+      description = "这就是浩瀚的塔克拉马干大沙漠，一走进来，你仿佛迷失 了方向。你感到口内十分焦渴，还是快些离开吧。"
+  x = -2
+  y = -2
+  z = 0
+    }
+
+  room_exits "nanjiang3" {
+    room_id = rooms.nanjiang3.id
+    east = rooms.__file__.id
+    west = rooms.__file__.id
+    south = rooms.__file__.id
+    north = rooms.__file__.id
+    northeast = rooms.luzhou.id
+    southwest = rooms.__file__.id
+    southeast = rooms.__file__.id
+    northwest = rooms.__file__.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/riyuedong.c by LPCConverter
+# Zone: xiyu
+
+    rooms "riyuedong" {
+      name = "日月洞"
+      description = "这里是星宿派总舵所在地日月洞。只见洞内灯火通明，正 中一把虎皮椅上端坐着星宿派掌门人丁春秋。洞壁上装饰着虎 皮鹿头雕羽及一些字画 (zihua)。洞两侧竖立兵器架，上面排 列的大多是各种棍棒。"
+  x = -1
+  y = 4
+  z = 0
+item_desc = {
+ zihua = "##################################            ########　　　　　　　　　########            ########　古　威　德　星　########            ########　今　震　配　宿　########            ########　无　寰　天　老　########            ########　比　宇　地　仙　########            ########　　　　　　　　　########            ##################################"
+}
+    }
+
+  room_exits "riyuedong" {
+    room_id = rooms.riyuedong.id
+    north = rooms.houdong.id
+    south = rooms.xxh2.id
+    }
+
+
+
+
+  room_items "riyuedong" {
+    room_id = rooms.riyuedong.id
+    items = [
+      { id = items.ding.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/riyuedong1.c by LPCConverter
+# Zone: xiyu
+
+    rooms "riyuedong1" {
+      name = "日月侧洞"
+      description = "这里是星宿派总舵所在地日月洞侧洞。只见漆黑一片，唯 有前方不员处有些许光线，看来可以从这出去。"
+  x = -2
+  y = 4
+  z = 0
+    }
+
+  room_exits "riyuedong1" {
+    room_id = rooms.riyuedong1.id
+    out = rooms.xxh1.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/saimachang.c by LPCConverter
+# Zone: xiyu
+
+    rooms "saimachang" {
+      name = "赛马场"
+      description = "这里是小镇的赛马场。场上正在举行维吾尔族的姑娘追表 演。一个小伙子可以找一个姑娘并骑慢驰到一处折返点。去的 路上小伙子可以对姑娘随便挑逗。回来时姑娘则可以用鞭子抽 打小伙子。当然如果姑娘喜欢这个小伙子，落鞭就会轻些。否 则的话，有小伙子好受的。"
+  x = -2
+  y = 2
+  z = 0
+    }
+
+  room_exits "saimachang" {
+    room_id = rooms.saimachang.id
+    southeast = rooms.beijiang.id
+    }
+
+
+  room_characters "saimachang" {
+    room_id = rooms.saimachang.id
+    characters = [
+      { id = characters.alamuhan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/shamo.c by LPCConverter
+# Zone: xiyu
+
+    rooms "shamo" {
+      name = "大沙漠"
+      description = "这是一片一望无际的大沙漠。你一进来就迷失了方向。看 来要走出这块沙漠并非易事。"
+  x = 0
+  y = 0
+  z = 4
+    }
+
+  room_exits "shamo" {
+    room_id = rooms.shamo.id
+    up = rooms.tianroad4.id
+    down = rooms.nanjiang1.id
+    east = rooms.__file__.id
+    west = rooms.__file__.id
+    south = rooms.__file__.id
+    north = rooms.__file__.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/shanjiao.c by LPCConverter
+# Zone: xiyu
+
+    rooms "shanjiao" {
+      name = "天山脚下"
+      description = "这里是天山脚下，西面是高耸入云的天山。天晴的时候可 以看到山顶上的冰川。一道天山将西域分为两半。北疆是西域 各族的聚居区，南疆是无边的塔克拉马干大沙漠。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanjiao" {
+    room_id = rooms.shanjiao.id
+    up = rooms.btshan.id
+    westup = rooms.tianroad1.id
+    north = rooms.kedian.id
+    northwest = rooms.beijiang.id
+    southwest = rooms.nanjiang.id
+    southeast = rooms.silk4.id
+    }
+
+
+  room_characters "shanjiao" {
+    room_id = rooms.shanjiao.id
+    characters = [
+      { id = characters.trader.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/shashan.c by LPCConverter
+# Zone: xiyu
+
+    rooms "shashan" {
+      name = "鸣沙山"
+      description = "这是一座黄沙堆积形成的山。微风吹动，沙山发出嗡嗡的 响声。故而当地人称之为鸣沙山。沙土中似乎有虫子在蠕动。"
+  x = 1
+  y = 0
+  z = 2
+    }
+
+  room_exits "shashan" {
+    room_id = rooms.shashan.id
+    northeast = rooms.silk3.id
+    west = rooms.yueerquan.id
+    }
+
+
+  room_characters "shashan" {
+    room_id = rooms.shashan.id
+    characters = [
+      { id = characters.shachong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/silk1.c by LPCConverter
+# Zone: xiyu
+
+    rooms "silk1" {
+      name = "丝绸之路"
+      description = "这是一条中原和西域之间的商道。东边有一座雄伟的关隘 西面则通往西域。"
+  x = 4
+  y = -2
+  z = 0
+    }
+
+  room_exits "silk1" {
+    room_id = rooms.silk1.id
+    west = rooms.silk2.id
+    east = rooms.jiayuguan.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/silk2.c by LPCConverter
+# Zone: xiyu
+
+    rooms "silk2" {
+      name = "丝绸之路"
+      description = "这是一条中原和西域之间的商道。南面连绵的祁连山脉在 阳光的照射下好像是一条玉带。东边是中原，西面则通往西域。"
+  x = 3
+  y = -2
+  z = 0
+    }
+
+  room_exits "silk2" {
+    room_id = rooms.silk2.id
+    northwest = rooms.silk3.id
+    west = rooms.westroad1.id
+    east = rooms.silk1.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/silk3.c by LPCConverter
+# Zone: xiyu
+
+    rooms "silk3" {
+      name = "丝绸之路"
+      description = "这是一条中原和西域之间的商道。南面连绵的祁连山脉在 阳光的照射下好像是一条玉带。东边是中原，西面则通往西域。 西南有一座黄沙堆积形成的山(mount)。"
+  x = 2
+  y = -1
+  z = 0
+item_desc = {
+ mount = "这是一座黄沙堆积形成的山。微风吹动，沙山发出嗡嗡的响声。 你不禁对自然的造物发出由衷的赞叹。"
+}
+    }
+
+  room_exits "silk3" {
+    room_id = rooms.silk3.id
+    west = rooms.silk4.id
+    southeast = rooms.silk2.id
+    }
+
+
+
+
+  room_items "silk3" {
+    room_id = rooms.silk3.id
+    items = [
+      { id = items.huo.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/silk4.c by LPCConverter
+# Zone: xiyu
+
+    rooms "silk4" {
+      name = "丝绸之路"
+      description = "这是一条中原和西域之间的商道。西面是一望无际的大沙 漠，传说那里常有盗匪出没。西北则通向一片连绵的山脉东面 就是通向中原的路。路边有一块石碑。"
+  x = 1
+  y = -1
+  z = 0
+    }
+
+  room_exits "silk4" {
+    room_id = rooms.silk4.id
+    southwest = rooms.caoyuan.id
+    northwest = rooms.shanjiao.id
+    west = rooms.shamo1.id
+    east = rooms.silk3.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/store.c by LPCConverter
+# Zone: xiyu
+
+    rooms "store" {
+      name = "杂货铺"
+      description = "这是一个小小的杂货铺。房屋内铺着地毯。店老板坐在地 毯上，旁边堆着他的货。墙上有个牌子是个价目。"
+  x = -2
+  y = 1
+  z = 0
+    }
+
+  room_exits "store" {
+    room_id = rooms.store.id
+    east = rooms.beijiang.id
+    }
+
+
+  room_characters "store" {
+    room_id = rooms.store.id
+    characters = [
+      { id = characters.maimaiti.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/tianroad1.c by LPCConverter
+# Zone: xiyu
+
+    rooms "tianroad1" {
+      name = "天山山路"
+      description = "这里是天山东麓，山风从山上吹来，你冷得瑟瑟发抖。路 边是一片草原。草原上一位牧羊人赶着一群羊。这里向东可以 下山。北边传来阵阵猛兽的啸声。"
+  x = -1
+  y = 0
+  z = 1
+    }
+
+  room_exits "tianroad1" {
+    room_id = rooms.tianroad1.id
+    north = rooms.tianroad2.id
+    eastdown = rooms.shanjiao.id
+    }
+
+
+  room_characters "tianroad1" {
+    room_id = rooms.tianroad1.id
+    characters = [
+      { id = characters.herdsman.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/tianroad2.c by LPCConverter
+# Zone: xiyu
+
+    rooms "tianroad2" {
+      name = "天山山路"
+      description = "这里是天山东麓，山风从山上吹来，你冷得瑟瑟发抖。路 边是一片草原。路尽头松林下一位壮汉正在长啸练功。北上就 是人人害怕的灵鹫宫了."
+  x = -1
+  y = 1
+  z = 1
+    }
+
+  room_exits "tianroad2" {
+    room_id = rooms.tianroad2.id
+    south = rooms.tianroad1.id
+    northdown = rooms.xxh1.id
+    northup = rooms.shanjiao.id
+    }
+
+
+  room_characters "tianroad2" {
+    room_id = rooms.tianroad2.id
+    characters = [
+      { id = characters.gushou.id },
+      { id = characters.haoshou.id },
+      { id = characters.boshou.id },
+      { id = characters.walker.id }    ]
+  }
+
+
+
+  room_items "tianroad2" {
+    room_id = rooms.tianroad2.id
+    items = [
+      { id = items.shihou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/tianroad3.c by LPCConverter
+# Zone: xiyu
+
+    rooms "tianroad3" {
+      name = "天山山路"
+      description = "这里是天山东麓，山风从山上吹来，你冷得瑟瑟发抖。路 边是一片草原。西面一条深涧(valley)挡住了上山的路。"
+  x = -2
+  y = 2
+  z = 1
+item_desc = {
+ valley = "深涧足有三丈多宽，不知道能不能跳过去。"
+}
+    }
+
+  room_exits "tianroad3" {
+    room_id = rooms.tianroad3.id
+    eastdown = rooms.xxh1.id
+    northup = rooms.xxroad4.id
+    }
+
+
+
+
+  room_items "tianroad3" {
+    room_id = rooms.tianroad3.id
+    items = [
+      { id = items.azi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/tianroad4.c by LPCConverter
+# Zone: xiyu
+
+    rooms "tianroad4" {
+      name = "天山山路"
+      description = "这里是天山东麓，山风从山上吹来，你冷得瑟瑟发抖。路 边是一片针叶林。石壁上盛开着一朵洁白的天山雪莲，一个采 药人正在采药。东面一条深涧(valley)挡住了下山的路。"
+  x = 0
+  y = 0
+  z = 5
+item_desc = {
+ valley = "深涧足有三丈多宽，不知道能不能跳过去。"
+}
+    }
+
+  room_exits "tianroad4" {
+    room_id = rooms.tianroad4.id
+    up = rooms.xxroad7.id
+    down = rooms.shamo.id
+    westup = rooms.tianroad5.id
+    }
+
+
+
+
+  room_items "tianroad4" {
+    room_id = rooms.tianroad4.id
+    items = [
+      { id = items.xuelian1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/tianroad5.c by LPCConverter
+# Zone: xiyu
+
+    rooms "tianroad5" {
+      name = "天山山路"
+      description = "这里是天山东麓，山风从山上吹来，你冷得瑟瑟发抖。路 边是一片针叶林。西边望去，顶峰遥遥可见。"
+  x = -1
+  y = 0
+  z = 6
+    }
+
+  room_exits "tianroad5" {
+    room_id = rooms.tianroad5.id
+    eastdown = rooms.tianroad4.id
+    westup = rooms.tianroad6.id
+    }
+
+
+  room_characters "tianroad5" {
+    room_id = rooms.tianroad5.id
+    characters = [
+      { id = characters.caiyaoren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/tianroad6.c by LPCConverter
+# Zone: xiyu
+
+    rooms "tianroad6" {
+      name = "天山顶峰"
+      description = "这里是天山顶峰。从这里向周围望去，帕米尔高原的风光 尽收眼底。东面一条小路可以下山。山风凛冽，极为强劲，几 乎无法站立。"
+  x = -2
+  y = 0
+  z = 7
+    }
+
+  room_exits "tianroad6" {
+    room_id = rooms.tianroad6.id
+    eastdown = rooms.tianroad5.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/wuchang2.c by LPCConverter
+# Zone: xiyu
+
+    rooms "wuchang2" {
+      name = "山间平地"
+      description = "山间平地，地上是嫩绿的小草，周围布了几棵桦树，山边 有一眼清泉。草地上树着几个星宿老怪当年从少林寺偷来的木 人，用来供星宿弟子练功所用。东西边紧邻着另一个练功场。"
+  x = -3
+  y = 5
+  z = 2
+    }
+
+  room_exits "wuchang2" {
+    room_id = rooms.wuchang2.id
+    west = rooms.wuchang3.id
+    east = rooms.xxroad6.id
+    }
+
+
+
+
+  room_items "wuchang2" {
+    room_id = rooms.wuchang2.id
+    items = [
+      { id = items.yangrou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/wuchang3.c by LPCConverter
+# Zone: xiyu
+
+    rooms "wuchang3" {
+      name = "山间平地"
+      description = "这里有点荒凉，小草也长得无精打采的，看来是星宿的弟 子毒练多了，毒素都聚集在这里，连草木也遭了殃。地上零零 散散的摆了几个木人，有些破旧。"
+  x = -4
+  y = 5
+  z = 2
+    }
+
+  room_exits "wuchang3" {
+    room_id = rooms.wuchang3.id
+    east = rooms.wuchang2.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/xiaoyao.c by LPCConverter
+# Zone: xiyu
+
+    rooms "xiaoyao" {
+      name = "逍遥洞"
+      description = "这是一个粗糙的石洞，里面铺了几张臭哄哄的草垫子。垫 子旁边是一些破酒罐子。洞壁(wall)上有些字迹。"
+  x = -3
+  y = 4
+  z = 0
+item_desc = {
+ wall = "星宿淫贼人人得而株之！"
+}
+    }
+
+  room_exits "xiaoyao" {
+    room_id = rooms.xiaoyao.id
+    out = rooms.xxh6.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/xxh1.c by LPCConverter
+# Zone: xiyu
+
+    rooms "xxh1" {
+      name = "星宿海"
+      description = "这里是星宿海边。说是海，其实是片湖泊和沼泽，地形十 分险恶。东面石壁上一道裂缝通到一个山洞。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "xxh1" {
+    room_id = rooms.xxh1.id
+    westup = rooms.tianroad3.id
+    southup = rooms.tianroad2.id
+    north = rooms.xxh2.id
+    }
+
+
+  room_characters "xxh1" {
+    room_id = rooms.xxh1.id
+    characters = [
+      { id = characters.gushou.id },
+      { id = characters.haoshou.id },
+      { id = characters.boshou.id }    ]
+  }
+
+
+
+  room_items "xxh1" {
+    room_id = rooms.xxh1.id
+    items = [
+      { id = items.zhaixing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/xxh2.c by LPCConverter
+# Zone: xiyu
+
+    rooms "xxh2" {
+      name = "星宿海"
+      description = "这里是星宿海边。说是海，其实是片湖泊和沼泽，地形十 分险恶。这里左右两厢通向星宿海的深处，南边是星宿派总舵 日月洞。洞口挂着一幅对联(duilian)。"
+  x = -1
+  y = 3
+  z = 0
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "xingxiu dizi"
+  direction = "north"
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
+    }
+
+  room_exits "xxh2" {
+    room_id = rooms.xxh2.id
+    northwest = rooms.xxh4.id
+    northeast = rooms.xxh3.id
+    south = rooms.xxh1.id
+    north = rooms.riyuedong.id
+    }
+
+
+
+
+  room_items "xxh2" {
+    room_id = rooms.xxh2.id
+    items = [
+      { id = items.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/xxh3.c by LPCConverter
+# Zone: xiyu
+
+    rooms "xxh3" {
+      name = "星宿海"
+      description = "这里是星宿海边。说是海，其实是片湖泊和沼泽，地形十 分险恶。这里通向星宿海的深处。"
+  x = 0
+  y = 4
+  z = 0
+    }
+
+  room_exits "xxh3" {
+    room_id = rooms.xxh3.id
+    northwest = rooms.xxh5.id
+    southwest = rooms.xxh2.id
+    }
+
+
+
+
+  room_items "xxh3" {
+    room_id = rooms.xxh3.id
+    items = [
+      { id = items.tianlang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/xxh4.c by LPCConverter
+# Zone: xiyu
+
+    rooms "xxh4" {
+      name = "星宿海"
+      description = "这里是星宿海边。说是海，其实是片湖泊和沼泽，地形十 分险恶。这里通向星宿海的深处。西面有一条新铺的石头路。"
+  x = -2
+  y = 4
+  z = 0
+    }
+
+  room_exits "xxh4" {
+    room_id = rooms.xxh4.id
+    west = rooms.xxh6.id
+    northeast = rooms.xxh5.id
+    southeast = rooms.xxh2.id
+    }
+
+
+  room_characters "xxh4" {
+    room_id = rooms.xxh4.id
+    characters = [
+      { id = characters.haoshou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/xxh5.c by LPCConverter
+# Zone: xiyu
+
+    rooms "xxh5" {
+      name = "星宿海"
+      description = "这里是星宿海的尽头。因为附近有野羊出没，所以星宿派 弟子常常在此烤羊肉串吃。当打不到野羊时，他们就抢山下牧 人的羊。"
+  x = -1
+  y = 5
+  z = 0
+    }
+
+  room_exits "xxh5" {
+    room_id = rooms.xxh5.id
+    southwest = rooms.xxh4.id
+    southeast = rooms.xxh3.id
+    }
+
+
+  room_characters "xxh5" {
+    room_id = rooms.xxh5.id
+    characters = [
+      { id = characters.boshou.id }    ]
+  }
+
+
+
+  room_items "xxh5" {
+    room_id = rooms.xxh5.id
+    items = [
+      { id = items.yangrou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/xxh6.c by LPCConverter
+# Zone: xiyu
+
+    rooms "xxh6" {
+      name = "石道"
+      description = "这是星宿海边有人用石头铺成的一条小道，周围弥漫着沼 泽的瘴气和一种说不出来的香味。路边有个石洞。"
+  x = -3
+  y = 4
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：!myfam || myfam["family_name"] != "星宿派"
+direction = ~
+  message = "采花子挡住了你：我的小妞可不是给你们邪派弟子准备的！"
+}
+,
+{
+   # 阻挡条件（原样保留）：me->query("gender") == "无性"
+direction = ~
+  message = "采花子挡住了你，一脸讥笑：您这小身板还想玩妞？别开玩笑了。"
+}
+,
+{
+   # 阻挡条件（原样保留）：!(int)this_player()->query_temp("marks/花")
+direction = ~
+  message = "采花子挡住了你：喂，你总该意思意思吧？"
+}
+
+]
+    }
+
+  room_exits "xxh6" {
+    room_id = rooms.xxh6.id
+    in = rooms.xiaoyao.id
+    east = rooms.xxh4.id
+    }
+
+
+  room_characters "xxh6" {
+    room_id = rooms.xxh6.id
+    characters = [
+      { id = characters.caihua.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/xxroad3.c by LPCConverter
+# Zone: xiyu
+
+    rooms "xxroad3" {
+      name = "六盘山"
+      description = "这是一座不太高的小山。山顶望去，瓦蓝的天空飘着几朵 淡淡的白云。一群大雁发出「嘎嘎」的叫声，从头上飞过。西 面山下长城的残垣断壁依稀可辨。长城的尽头是一座雄伟的关 隘。路旁有一处悬崖之上刻着首词。"
+  x = 6
+  y = -2
+  z = 1
+    }
+
+  room_exits "xxroad3" {
+    room_id = rooms.xxroad3.id
+    east = rooms.ximen.id
+    westdown = rooms.jiayuguan.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/xxroad4.c by LPCConverter
+# Zone: xiyu
+
+    rooms "xxroad4" {
+      name = "小路"
+      description = "你走在一条在山壁上人工开凿出来崎岖的小路上，这里寒 风凛冽，西面是望不见底的深涧。"
+  x = -2
+  y = 3
+  z = 2
+    }
+
+  room_exits "xxroad4" {
+    room_id = rooms.xxroad4.id
+    north = rooms.xxroad5.id
+    southdown = rooms.tianroad3.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/xxroad5.c by LPCConverter
+# Zone: xiyu
+
+    rooms "xxroad5" {
+      name = "小路"
+      description = "山势在这里渐渐变得平缓，你已经可以听见西边山涧底的 水声。东面有一个山洞。"
+  x = -2
+  y = 4
+  z = 2
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "chuchen zi"
+  direction = "in"
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
+    }
+
+  room_exits "xxroad5" {
+    room_id = rooms.xxroad5.id
+    north = rooms.xxroad6.id
+    in = rooms.cangku.id
+    south = rooms.xxroad4.id
+    }
+
+
+
+
+  room_items "xxroad5" {
+    room_id = rooms.xxroad5.id
+    items = [
+      { id = items.chuchen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/xxroad6.c by LPCConverter
+# Zone: xiyu
+
+    rooms "xxroad6" {
+      name = "山间平地"
+      description = "山间平地，地上是嫩绿的小草，周围布了几棵桦树，山边 有一眼清泉。草地上树着几个星宿老怪当年从少林寺偷来的木 人，显是星宿弟子练功所用。西边过去还有一块平地，也是练 功的去处。"
+  x = -2
+  y = 5
+  z = 2
+    }
+
+  room_exits "xxroad6" {
+    room_id = rooms.xxroad6.id
+    west = rooms.wuchang2.id
+    south = rooms.xxroad5.id
+    }
+
+
+
+
+  room_items "xxroad6" {
+    room_id = rooms.xxroad6.id
+    items = [
+      { id = items.yangrou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiyu/xxroad7.c by LPCConverter
+# Zone: xiyu
+
+    rooms "xxroad7" {
+      name = "小路"
+      description = "你走在一条崎岖的小路上，这里荒无人烟，寒风凛冽。"
+  x = 0
+  y = 0
+  z = 6
+    }
+
+  room_exits "xxroad7" {
+    room_id = rooms.xxroad7.id
+    down = rooms.tianroad4.id
+    southeast = rooms.xxroad6.id
+    west = rooms.xxroad8.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/xxroad8.c by LPCConverter
+# Zone: xiyu
+
+    rooms "xxroad8" {
+      name = "小路"
+      description = "你走在一条崎岖的小路上，这里荒无人烟，寒风凛冽。"
+  x = -1
+  y = 0
+  z = 6
+    }
+
+  room_exits "xxroad8" {
+    room_id = rooms.xxroad8.id
+    west = rooms.xxh1.id
+    east = rooms.xxroad7.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/yueerquan.c by LPCConverter
+# Zone: xiyu
+
+    rooms "yueerquan" {
+      name = "月儿泉"
+      description = "出乎你的意料之外，在沙漠中竟然有泉水。一泓清澈的泉 水形成一个月牙的形状，因而得名月儿泉。南面是一片峭壁东 边传来嗡嗡的声响。"
+  x = 0
+  y = 0
+  z = 2
+    }
+
+  room_exits "yueerquan" {
+    room_id = rooms.yueerquan.id
+    in = rooms.mogaoku.id
+    east = rooms.shashan.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/afanti.c by LPCConverter
+# Zone: xiyu
+
+    characters "afanti" {
+      name = "阿凡提"
+      description = "他头上包着头巾，长着向上翘的八字胡，最喜欢 捉弄巴依、帮助穷人。他常给别人出谜语。"
+  gender = "男性"
+  age = 48
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2500
+    con = 17
+    dex = 20
+    int = 15
+    str = 25
+  }
+
+  inquiries = [
+    { key = "here" value = "这里可真是个好地方。" },
+    { key = "name" value = "我就是纳苏尔的阿凡提。" },
+    { key = "小毛驴" value = "我的小毛驴在我到沙漠里骗巴依种金子时走丢了。" },
+    { key = "巴依" value = "他把我关在这里，有吃有喝，我就不走了。巴依是个坏蛋，愿胡大惩罚他。" },
+    { key = "毛驴" value = "我的小毛驴在我到沙漠里骗巴依种金子时走丢了。" },
+    { key = "真主" value = "真主至大，万物非主，唯有真主。穆罕默德是真主的使者。" },
+    { key = "纳苏尔" value = "是我出生的地方。" },
+    { key = "胡大" value = "就是真主。又名安拉或阿拉。" },
+    { key = "驴" value = "我的小毛驴在我到沙漠里骗巴依种金子时走丢了。" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "dodge" level = 25 }
+  ]
+
+
+  carry = [
+    { id = items.wcloth.id },
+    { id = items.dongbula.id }
+  ]
+
+
+  accept = [
+    { kind = "any" accept = true msg = ["阿凡提笑得嘴都合不上了，说：多谢这位的帮助。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/alamuhan.c by LPCConverter
+# Zone: xiyu
+
+    characters "alamuhan" {
+      name = "阿拉木罕"
+      description = "她身段不肥也不瘦。她的眉毛像弯月，她的眼睛很多情。"
+  title = "牧羊姑娘"
+  gender = "女性"
+  age = 17
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 5000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 20 },
+    { skill = "whip" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.wcloth.id },
+    { id = items.changbian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/bing.c by LPCConverter
+# Zone: xiyu
+
+    characters "bing" {
+      name = "官兵"
+      description = "他是个戍边多年的老兵。年纪不小了，但尚未成家。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    dex = 16
+    str = 24
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "blade" level = 40 },
+    { skill = "force" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.blade.id },
+    { id = items.junfu.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/boshou.c by LPCConverter
+# Zone: xiyu
+
+    characters "boshou" {
+      name = "星宿派钹手"
+      description = "他手中拿着一对铜钹，一边敲一边扯着 嗓子唱些肉麻的话。"
+  gender = "男性"
+  age = 33
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000
+    con = 22
+    dex = 24
+    int = 16
+    max_jing = 200
+    max_neili = 200
+    max_qi = 200
+    str = 26
+  }
+
+  chat_chance = 10
+chats = [
+    "钹手敲着铜钹，高声唱道：星~~宿~~老~~仙~~威~~震~~寰~~宇。",
+    "钹手敲着铜钹，高声唱道：星~~宿~~老~~仙~~德~~配~~天~~地。",
+    "钹手敲着铜钹，高声唱道：星~~宿~~老~~仙~~古~~今~~无~~比。"
+]
+
+
+  skills = [
+    { skill = "force" level = 20 },
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 },
+    { skill = "parry" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.tongbo.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/caihua.c by LPCConverter
+# Zone: xiyu
+
+    characters "caihua" {
+      name = "采花子"
+      description = "采花子是星宿派的一个小喽罗，武功虽 不好，但生性淫邪常奸淫良家妇女。乃 是官府通缉的犯人，故而星宿派名义上 也不承认有这个弟子。"
+  nickname = "赛昆仑"
+  gender = "男性"
+  age = 38
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 25000
+    con = 17
+    dex = 30
+    int = 15
+    max_jing = 500
+    max_neili = 500
+    max_qi = 800
+    str = 25
+  }
+
+  inquiries = [
+    { key = "name" value = "我也记不清我姓甚名谁了，江湖朋友送我雅号采花子。" },
+    { key = "采花" value = "那可是学问，我不能随便教。" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "zhaixing-gong" level = 100 },
+    { type = "dodge" skill = "zhaixing-gong" }
+  ]
+
+
+  carry = [
+    { id = items.pink_cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  accept = [
+    { kind = "money" accept = true msg = "少跟我套近乎。" },
+    { kind = "any" accept = true msg = ["少跟我套近乎。", "想不到师姐也有这个爱好。", "多谢师兄。", "唉，那小妞昨天晚上被不知道哪个混蛋救走了。", "不过洞内倒是很清净，你可以进去睡一觉。", "钱我有的是，你还是给我点别的什么吧。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/caiyaoren.c by LPCConverter
+# Zone: xiyu
+
+    characters "caiyaoren" {
+      name = "采药人"
+      description = "一个辛苦工作的采药人。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 },
+    { skill = "hammer" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.yaochu.id },
+    { id = items.xuelian1.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/gushou.c by LPCConverter
+# Zone: xiyu
+
+    characters "gushou" {
+      name = "星宿派鼓手"
+      description = "他面前放着一只铜鼓，一边敲一边扯着 嗓子唱些肉麻的话。"
+  gender = "男性"
+  age = 43
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 4000
+    con = 20
+    dex = 20
+    int = 16
+    max_jing = 400
+    max_neili = 400
+    max_qi = 400
+    str = 26
+  }
+
+  chat_chance = 10
+chats = [
+    "鼓手敲着铜鼓，高声唱道：星~~宿~~老~~仙~~威~~震~~寰~~宇。",
+    "鼓手敲着铜鼓，高声唱道：星~~宿~~老~~仙~~德~~配~~天~~地。",
+    "鼓手敲着铜鼓，高声唱道：星~~宿~~老~~仙~~古~~今~~无~~比。"
+]
+
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.tonggu.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/haoshou.c by LPCConverter
+# Zone: xiyu
+
+    characters "haoshou" {
+      name = "星宿派号手"
+      description = "他手中拿着一只铜号，鼓足力气沉醉地 吹着。"
+  gender = "男性"
+  age = 33
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 3000
+    con = 22
+    dex = 24
+    int = 16
+    max_jing = 300
+    max_neili = 300
+    max_qi = 300
+    str = 26
+  }
+
+  chat_chance = 10
+chats = [
+    "号手吹着铜号，高声唱道：星~~宿~~老~~仙~~威~~震~~寰~~宇。",
+    "号手吹着铜号，高声唱道：星~~宿~~老~~仙~~德~~配~~天~~地。",
+    "号手吹着铜号，高声唱道：星~~宿~~老~~仙~~古~~今~~无~~比。"
+]
+
+
+  skills = [
+    { skill = "force" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "unarmed" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.tonghao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/herdsman.c by LPCConverter
+# Zone: xiyu
+
+    characters "herdsman" {
+      name = "牧羊人"
+      description = "一个维吾尔族老汉，赶着几十只羊。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000
+  }
+
+  inquiries = [
+    { key = "星宿派" value = "他们躲在星宿海。" },
+    { key = "星宿海" value = "星宿海在深涧西边。" },
+    { key = "深涧" value = "我没过去过。听说只有采药的和星宿派弟子能徒手过去。" }
+  ]
+
+  chat_chance = 10
+chats = [
+    "牧羊老汉伤心地说道：那帮星宿派弟子昨天又抢了我一只羊。",
+    "牧羊老汉呆呆的望着羊群发起愣来了。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 },
+    { skill = "parry" level = 20 },
+    { skill = "whip" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.wcloth.id },
+    { id = items.bian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/kid.c by LPCConverter
+# Zone: xiyu
+
+    characters "kid" {
+      name = "小孩"
+      description = "这是个维吾尔族小孩子"
+  gender = "男性"
+  age = 7
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50
+    con = 11
+    dex = 11
+    int = 11
+    str = 11
+  }
+
+  carry = [
+    { id = items.wcloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/maimaiti.c by LPCConverter
+# Zone: xiyu
+
+    characters "maimaiti" {
+      name = "买卖提"
+      description = "买卖提是个中年维吾尔族商人，去过几 次中原，能讲一点儿汉话。"
+  title = "杂货铺老板"
+  gender = "男性"
+  age = 43
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+  }
+
+  # vendor_goods: "/d/xiyu/obj/hu" (file not found)
+  # vendor_goods: "/d/xiyu/obj/nang" (file not found)
+  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
+  # vendor_goods: "/d/xiyu/obj/hamigua" (file not found)
+  # vendor_goods: "/d/xiyu/obj/dongbula" (file not found)
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.wcloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "买卖提笑嘻嘻地说道：色兰姆阿里空。" },
+    { line = "买卖提右手放在胸前，浅鞠一躬说道：阿里空色兰姆。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/shachong.c by LPCConverter
+# Zone: xiyu
+
+    characters "shachong" {
+      name = "沙虫"
+      description = "一只黄褐色的小甲虫，尾巴上有黄蓝相 间的环纹。你的直觉告诉你它一定有毒。"
+  age = 3
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 300
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/shachongke.c by LPCConverter
+# Zone: xiyu
+
+    characters "shachongke" {
+      name = "沙虫壳"
+      description = "这是一只沙虫的干壳，是制备毒药的原料。"
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/shaonv.c by LPCConverter
+# Zone: xiyu
+
+    characters "shaonv" {
+      name = "维吾尔少女"
+      description = "这位小姑娘一边忙里忙外，还和客人有说有笑。"
+  gender = "女性"
+  age = 19
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "维吾尔少女说道：这位{respect}，进来喝杯奶茶，歇歇腿吧。" },
+    { line = "维吾尔少女说道：这位{respect}，快请进来。" }
+  ]
+
+  accept = [
+    { kind = "money" min = 5000 accept = true msg = "维吾尔少女忙说道：多谢您啦！请上楼歇息吧。" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/trader.c by LPCConverter
+# Zone: xiyu
+
+    characters "trader" {
+      name = "波斯商人"
+      description = "一个高鼻蓝眼的波斯商人。他看着你脸上露出狡猾的笑容。"
+  nickname = "消息灵通"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 6000
+  }
+
+  chat_chance = 15
+chats = [
+    "波斯商人对你挤了一下眼睛。",
+    "波斯商人对你说：阿拉阿可巴，穆罕默德瑞素阿拉。",
+    "波斯商人呵呵笑了笑，神秘兮兮的看着你：。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "blade" level = 40 },
+    { skill = "parry" level = 30 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.wandao.id },
+    { id = items.changpao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/woman.c by LPCConverter
+# Zone: xiyu
+
+    characters "woman" {
+      name = "维吾尔族妇女"
+      description = "一个很胖的维吾尔族中年妇女。"
+  gender = "女性"
+  age = 40
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 150
+    con = 14
+    dex = 12
+    int = 13
+    str = 13
+  }
+
+  carry = [
+    { id = items.wcloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/npc/wujiang.c by LPCConverter
+# Zone: xiyu
+
+    characters "wujiang" {
+      name = "武将"
+      description = "他是嘉峪关的守将。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 75000
+    dex = 16
+    max_neili = 300
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 55 },
+    { skill = "force" level = 55 },
+    { skill = "sword" level = 55 },
+    { skill = "dodge" level = 55 },
+    { skill = "parry" level = 55 }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.tiejia.id }
+  ]
+
+
+  engage = {
+    fight = { accept = false msg = "老夫从不枉杀无名之人。" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/bilinzhen.c by LPCConverter
+# Zone: xiyu
+
+    items "bilinzhen" {
+      name = "碧磷针"
+      description = "碧磷针是星宿派使用的，暗器，常常淬毒。针长寸许，发出诡异的光。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}迅速地从身上摸出一些碧磷针，捏在手中就待发出！"
+    unwield = "{npc}将手里剩下的碧磷针一抖就不见了。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/changpao.c by LPCConverter
+# Zone: xiyu
+
+    items "changpao" {
+      name = "波斯长袍"
+      description = "这是一件脏兮兮的波斯长袍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/dongbula.c by LPCConverter
+# Zone: xiyu
+
+    items "dongbula" {
+      name = "冬不拉"
+      description = "这是一把维吾尔族的弦乐器冬不拉。你可以演奏(play)它。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/fire.c by LPCConverter
+# Zone: xiyu
+
+    items "fire" {
+      name = "火折"
+      description = "这是一支用于引火的火折，可以用来点燃(light)东西，或者是 到了黑暗的地方使用(use)。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/hamigua.c by LPCConverter
+# Zone: xiyu
+
+    items "hamigua" {
+      name = "哈密瓜"
+      description = "一颗香甜的哈密瓜。不吃哈密瓜等于白来西域。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/horse.c by LPCConverter
+# Zone: xiyu
+
+    items "horse" {
+      name = "伊犁马"
+      description = "一匹良种的伊犁马，可以骑(ride)，也可以驮东西。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/hu.c by LPCConverter
+# Zone: xiyu
+
+    items "hu" {
+      name = "马奶酒壶"
+      description = "一个用来装马奶酒的大酒壶，大概装得八、九升的酒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/hulu.c by LPCConverter
+# Zone: xiyu
+
+    items "hulu" {
+      name = "青葫芦"
+      description = "这是一个碧绿色的葫芦。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/junfu.c by LPCConverter
+# Zone: xiyu
+
+    items "junfu" {
+      name = "军服"
+      description = "这是一件有点旧的官兵服。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/lianxindan.c by LPCConverter
+# Zone: xiyu
+
+    items "lianxindan" {
+      name = "炼心弹"
+      description = "炼心弹是星宿派淬毒暗器，针长寸许，发出诡异的光。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}迅速地从鹿皮袋中摸出一些炼心弹，捏在手中就待发出！"
+    unwield = "{npc}将手里剩下的炼心弹收回鹿皮袋中。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/menghan_yao.c by LPCConverter
+# Zone: xiyu
+
+    items "menghan_yao" {
+      name = "蒙汗药"
+      description = "这是极普通的蒙汗药"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/nang.c by LPCConverter
+# Zone: xiyu
+
+    items "nang" {
+      name = "馕"
+      description = "这是维吾尔族人日常吃的一种面饼。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/sanxiaosan.c by LPCConverter
+# Zone: xiyu
+
+    items "sanxiaosan" {
+      name = "Item"
+      description = "一包无色的粉末, 看样子不是寻常物品."
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/shedan.c by LPCConverter
+# Zone: xiyu
+
+    items "shedan" {
+      name = "毒蛇胆"
+      description = "这是一只绿莹莹的毒蛇胆，是制备毒药的原料。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/shoutao.c by LPCConverter
+# Zone: xiyu
+
+    items "shoutao" {
+      name = "金丝手套"
+      description = "这是一双用金丝编制而成的手套，戴上他可以拿取或触摸带毒的物品而不会中毒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/tongbo.c by LPCConverter
+# Zone: xiyu
+
+    items "tongbo" {
+      name = "铜钹"
+      description = "这是一对金光闪亮的铜钹。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/tonggu.c by LPCConverter
+# Zone: xiyu
+
+    items "tonggu" {
+      name = "铜鼓"
+      description = "这是一只金光闪亮的铜鼓。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/tonghao.c by LPCConverter
+# Zone: xiyu
+
+    items "tonghao" {
+      name = "铜号"
+      description = "这是一把金光闪亮的铜号。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/xxjiudai.c by LPCConverter
+# Zone: xiyu
+
+    items "xxjiudai" {
+      name = "花雕酒袋"
+      description = "一个用来装高级花雕酒的大酒袋。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/xxqingxin-san.c by LPCConverter
+# Zone: xiyu
+
+    items "xxqingxin_san" {
+      name = "清心散"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/yangrou.c by LPCConverter
+# Zone: xiyu
+
+    items "yangrou" {
+      name = "羊肉串"
+      description = "一串香喷喷的羊肉串，上面沾满了孜然和辣椒面。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/obj/yaochu.c by LPCConverter
+# Zone: xiyu
+
+    items "yaochu" {
+      name = "药锄"
+      description = "这是一把采药用的药锄，已经有些生锈了。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一把{name}，握在手中。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+    }

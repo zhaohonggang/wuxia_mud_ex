@@ -1,0 +1,1535 @@
+zones "kunming" {
+  name = "kunming"
+}
+
+# Generated from C:/files/git/mud/d/kunming/beidajie.c by LPCConverter
+# Zone: kunming
+
+    rooms "beidajie" {
+      name = "北大街"
+      description = "你走在北大街上，这里来往的人很少，正北面一座雄伟的 大门，那就是平西王吴三桂的官邸了。路的两旁整齐的种着大 树，显得十分漂亮。不时会有几个卫兵来回走动。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "beidajie" {
+    room_id = rooms.beidajie.id
+  south = rooms.jinrilou.id
+  north = rooms.wangfu.id  }
+
+
+  room_characters "beidajie" {
+    room_id = rooms.beidajie.id
+    characters = [
+      { id = characters.boy2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/bijifang.c by LPCConverter
+# Zone: kunming
+
+    rooms "bijifang" {
+      name = "碧鸡枋"
+      description = "昆明名胜之一，碧鸡枋，传说在每年的一天，其影子和金 马枋的影子交相辉印，称为金碧交辉，巍巍奇观。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bijifang" {
+    room_id = rooms.bijifang.id
+  west = rooms.jinrilou.id
+  east = rooms.dongmen.id  }
+
+
+  room_characters "bijifang" {
+    room_id = rooms.bijifang.id
+    characters = [
+      { id = characters.jumin1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/chapu.c by LPCConverter
+# Zone: kunming
+
+    rooms "chapu" {
+      name = "聚朋茶馆"
+      description = "几张方桌，几个方凳，茶馆的设施虽然简陋，却是一个大 好去处，许多人在这里谈天说地，你可以在这里打听到许多的 奇闻佚事，所以城里城外的人没事都会来这里座一座，抽上几 口水烟，天南地北的聊聊。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chapu" {
+    room_id = rooms.chapu.id
+  west = rooms.nandajie2.id  }
+
+
+  room_characters "chapu" {
+    room_id = rooms.chapu.id
+    characters = [
+      { id = characters.chaxiaoer.id },
+      { id = characters.yantong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/dangpu.c by LPCConverter
+# Zone: kunming
+
+    rooms "dangpu" {
+      name = "当铺"
+      description = "这是一家很有些历史的老当铺了，高高的柜台后面座着当 铺的老板，正用一种奇怪的眼光看着你，一个当铺伙计正在劈 劈啪啪的打着算盘，见你来了，也不招呼一下。柜台的顶上挂 着一块牌子。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ paizi = "公平交易"
+}
+    }
+
+  room_exits "dangpu" {
+    room_id = rooms.dangpu.id
+  east = rooms.nandajie1.id  }
+
+
+  room_characters "dangpu" {
+    room_id = rooms.dangpu.id
+    characters = [
+      { id = characters.liu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/dongmen.c by LPCConverter
+# Zone: kunming
+
+    rooms "dongmen" {
+      name = "东门"
+      description = "这里便是昆明的东城门，来来往往各色人出出进进，有游 客，有做买卖的，也不乏些江湖人士。西边可以看见碧鸡枋。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongmen" {
+    room_id = rooms.dongmen.id
+  west = rooms.bijifang.id
+  east = rooms.qingshilu2.id  }
+
+
+  room_characters "dongmen" {
+    room_id = rooms.dongmen.id
+    characters = [
+      { id = characters.ducha.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/dongzoulang.c by LPCConverter
+# Zone: kunming
+
+    rooms "dongzoulang" {
+      name = "东走廊"
+      description = "这里是一条干净的走廊，从两面看去，可以欣赏到花园里 的风景，只见各种假山怪石，奇花异草，足见王府之气派。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongzoulang" {
+    room_id = rooms.dongzoulang.id
+  west = rooms.wangfu1.id
+  east = rooms.dongzoulang1.id  }
+
+# Generated from C:/files/git/mud/d/kunming/dongzoulang1.c by LPCConverter
+# Zone: kunming
+
+    rooms "dongzoulang1" {
+      name = "东走廊"
+      description = "这里是一条干净的走廊，从两面看去，可以欣赏到花园里 的风景，只见各种假山怪石，奇花异草，足见王府之气派。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongzoulang1" {
+    room_id = rooms.dongzoulang1.id
+  west = rooms.dongzoulang.id
+  east = rooms.xiangfan.id  }
+
+
+  room_characters "dongzoulang1" {
+    room_id = rooms.dongzoulang1.id
+    characters = [
+      { id = characters.jiading.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/htroad1.c by LPCConverter
+# Zone: kunming
+
+    rooms "htroad1" {
+      name = "黄土路"
+      description = "这是一条向南的黄土大道，两旁是一片片绿油油的水田和 悠闲的牧童。大道上人流熙熙攘攘，过往的行人顶着炎炎烈日 满头大汗的匆匆赶路，似乎并无心欣赏这优美的田园风光。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "htroad1" {
+    room_id = rooms.htroad1.id
+  south = rooms.htroad2.id
+  north = rooms.nanmen.id  }
+
+# Generated from C:/files/git/mud/d/kunming/htroad2.c by LPCConverter
+# Zone: kunming
+
+    rooms "htroad2" {
+      name = "黄土路"
+      description = "这是一条向南的黄土大道，两旁是一片片绿油油的水田和 悠闲的牧童。大道上人流熙熙攘攘，过往的行人顶着炎炎烈日 满头大汗的匆匆赶路，似乎并无心欣赏这优美的田园风光。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "htroad2" {
+    room_id = rooms.htroad2.id
+  south = rooms.htroad3.id
+  north = rooms.htroad1.id  }
+
+# Generated from C:/files/git/mud/d/kunming/htroad3.c by LPCConverter
+# Zone: kunming
+
+    rooms "htroad3" {
+      name = "黄土路"
+      description = "这是一条向南的黄土大道，两旁是一片片绿油油的水田和 悠闲的牧童。大道上人流熙熙攘攘，过往的行人顶着炎炎烈日 满头大汗的匆匆赶路，似乎并无心欣赏这优美的田园风光。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "htroad3" {
+    room_id = rooms.htroad3.id
+  north = rooms.htroad2.id
+  southwest = rooms.heisenlin.id  }
+
+# Generated from C:/files/git/mud/d/kunming/jinmafang.c by LPCConverter
+# Zone: kunming
+
+    rooms "jinmafang" {
+      name = "金马枋"
+      description = "昆明名胜之一，金马枋，传说在每年的一天，其影子和碧 鸡枋的影子交相辉印，称为金碧交辉，巍巍奇观。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jinmafang" {
+    room_id = rooms.jinmafang.id
+  west = rooms.xiaoximen.id
+  east = rooms.jinrilou.id  }
+
+
+  room_characters "jinmafang" {
+    room_id = rooms.jinmafang.id
+    characters = [
+      { id = characters.old1.id },
+      { id = characters.boy1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/jinrilou.c by LPCConverter
+# Zone: kunming
+
+    rooms "jinrilou" {
+      name = "近日古楼"
+      description = "近日楼地处昆明市中心，南来北往的人都从这里通过，二 楼悬有一巨钟，北边是平西王府，一般人很少去那里，西边是 金马枋，南边热闹非凡，熙熙攘攘，人来人往。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jinrilou" {
+    room_id = rooms.jinrilou.id
+  west = rooms.jinmafang.id
+  east = rooms.bijifang.id
+  south = rooms.nandajie1.id
+  north = rooms.beidajie.id
+  up = rooms.zhonglou.id  }
+
+
+  room_characters "jinrilou" {
+    room_id = rooms.jinrilou.id
+    characters = [
+      { id = characters.xunbu.id },
+      { id = characters.richman1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/jiulou.c by LPCConverter
+# Zone: kunming
+
+    rooms "jiulou" {
+      name = "酒楼"
+      description = "这是一家极为普通的酒楼，平日里就卖些米酒，包子，大 部分来这里的人都是随便买点东西就走了，也有些人叫点花生 米，切点熟牛肉来对饮两盅的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jiulou" {
+    room_id = rooms.jiulou.id
+  west = rooms.nandajie1.id  }
+
+
+  room_characters "jiulou" {
+    room_id = rooms.jiulou.id
+    characters = [
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/kedian.c by LPCConverter
+# Zone: kunming
+
+    rooms "kedian" {
+      name = "客栈"
+      description = "这是一家价简陋客栈，店铺虽然不大，生意却不错，许多 过往的人都喜欢选择这里落脚，因为这里的店主识得一些江湖 中人，所以很少有人会来此闹事。店中的小二忙前忙后不停的 招呼着客人，就连店主也是满脸笑容的陪着说好话。让人觉的 有归家的感觉一般。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "westup" 
+direction = "westup"
+  message = "元财对你赔笑道：这位客官，请先这里付了钱再上楼住店。"
+}
+
+]
+    }
+
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+  west = rooms.majiu.id
+  east = rooms.nandajie2.id
+  westup = rooms.kedian1.id  }
+
+
+  room_characters "kedian" {
+    room_id = rooms.kedian.id
+    characters = [
+      { id = characters.xiaoer.id },
+      { id = characters.laoban.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/kedian1.c by LPCConverter
+# Zone: kunming
+
+    rooms "kedian1" {
+      name = "客店二楼"
+      description = "这里是客店的二楼几张大床一字排开，一些人正在上面睡 的呼噜震天响，门窗紧闭，官衔昏暗，你不由也想睡山个一觉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kedian1" {
+    room_id = rooms.kedian1.id
+  eastdown = rooms.kedian.id  }
+
+# Generated from C:/files/git/mud/d/kunming/lianhua.c by LPCConverter
+# Zone: kunming
+
+    rooms "lianhua" {
+      name = "莲花峰"
+      description = "你爬上莲花峰，整个石林的风光尽收眼底，眼见北边不远 刻有一大字(zi)，峰壁上刻有一小诗 (shi)，向下观望，只见 脚下一潭碧水荡漾。奇景迭出，险象环生，峰回路转，异境天 开，常使人心动神驰，乐而忘返矣。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ zi = "########           ##    ##           ## 天 ##           ##    ##           ## 下 ##           ##    ##           ## 第 ##           ##    ##           ## 一 ##           ##    ##           ## 奇 ##           ##    ##           ## 观 ##           ##    ##           ########"
+ shi = "攀登直欲夺天工              一顶凌云挈众峰              不是猱升挥汗水              何来双手抚晴空"
+}
+    }
+
+  room_exits "lianhua" {
+    room_id = rooms.lianhua.id
+  southdown = rooms.shilin2.id
+  up = rooms.wfting.id  }
+
+
+  room_characters "lianhua" {
+    room_id = rooms.lianhua.id
+    characters = [
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/majiu.c by LPCConverter
+# Zone: kunming
+
+    rooms "majiu" {
+      name = "马厩"
+      description = "这是元人客栈后的马厩，常年供应新鲜草料。昆明民风淳 朴，马夫们会把马牵到马厩好生照看，将它们喂饱饮足，再洗 刷得干乾净净，一直伺候到客人上路。马厩雨檐下的烂木柱上 钉着一块破木牌 (paizi)。马厩中堆放著几堆草料，正中有一 口泔槽。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+  east = rooms.kedian.id  }
+
+
+  room_characters "majiu" {
+    room_id = rooms.majiu.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu" {
+    room_id = rooms.majiu.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/nandajie1.c by LPCConverter
+# Zone: kunming
+
+    rooms "nandajie1" {
+      name = "南大街"
+      description = "你走在昆明最繁华的街道上，人来人往，好不热闹，街的 两旁有许多贩卖商品的人，正在贩卖一些土特产，沿街有一些 店铺，西边是一家当铺，东边一个高高的晃字立了出来。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nandajie1" {
+    room_id = rooms.nandajie1.id
+  south = rooms.nandajie2.id
+  north = rooms.jinrilou.id
+  west = rooms.dangpu.id
+  east = rooms.jiulou.id  }
+
+
+  room_characters "nandajie1" {
+    room_id = rooms.nandajie1.id
+    characters = [
+      { id = characters.hunhun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/nandajie2.c by LPCConverter
+# Zone: kunming
+
+    rooms "nandajie2" {
+      name = "南大街"
+      description = "你走在昆明最繁华的街道上，人来人往，好不热闹，西边 有一家客店，人们大多选择这里落脚，以便在赶路。东边听里 面传来的谈笑声看，肯定是一家茶铺。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nandajie2" {
+    room_id = rooms.nandajie2.id
+  south = rooms.nanmen.id
+  north = rooms.nandajie1.id
+  west = rooms.kedian.id
+  east = rooms.chapu.id  }
+
+
+  room_characters "nandajie2" {
+    room_id = rooms.nandajie2.id
+    characters = [
+      { id = characters.girl2.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/nanmen.c by LPCConverter
+# Zone: kunming
+
+    rooms "nanmen" {
+      name = "南门"
+      description = "这里便是昆明的南门，高高的城楼上写着大大的南门两个 字，由此南去，就是滇池了，出入南门的人很少，只有些渔民 不时提着新鲜的鱼进城来卖。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nanmen" {
+    room_id = rooms.nanmen.id
+  south = rooms.htroad1.id
+  north = rooms.nandajie2.id  }
+
+
+  room_characters "nanmen" {
+    room_id = rooms.nanmen.id
+    characters = [
+      { id = characters.ducha.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/qiao.c by LPCConverter
+# Zone: kunming
+
+    rooms "qiao" {
+      name = "独木桥"
+      description = "这里是一座独木桥，也不知是什么时候架起来的，走在上 面摇摇晃晃的，很是危险。如果你要过河的话，就只有走这里。 从桥上望下去，只见急流勇潺，一掉下去，肯定没命。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qiao" {
+    room_id = rooms.qiao.id
+  south = rooms.qiao2.id
+  north = rooms.road5.id  }
+
+# Generated from C:/files/git/mud/d/kunming/qiao2.c by LPCConverter
+# Zone: kunming
+
+    rooms "qiao2" {
+      name = "独木桥"
+      description = "这里是一座独木桥，也不知是什么时候架起来的，走在上 面摇摇晃晃的，很是危险。如果你要过河的话，就只有走这里。 从桥上望下去，只见急流勇潺，一掉下去，肯定没命。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qiao2" {
+    room_id = rooms.qiao2.id
+  south = rooms.qiao3.id
+  north = rooms.qiao.id  }
+
+
+  room_characters "qiao2" {
+    room_id = rooms.qiao2.id
+    characters = [
+      { id = characters.old1.id },
+      { id = characters.girl3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/qiao3.c by LPCConverter
+# Zone: kunming
+
+    rooms "qiao3" {
+      name = "独木桥"
+      description = "这里是一座独木桥，也不知是什么时候架起来的，走在上 面摇摇晃晃的，很是危险。如果你要过河的话，就只有走这里。 从桥上望下去，只见急流勇潺，一掉下去，肯定没命。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qiao3" {
+    room_id = rooms.qiao3.id
+  south = rooms.road6.id
+  north = rooms.qiao2.id  }
+
+
+  room_characters "qiao3" {
+    room_id = rooms.qiao3.id
+    characters = [
+      { id = characters.tangzi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/qingshilu.c by LPCConverter
+# Zone: kunming
+
+    rooms "qingshilu" {
+      name = "青石路"
+      description = "出了石林，就到了昆明的官道，青石铺成，平坦宽阔，西 去不远就是昆明了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qingshilu" {
+    room_id = rooms.qingshilu.id
+  west = rooms.qingshilu1.id
+  east = rooms.shilin2.id  }
+
+# Generated from C:/files/git/mud/d/kunming/qingshilu1.c by LPCConverter
+# Zone: kunming
+
+    rooms "qingshilu1" {
+      name = "青石路"
+      description = "一条青石大道，青石铺成，平坦宽阔，远远的可以看见昆 明了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qingshilu1" {
+    room_id = rooms.qingshilu1.id
+  west = rooms.qingshilu2.id
+  east = rooms.qingshilu.id  }
+
+
+  room_characters "qingshilu1" {
+    room_id = rooms.qingshilu1.id
+    characters = [
+      { id = characters.tangzi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/qingshilu2.c by LPCConverter
+# Zone: kunming
+
+    rooms "qingshilu2" {
+      name = "青石路"
+      description = "一条青石大道，青石铺成，平坦宽阔，抬头一看，前面的 城门清晰可见。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qingshilu2" {
+    room_id = rooms.qingshilu2.id
+  west = rooms.dongmen.id
+  east = rooms.qingshilu1.id  }
+
+# Generated from C:/files/git/mud/d/kunming/road1.c by LPCConverter
+# Zone: kunming
+
+    rooms "road1" {
+      name = "乱石滩"
+      description = "这里怪石林立，路极不好走，不小心就要摔个跟斗，过了 这片石滩，就是长江岸边。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road1" {
+    room_id = rooms.road1.id
+  south = rooms.road2.id
+  north = rooms.nanshilu1.id  }
+
+# Generated from C:/files/git/mud/d/kunming/road2.c by LPCConverter
+# Zone: kunming
+
+    rooms "road2" {
+      name = "乱石滩"
+      description = "这里怪石林立，路极不好走，不小心就要摔个跟斗，过了 这片石滩，就是长江岸边。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road2" {
+    room_id = rooms.road2.id
+  south = rooms.road3.id
+  north = rooms.road1.id  }
+
+# Generated from C:/files/git/mud/d/kunming/road3.c by LPCConverter
+# Zone: kunming
+
+    rooms "road3" {
+      name = "乱石滩"
+      description = "这里怪石林立，路极不好走，不小心就要摔个跟斗，过了 这片石滩，就是长江岸边。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road3" {
+    room_id = rooms.road3.id
+  north = rooms.road2.id
+  southwest = rooms.road4.id  }
+
+# Generated from C:/files/git/mud/d/kunming/road4.c by LPCConverter
+# Zone: kunming
+
+    rooms "road4" {
+      name = "乱石滩"
+      description = "这里怪石林立，路极不好走，不小心就要摔个跟斗，过了 这片石滩，就是长江岸边。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road4" {
+    room_id = rooms.road4.id
+  south = rooms.road5.id
+  northeast = rooms.road3.id  }
+
+
+  room_characters "road4" {
+    room_id = rooms.road4.id
+    characters = [
+      { id = characters.old2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/road5.c by LPCConverter
+# Zone: kunming
+
+    rooms "road5" {
+      name = "长江北岸"
+      description = "你快步来到了长江北岸，只见这里波涛滚滚，滔滔江水向 东流去。岸边立有一块碑(bei)，前面不远处有座独木桥。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ bei = "################################             ##                            ##             ##     通      天      河     ##             ##                            ##             ################################"
+}
+    }
+
+  room_exits "road5" {
+    room_id = rooms.road5.id
+  south = rooms.qiao.id
+  north = rooms.road4.id  }
+
+
+  room_characters "road5" {
+    room_id = rooms.road5.id
+    characters = [
+      { id = characters.tiaofu.id },
+      { id = characters.tiaofu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/road6.c by LPCConverter
+# Zone: kunming
+
+    rooms "road6" {
+      name = "长江南岸"
+      description = "你快步来到了长江南岸，只见这里波涛滚滚，滔滔江水向 东流去。岸边立有一块碑(bei)，前面不远处有座独木桥。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ bei = "################################             ##                            ##             ##     通      天      河     ##             ##                            ##             ################################"
+}
+    }
+
+  room_exits "road6" {
+    room_id = rooms.road6.id
+  south = rooms.road7.id
+  north = rooms.qiao3.id  }
+
+# Generated from C:/files/git/mud/d/kunming/road7.c by LPCConverter
+# Zone: kunming
+
+    rooms "road7" {
+      name = "山路"
+      description = "你走在一条崎岖的山路上，再往南，就进入了云贵高原了。 北面是一条大河拦住去路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road7" {
+    room_id = rooms.road7.id
+  south = rooms.yunnan.id
+  north = rooms.road6.id  }
+
+
+  room_characters "road7" {
+    room_id = rooms.road7.id
+    characters = [
+      { id = characters.tangzi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/shilin.c by LPCConverter
+# Zone: kunming
+
+    rooms "shilin" {
+      name = "石林"
+      description = "这里矗立着各种各样形状各异的石头，有的象人，有的象 树，有的又象动物，你这边看着象这样，也许换个角度又象其 他的，千姿百态。把你眼睛都看花了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shilin" {
+    room_id = rooms.shilin.id
+  north = rooms.xiaolu.id
+  south = rooms.shilin1.id  }
+
+
+  room_characters "shilin" {
+    room_id = rooms.shilin.id
+    characters = [
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/shilin1.c by LPCConverter
+# Zone: kunming
+
+    rooms "shilin1" {
+      name = "阿诗玛"
+      description = "这里是石林著名的阿诗玛峰，相传很就以前，美丽的哈尼 族姑娘阿诗玛在此等侯他的阿黑哥，然而阿黑却被地主老财杀 害了，阿诗玛等啊等，始终没有等来心爱的情郎，终究化作了 一座石峰，永远的守侯下去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shilin1" {
+    room_id = rooms.shilin1.id
+  north = rooms.shilin.id
+  west = rooms.shilin2.id  }
+
+
+  room_characters "shilin1" {
+    room_id = rooms.shilin1.id
+    characters = [
+      { id = characters.youngboy.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/shilin2.c by LPCConverter
+# Zone: kunming
+
+    rooms "shilin2" {
+      name = "石林"
+      description = "这里矗立着各种各样形状各异的石头，有的象人，有的象 树，有的又象动物，你这边看着象这样，也许换个角度又象其 他的，千姿百态。把你眼睛都看花了。北边有一座高峰，却甚 是象朵莲花，名为莲花峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shilin2" {
+    room_id = rooms.shilin2.id
+  northup = rooms.lianhua.id
+  east = rooms.shilin1.id
+  west = rooms.qingshilu.id  }
+
+# Generated from C:/files/git/mud/d/kunming/shufan.c by LPCConverter
+# Zone: kunming
+
+    rooms "shufan" {
+      name = "书房"
+      description = "这是一间整洁明亮的书房，四壁都是书架，上面摆满了各 种书籍，中间一张桌子，放着笔墨纸印。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shufan" {
+    room_id = rooms.shufan.id
+  east = rooms.xizoulang1.id  }
+
+
+  room_characters "shufan" {
+    room_id = rooms.shufan.id
+    characters = [
+      { id = characters.wusangui.id }    ]
+  }
+
+
+
+  room_items "shufan" {
+    room_id = rooms.shufan.id
+    items = [
+      { id = items.pingfeng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/wangfu.c by LPCConverter
+# Zone: kunming
+
+    rooms "wangfu" {
+      name = "王俯大门"
+      description = "这里便是云南平西王俯的大门，两边个有一个威武的大石 狮子，高大的朱漆大门紧紧的闭着，几个亲兵严密的注视着来 往的人，没什么事，最好别在这里溜达。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "north" && objectp(present("qin bing", environment(me)))
+direction = "north"
+  message = "亲兵拦住你说道：王府大院，闲杂人等一律回避。"
+}
+
+]
+    }
+
+  room_exits "wangfu" {
+    room_id = rooms.wangfu.id
+  south = rooms.beidajie.id
+  north = rooms.wangfu1.id  }
+
+
+  room_characters "wangfu" {
+    room_id = rooms.wangfu.id
+    characters = [
+      { id = characters.qinbing.id },
+      { id = characters.qinbing.id },
+      { id = characters.qinbing.id },
+      { id = characters.qinbing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/wangfu1.c by LPCConverter
+# Zone: kunming
+
+    rooms "wangfu1" {
+      name = "王府大院"
+      description = "这里便是平西王府的大院，院内钟满了各钟花草，最显眼 的却是中间的一株万年山茶，巨大的树干上开满了无数的山茶 花，颜色深浅不一，姹紫嫣红，十分好看。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wangfu1" {
+    room_id = rooms.wangfu1.id
+  south = rooms.wangfu.id
+  north = rooms.wangfu2.id
+  west = rooms.xizoulang.id
+  east = rooms.dongzoulang.id  }
+
+
+  room_characters "wangfu1" {
+    room_id = rooms.wangfu1.id
+    characters = [
+      { id = characters.shang1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/wangfu2.c by LPCConverter
+# Zone: kunming
+
+    rooms "wangfu2" {
+      name = "王府正厅"
+      description = "这里是平西王府的正厅，正中两把太师椅，墙上挂着一幅 字画，布置的简单清洁。这里空荡荡的没有一个人，看来平西 王平时极少来这里，只有几个下人不时来打扫一下。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wangfu2" {
+    room_id = rooms.wangfu2.id
+  south = rooms.wangfu1.id  }
+
+# Generated from C:/files/git/mud/d/kunming/wfting.c by LPCConverter
+# Zone: kunming
+
+    rooms "wfting" {
+      name = "望峰亭"
+      description = "这里是石林最高的一座峰，峰上有一小亭，真不知道是如 何建造出来的，放眼看去，只见四面石峰林立，一时间眼睛都 看花了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wfting" {
+    room_id = rooms.wfting.id
+  down = rooms.lianhua.id  }
+
+# Generated from C:/files/git/mud/d/kunming/xiangfan.c by LPCConverter
+# Zone: kunming
+
+    rooms "xiangfan" {
+      name = "厢房"
+      description = "一间不大的厢房，收拾的十分干净，看来是家人平是起居 之用，一扇小窗户透进些光线了，显的十分的舒心。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiangfan" {
+    room_id = rooms.xiangfan.id
+  west = rooms.dongzoulang1.id  }
+
+
+  room_characters "xiangfan" {
+    room_id = rooms.xiangfan.id
+    characters = [
+      { id = characters.shang1.id },
+      { id = characters.shang1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/xiaolu.c by LPCConverter
+# Zone: kunming
+
+    rooms "xiaolu" {
+      name = "小路"
+      description = "这里是一条小路，颇为不平，两边耸立着一些怪石，奇形 怪状，甚是有趣 。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaolu" {
+    room_id = rooms.xiaolu.id
+  north = rooms.yunnan4.id
+  south = rooms.shilin.id  }
+
+
+  room_characters "xiaolu" {
+    room_id = rooms.xiaolu.id
+    characters = [
+      { id = characters.boy3.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/xiaoximen.c by LPCConverter
+# Zone: kunming
+
+    rooms "xiaoximen" {
+      name = "小西门"
+      description = "这里是昆明的西城门，俗称小西门，来来往往各色人出出 进进，有游客，有做买卖的，也不乏些江湖人士。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaoximen" {
+    room_id = rooms.xiaoximen.id
+  west = rooms.xroad1.id
+  east = rooms.jinmafang.id  }
+
+
+  room_characters "xiaoximen" {
+    room_id = rooms.xiaoximen.id
+    characters = [
+      { id = characters.ducha.id },
+      { id = characters.caifan.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/xizoulang.c by LPCConverter
+# Zone: kunming
+
+    rooms "xizoulang" {
+      name = "西走廊"
+      description = "这里是一条干净的走廊，从两面看去，可以欣赏到花园里 的风景，只见各种假山怪石，奇花异草，足见王府之气派。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xizoulang" {
+    room_id = rooms.xizoulang.id
+  west = rooms.xizoulang1.id
+  east = rooms.wangfu1.id  }
+
+
+  room_characters "xizoulang" {
+    room_id = rooms.xizoulang.id
+    characters = [
+      { id = characters.jiading.id },
+      { id = characters.jiading.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/xizoulang1.c by LPCConverter
+# Zone: kunming
+
+    rooms "xizoulang1" {
+      name = "西走廊"
+      description = "这里是一条干净的走廊，从两面看去，可以欣赏到花园里 的风景，只见各种假山怪石，奇花异草，足见王府之气派。西 边是平西王最爱去的书房，门口有几名亲兵在把守。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "west" && objectp(present("qin bing", environment(me)))
+direction = "west"
+  message = "亲兵拦住你说道：王爷吩咐了，没有他的允许，任何人不得进入打扰。"
+}
+
+]
+    }
+
+  room_exits "xizoulang1" {
+    room_id = rooms.xizoulang1.id
+  west = rooms.shufan.id
+  east = rooms.xizoulang.id  }
+
+
+  room_characters "xizoulang1" {
+    room_id = rooms.xizoulang1.id
+    characters = [
+      { id = characters.qinbing.id },
+      { id = characters.qinbing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/xroad1.c by LPCConverter
+# Zone: kunming
+
+    rooms "xroad1" {
+      name = "官道"
+      description = "这是一条向南的黄土官道，两旁是一片片绿油油的水田和 悠闲的牧童。大道上人流熙熙攘攘，过往的行人顶着炎炎烈日 满头大汗的匆匆赶路，似乎并无心欣赏这优美的田园风光。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xroad1" {
+    room_id = rooms.xroad1.id
+  west = rooms.xroad2.id
+  east = rooms.xiaoximen.id  }
+
+# Generated from C:/files/git/mud/d/kunming/xroad2.c by LPCConverter
+# Zone: kunming
+
+    rooms "xroad2" {
+      name = "官道"
+      description = "这是一条向南的黄土官道，两旁是一片片绿油油的水田和 悠闲的牧童。大道上人流熙熙攘攘，过往的行人顶着炎炎烈日 满头大汗的匆匆赶路，似乎并无心欣赏这优美的田园风光。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xroad2" {
+    room_id = rooms.xroad2.id
+  west = rooms.road1.id
+  east = rooms.xroad1.id  }
+
+# Generated from C:/files/git/mud/d/kunming/yunnan.c by LPCConverter
+# Zone: kunming
+
+    rooms "yunnan" {
+      name = "红土路"
+      description = "进入云贵高原，泥土变为了红色，空气变得更清新，放眼 看去，只见周围那绵绵的原始森林不见边际，你顿时觉得心高 志远，一股豪气涌了上来，想要做一番大事业。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yunnan" {
+    room_id = rooms.yunnan.id
+  southwest = rooms.yunnan1.id
+  north = rooms.road7.id  }
+
+# Generated from C:/files/git/mud/d/kunming/yunnan1.c by LPCConverter
+# Zone: kunming
+
+    rooms "yunnan1" {
+      name = "红土路"
+      description = "进入云贵高原，泥土变为了红色，空气变得更清新，放眼 看去，只见周围那绵绵的原始森林不见边际，你顿时觉得心高 志远，一股豪气涌了上来，想要做一番大事业。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yunnan1" {
+    room_id = rooms.yunnan1.id
+  south = rooms.yunnan2.id
+  northeast = rooms.yunnan.id  }
+
+
+  room_characters "yunnan1" {
+    room_id = rooms.yunnan1.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/yunnan2.c by LPCConverter
+# Zone: kunming
+
+    rooms "yunnan2" {
+      name = "原始森林"
+      description = "你走进原始森林，只见周围迷迷茫茫全是参天大树，遮天 蔽日，四周光线很暗，分不清东南西北，任是谁进来都别想再 出去了。幸好当年诸葛亮入滇时曾开出了一条路。否则，就算 不被猛兽吃掉，恐怕也要被毒瘴毒死。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yunnan2" {
+    room_id = rooms.yunnan2.id
+  west = rooms.yunnan3.id
+  north = rooms.yunnan1.id  }
+
+
+
+
+  room_items "yunnan2" {
+    room_id = rooms.yunnan2.id
+    items = [
+      { id = items.huabanzhu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/yunnan3.c by LPCConverter
+# Zone: kunming
+
+    rooms "yunnan3" {
+      name = "原始森林"
+      description = "你走进原始森林，只见周围迷迷茫茫全是参天大树，遮天 蔽日，四周光线很暗，分不清东南西北，任是谁进来都别想再 出去了。幸好当年诸葛亮入滇时曾开出了一条路。否则，就算 不被猛兽吃掉，恐怕也要被毒瘴毒死。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yunnan3" {
+    room_id = rooms.yunnan3.id
+  east = rooms.yunnan2.id
+  south = rooms.yunnan4.id  }
+
+# Generated from C:/files/git/mud/d/kunming/yunnan4.c by LPCConverter
+# Zone: kunming
+
+    rooms "yunnan4" {
+      name = "原始森林"
+      description = "你走进原始森林，只见周围迷迷茫茫全是参天大树，遮天 蔽日，四周光线很暗，分不清东南西北，任是谁进来都别想再 出去了。幸好当年诸葛亮入滇时曾开出了一条路。否则，就算 不被猛兽吃掉，恐怕也要被毒瘴毒死。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yunnan4" {
+    room_id = rooms.yunnan4.id
+  north = rooms.yunnan3.id
+  south = rooms.xiaolu.id  }
+
+# Generated from C:/files/git/mud/d/kunming/zhonglou.c by LPCConverter
+# Zone: kunming
+
+    rooms "zhonglou" {
+      name = "钟楼"
+      description = "这是一座钟楼，中间悬有有一巨钟，上面刻的有铭文。永 乐大钟钟身足有两人那么高，看起来足有上千斤，不知道当初 是怎么挂上去的，钟的两侧悬有一巨木，看来是用来敲钟用的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhonglou" {
+    room_id = rooms.zhonglou.id
+  down = rooms.jinrilou.id  }
+
+
+  room_characters "zhonglou" {
+    room_id = rooms.zhonglou.id
+    characters = [
+      { id = characters.seng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunming/npc/chaxiaoer.c by LPCConverter
+# Zone: kunming
+
+    characters "chaxiaoer" {
+      name = "茶小二"
+      description = "这个茶小二正忙着给客人送茶，递烟。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 500
+    str = 30
+  }
+
+  goods = [
+    { id = items.yan.id },
+    { id = items.wan.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "茶小二热情的说到：这位{respect}，马上给你上茶。" },
+    { line = "茶小二说道：这位{respect}要不要来两口水烟提提神。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/laoban.c by LPCConverter
+# Zone: kunming
+
+    characters "laoban" {
+      name = "元财"
+      description = "他是这里的店主，看上去忠厚老实的样子。"
+  title = "店主"
+  gender = "男性"
+  age = 43
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  accept = [
+    { kind = "money" min = 5000 accept = true msg = "元财一哈腰，说道：多谢客官，楼上请。" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/liu.c by LPCConverter
+# Zone: kunming
+
+    characters "liu" {
+      name = "刘通"
+      description = "一个一看就知道是个精明的人。"
+  title = "当铺老板"
+  gender = "男性"
+  age = 35
+  shen_type = 0
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy", "sell", "value"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/qinbing.c by LPCConverter
+# Zone: kunming
+
+    characters "qinbing" {
+      name = "王府亲兵"
+      description = "一名尽忠职守的亲兵，警惕的注视着过往的人。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    dex = 23
+    str = 24
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "force" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.armor.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/wusangui.c by LPCConverter
+# Zone: kunming
+
+    characters "wusangui" {
+      name = "吴三桂"
+      description = "这就是大名鼎鼎的引清兵入关的平西王吴三桂"
+  title = "平西王"
+  gender = "男性"
+  age = 58
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 3000000
+    dex = 30
+    max_jing = 600
+    max_neili = 500
+    max_qi = 1200
+    str = 30
+  }
+
+  skills = [
+    { skill = "unarmed" level = 120 },
+    { skill = "dodge" level = 120 },
+    { skill = "parry" level = 120 },
+    { skill = "hammer" level = 120 },
+    { skill = "gun" level = 120 },
+    { skill = "force" level = 120 },
+    { type = "hammer" skill = "gun" }
+  ]
+
+
+  carry = [
+    { id = items.huoqiang.id },
+    { id = items.goldcloth2.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "吴三桂喝道：“什么人！居然敢擅闯本王府！”  只见吴三桂举手一抬，听得“轰”的一声，一团火焰从枪口窜出。" },
+    { line = "吴三桂瞪着你，磨了磨牙。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/xiaoer.c by LPCConverter
+# Zone: kunming
+
+    characters "xiaoer" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  # vendor_goods: "/d/city/npc/obj/jitui" (file not found)
+  # vendor_goods: "/d/city/npc/obj/jiudai" (file not found)
+  # vendor_goods: "/d/city/npc/obj/baozi" (file not found)
+  # vendor_goods: "/d/city/npc/obj/kaoya" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/obj/armor.c by LPCConverter
+# Zone: kunming
+
+    characters "armor" {
+      name = "铁甲"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/obj/baozi.c by LPCConverter
+# Zone: kunming
+
+    characters "baozi" {
+      name = "包子"
+      description = "一个香喷喷的肉包子。"
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/obj/changjian.c by LPCConverter
+# Zone: kunming
+
+    characters "changjian" {
+      name = "长剑"
+      description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/obj/gangdao.c by LPCConverter
+# Zone: kunming
+
+    characters "gangdao" {
+      name = "钢刀"
+      description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/obj/guanfu.c by LPCConverter
+# Zone: kunming
+
+    characters "guanfu" {
+      name = "官服"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/obj/huasheng.c by LPCConverter
+# Zone: kunming
+
+    characters "huasheng" {
+      name = "油炸花生"
+      description = "一碟香喷喷的花生米。"
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/obj/huoqiang.c by LPCConverter
+# Zone: kunming
+
+    characters "huoqiang" {
+      name = "金火枪"
+      description = "一支由黄金铸成，做工精细的火枪。"
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/obj/jitui.c by LPCConverter
+# Zone: kunming
+
+    characters "jitui" {
+      name = "烤鸡腿"
+      description = "一枝烤得香喷喷的鸡腿。"
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/obj/jiudai.c by LPCConverter
+# Zone: kunming
+
+    characters "jiudai" {
+      name = "牛皮酒袋"
+      description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/obj/niurou.c by LPCConverter
+# Zone: kunming
+
+    characters "niurou" {
+      name = "熟牛肉"
+      description = "一块香喷喷的熟牛肉。"
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/obj/wan.c by LPCConverter
+# Zone: kunming
+
+    characters "wan" {
+      name = "大碗茶"
+      description = "一个粗磁大碗。"
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/obj/yan.c by LPCConverter
+# Zone: kunming
+
+    characters "yan" {
+      name = "水烟"
+      description = "这是一卷水烟丝。"
+    }
+
+# Generated from C:/files/git/mud/d/kunming/npc/obj/yantong.c by LPCConverter
+# Zone: kunming
+
+    characters "yantong" {
+      name = "水烟筒"
+      description = "这是一支云南人喜爱的水烟筒。你可以用(fire)来吸烟。"
+
+  init = {
+    greet_delay = 0
+    add_actions = ["fire"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/kunming/obj/book14_1.c by LPCConverter
+# Zone: kunming
+
+    items "book14_1" {
+      name = "四十二章经一"
+      description = "一本镶黄旗的经书,封皮(binding)很精致。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunming/obj/pingfeng.c by LPCConverter
+# Zone: kunming
+
+    items "pingfeng" {
+      name = "大理石屏风"
+      description = "一座大理石的屏风，上面的天然花纹栩栩如生。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

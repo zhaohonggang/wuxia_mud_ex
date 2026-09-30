@@ -1,0 +1,670 @@
+zones "room" {
+  name = "room"
+}
+
+# Generated from C:/files/git/mud/d/room/qianting.c by LPCConverter
+# Zone: room
+
+    rooms "qianting" {
+      name = "前庭"
+      description = "这里似乎非常安静，倒是时不时听见鸟儿唧唧喳喳的叫。院中不少树 木已然有遮天之势，肃穆非常。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qianting" {
+    room_id = rooms.qianting.id
+  south = rooms.dayuan.id
+  east = rooms.zuowei.id
+  west = rooms.youwei.id  }
+
+# Generated from C:/files/git/mud/d/room/xiaoyuan.c by LPCConverter
+# Zone: room
+
+    rooms "xiaoyuan" {
+      name = "小院"
+      description = "这里是一个不大的院子，到处摆放着木料砖瓦。院中坐着 一个人，丰神飘洒，颇具宗匠之风。四周围着几个弟子，专心 致志的在老师听课。院角的一棵树上挂着一个牌子，上书：代 建各种房屋，有意者敬请与鲁班洽谈。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaoyuan" {
+    room_id = rooms.xiaoyuan.id
+  west = rooms.yidao2.id
+  dule = rooms.xiaoyuan.id
+  caihong = rooms.xiaoyuan.id
+  panlong = rooms.dayuan.id  }
+
+
+  room_characters "xiaoyuan" {
+    room_id = rooms.xiaoyuan.id
+    characters = [
+      { id = characters.jinlin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/room/caihong/dating.c by LPCConverter
+# Zone: room
+
+    rooms "dating" {
+      name = "大厅"
+      description = "这就是彩虹居主人迎送客人的地方，正中有一些桌椅，侧面是屏风， 厅堂中挂着两个条幅。不过上面居然什么都没有写。东面是主人的房间。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dating" {
+    room_id = rooms.dating.id
+  east = rooms.woshi.id
+  north = rooms.houyuan.id
+  south = rooms.xiaoyuan.id  }
+
+# Generated from C:/files/git/mud/d/room/caihong/houyuan.c by LPCConverter
+# Zone: room
+
+    rooms "houyuan" {
+      name = "后院"
+      description = "这是彩虹居的后院，种着一些花草，大部分是都不知名的野生花草。 不过花儿开起来也看上去也非常漂亮。主人如果读书练武疲倦了，就可 以到这里稍作休息，院角放着一张藤椅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houyuan" {
+    room_id = rooms.houyuan.id
+  south = rooms.dating.id  }
+
+# Generated from C:/files/git/mud/d/room/caihong/woshi.c by LPCConverter
+# Zone: room
+
+    rooms "woshi" {
+      name = "卧室"
+      description = "这是主人的卧室，收拾得井井有条。南窗下是一张大床，床边有一个 柜子，还有一个书架。整间屋子虽然朴素，但是可以说是样样俱全，并不 缺少什么东西。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "woshi" {
+    room_id = rooms.woshi.id
+  west = rooms.dating.id  }
+
+# Generated from C:/files/git/mud/d/room/dule/dulewu.c by LPCConverter
+# Zone: room
+
+    rooms "dulewu" {
+      name = "小屋"
+      description = "屋子不大，靠窗的地方摆了一张床，屋中一张桌，几只椅，非常简单。 恐怕只有甘于寂寞的人才住得了这种简朴的屋子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dulewu" {
+    room_id = rooms.dulewu.id
+  south = rooms.xiaoyuan.id  }
+
+# Generated from C:/files/git/mud/d/room/npc/jinlin.c by LPCConverter
+# Zone: room
+
+    characters "jinlin" {
+      name = "金临"
+      description = "这是一位垂髫童子，是鲁班手下五行童子之一。"
+  title = "南方丙丁◎火"
+  nickname = "五行童子"
+  gender = "男性"
+  age = 18
+
+  combat = {
+    attitude = "friendly"
+  }
+
+  accept = [
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/room/obj/advance.c by LPCConverter
+# Zone: room
+
+    items "advance" {
+      name = "免费卡"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/room/obj/card.c by LPCConverter
+# Zone: room
+
+    items "card" {
+      name = "免费卡"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/room/obj/paper.c by LPCConverter
+# Zone: room
+
+    items "paper" {
+      name = "纸张"
+      description = "这是一张上等宣纸，你可以在上面画(draw)点东西。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/room/obj/super.c by LPCConverter
+# Zone: room
+
+    items "super" {
+      name = "免费卡"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/room/obj/ultracard.c by LPCConverter
+# Zone: room
+
+    items "ultracard" {
+      name = "免费卡"
+      description = "这是一张无上住房免费卡，凭这张卡可以免费购买任何住房。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/room/panlong/chashi.c by LPCConverter
+# Zone: room
+
+    rooms "chashi" {
+      name = "茶室"
+      description = "这是一个玲珑小巧的茶室，很是显得精致。正中有一茶几。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chashi" {
+    room_id = rooms.chashi.id
+  west = rooms.yingke.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/chufang.c by LPCConverter
+# Zone: room
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "此处便是盘龙居的厨房，武功再高终究也不能辟谷，饭总是要吃的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+  east = rooms.houyuan.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/dayuan.c by LPCConverter
+# Zone: room
+
+    rooms "dayuan" {
+      name = "大院"
+      description = "这是一个宽阔的院落，种着各种树木，阳光照下来透过树荫投下层层 影子。有一条大路通向里面。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dayuan" {
+    room_id = rooms.dayuan.id
+  north = rooms.qianting.id
+  out = rooms.xiaoyuan.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/huayuan.c by LPCConverter
+# Zone: room
+
+    rooms "huayuan" {
+      name = "后花园"
+      description = "这是盘龙居的后花园，种着一些采自五湖四海，名山大川的奇花 异草，美丽非常。主人有时读书练武疲倦了，就到这里稍作休息，观 赏花草以怡情自乐，或许能突发灵感，有所领悟。西面就是通往主人 居所的铁门，东面则是一片竹林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huayuan" {
+    room_id = rooms.huayuan.id
+  south = rooms.houyuan.id
+  east = rooms.zhulin.id
+  west = rooms.jusuo.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/jusuo.c by LPCConverter
+# Zone: room
+
+    rooms "jusuo" {
+      name = "居所"
+      description = "这就是盘龙居主人休息，读书的地方。楼上就是主人的卧室，西面则 是书房。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jusuo" {
+    room_id = rooms.jusuo.id
+  up = rooms.woshi.id
+  west = rooms.shufang.id
+  east = rooms.huayuan.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/lianwu.c by LPCConverter
+# Zone: room
+
+    rooms "lianwu" {
+      name = "练武场"
+      description = "此处便是盘龙居的练武场，人在江湖，武功万万不可荒废。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lianwu" {
+    room_id = rooms.lianwu.id
+  west = rooms.houyuan.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/shufang.c by LPCConverter
+# Zone: room
+
+    rooms "shufang" {
+      name = "书房"
+      description = "这里是盘龙居的主人读书写字的地方，干净明亮。文房四宝整整齐齐 的摆在桌子上面。有时主人也在这里签发一些邀请客人的请柬。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shufang" {
+    room_id = rooms.shufang.id
+  east = rooms.jusuo.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/tingtao.c by LPCConverter
+# Zone: room
+
+    rooms "tingtao" {
+      name = "听涛阁"
+      description = "这是竹林一角的听涛阁，在这里风吹竹叶的阵阵涛声听的非常真 切，真是让人心旷神怡。实在是一个参悟武功的好去处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tingtao" {
+    room_id = rooms.tingtao.id
+  west = rooms.zhulin.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/yanwu1.c by LPCConverter
+# Zone: room
+
+    rooms "yanwu1" {
+      name = "演武厅"
+      description = "这是盘龙居的演武厅，有时有些江湖朋友来会，想一试身手，就 在这里比武较量。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yanwu1" {
+    room_id = rooms.yanwu1.id
+  west = rooms.yishiting.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/yanwu2.c by LPCConverter
+# Zone: room
+
+    rooms "yanwu2" {
+      name = "演武厅"
+      description = "这是盘龙居的演武厅，有时有些江湖朋友来会，想一试身手，就 在这里比武较量。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yanwu2" {
+    room_id = rooms.yanwu2.id
+  east = rooms.yishiting.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/yingke.c by LPCConverter
+# Zone: room
+
+    rooms "yingke" {
+      name = "迎客厅"
+      description = "这里是盘龙居的主人迎接八方来客的地方。大凡客人来拜见主人，少 不得在这里寒暄叙话，了尽仰慕之情。东面通往一个茶室，是主人陪同客 人品尝天下名茶之处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yingke" {
+    room_id = rooms.yingke.id
+  north = rooms.yishiting.id
+  south = rooms.zoudao.id
+  east = rooms.chashi.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/yishiting.c by LPCConverter
+# Zone: room
+
+    rooms "yishiting" {
+      name = "议事厅"
+      description = "这就是盘龙居主人和重要人物商量大事之处，正中有不少桌椅，侧 面是屏风，厅堂中挂着两个条幅，两旁通往演武厅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yishiting" {
+    room_id = rooms.yishiting.id
+  east = rooms.yanwu1.id
+  west = rooms.yanwu2.id
+  north = rooms.zhongting.id
+  south = rooms.yingke.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/youwei.c by LPCConverter
+# Zone: room
+
+    rooms "youwei" {
+      name = "右卫舍"
+      description = "这里是右卫舍，是看护大门的家丁放哨的地方。当然现在是空空 荡荡，没有一个人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "youwei" {
+    room_id = rooms.youwei.id
+  east = rooms.qianting.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/youxiang.c by LPCConverter
+# Zone: room
+
+    rooms "youxiang" {
+      name = "右厢房"
+      description = "这是盘龙居的右厢房，是客人居住的地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "youxiang" {
+    room_id = rooms.youxiang.id
+  east = rooms.zhongting.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/zhongting.c by LPCConverter
+# Zone: room
+
+    rooms "zhongting" {
+      name = "中庭"
+      description = "这是盘龙居之腰：中庭，两旁便是客人居住的厢房，后面通往后 花园和主人居所，前面则是议事厅，一直通往大院。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhongting" {
+    room_id = rooms.zhongting.id
+  north = rooms.houyuan.id
+  south = rooms.yishiting.id
+  east = rooms.zuoxiang.id
+  west = rooms.youxiang.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/zhulin.c by LPCConverter
+# Zone: room
+
+    rooms "zhulin" {
+      name = "竹林"
+      description = "这里种着好大一片竹林，非常幽静。风一起就听竹叶沙沙的响。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhulin" {
+    room_id = rooms.zhulin.id
+  west = rooms.huayuan.id
+  east = rooms.tingtao.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/zoudao.c by LPCConverter
+# Zone: room
+
+    rooms "zoudao" {
+      name = "走道"
+      description = "这是连接正厅和大门的一条走道，两旁都是木制墙板，前面就是 迎客厅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zoudao" {
+    room_id = rooms.zoudao.id
+  north = rooms.yingke.id
+  south = rooms.qianting.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/zuowei.c by LPCConverter
+# Zone: room
+
+    rooms "zuowei" {
+      name = "左卫舍"
+      description = "这里是左卫舍，是看护大门的家丁放哨的地方。当然现在是空空 荡荡，没有一个人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zuowei" {
+    room_id = rooms.zuowei.id
+  west = rooms.qianting.id  }
+
+# Generated from C:/files/git/mud/d/room/panlong/zuoxiang.c by LPCConverter
+# Zone: room
+
+    rooms "zuoxiang" {
+      name = "左厢房"
+      description = "这是盘龙居的左厢房，是客人居住的地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zuoxiang" {
+    room_id = rooms.zuoxiang.id
+  west = rooms.zhongting.id  }
+
+# Generated from C:/files/git/mud/d/room/roomnpc/laopu.c by LPCConverter
+# Zone: room
+
+    characters "laopu" {
+      name = "扫地老仆"
+      description = "这是一个扫地的老仆人，不过看上去似乎身怀绝技。"
+  gender = "男性"
+  brain = brains.guarder
+
+  combat = {
+    attitude = "friendly"
+    max_jing = 2000
+    max_neili = 4200
+    max_qi = 4000
+  }
+
+  skills = [
+    { skill = "force" level = 200 },
+    { skill = "parry" level = 200 },
+    { skill = "dodge" level = 200 },
+    { skill = "sword" level = 200 },
+    { skill = "cuff" level = 200 },
+    { skill = "strike" level = 200 },
+    { skill = "huashan-xinfa" level = 200 },
+    { skill = "feiyan-huixiang" level = 200 },
+    { skill = "huashan-jian" level = 200 },
+    { skill = "hunyuan-zhang" level = 200 },
+    { skill = "poyu-quan" level = 200 },
+    { type = "force" skill = "huashan-xinfa" },
+    { type = "parry" skill = "huashan-jian" },
+    { type = "sword" skill = "huashan-jian" },
+    { type = "dodge" skill = "feiyan-huixiang" },
+    { type = "cuff" skill = "poyu-quan" },
+    { type = "strike" skill = "hunyuan-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["invite", "show"]
+  }
+
+  accept = [
+    { kind = "money" accept = true msg = "对{npc}施了一礼。" },
+    { kind = "any" accept = false msg = ["对{npc}施了一礼。"] }
+  ]
+
+  engage = {
+    fight = { accept = false msg = "{npc}吓了一跳，慌忙对{name}道：“小的不敢，小的不敢！”" }
+    hit = { accept = false msg = "{npc}愁眉苦脸的对{name}道：“可不要和我开这种玩笑！”" }
+    kill = { accept = false msg = "{npc}一声长叹，道：“既然主人不留我了，罢罢罢！合则留，不合则去！我走了。” 说罢，老人丢下扫把，飘然而去。" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/room/roomnpc/puren.c by LPCConverter
+# Zone: room
+
+    characters "puren" {
+      name = "仆人"
+      description = "这是一个仆人，长得忠厚老实。"
+  gender = "男性"
+
+  combat = {
+    attitude = "friendly"
+  }
+
+  accept = [
+    { kind = "money" accept = true msg = "对{npc}施了一礼。" },
+    { kind = "any" accept = true msg = ["对{npc}施了一礼。", "对{npc}点头哈腰道：“多谢这位啦！”"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/room/roomnpc/teagirl.c by LPCConverter
+# Zone: room
+
+    characters "teagirl" {
+      name = "伺茶丫鬟"
+      description = "这是个年龄不大的小姑娘，一脸聪明乖巧，正在准备为客人上茶。"
+  gender = "女性"
+
+  combat = {
+    attitude = "friendly"
+  }
+
+  init = {
+    greet_delay = 1
+    add_actions = ["tea"]
+  }
+
+  greetings = [
+    { line = "{expr}对{npc}盈盈道了一个万福。 {expr}" },
+    { line = "{expr}对{npc}道：“这位{respect}好。” {expr}" }
+  ]
+
+  accept = [
+    { kind = "money" accept = true msg = "对{npc}施了一礼。" },
+    { kind = "any" accept = true msg = ["对{npc}施了一礼。", "杏目园睁，喝道：“你以为是打发叫花子啊？”", "对{npc}微微一笑，道：“多谢这位啦！”", "不情愿的接下了。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/room/roomnpc/yahuan.c by LPCConverter
+# Zone: room
+
+    characters "yahuan" {
+      name = "丫鬟"
+      description = "这是个年龄不大的小姑娘，一脸聪明乖巧。"
+  gender = "女性"
+
+  combat = {
+    attitude = "friendly"
+  }
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "{expr}对{npc}盈盈道了一个万福。 {expr}" },
+    { line = "{expr}对{npc}道：“这位{respect}好。” {expr}" }
+  ]
+
+  accept = [
+    { kind = "money" accept = true msg = "对{npc}施了一礼。" },
+    { kind = "any" accept = true msg = ["对{npc}施了一礼。", "杏目园睁，喝道：“你以为是打发叫花子啊？”", "对{npc}微微一笑，道：“多谢这位啦！”", "不情愿的接下了。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/room/roomobj/mantou.c by LPCConverter
+# Zone: room
+
+    items "mantou" {
+      name = "白面馒头"
+      description = "一个香喷喷的白面馒头。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/room/roomobj/pass.c by LPCConverter
+# Zone: room
+
+    items "pass" {
+      name = "手谕"
+      description = "一张手谕。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/room/roomobj/rice.c by LPCConverter
+# Zone: room
+
+    items "rice" {
+      name = "白米饭"
+      description = "一碗香喷喷的白米饭。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/room/roomobj/soup.c by LPCConverter
+# Zone: room
+
+    items "soup" {
+      name = "汤碗"
+      description = "一碗香气扑鼻的青菜汤。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

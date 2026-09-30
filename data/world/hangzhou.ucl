@@ -1,0 +1,5033 @@
+zones "hangzhou" {
+  name = "hangzhou"
+}
+
+# Generated from C:/files/git/mud/d/hangzhou/baiti.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "baiti" {
+      name = "白堤"
+      description = "白堤横旦湖上，把西湖分成里湖与外湖。堤上种满了杨柳，碧桃。 每逢春至，“翩翩柳丝泛绿，树树桃颜带笑”。白居易曾有“乱花渐 欲迷人眼，浅草才能没马蹄。最爱湖东行不足，绿杨荫里白沙堤。” 来描述这里的景色。朝西南走过了锦带桥便是“平湖秋月”。东边则 是断桥。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "baiti" {
+    room_id = rooms.baiti.id
+    north = rooms.duanqiao.id
+    southwest = rooms.pinghuqiuyue.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/baoshishan.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "baoshishan" {
+      name = "宝石山"
+      description = "宝石山不是很高，山上多奇峰怪石。山路旁有一座亭子“来凤亭”， 亭前有块卵形大石，临空搁置在山巅，叫落星石，又称寿星石。再往 北上就到了保淑塔，往南下便回到大道了。"
+  x = 0
+  y = 2
+  z = 1
+    }
+
+  room_exits "baoshishan" {
+    room_id = rooms.baoshishan.id
+    southdown = rooms.road8.id
+    northup = rooms.baoshuta.id
+    }
+
+
+
+
+  room_items "baoshishan" {
+    room_id = rooms.baoshishan.id
+    items = [
+      { id = items.shitou.id },
+      { id = items.eluanshi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/baoshuta.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "baoshuta" {
+      name = "保淑塔"
+      description = "保淑塔姿态秀丽挺拔，塔基极小，却负荷了极高的塔身。传说吴 越王钱弘淑奉召入京，久留未返，他大臣吴延爽为祝原其平安归来， 而建此塔，故名保淑塔。往南是下山的路。"
+  x = 0
+  y = 3
+  z = 2
+    }
+
+  room_exits "baoshuta" {
+    room_id = rooms.baoshuta.id
+    southdown = rooms.baoshishan.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/chashi.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "chashi" {
+      name = "茶室"
+      description = "这里是龙井茶茶室。在这里可以品到最新鲜的龙井。"
+  x = -6
+  y = -5
+  z = 0
+    }
+
+  room_exits "chashi" {
+    room_id = rooms.chashi.id
+    west = rooms.longjing.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/cuiweiting.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "cuiweiting" {
+      name = "翠微亭"
+      description = "翠微亭建在飞来峰的半山腰间，乃是名将韩世忠为纪念岳飞而建 的。岳飞有“经年尘土满征衣，特特寻芳上翠微”的诗句，故此亭名 为“翠微”。西边是下山的路。"
+  x = -5
+  y = -4
+  z = 0
+    }
+
+  room_exits "cuiweiting" {
+    room_id = rooms.cuiweiting.id
+    west = rooms.qinglindong.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/dadao1.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "dadao1" {
+      name = "沿湖大道"
+      description = "一条宽敞的大道上却游人稀少。原来这里沿路住着的都是达官贵 人。本来风景秀丽之处，却显的一片萧瑟。路的西边是一座庄园，大 道向南北延伸。"
+  x = -3
+  y = 0
+  z = 0
+    }
+
+  room_exits "dadao1" {
+    room_id = rooms.dadao1.id
+    west = rooms.guozhuang.id
+    south = rooms.dadao2.id
+    north = rooms.road5.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/dadao2.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "dadao2" {
+      name = "沿湖大道"
+      description = "一条宽敞的大道上却游人稀少。原来这里沿路住着的都是达官贵 人。本来风景秀丽之处，却显的一片萧瑟。大道向西南和北延伸。"
+  x = -3
+  y = -1
+  z = 0
+    }
+
+  room_exits "dadao2" {
+    room_id = rooms.dadao2.id
+    south = rooms.dalu1.id
+    north = rooms.dadao1.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/dadao3.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "dadao3" {
+      name = "沿湖大道"
+      description = "一条宽敞的大道上却游人稀少。原来这里沿路住着的都是达官贵 人。本来风景秀丽之处，却显的一片萧瑟。路的西边是一座庄园，大 道向南北延伸。"
+  x = -3
+  y = -3
+  z = 0
+    }
+
+  room_exits "dadao3" {
+    room_id = rooms.dadao3.id
+    west = rooms.liuzhuang.id
+    north = rooms.dalu1.id
+    south = rooms.road19.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/dalu1.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "dalu1" {
+      name = "沿湖大道"
+      description = "路的东边是一座小山。山上郁郁葱葱，种满了树。山上本是一处 观赏西湖的好地方，但却被丁财主占为私有。大路向东北和南边延伸。"
+  x = -3
+  y = -2
+  z = 0
+    }
+
+  room_exits "dalu1" {
+    room_id = rooms.dalu1.id
+    south = rooms.dadao3.id
+    north = rooms.dadao2.id
+    }
+
+
+  room_characters "dalu1" {
+    room_id = rooms.dalu1.id
+    characters = [
+      { id = characters.tiao_fu.id },
+      { id = characters.honghua1.id },
+      { id = characters.honghua1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/duanqiao.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "duanqiao" {
+      name = "断桥"
+      description = "断桥正好在外湖和里湖的分水点上。这里亭轩错落，掩映在绿树 佳荫之下。“山明水秀轩扉启，落日渔歌过里湖”，就是描述这里傍 晚的景色。在断桥上可浏览环湖诸山和湖中诸岛的风光。每当雪过後， 站在桥头，只见一切都被覆上白雪，玉琢银楼的湖山风貌就是西湖十 景之一的“断桥残雪”。民间神话“白蛇传”中的白娘娘和许仙就在 这里相会的。过桥往南走便是白堤了。东北边可通往青石大道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "duanqiao" {
+    room_id = rooms.duanqiao.id
+    south = rooms.baiti.id
+    northeast = rooms.road9.id
+    }
+
+
+  room_characters "duanqiao" {
+    room_id = rooms.duanqiao.id
+    characters = [
+      { id = characters.poorman.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/dxbaodian1.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "dxbaodian1" {
+      name = "大雄宝殿"
+      description = "天王殿後是另一座高达三十几米的大殿。匾上写着“大雄宝殿”。 殿前有两座八角九层石塔。往南又进了天王殿。"
+  x = -7
+  y = -1
+  z = 0
+    }
+
+  room_exits "dxbaodian1" {
+    room_id = rooms.dxbaodian1.id
+    in = rooms.dxbaodian2.id
+    south = rooms.tianwangdian.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/dxbaodian2.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "dxbaodian2" {
+      name = "大雄宝殿"
+      description = "殿内正中一尊如来佛像，两旁塑有二十尊诸天的佛像，大殿後壁 有五十三参海岛像，岛上有姿态各异的大小佛像一百五十个。"
+  x = -7
+  y = -1
+  z = 0
+    }
+
+  room_exits "dxbaodian2" {
+    room_id = rooms.dxbaodian2.id
+    out = rooms.dxbaodian1.id
+    }
+
+
+  room_characters "dxbaodian2" {
+    room_id = rooms.dxbaodian2.id
+    characters = [
+      { id = characters.dabei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/fajingsi.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "fajingsi" {
+      name = "法镜寺"
+      description = "法镜寺建在小溪旁，格外的幽雅。进香的游客不时的进进出出。 南上往中天竺。朝北是下山的路。"
+  x = -6
+  y = -4
+  z = 2
+    }
+
+  room_exits "fajingsi" {
+    room_id = rooms.fajingsi.id
+    northdown = rooms.shanlu1.id
+    southup = rooms.shanlu2.id
+    }
+
+
+  room_characters "fajingsi" {
+    room_id = rooms.fajingsi.id
+    characters = [
+      { id = characters.shami.id },
+      { id = characters.guest.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/fajinsi.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "fajinsi" {
+      name = "法净寺"
+      description = "法净寺依山而立，寺前小溪流水。进香的游客不时的进进出出。 南上往上天竺。朝北是下山的路。"
+  x = -6
+  y = -6
+  z = 4
+    }
+
+  room_exits "fajinsi" {
+    room_id = rooms.fajinsi.id
+    northdown = rooms.shanlu2.id
+    southup = rooms.shanlu3.id
+    }
+
+
+  room_characters "fajinsi" {
+    room_id = rooms.fajinsi.id
+    characters = [
+      { id = characters.shami.id },
+      { id = characters.guest.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/fangheting.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "fangheting" {
+      name = "放鹤亭"
+      description = "亭四周种满了梅花。一到冬末春初，梅花盛放，蔚然可观。此亭 是为了纪念北宋隐逸诗人林和靖而建。他酷爱梅花。“疏影横斜水清 浅，暗香浮动月黄昏”就是他的咏梅名句。据传说，诗人还养鹤一只， 取名：“鸣苯”每逢自己外出散步而恰有客人来访时，童子就开笼放 鹤，诗人见鹤，便回家接客，故流传有“梅妻鹤子”的故事。朝东南 走便是平湖秋月。西南边则是孤山。"
+  x = -2
+  y = -1
+  z = 0
+    }
+
+  room_exits "fangheting" {
+    room_id = rooms.fangheting.id
+    southeast = rooms.pinghuqiuyue.id
+    southwest = rooms.gushan.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/faxisi.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "faxisi" {
+      name = "法喜寺"
+      description = "法喜寺是天竺三寺中最敞朗深幽的一座。进香的游客不时的进进 出出。往东可达龙井，朝北是下山的路。"
+  x = -9
+  y = -6
+  z = 1
+    }
+
+  room_exits "faxisi" {
+    room_id = rooms.faxisi.id
+    east = rooms.shanlu4.id
+    }
+
+
+  room_characters "faxisi" {
+    room_id = rooms.faxisi.id
+    characters = [
+      { id = characters.guest.id },
+      { id = characters.guest.id },
+      { id = characters.seng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/feilaifeng.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "feilaifeng" {
+      name = "飞来峰"
+      description = "飞来峰又名灵鹫峰。延着盘山小道往上走，只见溪盘岩石壁间雕 着一尊袒腹露胸，喜笑自若的弭勒佛。旁边是一座气魄胸伟的多闻天 王。北边是下山的路。小路往上延伸向东西两边。"
+  x = -7
+  y = -4
+  z = 0
+    }
+
+  room_exits "feilaifeng" {
+    room_id = rooms.feilaifeng.id
+    west = rooms.longhongdong.id
+    east = rooms.qinglindong.id
+    north = rooms.road1.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/guozhuang.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "guozhuang" {
+      name = "郭庄"
+      description = "庄园的大匾上是「郭庄」两个大字。朱红色的大门紧紧关 闭着，里面静悄悄的一点声音都没有。"
+  x = -4
+  y = 0
+  z = 0
+    }
+
+  room_exits "guozhuang" {
+    room_id = rooms.guozhuang.id
+    east = rooms.dadao1.id
+    }
+
+
+
+
+  room_items "guozhuang" {
+    room_id = rooms.guozhuang.id
+    items = [
+      { id = items.gou2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/gushan.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "gushan" {
+      name = "孤山"
+      description = "通过林荫道向前，迎面石壁上刻有“孤山”两个丹红大字。朝南 拾级登山便是平台。东北边便是发鹤亭。东南边则是平湖秋月。西北 边通往西泠桥。"
+  x = -2
+  y = -2
+  z = 0
+    }
+
+  room_exits "gushan" {
+    room_id = rooms.gushan.id
+    northeast = rooms.fangheting.id
+    northwest = rooms.xilingqiao.id
+    southup = rooms.gushanpingtai.id
+    east = rooms.pinghuqiuyue.id
+    westup = rooms.shijie.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/gushanpingtai.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "gushanpingtai" {
+      name = "孤山平台"
+      description = "平台北面有“西湖天下景”亭阁，亭柱两旁有一对联(duilian)。 这里还有曲桥水池，临池有叠石假山，布置得高低参差，疏密有致。 北边是下山的路。"
+  x = -2
+  y = -3
+  z = 1
+item_desc = {
+ duilian = "水              晴 山              雨 处              时 处              时 明              好 秀              奇"
+}
+    }
+
+  room_exits "gushanpingtai" {
+    room_id = rooms.gushanpingtai.id
+    northdown = rooms.gushan.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/hongchunqiao.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "hongchunqiao" {
+      name = "洪春桥"
+      description = "从这里可以看到西湖十景之一的双峰插云(scenery)。大道通向北 边，再向西南是通往灵隐寺的路。"
+  x = -4
+  y = -1
+  z = 0
+item_desc = {
+ scenery = "双峰，南高峰在西湖之西南，北高峰在西湖之西北。南北遥遥相对， 只见宿雨初收，双峰隐现在轻风薄雾之中，或浓或淡，时有时无；雾 层飘移，卷舒断续，变幻无穹。"
+}
+    }
+
+  room_exits "hongchunqiao" {
+    room_id = rooms.hongchunqiao.id
+    north = rooms.road4.id
+    southwest = rooms.road3.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/huagang.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "huagang" {
+      name = "花港观鱼"
+      description = "只见湖中有一小岛，一座曲桥横跨湖面。曲桥上人群熙攘，倚栏 投饵。桥下红鱼，争食欢跳。谢觉哉游园时曾作诗一首“鱼国群粼乐 有余，观鱼才觉我非鱼。虞诈两忘欣共处，鱼犹如此况人乎。”"
+  x = -1
+  y = -5
+  z = 0
+    }
+
+  room_exits "huagang" {
+    room_id = rooms.huagang.id
+    west = rooms.suti6.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/huanglongdong.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "huanglongdong" {
+      name = "黄龙洞"
+      description = "一进山门，松篁交翠，别有洞天。石壁陡削，苔痕常绿；回廊临 之间有一小峰，上题：“有龙则灵”。"
+  x = -1
+  y = 3
+  z = 0
+    }
+
+  room_exits "huanglongdong" {
+    room_id = rooms.huanglongdong.id
+    south = rooms.shanlu8.id
+    }
+
+
+
+
+  room_items "huanglongdong" {
+    room_id = rooms.huanglongdong.id
+    items = [
+      { id = items.dushe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/huangniling.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "huangniling" {
+      name = "黄泥岭"
+      description = "一条黄土路弯弯曲曲，四周非常的安静。偶而才看见些游人匆匆而过。 南北分别是下山的路。"
+  x = -5
+  y = -3
+  z = 1
+    }
+
+  room_exits "huangniling" {
+    room_id = rooms.huangniling.id
+    northdown = rooms.road3.id
+    southdown = rooms.maojiabu.id
+    }
+
+
+  room_characters "huangniling" {
+    room_id = rooms.huangniling.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/hupaoquan.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "hupaoquan" {
+      name = "虎跑泉"
+      description = "只见泉水从沙岩中渗流而出，清澈见底。相传有位名叫性空的和 尚深爱此山风景灵秀，便住了下来。後因水源奇缺，准备迁走。一夜， 梦神告诉他说“南岳衡山童子泉，当遣二虎移来。”第二天，果然看 见两只老虎跑地作穴，涌出泉水，所以定名为“虎跑泉”。"
+  x = -4
+  y = -6
+  z = 0
+    }
+
+  room_exits "hupaoquan" {
+    room_id = rooms.hupaoquan.id
+    east = rooms.road17.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/jingci.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "jingci" {
+      name = "净慈寺"
+      description = "净慈寺有前，中，後三殿，以中间的大雄宝殿最为壮观。大雄宝殿， 外观两层，黄色琉璃瓦屋顶，特别显的精美宏伟。寺廊的钟声在苍烟暮 霭中回荡，抑扬动听，这就是西湖十景之一“南屏晚钟”的来历。"
+  x = 2
+  y = -5
+  z = 0
+    }
+
+  room_exits "jingci" {
+    room_id = rooms.jingci.id
+    out = rooms.jingcisi.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/jingcisi.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "jingcisi" {
+      name = "净慈寺"
+      description = "净慈寺，原名慧日永明院，又叫兴教寺。净慈寺面向西湖，後拥 苍然挺秀的南屏山。往西就回到大道上。"
+  x = 2
+  y = -5
+  z = 0
+    }
+
+  room_exits "jingcisi" {
+    room_id = rooms.jingcisi.id
+    in = rooms.jingci.id
+    west = rooms.road15.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/jiulou.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "jiulou" {
+      name = "楼外楼"
+      description = "提起“楼外楼”方圆百里无人不知。这里各式名菜是杭州一绝。 来游湖的人们都一定会来这里尝尝。整个大堂闹哄哄的挤满了各式人 等。店小儿跑来跑去，忙着招呼客人。墙上挂着价格牌子(paizi)。"
+  x = 2
+  y = 0
+  z = 0
+item_desc = {
+ paizi = "东坡肉(Pork)      ：一两白银又二十文铜板 西湖醋鱼(Fish)    ：一两白银又二十文铜板 百果油包(Baozi)   ：七十文铜板 龙井虾仁(Shrimp)  ：五十文铜板 叫化童鸡(Chicken) ：一两白银又二十文铜板 桂花鲜栗羹(Guihua geng)：一两白银又二十文铜板 酒瓶(Jiuping)     ：十六两白银"
+}
+    }
+
+  room_exits "jiulou" {
+    room_id = rooms.jiulou.id
+    up = rooms.loveroom.id
+    west = rooms.road10.id
+    }
+
+
+  room_characters "jiulou" {
+    room_id = rooms.jiulou.id
+    characters = [
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/jujingyuan.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "jujingyuan" {
+      name = "聚景园"
+      description = "漫步园中，只见湖傍遍置垂柳。柳树丛中，种了不少碧桃。东风 送暖之时，这里“杨柳千条拂面丝，绿烟金穗不胜吹”。诗人刘禹锡 的“桃红李白皆夸好，须得垂杨相发挥”形容的恰到好处。东面是清 波门，往东北便是柳浪桥。"
+  x = -1
+  y = -4
+  z = 0
+    }
+
+  room_exits "jujingyuan" {
+    room_id = rooms.jujingyuan.id
+    northeast = rooms.liulangqiao.id
+    east = rooms.qingbomen.id
+    }
+
+
+  room_characters "jujingyuan" {
+    room_id = rooms.jujingyuan.id
+    characters = [
+      { id = characters.jian_ke.id },
+      { id = characters.honghua2.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/kedian.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "kedian" {
+      name = "天外天客店"
+      description = "这是杭州最有名的客店，里面雕梁画壁，装饰有如宫殿，你可以在这里 打听到各地的风土人情。店小二里里外外忙得团团转，接待着南腔北调的客 人。墙上挂着一个牌子(paizi)。"
+  x = 2
+  y = -3
+  z = 0
+item_desc = {
+ paizi = "楼上雅房，每夜五两白银。"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）： !me->query_temp("rent_paid") && dir == "up" 
+direction = "up"
+  message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊！"
+}
+,
+{
+   # 阻挡条件（原样保留）： me->query_temp("rent_paid") && dir == "west" 
+direction = "west"
+  message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就住 旁人还以为小店伺候不周呢！"
+}
+
+]
+    }
+
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+    up = rooms.kedian2.id
+    east = rooms.majiu.id
+    west = rooms.road13.id
+    }
+
+
+  room_characters "kedian" {
+    room_id = rooms.kedian.id
+    characters = [
+      { id = characters.xiaoer.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/kedian2.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "kedian2" {
+      name = "天外天客店二楼"
+      description = "你正走在天外天客店二楼的走廊上，可以听到从客房里不时地呼呼 的打酣声，一阵高过一阵。不时有睡意朦胧的旅客进进出出，到楼下的 掌柜处付了钱再上来睡觉。"
+  x = 2
+  y = -3
+  z = 1
+    }
+
+  room_exits "kedian2" {
+    room_id = rooms.kedian2.id
+    in = rooms.kedian3.id
+    down = rooms.kedian.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/kedian3.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "kedian3" {
+      name = "天外天客店二楼"
+      description = "天外天客店果然名不虚传，好大的一间客房，一张精致的床，窗外 是美丽的西湖，无边的宜人景致。暖暖的风吹得你昏昏欲睡，这里正是 睡觉的好地方。"
+  x = 2
+  y = -3
+  z = 1
+    }
+
+  room_exits "kedian3" {
+    room_id = rooms.kedian3.id
+    out = rooms.kedian2.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/kslu.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "kslu" {
+      name = "碎石路"
+      description = "这是一条碎石子铺就的路，路上人来人往，赶着大车，看来是在 运什么东西。地上零零散散的遗落了一些蓝色的石头。往东就是江南 盛产铜矿的宝山了。"
+  x = -2
+  y = -6
+  z = 0
+    }
+
+  room_exits "kslu" {
+    room_id = rooms.kslu.id
+    east = rooms.kslu2.id
+    west = rooms.road17.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/kslu2.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "kslu2" {
+      name = "碎石路"
+      description = "这是一条碎石子铺就的路，路上人来人往，赶着大车，看来是在 运什么东西。地上零零散散的遗落了一些蓝色的石头。往东就是江南 盛产铜矿的宝山了。"
+  x = -1
+  y = -6
+  z = 0
+    }
+
+  room_exits "kslu2" {
+    room_id = rooms.kslu2.id
+    east = rooms.kuangshan.id
+    west = rooms.kslu.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/kuangshan.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "kuangshan" {
+      name = "铜矿山"
+      description = "这里是山脚，山坡蜿蜒并不陡峭，很多地方挖开了一些洞口，不 少人出出入入、来来往往，在搬运一些东西。你看到地上有着不少石 头，蓝色晶莹，好像是宝石一般，似乎质地不是很纯，有些地方泛着 白花花的杂质。"
+  x = 0
+  y = -6
+  z = 0
+    }
+
+  room_exits "kuangshan" {
+    room_id = rooms.kuangshan.id
+    west = rooms.kslu2.id
+    }
+
+
+  room_characters "kuangshan" {
+    room_id = rooms.kuangshan.id
+    characters = [
+      { id = characters.jiangong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/lingyinsi.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "lingyinsi" {
+      name = "灵隐寺"
+      description = "灵隐寺又名云林寺，寺前有清澈的小溪，溪旁建有冷泉亭和赫雷 亭。天王殿举目可见，殿外有两座经幢。往南便回到大道。"
+  x = -7
+  y = -2
+  z = 0
+    }
+
+  room_exits "lingyinsi" {
+    room_id = rooms.lingyinsi.id
+    south = rooms.road1.id
+    in = rooms.tianwangdian.id
+    }
+
+
+  room_characters "lingyinsi" {
+    room_id = rooms.lingyinsi.id
+    characters = [
+      { id = characters.seng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuhe1.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuhe1" {
+      name = "六和塔"
+      description = "这里是六和塔的最底层。窗(window)外是浓妆淡抹的西子湖，塔 中玲珑八角，青砖砌地，雕栏飞檐间粘连了些许蛛网。"
+  x = -4
+  y = -7
+  z = 1
+item_desc = {
+ window = "从窗口望出去，钱江东去。近处农田中，有一农夫正荷锄耕耘。"
+}
+    }
+
+  room_exits "liuhe1" {
+    room_id = rooms.liuhe1.id
+    up = rooms.liuhe2.id
+    out = rooms.liuheta.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuhe2.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuhe2" {
+      name = "六和塔"
+      description = "这里是六和塔的第二层。窗(window)外是浓妆淡抹的西子湖，塔 中玲珑八角，青砖砌地，雕栏飞檐间粘连了些许蛛网。"
+  x = -4
+  y = -7
+  z = 2
+item_desc = {
+ window = "从窗口望出去，钱江东去。近处农田中，有一农夫正荷锄耕耘。"
+}
+    }
+
+  room_exits "liuhe2" {
+    room_id = rooms.liuhe2.id
+    up = rooms.liuhe3.id
+    down = rooms.liuhe1.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuhe3.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuhe3" {
+      name = "六和塔"
+      description = "这里是六和塔的第三层。窗(window)外是浓妆淡抹的西子湖，塔 中玲珑八角，青砖砌地，雕栏飞檐间粘连了些许蛛网。"
+  x = -4
+  y = -7
+  z = 3
+item_desc = {
+ window = "从窗口望出去，钱江东去。近处农田中，有一农夫正荷锄耕耘。"
+}
+    }
+
+  room_exits "liuhe3" {
+    room_id = rooms.liuhe3.id
+    up = rooms.liuhe4.id
+    down = rooms.liuhe2.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuhe4.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuhe4" {
+      name = "六和塔"
+      description = "这里是六和塔的第四层。窗(window)外是浓妆淡抹的西子湖，塔 中玲珑八角，青砖砌地，雕栏飞檐间粘连了些许蛛网。"
+  x = -4
+  y = -7
+  z = 4
+item_desc = {
+ window = "从窗口望出去，钱江东去。近处农田中，有一农夫正荷锄耕耘。"
+}
+    }
+
+  room_exits "liuhe4" {
+    room_id = rooms.liuhe4.id
+    up = rooms.liuhe5.id
+    down = rooms.liuhe3.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuhe5.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuhe5" {
+      name = "六和塔"
+      description = "这里是六和塔的第五层。窗(window)外是浓妆淡抹的西子湖，塔 中玲珑八角，青砖砌地，雕栏飞檐间粘连了些许蛛网。"
+  x = -4
+  y = -7
+  z = 5
+item_desc = {
+ window = "从窗口望出去，钱江东去。近处农田中，有一农夫正荷锄耕耘。"
+}
+    }
+
+  room_exits "liuhe5" {
+    room_id = rooms.liuhe5.id
+    up = rooms.liuhe6.id
+    down = rooms.liuhe4.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuhe6.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuhe6" {
+      name = "六和塔"
+      description = "这里是六和塔的第六层。窗(window)外是浓妆淡抹的西子湖，塔 中玲珑八角，青砖砌地，雕栏飞檐间粘连了些许蛛网。"
+  x = -4
+  y = -7
+  z = 6
+item_desc = {
+ window = "从窗口望出去，钱江东去。近处农田中，有一农夫正荷锄耕耘。"
+}
+    }
+
+  room_exits "liuhe6" {
+    room_id = rooms.liuhe6.id
+    up = rooms.liuhe7.id
+    down = rooms.liuhe5.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuhe7.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuhe7" {
+      name = "六和塔"
+      description = "这里是六和塔的第七层。窗(window)外是浓妆淡抹的西子湖，塔 中玲珑八角，青砖砌地，雕栏飞檐间粘连了些许蛛网。"
+  x = -4
+  y = -7
+  z = 7
+item_desc = {
+ window = "从窗口望出去，钱江东去。近处农田中，有一农夫正荷锄耕耘。"
+}
+    }
+
+  room_exits "liuhe7" {
+    room_id = rooms.liuhe7.id
+    up = rooms.liuhe8.id
+    down = rooms.liuhe6.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuhe8.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuhe8" {
+      name = "六和塔"
+      description = "这里是六和塔的第八层。窗(window)外是浓妆淡抹的西子湖，塔 中玲珑八角，青砖砌地，雕栏飞檐间粘连了些许蛛网。"
+  x = -4
+  y = -7
+  z = 8
+item_desc = {
+ window = "从窗口望出去，钱江东去。近处农田中，有一农夫正荷锄耕耘。"
+}
+    }
+
+  room_exits "liuhe8" {
+    room_id = rooms.liuhe8.id
+    up = rooms.liuhe9.id
+    down = rooms.liuhe7.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuhe9.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuhe9" {
+      name = "六和塔"
+      description = "这里是六和塔的第九层。窗(window)外是浓妆淡抹的西子湖，塔 中玲珑八角，青砖砌地，雕栏飞檐间粘连了些许蛛网。"
+  x = -4
+  y = -7
+  z = 9
+item_desc = {
+ window = "从窗口望出去，钱江东去。近处农田中，有一农夫正荷锄耕耘。"
+}
+    }
+
+  room_exits "liuhe9" {
+    room_id = rooms.liuhe9.id
+    up = rooms.liuhea.id
+    down = rooms.liuhe8.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuhea.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuhea" {
+      name = "六和塔"
+      description = "这里是六和塔的第十层。窗(window)外是浓妆淡抹的西子湖，塔 中玲珑八角，青砖砌地，雕栏飞檐间粘连了些许蛛网。"
+  x = -4
+  y = -7
+  z = 10
+item_desc = {
+ window = "从窗口望出去，钱江东去。近处农田中，有一农夫正荷锄耕耘。"
+}
+    }
+
+  room_exits "liuhea" {
+    room_id = rooms.liuhea.id
+    up = rooms.liuheb.id
+    down = rooms.liuhe9.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuheb.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuheb" {
+      name = "六和塔"
+      description = "这里是六和塔的十一层。窗(window)外是浓妆淡抹的西子湖，塔 中玲珑八角，青砖砌地，雕栏飞檐间粘连了些许蛛网。"
+  x = -4
+  y = -7
+  z = 11
+item_desc = {
+ window = "从窗口望出去，钱江东去。近处农田中，有一农夫正荷锄耕耘。"
+}
+    }
+
+  room_exits "liuheb" {
+    room_id = rooms.liuheb.id
+    up = rooms.liuhec.id
+    down = rooms.liuhea.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuhec.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuhec" {
+      name = "六和塔"
+      description = "这里是六和塔的十二层。窗(window)外是浓妆淡抹的西子湖，塔 中玲珑八角，青砖砌地，雕栏飞檐间粘连了些许蛛网。"
+  x = -4
+  y = -7
+  z = 12
+item_desc = {
+ window = "从窗口望出去，钱江东去。近处农田中，有一农夫正荷锄耕耘。"
+}
+    }
+
+  room_exits "liuhec" {
+    room_id = rooms.liuhec.id
+    up = rooms.liuhed.id
+    down = rooms.liuheb.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuhed.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuhed" {
+      name = "六和塔"
+      description = "这里是六和塔的十三层。窗(window)外是浓妆淡抹的西子湖，塔 中玲珑八角，青砖砌地，雕栏飞檐间粘连了些许蛛网。"
+  x = -4
+  y = -7
+  z = 13
+item_desc = {
+ window = "从窗口望出去，钱江东去。近处农田中，有一农夫正荷锄耕耘。"
+}
+    }
+
+  room_exits "liuhed" {
+    room_id = rooms.liuhed.id
+    down = rooms.liuhec.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuheta.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuheta" {
+      name = "六和塔底"
+      description = "爬上月轮山，便来到了六和塔之前。六和塔亦名六合塔，“六和” 之名来之佛家的六种规约，“六合”就是“天，地，四方”的意思。 这座八角塔有十三层，在它的飞檐翘角上括有一百零四只大铁铃。"
+  x = -4
+  y = -7
+  z = 1
+    }
+
+  room_exits "liuheta" {
+    room_id = rooms.liuheta.id
+    in = rooms.liuhe1.id
+    eastdown = rooms.qiantang.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/liulangqiao.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liulangqiao" {
+      name = "柳浪桥"
+      description = "每当春至站在桥上，沿湖垂柳在风中摇曳如翠浪翻空，黄 莺在枝头迎春嬉戏，鸣声婉转，故得名「浪桥闻莺」。"
+  x = 0
+  y = -3
+  z = 0
+    }
+
+  room_exits "liulangqiao" {
+    room_id = rooms.liulangqiao.id
+    southwest = rooms.jujingyuan.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuzhuang.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuzhuang" {
+      name = "刘庄"
+      description = "庄园的大匾上是“刘庄”两个大字。大门(gate)紧闭，里面静悄 悄的一点声音都没有。"
+  x = -4
+  y = -3
+  z = 0
+item_desc = {
+ gate = "朱红的大门紧闭着，敲敲(knock)看吧。"
+}
+    }
+
+  room_exits "liuzhuang" {
+    room_id = rooms.liuzhuang.id
+    north = rooms.liuzhuang2.id
+    south = rooms.liuzhuang1.id
+    east = rooms.dadao3.id
+    }
+
+
+  room_characters "liuzhuang" {
+    room_id = rooms.liuzhuang.id
+    characters = [
+      { id = characters.guanjia.id },
+      { id = characters.jiading.id },
+      { id = characters.jiading.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuzhuang1.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuzhuang1" {
+      name = "刘庄侧院"
+      description = "这里是刘庄旁边的院子，你走到这里不禁有些惊奇，居然摆了几 个江湖上练武之人才用的练功木人，旁边有几个护院家丁模样的人坐 在一旁指手画脚的不知道在说些什么。"
+  x = -4
+  y = -4
+  z = 0
+    }
+
+  room_exits "liuzhuang1" {
+    room_id = rooms.liuzhuang1.id
+    north = rooms.liuzhuang.id
+    }
+
+
+  room_characters "liuzhuang1" {
+    room_id = rooms.liuzhuang1.id
+    characters = [
+      { id = characters.jiading.id },
+      { id = characters.jiading.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/liuzhuang2.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "liuzhuang2" {
+      name = "刘庄侧院"
+      description = "这里是刘庄旁边的院子，你走到这里不禁有些惊奇，居然摆了几 个江湖上练武之人才用的练功木人，旁边有几个护院家丁模样的人坐 在一旁指手画脚的不知道在说些什么。"
+  x = -4
+  y = -2
+  z = 0
+    }
+
+  room_exits "liuzhuang2" {
+    room_id = rooms.liuzhuang2.id
+    south = rooms.liuzhuang.id
+    }
+
+
+  room_characters "liuzhuang2" {
+    room_id = rooms.liuzhuang2.id
+    characters = [
+      { id = characters.jiading.id },
+      { id = characters.jiading.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/longhongdong.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "longhongdong" {
+      name = "龙泓洞"
+      description = "又叫通天洞。在洞口的岩壁上刻有姿态各异，一丈多高的佛像六 尊。左下方有两组浮雕。前一组记述了唐僧取经的故事；後一组为白 马驮经，刻有“竺法阑”，“聂摩腾”字样。东边是下山的路。小路 往上延伸向西北。"
+  x = -8
+  y = -4
+  z = 0
+    }
+
+  room_exits "longhongdong" {
+    room_id = rooms.longhongdong.id
+    east = rooms.feilaifeng.id
+    west = rooms.shexudong.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/longjing.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "longjing" {
+      name = "龙井"
+      description = "只见井(jing)水澈可见底而且清冷异常。龙井原名龙泓涧，传说 此井与海相通，其中必定有龙，祈祷必雨，故名“龙井”。苏东坡曾 有诗“人言山佳水亦佳，下有万古蛟龙潭”。井旁建有茶室。往南便 回大路。"
+  x = -7
+  y = -5
+  z = 0
+item_desc = {
+ jing = "井水清澈见底，井底部有一些豆状小颗粒叠起的小堆。"
+}
+    }
+
+  room_exits "longjing" {
+    room_id = rooms.longjing.id
+    south = rooms.shanlu5.id
+    east = rooms.chashi.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/loveroom.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "loveroom" {
+      name = "相约轩"
+      description = "楼外楼的相约轩，四面通窗。湖风拂面，淡淡生暖。远望苏堤一 线，映波，锁澜，望山，压堤，东浦，跨虹六桥断续连沿，烟柳笼纱， 流莺娇啼。近处白堤横亘湖上，堤上杨柳覆地，芳草寒茵如一段碧绸 飘然湖面。室内一张精巧的小桌。桌上一纸精致的菜单(menu)。"
+  x = 2
+  y = 0
+  z = 1
+valid_leave = [
+{
+  direction = ~
+  message = "先用 order end 结束后再走."
+}
+
+]
+    }
+
+  room_exits "loveroom" {
+    room_id = rooms.loveroom.id
+    down = rooms.jiulou.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/majiu.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "majiu" {
+      name = "马厩"
+      description = "这是天外天客店后的马厩，常年供应新鲜草料。杭州自古 号称天堂，杭州的客店汇集四海宾客。马夫们会把马牵到马厩 好生照看，将它们喂饱饮足，再洗刷得干乾净净，伺候到客人 上路。马厩雨檐下的烂木柱上钉着块破木牌 (paizi)。马厩中 堆放著几堆草料，正中有一口泔槽。"
+  x = 3
+  y = -3
+  z = 0
+    }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+    up = rooms.hangzhou_shop.id
+    west = rooms.kedian.id
+    }
+
+
+  room_characters "majiu" {
+    room_id = rooms.majiu.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu" {
+    room_id = rooms.majiu.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/manjuelong.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "manjuelong" {
+      name = "满觉陇"
+      description = "山路旁有一个小村落，村落四周桂花成林。每当仲秋，桂花盛开， 飘香数里。被称为“金雪世界”。西上是水乐洞，东下石屋洞。"
+  x = -5
+  y = -5
+  z = 1
+    }
+
+  room_exits "manjuelong" {
+    room_id = rooms.manjuelong.id
+    eastdown = rooms.shiwudong.id
+    westup = rooms.shuiledong.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/maojiabu.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "maojiabu" {
+      name = "茅家埠"
+      description = "路两旁盖着几座小土房。房门口一位老大娘正在喂鸡，几 个小孩正在追逐嬉戏。北边是上黄泥岭。南面是丁家山。"
+  x = -5
+  y = -4
+  z = 0
+    }
+
+  room_exits "maojiabu" {
+    room_id = rooms.maojiabu.id
+    northup = rooms.huangniling.id
+    south = rooms.tulu2.id
+    }
+
+
+  room_characters "maojiabu" {
+    room_id = rooms.maojiabu.id
+    characters = [
+      { id = characters.boy.id },
+      { id = characters.oldwoman.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/marryroom.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "marryroom" {
+      name = "红娘庄"
+      description = "你现在正站在风光秀丽的西子湖畔的红娘庄里，临水凭窗，隔着 碧绿的湖面，就是断桥了。"
+  x = 2
+  y = 1
+  z = 0
+    }
+
+  room_exits "marryroom" {
+    room_id = rooms.marryroom.id
+    west = rooms.road9.id
+    }
+
+
+  room_characters "marryroom" {
+    room_id = rooms.marryroom.id
+    characters = [
+      { id = characters.hongniang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/pinghuqiuyue.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "pinghuqiuyue" {
+      name = "平湖秋月"
+      description = "平湖秋月三面临水，四面曲栏画廊，直挹波际。曾有“万顷湖平 长似镜，四时月好最宜秋”的联句来描写这里秋夜时皓月当空的幽美 景色。朝西北走便是放鹤亭。东北边则是白堤。西边就是孤山。"
+  x = -1
+  y = -2
+  z = 0
+    }
+
+  room_exits "pinghuqiuyue" {
+    room_id = rooms.pinghuqiuyue.id
+    northeast = rooms.baiti.id
+    northwest = rooms.fangheting.id
+    west = rooms.gushan.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/qiantang.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "qiantang" {
+      name = "钱塘江畔"
+      description = "钱塘江，每年八月十八是观潮的好日子。“八月十八潮，壮观天 下无”，乃是杭州一大奇景。西上月轮山便到了六和塔。"
+  x = -3
+  y = -7
+  z = 0
+    }
+
+  room_exits "qiantang" {
+    room_id = rooms.qiantang.id
+    westup = rooms.liuheta.id
+    north = rooms.road17.id
+    }
+
+
+  room_characters "qiantang" {
+    room_id = rooms.qiantang.id
+    characters = [
+      { id = characters.jian_ke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/qingbomen.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "qingbomen" {
+      name = "清波门"
+      description = "园门口有一大门楼，大匾上刻着“清波门”。门楼下站着几个嬉 嬉哈哈的少女，惹人坠步相观。在往西就进了聚景，往东便回到大路。"
+  x = 0
+  y = -4
+  z = 0
+    }
+
+  room_exits "qingbomen" {
+    room_id = rooms.qingbomen.id
+    west = rooms.jujingyuan.id
+    east = rooms.road14.id
+    }
+
+
+  room_characters "qingbomen" {
+    room_id = rooms.qingbomen.id
+    characters = [
+      { id = characters.girl.id },
+      { id = characters.girl.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/qinglindong.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "qinglindong" {
+      name = "清林洞"
+      description = "又叫老虎洞。只见靠右雕有弭陀，观音，大势至三尊小佛。洞口 东侧壁上还刻着一组“庐舍那佛会”浮雕，它上刻花头龛，中间坐着 释迦牟尼，左右分列文殊，普贤，还有天王佛像。西边是下山的路。 小路往上延伸向东。"
+  x = -6
+  y = -4
+  z = 0
+    }
+
+  room_exits "qinglindong" {
+    room_id = rooms.qinglindong.id
+    west = rooms.feilaifeng.id
+    east = rooms.cuiweiting.id
+    }
+
+
+  room_characters "qinglindong" {
+    room_id = rooms.qinglindong.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/quyuanbei.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "quyuanbei" {
+      name = "曲院风荷"
+      description = "跨过小拱桥，迎面有一亭院，旁边立着石碑，上题“曲院风荷。” 往东是回苏堤。"
+  x = -1
+  y = -1
+  z = 0
+    }
+
+  room_exits "quyuanbei" {
+    room_id = rooms.quyuanbei.id
+    in = rooms.quyuanfenghe.id
+    west = rooms.suti2.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/quyuanfenghe.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "quyuanfenghe" {
+      name = "曲院风荷"
+      description = "走进亭院，只见临湖一座小榭。柱上有一对联(duilian)。 依榭 观湖，只见荷花满湖，茭荷深处，香远益清。杨万里曾有题咏“毕竟 西湖六月中，风光不与四时同。接天莲叶无穷碧，映日荷花别样红”。"
+  x = -1
+  y = -1
+  z = 0
+item_desc = {
+ duilian = "身              眼         在              明         荷              小         香              阁         水              浮         影              烟         中              翠"
+}
+    }
+
+  room_exits "quyuanfenghe" {
+    room_id = rooms.quyuanfenghe.id
+    out = rooms.quyuanbei.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/road1.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road1" {
+      name = "青石山路"
+      description = "大道上挤满了来灵隐寺上香和上飞来峰的游客。北边过了小溪就 是灵隐寺了。南边是上飞来峰的路。"
+  x = -7
+  y = -3
+  z = 0
+    }
+
+  room_exits "road1" {
+    room_id = rooms.road1.id
+    south = rooms.feilaifeng.id
+    north = rooms.lingyinsi.id
+    northeast = rooms.road2.id
+    northwest = rooms.jxnanmen.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/road10.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road10" {
+      name = "青石大道"
+      description = "沿湖大道旁店铺林立，长街故朴，屋舍鳞次栉比，道上人来车往， 一片太平热闹景象。街的东边是一座酒楼。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "road10" {
+    room_id = rooms.road10.id
+    east = rooms.jiulou.id
+    south = rooms.road11.id
+    north = rooms.road9.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/road11.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road11" {
+      name = "青石大道"
+      description = "沿湖大道旁店铺林立，长街故朴，屋舍鳞次栉比，道上人来车往， 一片太平热闹景象。街东边的一家店铺里传来叮叮当当的打铁声。"
+  x = 1
+  y = -1
+  z = 0
+    }
+
+  room_exits "road11" {
+    room_id = rooms.road11.id
+    east = rooms.tiejiangpu.id
+    south = rooms.road12.id
+    north = rooms.road10.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/road12.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road12" {
+      name = "青石大道"
+      description = "沿湖大道旁店铺林立，长街故朴，屋舍鳞次栉比，道上人来车往， 一片太平热闹景象。街东边是一古朴书院，书院里不时传来朗朗的笑声。"
+  x = 1
+  y = -2
+  z = 0
+    }
+
+  room_exits "road12" {
+    room_id = rooms.road12.id
+    east = rooms.shuyuan.id
+    south = rooms.road13.id
+    north = rooms.road11.id
+    }
+
+
+  room_characters "road12" {
+    room_id = rooms.road12.id
+    characters = [
+      { id = characters.likexiu.id },
+      { id = characters.qingbing.id },
+      { id = characters.qingbing.id },
+      { id = characters.qingbing.id },
+      { id = characters.qingbing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/road13.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road13" {
+      name = "青石大道"
+      description = "沿湖大道旁店铺林立，长街故朴，屋舍鳞次栉比，道上人来车往， 一片太平热闹景象。街东边有一家客店。"
+  x = 1
+  y = -3
+  z = 0
+    }
+
+  room_exits "road13" {
+    room_id = rooms.road13.id
+    east = rooms.kedian.id
+    south = rooms.road14.id
+    north = rooms.road12.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/road14.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road14" {
+      name = "青石大道"
+      description = "沿湖大道旁店铺林立，长街故朴，屋舍鳞次栉比，道上人来车往， 一片太平热闹景象。西边有一花园，游人进进出出，十分热闹。东边 是名医胡庆余开的药铺。"
+  x = 1
+  y = -4
+  z = 0
+    }
+
+  room_exits "road14" {
+    room_id = rooms.road14.id
+    west = rooms.qingbomen.id
+    east = rooms.yaodian.id
+    south = rooms.road15.id
+    north = rooms.road13.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/road15.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road15" {
+      name = "青石大道"
+      description = "大道上游人，或步行，或乘轿，或骑马。个个喜气洋洋的来游西 湖。东北和西边各是一条大道。南边是上玉皇山的山路，东边则是净 慈寺。"
+  x = 1
+  y = -5
+  z = 0
+    }
+
+  room_exits "road15" {
+    room_id = rooms.road15.id
+    east = rooms.jingcisi.id
+    west = rooms.road16.id
+    south = rooms.yuhuangsj.id
+    north = rooms.road14.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/road16.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road16" {
+      name = "青石道"
+      description = "大道上游人，或步行，或乘轿，或骑马。个个喜气洋洋的来游西 湖。北边可上雷峰。"
+  x = 0
+  y = -5
+  z = 0
+    }
+
+  room_exits "road16" {
+    room_id = rooms.road16.id
+    west = rooms.road20.id
+    east = rooms.road15.id
+    northup = rooms.xizhaoshan.id
+    }
+
+
+  room_characters "road16" {
+    room_id = rooms.road16.id
+    characters = [
+      { id = characters.baizhen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/road17.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road17" {
+      name = "青石大道"
+      description = "大道上游人，或步行，或乘轿，或骑马。个个喜气洋洋的来游西 湖。大道伸向南北两边，往西是虎跑泉，往东是一条碎石路。"
+  x = -3
+  y = -6
+  z = 0
+    }
+
+  room_exits "road17" {
+    room_id = rooms.road17.id
+    east = rooms.kslu.id
+    west = rooms.hupaoquan.id
+    south = rooms.qiantang.id
+    north = rooms.road18.id
+    }
+
+
+  room_characters "road17" {
+    room_id = rooms.road17.id
+    characters = [
+      { id = characters.tiao_fu.id },
+      { id = characters.chuyuan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/road18.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road18" {
+      name = "青石大道"
+      description = "大道上游人，或步行，或乘轿，或骑马。个个喜气洋洋的来游西 湖。大道伸向东北和南两边，往西是石屋洞，往东是一条山路。"
+  x = -3
+  y = -5
+  z = 0
+    }
+
+  room_exits "road18" {
+    room_id = rooms.road18.id
+    east = rooms.yuhuangshan.id
+    south = rooms.road17.id
+    west = rooms.shiwudong.id
+    north = rooms.road19.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/road19.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road19" {
+      name = "青石大道"
+      description = "大道上游人，或步行，或乘轿，或骑马。个个喜气洋洋的来游西 湖。大道伸向东和西南两边，往北是另一条大道。"
+  x = -3
+  y = -4
+  z = 0
+    }
+
+  room_exits "road19" {
+    room_id = rooms.road19.id
+    east = rooms.road20.id
+    south = rooms.road18.id
+    north = rooms.dadao3.id
+    }
+
+
+  room_characters "road19" {
+    room_id = rooms.road19.id
+    characters = [
+      { id = characters.dao_ke.id },
+      { id = characters.longjun.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/road2.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road2" {
+      name = "青石大道"
+      description = "大道上游人，或步行，或乘轿，或骑马。个个喜气洋洋的来游西 边是灵隐寺和飞来峰。往南是上天竺。"
+  x = -6
+  y = -2
+  z = 0
+    }
+
+  room_exits "road2" {
+    room_id = rooms.road2.id
+    east = rooms.road3.id
+    southwest = rooms.road1.id
+    southup = rooms.shanlu1.id
+    }
+
+
+  room_characters "road2" {
+    room_id = rooms.road2.id
+    characters = [
+      { id = characters.xianghuo.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/road20.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road20" {
+      name = "青石道"
+      description = "大道上游人，或步行，或乘轿，或骑马。个个喜气洋洋的来游西 湖。大道伸向东西两边，往北是苏堤。"
+  x = -1
+  y = -5
+  z = 0
+    }
+
+  room_exits "road20" {
+    room_id = rooms.road20.id
+    east = rooms.road16.id
+    west = rooms.road19.id
+    north = rooms.suti7.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/road3.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road3" {
+      name = "青石大道"
+      description = "大道两边遍植青松，满目苍翠，偃盖如雪。被称为“九里雪松”。 东北边是洪春桥。再向西南便到了灵隐寺。南边是一条土路。"
+  x = -5
+  y = -2
+  z = 0
+    }
+
+  room_exits "road3" {
+    room_id = rooms.road3.id
+    northeast = rooms.hongchunqiao.id
+    west = rooms.road2.id
+    southup = rooms.huangniling.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/road4.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road4" {
+      name = "青石道"
+      description = "大道上游人，或步行，或乘轿，或骑马。个个喜气洋洋的来游西 湖。往南是洪春桥。大道则延伸向东北边。"
+  x = -4
+  y = 0
+  z = 0
+    }
+
+  room_exits "road4" {
+    room_id = rooms.road4.id
+    northeast = rooms.road5.id
+    south = rooms.hongchunqiao.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/road5.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road5" {
+      name = "青石大道"
+      description = "大道上游人，或步行，或乘轿，或骑马。个个喜气洋洋的来游西 湖。往西是去玉泉寺的路。大道则延伸向东边和西南边。"
+  x = -3
+  y = 1
+  z = 0
+    }
+
+  room_exits "road5" {
+    room_id = rooms.road5.id
+    east = rooms.road6.id
+    south = rooms.dadao1.id
+    west = rooms.yuquan.id
+    southwest = rooms.road4.id
+    }
+
+
+  room_characters "road5" {
+    room_id = rooms.road5.id
+    characters = [
+      { id = characters.honghua1.id },
+      { id = characters.tiao_fu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/road6.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road6" {
+      name = "青石道"
+      description = "大道上游人，或步行，或乘轿，或骑马。个个喜气洋洋的来游西 湖。大道延伸向东西两边。南边则通往苏堤。北边是岳王庙。"
+  x = -2
+  y = 1
+  z = 0
+    }
+
+  room_exits "road6" {
+    room_id = rooms.road6.id
+    east = rooms.road7.id
+    west = rooms.road5.id
+    south = rooms.suti1.id
+    north = rooms.yuelang.id
+    }
+
+
+  room_characters "road6" {
+    room_id = rooms.road6.id
+    characters = [
+      { id = characters.liumang.id },
+      { id = characters.liumang.id },
+      { id = characters.liumang.id },
+      { id = characters.liumang.id },
+      { id = characters.liumangtou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/road7.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road7" {
+      name = "青石道"
+      description = "大道上游人，或步行，或乘轿，或骑马。个个喜气洋洋的来游西 湖。大道延伸向西边和东北边。朝北走便是上北山。南边则通往西泠 桥。"
+  x = -1
+  y = 1
+  z = 0
+    }
+
+  room_exits "road7" {
+    room_id = rooms.road7.id
+    west = rooms.road6.id
+    south = rooms.xilingqiao.id
+    north = rooms.shanlu8.id
+    east = rooms.road8.id
+    }
+
+
+  room_characters "road7" {
+    room_id = rooms.road7.id
+    characters = [
+      { id = characters.youfang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/road8.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road8" {
+      name = "青石道"
+      description = "大道上游人，或步行，或乘轿，或骑马。个个喜气洋洋的来游西 湖。大道延伸向东边和西南边。朝北走便是上宝石山。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "road8" {
+    room_id = rooms.road8.id
+    west = rooms.road7.id
+    northup = rooms.baoshishan.id
+    east = rooms.road9.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/road9.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "road9" {
+      name = "青石大道"
+      description = "大道上游人，或步行，或乘轿，或骑马。个个喜气洋洋的来游西 湖。大道延伸向西边。断桥在大道的西南边。南边则是另一条大道。"
+  x = 1
+  y = 1
+  z = 0
+    }
+
+  room_exits "road9" {
+    room_id = rooms.road9.id
+    southwest = rooms.duanqiao.id
+    south = rooms.road10.id
+    east = rooms.marryroom.id
+    west = rooms.road8.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/shanlu1.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "shanlu1" {
+      name = "山路"
+      description = "一条被人走出来的山路，弯弯曲曲地向上延伸。走在山路上，只 见两旁峰峦秀丽，景色怡人。一时间你都起了常住这里的念头。不时 有进香客擦肩而过。南上便到了下天竺，北下就是大道。"
+  x = -6
+  y = -3
+  z = 1
+    }
+
+  room_exits "shanlu1" {
+    room_id = rooms.shanlu1.id
+    northdown = rooms.road2.id
+    southup = rooms.fajingsi.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/shanlu2.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "shanlu2" {
+      name = "山路"
+      description = "走在这条不是很宽的山路上，只见两旁峰峦秀丽，景色怡人。一 条小溪在路边潺潺流过，溪畔有一农家。山村小景，使人有退隐江湖 之意。南上便到了中天竺。北下就是下天竺。"
+  x = -6
+  y = -5
+  z = 3
+    }
+
+  room_exits "shanlu2" {
+    room_id = rooms.shanlu2.id
+    northdown = rooms.fajingsi.id
+    southup = rooms.fajinsi.id
+    }
+
+
+  room_characters "shanlu2" {
+    room_id = rooms.shanlu2.id
+    characters = [
+      { id = characters.honghua2.id },
+      { id = characters.honghua2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/shanlu3.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "shanlu3" {
+      name = "山路"
+      description = "小溪横过山路，跨溪有一座小石桥。溪边农家小孩在嬉戏玩乐。 如此情趣让你不禁慨然生叹，一时间颇有远避江湖之意。南上便到了 上天竺，北下就是中天竺。"
+  x = -6
+  y = -7
+  z = 5
+    }
+
+  room_exits "shanlu3" {
+    room_id = rooms.shanlu3.id
+    northdown = rooms.fajinsi.id
+    south = rooms.shanlu4.id
+    }
+
+
+  room_characters "shanlu3" {
+    room_id = rooms.shanlu3.id
+    characters = [
+      { id = characters.boy.id },
+      { id = characters.boy.id },
+      { id = characters.boy.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/shanlu4.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "shanlu4" {
+      name = "山路"
+      description = "走在这弯弯的小路上，看着沿途山峰云影，松竹青葱，岩石斑驳。 不禁感到胸怀舒畅，颇想长居此地。西上便到了上天竺，东下就到了 龙井。"
+  x = -8
+  y = -6
+  z = 1
+    }
+
+  room_exits "shanlu4" {
+    room_id = rooms.shanlu4.id
+    eastdown = rooms.shanlu5.id
+    north = rooms.shanlu3.id
+    west = rooms.faxisi.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/shanlu5.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "shanlu5" {
+      name = "山路"
+      description = "走在小路上，只见漫山遍野都是绿油油的茶蓬。农家少女们在欢 笑声中采茶，到此不由得尽忘江湖仇杀，只想久居此地。。山路延伸 向东西两边，北边就是龙井，东北边有一条土路。"
+  x = -7
+  y = -6
+  z = 0
+    }
+
+  room_exits "shanlu5" {
+    room_id = rooms.shanlu5.id
+    east = rooms.yanxiadong.id
+    north = rooms.longjing.id
+    northeast = rooms.tulu1.id
+    westup = rooms.shanlu4.id
+    }
+
+
+  room_characters "shanlu5" {
+    room_id = rooms.shanlu5.id
+    characters = [
+      { id = characters.caichanu.id },
+      { id = characters.caichanu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/shanlu6.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "shanlu6" {
+      name = "玉皇山路"
+      description = "山路崎岖，曲折蜿延。四周林木苍翠，修竹茂密。山路旁 有一山洞，据说洞里有时会传出虎哮声，故名老虎洞，虽然如 此，景色如此宜人，怎能不让人心生长住之意？西边是下山的 路往东下山便到了山底。"
+  x = -2
+  y = -6
+  z = 1
+    }
+
+  room_exits "shanlu6" {
+    room_id = rooms.shanlu6.id
+    westdown = rooms.yuhuangshan.id
+    eastup = rooms.yuhuangsd.id
+    }
+
+
+
+
+  room_items "shanlu6" {
+    room_id = rooms.shanlu6.id
+    items = [
+      { id = items.laohu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/shanlu7.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "shanlu7" {
+      name = "玉皇山路"
+      description = "山路崎岖，曲折蜿延。四周林木苍翠，修竹茂密。山路旁是涵碧 亭，在这里极目远眺，群山环湖尽收眼底，的确是隐居得好去处。西 边是上山的路，往东便是下山的路。"
+  x = 0
+  y = -6
+  z = 1
+    }
+
+  room_exits "shanlu7" {
+    room_id = rooms.shanlu7.id
+    westup = rooms.yuhuangsd.id
+    eastdown = rooms.yuhuangsj.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/shanlu8.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "shanlu8" {
+      name = "山路"
+      description = "山上林木茂密，就是炎夏这里还是清凉依旧。朝北走便到了黄龙洞。 南边则是下山的路。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "shanlu8" {
+    room_id = rooms.shanlu8.id
+    north = rooms.huanglongdong.id
+    south = rooms.road7.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/shexudong.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "shexudong" {
+      name = "射旭洞"
+      description = "洞後侧穹顶上的石罅间可仰见一束天光，故又名“一线天”。东 南边是下山的路。"
+  x = -9
+  y = -4
+  z = 0
+    }
+
+  room_exits "shexudong" {
+    room_id = rooms.shexudong.id
+    east = rooms.longhongdong.id
+    }
+
+
+  room_characters "shexudong" {
+    room_id = rooms.shexudong.id
+    characters = [
+      { id = characters.mengmian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/shiwudong.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "shiwudong" {
+      name = "石屋洞"
+      description = "山路旁是石屋洞。石屋洞，洞中有洞，洞洞相连。主洞高 大宽敞，洁净明亮，上宽下窄，状如浮螺。西上便到了满觉陇 山路的尽头连着一条由北至南的大道。"
+  x = -4
+  y = -5
+  z = 0
+    }
+
+  room_exits "shiwudong" {
+    room_id = rooms.shiwudong.id
+    east = rooms.road18.id
+    westup = rooms.manjuelong.id
+    }
+
+
+
+
+  room_items "shiwudong" {
+    room_id = rooms.shiwudong.id
+    items = [
+      { id = items.changaoxie.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/shuiledong.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "shuiledong" {
+      name = "水乐洞"
+      description = "水乐洞有两个洞口，洞的左口有股山泉从石缝中涌出。泉水声如 金石，和谐悦耳。旁有“天然琴声”，“听无弦琴”等石刻字句。洞 内两壁有很多钟乳石。往东是下山的路，西上便到了烟霞洞。"
+  x = -6
+  y = -5
+  z = 2
+    }
+
+  room_exits "shuiledong" {
+    room_id = rooms.shuiledong.id
+    eastdown = rooms.manjuelong.id
+    westup = rooms.yanxiadong.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/shuyuan.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "shuyuan" {
+      name = "凤池书院"
+      description = "书院正中有一匾“凤池书院”。书院里坐着两位老者，他们正在 吟诗作对。他们身旁的桌上铺着宣纸和笔墨。"
+  x = 2
+  y = -2
+  z = 0
+    }
+
+  room_exits "shuyuan" {
+    room_id = rooms.shuyuan.id
+    west = rooms.road12.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/suti1.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "suti1" {
+      name = "苏堤"
+      description = "苏堤是诗人苏东坡在主持浚深西湖时用湖泥和草筑成的。苏东坡 曾有诗记述此事；“我在钱塘拓湖渌，大堤士女争昌丰。六桥横绝天 汉上，北山始与南屏通。忽惊二十五万丈，老葑席卷苍烟空。”往北 便是大道，南边是跨虹桥。跨虹桥乃苏堤六桥由北至南的第一座。桥 一边是岳湖，桥的另一边是西湖。"
+  x = -2
+  y = 0
+  z = 0
+    }
+
+  room_exits "suti1" {
+    room_id = rooms.suti1.id
+    south = rooms.suti2.id
+    north = rooms.road6.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/suti2.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "suti2" {
+      name = "苏堤"
+      description = "苏堤上，游客们有的林荫大道上漫步吟诗，高谈阔论；有的随机 就石，临水而坐；有的伶立湖边，静享湖景。北边是跨虹桥，南面是 东浦桥，东面是去曲园风荷。"
+  x = -2
+  y = -1
+  z = 0
+    }
+
+  room_exits "suti2" {
+    room_id = rooms.suti2.id
+    east = rooms.quyuanbei.id
+    south = rooms.suti3.id
+    north = rooms.suti1.id
+    }
+
+
+  room_characters "suti2" {
+    room_id = rooms.suti2.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/suti3.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "suti3" {
+      name = "苏堤"
+      description = "寒冬，瑞雪霏霏中，不少游人踏雪观景。从堤上极目远眺，只见 四周玉树琼林。北边是东浦桥，南面是压堤桥。"
+  x = -2
+  y = -2
+  z = 0
+    }
+
+  room_exits "suti3" {
+    room_id = rooms.suti3.id
+    south = rooms.suti4.id
+    north = rooms.suti2.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/suti4.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "suti4" {
+      name = "苏堤"
+      description = "春晓，漫步林荫道上，烟柳笼纱，雀鸟欢鸣一片生机。苏 堤春晓被列为西湖十景之首，果然名不虚传。北边是压堤桥南 面是望山桥。东面一片梅林，林后似乎有座院落，但看不真切。"
+  x = -2
+  y = -3
+  z = 0
+    }
+
+  room_exits "suti4" {
+    room_id = rooms.suti4.id
+    south = rooms.suti5.id
+    north = rooms.suti3.id
+    }
+
+
+  room_characters "suti4" {
+    room_id = rooms.suti4.id
+    characters = [
+      { id = characters.liyuanzhi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/suti5.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "suti5" {
+      name = "苏堤"
+      description = "每当盛夏，游客到此纷纷寻荫小息，堤上绿树交柯，鸣蝉噪鼓。 北边是望山桥，南面锁澜桥。"
+  x = -2
+  y = -4
+  z = 0
+    }
+
+  room_exits "suti5" {
+    room_id = rooms.suti5.id
+    south = rooms.suti6.id
+    north = rooms.suti4.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/suti6.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "suti6" {
+      name = "苏堤"
+      description = "秋月之夜，月下观湖，满湖银波粼粼，阵阵微风，风中桂子飘香， 令人为之心醉。堤边泊着小舟是送游客去三潭映月的。往西边是去花 港，东面可见三潭映月遥立湖中，北边是锁澜桥，南面映波桥。"
+  x = -2
+  y = -5
+  z = 0
+    }
+
+  room_exits "suti6" {
+    room_id = rooms.suti6.id
+    east = rooms.huagang.id
+    south = rooms.suti7.id
+    north = rooms.suti5.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/suti7.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "suti7" {
+      name = "苏堤"
+      description = "苏堤是诗人苏东坡在主持浚深西湖时用湖泥和草筑成的。苏东坡 曾有诗记述此事；“我在钱塘拓湖渌，大堤士女争昌丰。六桥横绝天 汉上，北山始与南屏通。忽惊二十五万丈，老葑席卷苍烟空。”往南 便是大道，北边是映波桥。映波桥乃苏堤六桥由至北南的第一座。"
+  x = -1
+  y = -4
+  z = 0
+    }
+
+  room_exits "suti7" {
+    room_id = rooms.suti7.id
+    south = rooms.road20.id
+    north = rooms.suti6.id
+    }
+
+
+  room_characters "suti7" {
+    room_id = rooms.suti7.id
+    characters = [
+      { id = characters.shu_sheng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/tianwangdian.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "tianwangdian" {
+      name = "天王殿"
+      description = "走进大殿，只见正面坐着袒胸露腹的弭勒佛，两旁是四大天王， 後面是神态威严的韦驮菩萨。天王殿後面便是大雄宝殿。"
+  x = -7
+  y = -2
+  z = 0
+    }
+
+  room_exits "tianwangdian" {
+    room_id = rooms.tianwangdian.id
+    north = rooms.dxbaodian1.id
+    out = rooms.lingyinsi.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/tiejiangpu.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "tiejiangpu" {
+      name = "铁匠铺"
+      description = "这是一家不小的打铁铺，店里摆了几座火炉，一位铁匠正在火炉 旁满头大汗地打造东西。一位老者坐在边上。火炉边放着不少打好了 的铁器。"
+  x = 2
+  y = -1
+  z = 0
+item_desc = {
+ cannotsawpaizi = "若要'铸剑'，请找欧冶师傅。 如果想在你的兵器上刻下带色的字，可以在宝剑名 前面加上$XXX$，在宝剑名后记得恢复为{npc}OR$。 $BLK$ - 黑色            {npc}OR$ - 恢复正常颜色 $RED$ - 红色            $HIR$ - 亮红色 $GRN$ - 绿色            $HIG$ - 亮绿色 $YEL$ - 土黄色          $HIY$ - 黄色 $BLU$ - 深蓝色          $HIB$ - 蓝色 $MAG$ - 浅紫色          $HIM$ - 粉红色 $CYN$ - 蓝绿色          $HIC$ - 天青色 $WHT$ - 浅灰色          $HIW$ - 白色"
+}
+valid_leave = [
+{
+  direction = ~
+  message = "铁匠对你道：哎，这位客官，拿了兵器再走！"
+}
+
+]
+    }
+
+  room_exits "tiejiangpu" {
+    room_id = rooms.tiejiangpu.id
+    west = rooms.road11.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/tulu1.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "tulu1" {
+      name = "土路"
+      description = "路旁一条小溪。溪水哗哗地流着，不时有鱼儿(fish)跃出水面。 溪旁几各男孩正低着头专心在钓鱼。"
+  x = -6
+  y = -5
+  z = 0
+item_desc = {
+ fish = "“哗”一条大鱼跃水而出，“噗”的一声又掉回水里。渐得男孩一身水。"
+}
+    }
+
+  room_exits "tulu1" {
+    room_id = rooms.tulu1.id
+    east = rooms.tulu2.id
+    southwest = rooms.shanlu5.id
+    }
+
+
+  room_characters "tulu1" {
+    room_id = rooms.tulu1.id
+    characters = [
+      { id = characters.boy.id },
+      { id = characters.boy.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/tulu2.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "tulu2" {
+      name = "土路"
+      description = "路旁一条小溪。溪水哗哗地流着，不时有鱼儿(fish)跃出水面。 溪旁几各男孩正低着头专心在钓鱼。"
+  x = -5
+  y = -5
+  z = 0
+item_desc = {
+ fish = "“哗”一条大鱼跃水而出，“噗”的一声又掉回水里。渐得男孩一身水。"
+}
+    }
+
+  room_exits "tulu2" {
+    room_id = rooms.tulu2.id
+    north = rooms.maojiabu.id
+    west = rooms.tulu1.id
+    }
+
+
+  room_characters "tulu2" {
+    room_id = rooms.tulu2.id
+    characters = [
+      { id = characters.boy.id },
+      { id = characters.boy.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/xilingqiao.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "xilingqiao" {
+      name = "西泠桥"
+      description = "西泠桥衔结孤山，跨过里西湖。桥的东南边是孤山。北边则是一 条青石大道。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "xilingqiao" {
+    room_id = rooms.xilingqiao.id
+    north = rooms.road7.id
+    southeast = rooms.gushan.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/xizhaoshan.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "xizhaoshan" {
+      name = "夕照山"
+      description = "夕照山上遍植栖树和红枫。每逢深秋，层林尽染，分外壮观。山 顶有一座塔，雷峰塔。神话“白蛇传”中的白娘娘就是被法海禁锢在 这座塔里。每当夕阳西下，彩云缭绕，塔影幢幢，这就是西湖十景之一 的“雷峰夕照”。"
+  x = 0
+  y = -4
+  z = 1
+    }
+
+  room_exits "xizhaoshan" {
+    room_id = rooms.xizhaoshan.id
+    southdown = rooms.road16.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/yanxiadong.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "yanxiadong" {
+      name = "烟霞洞"
+      description = "据说站在山头，清晨观看山村缭绕炊烟，傍晚仰望蓝天彩霞，景 色优美，故称“烟霞”。洞口两旁有精美的“观音”和“大势至菩萨” 洞内两壁的天然岩穴里有各代的石刻。往东是下山的路。西边是去龙 井。"
+  x = -6
+  y = -6
+  z = 0
+    }
+
+  room_exits "yanxiadong" {
+    room_id = rooms.yanxiadong.id
+    eastdown = rooms.shuiledong.id
+    west = rooms.shanlu5.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/yaodian.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "yaodian" {
+      name = "胡庆余堂"
+      description = "这是一家明净宽敞的药堂，後墙上是一个大药柜。几个伙计正忙 着爬上爬下地从小抽屉里抓药。药柜前摆着一张桌子，桌旁一位老者 正在为人把脉。他就是名医胡庆余。     柜台上方高挂一个大牌子(paizi)."
+  x = 2
+  y = -4
+  z = 0
+item_desc = {
+ paizi = "本店出售各类药品。"
+}
+    }
+
+  room_exits "yaodian" {
+    room_id = rooms.yaodian.id
+    west = rooms.road14.id
+    }
+
+
+  room_characters "yaodian" {
+    room_id = rooms.yaodian.id
+    characters = [
+      { id = characters.huqingyu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/yuefen.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "yuefen" {
+      name = "岳坟"
+      description = "墓道两旁有石虎，石羊，石马和三对翁仲。正中古柏交柯，便是 岳飞的坟墓。墓碑刻着“宋岳鄂王墓”。岳王墓的左面，便是岳飞之 子岳云的墓，墓碑上刻着“宋继忠侯岳云之墓”在岳坟前面两边四个 铁像(statue)。东首墙上有四个大字(word)。"
+  x = -2
+  y = 3
+  z = 0
+item_desc = {
+ statue = "北边两个是秦烩和他的妻子王氏，南边 两个是同谋杀害岳飞的奸臣，张俊和万 俟屑。四个铁像都反翦着手，向岳墓跪 着。"
+ word = "墙上有“精忠报国”四个大字。这是岳 母当年训子时在岳飞背上刻的字。"
+}
+    }
+
+  room_exits "yuefen" {
+    room_id = rooms.yuefen.id
+    south = rooms.yuelang.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/yuelang.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "yuelang" {
+      name = "岳廊"
+      description = "岳王庙的匾上是“心昭天日”四个大字。步入大殿，正中是岳飞 的塑像，身後的匾上题着“还我河山”。北边的门通向岳坟，往南是 出去的路。"
+  x = -2
+  y = 2
+  z = 0
+    }
+
+  room_exits "yuelang" {
+    room_id = rooms.yuelang.id
+    south = rooms.road6.id
+    north = rooms.yuefen.id
+    }
+
+
+  room_characters "yuelang" {
+    room_id = rooms.yuelang.id
+    characters = [
+      { id = characters.chengchaofeng.id },
+      { id = characters.honghua2.id },
+      { id = characters.honghua2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/yuhuangsd.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "yuhuangsd" {
+      name = "玉皇山顶"
+      description = "登上玉皇山，俯瞰山下，可以看到「八卦田」。据说这是皇帝祭 先农时亲耕的籍田。山顶有福星观，建於唐朝。廊宇旁有天一池和白 石井，并建有望湖亭。东西两边各有一条下山的路。"
+  x = -1
+  y = -6
+  z = 2
+    }
+
+  room_exits "yuhuangsd" {
+    room_id = rooms.yuhuangsd.id
+    westdown = rooms.shanlu6.id
+    eastdown = rooms.shanlu7.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/yuhuangshan.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "yuhuangshan" {
+      name = "玉皇山路"
+      description = "山脚有一座小亭，德意亭。不少游客登山前或下山後都在此小歇。 山路蜿延往东向上。西边有一条大路。"
+  x = -2
+  y = -5
+  z = 0
+    }
+
+  room_exits "yuhuangshan" {
+    room_id = rooms.yuhuangshan.id
+    west = rooms.road18.id
+    eastup = rooms.shanlu6.id
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/yuhuangsj.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "yuhuangsj" {
+      name = "玉皇山脚"
+      description = "只见往上的山路曲折蜿延。山路旁有一座小六角亭，几个游人正 在亭里歇脚。东北边是一条青石大道，往西是上山的路。"
+  x = 1
+  y = -6
+  z = 0
+    }
+
+  room_exits "yuhuangsj" {
+    room_id = rooms.yuhuangsj.id
+    westup = rooms.shanlu7.id
+    north = rooms.road15.id
+    }
+
+
+  room_characters "yuhuangsj" {
+    room_id = rooms.yuhuangsj.id
+    characters = [
+      { id = characters.honghua1.id },
+      { id = characters.honghua1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/yuquan.c by LPCConverter
+# Zone: hangzhou
+
+    rooms "yuquan" {
+      name = "玉泉"
+      description = "玉泉寺建在玉泉山上，原名清涟寺。走进玉泉寺，只见这里有几 个水池(pond)。朝东就是出寺下山的路。"
+  x = -4
+  y = 1
+  z = 0
+item_desc = {
+ pond = "池旁的石碑刻着“古珍珠泉”，池内偶有小水泡 上涌，好象一串珍珠。"
+}
+    }
+
+  room_exits "yuquan" {
+    room_id = rooms.yuquan.id
+    east = rooms.road5.id
+    }
+
+
+  room_characters "yuquan" {
+    room_id = rooms.yuquan.id
+    characters = [
+      { id = characters.you_ke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/an.c by LPCConverter
+# Zone: hangzhou
+
+    characters "an" {
+      name = "安健刚"
+      description = "他是铁胆周仲英的二弟子，对师父始终忠心不二。"
+  nickname = "独角虎"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 500
+    max_neili = 500
+    max_qi = 1000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "throwing" level = 50 },
+    { skill = "mantian-xing" level = 50 },
+    { skill = "hunyuan-yiqi" level = 50 },
+    { skill = "shaolin-shenfa" level = 50 },
+    { skill = "jingang-quan" level = 50 },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "throwing" skill = "mantian-xing" },
+    { type = "unarmed" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.tiedan.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/chang1.c by LPCConverter
+# Zone: hangzhou
+
+    characters "chang1" {
+      name = "常赫志"
+      description = "他身材又高又瘦，脸色蜡黄，眼睛凹进，眼角上有一粒黑痣，眉毛 斜斜的倒垂下来，形相甚是可怖。他是青城派慧侣道人的徒弟。黑沙 掌的功夫，江湖上无人能敌。黑白无常两兄弟是川江上著名的侠盗， 一向劫富济贫，不过心狠手辣，因此得了这难听的外号。"
+  title = "红花会五当家"
+  nickname = "黑无常"
+  gender = "男性"
+  age = 42
+  shen_type = 1
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 500000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1000
+    max_neili = 2000
+    max_qi = 2500
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 120 },
+    { skill = "dodge" level = 120 },
+    { skill = "parry" level = 120 },
+    { skill = "hand" level = 120 },
+    { skill = "claw" level = 120 },
+    { skill = "yunlong-shengong" level = 120 },
+    { skill = "yunlong-shenfa" level = 120 },
+    { skill = "yunlong-shou" level = 120 },
+    { skill = "yunlong-zhua" level = 120 },
+    { type = "dodge" skill = "yunlong-shenfa" },
+    { type = "force" skill = "yunlong-shengong" },
+    { type = "hand" skill = "yunlong-shou" },
+    { type = "parry" skill = "yunlong-shou" },
+    { type = "claw" skill = "yunlong-zhua" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/chang2.c by LPCConverter
+# Zone: hangzhou
+
+    characters "chang2" {
+      name = "常伯志"
+      description = "他身材又高又瘦，脸色蜡黄，眼睛凹进，眉毛斜斜的倒垂下来，形 相甚是可怖。他是青城派慧侣道人的徒弟。黑沙掌的功夫，江湖上无 人能敌。黑白无常两兄弟是川江上著名的侠盗，一向劫富济贫，不过 心狠手辣，因此得了这难听的外号。"
+  title = "红花会六当家"
+  nickname = "白无常"
+  gender = "男性"
+  age = 42
+  shen_type = 1
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 500000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1000
+    max_neili = 2000
+    max_qi = 2500
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 120 },
+    { skill = "dodge" level = 120 },
+    { skill = "parry" level = 120 },
+    { skill = "hand" level = 120 },
+    { skill = "claw" level = 120 },
+    { skill = "yunlong-shengong" level = 120 },
+    { skill = "yunlong-shenfa" level = 120 },
+    { skill = "yunlong-shou" level = 120 },
+    { skill = "yunlong-zhua" level = 120 },
+    { type = "dodge" skill = "yunlong-shenfa" },
+    { type = "force" skill = "yunlong-shengong" },
+    { type = "hand" skill = "yunlong-shou" },
+    { type = "parry" skill = "yunlong-shou" },
+    { type = "claw" skill = "yunlong-zhua" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/chen.c by LPCConverter
+# Zone: hangzhou
+
+    characters "chen" {
+      name = "陈家洛"
+      description = "他一副模样直是个富贵人家的纨裤子弟，丰姿如玉，目朗似星，轻 袍缓带，手中摇着一柄折扇，神采飞扬，气度闲雅，吐属斯文。服 饰俨然是个贵介公子。"
+  title = "红花会总舵主"
+  nickname = "玉面神龙"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+  score = 500000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2000000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1200
+    max_neili = 3000
+    max_qi = 3500
+    str = 30
+  }
+
+  skills = [
+    { skill = "literate" level = 200 },
+    { skill = "force" level = 250 },
+    { skill = "dodge" level = 250 },
+    { skill = "unarmed" level = 250 },
+    { skill = "parry" level = 250 },
+    { skill = "cuff" level = 250 },
+    { skill = "strike" level = 250 },
+    { skill = "hand" level = 250 },
+    { skill = "claw" level = 250 },
+    { skill = "yunlong-xinfa" level = 250 },
+    { skill = "yunlong-shengong" level = 250 },
+    { skill = "yunlong-shenfa" level = 250 },
+    { skill = "baihua-quan" level = 250 },
+    { type = "dodge" skill = "yunlong-shenfa" },
+    { type = "force" skill = "yunlong-shengong" },
+    { type = "unarmed" skill = "baihua-quan" },
+    { type = "hand" skill = "baihua-quan" },
+    { type = "parry" skill = "baihua-quan" },
+    { type = "claw" skill = "baihua-quan" },
+    { type = "strike" skill = "baihua-quan" },
+    { type = "cuff" skill = "baihua-quan" }
+  ]
+
+
+  carry = [
+    { id = items.jinduan.id },
+    { id = items.yaodai.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/huo.c by LPCConverter
+# Zone: hangzhou
+
+    characters "huo" {
+      name = "霍青桐"
+      description = "这女郎秀美中透着一股英气，光采照人，当真 丽若春梅绽雪，神如秋蕙披霜，两颊融融，霞 映澄塘，双目晶晶，月射寒江。腰插匕首，长 辨垂肩，鹅黄衫子，头戴金丝绣的小帽，帽边 插了根长长的翠绿羽毛，革履青马，旖旎如画。"
+  nickname = "翠羽黄衫"
+  gender = "女性"
+  age = 18
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 800000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1500
+    max_neili = 2500
+    max_qi = 2800
+    str = 30
+  }
+
+  inquiries = [
+    { key = "海市蜃楼" value = "(: ask_skill1 :)" }
+  ]
+
+  skills = [
+    { skill = "force" level = 180 },
+    { skill = "zhanshen-xinjing" level = 100 },
+    { skill = "tianchi-neigong" level = 180 },
+    { skill = "dodge" level = 180 },
+    { skill = "yanzi-chuanyun" level = 160 },
+    { skill = "zhuangzi-wu" level = 180 },
+    { skill = "parry" level = 160 },
+    { skill = "sword" level = 180 },
+    { skill = "sanfen-jianshu" level = 180 },
+    { skill = "hand" level = 160 },
+    { skill = "yunlong-shou" level = 160 },
+    { skill = "claw" level = 160 },
+    { skill = "yunlong-zhua" level = 160 },
+    { skill = "martial-cognize" level = 160 },
+    { skill = "literate" level = 200 },
+    { skill = "muslim" level = 300 },
+    { type = "force" skill = "tianchi-neigong" },
+    { type = "dodge" skill = "zhuangzi-wu" },
+    { type = "hand" skill = "yunlong-shou" },
+    { type = "parry" skill = "sanfen-jianshu" },
+    { type = "claw" skill = "yunlong-zhua" },
+    { type = "sword" skill = "sanfen-jianshu" }
+  ]
+
+
+  carry = [
+    { id = items.cuiyu.id },
+    { id = items.huangshan.id },
+    { id = items.shortsword.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/jiang.c by LPCConverter
+# Zone: hangzhou
+
+    characters "jiang" {
+      name = "蒋四根"
+      description = "铜头鳄鱼蒋四根在会中坐第十三把交椅，兵器是铁桨。"
+  title = "红花会十三当家"
+  nickname = "铜头鳄鱼"
+  gender = "男性"
+  age = 21
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 150000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 800
+    max_neili = 1000
+    max_qi = 1100
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "club" level = 80 },
+    { skill = "houquan" level = 80 },
+    { skill = "yunlong-shengong" level = 80 },
+    { skill = "zui-gun" level = 100 },
+    { skill = "yunlong-shenfa" level = 80 },
+    { type = "dodge" skill = "yunlong-shenfa" },
+    { type = "force" skill = "yunlong-shengong" },
+    { type = "unarmed" skill = "houquan" },
+    { type = "club" skill = "zui-gun" },
+    { type = "parry" skill = "zui-gun" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.tiejiang.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/lu.c by LPCConverter
+# Zone: hangzhou
+
+    characters "lu" {
+      name = "陆菲青"
+      description = "陆菲青，乃武当派大侠，壮年时在大江南北行侠仗义，端的名 震江湖，原是屠龙帮中一位响当当的人物。屠龙帮是反清的秘 帮，雍正年间声势十分浩大，后来雍正、乾隆两朝厉行镇压， 到乾隆七八年时，屠龙帮终于落得瓦解冰消。陆菲青远走边疆。 当时清廷曾四下派人追拿，但他为人机警，兼之武功高强，得 脱大难，但清廷继续严加查缉。陆菲青想到“大隐隐于朝、中 隐隐于市、小隐隐于野”之理，混到李可秀府中设帐教读。"
+  nickname = "绵里针"
+  gender = "男性"
+  age = 62
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1000
+    max_neili = 2000
+    max_qi = 3000
+    str = 30
+  }
+
+  skills = [
+    { skill = "literate" level = 100 },
+    { skill = "force" level = 200 },
+    { skill = "dodge" level = 200 },
+    { skill = "unarmed" level = 200 },
+    { skill = "parry" level = 200 },
+    { skill = "blade" level = 200 },
+    { skill = "sword" level = 200 },
+    { skill = "taiji-quan" level = 150 },
+    { skill = "taiji-shengong" level = 200 },
+    { skill = "taiji-dao" level = 200 },
+    { skill = "taiji-jian" level = 200 },
+    { skill = "liangyi-jian" level = 150 },
+    { skill = "tiyunzong" level = 200 },
+    { type = "dodge" skill = "tiyunzong" },
+    { type = "force" skill = "taiji-shengong" },
+    { type = "unarmed" skill = "taiji-quan" },
+    { type = "blade" skill = "taiji-dao" },
+    { type = "parry" skill = "taiji-jian" },
+    { type = "sword" skill = "liangyi-jian" }
+  ]
+
+
+  carry = [
+    { id = items.greyrobe.id },
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/luo.c by LPCConverter
+# Zone: hangzhou
+
+    characters "luo" {
+      name = "骆冰"
+      description = "她是一个秀美的少妇。一手短刀，一手握着一柄长刀。"
+  title = "红花会十一当家"
+  nickname = "鸳鸯刀"
+  gender = "女性"
+  age = 24
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 150000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 700
+    max_neili = 1000
+    max_qi = 1400
+    str = 30
+  }
+
+  skills = [
+    { skill = "literate" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "blade" level = 100 },
+    { skill = "hand" level = 100 },
+    { skill = "claw" level = 100 },
+    { skill = "yunlong-shengong" level = 100 },
+    { skill = "wuhu-duanmendao" level = 100 },
+    { skill = "yunlong-shenfa" level = 100 },
+    { skill = "yunlong-shou" level = 100 },
+    { skill = "yunlong-zhua" level = 100 },
+    { type = "dodge" skill = "yunlong-shenfa" },
+    { type = "force" skill = "yunlong-shengong" },
+    { type = "blade" skill = "wuhu-duanmendao" },
+    { type = "hand" skill = "yunlong-shou" },
+    { type = "parry" skill = "yunlong-shou" },
+    { type = "claw" skill = "yunlong-zhua" }
+  ]
+
+
+  carry = [
+    { id = items.jinduan.id },
+    { id = items.gangdao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/meng.c by LPCConverter
+# Zone: hangzhou
+
+    characters "meng" {
+      name = "孟健雄"
+      description = "他是铁胆周仲英的大弟子，对师父忠心耿耿。"
+  nickname = "神弹子"
+  gender = "男性"
+  age = 31
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 60000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 500
+    max_neili = 500
+    max_qi = 1000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "throwing" level = 50 },
+    { skill = "mantian-xing" level = 50 },
+    { skill = "hunyuan-yiqi" level = 50 },
+    { skill = "shaolin-shenfa" level = 50 },
+    { skill = "jingang-quan" level = 50 },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "throwing" skill = "mantian-xing" },
+    { type = "unarmed" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.tiedan.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/shi.c by LPCConverter
+# Zone: hangzhou
+
+    characters "shi" {
+      name = "石双英"
+      description = "鬼见愁石双英在会中坐第十二把交椅，执掌刑堂，铁面无私，心狠手 辣，犯了规条的就是逃到天涯海角，他也必派人抓来处刑，原来依据红 花会规条，会中兄弟犯了大罪，若是一时胡涂，此后诚心悔悟，可在开 香堂执法之前，自行用尖刀在大腿上连戳三刀，这三刀须对穿而过，即 所谓“三刀六洞”，然后向该管舵主和执法香主求恕，有望从轻发落， 但若真正罪重出自不能饶恕。是以红花会数万兄弟，提到鬼见愁时无不 悚然。"
+  title = "红花会十二当家"
+  nickname = "鬼见愁"
+  gender = "男性"
+  age = 24
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 200000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 700
+    max_neili = 1000
+    max_qi = 1500
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 90 },
+    { skill = "dodge" level = 90 },
+    { skill = "unarmed" level = 90 },
+    { skill = "parry" level = 90 },
+    { skill = "sword" level = 90 },
+    { skill = "taiji-quan" level = 95 },
+    { skill = "taiji-shengong" level = 90 },
+    { skill = "taiji-jian" level = 90 },
+    { skill = "tiyunzong" level = 90 },
+    { type = "dodge" skill = "tiyunzong" },
+    { type = "force" skill = "taiji-shengong" },
+    { type = "unarmed" skill = "tianji-quan" },
+    { type = "parry" skill = "taiji-jian" },
+    { type = "sword" skill = "taiji-jian" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/wei.c by LPCConverter
+# Zone: hangzhou
+
+    characters "wei" {
+      name = "卫春华"
+      description = "他长得面目英俊，穿一件青布长衫，三十岁左右年纪，双目炯炯， 英气逼人。凡逢江湖上凶殴争斗、对抗官兵之时，卫春华总是不顾 性命的勇往直前，一生所遇凶险不计其数，但连重伤也未受过一次， 是以说他有九条性命。"
+  title = "红花会九当家"
+  nickname = "九命锦豹子"
+  gender = "男性"
+  age = 31
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 250000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 800
+    max_neili = 1000
+    max_qi = 1800
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "unarmed" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "sword" level = 100 },
+    { skill = "houquan" level = 100 },
+    { skill = "yunlong-xinfa" level = 100 },
+    { skill = "yunlong-shengong" level = 100 },
+    { skill = "yunlong-jian" level = 100 },
+    { skill = "yunlong-shenfa" level = 150 },
+    { type = "dodge" skill = "yunlong-shenfa" },
+    { type = "force" skill = "yunlong-shengong" },
+    { type = "unarmed" skill = "houquan" },
+    { type = "parry" skill = "yunlong-jian" },
+    { type = "sword" skill = "yunlong-jian" }
+  ]
+
+
+  carry = [
+    { id = items.bluecloth.id },
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/wen.c by LPCConverter
+# Zone: hangzhou
+
+    characters "wen" {
+      name = "文泰来"
+      description = "文泰来号称“奔雷手”，十五岁起浪荡江湖，手掌下不知击毙 过多少神奸巨憝、凶徒恶霸。"
+  title = "红花会四当家"
+  nickname = "奔雷手"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 700000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1000
+    max_neili = 2000
+    max_qi = 2000
+    str = 30
+  }
+
+  skills = [
+    { skill = "literate" level = 100 },
+    { skill = "force" level = 150 },
+    { skill = "dodge" level = 150 },
+    { skill = "parry" level = 150 },
+    { skill = "hand" level = 150 },
+    { skill = "claw" level = 150 },
+    { skill = "yunlong-shengong" level = 150 },
+    { skill = "yunlong-shenfa" level = 150 },
+    { skill = "yunlong-shou" level = 150 },
+    { skill = "yunlong-zhua" level = 150 },
+    { type = "dodge" skill = "yunlong-shenfa" },
+    { type = "force" skill = "yunlong-shengong" },
+    { type = "hand" skill = "yunlong-shou" },
+    { type = "parry" skill = "yunlong-shou" },
+    { type = "claw" skill = "yunlong-zhua" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/wuchen.c by LPCConverter
+# Zone: hangzhou
+
+    characters "wuchen" {
+      name = "无尘道长"
+      description = "他就是无尘道人。少年时混迹绿林，劫富济贫，做下了无数巨案，武 功高强，手下兄弟又众，官府奈何他不得。有一次他见到一位官家小 姐，竟然死心塌地的爱上了她。那位小姐却对无尘并没真心，受了父 亲教唆，一天夜里无尘偷偷来见她之时，那小姐说：“你对我全是假 意，没半点诚心。”无尘当然赌誓罚咒。那小姐道：“你们男人啊， 这样的话个个会说。你隔这么久来瞧我一次，我可不够。你要是真心 爱我，就把你一条手膀砍来给我。有你这条臂膀陪着，也免得我寂寞 孤单。”无尘一语不发，真的拔剑将自己的左臂砍了下来。小姐楼上 早埋伏了许多官差，一见都涌了出来。无尘已痛晕在地，哪里还能抵 抗？无尘手下的兄弟们大会群豪，打破城池，将他救出，又把小姐全 家都捉了来听他发落。众人以为无尘不是把他们都杀了，就是要了这 小姐做妻子。哪知他看见小姐，心肠一软，叫众人把她和家人都放了， 自己当夜悄悄离开了那地方，心灰意懒，就此出家做了道人。人虽然 出了家，可是本性难移，仍是豪迈豁达，行侠江湖，被红花会老当家 于万亭请出来做了副手。"
+  title = "红花会二当家"
+  nickname = "追魂夺命剑"
+  gender = "男性"
+  age = 52
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2500000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 3000
+    max_neili = 5000
+    max_qi = 3800
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 250 },
+    { skill = "bibo-shengong" level = 250 },
+    { skill = "unarmed" level = 250 },
+    { skill = "lianhuan-mizongtui" level = 250 },
+    { skill = "dodge" level = 250 },
+    { skill = "zhuihun-jian" level = 250 },
+    { skill = "parry" level = 250 },
+    { skill = "sword" level = 250 },
+    { type = "force" skill = "bibo-shengong" },
+    { type = "unarmed" skill = "lianhuan-mizongtui" },
+    { type = "dodge" skill = "lianhuan-mizongtui" },
+    { type = "parry" skill = "zhuihun-jian" },
+    { type = "sword" skill = "zhuihun-jian" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.greyrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/xinyan.c by LPCConverter
+# Zone: hangzhou
+
+    characters "xinyan" {
+      name = "心砚"
+      description = "他是红花会总舵主陈家洛的贴身书僮。"
+  title = "红花会书僮"
+  gender = "男性"
+  age = 15
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 500
+    max_neili = 1000
+    max_qi = 1000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "unarmed" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "whip" level = 60 },
+    { skill = "claw" level = 60 },
+    { skill = "hand" level = 60 },
+    { skill = "yunlong-shengong" level = 60 },
+    { skill = "yunlong-bian" level = 60 },
+    { skill = "yunlong-jian" level = 60 },
+    { skill = "yunlong-shenfa" level = 50 },
+    { skill = "yunlong-shou" level = 50 },
+    { skill = "yunlong-zhua" level = 50 },
+    { type = "dodge" skill = "yunlong-shenfa" },
+    { type = "force" skill = "yunlong-shengong" },
+    { type = "hand" skill = "yunlong-shou" },
+    { type = "parry" skill = "yunlong-bian" },
+    { type = "claw" skill = "yunlong-zhua" },
+    { type = "sword" skill = "yunlong-jian" },
+    { type = "whip" skill = "yunlong-bian" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.changbian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/xu.c by LPCConverter
+# Zone: hangzhou
+
+    characters "xu" {
+      name = "徐天宏"
+      description = "其人身材矮小，足智多谋，是红花会的智囊军师，武功也颇 不弱，冷静持重。"
+  title = "红花会七当家"
+  nickname = "武诸葛"
+  gender = "男性"
+  age = 27
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 350000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 800
+    max_neili = 1100
+    max_qi = 1800
+    str = 30
+  }
+
+  skills = [
+    { skill = "literate" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "blade" level = 100 },
+    { skill = "hand" level = 100 },
+    { skill = "claw" level = 100 },
+    { skill = "yunlong-shengong" level = 100 },
+    { skill = "wuhu-duanmendao" level = 100 },
+    { skill = "yunlong-shenfa" level = 100 },
+    { skill = "yunlong-shou" level = 100 },
+    { skill = "yunlong-zhua" level = 100 },
+    { type = "dodge" skill = "yunlong-shenfa" },
+    { type = "force" skill = "yunlong-shengong" },
+    { type = "blade" skill = "wuhu-duanmendao" },
+    { type = "hand" skill = "yunlong-shou" },
+    { type = "parry" skill = "wuhu-duanmendao" },
+    { type = "claw" skill = "yunlong-zhua" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.gangdao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/yang.c by LPCConverter
+# Zone: hangzhou
+
+    characters "yang" {
+      name = "杨成协"
+      description = "他又肥又高，手执钢鞭，鞭身甚是粗重，看模样少说也有三十来斤。"
+  title = "红花会八当家"
+  nickname = "铁塔"
+  gender = "男性"
+  age = 26
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 900
+    max_neili = 1000
+    max_qi = 1500
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "whip" level = 100 },
+    { skill = "hand" level = 100 },
+    { skill = "claw" level = 100 },
+    { skill = "yunlong-shengong" level = 100 },
+    { skill = "yunlong-shenfa" level = 100 },
+    { skill = "yunlong-bian" level = 100 },
+    { skill = "yunlong-shou" level = 100 },
+    { skill = "yunlong-zhua" level = 100 },
+    { type = "dodge" skill = "yunlong-shenfa" },
+    { type = "force" skill = "yunlong-shengong" },
+    { type = "hand" skill = "yunlong-shou" },
+    { type = "parry" skill = "yunlong-bian" },
+    { type = "claw" skill = "yunlong-zhua" },
+    { type = "whip" skill = "yunlong-bian" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.tiebian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/yu.c by LPCConverter
+# Zone: hangzhou
+
+    characters "yu" {
+      name = "余鱼同"
+      description = "一个长身玉立，眉清目秀，风流英俊的书生。余鱼同乃江南望族 子弟，中过秀才。他父亲因和一家豪门争一块坟地，官司打得倾家 荡产，又被豪门借故陷害，瘐死狱中。余鱼同一气出走，得遇机缘， 拜马真为师，弃文习武，回来把士豪刺死，从此亡命江湖，后来入 了红花会。他为人机警灵巧，多识各地乡谈，在会中任联络四方、 刺探讯息之职。"
+  title = "红花会十四当家"
+  nickname = "金笛秀才"
+  gender = "男性"
+  age = 20
+  shen_type = 1
+  score = 500000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1000
+    max_neili = 2000
+    max_qi = 3000
+    str = 30
+  }
+
+  skills = [
+    { skill = "literate" level = 100 },
+    { skill = "force" level = 200 },
+    { skill = "dodge" level = 200 },
+    { skill = "unarmed" level = 200 },
+    { skill = "parry" level = 200 },
+    { skill = "whip" level = 200 },
+    { skill = "blade" level = 200 },
+    { skill = "sword" level = 200 },
+    { skill = "hand" level = 200 },
+    { skill = "claw" level = 200 },
+    { skill = "houquan" level = 150 },
+    { skill = "yunlong-xinfa" level = 200 },
+    { skill = "yunlong-shengong" level = 200 },
+    { skill = "wuhu-duanmendao" level = 150 },
+    { skill = "yunlong-jian" level = 200 },
+    { skill = "yunlong-shenfa" level = 150 },
+    { skill = "yunlong-bian" level = 150 },
+    { skill = "yunlong-shou" level = 150 },
+    { skill = "yunlong-zhua" level = 150 },
+    { type = "dodge" skill = "yunlong-shenfa" },
+    { type = "force" skill = "yunlong-shengong" },
+    { type = "unarmed" skill = "houquan" },
+    { type = "blade" skill = "wuhu-duanmendao" },
+    { type = "hand" skill = "yunlong-shou" },
+    { type = "parry" skill = "yunlong-shou" },
+    { type = "claw" skill = "yunlong-zhua" },
+    { type = "sword" skill = "yunlong-jian" },
+    { type = "whip" skill = "yunlong-bian" }
+  ]
+
+
+  carry = [
+    { id = items.jinduan.id },
+    { id = items.yaodai.id },
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/zhang.c by LPCConverter
+# Zone: hangzhou
+
+    characters "zhang" {
+      name = "章进"
+      description = "他是个驼子，最是直性子。他天生残疾，可是神力惊人，练 就了一身外家的硬功夫。他身有缺陷，最恼别人取笑他的驼 背，他和人说话时自称“章驼子”，那是好端端地，然而别 人若是在他面前提到个“驼”字，甚至冲着他的驼背一笑， 这人算是惹上了祸啦。笑他之人如是常人也还罢了，如会武 艺，往往就被他结结实实的打上一顿。他在红花会中最听骆 冰的话，因他脾气古怪，旁人都忌他三分，骆冰却怜他残废， 衣着饮食，时加细心照料，当他是小兄弟一般。衣服极为光 鲜。相貌却颇为丑陋。"
+  title = "红花会十当家"
+  nickname = "石敢当"
+  gender = "男性"
+  age = 24
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 120000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 700
+    max_neili = 1000
+    max_qi = 1200
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "parry" level = 70 },
+    { skill = "staff" level = 70 },
+    { skill = "hand" level = 70 },
+    { skill = "claw" level = 70 },
+    { skill = "yunlong-shengong" level = 70 },
+    { skill = "wuchang-zhang" level = 70 },
+    { skill = "yunlong-shenfa" level = 70 },
+    { skill = "yunlong-shou" level = 70 },
+    { skill = "yunlong-zhua" level = 70 },
+    { type = "dodge" skill = "yunlong-shenfa" },
+    { type = "force" skill = "yunlong-shengong" },
+    { type = "staff" skill = "wuchang-zhang" },
+    { type = "hand" skill = "yunlong-shou" },
+    { type = "parry" skill = "wuchang-zhang" },
+    { type = "claw" skill = "yunlong-zhua" }
+  ]
+
+
+  carry = [
+    { id = items.gangzhang.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/zhao.c by LPCConverter
+# Zone: hangzhou
+
+    characters "zhao" {
+      name = "赵半山"
+      description = "他一张胖胖的脸，笑起来给人一副很慈祥的感觉。他 原是温州王氏太极门掌门大弟子。豪迈豁达，行侠江 湖，一手暗器功夫和太极剑少有能匹敌。屠龙帮风流 云散之后，投入红花会。很得被红花会老当家于万亭 赏识。"
+  title = "红花会三当家"
+  nickname = "千臂如来"
+  gender = "男性"
+  age = 48
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 800000
+    con = 26
+    dex = 30
+    int = 30
+    max_jing = 1000
+    max_neili = 2500
+    max_qi = 2500
+    str = 21
+  }
+
+  skills = [
+    { skill = "force" level = 150 },
+    { skill = "taiji-shengong" level = 150 },
+    { skill = "unarmed" level = 150 },
+    { skill = "taiji-quan" level = 150 },
+    { skill = "throwing" level = 200 },
+    { skill = "hanxing-bada" level = 150 },
+    { skill = "dodge" level = 150 },
+    { skill = "tiyunzong" level = 150 },
+    { skill = "mantian-xing" level = 200 },
+    { skill = "parry" level = 150 },
+    { skill = "sword" level = 150 },
+    { skill = "taiji-jian" level = 150 },
+    { type = "force" skill = "taiji-shengong" },
+    { type = "unarmed" skill = "taiji-quan" },
+    { type = "dodge" skill = "tiyunzong" },
+    { type = "parry" skill = "taiji-jian" },
+    { type = "sword" skill = "taiji-jian" },
+    { type = "throwing" skill = "hanxing-bada" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.jili.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/zhou.c by LPCConverter
+# Zone: hangzhou
+
+    characters "zhou" {
+      name = "周仲英"
+      description = "他白发飘动，精神矍铄，乃是西北武林的领袖人物铁胆周仲英。"
+  title = "铁胆庄庄主"
+  nickname = "铁胆"
+  gender = "男性"
+  age = 61
+  shen_type = 1
+  score = 500000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1000
+    max_neili = 2000
+    max_qi = 3000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 140 },
+    { skill = "dodge" level = 140 },
+    { skill = "unarmed" level = 140 },
+    { skill = "parry" level = 140 },
+    { skill = "throwing" level = 140 },
+    { skill = "mantian-xing" level = 140 },
+    { skill = "hunyuan-yiqi" level = 140 },
+    { skill = "jingang-quan" level = 140 },
+    { skill = "shaolin-shenfa" level = 140 },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "throwing" skill = "mantian-xing" },
+    { type = "parry" skill = "jingang-quan" },
+    { type = "unarmed" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.tiedan.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/zhouyi.c by LPCConverter
+# Zone: hangzhou
+
+    characters "zhouyi" {
+      name = "周绮"
+      description = "这是铁胆庄的大小姐，周仲英的宝贝女儿。她性格豪迈，颇 有乃父之风，爱管闲事，好打不平，西北武林中人送了她个 外号，叫做“俏李逵”。"
+  title = "铁胆庄大小姐"
+  nickname = "俏李逵"
+  gender = "女性"
+  age = 17
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 40000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 400
+    max_neili = 600
+    max_qi = 800
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "blade" level = 50 },
+    { skill = "cibei-dao" level = 50 },
+    { skill = "hunyuan-yiqi" level = 50 },
+    { skill = "shaolin-shenfa" level = 50 },
+    { skill = "jingang-quan" level = 50 },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "blade" skill = "cibei-dao" },
+    { type = "unarmed" skill = "jingang-quan" },
+    { type = "parry" skill = "cibei-dao" }
+  ]
+
+
+  carry = [
+    { id = items.jinduan.id },
+    { id = items.gangdao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/obj/cuiyu.c by LPCConverter
+# Zone: hangzhou
+
+    items "cuiyu" {
+      name = "翠羽"
+      description = "一支翠绿的羽毛。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/obj/huangshan.c by LPCConverter
+# Zone: hangzhou
+
+    items "huangshan" {
+      name = "黄衫"
+      description = "一件鹅黄色的女子长衫。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/obj/shortsword.c by LPCConverter
+# Zone: hangzhou
+
+    items "shortsword" {
+      name = "短剑"
+      description = "这是一柄的短剑，据说剑里藏着一个极大秘密，几 百年来辗转相传，始终无人参详得出。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/obj/tiebian.c by LPCConverter
+# Zone: hangzhou
+
+    items "tiebian" {
+      name = "铁鞭"
+      description = "这是一柄粗大的铁鞭，总有三十来斤重。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抖出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}别回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/obj/tiedan.c by LPCConverter
+# Zone: hangzhou
+
+    items "tiedan" {
+      name = "铁胆"
+      description = "一些溜圆的铁胆，是一种凶猛的暗器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}迅速地从身上摸出一些铁胆，捏在手中就待发出！"
+    unwield = "{npc}将手里剩下的铁胆一抖就不见了。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/honghua/obj/tiejiang.c by LPCConverter
+# Zone: hangzhou
+
+    items "tiejiang" {
+      name = "铁桨"
+      description = "这是一根铁桨，举可齐眉，看来很是沉重，可攻击大片敌人。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/baizhen.c by LPCConverter
+# Zone: hangzhou
+
+    characters "baizhen" {
+      name = "白振"
+      description = "白振是嵩阳派高手，三十年前就驰名武林了。"
+  title = "御前侍卫"
+  nickname = "金爪铁钩"
+  gender = "男性"
+  age = 64
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 450000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 95 },
+    { skill = "blade" level = 95 },
+    { skill = "claw" level = 95 },
+    { skill = "parry" level = 90 },
+    { skill = "dodge" level = 90 },
+    { skill = "sougu" level = 90 },
+    { skill = "lingxu-bu" level = 90 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "claw" skill = "sougu" },
+    { type = "parry" skill = "sougu" }
+  ]
+
+
+  carry = [
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/boy.c by LPCConverter
+# Zone: hangzhou
+
+    characters "boy" {
+      name = "男孩"
+      description = "这是个农家少年，大概因从小物农，虽然年纪不大，可已长的很粗壮了。"
+  gender = "男性"
+  age = 13
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100
+    con = 15
+    dex = 16
+    int = 17
+    str = 17
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/caichanu.c by LPCConverter
+# Zone: hangzhou
+
+    characters "caichanu" {
+      name = "采茶女"
+      description = "江南清秀的采茶姑娘一样楚楚动人。"
+  gender = "女性"
+  age = 19
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 700
+  }
+
+  chat_chance = 5
+chats = [
+    "采茶女说道：侬今早去庙里上香伐，带我一道去好勿好？"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 25 },
+    { skill = "dodge" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/chuyuan.c by LPCConverter
+# Zone: hangzhou
+
+    characters "chuyuan" {
+      name = "褚圆"
+      description = "褚圆原是和尚，法名智圆，后来犯了清规，被追缴度牒，逐 出庙门，他索性还了俗，做了大内侍卫。"
+  title = "御前侍卫"
+  gender = "男性"
+  age = 34
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 350000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 55 },
+    { skill = "sword" level = 55 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "damo-jian" level = 50 },
+    { skill = "shaolin-shenfa" level = 50 },
+    { type = "sword" skill = "damo-jian" },
+    { type = "parry" skill = "damo-jian" },
+    { type = "dodge" skill = "shaolin-shenfa" }
+  ]
+
+
+  carry = [
+    { id = items.tiejia.id },
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/dabei.c by LPCConverter
+# Zone: hangzhou
+
+    characters "dabei" {
+      name = "大悲尊者"
+      description = "他看上去须眉皆白，眼神却异常有神。"
+  nickname = "灵隐寺住持"
+  gender = "男性"
+  age = 72
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000000
+    con = 38
+    dex = 33
+    int = 35
+    max_jing = 3000
+    max_neili = 6000
+    max_qi = 5200
+    str = 33
+  }
+
+  inquiries = [
+    { key = "莲花指" value = "这正是贫僧的绝学，阁下为何知晓？" }
+  ]
+
+  skills = [
+    { skill = "force" level = 280 },
+    { skill = "yijinjing" level = 280 },
+    { skill = "dodge" level = 280 },
+    { skill = "shaolin-shenfa" level = 280 },
+    { skill = "parry" level = 280 },
+    { skill = "lianhua-zhi" level = 320 },
+    { skill = "finger" level = 320 },
+    { skill = "literate" level = 220 },
+    { skill = "martial-cognize" level = 220 },
+    { type = "force" skill = "yijinjing" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "parry" skill = "lianhua-zhi" },
+    { type = "finger" skill = "lianhua-zhi" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/dao-ke.c by LPCConverter
+# Zone: hangzhou
+
+    characters "dao_ke" {
+      name = "刀客"
+      description = "这家伙满脸横肉，一付凶神恶煞的模样，令人望而生畏。"
+  gender = "男性"
+  age = 20
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 15000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 45 },
+    { skill = "blade" level = 45 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/girl.c by LPCConverter
+# Zone: hangzhou
+
+    characters "girl" {
+      name = "女孩"
+      description = "这是个农家少女，虽然只有十二、三岁，身材已经开始发育。"
+  gender = "女性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 70
+    con = 16
+    dex = 15
+    int = 15
+    str = 14
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/guanjia.c by LPCConverter
+# Zone: hangzhou
+
+    characters "guanjia" {
+      name = "管家"
+      description = ""
+  gender = "男性"
+  age = 65
+
+  combat = {
+    combat_exp = 7500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 35 },
+    { skill = "force" level = 35 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/guest.c by LPCConverter
+# Zone: hangzhou
+
+    characters "guest" {
+      name = "进香客"
+      description = ""
+  gender = "男性"
+  shen_type = 1
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/honghua1.c by LPCConverter
+# Zone: hangzhou
+
+    characters "honghua1" {
+      name = "红花会众"
+      description = "这是位青年壮汉，虎背熊腰，胸前配带一朵大红花。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 20000
+  }
+
+  skills = [
+    { skill = "sword" level = 60 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/honghua2.c by LPCConverter
+# Zone: hangzhou
+
+    characters "honghua2" {
+      name = "绿营会众"
+      description = "这是位手执长枪的绿营清兵，红花会在江南 声势大盛，绿营也多有会众。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 20000
+  }
+
+  skills = [
+    { skill = "club" level = 60 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.changqiang.id },
+    { id = items.junfu.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/huqingyu.c by LPCConverter
+# Zone: hangzhou
+
+    characters "huqingyu" {
+      name = "胡庆余"
+      description = "胡庆余是当世一大巫医，他的本事神奇无比。真有生死肉骨之功。"
+  gender = "男性"
+  age = 63
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 200000
+  }
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/jiading.c by LPCConverter
+# Zone: hangzhou
+
+    characters "jiading" {
+      name = "家丁"
+      description = ""
+  gender = "男性"
+  age = 35
+
+  combat = {
+    combat_exp = 4000
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/jian-ke.c by LPCConverter
+# Zone: hangzhou
+
+    characters "jian_ke" {
+      name = "剑客"
+      description = "这是位中年武人，肩背长剑，长长的剑穗随风飘扬，看来似乎身怀绝艺。"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 20000
+  }
+
+  skills = [
+    { skill = "sword" level = 60 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/jiangong.c by LPCConverter
+# Zone: hangzhou
+
+    characters "jiangong" {
+      name = "监工"
+      description = "这是一个监工，手持长鞭，眼光一眨不眨的盯着众人，口中吆喝个不停。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+  startroom = "/d/hangzhou/kuangshan"
+
+  combat = {
+    combat_exp = 500000
+  }
+
+  inquiries = [
+    { key = "job" value = "你是想采矿(mine)啊，还是运货(transit)？" },
+    { key = "mine" value = "(: ask_mine :)" },
+    { key = "transit" value = "(: ask_transit :)" },
+    { key = "工作" value = "你是想采矿(mine)啊，还是运货(transit)？" },
+    { key = "运货" value = "(: ask_transit :)" },
+    { key = "采矿" value = "(: ask_mine :)" }
+  ]
+
+  chat_chance = 9
+chats = [
+    "监工喝道：快！快给我干！",
+    "监工一扬鞭子，骂道：他奶奶的，你给我放老实点。",
+    "监工打量着四周，不知道在打什么主意。",
+    "监工狠狠的抽了一个人几下，骂道：怎么把矿石掉到地上了，你这笨蛋。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.changbian.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["mine"]
+  }
+
+  accept = [
+    { kind = "money" accept = true msg = "{npc}看了看{name}递过来的钱，大喝道：“就这点？一边儿去！”" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/likexiu.c by LPCConverter
+# Zone: hangzhou
+
+    characters "likexiu" {
+      name = "李可秀"
+      description = "李可秀一身军功而成封疆大吏，一身武功自然不容轻视。"
+  title = "杭州提督"
+  gender = "男性"
+  age = 54
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 150000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 75 },
+    { skill = "blade" level = 75 },
+    { skill = "parry" level = 70 },
+    { skill = "dodge" level = 70 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/liumang.c by LPCConverter
+# Zone: hangzhou
+
+    characters "liumang" {
+      name = "流氓"
+      description = "他是一个成天游手好闲的流氓，长得倒是白白胖胖的，也许以前有过钱。"
+  gender = "男性"
+  age = 19
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/liumangtou.c by LPCConverter
+# Zone: hangzhou
+
+    characters "liumangtou" {
+      name = "流氓头"
+      description = "他长得奸嘴猴腮的，一看就不像是个好人。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 7000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/liyuanzhi.c by LPCConverter
+# Zone: hangzhou
+
+    characters "liyuanzhi" {
+      name = "李沅芷"
+      description = "她是杭州提督李可秀的千金，武当名宿陆菲青的入室弟子。"
+  gender = "女性"
+  age = 16
+  shen_type = 1
+
+  combat = {
+    attitude = "peace"
+    combat_exp = 200000
+    con = 26
+    dex = 26
+    int = 26
+    max_jing = 500
+    max_neili = 1000
+    max_qi = 1000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 75 },
+    { skill = "sword" level = 75 },
+    { skill = "parry" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "force" level = 70 },
+    { skill = "taiji-shengong" level = 70 },
+    { skill = "taiji-jian" level = 70 },
+    { skill = "taiji-quan" level = 70 },
+    { skill = "tiyunzong" level = 70 },
+    { type = "dodge" skill = "tiyunzong" },
+    { type = "force" skill = "taiji-shengong" },
+    { type = "sword" skill = "taiji-jian" },
+    { type = "unarmed" skill = "taiji-quan" },
+    { type = "parry" skill = "taiji-jian" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.pink_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/longjun.c by LPCConverter
+# Zone: hangzhou
+
+    characters "longjun" {
+      name = "龙骏"
+      description = "龙骏是大内高手，一手喂毒暗器，少有其匹。"
+  title = "御前侍卫"
+  gender = "男性"
+  age = 32
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 300000
+  }
+
+  skills = [
+    { skill = "jingang-quan" level = 120 },
+    { skill = "cuff" level = 120 },
+    { skill = "throwing" level = 140 },
+    { skill = "parry" level = 120 },
+    { skill = "dodge" level = 130 },
+    { skill = "mantian-xing" level = 140 },
+    { skill = "shaolin-shenfa" level = 130 },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "throwing" skill = "mantian-xing" },
+    { type = "parry" skill = "mantian-xing" },
+    { type = "dodge" skill = "shaolin-shenfa" }
+  ]
+
+
+  carry = [
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/mengmian.c by LPCConverter
+# Zone: hangzhou
+
+    characters "mengmian" {
+      name = "蒙面人"
+      description = "一个蒙面大汉，杀气腾腾。"
+  gender = "男性"
+  age = 38
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "peace"
+    combat_exp = 20000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 100
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "blade" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "shaolin-shenfa" level = 50 },
+    { skill = "cibei-dao" level = 50 },
+    { skill = "hunyuan-yiqi" level = 50 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "blade" skill = "cibei-dao" },
+    { type = "parry" skill = "cibei-dao" }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/oldwoman.c by LPCConverter
+# Zone: hangzhou
+
+    characters "oldwoman" {
+      name = "老大娘"
+      description = "一个满脸风霜之色的老婆婆。"
+  gender = "女性"
+  age = 63
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 150
+    con = 14
+    dex = 12
+    int = 13
+    str = 13
+  }
+
+  inquiries = [
+    { key = "流氓" value = "那几个小流氓正天不务正业，就在小胡同里喝酒赌钱。" },
+    { key = "鸡" value = "我那老母鸡啊...一定是那几个不务正业的小流氓干的。" }
+  ]
+
+  chat_chance = 10
+chats = [
+    "老大娘伤心的说道：那个天杀的，偷了我的老母鸡。",
+    "老大娘叹了口气，说道：这是个什麽世道啊。",
+    "老大娘呆呆的望着鸡笼，发起愣来了。"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/poorman.c by LPCConverter
+# Zone: hangzhou
+
+    characters "poorman" {
+      name = "穷汉"
+      description = "一个骨瘦如柴，满脸菜色的穷汉。"
+  gender = "男性"
+  age = 33
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 250
+    con = 17
+    dex = 18
+    int = 13
+    str = 20
+  }
+
+  chat_chance = 15
+chats = [
+    "穷汉懒洋洋地打了个哈欠。",
+    "穷汉伸手捉住了身上的虱子，骂道：老子身上没几两肉，全叫你们给咬了。"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/qianlong.c by LPCConverter
+# Zone: hangzhou
+
+    characters "qianlong" {
+      name = "乾隆皇帝"
+      description = "乾隆皇帝姓爱新觉罗，名弘历，是大清入关后第四位在位皇帝，生平 号称有十大武功，自称“十全老人”。"
+  title = "清高宗"
+  gender = "男性"
+  age = 43
+
+  combat = {
+    attitude = "piece"
+    combat_exp = 500
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["kneel"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/qingbing.c by LPCConverter
+# Zone: hangzhou
+
+    characters "qingbing" {
+      name = "绿营清兵"
+      description = "这是位手执长枪的绿营清兵，满脸凶狠。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 20000
+  }
+
+  skills = [
+    { skill = "club" level = 60 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.changqiang.id },
+    { id = items.junfu.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/seng.c by LPCConverter
+# Zone: hangzhou
+
+    characters "seng" {
+      name = "老和尚"
+      description = "一个慈眉善目的老和尚。"
+  gender = "男性"
+  age = 67
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "peace"
+    combat_exp = 20000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 100
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "blade" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "shaolin-shenfa" level = 50 },
+    { skill = "cibei-dao" level = 50 },
+    { skill = "hunyuan-yiqi" level = 50 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "blade" skill = "cibei-dao" },
+    { type = "parry" skill = "cibei-dao" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/shami.c by LPCConverter
+# Zone: hangzhou
+
+    characters "shami" {
+      name = "小沙弥"
+      description = "他是本寺小沙弥。"
+  gender = "男性"
+  age = 12
+  shen_type = 1
+  score = 1000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000
+    con = 22
+    dex = 25
+    int = 20
+    max_jing = 100
+    max_neili = 150
+    max_qi = 150
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 30 },
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 },
+    { skill = "parry" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.dao_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/shu-sheng.c by LPCConverter
+# Zone: hangzhou
+
+    characters "shu_sheng" {
+      name = "书生"
+      description = "这是个饱读诗书，却手无搏鸡之力的年轻书生。"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "peaceful"
+    int = 28
+  }
+
+  skills = [
+    { skill = "literate" level = 40 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/smith.c by LPCConverter
+# Zone: hangzhou
+
+    characters "smith" {
+      name = "铁匠"
+      description = "铁匠正用铁钳夹住一块红热的铁块放进炉中。"
+  title = "铁匠铺老板"
+  gender = "男性"
+  age = 33
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 400
+  }
+
+  # vendor_goods: "/clone/weapon/changjian" (file not found)
+  # vendor_goods: "/clone/weapon/hammer" (file not found)
+  # vendor_goods: "/clone/weapon/tudao" (file not found)
+  # vendor_goods: "/clone/weapon/dagger" (file not found)
+  # vendor_goods: "/clone/weapon/tiegun" (file not found)
+  # vendor_goods: "/clone/weapon/gangdao" (file not found)
+  # vendor_goods: "/clone/cloth/tiejia" (file not found)
+
+  inquiries = [
+    { key = "job" value = "(: ask_me :)" },
+    { key = "工作" value = "(: ask_me :)" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/tiao-fu.c by LPCConverter
+# Zone: hangzhou
+
+    characters "tiao_fu" {
+      name = "挑夫"
+      description = "这是个老实巴交的穷挑夫，长得膀阔腰圆，一身肌肉。"
+  gender = "男性"
+
+  combat = {
+    attitude = "heroism"
+    con = 20
+    dex = 22
+    int = 15
+    str = 25
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/xianghuo.c by LPCConverter
+# Zone: hangzhou
+
+    characters "xianghuo" {
+      name = "香火道人"
+      description = "武当派四方香火的弟子。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000
+    dex = 16
+    str = 24
+  }
+
+  chat_chance = 5
+chats = [
+    "香火道人把手举到你面前：给点香火钱吧，无量寿佛！"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "force" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.whiterobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/xiaoer.c by LPCConverter
+# Zone: hangzhou
+
+    characters "xiaoer" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+
+  accept = [
+    { kind = "money" min = 500 accept = true msg = "小二一哈腰，说道：多谢您老，客官请上楼歇息。" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/xiaoer2.c by LPCConverter
+# Zone: hangzhou
+
+    characters "xiaoer2" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  goods = [
+    { id = items.pork.id },
+    { id = items.fish.id },
+    { id = items.baozi.id },
+    { id = items.shrimp.id },
+    { id = items.chicken.id },
+    { id = items.geng.id },
+    { id = items.jiuping.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/you-ke.c by LPCConverter
+# Zone: hangzhou
+
+    characters "you_ke" {
+      name = "游客"
+      description = ""
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    combat_exp = 750
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/youfang.c by LPCConverter
+# Zone: hangzhou
+
+    characters "youfang" {
+      name = "游方道人"
+      description = "武当派游方道人．"
+  gender = "男性"
+  age = 35
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 80000
+    dex = 16
+    str = 24
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.whiterobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/yuenv.c by LPCConverter
+# Zone: hangzhou
+
+    characters "yuenv" {
+      name = "越女"
+      description = "她是一位年轻的牧羊女，脸上挂着一丝与年龄不相称的哀思。"
+  gender = "女性"
+  age = 18
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2500000
+    con = 32
+    dex = 35
+    int = 35
+    max_jing = 2500
+    max_neili = 5000
+    max_qi = 5000
+    str = 19
+  }
+
+  inquiries = [
+    { key = "越女剑术" value = "(: teach_me : )" }
+  ]
+
+  skills = [
+    { skill = "force" level = 250 },
+    { skill = "dodge" level = 270 },
+    { skill = "parry" level = 270 },
+    { skill = "sword" level = 270 },
+    { skill = "yunv-xinfa" level = 250 },
+    { skill = "yuenv-jian" level = 270 },
+    { skill = "feiyan-huixiang" level = 250 },
+    { type = "dodge" skill = "feiyan-huixiang" },
+    { type = "force" skill = "yunv-xinfa" },
+    { type = "sword" skill = "yuenv-jian" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.zhujian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/obj/baozi.c by LPCConverter
+# Zone: hangzhou
+
+    characters "baozi" {
+      name = "百果油包"
+      description = "一个煎得油澄澄、香喷喷的百果油包。"
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/obj/chicken.c by LPCConverter
+# Zone: hangzhou
+
+    characters "chicken" {
+      name = "叫化童鸡"
+      description = "一只被烤得流油，香味扑鼻的叫化鸡。"
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/obj/cloth.c by LPCConverter
+# Zone: hangzhou
+
+    characters "cloth" {
+      name = "布衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/obj/fish.c by LPCConverter
+# Zone: hangzhou
+
+    characters "fish" {
+      name = "西湖醋鱼"
+      description = "一盘清甜可人的西湖醋鱼，用西湖中的金色鲤鱼 烧制而成，是西湖第一名菜。"
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/obj/geng.c by LPCConverter
+# Zone: hangzhou
+
+    characters "geng" {
+      name = "桂花鲜栗羹"
+      description = "一碗香气馥郁的桂花鲜栗羹。"
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/obj/goupi.c by LPCConverter
+# Zone: hangzhou
+
+    characters "goupi" {
+      name = "狗皮"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/obj/jiuping.c by LPCConverter
+# Zone: hangzhou
+
+    characters "jiuping" {
+      name = "酒瓶"
+      description = "一个晶莹碧绿的的大酒瓶，装了熏熏醉人的竹叶青。"
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/obj/pork.c by LPCConverter
+# Zone: hangzhou
+
+    characters "pork" {
+      name = "东坡肉"
+      description = "一碗香喷喷的东坡肉，用文火煨肥猪肉而成， 苏东坡在牧守杭州时看到民间吃肉而烧制不得法，遗惠此法至千年以下。"
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/npc/obj/shrimp.c by LPCConverter
+# Zone: hangzhou
+
+    characters "shrimp" {
+      name = "龙井虾仁"
+      description = "酽酽浓浓的一盘龙井虾仁。"
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/obj/eluanshi.c by LPCConverter
+# Zone: hangzhou
+
+    items "eluanshi" {
+      name = "鹅卵石"
+      description = "这是一粒平平常常的鹅卵石。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}掏出一粒{name}准备战斗。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/obj/shitou.c by LPCConverter
+# Zone: hangzhou
+
+    items "shitou" {
+      name = "大石头"
+      description = "这是一平平常常的大石头。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}搬起一块{name}准备战斗。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/hangzhou/obj/shuzhi.c by LPCConverter
+# Zone: hangzhou
+
+    items "shuzhi" {
+      name = "大树枝"
+      description = "这是一根爬山用的树枝。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一根{name}，握在手中。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+    }

@@ -1,0 +1,1243 @@
+zones "songshan" {
+  name = "songshan"
+}
+
+# Generated from C:/files/git/mud/d/songshan/changlang.c by LPCConverter
+# Zone: songshan
+
+    rooms "changlang" {
+      name = "长廊"
+      description = "这是通往客房的长廊,不远处便是客房和厨房了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "changlang" {
+    room_id = rooms.changlang.id
+  west = rooms.chanyuan.id
+  south = rooms.songshan_chufang.id
+  east = rooms.kefang.id  }
+
+# Generated from C:/files/git/mud/d/songshan/chanyuan.c by LPCConverter
+# Zone: songshan
+
+    rooms "chanyuan" {
+      name = "峻极禅院"
+      description = "峻极禅院处嵩山绝顶，院中古柏森森，殿上并无佛像。院 宇辽阔，可容千人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chanyuan" {
+    room_id = rooms.chanyuan.id
+  southdown = rooms.junjigate.id
+  east = rooms.changlang.id  }
+
+
+  room_characters "chanyuan" {
+    room_id = rooms.chanyuan.id
+    characters = [
+      { id = characters.shi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/songshan/chaotian.c by LPCConverter
+# Zone: songshan
+
+    rooms "chaotian" {
+      name = "朝天门"
+      description = "陡见双峰中断，天然出现一个门户，只觉疾风从断绝处吹 出，呼呼作响，云雾随风扑面而至，这里就是朝天门了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chaotian" {
+    room_id = rooms.chaotian.id
+  northup = rooms.shandao6.id
+  southdown = rooms.shandao7.id  }
+
+
+
+
+  room_items "chaotian" {
+    room_id = rooms.chaotian.id
+    items = [
+      { id = items.fei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/songshan/chongsheng.c by LPCConverter
+# Zone: songshan
+
+    rooms "chongsheng" {
+      name = "崇圣门"
+      description = "但见崇圣门前古神库有四座镇库铁人，高达丈许，振臂握 拳，怒目挺胸，身姿雄健。向北就是中岳庙最大的殿宇中岳大 殿了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chongsheng" {
+    room_id = rooms.chongsheng.id
+  north = rooms.dadian.id
+  south = rooms.tianzhongge.id  }
+
+# Generated from C:/files/git/mud/d/songshan/dadian.c by LPCConverter
+# Zone: songshan
+
+    rooms "dadian" {
+      name = "中岳大殿"
+      description = "大殿面阔九间，进深五间，重檐庑殿式屋顶，座落在七尺 高的台基上，气势雄伟。大殿中供奉岳神天中王。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dadian" {
+    room_id = rooms.dadian.id
+  northup = rooms.shandao1.id
+  south = rooms.chongsheng.id  }
+
+
+
+
+  room_items "dadian" {
+    room_id = rooms.dadian.id
+    items = [
+      { id = items.di.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/songshan/fawangsi.c by LPCConverter
+# Zone: songshan
+
+    rooms "fawangsi" {
+      name = "法王寺"
+      description = "法王寺在嵩山玉柱峰下，隐约于茂密松林中，此地素有'嵩 山第一胜地' 之称。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fawangsi" {
+    room_id = rooms.fawangsi.id
+  southdown = rooms.shandao4.id
+  northeast = rooms.shandao5.id
+  northup = rooms.tayuan.id
+  west = rooms.yuetai.id  }
+
+
+  room_characters "fawangsi" {
+    room_id = rooms.fawangsi.id
+    characters = [
+      { id = characters.zhong.id },
+      { id = characters.deng.id },
+      { id = characters.gao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/songshan/fengchantai.c by LPCConverter
+# Zone: songshan
+
+    rooms "fengchantai" {
+      name = "封禅台"
+      description = "峻极封禅台由大麻石所建，每块大石都凿得极是平整。地 势甚为宽阔。这里独立天心，万峰在下，云开日朗，纤翳不生。 极目北望，可遥见成皋玉门，黄河有如一线，西向隐隐见到洛 阳伊阙，东南都是叠叠重山。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fengchantai" {
+    room_id = rooms.fengchantai.id
+  eastdown = rooms.junjigate.id  }
+
+
+
+
+  room_items "fengchantai" {
+    room_id = rooms.fengchantai.id
+    items = [
+      { id = items.zuo.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/songshan/junjigate.c by LPCConverter
+# Zone: songshan
+
+    rooms "junjigate" {
+      name = "峻极禅院山门"
+      description = "嵩山绝顶，古称 '峻极' 。这里是本是佛教大寺，但百年 来却已成为嵩山派掌门人的住所。西上可以到达封禅台。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "junjigate" {
+    room_id = rooms.junjigate.id
+  southdown = rooms.shandao6.id
+  northup = rooms.chanyuan.id
+  westup = rooms.fengchantai.id  }
+
+# Generated from C:/files/git/mud/d/songshan/kefang.c by LPCConverter
+# Zone: songshan
+
+    rooms "kefang" {
+      name = "嵩山派客房"
+      description = "这是一间很大的客房，是嵩山派供前来祭神的游客暂住的 房间陈设十分简陋。 靠墙放了十几张小木床。 虽然简陋了点 但是总比在荒山中露宿强得多了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kefang" {
+    room_id = rooms.kefang.id
+  west = rooms.changlang.id  }
+
+# Generated from C:/files/git/mud/d/songshan/luyanpubu.c by LPCConverter
+# Zone: songshan
+
+    rooms "luyanpubu" {
+      name = "芦岩瀑布"
+      description = "忽听水声如雷，峭壁上两条玉龙直挂下来，双瀑并泄，屈 曲回旋，飞跃奔逸，水花映日，淡淡冕生。瀑布一侧有一小小 芦岩寺，瀑布斜过就是胜观峰。瀑布之侧有路可上。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+  direction = "up"
+  message = "你使劲儿一蹦，离瀑布顶还有数丈远就掉了下来，摔的鼻青脸肿。"
+}
+,
+{
+  direction = "up"
+  message = "你奋力一跃，却离瀑布顶还有一丈多远，看来是白费力气。"
+}
+,
+{
+  direction = "up"
+  message = "你纵身而起，离瀑布顶只差一点点了，再加把劲。"
+}
+
+]
+    }
+
+  room_exits "luyanpubu" {
+    room_id = rooms.luyanpubu.id
+  southwest = rooms.shandao1.id
+  up = rooms.tieliang.id  }
+
+
+
+
+  room_items "luyanpubu" {
+    room_id = rooms.luyanpubu.id
+    items = [
+      { id = items.yue.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/songshan/qimuque.c by LPCConverter
+# Zone: songshan
+
+    rooms "qimuque" {
+      name = "启母阙"
+      description = "启母阙位于嵩山南麓万岁峰下，是汉代启母庙前的神道阙， 和太室阙同为中岳汉三阙之一。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qimuque" {
+    room_id = rooms.qimuque.id
+  east = rooms.qimushi.id  }
+
+# Generated from C:/files/git/mud/d/songshan/qimushi.c by LPCConverter
+# Zone: songshan
+
+    rooms "qimushi" {
+      name = "启母石"
+      description = "这里有一壁三丈巨石当道。相传大禹治水时要打通辕擐山， 大禹化熊扒挖不止。大禹之妻涂山氏送饭时不慎撞破，失惊而 逃，到此化石。其时涂山已有身孕，大禹追及唤子，巨石北裂 一口，夏启呱呱落地。巨石因此唤作启母石。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qimushi" {
+    room_id = rooms.qimushi.id
+  southeast = rooms.shandao1.id
+  west = rooms.qimuque.id
+  northup = rooms.shandao2.id  }
+
+# Generated from C:/files/git/mud/d/songshan/shandao1.c by LPCConverter
+# Zone: songshan
+
+    rooms "shandao1" {
+      name = "山道"
+      description = "你走在嵩山山道，青松翠柏，山风岚雾，时来飘荡。左边 通往启母石，右手是芦岩瀑布。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shandao1" {
+    room_id = rooms.shandao1.id
+  southdown = rooms.dadian.id
+  northwest = rooms.qimushi.id
+  northeast = rooms.luyanpubu.id  }
+
+# Generated from C:/files/git/mud/d/songshan/shandao2.c by LPCConverter
+# Zone: songshan
+
+    rooms "shandao2" {
+      name = "山道"
+      description = "你走在嵩山山道，青松翠柏，山风岚雾，时来飘荡。远望 山下犬吠鸡啼，顿起仙凡之感。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shandao2" {
+    room_id = rooms.shandao2.id
+  northup = rooms.shuyuan.id
+  southdown = rooms.qimushi.id  }
+
+# Generated from C:/files/git/mud/d/songshan/shandao3.c by LPCConverter
+# Zone: songshan
+
+    rooms "shandao3" {
+      name = "山道"
+      description = "你走在嵩山山道，青松翠柏，山风岚雾，时来飘荡。远望 山下犬吠鸡啼，顿起仙凡之感。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shandao3" {
+    room_id = rooms.shandao3.id
+  northup = rooms.songyuesi.id
+  southeast = rooms.shuyuan.id  }
+
+# Generated from C:/files/git/mud/d/songshan/shandao4.c by LPCConverter
+# Zone: songshan
+
+    rooms "shandao4" {
+      name = "山道"
+      description = "你走在嵩山山道，青松翠柏，山风岚雾，时来飘荡。远望 山下犬吠鸡啼，顿起仙凡之感。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shandao4" {
+    room_id = rooms.shandao4.id
+  northup = rooms.fawangsi.id
+  southeast = rooms.songyuesi.id  }
+
+# Generated from C:/files/git/mud/d/songshan/shandao5.c by LPCConverter
+# Zone: songshan
+
+    rooms "shandao5" {
+      name = "山道"
+      description = "你走在嵩山山道，青松翠柏，山风岚雾，时来飘荡。远望 山下犬吠鸡啼，顿起仙凡之感。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shandao5" {
+    room_id = rooms.shandao5.id
+  northup = rooms.chaotian.id
+  southwest = rooms.fawangsi.id
+  east = rooms.shandao7.id  }
+
+# Generated from C:/files/git/mud/d/songshan/shandao6.c by LPCConverter
+# Zone: songshan
+
+    rooms "shandao6" {
+      name = "山道"
+      description = "你走在嵩山山道，青松翠柏，山风岚雾，时来飘荡。远望 山下犬吠鸡啼，顿起仙凡之感。上面就是嵩山峻极禅院。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shandao6" {
+    room_id = rooms.shandao6.id
+  northup = rooms.junjigate.id
+  southdown = rooms.chaotian.id  }
+
+# Generated from C:/files/git/mud/d/songshan/shandao7.c by LPCConverter
+# Zone: songshan
+
+    rooms "shandao7" {
+      name = "山道"
+      description = "你走在嵩山山道，青松翠柏，山风岚雾，时来飘荡。远望 山下犬吠鸡啼，顿起仙凡之感。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shandao7" {
+    room_id = rooms.shandao7.id
+  northup = rooms.chaotian.id
+  southdown = rooms.tieliang.id
+  west = rooms.shandao5.id  }
+
+# Generated from C:/files/git/mud/d/songshan/shuyuan.c by LPCConverter
+# Zone: songshan
+
+    rooms "shuyuan" {
+      name = "嵩阳书院"
+      description = "这里原是嵩阳寺。现在文化昌明，就改成了嵩阳书院，和 睢阳书院，岳麓书院，白鹿书院合称天下 '四大书院' 。北宋 程颢程颐曾在此讲学。院内有古柏三株，汉武帝巡游至此，册 封为大将军，二将军，三将军。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shuyuan" {
+    room_id = rooms.shuyuan.id
+  southdown = rooms.shandao2.id
+  northwest = rooms.shandao3.id  }
+
+# Generated from C:/files/git/mud/d/songshan/songshan_chufang.c by LPCConverter
+# Zone: songshan
+
+    rooms "songshan_chufang" {
+      name = "厨房"
+      description = "这里是衡山派长廊东北侧的一间厨房，平常嵩山的弟子们 饿了便可以到这里来要(serve)些食物吃。房中灶火正旺，一 个厨师正忙的满头大汗。屋角放着一个大水缸。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "songshan_chufang" {
+    room_id = rooms.songshan_chufang.id
+  north = rooms.changlang.id  }
+
+
+  room_characters "songshan_chufang" {
+    room_id = rooms.songshan_chufang.id
+    characters = [
+      { id = characters.chushi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/songshan/songyuesi.c by LPCConverter
+# Zone: songshan
+
+    rooms "songyuesi" {
+      name = "嵩岳寺"
+      description = "这里原是北魏离宫。孝明帝舍为佛院，至隋方有今名，寺 围阔大，僧舍连云。院内风动旌扬，松摇竹乱，别有一般清静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "songyuesi" {
+    room_id = rooms.songyuesi.id
+  southdown = rooms.shandao3.id
+  northwest = rooms.shandao4.id
+  west = rooms.songyueta.id  }
+
+# Generated from C:/files/git/mud/d/songshan/songyueta.c by LPCConverter
+# Zone: songshan
+
+    rooms "songyueta" {
+      name = "嵩岳寺塔"
+      description = "嵩岳寺塔为密檐式砖塔，高达十余丈，外廓十二面，内室 八方四门，十五层密檐塔刹向上收紧，优美绝伦。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "songyueta" {
+    room_id = rooms.songyueta.id
+  east = rooms.songyuesi.id  }
+
+
+  room_characters "songyueta" {
+    room_id = rooms.songyueta.id
+    characters = [
+      { id = characters.ding.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/songshan/taishique.c by LPCConverter
+# Zone: songshan
+
+    rooms "taishique" {
+      name = "太室阙"
+      description = "嵩山古称方外，又称崇山，为五岳中的中岳，由太室少室 二山沿绵而成。汉武帝时称之为「嵩高」，取自诗经「嵩岳维 高，峻极于天」，道教以之为第六小洞天。阕高丈余，南面刻 「中岳太室阳城」六字，篆文古朴，苍劲有力。向西就是去少 室山少林寺的路，北走一里许便是中岳庙了，南面有一小屋。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "taishique" {
+    room_id = rooms.taishique.id
+  north = rooms.tianzhongge.id
+  east = rooms.ruzhou.id
+  west = rooms.shijie1.id
+  south = rooms.shanlu2.id  }
+
+# Generated from C:/files/git/mud/d/songshan/tayuan.c by LPCConverter
+# Zone: songshan
+
+    rooms "tayuan" {
+      name = "塔院"
+      description = "法王寺北山坡上，是法王寺塔院。院内有十五层密檐方塔， 高近二十丈，造型优美。院内其它三座单檐墓塔，亦玲珑秀丽。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tayuan" {
+    room_id = rooms.tayuan.id
+  southdown = rooms.fawangsi.id  }
+
+# Generated from C:/files/git/mud/d/songshan/tianzhongge.c by LPCConverter
+# Zone: songshan
+
+    rooms "tianzhongge" {
+      name = "天中阁"
+      description = "天中阁是中岳庙的大门，原称黄中阁。庙内有古柏三百余 株，金石碑碣百余座。庙前石翁仲，雕制古朴。南面是嵩山的 出口太室阙。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tianzhongge" {
+    room_id = rooms.tianzhongge.id
+  north = rooms.chongsheng.id
+  south = rooms.taishique.id  }
+
+
+  room_characters "tianzhongge" {
+    room_id = rooms.tianzhongge.id
+    characters = [
+      { id = characters.seller.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/songshan/tieliang.c by LPCConverter
+# Zone: songshan
+
+    rooms "tieliang" {
+      name = "铁梁峡"
+      description = "由此上山，山路越发险竣。铁梁峡右侧尽是怪石，而左边 则为万仞深谷，渺不见底。隔着峡谷，青冈峰环抱青冈坪，向 上是主峰的山路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tieliang" {
+    room_id = rooms.tieliang.id
+  down = rooms.luyanpubu.id
+  northup = rooms.shandao7.id  }
+
+
+  room_characters "tieliang" {
+    room_id = rooms.tieliang.id
+    characters = [
+      { id = characters.lu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/songshan/yuetai.c by LPCConverter
+# Zone: songshan
+
+    rooms "yuetai" {
+      name = "月台"
+      description = "这里便是法王寺的月台。从月台东望，太室山峦高耸入云， 寺东有双峰插云，中间阙如。因名 '嵩门' 。中秋佳节，明月 自峰中升起，正当嵩门之中，银光洒满山谷，这就是登封八景 之一的「嵩门待月」。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yuetai" {
+    room_id = rooms.yuetai.id
+  east = rooms.fawangsi.id  }
+
+# Generated from C:/files/git/mud/d/songshan/npc/bo.c by LPCConverter
+# Zone: songshan
+
+    characters "bo" {
+      name = "卜沉"
+      description = ""
+  nickname = "白头翁"
+  gender = "男性"
+  age = 53
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 90000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2000
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "songshan-jian" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "songshan-xinfa" level = 80 },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "sword" skill = "songshan-sword" },
+    { type = "parry" skill = "songshan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/songshan/npc/chushi.c by LPCConverter
+# Zone: songshan
+
+    characters "chushi" {
+      name = "厨师"
+      description = "嵩山派的厨师，你可以问他要(serve)一些吃的。"
+  gender = "男性"
+  age = 50
+  shen_type = 1
+
+  combat = {
+    combat_exp = 7500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 35 },
+    { skill = "force" level = 35 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/songshan/npc/deng.c by LPCConverter
+# Zone: songshan
+
+    characters "deng" {
+      name = "邓八年"
+      description = ""
+  nickname = "神鞭"
+  gender = "男性"
+  age = 35
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 270000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 1000
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "sword" level = 140 },
+    { skill = "force" level = 140 },
+    { skill = "parry" level = 140 },
+    { skill = "dodge" level = 130 },
+    { skill = "songshan-jian" level = 140 },
+    { skill = "lingxu-bu" level = 130 },
+    { skill = "songshan-xinfa" level = 140 },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "sword" skill = "songshan-sword" },
+    { type = "parry" skill = "songshan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/songshan/npc/di.c by LPCConverter
+# Zone: songshan
+
+    characters "di" {
+      name = "狄修"
+      description = ""
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 90000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1800
+    max_neili = 1000
+    max_qi = 1000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "songshan-sword" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "songshan-xinfa" level = 80 },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "sword" skill = "songshan-sword" },
+    { type = "parry" skill = "songshan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/songshan/npc/ding.c by LPCConverter
+# Zone: songshan
+
+    characters "ding" {
+      name = "丁勉"
+      description = ""
+  nickname = "托塔手"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 110000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2000
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "songshan-jian" level = 100 },
+    { skill = "lingxu-bu" level = 100 },
+    { skill = "songshan-xinfa" level = 80 },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "sword" skill = "songshan-sword" },
+    { type = "parry" skill = "songshan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/songshan/npc/fei.c by LPCConverter
+# Zone: songshan
+
+    characters "fei" {
+      name = "费彬"
+      description = ""
+  nickname = "大嵩阳手"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 600000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2000
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "sword" level = 170 },
+    { skill = "force" level = 160 },
+    { skill = "parry" level = 160 },
+    { skill = "dodge" level = 160 },
+    { skill = "songshan-xinfa" level = 160 },
+    { skill = "songshan-sword" level = 170 },
+    { skill = "lingxu-bu" level = 160 },
+    { type = "sword" skill = "songshan-sword" },
+    { type = "parry" skill = "songshan-sword" },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/songshan/npc/gao.c by LPCConverter
+# Zone: songshan
+
+    characters "gao" {
+      name = "高克新"
+      description = ""
+  nickname = "锦毛狮"
+  gender = "男性"
+  age = 35
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 90000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2000
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "songshan-jian" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "songshan-xinfa" level = 80 },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "sword" skill = "songshan-sword" },
+    { type = "parry" skill = "songshan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/songshan/npc/lu.c by LPCConverter
+# Zone: songshan
+
+    characters "lu" {
+      name = "陆柏"
+      description = ""
+  nickname = "仙鹤手"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 110000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2000
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "songshan-jian" level = 100 },
+    { skill = "lingxu-bu" level = 100 },
+    { skill = "songshan-xinfa" level = 80 },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "sword" skill = "songshan-sword" },
+    { type = "parry" skill = "songshan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/songshan/npc/seller.c by LPCConverter
+# Zone: songshan
+
+    characters "seller" {
+      name = "小贩"
+      description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 32
+  brain = brains.vendor
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  # vendor_goods: "/d/village/npc/obj/stick" (file not found)
+  # vendor_goods: "/d/village/npc/obj/shoes" (file not found)
+  # vendor_goods: "/d/village/npc/obj/bottle" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/songshan/npc/sha.c by LPCConverter
+# Zone: songshan
+
+    characters "sha" {
+      name = "沙天江"
+      description = ""
+  nickname = "秃鹰"
+  gender = "男性"
+  age = 53
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 80000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2000
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "songshan-jian" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "songshan-xinfa" level = 80 },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "sword" skill = "songshan-sword" },
+    { type = "parry" skill = "songshan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/songshan/npc/shi.c by LPCConverter
+# Zone: songshan
+
+    characters "shi" {
+      name = "史登达"
+      description = ""
+  nickname = "千丈松"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 60000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 800
+    max_neili = 1000
+    max_qi = 1000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "songshan-jian" level = 60 },
+    { skill = "lingxu-bu" level = 60 },
+    { skill = "songshan-xinfa" level = 80 },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "sword" skill = "songshan-sword" },
+    { type = "parry" skill = "songshan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/songshan/npc/tang.c by LPCConverter
+# Zone: songshan
+
+    characters "tang" {
+      name = "汤英鹄"
+      description = ""
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 150000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2000
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "songshan-sword" level = 100 },
+    { skill = "lingxu-bu" level = 100 },
+    { skill = "songshan-xinfa" level = 80 },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "sword" skill = "songshan-sword" },
+    { type = "parry" skill = "songshan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/songshan/npc/wan.c by LPCConverter
+# Zone: songshan
+
+    characters "wan" {
+      name = "万大平"
+      description = ""
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 40000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 700
+    max_neili = 1000
+    max_qi = 1000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "songshan-sword" level = 60 },
+    { skill = "lingxu-bu" level = 60 },
+    { skill = "songshan-xinfa" level = 80 },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "sword" skill = "songshan-sword" },
+    { type = "parry" skill = "songshan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/songshan/npc/yao.c by LPCConverter
+# Zone: songshan
+
+    characters "yao" {
+      name = "乐厚"
+      description = ""
+  nickname = "大阴阳手"
+  gender = "男性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 120000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2000
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "songshan-sword" level = 100 },
+    { skill = "lingxu-bu" level = 100 },
+    { skill = "songshan-xinfa" level = 80 },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "sword" skill = "songshan-sword" },
+    { type = "parry" skill = "songshan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/songshan/npc/zhong.c by LPCConverter
+# Zone: songshan
+
+    characters "zhong" {
+      name = "钟镇"
+      description = ""
+  nickname = "九曲剑"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 150000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2000
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 140 },
+    { skill = "force" level = 120 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "songshan-xinfa" level = 120 },
+    { skill = "songshan-sword" level = 140 },
+    { skill = "lingxu-bu" level = 100 },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "sword" skill = "songshan-sword" },
+    { type = "parry" skill = "songshan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/songshan/npc/zuo.c by LPCConverter
+# Zone: songshan
+
+    characters "zuo" {
+      name = "左冷禅"
+      description = ""
+  title = "五岳剑派盟主嵩山派第十三掌门"
+  gender = "男性"
+  age = 55
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1850000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 2200
+    max_neili = 4800
+    max_qi = 4500
+    str = 26
+  }
+
+  skills = [
+    { skill = "sword" level = 210 },
+    { skill = "force" level = 220 },
+    { skill = "parry" level = 180 },
+    { skill = "dodge" level = 180 },
+    { skill = "strike" level = 200 },
+    { skill = "songshan-xinfa" level = 220 },
+    { skill = "songshan-sword" level = 210 },
+    { skill = "lingxu-bu" level = 180 },
+    { skill = "hanbing-mianzhang" level = 200 },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "sword" skill = "songshan-sword" },
+    { type = "parry" skill = "songshan-sword" },
+    { type = "strike" skill = "hanbing-mianzhang" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }

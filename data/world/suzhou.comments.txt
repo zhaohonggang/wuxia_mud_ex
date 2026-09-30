@@ -1,0 +1,492 @@
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/suzhou/beimen.c by LPCConverter
+# Zone: suzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_gaoshi
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/suzhou/canlangting.c by LPCConverter
+# Zone: suzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_duilian
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/suzhou/dongmen.c by LPCConverter
+# Zone: suzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_gaoshi
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/suzhou/kedian.c by LPCConverter
+# Zone: suzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !me->query_temp("rent_paid") && dir == "up" )  →  
+  # if ( me->query_temp("rent_paid") && dir == "west" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/suzhou/kedian3.c by LPCConverter
+# Zone: suzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( dir == "out" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/suzhou/nanmen.c by LPCConverter
+# Zone: suzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_gaoshi
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/suzhou/ximen.c by LPCConverter
+# Zone: suzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_gaoshi
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/suzhou/npc/gongzi.c by LPCConverter
+# Zone: suzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !ob || environment(ob) != environment() )  →  
+  # if (ob->query("gender")=="女性")  →  say(' 公子哥拧了一下'+ob->query('name')+'的脸蛋，一脸坏笑道：'+RANK_D->query_respect(ob)+ '长得好象还很不赖嘛，陪我玩玩可好？\\\\\n'); say(' 公子哥一眼看到'+ob->query('name')+'顿时大乐：这位'+RANK_D->query_respect(ob)+ '来得正好，走，乐乐去？\\\\\n');
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if ( interactive(ob = this_player()) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/suzhou/npc/huoji.c by LPCConverter
+# Zone: suzhou
+
+# inherit F_DEALER;
+
+# Generated from C:/files/git/mud/d/suzhou/npc/jiaoxi.c by LPCConverter
+# Zone: suzhou
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!(int)who->query_temp("mark/朱2"))  →  
+  # if (ob->query("money_id") && ob->value() >= 500)  →  message_vision('老夫子同意指点$N一些读书写字的问题。\\\\\n', who);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if (!(int)ob->query_temp("mark/朱2"))  →  
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: recognize_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/suzhou/npc/lady3.c by LPCConverter
+# Zone: suzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !ob || environment(ob) != environment() )  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if ( interactive(ob = this_player()) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/suzhou/npc/nigu1.c by LPCConverter
+# Zone: suzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/suzhou/npc/seller.c by LPCConverter
+# Zone: suzhou
+
+# inherit F_VENDOR;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !ob || environment(ob) != environment() )  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if ( interactive(ob = this_player()) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/suzhou/npc/shiye.c by LPCConverter
+# Zone: suzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: ask_me
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/suzhou/npc/sun.c by LPCConverter
+# Zone: suzhou
+
+# inherit F_BANKER;
+
+# Generated from C:/files/git/mud/d/suzhou/npc/wang.c by LPCConverter
+# Zone: suzhou
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: die
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/suzhou/npc/obj/doufu.c by LPCConverter
+# Zone: suzhou
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/suzhou/npc/obj/huotui.c by LPCConverter
+# Zone: suzhou
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/suzhou/npc/obj/potato.c by LPCConverter
+# Zone: suzhou
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/suzhou/npc/obj/soup.c by LPCConverter
+# Zone: suzhou
+
+# inherit ITEM;
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/suzhou/npc/obj/xianggu.c by LPCConverter
+# Zone: suzhou
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/suzhou/npc/obj/xiaren.c by LPCConverter
+# Zone: suzhou
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/suzhou/npc/obj/yayifu.c by LPCConverter
+# Zone: suzhou
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/suzhou/obj/box.c by LPCConverter
+# Zone: suzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!arg)  →  
+  # if ( sscanf(arg, "%s in %s", item, target)!=2 || sscanf(item, "%d %s", amount, item)!=2 || !objectp(obj = present(item, me)) )  →  
+  # if ( obj->query("money_id") == "silver" && obj->query_amount() >= 5 && amount >= 5 )  →  message_vision( sprintf(HIY '$N将一%s%s放进%s。\\\\\n' NOR, obj->query('unit'), obj->name(), this_object()->name()),me );
+# ==== CONDITIONAL BRANCHES (do_put) ====
+  # if ( me->query("combat_exp") <= -500 && this_object()->query("amount") >=10 && random(2) == 1 )  →  tell_object(me, '\\\\\n你忽然看到慈善箱里有什麽东西在闪闪发光！\\\\\n\\\\\n');
+# ==== CONDITIONAL BRANCHES (init) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: is_container
+  # UNHANDLED FUNCTION: do_put
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================

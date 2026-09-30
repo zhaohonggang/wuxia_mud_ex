@@ -481,8 +481,18 @@ def _parse_mapping_pairs(inner):
         parts = pair.split(":", 1)
         if len(parts) == 2:
             pairs.append((_parse_lpc_value(parts[0].strip()), _parse_lpc_value(parts[1].strip())))
-        else:
-            pairs.append((_parse_lpc_value(pair.strip()), ("var", "nil")))
+            continue
+        # No ":" at all.  A bare C comment left over from the previous line
+        # (e.g. `"south" : __DIR__"xiaoyuan",   /* EXAMPLE */` in
+        # room/caihong/dating.c) lands here and used to be turned into the pair
+        # (comment, nil), which then rendered as ` = rooms.nil.id` - a UCL
+        # syntax error.  Comments carry no mapping data, so drop them.  An
+        # explicit LPC `nil` value still parses as a real pair via the ":"
+        # branch above.
+        stripped = pair.strip()
+        if not stripped or stripped.startswith(("/*", "//", "*")):
+            continue
+        pairs.append((_parse_lpc_value(stripped), ("var", "nil")))
     return pairs
 
 
@@ -1622,6 +1632,17 @@ def _strip_exit_c_comments(s):
     return s.strip()
 
 
+# A rendered exit direction must be a bare UCL key.  Stripping a C comment out
+# of a direction can leave nothing behind (`"south" : ..., /* EXAMPLE */`
+# becomes the pair ("", nil)), and an empty key renders as ` = rooms.x.id`,
+# which is a syntax error, so callers must reject non-identifier directions.
+_EXIT_DIR_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_]*$")
+
+
+def _is_valid_exit_dir(direction):
+    return bool(direction) and bool(_EXIT_DIR_RE.match(direction))
+
+
 def _build_room_flags(sets):
     # Elixir build_room_flags: all `flags = [...]` rebindings sit inside `if`
     # blocks whose scope discards them -> flags is always [] -> no flags block.
@@ -1634,14 +1655,17 @@ def _generate_room_item_desc(sets):
         return ""
     entries = []
     for k, val in v[1]:
-        keyword = _item_desc_keyword(k)
+        keyword = _normalize_item_keyword(_item_desc_keyword(k))
         text = _item_desc_text(val)
+        # Test the NORMALISED keyword: a CJK key such as "床" or "大床" (see
+        # changan/qunyuys8.c) normalises to the empty string, and emitting
+        # ` = "..."` with no key is a syntax error.
         if keyword != "" and text != "":
             entries.append((keyword, text))
     if not entries:
         return ""
     rendered = "\n".join(
-        f" {_normalize_item_keyword(kw)} = \"{_escape_set_string(text)}\"" for kw, text in entries
+        f" {kw} = \"{_escape_set_string(text)}\"" for kw, text in entries
     )
     return f"item_desc = {{\n{rendered}\n}}\n"
 
@@ -1738,9 +1762,17 @@ def _generate_room_ucl(ast, zone_id):
     if isinstance(exits, tuple) and exits[0] == "mapping":
         exit_lines = []
         skipped = []
+        skipped_bad_dir = []
         for key, val in exits[1]:
             direction = _exit_key(key)
             direction = re.sub(r'^"|"$', "", direction)
+            if not _is_valid_exit_dir(direction):
+                # A direction key that is empty or not a bare identifier cannot
+                # be written as `key = value`; it is always an artefact of
+                # stripping a trailing C comment (see _strip_exit_c_comments),
+                # never real mapping data.
+                skipped_bad_dir.append(direction or "<empty>")
+                continue
             if isinstance(val, tuple) and val[0] == "mapping":
                 # A portal descriptor such as city/mudren.c's "enter" points at
                 # a raw LPC file plus x_axis/y_axis instead of at a room in this
@@ -1767,6 +1799,11 @@ def _generate_room_ucl(ast, zone_id):
         for direction in skipped:
             exits_block += (
                 f"  # skipped non-room exit '{direction}': LPC portal/mapping target\n"
+            )
+        for direction in skipped_bad_dir:
+            exits_block += (
+                f"  # skipped malformed exit direction '{direction}': "
+                f"not a bare identifier (C comment artefact)\n"
             )
     else:
         if is_river and arrive_room:
@@ -1984,12 +2021,22 @@ def _build_goods(sets, ast):
 
 def _build_inquiries(sets):
     inquiry_data = sets.get("inquiry") or sets.get("inquiries")
+    comments = []
     if isinstance(inquiry_data, tuple) and inquiry_data[0] == "mapping":
         out = {}
         for k, v in inquiry_data[1]:
-            out[_get_string(k)] = _get_string(v)
-        return out
-    return {}
+            key = _get_string(k)
+            value = _get_string(v)
+            if not _elias_safe_value(value):
+                # No spelling of this value parses; see _elias_safe_value/1.
+                comments.append(
+                    "skipped inquiry %s: value %s is unparseable by elias "
+                    "(digit immediately before a comma)" % (key, value)
+                )
+                continue
+            out[key] = value
+        return out, comments
+    return {}, comments
 
 
 def _get_string(value):
@@ -2002,6 +2049,45 @@ def _get_string(value):
     if isinstance(value, str):
         return _ucl_string(value)
     return '"unknown"'
+
+
+# elias 0.2.8 lexes with leex using
+#     Word = [^0-9{}\*\/#\n\[\]=\s'":\;\\-]+
+# Note that a COMMA is *not* in the exclusion set, so leex's longest match
+# swallows "a," into a single `word` token.  A digit breaks that run, after
+# which the comma lexes as its own `comma` token - and elias_parser.yrl has no
+# `words -> comma ...` production, so Elias.parse/1 aborts with
+#     syntax error before: ', ['","']
+#
+# Measured against elias 0.2.8 (mix run --no-start):
+#     "(: a, 'b' :)"        -> parses   (comma absorbed into the word "a,")
+#     "(: ab, 'c' :)"       -> parses
+#     "(: a_b, 'c' :)"      -> parses
+#     "(: a1, 'b' :)"       -> FAILS    (digit, then comma)
+#     "(: ask_me_1, 'b' :)" -> FAILS
+#
+# A comma is therefore only safe when the character before it is one leex keeps
+# inside the same word.  There is no alternative spelling: the grammar accepts a
+# quoted string only as `double_quote words double_quote`, `words` has neither a
+# comma nor a newline production, and no amount of backslash or extra quoting
+# can hide the comma.  Such values must be dropped.
+_ELIAS_WORD_STOP = frozenset("0123456789{}*/#\n[]= \t'\":;\\-")
+
+
+def _elias_safe_value(ucl_string):
+    """True when a rendered UCL string literal survives Elias.parse/1.
+
+    `ucl_string` is the already-quoted literal produced by :func:`_ucl_string`.
+    """
+    if not isinstance(ucl_string, str):
+        return False
+    text = ucl_string[1:-1] if len(ucl_string) >= 2 and ucl_string[0] == '"' else ucl_string
+    if text == "":
+        return False
+    for i, ch in enumerate(text):
+        if ch == "," and i > 0 and text[i - 1] in _ELIAS_WORD_STOP:
+            return False
+    return True
 
 
 def _generate_inquiries(inquiries):
@@ -2185,7 +2271,7 @@ def _generate_npc_ucl(ast, zone_id):
 
     combat = _build_npc_combat(sets)
     goods, goods_comments = _build_goods(sets, ast)
-    inquiries = _build_inquiries(sets)
+    inquiries, inquiry_comments = _build_inquiries(sets)
     chat = _build_chat(sets)
     function_calls = ast.function_calls
     skills_block = _build_skills_block(function_calls)
@@ -2205,6 +2291,8 @@ def _generate_npc_ucl(ast, zone_id):
         out += "\n" + "\n".join(f"  # {x}" for x in goods_comments) + "\n"
     if inquiries:
         out += "\n  inquiries = [\n" + _generate_inquiries(inquiries) + "\n  ]\n"
+    if inquiry_comments:
+        out += "\n" + "\n".join(f"  # {x}" for x in inquiry_comments) + "\n"
     if chat:
         out += f"\n  {chat}\n"
     if skills_block:

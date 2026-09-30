@@ -1,0 +1,748 @@
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/emei/bgs.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_ta
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/emei/bgsgate.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_gate
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/emei/cangjinglou.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "south" && present("shu", me) && objectp(present("dao ming", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/emei/dgtsheshenya.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  command('chat 有人跳下舍身崖自杀了。\\\\\n\\\\\n');
+  # if (me->query_skill("dodge", 1) >= 220)  →  
+# ==== CONDITIONAL BRANCHES (do_sheshen) ====
+  # if ( (!userp(ob[i])) && ((string)ob[i]->query("id") == "ji xiaofu"))  →  
+  # if ((j == 0) && (me->query("marks/ji")))  →  
+# ==== CONDITIONAL BRANCHES (clone_ji) ====
+  # if (interactive(me = this_player()))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_sheshen
+  # UNHANDLED FUNCTION: clone_ji
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/emei/hcadadian.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg != "xiang")  →  
+  # if (query("exits/down"))  →  
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: close
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/emei/hcawest.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg != "chuang")  →  
+# ==== CONDITIONAL BRANCHES (do_jump) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_jump
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/emei/hcazhaitang.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ __DIR__"obj/qingshui-hulu" : 1, names[random(sizeof(names))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/hcazhengdian.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "out" && objectp(ob = present("jingxin shitai", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/emei/qingyinge.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_shibei
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/emei/shierpan3.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: do_clap
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/emei/ssyb.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg != "fenmu")  →  
+  # if (me->is_busy() || me->is_fighting())  →  write('你忙完了再说吧！\\\\\n');
+  # if (me->query("jing") < 130)  →  write('你精力不足！\\\\\n');
+  # else  →  
+  # if (me->query("jing") > 200)  →  
+  # if (this_player()->query_skill("shaolin-jiuyang", 1) < 180 || this_player()->query_skill("wudang-jiuyang", 1) < 180)  →  write(HIG '你忽然觉得深潭底寒冷无比，心想还是赶快离开为好。\\\\\n' NOR);
+  # if (random(250) != 1)  →  write(HIG '磕头完毕，你缓缓站起身来。默默地注视着坟墓，不禁思绪万千。\\\\\n' NOR);
+  # if (this_player()->query_skill("dodge", 1) < 220 || this_player()->query_skill("martial-cognize", 1) < 220)  →  write(HIG '你闪躲不及，暗器从你胸口穿过！\\\\\n' NOR);
+  # if (! book = find_object("/clone/lonely/book/emeijy-book"))  →  
+  # if (environment(book))  →  write(HIG '你回头一看，却发现盒子是空的！\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_bai) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_climb
+  # UNHANDLED FUNCTION: do_bai
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/st0.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (query("exits/east"))  →  
+  # if (query("exits/west"))  →  
+  # if (query("exits/south"))  →  
+  # if (query("exits/north"))  →  
+# ==== CONDITIONAL BRANCHES (close_out) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(4)) { case 0 : set("exits/north", __DIR__"st2"); break; case 1 : set("exits/north", __DIR__"st1"); break; case 2 : set("exits/north", __DIR__"st2"); break; default: set("exits/north", __DIR__"st1"); }
+  # SWITCH POOL: switch (random(4)) { case 0 : set("exits/south", __DIR__"st2"); break; case 1 : set("exits/south", __DIR__"st2"); break; case 2 : set("exits/south", __DIR__"st1"); break; default: set("exits/south", __DIR__"st1"); }
+  # SWITCH POOL: switch (random(4)) { case 0 : set("exits/west", __DIR__"st1"); break; case 1 : set("exits/west", __DIR__"st1"); break; case 2 : set("exits/west", __DIR__"st2"); break; default: set("exits/west", __DIR__"st2"); }
+  # SWITCH POOL: switch (random(4)) { case 0 : set("exits/east", __DIR__"st1"); break; case 1 : set("exits/east", __DIR__"st2"); break; case 2 : set("exits/east", __DIR__"st1"); break; default: set("exits/east", __DIR__"st2"); }
+# ==== SWITCH POOLS ====
+  # UNHANDLED FUNCTION: close_out
+  # UNHANDLED FUNCTION: do_wang
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/st1.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (query("exits/east"))  →  
+  # if (query("exits/west"))  →  
+  # if (query("exits/south"))  →  
+  # if (query("exits/north"))  →  
+# ==== CONDITIONAL BRANCHES (close_out) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(4)) { case 0 : set("exits/north", __DIR__"st2"); break; case 1 : set("exits/north", __DIR__"st1"); break; case 2 : set("exits/north", __DIR__"st2"); break; default: set("exits/north", __DIR__"st1"); }
+  # SWITCH POOL: switch (random(4)) { case 0 : set("exits/south", __DIR__"st2"); break; case 1 : set("exits/south", __DIR__"st2"); break; case 2 : set("exits/south", __DIR__"st1"); break; default: set("exits/south", __DIR__"st1"); }
+  # SWITCH POOL: switch (random(4)) { case 0 : set("exits/west", __DIR__"st1"); break; case 1 : set("exits/west", __DIR__"st1"); break; case 2 : set("exits/west", __DIR__"st2"); break; default: set("exits/west", __DIR__"st2"); }
+  # SWITCH POOL: switch (random(4)) { case 0 : set("exits/east", __DIR__"st1"); break; case 1 : set("exits/east", __DIR__"st2"); break; case 2 : set("exits/east", __DIR__"st1"); break; default: set("exits/east", __DIR__"st2"); }
+# ==== SWITCH POOLS ====
+  # UNHANDLED FUNCTION: close_out
+  # UNHANDLED FUNCTION: do_wang
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/st2.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (query("exits/east"))  →  
+  # if (query("exits/west"))  →  
+  # if (query("exits/south"))  →  
+  # if (query("exits/north"))  →  
+# ==== CONDITIONAL BRANCHES (close_out) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(4)) { case 0 : set("exits/north", __DIR__"ssyb"); break; case 1 : set("exits/north", __DIR__"st1"); break; case 2 : set("exits/north", __DIR__"st2"); break; default: set("exits/north", __DIR__"st1"); }
+  # SWITCH POOL: switch (random(4)) { case 0 : set("exits/south", __DIR__"st2"); break; case 1 : set("exits/south", __DIR__"st2"); break; case 2 : set("exits/south", __DIR__"st1"); break; default: set("exits/south", __DIR__"st1"); }
+  # SWITCH POOL: switch (random(4)) { case 0 : set("exits/west", __DIR__"st1"); break; case 1 : set("exits/west", __DIR__"st1"); break; case 2 : set("exits/west", __DIR__"st2"); break; default: set("exits/west", __DIR__"st2"); }
+  # SWITCH POOL: switch (random(4)) { case 0 : set("exits/east", __DIR__"st1"); break; case 1 : set("exits/east", __DIR__"st2"); break; case 2 : set("exits/east", __DIR__"st1"); break; default: set("exits/east", __DIR__"st2"); }
+# ==== SWITCH POOLS ====
+  # UNHANDLED FUNCTION: close_out
+  # UNHANDLED FUNCTION: do_wang
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/emei/xiaoshulin1.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg != "chuang")  →  
+# ==== CONDITIONAL BRANCHES (do_jump) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_jump
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/emei/xiaoshulin4.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "north")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/xixiangchi.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_pool
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/emei/npc/puren.c by LPCConverter
+# Zone: emei
+
+# inherit F_DEALER;
+
+
+
+# Generated from C:/files/git/mud/d/emei/npc/xiao-fan.c by LPCConverter
+# Zone: emei
+
+# inherit F_DEALER;
+
+
+
+# Generated from C:/files/git/mud/d/emei/obj/bocai-fentiao.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/fojing10.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/fojing11.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/fojing20.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/fojing21.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/fuchen.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/jiudai.c by LPCConverter
+# Zone: emei
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/liuli-qiezi.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/mala-doufu.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/map.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/pantao.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("max_neili") < neili_limit)  →  
+  # if (me->can_improve_skill("force"))  →  
+  # if (stringp(force) && me->can_improve_skill(force))  →  
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/qingshui-hulu.c by LPCConverter
+# Zone: emei
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/ruanjian.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/shanhu-baicai.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/tianxiang-gao.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!id(arg))  →  
+  # if ( this_player()->qeury("eff_qi") >= this_player()->qeury("max_qi") )  →  
+# ==== CONDITIONAL BRANCHES (do_smear) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_smear
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/xiang.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/yaodai.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: is_container
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/ycloth.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/emei/obj/zhujian.c by LPCConverter
+# Zone: emei
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

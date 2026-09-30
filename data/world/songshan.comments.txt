@@ -1,0 +1,120 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/songshan/luyanpubu.c by LPCConverter
+# Zone: songshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((random((int)me->query_skill("dodge")) <= 20) && dir=="up")  →  
+  # if ((random((int)me->query_skill("dodge")) <= 35) && dir=="up")  →  
+  # if ((random((int)me->query_skill("dodge")) <= 60) && dir=="up")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/songshan/songshan_chufang.c by LPCConverter
+# Zone: songshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("family/family_name") != "嵩山派")  →  
+  # if (present("man tou", this_player()))  →  
+  # if (present("water", this_object()))  →  
+  # else  →  
+  # if (query("ricewater") > 0)  →  message_vision(CYN '厨师将一个馒头和一碗清水递到$N手中，笑' '道：你慢用。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_serve) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_serve
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/songshan/npc/seller.c by LPCConverter
+# Zone: songshan
+
+# inherit F_VENDOR;
+
+
+
+
+
+
+
+
+
+
+
+
+
+

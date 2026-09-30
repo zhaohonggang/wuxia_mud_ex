@@ -1,0 +1,422 @@
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/quanzhou/chiqian.c by LPCConverter
+# Zone: quanzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! objectp(ob) || find_object(__DIR__"dahai") != environment(ob))  →  
+# ==== CONDITIONAL BRANCHES (tpenghu) ====
+  # if (arg !="zhou")  →  tell_object(this_player() , '你要 enter 哪儿？\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_enter) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: tpenghu
+  # UNHANDLED FUNCTION: do_enter
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/quanzhou/haigang.c by LPCConverter
+# Zone: quanzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! objectp(ob) || find_object(__DIR__"dahai") != environment(ob))  →  
+# ==== CONDITIONAL BRANCHES (tpenghu) ====
+  # if (arg !="chuan")  →  tell_object(ob, '你要去哪儿？\\\\\n' );
+# ==== CONDITIONAL BRANCHES (do_enter) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: tpenghu
+  # UNHANDLED FUNCTION: do_enter
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/quanzhou/penghu.c by LPCConverter
+# Zone: quanzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (arg !="chuan" && arg !="zhou") { tell_object(this_player() , "你要去哪儿？\n" ) ; return 1; } if (arg == "chuan") { message_vision("船夫一见有人上船，忙叫了一声：开船喽！\n", ob); message_vision("船夫升起帆，船就向西方顺风航行。\n", ob); call_out("tdalu", 10, ob); } else { message_vision("水兵一见有人上船，忙叫了一声：开船喽！\n", ob); message_vision("水兵升起帆，船就向东方逆风航行。\n", ob); call_out("ttaiwan", 10, ob); }
+# ==== COMPLEX CONDITIONALS ====
+  # if (! objectp(ob) || find_object(__DIR__"dahai") != environment(ob))  →  
+# ==== CONDITIONAL BRANCHES (ttaiwan) ====
+  # if (! objectp(ob) || find_object(__DIR__"dahai") != environment(ob))  →  
+# ==== CONDITIONAL BRANCHES (tdalu) ====
+  # if (arg !="chuan" && arg !="zhou")  →  
+  # else  →  message_vision('水兵一见有人上船，忙叫了一声：开船喽！\\\\\n', ob); message_vision('水兵升起帆，船就向东方逆风航行。\\\\\n', ob);
+  # if (arg == "chuan")  →  message_vision('船夫一见有人上船，忙叫了一声：开船喽！\\\\\n', ob); message_vision('船夫升起帆，船就向西方顺风航行。\\\\\n', ob);
+# ==== CONDITIONAL BRANCHES (do_enter) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ttaiwan
+  # UNHANDLED FUNCTION: tdalu
+  # UNHANDLED FUNCTION: do_enter
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/quanzhou/xijie.c by LPCConverter
+# Zone: quanzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "west" && ((string)me->query("gender") =="男性") && !wizardp(me))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/quanzhou/yanyu2.c by LPCConverter
+# Zone: quanzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_bian
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/chen.c by LPCConverter
+# Zone: quanzhou
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && !is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch(random(2)) { case 0 : say("陈阿婆笑眯眯地说道：人客来坐。\n"); break; case 1 : say("陈阿婆说道：可嘴的，你要买什？\n"); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/chuanfu.c by LPCConverter
+# Zone: quanzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: unconcious
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/girl.c by LPCConverter
+# Zone: quanzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( interactive(ob=this_player()) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/hongmao.c by LPCConverter
+# Zone: quanzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! objectp(ob) || environment(ob) != environment())  →  
+  # else  →  
+  # if (stringp(startroom = query("startroom")) && find_object(startroom) == environment())  →  say('红毛鬼抬手就是一枪，“砰”的一团火焰从枪口窜出。\\\\\n'); tell_object(ob, HIR '你躲避不及，只觉得伤口一痛。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/liu.c by LPCConverter
+# Zone: quanzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( environment(ob) != environment() )  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if ( interactive(ob = this_player()) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/wokou.c by LPCConverter
+# Zone: quanzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( environment(ob) != environment() )  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if ( interactive(ob = this_player()) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/xiaoer.c by LPCConverter
+# Zone: quanzhou
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(2)) { case 0: say("店小二笑咪咪地说道：这位" + RANK_D->query_respect(ob) + "，进来喝杯茶，歇歇腿吧。\n"); break; case 1: say("店小二用脖子上的毛巾抹了抹手，说道：这位" + RANK_D->query_respect(ob) + "，请进请进。\n"); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/cloth.c by LPCConverter
+# Zone: quanzhou
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/fuchen.c by LPCConverter
+# Zone: quanzhou
+
+# inherit WHIP;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/huoqiang.c by LPCConverter
+# Zone: quanzhou
+
+# inherit STAFF;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/tiexiang.c by LPCConverter
+# Zone: quanzhou
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!id(arg))  →  
+  # else  →  write('你爬上箱子。\\\\\n');
+  # if (this_player()->query_temp("marks/跳1") )  →  write('你怎么爬个没完没了？\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_climb) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_climb
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/wodao.c by LPCConverter
+# Zone: quanzhou
+
+# inherit BLADE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/xiuhua.c by LPCConverter
+# Zone: quanzhou
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/yadan.c by LPCConverter
+# Zone: quanzhou
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/zongzi.c by LPCConverter
+# Zone: quanzhou
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/obj/flower_shoe.c by LPCConverter
+# Zone: quanzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/quanzhou/obj/pink_cloth.c by LPCConverter
+# Zone: quanzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

@@ -1,0 +1,702 @@
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/chengdu/eastgate.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_gaoshi
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/chengdu/eastroad3.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "liang")  →  
+  # if (query("break"))  →  
+  # if (me->query("max_neili") < 1000)  →  message_vision(HIR '结果只听一声闷哼，$N' HIR '内' '力不济，被房梁反震，眼前顿时一黑…' '…\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_break) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_break
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/chengdu/guangchang.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (objectp(me) && me->query_temp("pick_gift"))  →  
+# ==== CONDITIONAL BRANCHES (clear_flag) ====
+  # if (!arg)  →  
+  # if (arg == "all")  →  write('不要贪心，还是一样一样地拣吧！\\\\\n');
+  # if (me->is_busy() || me->is_fighting())  →  write('你还是忙完了再说吧！\\\\\n');
+  # if (me->query_temp("pick_gift"))  →  write('你刚拣过了，等等再拣吧！\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_get) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: clear_flag
+  # UNHANDLED FUNCTION: do_get
+  # UNHANDLED FUNCTION: do_drink
+  # UNHANDLED FUNCTION: do_eat
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/chengdu/kedian.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! me->query_temp("rent_paid") && dir == "up")  →  
+  # if (me->query_temp("rent_paid") && dir == "west")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/kedian2.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "out" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/chengdu/northgate.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_gaoshi
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/chengdu/northroad2.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (dir == "south" && me->query("born_family") != "唐门世家")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/chengdu/qingyanggong.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_temp("want_leave"))  →  tell_object(me, HIC '\\\\\n你钻进了青羊观树林内的密道。\\\\\n\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_back) ====
+  # if (environment(me) != this_object())  →  
+  # if (! me->query_temp("want_leave"))  →  
+# ==== CONDITIONAL BRANCHES (letter) ====
+  # if (me->query("family/family_name") == "峨嵋派")  →  tell_object(me, HIG '\\\\\n你突然发现峨嵋派弟子留在此处的' '密信。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: letter
+  # UNHANDLED FUNCTION: do_back
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/chengdu/southgate.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_gaoshi
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/chengdu/tidugate.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "north" || ! objectp(bing) || ! living(bing))  →  
+  # if (me->query("weiwang") >= 10000)  →  message_vision(CYN '$N' CYN '笑道：' + RANK_D->query_respect(me) + '请进，请进！这就去让人通报。\\\\\n' NOR, bing, me);
+  # if (me->query("special_skill/trick"))  →  message_vision(CYN '$N' CYN '看见$n' CYN '走了过来，刚想拦住，却' '听$n' CYN '一声断喝：给我散开！\\\\\n$N' CYN '不由得' '吓了一跳，讪讪的不敢说话。\\\\\n' NOR, bing, me);
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/chengdu/westgate.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_gaoshi
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/chengdu/wuguan.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! me->query_temp("marks/jinniu_paied") && (dir == "up" || dir == "down"))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/chengdu/npc/chenhu.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! (int)ob->query_temp("marks/jinniu_paied") == 1)  →  
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: recognize_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/chuniang.c by LPCConverter
+# Zone: chengdu
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! me->query_temp("job/step"))  →  
+  # if (! living(me))  →  
+  # if (finish)  →  
+  # if (finish)  →  write(MAG '你隐隐约约的发现炒菜居然和武功有一些相通之处，真是奇妙。\\\\\n' NOR); tell_object(me, msg);
+# ==== CONDITIONAL BRANCHES (cooking) ====
+  # if (me->is_busy())  →  
+  # if (! me->query_temp("job/cook"))  →  tell_object(me, '厨娘喝道：你要干什么？不要来捣乱，我忙着呢！\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_cook) ====
+  # if ((int)who->query_temp("mark/厨娘") < 1)  →  
+  # if (ob->query("money_id") && ob->value() >= 2000)  →  message_vision('厨娘同意指点$N一些关于炒菜的常识和技巧。\\\\\n', who);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if ((int)ob->query_temp("mark/厨娘") < 1)  →  
+  # if (skill != "cooking" && skill != "chuancai-jiyi")  →  command('say 你打住...我可只会做菜烧饭。');
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+  # if ((string)me->query("gender") != "女性")  →  
+  # if (me->query("combat_exp") < 10000)  →  
+  # if (me->query("jing") < 100)  →  
+  # if (me->query("combat_exp") > 200000 && me->query("mark/job_cook") > 1000)  →  
+  # if (me->query_skill("cooking") < 60)  →  
+  # if (me->query_skill_mapped("cooking") != "chuancai-jiyi")  →  
+  # if (! interactive(me))  →  
+# ==== CONDITIONAL BRANCHES (ask_job) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH: switch (me->query_temp("job/step")) { case 1: msg = "$N看看菜差不多够了，站起身来走到水盆边开始洗菜。"; break; case 2: msg = "哗----，$N将水盆中的污水倒掉，菜也洗干净了。"; break; case 3: msg = "$N走到灶台前开始切菜，嚓----嚓-----。"; break; case 4: case 6: msg = "$N将油到入锅中，继续切菜。"; break; case 5: msg = "油热了，冒出阵阵清烟，$N将切好的菜到入锅中！滋------"; break; case 7: msg = "$N不断翻动锅中的菜，慢慢的，一阵香味散发出来。"; break; default: msg = "$N在锅中加入调料，又翻动了几下，将炒好的菜铲到盘中，拿给$n。"; finish = 1; break; }
+# ==== SWITCH STATEMENTS ====
+  # UNHANDLED FUNCTION: recognize_apprentice
+  # UNHANDLED FUNCTION: cooking
+  # UNHANDLED FUNCTION: halt_cooking
+  # UNHANDLED FUNCTION: do_cook
+  # UNHANDLED FUNCTION: ask_job
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/huoji.c by LPCConverter
+# Zone: chengdu
+
+# inherit F_DEALER;
+
+# Generated from C:/files/git/mud/d/chengdu/npc/liuhongying.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!(int)ob->query_temp("marks/jinniu_paied") == 1)  →  
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: recognize_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/longquan.c by LPCConverter
+# Zone: chengdu
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! (int)ob->query_temp("marks/jinniu_paied") == 1)  →  
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: recognize_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/mawude.c by LPCConverter
+# Zone: chengdu
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! (int)ob->query_temp("marks/jinniu_paied") == 1)  →  
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: recognize_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/qinbing.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob = this_player()) && (int)ob->query_condition("killer"))  →  
+  # if ( interactive(ob = this_player()) && !is_fighting() )  →  message_vision('\\\\\n亲兵忽然对$N大喝一声：何方刁民，竟敢在提督衙前此撒野！看刀！\\\\\n',this_player());
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch(random(10)) { case 1: message_vision("\n亲兵忽然对$N大喝一声：何方刁民，竟敢在提督衙前此撒野！看刀！\n",this_player()); remove_call_out("kill_ob"); call_out("kill_ob", 1, ob); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/chengdu/npc/tanghuai.c by LPCConverter
+# Zone: chengdu
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: redeem
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/chengdu/npc/xiaoer.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !ob || environment(ob) != environment() )  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if ( interactive(ob) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch( random(2) ) { case 0: say( "店小二笑咪咪地说道：这位" + RANK_D->query_respect(ob) + "，进来喝杯茶，歇歇腿吧。\n"); break; case 1: say( "店小二用脖子上的毛巾抹了抹手，说道：这位" + RANK_D->query_respect(ob) + "，请进请进。\n"); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/xiaoer2.c by LPCConverter
+# Zone: chengdu
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !ob || environment(ob) != environment() )  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if ( interactive(ob) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch( random(2) ) { case 0: say( "店小二笑咪咪地说道：这位" + RANK_D->query_respect(ob) + "，进来喝杯茶，歇歇腿吧。\n"); break; case 1: say( "店小二用脖子上的毛巾抹了抹手，说道：这位" + RANK_D->query_respect(ob) + "，请进请进。\n"); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/xiaofei.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! (int)ob->query_temp("marks/jinniu_paied") == 1)  →  
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: recognize_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/xiaozei.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  command('shake'); command('say 这种东西鬼才要，给我滚一边去！'); command('give ' + obj->query('id') + ' to ' + me->query('id'));
+  # if (obj->query("money_id") && obj->value() >= 1)  →  command('smile'); command('say 其实我还是有点钱的，这次只不过试试你罢了。'); command('give 10 silver to ' + me->query('id'));
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if (! ob || environment(ob) != environment())  →  
+  # if (ob->present("gold_money"))  →  
+# ==== CONDITIONAL BRANCHES (stealing) ====
+  # if (interactive(ob = this_player()))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch( random(5) ) { case 0: command("hehe " + ob->query("id")); command("steal coin from " + ob->query("id")); command("buy jitui"); break; case 1: command("grin " + ob->query("id")); command("steal silver from " + ob->query("id")); command("eat jitui"); break; case 2: command("hi " + ob->query("id")); command("steal gold from " + ob->query("id")); command("drink jiudai"); break; case 3: command("pat " + ob->query("id")); command("steal changjian from " + ob->query("id")); command("wield changjian"); command("drink jiudai"); break; case 4: command("walkby " + ob->query("id")); command("steal jitui from " + ob->query("id")); command("eat jitui"); break; }
+# ==== SWITCH POOLS ====
+  # UNHANDLED FUNCTION: stealing
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/zhangfang.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (who->query("combat_exp") >= 150000 && !who->query_temp("can_paid"))  →  message_vision('老账房望着$N说：你的武功应该历练江湖才能再长进，不' '能埋没在这里了。\\\\\n', who); write('老账房悄悄对你说道：“但是如果你肯出' HIY '高价钱' NOR'，也' '不是不可以！”\\\\\n');
+  # else  →  
+  # else if (who->query_temp("can_paid") && ob->query("money_id") && ob->value() >= 5000000)  →  write('老帐房对你悄悄说道：“快去吧，可别说你认识我！”\\\\\n');
+  # if (ob->query("money_id") && ob->value() >= 500 && !who->query_temp("can_paid"))  →  message_vision('老账房对$N说：好！既然这位' + RANK_D->query_respect(who) + '如此上进，那就进去找师傅学吧！\\\\\n' , who);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: chu_hai
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/baozi.c by LPCConverter
+# Zone: chengdu
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/feihuangshi.c by LPCConverter
+# Zone: chengdu
+
+# inherit THROWING;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/flower-leaf.c by LPCConverter
+# Zone: chengdu
+
+# inherit THROWING;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/jitui.c by LPCConverter
+# Zone: chengdu
+
+# inherit HAMMER;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !query("weapon_prop") )  →  
+# ==== CONDITIONAL BRANCHES (finish_eat) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: finish_eat
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/jiudai.c by LPCConverter
+# Zone: chengdu
+
+# inherit ITEM;
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/lianzi.c by LPCConverter
+# Zone: chengdu
+
+# inherit THROWING;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/tea-leaf.c by LPCConverter
+# Zone: chengdu
+
+# inherit THROWING;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (query_amount() < 1)  →  
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/tielianzi.c by LPCConverter
+# Zone: chengdu
+
+# inherit THROWING;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/chengdu/obj/shelf.c by LPCConverter
+# Zone: chengdu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: is_container
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
