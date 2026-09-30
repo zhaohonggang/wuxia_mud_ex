@@ -194,3 +194,43 @@ LPC 的 `+` 是**字符串直接拼接十进制数字**，不是「文件名 ste
 
 `test/cross_zone_wiring_test.exs` 新增一条测试锁定：`baituo:cao1` 的
 `west` / `south` 必须回到 `baituo:cao1`，且全库不得残留 `__file__` 字面量。
+
+
+---
+
+## D. 修正八卦方向被跳过的注释文案
+
+**优先级**　低　**状态**　✅ 已完成 2026-09-30
+
+低优先级。纯文案，但错误文案会误导排查。
+
+- [x] 把 `# skipped malformed exit direction '乾': ... (C comment artefact)`
+      改成准确描述：elias 的 key 只接受 ASCII 标识符
+- [x] 与问题 3（数字 key）的注释统一措辞
+- [x] 重跑 `shaolin`
+
+### D 的实际改动（2026-09-30）
+
+`_is_valid_exit_dir()` 换成 `_exit_dir_skip_reason()`，按真实原因分三类：
+
+| 方向 | 文案 |
+|------|------|
+| 空（剥掉 C 注释后没剩东西） | `direction became empty after stripping a C comment` |
+| 含 CJK（shaolin 八卦） | `direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed` |
+| 含数字（huashan `hole1..6`） | `direction contains a digit; elias lexes Digit as a separate token, so the assignment cannot close` |
+| 其它非标识符 | `direction is not a bare identifier` |
+
+删掉已无引用的 `_EXIT_DIR_RE`；`scripts/test_lpc_path_rules.py` 补 17 项断言
+（12 个合法方向返回 `None`、三类原因各锁一条文案、3 项断言非空方向的消息里
+不得出现 `"C comment"` —— 正是旧文案误导排查之处）。
+
+> 说明：本文件的 C–I 各节曾因一次批量编辑被截断，此处按
+> `docs/ucl-conversion-fix-checklist.zh-CN.md`（结构完好）重建。
+
+---
+
+## 参考
+
+- `docs/ucl-conversion-fix-checklist.zh-CN.md` —— 核对单（勾选状态以此为准）
+- `docs/ucl-conversion-issues.zh-CN.md` —— 20 个问题的完整分析
+- `docs/zone-conversion-sop.zh-CN.md` —— 转换 SOP

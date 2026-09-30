@@ -77,8 +77,8 @@
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: close
   # UNHANDLED FUNCTION: look_hua
-  # UNHANDLED FUNCTION: do_xian
   # UNHANDLED FUNCTION: do_turn
+  # UNHANDLED FUNCTION: do_xian
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -232,8 +232,8 @@
   # if (me->can_improve_skill("bagua-quan") && (int)me->query_skill("bagua-quan", 1) < 120)  →  
 # ==== CONDITIONAL BRANCHES (do_jida) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_tiao
   # UNHANDLED FUNCTION: do_jida
+  # UNHANDLED FUNCTION: do_tiao
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -428,8 +428,8 @@
   # if ((int)me->query("jing") < 80 || (int)me->query("qi") < 80)  →  
 # ==== CONDITIONAL BRANCHES (do_liandan) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: liandan
   # UNHANDLED FUNCTION: do_liandan
+  # UNHANDLED FUNCTION: liandan
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -869,8 +869,8 @@
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
-  # UNHANDLED FUNCTION: ask_me2
   # UNHANDLED FUNCTION: ask_me1
+  # UNHANDLED FUNCTION: ask_me2
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1288,9 +1288,9 @@
 # ==== CONDITIONAL BRANCHES (do_liandan) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_liandan
+  # UNHANDLED FUNCTION: recognize_apprentice
   # UNHANDLED FUNCTION: ask_me
   # UNHANDLED FUNCTION: ask_yinzhen
-  # UNHANDLED FUNCTION: recognize_apprentice
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1329,10 +1329,10 @@
   # if (interactive(ob = this_player()) && ! is_fighting() && !ob->query_temp("is_riding"))  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: receive_damage
+  # UNHANDLED FUNCTION: do_ride
   # UNHANDLED FUNCTION: receive_wound
   # UNHANDLED FUNCTION: give_mashao
-  # UNHANDLED FUNCTION: do_ride
+  # UNHANDLED FUNCTION: receive_damage
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1446,8 +1446,8 @@
   # if ((int)this_player()->query("weiwang")>=70)  →  write( HIY '双儿道:夫人待我恩重如山,主人对我庄家又有大恩。\\\\\n' NOR); write( HIY '夫人要我服侍主人,我一定尽心。\\\\\n' NOR); command('nod');
 # ==== CONDITIONAL BRANCHES (ask_go) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: ask_go
   # UNHANDLED FUNCTION: ask_kiss
+  # UNHANDLED FUNCTION: ask_go
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1617,8 +1617,8 @@
   # if (interactive(ob = this_player()) && (int)ob->query_condition("killer"))  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: unconcious
   # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -3571,8 +3571,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

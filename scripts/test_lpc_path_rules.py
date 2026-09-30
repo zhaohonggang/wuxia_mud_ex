@@ -136,6 +136,37 @@ kind, *rest = C._classify_exit_path('"guangchang"', "city")
 check("bare name", (kind, rest[0]), ("local", "guangchang"))
 
 
+# ---------------------------------------------------------------- D
+print("\nD  exit-direction skip reasons must name the real cause")
+
+# A valid direction is not skipped at all.
+for ok in ("north", "south", "east", "west", "up", "down", "in", "out",
+           "northeast", "northup", "eastdown", "go_in", "climb"):
+    check("accepted(%s)" % ok, C._exit_dir_skip_reason(ok), None)
+
+# Three distinct causes, three distinct messages - the old code claimed all of
+# them were "C comment artefact", which is wrong for the last two.
+check("empty (C comment stripped)",
+      C._exit_dir_skip_reason(""),
+      "direction became empty after stripping a C comment")
+check("CJK (shaolin bagua)",
+      C._exit_dir_skip_reason("乾"),
+      "direction is not ASCII; elias's Word token is ASCII-only, "
+      "so this key cannot be lexed")
+check("digit (huashan hole6)",
+      C._exit_dir_skip_reason("hole6"),
+      "direction contains a digit; elias lexes Digit as a separate "
+      "token, so the assignment cannot close")
+check("punctuation",
+      C._exit_dir_skip_reason("a-b"),
+      "direction is not a bare identifier")
+
+# No message may claim "C comment artefact" for a non-empty direction.
+for d in ("乾", "hole6", "a-b"):
+    reason = C._exit_dir_skip_reason(d)
+    check("no false C-comment claim(%s)" % d, "C comment" in reason, False)
+
+
 print("")
 if FAILURES:
     print("FAILED: %d" % len(FAILURES))

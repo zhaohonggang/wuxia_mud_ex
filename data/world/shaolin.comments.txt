@@ -596,9 +596,9 @@
 # ==== CONDITIONAL BRANCHES (close_gate) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: close_gate
+  # UNHANDLED FUNCTION: do_open
   # UNHANDLED FUNCTION: look_gate
   # UNHANDLED FUNCTION: do_knock
-  # UNHANDLED FUNCTION: do_open
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -712,10 +712,10 @@
   # if (random(me->query("dex")) < 5)  →  message_vision('$N一不小心敲到自己头上了。\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (do_hit) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_hit
-  # UNHANDLED FUNCTION: look_out
   # UNHANDLED FUNCTION: look_drum
+  # UNHANDLED FUNCTION: look_out
   # UNHANDLED FUNCTION: do_out
+  # UNHANDLED FUNCTION: do_hit
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -925,11 +925,11 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH: switch (query("status")) { case 1: if (arg == "梦") right = 2; break; case 2: if (arg == "如" && n == 3) right = 3; break; case 3: if (arg == "是") right = 4; break; }
 # ==== SWITCH STATEMENTS ====
-  # UNHANDLED FUNCTION: look_jing
-  # UNHANDLED FUNCTION: do_xian
-  # UNHANDLED FUNCTION: look_hole
   # UNHANDLED FUNCTION: close_hole
+  # UNHANDLED FUNCTION: do_xian
   # UNHANDLED FUNCTION: do_get
+  # UNHANDLED FUNCTION: look_jing
+  # UNHANDLED FUNCTION: look_hole
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1016,8 +1016,8 @@
   # if (me->can_improve_skill("bagua-quan") && (int)me->query_skill("bagua-quan", 1) < 120)  →  
 # ==== CONDITIONAL BRANCHES (do_jida) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_jida
   # UNHANDLED FUNCTION: do_tiao
+  # UNHANDLED FUNCTION: do_jida
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1231,9 +1231,9 @@
 # ==== CONDITIONAL BRANCHES (close_gate) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: close_gate
-  # UNHANDLED FUNCTION: look_gate
-  # UNHANDLED FUNCTION: do_open
   # UNHANDLED FUNCTION: do_close
+  # UNHANDLED FUNCTION: do_open
+  # UNHANDLED FUNCTION: look_gate
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1394,8 +1394,8 @@
 # ==== CONDITIONAL BRANCHES (do_open) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_open
-  # UNHANDLED FUNCTION: close_passage
   # UNHANDLED FUNCTION: look_floor
+  # UNHANDLED FUNCTION: close_passage
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1427,10 +1427,10 @@
   # if (random(2)==0)  →  
 # ==== CONDITIONAL BRANCHES (do_knock) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: look_out
-  # UNHANDLED FUNCTION: do_knock
   # UNHANDLED FUNCTION: look_bell
+  # UNHANDLED FUNCTION: look_out
   # UNHANDLED FUNCTION: do_out
+  # UNHANDLED FUNCTION: do_knock
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1462,10 +1462,10 @@
   # if ( arg=="stone" && query_temp("available"))  →  write('你试著把石块一块块地搬开，突然发现下面埋着个奄奄一息的老人 !\\\\\n\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_move) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: fainting
   # UNHANDLED FUNCTION: look_stone
-  # UNHANDLED FUNCTION: do_remove
   # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: fainting
+  # UNHANDLED FUNCTION: do_remove
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1580,8 +1580,8 @@
   # if ( interactive(ob = this_player()) && !is_fighting() )  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: is_ghost
   # UNHANDLED FUNCTION: beat_faint
+  # UNHANDLED FUNCTION: is_ghost
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1627,10 +1627,10 @@
   # if (me->query("family/family_name") != "关外胡家")  →  
 # ==== CONDITIONAL BRANCHES (ask_me) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: ask_me
-  # UNHANDLED FUNCTION: ask_book
-  # UNHANDLED FUNCTION: recognize_apprentice
   # UNHANDLED FUNCTION: ask_hujia_book
+  # UNHANDLED FUNCTION: recognize_apprentice
+  # UNHANDLED FUNCTION: ask_book
+  # UNHANDLED FUNCTION: ask_me
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

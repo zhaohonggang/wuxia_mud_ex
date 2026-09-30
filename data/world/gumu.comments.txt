@@ -104,8 +104,8 @@
 # ==== CONDITIONAL BRANCHES (do_ci) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_ci
-  # UNHANDLED FUNCTION: do_zhan
   # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_zhan
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -280,8 +280,8 @@
   # if ( !arg || arg != "up")  →  write('那个方向没法爬。\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_climb) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: do_swim
+  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

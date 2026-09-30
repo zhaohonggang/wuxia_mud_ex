@@ -1771,11 +1771,34 @@ def _strip_exit_c_comments(s):
 #     hole_6 = rooms.b.id    -> FAILS
 # A *value* is unaffected: `rooms.lockroom6.id` parses fine, so room ids may
 # still contain digits.  Only the key is restricted.
-_EXIT_DIR_RE = re.compile(r"^[A-Za-z_][A-Za-z_]*$")
+#
+# The same rule also rejects a non-ASCII key: elias's Word token is ASCII-only, so
+# shaolin's bagua directions (乾/巽/离/艮/兑/坎/震/坤) cannot be written as keys
+# either.  64 such exits across the eight bagua rooms.
+def _exit_dir_skip_reason(direction):
+    """Why this exit direction cannot be written, or None when it is fine.
 
+    Two very different causes used to share one (wrong) message:
 
-def _is_valid_exit_dir(direction):
-    return bool(direction) and bool(_EXIT_DIR_RE.match(direction))
+    * empty - a C comment was stripped off the end of the direction, leaving
+      nothing behind (room/caihong/dating.c's `"south" : __DIR__"xiaoyuan",
+      /* EXAMPLE */`).  Nothing to do with elias.
+    * not a bare identifier - a genuine LPC direction that elias cannot lex as a
+      key: CJK (shaolin's bagua 乾/巽/...) or an embedded digit
+      (huashan's "hole1".."hole6").  Writing it produces
+      `syntax error before: ', ['"6"']` and aborts the whole world load.
+    """
+    if direction == "":
+        return "direction became empty after stripping a C comment"
+    if not direction.isascii():
+        return ("direction is not ASCII; elias's Word token is ASCII-only, "
+                "so this key cannot be lexed")
+    if re.search(r"\d", direction):
+        return ("direction contains a digit; elias lexes Digit as a separate "
+                "token, so the assignment cannot close")
+    if not re.fullmatch(r"[A-Za-z_][A-Za-z_]*", direction):
+        return "direction is not a bare identifier"
+    return None
 
 
 def _build_room_flags(sets):
@@ -1902,13 +1925,15 @@ def _generate_room_ucl(ast, zone_id):
         for key, val in exits[1]:
             direction = _exit_key(key)
             direction = re.sub(r'^"|"$', "", direction)
-            if not _is_valid_exit_dir(direction):
-                # Either a C-comment artefact (stripping the comment left
-                # nothing behind, see _strip_exit_c_comments) or a genuine LPC
-                # direction elias cannot lex as a key, e.g. huashan/s.c's
-                # "hole1".."hole6" (any digit in a key breaks the assignment).
-                # In both cases no spelling of `direction = target` parses.
-                skipped_bad_dir.append(direction or "<empty>")
+            reason = _exit_dir_skip_reason(direction)
+            if reason is not None:
+                # Either a C-comment artefact (stripping the comment left nothing
+                # behind, see _strip_exit_c_comments) or a genuine LPC direction
+                # elias cannot lex as a key: shaolin's CJK bagua directions
+                # (乾/巽/...) and huashan's "hole1".."hole6".  In both cases no
+                # spelling of `direction = target` parses, so the exit is dropped
+                # and the reason recorded.
+                skipped_bad_dir.append((direction or "<empty>", reason))
                 continue
             if isinstance(val, tuple) and val[0] == "mapping":
                 # A portal descriptor such as city/mudren.c's "enter" points at
@@ -1945,10 +1970,9 @@ def _generate_room_ucl(ast, zone_id):
             exits_block += (
                 f"  # skipped non-room exit '{direction}': LPC portal/mapping target\n"
             )
-        for direction in skipped_bad_dir:
+        for direction, reason in skipped_bad_dir:
             exits_block += (
-                f"  # skipped malformed exit direction '{direction}': "
-                f"not a bare identifier (C comment artefact)\n"
+                f"  # skipped exit direction '{direction}': {reason}\n"
             )
         for note in skipped_unlinkable:
             exits_block += (

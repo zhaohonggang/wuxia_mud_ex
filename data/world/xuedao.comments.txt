@@ -84,8 +84,8 @@
   # if (!environment(ob))  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_enter
   # UNHANDLED FUNCTION: do_get
+  # UNHANDLED FUNCTION: do_enter
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

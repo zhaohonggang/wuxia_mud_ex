@@ -1090,12 +1090,12 @@ item_desc = {
     room_id = rooms.s.id
     out = rooms.shandong.id
     }
-  # skipped malformed exit direction 'hole1': not a bare identifier (C comment artefact)
-  # skipped malformed exit direction 'hole2': not a bare identifier (C comment artefact)
-  # skipped malformed exit direction 'hole3': not a bare identifier (C comment artefact)
-  # skipped malformed exit direction 'hole4': not a bare identifier (C comment artefact)
-  # skipped malformed exit direction 'hole5': not a bare identifier (C comment artefact)
-  # skipped malformed exit direction 'hole6': not a bare identifier (C comment artefact)
+  # skipped exit direction 'hole1': direction contains a digit; elias lexes Digit as a separate token, so the assignment cannot close
+  # skipped exit direction 'hole2': direction contains a digit; elias lexes Digit as a separate token, so the assignment cannot close
+  # skipped exit direction 'hole3': direction contains a digit; elias lexes Digit as a separate token, so the assignment cannot close
+  # skipped exit direction 'hole4': direction contains a digit; elias lexes Digit as a separate token, so the assignment cannot close
+  # skipped exit direction 'hole5': direction contains a digit; elias lexes Digit as a separate token, so the assignment cannot close
+  # skipped exit direction 'hole6': direction contains a digit; elias lexes Digit as a separate token, so the assignment cannot close
 
 # Generated from C:/files/git/mud/d/huashan/sgyhole.c by LPCConverter
 # Zone: huashan

@@ -81,7 +81,23 @@ Kantele.World.LoaderError ... elias ... syntax error before: ', ['"6"']'
 
 ---
 
-## 4. 方向名含中文，elias 无法分词（已修，但注释文案有误）
+## 4. 方向名含中文，elias 无法分词（已修，注释文案亦已修正）
+
+**D 已修（2026-09-30）**　`_is_valid_exit_dir()` 换成 `_exit_dir_skip_reason()`，
+按**真实原因**分三类给出文案，不再一律写成「C comment artefact」：
+
+| 方向 | 新文案 |
+|------|--------|
+| 空（剥掉 C 注释后没剩东西） | `direction became empty after stripping a C comment` |
+| 含 CJK（shaolin 八卦） | `direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed` |
+| 含数字（huashan `hole1..6`） | `direction contains a digit; elias lexes Digit as a separate token, so the assignment cannot close` |
+| 其它非标识符 | `direction is not a bare identifier` |
+
+同时删掉了已无引用的 `_EXIT_DIR_RE`（判定逻辑并入新函数），
+并在 `scripts/test_lpc_path_rules.py` 补 17 项断言：12 个合法方向必须返回 `None`，
+三类原因各锁一条文案，另有 3 项专门断言**非空方向的消息里不得出现 "C comment"**
+——正是旧文案误导排查的地方。
+
 
 **现象**　同问题 3，报错 token 是 `"6"` 之外的其它字符。
 
@@ -91,7 +107,7 @@ Kantele.World.LoaderError ... elias ... syntax error before: ', ['"6"']'
 
 **修复**　同问题 3，被同一条正则拦下。
 
-**遗留问题**　留下的注释文案是错的：
+**遗留问题（已修，见下）**　原先留下的注释文案是错的：
 
 ```
 # skipped malformed exit direction '乾': not a bare identifier (C comment artefact)

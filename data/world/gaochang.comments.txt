@@ -42,10 +42,10 @@
   # if ((int)query("left_trigger") == 2 && (int)query("right_trigger") == 5 && ! query("exits/down"))  →  tell_object(me, HIW '\\\\\n你成功的开启了高昌迷宫入口！\\\\\n' NOR + HIC '通' '过这次的历练，你获得了' + chinese_number(exp) + '点' '经验、' + chinese_number(pot) + '点潜能以及' + chinese_number(sc) + '点江湖阅历。\\\\\n\\\\\n' NOR);
 # ==== CONDITIONAL BRANCHES (check_trigger) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: check_trigger
   # UNHANDLED FUNCTION: reset
-  # UNHANDLED FUNCTION: do_turn
+  # UNHANDLED FUNCTION: check_trigger
   # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: do_turn
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -245,8 +245,8 @@
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: ask_parent
-  # UNHANDLED FUNCTION: ask_supu
   # UNHANDLED FUNCTION: ask_gaochang
+  # UNHANDLED FUNCTION: ask_supu
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -268,8 +268,8 @@
   # if (interactive(me = this_player()) && ! is_fighting())  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: ask_back
   # UNHANDLED FUNCTION: unconcious
+  # UNHANDLED FUNCTION: ask_back
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

@@ -28,8 +28,8 @@
 # ==== CONDITIONAL BRANCHES (do_reach) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_reach
-  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: do_jump
+  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

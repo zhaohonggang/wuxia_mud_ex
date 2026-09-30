@@ -195,8 +195,8 @@
 # ==== CONDITIONAL BRANCHES (do_move) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_move
-  # UNHANDLED FUNCTION: close_passage
   # UNHANDLED FUNCTION: look_bei
+  # UNHANDLED FUNCTION: close_passage
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -273,8 +273,8 @@
   # if (me->query_temp("caistone") == 1)  →  message_vision(HIW '$N笨手笨脚地找了个缝隙把雷管插进去，手忙脚乱地点燃了就溜！\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_zha) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_zha
   # UNHANDLED FUNCTION: bao
+  # UNHANDLED FUNCTION: do_zha
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -303,8 +303,8 @@
   # if (me->query_temp("caistone") == 1)  →  message_vision(HIW '$N笨手笨脚地找了个缝隙把雷管插进去，手忙脚乱地点燃了就溜！\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_zha) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_zha
   # UNHANDLED FUNCTION: bao
+  # UNHANDLED FUNCTION: do_zha
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -468,8 +468,8 @@
   # if (interactive(ob = this_player()) && !is_fighting())  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: ask_me
+  # UNHANDLED FUNCTION: accept_kill
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

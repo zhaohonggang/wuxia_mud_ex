@@ -153,11 +153,11 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_clear
-  # UNHANDLED FUNCTION: do_draw
   # UNHANDLED FUNCTION: autoload
   # UNHANDLED FUNCTION: query_autoload
   # UNHANDLED FUNCTION: long
+  # UNHANDLED FUNCTION: do_clear
+  # UNHANDLED FUNCTION: do_draw
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -314,10 +314,10 @@
 # ==== CONDITIONAL BRANCHES (accept_object) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: do_wield
   # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: do_unwield
-  # UNHANDLED FUNCTION: do_wield
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -357,9 +357,9 @@
   # if (is_owner(who))  →  message_vision(name() + '对$N施了一礼。\\\\\n', who);
 # ==== CONDITIONAL BRANCHES (accept_object) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: accept_hit
   # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: accept_fight
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

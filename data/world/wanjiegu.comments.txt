@@ -21,10 +21,10 @@
   # if ((int)query("trigger") == 9 && !query("exits/north"))  →  
 # ==== CONDITIONAL BRANCHES (check_trigger) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: pushstone
+  # UNHANDLED FUNCTION: do_push
   # UNHANDLED FUNCTION: reset
   # UNHANDLED FUNCTION: check_trigger
-  # UNHANDLED FUNCTION: do_push
-  # UNHANDLED FUNCTION: pushstone
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -65,8 +65,8 @@
   # if ( arg == "草丛" || arg == "grass" )  →  message_vision('$N拨开长草，树上出现一洞。\\\\\n', this_player() );
 # ==== CONDITIONAL BRANCHES (do_push) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close_passage
   # UNHANDLED FUNCTION: do_push
+  # UNHANDLED FUNCTION: close_passage
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -161,8 +161,8 @@
   # if ( arg == "大铁环" || arg == "ring" )  →  message_vision('$N用劲拉起大铁环，拎起一块木板，下面露出一洞。\\\\\n', this_player() );
 # ==== CONDITIONAL BRANCHES (do_pull) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close_passage
   # UNHANDLED FUNCTION: do_pull
+  # UNHANDLED FUNCTION: close_passage
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

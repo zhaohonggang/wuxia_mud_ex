@@ -38,13 +38,13 @@
 # ==== CONDITIONAL BRANCHES (do_summon) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: accept_fight
-  # UNHANDLED FUNCTION: do_summon
   # UNHANDLED FUNCTION: receive_damage
   # UNHANDLED FUNCTION: fight_ob
   # UNHANDLED FUNCTION: do_show
   # UNHANDLED FUNCTION: receive_wound
-  # UNHANDLED FUNCTION: accept_ansuan
   # UNHANDLED FUNCTION: ask_me
+  # UNHANDLED FUNCTION: do_summon
+  # UNHANDLED FUNCTION: accept_ansuan
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

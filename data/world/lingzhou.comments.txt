@@ -184,8 +184,8 @@
   # if ( interactive(ob) && !is_fighting() )  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_join
   # UNHANDLED FUNCTION: ask_me
+  # UNHANDLED FUNCTION: do_join
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

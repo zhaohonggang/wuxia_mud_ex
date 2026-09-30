@@ -152,8 +152,8 @@
   # if ((int)this_player()->query_temp("marks/王3"))  →  say( '王小二眼露凶光，对' + this_player()->name() + '喊道：杀人不过头点地，我已经\\\\\n' '服了软，你还不放过我，老子跟你拼了!\\\\\n');
 # ==== CONDITIONAL BRANCHES (ask_me) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: ask_me
   # UNHANDLED FUNCTION: do_bihua
+  # UNHANDLED FUNCTION: ask_me
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
