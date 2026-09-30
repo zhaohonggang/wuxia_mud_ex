@@ -1,0 +1,1189 @@
+zones "village" {
+  name = "village"
+}
+
+# Generated from C:/files/git/mud/d/village/alley1.c by LPCConverter
+# Zone: village
+
+    rooms "alley1" {
+      name = "小巷"
+      description = "这是一条黑暗、肮脏的小巷，空气中仿佛飘扬着一股罪恶的气息，西 北边通向小巷深处，正人君子是不会往那边走去的。往东走就会回到村中 大路了。"
+  x = -1
+  y = -2
+  z = 0
+    }
+
+  room_exits "alley1" {
+    room_id = rooms.alley1.id
+    northwest = rooms.alley2.id
+    east = rooms.sroad3.id
+    }
+
+# Generated from C:/files/git/mud/d/village/alley2.c by LPCConverter
+# Zone: village
+
+    rooms "alley2" {
+      name = "小巷尽头"
+      description = "这里是小巷的尽头，一只破木箱上摆着几样粗制的赌具，地上乱扔着 些鸡骨头，空气中有一股鸡香、酒香和汗臭混杂在一起的味道。看来这里 是村内地痞、流氓聚集的地方。"
+  x = -2
+  y = -1
+  z = 0
+    }
+
+  room_exits "alley2" {
+    room_id = rooms.alley2.id
+    southeast = rooms.alley1.id
+    }
+
+
+  room_characters "alley2" {
+    room_id = rooms.alley2.id
+    characters = [
+      { id = characters.punk.id },
+      { id = characters.dipi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/bighouse1.c by LPCConverter
+# Zone: village
+
+    rooms "bighouse1" {
+      name = "前厅"
+      description = "这是一间很普通的青砖瓦房，但在这个小村子里已是首屈一指的“豪 宅”了。这里是前厅，厅里的摆设很简单，乡下土财主都很财迷，就算有 几个钱儿，也是舍不得花。东边是个小门通向内室。"
+  x = 1
+  y = -1
+  z = 0
+    }
+
+  room_exits "bighouse1" {
+    room_id = rooms.bighouse1.id
+    east = rooms.bighouse2.id
+    west = rooms.sroad4.id
+    }
+
+# Generated from C:/files/git/mud/d/village/bighouse2.c by LPCConverter
+# Zone: village
+
+    rooms "bighouse2" {
+      name = "内室"
+      description = "这里是一间寝室，屋子中间有一张大床，床上的被褥居然是绸缎的， 看来这个土财主对自己并不是十分刻薄。屋里摆着几只木箱子，墙角里有 一只大柜子(cabinet)。"
+  x = 2
+  y = -1
+  z = 0
+    }
+
+  room_exits "bighouse2" {
+    room_id = rooms.bighouse2.id
+    west = rooms.bighouse1.id
+    }
+
+# Generated from C:/files/git/mud/d/village/eexit.c by LPCConverter
+# Zone: village
+
+    rooms "eexit" {
+      name = "东村口"
+      description = "这里是华山脚下，虽然远离县城，却没有什麽山贼草寇在附近出没。 往东就是上山的路了。西边是一个小村庄，村子里人家并不多，村民们过 着日出而作，日落而息的宁静生活。"
+  x = 4
+  y = 0
+  z = 0
+    }
+
+  room_exits "eexit" {
+    room_id = rooms.eexit.id
+    east = rooms.path1.id
+    west = rooms.eroad1.id
+    }
+
+
+  room_characters "eexit" {
+    room_id = rooms.eexit.id
+    characters = [
+      { id = characters.boy.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/ehouse1.c by LPCConverter
+# Zone: village
+
+    rooms "ehouse1" {
+      name = "草棚"
+      description = "这是一个简单的草棚，地上摆著一堆堆的货物，上山的游客可以在这 买些上山用品。草棚的墙上贴着个牌子，是个价目表(sign)。"
+  x = 3
+  y = -1
+  z = 0
+    }
+
+  room_exits "ehouse1" {
+    room_id = rooms.ehouse1.id
+    north = rooms.eroad1.id
+    }
+
+
+  room_characters "ehouse1" {
+    room_id = rooms.ehouse1.id
+    characters = [
+      { id = characters.seller.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/ehouse2.c by LPCConverter
+# Zone: village
+
+    rooms "ehouse2" {
+      name = "民宅"
+      description = "这是一间很结实的房子，虽然也是间土坯房，但看的出建造的比村里 其他的土坯房要好很多。墙上挂着、地下摆着一些农具。"
+  x = 2
+  y = 1
+  z = 0
+    }
+
+  room_exits "ehouse2" {
+    room_id = rooms.ehouse2.id
+    south = rooms.eroad2.id
+    }
+
+
+  room_characters "ehouse2" {
+    room_id = rooms.ehouse2.id
+    characters = [
+      { id = characters.dibao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/eroad1.c by LPCConverter
+# Zone: village
+
+    rooms "eroad1" {
+      name = "碎石路"
+      description = "这是一个宁静的小村子，稀稀落落的分布着几十间土坯泥房，看来村 中人家不多，而且大都生活很艰辛。一条碎石路，往西通向村子的中心， 往东就是出村的路了。南面是一间很简陋的草棚。"
+  x = 3
+  y = 0
+  z = 0
+    }
+
+  room_exits "eroad1" {
+    room_id = rooms.eroad1.id
+    west = rooms.eroad2.id
+    east = rooms.eexit.id
+    south = rooms.ehouse1.id
+    }
+
+# Generated from C:/files/git/mud/d/village/eroad2.c by LPCConverter
+# Zone: village
+
+    rooms "eroad2" {
+      name = "碎石路"
+      description = "这是一个宁静的小村子，稀稀落落的分布着几十间土坯泥房，看来村 中人家不多，而且大都生活很艰辛。这是一条东西向的碎石路，北面是间 结实的民宅。"
+  x = 2
+  y = 0
+  z = 0
+    }
+
+  room_exits "eroad2" {
+    room_id = rooms.eroad2.id
+    north = rooms.ehouse2.id
+    west = rooms.eroad3.id
+    east = rooms.eroad1.id
+    }
+
+# Generated from C:/files/git/mud/d/village/eroad3.c by LPCConverter
+# Zone: village
+
+    rooms "eroad3" {
+      name = "碎石路"
+      description = "这是一个宁静的小村子，稀稀落落的分布着几十间土坯泥房，看来村 中人家不多，而且大都生活很艰辛。这是一条东西向的碎石路，往西就是 村子中心的打谷场了，南面是一间铁匠铺子，北面是家杂货店。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "eroad3" {
+    room_id = rooms.eroad3.id
+    west = rooms.square.id
+    east = rooms.eroad2.id
+    south = rooms.smithy1.id
+    north = rooms.shop.id
+    }
+
+
+  room_characters "eroad3" {
+    room_id = rooms.eroad3.id
+    characters = [
+      { id = characters.girl.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/hsroad1.c by LPCConverter
+# Zone: village
+
+    rooms "hsroad1" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，人来人往非常繁忙，不时地有人骑着马匆匆 而过。大道两旁有一些小货摊，似乎是一处集市。南边通向洛阳古城。"
+  x = 1
+  y = -8
+  z = 0
+    }
+
+  room_exits "hsroad1" {
+    room_id = rooms.hsroad1.id
+    south = rooms.guandaon4.id
+    north = rooms.hsroad2.id
+    }
+
+
+  room_characters "hsroad1" {
+    room_id = rooms.hsroad1.id
+    characters = [
+      { id = characters.girl.id },
+      { id = characters.girl.id },
+      { id = characters.girl.id },
+      { id = characters.girl.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/hsroad2.c by LPCConverter
+# Zone: village
+
+    rooms "hsroad2" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，南边隐约可见到洛阳城的城墙。北面两条土 路分岔通向山里。"
+  x = 1
+  y = -7
+  z = 0
+    }
+
+  room_exits "hsroad2" {
+    room_id = rooms.hsroad2.id
+    northeast = rooms.jzroad1.id
+    northwest = rooms.hsroad3.id
+    south = rooms.hsroad1.id
+    }
+
+# Generated from C:/files/git/mud/d/village/hsroad3.c by LPCConverter
+# Zone: village
+
+    rooms "hsroad3" {
+      name = "黄土路"
+      description = "一条坑坑洼洼的土路，弯弯曲曲的通向山里。"
+  x = 0
+  y = -6
+  z = 0
+    }
+
+  room_exits "hsroad3" {
+    room_id = rooms.hsroad3.id
+    north = rooms.sexit.id
+    southeast = rooms.hsroad2.id
+    }
+
+
+  room_characters "hsroad3" {
+    room_id = rooms.hsroad3.id
+    characters = [
+      { id = characters.tangzi.id },
+      { id = characters.tangzi.id },
+      { id = characters.tangzi.id },
+      { id = characters.tangzi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/nwhouse.c by LPCConverter
+# Zone: village
+
+    rooms "nwhouse" {
+      name = "民房"
+      description = "这是一个小房间，屋子里飘着一股大葱加香粉的味道。靠墙摆着张大 床，床头有个小梳妆台。"
+  x = -2
+  y = 0
+  z = 0
+    }
+
+  room_exits "nwhouse" {
+    room_id = rooms.nwhouse.id
+    northeast = rooms.nwroad2.id
+    }
+
+
+  room_characters "nwhouse" {
+    room_id = rooms.nwhouse.id
+    characters = [
+      { id = characters.cuihua.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/nwroad1.c by LPCConverter
+# Zone: village
+
+    rooms "nwroad1" {
+      name = "碎石路"
+      description = "这是一个宁静的小村子，稀稀落落的分布着几十间土坯泥房，看来村 中人家不多，而且大都生活很艰辛。东北边有间小庙，庙匾上的字早已模 糊不清，看不出是什麽庙了。"
+  x = -2
+  y = 2
+  z = 0
+    }
+
+  room_exits "nwroad1" {
+    room_id = rooms.nwroad1.id
+    northeast = rooms.temple1.id
+    southeast = rooms.nwroad2.id
+    west = rooms.wexit.id
+    }
+
+# Generated from C:/files/git/mud/d/village/nwroad2.c by LPCConverter
+# Zone: village
+
+    rooms "nwroad2" {
+      name = "碎石路"
+      description = "这是一个宁静的小村子，稀稀落落的分布着几十间土坯泥房，看来村 中人家不多，而且大都生活很艰辛。东南边就是村子中心的打谷场了，西 南是间民房。"
+  x = -1
+  y = 1
+  z = 0
+    }
+
+  room_exits "nwroad2" {
+    room_id = rooms.nwroad2.id
+    southwest = rooms.nwhouse.id
+    southeast = rooms.square.id
+    northwest = rooms.nwroad1.id
+    }
+
+# Generated from C:/files/git/mud/d/village/sexit.c by LPCConverter
+# Zone: village
+
+    rooms "sexit" {
+      name = "南村口"
+      description = "这里是华山脚下，虽然远离县城，却没有什麽山贼草寇在 附近出没。西面是一个小村庄，看来村子里人家不多，村民们 过着日出而作，日落而息的宁静生活。穿过这个小村子，就是 上华山的山路了。"
+  x = 0
+  y = -5
+  z = 0
+    }
+
+  room_exits "sexit" {
+    room_id = rooms.sexit.id
+    south = rooms.hsroad3.id
+    north = rooms.sroad1.id
+    }
+
+
+
+
+  room_items "sexit" {
+    room_id = rooms.sexit.id
+    items = [
+      { id = items.gou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/shack.c by LPCConverter
+# Zone: village
+
+    rooms "shack" {
+      name = "民宅"
+      description = "这是一间十分简陋，四壁漏风的小房子，屋子里连一张象样的床都没 有，只有一面门板上面铺着些干草。这屋子的主人一定是贫困潦倒，穷的 叮当响。"
+  x = -3
+  y = 3
+  z = 0
+    }
+
+  room_exits "shack" {
+    room_id = rooms.shack.id
+    south = rooms.wexit.id
+    }
+
+
+  room_characters "shack" {
+    room_id = rooms.shack.id
+    characters = [
+      { id = characters.poorman.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/shop.c by LPCConverter
+# Zone: village
+
+    rooms "shop" {
+      name = "杂货店"
+      description = "这是一间小小的杂货店，经营些油、盐、酱、醋及日用百货，村子里 的人多数是很穷，除了生活必需品，这里很少贩卖其它物品。"
+  x = 1
+  y = 1
+  z = 0
+    }
+
+  room_exits "shop" {
+    room_id = rooms.shop.id
+    south = rooms.eroad3.id
+    }
+
+
+  room_characters "shop" {
+    room_id = rooms.shop.id
+    characters = [
+      { id = characters.xiejian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/shouse.c by LPCConverter
+# Zone: village
+
+    rooms "shouse" {
+      name = "小土房"
+      description = "这是一间用土坯搭成的房屋，屋里只有几件残破的家俱。在靠门口的 墙角有一只空空的笼子，大概曾经用来养过鸡、鸭之类的家禽。"
+  x = 1
+  y = -3
+  z = 0
+    }
+
+  room_exits "shouse" {
+    room_id = rooms.shouse.id
+    west = rooms.sroad2.id
+    }
+
+
+  room_characters "shouse" {
+    room_id = rooms.shouse.id
+    characters = [
+      { id = characters.oldwoman.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/smithy1.c by LPCConverter
+# Zone: village
+
+    rooms "smithy1" {
+      name = "铁匠铺"
+      description = "这是一间甚是简陋的铁匠铺，入门正中是个大铁砧，满地煤渣碎铁， 墙上挂着几张犁头，屋子的角落里堆着几把破锄头、镰刀，靠墙放着几把 新出炉的铁锤。东面有一个小门，门上挂著个破布帘。"
+  x = 1
+  y = -1
+  z = 0
+    }
+
+  room_exits "smithy1" {
+    room_id = rooms.smithy1.id
+    north = rooms.eroad3.id
+    east = rooms.smithy2.id
+    }
+
+
+  room_characters "smithy1" {
+    room_id = rooms.smithy1.id
+    characters = [
+      { id = characters.smith.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/smithy2.c by LPCConverter
+# Zone: village
+
+    rooms "smithy2" {
+      name = "小房间"
+      description = "这是铁匠的住宅，屋子里十分简单，靠墙有一张木床，墙角摆着个小 桌子，桌上胡乱的摆着几个酒杯、茶碗，桌上靠墙放着一把长剑(sword)。 西边有个小门，门上挂著个破布帘，出去就是铁匠的铺子了。"
+  x = 2
+  y = -1
+  z = 0
+item_desc = {
+ sword = "这是一把看起来挺普通的剑，连剑鞘都没有，大概新出炉不久。 你一撩布帘，正要出去，在外间炉火映照下，一眼瞥见剑身上仿 佛有些花纹。你伸手想把剑拿起来看个究竟，可一恍惚间，居然 抓了个空。你不信邪的再要拿，又是抓了个空。你注意到桌上酒 杯、茶碗的位置似乎有些怪。"
+}
+    }
+
+  room_exits "smithy2" {
+    room_id = rooms.smithy2.id
+    west = rooms.smithy1.id
+    }
+
+# Generated from C:/files/git/mud/d/village/square.c by LPCConverter
+# Zone: village
+
+    rooms "square" {
+      name = "打谷场"
+      description = "这里是村子的中心，一个平坦的广场，每年秋收打谷就在 这。广场东角有棵大槐树，平日茶余饭後，村里的男女老少都 爱聚在这里谈天说地。角上有几个大谷堆。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "square" {
+    room_id = rooms.square.id
+    up = rooms.temple2.id
+    northwest = rooms.nwroad2.id
+    south = rooms.sroad4.id
+    east = rooms.eroad3.id
+    }
+
+
+  room_characters "square" {
+    room_id = rooms.square.id
+    characters = [
+      { id = characters.kid.id },
+      { id = characters.kid.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/sroad1.c by LPCConverter
+# Zone: village
+
+    rooms "sroad1" {
+      name = "碎石路"
+      description = "这是一个宁静的小村子，稀稀落落的分布着几十间土坯泥房，看来村 中人家不多，而且大都生活很艰辛。一条碎石路，往北通向村子的中心， 往南就是出村的路了。"
+  x = 0
+  y = -4
+  z = 0
+    }
+
+  room_exits "sroad1" {
+    room_id = rooms.sroad1.id
+    south = rooms.sexit.id
+    north = rooms.sroad2.id
+    }
+
+# Generated from C:/files/git/mud/d/village/sroad2.c by LPCConverter
+# Zone: village
+
+    rooms "sroad2" {
+      name = "碎石路"
+      description = "这是一个宁静的小村子，稀稀落落的分布着几十间土坯泥房，看来村 中人家不多，而且大都生活很艰辛。这是一条南北向的碎石路，东面是一 间小土房。"
+  x = 0
+  y = -3
+  z = 0
+    }
+
+  room_exits "sroad2" {
+    room_id = rooms.sroad2.id
+    east = rooms.shouse.id
+    south = rooms.sroad1.id
+    north = rooms.sroad3.id
+    }
+
+# Generated from C:/files/git/mud/d/village/sroad3.c by LPCConverter
+# Zone: village
+
+    rooms "sroad3" {
+      name = "碎石路"
+      description = "这是一个宁静的小村子，稀稀落落的分布着几十间土坯泥房，看来村 中人家不多，而且大都生活很艰辛。这是一条南北向的碎石路，西边有一 条黑黑暗暗的小巷子。"
+  x = 0
+  y = -2
+  z = 0
+    }
+
+  room_exits "sroad3" {
+    room_id = rooms.sroad3.id
+    west = rooms.alley1.id
+    south = rooms.sroad2.id
+    north = rooms.sroad4.id
+    }
+
+
+  room_characters "sroad3" {
+    room_id = rooms.sroad3.id
+    characters = [
+      { id = characters.boy.id },
+      { id = characters.boy.id },
+      { id = characters.boy.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/sroad4.c by LPCConverter
+# Zone: village
+
+    rooms "sroad4" {
+      name = "碎石路"
+      description = "这是一个宁静的小村子，稀稀落落的分布着几十间土坯泥房，看来村 中人家不多，而且大都生活很艰辛。这是一条南北向的碎石路，往北就是 村子中心的打谷场了，东面是村里唯一的青砖瓦房。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "sroad4" {
+    room_id = rooms.sroad4.id
+    east = rooms.bighouse1.id
+    south = rooms.sroad3.id
+    north = rooms.square.id
+    }
+
+# Generated from C:/files/git/mud/d/village/temple1.c by LPCConverter
+# Zone: village
+
+    rooms "temple1" {
+      name = "玄坛庙"
+      description = "这是一间十分破旧的小庙，庙里供的神像是赵玄坛，神像已经很残破 了，神案上也积了很多尘土，看来已有很久没人来上香进供了。大概村民 贫困的太久，已不再寄望於财神爷降福给他们了。神像後面的墙上有个半 人多高的洞(hole)。"
+  x = -1
+  y = 3
+  z = 0
+item_desc = {
+ hole = "看来这个大洞被人凿开不久，洞那边好象有个小棚子。"
+}
+    }
+
+  room_exits "temple1" {
+    room_id = rooms.temple1.id
+    southwest = rooms.nwroad1.id
+    }
+
+# Generated from C:/files/git/mud/d/village/temple2.c by LPCConverter
+# Zone: village
+
+    rooms "temple2" {
+      name = "小棚子"
+      description = "这是一个临时搭起来的小棚子。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "temple2" {
+    room_id = rooms.temple2.id
+    down = rooms.square.id
+    west = rooms.temple1.id
+    }
+
+
+  room_characters "temple2" {
+    room_id = rooms.temple2.id
+    characters = [
+      { id = characters.wang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/wexit.c by LPCConverter
+# Zone: village
+
+    rooms "wexit" {
+      name = "西村口"
+      description = "这里是华山脚下，虽然远离县城，却没有什麽山贼草寇在附近出没。 东面是一个小村庄，看来村子里人家不多，村民们过着日出而作，日落而 息的宁静生活。穿过这个小村子，就是上华山的山路了。北边有间破房子。"
+  x = -3
+  y = 2
+  z = 0
+    }
+
+  room_exits "wexit" {
+    room_id = rooms.wexit.id
+    northwest = rooms.road6.id
+    north = rooms.shack.id
+    east = rooms.nwroad1.id
+    }
+
+
+  room_characters "wexit" {
+    room_id = rooms.wexit.id
+    characters = [
+      { id = characters.kid.id },
+      { id = characters.kid.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/village/npc/boy.c by LPCConverter
+# Zone: village
+
+    characters "boy" {
+      name = "男孩"
+      description = "这是个农家少年，大概因从小物农，虽然年纪不大，可已长的很粗壮了。"
+  gender = "男性"
+  age = 13
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100
+    con = 15
+    dex = 16
+    int = 17
+    str = 17
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/cuihua.c by LPCConverter
+# Zone: village
+
+    characters "cuihua" {
+      name = "翠花"
+      description = "这是个打扮很妖艳的少妇，时不时的用眼角向你扫一眼。"
+  gender = "女性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 200
+    con = 15
+    dex = 18
+    int = 17
+    str = 15
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/dibao.c by LPCConverter
+# Zone: village
+
+    characters "dibao" {
+      name = "地保"
+      description = "赵洪是这个村子土生土长的人，年轻的时候到外面去闯荡过一阵。 在镖局当过趟子手，攒了点钱，回来後娶了房老婆，物农为生。 村里人因他在外见过世面，又会些武功，就推他做了地保。"
+  gender = "男性"
+  age = 43
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2500
+    con = 17
+    dex = 20
+    int = 15
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "dodge" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/dipi.c by LPCConverter
+# Zone: village
+
+    characters "dipi" {
+      name = "地痞"
+      description = "这是一个喝的醉醺醺的地痞。"
+  gender = "男性"
+  age = 20
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 750
+    con = 18
+    dex = 20
+    int = 15
+    str = 25
+  }
+
+  chat_chance = 5
+chats = [
+    "地痞迷迷糊糊的喊道：哥俩儿好啊，五魁手啊~~~~~~",
+    "地痞靠在墙角，发出了阵阵的鼾声。"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/girl.c by LPCConverter
+# Zone: village
+
+    characters "girl" {
+      name = "女孩"
+      description = "这是个农家少女，虽然只有十二、三岁，身材已经开始发育。"
+  gender = "女性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 70
+    con = 16
+    dex = 15
+    int = 15
+    str = 14
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/kid.c by LPCConverter
+# Zone: village
+
+    characters "kid" {
+      name = "小孩"
+      description = "这是个农家小孩子"
+  gender = "男性"
+  age = 7
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50
+    con = 11
+    dex = 11
+    int = 11
+    str = 11
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/oldwoman.c by LPCConverter
+# Zone: village
+
+    characters "oldwoman" {
+      name = "老大娘"
+      description = "一个满脸风霜之色的老婆婆。"
+  gender = "女性"
+  age = 63
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 150
+    con = 14
+    dex = 12
+    int = 13
+    str = 13
+  }
+
+  inquiries = [
+    { key = "流氓" value = "那几个小流氓正天不务正业，就在小胡同里喝酒赌钱。" },
+    { key = "鸡" value = "我那老母鸡啊...一定是那几个不务正业的小流氓干的。" }
+  ]
+
+  chat_chance = 10
+chats = [
+    "老大娘伤心的说道：那个天杀的，偷了我的老母鸡。",
+    "老大娘叹了口气，说道：这是个什麽世道啊。",
+    "老大娘呆呆的望着鸡笼，发起愣来了。"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/poorman.c by LPCConverter
+# Zone: village
+
+    characters "poorman" {
+      name = "穷汉"
+      description = "一个骨瘦如柴，满脸菜色的穷汉。"
+  gender = "男性"
+  age = 33
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 250
+    con = 17
+    dex = 18
+    int = 13
+    str = 20
+  }
+
+  chat_chance = 15
+chats = [
+    "穷汉懒洋洋地打了个哈欠。",
+    "穷汉伸手捉住了身上的虱子，骂道：老子身上没几两肉，全叫你们给咬了。"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/punk.c by LPCConverter
+# Zone: village
+
+    characters "punk" {
+      name = "小流氓"
+      description = "这是一个游手好闲的小流氓。"
+  gender = "男性"
+  age = 18
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 500
+    con = 18
+    dex = 20
+    int = 15
+    str = 25
+  }
+
+  inquiries = [
+    { key = "王小二" value = "(: ask_me :)" },
+    { key = "翠花" value = "翠花是个小寡妇，她家就在打谷场西边。" },
+    { key = "鸡" value = "鸡是王小二弄来的，味道还真不错。" }
+  ]
+
+  chat_chance = 10
+chats = [
+    "流氓骂骂咧咧的说道：这真他妈的邪唬，老子手里一对天牌，王 小二这杂种居然就摸出一对至尊来。",
+    "流氓靠着墙角打起瞌睡来了，睡梦中也不知想到了什麽，嘴里哼 哼道：我看见你哪雪白的大腿，我就起~~了~~坏~~心~~喽。",
+    "流氓摸了摸自己的口袋，叹了口气说道：唉，钱都让王小二骗去 了，不能去找翠花了。",
+    "流氓嘴角露出一丝邪笑，说道：翠花这娘儿们真够劲儿，真她奶 奶的够~~劲~~儿!"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/seller.c by LPCConverter
+# Zone: village
+
+    characters "seller" {
+      name = "小贩"
+      description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 32
+  brain = brains.vendor
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  goods = [
+    { id = items.stick.id },
+    { id = items.shoes.id },
+    { id = items.bottle.id },
+    { id = items.egg.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/smith.c by LPCConverter
+# Zone: village
+
+    characters "smith" {
+      name = "冯铁匠"
+      description = "冯铁匠想是常年弯腰打铁，背已驼了，双眼被烟火薰的又红又细， 左腿残废，肩窝下撑著一根拐杖。"
+  gender = "男性"
+  age = 53
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    con = 28
+    dex = 17
+    int = 27
+    str = 24
+  }
+
+  goods = [
+    { id = items.hammer.id }
+  ]
+
+  inquiries = [
+    { key = "here" value = "这里是小人糊口的铺子，小人就住在後边的屋子。" },
+    { key = "job" value = "(: ask_me :)" },
+    { key = "name" value = "小人姓冯，村里人都叫我冯铁匠。" },
+    { key = "剑" value = "哦，那是给华山派岳掌门打的，小人用了三个月，总算没浪费那块好铁。 嗯，岳掌门前不久率门徒下山去了，不知什麽时候才会派人来取剑。" },
+    { key = "取剑" value = "小人一定要见了岳掌门的手信才能给剑。" },
+    { key = "工作" value = "(: ask_me :)" },
+    { key = "铁锤" value = "铁锤？小人做的铁锤坚固又耐用，一把只要三百文钱。" },
+    { key = "锄头" value = "锄头... 抱歉，锄头已经卖光了..." }
+  ]
+
+  skills = [
+    { skill = "dodge" level = 70 },
+    { skill = "hammer" level = 40 },
+    { skill = "parry" level = 60 },
+    { skill = "force" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.hothammer.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy"]
+  }
+
+  accept = [
+    { kind = "item_id" id = "hand letter" accept = true msg = ["{npc}说道：这把剑虽不起眼，可也是小人的心血，总算对得起岳掌门。{npc}把name交给了{name}。", "冯铁匠眼也不抬，说道：要剑自己进去拿。"] },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/wang.c by LPCConverter
+# Zone: village
+
+    characters "wang" {
+      name = "王小二"
+      description = "这是个典型的关西汉子，一脸彪悍之色。"
+  gender = "男性"
+  age = 21
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 5000
+    con = 20
+    dex = 25
+    int = 17
+    str = 28
+  }
+
+  inquiries = [
+    { key = "偷鸡" value = "(: ask_me :)" },
+    { key = "王小二" value = "那就是我啊..." },
+    { key = "鸡" value = "(: ask_me :)" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["bihua"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/xiejian.c by LPCConverter
+# Zone: village
+
+    characters "xiejian" {
+      name = "李四"
+      description = "这是整天笑咪咪的小店老板，虽然不卖什麽东西，却也过得自在。"
+  title = "小店老板"
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 400
+    max_neili = 700
+    max_qi = 700
+    str = 30
+  }
+
+  inquiries = [
+    { key = "杀人" value = "我已经归隐了，不干这行了。" },
+    { key = "邪剑" value = "我已经归隐了，不干这行了。" }
+  ]
+
+  chat_chance = 1
+chats = [
+    "李四说道: 这位客官，您想买些什麽东西吗 ?"
+]
+
+
+  skills = [
+    { skill = "force" level = 60 },
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "parry" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/obj/bottle.c by LPCConverter
+# Zone: village
+
+    characters "bottle" {
+      name = "水壶"
+      description = "一个不知道用什么动物的皮制成的水壶。"
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/obj/cloth.c by LPCConverter
+# Zone: village
+
+    characters "cloth" {
+      name = "布衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/obj/egg.c by LPCConverter
+# Zone: village
+
+    characters "egg" {
+      name = "五香茶叶蛋"
+      description = "一颗用五种香料炮制出来的茶叶蛋。"
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/obj/hammer.c by LPCConverter
+# Zone: village
+
+    characters "hammer" {
+      name = "铁锤"
+      description = "这是一把沈重的铁锤，打造的相当坚实。"
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/obj/hothammer.c by LPCConverter
+# Zone: village
+
+    characters "hothammer" {
+      name = "烧红的铁锤"
+      description = "这是一把沈重的铁锤，打造的相当坚实。"
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/obj/shoes.c by LPCConverter
+# Zone: village
+
+    characters "shoes" {
+      name = "麻鞋"
+      description = "这是一双麻布鞋，不易大滑，供游人登山使用。"
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/obj/stick.c by LPCConverter
+# Zone: village
+
+    characters "stick" {
+      name = "手杖"
+      description = "这是一根爬山用的手杖。"
+    }
+
+# Generated from C:/files/git/mud/d/village/npc/obj/youlong.c by LPCConverter
+# Zone: village
+
+    characters "youlong" {
+      name = "游龙剑"
+      description = "这是把看起来很普通的长剑，但仔细一看，剑身上有几条细纹闪烁不定。"
+    }
+
+# Generated from C:/files/git/mud/d/village/obj/zhujian.c by LPCConverter
+# Zone: village
+
+    items "zhujian" {
+      name = "竹剑"
+      description = "这是一把练习剑法用的竹剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一把{name}，握在手中。"
+  }
+    }

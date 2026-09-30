@@ -1,0 +1,3447 @@
+zones "wudu" {
+  name = "wudu"
+}
+
+# Generated from C:/files/git/mud/d/wudu/baidu1.c by LPCConverter
+# Zone: wudu
+
+    rooms "baidu1" {
+      name = "百毒窟外"
+      description = "这里是五毒教饲养毒物的地方，山壁旁有一个天然的石洞，里面 黑漆漆的看不清楚。一阵山风吹来，你闻到一股腥味。洞口有几个五 毒教弟子正在闲聊。"
+  x = -4
+  y = -1
+  z = -1
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(string)me->query("family/family_name") != "五毒教" & objectp(present("jiao tu", environment(me)))
+direction = ~
+  message = "五毒教徒忽然挡住你，厉声喝道：这位鬼头鬼脑的想干什么？"
+}
+
+]
+    }
+
+  room_exits "baidu1" {
+    room_id = rooms.baidu1.id
+    north = rooms.wdsl4.id
+    south = rooms.baidu2.id
+    }
+
+
+  room_characters "baidu1" {
+    room_id = rooms.baidu1.id
+    characters = [
+      { id = characters.jiaotu.id },
+      { id = characters.jiaotu.id },
+      { id = characters.jiaotu.id },
+      { id = characters.jiaotu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/baidu2.c by LPCConverter
+# Zone: wudu
+
+    rooms "baidu2" {
+      name = "百毒窟"
+      description = "这里是一个天然形成的石洞，里面深邃广大。洞顶悬挂着许多钟 乳石，不时传来几声滴答的水声。走在洞中，洞内阴暗潮湿，身旁忽 然传来一阵“咝咝”的声音。"
+  x = -4
+  y = -2
+  z = -1
+    }
+
+  room_exits "baidu2" {
+    room_id = rooms.baidu2.id
+    east = rooms.baidu5.id
+    west = rooms.baidu4.id
+    south = rooms.baidu3.id
+    north = rooms.baidu1.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/baidu3.c by LPCConverter
+# Zone: wudu
+
+    rooms "baidu3" {
+      name = "百毒窟"
+      description = "这里是一个天然形成的石洞，里面深邃广大。洞顶悬挂着许多钟 乳石，不时传来几声滴答的水声。走在洞中，洞内阴暗潮湿，身旁忽 然传来一阵“咝咝”的声音。"
+  x = -4
+  y = -3
+  z = -1
+    }
+
+  room_exits "baidu3" {
+    room_id = rooms.baidu3.id
+    north = rooms.baidu2.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/baidu4.c by LPCConverter
+# Zone: wudu
+
+    rooms "baidu4" {
+      name = "百毒窟"
+      description = "这里是一个天然形成的石洞，里面深邃广大。洞顶悬挂着许多钟 乳石，不时传来几声滴答的水声。走在洞中，洞内阴暗潮湿，身旁忽 然传来一阵“咝咝”的声音。"
+  x = -5
+  y = -2
+  z = -1
+    }
+
+  room_exits "baidu4" {
+    room_id = rooms.baidu4.id
+    east = rooms.baidu2.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/baidu5.c by LPCConverter
+# Zone: wudu
+
+    rooms "baidu5" {
+      name = "百毒窟"
+      description = "这里是一个天然形成的石洞，里面深邃广大。洞顶悬挂着许多钟 乳石，不时传来几声滴答的水声。走在洞中，洞内阴暗潮湿，身旁忽 然传来一阵“咝咝”的声音。"
+  x = -3
+  y = -2
+  z = -1
+    }
+
+  room_exits "baidu5" {
+    room_id = rooms.baidu5.id
+    west = rooms.baidu2.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/beiyuan.c by LPCConverter
+# Zone: wudu
+
+    rooms "beiyuan" {
+      name = "北院"
+      description = "这里是北院，院子里静悄悄的。北面有一个厨房，远远飘来一股 饭香，想是该开饭了。"
+  x = 0
+  y = 2
+  z = 0
+    }
+
+  room_exits "beiyuan" {
+    room_id = rooms.beiyuan.id
+    north = rooms.chufang.id
+    south = rooms.lianwu.id
+    east = rooms.bingqi.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/bianzhai1.c by LPCConverter
+# Zone: wudu
+
+    rooms "bianzhai1" {
+      name = "边寨风情"
+      description = "这里已是苗疆地界，只觉得山清水秀，风景与中原大不相同。你 走在路上，不时会碰到少男少女在路边田野里载歌载舞，顿时只觉心 情舒畅，但愿终老此乡。南面就是有名的黑森林了。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "bianzhai1" {
+    room_id = rooms.bianzhai1.id
+    up = rooms.dijiao.id
+    down = rooms.nanyuan.id
+    south = rooms.milin8.id
+    west = rooms.bianzhai2.id
+    southwest = rooms.bianzhai3.id
+    }
+
+
+  room_characters "bianzhai1" {
+    room_id = rooms.bianzhai1.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/bianzhai2.c by LPCConverter
+# Zone: wudu
+
+    rooms "bianzhai2" {
+      name = "边寨风情"
+      description = "这里已是苗疆地界，只觉得山清水秀，风景与中原大不相同。你 走在路上，不时会碰到少男少女在路边田野里载歌载舞，顿时觉得心 情舒畅，但愿终老此乡。"
+  x = -1
+  y = 0
+  z = 1
+    }
+
+  room_exits "bianzhai2" {
+    room_id = rooms.bianzhai2.id
+    south = rooms.bianzhai3.id
+    east = rooms.bianzhai1.id
+    }
+
+
+  room_characters "bianzhai2" {
+    room_id = rooms.bianzhai2.id
+    characters = [
+      { id = characters.youngboy.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/bianzhai3.c by LPCConverter
+# Zone: wudu
+
+    rooms "bianzhai3" {
+      name = "边寨风情"
+      description = "这里已是苗疆地界，只觉得山清水秀，风景与中原大不相同。你 走在路上，不时会碰到少男少女在路边田野里载歌载舞，顿时只觉心 情舒畅，但愿终老此乡。东面有一条江水拦住去路。"
+  x = -1
+  y = -1
+  z = 1
+    }
+
+  room_exits "bianzhai3" {
+    room_id = rooms.bianzhai3.id
+    north = rooms.bianzhai2.id
+    northeast = rooms.bianzhai1.id
+    east = rooms.jiang1.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/bingqi.c by LPCConverter
+# Zone: wudu
+
+    rooms "bingqi" {
+      name = "兵器房"
+      description = "这里是五毒教存放武器的地方，四面靠墙全是兵器架，上面插满 了各种兵器。"
+  x = 1
+  y = 2
+  z = 0
+    }
+
+  room_exits "bingqi" {
+    room_id = rooms.bingqi.id
+    west = rooms.beiyuan.id
+    }
+
+
+
+
+  room_items "bingqi" {
+    room_id = rooms.bingqi.id
+    items = [
+      { id = items.ganggou.id },
+      { id = items.woodjian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/caodi.c by LPCConverter
+# Zone: wudu
+
+    rooms "caodi" {
+      name = "草地"
+      description = "这里是林中的一片空地，四周被参天的古松环抱着，当中是一片 绿油油的草地。草地中央地上有一个拳头大小的小洞，旁边丈许方圆 寸草不生，露出红褐色的土壤。四周一片寂静，草地上阳光明媚，但 你的心情却一也不轻松，这里该不会有什么危险吧？"
+  x = -1
+  y = -2
+  z = 1
+    }
+
+  room_exits "caodi" {
+    room_id = rooms.caodi.id
+    south = rooms.sl7.id
+    }
+
+
+
+
+  room_items "caodi" {
+    room_id = rooms.caodi.id
+    items = [
+      { id = items.jinshewang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/caoping.c by LPCConverter
+# Zone: wudu
+
+    rooms "caoping" {
+      name = "卧龙岗上"
+      description = "山顶上有一大片开阔地，蓝蓝的天上飘着几朵白云，脚下是绿油 油的草地，浅浅的刚好可以盖过脚面，散发着一种诱人的芳香舒服的 人直想躺在上面打滚。前面有几间简陋的竹舍。"
+  x = 2
+  y = -3
+  z = 4
+    }
+
+  room_exits "caoping" {
+    room_id = rooms.caoping.id
+    northdown = rooms.shanlu3.id
+    south = rooms.zhushe.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/chufang.c by LPCConverter
+# Zone: wudu
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "这里是五毒教的厨房，平常弟子们饿了可以到这里要 (yao)些食 物。房中灶火正旺，一个大厨师正忙的满头大汗。屋角放着一个大水 缸。"
+  x = 0
+  y = 3
+  z = 0
+valid_leave = [
+{
+  direction = ~
+  message = "吃完包子再走嘛！"
+}
+,
+{
+  direction = ~
+  message = "你不能把葫芦带走！"
+}
+
+]
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+    south = rooms.beiyuan.id
+    }
+
+
+  room_characters "chufang" {
+    room_id = rooms.chufang.id
+    characters = [
+      { id = characters.tian.id }    ]
+  }
+
+
+
+  room_items "chufang" {
+    room_id = rooms.chufang.id
+    items = [
+      { id = items.ganchai.id },
+      { id = items.hulu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/cun1.c by LPCConverter
+# Zone: wudu
+
+    rooms "cun1" {
+      name = "小村口"
+      description = "这里是桃花江边的一个小村，村口有几个农家的小孩正在大树底 下玩耍。远远的升起缕缕炊烟，忙碌了一天的人们开始做饭了。"
+  x = -7
+  y = 5
+  z = -2
+    }
+
+  room_exits "cun1" {
+    room_id = rooms.cun1.id
+    west = rooms.jiang2.id
+    east = rooms.cun2.id
+    }
+
+
+  room_characters "cun1" {
+    room_id = rooms.cun1.id
+    characters = [
+      { id = characters.kid.id },
+      { id = characters.kid.id },
+      { id = characters.kid.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/cun2.c by LPCConverter
+# Zone: wudu
+
+    rooms "cun2" {
+      name = "小村"
+      description = "走在小村的石板路上，两旁都是用青石砌成的房屋。村子里静悄 悄的，看不到行人，偶尔传来一两声狗叫。"
+  x = -6
+  y = 5
+  z = -2
+    }
+
+  room_exits "cun2" {
+    room_id = rooms.cun2.id
+    west = rooms.cun1.id
+    south = rooms.minju1.id
+    east = rooms.cun3.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/cun3.c by LPCConverter
+# Zone: wudu
+
+    rooms "cun3" {
+      name = "小村"
+      description = "走在小村的石板路上，两旁都是用青石砌成的房屋。村子里静悄 悄的，看不到行人，偶尔传来一两声狗叫。"
+  x = -5
+  y = 5
+  z = -2
+    }
+
+  room_exits "cun3" {
+    room_id = rooms.cun3.id
+    north = rooms.minju2.id
+    west = rooms.cun2.id
+    east = rooms.cun4.id
+    }
+
+
+  room_characters "cun3" {
+    room_id = rooms.cun3.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/cun4.c by LPCConverter
+# Zone: wudu
+
+    rooms "cun4" {
+      name = "小村"
+      description = "走在小村的石板路上，两旁都是用青石砌成的房屋。村子里静悄 悄的，看不到行人，偶尔传来一两声狗叫。"
+  x = -4
+  y = 5
+  z = -2
+    }
+
+  room_exits "cun4" {
+    room_id = rooms.cun4.id
+    north = rooms.minju3.id
+    west = rooms.cun3.id
+    southeast = rooms.cun6.id
+    northeast = rooms.cun5.id
+    }
+
+
+  room_characters "cun4" {
+    room_id = rooms.cun4.id
+    characters = [
+      { id = characters.boy.id },
+      { id = characters.boy.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/cun5.c by LPCConverter
+# Zone: wudu
+
+    rooms "cun5" {
+      name = "小村"
+      description = "走在小村的石板路上，两旁都是用青石砌成的房屋。村子里静悄 悄的，看不到行人，偶尔传来一两声狗叫。"
+  x = -3
+  y = 6
+  z = -2
+    }
+
+  room_exits "cun5" {
+    room_id = rooms.cun5.id
+    north = rooms.minju4.id
+    southeast = rooms.cun7.id
+    southwest = rooms.cun4.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/cun6.c by LPCConverter
+# Zone: wudu
+
+    rooms "cun6" {
+      name = "小村"
+      description = "走在小村的石板路上，两旁都是用青石砌成的房屋。村子里静悄 悄的，看不到行人，偶尔传来一两声狗叫。"
+  x = -3
+  y = 4
+  z = -2
+    }
+
+  room_exits "cun6" {
+    room_id = rooms.cun6.id
+    southeast = rooms.minju6.id
+    southwest = rooms.minju5.id
+    northeast = rooms.cun7.id
+    northwest = rooms.cun4.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/cun7.c by LPCConverter
+# Zone: wudu
+
+    rooms "cun7" {
+      name = "小村"
+      description = "走在小村的石板路上，两旁都是用青石砌成的房屋。东边有一座 学堂，里面传来朗朗的读书声。"
+  x = -2
+  y = 5
+  z = -2
+    }
+
+  room_exits "cun7" {
+    room_id = rooms.cun7.id
+    east = rooms.minju7.id
+    southwest = rooms.cun6.id
+    southeast = rooms.cun8.id
+    northwest = rooms.cun5.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/cun8.c by LPCConverter
+# Zone: wudu
+
+    rooms "cun8" {
+      name = "村东口"
+      description = "这里是小村的东头。因为暴雨刚过，地上一片泥泞，路非常不好 走。顺着这条路一直向东走一两个时辰就可到青石坪了，那里是这附 近最大的镇子。"
+  x = -1
+  y = 4
+  z = -2
+    }
+
+  room_exits "cun8" {
+    room_id = rooms.cun8.id
+    east = rooms.zhulin2.id
+    northwest = rooms.cun7.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/damen.c by LPCConverter
+# Zone: wudu
+
+    rooms "damen" {
+      name = "五毒教大门"
+      description = "这里是一座隐没于山林中的大宅院，高高的围墙，朱红色的大门， 好象是一座有钱人家的避暑别院。"
+  x = -1
+  y = 1
+  z = 0
+    }
+
+  room_exits "damen" {
+    room_id = rooms.damen.id
+    west = rooms.wdsl7.id
+    east = rooms.lianwu.id
+    }
+
+
+  room_characters "damen" {
+    room_id = rooms.damen.id
+    characters = [
+      { id = characters.jiaotu.id },
+      { id = characters.jiaotu.id },
+      { id = characters.jiaotu.id },
+      { id = characters.jiaotu.id }    ]
+  }
+
+
+
+  room_items "damen" {
+    room_id = rooms.damen.id
+    items = [
+      { id = items.jiaotou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/dating.c by LPCConverter
+# Zone: wudu
+
+    rooms "dating" {
+      name = "大厅"
+      description = "这里是个宽广的大厅，高大的盘龙柱一人都合抱不过来。这里是 平日教主召集教众们议事的地方，大厅正中供奉着五圣--毒蛇，蜘蛛， 蜈蚣，蝎子蟾蜍的画像。几位长老正坐在厅中议事 。"
+  x = 1
+  y = 1
+  z = 0
+    }
+
+  room_exits "dating" {
+    room_id = rooms.dating.id
+    north = rooms.shufang.id
+    west = rooms.lianwu.id
+    south = rooms.jingshi.id
+    east = rooms.huayuan1.id
+    }
+
+
+
+
+  room_items "dating" {
+    room_id = rooms.dating.id
+    items = [
+      { id = items.qiyunao.id },
+      { id = items.panxiuda.id },
+      { id = items.cenqisi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/dijiao.c by LPCConverter
+# Zone: wudu
+
+    rooms "dijiao" {
+      name = "地窖"
+      description = "这是一个阴暗的地窖，头顶被一张草席(xi)挡住了光线。地窖里 存放着一些准备过冬的食物，都整齐的堆放在木板上。"
+  x = 0
+  y = 0
+  z = 2
+item_desc = {
+ xi = "一张厚厚的草席盖在洞口，遮住了外面的阳光。"
+}
+    }
+  room_exits "dijiao" {
+    room_id = rooms.dijiao.id
+    down = rooms.bianzhai1.id
+    up = rooms.dongxue.id
+    }
+
+
+
+  room_items "dijiao" {
+    room_id = rooms.dijiao.id
+    items = [
+      { id = items.shibing.id },
+      { id = items.huluobu.id },
+      { id = items.tudou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/dongxue.c by LPCConverter
+# Zone: wudu
+
+    rooms "dongxue" {
+      name = "洞穴"
+      description = "这是一个狭窄的洞穴，四周石壁湿漉漉的，长满了青苔。你仔细 观察一下四周的情况，发现洞内深处有一块石壁非常平整，象是有人 力的痕迹，正中间有一个扁扁的小孔，好象可以插入(insert)什么东 西试试。"
+  x = 0
+  y = 0
+  z = 3
+    }
+  room_exits "dongxue" {
+    room_id = rooms.dongxue.id
+    down = rooms.dijiao.id
+    up = rooms.duchuan.id
+    }
+
+
+
+  room_items "dongxue" {
+    room_id = rooms.dongxue.id
+    items = [
+      { id = items.tongpai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/duchuan.c by LPCConverter
+# Zone: wudu
+
+    rooms "duchuan" {
+      name = "渡船"
+      description = "一叶小舟，最多也就能载七、八个人。一名六十多岁的老艄公手 持长竹篙，正在船尾吃力地撑着船。"
+  x = 0
+  y = 0
+  z = 4
+    }
+  room_exits "duchuan" {
+    room_id = rooms.duchuan.id
+    down = rooms.dongxue.id
+    up = rooms.midao.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/huating1.c by LPCConverter
+# Zone: wudu
+
+    rooms "huating1" {
+      name = "花厅"
+      description = "这里是一个幽雅别致的花厅，四周挂着碧纱的幔帐，屋角香炉中 飘着一股奇异的香气。有一个粉红衣裙的少女正坐在窗边发呆，听见 脚步声不觉瞟了你一样，秀眉微微一颦，似乎不太高兴。"
+  x = 3
+  y = 1
+  z = 0
+    }
+
+  room_exits "huating1" {
+    room_id = rooms.huating1.id
+    north = rooms.huating3.id
+    west = rooms.huayuan1.id
+    south = rooms.huating2.id
+    }
+
+
+
+
+  room_items "huating1" {
+    room_id = rooms.huating1.id
+    items = [
+      { id = items.hetieshou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/huating2.c by LPCConverter
+# Zone: wudu
+
+    rooms "huating2" {
+      name = "栖凤亭"
+      description = "这里是一个花园中的小亭子，雕梁画栋，古色古香。亭子 当中立着座青铜香炉(lu)，炉中正冒着许许清烟，也不知是燃 着什么东西，烟味颇为刺鼻。"
+  x = 3
+  y = 0
+  z = 0
+item_desc = {
+ lu = "这是一座青铜香炉，模样颇为古旧，香炉周围似乎有移动过的痕迹。"
+}
+    }
+
+  room_exits "huating2" {
+    room_id = rooms.huating2.id
+    up = rooms.minju9.id
+    west = rooms.huayuan2.id
+    north = rooms.huating1.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/huating3.c by LPCConverter
+# Zone: wudu
+
+    rooms "huating3" {
+      name = "腾蛟亭"
+      description = "这里是一个花园中的小亭子，雕梁画栋，古色古香。壁上 挂着一幅「月下舞剑图」。"
+  x = 3
+  y = 2
+  z = 0
+item_desc = {
+ tu = "你只见图中少女手持钢钩，含笑而立。恍惚间你似乎觉得有无 数道剑气扑面而来。这里面似乎隐含着某种奥秘。"
+}
+    }
+
+  room_exits "huating3" {
+    room_id = rooms.huating3.id
+    west = rooms.huayuan3.id
+    south = rooms.huating1.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/huayuan1.c by LPCConverter
+# Zone: wudu
+
+    rooms "huayuan1" {
+      name = "花园"
+      description = "这里是个花园，一年四季都生长着各种奇异的花草，在阳光下发 出七彩妖艳的光辉。花园里一片沉寂，竟看不到一只蜜蜂或蝴蝶飞舞。 有一条石子小路通向前面一座花厅。"
+  x = 2
+  y = 1
+  z = 0
+    }
+
+  room_exits "huayuan1" {
+    room_id = rooms.huayuan1.id
+    north = rooms.huayuan3.id
+    west = rooms.dating.id
+    south = rooms.huayuan2.id
+    east = rooms.huating1.id
+    }
+
+
+  room_characters "huayuan1" {
+    room_id = rooms.huayuan1.id
+    characters = [
+      { id = characters.tongzi.id },
+      { id = characters.tongzi.id },
+      { id = characters.tongzi.id },
+      { id = characters.tongzi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/huayuan2.c by LPCConverter
+# Zone: wudu
+
+    rooms "huayuan2" {
+      name = "花园"
+      description = "这里是个花园，一年四季都生长着各种奇异的花草，在阳光下发 出七彩妖艳的光辉。花园里一片沉寂，竟看不到一只蜜蜂或蝴蝶飞舞。 旁边有一座小亭子。"
+  x = 2
+  y = 0
+  z = 0
+    }
+
+  room_exits "huayuan2" {
+    room_id = rooms.huayuan2.id
+    north = rooms.huayuan1.id
+    east = rooms.huating2.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/huayuan3.c by LPCConverter
+# Zone: wudu
+
+    rooms "huayuan3" {
+      name = "花园"
+      description = "这里是个花园，一年四季都生长着各种奇异的花草，在阳光下发 出七彩妖艳的光辉。花园里一片沉寂，竟看不到一只蜜蜂或蝴蝶飞舞。 旁边有一座小亭子。"
+  x = 2
+  y = 2
+  z = 0
+    }
+
+  room_exits "huayuan3" {
+    room_id = rooms.huayuan3.id
+    south = rooms.huayuan1.id
+    east = rooms.huating3.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/huxue1.c by LPCConverter
+# Zone: wudu
+
+    rooms "huxue1" {
+      name = "虎穴"
+      description = "这里是个隐藏在密林里的岩洞，里面腥味扑鼻，随处都是 吃剩的兽骨。几只威风凛凛的大老虎正躺在洞口懒懒的晒太阳。"
+  x = 0
+  y = -2
+  z = 1
+    }
+
+  room_exits "huxue1" {
+    room_id = rooms.huxue1.id
+    out = rooms.milin7.id
+    south = rooms.huxue2.id
+    }
+
+
+
+
+  room_items "huxue1" {
+    room_id = rooms.huxue1.id
+    items = [
+      { id = items.laohu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/huxue2.c by LPCConverter
+# Zone: wudu
+
+    rooms "huxue2" {
+      name = "虎穴深处"
+      description = "这里是森林里岩洞的深处，几只刚生下几个月的小虎崽正 在洞中嬉戏，你突然发现洞内角落里有一堆白骨，你仔细一看 竟然是一具人类的遗骨。"
+  x = 0
+  y = -3
+  z = 1
+item_desc = {
+ bone = "一具人类的遗骨，下面似乎压着什么东西，你可以仔细搜索(sousuo)一下。"
+}
+    }
+
+  room_exits "huxue2" {
+    room_id = rooms.huxue2.id
+    north = rooms.huxue1.id
+    }
+
+
+
+
+  room_items "huxue2" {
+    room_id = rooms.huxue2.id
+    items = [
+      { id = items.laohu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/jiang1.c by LPCConverter
+# Zone: wudu
+
+    rooms "jiang1" {
+      name = "桃花江西岸"
+      description = "这里是桃花江 (river)边，江水清澈，水流平缓，两岸都 是无边的桃树，不断有桃花随风飘入江中，随波逐流。江边停 泊着一条渡船。"
+  x = 0
+  y = -1
+  z = 1
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "jiang1" {
+    room_id = rooms.jiang1.id
+    river = rooms.jiang2.id
+    west = rooms.bianzhai3.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/jiang2.c by LPCConverter
+# Zone: wudu
+
+    rooms "jiang2" {
+      name = "桃花江东岸"
+      description = "这里是桃花江 (river)边，江水清澈，水流平缓，两岸都 是无边的桃树，不断有桃花随风飘入江中，随波逐流。江边停 泊着一条渡船。"
+  x = -8
+  y = 5
+  z = -2
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "jiang2" {
+    room_id = rooms.jiang2.id
+    river = rooms.jiang1.id
+    south = rooms.xiao1.id
+    east = rooms.cun1.id
+    }
+
+
+  room_characters "jiang2" {
+    room_id = rooms.jiang2.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/jingshi.c by LPCConverter
+# Zone: wudu
+
+    rooms "jingshi" {
+      name = "静室"
+      description = "这是一个昏暗的房间，除了几张床之外什么都没有。室内光线昏 暗，你不由的打了一个哈欠。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "jingshi" {
+    room_id = rooms.jingshi.id
+    north = rooms.dating.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/langwo.c by LPCConverter
+# Zone: wudu
+
+    rooms "langwo" {
+      name = "狼窝"
+      description = "这里是密林中的一个大树洞，里面腥味扑鼻，随处都是吃 剩的兽骨残渣。几只瘦得皮包骨头的饿狼正抖擞精神，似乎要 出去觅食了。"
+  x = 1
+  y = -1
+  z = 1
+    }
+
+  room_exits "langwo" {
+    room_id = rooms.langwo.id
+    out = rooms.milin4.id
+    }
+
+
+
+
+  room_items "langwo" {
+    room_id = rooms.langwo.id
+    items = [
+      { id = items.lang.id },
+      { id = items.lang2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/liandu.c by LPCConverter
+# Zone: wudu
+
+    rooms "liandu" {
+      name = "练毒室"
+      description = "这里是五毒教弟子专门的练毒室，可以在这里练制各种毒 药，案上摆着各式各样的器具。屋内正中放着一个一人多高的 丹炉，炉火正旺，有个黑瘦的道人正手持桃木剑绕炉疾走，嘴 里呐呐自语不知在念些什么。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "liandu" {
+    room_id = rooms.liandu.id
+    north = rooms.nanyuan.id
+    }
+
+
+  room_characters "liandu" {
+    room_id = rooms.liandu.id
+    characters = [
+      { id = characters.daoren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/lianwu.c by LPCConverter
+# Zone: wudu
+
+    rooms "lianwu" {
+      name = "练武场"
+      description = "这里是院内的练武场，黄土场地上摆放着一些练功的石锁，沙袋。 一个小头目正在指导弟子练武。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "lianwu" {
+    room_id = rooms.lianwu.id
+    north = rooms.beiyuan.id
+    west = rooms.damen.id
+    south = rooms.nanyuan.id
+    east = rooms.dating.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/midao.c by LPCConverter
+# Zone: wudu
+
+    rooms "midao" {
+      name = "密道"
+      description = "这里是五毒教花园下面的一条狭窄的暗道。阴森可怕，到 处积满了灰尘，结满了蛛网，也不知道通往何处。"
+  x = 0
+  y = 0
+  z = 5
+    }
+
+  room_exits "midao" {
+    room_id = rooms.midao.id
+    down = rooms.duchuan.id
+    up = rooms.huating2.id
+    west = rooms.midao2.id
+    }
+
+
+
+
+  room_items "midao" {
+    room_id = rooms.midao.id
+    items = [
+      { id = items.huoba.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/midao2.c by LPCConverter
+# Zone: wudu
+
+    rooms "midao2" {
+      name = "密道"
+      description = "这里是五毒教花园下面的一条狭窄的暗道。阴森可怕，到 处积满了灰尘，结满了蛛网，也不知道通往何处。"
+  x = -1
+  y = 0
+  z = 5
+    }
+
+  room_exits "midao2" {
+    room_id = rooms.midao2.id
+    west = rooms.midao3.id
+    east = rooms.midao.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/midao3.c by LPCConverter
+# Zone: wudu
+
+    rooms "midao3" {
+      name = "密道"
+      description = "这里是五毒教花园下面的一条狭窄的暗道。阴森可怕，到 处积满了灰尘，结满了蛛网，也不知道通往何处。"
+  x = -2
+  y = 0
+  z = 5
+    }
+
+  room_exits "midao3" {
+    room_id = rooms.midao3.id
+    north = rooms.midao4.id
+    east = rooms.midao2.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/midao4.c by LPCConverter
+# Zone: wudu
+
+    rooms "midao4" {
+      name = "密道"
+      description = "这里是五毒教花园下面的一条狭窄的暗道。阴森可怕，到 处积满了灰尘，结满了蛛网，也不知道通往何处。"
+  x = -2
+  y = 1
+  z = 5
+    }
+
+  room_exits "midao4" {
+    room_id = rooms.midao4.id
+    north = rooms.midao5.id
+    south = rooms.midao3.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/midao5.c by LPCConverter
+# Zone: wudu
+
+    rooms "midao5" {
+      name = "密道"
+      description = "这里是五毒教花园下面的一条狭窄的暗道。阴森可怕，到 处积满了灰尘，结满了蛛网，也不知道通往何处。"
+  x = -2
+  y = 2
+  z = 5
+    }
+
+  room_exits "midao5" {
+    room_id = rooms.midao5.id
+    up = rooms.ma_chufang.id
+    south = rooms.midao4.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/milin1.c by LPCConverter
+# Zone: wudu
+
+    rooms "milin1" {
+      name = "黑森林"
+      description = "这里就是有名的黑森林，四周均是茂密的丛林，巨大的古木遮天 蔽日，头顶看不到一片天空。脚下不时传来轻微的声响，似乎有什么 东西从草丛中游过，远处偶尔传来一阵野兽的嚎叫声。"
+  x = 1
+  y = -1
+  z = 1
+    }
+
+  room_exits "milin1" {
+    room_id = rooms.milin1.id
+    north = rooms.shanlu1.id
+    west = rooms.milin2.id
+    south = rooms.milin2.id
+    east = rooms.milin2.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/milin2.c by LPCConverter
+# Zone: wudu
+
+    rooms "milin2" {
+      name = "黑森林"
+      description = "这里就是有名的黑森林，四周均是茂密的丛林，巨大的古木遮天 蔽日，头顶看不到一片天空。脚下不时传来轻微的声响，似乎有什么 东西从草丛中游过，远处偶尔传来一阵野兽的嚎叫声。"
+  x = -1
+  y = -1
+  z = 1
+    }
+
+  room_exits "milin2" {
+    room_id = rooms.milin2.id
+    north = rooms.milin2.id
+    west = rooms.milin1.id
+    south = rooms.milin1.id
+    east = rooms.milin3.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/milin3.c by LPCConverter
+# Zone: wudu
+
+    rooms "milin3" {
+      name = "黑森林"
+      description = "这里就是有名的黑森林，四周均是茂密的丛林，巨大的古木遮天 蔽日，头顶看不到一片天空。脚下不时传来轻微的声响，似乎有什么 东西从草丛中游过，远处偶尔传来一阵野兽的嚎叫声。"
+  x = 0
+  y = -1
+  z = 1
+    }
+
+  room_exits "milin3" {
+    room_id = rooms.milin3.id
+    north = rooms.milin2.id
+    west = rooms.milin2.id
+    south = rooms.milin4.id
+    east = rooms.milin1.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/milin4.c by LPCConverter
+# Zone: wudu
+
+    rooms "milin4" {
+      name = "黑森林"
+      description = "这里就是有名的黑森林，四周均是茂密的丛林，巨大的古木遮天 蔽日，头顶看不到一片天空。脚下不时传来轻微的声响，似乎有什么 东西从草丛中游过，远处偶尔传来一阵野兽的嚎叫声。"
+  x = 1
+  y = -1
+  z = 1
+    }
+
+  room_exits "milin4" {
+    room_id = rooms.milin4.id
+    north = rooms.milin3.id
+    west = rooms.milin3.id
+    south = rooms.milin5.id
+    in = rooms.langwo.id
+    }
+
+
+  room_characters "milin4" {
+    room_id = rooms.milin4.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/milin5.c by LPCConverter
+# Zone: wudu
+
+    rooms "milin5" {
+      name = "黑森林"
+      description = "这里就是有名的黑森林，四周均是茂密的丛林，巨大的古木遮天 蔽日，头顶看不到一片天空。脚下不时传来轻微的声响，似乎有什么 东西从草丛中游过，远处偶尔传来一阵野兽的嚎叫声。"
+  x = -1
+  y = -1
+  z = 1
+    }
+
+  room_exits "milin5" {
+    room_id = rooms.milin5.id
+    north = rooms.milin4.id
+    west = rooms.milin6.id
+    south = rooms.milin3.id
+    east = rooms.milin4.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/milin6.c by LPCConverter
+# Zone: wudu
+
+    rooms "milin6" {
+      name = "黑森林"
+      description = "这里就是有名的黑森林，四周均是茂密的丛林，巨大的古木遮天 蔽日，头顶看不到一片天空。脚下不时传来轻微的声响，似乎有什么 东西从草丛中游过，远处偶尔传来一阵野兽的嚎叫声。"
+  x = 1
+  y = -2
+  z = 1
+    }
+
+  room_exits "milin6" {
+    room_id = rooms.milin6.id
+    north = rooms.milin3.id
+    west = rooms.milin7.id
+    south = rooms.milin2.id
+    east = rooms.milin5.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/milin7.c by LPCConverter
+# Zone: wudu
+
+    rooms "milin7" {
+      name = "黑森林"
+      description = "这里就是有名的黑森林，四周均是茂密的丛林，巨大的古木遮天 蔽日，头顶看不到一片天空。脚下不时传来轻微的声响，似乎有什么 东西从草丛中游过，远处偶尔传来一阵野兽的嚎叫声。"
+  x = 0
+  y = -2
+  z = 1
+    }
+
+  room_exits "milin7" {
+    room_id = rooms.milin7.id
+    north = rooms.milin8.id
+    in = rooms.huxue1.id
+    south = rooms.milin3.id
+    east = rooms.milin6.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/milin8.c by LPCConverter
+# Zone: wudu
+
+    rooms "milin8" {
+      name = "黑森林"
+      description = "这里就是有名的黑森林，四周均是茂密的丛林，巨大的古木遮天 蔽日，头顶看不到一片天空。脚下不时传来轻微的声响，似乎有什么 东西从草丛中游过，远处偶尔传来一阵野兽的嚎叫声。"
+  x = 0
+  y = -1
+  z = 1
+    }
+
+  room_exits "milin8" {
+    room_id = rooms.milin8.id
+    north = rooms.bianzhai1.id
+    west = rooms.milin5.id
+    south = rooms.milin7.id
+    east = rooms.milin4.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/minju1.c by LPCConverter
+# Zone: wudu
+
+    rooms "minju1" {
+      name = "民居"
+      description = "这是一户普通的农家，屋里没有什么象样的摆设。墙边摆放着一 些农具，除此只外四壁皆空，看来并不富裕。"
+  x = -6
+  y = 4
+  z = -2
+    }
+
+  room_exits "minju1" {
+    room_id = rooms.minju1.id
+    north = rooms.cun2.id
+    }
+
+
+  room_characters "minju1" {
+    room_id = rooms.minju1.id
+    characters = [
+      { id = characters.cunmin.id },
+      { id = characters.cunfu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/minju10.c by LPCConverter
+# Zone: wudu
+
+    rooms "minju10" {
+      name = "后院"
+      description = "这是一个用篱笆围成的简易院落，远处种着几畦蔬菜。院子中间 一棵高大的柿树上结满了鲜红的果实，旁边的地上盖着一张厚厚的草 席(xi)。"
+  x = -2
+  y = 2
+  z = -2
+item_desc = {
+ xi = "一张厚厚的草席盖在洞口，下面似乎是一个地窖。"
+}
+    }
+
+  room_exits "minju10" {
+    room_id = rooms.minju10.id
+    north = rooms.minju6.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/minju2.c by LPCConverter
+# Zone: wudu
+
+    rooms "minju2" {
+      name = "民居"
+      description = "这是一户普通的农家，屋里没有什么象样的摆设。墙边摆放着一 些农具，除此只外四壁皆空，看来并不富裕。"
+  x = -5
+  y = 6
+  z = -2
+    }
+
+  room_exits "minju2" {
+    room_id = rooms.minju2.id
+    south = rooms.cun3.id
+    }
+
+
+  room_characters "minju2" {
+    room_id = rooms.minju2.id
+    characters = [
+      { id = characters.cunfu.id },
+      { id = characters.cunfu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/minju3.c by LPCConverter
+# Zone: wudu
+
+    rooms "minju3" {
+      name = "民居"
+      description = "这是一户普通的农家，屋里没有什么象样的摆设。墙边摆放着一 些农具，除此只外四壁皆空，看来并不富裕。"
+  x = -4
+  y = 6
+  z = -2
+    }
+
+  room_exits "minju3" {
+    room_id = rooms.minju3.id
+    west = rooms.minju8.id
+    south = rooms.cun4.id
+    }
+
+
+  room_characters "minju3" {
+    room_id = rooms.minju3.id
+    characters = [
+      { id = characters.cuilan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/minju4.c by LPCConverter
+# Zone: wudu
+
+    rooms "minju4" {
+      name = "民居"
+      description = "这是一户普通的农家，屋里没有什么象样的摆设。墙边摆放着一 些农具，屋正中摆着一张八仙桌，村长正拿着旱烟袋坐在桌边抽着。"
+  x = -3
+  y = 7
+  z = -2
+    }
+
+  room_exits "minju4" {
+    room_id = rooms.minju4.id
+    south = rooms.cun5.id
+    }
+
+
+  room_characters "minju4" {
+    room_id = rooms.minju4.id
+    characters = [
+      { id = characters.cunzhang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/minju5.c by LPCConverter
+# Zone: wudu
+
+    rooms "minju5" {
+      name = "民居"
+      description = "这是一户普通的农家，屋里没有什么象样的摆设。墙边摆放着一 些农具，除此只外四壁皆空，看来并不富裕。"
+  x = -4
+  y = 3
+  z = -2
+    }
+
+  room_exits "minju5" {
+    room_id = rooms.minju5.id
+    northeast = rooms.cun6.id
+    }
+
+
+  room_characters "minju5" {
+    room_id = rooms.minju5.id
+    characters = [
+      { id = characters.cunmin.id },
+      { id = characters.cunfu.id },
+      { id = characters.cunfu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/minju6.c by LPCConverter
+# Zone: wudu
+
+    rooms "minju6" {
+      name = "民居"
+      description = "这是一户普通的农家，屋里没有什么象样的摆设。墙边摆放着一 些农具，除此只外四壁皆空，看来并不富裕。后面似乎有一个小院。"
+  x = -2
+  y = 3
+  z = -2
+    }
+
+  room_exits "minju6" {
+    room_id = rooms.minju6.id
+    south = rooms.minju10.id
+    northwest = rooms.cun6.id
+    }
+
+
+  room_characters "minju6" {
+    room_id = rooms.minju6.id
+    characters = [
+      { id = characters.girl.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/minju7.c by LPCConverter
+# Zone: wudu
+
+    rooms "minju7" {
+      name = "学堂"
+      description = "这里是一座简陋的学堂，似乎是用祠堂改成。正中供桌(zhuo)上 还供着一些牌位，上面落满了灰尘。几个八、九岁的农家小孩正跟着 先生在念书。"
+  x = -1
+  y = 5
+  z = -2
+item_desc = {
+ zhuo = "一个陈旧的供桌，上面搭着黑糊糊的台布一直垂到地面。"
+}
+    }
+
+  room_exits "minju7" {
+    room_id = rooms.minju7.id
+    west = rooms.cun7.id
+    }
+
+
+  room_characters "minju7" {
+    room_id = rooms.minju7.id
+    characters = [
+      { id = characters.xuetong.id },
+      { id = characters.xuetong.id },
+      { id = characters.xuetong.id },
+      { id = characters.xiansheng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/minju8.c by LPCConverter
+# Zone: wudu
+
+    rooms "minju8" {
+      name = "灶房"
+      description = "这是一个简陋的灶房，四壁都被烟火熏的黑糊糊的，灶台旁的墙 上贴着一张发黄的黄裱纸，旁边挂着一些风干的兽肉。灶台铁锅旁的 水缸上摆着几只粗瓷大碗，屋的一角堆着一大堆麦秸。"
+  x = -5
+  y = 6
+  z = -2
+    }
+
+  room_exits "minju8" {
+    room_id = rooms.minju8.id
+    east = rooms.minju3.id
+    }
+
+
+
+
+  room_items "minju8" {
+    room_id = rooms.minju8.id
+    items = [
+      { id = items.qhcwan.id },
+      { id = items.shourou2.id },
+      { id = items.shourou1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/minju9.c by LPCConverter
+# Zone: wudu
+
+    rooms "minju9" {
+      name = "供桌下"
+      description = "你现在蜷缩在低矮的供桌下面，四周到处都是灰尘和蜘蛛 网，稍一抬头就会碰到桌面。这张桌子的四周都被肮脏的布帘 挡住了，你看不到外面的情况，别人也发现不了你。"
+  x = 0
+  y = 0
+  z = 6
+    }
+
+  room_exits "minju9" {
+    room_id = rooms.minju9.id
+    up = rooms.mishi.id
+    down = rooms.huating2.id
+    out = rooms.minju7.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/mishi.c by LPCConverter
+# Zone: wudu
+
+    rooms "mishi" {
+      name = "密室"
+      description = "这里是一座不大的石室，房间落满灰尘，好象有多年没人打扫似 的。室内只有一床一案，一缕阳光从洞顶的岩缝中射入，照射在室壁 上，你发现石壁(wall)上似乎有一些花纹。室内光线明亮。墙边有一 个青石床，一个宽大的石案上摆着一个石匣(xia)。"
+  x = 0
+  y = 0
+  z = 7
+item_desc = {
+ xia = "一只石匣，好象是和石案连在一起的，不知道敢不敢打开看看。"
+ wall = "墙上刻着很多蝇头小字，还附着一些图画，似乎是一门极上乘的武学。"
+}
+    }
+
+  room_exits "mishi" {
+    room_id = rooms.mishi.id
+    up = rooms.tree.id
+    down = rooms.minju9.id
+    eastup = rooms.shixi.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/nanyuan.c by LPCConverter
+# Zone: wudu
+
+    rooms "nanyuan" {
+      name = "南院"
+      description = "这里是南跨院，院子里有棵很大的榕树，将天空大部遮住 院子里静悄悄的，几只高大的藏獒在树下来回踱步。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nanyuan" {
+    room_id = rooms.nanyuan.id
+    down = rooms.mishi.id
+    up = rooms.bianzhai1.id
+    east = rooms.yaoshi.id
+    south = rooms.liandu.id
+    west = rooms.xiangfang.id
+    north = rooms.lianwu.id
+    }
+
+
+
+
+  room_items "nanyuan" {
+    room_id = rooms.nanyuan.id
+    items = [
+      { id = items.gou3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/neijin.c by LPCConverter
+# Zone: wudu
+
+    rooms "neijin" {
+      name = "客房"
+      description = "这里是一间客房，靠墙布着一溜通铺，行人累可以在这里随意休 息。窗边摆着一个破破烂烂的木桌，一个游方道人正坐在这里的桌边 上喝茶。"
+  x = -1
+  y = 0
+  z = 1
+    }
+
+  room_exits "neijin" {
+    room_id = rooms.neijin.id
+    east = rooms.xiaodian.id
+    }
+
+
+
+
+  room_items "neijin" {
+    room_id = rooms.neijin.id
+    items = [
+      { id = items.daoshi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/qiandu1.c by LPCConverter
+# Zone: wudu
+
+    rooms "qiandu1" {
+      name = "千毒窟外"
+      description = "这里是五毒教饲养毒物的地方，山壁旁有一个天然的石洞，里面 黑漆漆的看不清楚。一阵山风吹来，你闻到一股腥味。洞口站着几个 五毒教弟子。"
+  x = -4
+  y = 1
+  z = -1
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(string)me->query("family/family_name") != "五毒教" & objectp(present("di zi", environment(me)))
+direction = ~
+  message = "五毒教弟子忽然挡住你，厉声喝道：这位鬼头鬼脑的想干什么？"
+}
+
+]
+    }
+
+  room_exits "qiandu1" {
+    room_id = rooms.qiandu1.id
+    north = rooms.qiandu2.id
+    south = rooms.wdsl4.id
+    }
+
+
+  room_characters "qiandu1" {
+    room_id = rooms.qiandu1.id
+    characters = [
+      { id = characters.dizi.id },
+      { id = characters.dizi.id },
+      { id = characters.dizi.id },
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/qiandu2.c by LPCConverter
+# Zone: wudu
+
+    rooms "qiandu2" {
+      name = "千毒窟"
+      description = "这里是一个天然形成的石洞，里面深邃广大。洞顶悬挂着许多钟 乳石，不时传来几声滴答的水声。走在洞中，洞内阴暗潮湿，身旁忽 然传来一阵“咝咝”的声音。"
+  x = -4
+  y = 2
+  z = -1
+    }
+
+  room_exits "qiandu2" {
+    room_id = rooms.qiandu2.id
+    east = rooms.qiandu5.id
+    west = rooms.qiandu4.id
+    north = rooms.qiandu3.id
+    south = rooms.qiandu1.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/qiandu3.c by LPCConverter
+# Zone: wudu
+
+    rooms "qiandu3" {
+      name = "千毒窟"
+      description = "这里是一个天然形成的石洞，里面深邃广大。洞顶悬挂着许多钟 乳石，不时传来几声滴答的水声。走在洞中，洞内阴暗潮湿，身旁忽 然传来一阵“咝咝”的声音。"
+  x = -4
+  y = 3
+  z = -1
+    }
+
+  room_exits "qiandu3" {
+    room_id = rooms.qiandu3.id
+    south = rooms.qiandu2.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/qiandu4.c by LPCConverter
+# Zone: wudu
+
+    rooms "qiandu4" {
+      name = "千毒窟"
+      description = "这里是一个天然形成的石洞，里面深邃广大。洞顶悬挂着许多钟 乳石，不时传来几声滴答的水声。走在洞中，洞内阴暗潮湿，身旁忽 然传来一阵“咝咝”的声音。"
+  x = -5
+  y = 2
+  z = -1
+    }
+
+  room_exits "qiandu4" {
+    room_id = rooms.qiandu4.id
+    east = rooms.qiandu2.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/qiandu5.c by LPCConverter
+# Zone: wudu
+
+    rooms "qiandu5" {
+      name = "千毒窟"
+      description = "这里是一个天然形成的石洞，里面深邃广大。洞顶悬挂着许多钟 乳石，不时传来几声滴答的水声。走在洞中，洞内阴暗潮湿，身旁忽 然传来一阵“咝咝”的声音。"
+  x = -3
+  y = 2
+  z = -1
+    }
+
+  room_exits "qiandu5" {
+    room_id = rooms.qiandu5.id
+    west = rooms.qiandu2.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/road1.c by LPCConverter
+# Zone: wudu
+
+    rooms "road1" {
+      name = "黄土大道"
+      description = "这是一条向南的黄土大道，两旁是一片片绿油油的水田和悠闲的 牧童。大道上人流熙熙攘攘，过往的行人顶着炎炎烈日满头大汗的匆 匆赶路，似乎并无心欣赏这优美的田园风光。"
+  x = 1
+  y = 3
+  z = 1
+    }
+
+  room_exits "road1" {
+    room_id = rooms.road1.id
+    north = rooms.luyuxi.id
+    south = rooms.road2.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/road2.c by LPCConverter
+# Zone: wudu
+
+    rooms "road2" {
+      name = "黄土大道"
+      description = "这是一条向南的黄土大道，两旁是一片片绿油油的水田和悠闲的 牧童。大道上人流熙熙攘攘，过往的行人顶着炎炎烈日满头大汗的匆 匆赶路，似乎并无心欣赏这优美的田园风光。"
+  x = 1
+  y = 2
+  z = 1
+    }
+
+  room_exits "road2" {
+    room_id = rooms.road2.id
+    north = rooms.road1.id
+    south = rooms.road3.id
+    }
+
+
+  room_characters "road2" {
+    room_id = rooms.road2.id
+    characters = [
+      { id = characters.tiao_fu.id },
+      { id = characters.tiao_fu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/road3.c by LPCConverter
+# Zone: wudu
+
+    rooms "road3" {
+      name = "黄土大道"
+      description = "这是一条向南的黄土大道，远处隐约看见一片翠绿的山峦。路上 行人逐渐稀少起来，大路越走越窄，有些地方竟长出了一片片的杂草。 东边似乎有一条岔路。"
+  x = 1
+  y = 1
+  z = 1
+    }
+
+  room_exits "road3" {
+    room_id = rooms.road3.id
+    north = rooms.road2.id
+    south = rooms.shanlu1.id
+    southeast = rooms.xiaolu.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/shanlu1.c by LPCConverter
+# Zone: wudu
+
+    rooms "shanlu1" {
+      name = "山边小路"
+      description = "一条蜿蜒的小路延着山脚向前延伸，两旁是浓密的树林，脚下是 崎岖不平的山路，前面就是可怕的黑森林了。旁边似乎有一家山野小 店，路边有一座石碑(bei)。"
+  x = 1
+  y = 0
+  z = 1
+    }
+
+  room_exits "shanlu1" {
+    room_id = rooms.shanlu1.id
+    north = rooms.road3.id
+    west = rooms.xiaodian.id
+    south = rooms.milin1.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/shanlu2.c by LPCConverter
+# Zone: wudu
+
+    rooms "shanlu2" {
+      name = "上山小路"
+      description = "这是一条上山的小路，脚下是青石砌成的台阶，湿漉漉的长满了 青苔，四周全是茂密的竹林。远处传来一阵悠扬的山歌声。"
+  x = 2
+  y = -1
+  z = 2
+    }
+
+  room_exits "shanlu2" {
+    room_id = rooms.shanlu2.id
+    northdown = rooms.xiaolu.id
+    southup = rooms.shanlu3.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/shanlu3.c by LPCConverter
+# Zone: wudu
+
+    rooms "shanlu3" {
+      name = "上山小路"
+      description = "这是一条上山的小路，脚下是青石砌成的台阶，湿漉漉的长满了 青苔，四周全是茂密的竹林。前面似乎就快到小山顶上了。"
+  x = 2
+  y = -2
+  z = 3
+    }
+
+  room_exits "shanlu3" {
+    room_id = rooms.shanlu3.id
+    northdown = rooms.shanlu2.id
+    southup = rooms.caoping.id
+    }
+
+
+  room_characters "shanlu3" {
+    room_id = rooms.shanlu3.id
+    characters = [
+      { id = characters.qiaofu.id },
+      { id = characters.qiaofu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/shixi.c by LPCConverter
+# Zone: wudu
+
+    rooms "shixi" {
+      name = "石隙"
+      description = "这里是一道岩石的缝隙，窄得要人侧身挤过。你沿着曲折的岩缝 向前摸去，四周黑漆漆的，只有脚下的砂石发出轻微的声响。"
+  x = 1
+  y = 0
+  z = 8
+    }
+
+  room_exits "shixi" {
+    room_id = rooms.shixi.id
+    westdown = rooms.mishi.id
+    down = rooms.baidu2.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/shufang.c by LPCConverter
+# Zone: wudu
+
+    rooms "shufang" {
+      name = "书房"
+      description = "这里便是教主平时日内看书的地方，房间不大，只靠窗摆着一张 书案，案边放了几本书，看来是教主经常翻看的。"
+  x = 1
+  y = 2
+  z = 0
+    }
+
+  room_exits "shufang" {
+    room_id = rooms.shufang.id
+    south = rooms.dating.id
+    }
+
+
+
+
+  room_items "shufang" {
+    room_id = rooms.shufang.id
+    items = [
+      { id = items.book2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/sl1.c by LPCConverter
+# Zone: wudu
+
+    rooms "sl1" {
+      name = "松树林"
+      description = "你走进了一片浓密的松树林，前面已经没有了道路，你必须不时 砍断横在你面前的枝桠。林内光线黑暗，静的能听到你自己的心跳声， 只有你踩在地上厚厚的松针和枯枝上发出的沙沙声。"
+  x = -2
+  y = -1
+  z = 1
+    }
+
+  room_exits "sl1" {
+    room_id = rooms.sl1.id
+    south = rooms.sl4.id
+    east = rooms.sl2.id
+    north = rooms.wdsl8.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/sl2.c by LPCConverter
+# Zone: wudu
+
+    rooms "sl2" {
+      name = "松树林"
+      description = "你走进了一片浓密的松树林，前面已经没有了道路，你必须不时 砍断横在你面前的枝桠。林内光线黑暗，静的能听到你自己的心跳声， 只有你踩在地上厚厚的松针和枯枝上发出的沙沙声。"
+  x = -1
+  y = -1
+  z = 1
+    }
+
+  room_exits "sl2" {
+    room_id = rooms.sl2.id
+    southeast = rooms.sl5.id
+    west = rooms.sl1.id
+    southwest = rooms.sl4.id
+    east = rooms.sl3.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/sl3.c by LPCConverter
+# Zone: wudu
+
+    rooms "sl3" {
+      name = "松树林"
+      description = "这里是一片浓密的松树林，前面已经没有了道路，你必须不时砍 断横在你面前的枝桠。林内光线黑暗，静的能让你听到自己的心跳声， 只有你踩在地上厚厚的松针和枯枝上发出的沙沙声。前面依稀透着一 点光亮，你不由长长的吁了一口气。"
+  x = 0
+  y = -1
+  z = 1
+    }
+
+  room_exits "sl3" {
+    room_id = rooms.sl3.id
+    south = rooms.sl5.id
+    west = rooms.sl2.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/sl4.c by LPCConverter
+# Zone: wudu
+
+    rooms "sl4" {
+      name = "松树林"
+      description = "这里是一片浓密的松树林，前面已经没有了道路，你必须不时砍 断横在你面前的枝桠。林内光线黑暗，静的能让你听到自己的心跳声， 只有你踩在地上厚厚的松针和枯枝上发出的沙沙声。"
+  x = -2
+  y = -2
+  z = 1
+    }
+
+  room_exits "sl4" {
+    room_id = rooms.sl4.id
+    southeast = rooms.sl7.id
+    south = rooms.sl6.id
+    northeast = rooms.sl2.id
+    north = rooms.sl1.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/sl5.c by LPCConverter
+# Zone: wudu
+
+    rooms "sl5" {
+      name = "松树林"
+      description = "这里是一片浓密的松树林，前面已经没有了道路，你必须不时砍 断横在你面前的枝桠。林内光线黑暗，静的能让你听到自己的心跳声， 只有你踩在地上厚厚的松针和枯枝上发出的沙沙声。"
+  x = 0
+  y = -2
+  z = 1
+    }
+
+  room_exits "sl5" {
+    room_id = rooms.sl5.id
+    southwest = rooms.sl7.id
+    south = rooms.sl8.id
+    northwest = rooms.sl2.id
+    north = rooms.sl3.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/sl6.c by LPCConverter
+# Zone: wudu
+
+    rooms "sl6" {
+      name = "松树林"
+      description = "这里是一片浓密的松树林，前面已经没有了道路，你必须不时砍 断横在你面前的枝桠。林内光线黑暗，静的能让你听到自己的心跳声， 只有你踩在地上厚厚的松针和枯枝上发出的沙沙声。"
+  x = -2
+  y = -3
+  z = 1
+    }
+
+  room_exits "sl6" {
+    room_id = rooms.sl6.id
+    east = rooms.sl7.id
+    north = rooms.sl4.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/sl7.c by LPCConverter
+# Zone: wudu
+
+    rooms "sl7" {
+      name = "松树林"
+      description = "这里是一片松树林，连绵无尽，看不到尽头。四周都是参天的古 松，但许多都莫名其妙的枯死了，只剩下一些树干矗立在那里。阳光 透过枯死的树枝间隙照射到林中，暖洋洋的。四周是死一般寂静，你 不由一阵紧张。"
+  x = -1
+  y = -3
+  z = 1
+    }
+
+  room_exits "sl7" {
+    room_id = rooms.sl7.id
+    north = rooms.caodi.id
+    northeast = rooms.sl5.id
+    west = rooms.sl6.id
+    northwest = rooms.sl4.id
+    east = rooms.sl8.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/sl8.c by LPCConverter
+# Zone: wudu
+
+    rooms "sl8" {
+      name = "松树林"
+      description = "这里是一片浓密的松树林，前面已经没有了道路，你必须不时砍 断横在你面前的枝桠。不远处一株千年的古松直插云霄，它下面纵横 交错的树根似乎在向人诉说它悠久的岁月。林内光线黑暗，静的能听 到你自己的心跳声，只有你踩在地上厚厚的松针和枯枝上发出的沙沙 声。前面依稀透着一丝光亮，你不由高兴的紧走几步。"
+  x = 0
+  y = -3
+  z = 1
+    }
+
+  room_exits "sl8" {
+    room_id = rooms.sl8.id
+    west = rooms.sl7.id
+    north = rooms.sl5.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/taohua.c by LPCConverter
+# Zone: wudu
+
+    rooms "taohua" {
+      name = "桃花峪"
+      description = "你走在两山相夹的峡谷中，山上山下全是无边的野桃树，一阵山 风吹来，落英缤纷。数百年落下的桃花，桃枝都堆积在地上，人走在 上面软软的。日近正午了，远处的山林之间似乎飘荡着一股轻雾，越 来越浓。"
+  x = -6
+  y = 1
+  z = -2
+valid_leave = [
+{
+  direction = ~
+  message = "你禁不住踉跄了几下，两腿突然一软。"
+}
+
+]
+    }
+
+  room_exits "taohua" {
+    room_id = rooms.taohua.id
+    northwest = rooms.xiao3.id
+    east = rooms.wdsl1.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/tree.c by LPCConverter
+# Zone: wudu
+
+    rooms "tree" {
+      name = "榕树上"
+      description = "这里是大榕树的顶端，四周是浓密的枝叶和湿漉漉的苔藓。 突然间一阵微风吹来，树叶发出唰啦啦的声音。从上面望下去 你只觉得一阵眼晕，心想还是赶快下去吧。"
+  x = 0
+  y = 0
+  z = 8
+    }
+
+  room_exits "tree" {
+    room_id = rooms.tree.id
+    down = rooms.nanyuan.id
+    }
+
+
+
+
+  room_items "tree" {
+    room_id = rooms.tree.id
+    items = [
+      { id = items.xiang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/wandu1.c by LPCConverter
+# Zone: wudu
+
+    rooms "wandu1" {
+      name = "万毒窟外"
+      description = "这里是五毒教饲养毒物的地方，山壁旁有一个天然的石洞，里面 黑漆漆的看不清楚。一阵山风吹来，你闻到一股腥味。有一个衣衫褴 褛的枯瘦老妇正靠在洞边打盹。"
+  x = -5
+  y = -1
+  z = -2
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：me->query("family/master_name") != "何铁手" & objectp(present("he hongyao", environment(me)))
+direction = ~
+  message = "何红药身形一晃，挡住你喝道：没有教主准许，谁也不得进入本教圣地。"
+}
+
+]
+    }
+
+  room_exits "wandu1" {
+    room_id = rooms.wandu1.id
+    north = rooms.wdsl3.id
+    south = rooms.wandu2.id
+    }
+
+
+
+
+  room_items "wandu1" {
+    room_id = rooms.wandu1.id
+    items = [
+      { id = items.hehongyao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/wandu2.c by LPCConverter
+# Zone: wudu
+
+    rooms "wandu2" {
+      name = "万毒窟"
+      description = "这里是一个天然形成的石洞，里面深邃广大。洞顶悬挂着许多钟 乳石，不时传来几声滴答的水声。走在洞中，洞内阴暗潮湿，身旁忽 然传来一阵“咝咝”的声音。洞内似乎还有个小一点的支洞。"
+  x = -5
+  y = -2
+  z = -2
+    }
+
+  room_exits "wandu2" {
+    room_id = rooms.wandu2.id
+    north = rooms.wandu1.id
+    south = rooms.wandu3.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/wandu3.c by LPCConverter
+# Zone: wudu
+
+    rooms "wandu3" {
+      name = "万毒窟"
+      description = "这里是山洞内部的支洞，这里已经没有一丝光线了，黑洞洞的什 么也看不见。洞内岩壁(wall)上好象生着几株不知名的小草。身旁传 来一阵“咝咝”的声音。"
+  x = -5
+  y = -3
+  z = -2
+item_desc = {
+ wall = "一堵岩壁，上面突出些石笋，似乎可以顺着爬上去。"
+}
+    }
+
+  room_exits "wandu3" {
+    room_id = rooms.wandu3.id
+    north = rooms.wandu2.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/wdsl1.c by LPCConverter
+# Zone: wudu
+
+    rooms "wdsl1" {
+      name = "五毒山路"
+      description = "这里是五毒山中的山间小路，蜿蜒曲折盘旋而上。山路上寂静无 声，看不到一丝鸟兽的痕迹。你顺手拨开伸向路中的枝条，树枝忽然 一动，缩了回去，竟然是一条形似枯枝的毒蛇。"
+  x = -5
+  y = 1
+  z = -2
+    }
+
+  room_exits "wdsl1" {
+    room_id = rooms.wdsl1.id
+    west = rooms.taohua.id
+    southup = rooms.wdsl3.id
+    eastup = rooms.wdsl2.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/wdsl2.c by LPCConverter
+# Zone: wudu
+
+    rooms "wdsl2" {
+      name = "五毒山路"
+      description = "这里是五毒山中的山间小路，蜿蜒曲折盘旋而上。山路上寂静无 声，看不到一丝鸟兽的痕迹。你顺手拨开伸向路中的枝条，树枝忽然 一动，缩了回去，竟然是一条形似枯枝的毒蛇。"
+  x = -4
+  y = 1
+  z = -1
+    }
+
+  room_exits "wdsl2" {
+    room_id = rooms.wdsl2.id
+    westdown = rooms.wdsl1.id
+    eastup = rooms.wdsl6.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/wdsl3.c by LPCConverter
+# Zone: wudu
+
+    rooms "wdsl3" {
+      name = "五毒山路"
+      description = "这里是五毒山中的山间小路，蜿蜒曲折盘旋而上。山路上寂静无 声，看不到一丝鸟兽的痕迹。你顺手拨开伸向路中的枝条，树枝忽然 一动，缩了回去，竟然是一条形似枯枝的毒蛇。"
+  x = -5
+  y = 0
+  z = -2
+    }
+
+  room_exits "wdsl3" {
+    room_id = rooms.wdsl3.id
+    northdown = rooms.wdsl1.id
+    south = rooms.wandu1.id
+    eastup = rooms.wdsl4.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/wdsl4.c by LPCConverter
+# Zone: wudu
+
+    rooms "wdsl4" {
+      name = "五毒山路"
+      description = "这里是五毒山中的山间小路，蜿蜒曲折盘旋而上。山路上寂静无 声，看不到一丝鸟兽的痕迹。你顺手拨开伸向路中的枝条，树枝忽然 一动，缩了回去，竟然是一条形似枯枝的毒蛇。"
+  x = -4
+  y = 0
+  z = -1
+    }
+
+  room_exits "wdsl4" {
+    room_id = rooms.wdsl4.id
+    north = rooms.qiandu1.id
+    westdown = rooms.wdsl3.id
+    south = rooms.baidu1.id
+    eastup = rooms.wdsl5.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/wdsl5.c by LPCConverter
+# Zone: wudu
+
+    rooms "wdsl5" {
+      name = "五毒山路"
+      description = "这里是五毒山中的山间小路，蜿蜒曲折盘旋而上。山路上寂静无 声，看不到一丝鸟兽的痕迹。你顺手拨开伸向路中的枝条，树枝忽然 一动，缩了回去，竟然是一条形似枯枝的毒蛇。"
+  x = -3
+  y = 0
+  z = 0
+    }
+
+  room_exits "wdsl5" {
+    room_id = rooms.wdsl5.id
+    north = rooms.wdsl6.id
+    westdown = rooms.wdsl4.id
+    eastup = rooms.wdsl8.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/wdsl6.c by LPCConverter
+# Zone: wudu
+
+    rooms "wdsl6" {
+      name = "五毒山路"
+      description = "这里是五毒山中的山间小路，蜿蜒曲折盘旋而上。山路上寂静无 声，看不到一丝鸟兽的痕迹。你顺手拨开伸向路中的枝条，树枝忽然 一动，缩了回去，竟然是一条形似枯枝的毒蛇。"
+  x = -3
+  y = 1
+  z = 0
+    }
+
+  room_exits "wdsl6" {
+    room_id = rooms.wdsl6.id
+    westdown = rooms.wdsl2.id
+    south = rooms.wdsl5.id
+    east = rooms.wdsl7.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/wdsl7.c by LPCConverter
+# Zone: wudu
+
+    rooms "wdsl7" {
+      name = "五毒山路"
+      description = "这里是五毒山中的山间小路，蜿蜒曲折盘旋而上。山路上寂静无 声，看不到一丝鸟兽的痕迹。你顺手拨开伸向路中的枝条，树枝忽然 一动，缩了回去，竟然是一条形似枯枝的毒蛇。前面现出一段绿瓦红 墙，好象是所大宅院。"
+  x = -2
+  y = 1
+  z = 0
+    }
+
+  room_exits "wdsl7" {
+    room_id = rooms.wdsl7.id
+    west = rooms.wdsl6.id
+    east = rooms.damen.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/wdsl8.c by LPCConverter
+# Zone: wudu
+
+    rooms "wdsl8" {
+      name = "五毒山路"
+      description = "这里是五毒山中的山间小路，蜿蜒曲折盘旋而上。山路上寂静无 声，看不到一丝鸟兽的痕迹。你顺手拨开伸向路中的枝条，树枝忽然 一动，缩了回去，竟然是一条形似枯枝的毒蛇。"
+  x = -2
+  y = 0
+  z = 1
+    }
+
+  room_exits "wdsl8" {
+    room_id = rooms.wdsl8.id
+    south = rooms.sl1.id
+    westdown = rooms.wdsl5.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/xiangfang.c by LPCConverter
+# Zone: wudu
+
+    rooms "xiangfang" {
+      name = "厢房"
+      description = "这是一间乱糟糟的厢房，里面到处都是各种大大小小的笼子、瓦 罐之类的东西。不时还能看到有毒虫在笼子里面上窜下跳，四处游走。 一个赤着膀子的白胡子老者正在手忙脚乱的给毒虫们挨个喂食，忙得 手忙脚乱。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiangfang" {
+    room_id = rooms.xiangfang.id
+    east = rooms.nanyuan.id
+    }
+
+
+  room_characters "xiangfang" {
+    room_id = rooms.xiangfang.id
+    characters = [
+      { id = characters.oldman.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/xiao1.c by LPCConverter
+# Zone: wudu
+
+    rooms "xiao1" {
+      name = "江边小路"
+      description = "这里是桃花江边的一条泥土小路，一旁就是清澈的江水。夹岸连 绵不断的桃花灿若云霞，暗香袭人，引来许多蜜蜂在花树间飞舞。"
+  x = -8
+  y = 4
+  z = -2
+    }
+
+  room_exits "xiao1" {
+    room_id = rooms.xiao1.id
+    north = rooms.jiang2.id
+    south = rooms.xiao2.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/xiao2.c by LPCConverter
+# Zone: wudu
+
+    rooms "xiao2" {
+      name = "江边小路"
+      description = "这里是桃花江边的一条泥土小路，一旁就是清澈的江水。夹岸连 绵不断的桃花灿若云霞，暗香袭人，引来许多蜜蜂在花树间飞舞。"
+  x = -8
+  y = 3
+  z = -2
+    }
+
+  room_exits "xiao2" {
+    room_id = rooms.xiao2.id
+    north = rooms.xiao1.id
+    southeast = rooms.xiao3.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/xiao3.c by LPCConverter
+# Zone: wudu
+
+    rooms "xiao3" {
+      name = "江边小路"
+      description = "这里是桃花江边的一条泥土小路，一旁就是清澈的江水。夹岸连 绵不断的桃花灿若云霞，暗香袭人，引来许多蜜蜂在花树间飞舞。前 面有一个木牌 (pai)立在路中央，由于风吹日晒，字迹已经模糊了。"
+  x = -7
+  y = 2
+  z = -2
+    }
+
+  room_exits "xiao3" {
+    room_id = rooms.xiao3.id
+    northwest = rooms.xiao2.id
+    southeast = rooms.taohua.id
+    }
+
+# Generated from C:/files/git/mud/d/wudu/xiaodian.c by LPCConverter
+# Zone: wudu
+
+    rooms "xiaodian" {
+      name = "路边小店"
+      description = "这里是一家山野小店，仅仅供应一些食物和时鲜山货。这里行人 稀少，大概一天也没几个人路过这里，老板娘把店开在这里恐怕是要 赔了。店内进是一间客房，行人累了可以进去休息。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "xiaodian" {
+    room_id = rooms.xiaodian.id
+    west = rooms.neijin.id
+    east = rooms.shanlu1.id
+    }
+
+
+  room_characters "xiaodian" {
+    room_id = rooms.xiaodian.id
+    characters = [
+      { id = characters.sun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/xiaolu.c by LPCConverter
+# Zone: wudu
+
+    rooms "xiaolu" {
+      name = "小路"
+      description = "这是一条小路向东南延伸，四周尽是花香鸟语，空气顿时 清新了许多。前面有一座小小的山冈。"
+  x = 2
+  y = 0
+  z = 1
+    }
+
+  room_exits "xiaolu" {
+    room_id = rooms.xiaolu.id
+    southup = rooms.shanlu2.id
+    northwest = rooms.road3.id
+    }
+
+
+
+
+  room_items "xiaolu" {
+    room_id = rooms.xiaolu.id
+    items = [
+      { id = items.tu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/yaoshi.c by LPCConverter
+# Zone: wudu
+
+    rooms "yaoshi" {
+      name = "药室"
+      description = "这里是五毒教存放药品的地方，你只见十多个黑漆木柜一字排开， 上面开着数百个的小抽屉，每个抽屉上面都整整齐齐的贴着一行标签。 这里存放着各种珍贵药材，其中大多数是有毒的。旁边一个案上放着 几束刚采来的草药。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "yaoshi" {
+    room_id = rooms.yaoshi.id
+    west = rooms.nanyuan.id
+    }
+
+
+
+
+  room_items "yaoshi" {
+    room_id = rooms.yaoshi.id
+    items = [
+      { id = items.zhulou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/zhushe.c by LPCConverter
+# Zone: wudu
+
+    rooms "zhushe" {
+      name = "竹舍"
+      description = "这是一间竹子搭成的房子，虽然简陋但却被主人收拾的干干净净。 一个羽扇纶巾，相貌清雅的文士正坐在案边闲看三国，听见脚步声不 由抬起头来。"
+  x = 2
+  y = -4
+  z = 4
+    }
+
+  room_exits "zhushe" {
+    room_id = rooms.zhushe.id
+    north = rooms.caoping.id
+    }
+
+
+  room_characters "zhushe" {
+    room_id = rooms.zhushe.id
+    characters = [
+      { id = characters.zhuge.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudu/npc/boy.c by LPCConverter
+# Zone: wudu
+
+    characters "boy" {
+      name = "男孩"
+      description = "这是个农家少年，大概因从小物农，虽然年纪不大，可已长的很粗壮了。"
+  gender = "男性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100
+    con = 15
+    dex = 16
+    int = 17
+    str = 16
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/cuilan.c by LPCConverter
+# Zone: wudu
+
+    characters "cuilan" {
+      name = "翠兰"
+      description = "这是个普普通通的农家少女，看见生人羞的低下了头。"
+  gender = "女性"
+  age = 18
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 200
+    con = 15
+    dex = 18
+    int = 17
+    str = 15
+  }
+
+  inquiries = [
+    { key = "五毒山" value = "五毒山就在村子的东南边，不过进山要通过桃花峪，除了我爹爹，别人不敢去的。" },
+    { key = "桃花峪" value = "想进桃花峪啊，那里终年都有瘴气弥漫，除非你也有诸葛行军散。" },
+    { key = "爹爹" value = "我爹爹上五毒山采药去了，着么晚了，也该回家了。" },
+    { key = "诸葛行军散" value = "全村就我爹爹有这个东西，据说是跟一个叫诸葛什么的要的。" }
+  ]
+
+  chat_chance = 10
+chats = [
+    "翠兰自言自语道：爹爹怎么还不回来啊，饭都要凉了。"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/cunfu.c by LPCConverter
+# Zone: wudu
+
+    characters "cunfu" {
+      name = "NPC"
+      description = "这是个普普通通的农家妇女，脸上擦着厚厚的白粉。"
+  gender = "女性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500
+    con = 18
+    dex = 20
+    int = 19
+    max_qi = 200
+    str = 17
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/cunmin.c by LPCConverter
+# Zone: wudu
+
+    characters "cunmin" {
+      name = "NPC"
+      description = "这是个普普通通的乡下人，紫红的脸膛，手上长满了厚厚的老茧。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500
+    con = 18
+    dex = 20
+    int = 19
+    max_qi = 200
+    str = 17
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/cunzhang.c by LPCConverter
+# Zone: wudu
+
+    characters "cunzhang" {
+      name = "苗三斤"
+      description = "这是本村的村长，凡是村里各家各户，老老少少的事他没有不知道的。"
+  gender = "男性"
+  age = 58
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 800
+    con = 20
+    dex = 20
+    int = 20
+    max_qi = 300
+    str = 20
+  }
+
+  inquiries = [
+    { key = "here" value = "此乃桃花村也。" },
+    { key = "name" value = "我是苗三斤．因为村里我酒量最大，所以大家选我当了村长。" },
+    { key = "桃花峪" value = "你问桃花峪啊，那可是个鬼地方，据说山谷里有瘴气，进去的人都死了。" }
+  ]
+
+  chat_chance = 10
+chats = [
+    "村长叹道：翠兰的爹爹到现在还没回来，会不会出事啊。",
+    "村长自言自语道：天天到那种地方去，早晚要出事的。"
+]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.hanyan.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/daoren.c by LPCConverter
+# Zone: wudu
+
+    characters "daoren" {
+      name = "毒道人"
+      description = "一位身穿道服，干瘪黑瘦的中年道人．"
+  title = "五毒教小头目"
+  gender = "男性"
+  age = 35
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 200000
+  }
+
+  inquiries = [
+    { key = "here" value = "此乃炼丹房，可以在这里练制(lianzhi)各种毒药。" },
+    { key = "上篇" value = "(: ask_me :)" },
+    { key = "原料" value = "(: ask_me :)" },
+    { key = "毒经" value = "你打算炼毒么？可惜我这里只有毒经上篇。" },
+    { key = "毒经上篇" value = "(: ask_me :)" },
+    { key = "毒药" value = "阁下可以在这里练制(lianzhi)各种毒药。" },
+    { key = "毒药配方" value = "(: ask_me :)" },
+    { key = "练毒" value = "(: ask_me :)" },
+    { key = "配方" value = "(: ask_me :)" }
+  ]
+
+  chat_chance = 2
+chats = [
+    "毒道人冷笑道：江湖中人谁敢和我们五毒教作对，管叫他死的不明不白。",
+    "毒道人干笑一声道：贫道专管练制各种毒药，保证药到命除。"
+]
+
+
+  skills = [
+    { skill = "blade" level = 50 },
+    { skill = "ruyi-dao" level = 50 },
+    { skill = "force" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "feiyan-zoubi" level = 50 },
+    { skill = "beiming-shengong" level = 50 },
+    { skill = "changquan" level = 50 },
+    { type = "unarmed" skill = "changquan" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "force" skill = "beiming-shengong" },
+    { type = "blade" skill = "ruyi-dao" }
+  ]
+
+
+  carry = [
+    { id = items.greenrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/dizi.c by LPCConverter
+# Zone: wudu
+
+    characters "dizi" {
+      name = "五毒教弟子"
+      description = "一个身体强壮的苗族青年，看来武功已小由所成。"
+  gender = "男性"
+  age = 28
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    dex = 26
+    max_qi = 500
+    str = 24
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 40 },
+    { skill = "force" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.ganggou.id },
+    { id = items.jinyi.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/girl.c by LPCConverter
+# Zone: wudu
+
+    characters "girl" {
+      name = "女孩"
+      description = "这是个农家少女，虽然只有十二、三岁，身材已经开始发育。"
+  gender = "女性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 70
+    con = 16
+    dex = 15
+    int = 15
+    str = 14
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/jiaotu.c by LPCConverter
+# Zone: wudu
+
+    characters "jiaotu" {
+      name = "五毒教徒"
+      description = "一个五毒的基层教徒，看来刚入教不久。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 13000
+    con = 25
+    dex = 23
+    int = 30
+    max_jing = 500
+    max_neili = 380
+    max_qi = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/kid.c by LPCConverter
+# Zone: wudu
+
+    characters "kid" {
+      name = "小孩"
+      description = "这是个农家小孩子"
+  gender = "男性"
+  age = 7
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50
+    con = 10
+    dex = 10
+    int = 10
+    max_qi = 150
+    str = 10
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/oldman.c by LPCConverter
+# Zone: wudu
+
+    characters "oldman" {
+      name = "白髯老者"
+      description = "一个须发皆白的老者，精神矍铄，满面红光。"
+  gender = "男性"
+  age = 64
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 400000
+    max_jing = 2000
+    max_neili = 2000
+    max_qi = 2000
+  }
+
+  skills = [
+    { skill = "dodge" level = 120 },
+    { skill = "unarmed" level = 120 },
+    { skill = "parry" level = 120 },
+    { skill = "force" level = 120 },
+    { skill = "hammer" level = 120 },
+    { skill = "sword" level = 120 },
+    { skill = "literate" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.zhulou2.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/qiaofu.c by LPCConverter
+# Zone: wudu
+
+    characters "qiaofu" {
+      name = "樵夫"
+      description = "一位面色黑红，悠然自得的樵夫．"
+  gender = "男性"
+  age = 30
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+  }
+
+  inquiries = [
+    { key = "here" value = "此乃卧龙岗．听说山上有位卧龙先生。" },
+    { key = "name" value = "大家都叫我阿牛．平常上山打柴，有时也采些药材。" }
+  ]
+
+  chat_chance = 10
+chats = [
+    "只听樵夫唱道：云际依依认旧林，断崖荒草路难寻。",
+    "樵夫唱道：西山望见朝来雨，南涧归时渡处深。",
+    "樵夫唱道：观棋柯烂，伐木丁丁，云边谷口徐行，卖薪沽酒，狂笑自陶情。",
+    "樵夫低声唱道：相逢处，非仙即道，静坐讲黄庭。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 60 },
+    { skill = "unarmed" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/sun.c by LPCConverter
+# Zone: wudu
+
+    characters "sun" {
+      name = "孙二娘"
+      description = "这位老板娘正笑咪咪地坐在柜台后面，向着门外张望。"
+  gender = "女性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+  }
+
+  goods = [
+    { id = items.jitui.id },
+    { id = items.baozi.id },
+    { id = items.flagon.id }
+  ]
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "literate" level = 150 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "孙二娘笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "孙二娘用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/tian.c by LPCConverter
+# Zone: wudu
+
+    characters "tian" {
+      name = "田嫂"
+      description = "一个白皙丰满的中年妇人。"
+  title = "女易牙"
+  gender = "女性"
+  age = 36
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2000
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["yao"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/tongzi.c by LPCConverter
+# Zone: wudu
+
+    characters "tongzi" {
+      name = "锦衣童子"
+      description = "一个眉清目秀的童子，别看他年纪不大，已深得五毒教真传。"
+  gender = "男性"
+  age = 15
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 40000
+    dex = 25
+    max_qi = 600
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "force" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.jinyi.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/xiansheng.c by LPCConverter
+# Zone: wudu
+
+    characters "xiansheng" {
+      name = "教书先生"
+      description = "一位白面无须的中年文士，正摇头晃脑的在教学生念书。"
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000
+    max_qi = 400
+  }
+
+  chat_chance = 10
+chats = [
+    "教书先生念道：人之初，性本善。",
+    "教书先生摇头晃脑的吟道：关关雎鸠，在河之洲，窈窕淑女，君子好逑。",
+    "教书先生自言自语道：挠挠痒痒，痒痒挠挠，不挠不痒，不痒不挠。",
+    "教书先生朗声念道：春眠不觉晓，处处闻啼鸟。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 15 },
+    { skill = "unarmed" level = 10 },
+    { skill = "parry" level = 15 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/xuetong.c by LPCConverter
+# Zone: wudu
+
+    characters "xuetong" {
+      name = "小学童"
+      description = "这是一个十三四岁的小童，正心不在焉的跟着先生胡乱念着。"
+  gender = "男性"
+  age = 14
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    max_qi = 200
+  }
+
+  chat_chance = 10
+chats = [
+    "小学童断断续续的念道：人之初，性本……呼…呼……",
+    "小学童摇头晃脑的念道：蝈蝈鸠鸠，在河洲洲，窈窕是你，君子高逑。",
+    "小学童自言自语道：生生死死，死死生生，先生先死，先死先生。",
+    "小学童随声附和道：春眠不觉晓，所以睡懒觉。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 5 },
+    { skill = "unarmed" level = 5 },
+    { skill = "parry" level = 5 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/youngboy.c by LPCConverter
+# Zone: wudu
+
+    characters "youngboy" {
+      name = "苗族少年"
+      description = "一个身穿苗族服饰的英俊少年。"
+  gender = "男性"
+  age = 20
+  shen_type = 1
+
+  combat = {
+    combat_exp = 8000
+    max_qi = 400
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "dodge" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/zhuge.c by LPCConverter
+# Zone: wudu
+
+    characters "zhuge" {
+      name = "诸葛不亮"
+      description = "一位羽扇纶巾，仙风道骨的文士。"
+  gender = "男性"
+  age = 35
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 200000
+  }
+
+  inquiries = [
+    { key = "here" value = "此乃卧龙岗，乃我先祖读书之地也。" },
+    { key = "name" value = "在下乃诸葛武候之第二十三代孙诸葛不亮是也。" },
+    { key = "孔明先生" value = "此乃吾之先祖也，曾七擒孟获，平定了南疆。故而阁下若去 南疆，或许鄙人能助君一臂之力。" },
+    { key = "桃花峪" value = "(: ask_me :)" },
+    { key = "瘴气" value = "(: ask_me :)" },
+    { key = "诸葛亮" value = "阁下怎好直呼我先祖名讳？" },
+    { key = "诸葛行军散" value = "(: ask_me :)" }
+  ]
+
+  chat_chance = 2
+chats = [
+    "诸葛不亮叹道：本人上知天文，下晓地理，有经天纬地之才，奈何无人知晓。",
+    "诸葛不亮道：要过桃花峪，非得我诸葛家主传的诸葛行军散不可。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "literate" level = 200 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/baozi.c by LPCConverter
+# Zone: wudu
+
+    characters "baozi" {
+      name = "肉包子"
+      description = "一个香喷喷的肉包子,不知道是用什么肉做的。"
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/baozi2.c by LPCConverter
+# Zone: wudu
+
+    characters "baozi2" {
+      name = "蛇肉包子"
+      description = "一个香喷喷的蛇肉包子。"
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/flagon.c by LPCConverter
+# Zone: wudu
+
+    characters "flagon" {
+      name = "酒壶"
+      description = "一个用来装烧酒的大酒壶。"
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/ganggou.c by LPCConverter
+# Zone: wudu
+
+    characters "ganggou" {
+      name = "钢钩"
+      description = "这是一柄特殊的精钢剑，剑端带着一个倒钩。"
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/hanyan.c by LPCConverter
+# Zone: wudu
+
+    characters "hanyan" {
+      name = "旱烟袋"
+      description = "这是一只用了好多年的铜烟袋。"
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/jiandao.c by LPCConverter
+# Zone: wudu
+
+    characters "jiandao" {
+      name = "五毒神剪"
+      description = "这是一柄奇门兵器，好似一只大剪刀。"
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/jinyi.c by LPCConverter
+# Zone: wudu
+
+    characters "jinyi" {
+      name = "锦衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/jitui.c by LPCConverter
+# Zone: wudu
+
+    characters "jitui" {
+      name = "烤山鸡腿"
+      description = "一枝烤得香喷喷的山鸡腿。"
+    }
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/xingjunsan.c by LPCConverter
+# Zone: wudu
+
+    characters "xingjunsan" {
+      name = "NPC"
+      description = "这是一包预防瘴气的药散，带在身上可以预防瘴气。"
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/book2.c by LPCConverter
+# Zone: wudu
+
+    items "book2" {
+      name = "拆招秘术"
+      description = "这是一本薄薄的小册，上面绘了许多互相打斗的人像。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/chuanxin.c by LPCConverter
+# Zone: wudu
+
+    items "chuanxin" {
+      name = "穿心莲"
+      description = "这是一朵碧蓝色的莲花，含剧毒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/duanchang.c by LPCConverter
+# Zone: wudu
+
+    items "duanchang" {
+      name = "断肠草"
+      description = "这是一株闪烁着磷光的小草。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/dujing1.c by LPCConverter
+# Zone: wudu
+
+    items "dujing1" {
+      name = "Item"
+      description = "这是一本薄薄的小册，上面密密麻麻的写满了各种用毒 的基本方法和毒药的配方。你可以用读(read)一读。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/dujing2.c by LPCConverter
+# Zone: wudu
+
+    items "dujing2" {
+      name = "「毒经中篇」"
+      description = "这是一本薄薄的小册，上面密密麻麻的记满了各种用毒的法门。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/fugu.c by LPCConverter
+# Zone: wudu
+
+    items "fugu" {
+      name = "腐骨草"
+      description = "这是一株普通的小草，叶面发出一股难闻的臭气。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/ganchai.c by LPCConverter
+# Zone: wudu
+
+    items "ganchai" {
+      name = "Item"
+      description = "这是一捆木柴。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/hulu.c by LPCConverter
+# Zone: wudu
+
+    items "hulu" {
+      name = "葫芦"
+      description = "一个用葫芦制成的水壶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/huluobu.c by LPCConverter
+# Zone: wudu
+
+    items "huluobu" {
+      name = "胡箩卜干"
+      description = "一块晾干了的胡箩卜干，比较方便储藏。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/huoba.c by LPCConverter
+# Zone: wudu
+
+    items "huoba" {
+      name = "火把"
+      description = "这是支火把。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一根{name}，握在手中。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/jiedudan.c by LPCConverter
+# Zone: wudu
+
+    items "jiedudan" {
+      name = "凝冰丹"
+      description = "五毒教的神丹，能解蟾毒及砂毒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/jinfenggou.c by LPCConverter
+# Zone: wudu
+
+    items "jinfenggou" {
+      name = "金蜈钩"
+      description = "一柄金光闪闪的钩子，顶端好似一只蛇头。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回鞘中。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/jinsheduye.c by LPCConverter
+# Zone: wudu
+
+    items "jinsheduye" {
+      name = "金蛇毒液"
+      description = "这是一瓶剧毒的金蛇毒液。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/qhcwan.c by LPCConverter
+# Zone: wudu
+
+    items "qhcwan" {
+      name = "缺口的青花瓷碗"
+      description = "一个缺了口的粗瓷碗。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/qianrizui.c by LPCConverter
+# Zone: wudu
+
+    items "qianrizui" {
+      name = "千日醉"
+      description = "这是一颗核桃大小的果实，散发着一股浓郁的酒香。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/qianzhumiji.c by LPCConverter
+# Zone: wudu
+
+    items "qianzhumiji" {
+      name = "千蛛万毒手秘笈"
+      description = "这是失传已久的千蛛万毒手秘笈下半部，你可以从中研究一些千蛛万毒手的绝招。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/shexinzi.c by LPCConverter
+# Zone: wudu
+
+    items "shexinzi" {
+      name = "蛇信子"
+      description = "这是一颗植物的果实。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/shibing.c by LPCConverter
+# Zone: wudu
+
+    items "shibing" {
+      name = "柿饼"
+      description = "一个好甜的柿饼。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/shourou1.c by LPCConverter
+# Zone: wudu
+
+    items "shourou1" {
+      name = "狍子肉"
+      description = "一块风干的腊肉。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/shourou2.c by LPCConverter
+# Zone: wudu
+
+    items "shourou2" {
+      name = "野猪腿"
+      description = "一块风干的腊肉。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/tieshao.c by LPCConverter
+# Zone: wudu
+
+    items "tieshao" {
+      name = "铁哨"
+      description = "这是一个黑黝黝的铁哨子，看不出有什么不同。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/tiezhui.c by LPCConverter
+# Zone: wudu
+
+    items "tiezhui" {
+      name = "大铁锤"
+      description = "这是一柄沉重的大铁锤，后面带着长长的铁链。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「哗啷」的一声,取出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}挂回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/tongpai.c by LPCConverter
+# Zone: wudu
+
+    items "tongpai" {
+      name = "铜牌"
+      description = "这是一面四四方方的铜牌,上面刻着:“千蛛万毒”四个大字。 铜牌背面好象雕着一些细细的花纹，需要仔细看(see)才能勉强看清楚。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/tudou.c by LPCConverter
+# Zone: wudu
+
+    items "tudou" {
+      name = "土豆"
+      description = "一块圆滚滚的土豆。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/woodjian.c by LPCConverter
+# Zone: wudu
+
+    items "woodjian" {
+      name = "木剑"
+      description = "这是一柄练功用的木剑，剑头是平的。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/wuxing.c by LPCConverter
+# Zone: wudu
+
+    items "wuxing" {
+      name = "无形之毒"
+      description = "这是一包五毒教的秘制的毒药，吃了它必死无疑。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/xiang.c by LPCConverter
+# Zone: wudu
+
+    items "xiang" {
+      name = "龙涎香"
+      description = "这是一块黑红色的东西，散发出奇异香气。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/zhulou.c by LPCConverter
+# Zone: wudu
+
+    items "zhulou" {
+      name = "竹篓"
+      description = "这是一个小口大肚的竹篓，常用来存放草药。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudu/obj/zhulou2.c by LPCConverter
+# Zone: wudu
+
+    items "zhulou2" {
+      name = "竹篓"
+      description = "这是一个小口大肚的竹篓，常用来存放草药。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }

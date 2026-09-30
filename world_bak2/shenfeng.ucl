@@ -1,0 +1,1455 @@
+zones "shenfeng" {
+  name = "shenfeng"
+}
+
+# Generated from C:/files/git/mud/d/shenfeng/bridge1.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "bridge1" {
+      name = "独木桥"
+      description = "四下无声，仰视苍天，注视雪白的山峰，令人不觉怆然而 发思古之幽情。往前只见一道飞岩，下临绝崖，只有一条狭窄 的独木桥(bridge)通达对崖，危桥在谷风中不停地抖动。"
+  x = 0
+  y = 0
+  z = 1
+item_desc = {
+ bridge = "这是一条宽约七寸的独木桥，看来只能走(zou)过一人。"
+}
+    }
+
+  room_exits "bridge1" {
+    room_id = rooms.bridge1.id
+    up = rooms.bridge2.id
+    down = rooms.dadian.id
+    south = rooms.xiaojing.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/bridge2.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "bridge2" {
+      name = "独木桥"
+      description = "这是一条宽约七寸的独木桥(bridge)，天风凛冽，吹的人 衣襟头发齐飞，只要一不留神，稍一失足，立刻便要粉身碎骨。 两崖相隔，约有五十余丈，往下看，峭壁如刀削，云卷雾涌深 不见底，投块石子下去，也听不到回声！"
+  x = 0
+  y = 0
+  z = 2
+item_desc = {
+ bridge = "这是一条宽约七寸的独木桥，看来只能走(zou)过一人。"
+}
+    }
+
+  room_exits "bridge2" {
+    room_id = rooms.bridge2.id
+    up = rooms.feicui1.id
+    down = rooms.bridge1.id
+    north = rooms.xiaojing1.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/caoyuan1.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "caoyuan1" {
+      name = "草原"
+      description = "这是一片无边无际的草原，半人高的青草随风而动，正如 江湖中的你，随著江湖之中汹涌的波涛，四处飘摇。你想到江 湖中的无奈，不禁沧然泪下。"
+  x = 0
+  y = 1
+  z = 1
+    }
+
+  room_exits "caoyuan1" {
+    room_id = rooms.caoyuan1.id
+    south = rooms.caoyuan2.id
+    north = rooms.lake4.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/caoyuan2.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "caoyuan2" {
+      name = "草原"
+      description = "这是一片无边无际的草原，半人高的青草随风而动，正如 江湖中的你，随著江湖之中汹涌的波涛，四处飘摇。你想到江 湖中的无奈，不禁沧然泪下。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "caoyuan2" {
+    room_id = rooms.caoyuan2.id
+    north = rooms.caoyuan1.id
+    west = rooms.caoyuan3.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/caoyuan3.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "caoyuan3" {
+      name = "草原"
+      description = "这是一片无边无际的草原，半人高的青草随风而动，正如 江湖中的你，随著江湖之中汹涌的波涛，四处飘摇。你想到江 湖中的无奈，不禁沧然泪下。"
+  x = -1
+  y = 0
+  z = 1
+    }
+
+  room_exits "caoyuan3" {
+    room_id = rooms.caoyuan3.id
+    east = rooms.caoyuan2.id
+    west = rooms.caoyuan4.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/caoyuan4.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "caoyuan4" {
+      name = "戈壁"
+      description = "此处地势与大漠的其余地方截然不同，遍地黄沙中混着粗 大石砾，丘壑处处，乱岩嶙嶙，路十分的崎岖难行。"
+  x = -2
+  y = 0
+  z = 1
+    }
+
+  room_exits "caoyuan4" {
+    room_id = rooms.caoyuan4.id
+    east = rooms.caoyuan3.id
+    west = rooms.caoyuan5.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/caoyuan5.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "caoyuan5" {
+      name = "戈壁"
+      description = "戈壁平坦如镜，和沙漠上的沙丘起伏全然不同，只见一片 平沙，凝眸远眺，只觉天地相接，万籁无声，身当此境，不禁 也生栗栗之感，顿觉大千无限，一己渺小异常。"
+  x = -3
+  y = 0
+  z = 1
+    }
+
+  room_exits "caoyuan5" {
+    room_id = rooms.caoyuan5.id
+    southwest = rooms.nanjiang2.id
+    south = rooms.nanjiang2.id
+    west = rooms.nanjiang1.id
+    east = rooms.caoyuan4.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/caoyuan6.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "caoyuan6" {
+      name = "草原"
+      description = "这里是一望无际的大草原。绿色的草地美丽得就象晴朗的 蓝天。草原上三三两两的羊群则是蓝天上飘浮的朵朵白云。远 处的昆仑山在骄阳下看来亮如纯银；到了夕阳西下时又变得灿 烂如黄金。你也许从没想到，在塞外的边陲之地竟有如此美妙 的地方，美得辉煌而神秘，美得令人迷惑。"
+  x = 6
+  y = -1
+  z = 1
+    }
+
+  room_exits "caoyuan6" {
+    room_id = rooms.caoyuan6.id
+    east = rooms.xingxing2.id
+    westup = rooms.caoyuan7.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/caoyuan7.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "caoyuan7" {
+      name = "山路"
+      description = "山路自东向西，地势渐平。云中有几头苍鹰在低低的盘旋 遨翔，仿佛将行人当作了猎物。路面铺着小石子，道两旁的灌 木越来越少，骄阳似火，令人真想找个地方休息一下。"
+  x = 5
+  y = -1
+  z = 2
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：! userp(me) && dir == "north"
+direction = "north"
+  message = "高昌迷宮NPC立入禁止。"
+}
+
+]
+    }
+
+  room_exits "caoyuan7" {
+    room_id = rooms.caoyuan7.id
+    eastdown = rooms.caoyuan6.id
+    westdown = rooms.shamo1.id
+    north = rooms.shulin1.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/dadian.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "dadian" {
+      name = "大殿"
+      description = "你走到殿口，只见大殿中也到处都是骸骨，玉刀玉剑散满 了一地，想来当日必曾有过一场激战。殿中地下到处是大大小 小的玉制武器，刀枪剑戟都有，只是形状奇特，与中土习见的 迥然不同。骸骨前面有一块十分光滑的石板。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dadian" {
+    room_id = rooms.dadian.id
+    up = rooms.bridge1.id
+    west = rooms.yongdao4.id
+    north = rooms.diantang.id
+    }
+
+
+
+
+  room_items "dadian" {
+    room_id = rooms.dadian.id
+    items = [
+      { id = items.yufu.id },
+      { id = items.yudao.id },
+      { id = items.yujian.id },
+      { id = items.skeleton.id },
+      { id = items.skeleton1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenfeng/diantang.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "diantang" {
+      name = "殿堂"
+      description = "走到大殿之后，见是一座较小的殿堂，殿中情景却尤为可 怖，数十具骸骨一堆堆相互纠结，骸骨大都直立如生时，有的 手中握有兵刃，有的却是空手。西侧有一扇小石门。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "diantang" {
+    room_id = rooms.diantang.id
+    west = rooms.yushi.id
+    south = rooms.dadian.id
+    }
+
+
+
+
+  room_items "diantang" {
+    room_id = rooms.diantang.id
+    items = [
+      { id = items.yudao.id },
+      { id = items.yujian.id },
+      { id = items.skeleton.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenfeng/feicui1.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "feicui1" {
+      name = "翡翠池"
+      description = "这里四周群山围绕，就如一只大盆一般，盆子中心碧水莹 然，绿若翡翠，是个圆形的大水池(pool)，隔了这千百年，竟 然并不曾干枯，想来池底另有活水源头。你走近池边，伸下手 去只觉清凉入骨，双手捧起水来但见池水澄净清澈，更无纤毫 苔泥，原来圆池四周都是翡翠，池水才映成绿色。只见洁白的 玉峰映在碧绿的池中，明艳洁净，幽绝清绝。"
+  x = 0
+  y = 0
+  z = 3
+item_desc = {
+ pool = "池水澄净清澈，更无纤毫苔泥，圆池四周都是翡翠。"
+}
+    }
+
+  room_exits "feicui1" {
+    room_id = rooms.feicui1.id
+    down = rooms.bridge2.id
+    up = rooms.yongdao5.id
+    }
+
+
+
+
+  room_items "feicui1" {
+    room_id = rooms.feicui1.id
+    items = [
+      { id = items.skeleton3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenfeng/feicui2.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "feicui2" {
+      name = "翡翠池"
+      description = "这里是一个四周镶满翡翠的圆池，你身在池中，伸下手去 只觉清凉入骨，双手捧起水来但见池水澄净清澈，更无纤毫苔 泥，原来圆池四周都是翡翠，池水才映成绿色。洁白的玉峰映 在碧绿的池中，显得格外的明艳洁净，幽绝清绝。只见池边长 满了翠绿的青藤(rattan)。池底似乎有个洞(hole)。"
+  x = 0
+  y = 0
+  z = 4
+item_desc = {
+ rattan = "生长在翡翠池岸边的翠绿青藤，可以由它爬上岸去。"
+ hole = "潜藏在池底的一个小洞，你似乎可以钻进去。"
+}
+    }
+  room_exits "feicui2" {
+    room_id = rooms.feicui2.id
+    down = rooms.yongdao5.id
+    up = rooms.shenfeng.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/feixu1.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "feixu1" {
+      name = "高昌废墟"
+      description = "陡然间眼前一片空旷，此时朝阳初升，只见景色奇丽，莫 可名状。一座白玉山峰参天而起，峰前一排排的都是房屋。千 百所房屋断垣剩瓦，残破不堪，已没一座完整，但建筑规模宏 大，气象开朗，可见当年是一座十分繁荣的城市。"
+  x = -1
+  y = 2
+  z = 2
+    }
+
+  room_exits "feixu1" {
+    room_id = rooms.feixu1.id
+    west = rooms.feixu2.id
+    east = rooms.shibi.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/feixu2.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "feixu2" {
+      name = "高昌废墟"
+      description = "站在这里一眼望去，高高矮矮的房子栉比鳞次，可是声息 全无，甚至雀鸟啾鸣之声亦丝毫不闻。如此可怖的景象，寂静 的气势使人连大气也不敢喘上一口。一片寂静之中，远处忽然 传来隐隐的狼嗥。"
+  x = -2
+  y = 2
+  z = 2
+    }
+
+  room_exits "feixu2" {
+    room_id = rooms.feixu2.id
+    north = rooms.xiaowu.id
+    west = rooms.pendi.id
+    east = rooms.feixu1.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/guandao1.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "guandao1" {
+      name = "荒道"
+      description = "这里的地上是一种黄褐色，红褐色的石砾镶嵌在细细的黄 沙之中，给人以极其怪异的感觉。这里就是西域与中原的中间 地带，再往西就是边塞。"
+  x = 12
+  y = -1
+  z = 1
+    }
+
+  room_exits "guandao1" {
+    room_id = rooms.guandao1.id
+    east = rooms.road.id
+    west = rooms.guandao2.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/guandao2.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "guandao2" {
+      name = "塞口"
+      description = "这里是中原入西域的必经之路，大批的商人鸵队都一定要 从这里经过，形成了这里的畸形路容。向西你可以看到一段破 旧的长城，上面好象还有被土炮轰过的痕迹，向北是一家小店。 龙门客栈的木板招牌孤零零的在寒风中摇曳。"
+  x = 11
+  y = -1
+  z = 1
+    }
+
+  room_exits "guandao2" {
+    room_id = rooms.guandao2.id
+    east = rooms.guandao1.id
+    north = rooms.longmen.id
+    west = rooms.guandao3.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/guandao3.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "guandao3" {
+      name = "破旧长城"
+      description = "昔日雄伟的长城已面目全非，岁月和战争已几乎把它夷为 平地。唯一仅存的一点废墟，都被历代英雄的鲜血染成暗红色。 这里虽然是一片萧杀，却有几株小树从碎石的缝隙中挤出，给 人以一线生机的感觉。"
+  x = 10
+  y = -1
+  z = 1
+    }
+
+  room_exits "guandao3" {
+    room_id = rooms.guandao3.id
+    east = rooms.guandao2.id
+    west = rooms.guandao4.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/guandao4.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "guandao4" {
+      name = "山路"
+      description = "这是一条被人走出来的小山路，虽然不宽却是够一辆马车 通行。小路顺着山中较为平坦地带缓缓向西伸展。"
+  x = 9
+  y = -1
+  z = 1
+    }
+
+  room_exits "guandao4" {
+    room_id = rooms.guandao4.id
+    east = rooms.guandao3.id
+    west = rooms.xingxing1.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/huijiang1.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "huijiang1" {
+      name = "帕米尔高原"
+      description = "翻过天山顶峰，便来到帕米尔高原。真是天外有天，你仿 佛来到另一个世界。这儿冰雪消融，春意盎然。从那雪峰直垂 下来的溪涧里，长满了野果树。山风习习，空气清凉如水。山 花烂漫, 几里地外也能闻到馥郁的花香。"
+  x = -2
+  y = 4
+  z = 3
+    }
+
+  room_exits "huijiang1" {
+    room_id = rooms.huijiang1.id
+    southdown = rooms.huijiang2.id
+    }
+
+
+
+
+  room_items "huijiang1" {
+    room_id = rooms.huijiang1.id
+    items = [
+      { id = items.lang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenfeng/huijiang2.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "huijiang2" {
+      name = "帕米尔草原"
+      description = "这里已是南疆。独特的地势和气候，竟形成南疆难得一见 的小片草原。因天山挡住了北方寒风，这儿物产丰富，聚居了 不少哈萨克族人。波斯商人也常来此地贩卖土产。"
+  x = -2
+  y = 3
+  z = 2
+    }
+
+  room_exits "huijiang2" {
+    room_id = rooms.huijiang2.id
+    southdown = rooms.huijiang3.id
+    northup = rooms.huijiang1.id
+    }
+
+
+  room_characters "huijiang2" {
+    room_id = rooms.huijiang2.id
+    characters = [
+      { id = characters.hasake.id }    ]
+  }
+
+
+
+  room_items "huijiang2" {
+    room_id = rooms.huijiang2.id
+    items = [
+      { id = items.yang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenfeng/huijiang3.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "huijiang3" {
+      name = "南疆小镇"
+      description = "从草原上南下，便接近南疆沙漠了。这儿气候逐渐干燥热 浪时而从沙漠里涌来。沙漠里还走来骆驼商队，在这儿休息分 发货物。于是商铺林立人来人往十分热闹。西面是一小院。"
+  x = -2
+  y = 2
+  z = 1
+    }
+
+  room_exits "huijiang3" {
+    room_id = rooms.huijiang3.id
+    east = rooms.huijiang5.id
+    west = rooms.huijiang4.id
+    south = rooms.huijiang6.id
+    northup = rooms.huijiang2.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/huijiang4.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "huijiang4" {
+      name = "收购店"
+      description = "这是一个小收购店，房屋内铺着羊毛地毯。店老板为一波 斯人，专门收购当地物产。在一张大羊皮纸上，写着需收购的 各类物产表。"
+  x = -3
+  y = 2
+  z = 1
+    }
+
+  room_exits "huijiang4" {
+    room_id = rooms.huijiang4.id
+    east = rooms.huijiang3.id
+    }
+
+
+  room_characters "huijiang4" {
+    room_id = rooms.huijiang4.id
+    characters = [
+      { id = characters.dealer.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenfeng/huijiang5.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "huijiang5" {
+      name = "绿洲"
+      description = "在沙漠的尽头出现了一个绿洲。这儿是南疆难得一见的草 原。草原上的夜晚，天很高、很蓝，星星很亮，青草和小花散 播著芳香。隐隐约约随风声飘来天铃鸟的歌声。这里居住着哈 萨克人, 以放牧羊群为生。灌木丛中有一眼坎儿井。井台上有 个木杯专供口渴的行人喝水。井边是一块瓜地。"
+  x = -1
+  y = 2
+  z = 1
+    }
+
+  room_exits "huijiang5" {
+    room_id = rooms.huijiang5.id
+    east = rooms.lake4.id
+    north = rooms.huijiang7.id
+    west = rooms.huijiang3.id
+    }
+
+
+  room_characters "huijiang5" {
+    room_id = rooms.huijiang5.id
+    characters = [
+      { id = characters.su.id }    ]
+  }
+
+
+
+  room_items "huijiang5" {
+    room_id = rooms.huijiang5.id
+    items = [
+      { id = items.yang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenfeng/huijiang6.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "huijiang6" {
+      name = "草棚"
+      description = "这里是小山脚下，孤令令的有一座草棚。这棚屋土墙草顶 形式宛如内地汉人的砖屋，只是甚为简陋。只见小屋之後系著 匹高头白马，健腿长鬣。你悄悄的掩向小屋後面，正想探头从 窗子向屋内张望，那知窗内有一张脸同时探了上来。"
+  x = -2
+  y = 1
+  z = 1
+    }
+
+  room_exits "huijiang6" {
+    room_id = rooms.huijiang6.id
+    north = rooms.huijiang3.id
+    }
+
+
+  room_characters "huijiang6" {
+    room_id = rooms.huijiang6.id
+    characters = [
+      { id = characters.ji.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenfeng/huijiang7.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "huijiang7" {
+      name = "哈萨克群落"
+      description = "这儿有一片哈萨克帐蓬。哈萨克人的帐蓬一年四季在草原 上东西南北的迁移。其中一帐蓬前挂着一张大狼皮显得格外醒 目。一个身材苗条的女孩捧了酒浆出来，很客气地招呼你。"
+  x = -1
+  y = 3
+  z = 1
+    }
+
+  room_exits "huijiang7" {
+    room_id = rooms.huijiang7.id
+    south = rooms.huijiang5.id
+    }
+
+
+  room_characters "huijiang7" {
+    room_id = rooms.huijiang7.id
+    characters = [
+      { id = characters.aman.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenfeng/lake1.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "lake1" {
+      name = "小溪"
+      description = "沙丘间忽然出现了稀稀落落的铁草，再奔一阵，地下青草 渐多。转眼之间，面前出现一条小溪，俯身溪边，掬了一口水 喝下，只觉一阵清凉，直透心肺。那水甘美之中还带有微微香 气，想必出自一处绝佳的泉水。溪水中无数小块碎冰互相撞击 发出清脆声音，叮叮咚咚，宛如仙乐。"
+  x = 1
+  y = 0
+  z = 1
+    }
+
+  room_exits "lake1" {
+    room_id = rooms.lake1.id
+    south = rooms.lvzhou.id
+    north = rooms.lake2.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/lake2.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "lake2" {
+      name = "小溪"
+      description = "冰块闪耀之中，忽见夹杂有花瓣飘流，溪水芳香，当是上 游有花之故，沿溪水向上游行去。渐行溪流渐大。沙漠中的河 流大都上游水大，到下游水流逐渐被沙漠吸干，终于消失。但 见溪旁树木也渐渐多了。"
+  x = 1
+  y = 1
+  z = 1
+    }
+
+  room_exits "lake2" {
+    room_id = rooms.lake2.id
+    south = rooms.lake1.id
+    north = rooms.lake3.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/lake3.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "lake3" {
+      name = "银瀑"
+      description = "溪水转弯绕过一块高地，忽然眼前一片银瀑，水声轰轰不 绝，匹练有如自天而降，飞珠溅玉，顿成奇观。在这荒凉的大 漠之中突然见此美景，不觉身神俱爽，好奇心起，想看看瀑布 之上更有甚么景色。"
+  x = 1
+  y = 2
+  z = 1
+    }
+
+  room_exits "lake3" {
+    room_id = rooms.lake3.id
+    south = rooms.lake2.id
+    west = rooms.lake4.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/lake4.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "lake4" {
+      name = "大湖"
+      description = "转了几个弯，从一排参天青松中穿了出去，登时惊得呆了。 眼前一片大湖，湖的南端又是一条大瀑布，水花四溅，日光映 照，现出一条彩虹，湖周花树参差，杂花红白相间，倒映在碧 绿的湖水之中，奇丽莫名。远处是大片青草平原，无边无际的 延伸出去，与天相接。"
+  x = 0
+  y = 2
+  z = 1
+    }
+
+  room_exits "lake4" {
+    room_id = rooms.lake4.id
+    west = rooms.huijiang5.id
+    east = rooms.lake3.id
+    south = rooms.caoyuan1.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/longmen.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "longmen" {
+      name = "龙门客栈"
+      description = "小酒家几乎从不打烊，酒铺看起来不差，老板娘长得很不 错，但不知为什么，里边冷冷清清，看不见一个客人。屋子里 布置得精雅而别致，每一样东西都是精心挑选的，正好摆在最 恰当的地方，厅当中供着一个手捧金元宝的财神爷，上面还贴 着张斗大的红“喜”字，无论谁走进这里，都可以看得出这地 方的主人，一定是整天在做着发财梦的穷小子。"
+  x = 11
+  y = 0
+  z = 1
+    }
+
+  room_exits "longmen" {
+    room_id = rooms.longmen.id
+    south = rooms.guandao2.id
+    }
+
+
+  room_characters "longmen" {
+    room_id = rooms.longmen.id
+    characters = [
+      { id = characters.jinxiangyu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenfeng/lvzhou.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "lvzhou" {
+      name = "沙漠绿洲"
+      description = "你脚下的流沙已经不见，一个小小的湖泊呈现在你的眼前。 湖里的水虽然只有二指厚，却很清澈。在酷热的风中，湖水仍 是那么的清凉。一弯清流由北往南注入湖中。向西凝望，一座 雪白的山峰皎洁如玉。仰望峰巅，崇敬之心，油然而生。"
+  x = 1
+  y = -1
+  z = 1
+    }
+
+  room_exits "lvzhou" {
+    room_id = rooms.lvzhou.id
+    north = rooms.lake1.id
+    west = rooms.xiaojing.id
+    east = rooms.shamo3.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/pendi.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "pendi" {
+      name = "盆地"
+      description = "这地方是个盆地，四周高山拱卫，以致风雨不侵，千百年 之物仍能如此完好，实是罕见罕闻，沿路只见遍地白骨，刀枪 剑戟，到处乱丢。城中道路也是如迷宫，令人眼花缭乱。"
+  x = -3
+  y = 2
+  z = 2
+    }
+
+  room_exits "pendi" {
+    room_id = rooms.pendi.id
+    north = rooms.shanjiao.id
+    east = rooms.feixu2.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/shamo1.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "shamo1" {
+      name = "沙砾小径"
+      description = "这是一个无边的沙砾地，山势到了这里突然间变的无影无 踪。地气极干燥，连风都是暖的。地上的石砾发出一种暗红的 颜色，就象是被鲜血染红的一样。一条布满车痕的小径向西方 和东方伸展。"
+  x = 4
+  y = -1
+  z = 1
+    }
+
+  room_exits "shamo1" {
+    room_id = rooms.shamo1.id
+    eastup = rooms.caoyuan7.id
+    west = rooms.shamo2.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/shamo2.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "shamo2" {
+      name = "大漠风光"
+      description = "地势到这是豁然开朗，你的西边是一望无际的沙漠。狂风 在呼哮，漫天黄沙在飞舞，飞沙滚滚。沙砾打在你的身上，就 像是苍穹怒投下的冰雹。冥冥中仿佛已有种邪恶的力量，任何 人随时都有可能突然像野狗般死在沙砾上。"
+  x = 3
+  y = -1
+  z = 1
+    }
+
+  room_exits "shamo2" {
+    room_id = rooms.shamo2.id
+    east = rooms.shamo1.id
+    west = rooms.shamo3.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/shamo3.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "shamo3" {
+      name = "大漠风沙"
+      description = "你处在酷热如烘炉的沙漠中，热的令人连气都透不出。除 了满耳呼呼的风声什么也听不见。除了满眼滚滚的飞沙什么也 看不见；天地间仿佛只剩下你一个人。你脚下缓缓而动的流沙 给你如履薄冰的感觉。"
+  x = 2
+  y = -1
+  z = 1
+    }
+
+  room_exits "shamo3" {
+    room_id = rooms.shamo3.id
+    west = rooms.lvzhou.id
+    east = rooms.shamo2.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/shanjiao.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "shanjiao" {
+      name = "神峰山脚"
+      description = "此处已是神峰(peak)山脚，近看尤其美丽，通体雪白，莹 光纯净，做玉匠的只要找到小小的一块白玉，已然是终身吃之 不尽了，哪知这里竟有这样一座白玉山峰。抬头仰望，只觉心 旷神怡，万虑俱消。你不禁暗暗赞叹造物之奇。"
+  x = -3
+  y = 3
+  z = 2
+item_desc = {
+ peak = "陡峭的白玉山峰上布满斧凿痕迹，看来似乎可以爬上去。"
+}
+    }
+
+  room_exits "shanjiao" {
+    room_id = rooms.shanjiao.id
+    south = rooms.pendi.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/shenfeng.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "shenfeng" {
+      name = "神峰"
+      description = "这里是神峰的山腰，四周均有斧凿痕迹，察看峰壁发现洞 口的痕迹很是明显，只是年深月久，洞门(gate)的四周都已被 沙子(sand)牢牢堵塞住了。"
+  x = 0
+  y = 0
+  z = 5
+item_desc = {
+ gate = "嵌在神峰山腰的巨大厚重的石门，看起来很难推动。"
+ sand = "巨大的石门由于时间过长，已被沙子堵得严严实实。 如果要想打开石门，看来非得将这些沙子移开才行。"
+}
+    }
+  room_exits "shenfeng" {
+    room_id = rooms.shenfeng.id
+    down = rooms.feicui2.id
+    up = rooms.shishi.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/shibi.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "shibi" {
+      name = "石壁小径"
+      description = "这里道路骤陡，一线天光从石壁之间照射下来，只觉阴气 森森，寒意逼人。路旁又现一堆白骨，骸骨中光亮闪耀，竟是 许多宝石珠玉。"
+  x = 0
+  y = 2
+  z = 2
+    }
+
+  room_exits "shibi" {
+    room_id = rooms.shibi.id
+    west = rooms.feixu1.id
+    south = rooms.xiaojing1.id
+    }
+
+
+
+
+  room_items "shibi" {
+    room_id = rooms.shibi.id
+    items = [
+      { id = items.gold.id },
+      { id = items.bixue.id },
+      { id = items.skeleton.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenfeng/shishi.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "shishi" {
+      name = "石室"
+      description = "借着微弱的火光，只见四面石壁(wall)都是晶莹白玉，地 下放着几张木制桌椅。你伸手在桌上一按，桌子居然仍是坚牢 完固，原来山洞密闭，不受风侵，是以洞中物事并不朽烂。"
+  x = 0
+  y = 0
+  z = 6
+    }
+  room_exits "shishi" {
+    room_id = rooms.shishi.id
+    down = rooms.shenfeng.id
+    up = rooms.yongdao1.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/xiaojing.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "xiaojing" {
+      name = "石砾小径"
+      description = "此处地势与大漠的其余地方截然不同，遍地黄沙中混着粗 大石砾，丘壑处处，乱岩嶙嶙，山峰虽似触手可及，路竟是十 分的崎岖难行。"
+  x = 0
+  y = -1
+  z = 1
+    }
+
+  room_exits "xiaojing" {
+    room_id = rooms.xiaojing.id
+    north = rooms.bridge1.id
+    east = rooms.lvzhou.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/xiaojing1.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "xiaojing1" {
+      name = "小径"
+      description = "这条道路不知已有多少年无人行走，有些地方长草比人还 高，有些地方又全被沙堆阻塞，四下如死一般的寂静，只有风 吹过草梢的沙沙之声。偶尔一两声狼嚎随着腥风飘至耳际。"
+  x = 0
+  y = 1
+  z = 2
+    }
+
+  room_exits "xiaojing1" {
+    room_id = rooms.xiaojing1.id
+    north = rooms.shibi.id
+    south = rooms.bridge2.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/xiaowu.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "xiaowu" {
+      name = "小屋"
+      description = "这地方极是干燥，草木不生，屋中物品虽然经历了不知多 少年月，但大部仍然完好。厅上有一双女人的花鞋，色泽仍是 颇为鲜艳，想拿起来细看，哪知触手间登时化为灰尘，不由得 吓了一大跳。"
+  x = -2
+  y = 3
+  z = 2
+    }
+
+  room_exits "xiaowu" {
+    room_id = rooms.xiaowu.id
+    south = rooms.feixu2.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/xingxing1.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "xingxing1" {
+      name = "星星峡"
+      description = "远处出现了一抹岗峦。转眼之间，石壁越来越近，一字排 开，直伸出去，山石间云雾瀰漫，似乎其中别有天地，再走近 时忽觉峭壁中间露出一条缝来，沿山道直走进去，便是甘肃和 回疆之间的交通孔道星星峡。"
+  x = 8
+  y = -1
+  z = 1
+    }
+
+  room_exits "xingxing1" {
+    room_id = rooms.xingxing1.id
+    east = rooms.guandao4.id
+    west = rooms.xingxing2.id
+    }
+
+
+  room_characters "xingxing1" {
+    room_id = rooms.xingxing1.id
+    characters = [
+      { id = characters.seller.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenfeng/xingxing2.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "xingxing2" {
+      name = "星星峡"
+      description = "峡内两旁石壁峨然笔立，有如用刀削成，抬头望天，只觉 天色又蓝又亮，宛如潜在海底仰望一般。峡内岩石全是深黑色 显得乌光发亮。道路弯来弯去，曲折异常。峡内初有积雪，黑 白相映，蔚为奇观。"
+  x = 7
+  y = -1
+  z = 1
+    }
+
+  room_exits "xingxing2" {
+    room_id = rooms.xingxing2.id
+    east = rooms.xingxing1.id
+    west = rooms.caoyuan6.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/yongdao1.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "yongdao1" {
+      name = "甬道"
+      description = "这个山洞里伸手不见五指，黑沉沉的甚么也瞧不见。"
+  x = 0
+  y = 0
+  z = 7
+    }
+
+  room_exits "yongdao1" {
+    room_id = rooms.yongdao1.id
+    down = rooms.shishi.id
+    out = rooms.shenfeng.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/yongdao2.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "yongdao2" {
+      name = "甬道"
+      description = "走过了长长一条甬道，白玉壁上映出人的影子，此时深入 峰腹，吉凶祸福，殊难逆料，生平遭遇之奇，实以此时为最了。"
+  x = -1
+  y = -2
+  z = 0
+    }
+
+  room_exits "yongdao2" {
+    room_id = rooms.yongdao2.id
+    north = rooms.yongdao3.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/yongdao3.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "yongdao3" {
+      name = "甬道"
+      description = "前面山石阻路，已到尽头。只见尽头处闪闪生光，走近看 时，却是一玉石巨门。这门高达丈许，那里像门，直是一块巨 大的岩石。石门(gate)上下左右还有四个门环，均有两尺多长 的粗大铁钮紧紧扣住。"
+  x = -1
+  y = -1
+  z = 0
+    }
+
+  room_exits "yongdao3" {
+    room_id = rooms.yongdao3.id
+    south = rooms.yongdao2.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/yongdao4.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "yongdao4" {
+      name = "甬道"
+      description = "一步跨进，脚下喀喇一声，踏碎了一堆枯骨。这是一条仅 可容身的狭长甬道，刀剑四散，到处都是骸骨。火光下只见门 后刀痕累累，斑驳凹凸。走完甬道，慢慢前行，跨过一堆堆白 骨，转了个弯，前面突然出现一座大殿。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "yongdao4" {
+    room_id = rooms.yongdao4.id
+    south = rooms.yongdao3.id
+    east = rooms.dadian.id
+    }
+
+
+
+
+  room_items "yongdao4" {
+    room_id = rooms.yongdao4.id
+    items = [
+      { id = items.yufu.id },
+      { id = items.yudao.id },
+      { id = items.yujian.id },
+      { id = items.skeleton.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenfeng/yongdao5.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "yongdao5" {
+      name = "甬道"
+      description = "这里玉室下密道的一道梯级。下了梯级再走十多丈路，前 面豁然开朗，竟是一大片平地。"
+  x = 0
+  y = 0
+  z = 4
+    }
+
+  room_exits "yongdao5" {
+    room_id = rooms.yongdao5.id
+    up = rooms.feicui2.id
+    down = rooms.feicui1.id
+    out = rooms.yushi.id
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/yushi.c by LPCConverter
+# Zone: shenfeng
+
+    rooms "yushi" {
+      name = "玉室"
+      description = "你走进这里，眼前突然大亮，只见一道阳光从上面数十丈 高处的壁缝里照射进来。阳光照正之处，是一间玉室，看来当 年建造者依着这道天然光线，在峰中度准位置开凿而成。石室 中有玉床(bed)、玉桌(table)及玉椅，都雕刻得甚是精致，床 上斜倚着一具骸骨。石室一角有一大一小的两具骸骨。"
+  x = -1
+  y = 1
+  z = 0
+item_desc = {
+ table = "圆桌都是整块从玉石中雕刻出来的，连在地上，圆桌桌面刻的 是一群背上生翅的飞骆驼，花纹极细，刻工甚是精致，然而骆 驼的头和身子却并不连在一起，各自离开了一尺多位置。"
+ bed = "这是一张玉石雕刻出来的床。"
+}
+    }
+
+  room_exits "yushi" {
+    room_id = rooms.yushi.id
+    east = rooms.diantang.id
+    }
+
+
+
+
+  room_items "yushi" {
+    room_id = rooms.yushi.id
+    items = [
+      { id = items.skeleton.id },
+      { id = items.skeleton2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenfeng/npc/aman.c by LPCConverter
+# Zone: shenfeng
+
+    characters "aman" {
+      name = "阿曼"
+      description = "美丽的哈萨克姑娘，身形袅娜面目姣好，眼光中闪烁著笑意。"
+  nickname = "消息灵通"
+  gender = "女性"
+  age = 18
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2000
+    con = 12
+    dex = 18
+    int = 24
+    str = 16
+  }
+
+  inquiries = [
+    { key = "李文秀" value = "她才是一个大美人呢。" },
+    { key = "毛毯" value = "客人，请到帐蓬里挑选。" },
+    { key = "苏普" value = "嘻嘻，不告诉你。" }
+  ]
+
+  carry = [
+    { id = items.qcloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/npc/dealer.c by LPCConverter
+# Zone: shenfeng
+
+    characters "dealer" {
+      name = "波斯商人"
+      description = "一个高鼻蓝眼的波斯商人。他看着你脸上露出狡猾的笑容。"
+  nickname = "消息灵通"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 6000
+  }
+
+  chat_chance = 15
+chats = [
+    "波斯商人对你挤了一下眼睛。",
+    "波斯商人对你说：阿拉阿可巴，穆罕默德瑞素阿拉。",
+    "波斯商人呵呵笑了笑，神秘兮兮的看着你：。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "blade" level = 40 },
+    { skill = "parry" level = 30 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.wandao.id },
+    { id = items.changpao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/npc/hasake.c by LPCConverter
+# Zone: shenfeng
+
+    characters "hasake" {
+      name = "哈萨克人"
+      description = "一个哈萨克族青年，赶着几十只羊。"
+  gender = "男性"
+  age = 26
+  shen_type = 0
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 4000
+    con = 22
+    dex = 17
+    int = 18
+    max_jing = 600
+    max_neili = 600
+    max_qi = 600
+    str = 32
+  }
+
+  inquiries = [
+    { key = "苏普" value = "呀，你也要跟苏普摔跤？往东走你就会找到他。" },
+    { key = "计老人" value = "计老人会酿又香又烈的美酒，会医牛羊马匹的疾病。" },
+    { key = "阿曼" value = "叹，我摔跤总赢不了苏普。" }
+  ]
+
+  chat_chance = 10
+chats = [
+    "哈萨克人道：上个月我用刀砍死了一头狼，剥了狼皮送给咱阿妹。",
+    "哈萨克人道：阿曼是草原上一朵会走路的花。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "blade" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.duandao.id },
+    { id = items.ycloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/npc/ji.c by LPCConverter
+# Zone: shenfeng
+
+    characters "ji" {
+      name = "计老人"
+      description = "他满头白发，竟无一根是黑的。身材甚是高大，只 是弓腰曲背衰老已极。"
+  gender = "男性"
+  age = 70
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+    con = 20
+    dex = 24
+    int = 20
+    max_jing = 300
+    max_neili = 600
+    max_qi = 500
+    str = 20
+  }
+
+  inquiries = [
+    { key = "李文秀" value = "这孩子真是命苦。" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.ycloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/npc/jinxiangyu.c by LPCConverter
+# Zone: shenfeng
+
+    characters "jinxiangyu" {
+      name = "金湘玉"
+      description = "金湘玉是黄土高原一带有名的大美人。一些达官 贵人，江湖浪子常常在这里歇息，所以她对这一 带的一举一动都了如指掌。"
+  title = "龙门客栈老板娘"
+  nickname = "消息灵通"
+  gender = "女性"
+  shen_type = 0
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 500
+  }
+
+  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
+  # vendor_goods: "/d/city/npc/obj/jiudai" (file not found)
+  # vendor_goods: "/d/shenfeng/npc/obj/dogrou" (file not found)
+  # vendor_goods: "/d/shenfeng/npc/obj/hulu" (file not found)
+
+  carry = [
+    { id = items.yan_dress.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "金湘玉笑眯眯地说道：这位{respect}，快请进来喝碗酒吧。" },
+    { line = "金湘玉说道：哟！这位{respect}快请进，本店有刚出窑的好酒。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/npc/seller.c by LPCConverter
+# Zone: shenfeng
+
+    characters "seller" {
+      name = "珠宝商"
+      description = "这是一个来自西域的珠宝商人。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 32
+  brain = brains.vendor
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  # vendor_goods: "/clone/fam/etc/va2" (file not found)
+  # vendor_goods: "/clone/fam/etc/va3" (file not found)
+  # vendor_goods: "/clone/fam/etc/va5" (file not found)
+  # vendor_goods: "/clone/fam/etc/va6" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/npc/su.c by LPCConverter
+# Zone: shenfeng
+
+    characters "su" {
+      name = "苏普"
+      description = "一个年轻的哈萨克牧羊人，哈萨克第一勇士苏鲁克的儿子。"
+  gender = "男性"
+  age = 23
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 30000
+    con = 24
+    dex = 20
+    int = 20
+    max_jing = 1000
+    max_neili = 1000
+    max_qi = 1000
+    str = 36
+  }
+
+  inquiries = [
+    { key = "李文秀" value = "叹，不知她上哪儿去了。这么多年我一直没法忘了她。" },
+    { key = "计老人" value = "计老人会酿又香又烈的美酒，会医牛羊马匹的疾病。" },
+    { key = "阿曼" value = "她是我老婆，怎么着？不服咱们就摔摔跤。" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 100 },
+    { skill = "blade" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.duandao.id },
+    { id = items.ycloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/npc/obj/dogrou.c by LPCConverter
+# Zone: shenfeng
+
+    characters "dogrou" {
+      name = "狗肉"
+      description = "一块香喷喷的狗肉。"
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/npc/obj/duandao.c by LPCConverter
+# Zone: shenfeng
+
+    characters "duandao" {
+      name = "哈萨克弯刀"
+      description = "这是一柄亮晃晃的哈萨克短刀, 是哈萨克人的防身武器。"
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/npc/obj/duanjian.c by LPCConverter
+# Zone: shenfeng
+
+    characters "duanjian" {
+      name = "短剑"
+      description = "这是一柄剑身短小的精钢剑。"
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/npc/obj/hulu.c by LPCConverter
+# Zone: shenfeng
+
+    characters "hulu" {
+      name = "酒葫芦"
+      description = "一个用来装酒的大葫芦，外皮金黄，里面能装好几斤酒。"
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/npc/obj/qcloth.c by LPCConverter
+# Zone: shenfeng
+
+    characters "qcloth" {
+      name = "哈萨克袄裙"
+      description = "这是一件织著红花绿草的袄裙，哈萨克女孩常穿的衣着。"
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/npc/obj/ycloth.c by LPCConverter
+# Zone: shenfeng
+
+    characters "ycloth" {
+      name = "羊皮袄"
+      description = "这是一件灰色的羊皮袄。牧羊人不管春夏秋冬都穿着它。"
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/obj/skeleton.c by LPCConverter
+# Zone: shenfeng
+
+    items "skeleton" {
+      name = "枯乾的骸骨"
+      description = "这副骸骨已经躺在这里很久了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/obj/skeleton1.c by LPCConverter
+# Zone: shenfeng
+
+    items "skeleton1" {
+      name = "枯乾的骸骨"
+      description = "这副骸骨已经躺在这里很久了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/obj/skeleton2.c by LPCConverter
+# Zone: shenfeng
+
+    items "skeleton2" {
+      name = "枯乾的骸骨"
+      description = "这副骸骨已经躺在这里很久了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/obj/skeleton3.c by LPCConverter
+# Zone: shenfeng
+
+    items "skeleton3" {
+      name = "枯乾的骸骨"
+      description = "这副骸骨已经躺在这里很久了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/obj/yudao.c by LPCConverter
+# Zone: shenfeng
+
+    items "yudao" {
+      name = "玉刀"
+      description = "一柄用白玉做成的单刀，相当的精美。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/obj/yufu.c by LPCConverter
+# Zone: shenfeng
+
+    items "yufu" {
+      name = "玉斧"
+      description = "一柄用白玉做成的斧头，相当的精美。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenfeng/obj/yujian.c by LPCConverter
+# Zone: shenfeng
+
+    items "yujian" {
+      name = "玉剑"
+      description = "一柄用白玉做成的长剑，相当的精美。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }

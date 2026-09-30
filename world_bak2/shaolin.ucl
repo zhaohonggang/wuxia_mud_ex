@@ -1,0 +1,6545 @@
+zones "shaolin" {
+  name = "shaolin"
+}
+
+# Generated from C:/files/git/mud/d/shaolin/andao1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "andao1" {
+      name = "暗道"
+      description = "这里是一个阴暗潮湿的地道，四壁用粗糙的片岩垒垛而成， 只见一颗颗水珠沿着墙壁滚下来，溅在地上。也许是因为长时 间无人通行的缘故，整个地道弥漫着一股腐尸般的恶臭。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "andao1" {
+    room_id = rooms.andao1.id
+    up = rooms.andao2.id
+    down = rooms.guangchang2.id
+    south = rooms.rukou.id
+    north = rooms.jianyu1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/andao2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "andao2" {
+      name = "暗道"
+      description = "这是一个阴暗潮湿的地道，四壁用粗糙的片岩垒垛而成，一 颗颗水珠沿着墙壁滚下来，溅在地上。也许是因为长时间无人通 行的缘故，整个地道弥漫着一股腐尸般的恶臭。"
+  x = 0
+  y = 0
+  z = 2
+    }
+
+  room_exits "andao2" {
+    room_id = rooms.andao2.id
+    down = rooms.andao1.id
+    up = rooms.gulou1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/andao3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "andao3" {
+      name = "暗道"
+      description = "这是一个阴暗潮湿的地道，四壁用粗糙的片岩垒垛而成，一 颗颗水珠沿着墙壁滚下来，溅在地上。也许是因为长时间无人通 行的缘故，整个地道弥漫着一股腐尸般的恶臭。"
+  x = 0
+  y = 0
+  z = 3
+valid_leave = [
+{
+  direction = ~
+  message = "你试着推了推顶上的砖盖，触手冰凉，纹丝不动。 看来已被铁汁浇透，坚如铁板一般。看来你只能另想办法了。"
+}
+
+]
+    }
+
+  room_exits "andao3" {
+    room_id = rooms.andao3.id
+    down = rooms.gulou7.id
+    up = rooms.zhonglou1.id
+    in = rooms.bagua0.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bagua.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bagua" {
+      name = "八卦阵阵心"
+      description = "这里就是洪荒古阵的中心。站在这里，才能看清楚四周 的情形，只见周围暮蔼沉沉，云气弥漫，不见边际。一道道 闪电如奔蛇般穿梭其间，发出阵阵闷雷。间夹着几声惨厉的 哭叫声，与雷电着地的劈裂声混合在一起，整个场面说不出 的诡异可惧。阵心正中处有一口深潭(tan)，望之深不见底。"
+  x = 0
+  y = 0
+  z = 4
+item_desc = {
+ tan = "深潭边的岩石上刻着四个巨大的古篆：“万古寒潭”， 再有五个小字：“苍松子谨书”。 潭边都是极硬的玄武岩， 潭水澄碧透明，鱼虾不生。水面隐隐泛着一股幽幽的深绿色， 走近便觉一股彻骨寒气扑面而来。  粗看似乎只有几十丈深， 仔细望下去却是越看越深，直如无底深渊一般！"
+}
+    }
+
+  room_exits "bagua" {
+    room_id = rooms.bagua.id
+    down = rooms.zhonglou7.id
+    up = rooms.andao3.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bagua0.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bagua0" {
+      name = "八卦阵"
+      description = "这是便是八卦阵，四壁全由粗糙的片岩垒垛而成。巨石 狰狞，缺口及合缝处犬牙交错，如洪荒怪兽，其势似欲择人 而噬。壁上刻着一行小篆：“八卦通天地，金刚泣鬼神”。 四周灰尘厚积，蛛网密布，看来已久无人行。地上似乎躺着 几具尸体，早已腐烂化灰，脚步经过，连尸首身上的衣物也 随风飘散。"
+  x = 0
+  y = 0
+  z = 3
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：check_dirs(me, dir)
+direction = ~
+  message = "你踩动了机关，掉进僧监。"
+}
+
+]
+    }
+
+  room_exits "bagua0" {
+    room_id = rooms.bagua0.id
+  乾 = rooms.bagua7.id
+  巽 = rooms.bagua6.id
+  离 = rooms.bagua5.id
+  艮 = rooms.bagua4.id
+  兑 = rooms.bagua3.id
+  坎 = rooms.bagua2.id
+  震 = rooms.bagua1.id
+  坤 = rooms.bagua0.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bagua1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bagua1" {
+      name = "八卦阵"
+      description = "这是便是八卦阵，四壁全由粗糙的片岩垒垛而成。巨石 狰狞，缺口及合缝处犬牙交错，如洪荒怪兽，其势似欲择人 而噬。壁上刻着一行小篆：“八卦通天地，金刚泣鬼神”。 四周灰尘厚积，蛛网密布，看来已久无人行。地上似乎躺着 几具尸体，早已腐烂化灰，脚步经过，连尸首身上的衣物也 随风飘散。"
+  x = 0
+  y = 0
+  z = 5
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：check_dirs(me, dir)
+direction = ~
+  message = "你踩动了机关，掉进僧监。"
+}
+
+]
+    }
+
+  room_exits "bagua1" {
+    room_id = rooms.bagua1.id
+  乾 = rooms.bagua7.id
+  巽 = rooms.bagua6.id
+  离 = rooms.bagua5.id
+  艮 = rooms.bagua4.id
+  兑 = rooms.bagua3.id
+  坎 = rooms.bagua2.id
+  震 = rooms.bagua1.id
+  坤 = rooms.bagua0.id
+    up = rooms.bagua2.id
+    down = rooms.zhonglou6.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bagua2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bagua2" {
+      name = "八卦阵"
+      description = "这是便是八卦阵，四壁全由粗糙的片岩垒垛而成。巨石 狰狞，缺口及合缝处犬牙交错，如洪荒怪兽，其势似欲择人 而噬。壁上刻着一行小篆：“八卦通天地，金刚泣鬼神”。 四周灰尘厚积，蛛网密布，看来已久无人行。地上似乎躺着 几具尸体，早已腐烂化灰，脚步经过，连尸首身上的衣物也 随风飘散。"
+  x = 0
+  y = 0
+  z = 6
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：check_dirs(me, dir)
+direction = ~
+  message = "你踩动了机关，掉进僧监。"
+}
+
+]
+    }
+
+  room_exits "bagua2" {
+    room_id = rooms.bagua2.id
+  乾 = rooms.bagua7.id
+  巽 = rooms.bagua6.id
+  离 = rooms.bagua5.id
+  艮 = rooms.bagua4.id
+  兑 = rooms.bagua3.id
+  坎 = rooms.bagua2.id
+  震 = rooms.bagua1.id
+  坤 = rooms.bagua0.id
+    up = rooms.bagua3.id
+    down = rooms.bagua1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bagua3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bagua3" {
+      name = "八卦阵"
+      description = "这是便是八卦阵，四壁全由粗糙的片岩垒垛而成。巨石 狰狞，缺口及合缝处犬牙交错，如洪荒怪兽，其势似欲择人 而噬。壁上刻着一行小篆：“八卦通天地，金刚泣鬼神”。 四周灰尘厚积，蛛网密布，看来已久无人行。地上似乎躺着 几具尸体，早已腐烂化灰，脚步经过，连尸首身上的衣物也 随风飘散。"
+  x = 0
+  y = 0
+  z = 7
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：check_dirs(me, dir)
+direction = ~
+  message = "你踩动了机关，掉进僧监。"
+}
+,
+{
+  direction = ~
+  message = "你踩动了机关，掉进密室。"
+}
+
+]
+    }
+
+  room_exits "bagua3" {
+    room_id = rooms.bagua3.id
+  乾 = rooms.bagua7.id
+  巽 = rooms.bagua6.id
+  离 = rooms.bagua5.id
+  艮 = rooms.bagua4.id
+  兑 = rooms.bagua3.id
+  坎 = rooms.bagua2.id
+  震 = rooms.bagua1.id
+  坤 = rooms.bagua0.id
+    up = rooms.bagua4.id
+    down = rooms.bagua2.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bagua4.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bagua4" {
+      name = "八卦阵"
+      description = "这是便是八卦阵，四壁全由粗糙的片岩垒垛而成。巨石 狰狞，缺口及合缝处犬牙交错，如洪荒怪兽，其势似欲择人 而噬。壁上刻着一行小篆：“八卦通天地，金刚泣鬼神”。 四周灰尘厚积，蛛网密布，看来已久无人行。地上似乎躺着 几具尸体，早已腐烂化灰，脚步经过，连尸首身上的衣物也 随风飘散。"
+  x = 0
+  y = 0
+  z = 8
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：check_dirs(me, dir)
+direction = ~
+  message = "你踩动了机关，掉进僧监。"
+}
+
+]
+    }
+
+  room_exits "bagua4" {
+    room_id = rooms.bagua4.id
+  乾 = rooms.bagua7.id
+  巽 = rooms.bagua6.id
+  离 = rooms.bagua5.id
+  艮 = rooms.bagua4.id
+  兑 = rooms.bagua3.id
+  坎 = rooms.bagua2.id
+  震 = rooms.bagua1.id
+  坤 = rooms.bagua0.id
+    up = rooms.bagua5.id
+    down = rooms.bagua3.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bagua5.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bagua5" {
+      name = "八卦阵"
+      description = "这是便是八卦阵，四壁全由粗糙的片岩垒垛而成。巨石 狰狞，缺口及合缝处犬牙交错，如洪荒怪兽，其势似欲择人 而噬。壁上刻着一行小篆：“八卦通天地，金刚泣鬼神”。 四周灰尘厚积，蛛网密布，看来已久无人行。地上似乎躺着 几具尸体，早已腐烂化灰，脚步经过，连尸首身上的衣物也 随风飘散。"
+  x = 0
+  y = 0
+  z = 9
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：check_dirs(me, dir)
+direction = ~
+  message = "你踩动了机关，掉进僧监。"
+}
+
+]
+    }
+
+  room_exits "bagua5" {
+    room_id = rooms.bagua5.id
+  乾 = rooms.bagua7.id
+  巽 = rooms.bagua6.id
+  离 = rooms.bagua5.id
+  艮 = rooms.bagua4.id
+  兑 = rooms.bagua3.id
+  坎 = rooms.bagua2.id
+  震 = rooms.bagua1.id
+  坤 = rooms.bagua0.id
+    up = rooms.bagua6.id
+    down = rooms.bagua4.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bagua6.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bagua6" {
+      name = "八卦阵"
+      description = "这是便是八卦阵，四壁全由粗糙的片岩垒垛而成。巨石 狰狞，缺口及合缝处犬牙交错，如洪荒怪兽，其势似欲择人 而噬。壁上刻着一行小篆：“八卦通天地，金刚泣鬼神”。 四周灰尘厚积，蛛网密布，看来已久无人行。地上似乎躺着 几具尸体，早已腐烂化灰，脚步经过，连尸首身上的衣物也 随风飘散。"
+  x = 0
+  y = 0
+  z = 10
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：check_dirs(me, dir)
+direction = ~
+  message = "你踩动了机关，掉进僧监。"
+}
+
+]
+    }
+
+  room_exits "bagua6" {
+    room_id = rooms.bagua6.id
+  乾 = rooms.bagua7.id
+  巽 = rooms.bagua6.id
+  离 = rooms.bagua5.id
+  艮 = rooms.bagua4.id
+  兑 = rooms.bagua3.id
+  坎 = rooms.bagua2.id
+  震 = rooms.bagua1.id
+  坤 = rooms.bagua0.id
+    up = rooms.bagua7.id
+    down = rooms.bagua5.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bagua7.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bagua7" {
+      name = "八卦阵"
+      description = "这是便是八卦阵，四壁全由粗糙的片岩垒垛而成。巨石 狰狞，缺口及合缝处犬牙交错，如洪荒怪兽，其势似欲择人 而噬。壁上刻着一行小篆：“八卦通天地，金刚泣鬼神”。 四周灰尘厚积，蛛网密布，看来已久无人行。地上似乎躺着 几具尸体，早已腐烂化灰，脚步经过，连尸首身上的衣物也 随风飘散。"
+  x = 0
+  y = 0
+  z = 11
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：check_dirs(me, dir)
+direction = ~
+  message = "你踩动了机关，掉进僧监。"
+}
+
+]
+    }
+
+  room_exits "bagua7" {
+    room_id = rooms.bagua7.id
+  乾 = rooms.bagua7.id
+  巽 = rooms.bagua6.id
+  离 = rooms.bagua5.id
+  艮 = rooms.bagua4.id
+  兑 = rooms.bagua3.id
+  坎 = rooms.bagua2.id
+  震 = rooms.bagua1.id
+  坤 = rooms.bagua0.id
+    up = rooms.beilin3.id
+    down = rooms.bagua6.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bamboo1" {
+      name = "竹林"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = 0
+  y = 9
+  z = 1
+    }
+
+  room_exits "bamboo1" {
+    room_id = rooms.bamboo1.id
+    south = rooms.qfdian.id
+    southeast = rooms.bamboo.id
+    northwest = rooms.bamboo.id
+    southwest = rooms.bamboo2.id
+    northeast = rooms.bamboo.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo10.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bamboo10" {
+      name = "竹林"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = 0
+  y = 10
+  z = 1
+    }
+
+  room_exits "bamboo10" {
+    room_id = rooms.bamboo10.id
+    west = rooms.bamboo.id
+    east = rooms.bamboo.id
+    south = rooms.bamboo11.id
+    north = rooms.bamboo.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo11.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bamboo11" {
+      name = "竹林"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = 0
+  y = 9
+  z = 1
+    }
+
+  room_exits "bamboo11" {
+    room_id = rooms.bamboo11.id
+    north = rooms.bamboo.id
+    south = rooms.bamboo.id
+    west = rooms.bamboo12.id
+    east = rooms.bamboo.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo12.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bamboo12" {
+      name = "竹林"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = -1
+  y = 9
+  z = 1
+    }
+
+  room_exits "bamboo12" {
+    room_id = rooms.bamboo12.id
+    west = rooms.bamboo.id
+    east = rooms.bamboo.id
+    north = rooms.bamboo13.id
+    south = rooms.bamboo.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo13.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bamboo13" {
+      name = "竹林"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = -1
+  y = 10
+  z = 1
+    }
+
+  room_exits "bamboo13" {
+    room_id = rooms.bamboo13.id
+    southwest = rooms.bamboo.id
+    southeast = rooms.bamboo.id
+    northwest = rooms.bamboo14.id
+    northeast = rooms.bamboo.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo14.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bamboo14" {
+      name = "竹林"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = -2
+  y = 11
+  z = 1
+    }
+
+  room_exits "bamboo14" {
+    room_id = rooms.bamboo14.id
+    west = rooms.bamboo.id
+    east = rooms.bamboo.id
+    north = rooms.damodong.id
+    south = rooms.bamboo.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bamboo2" {
+      name = "竹林"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = -1
+  y = 8
+  z = 1
+    }
+
+  room_exits "bamboo2" {
+    room_id = rooms.bamboo2.id
+    southeast = rooms.bamboo.id
+    northwest = rooms.bamboo.id
+    southwest = rooms.bamboo3.id
+    northeast = rooms.bamboo.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bamboo3" {
+      name = "竹林"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = -2
+  y = 7
+  z = 1
+    }
+
+  room_exits "bamboo3" {
+    room_id = rooms.bamboo3.id
+    west = rooms.bamboo.id
+    east = rooms.bamboo.id
+    north = rooms.bamboo4.id
+    south = rooms.bamboo.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo4.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bamboo4" {
+      name = "竹林"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = -2
+  y = 8
+  z = 1
+    }
+
+  room_exits "bamboo4" {
+    room_id = rooms.bamboo4.id
+    west = rooms.bamboo.id
+    east = rooms.bamboo.id
+    north = rooms.bamboo5.id
+    south = rooms.bamboo.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo5.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bamboo5" {
+      name = "竹林"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = -2
+  y = 9
+  z = 1
+    }
+
+  room_exits "bamboo5" {
+    room_id = rooms.bamboo5.id
+    west = rooms.bamboo.id
+    south = rooms.bamboo.id
+    north = rooms.bamboo6.id
+    east = rooms.bamboo.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo6.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bamboo6" {
+      name = "竹林"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = -2
+  y = 10
+  z = 1
+    }
+
+  room_exits "bamboo6" {
+    room_id = rooms.bamboo6.id
+    east = rooms.bamboo.id
+    south = rooms.bamboo.id
+    north = rooms.bamboo7.id
+    west = rooms.bamboo.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo7.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bamboo7" {
+      name = "竹林"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = -2
+  y = 11
+  z = 1
+    }
+
+  room_exits "bamboo7" {
+    room_id = rooms.bamboo7.id
+    north = rooms.bamboo.id
+    west = rooms.bamboo.id
+    south = rooms.bamboo8.id
+    east = rooms.bamboo.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo8.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bamboo8" {
+      name = "竹林"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = -2
+  y = 10
+  z = 1
+    }
+
+  room_exits "bamboo8" {
+    room_id = rooms.bamboo8.id
+    north = rooms.bamboo.id
+    south = rooms.bamboo.id
+    east = rooms.bamboo9.id
+    west = rooms.bamboo.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo9.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bamboo9" {
+      name = "竹林"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = -1
+  y = 10
+  z = 1
+    }
+
+  room_exits "bamboo9" {
+    room_id = rooms.bamboo9.id
+    north = rooms.bamboo.id
+    south = rooms.bamboo.id
+    east = rooms.bamboo10.id
+    west = rooms.bamboo.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/banruo1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "banruo1" {
+      name = "般若堂一部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = -2
+  y = 4
+  z = 0
+    }
+
+  room_exits "banruo1" {
+    room_id = rooms.banruo1.id
+    north = rooms.banruo2.id
+    south = rooms.zoulang1.id
+    }
+
+
+
+
+  room_items "banruo1" {
+    room_id = rooms.banruo1.id
+    items = [
+      { id = items.cheng_xin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/banruo2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "banruo2" {
+      name = "般若堂二部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = -2
+  y = 5
+  z = 0
+    }
+
+  room_exits "banruo2" {
+    room_id = rooms.banruo2.id
+    north = rooms.banruo3.id
+    south = rooms.banruo1.id
+    }
+
+
+
+
+  room_items "banruo2" {
+    room_id = rooms.banruo2.id
+    items = [
+      { id = items.cheng_yi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/banruo3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "banruo3" {
+      name = "般若堂三部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = -2
+  y = 6
+  z = 0
+    }
+
+  room_exits "banruo3" {
+    room_id = rooms.banruo3.id
+    north = rooms.banruo4.id
+    south = rooms.banruo2.id
+    }
+
+
+
+
+  room_items "banruo3" {
+    room_id = rooms.banruo3.id
+    items = [
+      { id = items.cheng_si.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/banruo4.c by LPCConverter
+# Zone: shaolin
+
+    rooms "banruo4" {
+      name = "般若堂四部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = -2
+  y = 3
+  z = 0
+    }
+
+  room_exits "banruo4" {
+    room_id = rooms.banruo4.id
+    north = rooms.banruo5.id
+    south = rooms.banruo3.id
+    }
+
+
+
+
+  room_items "banruo4" {
+    room_id = rooms.banruo4.id
+    items = [
+      { id = items.cheng_shi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/banruo5.c by LPCConverter
+# Zone: shaolin
+
+    rooms "banruo5" {
+      name = "般若堂五部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。一位小 沙弥在一边垂手站立。"
+  x = -2
+  y = 4
+  z = 0
+    }
+
+  room_exits "banruo5" {
+    room_id = rooms.banruo5.id
+    north = rooms.banruo6.id
+    south = rooms.banruo4.id
+    east = rooms.wuchang1.id
+    }
+
+
+  room_characters "banruo5" {
+    room_id = rooms.banruo5.id
+    characters = [
+      { id = characters.xiao_nan.id }    ]
+  }
+
+
+
+  room_items "banruo5" {
+    room_id = rooms.banruo5.id
+    items = [
+      { id = items.xuan_nan.id },
+      { id = items.cheng_zhi2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/banruo6.c by LPCConverter
+# Zone: shaolin
+
+    rooms "banruo6" {
+      name = "般若堂六部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = -2
+  y = 5
+  z = 0
+    }
+
+  room_exits "banruo6" {
+    room_id = rooms.banruo6.id
+    north = rooms.banruo7.id
+    south = rooms.banruo5.id
+    }
+
+
+
+
+  room_items "banruo6" {
+    room_id = rooms.banruo6.id
+    items = [
+      { id = items.cheng_xin2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/banruo7.c by LPCConverter
+# Zone: shaolin
+
+    rooms "banruo7" {
+      name = "般若堂七部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = -2
+  y = 6
+  z = 0
+    }
+
+  room_exits "banruo7" {
+    room_id = rooms.banruo7.id
+    north = rooms.banruo8.id
+    south = rooms.banruo6.id
+    }
+
+
+
+
+  room_items "banruo7" {
+    room_id = rooms.banruo7.id
+    items = [
+      { id = items.cheng_ling.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/banruo8.c by LPCConverter
+# Zone: shaolin
+
+    rooms "banruo8" {
+      name = "般若堂八部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = -2
+  y = 7
+  z = 0
+    }
+
+  room_exits "banruo8" {
+    room_id = rooms.banruo8.id
+    north = rooms.banruo9.id
+    south = rooms.banruo7.id
+    }
+
+
+
+
+  room_items "banruo8" {
+    room_id = rooms.banruo8.id
+    items = [
+      { id = items.cheng_yu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/banruo9.c by LPCConverter
+# Zone: shaolin
+
+    rooms "banruo9" {
+      name = "般若堂九部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = -2
+  y = 4
+  z = -1
+    }
+
+  room_exits "banruo9" {
+    room_id = rooms.banruo9.id
+    northup = rooms.zoulang5.id
+    south = rooms.banruo8.id
+    }
+
+
+
+
+  room_items "banruo9" {
+    room_id = rooms.banruo9.id
+    items = [
+      { id = items.cheng_shang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/beilin1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "beilin1" {
+      name = "东碑林"
+      description = "这里是一大片碑林。虽说是碑林，主要是少林历代高僧的佛 塔灵藏 (tower)。一座座佛塔约有二三人高，有汉白玉的，花冈 石的，精工雕凿，薄薄的浮雕面上飞禽走兽，佛谒禅诗，诸佛众 生，可谓无所不包。底座有须弥座的，也有莲花座的，各态纷呈。 佛塔间疏疏落落的立着几块碑(stone)，有的题着几句诗。"
+  x = 1
+  y = -2
+  z = -1
+    }
+
+  room_exits "beilin1" {
+    room_id = rooms.beilin1.id
+    west = rooms.taijie.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/beilin2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "beilin2" {
+      name = "西碑林"
+      description = "这里是一大片碑林。虽说是碑林，主要是少林历代高僧的佛 塔灵藏 (tower)。一座座佛塔约有二三人高，有汉白玉的，花冈 石的，精工雕凿，薄薄的浮雕面上飞禽走兽，佛谒禅诗，诸佛众 生，可谓无所不包。底座有须弥座的，也有莲花座的，各态纷呈。 佛塔间疏疏落落的立着几块碑(stone)，有的题着几句诗。"
+  x = -1
+  y = -2
+  z = -1
+    }
+
+  room_exits "beilin2" {
+    room_id = rooms.beilin2.id
+    up = rooms.chufang2.id
+    east = rooms.taijie.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/beilin3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "beilin3" {
+      name = "地下室"
+      description = "这里是佛塔底下的地下密室。密室虽小，却也五脏俱全，石 桌石椅，石几石床，连室内放的几件器皿，也都是石制的。看来 似乎很久以前有人在这里住过。正中的石桌 (table)上平放着一 块薄薄的石板，上面好象刻着些什么。"
+  x = 0
+  y = 0
+  z = 12
+item_desc = {
+ table = "这是一整块巨石雕成的石桌，上面刻了些奇怪的图形。"
+}
+    }
+
+  room_exits "beilin3" {
+    room_id = rooms.beilin3.id
+    down = rooms.bagua7.id
+    up = rooms.beilin2.id
+    }
+
+
+
+
+  room_items "beilin3" {
+    room_id = rooms.beilin3.id
+    items = [
+      { id = items.book_stone.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/bydian.c by LPCConverter
+# Zone: shaolin
+
+    rooms "bydian" {
+      name = "白衣殿"
+      description = "这是白衣殿，供奉白衣观音大士。大士高居须弥座上，手托 净瓶，眉含微愁，唇绽浅笑，仿佛对人间疾苦既存忧心，又觉释 怀。殿中放了红木大香案，香案上供品齐备，香火十分旺盛。"
+  x = 1
+  y = 7
+  z = 0
+    }
+
+  room_exits "bydian" {
+    room_id = rooms.bydian.id
+    west = rooms.guangchang5.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/chufang.c by LPCConverter
+# Zone: shaolin
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "炊烟缭绕，蒸汽腾腾，香味扑鼻而来。靠墙是一排数丈长的 灶台，支着十来口大锅，最大的一口饭锅上方竟有人从梁上悬空 而下，手持木棍在搅拌。除了烧饭的僧人外，几位火工头陀忙着 劈柴运薪，灶下炉火熊熊。一位中年僧人正来回催促着。"
+  x = -1
+  y = 3
+  z = 0
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+    south = rooms.fanting1.id
+    }
+
+
+  room_characters "chufang" {
+    room_id = rooms.chufang.id
+    characters = [
+      { id = characters.shaofan_seng.id },
+      { id = characters.shaofan_seng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/chufang2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "chufang2" {
+      name = "厨房"
+      description = "这里是一间厨房。厨房很大，可能也是因为兼作仓库的缘 故。灶头砌在北首，一根大烟囱直通出屋顶。房子四壁被常年 烟火熏得发黑，连房梁也是焦黑焦黑。墙角堆满了柴火，另一 边放了些晒干的辣椒，稻谷等。东边的墙灰剥落了一块，露出 犬牙交错的砖缝来。屋角边有个大洞。"
+  x = 0
+  y = 0
+  z = 13
+    }
+
+  room_exits "chufang2" {
+    room_id = rooms.chufang2.id
+    up = rooms.duchuan.id
+    down = rooms.beilin2.id
+    southwest = rooms.houshan.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/cjlou.c by LPCConverter
+# Zone: shaolin
+
+    rooms "cjlou" {
+      name = "藏经阁一楼"
+      description = "不愧为中原佛法的总源，少林寺此处藏经之富，天下罕有其 匹。这里都是密密麻麻，高及顶棚的书架，书架间仅有容身一人 通行的空隙。几排大书架中间，间隔地放着数丈长的书桌。目光 及处，你看到桌上放了几本佛经。"
+  x = -3
+  y = 7
+  z = 0
+valid_leave = [
+{
+  direction = "up"
+  message = "道一说道: 你未经许可，不能上二楼。"
+}
+
+]
+    }
+
+  room_exits "cjlou" {
+    room_id = rooms.cjlou.id
+    up = rooms.cjlou1.id
+    east = rooms.zhulin5.id
+    }
+
+
+
+
+  room_items "cjlou" {
+    room_id = rooms.cjlou.id
+    items = [
+      { id = items.dao_yi.id },
+      { id = items.wuming.id },
+      { id = items.fojing1+random(2).id },
+      { id = items.fojing2+random(2).id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/cjlou1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "cjlou1" {
+      name = "藏经阁二楼"
+      description = "千余年来少林寺执中原武林之牛耳，自达摩老祖以下，历代 人材辈出。其中有不少高僧遗著留存，汇集至今，终成名震天下 的少林七十二绝艺。少林精华，尽集于此。二楼四面开窗，确保 通风。中间排列着五排大书架。四周则陈列矮几，以供阅读。几 位老僧手执经卷，正在闭目凝思。"
+  x = -3
+  y = 7
+  z = 1
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：ob[i]->id("shaolin wuji")
+direction = ~
+  message = "慧真说道：武功秘籍只许在藏经阁内研习，不得携带外出！"
+}
+
+]
+    }
+
+  room_exits "cjlou1" {
+    room_id = rooms.cjlou1.id
+    down = rooms.cjlou.id
+    }
+
+
+
+
+  room_items "cjlou1" {
+    room_id = rooms.cjlou1.id
+    items = [
+      { id = items.hui_zhen.id },
+      { id = items.wuji1.id },
+      { id = items.wuji2.id },
+      { id = items.wuji3.id },
+      { id = items.wuji4.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/damodong.c by LPCConverter
+# Zone: shaolin
+
+    rooms "damodong" {
+      name = "达摩洞"
+      description = "这里是达摩古洞。五百年前南天竺僧人菩提达摩来到少林寺，见 此风水宝地，就住下来广罗弟子，传授禅宗，开创少林寺佛教禅宗千 年不败之基。达摩祖师常在此面壁悟道，一坐十年，壁间隐隐似仍可 看到他面壁时的打坐姿态。除地上的几块竹片外，洞中空无一物。"
+  x = -2
+  y = 12
+  z = 1
+    }
+
+  room_exits "damodong" {
+    room_id = rooms.damodong.id
+    out = rooms.bamboo1.id
+    }
+
+
+
+
+  room_items "damodong" {
+    room_id = rooms.damodong.id
+    items = [
+      { id = items.book_bamboo.id },
+      { id = items.da_mo.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/dmyuan.c by LPCConverter
+# Zone: shaolin
+
+    rooms "dmyuan" {
+      name = "达摩院"
+      description = "这是一座古朴的殿堂。西首的墙上挂满了各类武功图谱，不 少白须白眉的老僧们正端坐在图谱画轴之前，似乎在苦苦思索。 南北山墙是高及屋顶的大书架，走近细看，它们是各门各派的武 功秘笈，屋正中摆着几张矮几诃和几个团，几位老僧正在入定中。 西首有个楼梯上楼。"
+  x = 0
+  y = 7
+  z = 1
+    }
+
+  room_exits "dmyuan" {
+    room_id = rooms.dmyuan.id
+    up = rooms.dmyuan2.id
+    northdown = rooms.guangchang5.id
+    southdown = rooms.wuchang3.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/dmyuan2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "dmyuan2" {
+      name = "达摩院二楼"
+      description = "这是一座古朴的殿堂。西首的墙上挂满了各类武功图谱，不 少白须白眉的老僧们正端坐在图谱画轴之前，似乎在苦苦思索。 南北山墙是高及屋顶的大书架，走近细看，它们是各门各派的武 功秘笈，屋正中摆着几张矮几诃和几个团，几位老僧正在入定中。"
+  x = 0
+  y = 7
+  z = 2
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：! present("xisui jing", this_object())
+direction = ~
+  message = "本寺最高心法不见了，你怎敢就走？"
+}
+
+]
+    }
+
+  room_exits "dmyuan2" {
+    room_id = rooms.dmyuan2.id
+    down = rooms.dmyuan.id
+    }
+
+
+  room_characters "dmyuan2" {
+    room_id = rooms.dmyuan2.id
+    characters = [
+      { id = characters.xiao_bei.id }    ]
+  }
+
+
+
+  room_items "dmyuan2" {
+    room_id = rooms.dmyuan2.id
+    items = [
+      { id = items.xuan_bei.id },
+      { id = items.xisuijing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/duchuan.c by LPCConverter
+# Zone: shaolin
+
+    rooms "duchuan" {
+      name = "渡船"
+      description = "一叶小舟，最多也就能载七、八个人。一名六十多岁的老 艄公手持长竹篙，正在船尾吃力地撑着船。"
+  x = 0
+  y = 0
+  z = 14
+    }
+  room_exits "duchuan" {
+    room_id = rooms.duchuan.id
+    down = rooms.chufang2.id
+    up = rooms.hanshui1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/dxbdian.c by LPCConverter
+# Zone: shaolin
+
+    rooms "dxbdian" {
+      name = "大雄宝殿"
+      description = "这里是少林寺的大雄宝殿。正中供奉着如来三宝，左右各是 文殊、普贤菩萨。一群青衣小和尚们正在佛像前的地上诵经。 缕缕香烟与梵唱交错在一起，仰视佛祖拈花浅笑的面容，令人顿 时生起几分脱俗之感。身边经常有一队队僧人鱼贯而入，看他们 手持戒刀，似乎是巡寺的僧人。"
+  x = 0
+  y = 1
+  z = 1
+    }
+
+  room_exits "dxbdian" {
+    room_id = rooms.dxbdian.id
+    southdown = rooms.guangchang2.id
+    }
+
+
+  room_characters "dxbdian" {
+    room_id = rooms.dxbdian.id
+    characters = [
+      { id = characters.xiang_ke.id }    ]
+  }
+
+
+
+  room_items "dxbdian" {
+    room_id = rooms.dxbdian.id
+    items = [
+      { id = items.dao_zheng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/dzdian.c by LPCConverter
+# Zone: shaolin
+
+    rooms "dzdian" {
+      name = "地藏殿"
+      description = "这是地藏殿。供奉地藏王菩萨。地藏王主宰阴间，手下自然有 不少鬼兵鬼卒，罗列帐前。菩萨眉横煞气，手断阴阳。令人一见之 下，顿觉心惊胆战，惶恐不已。"
+  x = -1
+  y = 7
+  z = 0
+    }
+
+  room_exits "dzdian" {
+    room_id = rooms.dzdian.id
+    east = rooms.guangchang5.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/fangjuku.c by LPCConverter
+# Zone: shaolin
+
+    rooms "fangjuku" {
+      name = "防具库"
+      description = "这是一间很大的房间，靠墙整齐地放着一个个大柜子，不少 柜子门敞开着，露出里面的各种防具，品种之多，是你生平仅见。 一位灰衣僧人正埋头整理一堆破损的护具。连你进来也没有注意。"
+  x = 3
+  y = 8
+  z = 0
+    }
+
+  room_exits "fangjuku" {
+    room_id = rooms.fangjuku.id
+    south = rooms.wuqiku.id
+    north = rooms.yaopinku.id
+    }
+
+
+
+
+  room_items "fangjuku" {
+    room_id = rooms.fangjuku.id
+    items = [
+      { id = items.dao_xiang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/fanting.c by LPCConverter
+# Zone: shaolin
+
+    rooms "fanting" {
+      name = "斋厅"
+      description = "这里便是少林全寺寺僧用斋的地方。斋厅极大，足可容纳上 千人同时进餐。从东到西一排排摆满了长长的餐桌和长凳，几位 小和尚正来回忙碌着布置素斋。桌上摆了几盆豆腐，花生，青菜 以及素鸭等美味素食。"
+  x = -1
+  y = 1
+  z = 0
+    }
+
+  room_exits "fanting" {
+    room_id = rooms.fanting.id
+    north = rooms.fanting1.id
+    east = rooms.guangchang3.id
+    }
+
+
+
+
+  room_items "fanting" {
+    room_id = rooms.fanting.id
+    items = [
+      { id = items.qingshui_hulu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/fanting1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "fanting1" {
+      name = "斋厅"
+      description = "这里便是少林全寺寺僧用斋的地方。斋厅极大，足可容纳上 千人同时进膳。从东到西一排排摆满了长长的餐桌和长凳，几位 小和尚正来回忙碌着布置素斋。桌上摆了几盆豆腐，花生，青菜 以及素鸭等美味素食。北面是个厨房。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "fanting1" {
+    room_id = rooms.fanting1.id
+    north = rooms.chufang.id
+    south = rooms.fanting.id
+    }
+
+
+
+
+  room_items "fanting1" {
+    room_id = rooms.fanting1.id
+    items = [
+      { id = items.qingshui_hulu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/fumoquan.c by LPCConverter
+# Zone: shaolin
+
+    rooms "fumoquan" {
+      name = "金刚伏魔圈"
+      description = "三棵大松树的树干上各挖了个可容身一人的大洞，有个洞 口露出黑色僧袍一角，似乎住得有人。中央是一片大草坪，中 心处光秃秃的，似乎经常受大力击打，以致寸草不生。"
+  x = 6
+  y = 6
+  z = 22
+    }
+
+  room_exits "fumoquan" {
+    room_id = rooms.fumoquan.id
+    out = rooms.qyping.id
+    }
+
+
+
+
+  room_items "fumoquan" {
+    room_id = rooms.fumoquan.id
+    items = [
+      { id = items.du_nan.id },
+      { id = items.du_e.id },
+      { id = items.du_jie.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/fzlou.c by LPCConverter
+# Zone: shaolin
+
+    rooms "fzlou" {
+      name = "方丈楼"
+      description = "这里的地上整整齐齐的排放着数十个黄布蒲团，北首有一个 红木讲坛，讲坛上放着个竹制的木鱼。东西边各放着一对美轮美 奂的大花瓶，上插檀香数枝，香烟缭绕，氤氲芬芳，室内一片祥 和之气。看来这里是方丈对僧众讲经说法的地方。"
+  x = 0
+  y = 5
+  z = 0
+    }
+
+  room_exits "fzlou" {
+    room_id = rooms.fzlou.id
+    west = rooms.zoulang6.id
+    east = rooms.zoulang7.id
+    north = rooms.wuchang3.id
+    up = rooms.fzlou1.id
+    south = rooms.wuchang.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/fzlou1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "fzlou1" {
+      name = "茶室"
+      description = "这里是方丈待客的地方，靠墙左右两侧摆着一溜太师椅。北 面墙上挂了一付对联。墙角一几，放着几个茶壶。有个茶壶壶身 上题了“碧螺春”三个篆字，壶嘴热气腾腾，似乎是刚沏的新茶。 往北是方丈室。"
+  x = 0
+  y = 5
+  z = 1
+valid_leave = [
+{
+  direction = "north"
+  message = "你资格不够，不能进入方丈室。"
+}
+
+]
+    }
+
+  room_exits "fzlou1" {
+    room_id = rooms.fzlou1.id
+    down = rooms.fzlou.id
+    north = rooms.fzlou2.id
+    }
+
+
+
+
+  room_items "fzlou1" {
+    room_id = rooms.fzlou1.id
+    items = [
+      { id = items.qing_le.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/fzlou2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "fzlou2" {
+      name = "方丈室"
+      description = "方丈室陈设简洁，正中一几，一蒲团，一矮床。北面墙上写 着大大的一个『禅』字。一位慈眉善目的灰衣老僧正端坐于蒲团 上打坐。"
+  x = 0
+  y = 6
+  z = 1
+    }
+
+  room_exits "fzlou2" {
+    room_id = rooms.fzlou2.id
+    south = rooms.fzlou1.id
+    }
+
+
+
+
+  room_items "fzlou2" {
+    room_id = rooms.fzlou2.id
+    items = [
+      { id = items.xuan_ci.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/guangchang1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "guangchang1" {
+      name = "广场"
+      description = "这里是少林寺前的广场，整个广场由大块的青石铺成，极为 平坦。但因年代久远，都有些破损。丛丛小草从石板的缝隙中长 了出来。广场的周围都是密密的松树林，四角上各放了几块石碑， 字迹都甚为模糊。正前方黄墙碧瓦，飞檐翘檩，正中一道二丈来 宽，三丈来高的朱红杉木包铜大门(gate)。上方一块大匾，龙飞 凤舞地书着『少林寺』三个大字。寺前三三两两的站着几个僧人。"
+  x = 2
+  y = 7
+  z = 22
+valid_leave = [
+{
+  direction = ~
+  message = "壮年僧人说道：对不起，俗家弟子不得入寺修行。"
+}
+,
+{
+  direction = ~
+  message = "壮年僧人说道：这位女施主还是请回罢，本寺从不接待女客。"
+}
+,
+{
+  direction = ~
+  message = "壮年僧人说道：这位施主请回罢，本寺不接待俗人。"
+}
+,
+{
+  direction = ~
+  message = "壮年僧人立时从身畔挚出一把雪亮的戒刀来，把明晃晃的刀尖对准你的 胸口，横眉怒目地说道：“你等邪魔外道，还不给我滚开！以后再敢走 近少林一步，我立时就斩断你们的狗腿！”"
+}
+
+]
+    }
+
+  room_exits "guangchang1" {
+    room_id = rooms.guangchang1.id
+    west = rooms.guangchang1w.id
+    south = rooms.shijie11.id
+    east = rooms.guangchang1e.id
+    }
+
+
+
+
+  room_items "guangchang1" {
+    room_id = rooms.guangchang1.id
+    items = [
+      { id = items.qing_fa.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/guangchang1e.c by LPCConverter
+# Zone: shaolin
+
+    rooms "guangchang1e" {
+      name = "广场"
+      description = "这里是少林寺前的广场，整个广场由大块的青石铺成，极为 平坦。但因年代久远，都有些破损。丛丛小草从石板的缝隙中长 了出来。广场周围都是密密的松树林，四角上各放了几块石碑， 字迹都甚为模糊。边上立了块木牌(mupai)，寺前三三两两的站着 几个僧人。"
+  x = 3
+  y = 7
+  z = 22
+item_desc = {
+ mupai = "少林寺护法松林，违令擅入者杀无赦！"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：!wizardp(me) && dir == "east" && me->query_skill("dodge",1) <= 20 && (present("qingwu biqiu", environment(me)))
+direction = "east"
+  message = "清无拦住劝你: 东边是本寺护法松林，向来有进无出， 轻功不佳，最好先看看木牌，不要随便进去！"
+}
+
+]
+    }
+
+  room_exits "guangchang1e" {
+    room_id = rooms.guangchang1e.id
+    west = rooms.guangchang1.id
+    southdown = rooms.shijie11.id
+    east = rooms.shulin1.id
+    }
+
+
+
+
+  room_items "guangchang1e" {
+    room_id = rooms.guangchang1e.id
+    items = [
+      { id = items.qing_wu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/guangchang1w.c by LPCConverter
+# Zone: shaolin
+
+    rooms "guangchang1w" {
+      name = "广场"
+      description = "这里是少林寺前的广场，整个广场由大块的青石铺成，极为 平坦。但因年代久远，都有些破损。丛丛小草从石板的缝隙中长 了出来。广场周围都是密密的松树林，四角上各放了几块石碑， 字迹都甚为模糊。边上立了块木牌(mupai)，寺前三三两两的站着 几个僧人。"
+  x = 1
+  y = 7
+  z = 22
+item_desc = {
+ mupai = "少林寺护法松林，违令擅入者杀无赦！"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：!wizardp(me) && dir == "west" && me->query_skill("dodge",1) <= 20 && (present("qingwei biqiu", environment(me)))
+direction = "west"
+  message = "清为拦住劝你: 西边是本寺护法松林，向来有进无出， 轻功不佳，最好先看看木牌，不要随便进去！"
+}
+
+]
+    }
+
+  room_exits "guangchang1w" {
+    room_id = rooms.guangchang1w.id
+    east = rooms.guangchang1.id
+    southdown = rooms.shijie11.id
+    west = rooms.shulin1.id
+    }
+
+
+
+
+  room_items "guangchang1w" {
+    room_id = rooms.guangchang1w.id
+    items = [
+      { id = items.qing_wei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/guangchang2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "guangchang2" {
+      name = "广场"
+      description = "过了天王殿，又有三道平行的青石台阶引正前方的一个大广 场。台阶上刻的是诸天众佛，五百罗汉以及三千伽蓝的坐像。上 了平台，正中方也有个丈许高的大香炉，香炉前的香台上，红烛 高烧，香烟飘绕，几位香客正对大殿虔诚叩拜。左右各通向一个 小院，两座高塔高耸天际。正前方就是大雄宝殿。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guangchang2" {
+    room_id = rooms.guangchang2.id
+    up = rooms.andao1.id
+    south = rooms.twdian.id
+    north = rooms.guangchang3.id
+    northup = rooms.dxbdian.id
+    east = rooms.zhonglou.id
+    west = rooms.gulou.id
+    }
+
+
+  room_characters "guangchang2" {
+    room_id = rooms.guangchang2.id
+    characters = [
+      { id = characters.xiang_ke.id },
+      { id = characters.seng_bing3.id },
+      { id = characters.seng_bing3.id }    ]
+  }
+
+
+
+  room_items "guangchang2" {
+    room_id = rooms.guangchang2.id
+    items = [
+      { id = items.qing_shan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/guangchang3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "guangchang3" {
+      name = "勤修场"
+      description = "这是戒律院前的勤修场。这里是全寺交通最密集的地方，只 见一队队僧人来来去去，身着各种服色，有的携带刀，枪，棍， 杖等兵器，个个身姿矫健，神态庄重。北面的大殿就是戒律院， 四位僧兵持刀守在两侧。西边通向斋厅。"
+  x = 0
+  y = 1
+  z = 0
+valid_leave = [
+{
+  direction = ~
+  message = "僧兵挡住说道：你未经许可，不能进入戒律院。"
+}
+
+]
+    }
+
+  room_exits "guangchang3" {
+    room_id = rooms.guangchang3.id
+    west = rooms.fanting.id
+    northup = rooms.jlyuan.id
+    north = rooms.guangchang4.id
+    south = rooms.guangchang2.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/guangchang4.c by LPCConverter
+# Zone: shaolin
+
+    rooms "guangchang4" {
+      name = "精进场"
+      description = "这是后殿前的精进场，广场青砖铺地，因为多年的踩踏而凹 凸不平。前后各是两堵高墙，把整个广场夹在中间，形成一个窄 窄的长方形。西边开了扇小门，一股香气袅袅地飘了过来。北面 是个大门，几位僧人在此把守。"
+  x = 0
+  y = 2
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(!myfam || myfam["family_name"] != "少林派") && dir == "northup" && objectp(present("hui kong", environment(me)))
+direction = "northup"
+  message = "慧空喝道：你不是少林出家弟子，不得进入后殿。"
+}
+
+]
+    }
+
+  room_exits "guangchang4" {
+    room_id = rooms.guangchang4.id
+    northup = rooms.putiyuan.id
+    north = rooms.houdian.id
+    south = rooms.guangchang3.id
+    }
+
+
+  room_characters "guangchang4" {
+    room_id = rooms.guangchang4.id
+    characters = [
+      { id = characters.seng_bing3.id },
+      { id = characters.seng_bing3.id }    ]
+  }
+
+
+
+  room_items "guangchang4" {
+    room_id = rooms.guangchang4.id
+    items = [
+      { id = items.hui_kong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/guangchang5.c by LPCConverter
+# Zone: shaolin
+
+    rooms "guangchang5" {
+      name = "广场"
+      description = "这是千佛殿前的一个广场。往北上了台阶就是供奉西天诸佛 的千佛殿。往西是供奉地藏王菩萨的地藏殿，往东是供奉白衣观 音大士的白衣殿。这里每年都有不少香客聚集举办水陆大法会。"
+  x = 0
+  y = 7
+  z = 0
+valid_leave = [
+{
+  direction = "southup"
+  message = "你级别不够，不能进入达摩院。"
+}
+
+]
+    }
+
+  room_exits "guangchang5" {
+    room_id = rooms.guangchang5.id
+    southup = rooms.dmyuan.id
+    northup = rooms.qfdian.id
+    south = rooms.wuchang3.id
+    west = rooms.dzdian.id
+    east = rooms.bydian.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/gulou.c by LPCConverter
+# Zone: shaolin
+
+    rooms "gulou" {
+      name = "鼓楼小院"
+      description = "这是一座砖木结构的宝塔，塔高七层，塔身作八角形，飞檐 翘翎，檐角上挂满了一串串小铜铃，随风叮叮作响。塔身墙上镂 空雕绘着无数佛陀们的坐像。一个个形态维肖，看来出自名匠之 手。塔底入口处开了一扇拱形的小木门，门扇两侧用彩漆涂绘， 画的是释祖在灵山对诸天众佛讲经时的情形。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "gulou" {
+    room_id = rooms.gulou.id
+    in = rooms.gulou1.id
+    east = rooms.guangchang2.id
+    }
+
+
+  room_characters "gulou" {
+    room_id = rooms.gulou.id
+    characters = [
+      { id = characters.seng_bing3.id },
+      { id = characters.seng_bing3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/gulou1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "gulou1" {
+      name = "鼓楼一层"
+      description = "这里是塔楼的底层，一缕缕阳光从墙上的花砖缝隙里透射 进来，在青砖地上投下别致的光影，如同一格格棋盘相似。往 上看，长长的木楼梯盘绕而上，似乎永无尽头。墙角，梯级都 相当洁净，看来经常有僧人打扫。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "gulou1" {
+    room_id = rooms.gulou1.id
+    out = rooms.gulou.id
+    up = rooms.gulou2.id
+    }
+
+
+  room_characters "gulou1" {
+    room_id = rooms.gulou1.id
+    characters = [
+      { id = characters.saodi_seng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/gulou2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "gulou2" {
+      name = "鼓楼二层"
+      description = "每个楼层上都铺设了结实的木楼板，八角形的墙身上则开 了四扇大窗。从窗孔看，墙体也是极为厚实。从这里往外眺望， 可以看到围绕塔周的小园以及北边的竹林，随风飘来阵阵竹叶 的清香。"
+  x = -1
+  y = 0
+  z = 1
+    }
+
+  room_exits "gulou2" {
+    room_id = rooms.gulou2.id
+    down = rooms.gulou1.id
+    up = rooms.gulou3.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/gulou3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "gulou3" {
+      name = "鼓楼三层"
+      description = "塔身往上似乎越来越窄，楼梯也渐为挤仄。扶手上不少朽 坏处续接了新木，漆色也是新旧不同。从窗孔往外望，往北可 以看到竹林中的藏经楼和方丈楼露出飞檐一角，往西则是后殿 的屋顶，屋脊上塑了个大大的“佛”字。"
+  x = -1
+  y = 0
+  z = 2
+    }
+
+  room_exits "gulou3" {
+    room_id = rooms.gulou3.id
+    down = rooms.gulou2.id
+    up = rooms.gulou4.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/gulou4.c by LPCConverter
+# Zone: shaolin
+
+    rooms "gulou4" {
+      name = "鼓楼四层"
+      description = "到这里楼梯大概只能容一人上下，墙身也略薄了些。视线 越过窗棂，南边的练武场，罗汉堂，般若堂历历在目，不少僧 人正汇集在练武场上习武，吆喝声一阵阵传进耳鼓。北边的藏 经楼，方丈楼也尽露全貌。"
+  x = -1
+  y = 0
+  z = 3
+    }
+
+  room_exits "gulou4" {
+    room_id = rooms.gulou4.id
+    down = rooms.gulou3.id
+    up = rooms.gulou5.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/gulou5.c by LPCConverter
+# Zone: shaolin
+
+    rooms "gulou5" {
+      name = "鼓楼五层"
+      description = "一眼望去，只见蓝天白云，青山列列，令人将尘俗之气， 顿为一一扫。南至前三殿，北到方丈楼，整个少林寺尽在眼底。 北面竹林随风起伏，犹如一片竹海。东西面围绕全寺的是密密 匝匝的松林，一眼往不到边。"
+  x = -1
+  y = 0
+  z = 4
+    }
+
+  room_exits "gulou5" {
+    room_id = rooms.gulou5.id
+    down = rooms.gulou4.id
+    up = rooms.gulou6.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/gulou6.c by LPCConverter
+# Zone: shaolin
+
+    rooms "gulou6" {
+      name = "鼓楼六层"
+      description = "沿窗洞吹进一阵阵凌厉的山风，寒意浸人。北望可见松林的 尽头，少室山的顶峰处，有一片小小的平地，正中植着三棵巨松； 中间又似乎有什么东西正闪闪发光。楼上传来一阵阵沉闷的鼓声。"
+  x = -1
+  y = 0
+  z = 5
+    }
+
+  room_exits "gulou6" {
+    room_id = rooms.gulou6.id
+    down = rooms.gulou5.id
+    up = rooms.gulou7.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/gulou7.c by LPCConverter
+# Zone: shaolin
+
+    rooms "gulou7" {
+      name = "鼓楼七层"
+      description = "这里就是鼓楼之顶。直入眼帘的便是一只大鼓。大鼓鼓身通红， 似由白杨木箍成。两头包以水牛皮，用一匝大铜钉钉在鼓身边缘。 鼓心有一圈白渍，看来是因为多次击打形成的。整个大鼓放在一 个一人高的架子上，架子底层搁着两根大鼓槌。尽管山风吹人欲 倒，谁都禁不住想击一下鼓(drum)试试。往外看，有个很大的汉 白玉窗台(out)，上面足可站一个人。"
+  x = -1
+  y = 0
+  z = 6
+    }
+
+  room_exits "gulou7" {
+    room_id = rooms.gulou7.id
+    up = rooms.andao3.id
+    down = rooms.gulou6.id
+    }
+
+
+
+
+  room_items "gulou7" {
+    room_id = rooms.gulou7.id
+    items = [
+      { id = items.qing_wen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/hanshui1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "hanshui1" {
+      name = "汉水南岸"
+      description = "面前是一条波涛翻滚的大江 (river)。浊流滚滚，万舟竞 发。两岸渡船来来往往，江边一长溜摆满了鱼摊，渔家就将船 泊在岸边，几个破萝支一块木板，板上摆满了活蹦乱跳的汉江 鲤鱼。过去不远，是有名的老河口。"
+  x = 0
+  y = 0
+  z = 15
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "hanshui1" {
+    room_id = rooms.hanshui1.id
+    up = rooms.hanshui2.id
+    down = rooms.duchuan.id
+    south = rooms.yidao2.id
+    river = rooms.hanshui2.id
+    }
+
+
+  room_characters "hanshui1" {
+    room_id = rooms.hanshui1.id
+    characters = [
+      { id = characters.chuanfu1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/hanshui2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "hanshui2" {
+      name = "汉水北岸"
+      description = "汉水北岸也是相当热闹，自北岸渡口往北，一条笔直的官 道直通南阳。此地民风淳朴，路旁夹柳成阴酒厮林立，且都有 面大大的「酒」旗迎风飘扬，蔚为壮观。也有不少小贩沿路叫 买，语多难辨，却也令人盛情难却。"
+  x = 0
+  y = 0
+  z = 16
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "hanshui2" {
+    room_id = rooms.hanshui2.id
+    up = rooms.hanshuim.id
+    down = rooms.hanshui1.id
+    north = rooms.nanyang.id
+    river = rooms.hanshui1.id
+    }
+
+
+  room_characters "hanshui2" {
+    room_id = rooms.hanshui2.id
+    characters = [
+      { id = characters.chuanfu2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/hanshuim.c by LPCConverter
+# Zone: shaolin
+
+    rooms "hanshuim" {
+      name = "汉水"
+      description = "这是汉水的货运渡船，波涛翻滚的江水将船摇得一晃一晃的。 但是船夫们将船操得稳稳的，不出一点岔子。"
+  x = 0
+  y = 0
+  z = 17
+    }
+  room_exits "hanshuim" {
+    room_id = rooms.hanshuim.id
+    down = rooms.hanshui2.id
+    up = rooms.hantan1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/hantan1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "hantan1" {
+      name = "万古寒潭"
+      description = "这是寒潭之中。四周水声哗哗，似乎有一股暗流在极力牵扯 着你往下沉。透过潭水隐约可见潭周的岩壁，被数万年水流冲激 磨削得十分光滑。虽然口中含了辟水珠，身上却仍然感觉到丝丝 寒意侵入肌肤，而且越是往下，水底的吸力越强，寒意更甚。"
+  x = 0
+  y = 0
+  z = 18
+    }
+  room_exits "hantan1" {
+    room_id = rooms.hantan1.id
+    down = rooms.hanshuim.id
+    up = rooms.hantan2.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/hantan2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "hantan2" {
+      name = "万古寒潭"
+      description = "这是寒潭之中。从这里已可感觉到深水下的巨大压力，彻骨 冰凉的潭水在身体四周凝成一层薄薄的冰壳，四肢也已开始麻木， 令你感到举手投足都甚为困难。水中的吸力也渐渐加强，你不由 自主地往下沉去。"
+  x = 0
+  y = 0
+  z = 19
+    }
+  room_exits "hantan2" {
+    room_id = rooms.hantan2.id
+    down = rooms.hantan1.id
+    up = rooms.hantan3.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/hantan3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "hantan3" {
+      name = "万古寒潭"
+      description = "这是寒潭之中。冰与水混合在一起，使整个潭水在此处变得 跟稀粥一样，身周的冰壳已凝成一个大块，除了双眼尚能透过冰 层视物外，全身各处都已动弹不得，只能听任水流带你继续往下 沉去。"
+  x = 0
+  y = 0
+  z = 20
+    }
+  room_exits "hantan3" {
+    room_id = rooms.hantan3.id
+    down = rooms.hantan2.id
+    up = rooms.jiebei.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/houdian.c by LPCConverter
+# Zone: shaolin
+
+    rooms "houdian" {
+      name = "后殿"
+      description = "后殿规模不大。两边都是水磨石壁，镂刻着十八罗汉的肖像 及佛谒，正中有一口水井，水面净如明镜，纯若菩提，名曰佛心 乃寺内有名的清水井。东西面各有个门洞，通向两侧长长的走廊。"
+  x = 0
+  y = 3
+  z = 0
+    }
+
+  room_exits "houdian" {
+    room_id = rooms.houdian.id
+    north = rooms.wuchang.id
+    south = rooms.guangchang4.id
+    east = rooms.zoulang3.id
+    west = rooms.zoulang2.id
+    }
+
+
+  room_characters "houdian" {
+    room_id = rooms.houdian.id
+    characters = [
+      { id = characters.seng_bing3.id },
+      { id = characters.seng_bing3.id }    ]
+  }
+
+
+
+  room_items "houdian" {
+    room_id = rooms.houdian.id
+    items = [
+      { id = items.hui_ru.id },
+      { id = items.kong_jian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/houshan.c by LPCConverter
+# Zone: shaolin
+
+    rooms "houshan" {
+      name = "小院"
+      description = "你站在最中间的土屋前。土屋似乎是用本地的山岭土夯筑的， 结实而且耐水。屋顶是茅草铺的，角上露出几个被风吹开的破洞。 左边的屋子好象是间猪舍，右边的土屋门边挂着几串晒干的辣椒。 正中间土屋的门是开着的。"
+  x = -1
+  y = -1
+  z = 13
+    }
+
+  room_exits "houshan" {
+    room_id = rooms.houshan.id
+    northwest = rooms.zhushe.id
+    northeast = rooms.chufang2.id
+    north = rooms.xiaowu.id
+    east = rooms.xiaojing2.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/hsyuan1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "hsyuan1" {
+      name = "和尚院一部"
+      description = "这里是和尚院待客的地方，靠墙左右两侧摆着一溜太师椅。 墙角一几，放着几个茶壶。有个茶壶壶身上题了“碧螺春”三 个篆字，壶嘴热气腾腾，似乎是刚沏的新茶。一位小沙弥在一 边垂手站立。"
+  x = 1
+  y = 6
+  z = 0
+    }
+
+  room_exits "hsyuan1" {
+    room_id = rooms.hsyuan1.id
+    north = rooms.hsyuan2.id
+    south = rooms.zoulang7.id
+    east = rooms.zhulin1.id
+    west = rooms.wuchang3.id
+    }
+
+
+
+
+  room_items "hsyuan1" {
+    room_id = rooms.hsyuan1.id
+    items = [
+      { id = items.hui_he.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/hsyuan2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "hsyuan2" {
+      name = "和尚院二部"
+      description = "这里是僧众们饮食起居的地方。靠墙一溜摆着几张木床，床 上铺的是篾席。床头叠着床薄被，冬天想必很冷，僧侣们全靠扎 实的内功根基御寒。地上整齐的放着几个蒲团和木鱼。"
+  x = 1
+  y = 7
+  z = 0
+    }
+
+  room_exits "hsyuan2" {
+    room_id = rooms.hsyuan2.id
+    north = rooms.hsyuan3.id
+    south = rooms.hsyuan1.id
+    east = rooms.zhulin2.id
+    }
+
+
+
+
+  room_items "hsyuan2" {
+    room_id = rooms.hsyuan2.id
+    items = [
+      { id = items.hui_xiu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/hsyuan3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "hsyuan3" {
+      name = "和尚院三部"
+      description = "这里是僧众们饮食起居的地方。靠墙一溜摆着几张木床，床 上铺的是篾席。床头叠着床薄被，冬天想必很冷，僧侣们全靠扎 实的内功根基御寒。地上整齐的放着几个蒲团和木鱼。"
+  x = 1
+  y = 8
+  z = 0
+    }
+
+  room_exits "hsyuan3" {
+    room_id = rooms.hsyuan3.id
+    south = rooms.hsyuan2.id
+    east = rooms.zhulin3.id
+    }
+
+
+
+
+  room_items "hsyuan3" {
+    room_id = rooms.hsyuan3.id
+    items = [
+      { id = items.hui_se.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/hsyuan4.c by LPCConverter
+# Zone: shaolin
+
+    rooms "hsyuan4" {
+      name = "和尚院四部"
+      description = "这里是和尚院待客的地方，靠墙左右两侧摆着一溜太师椅。 墙角一几，放着几个茶壶。有个茶壶壶身上题了“碧螺春”三 个篆字，壶嘴热气腾腾，似乎是刚沏的新茶。一位小沙弥在一 边垂手站立。"
+  x = -1
+  y = 6
+  z = 0
+    }
+
+  room_exits "hsyuan4" {
+    room_id = rooms.hsyuan4.id
+    north = rooms.hsyuan5.id
+    south = rooms.zoulang6.id
+    west = rooms.zhulin4.id
+    east = rooms.wuchang3.id
+    }
+
+
+
+
+  room_items "hsyuan4" {
+    room_id = rooms.hsyuan4.id
+    items = [
+      { id = items.hui_xu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/hsyuan5.c by LPCConverter
+# Zone: shaolin
+
+    rooms "hsyuan5" {
+      name = "和尚院五部"
+      description = "这里是僧众们饮食起居的地方。靠墙一溜摆着几张木床，床 上铺的是篾席。床头叠着床薄被，冬天想必很冷，僧侣们全靠扎 实的内功根基御寒。地上整齐的放着几个蒲团和木鱼。"
+  x = -1
+  y = 7
+  z = 0
+    }
+
+  room_exits "hsyuan5" {
+    room_id = rooms.hsyuan5.id
+    north = rooms.hsyuan6.id
+    south = rooms.hsyuan4.id
+    west = rooms.zhulin5.id
+    }
+
+
+
+
+  room_items "hsyuan5" {
+    room_id = rooms.hsyuan5.id
+    items = [
+      { id = items.hui_ming.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/hsyuan6.c by LPCConverter
+# Zone: shaolin
+
+    rooms "hsyuan6" {
+      name = "和尚院六部"
+      description = "这里是僧众们饮食起居的地方。靠墙一溜摆着几张木床，床 上铺的是篾席。床头叠着床薄被，冬天想必很冷，僧侣们全靠扎 实的内功根基御寒。地上整齐的放着几个蒲团和木鱼。"
+  x = -1
+  y = 8
+  z = 0
+    }
+
+  room_exits "hsyuan6" {
+    room_id = rooms.hsyuan6.id
+    south = rooms.hsyuan5.id
+    west = rooms.zhulin6.id
+    }
+
+
+
+
+  room_items "hsyuan6" {
+    room_id = rooms.hsyuan6.id
+    items = [
+      { id = items.hui_jie.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/jianyu.c by LPCConverter
+# Zone: shaolin
+
+    rooms "jianyu" {
+      name = "监狱"
+      description = "这里黑沉沉的，即无一丝光亮，也无半分声息。黑暗中依稀 可以看到身边似乎有几个人影，看到你转过头去，他们立刻屏住 呼吸，紧张地瞪着你。四壁摸上去冰凉，且极硬，似乎都是钢铁 铸成，只有南北面各有一道小门，门上开了个巴掌大的洞，象是 送饭用的。脚边有一堆东西踢上去克剌剌地散了开来，细看却是 一具白得发亮的枯骨。"
+  x = 0
+  y = 2
+  z = 1
+    }
+
+  room_exits "jianyu" {
+    room_id = rooms.jianyu.id
+    south = rooms.jianyu1.id
+    }
+
+
+
+
+  room_items "jianyu" {
+    room_id = rooms.jianyu.id
+    items = [
+      { id = items.qing_yuan.id },
+      { id = items.fojing1+random(2).id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/jianyu1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "jianyu1" {
+      name = "监狱"
+      description = "这里黑沉沉的，即无一丝光亮，也无半分声息。黑暗中依稀 可以看到身边似乎有几个人影，看到你转过头去，他们立刻屏住 呼吸，紧张地瞪着你。四壁摸上去冰凉，且极硬，似乎都是钢铁 铸成，只有南北面各有一道小门，门上开了个巴掌大的洞，象是 送饭用的。脚边有一堆东西踢上去克剌剌地散了开来，细看却是 一具白得发亮的枯骨。"
+  x = 0
+  y = 1
+  z = 1
+    }
+
+  room_exits "jianyu1" {
+    room_id = rooms.jianyu1.id
+    north = rooms.jianyu.id
+    }
+
+
+  room_characters "jianyu1" {
+    room_id = rooms.jianyu1.id
+    characters = [
+      { id = characters.yu_zu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/jiebei.c by LPCConverter
+# Zone: shaolin
+
+    rooms "jiebei" {
+      name = "界碑"
+      description = "界碑----未连接好的区域(jiebei)。"
+  x = 0
+  y = 0
+  z = 21
+    }
+
+  room_exits "jiebei" {
+    room_id = rooms.jiebei.id
+    up = rooms.shulin10.id
+    down = rooms.hantan3.id
+    east = rooms.shulin14.id
+    northup = rooms.qyping.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/jiulou1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "jiulou1" {
+      name = "迎宾楼"
+      description = "方圆数百里内提起迎宾楼可以说是无人不知，无人不晓。当年苏 学士云游到此，对迎宾楼的素齐赞不绝口，欣然为其题匾，流下一段 传遍海内的佳话，从此迎宾楼名声大震。楼下布置简易，顾客多是匆 匆的行人，买点包子，鸡腿、米酒就赶路去了。楼上是雅座。"
+  x = -1
+  y = 1
+  z = 16
+    }
+
+  room_exits "jiulou1" {
+    room_id = rooms.jiulou1.id
+    up = rooms.jiulou2.id
+    east = rooms.nanyang.id
+    }
+
+
+  room_characters "jiulou1" {
+    room_id = rooms.jiulou1.id
+    characters = [
+      { id = characters.xiao_er2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/jiulou2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "jiulou2" {
+      name = "迎宾楼二楼"
+      description = "这里是雅座，文人学士经常在这里吟诗作画，富商土豪也在这里 边吃喝边作交易。这里也是城里举办喜宴的最佳场所。你站在楼上眺 望，只觉得心旷神怡。东面是一池湖水，碧波荡漾。北面是崇山峻岭。 墙上挂着价格牌子(paizi)。"
+  x = -1
+  y = 1
+  z = 17
+item_desc = {
+ paizi = "本店专办上等素齐。"
+}
+    }
+
+  room_exits "jiulou2" {
+    room_id = rooms.jiulou2.id
+    down = rooms.jiulou1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/jlyuan.c by LPCConverter
+# Zone: shaolin
+
+    rooms "jlyuan" {
+      name = "戒律院"
+      description = "整个大殿门户紧闭，密不透风。即便是在白昼，也犹如黑 夜一般，每隔几步的墙上，点燃着几枝牛油巨烛。下方摆着一 排排烙铁、水牛皮鞭、穿孔竹板及狼牙棒等刑具。四周站满了 手持兵刃的执法僧兵。他们正用冷酷的眼神打量着你，令你不 禁浑身哆嗦起来。"
+  x = 0
+  y = 2
+  z = 1
+valid_leave = [
+{
+  direction = ~
+  message = "玄痛说道: 大胆，你还敢逃跑！执法僧兵何在！"
+}
+
+]
+    }
+
+  room_exits "jlyuan" {
+    room_id = rooms.jlyuan.id
+    southdown = rooms.guangchang3.id
+    }
+
+
+  room_characters "jlyuan" {
+    room_id = rooms.jlyuan.id
+    characters = [
+      { id = characters.seng_bing2.id },
+      { id = characters.seng_bing2.id },
+      { id = characters.seng_bing2.id },
+      { id = characters.xiao_tong.id }    ]
+  }
+
+
+
+  room_items "jlyuan" {
+    room_id = rooms.jlyuan.id
+    items = [
+      { id = items.xuan_tong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/kedian1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "kedian1" {
+      name = "悦来客栈"
+      description = "这是一家远近闻名的悦来客栈，生意非常兴隆。外地游客多选择 在这里落脚，你可以在这里打听到各地的风土人情。店小二里里外外 忙得团团转，接待着南腔北调的客人。墙上挂着一个牌子(paizi)。"
+  x = 1
+  y = 1
+  z = 16
+item_desc = {
+ paizi = "楼上雅房，每夜五两白银。"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "up"
+direction = "up"
+  message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊！"
+}
+,
+{
+   # 阻挡条件（原样保留）：me->query_temp("rent_paid") && dir == "west"
+direction = "west"
+  message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就走了呢！ 旁人还以为小店伺候不周呢！"
+}
+
+]
+    }
+
+  room_exits "kedian1" {
+    room_id = rooms.kedian1.id
+    up = rooms.kedian2.id
+    east = rooms.majiu1.id
+    west = rooms.nanyang.id
+    }
+
+
+  room_characters "kedian1" {
+    room_id = rooms.kedian1.id
+    characters = [
+      { id = characters.xiao_er.id }    ]
+  }
+
+
+
+  room_items "kedian1" {
+    room_id = rooms.kedian1.id
+    items = [
+      { id = items.xuxiake.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/kedian2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "kedian2" {
+      name = "客店二楼"
+      description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小木床， 不少客人正和衣而卧，满屋子都是呼呼的打酣声。西边有张床是空的， 你蹑手蹑脚地走了过去。"
+  x = 1
+  y = 1
+  z = 17
+    }
+
+  room_exits "kedian2" {
+    room_id = rooms.kedian2.id
+    down = rooms.kedian1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/luohan1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "luohan1" {
+      name = "罗汉堂一部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = 2
+  y = 4
+  z = 0
+    }
+
+  room_exits "luohan1" {
+    room_id = rooms.luohan1.id
+    north = rooms.luohan2.id
+    south = rooms.zoulang4.id
+    }
+
+
+
+
+  room_items "luohan1" {
+    room_id = rooms.luohan1.id
+    items = [
+      { id = items.cheng_guan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/luohan2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "luohan2" {
+      name = "罗汉堂二部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = 2
+  y = 5
+  z = 0
+    }
+
+  room_exits "luohan2" {
+    room_id = rooms.luohan2.id
+    north = rooms.luohan3.id
+    south = rooms.luohan1.id
+    }
+
+
+
+
+  room_items "luohan2" {
+    room_id = rooms.luohan2.id
+    items = [
+      { id = items.cheng_zhi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/luohan3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "luohan3" {
+      name = "罗汉堂三部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = 2
+  y = 6
+  z = 0
+    }
+
+  room_exits "luohan3" {
+    room_id = rooms.luohan3.id
+    north = rooms.luohan4.id
+    south = rooms.luohan2.id
+    }
+
+
+
+
+  room_items "luohan3" {
+    room_id = rooms.luohan3.id
+    items = [
+      { id = items.cheng_ming.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/luohan4.c by LPCConverter
+# Zone: shaolin
+
+    rooms "luohan4" {
+      name = "罗汉堂四部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = 2
+  y = 3
+  z = 0
+    }
+
+  room_exits "luohan4" {
+    room_id = rooms.luohan4.id
+    north = rooms.luohan5.id
+    south = rooms.luohan3.id
+    }
+
+
+
+
+  room_items "luohan4" {
+    room_id = rooms.luohan4.id
+    items = [
+      { id = items.cheng_jing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/luohan5.c by LPCConverter
+# Zone: shaolin
+
+    rooms "luohan5" {
+      name = "罗汉堂五部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。一位小 沙弥在一边垂手站立。"
+  x = 2
+  y = 4
+  z = 0
+    }
+
+  room_exits "luohan5" {
+    room_id = rooms.luohan5.id
+    north = rooms.luohan6.id
+    south = rooms.luohan4.id
+    west = rooms.wuchang2.id
+    }
+
+
+  room_characters "luohan5" {
+    room_id = rooms.luohan5.id
+    characters = [
+      { id = characters.xiao_ku.id }    ]
+  }
+
+
+
+  room_items "luohan5" {
+    room_id = rooms.luohan5.id
+    items = [
+      { id = items.xuan_ku.id },
+      { id = items.cheng_jian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/luohan6.c by LPCConverter
+# Zone: shaolin
+
+    rooms "luohan6" {
+      name = "罗汉堂六部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = 2
+  y = 5
+  z = 0
+    }
+
+  room_exits "luohan6" {
+    room_id = rooms.luohan6.id
+    north = rooms.luohan7.id
+    south = rooms.luohan5.id
+    }
+
+
+
+
+  room_items "luohan6" {
+    room_id = rooms.luohan6.id
+    items = [
+      { id = items.cheng_xing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/luohan7.c by LPCConverter
+# Zone: shaolin
+
+    rooms "luohan7" {
+      name = "罗汉堂七部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = 2
+  y = 6
+  z = 0
+    }
+
+  room_exits "luohan7" {
+    room_id = rooms.luohan7.id
+    north = rooms.luohan8.id
+    south = rooms.luohan6.id
+    }
+
+
+
+
+  room_items "luohan7" {
+    room_id = rooms.luohan7.id
+    items = [
+      { id = items.cheng_ji.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/luohan8.c by LPCConverter
+# Zone: shaolin
+
+    rooms "luohan8" {
+      name = "罗汉堂八部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = 2
+  y = 7
+  z = 0
+    }
+
+  room_exits "luohan8" {
+    room_id = rooms.luohan8.id
+    north = rooms.luohan9.id
+    south = rooms.luohan7.id
+    }
+
+
+
+
+  room_items "luohan8" {
+    room_id = rooms.luohan8.id
+    items = [
+      { id = items.cheng_mie.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/luohan9.c by LPCConverter
+# Zone: shaolin
+
+    rooms "luohan9" {
+      name = "罗汉堂九部"
+      description = "这是一间极为简陋的禅房。环视四周，除了几幅佛竭外，室 内空荡荡地别无他物。地上整齐的摆放着几个破烂且发黑的黄布 蒲团，几位须发花白的老僧正在坐在上面闭目入定。这里是本寺 十八罗汉参禅修行的地方，不少绝世武功便是在此悟出。"
+  x = 2
+  y = 4
+  z = -1
+    }
+
+  room_exits "luohan9" {
+    room_id = rooms.luohan9.id
+    northup = rooms.zoulang8.id
+    south = rooms.luohan8.id
+    }
+
+
+
+
+  room_items "luohan9" {
+    room_id = rooms.luohan9.id
+    items = [
+      { id = items.cheng_he.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/majiu1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "majiu1" {
+      name = "马厩"
+      description = "这是南阳城的马厩，常年供应新鲜草料。南阳地处中原，来往的行人 络绎不绝。马厩雨檐下的烂木柱上钉着一块破木牌(paizi)。     马厩中堆放著几堆草料，正中有一口泔槽。"
+  x = 2
+  y = 1
+  z = 16
+    }
+
+  room_exits "majiu1" {
+    room_id = rooms.majiu1.id
+    west = rooms.kedian1.id
+    }
+
+
+  room_characters "majiu1" {
+    room_id = rooms.majiu1.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu1" {
+    room_id = rooms.majiu1.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/maowu.c by LPCConverter
+# Zone: shaolin
+
+    rooms "maowu" {
+      name = "茅屋"
+      description = "这是一件不大的茅屋，残破不全。向上望去可以看到点点阳光 洒降下来，难以想象这里下雨的日子会是怎样一番情景。"
+  x = 0
+  y = -3
+  z = 12
+    }
+
+  room_exits "maowu" {
+    room_id = rooms.maowu.id
+    north = rooms.xiaojing1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/nanyang.c by LPCConverter
+# Zone: shaolin
+
+    rooms "nanyang" {
+      name = "南阳城"
+      description = "这里便是当年诸葛先生的故居。南阳城虽不大，但因为地出 要冲，南来北往的客人也就特别多，所以也五脏俱全，酒楼，客 栈，马店，满城子都是。本地人口甚少，到处都是行色匆匆的江 湖客人。"
+  x = 0
+  y = 1
+  z = 16
+    }
+
+  room_exits "nanyang" {
+    room_id = rooms.nanyang.id
+    west = rooms.jiulou1.id
+    east = rooms.kedian1.id
+    north = rooms.yidao3.id
+    south = rooms.hanshui2.id
+    }
+
+
+  room_characters "nanyang" {
+    room_id = rooms.nanyang.id
+    characters = [
+      { id = characters.xiao_fan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/putiyuan.c by LPCConverter
+# Zone: shaolin
+
+    rooms "putiyuan" {
+      name = "菩提院"
+      description = "这里是少林寺的菩提院。殿上并列这三尊铜像，佛像之前安 着一座屏风，屏风上装着一面极大的铜镜，擦得晶光净亮，镜中 将你的人影照了出来，铜镜(jing)上镌着四句经偈，佛像前点着 几盏油灯，昏黄的灯光之下，依稀看到的是：“一切有为法，如 梦幻泡影，如露亦如电，当作如是观。”"
+  x = 0
+  y = 3
+  z = 1
+    }
+
+  room_exits "putiyuan" {
+    room_id = rooms.putiyuan.id
+    southdown = rooms.guangchang4.id
+    }
+
+
+
+
+  room_items "putiyuan" {
+    room_id = rooms.putiyuan.id
+    items = [
+      { id = items.xuan_ji.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/qfdian.c by LPCConverter
+# Zone: shaolin
+
+    rooms "qfdian" {
+      name = "千佛殿"
+      description = "这是千佛殿。大殿入口是朱红格扇，七宝玲珑。内里供奉的西 天诸佛，计有八菩萨，四金刚，五百阿罗，三千揭谛，十一大曜， 十八伽蓝，以及众优婆塞，优婆夷等。直看得你眼花缭乱。边上 有道小木门。"
+  x = 0
+  y = 8
+  z = 1
+    }
+
+  room_exits "qfdian" {
+    room_id = rooms.qfdian.id
+    north = rooms.bamboo1.id
+    southdown = rooms.guangchang5.id
+    }
+
+
+
+
+  room_items "qfdian" {
+    room_id = rooms.qfdian.id
+    items = [
+      { id = items.qing_guan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/qyping.c by LPCConverter
+# Zone: shaolin
+
+    rooms "qyping" {
+      name = "青云坪"
+      description = "这里便是少室绝顶。极目望去，只见白云缕缕，如苍龙绕岭； 嵩山拔翠，似金刚擎天。山腰五道瀑布飞泻而下，石级蜿延曲折， 宛若一条长虫，游人纷纷其上，已如蚁蛭。面前的平地上寸草不 生，正中三棵巨松围成一圈，圈中央似乎有什么东西在闪闪发光。"
+  x = 6
+  y = 6
+  z = 22
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：present("fumo dao", me) || present("jingang zhao", me) || present("fumo dao", environment(me)) || present("jingang zhao", environment(me))
+direction = ~
+  message = "只听里面有人说道: 大侠上回已来过此处，此刻身携重宝，不便进入， 恕老衲等失礼了。"
+}
+
+]
+    }
+
+  room_exits "qyping" {
+    room_id = rooms.qyping.id
+    in = rooms.fumoquan.id
+    southdown = rooms.shulin14.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/rukou.c by LPCConverter
+# Zone: shaolin
+
+    rooms "rukou" {
+      name = "五行洞入口"
+      description = "这里是五行洞的入口。四面黑沉沉的，巨石削凿成的墙壁上 镶嵌了几颗鹅蛋大小的珠子，放出蒙蒙的黄光。就是这样，也只 能照射到几丈远的地方。地上湿漉漉的，脚边不时会踢到断裂的 枯骨，发出的脆响声在甬道内回响，使你从心底里冒出一股凌凌 的寒意。四周歧路重重，迷茫难辨。你不知道该往哪里迈步。"
+  x = 0
+  y = -1
+  z = 1
+    }
+
+  room_exits "rukou" {
+    room_id = rooms.rukou.id
+    north = rooms.andao1.id
+    south = rooms.wuxing.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/ruzhou.c by LPCConverter
+# Zone: shaolin
+
+    rooms "ruzhou" {
+      name = "汝州城"
+      description = "汝州城是本府的大城，立来是兵家必争之地。故州治在此驻 扎重兵，盘查南来北往的行人，并负责翦灭附近山上的草寇。城 内一队队官兵来来去去，一派森严气象。再折向西，就是五岳之 一的嵩山。"
+  x = 0
+  y = 3
+  z = 16
+    }
+
+  room_exits "ruzhou" {
+    room_id = rooms.ruzhou.id
+    south = rooms.yidao3.id
+    north = rooms.road10.id
+    east = rooms.shang_road1.id
+    west = rooms.taishique.id
+    }
+
+
+  room_characters "ruzhou" {
+    room_id = rooms.ruzhou.id
+    characters = [
+      { id = characters.wujiang.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_chufang.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_chufang" {
+      name = "厨房"
+      description = "这里是商家堡后院西侧的一间厨房，平常商家的弟子们饿了 便可以到这里来要 (serve)些食物。房中灶火正旺，一个大厨师 正忙的满头大汗。屋角放着一个大水缸。"
+  x = 2
+  y = 12
+  z = 16
+    }
+
+  room_exits "shang_chufang" {
+    room_id = rooms.shang_chufang.id
+    east = rooms.shang_houyuan.id
+    }
+
+
+  room_characters "shang_chufang" {
+    room_id = rooms.shang_chufang.id
+    characters = [
+      { id = characters.shang3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_dating.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_dating" {
+      name = "商家堡大厅"
+      description = "这里是商家堡的大厅，大厅内很是宽敞明亮，地上刻有一个 巨大的铁八卦。正对厅门摆放着一张八仙桌，一人压座中堂，身 材高大魁梧，留着短须，神情甚为严肃，正是「八卦刀」商剑鸣。"
+  x = 3
+  y = 8
+  z = 16
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(string)me->query("family/family_name") != "商家堡" && (string)me->query("born_family") != "山东商家" && objectp(present("shang jianming", environment(me)))
+direction = ~
+  message = "商剑鸣对你喝道：什么东西，居然敢在我面前放肆！"
+}
+
+]
+    }
+
+  room_exits "shang_dating" {
+    room_id = rooms.shang_dating.id
+    west = rooms.shang_tingw.id
+    east = rooms.shang_tinge.id
+    south = rooms.shang_xiaojin2.id
+    north = rooms.shang_houting.id
+    }
+
+
+
+
+  room_items "shang_dating" {
+    room_id = rooms.shang_dating.id
+    items = [
+      { id = items.ming.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_houting.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_houting" {
+      name = "后厅"
+      description = "这里是商家堡的后厅所在，大厅相当的宽敞明亮，四周的墙 上悬挂满了各朝名人的真迹。"
+  x = 3
+  y = 9
+  z = 16
+    }
+
+  room_exits "shang_houting" {
+    room_id = rooms.shang_houting.id
+    east = rooms.shang_xiange.id
+    west = rooms.shang_xiangw.id
+    south = rooms.shang_dating.id
+    north = rooms.shang_zoulang1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_houyuan.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_houyuan" {
+      name = "后院"
+      description = "这里是商家堡的后院，后院并不大，整个地面全部是用沙石 铺砌。南边是一条红木制走廊，通往大厅所在。左边不时传来阵 阵扑鼻的饭菜香，原来那里是厨房所在。"
+  x = 3
+  y = 12
+  z = 16
+    }
+
+  room_exits "shang_houyuan" {
+    room_id = rooms.shang_houyuan.id
+    west = rooms.shang_chufang.id
+    east = rooms.shang_huating.id
+    south = rooms.shang_zoulang2.id
+    north = rooms.shang_lianwun.id
+    }
+
+
+
+
+  room_items "shang_houyuan" {
+    room_id = rooms.shang_houyuan.id
+    items = [
+      { id = items.tai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_huating.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_huating" {
+      name = "花亭"
+      description = "你穿过商家堡的后院，来到一个花亭前。花亭以蓝色琉璃砌 成。出了花亭，是一条清幽的花径，两旁修竹姗姗，花径鹅卵石 上生满青苔，显得平素少有人行。"
+  x = 4
+  y = 12
+  z = 16
+    }
+
+  room_exits "shang_huating" {
+    room_id = rooms.shang_huating.id
+    west = rooms.shang_houyuan.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_lianwue.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_lianwue" {
+      name = "练武场"
+      description = "这是商家堡的练武场，空阔的场地上铺满了细细的黄土，正 好适合演武。四面有几个商家堡的弟子正在练武。练武场的中心 竖着几根木桩(muzhuang)，周围还挖有几个沙坑(shakeng)。"
+  x = 4
+  y = 5
+  z = 16
+item_desc = {
+ shakeng = "沙坑里有些家将在练习轻功，你也可以跳(tiao)下去试试。"
+ muzhuang = "几根木桩上有不少击打(jida)过的痕迹。"
+}
+    }
+
+  room_exits "shang_lianwue" {
+    room_id = rooms.shang_lianwue.id
+    west = rooms.shang_qgc.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_lianwun.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_lianwun" {
+      name = "练武场"
+      description = "这里是商家堡厅后的一个练武场，空阔的场地上铺满了细细 的黄土，正好适合演武。不过这里杂草丛生，看样子已经荒废很 长一段时间了。"
+  x = 3
+  y = 13
+  z = 16
+    }
+
+  room_exits "shang_lianwun" {
+    room_id = rooms.shang_lianwun.id
+    south = rooms.shang_houyuan.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_lianwuw.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_lianwuw" {
+      name = "练武场"
+      description = "这是商家堡的练武场，空阔的场地上铺满了细细的黄土，正 好适合演武。四面有几个商家堡的弟子正在练武。场地边上挂着 几个大沙袋(shadai)，不知有什么用处。"
+  x = 2
+  y = 5
+  z = 16
+item_desc = {
+ shadai = "几个沉重的沙袋，可以试着打打(jida)看。"
+}
+    }
+
+  room_exits "shang_lianwuw" {
+    room_id = rooms.shang_lianwuw.id
+    east = rooms.shang_qgc.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_men.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_men" {
+      name = "商家堡大门"
+      description = "一座巨大的宅院映入你的眼帘，正对着你的是一扇朱漆铜钉 的大门，四周是近丈高的围墙。大门的上方横着一块匾，匾上写 着「商家堡」三个大字。"
+  x = 3
+  y = 4
+  z = 16
+    }
+
+  room_exits "shang_men" {
+    room_id = rooms.shang_men.id
+    south = rooms.shang_road3.id
+    north = rooms.shang_qgc.id
+    }
+
+
+  room_characters "shang_men" {
+    room_id = rooms.shang_men.id
+    characters = [
+      { id = characters.shang2.id },
+      { id = characters.shang2.id }    ]
+  }
+
+
+
+  room_items "shang_men" {
+    room_id = rooms.shang_men.id
+    items = [
+      { id = items.zhen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_qgc.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_qgc" {
+      name = "前广场"
+      description = "这里是商家堡内的一个广场，整个广场用沙石铺砌而成，非 常的干净。广场的北边有一条青石小径，可以通过它到达商家堡 的厅内。"
+  x = 3
+  y = 5
+  z = 16
+    }
+
+  room_exits "shang_qgc" {
+    room_id = rooms.shang_qgc.id
+    east = rooms.shang_lianwue.id
+    west = rooms.shang_lianwuw.id
+    south = rooms.shang_men.id
+    north = rooms.shang_xiaojin1.id
+    }
+
+
+  room_characters "shang_qgc" {
+    room_id = rooms.shang_qgc.id
+    characters = [
+      { id = characters.shang2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_road1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_road1" {
+      name = "官道"
+      description = "这里是一条尘土飞扬的大官道，它是连接汝州的主干道。官 道很是宽广，足可容得下十马并驰。"
+  x = 1
+  y = 3
+  z = 16
+    }
+
+  room_exits "shang_road1" {
+    room_id = rooms.shang_road1.id
+    east = rooms.shang_road2.id
+    west = rooms.ruzhou.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_road2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_road2" {
+      name = "官道"
+      description = "这里是一条尘土飞扬的大官道，它是连接汝州的主干道。官 道很是宽广，足可容得下十马并驰。"
+  x = 2
+  y = 3
+  z = 16
+    }
+
+  room_exits "shang_road2" {
+    room_id = rooms.shang_road2.id
+    east = rooms.shang_road3.id
+    west = rooms.shang_road1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_road3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_road3" {
+      name = "小路"
+      description = "官道旁的一条小路，因为平时过往之人不多的缘故，周围都 已长满了杂草。远远的向西望去，似乎有一座大宅。"
+  x = 3
+  y = 3
+  z = 16
+    }
+
+  room_exits "shang_road3" {
+    room_id = rooms.shang_road3.id
+    north = rooms.shang_men.id
+    west = rooms.shang_road2.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_tinge.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_tinge" {
+      name = "东厅"
+      description = "偏厅布置的颇为优雅，丝毫没有正厅上的严肃气氛。一张红 木大桌边上有个书柜，柜里摆了各式各样的书。墙上挂着几幅字 画。看来客人少时，这里又可以当书房用。"
+  x = 4
+  y = 8
+  z = 16
+    }
+
+  room_exits "shang_tinge" {
+    room_id = rooms.shang_tinge.id
+    west = rooms.shang_dating.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_tingw.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_tingw" {
+      name = "西厅"
+      description = "偏厅布置的颇为优雅，丝毫没有正厅上的严肃气氛。一张红 木大桌边上有个书柜，柜里摆了各式各样的书。墙上挂着几幅字 画。看来客人少时，这里又可以当书房用。"
+  x = 2
+  y = 8
+  z = 16
+    }
+
+  room_exits "shang_tingw" {
+    room_id = rooms.shang_tingw.id
+    east = rooms.shang_dating.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_xiange.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_xiange" {
+      name = "东厢房"
+      description = "这里是商家堡后厅东侧的一个厢房，是供给远来的客人和商 家弟子所居住的。厢房中央摆着几张大床，几张桌子。室中光线 柔和，使人更增睡意。"
+  x = 4
+  y = 9
+  z = 16
+    }
+
+  room_exits "shang_xiange" {
+    room_id = rooms.shang_xiange.id
+    west = rooms.shang_houting.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_xiangw.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_xiangw" {
+      name = "西厢房"
+      description = "这里是商家堡后厅西侧的一个厢房，是供给远来的客人和商 家弟子所居住的。厢房中央摆着几张大床，几张桌子。室中光线 柔和，使人更增睡意。"
+  x = 2
+  y = 9
+  z = 16
+    }
+
+  room_exits "shang_xiangw" {
+    room_id = rooms.shang_xiangw.id
+    east = rooms.shang_houting.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_xiaojin1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_xiaojin1" {
+      name = "碎石小径"
+      description = "商家堡广场后面的一条碎石铺砌的小径，可以由它前往商家 堡的大厅所在。不时有商家堡的下人过往于此。"
+  x = 3
+  y = 6
+  z = 16
+    }
+
+  room_exits "shang_xiaojin1" {
+    room_id = rooms.shang_xiaojin1.id
+    south = rooms.shang_qgc.id
+    north = rooms.shang_xiaojin2.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_xiaojin2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_xiaojin2" {
+      name = "碎石小径"
+      description = "商家堡广场后面的一条碎石铺砌的小径，可以由它前往商家 堡的大厅所在。不时有商家堡的下人过往于此。"
+  x = 3
+  y = 7
+  z = 16
+    }
+
+  room_exits "shang_xiaojin2" {
+    room_id = rooms.shang_xiaojin2.id
+    south = rooms.shang_xiaojin1.id
+    north = rooms.shang_dating.id
+    }
+
+
+  room_characters "shang_xiaojin2" {
+    room_id = rooms.shang_xiaojin2.id
+    characters = [
+      { id = characters.shang1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_zoulang1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_zoulang1" {
+      name = "走廊"
+      description = "这是商家堡内的一条木制的走廊，红漆地面很是光滑，整个 走廊被打整得一尘不染。你不时能够看到几个商家堡的家丁在此 走动，忙碌个不停。"
+  x = 3
+  y = 10
+  z = 16
+    }
+
+  room_exits "shang_zoulang1" {
+    room_id = rooms.shang_zoulang1.id
+    south = rooms.shang_houting.id
+    north = rooms.shang_zoulang2.id
+    }
+
+
+  room_characters "shang_zoulang1" {
+    room_id = rooms.shang_zoulang1.id
+    characters = [
+      { id = characters.shang1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/shang_zoulang2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shang_zoulang2" {
+      name = "走廊"
+      description = "这是商家堡内的一条木制的走廊，红漆地面很是光滑，整个 走廊被打整得一尘不染。你不时能够看到几个商家堡的家丁在此 走动，忙碌个不停。"
+  x = 3
+  y = 11
+  z = 16
+    }
+
+  room_exits "shang_zoulang2" {
+    room_id = rooms.shang_zoulang2.id
+    south = rooms.shang_zoulang1.id
+    north = rooms.shang_houyuan.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shanmen.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shanmen" {
+      name = "少林寺"
+      description = "一个巨大的牌坊横架在两片山壁之间，牌坊正上方刻着三个 斗大的字：『少林寺』。字迹有些剥落，看上去年代久远。两位 三十来岁的僧人手持戒刀守在山门两侧。左侧立着一块石碑。"
+  x = 1
+  y = 3
+  z = 18
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：objectp(present("xu tong", environment(me)))
+direction = ~
+  message = "虚通伸手拦住你白眼一翻说道：千年以来，少林向不许女流擅入。 请下山去吧，免得自讨没趣。"
+}
+,
+{
+   # 阻挡条件（原样保留）：objectp(present("xu ming", environment(me)))
+direction = ~
+  message = "虚明迈步挡在你身前，双手合什说道：阿弥陀佛，这位请留步， 恕小寺不接待女客。女施主倘若一心向佛，何妨去峨眉山随喜？"
+}
+,
+{
+   # 阻挡条件（原样保留）：objectp(present("xu tong", environment(me)))
+direction = ~
+  message = "虚通拦住你说道：这位请放下兵刃。少林千年的规矩，外客 不得持兵刃上山。"
+}
+,
+{
+   # 阻挡条件（原样保留）：objectp(present("xu ming", environment(me)))
+direction = ~
+  message = "虚明迈步挡在你身前，双手合什说道：阿弥陀佛，这位请收起 兵刃。佛门清静之地，不便随意舞刀弄剑。还请施主鉴谅。"
+}
+
+]
+    }
+
+  room_exits "shanmen" {
+    room_id = rooms.shanmen.id
+    west = rooms.shijie7.id
+    eastup = rooms.shijie8.id
+    }
+
+
+
+
+  room_items "shanmen" {
+    room_id = rooms.shanmen.id
+    items = [
+      { id = items.xu_tong.id },
+      { id = items.xu_ming.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/shijie1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shijie1" {
+      name = "石阶"
+      description = "这里是嵩山南麓的少室山山脚。一条长长的石阶如同巨龙般 蜿蜒而上，直没云端。嵩山群峰壁立，翠色满山，令人俯仰间顿 生渺小之意。边上有几个叫卖的小贩和挑夫，似乎在嚷嚷着争吵 些什么。"
+  x = 1
+  y = -2
+  z = 12
+    }
+
+  room_exits "shijie1" {
+    room_id = rooms.shijie1.id
+    northup = rooms.shijie2.id
+    west = rooms.xiaojing1.id
+    east = rooms.taishique.id
+    }
+
+
+  room_characters "shijie1" {
+    room_id = rooms.shijie1.id
+    characters = [
+      { id = characters.xiao_fan.id },
+      { id = characters.tiao_fu.id },
+      { id = characters.tiao_fu.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/shijie10.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shijie10" {
+      name = "石阶"
+      description = "松树与松树似乎都挤在一块生长，阳光到这里变得格外黯淡 只在地上留下斑驳的碎影。静听不远处格的一声，象是松枝断落 的声音。"
+  x = 2
+  y = 5
+  z = 21
+    }
+
+  room_exits "shijie10" {
+    room_id = rooms.shijie10.id
+    northup = rooms.shijie11.id
+    southdown = rooms.shijie9.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shijie11.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shijie11" {
+      name = "石阶"
+      description = "松林渐渐开阔，面前出现了一条宽广的石板道，笔直通向前方。 沿道稀稀落落地种着几棵柏树，却显得高大挺拔，蝤龙般的枝干 向天空高高伸展着。"
+  x = 2
+  y = 6
+  z = 22
+    }
+
+  room_exits "shijie11" {
+    room_id = rooms.shijie11.id
+    north = rooms.guangchang1.id
+    southdown = rooms.shijie10.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shijie2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shijie2" {
+      name = "石阶"
+      description = "长长的石阶往上依然看不到尽头。身边的山壁受着长年风雨 的浸润，长出了薄薄的青苔。上面依稀有些刻凿的痕迹。有一行 字特别清晰：“金刚伏邪魔，宝塔镇群妖”"
+  x = 1
+  y = -1
+  z = 13
+    }
+
+  room_exits "shijie2" {
+    room_id = rooms.shijie2.id
+    northup = rooms.shijie3.id
+    southdown = rooms.shijie1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shijie3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shijie3" {
+      name = "石阶"
+      description = "石级到这里似乎变得宽阔了些。清新的山风扑面而来，令人 精神顿为一爽。远处传来淙淙水声，渐行渐远。山壁上挂满 了厚密的藤萝，随风轻轻摇弋。"
+  x = 1
+  y = 0
+  z = 14
+    }
+
+  room_exits "shijie3" {
+    room_id = rooms.shijie3.id
+    westup = rooms.shijie4.id
+    southdown = rooms.shijie2.id
+    }
+
+
+  room_characters "shijie3" {
+    room_id = rooms.shijie3.id
+    characters = [
+      { id = characters.xiao_hai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/shijie4.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shijie4" {
+      name = "石阶"
+      description = "水声越来越大，山间充满了浓浓的水气。石阶上，断裂的山 隙中，都流出一道道细细的泉水，汇成一股澄碧的小溪，向山下 蜿蜒流去。周围绿意荡漾，鸟语鹦声，如置身仙境。"
+  x = 0
+  y = 0
+  z = 15
+    }
+
+  room_exits "shijie4" {
+    room_id = rooms.shijie4.id
+    eastdown = rooms.shijie3.id
+    northup = rooms.shijie5.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shijie5.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shijie5" {
+      name = "石阶"
+      description = "一挂巨大的瀑布白龙出霄般横越山间，水气已浓得仿佛可以 滴下水珠儿来。山峦间升起薄薄的青雾，凝聚不散。哗哗的水声 震耳欲聋。石阶上满是水渍，走上去滑得可以让人打跌。。"
+  x = 0
+  y = 1
+  z = 16
+    }
+
+  room_exits "shijie5" {
+    room_id = rooms.shijie5.id
+    northup = rooms.shijie6.id
+    southdown = rooms.shijie4.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shijie6.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shijie6" {
+      name = "石阶"
+      description = "这里是瀑布上方一道窄窄的山梁，浑然天成。石梁上面人工 凿出一格格阶梯。边上钉了几棵木桩，绕上粗长的麻绳作为扶手。 瀑布在脚下奔腾而过，在不远的山脚下汇成一个深潭。"
+  x = 0
+  y = 2
+  z = 17
+    }
+
+  room_exits "shijie6" {
+    room_id = rooms.shijie6.id
+    northup = rooms.shijie7.id
+    southdown = rooms.shijie5.id
+    }
+
+
+
+
+  room_items "shijie6" {
+    room_id = rooms.shijie6.id
+    items = [
+      { id = items.jue_yuan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/shijie7.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shijie7" {
+      name = "石阶"
+      description = "石级继续向上延伸，瀑布在脚下越来越小，水声也渐行远去 几位身着灰黄色僧衣的僧人擦肩而过，看他们下山的时後脚步沉 稳，好象是个会家子。往上远眺，似乎可以看到石檐一角。"
+  x = 0
+  y = 3
+  z = 18
+    }
+
+  room_exits "shijie7" {
+    room_id = rooms.shijie7.id
+    east = rooms.shanmen.id
+    southdown = rooms.shijie6.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shijie8.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shijie8" {
+      name = "石阶"
+      description = "这里看来是半山腰了。不远的前面有一座小石亭，几位游客 在这里歇息。山路到这里变得十分平坦，东边的山壁上提满了名 人即兴题下的诗句。远望山林间层峦迭嶂，满目滴翠。"
+  x = 2
+  y = 3
+  z = 19
+    }
+
+  room_exits "shijie8" {
+    room_id = rooms.shijie8.id
+    northup = rooms.shijie9.id
+    westdown = rooms.shanmen.id
+    }
+
+
+  room_characters "shijie8" {
+    room_id = rooms.shijie8.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/shijie9.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shijie9" {
+      name = "石阶"
+      description = "眼前遽然出现一大片松林。松林长得极密，石阶上铺满了厚 厚的朽黄的松针。踩在脚下，发出察察的响声。一只小松鼠吱地 在眼前闪过，消失在林海里。"
+  x = 2
+  y = 4
+  z = 20
+    }
+
+  room_exits "shijie9" {
+    room_id = rooms.shijie9.id
+    northup = rooms.shijie10.id
+    southdown = rooms.shijie8.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shulin1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shulin1" {
+      name = "松树林"
+      description = "这是一片松树林。几十丈高的大松树簇在一块，密实的枝叶 象一蓬蓬巨伞般伸向天空，把阳光遮得丝毫也无。尺把厚的松针 积在地上，一脚踩下去，半天拔不出来。"
+  x = 4
+  y = 7
+  z = 22
+    }
+
+  room_exits "shulin1" {
+    room_id = rooms.shulin1.id
+    north = rooms.shulin.id
+    west = rooms.guangchang1e.id
+    south = rooms.shulin2.id
+    east = rooms.shulin.id
+    }
+
+
+
+
+  room_items "shulin1" {
+    room_id = rooms.shulin1.id
+    items = [
+      { id = items.fake_gold.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/shulin10.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shulin10" {
+      name = "松树林"
+      description = "你眼前骤然一黑，朦胧中，只见左右前后，到处都是铺天盖 地的松树林。几十丈高的大松树簇在一块，密实的枝叶象一蓬蓬 巨伞般伸向天空，把阳光遮得丝毫也无。尺把厚的松针积在地上， 一脚踩下去，半天拔不出来。你似乎迷失了方向，象没头苍蝇般 到处乱闯。"
+  x = 0
+  y = 0
+  z = 22
+    }
+
+  room_exits "shulin10" {
+    room_id = rooms.shulin10.id
+    up = rooms.shulin11.id
+    down = rooms.jiebei.id
+    east = rooms.shulin.id
+    south = rooms.shulin.id
+    west = rooms.shulin.id
+    north = rooms.shulin.id
+    }
+
+
+  room_characters "shulin10" {
+    room_id = rooms.shulin10.id
+    characters = [
+      { id = characters.seng_bing1.id },
+      { id = characters.seng_bing1.id },
+      { id = characters.seng_bing1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/shulin11.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shulin11" {
+      name = "松树林"
+      description = "你眼前骤然一黑，朦胧中，只见左右前后，到处都是铺天盖 地的松树林。几十丈高的大松树簇在一块，密实的枝叶象一蓬蓬 巨伞般伸向天空，把阳光遮得丝毫也无。尺把厚的松针积在地上， 一脚踩下去，半天拔不出来。你似乎迷失了方向，象没头苍蝇般 到处乱闯。"
+  x = 0
+  y = 0
+  z = 23
+    }
+
+  room_exits "shulin11" {
+    room_id = rooms.shulin11.id
+    up = rooms.shulin12.id
+    down = rooms.shulin10.id
+    east = rooms.shulin.id
+    south = rooms.shulin.id
+    west = rooms.shulin.id
+    north = rooms.shulin.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shulin12.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shulin12" {
+      name = "松树林"
+      description = "你眼前骤然一黑，朦胧中，只见左右前后，到处都是铺天盖 地的松树林。几十丈高的大松树簇在一块，密实的枝叶象一蓬蓬 巨伞般伸向天空，把阳光遮得丝毫也无。尺把厚的松针积在地上， 一脚踩下去，半天拔不出来。你似乎迷失了方向，象没头苍蝇般 到处乱闯。"
+  x = 0
+  y = 0
+  z = 24
+    }
+
+  room_exits "shulin12" {
+    room_id = rooms.shulin12.id
+    up = rooms.shulin13.id
+    down = rooms.shulin11.id
+    east = rooms.shulin.id
+    south = rooms.shulin.id
+    west = rooms.shulin.id
+    north = rooms.shulin.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shulin13.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shulin13" {
+      name = "松树林"
+      description = "你眼前骤然一黑，朦胧中，只见左右前后，到处都是铺天盖 地的松树林。几十丈高的大松树簇在一块，密实的枝叶象一蓬蓬 巨伞般伸向天空，把阳光遮得丝毫也无。尺把厚的松针积在地上， 一脚踩下去，半天拔不出来。你似乎迷失了方向，象没头苍蝇般 到处乱闯。"
+  x = 0
+  y = 0
+  z = 25
+    }
+
+  room_exits "shulin13" {
+    room_id = rooms.shulin13.id
+    up = rooms.shulin9.id
+    down = rooms.shulin12.id
+    east = rooms.shulin.id
+    south = rooms.shulin.id
+    west = rooms.shulin.id
+    north = rooms.shulin.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shulin14.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shulin14" {
+      name = "松树林"
+      description = "你眼前骤然一黑，朦胧中，只见左右前后，到处都是铺天盖 地的松树林。几十丈高的大松树簇在一块，密实的枝叶象一蓬蓬 巨伞般伸向天空，把阳光遮得丝毫也无。尺把厚的松针积在地上， 一脚踩下去，半天拔不出来。你似乎迷失了方向，象没头苍蝇般 到处乱闯。"
+  x = 6
+  y = 7
+  z = 22
+    }
+
+  room_exits "shulin14" {
+    room_id = rooms.shulin14.id
+    north = rooms.shulin.id
+    west = rooms.shulin8.id
+    south = rooms.qyping.id
+    east = rooms.shulin.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shulin2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shulin2" {
+      name = "松树林"
+      description = "你眼前骤然一黑，朦胧中，只见左右前后，到处都是铺天盖 地的松树林。几十丈高的大松树簇在一块，密实的枝叶象一蓬蓬 巨伞般伸向天空，把阳光遮得丝毫也无。尺把厚的松针积在地上， 一脚踩下去，半天拔不出来。你似乎迷失了方向，象没头苍蝇般 到处乱闯。"
+  x = 4
+  y = 6
+  z = 22
+    }
+
+  room_exits "shulin2" {
+    room_id = rooms.shulin2.id
+    north = rooms.shulin.id
+    west = rooms.shulin1.id
+    south = rooms.shulin.id
+    east = rooms.shulin3.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shulin3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shulin3" {
+      name = "松树林"
+      description = "你眼前骤然一黑，朦胧中，只见左右前后，到处都是铺天盖 地的松树林。几十丈高的大松树簇在一块，密实的枝叶象一蓬蓬 巨伞般伸向天空，把阳光遮得丝毫也无。尺把厚的松针积在地上， 一脚踩下去，半天拔不出来。你似乎迷失了方向，象没头苍蝇般 到处乱闯。"
+  x = 5
+  y = 6
+  z = 22
+    }
+
+  room_exits "shulin3" {
+    room_id = rooms.shulin3.id
+    north = rooms.shulin.id
+    west = rooms.shulin.id
+    south = rooms.shulin4.id
+    east = rooms.shulin2.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shulin4.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shulin4" {
+      name = "松树林"
+      description = "你眼前骤然一黑，朦胧中，只见左右前后，到处都是铺天盖 地的松树林。几十丈高的大松树簇在一块，密实的枝叶象一蓬蓬 巨伞般伸向天空，把阳光遮得丝毫也无。尺把厚的松针积在地上， 一脚踩下去，半天拔不出来。你似乎迷失了方向，象没头苍蝇般 到处乱闯。"
+  x = 5
+  y = 5
+  z = 22
+    }
+
+  room_exits "shulin4" {
+    room_id = rooms.shulin4.id
+    north = rooms.shulin3.id
+    west = rooms.shulin.id
+    south = rooms.shulin.id
+    east = rooms.shulin5.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shulin5.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shulin5" {
+      name = "松树林"
+      description = "地的松树林。几十丈高的大松树簇在一块，密实的枝叶象一蓬蓬 巨伞般伸向天空，把阳光遮得丝毫也无。尺把厚的松针积在地上， 一脚踩下去，半天拔不出来。你似乎迷失了方向，象没头苍蝇般 到处乱闯。"
+  x = 6
+  y = 5
+  z = 22
+    }
+
+  room_exits "shulin5" {
+    room_id = rooms.shulin5.id
+    north = rooms.shulin6.id
+    west = rooms.shulin.id
+    south = rooms.shulin4.id
+    east = rooms.shulin.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shulin6.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shulin6" {
+      name = "松树林"
+      description = "你眼前骤然一黑，朦胧中，只见左右前后，到处都是铺天盖 地的松树林。几十丈高的大松树簇在一块，密实的枝叶象一蓬蓬 巨伞般伸向天空，把阳光遮得丝毫也无。尺把厚的松针积在地上， 一脚踩下去，半天拔不出来。你似乎迷失了方向，象没头苍蝇般 到处乱闯。"
+  x = 6
+  y = 6
+  z = 22
+    }
+
+  room_exits "shulin6" {
+    room_id = rooms.shulin6.id
+    north = rooms.shulin7.id
+    west = rooms.shulin.id
+    south = rooms.shulin.id
+    east = rooms.shulin5.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shulin7.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shulin7" {
+      name = "松树林"
+      description = "你眼前骤然一黑，朦胧中，只见左右前后，到处都是铺天盖 地的松树林。几十丈高的大松树簇在一块，密实的枝叶象一蓬蓬 巨伞般伸向天空，把阳光遮得丝毫也无。尺把厚的松针积在地上， 一脚踩下去，半天拔不出来。你似乎迷失了方向，象没头苍蝇般 到处乱闯。"
+  x = 6
+  y = 7
+  z = 22
+    }
+
+  room_exits "shulin7" {
+    room_id = rooms.shulin7.id
+    north = rooms.shulin6.id
+    west = rooms.shulin.id
+    south = rooms.shulin.id
+    east = rooms.shulin8.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shulin8.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shulin8" {
+      name = "松树林"
+      description = "你眼前骤然一黑，朦胧中，只见左右前后，到处都是铺天盖 地的松树林。几十丈高的大松树簇在一块，密实的枝叶象一蓬蓬 巨伞般伸向天空，把阳光遮得丝毫也无。尺把厚的松针积在地上， 一脚踩下去，半天拔不出来。你似乎迷失了方向，象没头苍蝇般 到处乱闯。"
+  x = 7
+  y = 7
+  z = 22
+    }
+
+  room_exits "shulin8" {
+    room_id = rooms.shulin8.id
+    north = rooms.shulin.id
+    west = rooms.shulin14.id
+    south = rooms.shulin.id
+    east = rooms.shulin7.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/shulin9.c by LPCConverter
+# Zone: shaolin
+
+    rooms "shulin9" {
+      name = "松树林"
+      description = "你眼前骤然一黑，朦胧中，只见左右前后，到处都是铺天盖 地的松树林。几十丈高的大松树簇在一块，密实的枝叶象一蓬蓬 巨伞般伸向天空，把阳光遮得丝毫也无。尺把厚的松针积在地上， 一脚踩下去，半天拔不出来。你似乎迷失了方向，象没头苍蝇般 到处乱闯。"
+  x = 0
+  y = 0
+  z = 26
+    }
+
+  room_exits "shulin9" {
+    room_id = rooms.shulin9.id
+    up = rooms.wuxing0.id
+    down = rooms.shulin13.id
+    east = rooms.shulin.id
+    south = rooms.shulin.id
+    west = rooms.shulin.id
+    north = rooms.shulin.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/smdian.c by LPCConverter
+# Zone: shaolin
+
+    rooms "smdian" {
+      name = "山门殿"
+      description = "这里便是少林寺的前殿山门殿了。只见殿内青砖铺地，两侧 分列哼、哈二将。身躯雄伟，面相忿怒，头带宝冠，上半身裸露， 手执金刚杵，一鼓鼻，一张口，露牙睁目，凶猛可畏。两边各放 一红木供桌，陈列香烛，以供僧俗叩拜。自此的左右各有一间偏 殿，供比丘们打坐诵经之用。南面是一道三丈来高的朱红杉木包 铜大门(gate)。"
+  x = 0
+  y = -3
+  z = -1
+    }
+
+  room_exits "smdian" {
+    room_id = rooms.smdian.id
+    north = rooms.taijie.id
+    west = rooms.smdian2.id
+    east = rooms.smdian1.id
+    }
+
+
+  room_characters "smdian" {
+    room_id = rooms.smdian.id
+    characters = [
+      { id = characters.seng_bing3.id },
+      { id = characters.seng_bing3.id },
+      { id = characters.xiang_ke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/smdian1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "smdian1" {
+      name = "东侧殿"
+      description = "这里是东侧殿。房间四周悬挂着达摩祖师、观音大士的画 像，以及一些寺内元老的字画。地下散乱地放着许多蒲团，木 鱼等。看来此处是本派弟子打坐修行之所。几位年轻僧人正肃 容入定，看来已颇得禅宗三昧。"
+  x = 1
+  y = -3
+  z = -1
+    }
+
+  room_exits "smdian1" {
+    room_id = rooms.smdian1.id
+    west = rooms.smdian.id
+    }
+
+
+
+
+  room_items "smdian1" {
+    room_id = rooms.smdian1.id
+    items = [
+      { id = items.muchui.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/smdian2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "smdian2" {
+      name = "西侧殿"
+      description = "这里是西侧殿。房间四周悬挂着达摩祖师、观音大士的画 像，以及一些寺内元老的字画。地下散乱地放着许多蒲团，木 鱼等。看来此处是本派弟子打坐修行之所。几位年轻僧人正肃 容入定，看来已颇得禅宗三昧。"
+  x = -1
+  y = -3
+  z = -1
+    }
+
+  room_exits "smdian2" {
+    room_id = rooms.smdian2.id
+    east = rooms.smdian.id
+    }
+
+
+
+
+  room_items "smdian2" {
+    room_id = rooms.smdian2.id
+    items = [
+      { id = items.muchui.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/taijie.c by LPCConverter
+# Zone: shaolin
+
+    rooms "taijie" {
+      name = "台阶"
+      description = "穿过山门殿，面前三道平行的青石台阶通向前方的一个高 台。台阶上精工镂刻着麒麟，玄龟，松鹤等瑞兽，形态逼真动 人。高台正中方着个二人高的青铜大香炉，前面摆着个香台， 几位香客正在虔诚谟拜。再往前就是天王殿。"
+  x = 0
+  y = -2
+  z = -1
+    }
+
+  room_exits "taijie" {
+    room_id = rooms.taijie.id
+    northup = rooms.twdian.id
+    west = rooms.beilin2.id
+    south = rooms.smdian.id
+    east = rooms.beilin1.id
+    }
+
+
+  room_characters "taijie" {
+    room_id = rooms.taijie.id
+    characters = [
+      { id = characters.xiang_ke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/twdian.c by LPCConverter
+# Zone: shaolin
+
+    rooms "twdian" {
+      name = "天王殿"
+      description = "这里是少林寺的中殿天王殿。殿内香烟燎绕，幔角叮咚。 香火比前殿要旺盛的多。正前方供着个大肚子，似乎永远都笑 咪咪的弥勒佛。四大天王分列两旁，分执“风调雨顺”。两侧 香桌上摆满了四季果蔬，弥勒的身后站立的是韦驮。只见他金 盔金甲，年轻英俊，威风凛凛，双手合十，金刚杵横放腕上。 左右两边各有一间偏殿。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "twdian" {
+    room_id = rooms.twdian.id
+    north = rooms.guangchang2.id
+    southdown = rooms.taijie.id
+    west = rooms.twdian2.id
+    east = rooms.twdian1.id
+    }
+
+
+  room_characters "twdian" {
+    room_id = rooms.twdian.id
+    characters = [
+      { id = characters.xiang_ke.id }    ]
+  }
+
+
+
+  room_items "twdian" {
+    room_id = rooms.twdian.id
+    items = [
+      { id = items.dao_guo.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/twdian1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "twdian1" {
+      name = "东侧殿"
+      description = "这里是东侧殿。房间四周悬挂着达摩祖师、观音大士的画 像，以及一些寺内元老的字画。地下散乱地放着许多蒲团，木 鱼等。看来此处是本派弟子打坐修行之所。几位中年和尚手持 数珠，正在喃喃念经。"
+  x = 1
+  y = -1
+  z = 0
+    }
+
+  room_exits "twdian1" {
+    room_id = rooms.twdian1.id
+    west = rooms.twdian.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/twdian2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "twdian2" {
+      name = "西侧殿"
+      description = "这里是西侧殿。房间四周悬挂着达摩祖师、观音大士的画 像，以及一些寺内元老的字画。地下散乱地放着许多蒲团，木 鱼等。看来此处是本派弟子打坐修行之所。几位中年和尚手持 数珠，正在喃喃念经。"
+  x = -1
+  y = -1
+  z = 0
+    }
+
+  room_exits "twdian2" {
+    room_id = rooms.twdian2.id
+    east = rooms.twdian.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/woshi.c by LPCConverter
+# Zone: shaolin
+
+    rooms "woshi" {
+      name = "卧室"
+      description = "卧房里只有一张竹制的矮床上面铺了半破烂的篾席。席子上的 一角耷拉到地上。席腿边有一把断了的单刀。地上斑斑点点似乎是 好多天前留下的血迹。"
+  x = -1
+  y = 1
+  z = 13
+    }
+
+  room_exits "woshi" {
+    room_id = rooms.woshi.id
+    south = rooms.xiaowu.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/wuchang.c by LPCConverter
+# Zone: shaolin
+
+    rooms "wuchang" {
+      name = "练武场"
+      description = "这里是少林寺的练武场。由无数块巨大的花岗岩石板铺就。 上千年的踩踏已使得这些石板如同镜子般平整光滑。西边角上还 有两个大沙坑，十来个僧人正在练习武艺。东西两面各有一练武 场。"
+  x = 0
+  y = 4
+  z = 0
+    }
+
+  room_exits "wuchang" {
+    room_id = rooms.wuchang.id
+    north = rooms.fzlou.id
+    west = rooms.wuchang1.id
+    east = rooms.wuchang2.id
+    south = rooms.houdian.id
+    }
+
+
+
+
+  room_items "wuchang" {
+    room_id = rooms.wuchang.id
+    items = [
+      { id = items.dao_jue.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/wuchang1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "wuchang1" {
+      name = "练武场"
+      description = "这里是少林寺的练武场。由无数块巨大的花岗岩石板铺就。 上千年的踩踏已使得这些石板如同镜子般平整光滑。练武场中 间竖立着不少木人。十来个僧人正在练习武艺。东面有一长溜 僧房。"
+  x = -1
+  y = 4
+  z = 0
+    }
+
+  room_exits "wuchang1" {
+    room_id = rooms.wuchang1.id
+    north = rooms.zoulang6.id
+    east = rooms.wuchang.id
+    west = rooms.banruo5.id
+    south = rooms.zoulang2.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/wuchang2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "wuchang2" {
+      name = "练武场"
+      description = "这里是少林寺的练武场。由无数块巨大的花岗岩石板铺就。 上千年的踩踏已使得这些石板如同镜子般平整光滑。练武场中 间竖立着不少草靶。十来个僧人正在练习武艺。西面有一长溜 僧房。"
+  x = 1
+  y = 4
+  z = 0
+    }
+
+  room_exits "wuchang2" {
+    room_id = rooms.wuchang2.id
+    north = rooms.zoulang7.id
+    east = rooms.luohan5.id
+    west = rooms.wuchang.id
+    south = rooms.zoulang3.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/wuchang3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "wuchang3" {
+      name = "练武场"
+      description = "这里是少林寺的练武场。由无数块巨大的花岗岩石板铺就。 上千年的踩踏已使得这些石板如同镜子般平整光滑。练武场中 间竖立着不少木人和草靶。西边角上还有两个大沙坑，十来个 僧人正在练习武艺。东西两面各有一长溜僧房。"
+  x = 0
+  y = 6
+  z = 0
+valid_leave = [
+{
+  direction = "northup"
+  message = "你级别不够，不能进入达摩院。"
+}
+
+]
+    }
+
+  room_exits "wuchang3" {
+    room_id = rooms.wuchang3.id
+    northup = rooms.dmyuan.id
+    north = rooms.guangchang5.id
+    west = rooms.hsyuan4.id
+    east = rooms.hsyuan1.id
+    south = rooms.fzlou.id
+    }
+
+
+
+
+  room_items "wuchang3" {
+    room_id = rooms.wuchang3.id
+    items = [
+      { id = items.dao_cheng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/wuqiku.c by LPCConverter
+# Zone: shaolin
+
+    rooms "wuqiku" {
+      name = "武器库"
+      description = "少林寺的武器库可称天下第一，十八般兵器，这里可谓应有 尽有。四面一望，令你顿感眼花缭乱。墙上砌了一个个小格子， 每个都插满了各种各样的兵器。墙角一个健壮的僧人正乒乒乓 乓地在打造一根禅杖。另一位灰衣僧人正在墙角拂拭一把戒刀。 看到你进来，他缓缓起身，向你迎了过来。"
+  x = 3
+  y = 7
+  z = 0
+    }
+
+  room_exits "wuqiku" {
+    room_id = rooms.wuqiku.id
+    north = rooms.fangjuku.id
+    west = rooms.zhulin2.id
+    }
+
+
+  room_characters "wuqiku" {
+    room_id = rooms.wuqiku.id
+    characters = [
+      { id = characters.datie_seng.id }    ]
+  }
+
+
+
+  room_items "wuqiku" {
+    room_id = rooms.wuqiku.id
+    items = [
+      { id = items.dao_chen.id },
+      { id = items.zhujian.id },
+      { id = items.mudao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/wuxing0.c by LPCConverter
+# Zone: shaolin
+
+    rooms "wuxing0" {
+      name = "五行洞"
+      description = ""
+  x = 0
+  y = 0
+  z = 27
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：check_out(me)
+direction = ~
+  message = "你顺利地走出了五行迷宫。"
+}
+,
+{
+  direction = "west"
+  message = "你掉进机关，落入僧监。"
+}
+
+]
+    }
+
+  room_exits "wuxing0" {
+    room_id = rooms.wuxing0.id
+    down = rooms.shulin9.id
+    east = rooms.wuxing4.id
+    south = rooms.wuxing3.id
+    west = rooms.wuxing1.id
+    north = rooms.wuxing2.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/wuxing1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "wuxing1" {
+      name = "五行洞"
+      description = ""
+  x = -1
+  y = 0
+  z = 27
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：check_out(me)
+direction = ~
+  message = "你顺利地走出了五行迷宫。"
+}
+,
+{
+  direction = "west"
+  message = "你掉进机关，落入僧监。"
+}
+
+]
+    }
+
+  room_exits "wuxing1" {
+    room_id = rooms.wuxing1.id
+    north = rooms.wuxing2.id
+    west = rooms.wuxing4.id
+    south = rooms.wuxing3.id
+    east = rooms.wuxing0.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/wuxing2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "wuxing2" {
+      name = "五行洞"
+      description = ""
+  x = 0
+  y = 1
+  z = 27
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：check_out(me)
+direction = ~
+  message = "你顺利地走出了五行迷宫。"
+}
+,
+{
+  direction = "north"
+  message = "你掉进机关，落入僧监。"
+}
+
+]
+    }
+
+  room_exits "wuxing2" {
+    room_id = rooms.wuxing2.id
+    north = rooms.wuxing3.id
+    west = rooms.wuxing0.id
+    south = rooms.wuxing4.id
+    east = rooms.wuxing1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/wuxing3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "wuxing3" {
+      name = "五行洞"
+      description = ""
+  x = 0
+  y = -1
+  z = 27
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：check_out(me)
+direction = ~
+  message = "你顺利地走出了五行迷宫。"
+}
+,
+{
+  direction = "west"
+  message = "你掉进机关，落入僧监。"
+}
+
+]
+    }
+
+  room_exits "wuxing3" {
+    room_id = rooms.wuxing3.id
+    north = rooms.wuxing4.id
+    west = rooms.wuxing0.id
+    south = rooms.wuxing2.id
+    east = rooms.wuxing1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/wuxing4.c by LPCConverter
+# Zone: shaolin
+
+    rooms "wuxing4" {
+      name = "五行洞"
+      description = ""
+  x = 1
+  y = 0
+  z = 27
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：check_out(me)
+direction = ~
+  message = "你顺利地走出了五行迷宫。"
+}
+,
+{
+  direction = "north"
+  message = "你掉进机关，落入僧监。"
+}
+
+]
+    }
+
+  room_exits "wuxing4" {
+    room_id = rooms.wuxing4.id
+    north = rooms.wuxing2.id
+    west = rooms.wuxing0.id
+    south = rooms.wuxing3.id
+    east = rooms.wuxing1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/xiaojing1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "xiaojing1" {
+      name = "山坡"
+      description = "这里是少室山之阳的一座山坡山坡上长满了艳红色的不知名的 野花采密的蜂蝶们簇成一团团忙碌着。不时有几只好奇的小密蜂飞 近来似乎对你这个不速之客感到极大的惊奇。"
+  x = 0
+  y = -2
+  z = 12
+    }
+
+  room_exits "xiaojing1" {
+    room_id = rooms.xiaojing1.id
+    northup = rooms.xiaojing2.id
+    south = rooms.maowu.id
+    east = rooms.shijie1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/xiaojing2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "xiaojing2" {
+      name = "田埂边"
+      description = "转过山坡只见几棵果实累累的大枣树孤零零地栽在田埂边，上 面挂满了红熟的枣子，使人忍不住想摘下几颗尝尝。田里种着半熟 的青稞麦。西首有三间简陋的土屋。"
+  x = 0
+  y = -1
+  z = 13
+    }
+
+  room_exits "xiaojing2" {
+    room_id = rooms.xiaojing2.id
+    west = rooms.houshan.id
+    southdown = rooms.xiaojing1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/xiaowu.c by LPCConverter
+# Zone: shaolin
+
+    rooms "xiaowu" {
+      name = "小土屋"
+      description = "土屋中间挂着一张大竹席，将后边的那半间隔作了卧房。地上 放了架木制的纺车，上面已经积满了灰尘，看来是好久没人用了。 地面上的尘土上留有几行散乱的足迹，通向席后的卧房。"
+  x = -1
+  y = 0
+  z = 13
+    }
+
+  room_exits "xiaowu" {
+    room_id = rooms.xiaowu.id
+    north = rooms.woshi.id
+    south = rooms.houshan.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/yaopinku.c by LPCConverter
+# Zone: shaolin
+
+    rooms "yaopinku" {
+      name = "药品库"
+      description = "这里是全寺僧侣领用药品的地方。房间里弭漫着股浓浓 的药味。靠墙是一排排高及房顶的药柜，每个药柜都由上百 个装药的小抽屉，上面贴满了密密麻麻的各种草头药名。东 首墙边放着个巨大的暗红色杉木药柜，上面贴着个盖有方丈 印签的大封条。一位中年僧人正来回忙碌着称量药品，熬药 煎汤。"
+  x = 3
+  y = 9
+  z = 0
+    }
+
+  room_exits "yaopinku" {
+    room_id = rooms.yaopinku.id
+    south = rooms.fangjuku.id
+    }
+
+
+
+
+  room_items "yaopinku" {
+    room_id = rooms.yaopinku.id
+    items = [
+      { id = items.dao_xiang2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/yidao.c by LPCConverter
+# Zone: shaolin
+
+    rooms "yidao" {
+      name = "大驿道"
+      description = "你走在一条尘土飞扬的大驿道上。四周人来人往。挑担子 的行商，赶着大车的马夫，上京赶考的书生，熙熙攘攘，非常 热闹。不时还有快马从身边飞驰而过，扬起一路尘埃。马上的 人个个身着劲装，衣甲鲜明，有的还随身佩带着刀剑。看来都 是些些习武的江湖人。道路两旁是整整齐齐的杨树林。"
+  x = 0
+  y = -3
+  z = 15
+    }
+
+  room_exits "yidao" {
+    room_id = rooms.yidao.id
+    north = rooms.yidao1.id
+    south = rooms.beimen.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/yidao1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "yidao1" {
+      name = "大驿道"
+      description = "你走在一条尘土飞扬的大驿道上。四周人来人往。挑担子 的行商，赶着大车的马夫，上京赶考的书生，熙熙攘攘，非常 热闹。不时还有快马从身边飞驰而过，扬起一路尘埃。马上的 人个个身着劲装，衣甲鲜明，有的还随身佩带着刀剑。看来都 是些些习武的江湖人。道路两旁是整整齐齐的杨树林。"
+  x = 0
+  y = -2
+  z = 15
+    }
+
+  room_exits "yidao1" {
+    room_id = rooms.yidao1.id
+    north = rooms.yidao2.id
+    south = rooms.yidao.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/yidao2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "yidao2" {
+      name = "大驿道"
+      description = "你走在一条尘土飞扬的大驿道上。四周人来人往。挑担子 的行商，赶着大车的马夫，上京赶考的书生，熙熙攘攘，非常 热闹。不时还有快马从身边飞驰而过，扬起一路尘埃。马上的 人个个身着劲装，衣甲鲜明，有的还随身佩带着刀剑。看来都 是些些习武的江湖人。道路两旁是整整齐齐的杨树林。东边有 一条蜿蜒小路，不知通向何方。"
+  x = 0
+  y = -1
+  z = 15
+    }
+
+  room_exits "yidao2" {
+    room_id = rooms.yidao2.id
+    east = rooms.xiaoyuan.id
+    north = rooms.hanshui1.id
+    south = rooms.yidao1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/yidao3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "yidao3" {
+      name = "大驿道"
+      description = "你走在一条尘土飞扬的大驿道上。四周人来人往。挑担子的 行商，赶着大车的马夫，上京赶考的书生，熙熙攘攘，非常热闹。 不时还有两三骑快马从身边飞驰而过，扬起一路尘埃。道路两旁 是整整齐齐的杨树林。"
+  x = 0
+  y = 2
+  z = 16
+    }
+
+  room_exits "yidao3" {
+    room_id = rooms.yidao3.id
+    north = rooms.ruzhou.id
+    south = rooms.nanyang.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zhonglou.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zhonglou" {
+      name = "钟楼小院"
+      description = "这是一座砖木结构的宝塔，塔高七层，塔身作八角形，飞檐 翘翎，檐角上挂满了一串串小铜铃，随风叮叮作响。塔身墙上镂 空雕绘着无数佛陀们的坐像。一个个形态维肖，看来出自名匠之 手。塔底入口处开了一扇拱形的小木门，门扇两侧用彩漆涂绘， 画的是释祖在灵山对诸天众佛讲经时的情形。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhonglou" {
+    room_id = rooms.zhonglou.id
+    in = rooms.zhonglou1.id
+    west = rooms.guangchang2.id
+    }
+
+
+  room_characters "zhonglou" {
+    room_id = rooms.zhonglou.id
+    characters = [
+      { id = characters.seng_bing3.id },
+      { id = characters.seng_bing3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/zhonglou1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zhonglou1" {
+      name = "钟楼一层"
+      description = "这里是塔楼的底层，一缕缕阳光从墙上的花砖缝隙里透射 进来，在青砖地上投下别致的光影，如同一格格棋盘相似。往 上看，长长的木楼梯盘绕而上，似乎永无尽头。墙角，梯级都 相当洁净，看来经常有僧人打扫。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhonglou1" {
+    room_id = rooms.zhonglou1.id
+    out = rooms.zhonglou.id
+    up = rooms.zhonglou2.id
+    }
+
+
+  room_characters "zhonglou1" {
+    room_id = rooms.zhonglou1.id
+    characters = [
+      { id = characters.saodi_seng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/zhonglou2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zhonglou2" {
+      name = "钟楼二层"
+      description = "每个楼层上都铺设了结实的木楼板，八角形的墙身上则开 了四扇大窗。从窗孔看，墙体也是极为厚实。从这里往外眺望， 可以看到围绕塔周的小园以及北边的竹林，随风飘来阵阵竹叶 的清香。"
+  x = 1
+  y = 0
+  z = 1
+    }
+
+  room_exits "zhonglou2" {
+    room_id = rooms.zhonglou2.id
+    down = rooms.zhonglou1.id
+    up = rooms.zhonglou3.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zhonglou3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zhonglou3" {
+      name = "钟楼三层"
+      description = "塔身往上似乎越来越窄，楼梯也渐为挤仄。扶手上不少朽 坏处续接了新木，漆色也是新旧不同。从窗孔往外望，往北可 以看到竹林中的藏经楼和方丈楼露出飞檐一角，往西则是后殿 的屋顶，屋脊上塑了个大大的“佛”字。"
+  x = 1
+  y = 0
+  z = 2
+    }
+
+  room_exits "zhonglou3" {
+    room_id = rooms.zhonglou3.id
+    down = rooms.zhonglou2.id
+    up = rooms.zhonglou4.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zhonglou4.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zhonglou4" {
+      name = "钟楼四层"
+      description = "到这里楼梯大概只能容一人上下，墙身也略薄了些。视线 越过窗棂，南边的练武场，罗汉堂，般若堂历历在目，不少僧 人正汇集在练武场上习武，吆喝声一阵阵传进耳鼓。北边的藏 经楼，方丈楼也尽露全貌。"
+  x = 1
+  y = 0
+  z = 3
+    }
+
+  room_exits "zhonglou4" {
+    room_id = rooms.zhonglou4.id
+    down = rooms.zhonglou3.id
+    up = rooms.zhonglou5.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zhonglou5.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zhonglou5" {
+      name = "钟楼五层"
+      description = "一眼望去，只见蓝天白云，青山列列，令人将尘俗之气， 顿为一一扫。南至前三殿，北到方丈楼，整个少林寺尽在眼底。 北面竹林随风起伏，犹如一片竹海。东西面围绕全寺的是密密 匝匝的松林，一眼往不到边。"
+  x = 1
+  y = 0
+  z = 4
+    }
+
+  room_exits "zhonglou5" {
+    room_id = rooms.zhonglou5.id
+    down = rooms.zhonglou4.id
+    up = rooms.zhonglou6.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zhonglou6.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zhonglou6" {
+      name = "钟楼六层"
+      description = "沿窗洞吹进一阵阵凌厉的山风，寒意浸人。北望可见松林的 尽头，少室山的顶峰处，有一片小小的平地，正中植着三棵巨松； 又似乎有什么东西正闪闪发光。头顶上的楼板开了个大洞，挂下 一口大钟。从这里只能看到巨钟的下边缘，内里黑洞洞的，什么 也看不见。"
+  x = 1
+  y = 0
+  z = 5
+    }
+
+  room_exits "zhonglou6" {
+    room_id = rooms.zhonglou6.id
+    down = rooms.zhonglou5.id
+    up = rooms.zhonglou7.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zhonglou7.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zhonglou7" {
+      name = "钟楼七层"
+      description = "这里就是钟楼之顶。直入眼帘的便是那口大钟和一根悬挂空 中的巨杵。细看大钟，整整有两丈来高，直径也有丈许。钟身似 由青铜浇铸，上面满是密密麻麻的印文古篆，估计重逾数千斤。 巨杵粗可合抱，丈把来长，一头裹以厚皮，正对着钟腰。尽管山 风吹人欲倒，谁都禁不住想撞一下钟(bell)试试。往外看，有个很 大的汉白玉窗台(out)，上面足可站一个人。"
+  x = 1
+  y = 0
+  z = 6
+    }
+
+  room_exits "zhonglou7" {
+    room_id = rooms.zhonglou7.id
+    up = rooms.bagua.id
+    down = rooms.zhonglou6.id
+    }
+
+
+
+
+  room_items "zhonglou7" {
+    room_id = rooms.zhonglou7.id
+    items = [
+      { id = items.qing_xiao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/zhulin1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zhulin1" {
+      name = "竹林小道"
+      description = "这是一条卵石铺成的小道，曲曲折折地通向前方。两边是密 密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧敲木鱼声； 微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤，真是绝佳 的禅修所在。"
+  x = 2
+  y = 6
+  z = 0
+    }
+
+  room_exits "zhulin1" {
+    room_id = rooms.zhulin1.id
+    south = rooms.zoulang8.id
+    north = rooms.zhulin2.id
+    west = rooms.hsyuan1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zhulin2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zhulin2" {
+      name = "竹林小道"
+      description = "这是一条卵石铺成的小道，曲曲折折地通向前方。两边是密 密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧敲木鱼声； 微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤，真是绝佳 的禅修所在。"
+  x = 2
+  y = 7
+  z = 0
+    }
+
+  room_exits "zhulin2" {
+    room_id = rooms.zhulin2.id
+    north = rooms.zhulin3.id
+    south = rooms.zhulin1.id
+    west = rooms.hsyuan2.id
+    east = rooms.wuqiku.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zhulin3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zhulin3" {
+      name = "竹林小道"
+      description = "这是一条卵石铺成的小道，曲曲折折地通向前方。两边是密 密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧敲木鱼声； 微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤，真是绝佳 的禅修所在。"
+  x = 2
+  y = 8
+  z = 0
+    }
+
+  room_exits "zhulin3" {
+    room_id = rooms.zhulin3.id
+    south = rooms.zhulin2.id
+    west = rooms.hsyuan3.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zhulin4.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zhulin4" {
+      name = "竹林小道"
+      description = "这是一条卵石铺成的小道，曲曲折折地通向前方。两边是密 密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧敲木鱼声； 微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤，真是绝佳 的禅修所在。"
+  x = -2
+  y = 6
+  z = 0
+    }
+
+  room_exits "zhulin4" {
+    room_id = rooms.zhulin4.id
+    south = rooms.zoulang5.id
+    north = rooms.zhulin5.id
+    east = rooms.hsyuan4.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zhulin5.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zhulin5" {
+      name = "竹林小道"
+      description = "这是一条卵石铺成的小道，曲曲折折地通向前方。两边是密 密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧敲木鱼声； 微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤，真是绝佳 的禅修所在。"
+  x = -2
+  y = 7
+  z = 0
+    }
+
+  room_exits "zhulin5" {
+    room_id = rooms.zhulin5.id
+    north = rooms.zhulin6.id
+    west = rooms.cjlou.id
+    south = rooms.zhulin4.id
+    east = rooms.hsyuan5.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zhulin6.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zhulin6" {
+      name = "竹林小道"
+      description = "这是一条卵石铺成的小道，曲曲折折地通向前方。两边是密 密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧敲木鱼声； 微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤，真是绝佳 的禅修所在。"
+  x = -2
+  y = 8
+  z = 0
+    }
+
+  room_exits "zhulin6" {
+    room_id = rooms.zhulin6.id
+    south = rooms.zhulin5.id
+    east = rooms.hsyuan6.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zhushe.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zhushe" {
+      name = "猪舍"
+      description = "这是间破烂的农家猪舍。圈里养着几头瘦猪，泔槽已经干涸了， 草料也开始发霉腐烂。由于好多天没人清理牲口的粪便，满屋子弥 漫着一股恶臭。屋角堆了一大堆石块(stone)，足有半人高。"
+  x = -2
+  y = 0
+  z = 13
+    }
+
+  room_exits "zhushe" {
+    room_id = rooms.zhushe.id
+    southeast = rooms.houshan.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zoulang1.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zoulang1" {
+      name = "走廊"
+      description = "这里是禅房走廊。房顶一侧支在南面的高墙上，另一侧则与 北边般若堂的屋顶相连。彩梁画栋，连顶棚也用彩漆绘满了各种 飞天的图形，每幅画似乎都在诉说一个娓娓动人的佛经故事。南 边墙上题着一个字(writing)。往北通往般若堂。"
+  x = -2
+  y = 3
+  z = 0
+    }
+
+  room_exits "zoulang1" {
+    room_id = rooms.zoulang1.id
+    north = rooms.banruo1.id
+    east = rooms.zoulang2.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zoulang2.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zoulang2" {
+      name = "走廊"
+      description = "这里是禅房走廊。房顶一侧支在南面的高墙上，另一侧凌空 架在几根细细的石柱上。彩梁画栋，连顶棚也用彩漆绘满了各种 飞天的图形，每幅画似乎都在诉说一个娓娓动人的佛经故事。南 边墙上也画着一幅画(picture)。北望可以观赏僧众们练武的场面。"
+  x = -1
+  y = 3
+  z = 0
+    }
+
+  room_exits "zoulang2" {
+    room_id = rooms.zoulang2.id
+    north = rooms.wuchang1.id
+    east = rooms.houdian.id
+    west = rooms.zoulang1.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zoulang3.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zoulang3" {
+      name = "走廊"
+      description = "这里是禅房走廊。房顶一侧支在南面的高墙上，另一侧则与 北边和尚院的屋顶相连。彩梁画栋，连顶棚也用彩漆绘满了各种 飞天的图形，每幅画似乎都在诉说一个娓娓动人的佛经故事。南 边墙上挂着一幅对子(duizi)。北望可以观赏僧众们练武的场面。"
+  x = 1
+  y = 3
+  z = 0
+    }
+
+  room_exits "zoulang3" {
+    room_id = rooms.zoulang3.id
+    north = rooms.wuchang2.id
+    west = rooms.houdian.id
+    east = rooms.zoulang4.id
+    }
+
+
+
+
+  room_items "zoulang3" {
+    room_id = rooms.zoulang3.id
+    items = [
+      { id = items.dao_pin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shaolin/zoulang4.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zoulang4" {
+      name = "走廊"
+      description = "这里是禅房走廊。房顶一侧支在南面的高墙上，另一侧则与 北边罗汉堂的屋顶相连。彩梁画栋，连顶棚也用彩漆绘满了各种 飞天的图形，每幅画似乎都在诉说一个娓娓动人的佛经故事。南 边墙上题着一首诗(poem)。往北通往罗汉堂。"
+  x = 2
+  y = 3
+  z = 0
+    }
+
+  room_exits "zoulang4" {
+    room_id = rooms.zoulang4.id
+    north = rooms.luohan1.id
+    west = rooms.zoulang3.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zoulang5.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zoulang5" {
+      name = "走廊"
+      description = "这里是禅房走廊。走廊南侧的房顶倚着南面的高墙，另一侧 凌空架在几根细细的石柱上，倚在栏杆上，北望是一大片竹林， 馨香满怀，竹影摇曳，诗意顿上心头，别有一番韵趣。"
+  x = -2
+  y = 5
+  z = 0
+    }
+
+  room_exits "zoulang5" {
+    room_id = rooms.zoulang5.id
+    southdown = rooms.banruo9.id
+    north = rooms.zhulin4.id
+    east = rooms.zoulang6.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zoulang6.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zoulang6" {
+      name = "走廊"
+      description = "这里是禅房走廊。走廊南侧的房顶倚着南面的高墙，另一侧 则与北边和尚院的屋顶相连。南面墙上挂了一付对联：“悟彻菩 提真妙理，断魔归本合元神”。往北通向和尚院。"
+  x = -1
+  y = 5
+  z = 0
+    }
+
+  room_exits "zoulang6" {
+    room_id = rooms.zoulang6.id
+    south = rooms.wuchang1.id
+    north = rooms.hsyuan4.id
+    east = rooms.fzlou.id
+    west = rooms.zoulang5.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zoulang7.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zoulang7" {
+      name = "走廊"
+      description = "这里是禅房走廊。走廊南侧的房顶倚着南面的高墙，另一侧 则与北边和尚院的屋顶相连。南面墙上挂了一付对联：“灵根孕 育源流出，心性修持大道生”。往北通向和尚院。"
+  x = 1
+  y = 5
+  z = 0
+    }
+
+  room_exits "zoulang7" {
+    room_id = rooms.zoulang7.id
+    south = rooms.wuchang2.id
+    north = rooms.hsyuan1.id
+    west = rooms.fzlou.id
+    east = rooms.zoulang8.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/zoulang8.c by LPCConverter
+# Zone: shaolin
+
+    rooms "zoulang8" {
+      name = "走廊"
+      description = "这里是禅房走廊。走廊南侧的房顶倚着南面的高墙，另一侧 凌空架在几根细细的石柱上，倚在栏杆上，北望是一大片竹林， 馨香满怀，竹影摇曳，诗意顿上心头，别有一番韵趣。"
+  x = 2
+  y = 5
+  z = 0
+    }
+
+  room_exits "zoulang8" {
+    room_id = rooms.zoulang8.id
+    southdown = rooms.luohan9.id
+    north = rooms.zhulin1.id
+    west = rooms.zoulang7.id
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/chuanfu1.c by LPCConverter
+# Zone: shaolin
+
+    characters "chuanfu1" {
+      name = "船夫"
+      description = "这是常年在汉水专门管货运的一位船夫。"
+  gender = "男性"
+  age = 42
+
+  combat = {
+    attitude = "peaceful"
+  }
+
+  inquiries = [
+    { key = "摆渡" value = "不论货多货少，一船十两纹银，不二价。" },
+    { key = "过河" value = "不论货多货少，一船十两纹银，不二价。" }
+  ]
+
+  accept = [
+    { kind = "money" min = 1000 accept = true msg = "你悠闲的站在船头，晃晃悠悠的过了汉水......" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/chuanfu2.c by LPCConverter
+# Zone: shaolin
+
+    characters "chuanfu2" {
+      name = "船夫"
+      description = "这是常年在汉水专门管货运的一位船夫。"
+  gender = "男性"
+  age = 42
+
+  combat = {
+    attitude = "peaceful"
+  }
+
+  inquiries = [
+    { key = "摆渡" value = "不论货多货少，一船十两纹银，不二价。" },
+    { key = "过河" value = "不论货多货少，一船十两纹银，不二价。" }
+  ]
+
+  accept = [
+    { kind = "money" min = 1000 accept = true msg = "你悠闲的站在船头，晃晃悠悠的过了汉水......" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/da-shou.c by LPCConverter
+# Zone: shaolin
+
+    characters "da_shou" {
+      name = "打手"
+      description = "他是一位身穿黄布袈裟的青年僧人。脸上稚气未脱， 身手却已相当矫捷，看来似乎学过一点武功。"
+  gender = "男性"
+  age = 20
+  shen_type = 1
+  score = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 300
+    max_neili = 500
+    max_qi = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 25 },
+    { skill = "hunyuan-yiqi" level = 25 },
+    { skill = "dodge" level = 25 },
+    { skill = "shaolin-shenfa" level = 25 },
+    { skill = "unarmed" level = 25 },
+    { skill = "banruo-zhang" level = 25 },
+    { skill = "parry" level = 25 },
+    { skill = "sword" level = 25 },
+    { skill = "damo-jian" level = 25 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "unarmed" skill = "banruo-zhang" },
+    { type = "parry" skill = "damo-jian" },
+    { type = "sword" skill = "damo-jian" }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/datie-seng.c by LPCConverter
+# Zone: shaolin
+
+    characters "datie_seng" {
+      name = "打铁僧"
+      description = "这是个身强力壮、皮肤拗黑的打铁僧人。"
+  gender = "男性"
+  age = 38
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 7500
+    con = 17
+    dex = 20
+    int = 15
+    str = 25
+  }
+
+  inquiries = [
+    { key = "老乔" value = "(: ask_qiao :)" },
+    { key = "铁手掌" value = "(: ask_armor :)" }
+  ]
+
+  chat_chance = 3
+chats = [
+    "打铁僧喃喃自语：让山脚下的老乔给我买铁，结果送过来的都是些锈得发烂的旧铁！",
+    "打铁僧嘟囔道：寺内上等精铁都用得差不多了，得让慧合尊者派人去市上买些好铁来 ......！"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 35 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/lao-qiao.c by LPCConverter
+# Zone: shaolin
+
+    characters "lao_qiao" {
+      name = "乔三槐"
+      description = ""
+  gender = "男性"
+  age = 55
+
+  combat = {
+    max_jing = 300
+    max_qi = 400
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/miao.c by LPCConverter
+# Zone: shaolin
+
+    characters "miao" {
+      name = "苗人凤"
+      description = "他看上去脸色透黄，似乎蒙了一层淡淡的金纸。身材高大魁梧，确 是全然不修篇幅，令人称奇。"
+  nickname = "金面佛"
+  gender = "男性"
+  age = 37
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2200000
+    con = 33
+    dex = 31
+    int = 31
+    max_jing = 2200
+    max_neili = 4800
+    max_qi = 4500
+    str = 32
+  }
+
+  inquiries = [
+    { key = "打遍天下无敌手" value = "这话说说而已，岂能当真？" },
+    { key = "胡一刀" value = "(: ask_me :)" }
+  ]
+
+  skills = [
+    { skill = "force" level = 220 },
+    { skill = "hunyuan-yiqi" level = 220 },
+    { skill = "sword" level = 230 },
+    { skill = "miaojia-jian" level = 230 },
+    { skill = "dodge" level = 210 },
+    { skill = "feiyan-zoubi" level = 210 },
+    { skill = "strike" level = 225 },
+    { skill = "tianchang-zhang" level = 225 },
+    { skill = "parry" level = 230 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "sword" skill = "miaojia-jian" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "parry" skill = "miaojia-jian" },
+    { type = "strike" skill = "tianchang-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/saodi-seng.c by LPCConverter
+# Zone: shaolin
+
+    characters "saodi_seng" {
+      name = "扫地僧"
+      description = "这是一位专职负责塔楼清埽工作的寺内杂役僧人。"
+  gender = "男性"
+  age = 35
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 5000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 150
+    max_neili = 100
+    max_qi = 300
+    str = 20
+  }
+
+  chat_chance = 5
+chats = [
+    "扫地僧喃喃自语：这几天也真怪，干干净净的，不知道打哪冒出许多老鼠来！"
+]
+
+
+  skills = [
+    { skill = "force" level = 25 },
+    { skill = "dodge" level = 25 },
+    { skill = "unarmed" level = 25 },
+    { skill = "parry" level = 25 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/seng-bing1.c by LPCConverter
+# Zone: shaolin
+
+    characters "seng_bing1" {
+      name = "护林僧兵"
+      description = "他是一位身材高大的青年僧人，两臂粗壮，膀阔腰圆。他手持兵 刃，身穿一袭白布镶边袈裟，似乎有一身武艺。"
+  gender = "男性"
+  age = 20
+  shen_type = 1
+  score = 1
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 2000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 300
+    max_neili = 500
+    max_qi = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 30 },
+    { skill = "hunyuan-yiqi" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "shaolin-shenfa" level = 30 },
+    { skill = "unarmed" level = 30 },
+    { skill = "banruo-zhang" level = 30 },
+    { skill = "parry" level = 30 },
+    { skill = "blade" level = 30 },
+    { skill = "cibei-dao" level = 30 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "unarmed" skill = "banruo-zhang" },
+    { type = "parry" skill = "cibei-dao" },
+    { type = "blade" skill = "cibei-dao" }
+  ]
+
+
+  carry = [
+    { id = items.jiedao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/seng-bing2.c by LPCConverter
+# Zone: shaolin
+
+    characters "seng_bing2" {
+      name = "执法僧兵"
+      description = "他是一位身材高大的中年僧人，两臂粗壮，膀阔腰圆。他手持兵 刃，身穿一袭灰布镶边袈裟，似乎有一身武艺。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+  score = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 300
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "hunyuan-yiqi" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "shaolin-shenfa" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "banruo-zhang" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "blade" level = 40 },
+    { skill = "cibei-dao" level = 40 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "unarmed" skill = "banruo-zhang" },
+    { type = "parry" skill = "cibei-dao" },
+    { type = "blade" skill = "cibei-dao" }
+  ]
+
+
+  carry = [
+    { id = items.jiedao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/seng-bing3.c by LPCConverter
+# Zone: shaolin
+
+    characters "seng_bing3" {
+      name = "守寺僧兵"
+      description = "他是一位身材高大的壮年僧人，两臂粗壮，膀阔腰圆。他手持兵 刃，身穿一袭灰布镶边袈裟，似乎有一身武艺。"
+  gender = "男性"
+  age = 40
+  shen_type = 1
+  score = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 300
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "hunyuan-yiqi" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "shaolin-shenfa" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "banruo-zhang" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "blade" level = 50 },
+    { skill = "cibei-dao" level = 50 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "unarmed" skill = "banruo-zhang" },
+    { type = "parry" skill = "cibei-dao" },
+    { type = "blade" skill = "cibei-dao" }
+  ]
+
+
+  carry = [
+    { id = items.jiedao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/shang1.c by LPCConverter
+# Zone: shaolin
+
+    characters "shang1" {
+      name = "丫鬟"
+      description = "一个十多岁的小姑娘，在这里当丫鬟。"
+  gender = "女性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  skills = [
+    { skill = "dodge" level = 10 },
+    { skill = "unarmed" level = 10 }
+  ]
+
+
+  carry = [
+    { id = items.nvcloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/shang2.c by LPCConverter
+# Zone: shaolin
+
+    characters "shang2" {
+      name = "家丁"
+      description = "一个二十来岁的青年，在商家堡内当差。"
+  gender = "男性"
+  age = 20
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  skills = [
+    { skill = "dodge" level = 10 },
+    { skill = "unarmed" level = 10 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/shang3.c by LPCConverter
+# Zone: shaolin
+
+    characters "shang3" {
+      name = "厨师"
+      description = "商家堡内的厨师，你可以问他要(serve)一些吃的。"
+  gender = "男性"
+  age = 65
+  shen_type = 1
+
+  combat = {
+    combat_exp = 7500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 35 },
+    { skill = "force" level = 35 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/shaofan-seng.c by LPCConverter
+# Zone: shaolin
+
+    characters "shaofan_seng" {
+      name = "烧饭僧"
+      description = "这是位胖胖的中年僧人，大概是因为长年烧饭作菜的缘故，才如此发福的吧。"
+  gender = "男性"
+  age = 44
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 100
+    max_qi = 400
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 12 },
+    { skill = "dodge" level = 12 },
+    { skill = "unarmed" level = 12 },
+    { skill = "parry" level = 12 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/tiao-fu.c by LPCConverter
+# Zone: shaolin
+
+    characters "tiao_fu" {
+      name = "挑夫"
+      description = "这是个老实巴交的穷挑夫，长得膀阔腰圆，一身肌肉。"
+  gender = "男性"
+  age = 28
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 1000
+    con = 20
+    dex = 22
+    int = 15
+    str = 25
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/xiang-ke.c by LPCConverter
+# Zone: shaolin
+
+    characters "xiang_ke" {
+      name = "进香客"
+      description = ""
+  gender = "男性"
+  shen_type = 0
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/xiao-bei.c by LPCConverter
+# Zone: shaolin
+
+    characters "xiao_bei" {
+      name = "小沙弥"
+      description = "他是一位未通世故的少年和尚，脸上挂着天真的稚笑。"
+  gender = "男性"
+  age = 14
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 100
+    max_neili = 100
+    max_qi = 100
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 12 },
+    { skill = "dodge" level = 12 },
+    { skill = "unarmed" level = 12 },
+    { skill = "parry" level = 12 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/xiao-ci.c by LPCConverter
+# Zone: shaolin
+
+    characters "xiao_ci" {
+      name = "小沙弥"
+      description = "他是一位未通世故的少年和尚，脸上挂着天真的稚笑。"
+  gender = "男性"
+  age = 15
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 100
+    max_neili = 100
+    max_qi = 100
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 15 },
+    { skill = "dodge" level = 15 },
+    { skill = "unarmed" level = 15 },
+    { skill = "parry" level = 15 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/xiao-er.c by LPCConverter
+# Zone: shaolin
+
+    characters "xiao_er" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+
+  accept = [
+    { kind = "money" min = 500 accept = true msg = "小二一哈腰，说道：多谢您老，客官请上楼歇息。" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/xiao-er2.c by LPCConverter
+# Zone: shaolin
+
+    characters "xiao_er2" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  # vendor_goods: "/d/city/npc/obj/jitui" (file not found)
+  # vendor_goods: "/d/city/npc/obj/jiudai" (file not found)
+  # vendor_goods: "/d/city/npc/obj/baozi" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/xiao-fan.c by LPCConverter
+# Zone: shaolin
+
+    characters "xiao_fan" {
+      name = "小贩"
+      description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+  brain = brains.vendor
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 300
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  # vendor_goods: "/d/shaolin/obj/map" (file not found)
+  # vendor_goods: "/d/shaolin/obj/guide" (file not found)
+  # vendor_goods: "/d/village/npc/obj/stick" (file not found)
+  # vendor_goods: "/d/village/npc/obj/shoes" (file not found)
+  # vendor_goods: "/d/village/npc/obj/bottle" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/xiao-hai.c by LPCConverter
+# Zone: shaolin
+
+    characters "xiao_hai" {
+      name = "小孩"
+      description = "这是个农家小孩子。不知为何跑到山上玩耍。"
+  gender = "男性"
+  age = 11
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 50
+    con = 11
+    dex = 11
+    int = 11
+    str = 11
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/xiao-ku.c by LPCConverter
+# Zone: shaolin
+
+    characters "xiao_ku" {
+      name = "小沙弥"
+      description = "他是一位未通世故的少年和尚，脸上挂着天真的稚笑。"
+  gender = "男性"
+  age = 13
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 100
+    max_neili = 100
+    max_qi = 100
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 10 },
+    { skill = "dodge" level = 10 },
+    { skill = "unarmed" level = 10 },
+    { skill = "parry" level = 10 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/xiao-nan.c by LPCConverter
+# Zone: shaolin
+
+    characters "xiao_nan" {
+      name = "小沙弥"
+      description = "他是一位未通世故的少年和尚，脸上挂着天真的稚笑。"
+  gender = "男性"
+  age = 10
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 100
+    max_neili = 100
+    max_qi = 100
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 9 },
+    { skill = "dodge" level = 9 },
+    { skill = "unarmed" level = 9 },
+    { skill = "parry" level = 9 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/xiao-tong.c by LPCConverter
+# Zone: shaolin
+
+    characters "xiao_tong" {
+      name = "小沙弥"
+      description = "他是一位未通世故的少年和尚，脸上挂着天真的稚笑。"
+  gender = "男性"
+  age = 10
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 100
+    max_neili = 100
+    max_qi = 100
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 8 },
+    { skill = "dodge" level = 8 },
+    { skill = "unarmed" level = 8 },
+    { skill = "parry" level = 8 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/xingzhe.c by LPCConverter
+# Zone: shaolin
+
+    characters "xingzhe" {
+      name = "行者"
+      description = "他是一位云游四方的行者，风霜满面，行色匆匆，似乎正在办一件急事。"
+  title = "少林派弟子"
+  gender = "男性"
+  age = 35
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 20000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 100
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "blade" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "shaolin-shenfa" level = 50 },
+    { skill = "cibei-dao" level = 50 },
+    { skill = "hunyuan-yiqi" level = 50 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "blade" skill = "cibei-dao" },
+    { type = "parry" skill = "cibei-dao" }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/npc/yu-zu.c by LPCConverter
+# Zone: shaolin
+
+    characters "yu_zu" {
+      name = "狱卒"
+      description = "这是一个长相十分凶恶的狱卒，满脸横肉，眼神里带着股杀气。"
+  age = 50
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    max_jing = 500
+    max_qi = 500
+  }
+
+  chat_chance = 1
+chats = [
+    "狱卒嘿嘿嘿地冷笑起来，当他发现你正注视著他的时候，扭头恶狠狠瞪了你一眼。",
+    "狱卒掏出一把雪亮的匕首，缓缓地削着自己又黑又长的手指甲，嘴里哼着什麽。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 }
+  ]
+
+
+  accept = [
+    { kind = "money" min = 1000 accept = true msg = "狱卒说道：下水道里老鼠真多，替我去打几只，可别乘机溜了呵！" },
+    { kind = "any" accept = false msg = ["狱卒左右张望了一下，偷偷替{npc}打开通往南边的小门。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/allow-letter.c by LPCConverter
+# Zone: shaolin
+
+    items "allow_letter" {
+      name = "手谕"
+      description = "这是一封由方丈签发的手谕，凭此可自由进入藏经阁二楼研习上乘武功。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/basi-shanyao.c by LPCConverter
+# Zone: shaolin
+
+    items "basi_shanyao" {
+      name = "拔丝山药"
+      description = "一盆色若玫瑰，甜嫩香嫩的拔丝山药。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/beixin.c by LPCConverter
+# Zone: shaolin
+
+    items "beixin" {
+      name = "铁背心"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/bocai-fentiao.c by LPCConverter
+# Zone: shaolin
+
+    items "bocai_fentiao" {
+      name = "菠菜粉条"
+      description = "一盆白绿相间，清香可口的菠菜粉条。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/changbian.c by LPCConverter
+# Zone: shaolin
+
+    items "changbian" {
+      name = "长鞭"
+      description = "这是一柄普通的长鞭，由水牛精工编织而成。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抖出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}卷回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/changjian.c by LPCConverter
+# Zone: shaolin
+
+    items "changjian" {
+      name = "长剑"
+      description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/chanzhang.c by LPCConverter
+# Zone: shaolin
+
+    items "chanzhang" {
+      name = "禅杖"
+      description = "这是一根黑黝黝的镔铁禅杖，约四十来斤，是件称手的重兵器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/cheng-cloth.c by LPCConverter
+# Zone: shaolin
+
+    items "cheng_cloth" {
+      name = "金边黑布袈裟"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/cloth.c by LPCConverter
+# Zone: shaolin
+
+    items "cloth" {
+      name = "青布僧衣"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/damo-ling.c by LPCConverter
+# Zone: shaolin
+
+    items "damo_ling" {
+      name = "达摩令"
+      description = "这是一面金光闪闪的令牌，由方丈签发，凭此可弟子自由向师尊挑战。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/dao-cloth.c by LPCConverter
+# Zone: shaolin
+
+    items "dao_cloth" {
+      name = "灰布镶边袈裟"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/fake-gold.c by LPCConverter
+# Zone: shaolin
+
+    items "fake_gold" {
+      name = "黄金"
+      description = "黄澄澄的金子，人见人爱的金子，不过 ...颜色有点不对。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/fojing10.c by LPCConverter
+# Zone: shaolin
+
+    items "fojing10" {
+      name = "Item"
+      description = "这是一册佛经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/fojing11.c by LPCConverter
+# Zone: shaolin
+
+    items "fojing11" {
+      name = "Item"
+      description = "这是一册佛经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/fojing20.c by LPCConverter
+# Zone: shaolin
+
+    items "fojing20" {
+      name = "Item"
+      description = "这是一册佛经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/fojing21.c by LPCConverter
+# Zone: shaolin
+
+    items "fojing21" {
+      name = "Item"
+      description = "这是一册佛经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/food.c by LPCConverter
+# Zone: shaolin
+
+    items "food" {
+      name = "糖醋里脊"
+      description = "一份热气腾腾的糖醋里脊。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/fumo-zhang.c by LPCConverter
+# Zone: shaolin
+
+    items "fumo_zhang" {
+      name = "伏魔杖"
+      description = "这是一把银光雪亮的伏魔杖，流苏闪动，耀人耳目。此乃数百年前由 达摩老祖携入中原，一路用之除妖灭魔，乃是佛家无上降魔法宝。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "只听「铮」的一声，伏魔杖腾空而出，自行跃入{npc}掌中。 瞬时天际间风云变色，电闪雷鸣，弥漫着一片无边杀意。"
+    unwield = "伏魔杖自{npc}掌中飞起，在半空中一转，「唰」地靠在{npc}身后。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/furong-huagu.c by LPCConverter
+# Zone: shaolin
+
+    items "furong_huagu" {
+      name = "芙蓉花菇"
+      description = "一盆汤稠汁浓，味滑爽口的芙蓉花菇汤。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/guide.c by LPCConverter
+# Zone: shaolin
+
+    items "guide" {
+      name = "『少林拜师必读』"
+      description = "『少林拜师必读』  少林位于扬州城北少室山，新玩家由南麓北上山道，沿途攀 登八里十六段的石级到达山门。女性及手持兵刃的非少林弟 子都不能进山门。按约放下兵器，由守护山门的两位知客僧 收存後，再行向上攀登。寺前是一个松柏围绕的广场，排列 着一组组石人石兽，东西各是郁郁苍苍的忪林，正前方往北 就是少林寺的正门，广场上寥寥站着几个青年僧人，他们是 清无，清为，和清法三僧，俗家弟子到此止步，可直接拜三 僧为师学些入门的少林功夫。如果愿易剃度入我佛门，取法 号後可进入少林寺，从今以後就成为一名正式的少林弟子。 穿过少林寺的三进大雄宝殿，参拜如来等诸佛後，即到达寺 前的练武场。练武场上有各种习武的设施，如木人，沙坑， 草靶以及练习硬功的砖石等，大部分慧字辈和道字辈的僧人 都在练武场上授徒，新进的少林弟子可拜师而从，学习自己 感兴趣的武功。平时可下山除暴安良，履行一名正派弟子的 职责。武功达到一定水平後可凭达摩令挑战，如能战胜高辈 弟子或师友，则可晋升为道字辈或慧字辈，与以前的师父并 列，玩家之间也可切磋技艺，以求提高。本寺弟子武艺达到 一定程度，即可以进入藏经阁进修本派武功，待时机成熟， 可以向罗汉堂玄苦，玄难二长老提出破罗汉阵的要求。罗汉 阵由本寺十八罗汉组成，每人各擅长一种一种武功，长老同 意後十八位高僧即鱼贯而出在练武场中心布下罗汉阵，若要 破阵，玩家需承受每位罗汉僧集毕生精力之一击，玩家可凭 轻功躲避或以本身擅长的武功拆解，总之，如果能承受十八 招不死或昏迷，该弟子即升为澄字辈与十八罗汉并列，并可 获准进入达摩院研习破解别门武功的方法。并且自身的各项 属性都会有较大提高。玩家的下个目标就是等待每年正月十 五，本寺两位渡字辈长老驾临，他们将根据该弟子的根骨， 资质以及行侠仗仪的事迹，决定是否破格收录为弟子。该玩 家一但有幸成为二位长老的关门弟子，他即可与本寺五大神 僧并列玄字辈，位尊无比，并可委任为藏经阁阁主或僧监监 长一职，并可直接进入武林大会的决赛圈。其他诸多好处， 不必细表。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/heisuo.c by LPCConverter
+# Zone: shaolin
+
+    items "heisuo" {
+      name = "黑索"
+      description = "这是一根漆黑的长鞭，毫不起眼，但是入手沉重，且 不失柔韧，实在是千锤百炼之物。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}一伸手，悄无声息的将{name}握在手中。"
+    unwield = "{npc}将手中的{name}卷起收好。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/hui-cloth.c by LPCConverter
+# Zone: shaolin
+
+    items "hui_cloth" {
+      name = "青布镶边袈裟"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/hulu.c by LPCConverter
+# Zone: shaolin
+
+    items "hulu" {
+      name = "葫芦"
+      description = "一个用葫芦制成的水壶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/huwan.c by LPCConverter
+# Zone: shaolin
+
+    items "huwan" {
+      name = "铁护腕"
+      description = "这是一件皮质的护腕，上面满布铁钉，用以保护腕部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/huyao.c by LPCConverter
+# Zone: shaolin
+
+    items "huyao" {
+      name = "铁护腰"
+      description = "这是一件皮质的护腰，上面满布铁钉，用以保护腰部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/jiaxin-biji.c by LPCConverter
+# Zone: shaolin
+
+    items "jiaxin_biji" {
+      name = "夹心荸荠"
+      description = "一盆形态精巧别致，外脆里嫩，而又别有风味的夹心荸荠。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/jiedao.c by LPCConverter
+# Zone: shaolin
+
+    items "jiedao" {
+      name = "戒刀"
+      description = "这是一柄尺半长的戒刀，刀光闪闪，入手沉重，似是精铁打成。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一把明晃晃的{name}握在手中。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/jinchuang-yao.c by LPCConverter
+# Zone: shaolin
+
+    items "jinchuang_yao" {
+      name = "金创药"
+      description = "这是一包别具灵效的少林金创药，专治内外伤等。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/jingang-zhao.c by LPCConverter
+# Zone: shaolin
+
+    items "jingang_zhao" {
+      name = "金刚罩"
+      description = "这是一件金光闪闪的袈裟，通体用天山雪蚕丝织成，坚韧无比刀剑 不能伤。此袈裟数百年前由达摩老祖携入中原，邪魔见之辟易，乃 是佛家无上降魔法宝。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/liuli-qiezi.c by LPCConverter
+# Zone: shaolin
+
+    items "liuli_qiezi" {
+      name = "琉璃茄子"
+      description = "一盆青红相间，金黄透烂，清香四溢的琉璃茄子。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/mala-doufu.c by LPCConverter
+# Zone: shaolin
+
+    items "mala_doufu" {
+      name = "麻辣豆腐"
+      description = "一盆颜色红亮，细中带嫩，香辣可口的麻辣豆腐。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/map.c by LPCConverter
+# Zone: shaolin
+
+    items "map" {
+      name = "『少林旅游图』"
+      description = "『少林旅游图』  +----------------------+-----------------------+-----------------------+ |                      |                       |                       | +------------+         |        千佛殿         |          +------------+ |            |         |                       |          |            | |  地藏殿    O         +----------OO-----------+          O  白衣殿    | |            |                   ====                     |            | +------------+                   广场                     +------------+ |                            +----OO----+                              | |                            |          |                              | |                            |  达摩院 ?|                              | |                            |          |                              | +------------+---------------+----OO----+-----------------+------------+ |############|###################====#####################|############| |      竹-6  O    和-6    |                  |    和-3     O  竹-3     | |            |            |                  |             |           | +------+..o..+------O-----+                  +------O------+..o..+-----| |  藏  |     |            |                  |             |    |  武  | |  经  O林-5 O    尚-5    |     武   场      |      尚-2  O林-2 X  器  | |  楼? |     |            |         (1)      |             |    |  库  | +------+..o..+-----O------+                  +------O------+.o..+------| |            |            |                  |             |           | |      竹-4  O    院-4    O                  O      院-1   O  竹-1     | |            |            |                  |             |           | +----O-------+------O-----+-------OO---------+------O------+-----O-----+ |            |            |                  |             |           | |  走廊-5    O   走廊-6   O     方丈室  ?    O    走廊-7   O   走廊-8  | |            |            |                  |             |           | +----O-------+------------+-------OO---------+-------------+-----O-----+ |###===######|###################====######################|####===####| |  般若-9    |                                             |   罗汉-9  | +----O-------+                                             +-----O-----+ |  般若-8    |                                             |   罗汉-8  | +----O-------+                                             +-----O-----+ |  般若-7    |                                             |   罗汉-7  | +----O-------+                                             +-----O-----+ |  般若-6    |                                             |   罗汉-6  | +----O-------+                                             +-----O-----+ |  般若-5    O           练       武        场             O   罗汉-5  | +----O-------+                                             +----O------+ |  般若-4    |                                             |   罗汉-4  | +----O-------+                                             +-----O-----+ |  般若-3    |                                             |   罗汉-3  | +----O-------+                                             +-----O-----+ |  般若-2    |                                             |   罗汉-2  | +----O-------+                                             +-----O-----+ |  般若-1    |                                             |   罗汉-1  | +----O-------+-------------+-----------------+-------------+-----O-----+ |            |             |                 |             |           | |  走廊-1    O    走廊-2   O    后    殿     O    走廊-3   O   走廊-4  | |            |             |                 |             |           | +------------+-------------+-------OO--------+-------------+-----------+ |############|####################====#################################|                                   ｜｜（通往后殿)                                   ｜｜ +------------+----------+---------O??O--------------------+-----------+ |############|####################====####################|###########| |   厨房     |                                                        | |            |                    广场-4                              | |-----O------+------O---+-----------------------+----------------#----+ |            |          |                       |                     | |   饭厅-2   |          |      戒  律  院       |                     | |            |          |                       |                     | |-----O------+          +---------O??O----------+                     | |            |                    ====                                | |   饭厅-1   O                                                        | |            |                    广场-3                              | |------------+          +-----------------------+                     | |                       |                       |                     | |                       |        大雄宝殿       |                     | |                       |                       |                     | |-----------------------+---------O??O----------+---------------------| |                                 ====                                | |                                 广场-2                              | +---------+------------+                        +---------------X-----+ |         |            |                        |           |         | |  鼓楼   O||  小院    O                        O  小院   ||O  钟楼   | |         |            |                        |           |         | +---------+  +---------+-----------OO-----------+-----------+  +------+ |         |             |                       |           |         | |         |    侧殿     O        天王殿         O    侧殿   |         | |         |             |                       |           |         | +---------+-------------+----------OO-----------+---------------------+ |#######################|#########====##########|#####################| |                       |                       |                     | |  I      i    碑林     O    碑          林     O     碑林   i     I i| |                       |                       |                     | |       i    +----------+----------OO-----------+--------+   i        | |            |          |                       |        |            | |  i         |  侧殿    O        山门殿         O  侧殿  |         i  | |            |          |                       |        |            | +==================================X?X================================+ |#######################|#########====##########|#####################|              |          |                       |             |              |          |                       |             |         松林 O 石坊     O        寺前广场-1     O   石坊      O  松林              |          |                       |             |              |          |                       |             |              +----------+----------OO-----------+-------------+ 注：?    检查站         |         ====          |     ##   高墙           |                       |     ==   台阶           |         石阶          |     O    开放           |==========OO===========|     X    关着的门"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/mizhi-tianou.c by LPCConverter
+# Zone: shaolin
+
+    items "mizhi_tianou" {
+      name = "密汁甜藕"
+      description = "一盆香甜软糯，色泽粉红的蜜汁甜藕。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/muchui.c by LPCConverter
+# Zone: shaolin
+
+    items "muchui" {
+      name = "木鱼槌"
+      description = "这是一把和尚念经俏木鱼用的小木槌。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从衣袋里掏出一根{name}，握在手中当武器。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/mudao.c by LPCConverter
+# Zone: shaolin
+
+    items "mudao" {
+      name = "木刀"
+      description = "这是一柄木制的短刀，少林寺僧习武均用此刀，以免伤人。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一把{name}握在手中。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/qimeigun.c by LPCConverter
+# Zone: shaolin
+
+    items "qimeigun" {
+      name = "齐眉棍"
+      description = "这是一根桦木白腊棍，举可齐眉，轻重合宜，可攻击大片敌人。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/qing-cloth.c by LPCConverter
+# Zone: shaolin
+
+    items "qing_cloth" {
+      name = "白布黑边袈裟"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/qingshui-hulu.c by LPCConverter
+# Zone: shaolin
+
+    items "qingshui_hulu" {
+      name = "清水葫芦"
+      description = "一个用葫芦制成的水壶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/sengxie.c by LPCConverter
+# Zone: shaolin
+
+    items "sengxie" {
+      name = "僧鞋"
+      description = "一双青布僧鞋"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/shanhu-baicai.c by LPCConverter
+# Zone: shaolin
+
+    items "shanhu_baicai" {
+      name = "珊瑚白菜"
+      description = "一盆红白相间，脆嫩爽口，清香诱人的珊瑚白菜。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/shoutao.c by LPCConverter
+# Zone: shaolin
+
+    items "shoutao" {
+      name = "皮手套"
+      description = "这是一双皮手套，上面有硬物刻勒的痕迹。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/soup.c by LPCConverter
+# Zone: shaolin
+
+    items "soup" {
+      name = "酸菜粉丝汤"
+      description = "一碗香气扑鼻的酸菜粉丝汤。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/suji.c by LPCConverter
+# Zone: shaolin
+
+    items "suji" {
+      name = "素鸡"
+      description = "一只做工考究素鸡。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/suya.c by LPCConverter
+# Zone: shaolin
+
+    items "suya" {
+      name = "素鸭"
+      description = "一只做工考究素鸭。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/test.c by LPCConverter
+# Zone: shaolin
+
+    items "test" {
+      name = "青布僧衣"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/tie-ling.c by LPCConverter
+# Zone: shaolin
+
+    items "tie_ling" {
+      name = "少林英雄令"
+      description = "这是一块用于通行少林寺的铁铸令牌。 由方丈签发，邀各路英雄入寺观礼。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/tieshou.c by LPCConverter
+# Zone: shaolin
+
+    items "tieshou" {
+      name = "铁手掌"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/toukui.c by LPCConverter
+# Zone: shaolin
+
+    items "toukui" {
+      name = "头盔"
+      description = "这是一顶金属头盔，用以保护头部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/tuijianxin-1.c by LPCConverter
+# Zone: shaolin
+
+    items "tuijianxin_1" {
+      name = "推荐信"
+      description = "这是一封清字辈师尊们为你写的推荐信，凭此可直接向道字辈高僧们学习武艺。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/tuijianxin-2.c by LPCConverter
+# Zone: shaolin
+
+    items "tuijianxin_2" {
+      name = "推荐信"
+      description = "这是一封道字辈师尊们为你写的推荐信，凭此可直接向慧字辈高僧们学习武艺。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/tuijianxin-3.c by LPCConverter
+# Zone: shaolin
+
+    items "tuijianxin_3" {
+      name = "推荐信"
+      description = "这是一封慧字辈师尊们为你写的推荐信，凭此可直接向澄字辈高僧们学习武艺。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/tuijianxin-4.c by LPCConverter
+# Zone: shaolin
+
+    items "tuijianxin_4" {
+      name = "推荐信"
+      description = "这是一封澄字辈师尊们为你写的推荐信，凭此可直接向玄字辈高僧们学习武艺。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/weibo.c by LPCConverter
+# Zone: shaolin
+
+    items "weibo" {
+      name = "围脖"
+      description = "这是一皮围脖，用以保护颈部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/xu-cloth.c by LPCConverter
+# Zone: shaolin
+
+    items "xu_cloth" {
+      name = "黄布袈裟"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/xuan-cloth.c by LPCConverter
+# Zone: shaolin
+
+    items "xuan_cloth" {
+      name = "护法袈裟"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/yaodai.c by LPCConverter
+# Zone: shaolin
+
+    items "yaodai" {
+      name = "皮腰带"
+      description = "这是一件皮质的宽腰带，夹层透空，可以放各种软兵刃。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/zhitao.c by LPCConverter
+# Zone: shaolin
+
+    items "zhitao" {
+      name = "铁指套"
+      description = "这是五个环环相链的铁指套，前端锋利如刃，既可暗藏掌中伤人，又可保护指关节。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shaolin/obj/zhujian.c by LPCConverter
+# Zone: shaolin
+
+    items "zhujian" {
+      name = "竹剑"
+      description = "这是一柄三尺来长，精工制成的青竹剑，虽不致命，却可伤人。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一把{name}，握在手中。"
+  }
+    }

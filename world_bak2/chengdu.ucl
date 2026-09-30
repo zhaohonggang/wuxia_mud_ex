@@ -1,0 +1,2468 @@
+zones "chengdu" {
+  name = "chengdu"
+}
+
+# Generated from C:/files/git/mud/d/chengdu/baidicheng.c by LPCConverter
+# Zone: chengdu
+
+    rooms "baidicheng" {
+      name = "白帝城"
+      description = "朝辞白帝彩云间，千里江陵一日还。两岸猿声啼不住，千 舟已过万重山。这里就是有名的白帝城了，遥看四周，只见青 山绿水，一片大好风景。庙内塑有刘备及孔明等一干名士的雕 像，凭栏怀古，心潮汹涌，令人神怡。"
+  x = 19
+  y = 0
+  z = -4
+    }
+
+  room_exits "baidicheng" {
+    room_id = rooms.baidicheng.id
+    east = rooms.shudao9.id
+    west = rooms.shudao10.id
+    }
+
+
+  room_characters "baidicheng" {
+    room_id = rooms.baidicheng.id
+    characters = [
+      { id = characters.shiren.id },
+      { id = characters.shusheng1.id },
+      { id = characters.shusheng1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/bingqidian.c by LPCConverter
+# Zone: chengdu
+
+    rooms "bingqidian" {
+      name = "兵器铺"
+      description = "这着是一家小小店面的兵器铺，可是所卖的兵器可大不寻 常。种类固然中土难得一见，能用的人更是稀少。掌柜的拿着 眼瞟得你直发毛。你转脸就看到墙上的招牌。"
+  x = -2
+  y = 3
+  z = 0
+    }
+
+  room_exits "bingqidian" {
+    room_id = rooms.bingqidian.id
+    southeast = rooms.northroad1.id
+    }
+
+
+  room_characters "bingqidian" {
+    room_id = rooms.bingqidian.id
+    characters = [
+      { id = characters.tanghuai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/caotang.c by LPCConverter
+# Zone: chengdu
+
+    rooms "caotang" {
+      name = "杜甫草堂"
+      description = "这里是杜甫流寓成都的故居。草堂里流水回萦，小桥勾连 竹树掩映，显得既庄严肃穆，古朴典雅，又不失幽深静谧，秀 丽清朗。"
+  x = -5
+  y = 2
+  z = 0
+    }
+
+  room_exits "caotang" {
+    room_id = rooms.caotang.id
+    south = rooms.path2.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/chufang.c by LPCConverter
+# Zone: chengdu
+
+    rooms "chufang" {
+      name = "酒楼厨房"
+      description = "这里是酒后后面的厨房，几个大水池前面有不少的伙计在 摘菜和清洗碗碟，还有一些伙计站在油烟直冒的油锅面前努力 的翻炒着各色菜肴，而一个粗手大脚的中年厨娘大声吆喝，指 手画脚的却不干活。"
+  x = 4
+  y = 2
+  z = 0
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+    west = rooms.jiudian.id
+    }
+
+
+  room_characters "chufang" {
+    room_id = rooms.chufang.id
+    characters = [
+      { id = characters.chuniang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/eastgate.c by LPCConverter
+# Zone: chengdu
+
+    rooms "eastgate" {
+      name = "东门"
+      description = "这是成都东城门，城门正上方刻着“东门”两个楷书大字 城墙上贴着几张官府告示(gaoshi)。一条笔直的青石板大道向 东西两边延伸。东边是郊外，一片平平展展的平原风光，真是 不愧天府之国的美称。西边是城里。"
+  x = 3
+  y = 0
+  z = 0
+    }
+
+  room_exits "eastgate" {
+    room_id = rooms.eastgate.id
+    west = rooms.eastroad2.id
+    east = rooms.fuheqiaoe.id
+    }
+
+
+  room_characters "eastgate" {
+    room_id = rooms.eastgate.id
+    characters = [
+      { id = characters.wujiang.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/eastroad1.c by LPCConverter
+# Zone: chengdu
+
+    rooms "eastroad1" {
+      name = "东大街"
+      description = "你走在东大街坚实的青石板地面上。南边可以通向东城门 路边有一个简陋的茶摊，一块洗得发白了的旧帆布正顶着头顶 火辣辣的阳光，一张长几上放着几只大号粗瓷碗。碗中盛满着 可口的茶水。往西北通往北大街，东北方一座大店面里传出阵 阵划拳的喧闹。"
+  x = 2
+  y = 1
+  z = 0
+    }
+
+  room_exits "eastroad1" {
+    room_id = rooms.eastroad1.id
+    south = rooms.eastroad2.id
+    northwest = rooms.northroad3.id
+    northeast = rooms.jiudian.id
+    }
+
+
+  room_characters "eastroad1" {
+    room_id = rooms.eastroad1.id
+    characters = [
+      { id = characters.xiaozei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/eastroad2.c by LPCConverter
+# Zone: chengdu
+
+    rooms "eastroad2" {
+      name = "东大街"
+      description = "你走在东大街上，踩着坚实的青石板地面。东边是东城门 可以听到守城官兵的吆喝声。西边是蜀都大道，那边一派肃静 原来是因为提督府在那头。南北是一条宽直的大道。"
+  x = 2
+  y = 0
+  z = 0
+    }
+
+  room_exits "eastroad2" {
+    room_id = rooms.eastroad2.id
+    south = rooms.eastroad3.id
+    north = rooms.eastroad1.id
+    west = rooms.shuduroad1.id
+    east = rooms.eastgate.id
+    }
+
+
+  room_characters "eastroad2" {
+    room_id = rooms.eastroad2.id
+    characters = [
+      { id = characters.liumangtou.id },
+      { id = characters.liumang.id },
+      { id = characters.liumang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/eastroad3.c by LPCConverter
+# Zone: chengdu
+
+    rooms "eastroad3" {
+      name = "东大街"
+      description = "你走在东大街上，踩着坚实的青石板地面。向北是一条宽 直的大道。北边可以通往东城门，西南边通向南大街，东南方 便是有名的望江楼。东边不远处有一幢破烂的房屋，但是屋子 的门梁 (liang)已经垮塌，把门封了个严实。"
+  x = 2
+  y = -1
+  z = 0
+item_desc = {
+ liang = "房子的门梁垮塌，将门封了个严实。"
+}
+    }
+
+  room_exits "eastroad3" {
+    room_id = rooms.eastroad3.id
+    north = rooms.eastroad2.id
+    southwest = rooms.southroad1.id
+    southeast = rooms.wangjianglou.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/fuheqiaoe.c by LPCConverter
+# Zone: chengdu
+
+    rooms "fuheqiaoe" {
+      name = "府河桥"
+      description = "这里是成都东门外府河桥。成都自古就是川中首府，府河 和南河夹城而过，成为天然的护城河。由于四川外有峡江，秦 岭之险，内仗绵渝坚城之固，成都却因之自来无坐守成功之绩。 往往兵到城下，降旗高扯了。"
+  x = 4
+  y = 0
+  z = 0
+    }
+
+  room_exits "fuheqiaoe" {
+    room_id = rooms.fuheqiaoe.id
+    west = rooms.eastgate.id
+    east = rooms.road2.id
+    }
+
+
+  room_characters "fuheqiaoe" {
+    room_id = rooms.fuheqiaoe.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/fuheqiaon.c by LPCConverter
+# Zone: chengdu
+
+    rooms "fuheqiaon" {
+      name = "府河桥"
+      description = "这里是成都北门外府河桥。成都虽是川中首府，却无险可 守，一旦敌方兵至成都平原，即使府南两河水涨，也就只有祷 告对方慈悲的选择了。"
+  x = 0
+  y = 4
+  z = 0
+    }
+
+  room_exits "fuheqiaon" {
+    room_id = rooms.fuheqiaon.id
+    south = rooms.northgate.id
+    north = rooms.qcroad1.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/guangchang.c by LPCConverter
+# Zone: chengdu
+
+    rooms "guangchang" {
+      name = "广场"
+      description = "这里是成都提督府前广场。好空旷的地方，只有稀稀落落 几个没精打采的行人。北面就是提督府了，南边是提督街。广 场周围种了一圈遮阳树，但骄阳仍把地面晒得滚烫冒烟。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guangchang" {
+    room_id = rooms.guangchang.id
+    up = rooms.minju.id
+    east = rooms.shuduroad1.id
+    west = rooms.shuduroad2.id
+    south = rooms.tiduroad.id
+    north = rooms.tidugate.id
+    }
+
+
+  room_characters "guangchang" {
+    room_id = rooms.guangchang.id
+    characters = [
+      { id = characters.wujiang.id },
+      { id = characters.wujiang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/jiudian.c by LPCConverter
+# Zone: chengdu
+
+    rooms "jiudian" {
+      name = "蓉城酒楼"
+      description = "这是一座有着三开间门面的大酒楼，虽说不上雕梁画栋却 也气派不凡。正首门梁上挂着一幅黑漆匾，上写着蜀都酒楼四 个金漆大字。楼中桌洁椅净，座中客人衣饰豪奢，十九是富商 大贾。这是一家百年老店，传到现在的这位掌柜已经是第四代 据说和提督大人有点不清楚，却也保佑了这间酒楼的日进斗金。 东南角有一道方梯通往楼上雅座，往西南则可以出到东大街。"
+  x = 3
+  y = 2
+  z = 0
+    }
+
+  room_exits "jiudian" {
+    room_id = rooms.jiudian.id
+    east = rooms.chufang.id
+    southwest = rooms.eastroad1.id
+    }
+
+
+  room_characters "jiudian" {
+    room_id = rooms.jiudian.id
+    characters = [
+      { id = characters.tanghua.id },
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/kedian.c by LPCConverter
+# Zone: chengdu
+
+    rooms "kedian" {
+      name = "锦城驿"
+      description = "锦城驿是全西南最大的客店，生意非常兴隆。外地游客多 选择这里落脚，你可以在这里打听到各地的风土人情。店小二 里里外外忙得团团转，沉重的川味官话你是实在听不顺耳。这 是成都督府官办的客栈，接待着各地入川的官差浪人。墙上挂 着一个牌子(paizi)。"
+  x = 2
+  y = -3
+  z = 0
+item_desc = {
+ paizi = "##==============================##         ##                              ##         ##    楼上雅房，每夜十两白银。  ##         ##                              ##         ##==============================##"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "up"
+direction = "up"
+  message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊？"
+}
+,
+{
+   # 阻挡条件（原样保留）：me->query_temp("rent_paid") && dir == "west"
+direction = "west"
+  message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就走了呢！"
+}
+
+]
+    }
+
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+    east = rooms.majiu.id
+    up = rooms.kedian2.id
+    northwest = rooms.southroad1.id
+    }
+
+
+  room_characters "kedian" {
+    room_id = rooms.kedian.id
+    characters = [
+      { id = characters.xiaoer.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/kedian2.c by LPCConverter
+# Zone: chengdu
+
+    rooms "kedian2" {
+      name = "客店二楼"
+      description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小 木床，不少客人正和衣而卧，满屋子都是呼呼的打酣声。西边 有张床是空的，你蹑手蹑脚地走了过去。"
+  x = 2
+  y = -3
+  z = 1
+    }
+
+  room_exits "kedian2" {
+    room_id = rooms.kedian2.id
+    down = rooms.kedian.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/liubeidian.c by LPCConverter
+# Zone: chengdu
+
+    rooms "liubeidian" {
+      name = "刘备殿"
+      description = "这里是武侯祠的刘备殿。正中供着汉昭烈帝高可丈许。后 主却没得供奉，所谓 '扶不起来' 的阿斗吧。而哭庙玉碎的北 地王刘谌得能和英父同祀，令人不胜唏嘘。殿下左右是赵云等 的武将廊和蒋琬为首的文臣廊。"
+  x = -2
+  y = -2
+  z = 0
+    }
+
+  room_exits "liubeidian" {
+    room_id = rooms.liubeidian.id
+    northup = rooms.wuhouci.id
+    south = rooms.wuhoucigate.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/majiu.c by LPCConverter
+# Zone: chengdu
+
+    rooms "majiu" {
+      name = "马厩"
+      description = "这是成都城的马厩，常年供应新鲜草料。成都民风淳朴马 夫们会把马牵到马厩好生照看，将它们喂饱饮足，再洗刷得干 乾净净，一直伺候到客人上路。马厩雨檐下的烂木柱上钉着块 破木牌(paizi)。马厩中堆放著几堆草料。"
+  x = 3
+  y = -3
+  z = 0
+    }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+    up = rooms.chengdu_shop.id
+    west = rooms.kedian.id
+    }
+
+
+  room_characters "majiu" {
+    room_id = rooms.majiu.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu" {
+    room_id = rooms.majiu.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/minju.c by LPCConverter
+# Zone: chengdu
+
+    rooms "minju" {
+      name = "废弃的民居"
+      description = "这里是一幢破烂的民居，看样子已经被废弃很常一段日子 了，大院内四处残戈断壁，杂草丛生。院子的一个阴暗角落里 还立着一个已快腐烂的书架。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "minju" {
+    room_id = rooms.minju.id
+    up = rooms.jiaonei.id
+    down = rooms.guangchang.id
+    out = rooms.eastroad3.id
+    }
+
+
+
+
+  room_items "minju" {
+    room_id = rooms.minju.id
+    items = [
+      { id = items.shelf.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/nanheqiaos.c by LPCConverter
+# Zone: chengdu
+
+    rooms "nanheqiaos" {
+      name = "南河桥"
+      description = "这里是成都南门外南河桥。府河和南河夹城流过，成为天 然的护城河，滋润着这个天府之国的川中首府。向北进城，向 南又是一条小路。"
+  x = 0
+  y = -4
+  z = 0
+    }
+
+  room_exits "nanheqiaos" {
+    room_id = rooms.nanheqiaos.id
+    north = rooms.southgate.id
+    south = rooms.sroad1.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/nanheqiaow.c by LPCConverter
+# Zone: chengdu
+
+    rooms "nanheqiaow" {
+      name = "南河桥"
+      description = "这里是成都西门外南河桥。府河和南河夹城流过，呵护着 这个天府之国的首府之地。河水清新碧透。东面是西城门，往 西就是浣花溪了。"
+  x = -4
+  y = 0
+  z = 0
+    }
+
+  room_exits "nanheqiaow" {
+    room_id = rooms.nanheqiaow.id
+    east = rooms.westgate.id
+    west = rooms.path1.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/northgate.c by LPCConverter
+# Zone: chengdu
+
+    rooms "northgate" {
+      name = "北门"
+      description = "这是成都北城门，城门正上方刻着北门两个楷书大字，城 墙上贴着几张官府告示(gaoshi)。一条笔直的青石板大道向北 延伸。北边望去，一片绿油油的田野夹着随风摇曳的高树，长 竹。城门边两行官兵仔细盘查进出人等。"
+  x = 0
+  y = 3
+  z = 0
+    }
+
+  room_exits "northgate" {
+    room_id = rooms.northgate.id
+    north = rooms.fuheqiaon.id
+    south = rooms.northroad2.id
+    }
+
+
+  room_characters "northgate" {
+    room_id = rooms.northgate.id
+    characters = [
+      { id = characters.wujiang.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/northroad1.c by LPCConverter
+# Zone: chengdu
+
+    rooms "northroad1" {
+      name = "北大街"
+      description = "这里就是北大街了，空气中有着一种怪怪的气味，不是太 好闻。路很宽，但人却不多，尤其是在黄昏以后。西南是另一 条大街，北大街从此一直往东，西北有一家兵器铺，进进出出 的人都面无表情，死气沉沉。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "northroad1" {
+    room_id = rooms.northroad1.id
+    northwest = rooms.bingqidian.id
+    southwest = rooms.westroad3.id
+    east = rooms.northroad2.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/northroad2.c by LPCConverter
+# Zone: chengdu
+
+    rooms "northroad2" {
+      name = "北大街"
+      description = "这里一条北大街横贯东西。望向北边，是出城的北门。号 称 '天下幽' 的青城山，就是从这里出去。这里地当当道，行 人却都过往匆匆，小心翼翼，恨不得销声匿迹。因为南边一幢 古色古香的建筑，就是让天下武林闻风色变的川中唐门。"
+  x = 0
+  y = 2
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "south" && me->query("born_family") != "唐门世家"
+direction = "south"
+  message = "你一抬足，发现地上有毒，忙抽腿退回。"
+}
+
+]
+    }
+
+  room_exits "northroad2" {
+    room_id = rooms.northroad2.id
+    north = rooms.northgate.id
+    south = rooms.tanggate.id
+    west = rooms.northroad1.id
+    east = rooms.northroad3.id
+    }
+
+
+  room_characters "northroad2" {
+    room_id = rooms.northroad2.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/northroad3.c by LPCConverter
+# Zone: chengdu
+
+    rooms "northroad3" {
+      name = "北大街"
+      description = "你走在北大街的青石地上，发现这里热闹非凡。原来东北 角就是金牛武馆，据说每个武师都有绝活。许多江湖人物都慕 名前来，搬运行李被褥的人不绝如缕。往东南是东大街，一直 向西的是北大街。"
+  x = 1
+  y = 2
+  z = 0
+    }
+
+  room_exits "northroad3" {
+    room_id = rooms.northroad3.id
+    northeast = rooms.wuguan.id
+    southeast = rooms.eastroad1.id
+    west = rooms.northroad2.id
+    }
+
+
+  room_characters "northroad3" {
+    room_id = rooms.northroad3.id
+    characters = [
+      { id = characters.haoke.id },
+      { id = characters.haoke.id },
+      { id = characters.jian_ke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/path1.c by LPCConverter
+# Zone: chengdu
+
+    rooms "path1" {
+      name = "浣花溪"
+      description = "你走在浣花溪岸的小路上，浣花溪水晶莹剔透，岸草如茵 远远就能闻到水气的清香。许多睡莲散布在溪岸附近，水面飘 著数不尽的浮萍，浮萍下有不少艳红锦鲤穿梭来去。溪岸小路 随溪流曲折盘绕，芳草没足，花飘似海，使人不饮自醉。古人 所谓如行春郊诚不我欺。"
+  x = -5
+  y = 0
+  z = 0
+    }
+
+  room_exits "path1" {
+    room_id = rooms.path1.id
+    east = rooms.nanheqiaow.id
+    north = rooms.path2.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/path2.c by LPCConverter
+# Zone: chengdu
+
+    rooms "path2" {
+      name = "浣花溪"
+      description = "溪源转北，阵阵水响带着你来到草堂前。站在草堂照壁前 回首浣花溪，想象万红漂坠，少女清歌浣花时节，别是一 般滋味。北边就是万里桥西宅，百花潭北庄的杜甫草堂。"
+  x = -5
+  y = 1
+  z = 0
+    }
+
+  room_exits "path2" {
+    room_id = rooms.path2.id
+    south = rooms.path1.id
+    north = rooms.caotang.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/practice.c by LPCConverter
+# Zone: chengdu
+
+    rooms "practice" {
+      name = "武馆操练房"
+      description = "这里摆满了石锁簸箕、大刀长剑、沙袋绑腿等，还有几个 精心制造的木人，是武馆弟子日常练功的地方。"
+  x = 2
+  y = 3
+  z = 1
+    }
+
+  room_exits "practice" {
+    room_id = rooms.practice.id
+    down = rooms.wuguan.id
+    }
+
+
+  room_characters "practice" {
+    room_id = rooms.practice.id
+    characters = [
+      { id = characters.tong_ren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/qingyanggong.c by LPCConverter
+# Zone: chengdu
+
+    rooms "qingyanggong" {
+      name = "青羊宫"
+      description = "青羊宫是天下第一大道观。观中林木婆娑，冠盖亭亭观中 道士匆匆来去，没人得空理你，更没人接待你。你觉得到一种 宽松的失落。"
+  x = -3
+  y = -2
+  z = 0
+    }
+
+  room_exits "qingyanggong" {
+    room_id = rooms.qingyanggong.id
+    northeast = rooms.westroad1.id
+    }
+
+
+  room_characters "qingyanggong" {
+    room_id = rooms.qingyanggong.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/road1.c by LPCConverter
+# Zone: chengdu
+
+    rooms "road1" {
+      name = "青石大道"
+      description = "这是一条通往成都的大青石道，两旁绿树荫蔽，空气十分 清新。成都平原向称天府之国，这里四周田野稻浪滚滚，平平 展展的大地上，偶尔会出现一大丛翠竹浓荫，细细认去，都是 人家居处。"
+  x = 6
+  y = -1
+  z = 0
+    }
+
+  room_exits "road1" {
+    room_id = rooms.road1.id
+    northwest = rooms.road2.id
+    east = rooms.qsjie1.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/road2.c by LPCConverter
+# Zone: chengdu
+
+    rooms "road2" {
+      name = "青石大道"
+      description = "这是一条通往成都的大青石道，两旁绿树荫蔽，空气十分 清新。成都平原向称天府之国，四野鸡鸣犬吠，交替起落一派 安乐气息。西面隐隐可以看到成都城门了。"
+  x = 5
+  y = 0
+  z = 0
+    }
+
+  room_exits "road2" {
+    room_id = rooms.road2.id
+    east = rooms.shudao19.id
+    west = rooms.fuheqiaoe.id
+    southeast = rooms.road1.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/sanxia1.c by LPCConverter
+# Zone: chengdu
+
+    rooms "sanxia1" {
+      name = "西陵峡"
+      description = "这里便是长江三峡的西陵峡，长江两岸高山耸立，遮天蔽 日，真可谓是猿猴愁末攀啊！由于这里河道比较窄，河水变的 不安起来，发出阵阵咆哮声，不时翻滚着旋涡向东流去。"
+  x = 17
+  y = 0
+  z = -4
+    }
+
+  room_exits "sanxia1" {
+    room_id = rooms.sanxia1.id
+    east = rooms.shudao10.id
+    west = rooms.sanxia2.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/sanxia2.c by LPCConverter
+# Zone: chengdu
+
+    rooms "sanxia2" {
+      name = "巫峡"
+      description = "这里是长江三峡中的巫峡，也是最大最美的一个峡谷，神 女峰高高的耸立在江边，远远看去，犹如一位亭亭玉立的少女， 两岸风景美不胜收。"
+  x = 16
+  y = 0
+  z = -4
+    }
+
+  room_exits "sanxia2" {
+    room_id = rooms.sanxia2.id
+    west = rooms.sanxia3.id
+    east = rooms.sanxia1.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/sanxia3.c by LPCConverter
+# Zone: chengdu
+
+    rooms "sanxia3" {
+      name = "瞿塘峡"
+      description = "这里是长江三峡中的瞿塘峡，河水由东流来，进入此峡谷， 河道变窄，水流变急，两岸的高山中间夹着一条河流，就好象 一条丝带一般，蜿蜒而行。"
+  x = 15
+  y = 0
+  z = -4
+    }
+
+  room_exits "sanxia3" {
+    room_id = rooms.sanxia3.id
+    west = rooms.shudao11.id
+    east = rooms.sanxia2.id
+    }
+
+
+  room_characters "sanxia3" {
+    room_id = rooms.sanxia3.id
+    characters = [
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao1.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao1" {
+      name = "青石路"
+      description = "一条青石铺成的路，平坦宽阔，路的两面。绿树成荫，来 往的人累了都到树下去乘乘凉，歇歇脚，一些小贩也乘机在这 里买点吃喝的东西。"
+  x = 28
+  y = 1
+  z = -6
+    }
+
+  room_exits "shudao1" {
+    room_id = rooms.shudao1.id
+    west = rooms.shudao2.id
+    east = rooms.jzximen.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao10.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao10" {
+      name = "石阶"
+      description = "一条小石阶，有点破破烂烂，青草从石头的缝隙中长了出 来，有些地方的石阶由于年代久远，已经磨的光滑如镜。向上 看去，只见云雾中有几座房子。"
+  x = 18
+  y = 0
+  z = -4
+    }
+
+  room_exits "shudao10" {
+    room_id = rooms.shudao10.id
+    west = rooms.sanxia1.id
+    east = rooms.baidicheng.id
+    }
+
+
+  room_characters "shudao10" {
+    room_id = rooms.shudao10.id
+    characters = [
+      { id = characters.old2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao11.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao11" {
+      name = "蜀道"
+      description = "你走在以险著称天下的蜀道上，从这里向西越过高山，就 可以进入四川盆地了，东边是去风景优美的三峡。道路十分崎 岖，时而左转时而上山，时而又要穿过森林。"
+  x = 14
+  y = 0
+  z = -4
+    }
+
+  room_exits "shudao11" {
+    room_id = rooms.shudao11.id
+    west = rooms.shudao12.id
+    east = rooms.sanxia3.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao12.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao12" {
+      name = "蜀道"
+      description = "你走在以险著称天下的蜀道上，道路十分狭窄，这里不时 会有强盗出没，来往的人很少，举目看去，方圆几百里内没有 人烟，你还是加快步子走吧。"
+  x = 13
+  y = 0
+  z = -4
+    }
+
+  room_exits "shudao12" {
+    room_id = rooms.shudao12.id
+    west = rooms.shudao13.id
+    east = rooms.shudao11.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao13.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao13" {
+      name = "蜀道"
+      description = "你走在以险著称天下的蜀道上，道路十分狭窄，这里不时 会有强盗出没，来往的人很少，举目看去，方圆几百里内没有 人烟，你还是加快步子走吧。"
+  x = 12
+  y = 0
+  z = -4
+    }
+
+  room_exits "shudao13" {
+    room_id = rooms.shudao13.id
+    west = rooms.shudao14.id
+    east = rooms.shudao12.id
+    }
+
+
+  room_characters "shudao13" {
+    room_id = rooms.shudao13.id
+    characters = [
+      { id = characters.haoke1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao14.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao14" {
+      name = "蜀道"
+      description = "你走在以险著称天下的蜀道上，道路十分狭窄，西边不远 有一座高山。要去成都的话，必须翻过这座高山。四周一片荒 凉，渺无人烟。"
+  x = 11
+  y = 0
+  z = -4
+    }
+
+  room_exits "shudao14" {
+    room_id = rooms.shudao14.id
+    east = rooms.shudao13.id
+    westup = rooms.shudao15.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao15.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao15" {
+      name = "蜀道"
+      description = "你走在以险著称天下的蜀道上，走在这样的路上非要格外 小心，用尽全身气力才行。不多一会儿，你就觉得很累了。"
+  x = 10
+  y = 0
+  z = -3
+    }
+
+  room_exits "shudao15" {
+    room_id = rooms.shudao15.id
+    eastdown = rooms.shudao14.id
+    westup = rooms.shudao16.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao16.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao16" {
+      name = "蜀道"
+      description = "你走在以险著称天下的蜀道上，道路由东上山，异常难行。 由西而下，然而上山容易下山难，也不见得好走，总之走在这 样的路上非要格外小心，用尽全身气力才行。不多一会儿，你 就觉得筋疲力尽了。"
+  x = 9
+  y = 0
+  z = -2
+    }
+
+  room_exits "shudao16" {
+    room_id = rooms.shudao16.id
+    eastdown = rooms.shudao15.id
+    westup = rooms.shudao17.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao17.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao17" {
+      name = "蜀道"
+      description = "你走在以险著称天下的蜀道上，道路由东上山，异常难行。 由西而下，然而上山容易下山难，也不见得好走，总之走在这 样的路上非要格外小心，用尽全身气力才行。不多一会儿，你 就觉得筋疲力尽了。"
+  x = 8
+  y = 0
+  z = -1
+    }
+
+  room_exits "shudao17" {
+    room_id = rooms.shudao17.id
+    eastdown = rooms.shudao16.id
+    westup = rooms.shudao18.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao18.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao18" {
+      name = "蜀道"
+      description = "你走在以险著称天下的蜀道上，往西面再过不远，就到成 都了，向东则开始走入险恶的蜀道。"
+  x = 7
+  y = 0
+  z = 0
+    }
+
+  room_exits "shudao18" {
+    room_id = rooms.shudao18.id
+    eastdown = rooms.shudao17.id
+    west = rooms.shudao19.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao19.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao19" {
+      name = "官道"
+      description = "你走在一条官道上，西面已经可以隐约看见成都城的城门 了，东去是蜀道。"
+  x = 6
+  y = 0
+  z = 0
+    }
+
+  room_exits "shudao19" {
+    room_id = rooms.shudao19.id
+    east = rooms.shudao18.id
+    west = rooms.road2.id
+    }
+
+
+  room_characters "shudao19" {
+    room_id = rooms.shudao19.id
+    characters = [
+      { id = characters.shusheng2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao2.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao2" {
+      name = "青石路"
+      description = "一条青石铺成的路，平坦宽阔，路的两面。绿树成荫，来 往的人累了都到树下去乘乘凉，歇歇脚，一些小贩也乘机在这 里买点吃喝的东西。从这里向南看去，隐约可以看见奔腾的长 江。"
+  x = 27
+  y = 1
+  z = -6
+    }
+
+  room_exits "shudao2" {
+    room_id = rooms.shudao2.id
+    southwest = rooms.shudao3.id
+    east = rooms.shudao1.id
+    }
+
+
+  room_characters "shudao2" {
+    room_id = rooms.shudao2.id
+    characters = [
+      { id = characters.girl2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao3.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao3" {
+      name = "江边小路"
+      description = "你走在长江边上的一条小路上，耳听着江水哗哗的流，心 情也觉得好些，放眼向西看去，只见群山连绵，也不知道何处 才是归途。"
+  x = 26
+  y = 0
+  z = -6
+    }
+
+  room_exits "shudao3" {
+    room_id = rooms.shudao3.id
+    west = rooms.shudao4.id
+    northeast = rooms.shudao2.id
+    }
+
+
+  room_characters "shudao3" {
+    room_id = rooms.shudao3.id
+    characters = [
+      { id = characters.boy2.id },
+      { id = characters.girl4.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao4.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao4" {
+      name = "江边小路"
+      description = "你走在长江边上的一条小路上，再往西走，就进入了绵绵 的四川山区了，东南方向有条小路，不知道通往哪里。"
+  x = 25
+  y = 0
+  z = -6
+    }
+
+  room_exits "shudao4" {
+    room_id = rooms.shudao4.id
+    west = rooms.shudao5.id
+    east = rooms.shudao3.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao5.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao5" {
+      name = "栈道"
+      description = "栈道是通连接四川和中原的唯一道路，为了在险峻的山脉 中打开这条道路，不知道花费了多少人力物力，也不知死了多 少人。这条路是沿江而修成的，用大木桩钉在悬崖上，上面铺 以木板，仅能过一两个人。栈道因年久失修，走在上面摇摇晃 晃的，好不危险。"
+  x = 24
+  y = 0
+  z = -6
+    }
+
+  room_exits "shudao5" {
+    room_id = rooms.shudao5.id
+    west = rooms.shudao6.id
+    east = rooms.shudao4.id
+    }
+
+
+  room_characters "shudao5" {
+    room_id = rooms.shudao5.id
+    characters = [
+      { id = characters.tiaofu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao6.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao6" {
+      name = "栈道"
+      description = "栈道是通连接四川和中原的唯一道路，为了在险峻的山脉 中打开这条道路，不知道花费了多少人力物力，也不知死了多 少人。这条路是沿江而修成的，用大木桩钉在悬崖上，上面铺 以木板，仅能过一两个人。栈道因年久失修，走在上面摇摇晃 晃的，好不危险。"
+  x = 23
+  y = 0
+  z = -6
+    }
+
+  room_exits "shudao6" {
+    room_id = rooms.shudao6.id
+    west = rooms.shudao7.id
+    east = rooms.shudao5.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao7.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao7" {
+      name = "栈道"
+      description = "自古有云：蜀道难，难于上青天，呜呼。无怪大诗人李白 如此写。路到了这里真可谓惊险无比，一边是滔滔的江水，一 边是如刀切般的峭壁，朝西已无路可走，只有峭壁上有一些石 窝，可以攀登而上，向东，却是摇摇晃晃的栈道。"
+  x = 22
+  y = 0
+  z = -6
+    }
+
+  room_exits "shudao7" {
+    room_id = rooms.shudao7.id
+    westup = rooms.shudao8.id
+    east = rooms.shudao6.id
+    }
+
+
+  room_characters "shudao7" {
+    room_id = rooms.shudao7.id
+    characters = [
+      { id = characters.tangzi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao8.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao8" {
+      name = "峭壁"
+      description = "自古有云：蜀道难，难于上青天，呜呼。无怪大诗人李白 如此写。路到了这里真可谓惊险无比，一边是滔滔的江水，一 边是如刀切般的峭壁。你正爬在一个很危险的峭壁上，你还是 快走吧，别一不小心掉了下去。"
+  x = 21
+  y = 0
+  z = -5
+    }
+
+  room_exits "shudao8" {
+    room_id = rooms.shudao8.id
+    westup = rooms.shudao9.id
+    eastdown = rooms.shudao7.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/shudao9.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shudao9" {
+      name = "山顶"
+      description = "这里是一座高山的山顶，临江一面是陡峭的悬崖，仔细望 去，有一些石窝可以落脚，西看去，只见云雾中有好象有几栋 房子。"
+  x = 20
+  y = 0
+  z = -4
+    }
+
+  room_exits "shudao9" {
+    room_id = rooms.shudao9.id
+    west = rooms.baidicheng.id
+    eastdown = rooms.shudao8.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/shuduroad1.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shuduroad1" {
+      name = "蜀都道"
+      description = "这里是蜀都大道，向西就可以到提督府了。过往的车马卷 起阵阵尘土，来去的官差阵步如飞，一些官兵在路上巡哨。你 感到一点点害怕，真后悔拐进这里来。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "shuduroad1" {
+    room_id = rooms.shuduroad1.id
+    west = rooms.guangchang.id
+    east = rooms.eastroad2.id
+    }
+
+
+  room_characters "shuduroad1" {
+    room_id = rooms.shuduroad1.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/shuduroad2.c by LPCConverter
+# Zone: chengdu
+
+    rooms "shuduroad2" {
+      name = "蜀都道"
+      description = "这里是蜀都大道，它横贯整个锦官城。向东就可以到提督 府了。平头百姓少了，路上大多是有头有脸的爷们。几个官兵 顶盔贯甲打量着过往行人。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "shuduroad2" {
+    room_id = rooms.shuduroad2.id
+    east = rooms.guangchang.id
+    west = rooms.westroad2.id
+    }
+
+
+  room_characters "shuduroad2" {
+    room_id = rooms.shuduroad2.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/southgate.c by LPCConverter
+# Zone: chengdu
+
+    rooms "southgate" {
+      name = "南门"
+      description = "这是成都南城门，城门正上方刻着“南门”两个楷书大字 城墙上贴着几张官府告示(gaoshi)。一条笔直的青石板大道向 南延伸。南边是郊外，遍地麦浪金黄迷人。北边是城里。"
+  x = 0
+  y = -3
+  z = 0
+    }
+
+  room_exits "southgate" {
+    room_id = rooms.southgate.id
+    north = rooms.southroad2.id
+    south = rooms.nanheqiaos.id
+    }
+
+
+  room_characters "southgate" {
+    room_id = rooms.southgate.id
+    characters = [
+      { id = characters.wujiang.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/southroad1.c by LPCConverter
+# Zone: chengdu
+
+    rooms "southroad1" {
+      name = "南大街"
+      description = "你走在南大街上，踩着坚实的青石板地面。这里显得热闹 多了。东北方向是东大街，往西一直走都是南大街。东南方向 传来阵阵喧闹，那里有个客店，杏帘分明锦城驿。"
+  x = 1
+  y = -2
+  z = 0
+    }
+
+  room_exits "southroad1" {
+    room_id = rooms.southroad1.id
+    west = rooms.southroad2.id
+    southeast = rooms.kedian.id
+    northeast = rooms.eastroad3.id
+    }
+
+
+  room_characters "southroad1" {
+    room_id = rooms.southroad1.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/southroad2.c by LPCConverter
+# Zone: chengdu
+
+    rooms "southroad2" {
+      name = "南大街"
+      description = "你正走在成都府的南大街上，这是一条宽敞开阔的大路直 向两边延伸。路上行人来来往往，好不热闹。一些小商小贩常 在这里做些小买卖。南面是南门，北边大道名叫提督街，你看 就知到为啥那麽安静了。"
+  x = 0
+  y = -2
+  z = 0
+    }
+
+  room_exits "southroad2" {
+    room_id = rooms.southroad2.id
+    west = rooms.southroad3.id
+    east = rooms.southroad1.id
+    south = rooms.southgate.id
+    north = rooms.tiduroad.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/southroad3.c by LPCConverter
+# Zone: chengdu
+
+    rooms "southroad3" {
+      name = "南大街"
+      description = "你走在南大街坚实的青石板地面上，各色人等往来其中很 是喧闹。有时你可能会见到一些江湖装束的人物，他们口音各 异，服饰也五花八门，可是中气都很足，可不是好惹的。往东 长长的大道就是南大街。西南方是个很巍峨的建筑群，人进人 出十分热闹。西北通往西大街。"
+  x = -1
+  y = -2
+  z = 0
+    }
+
+  room_exits "southroad3" {
+    room_id = rooms.southroad3.id
+    east = rooms.southroad2.id
+    southwest = rooms.wuhoucigate.id
+    northwest = rooms.westroad1.id
+    }
+
+
+  room_characters "southroad3" {
+    room_id = rooms.southroad3.id
+    characters = [
+      { id = characters.jian_ke.id },
+      { id = characters.jian_ke.id },
+      { id = characters.dao_ke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/tanggate.c by LPCConverter
+# Zone: chengdu
+
+    rooms "tanggate" {
+      name = "唐门大门"
+      description = "这里就是名闻天下的唐门的大门。唐门建的十分巍峨，青 墙碧瓦下的铜包大门紧紧关闭，两边唐门弟子一溜排开，这个 架势看来是不好进去了。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "tanggate" {
+    room_id = rooms.tanggate.id
+    north = rooms.northroad2.id
+    }
+
+
+
+
+  room_items "tanggate" {
+    room_id = rooms.tanggate.id
+    items = [
+      { id = items.tangrou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/tidufu.c by LPCConverter
+# Zone: chengdu
+
+    rooms "tidufu" {
+      name = "提督府"
+      description = "这里便是提督大人办公事的地方。正前方大红楠木案桌后 正经端坐着的，就是成都提督吴天德。两边站立纹风不动的是 他的亲兵侍从，看上去都十分彪悍。"
+  x = 0
+  y = 2
+  z = 0
+    }
+
+  room_exits "tidufu" {
+    room_id = rooms.tidufu.id
+    south = rooms.tidugate.id
+    }
+
+
+  room_characters "tidufu" {
+    room_id = rooms.tidufu.id
+    characters = [
+      { id = characters.wutiande.id },
+      { id = characters.shicong.id },
+      { id = characters.shicong.id },
+      { id = characters.qinbing.id },
+      { id = characters.qinbing.id },
+      { id = characters.qinbing.id },
+      { id = characters.qinbing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/tidugate.c by LPCConverter
+# Zone: chengdu
+
+    rooms "tidugate" {
+      name = "提督府门"
+      description = "这便是提督府门。巍峨雄伟的城墙上，成都提督府五个大 字十分显眼，气势辉煌。几名亲兵立在两旁。"
+  x = 0
+  y = 1
+  z = 0
+valid_leave = [
+{
+  direction = ~
+  message = "亲兵上前挡住你，朗声说道：这位请回吧。老爷不见客。"
+}
+
+]
+    }
+
+  room_exits "tidugate" {
+    room_id = rooms.tidugate.id
+    north = rooms.tidufu.id
+    south = rooms.guangchang.id
+    }
+
+
+  room_characters "tidugate" {
+    room_id = rooms.tidugate.id
+    characters = [
+      { id = characters.qinbing.id },
+      { id = characters.qinbing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/tiduroad.c by LPCConverter
+# Zone: chengdu
+
+    rooms "tiduroad" {
+      name = "提督街"
+      description = "提督街就是因为通往提督府而得名。这一带来往行人很少 做生意的就更是绝迹了。提督大人好象有甚麽想不开的，派了 好多兵在这里守卫，连江湖人物都不敢轻率踏入。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "tiduroad" {
+    room_id = rooms.tiduroad.id
+    north = rooms.guangchang.id
+    south = rooms.southroad2.id
+    }
+
+
+  room_characters "tiduroad" {
+    room_id = rooms.tiduroad.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/wangjianglou.c by LPCConverter
+# Zone: chengdu
+
+    rooms "wangjianglou" {
+      name = "望江楼"
+      description = "望江楼又名崇丽阁。下两层四角，上两层八角，朱柱琉瓦 翘角飞甍，雕梁画栋，登临其上，远眺府南河，清风扑面，舟 火穿梭，实为胜景。楼的周遭，翠竹千茎朝天，每当雨雾氤氲 轻烟笼翠，竹籁鸟音，动人心魄。楼前薛涛井，传说因为薛涛 漂洗一种红色诗笺而流芳千古：无波古井因涛重，有色遗笺举 世珍。这也是这一才女的传世的唯一遗泽。"
+  x = 3
+  y = -2
+  z = 0
+    }
+
+  room_exits "wangjianglou" {
+    room_id = rooms.wangjianglou.id
+    northwest = rooms.eastroad3.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/westgate.c by LPCConverter
+# Zone: chengdu
+
+    rooms "westgate" {
+      name = "西门"
+      description = "你来到了西城门外，只见高大的城墙厚实凝重，卫兵仔细 地盘查着过往行人，一切都显得井井有条。城墙上贴着几张告 示(gaoshi)。西面远远可以看到城外的清溪碧水。"
+  x = -3
+  y = 0
+  z = 0
+    }
+
+  room_exits "westgate" {
+    room_id = rooms.westgate.id
+    east = rooms.westroad2.id
+    west = rooms.nanheqiaow.id
+    }
+
+
+  room_characters "westgate" {
+    room_id = rooms.westgate.id
+    characters = [
+      { id = characters.wujiang.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/westroad1.c by LPCConverter
+# Zone: chengdu
+
+    rooms "westroad1" {
+      name = "西大街"
+      description = "你正走在成都府的西大街上，这是一条宽敞开阔的大路往 北面一直延伸。路上行人来来往往，好不热闹。小商小贩常在 这里做些小买卖，常常可见有人骑着高头大马穿行其间。西南 边却显得特别清静，好象很清幽。东南方向通往南大街。"
+  x = -2
+  y = -1
+  z = 0
+    }
+
+  room_exits "westroad1" {
+    room_id = rooms.westroad1.id
+    north = rooms.westroad2.id
+    southeast = rooms.southroad3.id
+    southwest = rooms.qingyanggong.id
+    }
+
+
+  room_characters "westroad1" {
+    room_id = rooms.westroad1.id
+    characters = [
+      { id = characters.seller.id },
+      { id = characters.liumang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/westroad2.c by LPCConverter
+# Zone: chengdu
+
+    rooms "westroad2" {
+      name = "西大街"
+      description = "一条青石铺成的大道通向南北。路上行人络绎不绝，只见 南面不远处的古树下有一个简陋的摊子，摊子一角的招牌在风 中摇晃着，上面写着“诸葛再世”，居然也围了一堆人。往西 就是西门了，东边是蜀都大道。"
+  x = -2
+  y = 0
+  z = 0
+    }
+
+  room_exits "westroad2" {
+    room_id = rooms.westroad2.id
+    north = rooms.westroad3.id
+    west = rooms.westgate.id
+    east = rooms.shuduroad2.id
+    south = rooms.westroad1.id
+    }
+
+
+  room_characters "westroad2" {
+    room_id = rooms.westroad2.id
+    characters = [
+      { id = characters.tangzi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/westroad3.c by LPCConverter
+# Zone: chengdu
+
+    rooms "westroad3" {
+      name = "西大街"
+      description = "你不知不觉地就来到了成都西北角，从这里往北望，显得 格外冷清。青石大道上只有零零落落的几个人，在慢悠悠闲逛。 往南是西大街，东北方向是另一条大街，西北角有个好大的药 店，卖一些武林中人常用的药，唐门弟子常来此配药。"
+  x = -2
+  y = 1
+  z = 0
+    }
+
+  room_exits "westroad3" {
+    room_id = rooms.westroad3.id
+    northwest = rooms.yaodian.id
+    northeast = rooms.northroad1.id
+    south = rooms.westroad2.id
+    }
+
+
+  room_characters "westroad3" {
+    room_id = rooms.westroad3.id
+    characters = [
+      { id = characters.haoke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/wuguan.c by LPCConverter
+# Zone: chengdu
+
+    rooms "wuguan" {
+      name = "金牛武馆"
+      description = "金牛武馆在江湖中很有名声，很多大侠自小就是从这里走 进江湖。虽然他们在江湖早已成名立万，这里的师傅年纪也都 大了，却是他们的启蒙业师，他们也常回来看望师傅们，因此 这里长久得到黑白两道的尊重，不容侵犯。这里是武馆大厅馆 主马五德在此请授。"
+  x = 2
+  y = 3
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：! me->query_temp("marks/jinniu_paied") && (dir == "up" || dir == "down")
+direction = "up"
+  message = "马五德笑道: 那是本馆弟子才能进去的。"
+}
+
+]
+    }
+
+  room_exits "wuguan" {
+    room_id = rooms.wuguan.id
+    down = rooms.wuxiuxi.id
+    up = rooms.practice.id
+    north = rooms.wuguanliu.id
+    west = rooms.wuguanxiao.id
+    south = rooms.wuguanlong.id
+    east = rooms.wuguanchen.id
+    southwest = rooms.northroad3.id
+    }
+
+
+  room_characters "wuguan" {
+    room_id = rooms.wuguan.id
+    characters = [
+      { id = characters.mawude.id },
+      { id = characters.zhangfang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/wuguanchen.c by LPCConverter
+# Zone: chengdu
+
+    rooms "wuguanchen" {
+      name = "金牛武馆一部"
+      description = "这里是金牛武馆教授一部，师傅陈浒教授基本轻功，基本 内功，基本招架，基本拳法，基本杖法，基本棍法，基本锤法。"
+  x = 3
+  y = 3
+  z = 0
+    }
+
+  room_exits "wuguanchen" {
+    room_id = rooms.wuguanchen.id
+    west = rooms.wuguan.id
+    }
+
+
+  room_characters "wuguanchen" {
+    room_id = rooms.wuguanchen.id
+    characters = [
+      { id = characters.chenhu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/wuguanliu.c by LPCConverter
+# Zone: chengdu
+
+    rooms "wuguanliu" {
+      name = "金牛武馆四部"
+      description = "这里是金牛武馆教授四部，师傅刘虹瑛教授基本轻功，基 本内功，基本招架，基本掌法，基本剑法，基本短兵。"
+  x = 2
+  y = 4
+  z = 0
+    }
+
+  room_exits "wuguanliu" {
+    room_id = rooms.wuguanliu.id
+    south = rooms.wuguan.id
+    }
+
+
+  room_characters "wuguanliu" {
+    room_id = rooms.wuguanliu.id
+    characters = [
+      { id = characters.liuhongying.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/wuguanlong.c by LPCConverter
+# Zone: chengdu
+
+    rooms "wuguanlong" {
+      name = "金牛武馆二部"
+      description = "这是金牛武馆教授二部，师傅龙铨教授基本轻功，基本内 功，基本招架，基本爪法，基本刀法。"
+  x = 2
+  y = 2
+  z = 0
+    }
+
+  room_exits "wuguanlong" {
+    room_id = rooms.wuguanlong.id
+    north = rooms.wuguan.id
+    }
+
+
+  room_characters "wuguanlong" {
+    room_id = rooms.wuguanlong.id
+    characters = [
+      { id = characters.longquan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/wuguanxiao.c by LPCConverter
+# Zone: chengdu
+
+    rooms "wuguanxiao" {
+      name = "金牛武馆三部"
+      description = "这里是金牛武馆教授三部，师傅萧飞教授基本轻功，基本 内功，基本招架，基本指法，基本暗器。"
+  x = 1
+  y = 3
+  z = 0
+    }
+
+  room_exits "wuguanxiao" {
+    room_id = rooms.wuguanxiao.id
+    east = rooms.wuguan.id
+    }
+
+
+  room_characters "wuguanxiao" {
+    room_id = rooms.wuguanxiao.id
+    characters = [
+      { id = characters.xiaofei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/wuhouci.c by LPCConverter
+# Zone: chengdu
+
+    rooms "wuhouci" {
+      name = "诸葛亮殿"
+      description = "这里是武侯祠正殿诸葛亮殿。武侯羽扇纶巾一如生前。两 边诸葛瞻和诸葛尚父子塑像也栩栩如生。挂在殿门两壁的，由 诗圣杜甫笔下流露的千古名联：“三顾频繁天下事，两朝开济 老臣心。”道尽了这个千古风范的一生心事。"
+  x = -2
+  y = -1
+  z = 1
+    }
+
+  room_exits "wuhouci" {
+    room_id = rooms.wuhouci.id
+    southdown = rooms.liubeidian.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/wuhoucigate.c by LPCConverter
+# Zone: chengdu
+
+    rooms "wuhoucigate" {
+      name = "武侯祠大门"
+      description = "这里原来是武侯祠。大门人进人出，大多缠着武侯巾。原 来武侯生前治蜀，造福两川，这武侯巾乃是他去世川人为其带 孝之俗。由于武侯遗爱甚深，虽千载以下川人头巾仍不去首。"
+  x = -2
+  y = -3
+  z = 0
+    }
+
+  room_exits "wuhoucigate" {
+    room_id = rooms.wuhoucigate.id
+    north = rooms.liubeidian.id
+    northeast = rooms.southroad3.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/wuxiuxi.c by LPCConverter
+# Zone: chengdu
+
+    rooms "wuxiuxi" {
+      name = "金牛武馆地下室"
+      description = "这里是金牛武馆的地下室，虽然低洼，倒也干燥。只是有 些昏暗，靠墙有几张铺的好好的床，有些人正在休息。"
+  x = 2
+  y = 3
+  z = -1
+    }
+
+  room_exits "wuxiuxi" {
+    room_id = rooms.wuxiuxi.id
+    up = rooms.wuguan.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/yaodian.c by LPCConverter
+# Zone: chengdu
+
+    rooms "yaodian" {
+      name = "济世堂药店"
+      description = "济世堂药店卖很多中原买不到的药。托唐门的福，生意一 直都很好。一走进这家药店，就闻到股浓烈刺鼻的药味。你正 奇怪药店伙计怎麽能忍受，就看到药店里还有一些人正拿奇怪 的眼光看你。他们的腰间鼓鼓囊囊的，显然不是好惹的。"
+  x = -3
+  y = 2
+  z = 0
+    }
+
+  room_exits "yaodian" {
+    room_id = rooms.yaodian.id
+    southeast = rooms.westroad3.id
+    }
+
+
+  room_characters "yaodian" {
+    room_id = rooms.yaodian.id
+    characters = [
+      { id = characters.huoji.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/chenhu.c by LPCConverter
+# Zone: chengdu
+
+    characters "chenhu" {
+      name = "陈浒"
+      description = "陈老爷子在武馆也忙了几十年了，仍勇于提携后生。"
+  title = "金牛武馆教习"
+  gender = "男性"
+  age = 65
+  shen_type = 1
+
+  combat = {
+    combat_exp = 600000
+  }
+
+  skills = [
+    { skill = "dodge" level = 180 },
+    { skill = "force" level = 180 },
+    { skill = "parry" level = 180 },
+    { skill = "cuff" level = 180 },
+    { skill = "staff" level = 180 },
+    { skill = "club" level = 180 },
+    { skill = "hammer" level = 180 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/chuniang.c by LPCConverter
+# Zone: chengdu
+
+    characters "chuniang" {
+      name = "厨娘"
+      description = "她是一个看上去普普通通的厨娘，戴着油腻的围裙，因为常年累 月的在厨房烧菜做饭，双手粗糙，看起来貌不惊人，可是她做的饭菜 却是川中一绝。她为人似乎十分傲慢，看来不是一般的人物。"
+  gender = "女性"
+  age = 30
+  score = 100
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 5000
+    con = 30
+    dex = 21
+    int = 22
+    max_jing = 200
+    max_neili = 350
+    max_qi = 450
+    str = 21
+  }
+
+  # vendor_goods: "/clone/misc/cailiao" (file not found)
+
+  inquiries = [
+    { key = "job" value = "(: ask_job :)" },
+    { key = "工作" value = "(: ask_job :)" }
+  ]
+
+  skills = [
+    { skill = "force" level = 30 },
+    { skill = "dodge" level = 50 },
+    { skill = "cooking" level = 200 },
+    { skill = "chuancai-jiyi" level = 200 },
+    { skill = "unarmed" level = 50 }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["cook", "list", "buy"]
+  }
+
+  accept = [
+    { kind = "money" min = 2000 accept = true msg = "厨娘同意指点{npc}一些关于炒菜的常识和技巧。" },
+    { kind = "any" accept = false msg = ["厨娘同意指点{npc}一些关于炒菜的常识和技巧。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/huoji.c by LPCConverter
+# Zone: chengdu
+
+    characters "huoji" {
+      name = "药店伙计"
+      description = "他是模样老老实实的年轻人。"
+  gender = "男性"
+  age = 18
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 250
+    str = 20
+  }
+
+  # vendor_goods: "/clone/misc/jinchuang" (file not found)
+  # vendor_goods: "/clone/misc/yangjing" (file not found)
+  # vendor_goods: "/clone/misc/bicanfeng" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/liuhongying.c by LPCConverter
+# Zone: chengdu
+
+    characters "liuhongying" {
+      name = "刘虹瑛"
+      description = "刘教头是武馆的新来教习，你可别小看她哦。"
+  title = "金牛武馆教习"
+  gender = "女性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    combat_exp = 600000
+  }
+
+  skills = [
+    { skill = "dodge" level = 180 },
+    { skill = "force" level = 180 },
+    { skill = "parry" level = 180 },
+    { skill = "strike" level = 180 },
+    { skill = "sword" level = 180 },
+    { skill = "dagger" level = 180 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/longquan.c by LPCConverter
+# Zone: chengdu
+
+    characters "longquan" {
+      name = "龙铨"
+      description = "龙老爷子在武馆也干了好多年头了，仍老当益壮。"
+  title = "金牛武馆教习"
+  gender = "男性"
+  age = 60
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    combat_exp = 600000
+  }
+
+  skills = [
+    { skill = "dodge" level = 180 },
+    { skill = "force" level = 180 },
+    { skill = "parry" level = 180 },
+    { skill = "claw" level = 180 },
+    { skill = "blade" level = 180 }
+  ]
+
+
+  carry = [
+    { id = items.expert_sword.id },
+    { id = items.expert_sword.id },
+    { id = items.expert_sword.id },
+    { id = items.expert_sword.id },
+    { id = items.expert_sword.id },
+    { id = items.expert_blade.id },
+    { id = items.expert_blade.id },
+    { id = items.expert_blade.id },
+    { id = items.expert_blade.id },
+    { id = items.expert_blade.id },
+    { id = items.expert_dagger.id },
+    { id = items.expert_dagger.id },
+    { id = items.expert_dagger.id },
+    { id = items.expert_dagger.id },
+    { id = items.expert_dagger.id },
+    { id = items.expert_unarmed.id },
+    { id = items.expert_unarmed.id },
+    { id = items.expert_unarmed.id },
+    { id = items.expert_unarmed.id },
+    { id = items.expert_unarmed.id },
+    { id = items.expert_dodge.id },
+    { id = items.expert_dodge.id },
+    { id = items.expert_dodge.id },
+    { id = items.expert_dodge.id },
+    { id = items.expert_dodge.id },
+    { id = items.expert_parry.id },
+    { id = items.expert_parry.id },
+    { id = items.expert_parry.id },
+    { id = items.expert_parry.id },
+    { id = items.expert_parry.id },
+    { id = items.expert_force.id },
+    { id = items.expert_force.id },
+    { id = items.expert_force.id },
+    { id = items.expert_force.id },
+    { id = items.expert_force.id },
+    { id = items.expert_staff.id },
+    { id = items.expert_staff.id },
+    { id = items.expert_staff.id },
+    { id = items.expert_staff.id },
+    { id = items.expert_staff.id },
+    { id = items.expert_whip.id },
+    { id = items.expert_whip.id },
+    { id = items.expert_whip.id },
+    { id = items.expert_whip.id },
+    { id = items.expert_whip.id },
+    { id = items.expert_throwing.id },
+    { id = items.expert_throwing.id },
+    { id = items.expert_throwing.id },
+    { id = items.expert_throwing.id },
+    { id = items.expert_throwing.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/mawude.c by LPCConverter
+# Zone: chengdu
+
+    characters "mawude" {
+      name = "马五德"
+      description = "马老爷子是武馆的缔造者，辛苦一辈子了，仍勇于提携后生。"
+  title = "金牛武馆馆长"
+  gender = "男性"
+  age = 65
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    combat_exp = 600000
+  }
+
+  skills = [
+    { skill = "dodge" level = 180 },
+    { skill = "force" level = 180 },
+    { skill = "parry" level = 180 },
+    { skill = "unarmed" level = 180 },
+    { skill = "hand" level = 180 },
+    { skill = "whip" level = 180 }
+  ]
+
+
+  carry = [
+    { id = items.advance_sword.id },
+    { id = items.advance_sword.id },
+    { id = items.advance_sword.id },
+    { id = items.advance_sword.id },
+    { id = items.advance_sword.id },
+    { id = items.advance_blade.id },
+    { id = items.advance_blade.id },
+    { id = items.advance_blade.id },
+    { id = items.advance_blade.id },
+    { id = items.advance_blade.id },
+    { id = items.advance_dagger.id },
+    { id = items.advance_dagger.id },
+    { id = items.advance_dagger.id },
+    { id = items.advance_dagger.id },
+    { id = items.advance_dagger.id },
+    { id = items.advance_unarmed.id },
+    { id = items.advance_unarmed.id },
+    { id = items.advance_unarmed.id },
+    { id = items.advance_unarmed.id },
+    { id = items.advance_unarmed.id },
+    { id = items.advance_dodge.id },
+    { id = items.advance_dodge.id },
+    { id = items.advance_dodge.id },
+    { id = items.advance_dodge.id },
+    { id = items.advance_dodge.id },
+    { id = items.advance_parry.id },
+    { id = items.advance_parry.id },
+    { id = items.advance_parry.id },
+    { id = items.advance_parry.id },
+    { id = items.advance_parry.id },
+    { id = items.advance_force.id },
+    { id = items.advance_force.id },
+    { id = items.advance_force.id },
+    { id = items.advance_force.id },
+    { id = items.advance_force.id },
+    { id = items.advance_staff.id },
+    { id = items.advance_staff.id },
+    { id = items.advance_staff.id },
+    { id = items.advance_staff.id },
+    { id = items.advance_staff.id },
+    { id = items.advance_whip.id },
+    { id = items.advance_whip.id },
+    { id = items.advance_whip.id },
+    { id = items.advance_whip.id },
+    { id = items.advance_whip.id },
+    { id = items.advance_throwing.id },
+    { id = items.advance_throwing.id },
+    { id = items.advance_throwing.id },
+    { id = items.advance_throwing.id },
+    { id = items.advance_throwing.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/qinbing.c by LPCConverter
+# Zone: chengdu
+
+    characters "qinbing" {
+      name = "亲兵"
+      description = "他手握钢刀，目视前方，真是威风凛凛。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 75000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "blade" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/shicong.c by LPCConverter
+# Zone: chengdu
+
+    characters "shicong" {
+      name = "侍从"
+      description = "一个文职大扮的侍从，他手持钢刀，寸步不离提督大人。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 75000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "blade" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/tangdun.c by LPCConverter
+# Zone: chengdu
+
+    characters "tangdun" {
+      name = "唐钝"
+      description = "这是一个唐门长房弟子，一袭青衣，浑身透着一股邪气。本月长房轮值。"
+  title = "唐门长房弟子"
+  gender = "男性"
+
+  combat = {
+    attitude = "peaceful"
+    max_jing = 150
+    max_neili = 200
+    max_qi = 200
+  }
+
+  chat_chance = 3
+chats = [
+    "唐钝面无表情地说道: 江湖中无人敢侵犯唐门!"
+]
+
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 60 },
+    { skill = "shedao-qigong" level = 30 },
+    { type = "sword" skill = "shedao-qigong" }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/tanghua.c by LPCConverter
+# Zone: chengdu
+
+    characters "tanghua" {
+      name = "唐掌柜"
+      description = "唐掌柜是这家大酒楼的主人，别看他只是一个小小的酒楼老板，在成 都除了提督老爷以外，恐怕就属他最财大势大。"
+  age = 46
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+  }
+
+  inquiries = [
+    { key = "here" value = "此处便是蓉城酒楼，客倌如要点菜，吩咐店里的小二一声便可。" },
+    { key = "name" value = "在下姓唐单名一个桦字。" },
+    { key = "唐桦" value = "不敢，在下便是唐桦，不知客倌有何吩咐？" },
+    { key = "蓉城酒楼" value = "这里就是，客倌是第一次来吗？" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/tanghuai.c by LPCConverter
+# Zone: chengdu
+
+    characters "tanghuai" {
+      name = "唐槐"
+      description = "据说唐槐是四川唐家的后代。"
+  title = "兵器铺老板"
+  gender = "男性"
+  age = 35
+  shen_type = 0
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+  }
+
+  goods = [
+    { id = items.feihuangshi.id },
+    { id = items.flower_leaf.id },
+    { id = items.tea_leaf.id },
+    { id = items.tielianzi.id }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/wutiande.c by LPCConverter
+# Zone: chengdu
+
+    characters "wutiande" {
+      name = "吴天德"
+      description = "吴天德大人原来只是一个参将，自从给令狐冲变成小白脸后，居然官运亨通，不但提 为总兵，还能出督全川之兵。"
+  title = "成都提督"
+  gender = "男性"
+  age = 35
+  shen_type = 0
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/xiaoer.c by LPCConverter
+# Zone: chengdu
+
+    characters "xiaoer" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/xiaoer2.c by LPCConverter
+# Zone: chengdu
+
+    characters "xiaoer2" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  goods = [
+    { id = items.jitui.id },
+    { id = items.jiudai.id },
+    { id = items.baozi.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/xiaofei.c by LPCConverter
+# Zone: chengdu
+
+    characters "xiaofei" {
+      name = "萧飞"
+      description = "萧教头是武馆的新来教习，但他的弟子也有在江湖出头的了。"
+  title = "金牛武馆教习"
+  gender = "男性"
+  age = 35
+  shen_type = 1
+
+  combat = {
+    combat_exp = 600000
+  }
+
+  skills = [
+    { skill = "dodge" level = 180 },
+    { skill = "force" level = 180 },
+    { skill = "parry" level = 180 },
+    { skill = "finger" level = 180 },
+    { skill = "throwing" level = 180 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/xiaozei.c by LPCConverter
+# Zone: chengdu
+
+    characters "xiaozei" {
+      name = "小贼"
+      description = "一个笑嘻嘻看着你的小孩。"
+  gender = "男性"
+  age = 15
+  shen_type = 0
+
+  combat = {
+    combat_exp = 20000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 100
+    max_neili = 500
+    max_qi = 500
+    str = 27
+  }
+
+  chat_chance = 15
+chats = [
+    "小贼说道：好心的大爷，哪赏我要饭的几个铜板吧。",
+    "小贼懒洋洋地打了个哈欠。",
+    "小贼伸手捉住了身上的虱子，骂道：小爷身上没几两肉，叫你们还咬。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "sword" level = 50 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "stealing" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.jitui.id },
+    { id = items.jiudai.id },
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "money" min = 1 accept = true msg = "其实我还是有点钱的，这次只不过试试你罢了。" },
+    { kind = "any" accept = true msg = ["其实我还是有点钱的，这次只不过试试你罢了。", "这种东西鬼才要，给我滚一边去！", "smile", "shake"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/zhangfang.c by LPCConverter
+# Zone: chengdu
+
+    characters "zhangfang" {
+      name = "账房老夫子"
+      description = ""
+  gender = "男性"
+  age = 56
+  shen_type = 1
+
+  combat = {
+    combat_exp = 10000
+    max_neili = 1000
+  }
+
+  inquiries = [
+    { key = "学习" value = "先交五两银子！" },
+    { key = "学武" value = "先交五两银子！" },
+    { key = "学武功" value = "先交五两银子！" },
+    { key = "学费" value = "五两银子！" },
+    { key = "练功" value = "先交五两银子！" },
+    { key = "高价钱" value = "至少得五百两黄金！" }
+  ]
+
+  skills = [
+    { skill = "force" level = 200 },
+    { skill = "unarmed" level = 400 },
+    { skill = "dodge" level = 200 },
+    { skill = "parry" level = 200 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "money" min = 500 accept = true msg = "老账房望着{npc}说：你的武功应该历练江湖才能再长进，不能埋没在这里了。" },
+    { kind = "any" accept = false msg = ["老账房望着{npc}说：你的武功应该历练江湖才能再长进，不能埋没在这里了。", "老账房对{npc}说：好！既然这位如此上进，那就进去找师傅学吧！", "老账房皱眉对{npc}说：您给的也太少了点儿吧？", "老账房悄悄对你说道：“但是如果你肯出高价钱，也不是不可以！”", "老帐房对你悄悄说道：“快去吧，可别说你认识我！”"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/baozi.c by LPCConverter
+# Zone: chengdu
+
+    characters "baozi" {
+      name = "包子"
+      description = "一个香喷喷的肉包子。"
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/feihuangshi.c by LPCConverter
+# Zone: chengdu
+
+    characters "feihuangshi" {
+      name = "飞蝗石"
+      description = "仔细挑选的鹅卵石，大小一致，个个都滴溜溜圆。"
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/flower-leaf.c by LPCConverter
+# Zone: chengdu
+
+    characters "flower_leaf" {
+      name = "花瓣"
+      description = "新鲜的玫瑰花的花瓣，上面还挂这晶莹的露珠。"
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/jitui.c by LPCConverter
+# Zone: chengdu
+
+    characters "jitui" {
+      name = "烤鸡腿"
+      description = "一枝烤得香喷喷的鸡腿。"
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/jiudai.c by LPCConverter
+# Zone: chengdu
+
+    characters "jiudai" {
+      name = "牛皮酒袋"
+      description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/lianzi.c by LPCConverter
+# Zone: chengdu
+
+    characters "lianzi" {
+      name = "铁莲子"
+      description = "铁莲子是一种以量取胜的暗器，沉颠颠的。"
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/tea-leaf.c by LPCConverter
+# Zone: chengdu
+
+    characters "tea_leaf" {
+      name = "茶叶"
+      description = "才采的新茶，发出一股淡淡的香气。"
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/npc/obj/tielianzi.c by LPCConverter
+# Zone: chengdu
+
+    characters "tielianzi" {
+      name = "铁莲子"
+      description = "精铁打制的莲子状暗器。"
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/obj/jiaonei.c by LPCConverter
+# Zone: chengdu
+
+    rooms "jiaonei" {
+      name = "轿内"
+      description = "你在轿里刚坐稳，快轿摇了摇，抬起来往前走了。你只觉的轿子 慢慢摇啊摇啊，也不知道走了多久，一路上老觉得昏昏欲睡......"
+  x = 0
+  y = 0
+  z = 2
+    }
+  room_exits "jiaonei" {
+    room_id = rooms.jiaonei.id
+    down = rooms.minju.id
+    }
+
+# Generated from C:/files/git/mud/d/chengdu/obj/shelf.c by LPCConverter
+# Zone: chengdu
+
+    items "shelf" {
+      name = "破烂的书架"
+      description = "一只破烂的书架，腐朽不堪，也不知搁在这里多久了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

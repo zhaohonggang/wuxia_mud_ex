@@ -1,0 +1,1218 @@
+zones "foshan" {
+  name = "foshan"
+}
+
+# Generated from C:/files/git/mud/d/foshan/beidimiao.c by LPCConverter
+# Zone: foshan
+
+    rooms "beidimiao" {
+      name = "北帝庙"
+      description = "北帝庙坐北朝南。院子中一个大水塘，塘中石龟石蛇，昂 然盘踞。大殿神像石板上血迹殷然。北帝神像立于大殿的正中。"
+  x = -3
+  y = 1
+  z = 0
+    }
+
+  room_exits "beidimiao" {
+    room_id = rooms.beidimiao.id
+    south = rooms.street1.id
+    }
+
+# Generated from C:/files/git/mud/d/foshan/dangpu.c by LPCConverter
+# Zone: foshan
+
+    rooms "dangpu" {
+      name = "英雄典当"
+      description = "当铺里一张高高的柜台，柜台后面坐着当铺的朝奉。这家 当铺是凤老爷所开，十多年来从没人来闹过事，朝奉也就很放 心。柜台上挂着一个木牌子(paizi)。"
+  x = 1
+  y = -1
+  z = 0
+item_desc = {
+ paizi = "##==================##         ##                  ##         ##     公平交易     ##         ##                  ##         ##  卖出：   sell   ##         ##                  ##         ##  买进：   buy    ##         ##                  ##         ##  估价：   value  ##         ##                  ##         ##                  ##         ##==================##"
+}
+    }
+
+  room_exits "dangpu" {
+    room_id = rooms.dangpu.id
+    north = rooms.street5.id
+    }
+
+
+  room_characters "dangpu" {
+    room_id = rooms.dangpu.id
+    characters = [
+      { id = characters.chaofeng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/eastgate.c by LPCConverter
+# Zone: foshan
+
+    rooms "eastgate" {
+      name = "东门"
+      description = "这里是佛山镇的东门。再往东走，不久就要离开佛山去往 福建了。西面一条东西向的大街是佛山镇的主要街道。"
+  x = 2
+  y = 0
+  z = 0
+    }
+
+  room_exits "eastgate" {
+    room_id = rooms.eastgate.id
+    west = rooms.street5.id
+    east = rooms.road8.id
+    }
+
+# Generated from C:/files/git/mud/d/foshan/majiu.c by LPCConverter
+# Zone: foshan
+
+    rooms "majiu" {
+      name = "马厩"
+      description = "这里是佛山镇的马厩，常年供应新鲜草料。佛山民风淳朴 马夫们会把马牵到马厩好生照看，将它们喂饱饮足，再洗刷得 干乾净净，一直伺候到客人上路。马厩雨檐下的烂木柱上钉着 一块破木牌(paizi)。马厩中堆放著几堆草料。"
+  x = 0
+  y = -2
+  z = 0
+    }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+    up = rooms.foshan_shop.id
+    north = rooms.yingxionglou.id
+    }
+
+
+  room_characters "majiu" {
+    room_id = rooms.majiu.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu" {
+    room_id = rooms.majiu.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/nanling.c by LPCConverter
+# Zone: foshan
+
+    rooms "nanling" {
+      name = "南岭山口"
+      description = "这里是南岭的一个山口。南面就是佛山了，北面是横亘湖 南广东的五岭。这里地气非常炎热，百物速生快长，口音也渐 渐远异中原了。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "nanling" {
+    room_id = rooms.nanling.id
+    south = rooms.northgate.id
+    northup = rooms.hsroad9.id
+    }
+
+# Generated from C:/files/git/mud/d/foshan/northgate.c by LPCConverter
+# Zone: foshan
+
+    rooms "northgate" {
+      name = "北门"
+      description = "这里是佛山镇的北门。出北门再向北，翻过南岭可达中原。 南面一条东西向的大街是佛山镇的主要街道。"
+  x = -1
+  y = 1
+  z = 0
+    }
+
+  room_exits "northgate" {
+    room_id = rooms.northgate.id
+    north = rooms.nanling.id
+    south = rooms.street3.id
+    }
+
+# Generated from C:/files/git/mud/d/foshan/pm_restroom.c by LPCConverter
+# Zone: foshan
+
+    rooms "pm_restroom" {
+      name = "英雄会馆"
+      description = "英雄会馆也是凤老爷的家业。常来这里的人，都是有能耐 有来头的。英雄会馆里围着黑压压的一群人，南方有一扇紧紧 关闭的小门。只有在每月一次的店铺拍卖时「南霸天」凤天南 才会将它打开，在那里会见各处的商贾。小门旁挂着的一块红 木牌子(paizi)上标写着各家店铺拍卖的底价。"
+  x = -2
+  y = -1
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(me->query("balance") < 5000000 || me->query("weiwang") < 3000) && dir == "south" && ! wizardp(me)
+direction = "south"
+  message = "凤一鸣拦住你，冷笑道：以阁下的财产和地位，尚不足以进去。"
+}
+
+]
+    }
+
+  room_exits "pm_restroom" {
+    room_id = rooms.pm_restroom.id
+    north = rooms.street2.id
+    }
+
+
+  room_characters "pm_restroom" {
+    room_id = rooms.pm_restroom.id
+    characters = [
+      { id = characters.fengyiming.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/pmc.c by LPCConverter
+# Zone: foshan
+
+    rooms "pmc" {
+      name = "英雄会馆后厅"
+      description = "英雄会馆乃是佛山大豪「南霸天」凤天南的家业。常来这 里的人，都是有能耐有来头的。现在英雄会馆里正围着黑压压 的一大群人，都是来自各地的知名商贾。凤天南座于中堂，犀 利的目光似乎要把你刺透一般。西墙挂着的牌子 (paizi)上面 写着此次拍卖大会的规则，一定要好好看看。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "pmc" {
+    room_id = rooms.pmc.id
+    down = rooms.street4.id
+    north = rooms.pm_restroom.id
+    }
+
+# Generated from C:/files/git/mud/d/foshan/road1.c by LPCConverter
+# Zone: foshan
+
+    rooms "road1" {
+      name = "小道"
+      description = "这里是一条林间小道，在树丛中蜿蜒。这里向东行进可到 达广西。向西北走就是大理国的地界了。"
+  x = -11
+  y = 0
+  z = 0
+    }
+
+  room_exits "road1" {
+    room_id = rooms.road1.id
+    east = rooms.road2.id
+    northwest = rooms.road5.id
+    }
+
+
+
+
+  room_items "road1" {
+    room_id = rooms.road1.id
+    items = [
+      { id = items.shikuai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/road10.c by LPCConverter
+# Zone: foshan
+
+    rooms "road10" {
+      name = "林间道"
+      description = "这里是一条林间小道，在树丛中蜿蜒。岭南山林茂密，多 产毒虫，所以路人经过此地都是非常的小心。"
+  x = 5
+  y = 0
+  z = 0
+    }
+
+  room_exits "road10" {
+    room_id = rooms.road10.id
+    west = rooms.road9.id
+    southeast = rooms.road12.id
+    northeast = rooms.road11.id
+    }
+
+
+
+
+  room_items "road10" {
+    room_id = rooms.road10.id
+    items = [
+      { id = items.hua3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/road11.c by LPCConverter
+# Zone: foshan
+
+    rooms "road11" {
+      name = "林间道"
+      description = "这里是一条林间小道，在树丛中蜿蜒。岭南山林茂密，多 产毒虫，所以路人经过此地都是非常的小心。"
+  x = 6
+  y = 1
+  z = 0
+    }
+
+  room_exits "road11" {
+    room_id = rooms.road11.id
+    southwest = rooms.road10.id
+    northeast = rooms.road13.id
+    }
+
+
+
+
+  room_items "road11" {
+    room_id = rooms.road11.id
+    items = [
+      { id = items.shikuai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/road12.c by LPCConverter
+# Zone: foshan
+
+    rooms "road12" {
+      name = "林间道"
+      description = "这里是一条林间小道，在树丛中蜿蜒。岭南山林茂密，多 产毒虫，所以路人经过此地都是非常的小心。"
+  x = 6
+  y = -1
+  z = 0
+    }
+
+  room_exits "road12" {
+    room_id = rooms.road12.id
+    northwest = rooms.road10.id
+    }
+
+
+
+
+  room_items "road12" {
+    room_id = rooms.road12.id
+    items = [
+      { id = items.dushe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/road13.c by LPCConverter
+# Zone: foshan
+
+    rooms "road13" {
+      name = "林间道"
+      description = "这里是一条林间小道，在树丛中蜿蜒。岭南山林茂密，多 产毒虫，所以路人经过此地都是非常的小心。"
+  x = 7
+  y = 2
+  z = 0
+    }
+
+  room_exits "road13" {
+    room_id = rooms.road13.id
+    southwest = rooms.road11.id
+    northeast = rooms.road14.id
+    }
+
+
+
+
+  room_items "road13" {
+    room_id = rooms.road13.id
+    items = [
+      { id = items.shuzhi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/road14.c by LPCConverter
+# Zone: foshan
+
+    rooms "road14" {
+      name = "林间道"
+      description = "这里是一条林间小道，在树丛中蜿蜒。东面就是泉州城的 西门吊桥，向西南可达岭南广东。"
+  x = 8
+  y = 3
+  z = 0
+    }
+
+  room_exits "road14" {
+    room_id = rooms.road14.id
+    southwest = rooms.road13.id
+    east = rooms.westbridge.id
+    }
+
+
+
+
+  room_items "road14" {
+    room_id = rooms.road14.id
+    items = [
+      { id = items.hua3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/road2.c by LPCConverter
+# Zone: foshan
+
+    rooms "road2" {
+      name = "林间道"
+      description = "这里是一条林间小道，在树丛中蜿蜒。岭南山林茂密，多 产毒虫，所以路人经过此地都是非常的小心。"
+  x = -10
+  y = 0
+  z = 0
+    }
+
+  room_exits "road2" {
+    room_id = rooms.road2.id
+    east = rooms.road3.id
+    west = rooms.road1.id
+    }
+
+
+
+
+  room_items "road2" {
+    room_id = rooms.road2.id
+    items = [
+      { id = items.hua1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/road3.c by LPCConverter
+# Zone: foshan
+
+    rooms "road3" {
+      name = "林间道"
+      description = "这里是一条林间小道，在树丛中蜿蜒。岭南山林茂密，多 产毒虫，所以路人经过此地都是非常的小心。"
+  x = -9
+  y = 0
+  z = 0
+    }
+
+  room_exits "road3" {
+    room_id = rooms.road3.id
+    northeast = rooms.road4.id
+    west = rooms.road2.id
+    }
+
+# Generated from C:/files/git/mud/d/foshan/road4.c by LPCConverter
+# Zone: foshan
+
+    rooms "road4" {
+      name = "林间道"
+      description = "这里是一条林间小道，在树丛中蜿蜒。岭南山林茂密，多 产毒虫，所以路人经过此地都是非常的小心。"
+  x = -8
+  y = 1
+  z = 0
+    }
+
+  room_exits "road4" {
+    room_id = rooms.road4.id
+    southeast = rooms.road5.id
+    southwest = rooms.road3.id
+    }
+
+
+
+
+  room_items "road4" {
+    room_id = rooms.road4.id
+    items = [
+      { id = items.dushe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/road5.c by LPCConverter
+# Zone: foshan
+
+    rooms "road5" {
+      name = "林间道"
+      description = "这里是一条林间小道，在树丛中蜿蜒。岭南山林茂密，多 产毒虫，所以路人经过此地都是非常的小心。"
+  x = -7
+  y = 0
+  z = 0
+    }
+
+  room_exits "road5" {
+    room_id = rooms.road5.id
+    northwest = rooms.road4.id
+    east = rooms.road6.id
+    }
+
+# Generated from C:/files/git/mud/d/foshan/road6.c by LPCConverter
+# Zone: foshan
+
+    rooms "road6" {
+      name = "林间道"
+      description = "这里是一条林间小道，在树丛中蜿蜒。岭南山林茂密，多 产毒虫，所以路人经过此地都是非常的小心。"
+  x = -6
+  y = 0
+  z = 0
+    }
+
+  room_exits "road6" {
+    room_id = rooms.road6.id
+    east = rooms.road7.id
+    west = rooms.road5.id
+    }
+
+
+  room_characters "road6" {
+    room_id = rooms.road6.id
+    characters = [
+      { id = characters.youming.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/road7.c by LPCConverter
+# Zone: foshan
+
+    rooms "road7" {
+      name = "小道"
+      description = "这里是一条林间小道，在树丛中蜿蜒。东面是岭南重镇佛 山，西边通向广西。"
+  x = -5
+  y = 0
+  z = 0
+    }
+
+  room_exits "road7" {
+    room_id = rooms.road7.id
+    east = rooms.westgate.id
+    west = rooms.road6.id
+    }
+
+
+
+
+  room_items "road7" {
+    room_id = rooms.road7.id
+    items = [
+      { id = items.shuzhi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/road8.c by LPCConverter
+# Zone: foshan
+
+    rooms "road8" {
+      name = "林间道"
+      description = "这里是一条林间小道，在树丛中蜿蜒。西面是岭南重镇佛 山，东边通向福建泉州。"
+  x = 3
+  y = 0
+  z = 0
+    }
+
+  room_exits "road8" {
+    room_id = rooms.road8.id
+    east = rooms.road9.id
+    west = rooms.eastgate.id
+    }
+
+
+  room_characters "road8" {
+    room_id = rooms.road8.id
+    characters = [
+      { id = characters.zhang.id },
+      { id = characters.zhangkang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/road9.c by LPCConverter
+# Zone: foshan
+
+    rooms "road9" {
+      name = "林间道"
+      description = "这里是一条林间小道，在树丛中蜿蜒。岭南山林茂密，多 产毒虫，所以路人经过此地都是非常的小心。"
+  x = 4
+  y = 0
+  z = 0
+    }
+
+  room_exits "road9" {
+    room_id = rooms.road9.id
+    east = rooms.road10.id
+    west = rooms.road8.id
+    }
+
+
+
+
+  room_items "road9" {
+    room_id = rooms.road9.id
+    items = [
+      { id = items.hua2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/southgate.c by LPCConverter
+# Zone: foshan
+
+    rooms "southgate" {
+      name = "南门"
+      description = "这里是佛山镇的南门。从出南门再向南行进，就到达南海 之滨了。北面一条东西向的大街是佛山镇的主要街道。"
+  x = -1
+  y = -1
+  z = 0
+    }
+
+  room_exits "southgate" {
+    room_id = rooms.southgate.id
+    south = rooms.xkroad3.id
+    north = rooms.street3.id
+    }
+
+
+  room_characters "southgate" {
+    room_id = rooms.southgate.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/street1.c by LPCConverter
+# Zone: foshan
+
+    rooms "street1" {
+      name = "西镇街"
+      description = "佛山镇街道平整。西面是镇西门，北面有一座北帝庙，建 构宏伟，好大一座神祠。"
+  x = -3
+  y = 0
+  z = 0
+    }
+
+  room_exits "street1" {
+    room_id = rooms.street1.id
+    east = rooms.street2.id
+    west = rooms.westgate.id
+    north = rooms.beidimiao.id
+    }
+
+
+  room_characters "street1" {
+    room_id = rooms.street1.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/street2.c by LPCConverter
+# Zone: foshan
+
+    rooms "street2" {
+      name = "西镇街"
+      description = "佛山镇的街道横亘东西。北边不远处有座破败的庙宇，南 面是一座宏伟的建筑，大门上写着「英雄会馆」四个大字。"
+  x = -2
+  y = 0
+  z = 0
+    }
+
+  room_exits "street2" {
+    room_id = rooms.street2.id
+    east = rooms.street3.id
+    west = rooms.street1.id
+    south = rooms.pm_restroom.id
+    }
+
+
+  room_characters "street2" {
+    room_id = rooms.street2.id
+    characters = [
+      { id = characters.liumang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/street3.c by LPCConverter
+# Zone: foshan
+
+    rooms "street3" {
+      name = "大镇街"
+      description = "佛山自古与朱仙、景德、汉口并称天下四大镇，端的是民 丰物阜，市廛繁华。一条大街横亘东西。南边是南门，通往南 海。北边出北门跨南岭可达中原。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "street3" {
+    room_id = rooms.street3.id
+    east = rooms.street4.id
+    west = rooms.street2.id
+    south = rooms.southgate.id
+    north = rooms.northgate.id
+    }
+
+
+  room_characters "street3" {
+    room_id = rooms.street3.id
+    characters = [
+      { id = characters.liumangtou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/street4.c by LPCConverter
+# Zone: foshan
+
+    rooms "street4" {
+      name = "东镇街"
+      description = "凤家在佛山是首屈一指的大户，凤家的家丁常牵着狼狗鱼 肉乡里。一般的百姓只好忍辱偷生。一条大街横亘东西。路南 一家三开间门面的大酒楼，招牌上写着「英雄楼」三个金漆大 字，两边敞着窗户，酒楼里刀杓乱响，酒肉香气阵阵喷出。路 北有家烧饼油条铺，里面传出阵阵油烟香气。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "street4" {
+    room_id = rooms.street4.id
+    up = rooms.pmc.id
+    north = rooms.youtiaopu.id
+    south = rooms.yingxionglou.id
+    west = rooms.street3.id
+    east = rooms.street5.id
+    }
+
+
+  room_characters "street4" {
+    room_id = rooms.street4.id
+    characters = [
+      { id = characters.zhongxiaoer.id },
+      { id = characters.zhongsisao.id }    ]
+  }
+
+
+
+  room_items "street4" {
+    room_id = rooms.street4.id
+    items = [
+      { id = items.gou2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/street5.c by LPCConverter
+# Zone: foshan
+
+    rooms "street5" {
+      name = "东镇街"
+      description = "佛山镇街东西相连。东边是镇东门，南面一堵高墙，墙后 便是凤天南开的「英雄典当」，非常惹人注目。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "street5" {
+    room_id = rooms.street5.id
+    east = rooms.eastgate.id
+    west = rooms.street4.id
+    south = rooms.dangpu.id
+    }
+
+
+  room_characters "street5" {
+    room_id = rooms.street5.id
+    characters = [
+      { id = characters.jiading.id },
+      { id = characters.jiading.id }    ]
+  }
+
+
+
+  room_items "street5" {
+    room_id = rooms.street5.id
+    items = [
+      { id = items.gou2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/westgate.c by LPCConverter
+# Zone: foshan
+
+    rooms "westgate" {
+      name = "西门"
+      description = "这里乃是佛山镇的西门。岭南以西经由广西可至大理。东 面一条东西向的大街是佛山镇的主要街道。"
+  x = -4
+  y = 0
+  z = 0
+    }
+
+  room_exits "westgate" {
+    room_id = rooms.westgate.id
+    west = rooms.road7.id
+    east = rooms.street1.id
+    }
+
+# Generated from C:/files/git/mud/d/foshan/yingxionglou.c by LPCConverter
+# Zone: foshan
+
+    rooms "yingxionglou" {
+      name = "英雄楼"
+      description = "英雄楼乃是佛山大豪「南霸天」凤天南的家业。酒楼里桌 椅洁净。座中客人衣饰豪奢，十九是富商大贾。佛山地处交通 要地，来这吃饭的人还真不少。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "yingxionglou" {
+    room_id = rooms.yingxionglou.id
+    up = rooms.yingxionglou2.id
+    south = rooms.majiu.id
+    north = rooms.street4.id
+    }
+
+
+  room_characters "yingxionglou" {
+    room_id = rooms.yingxionglou.id
+    characters = [
+      { id = characters.fengqi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/yingxionglou2.c by LPCConverter
+# Zone: foshan
+
+    rooms "yingxionglou2" {
+      name = "英雄楼"
+      description = "英雄酒楼里桌椅洁净。座中客人衣饰豪奢，十九是富商大 贾。这里可以俯瞰佛山镇全景。"
+  x = 0
+  y = -1
+  z = 1
+    }
+
+  room_exits "yingxionglou2" {
+    room_id = rooms.yingxionglou2.id
+    down = rooms.yingxionglou.id
+    }
+
+
+  room_characters "yingxionglou2" {
+    room_id = rooms.yingxionglou2.id
+    characters = [
+      { id = characters.pang.id },
+      { id = characters.shou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/foshan/youtiaopu.c by LPCConverter
+# Zone: foshan
+
+    rooms "youtiaopu" {
+      name = "油条铺"
+      description = "这家烧饼油条铺是新开张的。铺面不大，正中央摆了一个 大炸锅和一个烤炉。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "youtiaopu" {
+    room_id = rooms.youtiaopu.id
+    south = rooms.street4.id
+    }
+
+# Generated from C:/files/git/mud/d/foshan/npc/chaofeng.c by LPCConverter
+# Zone: foshan
+
+    characters "chaofeng" {
+      name = "老朝奉"
+      description = "一个衣着光鲜的老朝奉。"
+  title = "当铺老板"
+  gender = "男性"
+  age = 35
+  shen_type = 0
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy", "sell", "value"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/foshan/npc/fengqi.c by LPCConverter
+# Zone: foshan
+
+    characters "fengqi" {
+      name = "凤七"
+      description = "凤七是凤天南的远房祖弟，在这英雄楼当掌柜。武功没有什么，为人 却极是机灵，江湖上大大小小的事情都知道一些"
+  title = "酒楼老板"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 42
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+  }
+
+  # vendor_goods: "/clone/food/jitui" (file not found)
+  # vendor_goods: "/clone/food/jiudai" (file not found)
+  # vendor_goods: "/clone/food/baozi" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "凤七笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "凤七笑咪咪地说道：这位{respect}，快请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/foshan/npc/fengyiming.c by LPCConverter
+# Zone: foshan
+
+    characters "fengyiming" {
+      name = "凤一鸣"
+      description = "凤一鸣是佛山镇上大财主凤天南之子。只见他 步履轻捷，脸上英气勃勃，显是武功不弱。"
+  title = "佛山五虎门传人"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    combat_exp = 40000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "force" level = 60 },
+    { skill = "blade" level = 80 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.fu_cloth.id },
+    { id = items.jade_belt.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/foshan/npc/jiading.c by LPCConverter
+# Zone: foshan
+
+    characters "jiading" {
+      name = "家丁"
+      description = "佛山凤老爷府上的家丁。占势欺人，横行霸道。"
+  gender = "男性"
+  age = 35
+
+  combat = {
+    combat_exp = 4000
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/foshan/npc/pang.c by LPCConverter
+# Zone: foshan
+
+    characters "pang" {
+      name = "胖商人"
+      description = "他肥肥胖胖的，一脸富贵相。"
+  gender = "男性"
+  age = 43
+  shen_type = 0
+
+  combat = {
+    combat_exp = 2000
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.magcloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/foshan/npc/shou.c by LPCConverter
+# Zone: foshan
+
+    characters "shou" {
+      name = "瘦商人"
+      description = "他瘦兮兮的，一脸穷苦相。"
+  gender = "男性"
+  age = 43
+  shen_type = 0
+
+  combat = {
+    combat_exp = 2000
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.magcloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/foshan/npc/youming.c by LPCConverter
+# Zone: foshan
+
+    characters "youming" {
+      name = "幽冥道人"
+      description = ""
+  nickname = "岭南"
+  gender = "男性"
+  age = 62
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000000
+    con = 38
+    dex = 33
+    int = 35
+    max_jing = 3000
+    max_neili = 6000
+    max_qi = 5200
+    str = 33
+  }
+
+  inquiries = [
+    { key = "幽冥指" value = "这正是贫道的绝学，阁下为何知晓？" }
+  ]
+
+  skills = [
+    { skill = "force" level = 280 },
+    { skill = "hunyuan-yiqi" level = 280 },
+    { skill = "dodge" level = 280 },
+    { skill = "shaolin-shenfa" level = 280 },
+    { skill = "parry" level = 280 },
+    { skill = "youming-zhi" level = 320 },
+    { skill = "finger" level = 320 },
+    { skill = "literate" level = 220 },
+    { skill = "martial-cognize" level = 220 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "parry" skill = "youming-zhi" },
+    { type = "finger" skill = "youming-zhi" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/foshan/npc/zhang.c by LPCConverter
+# Zone: foshan
+
+    characters "zhang" {
+      name = "张朝唐"
+      description = "这是个饱读诗书的南洋书生，他一直向往中土文化，特来赶考。"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "peaceful"
+    int = 28
+  }
+
+  skills = [
+    { skill = "literate" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/foshan/npc/zhangkang.c by LPCConverter
+# Zone: foshan
+
+    characters "zhangkang" {
+      name = "张康"
+      description = "这是个老实巴交的汉子，是张朝唐的从人。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    combat_exp = 2000
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/foshan/npc/zhongsisao.c by LPCConverter
+# Zone: foshan
+
+    characters "zhongsisao" {
+      name = "钟四嫂"
+      description = "她就是钟阿四的老婆。凤老爷后院中养了十只肥鹅，忽然不见了一只。家丁 说是锺家的小二子、小三子兄弟俩偷了，到巡检衙门去告了一状，差役便来 将锺阿四锁了去整治得奄奄一息。锺四嫂心里一急，便横了心。她赶回家里， 一手拖了小三子，一手拿了柄菜刀，叫了左右乡邻，一齐上祖庙去。 锺四嫂在北帝爷爷座前磕了几个响头，说道：‘北帝爷爷，我孩子决不能偷 人家的鹅。他今年还只四岁，刁嘴拗舌，说不清楚，在财主爷面前说什么吃 我，吃我！小妇人一家横遭不白，赃官受了贿，断事不明，只有请北帝爷爷 伸冤！’说着提起刀来，一刀便将小三子的肚子剖了。自己也发疯了。"
+  gender = "女性"
+  age = 35
+  shen_type = 1
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 20000
+  }
+
+  chat_chance = 5
+chats = [
+    "钟四嫂嘶哑着嗓子喊：‘不卖地，不卖地！没有偷，没有偷。’"
+]
+
+
+  skills = [
+    { skill = "blade" level = 30 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.caidao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/foshan/npc/zhongxiaoer.c by LPCConverter
+# Zone: foshan
+
+    characters "zhongxiaoer" {
+      name = "钟小二"
+      description = "他是钟阿四的二儿子，几只狼狗在追着撕咬他。"
+  gender = "男性"
+  age = 3
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50
+    con = 11
+    dex = 11
+    int = 11
+    str = 11
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/foshan/npc/obj/caidao.c by LPCConverter
+# Zone: foshan
+
+    characters "caidao" {
+      name = "菜刀"
+      description = "这是一柄亮晃晃的菜刀。"
+    }
+
+# Generated from C:/files/git/mud/d/foshan/npc/obj/goupi.c by LPCConverter
+# Zone: foshan
+
+    characters "goupi" {
+      name = "狗皮"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/foshan/npc/obj/magcloth.c by LPCConverter
+# Zone: foshan
+
+    characters "magcloth" {
+      name = "紫袍"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/foshan/obj/hua1.c by LPCConverter
+# Zone: foshan
+
+    items "hua1" {
+      name = "白合花"
+      description = "这是一朵美丽的小野花，香气清新。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/foshan/obj/hua2.c by LPCConverter
+# Zone: foshan
+
+    items "hua2" {
+      name = "莎椤花"
+      description = "这是一朵美丽的小野花，香气清新。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/foshan/obj/hua3.c by LPCConverter
+# Zone: foshan
+
+    items "hua3" {
+      name = "蕙兰花"
+      description = "这是一朵美丽的小野花，香气清新。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/foshan/obj/shikuai.c by LPCConverter
+# Zone: foshan
+
+    items "shikuai" {
+      name = "石块"
+      description = "这是一平平常常的鹅卵石。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}搬起一块{name}准备战斗。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/foshan/obj/shuzhi.c by LPCConverter
+# Zone: foshan
+
+    items "shuzhi" {
+      name = "大树枝"
+      description = "这是一根爬山用的树枝。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一根{name}，握在手中。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+    }

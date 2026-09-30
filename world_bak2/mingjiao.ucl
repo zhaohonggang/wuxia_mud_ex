@@ -1,0 +1,4696 @@
+zones "mingjiao" {
+  name = "mingjiao"
+}
+
+# Generated from C:/files/git/mud/d/mingjiao/dadian.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "dadian" {
+      name = "明教大殿"
+      description = "走进这里，突感一阵肃穆之意，大殿中十分空旷，殿顶高悬八盏 金灯，两旁是精壮佩剑武士剑气森严逼人。正中设一宝座，前有一雕 花檀木案，案头供明教圣火令(ling)六枚。宝座后立有一扇玉屏，屏 中所画正是明教圣火图，烈焰直逼日月。宝座上端坐一人，着布衣而 显高贵，含笑不怒而自威，正是明教教主张无忌。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dadian" {
+    room_id = rooms.dadian.id
+    up = rooms.didao1.id
+    south = rooms.qiandian.id
+    in = rooms.neishi.id
+    }
+
+
+
+
+  room_items "dadian" {
+    room_id = rooms.dadian.id
+    items = [
+      { id = items.zhangwuji.id },
+      { id = items.yangxiao.id },
+      { id = items.fanyao.id },
+      { id = items.yintianzheng.id },
+      { id = items.xiexun.id },
+      { id = items.weiyixiao.id },
+      { id = items.daijisi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/daoshe.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "daoshe" {
+      name = "道家竹舍"
+      description = "走进这间竹舍，一阵香茗醉人，只见几位白衣道人正在 品茶论道，几个青衣小童侍立两旁。中间那位道人中等年纪， 仙风道骨，飘然而立，身后挂有一幅对联(dui lian)，乃是 明教一位先辈李逍遥所书。"
+  x = 6
+  y = -16
+  z = -11
+    }
+
+  room_exits "daoshe" {
+    room_id = rooms.daoshe.id
+    north = rooms.mjfengmen1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/didao1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "didao1" {
+      name = "明教地道"
+      description = "这里是明教的地道，只见前方一条弯弯曲曲的道路不知道通往何 方。你只有试走（zou）下去看看。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "didao1" {
+    room_id = rooms.didao1.id
+    up = rooms.didao2.id
+    down = rooms.dadian.id
+    out = rooms.neishi.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/didao2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "didao2" {
+      name = "明教地道"
+      description = "这里是明教的地道，只见前方一条弯弯曲曲的道路不知道通往何 方。你只有试走（zou）下去看看。"
+  x = 0
+  y = 0
+  z = 2
+    }
+
+  room_exits "didao2" {
+    room_id = rooms.didao2.id
+    up = rooms.gudi1.id
+    down = rooms.didao1.id
+    out = rooms.guangchang.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/donglu.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "donglu" {
+      name = "昆仑山麓"
+      description = "这里是千里昆仑的东麓，由于树木高大茂盛，遮天盖地，甚 是阴暗。北面隐隐有条小路，但是看来许久未曾有人走过，颇为 荒凉阴森。"
+  x = 5
+  y = -10
+  z = -11
+    }
+
+  room_exits "donglu" {
+    room_id = rooms.donglu.id
+    north = rooms.youjing.id
+    south = rooms.shanjiao.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/eastdian.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "eastdian" {
+      name = "明教东侧殿"
+      description = "这里是东侧殿，是接待来宾的地方。殿内摆着几张桌子，桌 旁围放数把椅子。墙上悬着几幅字画，墙边一排书架，架上摆满 书籍。窗外是茫茫昆仑雪山，雪峰延绵。"
+  x = 1
+  y = -1
+  z = 0
+    }
+
+  room_exits "eastdian" {
+    room_id = rooms.eastdian.id
+    west = rooms.qiandian.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/fangtang.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "fangtang" {
+      name = "明教饭堂"
+      description = "这里便是明教的饭堂。摆满了长长的餐桌和长凳，几位年轻教 众正来回忙碌着布置。桌上摆了几盆豆腐，花生，青菜以及大鱼， 大肉，鸡，酒等美味食。东边的走廊通向广场。"
+  x = -1
+  y = -2
+  z = -1
+    }
+
+  room_exits "fangtang" {
+    room_id = rooms.fangtang.id
+    east = rooms.square.id
+    }
+
+
+  room_characters "fangtang" {
+    room_id = rooms.fangtang.id
+    characters = [
+      { id = characters.jiuping.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/foshe.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "foshe" {
+      name = "佛家竹舍"
+      description = "走进这间竹舍，一阵清香飘来，只见几为青衣僧人端坐 于莆团之上，正低声咏念“金刚经”。室中香烟清绕，竹影 流芳，一白眉老僧端坐正中，手持菩提念珠，念念有词。身 后墙壁之上，高悬一条幅(tiao fu)，纸已发黄,但笔力遒劲， 一见可知是件古物。"
+  x = 6
+  y = -14
+  z = -11
+    }
+
+  room_exits "foshe" {
+    room_id = rooms.foshe.id
+    south = rooms.mjfengmen1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/gebitan1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "gebitan1" {
+      name = "戈壁滩"
+      description = "终于穿出了密林，眼前是一望无际的戈壁滩，没有路标，也没 有一个行人，天显得很高，远山披雪，苍鹰翱翔，好一派不同于中 土的异域风光。不远处，几只白骨散落地上，似乎是牦牛的尸骨？ 走在这茫茫戈壁之上，你似乎迷路了。"
+  x = 8
+  y = -13
+  z = -11
+    }
+
+  room_exits "gebitan1" {
+    room_id = rooms.gebitan1.id
+    south = rooms.gebitan1.id
+    north = rooms.gebitan1.id
+    west = rooms.gebitan2.id
+    east = rooms.westroad2.id
+    }
+
+
+
+
+  room_items "gebitan1" {
+    room_id = rooms.gebitan1.id
+    items = [
+      { id = items.shigu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/gebitan2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "gebitan2" {
+      name = "戈壁滩"
+      description = "眼前是一望无际的戈壁滩，没有路标，也没有一个行人，天 显得很高，远山披雪，苍鹰翱翔，走在这茫茫戈壁之上，你似乎 迷路了。"
+  x = 7
+  y = -13
+  z = -11
+    }
+
+  room_exits "gebitan2" {
+    room_id = rooms.gebitan2.id
+    south = rooms.gebitan2.id
+    north = rooms.gebitan2.id
+    west = rooms.gebitan3.id
+    east = rooms.gebitan1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/gebitan3.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "gebitan3" {
+      name = "戈壁滩"
+      description = "眼前是一望无际的戈壁滩，没有路标，也没有一个行人，天 显得很高，远山披雪，苍鹰翱翔，走在这茫茫戈壁之上，你似乎 迷路了。"
+  x = 6
+  y = -13
+  z = -11
+    }
+
+  room_exits "gebitan3" {
+    room_id = rooms.gebitan3.id
+    south = rooms.gebitan3.id
+    north = rooms.gebitan4.id
+    west = rooms.gebitan3.id
+    east = rooms.gebitan2.id
+    }
+
+
+
+
+  room_items "gebitan3" {
+    room_id = rooms.gebitan3.id
+    items = [
+      { id = items.shigu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/gebitan4.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "gebitan4" {
+      name = "戈壁滩"
+      description = "眼前是一望无际的戈壁滩，没有路标，也没有一个行人，天 显得很高，远山披雪，苍鹰翱翔，走在这茫茫戈壁之上，你似乎 迷路了。"
+  x = 6
+  y = -12
+  z = -11
+    }
+
+  room_exits "gebitan4" {
+    room_id = rooms.gebitan4.id
+    south = rooms.gebitan3.id
+    north = rooms.gebitan5.id
+    west = rooms.gebitan4.id
+    east = rooms.gebitan4.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/gebitan5.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "gebitan5" {
+      name = "戈壁滩"
+      description = "眼前是一望无际的戈壁滩，没有路标，也没有一个行人，天 显得很高，远山披雪，苍鹰翱翔，走在这茫茫戈壁之上，你似乎 迷路了。"
+  x = 6
+  y = -11
+  z = -11
+    }
+
+  room_exits "gebitan5" {
+    room_id = rooms.gebitan5.id
+    south = rooms.gebitan4.id
+    north = rooms.gebitan5.id
+    west = rooms.shanjiao.id
+    east = rooms.gebitan5.id
+    }
+
+
+  room_characters "gebitan5" {
+    room_id = rooms.gebitan5.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/gudi1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "gudi1" {
+      name = "大平台"
+      description = "你从上面的悬天崖来到这里，这里前面是一堵屏风也似的大山 壁，眼前茫茫云海，更无去路，你竟是置身在一个三面皆空的极高 平台上。那平台倒有十余丈方圆，可是半天临空，上既不得，下又 不能，当真是死路一条。这大平台上白皑皑的都是冰雪，既无树林， 更无野兽。"
+  x = 0
+  y = 0
+  z = 3
+    }
+  room_exits "gudi1" {
+    room_id = rooms.gudi1.id
+    down = rooms.didao2.id
+    up = rooms.gudi2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/gudi2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "gudi2" {
+      name = "昆仑谷底"
+      description = "你翻过那堵屏风也似的大山壁来到这里，眼前依旧是一片茫茫 云海，山石坚硬无比，你看到右边有一株大松树(tree)，左侧山壁 黑黝黝似乎有个小山洞(dong)。"
+  x = 0
+  y = 0
+  z = 4
+item_desc = {
+ dong = "一个不知深浅的山洞。"
+ tree = "一株挺拔健硕的松树。"
+}
+    }
+  room_exits "gudi2" {
+    room_id = rooms.gudi2.id
+    down = rooms.gudi1.id
+    up = rooms.gudi3.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/gudi3.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "gudi3" {
+      name = "昆仑仙境"
+      description = "你出得洞来，面前竟是个花团锦簇的翠谷，红花绿树，交 相掩映。你脚下踏著的是柔软的细草，鼻中闻到的是清幽的花 香，鸣禽间关，鲜果悬枝，哪想得到在这黑黝黝的洞穴后，竟 会有这样一个洞天福地。离地丈许高处有一山洞(dong)。"
+  x = 0
+  y = 0
+  z = 5
+item_desc = {
+ dong = "这是一个不知深浅的山洞。"
+}
+    }
+
+  room_exits "gudi3" {
+    room_id = rooms.gudi3.id
+    up = rooms.hsqtan1.id
+    down = rooms.gudi2.id
+    west = rooms.gudi5.id
+    south = rooms.gudi4.id
+    }
+
+
+
+
+  room_items "gudi3" {
+    room_id = rooms.gudi3.id
+    items = [
+      { id = items.yang2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/gudi4.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "gudi4" {
+      name = "昆仑仙境"
+      description = "放开脚步向前急奔，直奔了两里有馀，才遇一座高峰阻路。 放眼四望，旦见翠谷四周高山环绕，似乎亘古以来从未有人迹 到过。四面雪峰插云，险峻陡绝计无法攀援而入。"
+  x = 0
+  y = -1
+  z = 5
+    }
+
+  room_exits "gudi4" {
+    room_id = rooms.gudi4.id
+    north = rooms.gudi3.id
+    }
+
+
+  room_characters "gudi4" {
+    room_id = rooms.gudi4.id
+    characters = [
+      { id = characters.bigmonkey.id }    ]
+  }
+
+
+
+  room_items "gudi4" {
+    room_id = rooms.gudi4.id
+    items = [
+      { id = items.hou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/gudi5.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "gudi5" {
+      name = "昆仑仙境"
+      description = "向西走了二里多，只见峭壁上有一道大瀑布冲击而下，料想是 雪融而成，阳光照射下尤如一条大玉龙，极是壮丽。瀑布泄在一座 清澈碧绿的深潭(tan) 之中，潭水却也不见满，当是另有泄水的去 路。"
+  x = -1
+  y = 0
+  z = 5
+item_desc = {
+ tan = "这是瀑布下的一座清澈碧绿的深潭。你附身潭边，凝神瞧去，只见 碧绿的水中十馀条大白鱼(fish)来回游动。"
+ fish = "生活在深潭中的白鱼，全身白鳞，足有一尺多长。鱼在深潭中游来 游去，你见了不竟想去捉(zhuo)一条。"
+}
+    }
+
+  room_exits "gudi5" {
+    room_id = rooms.gudi5.id
+    east = rooms.gudi3.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/hsqchanglang.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "hsqchanglang" {
+      name = "洪水旗长廊"
+      description = "你正走在一条长廊之上, 长廊蜿蜒曲折, 两旁是如画景象. 小河从廊下静静流淌, 河面之上飘浮着淡淡的轻烟, 如雾如纱. 但河面上又静得让人奇怪, 似乎没有一点生气."
+  x = 1
+  y = 2
+  z = -6
+    }
+
+  room_exits "hsqchanglang" {
+    room_id = rooms.hsqchanglang.id
+    out = rooms.hsqmen.id
+    north = rooms.hsqdating.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/hsqdating.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "hsqdating" {
+      name = "洪水旗大厅"
+      description = "这里是洪水旗的大厅，厅中四壁漆墨，连桌案台椅俱为黑色， 枪曳黑缨，剑垂玄穗，布置得冷漠森严。厅中央摆有茶几，洪水 旗掌旗使唐洋正襟而坐，面带杀气。"
+  x = 1
+  y = 3
+  z = -6
+    }
+
+  room_exits "hsqdating" {
+    room_id = rooms.hsqdating.id
+    south = rooms.hsqchanglang.id
+    }
+
+
+  room_characters "hsqdating" {
+    room_id = rooms.hsqdating.id
+    characters = [
+      { id = characters.tangyang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/hsqmen.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "hsqmen" {
+      name = "洪水旗大门"
+      description = "这里是明教洪水旗的大门, 庄严古朴, 门前对插四面镶蓝蟠 龙旗门前水声潺潺, 却是一条水流从门下流出, 正是瀑布的上源, 原来, 整个洪水旗就建筑在这条小河之上."
+  x = 1
+  y = 2
+  z = -6
+    }
+
+  room_exits "hsqmen" {
+    room_id = rooms.hsqmen.id
+    south = rooms.tohsq7.id
+    in = rooms.hsqchanglang.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/hsqtan1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "hsqtan1" {
+      name = "深潭"
+      description = "这里是瀑布下的寒潭，水中幽暗无比，四周似乎有几处出口， 但实在看不清是通向何处。水中冰冷刺骨，令人难以忍受，你只觉 得气力在一点一点消失。"
+  x = 0
+  y = 0
+  z = 6
+    }
+
+  room_exits "hsqtan1" {
+    room_id = rooms.hsqtan1.id
+    up = rooms.jmqdating.id
+    down = rooms.gudi3.id
+    east = rooms.hsqtan1.id
+    west = rooms.hsqtan1.id
+    south = rooms.hsqtan1.id
+    north = rooms.hsqtan2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/hsqtan2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "hsqtan2" {
+      name = "深潭"
+      description = "这里是瀑布下的寒潭，水中幽暗无比，四周似乎有几处出口， 但实在看不清是通向何处。水中冰冷刺骨，令人难以忍受，你只觉 得气力在一点一点消失。"
+  x = 0
+  y = 1
+  z = 6
+    }
+
+  room_exits "hsqtan2" {
+    room_id = rooms.hsqtan2.id
+    north = rooms.hsqtan2.id
+    south = rooms.hsqtan1.id
+    west = rooms.hsqtan2.id
+    east = rooms.hsqtan3.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/hsqtan3.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "hsqtan3" {
+      name = "深潭"
+      description = "这里是瀑布下的寒潭，水中幽暗无比，四周似乎有几处出口， 但实在看不清是通向何处。水中冰冷刺骨，令人难以忍受，你只觉 得气力在一点一点消失。"
+  x = 1
+  y = 1
+  z = 6
+    }
+
+  room_exits "hsqtan3" {
+    room_id = rooms.hsqtan3.id
+    north = rooms.hsqtan3.id
+    south = rooms.hsqtan4.id
+    west = rooms.hsqtan2.id
+    east = rooms.hsqtan3.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/hsqtan4.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "hsqtan4" {
+      name = "深潭"
+      description = "这里是瀑布下的寒潭，水中幽暗无比，四周似乎有几处出口， 但实在看不清是通向何处。水中冰冷刺骨，令人难以忍受，你只觉 得气力在一点一点消失。"
+  x = 1
+  y = 0
+  z = 6
+    }
+
+  room_exits "hsqtan4" {
+    room_id = rooms.hsqtan4.id
+    north = rooms.hsqtan3.id
+    south = rooms.hsqtan4.id
+    west = rooms.hsqtan4.id
+    east = rooms.hsqtan5.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/hsqtan5.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "hsqtan5" {
+      name = "深潭"
+      description = "这里是瀑布下的寒潭，水中幽暗无比，水中冰冷刺骨，令人难 以忍受，你只觉得气力在一点一点消失。四周有几处出口，东面的 似乎有些亮光透来。"
+  x = 2
+  y = 0
+  z = 6
+    }
+
+  room_exits "hsqtan5" {
+    room_id = rooms.hsqtan5.id
+    north = rooms.hsqtan5.id
+    south = rooms.hsqtan5.id
+    west = rooms.hsqtan4.id
+    east = rooms.hsqtan6.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/hsqtan6.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "hsqtan6" {
+      name = "深潭"
+      description = "这里的水只有齐腰深，但站在水中，仍感觉寒意从脚下漫起， 经久不散。"
+  x = 3
+  y = 0
+  z = 6
+    }
+
+  room_exits "hsqtan6" {
+    room_id = rooms.hsqtan6.id
+    west = rooms.hsqtan5.id
+    up = rooms.hsqmen.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/htqdating.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "htqdating" {
+      name = "厚土旗大厅"
+      description = "这里是厚土旗的大厅，厅中刀枪如林，黄旗招展，教众穿着铁 甲钢盔，腰间别着锹铲锤钻，一个个精神抖擞。正中端坐着个矮墩 汉子，就是厚土旗掌旗使颜垣。"
+  x = 0
+  y = 0
+  z = -7
+    }
+
+  room_exits "htqdating" {
+    room_id = rooms.htqdating.id
+    out = rooms.htqmen.id
+    }
+
+
+  room_characters "htqdating" {
+    room_id = rooms.htqdating.id
+    characters = [
+      { id = characters.yanyuan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/htqmen.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "htqmen" {
+      name = "厚土旗门"
+      description = "这是厚土旗的洞门，门洞里进进出出的厚土旗众，身上挂满了 锹，铲，短刀，谁也不理你。门边两面短杆镶黄边飞龙旗，绣着厚 土二字。"
+  x = 0
+  y = 0
+  z = -7
+    }
+
+  room_exits "htqmen" {
+    room_id = rooms.htqmen.id
+    south = rooms.tohtq7.id
+    in = rooms.htqdating.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/huangtulu1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "huangtulu1" {
+      name = "黄土小路"
+      description = "这里是茂密松林中的一条黄土小路。松林极密，四面都是蓝幽幽 的感觉，映衬着天心雪峰，极尽凄美。"
+  x = -1
+  y = -11
+  z = -9
+    }
+
+  room_exits "huangtulu1" {
+    room_id = rooms.huangtulu1.id
+    east = rooms.shanlu2.id
+    west = rooms.huangtulu2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/huangtulu2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "huangtulu2" {
+      name = "黄土小路"
+      description = "这里是茂密松林中的一条黄土小路。松林极密，四面都是蓝幽幽 的感觉，白白的冰雪反光耀眼。你来到一个山腰的危崖之边，前边有 一个小洞。"
+  x = -2
+  y = -11
+  z = -9
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "in" && objectp(present("da han", environment(me)))
+direction = "in"
+  message = "大汉拦住你说：此处乃明教重地，只有教主才能入内。"
+}
+
+]
+    }
+
+  room_exits "huangtulu2" {
+    room_id = rooms.huangtulu2.id
+    in = rooms.shandong.id
+    east = rooms.huangtulu1.id
+    }
+
+
+  room_characters "huangtulu2" {
+    room_id = rooms.huangtulu2.id
+    characters = [
+      { id = characters.menwei1.id },
+      { id = characters.menwei1.id },
+      { id = characters.menwei1.id },
+      { id = characters.menwei1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/huroom.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "huroom" {
+      name = "医居"
+      description = "你走进了烈火旗的大院后进，这里是个很宁静的小屋。四 周摆了不少医学典籍，还有很多散落堆放的膏、丸、散等。一 个老头在此呆呆出神，似乎有无限心事。"
+  x = 0
+  y = -7
+  z = -5
+    }
+
+  room_exits "huroom" {
+    room_id = rooms.huroom.id
+    out = rooms.lhqyuan.id
+    }
+
+
+  room_characters "huroom" {
+    room_id = rooms.huroom.id
+    characters = [
+      { id = characters.hu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/jmqdating.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "jmqdating" {
+      name = "巨木旗大厅"
+      description = "这是巨木旗的大厅，虽然都是练武之人，这里却布置得古 色古香。整个大厅就建在神木之中，树木掩映，极为严密。虽 然未免挤迫，却绝无外敌能轻易攻得上来。厅中充满茶香和古 木幽香，十分动人。掌旗使闻松神色自若地端坐喝茶，全不理 会客人的到来。巨木旗下在厅口准备了极多的巨木桩，专候来 敌。"
+  x = 0
+  y = 0
+  z = 7
+    }
+
+  room_exits "jmqdating" {
+    room_id = rooms.jmqdating.id
+    up = rooms.midao0.id
+    down = rooms.jmqshenmu.id
+    }
+
+
+  room_characters "jmqdating" {
+    room_id = rooms.jmqdating.id
+    characters = [
+      { id = characters.wensong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/jmqjiguan.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "jmqjiguan" {
+      name = "巨木旗机关"
+      description = "你眼前骤然一暗，朦胧中，只见左右前后，到处都是铺天盖地 的不知名的巨树，好象松柏，又似冷杉，簇在一起，密实的枝叶象 一蓬蓬巨伞般伸向天空，遮天蔽日。你似乎迷失了方向，象没头苍 蝇般到处乱闯。"
+  x = -3
+  y = -2
+  z = -6
+valid_leave = [
+{
+  direction = ~
+  message = "你走了半天，终于走到神木。真累!"
+}
+,
+{
+  direction = ~
+  message = "你走了半天，终于走出了巨木旗机关。"
+}
+
+]
+    }
+
+  room_exits "jmqjiguan" {
+    room_id = rooms.jmqjiguan.id
+    north = rooms.__file__.id
+    south = rooms.__file__.id
+    west = rooms.__file__.id
+    east = rooms.__file__.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/jmqmen.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "jmqmen" {
+      name = "巨木旗大门"
+      description = "这里是明教巨木旗的大门，庄严古朴，门前对插四面镶绿游 龙旗。碧绿的大门敞开着，似乎看不出有何设防。从门里望进去， 只有一片苍翠的树林。"
+  x = -2
+  y = -5
+  z = -6
+    }
+
+  room_exits "jmqmen" {
+    room_id = rooms.jmqmen.id
+    west = rooms.tojmq3.id
+    in = rooms.jmqshulin1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/jmqshenmu.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "jmqshenmu" {
+      name = "巨木旗神木"
+      description = "你眼前只见一棵大树，高有百丈，十人也环抱不住。巨树倚绝壁而 生，枝叶繁茂，藤萝环绕，竟然无法一览全貌。树身有一处光滑无 比，是常有人摩挲而成。"
+  x = 0
+  y = 0
+  z = 6
+    }
+
+  room_exits "jmqshenmu" {
+    room_id = rooms.jmqshenmu.id
+    down = rooms.hsqtan1.id
+    east = rooms.jmqshulin6.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/jmqshulin1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "jmqshulin1" {
+      name = "巨木旗树林"
+      description = "你眼前骤然一暗，朦胧中，只见左右前后，到处都是铺天盖地 的不知名的巨树，好象松柏，又似冷杉，簇在一起，密实的枝叶象 一蓬蓬巨伞般伸向天空，遮天蔽日。你似乎迷失了方向，象没头苍 蝇般到处乱闯。"
+  x = -2
+  y = -5
+  z = -6
+    }
+
+  room_exits "jmqshulin1" {
+    room_id = rooms.jmqshulin1.id
+    out = rooms.jmqmen.id
+    south = rooms.jmqshulin1.id
+    north = rooms.jmqshulin2.id
+    west = rooms.jmqshulin1.id
+    east = rooms.jmqshulin1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/jmqshulin2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "jmqshulin2" {
+      name = "巨木旗树林"
+      description = "你眼前骤然一暗，朦胧中，只见左右前后，到处都是铺天盖地 的不知名的巨树，好象松柏，又似冷杉，簇在一起，密实的枝叶象 一蓬蓬巨伞般伸向天空，遮天蔽日。你似乎迷失了方向，象没头苍 蝇般到处乱闯。"
+  x = -2
+  y = -4
+  z = -6
+    }
+
+  room_exits "jmqshulin2" {
+    room_id = rooms.jmqshulin2.id
+    south = rooms.jmqshulin2.id
+    north = rooms.jmqshulin3.id
+    west = rooms.jmqshulin2.id
+    east = rooms.jmqshulin2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/jmqshulin3.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "jmqshulin3" {
+      name = "巨木旗树林"
+      description = "你眼前骤然一暗，朦胧中，只见左右前后，到处都是铺天盖地 的不知名的巨树，好象松柏，又似冷杉，簇在一起，密实的枝叶象 一蓬蓬巨伞般伸向天空，遮天蔽日。你似乎迷失了方向，象没头苍 蝇般到处乱闯。"
+  x = -2
+  y = -3
+  z = -6
+    }
+
+  room_exits "jmqshulin3" {
+    room_id = rooms.jmqshulin3.id
+    south = rooms.jmqshulin3.id
+    north = rooms.jmqshulin3.id
+    west = rooms.jmqshulin3.id
+    east = rooms.jmqshulin4.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/jmqshulin4.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "jmqshulin4" {
+      name = "巨木旗树林"
+      description = "你眼前骤然一暗，朦胧中，只见左右前后，到处都是铺天盖地 的不知名的巨树，好象松柏，又似冷杉，簇在一起，密实的枝叶象 一蓬蓬巨伞般伸向天空，遮天蔽日。你似乎迷失了方向，象没头苍 蝇般到处乱闯。"
+  x = -1
+  y = -3
+  z = -6
+    }
+
+  room_exits "jmqshulin4" {
+    room_id = rooms.jmqshulin4.id
+    south = rooms.jmqshulin4.id
+    north = rooms.jmqshulin5.id
+    west = rooms.jmqshulin4.id
+    east = rooms.jmqshulin4.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/jmqshulin5.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "jmqshulin5" {
+      name = "巨木旗树林"
+      description = "你眼前骤然一暗，朦胧中，只见左右前后，到处都是铺天盖地 的不知名的巨树，好象松柏，又似冷杉，簇在一起，密实的枝叶象 一蓬蓬巨伞般伸向天空，遮天蔽日。你似乎迷失了方向，象没头苍 蝇般到处乱闯。"
+  x = -1
+  y = -2
+  z = -6
+    }
+
+  room_exits "jmqshulin5" {
+    room_id = rooms.jmqshulin5.id
+    south = rooms.jmqshulin5.id
+    north = rooms.jmqshulin5.id
+    west = rooms.jmqshulin6.id
+    east = rooms.jmqshulin5.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/jmqshulin6.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "jmqshulin6" {
+      name = "巨木旗树林"
+      description = "你眼前骤然一暗，朦胧中，只见左右前后，到处都是铺天盖地 的不知名的巨树，好象松柏，又似冷杉，簇在一起，密实的枝叶象 一蓬蓬巨伞般伸向天空，遮天蔽日。你似乎迷失了方向，象没头苍 蝇般到处乱闯。"
+  x = -2
+  y = -2
+  z = -6
+    }
+
+  room_exits "jmqshulin6" {
+    room_id = rooms.jmqshulin6.id
+    south = rooms.jmqshulin6.id
+    north = rooms.jmqshulin6.id
+    west = rooms.jmqjiguan.id
+    east = rooms.jmqshulin6.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/lhqdating.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "lhqdating" {
+      name = "烈火旗大厅"
+      description = "这里是烈火旗的大厅，厅中红旗招展，刀枪映血，教众绛衣赤帽， 团团拥住烈火旗掌旗使辛然。"
+  x = 1
+  y = -7
+  z = -5
+    }
+
+  room_exits "lhqdating" {
+    room_id = rooms.lhqdating.id
+    west = rooms.lhqyuan.id
+    }
+
+
+  room_characters "lhqdating" {
+    room_id = rooms.lhqdating.id
+    characters = [
+      { id = characters.xinran.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/lhqhoumen.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "lhqhoumen" {
+      name = "烈火旗后门"
+      description = "这里就是烈火旗的后门，后面就是明教总舵所在，门宇轩大， 教众出入纷纷。由于地处紧要，这里的关防也很严密。"
+  x = 0
+  y = -6
+  z = -4
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(me->query("family/family_name") != "明教") && (dir=="northup") && (objectp(present("tuoba", environment(me))))
+direction = "northup"
+  message = "拓跋拦住你说：此处乃明教重地，请止步。"
+}
+
+]
+    }
+
+  room_exits "lhqhoumen" {
+    room_id = rooms.lhqhoumen.id
+    southdown = rooms.lhqyuan.id
+    northup = rooms.zhandao1.id
+    }
+
+
+  room_characters "lhqhoumen" {
+    room_id = rooms.lhqhoumen.id
+    characters = [
+      { id = characters.tuoba.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/lhqlwch.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "lhqlwch" {
+      name = "练武场"
+      description = "走进了烈火旗的练武场，发现练武的教众们并不是在相互 切磋武功，而是穿戴着特制的防火护具，在学习使用火具和瞄 准。火具中喷出黝黑的原油，见火即燃，威力无比。"
+  x = -1
+  y = -7
+  z = -5
+    }
+
+  room_exits "lhqlwch" {
+    room_id = rooms.lhqlwch.id
+    east = rooms.lhqyuan.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/lhqmen.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "lhqmen" {
+      name = "烈火旗大门"
+      description = "这里是明教烈火旗的大门，庄严古朴，门前对插四面镶红飞 龙旗。金色门钉扣在火漆红门上，分外精神。也是通往明教总舵 的必经之地。所以来往的人也特别多。"
+  x = 0
+  y = -7
+  z = -5
+    }
+
+  room_exits "lhqmen" {
+    room_id = rooms.lhqmen.id
+    southdown = rooms.lhqpaifang.id
+    in = rooms.lhqyuan.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/lhqpaifang.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "lhqpaifang" {
+      name = "烈火旗牌坊"
+      description = "这里是昆仑山南麓的一片开阔地，四周山崖环抱，青木遮天，正对 路中的是一座大红牌坊。穿过牌坊，是一片红砖红瓦，遍插镶红团 龙旗，路边齐齐站立两排教众，整个山谷中好似烈焰蒸腾，红雾遍 野，实在是江湖中一般门派所没有的壮观景象。由此向东北折转， 大路直通锐金旗；由此向西北而行，则为巨木旗。三旗承犄角鼎立 之势，以巩固明教外围。"
+  x = 0
+  y = -8
+  z = -6
+    }
+
+  room_exits "lhqpaifang" {
+    room_id = rooms.lhqpaifang.id
+    southdown = rooms.shanlu4.id
+    northup = rooms.lhqmen.id
+    northwest = rooms.tojmq1.id
+    northeast = rooms.torjq1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/lhqyuan.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "lhqyuan" {
+      name = "大院"
+      description = "你走进了烈火旗的大院，却发现这里人声鼎沸，烈火教众 有的在搬火药，有的在炼石油，真是热火朝天。院子左首可能 是练武场，隐约传来打斗声；右首是一座大厅，象是烈火旗的 议会场所。向上走就是光明顶明教总舵了。"
+  x = 0
+  y = -7
+  z = -5
+    }
+
+  room_exits "lhqyuan" {
+    room_id = rooms.lhqyuan.id
+    in = rooms.huroom.id
+    out = rooms.lhqmen.id
+    east = rooms.lhqdating.id
+    northup = rooms.lhqhoumen.id
+    west = rooms.lhqlwch.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/miaorenbuluo.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "miaorenbuluo" {
+      name = "苗人部落"
+      description = "你眼前突然一亮，原来是走进了一个苗人部落。苗人们围坐在火 堆边，面色虔诚，好象在作某种祭神仪式。几个巫士挥舞着木镗，口中念念有词。突然，他们好象发现了你。"
+  x = 9
+  y = -14
+  z = -11
+    }
+
+  room_exits "miaorenbuluo" {
+    room_id = rooms.miaorenbuluo.id
+    north = rooms.westroad2.id
+    }
+
+
+  room_characters "miaorenbuluo" {
+    room_id = rooms.miaorenbuluo.id
+    characters = [
+      { id = characters.miaozuwushi.id },
+      { id = characters.miaozuwushi.id },
+      { id = characters.miaozuwushi.id },
+      { id = characters.miaozuwushi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/midao0.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "midao0" {
+      name = "甬道"
+      description = "这是一条小小的甬道，周围都是石壁，极为坚硬，看来不是什么 武功能打破的。向外的石门早已悄然合上，你只有鼓勇向前。"
+  x = 0
+  y = 0
+  z = 8
+    }
+
+  room_exits "midao0" {
+    room_id = rooms.midao0.id
+    up = rooms.rjqjiguan.id
+    down = rooms.jmqdating.id
+    north = rooms.midao1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/midao1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "midao1" {
+      name = "石室"
+      description = "这是一条小小的甬道，周围都是石壁，极为坚硬，看来不是什么 武功能打破的。石室里伸手不见无指，顺着石壁你摸索着好象周围有 石门。"
+  x = 0
+  y = 1
+  z = 8
+    }
+
+  room_exits "midao1" {
+    room_id = rooms.midao1.id
+    west = rooms.midao4.id
+    east = rooms.midao2.id
+    north = rooms.midao5.id
+    south = rooms.midao0.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/midao10.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "midao10" {
+      name = "石室"
+      description = "这是一条小小的甬道，周围都是石壁，极为坚硬，看来不是什么 武功能打破的。石室里伸手不见无指，顺着石壁你摸索着好象周围有 石门。"
+  x = 1
+  y = 0
+  z = 8
+    }
+
+  room_exits "midao10" {
+    room_id = rooms.midao10.id
+    west = rooms.midao9.id
+    east = rooms.midao11.id
+    north = rooms.midao2.id
+    south = rooms.midao6.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/midao11.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "midao11" {
+      name = "石室"
+      description = "这是一条小小的甬道，周围都是石壁，极为坚硬，看来不是什么 武功能打破的。石室里伸手不见无指，顺着石壁你摸索着好象周围有 石门。"
+  x = 2
+  y = 0
+  z = 8
+    }
+
+  room_exits "midao11" {
+    room_id = rooms.midao11.id
+    west = rooms.midao10.id
+    east = rooms.midao12.id
+    north = rooms.midao3.id
+    south = rooms.midao7.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/midao12.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "midao12" {
+      name = "石室"
+      description = "这是一条小小的甬道，周围都是石壁，极为坚硬，看来不是什么 武功能打破的。石室里伸手不见无指，顺着石壁你摸索着好象周围有 石门。"
+  x = -1
+  y = 0
+  z = 8
+    }
+
+  room_exits "midao12" {
+    room_id = rooms.midao12.id
+    west = rooms.midao11.id
+    east = rooms.midao9.id
+    north = rooms.midao4.id
+    south = rooms.midao8.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/midao2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "midao2" {
+      name = "石室"
+      description = "这是一条小小的甬道，周围都是石壁，极为坚硬，看来不是什么 武功能打破的。石室里伸手不见无指，顺着石壁你摸索着好象周围有 石门。"
+  x = 1
+  y = 1
+  z = 8
+    }
+
+  room_exits "midao2" {
+    room_id = rooms.midao2.id
+    west = rooms.midao1.id
+    east = rooms.midao3.id
+    north = rooms.midao6.id
+    south = rooms.midao10.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/midao3.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "midao3" {
+      name = "石室"
+      description = "这是一条小小的甬道，周围都是石壁，极为坚硬，看来不是什么 武功能打破的。石室里伸手不见无指，顺着石壁你摸索着好象周围有 石门。"
+  x = 2
+  y = 1
+  z = 8
+    }
+
+  room_exits "midao3" {
+    room_id = rooms.midao3.id
+    west = rooms.midao2.id
+    east = rooms.midao4.id
+    north = rooms.midao7.id
+    south = rooms.midao11.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/midao4.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "midao4" {
+      name = "石室"
+      description = "这是一条小小的甬道，周围都是石壁，极为坚硬，看来不是什么 武功能打破的。石室里伸手不见无指，顺着石壁你摸索着好象周围有 石门。"
+  x = -1
+  y = 1
+  z = 8
+    }
+
+  room_exits "midao4" {
+    room_id = rooms.midao4.id
+    west = rooms.midao3.id
+    east = rooms.midao1.id
+    north = rooms.midao8.id
+    south = rooms.midao12.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/midao5.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "midao5" {
+      name = "石室"
+      description = "这是一条小小的甬道，周围都是石壁，极为坚硬，看来不是什么 武功能打破的。石室里伸手不见无指，顺着石壁你摸索着好象周围有 石门。"
+  x = 0
+  y = 2
+  z = 8
+    }
+
+  room_exits "midao5" {
+    room_id = rooms.midao5.id
+    west = rooms.midao8.id
+    east = rooms.midao6.id
+    north = rooms.midao9.id
+    south = rooms.midao1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/midao6.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "midao6" {
+      name = "石室"
+      description = "这是一条小小的甬道，周围都是石壁，极为坚硬，看来不是什么 武功能打破的。石室里伸手不见无指，顺着石壁你摸索着好象周围有 石门。"
+  x = 1
+  y = 2
+  z = 8
+    }
+
+  room_exits "midao6" {
+    room_id = rooms.midao6.id
+    west = rooms.midao5.id
+    east = rooms.midao7.id
+    north = rooms.midao10.id
+    south = rooms.midao2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/midao7.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "midao7" {
+      name = "石室"
+      description = "这是一条小小的甬道，周围都是石壁，极为坚硬，看来不是什么 武功能打破的。石室里伸手不见无指，顺着石壁你摸索着好象周围有 石门。"
+  x = 2
+  y = 2
+  z = 8
+    }
+
+  room_exits "midao7" {
+    room_id = rooms.midao7.id
+    west = rooms.midao6.id
+    east = rooms.midao8.id
+    north = rooms.midao11.id
+    south = rooms.midao3.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/midao8.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "midao8" {
+      name = "石室"
+      description = "这是一条小小的甬道，周围都是石壁，极为坚硬，看来不是什么 武功能打破的。石室里伸手不见无指，顺着石壁你摸索着好象周围有 石门。"
+  x = -1
+  y = 2
+  z = 8
+    }
+
+  room_exits "midao8" {
+    room_id = rooms.midao8.id
+    west = rooms.midao7.id
+    east = rooms.midao5.id
+    north = rooms.midao12.id
+    south = rooms.midao4.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/midao9.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "midao9" {
+      name = "石室"
+      description = "这是一条小小的甬道，周围都是石壁，极为坚硬，看来不是什么 武功能打破的。石室里伸手不见无指，顺着石壁你摸索着好象周围有 石门。"
+  x = 0
+  y = 3
+  z = 8
+    }
+
+  room_exits "midao9" {
+    room_id = rooms.midao9.id
+    west = rooms.midao12.id
+    east = rooms.midao10.id
+    north = rooms.mishi.id
+    south = rooms.midao5.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/mishi.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "mishi" {
+      name = "石室"
+      description = "这间石室极大，顶上垂下钟乳，显是天然的石洞。走了几步，突 见地下倒着两具骷髅。骷髅身上衣服尚未烂尽，着得出是一男一女。 走近两具骷髅，只见那女子右手抓着一柄晶光闪亮的匕首，插在她自 己胸口。"
+  x = 0
+  y = 4
+  z = 8
+    }
+
+  room_exits "mishi" {
+    room_id = rooms.mishi.id
+    up = rooms.neishi.id
+    south = rooms.midao0.id
+    }
+
+
+
+
+  room_items "mishi" {
+    room_id = rooms.mishi.id
+    items = [
+      { id = items.yangdt.id },
+      { id = items.yangfr.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/mjdimen.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "mjdimen" {
+      name = "草地"
+      description = "这是一片芳草地，落英缤纷，蜂歌蝶舞，朝露夕光，沁人 心脾。几个小姑娘莺声曼影，顽皮可人，宛如三月桃李，腊冬 嫩梅，惹人怜爱。任你是江湖豪杰，走到这里，心中也平添几 寸温柔，少却三分杀意。"
+  x = 5
+  y = -12
+  z = -11
+    }
+
+  room_exits "mjdimen" {
+    room_id = rooms.mjdimen.id
+    southwest = rooms.mjsimen1.id
+    northeast = rooms.mjdimen1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/mjdimen1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "mjdimen1" {
+      name = "门口"
+      description = "前面就是明教的“地字门”了，这里是明教中女弟子修炼 的地方，从门口看进去，绫罗幔影，身姿绰绰。虽是江湖儿女， 却也不让男子随意进入。门口还立有一块木牌(mu pai)。"
+  x = 6
+  y = -11
+  z = -11
+    }
+
+  room_exits "mjdimen1" {
+    room_id = rooms.mjdimen1.id
+    southwest = rooms.mjdimen.id
+    in = rooms.nushe.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/mjfengmen.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "mjfengmen" {
+      name = "竹林"
+      description = "这是一条碎石铺成的小道，曲曲折折地通向前方。两边是 密密的竹林。这里人迹罕至，惟闻足底叩击路面，僧敲木鱼声， 道颂道德经，微风吹拂竹叶，如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = 5
+  y = -14
+  z = -11
+    }
+
+  room_exits "mjfengmen" {
+    room_id = rooms.mjfengmen.id
+    southeast = rooms.mjfengmen1.id
+    northwest = rooms.mjsimen1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/mjfengmen1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "mjfengmen1" {
+      name = "竹林"
+      description = "这是竹林中的一间小院，竹影依依，经声入耳，其南北各有 一间竹舍，乃是明教中释道和佛家弟子的修炼场所。"
+  x = 6
+  y = -15
+  z = -11
+    }
+
+  room_exits "mjfengmen1" {
+    room_id = rooms.mjfengmen1.id
+    south = rooms.daoshe.id
+    north = rooms.foshe.id
+    northwest = rooms.mjfengmen.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/mjleimen.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "mjleimen" {
+      name = "青石地"
+      description = "这是一片青石地，静穆无尘。斜晖淡扫，石栏映日，辉影 雪山。三三两两高鼻深目，雪肤金发男女教众急步匆匆来去， 所配兵器也非中土能见。"
+  x = 3
+  y = -14
+  z = -11
+    }
+
+  room_exits "mjleimen" {
+    room_id = rooms.mjleimen.id
+    northeast = rooms.mjsimen1.id
+    southwest = rooms.mjleimen1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/mjleimen1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "mjleimen1" {
+      name = "门口"
+      description = "前面就是明教的“雷字门”了，这里是明教中西域弟子修 炼的地方。西域风俗大异中土，他们的生活习惯以及使用物品 也与中土迥异。"
+  x = 2
+  y = -15
+  z = -11
+    }
+
+  room_exits "mjleimen1" {
+    room_id = rooms.mjleimen1.id
+    northeast = rooms.mjleimen.id
+    in = rooms.sushe.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/mjsimen.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "mjsimen" {
+      name = "青石道"
+      description = "穿过一片小松林，面前出现了一条宽广的石板道，笔直通向 前方。沿道稀稀落落地种着几棵柏树，却显得高大挺拔，蝤龙般 的枝干向天空高高伸展着。"
+  x = 4
+  y = -12
+  z = -11
+    }
+
+  room_exits "mjsimen" {
+    room_id = rooms.mjsimen.id
+    south = rooms.mjsimen1.id
+    north = rooms.tomen2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/mjsimen1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "mjsimen1" {
+      name = "广场"
+      description = "这里是一片庭院中央的广场，整个广场由大块的青石铺成， 极为平坦。但因年代久远，都有些破损。丛丛小草从石板的缝 隙中长了出来。广场四面有几条小道，通向明教的“天地风雷” 四门。"
+  x = 4
+  y = -13
+  z = -11
+    }
+
+  room_exits "mjsimen1" {
+    room_id = rooms.mjsimen1.id
+    southwest = rooms.mjleimen.id
+    southeast = rooms.mjfengmen.id
+    northeast = rooms.mjdimen.id
+    northwest = rooms.mjtianmen.id
+    north = rooms.mjsimen.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/mjtianmen.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "mjtianmen" {
+      name = "黄土地"
+      description = "这是一片黄土地，尘沙泛起，剑芒凌空，刀枪晃日，杀气 盈野，几个小伙子膀大腰圆，一身短打，练功不掇。到此地， 便能感觉到明教百年兴旺的根柢非虚。"
+  x = 3
+  y = -12
+  z = -11
+    }
+
+  room_exits "mjtianmen" {
+    room_id = rooms.mjtianmen.id
+    southeast = rooms.mjsimen1.id
+    northwest = rooms.mjtianmen1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/mjtianmen1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "mjtianmen1" {
+      name = "门口"
+      description = "前面就是明教的“天字门”了，这里是明教中男弟子修炼 的地方，从门口看进去，汗衫扬臭，木桌流酒。此处不允女人 随意进入。"
+  x = 2
+  y = -11
+  z = -11
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(me->query("gender") != "男性") && (dir == "in")
+direction = "in"
+  message = "请你自重，以免不测！"
+}
+
+]
+    }
+
+  room_exits "mjtianmen1" {
+    room_id = rooms.mjtianmen1.id
+    southeast = rooms.mjtianmen.id
+    in = rooms.nanshe.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/nanshe.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "nanshe" {
+      name = "天门男舍"
+      description = "走进这间男舍，一阵汗臭酒熏扑面，根本挥赶不去。几个五大 三粗汉子光脚神气赳赳，豪迈异常地喊你入席。桌上酒水淋漓，杯 盘狼籍，显然都喝得差不多了。"
+  x = 2
+  y = -11
+  z = -11
+    }
+
+  room_exits "nanshe" {
+    room_id = rooms.nanshe.id
+    out = rooms.mjtianmen1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/neishi.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "neishi" {
+      name = "明教内室"
+      description = "这里是明教内室。小小桌前的窗外，望出去是连绵万里的巍巍昆 仑。窗棂门扇均雕制得美仑美奂，精巧异常桌前端坐一个亮丽女孩， 你乍一见惊异她的美貌，不禁轻轻叫出声来。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "neishi" {
+    room_id = rooms.neishi.id
+    in = rooms.didao1.id
+    out = rooms.dadian.id
+    }
+
+
+
+
+  room_items "neishi" {
+    room_id = rooms.neishi.id
+    items = [
+      { id = items.xiaozhao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/nushe.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "nushe" {
+      name = "地门女舍"
+      description = "走进这间女舍，一阵脂粉淡香扑面，似有似无，似茉莉，似 丁香，似玫瑰，似夜来香，让人心神荡漾。几位姑娘斜倚阑窗， 吟诗作画，全不似武林中人，谁能想到，她们都是叱咤江湖的巾 帼女杰呢？"
+  x = 6
+  y = -11
+  z = -11
+    }
+
+  room_exits "nushe" {
+    room_id = rooms.nushe.id
+    out = rooms.mjdimen1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/qiandian.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "qiandian" {
+      name = "明教前殿"
+      description = "你来到这里，放眼窗外望去，漫漫昆仑雪山，晶莹剔透，苍 天浩浩，白云悠悠。东方沃野千里，楚天辽阔；西面高山巍巍， 迤逦万里。这里就是叱咤武林八百年的明教总舵的前殿。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "qiandian" {
+    room_id = rooms.qiandian.id
+    southdown = rooms.square.id
+    north = rooms.dadian.id
+    west = rooms.westdian.id
+    east = rooms.eastdian.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/rjqdating.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "rjqdating" {
+      name = "锐金旗大厅"
+      description = "这是锐金旗的大厅，虽然都是练武之人，这里却布置得古 色古香，显出锐金旗的与众不同。大厅正面高悬一块牌匾，上 书四个烫金大字“锐气金风”，一百二十年前，明教与来犯的 蒙古军队一场鏖战，锐金旗力守玄天崖，死者八、九，教主亲 书此匾以励教众，锐金旗以此为五旗之首。厅中央摆有茶几， 锐金旗掌旗使庄铮正襟而坐，正在读一本书卷。"
+  x = 2
+  y = -4
+  z = -6
+    }
+
+  room_exits "rjqdating" {
+    room_id = rooms.rjqdating.id
+    south = rooms.rjqyuan.id
+    }
+
+
+  room_characters "rjqdating" {
+    room_id = rooms.rjqdating.id
+    characters = [
+      { id = characters.zhuangzheng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/rjqjiguan.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "rjqjiguan" {
+      name = "密道"
+      description = "这里是一条秘道的尽头，石墙之上嵌入两盏油灯，火苗幽蓝， 向北望去，黑暗中有些光亮。"
+  x = 0
+  y = 0
+  z = 9
+    }
+
+  room_exits "rjqjiguan" {
+    room_id = rooms.rjqjiguan.id
+    up = rooms.rjqmidao.id
+    down = rooms.midao0.id
+    north = rooms.rjqmishi.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/rjqlwch.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "rjqlwch" {
+      name = "练武场"
+      description = "走进了锐金旗的练武场，发现这里有些奇怪。练武的教众 们并不是在相互切磋，而是穿戴着特制的护具，同一架奇怪的 装置打斗。装置从不移开原地，只是它似乎具备用不完的各种 兵器，进攻起来丝毫不弱于江湖好手。"
+  x = 2
+  y = -6
+  z = -6
+    }
+
+  room_exits "rjqlwch" {
+    room_id = rooms.rjqlwch.id
+    north = rooms.rjqyuan.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/rjqmen.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "rjqmen" {
+      name = "侧门"
+      description = "这是锐金旗的一个侧门，大概只容得下一个人进出，每个教众 到此，都必须出示一张腰牌，才可进入。"
+  x = 2
+  y = -5
+  z = -6
+    }
+
+  room_exits "rjqmen" {
+    room_id = rooms.rjqmen.id
+    east = rooms.torjq3.id
+    in = rooms.rjqyuan.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/rjqmenlou1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "rjqmenlou1" {
+      name = "门楼一层"
+      description = "这里是一间大石室，石室四周整齐的码置着兵器架，十八 般兵器样样俱全。几个教众在室中巡逻，好象是守护兵器的。 右面有一条石梯直通楼上。"
+  x = 1
+  y = -5
+  z = -6
+    }
+
+  room_exits "rjqmenlou1" {
+    room_id = rooms.rjqmenlou1.id
+    east = rooms.rjqyuan.id
+    up = rooms.rjqmenlou2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/rjqmenlou2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "rjqmenlou2" {
+      name = "门楼二层"
+      description = "这里是一间大石室，从石窗向外看去，整个院落一览无余， 这里正是一处易守难功的紧要关隘。右面有一条石梯直通楼上。"
+  x = 1
+  y = -5
+  z = -5
+    }
+
+  room_exits "rjqmenlou2" {
+    room_id = rooms.rjqmenlou2.id
+    down = rooms.rjqmenlou1.id
+    up = rooms.rjqmenlou3.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/rjqmenlou3.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "rjqmenlou3" {
+      name = "门楼三层"
+      description = "这里是一间大石室，中央摆放着石桌(zhuo)石椅(chair)，石桌 上刻有纵横交错的图案，仔细看，原来是一棋局，棋盘上两黑(hei zi)、一白(bai zi)，正该白方落子了。却不知对弈的棋士为何没有 下完。"
+  x = 1
+  y = -5
+  z = -4
+    }
+
+  room_exits "rjqmenlou3" {
+    room_id = rooms.rjqmenlou3.id
+    down = rooms.rjqmenlou2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/rjqmidao.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "rjqmidao" {
+      name = "密道"
+      description = "这里是一条秘道的尽头，石墙之上嵌入两盏油灯，火苗倏忽， 向前望去，黑暗中不知所往。"
+  x = 0
+  y = 0
+  z = 10
+    }
+
+  room_exits "rjqmidao" {
+    room_id = rooms.rjqmidao.id
+    down = rooms.rjqjiguan.id
+    north = rooms.rjqjiguan.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/rjqmishi.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "rjqmishi" {
+      name = "密室"
+      description = "这里是一间秘室，石壁之上嵌入两盏油灯，火苗幽蓝，石 室地板用精钢铸就，中央有一巨大铁炉，似乎也与地板铸为 一体。炉中火苗熊熊，烈炎冲天。几个壮士正在打造什么兵 器，地上的打铁声就是从这里传出的。石室角落中有一扇小 铁门(men)."
+  x = 0
+  y = 1
+  z = 9
+    }
+
+  room_exits "rjqmishi" {
+    room_id = rooms.rjqmishi.id
+    down = rooms.rjqmenlou1.id
+    south = rooms.rjqjiguan.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/rjqyuan.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "rjqyuan" {
+      name = "大院"
+      description = "你走进了锐金旗的大院，却发现这里人影稀疏，虽听见叮 叮咚咚的打铁声，却见不到打铁铺，那声音似乎是从深远的地 下传来的。向西走，就要进入门楼了。院子左首可能是练武场， 隐约传来打斗声；右首是一座大厅，象是锐金旗的议会场所。"
+  x = 2
+  y = -5
+  z = -6
+    }
+
+  room_exits "rjqyuan" {
+    room_id = rooms.rjqyuan.id
+    out = rooms.rjqmen.id
+    south = rooms.rjqlwch.id
+    north = rooms.rjqdating.id
+    west = rooms.rjqmenlou1.id
+    }
+
+
+
+
+  room_items "rjqyuan" {
+    room_id = rooms.rjqyuan.id
+    items = [
+      { id = items.lengqian.id },
+      { id = items.shuobude.id },
+      { id = items.zhangzhong.id },
+      { id = items.pengyingyu.id },
+      { id = items.zhoudian.id },
+      { id = items.yinyewang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/shandong.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "shandong" {
+      name = "明教密洞"
+      description = "这里是一个小小土洞，周围黑乎乎的很难看清楚。隐隐约约，可 以看到一扇大石门(men)。"
+  x = -2
+  y = -11
+  z = -9
+item_desc = {
+ men = "一扇大石门，看来总有两万斤重吧。"
+}
+    }
+
+  room_exits "shandong" {
+    room_id = rooms.shandong.id
+    out = rooms.huangtulu2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/shanjiao.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "shanjiao" {
+      name = "昆仑山下"
+      description = "这里是千里昆仑的东麓，远望苍天浩浩，白云悠悠。东方沃 野千里，楚天辽阔；西面高山巍巍，迤逦万里。叱咤武林八百年 的明教就座落在这群山之中。明教----是多少武林豪杰所向往的 地方，在那里，有无数生死相许的好兄弟，无论是正是邪。就在 这西方的群山之后，等待着你去谱写又一曲武林传奇。"
+  x = 5
+  y = -11
+  z = -11
+    }
+
+  room_exits "shanjiao" {
+    room_id = rooms.shanjiao.id
+    westup = rooms.zhenyuanqiao.id
+    north = rooms.donglu.id
+    east = rooms.gebitan5.id
+    west = rooms.tomen2.id
+    }
+
+
+  room_characters "shanjiao" {
+    room_id = rooms.shanjiao.id
+    characters = [
+      { id = characters.seller.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/shanlu1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "shanlu1" {
+      name = "青石阶"
+      description = "这里已是半山腰了。不远的前面有一座竹亭，几位剑客在 这里歇息。山路到这里更加陡峭，四下望去，层峦迭嶂，满目 滴翠远山披银装，云海现奇观。"
+  x = 1
+  y = -11
+  z = -10
+    }
+
+  room_exits "shanlu1" {
+    room_id = rooms.shanlu1.id
+    westup = rooms.shanlu2.id
+    eastdown = rooms.shanmen.id
+    }
+
+
+  room_characters "shanlu1" {
+    room_id = rooms.shanlu1.id
+    characters = [
+      { id = characters.jian_ke.id },
+      { id = characters.jian_ke.id },
+      { id = characters.jian_ke.id },
+      { id = characters.dao_ke.id },
+      { id = characters.dao_ke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/shanlu2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "shanlu2" {
+      name = "青石阶"
+      description = "眼前遽然出现一大片松林。松林长得极密，石阶转向北坡，上面 铺满了厚厚的金黄的松针。踩在脚下，发出察察的响声。一条窄小的 黄土小路继续向西延伸，进入树林深处，消失在茫茫林海之中。"
+  x = 0
+  y = -11
+  z = -9
+    }
+
+  room_exits "shanlu2" {
+    room_id = rooms.shanlu2.id
+    west = rooms.huangtulu1.id
+    northup = rooms.shanlu3.id
+    eastdown = rooms.shanlu1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/shanlu3.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "shanlu3" {
+      name = "悬天崖"
+      description = "这里山路陡峭，仅有一人多宽，路左是峭壁高耸，路右紧临万 丈深渊，实在是一夫当关、万夫莫开的险要之处。继续上攀，就要 到达明教五行旗了。紧挨路右，天然生有一块巨石，高近三丈，名 为“悬天石”，常有侠客于上远观云海。"
+  x = 0
+  y = -10
+  z = -8
+valid_leave = [
+{
+  direction = "up"
+  message = "你使劲儿一蹦，离石顶还有数丈远就掉了下来，摔的鼻青脸肿。"
+}
+,
+{
+  direction = "up"
+  message = "你奋力一跃，却离石顶还有一丈多远，看来是白费力气。"
+}
+,
+{
+  direction = "up"
+  message = "你纵身而起，离石顶只差一点点了，再加把劲。"
+}
+
+]
+    }
+
+  room_exits "shanlu3" {
+    room_id = rooms.shanlu3.id
+    up = rooms.xuantianshi.id
+    northup = rooms.shanlu4.id
+    southdown = rooms.shanlu2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/shanlu4.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "shanlu4" {
+      name = "青石阶"
+      description = "这里山路渐宽，青石铺路，苔痕淡青，路左青松巍巍，路右藤 萝绕树，远远的，只见前方房宇依稀，赤红色旗帜招展，听说明教 烈火旗在此据守，数百年来固如磐石。"
+  x = 0
+  y = -9
+  z = -7
+    }
+
+  room_exits "shanlu4" {
+    room_id = rooms.shanlu4.id
+    northup = rooms.lhqpaifang.id
+    southdown = rooms.shanlu3.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/shanmen.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "shanmen" {
+      name = "明教山门"
+      description = "一个巨大的天然石桥横跨在两片山壁之间，石桥正上方龙盘 凤舞刻着两个大字：『明教』。字迹有些剥落，看上去年代久远。 两位三十来岁的大汉手持钢剑守在山门两侧。"
+  x = 2
+  y = -11
+  z = -11
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：objectp(present("leng qian", environment(me)))
+direction = ~
+  message = "冷谦拦住你说道：这位请放下兵刃。我教教规严厉，外客不 得持兵刃上山。请见谅。"
+}
+
+]
+    }
+
+  room_exits "shanmen" {
+    room_id = rooms.shanmen.id
+    east = rooms.tomen1.id
+    westup = rooms.shanlu1.id
+    }
+
+
+  room_characters "shanmen" {
+    room_id = rooms.shanmen.id
+    characters = [
+      { id = characters.jieyinshi.id }    ]
+  }
+
+
+
+  room_items "shanmen" {
+    room_id = rooms.shanmen.id
+    items = [
+      { id = items.lengqian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/square.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "square" {
+      name = "大院"
+      description = "你走进了明教总舵广场，却发现这里人声鼎沸，五散人群 聚于此，看来有要事发生了。来往教众匆匆忙忙。广场左首是 教众饭堂；右首就是教众闻之变色的刑堂。向上走就是光明顶 明教总舵了。"
+  x = 0
+  y = -2
+  z = -1
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：me->query("family/family_name") != "明教" && (dir!="south") && ((objectp(present("peng yinyu", environment(me)))) || (objectp(present("zhang zhong", environment(me)))) || (objectp(present("shuo bude", environment(me)))) || (objectp(present("leng qian", environment(me)))) || (objectp(present("zhou dian", environment(me)))))
+direction = ~
+  message = "明教五散人拦住你说：此处乃明教重地，请止步。"
+}
+
+]
+    }
+
+  room_exits "square" {
+    room_id = rooms.square.id
+    south = rooms.tianweitang.id
+    east = rooms.xingtang.id
+    northup = rooms.qiandian.id
+    west = rooms.fangtang.id
+    }
+
+
+  room_characters "square" {
+    room_id = rooms.square.id
+    characters = [
+      { id = characters.shuobude.id },
+      { id = characters.zhangzhong.id },
+      { id = characters.pengyingyu.id },
+      { id = characters.zhoudian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/sushe.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "sushe" {
+      name = "雷门宿舍"
+      description = "走进这间宿舍，满目异国情调。雷门教众似乎不大理睬你。许是 言语不通，你也不想在此多留。"
+  x = 2
+  y = -15
+  z = -11
+    }
+
+  room_exits "sushe" {
+    room_id = rooms.sushe.id
+    out = rooms.mjleimen1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tianshitang.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tianshitang" {
+      name = "天市堂"
+      description = "你一进入明教的天市堂，顿时感到一鼓肃杀之气。教众出入都十分 小心，惟恐惊动了坐在油木桌后的堂主李天垣。见你进来李天垣抬眼看 了看你，一张很柔和的脸却立马让你心惊肉跳。"
+  x = 1
+  y = -3
+  z = -1
+    }
+
+  room_exits "tianshitang" {
+    room_id = rooms.tianshitang.id
+    west = rooms.tianweitang.id
+    }
+
+
+  room_characters "tianshitang" {
+    room_id = rooms.tianshitang.id
+    characters = [
+      { id = characters.litianyuan.id },
+      { id = characters.yinwulu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/tianweitang.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tianweitang" {
+      name = "天微堂"
+      description = "这里就是明教的天微堂，堂主就是威名远波的殷野王。他是白眉鹰 王的独子和教主张无忌的舅舅。堂内陈设鲜丽奢华，显然甚是兴旺，往 来教众进进出出，看他们各执兵刃，似乎是守总舵的卫士。"
+  x = 0
+  y = -3
+  z = -1
+    }
+
+  room_exits "tianweitang" {
+    room_id = rooms.tianweitang.id
+    north = rooms.square.id
+    southdown = rooms.zhandao2.id
+    west = rooms.ziweitang.id
+    east = rooms.tianshitang.id
+    }
+
+
+  room_characters "tianweitang" {
+    room_id = rooms.tianweitang.id
+    characters = [
+      { id = characters.yinyewang.id },
+      { id = characters.yinwufu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/tohsq1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tohsq1" {
+      name = "山路"
+      description = "这里是一条很普通的山路，路边的树林密集，芳草流香，草丛 中星星点点地点缀着一些白色野花，一股清泉叮叮咚咚地向山下流 淌，远处传来阵阵水声，为这山谷陡增了几分气势。"
+  x = 2
+  y = -4
+  z = -6
+    }
+
+  room_exits "tohsq1" {
+    room_id = rooms.tohsq1.id
+    northwest = rooms.tohsq2.id
+    southeast = rooms.torjq3.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tohsq2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tohsq2" {
+      name = "山路"
+      description = "这里地势很陡峭，向北是一条连绵数十里的山谷，向南走，则 是去明教锐金旗方向的路。路两旁蜂舞蝶影，山花烂漫，好一派野 地风光。但就在那丛林深处，迭翠之中，又让人不觉感受到一阵萧 瑟的寒意。"
+  x = 1
+  y = -3
+  z = -6
+    }
+
+  room_exits "tohsq2" {
+    room_id = rooms.tohsq2.id
+    north = rooms.tohsq4.id
+    northwest = rooms.tohsq3.id
+    southeast = rooms.tohsq1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tohsq3.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tohsq3" {
+      name = "山路"
+      description = "这里快接近谷低了，但北面瀑布挡住了去路。瀑布如一匹银练 奔流而下，倾泻在一深潭之中，水声轰鸣，帘雾直上重霄。两旁山 石高耸，陡壁断崖，象是人工劈就而成。深潭前的青石被磨得锃亮， 好象总有人在这里来往。"
+  x = 0
+  y = -2
+  z = -6
+    }
+
+  room_exits "tohsq3" {
+    room_id = rooms.tohsq3.id
+    southeast = rooms.tohsq2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tohsq4.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tohsq4" {
+      name = "山路"
+      description = "山路到这里似乎变得宽阔了些。清新的山风扑面而来，令人 精神顿为一爽。远处传来淙淙水声，渐行渐远。山壁上挂满 了厚密的藤萝，随风轻轻摇弋。"
+  x = 1
+  y = -2
+  z = -6
+    }
+
+  room_exits "tohsq4" {
+    room_id = rooms.tohsq4.id
+    south = rooms.tohsq2.id
+    north = rooms.tohsq5.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tohsq5.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tohsq5" {
+      name = "山路"
+      description = "水声越来越大，山间充满了浓浓的水气。山路上，断裂的山 隙中，都流出一道道细细的泉水，汇成一股澄碧的小溪，向山下 蜿蜒流去。周围绿意荡漾，鸟语鹦声，如置身仙境。"
+  x = 1
+  y = -1
+  z = -6
+    }
+
+  room_exits "tohsq5" {
+    room_id = rooms.tohsq5.id
+    south = rooms.tohsq4.id
+    north = rooms.tohsq6.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tohsq6.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tohsq6" {
+      name = "山路"
+      description = "一挂巨大的瀑布白龙出霄般横越山间，水气已浓得仿佛可以 滴下水珠儿来。山峦间升起薄薄的青雾，凝聚不散。哗哗的水声 震耳欲聋。"
+  x = 1
+  y = 0
+  z = -6
+    }
+
+  room_exits "tohsq6" {
+    room_id = rooms.tohsq6.id
+    south = rooms.tohsq5.id
+    north = rooms.tohsq7.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tohsq7.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tohsq7" {
+      name = "山路"
+      description = "这里是瀑布上方一道窄窄的山梁，浑然天成。石梁上面人工 凿出一格格阶梯。边上钉了几棵木桩，绕上粗长的麻绳作为扶手。 瀑布在脚下奔腾而过，山脚下汇成一个深潭。"
+  x = 1
+  y = 1
+  z = -6
+    }
+
+  room_exits "tohsq7" {
+    room_id = rooms.tohsq7.id
+    south = rooms.tohsq6.id
+    north = rooms.hsqmen.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tohtq1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tohtq1" {
+      name = "山路"
+      description = "这里是一条很普通的山路，路边的树林密集，芳草流香，草丛 中星星点点地点缀着一些白色野花，路面也越来越干燥，远处可见 阵阵尘土飞扬，为这山谷陡增了几分生气。"
+  x = -2
+  y = -4
+  z = -6
+    }
+
+  room_exits "tohtq1" {
+    room_id = rooms.tohtq1.id
+    northeast = rooms.tohtq2.id
+    southwest = rooms.tojmq3.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tohtq2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tohtq2" {
+      name = "山路"
+      description = "这里是一条很普通的山路，路边的树林密集，芳草流香，草丛 中星星点点地点缀着一些白色野花，渐行渐低，两边草木茂盛，处 高崖下，天色渐阴。"
+  x = -1
+  y = -3
+  z = -6
+    }
+
+  room_exits "tohtq2" {
+    room_id = rooms.tohtq2.id
+    northdown = rooms.tohtq3.id
+    southwest = rooms.tohtq1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tohtq3.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tohtq3" {
+      name = "山路"
+      description = "山路掩在土层下，前面似乎没有路了。满山树林密集，鸦鸟群 集，林中烟雾飘荡，不知所之。"
+  x = -1
+  y = -2
+  z = -7
+    }
+
+  room_exits "tohtq3" {
+    room_id = rooms.tohtq3.id
+    in = rooms.tohtq4.id
+    southup = rooms.tohtq2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tohtq4.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tohtq4" {
+      name = "山洞"
+      description = "山洞中似乎深不可测，洞壁上点着几盏松明，照得洞内一派光 亮。洞内虽然感到十分潮湿，可洞壁干燥坚实，大异平常。"
+  x = -1
+  y = -2
+  z = -7
+    }
+
+  room_exits "tohtq4" {
+    room_id = rooms.tohtq4.id
+    out = rooms.tohtq3.id
+    north = rooms.tohtq5.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tohtq5.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tohtq5" {
+      name = "山洞"
+      description = "山洞中似乎深不可测，洞壁上点着几盏松明，照得洞内一派光 亮。洞内虽然感到十分潮湿，可洞壁干燥坚实，大异平常。"
+  x = -1
+  y = -1
+  z = -7
+    }
+
+  room_exits "tohtq5" {
+    room_id = rooms.tohtq5.id
+    south = rooms.tohtq4.id
+    east = rooms.tohtq6.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tohtq6.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tohtq6" {
+      name = "山洞"
+      description = "山洞中似乎深不可测，洞壁上点着几盏松明，照得洞内一派光 亮。洞内虽然感到十分潮湿，可洞壁干燥坚实，大异平常。"
+  x = 0
+  y = -1
+  z = -7
+    }
+
+  room_exits "tohtq6" {
+    room_id = rooms.tohtq6.id
+    west = rooms.tohtq5.id
+    north = rooms.htqmen.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tohtq7.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tohtq7" {
+      name = "山洞"
+      description = "山洞中似乎深不可测，洞壁上点着几盏松明，照得洞内一派光 亮。洞内虽然感到十分潮湿，可洞壁干燥坚实，大异平常。"
+  x = 0
+  y = -1
+  z = -7
+    }
+
+  room_exits "tohtq7" {
+    room_id = rooms.tohtq7.id
+    west = rooms.tohtq5.id
+    north = rooms.tohtq7.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tojmq1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tojmq1" {
+      name = "青石大道"
+      description = "这里是通往巨木旗的大道。道路开阔，大概可容十人并肩而行。 现在巨木旗是明教五旗中人数最多，机关构筑最杂的。除了守护明教 外围，还负责明教中所有房屋和栈桥的建造。"
+  x = -1
+  y = -7
+  z = -6
+    }
+
+  room_exits "tojmq1" {
+    room_id = rooms.tojmq1.id
+    southeast = rooms.lhqpaifang.id
+    northwest = rooms.tojmq2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tojmq2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tojmq2" {
+      name = "青石大道"
+      description = "这里大道平坦，地势开阔，两旁树林中鸟语花香，一片和平安 祥的气氛。此时又有谁能想到，这条大道上撒下过多少江湖中人的 血，这片林中又埋有多少惨死于武林争斗的冤魂的骨。远处，隐约 传来叮叮咚咚的伐木声，偶尔能让人追忆起刀戈铁马的沙场景象。"
+  x = -2
+  y = -6
+  z = -6
+    }
+
+  room_exits "tojmq2" {
+    room_id = rooms.tojmq2.id
+    southeast = rooms.tojmq1.id
+    northwest = rooms.tojmq3.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tojmq3.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tojmq3" {
+      name = "青石大道"
+      description = "大路已经延伸到了尽头，西首方向一座门楼高耸，门前有十几 个金衣人往返巡逻，气势森严。门楼两旁并插镶金青龙旗，迎风招 展，烈烈生威。红色大门紧闭，不时有教众从侧小门进出，也被盘 查得紧。向西北而行，是去洪水旗的路，而西南方向则通往烈火旗。"
+  x = -3
+  y = -5
+  z = -6
+    }
+
+  room_exits "tojmq3" {
+    room_id = rooms.tojmq3.id
+    northeast = rooms.tohtq1.id
+    southeast = rooms.tojmq2.id
+    east = rooms.jmqmen.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tomen1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tomen1" {
+      name = "青石阶"
+      description = "石级到这里似乎变得宽阔了些。清新的山风扑面而来，令人 精神顿为一爽。远处传来淙淙水声，渐行渐远。山壁上挂满了厚 密的藤萝，随风轻轻摇弋。"
+  x = 3
+  y = -11
+  z = -11
+    }
+
+  room_exits "tomen1" {
+    room_id = rooms.tomen1.id
+    east = rooms.tomen2.id
+    west = rooms.shanmen.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/tomen2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "tomen2" {
+      name = "青石阶"
+      description = "松林渐渐开阔，面前出现了一条宽广的石板道，笔直通向前 方。沿道稀稀落落地种着几棵柏树，却显得高大挺拔，蝤龙般的 枝干向天空高高伸展着。由此向南远远望去，是一座红砖碧瓦的 恢宏大宅。"
+  x = 4
+  y = -11
+  z = -11
+    }
+
+  room_exits "tomen2" {
+    room_id = rooms.tomen2.id
+    south = rooms.mjsimen.id
+    east = rooms.shanjiao.id
+    west = rooms.tomen1.id
+    }
+
+
+  room_characters "tomen2" {
+    room_id = rooms.tomen2.id
+    characters = [
+      { id = characters.gaoshanwang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/torjq1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "torjq1" {
+      name = "青石大道"
+      description = "这里是通往锐金旗的大道。道路开阔，大概可容十人并肩而行。 相传锐金旗是明教五旗中成立最早，规模最为宏伟的。百年来人才 辈出，除了守护明教外围，还负责明教中所有兵器和护具的打造。"
+  x = 1
+  y = -7
+  z = -6
+    }
+
+  room_exits "torjq1" {
+    room_id = rooms.torjq1.id
+    southwest = rooms.lhqpaifang.id
+    northeast = rooms.torjq2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/torjq2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "torjq2" {
+      name = "青石大道"
+      description = "这里大道平坦，地势开阔，两旁树林中鸟语花香，一片和平安 祥的气氛。此时又有谁能想到，这条大道上撒下过多少江湖中人的 血，这片林中又埋有多少惨死于武林争斗的冤魂的骨。远处，隐约 传来叮叮咚咚的打铁声，偶尔能让人追忆起刀戈铁马的沙场景象。"
+  x = 2
+  y = -6
+  z = -6
+    }
+
+  room_exits "torjq2" {
+    room_id = rooms.torjq2.id
+    southwest = rooms.torjq1.id
+    northeast = rooms.torjq3.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/torjq3.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "torjq3" {
+      name = "青石大道"
+      description = "大路已经延伸到了尽头，西首方向一座门楼高耸，门前有十几 个金衣人往返巡逻，气势森严。门楼两旁并插镶金青龙旗，迎风招 展，烈烈生威。红色大门紧闭，不时有教众从侧小门进出，也被盘 查得紧。向西北而行，是去洪水旗的路，而西南方向则通往烈火旗。"
+  x = 3
+  y = -5
+  z = -6
+    }
+
+  room_exits "torjq3" {
+    room_id = rooms.torjq3.id
+    northwest = rooms.tohsq1.id
+    southwest = rooms.torjq2.id
+    west = rooms.rjqmen.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/westdian.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "westdian" {
+      name = "明教西侧殿"
+      description = "这里是西侧殿，是接待来宾的地方。殿内摆着几张桌子，桌 旁围放数把椅子。墙上悬着几张硬弓，甚是雄壮，旁边堆着一堆 羽箭。窗外是茫茫昆仑雪山，雪峰延绵。"
+  x = -1
+  y = -1
+  z = 0
+    }
+
+  room_exits "westdian" {
+    room_id = rooms.westdian.id
+    east = rooms.qiandian.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/westroad1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "westroad1" {
+      name = "山路"
+      description = "这是一条直通西方的山路，向西远望，群山巍峨，云雾飘渺， 再往前不远，就要进入深山之中了。东面就是去中原的路。"
+  x = 10
+  y = -13
+  z = -11
+    }
+
+  room_exits "westroad1" {
+    room_id = rooms.westroad1.id
+    east = rooms.silk2.id
+    west = rooms.westroad2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/westroad2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "westroad2" {
+      name = "深山"
+      description = "已经走了很久，山林越来越密，夜晚来临了，夜枭呼号， 令人毛骨悚然。真是“蜀道难，难于上青天”。再向西，就要 出山了。突然，你又发现南面有零星火光。"
+  x = 9
+  y = -13
+  z = -11
+    }
+
+  room_exits "westroad2" {
+    room_id = rooms.westroad2.id
+    south = rooms.miaorenbuluo.id
+    west = rooms.gebitan1.id
+    east = rooms.westroad1.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/xingtang.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "xingtang" {
+      name = "刑堂"
+      description = "整个刑堂门户紧闭，密不透风。即便是在白昼，也犹如黑 夜一般，每隔几步的墙上，点燃着几枝牛油巨烛。中间是一个 大火盆，烈焰腾腾。下方摆着一排排烙铁、水牛皮鞭、穿孔竹 板及狼牙棒等刑具。四周站满了手持兵刃的执法教众。他们正 用冷酷的眼神打量着你，令你不禁浑身哆嗦起来。"
+  x = 1
+  y = -2
+  z = -1
+    }
+
+  room_exits "xingtang" {
+    room_id = rooms.xingtang.id
+    west = rooms.square.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/xuantianshi.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "xuantianshi" {
+      name = "悬天石"
+      description = "从石上远眺，只见云海苍茫处，险绝万峦生，昆仑一脉，逶迤千里，真一派大好江山。悬天石立于昆仑山峰，足下悬崖峭壁，深渊万丈。"
+  x = 0
+  y = -10
+  z = -7
+    }
+
+  room_exits "xuantianshi" {
+    room_id = rooms.xuantianshi.id
+    down = rooms.shanlu3.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/youjing.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "youjing" {
+      name = "昆仑幽境"
+      description = "这里都是一些千年古木，极其高大茂盛，人迹罕至，荒凉无比。 你隐隐然感觉有些寒气，颇不舒服，还是赶快离开这里为好。"
+  x = 5
+  y = -9
+  z = -11
+    }
+
+  room_exits "youjing" {
+    room_id = rooms.youjing.id
+    south = rooms.donglu.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/zhandao1.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "zhandao1" {
+      name = "栈道"
+      description = "这里是通往明教的栈道，脚下茂林生云，极其艰险。"
+  x = 0
+  y = -5
+  z = -3
+    }
+
+  room_exits "zhandao1" {
+    room_id = rooms.zhandao1.id
+    southdown = rooms.lhqhoumen.id
+    northup = rooms.zhandao2.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/zhandao2.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "zhandao2" {
+      name = "栈道"
+      description = "这里是通往明教的栈道，脚下茂林生云，极其艰险。     远远看到上头就是明教内三堂美仑美奂的飞檐画栋了。"
+  x = 0
+  y = -4
+  z = -2
+    }
+
+  room_exits "zhandao2" {
+    room_id = rooms.zhandao2.id
+    southdown = rooms.zhandao1.id
+    northup = rooms.tianweitang.id
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/ziweitang.c by LPCConverter
+# Zone: mingjiao
+
+    rooms "ziweitang" {
+      name = "紫微堂"
+      description = "这里就是明教的紫微堂，堂上的大匾上 '紫微贯日' 四字并不因 堂主殷素素早逝而有丝毫减色。堂中陈设一如往昔。"
+  x = -1
+  y = -3
+  z = -1
+    }
+
+  room_exits "ziweitang" {
+    room_id = rooms.ziweitang.id
+    east = rooms.tianweitang.id
+    }
+
+
+  room_characters "ziweitang" {
+    room_id = rooms.ziweitang.id
+    characters = [
+      { id = characters.yinwushou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/baiguishou.c by LPCConverter
+# Zone: mingjiao
+
+    characters "baiguishou" {
+      name = "白龟寿"
+      description = "他是一位两鬓斑白的老者，身穿一件白布长袍。 他脸上总是浮现出可亲的微笑，但有时又透出一丝狡谲。"
+  title = "明教玄武坛坛主"
+  gender = "男性"
+  age = 56
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 300
+    max_neili = 600
+    max_qi = 450
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "hunyuan-yiqi" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "shaolin-shenfa" level = 70 },
+    { skill = "finger" level = 68 },
+    { skill = "nianhua-zhi" level = 68 },
+    { skill = "parry" level = 70 },
+    { skill = "sword" level = 80 },
+    { skill = "damo-jian" level = 80 },
+    { skill = "buddhism" level = 70 },
+    { skill = "literate" level = 70 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "finger" skill = "nianhua-zhi" },
+    { type = "parry" skill = "damo-jian" },
+    { type = "sword" skill = "damo-jian" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/bigmonkey.c by LPCConverter
+# Zone: mingjiao
+
+    characters "bigmonkey" {
+      name = "NPC"
+      description = ""
+  age = 65
+
+  combat = {
+    combat_exp = 300000
+    dex = 30
+    max_jing = 2500
+    max_qi = 2500
+    str = 22
+  }
+
+  init = {
+    greet_delay = 0
+    add_actions = ["heal"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/changjinpeng.c by LPCConverter
+# Zone: mingjiao
+
+    characters "changjinpeng" {
+      name = "常金鹏"
+      description = "他是一位体健如牛的大汉，身穿一件白布长袍。 他脸上手上的肌肉凹凹凸凸，盘根错节，看来武功修为不浅。"
+  title = "明教朱雀坛坛主"
+  gender = "男性"
+  age = 45
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 300
+    max_neili = 600
+    max_qi = 450
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "hunyuan-yiqi" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "shaolin-shenfa" level = 70 },
+    { skill = "finger" level = 68 },
+    { skill = "nianhua-zhi" level = 68 },
+    { skill = "parry" level = 70 },
+    { skill = "sword" level = 80 },
+    { skill = "damo-jian" level = 80 },
+    { skill = "buddhism" level = 70 },
+    { skill = "literate" level = 70 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "finger" skill = "nianhua-zhi" },
+    { type = "parry" skill = "damo-jian" },
+    { type = "sword" skill = "damo-jian" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/chengchaofeng.c by LPCConverter
+# Zone: mingjiao
+
+    characters "chengchaofeng" {
+      name = "程嘲风"
+      description = "他是一位身宽体胖的老者，身穿一件白布长袍。 他正笑嘻嘻地看着你，好象对你颇有好感。"
+  title = "明教青龙坛坛主"
+  gender = "男性"
+  age = 51
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 300
+    max_neili = 600
+    max_qi = 450
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "hunyuan-yiqi" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "shaolin-shenfa" level = 70 },
+    { skill = "finger" level = 68 },
+    { skill = "nianhua-zhi" level = 68 },
+    { skill = "parry" level = 70 },
+    { skill = "sword" level = 80 },
+    { skill = "damo-jian" level = 80 },
+    { skill = "buddhism" level = 70 },
+    { skill = "literate" level = 70 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "finger" skill = "nianhua-zhi" },
+    { type = "parry" skill = "damo-jian" },
+    { type = "sword" skill = "damo-jian" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/fenggongying.c by LPCConverter
+# Zone: mingjiao
+
+    characters "fenggongying" {
+      name = "封弓影"
+      description = "他是一个阴郁的瘦子，身穿一件白布长袍。 他脸上阴沉沉的，看来心胸必不开阔。"
+  title = "明教神蛇坛坛主"
+  gender = "男性"
+  age = 47
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 300
+    max_neili = 600
+    max_qi = 450
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "hunyuan-yiqi" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "shaolin-shenfa" level = 70 },
+    { skill = "finger" level = 68 },
+    { skill = "nianhua-zhi" level = 68 },
+    { skill = "parry" level = 70 },
+    { skill = "sword" level = 80 },
+    { skill = "damo-jian" level = 80 },
+    { skill = "buddhism" level = 70 },
+    { skill = "literate" level = 70 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "finger" skill = "nianhua-zhi" },
+    { type = "parry" skill = "damo-jian" },
+    { type = "sword" skill = "damo-jian" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/gaoshanwang.c by LPCConverter
+# Zone: mingjiao
+
+    characters "gaoshanwang" {
+      name = "高山王"
+      description = "他是一位身宽体胖的老者，身穿一件白布长袍。 他正笑嘻嘻地看着你，好象对你颇有好感。"
+  title = "明教白虎坛坛主"
+  gender = "男性"
+  age = 51
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 300
+    max_neili = 600
+    max_qi = 450
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "hunyuan-yiqi" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "shaolin-shenfa" level = 70 },
+    { skill = "finger" level = 68 },
+    { skill = "nianhua-zhi" level = 68 },
+    { skill = "parry" level = 70 },
+    { skill = "sword" level = 80 },
+    { skill = "damo-jian" level = 80 },
+    { skill = "buddhism" level = 70 },
+    { skill = "literate" level = 70 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "finger" skill = "nianhua-zhi" },
+    { type = "parry" skill = "damo-jian" },
+    { type = "sword" skill = "damo-jian" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/hu.c by LPCConverter
+# Zone: mingjiao
+
+    characters "hu" {
+      name = "胡青牛"
+      description = "他就是明教号称见死不救的胡青牛，据说他精通医理，可以起死回 生。但他从不医教外人士。"
+  title = "明教教众"
+  nickname = "蝶谷医仙"
+  gender = "男性"
+  age = 50
+  score = 80000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 150000
+    con = 25
+    dex = 25
+    int = 27
+    max_jing = 600
+    max_neili = 3000
+    max_qi = 1500
+    str = 25
+  }
+
+  inquiries = [
+    { key = "疗伤" value = "(:ask_me:)" }
+  ]
+
+  skills = [
+    { skill = "force" level = 90 },
+    { skill = "dodge" level = 90 },
+    { skill = "unarmed" level = 90 },
+    { skill = "parry" level = 90 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/jieyinshi.c by LPCConverter
+# Zone: mingjiao
+
+    characters "jieyinshi" {
+      name = "接引使"
+      description = "他是一位精明的中年人，身穿一件白布长袍。 他正在上下打量着你。"
+  title = "明教"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+  score = 100
+  brain = brains.guarder
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 5000
+    con = 50
+    dex = 21
+    int = 17
+    max_jing = 200
+    max_neili = 350
+    max_qi = 450
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 30 },
+    { skill = "hunyuan-yiqi" level = 30 },
+    { skill = "dodge" level = 50 },
+    { skill = "shaolin-shenfa" level = 50 },
+    { skill = "cuff" level = 50 },
+    { skill = "jingang-quan" level = 50 },
+    { skill = "parry" level = 30 },
+    { skill = "buddhism" level = 30 },
+    { skill = "literate" level = 30 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/litianyuan.c by LPCConverter
+# Zone: mingjiao
+
+    characters "litianyuan" {
+      name = "李天垣"
+      description = "他是一位看起来很慈祥的老者，身穿一件白布长袍。 他是白眉鹰王殷天正的师弟。一双眼睛总是笑眯眯的，但不知为什么，他的下属 对他畏如蛇蝎。"
+  title = "明教天市堂堂主"
+  nickname = "慈眉善目"
+  gender = "男性"
+  age = 55
+  shen_type = 1
+  score = 5000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 85 },
+    { skill = "hunyuan-yiqi" level = 85 },
+    { skill = "dodge" level = 85 },
+    { skill = "shaolin-shenfa" level = 85 },
+    { skill = "cuff" level = 95 },
+    { skill = "jingang-quan" level = 95 },
+    { skill = "parry" level = 85 },
+    { skill = "buddhism" level = 85 },
+    { skill = "literate" level = 85 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/menwei1.c by LPCConverter
+# Zone: mingjiao
+
+    characters "menwei1" {
+      name = "大汉"
+      description = "明教的守门武士，是烈火旗属下。"
+  gender = "男性"
+  age = 35
+  shen_type = 1
+  brain = brains.guarder
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 150 },
+    { skill = "parry" level = 140 },
+    { skill = "dodge" level = 150 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/miaozuwushi.c by LPCConverter
+# Zone: mingjiao
+
+    characters "miaozuwushi" {
+      name = "巫士"
+      description = "诡异的苗人巫士，好象想杀了你祭神。"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 6000
+  }
+
+  chat_chance = 30
+chats = [
+    "巫士一声大喊: @@###$$!!! @@@! &*%%%%@!!!"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 35 },
+    { skill = "blade" level = 20 },
+    { skill = "parry" level = 30 },
+    { skill = "dodge" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.mutang.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/monkey.c by LPCConverter
+# Zone: mingjiao
+
+    characters "monkey" {
+      name = "猴子"
+      description = "这只猴子在在桃树间跳上跳下，还不时津津有味地啃几口着蜜桃。"
+  gender = "雄性"
+  age = 5
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 5000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 25 },
+    { skill = "parry" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/pengyingyu.c by LPCConverter
+# Zone: mingjiao
+
+    characters "pengyingyu" {
+      name = "彭莹玉"
+      description = "他是一位高高瘦瘦的僧人，身穿一件白布长袍。"
+  title = "明教五散人"
+  nickname = "彭和尚"
+  gender = "男性"
+  age = 50
+  shen_type = 1
+  score = 5000
+  brain = brains.guarder
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 85 },
+    { skill = "hunyuan-yiqi" level = 85 },
+    { skill = "dodge" level = 85 },
+    { skill = "shaolin-shenfa" level = 85 },
+    { skill = "cuff" level = 95 },
+    { skill = "jingang-quan" level = 95 },
+    { skill = "parry" level = 85 },
+    { skill = "buddhism" level = 85 },
+    { skill = "literate" level = 85 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/sheep.c by LPCConverter
+# Zone: mingjiao
+
+    characters "sheep" {
+      name = "野羊"
+      description = "这只野羊在低头吃草，见了人也不惊避。"
+  gender = "雄性"
+  age = 2
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 5000
+  }
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/shuobude.c by LPCConverter
+# Zone: mingjiao
+
+    characters "shuobude" {
+      name = "说不得"
+      description = "他是一位笑嘻嘻的僧人，身穿一件白布长袍。"
+  title = "明教五散人"
+  nickname = "布袋和尚"
+  gender = "男性"
+  age = 50
+  shen_type = 1
+  score = 5000
+  brain = brains.guarder
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 85 },
+    { skill = "hunyuan-yiqi" level = 85 },
+    { skill = "dodge" level = 85 },
+    { skill = "shaolin-shenfa" level = 85 },
+    { skill = "cuff" level = 95 },
+    { skill = "jingang-quan" level = 95 },
+    { skill = "parry" level = 85 },
+    { skill = "buddhism" level = 85 },
+    { skill = "literate" level = 85 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/tangyang.c by LPCConverter
+# Zone: mingjiao
+
+    characters "tangyang" {
+      name = "唐洋"
+      description = "他是一位高大魁伟的中年男子，身穿一件白布长袍。 他天生神力，手中的两头狼牙棒有万夫不当之勇，真是一条威风凛凛的汉子。"
+  title = "明教洪水旗掌旗使"
+  gender = "男性"
+  age = 46
+  shen_type = 1
+  score = 5000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 85 },
+    { skill = "hunyuan-yiqi" level = 85 },
+    { skill = "dodge" level = 85 },
+    { skill = "shaolin-shenfa" level = 85 },
+    { skill = "cuff" level = 95 },
+    { skill = "jingang-quan" level = 95 },
+    { skill = "parry" level = 85 },
+    { skill = "buddhism" level = 85 },
+    { skill = "literate" level = 85 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/tuoba.c by LPCConverter
+# Zone: mingjiao
+
+    characters "tuoba" {
+      name = "拓跋"
+      description = "他是一位带发修行的头陀，身穿一件白布长袍。 他个子不高，但很结实，看上去颇为纯朴。可是脸上经常浮现出奇怪的笑容，让 人有些摸不着头脑。"
+  title = "明教风字门门主"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+  score = 100
+  brain = brains.guarder
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 300
+    max_neili = 600
+    max_qi = 450
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "hunyuan-yiqi" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "shaolin-shenfa" level = 70 },
+    { skill = "finger" level = 68 },
+    { skill = "nianhua-zhi" level = 68 },
+    { skill = "parry" level = 70 },
+    { skill = "sword" level = 80 },
+    { skill = "damo-jian" level = 80 },
+    { skill = "buddhism" level = 70 },
+    { skill = "literate" level = 70 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "finger" skill = "nianhua-zhi" },
+    { type = "parry" skill = "damo-jian" },
+    { type = "sword" skill = "damo-jian" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/wensong.c by LPCConverter
+# Zone: mingjiao
+
+    characters "wensong" {
+      name = "闻苍松"
+      description = "他是一位高大魁伟的中年男子，身穿一件白布长袍。 他天生神力，手中的两头狼牙棒有万夫不当之勇，真是一条威风凛凛的汉子。"
+  title = "明教巨木旗掌旗使"
+  gender = "男性"
+  age = 48
+  shen_type = 1
+  score = 5000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 85 },
+    { skill = "hunyuan-yiqi" level = 85 },
+    { skill = "dodge" level = 85 },
+    { skill = "shaolin-shenfa" level = 85 },
+    { skill = "cuff" level = 95 },
+    { skill = "jingang-quan" level = 95 },
+    { skill = "parry" level = 85 },
+    { skill = "buddhism" level = 85 },
+    { skill = "literate" level = 85 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.qimeigun.id },
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/xinran.c by LPCConverter
+# Zone: mingjiao
+
+    characters "xinran" {
+      name = "辛然"
+      description = "他是一位高大魁伟的中年男子，身穿一件白布长袍。 他天生神力，手中的两头狼牙棒有万夫不当之勇，真是一条威风凛凛的汉子。"
+  title = "明教烈火旗掌旗使"
+  gender = "男性"
+  age = 40
+  shen_type = 1
+  score = 5000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 85 },
+    { skill = "hunyuan-yiqi" level = 85 },
+    { skill = "dodge" level = 85 },
+    { skill = "shaolin-shenfa" level = 85 },
+    { skill = "cuff" level = 95 },
+    { skill = "jingang-quan" level = 95 },
+    { skill = "parry" level = 85 },
+    { skill = "buddhism" level = 85 },
+    { skill = "literate" level = 85 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/yanyuan.c by LPCConverter
+# Zone: mingjiao
+
+    characters "yanyuan" {
+      name = "颜垣"
+      description = "他是一个矮矮胖胖的汉子，身穿一件白布长袍。 他天生神力，手中的两头狼牙棒有万夫不当之勇，真是一条威风凛凛的汉子。"
+  title = "明教厚土旗掌旗使"
+  gender = "男性"
+  age = 48
+  shen_type = 1
+  score = 5000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 85 },
+    { skill = "hunyuan-yiqi" level = 85 },
+    { skill = "dodge" level = 85 },
+    { skill = "shaolin-shenfa" level = 85 },
+    { skill = "cuff" level = 95 },
+    { skill = "jingang-quan" level = 95 },
+    { skill = "parry" level = 85 },
+    { skill = "buddhism" level = 85 },
+    { skill = "literate" level = 85 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/yinwufu.c by LPCConverter
+# Zone: mingjiao
+
+    characters "yinwufu" {
+      name = "殷无福"
+      description = "他是一位老者，身穿一件白布长袍。 他是白眉鹰王殷天正的仆从。一双三角眼阴光四射，让人胆寒。"
+  title = "明教天微堂属下"
+  gender = "男性"
+  age = 58
+  shen_type = 1
+  score = 5000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 85 },
+    { skill = "hunyuan-yiqi" level = 85 },
+    { skill = "dodge" level = 85 },
+    { skill = "shaolin-shenfa" level = 85 },
+    { skill = "cuff" level = 95 },
+    { skill = "jingang-quan" level = 95 },
+    { skill = "parry" level = 85 },
+    { skill = "buddhism" level = 85 },
+    { skill = "literate" level = 85 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/yinwulu.c by LPCConverter
+# Zone: mingjiao
+
+    characters "yinwulu" {
+      name = "殷无禄"
+      description = "他是一位老者，身穿一件白布长袍。 他是白眉鹰王殷天正的仆从。一双怪眼正恶狠狠地瞪着你呢！"
+  title = "明教天市堂属下"
+  gender = "男性"
+  age = 56
+  shen_type = 1
+  score = 5000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 85 },
+    { skill = "hunyuan-yiqi" level = 85 },
+    { skill = "dodge" level = 85 },
+    { skill = "shaolin-shenfa" level = 85 },
+    { skill = "cuff" level = 95 },
+    { skill = "jingang-quan" level = 95 },
+    { skill = "parry" level = 85 },
+    { skill = "buddhism" level = 85 },
+    { skill = "literate" level = 85 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/yinwushou.c by LPCConverter
+# Zone: mingjiao
+
+    characters "yinwushou" {
+      name = "殷无寿"
+      description = "他是一位老者，身穿一件白布长袍。 他是白眉鹰王殷天正的仆从。整天愁眉苦脸的，一副短命横死相。"
+  title = "明教紫微堂属下"
+  gender = "男性"
+  age = 57
+  shen_type = 1
+  score = 5000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 85 },
+    { skill = "hunyuan-yiqi" level = 85 },
+    { skill = "dodge" level = 85 },
+    { skill = "shaolin-shenfa" level = 85 },
+    { skill = "cuff" level = 95 },
+    { skill = "jingang-quan" level = 95 },
+    { skill = "parry" level = 85 },
+    { skill = "buddhism" level = 85 },
+    { skill = "literate" level = 85 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/yinyewang.c by LPCConverter
+# Zone: mingjiao
+
+    characters "yinyewang" {
+      name = "殷野王"
+      description = "他是一位手摇折扇的中年男子，身穿一件白布长袍。 他是白眉鹰王殷天正之子。一双眼睛犹如冷电，精光四射，气势摄人。"
+  title = "明教天微堂堂主"
+  nickname = "一飞冲天"
+  gender = "男性"
+  age = 44
+  shen_type = 1
+  score = 5000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 85 },
+    { skill = "hunyuan-yiqi" level = 85 },
+    { skill = "dodge" level = 85 },
+    { skill = "shaolin-shenfa" level = 85 },
+    { skill = "cuff" level = 95 },
+    { skill = "jingang-quan" level = 95 },
+    { skill = "parry" level = 85 },
+    { skill = "buddhism" level = 85 },
+    { skill = "literate" level = 85 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/zhangzhong.c by LPCConverter
+# Zone: mingjiao
+
+    characters "zhangzhong" {
+      name = "张中"
+      description = "他是一位高高瘦瘦的道人，身穿一件白布长袍。"
+  title = "明教五散人"
+  nickname = "铁冠道人"
+  gender = "男性"
+  age = 52
+  shen_type = 1
+  score = 5000
+  brain = brains.guarder
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 85 },
+    { skill = "hunyuan-yiqi" level = 85 },
+    { skill = "dodge" level = 85 },
+    { skill = "shaolin-shenfa" level = 85 },
+    { skill = "cuff" level = 95 },
+    { skill = "jingang-quan" level = 95 },
+    { skill = "parry" level = 85 },
+    { skill = "buddhism" level = 85 },
+    { skill = "literate" level = 85 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/zhoudian.c by LPCConverter
+# Zone: mingjiao
+
+    characters "zhoudian" {
+      name = "周颠"
+      description = "他是一位疯疯颠颠的老者，身穿一件白布长袍。 他总是慌慌张张的，先天下之急而急。"
+  title = "明教五散人"
+  nickname = "没事不颠有事颠"
+  gender = "男性"
+  age = 46
+  shen_type = 1
+  score = 5000
+  brain = brains.guarder
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 85 },
+    { skill = "hunyuan-yiqi" level = 85 },
+    { skill = "dodge" level = 85 },
+    { skill = "shaolin-shenfa" level = 85 },
+    { skill = "cuff" level = 95 },
+    { skill = "jingang-quan" level = 95 },
+    { skill = "parry" level = 85 },
+    { skill = "buddhism" level = 85 },
+    { skill = "literate" level = 85 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/npc/zhuangzheng.c by LPCConverter
+# Zone: mingjiao
+
+    characters "zhuangzheng" {
+      name = "庄铮"
+      description = "他是一位高大魁伟的中年男子，身穿一件白布长袍。 他天生神力，手中的两头狼牙棒有万夫不当之勇，真是一条威风凛凛的汉子。"
+  title = "明教锐金旗掌旗使"
+  gender = "男性"
+  age = 42
+  shen_type = 1
+  score = 5000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 1000
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 85 },
+    { skill = "hunyuan-yiqi" level = 85 },
+    { skill = "dodge" level = 85 },
+    { skill = "shaolin-shenfa" level = 85 },
+    { skill = "cuff" level = 95 },
+    { skill = "jingang-quan" level = 95 },
+    { skill = "parry" level = 85 },
+    { skill = "buddhism" level = 85 },
+    { skill = "literate" level = 85 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "cuff" skill = "jingang-quan" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.langyabang.id },
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/bag.c by LPCConverter
+# Zone: mingjiao
+
+    items "bag" {
+      name = "油布包"
+      description = "这是一个油布包裹。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/baipao.c by LPCConverter
+# Zone: mingjiao
+
+    items "baipao" {
+      name = "白布长袍"
+      description = "这是件白布长袍，虽不奢华，却洗得一尘不染，在袍襟上锈了一团血红的火焰， 颇为鲜艳。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/beixin.c by LPCConverter
+# Zone: mingjiao
+
+    items "beixin" {
+      name = "铁背心"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/changbian.c by LPCConverter
+# Zone: mingjiao
+
+    items "changbian" {
+      name = "长鞭"
+      description = "这是一柄普通的长鞭，由水牛精工编织而成。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抖出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}卷回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/changjian.c by LPCConverter
+# Zone: mingjiao
+
+    items "changjian" {
+      name = "长剑"
+      description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/chanzhang.c by LPCConverter
+# Zone: mingjiao
+
+    items "chanzhang" {
+      name = "禅杖"
+      description = "这是一根黑黝黝的镔铁禅杖，约四十来斤，是件称手的重兵器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/dahuan-dan.c by LPCConverter
+# Zone: mingjiao
+
+    items "dahuan_dan" {
+      name = "大还丹"
+      description = "这是一颗紫红晶亮的大还丹。此丹乃少林珍药，提高功力，灵效无比。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/fish.c by LPCConverter
+# Zone: mingjiao
+
+    items "fish" {
+      name = "大白鱼"
+      description = "这是一尾大白鱼，长达一尺。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/gangdao.c by LPCConverter
+# Zone: mingjiao
+
+    items "gangdao" {
+      name = "戒刀"
+      description = "这是一柄尺半长的戒刀，刀光闪闪，入手沉重，似是精铁打成。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一把明晃晃的{name}握在手中。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/hulu.c by LPCConverter
+# Zone: mingjiao
+
+    items "hulu" {
+      name = "葫芦"
+      description = "一个用葫芦制成的水壶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/huwan.c by LPCConverter
+# Zone: mingjiao
+
+    items "huwan" {
+      name = "铁护腕"
+      description = "这是一件皮质的护腕，上面满布铁钉，用以保护腕部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/huyao.c by LPCConverter
+# Zone: mingjiao
+
+    items "huyao" {
+      name = "铁护腰"
+      description = "这是一件皮质的护腰，上面满布铁钉，用以保护腰部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/jiedao.c by LPCConverter
+# Zone: mingjiao
+
+    items "jiedao" {
+      name = "戒刀"
+      description = "这是一柄尺半长的戒刀，刀光闪闪，入手沉重，似是精铁打成。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一把明晃晃的{name}握在手中。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/jinchuang-yao.c by LPCConverter
+# Zone: mingjiao
+
+    items "jinchuang_yao" {
+      name = "金创药"
+      description = "这是一包别具灵效的金创药，专治内外伤等。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/jing.c by LPCConverter
+# Zone: mingjiao
+
+    items "jing" {
+      name = "「楞伽经」"
+      description = "这是一本薄薄的经书，只因油布包得紧密，虽长期 藏在猿腹之中，书页仍然完好无损。书面上写著几 个弯弯曲曲的文字，你却是一个也不识得。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/langyabang.c by LPCConverter
+# Zone: mingjiao
+
+    items "langyabang" {
+      name = "狼牙棒"
+      description = "这是一根两头狼牙棒，约两百来斤，是件称手的重兵器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/mutang.c by LPCConverter
+# Zone: mingjiao
+
+    items "mutang" {
+      name = "木镗"
+      description = "这是一把作神道用的木镗。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}高高举起{name}。"
+    unwield = "{npc}放下{name}，有些气喘吁吁。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/muzhang.c by LPCConverter
+# Zone: mingjiao
+
+    items "muzhang" {
+      name = "木杖"
+      description = "这是一根龙头木杖。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}矗立在地上。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/qimeigun.c by LPCConverter
+# Zone: mingjiao
+
+    items "qimeigun" {
+      name = "齐眉棍"
+      description = "这是一根桦木白腊棍，举可齐眉，轻重合宜，可攻击大片敌人。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/qingshui-hulu.c by LPCConverter
+# Zone: mingjiao
+
+    items "qingshui_hulu" {
+      name = "清水葫芦"
+      description = "一个用葫芦制成的水壶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/sengxie.c by LPCConverter
+# Zone: mingjiao
+
+    items "sengxie" {
+      name = "僧鞋"
+      description = "一双青布僧鞋"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/shigu.c by LPCConverter
+# Zone: mingjiao
+
+    items "shigu" {
+      name = "尸骨"
+      description = "这是一只白森森的尸骨。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}手中握住一把{name}，眼中露出阴邪的笑意。"
+    unwield = "{npc}将{name}插回腰间，脸色顿时也恢复了正常。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/shoutao.c by LPCConverter
+# Zone: mingjiao
+
+    items "shoutao" {
+      name = "皮手套"
+      description = "这是一双皮手套，上面有硬物刻勒的痕迹。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/tie-ling.c by LPCConverter
+# Zone: mingjiao
+
+    items "tie_ling" {
+      name = "少林英雄令"
+      description = "这是一块用于通行少林寺的铁铸令牌。 由方丈签发，邀各路英雄入寺观礼。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/tieshou.c by LPCConverter
+# Zone: mingjiao
+
+    items "tieshou" {
+      name = "铁手掌"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/tieyanling.c by LPCConverter
+# Zone: mingjiao
+
+    items "tieyanling" {
+      name = "铁焰令"
+      description = "这是一面黑黝黝的令牌，由教主签发，凭此可向尊长挑战。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/toukui.c by LPCConverter
+# Zone: mingjiao
+
+    items "toukui" {
+      name = "头盔"
+      description = "这是一顶金属头盔，用以保护头部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/tuijianxin-1.c by LPCConverter
+# Zone: mingjiao
+
+    items "tuijianxin_1" {
+      name = "推荐信"
+      description = "这是一封坛主为你写的推荐信，凭此可去见接引使者。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/tuijianxin-2.c by LPCConverter
+# Zone: mingjiao
+
+    items "tuijianxin_2" {
+      name = "推荐信"
+      description = "这是一封门主为你写的推荐信，凭此可去见五行旗掌旗使。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/tuijianxin-3.c by LPCConverter
+# Zone: mingjiao
+
+    items "tuijianxin_3" {
+      name = "推荐信"
+      description = "这是一封掌旗使为你写的推荐信，凭此可去见内三堂堂主。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/tuijianxin-4.c by LPCConverter
+# Zone: mingjiao
+
+    items "tuijianxin_4" {
+      name = "推荐信"
+      description = "这是一封堂主为你写的推荐信，凭此可去见护教法王。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/weibo.c by LPCConverter
+# Zone: mingjiao
+
+    items "weibo" {
+      name = "围脖"
+      description = "这是一皮围脖，用以保护颈部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/xiaohuan-dan.c by LPCConverter
+# Zone: mingjiao
+
+    items "xiaohuan_dan" {
+      name = "小还丹"
+      description = "这是一颗莹白溜圆的小还丹。此丹乃少林奇药，助长内力，灵效无比。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/yangdt.c by LPCConverter
+# Zone: mingjiao
+
+    items "yangdt" {
+      name = "阳顶天遗骨"
+      description = "这是一具明教前任教主阳顶的遗骨。他英雄一世，现在是什么都不知道了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/yangfr.c by LPCConverter
+# Zone: mingjiao
+
+    items "yangfr" {
+      name = "阳夫人遗骨"
+      description = "这是一具明教前任教主阳顶夫人的遗骨。她胸口插着一口精亮的匕首。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/yaodai.c by LPCConverter
+# Zone: mingjiao
+
+    items "yaodai" {
+      name = "皮腰带"
+      description = "这是一件皮质的宽腰带，夹层透空，可以放各种软兵刃。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/yixin.c by LPCConverter
+# Zone: mingjiao
+
+    items "yixin" {
+      name = "阳教主遗信"
+      description = "夫人亲启：      夫人妆次：夫人自归阳门，日夕郁郁。余粗鄙寡德，无足为欢，甚可歉咎， 兹当永别，唯夫人谅之。三十二代衣教主遗命，令余练成乾坤大挪移神功后，率 众前赴波斯总教，设法迎回圣火令。本教虽发源于波斯，然在中华生根，开枝散 叶，已数百年于兹。今鞑子占我中土，本教誓与周旋到底，决不可遵波斯总教无 理命令，而奉蒙古元人为主。圣火令若重入我手，我中华明教即可与波斯总教分 庭抗礼也。      今余神功第四层初成，即悉成昆之事，血气翻涌不克自制，真力将散，行当 大归。天也命也，复何如耶？      今余命在旦夕，有负衣教主重托，实为本教罪人。盼夫人持余此亲笔遗书， 召聚左右光明使者、四大护教法王、五行旗使、五散人，颁余遗命曰：“不论何 人重获圣火令者，为本教第三十四代教主。不服者杀无赦。令谢逊暂摄副教主之 位，处分本教重务。”      乾坤大挪移心法暂由谢逊接掌，日后转奉新教主。光大我教，驱除胡虏，行 善去恶，持正除奸，令我明尊圣火普惠天下世人，新教主其勉之。      余将以身上残存功力，掩石门而和成昆共处。夫人可依秘道全图脱困。当世 无第二人有乾坤大挪移之功，即无第二人能推动此‘无妄’位石门，待后世豪杰 练成，余及成昆骸骨朽矣。                                                   顶天谨白。      余名顶天，然于世无功，于教无勋，伤夫人之心，赍恨而没，狂言顶天立地， 诚可笑也。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/obj/zhitao.c by LPCConverter
+# Zone: mingjiao
+
+    items "zhitao" {
+      name = "铁指套"
+      description = "这是五个环环相链的铁指套，前端锋利如刃，既可暗藏掌中伤人，又可保护指关节。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/yuan/li4.c by LPCConverter
+# Zone: mingjiao
+
+    characters "li4" {
+      name = "李四摧"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 200
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/yuan/qian2.c by LPCConverter
+# Zone: mingjiao
+
+    characters "qian2" {
+      name = "钱二败"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 200
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/yuan/sun3.c by LPCConverter
+# Zone: mingjiao
+
+    characters "sun3" {
+      name = "孙三毁"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 200
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/yuan/wang8.c by LPCConverter
+# Zone: mingjiao
+
+    characters "wang8" {
+      name = "王八衰"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 200
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/yuan/wu6.c by LPCConverter
+# Zone: mingjiao
+
+    characters "wu6" {
+      name = "吴六破"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 200
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/yuan/zhao1.c by LPCConverter
+# Zone: mingjiao
+
+    characters "zhao1" {
+      name = "赵一伤"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 200
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/yuan/zhaomin.c by LPCConverter
+# Zone: mingjiao
+
+    characters "zhaomin" {
+      name = "赵敏"
+      description = "她脸泛红霞，容色丽都。十分美丽之中，更带着三分英气，三分豪态，同 时雍容华贵，自有一副端严之致，令人肃然起敬，不敢逼视。"
+  title = "大元绍敏郡主"
+  gender = "女性"
+  age = 15
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 30
+    int = 25
+    max_jing = 200
+    max_neili = 500
+    max_qi = 500
+    str = 15
+  }
+
+  inquiries = [
+    { key = "倚天剑" value = "倚天为天下神兵。" },
+    { key = "张无忌" value = "张公子远在昆仑，不知他近来可好？秋冷春寒，可有寒衣？" }
+  ]
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "liangyi-jian" level = 80 },
+    { skill = "huifeng-jian" level = 80 },
+    { skill = "taiji-shengong" level = 90 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "liangyi-jian" },
+    { type = "sword" skill = "liangyi-jian" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.female2_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/yuan/zheng7.c by LPCConverter
+# Zone: mingjiao
+
+    characters "zheng7" {
+      name = "郑七灭"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 200
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/yuan/zhou5.c by LPCConverter
+# Zone: mingjiao
+
+    characters "zhou5" {
+      name = "周五输"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 200
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/mingjiao/yuan/obj/arrow.c by LPCConverter
+# Zone: mingjiao
+
+    items "arrow" {
+      name = "凤尾箭"
+      description = "这是凤尾箭，可以连珠箭发，势道十分凶猛。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

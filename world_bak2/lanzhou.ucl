@@ -1,0 +1,1358 @@
+zones "lanzhou" {
+  name = "lanzhou"
+}
+
+# Generated from C:/files/git/mud/d/lanzhou/beidajie1.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "beidajie1" {
+      name = "北大街"
+      description = "你走在一条繁忙的街道上，看着操着南腔北调的人们行色 匆匆，许多人都往南边走去，那里有一个热闹的广场。东边是 一个热闹的菜市场，买卖的人熙熙攘攘。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "beidajie1" {
+    room_id = rooms.beidajie1.id
+    north = rooms.beidajie2.id
+    south = rooms.guangchang.id
+    east = rooms.caisicang.id
+    }
+
+
+  room_characters "beidajie1" {
+    room_id = rooms.beidajie1.id
+    characters = [
+      { id = characters.liwenxiu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/beidajie2.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "beidajie2" {
+      name = "北大街"
+      description = "你走在一条繁忙的街道上，看着操着南腔北调的人们行色 匆匆，许多人都往南边走去，那里有一个热闹的广场。西边是 一个小吃馆，阵阵香味飘来，让你直流口水。"
+  x = 0
+  y = 2
+  z = 0
+    }
+
+  room_exits "beidajie2" {
+    room_id = rooms.beidajie2.id
+    north = rooms.beimen.id
+    south = rooms.beidajie1.id
+    east = rooms.majiu.id
+    west = rooms.xiaochidian.id
+    }
+
+
+  room_characters "beidajie2" {
+    room_id = rooms.beidajie2.id
+    characters = [
+      { id = characters.kid1.id },
+      { id = characters.old1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/beimen.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "beimen" {
+      name = "兰州北门"
+      description = "这是兰州城的北城门，由于这里的环境干燥，经过几年的 风沙侵蚀显得有些破败。城门正上方勉勉强强可以认出北门两 个大字，城墙上贴着几张通缉告示(gaoshi)。许多罪犯常常经 过这里逃到西域，官兵们戒备森严，动不动就截住行人进行盘 问。一条笔直的青石大道向南北两边延伸。北边是郊外，许多 西域来的商人都从这里进城。许多本地人也赶着牲口从这里经 过，到城里去卖掉自己种的瓜果，再买回生活必需品。南边是 城里。"
+  x = 0
+  y = 3
+  z = 0
+    }
+
+  room_exits "beimen" {
+    room_id = rooms.beimen.id
+    south = rooms.beidajie2.id
+    north = rooms.nroad1.id
+    }
+
+
+  room_characters "beimen" {
+    room_id = rooms.beimen.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.xunbu.id },
+      { id = characters.ducha.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/caisicang.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "caisicang" {
+      name = "菜市场"
+      description = "这里是兰州城内最大的蔬菜批发市场，方圆百里的农民都 将自己种植的蔬菜送到这儿来出售。这里的蔬菜量多，价格又 便宜，很多做蔬菜生意的贩子都到这儿来采购。"
+  x = 1
+  y = 1
+  z = 0
+    }
+
+  room_exits "caisicang" {
+    room_id = rooms.caisicang.id
+    south = rooms.dongdajie1.id
+    west = rooms.beidajie1.id
+    }
+
+
+  room_characters "caisicang" {
+    room_id = rooms.caisicang.id
+    characters = [
+      { id = characters.liumang.id },
+      { id = characters.liumang.id },
+      { id = characters.cainong.id },
+      { id = characters.boy.id },
+      { id = characters.girl.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/caroad1.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "caroad1" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，人来人往非常繁忙，不时地有人 骑着马匆匆而过。大道两旁有一些小货摊，北行不远就可以到 达兰州了，南边通往长安。"
+  x = 0
+  y = -4
+  z = 0
+    }
+
+  room_exits "caroad1" {
+    room_id = rooms.caroad1.id
+    south = rooms.caroad2.id
+    north = rooms.nanmen.id
+    }
+
+
+  room_characters "caroad1" {
+    room_id = rooms.caroad1.id
+    characters = [
+      { id = characters.tiaofu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/caroad2.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "caroad2" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，人来人往非常繁忙，不时地有人 骑着马匆匆而过。大道两旁有一些小货摊，北行不远就可以到 达兰州了，南边通往长安。"
+  x = 0
+  y = -5
+  z = 0
+    }
+
+  room_exits "caroad2" {
+    room_id = rooms.caroad2.id
+    south = rooms.caroad3.id
+    north = rooms.caroad1.id
+    }
+
+
+  room_characters "caroad2" {
+    room_id = rooms.caroad2.id
+    characters = [
+      { id = characters.shusheng1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/caroad3.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "caroad3" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，人渐渐少起来，只是有时有人骑 着马匆匆而过。"
+  x = 0
+  y = -6
+  z = 0
+    }
+
+  room_exits "caroad3" {
+    room_id = rooms.caroad3.id
+    southeast = rooms.caroad4.id
+    north = rooms.caroad2.id
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/caroad4.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "caroad4" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，人渐渐少起来，只是有时有人骑 着马匆匆而过。"
+  x = 1
+  y = -7
+  z = 0
+    }
+
+  room_exits "caroad4" {
+    room_id = rooms.caroad4.id
+    southeast = rooms.caroad5.id
+    northwest = rooms.caroad3.id
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/caroad5.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "caroad5" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，人渐渐少起来，只是有时有人骑 着马匆匆而过。"
+  x = 2
+  y = -8
+  z = 0
+    }
+
+  room_exits "caroad5" {
+    room_id = rooms.caroad5.id
+    east = rooms.caroad6.id
+    northwest = rooms.caroad4.id
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/caroad6.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "caroad6" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，人渐渐少起来，只是有时有人骑 着马匆匆而过。"
+  x = 3
+  y = -8
+  z = 0
+    }
+
+  room_exits "caroad6" {
+    room_id = rooms.caroad6.id
+    south = rooms.caroad7.id
+    west = rooms.caroad5.id
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/caroad7.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "caroad7" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，人渐渐少起来，只是有时有人骑 着马匆匆而过。远远的你已经可以看到长安城了。"
+  x = 3
+  y = -9
+  z = 0
+    }
+
+  room_exits "caroad7" {
+    room_id = rooms.caroad7.id
+    south = rooms.caroad8.id
+    north = rooms.caroad6.id
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/caroad8.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "caroad8" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，人渐渐少起来，只是有时有人骑 着马匆匆而过。远远的你已经可以看到长安城了。"
+  x = 3
+  y = -10
+  z = 0
+    }
+
+  room_exits "caroad8" {
+    room_id = rooms.caroad8.id
+    southeast = rooms.caroad2.id
+    north = rooms.caroad7.id
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/dongdajie1.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "dongdajie1" {
+      name = "东大街"
+      description = "你走在兰州城的东大街上，由于兰州是西北地区的交通要 道，不论到西域还是中原都要经过这里，所以各地的行人来来 往往，你不时还可以看见一些来自西域的商人带着驼队匆匆向 东走去。西边就是兰州城的中央广场，这儿远离了中央广场的 宣闹，南边有一座土地庙。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongdajie1" {
+    room_id = rooms.dongdajie1.id
+    east = rooms.dongmen.id
+    west = rooms.guangchang.id
+    north = rooms.caisicang.id
+    }
+
+
+  room_characters "dongdajie1" {
+    room_id = rooms.dongdajie1.id
+    characters = [
+      { id = characters.girl1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/dongmen.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "dongmen" {
+      name = "兰州东门"
+      description = "这是兰州城的东城门，由于这里的环境干燥，经过几年的 风沙侵蚀显得有些破败。城门正上方勉勉强强可以认出东门两 个大字，城墙上贴着几张通缉告示(gaoshi)。许多来边疆做苦 力的罪犯常常经过这里逃回中原，官兵们戒备森严，动不动就 截住行人进行盘问。一条笔直的青石大道向东西两边延伸。东 边是郊外，许多西域来的商人都是从这里出城，向东到达中原。 许多本地人也赶着牲口从这里经过，到城里去卖掉自己种的瓜 果，再买回生活必需品。西边是城里。"
+  x = 2
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongmen" {
+    room_id = rooms.dongmen.id
+    east = rooms.lzroad.id
+    west = rooms.dongdajie1.id
+    }
+
+
+  room_characters "dongmen" {
+    room_id = rooms.dongmen.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.xunbu.id },
+      { id = characters.ducha.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/duchuan.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "duchuan" {
+      name = "渡船"
+      description = "一叶小舟，最多也就能载七、八个人。一名四十多岁的老 艄公手持长竹篙，正在船尾吃力地撑着船。"
+  x = 0
+  y = 0
+  z = 1
+    }
+  room_exits "duchuan" {
+    room_id = rooms.duchuan.id
+    down = rooms.guangchang.id
+    up = rooms.kedian.id
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/guangchang.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "guangchang" {
+      name = "中央广场"
+      description = "这里是兰州城的中央广场。由于兰州是西北地区的交通要 道，不论到西域还是中原都要经过这里，所以各地的行人来来 往往，你不时还可以看见一些来自西域的商人带着驼队匆匆向 东走去。这里是城市的正中心，有一个很宽阔的广场，由于这 里风沙很大，所以铺着青石的地面经常铺着一层黄沙。一些游 手好闲的人在这里溜溜达达，经常有一些西域艺人在这里表演。 由于这里是由中原到西域的最后一个大城，各地的旅人都在这 里进行最后的补给。这里人声鼎沸，许多小贩争着向行人兜售 着自己的商品，一派热闹景象。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guangchang" {
+    room_id = rooms.guangchang.id
+    up = rooms.duchuan.id
+    east = rooms.dongdajie1.id
+    south = rooms.nandajie1.id
+    west = rooms.xidajie1.id
+    north = rooms.beidajie1.id
+    }
+
+
+  room_characters "guangchang" {
+    room_id = rooms.guangchang.id
+    characters = [
+      { id = characters.maiyi2.id },
+      { id = characters.haoke1.id },
+      { id = characters.haoke1.id },
+      { id = characters.liumangtou.id },
+      { id = characters.xiaofan.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/huasen.c by LPCConverter
+# Zone: lanzhou
+
+    items "huasen" {
+      name = "五香花生"
+      description = "一碟香喷喷的花生米。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/jioudian.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "jioudian" {
+      name = "迎风酒店"
+      description = "方圆数百里内提起兰州迎风酒楼可以说是无人不知，无人 不晓。连西域的人对迎风酒楼的花雕酒赞不绝口。你站在酒店 内，百年陈酿独特的香味，向你阵阵飘来。"
+  x = -1
+  y = -2
+  z = 0
+    }
+
+  room_exits "jioudian" {
+    room_id = rooms.jioudian.id
+    north = rooms.xiaojisi.id
+    }
+
+
+  room_characters "jioudian" {
+    room_id = rooms.jioudian.id
+    characters = [
+      { id = characters.xiaoer3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/kedian.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "kedian" {
+      name = "客店"
+      description = "这是一家价钱低廉的客栈，生意非常兴隆。外地游客多选择这里落脚，你 可以在这里打听到各地的风土人情。店小二里里外外忙得团团转，接待着南腔北调 的客人。客店的主人从不露面，他究竟是谁，有各种各样的猜测。墙上挂着一个牌 子(paizi)。"
+  x = 0
+  y = 0
+  z = 2
+item_desc = {
+ paizi = "楼上雅房，每夜五十两白银。"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）： !me->query_temp("rent_paid") && dir == "up" 
+direction = "up"
+  message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊！"
+}
+,
+{
+   # 阻挡条件（原样保留）： me->query_temp("rent_paid") && dir == "west" 
+direction = "west"
+  message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就走了呢！ 旁人还以为小店伺候不周呢！"
+}
+
+]
+    }
+
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+    down = rooms.duchuan.id
+    west = rooms.beidajie1.id
+    up = rooms.kedian2.id
+    }
+
+
+  room_characters "kedian" {
+    room_id = rooms.kedian.id
+    characters = [
+      { id = characters.xiaoer.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/kedian2.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "kedian2" {
+      name = "客店二楼"
+      description = "你正走在客店二楼的走廊上，可以听到从客房里不时地呼呼 的打酣声，一阵高过一阵。不时有睡意朦胧的旅客进进出出，到楼下 的掌柜处付了钱再上来睡觉。"
+  x = 0
+  y = 0
+  z = 3
+    }
+
+  room_exits "kedian2" {
+    room_id = rooms.kedian2.id
+    up = rooms.river_bei.id
+    down = rooms.kedian.id
+    in = rooms.kedian3.id
+    }
+
+
+
+
+  room_items "kedian2" {
+    room_id = rooms.kedian2.id
+    items = [
+      { id = items.xingzhe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/kedian3.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "kedian3" {
+      name = "客店二楼"
+      description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小木床， 不少客人正和衣而卧，满屋子都是呼呼的打酣声。西边有张床是空的， 你蹑手蹑脚地走了过去。"
+  x = 0
+  y = 0
+  z = 3
+    }
+
+  room_exits "kedian3" {
+    room_id = rooms.kedian3.id
+    out = rooms.kedian2.id
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/majiu.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "majiu" {
+      name = "马厩"
+      description = "这是元人客栈后的马厩，常年供应新鲜草料。兰州民风淳 朴，马夫们会把马牵到马厩好生照看，将它们喂饱饮足，再洗 刷得干乾净净，一直伺候到客人上路。马厩雨檐下的烂木柱上 钉着一块破木牌 (paizi)。马厩中堆放著几堆草料，正中有一 口泔槽。"
+  x = 1
+  y = 2
+  z = 0
+    }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+    west = rooms.beidajie2.id
+    }
+
+
+  room_characters "majiu" {
+    room_id = rooms.majiu.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu" {
+    room_id = rooms.majiu.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/nandajie1.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "nandajie1" {
+      name = "南大街"
+      description = "你走在一条繁忙的街道上，看着操着南腔北调的人们行色 匆匆，许多人都往北边走去，那里有一个热闹的广场。东边传 来一阵阵银两撞击的声音，那儿有一家老字号的银号。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "nandajie1" {
+    room_id = rooms.nandajie1.id
+    east = rooms.qianzhuang.id
+    north = rooms.guangchang.id
+    south = rooms.nandajie2.id
+    }
+
+
+  room_characters "nandajie1" {
+    room_id = rooms.nandajie1.id
+    characters = [
+      { id = characters.richman1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/nandajie2.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "nandajie2" {
+      name = "南大街"
+      description = "你走在一条繁忙的街道上，看着操着南腔北调的人们行色 匆匆，许多人都往北边走去，那里有一个热闹的广场。"
+  x = 0
+  y = -2
+  z = 0
+    }
+
+  room_exits "nandajie2" {
+    room_id = rooms.nandajie2.id
+    north = rooms.nandajie1.id
+    south = rooms.nanmen.id
+    }
+
+
+  room_characters "nandajie2" {
+    room_id = rooms.nandajie2.id
+    characters = [
+      { id = characters.girl4.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/nanmen.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "nanmen" {
+      name = "兰州南门"
+      description = "这是兰州城的南城门，由于这里的环境干燥，经过几年的 风沙侵蚀显得有些破败。城门正上方勉勉强强可以认出南门两 个大字，城墙上贴着几张通缉告示(gaoshi)。许多来边疆做苦 力的罪犯常常经过这里逃回中原，官兵们戒备森严，动不动就 截住行人进行盘问。一条笔直的青石大道向南北两边延伸。南 边是郊外，一些西域来的商人都从这里出城。许多本地人也赶 着牲口从这里经过，到城里去卖掉自己种的瓜果，再买回生活 必需品。北边是城里。"
+  x = 0
+  y = -3
+  z = 0
+    }
+
+  room_exits "nanmen" {
+    room_id = rooms.nanmen.id
+    north = rooms.nandajie2.id
+    south = rooms.caroad1.id
+    }
+
+
+  room_characters "nanmen" {
+    room_id = rooms.nanmen.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.ducha.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/nroad1.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "nroad1" {
+      name = "丝绸之路"
+      description = "这就是丝绸之路，从古代起这就是中国和西方各国进行经 济和文化交流的一条重要的陆上通道。你走在一条黄土大道上， 路的两边种满了泡桐树，人来人往非常繁忙，不时地有骑着骆 驼的西域商人匆匆而过。许多本地人在大道两旁摆了一些小货 摊。这里向南是西北大城--兰州。"
+  x = 0
+  y = 4
+  z = 0
+    }
+
+  room_exits "nroad1" {
+    room_id = rooms.nroad1.id
+    north = rooms.nroad2.id
+    south = rooms.beimen.id
+    west = rooms.road.id
+    }
+
+
+  room_characters "nroad1" {
+    room_id = rooms.nroad1.id
+    characters = [
+      { id = characters.trader.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/nroad2.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "nroad2" {
+      name = "丝绸之路"
+      description = "这就是丝绸之路，从古代起这就是中国和西方各国进行经 济和文化交流的一条重要的陆上通道。你走在黄土路上，路的 两边种满了泡桐树，这里人不是很多，只有一些有骑着骆驼的 西域商人向南匆匆走过。偶尔有两个本地人在大道旁摆了个小 摊。这里向南隐隐约约可以看到兰州城。"
+  x = 0
+  y = 5
+  z = 0
+    }
+
+  room_exits "nroad2" {
+    room_id = rooms.nroad2.id
+    northwest = rooms.nroad3.id
+    south = rooms.nroad1.id
+    }
+
+
+  room_characters "nroad2" {
+    room_id = rooms.nroad2.id
+    characters = [
+      { id = characters.youke.id },
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/nroad3.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "nroad3" {
+      name = "丝绸之路"
+      description = "这就是丝绸之路，从古代起这就是中国和西方各国进行经 济和文化交流的一条重要的陆上通道。你走在黄土路上，路的 两边种满了泡桐树，这里人很少，偶尔有几个骑着骆驼的西域 商人向南匆匆走去。"
+  x = -1
+  y = 6
+  z = 0
+    }
+
+  room_exits "nroad3" {
+    room_id = rooms.nroad3.id
+    northwest = rooms.nroad4.id
+    southeast = rooms.nroad2.id
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/nroad4.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "nroad4" {
+      name = "丝绸之路"
+      description = "这就是丝绸之路，从古代起这就是中国和西方各国进行经 济和文化交流的一条重要的陆上通道。你走在黄土路上，路的 两边种了一些泡桐树，这里人很少，偶尔有几个骑着骆驼的西 域商人向南匆匆走去。路的两边都是黄土，看上去很荒凉。你 听到哗哗的流水声，前面好象是一条河。"
+  x = -2
+  y = 7
+  z = 0
+    }
+
+  room_exits "nroad4" {
+    room_id = rooms.nroad4.id
+    north = rooms.river_nan.id
+    southeast = rooms.nroad3.id
+    }
+
+
+  room_characters "nroad4" {
+    room_id = rooms.nroad4.id
+    characters = [
+      { id = characters.haoke1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/qianzhuang.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "qianzhuang" {
+      name = "钱庄"
+      description = "这是一家老字号的钱庄，已有几百年的历史，在全国各地 都有分店。它发行的银票信誉非常好，通行全国。"
+  x = 1
+  y = -1
+  z = 0
+    }
+
+  room_exits "qianzhuang" {
+    room_id = rooms.qianzhuang.id
+    west = rooms.nandajie1.id
+    }
+
+
+  room_characters "qianzhuang" {
+    room_id = rooms.qianzhuang.id
+    characters = [
+      { id = characters.qian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/river-bei.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "river_bei" {
+      name = "黄河北岸"
+      description = "你来到了黄河 (river)的岸边，只见黄色的河水汹涌的向 下流去。这就是中国的母亲河----黄河。你看了一下四周，还 好不远处有一个小小的渡口，刚好有一艘渡船，船上已经有几 个人，老船夫正看着你，好象等你上来以后就马上要开船了。"
+  x = 0
+  y = 0
+  z = 3
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "river_bei" {
+    room_id = rooms.river_bei.id
+    up = rooms.tudimiao.id
+    down = rooms.kedian2.id
+    north = rooms.xiaojiaqiao.id
+    river = rooms.river_nan.id
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/river-nan.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "river_nan" {
+      name = "黄河南岸"
+      description = "你来到了黄河 (river)的岸边，只见黄色的河水汹涌的向 下流去。这就是中国的母亲河----黄河。你看了一下四周，还 好不远处有一个小小的渡口，刚好有一艘渡船，船上已经有几 个人，老船夫正看着你，好象等你上来以后就马上要开船了。"
+  x = -2
+  y = 8
+  z = 0
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "river_nan" {
+    room_id = rooms.river_nan.id
+    river = rooms.river_bei.id
+    south = rooms.nroad4.id
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/road.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "road" {
+      name = "荒道"
+      description = "这里是兰州城北门外的一条甚为僻静的小路，虽然离城区 不远，平时却很少有人来到这里。道路两旁杂草丛生，四周残 戈断壁，一派荒凉无际的废城景象。"
+  x = -1
+  y = 4
+  z = 0
+    }
+
+  room_exits "road" {
+    room_id = rooms.road.id
+    east = rooms.nroad1.id
+    west = rooms.guandao1.id
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/tudimiao.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "tudimiao" {
+      name = "土地庙"
+      description = "这里是土地庙，里面有一座土地公公的泥像，庙内香烟缭绕，有许多做买卖的 的人在此上香礼拜。武人到此，也都要放下武器，毕恭毕敬地上香礼拜。"
+  x = 0
+  y = 0
+  z = 4
+    }
+
+  room_exits "tudimiao" {
+    room_id = rooms.tudimiao.id
+    down = rooms.river_bei.id
+    north = rooms.dongdajie1.id
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/xiaochidian.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "xiaochidian" {
+      name = "小吃店"
+      description = "你一走进来，就闻到一股浓浓的小吃香味，人站在门口就 有一种想好好吃一顿的感觉。几张八仙桌一字排开，坐满了客 人，或高声谈笑，或交头接耳。你如果想打听打听江湖上的掌 故和谣言，这里倒是个好所在。小二在桌子之间穿来穿去，忙 得根本就来及招呼你。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "xiaochidian" {
+    room_id = rooms.xiaochidian.id
+    east = rooms.beidajie2.id
+    }
+
+
+  room_characters "xiaochidian" {
+    room_id = rooms.xiaochidian.id
+    characters = [
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/xiaojisi.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "xiaojisi" {
+      name = "小集市"
+      description = "这里是兰州城的一个小集市。南边有一座老酒店，不时传 来一阵阵酒香。由于兰州是西北地区的交通要道，不论到西域 还是中原都要经过这里，所以各地的行人来来往往，你不时可 以看见一些人带着满身酒气从身边经过。"
+  x = -1
+  y = -1
+  z = 0
+    }
+
+  room_exits "xiaojisi" {
+    room_id = rooms.xiaojisi.id
+    north = rooms.xidajie1.id
+    south = rooms.jioudian.id
+    }
+
+
+  room_characters "xiaojisi" {
+    room_id = rooms.xiaojisi.id
+    characters = [
+      { id = characters.dipi.id },
+      { id = characters.hunhun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/xidajie1.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "xidajie1" {
+      name = "西大街"
+      description = "你走在一条繁忙的街道上，看着操着南腔北调的人们行色 匆匆，许多人都往东边走去，那里有一个热闹的广场。南边远 远的有一家生意兴隆的小酒店，来自各地的人们进进出出。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "xidajie1" {
+    room_id = rooms.xidajie1.id
+    south = rooms.xiaojisi.id
+    west = rooms.ximen.id
+    east = rooms.guangchang.id
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/ximen.c by LPCConverter
+# Zone: lanzhou
+
+    rooms "ximen" {
+      name = "兰州西门"
+      description = "这是兰州城的西城门，由于这里的环境干燥，经过几年的 风沙侵蚀显得有些破败。城门正上方勉勉强强可以认出西门两 个大字，城墙上贴着几张通缉告示(gaoshi)。许多来边疆做苦 力的罪犯常常经过这里逃回中原，官兵们戒备森严，动不动就 截住行人进行盘问。一条笔直的青石大道向东西两边延伸。西 边是郊外，一直向西去就是举世闻名的敦煌，许多游客在找到 向导后都座着骆驼由这里出去游览敦煌。许多人赶着牲口从这 里经过，到城里去卖掉自己种的瓜果，再买回生活必需品。东 边是城里。"
+  x = -2
+  y = 0
+  z = 0
+    }
+
+  room_exits "ximen" {
+    room_id = rooms.ximen.id
+    east = rooms.xidajie1.id
+    west = rooms.xxroad3.id
+    }
+
+
+  room_characters "ximen" {
+    room_id = rooms.ximen.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.ducha.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/boy.c by LPCConverter
+# Zone: lanzhou
+
+    characters "boy" {
+      name = "男孩"
+      description = "这是个农家少年，大概因从小物农，虽然年纪不大，可已长的很粗壮了。"
+  gender = "男性"
+  age = 13
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100
+    con = 15
+    dex = 16
+    int = 17
+    str = 17
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/cainong.c by LPCConverter
+# Zone: lanzhou
+
+    characters "cainong" {
+      name = "菜贩子"
+      description = "一个老实巴交的农民，卖些新鲜的蔬菜。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+  brain = brains.vendor
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  # vendor_goods: "/d/beijing/obj/luobo" (file not found)
+  # vendor_goods: "/d/beijing/obj/huluobo" (file not found)
+  # vendor_goods: "/d/beijing/obj/baicai" (file not found)
+  # vendor_goods: "/d/beijing/obj/dacong" (file not found)
+  # vendor_goods: "/d/beijing/obj/tudou" (file not found)
+
+  chat_chance = 10
+chats = [
+    "菜贩子叫道：卖新鲜的萝卜吆。",
+    "菜贩子叫道：卖新鲜的胡萝卜吆。",
+    "菜贩子叫道：卖新鲜的白菜吆。",
+    "菜贩子叫道：卖新鲜的大葱吆。",
+    "菜贩子叫道：卖新鲜的土豆吆。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/girl.c by LPCConverter
+# Zone: lanzhou
+
+    characters "girl" {
+      name = "女孩"
+      description = "这是个农家少女，虽然只有十二、三 岁，身材已经开始发育。"
+  gender = "女性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 70
+    con = 16
+    dex = 15
+    int = 15
+    str = 14
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/kid.c by LPCConverter
+# Zone: lanzhou
+
+    characters "kid" {
+      name = "小孩"
+      description = "这是个农家小孩子"
+  gender = "男性"
+  age = 7
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 20
+    con = 11
+    dex = 11
+    int = 11
+    str = 11
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/liumang.c by LPCConverter
+# Zone: lanzhou
+
+    characters "liumang" {
+      name = "流氓"
+      description = "他是一个成天游手好闲的流氓，长得倒是白白胖胖的，也许以前有过钱。"
+  gender = "男性"
+  age = 19
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/liumangtou.c by LPCConverter
+# Zone: lanzhou
+
+    characters "liumangtou" {
+      name = "流氓头"
+      description = "他长得奸嘴猴腮的，一看就不像是个好人。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 7000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/qian.c by LPCConverter
+# Zone: lanzhou
+
+    characters "qian" {
+      name = "钱迷心"
+      description = ""
+  title = "钱庄老板"
+  nickname = "心迷钱"
+  gender = "男性"
+  age = 34
+  shen_type = 1
+  brain = brains.banker
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    con = 18
+    dex = 18
+    int = 24
+    max_jing = 100
+    max_qi = 500
+    str = 22
+  }
+
+  chat_chance = 2
+chats = [
+    "钱迷心骄傲的说道：本银号已经有上百年的历史，在江南可以说是第一家。",
+    "钱迷心笑着说道：在本店存钱无利息，取钱收十分之一的手续费，客官您看着办吧。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["check", "chazhang", "convert", "duihuan", "deposit", "cun", "withdraw", "qu"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/xiaoer.c by LPCConverter
+# Zone: lanzhou
+
+    characters "xiaoer" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  # vendor_goods: "/d/city/npc/obj/jitui" (file not found)
+  # vendor_goods: "/d/city/npc/obj/jiudai" (file not found)
+  # vendor_goods: "/d/city/npc/obj/baozi" (file not found)
+  # vendor_goods: "/d/city/npc/obj/kaoya" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/xiaoer2.c by LPCConverter
+# Zone: lanzhou
+
+    characters "xiaoer2" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  goods = [
+    { id = items.tangbo.id },
+    { id = items.kaoya.id },
+    { id = items.huasen.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/xiaoer3.c by LPCConverter
+# Zone: lanzhou
+
+    characters "xiaoer3" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  goods = [
+    { id = items.jiudai.id },
+    { id = items.jiouhulu.id },
+    { id = items.maoniurou.id },
+    { id = items.gourou.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/xiaofan.c by LPCConverter
+# Zone: lanzhou
+
+    characters "xiaofan" {
+      name = "小贩"
+      description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+  brain = brains.vendor
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  goods = [
+    { id = items.tanghulu.id },
+    { id = items.stick.id },
+    { id = items.shoes.id },
+    { id = items.bottle.id },
+    { id = items.kaoya.id }
+  ]
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/obj/bottle.c by LPCConverter
+# Zone: lanzhou
+
+    characters "bottle" {
+      name = "水壶"
+      description = "一个不知道用什么动物的皮制成的水壶。"
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/obj/cloth.c by LPCConverter
+# Zone: lanzhou
+
+    characters "cloth" {
+      name = "布衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/obj/gourou.c by LPCConverter
+# Zone: lanzhou
+
+    characters "gourou" {
+      name = "红烧狗肉"
+      description = "一碗香喷喷的红烧狗肉"
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/obj/jiouhulu.c by LPCConverter
+# Zone: lanzhou
+
+    characters "jiouhulu" {
+      name = "酒葫芦"
+      description = "一个用葫芦制成的酒壶。"
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/obj/jiudai.c by LPCConverter
+# Zone: lanzhou
+
+    characters "jiudai" {
+      name = "牛皮酒袋"
+      description = "一个用来装酒的大酒袋，大概装得八、九升的酒。"
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/obj/kaoya.c by LPCConverter
+# Zone: lanzhou
+
+    characters "kaoya" {
+      name = "烤鸭"
+      description = "一只肥得流油的北京烤鸭。"
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/obj/maoniurou.c by LPCConverter
+# Zone: lanzhou
+
+    characters "maoniurou" {
+      name = "耗牛肉"
+      description = "一块烧烤得香喷喷的耗牛肉。"
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/obj/shoes.c by LPCConverter
+# Zone: lanzhou
+
+    characters "shoes" {
+      name = "麻鞋"
+      description = "这是一双麻布鞋，不易大滑，供游人登山使用。"
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/obj/stick.c by LPCConverter
+# Zone: lanzhou
+
+    characters "stick" {
+      name = "手杖"
+      description = "这是一根爬山用的手杖。"
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/obj/tangbo.c by LPCConverter
+# Zone: lanzhou
+
+    characters "tangbo" {
+      name = "汤包"
+      description = "一个香喷喷的鲜肉汤包。"
+    }
+
+# Generated from C:/files/git/mud/d/lanzhou/npc/obj/tanghulu.c by LPCConverter
+# Zone: lanzhou
+
+    characters "tanghulu" {
+      name = "冰糖葫芦"
+      description = "一串火红的冰糖葫芦"
+    }

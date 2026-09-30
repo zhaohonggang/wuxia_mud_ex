@@ -1,0 +1,1289 @@
+[
+ {
+  "zone": "baituo",
+  "lost": [
+   {
+    "room": "cao1",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "cao1",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "cao2",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   }
+  ],
+  "documented": []
+ },
+ {
+  "zone": "beijing",
+  "lost": [],
+  "documented": [
+   {
+    "room": "huiying",
+    "dir": "up",
+    "raw": "rooms.jiulou.id",
+    "kind": "dangling (no such room)",
+    "why": "comment"
+   },
+   {
+    "room": "majiu",
+    "dir": "up",
+    "raw": "rooms.beijing_shop.id",
+    "kind": "/clone/shop/* (outside d/)",
+    "why": "comment"
+   },
+   {
+    "room": "road10",
+    "dir": "east",
+    "raw": "rooms.haigang.id",
+    "kind": "dangling (no such room)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "changan",
+  "lost": [],
+  "documented": [
+   {
+    "room": "majiu",
+    "dir": "up",
+    "raw": "rooms.changan_shop.id",
+    "kind": "/clone/shop/* (outside d/)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "chengdu",
+  "lost": [],
+  "documented": [
+   {
+    "room": "majiu",
+    "dir": "up",
+    "raw": "rooms.chengdu_shop.id",
+    "kind": "/clone/shop/* (outside d/)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "city",
+  "lost": [
+   {
+    "room": "ml1",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "ml1",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "ml2",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "ml2",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "ml3",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "ml3",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "ml4",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "ml4",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "ml5",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "ml5",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "ml6",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "ml6",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "ml7",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "ml7",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   }
+  ],
+  "documented": [
+   {
+    "room": "liaotian",
+    "dir": "east",
+    "raw": "rooms.qiyuan1.id",
+    "kind": "dangling (no such room)",
+    "why": "comment"
+   },
+   {
+    "room": "majiu",
+    "dir": "up",
+    "raw": "rooms.yangzhou_shop.id",
+    "kind": "/clone/shop/* (outside d/)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "dali",
+  "lost": [],
+  "documented": [
+   {
+    "room": "majiu",
+    "dir": "up",
+    "raw": "rooms.dali_shop.id",
+    "kind": "/clone/shop/* (outside d/)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "death",
+  "lost": [],
+  "documented": [
+   {
+    "room": "baihuxue",
+    "dir": "south",
+    "raw": "rooms.exit.id",
+    "kind": "dangling (no such room)",
+    "why": "comment"
+   },
+   {
+    "room": "jimiesi",
+    "dir": "north",
+    "raw": "rooms.entry.id",
+    "kind": "dangling (no such room)",
+    "why": "comment"
+   },
+   {
+    "room": "youmingdian",
+    "ident": "characters.yanluo.id",
+    "kind": "dangling",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "foshan",
+  "lost": [],
+  "documented": [
+   {
+    "room": "majiu",
+    "dir": "up",
+    "raw": "rooms.foshan_shop.id",
+    "kind": "/clone/shop/* (outside d/)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "fuzhou",
+  "lost": [],
+  "documented": [
+   {
+    "room": "majiu",
+    "dir": "up",
+    "raw": "rooms.fuzhou_shop.id",
+    "kind": "/clone/shop/* (outside d/)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "gumu",
+  "lost": [
+   {
+    "room": "mishi2",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mishi2",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mishi4",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mishi4",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mishi4",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mishi5",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mishi5",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mishi5",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mishi6",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mishi6",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mishi7",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mishi7",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shulin5",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shulin5",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shulin6",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shulin6",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   }
+  ],
+  "documented": []
+ },
+ {
+  "zone": "hangzhou",
+  "lost": [],
+  "documented": [
+   {
+    "room": "majiu",
+    "dir": "up",
+    "raw": "rooms.hangzhou_shop.id",
+    "kind": "/clone/shop/* (outside d/)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "hengyang",
+  "lost": [],
+  "documented": [
+   {
+    "room": "majiu",
+    "dir": "up",
+    "raw": "rooms.hengyang_shop.id",
+    "kind": "/clone/shop/* (outside d/)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "huanghe",
+  "lost": [
+   {
+    "room": "shamo",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shamo",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shamo",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shamo1",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shamo1",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shamo1",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   }
+  ],
+  "documented": []
+ },
+ {
+  "zone": "jingzhou",
+  "lost": [],
+  "documented": [
+   {
+    "room": "majiu",
+    "dir": "up",
+    "raw": "rooms.jingzhou_shop.id",
+    "kind": "/clone/shop/* (outside d/)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "kaifeng",
+  "lost": [],
+  "documented": [
+   {
+    "room": "majiu",
+    "dir": "up",
+    "raw": "rooms.kaifeng_shop.id",
+    "kind": "/clone/shop/* (outside d/)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "luoyang",
+  "lost": [],
+  "documented": [
+   {
+    "room": "majiu",
+    "dir": "up",
+    "raw": "rooms.luoyang_shop.id",
+    "kind": "/clone/shop/* (outside d/)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "mingjiao",
+  "lost": [
+   {
+    "room": "jmqjiguan",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "jmqjiguan",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "jmqjiguan",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "jmqjiguan",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   }
+  ],
+  "documented": []
+ },
+ {
+  "zone": "motianya",
+  "lost": [
+   {
+    "room": "mtroad1",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mtroad2",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mtroad2",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mtroad3",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mtroad3",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mtroad4",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mtroad5",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mtroad5",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "mtroad5",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   }
+  ],
+  "documented": []
+ },
+ {
+  "zone": "room",
+  "lost": [],
+  "documented": [
+   {
+    "room": "xiaoyuan",
+    "dir": "dule",
+    "raw": "rooms.xiaoyuan.id",
+    "kind": "dangling (no such room)",
+    "why": "comment"
+   },
+   {
+    "room": "xiaoyuan",
+    "dir": "caihong",
+    "raw": "rooms.xiaoyuan.id",
+    "kind": "dangling (no such room)",
+    "why": "comment"
+   },
+   {
+    "room": "xiaoyuan",
+    "dir": "panlong",
+    "raw": "rooms.dayuan.id",
+    "kind": "dangling (no such room)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "shaolin",
+  "lost": [
+   {
+    "room": "cjlou",
+    "ident": "items.fojing1+random(2).id",
+    "kind": "runtime-built expression",
+    "why": "no comment"
+   },
+   {
+    "room": "cjlou",
+    "ident": "items.fojing2+random(2).id",
+    "kind": "runtime-built expression",
+    "why": "no comment"
+   },
+   {
+    "room": "jianyu",
+    "ident": "items.fojing1+random(2).id",
+    "kind": "runtime-built expression",
+    "why": "no comment"
+   }
+  ],
+  "documented": []
+ },
+ {
+  "zone": "suzhou",
+  "lost": [],
+  "documented": [
+   {
+    "room": "majiu",
+    "dir": "up",
+    "raw": "rooms.suzhou_shop.id",
+    "kind": "/clone/shop/* (outside d/)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "tiezhang",
+  "lost": [
+   {
+    "room": "sslin_1",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "sslin_1",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "sslin_2",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "sslin_2",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "sslin_3",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "sslin_3",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "sslin_4",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "sslin_4",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "sslin_5",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "sslin_5",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   }
+  ],
+  "documented": [
+   {
+    "room": "hunanroad1",
+    "dir": "east",
+    "raw": "rooms.caodi6.id",
+    "kind": "dangling (no such room)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "xiakedao",
+  "lost": [
+   {
+    "room": "lin1",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin1",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin2",
+    "dir": "northeast",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin2",
+    "dir": "southeast",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin2",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin2",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin3",
+    "dir": "northeast",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin3",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin3",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin3",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin4",
+    "dir": "southeast",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin4",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin4",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin4",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin5",
+    "dir": "southeast",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin5",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin5",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin5",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin6",
+    "dir": "northwest",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin6",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin6",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin6",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin7",
+    "dir": "northwest",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin7",
+    "dir": "southeast",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin7",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "lin7",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "midao1",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "midao1",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "midao1",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "midao2",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "midao2",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "midao3",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "midao3",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shidong2",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shidong2",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shidong3",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shidong3",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shidong4",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shidong4",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shidong5",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shidong5",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   }
+  ],
+  "documented": []
+ },
+ {
+  "zone": "xiangyang",
+  "lost": [],
+  "documented": [
+   {
+    "room": "majiu",
+    "dir": "up",
+    "raw": "rooms.xiangyang_shop.id",
+    "kind": "/clone/shop/* (outside d/)",
+    "why": "comment"
+   }
+  ]
+ },
+ {
+  "zone": "xiyu",
+  "lost": [
+   {
+    "room": "nanjiang",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang",
+    "dir": "northwest",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang",
+    "dir": "southeast",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang1",
+    "dir": "northeast",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang1",
+    "dir": "southwest",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang1",
+    "dir": "northwest",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang1",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang1",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang2",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang2",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang2",
+    "dir": "southeast",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang2",
+    "dir": "northwest",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang2",
+    "dir": "southwest",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang3",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang3",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang3",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang3",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang3",
+    "dir": "southwest",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang3",
+    "dir": "southeast",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "nanjiang3",
+    "dir": "northwest",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shamo",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shamo",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shamo",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shamo",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   }
+  ],
+  "documented": []
+ },
+ {
+  "zone": "xueshan",
+  "lost": [
+   {
+    "room": "shenghu",
+    "dir": "north",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shenghu",
+    "dir": "south",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shenghu",
+    "dir": "west",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   },
+   {
+    "room": "shenghu",
+    "dir": "east",
+    "raw": "rooms.__file__.id",
+    "kind": "__FILE__ self-reference",
+    "why": "no comment"
+   }
+  ],
+  "documented": []
+ },
+ {
+  "zone": "zhongzhou",
+  "lost": [],
+  "documented": [
+   {
+    "room": "majiu",
+    "dir": "up",
+    "raw": "rooms.zhongzhou_shop.id",
+    "kind": "/clone/shop/* (outside d/)",
+    "why": "comment"
+   }
+  ]
+ }
+]

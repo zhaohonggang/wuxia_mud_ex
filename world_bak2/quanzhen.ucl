@@ -1,0 +1,3735 @@
+zones "quanzhen" {
+  name = "quanzhen"
+}
+
+# Generated from C:/files/git/mud/d/quanzhen/baishulin1.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "baishulin1" {
+      name = "柏树林"
+      description = "绕过翠屏谷的山壁，眼前是一片大柏树林，想是由于山壁 挡住了视线，在山下的山路上根本想不到这里的柏树竟会有这 么密这么高。你踏进柏树林中，阳光全被头顶的树叶遮住，越 往树林深处，光线越是幽暗。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "baishulin1" {
+    room_id = rooms.baishulin1.id
+    up = rooms.fu_midao.id
+    down = rooms.datang1.id
+    southdown = rooms.cuipinggu.id
+    northup = rooms.baishulin3.id
+    east = rooms.baishulin2.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/baishulin2.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "baishulin2" {
+      name = "柏树林"
+      description = "你走进了柏树林的深处，脚下踩着厚厚的落叶，松松软软。 这里的光线非常阴暗，你几乎什么都看不清了。突然一只松鼠 从你眼前的树枝上猛地跳了过去，吓了你一跳。"
+  x = 1
+  y = 0
+  z = 1
+    }
+
+  room_exits "baishulin2" {
+    room_id = rooms.baishulin2.id
+    west = rooms.baishulin1.id
+    northup = rooms.baishulin4.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/baishulin3.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "baishulin3" {
+      name = "柏树林"
+      description = "你走进了柏树林的深处，脚下踩着厚厚的落叶，松松软软。 这里的光线非常阴暗，你几乎什么都看不清了。突然一只松鼠 从你眼前的树枝上猛地跳了过去，吓了你一跳。"
+  x = 0
+  y = 1
+  z = 2
+    }
+
+  room_exits "baishulin3" {
+    room_id = rooms.baishulin3.id
+    southdown = rooms.baishulin1.id
+    east = rooms.baishulin4.id
+    northup = rooms.cuipingfeng.id
+    }
+
+
+  room_characters "baishulin3" {
+    room_id = rooms.baishulin3.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/baishulin4.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "baishulin4" {
+      name = "柏树林"
+      description = "这里是树林的边缘，光线亮的多了。参天的柏树也稀疏了 很多。旁边有一丛灌木(frutex)杂生。灌木再往前就是悬崖了。"
+  x = 1
+  y = 1
+  z = 2
+item_desc = {
+ frutex = "一丛你叫不出名字的灌木，其中夹杂着很多小刺。"
+}
+    }
+
+  room_exits "baishulin4" {
+    room_id = rooms.baishulin4.id
+    southdown = rooms.baishulin2.id
+    west = rooms.baishulin3.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/banshanting.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "banshanting" {
+      name = "半山亭"
+      description = "这里是半山腰的一个小凉亭，游客们爬山爬的累了，就转 个弯到这里来坐一坐，歇一歇脚。从这里看下去，刚好可以看 见翠屏峰的峰顶。"
+  x = -3
+  y = 3
+  z = 0
+    }
+
+  room_exits "banshanting" {
+    room_id = rooms.banshanting.id
+    southdown = rooms.shijie5.id
+    }
+
+
+  room_characters "banshanting" {
+    room_id = rooms.banshanting.id
+    characters = [
+      { id = characters.youke.id },
+      { id = characters.youke.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/beijie.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "beijie" {
+      name = "北街"
+      description = "北街是武功镇最繁华的街道，每逢初一十五，还要在这里 举行些庙会之类的聚会。街北面是一家酒楼，楼前挂着一条蓝 幅，上面写了个大大的「酒」字。西面是一户人家。几个小孩 在街上笑着闹着互相追逐。"
+  x = -1
+  y = -3
+  z = -2
+    }
+
+  room_exits "beijie" {
+    room_id = rooms.beijie.id
+    west = rooms.minju1.id
+    north = rooms.jiulou1.id
+    south = rooms.zhongxin.id
+    }
+
+
+  room_characters "beijie" {
+    room_id = rooms.beijie.id
+    characters = [
+      { id = characters.kid.id },
+      { id = characters.kid.id },
+      { id = characters.kid.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/cetang.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "cetang" {
+      name = "侧堂"
+      description = "这里是大堂旁边的侧厅，也是接待重要客人的地方。厅不 大，只摆放着一张桌子和几把椅子。桌上摆放着一盆青松山石 的盆景，墙壁上挂着一些字画。"
+  x = 1
+  y = 1
+  z = 0
+    }
+
+  room_exits "cetang" {
+    room_id = rooms.cetang.id
+    south = rooms.datang2.id
+    north = rooms.shiweishi.id
+    west = rooms.huizhentang.id
+    east = rooms.guozhendian.id
+    }
+
+
+
+
+  room_items "cetang" {
+    room_id = rooms.cetang.id
+    items = [
+      { id = items.li.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/chanfang1.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "chanfang1" {
+      name = "禅房"
+      description = "这里是全真教弟子摆放兵器的禅房，地下杂乱地堆着一些 剑，有的已经锈纹斑斑了，有的还是锋利透亮，全真弟子练功 的时候，就到这里来挑选兵刃。"
+  x = 4
+  y = 2
+  z = 0
+    }
+
+  room_exits "chanfang1" {
+    room_id = rooms.chanfang1.id
+    east = rooms.chanfang2.id
+    }
+
+
+  room_characters "chanfang1" {
+    room_id = rooms.chanfang1.id
+    characters = [
+      { id = characters.gangjian.id },
+      { id = characters.gangdao.id },
+      { id = characters.tiejia.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/chanfang2.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "chanfang2" {
+      name = "禅房"
+      description = "这里是全真弟子修身养性、打熬气力的地方。为了方便练 功，桌椅都没有摆放，仅仅在地下丢了几个小蒲团。"
+  x = 5
+  y = 2
+  z = 0
+    }
+
+  room_exits "chanfang2" {
+    room_id = rooms.chanfang2.id
+    south = rooms.liangong.id
+    west = rooms.chanfang1.id
+    east = rooms.chanfang3.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/chanfang3.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "chanfang3" {
+      name = "禅房"
+      description = "这里是全真弟子修身养性、打熬气力的地方。因为这里比 较幽静，很多弟子在这里静修养神，参悟道学真谛。"
+  x = 6
+  y = 2
+  z = 0
+    }
+
+  room_exits "chanfang3" {
+    room_id = rooms.chanfang3.id
+    west = rooms.chanfang2.id
+    east = rooms.xiaohuayuan2.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/chufang.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "这里是全真教的厨房，屋角上堆着一大堆手臂粗细的木柴， 看来还没有劈好。一位火工道人正愁眉苦脸地坐在那里，看着 那堆柴。墙上挂着一块牌子，墙边扔着一把柴刀。"
+  x = 7
+  y = -3
+  z = 0
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+    west = rooms.shantang.id
+    }
+
+
+  room_characters "chufang" {
+    room_id = rooms.chufang.id
+    characters = [
+      { id = characters.huogong.id }    ]
+  }
+
+
+
+  room_items "chufang" {
+    room_id = rooms.chufang.id
+    items = [
+      { id = items.ganchai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/cuipingfeng.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "cuipingfeng" {
+      name = "翠屏峰顶"
+      description = "这里是翠屏峰的峰顶。翠屏峰是终南山的第一峰，也是最 矮的一个山峰。悬崖边建有一个小亭子，你走进亭中凭拦远望， 远处的山间白云漂浮缭绕，好象筑着什么建筑，山景清丽，可 惜被白云尽遮住了。几个游客也在亭中歇脚。"
+  x = 0
+  y = 2
+  z = 3
+    }
+
+  room_exits "cuipingfeng" {
+    room_id = rooms.cuipingfeng.id
+    southdown = rooms.baishulin3.id
+    }
+
+
+  room_characters "cuipingfeng" {
+    room_id = rooms.cuipingfeng.id
+    characters = [
+      { id = characters.youke.id },
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/cuipinggu.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "cuipinggu" {
+      name = "翠屏谷"
+      description = "你的面前是一座形如屏风的大山壁，山壁上郁郁葱葱都是 树，一眼看过去，全是一片翠绿色。这就是此地名叫翠屏谷的 由来。从这里继续北上，就到了终南山上的柏树林了。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "cuipinggu" {
+    room_id = rooms.cuipinggu.id
+    northup = rooms.baishulin1.id
+    southdown = rooms.shanlu3.id
+    }
+
+
+  room_characters "cuipinggu" {
+    room_id = rooms.cuipinggu.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/cundaota1.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "cundaota1" {
+      name = "存道塔一层"
+      description = "这里是存道塔的一层，存道塔是当年全真弟子用来存放经 书的地方，塔不高，是用一块一块的大青石砌起来的。塔中的 梯子也是用青石所砌，据说之所以用石头砌塔是为了避免失火 烧毁了全真教的经书。"
+  x = 2
+  y = 2
+  z = 0
+    }
+
+  room_exits "cundaota1" {
+    room_id = rooms.cundaota1.id
+    westup = rooms.cundaota2.id
+    south = rooms.guozhendian.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/cundaota2.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "cundaota2" {
+      name = "存道塔二层"
+      description = "这里是存道塔的二层，塔梯绕着塔内向塔顶延伸。这里空 空如也，经书也许全被全真弟子们借去阅读了。"
+  x = 1
+  y = 2
+  z = 1
+    }
+
+  room_exits "cundaota2" {
+    room_id = rooms.cundaota2.id
+    eastdown = rooms.cundaota1.id
+    eastup = rooms.cundaota3.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/cundaota3.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "cundaota3" {
+      name = "存道塔三层"
+      description = "这里是存道塔的三层，塔梯绕着塔内向塔顶延伸。这里空 空如也，经书也许全被全真弟子们借去阅读了。"
+  x = 2
+  y = 2
+  z = 2
+    }
+
+  room_exits "cundaota3" {
+    room_id = rooms.cundaota3.id
+    westdown = rooms.cundaota2.id
+    westup = rooms.cundaota4.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/cundaota4.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "cundaota4" {
+      name = "存道塔顶"
+      description = "这里是存道塔的塔顶，塔梯到这里就到了尽头。墙壁上开 着几个窗户(window)，几个中年道人正捧着书苦苦研读。"
+  x = 1
+  y = 2
+  z = 3
+item_desc = {
+ window = "窗外白云飘过，似乎你一伸手就可以抓住一片。"
+}
+    }
+
+  room_exits "cundaota4" {
+    room_id = rooms.cundaota4.id
+    eastdown = rooms.cundaota3.id
+    }
+
+
+  room_characters "cundaota4" {
+    room_id = rooms.cundaota4.id
+    characters = [
+      { id = characters.zhangjing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/cunzhangjia.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "cunzhangjia" {
+      name = "村长家"
+      description = "这里是村长的家，堂屋里堆放着一些锄头、镰刀之类的农 耕用具，有一些是村中村民家里坏了，来央求村长给修的。屋 檐前吊着数十串鲜红的辣椒，还有一些风干的野味。"
+  x = -3
+  y = 0
+  z = -1
+    }
+
+  room_exits "cunzhangjia" {
+    room_id = rooms.cunzhangjia.id
+    south = rooms.guchang.id
+    }
+
+
+  room_characters "cunzhangjia" {
+    room_id = rooms.cunzhangjia.id
+    characters = [
+      { id = characters.dibao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/damen.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "damen" {
+      name = "全真教大门"
+      description = "你已走到了终南山半山腰，来到全真教的总部重阳宫。殿 宇依山而筑，高低错落有致。门上挂着一块匾上面写着：             ################################            ##                            ##            ##     重      阳      宫     ##            ##                            ##            ################################  几个大字。门前的石柱上挂着一副对联 (duilian)。周围古木 森森，翠竹成林，景色清幽。正前方黄墙碧瓦飞檐翘檩，正中 有一道二丈来宽三丈来高的朱红杉木包铜大门。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "damen" {
+    room_id = rooms.damen.id
+    westdown = rooms.jiaobei.id
+    east = rooms.datang1.id
+    }
+
+
+  room_characters "damen" {
+    room_id = rooms.damen.id
+    characters = [
+      { id = characters.zhike.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/datang1.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "datang1" {
+      name = "大堂一进"
+      description = "这里是大堂，是全真教接待客人的地方。堂很大，几十张 桌椅一字排开也丝毫不显拥挤。地下铺着整齐的青砖，几名道 童正忙前忙后地端茶送水招呼客人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "datang1" {
+    room_id = rooms.datang1.id
+    up = rooms.baishulin1.id
+    east = rooms.datang2.id
+    west = rooms.damen.id
+    north = rooms.huizhentang.id
+    south = rooms.xianzhentang.id
+    }
+
+
+  room_characters "datang1" {
+    room_id = rooms.datang1.id
+    characters = [
+      { id = characters.daotong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/datang2.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "datang2" {
+      name = "大堂二进"
+      description = "这里是大堂的第二重，是全真教弟子做功课的所在。现在 还不到功课时间，大堂里空荡荡的，只有全真教掌管上下杂事 的掌理道长带领着几个小道童在整理桌椅，预备餐饭。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "datang2" {
+    room_id = rooms.datang2.id
+    south = rooms.piandian.id
+    north = rooms.cetang.id
+    west = rooms.datang1.id
+    east = rooms.datang3.id
+    }
+
+
+  room_characters "datang2" {
+    room_id = rooms.datang2.id
+    characters = [
+      { id = characters.zhangli.id },
+      { id = characters.daotong1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/datang3.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "datang3" {
+      name = "大堂三进"
+      description = "这里是大堂的第三进，是全真教弟子议事的地方。全真教 祖师王重阳王真人最近闭关修炼，教内的俗事一般都交给大弟 子马钰来处理。遇有事时，马真人便会召集六位师弟师妹，包 括三代弟子中的部分大弟子来到此地议事。"
+  x = 2
+  y = 0
+  z = 0
+    }
+
+  room_exits "datang3" {
+    room_id = rooms.datang3.id
+    north = rooms.guozhendian.id
+    west = rooms.datang2.id
+    south = rooms.nairongdian.id
+    east = rooms.laojundian.id
+    }
+
+
+
+
+  room_items "datang3" {
+    room_id = rooms.datang3.id
+    items = [
+      { id = items.fang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/diziju.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "diziju" {
+      name = "弟子居"
+      description = "这里是全真弟子居住的房间。房间很大，整齐地铺着一排 排的床，床上被褥都折叠得很整齐，但连个人都没有，也许所 有的弟子都去练功去了。靠墙的地方有个柜子(cabinet)。"
+  x = 7
+  y = -1
+  z = 0
+item_desc = {
+ cabinet = "这是一个红木角柜，也许是堆放衣物用的。"
+}
+    }
+
+  room_exits "diziju" {
+    room_id = rooms.diziju.id
+    north = rooms.jingxiushi.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/dongjie.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "dongjie" {
+      name = "东街"
+      description = "这里是武功镇的东街，往东走就是武功东门了。武功镇是 小城镇，不算繁华，街上的行人也很稀少。北面是家客栈，客 栈门口挂着半副「鸡鸣早看天」的对联，但是上联已经被撕掉 了。南面是一座大宅院，朱红大门上布满铜钉。从这里往西走 就是武功镇的中心了。"
+  x = 0
+  y = -4
+  z = -2
+    }
+
+  room_exits "dongjie" {
+    room_id = rooms.dongjie.id
+    south = rooms.fu_damen.id
+    north = rooms.kedian1.id
+    west = rooms.zhongxin.id
+    east = rooms.dongmen.id
+    }
+
+
+  room_characters "dongjie" {
+    room_id = rooms.dongjie.id
+    characters = [
+      { id = characters.seller.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/dongmen.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "dongmen" {
+      name = "东门"
+      description = "这里是武功镇的东门，眼前城墙高耸，墙上的箭垛里好象 还有人走来走去。阳光照来，城墙上闪过几道白光，似乎是兵 器反射出的光。城门上题着东门两个大字，门口站着一些官兵 正手持兵刃盘问着来往的行人们。"
+  x = 1
+  y = -4
+  z = -2
+    }
+
+  room_exits "dongmen" {
+    room_id = rooms.dongmen.id
+    west = rooms.dongjie.id
+    east = rooms.guandao2.id
+    }
+
+
+  room_characters "dongmen" {
+    room_id = rooms.dongmen.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.xunbu.id },
+      { id = characters.ducha.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/fangzhenqiao.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "fangzhenqiao" {
+      name = "访真桥"
+      description = "跨过石阶，眼前是一座石头砌成的小小拱桥。桥上栏杆上 雕龙描凤，栩栩如生。这里的山势非常陡峻，往下一看，悬崖 壁立，脚下白云飘过，真不知身在何境。"
+  x = -2
+  y = 3
+  z = 2
+    }
+
+  room_exits "fangzhenqiao" {
+    room_id = rooms.fangzhenqiao.id
+    southdown = rooms.shijie7.id
+    north = rooms.yuzhengong.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/fu-cemen.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "fu_cemen" {
+      name = "富家侧门"
+      description = "这里是一道小门，可能是由于怕进出不方便而修建的。门 虽然小，但还修饰得人模人样，门上嵌着两个大铜环。几条大 狼狗懒洋洋躺在门边，一看见有人进来就汪汪地乱吠。出了门 就是武功镇的南街了，进门后是富家的小院。"
+  x = 0
+  y = -6
+  z = -2
+    }
+
+  room_exits "fu_cemen" {
+    room_id = rooms.fu_cemen.id
+    east = rooms.fu_xiaoyuan.id
+    northwest = rooms.nanjie.id
+    }
+
+
+
+
+  room_items "fu_cemen" {
+    room_id = rooms.fu_cemen.id
+    items = [
+      { id = items.gou2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/fu-ceting.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "fu_ceting" {
+      name = "侧厅"
+      description = "这是正堂旁边的一间小厅，本来是用作书房的，只是侯员 外家实在找不出多少书来装点门面，所以就整治成了招待熟客 的地方。厅中摆放着一张八仙桌和几把椅子，桌上刚沏好的茶 还在冒着热气。"
+  x = 1
+  y = -7
+  z = -2
+    }
+
+  room_exits "fu_ceting" {
+    room_id = rooms.fu_ceting.id
+    north = rooms.fu_huating.id
+    west = rooms.fu_datang.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/fu-damen.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "fu_damen" {
+      name = "富家大门"
+      description = "这里是武功镇上首富--侯员外家的大门，门上挂着一块大 横匾，上面写着侯府两个大字。门内立着一面朱红的影壁，模 模糊糊好象题着一些诗句之类的东西。几个横眉立眼的家丁正 挺胸凸肚地站在门口耀武扬威。"
+  x = 0
+  y = -5
+  z = -2
+    }
+
+  room_exits "fu_damen" {
+    room_id = rooms.fu_damen.id
+    south = rooms.fu_xiaoyuan.id
+    north = rooms.dongjie.id
+    }
+
+
+  room_characters "fu_damen" {
+    room_id = rooms.fu_damen.id
+    characters = [
+      { id = characters.jiading.id },
+      { id = characters.jiading.id },
+      { id = characters.jiading.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/fu-datang.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "fu_datang" {
+      name = "富家大堂"
+      description = "这里是侯员外家的大堂，堂梁上挂着一块匾。堂内摆放着 些八仙桌和椅子，壁上梅兰竹菊的竹帘被挂成了兰竹菊梅，看 来这家也不过是附庸风雅的暴发户而已。"
+  x = 0
+  y = -7
+  z = -2
+    }
+
+  room_exits "fu_datang" {
+    room_id = rooms.fu_datang.id
+    south = rooms.fu_houyuan.id
+    north = rooms.fu_xiaoyuan.id
+    west = rooms.fu_zhangfang.id
+    east = rooms.fu_ceting.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/fu-houyuan.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "fu_houyuan" {
+      name = "后院"
+      description = "这里是后院。走到这里，花香味更加浓烈了。你仔细一看， 东南边有一道圆形门，似乎花香是从那里传出来的。从这里再 往南走，就是侯员外的卧室了。"
+  x = 0
+  y = -8
+  z = -2
+    }
+
+  room_exits "fu_houyuan" {
+    room_id = rooms.fu_houyuan.id
+    south = rooms.fu_woshi.id
+    north = rooms.fu_datang.id
+    southeast = rooms.houhuayuan.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/fu-huating.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "fu_huating" {
+      name = "花厅"
+      description = "这里是这户人家喝酒赏月的所在，一个小亭子建造在厅的 中央，四周围绕着一些葡萄藤(teng)。一阵微风吹过，空气中 似乎有隐隐的花香飘来，中人欲醉。"
+  x = 1
+  y = -6
+  z = -2
+item_desc = {
+ teng = "这些藤好象长得有些日子了，密不透风，夏天呆在藤下肯定阴凉极了。"
+}
+    }
+
+  room_exits "fu_huating" {
+    room_id = rooms.fu_huating.id
+    west = rooms.fu_xiaoyuan.id
+    south = rooms.fu_ceting.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/fu-midao.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "fu_midao" {
+      name = "密道"
+      description = "这里是侯员外卧室下的密道，听说许多佃户由于缴不起租， 被侯员外的爪牙抓到这里来拷打。四周好象有一些浅褐色干的 血渍，空气中夹杂着一种令人毛骨悚然的腥气。你不由地有些 害怕起来，心想还是赶快离开这里吧。"
+  x = 0
+  y = 0
+  z = 2
+    }
+
+  room_exits "fu_midao" {
+    room_id = rooms.fu_midao.id
+    up = rooms.mishi.id
+    down = rooms.baishulin1.id
+    southeast = rooms.fu_mishi.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/fu-mishi.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "fu_mishi" {
+      name = "密室"
+      description = "这里是一间密室，四周散布着几条带血的鞭子，还有一些 各种各样的刑具。看来传说果然不虚，这侯员外果真是个鱼肉 乡里的恶霸。"
+  x = 1
+  y = -1
+  z = 2
+    }
+
+  room_exits "fu_mishi" {
+    room_id = rooms.fu_mishi.id
+    up = rooms.fu_woshi.id
+    northwest = rooms.fu_midao.id
+    }
+
+
+
+
+  room_items "fu_mishi" {
+    room_id = rooms.fu_mishi.id
+    items = [
+      { id = items.xuejie.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/fu-woshi.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "fu_woshi" {
+      name = "卧室"
+      description = "这里是侯员外的卧室，卧室中央横拉着一道大帘子。在帘 后有张雕着八仙过海的大床，床头有个抽屉(drawer)。床上铺 丝陈缎，厚厚的锦被看起来很舒服。"
+  x = 0
+  y = -9
+  z = -2
+item_desc = {
+ drawer = "一个抽屉，好象可以拉(pull)开，里面可能有不少金银珠宝哦。"
+}
+    }
+
+  room_exits "fu_woshi" {
+    room_id = rooms.fu_woshi.id
+    north = rooms.fu_houyuan.id
+    }
+
+
+  room_characters "fu_woshi" {
+    room_id = rooms.fu_woshi.id
+    characters = [
+      { id = characters.yuanwai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/fu-xiaoyuan.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "fu_xiaoyuan" {
+      name = "富家小院"
+      description = "这是进门后的一个小院落。西面是一道侧门，东面是一扇 月形门好象通往花厅，北面是大门，南面就是大堂了。几个穷 汉正垂头丧气地站在小院中，可能是因为缴不起租被抓来了。"
+  x = 0
+  y = -6
+  z = -2
+    }
+
+  room_exits "fu_xiaoyuan" {
+    room_id = rooms.fu_xiaoyuan.id
+    east = rooms.fu_huating.id
+    west = rooms.fu_cemen.id
+    south = rooms.fu_datang.id
+    north = rooms.fu_damen.id
+    }
+
+
+  room_characters "fu_xiaoyuan" {
+    room_id = rooms.fu_xiaoyuan.id
+    characters = [
+      { id = characters.poorman.id },
+      { id = characters.poorman.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/fu-zhangfang.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "fu_zhangfang" {
+      name = "帐房"
+      description = "这里是侯员外家的帐房。屋内青砖铺地，进门处横摆着张 桌子，一个管家正坐在桌后，小眼睛不住地跟着你转，好象又 在打什么坏主意。"
+  x = -1
+  y = -7
+  z = -2
+    }
+
+  room_exits "fu_zhangfang" {
+    room_id = rooms.fu_zhangfang.id
+    east = rooms.fu_datang.id
+    }
+
+
+  room_characters "fu_zhangfang" {
+    room_id = rooms.fu_zhangfang.id
+    characters = [
+      { id = characters.guanjia.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/guandao1.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "guandao1" {
+      name = "官道"
+      description = "这是一条大道，西面通往武功镇，东北方则是长安城。道 上的行人很多，大多是低着头自己赶自己的路。忽然在你的身 后响起得得的马蹄声，不一会儿，几匹骏马从你身边飞驰而过， 掠起了一片黄沙。"
+  x = 3
+  y = -4
+  z = -2
+    }
+
+  room_exits "guandao1" {
+    room_id = rooms.guandao1.id
+    northeast = rooms.nan_chengmen.id
+    west = rooms.guandao2.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/guandao2.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "guandao2" {
+      name = "官道"
+      description = "这是一条官府修建的大道，西面隐约可以看见武功镇的东 门。远处好象可以看见巍峨的城墙。往东是通往中原的路。走 在这里，你似乎有种「劝君更进一杯酒，西出阳关无故人」的 感觉。"
+  x = 2
+  y = -4
+  z = -2
+    }
+
+  room_exits "guandao2" {
+    room_id = rooms.guandao2.id
+    west = rooms.dongmen.id
+    east = rooms.guandao1.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/guangning.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "guangning" {
+      name = "广宁居"
+      description = "这里是全真七子之六郝大通的卧室，卧室很小，除了一张 小床，一张小茶几而外没有什么别的摆设。茶几晶萤透明，仔 细一看，原来几面是用整块的玉琢磨成的。茶几上摆放着几本 先天课术的书，还有一些卜卦用的金钱。"
+  x = 1
+  y = -2
+  z = 0
+    }
+
+  room_exits "guangning" {
+    room_id = rooms.guangning.id
+    north = rooms.piandian.id
+    }
+
+
+
+
+  room_items "guangning" {
+    room_id = rooms.guangning.id
+    items = [
+      { id = items.hao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/guanjinglou.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "guanjinglou" {
+      name = "观景楼"
+      description = "这里是一座两层的小楼，是建筑在庄园边缘用来登高凭拦 看风景的。你轻轻靠在栏杆上，竟朽的吱吱做响。看来已经很 久没有人有这个雅兴来这里看风景了。窗户(window)上的窗纸 已经破了不少，风一吹哗哗的响。"
+  x = 1
+  y = -10
+  z = -2
+item_desc = {
+ window = "窗外是黄沙满天，往远处看，什么都看不清楚。"
+}
+    }
+
+  room_exits "guanjinglou" {
+    room_id = rooms.guanjinglou.id
+    north = rooms.houhuayuan.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/guanritai.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "guanritai" {
+      name = "观日台"
+      description = "这里是终南山上的观日台，不知哪朝哪代何人在这里修筑 了这个平台，用来观瞻日出的美景。这里的山势非常陡峻，往 下一看，悬崖壁立，脚下白云飘过，真不知身在何境。"
+  x = -3
+  y = -3
+  z = 1
+    }
+
+  room_exits "guanritai" {
+    room_id = rooms.guanritai.id
+    north = rooms.shijie9.id
+    }
+
+
+  room_characters "guanritai" {
+    room_id = rooms.guanritai.id
+    characters = [
+      { id = characters.youke.id },
+      { id = characters.xiangke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/guchang.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "guchang" {
+      name = "晒谷场"
+      description = "这里是村庄中心的晒谷场，地方不大，不过村里也就五六 户人家，种的谷子也够晒了。现在正是收获的季节，谷场中堆 满了谷子，几个男女童子正在场中嬉闹，不时地扬起一捧谷子 相互撒去。"
+  x = -3
+  y = -1
+  z = -1
+    }
+
+  room_exits "guchang" {
+    room_id = rooms.guchang.id
+    southwest = rooms.minju4.id
+    northwest = rooms.minju3.id
+    north = rooms.cunzhangjia.id
+    southeast = rooms.xiaocun.id
+    }
+
+
+  room_characters "guchang" {
+    room_id = rooms.guchang.id
+    characters = [
+      { id = characters.boy.id },
+      { id = characters.boy.id },
+      { id = characters.girl.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/guozhendian.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "guozhendian" {
+      name = "过真殿"
+      description = "这是大堂旁边的一个侧殿，也是接待重要客人的地方。殿 不大，只摆放着一张桌子和几把椅子。桌上摆放着一盆青山隐 隐的盆景，墙壁上挂着一些字画。从这里往北有座小塔。"
+  x = 2
+  y = 1
+  z = 0
+    }
+
+  room_exits "guozhendian" {
+    room_id = rooms.guozhendian.id
+    north = rooms.cundaota1.id
+    west = rooms.cetang.id
+    south = rooms.datang3.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/houhuayuan.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "houhuayuan" {
+      name = "后花园"
+      description = "这里是一个小花园，杂乱地种着各种花草，看来无人打理， 杂草已经长得很高了。有些红白色的鲜花夹杂在草丛中，阵阵 花香不断地飘过。东面有一道小门，南面是一座两层小楼。"
+  x = 1
+  y = -9
+  z = -2
+    }
+
+  room_exits "houhuayuan" {
+    room_id = rooms.houhuayuan.id
+    east = rooms.houhuayuan1.id
+    south = rooms.guanjinglou.id
+    northwest = rooms.fu_houyuan.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/houhuayuan1.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "houhuayuan1" {
+      name = "后花园"
+      description = "这是一片荒废了的花园，本来这里有一片小池塘，养着些 金鱼之类，现在池塘差不多也干涸了。池塘边立着座假山，山 上长满了青苔，看来已经很久没有人来过了。"
+  x = 2
+  y = -9
+  z = -2
+    }
+
+  room_exits "houhuayuan1" {
+    room_id = rooms.houhuayuan1.id
+    west = rooms.houhuayuan.id
+    }
+
+
+
+
+  room_items "houhuayuan1" {
+    room_id = rooms.houhuayuan1.id
+    items = [
+      { id = items.gui.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/houshan.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "houshan" {
+      name = "后山"
+      description = "这里已经出了重阳宫，到了终南山的后山。这里鸟语花香， 空气清新，山势也平缓得多了。"
+  x = 8
+  y = 0
+  z = 0
+    }
+
+  room_exits "houshan" {
+    room_id = rooms.houshan.id
+    northeast = rooms.xiaolu1.id
+    west = rooms.jingxiushi.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/houtang1.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "houtang1" {
+      name = "后堂一进"
+      description = "这里是后堂的一进，是平常全真教弟子休息的地方。由于 全真教现在广收弟子，堂中摆放的桌椅也不断增加，显得这个 堂已经很拥挤了。"
+  x = 4
+  y = 0
+  z = 0
+    }
+
+  room_exits "houtang1" {
+    room_id = rooms.houtang1.id
+    west = rooms.laojundian.id
+    east = rooms.houtang2.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/houtang2.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "houtang2" {
+      name = "后堂二进"
+      description = "这里是全真教弟子平常研讨武功的地方，这个堂不大，由 于经常要在这里演武，索性连桌椅也全都靠到墙边去了，这样 腾出了一大片空地来。"
+  x = 5
+  y = 0
+  z = 0
+    }
+
+  room_exits "houtang2" {
+    room_id = rooms.houtang2.id
+    north = rooms.liangong.id
+    south = rooms.wuchang1.id
+    west = rooms.houtang1.id
+    east = rooms.houtang3.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/houtang3.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "houtang3" {
+      name = "后堂三进"
+      description = "这里是全真教弟子演练武功的地方。全真教弟子众多，所 以每逢每月的十五这天，就召集所有弟子来这里切磋，一方面 检验弟子们的武功长进，另一方面选拔人才担任教中的重要职 务。现在还不到演武的日子，堂中空无一人。"
+  x = 6
+  y = 0
+  z = 0
+    }
+
+  room_exits "houtang3" {
+    room_id = rooms.houtang3.id
+    northeast = rooms.xiaohuayuan1.id
+    west = rooms.houtang2.id
+    east = rooms.jingxiushi.id
+    }
+
+
+
+
+  room_items "houtang3" {
+    room_id = rooms.houtang3.id
+    items = [
+      { id = items.wangzhi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/huizhentang.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "huizhentang" {
+      name = "会真堂"
+      description = "这里是大堂旁的一个侧厅，也是接待重要客人的地方。厅 不大，只摆放着一张桌子和几把椅子。桌上摆放着一盆青松山 石的盆景，墙壁上挂着一些字画。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "huizhentang" {
+    room_id = rooms.huizhentang.id
+    south = rooms.datang1.id
+    north = rooms.wanwutang.id
+    east = rooms.cetang.id
+    }
+
+
+
+
+  room_items "huizhentang" {
+    room_id = rooms.huizhentang.id
+    items = [
+      { id = items.cui.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/jiaobei.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "jiaobei" {
+      name = "教碑"
+      description = "这里是全真教的教碑所在地，路旁立着一块大碑。再往东 走就是天下闻名的道家玄门正宗--全真教的大门了。北面有条 石阶，不知道通向哪里，往西是下山的路。"
+  x = -2
+  y = 0
+  z = -1
+    }
+
+  room_exits "jiaobei" {
+    room_id = rooms.jiaobei.id
+    west = rooms.shijianyan.id
+    eastup = rooms.damen.id
+    northup = rooms.shijie6.id
+    }
+
+
+
+
+  room_items "jiaobei" {
+    room_id = rooms.jiaobei.id
+    items = [
+      { id = items.zhao.id },
+      { id = items.zhou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/jingxiushi.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "jingxiushi" {
+      name = "静修室"
+      description = "这里是全真教弟子静修参悟道情的房间，房间很小，但收 拾的干干净净，桌椅都摆放得整整齐齐，让人一看就心无杂念。"
+  x = 7
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(ob = present("liu chuxuan", environment(me))) && living(ob) && dir == "east"
+direction = "east"
+  message = "刘处玄伸手拦住你道：后面是本教祖师清修之地，请止步。"
+}
+
+]
+    }
+
+  room_exits "jingxiushi" {
+    room_id = rooms.jingxiushi.id
+    west = rooms.houtang3.id
+    south = rooms.diziju.id
+    east = rooms.houshan.id
+    }
+
+
+
+
+  room_items "jingxiushi" {
+    room_id = rooms.jingxiushi.id
+    items = [
+      { id = items.liu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/jiulou1.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "jiulou1" {
+      name = "酒楼"
+      description = "这家酒楼是武功镇方圆百里内的唯一一家，不过连名字都 没有。楼下布置简易，顾客多是匆匆的行人，买点鸡腿、米酒 就赶路去了。楼上是雅座。"
+  x = -1
+  y = -2
+  z = -2
+    }
+
+  room_exits "jiulou1" {
+    room_id = rooms.jiulou1.id
+    up = rooms.jiulou2.id
+    south = rooms.beijie.id
+    }
+
+
+  room_characters "jiulou1" {
+    room_id = rooms.jiulou1.id
+    characters = [
+      { id = characters.xiaoer.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/jiulou2.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "jiulou2" {
+      name = "酒楼二楼"
+      description = "这里是雅座，文人学士经常在这里吟诗作画，富商土豪也 在这里边吃喝边作交易。这里也是城里举办喜宴的场所。你站 在楼上眺望，只觉得心怀坦荡。四周全是漫漫的黄沙，比之江 南的花香鸟语，气势更是浩荡。"
+  x = -1
+  y = -2
+  z = -1
+    }
+
+  room_exits "jiulou2" {
+    room_id = rooms.jiulou2.id
+    down = rooms.jiulou1.id
+    }
+
+
+  room_characters "jiulou2" {
+    room_id = rooms.jiulou2.id
+    characters = [
+      { id = characters.zhanggui.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/kedian1.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "kedian1" {
+      name = "客店"
+      description = "这是一家价钱低廉的客栈，生意非常兴隆。外地游客多选 择这里落脚，你可以在这里打听到各地的风土人情。店小二里 里外外忙得团团转，接待着南腔北调的客人。客店的主人从不 露面。墙上挂着一个牌子。"
+  x = 0
+  y = -3
+  z = -2
+item_desc = {
+ paizi = "##################################         ##                              ##         ##    楼上雅房，每夜十两白银。  ##         ##                              ##         ##################################"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "up"
+direction = "up"
+  message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊？"
+}
+,
+{
+   # 阻挡条件（原样保留）：me->query_temp("rent_paid") && dir == "south"
+direction = "south"
+  message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就走了呢！"
+}
+
+]
+    }
+
+  room_exits "kedian1" {
+    room_id = rooms.kedian1.id
+    up = rooms.kedian2.id
+    south = rooms.dongjie.id
+    north = rooms.majiu.id
+    }
+
+
+  room_characters "kedian1" {
+    room_id = rooms.kedian1.id
+    characters = [
+      { id = characters.xiaoer1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/kedian2.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "kedian2" {
+      name = "客店二楼"
+      description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小 木床，不少客人正和衣而卧，满屋子都是呼呼的打酣声。西边 有张床是空的，你蹑手蹑脚地走了过去。"
+  x = 0
+  y = -3
+  z = -1
+    }
+
+  room_exits "kedian2" {
+    room_id = rooms.kedian2.id
+    down = rooms.kedian1.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/laojundian.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "laojundian" {
+      name = "老君殿"
+      description = "这里是供奉太上老君的大殿。殿中塑着老君的塑像，老君 骑在青牛上，正临云而去。两旁塑着两个童子，栩栩如生。殿 中的地都是以青砖一块块的铺成，打扫得一尘不染。"
+  x = 3
+  y = 0
+  z = 0
+    }
+
+  room_exits "laojundian" {
+    room_id = rooms.laojundian.id
+    west = rooms.datang3.id
+    north = rooms.yuanshidian.id
+    south = rooms.tongtiandian.id
+    east = rooms.houtang1.id
+    }
+
+
+
+
+  room_items "laojundian" {
+    room_id = rooms.laojundian.id
+    items = [
+      { id = items.qiu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/liangong.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "liangong" {
+      name = "练功房"
+      description = "这里是全真教弟子练功的房间。这座房间形状甚是奇特前 窄後宽，成为梯形，东边半圆，西边却作三角形状，原来这是 全真教独有的练功室，前窄练掌，後宽使指，东圆研剑，西角 发镖。房中央立着几个练功用的木人，吊着几个沙袋 (bag)和 纸册(paper)。"
+  x = 5
+  y = 1
+  z = 0
+item_desc = {
+ paper = "这是一摞厚厚的牛皮纸册，用铁钉钉在墙上。好象可以用来练 掌法的，你可以试着打(da)打看。"
+ bag = "这是一个大沙袋，看起来非常结实。好象是专门用来练习指法 的，你可以刺(ci)刺它试试看。"
+}
+    }
+
+  room_exits "liangong" {
+    room_id = rooms.liangong.id
+    north = rooms.chanfang2.id
+    south = rooms.houtang2.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/majiu.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "majiu" {
+      name = "马厩"
+      description = "这是武功镇的马厩，因为平时来往的人不多，显得有些破 旧。马厩雨檐下的烂木柱上钉着一块破木牌 (paizi)。厩中堆 放著几堆草料，正中有一口泔槽。"
+  x = 0
+  y = -2
+  z = -2
+    }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+    south = rooms.kedian1.id
+    }
+
+
+  room_characters "majiu" {
+    room_id = rooms.majiu.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu" {
+    room_id = rooms.majiu.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/minju1.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "minju1" {
+      name = "民居"
+      description = "这好象是一家相对殷实的小康人家，屋内铺着青砖，正中 摆着套红木桌椅。墙上挂着几幅山水画，主人不在家里。"
+  x = -2
+  y = -3
+  z = -2
+    }
+
+  room_exits "minju1" {
+    room_id = rooms.minju1.id
+    east = rooms.beijie.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/minju2.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "minju2" {
+      name = "民居"
+      description = "这是一家用茅草搭的房屋，家徒四壁，屋角的米缸是空的 厨房内的水缸也是空的。几个缺胳膊少腿的桌椅靠墙立着。看 来主人已经把所有能值钱的东西全都变卖了。"
+  x = -2
+  y = -3
+  z = -2
+    }
+
+  room_exits "minju2" {
+    room_id = rooms.minju2.id
+    south = rooms.xijie.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/minju3.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "minju3" {
+      name = "民居"
+      description = "这是一所乡间民居，桌椅都很旧了，而且看得出来是自己 敲敲打打给拼补下来的，不过擦拭得很干净。墙壁上斜倚着支 猎叉，也许这家的主人还是个捕猎高手。"
+  x = -4
+  y = 0
+  z = -1
+    }
+
+  room_exits "minju3" {
+    room_id = rooms.minju3.id
+    southeast = rooms.guchang.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/minju4.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "minju4" {
+      name = "民居"
+      description = "这间屋子你一进来就看见屋角大袋小袋地堆满了粮食，看 得出来今年的收成确实不错。屋内坐着一位村民，正笑嘻嘻地 看着自己的积粮，也许正在盘算这个冬天又不愁了。"
+  x = -4
+  y = -2
+  z = -1
+    }
+
+  room_exits "minju4" {
+    room_id = rooms.minju4.id
+    northeast = rooms.guchang.id
+    }
+
+
+  room_characters "minju4" {
+    room_id = rooms.minju4.id
+    characters = [
+      { id = characters.cunmin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/mishi.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "mishi" {
+      name = "密室"
+      description = "这里是全真教弟子为了直达中原修建的密室，这里的光线 非常昏暗，也许已经身处地下了。"
+  x = 0
+  y = 0
+  z = 3
+    }
+
+  room_exits "mishi" {
+    room_id = rooms.mishi.id
+    down = rooms.fu_midao.id
+    up = rooms.diziju.id
+    eastup = rooms.guangchang.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/nairongdian.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "nairongdian" {
+      name = "乃容殿"
+      description = "这里是大堂旁边的侧殿，也是接待重要客人的地方。殿不 大，只摆放着一张桌子和几把椅子。桌上摆放着一盆青山隐隐 的盆景，墙壁上挂着一些字画。"
+  x = 2
+  y = -1
+  z = 0
+    }
+
+  room_exits "nairongdian" {
+    room_id = rooms.nairongdian.id
+    north = rooms.datang3.id
+    west = rooms.piandian.id
+    south = rooms.qingjing.id
+    }
+
+
+
+
+  room_items "nairongdian" {
+    room_id = rooms.nairongdian.id
+    items = [
+      { id = items.cheng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/nanjie.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "nanjie" {
+      name = "南街"
+      description = "这里是武功的南街，说是街，不过是一条小胡同而已。路 上一个人也没有。街的尽头有一扇小门。从这里往北，就是武 功镇的中心了。"
+  x = -1
+  y = -5
+  z = -2
+    }
+
+  room_exits "nanjie" {
+    room_id = rooms.nanjie.id
+    southeast = rooms.fu_cemen.id
+    north = rooms.zhongxin.id
+    }
+
+
+  room_characters "nanjie" {
+    room_id = rooms.nanjie.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/piandian.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "piandian" {
+      name = "偏殿"
+      description = "这里是大堂旁边的侧厅，也是接待重要客人的地方。厅不 大，只摆放着一张桌子和几把椅子。桌上摆放着一盆青山隐隐 的盆景，墙壁上挂着一些字画。"
+  x = 1
+  y = -1
+  z = 0
+    }
+
+  room_exits "piandian" {
+    room_id = rooms.piandian.id
+    south = rooms.guangning.id
+    north = rooms.datang2.id
+    west = rooms.xianzhentang.id
+    east = rooms.nairongdian.id
+    }
+
+
+
+
+  room_items "piandian" {
+    room_id = rooms.piandian.id
+    items = [
+      { id = items.shen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/qingjing.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "qingjing" {
+      name = "清净居"
+      description = "这里是全真七子之末，也是唯一女弟子孙不二的居室。这 房间窗明几净，和她几位师兄的卧室大不相同。床上折叠着件 道袍，袍上绣着一个骷髅头。这骷髅头可不是随便绣来吓人的。 是当年王重阳收孙不二为徒时，画了一副骷髅图案给她，意思 是说人生苦短，得道为安。孙不二感念师恩，就将这个骷髅图 案绣在自己的道袍上。"
+  x = 2
+  y = -2
+  z = 0
+    }
+
+  room_exits "qingjing" {
+    room_id = rooms.qingjing.id
+    north = rooms.nairongdian.id
+    }
+
+
+
+
+  room_items "qingjing" {
+    room_id = rooms.qingjing.id
+    items = [
+      { id = items.sun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/rongwutang.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "rongwutang" {
+      name = "容物堂"
+      description = "这里是全真七子之二谭处端的居室，这间房间收拾的和普 通的民居没什么区别，只是一尘不染，墙上斜挂着一把宝剑。"
+  x = 0
+  y = -2
+  z = 0
+    }
+
+  room_exits "rongwutang" {
+    room_id = rooms.rongwutang.id
+    north = rooms.xianzhentang.id
+    }
+
+
+
+
+  room_items "rongwutang" {
+    room_id = rooms.rongwutang.id
+    items = [
+      { id = items.tan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/shandong.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shandong" {
+      name = "后山山洞"
+      description = "这里是全真教开山祖师王重阳真人静修的山洞。洞虽不大 但却布置得很是雅致，便似大户人家的客厅一样。洞壁上悬挂 着副画(hua)，桌椅茶几都很精致。"
+  x = 11
+  y = 2
+  z = 0
+item_desc = {
+ hua = "画中是一个中年道士的背影，看不出什么相貌，画中道人一手 指着天，画角题着「活死人像」几个字。"
+}
+    }
+
+  room_exits "shandong" {
+    room_id = rooms.shandong.id
+    out = rooms.xiaolu3.id
+    }
+
+
+
+
+  room_items "shandong" {
+    room_id = rooms.shandong.id
+    items = [
+      { id = items.wang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/shanjiao.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shanjiao" {
+      name = "终南山脚"
+      description = "这里是终南山的山脚，终南山号称西北的第一山，以山势 奇峻，环境清幽著称。这里的山势还很平缓，一道石阶蜿蜒通 往山上。面前是一座高山，如同擎天一柱般插向天空，所以古 人的诗句中有「终南一柱」的说法。"
+  x = 1
+  y = -4
+  z = 0
+    }
+
+  room_exits "shanjiao" {
+    room_id = rooms.shanjiao.id
+    westdown = rooms.shanlu4.id
+    north = rooms.shanlu13.id
+    }
+
+
+  room_characters "shanjiao" {
+    room_id = rooms.shanjiao.id
+    characters = [
+      { id = characters.youke.id },
+      { id = characters.xiangke.id },
+      { id = characters.xiangke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/shanlu1.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shanlu1" {
+      name = "山路"
+      description = "从武功西门出来，路势变急了，这是一条用石块铺成的山 路。路两旁光秃秃的，没有什么树木，全是一块块石头。这条 路好象通往前面的终南山上。北面有一个小村庄，村中正升起 冉冉的炊烟。"
+  x = -2
+  y = -3
+  z = -2
+    }
+
+  room_exits "shanlu1" {
+    room_id = rooms.shanlu1.id
+    southwest = rooms.ximen.id
+    northup = rooms.xiaocun.id
+    eastup = rooms.shanlu2.id
+    }
+
+
+  room_characters "shanlu1" {
+    room_id = rooms.shanlu1.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/shanlu2.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shanlu2" {
+      name = "山路"
+      description = "一条山路弯弯曲曲地通向山上。北面的山上好象有一片柏 树林，树林中隐隐露出亭子的一角，南面就是上山的路。"
+  x = -1
+  y = -3
+  z = -1
+    }
+
+  room_exits "shanlu2" {
+    room_id = rooms.shanlu2.id
+    westdown = rooms.shanlu1.id
+    southeast = rooms.shanlu4.id
+    northeast = rooms.shanlu3.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/shanlu3.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shanlu3" {
+      name = "山路"
+      description = "前面好象有一个大山谷，走到这里，树木多了些，全都是 柏树。西面是一条弯曲的山路，隐藏在山间，要在夜里还真看 不出来。"
+  x = 0
+  y = -2
+  z = -1
+    }
+
+  room_exits "shanlu3" {
+    room_id = rooms.shanlu3.id
+    northup = rooms.cuipinggu.id
+    southwest = rooms.shanlu2.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/shanlu4.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shanlu4" {
+      name = "山路"
+      description = "这里是山路的尽头，南面好象有一片小树林，折而向东就 是终南山的山脚了。"
+  x = 0
+  y = -4
+  z = -1
+    }
+
+  room_exits "shanlu4" {
+    room_id = rooms.shanlu4.id
+    eastup = rooms.shanjiao.id
+    northwest = rooms.shanlu2.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/shantang.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shantang" {
+      name = "膳堂"
+      description = "这里是全真教的膳堂，是弟子们用餐的地方。这个堂很大 整齐地摆放着一排一排的桌椅。现在桌椅上三三两两地坐着全 真弟子，有的正在用餐，有的低头谈笑。看着可口的饭菜，你 忍不住也想叫(serve)一份。"
+  x = 6
+  y = -3
+  z = 0
+    }
+
+  room_exits "shantang" {
+    room_id = rooms.shantang.id
+    northwest = rooms.wuchang2.id
+    east = rooms.chufang.id
+    north = rooms.xiuxishi.id
+    }
+
+
+  room_characters "shantang" {
+    room_id = rooms.shantang.id
+    characters = [
+      { id = characters.huogong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/shijianyan.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shijianyan" {
+      name = "试剑岩"
+      description = "石阶旁立着一块大岩石，上面斑斑驳驳的尽是砍伤。这块 大岩石便是全真教的试剑岩，天下的英雄来到这里，望着先辈 们练剑时在岩石上的砍痕，无不肃然起敬。"
+  x = -3
+  y = 0
+  z = -1
+    }
+
+  room_exits "shijianyan" {
+    room_id = rooms.shijianyan.id
+    east = rooms.jiaobei.id
+    southup = rooms.shijie8.id
+    northdown = rooms.shijie4.id
+    }
+
+
+  room_characters "shijianyan" {
+    room_id = rooms.shijianyan.id
+    characters = [
+      { id = characters.daotong.id },
+      { id = characters.daotong.id }    ]
+  }
+
+
+
+  room_items "shijianyan" {
+    room_id = rooms.shijianyan.id
+    items = [
+      { id = items.yin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/shijie1.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shijie1" {
+      name = "石阶"
+      description = "这是一条整齐的石板路，依山而建，随着山势的曲折蜿蜒 曲折。由于山势陡了，当初修建这条石阶时肯定费了不小的功 夫。走到这里，已经可以看见全真教重阳观的檐角了。"
+  x = -5
+  y = 1
+  z = -4
+    }
+
+  room_exits "shijie1" {
+    room_id = rooms.shijie1.id
+    southdown = rooms.daxiaochang.id
+    northup = rooms.shijie2.id
+    }
+
+
+  room_characters "shijie1" {
+    room_id = rooms.shijie1.id
+    characters = [
+      { id = characters.youke.id },
+      { id = characters.xiangke.id },
+      { id = characters.xiangke.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/shijie2.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shijie2" {
+      name = "石阶"
+      description = "这是一条整齐的石板路，依山而建，随着山势的曲折蜿蜒 曲折。由于山势陡了，当初修建这条石阶时肯定费了不小的功 夫。走到这里，已经可以看见全真教重阳观的檐角了。"
+  x = -5
+  y = 2
+  z = -3
+    }
+
+  room_exits "shijie2" {
+    room_id = rooms.shijie2.id
+    southdown = rooms.shijie1.id
+    southeast = rooms.shijie3.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/shijie3.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shijie3" {
+      name = "石阶"
+      description = "这是一条整齐的石板路，依山而建，随着山势的曲折蜿蜒 曲折。由于山势陡了，当初修建这条石阶时肯定费了不小的功 夫。走到这里，已经可以看见全真教重阳观的檐角了。"
+  x = -4
+  y = 1
+  z = -3
+    }
+
+  room_exits "shijie3" {
+    room_id = rooms.shijie3.id
+    eastup = rooms.shijie4.id
+    northwest = rooms.shijie2.id
+    }
+
+
+  room_characters "shijie3" {
+    room_id = rooms.shijie3.id
+    characters = [
+      { id = characters.xiangke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/shijie4.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shijie4" {
+      name = "石阶"
+      description = "这是一条整齐的石板路，依山而建，随着山势的曲折蜿蜒 曲折。由于山势陡了，当初修建这条石阶时肯定费了不小的功 夫。走到这里，已经可以看见全真教重阳观的檐角了。"
+  x = -3
+  y = 1
+  z = -2
+    }
+
+  room_exits "shijie4" {
+    room_id = rooms.shijie4.id
+    southup = rooms.shijianyan.id
+    westdown = rooms.shijie3.id
+    northup = rooms.shijie5.id
+    }
+
+
+  room_characters "shijie4" {
+    room_id = rooms.shijie4.id
+    characters = [
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/shijie5.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shijie5" {
+      name = "石阶"
+      description = "这是一条整齐的石板路，依山而建，随着山势的曲折蜿蜒 曲折。由于山势陡了，当初修建这条石阶时肯定费了不小的功 夫。走到这里，已经可以看见全真教重阳观的檐角了。"
+  x = -3
+  y = 2
+  z = -1
+    }
+
+  room_exits "shijie5" {
+    room_id = rooms.shijie5.id
+    southdown = rooms.shijie4.id
+    northup = rooms.banshanting.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/shijie6.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shijie6" {
+      name = "石阶"
+      description = "这是一条整齐的石板路，依山而建，随着山势的曲折蜿蜒 曲折。由于山势陡了，当初修建这条石阶时肯定费了不小的功 夫。走到这里，已经可以看见全真教重阳观的檐角了。"
+  x = -2
+  y = 1
+  z = 0
+    }
+
+  room_exits "shijie6" {
+    room_id = rooms.shijie6.id
+    southdown = rooms.jiaobei.id
+    northup = rooms.shijie7.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/shijie7.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shijie7" {
+      name = "石阶"
+      description = "这是一条整齐的石板路，依山而建，随着山势的曲折蜿蜒 曲折。由于山势陡了，当初修建这条石阶时肯定费了不小的功 夫。走到这里，已经可以看见全真教重阳观的檐角了。"
+  x = -2
+  y = 2
+  z = 1
+    }
+
+  room_exits "shijie7" {
+    room_id = rooms.shijie7.id
+    southdown = rooms.shijie6.id
+    northup = rooms.fangzhenqiao.id
+    }
+
+
+  room_characters "shijie7" {
+    room_id = rooms.shijie7.id
+    characters = [
+      { id = characters.youke.id },
+      { id = characters.xiangke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/shijie8.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shijie8" {
+      name = "石阶"
+      description = "这是一条整齐的石板路，依山而建，随着山势的曲折蜿蜒 曲折。由于山势陡了，当初修建这条石阶时肯定费了不小的功 夫。走到这里，已经可以看见全真教重阳观的檐角了。"
+  x = -3
+  y = -1
+  z = 0
+    }
+
+  room_exits "shijie8" {
+    room_id = rooms.shijie8.id
+    southup = rooms.shijie9.id
+    northdown = rooms.shijianyan.id
+    }
+
+
+  room_characters "shijie8" {
+    room_id = rooms.shijie8.id
+    characters = [
+      { id = characters.youke.id },
+      { id = characters.xiangke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/shijie9.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shijie9" {
+      name = "石阶"
+      description = "这是一条整齐的石板路，依山而建，随着山势的曲折蜿蜒 曲折。由于山势陡了，当初修建这条石阶时肯定费了不小的功 夫。走到这里，已经可以看见全真教重阳观的檐角了。西面好 象有一条小路。"
+  x = -3
+  y = -2
+  z = 1
+    }
+
+  room_exits "shijie9" {
+    room_id = rooms.shijie9.id
+    south = rooms.guanritai.id
+    northdown = rooms.shijie8.id
+    }
+
+
+  room_characters "shijie9" {
+    room_id = rooms.shijie9.id
+    characters = [
+      { id = characters.daotong.id },
+      { id = characters.daotong.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/shiweishi.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "shiweishi" {
+      name = "事为室"
+      description = "这里是全真七子之首马钰的居室。房间很小，只摆放一张 床、一张书桌和一把椅子。书桌上放着本老子，床上被褥折叠 得整整齐齐。"
+  x = 1
+  y = 2
+  z = 0
+    }
+
+  room_exits "shiweishi" {
+    room_id = rooms.shiweishi.id
+    south = rooms.cetang.id
+    }
+
+
+
+
+  room_items "shiweishi" {
+    room_id = rooms.shiweishi.id
+    items = [
+      { id = items.ma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/tongtiandian.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "tongtiandian" {
+      name = "通天殿"
+      description = "这里是供奉三清之末--通天教主的大殿，殿内的香烟不甚 旺盛。在通天教主的金身旁边，塑着几位截教道友，象长耳仙、 归云仙、申公豹的塑像。"
+  x = 3
+  y = -1
+  z = 0
+    }
+
+  room_exits "tongtiandian" {
+    room_id = rooms.tongtiandian.id
+    north = rooms.laojundian.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/wanwutang.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "wanwutang" {
+      name = "万物堂"
+      description = "这里是全真七子之五王处一的居所。房间不大，收拾的素 雅整洁，墙上挂着一萧一琴和一些字画，小几上摆放着宣纸和 徽墨狼毫，不知道主人是要练字还是绘画。"
+  x = 0
+  y = 2
+  z = 0
+    }
+
+  room_exits "wanwutang" {
+    room_id = rooms.wanwutang.id
+    south = rooms.huizhentang.id
+    }
+
+
+
+
+  room_items "wanwutang" {
+    room_id = rooms.wanwutang.id
+    items = [
+      { id = items.wangchuyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/wuchang1.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "wuchang1" {
+      name = "武场"
+      description = "这里是全真教的演武场，地下的青砖本来铺的整整齐齐却 不知道被谁踩出了几十个大大小小的凹坑。看的出来，这里成 年累月的有弟子修炼掌法步法，天长日久，地下就踩出了凹坑。"
+  x = 5
+  y = -1
+  z = 0
+    }
+
+  room_exits "wuchang1" {
+    room_id = rooms.wuchang1.id
+    southeast = rooms.xiuxishi.id
+    north = rooms.houtang2.id
+    south = rooms.wuchang2.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/wuchang2.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "wuchang2" {
+      name = "武场"
+      description = "这里是全真教的演武场，地下的青砖本来铺的整整齐齐却 不知道被谁踩出了几十个大大小小的凹坑。看的出来，这里成 年累月的有弟子修炼掌法步法，天长日久，地下就踩出了凹坑。"
+  x = 5
+  y = -2
+  z = 0
+    }
+
+  room_exits "wuchang2" {
+    room_id = rooms.wuchang2.id
+    southeast = rooms.shantang.id
+    south = rooms.wuchang3.id
+    east = rooms.xiuxishi.id
+    north = rooms.wuchang1.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/wuchang3.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "wuchang3" {
+      name = "武场"
+      description = "这里是全真教的演武场，地下的青砖本来铺的整整齐齐却 不知道被谁踩出了几十个大大小小的凹坑。看的出来，这里成 年累月的有弟子修炼掌法步法，天长日久，地下就踩出了凹坑。"
+  x = 5
+  y = -3
+  z = 0
+    }
+
+  room_exits "wuchang3" {
+    room_id = rooms.wuchang3.id
+    north = rooms.wuchang2.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/xianzhentang.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "xianzhentang" {
+      name = "显真堂"
+      description = "这里是大堂旁边的侧厅，也是接待重要客人的地方。厅不 大，只摆放着一张桌子和几把椅子。桌上摆放着一盆高山流水 的盆景，墙壁上挂着一些字画。西面有一间药剂室。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "xianzhentang" {
+    room_id = rooms.xianzhentang.id
+    south = rooms.rongwutang.id
+    north = rooms.datang1.id
+    west = rooms.yaojishi.id
+    east = rooms.piandian.id
+    }
+
+
+
+
+  room_items "xianzhentang" {
+    room_id = rooms.xianzhentang.id
+    items = [
+      { id = items.zhang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/xiaocun.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "xiaocun" {
+      name = "小村庄"
+      description = "这是一片小村庄，隐藏在一个小山坳里。这里的居民们都 很少到城里去，虽然离武功镇不过是五、六里的山路，他们宁 愿秉承着男耕女纺织、日出而作日落而歇的老传统。日子虽然 清贫，却还算逍遥。"
+  x = -2
+  y = -2
+  z = -1
+    }
+
+  room_exits "xiaocun" {
+    room_id = rooms.xiaocun.id
+    southdown = rooms.shanlu1.id
+    northwest = rooms.guchang.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/xiaohuayuan1.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "xiaohuayuan1" {
+      name = "小花园"
+      description = "这里是重阳观里的小花园，空气中飘着股鲜花的香味。再 往北去，就是金鱼池了。这个花园不大，却是全真弟子练功间 隙最爱来游玩的地方。园中见不到一根杂草，也许专门有人负 责管理这里。"
+  x = 7
+  y = 1
+  z = 0
+    }
+
+  room_exits "xiaohuayuan1" {
+    room_id = rooms.xiaohuayuan1.id
+    northeast = rooms.xiaohuayuan2.id
+    southwest = rooms.houtang3.id
+    }
+
+
+  room_characters "xiaohuayuan1" {
+    room_id = rooms.xiaohuayuan1.id
+    characters = [
+      { id = characters.zhangyuan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/xiaohuayuan2.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "xiaohuayuan2" {
+      name = "小花园"
+      description = "这里是重阳观里的小花园，种植着一些叫不出名字来的花 木，园角砌着一座假山，假山下是一潭小小的金鱼池，池水清 澈见底，你看见有数条红色的金鱼在里面悠哉游哉地游来游去。 几个道童正在这里嬉戏着。"
+  x = 8
+  y = 2
+  z = 0
+    }
+
+  room_exits "xiaohuayuan2" {
+    room_id = rooms.xiaohuayuan2.id
+    southwest = rooms.xiaohuayuan1.id
+    west = rooms.chanfang3.id
+    east = rooms.xiaohuayuan3.id
+    }
+
+
+  room_characters "xiaohuayuan2" {
+    room_id = rooms.xiaohuayuan2.id
+    characters = [
+      { id = characters.daotong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/xiaohuayuan3.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "xiaohuayuan3" {
+      name = "小花园"
+      description = "这里是重阳观里的小花园，种植着一些叫不出名字来的花 木，园角砌着一座假山，假山下是一潭小小的金鱼池，池水清 澈见底，你看见有数条红色的金鱼在里面悠哉游哉地游来游去。 几个道童正在这里嬉戏着。"
+  x = 9
+  y = 2
+  z = 0
+    }
+
+  room_exits "xiaohuayuan3" {
+    room_id = rooms.xiaohuayuan3.id
+    west = rooms.xiaohuayuan2.id
+    }
+
+
+  room_characters "xiaohuayuan3" {
+    room_id = rooms.xiaohuayuan3.id
+    characters = [
+      { id = characters.daotong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/xiaolu1.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "xiaolu1" {
+      name = "后山小路"
+      description = "这里是后山上的小路。这条小路好象不是人工刻意修出来 的，也许只是以前的采药人踩多了，现出这样一条小路来。"
+  x = 9
+  y = 1
+  z = 0
+    }
+
+  room_exits "xiaolu1" {
+    room_id = rooms.xiaolu1.id
+    southwest = rooms.houshan.id
+    northeast = rooms.xiaolu2.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/xiaolu2.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "xiaolu2" {
+      name = "后山小路"
+      description = "这里是后山上的小路。这条小路好象不是人工刻意修出来 的，也许只是以前的采药人踩多了，现出这样一条小路来。"
+  x = 10
+  y = 2
+  z = 0
+    }
+
+  room_exits "xiaolu2" {
+    room_id = rooms.xiaolu2.id
+    southwest = rooms.xiaolu1.id
+    east = rooms.xiaolu3.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/xiaolu3.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "xiaolu3" {
+      name = "后山小路"
+      description = "这里是后山上的小路。这条小路好象不是人工刻意修出来 的，也许只是以前的采药人踩多了，现出这样一条小路来。"
+  x = 11
+  y = 2
+  z = 0
+    }
+
+  room_exits "xiaolu3" {
+    room_id = rooms.xiaolu3.id
+    in = rooms.shandong.id
+    west = rooms.xiaolu2.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/xiaomiao.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "xiaomiao" {
+      name = "土地庙"
+      description = "这座庙宇原本是武功镇中的土地庙，不过因为很久没有修 缮过，已经破烂不堪。土地爷的金身也只剩下了半截，供桌只 剩下了三条腿，窗框已经全被下光了，被附近的贫苦百姓拿回 家去生火取暖。这里平常是没有人来的，只有一些游手好闲的 地痞流氓之类把这里当做了家。"
+  x = -2
+  y = -5
+  z = -2
+    }
+
+  room_exits "xiaomiao" {
+    room_id = rooms.xiaomiao.id
+    north = rooms.xijie.id
+    }
+
+
+  room_characters "xiaomiao" {
+    room_id = rooms.xiaomiao.id
+    characters = [
+      { id = characters.dipi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/xijie.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "xijie" {
+      name = "西街"
+      description = "武功镇的西面是贫苦百姓的聚居区，西街比起其他几条街 道来也显得破朽杂乱得多。街南面是一座年久失修的小庙，已 经摇摇欲坠了。北面是一户低矮的茅屋，西面是武功镇的西门。 从这里转而往东，就走到武功镇的中心了。"
+  x = -2
+  y = -4
+  z = -2
+    }
+
+  room_exits "xijie" {
+    room_id = rooms.xijie.id
+    west = rooms.ximen.id
+    south = rooms.xiaomiao.id
+    north = rooms.minju2.id
+    east = rooms.zhongxin.id
+    }
+
+
+  room_characters "xijie" {
+    room_id = rooms.xijie.id
+    characters = [
+      { id = characters.punk.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/ximen.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "ximen" {
+      name = "西门"
+      description = "这里是武功镇的西门，眼前城墙高耸，墙上的箭垛里好象 还有人走来走去。阳光照来，城墙上闪过几道白光，似乎是兵 器反射出的光。城门上题着西门两个大字，门口站着一些官兵 正盘问着来往的人们。从这里向北就是终南山脚了。"
+  x = -3
+  y = -4
+  z = -2
+    }
+
+  room_exits "ximen" {
+    room_id = rooms.ximen.id
+    northeast = rooms.shanlu1.id
+    east = rooms.xijie.id
+    }
+
+
+  room_characters "ximen" {
+    room_id = rooms.ximen.id
+    characters = [
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.xunbu.id },
+      { id = characters.ducha.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/xiuxishi.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "xiuxishi" {
+      name = "休息室"
+      description = "这是间很大的房间，光线非常昏暗。房里没有什么别的东 西，只有中间放着一张收拾得舒舒服服的大床，床上的被褥也 整理得整整洁洁，看着就让人想睡觉。"
+  x = 6
+  y = -2
+  z = 0
+    }
+
+  room_exits "xiuxishi" {
+    room_id = rooms.xiuxishi.id
+    south = rooms.shantang.id
+    northwest = rooms.wuchang1.id
+    west = rooms.wuchang2.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/yaojishi.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "yaojishi" {
+      name = "药剂室"
+      description = "这里是全真教制药、配药的地方。这间房间本来很大，只 是被前后左右堆放的药柜药箱挤的显得小多了。药柜已经很陈 旧了，不过是用上好的南海沉香木做成的，据说用这种木材做 成的柜子用来储藏东西不会遭虫蛀。"
+  x = -1
+  y = -1
+  z = 0
+    }
+
+  room_exits "yaojishi" {
+    room_id = rooms.yaojishi.id
+    east = rooms.xianzhentang.id
+    }
+
+
+  room_characters "yaojishi" {
+    room_id = rooms.yaojishi.id
+    characters = [
+      { id = characters.zhangyao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/yuanshidian.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "yuanshidian" {
+      name = "元始殿"
+      description = "这里是供奉元始天尊的大殿。殿内香烟缭绕，正中央塑着 元始天尊的金身，旁边还塑着几位道友如太乙、俱留孙、云中 子、广成子等等的像，正聚在一处或躺或坐，或棋或茶。"
+  x = 3
+  y = 1
+  z = 0
+    }
+
+  room_exits "yuanshidian" {
+    room_id = rooms.yuanshidian.id
+    south = rooms.laojundian.id
+    }
+
+
+
+
+  room_items "yuanshidian" {
+    room_id = rooms.yuanshidian.id
+    items = [
+      { id = items.qi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/yuzhengong.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "yuzhengong" {
+      name = "遇真宫"
+      description = "这里是重阳宫以前的旧址，是王重阳王真人参悟大道之前 清修的地方。后来手创全真教后，此地的布局实在太小，就将 重阳宫迁到东面山上，将此地重新改名为遇真宫，以纪念得道 之意。这里很久没有人来过了，桌椅上都积满了灰尘。"
+  x = -2
+  y = 4
+  z = 2
+    }
+
+  room_exits "yuzhengong" {
+    room_id = rooms.yuzhengong.id
+    south = rooms.fangzhenqiao.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/zhongxin.c by LPCConverter
+# Zone: quanzhen
+
+    rooms "zhongxin" {
+      name = "中心广场"
+      description = "这里是武功镇的中心广场，武功镇是个小镇，只有四条大 街分别是东街，西街，南街和北街，都在这里汇合。走到这里 路上的行人多了些，见了你都和和气气地拱手为礼。"
+  x = -1
+  y = -4
+  z = -2
+    }
+
+  room_exits "zhongxin" {
+    room_id = rooms.zhongxin.id
+    south = rooms.nanjie.id
+    north = rooms.beijie.id
+    west = rooms.xijie.id
+    east = rooms.dongjie.id
+    }
+
+
+  room_characters "zhongxin" {
+    room_id = rooms.zhongxin.id
+    characters = [
+      { id = characters.liumang.id },
+      { id = characters.liumang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/bing.c by LPCConverter
+# Zone: quanzhen
+
+    characters "bing" {
+      name = "官兵"
+      description = "虽然官兵的武艺不能和武林人士相比，可是他们讲究的是人多力量大。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    dex = 16
+    str = 24
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "blade" level = 40 },
+    { skill = "force" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.blade.id },
+    { id = items.junfu.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/boy.c by LPCConverter
+# Zone: quanzhen
+
+    characters "boy" {
+      name = "男孩"
+      description = "这是个农家少年，大概因从小物农，虽然年 纪不大，可已长的很粗壮了。"
+  gender = "男性"
+  age = 13
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100
+    con = 15
+    dex = 16
+    int = 17
+    str = 17
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/cunmin.c by LPCConverter
+# Zone: quanzhen
+
+    characters "cunmin" {
+      name = "村民"
+      description = "一个魁梧的庄稼汉子。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 500
+    con = 18
+    dex = 18
+    int = 13
+    str = 22
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/daotong.c by LPCConverter
+# Zone: quanzhen
+
+    characters "daotong" {
+      name = "道童"
+      description = "这是一位小道童，看来年纪不大，脸上稚气 犹存，整天笑嘻嘻的无忧无虑。"
+  gender = "男性"
+  age = 14
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 300
+    str = 20
+  }
+
+  carry = [
+    { id = items.grayrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/daotong1.c by LPCConverter
+# Zone: quanzhen
+
+    characters "daotong1" {
+      name = "小道童"
+      description = "这是一位小道童，看来年纪不大，脸上稚气 犹存，整天笑嘻嘻的无忧无虑。"
+  gender = "男性"
+  age = 14
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 300
+    str = 20
+  }
+
+  carry = [
+    { id = items.grayrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/dibao.c by LPCConverter
+# Zone: quanzhen
+
+    characters "dibao" {
+      name = "地保"
+      description = "他是这个村子土生土长的人，年轻的时候到 外面去闯荡过一阵。在镖局当过趟子手，攒 了点钱，回来後娶了房老婆，物农为生。村 里人因他在外见过世面，又会些武功，就推 他做了地保。"
+  gender = "男性"
+  age = 43
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2500
+    con = 17
+    dex = 20
+    int = 15
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/dipi.c by LPCConverter
+# Zone: quanzhen
+
+    characters "dipi" {
+      name = "地痞"
+      description = "这是一个喝的醉醺醺的地痞。"
+  gender = "男性"
+  age = 20
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 750
+    con = 18
+    dex = 20
+    int = 15
+    str = 25
+  }
+
+  chat_chance = 15
+chats = [
+    "地痞迷迷糊糊的喊道：哥俩儿好啊，五魁手啊！",
+    "地痞靠在墙角，发出了阵阵的鼾声。"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/girl.c by LPCConverter
+# Zone: quanzhen
+
+    characters "girl" {
+      name = "女孩"
+      description = "这是个农家少女，虽然她才只有十二、三岁， 身材已经开始发育。"
+  gender = "女性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 70
+    con = 16
+    dex = 15
+    int = 15
+    str = 14
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/guanjia.c by LPCConverter
+# Zone: quanzhen
+
+    characters "guanjia" {
+      name = "管家"
+      description = "这是一位尖嘴候腮的老管家，一对小绿豆眼 总在不停地转动着。"
+  gender = "男性"
+  age = 65
+
+  combat = {
+    combat_exp = 7500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 35 },
+    { skill = "force" level = 35 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/huogong.c by LPCConverter
+# Zone: quanzhen
+
+    characters "huogong" {
+      name = "火工道人"
+      description = "这里全真教掌管厨房的火工道人。"
+  gender = "男性"
+  age = 35
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 15000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 300
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "quanzhen-xinfa" level = 40 },
+    { skill = "dodge" level = 50 },
+    { skill = "jinyan-gong" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "strike" level = 50 },
+    { type = "force" skill = "quanzhen-xinfa" },
+    { type = "dodge" skill = "jinyan-gong" }
+  ]
+
+
+  carry = [
+    { id = items.grayrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/jiading.c by LPCConverter
+# Zone: quanzhen
+
+    characters "jiading" {
+      name = "家丁"
+      description = ""
+  gender = "男性"
+  age = 35
+
+  combat = {
+    combat_exp = 4000
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/kid.c by LPCConverter
+# Zone: quanzhen
+
+    characters "kid" {
+      name = "小孩"
+      description = "这是个农家小孩子"
+  gender = "男性"
+  age = 7
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50
+    con = 11
+    dex = 11
+    int = 11
+    str = 11
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/liumang.c by LPCConverter
+# Zone: quanzhen
+
+    characters "liumang" {
+      name = "流氓"
+      description = "他是一个成天游手好闲的流氓，长得倒是白 白胖胖的，也许以前有过钱。"
+  gender = "男性"
+  age = 19
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/poorman.c by LPCConverter
+# Zone: quanzhen
+
+    characters "poorman" {
+      name = "穷汉"
+      description = "一个骨瘦如柴，满脸菜色的穷汉。"
+  gender = "男性"
+  age = 33
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 250
+    con = 17
+    dex = 18
+    int = 13
+    str = 20
+  }
+
+  chat_chance = 15
+chats = [
+    "穷汉懒洋洋地打了个哈欠。",
+    "穷汉捉住身上的虱子，骂道：老子身上没几两肉，全叫你们给咬了。"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/punk.c by LPCConverter
+# Zone: quanzhen
+
+    characters "punk" {
+      name = "小流氓"
+      description = "这是一个游手好闲的小流氓。"
+  gender = "男性"
+  age = 18
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 500
+    con = 18
+    dex = 20
+    int = 15
+    str = 25
+  }
+
+  chat_chance = 10
+chats = [
+    "流氓骂道：真他妈的邪，老子手里一对天牌，王小二这杂种居然 就摸出一对至尊来。",
+    "流氓摸了摸自己的口袋，叹了口气说道：唉，钱都让王小二骗去 了，不能去找翠花了。",
+    "流氓嘴角露出一丝邪笑，说道：翠花这娘们真她奶奶的够劲儿！"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/seller.c by LPCConverter
+# Zone: quanzhen
+
+    characters "seller" {
+      name = "小贩"
+      description = "这是个小贩，别看他长的老老实实，可你别 想从他那儿掏便宜。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 32
+  brain = brains.vendor
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  goods = [
+    { id = items.stick.id },
+    { id = items.bottle.id },
+    { id = items.egg.id }
+  ]
+
+  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
+
+  inquiries = [
+    { key = "何首乌" value = "(: ask_me :)" },
+    { key = "药材" value = "(: ask_me :)" },
+    { key = "首乌" value = "(: ask_me :)" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+
+  accept = [
+    { kind = "money" accept = true msg = "小贩诧异地说道：你给我这个干什么？" },
+    { kind = "any" accept = true msg = ["小贩诧异地说道：你给我这个干什么？", "小贩抱歉地说道：实在对不住，现在我手里也没货了？", "小贩疑惑地说道：我又不是乞丐，你没事给我钱干嘛？", "小贩阴笑着说道：嘿嘿，给我这么多钱哪。", "小贩说道：既然您出得起价钱，这味药可就归您了。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/wujiang.c by LPCConverter
+# Zone: quanzhen
+
+    characters "wujiang" {
+      name = "武将"
+      description = "他站在那里，的确有说不出的威风。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 75000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/xiangke.c by LPCConverter
+# Zone: quanzhen
+
+    characters "xiangke" {
+      name = "香客"
+      description = "这是一位到山上进香的香客。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 3500
+    con = 20
+    dex = 20
+    int = 18
+    str = 24
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/xiaoer.c by LPCConverter
+# Zone: quanzhen
+
+    characters "xiaoer" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  goods = [
+    { id = items.jitui.id },
+    { id = items.jiudai.id },
+    { id = items.baozi.id },
+    { id = items.kaoya.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/xiaoer1.c by LPCConverter
+# Zone: quanzhen
+
+    characters "xiaoer1" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  goods = [
+    { id = items.jitui.id },
+    { id = items.jiudai.id },
+    { id = items.baozi.id },
+    { id = items.kaoya.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/youfang.c by LPCConverter
+# Zone: quanzhen
+
+    characters "youfang" {
+      name = "游方道人"
+      description = "他是一位未通世故的青年道人，脸上挂着孩 儿般的微笑。"
+  gender = "男性"
+  age = 20
+  shen_type = 1
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 10000
+    con = 30
+    dex = 18
+    int = 30
+    max_jing = 300
+    max_neili = 380
+    max_qi = 280
+    str = 15
+  }
+
+  chat_chance = 10
+chats = [
+    "游方道人说道：请施主化几两银子给贫道，随喜随喜，造福众生。"
+]
+
+
+  skills = [
+    { skill = "force" level = 41 },
+    { skill = "strike" level = 41 },
+    { skill = "dodge" level = 41 },
+    { skill = "parry" level = 41 },
+    { skill = "jinyan-gong" level = 42 },
+    { skill = "haotian-zhang" level = 41 },
+    { skill = "quanzhen-xinfa" level = 41 },
+    { type = "force" skill = "quanzhen-xinfa" },
+    { type = "dodge" skill = "jinyan-gong" },
+    { type = "strike" skill = "haotian-zhang" },
+    { type = "parry" skill = "haotian-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/youke.c by LPCConverter
+# Zone: quanzhen
+
+    characters "youke" {
+      name = "游客"
+      description = "这是一个游山玩水的游人。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2000
+    con = 20
+    dex = 20
+    int = 18
+    str = 24
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/yuanwai.c by LPCConverter
+# Zone: quanzhen
+
+    characters "yuanwai" {
+      name = "侯员外"
+      description = "侯员外据说是这长安镇上的首富，谁也 不知道他到底有多少家财。他大约五十 出头，长的富富态态。"
+  gender = "男性"
+  age = 52
+
+  combat = {
+    combat_exp = 12000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 45 },
+    { skill = "force" level = 42 },
+    { skill = "dodge" level = 35 }
+  ]
+
+
+  carry = [
+    { id = items.jinduan.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/zhanggui.c by LPCConverter
+# Zone: quanzhen
+
+    characters "zhanggui" {
+      name = "掌柜"
+      description = "这是位和和气气的生意人。"
+  gender = "男性"
+  age = 45
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    combat_exp = 7500
+  }
+
+  goods = [
+    { id = items.kaoya.id },
+    { id = items.jiudai.id }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 35 },
+    { skill = "force" level = 35 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/zhangjing.c by LPCConverter
+# Zone: quanzhen
+
+    characters "zhangjing" {
+      name = "掌经道长"
+      description = "这位是全真教里掌管经书的道长。他以前是长 安镇上一个私塾的夫子，因为仰慕大道，才拜 到了全真门下。不过毕竟因为年岁大了，功夫 的根基扎得不牢，这也正合他意，可以安安心 心地研读经书了。"
+  gender = "男性"
+  age = 36
+  shen_type = 1
+  score = 15000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 20000
+    con = 20
+    dex = 21
+    int = 18
+    max_jing = 350
+    max_neili = 900
+    max_qi = 500
+    str = 18
+  }
+
+  inquiries = [
+    { key = "全真教" value = "我全真教是天下道家玄门正宗。" },
+    { key = "道德经" value = "(: ask_me :)" }
+  ]
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "quanzhen-xinfa" level = 40 },
+    { skill = "sword" level = 40 },
+    { skill = "quanzhen-jian" level = 40 },
+    { skill = "dodge" level = 50 },
+    { skill = "jinyan-gong" level = 40 },
+    { skill = "parry" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "strike" level = 50 },
+    { skill = "haotian-zhang" level = 50 },
+    { skill = "literate" level = 100 },
+    { skill = "taoism" level = 80 },
+    { type = "force" skill = "quanzhen-xinfa" },
+    { type = "sword" skill = "quanzhen-jian" },
+    { type = "dodge" skill = "jinyan-gong" },
+    { type = "parry" skill = "quanzhen-jian" },
+    { type = "strike" skill = "haotian-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.grayrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/zhangli.c by LPCConverter
+# Zone: quanzhen
+
+    characters "zhangli" {
+      name = "掌理道长"
+      description = "这是一位年纪很轻的道人，他精明能干，是全 真教第四代弟子中出类拔瘁的人物，前辈真人 们分派他来掌理全教上下的杂务。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 30000
+    con = 22
+    dex = 22
+    int = 22
+    max_jing = 400
+    max_neili = 1200
+    max_qi = 600
+    str = 22
+  }
+
+  inquiries = [
+    { key = "全真教" value = "我全真教是天下道家玄门正宗。" },
+    { key = "道德经" value = "(: ask_me :)" }
+  ]
+
+  skills = [
+    { skill = "force" level = 60 },
+    { skill = "quanzhen-xinfa" level = 50 },
+    { skill = "sword" level = 60 },
+    { skill = "quanzhen-jian" level = 60 },
+    { skill = "dodge" level = 50 },
+    { skill = "jinyan-gong" level = 50 },
+    { skill = "parry" level = 60 },
+    { skill = "unarmed" level = 60 },
+    { skill = "strike" level = 60 },
+    { skill = "haotian-zhang" level = 50 },
+    { skill = "literate" level = 50 },
+    { skill = "taoism" level = 40 },
+    { type = "force" skill = "quanzhen-xinfa" },
+    { type = "sword" skill = "quanzhen-jian" },
+    { type = "dodge" skill = "jinyan-gong" },
+    { type = "parry" skill = "quanzhen-jian" },
+    { type = "strike" skill = "haotian-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.grayrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/zhangyao.c by LPCConverter
+# Zone: quanzhen
+
+    characters "zhangyao" {
+      name = "掌药道长"
+      description = "这是全真教中的掌管所有药物的道人。他年纪 不大，但看起来显得少年老成。"
+  gender = "男性"
+  age = 28
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 30000
+    con = 23
+    dex = 22
+    int = 22
+    max_jing = 400
+    max_neili = 1200
+    max_qi = 600
+    str = 21
+  }
+
+  inquiries = [
+    { key = "全真教" value = "我全真教是天下道家玄门正宗。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 60 },
+    { skill = "quanzhen-xinfa" level = 50 },
+    { skill = "sword" level = 60 },
+    { skill = "quanzhen-jian" level = 60 },
+    { skill = "dodge" level = 50 },
+    { skill = "jinyan-gong" level = 50 },
+    { skill = "parry" level = 60 },
+    { skill = "unarmed" level = 60 },
+    { skill = "strike" level = 60 },
+    { skill = "haotian-zhang" level = 50 },
+    { skill = "literate" level = 50 },
+    { skill = "taoism" level = 40 },
+    { type = "force" skill = "quanzhen-xinfa" },
+    { type = "sword" skill = "quanzhen-jian" },
+    { type = "dodge" skill = "jinyan-gong" },
+    { type = "parry" skill = "quanzhen-jian" },
+    { type = "strike" skill = "haotian-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.grayrobe.id }
+  ]
+
+
+  accept = [
+    { kind = "item_id" id = "gui jia" accept = true msg = ["掌药道长接过龟甲，说道：龟甲和茯苓都有了，这副龟苓膏可炼成了。", "掌药道长摇了摇头，说道：这龟甲我已经有了。", "掌药道长接过龟甲，笑道：龟甲有了，就缺茯苓了。", "掌药道长摇了摇头，说道：这茯苓我已经有了。", "掌药道长接过茯苓，笑道：茯苓有了，就缺龟甲了。"] },
+    { kind = "item_id" id = "fu ling" accept = true msg = ["掌药道长接过龟甲，说道：龟甲和茯苓都有了，这副龟苓膏可炼成了。", "掌药道长摇了摇头，说道：这龟甲我已经有了。", "掌药道长接过龟甲，笑道：龟甲有了，就缺茯苓了。", "掌药道长摇了摇头，说道：这茯苓我已经有了。", "掌药道长接过茯苓，笑道：茯苓有了，就缺龟甲了。"] },
+    { kind = "any" accept = true msg = ["掌药道长接过龟甲，说道：龟甲和茯苓都有了，这副龟苓膏可炼成了。", "掌药道长摇了摇头，说道：这龟甲我已经有了。", "掌药道长接过龟甲，笑道：龟甲有了，就缺茯苓了。", "掌药道长摇了摇头，说道：这茯苓我已经有了。", "掌药道长接过茯苓，笑道：茯苓有了，就缺龟甲了。"] fail_msg = ["你没有这件东西。", "掌药道长摇头道：这不是配药的材料。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/zhangyuan.c by LPCConverter
+# Zone: quanzhen
+
+    characters "zhangyuan" {
+      name = "掌园道长"
+      description = "他本是服侍重阳祖师的道徒，现在他年纪大了。 重阳祖师见他忠心耿耿，就分配他一个闲差到 小花园来打理花木。"
+  gender = "男性"
+  age = 52
+  shen_type = 1
+  score = 15000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 20000
+    con = 20
+    dex = 21
+    int = 18
+    max_jing = 350
+    max_neili = 900
+    max_qi = 500
+    str = 18
+  }
+
+  inquiries = [
+    { key = "全真教" value = "我全真教是天下道家玄门正宗。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "quanzhen-xinfa" level = 40 },
+    { skill = "sword" level = 40 },
+    { skill = "quanzhen-jian" level = 40 },
+    { skill = "dodge" level = 50 },
+    { skill = "jinyan-gong" level = 40 },
+    { skill = "parry" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "strike" level = 50 },
+    { skill = "haotian-zhang" level = 50 },
+    { skill = "literate" level = 40 },
+    { skill = "taoism" level = 30 },
+    { type = "force" skill = "quanzhen-xinfa" },
+    { type = "sword" skill = "quanzhen-jian" },
+    { type = "dodge" skill = "jinyan-gong" },
+    { type = "parry" skill = "quanzhen-jian" },
+    { type = "strike" skill = "haotian-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.grayrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/zhike.c by LPCConverter
+# Zone: quanzhen
+
+    characters "zhike" {
+      name = "知客道长"
+      description = "他是全真教第四代弟子中年纪最大的一位，以 前做过小买卖，走南闯北，见多识广，后来拜 到全真门下。掌教见他岁数毕竟大了，不适宜 再修练上乘功夫。且喜他能言善道，熟识礼节， 就安排在山门处专事接待访客。"
+  gender = "男性"
+  age = 42
+  shen_type = 1
+  score = 15000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 20000
+    con = 20
+    dex = 21
+    int = 18
+    max_jing = 350
+    max_neili = 900
+    max_qi = 500
+    str = 18
+  }
+
+  inquiries = [
+    { key = "全真教" value = "我全真教是天下道家玄门正宗。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "quanzhen-xinfa" level = 40 },
+    { skill = "sword" level = 40 },
+    { skill = "quanzhen-jian" level = 40 },
+    { skill = "dodge" level = 50 },
+    { skill = "jinyan-gong" level = 40 },
+    { skill = "parry" level = 50 },
+    { skill = "strike" level = 50 },
+    { skill = "haotian-zhang" level = 50 },
+    { skill = "literate" level = 60 },
+    { skill = "taoism" level = 50 },
+    { type = "force" skill = "quanzhen-xinfa" },
+    { type = "sword" skill = "quanzhen-jian" },
+    { type = "dodge" skill = "jinyan-gong" },
+    { type = "parry" skill = "quanzhen-jian" },
+    { type = "strike" skill = "haotian-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.grayrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/baozi.c by LPCConverter
+# Zone: quanzhen
+
+    characters "baozi" {
+      name = "包子"
+      description = "一个香喷喷的肉包子。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/bottle.c by LPCConverter
+# Zone: quanzhen
+
+    characters "bottle" {
+      name = "水壶"
+      description = "一个不知道用什么动物的皮制成的水壶。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/cloth.c by LPCConverter
+# Zone: quanzhen
+
+    characters "cloth" {
+      name = "布衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/daodejing-i.c by LPCConverter
+# Zone: quanzhen
+
+    characters "daodejing_i" {
+      name = "道德经「上卷」"
+      description = "这是一册道德经「上卷」，由体道第一始至去用第四十止。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/daodejing-ii.c by LPCConverter
+# Zone: quanzhen
+
+    characters "daodejing_ii" {
+      name = "道德经「下卷」"
+      description = "这是一册道德经「下卷」，由同异第四十一始至显质第八十一止。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/egg.c by LPCConverter
+# Zone: quanzhen
+
+    characters "egg" {
+      name = "五香茶叶蛋"
+      description = "一颗用五种香料炮制出来的茶叶蛋。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/gangdao.c by LPCConverter
+# Zone: quanzhen
+
+    characters "gangdao" {
+      name = "钢刀"
+      description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/gangjian.c by LPCConverter
+# Zone: quanzhen
+
+    characters "gangjian" {
+      name = "钢剑"
+      description = "这是一柄精工制成的钢剑，这种剑在将领之间非常流行。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/gao.c by LPCConverter
+# Zone: quanzhen
+
+    characters "gao" {
+      name = "NPC"
+      description = "这是一块用乌龟甲和茯苓配置成的龟苓膏，功能延年益寿。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/goupi.c by LPCConverter
+# Zone: quanzhen
+
+    characters "goupi" {
+      name = "狗皮"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/grayrobe.c by LPCConverter
+# Zone: quanzhen
+
+    characters "grayrobe" {
+      name = "灰色道袍"
+      description = "一件普普通通的灰布道袍。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/greenrobe.c by LPCConverter
+# Zone: quanzhen
+
+    characters "greenrobe" {
+      name = "青色道袍"
+      description = "这是件质地柔软的青色道袍。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/greyrobe.c by LPCConverter
+# Zone: quanzhen
+
+    characters "greyrobe" {
+      name = "灰色道袍"
+      description = "一件普普通通的灰布道袍。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/jinduan.c by LPCConverter
+# Zone: quanzhen
+
+    characters "jinduan" {
+      name = "锦缎"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/jitui.c by LPCConverter
+# Zone: quanzhen
+
+    characters "jitui" {
+      name = "烤鸡腿"
+      description = "一枝烤得香喷喷的鸡腿。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/jiudai.c by LPCConverter
+# Zone: quanzhen
+
+    characters "jiudai" {
+      name = "牛皮酒袋"
+      description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/junfu.c by LPCConverter
+# Zone: quanzhen
+
+    characters "junfu" {
+      name = "军服"
+      description = "这是一件有点旧的官兵服。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/kaoya.c by LPCConverter
+# Zone: quanzhen
+
+    characters "kaoya" {
+      name = "烤鸭"
+      description = "一只肥得流油的北京烤鸭。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/shanshen.c by LPCConverter
+# Zone: quanzhen
+
+    characters "shanshen" {
+      name = "老山参"
+      description = "这是一株沾满山泥的老山参。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/shouwu.c by LPCConverter
+# Zone: quanzhen
+
+    characters "shouwu" {
+      name = "NPC"
+      description = "这是一支已成人形的何首乌，看来可以入药。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/stick.c by LPCConverter
+# Zone: quanzhen
+
+    characters "stick" {
+      name = "手杖"
+      description = "这是一根爬山用的手杖。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/tie-ling.c by LPCConverter
+# Zone: quanzhen
+
+    characters "tie_ling" {
+      name = "重阳令"
+      description = "这是一块用于通行重阳宫的铁铸令牌。 由丹阳真人签发，邀各路英雄入宫观礼。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/npc/obj/tiejia.c by LPCConverter
+# Zone: quanzhen
+
+    characters "tiejia" {
+      name = "铁甲"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/obj/bowl.c by LPCConverter
+# Zone: quanzhen
+
+    items "bowl" {
+      name = "水碗"
+      description = "这是一个水碗，里面有什么呢？当然是水啦。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/obj/fuling.c by LPCConverter
+# Zone: quanzhen
+
+    items "fuling" {
+      name = "茯苓"
+      description = "这是一块成型的茯苓，看来可以入药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/quanzhen/obj/rice.c by LPCConverter
+# Zone: quanzhen
+
+    items "rice" {
+      name = "米饭"
+      description = "一个碗香喷喷米饭。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }

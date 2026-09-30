@@ -1,0 +1,1932 @@
+zones "fuzhou" {
+  name = "fuzhou"
+}
+
+# Generated from C:/files/git/mud/d/fuzhou/beidajie.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "beidajie" {
+      name = "北大街"
+      description = "街道两侧，榕木参天。福州盛夏苦热，广植榕树以纳凉 爽，别名“榕城”。南面是一个大路口，北上就是屏山。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "beidajie" {
+    room_id = rooms.beidajie.id
+    northup = rooms.pingshan.id
+    south = rooms.dongjiekou.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/biaoju.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "biaoju" {
+      name = "福威镖局"
+      description = "朱漆大门上茶杯大小的铜钉闪闪发光，门顶匾额写着“ 福威镖局”四个金漆大字，下面横书“总号”两个小字。进 门处两排长凳，分坐八名劲装汉子，个个腰板笔挺，显出一 股英悍之气。"
+  x = -1
+  y = 1
+  z = 0
+    }
+
+  room_exits "biaoju" {
+    room_id = rooms.biaoju.id
+    in = rooms.biaojudy.id
+    south = rooms.xidajie.id
+    }
+
+
+  room_characters "biaoju" {
+    room_id = rooms.biaoju.id
+    characters = [
+      { id = characters.chenqi.id },
+      { id = characters.baier.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/biaojudy.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "biaojudy" {
+      name = "福威镖局大院"
+      description = "大院里显得有些凌乱，趟子手和镖师们进进出出，似乎 都在满地里忙碌着什么。一棵很大的榕树栽在院子中央，给 火辣辣的福州带来一点凉爽。"
+  x = -1
+  y = 1
+  z = 0
+    }
+
+  room_exits "biaojudy" {
+    room_id = rooms.biaojudy.id
+    north = rooms.biaojuzt.id
+    out = rooms.biaoju.id
+    }
+
+
+  room_characters "biaojudy" {
+    room_id = rooms.biaojudy.id
+    characters = [
+      { id = characters.shi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/biaojuhy.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "biaojuhy" {
+      name = "福威镖局后院"
+      description = "镖局后院是平常镖师们打拳练功之所，除了几个木桩石 锁外，别无它物。"
+  x = -1
+  y = 3
+  z = 0
+    }
+
+  room_exits "biaojuhy" {
+    room_id = rooms.biaojuhy.id
+    south = rooms.biaojuzt.id
+    }
+
+
+  room_characters "biaojuhy" {
+    room_id = rooms.biaojuhy.id
+    characters = [
+      { id = characters.zheng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/biaojunz.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "biaojunz" {
+      name = "内宅"
+      description = "福威镖局内宅装点的十分华贵。花梨木桌上放着一尊精 致的振鬃长嘶的玉马，右首太师椅上好大一张豹皮把整张椅 子遮得严严实实。"
+  x = -2
+  y = 2
+  z = 0
+    }
+
+  room_exits "biaojunz" {
+    room_id = rooms.biaojunz.id
+    east = rooms.biaojuzt.id
+    }
+
+
+  room_characters "biaojunz" {
+    room_id = rooms.biaojunz.id
+    characters = [
+      { id = characters.wang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/biaojuzt.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "biaojuzt" {
+      name = "正厅"
+      description = "这里是福威镖局的正厅，几只太师椅一字排开，正中央 坐着总镖头，手持烟袋杆正在闭目沉思。墙上挂着几幅字画 和一把宝剑。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "biaojuzt" {
+    room_id = rooms.biaojuzt.id
+    west = rooms.biaojunz.id
+    south = rooms.biaojudy.id
+    north = rooms.biaojuhy.id
+    }
+
+
+  room_characters "biaojuzt" {
+    room_id = rooms.biaojuzt.id
+    characters = [
+      { id = characters.linzhennan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/dongdajie.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "dongdajie" {
+      name = "东大街"
+      description = "街道两侧，榕木参天。福州盛夏苦热，广植榕树以纳凉 爽，别名“榕城”。北面是客店，南面通往山上。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongdajie" {
+    room_id = rooms.dongdajie.id
+    west = rooms.dongjiekou.id
+    east = rooms.dongxiaojie.id
+    north = rooms.rongcheng.id
+    southup = rooms.yushan.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/dongjiekou.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "dongjiekou" {
+      name = "东街口"
+      description = "这里是福州的中心。向东通往鼓山，向南经泉州出海可 去台湾，北去屏山，向西经延平府直达中原。街边沉沉郁郁 的都是榕树，福州又称“榕城”即以其遍地植榕而名。     街上几个混混嬉皮笑脸地调戏过往行人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongjiekou" {
+    room_id = rooms.dongjiekou.id
+    up = rooms.houyuan.id
+    south = rooms.nandajie.id
+    north = rooms.beidajie.id
+    east = rooms.dongdajie.id
+    west = rooms.xidajie.id
+    }
+
+
+  room_characters "dongjiekou" {
+    room_id = rooms.dongjiekou.id
+    characters = [
+      { id = characters.liumangtou.id },
+      { id = characters.liumang.id },
+      { id = characters.liumang.id },
+      { id = characters.liumang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/dongmen.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "dongmen" {
+      name = "福州东门"
+      description = "东门外是福州平原。从这里看去，可以见到密密的丛林。 出东门十里地就是鼓山了。"
+  x = 3
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongmen" {
+    room_id = rooms.dongmen.id
+    west = rooms.dongxiaojie.id
+    east = rooms.shulin.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/dongxiaojie.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "dongxiaojie" {
+      name = "东小街"
+      description = "街道两侧，榕木参天。福州盛夏苦热，广植榕树以纳凉 爽，别名“榕城”。东面就出城了，西面是城中心。"
+  x = 2
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongxiaojie" {
+    room_id = rooms.dongxiaojie.id
+    west = rooms.dongdajie.id
+    east = rooms.dongmen.id
+    }
+
+
+  room_characters "dongxiaojie" {
+    room_id = rooms.dongxiaojie.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/erbapu.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "erbapu" {
+      name = "廿八铺"
+      description = "廿八铺高居仙霞岭上，四望群山连绵，长风振岗，十分爽利。 这里是个很小的小村落，虽然南来北往的客商繁多，可是也只有 一家小小客店。"
+  x = -7
+  y = 5
+  z = 1
+    }
+
+  room_exits "erbapu" {
+    room_id = rooms.erbapu.id
+    west = rooms.kedian.id
+    southdown = rooms.fzroad2.id
+    north = rooms.fzroad1.id
+    }
+
+
+  room_characters "erbapu" {
+    room_id = rooms.erbapu.id
+    characters = [
+      { id = characters.haoke.id },
+      { id = characters.haoke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/fzroad1.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "fzroad1" {
+      name = "仙霞岭"
+      description = "这里就是闽浙分水的仙霞岭。向阳的坡面郁郁葱葱，长满 了长长的马尾松。沿途的山路十分难行，来往的口音也渐渐带 有闽音，越来越难以辩识了。"
+  x = -7
+  y = 6
+  z = 1
+    }
+
+  room_exits "fzroad1" {
+    room_id = rooms.fzroad1.id
+    south = rooms.erbapu.id
+    northdown = rooms.qzroad4.id
+    }
+
+
+
+
+  room_items "fzroad1" {
+    room_id = rooms.fzroad1.id
+    items = [
+      { id = items.tu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/fzroad10.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "fzroad10" {
+      name = "酒肆"
+      description = "酒店门口一个酒招子半拉子挂着，店主人老蔡却不见了。两 间茅屋的小店显得十分空落，只有一个青袍年轻憨子靠在酒炉上 冷冷地瞧着你。"
+  x = -5
+  y = 1
+  z = 0
+    }
+
+  room_exits "fzroad10" {
+    room_id = rooms.fzroad10.id
+    south = rooms.fzroad9.id
+    }
+
+
+  room_characters "fzroad10" {
+    room_id = rooms.fzroad10.id
+    characters = [
+      { id = characters.yuyan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/fzroad11.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "fzroad11" {
+      name = "闽中大道"
+      description = "这里密迩城郊，来往行人也渐渐都了起来。福州的官话听起 来刺耳难懂，可是抑扬顿挫，别有一番风味。"
+  x = -4
+  y = 0
+  z = 0
+    }
+
+  room_exits "fzroad11" {
+    room_id = rooms.fzroad11.id
+    west = rooms.fzroad9.id
+    east = rooms.ximen.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/fzroad2.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "fzroad2" {
+      name = "武夷山道"
+      description = "你走在窄窄的武夷山小道上，山路崎岖，密林森森，常有 长虫野兽出没。所谓「闽道更比蜀道难」诚不相欺。西面隔着 崇阳溪，就是奇秀甲于东南的武夷山了。"
+  x = -7
+  y = 4
+  z = 0
+    }
+
+  room_exits "fzroad2" {
+    room_id = rooms.fzroad2.id
+    west = rooms.wuyishan1.id
+    southup = rooms.fzroad3.id
+    northup = rooms.erbapu.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/fzroad3.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "fzroad3" {
+      name = "闽浙古道"
+      description = "自古入闽无敞途。往来货运全靠肩挑背扛，逶迤入闽，车马 不通。古道号称“三千八百坎”，宽仅三尺，青石砌就，行商头 脚相继。下到坎底，就是延平府城了。"
+  x = -7
+  y = 3
+  z = 1
+    }
+
+  room_exits "fzroad3" {
+    room_id = rooms.fzroad3.id
+    southdown = rooms.yanping.id
+    northdown = rooms.fzroad2.id
+    }
+
+
+  room_characters "fzroad3" {
+    room_id = rooms.fzroad3.id
+    characters = [
+      { id = characters.tiao_fu.id },
+      { id = characters.tiao_fu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/fzroad4.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "fzroad4" {
+      name = "闽赣古道"
+      description = "福建境内数不尽的山坎相连。密林幽谷相继，终日不见天光。 山中毒虫猛兽出没无常，行路艰辛。"
+  x = -8
+  y = 1
+  z = 0
+    }
+
+  room_exits "fzroad4" {
+    room_id = rooms.fzroad4.id
+    northeast = rooms.yanping.id
+    southwest = rooms.fzroad5.id
+    }
+
+
+
+
+  room_items "fzroad4" {
+    room_id = rooms.fzroad4.id
+    items = [
+      { id = items.wubushe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/fzroad5.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "fzroad5" {
+      name = "闽赣古道"
+      description = "福建境内数不尽的山坎相连。密林幽谷相继，终日不见天光。 山中毒虫猛兽出没无常，行路艰辛。路边有一年轻汉子倚在树上 冷眼看着你。"
+  x = -9
+  y = 0
+  z = 0
+    }
+
+  room_exits "fzroad5" {
+    room_id = rooms.fzroad5.id
+    northeast = rooms.fzroad4.id
+    westup = rooms.fzroad6.id
+    }
+
+
+  room_characters "fzroad5" {
+    room_id = rooms.fzroad5.id
+    characters = [
+      { id = characters.fang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/fzroad6.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "fzroad6" {
+      name = "闽赣古道"
+      description = "福建境内数不尽的山坎相连。密林幽谷相继，终日不见天光。 山中毒虫猛兽出没无常，行路艰辛。一个粗豪汉子站在当道。"
+  x = -10
+  y = 0
+  z = 1
+    }
+
+  room_exits "fzroad6" {
+    room_id = rooms.fzroad6.id
+    eastdown = rooms.fzroad5.id
+    westdown = rooms.fzroad7.id
+    }
+
+
+  room_characters "fzroad6" {
+    room_id = rooms.fzroad6.id
+    characters = [
+      { id = characters.yu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/fzroad7.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "fzroad7" {
+      name = "闽赣古道"
+      description = "进入江西还是不尽的山坎和密林幽谷，终日不见天光。放 眼山中毒虫猛兽出没无常，行路艰辛。一到这里就闻到一股腥 风扑鼻而来。"
+  x = -11
+  y = 0
+  z = 0
+    }
+
+  room_exits "fzroad7" {
+    room_id = rooms.fzroad7.id
+    eastup = rooms.fzroad6.id
+    northwest = rooms.hsroad2.id
+    }
+
+
+
+
+  room_items "fzroad7" {
+    room_id = rooms.fzroad7.id
+    items = [
+      { id = items.laohu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/fzroad8.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "fzroad8" {
+      name = "闽江"
+      description = "自延福门放江而下，两岸青山夹翠，游鱼泛波，小舟穿行险 滩之中，耳畔哗哗水响，自延平到福州三百六十里水路，朝发夕 至。"
+  x = -6
+  y = 1
+  z = 0
+    }
+
+  room_exits "fzroad8" {
+    room_id = rooms.fzroad8.id
+    southeast = rooms.fzroad9.id
+    northwest = rooms.yanping.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/fzroad9.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "fzroad9" {
+      name = "闽中大道"
+      description = "你走在闽江北岸大道上。福建境内无山不青，无水不翠，山 陡林深少行人，不禁让你惴惴。北面有股青烟冒起，似乎有家野 店。"
+  x = -5
+  y = 0
+  z = 0
+    }
+
+  room_exits "fzroad9" {
+    room_id = rooms.fzroad9.id
+    east = rooms.fzroad11.id
+    north = rooms.fzroad10.id
+    northwest = rooms.fzroad8.id
+    }
+
+
+  room_characters "fzroad9" {
+    room_id = rooms.fzroad9.id
+    characters = [
+      { id = characters.jia.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/gushan.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "gushan" {
+      name = "鼓山"
+      description = "鼓山以山上有石形如鼓，扣之如擂鼓而得名，非只山势如 鼓覆地。山上苍松滴翠，岩秀谷幽，风景秀丽，四季如春。有 晋以来，即为八闽二绝之一。"
+  x = 5
+  y = 0
+  z = 1
+    }
+
+  room_exits "gushan" {
+    room_id = rooms.gushan.id
+    westdown = rooms.shulin.id
+    north = rooms.yongquan.id
+    }
+
+
+
+
+  room_items "gushan" {
+    room_id = rooms.gushan.id
+    items = [
+      { id = items.hou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/houyuan.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "houyuan" {
+      name = "老宅后院"
+      description = "这里是向阳老宅的后院。满地是发出朽烂霉气的落叶。院 子的中央有一口井，井台上刻着些字。院子南面有一扇门，但 已被坍塌的砖瓦挡住了。"
+  x = 0
+  y = 0
+  z = 1
+item_desc = {
+ men = "这扇门已被挡住无法通行，除非你打破(break)它。"
+}
+    }
+
+  room_exits "houyuan" {
+    room_id = rooms.houyuan.id
+    up = rooms.liang.id
+    down = rooms.dongjiekou.id
+    west = rooms.mishi.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/kedian.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "kedian" {
+      name = "客店"
+      description = "山野客店十分简陋。一个小二临台买卖，一片破门扇扑在地 上，显得相当忙乱。柜台上贴着个牌子(paizi)。"
+  x = -8
+  y = 5
+  z = 1
+item_desc = {
+ paizi = "即日起只供应吃喝，不留宿。"
+}
+    }
+
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+    east = rooms.erbapu.id
+    }
+
+
+  room_characters "kedian" {
+    room_id = rooms.kedian.id
+    characters = [
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/laozhai.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "laozhai" {
+      name = "向阳老宅"
+      description = "这里是福威镖局总镖头林震南在福建的旧居。室内的家具 横七竖八地倒在地上，把通向后院的门(men)都挡住了。房间 的一角结着一张蜘蛛网，屋里到处是尘土，显然是已经很久没 有人住了。"
+  x = -2
+  y = -1
+  z = 0
+item_desc = {
+ men = "这扇门已被挡住无法通行，除非你打破(break)它。"
+}
+    }
+
+  room_exits "laozhai" {
+    room_id = rooms.laozhai.id
+    south = rooms.xiangyang.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/liang.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "liang" {
+      name = "房梁"
+      description = "你在柴房的房梁上四下观瞧，周围全都是些烂木头破砖瓦。"
+  x = 0
+  y = 0
+  z = 2
+    }
+
+  room_exits "liang" {
+    room_id = rooms.liang.id
+    down = rooms.mishi.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/majiu.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "majiu" {
+      name = "马厩"
+      description = "这是榕城驿马厩，常年供应新鲜草料。福州民风淳朴，马 夫们会把马牵到马厩好生照看，将它们喂饱饮足，再洗刷得干 乾净净，一直伺候到客人上路。马厩雨檐下的烂木柱上钉着块 破木牌(paizi)。马厩中堆放著几堆草料。"
+  x = 1
+  y = 2
+  z = 0
+    }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+    up = rooms.fuzhou_shop.id
+    south = rooms.rongcheng.id
+    }
+
+
+  room_characters "majiu" {
+    room_id = rooms.majiu.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu" {
+    room_id = rooms.majiu.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/mishi.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "mishi" {
+      name = "柴房"
+      description = "这是向阳老宅后院的一间小柴房，房屋里布满了蛛网，地 面满是灰尘，看样子已经很久没有人打扫了。房间的墙壁破烂 不堪，左首处悬挂着一幅画(hua)，角落处斜放着几捆干柴。"
+  x = -1
+  y = 0
+  z = 1
+    }
+
+  room_exits "mishi" {
+    room_id = rooms.mishi.id
+    down = rooms.houyuan.id
+    east = rooms.houyuan.id
+    }
+
+
+
+
+  room_items "mishi" {
+    room_id = rooms.mishi.id
+    items = [
+      { id = items.ganchai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/nandajie.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "nandajie" {
+      name = "南大街"
+      description = "街道两侧，榕木参天。福州盛夏苦热，广植榕树以纳凉 爽，别名“榕城”。西面是府衙，东面是一家闽菜馆。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "nandajie" {
+    room_id = rooms.nandajie.id
+    west = rooms.yamen.id
+    east = rooms.weizhongwei.id
+    north = rooms.dongjiekou.id
+    south = rooms.nanmendou.id
+    }
+
+
+  room_characters "nandajie" {
+    room_id = rooms.nandajie.id
+    characters = [
+      { id = characters.xiaofan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/nanmen.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "nanmen" {
+      name = "福州南门"
+      description = "这里是福州南门，似乎没什么人来往，也没有官兵在这里把守。"
+  x = 0
+  y = -3
+  z = 0
+    }
+
+  room_exits "nanmen" {
+    room_id = rooms.nanmen.id
+    north = rooms.nanmendou.id
+    south = rooms.zhongzhou.id
+    }
+
+
+  room_characters "nanmen" {
+    room_id = rooms.nanmen.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/nanmendou.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "nanmendou" {
+      name = "南门兜"
+      description = "南门兜中央一株巨大古榕，根繁叶茂，浓荫遮盖树亩，将 整个街口遮闭严实不漏日光。在树阴下乘凉，甚为舒适。"
+  x = 0
+  y = -2
+  z = 0
+    }
+
+  room_exits "nanmendou" {
+    room_id = rooms.nanmendou.id
+    east = rooms.xiaochang.id
+    west = rooms.shiqiao.id
+    south = rooms.nanmen.id
+    north = rooms.nandajie.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/pingshan.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "pingshan" {
+      name = "福州屏山"
+      description = "屏山古称越王山，横亘福州城北，山下华林寺，构法考 究。屏山上俯瞰榕城，历历如画。"
+  x = 0
+  y = 2
+  z = 1
+    }
+
+  room_exits "pingshan" {
+    room_id = rooms.pingshan.id
+    southdown = rooms.beidajie.id
+    }
+
+
+  room_characters "pingshan" {
+    room_id = rooms.pingshan.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/puxian.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "puxian" {
+      name = "莆仙平原"
+      description = "你走在莆仙平原上。这里物产丰饶，人烟稠密，望北就 是福州府城了。往南就进入闽南。"
+  x = 0
+  y = -5
+  z = 0
+    }
+
+  room_exits "puxian" {
+    room_id = rooms.puxian.id
+    south = rooms.beimen.id
+    north = rooms.zhongzhou.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/rongcheng.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "rongcheng" {
+      name = "榕城驿"
+      description = "榕城驿是全省最大的客店，生意非常兴隆。外地游客多 选择这里落脚，你可以在这里打听到本省的风土人情。店小 二里里外外忙得团团转，福州的方言你是实在听不顺耳。还 是上楼睡觉去。墙上挂着一个牌子(paizi)。"
+  x = 1
+  y = 1
+  z = 0
+item_desc = {
+ paizi = "楼上雅房，每夜五十两白银。"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "up"
+direction = "up"
+  message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊！"
+}
+,
+{
+   # 阻挡条件（原样保留）：me->query_temp("rent_paid") && dir == "west"
+direction = "west"
+  message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就走了呢！ 旁人还以为小店伺候不周呢！"
+}
+
+]
+    }
+
+  room_exits "rongcheng" {
+    room_id = rooms.rongcheng.id
+    up = rooms.rongcheng2.id
+    north = rooms.majiu.id
+    south = rooms.dongdajie.id
+    }
+
+
+  room_characters "rongcheng" {
+    room_id = rooms.rongcheng.id
+    characters = [
+      { id = characters.xiaoer.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/rongcheng2.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "rongcheng2" {
+      name = "榕城驿二楼"
+      description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张 小木床，不少客人正和衣而卧，满屋子都是呼呼的打酣声。 你看到西边有张床是空的，就蹑手蹑脚地走了过去。"
+  x = 1
+  y = 1
+  z = 1
+    }
+
+  room_exits "rongcheng2" {
+    room_id = rooms.rongcheng2.id
+    down = rooms.rongcheng.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/shiqiao.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "shiqiao" {
+      name = "石桥"
+      description = "这是城里一条普普通通的石桥。大概总有几百年历史 了，桥侧生满青苔，桥下有小孩戏水，岸边洗衣的母亲大 声呵斥着自己的孩子。"
+  x = -1
+  y = -2
+  z = 0
+    }
+
+  room_exits "shiqiao" {
+    room_id = rooms.shiqiao.id
+    east = rooms.nanmendou.id
+    west = rooms.xiangyang.id
+    }
+
+
+  room_characters "shiqiao" {
+    room_id = rooms.shiqiao.id
+    characters = [
+      { id = characters.sha.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/shulin.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "shulin" {
+      name = "树林"
+      description = "你走在福州东门外密林中。林中时时传来虫鸟的啼鸣。 北边林深处似乎有一小庙。东边一山，其形如鼓。卧在平坦 平原上。"
+  x = 4
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin" {
+    room_id = rooms.shulin.id
+    west = rooms.dongmen.id
+    eastup = rooms.gushan.id
+    north = rooms.wuxiang.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/weizhongwei.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "weizhongwei" {
+      name = "味中味"
+      description = "提起“楼外楼”方圆百里无人不知。这里各式闽菜均是 福州一绝。来游湖的人们都一定会来这里尝尝。整个大堂闹 哄哄的挤满了各式人等。店小儿跑来跑去，忙着招呼客人。 墙上挂着价格牌子(paizi)。"
+  x = 1
+  y = -1
+  z = 0
+item_desc = {
+ paizi = "佛跳墙(Fotiaoqiang)   ：五两白银 福建老酒(Jiuping)     ：二两白银"
+}
+    }
+
+  room_exits "weizhongwei" {
+    room_id = rooms.weizhongwei.id
+    west = rooms.nandajie.id
+    }
+
+
+  room_characters "weizhongwei" {
+    room_id = rooms.weizhongwei.id
+    characters = [
+      { id = characters.xiaoer3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/wushan.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "wushan" {
+      name = "福州乌山"
+      description = "福州古城三山，以城内乌山、于山和屏山三山恃立之故 也。乌山上有乌塔。"
+  x = -1
+  y = -1
+  z = 1
+    }
+
+  room_exits "wushan" {
+    room_id = rooms.wushan.id
+    northdown = rooms.xidajie.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/wuxiang.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "wuxiang" {
+      name = "无相庵"
+      description = "一个小小庵堂。"
+  x = 4
+  y = 1
+  z = 0
+    }
+
+  room_exits "wuxiang" {
+    room_id = rooms.wuxiang.id
+    south = rooms.shulin.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/wuyishan1.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "wuyishan1" {
+      name = "武夷山"
+      description = "武夷山方圆两百四十里，九曲溪盘流群山之中，沿溪森列三 十六峰，碧水丹山，风光旖丽。奇峰云海，山清水秀，号称“三 三水，六六峰”。"
+  x = -8
+  y = 4
+  z = 0
+    }
+
+  room_exits "wuyishan1" {
+    room_id = rooms.wuyishan1.id
+    west = rooms.wuyishan2.id
+    east = rooms.fzroad2.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/wuyishan2.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "wuyishan2" {
+      name = "九曲溪"
+      description = "九曲溪依山而流，九曲九折，穿梭丹岩之中，水色碧透，掬 手可饮，“曲曲山回转，峰峰水抱流”，山光水色，融为一体。 沿岸大王峰巍峨，玉女峰俏立，备极景致。"
+  x = -9
+  y = 4
+  z = 0
+    }
+
+  room_exits "wuyishan2" {
+    room_id = rooms.wuyishan2.id
+    south = rooms.wuyishan7.id
+    northup = rooms.wuyishan6.id
+    west = rooms.wuyishan5.id
+    east = rooms.wuyishan1.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/wuyishan3.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "wuyishan3" {
+      name = "天游峰"
+      description = "天游峰为武夷第一胜地，山势陡峭，石阶因山而凿，极为险 峻，山峰巍然屹立，登顶远眺，武夷山全景尽收眼底。只见大王 玉女遥遥相望，默默伤情。"
+  x = -10
+  y = 5
+  z = 1
+    }
+
+  room_exits "wuyishan3" {
+    room_id = rooms.wuyishan3.id
+    southdown = rooms.wuyishan5.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/wuyishan4.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "wuyishan4" {
+      name = "天心岩"
+      description = "天心岩为武夷名胜，岩下永乐寺为天下著名禅林。山腰“大 红袍”岩茶为天下极品，驰名海内外。"
+  x = -11
+  y = 5
+  z = 0
+    }
+
+  room_exits "wuyishan4" {
+    room_id = rooms.wuyishan4.id
+    southeast = rooms.wuyishan5.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/wuyishan5.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "wuyishan5" {
+      name = "九曲溪"
+      description = "盈盈一水，折为九曲。两岸树绿竹翠，奇峰突兀，真是“溪 流九曲泻云液，山光倒浸清涟漪”。"
+  x = -10
+  y = 4
+  z = 0
+    }
+
+  room_exits "wuyishan5" {
+    room_id = rooms.wuyishan5.id
+    northwest = rooms.wuyishan4.id
+    northup = rooms.wuyishan3.id
+    east = rooms.wuyishan2.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/wuyishan6.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "wuyishan6" {
+      name = "大王峰"
+      description = "大王峰又称纱帽峰，山形如宦者纱帽，独具王仪而得名。四 周悬崖壁立，上丰下敛，气势雄浑。远远望去，宛若擎天巨柱， 与玉女遥遥相望。石壁上刻有“居高思危”四字。"
+  x = -9
+  y = 5
+  z = 1
+    }
+
+  room_exits "wuyishan6" {
+    room_id = rooms.wuyishan6.id
+    southdown = rooms.wuyishan2.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/wuyishan7.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "wuyishan7" {
+      name = "玉女峰"
+      description = "玉女峰亭亭如少女玉立，突兀挺拔。峰顶花卉参簇，恰似山 花插鬓。岩壁秀润光滑，宛如玉肌清凉。俏立溪畔，凛然不可侵 犯，无路攀登。“插花临水一奇峰，玉骨冰肌处女容”即其写照。 峰下浴香潭，为玉女沐浴处。峰东圆石如镜，是为梳妆台。"
+  x = -9
+  y = 3
+  z = 0
+    }
+
+  room_exits "wuyishan7" {
+    room_id = rooms.wuyishan7.id
+    north = rooms.wuyishan2.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/xiangyang.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "xiangyang" {
+      name = "向阳巷"
+      description = "这里是福州城西向阳巷。北面有一所破败的宅子。西面有 一家杂货铺，专卖女人家用的东西，男人不可以进去。"
+  x = -2
+  y = -2
+  z = 0
+    }
+
+  room_exits "xiangyang" {
+    room_id = rooms.xiangyang.id
+    west = rooms.zahuopu.id
+    north = rooms.laozhai.id
+    east = rooms.shiqiao.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/xiaochang.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "xiaochang" {
+      name = "校场"
+      description = "福州校场为福建水师校场。场中点将楼上高挂“施”字 黑锈金边帅旗，刀枪耀日生辉。水师提督施琅施大人亲率十 万雄兵，隔海相望，壮心不已。"
+  x = 1
+  y = -2
+  z = 0
+    }
+
+  room_exits "xiaochang" {
+    room_id = rooms.xiaochang.id
+    west = rooms.nanmendou.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/xichansi.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "xichansi" {
+      name = "西禅寺"
+      description = "西禅寺始建于梁朝，寺中玉佛楼玉佛为整玉雕就，宝相 庄严，从来香火不绝。香客往来，但有所求，多得灵验。"
+  x = -2
+  y = -1
+  z = 0
+    }
+
+  room_exits "xichansi" {
+    room_id = rooms.xichansi.id
+    north = rooms.ximendajie.id
+    }
+
+
+  room_characters "xichansi" {
+    room_id = rooms.xichansi.id
+    characters = [
+      { id = characters.guest.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/xidajie.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "xidajie" {
+      name = "西大街"
+      description = "大街北面，一座结构宏伟的建筑前，左右石坛上各插着 一根两丈多高的旗杆，杆上青旗飘扬。右首旗子用金线绣着 一头张牙舞爪的狮子，旗风招展，奕奕如生。雄狮上头有一 对黑丝线绣的蝙蝠展翅飞翔。左首旗子上写着“福威镖局” 四个黑字，银钩铁划，刚劲非凡。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "xidajie" {
+    room_id = rooms.xidajie.id
+    west = rooms.ximendajie.id
+    east = rooms.dongjiekou.id
+    north = rooms.biaoju.id
+    southup = rooms.wushan.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/xihu.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "xihu" {
+      name = "西湖"
+      description = "福州西湖原为灌溉疏浚之利而掘，汇一郭之水以为滋农 时。而今，春水环绿岛，长柳戏游鱼，已有十分景致。"
+  x = -2
+  y = 1
+  z = 0
+    }
+
+  room_exits "xihu" {
+    room_id = rooms.xihu.id
+    south = rooms.ximendajie.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/ximen.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "ximen" {
+      name = "福州西门"
+      description = "这里是福州西门。出此门向西可达中原。"
+  x = -3
+  y = 0
+  z = 0
+    }
+
+  room_exits "ximen" {
+    room_id = rooms.ximen.id
+    west = rooms.fzroad11.id
+    east = rooms.ximendajie.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/ximendajie.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "ximendajie" {
+      name = "西门大街"
+      description = "青石板路笔直地伸展出去，直通西门。街北望去，一片 的潋滟水色，街南却是一片丛林，佛号钟呤，悠远传音。"
+  x = -2
+  y = 0
+  z = 0
+    }
+
+  room_exits "ximendajie" {
+    room_id = rooms.ximendajie.id
+    south = rooms.xichansi.id
+    north = rooms.xihu.id
+    east = rooms.xidajie.id
+    west = rooms.ximen.id
+    }
+
+
+  room_characters "ximendajie" {
+    room_id = rooms.ximendajie.id
+    characters = [
+      { id = characters.cui.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/yamen.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "yamen" {
+      name = "提督衙门"
+      description = "这里是衙门大门，两扇朱木大门紧紧关闭着。“肃静” “回避”的牌子分放两头石狮子的旁边。前面有一个大鼓， 几名戈什哈站在门前。"
+  x = -1
+  y = -1
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：objectp(ob = present("ge shiha", environment(me))) && dir != "east" && living(ob)
+direction = ~
+  message = "戈什哈喝道：“施大人已去校场阅兵，你来何干？”"
+}
+
+]
+    }
+
+  room_exits "yamen" {
+    room_id = rooms.yamen.id
+    east = rooms.nandajie.id
+    }
+
+
+  room_characters "yamen" {
+    room_id = rooms.yamen.id
+    characters = [
+      { id = characters.geshiha.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/yanping.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "yanping" {
+      name = "延平府"
+      description = "延平府廛市繁华，占溪山之雄，当水陆之会，向为入闽之咽 喉。周遭山势壁立，深湍饶郭，易守难攻，为省城屏障，故关防 严密不轻怠。隆武天子以国姓爷食栗此方，赐封延平郡王。"
+  x = -7
+  y = 2
+  z = 0
+    }
+
+  room_exits "yanping" {
+    room_id = rooms.yanping.id
+    southwest = rooms.fzroad4.id
+    southeast = rooms.fzroad8.id
+    northup = rooms.fzroad3.id
+    }
+
+
+  room_characters "yanping" {
+    room_id = rooms.yanping.id
+    characters = [
+      { id = characters.wujiang.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/yongquan.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "yongquan" {
+      name = "涌泉寺"
+      description = "涌泉寺为闽中第一丛林。构筑宏伟，气势磅礴，工艺精 巧，冠绝一时。寺东胜境灵源深处，悬崖峭壁，峥嵘奇巧， 古树参天，宁静幽雅，其中千载碑林，多朱熹、蔡襄遗墨。 寺北绝顶峰，远望东海烟波，近瞰闽江流带，福州平原一派 田园风光尽收眼底。"
+  x = 5
+  y = 1
+  z = 1
+    }
+
+  room_exits "yongquan" {
+    room_id = rooms.yongquan.id
+    south = rooms.gushan.id
+    }
+
+
+  room_characters "yongquan" {
+    room_id = rooms.yongquan.id
+    characters = [
+      { id = characters.seng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/yushan.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "yushan" {
+      name = "福州于山"
+      description = "于山因战国时于越族在此居住而得名。相传闽越王无诸 曾于九月九日大宴于此，又称“九日山”，于山之麓的白塔， 又称定光塔，系唐王审知为了向死去的父母报恩而建。登上 白塔榕城历历如画。"
+  x = 1
+  y = -1
+  z = 1
+    }
+
+  room_exits "yushan" {
+    room_id = rooms.yushan.id
+    northdown = rooms.dongdajie.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/zahuopu.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "zahuopu" {
+      name = "杂货铺"
+      description = "这里是一间颇为陈旧的铺面，柜台上面奚奚落落摆放着些 女人专用的杂货。"
+  x = -3
+  y = -2
+  z = 0
+    }
+
+  room_exits "zahuopu" {
+    room_id = rooms.zahuopu.id
+    east = rooms.xiangyang.id
+    }
+
+
+  room_characters "zahuopu" {
+    room_id = rooms.zahuopu.id
+    characters = [
+      { id = characters.chen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/fuzhou/zhongzhou.c by LPCConverter
+# Zone: fuzhou
+
+    rooms "zhongzhou" {
+      name = "中洲桥"
+      description = "中洲桥横越闽江，桥面平整，桥下水花喧闹。中洲为一 小岛，尽是水上人家。"
+  x = 0
+  y = -4
+  z = 0
+    }
+
+  room_exits "zhongzhou" {
+    room_id = rooms.zhongzhou.id
+    south = rooms.puxian.id
+    north = rooms.nanmen.id
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/baier.c by LPCConverter
+# Zone: fuzhou
+
+    characters "baier" {
+      name = "白二"
+      description = "这是个镖局趟子手，长得虎背熊腰，一身横练功夫。"
+  title = "趟子手"
+  gender = "男性"
+  age = 30
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "sword" level = 20 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/boy.c by LPCConverter
+# Zone: fuzhou
+
+    characters "boy" {
+      name = "男孩"
+      description = "这是个城里的少年。"
+  gender = "男性"
+  age = 13
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100
+    con = 15
+    dex = 16
+    int = 17
+    str = 17
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/chen.c by LPCConverter
+# Zone: fuzhou
+
+    characters "chen" {
+      name = "陈阿婆"
+      description = "陈阿婆久居佛州城，据说她年轻时很有几分风韵。"
+  title = "杂货铺老板"
+  nickname = "消息灵通"
+  gender = "女性"
+  age = 55
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 800
+    str = 20
+  }
+
+  # vendor_goods: "/d/fuzhou/obj/xiuhua" (file not found)
+  # vendor_goods: "/d/fuzhou/obj/flower_shoe" (file not found)
+  # vendor_goods: "/d/fuzhou/obj/pink_cloth" (file not found)
+  # vendor_goods: "/d/city/obj/goldring" (file not found)
+  # vendor_goods: "/d/city/obj/necklace" (file not found)
+
+  inquiries = [
+    { key = "林震南" value = "阿南生着那俊，那会琢一个河南七子婆，唉。" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["list", "buy"]
+  }
+
+  greetings = [
+    { line = "陈阿婆笑眯眯地招呼道：人客来坐。" },
+    { line = "陈阿婆笑眯眯地说道：可嘴的，你要买什？" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/chenqi.c by LPCConverter
+# Zone: fuzhou
+
+    characters "chenqi" {
+      name = "陈七"
+      description = "这是个镖局趟子手，长得虎背熊腰，一身横练功夫。"
+  title = "趟子手"
+  gender = "男性"
+  age = 30
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "sword" level = 20 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/cui.c by LPCConverter
+# Zone: fuzhou
+
+    characters "cui" {
+      name = "崔镖头"
+      description = ""
+  gender = "男性"
+  age = 35
+  shen_type = 1
+
+  combat = {
+    combat_exp = 5000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "blade" level = 40 },
+    { skill = "parry" level = 30 },
+    { skill = "dodge" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/flower_shoe.c by LPCConverter
+# Zone: fuzhou
+
+    characters "flower_shoe" {
+      name = "绣花小鞋"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/geshiha.c by LPCConverter
+# Zone: fuzhou
+
+    characters "geshiha" {
+      name = "戈什哈"
+      description = "一个高大威猛的汉子，是靖海侯施琅大人的亲兵戈什哈。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    combat_exp = 17500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/girl.c by LPCConverter
+# Zone: fuzhou
+
+    characters "girl" {
+      name = "女孩"
+      description = "这是个农家少女，虽然只有十二、三岁，身材已经开始发育。"
+  gender = "女性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 70
+    con = 16
+    dex = 15
+    int = 15
+    str = 14
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/linzhennan.c by LPCConverter
+# Zone: fuzhou
+
+    characters "linzhennan" {
+      name = "林震南"
+      description = "他就是「福威镖局」的总镖头林震南。"
+  title = "福威镖局总镖头"
+  gender = "男性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    combat_exp = 100000
+    max_neili = 1000
+    max_qi = 800
+  }
+
+  inquiries = [
+    { key = "向阳老宅" value = "那是我从前在福建时住的家院，已经破败了。" },
+    { key = "林远图" value = "小孩子这么没礼貌，直呼先人名讳！" },
+    { key = "福威镖局" value = "福威镖局开创初期，便是仗着先祖远图公当年闯下的威名。" },
+    { key = "辟邪剑法" value = "(: ask_pixie :)" },
+    { key = "远图公" value = "祖父以七十二路辟邪剑法开创镖局，当真打遍黑道无敌手。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 100 },
+    { skill = "sword" level = 100 },
+    { skill = "pixie-sword" level = 100 },
+    { skill = "unarmed" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "parry" level = 100 },
+    { type = "parry" skill = "pixie-sword" },
+    { type = "sword" skill = "pixie-sword" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/shi.c by LPCConverter
+# Zone: fuzhou
+
+    characters "shi" {
+      name = "史镖头"
+      description = ""
+  gender = "男性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    combat_exp = 7000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "blade" level = 40 },
+    { skill = "parry" level = 30 },
+    { skill = "dodge" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/wang.c by LPCConverter
+# Zone: fuzhou
+
+    characters "wang" {
+      name = "王夫人"
+      description = "她是洛阳金刀王老爷子的独生爱女，福威镖局总镖头夫人。"
+  title = "金刀"
+  gender = "女性"
+  age = 39
+  shen_type = 1
+
+  combat = {
+    combat_exp = 25000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "blade" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "yanxing-dao" level = 50 },
+    { type = "parry" skill = "yanxing-dao" },
+    { type = "blade" skill = "yanxing-dao" }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/xiaoer.c by LPCConverter
+# Zone: fuzhou
+
+    characters "xiaoer" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+
+  accept = [
+    { kind = "money" min = 5000 accept = true msg = "小二一哈腰，说道：多谢您老，客官请上楼歇息。" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/xiaoer2.c by LPCConverter
+# Zone: fuzhou
+
+    characters "xiaoer2" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  goods = [
+    { id = items.fotiaoqiang.id },
+    { id = items.jiuping.id },
+    { id = items.yadan.id },
+    { id = items.zongzi.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/xiaoer3.c by LPCConverter
+# Zone: fuzhou
+
+    characters "xiaoer3" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  goods = [
+    { id = items.fotiaoqiang.id },
+    { id = items.jiuping.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/xiaofan.c by LPCConverter
+# Zone: fuzhou
+
+    characters "xiaofan" {
+      name = "小贩"
+      description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
+  gender = "男性"
+  age = 32
+  brain = brains.vendor
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  # vendor_goods: "/d/village/npc/obj/bottle" (file not found)
+  # vendor_goods: "/d/village/npc/obj/egg" (file not found)
+
+  inquiries = [
+    { key = "大力丸" value = "看你也是正人君子，怎么问这个？" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "小贩吆喝道：大力丸，大力丸，一夜管睡百姑娘！" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/zheng.c by LPCConverter
+# Zone: fuzhou
+
+    characters "zheng" {
+      name = "郑镖头"
+      description = ""
+  gender = "男性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    combat_exp = 10000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "blade" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/obj/bluecloth.c by LPCConverter
+# Zone: fuzhou
+
+    characters "bluecloth" {
+      name = "青布长衫"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/obj/cloth.c by LPCConverter
+# Zone: fuzhou
+
+    characters "cloth" {
+      name = "布衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/obj/fotiaoqiang.c by LPCConverter
+# Zone: fuzhou
+
+    characters "fotiaoqiang" {
+      name = "佛跳墙"
+      description = "一碗香喷喷的佛跳墙，是福建第一名菜。"
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/obj/fuchen.c by LPCConverter
+# Zone: fuzhou
+
+    characters "fuchen" {
+      name = "拂尘"
+      description = "这是一柄拂尘，做工精细，是很阴毒的兵器。"
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/obj/jiuping.c by LPCConverter
+# Zone: fuzhou
+
+    characters "jiuping" {
+      name = "酒瓶"
+      description = "一个晶莹碧绿的的大酒瓶，装了熏熏醉人的福建老酒。"
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/obj/tiexiang.c by LPCConverter
+# Zone: fuzhou
+
+    characters "tiexiang" {
+      name = "铁箱"
+      description = "一只有大又笨的铁箱子，有些生锈了。"
+
+  init = {
+    greet_delay = 0
+    add_actions = ["climb"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/obj/xiuhua.c by LPCConverter
+# Zone: fuzhou
+
+    characters "xiuhua" {
+      name = "绣花针"
+      description = "这是一根精钢细磨的绣花针，是绣花用的工具。"
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/obj/yadan.c by LPCConverter
+# Zone: fuzhou
+
+    characters "yadan" {
+      name = "臭鸭蛋"
+      description = "臭鸭蛋闻着臭，吃着香。"
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/npc/obj/zongzi.c by LPCConverter
+# Zone: fuzhou
+
+    characters "zongzi" {
+      name = "粽子"
+      description = "一个香喷喷的肉粽子，包它的粽子叶泛出一股清香。"
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/obj/jiasha.c by LPCConverter
+# Zone: fuzhou
+
+    items "jiasha" {
+      name = "袈裟"
+      description = "一件旧得已经看不出颜色的袈裟，上面有好多窟窿。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/fuzhou/obj/pink_cloth.c by LPCConverter
+# Zone: fuzhou
+
+    items "pink_cloth" {
+      name = "粉红绸衫"
+      description = "这件粉红色的绸衫上面绣着几只黄鹊，闻起来还有一股淡香。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

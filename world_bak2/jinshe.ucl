@@ -1,0 +1,155 @@
+zones "jinshe" {
+  name = "jinshe"
+}
+
+# Generated from C:/files/git/mud/d/jinshe/shanbi.c by LPCConverter
+# Zone: jinshe
+
+    rooms "shanbi" {
+      name = "山壁"
+      description = "这里是华山绝壁上的山壁。山壁似乎有个山洞(dong)。你向下一 望，只见脚下雾气一团团的随风飘过，绝峰险岭，却不看见地。转头 向洞里张望，黑沉沉的看不清楚，只觉得洞穴很深。洞口甚小，那是 钻不进去。"
+  x = -1
+  y = -1
+  z = 0
+item_desc = {
+ dong = "一个被烂泥堵住的山洞，不知道能不能打破（break）。"
+}
+    }
+
+  room_exits "shanbi" {
+    room_id = rooms.shanbi.id
+    up = rooms.ziqitai.id
+    }
+
+# Generated from C:/files/git/mud/d/jinshe/shandong.c by LPCConverter
+# Zone: jinshe
+
+    rooms "shandong" {
+      name = "山洞"
+      description = "对面石壁上斜倚着一副骷髅骨，身上衣服已烂了七八成，那骷髅 骨宛然尚可见到是个人形。见石室中别无其他可怖事物。骷髅前面横 七竖八的放着十几把金蛇锥，石壁上有几百幅用利器刻成的简陋人形 (map) 。图形尽处，石壁上出现了十六个字(word)，也是以利器所刻。 十六字之旁，有个剑柄凸出在石壁之上，似是一把剑插入了石壁，直 至剑柄。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ map = "石壁每个人形均不相同，举手踢足，似在练武。"
+ word = "“重宝秘术，付与有缘，入我门来，遇祸莫怨。”"
+}
+    }
+
+  room_exits "shandong" {
+    room_id = rooms.shandong.id
+    south = rooms.yongdao2.id
+    }
+
+
+
+
+  room_items "shandong" {
+    room_id = rooms.shandong.id
+    items = [
+      { id = items.jinshe_zhui.id },
+      { id = items.skeleton.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jinshe/yongdao1.c by LPCConverter
+# Zone: jinshe
+
+    rooms "yongdao1" {
+      name = "甬道"
+      description = "你慢慢爬了进去，见是这里是一条狭窄的天生甬道，其实是山腹 内的一条裂缝，爬了十多丈远，甬道渐高，再前进丈余，已可站直。 你挺一挺腰，向前走去。"
+  x = -1
+  y = -1
+  z = 0
+    }
+
+  room_exits "yongdao1" {
+    room_id = rooms.yongdao1.id
+    east = rooms.yongdao2.id
+    out = rooms.shanbi.id
+    }
+
+# Generated from C:/files/git/mud/d/jinshe/yongdao2.c by LPCConverter
+# Zone: jinshe
+
+    rooms "yongdao2" {
+      name = "甬道"
+      description = "甬道忽然转弯，走了两三丈远，前面豁然空阔，出现一个洞穴， 便如是座石室。可惜现在被大石头(stone)堵住了前方。"
+  x = 0
+  y = -1
+  z = 0
+item_desc = {
+ stone = "一块巨石，要想前进只有想办法把它移开（move）。"
+}
+    }
+
+  room_exits "yongdao2" {
+    room_id = rooms.yongdao2.id
+    west = rooms.yongdao1.id
+    }
+
+# Generated from C:/files/git/mud/d/jinshe/obj/bigbox.c by LPCConverter
+# Zone: jinshe
+
+    items "bigbox" {
+      name = "大铁盒"
+      description = "这盒子高约一尺，然而入手轻飘飘地，似乎盒里并没藏着甚么 东西。打开盒盖，那盒子竟浅得出奇，离底仅只一寸，一只尺 来高的盒子，怎地盒里却这般浅？料得必有夹层。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jinshe/obj/jinshe-jian.c by LPCConverter
+# Zone: jinshe
+
+    items "jinshe_jian" {
+      name = "金蛇剑"
+      description = "这剑金光灿烂，握在手中甚是沉重，看来竟是黄金混和了其他五 金所铸，剑身上一道血痕，发出碧油油的暗光，极是诡异。剑的 形状甚是奇特，整柄剑就如是一条蛇盘曲而成，蛇尾勾成剑柄， 蛇头则是剑尖，蛇舌伸出分叉，是以剑尖竟有两叉。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中，顿时全身凉飕飕地只感寒气逼人。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/jinshe/obj/jinshe-zhui.c by LPCConverter
+# Zone: jinshe
+
+    items "jinshe_zhui" {
+      name = "金蛇锥"
+      description = "金蛇锥是黄金所铸，灿烂生光。长约二寸八分，打成昂首吐舌的蛇 形，蛇舌尖端分成双叉，每一叉都是一个倒刺。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jinshe/obj/skeleton.c by LPCConverter
+# Zone: jinshe
+
+    items "skeleton" {
+      name = "骸骨"
+      description = "这副骸骨已经躺在这里很久了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/jinshe/obj/smallbox.c by LPCConverter
+# Zone: jinshe
+
+    items "smallbox" {
+      name = "小铁盒"
+      description = "这只盒子小得多，只一尺见方。盒中一张笺上写道：“君 是忠厚仁者，葬我骸骨，当酬以重宝秘术。大铁盒开启时 有毒箭射出，愈中书谱地图均假，上有剧毒，以惩贪欲恶 徒。真者在此小铁盒内。”"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

@@ -1,0 +1,1157 @@
+zones "quanzhou" {
+  name = "quanzhou"
+}
+
+# Generated from C:/files/git/mud/d/quanzhou/bamboo.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "bamboo" {
+      name = "竹林小道"
+      description = "这是一条卵石铺成的小道，曲曲折折地通向前方。两边是 密密的竹林。这里人迹罕至，惟闻足底叩击路面，微风吹拂竹 叶，令人尘心为之一涤。但除了幽静之外，却隐隐有股杀气弥 漫在这竹林之中，不禁让人心里一紧。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "bamboo" {
+    room_id = rooms.bamboo.id
+    up = rooms.chating.id
+    down = rooms.zhongxin.id
+    west = rooms.qinglong.id
+    north = rooms.nanmen.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/beimen.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "beimen" {
+      name = "泉州北门"
+      description = "这里是南方第一港泉州的北门。出此门向北可抵中原。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "beimen" {
+    room_id = rooms.beimen.id
+    south = rooms.zhongxin.id
+    north = rooms.puxian.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/chating.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "chating" {
+      name = "茶亭"
+      description = "这是一家路边的小茶亭，赶山路的人常在此处歇歇脚。亭 子里有几张桌子和几支条凳。周围是一片树林。"
+  x = 0
+  y = 0
+  z = 2
+    }
+
+  room_exits "chating" {
+    room_id = rooms.chating.id
+    up = rooms.chiqian.id
+    down = rooms.bamboo.id
+    west = rooms.qzroad4.id
+    }
+
+
+
+
+  room_items "chating" {
+    room_id = rooms.chating.id
+    items = [
+      { id = items.xiang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhou/chiqian.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "chiqian" {
+      name = "赤嵌城"
+      description = "此地为台湾府驻所。台湾开化未久，国姓爷东征，收 复此城，围困红毛鬼达两年之久，终致金瓯无缺。     城外海港，有舟(zhou)船来往澎湖。"
+  x = 0
+  y = 0
+  z = 3
+item_desc = {
+ zhou = "一条兵舟，往返澎湖的交通兵船。"
+}
+    }
+
+  room_exits "chiqian" {
+    room_id = rooms.chiqian.id
+    up = rooms.dahai.id
+    down = rooms.chating.id
+    eastup = rooms.riyuetang.id
+    north = rooms.jilong.id
+    south = rooms.dagou.id
+    }
+
+
+  room_characters "chiqian" {
+    room_id = rooms.chiqian.id
+    characters = [
+      { id = characters.hongmao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhou/dagou.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "dagou" {
+      name = "打狗港"
+      description = "打狗港位于台湾南部，港域口小腹大，外有岛链环抱， 内具曲折峡湾，诚全台第一良港。"
+  x = 0
+  y = -1
+  z = 3
+    }
+
+  room_exits "dagou" {
+    room_id = rooms.dagou.id
+    north = rooms.chiqian.id
+    }
+
+
+  room_characters "dagou" {
+    room_id = rooms.dagou.id
+    characters = [
+      { id = characters.wokou.id },
+      { id = characters.wokou.id },
+      { id = characters.wokou.id },
+      { id = characters.wokou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhou/dahai.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "dahai" {
+      name = "大海"
+      description = "你正处在茫茫大海之中。你极目远望，只见海天一线，周围连个黑点都没有。 耳边只有海浪的拍打声。"
+  x = 0
+  y = 0
+  z = 4
+    }
+  room_exits "dahai" {
+    room_id = rooms.dahai.id
+    down = rooms.chiqian.id
+    up = rooms.penghu.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/haigang.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "haigang" {
+      name = "海港"
+      description = "这里是出海的必经之地，泉州号称东方第一大港，是 海上丝绸之路的起点，舟船(chuan) 十分方便。"
+  x = 1
+  y = 0
+  z = 0
+item_desc = {
+ chuan = "一条大海船。出远海没这样的船可不行。"
+}
+    }
+
+  room_exits "haigang" {
+    room_id = rooms.haigang.id
+    west = rooms.zhongxin.id
+    }
+
+
+  room_characters "haigang" {
+    room_id = rooms.haigang.id
+    characters = [
+      { id = characters.boy.id },
+      { id = characters.boy.id },
+      { id = characters.girl.id },
+      { id = characters.chuanfu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhou/jiaxing.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "jiaxing" {
+      name = "嘉兴城"
+      description = "这里是江南名城嘉兴。城东是风景如画的南湖。城北早先有座醉仙楼， 当年全真七子之一的丘处机和江南七怪就在那里盟约寻找忠良之后。不知 道什么原因店主把它迁到扬州了。"
+  x = -1
+  y = 2
+  z = 2
+    }
+
+  room_exits "jiaxing" {
+    room_id = rooms.jiaxing.id
+    south = rooms.jxnanmen.id
+    east = rooms.nanhu.id
+    west = rooms.qzroad2.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/jiaxinggang.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "jiaxinggang" {
+      name = "嘉兴海港"
+      description = "这里是嘉兴海港，港内白帆点点，码头上停着好多渔船，可是 一提起桃花岛却个个摇头。"
+  x = 1
+  y = 2
+  z = 2
+    }
+
+  room_exits "jiaxinggang" {
+    room_id = rooms.jiaxinggang.id
+    west = rooms.nanhu.id
+    }
+
+
+  room_characters "jiaxinggang" {
+    room_id = rooms.jiaxinggang.id
+    characters = [
+      { id = characters.chuanfu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhou/jilong.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "jilong" {
+      name = "鸡笼港"
+      description = "鸡笼为台湾北部良港。群山环抱的港口腹地广大，人 烟稠密，有“台湾诸葛亮”之称的陈永华先生在此垦田养 桑，修养生息，遗爱甚长。"
+  x = 0
+  y = 1
+  z = 3
+    }
+
+  room_exits "jilong" {
+    room_id = rooms.jilong.id
+    south = rooms.chiqian.id
+    }
+
+
+  room_characters "jilong" {
+    room_id = rooms.jilong.id
+    characters = [
+      { id = characters.wokou.id },
+      { id = characters.wokou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhou/jxnanmen.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "jxnanmen" {
+      name = "嘉兴南门"
+      description = "这里是嘉兴的南门。周围长着茂密的竹林。东面是座庙宇。 向南可入福建。向东南就是号称天堂的杭州城了。"
+  x = -1
+  y = 1
+  z = 2
+    }
+
+  room_exits "jxnanmen" {
+    room_id = rooms.jxnanmen.id
+    southeast = rooms.road1.id
+    southwest = rooms.majiu2.id
+    south = rooms.qzroad4.id
+    east = rooms.tieqiang.id
+    north = rooms.jiaxing.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/majiu1.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "majiu1" {
+      name = "马厩"
+      description = "这是泉州城的马厩，常年供应新鲜草料。泉州商业发达，因此这里生 意兴隆，马夫们好生照看马匹，将它们喂饱饮足，再洗刷得干乾净净，一 直伺候到客人上路。马厩雨檐下的烂木柱上钉着一块破木牌(paizi)。     马厩中堆放著几堆草料，正中有一口泔槽。"
+  x = 1
+  y = -1
+  z = 0
+    }
+
+  room_exits "majiu1" {
+    room_id = rooms.majiu1.id
+    northwest = rooms.zhongxin.id
+    }
+
+
+  room_characters "majiu1" {
+    room_id = rooms.majiu1.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu1" {
+    room_id = rooms.majiu1.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhou/majiu2.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "majiu2" {
+      name = "马厩"
+      description = "这是嘉兴城的马厩，常年供应新鲜草料。马厩雨檐下的烂木柱上钉着 一块破木牌(paizi)。     马厩中堆放著几堆草料，正中有一口泔槽。"
+  x = -2
+  y = 0
+  z = 2
+    }
+
+  room_exits "majiu2" {
+    room_id = rooms.majiu2.id
+    northeast = rooms.jxnanmen.id
+    }
+
+
+  room_characters "majiu2" {
+    room_id = rooms.majiu2.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu2" {
+    room_id = rooms.majiu2.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhou/nanhu.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "nanhu" {
+      name = "嘉兴南湖"
+      description = "这里是嘉兴南湖。节近中秋，荷叶渐残，莲肉饱实。一阵轻柔婉 转的歌声，飘在烟水蒙蒙的湖面上。湖边一个道姑在一排柳树下悄立 已久。"
+  x = 0
+  y = 2
+  z = 2
+    }
+
+  room_exits "nanhu" {
+    room_id = rooms.nanhu.id
+    southeast = rooms.nanhu1.id
+    south = rooms.tieqiang.id
+    east = rooms.jiaxinggang.id
+    west = rooms.jiaxing.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/nanhu1.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "nanhu1" {
+      name = "嘉兴南湖"
+      description = "这里是烟波浩淼的南湖。湖上几只画舫在游荡，船上的游客和青 楼女子在嘻笑。湖水很深，没有船是渡不过去的。但不知是谁在湖底 钉了一些木桩。桩顶潜在水面之下一两寸的地方。即使是不懂轻功的 人走上去也像是水上漂的样子。"
+  x = 1
+  y = 1
+  z = 2
+    }
+
+  room_exits "nanhu1" {
+    room_id = rooms.nanhu1.id
+    northwest = rooms.nanhu.id
+    south = rooms.yanyu.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/nanmen.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "nanmen" {
+      name = "泉州南门"
+      description = "这里是南方第一港泉州的南门。南门外是一片荒野。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "nanmen" {
+    room_id = rooms.nanmen.id
+    north = rooms.zhongxin.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/penghu.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "penghu" {
+      name = "澎湖岛"
+      description = "澎湖为台湾属岛，海峡中砥，台岛屏障。马公港内多 为本地渔民，早晚劳作，与世无争。     港内有舟(zhou)船(chuan) 往返大陆台岛，冲波激浪 中，自有渔家滋味。"
+  x = 0
+  y = 0
+  z = 5
+item_desc = {
+ chuan = "一条大海船。出远海没这样的船可不行。"
+ zhou = "一条水军战舟，前往台湾，还得靠它。"
+}
+    }
+  room_exits "penghu" {
+    room_id = rooms.penghu.id
+    down = rooms.dahai.id
+    up = rooms.qzroad5.id
+    }
+
+  room_characters "penghu" {
+    room_id = rooms.penghu.id
+    characters = [
+      { id = characters.liu.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhou/qinglong.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "qinglong" {
+      name = "青龙会前庭"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = -1
+  y = 0
+  z = 1
+    }
+
+  room_exits "qinglong" {
+    room_id = rooms.qinglong.id
+    east = rooms.bamboo.id
+    north = rooms.qinglong3.id
+    south = rooms.qinglong2.id
+    west = rooms.qinglong1.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/qinglong1.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "qinglong1" {
+      name = "青龙会大庭"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = -2
+  y = 0
+  z = 1
+    }
+
+  room_exits "qinglong1" {
+    room_id = rooms.qinglong1.id
+    east = rooms.qinglong.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/qinglong2.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "qinglong2" {
+      name = "青龙会侧庭"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = -1
+  y = -1
+  z = 1
+    }
+
+  room_exits "qinglong2" {
+    room_id = rooms.qinglong2.id
+    north = rooms.qinglong.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/qinglong3.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "qinglong3" {
+      name = "青龙会侧庭"
+      description = "这是一片密密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧 敲木鱼声；微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤， 真是绝佳的禅修所在。"
+  x = -1
+  y = 1
+  z = 1
+    }
+
+  room_exits "qinglong3" {
+    room_id = rooms.qinglong3.id
+    south = rooms.qinglong.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/qzroad1.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "qzroad1" {
+      name = "山路"
+      description = "你走在一条山路上。时值春日，路旁的山坡上开满了金黄色的油菜花。"
+  x = -2
+  y = 2
+  z = 2
+    }
+
+  room_exits "qzroad1" {
+    room_id = rooms.qzroad1.id
+    south = rooms.qzroad2.id
+    northwest = rooms.yidao1.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/qzroad2.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "qzroad2" {
+      name = "山路"
+      description = "你走在一条山路上。时值春日，路旁的山坡上开满了金黄色的油菜花。 东面是江南名城嘉兴。西边就是天下名城苏州府了。"
+  x = -2
+  y = 1
+  z = 2
+    }
+
+  room_exits "qzroad2" {
+    room_id = rooms.qzroad2.id
+    west = rooms.dongmen.id
+    east = rooms.jiaxing.id
+    north = rooms.qzroad1.id
+    south = rooms.qzroad3.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/qzroad3.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "qzroad3" {
+      name = "山路"
+      description = "你走在一条山路上。时值春日，路旁的山坡上开满了金黄色的油菜花。"
+  x = -2
+  y = 0
+  z = 2
+    }
+
+  room_exits "qzroad3" {
+    room_id = rooms.qzroad3.id
+    east = rooms.qzroad4.id
+    north = rooms.qzroad2.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/qzroad4.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "qzroad4" {
+      name = "山路"
+      description = "你走在一条山路上。时值春日，路旁的山坡上开满了金黄色的油菜花。 北面是江南名城嘉兴。向南则进入福建武夷山区。东面有一个供路人休息的 小茶亭。"
+  x = -1
+  y = 0
+  z = 2
+    }
+
+  room_exits "qzroad4" {
+    room_id = rooms.qzroad4.id
+    east = rooms.chating.id
+    southup = rooms.fzroad1.id
+    west = rooms.qzroad3.id
+    north = rooms.jxnanmen.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/qzroad5.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "qzroad5" {
+      name = "武夷山路"
+      description = "你走在东南第一山脉武夷山上。海风从东面吹来，带着几 分寒意。南边就是著名的海港泉州了。"
+  x = 0
+  y = 0
+  z = 6
+    }
+
+  room_exits "qzroad5" {
+    room_id = rooms.qzroad5.id
+    up = rooms.xijie.id
+    down = rooms.penghu.id
+    northdown = rooms.qzroad4.id
+    south = rooms.beimen.id
+    }
+
+
+
+
+  room_items "qzroad5" {
+    room_id = rooms.qzroad5.id
+    items = [
+      { id = items.tu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhou/riyuetang.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "riyuetang" {
+      name = "日月潭"
+      description = "翠峰环抱，湖水澄碧的日月潭，潭北形如日轮，潭南 弯曲如月，为台湾避暑胜地。"
+  x = 1
+  y = 0
+  z = 4
+    }
+
+  room_exits "riyuetang" {
+    room_id = rooms.riyuetang.id
+    westdown = rooms.chiqian.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/tieqiang.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "tieqiang" {
+      name = "铁枪庙"
+      description = "这铁枪庙祀奉的是五代时名将铁枪王彦章。庙旁有座高塔， 塔顶群鸦世代为巢，乡民传说铁枪庙的乌鸦是神兵神将，向来 不敢侵犯，以致生养繁殖，越来越多。"
+  x = 0
+  y = 1
+  z = 2
+    }
+
+  room_exits "tieqiang" {
+    room_id = rooms.tieqiang.id
+    north = rooms.nanhu.id
+    west = rooms.jxnanmen.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/westbridge.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "westbridge" {
+      name = "西门吊桥"
+      description = "这是泉州西面的一座吊桥，从傍着晋江而建的城楼大门上以两 个滑轮维系。日出放下吊，日落绞起。过了桥向西南走可达岭南广 东。"
+  x = -2
+  y = 0
+  z = 0
+    }
+
+  room_exits "westbridge" {
+    room_id = rooms.westbridge.id
+    east = rooms.ximen.id
+    west = rooms.road14.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/xijie.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "xijie" {
+      name = "西街"
+      description = "这里是泉州的西大街，北面有一所破败的宅子。西面有一家杂货铺， 专卖女人家用的东西，男人不可以进去。"
+  x = 0
+  y = 0
+  z = 7
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "west" && ((string)me->query("gender") =="男性") && !wizardp(me)
+direction = "west"
+  message = "你个大老爷们儿去那干嘛！！"
+}
+
+]
+    }
+
+  room_exits "xijie" {
+    room_id = rooms.xijie.id
+    up = rooms.zhulin.id
+    down = rooms.qzroad5.id
+    east = rooms.zhongxin.id
+    north = rooms.laozhai.id
+    west = rooms.zahuopu.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/ximen.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "ximen" {
+      name = "泉州西门"
+      description = "这里是南方第一港泉州的西门。西门外是一座吊桥。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "ximen" {
+    room_id = rooms.ximen.id
+    west = rooms.westbridge.id
+    east = rooms.zhongxin.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/yanyu.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "yanyu" {
+      name = "烟雨楼"
+      description = "烟雨楼建在南湖中心的一个小岛上。南湖终年不断的水气把它 笼罩得迷迷蒙蒙的。楼内是家饭店。 店内正在装修楼梯。请勿上楼。"
+  x = 1
+  y = 0
+  z = 2
+    }
+
+  room_exits "yanyu" {
+    room_id = rooms.yanyu.id
+    north = rooms.nanhu1.id
+    up = rooms.yanyu2.id
+    }
+
+
+  room_characters "yanyu" {
+    room_id = rooms.yanyu.id
+    characters = [
+      { id = characters.xiaoer.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhou/yanyu2.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "yanyu2" {
+      name = "烟雨楼二楼"
+      description = "烟雨楼在南湖畔，四望临风，醺醺醉人。柳岸翻曳，禽噪起伏。 湖面轻烟薄雾，几尾小舟荡漾其间。半湖水里都浮着碧油油的菱叶， 越女轻歌，娇痴无邪。你放眼观赏，直欲跳入她的怀中。     楼中立了一幅长匾(bian)，绞丝镶边，楠木为里，年代虽久， 桐油粉漆，犹自清新如昨。柱子上隐隐有些字迹（ziji）。"
+  x = 1
+  y = 0
+  z = 3
+item_desc = {
+ ziji = "江南七怪叫板邱处机处。"
+}
+    }
+
+  room_exits "yanyu2" {
+    room_id = rooms.yanyu2.id
+    down = rooms.yanyu.id
+    }
+
+
+  room_characters "yanyu2" {
+    room_id = rooms.yanyu2.id
+    characters = [
+      { id = characters.yuenv.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhou/zahuopu.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "zahuopu" {
+      name = "杂货铺"
+      description = "这里是一家专卖女人用的东西的小铺子。"
+  x = -1
+  y = 0
+  z = 7
+    }
+
+  room_exits "zahuopu" {
+    room_id = rooms.zahuopu.id
+    east = rooms.xijie.id
+    }
+
+
+  room_characters "zahuopu" {
+    room_id = rooms.zahuopu.id
+    characters = [
+      { id = characters.chen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhou/zhongxin.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "zhongxin" {
+      name = "城中心"
+      description = "泉州是一个安静的港城。虽然这里是城中心，人们也只是脚步轻轻地 过往，并不喧哗。东面是一个港口，从那里可以出海。西面有一条小巷。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhongxin" {
+    room_id = rooms.zhongxin.id
+    up = rooms.bamboo.id
+    north = rooms.beimen.id
+    south = rooms.nanmen.id
+    east = rooms.haigang.id
+    west = rooms.ximen.id
+    southeast = rooms.majiu1.id
+    }
+
+
+  room_characters "zhongxin" {
+    room_id = rooms.zhongxin.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/quanzhou/zhulin.c by LPCConverter
+# Zone: quanzhou
+
+    rooms "zhulin" {
+      name = "竹林小道"
+      description = "这是一条卵石铺成的小道，曲曲折折地通向前方。两边是密 密的竹林。这里人迹罕至，惟闻足底叩击路面，有僧敲木鱼声； 微风吹拂竹叶，又如簌簌禅唱。令人尘心为之一涤，真是绝佳 的禅修所在。"
+  x = 0
+  y = 0
+  z = 8
+    }
+
+  room_exits "zhulin" {
+    room_id = rooms.zhulin.id
+    down = rooms.xijie.id
+    east = rooms.wuqiku.id
+    west = rooms.hsyuan2.id
+    south = rooms.zhulin1.id
+    north = rooms.zhulin3.id
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/boy.c by LPCConverter
+# Zone: quanzhou
+
+    characters "boy" {
+      name = "男孩"
+      description = "这是个城里的少年。"
+  gender = "男性"
+  age = 13
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100
+    con = 15
+    dex = 16
+    int = 17
+    str = 17
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/chen.c by LPCConverter
+# Zone: quanzhou
+
+    characters "chen" {
+      name = "陈阿婆"
+      description = "陈阿婆久居泉州城，据说她年轻时很有几分风韵，福威镖局 当时的少镖头林震南还追求过她。"
+  title = "杂货铺老板娘"
+  gender = "女性"
+  age = 55
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 800
+    str = 20
+  }
+
+  # vendor_goods: "/d/quanzhou/obj/xiuhua" (file not found)
+  # vendor_goods: "/d/quanzhou/obj/flower_shoe" (file not found)
+  # vendor_goods: "/d/quanzhou/obj/pink_cloth" (file not found)
+  # vendor_goods: "/d/city/obj/goldring" (file not found)
+  # vendor_goods: "/d/city/obj/necklace" (file not found)
+
+  inquiries = [
+    { key = "here" value = "泉州是个港口，会行船的人很多。" },
+    { key = "name" value = "婆婆我夫家姓陈。陈林半边天嘛。" },
+    { key = "林震南" value = "阿南生着那俊，那会琢一个河南七子婆，唉。" }
+  ]
+
+  init = {
+    greet_delay = 1
+    add_actions = ["list", "buy"]
+  }
+
+  greetings = [
+    { line = "陈阿婆笑眯眯地说道：人客来坐。" },
+    { line = "陈阿婆说道：可嘴的，你要买什？" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/chuanfu.c by LPCConverter
+# Zone: quanzhou
+
+    characters "chuanfu" {
+      name = "船夫"
+      description = "这是一个船夫。懒洋洋的靠在岸边，打量着来往的行人。眼神中透露 出一股狡黠之气。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 56
+
+  combat = {
+    combat_exp = 300000
+    max_neili = 1000
+  }
+
+  inquiries = [
+    { key = "出海" value = "那儿不是有船么？别来烦我。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 100 },
+    { skill = "unarmed" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "parry" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/girl.c by LPCConverter
+# Zone: quanzhou
+
+    characters "girl" {
+      name = "女孩"
+      description = "这是个农家少女，虽然只有十二、三岁，身材已经开始发育。"
+  gender = "女性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 70
+    con = 16
+    dex = 15
+    int = 15
+    str = 14
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "小女孩天真地笑着说：去桃花岛呀，要从嘉兴出海的。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/hongmao.c by LPCConverter
+# Zone: quanzhou
+
+    characters "hongmao" {
+      name = "红毛鬼"
+      description = "入侵我天朝宝岛台湾的荷兰红毛鬼。他手上端着一支火枪，枪口还冒着青烟。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 25000
+    dex = 16
+    str = 25
+  }
+
+  carry = [
+    { id = items.huoqiang.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "红毛鬼抬手就是一枪，“砰”的一团火焰从枪口窜出。" },
+    { line = "红毛鬼瞪着你，看了半天。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/liu.c by LPCConverter
+# Zone: quanzhou
+
+    characters "liu" {
+      name = "刘国轩"
+      description = "他就是延平王府的宿将，台海安危的干城，台湾三虎的刘大将军。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 75000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.tiejia.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "刘国轩扬声道：小将守土有责，虽万死以不辞。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/wokou.c by LPCConverter
+# Zone: quanzhou
+
+    characters "wokou" {
+      name = "倭寇"
+      description = "入侵我天朝宝岛台湾的日本武人，江湖通称武士。我天朝篾之倭寇。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 30000
+    dex = 16
+    str = 25
+  }
+
+  skills = [
+    { skill = "blade" level = 35 },
+    { skill = "dodge" level = 35 }
+  ]
+
+
+  carry = [
+    { id = items.wodao.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "倭寇抬眼大怒，牙缝里出声：八格牙路！你的，敢说台湾是你们的？死啦死啦的！" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/xiaoer.c by LPCConverter
+# Zone: quanzhou
+
+    characters "xiaoer" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  goods = [
+    { id = items.yadan.id },
+    { id = items.zongzi.id }
+  ]
+
+  # vendor_goods: "/d/city/obj/jitui" (file not found)
+  # vendor_goods: "/d/city/obj/jiudai" (file not found)
+  # vendor_goods: "/d/city/obj/baozi" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/cloth.c by LPCConverter
+# Zone: quanzhou
+
+    characters "cloth" {
+      name = "布衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/fuchen.c by LPCConverter
+# Zone: quanzhou
+
+    characters "fuchen" {
+      name = "拂尘"
+      description = "这是一柄拂尘，做工精细，是很阴毒的兵器。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/huoqiang.c by LPCConverter
+# Zone: quanzhou
+
+    characters "huoqiang" {
+      name = "荷兰火枪"
+      description = "一支荷兰火枪。可惜只能放一枪。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/tiexiang.c by LPCConverter
+# Zone: quanzhou
+
+    characters "tiexiang" {
+      name = "铁箱"
+      description = "一只有大又笨的铁箱子，有些生锈了。"
+
+  init = {
+    greet_delay = 0
+    add_actions = ["climb"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/wodao.c by LPCConverter
+# Zone: quanzhou
+
+    characters "wodao" {
+      name = "倭刀"
+      description = "这是一柄亮晃晃的弧形弯刀，十分锋利。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/xiuhua.c by LPCConverter
+# Zone: quanzhou
+
+    characters "xiuhua" {
+      name = "绣花针"
+      description = "这是一根精钢细磨的绣花针，是绣花用的绝佳工具。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/yadan.c by LPCConverter
+# Zone: quanzhou
+
+    characters "yadan" {
+      name = "臭鸭蛋"
+      description = "臭鸭蛋闻着臭，吃着香。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/npc/obj/zongzi.c by LPCConverter
+# Zone: quanzhou
+
+    characters "zongzi" {
+      name = "粽子"
+      description = "一个香喷喷的肉粽子，包它的粽子叶泛出一股清香。"
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/obj/flower_shoe.c by LPCConverter
+# Zone: quanzhou
+
+    items "flower_shoe" {
+      name = "绣花小鞋"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/quanzhou/obj/pink_cloth.c by LPCConverter
+# Zone: quanzhou
+
+    items "pink_cloth" {
+      name = "粉红绸衫"
+      description = "这件粉红色的绸衫上面绣着几只黄鹊，闻起来还有一股淡香。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

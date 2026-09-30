@@ -1,0 +1,2387 @@
+zones "baituo" {
+  name = "baituo"
+}
+
+# Generated from C:/files/git/mud/d/baituo/bridge.c by LPCConverter
+# Zone: baituo
+
+    rooms "bridge" {
+      name = "小桥"
+      description = "这是一座小竹桥，白驼山上的冰雪融化形成一条清澈的小 溪，从桥下缓缓流过。不时有顽皮的小鱼跃出水面，在阳光下 划出一条银白色的弧线。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "bridge" {
+    room_id = rooms.bridge.id
+    east = rooms.xijie.id
+    north = rooms.guangchang.id
+    }
+
+
+  room_characters "bridge" {
+    room_id = rooms.bridge.id
+    characters = [
+      { id = characters.cungu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/cao1.c by LPCConverter
+# Zone: baituo
+
+    rooms "cao1" {
+      name = "草丛"
+      description = "这里是乱草丛。东边是扇拱月形小敞门。其余三面都是齐 腰高的蒿草，常有蛇出没。"
+  x = -3
+  y = 5
+  z = 3
+    }
+
+  room_exits "cao1" {
+    room_id = rooms.cao1.id
+    south = rooms.__file__.id
+    east = rooms.ximen.id
+    north = rooms.cao2.id
+    west = rooms.__file__.id
+    }
+
+
+
+
+  room_items "cao1" {
+    room_id = rooms.cao1.id
+    items = [
+      { id = items.jinshe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/cao2.c by LPCConverter
+# Zone: baituo
+
+    rooms "cao2" {
+      name = "草丛"
+      description = "这里是乱草丛。北边是青竹林。其余三面都是齐腰高的蒿 草，常有蛇出没。"
+  x = -3
+  y = 6
+  z = 3
+    }
+
+  room_exits "cao2" {
+    room_id = rooms.cao2.id
+    south = rooms.cao1.id
+    east = rooms.cao1.id
+    north = rooms.zhulin.id
+    west = rooms.__file__.id
+    }
+
+
+
+
+  room_items "cao2" {
+    room_id = rooms.cao2.id
+    items = [
+      { id = items.qingshe.id },
+      { id = items.jinshe.id },
+      { id = items.dushe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/caomeide.c by LPCConverter
+# Zone: baituo
+
+    rooms "caomeide" {
+      name = "草莓地"
+      description = "这里是白驼山庄后面的一块草莓地，鲜红的草莓散落在绿 草中，让人感到非常美妙惬意。"
+  x = -3
+  y = 1
+  z = 0
+    }
+
+  room_exits "caomeide" {
+    room_id = rooms.caomeide.id
+    northeast = rooms.shulin1.id
+    }
+
+
+
+
+  room_items "caomeide" {
+    room_id = rooms.caomeide.id
+    items = [
+      { id = items.caomei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/caoping.c by LPCConverter
+# Zone: baituo
+
+    rooms "caoping" {
+      name = "草坪"
+      description = "这里是一块芳草坪，绿草茵茵，蝴蝶漫舞，让人感到惬意。 不过偶尔也会碰到菜花蛇。"
+  x = 1
+  y = 1
+  z = 1
+    }
+
+  room_exits "caoping" {
+    room_id = rooms.caoping.id
+    west = rooms.shijie.id
+    }
+
+
+
+
+  room_items "caoping" {
+    room_id = rooms.caoping.id
+    items = [
+      { id = items.caihuashe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/cave.c by LPCConverter
+# Zone: baituo
+
+    rooms "cave" {
+      name = "岩洞"
+      description = "这里是一个大岩洞，在白驼山特殊的地质条件下经过漫长 的年代形成的。洞内蜿蜒曲折，也不知延伸到了何处。"
+  x = -3
+  y = 8
+  z = 4
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "in" && objectp(present("mang she", environment(me)))
+direction = "in"
+  message = "蟒蛇盘在岩洞口，将路封了个严实。"
+}
+
+]
+    }
+
+  room_exits "cave" {
+    room_id = rooms.cave.id
+    southdown = rooms.zhulin.id
+    in = rooms.cave1.id
+    }
+
+
+
+
+  room_items "cave" {
+    room_id = rooms.cave.id
+    items = [
+      { id = items.mangshe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/cave1.c by LPCConverter
+# Zone: baituo
+
+    rooms "cave1" {
+      name = "岩洞内"
+      description = "这里是岩洞内部，洞顶上悬挂着洁白的钟乳石。"
+  x = -3
+  y = 8
+  z = 4
+    }
+
+  room_exits "cave1" {
+    room_id = rooms.cave1.id
+    out = rooms.cave.id
+    }
+
+
+
+
+  room_items "cave1" {
+    room_id = rooms.cave1.id
+    items = [
+      { id = items.yanjingshe.id },
+      { id = items.wangshe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/cedong.c by LPCConverter
+# Zone: baituo
+
+    rooms "cedong" {
+      name = "侧洞"
+      description = "这里是一个小小的侧洞，里面有张梳妆台，上边凌乱的摆 放着些女人的用品。"
+  x = 3
+  y = 5
+  z = 2
+    }
+
+  room_exits "cedong" {
+    room_id = rooms.cedong.id
+    east = rooms.dongnei.id
+    }
+
+
+  room_characters "cedong" {
+    room_id = rooms.cedong.id
+    characters = [
+      { id = characters.jinhua.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/chaifang.c by LPCConverter
+# Zone: baituo
+
+    rooms "chaifang" {
+      name = "柴房"
+      description = "这是间不宽的柴房，木柴已经快烧光了，剩余的几堆干柴 乱七八糟摆放在地面，墙角放着一柄柴刀。"
+  x = 2
+  y = 7
+  z = 3
+    }
+
+  room_exits "chaifang" {
+    room_id = rooms.chaifang.id
+    west = rooms.chufang.id
+    }
+
+
+
+
+  room_items "chaifang" {
+    room_id = rooms.chaifang.id
+    items = [
+      { id = items.ganchai.id },
+      { id = items.chaidao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/changlang.c by LPCConverter
+# Zone: baituo
+
+    rooms "changlang" {
+      name = "长廊"
+      description = "这里是非常气派的长廊。北边是间休息室。南边有一间小 小的药房，里面传来一阵器皿碰击的声音。西边是扇拱月形敞 门。东边是练功场。"
+  x = -1
+  y = 5
+  z = 3
+    }
+
+  room_exits "changlang" {
+    room_id = rooms.changlang.id
+    south = rooms.yaofang.id
+    north = rooms.restroom.id
+    east = rooms.liangong.id
+    west = rooms.ximen.id
+    }
+
+# Generated from C:/files/git/mud/d/baituo/chufang.c by LPCConverter
+# Zone: baituo
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "这是一间宽敞的厨房，厨师们在展示各自的烹饪绝活。整 个房间弥漫着令人垂涎欲滴的菜香及烘饼香。"
+  x = 1
+  y = 7
+  z = 3
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+    east = rooms.chaifang.id
+    west = rooms.huayuan.id
+    }
+
+
+  room_characters "chufang" {
+    room_id = rooms.chufang.id
+    characters = [
+      { id = characters.feifei.id }    ]
+  }
+
+
+
+  room_items "chufang" {
+    room_id = rooms.chufang.id
+    items = [
+      { id = items.doujiang.id },
+      { id = items.cake.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/damen.c by LPCConverter
+# Zone: baituo
+
+    rooms "damen" {
+      name = "大门"
+      description = "这就是闻名天下的白驼山庄的大门。只见大门梁上雕龙刻 凤，美奂美仑，不知凝聚着多少能工巧匠的心血。更显出庄主 的富有与显贵。门前左右各蹲着一只威武庄严的石狮子。"
+  x = 0
+  y = 2
+  z = 2
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "men wei"
+  direction = "north"
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
+    }
+
+  room_exits "damen" {
+    room_id = rooms.damen.id
+    southdown = rooms.shijie.id
+    north = rooms.yuanzi.id
+    }
+
+
+  room_characters "damen" {
+    room_id = rooms.damen.id
+    characters = [
+      { id = characters.menwei.id },
+      { id = characters.menwei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/datiepu.c by LPCConverter
+# Zone: baituo
+
+    rooms "datiepu" {
+      name = "铁铺"
+      description = "这里是白驼山庄下面的一家打铁铺，不时从里面传来叮叮 咚咚的响声。铁匠忙着打制铁制兵器，卖给江湖侠客。"
+  x = 2
+  y = -2
+  z = 0
+    }
+
+  room_exits "datiepu" {
+    room_id = rooms.datiepu.id
+    north = rooms.dongjie.id
+    }
+
+
+  room_characters "datiepu" {
+    room_id = rooms.datiepu.id
+    characters = [
+      { id = characters.smith.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/dating.c by LPCConverter
+# Zone: baituo
+
+    rooms "dating" {
+      name = "大厅"
+      description = "这是白驼山庄的大厅，内部摆设极尽豪华，当中一张黑色 檀木条案，上面陈放着精美的花瓶和一些珍贵的瓷器，四壁挂 满名家的字画，非常之醒目。"
+  x = 0
+  y = 4
+  z = 3
+    }
+
+  room_exits "dating" {
+    room_id = rooms.dating.id
+    southdown = rooms.yuanzi.id
+    north = rooms.liangong.id
+    }
+
+
+  room_characters "dating" {
+    room_id = rooms.dating.id
+    characters = [
+      { id = characters.yahuan.id },
+      { id = characters.yahuan.id }    ]
+  }
+
+
+
+  room_items "dating" {
+    room_id = rooms.dating.id
+    items = [
+      { id = items.ouyangfeng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/dongjie.c by LPCConverter
+# Zone: baituo
+
+    rooms "dongjie" {
+      name = "东街"
+      description = "这里是小镇的东街。南边有个打铁铺，里面传来丁丁当当 的声音。东南方是荒凉的戈壁，东北方有条小路可上山。"
+  x = 2
+  y = -1
+  z = 0
+    }
+
+  room_exits "dongjie" {
+    room_id = rooms.dongjie.id
+    northeast = rooms.xiaolu1.id
+    south = rooms.datiepu.id
+    east = rooms.gebi.id
+    west = rooms.xijie.id
+    }
+
+
+  room_characters "dongjie" {
+    room_id = rooms.dongjie.id
+    characters = [
+      { id = characters.playboy.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/dongkou.c by LPCConverter
+# Zone: baituo
+
+    rooms "dongkou" {
+      name = "洞口"
+      description = "这里是山贼的老窝的洞口，几个山贼把守在洞前，来回的 巡视着，守备很是森严。"
+  x = 4
+  y = 4
+  z = 2
+    }
+
+  room_exits "dongkou" {
+    room_id = rooms.dongkou.id
+    south = rooms.xiaolu4.id
+    north = rooms.dongnei.id
+    }
+
+
+  room_characters "dongkou" {
+    room_id = rooms.dongkou.id
+    characters = [
+      { id = characters.shanzei2.id },
+      { id = characters.shanzei2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/dongnei.c by LPCConverter
+# Zone: baituo
+
+    rooms "dongnei" {
+      name = "洞内"
+      description = "这里是山贼的老窝的所在。旁边有一侧洞，里面隐隐传来 女子的哭声。一个粗壮的山贼守卫在这里。"
+  x = 4
+  y = 5
+  z = 2
+    }
+
+  room_exits "dongnei" {
+    room_id = rooms.dongnei.id
+    south = rooms.dongkou.id
+    west = rooms.cedong.id
+    }
+
+
+  room_characters "dongnei" {
+    room_id = rooms.dongnei.id
+    characters = [
+      { id = characters.shanzei3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/fang.c by LPCConverter
+# Zone: baituo
+
+    rooms "fang" {
+      name = "练功房"
+      description = "这里是白驼山弟子的练功房。里面有几个单间，是练功室。 第子们在里边砌磋武艺，绝对不允许外人打搅。"
+  x = 1
+  y = 5
+  z = 3
+    }
+
+  room_exits "fang" {
+    room_id = rooms.fang.id
+    west = rooms.liangong.id
+    }
+
+
+  room_characters "fang" {
+    room_id = rooms.fang.id
+    characters = [
+      { id = characters.trainer.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/fende.c by LPCConverter
+# Zone: baituo
+
+    rooms "fende" {
+      name = "坟地"
+      description = "这里是一片荒凉阴森的荒坟地，时不时传来几声乌鸦的叫 声。有位中年妇女正在这里吊丧，哭泣个不停。"
+  x = 4
+  y = 1
+  z = 0
+    }
+
+  room_exits "fende" {
+    room_id = rooms.fende.id
+    southwest = rooms.xiaolu1.id
+    }
+
+
+  room_characters "fende" {
+    room_id = rooms.fende.id
+    characters = [
+      { id = characters.guafu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/gebi.c by LPCConverter
+# Zone: baituo
+
+    rooms "gebi" {
+      name = "戈壁"
+      description = "这里是临近沙漠的戈壁滩，荒无人烟。东边是一望无际的 大沙漠，西北方可以看见一座小镇。"
+  x = 3
+  y = -1
+  z = 0
+    }
+
+  room_exits "gebi" {
+    room_id = rooms.gebi.id
+    west = rooms.dongjie.id
+    east = rooms.shamo10.id
+    }
+
+
+  room_characters "gebi" {
+    room_id = rooms.gebi.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/guangchang.c by LPCConverter
+# Zone: baituo
+
+    rooms "guangchang" {
+      name = "广场"
+      description = "这里是一块不小的广场，上面堆着农家晒的谷物。北上是 白驼山庄。东面有间小农舍，西边有块菜地，南方是一座小桥。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guangchang" {
+    room_id = rooms.guangchang.id
+    up = rooms.midao.id
+    east = rooms.nongshe.id
+    northup = rooms.shijie.id
+    west = rooms.shanlu.id
+    south = rooms.bridge.id
+    }
+
+
+  room_characters "guangchang" {
+    room_id = rooms.guangchang.id
+    characters = [
+      { id = characters.kid.id },
+      { id = characters.kid.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/houyuan.c by LPCConverter
+# Zone: baituo
+
+    rooms "houyuan" {
+      name = "后院"
+      description = "这里是一处僻静的后院，住着少庄主欧阳克的老奶妈张妈。 由于她年岁已高，她已经不干活了，在这里静养。"
+  x = -1
+  y = 9
+  z = 3
+    }
+
+  room_exits "houyuan" {
+    room_id = rooms.houyuan.id
+    southeast = rooms.zhuyuan.id
+    }
+
+
+  room_characters "houyuan" {
+    room_id = rooms.houyuan.id
+    characters = [
+      { id = characters.zhangma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/huayuan.c by LPCConverter
+# Zone: baituo
+
+    rooms "huayuan" {
+      name = "花园"
+      description = "这是个美丽的大花园，园子里面种着鲜艳的红玫瑰。白衣 少女常来这里嬉戏。沿着弯弯曲曲的花径，可以通到山庄的许 多地方。东边是厨房。西边是白驼山少主欧阳克的内室，门虚 掩着，也不知主人在不在。"
+  x = 0
+  y = 7
+  z = 3
+    }
+
+  room_exits "huayuan" {
+    room_id = rooms.huayuan.id
+    south = rooms.menlang.id
+    east = rooms.chufang.id
+    north = rooms.zhuyuan.id
+    west = rooms.neishi.id
+    }
+
+
+  room_characters "huayuan" {
+    room_id = rooms.huayuan.id
+    characters = [
+      { id = characters.whitelady.id },
+      { id = characters.whitelady.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/jiudian.c by LPCConverter
+# Zone: baituo
+
+    rooms "jiudian" {
+      name = "酒店"
+      description = "这里是一家独具特色的酒店，由于地处白驼山下，酒店可 以供应风味食品。许多中原来客都爱来尝尝鲜，所以酒店生意 兴隆。酒店还经营打散装酒的业务。"
+  x = 1
+  y = -2
+  z = 0
+    }
+
+  room_exits "jiudian" {
+    room_id = rooms.jiudian.id
+    north = rooms.xijie.id
+    }
+
+
+  room_characters "jiudian" {
+    room_id = rooms.jiudian.id
+    characters = [
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/liangong.c by LPCConverter
+# Zone: baituo
+
+    rooms "liangong" {
+      name = "练功场"
+      description = "这里是白驼山弟子的练功场。东边是一个练功房。北边是 个门廊，西边连着一条长廊，雕梁画柱，非常气派。南面可见 巍巍大厅。"
+  x = 0
+  y = 5
+  z = 3
+    }
+
+  room_exits "liangong" {
+    room_id = rooms.liangong.id
+    south = rooms.dating.id
+    west = rooms.changlang.id
+    north = rooms.menlang.id
+    east = rooms.fang.id
+    }
+
+
+  room_characters "liangong" {
+    room_id = rooms.liangong.id
+    characters = [
+      { id = characters.li.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/menlang.c by LPCConverter
+# Zone: baituo
+
+    rooms "menlang" {
+      name = "门廊"
+      description = "这是个门廊，门廊的飞檐上挂着一串串的小铜铃，在清风 中发出清脆动听的铃声。"
+  x = 0
+  y = 6
+  z = 3
+    }
+
+  room_exits "menlang" {
+    room_id = rooms.menlang.id
+    south = rooms.liangong.id
+    north = rooms.huayuan.id
+    }
+
+
+  room_characters "menlang" {
+    room_id = rooms.menlang.id
+    characters = [
+      { id = characters.guanjia.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/midao.c by LPCConverter
+# Zone: baituo
+
+    rooms "midao" {
+      name = "密道"
+      description = "这是漆黑的密道，当年白驼山弟子为了直达中原而挖凿的。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "midao" {
+    room_id = rooms.midao.id
+    down = rooms.guangchang.id
+    east = rooms.beidajie1.id
+    up = rooms.neishi.id
+    }
+
+# Generated from C:/files/git/mud/d/baituo/neishi.c by LPCConverter
+# Zone: baituo
+
+    rooms "neishi" {
+      name = "内室"
+      description = "这是欧阳克的内室，内部摆设很有情趣。屋角摆着一盆名 贵兰花,正骄傲地吐露芳蕊。花盆(pen)下撒落一些浮土，可能 是被人搬出去晒太阳时撒下的。"
+  x = -1
+  y = 7
+  z = 3
+item_desc = {
+ pen = "这是一个大花盆，看上去非常坚固结实，作工也很考究，仔细 观察下，不难发现地上有些浮土，似乎有人移动(move)过花盆。"
+}
+    }
+
+  room_exits "neishi" {
+    room_id = rooms.neishi.id
+    up = rooms.zhailuo.id
+    east = rooms.huayuan.id
+    }
+
+# Generated from C:/files/git/mud/d/baituo/nongshe.c by LPCConverter
+# Zone: baituo
+
+    rooms "nongshe" {
+      name = "农舍"
+      description = "这里是一间小农舍，家具很新。看来主人比较富裕。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "nongshe" {
+    room_id = rooms.nongshe.id
+    west = rooms.guangchang.id
+    }
+
+
+  room_characters "nongshe" {
+    room_id = rooms.nongshe.id
+    characters = [
+      { id = characters.woman.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/restroom.c by LPCConverter
+# Zone: baituo
+
+    rooms "restroom" {
+      name = "休息室"
+      description = "这是一家药铺，一股浓浓的药味让你几欲窒息，那是从药 柜上的几百个小抽屉里散发出来的。神医平一指坐在茶几旁独 自喝着茶，看也不看你一眼。"
+  x = -1
+  y = 6
+  z = 3
+    }
+
+  room_exits "restroom" {
+    room_id = rooms.restroom.id
+    south = rooms.changlang.id
+    }
+
+# Generated from C:/files/git/mud/d/baituo/shanlu.c by LPCConverter
+# Zone: baituo
+
+    rooms "shanlu" {
+      name = "山路"
+      description = "这里是白驼山庄广场西边的一条小路，寻常百姓平时都是 经过这条小路上山。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu" {
+    room_id = rooms.shanlu.id
+    east = rooms.guangchang.id
+    north = rooms.shanlu1.id
+    }
+
+# Generated from C:/files/git/mud/d/baituo/shanlu1.c by LPCConverter
+# Zone: baituo
+
+    rooms "shanlu1" {
+      name = "山路"
+      description = "这里是白驼山庄广场西边的一条小路，寻常百姓平时都是 经过这条小路上山。"
+  x = -1
+  y = 1
+  z = 0
+    }
+
+  room_exits "shanlu1" {
+    room_id = rooms.shanlu1.id
+    south = rooms.shanlu.id
+    north = rooms.shulin.id
+    }
+
+
+  room_characters "shanlu1" {
+    room_id = rooms.shanlu1.id
+    characters = [
+      { id = characters.qiaofu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/sheyuan.c by LPCConverter
+# Zone: baituo
+
+    rooms "sheyuan" {
+      name = "蛇园"
+      description = "这里是白驼山庄的蛇园。白驼山以毒名扬天下，最重要的 毒质就来自毒蛇。这里遍地是蛇，墙上也巴着蛇，屋檐上也向 下垂着蛇，树枝上也盘绕着蛇，不由你不心惊。"
+  x = 1
+  y = 9
+  z = 3
+    }
+
+  room_exits "sheyuan" {
+    room_id = rooms.sheyuan.id
+    southwest = rooms.zhuyuan.id
+    }
+
+
+
+
+  room_items "sheyuan" {
+    room_id = rooms.sheyuan.id
+    items = [
+      { id = items.jinshe.id },
+      { id = items.dushe.id },
+      { id = items.fushe.id },
+      { id = items.qingshe.id },
+      { id = items.wubushe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/shijie.c by LPCConverter
+# Zone: baituo
+
+    rooms "shijie" {
+      name = "石阶"
+      description = "你走在青石板铺成的石阶上。这里就是传说中神秘的白驼 山。远远望去，两座白沙堆积形成的山峰好像一只骆驼的脊背。 一座山门立在你的眼前。"
+  x = 0
+  y = 1
+  z = 1
+    }
+
+  room_exits "shijie" {
+    room_id = rooms.shijie.id
+    southdown = rooms.guangchang.id
+    northup = rooms.damen.id
+    east = rooms.caoping.id
+    }
+
+# Generated from C:/files/git/mud/d/baituo/shulin.c by LPCConverter
+# Zone: baituo
+
+    rooms "shulin" {
+      name = "树林"
+      description = "这里是一片茂密的树林，翠绿色的树阴遮盖着天空，偶尔 还从林子深处传来几声不知什么野兽的嘶叫。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "shulin" {
+    room_id = rooms.shulin.id
+    south = rooms.shanlu1.id
+    west = rooms.shulin1.id
+    }
+
+# Generated from C:/files/git/mud/d/baituo/shulin1.c by LPCConverter
+# Zone: baituo
+
+    rooms "shulin1" {
+      name = "树林"
+      description = "这里是一片茂密的树林，翠绿色的树阴遮盖着天空，偶尔 还从林子深处传来几声不知什么野兽的嘶叫。"
+  x = -2
+  y = 2
+  z = 0
+    }
+
+  room_exits "shulin1" {
+    room_id = rooms.shulin1.id
+    southwest = rooms.caomeide.id
+    east = rooms.shulin.id
+    }
+
+# Generated from C:/files/git/mud/d/baituo/storeroom.c by LPCConverter
+# Zone: baituo
+
+    rooms "storeroom" {
+      name = "储藏室"
+      description = "这里是个储藏室，四周密不透风，只有一扇关闭着的大门。"
+  x = 1
+  y = 3
+  z = 2
+    }
+
+  room_exits "storeroom" {
+    room_id = rooms.storeroom.id
+    west = rooms.yuanzi.id
+    }
+
+# Generated from C:/files/git/mud/d/baituo/wuqiku.c by LPCConverter
+# Zone: baituo
+
+    rooms "wuqiku" {
+      name = "武器库"
+      description = "这里是白驼山弟子的武器库，白驼山弟子可以到此拿取练 功用的各种武器。不过别派弟子是不允许进来的。"
+  x = -1
+  y = 3
+  z = 2
+    }
+
+  room_exits "wuqiku" {
+    room_id = rooms.wuqiku.id
+    east = rooms.yuanzi.id
+    }
+
+
+  room_characters "wuqiku" {
+    room_id = rooms.wuqiku.id
+    characters = [
+      { id = characters.shiwei.id }    ]
+  }
+
+
+
+  room_items "wuqiku" {
+    room_id = rooms.wuqiku.id
+    items = [
+      { id = items.zheng.id },
+      { id = items.gangzhang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/xiaolu1.c by LPCConverter
+# Zone: baituo
+
+    rooms "xiaolu1" {
+      name = "小路"
+      description = "这里是一条上山的小路。山路周围很是僻静，连个人影也 没有。往西南是东街，东北处是一块坟地。"
+  x = 3
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaolu1" {
+    room_id = rooms.xiaolu1.id
+    northeast = rooms.fende.id
+    southwest = rooms.dongjie.id
+    northup = rooms.xiaolu2.id
+    }
+
+# Generated from C:/files/git/mud/d/baituo/xiaolu2.c by LPCConverter
+# Zone: baituo
+
+    rooms "xiaolu2" {
+      name = "小路"
+      description = "这里是一条上山的小路。山路周围很是僻静，连个人影也 没有。周围常有山贼土匪出没，行路需得小心谨慎。"
+  x = 3
+  y = 1
+  z = 1
+    }
+
+  room_exits "xiaolu2" {
+    room_id = rooms.xiaolu2.id
+    southdown = rooms.xiaolu1.id
+    northup = rooms.xiaolu3.id
+    }
+
+
+  room_characters "xiaolu2" {
+    room_id = rooms.xiaolu2.id
+    characters = [
+      { id = characters.man.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/xiaolu3.c by LPCConverter
+# Zone: baituo
+
+    rooms "xiaolu3" {
+      name = "小路"
+      description = "这里是一条上山的小路。东北方有山贼出没，要格外小心。"
+  x = 3
+  y = 2
+  z = 2
+    }
+
+  room_exits "xiaolu3" {
+    room_id = rooms.xiaolu3.id
+    southdown = rooms.xiaolu2.id
+    northeast = rooms.xiaolu4.id
+    }
+
+
+  room_characters "xiaolu3" {
+    room_id = rooms.xiaolu3.id
+    characters = [
+      { id = characters.shanzei1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/xiaolu4.c by LPCConverter
+# Zone: baituo
+
+    rooms "xiaolu4" {
+      name = "小路"
+      description = "这里是一条上山的小路，小路向西分出一条岔道。山路周 围很是寂静，北边是山贼的老窝，常常有土匪出没于此。"
+  x = 4
+  y = 3
+  z = 2
+    }
+
+  room_exits "xiaolu4" {
+    room_id = rooms.xiaolu4.id
+    southwest = rooms.xiaolu3.id
+    north = rooms.dongkou.id
+    }
+
+
+  room_characters "xiaolu4" {
+    room_id = rooms.xiaolu4.id
+    characters = [
+      { id = characters.shanzei2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/xijie.c by LPCConverter
+# Zone: baituo
+
+    rooms "xijie" {
+      name = "西街"
+      description = "这里是小镇的西街。北边有个酒店，门前树立着高高的旗 杆，一块青布幌子迎风飘扬，上面印着朱红色的酒字。"
+  x = 1
+  y = -1
+  z = 0
+    }
+
+  room_exits "xijie" {
+    room_id = rooms.xijie.id
+    south = rooms.jiudian.id
+    east = rooms.dongjie.id
+    west = rooms.bridge.id
+    }
+
+
+  room_characters "xijie" {
+    room_id = rooms.xijie.id
+    characters = [
+      { id = characters.man.id },
+      { id = characters.snaker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/ximen.c by LPCConverter
+# Zone: baituo
+
+    rooms "ximen" {
+      name = "西门"
+      description = "这是个山庄的西门。拱月形的竹门分外雅致，门上挂着块 竹牌，上面写着「西门外面有毒蛇出没，慎行」几个醒目的大 字。西门外面则是杂草丛生，很是荒凉。"
+  x = -2
+  y = 5
+  z = 3
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "men wei"
+  direction = "east"
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "west" && (int)me->query("combat_exp") < 600 && guarder
+direction = "west"
+  message = "门卫拦住你道：你经验太低，会被毒蛇咬死，还是不要乱闯的好。"
+}
+
+]
+    }
+
+  room_exits "ximen" {
+    room_id = rooms.ximen.id
+    east = rooms.changlang.id
+    west = rooms.cao1.id
+    }
+
+
+  room_characters "ximen" {
+    room_id = rooms.ximen.id
+    characters = [
+      { id = characters.menwei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/yaofang.c by LPCConverter
+# Zone: baituo
+
+    rooms "yaofang" {
+      name = "药房"
+      description = "这是间药房，靠墙放着只大药柜。屋子里有张桌子，上边 摆满了炼药用的瓶瓶罐罐。炼药师是位小姑娘，正在那里发呆 不知在想什么。北面是气派的长廊。"
+  x = -1
+  y = 4
+  z = 3
+    }
+
+  room_exits "yaofang" {
+    room_id = rooms.yaofang.id
+    north = rooms.changlang.id
+    }
+
+
+  room_characters "yaofang" {
+    room_id = rooms.yaofang.id
+    characters = [
+      { id = characters.xiaoqing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/yuanzi.c by LPCConverter
+# Zone: baituo
+
+    rooms "yuanzi" {
+      name = "院子"
+      description = "这是一个大院子，打扫得一尘不染。四周装点着几株青青 翠竹，错落有致。西边是武器库。东边有一间储藏室，房门关 闭着。北边是白驼山庄的大厅。南边就是大门了。"
+  x = 0
+  y = 3
+  z = 2
+    }
+
+  room_exits "yuanzi" {
+    room_id = rooms.yuanzi.id
+    south = rooms.damen.id
+    east = rooms.storeroom.id
+    west = rooms.wuqiku.id
+    northup = rooms.dating.id
+    }
+
+# Generated from C:/files/git/mud/d/baituo/zhailuo.c by LPCConverter
+# Zone: baituo
+
+    rooms "zhailuo" {
+      name = "小宅落"
+      description = "这里是一个树影婆娑的静谧的小宅落，当中放着一口乌黑 发亮的大水缸。白驼山上常年积雪，这里的主人架起一条长长 的竹渠，把清凉的雪水引到家中的水缸里来。"
+  x = 0
+  y = 0
+  z = 2
+    }
+
+  room_exits "zhailuo" {
+    room_id = rooms.zhailuo.id
+    down = rooms.neishi.id
+    west = rooms.liangong.id
+    }
+
+# Generated from C:/files/git/mud/d/baituo/zhulin.c by LPCConverter
+# Zone: baituo
+
+    rooms "zhulin" {
+      name = "竹林"
+      description = "这里是青竹林，常有蛇出没。南边是蒿草丛。北边有一个 大岩洞，从里面传出一阵嘶嘶的声音。"
+  x = -3
+  y = 7
+  z = 3
+    }
+
+  room_exits "zhulin" {
+    room_id = rooms.zhulin.id
+    south = rooms.cao2.id
+    northup = rooms.cave.id
+    }
+
+
+
+
+  room_items "zhulin" {
+    room_id = rooms.zhulin.id
+    items = [
+      { id = items.qingshe.id },
+      { id = items.dushe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/baituo/zhuyuan.c by LPCConverter
+# Zone: baituo
+
+    rooms "zhuyuan" {
+      name = "竹园"
+      description = "这里是一个幽静的竹园，高高低低的翠竹把这里装点得别 有情致。西北方是后院，东北方有个兔苑。南边是花园。"
+  x = 0
+  y = 8
+  z = 3
+    }
+
+  room_exits "zhuyuan" {
+    room_id = rooms.zhuyuan.id
+    south = rooms.huayuan.id
+    northwest = rooms.houyuan.id
+    northeast = rooms.sheyuan.id
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/cungu.c by LPCConverter
+# Zone: baituo
+
+    characters "cungu" {
+      name = "村姑"
+      description = "一个很清秀的年轻农村姑娘，挎着一只盖着布小篮子。"
+  gender = "女性"
+  age = 20
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 4000
+    con = 15
+    dex = 16
+    int = 17
+    str = 15
+  }
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.caomei.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/feifei.c by LPCConverter
+# Zone: baituo
+
+    characters "feifei" {
+      name = "厨师"
+      description = "一个肥头大耳的厨师，两只小眼睛不停地眨巴着。"
+  gender = "男性"
+  age = 35
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+    con = 20
+    dex = 22
+    int = 21
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/guafu.c by LPCConverter
+# Zone: baituo
+
+    characters "guafu" {
+      name = "寡妇"
+      description = "一个年轻漂亮又不甘寂寞的小寡妇。"
+  gender = "女性"
+  age = 25
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+    con = 19
+    dex = 19
+    int = 19
+    str = 18
+  }
+
+  chat_chance = 2
+chats = [
+    "小寡妇哭着：我苦命的夫哇，你怎么撇下我不管了哟。",
+    "小寡妇抹了把眼泪，暗暗瞟了你一眼。"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/guanjia.c by LPCConverter
+# Zone: baituo
+
+    characters "guanjia" {
+      name = "管家"
+      description = "一个管家。"
+  gender = "男性"
+  age = 30
+  score = 2500
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 20000
+    con = 23
+    dex = 22
+    int = 20
+    max_jing = 200
+    max_neili = 200
+    max_qi = 200
+    str = 24
+  }
+
+  skills = [
+    { skill = "force" level = 22 },
+    { skill = "dodge" level = 23 },
+    { skill = "unarmed" level = 22 },
+    { skill = "parry" level = 24 }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id },
+    { id = items.key.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/jinhua.c by LPCConverter
+# Zone: baituo
+
+    characters "jinhua" {
+      name = "金花"
+      description = "一个年少貌美的姑娘。"
+  gender = "女性"
+  age = 24
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 800
+    con = 18
+    dex = 18
+    int = 18
+    str = 18
+  }
+
+  inquiries = [
+    { key = "张妈" value = "你知道我娘？你可有她给你的信物？快给我看看。" },
+    { key = "绣花鞋" value = "你真有绣花鞋吗？快给我看看。" }
+  ]
+
+  chat_chance = 5
+chats = [
+    "金花哭泣着：我的命怎么这么苦哟。",
+    "金花抹着眼泪：娘呀，我好想你呀！",
+    "金花叹口气说道：不知今生今世能否再见到我娘。"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "金花道：这位{respect}，我娘是白驼山庄的老佣人。你可有她消息？" }
+  ]
+
+  accept = [
+    { kind = "any" accept = true msg = ["金花抹了把眼泪，不好意思道：这位见笑了。我实在没什么东西报答你，不过我知道山贼头有个钱箱藏在床下。我这就搬出来给你。", "{npc}帮金花从床下搬出来一只钱箱，迫不及待地打开一看，里面竟然搁着一大堆白银。{npc}毫不客气地把白银装进衣服里。", "金花双手捧着绣花鞋，泪如雨下道：娘，您还挂着女儿啊。"] fail_msg = ["你没有这件东西。", "金花说道：你给我这个东西干嘛？", "金花说道：我已经有绣花鞋了。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/kid.c by LPCConverter
+# Zone: baituo
+
+    characters "kid" {
+      name = "小孩"
+      description = "这是个农家小孩子"
+  gender = "男性"
+  age = 6
+  shen_type = 0
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/li.c by LPCConverter
+# Zone: baituo
+
+    characters "li" {
+      name = "李管家"
+      description = "这是个和蔼可亲的大管家。"
+  gender = "男性"
+  age = 25
+  score = 20000
+  brain = brains.guarder
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 250000
+    con = 22
+    dex = 20
+    int = 23
+    max_jing = 5000
+    max_neili = 4000
+    max_qi = 5000
+    str = 23
+  }
+
+  skills = [
+    { skill = "force" level = 160 },
+    { skill = "dodge" level = 160 },
+    { skill = "unarmed" level = 160 },
+    { skill = "parry" level = 160 },
+    { skill = "chanchu-bufa" level = 160 },
+    { skill = "changquan" level = 160 },
+    { type = "dodge" skill = "chanchu-bufa" },
+    { type = "parry" skill = "changquan" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/lingshe.c by LPCConverter
+# Zone: baituo
+
+    characters "lingshe" {
+      name = "灵蛇"
+      description = "一条银光闪闪的小蛇，产于西域，极为罕见。"
+  age = 4
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    con = 30
+    dex = 35
+    str = 30
+  }
+
+  init = {
+    greet_delay = 0
+    add_actions = ["bian"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/man.c by LPCConverter
+# Zone: baituo
+
+    characters "man" {
+      name = "农民"
+      description = "一个很健壮的壮年农民。"
+  gender = "男性"
+  age = 29
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2000
+    con = 18
+    dex = 18
+    int = 18
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/menwei.c by LPCConverter
+# Zone: baituo
+
+    characters "menwei" {
+      name = "门卫"
+      description = "这是个年富力强的卫兵，样子十分威严。虽然 他们武艺不高，但是经过欧阳锋的训练，决非 常人可敌。"
+  nickname = "铁狮子"
+  gender = "男性"
+  age = 22
+  score = 10000
+  brain = brains.guarder
+
+  combat = {
+    attitude = "friendly"
+    con = 22
+    dex = 20
+    int = 23
+    max_jing = 600
+    max_neili = 200
+    max_qi = 1200
+    str = 23
+  }
+
+  skills = [
+    { skill = "force" level = 100 },
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 100 },
+    { skill = "parry" level = 80 }
+  ]
+
+
+  carry = [
+    { id = items.dadao.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "门卫笑吟吟地道：这位{respect}您辛苦了，快请进吧。" },
+    { line = "门卫两眼一瞪道：这位{respect}你是来找麻烦的吧？" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/playboy.c by LPCConverter
+# Zone: baituo
+
+    characters "playboy" {
+      name = "花花公子"
+      description = "这是个流里流气的花花公子。"
+  nickname = "采花大盗"
+  gender = "男性"
+  age = 21
+  score = 10000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 500000
+    con = 22
+    dex = 20
+    int = 23
+    max_jing = 800
+    max_neili = 600
+    max_qi = 800
+    str = 21
+  }
+
+  skills = [
+    { skill = "force" level = 120 },
+    { skill = "dodge" level = 140 },
+    { skill = "chanchu-bufa" level = 140 },
+    { skill = "unarmed" level = 120 },
+    { skill = "changquan" level = 120 },
+    { skill = "dagger" level = 140 },
+    { skill = "poxu-daxuefa" level = 140 },
+    { skill = "parry" level = 140 },
+    { type = "dodge" skill = "chanchu-bufa" },
+    { type = "parry" skill = "poxu-daxuefa" },
+    { type = "dagger" skill = "poxu-daxuefa" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.jinduan.id },
+    { id = items.zhe_shan.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/qiaofu.c by LPCConverter
+# Zone: baituo
+
+    characters "qiaofu" {
+      name = "樵夫"
+      description = "这是一个很健壮的樵夫。"
+  gender = "男性"
+  age = 33
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 800
+    con = 18
+    dex = 18
+    int = 18
+    str = 22
+  }
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.chaidao.id },
+    { id = items.ganchai.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/shanzei1.c by LPCConverter
+# Zone: baituo
+
+    characters "shanzei1" {
+      name = "小山贼"
+      description = "这是个尚未成年的小山贼。"
+  gender = "男性"
+  age = 12
+  score = 1000
+
+  combat = {
+    attitude = "friendly"
+    con = 15
+    dex = 16
+    int = 16
+    max_jing = 200
+    max_neili = 80
+    max_qi = 200
+    str = 15
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/shanzei2.c by LPCConverter
+# Zone: baituo
+
+    characters "shanzei2" {
+      name = "山贼"
+      description = "这是个面目可憎的山贼。"
+  gender = "男性"
+  age = 20
+  score = 2000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 30000
+    con = 22
+    dex = 21
+    int = 21
+    max_jing = 200
+    max_neili = 80
+    max_qi = 200
+    str = 21
+  }
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.dadao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/shanzei3.c by LPCConverter
+# Zone: baituo
+
+    characters "shanzei3" {
+      name = "山贼头"
+      description = "这是个粗鲁的山贼头。"
+  gender = "男性"
+  age = 29
+  score = 2000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 24
+    dex = 23
+    int = 23
+    max_jing = 800
+    max_neili = 800
+    max_qi = 800
+    str = 24
+  }
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.dadao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/shiwei.c by LPCConverter
+# Zone: baituo
+
+    characters "shiwei" {
+      name = "仕卫"
+      description = "这是个样子威严的仕卫。"
+  gender = "男性"
+  age = 25
+  score = 3000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    con = 22
+    dex = 21
+    int = 23
+    max_jing = 300
+    max_neili = 200
+    max_qi = 400
+    str = 22
+  }
+
+  carry = [
+    { id = items.dadao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/smith.c by LPCConverter
+# Zone: baituo
+
+    characters "smith" {
+      name = "铁匠"
+      description = "铁匠正用铁钳夹住一块红热的铁块放进炉中。"
+  title = "铁匠铺老板"
+  gender = "男性"
+  age = 33
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 400
+  }
+
+  # vendor_goods: "/clone/weapon/changjian" (file not found)
+  # vendor_goods: "/clone/weapon/tudao" (file not found)
+  # vendor_goods: "/clone/weapon/tiegun" (file not found)
+  # vendor_goods: "/clone/weapon/gangdao" (file not found)
+  # vendor_goods: "/clone/cloth/tiejia" (file not found)
+
+  inquiries = [
+    { key = "job" value = "(: ask_me :)" },
+    { key = "工作" value = "(: ask_me :)" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/snake.c by LPCConverter
+# Zone: baituo
+
+    characters "snake" {
+      name = "毒蛇"
+      description = "一只有着三角形脑袋的蛇，尾巴沙沙做响。"
+  age = 4
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1000
+    con = 30
+    str = 26
+  }
+
+  init = {
+    greet_delay = 0
+    add_actions = ["bian"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/snaker.c by LPCConverter
+# Zone: baituo
+
+    characters "snaker" {
+      name = "舞蛇人"
+      description = "他是一个西域来的舞蛇人。"
+  title = "西域蛇王"
+  nickname = "蛇见怕"
+  gender = "男性"
+  age = 33
+  score = 10000
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 30000
+    con = 25
+    dex = 26
+    int = 24
+    max_neili = 400
+    str = 25
+  }
+
+  # vendor_goods: "/d/baituo/obj/fen" (file not found)
+
+  inquiries = [
+    { key = "白驼山" value = "我这里的蛇胆粉就是用白驼山的蛇精心制作的。" },
+    { key = "蛇胆粉" value = "我的蛇胆粉能治各种外伤，疗效不凡。" }
+  ]
+
+  chat_chance = 5
+chats = [
+    "舞蛇人吆喝道：停一停，看一看，有上好的蛇胆粉出售了。",
+    "舞蛇人把手腕划出一道口子，又敷上蛇胆粉，咦，流血立即停止了。",
+    "舞蛇人把手里的蛇舞来舞去道：货真价实的啦，别错过好机会。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 75 },
+    { skill = "dodge" level = 65 },
+    { skill = "parry" level = 65 },
+    { skill = "force" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["list", "buy"]
+  }
+
+  greetings = [
+    { line = "舞蛇人道：这位{respect}，买我包蛇胆粉吧，包您满意。" }
+  ]
+
+  engage = {
+    fight = { accept = true spawn = ["mangshe"] }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/trainer.c by LPCConverter
+# Zone: baituo
+
+    characters "trainer" {
+      name = "教练"
+      description = "这是个和蔼可亲的教练。"
+  gender = "男性"
+  age = 25
+  score = 20000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 30000
+    con = 22
+    dex = 20
+    int = 23
+    max_jing = 300
+    max_neili = 200
+    max_qi = 300
+    str = 23
+  }
+
+  skills = [
+    { skill = "force" level = 60 },
+    { skill = "dodge" level = 70 },
+    { skill = "unarmed" level = 70 },
+    { skill = "parry" level = 60 },
+    { skill = "staff" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true msg = "哪里来的家伙居然敢来白驼山添乱？" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/whitelady.c by LPCConverter
+# Zone: baituo
+
+    characters "whitelady" {
+      name = "白衣少女"
+      description = "这是一个聪明伶俐的白衣少女。"
+  gender = "女性"
+  age = 18
+  score = 800
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000
+    con = 19
+    dex = 18
+    int = 20
+    max_jing = 100
+    max_neili = 100
+    max_qi = 100
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 20 },
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 },
+    { skill = "parry" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/woman.c by LPCConverter
+# Zone: baituo
+
+    characters "woman" {
+      name = "农家妇女"
+      description = "一个很精明能干的农家妇女。"
+  gender = "女性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1200
+    con = 15
+    dex = 16
+    int = 17
+    str = 15
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/xiaoqing.c by LPCConverter
+# Zone: baituo
+
+    characters "xiaoqing" {
+      name = "小青"
+      description = "这是个打扮很朴素小姑娘，一袭青衣，却也显得落落有致。"
+  title = "白骆山庄药师"
+  gender = "女性"
+  age = 17
+  score = 1000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 60000
+    con = 23
+    dex = 22
+    int = 29
+    max_jing = 220
+    max_neili = 320
+    max_qi = 430
+    str = 20
+  }
+
+  inquiries = [
+    { key = "海口大碗" value = "这海口大碗你可以拿到顶东头小院儿去，灌水喝。" },
+    { key = "药罐" value = "药罐在那儿，你自己看吧。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 50 },
+    { skill = "unarmed" level = 35 },
+    { skill = "parry" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.qingpao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/yahuan.c by LPCConverter
+# Zone: baituo
+
+    characters "yahuan" {
+      name = "丫环"
+      description = "一个很能干的丫环。"
+  gender = "女性"
+  age = 14
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    con = 18
+    dex = 18
+    int = 19
+    str = 18
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/npc/zhangma.c by LPCConverter
+# Zone: baituo
+
+    characters "zhangma" {
+      name = "张妈"
+      description = "一个历经沧桑的老婆婆。"
+  gender = "女性"
+  age = 50
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 500
+    con = 17
+    dex = 17
+    int = 18
+    str = 16
+  }
+
+  inquiries = [
+    { key = "金花" value = "(: inquiry_hua :)" }
+  ]
+
+  chat_chance = 2
+chats = [
+    "张妈念叨着：我苦命的金花哟，你现在在那里哟！",
+    "张妈暗暗抹了把眼泪。",
+    "张妈独自说道：我的金花呀，你怎能撇下我自个儿走了…"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/baipao.c by LPCConverter
+# Zone: baituo
+
+    items "baipao" {
+      name = "白色长袍"
+      description = "这是件质量上佳的白色长袍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/bowl.c by LPCConverter
+# Zone: baituo
+
+    items "bowl" {
+      name = "海口大碗"
+      description = "这是一只可盛水的粗瓷大碗。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/cake.c by LPCConverter
+# Zone: baituo
+
+    items "cake" {
+      name = "Item"
+      description = "这是一块香喷喷的大烘饼。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/caomei.c by LPCConverter
+# Zone: baituo
+
+    items "caomei" {
+      name = "草莓"
+      description = "一颗鲜红的草莓。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/chai.c by LPCConverter
+# Zone: baituo
+
+    items "chai" {
+      name = "柴"
+      description = "这是一捆木柴。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/chaidao.c by LPCConverter
+# Zone: baituo
+
+    items "chaidao" {
+      name = "柴刀"
+      description = "这是一柄半新不旧的柴刀。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一把{name}握在手中。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/dadao.c by LPCConverter
+# Zone: baituo
+
+    items "dadao" {
+      name = "大刀"
+      description = "这是一柄铁打的大刀。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一把{name}握在手中。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/doujiang.c by LPCConverter
+# Zone: baituo
+
+    items "doujiang" {
+      name = "杯子"
+      description = "一个磁杯子。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/fen.c by LPCConverter
+# Zone: baituo
+
+    items "fen" {
+      name = "Item"
+      description = "这是一包治疗外伤的蛇胆粉。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/jindan.c by LPCConverter
+# Zone: baituo
+
+    items "jindan" {
+      name = "金蛇胆"
+      description = "这是一只黄灿灿的金蛇胆，是制备『蛇胆膏』的原料。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/key.c by LPCConverter
+# Zone: baituo
+
+    items "key" {
+      name = "钥匙"
+      description = "这是一把普通的铜钥匙。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/lingshezhang.c by LPCConverter
+# Zone: baituo
+
+    items "lingshezhang" {
+      name = "灵蛇杖"
+      description = "一根弯弯曲曲的黑色粗杖，似是钢铁所制， 杖头铸着个裂口而笑的人头，人头口中露出尖利雪白的牙齿， 模样甚是狰狞诡异，更奇的是杖上盘着两条银鳞闪闪的小蛇，不住的蜿蜒上下。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中，杖端的银蛇呲呲做响。"
+    unwield = "{npc}将手中的{name}放了下来。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/mangshe-dan.c by LPCConverter
+# Zone: baituo
+
+    items "mangshe_dan" {
+      name = "蟒蛇胆"
+      description = "一枚深紫色的蟒蛇胆，甚是腥臭。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/qingdan.c by LPCConverter
+# Zone: baituo
+
+    items "qingdan" {
+      name = "青蛇胆"
+      description = "这是一只绿莹莹的青蛇胆，是制备『蛇胆膏』的原料。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/qingpao.c by LPCConverter
+# Zone: baituo
+
+    items "qingpao" {
+      name = "青色丝袍"
+      description = "这是件质地轻柔的青色镂花丝袍，特别受女性青睐。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/shebian.c by LPCConverter
+# Zone: baituo
+
+    items "shebian" {
+      name = "蛇鞭"
+      description = "这是一柄蛇皮长鞭。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抖出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}卷回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/shedan.c by LPCConverter
+# Zone: baituo
+
+    items "shedan" {
+      name = "毒蛇胆"
+      description = "这是一只绿莹莹的毒蛇胆。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/shedangao.c by LPCConverter
+# Zone: baituo
+
+    items "shedangao" {
+      name = "蛇胆膏"
+      description = "这是珍贵补品『蛇胆膏』。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/shenshe.c by LPCConverter
+# Zone: baituo
+
+    items "shenshe" {
+      name = "引路神蛇"
+      description = "一条有识路能力的神蛇，可以把主人带到白驼山。(键入home即可)"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/shepi.c by LPCConverter
+# Zone: baituo
+
+    items "shepi" {
+      name = "蛇皮"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/sherou.c by LPCConverter
+# Zone: baituo
+
+    items "sherou" {
+      name = "蛇肉"
+      description = "一条烧烤得香喷喷的蛇肉。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/shezhang.c by LPCConverter
+# Zone: baituo
+
+    items "shezhang" {
+      name = "蛇杖"
+      description = "一根长约七尺的黑光铮亮的钢杖，杖端有一个蛇头，有机关可射出毒针伤人。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中，杖端的蛇头呲呲做响。"
+    unwield = "{npc}将手中的{name}放了下来。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/shoe.c by LPCConverter
+# Zone: baituo
+
+    items "shoe" {
+      name = "绣花鞋"
+      description = "这是一只漂亮的绣花鞋。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/tiezheng.c by LPCConverter
+# Zone: baituo
+
+    items "tiezheng" {
+      name = "Item"
+      description = "这是一台黑黝黝的铁筝。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/turou.c by LPCConverter
+# Zone: baituo
+
+    items "turou" {
+      name = "兔肉"
+      description = "一只烧烤得香香的兔肉。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/zheng.c by LPCConverter
+# Zone: baituo
+
+    items "zheng" {
+      name = "Item"
+      description = "这是一台看上去有些陈旧的古筝。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/baituo/obj/zhulou.c by LPCConverter
+# Zone: baituo
+
+    items "zhulou" {
+      name = "竹篓"
+      description = "一个竹条编成的篓子，是欧阳世家的人专门用来捕蛇的。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

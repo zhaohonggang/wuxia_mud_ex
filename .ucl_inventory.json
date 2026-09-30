@@ -1,0 +1,2124 @@
+[
+ {
+  "file": "baituo.ucl",
+  "rel": "data/world/baituo.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 49,
+  "room_exits": 49,
+  "characters": 25,
+  "items": 27,
+  "local_refs": 187,
+  "cross_refs": 2,
+  "cross_targets": [
+   "city",
+   "xiyu"
+  ],
+  "dangling_cross": [
+   "xiyu/shamo10 (no such room)"
+  ],
+  "skipped_notes": 3,
+  "lines": 2388,
+  "kb": 52.0,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "beijing.ucl",
+  "rel": "data/world/beijing.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 202,
+  "room_exits": 202,
+  "characters": 198,
+  "items": 21,
+  "local_refs": 796,
+  "cross_refs": 5,
+  "cross_targets": [
+   "guanwai",
+   "heimuya",
+   "hengshan",
+   "shaolin",
+   "xueshan"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 3,
+  "lines": 10060,
+  "kb": 257.1,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "changan.ucl",
+  "rel": "data/world/changan.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 143,
+  "room_exits": 143,
+  "characters": 126,
+  "items": 0,
+  "local_refs": 512,
+  "cross_refs": 6,
+  "cross_targets": [
+   "huanghe",
+   "lanzhou",
+   "luoyang",
+   "pk",
+   "quanzhen"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 1,
+  "lines": 5695,
+  "kb": 146.6,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "chengdu.ucl",
+  "rel": "data/world/chengdu.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 76,
+  "room_exits": 76,
+  "characters": 25,
+  "items": 1,
+  "local_refs": 278,
+  "cross_refs": 4,
+  "cross_targets": [
+   "emei",
+   "jingzhou",
+   "qingcheng",
+   "xuedao"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 1,
+  "lines": 2469,
+  "kb": 69.2,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "city.ucl",
+  "rel": "data/world/city.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 111,
+  "room_exits": 111,
+  "characters": 138,
+  "items": 17,
+  "local_refs": 421,
+  "cross_refs": 13,
+  "cross_targets": [
+   "gaibang",
+   "guiyun",
+   "huanghe",
+   "jingzhou",
+   "luoyang",
+   "minimal_world",
+   "shaolin",
+   "taishan",
+   "wizard",
+   "wudang",
+   "xuedao",
+   "xueshan",
+   "zhongzhou"
+  ],
+  "dangling_cross": [
+   "minimal_world/guangchang (no such zone)"
+  ],
+  "skipped_notes": 17,
+  "lines": 5820,
+  "kb": 153.6,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "dali.ucl",
+  "rel": "data/world/dali.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 213,
+  "room_exits": 213,
+  "characters": 101,
+  "items": 7,
+  "local_refs": 785,
+  "cross_refs": 8,
+  "cross_targets": [
+   "emei",
+   "foshan",
+   "kunming",
+   "tianlongsi",
+   "wanjiegu",
+   "wudu"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 1,
+  "lines": 7220,
+  "kb": 188.0,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "death.ucl",
+  "rel": "data/world/death.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 76,
+  "room_exits": 76,
+  "characters": 63,
+  "items": 102,
+  "local_refs": 270,
+  "cross_refs": 0,
+  "cross_targets": [],
+  "dangling_cross": [],
+  "skipped_notes": 2,
+  "lines": 5712,
+  "kb": 147.5,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "emei.ucl",
+  "rel": "data/world/emei.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 102,
+  "room_exits": 102,
+  "characters": 8,
+  "items": 19,
+  "local_refs": 372,
+  "cross_refs": 4,
+  "cross_targets": [
+   "chengdu",
+   "dali",
+   "wudang"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 2716,
+  "kb": 77.6,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "foshan.ucl",
+  "rel": "data/world/foshan.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 32,
+  "room_exits": 32,
+  "characters": 14,
+  "items": 5,
+  "local_refs": 121,
+  "cross_refs": 4,
+  "cross_targets": [
+   "dali",
+   "hengyang",
+   "quanzhou",
+   "xiakedao"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 1,
+  "lines": 1219,
+  "kb": 28.5,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "fuzhou.ucl",
+  "rel": "data/world/fuzhou.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 61,
+  "room_exits": 61,
+  "characters": 25,
+  "items": 2,
+  "local_refs": 215,
+  "cross_refs": 3,
+  "cross_targets": [
+   "hengyang",
+   "quanzhou"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 1,
+  "lines": 1933,
+  "kb": 48.0,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "gaibang.ucl",
+  "rel": "data/world/gaibang.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 4,
+  "room_exits": 4,
+  "characters": 12,
+  "items": 1,
+  "local_refs": 16,
+  "cross_refs": 1,
+  "cross_targets": [
+   "city"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 545,
+  "kb": 14.1,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "gaochang.ucl",
+  "rel": "data/world/gaochang.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 31,
+  "room_exits": 31,
+  "characters": 5,
+  "items": 1,
+  "local_refs": 134,
+  "cross_refs": 1,
+  "cross_targets": [
+   "shenfeng"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 774,
+  "kb": 24.4,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "global.ucl",
+  "rel": "data/world/global.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "dd9adc9",
+   "date": "2026-09-25",
+   "subject": "fix"
+  },
+  "rooms": 27,
+  "room_exits": 27,
+  "characters": 12,
+  "items": 42,
+  "local_refs": 83,
+  "cross_refs": 0,
+  "cross_targets": [],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 5746,
+  "kb": 278.6,
+  "validate": 1,
+  "coords": 1,
+  "comments_exists": false
+ },
+ {
+  "file": "guanwai.ucl",
+  "rel": "data/world/guanwai.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 67,
+  "room_exits": 67,
+  "characters": 25,
+  "items": 9,
+  "local_refs": 237,
+  "cross_refs": 1,
+  "cross_targets": [
+   "beijing"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 2273,
+  "kb": 64.5,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "guiyun.ucl",
+  "rel": "data/world/guiyun.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 25,
+  "room_exits": 25,
+  "characters": 34,
+  "items": 1,
+  "local_refs": 87,
+  "cross_refs": 3,
+  "cross_targets": [
+   "city",
+   "suzhou",
+   "wudang"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1776,
+  "kb": 47.8,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "gumu.ucl",
+  "rel": "data/world/gumu.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 74,
+  "room_exits": 74,
+  "characters": 2,
+  "items": 4,
+  "local_refs": 241,
+  "cross_refs": 3,
+  "cross_targets": [
+   "city",
+   "quanzhen"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 16,
+  "lines": 1561,
+  "kb": 49.7,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "hangzhou.ucl",
+  "rel": "data/world/hangzhou.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 120,
+  "room_exits": 120,
+  "characters": 66,
+  "items": 9,
+  "local_refs": 420,
+  "cross_refs": 2,
+  "cross_targets": [
+   "meizhuang",
+   "quanzhou"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 1,
+  "lines": 5034,
+  "kb": 134.9,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "heimuya.ucl",
+  "rel": "data/world/heimuya.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 80,
+  "room_exits": 80,
+  "characters": 28,
+  "items": 3,
+  "local_refs": 309,
+  "cross_refs": 6,
+  "cross_targets": [
+   "baituo",
+   "beijing",
+   "huanghe",
+   "village"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 2611,
+  "kb": 65.9,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "hengshan.ucl",
+  "rel": "data/world/hengshan.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 26,
+  "room_exits": 26,
+  "characters": 11,
+  "items": 0,
+  "local_refs": 83,
+  "cross_refs": 1,
+  "cross_targets": [
+   "beijing"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 954,
+  "kb": 23.3,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "hengyang.ucl",
+  "rel": "data/world/hengyang.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 107,
+  "room_exits": 107,
+  "characters": 31,
+  "items": 23,
+  "local_refs": 367,
+  "cross_refs": 5,
+  "cross_targets": [
+   "foshan",
+   "fuzhou",
+   "motianya",
+   "wudang"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 1,
+  "lines": 3508,
+  "kb": 93.2,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "huanggong.ucl",
+  "rel": "data/world/huanggong.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "e4b48c2",
+   "date": "2026-09-30",
+   "subject": "char"
+  },
+  "rooms": 14,
+  "room_exits": 14,
+  "characters": 4,
+  "items": 3,
+  "local_refs": 46,
+  "cross_refs": 0,
+  "cross_targets": [],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 442,
+  "kb": 11.1,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "huanghe.ucl",
+  "rel": "data/world/huanghe.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 56,
+  "room_exits": 56,
+  "characters": 26,
+  "items": 0,
+  "local_refs": 198,
+  "cross_refs": 8,
+  "cross_targets": [
+   "changan",
+   "city",
+   "heimuya",
+   "lanzhou",
+   "lingzhou",
+   "taishan",
+   "village"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 6,
+  "lines": 1902,
+  "kb": 49.6,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "huashan.ucl",
+  "rel": "data/world/huashan.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 89,
+  "room_exits": 89,
+  "characters": 15,
+  "items": 5,
+  "local_refs": 310,
+  "cross_refs": 3,
+  "cross_targets": [
+   "kaifeng",
+   "village"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 6,
+  "lines": 2542,
+  "kb": 71.2,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "item.ucl",
+  "rel": "data/world/item.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 6,
+  "room_exits": 6,
+  "characters": 1,
+  "items": 7,
+  "local_refs": 17,
+  "cross_refs": 1,
+  "cross_targets": [
+   "suzhou"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 255,
+  "kb": 6.7,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "jingzhou.ucl",
+  "rel": "data/world/jingzhou.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 90,
+  "room_exits": 90,
+  "characters": 30,
+  "items": 44,
+  "local_refs": 320,
+  "cross_refs": 4,
+  "cross_targets": [
+   "chengdu",
+   "city",
+   "kunming",
+   "wudang"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 1,
+  "lines": 3258,
+  "kb": 81.0,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "jinshe.ucl",
+  "rel": "data/world/jinshe.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 4,
+  "room_exits": 4,
+  "characters": 0,
+  "items": 5,
+  "local_refs": 9,
+  "cross_refs": 1,
+  "cross_targets": [
+   "huashan"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 156,
+  "kb": 4.9,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "jueqing.ucl",
+  "rel": "data/world/jueqing.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 57,
+  "room_exits": 57,
+  "characters": 7,
+  "items": 0,
+  "local_refs": 183,
+  "cross_refs": 1,
+  "cross_targets": [
+   "xiangyang"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1277,
+  "kb": 33.9,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "kaifeng.ucl",
+  "rel": "data/world/kaifeng.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 132,
+  "room_exits": 132,
+  "characters": 68,
+  "items": 2,
+  "local_refs": 483,
+  "cross_refs": 3,
+  "cross_targets": [
+   "huashan",
+   "songshan",
+   "zhongzhou"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 1,
+  "lines": 4490,
+  "kb": 116.5,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "kissa-jarvi.ucl",
+  "rel": "data/world/kissa-jarvi.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "84c77bd",
+   "date": "2026-08-22",
+   "subject": "Translate world content text to bilingual Chinese/English"
+  },
+  "rooms": 11,
+  "room_exits": 11,
+  "characters": 3,
+  "items": 0,
+  "local_refs": 2,
+  "cross_refs": 1,
+  "cross_targets": [
+   "sammatti"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 333,
+  "kb": 5.3,
+  "validate": 1,
+  "coords": 1,
+  "comments_exists": false
+ },
+ {
+  "file": "kunlun.ucl",
+  "rel": "data/world/kunlun.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 51,
+  "room_exits": 51,
+  "characters": 6,
+  "items": 19,
+  "local_refs": 189,
+  "cross_refs": 1,
+  "cross_targets": [
+   "mingjiao"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1547,
+  "kb": 40.9,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "kunming.ucl",
+  "rel": "data/world/kunming.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 54,
+  "room_exits": 54,
+  "characters": 19,
+  "items": 2,
+  "local_refs": 196,
+  "cross_refs": 3,
+  "cross_targets": [
+   "dali",
+   "jingzhou"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1590,
+  "kb": 41.8,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "lanzhou.ucl",
+  "rel": "data/world/lanzhou.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 37,
+  "room_exits": 37,
+  "characters": 22,
+  "items": 1,
+  "local_refs": 139,
+  "cross_refs": 5,
+  "cross_targets": [
+   "changan",
+   "huanghe",
+   "shenfeng",
+   "xiyu"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1359,
+  "kb": 37.3,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "lepakko-luola.ucl",
+  "rel": "data/world/lepakko-luola.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "84c77bd",
+   "date": "2026-08-22",
+   "subject": "Translate world content text to bilingual Chinese/English"
+  },
+  "rooms": 2,
+  "room_exits": 2,
+  "characters": 0,
+  "items": 0,
+  "local_refs": 0,
+  "cross_refs": 0,
+  "cross_targets": [],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 35,
+  "kb": 0.7,
+  "validate": 1,
+  "coords": 1,
+  "comments_exists": false
+ },
+ {
+  "file": "lingjiu.ucl",
+  "rel": "data/world/lingjiu.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 46,
+  "room_exits": 46,
+  "characters": 7,
+  "items": 6,
+  "local_refs": 161,
+  "cross_refs": 1,
+  "cross_targets": [
+   "xiyu"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1172,
+  "kb": 32.0,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "lingxiao.ucl",
+  "rel": "data/world/lingxiao.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 78,
+  "room_exits": 78,
+  "characters": 12,
+  "items": 11,
+  "local_refs": 291,
+  "cross_refs": 1,
+  "cross_targets": [
+   "xuedao"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 2570,
+  "kb": 75.4,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "lingzhou.ucl",
+  "rel": "data/world/lingzhou.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 50,
+  "room_exits": 50,
+  "characters": 17,
+  "items": 0,
+  "local_refs": 181,
+  "cross_refs": 2,
+  "cross_targets": [
+   "huanghe",
+   "xuanminggu"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1728,
+  "kb": 47.5,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "liuxi.ucl",
+  "rel": "data/world/liuxi.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "eae5c98",
+   "date": "2026-09-13",
+   "subject": "feat: wire HorseBoss + complete feature_attack/xiaoer integration"
+  },
+  "rooms": 8,
+  "room_exits": 6,
+  "characters": 13,
+  "items": 69,
+  "local_refs": 25,
+  "cross_refs": 1,
+  "cross_targets": [
+   "signature"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 2107,
+  "kb": 42.0,
+  "validate": 1,
+  "coords": 1,
+  "comments_exists": false
+ },
+ {
+  "file": "luoyang.ucl",
+  "rel": "data/world/luoyang.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 157,
+  "room_exits": 157,
+  "characters": 46,
+  "items": 0,
+  "local_refs": 570,
+  "cross_refs": 4,
+  "cross_targets": [
+   "changan",
+   "city",
+   "village",
+   "xiangyang"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 1,
+  "lines": 4538,
+  "kb": 132.7,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "meizhuang.ucl",
+  "rel": "data/world/meizhuang.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 37,
+  "room_exits": 37,
+  "characters": 9,
+  "items": 13,
+  "local_refs": 133,
+  "cross_refs": 2,
+  "cross_targets": [
+   "hangzhou",
+   "quanzhou"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1190,
+  "kb": 33.1,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "mingjiao.ucl",
+  "rel": "data/world/mingjiao.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 129,
+  "room_exits": 129,
+  "characters": 36,
+  "items": 39,
+  "local_refs": 477,
+  "cross_refs": 3,
+  "cross_targets": [
+   "kunlun",
+   "lanzhou",
+   "xiyu"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 4,
+  "lines": 4697,
+  "kb": 127.9,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "motianya.ucl",
+  "rel": "data/world/motianya.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 10,
+  "room_exits": 10,
+  "characters": 4,
+  "items": 0,
+  "local_refs": 35,
+  "cross_refs": 1,
+  "cross_targets": [
+   "hengyang"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 9,
+  "lines": 413,
+  "kb": 11.3,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "pk.ucl",
+  "rel": "data/world/pk.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 14,
+  "room_exits": 14,
+  "characters": 1,
+  "items": 0,
+  "local_refs": 59,
+  "cross_refs": 1,
+  "cross_targets": [
+   "changan"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 336,
+  "kb": 9.0,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "qingcheng.ucl",
+  "rel": "data/world/qingcheng.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 23,
+  "room_exits": 23,
+  "characters": 10,
+  "items": 0,
+  "local_refs": 72,
+  "cross_refs": 1,
+  "cross_targets": [
+   "chengdu"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 760,
+  "kb": 19.7,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "quanzhen.ucl",
+  "rel": "data/world/quanzhen.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 109,
+  "room_exits": 109,
+  "characters": 52,
+  "items": 3,
+  "local_refs": 414,
+  "cross_refs": 4,
+  "cross_targets": [
+   "changan",
+   "city",
+   "gumu"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 3736,
+  "kb": 100.6,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "quanzhou.ucl",
+  "rel": "data/world/quanzhou.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 36,
+  "room_exits": 36,
+  "characters": 16,
+  "items": 2,
+  "local_refs": 135,
+  "cross_refs": 6,
+  "cross_targets": [
+   "foshan",
+   "fuzhou",
+   "hangzhou",
+   "suzhou",
+   "taishan"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1158,
+  "kb": 29.0,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "register.ucl",
+  "rel": "data/world/register.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 7,
+  "room_exits": 7,
+  "characters": 7,
+  "items": 0,
+  "local_refs": 25,
+  "cross_refs": 4,
+  "cross_targets": [
+   "city"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 332,
+  "kb": 6.6,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "room.ucl",
+  "rel": "data/world/room.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 25,
+  "room_exits": 25,
+  "characters": 5,
+  "items": 9,
+  "local_refs": 83,
+  "cross_refs": 1,
+  "cross_targets": [
+   "shaolin"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 3,
+  "lines": 710,
+  "kb": 18.0,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "sammatti.ucl",
+  "rel": "data/world/sammatti.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "756b09c",
+   "date": "2026-08-23",
+   "subject": "Add wuxia realtime combat system ported from LPC MUD"
+  },
+  "rooms": 16,
+  "room_exits": 16,
+  "characters": 3,
+  "items": 0,
+  "local_refs": 27,
+  "cross_refs": 0,
+  "cross_targets": [],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 418,
+  "kb": 7.6,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": false
+ },
+ {
+  "file": "shaolin.ucl",
+  "rel": "data/world/shaolin.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 206,
+  "room_exits": 206,
+  "characters": 27,
+  "items": 58,
+  "local_refs": 837,
+  "cross_refs": 5,
+  "cross_targets": [
+   "beijing",
+   "city",
+   "room",
+   "songshan"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 64,
+  "lines": 6544,
+  "kb": 196.2,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "shenfeng.ucl",
+  "rel": "data/world/shenfeng.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 51,
+  "room_exits": 51,
+  "characters": 13,
+  "items": 7,
+  "local_refs": 168,
+  "cross_refs": 5,
+  "cross_targets": [
+   "gaochang",
+   "lanzhou",
+   "xiyu"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1456,
+  "kb": 41.7,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "shenlong.ucl",
+  "rel": "data/world/shenlong.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "e4b48c2",
+   "date": "2026-09-30",
+   "subject": "char"
+  },
+  "rooms": 21,
+  "room_exits": 21,
+  "characters": 12,
+  "items": 9,
+  "local_refs": 74,
+  "cross_refs": 0,
+  "cross_targets": [],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1099,
+  "kb": 27.2,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "signature.ucl",
+  "rel": "data/world/signature.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "a4e6398",
+   "date": "2026-09-16",
+   "subject": "F3 slice8: 俞莲舟 UCL 样板 + 数据驱动师父 e2e（F3 收尾）"
+  },
+  "rooms": 5,
+  "room_exits": 5,
+  "characters": 6,
+  "items": 3,
+  "local_refs": 18,
+  "cross_refs": 1,
+  "cross_targets": [
+   "liuxi"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 509,
+  "kb": 12.0,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": false
+ },
+ {
+  "file": "sky.ucl",
+  "rel": "data/world/sky.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "e4b48c2",
+   "date": "2026-09-30",
+   "subject": "char"
+  },
+  "rooms": 6,
+  "room_exits": 6,
+  "characters": 17,
+  "items": 9,
+  "local_refs": 24,
+  "cross_refs": 0,
+  "cross_targets": [],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 746,
+  "kb": 18.3,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "songshan.ucl",
+  "rel": "data/world/songshan.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 28,
+  "room_exits": 28,
+  "characters": 16,
+  "items": 0,
+  "local_refs": 95,
+  "cross_refs": 3,
+  "cross_targets": [
+   "kaifeng",
+   "shaolin"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1272,
+  "kb": 30.4,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "special.ucl",
+  "rel": "data/world/special.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "e4b48c2",
+   "date": "2026-09-30",
+   "subject": "char"
+  },
+  "rooms": 6,
+  "room_exits": 6,
+  "characters": 0,
+  "items": 0,
+  "local_refs": 16,
+  "cross_refs": 0,
+  "cross_targets": [],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 98,
+  "kb": 3.8,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "suzhou.ucl",
+  "rel": "data/world/suzhou.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 72,
+  "room_exits": 72,
+  "characters": 24,
+  "items": 1,
+  "local_refs": 266,
+  "cross_refs": 6,
+  "cross_targets": [
+   "guiyun",
+   "item",
+   "quanzhou",
+   "yanziwu",
+   "zhongzhou"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 1,
+  "lines": 2189,
+  "kb": 59.3,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "taishan.ucl",
+  "rel": "data/world/taishan.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 33,
+  "room_exits": 33,
+  "characters": 21,
+  "items": 0,
+  "local_refs": 116,
+  "cross_refs": 3,
+  "cross_targets": [
+   "city",
+   "huanghe",
+   "quanzhou"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1530,
+  "kb": 38.5,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "tangmen.ucl",
+  "rel": "data/world/tangmen.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "e4b48c2",
+   "date": "2026-09-30",
+   "subject": "char"
+  },
+  "rooms": 0,
+  "room_exits": 0,
+  "characters": 0,
+  "items": 2,
+  "local_refs": 0,
+  "cross_refs": 0,
+  "cross_targets": [],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 35,
+  "kb": 0.7,
+  "validate": 0,
+  "coords": 1,
+  "comments_exists": true
+ },
+ {
+  "file": "taohua.ucl",
+  "rel": "data/world/taohua.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 31,
+  "room_exits": 31,
+  "characters": 7,
+  "items": 18,
+  "local_refs": 104,
+  "cross_refs": 0,
+  "cross_targets": [],
+  "dangling_cross": [],
+  "skipped_notes": 4,
+  "lines": 1138,
+  "kb": 28.5,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "test.ucl",
+  "rel": "data/world/test.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "00c51c0",
+   "date": "2026-09-28",
+   "subject": "python"
+  },
+  "rooms": 34,
+  "room_exits": 34,
+  "characters": 13,
+  "items": 42,
+  "local_refs": 165,
+  "cross_refs": 0,
+  "cross_targets": [],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 2075,
+  "kb": 55.6,
+  "validate": 1,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "tianlongsi.ucl",
+  "rel": "data/world/tianlongsi.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 28,
+  "room_exits": 28,
+  "characters": 4,
+  "items": 3,
+  "local_refs": 104,
+  "cross_refs": 2,
+  "cross_targets": [
+   "dali",
+   "emei"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 789,
+  "kb": 20.0,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "tiezhang.ucl",
+  "rel": "data/world/tiezhang.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 66,
+  "room_exits": 66,
+  "characters": 13,
+  "items": 18,
+  "local_refs": 210,
+  "cross_refs": 0,
+  "cross_targets": [],
+  "dangling_cross": [],
+  "skipped_notes": 11,
+  "lines": 1967,
+  "kb": 56.5,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "tulong.ucl",
+  "rel": "data/world/tulong.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 60,
+  "room_exits": 60,
+  "characters": 46,
+  "items": 12,
+  "local_refs": 222,
+  "cross_refs": 2,
+  "cross_targets": [
+   "beijing"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 3190,
+  "kb": 84.5,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "village.ucl",
+  "rel": "data/world/village.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 30,
+  "room_exits": 30,
+  "characters": 21,
+  "items": 1,
+  "local_refs": 106,
+  "cross_refs": 4,
+  "cross_targets": [
+   "heimuya",
+   "huashan",
+   "luoyang"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1190,
+  "kb": 30.1,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "wanjiegu.ucl",
+  "rel": "data/world/wanjiegu.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 29,
+  "room_exits": 29,
+  "characters": 40,
+  "items": 4,
+  "local_refs": 92,
+  "cross_refs": 1,
+  "cross_targets": [
+   "dali"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1224,
+  "kb": 30.5,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "wizard.ucl",
+  "rel": "data/world/wizard.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 9,
+  "room_exits": 9,
+  "characters": 0,
+  "items": 0,
+  "local_refs": 27,
+  "cross_refs": 1,
+  "cross_targets": [
+   "city"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 166,
+  "kb": 6.3,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "wudang.ucl",
+  "rel": "data/world/wudang.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 102,
+  "room_exits": 102,
+  "characters": 10,
+  "items": 13,
+  "local_refs": 378,
+  "cross_refs": 8,
+  "cross_targets": [
+   "city",
+   "emei",
+   "guiyun",
+   "hengyang",
+   "jingzhou",
+   "xiangyang",
+   "xiaoyao"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 2675,
+  "kb": 71.0,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "wudu.ucl",
+  "rel": "data/world/wudu.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 108,
+  "room_exits": 108,
+  "characters": 28,
+  "items": 29,
+  "local_refs": 407,
+  "cross_refs": 3,
+  "cross_targets": [
+   "city",
+   "dali"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 3448,
+  "kb": 87.5,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "wuguan.ucl",
+  "rel": "data/world/wuguan.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 39,
+  "room_exits": 39,
+  "characters": 15,
+  "items": 7,
+  "local_refs": 134,
+  "cross_refs": 1,
+  "cross_targets": [
+   "xiangyang"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1601,
+  "kb": 44.5,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "xiakedao.ucl",
+  "rel": "data/world/xiakedao.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 99,
+  "room_exits": 99,
+  "characters": 25,
+  "items": 20,
+  "local_refs": 322,
+  "cross_refs": 2,
+  "cross_targets": [
+   "foshan",
+   "hengyang"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 41,
+  "lines": 3048,
+  "kb": 83.2,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "xiangyang.ucl",
+  "rel": "data/world/xiangyang.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 119,
+  "room_exits": 119,
+  "characters": 33,
+  "items": 2,
+  "local_refs": 423,
+  "cross_refs": 6,
+  "cross_targets": [
+   "jueqing",
+   "luoyang",
+   "tiezhang",
+   "wudang",
+   "wuguan",
+   "zhongzhou"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 7,
+  "lines": 3736,
+  "kb": 102.5,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "xiaoyao.ucl",
+  "rel": "data/world/xiaoyao.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 22,
+  "room_exits": 22,
+  "characters": 4,
+  "items": 4,
+  "local_refs": 85,
+  "cross_refs": 1,
+  "cross_targets": [
+   "wudang"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 630,
+  "kb": 15.0,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "xiyu.ucl",
+  "rel": "data/world/xiyu.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 51,
+  "room_exits": 51,
+  "characters": 17,
+  "items": 22,
+  "local_refs": 196,
+  "cross_refs": 6,
+  "cross_targets": [
+   "lanzhou",
+   "lingjiu",
+   "mingjiao",
+   "shenfeng",
+   "xueshan"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 26,
+  "lines": 2145,
+  "kb": 53.1,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "xuanminggu.ucl",
+  "rel": "data/world/xuanminggu.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 13,
+  "room_exits": 13,
+  "characters": 0,
+  "items": 0,
+  "local_refs": 43,
+  "cross_refs": 1,
+  "cross_targets": [
+   "lingzhou"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 265,
+  "kb": 6.6,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "xuedao.ucl",
+  "rel": "data/world/xuedao.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 24,
+  "room_exits": 24,
+  "characters": 4,
+  "items": 1,
+  "local_refs": 84,
+  "cross_refs": 4,
+  "cross_targets": [
+   "chengdu",
+   "lingxiao",
+   "xueshan"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 694,
+  "kb": 15.6,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "xueshan.ucl",
+  "rel": "data/world/xueshan.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 39,
+  "room_exits": 39,
+  "characters": 7,
+  "items": 18,
+  "local_refs": 142,
+  "cross_refs": 5,
+  "cross_targets": [
+   "beijing",
+   "city",
+   "xiyu",
+   "xuedao"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 4,
+  "lines": 1351,
+  "kb": 32.2,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "yanziwu.ucl",
+  "rel": "data/world/yanziwu.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 46,
+  "room_exits": 46,
+  "characters": 17,
+  "items": 4,
+  "local_refs": 168,
+  "cross_refs": 1,
+  "cross_targets": [
+   "suzhou"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 0,
+  "lines": 1478,
+  "kb": 38.8,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ },
+ {
+  "file": "zhongzhou.ucl",
+  "rel": "data/world/zhongzhou.ucl",
+  "state": "identical",
+  "commit": {
+   "sha": "1c97437",
+   "date": "2026-09-30",
+   "subject": "script"
+  },
+  "rooms": 90,
+  "room_exits": 90,
+  "characters": 27,
+  "items": 0,
+  "local_refs": 326,
+  "cross_refs": 4,
+  "cross_targets": [
+   "city",
+   "kaifeng",
+   "suzhou",
+   "xiangyang"
+  ],
+  "dangling_cross": [],
+  "skipped_notes": 1,
+  "lines": 2598,
+  "kb": 68.5,
+  "validate": 0,
+  "coords": 0,
+  "comments_exists": true
+ }
+]

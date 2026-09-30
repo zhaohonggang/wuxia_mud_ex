@@ -1,0 +1,1189 @@
+zones "meizhuang" {
+  name = "meizhuang"
+}
+
+# Generated from C:/files/git/mud/d/meizhuang/chufang.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "你顺着香味走到了梅庄的厨房，一位厨师正站在灶台后面笑眯眯 的看着你，他手上拿着一柄铁勺，用力的把锅里煮着的一大堆食物搅 匀，梅庄的弟子们如果饿了，就到这里来问这位厨师能不能吃饭，一 般来说，他们都不会遭到拒绝的。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+    up = rooms.didao1.id
+    down = rooms.gate.id
+    east = rooms.zoulang3.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/dating.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "dating" {
+      name = "四雅清风"
+      description = "你已经到了梅庄的大厅门口，门内的匾额(bian)龙飞凤舞的写着 “四雅清风”四个大字，笔法娟秀中透着挺拔，不失为一笔好字。透 过后门，你看到里面一尘不染，一张石桌和几个石凳都安放得整整齐 齐。"
+  x = 1
+  y = -6
+  z = 1
+    }
+
+  room_exits "dating" {
+    room_id = rooms.dating.id
+    south = rooms.tianjing.id
+    north = rooms.keting.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/didao1.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "didao1" {
+      name = "梅庄密道"
+      description = "这是一条昏暗潮湿的地道，地道很长，两边点着两根不太明亮的 火把，地道两旁的墙壁上画着很多不知道出自何人之手的壁画，而且 画得相当难看，你加快脚步，想知道地道的尽头是什么地方。"
+  x = 0
+  y = 0
+  z = 2
+    }
+
+  room_exits "didao1" {
+    room_id = rooms.didao1.id
+    up = rooms.didao4.id
+    down = rooms.chufang.id
+    west = rooms.didao2.id
+    south = rooms.didao1.id
+    north = rooms.didao2.id
+    east = rooms.didao1.id
+    out = rooms.keting.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/didao2.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "didao2" {
+      name = "梅庄密道"
+      description = "这是一条昏暗潮湿的地道，地道很长，两边点着两根不太明亮的 火把，地道两旁的墙壁上画着很多不知道出自何人之手的壁画，而且 画得相当难看，你加快脚步，想知道地道的尽头是什么地方。"
+  x = -1
+  y = 0
+  z = 2
+    }
+
+  room_exits "didao2" {
+    room_id = rooms.didao2.id
+    east = rooms.didao1.id
+    west = rooms.didao2.id
+    north = rooms.didao3.id
+    south = rooms.didao1.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/didao3.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "didao3" {
+      name = "梅庄密道"
+      description = "这是一条昏暗潮湿的地道，地道很长，两边点着两根不太明亮的 火把，地道两旁的墙壁上画着很多不知道出自何人之手的壁画，而且 画得相当难看，你加快脚步，想知道地道的尽头是什么地方。突然之 间你发现这里的地面已经是木板(floor)拼成的了。"
+  x = -1
+  y = 1
+  z = 2
+item_desc = {
+ floor = "这层木板似乎可以拉开(pull)。"
+}
+    }
+
+  room_exits "didao3" {
+    room_id = rooms.didao3.id
+    up = rooms.dingduan.id
+    south = rooms.didao2.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/didao4.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "didao4" {
+      name = "甬道"
+      description = "你一到这里，迎面就闻到一股腐烂的泥土的味道，不过从前面的 亮光中，你又看到了希望，你不禁开始加快脚步，想看看那里到底有 些什么东西。"
+  x = 0
+  y = 0
+  z = 3
+    }
+
+  room_exits "didao4" {
+    room_id = rooms.didao4.id
+    down = rooms.didao1.id
+    north = rooms.didao5.id
+    up = rooms.didao3.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/didao5.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "didao5" {
+      name = "甬道"
+      description = "你一到这里，迎面就闻到一股腐烂的泥土的味道，不过从前面的 亮光中，你又看到了希望，你不禁开始加快脚步，想看看那里到底有 些什么东西。"
+  x = 0
+  y = 1
+  z = 3
+    }
+
+  room_exits "didao5" {
+    room_id = rooms.didao5.id
+    west = rooms.didao5.id
+    east = rooms.didao4.id
+    south = rooms.didao4.id
+    north = rooms.didao6.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/didao6.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "didao6" {
+      name = "梅庄密道"
+      description = "这是一条昏暗潮湿的地道，地道很长，两边点着两根不太明亮的 火把，地道两旁的墙壁上画着很多不知道出自何人之手的壁画，而且 画得相当难看，你加快脚步，想知道地道的尽头是什么地方。"
+  x = 0
+  y = 2
+  z = 3
+    }
+
+  room_exits "didao6" {
+    room_id = rooms.didao6.id
+    west = rooms.didao4.id
+    north = rooms.didao5.id
+    east = rooms.didao6.id
+    south = rooms.didao7.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/didao7.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "didao7" {
+      name = "梅庄密道"
+      description = "这是一条昏暗潮湿的地道，地道很长，两边点着两根不太明亮的 火把，地道两旁的墙壁上画着很多不知道出自何人之手的壁画，而且 画得相当难看。北面有一扇铁门，但是走进了才发现原来是虚掩的， 并没有上锁。"
+  x = 0
+  y = 1
+  z = 3
+    }
+
+  room_exits "didao7" {
+    room_id = rooms.didao7.id
+    north = rooms.laofang.id
+    west = rooms.didao6.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/dingduan.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "dingduan" {
+      name = "书架顶部"
+      description = "你现在在书架的顶部，从这里你可以看见整个密室的情况，除了 几具白骨以外，确实没有什么值得你怀疑的东西，但你发现书架的顶 部非常不合适的铺着一块红绸。"
+  x = 0
+  y = 0
+  z = 4
+    }
+
+  room_exits "dingduan" {
+    room_id = rooms.dingduan.id
+    up = rooms.hupan.id
+    down = rooms.mishi.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/gate.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "gate" {
+      name = "梅庄大门"
+      description = "走过一大片梅林，走上一条青石板大路，来到一座朱门白墙的大 庄院外，行到近处，见大门外写着“梅庄”两个大字，旁边署着“虞 允文题”四字。那虞允文是南宋破金的大功臣，这几个字儒雅之中透 着勃勃英气。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "gate" {
+    room_id = rooms.gate.id
+    up = rooms.chufang.id
+    south = rooms.xiaolu.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/houting.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "houting" {
+      name = "后厅"
+      description = "这里是孤山梅庄的后厅，后厅内相当的宽敞明亮，四周的墙上悬 挂满了各朝名人的真迹，正堂坐着一个极高极瘦的黑衣老者，那老者 眉清目秀，只是脸色泛白，似乎是一具僵尸模样，令人一见之下，心 中便感到一阵凉意。大厅往南是一条走廊。"
+  x = 1
+  y = 1
+  z = 1
+    }
+
+  room_exits "houting" {
+    room_id = rooms.houting.id
+    south = rooms.zoulang3.id
+    }
+
+
+
+
+  room_items "houting" {
+    room_id = rooms.houting.id
+    items = [
+      { id = items.heibai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/meizhuang/huashi.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "huashi" {
+      name = "画室"
+      description = "这里是丹青生的画室，俗话说：书画不分家，所以丹青生的书法 也有相当的功力，虽然不及他三哥秃笔翁很多，但他将他的剑法融于 他的书法当中，也可谓是银钩铁画了。这里的陈设和书室差不多，唯 一不同的是这里的墙上并没有挂丹青生的丹青妙笔，而是挂了许多前 朝名家的名画，属于丹青生自己的是一幅写着《兵车行》的中堂。"
+  x = 2
+  y = -2
+  z = 1
+    }
+
+  room_exits "huashi" {
+    room_id = rooms.huashi.id
+    west = rooms.zoulang1.id
+    }
+
+
+
+
+  room_items "huashi" {
+    room_id = rooms.huashi.id
+    items = [
+      { id = items.danqing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/meizhuang/hupan.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "hupan" {
+      name = "南湖湖畔"
+      description = "顺着南湖一直走过去，你欣赏着湖边的杨柳，不知不觉地已经走 到南湖的尽头，这里有一条蜿蜒的小路向前延伸着，隐隐约约可以看 到一座庄园，你不禁想走过去看看那里是什么地方．"
+  x = 0
+  y = 0
+  z = 5
+    }
+
+  room_exits "hupan" {
+    room_id = rooms.hupan.id
+    up = rooms.lingmu.id
+    down = rooms.dingduan.id
+    west = rooms.nanhu1.id
+    north = rooms.xiaolu.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/keting.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "keting" {
+      name = "迎客亭"
+      description = "通过四雅清风，你来到了梅庄的迎客亭，这里虽然只有一张石桌 和几个石凳，但却是一尘不染，石凳和石桌之间的空隙很大，显是方 便来客与主人相互寒暄。"
+  x = 1
+  y = -5
+  z = 1
+    }
+
+  room_exits "keting" {
+    room_id = rooms.keting.id
+    north = rooms.senlin1.id
+    south = rooms.dating.id
+    }
+
+
+
+
+  room_items "keting" {
+    room_id = rooms.keting.id
+    items = [
+      { id = items.ding.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/meizhuang/laofang.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "laofang" {
+      name = "牢房"
+      description = "这里有一张铁床，上面还依稀有一个人(man)，似乎被铁镣锁着， 躺在那里一动不动。"
+  x = 0
+  y = 2
+  z = 3
+item_desc = {
+ man = "这个人如同稀泥一般，双目涣散，没有一点神采。整个人似乎只剩下 了一个干枯的躯壳，然而却还有一口气，如果不是铁镣锁着，也许可 以把他搬下床来。"
+}
+    }
+
+  room_exits "laofang" {
+    room_id = rooms.laofang.id
+    south = rooms.didao7.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/lingmu.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "lingmu" {
+      name = "古皇陵"
+      description = "你一走到这里，突然一片明亮，原来这里竟然是古代蚕丛王的陵 墓，中间停放着一具棺木，棺木的上方悬挂着一颗鹅蛋一般大小的夜 明珠，把这里照得异常明亮，棺木的正中放着一本书，书看起来很陈 旧，似乎是一位前辈异人留下的。"
+  x = 0
+  y = 0
+  z = 6
+    }
+
+  room_exits "lingmu" {
+    room_id = rooms.lingmu.id
+    up = rooms.mishi2.id
+    down = rooms.hupan.id
+    south = rooms.didao5.id
+    out = rooms.hupan.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/mishi.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "mishi" {
+      name = "密室"
+      description = "这是一间不大的房间，房间里摆着一排排的书架(shu jia) 和很多书(book)，在书架的两旁靠着几具死人的骸骨，有一具 的胸骨之中还插着一柄剑。"
+  x = 0
+  y = 0
+  z = 3
+item_desc = {
+ shu_jia = "书架上摆着各种各样的书。"
+ book = "都是一些很平常的书，到处都可以见到。"
+}
+    }
+
+  room_exits "mishi" {
+    room_id = rooms.mishi.id
+    down = rooms.didao3.id
+    out = rooms.neitang.id
+    }
+
+
+
+
+  room_items "mishi" {
+    room_id = rooms.mishi.id
+    items = [
+      { id = items.tizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/meizhuang/mishi2.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "mishi2" {
+      name = "柳园"
+      description = "这是一座小小的园子，里面种满了大大小小的柳树，柳枝有的长可及 地，有的还是新枝嫩叶，但中间有一株灌木(guanmu)低低矮矮的，长在那 里，非常惹人注目，你不禁朝那里多看了两眼。"
+  x = 0
+  y = 0
+  z = 7
+    }
+
+  room_exits "mishi2" {
+    room_id = rooms.mishi2.id
+    down = rooms.lingmu.id
+    west = rooms.xiaoyuan.id
+    }
+
+
+
+
+  room_items "mishi2" {
+    room_id = rooms.mishi2.id
+    items = [
+      { id = items.guanmu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/meizhuang/neitang.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "neitang" {
+      name = "偏房"
+      description = "这是一间没有任何东西的房子，四壁空荡荡的，好象是一间刚修 好的，还没有来得及进行装饰的房间，正中的墙上画着一幅壁画，相 当的醒目，画着九天十万神魔歃血为盟，十万滴魔血化做了一只鲜红 的鹦鹉，鹦鹉的眼睛(eye)竟然是用非常罕见的朱雀石做成的。"
+  x = 0
+  y = -4
+  z = 1
+item_desc = {
+ eye = "一块邪恶的朱雀石，发出耀眼的红光。"
+}
+    }
+
+  room_exits "neitang" {
+    room_id = rooms.neitang.id
+    east = rooms.senlin1.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/neiyuan.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "neiyuan" {
+      name = "内院"
+      description = "这里是梅庄的内院，从这里走过去就可以找到四位庄主，这里似 乎非常安静，可以听见落叶触地的声音，但又似乎非常吵闹，经常可 以听到嘈杂的琴声，但这琴声又可以将你的心弦打乱，你真不知道该 怎么形容这个地方。有一位壮年的汉子，腰悬宝剑守在院门口。"
+  x = 1
+  y = -3
+  z = 1
+    }
+
+  room_exits "neiyuan" {
+    room_id = rooms.neiyuan.id
+    north = rooms.zoulang1.id
+    south = rooms.senlin1.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/qhpo.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "qhpo" {
+      name = "奇槐坡"
+      description = "这里就是奇槐坡了，这里种着大大小小，千奇百怪的槐树，有的 槐树一直向天，有的又曲折盘绕，你从这里隐隐约约听到一阵阵的琴 声，似有似无，若隐若现。"
+  x = 3
+  y = -4
+  z = 1
+    }
+
+  room_exits "qhpo" {
+    room_id = rooms.qhpo.id
+    west = rooms.senlin2.id
+    eastup = rooms.xiaodao.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/qishi.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "qishi" {
+      name = "棋室"
+      description = "这里便是二庄主黑白子的棋室了，棋室里两张石凳，一张石几， 石几上用黑白子的指力刻着纵横九九八十一道，这里除了简单的放着 两盒用玉做成的棋子外，什么都没有，显是怕双方对弈时分心。只不 过现在二庄主不知道到那里去了，只剩下一副棋盘棋子在这里。"
+  x = 0
+  y = -1
+  z = 1
+    }
+
+  room_exits "qishi" {
+    room_id = rooms.qishi.id
+    east = rooms.zoulang2.id
+    }
+
+
+
+
+  room_items "qishi" {
+    room_id = rooms.qishi.id
+    items = [
+      { id = items.qizi.id },
+      { id = items.qipan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/meizhuang/senlin1.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "senlin1" {
+      name = "百木园"
+      description = "这里是梅庄的百木园，你一走到这里，就象走到了一个连绵无尽 的小森林一样，这里无数的松树，柏树，白杨，还有很多叫不出来名 字的异种苗木。"
+  x = 1
+  y = -4
+  z = 1
+    }
+
+  room_exits "senlin1" {
+    room_id = rooms.senlin1.id
+    west = rooms.neitang.id
+    east = rooms.senlin2.id
+    north = rooms.neiyuan.id
+    south = rooms.keting.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/senlin2.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "senlin2" {
+      name = "百木园"
+      description = "这里是梅庄的百木园，你一走到这里，就象走到了一个连绵无尽 的小森林一样，这里无数的松树，柏树，白杨，还有很多叫不出来名 字的异种苗木，你走在其中，只想把这片树林尽情的欣赏一遍，永不 出去才好。"
+  x = 2
+  y = -4
+  z = 1
+    }
+
+  room_exits "senlin2" {
+    room_id = rooms.senlin2.id
+    east = rooms.qhpo.id
+    west = rooms.senlin1.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/shijie.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "shijie" {
+      name = "孤山石级"
+      description = "你向孤山边的石级上行去，一路欣赏着湖边长曳的杨柳。不知不 觉地转了几个弯，却见遍地都是梅树，老干横斜，枝叶茂密，想像初 春梅花盛开之日，香雪如海，定然观赏不尽。"
+  x = 0
+  y = -2
+  z = 0
+    }
+
+  room_exits "shijie" {
+    room_id = rooms.shijie.id
+    north = rooms.xiaolu.id
+    eastdown = rooms.gushan.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/shushi.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "shushi" {
+      name = "书室"
+      description = "这里是秃笔翁的书室，房中有一个大案，案上放着一个笔筒，笔 筒中插着几管大小不同的毛笔，毛笔的质料也有所不同，有狼毫，有 羊毫，有猪鬃，有鼠须，还有一支世上很难见到的獭毫笔，案上平铺 着一张四尺中堂大小的宣纸，一方端砚，一柄徽墨，一对白玉镇纸， 一个寿山笔架，都显出主人对书法的爱好。墙上挂满了主人书写的一 幅幅条幅，中堂，对联。"
+  x = 0
+  y = -2
+  z = 1
+    }
+
+  room_exits "shushi" {
+    room_id = rooms.shushi.id
+    east = rooms.zoulang1.id
+    }
+
+
+
+
+  room_items "shushi" {
+    room_id = rooms.shushi.id
+    items = [
+      { id = items.tubi.id },
+      { id = items.maobi.id },
+      { id = items.panguanbi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/meizhuang/tianjing.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "tianjing" {
+      name = "大天井"
+      description = "你走过一个大天井，天井左右各植一棵老梅，枝干如铁，极是苍 劲。往南是梅庄大门，北面是大厅。"
+  x = 1
+  y = -7
+  z = 1
+    }
+
+  room_exits "tianjing" {
+    room_id = rooms.tianjing.id
+    north = rooms.dating.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/xiaodao.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "xiaodao" {
+      name = "小路"
+      description = "你走到这条小路上，前面已经可以隐隐约约看到一座小小的院落 的影子，你可以非常的肯定，琴声就是从这个小院里发出来的，想到 立刻就可以见到大庄主黄钟公了，你不禁一阵紧张。"
+  x = 4
+  y = -4
+  z = 2
+    }
+
+  room_exits "xiaodao" {
+    room_id = rooms.xiaodao.id
+    westdown = rooms.qhpo.id
+    north = rooms.yuedong.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/xiaolu.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "xiaolu" {
+      name = "蜿蜒小径"
+      description = "这条小路的两旁种着无数的梅花，虽然还没到梅花盛开的季节， 但透过这密密的梅林，你似乎已经闻到了阵阵的梅花的幽香，这时你 已经发现你快走到庄园的门口，你暗地里加快了脚步。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "xiaolu" {
+    room_id = rooms.xiaolu.id
+    north = rooms.gate.id
+    south = rooms.shijie.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/xiaowu.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "xiaowu" {
+      name = "石屋"
+      description = "一间小小的石屋，屋前屋后七八株苍松夭矫高挺，遮得石屋里阴 沉沉的，终日不见什么阳光。石屋内堂正中坐着一位老者，六十来岁 年纪，骨瘦如柴，脸上肌肉都凹了进去，直如一具骷髅，双目却炯炯 有神，正俯首抚琴。石屋四周的墙壁上挂满了各式各样的乐器，任何 一件都有上百或是上千光景，全是名贵之物。"
+  x = 4
+  y = -2
+  z = 2
+    }
+
+  room_exits "xiaowu" {
+    room_id = rooms.xiaowu.id
+    out = rooms.xiaoyuan.id
+    }
+
+
+
+
+  room_items "xiaowu" {
+    room_id = rooms.xiaowu.id
+    items = [
+      { id = items.huang.id },
+      { id = items.qin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/meizhuang/xiaoyuan.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "xiaoyuan" {
+      name = "琴心小院"
+      description = "穿过月洞门，便是一座看起来非常普通的小小的院落，两旁修竹 姗姗，花径鹅卵石上生满青苔，显得平素少有人行。花径通到三间石 屋之前。屋前屋后七八株苍松夭矫高挺，遮得四下里阴沉沉的。"
+  x = 4
+  y = -2
+  z = 2
+    }
+
+  room_exits "xiaoyuan" {
+    room_id = rooms.xiaoyuan.id
+    in = rooms.xiaowu.id
+    south = rooms.yuedong.id
+    }
+
+
+  room_characters "xiaoyuan" {
+    room_id = rooms.xiaoyuan.id
+    characters = [
+      { id = characters.shi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/meizhuang/xiuxishi.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "xiuxishi" {
+      name = "休息室"
+      description = "这里是梅庄弟子练功劳累的时候，休息的地方，这里经常可以听 到如雷的鼾声，这里简单的放着几张垫子，几床棉被，几个枕头，而 且梅庄弟子虽然经常打扫这里，但这里仍然凌乱不堪，很多梅庄弟子 一进这里，倒头便睡，显是过于疲劳的缘故。"
+  x = 2
+  y = -1
+  z = 1
+    }
+
+  room_exits "xiuxishi" {
+    room_id = rooms.xiuxishi.id
+    west = rooms.zoulang2.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/yuedong.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "yuedong" {
+      name = "月洞门"
+      description = "你穿过走廊，来到一个月洞门前。月洞门门额上写着“琴心”两 字，以蓝色琉璃砌成，笔致苍劲，当是出于秃笔翁的手笔了。过了月 洞门，是一条清幽的花径，两旁修竹姗姗，花径鹅卵石上生满青苔， 显得平素少有人行。"
+  x = 4
+  y = -3
+  z = 2
+    }
+
+  room_exits "yuedong" {
+    room_id = rooms.yuedong.id
+    south = rooms.xiaodao.id
+    north = rooms.xiaoyuan.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/zoulang1.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "zoulang1" {
+      name = "走廊"
+      description = "这是一条长长的走廊，走廊两边是四位庄主中的其他三位平时休 息和练功的地方，这里的左边是书室，右边是画室，三庄主秃笔翁和 四庄主丹青生在闲来无事的时候，便到那里面去挥毫，泼墨。"
+  x = 1
+  y = -2
+  z = 1
+    }
+
+  room_exits "zoulang1" {
+    room_id = rooms.zoulang1.id
+    south = rooms.neiyuan.id
+    north = rooms.zoulang2.id
+    east = rooms.huashi.id
+    west = rooms.shushi.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/zoulang2.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "zoulang2" {
+      name = "走廊"
+      description = "这是一条长长的走廊，走廊两边是四位庄主中的其他三位平时休 息和练功的地方，这里的左边是棋室，右边则是梅庄弟子感觉劳顿的 时候休息的地方，二庄主黑白子不分昼夜都在棋室里研究他那些不知 道哪儿找来的古棋谱。"
+  x = 1
+  y = -1
+  z = 1
+    }
+
+  room_exits "zoulang2" {
+    room_id = rooms.zoulang2.id
+    south = rooms.zoulang1.id
+    north = rooms.zoulang3.id
+    east = rooms.xiuxishi.id
+    west = rooms.qishi.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/zoulang3.c by LPCConverter
+# Zone: meizhuang
+
+    rooms "zoulang3" {
+      name = "走廊"
+      description = "这是一条长长的走廊，走廊两边是四位庄主中的其他三位平时休 息和练功的地方，左边就是梅庄的厨房。走廊到了这里似乎就到了尽 头，再往前便是梅庄的后厅了。"
+  x = 1
+  y = 0
+  z = 1
+    }
+
+  room_exits "zoulang3" {
+    room_id = rooms.zoulang3.id
+    west = rooms.chufang.id
+    south = rooms.zoulang2.id
+    north = rooms.houting.id
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/chushi.c by LPCConverter
+# Zone: meizhuang
+
+    characters "chushi" {
+      name = "厨师"
+      description = "他是梅庄的厨子，敦厚老实。你可以问他要(serve)些吃的。"
+  gender = "男性"
+  age = 65
+  shen_type = 1
+
+  combat = {
+    combat_exp = 7500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 35 },
+    { skill = "force" level = 35 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["serve"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/huyuan.c by LPCConverter
+# Zone: meizhuang
+
+    characters "huyuan" {
+      name = "护院"
+      description = ""
+  gender = "男性"
+  age = 30
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 20
+    dex = 22
+    int = 24
+    max_jing = 800
+    max_neili = 1350
+    max_qi = 1500
+    str = 17
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "sword" level = 100 },
+    { skill = "parry" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/jiading.c by LPCConverter
+# Zone: meizhuang
+
+    characters "jiading" {
+      name = "家丁"
+      description = "他是一位身着青衣的梅庄家丁，衣服的袖口上绣着一朵梅花。 手中拿着一对判官笔，似乎有一身武艺。"
+  gender = "男性"
+  age = 20
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 3000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 300
+    max_neili = 500
+    max_qi = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "unarmed" level = 30 },
+    { skill = "parry" level = 30 },
+    { skill = "blade" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.panguan_bi.id },
+    { id = items.qingyi.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/ren.c by LPCConverter
+# Zone: meizhuang
+
+    characters "ren" {
+      name = "任我行"
+      description = "这便是日月神教上任教主任我行。只见 他一张长长的脸孔，脸色雪白，更无半 分血色。他眉目清秀，身材甚高，一头 黑发，穿的是一袭青衫。"
+  title = "日月神教上任教主"
+  gender = "男性"
+  age = 55
+  score = 50000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 4000000
+    con = 40
+    dex = 40
+    int = 40
+    max_jing = 6000
+    max_neili = 10000
+    max_qi = 8000
+    str = 40
+  }
+
+  inquiries = [
+    { key = "剑法" value = "(: ask_bijian :)" },
+    { key = "比剑" value = "(: ask_bijian :)" },
+    { key = "黑木令" value = "要拿黑木令？老夫想先看看你的剑法！" }
+  ]
+
+  skills = [
+    { skill = "literate" level = 250 },
+    { skill = "force" level = 400 },
+    { skill = "dodge" level = 360 },
+    { skill = "unarmed" level = 360 },
+    { skill = "parry" level = 360 },
+    { skill = "sword" level = 360 },
+    { skill = "changquan" level = 360 },
+    { skill = "xixing-dafa" level = 400 },
+    { skill = "lingxu-bu" level = 360 },
+    { skill = "damo-jian" level = 360 },
+    { skill = "taiji-jian" level = 360 },
+    { skill = "huifeng-jian" level = 360 },
+    { skill = "taishan-sword" level = 360 },
+    { skill = "hengshan-jian" level = 360 },
+    { skill = "hengshan-sword" level = 360 },
+    { skill = "huashan-jian" level = 360 },
+    { skill = "songshan-sword" level = 360 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "force" skill = "xixing-dafa" },
+    { type = "unarmed" skill = "changquan" },
+    { type = "sword" skill = "damo-jian" },
+    { type = "parry" skill = "taiji-jian" }
+  ]
+
+
+  carry = [
+    { id = items.bluecloth.id },
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/shi.c by LPCConverter
+# Zone: meizhuang
+
+    characters "shi" {
+      name = "施令威"
+      description = "他就是隐居江湖数年的五路神施令威，现在在梅庄当管家。"
+  title = "梅庄仆从"
+  nickname = "五路神"
+  gender = "男性"
+  age = 30
+  brain = brains.guarder
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 500000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 2700
+    max_neili = 3500
+    max_qi = 3000
+    str = 25
+  }
+
+  skills = [
+    { skill = "parry" level = 120 },
+    { skill = "wai-bagua" level = 120 },
+    { skill = "force" level = 120 },
+    { skill = "nei-bagua" level = 120 },
+    { skill = "bagua-xinfa" level = 120 },
+    { skill = "dodge" level = 120 },
+    { skill = "bagua-bu" level = 120 },
+    { skill = "blade" level = 140 },
+    { skill = "bagua-dao" level = 140 },
+    { skill = "strike" level = 120 },
+    { skill = "bagua-zhang" level = 120 },
+    { skill = "cuff" level = 120 },
+    { skill = "bagua-quan" level = 120 },
+    { skill = "literate" level = 100 },
+    { type = "blade" skill = "bagua-dao" },
+    { type = "dodge" skill = "bagua-bu" },
+    { type = "force" skill = "nei-bagua" },
+    { type = "strike" skill = "bagua-zhang" },
+    { type = "cuff" skill = "bagua-quan" },
+    { type = "parry" skill = "wai-bagua" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.gangdao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/obj/heiyi.c by LPCConverter
+# Zone: meizhuang
+
+    characters "heiyi" {
+      name = "黑色长衫"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/obj/lingpai.c by LPCConverter
+# Zone: meizhuang
+
+    characters "lingpai" {
+      name = "梅花令牌"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/obj/panguan-bi.c by LPCConverter
+# Zone: meizhuang
+
+    characters "panguan_bi" {
+      name = "镔铁判官笔"
+      description = "这是一对用镔铁打造的判官笔。"
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/obj/qingyi.c by LPCConverter
+# Zone: meizhuang
+
+    characters "qingyi" {
+      name = "绣梅青衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/guanmu.c by LPCConverter
+# Zone: meizhuang
+
+    items "guanmu" {
+      name = "灌木"
+      description = "这是一丛不知名的灌木，生长得很茂盛。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/hongchou.c by LPCConverter
+# Zone: meizhuang
+
+    items "hongchou" {
+      name = "红绸"
+      description = "一块很完整的红绸，但已经开始变色了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/honghua.c by LPCConverter
+# Zone: meizhuang
+
+    items "honghua" {
+      name = "无忧红花"
+      description = "一朵鲜红的花。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/maobi.c by LPCConverter
+# Zone: meizhuang
+
+    items "maobi" {
+      name = "毛笔"
+      description = "一支普通的毛笔，武林中人常常用它作为打穴的兵器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从兜里掏出一把{name}握在手中。"
+    unwield = "{npc}将手中的{name}放回兜里。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/panguanbi.c by LPCConverter
+# Zone: meizhuang
+
+    items "panguanbi" {
+      name = "Item"
+      description = "一支镔铁所铸的判官笔，武林中人常常用它作为打穴的兵器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从兜里掏出一把{name}握在手中。"
+    unwield = "{npc}将手中的{name}放回兜里。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/qin.c by LPCConverter
+# Zone: meizhuang
+
+    items "qin" {
+      name = "檀木琴"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从背后缓缓取出一具檀木琴合抱在手中。"
+    unwield = "{npc}将手中的檀木琴收了起来，放到背后。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/qipan.c by LPCConverter
+# Zone: meizhuang
+
+    items "qipan" {
+      name = "铁棋盘"
+      description = "一个用生铁铸成的棋盘，非常的重。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/qizi.c by LPCConverter
+# Zone: meizhuang
+
+    items "qizi" {
+      name = "棋子"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/sea-wood.c by LPCConverter
+# Zone: meizhuang
+
+    items "sea_wood" {
+      name = "南海神木"
+      description = "这是一根遍体发出青光的剑形木棍。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从背后将南海神木拔出来，拿在手中。"
+    unwield = "{npc}将手中的{name}重新插回背后。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/tizi.c by LPCConverter
+# Zone: meizhuang
+
+    items "tizi" {
+      name = "梯子"
+      description = "一架长梯，靠在书架的旁边。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/xiao.c by LPCConverter
+# Zone: meizhuang
+
+    items "xiao" {
+      name = "绿玉洞箫"
+      description = "这是一根用绿玉做成的洞箫。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声从怀中掏出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}揣回怀里。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/yaoshi.c by LPCConverter
+# Zone: meizhuang
+
+    items "yaoshi" {
+      name = "红玉钥匙"
+      description = "这是一把看起来很古怪的钥匙。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/zhuguo.c by LPCConverter
+# Zone: meizhuang
+
+    items "zhuguo" {
+      name = "朱果"
+      description = "这是一颗朱果，通体鲜红，一望而知是不可多得的珍品。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

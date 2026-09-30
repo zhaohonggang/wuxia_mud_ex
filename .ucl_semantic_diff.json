@@ -1,0 +1,9754 @@
+{
+ "base": "d63dea6",
+ "head": "1c97437",
+ "added": [
+  {
+   "file": "data/world/gaochang.ucl",
+   "stats": {
+    "rooms": {
+     "dadian": {
+      "coords": [
+       "0",
+       "0",
+       "0"
+      ],
+      "name": "高昌大殿",
+      "body_len": 450
+     },
+     "entrance": {
+      "coords": [
+       "0",
+       "0",
+       "1"
+      ],
+      "name": "高昌大门",
+      "body_len": 443
+     },
+     "eroom1": {
+      "coords": [
+       "1",
+       "0",
+       "0"
+      ],
+      "name": "东大殿",
+      "body_len": 179
+     },
+     "eroom2": {
+      "coords": [
+       "1",
+       "1",
+       "0"
+      ],
+      "name": "东大殿",
+      "body_len": 179
+     },
+     "eroom3": {
+      "coords": [
+       "1",
+       "2",
+       "0"
+      ],
+      "name": "东大殿",
+      "body_len": 179
+     },
+     "kongdi": {
+      "coords": [
+       "-1",
+       "-3",
+       "-2"
+      ],
+      "name": "空地",
+      "body_len": 111
+     },
+     "mishi": {
+      "coords": [
+       "-1",
+       "5",
+       "0"
+      ],
+      "name": "高昌后殿",
+      "body_len": 141
+     },
+     "mishi2": {
+      "coords": [
+       "-1",
+       "6",
+       "0"
+      ],
+      "name": "地下室",
+      "body_len": 174
+     },
+     "shijie1": {
+      "coords": [
+       "0",
+       "-3",
+       "-2"
+      ],
+      "name": "石阶",
+      "body_len": 141
+     },
+     "shijie2": {
+      "coords": [
+       "0",
+       "-2",
+       "-1"
+      ],
+      "name": "石阶",
+      "body_len": 141
+     },
+     "shijie3": {
+      "coords": [
+       "0",
+       "-1",
+       "0"
+      ],
+      "name": "石阶",
+      "body_len": 140
+     },
+     "shulin1": {
+      "coords": [
+       "0",
+       "0",
+       "2"
+      ],
+      "name": "高昌迷宫",
+      "body_len": 143
+     },
+     "shulin10": {
+      "coords": [
+       "0",
+       "0",
+       "3"
+      ],
+      "name": "高昌迷宫",
+      "body_len": 164
+     },
+     "shulin11": {
+      "coords": [
+       "0",
+       "0",
+       "4"
+      ],
+      "name": "高昌迷宫",
+      "body_len": 164
+     },
+     "shulin12": {
+      "coords": [
+       "0",
+       "0",
+       "5"
+      ],
+      "name": "高昌迷宫",
+      "body_len": 164
+     },
+     "shulin13": {
+      "coords": [
+       "0",
+       "0",
+       "6"
+      ],
+      "name": "高昌迷宫",
+      "body_len": 164
+     },
+     "shulin14": {
+      "coords": [
+       "-1",
+       "-2",
+       "-2"
+      ],
+      "name": "高昌迷宫",
+      "body_len": 167
+     },
+     "shulin2": {
+      "coords": [
+       "1",
+       "0",
+       "2"
+      ],
+      "name": "高昌迷宫",
+      "body_len": 164
+     },
+     "shulin3": {
+      "coords": [
+       "2",
+       "0",
+       "2"
+      ],
+      "name": "高昌迷宫",
+      "body_len": 164
+     },
+     "shulin4": {
+      "coords": [
+       "2",
+       "-1",
+       "2"
+      ],
+      "name": "高昌迷宫",
+      "body_len": 165
+     },
+     "shulin5": {
+      "coords": [
+       "-2",
+       "-1",
+       "-2"
+      ],
+      "name": "高昌迷宫",
+      "body_len": 167
+     },
+     "shulin6": {
+      "coords": [
+       "-3",
+       "-1",
+       "-2"
+      ],
+      "name": "高昌迷宫",
+      "body_len": 167
+     },
+     "shulin7": {
+      "coords": [
+       "-3",
+       "-2",
+       "-2"
+      ],
+      "name": "高昌迷宫",
+      "body_len": 167
+     },
+     "shulin8": {
+      "coords": [
+       "-2",
+       "-2",
+       "-2"
+      ],
+      "name": "高昌迷宫",
+      "body_len": 167
+     },
+     "shulin9": {
+      "coords": [
+       "-1",
+       "-1",
+       "-2"
+      ],
+      "name": "高昌迷宫",
+      "body_len": 167
+     },
+     "wroom1": {
+      "coords": [
+       "-1",
+       "0",
+       "0"
+      ],
+      "name": "西大殿",
+      "body_len": 180
+     },
+     "wroom2": {
+      "coords": [
+       "-1",
+       "1",
+       "0"
+      ],
+      "name": "西大殿",
+      "body_len": 180
+     },
+     "wroom3": {
+      "coords": [
+       "-1",
+       "2",
+       "0"
+      ],
+      "name": "西大殿",
+      "body_len": 180
+     },
+     "zoulang2": {
+      "coords": [
+       "-1",
+       "4",
+       "0"
+      ],
+      "name": "走廊",
+      "body_len": 301
+     },
+     "zoulange": {
+      "coords": [
+       "2",
+       "3",
+       "0"
+      ],
+      "name": "走廊",
+      "body_len": 170
+     },
+     "zoulangw": {
+      "coords": [
+       "-2",
+       "3",
+       "0"
+      ],
+      "name": "走廊",
+      "body_len": 173
+     }
+    },
+    "exits": {
+     "dadian": {
+      "up": "rooms.entrance.id",
+      "west": "rooms.wroom1.id",
+      "east": "rooms.eroom1.id"
+     },
+     "entrance": {
+      "up": "rooms.shulin1.id",
+      "down": "rooms.dadian.id",
+      "southdown": "rooms.shijie3.id"
+     },
+     "eroom1": {
+      "west": "rooms.dadian.id",
+      "north": "rooms.eroom2.id"
+     },
+     "eroom2": {
+      "north": "rooms.eroom3.id",
+      "south": "rooms.eroom1.id"
+     },
+     "eroom3": {
+      "northeast": "rooms.zoulange.id",
+      "south": "rooms.eroom2.id"
+     },
+     "kongdi": {
+      "east": "rooms.shijie1.id",
+      "north": "rooms.shulin14.id"
+     },
+     "mishi": {
+      "north": "rooms.mishi2.id",
+      "south": "rooms.zoulang2.id"
+     },
+     "mishi2": {
+      "south": "rooms.mishi.id"
+     },
+     "shijie1": {
+      "northup": "rooms.shijie2.id",
+      "west": "rooms.kongdi.id"
+     },
+     "shijie2": {
+      "northup": "rooms.shijie3.id",
+      "southdown": "rooms.shijie1.id"
+     },
+     "shijie3": {
+      "northup": "rooms.entrance.id",
+      "southdown": "rooms.shijie2.id"
+     },
+     "shulin1": {
+      "up": "rooms.shulin10.id",
+      "down": "rooms.entrance.id",
+      "west": "rooms.shulin.id",
+      "east": "rooms.shulin2.id",
+      "north": "rooms.shulin.id",
+      "south": "shenfeng.rooms.caoyuan7.id"
+     },
+     "shulin10": {
+      "up": "rooms.shulin11.id",
+      "down": "rooms.shulin1.id",
+      "east": "rooms.shulin.id",
+      "west": "rooms.shulin.id",
+      "south": "rooms.shulin.id",
+      "north": "rooms.shulin.id"
+     },
+     "shulin11": {
+      "up": "rooms.shulin12.id",
+      "down": "rooms.shulin10.id",
+      "east": "rooms.shulin.id",
+      "west": "rooms.shulin.id",
+      "south": "rooms.shulin.id",
+      "north": "rooms.shulin.id"
+     },
+     "shulin12": {
+      "up": "rooms.shulin13.id",
+      "down": "rooms.shulin11.id",
+      "east": "rooms.shulin.id",
+      "west": "rooms.shulin.id",
+      "south": "rooms.shulin.id",
+      "north": "rooms.shulin.id"
+     },
+     "shulin13": {
+      "down": "rooms.shulin12.id",
+      "east": "rooms.shulin.id",
+      "west": "rooms.shulin.id",
+      "south": "rooms.shulin.id",
+      "north": "rooms.shulin.id"
+     },
+     "shulin14": {
+      "north": "rooms.shulin.id",
+      "west": "rooms.shulin8.id",
+      "south": "rooms.kongdi.id",
+      "east": "rooms.shulin.id"
+     },
+     "shulin2": {
+      "north": "rooms.shulin.id",
+      "south": "rooms.shulin.id",
+      "west": "rooms.shulin1.id",
+      "east": "rooms.shulin3.id"
+     },
+     "shulin3": {
+      "north": "rooms.shulin.id",
+      "south": "rooms.shulin4.id",
+      "west": "rooms.shulin.id",
+      "east": "rooms.shulin2.id"
+     },
+     "shulin4": {
+      "north": "rooms.shulin3.id",
+      "south": "rooms.shulin.id",
+      "west": "rooms.shulin.id",
+      "east": "rooms.shulin5.id"
+     },
+     "shulin5": {
+      "north": "rooms.shulin6.id",
+      "south": "rooms.shulin.id",
+      "west": "rooms.shulin.id",
+      "east": "rooms.shulin9.id"
+     },
+     "shulin6": {
+      "north": "rooms.shulin7.id",
+      "south": "rooms.shulin.id",
+      "west": "rooms.shulin.id",
+      "east": "rooms.shulin5.id"
+     },
+     "shulin7": {
+      "north": "rooms.shulin6.id",
+      "south": "rooms.shulin.id",
+      "west": "rooms.shulin.id",
+      "east": "rooms.shulin8.id"
+     },
+     "shulin8": {
+      "north": "rooms.shulin.id",
+      "south": "rooms.shulin.id",
+      "east": "rooms.shulin14.id",
+      "west": "rooms.shulin7.id"
+     },
+     "shulin9": {
+      "north": "rooms.shulin.id",
+      "south": "rooms.shulin.id",
+      "west": "rooms.shulin.id",
+      "east": "rooms.shulin.id"
+     },
+     "wroom1": {
+      "north": "rooms.wroom2.id",
+      "east": "rooms.dadian.id"
+     },
+     "wroom2": {
+      "north": "rooms.wroom3.id",
+      "south": "rooms.wroom1.id"
+     },
+     "wroom3": {
+      "northwest": "rooms.zoulangw.id",
+      "south": "rooms.wroom2.id"
+     },
+     "zoulang2": {
+      "north": "rooms.mishi.id",
+      "southwest": "rooms.zoulangw.id",
+      "southeast": "rooms.zoulange.id"
+     },
+     "zoulange": {
+      "southwest": "rooms.eroom3.id",
+      "northwest": "rooms.zoulang2.id"
+     },
+     "zoulangw": {
+      "northeast": "rooms.zoulang2.id",
+      "southeast": "rooms.wroom3.id"
+     }
+    },
+    "room_items": {},
+    "room_chars": {
+     "shulin1": [
+      "characters.ghost.id ",
+      "characters.ghost.id ",
+      "characters.ghost.id "
+     ],
+     "shulin10": [
+      "characters.ghost.id ",
+      "characters.ghost.id ",
+      "characters.ghost.id "
+     ],
+     "zoulang2": [
+      "characters.waer.id "
+     ]
+    },
+    "items": {
+     "fake_map": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "高昌迷宫地图",
+      "body_len": 247
+     }
+    },
+    "characters": {
+     "ghost": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "孤魂野鬼",
+      "body_len": 517
+     },
+     "liwenxiu": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "李文秀",
+      "body_len": 1209
+     },
+     "waer": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "瓦耳拉齐",
+      "body_len": 729
+     },
+     "liuxingchui": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "流星锤",
+      "body_len": 58
+     },
+     "map": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "高昌迷宫地图",
+      "body_len": 209
+     }
+    }
+   }
+  },
+  {
+   "file": "data/world/huanggong.ucl",
+   "stats": {
+    "rooms": {
+     "fang1": {
+      "coords": [
+       "-1",
+       "-1",
+       "0"
+      ],
+      "name": "房舍",
+      "body_len": 89
+     },
+     "fang2": {
+      "coords": [
+       "-1",
+       "1",
+       "0"
+      ],
+      "name": "房舍",
+      "body_len": 90
+     },
+     "houhuayuan": {
+      "coords": [
+       "0",
+       "1",
+       "0"
+      ],
+      "name": "后花苑",
+      "body_len": 211
+     },
+     "houhuayuan2": {
+      "coords": [
+       "-1",
+       "1",
+       "0"
+      ],
+      "name": "后花苑",
+      "body_len": 212
+     },
+     "houyuan": {
+      "coords": [
+       "-2",
+       "0",
+       "0"
+      ],
+      "name": "清和殿后院",
+      "body_len": 170
+     },
+     "inwell": {
+      "coords": [
+       "0",
+       "0",
+       "1"
+      ],
+      "name": "井底",
+      "body_len": 182
+     },
+     "majuan": {
+      "coords": [
+       "-2",
+       "1",
+       "0"
+      ],
+      "name": "马圈",
+      "body_len": 124
+     },
+     "qihedian": {
+      "coords": [
+       "0",
+       "0",
+       "0"
+      ],
+      "name": "清和殿",
+      "body_len": 115
+     },
+     "shanfang": {
+      "coords": [
+       "1",
+       "-2",
+       "0"
+      ],
+      "name": "御膳房",
+      "body_len": 131
+     },
+     "shufang": {
+      "coords": [
+       "1",
+       "1",
+       "0"
+      ],
+      "name": "御书房",
+      "body_len": 197
+     },
+     "tinglang1": {
+      "coords": [
+       "1",
+       "0",
+       "0"
+      ],
+      "name": "厅廊",
+      "body_len": 163
+     },
+     "tinglang2": {
+      "coords": [
+       "1",
+       "-1",
+       "0"
+      ],
+      "name": "厅廊",
+      "body_len": 142
+     },
+     "tinglang3": {
+      "coords": [
+       "0",
+       "-1",
+       "0"
+      ],
+      "name": "厅廊",
+      "body_len": 142
+     },
+     "zoulang1": {
+      "coords": [
+       "-1",
+       "0",
+       "0"
+      ],
+      "name": "走廊",
+      "body_len": 170
+     }
+    },
+    "exits": {
+     "fang1": {
+      "north": "rooms.zoulang1.id"
+     },
+     "fang2": {
+      "south": "rooms.zoulang1.id"
+     },
+     "houhuayuan": {
+      "south": "rooms.qihedian.id",
+      "west": "rooms.houhuayuan2.id"
+     },
+     "houhuayuan2": {
+      "west": "rooms.majuan.id",
+      "east": "rooms.houhuayuan.id"
+     },
+     "houyuan": {
+      "east": "rooms.zoulang1.id"
+     },
+     "inwell": {
+      "down": "rooms.qihedian.id"
+     },
+     "majuan": {
+      "east": "rooms.houhuayuan2.id"
+     },
+     "qihedian": {
+      "up": "rooms.inwell.id",
+      "south": "rooms.tinglang3.id",
+      "west": "rooms.zoulang1.id",
+      "north": "rooms.houhuayuan.id"
+     },
+     "shanfang": {
+      "north": "rooms.tinglang2.id"
+     },
+     "shufang": {
+      "south": "rooms.tinglang1.id"
+     },
+     "tinglang1": {
+      "south": "rooms.tinglang2.id",
+      "north": "rooms.shufang.id"
+     },
+     "tinglang2": {
+      "west": "rooms.tinglang3.id",
+      "south": "rooms.shanfang.id",
+      "north": "rooms.tinglang1.id"
+     },
+     "tinglang3": {
+      "east": "rooms.tinglang2.id",
+      "north": "rooms.qihedian.id"
+     },
+     "zoulang1": {
+      "north": "rooms.fang2.id",
+      "south": "rooms.fang1.id",
+      "east": "rooms.qihedian.id",
+      "west": "rooms.houyuan.id"
+     }
+    },
+    "room_items": {
+     "shanfang": [
+      "items.yuchi.id ",
+      "items.nverhong.id "
+     ]
+    },
+    "room_chars": {
+     "fang1": [
+      "characters.taijian.id "
+     ],
+     "fang2": [
+      "characters.taijian.id "
+     ],
+     "houhuayuan": [
+      "characters.gonnv.id ",
+      "characters.gonnv.id "
+     ],
+     "houhuayuan2": [
+      "characters.gonnv.id ",
+      "characters.gonnv.id "
+     ],
+     "qihedian": [
+      "characters.shiwei.id ",
+      "characters.taijian.id "
+     ]
+    },
+    "items": {
+     "nverhong": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "女儿红",
+      "body_len": 99
+     },
+     "yuchanda": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "雪参玉蟾丹",
+      "body_len": 109
+     },
+     "yuchi": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "鱼翅",
+      "body_len": 114
+     }
+    },
+    "characters": {
+     "gonnv": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "宫女",
+      "body_len": 261
+     },
+     "shiwei": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "侍卫",
+      "body_len": 457
+     },
+     "shiwei2": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "侍卫",
+      "body_len": 459
+     },
+     "taijian": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "太监",
+      "body_len": 328
+     }
+    }
+   }
+  },
+  {
+   "file": "data/world/kunlun.ucl",
+   "stats": {
+    "rooms": {
+     "bainiushan": {
+      "coords": [
+       "-2",
+       "-2",
+       "1"
+      ],
+      "name": "白牛山",
+      "body_len": 220
+     },
+     "bayankala": {
+      "coords": [
+       "2",
+       "2",
+       "-5"
+      ],
+      "name": "巴颜喀拉山",
+      "body_len": 161
+     },
+     "chufang": {
+      "coords": [
+       "1",
+       "-5",
+       "1"
+      ],
+      "name": "厨房",
+      "body_len": 134
+     },
+     "conglinggu": {
+      "coords": [
+       "0",
+       "-3",
+       "1"
+      ],
+      "name": "葱岭谷",
+      "body_len": 199
+     },
+     "elang01": {
+      "coords": [
+       "1",
+       "-2",
+       "0"
+      ],
+      "name": "长廊",
+      "body_len": 135
+     },
+     "fufengshan": {
+      "coords": [
+       "-3",
+       "-3",
+       "1"
+      ],
+      "name": "扶峰山",
+      "body_len": 199
+     },
+     "guangchang": {
+      "coords": [
+       "0",
+       "0",
+       "0"
+      ],
+      "name": "广场",
+      "body_len": 138
+     },
+     "guangchange": {
+      "coords": [
+       "1",
+       "0",
+       "0"
+      ],
+      "name": "广场东",
+      "body_len": 132
+     },
+     "guangchangw": {
+      "coords": [
+       "-1",
+       "0",
+       "0"
+      ],
+      "name": "广场西",
+      "body_len": 133
+     },
+     "houyuan": {
+      "coords": [
+       "-3",
+       "-3",
+       "1"
+      ],
+      "name": "后院",
+      "body_len": 154
+     },
+     "huayuan1": {
+      "coords": [
+       "0",
+       "-4",
+       "0"
+      ],
+      "name": "花园",
+      "body_len": 139
+     },
+     "jingshenfeng": {
+      "coords": [
+       "0",
+       "0",
+       "1"
+      ],
+      "name": "Room",
+      "body_len": 255
+     },
+     "jingxiushi": {
+      "coords": [
+       "-1",
+       "-3",
+       "0"
+      ],
+      "name": "静修室",
+      "body_len": 127
+     },
+     "jiuqulang1": {
+      "coords": [
+       "-1",
+       "-6",
+       "1"
+      ],
+      "name": "九曲廊",
+      "body_len": 151
+     },
+     "jiuqulang2": {
+      "coords": [
+       "-1",
+       "-5",
+       "1"
+      ],
+      "name": "九曲廊",
+      "body_len": 151
+     },
+     "keding1": {
+      "coords": [
+       "0",
+       "0",
+       "2"
+      ],
+      "name": "客厅",
+      "body_len": 140
+     },
+     "kekexili": {
+      "coords": [
+       "1",
+       "2",
+       "-5"
+      ],
+      "name": "可可西里山",
+      "body_len": 180
+     },
+     "keting1": {
+      "coords": [
+       "2",
+       "-2",
+       "0"
+      ],
+      "name": "客厅",
+      "body_len": 141
+     },
+     "keting2": {
+      "coords": [
+       "-2",
+       "-2",
+       "0"
+      ],
+      "name": "客厅",
+      "body_len": 112
+     },
+     "klshanlu": {
+      "coords": [
+       "-1",
+       "3",
+       "-5"
+      ],
+      "name": "昆仑山麓",
+      "body_len": 140
+     },
+     "kuhanlou1": {
+      "coords": [
+       "-2",
+       "-4",
+       "1"
+      ],
+      "name": "苦寒楼一层",
+      "body_len": 183
+     },
+     "kuhanlou2": {
+      "coords": [
+       "-2",
+       "-4",
+       "2"
+      ],
+      "name": "苦寒楼二层",
+      "body_len": 204
+     },
+     "kuhanlou3": {
+      "coords": [
+       "-2",
+       "-4",
+       "3"
+      ],
+      "name": "苦寒楼三层",
+      "body_len": 194
+     },
+     "lang2": {
+      "coords": [
+       "0",
+       "-5",
+       "0"
+      ],
+      "name": "长廊",
+      "body_len": 136
+     },
+     "liangong": {
+      "coords": [
+       "0",
+       "-5",
+       "1"
+      ],
+      "name": "练功房",
+      "body_len": 124
+     },
+     "pingfeng": {
+      "coords": [
+       "0",
+       "-1",
+       "0"
+      ],
+      "name": "石屏风",
+      "body_len": 153
+     },
+     "qianting": {
+      "coords": [
+       "0",
+       "-2",
+       "0"
+      ],
+      "name": "前厅",
+      "body_len": 147
+     },
+     "sanshengao": {
+      "coords": [
+       "0",
+       "-1",
+       "1"
+      ],
+      "name": "三圣坳",
+      "body_len": 174
+     },
+     "sanshengtang": {
+      "coords": [
+       "0",
+       "-6",
+       "1"
+      ],
+      "name": "三圣堂",
+      "body_len": 164
+     },
+     "shankou": {
+      "coords": [
+       "0",
+       "3",
+       "-5"
+      ],
+      "name": "昆仑山垭口",
+      "body_len": 152
+     },
+     "shanlin1": {
+      "coords": [
+       "-2",
+       "-4",
+       "1"
+      ],
+      "name": "云杉林",
+      "body_len": 154
+     },
+     "shanlin2": {
+      "coords": [
+       "-3",
+       "-4",
+       "1"
+      ],
+      "name": "云杉林",
+      "body_len": 154
+     },
+     "shanlin3": {
+      "coords": [
+       "-1",
+       "-3",
+       "1"
+      ],
+      "name": "云杉林",
+      "body_len": 154
+     },
+     "shanlin4": {
+      "coords": [
+       "0",
+       "-3",
+       "1"
+      ],
+      "name": "云杉林",
+      "body_len": 153
+     },
+     "shanlin5": {
+      "coords": [
+       "0",
+       "-4",
+       "1"
+      ],
+      "name": "云杉林",
+      "body_len": 153
+     },
+     "shanlin6": {
+      "coords": [
+       "-1",
+       "-4",
+       "1"
+      ],
+      "name": "云杉林",
+      "body_len": 154
+     },
+     "shanlu": {
+      "coords": [
+       "4",
+       "3",
+       "-7"
+      ],
+      "name": "西域山路",
+      "body_len": 127
+     },
+     "shanlu01": {
+      "coords": [
+       "0",
+       "4",
+       "-3"
+      ],
+      "name": "山路",
+      "body_len": 146
+     },
+     "shanlu02": {
+      "coords": [
+       "0",
+       "3",
+       "-2"
+      ],
+      "name": "山路",
+      "body_len": 146
+     },
+     "shanlu03": {
+      "coords": [
+       "0",
+       "2",
+       "-1"
+      ],
+      "name": "山路",
+      "body_len": 148
+     },
+     "shanlu04": {
+      "coords": [
+       "0",
+       "1",
+       "0"
+      ],
+      "name": "山路",
+      "body_len": 119
+     },
+     "shanlu1": {
+      "coords": [
+       "3",
+       "3",
+       "-7"
+      ],
+      "name": "西域山路",
+      "body_len": 127
+     },
+     "shanlu2": {
+      "coords": [
+       "2",
+       "3",
+       "-6"
+      ],
+      "name": "西域山路",
+      "body_len": 127
+     },
+     "shanmen": {
+      "coords": [
+       "-1",
+       "4",
+       "-4"
+      ],
+      "name": "昆仑派山门",
+      "body_len": 193
+     },
+     "shilu1": {
+      "coords": [
+       "0",
+       "-3",
+       "0"
+      ],
+      "name": "石路",
+      "body_len": 140
+     },
+     "shufang": {
+      "coords": [
+       "1",
+       "-3",
+       "0"
+      ],
+      "name": "书房",
+      "body_len": 136
+     },
+     "sleeproom": {
+      "coords": [
+       "-3",
+       "-6",
+       "1"
+      ],
+      "name": "卧室",
+      "body_len": 181
+     },
+     "tieqinju": {
+      "coords": [
+       "-2",
+       "-6",
+       "1"
+      ],
+      "name": "铁琴居",
+      "body_len": 147
+     },
+     "wlang01": {
+      "coords": [
+       "-1",
+       "-2",
+       "0"
+      ],
+      "name": "长廊",
+      "body_len": 136
+     },
+     "xiuxishi": {
+      "coords": [
+       "0",
+       "-4",
+       "1"
+      ],
+      "name": "休息室",
+      "body_len": 121
+     },
+     "zhenyuanqiao": {
+      "coords": [
+       "5",
+       "3",
+       "-7"
+      ],
+      "name": "镇远桥",
+      "body_len": 121
+     }
+    },
+    "exits": {
+     "bainiushan": {
+      "southwest": "rooms.fufengshan.id"
+     },
+     "bayankala": {
+      "west": "rooms.kekexili.id",
+      "northdown": "rooms.shanlu2.id"
+     },
+     "chufang": {
+      "northwest": "rooms.xiuxishi.id",
+      "west": "rooms.liangong.id"
+     },
+     "conglinggu": {
+      "south": "rooms.shanlin.id"
+     },
+     "elang01": {
+      "east": "rooms.keting1.id",
+      "west": "rooms.qianting.id"
+     },
+     "fufengshan": {
+      "northeast": "rooms.bainiushan.id",
+      "in": "rooms.houyuan.id"
+     },
+     "guangchang": {
+      "up": "rooms.jingshenfeng.id",
+      "north": "rooms.shanlu04.id",
+      "south": "rooms.pingfeng.id",
+      "west": "rooms.guangchangw.id",
+      "east": "rooms.guangchange.id"
+     },
+     "guangchange": {
+      "west": "rooms.guangchang.id",
+      "northwest": "rooms.shanlu04.id"
+     },
+     "guangchangw": {
+      "east": "rooms.guangchang.id",
+      "northeast": "rooms.shanlu04.id"
+     },
+     "houyuan": {
+      "south": "rooms.shanlin2.id",
+      "out": "rooms.fufengshan.id"
+     },
+     "huayuan1": {
+      "south": "rooms.lang2.id",
+      "north": "rooms.shilu1.id"
+     },
+     "jingshenfeng": {
+      "up": "rooms.keding1.id",
+      "down": "rooms.guangchang.id",
+      "south": "rooms.sanshengao.id"
+     },
+     "jingxiushi": {
+      "east": "rooms.shilu1.id"
+     },
+     "jiuqulang1": {
+      "east": "rooms.sanshengtang.id",
+      "west": "rooms.tieqinju.id"
+     },
+     "jiuqulang2": {
+      "southeast": "rooms.sanshengtang.id",
+      "northwest": "rooms.shanlin1.id"
+     },
+     "keding1": {
+      "down": "rooms.jingshenfeng.id",
+      "west": "rooms.elang01.id"
+     },
+     "kekexili": {
+      "east": "rooms.bayankala.id",
+      "northwest": "rooms.shankou.id"
+     },
+     "keting1": {
+      "west": "rooms.elang01.id"
+     },
+     "keting2": {
+      "east": "rooms.wlang01.id"
+     },
+     "klshanlu": {
+      "east": "rooms.shankou.id",
+      "northup": "rooms.shanmen.id"
+     },
+     "kuhanlou1": {
+      "out": "rooms.shanlin1.id",
+      "up": "rooms.kuhanlou2.id"
+     },
+     "kuhanlou2": {
+      "down": "rooms.kuhanlou1.id",
+      "up": "rooms.kuhanlou3.id"
+     },
+     "kuhanlou3": {
+      "down": "rooms.kuhanlou2.id"
+     },
+     "lang2": {
+      "north": "rooms.huayuan1.id",
+      "southup": "rooms.sanshengtang.id"
+     },
+     "liangong": {
+      "east": "rooms.chufang.id",
+      "north": "rooms.xiuxishi.id",
+      "south": "rooms.sanshengtang.id"
+     },
+     "pingfeng": {
+      "south": "rooms.qianting.id",
+      "north": "rooms.guangchang.id"
+     },
+     "qianting": {
+      "east": "rooms.elang01.id",
+      "west": "rooms.wlang01.id",
+      "south": "rooms.shilu1.id",
+      "north": "rooms.pingfeng.id"
+     },
+     "sanshengao": {
+      "down": "rooms.fufengshan.id",
+      "north": "rooms.jingshenfeng.id"
+     },
+     "sanshengtang": {
+      "northwest": "rooms.jiuqulang2.id",
+      "north": "rooms.liangong.id",
+      "northdown": "rooms.lang2.id",
+      "west": "rooms.jiuqulang1.id"
+     },
+     "shankou": {
+      "southeast": "rooms.kekexili.id",
+      "west": "rooms.klshanlu.id"
+     },
+     "shanlin1": {
+      "northeast": "rooms.shanlin3.id",
+      "southeast": "rooms.jiuqulang2.id",
+      "in": "rooms.kuhanlou1.id",
+      "west": "rooms.shanlin2.id"
+     },
+     "shanlin2": {
+      "west": "rooms.shanlin.id",
+      "south": "rooms.shanlin.id",
+      "east": "rooms.shanlin1.id",
+      "north": "rooms.houyuan.id"
+     },
+     "shanlin3": {
+      "south": "rooms.shanlin.id",
+      "north": "rooms.shanlin.id",
+      "east": "rooms.shanlin4.id",
+      "west": "rooms.shanlin.id"
+     },
+     "shanlin4": {
+      "east": "rooms.shanlin.id",
+      "north": "rooms.shanlin.id",
+      "south": "rooms.shanlin5.id",
+      "west": "rooms.shanlin.id"
+     },
+     "shanlin5": {
+      "south": "rooms.shanlin.id",
+      "north": "rooms.conglinggu.id",
+      "west": "rooms.shanlin6.id",
+      "east": "rooms.shanlin.id"
+     },
+     "shanlin6": {
+      "south": "rooms.shanlin.id",
+      "north": "rooms.shanlin.id",
+      "east": "rooms.kuhanlou1.id",
+      "west": "rooms.shanlin.id"
+     },
+     "shanlu": {
+      "east": "rooms.zhenyuanqiao.id",
+      "west": "rooms.shanlu1.id"
+     },
+     "shanlu01": {
+      "southup": "rooms.shanlu02.id",
+      "westdown": "rooms.shanmen.id"
+     },
+     "shanlu02": {
+      "southup": "rooms.shanlu03.id",
+      "northdown": "rooms.shanlu01.id"
+     },
+     "shanlu03": {
+      "southup": "rooms.shanlu04.id",
+      "northdown": "rooms.shanlu02.id"
+     },
+     "shanlu04": {
+      "southeast": "rooms.guangchange.id",
+      "southwest": "rooms.guangchangw.id",
+      "south": "rooms.guangchang.id",
+      "northdown": "rooms.shanlu03.id"
+     },
+     "shanlu1": {
+      "east": "rooms.shanlu.id",
+      "westup": "rooms.shanlu2.id"
+     },
+     "shanlu2": {
+      "southup": "rooms.bayankala.id",
+      "eastdown": "rooms.shanlu1.id"
+     },
+     "shanmen": {
+      "southdown": "rooms.klshanlu.id",
+      "eastup": "rooms.shanlu01.id"
+     },
+     "shilu1": {
+      "east": "rooms.shufang.id",
+      "west": "rooms.jingxiushi.id",
+      "south": "rooms.huayuan1.id",
+      "north": "rooms.qianting.id"
+     },
+     "shufang": {
+      "west": "rooms.shilu1.id"
+     },
+     "sleeproom": {
+      "east": "rooms.tieqinju.id"
+     },
+     "tieqinju": {
+      "west": "rooms.sleeproom.id",
+      "east": "rooms.jiuqulang1.id"
+     },
+     "wlang01": {
+      "west": "rooms.keting2.id",
+      "east": "rooms.qianting.id"
+     },
+     "xiuxishi": {
+      "southeast": "rooms.chufang.id",
+      "south": "rooms.liangong.id"
+     },
+     "zhenyuanqiao": {
+      "eastdown": "mingjiao.rooms.shanjiao.id",
+      "west": "rooms.shanlu.id"
+     }
+    },
+    "room_items": {
+     "bayankala": [
+      "items.da_shitou.id "
+     ],
+     "chufang": [
+      "items.rice.id ",
+      "items.xiangcha.id ",
+      "items.kaoya.id "
+     ],
+     "conglinggu": [
+      "items.huangqi.id ",
+      "items.chongcao.id ",
+      "items.qianjinzi.id ",
+      "items.fuzi.id ",
+      "items.renshen.id ",
+      "items.mahuang.id "
+     ],
+     "guangchang": [
+      "items.gaozecheng.id "
+     ],
+     "guangchange": [
+      "items.weisiniang.id "
+     ],
+     "guangchangw": [
+      "items.zhanchun.id "
+     ],
+     "jingshenfeng": [
+      "items.hezudao.id "
+     ],
+     "liangong": [
+      "items.zhujian.id "
+     ],
+     "qianting": [
+      "items.xihuazi.id "
+     ],
+     "sanshengtang": [
+      "items.banshuxian.id "
+     ],
+     "shanmen": [
+      "items.jiangtao.id "
+     ],
+     "tieqinju": [
+      "items.hetaichong.id "
+     ]
+    },
+    "room_chars": {
+     "chufang": [
+      "characters.puren.id "
+     ],
+     "guangchang": [
+      "characters.kl_dizi2.id ",
+      "characters.kl_dizi2.id "
+     ],
+     "guangchange": [
+      "characters.kl_dizi3.id ",
+      "characters.kl_dizi3.id "
+     ],
+     "guangchangw": [
+      "characters.kl_dizi3.id "
+     ],
+     "shanlu1": [
+      "characters.seller.id "
+     ],
+     "shanmen": [
+      "characters.kl_dizi1.id ",
+      "characters.kl_dizi2.id "
+     ],
+     "tieqinju": [
+      "characters.kl_dizi2.id ",
+      "characters.kl_dizi4.id "
+     ],
+     "zhenyuanqiao": [
+      "characters.wujiang.id ",
+      "characters.bing.id ",
+      "characters.bing.id ",
+      "characters.bing.id "
+     ]
+    },
+    "items": {
+     "cloth": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "布衣",
+      "body_len": 84
+     },
+     "da_shitou": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "大石头",
+      "body_len": 183
+     },
+     "dawancha": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "粗磁大碗",
+      "body_len": 95
+     },
+     "force_book": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "Item",
+      "body_len": 99
+     },
+     "fuchen": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "拂尘",
+      "body_len": 233
+     },
+     "guzheng": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "古筝",
+      "body_len": 108
+     },
+     "jwqin": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "Item",
+      "body_len": 123
+     },
+     "kaoya": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "烤鸭",
+      "body_len": 107
+     },
+     "lyj_book": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "Item",
+      "body_len": 106
+     },
+     "pao1": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "黑边白色长袍",
+      "body_len": 144
+     },
+     "pao2": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "白边青色长袍",
+      "body_len": 145
+     },
+     "pao3": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "白边蓝色长袍",
+      "body_len": 132
+     },
+     "pao4": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "白边黄色长袍",
+      "body_len": 136
+     },
+     "rice": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "米饭",
+      "body_len": 120
+     },
+     "sangmending": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "丧门钉",
+      "body_len": 227
+     },
+     "sword": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "长剑",
+      "body_len": 232
+     },
+     "w_cloth": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "白色道袍",
+      "body_len": 99
+     },
+     "weiqi": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "围棋",
+      "body_len": 106
+     },
+     "xiangcha": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "香茶",
+      "body_len": 102
+     }
+    },
+    "characters": {
+     "kl_dizi1": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "昆仑派女弟子",
+      "body_len": 432
+     },
+     "kl_dizi2": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "昆仑派弟子",
+      "body_len": 621
+     },
+     "kl_dizi3": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "昆仑派女弟子",
+      "body_len": 714
+     },
+     "kl_dizi4": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "昆仑派弟子",
+      "body_len": 750
+     },
+     "puren": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "仆人",
+      "body_len": 234
+     },
+     "seller": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "小贩",
+      "body_len": 622
+     }
+    }
+   }
+  },
+  {
+   "file": "data/world/lingzhou.ucl",
+   "stats": {
+    "rooms": {
+     "baxian": {
+      "coords": [
+       "4",
+       "4",
+       "0"
+      ],
+      "name": "八仙道观",
+      "body_len": 196
+     },
+     "beidajie": {
+      "coords": [
+       "0",
+       "1",
+       "0"
+      ],
+      "name": "北大街",
+      "body_len": 180
+     },
+     "biangate": {
+      "coords": [
+       "1",
+       "4",
+       "0"
+      ],
+      "name": "边门",
+      "body_len": 281
+     },
+     "biaoqiyin": {
+      "coords": [
+       "-2",
+       "0",
+       "0"
+      ],
+      "name": "骠骑营",
+      "body_len": 205
+     },
+     "center": {
+      "coords": [
+       "0",
+       "0",
+       "0"
+      ],
+      "name": "城中心",
+      "body_len": 250
+     },
+     "chema": {
+      "coords": [
+       "1",
+       "-1",
+       "0"
+      ],
+      "name": "车马店",
+      "body_len": 504
+     },
+     "chema2": {
+      "coords": [
+       "1",
+       "-1",
+       "1"
+      ],
+      "name": "车马店二楼",
+      "body_len": 146
+     },
+     "chiling": {
+      "coords": [
+       "4",
+       "8",
+       "-1"
+      ],
+      "name": "赤陵",
+      "body_len": 159
+     },
+     "dalu": {
+      "coords": [
+       "3",
+       "2",
+       "0"
+      ],
+      "name": "林中大路",
+      "body_len": 160
+     },
+     "daodian": {
+      "coords": [
+       "-1",
+       "-1",
+       "0"
+      ],
+      "name": "刀店",
+      "body_len": 216
+     },
+     "dawu": {
+      "coords": [
+       "5",
+       "5",
+       "0"
+      ],
+      "name": "林中大屋",
+      "body_len": 164
+     },
+     "deling": {
+      "coords": [
+       "4",
+       "9",
+       "-1"
+      ],
+      "name": "德陵",
+      "body_len": 154
+     },
+     "dongdajie": {
+      "coords": [
+       "1",
+       "0",
+       "0"
+      ],
+      "name": "东大街",
+      "body_len": 157
+     },
+     "dongmen": {
+      "coords": [
+       "2",
+       "0",
+       "0"
+      ],
+      "name": "灵州东门",
+      "body_len": 120
+     },
+     "gonggate": {
+      "coords": [
+       "0",
+       "2",
+       "0"
+      ],
+      "name": "皇宫大门",
+      "body_len": 286
+     },
+     "gongling": {
+      "coords": [
+       "4",
+       "10",
+       "-1"
+      ],
+      "name": "恭陵",
+      "body_len": 159
+     },
+     "gongsquare": {
+      "coords": [
+       "0",
+       "3",
+       "0"
+      ],
+      "name": "皇宫广场",
+      "body_len": 80
+     },
+     "huangyangtan": {
+      "coords": [
+       "0",
+       "-3",
+       "0"
+      ],
+      "name": "黄羊滩",
+      "body_len": 171
+     },
+     "jiangjungate": {
+      "coords": [
+       "1",
+       "-1",
+       "0"
+      ],
+      "name": "大将军府",
+      "body_len": 221
+     },
+     "jiangjunyuan": {
+      "coords": [
+       "1",
+       "-2",
+       "0"
+      ],
+      "name": "将军府大院",
+      "body_len": 157
+     },
+     "jiuguan": {
+      "coords": [
+       "-1",
+       "-1",
+       "0"
+      ],
+      "name": "酒馆",
+      "body_len": 203
+     },
+     "kongdi": {
+      "coords": [
+       "5",
+       "5",
+       "0"
+      ],
+      "name": "林中空地",
+      "body_len": 205
+     },
+     "luorilin1": {
+      "coords": [
+       "3",
+       "1",
+       "0"
+      ],
+      "name": "落日林",
+      "body_len": 107
+     },
+     "luorilin2": {
+      "coords": [
+       "4",
+       "3",
+       "0"
+      ],
+      "name": "落日林",
+      "body_len": 155
+     },
+     "majiu": {
+      "coords": [
+       "2",
+       "-1",
+       "0"
+      ],
+      "name": "马厩",
+      "body_len": 199
+     },
+     "malan": {
+      "coords": [
+       "-3",
+       "0",
+       "0"
+      ],
+      "name": "马栏",
+      "body_len": 188
+     },
+     "mingshazhou": {
+      "coords": [
+       "-3",
+       "-6",
+       "0"
+      ],
+      "name": "鸣沙洲",
+      "body_len": 169
+     },
+     "nandajie": {
+      "coords": [
+       "0",
+       "-1",
+       "0"
+      ],
+      "name": "南大街",
+      "body_len": 156
+     },
+     "nanmen": {
+      "coords": [
+       "0",
+       "-2",
+       "0"
+      ],
+      "name": "灵州南门",
+      "body_len": 119
+     },
+     "neizai": {
+      "coords": [
+       "1",
+       "-3",
+       "0"
+      ],
+      "name": "将军府内宅",
+      "body_len": 120
+     },
+     "qingtongxia": {
+      "coords": [
+       "-2",
+       "-5",
+       "0"
+      ],
+      "name": "青铜峡",
+      "body_len": 176
+     },
+     "qingxinquan": {
+      "coords": [
+       "4",
+       "6",
+       "0"
+      ],
+      "name": "清新泉",
+      "body_len": 147
+     },
+     "tulu": {
+      "coords": [
+       "4",
+       "4",
+       "0"
+      ],
+      "name": "林中土路",
+      "body_len": 183
+     },
+     "wangling": {
+      "coords": [
+       "4",
+       "7",
+       "-1"
+      ],
+      "name": "西夏王陵",
+      "body_len": 199
+     },
+     "xiaoba": {
+      "coords": [
+       "-1",
+       "-4",
+       "0"
+      ],
+      "name": "小坝",
+      "body_len": 193
+     },
+     "xiaolu1": {
+      "coords": [
+       "3",
+       "3",
+       "0"
+      ],
+      "name": "林中小路",
+      "body_len": 143
+     },
+     "xiaolu2": {
+      "coords": [
+       "3",
+       "4",
+       "0"
+      ],
+      "name": "林中小路",
+      "body_len": 146
+     },
+     "xiaolu3": {
+      "coords": [
+       "2",
+       "4",
+       "0"
+      ],
+      "name": "林中小路",
+      "body_len": 144
+     },
+     "xiaoxiaochang": {
+      "coords": [
+       "-2",
+       "-1",
+       "0"
+      ],
+      "name": "小校场",
+      "body_len": 185
+     },
+     "xiaoyuan": {
+      "coords": [
+       "2",
+       "-2",
+       "0"
+      ],
+      "name": "将军府小院",
+      "body_len": 116
+     },
+     "xidajie": {
+      "coords": [
+       "-1",
+       "0",
+       "0"
+      ],
+      "name": "西大街",
+      "body_len": 186
+     },
+     "ximen": {
+      "coords": [
+       "-3",
+       "1",
+       "0"
+      ],
+      "name": "灵州西门",
+      "body_len": 119
+     },
+     "xuanhebao": {
+      "coords": [
+       "-4",
+       "-7",
+       "0"
+      ],
+      "name": "宣和堡",
+      "body_len": 367
+     },
+     "yamen": {
+      "coords": [
+       "1",
+       "1",
+       "0"
+      ],
+      "name": "衙门",
+      "body_len": 123
+     },
+     "yinfang": {
+      "coords": [
+       "-2",
+       "1",
+       "0"
+      ],
+      "name": "营房",
+      "body_len": 138
+     },
+     "yipindating": {
+      "coords": [
+       "-1",
+       "3",
+       "0"
+      ],
+      "name": "一品堂大厅",
+      "body_len": 187
+     },
+     "yipindayuan": {
+      "coords": [
+       "-1",
+       "2",
+       "0"
+      ],
+      "name": "一品堂大院",
+      "body_len": 204
+     },
+     "yipingate": {
+      "coords": [
+       "-1",
+       "1",
+       "0"
+      ],
+      "name": "一品堂大门",
+      "body_len": 213
+     },
+     "yipinjieyin": {
+      "coords": [
+       "0",
+       "2",
+       "0"
+      ],
+      "name": "接引堂",
+      "body_len": 188
+     },
+     "yipinzhang": {
+      "coords": [
+       "-2",
+       "2",
+       "0"
+      ],
+      "name": "一品堂帐房",
+      "body_len": 131
+     }
+    },
+    "exits": {
+     "baxian": {
+      "west": "rooms.xiaolu2.id"
+     },
+     "beidajie": {
+      "north": "rooms.gonggate.id",
+      "south": "rooms.center.id"
+     },
+     "biangate": {
+      "east": "rooms.xiaolu3.id"
+     },
+     "biaoqiyin": {
+      "northwest": "rooms.ximen.id",
+      "west": "rooms.malan.id",
+      "east": "rooms.xidajie.id",
+      "north": "rooms.yinfang.id",
+      "south": "rooms.xiaoxiaochang.id"
+     },
+     "center": {
+      "west": "rooms.xidajie.id",
+      "east": "rooms.dongdajie.id",
+      "north": "rooms.beidajie.id",
+      "south": "rooms.nandajie.id"
+     },
+     "chema": {
+      "up": "rooms.chema2.id",
+      "west": "rooms.nandajie.id",
+      "east": "rooms.majiu.id"
+     },
+     "chema2": {
+      "down": "rooms.chema.id"
+     },
+     "chiling": {
+      "north": "rooms.deling.id",
+      "south": "rooms.wangling.id"
+     },
+     "dalu": {
+      "northeast": "rooms.luorilin2.id",
+      "north": "rooms.xiaolu1.id",
+      "south": "rooms.luorilin1.id"
+     },
+     "daodian": {
+      "north": "rooms.xidajie.id"
+     },
+     "dawu": {
+      "out": "rooms.kongdi.id"
+     },
+     "deling": {
+      "north": "rooms.gongling.id",
+      "south": "rooms.chiling.id"
+     },
+     "dongdajie": {
+      "east": "rooms.dongmen.id",
+      "west": "rooms.center.id",
+      "north": "rooms.yamen.id",
+      "south": "rooms.jiangjungate.id"
+     },
+     "dongmen": {
+      "northeast": "rooms.luorilin1.id",
+      "west": "rooms.dongdajie.id"
+     },
+     "gonggate": {
+      "south": "rooms.beidajie.id",
+      "north": "rooms.gongsquare.id"
+     },
+     "gongling": {
+      "south": "rooms.deling.id"
+     },
+     "gongsquare": {
+      "south": "rooms.gonggate.id"
+     },
+     "huangyangtan": {
+      "southwest": "rooms.xiaoba.id",
+      "north": "rooms.nanmen.id"
+     },
+     "jiangjungate": {
+      "south": "rooms.jiangjunyuan.id",
+      "north": "rooms.dongdajie.id"
+     },
+     "jiangjunyuan": {
+      "north": "rooms.jiangjungate.id",
+      "south": "rooms.neizai.id",
+      "east": "rooms.xiaoyuan.id"
+     },
+     "jiuguan": {
+      "east": "rooms.nandajie.id"
+     },
+     "kongdi": {
+      "northwest": "rooms.qingxinquan.id",
+      "southwest": "rooms.tulu.id",
+      "in": "rooms.dawu.id"
+     },
+     "luorilin1": {
+      "southwest": "rooms.dongmen.id",
+      "north": "rooms.dalu.id"
+     },
+     "luorilin2": {
+      "southwest": "rooms.dalu.id",
+      "north": "rooms.tulu.id"
+     },
+     "majiu": {
+      "west": "rooms.chema.id"
+     },
+     "malan": {
+      "east": "rooms.biaoqiyin.id"
+     },
+     "mingshazhou": {
+      "southwest": "rooms.xuanhebao.id",
+      "northeast": "rooms.qingtongxia.id"
+     },
+     "nandajie": {
+      "west": "rooms.jiuguan.id",
+      "east": "rooms.chema.id",
+      "north": "rooms.center.id",
+      "south": "rooms.nanmen.id"
+     },
+     "nanmen": {
+      "north": "rooms.nandajie.id",
+      "south": "rooms.huangyangtan.id"
+     },
+     "neizai": {
+      "north": "rooms.jiangjunyuan.id"
+     },
+     "qingtongxia": {
+      "southwest": "rooms.mingshazhou.id",
+      "northeast": "rooms.xiaoba.id"
+     },
+     "qingxinquan": {
+      "northdown": "rooms.wangling.id",
+      "southeast": "rooms.kongdi.id"
+     },
+     "tulu": {
+      "northeast": "rooms.kongdi.id",
+      "south": "rooms.luorilin2.id"
+     },
+     "wangling": {
+      "north": "rooms.chiling.id",
+      "southup": "rooms.qingxinquan.id"
+     },
+     "xiaoba": {
+      "southwest": "rooms.qingtongxia.id",
+      "northeast": "rooms.huangyangtan.id"
+     },
+     "xiaolu1": {
+      "north": "rooms.xiaolu2.id",
+      "south": "rooms.dalu.id"
+     },
+     "xiaolu2": {
+      "east": "rooms.baxian.id",
+      "west": "rooms.xiaolu3.id",
+      "south": "rooms.xiaolu1.id"
+     },
+     "xiaolu3": {
+      "east": "rooms.xiaolu2.id",
+      "west": "rooms.biangate.id"
+     },
+     "xiaoxiaochang": {
+      "north": "rooms.biaoqiyin.id"
+     },
+     "xiaoyuan": {
+      "west": "rooms.jiangjunyuan.id"
+     },
+     "xidajie": {
+      "west": "rooms.biaoqiyin.id",
+      "east": "rooms.center.id",
+      "north": "rooms.yipingate.id",
+      "south": "rooms.daodian.id"
+     },
+     "ximen": {
+      "southeast": "rooms.biaoqiyin.id",
+      "west": "xuanminggu.rooms.xiaolu1.id"
+     },
+     "xuanhebao": {
+      "river": "huanghe.rooms.guchangcheng.id",
+      "northeast": "rooms.mingshazhou.id"
+     },
+     "yamen": {
+      "south": "rooms.dongdajie.id"
+     },
+     "yinfang": {
+      "south": "rooms.biaoqiyin.id"
+     },
+     "yipindating": {
+      "south": "rooms.yipindayuan.id"
+     },
+     "yipindayuan": {
+      "west": "rooms.yipinzhang.id",
+      "east": "rooms.yipinjieyin.id",
+      "south": "rooms.yipingate.id",
+      "north": "rooms.yipindating.id"
+     },
+     "yipingate": {
+      "south": "rooms.xidajie.id",
+      "north": "rooms.yipindayuan.id"
+     },
+     "yipinjieyin": {
+      "west": "rooms.yipindayuan.id"
+     },
+     "yipinzhang": {
+      "east": "rooms.yipindayuan.id"
+     }
+    },
+    "room_items": {
+     "huangyangtan": [
+      "items.yang3.id "
+     ],
+     "kongdi": [
+      "items.gou2.id "
+     ],
+     "luorilin2": [
+      "items.shuzhi.id ",
+      "items.dushe.id "
+     ],
+     "majiu": [
+      "items.zaohongma.id ",
+      "items.huangbiaoma.id ",
+      "items.ziliuma.id "
+     ],
+     "malan": [
+      "items.zaohongma.id ",
+      "items.huangbiaoma.id ",
+      "items.ziliuma.id "
+     ],
+     "xiaolu1": [
+      "items.tu.id "
+     ]
+    },
+    "room_chars": {
+     "baxian": [
+      "characters.laodaoshi.id "
+     ],
+     "biangate": [
+      "characters.gongweishi.id ",
+      "characters.gongweishi.id "
+     ],
+     "biaoqiyin": [
+      "characters.xixiabing.id ",
+      "characters.xixiabing.id "
+     ],
+     "chema": [
+      "characters.xiaoer.id "
+     ],
+     "daodian": [
+      "characters.daodianhuoji.id "
+     ],
+     "dawu": [
+      "characters.ye.id "
+     ],
+     "deling": [
+      "characters.shiwushi.id ",
+      "characters.shiwushi.id "
+     ],
+     "dongdajie": [
+      "characters.walker.id "
+     ],
+     "gonggate": [
+      "characters.gongweishi.id ",
+      "characters.gongweishi.id "
+     ],
+     "gongsquare": [
+      "characters.gongweishi.id ",
+      "characters.gongweishi.id "
+     ],
+     "jiangjungate": [
+      "characters.xiaowei.id ",
+      "characters.xiaowei.id "
+     ],
+     "jiangjunyuan": [
+      "characters.jiading.id ",
+      "characters.jiading.id "
+     ],
+     "jiuguan": [
+      "characters.xiaoer2.id "
+     ],
+     "kongdi": [
+      "characters.nan.id "
+     ],
+     "majiu": [
+      "characters.mafu.id "
+     ],
+     "nanmen": [
+      "characters.xiaowei.id ",
+      "characters.xixiabing.id ",
+      "characters.xixiabing.id ",
+      "characters.walker.id "
+     ],
+     "neizai": [
+      "characters.hao.id "
+     ],
+     "wangling": [
+      "characters.shiwushi.id ",
+      "characters.shiwushi.id ",
+      "characters.shiwushi.id ",
+      "characters.shiwushi.id "
+     ],
+     "xiaoxiaochang": [
+      "characters.xixiabing.id ",
+      "characters.xixiabing.id ",
+      "characters.xixiabing.id "
+     ],
+     "xidajie": [
+      "characters.walker.id "
+     ],
+     "yamen": [
+      "characters.yayi.id ",
+      "characters.yayi.id ",
+      "characters.yayi.id ",
+      "characters.yayi.id "
+     ],
+     "yinfang": [
+      "characters.xixiabing.id ",
+      "characters.xixiabing.id ",
+      "characters.xixiabing.id "
+     ],
+     "yipindating": [
+      "characters.yipinwushi.id ",
+      "characters.yipinwushi.id ",
+      "characters.yipinwushi.id ",
+      "characters.yipinwushi.id "
+     ],
+     "yipindayuan": [
+      "characters.yun.id ",
+      "characters.yipinwushi.id ",
+      "characters.yipinwushi.id "
+     ],
+     "yipingate": [
+      "characters.yipinwushi.id ",
+      "characters.yipinwushi.id "
+     ],
+     "yipinjieyin": [
+      "characters.nuerhai.id "
+     ],
+     "yipinzhang": [
+      "characters.zhangfang.id "
+     ]
+    },
+    "items": {},
+    "characters": {
+     "daodianhuoji": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "小伙计",
+      "body_len": 528
+     },
+     "gongweishi": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "皇宫卫士",
+      "body_len": 494
+     },
+     "hao": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "郝连铁树",
+      "body_len": 593
+     },
+     "laodaoshi": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "老道士",
+      "body_len": 675
+     },
+     "nan": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "南海鳄神",
+      "body_len": 927
+     },
+     "nuerhai": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "努儿海",
+      "body_len": 511
+     },
+     "shiwushi": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "石人武士",
+      "body_len": 585
+     },
+     "xiaoer": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "店小二",
+      "body_len": 484
+     },
+     "xiaoer2": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "店小二",
+      "body_len": 697
+     },
+     "xiaowei": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "校尉",
+      "body_len": 441
+     },
+     "xixiabing": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "西夏兵",
+      "body_len": 492
+     },
+     "ye": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "叶二娘",
+      "body_len": 1080
+     },
+     "yipinwushi": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "一品堂武士",
+      "body_len": 494
+     },
+     "yun": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "云中鹤",
+      "body_len": 922
+     },
+     "zhangfang": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "帐房先生",
+      "body_len": 329
+     },
+     "kaoyangtui": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "烤羊腿",
+      "body_len": 57
+     },
+     "paomo": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "羊肉泡馍",
+      "body_len": 59
+     }
+    }
+   }
+  },
+  {
+   "file": "data/world/shenlong.ucl",
+   "stats": {
+    "rooms": {
+     "caodi": {
+      "coords": [
+       "-1",
+       "-2",
+       "0"
+      ],
+      "name": "草地",
+      "body_len": 127
+     },
+     "caoping": {
+      "coords": [
+       "-2",
+       "-3",
+       "0"
+      ],
+      "name": "草坪",
+      "body_len": 118
+     },
+     "chufang": {
+      "coords": [
+       "2",
+       "0",
+       "0"
+      ],
+      "name": "厨房",
+      "body_len": 111
+     },
+     "dahai": {
+      "coords": [
+       "0",
+       "0",
+       "1"
+      ],
+      "name": "大海",
+      "body_len": 116
+     },
+     "damen": {
+      "coords": [
+       "0",
+       "-1",
+       "0"
+      ],
+      "name": "大门",
+      "body_len": 126
+     },
+     "dating": {
+      "coords": [
+       "0",
+       "0",
+       "0"
+      ],
+      "name": "神龙教大厅",
+      "body_len": 348
+     },
+     "haitan": {
+      "coords": [
+       "-1",
+       "-6",
+       "0"
+      ],
+      "name": "海滩",
+      "body_len": 236
+     },
+     "houting": {
+      "coords": [
+       "0",
+       "1",
+       "0"
+      ],
+      "name": "神龙教后厅",
+      "body_len": 130
+     },
+     "jushi": {
+      "coords": [
+       "-2",
+       "0",
+       "0"
+      ],
+      "name": "竹屋",
+      "body_len": 118
+     },
+     "kongdi": {
+      "coords": [
+       "-1",
+       "-3",
+       "0"
+      ],
+      "name": "空地",
+      "body_len": 129
+     },
+     "lin1": {
+      "coords": [
+       "-1",
+       "-5",
+       "0"
+      ],
+      "name": "灌木林",
+      "body_len": 197
+     },
+     "lin2": {
+      "coords": [
+       "-1",
+       "-4",
+       "0"
+      ],
+      "name": "灌木林",
+      "body_len": 100
+     },
+     "road": {
+      "coords": [
+       "0",
+       "-3",
+       "0"
+      ],
+      "name": "大道",
+      "body_len": 108
+     },
+     "road2": {
+      "coords": [
+       "0",
+       "-2",
+       "0"
+      ],
+      "name": "山道",
+      "body_len": 115
+     },
+     "wuchang": {
+      "coords": [
+       "1",
+       "-1",
+       "0"
+      ],
+      "name": "练武场",
+      "body_len": 169
+     },
+     "wuchang2": {
+      "coords": [
+       "1",
+       "-2",
+       "0"
+      ],
+      "name": "练武场",
+      "body_len": 175
+     },
+     "wuchang3": {
+      "coords": [
+       "2",
+       "-1",
+       "0"
+      ],
+      "name": "练武场",
+      "body_len": 123
+     },
+     "xiaowu": {
+      "coords": [
+       "-1",
+       "-1",
+       "0"
+      ],
+      "name": "小屋",
+      "body_len": 139
+     },
+     "xiuxishi": {
+      "coords": [
+       "1",
+       "1",
+       "0"
+      ],
+      "name": "休息室",
+      "body_len": 119
+     },
+     "zhulin": {
+      "coords": [
+       "-1",
+       "0",
+       "0"
+      ],
+      "name": "竹林",
+      "body_len": 115
+     },
+     "zoulang": {
+      "coords": [
+       "1",
+       "0",
+       "0"
+      ],
+      "name": "走廊",
+      "body_len": 291
+     }
+    },
+    "exits": {
+     "caodi": {
+      "north": "rooms.xiaowu.id",
+      "south": "rooms.kongdi.id"
+     },
+     "caoping": {
+      "east": "rooms.kongdi.id"
+     },
+     "chufang": {
+      "west": "rooms.zoulang.id"
+     },
+     "dahai": {
+      "down": "rooms.dating.id"
+     },
+     "damen": {
+      "north": "rooms.dating.id",
+      "south": "rooms.road2.id"
+     },
+     "dating": {
+      "up": "rooms.dahai.id",
+      "south": "rooms.damen.id",
+      "north": "rooms.houting.id",
+      "west": "rooms.zhulin.id",
+      "east": "rooms.zoulang.id"
+     },
+     "haitan": {
+      "north": "rooms.lin1.id"
+     },
+     "houting": {
+      "south": "rooms.dating.id"
+     },
+     "jushi": {
+      "east": "rooms.zhulin.id"
+     },
+     "kongdi": {
+      "south": "rooms.lin2.id",
+      "north": "rooms.caodi.id",
+      "east": "rooms.road.id",
+      "west": "rooms.caoping.id"
+     },
+     "lin1": {
+      "south": "rooms.haitan.id"
+     },
+     "lin2": {
+      "south": "rooms.lin1.id",
+      "north": "rooms.kongdi.id"
+     },
+     "road": {
+      "north": "rooms.road2.id",
+      "west": "rooms.kongdi.id"
+     },
+     "road2": {
+      "south": "rooms.road.id",
+      "north": "rooms.damen.id"
+     },
+     "wuchang": {
+      "east": "rooms.wuchang3.id",
+      "south": "rooms.wuchang2.id",
+      "north": "rooms.zoulang.id"
+     },
+     "wuchang2": {
+      "north": "rooms.wuchang.id"
+     },
+     "wuchang3": {
+      "west": "rooms.wuchang.id"
+     },
+     "xiaowu": {
+      "south": "rooms.caodi.id"
+     },
+     "xiuxishi": {
+      "south": "rooms.zoulang.id"
+     },
+     "zhulin": {
+      "west": "rooms.jushi.id",
+      "east": "rooms.dating.id"
+     },
+     "zoulang": {
+      "north": "rooms.xiuxishi.id",
+      "south": "rooms.wuchang.id",
+      "west": "rooms.dating.id",
+      "east": "rooms.chufang.id"
+     }
+    },
+    "room_items": {
+     "chufang": [
+      "items.jitui.id ",
+      "items.jiudai.id "
+     ],
+     "dating": [
+      "items.hong.id ",
+      "items.wugen.id "
+     ],
+     "houting": [
+      "items.yin.id "
+     ],
+     "jushi": [
+      "items.su.id "
+     ],
+     "kongdi": [
+      "items.xu.id "
+     ],
+     "lin1": [
+      "items.dushe.id "
+     ],
+     "lin2": [
+      "items.dushe.id "
+     ],
+     "xiaowu": [
+      "items.lu.id "
+     ],
+     "zoulang": [
+      "items.zhang.id "
+     ]
+    },
+    "room_chars": {
+     "dating": [
+      "characters.yunsumei.id "
+     ],
+     "jushi": [
+      "characters.mujianping.id ",
+      "characters.fangyi.id "
+     ],
+     "kongdi": [
+      "characters.dizi.id "
+     ],
+     "road": [
+      "characters.old.id ",
+      "characters.old.id "
+     ],
+     "road2": [
+      "characters.dizi.id ",
+      "characters.old.id "
+     ]
+    },
+    "items": {
+     "baihua": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "百花腹蛇膏",
+      "body_len": 100
+     },
+     "hua": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "百香花",
+      "body_len": 101
+     },
+     "hua2": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "无名花",
+      "body_len": 105
+     },
+     "hua3": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "断肠花",
+      "body_len": 108
+     },
+     "hua4": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "翡翠兰",
+      "body_len": 107
+     },
+     "jiudai": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "牛皮酒袋",
+      "body_len": 109
+     },
+     "mitao": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "水蜜桃",
+      "body_len": 107
+     },
+     "usedgao": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "用过的百花腹蛇膏",
+      "body_len": 103
+     },
+     "xionghuang": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "雄黄",
+      "body_len": 98
+     }
+    },
+    "characters": {
+     "boy": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "年轻弟子",
+      "body_len": 819
+     },
+     "boy2": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "年轻弟子",
+      "body_len": 819
+     },
+     "boy3": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "年轻弟子",
+      "body_len": 819
+     },
+     "boy4": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "年轻弟子",
+      "body_len": 819
+     },
+     "chuanfu": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "老船夫",
+      "body_len": 734
+     },
+     "dizi": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "弟子",
+      "body_len": 750
+     },
+     "fangyi": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "方怡",
+      "body_len": 619
+     },
+     "girl": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "年轻女弟子",
+      "body_len": 819
+     },
+     "mujianping": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "沐剑屏",
+      "body_len": 640
+     },
+     "old": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "老者",
+      "body_len": 468
+     },
+     "yunsumei": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "云素梅",
+      "body_len": 613
+     },
+     "zhang3": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "章老三",
+      "body_len": 980
+     }
+    }
+   }
+  },
+  {
+   "file": "data/world/sky.ucl",
+   "stats": {
+    "rooms": {
+     "sky1": {
+      "coords": [
+       "0",
+       "0",
+       "1"
+      ],
+      "name": "【一重天】",
+      "body_len": 121
+     },
+     "sky2": {
+      "coords": [
+       "0",
+       "0",
+       "2"
+      ],
+      "name": "【二重天】",
+      "body_len": 121
+     },
+     "sky3": {
+      "coords": [
+       "0",
+       "0",
+       "3"
+      ],
+      "name": "【三重天】",
+      "body_len": 121
+     },
+     "sky4": {
+      "coords": [
+       "0",
+       "0",
+       "4"
+      ],
+      "name": "【四重天】",
+      "body_len": 121
+     },
+     "sky5": {
+      "coords": [
+       "0",
+       "0",
+       "5"
+      ],
+      "name": "【五重天】",
+      "body_len": 121
+     },
+     "tianmen": {
+      "coords": [
+       "0",
+       "0",
+       "0"
+      ],
+      "name": "【通天门】",
+      "body_len": 73
+     }
+    },
+    "exits": {
+     "sky1": {
+      "up": "rooms.sky2.id",
+      "down": "rooms.tianmen.id",
+      "out": "rooms.tianmen.id"
+     },
+     "sky2": {
+      "down": "rooms.sky1.id",
+      "up": "rooms.sky3.id"
+     },
+     "sky3": {
+      "down": "rooms.sky2.id",
+      "up": "rooms.sky4.id"
+     },
+     "sky4": {
+      "down": "rooms.sky3.id",
+      "up": "rooms.sky5.id"
+     },
+     "sky5": {
+      "down": "rooms.sky4.id"
+     },
+     "tianmen": {
+      "up": "rooms.sky1.id",
+      "in": "rooms.sky1.id"
+     }
+    },
+    "room_items": {},
+    "room_chars": {
+     "sky1": [
+      "characters.tie.id "
+     ],
+     "sky2": [
+      "characters.li2.id "
+     ],
+     "sky3": [
+      "characters.hua.id "
+     ],
+     "sky4": [
+      "characters.kou.id ",
+      "characters.xu.id "
+     ],
+     "sky5": [
+      "characters.beichou.id "
+     ],
+     "tianmen": [
+      "characters.li.id "
+     ]
+    },
+    "items": {
+     "heshibi": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "何氏壁",
+      "body_len": 174
+     },
+     "jue": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "长生决",
+      "body_len": 113
+     },
+     "miji1": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "铁线拳密芨",
+      "body_len": 110
+     },
+     "miji2": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "四季剑法",
+      "body_len": 109
+     },
+     "miji3": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "飞龙探云秘芨",
+      "body_len": 97
+     },
+     "sheli": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "魔尊舍利",
+      "body_len": 163
+     },
+     "shenjiu": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "天乙神酒",
+      "body_len": 108
+     },
+     "tianxiadan": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "天霞神丹",
+      "body_len": 86
+     },
+     "yishu": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "岳山遗书",
+      "body_len": 117
+     }
+    },
+    "characters": {
+     "beichou": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "北丑",
+      "body_len": 2398
+     },
+     "hua": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "华英雄",
+      "body_len": 1159
+     },
+     "kou": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "寇仲",
+      "body_len": 1200
+     },
+     "li": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "李寻欢",
+      "body_len": 1248
+     },
+     "li2": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "李逍遥",
+      "body_len": 1200
+     },
+     "tie": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "铁传甲",
+      "body_len": 1044
+     },
+     "xu": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "徐子陵",
+      "body_len": 1180
+     },
+     "chijian": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "赤剑",
+      "body_len": 64
+     },
+     "chiyoujian": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "玄蚩神剑",
+      "body_len": 69
+     },
+     "cloth1": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "白色长衫",
+      "body_len": 48
+     },
+     "cloth2": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "雕龙长袍",
+      "body_len": 48
+     },
+     "cloth3": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "青色长衫",
+      "body_len": 48
+     },
+     "feidao": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "小李飞刀",
+      "body_len": 72
+     },
+     "hands": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "残血手套",
+      "body_len": 57
+     },
+     "jingzhongyue": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "井中月",
+      "body_len": 73
+     },
+     "pangukai": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "盘古铠",
+      "body_len": 66
+     },
+     "renou": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "人偶",
+      "body_len": 71
+     }
+    }
+   }
+  },
+  {
+   "file": "data/world/special.ucl",
+   "stats": {
+    "rooms": {
+     "chushengdao": {
+      "coords": [
+       "0",
+       "0",
+       "1"
+      ],
+      "name": "畜        生        道",
+      "body_len": 184
+     },
+     "diyudao": {
+      "coords": [
+       "0",
+       "0",
+       "2"
+      ],
+      "name": "地        狱        道",
+      "body_len": 194
+     },
+     "eguidao": {
+      "coords": [
+       "0",
+       "0",
+       "3"
+      ],
+      "name": "饿        鬼        道",
+      "body_len": 197
+     },
+     "rendao": {
+      "coords": [
+       "0",
+       "0",
+       "0"
+      ],
+      "name": "人        间        道",
+      "body_len": 197
+     },
+     "tiandao": {
+      "coords": [
+       "0",
+       "0",
+       "4"
+      ],
+      "name": "天        极        道",
+      "body_len": 190
+     },
+     "xiuluodao": {
+      "coords": [
+       "0",
+       "0",
+       "5"
+      ],
+      "name": "修        罗        道",
+      "body_len": 197
+     }
+    },
+    "exits": {
+     "chushengdao": {
+      "down": "rooms.rendao.id",
+      "up": "rooms.diyudao.id"
+     },
+     "diyudao": {
+      "down": "rooms.chushengdao.id",
+      "up": "rooms.eguidao.id"
+     },
+     "eguidao": {
+      "down": "rooms.diyudao.id",
+      "up": "rooms.tiandao.id"
+     },
+     "rendao": {
+      "up": "rooms.chushengdao.id"
+     },
+     "tiandao": {
+      "down": "rooms.eguidao.id",
+      "up": "rooms.xiuluodao.id"
+     },
+     "xiuluodao": {
+      "down": "rooms.tiandao.id"
+     }
+    },
+    "room_items": {},
+    "room_chars": {},
+    "items": {},
+    "characters": {}
+   }
+  },
+  {
+   "file": "data/world/tangmen.ucl",
+   "stats": {
+    "rooms": {},
+    "exits": {},
+    "room_items": {},
+    "room_chars": {},
+    "items": {
+     "feidao": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "小飞刀",
+      "body_len": 93
+     },
+     "jili": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "毒蒺藜",
+      "body_len": 235
+     }
+    },
+    "characters": {}
+   }
+  },
+  {
+   "file": "data/world/taohua.ucl",
+   "stats": {
+    "rooms": {
+     "bingqi": {
+      "coords": [
+       "1",
+       "1",
+       "0"
+      ],
+      "name": "兵器室",
+      "body_len": 130
+     },
+     "chufang": {
+      "coords": [
+       "-1",
+       "1",
+       "0"
+      ],
+      "name": "厨房",
+      "body_len": 177
+     },
+     "dahai": {
+      "coords": [
+       "0",
+       "0",
+       "1"
+      ],
+      "name": "大海",
+      "body_len": 116
+     },
+     "damen": {
+      "coords": [
+       "0",
+       "2",
+       "0"
+      ],
+      "name": "桃花山庄正门",
+      "body_len": 249
+     },
+     "daojufang": {
+      "coords": [
+       "1",
+       "0",
+       "0"
+      ],
+      "name": "道具房",
+      "body_len": 165
+     },
+     "dating": {
+      "coords": [
+       "0",
+       "0",
+       "0"
+      ],
+      "name": "大厅",
+      "body_len": 608
+     },
+     "dong": {
+      "coords": [
+       "3",
+       "1",
+       "0"
+      ],
+      "name": "山洞",
+      "body_len": 148
+     },
+     "haitan": {
+      "coords": [
+       "0",
+       "0",
+       "1"
+      ],
+      "name": "海滩",
+      "body_len": 218
+     },
+     "houyuan": {
+      "coords": [
+       "0",
+       "-1",
+       "0"
+      ],
+      "name": "后院",
+      "body_len": 165
+     },
+     "lantian": {
+      "coords": [
+       "0",
+       "0",
+       "2"
+      ],
+      "name": "蓝天",
+      "body_len": 117
+     },
+     "mudao": {
+      "coords": [
+       "0",
+       "0",
+       "3"
+      ],
+      "name": "墓道",
+      "body_len": 122
+     },
+     "mudi": {
+      "coords": [
+       "2",
+       "4",
+       "0"
+      ],
+      "name": "墓地",
+      "body_len": 197
+     },
+     "mushi": {
+      "coords": [
+       "0",
+       "0",
+       "2"
+      ],
+      "name": "墓室",
+      "body_len": 193
+     },
+     "qianyuan": {
+      "coords": [
+       "0",
+       "1",
+       "0"
+      ],
+      "name": "前院",
+      "body_len": 148
+     },
+     "road1": {
+      "coords": [
+       "1",
+       "2",
+       "0"
+      ],
+      "name": "小路",
+      "body_len": 118
+     },
+     "road2": {
+      "coords": [
+       "2",
+       "2",
+       "0"
+      ],
+      "name": "小路",
+      "body_len": 118
+     },
+     "road3": {
+      "coords": [
+       "2",
+       "3",
+       "0"
+      ],
+      "name": "小路",
+      "body_len": 118
+     },
+     "road4": {
+      "coords": [
+       "2",
+       "1",
+       "0"
+      ],
+      "name": "小路",
+      "body_len": 131
+     },
+     "road5": {
+      "coords": [
+       "3",
+       "1",
+       "0"
+      ],
+      "name": "洞口",
+      "body_len": 113
+     },
+     "shufang": {
+      "coords": [
+       "1",
+       "0",
+       "1"
+      ],
+      "name": "书房",
+      "body_len": 148
+     },
+     "siguoshi": {
+      "coords": [
+       "1",
+       "-1",
+       "0"
+      ],
+      "name": "思过室",
+      "body_len": 167
+     },
+     "tao0": {
+      "coords": [
+       "0",
+       "5",
+       "0"
+      ],
+      "name": "桃花迷阵",
+      "body_len": 144
+     },
+     "tao_in": {
+      "coords": [
+       "0",
+       "-1",
+       "1"
+      ],
+      "name": "迷阵入口",
+      "body_len": 145
+     },
+     "tao_out": {
+      "coords": [
+       "0",
+       "4",
+       "0"
+      ],
+      "name": "桃林边",
+      "body_len": 143
+     },
+     "tingzi": {
+      "coords": [
+       "0",
+       "3",
+       "0"
+      ],
+      "name": "试剑亭",
+      "body_len": 125
+     },
+     "wofang": {
+      "coords": [
+       "-1",
+       "0",
+       "0"
+      ],
+      "name": "卧房",
+      "body_len": 149
+     },
+     "wuchang1": {
+      "coords": [
+       "1",
+       "-2",
+       "0"
+      ],
+      "name": "修行场",
+      "body_len": 123
+     },
+     "wuchang2": {
+      "coords": [
+       "-1",
+       "-2",
+       "0"
+      ],
+      "name": "修行场",
+      "body_len": 124
+     },
+     "wuchang3": {
+      "coords": [
+       "0",
+       "-2",
+       "0"
+      ],
+      "name": "修行场",
+      "body_len": 123
+     },
+     "xiaowu": {
+      "coords": [
+       "-1",
+       "-1",
+       "0"
+      ],
+      "name": "小屋",
+      "body_len": 148
+     },
+     "xiuxishi": {
+      "coords": [
+       "2",
+       "-1",
+       "0"
+      ],
+      "name": "桃花轩",
+      "body_len": 131
+     }
+    },
+    "exits": {
+     "bingqi": {
+      "west": "rooms.qianyuan.id"
+     },
+     "chufang": {
+      "east": "rooms.qianyuan.id"
+     },
+     "dahai": {
+      "up": "rooms.lantian.id",
+      "down": "rooms.dating.id",
+      "out": "rooms.haitan.id"
+     },
+     "damen": {
+      "east": "rooms.road1.id",
+      "north": "rooms.tingzi.id",
+      "south": "rooms.qianyuan.id"
+     },
+     "daojufang": {
+      "up": "rooms.shufang.id",
+      "west": "rooms.dating.id"
+     },
+     "dating": {
+      "up": "rooms.dahai.id",
+      "north": "rooms.qianyuan.id",
+      "south": "rooms.houyuan.id",
+      "east": "rooms.daojufang.id",
+      "west": "rooms.wofang.id"
+     },
+     "dong": {
+      "out": "rooms.road5.id"
+     },
+     "haitan": {
+      "south": "rooms.tao_in.id"
+     },
+     "houyuan": {
+      "south": "rooms.wuchang3.id",
+      "southwest": "rooms.wuchang2.id",
+      "southeast": "rooms.wuchang1.id",
+      "east": "rooms.siguoshi.id",
+      "west": "rooms.xiaowu.id",
+      "north": "rooms.dating.id"
+     },
+     "lantian": {
+      "down": "rooms.dahai.id",
+      "up": "rooms.mudao.id"
+     },
+     "mudao": {
+      "down": "rooms.mushi.id",
+      "up": "rooms.mudi.id"
+     },
+     "mudi": {
+      "south": "rooms.road3.id"
+     },
+     "mushi": {
+      "down": "rooms.lantian.id",
+      "up": "rooms.mudao.id"
+     },
+     "qianyuan": {
+      "west": "rooms.chufang.id",
+      "east": "rooms.bingqi.id",
+      "south": "rooms.dating.id",
+      "north": "rooms.damen.id"
+     },
+     "road1": {
+      "west": "rooms.damen.id",
+      "east": "rooms.road2.id"
+     },
+     "road2": {
+      "south": "rooms.road4.id",
+      "north": "rooms.road3.id",
+      "west": "rooms.road1.id"
+     },
+     "road3": {
+      "north": "rooms.mudi.id",
+      "south": "rooms.road2.id"
+     },
+     "road4": {
+      "north": "rooms.road2.id",
+      "east": "rooms.road5.id"
+     },
+     "road5": {
+      "in": "rooms.dong.id",
+      "west": "rooms.road4.id"
+     },
+     "shufang": {
+      "down": "rooms.daojufang.id"
+     },
+     "siguoshi": {
+      "east": "rooms.xiuxishi.id",
+      "west": "rooms.houyuan.id"
+     },
+     "tao0": {},
+     "tao_in": {
+      "north": "rooms.haitan.id",
+      "south": "rooms.tao0.id"
+     },
+     "tao_out": {
+      "north": "rooms.tao0.id",
+      "south": "rooms.tingzi.id"
+     },
+     "tingzi": {
+      "north": "rooms.tao_out.id",
+      "south": "rooms.damen.id"
+     },
+     "wofang": {
+      "east": "rooms.dating.id"
+     },
+     "wuchang1": {
+      "northwest": "rooms.houyuan.id"
+     },
+     "wuchang2": {
+      "northeast": "rooms.houyuan.id"
+     },
+     "wuchang3": {
+      "north": "rooms.houyuan.id"
+     },
+     "xiaowu": {
+      "east": "rooms.houyuan.id"
+     },
+     "xiuxishi": {
+      "west": "rooms.siguoshi.id"
+     }
+    },
+    "room_items": {
+     "bingqi": [
+      "items.taojian.id "
+     ],
+     "daojufang": [
+      "items.zhuxiao.id "
+     ],
+     "dating": [
+      "items.huang.id "
+     ],
+     "houyuan": [
+      "items.shizi.id "
+     ],
+     "mushi": [
+      "items.gold.id "
+     ],
+     "road4": [
+      "items.dushe.id "
+     ],
+     "shufang": [
+      "items.jiuzhang.id ",
+      "items.qu.id "
+     ],
+     "tao_in": [
+      "items.feng.id "
+     ]
+    },
+    "room_chars": {
+     "chufang": [
+      "characters.cheng.id ",
+      "characters.yapu.id "
+     ],
+     "damen": [
+      "characters.shitong.id ",
+      "characters.shitong.id "
+     ],
+     "daojufang": [
+      "characters.yapu.id ",
+      "characters.yapu.id "
+     ],
+     "wofang": [
+      "characters.binu.id ",
+      "characters.binu.id "
+     ],
+     "xiaowu": [
+      "characters.puren.id ",
+      "characters.puren.id ",
+      "characters.puren.id "
+     ]
+    },
+    "items": {
+     "bagua": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "Item",
+      "body_len": 158
+     },
+     "baichou": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "白绸裙",
+      "body_len": 85
+     },
+     "baipao": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "白袍",
+      "body_len": 84
+     },
+     "baiyi": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "白丝衣",
+      "body_len": 85
+     },
+     "bupao": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "青布袍",
+      "body_len": 85
+     },
+     "cha": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "醉仙茶",
+      "body_len": 114
+     },
+     "cubupao": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "粗布袍",
+      "body_len": 85
+     },
+     "gao": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "桃花糕",
+      "body_len": 121
+     },
+     "huaban": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "桃花瓣",
+      "body_len": 104
+     },
+     "jindai": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "束发金带",
+      "body_len": 112
+     },
+     "mingzhu": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "明珠",
+      "body_len": 103
+     },
+     "ruanwei": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "软猬甲",
+      "body_len": 128
+     },
+     "shizi": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "石子",
+      "body_len": 93
+     },
+     "shudai": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "束发金带",
+      "body_len": 126
+     },
+     "taojian": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "桃木剑",
+      "body_len": 187
+     },
+     "xiang": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "Item",
+      "body_len": 134
+     },
+     "yuxiao": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "玉萧",
+      "body_len": 242
+     },
+     "zhuxiao": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "竹萧",
+      "body_len": 106
+     }
+    },
+    "characters": {
+     "binu": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "婢奴",
+      "body_len": 469
+     },
+     "cheng": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "程英",
+      "body_len": 531
+     },
+     "chuanfu": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "老船夫",
+      "body_len": 848
+     },
+     "puren": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "仆人",
+      "body_len": 439
+     },
+     "shitong": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "侍童",
+      "body_len": 441
+     },
+     "shoumu": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "守墓家奴",
+      "body_len": 920
+     },
+     "yapu": {
+      "coords": [
+       null,
+       null,
+       null
+      ],
+      "name": "哑仆",
+      "body_len": 466
+     }
+    }
+   }
+  },
+  {
+   "file": "data/world/xuanminggu.ucl",
+   "stats": {
+    "rooms": {
+     "shanjiao": {
+      "coords": [
+       "5",
+       "-5",
+       "-2"
+      ],
+      "name": "玄冥峰山脚",
+      "body_len": 116
+     },
+     "shanlu1": {
+      "coords": [
+       "4",
+       "-4",
+       "-2"
+      ],
+      "name": "山路",
+      "body_len": 93
+     },
+     "shanlu2": {
+      "coords": [
+       "0",
+       "-2",
+       "0"
+      ],
+      "name": "山路",
+      "body_len": 92
+     },
+     "shanlu3": {
+      "coords": [
+       "0",
+       "-1",
+       "1"
+      ],
+      "name": "山路",
+      "body_len": 92
+     },
+     "shanlu4": {
+      "coords": [
+       "-1",
+       "1",
+       "0"
+      ],
+      "name": "山路",
+      "body_len": 92
+     },
+     "xiaolu1": {
+      "coords": [
+       "6",
+       "-5",
+       "-3"
+      ],
+      "name": "小路",
+      "body_len": 143
+     },
+     "xiaolu2": {
+      "coords": [
+       "3",
+       "-3",
+       "-2"
+      ],
+      "name": "小路",
+      "body_len": 143
+     },
+     "xiaolu3": {
+      "coords": [
+       "2",
+       "-3",
+       "-1"
+      ],
+      "name": "小路",
+      "body_len": 143
+     },
+     "xiaowu": {
+      "coords": [
+       "0",
+       "0",
+       "1"
+      ],
+      "name": "休息室",
+      "body_len": 132
+     },
+     "xuanmingfeng": {
+      "coords": [
+       "-1",
+       "2",
+       "1"
+      ],
+      "name": "玄冥峰",
+      "body_len": 149
+     },
+     "xuanminggu": {
+      "coords": [
+       "0",
+       "0",
+       "0"
+      ],
+      "name": "玄冥谷",
+      "body_len": 212
+     },
+     "zulin1": {
+      "coords": [
+       "1",
+       "-3",
+       "0"
+      ],
+      "name": "翠竹林",
+      "body_len": 98
+     },
+     "zulin2": {
+      "coords": [
+       "0",
+       "-3",
+       "1"
+      ],
+      "name": "翠竹林",
+      "body_len": 137
+     }
+    },
+    "exits": {
+     "shanjiao": {
+      "northwest": "rooms.shanlu1.id",
+      "eastdown": "rooms.xiaolu1.id"
+     },
+     "shanlu1": {
+      "northwest": "rooms.xiaolu2.id",
+      "southeast": "rooms.shanjiao.id"
+     },
+     "shanlu2": {
+      "southeast": "rooms.zulin1.id",
+      "northup": "rooms.shanlu3.id"
+     },
+     "shanlu3": {
+      "southdown": "rooms.shanlu2.id",
+      "northdown": "rooms.xuanminggu.id"
+     },
+     "shanlu4": {
+      "southeast": "rooms.xuanminggu.id",
+      "northup": "rooms.xuanmingfeng.id"
+     },
+     "xiaolu1": {
+      "westup": "rooms.shanjiao.id",
+      "east": "lingzhou.rooms.ximen.id"
+     },
+     "xiaolu2": {
+      "westup": "rooms.xiaolu3.id",
+      "southeast": "rooms.shanlu1.id"
+     },
+     "xiaolu3": {
+      "westup": "rooms.zulin1.id",
+      "eastdown": "rooms.xiaolu2.id"
+     },
+     "xiaowu": {
+      "down": "rooms.xuanminggu.id",
+      "out": "rooms.xuanminggu.id"
+     },
+     "xuanmingfeng": {
+      "southdown": "rooms.shanlu4.id"
+     },
+     "xuanminggu": {
+      "up": "rooms.xiaowu.id",
+      "southup": "rooms.shanlu3.id",
+      "northwest": "rooms.shanlu4.id",
+      "in": "rooms.xiaowu.id"
+     },
+     "zulin1": {
+      "northwest": "rooms.shanlu2.id",
+      "westup": "rooms.zulin2.id",
+      "eastdown": "rooms.xiaolu3.id"
+     },
+     "zulin2": {
+      "eastdown": "rooms.zulin1.id"
+     }
+    },
+    "room_items": {
+     "xuanmingfeng": [
+      "items.bai.id "
+     ],
+     "xuanminggu": [
+      "items.lu.id "
+     ],
+     "zulin1": [
+      "items.wuwang.id "
+     ],
+     "zulin2": [
+      "items.he.id "
+     ]
+    },
+    "room_chars": {},
+    "items": {},
+    "characters": {}
+   }
+  }
+ ],
+ "removed_files": [],
+ "modified": [
+  {
+   "file": "data/world/baituo.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "cao1",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "cao1",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "cao2",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "gebi",
+       "dir": "east",
+       "from": "rooms.shamo10.id",
+       "to": "xiyu.rooms.shamo10.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "midao",
+       "dir": "east",
+       "from": "rooms.beidajie1.id",
+       "to": "city.rooms.beidajie1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/beijing.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [
+      {
+       "room": "road10",
+       "from": [
+        "-7",
+        "-8",
+        "0"
+       ],
+       "to": [
+        "9",
+        "-10",
+        "0"
+       ]
+      },
+      {
+       "room": "road2",
+       "from": [
+        "-8",
+        "-3",
+        "0"
+       ],
+       "to": [
+        "8",
+        "-5",
+        "0"
+       ]
+      },
+      {
+       "room": "road3",
+       "from": [
+        "-7",
+        "-4",
+        "0"
+       ],
+       "to": [
+        "9",
+        "-6",
+        "0"
+       ]
+      },
+      {
+       "room": "road4",
+       "from": [
+        "-7",
+        "-5",
+        "0"
+       ],
+       "to": [
+        "9",
+        "-7",
+        "0"
+       ]
+      },
+      {
+       "room": "road7",
+       "from": [
+        "-8",
+        "-5",
+        "0"
+       ],
+       "to": [
+        "2",
+        "-15",
+        "0"
+       ]
+      },
+      {
+       "room": "road8",
+       "from": [
+        "-7",
+        "-6",
+        "0"
+       ],
+       "to": [
+        "9",
+        "-8",
+        "0"
+       ]
+      },
+      {
+       "room": "road9",
+       "from": [
+        "-7",
+        "-7",
+        "0"
+       ],
+       "to": [
+        "9",
+        "-9",
+        "0"
+       ]
+      },
+      {
+       "room": "xiaotan",
+       "from": [
+        "-8",
+        "-6",
+        "0"
+       ],
+       "to": [
+        "8",
+        "-8",
+        "0"
+       ]
+      }
+     ],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "huiying",
+       "dir": "up",
+       "was": "rooms.jiulou.id",
+       "kind": "local"
+      },
+      {
+       "room": "majiu",
+       "dir": "up",
+       "was": "rooms.beijing_shop.id",
+       "kind": "local"
+      },
+      {
+       "room": "road10",
+       "dir": "east",
+       "was": "rooms.haigang.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "road10",
+       "dir": "south",
+       "from": "rooms.ruzhou.id",
+       "to": "shaolin.rooms.ruzhou.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road3",
+       "dir": "northeast",
+       "from": "rooms.laolongtou.id",
+       "to": "guanwai.rooms.laolongtou.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road5",
+       "dir": "west",
+       "from": "rooms.bieyuan.id",
+       "to": "xueshan.rooms.bieyuan.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road6",
+       "dir": "southwest",
+       "from": "rooms.jinlongxia.id",
+       "to": "hengshan.rooms.jinlongxia.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "ximenwai",
+       "dir": "west",
+       "from": "rooms.road3.id",
+       "to": "heimuya.rooms.road3.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/changan.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "majiu",
+       "dir": "up",
+       "was": "rooms.changan_shop.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "caroad2",
+       "dir": "northwest",
+       "from": "rooms.caroad8.id",
+       "to": "lanzhou.rooms.caroad8.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "lzroad",
+       "dir": "west",
+       "from": "rooms.dongmen.id",
+       "to": "lanzhou.rooms.dongmen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "nan_chengmen",
+       "dir": "southwest",
+       "from": "rooms.guandao1.id",
+       "to": "quanzhen.rooms.guandao1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road2",
+       "dir": "east",
+       "from": "rooms.guandaow4.id",
+       "to": "luoyang.rooms.guandaow4.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "tulu4",
+       "dir": "northdown",
+       "from": "rooms.yongdeng.id",
+       "to": "huanghe.rooms.yongdeng.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "yongtai_dadao2",
+       "dir": "east",
+       "from": "rooms.entry.id",
+       "to": "pk.rooms.entry.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/chengdu.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "majiu",
+       "dir": "up",
+       "was": "rooms.chengdu_shop.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "fuheqiaon",
+       "dir": "north",
+       "from": "rooms.qcroad1.id",
+       "to": "qingcheng.rooms.qcroad1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "nanheqiaos",
+       "dir": "south",
+       "from": "rooms.sroad1.id",
+       "to": "xuedao.rooms.sroad1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road1",
+       "dir": "east",
+       "from": "rooms.qsjie1.id",
+       "to": "emei.rooms.qsjie1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "shudao1",
+       "dir": "east",
+       "from": "rooms.jzximen.id",
+       "to": "jingzhou.rooms.jzximen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/city.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [
+      {
+       "room": "qiyuan1",
+       "from": [
+        "2",
+        "0",
+        "0"
+       ],
+       "to": [
+        "0",
+        "0",
+        "9"
+       ]
+      },
+      {
+       "room": "qiyuan2",
+       "from": [
+        "3",
+        "0",
+        "0"
+       ],
+       "to": [
+        "1",
+        "0",
+        "9"
+       ]
+      },
+      {
+       "room": "qiyuan3",
+       "from": [
+        "2",
+        "-1",
+        "0"
+       ],
+       "to": [
+        "0",
+        "-1",
+        "9"
+       ]
+      },
+      {
+       "room": "qiyuan4",
+       "from": [
+        "2",
+        "1",
+        "0"
+       ],
+       "to": [
+        "0",
+        "1",
+        "9"
+       ]
+      }
+     ],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [
+      {
+       "room": "jiaonei",
+       "dir": "up",
+       "to": "rooms.qiyuan1.id",
+       "kind": "local"
+      },
+      {
+       "room": "qiyuan1",
+       "dir": "down",
+       "to": "rooms.jiaonei.id",
+       "kind": "local"
+      },
+      {
+       "room": "xdmidao1",
+       "dir": "northup",
+       "to": "rooms.xsmidao.id",
+       "kind": "local"
+      }
+     ],
+     "removed": [
+      {
+       "room": "liaotian",
+       "dir": "east",
+       "was": "rooms.qiyuan1.id",
+       "kind": "local"
+      },
+      {
+       "room": "majiu",
+       "dir": "up",
+       "was": "rooms.yangzhou_shop.id",
+       "kind": "local"
+      },
+      {
+       "room": "ml1",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "ml1",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "ml2",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "ml2",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "ml3",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "ml3",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "ml4",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "ml4",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "ml5",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "ml5",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "ml6",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "ml6",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "ml7",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "ml7",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "beimen",
+       "dir": "north",
+       "from": "rooms.yidao.id",
+       "to": "shaolin.rooms.yidao.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "beimen",
+       "dir": "west",
+       "from": "rooms.caodi1.id",
+       "to": "huanghe.rooms.caodi1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "dongmen",
+       "dir": "east",
+       "from": "rooms.yidao.id",
+       "to": "taishan.rooms.yidao.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "guangchang",
+       "dir": "in",
+       "from": "rooms.inhole.id",
+       "to": "gaibang.rooms.inhole.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "guangchang",
+       "dir": "liuxi",
+       "from": "rooms.guangchang.id",
+       "to": "minimal_world.rooms.guangchang.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "jiaowai4",
+       "dir": "southeast",
+       "from": "rooms.shulin1.id",
+       "to": "guiyun.rooms.shulin1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "nanmen",
+       "dir": "south",
+       "from": "rooms.wdroad1.id",
+       "to": "wudang.rooms.wdroad1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "wumiao",
+       "dir": "down",
+       "from": "rooms.herodoor.id",
+       "to": "wizard.rooms.herodoor.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "xdmidao1",
+       "dir": "up",
+       "from": "rooms.xsmidao.id",
+       "to": "xuedao.rooms.sroad8.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "ximen",
+       "dir": "south",
+       "from": "rooms.yangzhoudu.id",
+       "to": "zhongzhou.rooms.yangzhoudu.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "ximenroad",
+       "dir": "southwest",
+       "from": "rooms.road1.id",
+       "to": "jingzhou.rooms.road1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "ximenroad",
+       "dir": "west",
+       "from": "rooms.road8.id",
+       "to": "luoyang.rooms.road8.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "xsmidao5",
+       "dir": "south",
+       "from": "rooms.mishi.id",
+       "to": "xueshan.rooms.mishi.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/dali.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [
+      {
+       "room": "road1",
+       "from": [
+        "0",
+        "-11",
+        "0"
+       ],
+       "to": [
+        "3",
+        "2",
+        "0"
+       ]
+      }
+     ],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "majiu",
+       "dir": "up",
+       "was": "rooms.dali_shop.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "heisenlin",
+       "dir": "northeast",
+       "from": "rooms.htroad3.id",
+       "to": "kunming.rooms.htroad3.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "hongsheng",
+       "dir": "south",
+       "from": "rooms.damen.id",
+       "to": "tianlongsi.rooms.damen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "luyuxi",
+       "dir": "south",
+       "from": "rooms.road1.id",
+       "to": "wudu.rooms.road1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road1",
+       "dir": "east",
+       "from": "rooms.xroad2.id",
+       "to": "kunming.rooms.xroad2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road1",
+       "dir": "northeast",
+       "from": "rooms.qsjie2.id",
+       "to": "emei.rooms.qsjie2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road3",
+       "dir": "northwest",
+       "from": "rooms.riverside2.id",
+       "to": "wanjiegu.rooms.riverside2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road5",
+       "dir": "southeast",
+       "from": "rooms.road1.id",
+       "to": "foshan.rooms.road1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "zhulin2",
+       "dir": "west",
+       "from": "rooms.cun8.id",
+       "to": "wudu.rooms.cun8.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/death.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "baihuxue",
+       "dir": "south",
+       "was": "rooms.exit.id",
+       "kind": "local"
+      },
+      {
+       "room": "jimiesi",
+       "dir": "north",
+       "was": "rooms.entry.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": []
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/emei.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "midao5",
+       "dir": "up",
+       "from": "rooms.qingyanggong.id",
+       "to": "chengdu.rooms.qingyanggong.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "qsjie1",
+       "dir": "west",
+       "from": "rooms.road1.id",
+       "to": "chengdu.rooms.road1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "qsjie2",
+       "dir": "southwest",
+       "from": "rooms.road1.id",
+       "to": "dali.rooms.road1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "wdroad",
+       "dir": "northeast",
+       "from": "rooms.sanbuguan.id",
+       "to": "wudang.rooms.sanbuguan.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/foshan.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "majiu",
+       "dir": "up",
+       "was": "rooms.foshan_shop.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "nanling",
+       "dir": "northup",
+       "from": "rooms.hsroad9.id",
+       "to": "hengyang.rooms.hsroad9.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road1",
+       "dir": "northwest",
+       "from": "rooms.road5.id",
+       "to": "dali.rooms.road5.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road14",
+       "dir": "east",
+       "from": "rooms.westbridge.id",
+       "to": "quanzhou.rooms.westbridge.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "southgate",
+       "dir": "south",
+       "from": "rooms.xkroad3.id",
+       "to": "xiakedao.rooms.xkroad3.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/fuzhou.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "majiu",
+       "dir": "up",
+       "was": "rooms.fuzhou_shop.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "fzroad1",
+       "dir": "northdown",
+       "from": "rooms.qzroad4.id",
+       "to": "quanzhou.rooms.qzroad4.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "fzroad7",
+       "dir": "northwest",
+       "from": "rooms.hsroad2.id",
+       "to": "hengyang.rooms.hsroad2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "puxian",
+       "dir": "south",
+       "from": "rooms.beimen.id",
+       "to": "quanzhou.rooms.beimen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/gaibang.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "inhole",
+       "dir": "out",
+       "from": "rooms.guangchang.id",
+       "to": "city.rooms.guangchang.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/guanwai.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "laolongtou",
+       "dir": "southwest",
+       "from": "rooms.road3.id",
+       "to": "beijing.rooms.road3.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/guiyun.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "shanlu2",
+       "dir": "southeast",
+       "from": "rooms.road1.id",
+       "to": "suzhou.rooms.road1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "shulin1",
+       "dir": "northwest",
+       "from": "rooms.jiaowai4.id",
+       "to": "city.rooms.jiaowai4.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "yixing",
+       "dir": "northwest",
+       "from": "rooms.wdroad2.id",
+       "to": "wudang.rooms.wdroad2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/gumu.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "mishi2",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mishi2",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mishi4",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mishi4",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mishi4",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mishi5",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mishi5",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mishi5",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mishi6",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mishi6",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mishi7",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mishi7",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shulin5",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shulin5",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shulin6",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shulin6",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "daxiaochang",
+       "dir": "northup",
+       "from": "rooms.shijie1.id",
+       "to": "quanzhen.rooms.shijie1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "mishi8",
+       "dir": "out",
+       "from": "rooms.guangchang.id",
+       "to": "city.rooms.guangchang.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "shanlu13",
+       "dir": "south",
+       "from": "rooms.shanjiao.id",
+       "to": "quanzhen.rooms.shanjiao.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/hangzhou.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "majiu",
+       "dir": "up",
+       "was": "rooms.hangzhou_shop.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "gushan",
+       "dir": "westup",
+       "from": "rooms.shijie.id",
+       "to": "meizhuang.rooms.shijie.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road1",
+       "dir": "northwest",
+       "from": "rooms.jxnanmen.id",
+       "to": "quanzhou.rooms.jxnanmen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/heimuya.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "bridge",
+       "dir": "east",
+       "from": "rooms.xijie.id",
+       "to": "baituo.rooms.xijie.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "bridge",
+       "dir": "northwest",
+       "from": "rooms.guangchang.id",
+       "to": "baituo.rooms.guangchang.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "dukou2",
+       "dir": "southwest",
+       "from": "rooms.huanghe_1.id",
+       "to": "huanghe.rooms.huanghe_1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road3",
+       "dir": "east",
+       "from": "rooms.ximenwai.id",
+       "to": "beijing.rooms.ximenwai.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road5",
+       "dir": "northeast",
+       "from": "rooms.weifen.id",
+       "to": "huanghe.rooms.weifen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road6",
+       "dir": "southeast",
+       "from": "rooms.wexit.id",
+       "to": "village.rooms.wexit.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/hengshan.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "jinlongxia",
+       "dir": "northeast",
+       "from": "rooms.road6.id",
+       "to": "beijing.rooms.road6.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/hengyang.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [
+      {
+       "room": "ontree",
+       "dir": "eastdown",
+       "to": "rooms.outzigai.id",
+       "kind": "local"
+      },
+      {
+       "room": "ontree",
+       "dir": "northdown",
+       "to": "rooms.liufudating.id",
+       "kind": "local"
+      }
+     ],
+     "removed": [
+      {
+       "room": "majiu",
+       "dir": "up",
+       "was": "rooms.hengyang_shop.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "hsroad1",
+       "dir": "northdown",
+       "from": "rooms.wdroad4.id",
+       "to": "wudang.rooms.wdroad4.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "hsroad2",
+       "dir": "southeast",
+       "from": "rooms.fzroad7.id",
+       "to": "fuzhou.rooms.fzroad7.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "hsroad5",
+       "dir": "west",
+       "from": "rooms.mtroad1.id",
+       "to": "motianya.rooms.mtroad1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "hsroad8",
+       "dir": "northwest",
+       "from": "rooms.wdroad9.id",
+       "to": "wudang.rooms.wdroad9.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "hsroad9",
+       "dir": "southdown",
+       "from": "rooms.nanling.id",
+       "to": "foshan.rooms.nanling.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/huanghe.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "shamo",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shamo",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shamo",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shamo1",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shamo1",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shamo1",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "caodi1",
+       "dir": "east",
+       "from": "rooms.beimen.id",
+       "to": "city.rooms.beimen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "guchangcheng",
+       "dir": "river",
+       "from": "rooms.xuanhebao.id",
+       "to": "lingzhou.rooms.xuanhebao.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "huanghe5",
+       "dir": "east",
+       "from": "rooms.daizong.id",
+       "to": "taishan.rooms.daizong.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "huanghe_1",
+       "dir": "northeast",
+       "from": "rooms.dukou2.id",
+       "to": "heimuya.rooms.dukou2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "liupanshan",
+       "dir": "eastdown",
+       "from": "rooms.wexit.id",
+       "to": "village.rooms.wexit.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "weifen",
+       "dir": "southwest",
+       "from": "rooms.road5.id",
+       "to": "heimuya.rooms.road5.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "xiaojiaqiao",
+       "dir": "south",
+       "from": "rooms.river_bei.id",
+       "to": "lanzhou.rooms.river_bei.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "yongdeng",
+       "dir": "southup",
+       "from": "rooms.tulu4.id",
+       "to": "changan.rooms.tulu4.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/huashan.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "jzroad1",
+       "dir": "southwest",
+       "from": "rooms.hsroad2.id",
+       "to": "village.rooms.hsroad2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "path1",
+       "dir": "east",
+       "from": "rooms.yezhulin.id",
+       "to": "kaifeng.rooms.yezhulin.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "path1",
+       "dir": "west",
+       "from": "rooms.eexit.id",
+       "to": "village.rooms.eexit.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/item.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [
+      {
+       "room": "road4",
+       "from": [
+        "-2",
+        "0",
+        "0"
+       ],
+       "to": [
+        "3",
+        "1",
+        "0"
+       ]
+      },
+      {
+       "room": "road5",
+       "from": [
+        "-1",
+        "0",
+        "0"
+       ],
+       "to": [
+        "4",
+        "1",
+        "0"
+       ]
+      },
+      {
+       "room": "xiaowu",
+       "from": [
+        "-1",
+        "0",
+        "0"
+       ],
+       "to": [
+        "4",
+        "1",
+        "0"
+       ]
+      }
+     ],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "road1",
+       "dir": "west",
+       "from": "rooms.road5.id",
+       "to": "suzhou.rooms.road5.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/jingzhou.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [
+      {
+       "room": "qingshan2",
+       "from": [
+        "-4",
+        "-9",
+        "1"
+       ],
+       "to": [
+        "12",
+        "1",
+        "0"
+       ]
+      },
+      {
+       "room": "road1",
+       "from": [
+        "0",
+        "-6",
+        "0"
+       ],
+       "to": [
+        "16",
+        "4",
+        "-1"
+       ]
+      },
+      {
+       "room": "road2",
+       "from": [
+        "-1",
+        "-7",
+        "0"
+       ],
+       "to": [
+        "15",
+        "3",
+        "-1"
+       ]
+      },
+      {
+       "room": "road3",
+       "from": [
+        "-2",
+        "-8",
+        "0"
+       ],
+       "to": [
+        "14",
+        "2",
+        "-1"
+       ]
+      },
+      {
+       "room": "road4",
+       "from": [
+        "-3",
+        "-9",
+        "0"
+       ],
+       "to": [
+        "13",
+        "1",
+        "-1"
+       ]
+      }
+     ],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "majiu",
+       "dir": "up",
+       "was": "rooms.jingzhou_shop.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "jzbeimen",
+       "dir": "northup",
+       "from": "rooms.wdroad5.id",
+       "to": "wudang.rooms.wdroad5.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "jzximen",
+       "dir": "west",
+       "from": "rooms.shudao1.id",
+       "to": "chengdu.rooms.shudao1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "nanshilu1",
+       "dir": "south",
+       "from": "rooms.road1.id",
+       "to": "kunming.rooms.road1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road1",
+       "dir": "northeast",
+       "from": "rooms.ximenroad.id",
+       "to": "city.rooms.ximenroad.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/jinshe.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "shanbi",
+       "dir": "up",
+       "from": "rooms.ziqitai.id",
+       "to": "huashan.rooms.ziqitai.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/jueqing.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "shanjiao",
+       "dir": "southdown",
+       "from": "rooms.shanlu1.id",
+       "to": "xiangyang.rooms.shanlu1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/kaifeng.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "majiu",
+       "dir": "up",
+       "was": "rooms.kaifeng_shop.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "shanlu2",
+       "dir": "north",
+       "from": "rooms.taishique.id",
+       "to": "songshan.rooms.taishique.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "tokaifeng",
+       "dir": "east",
+       "from": "rooms.wroad3.id",
+       "to": "zhongzhou.rooms.wroad3.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "yezhulin",
+       "dir": "west",
+       "from": "rooms.path1.id",
+       "to": "huashan.rooms.path1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/kunming.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [
+      {
+       "room": "qiao",
+       "from": [
+        "-6",
+        "-5",
+        "0"
+       ],
+       "to": [
+        "9",
+        "11",
+        "0"
+       ]
+      },
+      {
+       "room": "qiao2",
+       "from": [
+        "-6",
+        "-6",
+        "0"
+       ],
+       "to": [
+        "9",
+        "10",
+        "0"
+       ]
+      },
+      {
+       "room": "qiao3",
+       "from": [
+        "-6",
+        "-7",
+        "0"
+       ],
+       "to": [
+        "9",
+        "9",
+        "0"
+       ]
+      },
+      {
+       "room": "road1",
+       "from": [
+        "-5",
+        "0",
+        "0"
+       ],
+       "to": [
+        "10",
+        "16",
+        "0"
+       ]
+      },
+      {
+       "room": "road2",
+       "from": [
+        "-5",
+        "-1",
+        "0"
+       ],
+       "to": [
+        "10",
+        "15",
+        "0"
+       ]
+      },
+      {
+       "room": "road3",
+       "from": [
+        "-5",
+        "-2",
+        "0"
+       ],
+       "to": [
+        "10",
+        "14",
+        "0"
+       ]
+      },
+      {
+       "room": "road4",
+       "from": [
+        "-6",
+        "-3",
+        "0"
+       ],
+       "to": [
+        "9",
+        "13",
+        "0"
+       ]
+      },
+      {
+       "room": "road5",
+       "from": [
+        "-6",
+        "-4",
+        "0"
+       ],
+       "to": [
+        "9",
+        "12",
+        "0"
+       ]
+      },
+      {
+       "room": "road6",
+       "from": [
+        "-6",
+        "-8",
+        "0"
+       ],
+       "to": [
+        "9",
+        "8",
+        "0"
+       ]
+      },
+      {
+       "room": "road7",
+       "from": [
+        "-6",
+        "-9",
+        "0"
+       ],
+       "to": [
+        "9",
+        "7",
+        "0"
+       ]
+      }
+     ],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "htroad3",
+       "dir": "southwest",
+       "from": "rooms.heisenlin.id",
+       "to": "dali.rooms.heisenlin.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road1",
+       "dir": "north",
+       "from": "rooms.nanshilu1.id",
+       "to": "jingzhou.rooms.nanshilu1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "xroad2",
+       "dir": "west",
+       "from": "rooms.road1.id",
+       "to": "dali.rooms.road1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/lanzhou.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "caroad8",
+       "dir": "southeast",
+       "from": "rooms.caroad2.id",
+       "to": "changan.rooms.caroad2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "dongmen",
+       "dir": "east",
+       "from": "rooms.lzroad.id",
+       "to": "changan.rooms.lzroad.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "river_bei",
+       "dir": "north",
+       "from": "rooms.xiaojiaqiao.id",
+       "to": "huanghe.rooms.xiaojiaqiao.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road",
+       "dir": "west",
+       "from": "rooms.guandao1.id",
+       "to": "shenfeng.rooms.guandao1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "ximen",
+       "dir": "west",
+       "from": "rooms.xxroad3.id",
+       "to": "xiyu.rooms.xxroad3.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/lingjiu.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "shanjiao",
+       "dir": "southdown",
+       "from": "rooms.tianroad2.id",
+       "to": "xiyu.rooms.tianroad2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/lingxiao.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "boot",
+       "dir": "southeast",
+       "from": "rooms.sroad1.id",
+       "to": "xuedao.rooms.sroad1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/luoyang.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "majiu",
+       "dir": "up",
+       "was": "rooms.luoyang_shop.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "guandaon4",
+       "dir": "north",
+       "from": "rooms.hsroad1.id",
+       "to": "village.rooms.hsroad1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "guandaos6",
+       "dir": "south",
+       "from": "rooms.caodi3.id",
+       "to": "xiangyang.rooms.caodi3.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "guandaow4",
+       "dir": "west",
+       "from": "rooms.road2.id",
+       "to": "changan.rooms.road2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road8",
+       "dir": "east",
+       "from": "rooms.ximenroad.id",
+       "to": "city.rooms.ximenroad.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/meizhuang.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "hupan",
+       "dir": "west",
+       "from": "rooms.nanhu1.id",
+       "to": "quanzhou.rooms.nanhu1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "shijie",
+       "dir": "eastdown",
+       "from": "rooms.gushan.id",
+       "to": "hangzhou.rooms.gushan.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/mingjiao.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "jmqjiguan",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "jmqjiguan",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "jmqjiguan",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "jmqjiguan",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "didao2",
+       "dir": "out",
+       "from": "rooms.guangchang.id",
+       "to": "lanzhou.rooms.guangchang.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "shanjiao",
+       "dir": "westup",
+       "from": "rooms.zhenyuanqiao.id",
+       "to": "kunlun.rooms.zhenyuanqiao.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "westroad1",
+       "dir": "east",
+       "from": "rooms.silk2.id",
+       "to": "xiyu.rooms.silk2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/motianya.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "mtroad1",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mtroad2",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mtroad2",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mtroad3",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mtroad3",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mtroad4",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mtroad5",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mtroad5",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "mtroad5",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "mtroad1",
+       "dir": "east",
+       "from": "rooms.hsroad5.id",
+       "to": "hengyang.rooms.hsroad5.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/pk.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "entry",
+       "dir": "west",
+       "from": "rooms.yongtai_dadao2.id",
+       "to": "changan.rooms.yongtai_dadao2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/qingcheng.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "qcroad1",
+       "dir": "south",
+       "from": "rooms.fuheqiaon.id",
+       "to": "chengdu.rooms.fuheqiaon.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/quanzhen.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "guandao1",
+       "dir": "northeast",
+       "from": "rooms.nan_chengmen.id",
+       "to": "changan.rooms.nan_chengmen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "mishi",
+       "dir": "eastup",
+       "from": "rooms.guangchang.id",
+       "to": "city.rooms.guangchang.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "shanjiao",
+       "dir": "north",
+       "from": "rooms.shanlu13.id",
+       "to": "gumu.rooms.shanlu13.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "shijie1",
+       "dir": "southdown",
+       "from": "rooms.daxiaochang.id",
+       "to": "gumu.rooms.daxiaochang.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/quanzhou.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "beimen",
+       "dir": "north",
+       "from": "rooms.puxian.id",
+       "to": "fuzhou.rooms.puxian.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "jxnanmen",
+       "dir": "southeast",
+       "from": "rooms.road1.id",
+       "to": "hangzhou.rooms.road1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "qzroad1",
+       "dir": "northwest",
+       "from": "rooms.yidao1.id",
+       "to": "taishan.rooms.yidao1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "qzroad2",
+       "dir": "west",
+       "from": "rooms.dongmen.id",
+       "to": "suzhou.rooms.dongmen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "qzroad4",
+       "dir": "southup",
+       "from": "rooms.fzroad1.id",
+       "to": "fuzhou.rooms.fzroad1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "westbridge",
+       "dir": "west",
+       "from": "rooms.road14.id",
+       "to": "foshan.rooms.road14.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/register.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "roome",
+       "dir": "out",
+       "from": "rooms.guangchang.id",
+       "to": "city.rooms.guangchang.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "roomn",
+       "dir": "out",
+       "from": "rooms.guangchang.id",
+       "to": "city.rooms.guangchang.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "rooms",
+       "dir": "out",
+       "from": "rooms.guangchang.id",
+       "to": "city.rooms.guangchang.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "roomw",
+       "dir": "out",
+       "from": "rooms.guangchang.id",
+       "to": "city.rooms.guangchang.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/room.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "xiaoyuan",
+       "dir": "caihong",
+       "was": "rooms.xiaoyuan.id",
+       "kind": "local"
+      },
+      {
+       "room": "xiaoyuan",
+       "dir": "dule",
+       "was": "rooms.xiaoyuan.id",
+       "kind": "local"
+      },
+      {
+       "room": "xiaoyuan",
+       "dir": "panlong",
+       "was": "rooms.dayuan.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "xiaoyuan",
+       "dir": "west",
+       "from": "rooms.yidao2.id",
+       "to": "shaolin.rooms.yidao2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/shaolin.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [
+      {
+       "room": "zhonglou6",
+       "dir": "northup",
+       "to": "rooms.bagua1.id",
+       "kind": "local"
+      }
+     ],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "ruzhou",
+       "dir": "north",
+       "from": "rooms.road10.id",
+       "to": "beijing.rooms.road10.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "ruzhou",
+       "dir": "west",
+       "from": "rooms.taishique.id",
+       "to": "songshan.rooms.taishique.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "shijie1",
+       "dir": "east",
+       "from": "rooms.taishique.id",
+       "to": "songshan.rooms.taishique.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "yidao",
+       "dir": "south",
+       "from": "rooms.beimen.id",
+       "to": "city.rooms.beimen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "yidao2",
+       "dir": "east",
+       "from": "rooms.xiaoyuan.id",
+       "to": "room.rooms.xiaoyuan.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/shenfeng.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "caoyuan5",
+       "dir": "south",
+       "from": "rooms.nanjiang2.id",
+       "to": "xiyu.rooms.nanjiang2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "caoyuan5",
+       "dir": "southwest",
+       "from": "rooms.nanjiang2.id",
+       "to": "xiyu.rooms.nanjiang2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "caoyuan5",
+       "dir": "west",
+       "from": "rooms.nanjiang1.id",
+       "to": "xiyu.rooms.nanjiang1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "caoyuan7",
+       "dir": "north",
+       "from": "rooms.shulin1.id",
+       "to": "gaochang.rooms.shulin1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "guandao1",
+       "dir": "east",
+       "from": "rooms.road.id",
+       "to": "lanzhou.rooms.road.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/songshan.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "taishique",
+       "dir": "east",
+       "from": "rooms.ruzhou.id",
+       "to": "shaolin.rooms.ruzhou.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "taishique",
+       "dir": "south",
+       "from": "rooms.shanlu2.id",
+       "to": "kaifeng.rooms.shanlu2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "taishique",
+       "dir": "west",
+       "from": "rooms.shijie1.id",
+       "to": "shaolin.rooms.shijie1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/suzhou.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "majiu",
+       "dir": "up",
+       "was": "rooms.suzhou_shop.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "dongmen",
+       "dir": "east",
+       "from": "rooms.qzroad2.id",
+       "to": "quanzhou.rooms.qzroad2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road1",
+       "dir": "northwest",
+       "from": "rooms.shanlu2.id",
+       "to": "guiyun.rooms.shanlu2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road4",
+       "dir": "west",
+       "from": "rooms.dongmeng.id",
+       "to": "zhongzhou.rooms.dongmeng.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road5",
+       "dir": "east",
+       "from": "rooms.road1.id",
+       "to": "item.rooms.road1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road5",
+       "dir": "southwest",
+       "from": "rooms.hupan.id",
+       "to": "yanziwu.rooms.hupan.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "taihu",
+       "dir": "west",
+       "from": "rooms.hupan.id",
+       "to": "yanziwu.rooms.hupan.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/taishan.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "daizong",
+       "dir": "west",
+       "from": "rooms.huanghe5.id",
+       "to": "huanghe.rooms.huanghe5.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "yidao",
+       "dir": "west",
+       "from": "rooms.dongmen.id",
+       "to": "city.rooms.dongmen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "yidao1",
+       "dir": "southeast",
+       "from": "rooms.qzroad1.id",
+       "to": "quanzhou.rooms.qzroad1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/tianlongsi.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "dadao1",
+       "dir": "northeast",
+       "from": "rooms.qsjie2.id",
+       "to": "emei.rooms.qsjie2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "damen",
+       "dir": "north",
+       "from": "rooms.hongsheng.id",
+       "to": "dali.rooms.hongsheng.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/tiezhang.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "hunanroad1",
+       "dir": "east",
+       "was": "rooms.caodi6.id",
+       "kind": "local"
+      },
+      {
+       "room": "sslin_1",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "sslin_1",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "sslin_2",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "sslin_2",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "sslin_3",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "sslin_3",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "sslin_4",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "sslin_4",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "sslin_5",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "sslin_5",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": []
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/tulong.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [
+      {
+       "room": "jiulou",
+       "dir": "northdown",
+       "to": "rooms.huichang_back.id",
+       "kind": "local"
+      }
+     ],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "haigang",
+       "dir": "west",
+       "from": "rooms.road10.id",
+       "to": "beijing.rooms.road10.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "jiulou",
+       "dir": "down",
+       "from": "rooms.huichang_back.id",
+       "to": "beijing.rooms.huiying.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/village.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "eexit",
+       "dir": "east",
+       "from": "rooms.path1.id",
+       "to": "huashan.rooms.path1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "hsroad1",
+       "dir": "south",
+       "from": "rooms.guandaon4.id",
+       "to": "luoyang.rooms.guandaon4.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "hsroad2",
+       "dir": "northeast",
+       "from": "rooms.jzroad1.id",
+       "to": "huashan.rooms.jzroad1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "wexit",
+       "dir": "northwest",
+       "from": "rooms.road6.id",
+       "to": "heimuya.rooms.road6.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/wanjiegu.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "riverside2",
+       "dir": "southeast",
+       "from": "rooms.road3.id",
+       "to": "dali.rooms.road3.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/wizard.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "herodoor",
+       "dir": "up",
+       "from": "rooms.wumiao.id",
+       "to": "city.rooms.wumiao.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/wudang.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "sanbuguan",
+       "dir": "southwest",
+       "from": "rooms.wdroad.id",
+       "to": "emei.rooms.wdroad.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "wdroad1",
+       "dir": "north",
+       "from": "rooms.nanmen.id",
+       "to": "city.rooms.nanmen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "wdroad2",
+       "dir": "southeast",
+       "from": "rooms.yixing.id",
+       "to": "guiyun.rooms.yixing.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "wdroad4",
+       "dir": "east",
+       "from": "rooms.shulin3.id",
+       "to": "xiaoyao.rooms.shulin3.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "wdroad4",
+       "dir": "southup",
+       "from": "rooms.hsroad1.id",
+       "to": "hengyang.rooms.hsroad1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "wdroad5",
+       "dir": "north",
+       "from": "rooms.caodi6.id",
+       "to": "xiangyang.rooms.caodi6.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "wdroad5",
+       "dir": "southdown",
+       "from": "rooms.jzbeimen.id",
+       "to": "jingzhou.rooms.jzbeimen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "wdroad9",
+       "dir": "southeast",
+       "from": "rooms.hsroad8.id",
+       "to": "hengyang.rooms.hsroad8.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/wudu.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "cun8",
+       "dir": "east",
+       "from": "rooms.zhulin2.id",
+       "to": "dali.rooms.zhulin2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "midao5",
+       "dir": "up",
+       "from": "rooms.ma_chufang.id",
+       "to": "city.rooms.ma_chufang.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "road1",
+       "dir": "north",
+       "from": "rooms.luyuxi.id",
+       "to": "dali.rooms.luyuxi.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/wuguan.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "guofu_gate",
+       "dir": "south",
+       "from": "rooms.westjie1.id",
+       "to": "xiangyang.rooms.westjie1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/xiakedao.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "lin1",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin1",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin2",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin2",
+       "dir": "northeast",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin2",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin2",
+       "dir": "southeast",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin3",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin3",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin3",
+       "dir": "northeast",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin3",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin4",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin4",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin4",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin4",
+       "dir": "southeast",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin5",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin5",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin5",
+       "dir": "southeast",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin5",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin6",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin6",
+       "dir": "northwest",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin6",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin6",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin7",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin7",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin7",
+       "dir": "northwest",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "lin7",
+       "dir": "southeast",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "midao1",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "midao1",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "midao1",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "midao2",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "midao2",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "midao3",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "midao3",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shidong2",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shidong2",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shidong3",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shidong3",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shidong4",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shidong4",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shidong5",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shidong5",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "xkroad1",
+       "dir": "northup",
+       "from": "rooms.hsroad9.id",
+       "to": "hengyang.rooms.hsroad9.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "xkroad3",
+       "dir": "north",
+       "from": "rooms.southgate.id",
+       "to": "foshan.rooms.southgate.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/xiangyang.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "majiu",
+       "dir": "up",
+       "was": "rooms.xiangyang_shop.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "caodi3",
+       "dir": "north",
+       "from": "rooms.guandaos6.id",
+       "to": "luoyang.rooms.guandaos6.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "caodi6",
+       "dir": "south",
+       "from": "rooms.wdroad5.id",
+       "to": "wudang.rooms.wdroad5.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "caodi6",
+       "dir": "west",
+       "from": "rooms.hunanroad1.id",
+       "to": "tiezhang.rooms.hunanroad1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "eastgate2",
+       "dir": "east",
+       "from": "rooms.toyy.id",
+       "to": "zhongzhou.rooms.toyy.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "shanlu1",
+       "dir": "northup",
+       "from": "rooms.shanjiao.id",
+       "to": "jueqing.rooms.shanjiao.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "westjie1",
+       "dir": "north",
+       "from": "rooms.guofu_gate.id",
+       "to": "wuguan.rooms.guofu_gate.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/xiaoyao.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "shulin3",
+       "dir": "west",
+       "from": "rooms.wdroad4.id",
+       "to": "wudang.rooms.wdroad4.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/xiyu.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "nanjiang",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang",
+       "dir": "northwest",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang",
+       "dir": "southeast",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang1",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang1",
+       "dir": "northeast",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang1",
+       "dir": "northwest",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang1",
+       "dir": "southwest",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang1",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang2",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang2",
+       "dir": "northwest",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang2",
+       "dir": "southeast",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang2",
+       "dir": "southwest",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang2",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang3",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang3",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang3",
+       "dir": "northwest",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang3",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang3",
+       "dir": "southeast",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang3",
+       "dir": "southwest",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "nanjiang3",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shamo",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shamo",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shamo",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shamo",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "nanjiang1",
+       "dir": "east",
+       "from": "rooms.caoyuan5.id",
+       "to": "shenfeng.rooms.caoyuan5.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "nanjiang2",
+       "dir": "northeast",
+       "from": "rooms.caoyuan5.id",
+       "to": "shenfeng.rooms.caoyuan5.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "silk2",
+       "dir": "west",
+       "from": "rooms.westroad1.id",
+       "to": "mingjiao.rooms.westroad1.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "silk4",
+       "dir": "southwest",
+       "from": "rooms.caoyuan.id",
+       "to": "xueshan.rooms.caoyuan.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "tianroad2",
+       "dir": "northup",
+       "from": "rooms.shanjiao.id",
+       "to": "lingjiu.rooms.shanjiao.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "xxroad3",
+       "dir": "east",
+       "from": "rooms.ximen.id",
+       "to": "lanzhou.rooms.ximen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/xuedao.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "nroad4",
+       "dir": "westup",
+       "from": "rooms.shanmen.id",
+       "to": "xueshan.rooms.shanmen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "nroad7",
+       "dir": "eastdown",
+       "from": "rooms.shanjiao.id",
+       "to": "xueshan.rooms.shanjiao.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "sroad1",
+       "dir": "north",
+       "from": "rooms.nanheqiaos.id",
+       "to": "chengdu.rooms.nanheqiaos.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "sroad1",
+       "dir": "northwest",
+       "from": "rooms.boot.id",
+       "to": "lingxiao.rooms.boot.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/xueshan.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "shenghu",
+       "dir": "east",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shenghu",
+       "dir": "north",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shenghu",
+       "dir": "south",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      },
+      {
+       "room": "shenghu",
+       "dir": "west",
+       "was": "rooms.__file__.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "bieyuan",
+       "dir": "east",
+       "from": "rooms.road5.id",
+       "to": "beijing.rooms.road5.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "caoyuan",
+       "dir": "northeast",
+       "from": "rooms.silk4.id",
+       "to": "xiyu.rooms.silk4.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "mishi",
+       "dir": "north",
+       "from": "rooms.xsmidao5.id",
+       "to": "city.rooms.xsmidao5.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "shanjiao",
+       "dir": "westup",
+       "from": "rooms.nroad7.id",
+       "to": "xuedao.rooms.nroad7.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "shanmen",
+       "dir": "eastdown",
+       "from": "rooms.nroad4.id",
+       "to": "xuedao.rooms.nroad4.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/yanziwu.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [],
+     "retargeted": [
+      {
+       "room": "hupan",
+       "dir": "northeast",
+       "from": "rooms.road5.id",
+       "to": "suzhou.rooms.road5.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  },
+  {
+   "file": "data/world/zhongzhou.ucl",
+   "diff": {
+    "rooms": {
+     "added": [],
+     "removed": [],
+     "coords": [],
+     "renamed": [],
+     "desc": []
+    },
+    "exits": {
+     "added": [],
+     "removed": [
+      {
+       "room": "majiu",
+       "dir": "up",
+       "was": "rooms.zhongzhou_shop.id",
+       "kind": "local"
+      }
+     ],
+     "retargeted": [
+      {
+       "room": "dongmeng",
+       "dir": "east",
+       "from": "rooms.road4.id",
+       "to": "suzhou.rooms.road4.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "toyy",
+       "dir": "west",
+       "from": "rooms.eastgate2.id",
+       "to": "xiangyang.rooms.eastgate2.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "wroad3",
+       "dir": "west",
+       "from": "rooms.tokaifeng.id",
+       "to": "kaifeng.rooms.tokaifeng.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      },
+      {
+       "room": "yangzhoudu",
+       "dir": "north",
+       "from": "rooms.ximen.id",
+       "to": "city.rooms.ximen.id",
+       "from_kind": "local",
+       "to_kind": "cross"
+      }
+     ]
+    },
+    "room_items": {
+     "added": [],
+     "removed": []
+    },
+    "room_chars": {
+     "added": [],
+     "removed": []
+    },
+    "items": {
+     "added": [],
+     "removed": []
+    },
+    "characters": {
+     "added": [],
+     "removed": []
+    }
+   }
+  }
+ ],
+ "unchanged": [
+  "data/world/global.ucl",
+  "data/world/kissa-jarvi.ucl",
+  "data/world/lepakko-luola.ucl",
+  "data/world/liuxi.ucl",
+  "data/world/sammatti.ucl",
+  "data/world/signature.ucl",
+  "data/world/test.ucl"
+ ]
+}

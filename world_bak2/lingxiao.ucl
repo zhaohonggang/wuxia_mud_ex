@@ -1,0 +1,2569 @@
+zones "lingxiao" {
+  name = "lingxiao"
+}
+
+# Generated from C:/files/git/mud/d/lingxiao/bar.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "bar" {
+      name = "石崖客栈"
+      description = "这里是雪山山路上的一间客栈，虽然店面简单朴实，平日也 不可能有什么游客来这雪域游山玩水，但在这大雪山上，却也是 独一无二的客栈。到了这地方，要是不想被活活冻死在这万里冰 川上，只怕还是得照顾一下这里的生意。所以这家客栈倒也是生 意兴隆。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "bar" {
+    room_id = rooms.bar.id
+    up = rooms.dilao.id
+    down = rooms.dadian.id
+    west = rooms.shiya.id
+    }
+
+
+  room_characters "bar" {
+    room_id = rooms.bar.id
+    characters = [
+      { id = characters.xiaoer2.id },
+      { id = characters.walker.id },
+      { id = characters.dizi.id },
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/bingti.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "bingti" {
+      name = "冰梯"
+      description = "这里是一座晶莹剔透的冰梯。此处地处万里雪山顶峰，连接 凌霄城的天险防线分天崖。悬在这里，只觉罡风凛冽，如利刃割 体，身侧寒云渺渺，白烟氤氲。桥下万载寒冰，在日光下闪烁生 辉。山寒水冷，众鸟飞尽，惟有朵朵白雪，依旧飘零。这里往往 有伤心失意人跳崖自尽。"
+  x = -1
+  y = 4
+  z = 5
+    }
+
+  room_exits "bingti" {
+    room_id = rooms.bingti.id
+    down = rooms.fentianya.id
+    up = rooms.shanya.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/book.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "book" {
+      name = "书房"
+      description = "这里是白自在的书房，一室之内，放满了各类书籍。白自在 虽然狂妄自大，但说到他学问，却当真也是饱读诗书，学富五车。 这里的书架，大大小小，总有十几个吧。白自在的书童正在这为 他整理。"
+  x = 0
+  y = 6
+  z = 0
+    }
+
+  room_exits "book" {
+    room_id = rooms.book.id
+    south = rooms.bridge.id
+    north = rooms.weideju.id
+    }
+
+
+  room_characters "book" {
+    room_id = rooms.book.id
+    characters = [
+      { id = characters.su.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/boot.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "boot" {
+      name = "山路"
+      description = "这里是一座大山的山麓，抬头仰望，山上积雪皑皑，在日光 下映得闪烁生辉。山上云海迷茫，雪峰林立，阳光交辉在白云与 飞雪之间，隐隐能看见有一座城在山顶。路旁有一块木板(sign)。"
+  x = -1
+  y = -2
+  z = -3
+item_desc = {
+ sign = "万  古  凌  霄  一  羽  毛"
+}
+    }
+
+  room_exits "boot" {
+    room_id = rooms.boot.id
+    westup = rooms.sroad1.id
+    southeast = rooms.sroad1.id
+    }
+
+
+  room_characters "boot" {
+    room_id = rooms.boot.id
+    characters = [
+      { id = characters.dizi.id },
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/bridge.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "bridge" {
+      name = "小桥"
+      description = "这是一座江南园林似的小桥，桥下莲叶田田，清波荡漾，水 滑栏碧，池鱼自得。城外虽有雪花飞舞之姿，朔风呼号之势，此 处却得地气温暖之润，得天独厚，有如江南之景，现于西域大漠 之地。"
+  x = 0
+  y = 5
+  z = 0
+    }
+
+  room_exits "bridge" {
+    room_id = rooms.bridge.id
+    north = rooms.book.id
+    south = rooms.houyuan2.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/car.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "car" {
+      name = "冰车"
+      description = "这里是凌霄城的冰车 (che)下山之处，此冰车是凌霄城为了 能直达山脚，所特制而成，能从这雪山之巅飞速滑下，是从雪山 去往山下的交通工具。你可以乘坐(take)它下山。"
+  x = -1
+  y = -2
+  z = 0
+item_desc = {
+ che = "一台以上好的红杉木所制的冰车，是凌霄弟子下山之用。"
+}
+    }
+
+  room_exits "car" {
+    room_id = rooms.car.id
+    east = rooms.iceroad3.id
+    }
+
+
+  room_characters "car" {
+    room_id = rooms.car.id
+    characters = [
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/cheng.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "cheng" {
+      name = "居室"
+      description = "这是成自学的房间。成自学虽和四位师弟一样，由白自在代 师授艺，但在四位师兄弟中，他和白自在关系最好。同时他为人 方正，刚严不曲，最得白自在信任，所以白自在在失踪以前，把 凌霄城的寒玉牌交给他保管。这间屋子整洁典雅，只在桌上放着 一卷未写完的帛卷。"
+  x = 1
+  y = 6
+  z = 0
+    }
+
+  room_exits "cheng" {
+    room_id = rooms.cheng.id
+    south = rooms.zoulang4.id
+    }
+
+
+  room_characters "cheng" {
+    room_id = rooms.cheng.id
+    characters = [
+      { id = characters.cheng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/cityout.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "cityout" {
+      name = "城外"
+      description = "这里是凌霄城的城外，出现在你面前的是高耸的城墙，看来 如果不从城门走，想要越墙而入，是不太可能的。凌霄城外野狼 很多，绝对不是什么安全的地方，还是赶快进城吧。"
+  x = 0
+  y = 4
+  z = 6
+    }
+
+  room_exits "cityout" {
+    room_id = rooms.cityout.id
+    west = rooms.shanya.id
+    }
+
+
+
+
+  room_items "cityout" {
+    room_id = rooms.cityout.id
+    items = [
+      { id = items.lang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/cityout1.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "cityout1" {
+      name = "城外"
+      description = "这里是凌霄城的城外，出现在你面前的是高耸的城墙，看来 如果不从城门走，想要越墙而入，是不太可能的。凌霄城外野狼 很多，绝对不是什么安全的地方，还是赶快进城吧。"
+  x = -2
+  y = 4
+  z = 6
+    }
+
+  room_exits "cityout1" {
+    room_id = rooms.cityout1.id
+    east = rooms.shanya.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/cook.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "cook" {
+      name = "厨房"
+      description = "这里是凌霄城的厨房。一阵饭菜的香味充盈其间。一个凌霄 弟子满头大汗，正在做饭。他做饭方法倒也特别，人绑在一根倒 吊的绳子上，用一个奇大的铲子来搅动一口极大的锅。听说是白 自在去少林寺考察回来后，要求每一个轮值做饭的弟子都要这样 干，利于练功云云……你可以用(serve)，来获得饭菜。"
+  x = 2
+  y = 2
+  z = 0
+    }
+
+  room_exits "cook" {
+    room_id = rooms.cook.id
+    west = rooms.zoulang2.id
+    }
+
+
+  room_characters "cook" {
+    room_id = rooms.cook.id
+    characters = [
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/dadian.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "dadian" {
+      name = "凌霄殿"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dadian" {
+    room_id = rooms.dadian.id
+    up = rooms.bar.id
+    east = rooms.fudian2.id
+    west = rooms.fudian1.id
+    north = rooms.qianyuan.id
+    south = rooms.meiroad1.id
+    }
+
+
+  room_characters "dadian" {
+    room_id = rooms.dadian.id
+    characters = [
+      { id = characters.dizi.id },
+      { id = characters.dizi.id },
+      { id = characters.dizi.id },
+      { id = characters.dizi.id }    ]
+  }
+
+
+
+  room_items "dadian" {
+    room_id = rooms.dadian.id
+    items = [
+      { id = items.luwantong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/didi.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "didi" {
+      name = "地底"
+      description = "这里按地势而言，早已深入地底，乃是大雪山的山腹之中了。 四周土地潮湿，充满了一股浓浓的泥土味。墙上依然插着几支火 把，照得四周亮堂堂的。一个腰悬利剑，神情警惕的剑士，正守 在一扇巨大的石门(men)旁。"
+  x = 1
+  y = -2
+  z = -2
+item_desc = {
+ men = "一扇厚厚的石门，怕有千斤之重。看样子很难推(push)开。"
+}
+    }
+
+  room_exits "didi" {
+    room_id = rooms.didi.id
+    up = rooms.laolang.id
+    }
+
+
+  room_characters "didi" {
+    room_id = rooms.didi.id
+    characters = [
+      { id = characters.shi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/dilao.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "dilao" {
+      name = "地牢"
+      description = "这间地牢在监狱的最下面，但却有淡淡的阳光透入。地牢中 间，一个身影手持铁链，傲然站在石柱旁。日光透将进来，只见 那人满脸花白胡，身材魁梧，背脊微弓，倒似这间小小石室装不 下他这个大身子似的，眼光耀如闪电，威猛无俦。"
+  x = 0
+  y = 0
+  z = 2
+    }
+
+  room_exits "dilao" {
+    room_id = rooms.dilao.id
+    up = rooms.juegu.id
+    down = rooms.bar.id
+    out = rooms.didi.id
+    }
+
+
+
+
+  room_items "dilao" {
+    room_id = rooms.dilao.id
+    items = [
+      { id = items.baizizai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/feihua.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "feihua" {
+      name = "飞花阁"
+      description = "这是凌霄城第六代弟子，「寒梅女侠」花万紫的居所，楼名 飞花阁。花万紫是凌霄城六代弟子中唯一的女性，一来因为避嫌， 二来花万紫本就性喜清净，故一人独居于此。此处是花园小楼之 上，凭窗而望，千万朵梅花迎雪飞舞，万梅飘零，纷纷而下。桌 上放着一束五颜六色的梅花。"
+  x = -1
+  y = 1
+  z = 1
+    }
+
+  room_exits "feihua" {
+    room_id = rooms.feihua.id
+    down = rooms.huajing.id
+    }
+
+
+
+
+  room_items "feihua" {
+    room_id = rooms.feihua.id
+    items = [
+      { id = items.huawanzi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/fenghuo.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "fenghuo" {
+      name = "风火居"
+      description = "这里是凌霄双杰之一--封万里的房间。房间混乱不堪，到处 都是刀剑砍凿的痕迹，好象被谁在这发泄过怒火似的。一名手持 长剑，少了一臂，而偏又面带怒色的中年男子，站在屋中，凝望 窗外，正牙关紧咬,似有无限恨事。"
+  x = 1
+  y = 4
+  z = 0
+    }
+
+  room_exits "fenghuo" {
+    room_id = rooms.fenghuo.id
+    west = rooms.houyuan2.id
+    }
+
+
+  room_characters "fenghuo" {
+    room_id = rooms.fenghuo.id
+    characters = [
+      { id = characters.feng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/fentianya.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "fentianya" {
+      name = "分天崖"
+      description = "这里就是凌霄城的天险--分天崖。往外望去，只见万丈深谷 上，横着一座又窄又滑的冰梯，雪花飘落，更是滑溜，在强劲的 罡风中，给人一种摇摇欲坠的感觉。"
+  x = -1
+  y = 4
+  z = 4
+    }
+
+  room_exits "fentianya" {
+    room_id = rooms.fentianya.id
+    up = rooms.bingti.id
+    southdown = rooms.sroad6.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/fudian1.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "fudian1" {
+      name = "副殿"
+      description = "这里是凌霄城的副殿之一。雪山派五代弟子，除掌门白自在 外，共分四支。各支如果自己派系内有什么事，而又不必提到全 派解决的，往往就在副殿商议。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "fudian1" {
+    room_id = rooms.fudian1.id
+    east = rooms.dadian.id
+    west = rooms.lianwu1.id
+    }
+
+
+  room_characters "fudian1" {
+    room_id = rooms.fudian1.id
+    characters = [
+      { id = characters.dizi.id },
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/fudian2.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "fudian2" {
+      name = "副殿"
+      description = "这里是凌霄城的副殿之一。几个凌霄弟子正在一起，贼头贼 脑地不知在干什么，鬼鬼祟祟的，准没什么好事。最近凌霄城里 不太平，麻烦事情也挺多的，还是少理为妙。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "fudian2" {
+    room_id = rooms.fudian2.id
+    west = rooms.dadian.id
+    east = rooms.lianwu2.id
+    }
+
+
+  room_characters "fudian2" {
+    room_id = rooms.fudian2.id
+    characters = [
+      { id = characters.dizi.id },
+      { id = characters.dizi.id },
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/gate.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "gate" {
+      name = "凌霄内门"
+      description = "这里是凌霄城的城门。本来凌霄城少有外敌入侵，但由于地 处西域，隆冬之际常有饿狼前来侵袭，故修筑此大城以做为抵挡。 向城内望去，只见人头攘攘，很是繁华，想不到在这西域雪山绝 顶，却有着一个如此去处。内门前那张厚厚的吊桥(bridge)正紧 紧关闭着。如果想要进入的话，必须要请人开(open)才行。"
+  x = 0
+  y = -5
+  z = 0
+item_desc = {
+ bridge = "这是一张极大的吊桥，乃是凌霄城的一道防线。"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：objectp(present("wen wanfu", environment(me)))
+direction = ~
+  message = "闻万夫身形一展，挡住你道：凌霄城历年来的规矩，外人入城不得佩带兵刃。"
+}
+
+]
+    }
+
+  room_exits "gate" {
+    room_id = rooms.gate.id
+    north = rooms.iceroad1.id
+    westup = rooms.wallw1.id
+    eastup = rooms.walle1.id
+    }
+
+
+  room_characters "gate" {
+    room_id = rooms.gate.id
+    characters = [
+      { id = characters.dizi.id },
+      { id = characters.dizi.id },
+      { id = characters.dizi.id }    ]
+  }
+
+
+
+  room_items "gate" {
+    room_id = rooms.gate.id
+    items = [
+      { id = items.wenwanfu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/hotel.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "hotel" {
+      name = "冰雪轩"
+      description = "这里是凌霄城里最大的酒楼冰雪轩，同时也是凌霄城的名迹 之一。大凡过往旅客，不管是贩夫走卒，还是文人墨客，迁客骚 人，都要到此一醉。当年谢烟客独闯凌霄城，在此狂饮十八坛烈 酒之后，杀入凌霄内城。从此，凌霄城冰雪轩的大名，便是名闻 四海。"
+  x = -1
+  y = -4
+  z = 0
+    }
+
+  room_exits "hotel" {
+    room_id = rooms.hotel.id
+    east = rooms.iceroad1.id
+    }
+
+
+  room_characters "hotel" {
+    room_id = rooms.hotel.id
+    characters = [
+      { id = characters.xiaoer2.id },
+      { id = characters.dizi.id },
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/houyuan1.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "houyuan1" {
+      name = "后园"
+      description = "这里是凌霄派的后园。小桥流水，菏塘低阁。层台耸翠，上 出重霄。飞阁流丹，下临无地。在这万里雪山之上，象这种温暖 如春的地方，实不多见，也难怪当年凌霄祖师要建派于此了。菏 塘中的一方假山上，一缕清泉汩汩流出，雾气蔼蔼，如梦如幻。"
+  x = 0
+  y = 3
+  z = 0
+    }
+
+  room_exits "houyuan1" {
+    room_id = rooms.houyuan1.id
+    south = rooms.zhongting.id
+    north = rooms.houyuan2.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/houyuan2.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "houyuan2" {
+      name = "后园"
+      description = "这里重门叠户，是凌霄城上层人物的居所了。一般弟子要是 没什么事，是不能随便进来的。旁边几丛绿竹，郁郁葱葱。屋柱 上尽皆雕镂着雪花六出之形，一盆盆梅花栽种在屋廊之中。比起 外面合围粗的各色梅树，又是别有风情，左边是白万剑的家，右 边是封万里的住所。"
+  x = 0
+  y = 4
+  z = 0
+    }
+
+  room_exits "houyuan2" {
+    room_id = rooms.houyuan2.id
+    east = rooms.fenghuo.id
+    northeast = rooms.zoulang4.id
+    northwest = rooms.zoulang3.id
+    west = rooms.qihan.id
+    north = rooms.bridge.id
+    south = rooms.houyuan1.id
+    }
+
+
+
+
+  room_items "houyuan2" {
+    room_id = rooms.houyuan2.id
+    items = [
+      { id = items.mei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/huajing.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "huajing" {
+      name = "花径"
+      description = "这是一条种满了各色梅花的花径。小径两边梅花飘香，梅 萼生寒。悠然而赏鉴，梅枝蜿蜒，梅干崎岖，古朴飘逸，兼而 有之。梅枝干以枯残丑拙为贵，梅花梅萼以繁密浓聚为尚，此 处之景，可谓得矣。"
+  x = -1
+  y = 1
+  z = 0
+    }
+
+  room_exits "huajing" {
+    room_id = rooms.huajing.id
+    up = rooms.feihua.id
+    east = rooms.qianyuan.id
+    }
+
+
+
+
+  room_items "huajing" {
+    room_id = rooms.huajing.id
+    items = [
+      { id = items.he2.id },
+      { id = items.mei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/iceroad1.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "iceroad1" {
+      name = "冰道"
+      description = "这里是一片冰雕玉砌的世界。走在路上，低头一看，路面是 用万载不化的寒冰所制，晶莹剔透，足可映物，照理说走在这样 的冰上，应该滑溜不堪，但仔细一看，每处冰道上，都雕有细细 的花纹，而且做工精细，显然耗费了大量人力。"
+  x = 0
+  y = -4
+  z = 0
+    }
+
+  room_exits "iceroad1" {
+    room_id = rooms.iceroad1.id
+    east = rooms.sell.id
+    west = rooms.hotel.id
+    north = rooms.iceroad2.id
+    south = rooms.gate.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/iceroad2.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "iceroad2" {
+      name = "冰道"
+      description = "这里是凌霄城的南街，凌霄城的弟子、亲人、家属，尽皆居 住在城里。凌霄城自创派以来一百余年，历代先祖皆是饱学逍遥 之士，以老子之黄庭为铭，避人间之烦嚣，享高处之清寒，是以 凌霄弟子居此西域冷僻之地，仍能生生不息。这里人来人往，西 面是一家刀剑铺，东边是一家药铺。"
+  x = 0
+  y = -3
+  z = 0
+    }
+
+  room_exits "iceroad2" {
+    room_id = rooms.iceroad2.id
+    east = rooms.yaodian.id
+    west = rooms.wuqi.id
+    north = rooms.iceroad3.id
+    south = rooms.iceroad1.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/iceroad3.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "iceroad3" {
+      name = "冰道"
+      description = "这条冰道的两边都很安静。西边是冰车，东边是凌霄城的监 狱。北边过去，就是凌霄城的根本之地----雪山派的总堂凌霄殿 了，这里防守紧密，四处都是凌霄弟子。"
+  x = 0
+  y = -2
+  z = 0
+    }
+
+  room_exits "iceroad3" {
+    room_id = rooms.iceroad3.id
+    east = rooms.jianyuting.id
+    west = rooms.car.id
+    north = rooms.meiroad1.id
+    south = rooms.iceroad2.id
+    }
+
+
+  room_characters "iceroad3" {
+    room_id = rooms.iceroad3.id
+    characters = [
+      { id = characters.dizi.id },
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/jianyusun.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "jianyusun" {
+      name = "牢房"
+      description = "这是一间小小的牢房，是一间丈许见方的石室。地下高低不 平，都是巨石。你睁大眼睛四下察看，只见左角落里略有微光透 入，凝目看去，是个不到一尺见方的洞穴，猫儿或可出入，却连 小狗也钻不过去，是送饭时用的小孔。"
+  x = 0
+  y = -2
+  z = -1
+    }
+
+  room_exits "jianyusun" {
+    room_id = rooms.jianyusun.id
+    east = rooms.laolang.id
+    }
+
+
+  room_characters "jianyusun" {
+    room_id = rooms.jianyusun.id
+    characters = [
+      { id = characters.sun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/jianyuting.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "jianyuting" {
+      name = "监狱小厅"
+      description = "这里就是凌霄城的监狱入口。凌霄城的监狱专门用来关押犯 了门规的弟子，一些城中的作奸犯科，鸡鸣狗盗之徒也顺便收押 在此。凌霄向来一派所成，所以门规森严，倒也少有犯事者，但 这里是凌霄重地，防守自也严密。"
+  x = 1
+  y = -2
+  z = 0
+    }
+
+  room_exits "jianyuting" {
+    room_id = rooms.jianyuting.id
+    down = rooms.laolang.id
+    west = rooms.iceroad3.id
+    }
+
+
+  room_characters "jianyuting" {
+    room_id = rooms.jianyuting.id
+    characters = [
+      { id = characters.yan.id },
+      { id = characters.dizi.id },
+      { id = characters.dizi.id },
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/jianyuzhu.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "jianyuzhu" {
+      name = "牢房"
+      description = "这里漆黑一片，你细细摸索。不久便摸到石门的缝隙，以肩 头推去，石门竟绝不摇晃，不知有多重实。一个脸色苍白的年轻 人，垂头丧气地坐在地上。"
+  x = 2
+  y = -2
+  z = -1
+    }
+
+  room_exits "jianyuzhu" {
+    room_id = rooms.jianyuzhu.id
+    west = rooms.laolang.id
+    }
+
+
+  room_characters "jianyuzhu" {
+    room_id = rooms.jianyuzhu.id
+    characters = [
+      { id = characters.zhu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/juegu.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "juegu" {
+      name = "绝谷"
+      description = "还好，你运气好，从万丈深渊上摔下来，居然摔到厚厚的 雪堆上，不但没断腿少胳膊，连皮都没伤到一点。但是，到了 这绝谷之下，如何上去倒是一大难题。"
+  x = 0
+  y = 0
+  z = 3
+    }
+  room_exits "juegu" {
+    room_id = rooms.juegu.id
+    down = rooms.dilao.id
+    up = rooms.wave.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/laolang.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "laolang" {
+      name = "监狱走廊"
+      description = "这是凌霄城监狱的走廊，两边关的都是凌霄城犯了门规的弟 子。此处地下高低不平，两边都是巨石筑成，一旦被关进来，就 别想逃得出去。墙上点着一支支火把，火光照得四周墙上的影子 象要择人而噬的怪物一样，看起来这种地方还是快走比较好。"
+  x = 1
+  y = -2
+  z = -1
+    }
+
+  room_exits "laolang" {
+    room_id = rooms.laolang.id
+    down = rooms.didi.id
+    east = rooms.jianyuzhu.id
+    west = rooms.jianyusun.id
+    up = rooms.jianyuting.id
+    }
+
+
+  room_characters "laolang" {
+    room_id = rooms.laolang.id
+    characters = [
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/liang.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "liang" {
+      name = "居室"
+      description = "这是梁自进的房间，他生性单纯，与廖自励正好相反。他从 小就在凌霄城中练功习武，连大雪山也未下过一步，所以他的武 功在五代弟子中，是仅次于白自在的。他的房间朴素自然，仅有 一床一桌。除此之外，别无他物。"
+  x = -1
+  y = 4
+  z = 0
+    }
+
+  room_exits "liang" {
+    room_id = rooms.liang.id
+    north = rooms.zoulang3.id
+    }
+
+
+  room_characters "liang" {
+    room_id = rooms.liang.id
+    characters = [
+      { id = characters.liang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/lianwu1.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "lianwu1" {
+      name = "练武厅"
+      description = "这里是凌霄城的练武场。场上放着几个木人，是供凌霄弟子 练功之用。几个凌霄弟子手持长剑，你来我往，正在场上练的起 劲。"
+  x = -2
+  y = 0
+  z = 0
+    }
+
+  room_exits "lianwu1" {
+    room_id = rooms.lianwu1.id
+    east = rooms.fudian1.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/lianwu2.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "lianwu2" {
+      name = "练武厅"
+      description = "这里是凌霄城的练武场。只见刀光剑影，目不暇接，一群凌 霄弟子练得大汗淋漓，彼此打得难解难分。凌霄城里因派系不和， 彼此间明争暗斗，门下弟子也只得努力练功，以防不测。"
+  x = 2
+  y = 0
+  z = 0
+    }
+
+  room_exits "lianwu2" {
+    room_id = rooms.lianwu2.id
+    west = rooms.fudian2.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/liao.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "liao" {
+      name = "居室"
+      description = "这是廖自励的房间。四位长老中，以他最为生性多智，有人 说若不是当年先师仙去之时，他不在凌霄城内，而等廖自励回来 之时，大局已定，那这掌门之位必为他囊中之物。这房间内摆满 了书，从《孙子兵法》到《史记》，尽皆是权谋争斗之书。"
+  x = -1
+  y = 6
+  z = 0
+    }
+
+  room_exits "liao" {
+    room_id = rooms.liao.id
+    south = rooms.zoulang3.id
+    }
+
+
+  room_characters "liao" {
+    room_id = rooms.liao.id
+    characters = [
+      { id = characters.liao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/meiroad1.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "meiroad1" {
+      name = "梅道"
+      description = "这是一条充满了梅花清香的大道。往北就是凌霄城的大殿 凌霄殿了。闻着满天的梅香，本以为这里种满了梅树，走近却 才发现，这里只有两棵合围粗的白梅，开着漫天的冰凌。其实 是梅还是雪，已分不清了。看到这种情况那句「梅须逊雪三分 白，雪却输梅一段香」的话，是谁也不会信了。这梅这雪，谁 白谁香，分得出来吗？"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "meiroad1" {
+    room_id = rooms.meiroad1.id
+    east = rooms.meiroad3.id
+    west = rooms.meiroad2.id
+    north = rooms.dadian.id
+    south = rooms.iceroad3.id
+    }
+
+
+  room_characters "meiroad1" {
+    room_id = rooms.meiroad1.id
+    characters = [
+      { id = characters.dizi.id },
+      { id = characters.dizi.id }    ]
+  }
+
+
+
+  room_items "meiroad1" {
+    room_id = rooms.meiroad1.id
+    items = [
+      { id = items.ban.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/meiroad2.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "meiroad2" {
+      name = "梅道"
+      description = "这也是一条充满梅花清香的小道。与殿外不同的是，这儿 种满了梅树，而且全是如鲜血般灿烂的红梅，花瓣片片飘落到 洁白的雪地上，就如一个温婉和顺的美人，在给自己的心上人 刺绣时，不小心刺破了手指而流出的一滴血，浸到了白绢上样。 一只通体雪白的雪鹤在地上翩然起舞，逍遥自得。"
+  x = -1
+  y = -1
+  z = 0
+    }
+
+  room_exits "meiroad2" {
+    room_id = rooms.meiroad2.id
+    east = rooms.meiroad1.id
+    west = rooms.stone.id
+    }
+
+
+
+
+  room_items "meiroad2" {
+    room_id = rooms.meiroad2.id
+    items = [
+      { id = items.he2.id },
+      { id = items.ban.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/meiroad3.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "meiroad3" {
+      name = "梅道"
+      description = "这里种满了绿梅。站在这里，似乎看到了在凌霄城永远不 可能看到的春天一样。一阵微风吹来，在绿梅的海洋中荡起阵 阵涟漪，同时将那股浸人心脾的素香，送到每个人的心中。东 边就是凌霄城的观景胜地戏梅亭了。"
+  x = 1
+  y = -1
+  z = 0
+    }
+
+  room_exits "meiroad3" {
+    room_id = rooms.meiroad3.id
+    east = rooms.ting.id
+    west = rooms.meiroad1.id
+    }
+
+
+
+
+  room_items "meiroad3" {
+    room_id = rooms.meiroad3.id
+    items = [
+      { id = items.ban.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/muwu.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "muwu" {
+      name = "木屋"
+      description = "这是凌霄城弟子在城外巡逻护山的哨所，每天都有雪山弟子 守卫，以保护凌霄城安全清净。不过，凭凌霄城在武林中的名头, 一般宵小之辈也不敢来此捣乱"
+  x = 0
+  y = 3
+  z = 3
+    }
+
+  room_exits "muwu" {
+    room_id = rooms.muwu.id
+    west = rooms.sroad6.id
+    }
+
+
+
+
+  room_items "muwu" {
+    room_id = rooms.muwu.id
+    items = [
+      { id = items.wangwanren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/qi.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "qi" {
+      name = "居室"
+      description = "这是齐自勉的房间。齐自勉性格风雅，为人飘逸。墙上挂着 李白的《将进酒》，是齐自勉亲手所书，字迹豪放奔放，走的是 张旭狂草的路子，从这依稀也能看出主人武功的性情。照壁上一 幅《雪月夜行图》，是他当年一夜奔波八百里，灭掉太行三十寨 的荣事。桌上燃着一束檀香，散发出恬静的气息。一张焦尾琴摆 在桌上，主人正在自斟自饮，自得其乐。"
+  x = 1
+  y = 4
+  z = 0
+    }
+
+  room_exits "qi" {
+    room_id = rooms.qi.id
+    north = rooms.zoulang4.id
+    }
+
+
+  room_characters "qi" {
+    room_id = rooms.qi.id
+    characters = [
+      { id = characters.qi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/qianyuan.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "qianyuan" {
+      name = "前院"
+      description = "这里是凌霄城的前院，凌霄弟子大都居住于此后。这里种 了一棵三人合围粗的墨梅，花瓣漆黑，气味芬芳。深邃的大院 里，高山阳光透过墨梅的花瓣射下，在雪地上映出一块块亮斑。 一只雪鹤在树下翩翩起舞，黑白相映，互有情趣。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "qianyuan" {
+    room_id = rooms.qianyuan.id
+    north = rooms.zhongting.id
+    west = rooms.huajing.id
+    south = rooms.dadian.id
+    }
+
+
+
+
+  room_items "qianyuan" {
+    room_id = rooms.qianyuan.id
+    items = [
+      { id = items.he2.id },
+      { id = items.ban.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/qihan.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "qihan" {
+      name = "气寒轩"
+      description = "这里是凌霄城大弟子白万剑及其家人的住所。墙上挂着一副 中堂，上书“气寒西北”，笔法粗犷，显是名家手迹。桌上放着 一壶参阳玉酒，酒香四溢，一位面貌英俊的男子坐在桌旁，正悠 闲自得地修剪桌上的一盆梅花。"
+  x = -1
+  y = 4
+  z = 0
+    }
+
+  room_exits "qihan" {
+    room_id = rooms.qihan.id
+    east = rooms.houyuan2.id
+    }
+
+
+
+
+  room_items "qihan" {
+    room_id = rooms.qihan.id
+    items = [
+      { id = items.baiwanjian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/roomgeng.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "roomgeng" {
+      name = "居室"
+      description = "这是一间安静的居室，是凌霄城第六代弟子耿万钟的房间。 桌上放着一卷《冰雪心法》，墙上挂着一柄剑。束束阳光从窗 格中射入，照在墙上，映得一副《万里江山图》分外雄伟。"
+  x = -1
+  y = 3
+  z = 0
+    }
+
+  room_exits "roomgeng" {
+    room_id = rooms.roomgeng.id
+    south = rooms.zoulang1.id
+    }
+
+
+
+
+  room_items "roomgeng" {
+    room_id = rooms.roomgeng.id
+    items = [
+      { id = items.gengwanzhong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/roomke.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "roomke" {
+      name = "居室"
+      description = "这里是柯万仞的房间。柯万仞喜欢收集武器，房间四壁都挂 满了形形色色的刀剑，从倭刀到西洋剑，应有尽有。床边还挂了 一柄奇怪的东西，听说是前年从西域来的番人送给他的火枪。据 说老爷子想试试这家伙的威力，结果在床上躺了一个月。"
+  x = 1
+  y = 3
+  z = 0
+    }
+
+  room_exits "roomke" {
+    room_id = rooms.roomke.id
+    south = rooms.zoulang2.id
+    }
+
+
+
+
+  room_items "roomke" {
+    room_id = rooms.roomke.id
+    items = [
+      { id = items.kewanjun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/roomwang.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "roomwang" {
+      name = "居室"
+      description = "这里与其说是一间卧室，不如说是一间练功室。地上铺满了 浑圆的黄豆，怎么也站不住。室内立了八根梅花桩，一名身挂披 风的男子正在上面纵跃如飞，看得人眼花缭乱。他正是凌霄城的 六代弟子汪万翼。他的轻功卓绝，在凌霄城数一数二，甚至与白 自在不相上下，谁也不知道他是怎么学上来的，也许可以向他问 问这件事。"
+  x = -1
+  y = 1
+  z = 0
+    }
+
+  room_exits "roomwang" {
+    room_id = rooms.roomwang.id
+    north = rooms.zoulang1.id
+    }
+
+
+  room_characters "roomwang" {
+    room_id = rooms.roomwang.id
+    characters = [
+      { id = characters.wang_wanyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/roomzhang.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "roomzhang" {
+      name = "居室"
+      description = "走进这里，出现在你眼前的是大大小小的药罐。在这里住的 是凌霄城的六代弟子张万风，他为人厚道，所以白自在放心地把 管理凌霄城一些稀世药物的任务交给了他。不过据说他跟王万仞 向来交好，经常把一些珍贵的药酒给那家伙喝。"
+  x = 1
+  y = 1
+  z = 0
+    }
+
+  room_exits "roomzhang" {
+    room_id = rooms.roomzhang.id
+    north = rooms.zoulang2.id
+    }
+
+
+
+
+  room_items "roomzhang" {
+    room_id = rooms.roomzhang.id
+    items = [
+      { id = items.zhangwanfeng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/sell.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "sell" {
+      name = "水晶当"
+      description = "这里是凌霄城的大当铺--水晶当。它名叫水晶当，不仅是因 为它的招牌是水晶所制，更重要的是它的信誉鼎然，在凌霄城中 名声向来不错。所以人称“水晶当”。老板陈朝奉，正坐在柜台 后，笑嘻嘻地同客人讨价还价。"
+  x = 1
+  y = -4
+  z = 0
+item_desc = {
+ paizi = "水晶招牌，童叟无欺  sell        卖  buy         买 redeem      赎 value       估价"
+}
+    }
+
+  room_exits "sell" {
+    room_id = rooms.sell.id
+    west = rooms.iceroad1.id
+    }
+
+
+  room_characters "sell" {
+    room_id = rooms.sell.id
+    characters = [
+      { id = characters.laoban.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/shanya.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "shanya" {
+      name = "山崖"
+      description = "映照在阳光白云之间的，是一座巍峨之极的大城。只见城墙 高逾三丈，墙头墙垣雪白一片，尽是冰雪。城墙上隐隐有人头晃 动，城头树着一面在罡风中招展的大旗，城楼上面写着三个大字              ################################             ##                            ##             ##     凌      霄      城     ##             ##                            ##             ################################  城门前有一张厚厚的吊桥(bridge)正紧紧关闭着。如果想要进入 的话，必须要请人开(open)才行。"
+  x = -1
+  y = 4
+  z = 6
+item_desc = {
+ bridge = "这是一张极大的吊桥，乃是凌霄城的一道防线。"
+}
+    }
+
+  room_exits "shanya" {
+    room_id = rooms.shanya.id
+    down = rooms.bingti.id
+    west = rooms.cityout1.id
+    east = rooms.cityout.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/shiya.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "shiya" {
+      name = "山路"
+      description = "转过山梁，几块青石相互交搭，组成了一个避风的石崖。外 面朔风飞扬，里面却炉火熊熊，松木流爆，传来丝丝烤肉的香味， 凌霄弟子巡山至此，常在这里避风休憩。旁边有个小店，疲累饥 渴时，可在里面稍事休息。"
+  x = -1
+  y = 0
+  z = 1
+    }
+
+  room_exits "shiya" {
+    room_id = rooms.shiya.id
+    northup = rooms.sroad4.id
+    east = rooms.bar.id
+    westdown = rooms.sroad3.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/sleep.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "sleep" {
+      name = "休息室"
+      description = "这是间整洁的厢房，门窗常闭，光线昏暗。房里别无他物， 只有两边放着几张收拾得舒舒服服的大床，看着就让人想睡觉。"
+  x = -2
+  y = 2
+  z = 0
+    }
+
+  room_exits "sleep" {
+    room_id = rooms.sleep.id
+    east = rooms.zoulang1.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/sroad1.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "sroad1" {
+      name = "山路"
+      description = "从这里开始，就是上凌宵城的山路了。抬头一望，雪峰高插 云霄，看不见顶，自己站立之处，仅仅是在山脚高一点，却已有 点“高处不胜寒”之感了。一路行来，虽还在山脚，却已感觉到 寒气逼人，路旁的树上，全挂满了白雪冰凌，一阵冷风吹来，已 让人缩头笼手。"
+  x = -2
+  y = -2
+  z = -2
+    }
+
+  room_exits "sroad1" {
+    room_id = rooms.sroad1.id
+    northup = rooms.sroad2.id
+    eastdown = rooms.boot.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/sroad2.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "sroad2" {
+      name = "山路"
+      description = "这时雪更大些了，使得地上盖上了厚厚的一层。正值朝阳初 出，从山顶倒挂下来的冰川，由于太阳光的折射和发射，整个冰 层都变成浅蓝色的透明体，那些末曾凝结的雪花，在阳光底下， 泛出霞辉丽彩，奇妙得难以形容。山路也渐渐不平坦起来，走一 步跌三步，联想到古诗所说：“去时雪满天山路”，也不过如此 吧。"
+  x = -2
+  y = -1
+  z = -1
+    }
+
+  room_exits "sroad2" {
+    room_id = rooms.sroad2.id
+    northup = rooms.sroad3.id
+    southdown = rooms.sroad1.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/sroad3.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "sroad3" {
+      name = "山路"
+      description = "山行崎岖，这里已是雪山之上，朔风飞扬，黄云盖天。愈上 愈高，山势也愈来愈险，俯览群山，片片浮白，在云气弥漫之下， 恍如云海中星罗棋布的岛屿。这时已是正午时分，但寒气却愈来 愈浓。四周白茫茫的一片，惟有无边飞雪，纷纷扬扬从空中撒将 下来。"
+  x = -2
+  y = 0
+  z = 0
+    }
+
+  room_exits "sroad3" {
+    room_id = rooms.sroad3.id
+    eastup = rooms.shiya.id
+    southdown = rooms.sroad2.id
+    }
+
+
+
+
+  room_items "sroad3" {
+    room_id = rooms.sroad3.id
+    items = [
+      { id = items.huyanwanshan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/sroad4.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "sroad4" {
+      name = "天风川"
+      description = "你正站在一块晶莹剔透的万年冰川之上，只觉脚部不断传来 一阵透骨的冰凉。雪山上北风怒号，万里愁云淡雾笼罩雪域，四 周一片苍茫，已经看不见半点生命迹象了。片片雪花从空中鹅毛 般飞撒而下。足底溜滑，道路更是难於辨认。可谓“雪道难，难 于上青天”。"
+  x = -1
+  y = 1
+  z = 2
+    }
+
+  room_exits "sroad4" {
+    room_id = rooms.sroad4.id
+    northup = rooms.sroad5.id
+    southdown = rooms.shiya.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/sroad5.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "sroad5" {
+      name = "山路"
+      description = "越往上走，寒气愈甚，霜雪漫天纷纷而下。极目远望，只见 满天雪白，万物晶莹。不远处似乎有个湖泊，山泉瀑布奔腾入湖， 绿树丛中馥郁的鲜花争妍斗艳，让你不由得加快脚步。路旁结满 了一条条冰柱，倒垂而下，锋利尖锐，有时凌霄弟子练剑之时也 将其作为兵器使用。"
+  x = -1
+  y = 2
+  z = 3
+    }
+
+  room_exits "sroad5" {
+    room_id = rooms.sroad5.id
+    north = rooms.sroad6.id
+    southdown = rooms.sroad4.id
+    }
+
+
+  room_characters "sroad5" {
+    room_id = rooms.sroad5.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/sroad6.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "sroad6" {
+      name = "山路"
+      description = "走到这里，反觉暖和一些了，风仍在刮，但耳边只听到叮当 的流水声。一道白波从岩缝中垂下，簌簌清流令人心神一爽，左 边热气腾腾，烟雾弥漫，显然是个温泉，右边零零落落有几间木 屋，是凌霄弟子巡山看守时住宿之地。"
+  x = -1
+  y = 3
+  z = 3
+    }
+
+  room_exits "sroad6" {
+    room_id = rooms.sroad6.id
+    east = rooms.muwu.id
+    west = rooms.water.id
+    northup = rooms.fentianya.id
+    south = rooms.sroad5.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/stone.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "stone" {
+      name = "云海石"
+      description = "这里放着一座硕大的石头。乃是白自在从雪山绝谷中找到的 奇石。只见上面云气缭绕，布满了一些奇形怪状的花纹。听说在 要下雨的时候，还会散发出不同形状的云雾，缭绕奇石四周，经 久不散，是白自在最喜欢来赏玩的宝物。"
+  x = -2
+  y = -1
+  z = 0
+    }
+
+  room_exits "stone" {
+    room_id = rooms.stone.id
+    east = rooms.meiroad2.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/ting.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "ting" {
+      name = "戏梅亭"
+      description = "这里是凌霄城的戏梅亭，是凌霄城主白自在平时最喜欢来的 地方。从这里俯瞰群山，披襟当风，只觉万里江山，不如金樽一 醉。在厅柱上刻着一句诗(poem)，是白老爷子酒后性至，仗剑所 留。但有人却说白老爷子生平最是好名，这样说是自己打自己嘴 巴，可也没人正直到敢在白老爷子面前讥讽半句。"
+  x = 2
+  y = -1
+  z = 0
+item_desc = {
+ poem = "忍把浮名，换了浅酌低唱。"
+}
+    }
+
+  room_exits "ting" {
+    room_id = rooms.ting.id
+    west = rooms.meiroad3.id
+    }
+
+
+
+
+  room_items "ting" {
+    room_id = rooms.ting.id
+    items = [
+      { id = items.ban.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/walle1.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "walle1" {
+      name = "城头"
+      description = "这是凌霄城的城头，从这极目远望，只见万里雪山，一片苍 茫。黄云万丈之下，无数起伏的山脉向东奔腾而去。沉寂的雪岭 之间，只偶尔传来一阵阵狼嗷。"
+  x = 1
+  y = -5
+  z = 1
+    }
+
+  room_exits "walle1" {
+    room_id = rooms.walle1.id
+    westdown = rooms.gate.id
+    east = rooms.walle2.id
+    }
+
+
+  room_characters "walle1" {
+    room_id = rooms.walle1.id
+    characters = [
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/walle2.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "walle2" {
+      name = "城头"
+      description = "雪花飘飘。站在这绝高之处，独感天地之悠悠。回思历代帝 皇，为成王图霸业，每每出兵远伐西域。山河辽阔，却是无情战 场，江山渺渺，偏是征人坟地。此情此景，不由令人想起昔人所 言：“可怜无定河边骨，犹是春闺梦里人。”为一人之欲，苦天 下之人，古今同矣！"
+  x = 2
+  y = -5
+  z = 1
+    }
+
+  room_exits "walle2" {
+    room_id = rooms.walle2.id
+    west = rooms.walle1.id
+    east = rooms.walle3.id
+    }
+
+
+  room_characters "walle2" {
+    room_id = rooms.walle2.id
+    characters = [
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/walle3.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "walle3" {
+      name = "城头"
+      description = "远山渺渺，冷风萧萧。试拂铁衣，只见衣色似雪，在这凌霄 之处，惟有雨雪连绵，以陪弋人。大漠苍苍，远空一鹰高翔，振 翅直飞九霄，忽而又直冲而下，翱翔九天，瞬间无踪，只有白云 千载，仍在这座孤城上悠悠飘荡。"
+  x = 3
+  y = -5
+  z = 1
+    }
+
+  room_exits "walle3" {
+    room_id = rooms.walle3.id
+    west = rooms.walle2.id
+    }
+
+
+  room_characters "walle3" {
+    room_id = rooms.walle3.id
+    characters = [
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/wallw1.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "wallw1" {
+      name = "城头"
+      description = "狂风吹雪，卷起千堆银屑。孤鸿翔空，拂乱万里云空。“平 地不见雪，白沙入黄云”，正是这种情况的真实写照。远处依稀 可见一两个在当地被称为‘海子’的湖泊，在狂风、白雪、烈日 的映照下，挂起点点鱼鳞之浪。"
+  x = -1
+  y = -5
+  z = 1
+    }
+
+  room_exits "wallw1" {
+    room_id = rooms.wallw1.id
+    eastdown = rooms.gate.id
+    west = rooms.wallw2.id
+    }
+
+
+  room_characters "wallw1" {
+    room_id = rooms.wallw1.id
+    characters = [
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/wallw2.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "wallw2" {
+      name = "城头"
+      description = "高处不胜寒。不只是雪，连霜也纷纷而下。头天晚上还是石 城木垛，一下子就霜雪漫天，万物俱白。古诗云‘天涯霜雪霁寒 霄’。大概也就是这个意思吧。"
+  x = -2
+  y = -5
+  z = 1
+    }
+
+  room_exits "wallw2" {
+    room_id = rooms.wallw2.id
+    east = rooms.wallw1.id
+    west = rooms.wallw3.id
+    }
+
+
+  room_characters "wallw2" {
+    room_id = rooms.wallw2.id
+    characters = [
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/wallw3.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "wallw3" {
+      name = "城头"
+      description = "“大漠孤烟直，长河落日圆”。也只有在这种绝域寒地，方 有此种豪迈奇景现世。日薄西山，余辉满世，在这寂静无声的大 漠之上，往往有烟气直升九霄，蔚为奇观。视野尽处，一道横贯 大漠的长河，遮掩住了红火的落日。天色愈暗，直到那最后一道 余辉逝去，短短一柱香的时间内，让人的灵魂，也为之震撼。"
+  x = -3
+  y = -5
+  z = 1
+    }
+
+  room_exits "wallw3" {
+    room_id = rooms.wallw3.id
+    east = rooms.wallw2.id
+    }
+
+
+  room_characters "wallw3" {
+    room_id = rooms.wallw3.id
+    characters = [
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/water.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "water" {
+      name = "雪山温泉"
+      description = "这是两个山道盆地之间的一处温泉(quan)，一股喷泉正在嘶 嘶喷水，灼热的水花被风吹散，在月光下形成一团团白色的花环。 在这雪山之上，居然还有此等令人惬意之处，亦不由让人感叹造 物之神奇。碧波绿水中，飘荡着朵朵雪莲花瓣，片片雪花飘然而 下，离水面有数寸，便即纷纷化为白雾而散。在这生命绝迹的大 雪山之上，惟有这里，才有绿树、红花、青草。一个少女在温泉 畔凝望落花，似有无限心事。"
+  x = -2
+  y = 3
+  z = 3
+item_desc = {
+ quan = "这是山道间的一处温泉，深不见底，似乎可以潜(dive)下去。"
+}
+    }
+
+  room_exits "water" {
+    room_id = rooms.water.id
+    east = rooms.sroad6.id
+    }
+
+
+  room_characters "water" {
+    room_id = rooms.water.id
+    characters = [
+      { id = characters.a_xiu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/wave.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "wave" {
+      name = "冰洞"
+      description = "蛇！一条足有水桶粗的白蛇，正横卧在冰洞正中，望见有人 进来，呼地一声直立起来，吐出血红的信子，径直扑了过来。带 过来一股腥臭的味道。旁边一面冰壁很薄，隐约可见里面有什么 东西。"
+  x = 0
+  y = 0
+  z = 4
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：objectp(present("xuanbing chimang", environment(me)))
+direction = ~
+  message = "你正欲离开此地，却只见玄冰赤蟒一个盘旋，顿时将去路完全封锁。"
+}
+
+]
+    }
+
+  room_exits "wave" {
+    room_id = rooms.wave.id
+    up = rooms.yuan.id
+    down = rooms.juegu.id
+    out = rooms.wave2.id
+    }
+
+
+
+
+  room_items "wave" {
+    room_id = rooms.wave.id
+    items = [
+      { id = items.xuanmang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/wave1.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "wave1" {
+      name = "冰洞"
+      description = "这是一个巨大的天然冰洞。做梦也没想到，这温泉水潭之下， 竟然有这样一个天造地设的洞天福地。站在这里，仿佛置身于水 晶宝库一般，四周全是晶莹剔透的冰块，四面八方都是自己的倒 影，清可鉴发。"
+  x = 1
+  y = 0
+  z = 4
+    }
+
+  room_exits "wave1" {
+    room_id = rooms.wave1.id
+    west = rooms.wave2.id
+    up = rooms.water.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/wave2.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "wave2" {
+      name = "冰洞"
+      description = "这里又是一个冰洞，但从这里往上望，居然可以透过冰壁看 到外面的万里群山。原来这外面的墙壁是悬崖上的冰层，月光射 进冰洞，照得满洞生辉，银光闪闪，让人想起‘冰簟银床梦不成， 碧天如水夜云轻’的意境。"
+  x = 0
+  y = 0
+  z = 4
+    }
+
+  room_exits "wave2" {
+    room_id = rooms.wave2.id
+    east = rooms.wave1.id
+    in = rooms.wave.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/weideju.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "weideju" {
+      name = "威德居"
+      description = "这是白自在的寝室，家具屋饰，极尽豪华，谓金碧辉煌，桂 殿兰宫。但现在白自在已不知去向，只剩他的一个妾室，还在这 里抽抽噎噎地哭。"
+  x = 0
+  y = 7
+  z = 0
+    }
+
+  room_exits "weideju" {
+    room_id = rooms.weideju.id
+    south = rooms.book.id
+    }
+
+
+  room_characters "weideju" {
+    room_id = rooms.weideju.id
+    characters = [
+      { id = characters.yaoniang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/wuqi.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "wuqi" {
+      name = "打铁铺"
+      description = "这就是凌霄城的刀剑铺。走进这里，寒气侵体，好象比外面 还要冷。仔细一看，墙上挂满了大大小小、形形色色的刀剑，一 柄柄寒光闪闪，全是上品。店主轩辕苍翼看到有人进来，立刻殷 勤地迎上前来。"
+  x = -1
+  y = -3
+  z = 0
+    }
+
+  room_exits "wuqi" {
+    room_id = rooms.wuqi.id
+    east = rooms.iceroad2.id
+    }
+
+
+  room_characters "wuqi" {
+    room_id = rooms.wuqi.id
+    characters = [
+      { id = characters.smith.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/yaodian.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "yaodian" {
+      name = "回春居"
+      description = "这就是凌霄城中医术最高明的戴大夫所开的回春居，一进这 里，就闻到一股刺鼻的药味，只见房中摆满了大大小小的箱笼药 柜。一名须发皆白的老人坐在桌旁，正在替一人把脉。旁边墙上 贴着一张张条幅(tiaofu)，都是被阎大夫治好了的病人送的。"
+  x = 1
+  y = -3
+  z = 0
+item_desc = {
+ tiaofu = "华佗再世,扁雀重生。"
+}
+    }
+
+  room_exits "yaodian" {
+    room_id = rooms.yaodian.id
+    west = rooms.iceroad2.id
+    }
+
+
+  room_characters "yaodian" {
+    room_id = rooms.yaodian.id
+    characters = [
+      { id = characters.daifu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingxiao/yuan.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "yuan" {
+      name = "分天渊侧"
+      description = "过了分天崖，回头望望，白云寥寥，云气弥漫，想想还有点 后怕，但毕竟过来了。往前看，就是凌霄城了，这座武林中传说 的名城，终于出现在你面前了，赶快进去看看吧。"
+  x = 0
+  y = 0
+  z = 5
+    }
+
+  room_exits "yuan" {
+    room_id = rooms.yuan.id
+    up = rooms.yudong.id
+    down = rooms.wave.id
+    north = rooms.shanya.id
+    south = rooms.bingqiao.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/yudong.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "yudong" {
+      name = "玉洞"
+      description = "如果说外面的冰洞象梦幻的世界一样，那么，这里就是真正 的天堂。整个洞内，无论洞壁洞顶，全是墨绿的玉石。玉质温润 细滑，竟是和田之玉。就算在权贵之家，和田玉也是了不起的财 富。一块手掌般大的和田玉，就够一户中等人家过上一辈子。但 是，这里最吸引人的，还是中间的玉台上天然所生的一块珠子， 它散发出幽幽光泽，照的满室皆绿。"
+  x = 0
+  y = 0
+  z = 6
+    }
+
+  room_exits "yudong" {
+    room_id = rooms.yudong.id
+    down = rooms.yuan.id
+    out = rooms.wave.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/zhongting.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "zhongting" {
+      name = "中庭"
+      description = "这里是凌霄城的中庭，左右都是凌霄弟子的住所。白自在对 诸弟子要求严厉。所以凌霄弟子平时除练剑习武外，无事之时往 往便在房中研读剑经拳谱，不敢稍有懈怠。"
+  x = 0
+  y = 2
+  z = 0
+    }
+
+  room_exits "zhongting" {
+    room_id = rooms.zhongting.id
+    east = rooms.zoulang2.id
+    south = rooms.qianyuan.id
+    north = rooms.houyuan1.id
+    west = rooms.zoulang1.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/zoulang1.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "zoulang1" {
+      name = "走廊"
+      description = "这是一条安静的走廊。上下都是凌霄弟子的居所，北边是耿 钟的居室，听说他目前正在广收门徒。南边是汪万翼的房间。西 边是一个安静的小间，可以在那睡觉休息。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "zoulang1" {
+    room_id = rooms.zoulang1.id
+    east = rooms.zhongting.id
+    south = rooms.roomwang.id
+    north = rooms.roomgeng.id
+    west = rooms.sleep.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/zoulang2.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "zoulang2" {
+      name = "走廊"
+      description = "这是一条安静的走廊。上下都是凌霄弟子的居所，北边是柯 万仞的居室，最近似乎忙着收徒弟。南边是凌霄城的物资室，由 张万年主管。东边是个厨房，飘来一阵阵饭菜的香味。"
+  x = 1
+  y = 2
+  z = 0
+    }
+
+  room_exits "zoulang2" {
+    room_id = rooms.zoulang2.id
+    west = rooms.zhongting.id
+    south = rooms.roomzhang.id
+    north = rooms.roomke.id
+    east = rooms.cook.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/zoulang3.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "zoulang3" {
+      name = "走廊"
+      description = "这是一条安静的走廊，少有闲人走动，凌霄城四位五代长老 就居住在此周围。四老不喜花雪，是以深居此处。但听说由于六 代弟子中白万剑最为出色，甚至隐隐有压倒四位长老之势。四老 心中不喜，已不收弟子。"
+  x = -1
+  y = 5
+  z = 0
+    }
+
+  room_exits "zoulang3" {
+    room_id = rooms.zoulang3.id
+    southeast = rooms.houyuan2.id
+    south = rooms.liang.id
+    north = rooms.liao.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/zoulang4.c by LPCConverter
+# Zone: lingxiao
+
+    rooms "zoulang4" {
+      name = "走廊"
+      description = "这是一条安静的走廊，北面是齐自勉的居室，南面是成自学 的房间。长老们向来除了授徒传艺，少有外出，这里一向少有人 来，只有凌霄弟子每日前来打扫。"
+  x = 1
+  y = 5
+  z = 0
+    }
+
+  room_exits "zoulang4" {
+    room_id = rooms.zoulang4.id
+    southwest = rooms.houyuan2.id
+    south = rooms.qi.id
+    north = rooms.cheng.id
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/a-xiu.c by LPCConverter
+# Zone: lingxiao
+
+    characters "a_xiu" {
+      name = "阿绣"
+      description = "她是凌霄城主的孙女，十多岁年纪。聪明伶俐 美丽可人。"
+  title = "凌霄城主孙女"
+  gender = "女性"
+  age = 16
+  shen_type = 1
+  score = 2000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    con = 30
+    dex = 30
+    int = 24
+    max_jing = 500
+    max_neili = 1000
+    max_qi = 800
+    str = 25
+  }
+
+  inquiries = [
+    { key = "大粽子" value = "只有我才能这么叫他，你可不许。" },
+    { key = "白万剑" value = "那是我爹呀。" },
+    { key = "白自在" value = "那是我爷爷呀。" },
+    { key = "石中玉" value = "哼，那个家伙，死不足惜。" },
+    { key = "石破天" value = "天哥去了侠客岛，也不知道他现在怎么样了。" }
+  ]
+
+  chat_chance = 5
+chats = [
+    "阿绣忽然皱颦不快，好象想起了什么可气之事。"
+]
+
+
+  skills = [
+    { skill = "force" level = 100 },
+    { skill = "xueshan-neigong" level = 100 },
+    { skill = "wuwang-shengong" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "taxue-wuhen" level = 80 },
+    { skill = "cuff" level = 80 },
+    { skill = "lingxiao-quan" level = 80 },
+    { skill = "strike" level = 80 },
+    { skill = "piaoxu-zhang" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "hanmei-jian" level = 80 },
+    { skill = "blade" level = 120 },
+    { skill = "jinwu-daofa" level = 120 },
+    { skill = "parry" level = 80 },
+    { skill = "literate" level = 100 },
+    { skill = "martial-cognize" level = 20 },
+    { type = "force" skill = "wuwang-shengong" },
+    { type = "dodge" skill = "taxue-wuhen" },
+    { type = "cuff" skill = "lingxiao-quan" },
+    { type = "strike" skill = "piaoxu-zhang" },
+    { type = "sword" skill = "hanmei-jian" },
+    { type = "blade" skill = "jinwu-daofa" },
+    { type = "parry" skill = "jinwu-daofa" }
+  ]
+
+
+  carry = [
+    { id = items.mudao.id },
+    { id = items.xian_cloth.id },
+    { id = items.boots.id },
+    { id = items.belt.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/daifu.c by LPCConverter
+# Zone: lingxiao
+
+    characters "daifu" {
+      name = "阎大夫"
+      description = "阎大夫是凌宵城中的医生，声得称赞。"
+  gender = "男性"
+  age = 18
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 250
+    str = 20
+  }
+
+  # vendor_goods: "/clone/misc/jinchuang" (file not found)
+  # vendor_goods: "/clone/misc/yangjing" (file not found)
+  # vendor_goods: "/clone/misc/dust" (file not found)
+  # vendor_goods: "/clone/misc/fashao" (file not found)
+  # vendor_goods: "/clone/misc/shanghan" (file not found)
+  # vendor_goods: "/clone/misc/xiaoshu" (file not found)
+  # vendor_goods: "/clone/misc/dongshang" (file not found)
+  # vendor_goods: "/clone/misc/zhike" (file not found)
+  # vendor_goods: "/d/shenlong/obj/xionghuang" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/dizi.c by LPCConverter
+# Zone: lingxiao
+
+    characters "dizi" {
+      name = "凌霄弟子"
+      description = "这是一个凌霄城的普通弟子。"
+  gender = "男性"
+  age = 20
+  shen_type = 0
+  score = 50000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 400
+    max_neili = 500
+    max_qi = 800
+    str = 30
+  }
+
+  chat_chance = 3
+chats = [
+    "一位凌霄弟子小声说道：听说老爷子发疯了，还把封师叔的膀子卸了下来，不知道是真是假。",
+    "一位凌霄弟子冷笑道：打起来了好啊，这下子半年一次的论剑也不用开了，免得挨骂。",
+    "一位凌霄城弟子哼了一声，道：师父一向说我们凌霄城的剑法天下无双，改天我要让那些江湖中人见识一下。",
+    "一位凌霄城弟子不屑道：老爷子的病是气出来的，你们不知道吧。",
+    "一位凌霄城弟子哼了一声，道：马上赏善罚恶使者要来了，我们还是先跑路吧。",
+    "一位凌霄城弟子摇摇头，道：就算赏善罚恶使者来了，只要有人接令牌，我们这些小人物也没事。",
+    "一位凌霄城弟子打了个哈欠，道：昨天轮到老子守城，差点被冷死。",
+    "一位凌霄城弟子搓了搓手，道：昨天我从师父的柜子里偷了瓶参阳玉酒，嘿嘿……真他妈的不错。",
+    "一位凌霄城弟子看看四周，小声说道：上次谢烟客来的时候，带的那个狗杂种，听说是长乐帮的帮主。",
+    "一位凌霄城弟子摆了个架势，大声说：武当少林算什么！老爷子说了，武林中就我们凌霄城最厉害！",
+    "一位凌霄城弟子掏出一瓶酒，喝了两口，红着眼睛说：老爷子是被成师叔祖他们暗算了！我等会就去把他救出来！",
+    "一位凌霄城弟子低声对另一位弟子说，要想进地牢，就必须先拿到寒玉牌啊。",
+    "一位凌霄城弟子愤愤说道：那个狗杂种，上次竟想对阿绣非礼，要是让我遇见，哼哼哼！"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 100 },
+    { skill = "sword" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "literate" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/feng.c by LPCConverter
+# Zone: lingxiao
+
+    characters "feng" {
+      name = "封万里"
+      description = "他是凌霄城第六代弟子封万里，是第六代弟子中 最为出类拔萃的人物。其剑法刚猛迅捷，如狂风 似烈火，因此得了个风火神龙的外号。但不知为 何，他少了一只手臂,眼中全是愤怒悔恨之色。"
+  nickname = "风火神龙"
+  gender = "男性"
+  age = 34
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1200000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 3500
+    max_neili = 5000
+    max_qi = 4200
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 220 },
+    { skill = "xueshan-neigong" level = 220 },
+    { skill = "dodge" level = 220 },
+    { skill = "taxue-wuhen" level = 220 },
+    { skill = "cuff" level = 200 },
+    { skill = "lingxiao-quan" level = 200 },
+    { skill = "strike" level = 200 },
+    { skill = "piaoxu-zhang" level = 200 },
+    { skill = "sword" level = 240 },
+    { skill = "hanmei-jian" level = 240 },
+    { skill = "yunhe-jian" level = 240 },
+    { skill = "xueshan-jian" level = 240 },
+    { skill = "parry" level = 220 },
+    { skill = "literate" level = 200 },
+    { skill = "martial-cognize" level = 200 },
+    { type = "force" skill = "xueshan-neigong" },
+    { type = "dodge" skill = "taxue-wuhen" },
+    { type = "cuff" skill = "lingxiao-quan" },
+    { type = "strike" skill = "piaoxu-zhang" },
+    { type = "sword" skill = "xueshan-jian" },
+    { type = "parry" skill = "yunhe-jian" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+
+  engage = {
+    fight = { accept = false msg = "别以为我少了一臂便好欺负，给我滚开！" }
+    hit = { accept = true msg = "无耻之徒，别以为我少了一臂便能任人宰割，受死吧！" retaliate = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/laoban.c by LPCConverter
+# Zone: lingxiao
+
+    characters "laoban" {
+      name = "陈朝奉"
+      description = "陈朝奉是水晶当的老板，据说为人还不错。"
+  title = "当铺老板"
+  gender = "男性"
+  age = 35
+  shen_type = 0
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    str = 100
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "dodge" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy", "sell", "value"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/shi.c by LPCConverter
+# Zone: lingxiao
+
+    characters "shi" {
+      name = "时万年"
+      description = "他是凌霄城第六代弟子时万年，乃是继白万剑、封 万里后武功最高、剑法最精的弟子。此时他在此守 卫监狱。"
+  gender = "男性"
+  age = 24
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 800000
+    con = 30
+    dex = 30
+    int = 24
+    max_jing = 1200
+    max_neili = 1800
+    max_qi = 1500
+    str = 25
+  }
+
+  chat_chance = 8
+chats = [
+    "时万年恨恨说道：老疯子不知道又怎么了，把自己关在里面弄死不肯出来。",
+    "时万年把剑一弹，傲然道：有我守在这，谁都别想把老疯子放出来。"
+]
+
+
+  skills = [
+    { skill = "force" level = 160 },
+    { skill = "xueshan-neigong" level = 160 },
+    { skill = "dodge" level = 160 },
+    { skill = "taxue-wuhen" level = 160 },
+    { skill = "cuff" level = 160 },
+    { skill = "lingxiao-quan" level = 160 },
+    { skill = "strike" level = 160 },
+    { skill = "piaoxu-zhang" level = 160 },
+    { skill = "sword" level = 180 },
+    { skill = "hanmei-jian" level = 180 },
+    { skill = "yunhe-jian" level = 180 },
+    { skill = "parry" level = 160 },
+    { skill = "literate" level = 120 },
+    { skill = "martial-cognize" level = 80 },
+    { type = "force" skill = "xueshan-neigong" },
+    { type = "dodge" skill = "taxue-wuhen" },
+    { type = "cuff" skill = "lingxiao-quan" },
+    { type = "strike" skill = "piaoxu-zhang" },
+    { type = "sword" skill = "yunhe-jian" },
+    { type = "parry" skill = "hanmei-jian" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/su.c by LPCConverter
+# Zone: lingxiao
+
+    characters "su" {
+      name = "苏万虹"
+      description = "他是凌霄城第六代弟子苏万虹，很得白自在的喜欢。"
+  gender = "男性"
+  age = 24
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500000
+    con = 30
+    dex = 30
+    int = 24
+    max_jing = 1000
+    max_neili = 1500
+    max_qi = 1200
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 140 },
+    { skill = "xueshan-neigong" level = 140 },
+    { skill = "dodge" level = 120 },
+    { skill = "taxue-wuhen" level = 120 },
+    { skill = "cuff" level = 120 },
+    { skill = "lingxiao-quan" level = 120 },
+    { skill = "strike" level = 120 },
+    { skill = "piaoxu-zhang" level = 120 },
+    { skill = "sword" level = 140 },
+    { skill = "hanmei-jian" level = 140 },
+    { skill = "yunhe-jian" level = 140 },
+    { skill = "parry" level = 120 },
+    { skill = "literate" level = 100 },
+    { skill = "martial-cognize" level = 40 },
+    { type = "force" skill = "xueshan-neigong" },
+    { type = "dodge" skill = "taxue-wuhen" },
+    { type = "cuff" skill = "lingxiao-quan" },
+    { type = "strike" skill = "piaoxu-zhang" },
+    { type = "sword" skill = "yunhe-jian" },
+    { type = "parry" skill = "hanmei-jian" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/sun.c by LPCConverter
+# Zone: lingxiao
+
+    characters "sun" {
+      name = "孙万年"
+      description = "他是凌宵城第六代弟子孙万年，生得獐头鼠目。 因为品行不端，被关在这里思过。"
+  age = 24
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500000
+    con = 30
+    dex = 30
+    int = 24
+    max_jing = 1000
+    max_neili = 1500
+    max_qi = 1200
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 140 },
+    { skill = "xueshan-neigong" level = 140 },
+    { skill = "dodge" level = 120 },
+    { skill = "taxue-wuhen" level = 120 },
+    { skill = "cuff" level = 120 },
+    { skill = "lingxiao-quan" level = 120 },
+    { skill = "strike" level = 120 },
+    { skill = "piaoxu-zhang" level = 120 },
+    { skill = "sword" level = 140 },
+    { skill = "hanmei-jian" level = 140 },
+    { skill = "yunhe-jian" level = 140 },
+    { skill = "parry" level = 120 },
+    { skill = "literate" level = 100 },
+    { skill = "martial-cognize" level = 40 },
+    { type = "force" skill = "xueshan-neigong" },
+    { type = "dodge" skill = "taxue-wuhen" },
+    { type = "cuff" skill = "lingxiao-quan" },
+    { type = "strike" skill = "piaoxu-zhang" },
+    { type = "sword" skill = "yunhe-jian" },
+    { type = "parry" skill = "hanmei-jian" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/wang-wanyi.c by LPCConverter
+# Zone: lingxiao
+
+    characters "wang_wanyi" {
+      name = "汪万翼"
+      description = "他是凌霄城第六代弟子汪万翼，在凌霄城中以轻功见长。"
+  gender = "男性"
+  age = 24
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500000
+    con = 30
+    dex = 30
+    int = 24
+    max_jing = 1000
+    max_neili = 1500
+    max_qi = 1200
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 140 },
+    { skill = "xueshan-neigong" level = 140 },
+    { skill = "dodge" level = 120 },
+    { skill = "taxue-wuhen" level = 120 },
+    { skill = "cuff" level = 120 },
+    { skill = "lingxiao-quan" level = 120 },
+    { skill = "strike" level = 120 },
+    { skill = "piaoxu-zhang" level = 120 },
+    { skill = "sword" level = 140 },
+    { skill = "hanmei-jian" level = 140 },
+    { skill = "yunhe-jian" level = 140 },
+    { skill = "parry" level = 120 },
+    { skill = "literate" level = 100 },
+    { skill = "martial-cognize" level = 40 },
+    { type = "force" skill = "xueshan-neigong" },
+    { type = "dodge" skill = "taxue-wuhen" },
+    { type = "cuff" skill = "lingxiao-quan" },
+    { type = "strike" skill = "piaoxu-zhang" },
+    { type = "sword" skill = "yunhe-jian" },
+    { type = "parry" skill = "hanmei-jian" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/yan.c by LPCConverter
+# Zone: lingxiao
+
+    characters "yan" {
+      name = "燕万鹏"
+      description = "他是凌霄城第六代弟子燕万鹏。第六代弟子中，为 人数他最为梗直，素有铁面之称，所以在此镇狱。"
+  gender = "男性"
+  age = 24
+  brain = brains.guarder
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1000000
+    con = 30
+    dex = 30
+    int = 24
+    max_jing = 2500
+    max_neili = 2500
+    max_qi = 3000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 160 },
+    { skill = "xueshan-neigong" level = 160 },
+    { skill = "dodge" level = 140 },
+    { skill = "taxue-wuhen" level = 140 },
+    { skill = "cuff" level = 140 },
+    { skill = "lingxiao-quan" level = 140 },
+    { skill = "strike" level = 140 },
+    { skill = "piaoxu-zhang" level = 140 },
+    { skill = "sword" level = 160 },
+    { skill = "hanmei-jian" level = 160 },
+    { skill = "yunhe-jian" level = 160 },
+    { skill = "parry" level = 140 },
+    { skill = "literate" level = 100 },
+    { skill = "martial-cognize" level = 60 },
+    { type = "force" skill = "xueshan-neigong" },
+    { type = "dodge" skill = "taxue-wuhen" },
+    { type = "cuff" skill = "lingxiao-quan" },
+    { type = "strike" skill = "piaoxu-zhang" },
+    { type = "sword" skill = "yunhe-jian" },
+    { type = "parry" skill = "hanmei-jian" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/yaoniang.c by LPCConverter
+# Zone: lingxiao
+
+    characters "yaoniang" {
+      name = "窈娘"
+      description = "窈娘是白自在的妾侍，很得白自在宠信。"
+  gender = "女性"
+  age = 17
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+    con = 24
+    dex = 30
+    int = 27
+    max_jing = 500
+    max_qi = 800
+    str = 16
+  }
+
+  inquiries = [
+    { key = "白自在" value = "老爷子不知为什么，把自己关到监狱里。说是思什么过。" },
+    { key = "监狱" value = "没少爷同意，你是进不去的。" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/npc/zhu.c by LPCConverter
+# Zone: lingxiao
+
+    characters "zhu" {
+      name = "褚万春"
+      description = "他是凌霄城第六代弟子褚万春，和孙万年一样，贼眉鼠眼。 也因为行止不端，被关在这里。"
+  gender = "男性"
+  age = 24
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500000
+    con = 30
+    dex = 30
+    int = 24
+    max_jing = 1000
+    max_neili = 1500
+    max_qi = 1200
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 140 },
+    { skill = "xueshan-neigong" level = 140 },
+    { skill = "dodge" level = 120 },
+    { skill = "taxue-wuhen" level = 120 },
+    { skill = "cuff" level = 120 },
+    { skill = "lingxiao-quan" level = 120 },
+    { skill = "strike" level = 120 },
+    { skill = "piaoxu-zhang" level = 120 },
+    { skill = "sword" level = 140 },
+    { skill = "hanmei-jian" level = 140 },
+    { skill = "yunhe-jian" level = 140 },
+    { skill = "parry" level = 120 },
+    { skill = "literate" level = 100 },
+    { skill = "martial-cognize" level = 40 },
+    { type = "force" skill = "xueshan-neigong" },
+    { type = "dodge" skill = "taxue-wuhen" },
+    { type = "cuff" skill = "lingxiao-quan" },
+    { type = "strike" skill = "piaoxu-zhang" },
+    { type = "sword" skill = "yunhe-jian" },
+    { type = "parry" skill = "hanmei-jian" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/ban.c by LPCConverter
+# Zone: lingxiao
+
+    items "ban" {
+      name = "Item"
+      description = "一片刚刚从树上飘落的梅瓣。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/book-bamboo.c by LPCConverter
+# Zone: lingxiao
+
+    items "book_bamboo" {
+      name = "旧竹片"
+      description = "易筋经轻功篇 这是一片两边去皮的旧竹片，正面和背面都画了无数个飞翔纵跃的小图形。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/book-iron.c by LPCConverter
+# Zone: lingxiao
+
+    items "book_iron" {
+      name = "铁手掌"
+      description = "易筋经攻防篇 这是一块铁手掌，上面凹凹凸凸刻满了人形搏击的场面。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/book-silk.c by LPCConverter
+# Zone: lingxiao
+
+    items "book_silk" {
+      name = "薄绢"
+      description = "这是小册易筋经修行篇 由一束薄绢钉成，里面密密麻麻的画了不少打坐吐呐的姿势。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/book-stone.c by LPCConverter
+# Zone: lingxiao
+
+    items "book_stone" {
+      name = "石板"
+      description = "易筋经拳法篇 这是一块园园的石板，似乎用手指刻划了数个指印。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/ganjiang.c by LPCConverter
+# Zone: lingxiao
+
+    items "ganjiang" {
+      name = "干将"
+      description = "这就是赫赫有名的干将,剑锋上隐隐透出一股清气,仔细凝望,只觉一股肃杀之气森热煌馍ⅰ�n"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中,顿时风沙飞扬,黑云罩日,漫天神鬼惊惧。"
+    unwield = "{npc}将手中的{name}插回剑鞘,一下子风平浪静,晴空万里。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/hanyu.c by LPCConverter
+# Zone: lingxiao
+
+    items "hanyu" {
+      name = "极北寒玉"
+      description = "极地万年寒冰凝结而成，看上去洁白剔透，散发出雪一般的光泽。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/mei.c by LPCConverter
+# Zone: lingxiao
+
+    items "mei" {
+      name = "Item"
+      description = "一朵刚刚从树上飘落的梅花。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/moye.c by LPCConverter
+# Zone: lingxiao
+
+    items "moye" {
+      name = "莫邪"
+      description = "这就是赫赫有名的莫邪,剑锋上隐隐透出一股紫气,仔细凝望,只觉一股肃杀之气森然外散。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中,顿时只听冤魂惨嚎,令人毛骨悚然。"
+    unwield = "{npc}将手中的{name}插回剑鞘,一下子风平浪静,晴空万里。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/rice.c by LPCConverter
+# Zone: lingxiao
+
+    items "rice" {
+      name = "珍珠饭"
+      description = "一碗用雪山珍珠米作的饭。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lingxiao/obj/soup.c by LPCConverter
+# Zone: lingxiao
+
+    items "soup" {
+      name = "雪鹤汤"
+      description = "一碗香气扑鼻的雪鹤汤。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

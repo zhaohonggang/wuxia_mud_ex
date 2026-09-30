@@ -1,0 +1,332 @@
+zones "kissa-jarvi" {
+  name = "基萨湖 Kissa Järvi"
+}
+
+rooms "gates" {
+  name = "萨玛蒂之门 The Gates to Sammatti"
+  description = "你正站在通往萨玛蒂的大门前面。You are in front of the gates to Sammatti."
+
+  x = 1
+  y = 3
+  z = 0
+
+  features = [
+    {
+      keyword = "lake edge"
+      short = "湖岸悄然逼近入口。The lake edge creeps close to the entrance."
+      long = "湖岸悄然逼近入口。The lake edge creeps close to the entrance."
+    }
+  ]
+}
+
+room_exits "gates" {
+  room_id = rooms.gates.id
+
+  north = sammatti.rooms.town_square.id
+  south = rooms.path-1.id
+}
+
+rooms "path-1" {
+  name = "基萨小径 Kissa Path"
+  description = "一条远离萨玛蒂的土路。A dirt road leading away from Sammatti."
+
+  map_color = "brown"
+  map_icon = "trail"
+
+  x = 1
+  y = 2
+  z = 0
+
+  features = [
+    {
+      ref = features.stones
+    }
+  ]
+}
+
+room_exits "path-1" {
+  room_id = rooms.path-1.id
+
+  north = rooms.gates.id
+  south = rooms.path-2.id
+  west = rooms.lake-1.id
+}
+
+rooms "path-2" {
+  name = "基萨小径 Kissa Path"
+  description = "一条远离萨玛蒂的土路。A dirt road leading away from Sammatti."
+
+  map_color = "brown"
+  map_icon = "trail"
+
+  x = 1
+  y = 1
+  z = 0
+
+  features = [
+    {
+      ref = features.stones
+    }
+  ]
+}
+
+room_exits "path-2" {
+  room_id = rooms.path-2.id
+
+  north = rooms.path-1.id
+  east = rooms.path-3.id
+  west = rooms.lake-2.id
+  south = rooms.lake-4.id
+}
+
+room_characters "path-2" {
+  room_id = rooms.path-2.id
+
+  characters = [
+    {
+      id = characters.wolf.id
+    }
+  ]
+}
+
+rooms "path-3" {
+  name = "基萨小径 Kissa Path"
+  description = "一条远离萨玛蒂的土路。A dirt road leading away from Sammatti."
+
+  map_color = "brown"
+  map_icon = "trail"
+
+  x = 2
+  y = 1
+  z = 0
+
+  features = [
+    {
+      ref = features.stones
+    }
+  ]
+}
+
+room_exits "path-3" {
+  room_id = rooms.path-3.id
+
+  west = rooms.path-2.id
+  east = rooms.path-4.id
+  south = rooms.lake-5.id
+}
+
+room_characters "path-3" {
+  room_id = rooms.path-3.id
+
+  characters = [
+    {
+      id = characters.wolf.id
+    }
+  ]
+}
+
+rooms "path-4" {
+  name = "基萨小径 Kissa Path"
+  description = "一条远离萨玛蒂的土路。A dirt road leading away from Sammatti."
+
+  map_color = "brown"
+  map_icon = "trail"
+
+  x = 3
+  y = 1
+  z = 0
+
+  features = [
+    {
+      ref = features.stones
+    }
+  ]
+}
+
+room_exits "path-4" {
+  room_id = rooms.path-4.id
+
+  west = rooms.path-3.id
+  south = rooms.lake-6.id
+}
+
+rooms "lake-1" {
+  name = "基萨湖 Kissa Järvi"
+  description = "一片狭长而浅的湖泊。A long shallow lake."
+
+  map_color = "blue"
+  map_icon = "drop"
+
+  x = 0
+  y = 2
+  z = 0
+
+  features = [
+    {
+      ref = features.water
+    }
+  ]
+}
+
+room_exits "lake-1" {
+  room_id = rooms.lake-1.id
+
+  east = rooms.path-1.id
+  south = rooms.lake-2.id
+}
+
+rooms "lake-2" {
+  name = "基萨湖 Kissa Järvi"
+  description = "一片狭长而浅的湖泊。A long shallow lake."
+
+  map_color = "blue"
+  map_icon = "drop"
+
+  x = 0
+  y = 1
+  z = 0
+
+  features = [
+    {
+      ref = features.water
+    }
+  ]
+}
+
+room_exits "lake-2" {
+  room_id = rooms.lake-2.id
+
+  north = rooms.lake-1.id
+  east = rooms.path-2.id
+  south = rooms.lake-3.id
+}
+
+rooms "lake-3" {
+  name = "基萨湖 Kissa Järvi"
+  description = "一片狭长而浅的湖泊。A long shallow lake."
+
+  map_color = "blue"
+  map_icon = "drop"
+
+  x = 0
+  y = 0
+  z = 0
+
+  features = [
+    {
+      ref = features.water
+    }
+  ]
+}
+
+room_exits "lake-3" {
+  room_id = rooms.lake-3.id
+
+  north = rooms.lake-2.id
+  east = rooms.lake-4.id
+}
+
+rooms "lake-4" {
+  name = "基萨湖 Kissa Järvi"
+  description = "一片狭长而浅的湖泊。A long shallow lake."
+
+  map_color = "blue"
+  map_icon = "drop"
+
+  x = 1
+  y = 0
+  z = 0
+
+  features = [
+    {
+      ref = features.water
+    }
+  ]
+}
+
+room_exits "lake-4" {
+  room_id = rooms.lake-4.id
+
+  north = rooms.path-2.id
+  east = rooms.lake-5.id
+  west = rooms.lake-3.id
+  south = lepakko-luola.rooms.cave-outside.id
+}
+
+rooms "lake-5" {
+  name = "基萨湖 Kissa Järvi"
+  description = "一片狭长而浅的湖泊。A long shallow lake."
+
+  map_color = "blue"
+  map_icon = "drop"
+
+  x = 2
+  y = 0
+  z = 0
+
+  features = [
+    {
+      ref = features.water
+    }
+  ]
+}
+
+room_exits "lake-5" {
+  room_id = rooms.lake-5.id
+
+  north = rooms.path-3.id
+  west = rooms.lake-4.id
+  east = rooms.lake-6.id
+}
+
+rooms "lake-6" {
+  name = "基萨湖 Kissa Järvi"
+  description = "一片狭长而浅的湖泊。A long shallow lake."
+
+  map_color = "blue"
+  map_icon = "drop"
+
+  x = 3
+  y = 0
+  z = 0
+
+  features = [
+    {
+      ref = features.water
+    }
+  ]
+}
+
+room_exits "lake-6" {
+  room_id = rooms.lake-6.id
+
+  north = rooms.path-4.id
+  west = rooms.lake-5.id
+}
+
+features "water" {
+  keyword = "water"
+  short = "湖水在阳光下波光粼粼。The water shimmers in the sunlight."
+  long = "湖水在阳光下波光粼粼。The water shimmers in the sunlight."
+}
+
+features "stones" {
+  keyword = "stones"
+  short = "小石子散落在小径上。Small stones liter the pathway."
+  long = "小石子散落在小径上。Small stones liter the pathway."
+}
+
+characters "wolf" {
+  name = "灰狼 Wolf"
+  description = "一头灰色的狼。A grey wolf."
+}
+
+characters "bobcat" {
+  name = "猞猁 Bobcat"
+  description = "一只尾巴短粗的灰色大猫。A large grey cat with a stubby tail."
+}
+
+characters "pike" {
+  name = "狗鱼 Pike"
+  description = "一条细长的银白色鱼。A long slender slivery fish."
+}
