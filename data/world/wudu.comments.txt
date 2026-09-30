@@ -173,12 +173,12 @@
   # if (random(10) > 5)  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_insert
   # UNHANDLED FUNCTION: do_use
+  # UNHANDLED FUNCTION: do_insert
   # UNHANDLED FUNCTION: precreate
+  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: recreate
   # UNHANDLED FUNCTION: do_fire
-  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -246,8 +246,8 @@
   # if (query("not_tongpai"))  →  
 # ==== CONDITIONAL BRANCHES (do_search) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: regenerate
   # UNHANDLED FUNCTION: do_search
+  # UNHANDLED FUNCTION: regenerate
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -392,8 +392,8 @@
   # if ( query("mishi_book") == 1 && me->query("can_learn/qianzhu-wandushou") )  →  message_vision(HIC '$P' HIC '打开石匣，发现内有一束绢' '册，连忙取了出来。\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_open) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_open
   # UNHANDLED FUNCTION: do_think
+  # UNHANDLED FUNCTION: do_open
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -529,8 +529,8 @@
   # if (dir == "northwest")  →  
 # ==== CONDITIONAL BRANCHES (valid_leave) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: fall_down
   # UNHANDLED FUNCTION: fall_down1
+  # UNHANDLED FUNCTION: fall_down
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1128,12 +1128,12 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: suck
-  # UNHANDLED FUNCTION: setup
-  # UNHANDLED FUNCTION: wan
-  # UNHANDLED FUNCTION: do_du
-  # UNHANDLED FUNCTION: zhugu
   # UNHANDLED FUNCTION: do_yanjiu
+  # UNHANDLED FUNCTION: zhugu
+  # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_du
+  # UNHANDLED FUNCTION: wan
+  # UNHANDLED FUNCTION: suck
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

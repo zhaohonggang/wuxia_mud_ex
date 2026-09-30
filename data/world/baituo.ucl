@@ -39,11 +39,11 @@ zones "baituo" {
 
   room_exits "cao1" {
     room_id = rooms.cao1.id
+    south = rooms.cao1.id
     east = rooms.ximen.id
     north = rooms.cao2.id
+    west = rooms.cao1.id
     }
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
 
 
 
@@ -70,8 +70,8 @@ zones "baituo" {
     south = rooms.cao1.id
     east = rooms.cao1.id
     north = rooms.zhulin.id
+    west = rooms.cao2.id
     }
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 
 

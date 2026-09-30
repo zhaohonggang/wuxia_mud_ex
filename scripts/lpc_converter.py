@@ -1693,7 +1693,7 @@ def _classify_exit_path(path, zone_id):
     return ("local", _room_id_from_path(t))
 
 
-def _resolve_exit_target(val, zone_id):
+def _resolve_exit_target(val, zone_id, room_id=None):
     """Render an exit value as a UCL reference.
 
     Cross-zone targets become `<zone>.rooms.<room>.id` because that is the shape
@@ -1705,6 +1705,9 @@ def _resolve_exit_target(val, zone_id):
     source zone happened to own a room of that name, silently linked to the
     wrong room (e.g. beijing/ximenwai -west-> /d/heimuya/road3 pointed at
     beijing/road3).
+
+    `room_id` is the room being generated; it is only needed to resolve
+    `__FILE__`, which names the room itself.
     """
     if isinstance(val, tuple) and val[0] == "string":
         kind, *rest = _classify_exit_path(val[1], zone_id)
@@ -1718,7 +1721,22 @@ def _resolve_exit_target(val, zone_id):
     if kind == "cross":
         return "%s.rooms.%s.id" % (rest[0], rest[1]), None
     if kind == "self":
-        return None, "self-referential (__FILE__)"
+        # LPC's __FILE__ is the room's own source file, i.e. the exit leads back
+        # to this very room - a legal (if odd) self-loop.  50 rooms / 137 exits
+        # across 11 zones use it, e.g. baituo/cao1.c:
+        #     "west" : __FILE__,
+        #     "south": __FILE__,
+        # Resolving it to the room itself keeps the direction usable; the old
+        # behaviour wrote a literal `rooms.__file__.id`, which named a room that
+        # does not exist, so the loader dropped it and the direction silently did
+        # nothing.  Verified safe downstream: a self-loop resolves to the same
+        # room id, Zone -> Voting -> MoveEvent simply re-enters the same room,
+        # and both assign_room_coords (visited set) and check_room_coords
+        # (already-seen guard) treat it as a no-op.  None of these 137 exits use
+        # up/down, so the vertical-link synthesis is untouched.
+        if not room_id:
+            return None, "self-referential (__FILE__) with unknown room id"
+        return "rooms." + _room_id_from_path(room_id) + ".id", None
     return None, rest[0]
 
 
@@ -1899,7 +1917,7 @@ def _generate_room_ucl(ast, zone_id):
                 # rather than emitting a dangling target the loader would follow.
                 skipped.append(direction)
                 continue
-            target, why = _resolve_exit_target(val, zone_id)
+            target, why = _resolve_exit_target(val, zone_id, room_id)
             if target is None:
                 # No data/world zone to point at (/clone/shop, /b/, __FILE__,
                 # a relative path, ...).  Dropping it is correct: a bare

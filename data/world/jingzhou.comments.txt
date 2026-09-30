@@ -194,8 +194,8 @@
   # if ((int)me->query_skill("force", 1) < 100 )  →  
 # ==== CONDITIONAL BRANCHES (do_move) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close_passage
   # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: close_passage
   # UNHANDLED FUNCTION: look_bei
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -273,8 +273,8 @@
   # if (me->query_temp("caistone") == 1)  →  message_vision(HIW '$N笨手笨脚地找了个缝隙把雷管插进去，手忙脚乱地点燃了就溜！\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_zha) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: bao
   # UNHANDLED FUNCTION: do_zha
+  # UNHANDLED FUNCTION: bao
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -303,8 +303,8 @@
   # if (me->query_temp("caistone") == 1)  →  message_vision(HIW '$N笨手笨脚地找了个缝隙把雷管插进去，手忙脚乱地点燃了就溜！\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_zha) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: bao
   # UNHANDLED FUNCTION: do_zha
+  # UNHANDLED FUNCTION: bao
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -788,8 +788,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_eat
   # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_eat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -863,8 +863,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_eat
   # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_eat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -956,8 +956,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_eat
   # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_eat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1069,8 +1069,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_eat
   # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_eat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1116,8 +1116,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_eat
   # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_eat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1274,8 +1274,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_eat
   # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_eat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1297,8 +1297,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_eat
   # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_eat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

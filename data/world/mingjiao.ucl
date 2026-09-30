@@ -729,14 +729,14 @@ valid_leave = [
 
 ]
     }
+
   room_exits "jmqjiguan" {
     room_id = rooms.jmqjiguan.id
+    north = rooms.jmqjiguan.id
+    south = rooms.jmqjiguan.id
+    west = rooms.jmqjiguan.id
+    east = rooms.jmqjiguan.id
     }
-
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/mingjiao/jmqmen.c by LPCConverter
 # Zone: mingjiao

@@ -312,7 +312,32 @@ LPC 里 `random(2)` 只返回 0/1，即在 fojing1/fojing2 间二选一——完
 
 ---
 
-## 14. `__FILE__` 自引用产生悬空房间名（已修）
+## 14. `__FILE__` 自引用产生悬空房间名（已修，现为真实自环）
+
+**`__FILE__` 已真实修正为自环（B 项扩展，2026-09-30）**
+
+原先只是「跳过 + 注释」，现按你的要求**真实指向自己房间**：
+`_resolve_exit_target()` 新增 `room_id` 参数，遇到 `__FILE__` 时输出
+`rooms.<本房间>.id`。
+
+规模：**137 条出口 / 50 个房间 / 11 个区**（`baituo` `city` `gumu` `huanghe`
+`mingjiao` `motianya` `taohua` `tiezhang` `xiakedao` `xiyu` `xueshan`）。
+
+风险排查结论（都验证过，不是推测）：
+
+- **0 条是 up/down**（全是 west/north/east/south 与四个斜向），所以
+  `assign_room_coords.py` 的垂直连接合成、`_phantom_updown` 完全不受影响
+- 运行时安全：`room/events.ex` 用
+  `Enum.find(exits, &(&1.exit_name == exit_name))` 查表后取
+  `to: room_exit.end_room_id`，自环即回到本房间 id，
+  Zone → Voting → `MoveEvent` 只把 `room_id` 设为同值，原地不动
+- 坐标脚本不会死循环：`_drain` 用 `visited` 集合、
+  `_find_topmost_via_up_rec` 带 `visited` 参数，都有防重入
+- 加载器不再丢弃：`parse_exits` 的 `not is_nil` 过滤不再命中
+
+`test/cross_zone_wiring_test.exs` 新增一条测试锁定：`baituo:cao1` 的
+`west` / `south` 必须回到 `baituo:cao1`，且全库不得残留 `__file__` 字面量。
+
 
 **修复（A 项，2026-09-30）**　新增 `_split_runtime_suffix()` / `_random_candidates()`：把 `"<路径>" + random(n)` 拆成字面路径 + 候选枚举，不再因含括号整体丢弃。
 LPC 的 `+` 是**字符串直接拼接十进制数字**，所以 `"d/shaolin/obj/fojing1" + random(2)` 实际指向 `fojing10` / `fojing11`——这与磁盘上的文件完全吻合（`shaolin/obj/` 只有 `fojing10.c` `fojing11.c` `fojing20.c` `fojing21.c`，**没有** `fojing1.c` / `fojing2.c`）。

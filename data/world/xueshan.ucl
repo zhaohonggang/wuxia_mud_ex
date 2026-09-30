@@ -704,14 +704,14 @@ item_desc = {
   y = 2
   z = 2
     }
+
   room_exits "shenghu" {
     room_id = rooms.shenghu.id
+    north = rooms.shenghu.id
+    south = rooms.shenghu.id
+    west = rooms.shenghu.id
+    east = rooms.shenghu.id
     }
-
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 
   room_characters "shenghu" {

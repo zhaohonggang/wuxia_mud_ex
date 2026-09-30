@@ -76,6 +76,33 @@ defmodule CrossZoneWiringTest do
   end
 
   @tag :world_data
+  test "__FILE__ exits resolve to the room itself (self-loops)" do
+    w = world()
+    rooms = room_index(w)
+
+    # baituo/cao1.c declares "west" : __FILE__ and "south" : __FILE__,
+    # i.e. both directions lead back to the same room.
+    cao1 = Map.fetch!(rooms, "baituo:cao1")
+
+    for dir <- ["west", "south"] do
+      exit = Enum.find(cao1.exits, &(&1.exit_name == dir))
+      assert exit != nil, "cao1 lost its #{dir} self-loop"
+      assert exit.end_room_id == "baituo:cao1",
+             "cao1 -#{dir}-> should return to baituo:cao1, got #{inspect(exit.end_room_id)}"
+    end
+
+    # No exit anywhere may still carry the bogus literal `__file__` room.
+    bogus =
+      for r <- all_rooms(w),
+          e <- r.exits,
+          is_binary(e.end_room_id),
+          String.contains?(e.end_room_id, "__file__"),
+          do: {r.id, e.exit_name, e.end_room_id}
+
+    assert bogus == [], "unresolved __FILE__ references remain: #{inspect(bogus)}"
+  end
+
+  @tag :world_data
   test "world graph is now connected across zones" do
     w = world()
 

@@ -174,9 +174,9 @@
   # if (! environment(junzi) && ! environment(shunv))  →  
 # ==== CONDITIONAL BRANCHES (look_hua) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: look_hua
   # UNHANDLED FUNCTION: do_pull
   # UNHANDLED FUNCTION: do_pick
+  # UNHANDLED FUNCTION: look_hua
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -302,8 +302,8 @@
   # if (me->is_fighting())  →  
 # ==== CONDITIONAL BRANCHES (do_climb) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: look_kong
   # UNHANDLED FUNCTION: do_climb
+  # UNHANDLED FUNCTION: look_kong
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -333,9 +333,9 @@
   # if (me->query_temp("marks/抱"))  →  
 # ==== CONDITIONAL BRANCHES (do_bao) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: out_water
-  # UNHANDLED FUNCTION: do_jump
   # UNHANDLED FUNCTION: do_bao
+  # UNHANDLED FUNCTION: do_jump
+  # UNHANDLED FUNCTION: out_water
   # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -382,9 +382,9 @@
   # if (ob->query_temp("marks/转"))  →  
 # ==== CONDITIONAL BRANCHES (do_turn) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_turn
   # UNHANDLED FUNCTION: do_jump
   # UNHANDLED FUNCTION: tell_player
+  # UNHANDLED FUNCTION: do_turn
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

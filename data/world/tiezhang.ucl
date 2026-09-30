@@ -985,11 +985,11 @@ item_desc = {
 
   room_exits "sslin_1" {
     room_id = rooms.sslin_1.id
+    north = rooms.sslin_1.id
     south = rooms.shanlu_7.id
+    west = rooms.sslin_1.id
     east = rooms.sslin_2.id
     }
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/tiezhang/sslin-2.c by LPCConverter
 # Zone: tiezhang
@@ -1004,11 +1004,11 @@ item_desc = {
 
   room_exits "sslin_2" {
     room_id = rooms.sslin_2.id
+    east = rooms.sslin_2.id
     west = rooms.sslin_1.id
+    south = rooms.sslin_2.id
     north = rooms.sslin_3.id
     }
-  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/tiezhang/sslin-3.c by LPCConverter
 # Zone: tiezhang
@@ -1023,11 +1023,11 @@ item_desc = {
 
   room_exits "sslin_3" {
     room_id = rooms.sslin_3.id
+    north = rooms.sslin_3.id
     south = rooms.sslin_2.id
+    east = rooms.sslin_3.id
     west = rooms.sslin_4.id
     }
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/tiezhang/sslin-4.c by LPCConverter
 # Zone: tiezhang
@@ -1042,11 +1042,11 @@ item_desc = {
 
   room_exits "sslin_4" {
     room_id = rooms.sslin_4.id
+    west = rooms.sslin_4.id
     east = rooms.sslin_3.id
+    south = rooms.sslin_4.id
     north = rooms.sslin_5.id
     }
-  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/tiezhang/sslin-5.c by LPCConverter
 # Zone: tiezhang
@@ -1063,9 +1063,9 @@ item_desc = {
     room_id = rooms.sslin_5.id
     north = rooms.dezj.id
     south = rooms.sslin_4.id
+    east = rooms.sslin_5.id
+    west = rooms.sslin_5.id
     }
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/tiezhang/sslu-1.c by LPCConverter
 # Zone: tiezhang

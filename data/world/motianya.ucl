@@ -72,10 +72,10 @@ direction = "east"
   room_exits "mtroad1" {
     room_id = rooms.mtroad1.id
     south = rooms.mtroad2.id
+    north = rooms.mtroad1.id
     west = rooms.mtroad.id
     east = hengyang.rooms.hsroad5.id
     }
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/motianya/mtroad2.c by LPCConverter
 # Zone: motianya
@@ -91,10 +91,10 @@ direction = "east"
   room_exits "mtroad2" {
     room_id = rooms.mtroad2.id
     north = rooms.mtroad3.id
+    south = rooms.mtroad2.id
+    west = rooms.mtroad2.id
     east = rooms.mtroad1.id
     }
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/motianya/mtroad3.c by LPCConverter
 # Zone: motianya
@@ -110,10 +110,10 @@ direction = "east"
   room_exits "mtroad3" {
     room_id = rooms.mtroad3.id
     south = rooms.mtroad4.id
+    north = rooms.mtroad3.id
+    west = rooms.mtroad3.id
     east = rooms.mtroad2.id
     }
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 
   room_characters "mtroad3" {
@@ -135,11 +135,11 @@ direction = "east"
 
   room_exits "mtroad4" {
     room_id = rooms.mtroad4.id
+    south = rooms.mtroad4.id
     north = rooms.mtroad6.id
     west = rooms.mtroad5.id
     east = rooms.mtroad3.id
     }
-  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/motianya/mtroad5.c by LPCConverter
 # Zone: motianya
@@ -154,11 +154,11 @@ direction = "east"
 
   room_exits "mtroad5" {
     room_id = rooms.mtroad5.id
+    south = rooms.mtroad5.id
+    north = rooms.mtroad5.id
+    west = rooms.mtroad5.id
     east = rooms.mtroad4.id
     }
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
 
 
 

@@ -120,8 +120,16 @@ for src in ['"/clone/shop/yangzhou_shop"', '"/b/tulong/haigang"', '"../room_abov
     kind, *rest = C._classify_exit_path(src, "city")
     check("unlinkable(%s)" % src, kind, "skip")
 
-# __FILE__ is a self reference
-check("__FILE__", C._classify_exit_path('__FILE__', "baituo"), ("self", None))
+# __FILE__ names the room itself: it must resolve to a self-loop, not be dropped.
+# 50 rooms / 137 exits across 11 zones rely on this (baituo/cao1.c has both
+# "west" : __FILE__ and "south": __FILE__).
+check("classify __FILE__", C._classify_exit_path('__FILE__', "baituo"), ("self", None))
+check("resolve __FILE__ -> self",
+      C._resolve_exit_target(("var", "__FILE__"), "baituo", "cao1"),
+      ("rooms.cao1.id", None))
+check("resolve __FILE__ without room id",
+      C._resolve_exit_target(("var", "__FILE__"), "baituo", None),
+      (None, "self-referential (__FILE__) with unknown room id"))
 
 # bare name in the same zone
 kind, *rest = C._classify_exit_path('"guangchang"', "city")

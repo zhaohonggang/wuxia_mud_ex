@@ -1461,11 +1461,11 @@ valid_leave = [
 
   room_exits "ml1" {
     room_id = rooms.ml1.id
+    north = rooms.ml1.id
     south = rooms.dongmen.id
+    west = rooms.ml1.id
     east = rooms.ml2.id
     }
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/city/ml2.c by LPCConverter
 # Zone: city
@@ -1482,9 +1482,9 @@ valid_leave = [
     room_id = rooms.ml2.id
     north = rooms.ml3.id
     south = rooms.dongmen.id
+    west = rooms.ml2.id
+    east = rooms.ml2.id
     }
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/city/ml3.c by LPCConverter
 # Zone: city
@@ -1499,11 +1499,11 @@ valid_leave = [
 
   room_exits "ml3" {
     room_id = rooms.ml3.id
+    north = rooms.ml3.id
     south = rooms.dongmen.id
     west = rooms.ml4.id
+    east = rooms.ml3.id
     }
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/city/ml4.c by LPCConverter
 # Zone: city
@@ -1520,9 +1520,9 @@ valid_leave = [
     room_id = rooms.ml4.id
     north = rooms.ml5.id
     south = rooms.dongmen.id
+    west = rooms.ml4.id
+    east = rooms.ml4.id
     }
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/city/ml5.c by LPCConverter
 # Zone: city
@@ -1537,11 +1537,11 @@ valid_leave = [
 
   room_exits "ml5" {
     room_id = rooms.ml5.id
+    north = rooms.ml5.id
     south = rooms.dongmen.id
+    west = rooms.ml5.id
     east = rooms.ml6.id
     }
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/city/ml6.c by LPCConverter
 # Zone: city
@@ -1556,11 +1556,11 @@ valid_leave = [
 
   room_exits "ml6" {
     room_id = rooms.ml6.id
+    north = rooms.ml6.id
     south = rooms.dongmen.id
     west = rooms.ml7.id
+    east = rooms.ml6.id
     }
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/city/ml7.c by LPCConverter
 # Zone: city
@@ -1577,9 +1577,9 @@ valid_leave = [
     room_id = rooms.ml7.id
     north = rooms.pomiao.id
     south = rooms.dongmen.id
+    west = rooms.ml7.id
+    east = rooms.ml7.id
     }
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/city/mudan.c by LPCConverter
 # Zone: city

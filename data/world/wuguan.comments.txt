@@ -339,9 +339,9 @@
   # if (! clonep(this_object()))  →  message_vision(CYN '\\\\\n$N' CYN '走了过来，环顾四' '周，深深叹了口气。\\\\\n' NOR, this_object());
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: unconcious
   # UNHANDLED FUNCTION: recognize_apprentice
   # UNHANDLED FUNCTION: attempt_apprentice
+  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -394,19 +394,19 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: accept_fight
-  # UNHANDLED FUNCTION: receive_damage
-  # UNHANDLED FUNCTION: recover
-  # UNHANDLED FUNCTION: accept_hit
-  # UNHANDLED FUNCTION: do_yun
-  # UNHANDLED FUNCTION: receive_wound
-  # UNHANDLED FUNCTION: unconcious
-  # UNHANDLED FUNCTION: do_kill
   # UNHANDLED FUNCTION: accept_touxi
-  # UNHANDLED FUNCTION: do_join
+  # UNHANDLED FUNCTION: do_yun
+  # UNHANDLED FUNCTION: recover
   # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: receive_damage
+  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: heart_beat
+  # UNHANDLED FUNCTION: do_kill
+  # UNHANDLED FUNCTION: do_join
+  # UNHANDLED FUNCTION: receive_wound
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

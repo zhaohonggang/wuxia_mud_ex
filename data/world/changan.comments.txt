@@ -97,16 +97,16 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH: switch (i) { case 1: str = "┌-----┐\n"+ "│ │\n"+ "│ ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 2: str = "┌-----┐\n"+ "│ │\n"+ "│ ● ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 3: str = "┌-----┐\n"+ "│● │\n"+ "│ ● │\n"+ "│ ●│\n"+ "└-----┘\n"; break; case 4: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; case 5: str = "┌-----┐\n"+ "│● ●│\n"+ "│ ● │\n"+ "│● ●│\n"+ "└-----┘\n"; break; case 6: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; }
 # ==== SWITCH STATEMENTS ====
-  # UNHANDLED FUNCTION: player_loses
-  # UNHANDLED FUNCTION: do_bet
-  # UNHANDLED FUNCTION: gamble_finish
-  # UNHANDLED FUNCTION: rdm
   # UNHANDLED FUNCTION: player_wins
-  # UNHANDLED FUNCTION: gamble_prepare
+  # UNHANDLED FUNCTION: gamble_finish
   # UNHANDLED FUNCTION: gamble_perform
-  # UNHANDLED FUNCTION: display_bet
-  # UNHANDLED FUNCTION: gamble_start
+  # UNHANDLED FUNCTION: do_bet
+  # UNHANDLED FUNCTION: player_loses
   # UNHANDLED FUNCTION: random2
+  # UNHANDLED FUNCTION: display_bet
+  # UNHANDLED FUNCTION: gamble_prepare
+  # UNHANDLED FUNCTION: gamble_start
+  # UNHANDLED FUNCTION: rdm
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -284,9 +284,9 @@
   # if (me->is_ghost())  →  
 # ==== CONDITIONAL BRANCHES (free_ob) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: catch_ob
-  # UNHANDLED FUNCTION: catch_back
   # UNHANDLED FUNCTION: free_ob
+  # UNHANDLED FUNCTION: catch_back
+  # UNHANDLED FUNCTION: catch_ob
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -467,8 +467,8 @@
 # ==== CONDITIONAL BRANCHES (heal_up) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: heal_up
-  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: leave
+  # UNHANDLED FUNCTION: accept_fight
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -544,11 +544,11 @@
   # if (gx < 100)  →  
 # ==== CONDITIONAL BRANCHES (do_list) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: unconcious
-  # UNHANDLED FUNCTION: do_list
-  # UNHANDLED FUNCTION: do_duihuan
-  # UNHANDLED FUNCTION: die
   # UNHANDLED FUNCTION: do_answer
+  # UNHANDLED FUNCTION: do_list
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: do_duihuan
+  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -603,9 +603,9 @@
   # if (! ob)  →  
 # ==== CONDITIONAL BRANCHES (accept_kill) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: regenerate
+  # UNHANDLED FUNCTION: accept_fight
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -745,8 +745,8 @@
   # if (interactive(ob = this_player()) && !is_fighting())  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: regenerate
   # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: regenerate
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -916,9 +916,9 @@
   # RAW BLOCK: clean_up
   # clean_up: return 0;
 # ==== RAW CODE BLOCKS ====
-  # UNHANDLED FUNCTION: unconcious
   # UNHANDLED FUNCTION: clean_up
   # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -948,8 +948,8 @@
 # ==== CONDITIONAL BRANCHES ====
   # COMPLEX MAPPING: (["exp":2000 + random(2000), "pot":1500 + random(1500), "score":30 + random(30), "prompt":"通过这次押送" + goods["name"]
 # ==== COMPLEX MAPPINGS ====
-  # UNHANDLED FUNCTION: heart_beat
   # UNHANDLED FUNCTION: filter_ob
+  # UNHANDLED FUNCTION: heart_beat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -979,8 +979,8 @@
 # ==== CONDITIONAL BRANCHES ====
   # COMPLEX MAPPING: (["exp":1500 + random(1500), "pot":1000 + random(1000), "score":30 + random(20), "prompt":"通过这次押送" + goods["name"]
 # ==== COMPLEX MAPPINGS ====
-  # UNHANDLED FUNCTION: heart_beat
   # UNHANDLED FUNCTION: filter_ob
+  # UNHANDLED FUNCTION: heart_beat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1024,9 +1024,9 @@
   # if (! objectp(me) || environment(me) != environment())  →  
 # ==== CONDITIONAL BRANCHES (greeting) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: unconcious
-  # UNHANDLED FUNCTION: execute_ask
   # UNHANDLED FUNCTION: check_rescure
+  # UNHANDLED FUNCTION: execute_ask
+  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1109,8 +1109,8 @@
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
-  # UNHANDLED FUNCTION: drool
   # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: drool
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

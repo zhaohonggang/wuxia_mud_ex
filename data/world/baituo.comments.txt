@@ -214,9 +214,9 @@
   # if (interactive(ob = this_player()) && ob->query("family/family_name") != "欧阳世家" && !present("xiong huang", environment(ob)))  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: unconcious
   # UNHANDLED FUNCTION: die
   # UNHANDLED FUNCTION: convert
-  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -622,8 +622,8 @@
   # if ((int)me->query_condition("snake_poison") > 7)  →  
 # ==== CONDITIONAL BRANCHES (cure_ob) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: cure_ob
   # UNHANDLED FUNCTION: effect_in_liquid
+  # UNHANDLED FUNCTION: cure_ob
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -811,10 +811,10 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: is_container
-  # UNHANDLED FUNCTION: do_free
   # UNHANDLED FUNCTION: reject
+  # UNHANDLED FUNCTION: do_free
   # UNHANDLED FUNCTION: no_limit_amount
   # UNHANDLED FUNCTION: do_catch
+  # UNHANDLED FUNCTION: is_container
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

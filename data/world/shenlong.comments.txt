@@ -179,10 +179,10 @@
   # if (ob->query("party/party_name") == "神龙教")  →  message_vision('老船夫一招手，叫来几个年轻船夫。\\\\\n', ob); message_vision('年轻船夫和$N上了船，一声「起锚」船就开走了，但' '老船夫却没上船......\\\\\n', ob); tell_object(ob, BLU '你在海上航行了很久很久.......\\\\\n' NOR);
 # ==== CONDITIONAL BRANCHES (chu_hai) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: goto_shenlong
-  # UNHANDLED FUNCTION: goto_dao
   # UNHANDLED FUNCTION: unconcious
   # UNHANDLED FUNCTION: chu_hai
+  # UNHANDLED FUNCTION: goto_dao
+  # UNHANDLED FUNCTION: goto_shenlong
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

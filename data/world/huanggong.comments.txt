@@ -27,8 +27,8 @@
   # if ( arg=="string")  →  message_vision( '\\\\\n$N试著去抓长绳，但总是差一点够着，要能跳高一点就好了。\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (do_reach) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: do_reach
+  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: do_jump
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -51,8 +51,8 @@
   # if ( arg=="desk")  →  message_vision('你轻轻一按桌角,突然墙上书架列开一道暗门.\\\\\n', this_player());
 # ==== CONDITIONAL BRANCHES (do_press) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close
   # UNHANDLED FUNCTION: do_press
+  # UNHANDLED FUNCTION: close
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

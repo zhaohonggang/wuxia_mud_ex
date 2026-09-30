@@ -60,8 +60,8 @@
   # if (random(10) > 8)  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_tang
   # UNHANDLED FUNCTION: do_niu
+  # UNHANDLED FUNCTION: do_tang
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

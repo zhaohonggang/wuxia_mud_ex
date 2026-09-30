@@ -71,10 +71,42 @@ defmodule Kantele.Character.WizardGuardTest do
   end
 
   test "goto 巫师可瞬移到房间" do
-    wizard = player(%{attributes: %{"wiz_level" => 1}})
-    conn = GotoCommand.run(build_conn(wizard), %{"target" => "zone:room"})
+    room_id = "zone:room-#{System.unique_integer([:positive])}"
 
-    assert updated(conn).room_id == "zone:room"
+    :ok =
+      Kantele.Communication.register("rooms:#{room_id}", Kantele.RoomChannel,
+        room_id: room_id
+      )
+
+    # No cleanup needed: the id is unique per run.  The channel table
+    # (Kantele.Communication.Channels, a config override) is :protected, so a
+    # test process cannot delete its own entry anyway.
+
+    wizard = player(%{attributes: %{"wiz_level" => 1}})
+    conn = GotoCommand.run(build_conn(wizard), %{"target" => room_id})
+
+    assert updated(conn).room_id == room_id
+  end
+
+  test "goto 到未注册的房间给出提示，不会崩掉角色进程" do
+    wizard = player(%{attributes: %{"wiz_level" => 1}})
+    conn = GotoCommand.run(build_conn(wizard), %{"target" => "city:m16"})
+
+    # `Kalevala.Communication.subscribe/4` returns the bare atom `:error` for a
+    # channel that was never registered, and
+    # `Kalevala.Character.Foreman.Channel.handle_channel_change/3` only matches
+    # `:ok` / `{:error, reason}` - teleporting anyway raised CaseClauseError and
+    # killed the character process.  The command must reject the target first.
+    assert output_text(conn) =~ "找不到目标地点"
+    assert updated(conn).room_id == "start:room"
+  end
+
+  test "goto 不带冒号的目标给出提示" do
+    wizard = player(%{attributes: %{"wiz_level" => 1}})
+    conn = GotoCommand.run(build_conn(wizard), %{"target" => "m16"})
+
+    assert output_text(conn) =~ "找不到目标地点"
+    assert updated(conn).room_id == "start:room"
   end
 
   test "goto 巫师瞬移到在线玩家所在房间" do

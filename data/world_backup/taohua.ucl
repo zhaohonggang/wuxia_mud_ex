@@ -457,10 +457,12 @@ item_desc = {
   z = 0
     }
 
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
+  room_exits "tao0" {
+    room_id = rooms.tao0.id
+  east = rooms.tao0.id
+  west = rooms.tao0.id
+  south = rooms.tao0.id
+  north = rooms.tao0.id  }
 
 # Generated from C:/files/git/mud/d/taohua/tao_in.c by LPCConverter
 # Zone: taohua

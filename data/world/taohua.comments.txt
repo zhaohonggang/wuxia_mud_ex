@@ -34,8 +34,8 @@
   # if (ob->query("family/family_name") != "桃花岛")  →  message_vision(HIW '\\\\\n$N' HIW '一跃身跨上了白雕。只见白雕' '仰天长唳，突然猛然一颠……\\\\\n' HIR '结果$N' HIR '摔了个鼻青脸肿，看来白雕对$N' HIR '并' '不太感兴趣。\\\\\n' NOR, ob);
 # ==== CONDITIONAL BRANCHES (do_ride) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: taohua
   # UNHANDLED FUNCTION: do_ride
+  # UNHANDLED FUNCTION: taohua
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -83,8 +83,8 @@
   # if (arg != "chuan")  →  tell_object(this_player() , '你要 enter 哪儿？\\\\\n' );
 # ==== CONDITIONAL BRANCHES (do_enter) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: rtaohua
   # UNHANDLED FUNCTION: do_enter
+  # UNHANDLED FUNCTION: rtaohua
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -119,10 +119,10 @@
   # if ((int)query("left_trigger") == 3 && (int)query("right_trigger")==3 && ! query("exits/down"))  →  
 # ==== CONDITIONAL BRANCHES (check_trigger) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: check_trigger
-  # UNHANDLED FUNCTION: close_passage
-  # UNHANDLED FUNCTION: reset
   # UNHANDLED FUNCTION: do_push
+  # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: check_trigger
+  # UNHANDLED FUNCTION: reset
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -216,9 +216,9 @@
   # if (ob->query("family/family_name") == "桃花岛")  →  message_vision('老船夫一招手，叫来几个年轻船夫。\\\\\n',ob); message_vision('年轻船夫和$N上了船，一声「起锚」船就开走了，但老船夫却没上船......\\\\\n', ob); tell_object(ob, BLU '你在海上航行了很久很久.......\\\\\n' NOR ) ; call_out('goto_taohua',5,ob) ; ob->start_busy(5);
 # ==== CONDITIONAL BRANCHES (chu_hai) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: goto_taohua
   # UNHANDLED FUNCTION: chu_hai
   # UNHANDLED FUNCTION: unconcious
-  # UNHANDLED FUNCTION: goto_taohua
   # UNHANDLED FUNCTION: goto_dao
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

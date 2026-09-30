@@ -241,9 +241,9 @@
 # ==== CONDITIONAL BRANCHES (do_enter) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_float
+  # UNHANDLED FUNCTION: down1
   # UNHANDLED FUNCTION: do_enter
   # UNHANDLED FUNCTION: down2
-  # UNHANDLED FUNCTION: down1
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -335,12 +335,12 @@
   # if (!query("exits/enter") )  →  
 # ==== CONDITIONAL BRANCHES (check_trigger) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: reset
-  # UNHANDLED FUNCTION: arrive
-  # UNHANDLED FUNCTION: check_trigger
   # UNHANDLED FUNCTION: do_insert
+  # UNHANDLED FUNCTION: check_trigger
+  # UNHANDLED FUNCTION: arrive
   # UNHANDLED FUNCTION: on_board
   # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: reset
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -368,12 +368,12 @@
   # if (!query("exits/enter") )  →  
 # ==== CONDITIONAL BRANCHES (check_trigger) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: reset
-  # UNHANDLED FUNCTION: arrive
-  # UNHANDLED FUNCTION: check_trigger
   # UNHANDLED FUNCTION: do_insert
+  # UNHANDLED FUNCTION: check_trigger
+  # UNHANDLED FUNCTION: arrive
   # UNHANDLED FUNCTION: on_board
   # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: reset
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -401,12 +401,12 @@
   # if (!query("exits/enter") )  →  
 # ==== CONDITIONAL BRANCHES (check_trigger) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: reset
-  # UNHANDLED FUNCTION: arrive
-  # UNHANDLED FUNCTION: check_trigger
   # UNHANDLED FUNCTION: do_insert
+  # UNHANDLED FUNCTION: check_trigger
+  # UNHANDLED FUNCTION: arrive
   # UNHANDLED FUNCTION: on_board
   # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: reset
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

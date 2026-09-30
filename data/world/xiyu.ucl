@@ -368,14 +368,14 @@ direction = "west"
   room_exits "nanjiang" {
     room_id = rooms.nanjiang.id
     west = rooms.luzhou.id
+    east = rooms.nanjiang.id
+    south = rooms.nanjiang.id
+    north = rooms.nanjiang.id
     southwest = rooms.nanjiang3.id
+    northwest = rooms.nanjiang.id
     northeast = rooms.shanjiao.id
+    southeast = rooms.nanjiang.id
     }
-  # skipped exit southeast: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit northwest: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/xiyu/nanjiang1.c by LPCConverter
 # Zone: xiyu
@@ -392,15 +392,15 @@ direction = "west"
     room_id = rooms.nanjiang1.id
     up = rooms.shamo.id
     down = rooms.mogaoku.id
+    northeast = rooms.nanjiang1.id
+    southwest = rooms.nanjiang1.id
+    northwest = rooms.nanjiang1.id
     southeast = rooms.nanjiang.id
+    north = rooms.nanjiang1.id
     south = rooms.nanjiang2.id
+    west = rooms.nanjiang1.id
     east = shenfeng.rooms.caoyuan5.id
     }
-  # skipped exit northeast: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit southwest: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit northwest: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/xiyu/nanjiang2.c by LPCConverter
 # Zone: xiyu
@@ -415,15 +415,15 @@ direction = "west"
 
   room_exits "nanjiang2" {
     room_id = rooms.nanjiang2.id
+    west = rooms.nanjiang2.id
     east = rooms.luzhou.id
     south = rooms.nanjiang3.id
+    north = rooms.nanjiang2.id
+    southeast = rooms.nanjiang2.id
+    northwest = rooms.nanjiang2.id
+    southwest = rooms.nanjiang2.id
     northeast = shenfeng.rooms.caoyuan5.id
     }
-  # skipped exit southwest: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit northwest: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit southeast: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 
   room_characters "nanjiang2" {
@@ -445,15 +445,15 @@ direction = "west"
 
   room_exits "nanjiang3" {
     room_id = rooms.nanjiang3.id
+    east = rooms.nanjiang3.id
+    west = rooms.nanjiang3.id
+    south = rooms.nanjiang3.id
+    north = rooms.nanjiang3.id
     northeast = rooms.luzhou.id
+    southwest = rooms.nanjiang3.id
+    southeast = rooms.nanjiang3.id
+    northwest = rooms.nanjiang3.id
     }
-  # skipped exit northwest: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit southeast: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit southwest: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/xiyu/riyuedong.c by LPCConverter
 # Zone: xiyu
@@ -533,16 +533,16 @@ item_desc = {
   y = 0
   z = 4
     }
+
   room_exits "shamo" {
     room_id = rooms.shamo.id
-    down = rooms.nanjiang1.id
     up = rooms.tianroad4.id
+    down = rooms.nanjiang1.id
+    east = rooms.shamo.id
+    west = rooms.shamo.id
+    south = rooms.shamo.id
+    north = rooms.shamo.id
     }
-
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit south: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/xiyu/shanjiao.c by LPCConverter
 # Zone: xiyu

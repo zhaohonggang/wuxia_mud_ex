@@ -663,11 +663,11 @@ item_desc = {
 
   room_exits "shamo" {
     room_id = rooms.shamo.id
+    west = rooms.shamo.id
+    east = rooms.shamo.id
     south = rooms.shamo1.id
+    north = rooms.shamo.id
     }
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/huanghe/shamo1.c by LPCConverter
 # Zone: huanghe
@@ -683,11 +683,11 @@ item_desc = {
   room_exits "shamo1" {
     room_id = rooms.shamo1.id
     in = rooms.shidong.id
+    west = rooms.shamo1.id
+    east = rooms.shamo1.id
     south = rooms.shamo1.id
+    north = rooms.shamo1.id
     }
-  # skipped exit north: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit east: self-referential (__FILE__): no data/world zone to reference
-  # skipped exit west: self-referential (__FILE__): no data/world zone to reference
 
 # Generated from C:/files/git/mud/d/huanghe/shidong.c by LPCConverter
 # Zone: huanghe
