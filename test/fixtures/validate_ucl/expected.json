@@ -36,7 +36,7 @@
         "A hand-written minimal UCL recursive-descent parser covering the syntax subset that scripts/lpc_converter.py actually emits.",
         "Must support: top-level `name \"v\" { ... }` and `name { ... }` blocks; block members `key = value`; nested inline objects `key = { ... }` (recursive); arrays `[ ... ]` (possibly empty, multi-line, elements may be `{ k = v }`); scalars = double-quoted string (with \\\" escapes), number, bare identifier including dotted references like rooms.damen.id, `[]`, `{}`.",
         "Comments: `#` to end of line. A closing brace may be glued to the end of a value, e.g. `north = rooms.a.id  }`.",
-        "Must ACCEPT every `*_ok_*` fixture, and must REJECT 10, 11, 12, 40 and 52."
+        "Must ACCEPT every `*_ok_*` fixture, and must REJECT 10, 11, 12, 40, 42 and 52."
       ]
     },
     "structure": {
@@ -63,7 +63,9 @@
         ",[ \\t]*}          ->  trailing comma before `}`",
         "an odd total number of `\"` bytes in the file  ->  unpaired double quote",
         "raw `$N` or `$n` placeholders not replaced by converter (must be {npc}/{name})",
-        "square brackets inside string literals (elias parser rejects them; converter should emit ( ) )"
+        "square brackets inside string literals (elias parser rejects them; converter should emit ( ) )",
+        "duplicate direction keys inside a single `room_exits \"...\"` block (elias merges them into an array, so the loader's String.split receives an array and crashes)",
+        "raw Python repr leaking into a UCL value, i.e. a single-quoted token directly after `[` or `{`, or a `'key': 'value'` pair. UCL only ever writes `key = value` with double quotes, so this can only come from the converter interpolating str(dict)/str(list). The detail must include the 1-based line number."
       ]
     }
   },
@@ -131,6 +133,18 @@
     {
       "file": "40_bad_chars_double_close.ucl",
       "why": "a genuine stray `} }` on one line, which is both a syntax error and a chars violation",
+      "exit_code": 1,
+      "failing_checks": ["Syntax", "Chars"]
+    },
+    {
+      "file": "41_bad_chars_duplicate_exit_key.ucl",
+      "why": "regression fixture for the real shaolin bug: room_exits \"zhonglou6\" got two `up` keys (one from the LPC source, one added by assign_room_coords.py's vertical-link pass). elias merges duplicate keys into an array, so the loader crashed with String.split([\"rooms.bagua1.id\", \"rooms.zhonglou7.id\"], \".\", []). Note the duplicate direction is still syntactically valid, so only `chars` may be reported.",
+      "exit_code": 1,
+      "failing_checks": ["Chars"]
+    },
+    {
+      "file": "42_bad_chars_python_repr.ucl",
+      "why": "regression fixture for the real taishan bug: _parse_accept_body() computed `has_specific_rules = money_rule is not None or item_id_rules or item_name_rules`, which returns the non-empty LIST `item_name_rules` rather than a bool, and _build_accept_ucl() then interpolated str(list) straight into the output. Two independent checks must catch this: syntax (the `'key': 'value'` pair has no `=`) and chars (the python-repr rule).",
       "exit_code": 1,
       "failing_checks": ["Syntax", "Chars"]
     },

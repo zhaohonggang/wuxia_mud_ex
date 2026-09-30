@@ -35,7 +35,7 @@
 - [x] **quanzhen** · 中心 `datang1` · 产出 `quanzhen.ucl` `quanzhen.comments.txt` ✅ 2026-09-29
 - [x] **register** · 中心 `entry` · 产出 `register.ucl` `register.comments.txt` ✅ 2026-09-29
 - [x] **shaolin** · 中心 `guangchang2` · 产出 `shaolin.ucl` `shaolin.comments.txt` ✅ 2026-09-29
-- [ ] **taishan** · 中心 `nantian`
+- [x] **taishan** · 中心 `nantian` · 产出 `taishan.ucl` `taishan.comments.txt` ✅ 2026-09-30
 - [ ] **wizard** · 中心 `hall`
 - [ ] **wudang** · 中心 `guangchang`
 - [ ] **wudu** · 中心 `nanyuan`
@@ -122,15 +122,15 @@
 
 | 步骤 | 动作 | 产出/验证 | 勾选 |
 |------|------|-----------|------|
-| 1 | `python scripts\lpc_converter.py C:\files\git\mud\d\<zone> --zone <zone>` | `<zone>.ucl` `<zone>.comments.txt` | - [ ] |
-| 2 | `python scripts\assign_room_coords.py data\world\<zone>.ucl <center>` | `.ucl` 写入 `x`/`y`/`z` 坐标 | - [ ] |
-| 3 | `python scripts\validate_ucl.py data\world\<zone>.ucl` | 5 项全绿、退出码 0（`✅ All checks passed`）。本步在赋坐标**之后**；若在步骤 1 之后提前跑一次，**Integrity 失败属正常**（孤儿房尚无 `room_exits` 块） | - [ ] |
-| 4 | `git add/commit` 两文件 | commit 记录 | - [ ] |
-| 5 | 热更加载 `World.load_zone("<zone>")` | 无报错 | - [ ] |
-| 6 | 自动化测试 `mix test test/zone_<zone>_test.exs` | 全绿 | - [ ] |
-| 7 | 巫师测试（goto/walk/call/任务） | `test_logs/<zone>_wizard_<date>.md` | - [ ] |
-| 8 | 玩家测试（主线/战斗/技能/传送） | `test_logs/<zone>_player_<date>.md` | - [ ] |
-| 9 | 本文件把该区域大项标 ✅ | `git commit --amend` | - [ ] |
+| 1 | `python scripts\lpc_converter.py C:\files\git\mud\d\<zone> --zone <zone> --output data\world` | `<zone>.ucl` `<zone>.comments.txt` | - [ ] |
+| 2 | `python scripts\validate_ucl.py data\world\<zone>.ucl` | 5 项全绿、退出码 0。赋坐标**之前**跑一次，**Integrity 失败属正常**（孤儿房尚无 `room_exits` 块） | - [ ] |
+| 3 | 备份 + 赋坐标：`Copy-Item` 到 `data\world_backup` 后 `python scripts\assign_room_coords.py data\world\<zone>.ucl <center>` | `.ucl` 写入 `x`/`y`/`z` 坐标 | - [ ] |
+| 4 | `python scripts\validate_ucl.py data\world\<zone>.ucl` **+** `python scripts\check_room_coords.py data\world\<zone>.ucl` | 前者 5 项全绿、退出码 0（`✅ All checks passed`）；后者确认每房有 x/y/z、从中心房 BFS 可达全部房间、无孤立 `room_exits` 块，退出码 0。`W1`（同坐标多房）/`W2`（方向与坐标不符）为**源数据固有的 WARNING，不需修**——见 SOP Step 4 的说明 | - [ ] || 5 | 加载校验 `docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test test/kantele/world/'` | 无报错（走 `Kantele.World.Loader.load/1`，仓库无按区热更函数） | - [ ] |
+| 6 | `git add/commit` 两文件 | commit 记录 | - [ ] |
+| 7 | 自动化冒烟 `MIX_ENV=test mix test` | 全绿 | - [ ] |
+| 8 | 巫师测试（goto/walk/call/任务） | `test_logs/<zone>_wizard_<date>.md` | - [ ] |
+| 9 | 玩家测试（主线/战斗/技能/传送） | `test_logs/<zone>_player_<date>.md` | - [ ] |
+| 10 | 本文件把该区域大项标 ✅ | `git commit --amend` | - [ ] |
 
 ---
 
@@ -139,9 +139,9 @@
 | 指标 | 数值 |
 |------|------|
 | 总区域数 | 71 |
-| 已完成 | 1 |
+| 已完成 | 13 |
 | 进行中 | 0 |
-| 待处理 | 70 |
+| 待处理 | 58 |
 
 > 实时更新：每完成一个区域，在对应大项打勾，并在下方填入完成日期、测试人、关键修复 commit。
 
@@ -162,5 +162,11 @@
 | luoyang | 2026-09-29 | ? | ? | 完整 Python 转换：157 rooms, 157 room_exits (含 coords) |
 | quanzhen | 2026-09-29 | ? | ? | 完整 Python 转换：109 rooms, 109 room_exits (含 coords) |
 | register | 2026-09-29 | ? | ? | 完整 Python 转换：7 rooms, 7 room_exits (含 coords) |
-| shaolin | 2026-09-29 | ? | ? | 完整 Python 转换：206 rooms, 206 room_exits (含 coords) |
+| shaolin | 2026-09-29 | ? | ? | 完整 Python 转换：206 rooms, 206 room_exits (含 coords)。修 `assign_room_coords.py` 重复 `up` 键（elias 并成数组 → loader `String.split` 崩） |
+| taishan | 2026-09-30 | ? | ? | 完整 Python 转换：33 rooms, 33 room_exits (含 coords)。修 `_parse_accept_body` 布尔/列表混淆导致 `accept = [{'kind': ...}]` 泄漏 Python repr；新增 `validate_ucl.py` Python-repr 检查 + 2 个 fixture |
 | ... |  |  |  |  |
+
+> 2026-09-30 全量复验：13 个已转区域全部重跑「备份 → 赋坐标 → 静态校验 → 坐标唯一性 + BFS 可达性」，
+> 并跑 `MIX_ENV=test mix test test/kantele/world/`（183 tests, 0 failures，含全量世界加载）。
+> 期间修掉 3 个缺陷：`assign_room_coords.py` 坐标重叠（taishan 2 处）、垂直连接因方向已被占用而
+> 直接跳过导致 city 的 `xsmidao*` 6 间房不可达、菱形环路导致的同坐标重叠（新增 `_place`/`_free_coord`）。

@@ -1,0 +1,21 @@
+zones "crc_orphan_exits" {
+  name = "crc_orphan_exits"
+  }
+
+    rooms "centre" {
+      name = "中心"
+      description = "位于原点的中心房。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "centre" {
+    room_id = rooms.centre.id
+    }
+
+# 存在 room_exits 块，但没有对应的 rooms 块。
+  room_exits "ghost" {
+    room_id = rooms.ghost.id
+    north = rooms.centre.id
+    }

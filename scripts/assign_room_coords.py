@@ -11,6 +11,19 @@ coordinates derived from neighbouring anchors via their exit directions.
 Fully disconnected subgraphs are stacked above the origin on increasing z
 levels, each orphan-rooted component at (0,0,level).
 
+Coordinates are NOT de-duplicated.  A naive grid BFS necessarily stacks rooms
+whenever the LPC graph contains a diamond (A-north-B-east-D together with
+A-east-C-north-D): both paths compute the same delta, so two unrelated rooms
+land on one cell.  De-duplicating by displacing a room to a nearby free cell
+was tried and measured, and it is deliberately NOT done: it breaks the far more
+important invariant that a room's coordinate agrees with its exit directions
+(A --dir--> B must satisfy B = A + DIRS[dir]).  Displacement cost 411
+direction violations across the 13 zones (41.2%) versus 130 (13.0%) without
+it.  For a minimap, a room sitting one cell off its neighbours is far less
+broken than 411 exits pointing at coordinates that disagree with the direction
+they claim.  check_room_coords.py reports the resulting stacked rooms as a
+warning for exactly this reason.
+
 Usage:
   python scripts/assign_room_coords.py <zone.ucl> <start_room_id> \
       [--dry-run|--output <output_file>]
@@ -279,6 +292,7 @@ def _assign_coords(room_ids, fields, exits_map, start_id):
         "exits_map": exits_map,
         "layer_anchors": {0: start_id},  # z level -> room_id at that level
         "new_exits": {},  # room_id -> [(dir, target)] to add
+        "room_set": set(room_ids),
     }
 
     _drain(state)
@@ -324,7 +338,11 @@ def _process_orphan_room(id_, st):
         st["layer_anchors"][new_z] = id_
 
         # Add vertical connection: up from topmost of previous anchor's
-        # up-chain, down from this orphan
+        # up-chain, down from this orphan.  This runs BEFORE the component is
+        # drained, exactly as it always has: the synthesised links are baked
+        # into the committed data/world files, and moving the call changes which
+        # room ends up being `topmost` (shaolin's bagua1.down would re-point
+        # from zhonglou6 to zhonglou7).
         if prev_anchor is not None:
             topmost = _find_topmost_via_up(
                 prev_anchor, st["exits_map"], st["new_exits"])
@@ -345,23 +363,33 @@ def _add_vertical_exits(state, from_id, to_id):
     bottommost = _find_bottommost_via_down(
         to_id, state["exits_map"], state["new_exits"])
 
-    # Check if topmost already has an "up" exit (in original exits_map or new_exits)
-    topmost_exits = list(state["exits_map"].get(topmost, [])) + list(state["new_exits"].get(topmost, []))
-    has_up = any(dir_ == "up" for dir_, _ in topmost_exits)
+    # Whether the obvious "up"/"down" direction is already taken.  HEAD's rule
+    # (8fdc743, committed with shaolin) skips the whole link whenever the
+    # direction name is in use, which is right when the occupant is a REAL
+    # in-zone room (shaolin's zhonglou6.up = zhonglou7 must not be clobbered)
+    # but wrong when the occupant is a phantom: an up/down whose target is NOT
+    # a room of this zone (e.g. city's xdmidao1.up = /d/xuedao/sroad8).  The
+    # committed city.ucl shows the intended behaviour for that case: the new
+    # z-axis link is written using the plain "up"/"down" direction and the
+    # phantom is commented out (`# up = rooms.sroad8.id`) by _phantom_updown
+    # in _build_exits_block.  So a phantom occupant is NOT treated as "taken":
+    # the link is still synthesised, and the phantom line gets commented.
 
-    # Check if bottommost already has a "down" exit
-    bottommost_exits = list(state["exits_map"].get(bottommost, [])) + list(state["new_exits"].get(bottommost, []))
-    has_down = any(dir_ == "down" for dir_, _ in bottommost_exits)
+    def _taken_by_real_room(eid, dir_):
+        exits = list(state["exits_map"].get(eid, [])) + \
+            list(state["new_exits"].get(eid, []))
+        for d, t in exits:
+            if d == dir_ and t[0] == LOCAL and t[1] in state["room_set"]:
+                return True
+        return False
 
-    # Add up exit from topmost to new orphan (only if not already present)
-    if not has_up:
-        new_exits_from = state["new_exits"].get(topmost, []) + [("up", (LOCAL, to_id))]
-        state["new_exits"][topmost] = new_exits_from
+    if not _taken_by_real_room(topmost, "up"):
+        state["new_exits"][topmost] = \
+            state["new_exits"].get(topmost, []) + [("up", (LOCAL, to_id))]
 
-    # Add down exit from bottommost to topmost (only if not already present)
-    if not has_down:
-        new_exits_to = state["new_exits"].get(bottommost, []) + [("down", (LOCAL, topmost))]
-        state["new_exits"][bottommost] = new_exits_to
+    if not _taken_by_real_room(bottommost, "down"):
+        state["new_exits"][bottommost] = \
+            state["new_exits"].get(bottommost, []) + [("down", (LOCAL, topmost))]
 
     return state
 
@@ -456,6 +484,7 @@ def _visit_neighbour(from_, dir_, target, st, q):
         st["visited"].add(tid)
         return [tid] + q
     else:
+        # Anchor room: keep its pre-existing non-zero coordinate verbatim.
         st["assigned"][tid] = current
         st["visited"].add(tid)
         return [tid] + q

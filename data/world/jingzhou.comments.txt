@@ -468,8 +468,8 @@
   # if (interactive(ob = this_player()) && !is_fighting())  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: ask_me
+  # UNHANDLED FUNCTION: accept_kill
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -788,8 +788,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -863,8 +863,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -956,8 +956,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1069,8 +1069,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1116,8 +1116,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1274,8 +1274,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1297,8 +1297,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

@@ -52,6 +52,11 @@ _INTEGRITY_EXITS_RE = re.compile(rb'^\s*room_exits\s+"(\w+)"', re.MULTILINE)
 _CHARS_DOUBLE_BRACE_RE = re.compile(rb'^[ \t]*}[ \t]*}', re.MULTILINE)
 _CHARS_TRAILING_COMMA_RE = re.compile(rb',[ \t]*}', re.MULTILINE)
 
+# Raw Python repr leaking into UCL values, e.g. accept = [{'kind': 'item_name'}].
+# UCL always writes `key = value` with double quotes, so a single-quoted token
+# directly after `[` or `{`, or a `'key': 'value'` pair, can only be str(dict)/str(list).
+_PY_REPR_RE = re.compile(rb"[\[{]\s*'|'[^'\n]*'\s*:\s*'")
+
 
 # ---------------------------------------------------------------------------
 # Output helpers: UTF-8 bytes plus a single LF (never CRLF on Windows).
@@ -330,9 +335,24 @@ def check_chars(data):
         for room, keys in dup.items():
             for k in keys:
                 issues.append("duplicate exit key '%s' in room_exits '%s'" % (k, room))
+    # Check for raw Python repr leaking into UCL (e.g. accept = [{'kind': 'item_name'}]).
+    # UCL objects always use `key = value` with double quotes; a single-quoted token
+    # right after `[`/`{`, or a `'k': 'v'` pair, can only come from str(dict)/str(list).
+    if _PY_REPR_RE.search(data):
+        line, snippet = _find_python_repr(data)
+        issues.append("raw Python repr inside UCL value at line %s (converter leaked "
+                      "str(dict)/str(list)): %s" % (line, snippet))
     if issues:
         return (False, "; ".join(issues))
     return (True, None)
+
+
+def _find_python_repr(data):
+    """Return (line, snippet) for the first raw Python repr leak, else None."""
+    m = _PY_REPR_RE.search(data)
+    if not m:
+        return None
+    return (_line_of_offset(data, m.start()), m.group(0).strip())
 
 
 def _has_brackets_in_strings(data):

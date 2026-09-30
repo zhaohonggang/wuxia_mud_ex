@@ -10,14 +10,14 @@
 | 环节 | 命令 | 说明 |
 |---|---|---|
 | LPC → UCL | `python scripts\lpc_converter.py <语料目录> --zone <zone> --output data\world` | 传目录即自动递归所有 `.c` |
-| 赋坐标 | `python scripts\assign_room_coords.py <zone>.ucl <center> --output <输出>` | 只收 2 个位置参数 |
+| 赋坐标 | `python scripts\assign_room_coords.py data\world\<zone>.ucl <center>` | 只收 2 个位置参数，**就地覆盖**，不再需要 `--output` |
 | 校验 | `python scripts\validate_ucl.py <file.ucl>` | 退出码 0/1/2 |
 
 原因与前提：
 - **容器 `wuxia_mud_dev-app-1` 内没有 Python**（`python3: not found`），在容器里跑会直接失败。
 - LPC 语料在**宿主机** `C:\files\git\mud\d\<zone>`；容器里的 `/mud/d` 只有 `city`，且不是 bind mount。
 - 容器 `/app` 就是本仓库的 bind mount，所以 `data\world\<zone>.ucl` 宿主机与容器**共享同一份**，产出与校验都不需要 `docker cp`。
-- 只有 Step 5 的热更加载与 `mix test` 需要进容器。
+- **Step 2 的动态加载校验与 Step 5 的冒烟测试都需要进容器**（纯静态校验不够，见 Step 2.2）。
 - Elixir 版 `scripts/assign_room_coords.exs` / `scripts/validate_ucl.exs` / `lib/kantele/world/lpc_converter.ex` 与 mix task `kantele.convert_lpc` **仍然存在**（部分 dev 辅助脚本仍在用），但**已不是主流程**，仅作遗留参考。
 
 ---
@@ -66,8 +66,11 @@ python scripts\lpc_converter.py C:\files\git\mud\d\<zone> --zone <zone> --output
 python scripts\validate_ucl.py data\world\<zone>.ucl
 
 # 2.2 动态加载校验（确认 Elixir/Elias 真正能解析并加载）
-#     无需重启容器：data\world 与容器 /app/data\world 是 bind mount 同一份
-docker exec wuxia_mud_dev-app-1 iex --remsh app@<host> -e 'World.reload_zone("<zone>")'
+#     无需重启容器：data\world 与容器 /app/data\world 是 bind mount 同一份。
+#     仓库里没有 World.reload_zone/1 这类按区热更函数（Kantele.World.Loader.load/1
+#     一次性加载整个 data/world 目录），所以"动态校验"= 跑加载器的测试。
+#     test env 下 config/test.exs 设了 server: false，不会抢 4000/4646 端口。
+docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test test/kantele/world/'
 ```
 **校验项**（5 项全部执行、互不短路；失败时逐行打印 `❌ <Check>: <detail>`）：
 
@@ -100,31 +103,44 @@ python scripts\assign_room_coords.py data\world\<zone>.ucl <center_room>
 - **不带 `--output` 即就地覆盖输入文件**（原有 `--output` 仍可用，但新流程不再需要中间文件）
 - 选项只认长形式：`--dry-run`（打印不写盘）、**`--output <file>` 或 `--output=<file>`**。**`-o` 不存在且会被静默吞掉**，误用会导致就地覆盖
 
-### Step 4 — 坐标产出校验（复用 `validate_ucl.py` + 额外人工检查）
+### Step 4 — 坐标产出校验（`validate_ucl.py` + `check_room_coords.py`）
 ```powershell
 python scripts\validate_ucl.py data\world\<zone>.ucl
+python scripts\check_room_coords.py data\world\<zone>.ucl
 ```
 赋坐标后 Step 2 的 Integrity 应当**转为通过**（孤儿房已补 `room_exits` 块）。
 
-以下检查**不由脚本覆盖**，需人工或另行核对：
-- 所有 `rooms` 有非零坐标（或显式 `(0,0,0)` 仅限中心房）
-- 坐标无冲突（同坐标不超过 1 个房间）
-- 中心房坐标为 `(0,0,0)`
-- BFS 连通：从中心房可达所有本区房间
-- 每个 `room_exits` 目标要么本区 `rooms.<id>.id`，要么外部绝对路径
+`check_room_coords.py` 负责几何正确性（`validate_ucl.py` 只管文本/Elias 兼容性），**硬失败项**：
+- 每个房间都有 `x`/`y`/`z`
+- 从原点房（坐标脚本钉住的中心房 `(0,0,0)`）**沿出口方向 BFS 可达全部房间**
+- 没有孤立 `room_exits` 块
 
-> **失败处理**：定位 `scripts/assign_room_coords.py` bug（方向向量、BFS 队列、孤儿房堆叠） → 修脚本 → **重跑 Step 3**，不得手改坐标。
+**警告项**（输出 `WARNING:`，退出码仍为 0）：
+- `W1` 同坐标多房：LPC 出口图里存在菱形（`A-north-B-east-D` 与 `A-east-C-north-D`），两条路径算出同一格，必然叠房。**这是源数据固有现象，不要修**。
+- `W2` 出口方向与两端坐标不符：来自预置的非零"锚点"坐标，以及孤儿层被钉在 `(0,0,z)`。同样是源数据固有现象。
+
+> **不要为了消除 W1 去挪动房间。** 曾实现过"坐标冲突时螺旋外扩找空格"，实测会把方向/坐标一致性从 13.0% 打到 41.2%（13 个区共 411 条出口的坐标与其声明方向不符），
+> 因为挪动一间房会打断所有指向它的出口方向，并沿其子树级联放大。对小地图而言，"某房偏离邻格一格"远比"411 条出口指向与方向矛盾的坐标"轻。
+> **方向一致性优先于坐标唯一性**，该取舍已写入 `assign_room_coords.py` 的模块 docstring。
+
+`check_room_coords.py` 自身也有 fixture 回归（改了它就要跑）：
+```powershell
+python scripts\test_check_room_coords.py
+```
+fixture 与权威预期在 `test\fixtures\check_room_coords\`，改动该脚本后必须同步更新 `expected.json`（精确的退出码 + 精确的 problem/warning 集合）。
+
+> **失败处理**：定位 `scripts/assign_room_coords.py` bug（方向向量、BFS 队列、孤儿房堆叠、垂直连接方向） → 修脚本 → **重跑 Step 3**，不得手改坐标。
 
 ### Step 5 — 热更加载 + 冒烟测试
 ```bash
 # 5.1 无需 docker cp：data\world 与容器 /app/data\world 是同一份（bind mount）
-#     Step 3 产出的 <zone>_coords.ucl 需先就位为 <zone>.ucl，再热更
 
-# 5.2 热更（不重启容器）
-docker exec wuxia_mud_dev-app-1 iex --remsh app@<host> -e 'World.reload_zone("<zone>")'
+# 5.2 加载校验（同 Step 2.2：跑加载器测试；新增区域必须整体重载世界，不能靠游戏内
+#     `reload` 热更——见 docs/dev-reload-guide.zh-CN.md「不支持热加载：新增 NPC/房间」）
+docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test test/kantele/world/'
 
 # 5.3 自动化冒烟
-docker exec wuxia_mud_dev-app-1 mix test test/zone_<zone>_test.exs
+docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test'
 
 # 5.4 人工巡游（巫师号）
 #   goto <zone>/<center> → walk 全图 → 检查 exits/描述/NPC/物品/任务
@@ -160,7 +176,8 @@ CHECK_ORDER = ["Encoding", "Syntax", "Structure", "Integrity", "Chars"]
 #    注意用 [ \t] 而非 \s 判断同行双闭括号（\s 会匹配换行而误报）
 # 3. Structure —— 全文 multiline 搜 zones "…" / rooms "…" / room_exits "…"
 # 4. Integrity —— rooms 数 == room_exits 数 且 > 0
-# 5. Chars —— [ \t]*}[ \t]*} 、,[ \t]*} 、双引号字节数为偶数
+# 5. Chars —— [ \t]*}[ \t]*} 、,[ \t]*} 、双引号字节数为偶数、
+#    raw $N/$n、字符串内 []、room_exits 块内重复方向键、值里泄漏的 Python repr
 ```
 
 退出码：`0` 全绿 / `1` 有检查失败或文件读不了 / `2` 参数个数不对。
@@ -168,7 +185,7 @@ CHECK_ORDER = ["Encoding", "Syntax", "Structure", "Integrity", "Chars"]
 
 ### 回归测试
 
-14 个 fixture + 权威对照表在 `test\fixtures\validate_ucl\`，`expected.json` 记录每个用例的**退出码**与 **`failing_checks` 集合**（多报和漏报都算失败）：
+16 个 fixture + 权威对照表在 `test\fixtures\validate_ucl\`，`expected.json` 记录每个用例的**退出码**与 **`failing_checks` 集合**（多报和漏报都算失败）：
 
 ```powershell
 # 逐个跑，人工核对
@@ -185,11 +202,16 @@ Get-ChildItem test\fixtures\validate_ucl\*.ucl | ForEach-Object {
 | Structure | `20_bad_structure_no_zone` / `21_bad_structure_no_exits` | exit 1 |
 | Integrity | `22_bad_integrity_zero_rooms` / `30_bad_integrity_mismatch` | exit 1 |
 | Chars | `40_bad_chars_double_close` | exit 1 |
+| Chars | `41_bad_chars_duplicate_exit_key` | exit 1 |
+| Chars | `42_bad_chars_python_repr` | exit 1 |
 | Encoding | `50_bad_encoding_crlf` / `51_bad_encoding_bom` / `52_bad_encoding_invalid_utf8` | exit 1 |
 
 > `11_bad_syntax_double_quote` 固定了真实转换器 bug（`direction = ""north""`）。
 > `51_bad_encoding_bom` 固定了 Elixir 版 `check_encoding` 漏检 UTF-8 BOM 的缺陷。
-> 改 `validate_ucl.py` 后请重跑这 14 例 + `data\world\test.ucl`（应 exit 0）。
+> `41_bad_chars_duplicate_exit_key` 固定了 shaolin 的重复 `up` 键（elias 把重复键并成数组，
+> loader 的 `String.split` 收到数组就崩）。
+> `42_bad_chars_python_repr` 固定了 taishan 的 `_parse_accept_body` 布尔/列表混淆 bug。
+> 改 `validate_ucl.py` 后请重跑这 16 例 + `data\world\test.ucl`（应 exit 0）。
 
 > **遗留**：`scripts/validate_ucl.exs` 仍在仓库里，但**完全不可用**——它 `case` 的是 `{:ok,_}` / `{:error,_}`，而 `Elias.parse/1` 成功返回**裸 map**、失败**抛异常**，实测对 100% 输入（含合法文件）都抛 `CaseClauseError`。它另有 2 处已知缺陷：`check_chars` 的 `\s` 误报连续 `}` 行、`check_encoding` 漏检 UTF-8 BOM。这三点已在 `expected.json` 的 `known_exs_defects_do_not_reproduce` 中固化为回归用例，**不要**改回 Elixir 版行为。
 
@@ -203,18 +225,19 @@ python scripts\lpc_converter.py C:\files\git\mud\d\baituo --zone baituo --output
 
 # 2. 校验转换产出（赋坐标前 Integrity 失败属正常，见 Step 2 说明）
 python scripts\validate_ucl.py data\world\baituo.ucl
-docker exec wuxia_mud_dev-app-1 iex --remsh app@<host> -e 'World.reload_zone("baituo")'
+docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test test/kantele/world/'
 
 # 3. 备份 + 赋坐标（就地覆盖）
 Copy-Item data\world\baituo.ucl data\world_backup\baituo.ucl -Force
 python scripts\assign_room_coords.py data\world\baituo.ucl guangchang
 
-# 4. 校验坐标产出（应全绿）
+# 4. 校验坐标产出（两项都应全绿）
 python scripts\validate_ucl.py data\world\baituo.ucl
+python scripts\check_room_coords.py data\world\baituo.ucl
 
-# 5. 热更 + 冒烟（这两步才需要进容器）
-docker exec wuxia_mud_dev-app-1 iex --remsh app@<host> -e 'World.reload_zone("baituo")'
-docker exec -w /app wuxia_mud_dev-app-1 mix test test/zone_baituo_test.exs
+# 5. 加载 + 冒烟
+docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test test/kantele/world/'
+docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test'
 ```
 
 ---
@@ -227,6 +250,11 @@ docker exec -w /app wuxia_mud_dev-app-1 mix test test/zone_baituo_test.exs
 | `Encoding:` 失败 | 写出时未强制 UTF-8 / 混入 BOM / 混入 CR | `scripts\lpc_converter.py` 的 `open(..., encoding="utf-8", newline="")` |
 | `room_exits` 缺闭合 `}` | 生成时 `}` 与上行合并 | `scripts\lpc_converter.py` 的 `generate_room_ucl` / `build_exits_block` |
 | `Chars: double closing brace` | 同行出现 `} }` | `scripts\lpc_converter.py` 的 `build_exits_block` |
+| `Syntax: expected '='`（`accept` 块附近） | 转换器把 Python 的 `str(dict)`/`str(list)` 直接插值进 UCL | `scripts\lpc_converter.py` 的 `_parse_accept_body` / `_build_accept_ucl`（注意 `or` 返回的是最后**操作数**，可能是 list 而不是 bool） |
+| `Chars: raw Python repr ...` | 同上，`[{'k': 'v'}]` 这类单引号 repr 漏出 | 同上 |
+| `Chars: duplicate exit key '<dir>' in room_exits '<id>'` | 同一房间同一方向写了两个出口；elias 会并成数组，loader `String.split` 收到数组而崩 | `scripts\assign_room_coords.py` 的 `_add_vertical_exits` / `_merge_new_exits`（垂直连接必须**换用空闲方向**，不能重复用同一方向） |
+| 赋坐标后**孤儿房不可达** | 垂直连接因为方向已被占用而被**跳过**，整层挂不上主区 | `scripts\assign_room_coords.py` 的 `_add_vertical_exits`（应从 `UP_DIR_CANDIDATES`/`DOWN_DIR_CANDIDATES` 里挑空闲方向，而不是 `continue`） |
+| 同坐标多房（菱形环路） | 朴素 BFS 下两条不同路径算出同一 delta，两房重叠 | `scripts\assign_room_coords.py` 的 `_visit_neighbour`（需用 `_place`/`_free_coord` 做去重放置） |
 | `Integrity: rooms(N) != room_exits(M)` | 孤儿房还没有 `room_exits` 块（**赋坐标前属正常**）；若赋坐标后仍失败则是 bug | `scripts\assign_room_coords.py` 的 `drain` / `visit_neighbour` / `orphans` |
 | 坐标冲突/全 0 | BFS 队列/方向向量/孤儿房逻辑 | `scripts\assign_room_coords.py` |
 | 跨区出口指向不存在房间 | 转换器未解析外部路径、或目标区未转 | `scripts\lpc_converter.py` 的 `extract_exit_*`、跨区依赖顺序 |

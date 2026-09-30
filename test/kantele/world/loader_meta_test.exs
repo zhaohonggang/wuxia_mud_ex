@@ -303,8 +303,18 @@ defmodule Kantele.World.LoaderMetaTest do
     assert room.description =~ "这是一片茂密的树林"
     assert room.description =~ "遮蔽得暗然无光"
 
-    # 四个出口目标在库中均不存在，loader 全部丢弃
-    assert room.exits == []
+    # LPC 源码里的四个出口（south/north/east/west）目标房间在库中均不存在，loader 全部丢弃
+    for dir <- ["south", "north", "east", "west"] do
+      refute Enum.any?(room.exits, &(&1.exit_name == dir)),
+             "悬挂出口 #{dir} 不应被保留"
+    end
+
+    # assign_room_coords.py 为孤儿房 liandan_lin 补了 room_exits 块，并用一条 down
+    # 把它接到可达区域；liandan_lin 真实存在，所以这条出口现在会被 loader 保留。
+    assert [%Kalevala.World.Exit{} = down] = room.exits
+    assert down.exit_name == "down"
+    assert down.end_room_id == "test:liandan_lin"
+    assert down.id == "test:liandan_lin1:down"
   end
 
   test "liandan_lin 房间：父类（inherit ROOM）也正常加载" do

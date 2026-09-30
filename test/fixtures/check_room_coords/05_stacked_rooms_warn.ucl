@@ -1,0 +1,43 @@
+zones "crc_stacked" {
+  name = "crc_stacked"
+  }
+
+# 三个房间共用同一格坐标。连接使用向量为 (0,0,0) 的 portal 类出口，
+# 因此可达性成立且方向/坐标自洽，只触发 W1（同坐标多房）警告。
+    rooms "centre" {
+      name = "中心"
+      description = "位于原点的中心房。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "centre" {
+    room_id = rooms.centre.id
+    out = rooms.mid.id
+    }
+
+    rooms "mid" {
+      name = "中转"
+      description = "与中心房同格。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mid" {
+    room_id = rooms.mid.id
+    out = rooms.leaf.id
+    }
+
+    rooms "leaf" {
+      name = "末梢"
+      description = "与前两间房同格。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "leaf" {
+    room_id = rooms.leaf.id
+    }

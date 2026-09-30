@@ -103,8 +103,8 @@
   # if (!objectp(weapon = me->query_temp("weapon")))  →  
 # ==== CONDITIONAL BRANCHES (do_ci) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close
   # UNHANDLED FUNCTION: do_ci
+  # UNHANDLED FUNCTION: close
   # UNHANDLED FUNCTION: do_zhan
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

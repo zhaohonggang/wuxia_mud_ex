@@ -153,8 +153,11 @@ defmodule Kantele.World.MirrorZixuTest do
 
       assert updated.inventory == []
       assert updated.meta.stats.mirror_count == 1
-      assert updated.meta.stats.combat_exp in 1100..1199
-      assert updated.meta.stats.potential in 200..300
+      # Stats.new() 起始 combat_exp = 1000，奖励 exp = (100 + :rand.uniform(100)) * 1
+      # 即 101..200，合计 1101..1200。原先写成 1100..1199，导致 :rand.uniform(100)
+      # 恰好返回 100 时（约 1% 概率）随机失败。
+      assert updated.meta.stats.combat_exp in 1101..1200
+      assert updated.meta.stats.potential in 201..300
       assert updated.meta.stats.silver == 10
       assert output_text(conn) =~ "交给了"
       assert output_text(conn) =~ "第1个宝镜任务"

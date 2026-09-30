@@ -1228,7 +1228,7 @@ def _parse_accept_body(body):
 
     has_return_0 = re.search(r"return\s+0\s*;", body, _A) is not None
     has_return_1 = re.search(r"return\s+1\s*;", body, _A) is not None
-    has_specific_rules = money_rule is not None or item_id_rules or item_name_rules
+    has_specific_rules = bool(money_rule is not None or item_id_rules or item_name_rules)
     last_return = _get_last_return(body)
 
     default_rule = None
@@ -1362,14 +1362,20 @@ def _child_of(ast):
     }
 
 
+def _is_exit_mapping(v):
+    # A "mapping" marker is a non-empty (type, contents) tuple.  An empty tuple
+    # is the .get() default for "no exits mapping set anywhere in this chain"
+    # and must fall through to the plain set-merge branch, not crash on v[0].
+    return isinstance(v, tuple) and len(v) > 0 and v[0] == "mapping"
+
+
 def _merge_vals(base, newer):
     merged_sets = {**base["sets"], **newer["sets"]}
     # For exits specifically, we need to merge mappings by key (direction)
     # rather than having newer overwrite base, to avoid duplicate directions
     base_exits = base["sets"].get("exits", ())
     newer_exits = newer["sets"].get("exits", ())
-    if isinstance(base_exits, tuple) and base_exits[0] == "mapping" and \
-       isinstance(newer_exits, tuple) and newer_exits[0] == "mapping":
+    if _is_exit_mapping(base_exits) and _is_exit_mapping(newer_exits):
         # Merge exit mappings: base first, then newer (newer wins for same direction)
         base_exit_map = {k[1]: v for k, v in base_exits[1]} if isinstance(base_exits[1], list) else {}
         newer_exit_map = {k[1]: v for k, v in newer_exits[1]} if isinstance(newer_exits[1], list) else {}
@@ -2024,7 +2030,7 @@ def _build_accept_ucl(rules):
             s += f' id = "{rule["id"]}"'
         if rule.get("name") is not None:
             s += f' name = "{rule["name"]}"'
-        if rule.get("accept") is not None:
+        if isinstance(rule.get("accept"), bool):
             s += f" accept = {str(rule['accept']).lower()}"
         else:
             s += " accept = true"

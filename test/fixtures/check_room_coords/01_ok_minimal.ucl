@@ -1,0 +1,15 @@
+zones "crc_ok" {
+  name = "crc_ok"
+  }
+
+    rooms "centre" {
+      name = "中心"
+      description = "最小可用区域：一个位于原点的房间。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "centre" {
+    room_id = rooms.centre.id
+    }

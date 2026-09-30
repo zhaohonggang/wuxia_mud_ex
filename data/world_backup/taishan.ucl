@@ -1,0 +1,1496 @@
+zones "taishan" {
+  name = "taishan"
+}
+
+# Generated from C:/files/git/mud/d/taishan/baihe.c by LPCConverter
+# Zone: taishan
+
+    rooms "baihe" {
+      name = "白鹤泉"
+      description = "相传从前这里有一个白鹤泉，它的水清凉甘甜，为泰山之最。 这泉水长年涌流不断，喷出的水象仙鹤扑扇着翅膀洗澡一样，因以 为名。可惜后来有一个自私自利的小官，独霸了泉水，后来更因迷 信风水之说，把泉眼堵塞，白鹤泉从此便干涸了。现在只剩下一座 刻着「白鹤泉」三字的石坊以为纪念。从这里继续北上，便是上山 之路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baihe" {
+    room_id = rooms.baihe.id
+  northup = rooms.yitian.id
+  southdown = rooms.daizong.id  }
+
+# Generated from C:/files/git/mud/d/taishan/baozang.c by LPCConverter
+# Zone: taishan
+
+    rooms "baozang" {
+      name = "宝藏岭"
+      description = "这里是泰山的一个名胜。岭上有一座状似狮子的巨石，称为狮 子崖。最出名的还是要数在东北面的东岳庙，也称上岳庙，是古代 封禅的地方，那里有一块唐玄宗的纪泰山铭。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baozang" {
+    room_id = rooms.baozang.id
+  westup = rooms.bixia.id  }
+
+# Generated from C:/files/git/mud/d/taishan/beitian.c by LPCConverter
+# Zone: taishan
+
+    rooms "beitian" {
+      name = "北天门"
+      description = "这里位于石马山的北麓，是岱顶的北面出口，路口有一石坊， 上面写着「玄武」二字。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "beitian" {
+    room_id = rooms.beitian.id
+  southdown = rooms.zhangren.id  }
+
+# Generated from C:/files/git/mud/d/taishan/bixia.c by LPCConverter
+# Zone: taishan
+
+    rooms "bixia" {
+      name = "碧霞祠"
+      description = "这是一座历史悠久而宏伟壮丽的祠院。相传建于唐代以前，宋 、元、明、清各代均曾增建。祠院设有东西两殿，分别称为东西宝 库，储存着进香客的捐施，两殿的屋瓦都是由铁铸成。从四方八面 来泰山上香的男女，都是先到碧霞祠，然后才到其他的庙宇。从这 里往东南走便可到达宝藏岭。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bixia" {
+    room_id = rooms.bixia.id
+  west = rooms.weipin.id
+  eastdown = rooms.baozang.id  }
+
+# Generated from C:/files/git/mud/d/taishan/daizong.c by LPCConverter
+# Zone: taishan
+
+    rooms "daizong" {
+      name = "岱宗坊"
+      description = "位于泰安县城以北约一里，此处是登泰山的入口。相传当年碧 霞元君被姜子牙戏弄，诱她投掷绣花鞋以定泰山地界，结果碧霞元 君只能把绣花鞋从山顶掷到此处。从此泰山便以此为起点。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "daizong" {
+    room_id = rooms.daizong.id
+  northup = rooms.baihe.id
+  south = rooms.taishanjiao.id
+  west = rooms.huanghe5.id  }
+
+# Generated from C:/files/git/mud/d/taishan/dongtian.c by LPCConverter
+# Zone: taishan
+
+    rooms "dongtian" {
+      name = "东天门"
+      description = "这里是岱顶的东面出口。往东依次经过伏虎门峡口、鹰愁涧等， 便可下山。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongtian" {
+    room_id = rooms.dongtian.id
+  west = rooms.tanhai.id  }
+
+# Generated from C:/files/git/mud/d/taishan/doumo.c by LPCConverter
+# Zone: taishan
+
+    rooms "doumo" {
+      name = "斗母宫"
+      description = "上了一段山路，游人一般都会在这里稍为休息。这里的地势已 经比泰山邻近的徂徕山为高，从这里往东北走便是石经峪。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "doumo" {
+    room_id = rooms.doumo.id
+  eastup = rooms.shijin.id
+  southdown = rooms.yitian.id  }
+
+
+  room_characters "doumo" {
+    room_id = rooms.doumo.id
+    characters = [
+      { id = characters.jian_ke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/ertian.c by LPCConverter
+# Zone: taishan
+
+    rooms "ertian" {
+      name = "二天门"
+      description = "这里又叫「中天门」。一般的登山者来到这里都已累极，但是 这里才是泰山的一半啊！面对前面险峻的十八盘，很多人都不禁犹 豫起来。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "ertian" {
+    room_id = rooms.ertian.id
+  northup = rooms.wudafu.id
+  southdown = rooms.huima.id  }
+
+
+  room_characters "ertian" {
+    room_id = rooms.ertian.id
+    characters = [
+      { id = characters.tiao_fu.id },
+      { id = characters.tiansong.id },
+      { id = characters.tianbai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/fengchan.c by LPCConverter
+# Zone: taishan
+
+    rooms "fengchan" {
+      name = "封禅台"
+      description = "如今这里是推选天下武林总盟主之处，各路英雄如能技压群雄， 比武夺魁，便能问鼎盟主宝座，成为统领中原武林的领袖。高台上 摆放着汉白玉宝座，盟主便在此坐堂议事。台上高高立着一竿旗， 上书：替天行道 四个大字。 盟主左右各侍立着两位白衣武士，两 边都放着一长排虎皮交椅，时常有武林前辈高手前来参见盟主。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fengchan" {
+    room_id = rooms.fengchan.id
+  down = rooms.yuhuang.id  }
+
+
+  room_characters "fengchan" {
+    room_id = rooms.fengchan.id
+    characters = [
+      { id = characters.wei_shi1.id },
+      { id = characters.wei_shi1.id },
+      { id = characters.wei_shi1.id },
+      { id = characters.wei_shi1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/huima.c by LPCConverter
+# Zone: taishan
+
+    rooms "huima" {
+      name = "回马岭"
+      description = "此处又名天关，到了这里，马匹已不能再前进。据说当年唐玄 宗上泰山封禅，来到这里，因陡峭难攀，累死了白马，要改乘小轿 上山。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huima" {
+    room_id = rooms.huima.id
+  northup = rooms.ertian.id
+  southdown = rooms.shijin.id  }
+
+
+  room_characters "huima" {
+    room_id = rooms.huima.id
+    characters = [
+      { id = characters.tiao_fu.id },
+      { id = characters.jian_ke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/kedian.c by LPCConverter
+# Zone: taishan
+
+    rooms "kedian" {
+      name = "客栈"
+      description = "这是一家在泰山山脚一的一个小客栈，由于泰山游人如织，因此这 里生意非常兴隆。外地游客多选择在这里落脚，你可以在这里打听到各 地的风土人情。店小二里里外外忙得团团转，接待着南腔北调的客人。 墙上挂着一个牌子(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ paizi = "楼上雅房，每夜五两白银。"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）： !me->query_temp("rent_paid") && dir == "up" 
+direction = "up"
+  message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊！"
+}
+,
+{
+   # 阻挡条件（原样保留）： me->query_temp("rent_paid") && dir == "west" 
+direction = "west"
+  message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就走了呢！ 旁人还以为小店伺候不周呢！"
+}
+
+]
+    }
+
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+  west = rooms.taishanjiao.id
+  up = rooms.kedian2.id  }
+
+
+  room_characters "kedian" {
+    room_id = rooms.kedian.id
+    characters = [
+      { id = characters.xiaoer.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/kedian2.c by LPCConverter
+# Zone: taishan
+
+    rooms "kedian2" {
+      name = "客店二楼"
+      description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小木床， 不少客人正和衣而卧，满屋子都是呼呼的打酣声。西边有张床是空的， 你蹑手蹑脚地走了过去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kedian2" {
+    room_id = rooms.kedian2.id
+  down = rooms.kedian.id  }
+
+# Generated from C:/files/git/mud/d/taishan/lianhua.c by LPCConverter
+# Zone: taishan
+
+    rooms "lianhua" {
+      name = "莲花峰"
+      description = "莲花峰其实是由五座山峰攒簇而成，状如莲花，因以为名。东 面有危崖万仞，叫五花崖。登上莲花峰后，可看到在盘道中的游人 如小蚁般往来穿梭，故此莲花峰又叫望人峰。往上走便是莲花峰的 峰顶。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lianhua" {
+    room_id = rooms.lianhua.id
+  westup = rooms.tianjie.id
+  northup = rooms.shixin.id  }
+
+# Generated from C:/files/git/mud/d/taishan/longmen.c by LPCConverter
+# Zone: taishan
+
+    rooms "longmen" {
+      name = "龙门"
+      description = "这里便是泰山十八盘的起点。此处山势陡峭，登山的人一个不 小心很容易便会跌堕到崖谷之中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "longmen" {
+    room_id = rooms.longmen.id
+  northup = rooms.shengxian.id
+  southdown = rooms.wudafu.id  }
+
+
+  room_characters "longmen" {
+    room_id = rooms.longmen.id
+    characters = [
+      { id = characters.chi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/nantian.c by LPCConverter
+# Zone: taishan
+
+    rooms "nantian" {
+      name = "南天门"
+      description = "走完了十八盘，这里便是泰山顶的入口处。从这里附视山下， 群山如龟伏地，河流如蚓缠绕，天地空阔，无可名状。从这里往东 北走可到一个市集，往西走便是月观峰，往北走则是到玉皇顶之路。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）： present("jiang baisheng", environment(me)) && me->query("id") != mengzhu
+direction = ~
+  message = "江百胜伸手拦住你说道：盟主很忙，现在不见外客，你下山去吧！"
+}
+
+]
+    }
+
+  room_exits "nantian" {
+    room_id = rooms.nantian.id
+  eastup = rooms.tianjie.id
+  northup = rooms.yuhuang.id
+  west = rooms.yueguan.id
+  southdown = rooms.shengxian.id  }
+
+
+  room_characters "nantian" {
+    room_id = rooms.nantian.id
+    characters = [
+      { id = characters.jiang.id },
+      { id = characters.wei_shi3.id },
+      { id = characters.wei_shi3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/riguan.c by LPCConverter
+# Zone: taishan
+
+    rooms "riguan" {
+      name = "日观峰"
+      description = "这里是位于南天门西面的山岭，怪石攒簇，最高的地方一石 卓立，名为君子峰。往北走便是泰山的西天门。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "riguan" {
+    room_id = rooms.riguan.id
+  westup = rooms.yuhuang.id
+  eastup = rooms.tanhai.id  }
+
+
+  room_characters "riguan" {
+    room_id = rooms.riguan.id
+    characters = [
+      { id = characters.tianmen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/shengxian.c by LPCConverter
+# Zone: taishan
+
+    rooms "shengxian" {
+      name = "升仙坊"
+      description = "这里是十八盘的中间，从龙门至此的一段称为缓十八，从这里 直上南天门的一段称为紧十八。由此刻攀石而上，后面的人可以看 到前面的人的鞋底，前面的人回头则可见到后面的人的发顶。在这 里一般人每走十来步便要稍一休息。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shengxian" {
+    room_id = rooms.shengxian.id
+  northup = rooms.nantian.id
+  southdown = rooms.longmen.id  }
+
+
+  room_characters "shengxian" {
+    room_id = rooms.shengxian.id
+    characters = [
+      { id = characters.jianchu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/shijin.c by LPCConverter
+# Zone: taishan
+
+    rooms "shijin" {
+      name = "石经峪"
+      description = "这里是一块大石坪，石面刻有篆文「金刚经」，字体其大如斗， 但却没有记载刻石者的名字和刻石的年代。过了此处，渐入空山， 山路越来越不好走了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shijin" {
+    room_id = rooms.shijin.id
+  northup = rooms.huima.id
+  westdown = rooms.doumo.id  }
+
+
+  room_characters "shijin" {
+    room_id = rooms.shijin.id
+    characters = [
+      { id = characters.seng_ren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/shixin.c by LPCConverter
+# Zone: taishan
+
+    rooms "shixin" {
+      name = "试心石"
+      description = "这里便是莲花峰的峰顶，由两块巨石勾连在一起，据说若果你 心存诚意，登上试心石时石快便不会动摇，反之则摇动不止。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shixin" {
+    room_id = rooms.shixin.id
+  southdown = rooms.lianhua.id  }
+
+
+  room_characters "shixin" {
+    room_id = rooms.shixin.id
+    characters = [
+      { id = characters.yujizi.id },
+      { id = characters.yuyinzi.id },
+      { id = characters.yuqingzi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/taishanjiao.c by LPCConverter
+# Zone: taishan
+
+    rooms "taishanjiao" {
+      name = "泰山脚下"
+      description = "泰山古称岱山，为五岳的东岳，为道教第二小洞天，向有『五岳独尊』 之称誉，以『泰山天下雄』名闻域内。往北就到岱宗坊了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "taishanjiao" {
+    room_id = rooms.taishanjiao.id
+  north = rooms.daizong.id
+  south = rooms.yidao3.id
+  east = rooms.kedian.id  }
+
+# Generated from C:/files/git/mud/d/taishan/tanhai.c by LPCConverter
+# Zone: taishan
+
+    rooms "tanhai" {
+      name = "探海石"
+      description = "这是一块从山崖向横突出的巨石，长约二丈余，向东直指渤海。 巨石三面无所凭依，视野广阔，但除非有绝高胆色的人，普通人一般 都不敢攀登这块探海石。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tanhai" {
+    room_id = rooms.tanhai.id
+  westdown = rooms.riguan.id
+  east = rooms.dongtian.id  }
+
+# Generated from C:/files/git/mud/d/taishan/tianjie.c by LPCConverter
+# Zone: taishan
+
+    rooms "tianjie" {
+      name = "天街"
+      description = "此地在南天门东北，这里有数十户小贩聚而成市。从这里往东 南走便是莲花峰，东北是围屏山，西南便回到南天门。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tianjie" {
+    room_id = rooms.tianjie.id
+  westdown = rooms.nantian.id
+  eastup = rooms.weipin.id
+  eastdown = rooms.lianhua.id  }
+
+
+  room_characters "tianjie" {
+    room_id = rooms.tianjie.id
+    characters = [
+      { id = characters.xiao_fan.id },
+      { id = characters.xiao_fan.id },
+      { id = characters.tiao_fu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/weipin.c by LPCConverter
+# Zone: taishan
+
+    rooms "weipin" {
+      name = "围屏山"
+      description = "这里是泰山的其中一座山峰。山的东面有一个虎头崖，其形状 有如一头伏虎。南面有避风崖，崖上大大地刻着「振衣冈」三字于 上面。北边则有北斗坛。从这里往东走，便可到达伺奉泰山之神碧 霞元君的碧霞祠。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "weipin" {
+    room_id = rooms.weipin.id
+  westdown = rooms.tianjie.id
+  east = rooms.bixia.id  }
+
+# Generated from C:/files/git/mud/d/taishan/wudafu.c by LPCConverter
+# Zone: taishan
+
+    rooms "wudafu" {
+      name = "五大夫松"
+      description = "相传当年秦始皇上泰山，来到这里下起雨来，他就到两棵松树 底下避雨，结果没淋着。因此，他就封这两棵松树为「五大夫」。 后来不知从哪里来了一块巨大的飞来石把两棵松树砸死了。后人再 在旁补种五株松树。在不远处还有一个御帐坪，据说就是秦始皇当 年结帐的位置。从这里再往山上走便会到达十八盘的入口。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wudafu" {
+    room_id = rooms.wudafu.id
+  northup = rooms.longmen.id
+  southdown = rooms.ertian.id  }
+
+# Generated from C:/files/git/mud/d/taishan/xitian.c by LPCConverter
+# Zone: taishan
+
+    rooms "xitian" {
+      name = "西天门"
+      description = "这里有两块巨石壁立，有如给人斩削过似的，正是岱顶的西面出口。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xitian" {
+    room_id = rooms.xitian.id
+  southdown = rooms.yueguan.id  }
+
+# Generated from C:/files/git/mud/d/taishan/yidao.c by LPCConverter
+# Zone: taishan
+
+    rooms "yidao" {
+      name = "大驿道"
+      description = "你走在一条尘土飞扬的大驿道上。四周人来人往。挑担子的 行商，赶着大车的马夫，上京赶考的书生，熙熙攘攘，非常热闹。 不时还有两三骑快马从身边飞驰而过，扬起一路尘埃。道路两旁 是整整齐齐的杨树林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yidao" {
+    room_id = rooms.yidao.id
+  west = rooms.dongmen.id
+  east = rooms.yidao1.id  }
+
+
+  room_characters "yidao" {
+    room_id = rooms.yidao.id
+    characters = [
+      { id = characters.tiao_fu.id },
+      { id = characters.tiao_fu.id },
+      { id = characters.tiao_fu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/yidao1.c by LPCConverter
+# Zone: taishan
+
+    rooms "yidao1" {
+      name = "大驿道"
+      description = "你走在一条尘土飞扬的大驿道上。四周人来人往。挑担子的 行商，赶着大车的马夫，上京赶考的书生，熙熙攘攘，非常热闹。 不时还有两三骑快马从身边飞驰而过，扬起一路尘埃。马上的人 个个身着劲装，衣甲鲜明，有的还随身佩带着刀剑。看来都是些 些习武的江湖人。道路两旁是整整齐齐的杨树林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yidao1" {
+    room_id = rooms.yidao1.id
+  west = rooms.yidao.id
+  northeast = rooms.yidao2.id
+  southeast = rooms.qzroad1.id  }
+
+
+  room_characters "yidao1" {
+    room_id = rooms.yidao1.id
+    characters = [
+      { id = characters.tangzi.id },
+      { id = characters.tangzi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/yidao2.c by LPCConverter
+# Zone: taishan
+
+    rooms "yidao2" {
+      name = "大驿道"
+      description = "你走在一条尘土飞扬的大驿道上。四周人来人往。挑担子的 行商，赶着大车的马夫，上京赶考的书生，熙熙攘攘，非常热闹。 不时还有两三骑快马从身边飞驰而过，扬起一路尘埃。道路两旁 是整整齐齐的杨树林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yidao2" {
+    room_id = rooms.yidao2.id
+  southwest = rooms.yidao1.id
+  north = rooms.yidao3.id  }
+
+
+  room_characters "yidao2" {
+    room_id = rooms.yidao2.id
+    characters = [
+      { id = characters.shu_sheng.id },
+      { id = characters.tianyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/yidao3.c by LPCConverter
+# Zone: taishan
+
+    rooms "yidao3" {
+      name = "大驿道"
+      description = "你走在一条尘土飞扬的大驿道上。四周人来人往。挑担子的 行商，赶着大车的马夫，上京赶考的书生，熙熙攘攘，非常热闹。 不时还有两三骑快马从身边飞驰而过，扬起一路尘埃。道路两旁 是整整齐齐的杨树林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yidao3" {
+    room_id = rooms.yidao3.id
+  south = rooms.yidao2.id
+  north = rooms.taishanjiao.id  }
+
+
+  room_characters "yidao3" {
+    room_id = rooms.yidao3.id
+    characters = [
+      { id = characters.dao_ke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/yitian.c by LPCConverter
+# Zone: taishan
+
+    rooms "yitian" {
+      name = "一天门"
+      description = "从岱宗坊上山大约走四里，便来到一天门。北面有一座天阶坊，过 了此坊便进入了登泰山的盘道。南面有一座更衣亭，士大夫们及其 随从，都会在这里换上轻便的服装，才继续登山。从一天门向北眺 望，南天门与十八盘在云雾明灭间或隐或现，登泰山的人到此已有 观止之叹。附近有一牌坊，上写「孔子登临处」，相传为「孔子过 泰山侧」的故事发生的地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yitian" {
+    room_id = rooms.yitian.id
+  northup = rooms.doumo.id
+  southdown = rooms.baihe.id  }
+
+
+  room_characters "yitian" {
+    room_id = rooms.yitian.id
+    characters = [
+      { id = characters.dao_ke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/yueguan.c by LPCConverter
+# Zone: taishan
+
+    rooms "yueguan" {
+      name = "月观峰"
+      description = "这里是位于南天门西面的山岭，怪石攒簇，最高的地方一石卓立， 名为君子峰。往北走便是泰山的西天门。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yueguan" {
+    room_id = rooms.yueguan.id
+  east = rooms.nantian.id
+  northup = rooms.xitian.id  }
+
+# Generated from C:/files/git/mud/d/taishan/yuhuang.c by LPCConverter
+# Zone: taishan
+
+    rooms "yuhuang" {
+      name = "玉皇顶"
+      description = "此处便是泰山绝顶。这里有一座玉帝观，观前为古登封台，厉 代皇帝封禅的仪式都是在这里举行。台下有一无字碑，据说是汉武 帝所立。不远处有一石碣，上书「孔子小天下处」。正中往上便是 武林盟主所在之处--封禅台。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yuhuang" {
+    room_id = rooms.yuhuang.id
+  southdown = rooms.nantian.id
+  eastdown = rooms.riguan.id
+  west = rooms.zhangren.id
+  up = rooms.fengchan.id  }
+
+
+  room_characters "yuhuang" {
+    room_id = rooms.yuhuang.id
+    characters = [
+      { id = characters.wei_shi2.id },
+      { id = characters.wei_shi2.id },
+      { id = characters.wei_shi2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/zhangren.c by LPCConverter
+# Zone: taishan
+
+    rooms "zhangren" {
+      name = "丈人峰"
+      description = "这里位于玉皇顶以西里许的地方，形状有如一个伛偻的老人。 靠西有黄华洞，因洞路极为危险，后人在进路处写上「回车岩」。 从这里往北走便是岱顶的北天门。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhangren" {
+    room_id = rooms.zhangren.id
+  east = rooms.yuhuang.id
+  northup = rooms.beitian.id  }
+
+
+  room_characters "zhangren" {
+    room_id = rooms.zhangren.id
+    characters = [
+      { id = characters.wei_shi1.id },
+      { id = characters.wei_shi1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/taishan/npc/chi.c by LPCConverter
+# Zone: taishan
+
+    characters "chi" {
+      name = "迟百城"
+      description = ""
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 600000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 800
+    max_neili = 1400
+    max_qi = 1200
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "taishan-sword" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { type = "sword" skill = "taishan-sword" },
+    { type = "parry" skill = "taishan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/dao-ke.c by LPCConverter
+# Zone: taishan
+
+    characters "dao_ke" {
+      name = "刀客"
+      description = "这家伙满脸横肉，一付凶神恶煞的模样，令人望而生畏。"
+  gender = "男性"
+  age = 20
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 15000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 45 },
+    { skill = "blade" level = 45 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/jian-ke.c by LPCConverter
+# Zone: taishan
+
+    characters "jian_ke" {
+      name = "剑客"
+      description = "这是位中年武人，肩背长剑，长长的剑穗随风飘扬，看来似乎身怀绝艺。"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 20000
+  }
+
+  skills = [
+    { skill = "sword" level = 60 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/jianchu.c by LPCConverter
+# Zone: taishan
+
+    characters "jianchu" {
+      name = "建除道人"
+      description = ""
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 60000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 800
+    max_neili = 1400
+    max_qi = 1200
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "taishan-sword" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "taishan-xinfa" level = 80 },
+    { type = "force" skill = "taishan-xinfa" },
+    { type = "sword" skill = "taishan-sword" },
+    { type = "parry" skill = "taishan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.greyrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/jiang.c by LPCConverter
+# Zone: taishan
+
+    characters "jiang" {
+      name = "江百胜"
+      description = "当今武林盟主魏无双之手下之亲兵队长。"
+  gender = "男性"
+  age = 30
+  shen_type = 0
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 50000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 200
+    max_neili = 300
+    max_qi = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "unarmed" level = 100 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 80 }
+  ]
+
+
+  engage = {
+    fight = { accept = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/seng-ren.c by LPCConverter
+# Zone: taishan
+
+    characters "seng_ren" {
+      name = "游方和尚"
+      description = "他是一位中年游方和尚，骨瘦如柴，身上的袈裟打满了补丁。"
+  gender = "男性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+    con = 25
+    dex = 23
+    int = 30
+    max_jing = 300
+    max_neili = 380
+    max_qi = 380
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "item_name" name = "金刚经" accept = true msg = ["贫僧正需这本金刚经来叁照石坪上的原文啊 ！", "smile"] },
+    { kind = "any" accept = true msg = ["贫僧正需这本金刚经来叁照石坪上的原文啊 ！", "smile"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/shu-sheng.c by LPCConverter
+# Zone: taishan
+
+    characters "shu_sheng" {
+      name = "书生"
+      description = "这是个饱读诗书，却手无搏鸡之力的年轻书生。"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "peaceful"
+    int = 28
+  }
+
+  skills = [
+    { skill = "literate" level = 40 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/tangzi.c by LPCConverter
+# Zone: taishan
+
+    characters "tangzi" {
+      name = "趟子手"
+      description = "这是个镖局趟子手，长得虎背熊腰，一身横练功夫。"
+  gender = "男性"
+  age = 30
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+  }
+
+  chat_chance = 5
+chats = [
+    "趟子手一声大喊: 我~~~~武~~~~维~~~~扬~~~~！"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "sword" level = 20 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.duanjian.id },
+    { id = items.cloth.id },
+    { id = items.jitui.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/tianbai.c by LPCConverter
+# Zone: taishan
+
+    characters "tianbai" {
+      name = "天柏道人"
+      description = ""
+  gender = "男性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 60000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 800
+    max_neili = 1400
+    max_qi = 1200
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "taishan-sword" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "taishan-xinfa" level = 80 },
+    { type = "force" skill = "taishan-xinfa" },
+    { type = "sword" skill = "taishan-sword" },
+    { type = "parry" skill = "taishan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.greyrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/tianmen.c by LPCConverter
+# Zone: taishan
+
+    characters "tianmen" {
+      name = "天门道人"
+      description = ""
+  title = "泰山派第十三代掌门"
+  gender = "男性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 800000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1600
+    max_neili = 4200
+    max_qi = 3200
+    str = 26
+  }
+
+  skills = [
+    { skill = "sword" level = 170 },
+    { skill = "force" level = 170 },
+    { skill = "parry" level = 170 },
+    { skill = "dodge" level = 170 },
+    { skill = "taishan-sword" level = 170 },
+    { skill = "lingxu-bu" level = 170 },
+    { skill = "taishan-xinfa" level = 170 },
+    { type = "force" skill = "taishan-xinfa" },
+    { type = "sword" skill = "taishan-sword" },
+    { type = "parry" skill = "taishan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.greyrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/tiansong.c by LPCConverter
+# Zone: taishan
+
+    characters "tiansong" {
+      name = "天松道人"
+      description = ""
+  gender = "男性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 60000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 800
+    max_neili = 1400
+    max_qi = 1200
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "taishan-sword" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "taishan-xinfa" level = 80 },
+    { type = "force" skill = "taishan-xinfa" },
+    { type = "sword" skill = "taishan-sword" },
+    { type = "parry" skill = "taishan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.greyrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/tianyi.c by LPCConverter
+# Zone: taishan
+
+    characters "tianyi" {
+      name = "天乙道人"
+      description = ""
+  gender = "男性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 60000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 800
+    max_neili = 1400
+    max_qi = 1200
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "taishan-sword" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "taishan-xinfa" level = 80 },
+    { type = "force" skill = "taishan-xinfa" },
+    { type = "sword" skill = "taishan-sword" },
+    { type = "parry" skill = "taishan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.greyrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/tiao-fu.c by LPCConverter
+# Zone: taishan
+
+    characters "tiao_fu" {
+      name = "挑夫"
+      description = "这是个老实巴交的穷挑夫，长得膀阔腰圆，一身肌肉。"
+  gender = "男性"
+
+  combat = {
+    attitude = "heroism"
+    con = 20
+    dex = 22
+    int = 15
+    str = 25
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/wei-shi1.c by LPCConverter
+# Zone: taishan
+
+    characters "wei_shi1" {
+      name = "白衣武士"
+      description = "这是位白衣武士，身披钢甲，手执长剑，双目精光炯炯，警惕地巡视着四周的情形。"
+  gender = "男性"
+  age = 35
+  shen_type = 0
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 100000
+    con = 25
+    dex = 30
+    int = 20
+    max_jing = 200
+    max_neili = 500
+    max_qi = 500
+    str = 30
+  }
+
+  skills = [
+    { skill = "sword" level = 100 },
+    { skill = "unarmed" level = 80 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 100 }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/wei-shi2.c by LPCConverter
+# Zone: taishan
+
+    characters "wei_shi2" {
+      name = "红衣武士"
+      description = "这是位红衣武士，身披钢甲，手执长剑，双目精光炯炯，警惕地巡视着四周的情形。"
+  gender = "男性"
+  age = 35
+  shen_type = 0
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 80000
+    con = 23
+    dex = 26
+    int = 20
+    max_jing = 200
+    max_neili = 400
+    max_qi = 450
+    str = 28
+  }
+
+  skills = [
+    { skill = "sword" level = 80 },
+    { skill = "unarmed" level = 60 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/wei-shi3.c by LPCConverter
+# Zone: taishan
+
+    characters "wei_shi3" {
+      name = "青衣武士"
+      description = "这是位青衣武士，身披钢甲，手执长剑，双目精光炯炯，警惕地巡视着四周的情形。"
+  gender = "男性"
+  age = 35
+  shen_type = 0
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 60000
+    con = 22
+    dex = 24
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 400
+    str = 26
+  }
+
+  skills = [
+    { skill = "sword" level = 60 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 60 },
+    { skill = "dodge" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/xiao-fan.c by LPCConverter
+# Zone: taishan
+
+    characters "xiao_fan" {
+      name = "小贩"
+      description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+  brain = brains.vendor
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  # vendor_goods: "/d/village/npc/obj/shoes" (file not found)
+  # vendor_goods: "/d/village/npc/obj/bottle" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/xiaoer.c by LPCConverter
+# Zone: taishan
+
+    characters "xiaoer" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+
+  accept = [
+    { kind = "money" min = 500 accept = true msg = "小二一哈腰，说道：多谢您老，客官请上楼歇息。" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/yujizi.c by LPCConverter
+# Zone: taishan
+
+    characters "yujizi" {
+      name = "玉玑子"
+      description = ""
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 120000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2000
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "taishan-sword" level = 100 },
+    { skill = "lingxu-bu" level = 100 },
+    { skill = "taishan-xinfa" level = 100 },
+    { type = "force" skill = "taishan-xinfa" },
+    { type = "sword" skill = "taishan-sword" },
+    { type = "parry" skill = "taishan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.greyrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/yuqingzi.c by LPCConverter
+# Zone: taishan
+
+    characters "yuqingzi" {
+      name = "玉磬子"
+      description = ""
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 120000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2000
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "taishan-sword" level = 100 },
+    { skill = "lingxu-bu" level = 100 },
+    { skill = "taishan-xinfa" level = 100 },
+    { type = "force" skill = "taishan-xinfa" },
+    { type = "sword" skill = "taishan-sword" },
+    { type = "parry" skill = "taishan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.greyrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/taishan/npc/yuyinzi.c by LPCConverter
+# Zone: taishan
+
+    characters "yuyinzi" {
+      name = "玉音子"
+      description = ""
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 110000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2000
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "taishan-sword" level = 100 },
+    { skill = "lingxu-bu" level = 100 },
+    { skill = "taishan-xinfa" level = 100 },
+    { type = "force" skill = "taishan-xinfa" },
+    { type = "sword" skill = "taishan-sword" },
+    { type = "parry" skill = "taishan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.greyrobe.id }
+  ]
+
+    }

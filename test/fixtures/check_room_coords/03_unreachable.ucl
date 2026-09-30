@@ -1,0 +1,28 @@
+zones "crc_unreachable" {
+  name = "crc_unreachable"
+  }
+
+    rooms "centre" {
+      name = "中心"
+      description = "位于原点的中心房。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "centre" {
+    room_id = rooms.centre.id
+    }
+
+# 这个房间有完整坐标，但和中心房之间没有任何出口相连。
+    rooms "island" {
+      name = "孤岛"
+      description = "与中心房不连通。"
+  x = 5
+  y = 5
+  z = 0
+    }
+
+  room_exits "island" {
+    room_id = rooms.island.id
+    }

@@ -57,16 +57,16 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH: switch (i) { case 1: str = "┌-----┐\n"+ "│ │\n"+ "│ ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 2: str = "┌-----┐\n"+ "│ │\n"+ "│ ● ● │\n"+ "│ │\n"+ "└-----┘\n"; break; case 3: str = "┌-----┐\n"+ "│● │\n"+ "│ ● │\n"+ "│ ●│\n"+ "└-----┘\n"; break; case 4: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; case 5: str = "┌-----┐\n"+ "│● ●│\n"+ "│ ● │\n"+ "│● ●│\n"+ "└-----┘\n"; break; case 6: str = "┌-----┐\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "│ ● ● │\n"+ "└-----┘\n"; break; }
 # ==== SWITCH STATEMENTS ====
-  # UNHANDLED FUNCTION: gamble_start
+  # UNHANDLED FUNCTION: rdm
+  # UNHANDLED FUNCTION: player_loses
   # UNHANDLED FUNCTION: display_bet
   # UNHANDLED FUNCTION: gamble_prepare
   # UNHANDLED FUNCTION: player_wins
+  # UNHANDLED FUNCTION: gamble_perform
+  # UNHANDLED FUNCTION: do_bet
+  # UNHANDLED FUNCTION: gamble_start
   # UNHANDLED FUNCTION: gamble_finish
   # UNHANDLED FUNCTION: random2
-  # UNHANDLED FUNCTION: rdm
-  # UNHANDLED FUNCTION: do_bet
-  # UNHANDLED FUNCTION: player_loses
-  # UNHANDLED FUNCTION: gamble_perform
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -150,9 +150,9 @@
   # if (this_player()->query_temp("pigging_seat"))  →  
 # ==== CONDITIONAL BRANCHES (look_table) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: look_rules
   # UNHANDLED FUNCTION: look_scoreboard
   # UNHANDLED FUNCTION: look_table
-  # UNHANDLED FUNCTION: look_rules
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -192,11 +192,11 @@
   # if (longstr)  →  
 # ==== CONDITIONAL BRANCHES (create_food) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: create_food
-  # UNHANDLED FUNCTION: do_broadcast
-  # UNHANDLED FUNCTION: create_wine
   # UNHANDLED FUNCTION: do_order
+  # UNHANDLED FUNCTION: create_wine
+  # UNHANDLED FUNCTION: do_broadcast
   # UNHANDLED FUNCTION: create_water
+  # UNHANDLED FUNCTION: create_food
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -221,8 +221,8 @@
   # if (userp(this_player()))  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: do_enter
+  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: look_gaoshi
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -317,12 +317,12 @@
   # if (! objectp(ob))  →  
 # ==== CONDITIONAL BRANCHES (look_tiaofu) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_invite
-  # UNHANDLED FUNCTION: refuse
+  # UNHANDLED FUNCTION: do_lclose
   # UNHANDLED FUNCTION: look_tiaofu
   # UNHANDLED FUNCTION: do_kickout
+  # UNHANDLED FUNCTION: refuse
   # UNHANDLED FUNCTION: do_lopen
-  # UNHANDLED FUNCTION: do_lclose
+  # UNHANDLED FUNCTION: do_invite
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -447,11 +447,11 @@
   # if (longstr)  →  
 # ==== CONDITIONAL BRANCHES (create_food) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: create_food
-  # UNHANDLED FUNCTION: do_broadcast
-  # UNHANDLED FUNCTION: create_wine
   # UNHANDLED FUNCTION: do_order
+  # UNHANDLED FUNCTION: create_wine
+  # UNHANDLED FUNCTION: do_broadcast
   # UNHANDLED FUNCTION: create_water
+  # UNHANDLED FUNCTION: create_food
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -505,11 +505,11 @@
   # if (longstr)  →  
 # ==== CONDITIONAL BRANCHES (create_food) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: create_food
-  # UNHANDLED FUNCTION: do_broadcast
-  # UNHANDLED FUNCTION: create_wine
   # UNHANDLED FUNCTION: do_order
+  # UNHANDLED FUNCTION: create_wine
+  # UNHANDLED FUNCTION: do_broadcast
   # UNHANDLED FUNCTION: create_water
+  # UNHANDLED FUNCTION: create_food
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -559,9 +559,9 @@
   # if (this_player()->query_temp("pigging_seat"))  →  
 # ==== CONDITIONAL BRANCHES (look_table) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: look_rules
   # UNHANDLED FUNCTION: look_scoreboard
   # UNHANDLED FUNCTION: look_table
-  # UNHANDLED FUNCTION: look_rules
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -609,9 +609,9 @@
   # if (this_player()->query_temp("pigging_seat"))  →  
 # ==== CONDITIONAL BRANCHES (look_table) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: look_rules
   # UNHANDLED FUNCTION: look_scoreboard
   # UNHANDLED FUNCTION: look_table
-  # UNHANDLED FUNCTION: look_rules
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -640,9 +640,9 @@
   # if (ob->refuse(me))  →  
 # ==== CONDITIONAL BRANCHES (valid_leave) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: init_here
-  # UNHANDLED FUNCTION: is_chat_room
   # UNHANDLED FUNCTION: do_pass
+  # UNHANDLED FUNCTION: is_chat_room
+  # UNHANDLED FUNCTION: init_here
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -659,9 +659,9 @@
   # if (this_player()->query_temp("pigging_seat"))  →  
 # ==== CONDITIONAL BRANCHES (look_table) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: look_rules
   # UNHANDLED FUNCTION: look_scoreboard
   # UNHANDLED FUNCTION: look_table
-  # UNHANDLED FUNCTION: look_rules
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -981,18 +981,18 @@
   # if (! me->query_temp("pet/money"))  →  command('say 这位' + RANK_D->query_respect(me) + '，每只宠物一百两黄金！');
 # ==== CONDITIONAL BRANCHES (do_selete) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: check_legal_id
+  # UNHANDLED FUNCTION: confirm_dispose
+  # UNHANDLED FUNCTION: build_pet
+  # UNHANDLED FUNCTION: get_subtype
+  # UNHANDLED FUNCTION: check_legal_name
+  # UNHANDLED FUNCTION: get_desc
+  # UNHANDLED FUNCTION: get_type
+  # UNHANDLED FUNCTION: recognize_apprentice
+  # UNHANDLED FUNCTION: do_selete
+  # UNHANDLED FUNCTION: get_gender
   # UNHANDLED FUNCTION: get_name
   # UNHANDLED FUNCTION: get_id
-  # UNHANDLED FUNCTION: recognize_apprentice
-  # UNHANDLED FUNCTION: build_pet
-  # UNHANDLED FUNCTION: do_selete
-  # UNHANDLED FUNCTION: get_desc
-  # UNHANDLED FUNCTION: get_subtype
-  # UNHANDLED FUNCTION: get_type
-  # UNHANDLED FUNCTION: check_legal_id
-  # UNHANDLED FUNCTION: get_gender
-  # UNHANDLED FUNCTION: confirm_dispose
-  # UNHANDLED FUNCTION: check_legal_name
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1026,8 +1026,8 @@
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: refuse_message
-  # UNHANDLED FUNCTION: do_kill
   # UNHANDLED FUNCTION: do_fight
+  # UNHANDLED FUNCTION: do_kill
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1126,10 +1126,10 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH: switch (me->query_temp("job/step")) { case 1: msg = "$N东挑西拣，选好了一些药材。"; break; case 2: msg = "$N把药材放进药臼，使劲捣了起来。"; break; case 3: msg = "药材渐渐化作粉屑，混在一起。"; break; case 4: msg = "粉屑在$N的捣弄下越来越细，逐渐变成了粉末。"; break; default: msg = "$N把药材包好，递给$n。"; finish = 1; break; }
 # ==== SWITCH STATEMENTS ====
-  # UNHANDLED FUNCTION: working
   # UNHANDLED FUNCTION: halt_working
   # UNHANDLED FUNCTION: do_peiyao
   # UNHANDLED FUNCTION: ask_job
+  # UNHANDLED FUNCTION: working
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1160,11 +1160,11 @@
   # SWITCH POOL: switch (random(6)) { case 0: command("say 好！好！"); break; case 1: command("say 不要就给我！"); break; }
   # SWITCH POOL: switch (random(4)) { case 0: command("say 日积月累，小康之路！"); break; case 1: command("kok " + this_player()->query("id")); command("say 随地乱扔垃圾，罚款五元！"); break; case 2: command("say 败家子，败家子！"); break; default: command("heihei"); break; }
 # ==== SWITCH POOLS ====
-  # UNHANDLED FUNCTION: die
   # UNHANDLED FUNCTION: do_drop
   # UNHANDLED FUNCTION: do_answer
-  # UNHANDLED FUNCTION: unconcious
+  # UNHANDLED FUNCTION: die
   # UNHANDLED FUNCTION: recover
+  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1186,8 +1186,8 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH POOL: switch (random(5)) { case 0: command("hehe " + ob->query("id")); command("steal coin from " + ob->query("id")); command("buy jitui"); break; case 1: command("grin " + ob->query("id")); command("steal silver from " + ob->query("id")); command("eat jitui"); break; case 2: command("hi " + ob->query("id")); command("steal gold from " + ob->query("id")); command("drink jiudai"); break; case 3: command("pat " + ob->query("id")); command("steal changjian from " + ob->query("id")); command("wield changjian"); command("drink jiudai"); break; case 4: command("walkby " + ob->query("id")); command("steal jitui from " + ob->query("id")); command("eat jitui"); break; }
 # ==== SWITCH POOLS ====
-  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: stealing
+  # UNHANDLED FUNCTION: accept_fight
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1211,9 +1211,9 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: recognize_apprentice
   # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_fight
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1257,10 +1257,10 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH: switch (me->query_temp("job/step")) { case 1: msg = "$N拿过砚台，慢慢地研墨。"; break; case 2: msg = "$N看看墨磨得差不多了，摸起毛笔，轻轻哈了两口气。"; break; case 3: msg = "$N饱蘸墨汁，翻开四书，摊开纸张，开始誊写。"; break; case 4: case 6: msg = "$N聚精会神的抄写书籍。"; break; case 5: msg = "$N蘸了蘸墨，继续仔细地抄写。"; case 7: msg = "$N不断翻动着书籍，纸张越来越厚。"; break; default: msg = "$N把书籍抄好，将纸上墨吹干，装订成册，递给$n。"; finish = 1; break; }
 # ==== SWITCH STATEMENTS ====
-  # UNHANDLED FUNCTION: working
-  # UNHANDLED FUNCTION: halt_working
   # UNHANDLED FUNCTION: do_copy
+  # UNHANDLED FUNCTION: halt_working
   # UNHANDLED FUNCTION: ask_job
+  # UNHANDLED FUNCTION: working
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1299,9 +1299,9 @@
   # if (me->query("family/family_name") != "大轮寺")  →  message_vision(CYN '$N' CYN '一脸茫然道：啥？刚才你说啥？\\\\\n' NOR, this_object(), me);
 # ==== CONDITIONAL BRANCHES (ask_back) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: redeem
-  # UNHANDLED FUNCTION: unconcious
   # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: unconcious
+  # UNHANDLED FUNCTION: redeem
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1359,15 +1359,15 @@
   # SWITCH POOL: switch(random(10)) { case 0: command("say " + who + "，你是说" + msg + "吗？");break; case 1: command("say 你确定" + msg + "？"); break; case 2: command("say " + msg + "跟你有什麽关系？"); break; case 3: command("say 嗯……" + who + "说得好"); break; case 4: command("say " + who + "你为什麽对" + msg + "这麽有兴趣？"); break; case 5: command("say 为什麽你认为" + msg + "？"); break; case 6: command("say 换个话题吧"); drool(); break; case 7: command("say 才怪！"); break; case 8: command("say 不一定吧？"); break; case 9: command("say 有这个可能……"); break; }
   # SWITCH POOL: switch(random(8)) { case 0: command("say " + who + "，你是在问我吗？"); break; case 1: command("say 关於" + msg + "……"); break; case 2: command("say 呃……"); drool(); break; case 3: command("say 这个问题嘛……"); break; case 4: command("say " + who + "，知道这个问题的答案对你那麽重要么？"); break; case 5: command("say " + msg + "？"); break; case 6: command("say " + who + "你能不能说清楚一点？"); break; case 7: command("say " + who + "，我不懂你问的问题"); break; }
 # ==== SWITCH POOLS ====
-  # UNHANDLED FUNCTION: do_dajia
-  # UNHANDLED FUNCTION: reset
-  # UNHANDLED FUNCTION: add_phrase
-  # UNHANDLED FUNCTION: relay_emote
-  # UNHANDLED FUNCTION: drool
-  # UNHANDLED FUNCTION: do_kill
-  # UNHANDLED FUNCTION: relay_say
   # UNHANDLED FUNCTION: relay_channel
+  # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: drool
+  # UNHANDLED FUNCTION: add_phrase
+  # UNHANDLED FUNCTION: do_kill
+  # UNHANDLED FUNCTION: do_dajia
+  # UNHANDLED FUNCTION: relay_emote
   # UNHANDLED FUNCTION: make_reply
+  # UNHANDLED FUNCTION: relay_say
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1419,13 +1419,13 @@
   # SWITCH POOL: switch(random(10)) { case 0: command("say " + who + "，你是说" + msg + "吗？");break; case 1: command("say 你确定" + msg + "？"); break; case 2: command("say " + msg + "跟你有什麽关系？"); break; case 3: command("say 嗯 ... " + who + "说得好"); break; case 4: command("say " + who + "你为什麽对" + msg + "这麽有兴趣？"); break; case 5: command("say 为什麽你认为" + msg + "？"); break; case 6: command("say 换个话题吧"); drool(); break; case 7: command("say 才怪"); break; case 8: command("say 不一定吧？"); break; case 9: command("say 有这个可能 ...."); break; }
   # SWITCH POOL: switch(random(8)) { case 0: command("say " + who + "，你是在问我吗？"); break; case 1: command("say 关於" + msg + " ... "); break; case 2: command("say 呃 ... "); drool(); break; case 3: command("say 这个问题嘛 ...."); break; case 4: command("say " + who + "，知道这个问题的答案对你那麽重要么？"); break; case 5: command("say " + msg + "？"); break; case 6: command("say " + who + "你能不能说清楚一点？"); break; case 7: command("say " + who + "，我不懂你问的问题"); break; }
 # ==== SWITCH POOLS ====
+  # UNHANDLED FUNCTION: relay_channel
   # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: drool
   # UNHANDLED FUNCTION: add_phrase
   # UNHANDLED FUNCTION: relay_emote
-  # UNHANDLED FUNCTION: drool
-  # UNHANDLED FUNCTION: relay_say
-  # UNHANDLED FUNCTION: relay_channel
   # UNHANDLED FUNCTION: make_reply
+  # UNHANDLED FUNCTION: relay_say
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1477,13 +1477,13 @@
   # SWITCH POOL: switch(random(10)) { case 0: command("say " + who + "，你是说" + msg + "吗？");break; case 1: command("say 你确定" + msg + "？"); break; case 2: command("say " + msg + "跟你有什麽关系？"); break; case 3: command("say 嗯 ... " + who + "说得好"); break; case 4: command("say " + who + "你为什麽对" + msg + "这麽有兴趣？"); break; case 5: command("say 为什麽你认为" + msg + "？"); break; case 6: command("say 换个话题吧"); drool(); break; case 7: command("say 才怪"); break; case 8: command("say 不一定吧？"); break; case 9: command("say 有这个可能 ...."); break; }
   # SWITCH POOL: switch(random(8)) { case 0: command("say " + who + "，你是在问我吗？"); break; case 1: command("say 关於" + msg + " ... "); break; case 2: command("say 呃 ... "); drool(); break; case 3: command("say 这个问题嘛 ...."); break; case 4: command("say " + who + "，知道这个问题的答案对你那麽重要么？"); break; case 5: command("say " + msg + "？"); break; case 6: command("say " + who + "你能不能说清楚一点？"); break; case 7: command("say " + who + "，我不懂你问的问题"); break; }
 # ==== SWITCH POOLS ====
+  # UNHANDLED FUNCTION: relay_channel
   # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: drool
   # UNHANDLED FUNCTION: add_phrase
   # UNHANDLED FUNCTION: relay_emote
-  # UNHANDLED FUNCTION: drool
-  # UNHANDLED FUNCTION: relay_say
-  # UNHANDLED FUNCTION: relay_channel
   # UNHANDLED FUNCTION: make_reply
+  # UNHANDLED FUNCTION: relay_say
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1535,13 +1535,13 @@
   # SWITCH POOL: switch(random(10)) { case 0: command("say " + who + "，你是说" + msg + "吗？");break; case 1: command("say 你确定" + msg + "？"); break; case 2: command("say " + msg + "跟你有什麽关系？"); break; case 3: command("say 嗯 ... " + who + "说得好"); break; case 4: command("say " + who + "你为什麽对" + msg + "这麽有兴趣？"); break; case 5: command("say 为什麽你认为" + msg + "？"); break; case 6: command("say 换个话题吧"); drool(); break; case 7: command("say 才怪"); break; case 8: command("say 不一定吧？"); break; case 9: command("say 有这个可能 ...."); break; }
   # SWITCH POOL: switch(random(8)) { case 0: command("say " + who + "，你是在问我吗？"); break; case 1: command("say 关於" + msg + " ... "); break; case 2: command("say 呃 ... "); drool(); break; case 3: command("say 这个问题嘛 ...."); break; case 4: command("say " + who + "，知道这个问题的答案对你那麽重要么？"); break; case 5: command("say " + msg + "？"); break; case 6: command("say " + who + "你能不能说清楚一点？"); break; case 7: command("say " + who + "，我不懂你问的问题"); break; }
 # ==== SWITCH POOLS ====
+  # UNHANDLED FUNCTION: relay_channel
   # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: drool
   # UNHANDLED FUNCTION: add_phrase
   # UNHANDLED FUNCTION: relay_emote
-  # UNHANDLED FUNCTION: drool
-  # UNHANDLED FUNCTION: relay_say
-  # UNHANDLED FUNCTION: relay_channel
   # UNHANDLED FUNCTION: make_reply
+  # UNHANDLED FUNCTION: relay_say
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1593,13 +1593,13 @@
   # SWITCH POOL: switch(random(10)) { case 0: command("say " + who + "，你是说" + msg + "吗？");break; case 1: command("say 你确定" + msg + "？"); break; case 2: command("say " + msg + "跟你有什麽关系？"); break; case 3: command("say 嗯 ... " + who + "说得好"); break; case 4: command("say " + who + "你为什麽对" + msg + "这麽有兴趣？"); break; case 5: command("say 为什麽你认为" + msg + "？"); break; case 6: command("say 换个话题吧"); drool(); break; case 7: command("say 才怪"); break; case 8: command("say 不一定吧？"); break; case 9: command("say 有这个可能 ...."); break; }
   # SWITCH POOL: switch(random(8)) { case 0: command("say " + who + "，你是在问我吗？"); break; case 1: command("say 关於" + msg + " ... "); break; case 2: command("say 呃 ... "); drool(); break; case 3: command("say 这个问题嘛 ...."); break; case 4: command("say " + who + "，知道这个问题的答案对你那麽重要么？"); break; case 5: command("say " + msg + "？"); break; case 6: command("say " + who + "你能不能说清楚一点？"); break; case 7: command("say " + who + "，我不懂你问的问题"); break; }
 # ==== SWITCH POOLS ====
+  # UNHANDLED FUNCTION: relay_channel
   # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: drool
   # UNHANDLED FUNCTION: add_phrase
   # UNHANDLED FUNCTION: relay_emote
-  # UNHANDLED FUNCTION: drool
-  # UNHANDLED FUNCTION: relay_say
-  # UNHANDLED FUNCTION: relay_channel
   # UNHANDLED FUNCTION: make_reply
+  # UNHANDLED FUNCTION: relay_say
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1651,13 +1651,13 @@
   # SWITCH POOL: switch(random(10)) { case 0: command("say " + who + "，你是说" + msg + "吗？");break; case 1: command("say 你确定" + msg + "？"); break; case 2: command("say " + msg + "跟你有什麽关系？"); break; case 3: command("say 嗯 ... " + who + "说得好"); break; case 4: command("say " + who + "你为什麽对" + msg + "这麽有兴趣？"); break; case 5: command("say 为什麽你认为" + msg + "？"); break; case 6: command("say 换个话题吧"); drool(); break; case 7: command("say 才怪"); break; case 8: command("say 不一定吧？"); break; case 9: command("say 有这个可能 ...."); break; }
   # SWITCH POOL: switch(random(8)) { case 0: command("say " + who + "，你是在问我吗？"); break; case 1: command("say 关於" + msg + " ... "); break; case 2: command("say 呃 ... "); drool(); break; case 3: command("say 这个问题嘛 ...."); break; case 4: command("say " + who + "，知道这个问题的答案对你那麽重要么？"); break; case 5: command("say " + msg + "？"); break; case 6: command("say " + who + "你能不能说清楚一点？"); break; case 7: command("say " + who + "，我不懂你问的问题"); break; }
 # ==== SWITCH POOLS ====
+  # UNHANDLED FUNCTION: relay_channel
   # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: drool
   # UNHANDLED FUNCTION: add_phrase
   # UNHANDLED FUNCTION: relay_emote
-  # UNHANDLED FUNCTION: drool
-  # UNHANDLED FUNCTION: relay_say
-  # UNHANDLED FUNCTION: relay_channel
   # UNHANDLED FUNCTION: make_reply
+  # UNHANDLED FUNCTION: relay_say
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1798,8 +1798,8 @@
   # ----------------------------------------------------------------
   # SWITCH TABLE (expr: arg)
 # ==== SWITCH TABLES ====
-  # UNHANDLED FUNCTION: accept_ask
   # UNHANDLED FUNCTION: heart_beat
+  # UNHANDLED FUNCTION: accept_ask
   # UNHANDLED FUNCTION: do_drop
   # UNHANDLED FUNCTION: do_exchange
 # ==== UNHANDLED FUNCTIONS ====
@@ -1890,10 +1890,10 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH: switch (me->query_temp("job/step")) { case 1: msg = "$N戴上一个顶针，摸出针线。"; break; case 2: msg = "$N展开布料，对着样子比划了半天。"; break; case 3: msg = "$N轻轻的折了折料子，留下几条痕印。"; break; case 4: case 6: msg = "$N专心致志的一针一线的缝纫。"; break; case 5: msg = "$N凝眉看了看样子，若有所思。"; case 7: msg = "$N轻动纤纤细指，缝针上下穿梭，衣服的模样渐渐的出来了。"; break; default: msg = "$N把衣服缝好，烫熨完毕，叠好递给$n。"; finish = 1; break; }
 # ==== SWITCH STATEMENTS ====
-  # UNHANDLED FUNCTION: working
-  # UNHANDLED FUNCTION: halt_working
   # UNHANDLED FUNCTION: do_sew
+  # UNHANDLED FUNCTION: halt_working
   # UNHANDLED FUNCTION: ask_job
+  # UNHANDLED FUNCTION: working
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1932,12 +1932,12 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH: switch (me->query_temp("job/step")) { case 1: msg = "$N拿过砚台，慢慢地研墨。"; break; case 2: msg = "$N看看墨磨得差不多了，摸起毛笔，轻轻哈了两口气。"; break; case 3: msg = "$N饱蘸墨汁，翻开四书，摊开纸张，开始誊写。"; break; case 4: case 6: msg = "$N聚精会神的抄写书籍。"; break; case 5: msg = "$N蘸了蘸墨，继续仔细地抄写。"; case 7: msg = "$N不断翻动着书籍，纸张越来越厚。"; break; default: msg = "$N把书籍抄好，将纸上墨吹干，装订成册，递给$n。"; finish = 1; break; }
 # ==== SWITCH STATEMENTS ====
-  # UNHANDLED FUNCTION: ask_buy
-  # UNHANDLED FUNCTION: recognize_apprentice
   # UNHANDLED FUNCTION: halt_working
+  # UNHANDLED FUNCTION: recognize_apprentice
+  # UNHANDLED FUNCTION: ask_buy
   # UNHANDLED FUNCTION: ask_job
-  # UNHANDLED FUNCTION: working
   # UNHANDLED FUNCTION: do_copy
+  # UNHANDLED FUNCTION: working
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -3738,23 +3738,23 @@
   # if (pl["white"])  →  
 # ==== CONDITIONAL BRANCHES (check_players) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: no_qi
-  # UNHANDLED FUNCTION: eat
-  # UNHANDLED FUNCTION: translate_position
-  # UNHANDLED FUNCTION: weiqi_rule
-  # UNHANDLED FUNCTION: wuzi_rule
-  # UNHANDLED FUNCTION: show_game
-  # UNHANDLED FUNCTION: remove_block
-  # UNHANDLED FUNCTION: look_string
-  # UNHANDLED FUNCTION: do_leave
-  # UNHANDLED FUNCTION: do_undo
-  # UNHANDLED FUNCTION: do_new
-  # UNHANDLED FUNCTION: check_players
-  # UNHANDLED FUNCTION: do_play
   # UNHANDLED FUNCTION: do_pass
-  # UNHANDLED FUNCTION: do_refresh
+  # UNHANDLED FUNCTION: do_leave
+  # UNHANDLED FUNCTION: do_play
+  # UNHANDLED FUNCTION: wuzi_rule
   # UNHANDLED FUNCTION: do_sit
+  # UNHANDLED FUNCTION: look_string
+  # UNHANDLED FUNCTION: weiqi_rule
+  # UNHANDLED FUNCTION: do_undo
+  # UNHANDLED FUNCTION: remove_block
   # UNHANDLED FUNCTION: str_to_int
+  # UNHANDLED FUNCTION: do_refresh
+  # UNHANDLED FUNCTION: no_qi
+  # UNHANDLED FUNCTION: translate_position
+  # UNHANDLED FUNCTION: show_game
+  # UNHANDLED FUNCTION: check_players
+  # UNHANDLED FUNCTION: do_new
+  # UNHANDLED FUNCTION: eat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -3886,23 +3886,23 @@
   # if (pl["white"])  →  
 # ==== CONDITIONAL BRANCHES (check_players) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: no_qi
-  # UNHANDLED FUNCTION: eat
-  # UNHANDLED FUNCTION: translate_position
-  # UNHANDLED FUNCTION: weiqi_rule
-  # UNHANDLED FUNCTION: wuzi_rule
-  # UNHANDLED FUNCTION: show_game
-  # UNHANDLED FUNCTION: remove_block
-  # UNHANDLED FUNCTION: look_string
-  # UNHANDLED FUNCTION: do_leave
-  # UNHANDLED FUNCTION: do_undo
-  # UNHANDLED FUNCTION: do_new
-  # UNHANDLED FUNCTION: check_players
-  # UNHANDLED FUNCTION: do_play
   # UNHANDLED FUNCTION: do_pass
-  # UNHANDLED FUNCTION: do_refresh
+  # UNHANDLED FUNCTION: do_leave
+  # UNHANDLED FUNCTION: do_play
+  # UNHANDLED FUNCTION: wuzi_rule
   # UNHANDLED FUNCTION: do_sit
+  # UNHANDLED FUNCTION: look_string
+  # UNHANDLED FUNCTION: weiqi_rule
+  # UNHANDLED FUNCTION: do_undo
+  # UNHANDLED FUNCTION: remove_block
   # UNHANDLED FUNCTION: str_to_int
+  # UNHANDLED FUNCTION: do_refresh
+  # UNHANDLED FUNCTION: no_qi
+  # UNHANDLED FUNCTION: translate_position
+  # UNHANDLED FUNCTION: show_game
+  # UNHANDLED FUNCTION: check_players
+  # UNHANDLED FUNCTION: do_new
+  # UNHANDLED FUNCTION: eat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -4034,23 +4034,23 @@
   # if (pl["white"])  →  
 # ==== CONDITIONAL BRANCHES (check_players) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: no_qi
-  # UNHANDLED FUNCTION: eat
-  # UNHANDLED FUNCTION: translate_position
-  # UNHANDLED FUNCTION: weiqi_rule
-  # UNHANDLED FUNCTION: wuzi_rule
-  # UNHANDLED FUNCTION: show_game
-  # UNHANDLED FUNCTION: remove_block
-  # UNHANDLED FUNCTION: look_string
-  # UNHANDLED FUNCTION: do_leave
-  # UNHANDLED FUNCTION: do_undo
-  # UNHANDLED FUNCTION: do_new
-  # UNHANDLED FUNCTION: check_players
-  # UNHANDLED FUNCTION: do_play
   # UNHANDLED FUNCTION: do_pass
-  # UNHANDLED FUNCTION: do_refresh
+  # UNHANDLED FUNCTION: do_leave
+  # UNHANDLED FUNCTION: do_play
+  # UNHANDLED FUNCTION: wuzi_rule
   # UNHANDLED FUNCTION: do_sit
+  # UNHANDLED FUNCTION: look_string
+  # UNHANDLED FUNCTION: weiqi_rule
+  # UNHANDLED FUNCTION: do_undo
+  # UNHANDLED FUNCTION: remove_block
   # UNHANDLED FUNCTION: str_to_int
+  # UNHANDLED FUNCTION: do_refresh
+  # UNHANDLED FUNCTION: no_qi
+  # UNHANDLED FUNCTION: translate_position
+  # UNHANDLED FUNCTION: show_game
+  # UNHANDLED FUNCTION: check_players
+  # UNHANDLED FUNCTION: do_new
+  # UNHANDLED FUNCTION: eat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -4149,19 +4149,19 @@
 # ==== CONDITIONAL BRANCHES ====
   # COMPLEX MAPPING: ([ 0: ([ 0 :({ "┌",HIR"车"NOR, 1,1 }), 1 :({ "─", " ", 0,0 }), 2 :({ "┬",HIR"马"NOR, 2,1 }), 3 :({ "─", " ", 0,0 }), 4 :({ "┬",HIR"相"NOR, 3,1 }), 5 :({ "─", " ", 0,0 }), 6 :({ "┬",HIR"仕"NOR, 4,1 }), 7 :({ "─", " ", 0,0 }), 8 :({ "┬",HIR"帅"NOR, 5,1 }), 9 :({ "─", " ", 0,0 }), 10:({ "┬",HIR"仕"NOR, 4,1 }), 11:({ "─", " ", 0,0 }), 12:({ "┬",HIR"相"NOR, 3,1 }), 13:({ "─", " ", 0,0 }), 14:({ "┬",HIR"马"NOR, 2,1 }), 15:({ "─", " ", 0,0 }), 16:({ "┐",HIR"车"NOR, 1,1 }), ]
 # ==== COMPLEX MAPPINGS ====
-  # UNHANDLED FUNCTION: long
-  # UNHANDLED FUNCTION: query_save_file
-  # UNHANDLED FUNCTION: do_help
   # UNHANDLED FUNCTION: do_reset
-  # UNHANDLED FUNCTION: do_display
-  # UNHANDLED FUNCTION: do_lose
-  # UNHANDLED FUNCTION: do_move
-  # UNHANDLED FUNCTION: do_save
+  # UNHANDLED FUNCTION: long
   # UNHANDLED FUNCTION: do_deploy
-  # UNHANDLED FUNCTION: do_review
-  # UNHANDLED FUNCTION: do_toss
+  # UNHANDLED FUNCTION: do_help
   # UNHANDLED FUNCTION: init_tab
+  # UNHANDLED FUNCTION: do_lose
+  # UNHANDLED FUNCTION: query_save_file
   # UNHANDLED FUNCTION: do_check
+  # UNHANDLED FUNCTION: do_review
+  # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: do_display
+  # UNHANDLED FUNCTION: do_toss
+  # UNHANDLED FUNCTION: do_save
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

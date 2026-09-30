@@ -1,0 +1,26 @@
+zones "test" {
+  name = "test"
+}
+
+    characters "seng_ren" {
+      name = "游方和尚"
+  x = 0
+  y = 0
+  z = 0
+  accept = [
+    { kind = "item_name" name = "金刚经" accept = true msg = ["贫僧正需这本金刚经来参照石坪上的原文啊 ！", "smile"] },
+    { kind = "any" accept = [{'kind': 'item_name', 'name': '金刚经', 'msg': ['贫僧正需这本金刚经来参照石坪上的原文啊 ！', 'smile']}] msg = ["贫僧正需这本金刚经来参照石坪上的原文啊 ！", "smile"] }
+  ]
+    }
+
+    rooms "stray" {
+      name = "游离括号"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "stray" {
+    room_id = rooms.stray.id
+  north = rooms.other.id
+  }

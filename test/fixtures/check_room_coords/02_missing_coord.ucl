@@ -1,0 +1,29 @@
+zones "crc_missing_coord" {
+  name = "crc_missing_coord"
+  }
+
+    rooms "centre" {
+      name = "中心"
+      description = "位于原点的中心房。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "centre" {
+    room_id = rooms.centre.id
+    north = rooms.hall.id
+    }
+
+# 这个房间缺少 y 坐标，坐标脚本从未成功处理过它。
+    rooms "hall" {
+      name = "大厅"
+      description = "缺少 y 坐标的房间。"
+  x = 0
+  z = 0
+    }
+
+  room_exits "hall" {
+    room_id = rooms.hall.id
+    south = rooms.centre.id
+    }

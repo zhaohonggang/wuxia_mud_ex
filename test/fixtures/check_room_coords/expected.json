@@ -1,0 +1,78 @@
+{
+  "spec_version": 1,
+  "description": "Ground truth for scripts/check_room_coords.py. Problems are hard failures (exit 1); warnings W1 (stacked rooms) and W2 (direction/coord mismatch) are inherent to the source LPC graph and must NOT fail the check. Measured 2026-09-30.",
+  "checker": {
+    "cli": "python scripts/check_room_coords.py <file.ucl>",
+    "exit_codes": {
+      "0": "no problems (warnings may be printed)",
+      "1": "at least one problem found, or the file could not be read/decoded",
+      "2": "wrong argument count; usage printed to stderr"
+    },
+    "stdout_problem_prefix": "Coords: ",
+    "stdout_warning_prefix": "Coords: WARNING: ",
+    "stdout_success_prefix": "OK: ",
+    "invariants": [
+      "The tool must never raise an uncaught exception or print a traceback, for ANY input (including invalid UTF-8, truncated files and files with no rooms).",
+      "W1 and W2 are warnings only: over-reporting them as problems is a failure.",
+      "Under-reporting a problem is a failure."
+    ]
+  },
+  "cases": [
+    {
+      "file": "01_ok_minimal.ucl",
+      "why": "1 room at the origin with an empty room_exits block: no problems, no warnings.",
+      "exit_code": 0,
+      "problems": [],
+      "warnings": []
+    },
+    {
+      "file": "02_missing_coord.ucl",
+      "why": "room 'hall' has x/z but no y: the coords script never handled it.",
+      "exit_code": 1,
+      "problems": ["room hall is missing a coordinate"],
+      "warnings": []
+    },
+    {
+      "file": "03_unreachable.ucl",
+      "why": "room 'island' has full coordinates but no exit path back to the origin room.",
+      "exit_code": 1,
+      "problems": ["1 room(s) unreachable from centre centre"],
+      "warnings": []
+    },
+    {
+      "file": "04_orphan_exits.ucl",
+      "why": "room_exits 'ghost' has no matching rooms block.",
+      "exit_code": 1,
+      "problems": ["room_exits ghost has no matching rooms block"],
+      "warnings": []
+    },
+    {
+      "file": "05_stacked_rooms_warn.ucl",
+      "why": "3 rooms share (0,0,0) and are linked by (0,0,0) portal exits, so reachability and direction/coord agreement both hold. Isolates W1 with zero W2.",
+      "exit_code": 0,
+      "problems": [],
+      "warnings": ["coordinate (0, 0, 0) shared by 3 rooms"]
+    },
+    {
+      "file": "06_direction_mismatch_warn.ucl",
+      "why": "centre --north--> far but far is at (3,3,3). Coordinates do not collide, so this isolates W2 with zero W1.",
+      "exit_code": 0,
+      "problems": [],
+      "warnings": ["direction/coord mismatch: centre -north-> far"]
+    },
+    {
+      "file": "07_no_rooms.ucl",
+      "why": "file contains only an items block: nothing to check reachability against.",
+      "exit_code": 1,
+      "problems": ["no rooms found"],
+      "warnings": []
+    },
+    {
+      "file": "08_invalid_utf8.ucl",
+      "why": "raw invalid UTF-8 bytes; must be reported cleanly, never as a traceback.",
+      "exit_code": 1,
+      "problems": ["not valid UTF-8"],
+      "warnings": []
+    }
+  ]
+}

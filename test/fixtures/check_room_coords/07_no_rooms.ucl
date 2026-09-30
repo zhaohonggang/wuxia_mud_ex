@@ -1,0 +1,8 @@
+zones "crc_no_rooms" {
+  name = "crc_no_rooms"
+  }
+
+  items "only_item" {
+    name = "只有物品"
+    description = "这个文件里一个 rooms 块都没有。"
+    }

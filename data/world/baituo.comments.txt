@@ -286,8 +286,8 @@
   # if (interactive(ob = this_player()) && ob->query("family/family_name") != "欧阳世家" && random(ob->query_kar() + ob->query_per()) < 30)  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: die
   # UNHANDLED FUNCTION: convert
+  # UNHANDLED FUNCTION: die
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -325,8 +325,8 @@
   # if (ob->query("born_family") != "欧阳世家")  →  command('shake'); command('say 哪里来的家伙？居然敢来白驼山添乱？');
 # ==== CONDITIONAL BRANCHES (attempt_apprentice) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: attempt_apprentice
   # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: attempt_apprentice
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -558,9 +558,9 @@
   # if (used)  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: cure_ob
-  # UNHANDLED FUNCTION: decay
   # UNHANDLED FUNCTION: delete_benefit
+  # UNHANDLED FUNCTION: decay
+  # UNHANDLED FUNCTION: cure_ob
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -622,8 +622,8 @@
   # if ((int)me->query_condition("snake_poison") > 7)  →  
 # ==== CONDITIONAL BRANCHES (cure_ob) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: cure_ob
   # UNHANDLED FUNCTION: effect_in_liquid
+  # UNHANDLED FUNCTION: cure_ob
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -811,10 +811,10 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_free
-  # UNHANDLED FUNCTION: do_catch
-  # UNHANDLED FUNCTION: reject
   # UNHANDLED FUNCTION: is_container
+  # UNHANDLED FUNCTION: do_free
+  # UNHANDLED FUNCTION: reject
+  # UNHANDLED FUNCTION: do_catch
   # UNHANDLED FUNCTION: no_limit_amount
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

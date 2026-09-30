@@ -1,0 +1,283 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/taishan/kedian.c by LPCConverter
+# Zone: taishan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !me->query_temp("rent_paid") && dir == "up" )  →  
+  # if ( me->query_temp("rent_paid") && dir == "west" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/taishan/kedian2.c by LPCConverter
+# Zone: taishan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "down" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/taishan/longmen.c by LPCConverter
+# Zone: taishan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( random((int)me->query_skill("dodge")) <= 10)  →  message_vision(HIR'$N一不小心脚下踏了个空，... 啊...！\\\\\n'NOR, me); tell_object(me, HIR'你从山上滚了下来，只觉得浑身无处不疼，还受了几处伤。\\\\\n'NOR);
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/taishan/nantian.c by LPCConverter
+# Zone: taishan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!( ob1 = find_living("mengzhu")) )  →  
+  # if ( dir == "northup" )  →  message_vision(HIY '\\\\\n江百胜诚惶诚恐的向$N跪倒磕头，大声喊道：盟主万岁，万岁，万万岁！\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/taishan/shijin.c by LPCConverter
+# Zone: taishan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || (arg != "stone"))  →  
+  # if ((int)me->query_skill("literate", 1) < 1)  →  
+  # if ((int)me->query_skill("buddhism", 1) < 100)  →  write('你对着石坪上的「金刚经」琢磨了一回' '儿，似乎对禅宗心法略有心得。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_study) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_study
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/taishan/npc/chi.c by LPCConverter
+# Zone: taishan
+
+# inherit F_MASTER;
+
+# Generated from C:/files/git/mud/d/taishan/npc/dao-ke.c by LPCConverter
+# Zone: taishan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!( room = find_object("/d/taishan/fengchan")) )  →  
+  # if ( objectp(ob = present("mengzhu", room)) )  →  
+  # if ( this_player()->query("id") == mengzhu )  →  message_vision(HIY '刀客向$N躬身为礼，说道：盟主您老人家好！\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/taishan/npc/jian-ke.c by LPCConverter
+# Zone: taishan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!( room = find_object("/d/taishan/fengchan")) )  →  
+  # if ( objectp(ob = present("mengzhu", room)) )  →  
+  # if ( this_player()->query("id") == mengzhu )  →  message_vision(HIY '剑客向$N躬身为礼，说道：盟主您老人家好！\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/taishan/npc/jiang.c by LPCConverter
+# Zone: taishan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !present(ob, environment()) )  →  
+  # if ( me->is_fighting() )  →  say(GRN '\\\\\n江百胜说道： 魏盟主泽被天下，福济苍生， 他老人家算无遗策，功无不克，克无不胜！\\\\\n' NOR); say(GRN '\\\\\n江百胜说道： 魏盟主一句话，属下办事戳力，勇往直前！ 冰天雪地往里闯，刀山火海就敢去！\\\\\n' NOR); message_vision(HIY '\\\\\n江百胜说完，全身不知打哪里冒出来的一股力气，不但功力尽复，拳力也威猛好多倍！\\\\\n' NOR, ob); say(GRN '\\\\\n江百胜说道： 看来你小子跟我还差着一大截呢，回去练上十年再来吧！\\\\\n');
+# ==== CONDITIONAL BRANCHES (checking) ====
+  # if ( me->is_fighting())  →  
+  # if ( !present(ob, environment()) )  →  
+  # if ( me->query("fight_times") >= 10 )  →  
+# ==== CONDITIONAL BRANCHES (accept_fight) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: checking
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/taishan/npc/seng-ren.c by LPCConverter
+# Zone: taishan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( obj->query("name") == "金刚经" )  →  command('smile'); command('say 阿弭陀佛，多谢这位' + RANK_D->query_respect(me) + '了 ！'); command('say 贫僧正需这本金刚经来叁照石坪上的原文啊 ！');
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/taishan/npc/wei-shi1.c by LPCConverter
+# Zone: taishan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!( ob1 = find_living("mengzhu")) )  →  
+  # if ( this_player()->query("id") == mengzhu )  →  message_vision(HIY '白衣武士举起长剑，向$N齐声大喊：盟主万岁，万岁，万万岁！\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/taishan/npc/wei-shi2.c by LPCConverter
+# Zone: taishan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!( ob1 = find_living("mengzhu")) )  →  
+  # if ( this_player()->query("id") == mengzhu )  →  message_vision(HIY '红衣武士举起长剑，向$N齐声大喊：盟主万岁，万岁，万万岁！\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/taishan/npc/wei-shi3.c by LPCConverter
+# Zone: taishan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!( ob1 = find_living("mengzhu")) )  →  
+  # if ( this_player()->query("id") == mengzhu )  →  message_vision(HIY '青衣武士举起长剑，向$N齐声大喊：盟主万岁，万岁，万万岁！\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/taishan/npc/xiao-fan.c by LPCConverter
+# Zone: taishan
+
+# inherit F_VENDOR;
+
+# Generated from C:/files/git/mud/d/taishan/npc/xiaoer.c by LPCConverter
+# Zone: taishan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (ob->query("money_id") && ob->value() >= 500)  →  tell_object(who, '小二一哈腰，说道：多谢您老，客官请上楼歇息。\\\\\n');
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if ( !ob || environment(ob) != environment() )  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if ( interactive(ob = this_player()) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch( random(2) ) { case 0: say( "店小二笑咪咪地说道：这位" + RANK_D->query_respect(ob) + "，进来喝杯茶，歇歇腿吧。\n"); break; case 1: say( "店小二用脖子上的毛巾抹了抹手，说道：这位" + RANK_D->query_respect(ob) + "，请进请进。\n"); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
+
+
+
+
+

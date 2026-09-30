@@ -1,0 +1,16 @@
+zones "test" {
+  name = "test"
+}
+
+    rooms "stray" {
+      name = "重复出口"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "stray" {
+    room_id = rooms.stray.id
+  up = rooms.zhonglou7.id
+  up = rooms.bagua1.id
+  }

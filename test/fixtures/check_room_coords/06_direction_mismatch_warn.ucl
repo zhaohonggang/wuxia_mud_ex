@@ -1,0 +1,31 @@
+zones "crc_dir_mismatch" {
+  name = "crc_dir_mismatch"
+  }
+
+# centre 声称 north 通向 far，但 far 并不在 centre 的正北方。
+# 坐标不重叠，所以只触发 W2（方向与坐标不符），不触发 W1。
+    rooms "centre" {
+      name = "中心"
+      description = "位于原点的中心房。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "centre" {
+    room_id = rooms.centre.id
+    north = rooms.far.id
+    }
+
+    rooms "far" {
+      name = "远方"
+      description = "坐标与 north 方向矛盾的房间。"
+  x = 3
+  y = 3
+  z = 3
+    }
+
+  room_exits "far" {
+    room_id = rooms.far.id
+    south = rooms.centre.id
+    }

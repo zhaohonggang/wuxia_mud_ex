@@ -105,15 +105,15 @@
   # if (! query("exits/enter"))  →  
 # ==== CONDITIONAL BRANCHES (check_trigger) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: check_trigger
   # UNHANDLED FUNCTION: reset
   # UNHANDLED FUNCTION: do_yell
-  # UNHANDLED FUNCTION: arrive
-  # UNHANDLED FUNCTION: do_shang
-  # UNHANDLED FUNCTION: do_cross
-  # UNHANDLED FUNCTION: rjinbing
-  # UNHANDLED FUNCTION: check_trigger
-  # UNHANDLED FUNCTION: close_passage
   # UNHANDLED FUNCTION: on_board
+  # UNHANDLED FUNCTION: rjinbing
+  # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: do_shang
+  # UNHANDLED FUNCTION: arrive
+  # UNHANDLED FUNCTION: do_cross
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -194,13 +194,13 @@
   # if (! query("exits/enter"))  →  
 # ==== CONDITIONAL BRANCHES (check_trigger) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: check_trigger
   # UNHANDLED FUNCTION: reset
   # UNHANDLED FUNCTION: do_yell
+  # UNHANDLED FUNCTION: on_board
+  # UNHANDLED FUNCTION: close_passage
   # UNHANDLED FUNCTION: arrive
   # UNHANDLED FUNCTION: do_cross
-  # UNHANDLED FUNCTION: check_trigger
-  # UNHANDLED FUNCTION: close_passage
-  # UNHANDLED FUNCTION: on_board
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -319,8 +319,8 @@
   # if (!me->query_temp("guiyun/decide"))  →  message_vision('$N对$n奇怪地说道：你要决定干嘛？\\\\\n', this_object(), me);
 # ==== CONDITIONAL BRANCHES (do_decide) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_decide
   # UNHANDLED FUNCTION: ask_me
+  # UNHANDLED FUNCTION: do_decide
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

@@ -3591,7 +3591,7 @@ chats = [
   }
 
   accept = [
-    { kind = "any" accept = [] msg = ["好！好！", "不要就给我！"] }
+    { kind = "any" accept = false msg = ["好！好！", "不要就给我！"] }
   ]
     }
 
@@ -3888,7 +3888,7 @@ chats = [
   ]
 
   accept = [
-    { kind = "any" accept = [] }
+    { kind = "any" accept = false }
   ]
     }
 
@@ -3908,7 +3908,7 @@ chats = [
   }
 
   accept = [
-    { kind = "any" accept = [] }
+    { kind = "any" accept = false }
   ]
     }
 
@@ -3928,7 +3928,7 @@ chats = [
   }
 
   accept = [
-    { kind = "any" accept = [] }
+    { kind = "any" accept = false }
   ]
     }
 
@@ -3948,7 +3948,7 @@ chats = [
   }
 
   accept = [
-    { kind = "any" accept = [] }
+    { kind = "any" accept = false }
   ]
     }
 
@@ -3968,7 +3968,7 @@ chats = [
   }
 
   accept = [
-    { kind = "any" accept = [] }
+    { kind = "any" accept = false }
   ]
     }
 
@@ -3988,7 +3988,7 @@ chats = [
   }
 
   accept = [
-    { kind = "any" accept = [] }
+    { kind = "any" accept = false }
   ]
     }
 
