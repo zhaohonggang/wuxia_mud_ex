@@ -323,6 +323,13 @@ def check_chars(data):
     # Check for [ ] inside quoted strings (elias parser error "syntax error before: [")
     if _has_brackets_in_strings(data):
         issues.append("square brackets inside strings (elias parser rejects them)")
+    # Check for duplicate keys in room_exits blocks (elias merges them into arrays,
+    # causing String.split to fail on arrays like ["rooms.a.id", "rooms.b.id"])
+    dup = _find_duplicate_exit_keys(data)
+    if dup:
+        for room, keys in dup.items():
+            for k in keys:
+                issues.append("duplicate exit key '%s' in room_exits '%s'" % (k, room))
     if issues:
         return (False, "; ".join(issues))
     return (True, None)
@@ -370,6 +377,44 @@ def _has_brackets_in_strings(data):
             pass
         i += 1
     return False
+
+
+def _find_duplicate_exit_keys(data):
+    """Return dict of room_id -> list of duplicate exit direction keys found in room_exits blocks.
+
+    Returns empty dict if no duplicates found.
+    """
+    text = data.decode("utf-8", errors="replace")
+    lines = text.split("\n")
+    duplicates = {}
+    in_exits = False
+    current_room = None
+    keys = {}
+
+    for line in lines:
+        m = re.match(r'\s*room_exits\s+"([^"]+)"', line)
+        if m:
+            if current_room and keys:
+                # check for duplicates before starting new room
+                dups = [k for k, v in keys.items() if v > 1]
+                if dups:
+                    duplicates[current_room] = dups
+            current_room = m.group(1)
+            keys = {}
+            continue
+        if current_room:
+            m = re.match(r'\s*(\S+)\s*=', line)
+            if m:
+                key = m.group(1).strip()
+                keys[key] = keys.get(key, 0) + 1
+            if '}' in line and '{' not in line:
+                # closing brace of room_exits block
+                dups = [k for k, v in keys.items() if v > 1]
+                if dups:
+                    duplicates[current_room] = dups
+                current_room = None
+                keys = {}
+    return duplicates
 
 
 # ---------------------------------------------------------------------------

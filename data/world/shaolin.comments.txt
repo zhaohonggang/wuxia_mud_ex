@@ -1,0 +1,2598 @@
+
+
+# Generated from C:/files/git/mud/d/shaolin/andao2.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( interactive(ob = this_player()) && (int)ob->query_condition("bonze_jail") >= 0 )  →  tell_object(ob, '你觉得混身轻松，总算走出了这个五行迷魂阵，逃出生天了！\\\\\n');
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/andao3.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "up")  →  message_vision(HIY '$N全身运足九阳真气，拔身错步，嘿地一声，举起双掌向上猛击。\\\\\n' '只见一股白气自$N掌心而出，迅猛无比地击中顶上的铁铸砖盖。\\\\\n' '克剌剌一声巨响，砖盖被震成无数小碎片四散飘飞。露出一个向上的洞口。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bagua.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if( arg=="tan" ) { if( present("pishui zhu", me) ) { message_vision("$N取出辟水灵珠，含在嘴里，轻轻一纵，跃入寒潭之中。\n", me); me->move("/d/shaolin/hantan1"); message("vision", "只听水面哗啦一声响，似乎有人也潜下水来。\n", environment(me), ({me}) ); } else { tell_object(me, "你一跳入水中，只觉蚀骨寒气从全身无数个毛孔侵入，四肢几乎完全麻木，\n" "你拚着丹田中残余的一股内力，攀住潭边的岩石，急急忙忙地爬了出来！\n"); message("vision", me->name() + "下半身一浸入水中，立刻大叫一声，落汤鸡似地跳了出来！，\n", environment(me), ({me}
+# ==== COMPLEX CONDITIONALS ====
+  # if ( !arg || arg=="" )  →  
+  # if ( arg=="tan" )  →  message_vision('$N取出辟水灵珠，含在嘴里，轻轻一纵，跃入寒潭之中。\\\\\n', me); tell_object(me, '你一跳入水中，只觉蚀骨寒气从全身无数个毛孔侵入，四肢几乎完全麻木，\\\\\n' '你拚着丹田中残余的一股内力，攀住潭边的岩石，急急忙忙地爬了出来！\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_enter) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_enter
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bagua0.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (check_dirs(me, dir))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bagua1.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (check_dirs(me, dir))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bagua2.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (check_dirs(me, dir))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bagua3.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (check_dirs(me, dir))  →  
+  # if (me->query_temp("/bagua/count") == 18)  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bagua4.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (check_dirs(me, dir))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bagua5.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (check_dirs(me, dir))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bagua6.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (check_dirs(me, dir))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bagua7.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (check_dirs(me, dir))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo1.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # else if (dir == "south")  →  
+  # if (dir == "southwest" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo10.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (dir == "south" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo11.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (dir == "west" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo12.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (dir == "north" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo13.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (dir == "northwest" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo14.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (dir == "north" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo2.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (dir == "southeast" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo3.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (dir == "north" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo4.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (dir == "south" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo5.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (dir == "west" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo6.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (dir == "east" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo7.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (dir == "west" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo8.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (dir == "east" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/bamboo9.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (dir == "east" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/beilin1.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_tower
+  # UNHANDLED FUNCTION: look_stone
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/beilin2.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "stone" || arg == "")  →  
+  # if (query("exits/down"))  →  
+  # if (me->query("max_neili") < 1000)  →  message_vision(HIR '结果哪知$N' HIR '内力不济，连吃奶' '的劲都用上了，佛塔还是纹丝不动。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: look_tower
+  # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: look_stone
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/beilin3.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "table")  →  
+  # if ((int)me->query_skill("literate", 1) < 1)  →  
+  # if (me->query("jing") < 0)  →  
+  # else  →  
+  # if ( me->query( "special_skill/clever" ) )  →  
+  # if ((int)me->query_skill("finger", 1) < 100)  →  
+  # if ((int)me->query_skill("claw", 1) < 100)  →  
+  # if ((int)me->query_skill("strike", 1) < 100)  →  
+  # if ((int)me->query_skill("cuff", 1) < 100)  →  
+  # if ( (int)me->query_skill("hand", 1) < 100)  →  
+  # if (! me->query_temp("stone_learned"))  →  
+# ==== CONDITIONAL BRANCHES (do_study) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(5)) { case 0: if ((int)me->query_skill("finger", 1) < 100) { me->improve_skill("finger", 1 + random(add)); msg += "你对着石桌琢磨了一回儿，似乎对指法有点心得。\n"; me->set_temp("stone_learned", 1); }
+# ==== SWITCH POOLS ====
+  # UNHANDLED FUNCTION: do_study
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/cjlou.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! present("shou yu", this_player()) && (objectp(present("daoyi chanshi", environment(me)))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/cjlou1.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "down" || ! present("huizhen zunzhe", environment(me)))  →  
+  # if (ob[i]->id("shaolin wuji"))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/damodong.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((int)me->query_temp("bamboo/count") == 14 && (int)me->query_skill("dodge", 1) >= 30 && (int)me->query_skill("dodge", 1) <= 100 && present("bamboo", me) )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_mianbi
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/dmyuan2.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! present("xisui jing", this_object()))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/dxbdian.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_temp("ketou_times") >= 0 )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if ((int)me->query("jing") < 30)  →  
+  # if ( me->query_temp("ketou_times") == 0 )  →  message_vision(HIR '\\\\\n$N' HIR '磕头磕得晕了过去。\\\\\n' NOR, me);
+  # if (random(100) == 37 && ! present("silk", me) && query("book_count") >= 1)  →  tell_object(me, HIM '\\\\\n突然你面前「啪」地一声掉' '下一束羊皮线穿起来的薄绢。\\\\\n' NOR);
+  # if ((int)me->query_skill("force", 1) >= 30 && (int)me->query_skill("force", 1) <= 100 && present("silk", me) )  →  tell_object(me, HIY '冥冥之中，你似乎觉得佛祖在' '点拨你在内功方面的疑难。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_ketou) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_ketou
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/fanting.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ __DIR__"obj/qingshui-hulu" : 1, names[random(sizeof(names))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/fanting1.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ __DIR__"obj/qingshui-hulu" : 1, names[random(sizeof(names))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/fumoquan.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_temp("valid_in_fumoquan"))  →  
+  # if (mapp(mine) && mine["family_name"] == "少林派" && mine["generation"] <= 36)  →  
+  # if (! objectp(ob1 = present("du nan", this_object())) || ! living(ob1) || ! objectp(ob2 = present("du e", this_object())) || ! living(ob2) || ! objectp(ob3 = present("du jie", this_object())) || ! living(ob3) || ! interactive(me))  →  
+  # if (ultrap(me))  →  
+  # if (mapp(mine) && mine["family_name"] == "少林派" && this_player()->query("combat_exp") < 100000 )  →  message_vision(HIR '\\\\\n突然$N' HIR '被一道排山倒海般的劲' '气击中，顿时飞了出去。\\\\\n\\\\\n' NOR, me);
+  # if (me->query("qi") < 0)  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/fzlou1.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!wizardp(me) && skill < 30)  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/guangchang1.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "north")  →  
+  # if (! ::valid_leave(me, dir))  →  
+  # else if (present("yingxiong ling", me))  →  write(CYN '壮年僧人合十为礼，侧身让开，说道：原来是贵客驾到，请进请进。\\\\\n' NOR);
+  # if ((me->query("family/family_name") == "少林派"))  →  write(CYN '壮年僧人侧身让开，说道：师兄辛苦了，请进。\\\\\n' NOR); write(CYN '壮年僧人沉下脸来，说道：戒律院主持玄痛大师请师兄去戒律院' '陈述此行过犯。\\\\\n' NOR);
+  # if (me->query("shen") >= 0)  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if (query("exits/north"))  →  
+  # if (! arg || (arg != "gate" && arg != "north"))  →  
+  # if (! (room = find_object(__DIR__"smdian")))  →  
+  # if (objectp(room))  →  message_vision(HIY '$N' HIY '轻轻地敲了敲门，只听吱地' '一声，衣位壮年僧人应声打开大门。\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_knock) ====
+  # if (! (room = find_object(__DIR__"smdian")))  →  
+  # else  →  
+  # if (objectp(room))  →  
+# ==== CONDITIONAL BRANCHES (close_gate) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_knock
+  # UNHANDLED FUNCTION: do_open
+  # UNHANDLED FUNCTION: look_gate
+  # UNHANDLED FUNCTION: close_gate
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/guangchang1e.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!wizardp(me) && dir == "east" && me->query_skill("dodge",1) <= 20 && (present("qingwu biqiu", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/guangchang1w.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!wizardp(me) && dir == "west" && me->query_skill("dodge",1) <= 20 && (present("qingwei biqiu", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/guangchang3.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "northup")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/guangchang4.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((!myfam || myfam["family_name"] != "少林派") && dir == "northup" && objectp(present("hui kong", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/guangchang5.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !me->query("luohan_winner") && !wizardp(me))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/gulou.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("id") == "seng bing" && dir == "in")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/gulou7.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (((int)me->query("jing") < ging_cost) || ((int)me->query("qi") < qi_cost))  →  
+  # else  →  message_vision('$N已稳稳地站在地上。\\\\\n', me);
+  # else if (i < 125)  →  
+  # if (i < 50)  →  
+# ==== CONDITIONAL BRANCHES (do_out) ====
+  # if (! arg || ( arg != "drum" ))  →  
+  # else  →  message_vision('$N敲了一下大鼓，『咚……』声音传遍整个寺庙。\\\\\n', me); write('鼓声如迅雷般在你耳边炸响，你头脑中一片糊涂，\\\\\n' '全身摇摇欲坠，勉力支撑着不倒在地上。心中一个\\\\\n' '声音告诉你，得赶快离开这里，不然就没命了。\\\\\n');
+  # if (random(me->query("dex")) < 5)  →  message_vision('$N一不小心敲到自己头上了。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_hit) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_hit
+  # UNHANDLED FUNCTION: do_out
+  # UNHANDLED FUNCTION: look_out
+  # UNHANDLED FUNCTION: look_drum
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/hantan1.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: down
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/hantan2.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: down
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/houdian.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "east" && dir != "west" && dir != "north" || ! objectp(kj = present("kong jian", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/jianyu.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( (int)ob->query_condition("bonze_jail") <= 0 )  →  tell_object(ob, '狱卒嘿嘿地笑着：今儿个你可落在我手里了...！\\\\\n');
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/jiebei.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_jiebei
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/jlyuan.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (userp(me) && dir == "southdown")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if (! objectp(ob))  →  
+  # if (ob->query("guilty") > 0)  →  
+# ==== CONDITIONAL BRANCHES (beating) ====
+  # if (! objectp(ob))  →  
+  # if (i == 0)  →  
+# ==== CONDITIONAL BRANCHES (responsing) ====
+  # if (! objectp(ob))  →  
+  # if (! (fam = ob->query("family")) || fam["family_name"] != "少林派")  →  
+  # if ((fam = ob->query("family")) && fam["family_name"] == "少林派" )  →  message_vision(HIY '玄痛一声大喝：$N' HIY '！你离寺仅有' '数日，却在外杀人越货，胡作非为，' '累犯大戒，败坏本寺千载清誉！你该当' '何罪？！执法僧兵何在！\\\\\n\\\\\n' NOR, ob); message_vision(HIY '玄痛一声大喝：$N' HIY '！本寺护法松' '林历代向来不许门人弟子擅入，' '你擅闯此地，意在不轨，该当何罪！执法' '僧兵何在！\\\\\n\\\\\n' NOR, ob); message_vision(HIY '玄痛盯着$N' HIY '看了半饷，说' '道：$N' HIY '，你惩恶扬善，锄暴安' '良，当得表彰，但出家人首戒杀生，你' '伤害人命，乃是僧家的重罪！ ' '你去罢，下次定不轻饶！\\\\\n\\\\\n' NOR, ob);
+# ==== CONDITIONAL BRANCHES (processing) ====
+  # if (interactive(ob = this_player()))  →  message_vision(HIY '$N' HIY '一进戒律院，...只听几声' '大喝，如同炸雷般在大殿里回响。' '$N' HIY '不禁浑身发抖，再也站立不住，' '腿一软，扑通一声跪了下来。\\\\\n\\\\\n' NOR, ob);
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: processing
+  # UNHANDLED FUNCTION: beating
+  # UNHANDLED FUNCTION: responsing
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/kedian1.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! me->query_temp("rent_paid") && dir == "up")  →  
+  # if (me->query_temp("rent_paid") && dir == "west")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/kedian2.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "down")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/putiyuan.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg)  →  
+  # if (arg != "book from hole" && arg != "book in hole" && arg != "jing from hole" && arg != "jing in hole")  →  
+  # if (query("status") != 4)  →  
+  # if (objectp(ob = find_object(MIJI)) && environment(ob) || query("book_count") < 1)  →  write('你想书想晕了头吗？那里并没有什么书呀！\\\\\n');
+  # if (! objectp(ob))  →  write('系统出现故障 - 找不到应该在这里的秘籍了 :)\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_get) ====
+  # if (! arg)  →  
+  # if (objectp(ob = present("xuanji dashi", this_object())) && living(ob))  →  
+  # if (arg == "如")  →  
+  # if (sscanf(arg, "%s %d", arg, n) != 2)  →  
+  # if (strwidth(arg) != 2)  →  
+  # if (strsrch("一切有为法如梦幻泡影如露亦如电当作如是观", arg) == -1)  →  
+  # if (arg != "如" && n != 1 || n > 4)  →  
+  # if (arg == "梦")  →  
+  # if (arg == "如" && n == 3)  →  
+  # if (arg == "是")  →  
+  # if (arg == "一")  →  
+  # if (right == 4)  →  message_vision('$N的手指还没有离开镜面，只听得轧轧声响，铜镜已' '经缓缓翻起，露出一个小洞(hole)。\\\\\n', this_player());
+# ==== CONDITIONAL BRANCHES (do_xian) ====
+  # if (query("status") != 4)  →  
+  # if (query("book_count"))  →  
+# ==== CONDITIONAL BRANCHES (look_hole) ====
+  # if (me->query("score") < 1000)  →  
+  # if (me->query("score") < 5000)  →  
+# ==== CONDITIONAL BRANCHES (look_jing) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH: switch (query("status")) { case 1: if (arg == "梦") right = 2; break; case 2: if (arg == "如" && n == 3) right = 3; break; case 3: if (arg == "是") right = 4; break; }
+# ==== SWITCH STATEMENTS ====
+  # UNHANDLED FUNCTION: look_jing
+  # UNHANDLED FUNCTION: close_hole
+  # UNHANDLED FUNCTION: do_xian
+  # UNHANDLED FUNCTION: look_hole
+  # UNHANDLED FUNCTION: do_get
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/qyping.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "in")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/shang_chufang.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("family/family_name") != "商家堡")  →  
+  # if (present("tangcu liji", this_player()))  →  
+  # if (present("soup", this_object()))  →  
+  # else  →  
+  # if (query("ricewater") > 0)  →  message_vision(CYN '厨师将热气腾腾的饭菜递到你手中，笑' '道：你慢用。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_serve) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_serve
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/shang_dating.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "north" || dir == "east" || dir == "west")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/shang_lianwue.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! living(me) || arg != "shakeng")  →  
+  # if (me->is_busy())  →  
+  # if ((int)me->query_skill("dodge", 1) < 30 || (int)me->query_skill("bagua-bu", 1) < 30)  →  
+  # if ((int)me->query_skill("dodge", 1) >= 120 && (int)me->query_skill("bagua-bu", 1) >= 120)  →  
+  # if ((int)me->query("qi") < 40)  →  
+  # if (me->can_improve_skill("dodge") && (int)me->query_skill("dodge", 1) < 120)  →  
+  # if (me->can_improve_skill("bagua-bu") && (int)me->query_skill("bagua-bu", 1) < 120)  →  
+# ==== CONDITIONAL BRANCHES (do_tiao) ====
+  # if (! living(me) || arg != "muzhuang")  →  
+  # if (me->is_busy())  →  
+  # if (objectp(weapon = me->query_temp("weapon")))  →  
+  # if ((int)me->query_skill("bagua-quan", 1) < 30 || (int)me->query_skill("bagua-zhang", 1) < 30)  →  
+  # if ((int)me->query_skill("bagua-quan", 1) >= 120 && (int)me->query_skill("bagua-zhang", 1) >= 120)  →  
+  # if ((int)me->query("qi") < 40)  →  
+  # if (me->can_improve_skill("bagua-zhang") && (int)me->query_skill("bagua-zhang", 1) < 120)  →  
+  # if (me->can_improve_skill("bagua-quan") && (int)me->query_skill("bagua-quan", 1) < 120)  →  
+# ==== CONDITIONAL BRANCHES (do_jida) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_tiao
+  # UNHANDLED FUNCTION: do_jida
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/shang_lianwuw.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! living(me) || arg != "shadai")  →  
+  # if (me->is_busy())  →  
+  # if (objectp(weapon = me->query_temp("weapon")))  →  
+  # if ((int)me->query_skill("cuff", 1) < 30 || (int)me->query_skill("strike", 1) < 30)  →  
+  # if ((int)me->query_skill("cuff", 1) >= 120 && (int)me->query_skill("strike", 1) >= 120)  →  
+  # if ((int)me->query("qi") < 40)  →  
+  # if (me->can_improve_skill("cuff") && (int)me->query_skill("cuff", 1) < 120)  →  
+  # if (me->can_improve_skill("strike") && (int)me->query_skill("strike", 1) < 120)  →  
+# ==== CONDITIONAL BRANCHES (do_jida) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_jida
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/shang_men.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "north" || ! objectp(zhen = present("shang baozhen", this_object())) || (me->query("born_family") == "山东商家" && ! me->query("family/family_name")))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/shanmen.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("gender") == "女性" && dir == "eastup" )  →  
+  # if ((!myfam || myfam["family_name"] != "少林派" ) && dir == "eastup")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/shijie11.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("id") == "seng bing" && dir == "southdown")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/shulin11.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || ! living(ob) || environment(ob) != this_object())  →  
+# ==== CONDITIONAL BRANCHES (trapping) ====
+  # if ( i == 0)  →  
+  # if (ob->query("id") == "seng bing" || !living(ob))  →  
+  # if ( (fam = ob->query("family")) && fam["family_name"] == "少林派" && ob->query("guilty") != 1 )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: trapping
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/shulin13.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || ! living(ob) || environment(ob) != this_object())  →  
+# ==== CONDITIONAL BRANCHES (trapping) ====
+  # if ( i == 0)  →  
+  # if (ob->query("id") == "seng bing" || !living(ob))  →  
+  # if ( (fam = ob->query("family")) && fam["family_name"] == "少林派" && ob->query("guilty") != 1 )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: trapping
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/shulin9.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || ! living(ob) || environment(ob) != this_object())  →  
+# ==== CONDITIONAL BRANCHES (trapping) ====
+  # if ( i == 0)  →  
+  # if (ob->query("id") == "seng bing" || !living(ob))  →  
+  # if ( (fam = ob->query("family")) && fam["family_name"] == "少林派" && ob->query("guilty") != 1 )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: trapping
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/smdian.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("id") == "seng bing" && dir == "south" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if (query("exits/south"))  →  
+  # if (!arg || (arg != "gate" && arg != "south"))  →  
+  # if (!( room = find_object(__DIR__"guangchang1")) )  →  
+  # if (objectp(room))  →  message_vision(HIY '$N' HIY '使劲把大门打了开来。\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_open) ====
+  # if (!query("exits/south"))  →  
+  # if (!arg || (arg != "gate" && arg != "south"))  →  
+# ==== CONDITIONAL BRANCHES (do_close) ====
+  # if (!( room = find_object(__DIR__"guangchang1")) )  →  
+  # if (objectp(room))  →  
+# ==== CONDITIONAL BRANCHES (close_gate) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_close
+  # UNHANDLED FUNCTION: do_open
+  # UNHANDLED FUNCTION: look_gate
+  # UNHANDLED FUNCTION: close_gate
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/wuchang3.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! me->query("luohan_winner") && ! wizardp(me))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/wuxing0.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (member_array(dir, dirs) != -1)  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if ( metal > 0 && metal == wood && metal == water && metal == fire && metal == earth )  →  
+# ==== CONDITIONAL BRANCHES (check_out) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: check_out
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/wuxing1.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (member_array(dir, dirs) != -1)  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if ( metal > 0 && metal == wood && metal == water && metal == fire && metal == earth )  →  
+# ==== CONDITIONAL BRANCHES (check_out) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: check_out
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/wuxing2.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (member_array(dir, dirs) != -1)  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if ( metal > 0 && metal == wood && metal == water && metal == fire && metal == earth )  →  
+# ==== CONDITIONAL BRANCHES (check_out) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: check_out
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/wuxing3.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (member_array(dir, dirs) != -1)  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if ( metal > 0 && metal == wood && metal == water && metal == fire && metal == earth )  →  
+# ==== CONDITIONAL BRANCHES (check_out) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: check_out
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/wuxing4.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (member_array(dir, dirs) != -1)  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+  # if ( metal > 0 && metal == wood && metal == water && metal == fire && metal == earth )  →  
+# ==== CONDITIONAL BRANCHES (check_out) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: check_out
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/zhonglou1.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !query("exits/down") )  →  
+  # if ( !living(ob[i]) || !userp(ob[i]) || ob[i]==man )  →  
+  # if ( userp(ob[i]) )  →  
+  # if ( room = find_object(__DIR__"andao3") )  →  
+# ==== CONDITIONAL BRANCHES (close_passage) ====
+  # if ( !arg || arg=="" )  →  
+  # if ( arg=="brick" && !present("blade", this_player()))  →  
+  # if ( arg=="brick" && !query("exits/down") )  →  message_vision( '$N走到楼梯下，趴在地上，试着用戒刀伸进青砖缝里，慢慢的撬着……\\\\\n' '等到青砖一块块地起了出来，地上露出一个大洞，几排石阶往下伸去，\\\\\n' '从这里分明通向一个暗道。\\\\\n', this_player());
+# ==== CONDITIONAL BRANCHES (do_open) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_open
+  # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: look_floor
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/zhonglou7.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (((int)me->query("jing") < ging_cost) || ((int)me->query("qi") < qi_cost))  →  
+  # else  →  message_vision('$N已稳稳地站在地上。\\\\\n', me);
+  # else if (i < 125)  →  
+  # if (i < 50)  →  
+# ==== CONDITIONAL BRANCHES (do_out) ====
+  # if ( !arg || ( arg != "bell" ) )  →  
+  # else  →  
+  # if (random(2)==0)  →  
+# ==== CONDITIONAL BRANCHES (do_knock) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_knock
+  # UNHANDLED FUNCTION: do_out
+  # UNHANDLED FUNCTION: look_out
+  # UNHANDLED FUNCTION: look_bell
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/zhushe.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! me || ! ob || environment(me) != this_object() || environment(ob) != this_object())  →  
+  # else  →  message_vision('\\\\\n乔三槐醒了过来，说道: 再往北，往东，往西，南......出路在砖......\\\\\n\\\\\n',ob); message_vision('说罢脑袋便软软地垂了下去......',ob);
+  # if ( (int)me->query("qi") <= 50 )  →  message_vision('乔三槐缓缓苏醒了过来，说道: 谢...谢......。\\\\\n',ob);
+# ==== CONDITIONAL BRANCHES (fainting) ====
+  # if ( !arg || arg=="" || !query_temp("available") )  →  
+  # if ( arg=="stone" && query_temp("available"))  →  write('你试著把石块一块块地搬开，突然发现下面埋着个奄奄一息的老人 !\\\\\n\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: look_stone
+  # UNHANDLED FUNCTION: fainting
+  # UNHANDLED FUNCTION: do_remove
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/zoulang1.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_writing
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/zoulang2.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_picture
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/zoulang3.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_duizi
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/zoulang4.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_poem
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/npc/chuanfu1.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arrayp(obs) && sizeof(obs))  →  
+  # if (! objectp(ob) || environment(ob) != find_object("/d/shaolin/hanshuim"))  →  
+# ==== CONDITIONAL BRANCHES (goto_peer) ====
+  # if (sizeof(filter_array(obs, (: ! $1->is_character() :))) < 1)  →  message_vision('船夫哼了一声对$N道：“看清楚了，我这儿' '只管货运，没有货你添什么乱？”\\\\\n', who);
+  # else  →  
+  # if (ob->query("money_id") && ob->value() >= 1000)  →  message_vision('船夫掂了掂' + ob->name() + '，对$N说：好！这就上船吧！\\\\\n' , who); message_vision('船夫叫来几个年轻船夫，帮$N将货拖上船，一声「起锚」船就开走了。\\\\\n', who); tell_object(who, HIG '你悠闲的站在船头，晃晃悠悠的过了汉水......\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: goto_peer
+  # UNHANDLED FUNCTION: unconcious
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/npc/chuanfu2.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arrayp(obs) && sizeof(obs))  →  
+  # if (! objectp(ob) || environment(ob) != find_object("/d/shaolin/hanshuim"))  →  
+# ==== CONDITIONAL BRANCHES (goto_peer) ====
+  # if (sizeof(filter_array(obs, (: ! $1->is_character() :))) < 1)  →  message_vision('船夫哼了一声对$N道：“看清楚了，我这儿' '只管货运，没有货你添什么乱？”\\\\\n', who);
+  # else  →  
+  # if (ob->query("money_id") && ob->value() >= 1000)  →  message_vision('船夫掂了掂' + ob->name() + '，对$N说：好！这就上船吧！\\\\\n' , who); message_vision('船夫叫来几个年轻船夫，帮$N将货拖上船，一声「起锚」船就开走了。\\\\\n', who); tell_object(who, HIG '你悠闲的站在船头，晃晃悠悠的过了汉水......\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: goto_peer
+  # UNHANDLED FUNCTION: unconcious
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/npc/da-shou.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !ob || environment(ob) != environment() )  →  
+# ==== CONDITIONAL BRANCHES (beat_faint) ====
+  # if ( interactive(ob = this_player()) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: is_ghost
+  # UNHANDLED FUNCTION: beat_faint
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/npc/datie-seng.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: reset
+  # reset: set("hand_count", 20);
+# ==== RAW CODE BLOCKS ====
+  # if (present("iron hand", ob))  →  
+  # if (present("iron hand", environment(ob)))  →  
+  # if (time() - ob->query_temp("last_ask/for_hand") < 240)  →  
+  # if (query("hand_count") < 1)  →  
+# ==== CONDITIONAL BRANCHES (ask_armor) ====
+  # else  →  command('say 老乔就住在少室山山脚下，好象是' '在东头…还是西头？看我这记性！\\\\\n');
+  # if (this_player()->query_temp("marks/问过老乔"))  →  command('say 哎呀，我真记不清楚！\\\\\n');
+# ==== CONDITIONAL BRANCHES (ask_qiao) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_qiao
+  # UNHANDLED FUNCTION: reset
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/npc/miao.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (ob->query("family/family_name") != "关外胡家")  →  command('say 你这算是什么意思？要是比划就放马过来！');
+  # if (skill != "miaojia-jian" && skill != "sword")  →  command('say 我只传你剑法，你如果不感兴趣就不要浪费时间了。');
+  # if (! ob->query_temp("can_learn/miao"))  →  command('say 好！你既然感兴趣，那就要看仔细了！');
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+  # if (me->query("family/family_name") != "关外胡家")  →  
+# ==== CONDITIONAL BRANCHES (ask_me) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_hujia_book
+  # UNHANDLED FUNCTION: ask_book
+  # UNHANDLED FUNCTION: recognize_apprentice
+  # UNHANDLED FUNCTION: ask_me
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/npc/saodi-seng.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else if (value < 4)  →  command('say 还一大堆活没干完呢，我得赶紧了。\\\\\n'); command('sigh'); command('down');
+  # if (value > 6)  →  command('say 还一大堆活没干完呢，我得赶紧了。\\\\\n'); command('sigh'); command('up');
+# ==== CONDITIONAL BRANCHES (my_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: my_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/npc/seng-bing1.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/npc/seng-bing2.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else if ( environment(ob)->query("no_fight") )  →  
+  # if ( interactive(ob) && !environment(ob)->query("no_fight") )  →  command('say 你这佛门败类，哪里逃！ 还不速到戒律院领罪！\\\\\n'); command('say 戒律院玄痛大师请你去陈述此次下山经过 ！\\\\\n');
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/npc/seng-bing3.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob) && !environment(ob)->query("no_fight") && !present("yingxiong ling", ob) && ( (fam = ob->query("family")) && fam["family_name"] != "少林派" ) )  →  command('say 你是谁？ 怎么闯到少林寺里来了？！'); command('say 快给我速速离开，下次看到决不轻饶！'); command('say 大胆狂徒，竟敢闯到少林寺里来撒野！！！\\\\\n');
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/npc/xiao-er.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (ob->query("money_id") && ob->value() >= 500)  →  tell_object(who, '小二一哈腰，说道：多谢您老，客官请上楼歇息。\\\\\n');
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if ( interactive(ob = this_player()) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(2)) { case 0: say( "店小二笑咪咪地说道：这位" + RANK_D->query_respect(ob) + "，进来喝杯茶，歇歇腿吧。\n"); break; case 1: say( "店小二用脖子上的毛巾抹了抹手，说道：这位" + RANK_D->query_respect(ob) + "，请进请进。\n"); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/npc/xiao-er2.c by LPCConverter
+# Zone: shaolin
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(2)) { case 0: say("店小二笑咪咪地说道：这位" + RANK_D->query_respect(ob) + "，进来喝杯茶，歇歇腿吧。\n"); break; case 1: say("店小二用脖子上的毛巾抹了抹手，说道：这位" + RANK_D->query_respect(ob) + "，请进请进。\n"); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/npc/xiao-fan.c by LPCConverter
+# Zone: shaolin
+
+# inherit F_VENDOR;
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shaolin/npc/xingzhe.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !mapp(exits = where->query("exits")) )  →  
+  # if ( (string)file_name(where) == "/d/village/hsroad2" )  →  command('go south');
+  # if ( (string)file_name(where) == "/d/wudang/wdroad5" )  →  command('go north');
+  # else  →  command('go ' + dirs[random(sizeof(dirs))]);
+  # if (sizeof(dirs) < 2)  →  command('go ' + dirs[0]);
+# ==== CONDITIONAL BRANCHES (random_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: random_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/npc/yu-zu.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (ob->query("money_id") && ob->value() >= 1000)  →  tell_object(who, '狱卒说道：下水道里老鼠真多，替我去打几只，可别乘机溜了呵！\\\\\n\\\\\n'); message_vision('狱卒左右张望了一下，偷偷替$N打开通往南边的小门。\\\\\n', who);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: close_door
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/allow-letter.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/basi-shanyao.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/beixin.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/bocai-fentiao.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/changbian.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/changjian.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/chanzhang.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/cheng-cloth.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/cloth.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/damo-ling.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/dao-cloth.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/fake-gold.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/fojing10.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/fojing11.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/fojing20.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/fojing21.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/food.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/fumo-zhang.c by LPCConverter
+# Zone: shaolin
+
+# inherit F_NOCLONE;
+
+# Generated from C:/files/git/mud/d/shaolin/obj/furong-huagu.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/guide.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/heisuo.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/hui-cloth.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/hulu.c by LPCConverter
+# Zone: shaolin
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/huwan.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/huyao.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/jiaxin-biji.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/jiedao.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/jinchuang-yao.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("eff_qi") == me->query("max_qi"))  →  
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/jingang-zhao.c by LPCConverter
+# Zone: shaolin
+
+# inherit F_NOCLONE;
+
+# Generated from C:/files/git/mud/d/shaolin/obj/liuli-qiezi.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/mala-doufu.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/map.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/mizhi-tianou.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/muchui.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/mudao.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/qimeigun.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/qing-cloth.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/qingshui-hulu.c by LPCConverter
+# Zone: shaolin
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/sengxie.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/shanhu-baicai.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/shoutao.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/soup.c by LPCConverter
+# Zone: shaolin
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/suji.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/suya.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/test.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/tie-ling.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: dest
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/tieshou.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/toukui.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/tuijianxin-1.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/tuijianxin-2.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/tuijianxin-3.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/tuijianxin-4.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/weibo.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/xu-cloth.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/xuan-cloth.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/yaodai.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: is_container
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/zhitao.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shaolin/obj/zhujian.c by LPCConverter
+# Zone: shaolin
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

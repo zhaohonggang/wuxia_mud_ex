@@ -1363,9 +1363,24 @@ def _child_of(ast):
 
 
 def _merge_vals(base, newer):
+    merged_sets = {**base["sets"], **newer["sets"]}
+    # For exits specifically, we need to merge mappings by key (direction)
+    # rather than having newer overwrite base, to avoid duplicate directions
+    base_exits = base["sets"].get("exits", ())
+    newer_exits = newer["sets"].get("exits", ())
+    if isinstance(base_exits, tuple) and base_exits[0] == "mapping" and \
+       isinstance(newer_exits, tuple) and newer_exits[0] == "mapping":
+        # Merge exit mappings: base first, then newer (newer wins for same direction)
+        base_exit_map = {k[1]: v for k, v in base_exits[1]} if isinstance(base_exits[1], list) else {}
+        newer_exit_map = {k[1]: v for k, v in newer_exits[1]} if isinstance(newer_exits[1], list) else {}
+        merged_exit_map = {**base_exit_map, **newer_exit_map}
+        merged_exits = ("mapping", list(merged_exit_map.items()))
+        merged_sets = {**base["sets"], **newer["sets"], "exits": merged_exits}
+    else:
+        merged_sets = {**base["sets"], **newer["sets"]}
     return {
         "inherits": newer["inherits"] + base["inherits"],
-        "sets": {**base["sets"], **newer["sets"]},
+        "sets": merged_sets,
         "set_name": {**base["set_name"], **newer["set_name"]},
         "heredocs": {**base["heredocs"], **newer["heredocs"]},
         "exit_vetoes": newer["exit_vetoes"],
@@ -1777,7 +1792,12 @@ def _extract_key_path(key):
         return key[1]
     if isinstance(key, tuple) and key[0] == "string":
         return key[1]
-    return ""
+    return None
+
+
+def _looks_like_path(s):
+    """Heuristic: a string that looks like a file path (contains / or __DIR__)."""
+    return isinstance(s, str) and ("/" in s or "__DIR__" in s)
 
 
 def _generate_room_objects(room_id, value):
@@ -1789,6 +1809,10 @@ def _generate_room_objects(room_id, value):
     item_links = []
     for key, count in value[1]:
         path = _extract_key_path(key)
+        if path is None or not _looks_like_path(path):
+            # Skip keys that are expressions (like names[random(sizeof(names))])
+            # rather than simple file paths
+            continue
         id_ = _room_id_from_path(path)
         if _contains_npc(path):
             n = _count_or_one(count)

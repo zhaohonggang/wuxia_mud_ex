@@ -345,13 +345,24 @@ def _add_vertical_exits(state, from_id, to_id):
     bottommost = _find_bottommost_via_down(
         to_id, state["exits_map"], state["new_exits"])
 
-    # Add up exit from topmost to new orphan
-    new_exits_from = state["new_exits"].get(topmost, []) + [("up", (LOCAL, to_id))]
-    # Add down exit from bottommost to topmost
-    new_exits_to = state["new_exits"].get(bottommost, []) + [("down", (LOCAL, topmost))]
+    # Check if topmost already has an "up" exit (in original exits_map or new_exits)
+    topmost_exits = list(state["exits_map"].get(topmost, [])) + list(state["new_exits"].get(topmost, []))
+    has_up = any(dir_ == "up" for dir_, _ in topmost_exits)
 
-    state["new_exits"][topmost] = new_exits_from
-    state["new_exits"][bottommost] = new_exits_to
+    # Check if bottommost already has a "down" exit
+    bottommost_exits = list(state["exits_map"].get(bottommost, [])) + list(state["new_exits"].get(bottommost, []))
+    has_down = any(dir_ == "down" for dir_, _ in bottommost_exits)
+
+    # Add up exit from topmost to new orphan (only if not already present)
+    if not has_up:
+        new_exits_from = state["new_exits"].get(topmost, []) + [("up", (LOCAL, to_id))]
+        state["new_exits"][topmost] = new_exits_from
+
+    # Add down exit from bottommost to topmost (only if not already present)
+    if not has_down:
+        new_exits_to = state["new_exits"].get(bottommost, []) + [("down", (LOCAL, topmost))]
+        state["new_exits"][bottommost] = new_exits_to
+
     return state
 
 
@@ -657,7 +668,13 @@ def _build_exits_block(content, eid, exits_map, room_set):
     indent = _block_indent(content)
 
     # Keep non-exit lines (room_id = ...) and add merged exits
-    non_exit_lines = [line for line in content if _parse_exit_row(line) is None]
+    # But EXCLUDE the closing brace from non_exit_lines since we'll add our own
+    non_exit_lines = [line for line in content if _parse_exit_row(line) is None and not _CLOSING_BRACE_RE.match(line)]
+
+    # Handle case where closing brace is on the same line as the last exit
+    # e.g., "    exit = rooms.foo.id  }" -> remove trailing "  }"
+    if non_exit_lines and non_exit_lines[-1].rstrip().endswith("}"):
+        non_exit_lines[-1] = non_exit_lines[-1].rstrip()[:-1].rstrip()
 
     # An up/down exit whose target is a room not present in this zone is a
     # phantom reference (test data like room_above/room_below).  When the new
@@ -667,16 +684,8 @@ def _build_exits_block(content, eid, exits_map, room_set):
         comment = _phantom_updown((dir_, target), merged, room_set)
         exit_lines.append(_render_exit_row(dir_, target, indent, comment))
 
-    # Add closing brace.  Note (fidelity): a standalone `}` line in the source
-    # is treated as a non-exit line above and is therefore duplicated here --
-    # this mirrors the Elixir build_exits_block/4 behaviour exactly.
-    closing_brace = None
-    for line in content:
-        if _CLOSING_BRACE_RE.match(line):
-            closing_brace = line
-            break
-    if closing_brace is None:
-        closing_brace = indent + "}"
+    # Add closing brace
+    closing_brace = indent + "}"
 
     return non_exit_lines + exit_lines + [closing_brace]
 
