@@ -1,0 +1,17 @@
+zones "test" {
+  name = "test"
+}
+
+    rooms "s" {
+      name = "石洞"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "s" {
+    room_id = rooms.s.id
+    out = rooms.shandong.id
+    hole6 = rooms.lockroom6.id
+    hole5 = rooms.lockroom5.id
+  }

@@ -1,0 +1,147 @@
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/item/npc/zhang.c by LPCConverter
+# Zone: item
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob->query("money_id"))  →  command('say 这玩艺我可没啥兴趣！');
+  # if (ob->value() < 50000)  →  command('say 算是给观里的香火么？那我就收下了！');
+  # if (ob->value() < 100000)  →  command('say 唉！看你也算有点心意，我就替你开一次光吧！');
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if (! arg)  →  
+  # if (! objectp(ob = present(arg, me)))  →  
+  # if (ob->query("equipped"))  →  
+  # if (ob->query("money_id"))  →  command('say 你亮出钱干什么？想献给观里？那就给我好了。');
+  # if (ob->is_depot_ob())  →  command('good'); command('say 这件仙器已经不需要再开光了，你可以随时召唤(summon)！');
+  # if (! me->query_temp("paid/张天师", 1))  →  command('heihei'); command('say 这...怎么也的有点意思意思吧？你' '说十两黄金怎么样？当然多些我也不反对。');
+  # if (stringp(ob->query("magic/imbue_ob")))  →  command('say 你的对象有点问题，得和巫师联系！'); tell_object(me, HIG '张天师悄悄对你说道：“恩...我看看，应该用' + imbue_ob->name() + HIG '浸入它才能进一步激发它的潜力。”\\\\\n');
+  # if (mapp(ob->query("magic/imbue_ok")))  →  command('say 哦！我看它现在已经不需要在浸入了，' '要发挥潜力得用别的法子了。\\\\\n');
+  # if (! ob->is_item_make())  →  command('heng'); command('say 这...这...我看还是算了吧！');
+  # if (ob->item_owner() != me->query("id"))  →  command('kick ' + me->query('id')); command('say 你以为本山人的仙术是蒙事的啊，这分明不是你的！');
+  # if (me->query("can_summon/" + ob->query("id")))  →  command('poor ' + me->query('id')); command('say 它现在还不到浸入的时候...' '你要先圣化它才行啊！'); command('kok ' + me->query('id')); command('say 你和它已经有缘了！我说你的' '记性怎么这么差？');
+# ==== CONDITIONAL BRANCHES (do_show) ====
+  # if (! wizardp(this_player()))  →  command('say 你在我面前瞎抓个什么劲？别地试去！');
+# ==== CONDITIONAL BRANCHES (do_summon) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: receive_damage
+  # UNHANDLED FUNCTION: do_summon
+  # UNHANDLED FUNCTION: do_show
+  # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: ask_me
+  # UNHANDLED FUNCTION: receive_wound
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: fight_ob
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/item/obj/butian.c by LPCConverter
+# Zone: item
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/item/obj/chanhs.c by LPCConverter
+# Zone: item
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/item/obj/hantie.c by LPCConverter
+# Zone: item
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/item/obj/jingtie.c by LPCConverter
+# Zone: item
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/item/obj/tiancs.c by LPCConverter
+# Zone: item
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/item/obj/wujins.c by LPCConverter
+# Zone: item
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/item/obj/xuantie.c by LPCConverter
+# Zone: item
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

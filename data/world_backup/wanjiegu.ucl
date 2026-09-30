@@ -1,0 +1,1192 @@
+zones "wanjiegu" {
+  name = "wanjiegu"
+}
+
+# Generated from C:/files/git/mud/d/wanjiegu/backyard.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "backyard" {
+      name = "后院"
+      description = "后院是一大片开阔的草地，绿草如荫，几朵野花点缀其间，草 地中间放着一块大石刻成的棋盘，一个黄眉老僧和一个青袍客正在 下棋。北边有一间石屋，门口被一块大石头(rock)挡住了。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ rock = "一块很大的石头，挡住了石屋的入口。"
+}
+    }
+
+  room_exits "backyard" {
+    room_id = rooms.backyard.id
+  south = rooms.hall.id  }
+
+
+  room_characters "backyard" {
+    room_id = rooms.backyard.id
+    characters = [
+      { id = characters.monk.id }    ]
+  }
+
+
+
+  room_items "backyard" {
+    room_id = rooms.backyard.id
+    items = [
+      { id = items.duanyq.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/bed_room.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "bed_room" {
+      name = "卧室"
+      description = "这是钟谷主的卧室，室内大红的帏帐挂在大红的木床之上。墙 上贴满了各种花花绿绿的东西。床边有个小柜，柜上放着一盏豆油 灯。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bed_room" {
+    room_id = rooms.bed_room.id
+  south = rooms.left_room.id  }
+
+
+  room_characters "bed_room" {
+    room_id = rooms.bed_room.id
+    characters = [
+      { id = characters.zhongling.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/bridge.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "bridge" {
+      name = "铁索桥"
+      description = "一座横跨澜沧江的铁索桥，此桥共有四道铁索，两条在下，上 铺木板，以供行走，两条在旁，作为扶手。一踏上桥，几条铁索便 即晃动。江水荡荡，如快马奔腾从脚底飞过，只要一个失足，卷入 江水，任你多好的水性也难活命。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bridge" {
+    room_id = rooms.bridge.id
+  west = rooms.port2.id
+  east = rooms.port.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/drug_room.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "drug_room" {
+      name = "药房"
+      description = "刚进这间屋子，就有一股浓重的药味扑面而来。房子中间有一 个练药用的石臼，还有几只药匙放在一边。靠墙一排架子，架子上 摆满了药瓶，数百个瓶子上都写着药物的名字。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "drug_room" {
+    room_id = rooms.drug_room.id
+  south = rooms.right_room.id  }
+
+
+
+
+  room_items "drug_room" {
+    room_id = rooms.drug_room.id
+    items = [
+      { id = items.mortar.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/entrance.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "entrance" {
+      name = "大森林"
+      description = "这里是好大一座森林，黑压压的一片望不到边。最特别是左首 一排并列着九株参天大松树，每颗树都高耸入云。树下草丛茂密， 挡住了去路。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ grass = "一片茂密的草丛，你可以试着把它拨开(pushaside)。"
+}
+    }
+
+  room_exits "entrance" {
+    room_id = rooms.entrance.id
+  east = rooms.shan_road4.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/grassland.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "grassland" {
+      name = "草地"
+      description = "这是一大片草地，前面一排松树挡住了去路。只见一株大松上 削下了丈许长、尺许宽的一片，漆着白漆，写着九个大字，“姓段 者入此谷杀无赦”。树上挂着一个铁锤。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ hammer = "一个铁锤，可以用来敲(knock)东西。"
+}
+    }
+
+  room_exits "grassland" {
+    room_id = rooms.grassland.id
+  in = rooms.tunnel2.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/hall.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "hall" {
+      name = "内堂"
+      description = "这里放着一张大桌子，靠墙有两张凳子，白白的墙壁一尘不染 ，有一个人正在屋里走来走去，显的心情焦操。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hall" {
+    room_id = rooms.hall.id
+  north = rooms.backyard.id
+  west = rooms.left_room.id
+  south = rooms.xiaoting.id
+  east = rooms.right_room.id  }
+
+
+  room_characters "hall" {
+    room_id = rooms.hall.id
+    characters = [
+      { id = characters.zhong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/left_room.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "left_room" {
+      name = "左厢房"
+      description = "这是一间普通的房间，里面放着一些日常用品。桌子上放着一 壶茶，还没有冷掉。旁边一个大柜子，里面放着许多衣服。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "left_room" {
+    room_id = rooms.left_room.id
+  north = rooms.bed_room.id
+  east = rooms.hall.id  }
+
+
+  room_characters "left_room" {
+    room_id = rooms.left_room.id
+    characters = [
+      { id = characters.xier.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/port.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "port" {
+      name = "善人渡"
+      description = "这里从前是澜沧江的一个渡口，后来大理国在此修了一座铁索 桥，人们便不用再乘船过江了。桥边石上清清楚楚地刻着三个大字 “善人渡”。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "port" {
+    room_id = rooms.port.id
+  west = rooms.bridge.id
+  east = rooms.riverside3.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/port2.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "port2" {
+      name = "澜沧江畔"
+      description = "这里是一个小山坡，西面是上山的路，东面一条铁索桥横跨江 面，只见江水奔腾，呼啸而过，江风吹得铁索桥晃来晃去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "port2" {
+    room_id = rooms.port2.id
+  westup = rooms.slide3.id
+  east = rooms.bridge.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/right_room.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "right_room" {
+      name = "右厢房"
+      description = "这是一间普通的房间，里面放着一些日常用品，墙角落里堆着 一堆药草，是钟谷主采集而来，日后要用它制造各种药物。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "right_room" {
+    room_id = rooms.right_room.id
+  west = rooms.hall.id
+  north = rooms.drug_room.id  }
+
+
+  room_characters "right_room" {
+    room_id = rooms.right_room.id
+    characters = [
+      { id = characters.fuer.id }    ]
+  }
+
+
+
+  room_items "right_room" {
+    room_id = rooms.right_room.id
+    items = [
+      { id = items.cao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/riverside1.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "riverside1" {
+      name = "江边小路"
+      description = "这是澜沧江边的一条小路，江水滔滔从下面奔腾而过，江 面上不时传来艄公的号子声，与江风的呼啸声形成一曲动人的 交响乐，令人精神为之一振。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "riverside1" {
+    room_id = rooms.riverside1.id
+  northup = rooms.riverside2.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/riverside2.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "riverside2" {
+      name = "江边小路"
+      description = "这是澜沧江边的一条小路，江水滔滔，从下面奔腾而过，江面 上不时传来艄公的号子声，与江风的呼啸声形成一曲动人的交响乐。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "riverside2" {
+    room_id = rooms.riverside2.id
+  southeast = rooms.road3.id
+  southdown = rooms.riverside1.id
+  northdown = rooms.riverside3.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/riverside3.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "riverside3" {
+      name = "江边小路"
+      description = "这是澜沧江边的一条小路，江水滔滔，从下面奔腾而过，江面 上不时传来艄公的号子声，与江风的呼啸声形成一曲动人的交响乐。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "riverside3" {
+    room_id = rooms.riverside3.id
+  west = rooms.port.id
+  southup = rooms.riverside2.id
+  north = rooms.riverside4.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/riverside4.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "riverside4" {
+      name = "江边小路"
+      description = "这是澜沧江边的一条小路，江水滔滔，从下面奔腾而过，江面 上不时传来艄公的号子声，与江风的呼啸声形成一曲动人的交响乐。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "riverside4" {
+    room_id = rooms.riverside4.id
+  northwest = rooms.wlshan.id
+  south = rooms.riverside3.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/shan_road1.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "shan_road1" {
+      name = "山路"
+      description = "这是一条山间小路，两边山坡上张了许多树木，北风吹过，发 出沙沙的响声。路上张着许多杂草，看起来这里很少有人走动。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shan_road1" {
+    room_id = rooms.shan_road1.id
+  westup = rooms.shan_road2.id
+  northdown = rooms.slide3.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/shan_road2.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "shan_road2" {
+      name = "山路"
+      description = "这是一条山间小路，两边山坡上张了许多树木，北风吹过 发出沙沙的响声。路上张着许多杂草，看来很少有人走动。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shan_road2" {
+    room_id = rooms.shan_road2.id
+  westdown = rooms.shan_road3.id
+  eastdown = rooms.shan_road1.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/shan_road3.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "shan_road3" {
+      name = "山路"
+      description = "这是一条山间小路，两边山坡上张了许多树木，北风吹过，发 出沙沙的响声。路上张着许多杂草，看起来这里很少有人走动。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shan_road3" {
+    room_id = rooms.shan_road3.id
+  eastup = rooms.shan_road2.id
+  northdown = rooms.shan_road4.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/shan_road4.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "shan_road4" {
+      name = "山路"
+      description = "这是一条山间小路，两边山坡上张了许多树木，北风吹过，发 出沙沙的响声。路上张着许多杂草，看起来这里很少有人走动。往 西看，远远可见黑压压一片大森林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shan_road4" {
+    room_id = rooms.shan_road4.id
+  west = rooms.entrance.id
+  southup = rooms.shan_road3.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/slide3.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "slide3" {
+      name = "山坡"
+      description = "山坡之上张着一些不知名的杂草，以及三三两两分布其间的灌 木丛，这里很少有大树，几朵野花在路边悄悄开放，偶尔有几只蝴 蝶飞来飞去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "slide3" {
+    room_id = rooms.slide3.id
+  southup = rooms.shan_road1.id
+  eastdown = rooms.port2.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/stone_room.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "stone_room" {
+      name = "石屋"
+      description = "一间用花岗岩砌成的房子，坚固无比。南面有一个小孔，西边 有一张小床，屋内光线黑暗，又有些潮湿。一人女子正坐在床上不 停地喘气，身上的衣服都被汗水湿透了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "stone_room" {
+    room_id = rooms.stone_room.id
+  south = rooms.backyard.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/tree_hole.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "tree_hole" {
+      name = "树洞"
+      description = "树洞内非常狭窄，光线黑暗，地上铺满是枯草。洞的墙上有一 只大蜘蛛正在编织一个蜘蛛网。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ grass = "一堆枯草，里面有一个大铁环(ring)。"
+}
+    }
+
+  room_exits "tree_hole" {
+    room_id = rooms.tree_hole.id
+  out = rooms.entrance.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/tunnel1.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "tunnel1" {
+      name = "地道"
+      description = "地道里光线黑暗，空气浑浊，一股霉味扑鼻而来。地道里石台 阶异常粗糙，两边土墙上不时渗出水滴掉到地上。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tunnel1" {
+    room_id = rooms.tunnel1.id
+  north = rooms.tunnel2.id
+  out = rooms.tree_hole.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/tunnel2.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "tunnel2" {
+      name = "地道"
+      description = "地道里光线黑暗，空气浑浊，一股霉味扑鼻而来。地道里石台 阶异常粗糙，两边土墙上不时渗出水滴掉到地上。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tunnel2" {
+    room_id = rooms.tunnel2.id
+  south = rooms.tunnel1.id
+  out = rooms.grassland.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/wlhoushan.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "wlhoushan" {
+      name = "后山"
+      description = "这里是无量山的后山，你四处看了看，还是无法找到上山的路 径。眼前有一片湖泊，看上去幽静安然。远远的看过去，对面山壁 十分光滑，宛若一面镜子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wlhoushan" {
+    room_id = rooms.wlhoushan.id
+  northeast = rooms.wlroad2.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/wlroad1.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "wlroad1" {
+      name = "小路"
+      description = "这里长满了杂草，到处都是灌木。树木遮天蔽日，偶然有一些 小动物突然串出，有飞快的跑开。地处偏僻，十分幽静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wlroad1" {
+    room_id = rooms.wlroad1.id
+  west = rooms.wlroad2.id
+  southeast = rooms.wlshan.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/wlroad2.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "wlroad2" {
+      name = "小路"
+      description = "这里长满了杂草，到处都是灌木。树木遮天蔽日，偶然有一些 小动物突然串出，有飞快的跑开。地处偏僻，十分幽静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wlroad2" {
+    room_id = rooms.wlroad2.id
+  southwest = rooms.wlhoushan.id
+  east = rooms.wlroad1.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/wlshan.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "wlshan" {
+      name = "无量山"
+      description = "这里就是无量山区。山上树木丛生，很少有人走动，你都无法 找到一条能够上山的路。沿着山脚有一条蜿蜒的小路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wlshan" {
+    room_id = rooms.wlshan.id
+  northwest = rooms.wlroad1.id
+  southeast = rooms.riverside4.id  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/xiaoting.c by LPCConverter
+# Zone: wanjiegu
+
+    rooms "xiaoting" {
+      name = "小厅"
+      description = "这是一间小厅，桌上点着一对巨烛。东壁四幅屏条，绘的是梅 兰竹菊，西壁上的四幅是春夏秋冬。可是全挂错了方位，看来这里 的主人并不懂得书画。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaoting" {
+    room_id = rooms.xiaoting.id
+  south = rooms.grassland.id
+  north = rooms.hall.id  }
+
+
+  room_characters "xiaoting" {
+    room_id = rooms.xiaoting.id
+    characters = [
+      { id = characters.gan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/fuer.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "fuer" {
+      name = "来福儿"
+      description = "来福儿是万劫谷的下人。"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 5000
+    con = 24
+    dex = 21
+    int = 14
+    str = 16
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 50 },
+    { skill = "force" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.bu_shoes.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/gan.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "gan" {
+      name = "甘宝宝"
+      description = "甘宝宝容色清秀，多愁善感，年轻时曾与 段正淳有过一段风流佳话，但段正淳未能 与她共守白头，段正淳离去后，甘宝宝因 有身孕，无奈嫁给钟万仇为妻。"
+  gender = "女性"
+  age = 35
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 35000
+    con = 24
+    dex = 21
+    int = 27
+    max_neili = 200
+    str = 16
+  }
+
+  skills = [
+    { skill = "finger" level = 60 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 50 },
+    { skill = "sword" level = 30 },
+    { skill = "force" level = 50 },
+    { skill = "sun-finger" level = 40 },
+    { skill = "yizhi-chan" level = 60 },
+    { type = "finger" skill = "sun-finger" },
+    { type = "parry" skill = "sun-finger" }
+  ]
+
+
+  carry = [
+    { id = items.red_dress.id },
+    { id = items.shoes.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/haoke.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "haoke" {
+      name = "江湖豪客"
+      description = "一名满脸彪捍之色的江湖豪客。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 2000
+    con = 25
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 300
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/monk.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "monk" {
+      name = "黄眉大师"
+      description = "这是一个满脸皱纹、身形高大的老僧。这老僧两道焦黄长眉， 眉尾下垂，是拈花寺主持。"
+  gender = "男性"
+  age = 69
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1000000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1000
+    max_neili = 2000
+    max_qi = 1500
+    str = 30
+  }
+
+  inquiries = [
+    { key = "help" value = "(: savemu :)" },
+    { key = "救人" value = "(: savemu :)" },
+    { key = "救木婉清" value = "(: savemu :)" }
+  ]
+
+  skills = [
+    { skill = "force" level = 110 },
+    { skill = "hunyuan-yiqi" level = 110 },
+    { skill = "dodge" level = 110 },
+    { skill = "shaolin-shenfa" level = 110 },
+    { skill = "finger" level = 110 },
+    { skill = "strike" level = 110 },
+    { skill = "hand" level = 110 },
+    { skill = "claw" level = 110 },
+    { skill = "parry" level = 110 },
+    { skill = "nianhua-zhi" level = 110 },
+    { skill = "sanhua-zhang" level = 110 },
+    { skill = "fengyun-shou" level = 110 },
+    { skill = "longzhua-gong" level = 110 },
+    { skill = "buddhism" level = 110 },
+    { skill = "literate" level = 110 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "finger" skill = "nianhua-zhi" },
+    { type = "strike" skill = "sanhua-zhang" },
+    { type = "hand" skill = "fengyun-shou" },
+    { type = "claw" skill = "longzhua-gong" },
+    { type = "parry" skill = "nianhua-zhi" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.bu_shoes.id },
+    { id = items.muyu.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/mu.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "mu" {
+      name = "木婉清"
+      description = "一张脸秀丽绝俗，如新月清晖，如花树堆雪。 看上去楚楚可怜，娇柔婉转。只是长时间面幕 脸之故，脸色苍白，没半点血色，两片薄薄的 嘴唇，也是血色极淡。"
+  gender = "女性"
+  age = 17
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 550000
+    con = 24
+    dex = 21
+    int = 27
+    max_neili = 600
+    str = 26
+  }
+
+  inquiries = [
+    { key = "木婉清" value = "我就是木婉清。" },
+    { key = "段誉" value = "段哥哥呢？他在哪儿？说完，木婉清的脸上现出一丝红晕。" },
+    { key = "钟灵" value = "钟灵这死丫头，哼！" }
+  ]
+
+  skills = [
+    { skill = "finger" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "sword" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "sun-finger" level = 100 },
+    { skill = "yizhi-chan" level = 100 },
+    { type = "finger" skill = "sun-finger" },
+    { type = "parry" skill = "sun-finger" }
+  ]
+
+
+  carry = [
+    { id = items.pink_dress.id },
+    { id = items.shoes.id }
+  ]
+
+
+  accept = [
+    { kind = "any" accept = false msg = ["{npc}拿出一朵绝情花给木婉清。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/xier.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "xier" {
+      name = "进喜儿"
+      description = "进喜儿是万劫谷的丫鬟。"
+  gender = "女性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 5000
+    con = 24
+    dex = 11
+    int = 14
+    max_neili = 200
+    str = 16
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 50 },
+    { skill = "force" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.mini_dress.id },
+    { id = items.shoes.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/zhong.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "zhong" {
+      name = "钟万仇"
+      description = "钟万仇张着好长的一张马脸，眼睛生的甚高， 一个圆圆的大鼻子却和嘴巴挤在一块，以致眼 睛与鼻子之间，留下了一大块一无所有的空白 地，丑陋异常。"
+  gender = "男性"
+  age = 52
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 35000
+    con = 13
+    dex = 13
+    int = 13
+    max_neili = 500
+    str = 13
+  }
+
+  skills = [
+    { skill = "unarmed" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 90 },
+    { skill = "sword" level = 100 },
+    { skill = "force" level = 90 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.bu_shoes.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/zhongling.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "zhongling" {
+      name = "钟灵"
+      description = ""
+  gender = "女性"
+  age = 15
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 3500
+    con = 24
+    dex = 11
+    int = 24
+    max_neili = 200
+    str = 16
+  }
+
+  inquiries = [
+    { key = "here" value = "这里是万劫谷。" },
+    { key = "木婉清" value = "木婉清被关在后面的石屋里，快去救她！" },
+    { key = "段誉" value = "段哥哥呢？他在哪儿？" },
+    { key = "甘宝宝" value = "甘宝宝是我妈。" },
+    { key = "钟万仇" value = "钟万仇是我爹。" },
+    { key = "钟灵" value = "我就是钟灵啊。" }
+  ]
+
+  chat_chance = 1
+chats = [
+    "钟灵自言自语道：“要是我的闪电貂在这儿就好了。”"
+]
+
+
+  skills = [
+    { skill = "finger" level = 60 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 50 },
+    { skill = "sword" level = 30 },
+    { skill = "force" level = 50 },
+    { skill = "sun-finger" level = 40 },
+    { type = "finger" skill = "sun-finger" },
+    { type = "parry" skill = "sun-finger" }
+  ]
+
+
+  carry = [
+    { id = items.moon_dress.id },
+    { id = items.shoes.id },
+    { id = items.xiu_scarf.id }
+  ]
+
+
+  accept = [
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/belt.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "belt" {
+      name = "软金束带"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/blake-cloth.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "blake_cloth" {
+      name = "黑色劲装"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/boots.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "boots" {
+      name = "羊皮靴"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/bu-shoes.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "bu_shoes" {
+      name = "布鞋"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/cloth.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "cloth" {
+      name = "浅蓝色马褂"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/color-dress.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "color_dress" {
+      name = "五彩绣花裙"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/dress.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "dress" {
+      name = "梨花飘雪裳"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/feature.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "feature" {
+      name = "孔雀羽衣"
+      description = "这件孔雀羽衣是用孔雀羽毛织成的。"
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/fu-cloth.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "fu_cloth" {
+      name = "富贵团金褂"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/gui-dress.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "gui_dress" {
+      name = "桂花浮玉衫"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/hat.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "hat" {
+      name = "缨子帽"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/jade-belt.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "jade_belt" {
+      name = "蓝宝石腰带"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/liu-dress.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "liu_dress" {
+      name = "翠柳鹦鹉服"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/marry-dress.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "marry_dress" {
+      name = "结婚礼服"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/mini-dress.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "mini_dress" {
+      name = "彩缎紧身袄"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/moon-dress.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "moon_dress" {
+      name = "琼花皎月裳"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/muyu.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "muyu" {
+      name = "木鱼锤"
+      description = "这是一把很沉的铁木鱼锤"
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/pink-cloth.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "pink_cloth" {
+      name = "粉红绸衫"
+      description = "这件粉红色的绸衫上面绣著几只黄鹊，闻起来还有一股淡香。"
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/pink-dress.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "pink_dress" {
+      name = "梨花飘雪裳"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/qi-dress.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "qi_dress" {
+      name = "七彩霞云衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/qing-cloth.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "qing_cloth" {
+      name = "青衫"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/red-dress.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "red_dress" {
+      name = "霓红连衣裙"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/scarf.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "scarf" {
+      name = "一字逍遥巾"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/sha-dress.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "sha_dress" {
+      name = "梨芯淡烟纱"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/shoes.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "shoes" {
+      name = "绣花鞋"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/shoes2.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "shoes2" {
+      name = "绣花鞋"
+      description = "这是钟灵的一双绣球鞋。"
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/tie-gan.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "tie_gan" {
+      name = "细铁杆"
+      description = "这是一根又细又张的铁杆。"
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/xian-cloth.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "xian_cloth" {
+      name = "玄色紧身袄"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/xiu-cloth.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "xiu_cloth" {
+      name = "淡烟秀才装"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/xiu-scarf.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "xiu_scarf" {
+      name = "绣花小方巾"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/yan-dress.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "yan_dress" {
+      name = "艳露凝香衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/zi-dress.c by LPCConverter
+# Zone: wanjiegu
+
+    characters "zi_dress" {
+      name = "紫绫纱湘裙"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/obj/cao.c by LPCConverter
+# Zone: wanjiegu
+
+    items "cao" {
+      name = "药草"
+      description = "这是一堆药草。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/obj/flower.c by LPCConverter
+# Zone: wanjiegu
+
+    items "flower" {
+      name = "绝情花"
+      description = "一朵散发着刺鼻味的野花。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/obj/mortar.c by LPCConverter
+# Zone: wanjiegu
+
+    items "mortar" {
+      name = "石臼"
+      description = "这是一用来炼药用的石臼。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/obj/x-drug.c by LPCConverter
+# Zone: wanjiegu
+
+    items "x_drug" {
+      name = "阴阳合和散"
+      description = "一种强烈的春药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

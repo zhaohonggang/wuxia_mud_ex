@@ -1,0 +1,530 @@
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/meizhuang/didao3.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (! arg || arg == "") { write("你要打开什么？\n"); return 1; } if (arg == "floor") { me = this_player(); if (! query("exits/down")) { set("exits/down", __DIR__"didao4"); call_out("close_path", 5); } else { write("地上的木板现在已经拉开了。\n"); return 1; }
+# ==== COMPLEX CONDITIONALS ====
+  # if (! query("exits/down"))  →  
+# ==== CONDITIONAL BRANCHES (close_path) ====
+  # if (! arg || arg == "")  →  write('你要打开什么？\\\\\n');
+  # else  →  write('你没法打开 ' + arg + ' 这样东西。\\\\\n');
+  # if (arg == "floor")  →  write('地上的木板现在已经拉开了。\\\\\n'); message_vision('$N拉起地上的木板，发现下面是空的。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_open) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: close_path
+  # UNHANDLED FUNCTION: do_open
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/meizhuang/gate.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (arg == "4") { message_vision(HIC "$N" HIC "走上前去将门上铜环敲了四下。\n" NOR, me); me->set_temp("step", 1); return 1; } if (arg == "2") { message_vision(HIC "$N" HIC "走上前去将门上铜环敲了两下。\n" NOR, me); if (me->query_temp("step") == 1) me->set_temp("step", 2); else me->set_temp("step", 0); return 1; } if (arg == "5") { message_vision(HIC "$N" HIC "走上前去将门上铜环敲了五下。\n" NOR, me); if (me->query_temp("step") == 2) me->set_temp("step", 3); else me->set_temp("step", 0); return 1; } if (arg == "3") { message_vision(HIC "$N" HIC "走上前去将门上铜环敲了三下。\n" NOR, me); if (me->query_temp("step") == 3) { me->set_temp("step", 0); set("exits/north", __DIR__"tianjing"); message("vision", HIY "你静静的等候，过了半晌，大门终于缓缓" "的打开了。\n" NOR, this_object() ); if (! (room = find_object(__DIR__"tianjing"))) room = load_object(__DIR__"tianjing"); room->set("exits/south", __FILE__); message("vision", HIY "梅庄大门上的铜环有节奏地响了" "四声，大门给打开了。\n" NOR, room ); remove_call_out("close_passage"); call_out("close_passage", 10); } else { me->set_temp("step", 0); }
+# ==== COMPLEX CONDITIONALS ====
+  # if (! query("exits/north"))  →  
+  # if (room = find_object(__DIR__"tianjing"))  →  
+# ==== CONDITIONAL BRANCHES (close_passage) ====
+  # if (query("exits/north"))  →  
+  # if (arg == "4")  →  message_vision(HIC '$N' HIC '走上前去将门上铜环敲了四下。\\\\\n' NOR, me);
+  # if (arg == "2")  →  message_vision(HIC '$N' HIC '走上前去将门上铜环敲了两下。\\\\\n' NOR, me);
+  # if (arg == "5")  →  message_vision(HIC '$N' HIC '走上前去将门上铜环敲了五下。\\\\\n' NOR, me);
+  # if (arg == "3")  →  message_vision(HIC '$N' HIC '走上前去将门上铜环敲了三下。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_knock) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: do_knock
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/meizhuang/keting.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "north" || ! objectp(ding = present("ding jian", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/laofang.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "man")  →  
+  # if (me->query_temp("get_xxbook"))  →  
+  # if (query("get_book"))  →  write('你走上前去，却发现锁人的铁镣上面有一个细细的缺口，而且看上 去前不久有人曾经扭开过，你不禁有些迷惑，不知道有什么机关， 索性就不再理床上那人。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/meizhuang/mishi.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !arg || arg=="" )  →  
+  # if ( arg=="shu jia")  →  write('你试图跳上书架的顶端，但老是跳不上去。\\\\\n'); write('你纵身跃上了书架顶端。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_jump) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_press
+  # UNHANDLED FUNCTION: do_jump
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/mishi2.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: reset
+  # reset: object *inv; object con, item, guanmu; ::reset(); guanmu= present("guanmu", this_object()); inv = all_inventory(guanmu); if( !sizeof(inv)) { con = new(__DIR__"obj/honghua"); item = new(__DIR__"obj/zhuguo"); item->move(con); con->move(guanmu);
+# ==== RAW CODE BLOCKS ====
+  # if ( !sizeof(inv))  →  
+# ==== CONDITIONAL BRANCHES (reset) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: reset
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/neitang.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !arg || arg=="" )  →  write('你想推什么？\\\\\n');
+  # if ( arg=="eye" )  →  write('你使劲推了一下鹦鹉的眼睛，墙壁悄然旋开。\\\\\n'); write('顺着墙壁旋开的夹缝，你进到里面的密室。\\\\\n'); write('你试着推了一下鹦鹉的眼睛，但什么都没有发生。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_push) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_push
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/meizhuang/tianjing.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!( room = find_object(__DIR__"gate")) )  →  
+  # if (objectp(room))  →  
+# ==== CONDITIONAL BRANCHES (close_gate) ====
+  # if (query("exits/south"))  →  
+  # if (!arg || (arg != "gate" && arg != "south"))  →  
+  # if (!( room = find_object(__DIR__"gate")) )  →  
+  # if (objectp(room))  →  message_vision('$N使劲把大门打了开来。\\\\\n', this_player());
+# ==== CONDITIONAL BRANCHES (do_open) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_open
+  # UNHANDLED FUNCTION: close_gate
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/meizhuang/xiaoyuan.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "in" || !objectp(shi = present("shi lingwei", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/chushi.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (present("rice", me) && present("tea", me))  →  
+  # if (objectp(present("rice", environment(me))) && objectp(present("tea", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (do_serve) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_serve
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/ren.c by LPCConverter
+# Zone: meizhuang
+
+# inherit F_MASTER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_temp("want_bijian"))  →  command('say 他奶奶的，你把剑取了这算什么意思？'); say (CYN '\\\\\n任我行哈哈一笑，说道：那我就开始进招了。\\\\\n' NOR + HIW '\\\\\n只见任我行说罢身形一展，一道剑光由他处凌厉闪出。\\\\\n' NOR, me, ob); say (HIW '\\\\\n任我行大喝一声：看好了，我这第一招乃少林派达摩剑法' '！\\\\\n' NOR); say(CYN '任我行叹了口气，说道：才一招。\\\\\n' NOR); command('enable sword taiji-jian'); say(HIW '\\\\\n任我行大喝一声：第二招！武当派太极剑法！\\\\\n' NOR); say(CYN '任我行叹了口气，说道：才两招。\\\\\n' NOR); command('enable sword huifeng-jian'); say(HIW '\\\\\n任我行大喝一声：第三招！峨嵋派回风拂柳剑法！\\\\\n' NOR); say(CYN '任我行叹了口气，说道：才三招。\\\\\n' NOR); command('enable sword songshan-sword'); say(HIW '\\\\\n任我行大喝一声：第四招！嵩山剑法之天外玉龙！\\\\\n' NOR); say(CYN '任我行叹了口气，说道：才四招。\\\\\n' NOR); command('enable sword taishan-sword'); say(HIW '\\\\\n任我行大喝一声：第五招！泰山派十八盘剑法！\\\\\n' NOR); say(CYN '任我行叹了口气，说道：才五招。\\\\\n' NOR); command('enable sword huashan-jian'); say(HIW '\\\\\n任我行大喝一声：第六招！华山剑宗夺命连环三仙剑！\\\\\n' NOR); say(CYN '任我行叹了口气，说道：才六招。\\\\\n' NOR); command('enable sword hengshan-sword'); say(HIW '\\\\\n任我行大喝一声：第七招！衡山剑法之一剑落九雁！\\\\\n' NOR); say(CYN '任我行叹了口气，说道：才七招。\\\\\n' NOR); command('enable sword hengshan-jian'); say(HIW '\\\\\n任我行大喝一声：小心了，我这最后一招乃恒山派万花剑法！\\\\\n' NOR); say(CYN '任我行叹了口气，说道：还是没过第八招。\\\\\n' NOR); say(CYN '\\\\\n任我行哈哈大笑说道：阁下果然武艺超群，再来接我这路剑法！\\\\\n\\\\\n' NOR); message_vision(HIR '说完任我行一声长啸，木剑倏地劈出。$N' HIR '当即斜剑' '刺出，逼得他收剑回挡。任\\\\\n我行连连呼喝，竟似发疯一般。呼' '喝越急，出剑也是越快。$N' HIR '觉得每一声断喝\\\\\n都令他双' '耳嗡嗡作响，心烦意乱。突然之间，任我行石破天惊般一声狂啸' '。$N' HIR '\\\\\n耳中嗡的一响，耳鼓都似震破，脑中一阵晕眩，登' '时人事不知，昏倒在地……\\\\\n' NOR, me, ob );
+# ==== CONDITIONAL BRANCHES (do_accept) ====
+  # if (me->query_temp("want_bijian"))  →  command('say 你这人这么那么不爽快？要比就赶紧开始吧！');
+  # if (me->query("skybook/xiaoao/bijian"))  →  command('say 我们已经比试过了，没必要再战一场。');
+  # if (me->query_temp("bijian_fail"))  →  command('say 你已经输了，再比下去也没什么结果。');
+  # if (me->query("combat_exp") < 1500000)  →  command('heng'); command('say 你还不配和我比剑！');
+  # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "sword")  →  command('say 你不拿剑我还和你比什么？');
+# ==== CONDITIONAL BRANCHES (ask_bijian) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_bijian
+  # UNHANDLED FUNCTION: do_accept
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/shi.c by LPCConverter
+# Zone: meizhuang
+
+# inherit F_MASTER;
+# inherit F_GUARDER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/obj/heiyi.c by LPCConverter
+# Zone: meizhuang
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/obj/lingpai.c by LPCConverter
+# Zone: meizhuang
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: setup
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/obj/panguan-bi.c by LPCConverter
+# Zone: meizhuang
+
+# inherit DAGGER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/npc/obj/qingyi.c by LPCConverter
+# Zone: meizhuang
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/guanmu.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/hongchou.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  message_vision('$N把红绸撕开，但里面什么都没有。\\\\\n', me);
+  # if (arg == "hong chou" && !present("zhanyi", me) && query("cloth_count")>= 1)  →  message_vision('$N把红绸撕开，发现里面包着一件衣服。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_tear) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_tear
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/honghua.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/maobi.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/panguanbi.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/qin.c by LPCConverter
+# Zone: meizhuang
+
+# inherit MI_QIN;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/qipan.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/qizi.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/sea-wood.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/tizi.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!id(arg))  →  
+  # else  →  write('你爬上梯子。\\\\\n');
+  # if (this_player()->query_temp("marks/跳1") )  →  write('你怎么爬个没完没了？\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_climb) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_climb
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/xiao.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/meizhuang/obj/zhuguo.c by LPCConverter
+# Zone: meizhuang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================

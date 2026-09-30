@@ -1,0 +1,101 @@
+# Generated from C:/files/git/mud/d/motianya/mtdating.c by LPCConverter
+# Zone: motianya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "east" && objectp(ob = present("xie yanke", this_object())) && living(ob))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/motianya/mtyadi.c by LPCConverter
+# Zone: motianya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (arg != "lian") { write("你要爬什么呀? \n"); return 1; } me = this_player(); n = me->query_skill("dodge", 1); message_vision("$N深吸了一口气，慢慢沿着铁链的向上爬。\n", me); if (n > 80) { message_vision("$N爬了半天，终于爬了上去，$N高兴的" "抹了抹汗。\n", me); me->move(__DIR__"mtdating"); } else { message_vision("$N爬了一会，一不小心摔了下来。\n", me); me->receive_damage("qi", 50); me->receive_wound("qi", 50); }
+# ==== COMPLEX CONDITIONALS ====
+  # if (arg != "lian")  →  write('你要爬什么呀? \\\\\n');
+  # else  →  message_vision('$N爬了一会，一不小心摔了下来。\\\\\n', me);
+  # if (n > 80)  →  message_vision('$N爬了半天，终于爬了上去，$N高兴的' '抹了抹汗。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_climb) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_climb
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/motianya/npc/dingdang.c by LPCConverter
+# Zone: motianya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: inquiry_yu
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/motianya/npc/qiaofu.c by LPCConverter
+# Zone: motianya
+
+# inherit F_DEALER;
+
+# Generated from C:/files/git/mud/d/motianya/npc/shizhongyu.c by LPCConverter
+# Zone: motianya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: die
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/motianya/npc/xieyan.c by LPCConverter
+# Zone: motianya
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("can_perform/bizhen-qingzhang/pengpai"))  →  
+  # if (! me->query("can_learn/xieyanke/bizhen-qingzhang"))  →  
+  # if (me->query_skill("bizhen-qingzhang", 1) < 180)  →  
+  # if (me->can_improve_skill("strike"))  →  
+# ==== CONDITIONAL BRANCHES (ask_me) ====
+  # if (! ob->query("can_learn/xieyanke/bizhen-qingzhang"))  →  command('say 你是什么东西？给我滚开！\\\\\n');
+  # if (skill != "bizhen-qingzhang")  →  command('killair'); command('say 我说过只传授你这套掌法，你不学就算了。');
+  # if (ob->query_skill("bizhen-qingzhang", 1) > 100)  →  command('say 够了，剩下的自己去练。');
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+  # else  →  command('say 很好，很好！'); command('say 我这里有一套碧针清掌，是我晚年创下的绝学，可以传授予你。');
+  # if (ob->query("id") != "xuantie ling")  →  command('say 你给我这种东西干什么？');
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: recognize_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================

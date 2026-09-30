@@ -1,0 +1,16 @@
+zones "test" {
+  name = "test"
+}
+
+    rooms "miaorenbuluo" {
+      name = "苗人部落"
+      description = "几个巫士挥舞着木镗，口\ 中念念有词。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "miaorenbuluo" {
+    room_id = rooms.miaorenbuluo.id
+  north = rooms.westroad2.id
+  }

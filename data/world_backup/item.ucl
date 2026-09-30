@@ -1,0 +1,248 @@
+zones "item" {
+  name = "item"
+}
+
+# Generated from C:/files/git/mud/d/item/road1.c by LPCConverter
+# Zone: item
+
+    rooms "road1" {
+      name = "小径"
+      description = "这是一条蜿蜒的小径，曲曲折折通往山里。路面上光滑平实，看来是 经常有人来往。东面隐隐约约可以看到青石铺就的官道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road1" {
+    room_id = rooms.road1.id
+  west = rooms.road5.id
+  eastup = rooms.road2.id  }
+
+
+  room_characters "road1" {
+    room_id = rooms.road1.id
+    characters = [
+      { id = characters.zhang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/item/road2.c by LPCConverter
+# Zone: item
+
+    rooms "road2" {
+      name = "小径"
+      description = "这是一条蜿蜒的小径，曲曲折折通往山里。路面上光滑平实，看来是 经常有人来往。四周非常安静，道旁都是田园村户。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road2" {
+    room_id = rooms.road2.id
+  westdown = rooms.road1.id
+  eastdown = rooms.road3.id  }
+
+# Generated from C:/files/git/mud/d/item/road3.c by LPCConverter
+# Zone: item
+
+    rooms "road3" {
+      name = "小径"
+      description = "这是一条蜿蜒的小径，曲曲折折通往山里。路面上光滑平实，看来是 经常有人来往。四周非常安静，道旁都是田园村户。有时可以听见几声清 脆动人的鸟叫。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road3" {
+    room_id = rooms.road3.id
+  westup = rooms.road2.id
+  northeast = rooms.road4.id  }
+
+# Generated from C:/files/git/mud/d/item/road4.c by LPCConverter
+# Zone: item
+
+    rooms "road4" {
+      name = "小径"
+      description = "这是一条蜿蜒的小径，曲曲折折通往山里。路面上光滑平实，看来是 经常有人来往。这里已经是山脚了，山坡上有一些梯田，附近间或有一些 茅屋。只有东边不远的地方有一见小砖房，烟筒里面时不时冒出一股股黑 烟，不象是炊火。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road4" {
+    room_id = rooms.road4.id
+  southwest = rooms.road3.id
+  east = rooms.road5.id  }
+
+# Generated from C:/files/git/mud/d/item/road5.c by LPCConverter
+# Zone: item
+
+    rooms "road5" {
+      name = "小径"
+      description = "这是一条蜿蜒的小径，曲曲折折通往山里。路旁有一间小砖房，烟筒 里面时不时冒出一股股黑烟，闻起来有些难受，你一时忍不住想打两个喷 嚏。屋里面传来阵阵的敲打声音，看来这里是给村民们打造菜刀、犁头的 铁匠铺。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road5" {
+    room_id = rooms.road5.id
+  west = rooms.road4.id
+  in = rooms.xiaowu.id  }
+
+# Generated from C:/files/git/mud/d/item/xiaowu.c by LPCConverter
+# Zone: item
+
+    rooms "xiaowu" {
+      name = "铸剑室"
+      description = "你一走进这个屋子，就感觉到有一股热浪扑面而来。屋角有一个炉子， 里面燃着熊熊火光，似乎无数的金蛇在你面前晃动。屋角堆放着一堆堆黑 乎乎的东西，不知道是什么。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaowu" {
+    room_id = rooms.xiaowu.id
+  out = rooms.road5.id  }
+
+# Generated from C:/files/git/mud/d/item/npc/zhang.c by LPCConverter
+# Zone: item
+
+    characters "zhang" {
+      name = "张天师"
+      description = "这是一位仙风神骨，道貌岸然的法师。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 57
+
+  combat = {
+    attitude = "peaceful"
+    con = 38
+    dex = 31
+    int = 35
+    max_jing = 8000
+    max_neili = 8000
+    max_qi = 8000
+    str = 28
+  }
+
+  inquiries = [
+    { key = "仙术" value = "仙术只好算是中乘，还是不能和道术相比。" },
+    { key = "妖术" value = "妖术啊，趋于下乘，不足为提。" },
+    { key = "开光" value = "(: ask_me :)" },
+    { key = "没钱" value = "没钱就去赚，跟我说什么。" },
+    { key = "法术" value = "法术还分很多种呢，道术、妖术、仙术不一而足。" },
+    { key = "浸入" value = "你要是不行我可以帮你看看(show)浸入需要用什么物品。" },
+    { key = "穷" value = "看你也是一副穷命。" },
+    { key = "道术" value = "道术？这可是本源正宗！" },
+    { key = "魔法" value = "魔法？什么玩艺？" }
+  ]
+
+  skills = [
+    { skill = "magic" level = 200 },
+    { skill = "taoism" level = 350 }
+  ]
+
+
+  carry = [
+    { id = items.dao_cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["show", "summon"]
+  }
+
+  accept = [
+    { kind = "money" accept = true msg = "这玩艺我可没啥兴趣！" },
+    { kind = "any" accept = true msg = ["这玩艺我可没啥兴趣！", "算是给观里的香火么？那我就收下了！", "唉！看你也算有点心意，我就替你开一次光吧！", "好...好...这么照顾本观，我能帮你点什么？"] }
+  ]
+
+  engage = {
+    fight = { accept = false msg = "没兴趣。" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/item/obj/butian.c by LPCConverter
+# Zone: item
+
+    items "butian" {
+      name = "补天石"
+      description = "传说这是女娲补天剩下的五彩石，不知是真是假。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/item/obj/chanhs.c by LPCConverter
+# Zone: item
+
+    items "chanhs" {
+      name = "缠魂丝"
+      description = "一束晶莹透明的细丝，是用蛛丝和蚕丝混合织就而成的。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/item/obj/hantie.c by LPCConverter
+# Zone: item
+
+    items "hantie" {
+      name = "玄冰寒铁"
+      description = "一块亮晶晶的金属，据说是在上古玄冰中孕育出的寒铁。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/item/obj/jingtie.c by LPCConverter
+# Zone: item
+
+    items "jingtie" {
+      name = "百炼精铁"
+      description = "一块黑黝黝的经过精心冶炼的精铁。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/item/obj/tiancs.c by LPCConverter
+# Zone: item
+
+    items "tiancs" {
+      name = "冰蚕丝"
+      description = "一束晶莹剔透的细丝，隐然泛出白光。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/item/obj/wujins.c by LPCConverter
+# Zone: item
+
+    items "wujins" {
+      name = "乌金丝"
+      description = "一束黑白相间的细丝，是由乌金丝和蚕丝混合织就而成。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/item/obj/xuantie.c by LPCConverter
+# Zone: item
+
+    items "xuantie" {
+      name = "玄铁石"
+      description = "一块黑黝黝有些泛光石头，掂在手中感到极为沉重，远胜铜铁。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

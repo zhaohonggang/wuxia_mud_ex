@@ -1,0 +1,1199 @@
+zones "jueqing" {
+  name = "jueqing"
+}
+
+# Generated from C:/files/git/mud/d/jueqing/changlang1.c by LPCConverter
+# Zone: jueqing
+
+    rooms "changlang1" {
+      name = "长廊"
+      description = "这是连接大厅和书房的长廊，虽不见花木，但也能闻到淡 淡的花香。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "changlang1" {
+    room_id = rooms.changlang1.id
+  east = rooms.dating.id
+  west = rooms.shufang.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/changlang2.c by LPCConverter
+# Zone: jueqing
+
+    rooms "changlang2" {
+      name = "长廊"
+      description = "这是连接内堂和后堂的长廊，虽不见花木，但也能闻到淡 淡的花香。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "changlang2" {
+    room_id = rooms.changlang2.id
+  north = rooms.changlang3.id
+  south = rooms.neitang.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/changlang3.c by LPCConverter
+# Zone: jueqing
+
+    rooms "changlang3" {
+      name = "长廊"
+      description = "这是连接内堂和后堂的长廊，虽不见花木，但也能闻到淡 淡的花香。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "changlang3" {
+    room_id = rooms.changlang3.id
+  north = rooms.changlang4.id
+  south = rooms.changlang2.id
+  east = rooms.xiangfang2.id
+  west = rooms.xiangfang1.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/changlang4.c by LPCConverter
+# Zone: jueqing
+
+    rooms "changlang4" {
+      name = "长廊"
+      description = "这是连接内堂和后堂的长廊，虽不见花木，但也能闻到淡 淡的花香。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "changlang4" {
+    room_id = rooms.changlang4.id
+  north = rooms.houtang.id
+  south = rooms.changlang3.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/chucangshi.c by LPCConverter
+# Zone: jueqing
+
+    rooms "chucangshi" {
+      name = "储藏室"
+      description = "这里是绝情谷的储藏室，里面堆放着一些杂物。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chucangshi" {
+    room_id = rooms.chucangshi.id
+  west = rooms.houtang.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/chufang.c by LPCConverter
+# Zone: jueqing
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "这里是绝情谷内堂西侧一间厨房，平常绝情谷的弟子们饿 了便可以到这里来要(serve)些食物吃。房中灶火正旺，一个 厨师正忙的满头大汗。屋角放着一个大水缸。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+  east = rooms.neitang.id  }
+
+
+  room_characters "chufang" {
+    room_id = rooms.chufang.id
+    characters = [
+      { id = characters.chushi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jueqing/danfang.c by LPCConverter
+# Zone: jueqing
+
+    rooms "danfang" {
+      name = "丹房"
+      description = "行至这里，顿感炽热更盛，只见里面是间丈许见方的石室。 石室中央摆有一个一人多高的火炉(huo lu)。两名粗工正在搬 堆柴炭，这两人上身赤膊，下身只穿一条牛头短裤，全身大汗 淋漓。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "danfang" {
+    room_id = rooms.danfang.id
+  south = rooms.huohuanshi.id
+  west = rooms.zhulin3.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/dating.c by LPCConverter
+# Zone: jueqing
+
+    rooms "dating" {
+      name = "大厅"
+      description = "绝情谷大厅正中摆放着一个红棕色茶几，四周并排着几个 椅子，椅背上刻有些许图案，虽单调了点，但也显得非常别致， 厅角的几盆花木散发出阵阵清香。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dating" {
+    room_id = rooms.dating.id
+  out = rooms.shanzhuang.id
+  north = rooms.neitang.id
+  west = rooms.changlang1.id
+  east = rooms.xiaojing.id  }
+
+
+  room_characters "dating" {
+    room_id = rooms.dating.id
+    characters = [
+      { id = characters.dizi1.id },
+      { id = characters.dizi1.id },
+      { id = characters.dizi2.id },
+      { id = characters.dizi2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jueqing/duanchang.c by LPCConverter
+# Zone: jueqing
+
+    rooms "duanchang" {
+      name = "断肠崖"
+      description = "到得此处只见崖壁上刻了“断肠崖”三字，自此而上，数 十丈光溜溜的寸草不生，终年云雾环绕，天风猛烈，便飞鸟也 甚难在峰顶停足。山崖下临深渊，自渊口下望，黑黝黝的深不 见底。“断肠崖”前后风景清幽，只因地势实在太险，山石滑 溜溜，极易掉入深渊崖，俯视深谷，但见灰雾茫茫四下里山石 嶙峋，树木茂密。隐约可见崖壁上用利器刻着两行字(zi)。抬 头见一座山峰冲天而起，正是绝险之地的绝情峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "duanchang" {
+    room_id = rooms.duanchang.id
+  southdown = rooms.shanlu5.id
+  east = rooms.shulin2.id
+  north = rooms.shanlu7.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/eyutan1.c by LPCConverter
+# Zone: jueqing
+
+    rooms "eyutan1" {
+      name = "鄂鱼潭岸上"
+      description = "鄂鱼潭深处地底，寒似冰窟。潭中(tan)一团黑子晃动，仔 细一看竟是许多凶猛的鄂鱼。 只见不远处似有一个洞口，但由 于深潭相隔，不知如何过去。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ tan = "潭中鄂鱼成群，凶猛无比。 恐怕只有施展轻功穿(cross)过去了。"
+}
+    }
+
+# Generated from C:/files/git/mud/d/jueqing/eyutan2.c by LPCConverter
+# Zone: jueqing
+
+    rooms "eyutan2" {
+      name = "鄂鱼潭中"
+      description = "鄂鱼潭中寒水刺骨，深不见底，潭底水声潺潺，令人毛骨 悚然。看来要离开这里只有游(swim)回岸边(bank)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+
+
+  room_items "eyutan2" {
+    room_id = rooms.eyutan2.id
+    items = [
+      { id = items.eyu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jueqing/eyutan3.c by LPCConverter
+# Zone: jueqing
+
+    rooms "eyutan3" {
+      name = "鄂鱼潭对岸"
+      description = "这里是鄂鱼潭的对岸，但见前方有一洞口(dong)，些许阳 光从里面射了进来。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "eyutan3" {
+    room_id = rooms.eyutan3.id
+  in = rooms.hole1.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/hole1.c by LPCConverter
+# Zone: jueqing
+
+    rooms "hole1" {
+      name = "潭底洞内"
+      description = "鳄潭水气蒸浸，洞中潮湿滑溜，腥臭难闻。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hole1" {
+    room_id = rooms.hole1.id
+  out = rooms.eyutan3.id
+  northeast = rooms.hole2.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/hole2.c by LPCConverter
+# Zone: jueqing
+
+    rooms "hole2" {
+      name = "潭底洞内"
+      description = "鳄潭水气蒸浸，洞中潮湿滑溜，腥臭难闻。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hole2" {
+    room_id = rooms.hole2.id
+  southwest = rooms.hole1.id
+  out = rooms.undertan.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/house.c by LPCConverter
+# Zone: jueqing
+
+    rooms "house" {
+      name = "小屋"
+      description = "这是绝情谷底的一间小茅屋，这里似乎很久没有来过了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "house" {
+    room_id = rooms.house.id
+  out = rooms.underya2.id  }
+
+
+
+
+  room_items "house" {
+    room_id = rooms.house.id
+    items = [
+      { id = items.fengmi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jueqing/houshan.c by LPCConverter
+# Zone: jueqing
+
+    rooms "houshan" {
+      name = "后山"
+      description = "谷西是绝情谷后山，这里地势偏僻平时很少有人来。俯瞰 山下千沟万壑，云雾缭绕。翘首北望，只见峭壁绝险，云雾深 锁。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houshan" {
+    room_id = rooms.houshan.id
+  southeast = rooms.shanlu3.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/houtang.c by LPCConverter
+# Zone: jueqing
+
+    rooms "houtang" {
+      name = "后堂"
+      description = "绝情谷后堂摆放着各种珍奇的古董和陶瓷，正中靠墙处的 柜子上供着一尊泥像，泥像下轻烟缭绕，想必是绝情谷开山祖 师的灵位。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houtang" {
+    room_id = rooms.houtang.id
+  west = rooms.zhifang.id
+  north = rooms.jianshi.id
+  east = rooms.chucangshi.id
+  south = rooms.changlang4.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/huayuan.c by LPCConverter
+# Zone: jueqing
+
+    rooms "huayuan" {
+      name = "后花园"
+      description = "这是绝情谷的后花园，但见园中群花争奇斗艳，偶闻花香 扑鼻，醉人心扉。四周翠木丛生，飞禽追逐嬉戏，别有一番景 致。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huayuan" {
+    room_id = rooms.huayuan.id
+  north = rooms.zizhuxuan.id
+  west = rooms.xiaojing.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/huohuanshi.c by LPCConverter
+# Zone: jueqing
+
+    rooms "huohuanshi" {
+      name = "火浣室"
+      description = "这里便是绝情谷的火浣室。谷主规定每日有一个时辰焚烧 烈火。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huohuanshi" {
+    room_id = rooms.huohuanshi.id
+  south = rooms.shufang.id
+  north = rooms.danfang.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/jianshi.c by LPCConverter
+# Zone: jueqing
+
+    rooms "jianshi" {
+      name = "剑室"
+      description = "只见室中的壁上、桌上、架上、摆满了各类兵刃，式样繁 多，十之八九都是古剑，或长逾七尺，或短仅数寸，有的铁斑 驳，有的寒光逼人，直看得人眼光撩乱。不远处的墙壁上挂着 有一副古画(hua)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jianshi" {
+    room_id = rooms.jianshi.id
+  south = rooms.houtang.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/jueqing.c by LPCConverter
+# Zone: jueqing
+
+    rooms "jueqing" {
+      name = "绝情峰"
+      description = "这里便是绝情谷绝顶之处绝情峰，矗立此处俯瞰群峰，但 见群峰间云雾缭绕，轻烟缕缕。峰下千沟万壑，树木丛生，刺 骨的山风吹过，令人感到阵阵寒意。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jueqing" {
+    room_id = rooms.jueqing.id
+  southdown = rooms.shanlu8.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/ligui.c by LPCConverter
+# Zone: jueqing
+
+    rooms "ligui" {
+      name = "厉鬼峰"
+      description = "此处是绝情谷东面的厉鬼峰，谷中世代相传，峰上有厉鬼 作崇，是以谁也不敢上来。一到这里狂风大作，吹得人不禁毛 骨悚然，担了一个寒颤。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "ligui" {
+    room_id = rooms.ligui.id
+  southwest = rooms.shanlu6.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/neitang.c by LPCConverter
+# Zone: jueqing
+
+    rooms "neitang" {
+      name = "内堂"
+      description = "绝情谷内堂较大厅要宽敞一些，四周陈设甚多，但四周仍 摆放着几盆花木，清香四溢。可见谷主是个爱花之人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "neitang" {
+    room_id = rooms.neitang.id
+  south = rooms.dating.id
+  north = rooms.changlang2.id
+  west = rooms.chufang.id
+  east = rooms.pianting.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/ontree1.c by LPCConverter
+# Zone: jueqing
+
+    rooms "ontree1" {
+      name = "大枣树上"
+      description = "这里是石窟内的一棵百仗高的大枣树上，但见此处被树叶 所盖，密不透风。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "ontree1" {
+    room_id = rooms.ontree1.id
+  up = rooms.ontree2.id
+  down = rooms.undertan.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/ontree2.c by LPCConverter
+# Zone: jueqing
+
+    rooms "ontree2" {
+      name = "大枣树上"
+      description = "这里是石窟内的一棵百仗高的大枣树上，但见此处被树叶 所盖，密不透风。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "ontree2" {
+    room_id = rooms.ontree2.id
+  up = rooms.ontree3.id
+  down = rooms.ontree1.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/ontree3.c by LPCConverter
+# Zone: jueqing
+
+    rooms "ontree3" {
+      name = "大枣树上"
+      description = "这里是枣树顶，四下望去，突然感觉一阵眩晕，原来这里 离地面已有百来仗高了。抬头一看，猛然间你眼光一闪，发现 上面竟有一根树藤(teng)垂下。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ teng = "看来可以借这根树藤爬(climb)出石窟。"
+}
+    }
+
+  room_exits "ontree3" {
+    room_id = rooms.ontree3.id
+  down = rooms.ontree2.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/pianting.c by LPCConverter
+# Zone: jueqing
+
+    rooms "pianting" {
+      name = "偏厅"
+      description = "绝情谷内堂东侧便是偏厅，这里是谷主招呼朋友谈天喝茶 的地方。此处甚是清静，偶有一两声鸟叫伴随着淡淡香气，令 人有一种说不出的舒畅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "pianting" {
+    room_id = rooms.pianting.id
+  west = rooms.neitang.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/qinghuaao.c by LPCConverter
+# Zone: jueqing
+
+    rooms "qinghuaao" {
+      name = "情花坳"
+      description = "前方是一片径长两丈的园形草地(caodi)，一阵醉人心魄的 花香扑鼻而来，外边密密层层的围满了情花。不论从那个方位 出来，都有八九丈地面生满情花。任你武功再强，也决不能一 跃而出，纵然跃至半路也是难能。         ====此处等待补充。。。。。===="
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qinghuaao" {
+    room_id = rooms.qinghuaao.id
+  westdown = rooms.shanyao.id  }
+
+
+  room_characters "qinghuaao" {
+    room_id = rooms.qinghuaao.id
+    characters = [
+      { id = characters.dizi1.id },
+      { id = characters.dizi2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jueqing/shanjiao.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shanjiao" {
+      name = "绝情谷山脚"
+      description = "这里是绝情谷山脚下，但见四周溪流飞瀑，树木高耸，两 边山峰壁立，景色极尽清幽。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanjiao" {
+    room_id = rooms.shanjiao.id
+  northup = rooms.shulin1.id
+  southdown = rooms.shanlu1.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/shanlu1.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shanlu1" {
+      name = "山路"
+      description = "到得此处，一路上已是风物佳胜。只见路旁仙鹤三二、白 鹿成群，松鼠小兔，尽是见人不惊。偶尔闻到阵阵的花香，又 见道旁白兔、小鹿来去奔跃，甚是可爱，令人心旷神怡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu1" {
+    room_id = rooms.shanlu1.id
+  northup = rooms.shanlu2.id
+  west = rooms.shuitang.id
+  east = rooms.shanyao.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/shanlu2.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shanlu2" {
+      name = "山路"
+      description = "到得此处，一路上已是风物佳胜。只见路旁仙鹤三二、白 鹿成群，松鼠小兔，尽是见人不惊。偶尔闻到阵阵的花香，又 见道旁白兔、小鹿来去奔跃，甚是可爱，令人心旷神怡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu2" {
+    room_id = rooms.shanlu2.id
+  northeast = rooms.zhulin1.id
+  southdown = rooms.shanlu1.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/shanlu3.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shanlu3" {
+      name = "山路"
+      description = "到得此处，一路上已是风物佳胜。只见路旁仙鹤三二、白 鹿成群，松鼠小兔，尽是见人不惊。偶尔闻到阵阵的花香，又 见道旁白兔、小鹿来去奔跃，甚是可爱，令人心旷神怡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu3" {
+    room_id = rooms.shanlu3.id
+  northwest = rooms.houshan.id
+  southeast = rooms.zhulin2.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/shanlu4.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shanlu4" {
+      name = "山路"
+      description = "到得此处，一路上已是风物佳胜。只见路旁仙鹤三二、白 鹿成群，松鼠小兔，尽是见人不惊。偶尔闻到阵阵的花香，又 见道旁白兔、小鹿来去奔跃，甚是可爱，令人心旷神怡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu4" {
+    room_id = rooms.shanlu4.id
+  southeast = rooms.zhulin3.id
+  northwest = rooms.shanlu5.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/shanlu5.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shanlu5" {
+      name = "山路"
+      description = "到得此处，一路上已是风物佳胜。只见路旁仙鹤三二、白 鹿成群，松鼠小兔，尽是见人不惊。偶尔闻到阵阵的花香，又 见道旁白兔、小鹿来去奔跃，甚是可爱，令人心旷神怡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu5" {
+    room_id = rooms.shanlu5.id
+  southeast = rooms.shanlu4.id
+  northup = rooms.duanchang.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/shanlu6.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shanlu6" {
+      name = "山路"
+      description = "到得此处，一路上已是风物佳胜。只见路旁仙鹤三二、白 鹿成群，松鼠小兔，尽是见人不惊。偶尔闻到阵阵的花香，又 见道旁白兔、小鹿来去奔跃，甚是可爱，令人心旷神怡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu6" {
+    room_id = rooms.shanlu6.id
+  west = rooms.shulin3.id
+  northeast = rooms.ligui.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/shanlu7.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shanlu7" {
+      name = "山路"
+      description = "到得此处，一路上已是风物佳胜。只见路旁仙鹤三二、白 鹿成群，松鼠小兔，尽是见人不惊。偶尔闻到阵阵的花香，又 见道旁白兔、小鹿来去奔跃，甚是可爱，令人心旷神怡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu7" {
+    room_id = rooms.shanlu7.id
+  south = rooms.duanchang.id
+  northwest = rooms.shanlu8.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/shanlu8.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shanlu8" {
+      name = "山路"
+      description = "到得此处，一路上已是风物佳胜。只见路旁仙鹤三二、白 鹿成群，松鼠小兔，尽是见人不惊。偶尔闻到阵阵的花香，又 见道旁白兔、小鹿来去奔跃，甚是可爱，令人心旷神怡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu8" {
+    room_id = rooms.shanlu8.id
+  northup = rooms.jueqing.id
+  southeast = rooms.shanlu7.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/shanyao.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shanyao" {
+      name = "山腰"
+      description = "此处阳光照耀，地气和暖，情花开放得早，这时已结了果 实。但见果子或青或红，有的青红相杂，还生著茸茸细毛。翘 首远望，但见绝情峰上云雾缭绕，壮观之极。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanyao" {
+    room_id = rooms.shanyao.id
+  west = rooms.shanlu1.id
+  eastup = rooms.qinghuaao.id  }
+
+
+  room_characters "shanyao" {
+    room_id = rooms.shanyao.id
+    characters = [
+      { id = characters.dizi2.id },
+      { id = characters.dizi2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jueqing/shanzhuang.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shanzhuang" {
+      name = "绝情山庄"
+      description = "此处便是绝情山庄，但见山庄掩映于葱翠的林木之下，四 处繁花遍布，景致宜人。时有醉人的花香飘过，间杂着清脆的 百鸟之声，令人不由心旷神怡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanzhuang" {
+    room_id = rooms.shanzhuang.id
+  in = rooms.dating.id
+  south = rooms.shiban.id  }
+
+
+  room_characters "shanzhuang" {
+    room_id = rooms.shanzhuang.id
+    characters = [
+      { id = characters.dizi1.id },
+      { id = characters.dizi1.id },
+      { id = characters.dizi1.id },
+      { id = characters.dizi1.id },
+      { id = characters.dizi2.id },
+      { id = characters.dizi2.id },
+      { id = characters.dizi2.id },
+      { id = characters.dizi2.id }    ]
+  }
+
+
+
+  room_items "shanzhuang" {
+    room_id = rooms.shanzhuang.id
+    items = [
+      { id = items.fan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jueqing/shiban.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shiban" {
+      name = "青石板路"
+      description = "四周树木丛生，花香宜人，偶闻飞鸟齐鸣，石板蜿蜒曲折， 遥见不远处山阴遮盖下有座极大石屋。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shiban" {
+    room_id = rooms.shiban.id
+  north = rooms.shanzhuang.id
+  south = rooms.zhulin1.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/shufang.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shufang" {
+      name = "书房"
+      description = "这是绝情谷的书房，但见四周整齐地摆放着各种书籍。书 房中央有一个雕有花纹的书桌和一张精致的木椅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shufang" {
+    room_id = rooms.shufang.id
+  east = rooms.changlang1.id
+  north = rooms.huohuanshi.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/shuitang.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shuitang" {
+      name = "水塘"
+      description = "行至此处，突然一阵清香涌至，眼前无边无际的全是水仙 花。原来地下是浅浅的一片水塘，深不逾尺，种满了水仙。由 于这绝情谷下生有温泉，以致地气奇暖这花虽是南方之物，也 会在这里的出现。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shuitang" {
+    room_id = rooms.shuitang.id
+  east = rooms.shanlu1.id
+  southdown = rooms.shulin1.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/shulin1.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shulin1" {
+      name = "树林"
+      description = "这里山青水碧，景色极尽清幽，只是四下寂无声息，隐隐 透著凶险，偶尔却可隐约听见溪流飞瀑之声回荡于山谷。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin1" {
+    room_id = rooms.shulin1.id
+  northup = rooms.shuitang.id
+  southdown = rooms.shanjiao.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/shulin2.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shulin2" {
+      name = "树林"
+      description = "这里山青水碧，景色极尽清幽，只是四下寂无声息，隐隐 透著凶险，偶尔却可隐约听见溪流飞瀑之声回荡于山谷。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin2" {
+    room_id = rooms.shulin2.id
+  west = rooms.duanchang.id
+  east = rooms.shulin3.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/shulin3.c by LPCConverter
+# Zone: jueqing
+
+    rooms "shulin3" {
+      name = "树林"
+      description = "这里山青水碧，景色极尽清幽，只是四下寂无声息，隐隐 透著凶险，偶尔却可隐约听见溪流飞瀑之声回荡于山谷。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shulin3" {
+    room_id = rooms.shulin3.id
+  west = rooms.shulin2.id
+  east = rooms.shanlu6.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/undertan.c by LPCConverter
+# Zone: jueqing
+
+    rooms "undertan" {
+      name = "潭底石窟"
+      description = "此处是个天然生成的石窟，深不见尽头，顶上有个圆径丈 许的大孔(kong)，日光从孔中透射进来，只是那大孔离地一百 馀丈，石窟深处地底，纵在窟中大声呼叫，上面有人经过也未 必听见。石窟中日光所及处生了不少大枣树(tree)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ tree = "但见枣树参天耸立，竟有百丈之高。"
+}
+    }
+
+  room_exits "undertan" {
+    room_id = rooms.undertan.id
+  in = rooms.hole2.id  }
+
+
+
+
+  room_items "undertan" {
+    room_id = rooms.undertan.id
+    items = [
+      { id = items.chi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jueqing/underya.c by LPCConverter
+# Zone: jueqing
+
+    rooms "underya" {
+      name = "绝情谷底"
+      description = "这里便是绝情谷底，情景一瞥之间，四下削壁环列， 宛似 身处一口大井之底， 常言道：“坐井观天”，但坐在此处，望 上去尽是白云浓雾。不远处是一寒潭(tan)，潭中弥漫着阵阵寒 气。 寒潭西侧有几块大石(stone)。 四下一望，峭壁上垂一根 长藤(teng)， 看来可以借这跟树藤攀上悬崖。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ tan = "寒潭看去平静如镜，阵阵寒气从中透出。"
+ stone = "石头有半人多高，看似非常沉重。"
+ teng = "这根树藤看上去很结实，可作攀爬之用。"
+}
+    }
+
+# Generated from C:/files/git/mud/d/jueqing/underya2.c by LPCConverter
+# Zone: jueqing
+
+    rooms "underya2" {
+      name = "寒潭尽头"
+      description = "这里只觉阳光耀眼，花香扑鼻，竟是别有天地，游目四顾， 只见繁花青草，便如同一个极大的花园，然花影不动，幽谷无 人。十余丈外有一间茅屋(house)， 侧耳倾听，四下里静悄悄 的，绝无人声鸟语，惟有蜜蜂的嗡嗡微响。身后寒潭透着阵阵 寒气。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ house = "但见茅屋破旧不堪，似乎很久没人来过了。"
+}
+    }
+
+  room_exits "underya2" {
+    room_id = rooms.underya2.id
+  in = rooms.house.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/xiangfang1.c by LPCConverter
+# Zone: jueqing
+
+    rooms "xiangfang1" {
+      name = "厢房"
+      description = "这是绝情谷主的厢房，平时除了谷主本人外未经允许任何 人都不能入内。但见厢房布置简陋，但四周陈设整齐，床头处 却露出一个洞(dong)来，不知道通往何处。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ pen = "这个花盆看上去很奇怪，似乎连接着什么机关。"
+}
+    }
+
+  room_exits "xiangfang1" {
+    room_id = rooms.xiangfang1.id
+  east = rooms.changlang3.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/xiangfang2.c by LPCConverter
+# Zone: jueqing
+
+    rooms "xiangfang2" {
+      name = "厢房"
+      description = "这是绝情谷主之女公孙绿萼的闺房，靠窗一边是个精致的 梳妆柜，上面放着一面古铜镜和一些胭脂水粉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiangfang2" {
+    room_id = rooms.xiangfang2.id
+  west = rooms.changlang3.id  }
+
+
+  room_characters "xiangfang2" {
+    room_id = rooms.xiangfang2.id
+    characters = [
+      { id = characters.lve.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jueqing/xiaojing.c by LPCConverter
+# Zone: jueqing
+
+    rooms "xiaojing" {
+      name = "小径"
+      description = "这是绝情谷大厅通往后花园的一条必经之路。道路两旁花 草丛生，花香宜人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaojing" {
+    room_id = rooms.xiaojing.id
+  east = rooms.huayuan.id
+  west = rooms.dating.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/zhifang.c by LPCConverter
+# Zone: jueqing
+
+    rooms "zhifang" {
+      name = "芝房"
+      description = "这里是绝情谷储藏各类药材的地方，只见墙角放着一个药 柜，阵阵药味从中散发出来。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhifang" {
+    room_id = rooms.zhifang.id
+  east = rooms.houtang.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/zhulin1.c by LPCConverter
+# Zone: jueqing
+
+    rooms "zhulin1" {
+      name = "竹林"
+      description = "北方竹子极少，这般大的一片竹林更是罕见。信步穿过竹 林，闻到一阵阵淡淡花香，登觉烦俗尽消。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhulin1" {
+    room_id = rooms.zhulin1.id
+  southwest = rooms.shanlu2.id
+  north = rooms.shiban.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/zhulin2.c by LPCConverter
+# Zone: jueqing
+
+    rooms "zhulin2" {
+      name = "竹林"
+      description = "北方竹子极少，这般大的一片竹林更是罕见。信步穿过竹 林，闻到一阵阵淡淡花香，登觉烦俗尽消。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhulin2" {
+    room_id = rooms.zhulin2.id
+  northwest = rooms.shanlu3.id
+  east = rooms.zhulin3.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/zhulin3.c by LPCConverter
+# Zone: jueqing
+
+    rooms "zhulin3" {
+      name = "竹林"
+      description = "北方竹子极少，这般大的一片竹林更是罕见。信步穿过竹 林，闻到一阵阵淡淡花香，登觉烦俗尽消。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhulin3" {
+    room_id = rooms.zhulin3.id
+  northwest = rooms.shanlu4.id
+  west = rooms.zhulin2.id
+  east = rooms.danfang.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/zhulin4.c by LPCConverter
+# Zone: jueqing
+
+    rooms "zhulin4" {
+      name = "竹林"
+      description = "北方竹子极少，这般大的一片竹林更是罕见。信步穿过竹 林，闻到一阵阵淡淡花香，登觉烦俗尽消。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhulin4" {
+    room_id = rooms.zhulin4.id
+  west = rooms.zizhuxuan.id  }
+
+# Generated from C:/files/git/mud/d/jueqing/zizhuxuan.c by LPCConverter
+# Zone: jueqing
+
+    rooms "zizhuxuan" {
+      name = "紫竹轩"
+      description = "到得此处，阵阵泥土的清香扑面而来，放眼四周只见不远 处有一露天亭阁(ting ge)掩映于翠竹之下。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zizhuxuan" {
+    room_id = rooms.zizhuxuan.id
+  south = rooms.huayuan.id
+  east = rooms.zhulin4.id  }
+
+
+
+
+  room_items "zizhuxuan" {
+    room_id = rooms.zizhuxuan.id
+    items = [
+      { id = items.zhi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/jueqing/npc/chushi.c by LPCConverter
+# Zone: jueqing
+
+    characters "chushi" {
+      name = "厨师"
+      description = "绝情谷的厨师，你可以问他要(serve)一些吃的。"
+  gender = "男性"
+  age = 50
+  shen_type = 1
+
+  combat = {
+    combat_exp = 7500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 35 },
+    { skill = "force" level = 35 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/jueqing/npc/dizi1.c by LPCConverter
+# Zone: jueqing
+
+    characters "dizi1" {
+      name = "弟子"
+      description = ""
+  gender = "男性"
+  age = 23
+  shen_type = 0
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    con = 14
+    dex = 14
+    int = 14
+    max_jing = 300
+    max_neili = 200
+    max_qi = 600
+    str = 14
+  }
+
+  skills = [
+    { skill = "sword" level = 40 },
+    { skill = "force" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "strike" level = 40 },
+    { skill = "jueqing-jian" level = 40 },
+    { skill = "jueqing-shenfa" level = 40 },
+    { skill = "jueqing-xinfa" level = 40 },
+    { type = "sword" skill = "jueqing-jian" },
+    { type = "parry" skill = "jueqing-jian" },
+    { type = "dodge" skill = "jueqing-shenfa" },
+    { type = "force" skill = "jueqing-xinfa" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/jueqing/npc/dizi2.c by LPCConverter
+# Zone: jueqing
+
+    characters "dizi2" {
+      name = "绿衫少女"
+      description = ""
+  gender = "女性"
+  age = 17
+  shen_type = 0
+  brain = brains.guarder
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    con = 14
+    dex = 14
+    int = 14
+    max_jing = 300
+    max_neili = 200
+    max_qi = 600
+    str = 14
+  }
+
+  skills = [
+    { skill = "sword" level = 40 },
+    { skill = "force" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "strike" level = 40 },
+    { skill = "jueqing-jian" level = 40 },
+    { skill = "jueqing-shenfa" level = 40 },
+    { skill = "jueqing-xinfa" level = 40 },
+    { type = "sword" skill = "jueqing-jian" },
+    { type = "parry" skill = "jueqing-jian" },
+    { type = "dodge" skill = "jueqing-shenfa" },
+    { type = "force" skill = "jueqing-xinfa" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.lvshan.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/jueqing/npc/lve.c by LPCConverter
+# Zone: jueqing
+
+    characters "lve" {
+      name = "公孙绿萼"
+      description = "她就是绝情谷主的女儿公孙绿萼，只见她长 挑身材、脸色白嫩、嘴角旁有颗小痣，自有 一股清新脱俗之气。"
+  nickname = "绝情谷主女儿"
+  gender = "女性"
+  age = 18
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 400000
+    con = 14
+    dex = 14
+    int = 14
+    max_jing = 600
+    max_neili = 200
+    max_qi = 800
+    str = 14
+  }
+
+  skills = [
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "strike" level = 80 },
+    { skill = "jueqing-jian" level = 80 },
+    { skill = "jueqing-shenfa" level = 80 },
+    { skill = "jueqing-xinfa" level = 80 },
+    { type = "sword" skill = "jueqing-jian" },
+    { type = "parry" skill = "jueqing-jian" },
+    { type = "dodge" skill = "jueqing-shenfa" },
+    { type = "force" skill = "jueqing-xinfa" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.lvshan.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/jueqing/npc/obj/lvshan.c by LPCConverter
+# Zone: jueqing
+
+    characters "lvshan" {
+      name = "绿衫"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/jueqing/npc/obj/mantou.c by LPCConverter
+# Zone: jueqing
+
+    characters "mantou" {
+      name = "馒头"
+      description = "一个馒头。"
+    }
+
+# Generated from C:/files/git/mud/d/jueqing/npc/obj/water.c by LPCConverter
+# Zone: jueqing
+
+    characters "water" {
+      name = "清水"
+      description = "一碗清水。"
+    }

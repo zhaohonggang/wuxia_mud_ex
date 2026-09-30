@@ -69,6 +69,27 @@ _PY_REPR_RE = re.compile(rb"[\[{]\s*'|'[^'\n]*'\s*:\s*'")
 _ELIAS_UNLEXABLE_RE = re.compile(rb'"[^"\n]*[0-9],[^"\n]*"')
 
 
+# A key elias cannot lex.  elias_parser.yrl only accepts
+# `assignment -> word equality ...` and leex splits a key on digits
+# (Word excludes 0-9; Digit = [0-9]+ is its own token), so `hole6 = rooms.b.id`
+# dies with `syntax error before: ', ['"6"']`.  Values are unaffected
+# (`rooms.lockroom6.id` is fine), so only assignment keys are checked.
+# Measured: hole / hole_ -> OK; hole6 / hole_6 / 6hole -> all fail.
+_ELIAS_BAD_KEY_RE = re.compile(rb"^\s*[A-Za-z_][A-Za-z_0-9]*[0-9][A-Za-z_0-9]*\s*=",
+                               re.MULTILINE)
+
+
+# A backslash immediately followed by whitespace inside a quoted value.  elias's
+# `words` rules only cover `back_slash word` and `back_slash quotes`, so a
+# backslash before a space (or at end of line) has no production and the parse
+# aborts with `syntax error before: ', ['" "']'` - the space the backslash was
+# hiding.  This bit mingjiao/miaorenbuluo.c, whose @TEXT block ends a line with
+# a continuation backslash; the converter was emitting `kou\ zhong` because it
+# collapsed the newline to a space before removing the continuation.
+# Measured: "a\ b" and "a\" both fail; "a\bcd" and a plain space are fine.
+_ELIAS_STRAY_BACKSLASH_RE = re.compile(rb'"[^"\n]*\\[ \t][^"\n]*"|"[^"\n]*\\"')
+
+
 # ---------------------------------------------------------------------------
 # Output helpers: UTF-8 bytes plus a single LF (never CRLF on Windows).
 # ---------------------------------------------------------------------------
@@ -365,9 +386,39 @@ def check_chars(data):
         line, snippet = _find_elias_unlexable(data)
         issues.append("elias-unlexable value at line %s (digit immediately before a "
                       "comma inside a quoted value): %s" % (line, snippet))
+    # Check for an assignment key elias cannot lex.  elias_parser.yrl only accepts
+    # `assignment -> word equality ...` and leex splits keys on digits (Word
+    # excludes 0-9, Digit = [0-9]+ is a separate token), so `hole6 = rooms.b.id`
+    # dies with `syntax error before: ', ['"6"']`.  This bit huashan/s.c, whose
+    # exits are literally named "hole1".."hole6".  Values are unaffected
+    # (`rooms.lockroom6.id` parses), so only keys are checked.
+    if _ELIAS_BAD_KEY_RE.search(code_only):
+        line, snippet = _find_elias_bad_key(data)
+        issues.append("elias-unlexable key at line %s (a UCL key may not contain a "
+                      "digit; elias lexes it as word+digit): %s" % (line, snippet))
+    if _ELIAS_STRAY_BACKSLASH_RE.search(code_only):
+        line, snippet = _find_elias_stray_backslash(data)
+        issues.append("stray backslash before whitespace at line %s (LPC line "
+                      "continuation not folded; elias cannot lex it): %s" % (line, snippet))
     if issues:
         return (False, "; ".join(issues))
     return (True, None)
+
+
+def _find_elias_bad_key(data):
+    """Return (line, snippet) for the first digit-bearing UCL key, else None."""
+    m = _ELIAS_BAD_KEY_RE.search(_strip_comments(data))
+    if not m:
+        return None
+    return (_line_of_offset(data, m.start()), m.group(0).strip())
+
+
+def _find_elias_stray_backslash(data):
+    """Return (line, snippet) for the first backslash-before-space value."""
+    m = _ELIAS_STRAY_BACKSLASH_RE.search(_strip_comments(data))
+    if not m:
+        return None
+    return (_line_of_offset(data, m.start()), m.group(0).strip())
 
 
 def _find_elias_unlexable(data):

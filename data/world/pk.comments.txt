@@ -1,0 +1,111 @@
+# Generated from C:/files/git/mud/d/pk/entry.c by LPCConverter
+# Zone: pk
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "north")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/pk/ready.c by LPCConverter
+# Zone: pk
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "south")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/pk/npc/wu.c by LPCConverter
+# Zone: pk
+
+# inherit F_MASTER;
+# inherit F_QUESTER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (PK_D->is_pking())  →  
+  # if (PK_D->is_ready())  →  
+  # if (PK_D->join_competition(this_player()))  →  
+# ==== CONDITIONAL BRANCHES (do_join) ====
+  # if (me->query("combat_exp") < 10000)  →  message_vision(CYN '$n' CYN '抬头看了看$N' CYN '，不屑道：就' '你这点本事？只好参加被屠大赛！\\\\\n' NOR, me, this_object());
+  # if (stringp(msg = PK_D->reject_join(me)))  →  command('say ' + msg);
+  # if (objectp(me->query_temp("is_riding")))  →  command('say 屠人大赛又不是马术比赛，骑马的都给我下马！');
+  # if (ob->is_character())  →  command('say 你背的谁？去比赛还拖家带口的？快给我滚！'); message_vision(HIC '$N' HIC '飞起一脚，把$n' HIC '踢' '倒在地！\\\\\n' NOR, this_object(), me);
+# ==== CONDITIONAL BRANCHES (do_sign) ====
+  # if (PK_D->is_pking())  →  
+  # if (PK_D->is_ready())  →  
+# ==== CONDITIONAL BRANCHES (ask_me) ====
+  # if (! permit_recruit(ob))  →  
+# ==== CONDITIONAL BRANCHES (attempt_apprentice) ====
+  # if (me->query("family/family_name") != "灵鹫宫" && me->query("family/family_name") != "碧刀门")  →  
+  # if (me->query("family/master_id") != "xuzhu zi" && me->query("family/master_id") != "wu laoda")  →  
+  # if (me->query_skill("biyan-dao", 1) < 100)  →  
+  # if (! ob)  →  
+  # if (owner->is_character() || ! environment(owner))  →  
+  # if (owner == me)  →  
+  # if (objectp(owner) && owner != this_object())  →  
+  # if (query("count") > 0)  →  command('say 另外，这刀身涂抹的是我独门秘药，这瓶解药你也拿着，' '以备不时之需。'); command('give yu ping to ' + me->query('id'));
+# ==== CONDITIONAL BRANCHES (ask_dao) ====
+  # if (me->query("can_perform/biyan-dao/luo"))  →  
+  # if (me->query("family/family_name") != "灵鹫宫" && me->query("family/family_name") != "碧刀门")  →  
+  # if (me->query_skill("biyan-dao", 1) < 1)  →  
+  # if (me->query("family/family_name") == "灵鹫宫" && me->query("gongxian") < 250)  →  
+  # if (me->query_skill("force") < 120)  →  
+  # if ((int)me->query("max_neili", 1) < 1000)  →  
+  # if (me->query_skill("biyan-dao", 1) < 80)  →  
+  # if (me->can_improve_skill("blade"))  →  
+  # if (me->can_improve_skill("biyan-dao"))  →  
+  # if (me->query("family/family_name") == "灵鹫宫")  →  
+# ==== CONDITIONAL BRANCHES (ask_skill) ====
+  # if (ob->query("family/family_name") != "灵鹫宫")  →  command('heng'); command('say 哪里来的臭贼？居然打起俺的主意来了！');
+  # if (ob->query("family/master_id") != "xuzhu zi")  →  command('grin'); command('say 恐怕这灵鹫宫里，还轮不到你说话。');
+  # if (skill != "biyan-dao" && skill != "blade")  →  command('consider'); command('say 我只能教你一些刀法功夫，其它你还是跟门主学吧。');
+  # if (skill == "blade" && ob->query_skill("blade", 1) > 179)  →  command('hmm'); command('say 你已经学得差不多了，剩下的就自己去研究吧。');
+  # if (! ob->query_temp("can_learn/wulaoda"))  →  command('qnod'); command('say 既然你感兴趣，又是主公的弟子，乌某就教你这套碧烟刀法。');
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: unconcious
+  # UNHANDLED FUNCTION: do_join
+  # UNHANDLED FUNCTION: attempt_apprentice
+  # UNHANDLED FUNCTION: recognize_apprentice
+  # UNHANDLED FUNCTION: do_sign
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================

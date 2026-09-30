@@ -1,0 +1,103 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/hengshan/npc/he.c by LPCConverter
+# Zone: hengshan
+
+# inherit F_MASTER;
+
+# Generated from C:/files/git/mud/d/hengshan/npc/jing.c by LPCConverter
+# Zone: hengshan
+
+# inherit F_MASTER;
+
+# Generated from C:/files/git/mud/d/hengshan/npc/lin.c by LPCConverter
+# Zone: hengshan
+
+# inherit F_MASTER;
+
+# Generated from C:/files/git/mud/d/hengshan/npc/qin.c by LPCConverter
+# Zone: hengshan
+
+# inherit F_MASTER;
+
+# Generated from C:/files/git/mud/d/hengshan/npc/qing.c by LPCConverter
+# Zone: hengshan
+
+# inherit F_MASTER;
+
+# Generated from C:/files/git/mud/d/hengshan/npc/wen.c by LPCConverter
+# Zone: hengshan
+
+# inherit F_MASTER;
+
+# Generated from C:/files/git/mud/d/hengshan/npc/xian.c by LPCConverter
+# Zone: hengshan
+
+# inherit F_MASTER;
+
+
+
+# Generated from C:/files/git/mud/d/hengshan/npc/yi.c by LPCConverter
+# Zone: hengshan
+
+# inherit F_MASTER;
+
+# Generated from C:/files/git/mud/d/hengshan/npc/zheng.c by LPCConverter
+# Zone: hengshan
+
+# inherit F_MASTER;
+
+# Generated from C:/files/git/mud/d/hengshan/npc/zhi.c by LPCConverter
+# Zone: hengshan
+
+# inherit F_MASTER;

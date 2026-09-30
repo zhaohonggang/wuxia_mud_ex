@@ -119,6 +119,10 @@ _ESC_SEQ = re.compile(r"\\([a-zA-Z])")
 _TRAILING_QUOTE = re.compile(r"\\?[\"\']\s*$")
 _TRAILING_SEMI = re.compile(r";+\s*$")
 
+# LPC string/heredoc line continuation: a backslash at end of line means the
+# string continues on the next line with no separator.
+_LPC_CONTINUATION = re.compile(r"\\[ \t]*\r?\n")
+
 
 def _ascii_ws_collapse(s):
     return _WS_RE.sub(" ", s)
@@ -354,6 +358,13 @@ def _parse_heredocs_from_raw(content):
         cleaned = _TRAILING_QUOTE.sub("", cleaned)
         cleaned = _TRAILING_SEMI.sub("", cleaned)
         cleaned = cleaned.strip()
+        # LPC line continuation: a backslash at end of line joins the next line.
+        # mingjiao/miaorenbuluo.c ends a @TEXT line with "口\" and continues on
+        # the next line, so the backslash must go - leaving it in place yields
+        # `口\ 中`, and elias cannot lex a backslash followed by whitespace
+        # (elias_parser.yrl has only `words -> back_slash word words` and
+        # `words -> back_slash quotes words`).
+        cleaned = _LPC_CONTINUATION.sub("", cleaned)
         # literal " -> ' (elias safety)
         cleaned = cleaned.replace('"', "'")
         heredocs[key] = {"type": "heredoc", "delimiter": delimiter, "content": cleaned}
@@ -1544,6 +1555,14 @@ def _ucl_string(s):
 
 
 def _sanitize_ucl_sval(s):
+    # LPC line continuation first: a backslash at end of line joins the next
+    # line.  It must happen BEFORE newlines collapse to spaces, otherwise the
+    # backslash survives as a lone "\" followed by a space, and elias cannot
+    # lex that: elias_parser.yrl only has `words -> back_slash word words`
+    # and `words -> back_slash quotes words`, so a backslash before
+    # whitespace aborts the parse.  This bit mingjiao/miaorenbuluo.c, whose
+    # @TEXT block ends a line with a backslash after the character Kou.
+    s = _LPC_CONTINUATION.sub("", s)
     s = s.replace("\\\\\\\\", "\\\\")
     s = s.replace("\\\\", "\\")
     s = s.replace('\\"', "'")
@@ -1632,11 +1651,21 @@ def _strip_exit_c_comments(s):
     return s.strip()
 
 
-# A rendered exit direction must be a bare UCL key.  Stripping a C comment out
-# of a direction can leave nothing behind (`"south" : ..., /* EXAMPLE */`
-# becomes the pair ("", nil)), and an empty key renders as ` = rooms.x.id`,
-# which is a syntax error, so callers must reject non-identifier directions.
-_EXIT_DIR_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_]*$")
+# A UCL key that elias can actually lex.  Stripping a C comment out of a
+# direction can leave nothing behind (`"south" : ..., /* EXAMPLE */` becomes the
+# pair ("", nil)), and an empty key renders as ` = rooms.x.id`.
+# elias_parser.yrl only accepts
+# `assignment -> word equality ...`, and elias's Word token pattern is
+#     Word = [^0-9{}\*\/#\n\[\]=\s'":\;\\-]+
+# with `Digit = [0-9]+` as a separate token.  So a key containing a digit is
+# split into word+digit and the assignment cannot close.  Measured against
+# elias 0.2.8:
+#     hole = rooms.b.id      -> parses
+#     hole6 = rooms.b.id     -> FAILS (word "hole" then digit "6")
+#     hole_6 = rooms.b.id    -> FAILS
+# A *value* is unaffected: `rooms.lockroom6.id` parses fine, so room ids may
+# still contain digits.  Only the key is restricted.
+_EXIT_DIR_RE = re.compile(r"^[A-Za-z_][A-Za-z_]*$")
 
 
 def _is_valid_exit_dir(direction):
@@ -1767,10 +1796,11 @@ def _generate_room_ucl(ast, zone_id):
             direction = _exit_key(key)
             direction = re.sub(r'^"|"$', "", direction)
             if not _is_valid_exit_dir(direction):
-                # A direction key that is empty or not a bare identifier cannot
-                # be written as `key = value`; it is always an artefact of
-                # stripping a trailing C comment (see _strip_exit_c_comments),
-                # never real mapping data.
+                # Either a C-comment artefact (stripping the comment left
+                # nothing behind, see _strip_exit_c_comments) or a genuine LPC
+                # direction elias cannot lex as a key, e.g. huashan/s.c's
+                # "hole1".."hole6" (any digit in a key breaks the assignment).
+                # In both cases no spelling of `direction = target` parses.
                 skipped_bad_dir.append(direction or "<empty>")
                 continue
             if isinstance(val, tuple) and val[0] == "mapping":

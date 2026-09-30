@@ -1,0 +1,1561 @@
+zones "wuguan" {
+  name = "wuguan"
+}
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_caidi1.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_caidi1" {
+      name = "菜地"
+      description = "这里是块菜地，由于长期得不到良好的照顾，菜地里杂草 丛生，种的菜都长势不好，蔫蔫的，地都荒了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_caidi1" {
+    room_id = rooms.guofu_caidi1.id
+  west = rooms.guofu_houyuan3.id  }
+
+
+  room_characters "guofu_caidi1" {
+    room_id = rooms.guofu_caidi1.id
+    characters = [
+      { id = characters.guanjia5.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_caidi2.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_caidi2" {
+      name = "菜地"
+      description = "这里是块菜地，菜地旁有几口大缸，里面盛满了水，可是 菜地看起来都干裂了，几棵菜蔫蔫的长着，看样子是因为缺水 太多的缘故吧。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_caidi2" {
+    room_id = rooms.guofu_caidi2.id
+  east = rooms.guofu_houyuan3.id  }
+
+
+  room_characters "guofu_caidi2" {
+    room_id = rooms.guofu_caidi2.id
+    characters = [
+      { id = characters.guanjia6.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_chaifang.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_chaifang" {
+      name = "柴房"
+      description = "这间屋里叮叮哐哐的，你进屋内仔细一看，几个人在劈柴 火，屋子特别大，屋子一边堆满了已经锯短的木头，但另一边 劈好的柴火却没有多少。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_chaifang" {
+    room_id = rooms.guofu_chaifang.id
+  west = rooms.guofu_houyuan.id  }
+
+
+  room_characters "guofu_chaifang" {
+    room_id = rooms.guofu_chaifang.id
+    characters = [
+      { id = characters.guanjia1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_dating.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_dating" {
+      name = "郭府大厅"
+      description = "这里是郭府的客厅。厅虽不大，却布置的挺雅致。东壁悬 挂着四幅屏条，绘的是梅兰菊竹四种花卉；西壁悬挂的是春夏 秋冬。内厅居中的是一张八仙桌。桌上端放着一套茶具，两旁 摆放着四张檀香椅，显得极为古朴。厅角各摆放着一盆牡丹花 似乎给这里带来一丝暖意。北壁内墙神龛供奉岳飞的画像，上 面是一条横幅，上书「还我河山」。往北走是个长廊，一直通 向馆主的卧室。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_dating" {
+    room_id = rooms.guofu_dating.id
+  south = rooms.guofu_dayuan2.id
+  north = rooms.guofu_lang5.id
+  west = rooms.guofu_shilu_2.id
+  east = rooms.guofu_shilu_1.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_dayuan.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_dayuan" {
+      name = "郭府大院"
+      description = "这是个大院子，东西两边都是练武场，不少人在这里习武 强身，这里很吵，乱哄哄的，你看见不时有扛着东西的，挑着 水的匆匆而过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_dayuan" {
+    room_id = rooms.guofu_dayuan.id
+  south = rooms.guofu_gate.id
+  north = rooms.guofu_dayuan2.id
+  east = rooms.guofu_lang2.id
+  west = rooms.guofu_lang1.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_dayuan2.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_dayuan2" {
+      name = "郭府大院"
+      description = "这是个大院子，东西两边都是练武场，不少人在这里习武 强身，大院里很是吵闹，乱烘烘的，你看见不时有扛着东西的 挑着水的人匆匆而过，北面上了台阶就是郭府的大厅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_dayuan2" {
+    room_id = rooms.guofu_dayuan2.id
+  south = rooms.guofu_dayuan.id
+  north = rooms.guofu_dating.id  }
+
+
+  room_characters "guofu_dayuan2" {
+    room_id = rooms.guofu_dayuan2.id
+    characters = [
+      { id = characters.yelvqi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_fanting.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_fanting" {
+      name = "饭厅"
+      description = "这里是武馆内用餐的地方。屋里布置很简单, 只摆着几张 桌椅几个人在一声不响地吃着。一个厨子在不停的忙碌着，你 可以向他要(serve)食物和水。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：present("tea", me)
+direction = ~
+  message = "厨师拦住你道：你还是先把茶喝完再走吧。"
+}
+,
+{
+   # 阻挡条件（原样保留）：present("rice", me)
+direction = ~
+  message = "厨师拦住你道：你还是先把饭吃完再走吧。"
+}
+
+]
+    }
+
+  room_exits "guofu_fanting" {
+    room_id = rooms.guofu_fanting.id
+  east = rooms.guofu_shilu_4.id  }
+
+
+  room_characters "guofu_fanting" {
+    room_id = rooms.guofu_fanting.id
+    characters = [
+      { id = characters.chushi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_gate.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_gate" {
+      name = "郭府大门"
+      description = "建筑古朴的大宅院出现在你的眼前。只见门楼高挑，门前 立了两个石狮，大门上书两个大字                ######################               ##                  ##               ##     郭    府     ##               ##                  ##               ######################  你从大门瞧进去，好象里面人来人往，都很繁忙的样子。这里 站着位青年，神情威严。接待前来保卫襄阳的各方义士。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：me->query("mark/guofu_ok") && ! me->query("mark/guofu_out") && present("wu dunru", environment(me)) && dir == "south"
+direction = "south"
+  message = "武敦儒伸手将你拦住道：现在襄阳城内不太平，你还是多呆一会吧。"
+}
+,
+{
+   # 阻挡条件（原样保留）：me->query("mark/guofu_ok") && present("wu dunru", environment(me)) && dir == "north" && objectp(riding = me->query_temp("is_riding"))
+direction = "north"
+  message = "武敦儒伸手将你拦住道：不能骑马进郭府，你撞到其他人怎么办？"
+}
+,
+{
+   # 阻挡条件（原样保留）：me->query("mark/guofu_over") && present("wu dunru", environment(me)) && dir == "north"
+direction = "north"
+  message = "武敦儒将你拦住，冷笑道：郭府留你不下，你还是走吧。"
+}
+,
+{
+   # 阻挡条件（原样保留）：me->query("combat_exp") > 5000 && ! me->query("mark/guofu_ok") && present("wu dunru", environment(me)) && dir == "north"
+direction = "north"
+  message = "武敦儒抱拳道：现襄阳正值动乱时期，没师父许可，任何人不得入内。"
+}
+,
+{
+   # 阻挡条件（原样保留）：! me->query("mark/guofu_ok") && present("wu dunru", environment(me)) && dir == "north"
+direction = "north"
+  message = "武敦儒伸手将你拦住道：如果你不打算帮忙打杂，就别进来。"
+}
+
+]
+    }
+
+  room_exits "guofu_gate" {
+    room_id = rooms.guofu_gate.id
+  south = rooms.westjie1.id
+  north = rooms.guofu_dayuan.id  }
+
+
+  room_characters "guofu_gate" {
+    room_id = rooms.guofu_gate.id
+    characters = [
+      { id = characters.wudunru.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_houyuan.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_houyuan" {
+      name = "后院"
+      description = "这里是郭府的后院，都是些干活做事的地方，东面过去都 是柴房，西面是一个水房。人们忙碌的进出，干着自己的活。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_houyuan" {
+    room_id = rooms.guofu_houyuan.id
+  east = rooms.guofu_chaifang.id
+  west = rooms.guofu_shuifang.id
+  north = rooms.guofu_houyuan2.id
+  south = rooms.guofu_shilu_3.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_houyuan2.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_houyuan2" {
+      name = "后院"
+      description = "这里仍然是后院，西面不时传来马嘶声，你看过去，那里 是个马房，东面屋子里也是吵吵的，好象是锯木头的声音。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_houyuan2" {
+    room_id = rooms.guofu_houyuan2.id
+  west = rooms.guofu_mafang.id
+  east = rooms.guofu_mufang.id
+  south = rooms.guofu_houyuan.id
+  north = rooms.guofu_houyuan3.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_houyuan3.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_houyuan3" {
+      name = "后院"
+      description = "这里是后院外了，四周都是菜地，往北是个小山坡，东西 面都是用篱笆围起的菜地，种着各样的菜，篱笆很破烂，摇摇 欲坠，看来这里没什么人打理。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_houyuan3" {
+    room_id = rooms.guofu_houyuan3.id
+  west = rooms.guofu_caidi2.id
+  east = rooms.guofu_caidi1.id
+  south = rooms.guofu_houyuan2.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_huayuan.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_huayuan" {
+      name = "郭府花园"
+      description = "这里是郭府的花园，园内假山林立，西边种着些青竹，东 边是几棵枝叶茂盛的木笔花树。你一走进来，就闻到一阵阵清 新的、淡淡的花香。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_huayuan" {
+    room_id = rooms.guofu_huayuan.id
+  east = rooms.guofu_woshigh.id
+  west = rooms.guofu_kefang.id
+  south = rooms.guofu_lang5.id
+  north = rooms.guofu_shufang.id  }
+
+
+
+
+  room_items "guofu_huayuan" {
+    room_id = rooms.guofu_huayuan.id
+    items = [
+      { id = items.rong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_kefang.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_kefang" {
+      name = "客房"
+      description = "这里是郭府客人们的住处，整整齐齐的一排平房。门的左 右两边各是一张床，床上的被褥被叠得整整齐齐。床头正对的 地方摆着一张桌子，旁边还放着一张椅子。桌上整齐地放着文 房四宝，旁边还放着几本书。地上摆着一盆牡丹花，一丝清香 萦绕房中。因为郭靖是当今的大英雄，所以江湖上有不少豪杰 每年都来拜访他。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_kefang" {
+    room_id = rooms.guofu_kefang.id
+  east = rooms.guofu_huayuan.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_lang1.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_lang1" {
+      name = "长廊"
+      description = "这是个长廊，通向西练武场，人们急冲冲的走过，不时有 人被抬出来，看样子是练功脱力昏倒的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_lang1" {
+    room_id = rooms.guofu_lang1.id
+  west = rooms.guofu_wuchang1.id
+  east = rooms.guofu_dayuan.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_lang2.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_lang2" {
+      name = "长廊"
+      description = "这是个长廊，通向东练武场，人来人往的，很是热闹。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_lang2" {
+    room_id = rooms.guofu_lang2.id
+  east = rooms.guofu_wuchang2.id
+  west = rooms.guofu_dayuan.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_lang3.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_lang3" {
+      name = "长廊"
+      description = "这是个长廊，一直通向后院，南边是西练武场。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_lang3" {
+    room_id = rooms.guofu_lang3.id
+  north = rooms.guofu_shilu_4.id
+  south = rooms.guofu_wuchang3.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_lang4.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_lang4" {
+      name = "长廊"
+      description = "这是个长廊，北面是武馆内的物品房，要在武馆做杂事 的人都得去物品房领工具，南边是东练武场。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_lang4" {
+    room_id = rooms.guofu_lang4.id
+  north = rooms.guofu_wupinfang.id
+  south = rooms.guofu_wuchang4.id  }
+
+
+  room_characters "guofu_lang4" {
+    room_id = rooms.guofu_lang4.id
+    characters = [
+      { id = characters.wusantong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_lang5.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_lang5" {
+      name = "长廊"
+      description = "这是个长廊，通向馆主的卧室，这里静悄悄的，没有什么 人来，走廊两边爬满了爬山虎，外面烈日，可是你走在走廊里 只觉得一阵清凉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_lang5" {
+    room_id = rooms.guofu_lang5.id
+  south = rooms.guofu_dating.id
+  north = rooms.guofu_huayuan.id  }
+
+
+  room_characters "guofu_lang5" {
+    room_id = rooms.guofu_lang5.id
+    characters = [
+      { id = characters.yahuan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_lang6.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_lang6" {
+      name = "长廊"
+      description = "这是个长廊，往北通向休息室，南面是物品房，这里静悄 悄的，人们走路都也是小心翼翼的。生怕吵着北面休息室里正 在休息的人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_lang6" {
+    room_id = rooms.guofu_lang6.id
+  north = rooms.guofu_woshi1.id
+  south = rooms.guofu_wupinfang.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_mafang.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_mafang" {
+      name = "马房"
+      description = "这里是郭府内的马房，马房里面臭烘烘的，还养了几十匹 马。你看过去，马身上都很脏了，早该洗洗了，马房的旁边有 个水池，里面有些清水。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_mafang" {
+    room_id = rooms.guofu_mafang.id
+  east = rooms.guofu_houyuan2.id  }
+
+
+  room_characters "guofu_mafang" {
+    room_id = rooms.guofu_mafang.id
+    characters = [
+      { id = characters.guanjia3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_mufang.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_mufang" {
+      name = "木房"
+      description = "一进屋，你就被巨大的轰鸣声吵住了，这里堆了好多长的 木头，准备要做柴火用的，但是在送去柴房前先得把长木头锯 短成一截截的。你看见几个人在费力的锯着。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_mufang" {
+    room_id = rooms.guofu_mufang.id
+  west = rooms.guofu_houyuan2.id  }
+
+
+  room_characters "guofu_mufang" {
+    room_id = rooms.guofu_mufang.id
+    characters = [
+      { id = characters.guanjia2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_shilu-1.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_shilu_1" {
+      name = "石板路"
+      description = "你走在一条石板路上，从这里往东是物品房，你见有不少 人手里拿着各样的工具，从那边过来，西面是郭府的大厅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_shilu_1" {
+    room_id = rooms.guofu_shilu_1.id
+  east = rooms.guofu_wupinfang.id
+  west = rooms.guofu_dating.id
+  north = rooms.guofu_xuetang.id
+  south = rooms.guofu_zhangfang.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_shilu-2.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_shilu_2" {
+      name = "石板路"
+      description = "你走在一条石板路上，北面和南面都是习武堂，不少人在 这里进进出出的，东面是郭府的客厅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_shilu_2" {
+    room_id = rooms.guofu_shilu_2.id
+  east = rooms.guofu_dating.id
+  west = rooms.guofu_shilu_4.id
+  north = rooms.guofu_xiwutang.id
+  south = rooms.guofu_xiwutang2.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_shilu-3.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_shilu_3" {
+      name = "石板路"
+      description = "你走在一条石板路上，一直通向后院，路两旁是些普通的 花草，树上的小鸟，不停的叫着。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_shilu_3" {
+    room_id = rooms.guofu_shilu_3.id
+  north = rooms.guofu_houyuan.id
+  south = rooms.guofu_shilu_4.id  }
+
+
+  room_characters "guofu_shilu_3" {
+    room_id = rooms.guofu_shilu_3.id
+    characters = [
+      { id = characters.puren1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_shilu-4.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_shilu_4" {
+      name = "石板路"
+      description = "你走在一条石板路上，北面过去就是后院了，南面是西练 功场，西面传来阵阵饭菜的香气，那里是郭府的饭厅。东面过 去是郭府大厅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_shilu_4" {
+    room_id = rooms.guofu_shilu_4.id
+  east = rooms.guofu_shilu_2.id
+  south = rooms.guofu_lang3.id
+  north = rooms.guofu_shilu_3.id
+  west = rooms.guofu_fanting.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_shufang.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_shufang" {
+      name = "书房"
+      description = "这是郭靖的书房。右边是书架，上面陈列着道家和儒家的 一些典籍，却没有一本与武学有关的书。左边靠窗的地方摆着 一张木桌，上面放着笔墨纸砚，边上放着几本书，摆放得整整 齐齐，搽拭得一尘不染，阁里到处被打扫得一尘不染，窗明几 净，可以看到外面松竹掩映，时有微风入户，门后桌上还燃着 一炉檀香，氲氲的香气轻轻横散，使人俗念尽消，心情完全平 静下来。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_shufang" {
+    room_id = rooms.guofu_shufang.id
+  south = rooms.guofu_huayuan.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_shuifang.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_shuifang" {
+      name = "水房"
+      description = "一进屋，你看见屋内放着几口大缸，好象是装水用的，不 过缸似乎都是空的，这里没有一个人，估计仆人都跑了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_shuifang" {
+    room_id = rooms.guofu_shuifang.id
+  east = rooms.guofu_houyuan.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_woshi1.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_woshi1" {
+      name = "休息室"
+      description = "这里是郭府内的休息室，屋子有点点旧，但是打扫的非常 干净，一排床铺靠墙摆着，东面过去也是一间休息室，不断的 有人进来休息或醒后离去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_woshi1" {
+    room_id = rooms.guofu_woshi1.id
+  east = rooms.guofu_woshi2.id
+  south = rooms.guofu_lang6.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_woshi2.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_woshi2" {
+      name = "休息室"
+      description = "这里是郭府内的休息室，屋子有点点旧，但是打扫的非常 干净，一排床铺靠墙摆着，东面过去也是一间休息室，不断的 有人进来休息或醒后离去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_woshi2" {
+    room_id = rooms.guofu_woshi2.id
+  west = rooms.guofu_woshi1.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_woshigh.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_woshigh" {
+      name = "卧室"
+      description = "这里就是郭靖和黄蓉的卧室。屋子里的陈设很简单。门的 左边有一张软床。床上的被褥被叠得整整齐齐。床头正对的地 方摆着一张梳妆台。桌上摆着一个光亮的铜镜，铜镜旁边的花 瓶里，有一束百合花，正在散发出淡淡的幽香。里边放着两张 木椅，中间是一茶几，上面摆着一盆山茶花。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_woshigh" {
+    room_id = rooms.guofu_woshigh.id
+  west = rooms.guofu_huayuan.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_wuchang1.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_wuchang1" {
+      name = "西练武场"
+      description = "这是间大大的房子，十分宽阔，不少人在这里汗流浃背的 苦练着功夫，地上有一些练武用的工具。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_wuchang1" {
+    room_id = rooms.guofu_wuchang1.id
+  north = rooms.guofu_wuchang3.id
+  east = rooms.guofu_lang1.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_wuchang2.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_wuchang2" {
+      name = "东练武场"
+      description = "这是露天练武场，好多人在这里辛苦的练着，你走在场中 没有人回头看你一眼，都在聚精汇神的练着自己的功夫。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_wuchang2" {
+    room_id = rooms.guofu_wuchang2.id
+  north = rooms.guofu_wuchang4.id
+  west = rooms.guofu_lang2.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_wuchang3.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_wuchang3" {
+      name = "西练武场"
+      description = "这是间大大的房子，十分宽阔，不少人在这里汗流浃背的 苦练着功夫，地上有一些练武用的工具。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_wuchang3" {
+    room_id = rooms.guofu_wuchang3.id
+  south = rooms.guofu_wuchang1.id
+  north = rooms.guofu_lang3.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_wuchang4.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_wuchang4" {
+      name = "东练武场"
+      description = "这是露天练武场，好多人在这里辛苦的练着，你走在场中 没有人回头看你一眼，都在聚精汇神的练着自己的功夫。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_wuchang4" {
+    room_id = rooms.guofu_wuchang4.id
+  north = rooms.guofu_lang4.id
+  south = rooms.guofu_wuchang2.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_wupinfang.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_wupinfang" {
+      name = "物品房"
+      description = "这是物品房，一个大架子。上面放的整整齐齐，看来这里 的管家是很认真负责的，一些人正在跟管物品工具的青年说着 什么。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_wupinfang" {
+    room_id = rooms.guofu_wupinfang.id
+  south = rooms.guofu_lang4.id
+  north = rooms.guofu_lang6.id
+  west = rooms.guofu_shilu_1.id  }
+
+
+  room_characters "guofu_wupinfang" {
+    room_id = rooms.guofu_wupinfang.id
+    characters = [
+      { id = characters.wuxiuwen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_xiwutang.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_xiwutang" {
+      name = "习武堂"
+      description = "这里是郭府内的习武堂，堂内一个教头在教着武功，几个 新手正在向教头学习功夫，堂子正上方挂着个匾，上面写着吃 得苦中苦，放为人上人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_xiwutang" {
+    room_id = rooms.guofu_xiwutang.id
+  south = rooms.guofu_shilu_2.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_xiwutang2.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_xiwutang2" {
+      name = "习武堂"
+      description = "这里是郭府的习武堂，堂内一个教头在教着武功，几个新 手正在向教头学习功夫，堂子正上方挂着个匾，上面写着吃得 苦中苦，放为人上人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_xiwutang2" {
+    room_id = rooms.guofu_xiwutang2.id
+  north = rooms.guofu_shilu_2.id  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_xuetang.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_xuetang" {
+      name = "学堂"
+      description = "这里是武馆内的一个小学堂，堂内阵阵朗朗读书声，一个 先生在这里认真的教着，这里放满了桌子和椅子，靠先生那边 墙上写了几个大字少壮不努力，老大徒伤悲。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guofu_xuetang" {
+    room_id = rooms.guofu_xuetang.id
+  south = rooms.guofu_shilu_1.id  }
+
+
+  room_characters "guofu_xuetang" {
+    room_id = rooms.guofu_xuetang.id
+    characters = [
+      { id = characters.zhuziliu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_zhangfang.c by LPCConverter
+# Zone: wuguan
+
+    rooms "guofu_zhangfang" {
+      name = "帐房"
+      description = "这里是武馆内的一个帐房，室内一个帐房先生在这里认真 地做着帐。几名新弟子正围着帐房先生，看来是想把积攒下来 的钱物存在这里。墙上挂有一个牌子(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ paizi = "######################         ##                  ##         ##     公平交易     ##         ##                  ##         ##  存钱： deposit  ##         ##                  ##         ##  取钱： withdraw ##         ##                  ##         ##  兑换： convert  ##         ##                  ##         ##  查帐： check    ##         ##                  ##         ##                  ##         ######################"
+}
+    }
+
+  room_exits "guofu_zhangfang" {
+    room_id = rooms.guofu_zhangfang.id
+  north = rooms.guofu_shilu_1.id  }
+
+
+  room_characters "guofu_zhangfang" {
+    room_id = rooms.guofu_zhangfang.id
+    characters = [
+      { id = characters.fan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wuguan/npc/chushi.c by LPCConverter
+# Zone: wuguan
+
+    characters "chushi" {
+      name = "厨师"
+      description = "他是郭府的厨子，敦厚老实。你可以问他要(serve)些吃的。"
+  gender = "男性"
+  age = 65
+  shen_type = 1
+
+  combat = {
+    combat_exp = 7500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 35 },
+    { skill = "force" level = 35 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["serve"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/npc/fan.c by LPCConverter
+# Zone: wuguan
+
+    characters "fan" {
+      name = "范先生"
+      description = ""
+  title = "帐房先生"
+  gender = "男性"
+  age = 34
+  shen_type = 1
+  brain = brains.banker
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    con = 18
+    dex = 18
+    int = 24
+    max_jing = 100
+    max_qi = 500
+    str = 22
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["check", "chazhang", "convert", "duihuan", "deposit", "cun", "withdraw", "qu"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/npc/guanjia1.c by LPCConverter
+# Zone: wuguan
+
+    characters "guanjia1" {
+      name = "柴房管事"
+      description = "他是柴房管事，专管柴房！"
+  gender = "男性"
+  age = 50
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2500
+  }
+
+  inquiries = [
+    { key = "劈柴" value = "你就在这老老实实劈柴，我不满意，你就别想回去覆命！" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/npc/guanjia2.c by LPCConverter
+# Zone: wuguan
+
+    characters "guanjia2" {
+      name = "木房管事"
+      description = "他是木房管事，专管木房！"
+  gender = "男性"
+  age = 50
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2500
+  }
+
+  inquiries = [
+    { key = "锯木头" value = "你就在这老老实实给我锯木头，没有我的满意，你别想回去覆命！" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/npc/guanjia3.c by LPCConverter
+# Zone: wuguan
+
+    characters "guanjia3" {
+      name = "马房管事"
+      description = "他是马房管事，专管马房里的大小杂事！"
+  gender = "男性"
+  age = 50
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2500
+  }
+
+  inquiries = [
+    { key = "打扫" value = "你就在这老老实实给我打扫马房，没有我的满意，你别想回去覆命！" }
+  ]
+
+  init = {
+    greet_delay = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/npc/guanjia5.c by LPCConverter
+# Zone: wuguan
+
+    characters "guanjia5" {
+      name = "菜园管事"
+      description = "他是菜园管事，专管菜园里大小杂事！"
+  gender = "男性"
+  age = 50
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2500
+  }
+
+  inquiries = [
+    { key = "锄草" value = "你就在这老老实实给我锄清杂草，没有我的满意，你别想回去覆命！" }
+  ]
+
+  init = {
+    greet_delay = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/npc/guanjia6.c by LPCConverter
+# Zone: wuguan
+
+    characters "guanjia6" {
+      name = "菜园管事"
+      description = "他是菜园管事，专管菜园里大小杂事！"
+  gender = "男性"
+  age = 50
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2500
+  }
+
+  inquiries = [
+    { key = "浇水" value = "你就在这老老实实给我浇水，没有我的满意，你别想回去覆命！" }
+  ]
+
+  init = {
+    greet_delay = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/npc/guojing.c by LPCConverter
+# Zone: wuguan
+
+    characters "guojing" {
+      name = "郭靖"
+      description = "他就是人称北侠的郭靖，既是蒙古成吉思汗的金刀 驸马，又是江南七怪、全真派马钰道长、「北丐」 洪七公和「老顽童」周伯通等人的徒弟，身兼数门 武功。他身着一件灰色长袍，体态魁梧，敦厚的面 目中透出一股威严令人不由得产生一股钦佩之情。"
+  title = "襄阳城大将"
+  nickname = "北侠"
+  gender = "男性"
+  age = 41
+  shen_type = 1
+  score = 200000
+  startroom = "/d/wuguan/guofu_dating"
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 4000000
+    con = 40
+    dex = 40
+    int = 14
+    max_jing = 6000
+    max_neili = 8000
+    max_qi = 8000
+    str = 40
+  }
+
+  inquiries = [
+    { key = "一灯大师" value = "在下对大师好生感激。" },
+    { key = "丐帮" value = "丐帮英雄几百年了，守卫襄阳多亏了他们。" },
+    { key = "丘处机" value = "邱道长义薄云天，是真豪杰。" },
+    { key = "全金发" value = "那是我六师父。" },
+    { key = "南希仁" value = "那是我四师父。" },
+    { key = "周伯通" value = "你见到我周大哥了？他现在可好？" },
+    { key = "工作" value = "…嗯…这个你去找齐儿吧，他会帮你安排的。" },
+    { key = "张阿生" value = "那是我五师父。" },
+    { key = "拜师" value = "现在蒙古人围攻襄阳，我哪有心情收徒啊！" },
+    { key = "朱聪" value = "那是我二师父。" },
+    { key = "杨过" value = "过儿确实有出息。" },
+    { key = "柯镇恶" value = "那是我大师父。" },
+    { key = "欧阳锋" value = "这个老毒物，害死我六位师父，一待襄阳事了，决不与他干休。" },
+    { key = "洪七公" value = "师父除了吃，就是喜欢玩。到处玩，还是为了找吃的。" },
+    { key = "练功" value = "东西练武场都可以练的，你去那练吧。" },
+    { key = "老顽童" value = "周大哥一贯这样，没点正经。" },
+    { key = "蓉儿" value = "蓉儿就是蓉儿了。你问这么多干嘛？" },
+    { key = "郭破虏" value = "那是我的小儿子。" },
+    { key = "郭芙" value = "这个女儿，又笨又不听话。" },
+    { key = "郭襄" value = "襄儿生于乱世，这辈子又多艰厄。但愿她能快乐一世。" },
+    { key = "韩宝驹" value = "那是我三师父。" },
+    { key = "韩小莹" value = "那是我七师父。" },
+    { key = "马钰" value = "马道长于我有半师之谊。" },
+    { key = "黄药师" value = "那是我泰山大人。他云游四海，神龙见首不见尾的。" },
+    { key = "黄蓉" value = "蓉儿是我的爱妻，你问她做甚？" }
+  ]
+
+  chat_chance = 1
+chats = [
+    "郭靖叹了口气道：蒙古兵久攻襄阳不下，一定会再出诡计。"
+]
+
+
+  skills = [
+    { skill = "force" level = 320 },
+    { skill = "xiantian-gong" level = 320 },
+    { skill = "yijin-duangu" level = 320 },
+    { skill = "guoshi-xinfa" level = 280 },
+    { skill = "dodge" level = 300 },
+    { skill = "feiyan-zoubi" level = 280 },
+    { skill = "jinyan-gong" level = 300 },
+    { skill = "shexing-lifan" level = 300 },
+    { skill = "unarmed" level = 300 },
+    { skill = "changquan" level = 300 },
+    { skill = "strike" level = 320 },
+    { skill = "xianglong-zhang" level = 320 },
+    { skill = "sword" level = 280 },
+    { skill = "yuenv-jian" level = 280 },
+    { skill = "parry" level = 320 },
+    { skill = "literate" level = 120 },
+    { skill = "zuoyou-hubo" level = 400 },
+    { skill = "martial-cognize" level = 320 },
+    { skill = "craft-cognize" level = 280 },
+    { type = "force" skill = "yijin-duangu" },
+    { type = "strike" skill = "xianglong-zhang" },
+    { type = "unarmed" skill = "changquan" },
+    { type = "sword" skill = "yuenv-jian" },
+    { type = "dodge" skill = "shexing-lifan" },
+    { type = "parry" skill = "xianglong-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/npc/puren1.c by LPCConverter
+# Zone: wuguan
+
+    characters "puren1" {
+      name = "仆人"
+      description = "这是个仆人打扮的年青人，两眼乱转，四处看个不停。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    int = 28
+  }
+
+  chat_chance = 1
+chats = [
+    "仆人突然说道：后院很需要人手，郭大侠正为此烦恼呢。",
+    "仆役低声的说：在后院做事有好多好处啊。"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/npc/wudunru.c by LPCConverter
+# Zone: wuguan
+
+    characters "wudunru" {
+      name = "武敦儒"
+      description = "他是郭靖大弟子，相貌和蔼，一天到晚笑呵呵的。"
+  title = "郭靖大弟子"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 23
+  shen_type = 1
+  score = 20000
+  brain = brains.guarder
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 400000
+    con = 30
+    dex = 25
+    int = 20
+    max_jing = 2500
+    max_neili = 2800
+    max_qi = 3000
+    str = 20
+  }
+
+  inquiries = [
+    { key = "郭靖" value = "那是我师父。" },
+    { key = "黄蓉" value = "那是我师母。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 160 },
+    { skill = "yijin-duangu" level = 160 },
+    { skill = "dodge" level = 160 },
+    { skill = "shexing-lifan" level = 160 },
+    { skill = "finger" level = 160 },
+    { skill = "yiyang-zhi" level = 160 },
+    { skill = "sword" level = 160 },
+    { skill = "yuenv-jian" level = 160 },
+    { skill = "parry" level = 160 },
+    { skill = "literate" level = 140 },
+    { skill = "jingluo-xue" level = 160 },
+    { skill = "martial-cognize" level = 140 },
+    { type = "force" skill = "yijin-duangu" },
+    { type = "dodge" skill = "shexing-lifan" },
+    { type = "finger" skill = "yiyang-zhi" },
+    { type = "sword" skill = "yuenv-jian" },
+    { type = "parry" skill = "jinyuan-gun" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["join", "hit", "kill", "touxi", "fight", "yun", "exert"]
+  }
+
+  engage = {
+    fight = { accept = false msg = "给我滚进去，跑到这里来瞎胡闹什么！" }
+    hit = { accept = true msg = "给我滚进去，跑到这里来瞎胡闹什么！" retaliate = true }
+    kill = { accept = true msg = "给我滚进去，跑到这里来瞎胡闹什么！" retaliate = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/npc/wusantong.c by LPCConverter
+# Zone: wuguan
+
+    characters "wusantong" {
+      name = "武三通"
+      description = "朱子柳乃是一灯大师的四大弟子之一，现在正协助 郭靖、黄蓉镇守襄阳城。"
+  title = "南帝四大弟子"
+  gender = "男性"
+  age = 55
+  score = 5000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2500000
+    con = 30
+    dex = 25
+    int = 20
+    max_jing = 2600
+    max_neili = 4200
+    max_qi = 3200
+    str = 40
+  }
+
+  skills = [
+    { skill = "force" level = 180 },
+    { skill = "duanshi-xinfa" level = 180 },
+    { skill = "dodge" level = 180 },
+    { skill = "tiannan-bu" level = 180 },
+    { skill = "cuff" level = 180 },
+    { skill = "jinyu-quan" level = 180 },
+    { skill = "strike" level = 180 },
+    { skill = "wuluo-zhang" level = 180 },
+    { skill = "dagger" level = 200 },
+    { skill = "qingliang-daxuefa" level = 200 },
+    { skill = "parry" level = 180 },
+    { skill = "literate" level = 400 },
+    { skill = "martial-cognize" level = 180 },
+    { type = "force" skill = "duanshi-xinfa" },
+    { type = "dodge" skill = "tiannan-bu" },
+    { type = "cuff" skill = "jinyu-quan" },
+    { type = "strike" skill = "wuluo-zhang" },
+    { type = "dagger" skill = "qingliang-daxuefa" },
+    { type = "parry" skill = "qingliang-daxuefa" }
+  ]
+
+
+  carry = [
+    { id = items.junfu.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/npc/wuxiuwen.c by LPCConverter
+# Zone: wuguan
+
+    characters "wuxiuwen" {
+      name = "武修文"
+      description = "他是郭靖的二弟子，精明强干，专门负责后勤。"
+  title = "郭靖二弟子"
+  gender = "男性"
+  age = 21
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 400000
+    con = 30
+    dex = 25
+    int = 20
+    max_jing = 2500
+    max_neili = 2800
+    max_qi = 3000
+    str = 20
+  }
+
+  inquiries = [
+    { key = "tools" value = "(: give_tools :)" },
+    { key = "工具" value = "(: give_tools :)" },
+    { key = "郭靖" value = "那是我师父。" },
+    { key = "黄蓉" value = "那是我师母。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 160 },
+    { skill = "yijin-duangu" level = 160 },
+    { skill = "dodge" level = 160 },
+    { skill = "shexing-lifan" level = 160 },
+    { skill = "finger" level = 160 },
+    { skill = "yiyang-zhi" level = 160 },
+    { skill = "sword" level = 160 },
+    { skill = "yuenv-jian" level = 160 },
+    { skill = "parry" level = 160 },
+    { skill = "literate" level = 140 },
+    { skill = "jingluo-xue" level = 160 },
+    { skill = "martial-cognize" level = 140 },
+    { type = "force" skill = "yijin-duangu" },
+    { type = "dodge" skill = "shexing-lifan" },
+    { type = "finger" skill = "yiyang-zhi" },
+    { type = "sword" skill = "yuenv-jian" },
+    { type = "parry" skill = "jinyuan-gun" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  accept = [
+    { kind = "any" accept = true msg = ["你还没完成工作，怎么就回来还工具了，偷懒吗？", "你还错东西了吧，我从没有发过这样工具。", "我没有发给你过东西，你是不是还错了？", "干得不错，你现在去耶律师兄那儿领取酬劳吧。", "shake", "nod"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/npc/yahuan.c by LPCConverter
+# Zone: wuguan
+
+    characters "yahuan" {
+      name = "丫环"
+      description = "这是一个小丫环，容貌清秀脱俗。"
+  gender = "女性"
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 3000
+    con = 18
+    dex = 18
+    int = 19
+    str = 18
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/npc/yelvqi.c by LPCConverter
+# Zone: wuguan
+
+    characters "yelvqi" {
+      name = "耶律齐"
+      description = "耶律齐是郭靖和黄蓉的大女婿，郭芙的丈夫。"
+  title = "全真教第二代弟子"
+  nickname = "丐帮帮主"
+  gender = "男性"
+  age = 35
+  shen_type = 1
+  score = 5000
+
+  combat = {
+    combat_exp = 2500000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 3000
+    max_neili = 5000
+    max_qi = 4000
+    str = 35
+  }
+
+  inquiries = [
+    { key = "job" value = "(: ask_job :)" },
+    { key = "工作" value = "(: ask_job :)" },
+    { key = "工具" value = "你去物品房找修文要吧。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 220 },
+    { skill = "quanzhen-xinfa" level = 200 },
+    { skill = "xiantian-gong" level = 220 },
+    { skill = "staff" level = 200 },
+    { skill = "dagou-bang" level = 200 },
+    { skill = "unarmed" level = 220 },
+    { skill = "kongming-quan" level = 220 },
+    { skill = "strike" level = 200 },
+    { skill = "haotian-zhang" level = 200 },
+    { skill = "sword" level = 200 },
+    { skill = "quanzhen-jian" level = 200 },
+    { skill = "dodge" level = 200 },
+    { skill = "jinyan-gong" level = 200 },
+    { skill = "parry" level = 200 },
+    { skill = "jinguan-yusuo" level = 200 },
+    { skill = "literate" level = 180 },
+    { skill = "martial-cognize" level = 220 },
+    { type = "force" skill = "xiantian-gong" },
+    { type = "unarmed" skill = "kongming-quan" },
+    { type = "sword" skill = "quanzhen-jian" },
+    { type = "staff" skill = "dagou-bang" },
+    { type = "parry" skill = "jinguan-yusuo" },
+    { type = "dodge" skill = "jinyan-gong" },
+    { type = "strike" skill = "haotian-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["task"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/npc/zhuziliu.c by LPCConverter
+# Zone: wuguan
+
+    characters "zhuziliu" {
+      name = "朱子柳"
+      description = "朱子柳乃是一灯大师的四大弟子之一，现在正协助 郭靖、黄蓉镇守襄阳城。"
+  title = "南帝四大弟子"
+  gender = "男性"
+  age = 55
+  score = 5000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2500000
+    con = 30
+    dex = 25
+    int = 20
+    max_jing = 2600
+    max_neili = 4200
+    max_qi = 3200
+    str = 40
+  }
+
+  skills = [
+    { skill = "force" level = 180 },
+    { skill = "duanshi-xinfa" level = 180 },
+    { skill = "dodge" level = 180 },
+    { skill = "tiannan-bu" level = 180 },
+    { skill = "cuff" level = 180 },
+    { skill = "jinyu-quan" level = 180 },
+    { skill = "strike" level = 180 },
+    { skill = "wuluo-zhang" level = 180 },
+    { skill = "dagger" level = 200 },
+    { skill = "qingliang-daxuefa" level = 200 },
+    { skill = "parry" level = 180 },
+    { skill = "literate" level = 400 },
+    { skill = "martial-cognize" level = 180 },
+    { type = "force" skill = "duanshi-xinfa" },
+    { type = "dodge" skill = "tiannan-bu" },
+    { type = "cuff" skill = "jinyu-quan" },
+    { type = "strike" skill = "wuluo-zhang" },
+    { type = "dagger" skill = "qingliang-daxuefa" },
+    { type = "parry" skill = "qingliang-daxuefa" }
+  ]
+
+
+  carry = [
+    { id = items.junfu.id },
+    { id = items.panguanbi.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/obj/chaidao.c by LPCConverter
+# Zone: wuguan
+
+    items "chaidao" {
+      name = "柴刀"
+      description = "这是一柄沉甸甸的砍柴刀，普通百姓的日常用品。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄柴刀握在手中。"
+    unwield = "{npc}将手中的柴刀插回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/obj/chutou.c by LPCConverter
+# Zone: wuguan
+
+    items "chutou" {
+      name = "锄头"
+      description = "这是一把锄头，普通百姓的日常务农用品。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一把锄头握在手中。"
+    unwield = "{npc}将手中的锄头抗在肩上。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/obj/juzi.c by LPCConverter
+# Zone: wuguan
+
+    items "juzi" {
+      name = "锯子"
+      description = "这是一用来锯木头的锯子，普通百姓的日常用品。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一把锯子握在手中。"
+    unwield = "{npc}将手中的锯子抗在肩上。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/obj/piao.c by LPCConverter
+# Zone: wuguan
+
+    items "piao" {
+      name = "水瓢"
+      description = "这是一个用老葫芦劈开做成的瓢，普通百姓的日常务农用品。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一个水瓢握在手中。"
+    unwield = "{npc}将手中的水瓢插在腰上。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/obj/rice.c by LPCConverter
+# Zone: wuguan
+
+    items "rice" {
+      name = "小米饭"
+      description = "一碗香喷喷的小米饭。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/obj/saozhou.c by LPCConverter
+# Zone: wuguan
+
+    items "saozhou" {
+      name = "扫帚"
+      description = "这是一把扫帚，普通百姓的日常用品。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一把扫帚握在手中。"
+    unwield = "{npc}将手中的扫帚抗在肩上。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wuguan/obj/tea.c by LPCConverter
+# Zone: wuguan
+
+    items "tea" {
+      name = "花茶"
+      description = "一杯茶杯，里面盛有清香浓郁的花茶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

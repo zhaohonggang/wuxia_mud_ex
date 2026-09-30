@@ -1,0 +1,2191 @@
+zones "guanwai" {
+  name = "guanwai"
+}
+
+# Generated from C:/files/git/mud/d/guanwai/baihe.c by LPCConverter
+# Zone: guanwai
+
+    rooms "baihe" {
+      name = "白河"
+      description = "这里是长白山下的一个小村，只有四，五间粗陋的小木屋。这里并没有 固定的居民，木屋都是进山采参的参客所盖，为的是在进山前能在这里好好 的休息一下。东面就是巍峨耸立的长白大山。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baihe" {
+    room_id = rooms.baihe.id
+  west = rooms.caoguduo.id
+  east = rooms.milin1.id
+  north = rooms.xiaoyuan.id  }
+
+
+  room_characters "baihe" {
+    room_id = rooms.baihe.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/baiyun.c by LPCConverter
+# Zone: guanwai
+
+    rooms "baiyun" {
+      name = "白云峰"
+      description = "白云峰在天池之西，鹿鸣峰之南，为长白山主峰。山峰圆而高大，临天 池而耸立，巍峨磅礴，如一口宝剑直插云天。天气晴好，天池十六峰毕露， 惟独此峰常有烟云缭绕，终日不散。古人有“看罢归来回首顾，白山依旧白 云封”的赞语。登临此峰，诚有飘飘欲仙之感。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baiyun" {
+    room_id = rooms.baiyun.id
+  north = rooms.luming.id
+  eastdown = rooms.tianchi1.id
+  southwest = rooms.yuzhu.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/beicheng.c by LPCConverter
+# Zone: guanwai
+
+    rooms "beicheng" {
+      name = "北城"
+      description = "这里是用黄土铺就的街道，街上的行人不多，看起来很冷清。偶尔有几 个身着异域服饰的行人走过，看起来是满族，鲜祖的居民。西面有一条幽深 的小巷，不知通向何处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "beicheng" {
+    room_id = rooms.beicheng.id
+  south = rooms.jishi.id
+  west = rooms.xiaoxiang.id  }
+
+
+  room_characters "beicheng" {
+    room_id = rooms.beicheng.id
+    characters = [
+      { id = characters.xiucai.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/bingmian.c by LPCConverter
+# Zone: guanwai
+
+    rooms "bingmian" {
+      name = "冰面"
+      description = "这里是松花江的江面，现已冻成了几尺厚的坚冰。行人或马匹，车辆均 可横逾江面而绝无危险。冰面上留有厚厚的积雪，与两岸连成一片，只有中 间经常行走之出，露出一条青色的冰路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bingmian" {
+    room_id = rooms.bingmian.id
+  east = rooms.damenkan.id
+  west = rooms.chuanchang.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/caoguduo.c by LPCConverter
+# Zone: guanwai
+
+    rooms "caoguduo" {
+      name = "谷草垛"
+      description = "经过一番艰苦的跋涉，你的眼前出现了一片低矮的丘陵。远远看去象秋 收后堆成的谷草垛，密密麻麻，数不清有多少个。翻过这片丘陵再向东行， 就可进入长白大山了。东面的天边有一缕炊烟，看来似乎有人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caoguduo" {
+    room_id = rooms.caoguduo.id
+  northwest = rooms.mantianxing.id
+  east = rooms.baihe.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/chuanchang.c by LPCConverter
+# Zone: guanwai
+
+    rooms "chuanchang" {
+      name = "船厂"
+      description = "这里是古镇船厂。船厂是位于关外大平原中部的一个古老 的小镇，此镇西、南、北、三面是以高墙垒筑利于坚守。东面 临松花江天成天险，乃兵家必争的要地。松花江 (river)在冬 春时结冰可通行，夏秋化冻你只好找船家帮忙了。"
+  x = 0
+  y = 0
+  z = 0
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "chuanchang" {
+    room_id = rooms.chuanchang.id
+  south = rooms.xuedi3.id
+  river = rooms.damenkan.id  }
+
+
+  room_characters "chuanchang" {
+    room_id = rooms.chuanchang.id
+    characters = [
+      { id = characters.chuanfu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/chufang.c by LPCConverter
+# Zone: guanwai
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "炊烟缭绕，蒸汽腾腾，香味扑鼻而来。靠墙有一个灶台，支着一 口大锅，里面煮着香喷喷的米粥，旁边的一个火上蒸着白面馒头。一 个老仆人聚精会神的整理着厨房里面物什。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+  east = rooms.shizilu.id  }
+
+
+
+
+  room_items "chufang" {
+    room_id = rooms.chufang.id
+    items = [
+      { id = items.wan.id },
+      { id = items.mantou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/damen.c by LPCConverter
+# Zone: guanwai
+
+    rooms "damen" {
+      name = "达门"
+      description = "天池三面壅注不流，惟独北面偏东一线斜垂，白练飞舞，这就是达门。 池水经达门外流，水流清冷，在石壁间冲撞有声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "damen" {
+    room_id = rooms.damen.id
+  southwest = rooms.longmen.id
+  northwest = rooms.pubu.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/damenkan.c by LPCConverter
+# Zone: guanwai
+
+    rooms "damenkan" {
+      name = "大门坎子"
+      description = "这里是沿江向东的古道，多为进山采参的参客所走，因此 也称参路。前面一座小山截断去路，为东去采参的第一道屏障 故被称为大门坎子。西面是宽阔的松花江 (river)。松花江在 冬春时结冰可以通行，夏秋化冻你只好找船家帮忙了。"
+  x = 0
+  y = 0
+  z = 0
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "damenkan" {
+    room_id = rooms.damenkan.id
+  southeast = rooms.ermenkan.id
+  river = rooms.chuanchang.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/dongcheng.c by LPCConverter
+# Zone: guanwai
+
+    rooms "dongcheng" {
+      name = "东城"
+      description = "这里是用黄土铺就的街道，街上的行人不多，看起来很冷清。偶尔有几 个身着异域服饰的行人走过，看起来是满族，鲜祖的居民。西面传来嘈杂的 叫卖声。南面是一排黄泥垒成的土房，里面有嬉笑的声音。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongcheng" {
+    room_id = rooms.dongcheng.id
+  west = rooms.jishi.id
+  south = rooms.tuyaoguan.id
+  east = rooms.xuedi1.id
+  northeast = rooms.huandi1.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/ermenkan.c by LPCConverter
+# Zone: guanwai
+
+    rooms "ermenkan" {
+      name = "二门坎子"
+      description = "漫长的参路蜿蜒的消失在原处的天边，路上依稀还留有一些浅浅的足印 ，看来是前面的参客留下的。白茫茫的雪地反射出耀眼的银光，看得人头昏 眼花。偶尔有几只雪兔飞驰而过，转眼就无影无踪了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "ermenkan" {
+    room_id = rooms.ermenkan.id
+  east = rooms.mantianxing.id
+  northwest = rooms.damenkan.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/famu.c by LPCConverter
+# Zone: guanwai
+
+    rooms "famu" {
+      name = "伐木场"
+      description = "这里是鹿鸣峰西坡下的一片森林，长着许多百年的参天大 树，笔直挺拔，都是上好的木材，许多人在这里砍伐(famu)木料， 然后运到中原供达官贵人们建筑豪宅。这里地处深山老林，时常 有凶猛的野兽出没。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "famu" {
+    room_id = rooms.famu.id
+  southup = rooms.luming.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/heifengkou.c by LPCConverter
+# Zone: guanwai
+
+    rooms "heifengkou" {
+      name = "黑风口"
+      description = "这里是密林中的险恶之境周围是为茂密的松林，不见天光。 林中传来野兽饥饿之极的嘶吼。四处有不知名草菰和野果，可 你一点也不敢尝尝。林木幽暗深邃，似乎暗藏杀机。你到了此 处，心胆俱裂，只想快点离开。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "heifengkou" {
+    room_id = rooms.heifengkou.id
+  east = rooms.xiaotianchi.id
+  westdown = rooms.milin3.id  }
+
+
+
+
+  room_items "heifengkou" {
+    room_id = rooms.heifengkou.id
+    items = [
+      { id = items.xiong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/houyuan.c by LPCConverter
+# Zone: guanwai
+
+    rooms "houyuan" {
+      name = "后院"
+      description = "这是胡家的后院，虽然不大，但是收拾得颇为整齐利落，看来是 有人常用心打扫的缘故。东面隐隐的传来打斗声，西面静一些。而北 面望过去是一条铺满碎石子的小路，隐隐飘来阵阵饭香。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houyuan" {
+    room_id = rooms.houyuan.id
+  south = rooms.xiaowu.id
+  north = rooms.shizilu.id
+  west = rooms.jingxiu.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/huagai.c by LPCConverter
+# Zone: guanwai
+
+    rooms "huagai" {
+      name = "华盖峰"
+      description = "长白东侧最高峰，自古以来，华盖峰就是风雨云雾的故道。云雾起处， 恰似掀开锅盖一般，雾气翻滚，池水云天，一脉相连，气壮华夏，故名华盖 峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huagai" {
+    room_id = rooms.huagai.id
+  north = rooms.tianhuo.id
+  westdown = rooms.tianchi1.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/huandi1.c by LPCConverter
+# Zone: guanwai
+
+    rooms "huandi1" {
+      name = "荒路"
+      description = "这是城东的一条荒路，路旁杂乱的长着齐膝的荒草，远近荒无一人。两 旁干枯的老树上落满了成群的乌鸦，凄凉的鸣叫声在荒野上远远传去，一派 凄凉的景象。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huandi1" {
+    room_id = rooms.huandi1.id
+  southwest = rooms.dongcheng.id
+  northeast = rooms.huandi2.id  }
+
+
+
+
+  room_items "huandi1" {
+    room_id = rooms.huandi1.id
+    items = [
+      { id = items.longcheng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/huandi2.c by LPCConverter
+# Zone: guanwai
+
+    rooms "huandi2" {
+      name = "荒路"
+      description = "这是城东的一条荒路，路旁杂乱的长着齐膝的荒草，远近荒无一人。两 旁干枯的老树上落满了成群的乌鸦，凄凉的鸣叫声在荒野上远远传去，一派 凄凉的景象。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huandi2" {
+    room_id = rooms.huandi2.id
+  southwest = rooms.huandi1.id
+  in = rooms.shanshenmiao.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/jingxiu.c by LPCConverter
+# Zone: guanwai
+
+    rooms "jingxiu" {
+      name = "静修室"
+      description = "这里是静修室，屋中有一些胡家弟子在这里打坐练功。南面有一 扇小门(men)，里面隐隐传来了鼾声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jingxiu" {
+    room_id = rooms.jingxiu.id
+  east = rooms.houyuan.id  }
+
+
+
+
+  room_items "jingxiu" {
+    room_id = rooms.jingxiu.id
+    items = [
+      { id = items.mudao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/jishi.c by LPCConverter
+# Zone: guanwai
+
+    rooms "jishi" {
+      name = "集市"
+      description = "这里是城中一片开阔的广场，乃是来往客商交易毛皮，药材以及其它杂 物的集市。由于附近方圆百里仅有这么一个集市，因此这里的人最多，货物 也最全。不同的服饰，不同的语言都可以在这里看到，听到。杂乱的人群中 传出各种吆喝，叫卖的声音。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jishi" {
+    room_id = rooms.jishi.id
+  north = rooms.beicheng.id
+  south = rooms.nancheng.id
+  east = rooms.dongcheng.id
+  west = rooms.kedian.id  }
+
+
+  room_characters "jishi" {
+    room_id = rooms.jishi.id
+    characters = [
+      { id = characters.pihuoshang.id },
+      { id = characters.pihuoshang.id },
+      { id = characters.pihuoshang.id },
+      { id = characters.hadani.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/kedian.c by LPCConverter
+# Zone: guanwai
+
+    rooms "kedian" {
+      name = "客店"
+      description = "这是城里唯一的一家小客栈，专门接待过往客商，生意非常兴隆。 店小二里里外外忙得团团转。此间虽偏远，却不因势坑宰客人，住店一 宿只要五两银子。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）： !me->query_temp("rent_paid") && dir == "up" 
+direction = "up"
+  message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊！"
+}
+,
+{
+   # 阻挡条件（原样保留）： me->query_temp("rent_paid") && dir == "west" 
+direction = "west"
+  message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就走了呢！ 旁人还以为小店伺候不周呢！"
+}
+
+]
+    }
+
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+  west = rooms.majiu.id
+  east = rooms.jishi.id
+  up = rooms.kedian2.id  }
+
+
+  room_characters "kedian" {
+    room_id = rooms.kedian.id
+    characters = [
+      { id = characters.xiaoer.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/kedian2.c by LPCConverter
+# Zone: guanwai
+
+    rooms "kedian2" {
+      name = "客店二楼"
+      description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小木床， 不少客人正和衣而卧，满屋子都是呼呼的打酣声。西边有张床是空的， 你蹑手蹑脚地走了过去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kedian2" {
+    room_id = rooms.kedian2.id
+  down = rooms.kedian.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/laolongtou.c by LPCConverter
+# Zone: guanwai
+
+    rooms "laolongtou" {
+      name = "老龙头"
+      description = "老龙头是万里长城最东端。澄海楼巍峨高踞城头，楼上“雄襟万里”的 横匾居高临下，直俯大海。自澄海楼筑有一石城逐级而下伸入大海，站在石 城终端楼平台上四眺，海天一色，无边无际，气象万千。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "laolongtou" {
+    room_id = rooms.laolongtou.id
+  northwest = rooms.shanhaiguan.id
+  southwest = rooms.road3.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/liangong.c by LPCConverter
+# Zone: guanwai
+
+    rooms "liangong" {
+      name = "练功房"
+      description = "这里是练功房，屋中立着一些练武者常用的木人。东面似乎还有 一间房子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liangong" {
+    room_id = rooms.liangong.id
+  east = rooms.liangonge.id
+  west = rooms.houyuan.id
+  south = rooms.liangongs.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/liangonge.c by LPCConverter
+# Zone: guanwai
+
+    rooms "liangonge" {
+      name = "东练功房"
+      description = "这里是东面的练功房，屋中立着一些练武者常用的木人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liangonge" {
+    room_id = rooms.liangonge.id
+  west = rooms.liangong.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/liangongs.c by LPCConverter
+# Zone: guanwai
+
+    rooms "liangongs" {
+      name = "南练功房"
+      description = "这里是南面的练功房，屋中立着一些练武者常用的木人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liangongs" {
+    room_id = rooms.liangongs.id
+  north = rooms.liangong.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/longmen.c by LPCConverter
+# Zone: guanwai
+
+    rooms "longmen" {
+      name = "龙门峰"
+      description = "龙门峰在乘槎河西岸，因状如门形，故名龙门。崇崖峻壁，形态奇特， 宛如卧龙吸水，传说大禹治水曾到此峰，旁有蝌蚪形石柱。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "longmen" {
+    room_id = rooms.longmen.id
+  northeast = rooms.damen.id
+  west = rooms.luming.id
+  east = rooms.tianhuo.id
+  southdown = rooms.tianchi1.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/luming.c by LPCConverter
+# Zone: guanwai
+
+    rooms "luming" {
+      name = "鹿鸣峰"
+      description = "龙门峰西侧是鹿鸣峰。鹿鸣峰又称芝盘峰，因峰上有一草 甸子，形圆如盖，有热气从地下冒出，每到严冬，其它峰均积 雪甚厚，唯鹿鸣峰依然植物茂盛，且盛产芝草，鹿多居之。常 有鹤、雀、雕、燕飞落其上，有鹿鸣翠谷，雕飞芝盖之称。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "luming" {
+    room_id = rooms.luming.id
+  south = rooms.baiyun.id
+  east = rooms.longmen.id
+  northdown = rooms.famu.id  }
+
+
+
+
+  room_items "luming" {
+    room_id = rooms.luming.id
+    items = [
+      { id = items.lu.id },
+      { id = items.diao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/majiu.c by LPCConverter
+# Zone: guanwai
+
+    rooms "majiu" {
+      name = "马厩"
+      description = "这是关外的马厩，关外苦寒之地，颇乏新鲜草料。但东北大汉惯能吃 苦，马夫们会把马牵到马厩好生照看，将它们喂饱饮足，再洗刷得干乾净 净，一直伺候到客人上路。马厩雪披下的木柱上钉着一块破木牌(paizi)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+  east = rooms.kedian.id  }
+
+
+  room_characters "majiu" {
+    room_id = rooms.majiu.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu" {
+    room_id = rooms.majiu.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/mantianxing.c by LPCConverter
+# Zone: guanwai
+
+    rooms "mantianxing" {
+      name = "满天星"
+      description = "这里是一片开阔的平原，附近不但没有任何小山丘陵，就连一棵树也找 不到。抬眼望去，地平线笔直的将蓝天与雪原分隔在两边。据说夜间因这里 无物遮挡，可遍观满天星斗。进山的人们多在此祈求上苍的保佑。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mantianxing" {
+    room_id = rooms.mantianxing.id
+  southeast = rooms.caoguduo.id
+  west = rooms.ermenkan.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/milin1.c by LPCConverter
+# Zone: guanwai
+
+    rooms "milin1" {
+      name = "密林"
+      description = "这是一片茂密的松林，杂乱的生长在倾斜的山坡上。每棵松树都有三四 抱粗细，高达十几丈。树冠枝多叶密，将天空完全遮住，因此林内显得有些 昏暗。树木之间长着很多灌木杂草，使行走很艰难，据说人参就生长在这些 杂草之中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "milin1" {
+    room_id = rooms.milin1.id
+  west = rooms.baihe.id
+  eastup = rooms.milin2.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/milin2.c by LPCConverter
+# Zone: guanwai
+
+    rooms "milin2" {
+      name = "密林"
+      description = "这是一片茂密的松林，杂乱的生长在倾斜的山坡上。每棵 松树都有三四抱粗细，高达十几丈。树冠枝多叶密，将天空完 全遮住，因此林内显得有些昏暗。树木之间长着很多灌木杂草 使行走很艰难，据说人参就生长在这些杂草之中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "milin2" {
+    room_id = rooms.milin2.id
+  westdown = rooms.milin1.id
+  southup = rooms.milin3.id  }
+
+
+
+
+  room_items "milin2" {
+    room_id = rooms.milin2.id
+    items = [
+      { id = items.laohu2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/milin3.c by LPCConverter
+# Zone: guanwai
+
+    rooms "milin3" {
+      name = "密林"
+      description = "这是一片茂密的松林，杂乱的生长在倾斜的山坡上。每棵松树都有三四 抱粗细，高达十几丈。树冠枝多叶密，将天空完全遮住，因此林内显得有些 昏暗。树木之间长着很多灌木杂草，使行走很艰难，据说人参就生长在这些 杂草之中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "milin3" {
+    room_id = rooms.milin3.id
+  northdown = rooms.milin2.id
+  eastup = rooms.heifengkou.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/muqiao.c by LPCConverter
+# Zone: guanwai
+
+    rooms "muqiao" {
+      name = "木桥"
+      description = "这是一座年久失修的破木桥，由几根树干捆扎而成。下面的河水早以结 成坚冰。这里本是赫图阿拉城的护城河，现已废弃不用了。河岸北面是用黄 土堆成的城墙，很多处都已坍塌。由此向北就是赫图阿拉城了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "muqiao" {
+    room_id = rooms.muqiao.id
+  north = rooms.nancheng.id
+  south = rooms.road8.id  }
+
+
+  room_characters "muqiao" {
+    room_id = rooms.muqiao.id
+    characters = [
+      { id = characters.yuzhenzi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/nancheng.c by LPCConverter
+# Zone: guanwai
+
+    rooms "nancheng" {
+      name = "南城"
+      description = "这里是用黄土铺就的街道，街上的行人不多，看起来很冷清。偶尔有几 个身着异域服饰的行人走过，看起来是满族，鲜祖的居民。西面有一座低埃 的土房，门口挂着一个写满鲜文的幌子，还传来阵阵的肉香，看起来象一个 小饭馆。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nancheng" {
+    room_id = rooms.nancheng.id
+  north = rooms.jishi.id
+  south = rooms.muqiao.id
+  west = rooms.rouguan.id
+  southeast = rooms.tulu.id  }
+
+
+  room_characters "nancheng" {
+    room_id = rooms.nancheng.id
+    characters = [
+      { id = characters.tengyilei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/ningyuan.c by LPCConverter
+# Zone: guanwai
+
+    rooms "ningyuan" {
+      name = "宁远"
+      description = "这里是关外驻防的军事重镇。城高河宽，守备森严，城楼上不但有大量 的官兵驻防，甚至还有几门红衣火炮，架设其上。城门旁几名官兵正在检察 来往行人的物品，不时传来几声叱骂之声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "ningyuan" {
+    room_id = rooms.ningyuan.id
+  northeast = rooms.road4.id
+  south = rooms.road3.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/pubu.c by LPCConverter
+# Zone: guanwai
+
+    rooms "pubu" {
+      name = "长白瀑布"
+      description = "天池水从两百余尺高飞流跌落，轰鸣之声远传数里，水花直落大嶂谷， 与天然屏障玉壁、金壁相映，恰似白练当空，水柱扑向深深的谷底，溅起几 丈高的飞浪，犹如仙女散花，阳光照射下，虹飞氤跃，璀灿壮观之极。古人 诗云：“白河两岸景清幽，碧水悬崖万古留；疑似龙池喷瑞雪，如同天际挂 飞流。不须鞭石渡沧海，直可乘槎问斗牛？欲识林泉真乐趣，明朝结伴再来 游。”"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "pubu" {
+    room_id = rooms.pubu.id
+  southeast = rooms.damen.id
+  westdown = rooms.xiaotianchi.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/road1.c by LPCConverter
+# Zone: guanwai
+
+    rooms "road1" {
+      name = "官道"
+      description = "这里是通往关外的官道，几米宽的大道，全部由黄土铺成，可并行三四 辆马车而不显拥挤。这里是进出关口的必经之路，路上三俩成群的行人都是 往来贩运皮货，药材的生意人。偶尔有身着官兵骑马飞驰而过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road1" {
+    room_id = rooms.road1.id
+  northeast = rooms.road2.id
+  southwest = rooms.shanhaiguan.id  }
+
+
+  room_characters "road1" {
+    room_id = rooms.road1.id
+    characters = [
+      { id = characters.xiaoyuanshan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/road2.c by LPCConverter
+# Zone: guanwai
+
+    rooms "road2" {
+      name = "官道"
+      description = "这里是通往关外的官道，几米宽的大道，全部由黄土铺成，可并行三四 辆马车而不显拥挤。这里是进出关口的必经之路，路上三俩成群的行人都是 往来贩运皮货，药材的生意人。偶尔有身着官兵骑马飞驰而过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road2" {
+    room_id = rooms.road2.id
+  northeast = rooms.road3.id
+  southwest = rooms.road1.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/road3.c by LPCConverter
+# Zone: guanwai
+
+    rooms "road3" {
+      name = "官道"
+      description = "这里是通往关外的官道，几米宽的大道，全部由黄土铺成，可并行三四 辆马车而不显拥挤。这里是进出关口的必经之路，路上三俩成群的行人都是 往来贩运皮货，药材的生意人。偶尔有身着官兵骑马飞驰而过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road3" {
+    room_id = rooms.road3.id
+  north = rooms.ningyuan.id
+  southwest = rooms.road2.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/road4.c by LPCConverter
+# Zone: guanwai
+
+    rooms "road4" {
+      name = "大道"
+      description = "你走在一条碎石铺成的大道上，道两旁种着笔直通天的白杨树，放眼向 两侧望去，全是无边无际的田野，天边处仿佛有几座低矮的丘陵，为平坦的 大地增加了几许柔和的曲线。路上行人渐渐稀少起来。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road4" {
+    room_id = rooms.road4.id
+  northeast = rooms.road5.id
+  southwest = rooms.ningyuan.id  }
+
+
+  room_characters "road4" {
+    room_id = rooms.road4.id
+    characters = [
+      { id = characters.dahu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/road5.c by LPCConverter
+# Zone: guanwai
+
+    rooms "road5" {
+      name = "大道"
+      description = "你走在一条碎石铺成的大道上，道两旁种着笔直通天的白杨树，放眼向 两侧望去，全是无边无际的田野，天边处仿佛有几座低矮的丘陵，为平坦的 大地增加了几许柔和的曲线。路上行人渐渐稀少起来。天气也渐渐变凉了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road5" {
+    room_id = rooms.road5.id
+  north = rooms.road6.id
+  southwest = rooms.road4.id  }
+
+
+  room_characters "road5" {
+    room_id = rooms.road5.id
+    characters = [
+      { id = characters.erhu.id },
+      { id = characters.sihu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/road6.c by LPCConverter
+# Zone: guanwai
+
+    rooms "road6" {
+      name = "大道"
+      description = "你走在一条碎石铺成的大道上，道两旁种着笔直通天的白杨树，放眼向 两侧望去，全是无边无际的田野，天边处仿佛有几座低矮的丘陵，为平坦的 大地增加了几许柔和的曲线。路上渐渐的出现了一些积雪。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road6" {
+    room_id = rooms.road6.id
+  north = rooms.road7.id
+  south = rooms.road5.id  }
+
+
+  room_characters "road6" {
+    room_id = rooms.road6.id
+    characters = [
+      { id = characters.sanhu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/road7.c by LPCConverter
+# Zone: guanwai
+
+    rooms "road7" {
+      name = "大道"
+      description = "你走在一条碎石铺成的大道上，道两旁种着笔直通天的白杨树，放眼向 两侧望去，全是无边无际的田野，天边处仿佛有几座低矮的丘陵，为平坦的 大地增加了几许柔和的曲线。呼啸而过的狂风冻得人直打哆嗦。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road7" {
+    room_id = rooms.road7.id
+  north = rooms.road8.id
+  south = rooms.road6.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/road8.c by LPCConverter
+# Zone: guanwai
+
+    rooms "road8" {
+      name = "大道"
+      description = "你走在一条碎石铺成的大道上。四周的田野已经被积雪覆盖，放眼望去 发现自己已经置身于无边无际的雪原中。狂风夹杂着雪花呼啸而过，冻得人 浑身发抖。北面的天边似乎有一缕炊烟升起。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road8" {
+    room_id = rooms.road8.id
+  north = rooms.muqiao.id
+  south = rooms.road7.id  }
+
+
+  room_characters "road8" {
+    room_id = rooms.road8.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/rouguan.c by LPCConverter
+# Zone: guanwai
+
+    rooms "rouguan" {
+      name = "香肉馆"
+      description = "这是一间很小的狗肉馆，屋内有一个很大的土炕，几乎占去了房间的一 半。炕中是一个火灶，上架一口大铁锅，香喷喷的热气从锅中不断冒出。饭 馆的老板坐在锅旁，不断的给客人盛上一碗碗热腾腾的肉汤。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "rouguan" {
+    room_id = rooms.rouguan.id
+  east = rooms.nancheng.id  }
+
+
+  room_characters "rouguan" {
+    room_id = rooms.rouguan.id
+    characters = [
+      { id = characters.laoban.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/shanhaiguan.c by LPCConverter
+# Zone: guanwai
+
+    rooms "shanhaiguan" {
+      name = "山海关"
+      description = "这里就是万里长城最东面的重要关口--山海关。这里地势险要，自古就 是关外通往中原的必经之地。站在关楼上北望，角山，古堡，烽火台历历在 目，南沿长城远眺，直深入海的老龙头依稀可见。城楼二楼上悬挂着一块巨 幅横匾(bian)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ bian = "##==================================##     ##======　　　　　　　　　　　======##     ##======　天  下  第  一  关  ======##     ##======　　　　　　　　　　　======##     ##==================================##"
+}
+    }
+
+  room_exits "shanhaiguan" {
+    room_id = rooms.shanhaiguan.id
+  northeast = rooms.road1.id
+  southeast = rooms.laolongtou.id  }
+
+
+  room_characters "shanhaiguan" {
+    room_id = rooms.shanhaiguan.id
+    characters = [
+      { id = characters.wujiang.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/shanshenmiao.c by LPCConverter
+# Zone: guanwai
+
+    rooms "shanshenmiao" {
+      name = "山神庙"
+      description = "这是一个用木板和石头垒成的小庙，庙前地上散落着一些然过的灰烬。 庙里供奉着山神爷老把头的灵位(lingwei)。传说他是所有采参人的祖师爷， 所以每个进山挖参的参客都要来这里祭拜，希望能得到他老人家的保佑。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ lingwei = "************** *            * *     山     * *     神     * *     爷     * *     老     * *     把     * *     头     * *            * *     孙     * *     良     * *            * *     之     * *     位     * *            * **************"
+}
+    }
+
+  room_exits "shanshenmiao" {
+    room_id = rooms.shanshenmiao.id
+  out = rooms.huandi2.id  }
+
+
+  room_characters "shanshenmiao" {
+    room_id = rooms.shanshenmiao.id
+    characters = [
+      { id = characters.yanji.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/shichang.c by LPCConverter
+# Zone: guanwai
+
+    rooms "shichang" {
+      name = "采石场"
+      description = "这里是山脚，眼前蓦然耸立着一座大山，不过一侧已经被炸得支离 破碎，工人们来来往往，搬运着石料。在北方也有这么大的石山，你不 禁有些惊讶。眼前有一个人，看起来像个监工。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shichang" {
+    room_id = rooms.shichang.id
+  west = rooms.tulu.id  }
+
+
+  room_characters "shichang" {
+    room_id = rooms.shichang.id
+    characters = [
+      { id = characters.jiangong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/shizilu.c by LPCConverter
+# Zone: guanwai
+
+    rooms "shizilu" {
+      name = "石路"
+      description = "这是一条碎石子铺的小路，西面烟雾缭绕的，墙壁都有些发黑了， 看上去有些刺眼，不过里面却飘来阵阵香气，看来是厨房。东面则是 一个显得有些荒凉的小院子，似乎没什么东西。时不时有一些胡家的 弟子匆匆而过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shizilu" {
+    room_id = rooms.shizilu.id
+  south = rooms.houyuan.id
+  west = rooms.chufang.id
+  east = rooms.taxue.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/songhuajiang.c by LPCConverter
+# Zone: guanwai
+
+    rooms "songhuajiang" {
+      name = "松花江面"
+      description = "这里是松花江的江面，冰面早已解冻，清澈的江水涛涛北去，两岸是如 烟如雾松支，柳条。船夫悠闲地在船尾把着舵。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/taxue.c by LPCConverter
+# Zone: guanwai
+
+    rooms "taxue" {
+      name = "踏雪院"
+      description = "这是一条碎石子铺的小路，西面烟雾缭绕的，墙壁都有些发黑了， 看上去有些刺眼，不过里面却飘来阵阵香气，看来是厨房。东面则是 一个显得有些荒凉的小院子，似乎没什么东西。时不时有一些胡家的 弟子匆匆而过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "taxue" {
+    room_id = rooms.taxue.id
+  west = rooms.shizilu.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/tianchi1.c by LPCConverter
+# Zone: guanwai
+
+    rooms "tianchi1" {
+      name = "白头山天池"
+      description = "“天池在长白山巅中心点，群峰环抱，离地高约二十里，故名天池。” 天池碧波盈盈，清澈湛蓝。湖周围峭壁百丈，峰影云影倒映其中，湖光山色、 岚影云天十分诱人。湖岸周遭芳草茵茵，百花吐艳。古人诗云：“周迥八十 里，峭壁立池边。水满疑天池，云低别有天。江山宜漫画，鹿逐结前缘。予 卜携书隐，遨游慰晚年。”"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tianchi1" {
+    room_id = rooms.tianchi1.id
+  south = rooms.tianchi2.id
+  northup = rooms.longmen.id
+  westup = rooms.baiyun.id
+  eastup = rooms.huagai.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/tianchi2.c by LPCConverter
+# Zone: guanwai
+
+    rooms "tianchi2" {
+      name = "白头山天池"
+      description = "天池十天九雾，云蒸雾绕，变幻无穷。瞬息万变的雾霭风雨，使天池时 而清亮如蓝天明镜，时而缥缈如轻莹薄纱，时而腾跃如大海波涛，景色大观 令人神往。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tianchi2" {
+    room_id = rooms.tianchi2.id
+  north = rooms.tianchi1.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/tianhuo.c by LPCConverter
+# Zone: guanwai
+
+    rooms "tianhuo" {
+      name = "天豁峰"
+      description = "乘槎河东岸，与龙门峰对峙。峰顶如鹰嘴般的峻峭山峰破石而出，伸向 天池，故又名鹰嘴峰。古书载：“峰起双尖，中辟一线，有豁然开朗、令人 不可思议之趣”，相传为大禹治水所劈，石多赤色，犹如二龙蟠踞，妙趣横 生。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tianhuo" {
+    room_id = rooms.tianhuo.id
+  south = rooms.huagai.id
+  west = rooms.longmen.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/tiyun.c by LPCConverter
+# Zone: guanwai
+
+    rooms "tiyun" {
+      name = "梯云峰"
+      description = "玉柱峰北，有一山峰，峰脊出梯河瀑布，远望如腾白如云，纵列如梯， 故名梯云峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tiyun" {
+    room_id = rooms.tiyun.id
+  south = rooms.yuzhu.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/tulu.c by LPCConverter
+# Zone: guanwai
+
+    rooms "tulu" {
+      name = "土路"
+      description = "这是一条用黄土铺就的道路。许多马车不断来往，似乎在搬运石料。 你抬头了望，一辆辆满载石料的车子往西北城中而去，而一辆辆的空车 却源源不断的开向东边。直弄得土路上尘土飞扬。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tulu" {
+    room_id = rooms.tulu.id
+  east = rooms.shichang.id
+  northwest = rooms.nancheng.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/tuwu.c by LPCConverter
+# Zone: guanwai
+
+    rooms "tuwu" {
+      name = "小土屋"
+      description = "这是一座用黄土垒成的小屋，屋内打扫的很干净。四周的墙壁上挂满了 各种棍子，钎子，开山斧，小锯子等工具，看来似乎是采参所用的工具。屋 内西面的火炕上坐着一位上了年纪的老人，正在吸着旱烟袋。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tuwu" {
+    room_id = rooms.tuwu.id
+  north = rooms.xiaoxiang.id  }
+
+
+  room_characters "tuwu" {
+    room_id = rooms.tuwu.id
+    characters = [
+      { id = characters.heersu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/tuyaoguan.c by LPCConverter
+# Zone: guanwai
+
+    rooms "tuyaoguan" {
+      name = "土窑馆"
+      description = "一迈进这间小房，一股脂粉混合着大蒜的味道扑鼻而来，差点把你呛了 一个跟头。屋内点着很多蜡烛和灯笼，把四壁照得通红。很多穿着破烂的汉 子，一手搂着姑娘，一个握着酒壶，正在高谈阔论。一个肥胖的老鸦一遍招 待着客人，一遍大声催促的这里的伴当和姑娘们。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tuyaoguan" {
+    room_id = rooms.tuyaoguan.id
+  north = rooms.dongcheng.id  }
+
+
+  room_characters "tuyaoguan" {
+    room_id = rooms.tuyaoguan.id
+    characters = [
+      { id = characters.jiaowenqi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/xiaotianchi.c by LPCConverter
+# Zone: guanwai
+
+    rooms "xiaotianchi" {
+      name = "小天池"
+      description = "小天池又称长白镜湖，圆圆如镜。湖水碧蓝，林海峭壁倒映其间，风光 幽丽，一层绿里透红的细沙，均匀地铺在湖底，恰似展开着的一幅金丝绒毯。 相传天上仙女每日天池中沐浴，洗毕就到天豁峰的峰颠，坐在两个峰尖中间 的开阔岩石上，对着小天池打扮梳妆，故名镜湖。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaotianchi" {
+    room_id = rooms.xiaotianchi.id
+  eastup = rooms.pubu.id
+  west = rooms.heifengkou.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/xiaowu.c by LPCConverter
+# Zone: guanwai
+
+    rooms "xiaowu" {
+      name = "小茅屋"
+      description = "这是一座用长白山松木垒成的小屋，屋内打扫的很干净。剥离的 墙壁上挂满了兽皮和雪橇，一张小小的桌旁坐着一个虬髯大汉。北面 看来一扇小门，后面似乎别有洞天。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaowu" {
+    room_id = rooms.xiaowu.id
+  south = rooms.xiaoyuan.id
+  north = rooms.houyuan.id  }
+
+
+
+
+  room_items "xiaowu" {
+    room_id = rooms.xiaowu.id
+    items = [
+      { id = items.hufei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/xiaoxiang.c by LPCConverter
+# Zone: guanwai
+
+    rooms "xiaoxiang" {
+      name = "小巷"
+      description = "这是一个僻静幽深的小巷，四周寂静无声，一个人影也没有。长长的石 板路上落了一层厚厚的积雪，踩在脚下发出“咯吱”的响声。小巷的尽头有 一座土屋。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaoxiang" {
+    room_id = rooms.xiaoxiang.id
+  south = rooms.tuwu.id
+  east = rooms.beicheng.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/xiaoyuan.c by LPCConverter
+# Zone: guanwai
+
+    rooms "xiaoyuan" {
+      name = "小院子"
+      description = "这是山间民居前的一座小院子，北面有一个小屋，而院中 有一个老人正在打扫。"
+  x = 0
+  y = 0
+  z = 0
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "ping si"
+  direction = "north"
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
+    }
+
+  room_exits "xiaoyuan" {
+    room_id = rooms.xiaoyuan.id
+  south = rooms.baihe.id
+  north = rooms.xiaowu.id  }
+
+
+
+
+  room_items "xiaoyuan" {
+    room_id = rooms.xiaoyuan.id
+    items = [
+      { id = items.pingsi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/xiuxishi.c by LPCConverter
+# Zone: guanwai
+
+    rooms "xiuxishi" {
+      name = "休息室"
+      description = "这是间整洁的厢房，因门窗常闭着，光线很昏暗。房里别无他物， 只有中间放着一张收拾得舒舒服服的大床，看着就让人想睡觉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/xuedi1.c by LPCConverter
+# Zone: guanwai
+
+    rooms "xuedi1" {
+      name = "雪地"
+      description = "这里是一片白茫茫的雪地，一眼望不到边际。四周一个人影也没有，厚 厚的积雪踩起来发出咯吱的响声，大地上留下一串孤独的脚印。寒冷的北风 呼啸而过，吹得脸生痛。暗淡的太阳低悬在天边，显得那么苍白。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xuedi1" {
+    room_id = rooms.xuedi1.id
+  west = rooms.dongcheng.id
+  northeast = rooms.xuedi2.id  }
+
+
+  room_characters "xuedi1" {
+    room_id = rooms.xuedi1.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/guanwai/xuedi2.c by LPCConverter
+# Zone: guanwai
+
+    rooms "xuedi2" {
+      name = "雪地"
+      description = "这里是一片白茫茫的雪地，一眼望不到边际。四周一个人影也没有，厚 厚的积雪踩起来发出咯吱的响声，大地上留下一串孤独的脚印。寒冷的北风 呼啸而过，吹得脸生痛。暗淡的太阳低悬在天边，显得那么苍白。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xuedi2" {
+    room_id = rooms.xuedi2.id
+  east = rooms.xuedi3.id
+  southwest = rooms.xuedi1.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/xuedi3.c by LPCConverter
+# Zone: guanwai
+
+    rooms "xuedi3" {
+      name = "雪地"
+      description = "这里是一片白茫茫的雪地，一眼望不到边际。四周一个人影也没有，厚 厚的积雪踩起来发出咯吱的响声，大地上留下一串孤独的脚印。寒冷的北风 呼啸而过，吹得脸生痛。暗淡的太阳低悬在天边，显得那么苍白。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xuedi3" {
+    room_id = rooms.xuedi3.id
+  north = rooms.chuanchang.id
+  west = rooms.xuedi2.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/yuzhu.c by LPCConverter
+# Zone: guanwai
+
+    rooms "yuzhu" {
+      name = "玉柱峰"
+      description = "白云峰西南，有峰高耸挺秀，多峰突起，形如玉柱。东麓泻出一水，悬 流如线，注入天池，就是古籍所载的“金线泉”了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yuzhu" {
+    room_id = rooms.yuzhu.id
+  north = rooms.tiyun.id
+  northeast = rooms.baiyun.id  }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/chuanfu.c by LPCConverter
+# Zone: guanwai
+
+    characters "chuanfu" {
+      name = "船夫"
+      description = "这是一个松花江上的船夫。饱经风霜的脸上透出东北人的豪爽。"
+  gender = "男性"
+  age = 36
+  shen_type = 1
+
+  combat = {
+    combat_exp = 10000
+    max_neili = 100
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "money" min = 100 accept = true msg = "船夫对{npc}说：好！既然这位要过江， 那我就送你上这条船吧！" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/dahu.c by LPCConverter
+# Zone: guanwai
+
+    characters "dahu" {
+      name = "忽伦大虎"
+      description = "他是一个满洲巨人，手脚粗大，善于相扑，却生性纯朴。"
+  nickname = "巨人"
+  gender = "男性"
+  age = 19
+  shen_type = 0
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 90 },
+    { skill = "dodge" level = 90 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/erhu.c by LPCConverter
+# Zone: guanwai
+
+    characters "erhu" {
+      name = "忽伦二虎"
+      description = "他是一个满洲巨人，手脚粗大，善于相扑，却生性纯朴。"
+  nickname = "巨人"
+  gender = "男性"
+  age = 19
+  shen_type = 0
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 90 },
+    { skill = "dodge" level = 90 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/fengxifan.c by LPCConverter
+# Zone: guanwai
+
+    characters "fengxifan" {
+      name = "冯锡范"
+      description = "冯锡范是延平王府卫队长，武夷派第一高手，一张白湛湛的面皮。"
+  nickname = "一剑无血"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1500000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2400
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 190 },
+    { skill = "sword" level = 220 },
+    { skill = "force" level = 190 },
+    { skill = "parry" level = 190 },
+    { skill = "dodge" level = 210 },
+    { skill = "strike" level = 190 },
+    { skill = "literate" level = 100 },
+    { skill = "huashan-jian" level = 220 },
+    { skill = "kuangfeng-jian" level = 220 },
+    { skill = "huashan-xinfa" level = 190 },
+    { skill = "huashan-zhangfa" level = 190 },
+    { skill = "huashan-quanfa" level = 190 },
+    { skill = "huashan-shenfa" level = 190 },
+    { type = "sword" skill = "kuangfeng-jian" },
+    { type = "parry" skill = "kuangfeng-jian" },
+    { type = "force" skill = "huashan-xinfa" },
+    { type = "unarmed" skill = "huashan-quanfa" },
+    { type = "strike" skill = "huashan-zhangfa" },
+    { type = "dodge" skill = "huashan-shenfa" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/hadani.c by LPCConverter
+# Zone: guanwai
+
+    characters "hadani" {
+      name = "哈达尼"
+      description = "这是一位年轻的小伙子，靠打造出售铁器为生。"
+  title = "铁匠"
+  gender = "男性"
+  age = 28
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 30000
+  }
+
+  # vendor_goods: "/d/guanwai/obj/saw" (file not found)
+  # vendor_goods: "/d/guanwai/obj/axe" (file not found)
+
+  inquiries = [
+    { key = "斧头" value = "我这儿有，来一把吧。" },
+    { key = "斧子" value = "我这儿有，来一把吧。" },
+    { key = "钢锯" value = "我这里有上好的钢锯，你要不要买一条？" },
+    { key = "锯" value = "我这里有上好的钢锯，你要不要买一条？" }
+  ]
+
+  carry = [
+    { id = items.cuttonp.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/heersu.c by LPCConverter
+# Zone: guanwai
+
+    characters "heersu" {
+      name = "赫尔苏"
+      description = "他是一个老参客，可是一贫如洗。"
+  title = "参客"
+  nickname = "消息灵通"
+  age = 65
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    con = 30
+    dex = 30
+    int = 30
+    str = 30
+  }
+
+  inquiries = [
+    { key = "人参" value = "(: ask_me :)" },
+    { key = "山参" value = "(: ask_me :)" }
+  ]
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.stick.id }
+  ]
+
+
+  accept = [
+    { kind = "money" accept = true msg = "赫尔苏诧异地说道：你给我这个干什么？" },
+    { kind = "any" accept = true msg = ["赫尔苏诧异地说道：你给我这个干什么？", "赫尔苏摇头道：你等下次吧，现在我手里也没货。", "赫尔苏疑惑道：我又不是乞丐，没事给我钱作甚？", "赫尔苏冷笑道：嘿嘿，给我这么多钱哪？", "赫尔苏说道：既然您出得起价，这株百年人参就给您吧。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/jiangong.c by LPCConverter
+# Zone: guanwai
+
+    characters "jiangong" {
+      name = "监工"
+      description = "这是一个监工，眼光不断闪烁，不知道在打什么坏主意"
+  gender = "男性"
+  age = 38
+  shen_type = 1
+  startroom = "/d/guanwai/shichang"
+
+  combat = {
+    combat_exp = 500000
+  }
+
+  inquiries = [
+    { key = "job" value = "你是想采矿(mine)啊，还是运货(transit)？" },
+    { key = "mine" value = "(: ask_mine :)" },
+    { key = "transit" value = "(: ask_transit :)" },
+    { key = "工作" value = "你是想采矿(mine)啊，还是运货(transit)？" },
+    { key = "运货" value = "(: ask_transit :)" },
+    { key = "采矿" value = "(: ask_mine :)" }
+  ]
+
+  chat_chance = 9
+chats = [
+    "监工喝道：快！快给我干！",
+    "监工一扬鞭子，骂道：他奶奶的，你给我放老实点。",
+    "监工打量着四周，不知道在打什么主意。",
+    "监工狠狠的抽了一个人几下，骂道：怎么把石头掉到地上了，你这笨蛋。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 100 }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["move", "mine"]
+  }
+
+  accept = [
+    { kind = "money" accept = true msg = "{npc}看了看{name}递过来的钱，大喝道：“就这点？一边儿去！”" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/jiaowenqi.c by LPCConverter
+# Zone: guanwai
+
+    characters "jiaowenqi" {
+      name = "焦文期"
+      description = "他是关外六魔中的三魔焦文期。背上一把铁琵琶，是武林中少见的奇门兵器。"
+  nickname = "关外三魔"
+  gender = "男性"
+  age = 36
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 170000
+    con = 30
+    dex = 20
+    int = 20
+    max_jing = 500
+    max_neili = 1200
+    max_qi = 1200
+    str = 50
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "xiaowuxiang" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "shenkong-xing" level = 60 },
+    { skill = "unarmed" level = 90 },
+    { skill = "yujiamu-quan" level = 40 },
+    { skill = "parry" level = 60 },
+    { skill = "hammer" level = 100 },
+    { skill = "riyue-lun" level = 100 },
+    { type = "force" skill = "xiaowuxiang" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "unarmed" skill = "yujiamu-quan" },
+    { type = "parry" skill = "riyue-lun" },
+    { type = "hammer" skill = "riyue-lun" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.tiepipa.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/laoban.c by LPCConverter
+# Zone: guanwai
+
+    characters "laoban" {
+      name = "酒馆老板"
+      description = "这位酒馆老板满身狗肉香，点头哈腰着对你笑着。"
+  gender = "男性"
+  age = 32
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 500
+  }
+
+  goods = [
+    { id = items.gourou.id },
+    { id = items.gouroutang.id },
+    { id = items.map.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "酒馆老板得意的说道：这么冷的天，喝碗狗肉汤是最能暖和身子的！" },
+    { line = "酒馆老板搓了搓手，说道：这位{respect}，狗肉大补啊，尝尝吧。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/pihuoshang.c by LPCConverter
+# Zone: guanwai
+
+    characters "pihuoshang" {
+      name = "皮货商"
+      description = "这是一位皮货商，他自己也是满身皮裘。"
+  gender = "男性"
+  age = 25
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 5000
+  }
+
+  goods = [
+    { id = items.piqiu.id }
+  ]
+
+  carry = [
+    { id = items.piqiu.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/sanhu.c by LPCConverter
+# Zone: guanwai
+
+    characters "sanhu" {
+      name = "忽伦三虎"
+      description = "他是一个满洲巨人，手脚粗大，善于相扑，却生性纯朴。"
+  nickname = "巨人"
+  gender = "男性"
+  age = 19
+  shen_type = 0
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 90 },
+    { skill = "dodge" level = 90 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/shenke.c by LPCConverter
+# Zone: guanwai
+
+    characters "shenke" {
+      name = "参客"
+      description = "他是一个参客，常年在关外经营，颇为富有。"
+  age = 65
+  startroom = "/d/beijing/majiu"
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    con = 30
+    dex = 30
+    int = 30
+    str = 30
+  }
+
+  inquiries = [
+    { key = "入关" value = "(: ask_me :)" },
+    { key = "回去" value = "(: ask_me :)" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/sihu.c by LPCConverter
+# Zone: guanwai
+
+    characters "sihu" {
+      name = "忽伦四虎"
+      description = "他是一个满洲巨人，手脚粗大，善于相扑，却生性纯朴。"
+  nickname = "巨人"
+  gender = "男性"
+  age = 19
+  shen_type = 0
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 90 },
+    { skill = "dodge" level = 90 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/tengyilei.c by LPCConverter
+# Zone: guanwai
+
+    characters "tengyilei" {
+      name = "滕一雷"
+      description = "他是关外六魔中的大魔滕一雷。手中一只独脚铜人，看来大是不轻。"
+  nickname = "关外大魔"
+  gender = "男性"
+  age = 46
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 180000
+    con = 30
+    dex = 20
+    int = 20
+    max_jing = 500
+    max_neili = 1500
+    max_qi = 1500
+    str = 50
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "xiaowuxiang" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "shenkong-xing" level = 60 },
+    { skill = "unarmed" level = 90 },
+    { skill = "yujiamu-quan" level = 40 },
+    { skill = "parry" level = 60 },
+    { skill = "hammer" level = 100 },
+    { skill = "riyue-lun" level = 100 },
+    { type = "force" skill = "xiaowuxiang" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "unarmed" skill = "yujiamu-quan" },
+    { type = "parry" skill = "riyue-lun" },
+    { type = "hammer" skill = "riyue-lun" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.tongren.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/xiaoer.c by LPCConverter
+# Zone: guanwai
+
+    characters "xiaoer" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+
+  accept = [
+    { kind = "money" min = 500 accept = true msg = "小二一哈腰，说道：多谢您老，客官请上楼歇息。" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/xiaoyuanshan.c by LPCConverter
+# Zone: guanwai
+
+    characters "xiaoyuanshan" {
+      name = "萧远山"
+      description = "他就是丐帮前任帮主萧峰的父亲，潜伏少林数十年了。 他身穿一件普通的黑僧袍，腰间用一条麻绳随便一系。 他身高六尺有余，体格十分魁梧，长有一张线条粗旷、十 分男性化的脸庞，双目如电，炯炯有神。"
+  nickname = "黑衣僧"
+  gender = "男性"
+  age = 28
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 180000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1500
+    max_neili = 4000
+    max_qi = 4000
+    str = 45
+  }
+
+  skills = [
+    { skill = "force" level = 120 },
+    { skill = "hunyuan-yiqi" level = 120 },
+    { skill = "unarmed" level = 120 },
+    { skill = "jingang-quan" level = 120 },
+    { skill = "dodge" level = 120 },
+    { skill = "shaolin-shenfa" level = 120 },
+    { skill = "parry" level = 120 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "unarmed" skill = "jingang-quan" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "parry" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/xiucai.c by LPCConverter
+# Zone: guanwai
+
+    characters "xiucai" {
+      name = "落第秀才"
+      description = "这是个饱读诗书，却手无搏鸡之力的落第秀才。"
+  gender = "男性"
+  age = 26
+
+  combat = {
+    attitude = "peaceful"
+    int = 28
+  }
+
+  skills = [
+    { skill = "literate" level = 40 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/yanji.c by LPCConverter
+# Zone: guanwai
+
+    characters "yanji" {
+      name = "阎基"
+      description = "他是一个没落江湖医生。"
+  title = "江湖医生"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 30000
+    con = 24
+    dex = 20
+    int = 22
+    max_jing = 500
+    max_qi = 1000
+    str = 21
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "blade" level = 60 },
+    { skill = "hujia-daofa" level = 60 },
+    { type = "blade" skill = "hujia-daofa" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.gangdao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/yuzhenzi.c by LPCConverter
+# Zone: guanwai
+
+    characters "yuzhenzi" {
+      name = "玉真子"
+      description = "这是一位颇有仙风道骨的潇洒全真，手握长剑，目视前方。"
+  title = "铁剑门掌门人"
+  nickname = "护国真人"
+  gender = "男性"
+  age = 44
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 600000
+    con = 23
+    dex = 28
+    int = 27
+    max_jing = 1500
+    max_neili = 3500
+    max_qi = 3000
+    str = 25
+  }
+
+  skills = [
+    { skill = "sword" level = 150 },
+    { skill = "force" level = 150 },
+    { skill = "mizong-neigong" level = 150 },
+    { skill = "unarmed" level = 150 },
+    { skill = "dodge" level = 150 },
+    { skill = "parry" level = 150 },
+    { skill = "huashan-jian" level = 150 },
+    { skill = "shenxing-baibian" level = 150 },
+    { type = "whip" skill = "huashan-jian" },
+    { type = "parry" skill = "huashan-jian" },
+    { type = "dodge" skill = "shenxing-baibian" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/obj/gourou.c by LPCConverter
+# Zone: guanwai
+
+    characters "gourou" {
+      name = "狗肉"
+      description = "一块香喷喷的狗肉。"
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/obj/gouroutang.c by LPCConverter
+# Zone: guanwai
+
+    characters "gouroutang" {
+      name = "狗肉汤"
+      description = "一个满满一碗狗肉汤的大海碗，够喝一气的了。"
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/obj/map.c by LPCConverter
+# Zone: guanwai
+
+    characters "map" {
+      name = "『长白山旅游图』"
+      description = "『长白山导游图』  　　　【地图一】　　　　　　　　　   ＾                                      ｜                                      ＾                                                                         白  大                                                                  云  门                                                  鸡              峰  坎＼二                                        铁    冠    鹿      ／  ＼  子  门    满                                  壁 --    -- 鸣＼玉／  天  ＼龙      坎 -- 天  谷    白    密    黑    夹      崖    砬    峰  柱          门            星＼草 --    --    -- 风 -- 心      ｜    子        峰＼  池  ／峰                垛    河    林    口    子      长                  ＼  ／                                        ｜      白                    梯                                        二＼半／瀑                    云                                        龙  拉  布                    峰                                        斗  瓢   　　　【地图二】                                          山神庙                                        ／                                     荒路          船厂 -- 冰面 -- 大门坎子                                    ／              ｜                 小巷 -- 北城    荒路        雪地--雪地                ／        ｜      ｜        ／           小土屋        集市 -- 东城 -- 雪地                          ｜      ｜               香肉馆 -- 南城    土窑馆                          ｜                         木桥                          ｜                         大道                          ｜                         大道                       ／                    大道                     ｜                    宁远                   ／                官道               ／            官道           ／      山海关           ＼            老龙头"
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/obj/piqiu.c by LPCConverter
+# Zone: guanwai
+
+    characters "piqiu" {
+      name = "皮裘"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/obj/tiepipa.c by LPCConverter
+# Zone: guanwai
+
+    characters "tiepipa" {
+      name = "铁琵琶"
+      description = "这是一把奇形铁琵琶，打造的相当精巧坚实。"
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/npc/obj/tongren.c by LPCConverter
+# Zone: guanwai
+
+    characters "tongren" {
+      name = "独脚铜人"
+      description = "这是一只沉重的独脚铜人，打造的相当粗大坚实。"
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/obj/axe.c by LPCConverter
+# Zone: guanwai
+
+    items "axe" {
+      name = "斧头"
+      description = "这是一把斧头，颇为沉重，是伐树的好工具。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抓起一把斧头，握在手中。"
+    unwield = "{npc}将手中的斧头收了回来。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/obj/cwbdao.c by LPCConverter
+# Zone: guanwai
+
+    items "cwbdao" {
+      name = "闯王宝刀"
+      description = "这是闯王所使用过的刀，上面刻有几行小字。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "一道白光，{name}已在{npc}手中，只觉青光四射，寒气透骨，不禁机伶伶的打个冷战。"
+    unwield = "{npc}将{name}插回腰间，华光顿敛，天地间只闻龙鸣。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/obj/largewood.c by LPCConverter
+# Zone: guanwai
+
+    items "largewood" {
+      name = "大木材"
+      description = "这是伐自长白山的上好的大木料。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/obj/lengyue.c by LPCConverter
+# Zone: guanwai
+
+    items "lengyue" {
+      name = "冷月宝刀"
+      description = "这是胡家祖传的宝刀，冷气森森，锐利无比。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抓起刀柄，众人只觉眼前青光一闪，寒气逼人，{npc}手中已经多了一柄{name}，刀光如水，流转不定。"
+    unwield = "{npc}弹刀清啸，心中感慨，将{name}插回刀鞘。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/obj/mantou.c by LPCConverter
+# Zone: guanwai
+
+    items "mantou" {
+      name = "白面馒头"
+      description = "一个香喷喷的白面馒头。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/obj/renshen.c by LPCConverter
+# Zone: guanwai
+
+    items "renshen" {
+      name = "人参"
+      description = "这是一棵初具人形的老山参。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/obj/saw.c by LPCConverter
+# Zone: guanwai
+
+    items "saw" {
+      name = "钢锯"
+      description = "这是一条黑黝黝的钢锯，一般用来伐木。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/obj/shouwu.c by LPCConverter
+# Zone: guanwai
+
+    items "shouwu" {
+      name = "何首乌"
+      description = "这是一棵初具人形的何首乌。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/guanwai/obj/wan.c by LPCConverter
+# Zone: guanwai
+
+    items "wan" {
+      name = "粗瓷碗"
+      description = "一碗热气腾腾的粥。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

@@ -1,0 +1,756 @@
+zones "tianlongsi" {
+  name = "tianlongsi"
+}
+
+# Generated from C:/files/git/mud/d/tianlongsi/banruotai.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "banruotai" {
+      name = "般若台"
+      description = "这是个普通的石台，相传当年佛祖曾降临此台传法。再往南去就是本 寺重地----牟尼堂。江湖中传言天龙寺的镇寺之宝----六脉神剑谱就藏于 此中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "banruotai" {
+    room_id = rooms.banruotai.id
+  south = rooms.munitang.id
+  north = rooms.doushuai.id  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/baodian.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "baodian" {
+      name = "崇圣宝殿"
+      description = "这是一座宽广的大殿，正面有一座高约二十余尺的佛祖宝像，通体金 光耀眼。座下香烟缭绕。大殿两旁树立两根檀木大柱，题有一联，云曰： 　　　　　　守口摄意身莫犯　　莫恼一切诸有情"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baodian" {
+    room_id = rooms.baodian.id
+  north = rooms.ta1.id  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/cibeiyuan.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "cibeiyuan" {
+      name = "慈悲院"
+      description = "这是僧人们点化顽徒的地方。不少江湖豪客由于厌倦了打打杀杀 的日子，来到此处落发为僧，叛依佛门。墙上一幅佛祖神像，两边各 有一条幅，上书：放下屠刀，立地成佛。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "cibeiyuan" {
+    room_id = rooms.cibeiyuan.id
+  east = rooms.wuwujing.id
+  south = rooms.sanwugong.id  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/dadao1.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "dadao1" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，人来人往非常繁忙，不时地有人骑着马匆匆而过。 大道两旁有一些小货摊，似乎是一处集市。这条大道通向边域名城----大理。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dadao1" {
+    room_id = rooms.dadao1.id
+  northeast = rooms.qsjie2.id
+  south = rooms.dadao2.id  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/dadao2.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "dadao2" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，人来人往非常繁忙，不时地有人骑着马匆匆而过。 大道两旁有一些小货摊，似乎是一处集市。这条大道通向边域名城----大理。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dadao2" {
+    room_id = rooms.dadao2.id
+  west = rooms.dadao3.id
+  north = rooms.dadao1.id  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/dadao3.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "dadao3" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，人来人往非常繁忙，不时地有人骑着马匆匆而过。 大道两旁有一些小货摊，似乎是一处集市。这条大道通向边域名城----大理。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dadao3" {
+    room_id = rooms.dadao3.id
+  west = rooms.dadao4.id
+  east = rooms.dadao2.id  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/dadao4.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "dadao4" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，人来人往非常繁忙，不时地有人骑着马匆匆而过。 大道两旁有一些小货摊，似乎是一处集市。往南就是名刹----天龙寺了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dadao4" {
+    room_id = rooms.dadao4.id
+  south = rooms.damen.id
+  east = rooms.dadao3.id  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/damen.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "damen" {
+      name = "大门"
+      description = "你来到了天龙寺大门前，只见气势恢弘的两个大门柱上刻有一付对联 ( duilian )，红漆覆字，颇有点拨众生之意。抬头上望，门楣上一块黑 木大匾，上题“崇圣寺”三个大字，笔意苍松。此乃正式寺名，但大理百 性叫惯了，都称之为“天龙寺”。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ duilian = "心性无染本自圆成　但离妄缘即如如佛"
+}
+    }
+
+  room_exits "damen" {
+    room_id = rooms.damen.id
+  south = rooms.talin.id
+  north = rooms.hongsheng.id  }
+
+
+  room_characters "damen" {
+    room_id = rooms.damen.id
+    characters = [
+      { id = characters.guest.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/doumugong.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "doumugong" {
+      name = "斗母宫"
+      description = "这是给进香客们休息的地方。四周围放着一溜檀木红漆椅。几个进香 客坐在上面休息。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "doumugong" {
+    room_id = rooms.doumugong.id
+  southwest = rooms.doushuai.id
+  north = rooms.yuhuayuan.id  }
+
+
+  room_characters "doumugong" {
+    room_id = rooms.doumugong.id
+    characters = [
+      { id = characters.guest.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/doushuai.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "doushuai" {
+      name = "兜率大士院"
+      description = "这是一般参拜者所能到的最远的地方，再往南就是天龙寺历代高僧静 修之处----牟尼堂。那是常人不可轻易打搅的地方，你最好不要擅自闯入 。除非你确信能给高僧们带去好消息。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "doushuai" {
+    room_id = rooms.doushuai.id
+  north = rooms.qingxinge.id
+  south = rooms.banruotai.id
+  northeast = rooms.doumugong.id
+  northwest = rooms.sanwugong.id  }
+
+
+
+
+  room_items "doushuai" {
+    room_id = rooms.doushuai.id
+    items = [
+      { id = items.xianglu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/huangtianmen.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "huangtianmen" {
+      name = "晃天门"
+      description = "这是出入前后寺的必经之路。往南望去，可见后寺中亭台楼阁规模宏 大，构筑精丽，宅地连云，其气势之盛更胜于五台，普陀等诸处佛门胜地 的名山大寺。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huangtianmen" {
+    room_id = rooms.huangtianmen.id
+  south = rooms.yaotai.id
+  west = rooms.wulege.id
+  east = rooms.wuchangge.id  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/munitang.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "munitang" {
+      name = "牟尼堂"
+      description = "这是高僧们的静修之处。整堂全以松木制成，板门木柱，木料均不去 皮，天然质朴，和一路行来金碧辉煌的殿堂截然不同。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "munitang" {
+    room_id = rooms.munitang.id
+  north = rooms.banruotai.id  }
+
+
+
+
+  room_items "munitang" {
+    room_id = rooms.munitang.id
+    items = [
+      { id = items.kurong.id },
+      { id = items.benguan.id },
+      { id = items.benxiang.id },
+      { id = items.bencan.id },
+      { id = items.benyin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/qingxinge.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "qingxinge" {
+      name = "清心阁"
+      description = "这是寺中诸僧前去后院参修之前清心净欲的地方。阁中只有地面放有 几个蒲团，除此之外别无它物，确然是个清静之处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qingxinge" {
+    room_id = rooms.qingxinge.id
+  south = rooms.doushuai.id
+  north = rooms.wuwujing.id  }
+
+
+  room_characters "qingxinge" {
+    room_id = rooms.qingxinge.id
+    characters = [
+      { id = characters.xiaoshami.id },
+      { id = characters.xiaoshami.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/ruihemen.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "ruihemen" {
+      name = "瑞鹤门"
+      description = "这是通往天龙寺后寺的门户。你低头看看地上，只见铜门槛早已被踩 踏得锃亮，足见此寺香火之盛了。抬头向南可以望见点苍山耸立云天。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "ruihemen" {
+    room_id = rooms.ruihemen.id
+  south = rooms.wuchangge.id
+  north = rooms.wuwoge.id  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/sanwugong.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "sanwugong" {
+      name = "三无宫"
+      description = "这里可以买香到后面参拜西方大士。几个进香客正围着一个老年僧 人讨价还价。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sanwugong" {
+    room_id = rooms.sanwugong.id
+  southeast = rooms.doushuai.id
+  north = rooms.cibeiyuan.id  }
+
+
+  room_characters "sanwugong" {
+    room_id = rooms.sanwugong.id
+    characters = [
+      { id = characters.guest.id },
+      { id = characters.guest.id },
+      { id = characters.guest.id },
+      { id = characters.guest.id },
+      { id = characters.laoniansengren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/ta1.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "ta1" {
+      name = "舍利塔"
+      description = "这是天龙三塔中最高的一座，高约三百余尺，共有十六级。相传塔顶 原本供奉着一颗前代高僧的舍利子，但在当年奸臣杨义贞弑上德帝篡位以 至天下大乱时，舍利子不知何因而失踪了，这也成为天龙寺历代主持的心 腹大事。这个传言也不知是真是假。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "ta1" {
+    room_id = rooms.ta1.id
+  south = rooms.baodian.id
+  east = rooms.wuwoge.id
+  west = rooms.wujingge.id
+  north = rooms.talin.id  }
+
+
+  room_characters "ta1" {
+    room_id = rooms.ta1.id
+    characters = [
+      { id = characters.hutaseng1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/ta2.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "ta2" {
+      name = "舍利塔"
+      description = "这是天龙三塔之一，建于唐初，年代久远。传说月圆之夜，在此塔之 下默许心愿，塔顶会出现圣光指点迷津，助你达成心愿。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "ta2" {
+    room_id = rooms.ta2.id
+  west = rooms.talin.id  }
+
+
+  room_characters "ta2" {
+    room_id = rooms.ta2.id
+    characters = [
+      { id = characters.guest.id },
+      { id = characters.guest.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/ta3.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "ta3" {
+      name = "舍利塔"
+      description = "这是天龙三塔之一，建于唐初，年代久远。虽然塔身已经石迹斑驳， 但是仍然耸立挺拔，俨然是天龙寺百年威名的象征。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "ta3" {
+    room_id = rooms.ta3.id
+  east = rooms.talin.id  }
+
+
+  room_characters "ta3" {
+    room_id = rooms.ta3.id
+    characters = [
+      { id = characters.guest.id },
+      { id = characters.guest.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/tading.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "tading" {
+      name = "塔顶"
+      description = "这是舍利塔塔顶，室中孤零零地放着一张供桌(zhuozi)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tading" {
+    room_id = rooms.tading.id
+  down = rooms.ta1.id  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/talin.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "talin" {
+      name = "塔林"
+      description = "这是一片塔林。放眼望去，林林总总有不下百座高矮不一的石塔，这 些都是达官显贵们捐资修筑的，或是为了祈求菩萨保佑，或是为了还愿平 心。东西北三面各有一座高塔。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "talin" {
+    room_id = rooms.talin.id
+  south = rooms.ta1.id
+  west = rooms.ta3.id
+  east = rooms.ta2.id
+  north = rooms.damen.id  }
+
+
+  room_characters "talin" {
+    room_id = rooms.talin.id
+    characters = [
+      { id = characters.saodiseng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/wuchangge.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "wuchangge" {
+      name = "无常阁"
+      description = "这是历代大理王侯前来进香还愿时休息的地方。阁内檀象宝炉，软榻 矮几，一应俱全，清静之中隐然透出一丝富贵之象。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuchangge" {
+    room_id = rooms.wuchangge.id
+  north = rooms.ruihemen.id
+  west = rooms.huangtianmen.id  }
+
+
+  room_characters "wuchangge" {
+    room_id = rooms.wuchangge.id
+    characters = [
+      { id = characters.xiaoshami.id },
+      { id = characters.xiaoshami.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/wujingge.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "wujingge" {
+      name = "无净阁"
+      description = "这是历代大理王侯前来进香还愿时休息的地方。阁内檀象宝炉，软榻 矮几，一应俱全，清静之中隐然透出一丝富贵之象。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wujingge" {
+    room_id = rooms.wujingge.id
+  south = rooms.xianghemen.id
+  east = rooms.ta1.id  }
+
+
+  room_characters "wujingge" {
+    room_id = rooms.wujingge.id
+    characters = [
+      { id = characters.xiaoshami.id },
+      { id = characters.xiaoshami.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/wulege.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "wulege" {
+      name = "无乐阁"
+      description = "这是历代大理王侯前来进香还愿时休息的地方。阁内檀象宝炉，软榻 矮几，一应俱全，清静之中隐然透出一丝富贵之象。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wulege" {
+    room_id = rooms.wulege.id
+  north = rooms.xianghemen.id
+  east = rooms.huangtianmen.id  }
+
+
+  room_characters "wulege" {
+    room_id = rooms.wulege.id
+    characters = [
+      { id = characters.xiaoshami.id },
+      { id = characters.xiaoshami.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/wuwoge.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "wuwoge" {
+      name = "无我阁"
+      description = "这是历代大理王侯前来进香还愿时休息的地方。阁内檀象宝炉，软榻 矮几，一应俱全，清静之中隐然透出一丝富贵之象。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuwoge" {
+    room_id = rooms.wuwoge.id
+  south = rooms.ruihemen.id
+  west = rooms.ta1.id  }
+
+
+  room_characters "wuwoge" {
+    room_id = rooms.wuwoge.id
+    characters = [
+      { id = characters.xiaoshami.id },
+      { id = characters.xiaoshami.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/wuwujing.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "wuwujing" {
+      name = "无无境"
+      description = "一片水池静卧眼前，一座精雕木桥横跨其上，与其倒影恰成一圆，映 着空灵的水面，使你心中似有所动。仿佛体会到了众生之源，万物之本的 真谛。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuwujing" {
+    room_id = rooms.wuwujing.id
+  north = rooms.yaotai.id
+  south = rooms.qingxinge.id
+  west = rooms.cibeiyuan.id
+  east = rooms.yuhuayuan.id  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/xianghemen.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "xianghemen" {
+      name = "翔鹤门"
+      description = "这是通往天龙寺后寺的门户。你低头看看地上，只见铜门槛早已被踩 踏得锃亮，足见此寺香火之盛了。抬头向南可以望见点苍山耸立云天。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xianghemen" {
+    room_id = rooms.xianghemen.id
+  south = rooms.wulege.id
+  north = rooms.wujingge.id  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/yaotai.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "yaotai" {
+      name = "清都瑶台"
+      description = "这是出入前后寺的必经之路。往南望去，可见后寺中亭台楼阁规模宏 大，构筑精丽，宅地连云，其气势之盛更胜于五台，普陀等诸处佛门胜地 的名山大寺。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yaotai" {
+    room_id = rooms.yaotai.id
+  south = rooms.wuwujing.id
+  north = rooms.huangtianmen.id  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/yuhuayuan.c by LPCConverter
+# Zone: tianlongsi
+
+    rooms "yuhuayuan" {
+      name = "雨花院"
+      description = "相传当年佛祖降临天龙寺传法时，漫天遍洒雨花石。后人以石建 院，即成此间玉花院。院中常年檀香四溢，令人心旷神怡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yuhuayuan" {
+    room_id = rooms.yuhuayuan.id
+  west = rooms.wuwujing.id
+  south = rooms.doumugong.id  }
+
+# Generated from C:/files/git/mud/d/tianlongsi/npc/hutaseng1.c by LPCConverter
+# Zone: tianlongsi
+
+    characters "hutaseng1" {
+      name = "护塔僧"
+      description = ""
+  gender = "男性"
+  age = 33
+  shen_type = 1
+
+  combat = {
+    combat_exp = 80000
+    con = 22
+    dex = 33
+    int = 21
+    max_jing = 500
+    max_neili = 1200
+    max_qi = 1000
+    str = 21
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 70 },
+    { skill = "tiannan-step" level = 80 },
+    { skill = "duanshi-xinfa" level = 70 },
+    { type = "force" skill = "duanshi-xinfa" },
+    { type = "dodge" skill = "tiannan-step" }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tianlongsi/npc/laoniansengren.c by LPCConverter
+# Zone: tianlongsi
+
+    characters "laoniansengren" {
+      name = "老年僧人"
+      description = "他是寺中掌管烟火的僧人。"
+  gender = "男性"
+  age = 80
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000
+  }
+
+  # vendor_goods: "/d/tianlongsi/obj/xiang" (file not found)
+
+  inquiries = [
+    { key = "舍利子" value = "(:ask_me():)" }
+  ]
+
+  carry = [
+    { id = items.c_jiasha.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "老年僧人笑咪咪地说道：这位{respect}，买柱香吧。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tianlongsi/npc/saodiseng.c by LPCConverter
+# Zone: tianlongsi
+
+    characters "saodiseng" {
+      name = "扫地僧"
+      description = ""
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 100
+  shen_type = 1
+
+  combat = {
+    combat_exp = 5000
+    con = 21
+    dex = 19
+    int = 18
+    max_jing = 250
+    max_neili = 600
+    max_qi = 500
+    str = 22
+  }
+
+  skills = [
+    { skill = "force" level = 35 },
+    { skill = "dodge" level = 35 },
+    { skill = "parry" level = 35 }
+  ]
+
+
+  carry = [
+    { id = items.c_jiasha.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tianlongsi/npc/xiaoshami.c by LPCConverter
+# Zone: tianlongsi
+
+    characters "xiaoshami" {
+      name = "小沙弥"
+      description = ""
+  gender = "男性"
+  age = 15
+  shen_type = 1
+  score = 1000
+
+  combat = {
+    combat_exp = 8000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 100
+    max_neili = 100
+    max_qi = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 70 },
+    { skill = "tiannan-step" level = 80 },
+    { skill = "kurong-changong" level = 70 },
+    { type = "force" skill = "kurong-changong" },
+    { type = "dodge" skill = "tiannan-step" },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" }
+  ]
+
+
+  carry = [
+    { id = items.y_jiasha.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tianlongsi/obj/box.c by LPCConverter
+# Zone: tianlongsi
+
+    items "box" {
+      name = "锦盒"
+      description = "这是装舍利子的盒子,你似乎应该交还失主。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tianlongsi/obj/xiang.c by LPCConverter
+# Zone: tianlongsi
+
+    items "xiang" {
+      name = "香"
+      description = "这是一柱香,你可以点燃它(dian)。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tianlongsi/obj/xianglu.c by LPCConverter
+# Zone: tianlongsi
+
+    items "xianglu" {
+      name = "香炉"
+      description = "这是一个庙里常见的香炉，用来让善男信女们插香(pushin)进愿。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

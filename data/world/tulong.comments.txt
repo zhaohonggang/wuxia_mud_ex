@@ -1,0 +1,1215 @@
+# Generated from C:/files/git/mud/d/tulong/obj/duan1.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/obj/duan2.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/obj/miji.c by LPCConverter
+# Zone: tulong
+
+# inherit F_UNIQUE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!(arg=="xianglong miji" || arg == "book" || arg == "miji" ))  →  
+  # if (me->is_busy())  →  write('你现在正忙着呢。\\\\\n');
+  # if ( me->is_fighting() )  →  write('你无法在战斗中专心下来研读新知！\\\\\n');
+  # if (!id(arg))  →  write('你要读什么？\\\\\n');
+  # if ( !me->query_skill("literate", 1) )  →  write('你是个文盲，先学点文化(literate)吧。\\\\\n');
+  # if ( (int)me->query("jing") < 80 )  →  write('你现在过于疲倦，无法专心下来研读新知。\\\\\n');
+  # if ( (int)me->query("qi") < 80 )  →  write('你现在过于疲倦，无法专心下来研读新知。\\\\\n');
+  # if ( (int)me->query("combat_exp") < 100000 )  →  write('你的实战经验不足，无法看懂降龙十八掌秘笈中的内容。\\\\\n');
+  # if ( (int)me->query("combat_exp") < (int)pxlevel*pxlevel*pxlevel/10 )  →  write('你的实战经验不足，无法看懂降龙十八掌秘笈中的内容。\\\\\n');
+  # if ( me->query_skill("dragon-strike", 1) > 249)  →  write('你研读了一会儿，但是发现秘笈中的内容对你而言都太浅了，没有学到任何东西。\\\\\n');
+  # if ( me->query_skill("dragon-strike", 1) < 80)  →  write('你研读了一会儿，但是发现秘笈中的内容深奥无比，没有学到任何东西。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_du) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_du
+  # UNHANDLED FUNCTION: setup
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/obj/tulongdao.c by LPCConverter
+# Zone: tulong
+
+# inherit F_UNIQUE;
+# inherit F_NOCLONE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else if (this_player()->query("jiali") <= 160)  →  
+  # if (arg != "yitian sword" || !ob = present("yitian sword", environment(this_object())))  →  
+# ==== CONDITIONAL BRANCHES (do_open) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_open
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/obj/yishu.c by LPCConverter
+# Zone: tulong
+
+# inherit F_UNIQUE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!(arg=="wumu yishu" || arg == "book" || arg == "yishu" ))  →  
+  # if (me->is_busy())  →  write('你现在正忙着呢。\\\\\n');
+  # if ( me->is_fighting() )  →  write('你无法在战斗中专心下来研读新知！\\\\\n');
+  # if (!id(arg))  →  write('你要读什么？\\\\\n');
+  # if ( !me->query_skill("literate", 1) )  →  write('你是个文盲，先学点文化(literate)吧。\\\\\n');
+  # if ( (int)me->query("jing") < 80 )  →  write('你现在过于疲倦，无法专心下来研读新知。\\\\\n');
+  # if ( (int)me->query("qi") < 80 )  →  write('你现在过于疲倦，无法专心下来研读新知。\\\\\n');
+  # if ( (int)me->query("combat_exp") < 100000 )  →  write('你的实战经验不足，无法看懂武穆遗书中的内容。\\\\\n');
+  # if ( (int)me->query("combat_exp") < (int)pxlevel*pxlevel*pxlevel/10 )  →  write('你的实战经验不足，无法看懂武穆遗书中的内容。\\\\\n');
+  # if ( me->query_skill("craft-cognize", 1) > 299)  →  write('你发现对于武穆遗书上的兵法要诣已经了然于胸，完全掌握了。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_du) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_du
+  # UNHANDLED FUNCTION: setup
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/obj/yitianjian.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (victim->query("neili") < 0)  →  
+# ==== CONDITIONAL BRANCHES (hit_ob) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/obj/zhenjing.c by LPCConverter
+# Zone: tulong
+
+# inherit F_UNIQUE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg)  →  write('研究九阴真经的指令格式：\\\\\n' 'research|yanjiu <技能> from <九阴真经>\\\\\n');
+  # if (arg == "yijin-duangu" || arg == "shexing-lifan" || arg == "cuixin-zhang" || arg == "jiuyin-baiguzhao" || arg == "jiuyin zhenjing" || arg == "zhenjing" )  →  write('研究九阴真经的指令格式：\\\\\n' 'research|yanjiu <技能> from <九阴真经>\\\\\n');
+  # if (sscanf(arg, "%s from %s", skill, book) != 2)  →  
+  # if ( me->is_busy())  →  write('你现在正忙着呢。\\\\\n');
+  # if ( me->is_fighting())  →  write('你无法在战斗中专心下来研读新知！\\\\\n');
+  # if ( ! me->query_skill("literate", 1) )  →  write('你是个文盲，先学点文化(literate)吧。\\\\\n');
+  # if (! id(book))  →  write('这里没有这本书。\\\\\n');
+  # if ( skill != "yijin-duangu" && skill != "shexing-lifan" && skill != "cuixin-zhang" && skill != "jiuyin-baiguzhao" )  →  write(HIW '你可以从九阴真经里研究到易筋锻骨（yijin-duangu），蛇行狸翻（shexing-lifan），\\\\\n' '催心掌（cuixin-zhang）以及九阴白骨爪（jiuyin-baiguzhao）。\\\\\n\\\\\n' NOR,);
+  # if ( me->query_skill("sanscrit", 1) < 199)  →  write('你的梵文水平太低，无法看懂真经里所记载的内容。\\\\\n');
+  # if ( (int)me->query("combat_exp") < 500000 )  →  write('你的实战经验不足，再怎么读也没用。\\\\\n');
+  # if ( (int)me->query("jing") < 101 || (int)me->query("qi") < 101 )  →  write('你现在过于疲倦，无法专心下来研读新知。\\\\\n');
+  # if ( skill == "yijin-duangu" )  →  write('你的实战经验不足，再怎么读也没用。\\\\\n'); write('你研读了一会儿，但是发现上面所说的对你而言都太浅了，没有学到任何东西。\\\\\n'); write('你仔细研读九阴真经，对真经里所记载的易筋锻骨颇有心得。\\\\\n');
+  # if ( skill == "shexing-lifan" )  →  write('你的实战经验不足，再怎么读也没用。\\\\\n'); write('你研读了一会儿，但是发现上面所说的对你而言都太浅了，没有学到任何东西。\\\\\n'); write('你仔细研读九阴真经，对真经里所记载的蛇行狸翻轻功颇有心得。\\\\\n');
+  # if ( skill == "cuixin-zhang" )  →  write('你的实战经验不足，再怎么读也没用。\\\\\n'); write('你研读了一会儿，但是发现上面所说的对你而言都太浅了，没有学到任何东西。\\\\\n'); write('你仔细研读九阴真经，对真经里所记载的催心掌颇有心得。\\\\\n');
+  # if ( skill == "jiuyin-baiguzhao" )  →  write('你的实战经验不足，再怎么读也没用。\\\\\n'); write('你研读了一会儿，但是发现上面所说的对你而言都太浅了，没有学到任何东西。\\\\\n'); write('你仔细研读九阴真经，对真经里所记载的九阴白骨爪颇有心得。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_du) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_du
+  # UNHANDLED FUNCTION: setup
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/tulong/tulong/boat2.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg!="boat" && arg!="船")  →  
+  # if (query("dao"))  →  
+  # else  →  message_vision('$N举起手中'+inv->query('name')+'，向船上的桅杆砸去。\\\\\n',me);
+  # if (!objectp(inv))  →  
+# ==== CONDITIONAL BRANCHES (do_break) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_break
+  # UNHANDLED FUNCTION: do_dao
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/boat3.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !arg || arg=="" )  →  
+  # if ( arg=="deck" )  →  
+# ==== CONDITIONAL BRANCHES (do_jump) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_jump
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/daobian.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!me->query_temp("dao") && dir=="east")  →  
+  # if (me->query_temp("dao") && dir=="east" && ob=present("bai guishou"))  →  command('tnnd'+me->query('id')); command('slap3'+me->query('id')); message_vision('$N喝道：$n，去死吧！\\\\\n',ob,me);
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/tulong/tulong/haigang.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! me->query_temp("to_wang"))  →  
+  # if (bai->query_temp("go"))  →  
+# ==== CONDITIONAL BRANCHES (do_accept) ====
+  # if (objectp(ding))  →  
+  # if (objectp(dao))  →  tell_object(me, HIC '\\\\\n只见岸边上泊满了海船，所有的海船全部标记着天' '鹰教的标志。\\\\\n' NOR); tell_object(me, CYN '\\\\\n白龟寿对你说道：此次我天鹰教得到了屠' '龙宝刀，这位武林同\\\\\n道可愿意参加扬刀立威大' '会，选出此刀该为何人所有？\\\\\n' NOR); tell_object(me, HIR '\\\\\n你愿意参加(' HIY 'accept' HIR ')王盘' '山岛扬刀立威大会吗？\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: arrive2
+  # UNHANDLED FUNCTION: moveto
+  # UNHANDLED FUNCTION: do_accept
+  # UNHANDLED FUNCTION: arrive1
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/chang.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!arg)  →  
+  # if (sscanf(arg, "%s from %s", what, where) != 2)  →  
+  # if (where == "ding")  →  message_vision(CYN '$N对$n大喝一声：大胆！竟敢打宝刀的主意！\\\\\n' NOR, obj,this_player()); message_vision(CYN '$N对$n喝道：去死吧。\\\\\n' NOR, obj,this_player());
+# ==== CONDITIONAL BRANCHES (do_get) ====
+  # if (objectp(obj) && objectp(obj2))  →  message_vision(HIC '\\\\\n$N哈哈一笑，手一挥，将那屠龙宝刀掷进了烈焰冲天的大铁鼎中。\\\\\n\\\\\n' NOR, this_object());
+  # if (objectp(obj))  →  
+# ==== CONDITIONAL BRANCHES (put) ====
+  # else  →  
+  # if (objectp(sword))  →  tell_object(obj, HIR'\\\\\n一条人影从你眼前一闪而过：' + '“多谢替老夫取回' NOR + sword->name() + HIR '，就此谢过，咱们后会有期！”\\\\\n\\\\\n'NOR);
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: put
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: do_bi
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: do_get
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/guo.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (objectp(present("mai jing",environment())))  →  
+# ==== CONDITIONAL BRANCHES (do_bi) ====
+  # if (!arg)  →  
+  # if (objectp(obj=present("mai jing",environment())))  →  
+  # if (sscanf(arg,"%s from %s",what, where) !=2)  →  
+  # if (where == "ding")  →  message_vision(CYN '$N哼了一声。\\\\\n' NOR, obj); message_vision(CYN '$N说道：要想得到宝刀，先过我三拳！\\\\\n' NOR, obj);
+# ==== CONDITIONAL BRANCHES (do_get) ====
+  # if (objectp(query("anti")))  →  message_vision(HIR '\\\\\n\\\\\n$N一拳端端正正的击中了$n' HIR '的小腹。\\\\\n' NOR, this_object(),query('anti')); message_vision(HIR '人身的小腹本来极是柔软，但$N' HIR '着拳时如中铁石，刚知不妙，已狂喷鲜血。\\\\\n' NOR, this_object(),query('anti'));
+# ==== CONDITIONAL BRANCHES (die) ====
+  # if (me->query("max_neili")>2000)  →  
+# ==== CONDITIONAL BRANCHES (begin) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: do_bi
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: do_get
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/huiyue.c by LPCConverter
+# Zone: tulong
+
+# inherit F_MASTER;
+# inherit F_COAGENT;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/liuyun.c by LPCConverter
+# Zone: tulong
+
+# inherit F_MASTER;
+# inherit F_GUARDER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/mai.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!arg)  →  
+  # if (objectp(obj=present("yuan guangbo",environment())))  →  
+  # if (sscanf(arg,"%s from %s",what, where) !=2)  →  
+  # if (where == "ding")  →  message_vision(CYN '$N正色道：这位英雄请了！\\\\\n' NOR, obj); message_vision(CYN '$N说道：屠龙宝刀乃不世之宝，要得此刀，需过(bi)了我这关！\\\\\n' NOR, obj);
+# ==== CONDITIONAL BRANCHES (do_get) ====
+  # if (objectp(present("guo sanquan",environment())))  →  
+# ==== CONDITIONAL BRANCHES (guo) ====
+  # if (objectp(query("anti")))  →  message_vision(HIR'\\\\\n\\\\\n$N挣扎了两下，一口气没接上，倒在地上一动不动了。\\\\\n'NOR,this_object());
+# ==== CONDITIONAL BRANCHES (unconcious) ====
+  # if (objectp(query("anti")))  →  message_vision(HIR'\\\\\n\\\\\n$N挣扎了两下，一口气没接上，倒在地上一动不动了。\\\\\n'NOR,this_object());
+# ==== CONDITIONAL BRANCHES (die) ====
+  # if (objectp(present("yuan guangbo",environment())))  →  
+# ==== CONDITIONAL BRANCHES (begin) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: guo
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: unconcious
+  # UNHANDLED FUNCTION: do_get
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/miaofeng.c by LPCConverter
+# Zone: tulong
+
+# inherit F_MASTER;
+# inherit F_COAGENT;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/qqq.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!arg)  →  
+  # if (sscanf(arg, "%s from %s", what, where) != 2)  →  
+  # if (where == "ding")  →  message_vision(CYN '$N对$n大喝一声：大胆！竟敢打宝刀的主意！\\\\\n' NOR, obj,this_player()); message_vision(CYN '$N对$n喝道：去死吧。\\\\\n' NOR, obj,this_player());
+# ==== CONDITIONAL BRANCHES (do_get) ====
+  # if (! ob)  →  
+  # if (owner->is_character() || ! environment(owner))  →  
+  # if (objectp(owner) && owner != this_object())  →  
+  # if (objectp(ob) && objectp(obj2))  →  message_vision(HIC '\\\\\n$N哈哈一笑，手一挥，将那屠龙宝刀掷进了烈焰冲天的大铁鼎中。\\\\\n\\\\\n' NOR, this_object());
+  # if (objectp(ob))  →  
+# ==== CONDITIONAL BRANCHES (put) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: put
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: do_bi
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: do_get
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/yin.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg == "roar" )  →  message_vision(CYN '\\\\\n殷素素喝道：贼子，要想行凶么？在这里恐怕由不得你！\\\\\n' NOR, obj);
+# ==== CONDITIONAL BRANCHES (do_yun) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: receive_damage
+  # UNHANDLED FUNCTION: do_yun
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: receive_wound
+  # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_fight
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/yuan.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!arg)  →  
+  # if (objectp(obj=present("chang jinpeng",environment(this_object()))))  →  
+  # if (sscanf(arg,"%s from %s",what, where) !=2)  →  
+  # if (where == "ding")  →  message_vision(CYN '$N喝道：无耻小贼，给我住手！你凭什么得此宝刀？\\\\\n' NOR, obj,this_player()); message_vision(CYN '$N冷冷地说道：要得此刀，先比(bi)赢了我再说！\\\\\n' NOR, obj,this_player());
+# ==== CONDITIONAL BRANCHES (do_get) ====
+  # if (objectp(query("anti")))  →  command('say 佩服，佩服......'); message_vision(HIR '\\\\\n$N嘶哑着嗓子干嚎了两声，双眼翻白，跌倒在地，口中吐出一些白沫，就再也没动了。\\\\\n' NOR, this_object());
+# ==== CONDITIONAL BRANCHES (unconcious) ====
+  # if (objectp(query("anti")))  →  command('say 佩服，佩服......'); message_vision(HIR '\\\\\n$N嘶哑着嗓子干嚎了两声，双眼翻白，跌倒在地，口中吐出一些白沫，就再也没动了。\\\\\n' NOR, this_object());
+# ==== CONDITIONAL BRANCHES (die) ====
+  # if (objectp(present("chang jinpeng",environment())))  →  
+# ==== CONDITIONAL BRANCHES (begin) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: unconcious
+  # UNHANDLED FUNCTION: do_get
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/zhang.c by LPCConverter
+# Zone: tulong
+
+# inherit F_MASTER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!arg)  →  
+  # if (sscanf(arg,"%s from %s",what, where) !=2)  →  
+  # if (objectp(present("mai jing", environment())) || objectp(present("guo sanquan",environment())))  →  
+  # if (where == "ding")  →  message_vision(CYN '$N说道：在下武当张翠山，这厢有理了！\\\\\n' NOR, this_object());
+# ==== CONDITIONAL BRANCHES (do_get) ====
+  # if (objectp(obj))  →  
+# ==== CONDITIONAL BRANCHES (arrive) ====
+  # if (! objectp(ding))  →  
+  # if (! objectp(dao))  →  
+  # if (objectp(dao))  →  command('rumor '+me->name(1)+'在王盘山击败了各路英豪，夺得了屠龙宝刀。');
+  # if (objectp(obj))  →  
+# ==== CONDITIONAL BRANCHES (end) ====
+  # if (me->query_temp("biwu"))  →  
+# ==== CONDITIONAL BRANCHES (begin) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: receive_damage
+  # UNHANDLED FUNCTION: storm5
+  # UNHANDLED FUNCTION: receive_wound
+  # UNHANDLED FUNCTION: storm3
+  # UNHANDLED FUNCTION: storm
+  # UNHANDLED FUNCTION: biwu
+  # UNHANDLED FUNCTION: biwu3
+  # UNHANDLED FUNCTION: storm2
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: shu
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: arrive
+  # UNHANDLED FUNCTION: biwu2
+  # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: storm4
+  # UNHANDLED FUNCTION: end
+  # UNHANDLED FUNCTION: storm6
+  # UNHANDLED FUNCTION: do_get
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/bosi.c by LPCConverter
+# Zone: tulong
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/flag.c by LPCConverter
+# Zone: tulong
+
+# inherit CLUB;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/hammer.c by LPCConverter
+# Zone: tulong
+
+# inherit HAMMER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/jiaofu.c by LPCConverter
+# Zone: tulong
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/ling.c by LPCConverter
+# Zone: tulong
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/obj/ding.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: is_container
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/obj/ling1.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!(arg=="shenghuo ling" || arg == "shenghuo" || arg == "ling" ))  →  
+  # if (me->is_busy())  →  write('你现在正忙着呢。\\\\\n');
+  # if ( me->is_fighting() )  →  write('你无法在战斗中专心下来研读新知！\\\\\n');
+  # if (!id(arg))  →  write('你要读什么？\\\\\n');
+  # if ( !me->query_skill("literate", 1) )  →  write('你是个文盲，先学点文化(literate)吧。\\\\\n');
+  # if ( me->query_skill("sanscrit", 1) < 199)  →  write('你的梵文水平太低，无法看懂圣火令里所记载的内容。\\\\\n');
+  # if ( (int)me->query("jing") < 80 )  →  write('你现在过于疲倦，无法专心下来研读新知。\\\\\n');
+  # if ( (int)me->query("qi") < 80 )  →  write('你现在过于疲倦，无法专心下来研读新知。\\\\\n');
+  # if ( (int)me->query("combat_exp") < 100000 )  →  write('你的实战经验不足，再怎么读也没用。\\\\\n');
+  # if ( (int)me->query("combat_exp") < (int)pxlevel*pxlevel*pxlevel/10 )  →  write('你的实战经验不足，再怎么读也没用。\\\\\n');
+  # if ( me->query_skill("shenghuo-ling", 1) > 49)  →  write('你研读了一会儿，但是发现圣火令上所记载的对你而言都太浅了，没有学到任何东西。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_du) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_du
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/obj/stone.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/tulong/obj/xuantie-ling.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/jiulou.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! npc1 || ! npc2)  →  
+  # if (objectp(npc1))  →  
+  # if (objectp(npc2))  →  
+  # if (objectp(npc3))  →  
+  # if (objectp(npc4))  →  
+# ==== CONDITIONAL BRANCHES (check) ====
+  # if (query("story"))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+  # if (random(5) > 2)  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: check
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/tulong/yitian/road1.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_temp("want_leave"))  →  tell_object(me, HIR '你决定离开万安寺。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_leave
+  # UNHANDLED FUNCTION: mes
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_dadian.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: reset
+  # reset: object ob; ::reset(); foreach (ob in all_inventory(this_object())) { if (ob->is_character() || ob->is_head() || ob->is_corpse() || ob->query("no_get")) continue; destruct(ob);
+# ==== RAW CODE BLOCKS ====
+  # if (ob->is_character() || ob->is_head() || ob->is_corpse() || ob->query("no_get"))  →  
+# ==== CONDITIONAL BRANCHES (reset) ====
+  # if (dir == "north" && objectp(present("bo seng", environment(me))))  →  
+  # if (dir == "south" && objectp(present("bo seng", environment(me))))  →  
+  # if (dir == "west" && objectp(present("bo seng", environment(me))))  →  
+  # if (dir == "east" && objectp(present("bo seng", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: reset
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_damen.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  message_vision(HIW '$N' HIW '见对方来势汹涌，当即纵身跃起，半' '空中拔出倚天剑，划出一道美丽的寒芒直贯韦一' '笑，只听韦\\\\\n一笑一声惨嚎，' NOR + HIR '鲜血' NOR + HIW '飞溅。\\\\\n\\\\\n', me);
+  # if ((int)me->query_skill("parry") < 400)  →  message_vision(HIW '$N' HIW '只见对方来势汹涌，连忙抽身抵挡，' '顿时只觉手中一轻，倚天剑已被韦一笑' '夺了过去！\\\\\n\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (yixiao_rob) ====
+  # if ((objectp(sword = present("yitian sword", me))))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+  # if (dir == "in" &&ob = present("qianfu zhang"))  →  command('tnnd' + me->query('id')); message_vision(CYN '$N喝道：乱党贼子，敢在这里撒野？去死吧！\\\\\n' NOR, ob, me);
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: yixiao_rob
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_dayuan.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( dir == "north" && ob = present("zhao yishang"))  →  message_vision(CYN '$N喝道：在这里也敢乱闯？去死吧！\\\\\n' NOR,ob,me);
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_houdian.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "up" && objectp(present("dao seng", environment(me))))  →  
+  # if (dir == "south" && objectp(present("dao seng", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_lou2.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: reset
+  # reset: object ob; ::reset(); foreach (ob in all_inventory(this_object())) { if (ob->is_character() || ob->is_head() || ob->is_corpse() || ob->query("no_get")) continue; destruct(ob);
+# ==== RAW CODE BLOCKS ====
+  # if (ob->is_character() || ob->is_head() || ob->is_corpse() || ob->query("no_get"))  →  
+# ==== CONDITIONAL BRANCHES (reset) ====
+  # if (dir == "up" && objectp(present("zhang seng", environment(me))))  →  
+  # if (dir == "down" && objectp(present("zhang seng", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: reset
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_lou3.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "up" && objectp(present("jian seng", environment(me))))  →  
+  # if (dir == "down" && objectp(present("jian seng", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/ada.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (objectp(query("anti")))  →  message_vision(HIR '\\\\\n$n' HIR '暗自摸索阿大剑招中的破绽，手中兵器挥洒，将阿大手中的倚天剑牢牢圈住，' '阿大顿感不妙，刚要撤剑回\\\\\n防，只觉胸口一阵冰凉，$n' HIR '的剑身已经贯胸而入。\\\\\n\\\\\n' NOR, this_object(),query('anti')); message_vision(HIR '$n' HIR '得势不饶人，紧接着连攻出数剑，将阿大全身各处筋脉尽数削断。\\\\\n\\\\\n' NOR, this_object(),query('anti')); message_vision(CYN '\\\\\n赵敏一张俏脸顿时惨白，叹了口气，说道：“很好，这倚天剑你就拿去吧！”\\\\\n' NOR, this_object()); message_vision(CYN '赵敏对着$n' CYN '嫣然一笑，随即轻轻伸了伸腰，轻声说道：“鹿先生，鹤先生，我累了。”\\\\\n' NOR, this_object(), query('anti')); message_vision(HIR '只见赵敏身后闪出两个人影，相互使了个眼神，二话不说，对着$n' HIR '直扑过来。”\\\\\n' NOR, this_object(), query('anti'));
+# ==== CONDITIONAL BRANCHES (unconcious) ====
+  # if (objectp(present("a er", environment())))  →  
+  # if (! me->query_temp("win_aer"))  →  command('heng'); command('say 阁下是谁？为何刚才不出战，现在来趁机拣便宜。');
+  # if (! objectp(weapon = me->query_temp("weapon")))  →  command('say 我只和你比兵器功夫！');
+  # if (sword)  →  command('nod'); command('bow'); message_vision(CYN '突然赵敏喝道：“慢着！拿着倚天剑和$n' CYN '斗！”\\\\\n' NOR, obj, this_player()); message_vision(CYN '阿大微微点了点头，道：“遵命！”\\\\\n\\\\\n' NOR, obj, this_player()); message_vision(CYN '阿大躬身上前，轻轻在' NOR+RED '红木剑架' NOR+CYN '上一拍，那号称天下第一神兵的' NOR+WHT '倚天剑' NOR+CYN '顿时凌空跃起，飞如阿大手中。\\\\\n\\\\\n' NOR, obj, this_player()); message_vision(HIW '只听“嗖”的一声破空声响，号称天下第一神兵的倚天剑已被阿大握在手中。\\\\\n\\\\\n' NOR, this_object(),this_player()); command('say 进招了。'); message_vision(HIR '阿大仰天一声清啸，手中倚天剑寒芒顿时爆涨数倍，“刷刷刷刷”连续数剑，向$n' HIR '各处要害连续刺去！\\\\\n身法之快，剑法之高明，的确世所罕见。\\\\\n\\\\\n' NOR, this_object(),this_player());
+# ==== CONDITIONAL BRANCHES (begin) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: unconcious
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/aer.c by LPCConverter
+# Zone: tulong
+
+# inherit F_MASTER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (objectp(query("anti")))  →  message_vision( HIR '\\\\\n只听一声轰响，阿二前胸被$n' HIR '打中，胸骨尽断，口中鲜血狂喷，身子如断了线的风筝\\\\\n' '一样直飞了出去，倒在地上动也不动一下。\\\\\n\\\\\n' NOR, this_object(),query('anti')); message_vision( CYN '赵敏颇为惊讶，可还是不露声色，只是向亲兵淡淡挥手说' '道：“抬下去。”\\\\\n' NOR, this_object()); message_vision( CYN '赵敏又转头对$n' CYN '微笑道：“很好，还剩下个阿大，你胜过了他倚天剑你就取走吧。”\\\\\n' NOR, this_object(), query('anti'));
+# ==== CONDITIONAL BRANCHES (die) ====
+  # if (objectp(present("a san", environment())))  →  
+  # if (! me->query_temp("win_asan"))  →  command('@@'); command('say 阁下是谁？为何刚才不出战，现在来趁机拣便宜。');
+  # if (objectp(weapon = me->query_temp("weapon")))  →  command('shake'); command('say 我也和你比空手，放下你的' + weapon->name() + '再说。');
+# ==== CONDITIONAL BRANCHES (begin) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_fight
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/asan.c by LPCConverter
+# Zone: tulong
+
+# inherit F_MASTER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (objectp(query("anti")))  →  message_vision(HIR '\\\\\n只听阿三几声惨嚎，全身各处关节竟然已被$n' HIR '一一用重手折断，大叫一声，瘫倒在地。\\\\\n' NOR, this_object(),query('anti')); message_vision(CYN '\\\\\n阿三倦缩在地，一张脸痛得全无血色，挣扎着说' '道：“郡主，小的无能。”，话未说完，已晕了过去。\\\\\n' NOR, this_object()); message_vision(CYN '赵敏看了倒在地上的阿三一眼，面无表情地说道：' '“来人，给我抬下去。”\\\\\n' NOR, this_object()); message_vision(CYN '赵敏转过头对$n' CYN '微笑道：“不错呀，现在让阿二和你比。”\\\\\n' NOR, this_object(),query('anti'));
+# ==== CONDITIONAL BRANCHES (die) ====
+  # if (objectp(present("he taichong", environment())))  →  
+  # if (! me->query_temp("win_he"))  →  command('heng'); command('say 阁下是谁？为何刚才不出战，现在来趁机拣便宜。');
+  # if (objectp(weapon = me->query_temp("weapon")))  →  command('say 我和你比空手，请将' + weapon->name() + '放下。');
+# ==== CONDITIONAL BRANCHES (begin) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_fight
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/bing1.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob = this_player()) && (int)ob->query_condition("killer"))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_fight
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/bing2.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob = this_player()) && (int)ob->query_condition("killer"))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_fight
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/he.c by LPCConverter
+# Zone: tulong
+
+# inherit F_MASTER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (objectp(query("anti")))  →  message_vision(CYN '\\\\\n赵敏皱了皱眉头，低声骂道：“废物！”\\\\\n' NOR, this_object());
+# ==== CONDITIONAL BRANCHES (die) ====
+  # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "sword")  →  command('say 我内力全失，现在只能和你比剑！');
+# ==== CONDITIONAL BRANCHES (begin) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_fight
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/li4.c by LPCConverter
+# Zone: tulong
+
+# inherit F_UNIQUE;
+
+
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/qian2.c by LPCConverter
+# Zone: tulong
+
+# inherit F_UNIQUE;
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/sun3.c by LPCConverter
+# Zone: tulong
+
+# inherit F_UNIQUE;
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/wang8.c by LPCConverter
+# Zone: tulong
+
+# inherit F_UNIQUE;
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/wu6.c by LPCConverter
+# Zone: tulong
+
+# inherit F_UNIQUE;
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/zhao.c by LPCConverter
+# Zone: tulong
+
+# inherit F_UNIQUE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !ob || environment(ob) != environment() )  →  
+  # if ( !userp(ob))  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (!arg)  →  
+  # if (sscanf(arg,"%s from %s",what, where) !=2)  →  
+  # if (where == "shelf")  →  message_vision(CYN '\\\\\n赵敏喝道：无耻贼子，休得无理！\\\\\n' NOR, obj); message_vision(CYN '\\\\\n赵敏轻声哼了声，道：要想得到倚天剑也可以，但是首先' '得比赢(bi)我的手下！\\\\\n' NOR, obj);
+# ==== CONDITIONAL BRANCHES (do_get) ====
+  # if (arg == "roar" )  →  message_vision(CYN '\\\\\n赵敏喝道：无耻贼子，在我这儿由不得你猖狂！\\\\\n' NOR, obj);
+# ==== CONDITIONAL BRANCHES (do_yun) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: receive_damage
+  # UNHANDLED FUNCTION: do_yun
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: receive_wound
+  # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: do_get
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/zhao1.c by LPCConverter
+# Zone: tulong
+
+# inherit F_UNIQUE;
+
+
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/zheng7.c by LPCConverter
+# Zone: tulong
+
+# inherit F_UNIQUE;
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/zhou5.c by LPCConverter
+# Zone: tulong
+
+# inherit F_UNIQUE;
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/gong.c by LPCConverter
+# Zone: tulong
+
+# inherit HANDS;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/jian.c by LPCConverter
+# Zone: tulong
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/spear.c by LPCConverter
+# Zone: tulong
+
+# inherit CLUB;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/tiezhang.c by LPCConverter
+# Zone: tulong
+
+# inherit STAFF;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/tongbo.c by LPCConverter
+# Zone: tulong
+
+# inherit HAMMER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tulong/yitian/obj/shelf.c by LPCConverter
+# Zone: tulong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: is_container
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

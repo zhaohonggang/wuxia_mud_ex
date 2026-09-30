@@ -1,0 +1,177 @@
+# Generated from C:/files/git/mud/d/tianlongsi/banruotai.c by LPCConverter
+# Zone: tianlongsi
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! stringp(query("exits/south")))  →  
+# ==== CONDITIONAL BRANCHES (long) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: long
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/tianlongsi/munitang.c by LPCConverter
+# Zone: tianlongsi
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! mapp(query("exits")))  →  write('现在没有出路，你无法离开。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_quit) ====
+  # if (mapp(query("exits")))  →  
+# ==== CONDITIONAL BRANCHES (long) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: long
+  # UNHANDLED FUNCTION: do_quit
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/tianlongsi/tading.c by LPCConverter
+# Zone: tianlongsi
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/tianlongsi/npc/laoniansengren.c by LPCConverter
+# Zone: tianlongsi
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (me->query_temp("marks/ask_temp2"))  →  
+# ==== CONDITIONAL BRANCHES (ask_me) ====
+  # if ( !ob || environment(ob) != environment() )  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_me
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/tianlongsi/obj/box.c by LPCConverter
+# Zone: tianlongsi
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!arg&&arg!="he")  →  
+# ==== CONDITIONAL BRANCHES (do_open) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_open
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tianlongsi/obj/xiang.c by LPCConverter
+# Zone: tianlongsi
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (!arg||arg!="xiang")  →  
+# ==== CONDITIONAL BRANCHES (do_dian) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_dian
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tianlongsi/obj/xianglu.c by LPCConverter
+# Zone: tianlongsi
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!arg&&arg!="xiang")  →  
+  # else  →  
+  # if ( me->query_temp("marks/dian_temp") && random(2) == 1 )  →  tell_object(me, '\\\\\n你忽然觉得香在插下时被什么挡住了！\\\\\n你扒开香灰，发现了一个盒子。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_pushin) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_pushin
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================

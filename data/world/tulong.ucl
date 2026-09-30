@@ -1,0 +1,3189 @@
+zones "tulong" {
+  name = "tulong"
+}
+
+# Generated from C:/files/git/mud/d/tulong/obj/duan1.c by LPCConverter
+# Zone: tulong
+
+    items "duan1" {
+      name = "断了的倚天剑"
+      description = "一柄断了的长剑"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tulong/obj/duan2.c by LPCConverter
+# Zone: tulong
+
+    items "duan2" {
+      name = "断了的屠龙刀"
+      description = "一柄断了的刀。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tulong/obj/miji.c by LPCConverter
+# Zone: tulong
+
+    items "miji" {
+      name = "降龙十八掌秘笈"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tulong/obj/tulongdao.c by LPCConverter
+# Zone: tulong
+
+    items "tulongdao" {
+      name = "屠龙刀"
+      description = "这便是号称武林至尊的屠龙宝刀，四尺来长的单刀，竟达一百多斤之重。 相传其中藏有旷世的大秘密。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}一声狂笑，从背后抽出那柄号称“武林至尊”的屠龙宝刀高高举起。"
+    unwield = "{npc}哈哈一笑，将屠龙宝刀插回背后。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/obj/yishu.c by LPCConverter
+# Zone: tulong
+
+    items "yishu" {
+      name = "武穆遗书"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tulong/obj/yitianjian.c by LPCConverter
+# Zone: tulong
+
+    items "yitianjian" {
+      name = "倚天剑"
+      description = "这便与天下至尊的屠龙宝刀并称的倚天剑。 相传让刀剑对砍(duikan)可以得到旷世的武林秘籍。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "只听“嗖”的一声破空声响，号称天下第一神兵的倚天剑已被{npc}握在手中。"
+    unwield = "{npc}将倚天剑插回腰间，天地又渐渐放出光芒。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/obj/zhenjing.c by LPCConverter
+# Zone: tulong
+
+    items "zhenjing" {
+      name = "Item"
+      description = "这是一本用薄纸写成的书。书面上写着《九阴真经》。书皮泛黄，看来已经保存很久了。 真经里记载了催心掌、九阴白骨爪、易筋锻骨和蛇行狸翻，你可以试着研究研究。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/boat.c by LPCConverter
+# Zone: tulong
+
+    rooms "boat" {
+      name = "船上"
+      description = "一只大江船，比寻常的船大了许多，舱外风声呼呼，船也颠来颠去。"
+  x = 0
+  y = 0
+  z = 1
+    }
+  room_exits "boat" {
+    room_id = rooms.boat.id
+    down = rooms.damen.id
+    up = rooms.boat2.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/boat2.c by LPCConverter
+# Zone: tulong
+
+    rooms "boat2" {
+      name = "船上"
+      description = "这些大船，想是巨鲸帮、海沙派一干人的座船。"
+  x = 0
+  y = 0
+  z = 2
+    }
+
+  room_exits "boat2" {
+    room_id = rooms.boat2.id
+    up = rooms.boat3.id
+    down = rooms.boat.id
+    northup = rooms.daobian.id
+    }
+
+
+
+
+  room_items "boat2" {
+    room_id = rooms.boat2.id
+    items = [
+      { id = items.stone.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/boat3.c by LPCConverter
+# Zone: tulong
+
+    rooms "boat3" {
+      name = "船上"
+      description = "一只大江船，比寻常的船大了许多，此时大船已经靠岸，随时可以从甲板(d eck)上跳下去。"
+  x = 0
+  y = 0
+  z = 3
+item_desc = {
+ deck = "大船的甲板，已经被海水侵蚀得腐烂不堪。"
+}
+    }
+  room_exits "boat3" {
+    room_id = rooms.boat3.id
+    down = rooms.boat2.id
+    up = rooms.haian.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/daobian.c by LPCConverter
+# Zone: tulong
+
+    rooms "daobian" {
+      name = "王盘山岛边"
+      description = "王盘山在钱塘江口的东海之中，是个荒凉小岛，山石嶙峋，向无人居。岸边 两人各举大旗，挥舞示意，只见两面大旗上均绣着一头大鹰，双翅伸展，甚是威 武。两面大旗之间站着一个老者。王盘山是个小岛，山石树木无可观之处。东南 角有个港湾，桅樯高耸，停泊着十来艘大船，想是巨鲸帮、海沙派一干人的座船。"
+  x = 0
+  y = 1
+  z = 3
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：!me->query_temp("dao") && dir=="east"
+direction = "east"
+  message = "一进了会场就是生死之斗，还是先砸了他们的船(break boat)以防不测。"
+}
+,
+{
+  direction = ~
+  message = "向东的路被白龟寿拦住了。"
+}
+
+]
+    }
+
+  room_exits "daobian" {
+    room_id = rooms.daobian.id
+    east = rooms.gukou.id
+    southdown = rooms.boat2.id
+    }
+
+
+  room_characters "daobian" {
+    room_id = rooms.daobian.id
+    characters = [
+      { id = characters.jiaozhong1.id },
+      { id = characters.jiaozhong1.id },
+      { id = characters.jiaozhong2.id },
+      { id = characters.jiaozhong2.id },
+      { id = characters.bai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/gukou.c by LPCConverter
+# Zone: tulong
+
+    rooms "gukou" {
+      name = "山谷口"
+      description = "进得谷口，只见一片青草地上摆着七八张方桌，除了东首第一席外，每张桌 旁都已坐了人。各门各派的掌门、帮主都在里面了。"
+  x = 1
+  y = 1
+  z = 3
+    }
+
+  room_exits "gukou" {
+    room_id = rooms.gukou.id
+    east = rooms.huichang.id
+    west = rooms.daobian.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/haian.c by LPCConverter
+# Zone: tulong
+
+    rooms "haian" {
+      name = "蔚蓝海边"
+      description = "无边无际的大海就在眼前了。海风拂面，一洗过往旅客的一路劳顿。海风清 凉，略有点咸味，海面微微泛着波浪。碧蓝的的海水上面涌动的洁白的浪花，海 面飘着轻轻的薄雾。茫茫的大海上没有一点帆影，极目远眺，海天交界处蒙蒙一 片，分不出哪里是海，哪里是天。"
+  x = 0
+  y = 0
+  z = 4
+    }
+
+  room_exits "haian" {
+    room_id = rooms.haian.id
+    up = rooms.huichang_back.id
+    down = rooms.boat3.id
+    south = rooms.haigang.id
+    east = rooms.shatan.id
+    }
+
+
+  room_characters "haian" {
+    room_id = rooms.haian.id
+    characters = [
+      { id = characters.huiyue.id },
+      { id = characters.miaofeng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/haigang.c by LPCConverter
+# Zone: tulong
+
+    rooms "haigang" {
+      name = "东海之滨"
+      description = "这里就是大海之滨，浪花拍打着礁石，发出阵阵响声，海 面上一群群海鸥欧欧地叫着，不时有鱼儿跃出海面，溅起层层 浪花。边上有艘大船(boat)，船上坐着几个渔夫打扮的人，乘 船可渡过大海到达海的另一端。西面一直走就是燕京了，东面 是一望无际的大海。极目眺望不禁让人心胸开扩神舒意畅，的 确是一个好居处。"
+  x = 0
+  y = -1
+  z = 4
+item_desc = {
+ boat = "这是一艘大帆船，造得很结实，看来可以出远海的。"
+}
+    }
+
+  room_exits "haigang" {
+    room_id = rooms.haigang.id
+    north = rooms.haian.id
+    west = rooms.road10.id
+    }
+
+
+  room_characters "haigang" {
+    room_id = rooms.haigang.id
+    characters = [
+      { id = characters.chuanfu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/huichang-back.c by LPCConverter
+# Zone: tulong
+
+    rooms "huichang_back" {
+      name = "扬刀立威会场"
+      description = "这里是扬刀立威会场，一片青草地上摆着七八张方桌，除了东首第一席外， 每张桌旁都已坐了人，有海沙派、巨鲸帮、神拳门等等各派弟子。"
+  x = 0
+  y = 0
+  z = 5
+    }
+
+  room_exits "huichang_back" {
+    room_id = rooms.huichang_back.id
+    up = rooms.jiulou.id
+    down = rooms.haian.id
+    west = rooms.gukou.id
+    }
+
+
+  room_characters "huichang_back" {
+    room_id = rooms.huichang_back.id
+    characters = [
+      { id = characters.mai.id },
+      { id = characters.guo.id },
+      { id = characters.yin.id },
+      { id = characters.yuan.id },
+      { id = characters.zhang.id },
+      { id = characters.chang.id }    ]
+  }
+
+
+
+  room_items "huichang_back" {
+    room_id = rooms.huichang_back.id
+    items = [
+      { id = items.ding.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/huichang.c by LPCConverter
+# Zone: tulong
+
+    rooms "huichang" {
+      name = "扬刀立威会场"
+      description = "这里是扬刀立威会场，一片青草地上摆着七八张方桌，除了东首第一席外， 每张桌旁都已坐了人，有海沙派、巨鲸帮、神拳门等等各派弟子。"
+  x = 2
+  y = 1
+  z = 3
+    }
+
+  room_exits "huichang" {
+    room_id = rooms.huichang.id
+    west = rooms.gukou.id
+    }
+
+
+  room_characters "huichang" {
+    room_id = rooms.huichang.id
+    characters = [
+      { id = characters.mai.id },
+      { id = characters.guo.id },
+      { id = characters.yin.id },
+      { id = characters.yuan.id },
+      { id = characters.zhang.id },
+      { id = characters.chang.id }    ]
+  }
+
+
+
+  room_items "huichang" {
+    room_id = rooms.huichang.id
+    items = [
+      { id = items.ding.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/shatan.c by LPCConverter
+# Zone: tulong
+
+    rooms "shatan" {
+      name = "沙滩"
+      description = "一片金黄色的沙滩，无边无际的大海就在眼前了。碧蓝的的海水上面涌动的 洁白的浪花，海面飘着轻轻的薄雾。茫茫的大海上没有一点帆影，极目远眺，海 天交界处蒙蒙一片，分不出哪里是海，哪里是天。海风清凉，略有点咸味，海面 微微泛着波浪。"
+  x = 1
+  y = 0
+  z = 4
+    }
+
+  room_exits "shatan" {
+    room_id = rooms.shatan.id
+    west = rooms.haian.id
+    }
+
+
+  room_characters "shatan" {
+    room_id = rooms.shatan.id
+    characters = [
+      { id = characters.liuyun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/bai.c by LPCConverter
+# Zone: tulong
+
+    characters "bai" {
+      name = "白龟寿"
+      description = "一个五十来岁的老者，秃着头顶，一身结实的肌肉。"
+  title = "天鹰教"
+  nickname = "玄武坛坛主"
+  age = 50
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 500000
+  }
+
+  skills = [
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "finger" skill = "nianhua-zhi" },
+    { type = "parry" skill = "nianhua-zhi" }
+  ]
+
+
+  carry = [
+    { id = items.jiaofu.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/chang.c by LPCConverter
+# Zone: tulong
+
+    characters "chang" {
+      name = "常金鹏"
+      description = "这便是天鹰教朱雀坛的坛主常金鹏。 五十来岁年纪，脸上手上的肌肉凹凹凸凸、盘根错节。"
+  title = "天鹰教"
+  nickname = "朱雀坛坛主"
+  age = 52
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 1000000
+    str = 100
+  }
+
+  skills = [
+    { type = "force" skill = "longxiang" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "cuff" skill = "yujiamu-quan" },
+    { type = "hand" skill = "dashou-yin" },
+    { type = "parry" skill = "riyue-lun" },
+    { type = "hammer" skill = "riyue-lun" }
+  ]
+
+
+  carry = [
+    { id = items.jiaofu.id },
+    { id = items.hammer.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["bi", "get"]
+  }
+
+  engage = {
+    fight = { accept = true msg = "他奶奶的，要打架吗？正合老子心意！" retaliate = true }
+    hit = { accept = true msg = "他奶奶的，要打架吗？正合老子心意！" retaliate = true }
+    kill = { accept = true msg = "他奶奶的，要打架吗？正合老子心意！" retaliate = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/guo.c by LPCConverter
+# Zone: tulong
+
+    characters "guo" {
+      name = "过三拳"
+      description = "这是神拳门掌门人过三拳。身材高大，双 臂肌肉结实，一看就知道是外家好手。"
+  title = "神拳门掌门人"
+  age = 56
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 800000
+  }
+
+  carry = [
+    { id = items.cloth6.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["get", "bi"]
+  }
+
+  engage = {
+    fight = { accept = false msg = "我不和你蛮打，只和你比(bi)一些拳脚上的功夫。" }
+    hit = { accept = false msg = "我不和你蛮打，只和你比(bi)一些拳脚上的功夫。" }
+    kill = { accept = true msg = "怎么，想得屠龙刀就非得要行凶不成？" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/huiyue.c by LPCConverter
+# Zone: tulong
+
+    characters "huiyue" {
+      name = "辉月使"
+      description = "这是一个三十多岁的中年男子，装束奇异，不 同普通的中土人士。这便是波斯明教总教教主 座下的辉月使。"
+  title = "波斯总教教主座下"
+  nickname = "云风月三使"
+  gender = "男性"
+  age = 33
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1500000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 2500
+    max_neili = 3500
+    max_qi = 2800
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 180 },
+    { skill = "shenghuo-xinfa" level = 200 },
+    { skill = "dodge" level = 180 },
+    { skill = "qiankun-danuoyi" level = 180 },
+    { skill = "unarmed" level = 180 },
+    { skill = "sword" level = 180 },
+    { skill = "shenghuo-ling" level = 180 },
+    { skill = "parry" level = 180 },
+    { skill = "finger" level = 220 },
+    { skill = "tougu-zhen" level = 220 },
+    { skill = "strike" level = 220 },
+    { skill = "yinfeng-dao" level = 220 },
+    { skill = "literate" level = 200 },
+    { skill = "sanscrit" level = 200 },
+    { skill = "martial-cognize" level = 200 },
+    { type = "force" skill = "shenghuo-xinfa" },
+    { type = "dodge" skill = "qiankun-danuoyi" },
+    { type = "parry" skill = "qiankun-danuoyi" },
+    { type = "sword" skill = "shenghuo-ling" },
+    { type = "finger" skill = "tougu-zhen" },
+    { type = "strike" skill = "yinfeng-dao" }
+  ]
+
+
+  carry = [
+    { id = items.bosi.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/jiaozhong1.c by LPCConverter
+# Zone: tulong
+
+    characters "jiaozhong1" {
+      name = "教众"
+      description = "一个天鹰教的教众，手中挥舞着一面大旗。"
+  title = "天鹰教朱雀坛"
+
+  combat = {
+    attitude = "heroism"
+  }
+
+  carry = [
+    { id = items.jiaofu.id },
+    { id = items.flag.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/jiaozhong2.c by LPCConverter
+# Zone: tulong
+
+    characters "jiaozhong2" {
+      name = "教众"
+      description = "一个天鹰教的教众，手中挥舞着一面大旗。"
+  title = "天鹰教玄武坛"
+
+  combat = {
+    attitude = "heroism"
+  }
+
+  carry = [
+    { id = items.jiaofu.id },
+    { id = items.flag.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/liuyun.c by LPCConverter
+# Zone: tulong
+
+    characters "liuyun" {
+      name = "流云使"
+      description = "这是一个四十多岁的中年男子，装束奇异，不 像普通的中土人士。这便是波斯明教总教教主 座下排名三百七十四的流云使。"
+  title = "波斯总教教主座下"
+  nickname = "云风月三使"
+  gender = "男性"
+  age = 43
+  brain = brains.guarder
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2500000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 3500
+    max_neili = 4000
+    max_qi = 4500
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 240 },
+    { skill = "shenghuo-xinfa" level = 240 },
+    { skill = "dodge" level = 220 },
+    { skill = "qiankun-danuoyi" level = 220 },
+    { skill = "unarmed" level = 200 },
+    { skill = "sword" level = 240 },
+    { skill = "shenghuo-ling" level = 240 },
+    { skill = "parry" level = 240 },
+    { skill = "finger" level = 220 },
+    { skill = "tougu-zhen" level = 220 },
+    { skill = "strike" level = 220 },
+    { skill = "yinfeng-dao" level = 220 },
+    { skill = "literate" level = 200 },
+    { skill = "sanscrit" level = 200 },
+    { skill = "martial-cognize" level = 220 },
+    { type = "force" skill = "shenghuo-xinfa" },
+    { type = "dodge" skill = "qiankun-danuoyi" },
+    { type = "parry" skill = "qiankun-danuoyi" },
+    { type = "sword" skill = "shenghuo-ling" },
+    { type = "finger" skill = "tougu-zhen" },
+    { type = "strike" skill = "yinfeng-dao" }
+  ]
+
+
+  carry = [
+    { id = items.bosi.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/mai.c by LPCConverter
+# Zone: tulong
+
+    characters "mai" {
+      name = "麦鲸"
+      description = "这是巨鲸帮帮主麦鲸，身高七尺，满面 扎须，相貌很是威猛。"
+  title = "巨鲸帮帮主"
+  age = 47
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 800000
+  }
+
+  carry = [
+    { id = items.cloth6.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["get", "bi"]
+  }
+
+  engage = {
+    fight = { accept = false msg = "我不和你蛮打，只和你比(bi)一些水上功夫。" }
+    hit = { accept = false msg = "我不和你蛮打，只和你比(bi)一些水上功夫。" }
+    kill = { accept = true msg = "怎么，想得屠龙刀就非得要行凶不成？" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/miaofeng.c by LPCConverter
+# Zone: tulong
+
+    characters "miaofeng" {
+      name = "妙风使"
+      description = "这是一个三十多岁的中年美妇，装束奇异，不 同普通的中土人士。这便是波斯明教总教教主 座下的妙风使。"
+  title = "波斯总教教主座下"
+  nickname = "云风月三使"
+  gender = "女性"
+  age = 33
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1500000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 2500
+    max_neili = 3500
+    max_qi = 2800
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 180 },
+    { skill = "shenghuo-xinfa" level = 200 },
+    { skill = "dodge" level = 180 },
+    { skill = "qiankun-danuoyi" level = 180 },
+    { skill = "unarmed" level = 180 },
+    { skill = "sword" level = 180 },
+    { skill = "shenghuo-ling" level = 180 },
+    { skill = "parry" level = 180 },
+    { skill = "finger" level = 220 },
+    { skill = "tougu-zhen" level = 220 },
+    { skill = "strike" level = 220 },
+    { skill = "yinfeng-dao" level = 220 },
+    { skill = "literate" level = 200 },
+    { skill = "sanscrit" level = 200 },
+    { skill = "martial-cognize" level = 200 },
+    { type = "force" skill = "shenghuo-xinfa" },
+    { type = "dodge" skill = "qiankun-danuoyi" },
+    { type = "parry" skill = "qiankun-danuoyi" },
+    { type = "sword" skill = "shenghuo-ling" },
+    { type = "finger" skill = "tougu-zhen" },
+    { type = "strike" skill = "yinfeng-dao" }
+  ]
+
+
+  carry = [
+    { id = items.bosi.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/qqq.c by LPCConverter
+# Zone: tulong
+
+    characters "qqq" {
+      name = "常金鹏"
+      description = "这便是天鹰教朱雀坛的坛主常金鹏。 五十来岁年纪，脸上手上的肌肉凹凹凸凸、盘根错节。"
+  title = "天鹰教"
+  nickname = "朱雀坛坛主"
+  age = 52
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 1000000
+    str = 100
+  }
+
+  skills = [
+    { type = "force" skill = "longxiang" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "cuff" skill = "yujiamu-quan" },
+    { type = "hand" skill = "dashou-yin" },
+    { type = "parry" skill = "riyue-lun" },
+    { type = "hammer" skill = "riyue-lun" }
+  ]
+
+
+  carry = [
+    { id = items.jiaofu.id },
+    { id = items.hammer.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["bi", "get"]
+  }
+
+  engage = {
+    fight = { accept = true msg = "他奶奶的，要打架吗？正合老子心意！" retaliate = true }
+    hit = { accept = true msg = "他奶奶的，要打架吗？正合老子心意！" retaliate = true }
+    kill = { accept = true msg = "他奶奶的，要打架吗？正合老子心意！" retaliate = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/yin.c by LPCConverter
+# Zone: tulong
+
+    characters "yin" {
+      name = "殷素素"
+      description = "只见她身穿淡绿衫子，清丽不可方物。"
+  title = "天鹰教"
+  nickname = "紫微堂堂主"
+  gender = "女性"
+  age = 18
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 800000
+  }
+
+  carry = [
+    { id = items.cloth4.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["yun", "exert"]
+  }
+
+  engage = {
+    fight = { accept = false msg = "我不和你比，我是陪张公子来参观的！" }
+    hit = { accept = false msg = "我不和你比，我是陪张公子来参观的！" }
+    kill = { accept = true msg = "怎么，要行凶么？在这里恐怕由不得你！" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/yuan.c by LPCConverter
+# Zone: tulong
+
+    characters "yuan" {
+      name = "元广波"
+      description = "这是海沙派总舵主元广波，目光如电，身材彪捍。"
+  title = "海沙派总舵主"
+  age = 15
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 800000
+  }
+
+  carry = [
+    { id = items.cloth6.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["get", "bi"]
+  }
+
+  engage = {
+    fight = { accept = false msg = "我不和你蛮打，只和你比(bi)一些我海沙帮的绝技。" }
+    hit = { accept = false msg = "我不和你蛮打，只和你比(bi)一些我海沙帮的绝技。" }
+    kill = { accept = true msg = "怎么，想得屠龙刀就非得要行凶不成？" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/zhang.c by LPCConverter
+# Zone: tulong
+
+    characters "zhang" {
+      name = "张翠山"
+      description = "一个二十一二岁的少年，面目俊秀，虽然略觉清 癯，但神朗气爽，身形的瘦弱竟掩不住一股剽悍 之意。"
+  title = "武当五侠"
+  nickname = "银钩铁划"
+  age = 21
+  shen_type = 1
+  score = 60000
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 1400000
+  }
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth1.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["get"]
+  }
+
+  engage = {
+    fight = { accept = false msg = "我是不会和你打架的！" }
+    hit = { accept = false msg = "我是不会和你打架的！" }
+    kill = { accept = true msg = "怎么，要行凶么？在这里恐怕由不得你！" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/bosi.c by LPCConverter
+# Zone: tulong
+
+    characters "bosi" {
+      name = "NPC"
+      description = "这是一件波斯明教总舵的教服。"
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/flag.c by LPCConverter
+# Zone: tulong
+
+    characters "flag" {
+      name = "大旗"
+      description = "旗上绣着一头大鹰，双翅伸展，甚是威武。"
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/hammer.c by LPCConverter
+# Zone: tulong
+
+    characters "hammer" {
+      name = "NPC"
+      description = "这西瓜由精钢铸成，瓜上漆成绿黑间条之色，共有一对，系以钢链。"
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/jiaofu.c by LPCConverter
+# Zone: tulong
+
+    characters "jiaofu" {
+      name = "天鹰教服"
+      description = "这是一件天鹰教服。"
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/ling.c by LPCConverter
+# Zone: tulong
+
+    characters "ling" {
+      name = "NPC"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/obj/ding.c by LPCConverter
+# Zone: tulong
+
+    items "ding" {
+      name = "铜鼎"
+      description = "铜鼎中烧着熊熊烈火，火焰冲起一丈来高。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/obj/ling1.c by LPCConverter
+# Zone: tulong
+
+    items "ling1" {
+      name = "圣火令"
+      description = "这是一柄两尺来长的黑牌，非金非铁。质地坚硬无比， 似透明，令中隐隐似有火焰飞腾，实则是令质映光，颜 色变幻。令上刻得有不少波斯文字。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}“唰”的一声，从腰间抽出一片黑黝的铁牌握在手中。"
+    unwield = "{npc}将圣火令插回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/obj/stone.c by LPCConverter
+# Zone: tulong
+
+    items "stone" {
+      name = "大石头"
+      description = "一块大大的圆滚滚的石头。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tulong/tulong/obj/xuantie-ling.c by LPCConverter
+# Zone: tulong
+
+    items "xuantie_ling" {
+      name = "玄铁令"
+      description = "一块黑黝黝的令牌，竟是玄铁所铸。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/jiulou.c by LPCConverter
+# Zone: tulong
+
+    rooms "jiulou" {
+      name = "汇英酒楼"
+      description = "汇英酒楼里桌椅洁净，座中客人衣饰豪奢，十九都是富商 大贾。这里可以俯瞰整个紫禁城的全景。"
+  x = 0
+  y = 0
+  z = 6
+    }
+
+  room_exits "jiulou" {
+    room_id = rooms.jiulou.id
+    up = rooms.move1.id
+    down = rooms.huichang_back.id
+    # down = rooms.huiying.id
+    }
+
+
+  room_characters "jiulou" {
+    room_id = rooms.jiulou.id
+    characters = [
+      { id = characters.zhaomin2.id },
+      { id = characters.zhao1.id },
+      { id = characters.qian2.id }    ]
+  }
+
+
+
+  room_items "jiulou" {
+    room_id = rooms.jiulou.id
+    items = [
+      { id = items.ada.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/move1.c by LPCConverter
+# Zone: tulong
+
+    rooms "move1" {
+      name = "元大都城中心"
+      description = "这里是元大都城的中心，也就是后来北京城的前身。灰色的城墙给人以庄严 肃穆之感，远远望去，城楼的轮廓益发显得雄伟高大，一条护城河绕城而过。"
+  x = 0
+  y = 0
+  z = 7
+    }
+  room_exits "move1" {
+    room_id = rooms.move1.id
+    down = rooms.jiulou.id
+    up = rooms.move2.id
+    }
+
+  room_characters "move1" {
+    room_id = rooms.move1.id
+    characters = [
+      { id = characters.maiyi1.id },
+      { id = characters.old2.id },
+      { id = characters.kid1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/move2.c by LPCConverter
+# Zone: tulong
+
+    rooms "move2" {
+      name = "小路"
+      description = "这是一条蜿蜒的小路，北面可以远远的望见万安寺的塔间。"
+  x = 0
+  y = 0
+  z = 8
+    }
+  room_exits "move2" {
+    room_id = rooms.move2.id
+    down = rooms.move1.id
+    up = rooms.move3.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/move3.c by LPCConverter
+# Zone: tulong
+
+    rooms "move3" {
+      name = "树林"
+      description = "这是一片茂密的树林，北面就是万安寺了，到处都是亲兵，守备很是深严。"
+  x = 0
+  y = 0
+  z = 9
+    }
+  room_exits "move3" {
+    room_id = rooms.move3.id
+    down = rooms.move2.id
+    up = rooms.road1.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/road1.c by LPCConverter
+# Zone: tulong
+
+    rooms "road1" {
+      name = "黄土路"
+      description = "你走在一条蜿蜒的小路上。南边翻个一个小高岗可以回到京城。"
+  x = 0
+  y = 0
+  z = 10
+    }
+
+  room_exits "road1" {
+    room_id = rooms.road1.id
+    up = rooms.baozang.id
+    down = rooms.move3.id
+    east = rooms.road2.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/road2.c by LPCConverter
+# Zone: tulong
+
+    rooms "road2" {
+      name = "黄土路"
+      description = "你走在一条蜿蜒的小路上，北面就是万安寺了。"
+  x = 1
+  y = 0
+  z = 10
+    }
+
+  room_exits "road2" {
+    room_id = rooms.road2.id
+    west = rooms.road1.id
+    north = rooms.road3.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/road3.c by LPCConverter
+# Zone: tulong
+
+    rooms "road3" {
+      name = "黄土路"
+      description = "你走在一条蜿蜒的小路上，北面就是万安寺了，戒备很是深严。"
+  x = 1
+  y = 1
+  z = 10
+    }
+
+  room_exits "road3" {
+    room_id = rooms.road3.id
+    south = rooms.road2.id
+    north = rooms.was_damen.id
+    }
+
+
+  room_characters "road3" {
+    room_id = rooms.road3.id
+    characters = [
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_change.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_change" {
+      name = "庭院"
+      description = "这里是万安寺的西院，打扫得非常干净。大院两旁是几间大屋，全以松木搭 成，极大的木柱，木料均不去皮，天然质朴，却与大院正对的一座金碧辉煌的殿 堂截然不同，这里到处都是蒙古兵，戒备很是深严。"
+  x = 2
+  y = 2
+  z = 10
+    }
+
+  room_exits "was_change" {
+    room_id = rooms.was_change.id
+    west = rooms.was_dayuan.id
+    }
+
+
+  room_characters "was_change" {
+    room_id = rooms.was_change.id
+    characters = [
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_changw.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_changw" {
+      name = "庭院"
+      description = "这里是万安寺的西院，打扫得非常干净。大院两旁是几间大屋，全以松木搭 成，极大的木柱，木料均不去皮，天然质朴，却与大院正对的一座金碧辉煌的殿 堂截然不同，这里到处都是蒙古兵，戒备很是深严。"
+  x = 0
+  y = 2
+  z = 10
+    }
+
+  room_exits "was_changw" {
+    room_id = rooms.was_changw.id
+    east = rooms.was_dayuan.id
+    }
+
+
+  room_characters "was_changw" {
+    room_id = rooms.was_changw.id
+    characters = [
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_dadian.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_dadian" {
+      name = "大殿"
+      description = "这里是万安寺的大殿，非常的宽敞明亮，这里本是万安寺众僧早晚课之处， 佛像前摆着一个供桌，桌上的香炉中插着几柱香。地上摆着一些蒲团。几个和尚 盘膝做在上面。左右两旁是两个偏殿。"
+  x = 1
+  y = 5
+  z = 10
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "north" && objectp(present("bo seng", environment(me)))
+direction = "north"
+  message = "钹僧齐声喝道：哪里走？滚下来！"
+}
+,
+{
+   # 阻挡条件（原样保留）：dir == "south" && objectp(present("bo seng", environment(me)))
+direction = "south"
+  message = "钹僧齐声喝道：哪里逃？纳命来！"
+}
+,
+{
+   # 阻挡条件（原样保留）：dir == "west" && objectp(present("bo seng", environment(me)))
+direction = "west"
+  message = "钹僧齐声喝道：哪里逃？纳命来！"
+}
+,
+{
+   # 阻挡条件（原样保留）：dir == "east" && objectp(present("bo seng", environment(me)))
+direction = "east"
+  message = "钹僧齐声喝道：哪里逃？纳命来！"
+}
+
+]
+    }
+
+  room_exits "was_dadian" {
+    room_id = rooms.was_dadian.id
+    west = rooms.was_piandianw.id
+    east = rooms.was_piandiane.id
+    south = rooms.was_zoulang2.id
+    north = rooms.was_zoulang3.id
+    }
+
+
+  room_characters "was_dadian" {
+    room_id = rooms.was_dadian.id
+    characters = [
+      { id = characters.18jingang_4bo.id },
+      { id = characters.18jingang_4bo.id },
+      { id = characters.18jingang_4bo.id },
+      { id = characters.18jingang_4bo.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_damen.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_damen" {
+      name = "万安寺寺门"
+      description = "这里便是万安寺的大门所在，那万安寺楼高四层，寺后的一座十三级宝塔更 老远便可望见。大门内外不时有亲兵在来回巡视察看，戒备很是森严。"
+  x = 1
+  y = 2
+  z = 10
+valid_leave = [
+{
+  direction = ~
+  message = "大门被蒙古兵挡住了。"
+}
+
+]
+    }
+
+  room_exits "was_damen" {
+    room_id = rooms.was_damen.id
+    south = rooms.road3.id
+    in = rooms.was_dayuan.id
+    }
+
+
+  room_characters "was_damen" {
+    room_id = rooms.was_damen.id
+    characters = [
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing1.id },
+      { id = characters.bing2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_dayuan.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_dayuan" {
+      name = "庭院"
+      description = "这里是万安寺的大院，打扫得非常干净。大院两旁是几间大屋，全以松木搭 成，极大的木柱，木料均不去皮，天然质朴，却与大院正对的一座金碧辉煌的殿 堂截然不同。"
+  x = 1
+  y = 2
+  z = 10
+valid_leave = [
+{
+  direction = ~
+  message = "向北的路被神箭八雄拦住了。"
+}
+
+]
+    }
+
+  room_exits "was_dayuan" {
+    room_id = rooms.was_dayuan.id
+    north = rooms.was_zoulang1.id
+    west = rooms.was_changw.id
+    east = rooms.was_change.id
+    out = rooms.was_damen.id
+    }
+
+
+  room_characters "was_dayuan" {
+    room_id = rooms.was_dayuan.id
+    characters = [
+      { id = characters.zhao1.id },
+      { id = characters.qian2.id },
+      { id = characters.sun3.id },
+      { id = characters.li4.id },
+      { id = characters.zhou5.id },
+      { id = characters.wu6.id },
+      { id = characters.zheng7.id },
+      { id = characters.wang8.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_houdian.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_houdian" {
+      name = "后殿"
+      description = "这里是万安寺的后殿，非常的宽敞明亮，佛像前摆着一个供桌，桌上的香炉 中插着几柱香，地上摆着一些蒲团。右首处一个木制阶梯，可以通向万安寺的寺 楼。"
+  x = 1
+  y = 7
+  z = 10
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "up" && objectp(present("dao seng", environment(me)))
+direction = "up"
+  message = "刀僧齐声喝道：哪里走？滚下来！"
+}
+,
+{
+   # 阻挡条件（原样保留）：dir == "south" && objectp(present("dao seng", environment(me)))
+direction = "south"
+  message = "刀僧齐声喝道：哪里逃？纳命来！"
+}
+
+]
+    }
+
+  room_exits "was_houdian" {
+    room_id = rooms.was_houdian.id
+    up = rooms.was_lou2.id
+    south = rooms.was_zoulang3.id
+    }
+
+
+  room_characters "was_houdian" {
+    room_id = rooms.was_houdian.id
+    characters = [
+      { id = characters.18jingang_5dao.id },
+      { id = characters.18jingang_5dao.id },
+      { id = characters.18jingang_5dao.id },
+      { id = characters.18jingang_5dao.id },
+      { id = characters.18jingang_5dao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_lou2.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_lou2" {
+      name = "万安寺第二层"
+      description = "这里是万安寺的第二层，寺楼里站着几个身着火红袈裟的和尚。一见你上楼， 立马向你扑来。"
+  x = 1
+  y = 7
+  z = 11
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "up" && objectp(present("zhang seng", environment(me)))
+direction = "up"
+  message = "杖僧齐声喝道：哪里走？滚下来！"
+}
+,
+{
+   # 阻挡条件（原样保留）：dir == "down" && objectp(present("zhang seng", environment(me)))
+direction = "down"
+  message = "杖僧齐声喝道：哪里逃？纳命来！"
+}
+
+]
+    }
+
+  room_exits "was_lou2" {
+    room_id = rooms.was_lou2.id
+    up = rooms.was_lou3.id
+    down = rooms.was_houdian.id
+    }
+
+
+  room_characters "was_lou2" {
+    room_id = rooms.was_lou2.id
+    characters = [
+      { id = characters.18jingang_4zhang.id },
+      { id = characters.18jingang_4zhang.id },
+      { id = characters.18jingang_4zhang.id },
+      { id = characters.18jingang_4zhang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_lou3.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_lou3" {
+      name = "万安寺第三层"
+      description = "这里是万安寺的第三层，寺楼里站着几个身着火红袈裟的和尚。一见你上楼， 立马向你扑来。"
+  x = 1
+  y = 7
+  z = 12
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "up" && objectp(present("jian seng", environment(me)))
+direction = "up"
+  message = "剑僧齐声喝道：哪里走？滚下来！"
+}
+,
+{
+   # 阻挡条件（原样保留）：dir == "down" && objectp(present("jian seng", environment(me)))
+direction = "down"
+  message = "剑僧齐声喝道：哪里逃？纳命来！"
+}
+
+]
+    }
+
+  room_exits "was_lou3" {
+    room_id = rooms.was_lou3.id
+    up = rooms.was_lou4.id
+    down = rooms.was_lou2.id
+    }
+
+
+  room_characters "was_lou3" {
+    room_id = rooms.was_lou3.id
+    characters = [
+      { id = characters.18jingang_5jian.id },
+      { id = characters.18jingang_5jian.id },
+      { id = characters.18jingang_5jian.id },
+      { id = characters.18jingang_5jian.id },
+      { id = characters.18jingang_5jian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_lou4.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_lou4" {
+      name = "万安寺四楼大厅"
+      description = "这里是万安寺四楼的大厅，相当的宽敞。一个明艳少女正座中堂，少女前方 有一块巨大的红木制武器架，左右站满了亲兵，排场很是气派。"
+  x = 1
+  y = 7
+  z = 13
+    }
+
+  room_exits "was_lou4" {
+    room_id = rooms.was_lou4.id
+    down = rooms.was_lou3.id
+    }
+
+
+  room_characters "was_lou4" {
+    room_id = rooms.was_lou4.id
+    characters = [
+      { id = characters.ada.id },
+      { id = characters.aer.id },
+      { id = characters.asan.id },
+      { id = characters.he.id },
+      { id = characters.zhao.id },
+      { id = characters.walker.id }    ]
+  }
+
+
+
+  room_items "was_lou4" {
+    room_id = rooms.was_lou4.id
+    items = [
+      { id = items.shelf.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_piandiane.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_piandiane" {
+      name = "偏殿"
+      description = "这里是万安寺的偏殿，本是万安寺众僧参禅之处，地上只摆着几个蒲团。大 台上供着十八罗汉中的九个罗汉，一个个是金光闪闪，栩栩如生。"
+  x = 2
+  y = 5
+  z = 10
+    }
+
+  room_exits "was_piandiane" {
+    room_id = rooms.was_piandiane.id
+    west = rooms.was_dadian.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_piandianw.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_piandianw" {
+      name = "偏殿"
+      description = "这里是万安寺的偏殿，本是万安寺众僧参禅之处，地上只摆着几个蒲团。大 台上供着十八罗汉中的九个罗汉，一个个是金光闪闪，栩栩如生。"
+  x = 0
+  y = 5
+  z = 10
+    }
+
+  room_exits "was_piandianw" {
+    room_id = rooms.was_piandianw.id
+    east = rooms.was_dadian.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_tinge.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_tinge" {
+      name = "侧厅"
+      description = "这里是万安寺的侧厅，地上摆着几个蒲团。"
+  x = 2
+  y = 3
+  z = 10
+    }
+
+  room_exits "was_tinge" {
+    room_id = rooms.was_tinge.id
+    west = rooms.was_zoulang1.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_tingw.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_tingw" {
+      name = "侧厅"
+      description = "这里是万安寺的侧厅，地上摆着几个蒲团。"
+  x = 0
+  y = 3
+  z = 10
+    }
+
+  room_exits "was_tingw" {
+    room_id = rooms.was_tingw.id
+    east = rooms.was_zoulang1.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_zoulang1.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_zoulang1" {
+      name = "走廊"
+      description = "这是一条通往万安寺后厅的木制走廊，走廊里静悄悄的，没什么人走动。左 右两旁是两个侧厅。"
+  x = 1
+  y = 3
+  z = 10
+    }
+
+  room_exits "was_zoulang1" {
+    room_id = rooms.was_zoulang1.id
+    west = rooms.was_tingw.id
+    east = rooms.was_tinge.id
+    south = rooms.was_dayuan.id
+    north = rooms.was_zoulang2.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_zoulang2.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_zoulang2" {
+      name = "走廊"
+      description = "这是一条通往万安寺大殿的木制走廊，走廊里静悄悄的，没什么人走动。前 面便是万安寺的大殿了。大厅上灯火通明，非常的宽敞明亮。"
+  x = 1
+  y = 4
+  z = 10
+    }
+
+  room_exits "was_zoulang2" {
+    room_id = rooms.was_zoulang2.id
+    south = rooms.was_zoulang1.id
+    north = rooms.was_dadian.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/was_zoulang3.c by LPCConverter
+# Zone: tulong
+
+    rooms "was_zoulang3" {
+      name = "走廊"
+      description = "这是一条通往万安寺后殿的木制走廊，走廊里静悄悄的，没什么人走动。后 方是万安寺的大殿了。"
+  x = 1
+  y = 6
+  z = 10
+    }
+
+  room_exits "was_zoulang3" {
+    room_id = rooms.was_zoulang3.id
+    south = rooms.was_dadian.id
+    north = rooms.was_houdian.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/18jingang-4bo.c by LPCConverter
+# Zone: tulong
+
+    characters "18jingang_4bo" {
+      name = "钹僧"
+      description = "一个秃顶和尚，裸露着上身，肌肉结实。 这便是汝阳王手下的十八金刚之一。"
+  title = "汝阳王座下十八金刚"
+  nickname = "四钹金刚"
+  age = 30
+
+  combat = {
+    attitude = "heroism"
+    max_jing = 800
+    max_neili = 2000
+    max_qi = 2000
+  }
+
+  skills = [
+    { skill = "lamaism" level = 180 },
+    { type = "force" skill = "longxiang" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "cuff" skill = "yujiamu-quan" },
+    { type = "parry" skill = "riyue-lun" },
+    { type = "hammer" skill = "riyue-lun" }
+  ]
+
+
+  carry = [
+    { id = items.jiasha.id },
+    { id = items.tongbo.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/18jingang-4zhang.c by LPCConverter
+# Zone: tulong
+
+    characters "18jingang_4zhang" {
+      name = "杖僧"
+      description = "一个秃顶和尚，裸露着上身，肌肉结实。 这便是汝阳王手下的十八金刚之一。"
+  title = "汝阳王座下十八金刚"
+  nickname = "四杖金刚"
+  age = 30
+
+  combat = {
+    attitude = "heroism"
+    max_jing = 800
+    max_neili = 2000
+    max_qi = 2000
+  }
+
+  skills = [
+    { skill = "lamaism" level = 180 },
+    { type = "force" skill = "longxiang" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "cuff" skill = "yujiamu-quan" },
+    { type = "parry" skill = "xiangmo-chu" },
+    { type = "staff" skill = "xiangmo-chu" }
+  ]
+
+
+  carry = [
+    { id = items.jiasha.id },
+    { id = items.tiezhang.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/18jingang-5dao.c by LPCConverter
+# Zone: tulong
+
+    characters "18jingang_5dao" {
+      name = "刀僧"
+      description = "一个秃顶和尚，裸露着上身，肌肉结实。 这便是汝阳王手下的十八金刚之一。"
+  title = "汝阳王座下十八金刚"
+  nickname = "五刀金刚"
+  age = 30
+
+  combat = {
+    attitude = "heroism"
+    max_jing = 800
+    max_neili = 2000
+    max_qi = 2000
+  }
+
+  skills = [
+    { skill = "lamaism" level = 180 },
+    { type = "force" skill = "xuehai-mogong" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "cuff" skill = "yujiamu-quan" },
+    { type = "parry" skill = "xue-dao" },
+    { type = "blade" skill = "xue-dao" }
+  ]
+
+
+  carry = [
+    { id = items.jiasha.id },
+    { id = items.blade1.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/18jingang-5jian.c by LPCConverter
+# Zone: tulong
+
+    characters "18jingang_5jian" {
+      name = "剑僧"
+      description = "一个秃顶和尚，裸露着上身，肌肉结实。 这便是汝阳王手下的十八金刚之一。"
+  title = "汝阳王座下十八金刚"
+  nickname = "五剑金刚"
+  age = 30
+
+  combat = {
+    attitude = "heroism"
+    max_jing = 800
+    max_neili = 2000
+    max_qi = 2000
+  }
+
+  skills = [
+    { skill = "lamaism" level = 180 },
+    { type = "force" skill = "longxiang" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "cuff" skill = "yujiamu-quan" },
+    { type = "parry" skill = "mingwang-jian" },
+    { type = "sword" skill = "mingwang-jian" }
+  ]
+
+
+  carry = [
+    { id = items.jiasha.id },
+    { id = items.sword2.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/ada.c by LPCConverter
+# Zone: tulong
+
+    characters "ada" {
+      name = "阿大"
+      description = "八臂神剑方东白是丐帮四大长老之首，剑术 之精，名动江湖，只因他出剑奇快，有如生 了七八条手臂一般，因此上得了这个外号。 十多年前听说他身染重病身亡，当时人人都 感惋惜，不觉他竟尚在人世。"
+  title = "丐帮四大长老之首"
+  nickname = "八臂神剑"
+  gender = "男性"
+  age = 68
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000000
+    con = 45
+    dex = 45
+    int = 45
+    max_jing = 2000
+    max_neili = 6000
+    max_qi = 5500
+    str = 45
+  }
+
+  skills = [
+    { skill = "literate" level = 180 },
+    { skill = "begging" level = 200 },
+    { skill = "checking" level = 200 },
+    { skill = "force" level = 270 },
+    { skill = "dodge" level = 270 },
+    { skill = "unarmed" level = 270 },
+    { skill = "parry" level = 270 },
+    { skill = "strike" level = 270 },
+    { skill = "sword" level = 270 },
+    { skill = "feiyan-zoubi" level = 270 },
+    { skill = "huntian-qigong" level = 270 },
+    { skill = "kuangfeng-jian" level = 270 },
+    { skill = "dragon-strike" level = 270 },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "force" skill = "huntian-qigong" },
+    { type = "strike" skill = "dragon-strike" },
+    { type = "parry" skill = "kuangfeng-jian" },
+    { type = "sword" skill = "kuangfeng-jian" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["bi"]
+  }
+
+  engage = {
+    fight = { accept = false msg = "没郡主的吩咐我不会出手。" }
+    hit = { accept = false msg = "没郡主的吩咐我不会出手。" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/ada2.c by LPCConverter
+# Zone: tulong
+
+    characters "ada2" {
+      name = "阿大"
+      description = "八臂神剑方东白本是丐帮四大长老之首，剑术 之精，名动江湖，只因他出剑奇快，有如生了 七八条手臂一般，因此上得了这个外号。十多 年前听说他身染重病身亡，当时人人都感惋惜， 不觉他竟尚在人世。"
+  title = "丐帮四大长老之首"
+  nickname = "八臂神剑"
+  gender = "男性"
+  age = 68
+  score = 500000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 3500000
+    con = 35
+    dex = 35
+    int = 35
+    max_jing = 5800
+    max_neili = 6200
+    max_qi = 5800
+    str = 35
+  }
+
+  skills = [
+    { skill = "force" level = 300 },
+    { skill = "jiaohua-neigong" level = 280 },
+    { skill = "huntian-qigong" level = 300 },
+    { skill = "dodge" level = 280 },
+    { skill = "feiyan-zoubi" level = 280 },
+    { skill = "sword" level = 300 },
+    { skill = "guanri-jian" level = 300 },
+    { skill = "pichen-jian" level = 300 },
+    { skill = "parry" level = 280 },
+    { skill = "unarmed" level = 280 },
+    { skill = "changquan" level = 280 },
+    { skill = "staff" level = 280 },
+    { skill = "jiaohua-bangfa" level = 280 },
+    { skill = "dagou-bang" level = 280 },
+    { skill = "strike" level = 280 },
+    { skill = "dragon-strike" level = 280 },
+    { skill = "begging" level = 200 },
+    { skill = "checking" level = 200 },
+    { skill = "martial-cognize" level = 300 },
+    { type = "force" skill = "huntian-qigong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "sword" skill = "guanri-jian" },
+    { type = "parry" skill = "guanri-jian" },
+    { type = "unarmed" skill = "changquan" },
+    { type = "staff" skill = "dagou-bang" },
+    { type = "strike" skill = "dragon-strike" }
+  ]
+
+
+  carry = [
+    { id = items.jian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/aer.c by LPCConverter
+# Zone: tulong
+
+    characters "aer" {
+      name = "阿二"
+      description = "阿二乃阿三的同门师兄，也是西域少林派一 等一的高手，被汝阳王一重金安置于麾下， 非常得汝阳王的赏识。"
+  title = "西域少林派高手"
+  gender = "男性"
+  age = 55
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1800000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1400
+    max_neili = 7000
+    max_qi = 5000
+    str = 60
+  }
+
+  skills = [
+    { skill = "literate" level = 100 },
+    { skill = "buddhism" level = 150 },
+    { skill = "sanscrit" level = 150 },
+    { skill = "force" level = 270 },
+    { skill = "dodge" level = 270 },
+    { skill = "unarmed" level = 270 },
+    { skill = "parry" level = 270 },
+    { skill = "strike" level = 270 },
+    { skill = "shaolin-shenfa" level = 270 },
+    { skill = "yijinjing" level = 270 },
+    { skill = "banruo-zhang" level = 270 },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "force" skill = "yijinjing" },
+    { type = "strike" skill = "banruo-zhang" },
+    { type = "parry" skill = "banruo-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["bi"]
+  }
+
+  engage = {
+    fight = { accept = false msg = "没郡主的吩咐我不会出手。" }
+    hit = { accept = false msg = "没郡主的吩咐我不会出手。" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/asan.c by LPCConverter
+# Zone: tulong
+
+    characters "asan" {
+      name = "阿三"
+      description = "一个五十来岁的男子，上身裸露，右嘴角处 生有一个大痣，双臂肌肉结实无比，一看便 知是外家好手。"
+  title = "西域少林派高手"
+  gender = "男性"
+  age = 55
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1600000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1400
+    max_neili = 5000
+    max_qi = 4400
+    str = 60
+  }
+
+  skills = [
+    { skill = "literate" level = 100 },
+    { skill = "buddhism" level = 150 },
+    { skill = "sanscrit" level = 150 },
+    { skill = "force" level = 250 },
+    { skill = "dodge" level = 250 },
+    { skill = "unarmed" level = 250 },
+    { skill = "parry" level = 250 },
+    { skill = "finger" level = 250 },
+    { skill = "shaolin-shenfa" level = 250 },
+    { skill = "yijinjing" level = 250 },
+    { skill = "jingang-zhi" level = 250 },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "force" skill = "yijinjing" },
+    { type = "finger" skill = "jingang-zhi" },
+    { type = "parry" skill = "jingang-zhi" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["bi"]
+  }
+
+  engage = {
+    fight = { accept = false msg = "没郡主的吩咐我不会出手。" }
+    hit = { accept = false msg = "没郡主的吩咐我不会出手。" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/bing1.c by LPCConverter
+# Zone: tulong
+
+    characters "bing1" {
+      name = "蒙古官兵"
+      description = "蒙古汝阳王手下精兵，一个个 体格健壮，神情严肃。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    dex = 20
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "club" level = 40 },
+    { skill = "force" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.spear.id },
+    { id = items.guanfu6.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/bing2.c by LPCConverter
+# Zone: tulong
+
+    characters "bing2" {
+      name = "千夫长"
+      description = "蒙古汝阳王手下精兵的头领， 体格健壮，神情严肃。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    dex = 20
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 90 },
+    { skill = "dodge" level = 90 },
+    { skill = "parry" level = 90 },
+    { skill = "club" level = 90 },
+    { skill = "force" level = 90 },
+    { skill = "zhongping-qiang" level = 90 },
+    { skill = "feiyan-zoubi" level = 90 },
+    { skill = "huntian-qigong" level = 90 },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "force" skill = "huntian-qigong" },
+    { type = "club" skill = "zhongping-qiang" }
+  ]
+
+
+  carry = [
+    { id = items.spear.id },
+    { id = items.guanfu6.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/he.c by LPCConverter
+# Zone: tulong
+
+    characters "he" {
+      name = "何太冲"
+      description = "一个五十多岁的中年男子，眉头紧锁，原来 这就是昆仑派的掌门，人称“铁琴先生”的 何太冲，至六大门派围攻光明顶之后，被赵 用计擒拿，关押在这里。"
+  title = "昆仑派第三代掌门"
+  nickname = "铁琴先生"
+  gender = "男性"
+  age = 58
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1400000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1200
+    max_neili = 4000
+    max_qi = 3500
+    str = 30
+  }
+
+  skills = [
+    { skill = "literate" level = 100 },
+    { skill = "tanqin-jifa" level = 250 },
+    { skill = "qingxin-pushan" level = 250 },
+    { skill = "force" level = 220 },
+    { skill = "dodge" level = 220 },
+    { skill = "unarmed" level = 220 },
+    { skill = "parry" level = 220 },
+    { skill = "strike" level = 220 },
+    { skill = "sword" level = 220 },
+    { skill = "lingxu-bu" level = 220 },
+    { skill = "songshan-xinfa" level = 220 },
+    { skill = "kunlun-jian" level = 220 },
+    { skill = "cuixin-zhang" level = 220 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "strike" skill = "cuixin-zhang" },
+    { type = "parry" skill = "kunlun-jian" },
+    { type = "sword" skill = "kunlun-jian" },
+    { type = "tanqin-jifa" skill = "qingxin-pushan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.zhujian.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["bi"]
+  }
+
+  engage = {
+    fight = { accept = false msg = "哼，如我何太冲内力尚在，也由不得你猖狂。" }
+    hit = { accept = false msg = "哼，如我何太冲内力尚在，也由不得你猖狂。" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/hebiweng.c by LPCConverter
+# Zone: tulong
+
+    characters "hebiweng" {
+      name = "鹤笔翁"
+      description = "一个六十多岁的老者，头发花白，满面红光， 身材魁梧高大，这便是汝阳王用重金聘请的 高手，玄冥二老中的鹤笔翁，一双玄冥毒掌 使得出神入化，武艺超群，很得汝阳王的赏 识。"
+  title = "玄冥二老"
+  gender = "男性"
+  age = 68
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1800000
+    con = 40
+    dex = 40
+    int = 40
+    max_jing = 2000
+    max_neili = 4800
+    max_qi = 4000
+    str = 40
+  }
+
+  skills = [
+    { skill = "literate" level = 100 },
+    { skill = "force" level = 270 },
+    { skill = "dodge" level = 250 },
+    { skill = "unarmed" level = 270 },
+    { skill = "parry" level = 270 },
+    { skill = "strike" level = 270 },
+    { skill = "lingxu-bu" level = 250 },
+    { skill = "xuanming-zhang" level = 270 },
+    { skill = "xuanming-shengong" level = 270 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "force" skill = "xuanming-shengong" },
+    { type = "strike" skill = "xuanming-zhang" },
+    { type = "parry" skill = "xuanming-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/li4.c by LPCConverter
+# Zone: tulong
+
+    characters "li4" {
+      name = "李四摧"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 500
+    max_neili = 800
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "hunyuan-yiqi" level = 80 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.gong.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/luzhangke.c by LPCConverter
+# Zone: tulong
+
+    characters "luzhangke" {
+      name = "鹿杖客"
+      description = "一个六十多岁的老者，头发花白，满面红光， 身材魁梧高大，这便是汝阳王用重金聘请的 高手，玄冥二老中的鹿杖客，一双玄冥毒掌 使得出神入化，武艺超群，很得汝阳王的赏 识。"
+  title = "玄冥二老"
+  gender = "男性"
+  age = 68
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1800000
+    con = 40
+    dex = 40
+    int = 40
+    max_jing = 2000
+    max_neili = 4800
+    max_qi = 4000
+    str = 40
+  }
+
+  skills = [
+    { skill = "literate" level = 100 },
+    { skill = "force" level = 270 },
+    { skill = "dodge" level = 250 },
+    { skill = "unarmed" level = 270 },
+    { skill = "parry" level = 270 },
+    { skill = "strike" level = 270 },
+    { skill = "lingxu-bu" level = 250 },
+    { skill = "xuanming-zhang" level = 270 },
+    { skill = "xuanming-shengong" level = 270 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "force" skill = "xuanming-shengong" },
+    { type = "strike" skill = "xuanming-zhang" },
+    { type = "parry" skill = "xuanming-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/qian2.c by LPCConverter
+# Zone: tulong
+
+    characters "qian2" {
+      name = "钱二败"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 500
+    max_neili = 800
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "hunyuan-yiqi" level = 80 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.gong.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/sun3.c by LPCConverter
+# Zone: tulong
+
+    characters "sun3" {
+      name = "孙三毁"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 500
+    max_neili = 800
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "hunyuan-yiqi" level = 80 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.gong.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/wang8.c by LPCConverter
+# Zone: tulong
+
+    characters "wang8" {
+      name = "王八衰"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 500
+    max_neili = 800
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "hunyuan-yiqi" level = 80 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.gong.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/wu6.c by LPCConverter
+# Zone: tulong
+
+    characters "wu6" {
+      name = "吴六破"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 500
+    max_neili = 800
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "hunyuan-yiqi" level = 80 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.gong.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/zhao.c by LPCConverter
+# Zone: tulong
+
+    characters "zhao" {
+      name = "赵敏"
+      description = "她脸泛红霞，容色丽都。十分美丽之中，更带着三分英气，三分豪态，同 时雍容华贵，自有一副端严之姿，令人肃然起敬，不敢逼视。"
+  title = "大元绍敏郡主"
+  gender = "女性"
+  age = 15
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 30
+    int = 25
+    max_jing = 200
+    max_neili = 500
+    max_qi = 500
+    str = 15
+  }
+
+  inquiries = [
+    { key = "倚天剑" value = "倚天为天下神兵，怎么，你想要？" },
+    { key = "张无忌" value = "张公子远在昆仑，不知他近来可好？秋冷春寒，可有寒衣？" }
+  ]
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "liangyi-jian" level = 80 },
+    { skill = "huifeng-jian" level = 80 },
+    { skill = "taiji-shengong" level = 90 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "liangyi-jian" },
+    { type = "sword" skill = "liangyi-jian" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.female2_cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["get", "yun", "exert"]
+  }
+
+  greetings = [
+    { line = "{npc}一上楼来，只见一位明艳少女正座中堂，脸泛红霞，容色丽都。十分美丽 之中，更带着三分英气，三分豪态，同时雍容华贵，自有一副端严之致，令 人肃然起敬，不敢逼视。少女身旁地站着几人，衣着各异，但从几人的神态 和气度看来，无一不是武林高手。中堂摆着一个名贵的红木制剑架，剑架上 横放着一柄长剑，长剑的剑鞘上赫然写着“倚天”二字。 {expr}" }
+  ]
+
+  engage = {
+    fight = { accept = false msg = "欺负一个弱小女子算什么，要比和我的手下比(bi)。" }
+    hit = { accept = false msg = "欺负一个弱小女子算什么，要比和我的手下比(bi)。" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/zhao1.c by LPCConverter
+# Zone: tulong
+
+    characters "zhao1" {
+      name = "赵一伤"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 500
+    max_neili = 800
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "hunyuan-yiqi" level = 80 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.gong.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/zhaomin2.c by LPCConverter
+# Zone: tulong
+
+    characters "zhaomin2" {
+      name = "赵敏"
+      description = "她脸泛红霞，容色丽都。十分美丽之中，更带着三分英气，三分豪态，同 时雍容华贵，自有一副端严之姿，令人肃然起敬，不敢逼视。"
+  title = "大元绍敏郡主"
+  gender = "女性"
+  age = 15
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 30
+    int = 25
+    max_jing = 200
+    max_neili = 500
+    max_qi = 500
+    str = 15
+  }
+
+  inquiries = [
+    { key = "倚天剑" value = "倚天为天下神兵，怎么，你想要？" },
+    { key = "张无忌" value = "张公子远在昆仑，不知他近来可好？秋冷春寒，可有寒衣？" }
+  ]
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "liangyi-jian" level = 80 },
+    { skill = "huifeng-jian" level = 80 },
+    { skill = "taiji-shengong" level = 90 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "liangyi-jian" },
+    { type = "sword" skill = "liangyi-jian" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.female2_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/zheng7.c by LPCConverter
+# Zone: tulong
+
+    characters "zheng7" {
+      name = "郑七灭"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 500
+    max_neili = 800
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "hunyuan-yiqi" level = 80 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.gong.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/zhou5.c by LPCConverter
+# Zone: tulong
+
+    characters "zhou5" {
+      name = "周五输"
+      description = ""
+  title = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 500
+    max_neili = 800
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "throwing" level = 80 },
+    { skill = "xuanyuan-arrow" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "hunyuan-yiqi" level = 80 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.gong.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/gong.c by LPCConverter
+# Zone: tulong
+
+    characters "gong" {
+      name = "点金盘龙弓"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/jian.c by LPCConverter
+# Zone: tulong
+
+    characters "jian" {
+      name = "NPC"
+      description = "这便与天下至尊的屠龙宝刀并称的倚天剑。"
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/spear.c by LPCConverter
+# Zone: tulong
+
+    characters "spear" {
+      name = "镔铁长枪"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/tiezhang.c by LPCConverter
+# Zone: tulong
+
+    characters "tiezhang" {
+      name = "精铁杖"
+      description = "一柄用镔铁打造的杖。"
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/tongbo.c by LPCConverter
+# Zone: tulong
+
+    characters "tongbo" {
+      name = "铜钹"
+      description = "一柄用熟铜打造的钹。"
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yitian/obj/shelf.c by LPCConverter
+# Zone: tulong
+
+    items "shelf" {
+      name = "红木剑架"
+      description = "一只由名贵红木所制，用来存放配剑的架子。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/baozang.c by LPCConverter
+# Zone: tulong
+
+    rooms "baozang" {
+      name = "闯王宝藏"
+      description = "一踏进石门，一阵金光照射，人人眼花撩乱，凝神屏气，个个张大了口合不 拢来。原来里面竟是个极大的洞穴，四面堆满了金砖银块，珍珠宝石，不计 其数。只是金银珠宝都隐在透明的坚冰之后。料想当年闯王的部属把金银珠 宝藏入之后，浇上冷水。该地终年酷寒，坚冰不融，金珠就似藏在水晶之中 一般。"
+  x = 0
+  y = 0
+  z = 11
+    }
+
+  room_exits "baozang" {
+    room_id = rooms.baozang.id
+    up = rooms.changlang.id
+    down = rooms.road1.id
+    out = rooms.shimen.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/changlang.c by LPCConverter
+# Zone: tulong
+
+    rooms "changlang" {
+      name = "长廊"
+      description = "这是一条长长的走廊，四处透着浓浓的寒气。出去就是山庄大门，沿这里走 过去可以直达大厅，周围一尘不染，非常安静。"
+  x = 0
+  y = 0
+  z = 12
+    }
+
+  room_exits "changlang" {
+    room_id = rooms.changlang.id
+    up = rooms.fengdi.id
+    down = rooms.baozang.id
+    north = rooms.dating.id
+    out = rooms.damen.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/damen.c by LPCConverter
+# Zone: tulong
+
+    rooms "damen" {
+      name = "山庄大门"
+      description = "转过了几株雪松,只见前面一座五开间极大的石屋，屋前屋后都是白雪。 大门外写着“玉笔峰山庄”几个大字，此处气候酷寒，上下艰难，当初不 知道庄主花了多少的心思才能在此建成如此石室，不禁令人啧啧称奇。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "damen" {
+    room_id = rooms.damen.id
+    up = rooms.boat.id
+    in = rooms.changlang.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/dating.c by LPCConverter
+# Zone: tulong
+
+    rooms "dating" {
+      name = "大厅"
+      description = "那厅极大，四角各生着一盆大炭火。厅上居中挂着一副木板对联，写着 廿二个大字：'不来辽东大言天下无敌手,邂逅冀北方信世间有英雄'。 上款是“希孟仁兄正之”，下款是“妄人苗人凤深惭昔年狂言醉后涂鸦”。"
+  x = 0
+  y = 1
+  z = 12
+    }
+
+  room_exits "dating" {
+    room_id = rooms.dating.id
+    east = rooms.zoulang2.id
+    west = rooms.zoulang1.id
+    south = rooms.changlang.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/eastroom1.c by LPCConverter
+# Zone: tulong
+
+    rooms "eastroom1" {
+      name = "东厢房"
+      description = "东厢房原是杜庄主款待宾客的所在，床帐、屏风、几桌、一应起居之具 齐备，陈设得甚是考究。"
+  x = 2
+  y = 2
+  z = 12
+    }
+
+  room_exits "eastroom1" {
+    room_id = rooms.eastroom1.id
+    west = rooms.zoulang4.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/eastroom2.c by LPCConverter
+# Zone: tulong
+
+    rooms "eastroom2" {
+      name = "东厢房"
+      description = "东厢房原是杜庄主款待宾客的所在，床帐、屏风、几桌、一应起居之具 齐备，陈设得甚是考究。"
+  x = 2
+  y = 3
+  z = 12
+    }
+
+  room_exits "eastroom2" {
+    room_id = rooms.eastroom2.id
+    west = rooms.zoulang6.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/fengdi.c by LPCConverter
+# Zone: tulong
+
+    rooms "fengdi" {
+      name = "玉笔峰下"
+      description = "这座松林好长，走了半个时辰方始过完，一出松林，即到一座山峰脚下。山 峰虽非奇高，但宛如一根笔管般竖立在群山之中，陡削异常，壁立千仞，非 同小可。莫说是人，即令猿猴也是不易上去。"
+  x = 0
+  y = 0
+  z = 13
+    }
+
+  room_exits "fengdi" {
+    room_id = rooms.fengdi.id
+    up = rooms.fengding.id
+    down = rooms.changlang.id
+    north = rooms.songlin5.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/fengding.c by LPCConverter
+# Zone: tulong
+
+    rooms "fengding" {
+      name = "玉笔峰"
+      description = "只见山峰旁好大三个绞盘，互以竹索牵连，三盘互绞，升降竹篮，十馀名壮 汉扳动三个绞盘，又将篮子放了下去。篮子上下数次，那老僧与群豪都上了 峰顶。绞盘旁站着两名灰衣汉子。"
+  x = 0
+  y = 0
+  z = 14
+    }
+
+  room_exits "fengding" {
+    room_id = rooms.fengding.id
+    up = rooms.songlin.id
+    down = rooms.fengdi.id
+    east = rooms.damen.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/houting.c by LPCConverter
+# Zone: tulong
+
+    rooms "houting" {
+      name = "后厅"
+      description = "这里是庄内人用饭休息的地方，四角各生着一盆大炭火，一张八仙桌居 中，周围打扫得甚是干净。管家正在和下人们吩咐着什么。"
+  x = 0
+  y = 3
+  z = 12
+    }
+
+  room_exits "houting" {
+    room_id = rooms.houting.id
+    south = rooms.houyuan.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/houyuan.c by LPCConverter
+# Zone: tulong
+
+    rooms "houyuan" {
+      name = "后院"
+      description = "这是庄主平时练功的地方，在这绝顶寒峰，几乎寸草不生， 只有几棵苍松挺立在那里。院内有一张石桌和几张石凳。"
+  x = 0
+  y = 2
+  z = 12
+    }
+
+  room_exits "houyuan" {
+    room_id = rooms.houyuan.id
+    north = rooms.houting.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/shimen.c by LPCConverter
+# Zone: tulong
+
+    rooms "shimen" {
+      name = "洞窟内"
+      description = "洞中到处是千年不化的尖冰，有些处所的冰条如刀剑般锋锐突出。行不多时 前面已无去路，只见一块圆形巨岩叠在另一块圆岩上，两块巨岩封住了去路。 两岩之间都是坚冰凝结。"
+  x = 0
+  y = 0
+  z = 11
+    }
+
+  room_exits "shimen" {
+    room_id = rooms.shimen.id
+    west = rooms.tongdao.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/songlin.c by LPCConverter
+# Zone: tulong
+
+    rooms "songlin" {
+      name = "大松林"
+      description = "这是一片茂密的松林，杂乱的生长在倾斜的山坡上。林中松树都是数百年的 老树，枝柯交横，树顶上压了数尺厚的白雪，是以林中雪少，反而好走。"
+  x = 0
+  y = 0
+  z = 15
+    }
+
+  room_exits "songlin" {
+    room_id = rooms.songlin.id
+    up = rooms.songlin6.id
+    down = rooms.fengding.id
+    west = rooms.baihe.id
+    north = rooms.songlin1.id
+    south = rooms.songlin1.id
+    east = rooms.song2.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/songlin1.c by LPCConverter
+# Zone: tulong
+
+    rooms "songlin1" {
+      name = "大松林"
+      description = "这是一片茂密的松林，杂乱的生长在倾斜的山坡上。林中松树都是数百年的 老树，枝柯交横，树顶上压了数尺厚的白雪，是以林中雪少，反而好走。"
+  x = -1
+  y = 2
+  z = 13
+    }
+
+  room_exits "songlin1" {
+    room_id = rooms.songlin1.id
+    east = rooms.songlin2.id
+    south = rooms.songlin1.id
+    north = rooms.songlin1.id
+    west = rooms.songlin1.id
+    southeast = rooms.xuedi1.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/songlin2.c by LPCConverter
+# Zone: tulong
+
+    rooms "songlin2" {
+      name = "大松林"
+      description = "这是一片茂密的松林，杂乱的生长在倾斜的山坡上。林中松树都是数百年的 老树，枝柯交横，树顶上压了数尺厚的白雪，是以林中雪少，反而好走。"
+  x = 1
+  y = 1
+  z = 13
+    }
+
+  room_exits "songlin2" {
+    room_id = rooms.songlin2.id
+    east = rooms.songlin2.id
+    south = rooms.songlin3.id
+    north = rooms.songlin2.id
+    west = rooms.songlin1.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/songlin3.c by LPCConverter
+# Zone: tulong
+
+    rooms "songlin3" {
+      name = "大松林"
+      description = "这是一片茂密的松林，杂乱的生长在倾斜的山坡上。林中松树都是数百年的 老树，枝柯交横，树顶上压了数尺厚的白雪，是以林中雪少，反而好走。"
+  x = 0
+  y = 2
+  z = 13
+    }
+
+  room_exits "songlin3" {
+    room_id = rooms.songlin3.id
+    east = rooms.songlin1.id
+    south = rooms.songlin4.id
+    north = rooms.songlin2.id
+    west = rooms.songlin1.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/songlin4.c by LPCConverter
+# Zone: tulong
+
+    rooms "songlin4" {
+      name = "大松林"
+      description = "这是一片茂密的松林，杂乱的生长在倾斜的山坡上。林中松树都是数百年的 老树，枝柯交横，树顶上压了数尺厚的白雪，是以林中雪少，反而好走。"
+  x = -1
+  y = 1
+  z = 13
+    }
+
+  room_exits "songlin4" {
+    room_id = rooms.songlin4.id
+    east = rooms.songlin3.id
+    south = rooms.songlin2.id
+    north = rooms.songlin3.id
+    west = rooms.songlin5.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/songlin5.c by LPCConverter
+# Zone: tulong
+
+    rooms "songlin5" {
+      name = "大松林"
+      description = "这是一片茂密的松林，杂乱的生长在倾斜的山坡上。林中松树都是数百年的 老树，枝柯交横，树顶上压了数尺厚的白雪，是以林中雪少，反而好走。"
+  x = 0
+  y = 1
+  z = 13
+    }
+
+  room_exits "songlin5" {
+    room_id = rooms.songlin5.id
+    east = rooms.songlin2.id
+    south = rooms.fengdi.id
+    north = rooms.songlin3.id
+    west = rooms.songlin4.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/songlin6.c by LPCConverter
+# Zone: tulong
+
+    rooms "songlin6" {
+      name = "大松林"
+      description = "这座松林好长，走了半个时辰方始过完，一出松林，即到一座山峰脚下。山 峰虽非奇高，但宛如一根笔管般竖立在群山之中，陡削异常，莫说是人，即 令猿猴也是不易上去。"
+  x = 0
+  y = 0
+  z = 16
+    }
+
+  room_exits "songlin6" {
+    room_id = rooms.songlin6.id
+    down = rooms.songlin.id
+    east = rooms.songlin6.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/westroom1.c by LPCConverter
+# Zone: tulong
+
+    rooms "westroom1" {
+      name = "书房"
+      description = "这里是庄主的书房推开房门，见里面四壁图书，陈设得甚是精雅。"
+  x = -2
+  y = 2
+  z = 12
+    }
+
+  room_exits "westroom1" {
+    room_id = rooms.westroom1.id
+    east = rooms.zoulang3.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/westroom2.c by LPCConverter
+# Zone: tulong
+
+    rooms "westroom2" {
+      name = "西厢房"
+      description = "西厢房原是杜庄主的卧室的所在，床帐几桌、一应起居之具齐备，陈设 得甚是考究。"
+  x = -2
+  y = 3
+  z = 12
+    }
+
+  room_exits "westroom2" {
+    room_id = rooms.westroom2.id
+    east = rooms.zoulang5.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/xuedi1.c by LPCConverter
+# Zone: tulong
+
+    rooms "xuedi1" {
+      name = "雪地"
+      description = "这里是一片白茫茫的雪地，一眼望不到边际。四周一个人影也没有，厚 厚的积雪踩起来发出咯吱的响声，大地上留下一串孤独的脚印。寒冷的北风 呼啸而过，吹得脸生痛。暗淡的太阳低悬在天边，显得那么苍白。"
+  x = 0
+  y = 1
+  z = 13
+    }
+
+  room_exits "xuedi1" {
+    room_id = rooms.xuedi1.id
+    northwest = rooms.songlin1.id
+    }
+
+
+  room_characters "xuedi1" {
+    room_id = rooms.xuedi1.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/zoulang1.c by LPCConverter
+# Zone: tulong
+
+    rooms "zoulang1" {
+      name = "走廊"
+      description = "这是一条长长的走廊，通向各个客人的寝室。两侧木壁上或 刻有花鸟鱼虫，或挂了些许时人的字画，每隔七八步，就有 一处香台，缕缕青烟从铜鹤嘴里游出，闻之精神一振。"
+  x = -1
+  y = 1
+  z = 12
+    }
+
+  room_exits "zoulang1" {
+    room_id = rooms.zoulang1.id
+    north = rooms.zoulang3.id
+    east = rooms.dating.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/zoulang2.c by LPCConverter
+# Zone: tulong
+
+    rooms "zoulang2" {
+      name = "走廊"
+      description = "这是一条长长的走廊，通向各个客人的寝室。两侧木壁上或 刻有花鸟鱼虫，或挂了些许时人的字画，每隔七八步，就有 一处香台，缕缕青烟从铜鹤嘴里游出，闻之精神一振。"
+  x = 1
+  y = 1
+  z = 12
+    }
+
+  room_exits "zoulang2" {
+    room_id = rooms.zoulang2.id
+    north = rooms.zoulang4.id
+    west = rooms.dating.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/zoulang3.c by LPCConverter
+# Zone: tulong
+
+    rooms "zoulang3" {
+      name = "走廊"
+      description = "这是一条长长的走廊，通向各个客人的寝室。两侧木壁上或 刻有花鸟鱼虫，或挂了些许时人的字画，每隔七八步，就有 一处香台，缕缕青烟从铜鹤嘴里游出，闻之精神一振。"
+  x = -1
+  y = 2
+  z = 12
+    }
+
+  room_exits "zoulang3" {
+    room_id = rooms.zoulang3.id
+    south = rooms.zoulang1.id
+    north = rooms.zoulang5.id
+    west = rooms.westroom1.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/zoulang4.c by LPCConverter
+# Zone: tulong
+
+    rooms "zoulang4" {
+      name = "走廊"
+      description = "这是一条长长的走廊，通向各个客人的寝室。两侧木壁上或 刻有花鸟鱼虫，或挂了些许时人的字画，每隔七八步，就有 一处香台，缕缕青烟从铜鹤嘴里游出，闻之精神一振。"
+  x = 1
+  y = 2
+  z = 12
+    }
+
+  room_exits "zoulang4" {
+    room_id = rooms.zoulang4.id
+    south = rooms.zoulang2.id
+    north = rooms.zoulang6.id
+    east = rooms.eastroom1.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/zoulang5.c by LPCConverter
+# Zone: tulong
+
+    rooms "zoulang5" {
+      name = "走廊"
+      description = "这是一条长长的走廊，通向各个客人的寝室。两侧木壁上或 刻有花鸟鱼虫，或挂了些许时人的字画，每隔七八步，就有 一处香台，缕缕青烟从铜鹤嘴里游出，闻之精神一振。"
+  x = -1
+  y = 3
+  z = 12
+    }
+
+  room_exits "zoulang5" {
+    room_id = rooms.zoulang5.id
+    south = rooms.zoulang3.id
+    east = rooms.houting.id
+    west = rooms.westroom2.id
+    }
+
+# Generated from C:/files/git/mud/d/tulong/yubifeng/zoulang6.c by LPCConverter
+# Zone: tulong
+
+    rooms "zoulang6" {
+      name = "走廊"
+      description = "这是一条长长的走廊，通向各个客人的寝室。两侧木壁上或 刻有花鸟鱼虫，或挂了些许时人的字画，每隔七八步，就有 一处香台，缕缕青烟从铜鹤嘴里游出，闻之精神一振。"
+  x = 1
+  y = 3
+  z = 12
+    }
+
+  room_exits "zoulang6" {
+    room_id = rooms.zoulang6.id
+    south = rooms.zoulang4.id
+    west = rooms.houting.id
+    east = rooms.eastroom2.id
+    }

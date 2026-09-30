@@ -1,0 +1,953 @@
+zones "hengshan" {
+  name = "hengshan"
+}
+
+# Generated from C:/files/git/mud/d/hengshan/baiyunan.c by LPCConverter
+# Zone: hengshan
+
+    rooms "baiyunan" {
+      name = "白云庵"
+      description = "这里就是恒山派掌门人的居所。庵内供奉白衣观世音，除地上 一个蒲团，四壁萧然。恒山派威震江湖，没想到主庵居然简朴一至 如斯。"
+  x = 1
+  y = 4
+  z = 4
+    }
+
+  room_exits "baiyunan" {
+    room_id = rooms.baiyunan.id
+    south = rooms.square.id
+    }
+
+
+  room_characters "baiyunan" {
+    room_id = rooms.baiyunan.id
+    characters = [
+      { id = characters.xian.id },
+      { id = characters.zheng.id },
+      { id = characters.qin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengshan/beiyuedian.c by LPCConverter
+# Zone: hengshan
+
+    rooms "beiyuedian" {
+      name = "北岳殿"
+      description = "北岳殿上负绝壁，下临宫廨，下云级插天，庑门上下，穹碑森 立。殿正中悬风字形匾，上书“贞元之殿”，殿内北岳恒山之神全 身塑像，高可丈余。"
+  x = 0
+  y = 1
+  z = 1
+    }
+
+  room_exits "beiyuedian" {
+    room_id = rooms.beiyuedian.id
+    southdown = rooms.beiyuemiao.id
+    northup = rooms.shandao1.id
+    eastup = rooms.yuyang.id
+    westup = rooms.huixiantai.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/beiyuemiao.c by LPCConverter
+# Zone: hengshan
+
+    rooms "beiyuemiao" {
+      name = "北岳庙"
+      description = "北岳庙是个巍巍壮观的宫殿庙宇，山门三重，高列阜上，其下 石阶数层。这里是北岳庙最大最高的 '朝殿' 。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "beiyuemiao" {
+    room_id = rooms.beiyuemiao.id
+    southdown = rooms.guolaoling.id
+    northup = rooms.beiyuedian.id
+    west = rooms.jijiaoshi.id
+    east = rooms.kutianjing.id
+    }
+
+
+  room_characters "beiyuemiao" {
+    room_id = rooms.beiyuemiao.id
+    characters = [
+      { id = characters.he.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengshan/cuiping1.c by LPCConverter
+# Zone: hengshan
+
+    rooms "cuiping1" {
+      name = "翠屏山道"
+      description = "你爬在翠屏山道上，石阶陡峭，近在目前。回头外望，恒山重 峦叠嶂，林木幽深，倍感静谧。"
+  x = -3
+  y = 1
+  z = -5
+    }
+
+  room_exits "cuiping1" {
+    room_id = rooms.cuiping1.id
+    down = rooms.cuipinggu2.id
+    westup = rooms.cuiping2.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/cuiping2.c by LPCConverter
+# Zone: hengshan
+
+    rooms "cuiping2" {
+      name = "翠屏山道"
+      description = "你爬在翠屏山道上，树木遮天，难见天日。山林静谧，隐隐晨 钟轻敲，一切尘俗尽皆洗尽，山深有静气，恒山本色。"
+  x = -4
+  y = 1
+  z = -4
+    }
+
+  room_exits "cuiping2" {
+    room_id = rooms.cuiping2.id
+    eastdown = rooms.cuiping1.id
+    eastup = rooms.xuankong1.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/cuipinggu1.c by LPCConverter
+# Zone: hengshan
+
+    rooms "cuipinggu1" {
+      name = "翠屏谷"
+      description = "浑河在谷中冲刷而过，天峰岭和翠屏山分列峡谷两侧，绝壁千 仞，犹如刀削斧劈，高耸入云，这里自古就是塞外通往内地的咽喉 要道，真有一夫当关万夫莫开之势。"
+  x = -4
+  y = 2
+  z = -6
+    }
+
+  room_exits "cuipinggu1" {
+    room_id = rooms.cuipinggu1.id
+    northwest = rooms.jinlongxia.id
+    southeast = rooms.cuipinggu2.id
+    }
+
+
+  room_characters "cuipinggu1" {
+    room_id = rooms.cuipinggu1.id
+    characters = [
+      { id = characters.wen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengshan/cuipinggu2.c by LPCConverter
+# Zone: hengshan
+
+    rooms "cuipinggu2" {
+      name = "翠屏谷"
+      description = "这里峡谷幽深，石壁陡直，两崖壁立，一涧中流。就在这地势 绝险的恒山山谷中，却有数十殿堂悬挂在翠屏山腰。它们上载危岩， 下临深谷，错落有致，如玉宇琼楼自空中冉冉降落。那就是悬空寺 了。"
+  x = -3
+  y = 1
+  z = -6
+    }
+
+  room_exits "cuipinggu2" {
+    room_id = rooms.cuipinggu2.id
+    northwest = rooms.cuipinggu1.id
+    up = rooms.cuiping1.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/daziling.c by LPCConverter
+# Zone: hengshan
+
+    rooms "daziling" {
+      name = "大字岭"
+      description = "大字岭是入恒山必由之路。石壁上镌有 '恒宗' 二字，高可两 丈，笔力遒劲，气势雄浑。"
+  x = -2
+  y = -3
+  z = -1
+    }
+
+  room_exits "daziling" {
+    room_id = rooms.daziling.id
+    northeast = rooms.hufengkou.id
+    west = rooms.yunge.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/guolaoling.c by LPCConverter
+# Zone: hengshan
+
+    rooms "guolaoling" {
+      name = "果老岭"
+      description = "光滑的岩面上断续分布着行行马蹄形凹坑，坑径三四寸，深寸 许。传说这就是当年八仙中的张果老在恒山修道时，骑小毛驴由此 登天。由于路陡坡滑，他不得不牵驴步行，留下这些脚印。后人诗 云:  '盘跚云路岭头那，凹石相传果老过，想是婆心来度世，故留 遗迹使人摩。"
+  x = 0
+  y = -1
+  z = -1
+    }
+
+  room_exits "guolaoling" {
+    room_id = rooms.guolaoling.id
+    southwest = rooms.hufengkou.id
+    westdown = rooms.tongyuangu.id
+    northup = rooms.beiyuemiao.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/hufengkou.c by LPCConverter
+# Zone: hengshan
+
+    rooms "hufengkou" {
+      name = "虎风口"
+      description = "过 '步云桥' ， '望仙亭' ，就到了一个峰回路转的陡峭路口， 这里是一处风口，大风来处，声如虎啸，比别处强劲多多，故有是 名。"
+  x = -1
+  y = -2
+  z = -1
+    }
+
+  room_exits "hufengkou" {
+    room_id = rooms.hufengkou.id
+    northeast = rooms.guolaoling.id
+    west = rooms.xuangengsong.id
+    southwest = rooms.daziling.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/huixiantai.c by LPCConverter
+# Zone: hengshan
+
+    rooms "huixiantai" {
+      name = "会仙台"
+      description = "走出北岳殿，就能看见一个石窟，紧靠在绝壁中凿出的一个小 室，就是会仙台。台上排列群仙雕像，密密麻麻，不能胜数。"
+  x = -1
+  y = 1
+  z = 2
+    }
+
+  room_exits "huixiantai" {
+    room_id = rooms.huixiantai.id
+    eastdown = rooms.beiyuedian.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/jijiaoshi.c by LPCConverter
+# Zone: hengshan
+
+    rooms "jijiaoshi" {
+      name = "鸡叫石"
+      description = "北岳庙的西侧，有一尺许见方的石头，称鸡叫石。击之， '咯 咯' 作鸡鸣声，故名。清晨敲击，引起山谷回声，如群鸡争鸣，就 称 '金鸡报晓' 。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "jijiaoshi" {
+    room_id = rooms.jijiaoshi.id
+    east = rooms.beiyuemiao.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/jinlongxia.c by LPCConverter
+# Zone: hengshan
+
+    rooms "jinlongxia" {
+      name = "金龙峡"
+      description = "金龙峡又称唐峪，是进入恒山的入口。恒山一名太恒山或 称玄岳，是五岳中的北岳，道教以之为「第五小洞天」。它横 亘三百余里，如一队行进中的队列，昔人以为恒山如行来相对 泰山如坐、华山如立、嵩山如卧和衡山如飞。"
+  x = -5
+  y = 3
+  z = -6
+    }
+
+  room_exits "jinlongxia" {
+    room_id = rooms.jinlongxia.id
+    northeast = rooms.road6.id
+    southeast = rooms.cuipinggu1.id
+    }
+
+
+  room_characters "jinlongxia" {
+    room_id = rooms.jinlongxia.id
+    characters = [
+      { id = characters.jing.id },
+      { id = characters.qiaofu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengshan/kutianjing.c by LPCConverter
+# Zone: hengshan
+
+    rooms "kutianjing" {
+      name = "苦甜井"
+      description = "北岳庙的右下角，有二井相距不过三尺，而水质一苦一甜，称 为苦甜井。甜井中水味清洌甘甜，道家弟子奉为圣水，游人到此， 每感口枯舌燥，饮此水确有消暑清热之益。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "kutianjing" {
+    room_id = rooms.kutianjing.id
+    west = rooms.beiyuemiao.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/sanjiaodian.c by LPCConverter
+# Zone: hengshan
+
+    rooms "sanjiaodian" {
+      name = "三教殿"
+      description = "这里是全寺最高处的三教殿，也是悬空寺最大的殿宇。三层九 脊，全部由每根插入崖石的木梁承受，真是 '公输天巧'， 古今奇 迹。"
+  x = -3
+  y = 1
+  z = -2
+    }
+
+  room_exits "sanjiaodian" {
+    room_id = rooms.sanjiaodian.id
+    down = rooms.xuankong1.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/shandao1.c by LPCConverter
+# Zone: hengshan
+
+    rooms "shandao1" {
+      name = "见性峰山道"
+      description = "你走在见性峰山脊小路上，听着山下庙宇的钟鼓，眼前白云漂 荡，感觉幽逸极了。"
+  x = 0
+  y = 2
+  z = 2
+    }
+
+  room_exits "shandao1" {
+    room_id = rooms.shandao1.id
+    northup = rooms.shandao2.id
+    southdown = rooms.beiyuedian.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/shandao2.c by LPCConverter
+# Zone: hengshan
+
+    rooms "shandao2" {
+      name = "见性峰山道"
+      description = "你走在见性峰山脊小路上，听着山下庙宇的钟鼓，眼前白云漂 荡，远远看到前面就是峰顶了。"
+  x = 0
+  y = 3
+  z = 3
+    }
+
+  room_exits "shandao2" {
+    room_id = rooms.shandao2.id
+    eastup = rooms.square.id
+    southdown = rooms.shandao1.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/square.c by LPCConverter
+# Zone: hengshan
+
+    rooms "square" {
+      name = "见性峰广场"
+      description = "这里是恒山主峰见性峰峰顶的广场。在这里俯瞰群山，才理会 得何以恒山是华夏北方万山之宗，这里也是威震江湖的恒山派的根 本重地。"
+  x = 1
+  y = 3
+  z = 4
+    }
+
+  room_exits "square" {
+    room_id = rooms.square.id
+    north = rooms.baiyunan.id
+    westdown = rooms.shandao2.id
+    }
+
+
+  room_characters "square" {
+    room_id = rooms.square.id
+    characters = [
+      { id = characters.yi.id },
+      { id = characters.qing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengshan/tongyuangu.c by LPCConverter
+# Zone: hengshan
+
+    rooms "tongyuangu" {
+      name = "通元谷"
+      description = "通元谷孤处见性峰下，相传为张果老成仙前修道之所，由于他 道号 '通元' ，这里也就成了通元谷。"
+  x = -1
+  y = -1
+  z = -2
+    }
+
+  room_exits "tongyuangu" {
+    room_id = rooms.tongyuangu.id
+    eastup = rooms.guolaoling.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/xuangengsong.c by LPCConverter
+# Zone: hengshan
+
+    rooms "xuangengsong" {
+      name = "悬根松"
+      description = "就在虎风口这个风口险地，却有一株古松，虽被大风吹得树根 裸露，千百年来仍迎风挺立，这就是恒山著名的 '梵宫悬根' 。"
+  x = -2
+  y = -2
+  z = -1
+    }
+
+  room_exits "xuangengsong" {
+    room_id = rooms.xuangengsong.id
+    east = rooms.hufengkou.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/xuankong1.c by LPCConverter
+# Zone: hengshan
+
+    rooms "xuankong1" {
+      name = "悬空寺北楼"
+      description = "这里是悬空寺的北门楼，也是北碑亭。登楼俯视，如临深渊， 谷底仰望，如壁间丹凤。向南有悬空栈桥通往南楼。"
+  x = -3
+  y = 1
+  z = -3
+    }
+
+  room_exits "xuankong1" {
+    room_id = rooms.xuankong1.id
+    westdown = rooms.cuiping2.id
+    up = rooms.sanjiaodian.id
+    south = rooms.zhanqiao.id
+    }
+
+
+  room_characters "xuankong1" {
+    room_id = rooms.xuankong1.id
+    characters = [
+      { id = characters.yafu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengshan/xuankong2.c by LPCConverter
+# Zone: hengshan
+
+    rooms "xuankong2" {
+      name = "悬空寺南楼"
+      description = "这里是悬空寺的南门楼，也是南碑亭。悬空寺于陡崖上凿石穴 插悬梁为基，楼宇间栈桥相连。全寺面东座西，南北危楼对望，断 崖分断，很是艰险。"
+  x = -3
+  y = -1
+  z = -3
+    }
+
+  room_exits "xuankong2" {
+    room_id = rooms.xuankong2.id
+    southup = rooms.zhandao.id
+    north = rooms.zhanqiao.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/yunge.c by LPCConverter
+# Zone: hengshan
+
+    rooms "yunge" {
+      name = "云阁虹桥"
+      description = "过完栈道，就到云阁虹桥。前往恒山主峰见性峰，都要在这里 跨过唐峪河。拱桥卧波，水天亮丽，倍觉胸襟舒畅。"
+  x = -3
+  y = -3
+  z = -1
+    }
+
+  room_exits "yunge" {
+    room_id = rooms.yunge.id
+    northdown = rooms.zhandao.id
+    east = rooms.daziling.id
+    }
+
+
+  room_characters "yunge" {
+    room_id = rooms.yunge.id
+    characters = [
+      { id = characters.zhi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/hengshan/yuyang.c by LPCConverter
+# Zone: hengshan
+
+    rooms "yuyang" {
+      name = "玉羊游云"
+      description = "东峰峭壁崖顶上，白石累累，散布有致，在云雾拂动下，似有 动感，象正在吃草的羊只。这就是和“金鸡报晓”齐名的恒山胜景 “玉羊游云”。"
+  x = 1
+  y = 1
+  z = 2
+    }
+
+  room_exits "yuyang" {
+    room_id = rooms.yuyang.id
+    westdown = rooms.beiyuedian.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/zhandao.c by LPCConverter
+# Zone: hengshan
+
+    rooms "zhandao" {
+      name = "梯式栈道"
+      description = "栈道悬于壁，由无数的掾铺成，每节掾宽尺许，九节并排在一 起，每根掾插入岩壁，上铺木板，长约十丈，下临深渊。人必须踏 上悬空的木板，紧攀铁索，屏息静气，缓步挪动，才能过去。"
+  x = -3
+  y = -2
+  z = -2
+    }
+
+  room_exits "zhandao" {
+    room_id = rooms.zhandao.id
+    northdown = rooms.xuankong2.id
+    southup = rooms.yunge.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/zhanqiao.c by LPCConverter
+# Zone: hengshan
+
+    rooms "zhanqiao" {
+      name = "悬空栈桥"
+      description = "栈道悬于南北危楼之间，由无数的掾铺成，每节掾宽尺许，九 节并排在一起，每根掾绑在铁索上，上铺木板，长数十丈，下临深 渊。山风呼啸，惊心动魄。"
+  x = -3
+  y = 0
+  z = -3
+    }
+
+  room_exits "zhanqiao" {
+    room_id = rooms.zhanqiao.id
+    north = rooms.xuankong1.id
+    south = rooms.xuankong2.id
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/npc/he.c by LPCConverter
+# Zone: hengshan
+
+    characters "he" {
+      name = "仪和"
+      description = ""
+  gender = "女性"
+  age = 35
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 800
+    max_neili = 1400
+    max_qi = 1000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 90 },
+    { skill = "sword" level = 90 },
+    { skill = "force" level = 90 },
+    { skill = "parry" level = 90 },
+    { skill = "dodge" level = 90 },
+    { skill = "hengshan-jian" level = 90 },
+    { skill = "lingxu-bu" level = 90 },
+    { type = "sword" skill = "hengshan-jian" },
+    { type = "parry" skill = "hengshan-jian" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cheng_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/npc/jing.c by LPCConverter
+# Zone: hengshan
+
+    characters "jing" {
+      name = "定静师太"
+      description = ""
+  gender = "女性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1000000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2400
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 130 },
+    { skill = "sword" level = 130 },
+    { skill = "force" level = 130 },
+    { skill = "parry" level = 130 },
+    { skill = "dodge" level = 130 },
+    { skill = "hengshan-jian" level = 130 },
+    { skill = "lingxu-bu" level = 130 },
+    { type = "sword" skill = "hengshan-jian" },
+    { type = "parry" skill = "hengshan-jian" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.xuan_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/npc/lin.c by LPCConverter
+# Zone: hengshan
+
+    characters "lin" {
+      name = "仪琳"
+      description = ""
+  gender = "女性"
+  age = 16
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 200000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 800
+    max_neili = 1400
+    max_qi = 1000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 70 },
+    { skill = "sword" level = 70 },
+    { skill = "force" level = 70 },
+    { skill = "parry" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "hengshan-jian" level = 70 },
+    { skill = "lingxu-bu" level = 70 },
+    { type = "sword" skill = "hengshan-jian" },
+    { type = "parry" skill = "hengshan-jian" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cheng_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/npc/qin.c by LPCConverter
+# Zone: hengshan
+
+    characters "qin" {
+      name = "秦绢"
+      description = ""
+  gender = "女性"
+  age = 16
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 200000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 800
+    max_neili = 1400
+    max_qi = 1000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "sword" level = 50 },
+    { skill = "force" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "hengshan-jian" level = 50 },
+    { skill = "lingxu-bu" level = 50 },
+    { type = "sword" skill = "hengshan-jian" },
+    { type = "parry" skill = "hengshan-jian" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/npc/qing.c by LPCConverter
+# Zone: hengshan
+
+    characters "qing" {
+      name = "仪清"
+      description = ""
+  gender = "女性"
+  age = 35
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 800
+    max_neili = 1400
+    max_qi = 1000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 90 },
+    { skill = "sword" level = 90 },
+    { skill = "force" level = 90 },
+    { skill = "parry" level = 90 },
+    { skill = "dodge" level = 90 },
+    { skill = "hengshan-jian" level = 90 },
+    { skill = "lingxu-bu" level = 90 },
+    { type = "sword" skill = "hengshan-jian" },
+    { type = "parry" skill = "hengshan-jian" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cheng_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/npc/wen.c by LPCConverter
+# Zone: hengshan
+
+    characters "wen" {
+      name = "仪文"
+      description = ""
+  gender = "女性"
+  age = 28
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 400000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 800
+    max_neili = 1400
+    max_qi = 1000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "hengshan-jian" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { type = "sword" skill = "hengshan-jian" },
+    { type = "parry" skill = "hengshan-jian" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cheng_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/npc/xian.c by LPCConverter
+# Zone: hengshan
+
+    characters "xian" {
+      name = "定闲师太"
+      description = ""
+  title = "恒山派第十三代掌门"
+  gender = "女性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1200000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2400
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 130 },
+    { skill = "sword" level = 130 },
+    { skill = "force" level = 130 },
+    { skill = "parry" level = 130 },
+    { skill = "dodge" level = 130 },
+    { skill = "hengshan-jian" level = 130 },
+    { skill = "lingxu-bu" level = 130 },
+    { type = "sword" skill = "hengshan-jian" },
+    { type = "parry" skill = "hengshan-jian" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.xuan_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/npc/yafu.c by LPCConverter
+# Zone: hengshan
+
+    characters "yafu" {
+      name = "哑妇"
+      description = "这是个终年不开口的哑妇"
+  gender = "女性"
+  age = 37
+  shen_type = 0
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    con = 21
+    dex = 21
+    int = 21
+    str = 21
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/npc/yi.c by LPCConverter
+# Zone: hengshan
+
+    characters "yi" {
+      name = "定逸师太"
+      description = ""
+  gender = "女性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1000000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2400
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 130 },
+    { skill = "sword" level = 130 },
+    { skill = "force" level = 130 },
+    { skill = "parry" level = 130 },
+    { skill = "dodge" level = 130 },
+    { skill = "hengshan-jian" level = 130 },
+    { skill = "lingxu-bu" level = 130 },
+    { type = "sword" skill = "hengshan-jian" },
+    { type = "parry" skill = "hengshan-jian" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.xuan_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/npc/zheng.c by LPCConverter
+# Zone: hengshan
+
+    characters "zheng" {
+      name = "郑萼"
+      description = ""
+  gender = "女性"
+  age = 16
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 200000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 800
+    max_neili = 1400
+    max_qi = 1000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "sword" level = 50 },
+    { skill = "force" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "hengshan-jian" level = 50 },
+    { skill = "lingxu-bu" level = 50 },
+    { type = "sword" skill = "hengshan-jian" },
+    { type = "parry" skill = "hengshan-jian" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/hengshan/npc/zhi.c by LPCConverter
+# Zone: hengshan
+
+    characters "zhi" {
+      name = "仪质"
+      description = ""
+  gender = "女性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 800
+    max_neili = 1400
+    max_qi = 1000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 90 },
+    { skill = "sword" level = 90 },
+    { skill = "force" level = 90 },
+    { skill = "parry" level = 90 },
+    { skill = "dodge" level = 90 },
+    { skill = "hengshan-jian" level = 90 },
+    { skill = "lingxu-bu" level = 90 },
+    { type = "sword" skill = "hengshan-jian" },
+    { type = "parry" skill = "hengshan-jian" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cheng_cloth.id }
+  ]
+
+    }

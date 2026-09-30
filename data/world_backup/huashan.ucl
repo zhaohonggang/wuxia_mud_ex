@@ -1,0 +1,2408 @@
+zones "huashan" {
+  name = "huashan"
+}
+
+# Generated from C:/files/git/mud/d/huashan/baichi.c by LPCConverter
+# Zone: huashan
+
+    rooms "baichi" {
+      name = "百尺峡"
+      description = "走过千尺幢，前面又见另一要命的百尺峡，百尺峡不似千尺幢般险峻 ，但亦十分陡峭，岩壁两侧设有铁索以作扶拦。百尺峡又称百丈崖，是一 座壁立千仞的悬崖。崖底到上面的最低的垭口处约百尺，故有是名。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "baichi" {
+    room_id = rooms.baichi.id
+  northdown = rooms.qianchi.id
+  eastup = rooms.pingxinshi.id  }
+
+# Generated from C:/files/git/mud/d/huashan/bingqifang.c by LPCConverter
+# Zone: huashan
+
+    rooms "bingqifang" {
+      name = "兵器房"
+      description = "这里是华山派的兵器房，四周放这几个兵器架，上面是华山派各弟子 平时练剑用的竹剑。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：j > 1
+direction = ~
+  message = "这位别那麽贪心，带走一把竹剑就够啦。"
+}
+
+]
+    }
+
+  room_exits "bingqifang" {
+    room_id = rooms.bingqifang.id
+  west = rooms.square.id  }
+
+
+
+
+  room_items "bingqifang" {
+    room_id = rooms.bingqifang.id
+    items = [
+      { id = items.zhujian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/buwei1.c by LPCConverter
+# Zone: huashan
+
+    rooms "buwei1" {
+      name = "有所不为轩"
+      description = "这就是华山掌门岳不群的居所「有所不为轩」，此处乃是 前厅，厅上挂着「正气堂」三字匾额。厅中很宽敞，却没什么 摆设，靠墙放着两把交椅。这里乃是岳不群议事及授徒的地方 后面是寝室。"
+  x = 0
+  y = 0
+  z = 0
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "lu dayou"
+  direction = "south"
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
+    }
+
+  room_exits "buwei1" {
+    room_id = rooms.buwei1.id
+  north = rooms.buwei2.id
+  south = rooms.qunxianguan.id
+  west = rooms.garden.id
+  east = rooms.buwei3.id  }
+
+
+  room_characters "buwei1" {
+    room_id = rooms.buwei1.id
+    characters = [
+      { id = characters.dayou.id }    ]
+  }
+
+
+
+  room_items "buwei1" {
+    room_id = rooms.buwei1.id
+    items = [
+      { id = items.hou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/buwei2.c by LPCConverter
+# Zone: huashan
+
+    rooms "buwei2" {
+      name = "寝室"
+      description = "这里是岳不群的寝室，岳不群在江湖上人称「君子剑」，他虽为一大 派掌门，可他的卧室却布置的很简单。除了一张床，几只箱子，墙角有张 化妆台，只有靠墙一张红木书桌(desk)还显得略有气派。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ desk = "这是一张很结实的红木书桌，桌面上摆着几只狼毫笔，磨了一半的墨， 还有一叠未用的白纸。"
+}
+    }
+
+  room_exits "buwei2" {
+    room_id = rooms.buwei2.id
+  south = rooms.buwei1.id  }
+
+# Generated from C:/files/git/mud/d/huashan/buwei3.c by LPCConverter
+# Zone: huashan
+
+    rooms "buwei3" {
+      name = "偏厅"
+      description = "偏厅里供奉着华山历代祖师的神位。正中神案的墙上是华山派开山祖 师风祖师的画象。画象神情清隽，非常传神。神案上香炉里插着三柱清香， 香烟袅袅上升，散发着一股檀香味。西面有扇门通往外面的正厅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "buwei3" {
+    room_id = rooms.buwei3.id
+  west = rooms.buwei1.id  }
+
+# Generated from C:/files/git/mud/d/huashan/canglong.c by LPCConverter
+# Zone: huashan
+
+    rooms "canglong" {
+      name = "苍龙岭"
+      description = "华山五峰中最惊险的是北峰，北峰之上最陡峭的则是苍龙岭。此岭高 约百米，宽仅一米，而登山之路则在其山脊之上，两侧脊坡光滑挺拔，其 下悬崖深邃，云涛隐伏，岭体蜿蜒逶迤，体青背黑，如苍龙腾空，故有是 名。岭侧有一石碑(shibei)。     从这里往东是下山的路，再往南是上其它四峰的路，西面是华山极险 处之一，叫做“舍身崖”。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ shibei = "石碑刻着几个大字：「韩退之投书处」，据说当年韩愈爬上此岭之后，再 也不敢下来，自以为要死在山上，就在山上写信投下来，和家人诀别。后 来还是华阴县的县官派人上山拿绳子把他捆着吊下来的。"
+}
+    }
+
+  room_exits "canglong" {
+    room_id = rooms.canglong.id
+  eastdown = rooms.shangtianti.id
+  northup = rooms.yuntai.id
+  westup = rooms.sheshen.id  }
+
+
+  room_characters "canglong" {
+    room_id = rooms.canglong.id
+    characters = [
+      { id = characters.liang_fa.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/changlang.c by LPCConverter
+# Zone: huashan
+
+    rooms "changlang" {
+      name = "长廊"
+      description = "你走在长廊上只见红栏碧瓦，雕梁画栋，廊外风吹翠竹，细吟阵阵， 看来华山派气派果然不凡。西面是岳夫人的居室。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "changlang" {
+    room_id = rooms.changlang.id
+  west = rooms.jushi.id
+  north = rooms.songlin1.id
+  south = rooms.garden.id  }
+
+# Generated from C:/files/git/mud/d/huashan/chaopath1.c by LPCConverter
+# Zone: huashan
+
+    rooms "chaopath1" {
+      name = "朝阳峰小路"
+      description = "这里是朝阳峰小路，山势陡峭，两边下临深谷，一不小心都会掉 了下去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chaopath1" {
+    room_id = rooms.chaopath1.id
+  northeast = rooms.chaopath2.id
+  southeast = rooms.square.id  }
+
+# Generated from C:/files/git/mud/d/huashan/chaopath2.c by LPCConverter
+# Zone: huashan
+
+    rooms "chaopath2" {
+      name = "朝阳峰小路"
+      description = "这里是朝阳峰小路，山势陡峭，两边下临深谷，一不小心都会掉 了下去。西面有一条小路，长草没径。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+  direction = ~
+  message = "看来施戴子不会让你过去。"
+}
+,
+{
+  direction = ~
+  message = "看来施戴子不会让你过去。"
+}
+
+]
+    }
+
+  room_exits "chaopath2" {
+    room_id = rooms.chaopath2.id
+  southwest = rooms.chaopath1.id
+  eastup = rooms.chaoyang.id
+  westup = rooms.ziqitai.id  }
+
+
+  room_characters "chaopath2" {
+    room_id = rooms.chaopath2.id
+    characters = [
+      { id = characters.shi_daizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/chaoyang.c by LPCConverter
+# Zone: huashan
+
+    rooms "chaoyang" {
+      name = "朝阳峰"
+      description = "这里就是华山的东峰，也称朝阳峰，是华山看日出的绝佳处。於此俯 瞰，黄河隐显东迤如带，南望小孤峰背倚山河。小孤峰上有一小亭，覆以 铁瓦，亭中摆有铁棋盘一局，那就是华山著名的“博台”了。远望东壁悬 崖（ya）上，更有一个巨型掌印，相传为「河神巨灵」劈山时所留下的， 李白诗中“巨灵咆哮劈两山，洪波喷流射东海”就是指这个上古传说。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ ya = "悬崖下峭壁高耸，一条青藤（teng）直垂而下。"
+ teng = "一根青藤，如果你轻功不错，可以试着拉（la）住它可以跳（jump）下悬崖。"
+}
+    }
+
+  room_exits "chaoyang" {
+    room_id = rooms.chaoyang.id
+  westdown = rooms.chaopath2.id  }
+
+# Generated from C:/files/git/mud/d/huashan/chengxiang.c by LPCConverter
+# Zone: huashan
+
+    rooms "chengxiang" {
+      name = "沉香劈山处"
+      description = "传说华山三圣母爱上了一个叫刘彦昌的书生，结为夫妇，其兄二郎神 反对他们结合，将她压在华山下，她的儿子沉香长大后用斧子劈开华山， 救出了母亲。旁边有一块中间裂开的大石，象用斧子劈开的一般，叫做斧 劈石。传说就是沉香劈山救母的地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chengxiang" {
+    room_id = rooms.chengxiang.id
+  westup = rooms.lianhua.id
+  eastdown = rooms.lianpath2.id  }
+
+# Generated from C:/files/git/mud/d/huashan/chufang.c by LPCConverter
+# Zone: huashan
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "这是华山派的厨房，一位华山小师妹正在烧饭。整个房间弥漫着饭菜 香。你可以向小师妹要(serve) 些吃的喝的。墙上贴着一张启事(note)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ note = "一粥一饭，当思来之不易。"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）： present("soup", me) || present("rice", me)
+direction = ~
+  message = "小师妹瞪了你一眼: 吃不了要兜着走啊?"
+}
+
+]
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+  east = rooms.garden.id  }
+
+
+  room_characters "chufang" {
+    room_id = rooms.chufang.id
+    characters = [
+      { id = characters.girldizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/doctorroom.c by LPCConverter
+# Zone: huashan
+
+    rooms "doctorroom" {
+      name = "郎中家"
+      description = "这间屋子里住着一位郎中，号称仙医，据说无论遇到什么疑难杂症,只要到了 他手里，都能手到病除。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "doctorroom" {
+    room_id = rooms.doctorroom.id
+  east = rooms.road1.id  }
+
+
+  room_characters "doctorroom" {
+    room_id = rooms.doctorroom.id
+    characters = [
+      { id = characters.doctor.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/garden.c by LPCConverter
+# Zone: huashan
+
+    rooms "garden" {
+      name = "花园"
+      description = "这是一个园子，庭院清幽，异种花卉甚是不少。百花争放，山石古拙， 杨柳垂清，苍松翠竹，景致煞是宜人。清澈的溪流旁耸立着一座小亭子， 潺潺溪水向西南流去。东面通往有所不为轩，北面是一条长廊，西边小屋 传出阵阵香味，引得你真想去看看。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "garden" {
+    room_id = rooms.garden.id
+  east = rooms.buwei1.id
+  west = rooms.chufang.id
+  north = rooms.changlang.id
+  south = rooms.shufang.id
+  southwest = rooms.houyuan.id  }
+
+# Generated from C:/files/git/mud/d/huashan/houyuan.c by LPCConverter
+# Zone: huashan
+
+    rooms "houyuan" {
+      name = "后院"
+      description = "这里是华山派的后院，里面是华山弟子的居室和练功房。华山派总所 倚山而建，地势险峻，往东便是悬崖。西面是另一个小花院，有假山小池， 景色怡人，颇有江南林园的特色。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houyuan" {
+    room_id = rooms.houyuan.id
+  northeast = rooms.garden.id
+  west = rooms.jiashan.id
+  east = rooms.xuanya.id  }
+
+# Generated from C:/files/git/mud/d/huashan/huixinshi.c by LPCConverter
+# Zone: huashan
+
+    rooms "huixinshi" {
+      name = "回心石"
+      description = "从青柯坪沿石阶上山，山路到此而尽，前面山势险恶，石崖间仅有窄 窄的石阶犹如天梯耸立，两边铁链斜悬，令人不寒而栗，不敢前行。北壁 下大石当路，此石因此叫做回心石，再上去山道奇险，游客至此，就该回 头了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huixinshi" {
+    room_id = rooms.huixinshi.id
+  westdown = rooms.qingke.id
+  eastup = rooms.qianchi.id  }
+
+# Generated from C:/files/git/mud/d/huashan/husun.c by LPCConverter
+# Zone: huashan
+
+    rooms "husun" {
+      name = "猢狲愁"
+      description = "前面又是一处十分陡峭的山岭，上面有四只铁猿，盘踞台 畔，据说以前从华山水帘洞出来的猿猴，每到这里就要返回去， 连它们也感到难于超越，此岭因而得名。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "husun" {
+    room_id = rooms.husun.id
+  northdown = rooms.laojun.id
+  southup = rooms.shangtianti.id  }
+
+
+
+
+  room_items "husun" {
+    room_id = rooms.husun.id
+    items = [
+      { id = items.hou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/jianzhong.c by LPCConverter
+# Zone: huashan
+
+    rooms "jianzhong" {
+      name = "剑冢"
+      description = "只见许多石块堆著一个大坟。这坟（fen）背向山谷，俯仰空阔。 坟 旁立有一大石（stone），上刻：「剑冢」二字。站在此处， 山风刺骨， 俯瞰莲花峰（lianhua）下景色壮丽无比。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ fir_sword = "你拿起这柄剑，只觉着手轻飘飘的浑似无物，原来是柄竹剑。但见剑下的石刻道： 「四十岁後，不滞於物，草木竹石均可为剑。自此精修，渐进於无剑胜有剑之境。 」"
+ piece = "你拿起长条石片 ，见石片下的青石上也刻有两行小字： 「紫薇软剑，三十岁前所用，误伤义不祥，乃弃之深谷。」"
+ sec_piece = "细看石刻，见两行小字道：「重剑无锋，大巧不工。四十岁前恃之横行天下。」"
+ thi_piece = "石上刻有两行小字：「凌厉刚猛，无坚不摧，弱冠前以之与河朔群雄争锋。」"
+ big_stone = "一堆石头，似乎独孤求败所遗留之剑就在下面。"
+ lianhua = "景色壮丽无比，可以从这里（jump lianhua）到莲花峰。"
+}
+    }
+
+# Generated from C:/files/git/mud/d/huashan/jiashan.c by LPCConverter
+# Zone: huashan
+
+    rooms "jiashan" {
+      name = "假山小池"
+      description = "这是另一个小园子，里头有个小池塘。四周布有假山，增添林园美景。 下雨时雨水落入溪塘中，清脆的水珠声有如玉珠落盘般悦耳。水气朦胧中 抬头西望，只见远处苍山如黛，若隐若现，雨景妙趣无穷。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jiashan" {
+    room_id = rooms.jiashan.id
+  east = rooms.houyuan.id  }
+
+# Generated from C:/files/git/mud/d/huashan/jinshedong.c by LPCConverter
+# Zone: huashan
+
+    rooms "jinshedong" {
+      name = "金蛇洞"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ ya = "悬崖下峭壁高耸，一条青藤（teng）直垂而下。"
+ teng = "一根青藤，在半空中摇晃着，可以用他爬（climb）上悬崖。"
+}
+    }
+
+# Generated from C:/files/git/mud/d/huashan/jinsuo.c by LPCConverter
+# Zone: huashan
+
+    rooms "jinsuo" {
+      name = "金锁关"
+      description = "金锁关山势形如一把锁，下面是一片开阔地，两旁是高耸入云的峭壁，中间 一条羊肠小道。真是一夫当关，万夫莫开。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jinsuo" {
+    room_id = rooms.jinsuo.id
+  southup = rooms.zhenyue.id
+  northdown = rooms.shangtianti.id  }
+
+# Generated from C:/files/git/mud/d/huashan/jushi.c by LPCConverter
+# Zone: huashan
+
+    rooms "jushi" {
+      name = "居室"
+      description = "这里是岳夫人的寝室，岳夫人在江湖上人称「淑女剑」，为人极有骨 气，她的居室却相当朴素，床椅之外，靠窗(window)处有个梳妆台(tai)， 墙上挂着一口宝剑(sword)， 蛇皮吞口看来很是锋利。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ window = "窗外就是天声峡了。往外望去，云深谷幽令人目眩。"
+ sword = "这是上次前往福建时带回的龙泉剑。"
+ tai = "这是一张红漆梳妆台，半开的抽屉斜插着几朵鲜花。"
+}
+    }
+
+  room_exits "jushi" {
+    room_id = rooms.jushi.id
+  east = rooms.changlang.id  }
+
+
+
+
+  room_items "jushi" {
+    room_id = rooms.jushi.id
+    items = [
+      { id = items.yue_wife.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/jzroad1.c by LPCConverter
+# Zone: huashan
+
+    rooms "jzroad1" {
+      name = "松树林"
+      description = "这是一片松树林。中间一条小路，两边都是黑森森的几丈 高的松树。树上结着不少松果，间或有野兔游悠游而过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jzroad1" {
+    room_id = rooms.jzroad1.id
+  southwest = rooms.hsroad2.id
+  east = rooms.jzroad2.id  }
+
+
+
+
+  room_items "jzroad1" {
+    room_id = rooms.jzroad1.id
+    items = [
+      { id = items.tu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/jzroad2.c by LPCConverter
+# Zone: huashan
+
+    rooms "jzroad2" {
+      name = "松树林"
+      description = "这是一片松树林。中间一条小路，两边都是黑森森的几丈高的松 树。快出林了，可以看到东边好高的一道大山。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jzroad2" {
+    room_id = rooms.jzroad2.id
+  west = rooms.jzroad1.id
+  east = rooms.jzroad3.id  }
+
+# Generated from C:/files/git/mud/d/huashan/jzroad3.c by LPCConverter
+# Zone: huashan
+
+    rooms "jzroad3" {
+      name = "中条山脚"
+      description = "你来到中条山脚。仰望天空，山势压顶，天边的红霞映透了整个 山林，呼啸的穿山风刮个不停。你不禁有些惧意。向东有一条上山小 路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jzroad3" {
+    room_id = rooms.jzroad3.id
+  west = rooms.jzroad2.id
+  eastup = rooms.jzroad4.id  }
+
+# Generated from C:/files/git/mud/d/huashan/jzroad4.c by LPCConverter
+# Zone: huashan
+
+    rooms "jzroad4" {
+      name = "中条山森林"
+      description = "你走在中条山路上。路径狭小，周围茂密森林里，传来阵阵野兽 夜禽的嘶鸣，听来让人毛骨悚然。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jzroad4" {
+    room_id = rooms.jzroad4.id
+  westdown = rooms.jzroad3.id
+  southup = rooms.jzroad5.id  }
+
+# Generated from C:/files/git/mud/d/huashan/jzroad5.c by LPCConverter
+# Zone: huashan
+
+    rooms "jzroad5" {
+      name = "中条山密林"
+      description = "山路越来越小，周围茂密森林里和脚下的茅草封住了路，上不见 天光，后不见归路(road)，你简直绝望了。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ road = "路边模模糊糊，好象有个碑。可是太暗了实在看不见。"
+}
+    }
+
+  room_exits "jzroad5" {
+    room_id = rooms.jzroad5.id
+  northdown = rooms.jzroad4.id  }
+
+# Generated from C:/files/git/mud/d/huashan/jzroad6.c by LPCConverter
+# Zone: huashan
+
+    rooms "jzroad6" {
+      name = "树林外"
+      description = "树林外，赫然站着一个汉子，在阴森森的林子边上，凭添一股煞 气。西上是登山的路，东边就进入森林了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jzroad6" {
+    room_id = rooms.jzroad6.id
+  in = rooms.jzroad5.id
+  westup = rooms.jzroad7.id  }
+
+
+
+
+  room_items "jzroad6" {
+    room_id = rooms.jzroad6.id
+    items = [
+      { id = items.cheng_buyou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/jzroad7.c by LPCConverter
+# Zone: huashan
+
+    rooms "jzroad7" {
+      name = "峭壁"
+      description = "你走在峭壁边的小路上。一侧是密密的丛林，外侧却是极深的陡 壁。山风凛冽，几乎要把你刮落崖去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jzroad7" {
+    room_id = rooms.jzroad7.id
+  eastdown = rooms.jzroad6.id
+  southup = rooms.shangu.id  }
+
+# Generated from C:/files/git/mud/d/huashan/kuihua_1.c by LPCConverter
+# Zone: huashan
+
+    rooms "kuihua_1" {
+      name = "山崖"
+      description = "这是华山后山的陡峭山崖，做上方便是华山派掌门岳不群的居室，居 室的窗户正对着你的头顶。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kuihua_1" {
+    room_id = rooms.kuihua_1.id
+  east = rooms.songlin4.id  }
+
+# Generated from C:/files/git/mud/d/huashan/kuihua_2.c by LPCConverter
+# Zone: huashan
+
+    rooms "kuihua_2" {
+      name = "山崖"
+      description = "这里是玉女祠山下的陡峭山崖，离前边的山崖比较远，看来想要爬过 去并不容易。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/huashan/laojun.c by LPCConverter
+# Zone: huashan
+
+    rooms "laojun" {
+      name = "老君沟"
+      description = "爬过两个要命的悬崖，可在这里稍作歇息。老君沟是一条半里多长的 山沟，相传为太上老君到此，见无路可通，因而套上大青牛用铁犁犁出了 这条沟作为登山通道。"
+  x = 0
+  y = 0
+  z = 0
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "lao denuo"
+  direction = "southup"
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
+    }
+
+  room_exits "laojun" {
+    room_id = rooms.laojun.id
+  westdown = rooms.pingxinshi.id
+  southup = rooms.husun.id  }
+
+
+
+
+  room_items "laojun" {
+    room_id = rooms.laojun.id
+    items = [
+      { id = items.lao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/lianhua.c by LPCConverter
+# Zone: huashan
+
+    rooms "lianhua" {
+      name = "莲花峰"
+      description = "太华西峰－又名莲花峰，也叫芙蓉峰，峰顶有一块巨石，状如莲花，覆盖 崖巅。该处由此得名。这里悬崖陡峭，壁立千仞，登临远眺（tiao），秦川莽 莽，渭、洛二水盘屈如带。峰顶有石名“摘星石”，取“手可摘星辰”之意， 以状西峰之高。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ jianzhong = "太远了瞧不清楚。"
+}
+    }
+
+  room_exits "lianhua" {
+    room_id = rooms.lianhua.id
+  eastdown = rooms.chengxiang.id  }
+
+# Generated from C:/files/git/mud/d/huashan/lianpath1.c by LPCConverter
+# Zone: huashan
+
+    rooms "lianpath1" {
+      name = "莲花峰小路"
+      description = "小路通往莲花峰，周围静静悄悄，微闻蝉鸣。四望密林幽谷，让人 胆寒。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lianpath1" {
+    room_id = rooms.lianpath1.id
+  westup = rooms.lianpath2.id
+  northeast = rooms.zhenyue.id  }
+
+# Generated from C:/files/git/mud/d/huashan/lianpath2.c by LPCConverter
+# Zone: huashan
+
+    rooms "lianpath2" {
+      name = "莲花峰小路"
+      description = "小路通往莲花峰，周围静静悄悄，微闻蝉鸣。四望密林幽谷，让人 胆寒。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lianpath2" {
+    room_id = rooms.lianpath2.id
+  westup = rooms.chengxiang.id
+  eastdown = rooms.lianpath1.id  }
+
+# Generated from C:/files/git/mud/d/huashan/lockroom1.c by LPCConverter
+# Zone: huashan
+
+    rooms "lockroom1" {
+      name = "石室"
+      description = "这是一间宽敞的石室，只见四周空旷无比，不远处有一块 形状奇特的石桌（desk）。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ desk = "一张形状奇特的石桌，似乎连接着什么机关！"
+}
+    }
+
+  room_exits "lockroom1" {
+    room_id = rooms.lockroom1.id
+  out = rooms.s.id  }
+
+# Generated from C:/files/git/mud/d/huashan/lockroom2.c by LPCConverter
+# Zone: huashan
+
+    rooms "lockroom2" {
+      name = "石室"
+      description = "这是一间宽敞的石室，只见四周空旷无比，不远处有一块 形状奇特的石桌（desk）。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ desk = "一张形状奇特的石桌，似乎连接着什么机关！"
+}
+    }
+
+  room_exits "lockroom2" {
+    room_id = rooms.lockroom2.id
+  out = rooms.s.id  }
+
+# Generated from C:/files/git/mud/d/huashan/lockroom3.c by LPCConverter
+# Zone: huashan
+
+    rooms "lockroom3" {
+      name = "石室"
+      description = "这是一间宽敞的石室，只见四周空旷无比，不远处有一块 形状奇特的石桌（desk）。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ desk = "一张形状奇特的石桌，似乎连接着什么机关！"
+}
+    }
+
+  room_exits "lockroom3" {
+    room_id = rooms.lockroom3.id
+  out = rooms.s.id  }
+
+# Generated from C:/files/git/mud/d/huashan/lockroom4.c by LPCConverter
+# Zone: huashan
+
+    rooms "lockroom4" {
+      name = "石室"
+      description = "这是一间宽敞的石室，只见四周空旷无比，不远处有一块 形状奇特的石桌（desk）。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ desk = "一张形状奇特的石桌，似乎连接着什么机关！"
+}
+    }
+
+  room_exits "lockroom4" {
+    room_id = rooms.lockroom4.id
+  out = rooms.s.id  }
+
+# Generated from C:/files/git/mud/d/huashan/lockroom5.c by LPCConverter
+# Zone: huashan
+
+    rooms "lockroom5" {
+      name = "石室"
+      description = "这是一间宽敞的石室，只见四周空旷无比，不远处有一块 形状奇特的石桌（desk）。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ desk = "一张形状奇特的石桌，似乎连接着什么机关！"
+}
+    }
+
+  room_exits "lockroom5" {
+    room_id = rooms.lockroom5.id
+  out = rooms.s.id  }
+
+# Generated from C:/files/git/mud/d/huashan/lockroom6.c by LPCConverter
+# Zone: huashan
+
+    rooms "lockroom6" {
+      name = "石室"
+      description = "这是一间宽敞的石室，只见四周空旷无比，不远处有一块 形状奇特的石桌（desk）。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ desk = "一张形状奇特的石桌，似乎连接着什么机关！"
+}
+    }
+
+  room_exits "lockroom6" {
+    room_id = rooms.lockroom6.id
+  out = rooms.s.id  }
+
+# Generated from C:/files/git/mud/d/huashan/luoyan.c by LPCConverter
+# Zone: huashan
+
+    rooms "luoyan" {
+      name = "落雁峰"
+      description = "南峰又名落雁峰，是华山最高峰。峰头题刻极多，如“太华峰头”、“竣 极于天”、“袖拂天星”等，极言华岳之高。环顾四周，皆在足下。寇准诗赞 曰：只有天在上，更无山与齐；举头红日近，回首白云低。传说五代时候的隐 士陈抟就隐居在这里。宋太祖曾经下诏征他出山作官，他便在这里写下谢诏表 说：“一片野心都被白云锁住，九重宠诏休教丹凤衔来”，表示不愿出山做官。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "luoyan" {
+    room_id = rooms.luoyan.id
+  northdown = rooms.zhandao.id  }
+
+
+
+
+  room_items "luoyan" {
+    room_id = rooms.luoyan.id
+    items = [
+      { id = items.feng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/neishi.c by LPCConverter
+# Zone: huashan
+
+    rooms "neishi" {
+      name = "内室"
+      description = "这里有些昏暗，窗棂上落了少许灰尘，看来平时并没有人勤于打扫。 有一些剑宗弟子斜斜的靠在角落的床上沉沉的睡着。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "neishi" {
+    room_id = rooms.neishi.id
+  west = rooms.xiaowu.id  }
+
+# Generated from C:/files/git/mud/d/huashan/path1.c by LPCConverter
+# Zone: huashan
+
+    rooms "path1" {
+      name = "华山脚下"
+      description = "这便是五岳中西岳华山，巍然耸立于陕西省华阴县城南。华山北瞰黄 河，南连秦岭，五座山峰高低错落，各据一方，其间又有一段若断若续的 山岭相连，疏密有度，神韵天成，远远望去，状若巨朵青莲，外围诸峰如 莲瓣，中间三峰似莲蕊，因此山便因『花』得名，取名华山。又因其西临 少华山，故华山又称太华。它素有『奇峰天下第一山』之称，西面是一个 小村，而由东穿过野猪林便可到达开封府。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "path1" {
+    room_id = rooms.path1.id
+  west = rooms.eexit.id
+  east = rooms.yezhulin.id
+  north = rooms.yuquan.id
+  southeast = rooms.shaluo.id  }
+
+# Generated from C:/files/git/mud/d/huashan/pingdi.c by LPCConverter
+# Zone: huashan
+
+    rooms "pingdi" {
+      name = "山间平地"
+      description = "你走在中条山山间平地上。靠东山壁上有一小屋。传闻当年华山 玉女峰剑气两宗大对决，中计败北的剑宗弟子大多隐匿中条山。难道 就是这里？林中冷风轻吹门响。很失意的感觉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "pingdi" {
+    room_id = rooms.pingdi.id
+  north = rooms.shangu.id
+  east = rooms.xiaowu.id  }
+
+# Generated from C:/files/git/mud/d/huashan/pingxinshi.c by LPCConverter
+# Zone: huashan
+
+    rooms "pingxinshi" {
+      name = "平心石"
+      description = "百尺峡尽头，两边岩崖势欲相合，中夹两块巨石，前边一块刻有“惊 心石”三字。过此回望，石上刻有“平心石”三字，示人们以险境已经过 去，已进入平安之途了。顿时心情至此一舒。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "pingxinshi" {
+    room_id = rooms.pingxinshi.id
+  westdown = rooms.baichi.id
+  eastup = rooms.laojun.id  }
+
+
+  room_characters "pingxinshi" {
+    room_id = rooms.pingxinshi.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/qianchi.c by LPCConverter
+# Zone: huashan
+
+    rooms "qianchi" {
+      name = "千尺幢"
+      description = "前面有一斜如天垂石梯的山阶，这就是赫赫有名的千尺幢，千尺幢是 依一陡峭岩脊的裂缝开凿而成，斜度约七十度，高约二十米，仅容一人上 落。抬头仅见一线天光，两旁岩壁陡峭，尽头是个仅能容身的方形石洞， 俗称“天井”，天井旁的危崖上刻有“太华咽喉”的题刻。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qianchi" {
+    room_id = rooms.qianchi.id
+  westdown = rooms.huixinshi.id
+  southup = rooms.baichi.id  }
+
+
+  room_characters "qianchi" {
+    room_id = rooms.qianchi.id
+    characters = [
+      { id = characters.youke.id },
+      { id = characters.youke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/qingke.c by LPCConverter
+# Zone: huashan
+
+    rooms "qingke" {
+      name = "青柯坪"
+      description = "走过崎岖的十八盘，穿过云门，就到了青柯坪。青柯坪是一山间盆地 ，地势略为平坦。从这里开始，上山的路都是由原地凿出的石阶。远远望 见一个小小石亭，便是赌棋亭了。相传宋太祖与华夷先生曾弈棋于此，将 华山作为赌注，宋太祖输了，从此华山上的土地就不须缴纳钱粮。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qingke" {
+    room_id = rooms.qingke.id
+  northdown = rooms.yunmen.id
+  eastup = rooms.huixinshi.id  }
+
+# Generated from C:/files/git/mud/d/huashan/qunxianguan.c by LPCConverter
+# Zone: huashan
+
+    rooms "qunxianguan" {
+      name = "群仙观"
+      description = "这里是华山派历来之根本重地，墙上挂着华山派历代掌门人的画像， 华山派一切重大礼仪都在这里举行。这里也是华山弟子讲武习剑之地。北 边就是华山掌门岳不群的居所「有所不为轩」。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qunxianguan" {
+    room_id = rooms.qunxianguan.id
+  south = rooms.square.id
+  north = rooms.buwei1.id  }
+
+
+
+
+  room_items "qunxianguan" {
+    room_id = rooms.qunxianguan.id
+    items = [
+      { id = items.yue_buqun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/s.c by LPCConverter
+# Zone: huashan
+
+    rooms "s" {
+      name = "峭壁"
+      description = "四周悬崖峭壁，只见前方隐然是一个山洞，但是被一个巨大的 石门（door）封住了，石门上却插着六把形状奇特火炬（huoju）, 细看石门周围，只见有六个像是人工开凿小山洞。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ huoju = "这些火炬看来很奇怪，似乎连接着什么机关！"
+}
+    }
+
+  room_exits "s" {
+    room_id = rooms.s.id
+  out = rooms.shandong.id  }
+  # skipped malformed exit direction 'hole1': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction 'hole2': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction 'hole3': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction 'hole4': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction 'hole5': not a bare identifier (C comment artefact)
+  # skipped malformed exit direction 'hole6': not a bare identifier (C comment artefact)
+
+# Generated from C:/files/git/mud/d/huashan/sgyhole.c by LPCConverter
+# Zone: huashan
+
+    rooms "sgyhole" {
+      name = "山洞"
+      description = "这是一个毫不起眼的山洞，但是里面的石壁上却画满了五岳剑派所有已 经失传的精妙绝招。花岗岩石壁(wall)上很多小人，全是用利器刻制，想见 当初运力之人内力十分深厚。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sgyhole" {
+    room_id = rooms.sgyhole.id
+  southup = rooms.zhandao.id
+  northdown = rooms.sgyhole2.id
+  out = rooms.sgyhole1.id  }
+
+# Generated from C:/files/git/mud/d/huashan/sgyhole1.c by LPCConverter
+# Zone: huashan
+
+    rooms "sgyhole1" {
+      name = "山洞"
+      description = "山洞内有块光溜溜的大石，不知道曾有多少华山派的前辈在此思过面 壁，以致这块大石竟被坐得滑溜。石壁(wall)左侧刻着「风清扬」三个大 字，是以利器所刻，笔划苍劲，深有半寸。这三字刻得劲力非凡，想必其 人武功一定十分了得。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ wall = "一面很厚的石壁。"
+}
+    }
+
+  room_exits "sgyhole1" {
+    room_id = rooms.sgyhole1.id
+  out = rooms.siguoya.id  }
+
+
+
+
+  room_items "sgyhole1" {
+    room_id = rooms.sgyhole1.id
+    items = [
+      { id = items.linghu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/sgyhole2.c by LPCConverter
+# Zone: huashan
+
+    rooms "sgyhole2" {
+      name = "山洞"
+      description = "这是一个毫不起眼的山洞，但是里面的石壁上却画满了五 岳剑派所有已经失传的精妙绝招。花岗岩石壁(wall)上很多小 人，全是用利器刻制，想见当初运力之人内力十分深厚。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sgyhole2" {
+    room_id = rooms.sgyhole2.id
+  southup = rooms.sgyhole.id
+  northdown = rooms.sgyhole3.id  }
+
+# Generated from C:/files/git/mud/d/huashan/sgyhole3.c by LPCConverter
+# Zone: huashan
+
+    rooms "sgyhole3" {
+      name = "山洞"
+      description = "这是一个毫不起眼的山洞，但是里面的石壁上却画满了五 岳剑派所有已经失传的精妙绝招。花岗岩石壁(wall)上很多小 人，全是用利器刻制，想见当初运力之人内力十分深厚。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sgyhole3" {
+    room_id = rooms.sgyhole3.id
+  southup = rooms.sgyhole2.id
+  north = rooms.sgyhole4.id  }
+
+# Generated from C:/files/git/mud/d/huashan/sgyhole4.c by LPCConverter
+# Zone: huashan
+
+    rooms "sgyhole4" {
+      name = "山洞"
+      description = "这是一个毫不起眼的山洞，但是里面的石壁上却画满了五 岳剑派所有已经失传的精妙绝招。花岗岩石壁(wall)上很多小 人，全是用利器刻制，想见当初运力之人内力十分深厚。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sgyhole4" {
+    room_id = rooms.sgyhole4.id
+  south = rooms.sgyhole3.id  }
+
+# Generated from C:/files/git/mud/d/huashan/shaluo.c by LPCConverter
+# Zone: huashan
+
+    rooms "shaluo" {
+      name = "莎萝坪"
+      description = "沿着玉泉，踏过累累石涧，由山径迤逦而上，就来到了莎萝坪。从这 里山路开始陡峭，南面一条迂回盘旋的山道，称作「十八盘」，通往山上。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shaluo" {
+    room_id = rooms.shaluo.id
+  northwest = rooms.path1.id
+  northeast = rooms.shanhongpb.id
+  southup = rooms.yunmen.id  }
+
+
+  room_characters "shaluo" {
+    room_id = rooms.shaluo.id
+    characters = [
+      { id = characters.haoke.id },
+      { id = characters.haoke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/shandong.c by LPCConverter
+# Zone: huashan
+
+    rooms "shandong" {
+      name = "山洞"
+      description = "这里是一个不大的山洞，奔腾的瀑布成了它的门帘，阳光轻易就可以的透过水帘射进来，因此这里白天并不阴暗。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shandong" {
+    room_id = rooms.shandong.id
+  out = rooms.shanhongpb.id
+  in = rooms.s.id  }
+
+# Generated from C:/files/git/mud/d/huashan/shangtianti.c by LPCConverter
+# Zone: huashan
+
+    rooms "shangtianti" {
+      name = "上天梯"
+      description = "此处绝险，必须面壁挽索，贴身探足前进，步不登高，故名'上天梯'。 北面是下山的路，往南面是金锁关。西面上去可以通达北峰云台峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shangtianti" {
+    room_id = rooms.shangtianti.id
+  southup = rooms.jinsuo.id
+  northdown = rooms.husun.id
+  westup = rooms.canglong.id  }
+
+# Generated from C:/files/git/mud/d/huashan/shangu.c by LPCConverter
+# Zone: huashan
+
+    rooms "shangu" {
+      name = "山谷"
+      description = "这里是中条山的一个隐秘山谷。四周是高可及天的山峰，云深林 密，一径小溪潺潺流过，溅入坡下塘中。溪畔有一汉子舞剑正酣。不 打扰的为妙。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shangu" {
+    room_id = rooms.shangu.id
+  northdown = rooms.jzroad7.id
+  south = rooms.pingdi.id  }
+
+
+
+
+  room_items "shangu" {
+    room_id = rooms.shangu.id
+    items = [
+      { id = items.cong_buqi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/shanhongpb.c by LPCConverter
+# Zone: huashan
+
+    rooms "shanhongpb" {
+      name = "山洪瀑布"
+      description = "这里是一处峡谷，每年雨季山洪爆发时就形成了一处蔚为壮观的 瀑布。传说当年神雕侠杨过就是在这里练成绝世的玄铁剑法的。现在 人去谷空，只剩下空寥的山谷和奔腾的洪水(hongshui)。看来倒是个 隐居的好去处。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ stone = "一块天然的巨石，被洪水无情地冲蚀着。"
+}
+    }
+
+  room_exits "shanhongpb" {
+    room_id = rooms.shanhongpb.id
+  southwest = rooms.shaluo.id  }
+
+# Generated from C:/files/git/mud/d/huashan/sheshen.c by LPCConverter
+# Zone: huashan
+
+    rooms "sheshen" {
+      name = "舍身崖"
+      description = "这是一段极窄极险的山崖，四周云雾飞绕，下面渊深无底。 如不小心，一失足掉下去，只怕连骨头都找不到。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sheshen" {
+    room_id = rooms.sheshen.id
+  eastdown = rooms.canglong.id  }
+
+# Generated from C:/files/git/mud/d/huashan/shop.c by LPCConverter
+# Zone: huashan
+
+    rooms "shop" {
+      name = "山顶小店"
+      description = "这里是华山山顶的一间小店，卖些简单的饮食，专门赚那些游客 的钱。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shop" {
+    room_id = rooms.shop.id
+  east = rooms.square.id  }
+
+
+  room_characters "shop" {
+    room_id = rooms.shop.id
+    characters = [
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/shufang.c by LPCConverter
+# Zone: huashan
+
+    rooms "shufang" {
+      name = "华山书房"
+      description = "这里是华山派的书房，靠墙是一排书架，里面堆着乱七八糟的一大堆 书，最近老有人上山寻事，都很久没人整理书房了，要找啥书都很麻烦。 右侧有张书桌，桌上四宝俱备。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shufang" {
+    room_id = rooms.shufang.id
+  north = rooms.garden.id  }
+
+
+
+
+  room_items "shufang" {
+    room_id = rooms.shufang.id
+    items = [
+      { id = items.zhengqi_book.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/siguoya.c by LPCConverter
+# Zone: huashan
+
+    rooms "siguoya" {
+      name = "思过崖"
+      description = "这是华山的思过崖。危崖上有个山洞，是华山派历代弟子犯规后囚禁 受罚之所。崖上光秃秃的寸草不生，更无一株树木。这危崖自来自来相传 是玉女发钗上的一颗珍珠，当年华山派的祖师以此危崖为惩罚弟子之所， 主要是此处无草无木，无虫无鸟，受罚的弟子在面壁思过之时，不致为外 物所扰，心有旁鹜。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "siguoya" {
+    room_id = rooms.siguoya.id
+  northdown = rooms.yunupath2.id
+  in = rooms.sgyhole1.id  }
+
+# Generated from C:/files/git/mud/d/huashan/songlin1.c by LPCConverter
+# Zone: huashan
+
+    rooms "songlin1" {
+      name = "松树林"
+      description = "这是一片松树林。几丈高的松树密密麻麻，遮得不见天日。地上 落满松针，有不知名的野兔偷偷逃过。四周一片寂静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "songlin1" {
+    room_id = rooms.songlin1.id
+  south = rooms.changlang.id
+  north = rooms.songlin.id
+  east = rooms.songlin2.id
+  west = rooms.songlin.id  }
+
+# Generated from C:/files/git/mud/d/huashan/songlin2.c by LPCConverter
+# Zone: huashan
+
+    rooms "songlin2" {
+      name = "松树林"
+      description = "这是一片松树林。几丈高的松树密密麻麻，遮得不见天日。地上 落满松针，有不知名的野兔偷偷逃过。四周一片寂静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "songlin2" {
+    room_id = rooms.songlin2.id
+  south = rooms.songlin.id
+  north = rooms.songlin.id
+  east = rooms.songlin.id
+  west = rooms.songlin3.id  }
+
+# Generated from C:/files/git/mud/d/huashan/songlin3.c by LPCConverter
+# Zone: huashan
+
+    rooms "songlin3" {
+      name = "松树林"
+      description = "这是一片松树林。几丈高的松树密密麻麻，遮得不见天日。地上 落满松针，有不知名的野兔偷偷逃过。四周一片寂静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "songlin3" {
+    room_id = rooms.songlin3.id
+  south = rooms.songlin.id
+  north = rooms.songlin.id
+  east = rooms.songlin3.id
+  west = rooms.songlin.id  }
+
+# Generated from C:/files/git/mud/d/huashan/songlin4.c by LPCConverter
+# Zone: huashan
+
+    rooms "songlin4" {
+      name = "松树林"
+      description = "这是一片松树林。几丈高的松树密密麻麻，遮得不见天日。地上 落满松针，有不知名的野兔偷偷逃过。四周一片寂静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "songlin4" {
+    room_id = rooms.songlin4.id
+  south = rooms.songlin.id
+  north = rooms.songlin1.id
+  east = rooms.songlin.id
+  west = rooms.songlin.id  }
+
+
+  room_characters "songlin4" {
+    room_id = rooms.songlin4.id
+    characters = [
+      { id = characters.lin_pingzhi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/square.c by LPCConverter
+# Zone: huashan
+
+    rooms "square" {
+      name = "广场"
+      description = "这里是华山派在山顶开辟的一块平台，平时聚会的时候使用。虽然不 大却很平整。东北通向练武场，那里是华山弟子练习功夫的地方，人来人 往，热闹非凡。西面有个小店。通常有许多华山派弟子在此买些物品。北 边的房屋门上挂着一块匾，上书「群仙观」，西北方似乎有条小道通往山 上。"
+  x = 0
+  y = 0
+  z = 0
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "gao genming"
+  direction = "northeast"
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
+    }
+
+  room_exits "square" {
+    room_id = rooms.square.id
+  northeast = rooms.wuchang1.id
+  northwest = rooms.chaopath1.id
+  south = rooms.yunu.id
+  north = rooms.qunxianguan.id
+  west = rooms.shop.id
+  east = rooms.bingqifang.id  }
+
+
+  room_characters "square" {
+    room_id = rooms.square.id
+    characters = [
+      { id = characters.gao_genming.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/stone.c by LPCConverter
+# Zone: huashan
+
+    rooms "stone" {
+      name = "巨石上"
+      description = "这里是华山瀑布下的一块天然巨大石头上，周围尽是湍急的水流，汹 涌的高山洪水（hongshui）倾泄而下拍打在你身上。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ hongshui = "洪水汹涌无比，你只觉随时有可能被洪水冲到水中。"
+}
+    }
+
+# Generated from C:/files/git/mud/d/huashan/tsr_dugu-jiujian.c by LPCConverter
+# Zone: huashan
+
+    items "tsr_dugu_jiujian" {
+      name = "独孤九剑解迷管理对象"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/huashan/wuchang1.c by LPCConverter
+# Zone: huashan
+
+    rooms "wuchang1" {
+      name = "南练武场"
+      description = "这里是华山派的练武场，场上立这几个木人，西南通向广场，北面是另一 个练武场，东边也是一个练武场，可是不知怎么的，似乎很少有人过去。附近 到处是华山的弟子人来人往，热闹非凡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuchang1" {
+    room_id = rooms.wuchang1.id
+  southwest = rooms.square.id
+  north = rooms.wuchang2.id
+  east = rooms.wuchang3.id  }
+
+# Generated from C:/files/git/mud/d/huashan/wuchang2.c by LPCConverter
+# Zone: huashan
+
+    rooms "wuchang2" {
+      name = "北练武场"
+      description = "这里是华山派的练武场，场上立这几个木人，南面是另一个练武场， 到处是华山的弟子人来人往，热闹非凡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuchang2" {
+    room_id = rooms.wuchang2.id
+  south = rooms.wuchang1.id  }
+
+# Generated from C:/files/git/mud/d/huashan/wuchang3.c by LPCConverter
+# Zone: huashan
+
+    rooms "wuchang3" {
+      name = "东练武场"
+      description = "这里是华山派的练武场，场上立这几个木人，地处偏僻，有些荒凉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuchang3" {
+    room_id = rooms.wuchang3.id
+  west = rooms.wuchang1.id  }
+
+# Generated from C:/files/git/mud/d/huashan/x.c by LPCConverter
+# Zone: huashan
+
+    rooms "x" {
+      name = "空室"
+      description = "这是一间空旷的石室，不远处有个一石凳，你不禁想象这 里曾经像是有人在上面来打坐或者参悟武学至高境界。你 隐约发现前方石壁（bi）上像是刻着什么东西。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ bi = "無 		招 		胜 		有 		招  」"
+}
+    }
+
+  room_exits "x" {
+    room_id = rooms.x.id
+  out = rooms.s.id  }
+
+# Generated from C:/files/git/mud/d/huashan/xiaolu1.c by LPCConverter
+# Zone: huashan
+
+    rooms "xiaolu1" {
+      name = "小山路"
+      description = "这里是华山的一条小山路，地势较为平缓，不似其它地方那么险 峻。你走在这里，四周静悄悄的，你就象走进了一个世外桃源。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaolu1" {
+    room_id = rooms.xiaolu1.id
+  southwest = rooms.yunu.id
+  northeast = rooms.xiaolu2.id  }
+
+# Generated from C:/files/git/mud/d/huashan/xiaolu2.c by LPCConverter
+# Zone: huashan
+
+    rooms "xiaolu2" {
+      name = "小山路"
+      description = "这里是华山的一条小山路，地势较为平缓，不似其它地方那么险峻。 你走在这里，四周静悄悄的，你就象走进了一个世外桃源。东面好象有一 扇竹门(men)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaolu2" {
+    room_id = rooms.xiaolu2.id
+  southwest = rooms.xiaolu1.id  }
+
+# Generated from C:/files/git/mud/d/huashan/xiaowu.c by LPCConverter
+# Zone: huashan
+
+    rooms "xiaowu" {
+      name = "林间小屋"
+      description = "这里就是华山剑宗的的根本之地。二十五年来，剑宗弟子卧薪尝胆， 只是为了夺回华山门派掌门，为此，付出了极大牺牲。     屋里陈设极为简陋，只是西面开了一个小门，上面挂着一道竹帘。"
+  x = 0
+  y = 0
+  z = 0
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "feng buping"
+  direction = "east"
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
+    }
+
+  room_exits "xiaowu" {
+    room_id = rooms.xiaowu.id
+  west = rooms.pingdi.id
+  east = rooms.neishi.id  }
+
+
+
+
+  room_items "xiaowu" {
+    room_id = rooms.xiaowu.id
+    items = [
+      { id = items.feng_buping.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/xiuxishi.c by LPCConverter
+# Zone: huashan
+
+    rooms "xiuxishi" {
+      name = "华山小筑"
+      description = "这是间整洁的厢房，因门窗常闭着，光线很昏暗。房里别无他物， 只有中间放着一张收拾得舒舒服服的大床，看着就让人想睡觉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/huashan/xuanya.c by LPCConverter
+# Zone: huashan
+
+    rooms "xuanya" {
+      name = "悬崖"
+      description = "这是华山上悬崖上的一片平台，地势险恶。平台旁便是万丈深渊，低 头望下，只见一天云海。华山弟子多在此练剑打坐，借天时地势，勤练武 功。平时华山掌门也在此指点及考教门下弟子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xuanya" {
+    room_id = rooms.xuanya.id
+  west = rooms.houyuan.id  }
+
+# Generated from C:/files/git/mud/d/huashan/yunmen.c by LPCConverter
+# Zone: huashan
+
+    rooms "yunmen" {
+      name = "云门"
+      description = "过莎萝坪，是华山十八盘。十八盘的尽处就是“云门”了。这里刻着 “仙境”、“天下第一名山”等石刻。云门之内的小盆地就是青柯坪。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yunmen" {
+    room_id = rooms.yunmen.id
+  northdown = rooms.shaluo.id
+  southup = rooms.qingke.id  }
+
+# Generated from C:/files/git/mud/d/huashan/yuntai.c by LPCConverter
+# Zone: huashan
+
+    rooms "yuntai" {
+      name = "云台峰"
+      description = "太华北峰又名云台峰，它和南面的诸峰连成一条崎岖的长岭，构成 了一条鱼椎脊似的登峰天梯。香炉峰和梁张峰拱立左右，峥嵘兀突。云 台四面都是悬崖绝壁，十分险峻。峰顶建有真武宫，朝南通道上立着石 牌楼两座，高镶“北峰顶”三字。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yuntai" {
+    room_id = rooms.yuntai.id
+  southdown = rooms.canglong.id  }
+
+# Generated from C:/files/git/mud/d/huashan/yunu.c by LPCConverter
+# Zone: huashan
+
+    rooms "yunu" {
+      name = "玉女峰"
+      description = "这里是华山的中峰，玉女峰。传说春秋时隐士萧史善吹洞箫，箫声引 动了秦穆公女儿弄玉的爱慕，抛弃了宫廷生活，跟萧史来此隐居，故称玉 女峰。这里地势略为平缓，不似其它四峰般险峻，江湖上赫赫有名的华山 剑派就在此处。东边有所小小的庙宇，那就是玉女祠了。北面稀稀落落有 十几间房子，是华山派的地方，闲杂游客最好别往那里去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yunu" {
+    room_id = rooms.yunu.id
+  westdown = rooms.zhenyue.id
+  west = rooms.yunuci.id
+  north = rooms.square.id
+  southdown = rooms.yunupath1.id
+  northeast = rooms.xiaolu1.id  }
+
+
+  room_characters "yunu" {
+    room_id = rooms.yunu.id
+    characters = [
+      { id = characters.yue_lingshan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/yunuci.c by LPCConverter
+# Zone: huashan
+
+    rooms "yunuci" {
+      name = "玉女祠"
+      description = "玉女祠里供奉的到底是哪位玉女，有许多不同的说法，现在所能看到 的只一尊呆板的石像。祠中大石上有一处深陷，凹处积水清碧，这是玉女 的洗脸盆，碧水终年不干。玉女祠左边是一处山崖(cliff)，很是陡峭。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ cliff = "玉女祠下的山崖很是陡峭，似乎连接了一条小路。"
+}
+    }
+
+  room_exits "yunuci" {
+    room_id = rooms.yunuci.id
+  east = rooms.yunu.id  }
+
+# Generated from C:/files/git/mud/d/huashan/yunupath1.c by LPCConverter
+# Zone: huashan
+
+    rooms "yunupath1" {
+      name = "玉女峰山路"
+      description = "这里是玉女峰后山的一条山路。路边长满了翠竹，每当微风拂过 ，竹叶便沙沙作响，显得分外的幽静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yunupath1" {
+    room_id = rooms.yunupath1.id
+  southup = rooms.yunupath2.id
+  northup = rooms.yunu.id  }
+
+# Generated from C:/files/git/mud/d/huashan/yunupath2.c by LPCConverter
+# Zone: huashan
+
+    rooms "yunupath2" {
+      name = "玉女峰山路"
+      description = "这里是玉女峰后山的一条山路。路边长满了翠竹，每当微风拂过 ，竹叶便沙沙作响，显得分外的幽静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yunupath2" {
+    room_id = rooms.yunupath2.id
+  southup = rooms.siguoya.id
+  northdown = rooms.yunupath1.id  }
+
+# Generated from C:/files/git/mud/d/huashan/yuquan.c by LPCConverter
+# Zone: huashan
+
+    rooms "yuquan" {
+      name = "玉泉院"
+      description = "这里因屋后的玉泉而得名，是宋代陈希夷隐居的地方。周围生着十二 株大龙藤，夭矫多姿，枝干中空，就如飞龙相似，相传是希夷先生陈抟老 祖所植。院内绿荫蔽日，泉石如画，流水萦回，回廊曲折。院中有清泉一 股，泉水甘冽，传与山顶镇岳宫玉井相通，故名玉泉，玉泉院因此得名。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yuquan" {
+    room_id = rooms.yuquan.id
+  south = rooms.path1.id  }
+
+
+  room_characters "yuquan" {
+    room_id = rooms.yuquan.id
+    characters = [
+      { id = characters.teller.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huashan/zhandao.c by LPCConverter
+# Zone: huashan
+
+    rooms "zhandao" {
+      name = "长空栈道"
+      description = "栈道以铁斜插，上覆青石板，宽不足八寸。上乃绝壁，下亦绝壁。挽索 登其上，只听山风呼啸，林涛怒吼。远处偶传一两声禽鸣兽嘶，更使人毛骨 悚然。踏上悬空的栈道，紧攀铁索，屏息静气，缓步挪动，才能过去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhandao" {
+    room_id = rooms.zhandao.id
+  southup = rooms.luoyan.id
+  northdown = rooms.sgyhole.id  }
+
+# Generated from C:/files/git/mud/d/huashan/zhenyue.c by LPCConverter
+# Zone: huashan
+
+    rooms "zhenyue" {
+      name = "镇岳宫"
+      description = "镇岳宫倚壁而构，四边松林蔽日，景色幽美。宫前有玉井(jing)，相 传井中曾生千叶白莲。这里地势略为平坦，上、下山的游客多在此稍作休 息再继续前行。附近有几间简陋的旅社，欲登东峰观日出者，大都于头晚 歇息于此。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ jing = "井中水色碧透，掬手可饮。"
+}
+    }
+
+  room_exits "zhenyue" {
+    room_id = rooms.zhenyue.id
+  northdown = rooms.jinsuo.id
+  eastup = rooms.yunu.id
+  southwest = rooms.lianpath1.id  }
+
+# Generated from C:/files/git/mud/d/huashan/ziqitai.c by LPCConverter
+# Zone: huashan
+
+    rooms "ziqitai" {
+      name = "紫气台"
+      description = "紫气台终年云遮雾掩，迷蒙不见天日，在悬崖边上长着一根长长 的紫藤(teng)，很是怪异。更为怪异的是：每逢下雨天，山谷之中就 隐隐有紫气出现。极目四望，风景如画，在这里隐居相必非常惬意。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ teng = "一根紫藤，看起来很结实的样子，好像可以用它爬（climb）下悬崖。"
+}
+    }
+
+  room_exits "ziqitai" {
+    room_id = rooms.ziqitai.id
+  eastdown = rooms.chaopath2.id  }
+
+# Generated from C:/files/git/mud/d/huashan/npc/dayou.c by LPCConverter
+# Zone: huashan
+
+    characters "dayou" {
+      name = "陆大有"
+      description = "陆大有身材很瘦，又长的尖嘴猴腮的，但别看他其貌不扬，他在 同门中排行第六，是华山派年轻一代中的好手。肩上坐着一只小 猴，一对眼睛四处乱转。"
+  nickname = "六猴儿"
+  gender = "男性"
+  age = 26
+  shen_type = 1
+  score = 5000
+  brain = brains.guarder
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000
+    con = 24
+    dex = 28
+    int = 23
+    max_jing = 600
+    max_neili = 800
+    max_qi = 800
+    str = 23
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "huashan-xinfa" level = 40 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 50 },
+    { skill = "sword" level = 60 },
+    { skill = "huashan-jian" level = 60 },
+    { type = "force" skill = "huashan-xinfa" },
+    { type = "parry" skill = "huashan-jian" },
+    { type = "sword" skill = "huashan-jian" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huashan/npc/doctor.c by LPCConverter
+# Zone: huashan
+
+    characters "doctor" {
+      name = "妙手郎中"
+      description = "仙医能治各种疑难杂症,端的是手到病除."
+  nickname = "半仙"
+  gender = "男性"
+  age = 30
+
+  combat = {
+    attitude = "peaceful"
+    con = 30
+    dex = 30
+    int = 24
+    str = 26
+  }
+
+  inquiries = [
+    { key = "自宫" value = "哦....你要自宫?没问题,包你无痛!(accept zigong)?" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["accept"]
+  }
+
+  engage = {
+    fight = { accept = false msg = "我怎么能打得过您？" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/huashan/npc/gao-genming.c by LPCConverter
+# Zone: huashan
+
+    characters "gao_genming" {
+      name = "高根明"
+      description = "高根明是岳不群的第五位弟子。"
+  nickname = "市井豪杰"
+  gender = "男性"
+  age = 24
+  shen_type = 1
+  score = 20000
+  brain = brains.guarder
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 30000
+    con = 30
+    dex = 30
+    int = 24
+    max_neili = 900
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "sword" level = 50 },
+    { skill = "force" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "literate" level = 30 },
+    { skill = "huashan-jian" level = 50 },
+    { skill = "huashan-xinfa" level = 50 },
+    { skill = "huashan-quanfa" level = 50 },
+    { skill = "feiyan-huixiang" level = 50 },
+    { type = "sword" skill = "huashan-jian" },
+    { type = "parry" skill = "huashan-jian" },
+    { type = "force" skill = "huashan-xinfa" },
+    { type = "unarmed" skill = "huashan-quanfa" },
+    { type = "dodge" skill = "feiyan-huixiang" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huashan/npc/girldizi.c by LPCConverter
+# Zone: huashan
+
+    characters "girldizi" {
+      name = "小师妹"
+      description = "她是华山派的女弟子。"
+  gender = "女性"
+  age = 15
+  shen_type = 1
+  score = 1000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000
+    con = 22
+    dex = 25
+    int = 20
+    max_jing = 100
+    max_neili = 150
+    max_qi = 150
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 30 },
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 },
+    { skill = "parry" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huashan/npc/haoke.c by LPCConverter
+# Zone: huashan
+
+    characters "haoke" {
+      name = "江湖豪客"
+      description = "一名满脸彪捍之色的江湖豪客。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 2000
+    con = 25
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 300
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huashan/npc/lao-denuo.c by LPCConverter
+# Zone: huashan
+
+    characters "lao_denuo" {
+      name = "劳德诺"
+      description = "劳德诺是岳不群的二弟子。"
+  nickname = "老好人"
+  gender = "男性"
+  age = 61
+  score = 5000
+  brain = brains.guarder
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 150000
+    con = 30
+    dex = 30
+    int = 24
+    max_jing = 1700
+    max_neili = 2800
+    max_qi = 3400
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 95 },
+    { skill = "sword" level = 95 },
+    { skill = "force" level = 95 },
+    { skill = "parry" level = 95 },
+    { skill = "dodge" level = 95 },
+    { skill = "literate" level = 40 },
+    { skill = "huashan-jian" level = 95 },
+    { skill = "huashan-xinfa" level = 95 },
+    { skill = "huashan-quanfa" level = 95 },
+    { skill = "feiyan-huixiang" level = 95 },
+    { type = "sword" skill = "huashan-jian" },
+    { type = "parry" skill = "huashan-jian" },
+    { type = "force" skill = "huashan-xinfa" },
+    { type = "unarmed" skill = "huashan-quanfa" },
+    { type = "dodge" skill = "feiyan-huixiang" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+
+  meta = {
+    guarder = {
+      family = "华山剑宗"
+      msgs = { refuse_other = "{npc}劝道：家师有交代，剑宗廿五年" }
+    }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/huashan/npc/liang-fa.c by LPCConverter
+# Zone: huashan
+
+    characters "liang_fa" {
+      name = "梁发"
+      description = "梁发是岳不群的第三弟子。"
+  nickname = "闭嘴佛"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+  score = 2000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000
+    con = 30
+    dex = 30
+    int = 24
+    max_neili = 500
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "literate" level = 60 },
+    { skill = "huashan-jian" level = 60 },
+    { skill = "huashan-xinfa" level = 60 },
+    { skill = "huashan-quanfa" level = 60 },
+    { skill = "feiyan-huixiang" level = 60 },
+    { type = "sword" skill = "huashan-jian" },
+    { type = "parry" skill = "huashan-jian" },
+    { type = "force" skill = "huashan-xinfa" },
+    { type = "unarmed" skill = "huashan-quanfa" },
+    { type = "dodge" skill = "feiyan-huixiang" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huashan/npc/lin-pingzhi.c by LPCConverter
+# Zone: huashan
+
+    characters "lin_pingzhi" {
+      name = "林平之"
+      description = "林平之是岳不群最小的一个弟子，也是他的东床快婿。"
+  gender = "男性"
+  age = 18
+  score = 120000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 3000
+    con = 30
+    dex = 35
+    int = 24
+    max_jing = 1500
+    max_neili = 1500
+    max_qi = 1500
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "sword" level = 50 },
+    { skill = "force" level = 60 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 60 },
+    { skill = "literate" level = 70 },
+    { skill = "huashan-jian" level = 80 },
+    { skill = "pixie-sword" level = 50 },
+    { skill = "huashan-xinfa" level = 60 },
+    { skill = "huashan-quanfa" level = 60 },
+    { skill = "feiyan-huixiang" level = 60 },
+    { type = "sword" skill = "pixie-sword" },
+    { type = "parry" skill = "pixie-sword" },
+    { type = "force" skill = "huashan-xinfa" },
+    { type = "unarmed" skill = "huashan-quanfa" },
+    { type = "dodge" skill = "feiyan-huixiang" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huashan/npc/ren-yingying.c by LPCConverter
+# Zone: huashan
+
+    characters "ren_yingying" {
+      name = "任盈盈"
+      description = "任盈盈是魔教教主任我行的独生女儿。"
+  title = "魔教圣姑"
+  gender = "女性"
+  age = 19
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 250000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1200
+    max_neili = 2800
+    max_qi = 2500
+    str = 16
+  }
+
+  skills = [
+    { skill = "unarmed" level = 90 },
+    { skill = "sword" level = 90 },
+    { skill = "force" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "literate" level = 100 },
+    { skill = "huashan-jian" level = 100 },
+    { skill = "huashan-xinfa" level = 100 },
+    { skill = "huashan-quanfa" level = 100 },
+    { skill = "feiyan-huixiang" level = 100 },
+    { type = "sword" skill = "huashan-jian" },
+    { type = "parry" skill = "huashan-jian" },
+    { type = "force" skill = "huashan-xinfa" },
+    { type = "unarmed" skill = "huashan-quanfa" },
+    { type = "dodge" skill = "feiyan-huixiang" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 2
+  }
+
+  greetings = [
+    { line = "任盈盈微微叹了口气：“不知道我的令狐大哥在何方?”" }
+  ]
+
+  engage = {
+    fight = { accept = false msg = "小女子怎会是你的对手?" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/huashan/npc/shi-daizi.c by LPCConverter
+# Zone: huashan
+
+    characters "shi_daizi" {
+      name = "施戴子"
+      description = "施戴子是岳不群的第四位弟子。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+  score = 2000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000
+    con = 30
+    dex = 30
+    int = 24
+    max_jing = 800
+    max_neili = 1800
+    max_qi = 1800
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "literate" level = 60 },
+    { skill = "huashan-jian" level = 60 },
+    { skill = "huashan-xinfa" level = 60 },
+    { skill = "huashan-quanfa" level = 60 },
+    { skill = "feiyan-huixiang" level = 60 },
+    { type = "sword" skill = "huashan-jian" },
+    { type = "parry" skill = "huashan-jian" },
+    { type = "force" skill = "huashan-xinfa" },
+    { type = "unarmed" skill = "huashan-quanfa" },
+    { type = "dodge" skill = "feiyan-huixiang" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huashan/npc/teller.c by LPCConverter
+# Zone: huashan
+
+    characters "teller" {
+      name = "李铁嘴"
+      description = "李铁嘴是个买卜算卦的江湖术士，兼代客写书信、条幅。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 48
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2500
+    con = 17
+    dex = 20
+    int = 15
+    str = 25
+  }
+
+  inquiries = [
+    { key = "伪造" value = "(: do_forge :)" },
+    { key = "写信" value = "李铁嘴说道：代客写信，每页五十文。" },
+    { key = "写条幅" value = "李铁嘴说道：可以用各家字迹写条幅，每幅五两白银。" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "dodge" level = 25 }
+  ]
+
+
+  accept = [
+    { kind = "item_id" id = "letter paper" accept = true msg = ["李铁嘴给了name一封手信。", "李铁嘴一面急忙把钱收起来，一面笑嘻嘻说道：，这怎么敢当。", "李铁嘴笑嘻嘻说道：条幅写好了，请您收起来吧，多谢关照。", "李铁嘴笑嘻嘻说道：信写完了，您收好了，多谢关照。", "李铁嘴对你说道：造封信容易，先拿五十两银子来。", "李铁嘴皮笑肉不笑的对你说道：伪造这封信可是关系重大啊，得多收五十两。", "李铁嘴对你说道：这封信是造好了，但要是出了事，千万别把我说出来呀。", "李铁嘴对你说道：你想伪造什么啊? 总得拿个样子来吧。"] },
+    { kind = "any" accept = false msg = ["李铁嘴给了name一封手信。", "李铁嘴一面急忙把钱收起来，一面笑嘻嘻说道：，这怎么敢当。", "李铁嘴笑嘻嘻说道：条幅写好了，请您收起来吧，多谢关照。", "李铁嘴笑嘻嘻说道：信写完了，您收好了，多谢关照。", "李铁嘴对你说道：造封信容易，先拿五十两银子来。", "李铁嘴皮笑肉不笑的对你说道：伪造这封信可是关系重大啊，得多收五十两。", "李铁嘴对你说道：这封信是造好了，但要是出了事，千万别把我说出来呀。", "李铁嘴对你说道：你想伪造什么啊? 总得拿个样子来吧。"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/huashan/npc/youke.c by LPCConverter
+# Zone: huashan
+
+    characters "youke" {
+      name = "游客"
+      description = ""
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    combat_exp = 750
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huashan/npc/yue-lingshan.c by LPCConverter
+# Zone: huashan
+
+    characters "yue_lingshan" {
+      name = "岳灵珊"
+      description = "岳灵珊是华山派掌门岳不群的独生女儿。"
+  nickname = "小师妹"
+  gender = "女性"
+  age = 17
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 24
+    dex = 30
+    int = 27
+    max_jing = 600
+    max_neili = 1500
+    max_qi = 1200
+    str = 16
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "sword" level = 50 },
+    { skill = "force" level = 60 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "literate" level = 70 },
+    { skill = "huashan-jian" level = 50 },
+    { skill = "yunu-sword" level = 80 },
+    { skill = "huashan-quanfa" level = 50 },
+    { skill = "huashan-xinfa" level = 50 },
+    { skill = "feiyan-huixiang" level = 50 },
+    { type = "sword" skill = "yunu-sword" },
+    { type = "parry" skill = "yunu-sword" },
+    { type = "force" skill = "huashan-xinfa" },
+    { type = "unarmed" skill = "huashan-quanfa" },
+    { type = "dodge" skill = "feiyan-huixiang" }
+  ]
+
+
+  carry = [
+    { id = items.green_water_sword.id },
+    { id = items.cloth.id }
+  ]
+
+
+  engage = {
+    fight = { accept = false msg = "小女子怎会是你的对手?" }
+  }
+    }
+
+# Generated from C:/files/git/mud/d/huashan/npc/obj/green_water_sword.c by LPCConverter
+# Zone: huashan
+
+    characters "green_water_sword" {
+      name = "碧水剑"
+      description = "这是一把通体晶莹剔透的剑，美丽之极，"
+    }
+
+# Generated from C:/files/git/mud/d/huashan/npc/obj/letter.c by LPCConverter
+# Zone: huashan
+
+    characters "letter" {
+      name = "手信"
+      description = "这是华山派掌门岳不群的手信，请冯铁匠把打好的宝剑交给执信弟子。"
+    }
+
+# Generated from C:/files/git/mud/d/huashan/obj/longquan.c by LPCConverter
+# Zone: huashan
+
+    items "longquan" {
+      name = "龙泉剑"
+      description = "这是柄一看就知道是宝剑的利器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "只听见「飕」地一声，{npc}的手中已经多了一把寒光四射的宝剑----{name}。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/huashan/obj/paper.c by LPCConverter
+# Zone: huashan
+
+    items "paper" {
+      name = "信纸"
+      description = "这是张普通的信纸，上面是岳不群写给朋友的家常信，信已写好，而且 盖上了私印，大概走的匆忙忘记带上了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/huashan/obj/rice.c by LPCConverter
+# Zone: huashan
+
+    items "rice" {
+      name = "黄米饭"
+      description = "一碗香喷喷的黄米饭。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/huashan/obj/soup.c by LPCConverter
+# Zone: huashan
+
+    items "soup" {
+      name = "汤碗"
+      description = "一碗香气扑鼻的新鲜野菇做的汤。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

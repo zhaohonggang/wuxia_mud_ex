@@ -1,0 +1,1896 @@
+zones "tiezhang" {
+  name = "tiezhang"
+}
+
+# Generated from C:/files/git/mud/d/tiezhang/bqshi.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "bqshi" {
+      name = "兵器室"
+      description = "铁掌帮虽是以掌法、轻功著称，但帮中仍存有大量的兵器。以供武功不 够的帮众使用。屋内两侧排列的都是兵器架，上面刀、枪、剑、戟、斧、钺 钩、叉应有尽有。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bqshi" {
+    room_id = rooms.bqshi.id
+  south = rooms.zoulang_1.id  }
+
+
+
+
+  room_items "bqshi" {
+    room_id = rooms.bqshi.id
+    items = [
+      { id = items.gangjian.id },
+      { id = items.gangzhang.id },
+      { id = items.changbian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tiezhang/chufang.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "这里是铁掌帮内的厨房。你的正面是一个大炉灶，几乎占去了一大半的 房间。灶上留有很多火眼，可同时做很多种菜。几位帮中的厨子正在来回忙 碌着。整间屋内弥漫着各种饭菜的香味，闻了让人垂涎欲滴。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+  south = rooms.zoulang_3.id  }
+
+
+
+
+  room_items "chufang" {
+    room_id = rooms.chufang.id
+    items = [
+      { id = items.hsnr.id },
+      { id = items.ruzhu.id },
+      { id = items.fan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tiezhang/dezj.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "dezj" {
+      name = "第二指节"
+      description = "这里已到了中指峰的半山腰了，由于铁掌山排列得象手指一样，每座山 峰又再分为三截，就如手指的指节一般，因此这里又正是位于第二指节的位 置。这里离峰顶已近，透过淡淡的云雾，似已可以看到山路的尽头了。左前 方二十于丈处，黑黝黝的似有一个洞穴(dong)，洞口砌以玉石，修建得极是 齐整。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ dong = "一个黑黝黝的山洞。黑暗中偶尔有几点磷光闪过。"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "in" && objectp(present("mayi zhanglao", environment(me)))
+direction = "in"
+  message = "麻衣长老喝道：此乃铁掌帮禁地，任何人不得入内，否则有死无生！"
+}
+
+]
+    }
+
+  room_exits "dezj" {
+    room_id = rooms.dezj.id
+  south = rooms.sslin_5.id
+  northup = rooms.shanlu_8.id
+  in = rooms.dong_1.id  }
+
+
+  room_characters "dezj" {
+    room_id = rooms.dezj.id
+    characters = [
+      { id = characters.mayi.id },
+      { id = characters.mayi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tiezhang/dong-1.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "dong_1" {
+      name = "山洞"
+      description = "一个黑漆漆的山洞，一眼竟望不到底。两侧的石壁上生满的苔藓，摸起 来又湿又滑。这石洞似乎是人工开凿的，从四周的石壁上仍能看出斧凿的痕 迹。你站在这里，一股恐惧由然而生，似乎身体随时都会被这片黑暗吞噬掉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dong_1" {
+    room_id = rooms.dong_1.id
+  out = rooms.dezj.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/guajia.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "guajia" {
+      name = "瓜架"
+      description = "转过一个小弯，忽然眼前一绿，面前是一片很大的瓜架。在高大的木架 旁，种植着一些蔬菜和瓜类，架子上已经爬满了各种各样的植物，从茂密的 叶子中，垂下各种已经成熟的果实，丝瓜，苦瓜，葫芦……还有一些叫不出 名称的瓜果也缠杂在其中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guajia" {
+    room_id = rooms.guajia.id
+  southeast = rooms.shuijing.id
+  west = rooms.guangchang.id  }
+
+
+
+
+  room_items "guajia" {
+    room_id = rooms.guajia.id
+    items = [
+      { id = items.qiuqianzhang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tiezhang/guangchang.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "guangchang" {
+      name = "广场"
+      description = "山路行到这里，忽然变得开阔，你眼前出现了一片很大的广场。一些铁 掌帮的弟子来回穿梭于其间，显得很忙碌。在广场的周围有很多岩石建的房 子。正面的这间尤其显得高大雄伟。左面的房子中不时的涌出阵阵热气，其 间还加杂着鼓风的声音。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）： (string)me->query("family/family_name") != "铁掌帮" & objectp(present("feng yong", environment(me))) & ! me->query("move_party/绝情谷--铁掌帮", 1) 
+direction = ~
+  message = "冯勇身形一晃，忽然挡住你，厉声说道：这位不是本帮弟子，休得在本帮乱闯。"
+}
+
+]
+    }
+
+  room_exits "guangchang" {
+    room_id = rooms.guangchang.id
+  south = rooms.shanlu_2.id
+  west = rooms.lgfang.id
+  east = rooms.guajia.id
+  northup = rooms.wztang.id  }
+
+
+  room_characters "guangchang" {
+    room_id = rooms.guangchang.id
+    characters = [
+      { id = characters.huiyi.id },
+      { id = characters.heiyi.id },
+      { id = characters.heiyi.id }    ]
+  }
+
+
+
+  room_items "guangchang" {
+    room_id = rooms.guangchang.id
+    items = [
+      { id = items.fen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tiezhang/hclu-2.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "hclu_2" {
+      name = "荒草路"
+      description = "你走一条荒芜的小路上，两旁荒草齐膝，荆棘遍地，似乎罕有人至。山 石壁立，遮天蔽日，鸟兽全无，四周笼罩在一片阴暗之中，使这里看起来格 外深隧幽静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hclu_2" {
+    room_id = rooms.hclu_2.id
+  southdown = rooms.hclu.id
+  northwest = rooms.hclu_3.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/hclu-3.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "hclu_3" {
+      name = "荒草路"
+      description = "你走一条荒芜的小路上，两旁荒草齐膝，荆棘遍地，似乎罕有人至。山 石壁立，遮天蔽日，鸟兽全无，四周笼罩在一片阴暗之中，使这里看起来格 外深隧幽静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hclu_3" {
+    room_id = rooms.hclu_3.id
+  southeast = rooms.hclu_2.id
+  northup = rooms.hclu_4.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/hclu-4.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "hclu_4" {
+      name = "荒草路"
+      description = "你走一条荒芜的小路上，两旁荒草齐膝，荆棘遍地，似乎罕有人至。山 石壁立，遮天蔽日，鸟兽全无，四周笼罩在一片阴暗之中，使这里看起来格 外深隧幽静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hclu_4" {
+    room_id = rooms.hclu_4.id
+  northup = rooms.wmfeng.id
+  southdown = rooms.hclu_3.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/hclu.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "hclu" {
+      name = "荒草路"
+      description = "你走一条荒芜的小路上，两旁荒草齐膝，荆棘遍地，似乎罕有人至。山 石壁立，遮天蔽日，鸟兽全无，四周笼罩在一片阴暗之中，使这里看起来格 外深隧幽静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hclu" {
+    room_id = rooms.hclu.id
+  southeast = rooms.pingtai.id
+  northup = rooms.hclu_2.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/hhyang-2.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "hhyang_2" {
+      name = "花圃"
+      description = "只见这里摆满了茉莉、素馨、麝香藤、朱槿、玉桂、红蕉，都是夏日盛 开的香花。院墙上又挂了枷木兰、真腊龙诞等香珠，但觉馨意袭人，清芬满 园。园中桌上放着几盆新藕、甜瓜、枇杷、等鲜果，椅子上丢着把蒲扇，看 来是帮主休息的地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hhyang_2" {
+    room_id = rooms.hhyang_2.id
+  west = rooms.hhyuan_1.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/hhyuan-1.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "hhyuan_1" {
+      name = "后花园"
+      description = "这是一处环境优雅的花园。只见乔松修竹，苍翠蔽天，层峦奇岫，静窈 幽深。西面有一座假山，东面是大片的花圃。北面是通往山上的路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hhyuan_1" {
+    room_id = rooms.hhyuan_1.id
+  north = rooms.shanlu_3.id
+  south = rooms.hxfang.id
+  west = rooms.hhyuan_3.id
+  east = rooms.hhyang_2.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/hhyuan-3.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "hhyuan_3" {
+      name = "假山"
+      description = "你面前矗立着一座巨大的假山，一道瀑布从假山边泻将下来，飞注入 前面的一座大池塘中，池塘底下想是另有泻水通道，是以塘水却不见满溢。 铁掌帮为建这个花园，也不知花费了多少人力和物力。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hhyuan_3" {
+    room_id = rooms.hhyuan_3.id
+  east = rooms.hhyuan_1.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/hunanroad1.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "hunanroad1" {
+      name = "土路"
+      description = "你走在湘鄂交界的土路上，偶尔会有人骑着马匆匆而过。这里已经是湖 南地界，往北进入湖北境内。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hunanroad1" {
+    room_id = rooms.hunanroad1.id
+  east = rooms.caodi6.id
+  southwest = rooms.hunanroad2.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/hunanroad2.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "hunanroad2" {
+      name = "土路"
+      description = "你走在湘鄂交界的土路上，偶尔会有人骑着马匆匆而过。这里已经是湖 南地界，往北进入湖北境内。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hunanroad2" {
+    room_id = rooms.hunanroad2.id
+  northeast = rooms.hunanroad1.id
+  south = rooms.lx.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/hxfang.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "hxfang" {
+      name = "后厢房"
+      description = "这是大厅后面的一个小房间，虽然也是岩石砌成，但是却布置的非常舒 适。四壁用挂毯遮住，不露一点石壁的痕迹。屋内转圈摆放了一些椅子，上 面铺着厚厚的软垫，坐上去一定很舒适。这里是帮主处理帮中日常事务的地 方。后面通向后花院。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hxfang" {
+    room_id = rooms.hxfang.id
+  north = rooms.hhyuan_1.id
+  south = rooms.wztang.id  }
+
+
+  room_characters "hxfang" {
+    room_id = rooms.hxfang.id
+    characters = [
+      { id = characters.yahuan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tiezhang/juebi-1.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "juebi_1" {
+      name = "峭壁"
+      description = "你走到这里，发现前面已经没有路了。你面前是一座立陡的山峰，高耸 入云，看不到尽头。石壁上生长着很多松树，疾风吹来，沙沙作响。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "juebi_1" {
+    room_id = rooms.juebi_1.id
+  southwest = rooms.shangu_2.id
+  northup = rooms.szfeng.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/kedian.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "kedian" {
+      name = "客店"
+      description = "这是一家价钱低廉的客栈，生意非常兴隆。外地游客很多都选择这里落 脚，你可以在这里打听到各地的风土人情。店小二里里外外忙得团团转，接 待着南腔北调的客人。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ paizi = "楼上雅房，每夜五两白银。"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）： !me->query_temp("rent_paid") && dir == "up" 
+direction = "up"
+  message = "怎么着，想白住啊！"
+}
+,
+{
+   # 阻挡条件（原样保留）： me->query_temp("rent_paid") && dir == "west" 
+direction = "west"
+  message = "客官已经付了银子，怎么不住店就走了呢！ 旁人还以为小店伺候不周呢！"
+}
+
+]
+    }
+
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+  east = rooms.lx.id
+  up = rooms.kedian2.id  }
+
+
+  room_characters "kedian" {
+    room_id = rooms.kedian.id
+    characters = [
+      { id = characters.xiaoer.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tiezhang/kedian2.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "kedian2" {
+      name = "客店二楼"
+      description = "你正走在客店二楼的走廊上，可以听到从客房里不时地呼呼的打酣声一 阵高过一阵。不时有睡意朦胧的旅客进进出出。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kedian2" {
+    room_id = rooms.kedian2.id
+  down = rooms.kedian.id
+  in = rooms.kedian3.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/kedian3.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "kedian3" {
+      name = "客店二楼"
+      description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小木床，不少客 人正和衣而卧，满屋子都是呼呼的打酣声。西边有张床是空的，你蹑手蹑脚 地走了过去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kedian3" {
+    room_id = rooms.kedian3.id
+  out = rooms.kedian2.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/lgfang.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "lgfang" {
+      name = "练功房"
+      description = "这是一间用花岗岩砌成的石屋。室内一只大炉中燃了洪炭，煮着热气腾 腾的一镬 (huo)东西，镬旁两个黑衣小童，一个使劲推拉风箱，另一个用铁 铲翻炒镬中之物，听这沙沙之声，所炒的似是铁沙。几名帮中弟子闭目盘膝 坐在锅前，或对着腾上的热气吐呐，或把手掌插入(charu)镬中苦练掌法。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ huo = "这是一口巨大的铁锅，锅中盛满铁沙，下面燃着炭火。"
+}
+    }
+
+  room_exits "lgfang" {
+    room_id = rooms.lgfang.id
+  east = rooms.guangchang.id  }
+
+
+  room_characters "lgfang" {
+    room_id = rooms.lgfang.id
+    characters = [
+      { id = characters.heiyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tiezhang/lx.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "lx" {
+      name = "泸溪"
+      description = "这里是湘西的一个小镇。虽然此地地处偏僻，但这里来往的行人仍然很 多。西面是一间供人休息打尖的小客店。西南方四十里处，就是此处有名的 猴爪山。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lx" {
+    room_id = rooms.lx.id
+  southwest = rooms.road_1.id
+  north = rooms.hunanroad2.id
+  west = rooms.kedian.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/mishi.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "mishi" {
+      name = "密室"
+      description = "这是瀑布后面的一间密室，地下尘土堆积，显是长时间无人到来， 正中孤零零的摆着一张石几，几上有一只两尺见方的石盒(he)，盒口贴了封 条，此外再无别物。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ he = "一个四四方方的石盒，上面落满了尘土。"
+}
+    }
+
+  room_exits "mishi" {
+    room_id = rooms.mishi.id
+  out = rooms.hhyuan_3.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/mzfeng.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "mzfeng" {
+      name = "拇指峰"
+      description = "拇指峰是铁掌五峰中最为低矮的一峰，名为峰，实则只是一座较高的石 山罢了。峰顶四周全是又大又圆的岩石，在日晒雨淋下，被风蚀得十分之光 滑。在岩石的缝隙中，长出许多松树，其中一棵尤其引人注目。相传这棵松 名曰----并蒂松(song)，乃同根而生，于距地一米高处，忽分为二。这两根 树干同粗同高，均长得高大挺拔，枝叶茂盛，尤如兄弟一般，因此又名为兄 弟松。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ song = "这棵松树能长得如此奇特，必蕴涵了天地日月之精华。"
+}
+    }
+
+  room_exits "mzfeng" {
+    room_id = rooms.mzfeng.id
+  southdown = rooms.sslu_3.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/pingtai.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "pingtai" {
+      name = "山间平台"
+      description = "这里是山间的一块平地。山势在这里开始分支，矗立在面前的有五座高 耸入云的山峰，型似五指，“铁掌山”之名由此而得。五峰虽同处此山，但 拇指峰之雄伟，食指峰之险峻，中指峰之高耸，无名峰之奇丽，小指峰之秀 美，则各有特色，各擅胜场。在平台一侧的大石上，刻着一副地图(map)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "pingtai" {
+    room_id = rooms.pingtai.id
+  westup = rooms.shanlu_5.id
+  northeast = rooms.shangu_1.id
+  eastup = rooms.sslu_1.id
+  southdown = rooms.shanlu_4.id
+  northwest = rooms.hclu.id
+  northup = rooms.shanlu_6.id  }
+
+
+  room_characters "pingtai" {
+    room_id = rooms.pingtai.id
+    characters = [
+      { id = characters.huiyi.id },
+      { id = characters.huiyi.id },
+      { id = characters.huiyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tiezhang/pubu.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "pubu" {
+      name = "瀑布"
+      description = "山路行到这里，忽听远处传来隐隐水声，转过一道山梁，只见一道白龙 似的大瀑布从对面双峰之间奔腾而下，空山寂寂，那水声不断在山谷中激荡 回响，声势甚是惊人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "pubu" {
+    room_id = rooms.pubu.id
+  northup = rooms.xzfeng.id
+  eastdown = rooms.sblu_1.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/road-1.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "road_1" {
+      name = "黄土路"
+      description = "你走在一条尘土飞扬的黄土路上，两旁是阴森森的树林。这里是川湘的 交界处，据说经常有土匪出没，不可久留。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road_1" {
+    room_id = rooms.road_1.id
+  southwest = rooms.road_2.id
+  northeast = rooms.lx.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/road-2.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "road_2" {
+      name = "黄土路"
+      description = "你走在一条尘土飞扬的黄土路上，两旁是阴森森的树林。这里是川湘的 交界处，据说经常有土匪出没，不可久留。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road_2" {
+    room_id = rooms.road_2.id
+  west = rooms.road_3.id
+  northeast = rooms.road_1.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/road-3.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "road_3" {
+      name = "黄土路"
+      description = "你走在一条尘土飞扬的黄土路上，两旁是阴森森的树林。这里是川湘的 交界处，据说经常有土匪出没，不可久留。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road_3" {
+    room_id = rooms.road_3.id
+  northwest = rooms.shanjiao.id
+  east = rooms.road_2.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/sblu-1.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "sblu_1" {
+      name = "石板路"
+      description = "你走在一条石板铺成的小路上，两旁是高大的垂柳，虽在骄阳似火的夏 日，依旧凉爽怡人。因为小指峰风光秀美，游人较多，因此这里的路也修砌 的很好。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sblu_1" {
+    room_id = rooms.sblu_1.id
+  westup = rooms.pubu.id
+  eastdown = rooms.shanlu_5.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shangu-1.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shangu_1" {
+      name = "山谷"
+      description = "你走在一条狭窄的山谷之中，两旁山峰壁立，直插云霄。鸟鸣猿啼之声 回荡在寂静的空谷之中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shangu_1" {
+    room_id = rooms.shangu_1.id
+  northeast = rooms.shangu_2.id
+  southwest = rooms.pingtai.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shangu-2.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shangu_2" {
+      name = "山谷"
+      description = "你走在一条狭窄的山谷之中，两旁山峰壁立，直插云霄。鸟鸣猿啼之声 回荡在寂静的空谷之中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shangu_2" {
+    room_id = rooms.shangu_2.id
+  northeast = rooms.juebi_1.id
+  southwest = rooms.shangu_1.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shanjiao.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shanjiao" {
+      name = "山脚下"
+      description = "这里已到了山脚下，此处近看，但见五座山峰峭兀突怒，确似五根手指 竖立在半空之中。居中一峰尤见挺拔，笔立指天，耸入云表，下临深涧。山 侧生着一片松林，松梢留雪，树身尽皆向南弯曲，想见北风极烈。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanjiao" {
+    room_id = rooms.shanjiao.id
+  northup = rooms.shanmen.id
+  southeast = rooms.road_3.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shanlu-1.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shanlu_1" {
+      name = "山路"
+      description = "你走在一条崎岖的山路上，道旁山峰壁立，长草过腰，中间一条羊肠小 路，仅容一人勉强过去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu_1" {
+    room_id = rooms.shanlu_1.id
+  north = rooms.shanlu_2.id
+  southdown = rooms.shanmen.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shanlu-2.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shanlu_2" {
+      name = "山路"
+      description = "你走在一条崎岖的山路上，道旁山峰壁立，长草过腰，中间一条羊肠小 路，仅容一人勉强过去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu_2" {
+    room_id = rooms.shanlu_2.id
+  north = rooms.guangchang.id
+  south = rooms.shanlu_1.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shanlu-3.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shanlu_3" {
+      name = "山路"
+      description = "你走在一条崎岖的山路上，道旁山峰壁立，长草过腰，中间一条羊肠小 路，仅容一人勉强过去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu_3" {
+    room_id = rooms.shanlu_3.id
+  south = rooms.hhyuan_1.id
+  northup = rooms.shanlu_4.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shanlu-4.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shanlu_4" {
+      name = "山路"
+      description = "你走在一条崎岖的山路上，道旁山峰壁立，长草过腰，中间一条羊肠小 路，仅容一人勉强过去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu_4" {
+    room_id = rooms.shanlu_4.id
+  southdown = rooms.shanlu_3.id
+  northup = rooms.pingtai.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shanlu-5.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shanlu_5" {
+      name = "石板路"
+      description = "你走在一条石板铺成的小路上，两旁是高大的垂柳，虽在骄阳似火的夏 日，依旧凉爽怡人。因为小指峰风光秀美，游人较多，因此这里的路也修砌 的很好。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu_5" {
+    room_id = rooms.shanlu_5.id
+  westup = rooms.sblu_1.id
+  eastdown = rooms.pingtai.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shanlu-6.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shanlu_6" {
+      name = "山路"
+      description = "你走在一条崎岖的山路上，道旁山峰壁立，长草过腰，中间一条羊肠小 路，仅容一人勉强过去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu_6" {
+    room_id = rooms.shanlu_6.id
+  southdown = rooms.pingtai.id
+  northup = rooms.shanlu_7.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shanlu-7.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shanlu_7" {
+      name = "山路"
+      description = "你走在一条崎岖的山路上，道旁山峰壁立，长草过腰，中间一条羊肠小 路，仅容一人勉强过去。前面有一片茂密的松林。路旁的石壁上刻着几个大 字(dazi)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu_7" {
+    room_id = rooms.shanlu_7.id
+  north = rooms.sslin_1.id
+  southdown = rooms.shanlu_6.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shanlu-8.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shanlu_8" {
+      name = "山路"
+      description = "你走在一条崎岖的山路上，道旁山峰壁立，长草过腰，中间一条羊肠小 路，仅容一人勉强过去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu_8" {
+    room_id = rooms.shanlu_8.id
+  southdown = rooms.dezj.id
+  northup = rooms.shanlu_9.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shanlu-9.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shanlu_9" {
+      name = "山路"
+      description = "你走在一条崎岖的山路上，道旁山峰壁立，长草过腰，中间一条羊肠小 路，仅容一人勉强过去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu_9" {
+    room_id = rooms.shanlu_9.id
+  southdown = rooms.shanlu_8.id
+  northup = rooms.zzfeng.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shanmen.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shanmen" {
+      name = "山门"
+      description = "这里就是江湖上闻风丧胆的“铁掌帮”。自从“铁掌歼衡山”一役将衡 山派打得一蹶不振之后，帮主铁掌水上漂的名头威震江湖。这里是进山的必 经之路，曲的小路通向山里。路的一侧立着一块牌子(paizi) 。两旁的树林 内不时传出一些响声，似乎有人在暗中监视。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(!myfam || myfam["family_name"] != "铁掌帮") && dir == "northup" && (int)me->query("combat_exp", 1) >= 10000 && objectp(present("heiyi bangzhong", environment(me)))
+direction = "northup"
+  message = "黑衣帮众抽刀拦住你的去路，说道：“你不是铁掌帮弟子，不能上山！"
+}
+
+]
+    }
+
+  room_exits "shanmen" {
+    room_id = rooms.shanmen.id
+  northup = rooms.shanlu_1.id
+  southdown = rooms.shanjiao.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shijie-1.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shijie_1" {
+      name = "石阶"
+      description = "只见一排石阶盘旋而下，消失在浓浓的黑暗中。石阶上长满的绿色的青 苔，滑不留脚。远处黑暗的尽头似乎有点昏黄的光亮。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shijie_1" {
+    room_id = rooms.shijie_1.id
+  out = rooms.wmfeng.id
+  eastdown = rooms.shijie_2.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shijie-2.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shijie_2" {
+      name = "石阶"
+      description = "只见一排石阶盘旋而下，消失在浓浓的黑暗中。石阶上长满的绿色的青 苔，滑不留脚。远处黑暗的尽头似乎有点昏黄的光亮。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shijie_2" {
+    room_id = rooms.shijie_2.id
+  westup = rooms.shijie_1.id
+  northdown = rooms.shijie_3.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shijie-3.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shijie_3" {
+      name = "石阶"
+      description = "只见一排石阶盘旋而下，消失在浓浓的黑暗中。石阶上长满的绿色的青 苔，滑不留脚。远处黑暗的尽头似乎有点昏黄的光亮。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shijie_3" {
+    room_id = rooms.shijie_3.id
+  westdown = rooms.shishi.id
+  southup = rooms.shijie_2.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shishi.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shishi" {
+      name = "石室"
+      description = "这是一间在山腹中凿成的小石屋，中间有一座石桌 (shizhuo)，桌上摆 放着一盏油灯，散发出暗淡昏黄的光亮。屋内光线很暗，四周还散发着一股 腐烂霉臭的味道。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ shizhuo = "一座石桌，桌身好象是和石屋连在一起的，上面重重的印着两个手印。"
+ shouyin = "一双在石桌上的手印，你可以试着把双手嵌(qian)进去。"
+}
+    }
+
+  room_exits "shishi" {
+    room_id = rooms.shishi.id
+  eastup = rooms.shijie_3.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/shuijing.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "shuijing" {
+      name = "蝴蝶泉"
+      description = "在向前行，一路上嫣红姹紫，遍山遍野都是鲜花。春光烂漫已极。转过 一树花丛，眼前出现一眼泉水，泉水清澈见底，散发出一种沁人心脾的清凉。 泉水的旁边，飞舞一群群的蝴蝶，或花或白，或黑或紫，翩翩起舞。蝴蝶并 不畏人，飞近时便在人们的身上停留。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shuijing" {
+    room_id = rooms.shuijing.id
+  northwest = rooms.guajia.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/sslin-1.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "sslin_1" {
+      name = "松树林"
+      description = "你走进一片黑压压的松树林，这里的松树枝繁叶茂，树冠相叠，遮天蔽 日。几素阳光从树梢间照射下来，在淡淡的雾气中，形成一条条白色的光柱， 煞是好看。你走着走着，忽然发现自己已迷失在这片松林中，找不到出去的 路了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sslin_1" {
+    room_id = rooms.sslin_1.id
+  east = rooms.sslin_2.id
+  west = rooms.__file__.id
+  south = rooms.shanlu_7.id
+  north = rooms.__file__.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/sslin-2.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "sslin_2" {
+      name = "松树林"
+      description = "你走进一片黑压压的松树林，这里的松树枝繁叶茂，树冠相叠，遮天蔽 日。几素阳光从树梢间照射下来，在淡淡的雾气中，形成一条条白色的光柱， 煞是好看。你走着走着，忽然发现自己已迷失在这片松林中，找不到出去的 路了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sslin_2" {
+    room_id = rooms.sslin_2.id
+  north = rooms.sslin_3.id
+  south = rooms.__file__.id
+  west = rooms.sslin_1.id
+  east = rooms.__file__.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/sslin-3.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "sslin_3" {
+      name = "松树林"
+      description = "你走进一片黑压压的松树林，这里的松树枝繁叶茂，树冠 相叠，遮天蔽日。几素阳光从树梢间照射下来，在淡淡的雾气 中，形成一条条白色的光柱，煞是好看。你走着走着，忽然发 现自己已迷失在这片松林中，找不到出去的路了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sslin_3" {
+    room_id = rooms.sslin_3.id
+  west = rooms.sslin_4.id
+  east = rooms.__file__.id
+  south = rooms.sslin_2.id
+  north = rooms.__file__.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/sslin-4.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "sslin_4" {
+      name = "松树林"
+      description = "你走进一片黑压压的松树林，这里的松树枝繁叶茂，树冠相叠，遮天蔽 日。几素阳光从树梢间照射下来，在淡淡的雾气中，形成一条条白色的光柱， 煞是好看。你走着走着，忽然发现自己已迷失在这片松林中，找不到出去的 路了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sslin_4" {
+    room_id = rooms.sslin_4.id
+  north = rooms.sslin_5.id
+  south = rooms.__file__.id
+  east = rooms.sslin_3.id
+  west = rooms.__file__.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/sslin-5.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "sslin_5" {
+      name = "松树林"
+      description = "你走进一片黑压压的松树林，这里的松树枝繁叶茂，树冠相叠，遮天蔽 日。几素阳光从树梢间照射下来，在淡淡的雾气中，形成一条条白色的光柱， 煞是好看。你走着走着，忽然发现自己已迷失在这片松林中，找不到出去的 路了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sslin_5" {
+    room_id = rooms.sslin_5.id
+  west = rooms.__file__.id
+  east = rooms.__file__.id
+  south = rooms.sslin_4.id
+  north = rooms.dezj.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/sslu-1.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "sslu_1" {
+      name = "碎石路"
+      description = "你走在一条用碎石铺成的小路上。两旁山势低缓，长满了翠绿的毛竹， 阵阵微风吹过，耳旁便响起一片沙沙声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sslu_1" {
+    room_id = rooms.sslu_1.id
+  eastup = rooms.sslu_2.id
+  westdown = rooms.pingtai.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/sslu-2.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "sslu_2" {
+      name = "碎石路"
+      description = "你走在一条用碎石铺成的小路上。两旁山势低缓，长满了翠绿的毛竹， 阵阵微风吹过，耳旁便响起一片沙沙声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sslu_2" {
+    room_id = rooms.sslu_2.id
+  eastup = rooms.sslu_3.id
+  westdown = rooms.sslu_1.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/sslu-3.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "sslu_3" {
+      name = "碎石路"
+      description = "你走在一条用碎石铺成的小路上。两旁山势低缓，长满了翠绿的毛竹， 阵阵微风吹过，耳旁便响起一片沙沙声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sslu_3" {
+    room_id = rooms.sslu_3.id
+  westdown = rooms.sslu_2.id
+  northup = rooms.mzfeng.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/szfeng.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "szfeng" {
+      name = "食指峰"
+      description = "你终于爬上了峰顶，已经累得气喘吁吁了。这里只有丈许方圆的一小块 地方，寸草不生，到处都是光秃秃的岩石。一阵狂风呼啸而过，吹得你一个 趔趄，差点摔倒，看来还是赶快离开这里的好。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "szfeng" {
+    room_id = rooms.szfeng.id
+  southdown = rooms.juebi_1.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/wmfeng.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "wmfeng" {
+      name = "无名峰"
+      description = "跨过路上的荆棘和荒草，你终于登上了五指山无名峰的峰顶。由于这里 地处五峰之中，四周有其它山峰阻挡，因此风势很小，常年笼罩在一片云雾 之中。峰顶长满了齐腰的荒草，怪石嶙峋，一片荒凉景色。在山峰顶部的正 中赫然矗立着一座岩石砌就的坟墓，坟墓的前面立着一块一人多高的花岗岩 的墓碑(bei)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wmfeng" {
+    room_id = rooms.wmfeng.id
+  southdown = rooms.hclu_4.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/wztang.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "wztang" {
+      name = "五指堂"
+      description = "这是一间完全用花岗岩砌成的大厅，透出阵阵逼人的寒气。整座房内没 有窗户，显得阴森黑暗。两旁的墙壁上插着松油制的火把，散发出昏黄色的 光亮，寂静的大厅中不时响起火把噼啪的燃烧声。大厅的正中摆放着帮主的 宝座，两旁分列着十几把椅子，只有遇到帮中大事时，帮主才会在这里与部 下商议。在正面的墙上挂着一面缕金的横匾(bian)。北面有一扇小门通向后 面。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wztang" {
+    room_id = rooms.wztang.id
+  east = rooms.zoulang_1.id
+  southdown = rooms.guangchang.id
+  west = rooms.zoulang_2.id
+  north = rooms.hxfang.id  }
+
+
+  room_characters "wztang" {
+    room_id = rooms.wztang.id
+    characters = [
+      { id = characters.xiaotong.id },
+      { id = characters.xiaotong.id }    ]
+  }
+
+
+
+  room_items "wztang" {
+    room_id = rooms.wztang.id
+    items = [
+      { id = items.qiuqianren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/tiezhang/xxs.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "xxs" {
+      name = "休息室"
+      description = "这是一个黑不透光的大房间。所有的窗户都用厚厚的帘子遮住，不露丝 毫光亮。屋内整齐的排列着十几张木板搭成的床铺，可以让练功后的帮众及 时得到休息。这里静悄悄的，黑暗中偶尔传来清微的鼾声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xxs" {
+    room_id = rooms.xxs.id
+  south = rooms.zoulang_4.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/xzfeng.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "xzfeng" {
+      name = "小指峰"
+      description = "你已登上了小指峰的峰顶。纵目远眺，但见远处四峰已淹没在浓浓的迷 雾之中。这里的高度恰在云雾之中，你只能看清身前几米的景物。不知不觉 中你的衣服已被水气沁湿，凉风袭来，冻得你瑟瑟发抖。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xzfeng" {
+    room_id = rooms.xzfeng.id
+  southdown = rooms.pubu.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/zoulang-1.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "zoulang_1" {
+      name = "走廊"
+      description = "你走在一条走廊上。北面的屋内传来阵阵金属的声音。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zoulang_1" {
+    room_id = rooms.zoulang_1.id
+  north = rooms.bqshi.id
+  west = rooms.wztang.id
+  east = rooms.zoulang_4.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/zoulang-2.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "zoulang_2" {
+      name = "走廊"
+      description = "你走在一条走廊上，北面似乎有翻书的哗哗声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zoulang_2" {
+    room_id = rooms.zoulang_2.id
+  west = rooms.zoulang_3.id
+  east = rooms.wztang.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/zoulang-3.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "zoulang_3" {
+      name = "走廊"
+      description = "你走在一条走廊上。北面传来阵阵饭菜的香味。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zoulang_3" {
+    room_id = rooms.zoulang_3.id
+  north = rooms.chufang.id
+  east = rooms.zoulang_2.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/zoulang-4.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "zoulang_4" {
+      name = "走廊"
+      description = "你走在一条走廊上。北面似乎有个黑暗的小屋，还隐隐传来一些酣声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zoulang_4" {
+    room_id = rooms.zoulang_4.id
+  west = rooms.zoulang_1.id
+  north = rooms.xxs.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/zzfeng.c by LPCConverter
+# Zone: tiezhang
+
+    rooms "zzfeng" {
+      name = "中指峰"
+      description = "这里就是铁掌山的最高峰----中指峰。由于山势太高，峰顶仍存有大量 的积雪，白雪皑皑，在阳光的照射下，泛起一片耀眼的银光。纵目远眺，湘 西几百里景色尽收眼底，泸溪，辰溪如两条玉带，从山下缓缓流过。远处那 条白色的亮线，就是湘西的大江----沅江。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zzfeng" {
+    room_id = rooms.zzfeng.id
+  southdown = rooms.shanlu_9.id  }
+
+# Generated from C:/files/git/mud/d/tiezhang/npc/bangzhon.c by LPCConverter
+# Zone: tiezhang
+
+    characters "bangzhon" {
+      name = "黑衣帮众"
+      description = "他是一个身行健壮的汉子，两臂粗壮，膀阔腰圆。满脸的凶相。"
+  gender = "男性"
+  age = 30
+  score = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 300
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "tiezhang-xinfa" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "dengping-dushui" level = 40 },
+    { skill = "strike" level = 40 },
+    { skill = "tongbi-zhang" level = 40 },
+    { skill = "parry" level = 40 },
+    { type = "force" skill = "tiezhang-xinfa" },
+    { type = "dodge" skill = "dengping-dushui" },
+    { type = "strike" skill = "tongbi-zhang" },
+    { type = "parry" skill = "tongbi-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.black_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/npc/dizi.c by LPCConverter
+# Zone: tiezhang
+
+    characters "dizi" {
+      name = "厚土旗弟子"
+      description = "他是身材矮小，两臂粗壮，膀阔腰圆。他手持兵 刃，身穿一黑色圣衣，似乎有一身武艺。"
+  gender = "男性"
+  age = 35
+  shen_type = 0
+  score = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 300
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "tiyunzong" level = 50 },
+    { skill = "cuff" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "blade" level = 50 },
+    { type = "force" skill = "shenhuo-shengong" },
+    { type = "dodge" skill = "tiyunzong" },
+    { type = "parry" skill = "cibei-dao" },
+    { type = "blade" skill = "cibei-dao" }
+  ]
+
+
+  carry = [
+    { id = items.black_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/npc/dizi1.c by LPCConverter
+# Zone: tiezhang
+
+    characters "dizi1" {
+      name = "巨木旗教众"
+      description = "他是身材高大，两臂粗壮，膀阔腰圆。他手持兵 刃，身穿一绿色圣衣，似乎有一身武艺。"
+  gender = "男性"
+  age = 35
+  shen_type = 0
+  score = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 300
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "blade" level = 50 },
+    { skill = "cuff" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "cuff" level = 50 },
+    { skill = "parry" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.green_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/npc/gu.c by LPCConverter
+# Zone: tiezhang
+
+    characters "gu" {
+      name = "顾炎武"
+      description = "顾先生名炎武，字亭林，江苏昆山人士。 顾先生是当世大儒，明亡之后，心伤国变，隐居不仕。 他又高又瘦，面目黝黑。"
+  gender = "男性"
+  age = 55
+  shen_type = 1
+
+  combat = {
+    combat_exp = 500
+  }
+
+  inquiries = [
+    { key = "上官剑南" value = "(: ask_jiannan :)" },
+    { key = "二瞻" value = "他乃是当今一位大画家。" },
+    { key = "伊璜" value = "查伊璜, 也就是查继佐, 因大力将军所助, 免罪不究。" },
+    { key = "反清复明" value = "你也要学一学当年岳武穆尽忠报国, 刺字以决你心?" },
+    { key = "口号" value = "天地父母，反清复明。" },
+    { key = "吴六奇" value = "吴六奇将军身在曹营心在汉, 实际上是天地会洪顺堂香主。" },
+    { key = "大力" value = "大力将军乃广东提督吴六奇将军。" },
+    { key = "天地会" value = "天地会是台湾国姓爷延平郡王郑成功手下谋主陈永华所创。" },
+    { key = "岳武穆" value = "(: ask_wumu :)" },
+    { key = "查士标" value = "二瞻先生有位本家伊璜先生牵连在这场‘明史’大案中。" },
+    { key = "武穆遗书" value = "(: ask_yishu :)" },
+    { key = "画" value = "这是二瞻先生的丹青。" },
+    { key = "陈永华" value = "陈先生暗中联络老兄弟，胸口所刺八字便是会里的口号。" }
+  ]
+
+  chat_chance = 3
+chats = [
+    "顾炎武高声呤道：清风虽细难吹我，明月何尝不照人？ 真是绝唱！",
+    "顾炎武道：如此江山，沦于夷狄。我辈忍气吞声。偷生其间，实令人悲愤填膺。",
+    "顾炎武道：终有一日驱除胡虏，还我大汉河山，比之徒抒悲愤，更加令人气壮。",
+    "顾炎武道：当今之世，便真有桃源乐土，咱们也不能独善其身，去躲了起来。"
+]
+
+
+  skills = [
+    { skill = "literate" level = 200 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/npc/heiyi.c by LPCConverter
+# Zone: tiezhang
+
+    characters "heiyi" {
+      name = "黑衣帮众"
+      description = "他是一个身行健壮的汉子，两臂粗壮，膀阔腰圆。满脸的凶相。"
+  gender = "男性"
+  age = 30
+  score = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 300
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "tiezhang-xinfa" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "dengping-dushui" level = 40 },
+    { skill = "strike" level = 40 },
+    { skill = "tongbi-zhang" level = 40 },
+    { skill = "parry" level = 40 },
+    { type = "force" skill = "tiezhang-xinfa" },
+    { type = "dodge" skill = "dengping-dushui" },
+    { type = "strike" skill = "tongbi-zhang" },
+    { type = "parry" skill = "tongbi-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.black_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/npc/huiyi.c by LPCConverter
+# Zone: tiezhang
+
+    characters "huiyi" {
+      name = "灰衣帮众"
+      description = "他是一个身行健壮的汉子，两臂粗壮，膀阔腰圆。满脸的凶相。"
+  gender = "男性"
+  age = 30
+  score = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 300
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "tiezhang-xinfa" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "dengping-dushui" level = 80 },
+    { skill = "strike" level = 80 },
+    { skill = "tongbi-zhang" level = 80 },
+    { skill = "parry" level = 80 },
+    { type = "force" skill = "tiezhang-xinfa" },
+    { type = "dodge" skill = "dengping-dushui" },
+    { type = "strike" skill = "tongbi-zhang" },
+    { type = "parry" skill = "tongbi-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.black_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/npc/mayi.c by LPCConverter
+# Zone: tiezhang
+
+    characters "mayi" {
+      name = "麻衣长老"
+      description = "他是一个年约六旬的老者，满头花发，两鬓斑白。 他两侧的太阳穴高高鼓起，微闭的双目中时而闪过凌厉的眼神，似乎身怀绝技。"
+  gender = "男性"
+  age = 30
+  score = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 300
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 120 },
+    { skill = "tiezhang-xinfa" level = 120 },
+    { skill = "dodge" level = 120 },
+    { skill = "dengping-dushui" level = 120 },
+    { skill = "strike" level = 120 },
+    { skill = "tongbi-zhang" level = 120 },
+    { skill = "parry" level = 120 },
+    { type = "force" skill = "tiezhang-xinfa" },
+    { type = "dodge" skill = "dengping-dushui" },
+    { type = "strike" skill = "tongbi-zhang" },
+    { type = "parry" skill = "tongbi-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.black_cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/npc/xiaoer.c by LPCConverter
+# Zone: tiezhang
+
+    characters "xiaoer" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  # vendor_goods: "/d/city/obj/jitui" (file not found)
+  # vendor_goods: "/d/city/obj/jiudai" (file not found)
+  # vendor_goods: "/d/city/obj/baozi" (file not found)
+  # vendor_goods: "/d/beijing/obj/mian" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/npc/xiaotong.c by LPCConverter
+# Zone: tiezhang
+
+    characters "xiaotong" {
+      name = "小童"
+      description = "他是一位未通世故的少年，脸上挂着天真的稚笑。"
+  gender = "男性"
+  age = 10
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 100
+    max_neili = 100
+    max_qi = 100
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 10 },
+    { skill = "dodge" level = 10 },
+    { skill = "strike" level = 10 },
+    { skill = "parry" level = 10 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/npc/yahuan.c by LPCConverter
+# Zone: tiezhang
+
+    characters "yahuan" {
+      name = "丫鬟"
+      description = "她是一个长得很好看的小姑娘。"
+  gender = "女性"
+  age = 16
+  shen_type = 1
+
+  combat = {
+    combat_exp = 3000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 },
+    { skill = "parry" level = 20 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/npc/obj/black-cloth.c by LPCConverter
+# Zone: tiezhang
+
+    characters "black_cloth" {
+      name = "黑衣"
+      description = "这是一件绣着红色火焰的黑色圣衣。"
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/npc/obj/green-cloth.c by LPCConverter
+# Zone: tiezhang
+
+    characters "green_cloth" {
+      name = "绿色圣衣"
+      description = "这是一件绣着红色火焰的绿色圣衣。"
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/npc/obj/hupi.c by LPCConverter
+# Zone: tiezhang
+
+    characters "hupi" {
+      name = "虎皮"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/axe.c by LPCConverter
+# Zone: tiezhang
+
+    items "axe" {
+      name = "大板斧"
+      description = "这是一把沉重的大板斧，砍起东西来非常顺手。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一把{name}，握在手中当作武器。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/changbian.c by LPCConverter
+# Zone: tiezhang
+
+    items "changbian" {
+      name = "长鞭"
+      description = "这是一柄普通的长鞭，由水牛精工编织而成。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抖出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}卷回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/fan.c by LPCConverter
+# Zone: tiezhang
+
+    items "fan" {
+      name = "大米饭"
+      description = "一碗香喷喷的大米饭。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/gangdao.c by LPCConverter
+# Zone: tiezhang
+
+    items "gangdao" {
+      name = "钢刀"
+      description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回刀鞘。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/gangjian.c by LPCConverter
+# Zone: tiezhang
+
+    items "gangjian" {
+      name = "钢剑"
+      description = "这是一柄精工制成的钢剑，这种剑在将领之间非常流行。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/gangzhang.c by LPCConverter
+# Zone: tiezhang
+
+    items "gangzhang" {
+      name = "钢杖"
+      description = "这是一根粗重的钢杖，是星宿派专用之物。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/haigu-1.c by LPCConverter
+# Zone: tiezhang
+
+    items "haigu_1" {
+      name = "骸骨"
+      description = "这副骸骨躺在这里已经很久了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/haigu.c by LPCConverter
+# Zone: tiezhang
+
+    items "haigu" {
+      name = "骸骨"
+      description = "这副骸骨躺在这里已经很久了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/haigu1.c by LPCConverter
+# Zone: tiezhang
+
+    items "haigu1" {
+      name = "骸骨"
+      description = "这是一具男子的骸骨。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/haigu2.c by LPCConverter
+# Zone: tiezhang
+
+    items "haigu2" {
+      name = "骸骨"
+      description = "这是一具女子的骸骨。在其胸部插着一把短剑。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/hsnr.c by LPCConverter
+# Zone: tiezhang
+
+    items "hsnr" {
+      name = "红烧牛肉"
+      description = "一盘炖得很烂很香的牛肉，看得你直流口水。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/qingshui-hulu.c by LPCConverter
+# Zone: tiezhang
+
+    items "qingshui_hulu" {
+      name = "清水葫芦"
+      description = "一个用葫芦制成的水壶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/ruzhu.c by LPCConverter
+# Zone: tiezhang
+
+    items "ruzhu" {
+      name = "片皮乳猪"
+      description = "鸡豆花色白细嫩，汤清味鲜，源于豆花，高于豆花， 被誉名为“豆花不用豆，吃鸡不见鸡”的佳肴美馔。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/shanshui.c by LPCConverter
+# Zone: tiezhang
+
+    items "shanshui" {
+      name = "山水画"
+      description = "只见画中是一座陡峭突兀的高山，共有五座山峰，中间一峰尤高，笔立指天，耸入云表， 山侧生着一排松树，松梢积雪，树身尽皆向南弯曲，想见北风之烈。峰西独有一棵老松， 却是挺然直起，巍巍秀拔，树下朱笔画着一个迎风舞剑的将军。这人面目难见，但衣袂飘 举，资形脱俗。全幅画都是水墨山水，独此人殷红如火，更加显得卓然不群。画上并无书 款，只题着一首诗云：“经年尘土满征衣，特特寻芳上翠微，好山好水看不足，马蹄催趁 月明归。”"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/wumu-yishu.c by LPCConverter
+# Zone: tiezhang
+
+    items "wumu_yishu" {
+      name = "「武穆遗书」"
+      description = "这就是岳武穆临死前留下的“破金要诀”。 只见第一页上写了十八个大字： “重搜选，谨训习” “公赏罚，明号令” “严纪  ，同甘苦”"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/ycj.c by LPCConverter
+# Zone: tiezhang
+
+    items "ycj" {
+      name = "鱼肠剑"
+      description = "这就是传说中的鱼肠剑，没想到会在这里出现！ 你忍不住想把它捡(jian)起来！！！"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/zhangpu.c by LPCConverter
+# Zone: tiezhang
+
+    items "zhangpu" {
+      name = "铁掌掌谱"
+      description = "这是一本落满灰尘的破书，纸质发黄，边缘处也已残缺不全了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tiezhang/obj/zitie.c by LPCConverter
+# Zone: tiezhang
+
+    items "zitie" {
+      name = "字帖"
+      description = "“满江红”  怒发冲冠，凭阑处，潇潇雨歇。 抬望眼，仰天长啸，壮怀激烈。 三十功名尘与土，八千里路云和月。 莫等闲，白了少年头，空悲切。  靖康耻，尤未雪；臣子憾，何时灭。 驾长车踏破，贺兰山缺。 壮志饥餐胡虏肉，笑谈渴饮匈奴血。 待从头，收拾旧山河，朝天阙。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

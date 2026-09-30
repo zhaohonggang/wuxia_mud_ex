@@ -1,0 +1,1171 @@
+zones "lingjiu" {
+  name = "lingjiu"
+}
+
+# Generated from C:/files/git/mud/d/lingjiu/biguan.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "biguan" {
+      name = "闭关室"
+      description = "这里当年本是天山童姥闭关修练的地方，至天山童姥仙去 之后，虚竹子便将此处挪出，让梅兰竹菊四姐妹居住。"
+  x = 0
+  y = 7
+  z = 0
+    }
+
+  room_exits "biguan" {
+    room_id = rooms.biguan.id
+    south = rooms.men3.id
+    }
+
+
+
+
+  room_items "biguan" {
+    room_id = rooms.biguan.id
+    items = [
+      { id = items.jujian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/caifeng.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "caifeng" {
+      name = "潇湘馆"
+      description = "这是缥缈峰灵鹫宫的裁缝室。几个女子围坐在一块，飞针 走线，苦练女红，为灵鹫宫的诸多女弟子缝纫青衣斗篷。"
+  x = 2
+  y = 5
+  z = 0
+    }
+
+  room_exits "caifeng" {
+    room_id = rooms.caifeng.id
+    south = rooms.changl10.id
+    }
+
+
+
+
+  room_items "caifeng" {
+    room_id = rooms.caifeng.id
+    items = [
+      { id = items.fumingyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/changl1.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "changl1" {
+      name = "画廊"
+      description = "这是一条非常精美的长廊，柱子和栏杆是用华贵的紫檀木 制成，上面雕饰着美丽的图画，画工精巧，美不胜收。地板不 知是用什么材料做的，走在上面毫无声息，你只感到脚下软软 的，非常舒服。一阵阵花香从东边传来。"
+  x = -1
+  y = 3
+  z = 0
+    }
+
+  room_exits "changl1" {
+    room_id = rooms.changl1.id
+    east = rooms.huayuan.id
+    west = rooms.changl5.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/changl10.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "changl10" {
+      name = "画廊"
+      description = "这是一条非常精美的长廊，柱子和栏杆是用华贵的紫檀木 制成，上面雕饰着美丽的图画，画工精巧，美不胜收。地板不 知是用什么材料做的，走在上面毫无声息，你只感到脚下软软 的，非常舒服。"
+  x = 2
+  y = 4
+  z = 0
+    }
+
+  room_exits "changl10" {
+    room_id = rooms.changl10.id
+    north = rooms.caifeng.id
+    south = rooms.changl3.id
+    west = rooms.changl13.id
+    east = rooms.changl14.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/changl11.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "changl11" {
+      name = "画廊"
+      description = "这是一条非常精美的长廊，柱子和栏杆是用华贵的紫檀木 制成，上面雕饰着美丽的图画，画工精巧，美不胜收。地板不 知是用什么材料做的，走在上面毫无声息，你只感到脚下软软 的，非常舒服。西面是天山童姥关押犯人的地方，那里是本派 禁地，没有现任门主虚竹子的许可，谁也不能进去。"
+  x = -3
+  y = 4
+  z = 0
+    }
+
+  room_exits "changl11" {
+    room_id = rooms.changl11.id
+    west = rooms.men1.id
+    east = rooms.changl9.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/changl12.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "changl12" {
+      name = "画廊"
+      description = "这是一条非常精美的长廊，柱子和栏杆是用华贵的紫檀木 制成，上面雕饰着美丽的图画，画工精巧，美不胜收。地板不 知是用什么材料做的，走在上面毫无声息，你只感到脚下软软 的，非常舒服。走廊东面通往书房。"
+  x = -1
+  y = 4
+  z = 0
+    }
+
+  room_exits "changl12" {
+    room_id = rooms.changl12.id
+    west = rooms.changl9.id
+    east = rooms.men2.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/changl13.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "changl13" {
+      name = "画廊"
+      description = "这是一条非常精美的长廊，柱子和栏杆是用华贵的紫檀木 制成，上面雕饰着一些美丽的图画，画工精巧，美不胜收。地 板不知是用什么材料做的，走在上面毫无声息，你只感到脚下 软软的，非常舒服。走廊西面通往本派的练功宝地玄冰室。"
+  x = 1
+  y = 4
+  z = 0
+    }
+
+  room_exits "changl13" {
+    room_id = rooms.changl13.id
+    west = rooms.xuanbing.id
+    east = rooms.changl10.id
+    }
+
+
+
+
+  room_items "changl13" {
+    room_id = rooms.changl13.id
+    items = [
+      { id = items.cheng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/changl14.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "changl14" {
+      name = "画廊"
+      description = "这是一条非常精美的长廊，柱子和栏杆是用华贵的紫檀木 制成，上面雕饰着美丽的图画，画工精巧，美不胜收。地板不 知是用什么材料做的，走在上面毫无声息，你只感到脚下软软 的，非常舒服。走廊东面通往梳妆楼。"
+  x = 3
+  y = 4
+  z = 0
+    }
+
+  room_exits "changl14" {
+    room_id = rooms.changl14.id
+    west = rooms.changl10.id
+    east = rooms.daban.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/changl15.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "changl15" {
+      name = "画廊"
+      description = "这是一条非常精美的长廊，柱子和栏杆是用华贵的紫檀木 制成，上面雕饰着美丽的图画，画工精巧，美不胜收。地板不 知是用什么材料做的，走在上面毫无声息，你只感到脚下软软 的，非常舒服。一阵阵花香从北边传来。"
+  x = 0
+  y = 2
+  z = 0
+    }
+
+  room_exits "changl15" {
+    room_id = rooms.changl15.id
+    north = rooms.huayuan.id
+    south = rooms.dating.id
+    east = rooms.changl8.id
+    west = rooms.changl7.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/changl2.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "changl2" {
+      name = "画廊"
+      description = "这是一条非常精美的长廊，柱子和栏杆是用华贵的紫檀木 制成，上面雕饰着美丽的图画，画工精巧，美不胜收。地板不 知是用什么材料做的，走在上面毫无声息，你只感到脚下软软 的，非常舒服。一阵阵花香从西边传来。"
+  x = 1
+  y = 3
+  z = 0
+    }
+
+  room_exits "changl2" {
+    room_id = rooms.changl2.id
+    west = rooms.huayuan.id
+    east = rooms.changl3.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/changl3.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "changl3" {
+      name = "画廊"
+      description = "这是一条非常精美的长廊，柱子和栏杆是用华贵的紫檀木 制成，上面雕饰着美丽的图画，画工精巧，美不胜收。地板不 知是用什么材料做的，走在上面毫无声息，你只感到脚下软软 的，非常舒服。走廊东面是憩凤阁，是灵鹫宫弟子休息的地方。"
+  x = 2
+  y = 3
+  z = 0
+    }
+
+  room_exits "changl3" {
+    room_id = rooms.changl3.id
+    south = rooms.changl4.id
+    north = rooms.changl10.id
+    west = rooms.changl2.id
+    east = rooms.restroom.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/changl4.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "changl4" {
+      name = "画廊"
+      description = "这是一条非常精美的长廊，柱子和栏杆是用华贵的紫檀木 制成，上面雕饰着美丽的图画，画工精巧，美不胜收。地板不 知是用什么材料做的，走在上面毫无声息，你只感到脚下软软 的，非常舒服。走廊东面是一间房间，里面不时传出几声女子 的娇叱。"
+  x = 2
+  y = 2
+  z = 0
+    }
+
+  room_exits "changl4" {
+    room_id = rooms.changl4.id
+    west = rooms.changl8.id
+    east = rooms.liangong.id
+    north = rooms.changl3.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/changl5.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "changl5" {
+      name = "画廊"
+      description = "这是一条非常精美的长廊，柱子和栏杆是用华贵的紫檀木 制成，上面雕饰着美丽的图画，画工精巧，美不胜收。地板不 知是用什么材料做的，走在上面毫无声息，你只感到脚下软软 的，非常舒服。一阵阵花香从北边传来。"
+  x = -2
+  y = 3
+  z = 0
+    }
+
+  room_exits "changl5" {
+    room_id = rooms.changl5.id
+    north = rooms.changl9.id
+    south = rooms.changl6.id
+    east = rooms.changl1.id
+    west = rooms.wuqiku.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/changl6.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "changl6" {
+      name = "画廊"
+      description = "这是一条非常精美的长廊，柱子和栏杆是用华贵的紫檀木 制成，上面雕饰着美丽的图画，画工精巧，美不胜收。地板不 知是用什么材料做的，走在上面毫无声息，你只感到脚下软软 的，非常舒服。"
+  x = -2
+  y = 2
+  z = 0
+    }
+
+  room_exits "changl6" {
+    room_id = rooms.changl6.id
+    east = rooms.changl7.id
+    west = rooms.chufang.id
+    north = rooms.changl5.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/changl7.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "changl7" {
+      name = "画廊"
+      description = "这是一条非常精美的长廊，柱子和栏杆是用华贵的紫檀木 制成，上面雕饰着美丽的图画，画工精巧，美不胜收。地板不 知是用什么材料做的，走在上面毫无声息，你只感到脚下软软 的，非常舒服。东边通向大厅。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "changl7" {
+    room_id = rooms.changl7.id
+    west = rooms.changl6.id
+    east = rooms.changl15.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/changl8.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "changl8" {
+      name = "画廊"
+      description = "这是一条非常精美的长廊，柱子和栏杆是用华贵的紫檀木 制成，上面雕饰着美丽的图画，画工精巧，美不胜收。地板不 知是用什么材料做的，走在上面毫无声息，你只感到脚下软软 的，非常舒服。西边通向大厅。"
+  x = 1
+  y = 2
+  z = 0
+    }
+
+  room_exits "changl8" {
+    room_id = rooms.changl8.id
+    east = rooms.changl4.id
+    west = rooms.changl15.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/changl9.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "changl9" {
+      name = "画廊"
+      description = "这是一条非常精美的长廊，柱子和栏杆是用华贵的紫檀木 制成，上面雕饰着美丽的图画，画工精巧，美不胜收。地板不 知是用什么材料做的，走在上面毫无声息，你只感到脚下软软 的，非常舒服。"
+  x = -2
+  y = 4
+  z = 0
+    }
+
+  room_exits "changl9" {
+    room_id = rooms.changl9.id
+    south = rooms.changl5.id
+    west = rooms.changl11.id
+    east = rooms.changl12.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/chufang.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "chufang" {
+      name = "藕香榭"
+      description = "这是间厨房，浓郁的饭菜香味一个劲地钻进你的鼻子，你 仿佛听到“咕咕”的响声，环顾四周不知来源。原来是你的肚 子作怪。"
+  x = -3
+  y = 2
+  z = 0
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+    east = rooms.changl6.id
+    }
+
+
+  room_characters "chufang" {
+    room_id = rooms.chufang.id
+    characters = [
+      { id = characters.lisao.id }    ]
+  }
+
+
+
+  room_items "chufang" {
+    room_id = rooms.chufang.id
+    items = [
+      { id = items.suanmei.id },
+      { id = items.gao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/daban.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "daban" {
+      name = "缀锦阁"
+      description = "这是日常梳妆打扮的地方，放着一张红木梳妆台，正对着 你的是一面光润的铜镜，梳妆台上散落着一些胭脂花粉。台旁 摆着斗大的一个汝瓷花囊，插着满满的水晶球儿般的白菊。"
+  x = 4
+  y = 4
+  z = 0
+    }
+
+  room_exits "daban" {
+    room_id = rooms.daban.id
+    west = rooms.changl14.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/dadao1.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "dadao1" {
+      name = "青石大道"
+      description = "这是条青石铺成的宽敞大道，每块青石都是长约八尺，宽 约三尺，甚是整齐。道旁是郁郁葱葱的松树林，不时可以看到 几只松鼠蹦蹦跳跳地跃向树林深处。往北望去，一座巨大的石 堡巍然耸立。"
+  x = 0
+  y = -2
+  z = 0
+    }
+
+  room_exits "dadao1" {
+    room_id = rooms.dadao1.id
+    westdown = rooms.xianchou.id
+    north = rooms.dadao2.id
+    }
+
+
+
+
+  room_items "dadao1" {
+    room_id = rooms.dadao1.id
+    items = [
+      { id = items.song.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/dadao2.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "dadao2" {
+      name = "青石大道"
+      description = "这是条青石铺成的宽敞大道，每块青石都是长约八尺，宽 约三尺，甚是整齐。道旁是郁郁葱葱的松树林，不时可以看到 几只松鼠蹦蹦跳跳地跃向树林深处。往北望去，一座巨大的石 堡巍然耸立。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "dadao2" {
+    room_id = rooms.dadao2.id
+    south = rooms.dadao1.id
+    north = rooms.damen.id
+    }
+
+
+
+
+  room_items "dadao2" {
+    room_id = rooms.dadao2.id
+    items = [
+      { id = items.song.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/damen.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "damen" {
+      name = "独尊厅大门"
+      description = "这就是通向「灵鹫宫」独尊厅的大门。大门左右各有一头 石雕的猛鹫，高达三丈有余，尖喙巨爪，神骏非凡，似乎随时 要腾空而去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "damen" {
+    room_id = rooms.damen.id
+    south = rooms.dadao2.id
+    north = rooms.dating.id
+    }
+
+
+
+
+  room_items "damen" {
+    room_id = rooms.damen.id
+    items = [
+      { id = items.meijian.id },
+      { id = items.lanjian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/dating.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "dating" {
+      name = "独尊厅"
+      description = "这就是「灵鹫宫」独尊厅。大厅全是以巨石砌成，石块之 间竟无半点缝隙，令人称奇。厅内矗立着四根石柱，皆为坚硬 的花岗石所制。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "dating" {
+    room_id = rooms.dating.id
+    south = rooms.damen.id
+    north = rooms.changl15.id
+    }
+
+
+
+
+  room_items "dating" {
+    room_id = rooms.dating.id
+    items = [
+      { id = items.xuzhu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/huayuan.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "huayuan" {
+      name = "花园"
+      description = "你的眼前出现了一个美丽的花园，花园里种着一些花，花 从中隐约可见飘渺的倩影，那是宫中的姐妹们在玩耍。花园中 央有一座假山。花园的东西两头是长廊，北边有一条小道通向 天山童姥修练之处。"
+  x = 0
+  y = 3
+  z = 0
+    }
+
+  room_exits "huayuan" {
+    room_id = rooms.huayuan.id
+    south = rooms.changl15.id
+    east = rooms.changl2.id
+    north = rooms.xiaodao1.id
+    west = rooms.changl1.id
+    }
+
+
+
+
+  room_items "huayuan" {
+    room_id = rooms.huayuan.id
+    items = [
+      { id = items.lu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/jian.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "jian" {
+      name = "百丈涧"
+      description = "山道到此突然消失，在你面前是一条山涧，山涧之中云雾 缭绕，你根本无法看清对面。一条铁索(tiesuo)深入云中，旁 边有一块石碑。"
+  x = -1
+  y = -3
+  z = -2
+item_desc = {
+ tiesuo = "这条铁索是通往对面的接天桥，你也许可以走(zou)过去。"
+}
+    }
+
+  room_exits "jian" {
+    room_id = rooms.jian.id
+    southdown = rooms.yan.id
+    }
+
+
+
+
+  room_items "jian" {
+    room_id = rooms.jian.id
+    items = [
+      { id = items.yupopo.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/liangong.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "liangong" {
+      name = "戏凤阁"
+      description = "这里是灵鹫宫弟子练功的地方。有几个妙龄女子正在专心 致致地练武，有几个手持竹剑，在互相拆招，身法灵动，犹如 穿花蝴蝶一般，你不禁看花了眼，别的人则坐在地上的蒲团上 苦练内力。"
+  x = 3
+  y = 2
+  z = 0
+    }
+
+  room_exits "liangong" {
+    room_id = rooms.liangong.id
+    up = rooms.liangong2.id
+    west = rooms.changl4.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/liangong2.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "liangong2" {
+      name = "戏凤阁二楼"
+      description = "这里是灵鹫宫弟子练功的地方。有几个妙龄女子正在专心 致致地练武，有几个手持竹剑，在互相拆招，身法灵动，犹如 穿花蝴蝶一般，你看了也忍不住跃跃欲试。"
+  x = 3
+  y = 2
+  z = 1
+    }
+
+  room_exits "liangong2" {
+    room_id = rooms.liangong2.id
+    up = rooms.liangong3.id
+    down = rooms.liangong.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/liangong3.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "liangong3" {
+      name = "戏凤阁三楼"
+      description = "这里是三楼，人比楼下的少多了，只听见楼下隐隐约约的 传来阵阵娇咤，不那么真切。"
+  x = 3
+  y = 2
+  z = 2
+    }
+
+  room_exits "liangong3" {
+    room_id = rooms.liangong3.id
+    down = rooms.liangong2.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/men1.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "men1" {
+      name = "囚室大门"
+      description = "这是缥缈峰灵鹫宫关押犯人的地方，这是囚室东边，西面 便是囚室。"
+  x = -4
+  y = 4
+  z = 0
+    }
+
+  room_exits "men1" {
+    room_id = rooms.men1.id
+    east = rooms.changl11.id
+    west = rooms.qiushi.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/men2.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "men2" {
+      name = "书房大门"
+      description = "这是书房门口，只见大门旁贴着副对联 (duilian)，抬头 上望。门楣上一块大匾(bian)上写着几个大字。"
+  x = 0
+  y = 4
+  z = 0
+    }
+
+  room_exits "men2" {
+    room_id = rooms.men2.id
+    west = rooms.changl12.id
+    east = rooms.shufang.id
+    }
+
+
+
+
+  room_items "men2" {
+    room_id = rooms.men2.id
+    items = [
+      { id = items.zhujian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/men3.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "men3" {
+      name = "闭关室大门"
+      description = "这是闭关室南边，北面有一扇大门便是通往闭关室。那里 本是天山童姥闭关修练的地方，至天山童姥仙去之后，虚竹子 便将此处挪出，让梅兰竹菊四姐妹居住。"
+  x = 0
+  y = 6
+  z = 0
+    }
+
+  room_exits "men3" {
+    room_id = rooms.men3.id
+    south = rooms.xiaodao2.id
+    north = rooms.biguan.id
+    }
+
+
+
+
+  room_items "men3" {
+    room_id = rooms.men3.id
+    items = [
+      { id = items.shisao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/pingtai.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "pingtai" {
+      name = "山间平台"
+      description = "这是失足岩左侧的一块大平台，平台周围聚满了人。左边 通向灵鹫宫的必经之路，山道被一块鹰喙突出的巨岩截断，巨 岩光可鉴人，只有中间一条窄窄的石阶通向山道的那一头。"
+  x = 1
+  y = -4
+  z = -3
+    }
+
+  room_exits "pingtai" {
+    room_id = rooms.pingtai.id
+    west = rooms.shandao.id
+    }
+
+
+
+
+  room_items "pingtai" {
+    room_id = rooms.pingtai.id
+    items = [
+      { id = items.li.id },
+      { id = items.sang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/pingtai3.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "pingtai3" {
+      name = "山间平台"
+      description = "这是失足岩左侧的一块大平台，平台周围聚满了人。左边 通向灵鹫宫的必经之路，山道被一块鹰喙突出的巨岩截断，巨 岩光可鉴人，只有中间一条窄窄的石阶通向山道的那一头。你 身后不远处堆着几丛稻草，有几个武林人士正躺在上面呼呼大 睡。你看了也不禁想走过去休息一会儿。"
+  x = 0
+  y = -5
+  z = -3
+    }
+
+  room_exits "pingtai3" {
+    room_id = rooms.pingtai3.id
+    north = rooms.shandao.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/qiushi.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "qiushi" {
+      name = "囚室"
+      description = "这里是「灵鹫宫」关押犯人的地方，屋中光线昏暗，气味 难闻。现在这里静悄悄的，似乎虚竹子当上门主后，这里便比 以前轻静了许多。"
+  x = -5
+  y = 4
+  z = 0
+    }
+
+  room_exits "qiushi" {
+    room_id = rooms.qiushi.id
+    east = rooms.men1.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/restroom.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "restroom" {
+      name = "憩凤阁"
+      description = "这里是灵鹫宫弟子睡觉的地方，一进门就闻到一阵悠悠的 香气，只见房中点了一支大红烛，照的满室生春，床上珠罗纱 的帐子，白色缎被上绣着一只黄色的凤凰，壁上挂着一幅工笔 仕女图。西首一张几上供着一盆兰花，架上停着只白鹦鹉。"
+  x = 3
+  y = 3
+  z = 0
+    }
+
+  room_exits "restroom" {
+    room_id = rooms.restroom.id
+    west = rooms.changl3.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/shandao.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "shandao" {
+      name = "平台山道"
+      description = "山道被一块如鹰喙突出的巨岩截断，巨岩光可鉴人，只有 中间凿出了一条窄窄的石阶通向山道的那一头。你小心翼翼地 试着踏了上去。右侧是一块大平台，依稀看去好象有不少人在 那里聚会。"
+  x = 0
+  y = -4
+  z = -3
+    }
+
+  room_exits "shandao" {
+    room_id = rooms.shandao.id
+    south = rooms.pingtai3.id
+    north = rooms.shandao2.id
+    east = rooms.pingtai.id
+    west = rooms.yan.id
+    }
+
+
+
+
+  room_items "shandao" {
+    room_id = rooms.shandao.id
+    items = [
+      { id = items.duanmu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/shandao2.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "shandao2" {
+      name = "平台山道"
+      description = "山道被一块如鹰喙突出的巨岩截断，巨岩光可鉴人，只有 中间凿出了一条窄窄的石阶通向山道的那一头。你小心翼翼地 试着踏了上去。右侧是一块大平台，依稀看去好象有不少人在 那里聚会。"
+  x = 0
+  y = -3
+  z = -3
+    }
+
+  room_exits "shandao2" {
+    room_id = rooms.shandao2.id
+    south = rooms.shandao.id
+    }
+
+
+
+
+  room_items "shandao2" {
+    room_id = rooms.shandao2.id
+    items = [
+      { id = items.zuo.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/shanjiao.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "shanjiao" {
+      name = "缥缈峰山脚"
+      description = "这里是缥缈峰山脚，抬头上望，缥缈峰耸入云天，峰顶白 云缭绕，宛若仙境。白云深处隐约可见琼楼玉宇，那就是令江 湖人物闻名丧胆的灵鹫宫。听说宫中住着一些武艺高强的女侠， 而且只收女弟子为徒。"
+  x = 1
+  y = -4
+  z = -5
+    }
+
+  room_exits "shanjiao" {
+    room_id = rooms.shanjiao.id
+    southdown = rooms.tianroad2.id
+    westup = rooms.ya.id
+    }
+
+
+  room_characters "shanjiao" {
+    room_id = rooms.shanjiao.id
+    characters = [
+      { id = characters.jiuyi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/shufang.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "shufang" {
+      name = "沁芳轩"
+      description = "这是灵鹫宫的书房，靠墙摆放着一溜书架，上面整齐地排 列着各种书籍。屋子正中是一张墨色小几，几上的香炉冒出缕 缕轻烟，几前有个蒲团可供你盘坐而读，除此外别无他物。你 不由低呼，好一个雅静所在。"
+  x = 1
+  y = 4
+  z = 0
+    }
+
+  room_exits "shufang" {
+    room_id = rooms.shufang.id
+    west = rooms.men2.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/wuqiku.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "wuqiku" {
+      name = "蓼风轩"
+      description = "这是灵鹫宫弟子的兵器库，你环顾四周，发现墙上嵌满了 各式兵器，仔细一看，原来满墙满壁竟随依各般兵器之形抠出 槽子，兵刃就悬于槽内。"
+  x = -3
+  y = 3
+  z = 0
+    }
+
+  room_exits "wuqiku" {
+    room_id = rooms.wuqiku.id
+    east = rooms.changl5.id
+    }
+
+
+
+
+  room_items "wuqiku" {
+    room_id = rooms.wuqiku.id
+    items = [
+      { id = items.zhujian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/xianchou.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "xianchou" {
+      name = "仙愁门"
+      description = "这里就快到缥缈峰绝顶了，越往上走，山势越高，缭绕在 你身边的白雾愈来愈浓，往南则是下山的路。沿着山道没走几 步，在你眼前出现一个石坊，上书「仙愁门」三个大字，盖因 上山之艰辛吧。"
+  x = -1
+  y = -2
+  z = -1
+    }
+
+  room_exits "xianchou" {
+    room_id = rooms.xianchou.id
+    southdown = rooms.jian.id
+    eastup = rooms.dadao1.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/xiaodao1.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "xiaodao1" {
+      name = "小道"
+      description = "你走到这里，一条小道蜿延曲折地通向远方，两旁是郁郁 葱葱的树林，微风吹过，树叶发出奚索的声音。"
+  x = 0
+  y = 4
+  z = 0
+    }
+
+  room_exits "xiaodao1" {
+    room_id = rooms.xiaodao1.id
+    south = rooms.huayuan.id
+    north = rooms.xiaodao2.id
+    }
+
+
+  room_characters "xiaodao1" {
+    room_id = rooms.xiaodao1.id
+    characters = [
+      { id = characters.cungu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/xiaodao2.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "xiaodao2" {
+      name = "小道"
+      description = "你走到这里，一条小道蜿延曲折地通向远方，两旁是郁郁 葱葱的树林，微风吹过，树叶发出奚索的声音。"
+  x = 0
+  y = 5
+  z = 0
+    }
+
+  room_exits "xiaodao2" {
+    room_id = rooms.xiaodao2.id
+    south = rooms.xiaodao1.id
+    north = rooms.men3.id
+    }
+
+
+  room_characters "xiaodao2" {
+    room_id = rooms.xiaodao2.id
+    characters = [
+      { id = characters.old2.id },
+      { id = characters.kid1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/xuanbing.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "xuanbing" {
+      name = "玄冰室"
+      description = "这是昔日天山童姥修练内功的地方。屋子正中有一块千年 玄冰 (ice)，冰上冒出丝丝寒气，屋里因此寒气逼人，你不由 得打了一个寒颤。"
+  x = 0
+  y = 4
+  z = 0
+item_desc = {
+ ice = "这是一块采自天山之巅的千年玄冰，奇寒无比。"
+}
+    }
+
+  room_exits "xuanbing" {
+    room_id = rooms.xuanbing.id
+    east = rooms.changl13.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/ya.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "ya" {
+      name = "断魂崖"
+      description = "这是通向灵鹫宫的必经之路，一条小道蜿蜒曲折地通向缥 缈峰顶。路的右侧是一条陡峭的山崖，一阵山风吹过，你似乎 听见从下面传来几声惨号，你心中一凛，不禁加快脚步赶紧离 开这里。"
+  x = 0
+  y = -4
+  z = -4
+    }
+
+  room_exits "ya" {
+    room_id = rooms.ya.id
+    eastdown = rooms.shanjiao.id
+    westup = rooms.yan.id
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/yan.c by LPCConverter
+# Zone: lingjiu
+
+    rooms "yan" {
+      name = "失足岩"
+      description = "这是通向灵鹫宫的必经之路，山道被一块如鹰喙突出的巨 岩截断，巨岩光可鉴人，只有中间凿出了一条窄窄的石阶通向 山道的那一头。你小心翼翼地试着踏了上去。失足岩的右侧是 一块大平台，依稀看去好象有不少人在那里聚会。"
+  x = -1
+  y = -4
+  z = -3
+    }
+
+  room_exits "yan" {
+    room_id = rooms.yan.id
+    east = rooms.shandao.id
+    eastdown = rooms.ya.id
+    northup = rooms.jian.id
+    }
+
+
+  room_characters "yan" {
+    room_id = rooms.yan.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+
+
+  room_items "yan" {
+    room_id = rooms.yan.id
+    items = [
+      { id = items.zhuo.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingjiu/npc/jiuyi.c by LPCConverter
+# Zone: lingjiu
+
+    characters "jiuyi" {
+      name = "九翼道人"
+      description = "他是西夏一品堂礼聘的高手，身材高瘦，脸上总是阴沉沉的。 他轻功极高，擅使雷公挡，凭一手雷公挡功夫，成为江湖的一流高手。"
+  title = "西夏一品堂高手"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 40
+  score = 1500
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 150000
+    con = 24
+    dex = 30
+    int = 23
+    max_jing = 1000
+    max_neili = 3000
+    max_qi = 2000
+    str = 27
+  }
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/npc/lisao.c by LPCConverter
+# Zone: lingjiu
+
+    characters "lisao" {
+      name = "李嫂"
+      description = "她是 (灵鹫宫) 的厨师."
+  gender = "女性"
+  age = 30
+  shen_type = 1
+  score = 4000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    con = 30
+    dex = 30
+    int = 25
+    max_jing = 500
+    max_neili = 1000
+    max_qi = 800
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 100 },
+    { skill = "unarmed" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "hand" level = 100 },
+    { skill = "strike" level = 100 },
+    { skill = "zhemei-shou" level = 90 },
+    { skill = "liuyang-zhang" level = 90 },
+    { skill = "yueying-wubu" level = 90 },
+    { skill = "lingjiu-xinfa" level = 90 },
+    { type = "force" skill = "lingjiu-xinfa" },
+    { type = "strike" skill = "liuyang-zhang" },
+    { type = "dodge" skill = "yueying-wubu" },
+    { type = "unarmed" skill = "liuyang-zhang" },
+    { type = "hand" skill = "zhemei-shou" },
+    { type = "parry" skill = "liuyang-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.qingyi.id },
+    { id = items.doupeng.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/npc/obj/baiyunwan.c by LPCConverter
+# Zone: lingjiu
+
+    characters "baiyunwan" {
+      name = "白云熊胆丸"
+      description = "这是一颗武林人士梦寐以求的疗伤圣药。"
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/npc/obj/diaogan.c by LPCConverter
+# Zone: lingjiu
+
+    characters "diaogan" {
+      name = "钓竿"
+      description = "这是一根桦木制的钓竿，制作得颇为奇特。"
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/npc/obj/jieyao.c by LPCConverter
+# Zone: lingjiu
+
+    characters "jieyao" {
+      name = "药丸"
+      description = "一颗浑圆的药丸，乃是乌老大所配制的独门解药。"
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/npc/obj/jinzhen.c by LPCConverter
+# Zone: lingjiu
+
+    characters "jinzhen" {
+      name = "斓蜈金针"
+      description = "这是一些血红色的细长金针，长约寸许。"
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/npc/obj/yuping.c by LPCConverter
+# Zone: lingjiu
+
+    characters "yuping" {
+      name = "玉瓶"
+      description = "一支白玉雕制的玉瓶，瓶上的木塞已甚为古旧。"
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/obj/changpao.c by LPCConverter
+# Zone: lingjiu
+
+    items "changpao" {
+      name = "长袍"
+      description = "这是件质量上佳长袍，是由(针神)亲手缝制的。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/obj/doupeng.c by LPCConverter
+# Zone: lingjiu
+
+    items "doupeng" {
+      name = "斗篷"
+      description = "这是件斗篷。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/obj/gao.c by LPCConverter
+# Zone: lingjiu
+
+    items "gao" {
+      name = "冰雪翡翠糕"
+      description = "这是一块糕点，引人食欲大增。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/obj/key.c by LPCConverter
+# Zone: lingjiu
+
+    items "key" {
+      name = "钥匙"
+      description = "这是一把普通的铜钥匙。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/obj/qingyi.c by LPCConverter
+# Zone: lingjiu
+
+    items "qingyi" {
+      name = "青衣"
+      description = "这是件质量上佳青衣，是由(针神)亲手缝制的。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lingjiu/obj/suanmei.c by LPCConverter
+# Zone: lingjiu
+
+    items "suanmei" {
+      name = "酸梅汤"
+      description = "这是一碗解渴良汤。!"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

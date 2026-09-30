@@ -1,0 +1,1409 @@
+zones "yanziwu" {
+  name = "yanziwu"
+}
+
+# Generated from C:/files/git/mud/d/yanziwu/biheqiao.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "biheqiao" {
+      name = "碧荷桥"
+      description = "密密匝匝的荷叶上面，一条曲曲折折的小桥通向水中的一 片小洲，洲上花红柳绿，似乎别有洞天。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "biheqiao" {
+    room_id = rooms.biheqiao.id
+  west = rooms.huayuan.id
+  east = rooms.tingxiang.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/bozhou.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "bozhou" {
+      name = "泊舟坞"
+      description = "此处一片芦苇，茭白丛中现出一座船坞，大小船只依次排 开。菱花荷叶丛中条条水道 (river)四通八达，由此可乘船离 开燕子坞。湖面系着尾小舟。北面远远望过去有个梯子。"
+  x = 0
+  y = 0
+  z = 0
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "bozhou" {
+    room_id = rooms.bozhou.id
+  east = rooms.pindi.id
+  northdown = rooms.muti.id
+  river = rooms.hupan.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/canheju.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "canheju" {
+      name = "参合居"
+      description = "这是慕容世家首脑人物日常起居之地，布置得华丽中不乏 清雅，平实中透着高贵。楠木方桌，大太师椅，以及墙上的字 画都透着一股非凡之气。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "canheju" {
+    room_id = rooms.canheju.id
+  west = rooms.qiushuan.id
+  east = rooms.zuijing.id
+  north = rooms.yimen.id
+  south = rooms.shuwu.id  }
+
+
+
+
+  room_items "canheju" {
+    room_id = rooms.canheju.id
+    items = [
+      { id = items.murongbo.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/yanziwu/changlang.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "changlang" {
+      name = "长廊"
+      description = "只见红栏碧瓦，一派富贵气象，不时有几只燕子灵巧的从 廊见飞过，长廊的尽头有一座大花园。长廊上似乎还有一层， 你忍不住想爬上去看看。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "changlang" {
+    room_id = rooms.changlang.id
+  east = rooms.huizhen.id
+  west = rooms.lixiang.id
+  north = rooms.shijian.id
+  south = rooms.huayuan.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/chuantang.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "chuantang" {
+      name = "穿堂"
+      description = "不知是什么能工巧匠设计了这条穿堂，九曲回折，雕梁画 栋。再望南就是后院了，向北则是一座大厅堂。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chuantang" {
+    room_id = rooms.chuantang.id
+  south = rooms.lixiang.id
+  north = rooms.cuixia.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/chufang.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "这是间宽敞的厨房，厨师们在展示各自的烹饪绝活。整个 房间弥漫着令人垂涎欲滴的菜香。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+  north = rooms.xiaoting.id  }
+
+
+  room_characters "chufang" {
+    room_id = rooms.chufang.id
+    characters = [
+      { id = characters.nanpu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/yanziwu/cuixia.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "cuixia" {
+      name = "翠霞堂"
+      description = "古朴庄严，气度非凡，你一进门就不由的惊叹。好大一座 厅堂! 西边仿佛有一间小厅，东边则是一片竹林，南面有一道 穿堂，不知通向什么地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "cuixia" {
+    room_id = rooms.cuixia.id
+  west = rooms.xiaoting.id
+  east = rooms.zhulin1.id
+  south = rooms.chuantang.id  }
+
+
+  room_characters "cuixia" {
+    room_id = rooms.cuixia.id
+    characters = [
+      { id = characters.azhu.id },
+      { id = characters.deng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/yanziwu/dannuo.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "dannuo" {
+      name = "啖糯厅"
+      description = "这是一间雅致的大厅，厅上摆着几张紫檀木大桌。桌上银 制餐具一应俱全，桌边一溜犁花木椅。每日慕容世家很多人都 在此用餐。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dannuo" {
+    room_id = rooms.dannuo.id
+  west = rooms.yimen.id
+  east = rooms.huayuan.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/hu.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "hu" {
+      name = "百曲湖"
+      description = "这是一个支流众多的小河，四面都是菱叶。除了桨声和菱 叶与船身相擦的沙沙轻声，四下一片寂静，湖上清风，夹着淡 淡的花香，你不禁心想:  '就算这样一辈子，也好哇！"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/huanshi.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "huanshi" {
+      name = "还施水阁"
+      description = "阁中满是书架(jia)， 架上摆着许多颇古旧的书籍，架上 均贴有标签(sign)。这就是慕容世家历经数代才收集积累而成 的武学宝库。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ sign = "缺大理段氏六脉神剑，丐帮降龙十八掌、打狗棍法…"
+ jia = "上面放着各种武学书籍，却发现没什么有价值的秘籍。"
+}
+    }
+
+  room_exits "huanshi" {
+    room_id = rooms.huanshi.id
+  out = rooms.lanyue.id  }
+
+
+
+
+  room_items "huanshi" {
+    room_id = rooms.huanshi.id
+    items = [
+      { id = items.book_bamboo.id },
+      { id = items.book_iron.id },
+      { id = items.book_paper.id },
+      { id = items.book_silk.id },
+      { id = items.book_stone.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/yanziwu/huayuan.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "huayuan" {
+      name = "花园"
+      description = "这个花园虽然不大，但整理的井井有条，看的出主人下了 一番功夫，丫环常来这里嬉戏。沿着弯弯曲曲的花径，可以同 向各处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huayuan" {
+    room_id = rooms.huayuan.id
+  north = rooms.changlang.id
+  south = rooms.jiashan.id
+  west = rooms.dannuo.id
+  east = rooms.biheqiao.id  }
+
+
+  room_characters "huayuan" {
+    room_id = rooms.huayuan.id
+    characters = [
+      { id = characters.yahuan.id },
+      { id = characters.yahuan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/yanziwu/huizhen.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "huizhen" {
+      name = "汇珍园"
+      description = "这是燕子坞中最大的花园，遍植江南的奇花异草，香气浓 郁。彩蝶在花间翩跹飞舞，你不由的痴了，有点乐而忘返。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huizhen" {
+    room_id = rooms.huizhen.id
+  west = rooms.changlang.id  }
+
+
+
+
+  room_items "huizhen" {
+    room_id = rooms.huizhen.id
+    items = [
+      { id = items.he.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/yanziwu/hupan.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "hupan" {
+      name = "太湖湖畔"
+      description = "太湖处江浙之间。她襟带三江，东南之水尽汇于此，周行 五百里，古称五湖。矗立湖 (river)岸，唯见长天远波，放眼 皆碧，七十二峰苍翠挺立在三万六千顷波涛之中，使人心襟大 开直欲仰天长啸，方能表此喜乐。"
+  x = 0
+  y = 0
+  z = 0
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "hupan" {
+    room_id = rooms.hupan.id
+  northeast = rooms.road5.id
+  river = rooms.bozhou.id  }
+
+
+  room_characters "hupan" {
+    room_id = rooms.hupan.id
+    characters = [
+      { id = characters.yufu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/yanziwu/jiashan.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "jiashan" {
+      name = "假山"
+      description = "怪石堆叠，巨石参差，你有些头晕目眩，那么多山洞你不 知该钻哪一个。个个山洞都昏暗曲折，实在不知通向什么地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jiashan" {
+    room_id = rooms.jiashan.id
+  west = rooms.zuijing.id
+  east = rooms.shuiyun.id
+  north = rooms.huayuan.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/kuxiu.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "kuxiu" {
+      name = "苦修场"
+      description = "这里的场地有些破落，虽然经常打扫，但是场地仍然看得 出不少痕迹。希望出人头地的慕容家弟子在武功有了一定的修 为以后往往到这里来作进一步的修行。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kuxiu" {
+    room_id = rooms.kuxiu.id
+  west = rooms.shijian.id
+  east = rooms.kuxiu2.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/kuxiu2.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "kuxiu2" {
+      name = "苦修场"
+      description = "这里的场地有些破落，虽然经常打扫，但是场地仍然看得 出不少痕迹。希望出人头地的慕容家弟子在武功有了一定的修 为以后往往到这里来作进一步的修行。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kuxiu2" {
+    room_id = rooms.kuxiu2.id
+  west = rooms.kuxiu.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/lanyue.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "lanyue" {
+      name = "揽月居"
+      description = "这是慕容公子的卧室，房中陈设普通，收拾得颇为整洁， 屋角一架茂兰盆景(penjing)长得很是旺盛。晚上月光从窗户射 进来，满室银光，是燕子坞的一大美景。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ penjing = "这盆景似乎很平常，独有其边沿特别光滑。"
+}
+    }
+
+  room_exits "lanyue" {
+    room_id = rooms.lanyue.id
+  west = rooms.shuwu.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/lixiang.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "lixiang" {
+      name = "梨香苑"
+      description = "慕容家的后院也与众不同，圆形院门上刻有「梨香苑」三 字，院中雪白的梨花开满了枝头。西侧就是接待贵宾的龙凤厅 了，东侧有一条精美的长廊。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lixiang" {
+    room_id = rooms.lixiang.id
+  north = rooms.chuantang.id
+  west = rooms.longfeng.id
+  east = rooms.changlang.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/longfeng.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "longfeng" {
+      name = "龙凤厅"
+      description = "这是一座气势巍峨，构造宏大的大厅堂，大门前一对大石 狮子张牙舞爪，厅门上「龙凤厅」三个大字遒劲有力，气度不 凡。厅中墙上挂满名人字画，一张大八仙桌上茶具齐整，四周 围着一圈檀香木大椅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "longfeng" {
+    room_id = rooms.longfeng.id
+  south = rooms.yimen.id
+  east = rooms.lixiang.id
+  west = rooms.pindi.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/muti.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "muti" {
+      name = "木梯"
+      description = "这是一座松树枝架成的木梯，垂下来通往水面。忽听得旁 边柳枝上一只小鸟 '莎莎都莎，莎莎都莎' 的叫了起来，把你 吓了一跳。南边通向船坞。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "muti" {
+    room_id = rooms.muti.id
+  eastup = rooms.qinyun.id
+  southup = rooms.bozhou.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/muzhuang.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "muzhuang" {
+      name = "木桩"
+      description = "烟波浩淼的大湖上，水天一色，多么美丽的地方，在这儿 练功怎能不事半功倍呢。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/neitang.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "neitang" {
+      name = "内堂"
+      description = "这是一间雅致的内堂，布置简单而典雅。里面站着个一身 淡绿的女郎，向着你似笑非笑。似乎是江南灵秀造了这样一个 小美人。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "neitang" {
+    room_id = rooms.neitang.id
+  north = rooms.qinyun.id  }
+
+
+  room_characters "neitang" {
+    room_id = rooms.neitang.id
+    characters = [
+      { id = characters.abi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/yanziwu/pindi.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "pindi" {
+      name = "品笛庭"
+      description = "只见墙上挂有萧管之类的乐器，桌上放有一沓乐谱，想是 慕容世家演练乐曲的所在了。在向西就到了太湖岸边，向东则 是慕容世家接待宾客的龙凤厅了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "pindi" {
+    room_id = rooms.pindi.id
+  east = rooms.longfeng.id
+  west = rooms.bozhou.id  }
+
+
+  room_characters "pindi" {
+    room_id = rooms.pindi.id
+    characters = [
+      { id = characters.gongye.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/yanziwu/qinfang1.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "qinfang1" {
+      name = "沁芳阁"
+      description = "这里是供慕容世家的仆人小憩的地方，三面临水。微风拂 过，送来缕缕的荷花叶香，沁人心脾，沁芳阁因此而名。一架 墨绿色的竹梯通向楼上的休息室。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qinfang1" {
+    room_id = rooms.qinfang1.id
+  east = rooms.yimen.id
+  up = rooms.qinfang2.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/qinfang2.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "qinfang2" {
+      name = "沁芳阁二层"
+      description = "这儿窗户半闭，嗅着透过来的阵阵清香，你觉得有些困倦。 一张大床上淡绿色的被褥发出淡淡的香气，睡了吧，你不由的 想到。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qinfang2" {
+    room_id = rooms.qinfang2.id
+  down = rooms.qinfang1.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/qingzong.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "qingzong" {
+      name = "青冢"
+      description = "你在竹林中七绕八绕，忽然豁然开朗，原来到了慕容世家 的墓地，据说燕子坞的主人就葬于此了。地上长满了细的小草， 传说这种草常年碧绿，永不枯萎。似乎除了向南有一片竹林外 别无出口。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qingzong" {
+    room_id = rooms.qingzong.id
+  south = rooms.zhulin3.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/qinyun.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "qinyun" {
+      name = "琴韵小筑"
+      description = "这是一间小巧玲珑的房舍，颇为精雅。周围稀稀落落的四 五间小房屋，建造在一个不知是小岛还是半岛上。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qinyun" {
+    room_id = rooms.qinyun.id
+  westdown = rooms.muti.id
+  east = rooms.xiaoting.id
+  south = rooms.neitang.id  }
+
+
+  room_characters "qinyun" {
+    room_id = rooms.qinyun.id
+    characters = [
+      { id = characters.bao.id },
+      { id = characters.feng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/yanziwu/qiushuan.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "qiushuan" {
+      name = "秋爽斋"
+      description = "素幔低垂，设备朴素，临窗的桌上堆满卷轴，一大桶毛笔 显示出主人学识渊博。一只剑形花瓶插着几朵犁花，带来几分 清新的气息。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qiushuan" {
+    room_id = rooms.qiushuan.id
+  east = rooms.canheju.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/shangyu.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "shangyu" {
+      name = "赏鱼台"
+      description = "站在台上，你可以看见一片荷花菱角，不时有几尾金鱼跃 出水面，有的甚至还跳你眼前，仿佛一伸手就可以抓住。透过 荷叶隐约可以看到船坞，你不知是否有把握能跳过去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shangyu" {
+    room_id = rooms.shangyu.id
+  north = rooms.shuwu.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/shijian.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "shijian" {
+      name = "试剑台"
+      description = "玉石栏杆围成的一座石台，慕容世家的弟子经常在此练习 武技，台角放着刀枪剑戟等十八般兵器。 场中立着一些制作 极为精妙的木人。东边则是慕容家弟子苦心修行的地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shijian" {
+    room_id = rooms.shijian.id
+  south = rooms.changlang.id
+  east = rooms.kuxiu.id  }
+
+
+
+
+  room_items "shijian" {
+    room_id = rooms.shijian.id
+    items = [
+      { id = items.zhubang.id },
+      { id = items.mudao.id },
+      { id = items.zhujian.id },
+      { id = items.bian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/yanziwu/shuiyun.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "shuiyun" {
+      name = "水云轩"
+      description = "湖心的一座小小的亭台，四面环水，只有西侧有一条曲桥 与岸上相连。轩中清风拂面，水波微扬，一群群游鱼清晰可见， 别有一番诗情画意。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shuiyun" {
+    room_id = rooms.shuiyun.id
+  west = rooms.jiashan.id  }
+
+
+
+
+  room_items "shuiyun" {
+    room_id = rooms.shuiyun.id
+    items = [
+      { id = items.murongfu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/yanziwu/shuwu.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "shuwu" {
+      name = "翰墨书屋"
+      description = "屋中一架架紫竹搭成的书架倚墙而立，书架上摆满了经史 典籍。屋子正中央是一张书桌，桌上琴棋俱备，笔墨纸砚一应 俱全，墙上挂着一幅条幅(tiaofu)。大名鼎鼎的慕容公子常在 这里读书写字。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ tiaofu = "光洒菱湖天欲晚，                复国无计隐寒潭。                大梦未觉身已老，                燕语声中空笑谈。  你想了想始终觉得这个条幅中像是隐藏着什么秘密一样，但一时又想不出来。"
+}
+    }
+
+  room_exits "shuwu" {
+    room_id = rooms.shuwu.id
+  east = rooms.lanyue.id
+  north = rooms.canheju.id
+  south = rooms.shangyu.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/taihu.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "taihu" {
+      name = "太湖"
+      description = "绿衫少女脸带微笑，如春花般娇痴无瑕。两手划桨，不时 采摘莲实戏耍。口中漫声唱道:  '菡萏香连十顷陂，小姑贪戏 采莲迟。晚来弄水船头滩，笑脱红裙裹鸭儿。' 碧玉般湖面淡 淡弥散着轻柔的曲调。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/tingxiang.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "tingxiang" {
+      name = "听香水榭"
+      description = "绿柳杏花丛中有八九间茅房，四周竹篱掩映，错落有致， 这就是慕容公子的婢女阿朱的住所了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tingxiang" {
+    room_id = rooms.tingxiang.id
+  west = rooms.biheqiao.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/tingyu.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "tingyu" {
+      name = "听雨居"
+      description = "这个小居建在湖上，看上去没有什么特别之处。四面为水， 湖上烟波尽收眼底。唯一奇怪的是这儿放着一具瑶琴(qin)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ qin = "这琴比之寻常七弦琴短了尺许，却有九根琴弦。 不知是该去弹一弹(tan)还是将它击开(break)。"
+}
+    }
+
+  room_exits "tingyu" {
+    room_id = rooms.tingyu.id
+  south = rooms.xiaoqiao.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/xiaojing.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "xiaojing" {
+      name = "小径"
+      description = "这是个一条湖边的小径，西面就是一座小桥。周围湖光影 天，你不禁深吸了一口醉人的空气，陶醉于山水中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaojing" {
+    room_id = rooms.xiaojing.id
+  west = rooms.xiaoqiao.id
+  south = rooms.xiaoting.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/xiaoqiao.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "xiaoqiao" {
+      name = "紫菱桥"
+      description = "细竹搭就的一座小小拱桥，竹制的栏杆雕有别致的花纹， 桥的北端隐隐有一座小小木屋。站在桥上，你觉的心旷神怡， 久久不愿离去。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaoqiao" {
+    room_id = rooms.xiaoqiao.id
+  north = rooms.tingyu.id
+  east = rooms.xiaojing.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/xiaoting.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "xiaoting" {
+      name = "晓寒厅"
+      description = "这是一间小厅,厅虽不大,布置倒也别致。满厅的芳香，沁 人心脾。只见墙上挂着几幅条幅,笔致颇为潇洒,但掩不住几分 柔弱之气。厅内四周精巧地摆着些桌子(table)和椅子(chair)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ table = "一张典雅的桃木小桌，上面放着水果盘和饮茶器具。"
+ chair = "一只青竹打制的靠椅，躺上去摇摇晃晃，好舒服耶！"
+}
+    }
+
+  room_exits "xiaoting" {
+    room_id = rooms.xiaoting.id
+  west = rooms.qinyun.id
+  east = rooms.cuixia.id
+  north = rooms.xiaojing.id
+  south = rooms.chufang.id  }
+
+
+  room_characters "xiaoting" {
+    room_id = rooms.xiaoting.id
+    characters = [
+      { id = characters.susu.id }    ]
+  }
+
+
+
+  room_items "xiaoting" {
+    room_id = rooms.xiaoting.id
+    items = [
+      { id = items.gao.id },
+      { id = items.cha.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/yanziwu/xiaozhou.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "xiaozhou" {
+      name = "小舟"
+      description = "碧绿湖面飘荡的一叶小舟，一个绿衫少女手执双桨，缓缓 划水，口中唱着吴侬小曲。歌声娇柔无那，欢悦动心。一双纤 手皓肤如玉，映着绿波，便如透明一般。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/yimen.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "yimen" {
+      name = "仪门"
+      description = "一扇朱漆的雕花大门，一块醒目的牌子挂于门上，上镌黑 色小篆写的 '仪门' 二字，给人一种庄严威武的感觉。东面就 是燕子坞门人休息的地方，向西则是慕容家人用饭的啖糯厅。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yimen" {
+    room_id = rooms.yimen.id
+  west = rooms.qinfang1.id
+  east = rooms.dannuo.id
+  north = rooms.longfeng.id
+  south = rooms.canheju.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/zhulin1.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "zhulin1" {
+      name = "竹林"
+      description = "凤尾森森，龙吟细细，竿竿青竹纵横交错，遮蔽天日。这 里人迹罕至，微风拂过竹林，发出沙沙之声，你心中不免惴惴 不安起来。林中一道道石子铺成的羊肠小道向前延伸。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhulin1" {
+    room_id = rooms.zhulin1.id
+  west = rooms.cuixia.id
+  east = rooms.zhulin2.id
+  north = rooms.zhulin4.id
+  south = rooms.zhulin4.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/zhulin2.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "zhulin2" {
+      name = "竹林"
+      description = "凤尾森森，龙吟细细，竿竿青竹纵横交错，遮蔽天日。这 里人迹罕至，微风拂过竹林，发出沙沙之声，你心中不免惴惴 不安起来。林中一道道石子铺成的羊肠小道向前延伸。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhulin2" {
+    room_id = rooms.zhulin2.id
+  west = rooms.zhulin1.id
+  east = rooms.zhulin1.id
+  north = rooms.zhulin3.id
+  south = rooms.zhulin2.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/zhulin3.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "zhulin3" {
+      name = "竹林"
+      description = "凤尾森森，龙吟细细，竿竿青竹纵横交错，遮蔽天日。这 里人迹罕至，微风拂过竹林，发出沙沙之声，你心中不免惴惴 不安起来。林中一道道石子铺成的羊肠小道向前延伸。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhulin3" {
+    room_id = rooms.zhulin3.id
+  west = rooms.zhulin4.id
+  east = rooms.zhulin3.id
+  north = rooms.qingzong.id
+  south = rooms.zhulin2.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/zhulin4.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "zhulin4" {
+      name = "竹林"
+      description = "凤尾森森，龙吟细细，竿竿青竹纵横交错，遮蔽天日。这 里人迹罕至，微风拂过竹林，发出沙沙之声，你心中不免惴惴 不安起来。林中一道道石子铺成的羊肠小道向前延伸。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhulin4" {
+    room_id = rooms.zhulin4.id
+  west = rooms.zhulin4.id
+  east = rooms.zhulin3.id
+  north = rooms.zhulin1.id
+  south = rooms.zhulin1.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/zuijing.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "zuijing" {
+      name = "缀锦楼"
+      description = "地面铺着大红地毯，房中布置得珠光宝气，各种珠宝，古 玩摆放得琳琅满目，你看了颇为心动，很想顺手拿走几件，但 又有些不敢。角落里有一架红木楼梯。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zuijing" {
+    room_id = rooms.zuijing.id
+  west = rooms.canheju.id
+  east = rooms.jiashan.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/zuijing2.c by LPCConverter
+# Zone: yanziwu
+
+    rooms "zuijing2" {
+      name = "缀锦楼二层"
+      description = "这是包不同爱女包不靓的卧室，小床，小桌上堆满了小孩 子的玩艺儿，透过南北两扇窗户可以看见太湖上烟波浩渺，白 帆点点。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zuijing2" {
+    room_id = rooms.zuijing2.id
+  down = rooms.zuijing.id  }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/abi.c by LPCConverter
+# Zone: yanziwu
+
+    characters "abi" {
+      name = "阿碧"
+      description = "这是个身穿绿衣的女郎，约十六七岁年纪，满脸都是温柔， 满身都是秀气。一张可爱的瓜子脸，肤白如新剥鲜藕，说话 声音极甜极清，令人一听之下说不出的舒适。嘴角边一粒细 细的黑痔，更增俏媚。"
+  gender = "女性"
+  age = 16
+  shen_type = 1
+
+  combat = {
+    combat_exp = 10000
+    max_jing = 160
+    max_neili = 200
+    max_qi = 160
+  }
+
+  inquiries = [
+    { key = "曼陀山庄" value = "我才不敢去曼陀山庄，王夫人太霸道了!" },
+    { key = "王语嫣" value = "哎，只有她才配得上我们公子，也不知她现在怎么样了!" },
+    { key = "阿朱" value = "那小妮子只大我一岁，整天就喜欢扮别人玩。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 },
+    { skill = "sword" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.goldring.id },
+    { id = items.necklace.id },
+    { id = items.changjian.id },
+    { id = items.green_cloth.id },
+    { id = items.flower_shoe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/azhu.c by LPCConverter
+# Zone: yanziwu
+
+    characters "azhu" {
+      name = "阿朱"
+      description = "这是个身穿红衣的女郎，大约十七八岁，一脸精灵顽皮的神气。 一张鹅蛋脸，眼珠灵动，别有一番动人风韵。"
+  gender = "女性"
+  age = 17
+  shen_type = 1
+
+  combat = {
+    combat_exp = 10000
+    max_jing = 160
+    max_neili = 200
+    max_qi = 160
+  }
+
+  inquiries = [
+    { key = "弹琴" value = "(: inquiry_tanqin :)" },
+    { key = "易容" value = "(: ask_me :)" },
+    { key = "易容术" value = "(: ask_me :)" },
+    { key = "曼陀山庄" value = "我才不敢去曼陀山庄，王夫人太霸道了!" },
+    { key = "王语嫣" value = "哎，只有她才配得上我们公子，也不知她现在怎么样了!" },
+    { key = "阿碧" value = "那小丫头也不只跑哪儿去了。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 },
+    { skill = "sword" level = 30 },
+    { skill = "pretending" level = 200 }
+  ]
+
+
+  carry = [
+    { id = items.goldring.id },
+    { id = items.necklace.id },
+    { id = items.changjian.id },
+    { id = items.pink_cloth.id },
+    { id = items.flower_shoe.id },
+    { id = items.mask.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/bao.c by LPCConverter
+# Zone: yanziwu
+
+    characters "bao" {
+      name = "包不同"
+      description = "他是慕容家四大家臣之三，生性喜欢饶舌。"
+  gender = "男性"
+  age = 31
+  brain = brains.guarder
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 550000
+    con = 25
+    dex = 24
+    int = 26
+    max_jing = 1500
+    max_neili = 2900
+    max_qi = 2900
+    str = 21
+  }
+
+  inquiries = [
+    { key = "慕容博" value = "那是老主人。" },
+    { key = "慕容复" value = "他就是我们跟随的公子！" }
+  ]
+
+  skills = [
+    { skill = "force" level = 130 },
+    { skill = "shaolin-xinfa" level = 130 },
+    { skill = "dodge" level = 130 },
+    { skill = "shaolin-shenfa" level = 130 },
+    { skill = "parry" level = 140 },
+    { skill = "claw" level = 140 },
+    { skill = "longzhua-gong" level = 140 },
+    { type = "force" skill = "shaolin-xinfa" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "parry" skill = "longzhua-gong" },
+    { type = "claw" skill = "longzhua-gong" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/deng.c by LPCConverter
+# Zone: yanziwu
+
+    characters "deng" {
+      name = "邓百川"
+      description = "他是慕容家四大家臣之首，功力最为深厚。"
+  gender = "男性"
+  age = 42
+  brain = brains.guarder
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 750000
+    con = 25
+    dex = 22
+    int = 22
+    max_jing = 1800
+    max_neili = 3800
+    max_qi = 3600
+    str = 26
+  }
+
+  inquiries = [
+    { key = "慕容博" value = "那是老主人。" },
+    { key = "慕容复" value = "他就是我们跟随的公子！" }
+  ]
+
+  skills = [
+    { skill = "force" level = 175 },
+    { skill = "hunyuan-yiqi" level = 175 },
+    { skill = "dodge" level = 130 },
+    { skill = "shaolin-shenfa" level = 130 },
+    { skill = "parry" level = 140 },
+    { skill = "cuff" level = 175 },
+    { skill = "jingang-quan" level = 175 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "parry" skill = "jingang-quan" },
+    { type = "cuff" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/feng.c by LPCConverter
+# Zone: yanziwu
+
+    characters "feng" {
+      name = "风波恶"
+      description = "他是慕容家四大家臣之四，最喜欢打架，轻易却不服输。"
+  gender = "男性"
+  age = 28
+  brain = brains.guarder
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 480000
+    con = 24
+    dex = 28
+    int = 21
+    max_jing = 1400
+    max_neili = 2800
+    max_qi = 2700
+    str = 24
+  }
+
+  inquiries = [
+    { key = "慕容博" value = "那是老主人。" },
+    { key = "慕容复" value = "他就是我们跟随的公子！" }
+  ]
+
+  skills = [
+    { skill = "force" level = 125 },
+    { skill = "shaolin-xinfa" level = 125 },
+    { skill = "blade" level = 145 },
+    { skill = "xiuluo-dao" level = 145 },
+    { skill = "dodge" level = 140 },
+    { skill = "shaolin-shenfa" level = 140 },
+    { skill = "parry" level = 130 },
+    { skill = "cuff" level = 100 },
+    { skill = "jingang-quan" level = 100 },
+    { type = "force" skill = "shaolin-xinfa" },
+    { type = "blade" skill = "xiuluo-dao" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "parry" skill = "xiuluo-dao" },
+    { type = "cuff" skill = "jingang-quan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.gangdao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/gongye.c by LPCConverter
+# Zone: yanziwu
+
+    characters "gongye" {
+      name = "公冶乾"
+      description = "他是慕容家四大家臣之二，为人稳重。"
+  gender = "男性"
+  age = 35
+  brain = brains.guarder
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 620000
+    con = 26
+    dex = 24
+    int = 24
+    max_jing = 1600
+    max_neili = 3400
+    max_qi = 3200
+    str = 27
+  }
+
+  inquiries = [
+    { key = "慕容博" value = "那是老主人。" },
+    { key = "慕容复" value = "他就是我们跟随的公子！" }
+  ]
+
+  skills = [
+    { skill = "force" level = 150 },
+    { skill = "hunyuan-yiqi" level = 150 },
+    { skill = "sword" level = 155 },
+    { skill = "fumo-jian" level = 155 },
+    { skill = "dodge" level = 140 },
+    { skill = "shaolin-shenfa" level = 140 },
+    { skill = "parry" level = 150 },
+    { skill = "hand" level = 140 },
+    { skill = "fengyun-shou" level = 140 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "sword" skill = "fumo-jian" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "parry" skill = "fumo-jian" },
+    { type = "hand" skill = "fengyun-shou" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.gangjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/nanpu.c by LPCConverter
+# Zone: yanziwu
+
+    characters "nanpu" {
+      name = "男仆"
+      description = ""
+  gender = "男性"
+  age = 25
+
+  combat = {
+    combat_exp = 4000
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/susu.c by LPCConverter
+# Zone: yanziwu
+
+    characters "susu" {
+      name = "素素"
+      description = "这是个年年龄不大的小丫鬟，但宽松的衣服也遮不住她过早发育的身体。 一脸聪明乖巧，满口伶牙俐齿。见有人稍微示意，便过去加茶倒水。"
+  nickname = "伺茶丫鬟"
+  gender = "女性"
+  shen_type = 1
+  score = 1000
+
+  combat = {
+    attitude = "friendly"
+    con = 24
+    dex = 20
+    int = 28
+    max_jing = 100
+    max_neili = 150
+    max_qi = 150
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 30 },
+    { skill = "dodge" level = 20 },
+    { skill = "parry" level = 20 }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "素素笑吟吟地说道：这位{respect}请先入座，我这就给您上茶。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/yahuan.c by LPCConverter
+# Zone: yanziwu
+
+    characters "yahuan" {
+      name = "丫环"
+      description = "这是一个容貌清秀的丫环，正在打闹的开心。"
+  gender = "女性"
+  age = 18
+  score = 800
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000
+    con = 19
+    dex = 18
+    int = 20
+    max_jing = 100
+    max_neili = 100
+    max_qi = 100
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 20 },
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 },
+    { skill = "parry" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "丫环笑着说道：这位{respect}，过来和我们一起玩吧。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/yufu.c by LPCConverter
+# Zone: yanziwu
+
+    characters "yufu" {
+      name = "渔夫"
+      description = "一个头戴斗笠的渔夫，正悠然自得地在岸边垂钓。"
+  nickname = "消息灵通"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 60000
+  }
+
+  chat_chance = 1
+chats = [
+    "渔夫看了你一眼，自言自语道：这世道真是越来越不太平了。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "blade" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/obj/changjian.c by LPCConverter
+# Zone: yanziwu
+
+    characters "changjian" {
+      name = "长剑"
+      description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/obj/cloth.c by LPCConverter
+# Zone: yanziwu
+
+    characters "cloth" {
+      name = "布衣"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/obj/flower_shoe.c by LPCConverter
+# Zone: yanziwu
+
+    characters "flower_shoe" {
+      name = "绣花小鞋"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/obj/goldring.c by LPCConverter
+# Zone: yanziwu
+
+    characters "goldring" {
+      name = "金戒指"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/obj/green_cloth.c by LPCConverter
+# Zone: yanziwu
+
+    characters "green_cloth" {
+      name = "翠绿绸衫"
+      description = "这件翠绿色的绸衫上面绣着几只黄鹊，闻起来还有一股淡香。"
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/obj/necklace.c by LPCConverter
+# Zone: yanziwu
+
+    characters "necklace" {
+      name = "金项链"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/obj/pink_cloth.c by LPCConverter
+# Zone: yanziwu
+
+    characters "pink_cloth" {
+      name = "粉红绸衫"
+      description = "这件粉红色的绸衫上面绣着几只黄鹊，闻起来还有一股淡香。"
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/obj/cha.c by LPCConverter
+# Zone: yanziwu
+
+    items "cha" {
+      name = "碧螺春"
+      description = "这是一杯颜色碧绿、香味浓郁上等好茶。本地人称作吓煞人香。!"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/obj/dodgebook.c by LPCConverter
+# Zone: yanziwu
+
+    items "dodgebook" {
+      name = "轻功篇"
+      description = "轻功篇 这是一本还施水阁的轻功藏本，书色泛黄，有不少的批注。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/obj/gao.c by LPCConverter
+# Zone: yanziwu
+
+    items "gao" {
+      name = "四色点心"
+      description = "四色点心形状精雅,似乎是用来玩赏一般"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/yanziwu/obj/heiyugao.c by LPCConverter
+# Zone: yanziwu
+
+    items "heiyugao" {
+      name = "黑玉断续膏"
+      description = "这是一粒千年极其难配制的的黑玉断续膏,据说能起死回生。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

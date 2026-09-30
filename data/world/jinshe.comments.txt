@@ -1,0 +1,142 @@
+# Generated from C:/files/git/mud/d/jinshe/shanbi.c by LPCConverter
+# Zone: jinshe
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "dong")  →  
+  # if (me->query("neili") < 100)  →  message_vision(HIY '结果只听一声闷哼，$N被土层的反弹力震得眼前一黑....\\\\\n'NOR,me);
+# ==== CONDITIONAL BRANCHES (do_break) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_break
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/jinshe/shandong.c by LPCConverter
+# Zone: jinshe
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "map")  →  
+  # if (! ob->can_improve_skill("jinshe-jian"))  →  message_vision('$N的实战经验不足，无法领悟' '石壁内容。\\\\\n', ob);
+  # if (ob->query("jing") < 20)  →  message_vision('$N太累了，现在无法领悟石壁' '内容。\\\\\n', ob);
+  # if (c_skill > 50)  →  message_vision('$N觉得石壁内容太肤浅了。\\\\\n', ob);
+  # if (! SKILL_D("jinshe-jian")->valid_learn(ob))  →  
+# ==== CONDITIONAL BRANCHES (do_think) ====
+  # if (arg != "sword")  →  
+  # if (query("sword_count") < 1)  →  
+  # if (me->query("neili") < 2000 || me->query_str() < 40)  →  message_vision('$N好奇心起，握住剑柄向外一拔，却是' '纹丝不动，竟似铸在石里一般。\\\\\n', me);
+  # if (! ob = find_object(SWORD))  →  
+# ==== CONDITIONAL BRANCHES (do_pull) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_think
+  # UNHANDLED FUNCTION: do_pull
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/jinshe/yongdao2.c by LPCConverter
+# Zone: jinshe
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !arg || arg != "stone" )  →  
+  # if (me->query("neili") < 1500 || me->query_str() < 35)  →  message_vision('$N使出吃奶的劲也没能移动巨石。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: close
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/jinshe/obj/bigbox.c by LPCConverter
+# Zone: jinshe
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (query("open_count") > 0)  →  message_vision(HIR '$N伸手打开铁盒，只见眼前黑影骤起，原来盒里是毒箭！\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_open) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_open
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/jinshe/obj/jinshe-jian.c by LPCConverter
+# Zone: jinshe
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/jinshe/obj/jinshe-zhui.c by LPCConverter
+# Zone: jinshe
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/jinshe/obj/skeleton.c by LPCConverter
+# Zone: jinshe
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if( !arg || arg != "skeleton") { write("你要埋什么? \n"); return 1; } if (me->query_temp("marks/jinshe") == "1") { if (n > 200 && query("small_count") == 1) { message_vision( "$N又向地下挖掘，这次泥土较坚，时时出现山石，挖掘远为费力。 堪堪又将挖了三尺，忽然叮的一声，锄头又碰到一物，拨开泥土， 居然又是一只铁盒。\n", me); ob = new(__DIR__"smallbox"); ob->move(environment(me)); me->set_temp("marks/jinshe", "2"); add("small_count", -1); } else { message_vision("$N挖不到什么，挖了几下就不想干了。\n", me); me->set("neili",0); }
+# ==== COMPLEX CONDITIONALS ====
+  # if ( !arg || arg != "skeleton")  →  write('你要埋什么? \\\\\n');
+  # else  →  message_vision( '$N发现地面很松软的，于是用力挖了起来。$N挖了一会，忽然叮 的一声，碰到一件铁器。移近火把一看，见底下有块铁板，再用 挖了几下，拨开旁边泥土，原来竟是一只两尺见方的大铁盒。\\\\\n', me); message_vision('$N挖不到什么，挖了几下就不想干了。\\\\\n', me);
+  # if (me->query_temp("marks/jinshe") == "1")  →  message_vision( '$N又向地下挖掘，这次泥土较坚，时时出现山石，挖掘远为费力。 堪堪又将挖了三尺，忽然叮的一声，锄头又碰到一物，拨开泥土， 居然又是一只铁盒。\\\\\n', me); message_vision('$N挖不到什么，挖了几下就不想干了。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_mai) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_mai
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/jinshe/obj/smallbox.c by LPCConverter
+# Zone: jinshe
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (query("open_count") > 0)  →  message_vision(HIR '$N伸手打开铁盒，盒子里有三本书，上写《金蛇秘笈》四字，用 钳子揭开数页，见写满密密小字，又有许多图画。有的是地图， 有的是武术姿势，更有些兵刃机关的图样。\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_open) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_open
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================

@@ -162,6 +162,18 @@
       "failing_checks": ["Chars"]
     },
     {
+      "file": "45_bad_chars_elias_bad_key.ucl",
+      "why": "regression fixture for the real huashan bug, again found by the container rather than by any static check: huashan/s.c declares its exits as \"hole1\"..\"hole6\". elias_parser.yrl only accepts `assignment -> word equality ...`, and leex uses Word = [^0-9{}\\*/#\\n\\[\\]=\\s'\":;\\\\-] with Digit = [0-9]+ as a separate token, so a key holding a digit is split into word+digit and the assignment cannot close. Elias.parse/1 aborts with `syntax error before: ', ['\"6\"']`. Measured: `hole` and `hole_` parse; `hole6`, `hole_6` and `6hole` all fail. Values are unaffected - `rooms.lockroom6.id` parses fine - so only keys are restricted. The syntax check cannot see this (the file is well-formed UCL), so `chars` is the only check that fires.",
+      "exit_code": 1,
+      "failing_checks": ["Chars"]
+    },
+    {
+      "file": "46_bad_chars_elias_stray_backslash.ucl",
+      "why": "regression fixture for the real mingjiao bug, again found by the container: miaorenbuluo.c writes a @TEXT block whose line ends with a continuation backslash, so the intended text is the two lines joined with no separator. The converter collapsed the newline to a space but left the backslash, emitting `kou\\ zhong`. elias_parser.yrl only has `words -> back_slash word words` and `words -> back_slash quotes words`, so a backslash before whitespace has no production and Elias.parse/1 aborts with `syntax error before: ', ['\" \"']'` - the reported token is the space the backslash was hiding. Measured with an explicitly constructed backslash: `a\\ b` and `a\\` both fail, `a\\bcd` and a plain space are fine. The fix is _LPC_CONTINUATION, applied in _sanitize_ucl_sval BEFORE newlines collapse to spaces. Well-formed UCL, so `chars` is the only check that fires.",
+      "exit_code": 1,
+      "failing_checks": ["Chars"]
+    },
+    {
       "file": "50_bad_encoding_crlf.ucl",
       "why": "CRLF line endings. Measured: Elias parses it SUCCESSFULLY, so only `encoding` may be reported.",
       "exit_code": 1,

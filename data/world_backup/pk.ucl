@@ -1,0 +1,319 @@
+zones "pk" {
+  name = "pk"
+}
+
+# Generated from C:/files/git/mud/d/pk/entry.c by LPCConverter
+# Zone: pk
+
+    rooms "entry" {
+      name = "屠人场入口"
+      description = "这里是一间不算大的小屋，当中摆了一个桌子，后面做 着一个人，正笑吟吟的看着你。他身后有一扇门虚掩着，里 面黑乎乎的，也不知道通往哪里。西面望出去是宽阔敞亮的 大街，让人无限向往。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "north"
+direction = "north"
+  message = "乌老大喝道：给我站住！那儿不能随意进入。"
+}
+
+]
+    }
+
+  room_exits "entry" {
+    room_id = rooms.entry.id
+  north = rooms.ready.id
+  west = rooms.yongtai_dadao2.id  }
+
+
+  room_characters "entry" {
+    room_id = rooms.entry.id
+    characters = [
+      { id = characters.wu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/pk/ready.c by LPCConverter
+# Zone: pk
+
+    rooms "ready" {
+      name = "屠人场休息室"
+      description = "这里黑乎乎的，地上还有一些粘满了血迹的布条，偶然 也看得到断了的长剑、钢刀什么的。北面的门紧紧锁着，里 面散发出一阵阵血腥的气味。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "ready" {
+    room_id = rooms.ready.id
+  south = rooms.entry.id  }
+
+# Generated from C:/files/git/mud/d/pk/turen1.c by LPCConverter
+# Zone: pk
+
+    rooms "turen1" {
+      name = "屠人场"
+      description = "这里阴森恐怖，地上到处是残肢碎尸，无处不是暗红色的血滴。你心中 忐忑不安，万分警惕，不知道从哪里就会窜出一个黑影。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "turen1" {
+    room_id = rooms.turen1.id
+  east = rooms.turen2.id
+  south = rooms.turen4.id
+  southwest = rooms.turen3.id  }
+
+# Generated from C:/files/git/mud/d/pk/turen10.c by LPCConverter
+# Zone: pk
+
+    rooms "turen10" {
+      name = "宰人场"
+      description = "这里阴森恐怖，地上到处是残肢碎尸，无处不是暗红色的血滴。你心中 忐忑不安，万分警惕，不知道从哪里就会窜出一个黑影。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "turen10" {
+    room_id = rooms.turen10.id
+  southwest = rooms.turen12.id
+  west = rooms.turen9.id
+  north = rooms.turen6.id  }
+
+# Generated from C:/files/git/mud/d/pk/turen11.c by LPCConverter
+# Zone: pk
+
+    rooms "turen11" {
+      name = "诛人场"
+      description = "这里阴森恐怖，地上到处是残肢碎尸，无处不是暗红色的血滴。你心中 忐忑不安，万分警惕，不知道从哪里就会窜出一个黑影。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "turen11" {
+    room_id = rooms.turen11.id
+  east = rooms.turen12.id
+  northwest = rooms.turen7.id
+  north = rooms.turen8.id  }
+
+# Generated from C:/files/git/mud/d/pk/turen12.c by LPCConverter
+# Zone: pk
+
+    rooms "turen12" {
+      name = "戮人场"
+      description = "这里阴森恐怖，地上到处是残肢碎尸，无处不是暗红色的血滴。你心中 忐忑不安，万分警惕，不知道从哪里就会窜出一个黑影。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "turen12" {
+    room_id = rooms.turen12.id
+  northeast = rooms.turen10.id
+  west = rooms.turen11.id
+  north = rooms.turen9.id  }
+
+# Generated from C:/files/git/mud/d/pk/turen2.c by LPCConverter
+# Zone: pk
+
+    rooms "turen2" {
+      name = "宰人场"
+      description = "这里阴森恐怖，地上到处是残肢碎尸，无处不是暗红色的血滴。你心中 忐忑不安，万分警惕，不知道从哪里就会窜出一个黑影。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "turen2" {
+    room_id = rooms.turen2.id
+  southeast = rooms.turen6.id
+  south = rooms.turen5.id
+  west = rooms.turen1.id  }
+
+# Generated from C:/files/git/mud/d/pk/turen3.c by LPCConverter
+# Zone: pk
+
+    rooms "turen3" {
+      name = "剁人场"
+      description = "这里阴森恐怖，地上到处是残肢碎尸，无处不是暗红色的血滴。你心中 忐忑不安，万分警惕，不知道从哪里就会窜出一个黑影。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "turen3" {
+    room_id = rooms.turen3.id
+  east = rooms.turen4.id
+  south = rooms.turen7.id
+  northeast = rooms.turen1.id  }
+
+# Generated from C:/files/git/mud/d/pk/turen4.c by LPCConverter
+# Zone: pk
+
+    rooms "turen4" {
+      name = "碎尸场"
+      description = "这里阴森恐怖，地上到处是残肢碎尸，无处不是暗红色的血滴。你心中 忐忑不安，万分警惕，不知道从哪里就会窜出一个黑影。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "turen4" {
+    room_id = rooms.turen4.id
+  east = rooms.turen5.id
+  south = rooms.turen8.id
+  west = rooms.turen3.id
+  north = rooms.turen1.id  }
+
+# Generated from C:/files/git/mud/d/pk/turen5.c by LPCConverter
+# Zone: pk
+
+    rooms "turen5" {
+      name = "喋血场"
+      description = "这里阴森恐怖，地上到处是残肢碎尸，无处不是暗红色的血滴。你心中 忐忑不安，万分警惕，不知道从哪里就会窜出一个黑影。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "turen5" {
+    room_id = rooms.turen5.id
+  east = rooms.turen6.id
+  south = rooms.turen9.id
+  west = rooms.turen4.id
+  north = rooms.turen2.id  }
+
+# Generated from C:/files/git/mud/d/pk/turen6.c by LPCConverter
+# Zone: pk
+
+    rooms "turen6" {
+      name = "毒人场"
+      description = "这里阴森恐怖，地上到处是残肢碎尸，无处不是暗红色的血滴。你心中 忐忑不安，万分警惕，不知道从哪里就会窜出一个黑影。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "turen6" {
+    room_id = rooms.turen6.id
+  south = rooms.turen10.id
+  west = rooms.turen5.id
+  northwest = rooms.turen2.id  }
+
+# Generated from C:/files/git/mud/d/pk/turen7.c by LPCConverter
+# Zone: pk
+
+    rooms "turen7" {
+      name = "丧命场"
+      description = "这里阴森恐怖，地上到处是残肢碎尸，无处不是暗红色的血滴。你心中 忐忑不安，万分警惕，不知道从哪里就会窜出一个黑影。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "turen7" {
+    room_id = rooms.turen7.id
+  east = rooms.turen8.id
+  southeast = rooms.turen11.id
+  north = rooms.turen3.id  }
+
+# Generated from C:/files/git/mud/d/pk/turen8.c by LPCConverter
+# Zone: pk
+
+    rooms "turen8" {
+      name = "殒命场"
+      description = "这里阴森恐怖，地上到处是残肢碎尸，无处不是暗红色的血滴。你心中 忐忑不安，万分警惕，不知道从哪里就会窜出一个黑影。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "turen8" {
+    room_id = rooms.turen8.id
+  east = rooms.turen9.id
+  south = rooms.turen11.id
+  west = rooms.turen7.id
+  north = rooms.turen4.id  }
+
+# Generated from C:/files/git/mud/d/pk/turen9.c by LPCConverter
+# Zone: pk
+
+    rooms "turen9" {
+      name = "送命场"
+      description = "这里阴森恐怖，地上到处是残肢碎尸，无处不是暗红色的血滴。你心中 忐忑不安，万分警惕，不知道从哪里就会窜出一个黑影。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "turen9" {
+    room_id = rooms.turen9.id
+  east = rooms.turen10.id
+  south = rooms.turen12.id
+  west = rooms.turen8.id
+  north = rooms.turen5.id  }
+
+# Generated from C:/files/git/mud/d/pk/npc/wu.c by LPCConverter
+# Zone: pk
+
+    characters "wu" {
+      name = "乌老大"
+      description = "一位身材魁梧的汉子，满面髯须，神情甚是威 武。他便是回疆碧刀门掌门乌老大，他在天山 缥缈峰灵鹫宫下组织了万仙大会，预谋铲除天 山童姥，后来被虚竹子所降服。"
+  title = "回疆碧刀门掌门"
+  gender = "男性"
+  age = 45
+  brain = brains.quester
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2200000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 2200
+    max_neili = 4800
+    max_qi = 4500
+    str = 30
+  }
+
+  inquiries = [
+    { key = "屠人大赛" value = "(: ask_me :)" },
+    { key = "屠人比赛" value = "(: ask_me :)" },
+    { key = "屠人赛" value = "(: ask_me :)" },
+    { key = "瀑落九霄" value = "(: ask_skill :)" },
+    { key = "绿波香露刀" value = "(: ask_dao :)" }
+  ]
+
+  skills = [
+    { skill = "force" level = 200 },
+    { skill = "yaogu-xinfa" level = 200 },
+    { skill = "blade" level = 200 },
+    { skill = "biyan-dao" level = 200 },
+    { skill = "dodge" level = 180 },
+    { skill = "feiyan-zoubi" level = 180 },
+    { skill = "hand" level = 180 },
+    { skill = "jiuqu-zhegufa" level = 180 },
+    { skill = "parry" level = 180 },
+    { skill = "martial-cognize" level = 180 },
+    { skill = "literate" level = 120 },
+    { type = "force" skill = "yaogu-xinfa" },
+    { type = "blade" skill = "biyan-dao" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "parry" skill = "biyan-dao" },
+    { type = "hand" skill = "jiuqu-zhegufa" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["sign", "join"]
+  }
+    }

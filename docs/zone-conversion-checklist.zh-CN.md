@@ -76,13 +76,13 @@
 
 - [ ] **guanwai** · 中心 `longmen` · `goto guanwai:longmen`
 - [ ] **hengshan** · 中心 `beiyuemiao` · `goto hengshan:beiyuemiao`
-- [ ] **huashan** · 中心 `square` · `goto huashan:square`
+- [x] **huashan** · 中心 `square` · `goto huashan:square` ✅ 2026-09-30（elias key 缺陷，见完成记录）
 - [ ] **item** · 中心 `road1` · `goto item:road1`
 - [ ] **jinshe** · 中心 `shandong` · `goto jinshe:shandong`
 - [ ] **jueqing** · 中心 `dating` · `goto jueqing:dating`
 - [ ] **lingjiu** · 中心 `damen` · `goto lingjiu:damen`
 - [ ] **meizhuang** · 中心 `gate` · `goto meizhuang:gate`
-- [ ] **mingjiao** · 中心 `dadian` · `goto mingjiao:dadian`
+- [x] **mingjiao** · 中心 `dadian` · `goto mingjiao:dadian` ✅ 2026-09-30（elias 反斜杠缺陷，见完成记录）
 - [ ] **motianya** · 中心 `mtdating` · `goto motianya:mtdating`
 - [ ] **pk** · 中心 `entry` · `goto pk:entry`
 - [ ] **qingcheng** · 中心 `sanqingdian` · `goto qingcheng:sanqingdian`
@@ -192,7 +192,10 @@
 | xiaoyao | 2026-09-30 | ? | ? | 完整 Python 转换：22 rooms, 22 room_exits (含 coords) |
 | xiyu | 2026-09-30 | ? | ? | 完整 Python 转换：51 rooms, 51 room_exits (含 coords) |
 | quanzhou | 2026-09-30 | ? | ? | 完整 Python 转换：36 rooms, 36 room_exits (含 coords) |
+| huashan | 2026-09-30 | ? | ? | 完整 Python 转换：89 rooms, 89 room_exits (含 coords)。**容器加载失败修复（按「遇错即停」规则停在此区）**：`s.c` 的出口方向名是 `"hole1".."hole6"`，而 **UCL 的 key 不能含数字**——`elias_parser.yrl` 只接受 `assignment -> word equality ...`，leex 又把 `Digit` 当独立 token，于是 `hole6` 被切成 `word "hole"` + `digit "6"` 赋值闭合不了 → `syntax error before: ', ['"6"']`。实测 `hole`/`hole_` 可解析，`hole6`/`hole_6`/`6hole` 均失败；**值侧不受影响**（`rooms.lockroom6.id` 正常）。修 `lpc_converter.py` 的 `_EXIT_DIR_RE` 收紧为 `^[A-Za-z_][A-Za-z_]*$`；`validate_ucl.py` 新增 `_ELIAS_BAD_KEY_RE` + fixture `45_bad_chars_elias_bad_key.ucl`。这 6 条 `hole*` 是冗余反向链接（每个 `lockroomN` 自身有 `out = rooms.s.id`，`kuihua_2 -up-> lockroom1`），跳过不造成不可达 |
+| mingjiao | 2026-09-30 | ? | ? | 完整 Python 转换：129 rooms, 129 room_exits (含 coords)。**容器加载失败修复**：`miaorenbuluo.c` 的 `@TEXT` 块某行以 `口\` 结尾，是 LPC **行尾续行符**（本意换行续接），转换器却先把换行折成空格、留下反斜杠，产出 `口\ 中`。elias 的 `words` 只有 `back_slash word` / `back_slash quotes` 产生式，反斜杠接空格无规则可走 → 报错 token 恰是那个被反斜杠藏起来的**空格**。修法：新增 `_LPC_CONTINUATION`，并在 `_sanitize_ucl_sval()` **换行转空格之前**应用（所有字符串的最终出口，heredoc 与普通字面量都覆盖），`_parse_heredocs_from_raw()` 另加一道；产出已恢复为 `口中`。`validate_ucl.py` 新增 `_ELIAS_STRAY_BACKSLASH_RE` + fixture `46_bad_chars_elias_stray_backslash.ucl` |
 | ... |  |  |  |  |
+| huashan | 2026-09-30 | ? | ? | 完整 Python 转换：89 rooms, 89 room_exits (含 coords)。**容器加载失败修复（按「遇错即停」规则停在此区）**：`s.c` 的出口方向名是 `"hole1".."hole6"`，而 **UCL 的 key 不能含数字**——`elias_parser.yrl` 只接受 `assignment -> word equality ...`，leex 又把 `Digit` 当独立 token，于是 `hole6` 被切成 `word "hole"` + `digit "6"` 赋值闭合不了 → `syntax error before: ', ['"6"']`。实测 `hole`/`hole_` 可解析，`hole6`/`hole_6`/`6hole` 均失败；**值侧不受影响**（`rooms.lockroom6.id` 正常）。修 `lpc_converter.py` 的 `_EXIT_DIR_RE` 收紧为 `^[A-Za-z_][A-Za-z_]*$`；`validate_ucl.py` 新增 `_ELIAS_BAD_KEY_RE` + fixture `45_bad_chars_elias_bad_key.ucl`。这 6 条 `hole*` 是冗余反向链接（每个 `lockroomN` 自身有 `out = rooms.s.id`，`kuihua_2 -up-> lockroom1`），跳过不造成不可达 |
 
 > 2026-09-30 全量复验：13 个已转区域全部重跑「备份 → 赋坐标 → 静态校验 → 坐标唯一性 + BFS 可达性」，
 > 并跑 `MIX_ENV=test mix test test/kantele/world/`（183 tests, 0 failures，含全量世界加载）。

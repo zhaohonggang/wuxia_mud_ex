@@ -1,0 +1,402 @@
+zones "motianya" {
+  name = "motianya"
+}
+
+# Generated from C:/files/git/mud/d/motianya/mtdating.c by LPCConverter
+# Zone: motianya
+
+    rooms "mtdating" {
+      name = "崖顶"
+      description = "这就是摩天崖了。上面光秃秃的，连一棵小树也没有，峰顶到也 十分开阔，但身周云雾缭绕，当真是置身云端之中，使人心惊肉跳。 东面有一个小木屋。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "east" && objectp(ob = present("xie yanke", this_object())) && living(ob)
+direction = "east"
+  message = "谢烟客把手一拦，喝道：“给我回来！”"
+}
+
+]
+    }
+
+  room_exits "mtdating" {
+    room_id = rooms.mtdating.id
+  east = rooms.mtxiaowu.id
+  down = rooms.mtyadi.id  }
+
+
+  room_characters "mtdating" {
+    room_id = rooms.mtdating.id
+    characters = [
+      { id = characters.xieyan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/motianya/mtroad.c by LPCConverter
+# Zone: motianya
+
+    rooms "mtroad" {
+      name = "山路"
+      description = "这是一条山路，两旁是茂盛的森林，有一个女孩在这眼望南边发 呆，南边就是摩天崖了，一股阴森恐怖的气氛随之而来，你不禁告诉 自己，还是快走吧。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mtroad" {
+    room_id = rooms.mtroad.id
+  south = rooms.mtyadi.id
+  east = rooms.mtroad1.id  }
+
+
+  room_characters "mtroad" {
+    room_id = rooms.mtroad.id
+    characters = [
+      { id = characters.dingdang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/motianya/mtroad1.c by LPCConverter
+# Zone: motianya
+
+    rooms "mtroad1" {
+      name = "树林"
+      description = "这里是茂密的森林。四周都是数不清的长草，一股阴森恐怖的气 氛。远处不时传来野兽的嚎叫，你实在不想在这里多留。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mtroad1" {
+    room_id = rooms.mtroad1.id
+  east = rooms.hsroad5.id
+  west = rooms.mtroad.id
+  north = rooms.__file__.id
+  south = rooms.mtroad2.id  }
+
+# Generated from C:/files/git/mud/d/motianya/mtroad2.c by LPCConverter
+# Zone: motianya
+
+    rooms "mtroad2" {
+      name = "树林"
+      description = "这里是茂密的森林。四周都是数不清的长草，一股阴森恐怖的气 氛。远处不时传来野兽的嚎叫，你实在不想在这里多留。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mtroad2" {
+    room_id = rooms.mtroad2.id
+  east = rooms.mtroad1.id
+  west = rooms.__file__.id
+  south = rooms.__file__.id
+  north = rooms.mtroad3.id  }
+
+# Generated from C:/files/git/mud/d/motianya/mtroad3.c by LPCConverter
+# Zone: motianya
+
+    rooms "mtroad3" {
+      name = "树林"
+      description = "这里是茂密的森林。四周都是数不清的长草，一股阴森恐怖的气 氛。远处不时传来野兽的嚎叫，你实在不想在这里多留。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mtroad3" {
+    room_id = rooms.mtroad3.id
+  east = rooms.mtroad2.id
+  west = rooms.__file__.id
+  north = rooms.__file__.id
+  south = rooms.mtroad4.id  }
+
+
+  room_characters "mtroad3" {
+    room_id = rooms.mtroad3.id
+    characters = [
+      { id = characters.qiaofu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/motianya/mtroad4.c by LPCConverter
+# Zone: motianya
+
+    rooms "mtroad4" {
+      name = "树林"
+      description = "这里是茂密的森林。四周都是数不清的长草，一股阴森恐怖的气 氛。远处不时传来野兽的嚎叫，你实在不想在这里多留。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mtroad4" {
+    room_id = rooms.mtroad4.id
+  east = rooms.mtroad3.id
+  west = rooms.mtroad5.id
+  north = rooms.mtroad6.id
+  south = rooms.__file__.id  }
+
+# Generated from C:/files/git/mud/d/motianya/mtroad5.c by LPCConverter
+# Zone: motianya
+
+    rooms "mtroad5" {
+      name = "树林"
+      description = "这里是茂密的森林。四周都是数不清的长草，一股阴森恐 怖的气氛。远处不时传来野兽的嚎叫，你实在不想在这里多留。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mtroad5" {
+    room_id = rooms.mtroad5.id
+  east = rooms.mtroad4.id
+  west = rooms.__file__.id
+  north = rooms.__file__.id
+  south = rooms.__file__.id  }
+
+
+
+
+  room_items "mtroad5" {
+    room_id = rooms.mtroad5.id
+    items = [
+      { id = items.zhu2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/motianya/mtroad6.c by LPCConverter
+# Zone: motianya
+
+    rooms "mtroad6" {
+      name = "树林"
+      description = "这里是森林中的一块小平地。长草没胫，野花浪漫，四周都是密 密的森林。时不时传来阵阵野兽嘶叫，飞鸟啼鸣。西南有一高崖突兀 而起，极是险峻。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mtroad6" {
+    room_id = rooms.mtroad6.id
+  east = rooms.mtroad4.id
+  west = rooms.mtroad4.id
+  north = rooms.mtroad4.id
+  south = rooms.mtroad4.id  }
+
+# Generated from C:/files/git/mud/d/motianya/mtxiaowu.c by LPCConverter
+# Zone: motianya
+
+    rooms "mtxiaowu" {
+      name = "木屋"
+      description = "这里是一个很小的木屋，室中放着一些乱七八遭的家具，墙角边 还有一张破烂的小床，有一个英俊的少年在屋内走来走去，似乎有什 么心事，不时的发出几声长叹......"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mtxiaowu" {
+    room_id = rooms.mtxiaowu.id
+  west = rooms.mtdating.id  }
+
+
+  room_characters "mtxiaowu" {
+    room_id = rooms.mtxiaowu.id
+    characters = [
+      { id = characters.shizhongyu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/motianya/mtyadi.c by LPCConverter
+# Zone: motianya
+
+    rooms "mtyadi" {
+      name = "崖底"
+      description = "你的面前是一座笔直的山峰，高若千丈，峰顶在云雾中隐约可见， 山峰光秃秃的，更无置手足处，山峰垂下一条铁链(lian)，仔细一看， 铁链并无锈迹，似乎有人用它爬(climb)上爬下。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mtyadi" {
+    room_id = rooms.mtyadi.id
+  north = rooms.mtroad.id  }
+
+# Generated from C:/files/git/mud/d/motianya/npc/dingdang.c by LPCConverter
+# Zone: motianya
+
+    characters "dingdang" {
+      name = "丁当"
+      description = "一个十七八岁的少女，身穿淡绿衫子，一张瓜子脸，秀丽美艳。"
+  gender = "女性"
+  age = 18
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100000
+    con = 25
+    dex = 22
+    int = 35
+    max_jing = 2000
+    max_neili = 2000
+    max_qi = 2000
+    str = 18
+  }
+
+  inquiries = [
+    { key = "摩天崖" value = "前面这座山就是了，你要小心呀，那个老头的武功好强呀。" },
+    { key = "玄铁令" value = "据说是在石破天手里，真假我就不知道了。" },
+    { key = "石中玉" value = "呜呜...他...他是我哥哥..." }
+  ]
+
+  skills = [
+    { skill = "force" level = 100 },
+    { skill = "unarmed" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "dodge" level = 200 },
+    { skill = "taiji-shengong" level = 200 },
+    { skill = "taiji-quan" level = 200 },
+    { skill = "tiyunzong" level = 500 },
+    { type = "force" skill = "taiji-shenfong" },
+    { type = "unarmed" skill = "taiji-quan" },
+    { type = "parry" skill = "taiji-quan" },
+    { type = "dodge" skill = "tiyunzong" }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/motianya/npc/qiaofu.c by LPCConverter
+# Zone: motianya
+
+    characters "qiaofu" {
+      name = "樵夫"
+      description = "这是一个一辈子以砍材为生的老樵夫，由于饱 受风霜，显出与年龄不相称的衰老。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 50
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+    con = 18
+    dex = 18
+    int = 18
+    str = 17
+  }
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.knife.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/motianya/npc/shizhongyu.c by LPCConverter
+# Zone: motianya
+
+    characters "shizhongyu" {
+      name = "石中玉"
+      description = "这是一个年轻公子，大约二十左右岁，面若中秋之月，色如春晓 之花，鬓若刀裁，眉如墨画，鼻如悬胆，情若秋波，虽怒而时笑，即视而有情。"
+  gender = "男性"
+  age = 20
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    con = 18
+    dex = 20
+    int = 45
+    max_neili = 200
+    str = 15
+  }
+
+  inquiries = [
+    { key = "侠客岛" value = "在泉州附近的一个小岛。" },
+    { key = "叮当" value = "我好久没见到她了，不知道她现在怎么样了。" },
+    { key = "石破天" value = "他..." }
+  ]
+
+  chat_chance = 8
+chats = [
+    "石中玉说道: 叮当，你在哪呀，我好想你呀。",
+    "石中玉叹道: 也不知道我的叮当怎么样了。",
+    "石中玉说道: 腊八粥可是好东西...",
+    "石中玉说道: 唉，谁能帮我杀了外面的老头，兄弟我谢谢你了！"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "force" level = 30 },
+    { skill = "blade" level = 20 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 },
+    { skill = "literate" level = 100 },
+    { skill = "wuhu-duanmendao" level = 50 },
+    { type = "blade" skill = "wuhu-duanmendao" }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/motianya/npc/xieyan.c by LPCConverter
+# Zone: motianya
+
+    characters "xieyan" {
+      name = "谢烟客"
+      description = "摩天居士谢烟客乃天下第一奇人，武功高强，曾经散出 玄铁令三枚，誓言可以满足拥有此令的三人任何愿望。"
+  nickname = "摩天居士"
+  gender = "男性"
+  age = 71
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2500000
+    con = 35
+    dex = 35
+    int = 35
+    max_jing = 2500
+    max_neili = 6000
+    max_qi = 5000
+    str = 35
+  }
+
+  inquiries = [
+    { key = "澎湃" value = "(: ask_me :)" },
+    { key = "玄铁令" value = "两枚玄铁令我已经收回。" },
+    { key = "石破天" value = "狗杂种那个白痴还没死么？" },
+    { key = "碧针清掌" value = "(: ask_me :)" },
+    { key = "绝技" value = "(: ask_me :)" },
+    { key = "绝招" value = "(: ask_me :)" }
+  ]
+
+  skills = [
+    { skill = "force" level = 260 },
+    { skill = "unarmed" level = 250 },
+    { skill = "dodge" level = 250 },
+    { skill = "parry" level = 250 },
+    { skill = "strike" level = 260 },
+    { skill = "yijinjing" level = 260 },
+    { skill = "shexing-lifan" level = 250 },
+    { skill = "bizhen-qingzhang" level = 260 },
+    { type = "force" skill = "yijinjing" },
+    { type = "dodge" skill = "shexing-lifan" },
+    { type = "strike" skill = "bizhen-qingzhang" },
+    { type = "parry" skill = "bizhen-qingzhang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "any" accept = false }
+  ]
+    }

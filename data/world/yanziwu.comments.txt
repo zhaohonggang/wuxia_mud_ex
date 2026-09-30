@@ -1,0 +1,526 @@
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/yanziwu/cuixia.c by LPCConverter
+# Zone: yanziwu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "east")  →  
+  # if (guarder = present("deng baichuan", this_object()))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/yanziwu/huanshi.c by LPCConverter
+# Zone: yanziwu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: reset
+  # reset: object here; ::reset(); if (! here = find_object(__FILE__)) here = load_object(__FILE__); if (here->query("marks/move")) here->delete("marks/move");
+# ==== RAW CODE BLOCKS ====
+  # if (! here = find_object(__FILE__))  →  
+  # if (here->query("marks/move"))  →  
+# ==== CONDITIONAL BRANCHES (reset) ====
+  # if (! arg || arg != "jia")  →  
+  # if (! book = find_object(books[ran]))  →  
+  # if (! here = find_object(__FILE__))  →  
+  # if (here->query("marks/move") || ! can_creat_book)  →  
+  # else  →  
+  # if (! environment(book))  →  tell_object(me, HIY '啪~~地一声，一本书掉在了地上，你赶紧将它收了' '起来。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_move) ====
+  # if (random(5) == 0)  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: reset
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/yanziwu/lanyue.c by LPCConverter
+# Zone: yanziwu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || ! me->query_temp("can_whisper"))  →  
+  # if (arg != "光复大燕")  →  write(HIG '你悄悄地说道：“' + arg + '”，却没什么反应。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_say) ====
+  # if (!arg || (arg!="penjing" ) )  →  
+  # if (me->query_temp("marks/pen"))  →  
+# ==== CONDITIONAL BRANCHES (do_knock) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_knock
+  # UNHANDLED FUNCTION: check_pass
+  # UNHANDLED FUNCTION: end_whisper
+  # UNHANDLED FUNCTION: do_say
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/yanziwu/pindi.c by LPCConverter
+# Zone: yanziwu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "east")  →  
+  # if (guarder = present("gongye qian", this_object()))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/yanziwu/qinyun.c by LPCConverter
+# Zone: yanziwu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "east" || ! objectp(guard = present("bao butong", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/yanziwu/shangyu.c by LPCConverter
+# Zone: yanziwu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: do_jump
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/yanziwu/tingyu.c by LPCConverter
+# Zone: yanziwu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! objectp(ob))  →  
+# ==== CONDITIONAL BRANCHES (mantuo) ====
+  # if (! arg || arg != "qin")  →  
+  # else  →  
+  # if ((int)this_player()->query("qi") < 200)  →  
+# ==== CONDITIONAL BRANCHES (do_break) ====
+  # if (! arg || arg != "qin")  →  
+# ==== CONDITIONAL BRANCHES (do_tan) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_tan
+  # UNHANDLED FUNCTION: mantuo
+  # UNHANDLED FUNCTION: do_break
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/yanziwu/xiaoting.c by LPCConverter
+# Zone: yanziwu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "chair")  →  
+  # if (this_player()->query_temp("marks/sit"))  →  
+# ==== CONDITIONAL BRANCHES (do_sit) ====
+  # if (objectp(me))  →  
+# ==== CONDITIONAL BRANCHES (delete_served) ====
+  # if (arg != "desk" && arg != "table")  →  
+  # if (! objectp(susu = present("su su", environment(me))))  →  
+  # if (! me->query_temp("marks/sit"))  →  
+  # if (susu->query_temp("marks/served"))  →  message_vision('素素不耐烦地对$N说道：我这里忙着呢！\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_tap) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_sit
+  # UNHANDLED FUNCTION: delete_served
+  # UNHANDLED FUNCTION: do_tap
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/azhu.c by LPCConverter
+# Zone: yanziwu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! me->query_temp("can_learn/azhu/pretending"))  →  
+  # if (skill != "pretending")  →  
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+  # if (me->query("family/family_name") != "慕容世家")  →  message_vision(CYN '$n' CYN '望着$N' CYN + '吃吃的笑，道：“侬说啥子耶？”\\\\\n' NOR, me, this_object());
+  # if (me->query("age") > 25)  →  message_vision(CYN '$n' CYN '看了看$N' CYN '，惊呼道：“现在还这么贪玩？你' '的年纪不要太大了。”\\\\\n', me, this_object());
+  # if (me->query("age") < 18)  →  message_vision(CYN '$n' CYN '笑嘻嘻的对$N' CYN '道：“小孩子家胡闹什么？找你的小' '碧姐姐要糖吃去吧。”\\\\\n', me, this_object());
+  # if (me->query("gender") != "女性")  →  
+# ==== CONDITIONAL BRANCHES (ask_me) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: recognize_apprentice
+  # UNHANDLED FUNCTION: inquiry_tanqin
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/bao.c by LPCConverter
+# Zone: yanziwu
+
+# inherit F_GUARDER;
+# inherit F_COAGENT;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/deng.c by LPCConverter
+# Zone: yanziwu
+
+# inherit F_GUARDER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/feng.c by LPCConverter
+# Zone: yanziwu
+
+# inherit F_GUARDER;
+# inherit F_COAGENT;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/gongye.c by LPCConverter
+# Zone: yanziwu
+
+# inherit F_GUARDER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/susu.c by LPCConverter
+# Zone: yanziwu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: reset
+  # reset: set("can_supply", 15);
+# ==== RAW CODE BLOCKS ====
+  # if (! who || environment(who) != environment())  →  
+  # if (! who->query_temp("marks/sit"))  →  
+  # if (! objectp(room = environment()))  →  
+  # if (query("can_supply") < 1)  →  message_vision('素素抱歉的对$N道：现在暂时没有了，过会' '儿再来吧。\\\\\n', who);
+# ==== CONDITIONAL BRANCHES (serve_tea) ====
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && !is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: serve_tea
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/yahuan.c by LPCConverter
+# Zone: yanziwu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !ob || environment(ob) != environment() )  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if ( interactive(ob = this_player()) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/obj/changjian.c by LPCConverter
+# Zone: yanziwu
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/obj/cloth.c by LPCConverter
+# Zone: yanziwu
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/obj/flower_shoe.c by LPCConverter
+# Zone: yanziwu
+
+# inherit BOOTS;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/obj/goldring.c by LPCConverter
+# Zone: yanziwu
+
+# inherit HANDS;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/obj/green_cloth.c by LPCConverter
+# Zone: yanziwu
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/obj/necklace.c by LPCConverter
+# Zone: yanziwu
+
+# inherit NECK;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/yanziwu/npc/obj/pink_cloth.c by LPCConverter
+# Zone: yanziwu
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/yanziwu/obj/cha.c by LPCConverter
+# Zone: yanziwu
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/yanziwu/obj/dodgebook.c by LPCConverter
+# Zone: yanziwu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/yanziwu/obj/gao.c by LPCConverter
+# Zone: yanziwu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/yanziwu/obj/heiyugao.c by LPCConverter
+# Zone: yanziwu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================

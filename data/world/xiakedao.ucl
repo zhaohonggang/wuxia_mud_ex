@@ -1,0 +1,3047 @@
+zones "xiakedao" {
+  name = "xiakedao"
+}
+
+# Generated from C:/files/git/mud/d/xiakedao/chashi.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "chashi" {
+      name = "茶室"
+      description = "这是一个石洞，三枝红烛照耀得全洞明亮。洞内坐满了人，一个 童子忙前忙后，满屋的果香和茶香，沁人心脾。屋里四周得体地摆着 些桌子(table)和椅子(chair)。"
+  x = 0
+  y = 0
+  z = 1
+item_desc = {
+ table = "一张精致的木制小桌，上面放着一些茶具。"
+ chair = "一只青竹打制的靠椅，躺上去摇摇晃晃，好舒服耶！"
+}
+valid_leave = [
+{
+  direction = "east"
+  message = "童子把嘴一撇：吃饱了喝足了还不够，临走怀里还揣上一些！"
+}
+
+]
+    }
+
+  room_exits "chashi" {
+    room_id = rooms.chashi.id
+    up = rooms.dahai.id
+    down = rooms.dating.id
+    east = rooms.neiting.id
+    }
+
+
+  room_characters "chashi" {
+    room_id = rooms.chashi.id
+    characters = [
+      { id = characters.tongzi.id }    ]
+  }
+
+
+
+  room_items "chashi" {
+    room_id = rooms.chashi.id
+    items = [
+      { id = items.mitao.id },
+      { id = items.xiangcha.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/dahai.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "dahai" {
+      name = "大海"
+      description = "你正处在茫茫大海之中。你极目远望，只见海天一线，周围连个 黑点都没有。耳边只有海浪的拍打声。"
+  x = 0
+  y = 0
+  z = 2
+    }
+  room_exits "dahai" {
+    room_id = rooms.dahai.id
+    down = rooms.chashi.id
+    up = rooms.duchuan.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/dating.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "dating" {
+      name = "大厅"
+      description = "这是『侠客岛』的大厅，四周点满了牛油蜡烛，南面放着一个大 屏风。洞内摆着一百来张桌子，宾客正络绎进来，数百名黄衣汉子穿 索般来去，引导宾客入座。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ pingfeng = "这是一个非常漂亮的玉石屏风，不知道推(push)开它后面是什么。"
+}
+    }
+
+  room_exits "dating" {
+    room_id = rooms.dating.id
+    up = rooms.chashi.id
+    north = rooms.shidong5.id
+    east = rooms.shufang.id
+    west = rooms.wuqiku.id
+    }
+
+
+  room_characters "dating" {
+    room_id = rooms.dating.id
+    characters = [
+      { id = characters.dizi.id },
+      { id = characters.dizi.id },
+      { id = characters.dizi.id },
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/dongmen.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "dongmen" {
+      name = "洞门"
+      description = "你的面前突然一亮，眼前赫然出现一道玉石砌成的洞门，门额上 雕有三个大字迎宾馆，两旁石粱雕龙刻凤，不知凝聚着多少名工巧匠 的心血！更体现出主人的富有和奢侈。"
+  x = 0
+  y = 2
+  z = 0
+    }
+
+  room_exits "dongmen" {
+    room_id = rooms.dongmen.id
+    west = rooms.shidong1.id
+    in = rooms.yingbin.id
+    }
+
+
+  room_characters "dongmen" {
+    room_id = rooms.dongmen.id
+    characters = [
+      { id = characters.dizi1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/duchuan.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "duchuan" {
+      name = "小舟"
+      description = "这是一只几尺见方的小舟，除了船尾划桨的黄衣侠客岛接送弟子 外，再不能坐第三个人了。海面几乎和船帮平齐。还好没什么风浪， 你正暗自庆幸。"
+  x = 0
+  y = 0
+  z = 3
+    }
+  room_exits "duchuan" {
+    room_id = rooms.duchuan.id
+    down = rooms.dahai.id
+    up = rooms.gudi.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/gudi.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "gudi" {
+      name = "谷底"
+      description = "这就是悬崖谷底了，三面是高耸的山峰，一面是大海，四周没有 出口，谷底的烟雾很大，走着走着，你隐隐约约见到前面盘膝坐着一 位老者(Oldman)。"
+  x = 0
+  y = 0
+  z = 4
+item_desc = {
+ feng = "看什么呀? 这么高的山你是爬不上去的。"
+ shanfeng = "看什么呀? 这么高的山你是爬不上去的。"
+ oldman = "你仔细一看，这位老者已经仙去很多年了，留下的只是他的遗骨(gu)，好可怜呀!"
+ sea = "看什么呀? 你难道想游泳吗?"
+}
+    }
+  room_exits "gudi" {
+    room_id = rooms.gudi.id
+    down = rooms.duchuan.id
+    up = rooms.haibin.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/haibin.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "haibin" {
+      name = "南海之滨"
+      description = "这里就是大陆的南端，向南望去是一望无际的碧海，与辽 阔的蓝天相映，让人顿生渺小之感。湛蓝海水、岸边礁石、浪 拍沙滩卷起层层细沫，阳光绕出白云尽情笼照青草绿树，让人 心生退隐江湖之意，只想在此隐居修行，追求武道至高境界。"
+  x = 0
+  y = 0
+  z = 5
+    }
+
+  room_exits "haibin" {
+    room_id = rooms.haibin.id
+    up = rooms.midao1.id
+    down = rooms.gudi.id
+    north = rooms.xkroad4.id
+    west = rooms.zhuwu.id
+    }
+
+
+  room_characters "haibin" {
+    room_id = rooms.haibin.id
+    characters = [
+      { id = characters.sun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/haigang.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "haigang" {
+      name = "渔港"
+      description = "这里是个小小渔港。南面海面漂浮着几艘小船，抬眼望，海天相 连，无边无际。海鸥掠过浪尖，悠悠翩然。有几个渔夫懒洋洋的呆在 海边，附近停泊了一些小船(boat)。"
+  x = -1
+  y = 1
+  z = 5
+item_desc = {
+ boat = "这艘船可到侠客岛。"
+}
+    }
+
+  room_exits "haigang" {
+    room_id = rooms.haigang.id
+    east = rooms.xkroad4.id
+    }
+
+
+  room_characters "haigang" {
+    room_id = rooms.haigang.id
+    characters = [
+      { id = characters.renter.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/haitan.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "haitan" {
+      name = "海滩"
+      description = "这里就是侠客岛了。北边是一望无际的大海；往南则是一片树林。 岛上的空气似乎非常新鲜，咸湿的海风中带着一股花香，这是好大的 一片沙滩，东首石崖下停着四十多艘大小的船只(boat)。"
+  x = -3
+  y = 12
+  z = -5
+item_desc = {
+ boat = "这是侠客岛对外联系的大船。岛上的客人只要上船(enter)就可以回中原。"
+}
+    }
+
+  room_exits "haitan" {
+    room_id = rooms.haitan.id
+    south = rooms.lin1.id
+    }
+
+
+  room_characters "haitan" {
+    room_id = rooms.haitan.id
+    characters = [
+      { id = characters.shizhe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/lin1.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "lin1" {
+      name = "树林"
+      description = "这是一片茂密的树林，似乎有人在这里设计了一个迷阵，一走进 来，你就迷失了方向。"
+  x = -3
+  y = 11
+  z = -5
+    }
+
+  room_exits "lin1" {
+    room_id = rooms.lin1.id
+    north = rooms.haitan.id
+    south = rooms.lin2.id
+    west = rooms.__file__.id
+    east = rooms.__file__.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/lin2.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "lin2" {
+      name = "树林"
+      description = "这是一片茂密的树林，似乎有人在这里设计了一个迷阵，一走进 来，你就迷失了方向。"
+  x = -2
+  y = 11
+  z = -5
+    }
+
+  room_exits "lin2" {
+    room_id = rooms.lin2.id
+    northeast = rooms.__file__.id
+    southeast = rooms.__file__.id
+    north = rooms.__file__.id
+    south = rooms.__file__.id
+    west = rooms.lin1.id
+    east = rooms.lin3.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/lin3.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "lin3" {
+      name = "树林"
+      description = "这是一片茂密的树林，似乎有人在这里设计了一个迷阵，一走进 来，你就迷失了方向。"
+  x = -1
+  y = 11
+  z = -5
+    }
+
+  room_exits "lin3" {
+    room_id = rooms.lin3.id
+    northeast = rooms.__file__.id
+    southeast = rooms.lin4.id
+    north = rooms.__file__.id
+    south = rooms.__file__.id
+    west = rooms.lin2.id
+    east = rooms.__file__.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/lin4.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "lin4" {
+      name = "树林"
+      description = "这是一片茂密的树林，似乎有人在这里设计了一个迷阵，一走进 来，你就迷失了方向。"
+  x = 0
+  y = 10
+  z = -5
+    }
+
+  room_exits "lin4" {
+    room_id = rooms.lin4.id
+    northwest = rooms.lin3.id
+    southeast = rooms.__file__.id
+    north = rooms.__file__.id
+    south = rooms.__file__.id
+    west = rooms.lin5.id
+    east = rooms.__file__.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/lin5.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "lin5" {
+      name = "树林"
+      description = "这是一片茂密的树林，似乎有人在这里设计了一个迷阵，一走进 来，你就迷失了方向。"
+  x = -1
+  y = 10
+  z = -5
+    }
+
+  room_exits "lin5" {
+    room_id = rooms.lin5.id
+    northwest = rooms.lin6.id
+    southeast = rooms.__file__.id
+    north = rooms.__file__.id
+    south = rooms.__file__.id
+    west = rooms.__file__.id
+    east = rooms.lin4.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/lin6.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "lin6" {
+      name = "树林"
+      description = "这是一片茂密的树林，似乎有人在这里设计了一个迷阵，一走进 来，你就迷失了方向。"
+  x = -2
+  y = 11
+  z = -5
+    }
+
+  room_exits "lin6" {
+    room_id = rooms.lin6.id
+    northwest = rooms.__file__.id
+    southeast = rooms.lin5.id
+    north = rooms.__file__.id
+    south = rooms.__file__.id
+    west = rooms.__file__.id
+    east = rooms.lin7.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/lin7.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "lin7" {
+      name = "树林"
+      description = "这是一片茂密的树林，似乎有人在这里设计了一个迷阵，一走进 来，你就迷失了方向。"
+  x = -1
+  y = 11
+  z = -5
+    }
+
+  room_exits "lin7" {
+    room_id = rooms.lin7.id
+    northwest = rooms.__file__.id
+    southeast = rooms.__file__.id
+    north = rooms.__file__.id
+    south = rooms.lin8.id
+    west = rooms.lin6.id
+    east = rooms.__file__.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/lin8.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "lin8" {
+      name = "树林"
+      description = "终于走出了树林，你不禁长长的松了口气。和煦的阳光照在你的 身上，使你感到无比的温暖。南边是一座高耸的石山，山上郁郁苍苍， 生满树木。"
+  x = -1
+  y = 10
+  z = -5
+    }
+
+  room_exits "lin8" {
+    room_id = rooms.lin8.id
+    north = rooms.lin7.id
+    south = rooms.shanmen.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/midao1.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "midao1" {
+      name = "秘密通道"
+      description = "这是一条很长的秘密通道，也许好久没人来过了，密道中充满 了一种潮湿的气味，隐约可以感觉到四周是冰冷的石壁，你什么也 看不见，只可以靠摸索着前进。"
+  x = 0
+  y = 0
+  z = 6
+    }
+
+  room_exits "midao1" {
+    room_id = rooms.midao1.id
+    up = rooms.midao5.id
+    down = rooms.haibin.id
+    north = rooms.__file__.id
+    east = rooms.midao2.id
+    west = rooms.__file__.id
+    south = rooms.__file__.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/midao2.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "midao2" {
+      name = "秘密通道"
+      description = "这是一条很长的秘密通道，也许好久没人来过了，密道中充满了 一种潮湿的气味，隐约可以感觉到四周是冰冷的石壁，你什么也看不 见，只可以靠摸索着前进。"
+  x = 1
+  y = 0
+  z = 6
+    }
+
+  room_exits "midao2" {
+    room_id = rooms.midao2.id
+    north = rooms.__file__.id
+    east = rooms.__file__.id
+    south = rooms.midao3.id
+    west = rooms.midao1.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/midao3.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "midao3" {
+      name = "秘密通道"
+      description = "这是一条很长的秘密通道，也许好久没人来过了，密道中充满了 一种潮湿的气味，隐约可以感觉到四周是冰冷的石壁，你什么也看不 见，只可以靠摸索着前进。"
+  x = 1
+  y = -1
+  z = 6
+    }
+
+  room_exits "midao3" {
+    room_id = rooms.midao3.id
+    south = rooms.__file__.id
+    east = rooms.__file__.id
+    west = rooms.midao4.id
+    north = rooms.midao2.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/midao4.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "midao4" {
+      name = "密道"
+      description = "这是一条很长的秘密通道，四周是坚硬的石壁，你什么也看不见， 只能摸索前进。突然你走到了路的尽头，这是个死路，你还是回去吧。"
+  x = 0
+  y = -1
+  z = 6
+item_desc = {
+ shibi = "石壁有什么可看的，不过这侧的石壁和其他的不同却是真的。 呀，它是一个石门(men)！"
+}
+    }
+
+  room_exits "midao4" {
+    room_id = rooms.midao4.id
+    east = rooms.midao3.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/midao5.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "midao5" {
+      name = "秘密通道"
+      description = "这是一个石室，隐约可以感觉到四周是冰冷而坚硬的石壁。 地上和角落都是灰尘，大概好久没人来过了。"
+  x = 0
+  y = 0
+  z = 7
+    }
+
+  room_exits "midao5" {
+    room_id = rooms.midao5.id
+    up = rooms.midao6.id
+    down = rooms.midao1.id
+    east = rooms.midao4.id
+    out = rooms.neiting.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/midao6.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "midao6" {
+      name = "石洞"
+      description = "这是一个石洞，地上和石壁满是灰尘，看得出好久没人来过了靠 左侧石壁是一排书架，上面也满是灰尘，还有一些破旧的书籍。墙角 有一张石床。虽然很脏，却也能休息。"
+  x = 0
+  y = 0
+  z = 8
+    }
+
+  room_exits "midao6" {
+    room_id = rooms.midao6.id
+    up = rooms.shidong10.id
+    down = rooms.midao5.id
+    west = rooms.midao7.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/midao7.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "midao7" {
+      name = "秘密通道"
+      description = "这是一个石室，地上和角落都是灰尘，大概好久没人来过了。"
+  x = -1
+  y = 0
+  z = 8
+    }
+
+  room_exits "midao7" {
+    room_id = rooms.midao7.id
+    northup = rooms.midao8.id
+    out = rooms.dating.id
+    east = rooms.midao6.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/midao8.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "midao8" {
+      name = "密道"
+      description = "这是一条长长的密道，地面和石壁满是灰尘，很久没人来过了。"
+  x = -1
+  y = 1
+  z = 9
+    }
+
+  room_exits "midao8" {
+    room_id = rooms.midao8.id
+    southdown = rooms.midao7.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/neiting.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "neiting" {
+      name = "内厅"
+      description = "这是一个石洞，此洞硕大无朋，四周点满了火把，把整个 大厅照耀得十分明亮，中间放着很多石桌和石凳，有很多的江 湖人物在石室在参悟武功之余，在这里休息一会。"
+  x = 1
+  y = 0
+  z = 1
+    }
+
+  room_exits "neiting" {
+    room_id = rooms.neiting.id
+    west = rooms.chashi.id
+    east = rooms.shibi.id
+    north = rooms.xiuxis2.id
+    in = rooms.shihole1.id
+    }
+
+
+  room_characters "neiting" {
+    room_id = rooms.neiting.id
+    characters = [
+      { id = characters.dizi.id },
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/pubu.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "pubu" {
+      name = "瀑布"
+      description = "你猛听得水声响亮，轰轰隆隆，便如潮水大至一般，抬头一看，只 见一条大瀑布(pubu)，犹如银河倒悬，从高崖上直泻下来下面是万丈 悬崖(xuanya)，云雾弥漫，望不到尽头！"
+  x = -1
+  y = 4
+  z = 0
+item_desc = {
+ pubu = "你仔细一看，瀑布里面好象有出口，你似乎可以跳(jump)进去。"
+ xuanya = "下面弥漫着烟雾，什么也看不见，你可不要跳(plump)下去呀！"
+}
+    }
+
+  room_exits "pubu" {
+    room_id = rooms.pubu.id
+    northdown = rooms.road4.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/road1.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "road1" {
+      name = "山路"
+      description = "走在青石铺成的小路上，脚步十分轻捷。两旁都是密林，枝叶遮 天蔽日，阴沉沉的很不舒服。林中鸟雀叽喳，与呼呼的风声混成一片。"
+  x = -1
+  y = 8
+  z = -4
+    }
+
+  room_exits "road1" {
+    room_id = rooms.road1.id
+    northdown = rooms.shanmen.id
+    southup = rooms.road2.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/road2.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "road2" {
+      name = "山路"
+      description = "小路曲曲折折地通向山顶，脚步声惊起一群飞鸟，扑簌簌地消失 在空中。空气中却有些腥气，路边草丛间不时传来沙沙的轻响，可能 是毒蛇，还是快点离开的好。"
+  x = -1
+  y = 7
+  z = -3
+    }
+
+  room_exits "road2" {
+    room_id = rooms.road2.id
+    northdown = rooms.road1.id
+    southup = rooms.road3.id
+    }
+
+
+
+
+  room_items "road2" {
+    room_id = rooms.road2.id
+    items = [
+      { id = items.dushe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/road3.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "road3" {
+      name = "山路"
+      description = "这是通往山顶的小路，路旁杂草丛生，夹杂着一些不知名的野花。 四周静悄悄地没有人声。你深深吸口气，一阵山野的芬芳直入心扉。"
+  x = -1
+  y = 6
+  z = -2
+    }
+
+  room_exits "road3" {
+    room_id = rooms.road3.id
+    southup = rooms.road4.id
+    northdown = rooms.road2.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/road4.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "road4" {
+      name = "山路"
+      description = "你走在一条岩石嶙峋的山道上，左临深涧，涧水缓急，激石有声。 右边是悬崖，抬头隐约可见笼罩在云雾中的山峰，一路沿着山潼渐行 渐高。"
+  x = -1
+  y = 5
+  z = -1
+    }
+
+  room_exits "road4" {
+    room_id = rooms.road4.id
+    northdown = rooms.road3.id
+    southup = rooms.pubu.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/road5.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "road5" {
+      name = "山路"
+      description = "这是侠客岛的后山，你走在一条岩石嶙峋的山道上，这是通向侠 客岛 '望云台' 的唯一路径，旁边是万丈悬崖，抬头隐约可见笼罩在 云雾中的山峰，一条山路环山而行。"
+  x = -2
+  y = -1
+  z = 0
+    }
+
+  room_exits "road5" {
+    room_id = rooms.road5.id
+    north = rooms.shidong8.id
+    southup = rooms.road6.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/road6.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "road6" {
+      name = "山路"
+      description = "你走在一条岩石嶙峋的山道上，这是通向侠客岛望云台的唯一路 径，旁边是万丈悬崖，抬头隐约可见笼罩在云雾中的山峰，一条山路 环山而行。"
+  x = -2
+  y = -2
+  z = 1
+    }
+
+  room_exits "road6" {
+    room_id = rooms.road6.id
+    northdown = rooms.road5.id
+    southup = rooms.road7.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/road7.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "road7" {
+      name = "夹鳖石"
+      description = "这里便是夹鳖石。此处山势陡峭，行人到此无不心惊胆颤，不敢 大声说话，只求平安过去。登山的人一个不小心，很容易便会跌堕到 崖谷之中。"
+  x = -2
+  y = -3
+  z = 2
+    }
+
+  room_exits "road7" {
+    room_id = rooms.road7.id
+    northdown = rooms.road6.id
+    southup = rooms.road8.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/road8.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "road8" {
+      name = "一线天"
+      description = "这里便是一线天。此处山势甚是陡峭，两旁都是无底的深渊，中 间是一条近似九十度的坡形山路。行人到此无不心惊胆颤，只盯着自 己的脚，生怕一不小心掉下深渊。"
+  x = -2
+  y = -4
+  z = 3
+    }
+
+  room_exits "road8" {
+    room_id = rooms.road8.id
+    northdown = rooms.road7.id
+    southup = rooms.wangyun.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shanmen.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shanmen" {
+      name = "山门"
+      description = "你的面前是一座林木繁茂的高山，几座山峰在云雾中隐约可见， 一条山径向山上延伸，不时有几个江湖好汉从你身边走过，他们都是 到侠客岛来专研武功的。石壁上刻着三个大字 '侠客岛' ，这就是江 湖上传闻的侠客岛。"
+  x = -1
+  y = 9
+  z = -5
+    }
+
+  room_exits "shanmen" {
+    room_id = rooms.shanmen.id
+    north = rooms.lin8.id
+    southup = rooms.road1.id
+    }
+
+
+  room_characters "shanmen" {
+    room_id = rooms.shanmen.id
+    characters = [
+      { id = characters.dizi2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/shibi.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shibi" {
+      name = "石壁"
+      description = "你的面前是块打磨光滑的大石壁(shibi)。 石壁边上点燃着八根 大火把，照耀明亮。石室中已有十多人，有的注目凝思，有的打坐练 功，有的毕目喃喃自语，更有几人在大声争辩。"
+  x = 2
+  y = 0
+  z = 1
+item_desc = {
+ shibi = "石壁上有首诗：   	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: 	::::::　　　　　　　　　　　　　　　　　　　　　　　　　　:::::: 	::::::　　　　　　　　　　　侠客行　　　　　　　　　　　　:::::: 	::::::　　　　　　　　　　　　　　　　　　　　　　　　　　:::::: 	::::::　赵客缦胡缨，吴钩霜雪明。银鞍照白马，飒沓如流星。　:::::: 	::::::　　　　　　　　　　　　　　　　　　　　　　　　　　:::::: 	::::::　十步杀一人，千里不留行，事了拂衣去，深藏身与名。　:::::: 	::::::　　　　　　　　　　　　　　　　　　　　　　　　　　:::::: 	::::::　闲过信陵饮，脱剑膝前横。将炙啖朱亥，持觞劝侯嬴。　:::::: 	::::::　　　　　　　　　　　　　　　　　　　　　　　　　　:::::: 	::::::　三杯吐然诺，五岳倒为轻。眼花耳热后，意气素霓生。　:::::: 	::::::　　　　　　　　　　　　　　　　　　　　　　　　　　:::::: 	::::::　救赵挥金锤，邯郸先震惊，千秋二壮士，煊赫大梁城。　:::::: 	::::::　　　　　　　　　　　　　　　　　　　　　　　　　　:::::: 	::::::　纵死侠骨香，不惭世上英，谁能书阁下，白首太玄经。　:::::: 	::::::　　　　　　　　　　　　　　　　　　　　　　　　　　:::::: 	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+}
+    }
+
+  room_exits "shibi" {
+    room_id = rooms.shibi.id
+    south = rooms.xiaowu.id
+    east = rooms.wuchang.id
+    out = rooms.shimen.id
+    west = rooms.neiting.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shidong1.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shidong1" {
+      name = "石洞"
+      description = "这是一个石洞，也不知走了多久，只觉越走越低，洞中出现了流 水之声，淙淙争争，清脆悦耳，如击玉磬。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "shidong1" {
+    room_id = rooms.shidong1.id
+    south = rooms.shidong6.id
+    north = rooms.yongdao2.id
+    east = rooms.dongmen.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shidong10.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shidong10" {
+      name = "石洞"
+      description = "这是一个石室，隐约可以感觉到四周是坚硬的石壁(bi)， 石洞内干干净净，一尘不染。"
+  x = 0
+  y = 0
+  z = 9
+    }
+
+  room_exits "shidong10" {
+    room_id = rooms.shidong10.id
+    up = rooms.xkroad1.id
+    down = rooms.midao6.id
+    east = rooms.shidong9.id
+    out = rooms.dating.id
+    }
+
+
+
+
+  room_items "shidong10" {
+    room_id = rooms.shidong10.id
+    items = [
+      { id = items.baihongjian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/shidong2.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shidong2" {
+      name = "石洞"
+      description = "这是一个石洞，四周点着八盏油灯，使得整个房间非常明 亮。山洞四周石壁(bi)上像是刻画着什么东西，你禁不住想看 看。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "shidong2" {
+    room_id = rooms.shidong2.id
+    north = rooms.yingbin.id
+    south = rooms.__file__.id
+    west = rooms.__file__.id
+    east = rooms.shidong3.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shidong3.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shidong3" {
+      name = "石洞"
+      description = "这是一个石洞，四周点着八盏油灯，使得整个房间非常明亮。山 洞中支路甚多，你可要小心，别走错了路。"
+  x = 1
+  y = 1
+  z = 0
+    }
+
+  room_exits "shidong3" {
+    room_id = rooms.shidong3.id
+    north = rooms.yingbin.id
+    south = rooms.shidong4.id
+    west = rooms.__file__.id
+    east = rooms.__file__.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shidong4.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shidong4" {
+      name = "石洞"
+      description = "这是一个石洞，四周点着八盏油灯，使得整个房间非常明 亮。山洞四周石壁(bi)上像是刻画着什么东西，你禁不住想看 看。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "shidong4" {
+    room_id = rooms.shidong4.id
+    north = rooms.yingbin.id
+    south = rooms.__file__.id
+    west = rooms.shidong5.id
+    east = rooms.__file__.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shidong5.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shidong5" {
+      name = "石洞"
+      description = "这是一个石洞，四周点着八盏油灯，使得整个房间非常明亮。山 洞中支路甚多，你可要小心，别走错了路。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "shidong5" {
+    room_id = rooms.shidong5.id
+    north = rooms.yingbin.id
+    south = rooms.dating.id
+    west = rooms.__file__.id
+    east = rooms.__file__.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shidong6.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shidong6" {
+      name = "石洞"
+      description = "这是一个石洞，略显狭窄，仅容两人并肩而过。顶壁也甚是低矮， 伸手便可触及。油灯晃动，在身后拉出长长的阴影。脚步踢嗒石洞彼 端响起阵阵回声，感觉有些异样。"
+  x = -1
+  y = 1
+  z = 0
+    }
+
+  room_exits "shidong6" {
+    room_id = rooms.shidong6.id
+    north = rooms.shidong1.id
+    south = rooms.shidong7.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shidong7.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shidong7" {
+      name = "石洞"
+      description = "这是一个石洞，四周点着八盏油灯，使得整个房间非常明 亮。山洞四周石壁(bi)上像是刻画着什么东西，你禁不住想看 看。"
+  x = -1
+  y = 0
+  z = 0
+item_desc = {
+ weapon = "图中人物手持刀剑，互相挥砍……"
+}
+    }
+
+  room_exits "shidong7" {
+    room_id = rooms.shidong7.id
+    north = rooms.shidong6.id
+    west = rooms.shidong8.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shidong8.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shidong8" {
+      name = "石洞"
+      description = "这是一个石洞，四周是光滑的石壁，石洞内干干净净，一尘不染。 两旁点着火把，非常明亮。南面有一扇虚掩的石门。"
+  x = -2
+  y = 0
+  z = 0
+item_desc = {
+ door = "这是一扇极厚的石门。"
+}
+    }
+
+  room_exits "shidong8" {
+    room_id = rooms.shidong8.id
+    south = rooms.road5.id
+    east = rooms.shidong7.id
+    }
+
+
+  room_characters "shidong8" {
+    room_id = rooms.shidong8.id
+    characters = [
+      { id = characters.dizi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/shidong9.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shidong9" {
+      name = "石洞"
+      description = "这是一个很小的石洞，两边点着红烛，光线虽暗，却也能辩得 出方向。走着走着，你隐约看见在前面有一个身影，只见他身穿青 色长衫，眼视前方，一副唯我独尊的样子。"
+  x = 1
+  y = 0
+  z = 9
+    }
+
+  room_exits "shidong9" {
+    room_id = rooms.shidong9.id
+    east = rooms.yadi.id
+    west = rooms.shidong10.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shihole1.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shihole1" {
+      name = "石洞"
+      description = "这里依次是六个石洞，各自通向四句诗的石室。后人研习「侠客 行」武功，悟出六句总纲，也分别刻在这里。此洞一色青布帷幔，侍 立的弟子均是青衣长剑。正面壁上，粗隶刻着前四句诗的总纲「一剑 飞鸿」。"
+  x = 1
+  y = 0
+  z = 1
+    }
+
+  room_exits "shihole1" {
+    room_id = rooms.shihole1.id
+    west = rooms.shiroom04.id
+    east = rooms.shiroom03.id
+    south = rooms.shiroom02.id
+    north = rooms.shiroom01.id
+    in = rooms.shihole2.id
+    out = rooms.neiting.id
+    }
+
+
+  room_characters "shihole1" {
+    room_id = rooms.shihole1.id
+    characters = [
+      { id = characters.wangwu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/shihole2.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shihole2" {
+      name = "石洞"
+      description = "此洞通向第二组石室。洞中水声淙淙，右面恰巧一道山泉流过。 中间四个草书大字深入石壁「飘渺烟云」，两侧均是蓝色帷幔环绕。 几名蓝衣弟子侍立。"
+  x = 1
+  y = 0
+  z = 1
+    }
+
+  room_exits "shihole2" {
+    room_id = rooms.shihole2.id
+    west = rooms.shiroom08.id
+    east = rooms.shiroom07.id
+    south = rooms.shiroom06.id
+    north = rooms.shiroom05.id
+    in = rooms.shihole3.id
+    out = rooms.shihole1.id
+    }
+
+
+  room_characters "shihole2" {
+    room_id = rooms.shihole2.id
+    characters = [
+      { id = characters.maliu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/shihole3.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shihole3" {
+      name = "石洞"
+      description = "迎面可见四个行书大字「水银泻地」，极具神韵。洞中陈设奢华， 洁白的大理石砖，汉白玉栏杆。几个香炉烟雾缭绕，白衣婢女垂手侍 立，依稀是豪门内宅一般。"
+  x = 1
+  y = 0
+  z = 1
+    }
+
+  room_exits "shihole3" {
+    room_id = rooms.shihole3.id
+    west = rooms.shiroom12.id
+    east = rooms.shiroom11.id
+    south = rooms.shiroom10.id
+    north = rooms.shiroom09.id
+    in = rooms.shihole4.id
+    out = rooms.shihole2.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shihole4.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shihole4" {
+      name = "石洞"
+      description = "此洞气氛却又大不相同，却似来到火焰山一般。只见一色红布帷 幔，八支粗大的红烛分列四角。一旁站立的是虬髯大汉，各佩弯刀， 刀柄上红樱低垂。正中大字是雄健的魏碑体：「烈焰豪情」。"
+  x = 1
+  y = 0
+  z = 1
+    }
+
+  room_exits "shihole4" {
+    room_id = rooms.shihole4.id
+    west = rooms.shiroom16.id
+    east = rooms.shiroom15.id
+    south = rooms.shiroom14.id
+    north = rooms.shiroom13.id
+    in = rooms.shihole5.id
+    out = rooms.shihole3.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shihole5.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shihole5" {
+      name = "石洞"
+      description = "进洞便觉脚下有些不同，原来特意垫了半尺厚的黄土，不知有什 麽妙用。正面也是刻着这四句的总纲：「落花残阳」，却是笔致圆润， 似出女子之手。周围帘幕低垂，一色淡黄。"
+  x = 1
+  y = 0
+  z = 1
+    }
+
+  room_exits "shihole5" {
+    room_id = rooms.shihole5.id
+    west = rooms.shiroom20.id
+    east = rooms.shiroom19.id
+    south = rooms.shiroom18.id
+    north = rooms.shiroom17.id
+    in = rooms.shihole6.id
+    out = rooms.shihole4.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shihole6.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shihole6" {
+      name = "石洞"
+      description = "眼前烛光黯淡，四周未见任何装饰，光秃粗糙的石壁上四字小篆， 正是最后一句总纲：「天人归真」，下面又有一行小字(xiaozi)。几 张石桌石凳随意地摆放着，似是杂乱无章，又似内藏玄机。"
+  x = 1
+  y = 0
+  z = 1
+item_desc = {
+ xiaozi = "小字写的是：「昔年余等沉溺无术，惟石公妙悟神功，盖因...」， 后面的字迹已模糊难辨。"
+}
+    }
+
+  room_exits "shihole6" {
+    room_id = rooms.shihole6.id
+    west = rooms.shiroom24.id
+    east = rooms.shiroom23.id
+    south = rooms.shiroom22.id
+    north = rooms.shiroom21.id
+    out = rooms.shihole5.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shimen.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shimen" {
+      name = "石门"
+      description = "这里已是甬道尽头，面前一道厚重的石门。门上刻着三个斗大的 古篆：「侠客行」。年深日久，那笔划的凹下之处都积满了青苔，越 发显得沧桑，你心中的敬意油然而生。 里面是一块大石壁，在石壁下好象有很多人。"
+  x = 2
+  y = 0
+  z = 1
+    }
+
+  room_exits "shimen" {
+    room_id = rooms.shimen.id
+    north = rooms.yongdao3.id
+    in = rooms.shibi.id
+    }
+
+
+  room_characters "shimen" {
+    room_id = rooms.shimen.id
+    characters = [
+      { id = characters.dizi3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom01.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom01" {
+      name = "石室"
+      description = "这是第一间石室。不少人走来走去，已经颇为拥挤。那些人有的 注目凝思，有的打坐练功，有的闭目喃喃自语，更有的正在大声争辩。 东面是块打磨光滑的大石壁(wall)，石壁旁点燃着火把，把整间石室 照耀得白昼相仿。"
+  x = 1
+  y = 1
+  z = 1
+    }
+
+  room_exits "shiroom01" {
+    room_id = rooms.shiroom01.id
+    south = rooms.shihole1.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom02.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom02" {
+      name = "石室"
+      description = "进入第二间石室，只觉眼前一花，端的是剑气纵横。数人各持长 剑，正在捉对较量，兵刃撞击，铮铮不绝。地上遗弃着几柄长短不一 的断剑，墙上也有些兵器劈砍的斑痕。旁边有两位老者正在争论着什 麽。石壁(wall)上有若干字迹。"
+  x = 1
+  y = -1
+  z = 1
+    }
+
+  room_exits "shiroom02" {
+    room_id = rooms.shiroom02.id
+    north = rooms.shihole1.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom03.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom03" {
+      name = "石室"
+      description = "洞中风声劲急，数道身影正在洞中迅速异常地奔跑，直带得满 室生风。一人身法轻灵飘逸，另一人则古朴稳健，更有一人无甚特 异之处，却也十分迅捷。几人奔跑中兀自不停争论，而语气甚是平 静。旁边石壁(wall)上也是有图有字。"
+  x = 2
+  y = 0
+  z = 1
+    }
+
+  room_exits "shiroom03" {
+    room_id = rooms.shiroom03.id
+    west = rooms.shihole1.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom04.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom04" {
+      name = "石室"
+      description = "此洞中仍是较为拥挤。有几人脚踏北斗七星方位，或正或逆地行 走；一名老者端坐于北极星位闭目打坐，头顶隐隐透出丝丝白气另有 两个黄衫女子并肩而立，在石壁(wall)上指指点点。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "shiroom04" {
+    room_id = rooms.shiroom04.id
+    east = rooms.shihole1.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom05.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom05" {
+      name = "石室"
+      description = "一位仙风道骨的老者正和一位高大的西域人切磋武功，两人均是 虚持空剑，招式忽快忽慢，阵阵劲风将室内得火把激荡得明暗不定， 石壁(wall)上图案亦是班驳陆离。"
+  x = 1
+  y = 1
+  z = 1
+    }
+
+  room_exits "shiroom05" {
+    room_id = rooms.shiroom05.id
+    south = rooms.shihole2.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom06.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom06" {
+      name = "石室"
+      description = "这间石室中却恰巧无人观看图谱，端的是冷冷清清，隔壁传来隐 隐的喧嚣。墙上火把静静地燃烧着，偶尔发出轻微的毕驳之声，空中 有阵阵松脂的气味，石壁(wall)也被熏黑了几处。"
+  x = 1
+  y = -1
+  z = 1
+    }
+
+  room_exits "shiroom06" {
+    room_id = rooms.shiroom06.id
+    north = rooms.shihole2.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom07.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom07" {
+      name = "石室"
+      description = "这里亦有数人研习武功。几名女子都显得颇有心得，面色凝重地 对照着石壁(wall)练习步法，旁边的两个白衣青年却满脸迷惑，似乎 未窥门径。"
+  x = 2
+  y = 0
+  z = 1
+    }
+
+  room_exits "shiroom07" {
+    room_id = rooms.shiroom07.id
+    west = rooms.shihole2.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom08.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom08" {
+      name = "石室"
+      description = "石洞正中，一位白眉僧人和一位青袍之人正比试武功。一对男女 在旁边并肩奔行，趋退之际，步法配合甚是和谐。另有一人神色不屑 地站在墙角，边指点石壁(wall)，边指摘众人的招式。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "shiroom08" {
+    room_id = rooms.shiroom08.id
+    east = rooms.shihole2.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom09.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom09" {
+      name = "石室"
+      description = "这里是石洞深处，较为气闷。此石室内甚是安静，一名虬髯大汉 和一名道士相对而立，正在缓缓地推手。一人站在远处墙角，将墙上 的火把取下来擎在手中，紧盯着石壁(wall)，鼻子似乎已经贴了上去。"
+  x = 1
+  y = 1
+  z = 1
+    }
+
+  room_exits "shiroom09" {
+    room_id = rooms.shiroom09.id
+    south = rooms.shihole3.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom10.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom10" {
+      name = "石室"
+      description = "这里却也安静。右面地上一人横卧，似是过度疲倦，已经沉沉 睡去。一个布衣男子袖手而立，呆呆地望着石壁(wall)出神他身旁 站着一位美貌少妇。旁边的火把将要燃尽，摇曳不定。地上横七竖 八丢弃了一些破损的兵刃。"
+  x = 1
+  y = -1
+  z = 1
+    }
+
+  room_exits "shiroom10" {
+    room_id = rooms.shiroom10.id
+    north = rooms.shihole3.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom11.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom11" {
+      name = "石室"
+      description = "进门便觉得室中潮气极重，呼吸不畅，想来是深入山腹之故。数 人也是或坐或立，默不做声地各自研习武功,火把却不知为何少了几 支，石壁(wall)上投下了大片阴影。"
+  x = 2
+  y = 0
+  z = 1
+    }
+
+  room_exits "shiroom11" {
+    room_id = rooms.shiroom11.id
+    west = rooms.shihole3.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom12.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom12" {
+      name = "石室"
+      description = "大约是刀法仅绘于此石室之故，这里层层叠叠站了不少人。刀光 霍霍，一名藏僧手持大环刀，呼喝之声不绝，与三个少年正斗得走马 灯相仿。其中绿衣的少年背靠石壁(wall)，似乎极是吃力。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "shiroom12" {
+    room_id = rooms.shiroom12.id
+    east = rooms.shihole3.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom13.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom13" {
+      name = "石室"
+      description = "石室正中三人席地而坐，各自闭目吐纳，隐然是天地人三才的阵 势。一个书生手持几根短竹，在地下来回摆弄，似乎正在占卜。偶尔 抬头望望石壁(wall)，若有所悟。"
+  x = 1
+  y = 1
+  z = 1
+    }
+
+  room_exits "shiroom13" {
+    room_id = rooms.shiroom13.id
+    south = rooms.shihole4.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom14.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom14" {
+      name = "石室"
+      description = "这里光线黯淡，水珠时而从头顶的石壁上滴下，略略有些霉气把 石室照得明亮。壁上刻得有图有字。右侧一位老乞丐正在对着独自石 壁(wall)练拳，拳劲十足。"
+  x = 1
+  y = -1
+  z = 1
+    }
+
+  room_exits "shiroom14" {
+    room_id = rooms.shiroom14.id
+    north = rooms.shihole4.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom15.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom15" {
+      name = "石室"
+      description = "这里酒气浓重，地上抛弃了不少酒袋或葫芦。东侧两人说话已经 含糊不清，兀自向嘴里不停倒酒，踉跄地模仿石壁(wall)上的图案。 距二人丈许外一个女子掩鼻而立，面带厌恶之色。"
+  x = 2
+  y = 0
+  z = 1
+    }
+
+  room_exits "shiroom15" {
+    room_id = rooms.shiroom15.id
+    west = rooms.shihole4.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom16.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom16" {
+      name = "石室"
+      description = "进门便听得急促的呼吸之声。只见一人面向石壁(wall)而坐，肩 头耸动，喘息连连，似是练功到了紧要关头。另一名大汉双掌按在前 人的后心，头顶也是白气氤氲。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "shiroom16" {
+    room_id = rooms.shiroom16.id
+    east = rooms.shihole4.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom17.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom17" {
+      name = "石室"
+      description = "这里铿锵之声不绝，一个身材矮小的汉子手持黄金棍，与使蛾眉 刺的少妇双战一个瘦子。那瘦子在一片黄光中身形晃动，丝毫不落下 风。兵刃劲风激荡之下，火把也熄灭了两支。石壁(wall)上的图谱隐 约可见。"
+  x = 1
+  y = 1
+  z = 1
+    }
+
+  room_exits "shiroom17" {
+    room_id = rooms.shiroom17.id
+    south = rooms.shihole5.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom18.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom18" {
+      name = "石室"
+      description = "石室之中平平无奇，也是数人切磋武功，或指点石壁(wall)相互 辩论。偶尔众人默然，便听到头顶传来潺潺的水声，想必此处乃是溪 流之下。脚下石砖上遍布青苔，若不小心便要滑倒。"
+  x = 1
+  y = -1
+  z = 1
+    }
+
+  room_exits "shiroom18" {
+    room_id = rooms.shiroom18.id
+    north = rooms.shihole5.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom19.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom19" {
+      name = "石室"
+      description = "这里极为低矮，身材稍高之人便要低头。室内仅余西北角一支火 把，其余的均已燃为灰烬，在昏暗的光线中，仅有一人盘膝而坐，对 照石壁(wall)比划着。只见掌指交替，繁杂无比。"
+  x = 2
+  y = 0
+  z = 1
+    }
+
+  room_exits "shiroom19" {
+    room_id = rooms.shiroom19.id
+    west = rooms.shihole5.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom20.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom20" {
+      name = "石室"
+      description = "进得门来，便觉阵阵有形无质的气浪逼人，功力稍差之人似乎要 站立不稳。几位老者正在场中互较内功，身上衣衫高高蓬起。几名旁 观者均背靠石壁(wall)而立，神色紧张。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "shiroom20" {
+    room_id = rooms.shiroom20.id
+    east = rooms.shihole5.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom21.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom21" {
+      name = "石室"
+      description = "进门便觉精神一振，原来上方有一尺许见方的通风孔，不似其他 石室那般气闷。一抹阳光从孔中透入，投在对面的石壁(wall)上。隐 隐也能听见外面的鸟雀叽嚓飞过，令人片刻间神游物外。"
+  x = 1
+  y = 1
+  z = 1
+    }
+
+  room_exits "shiroom21" {
+    room_id = rooms.shiroom21.id
+    south = rooms.shihole6.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom22.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom22" {
+      name = "石室"
+      description = "只听劈啪之声不断，两个长脸汉子各持齐眉棍，正自印证武功。 一旁的两人却是默不作声，以指作棍，在空中虚点虚刺。一名少女斜 倚石壁(wall)，甚是疲倦，右侧长衫男子端着一盘点心，神色关注。"
+  x = 1
+  y = -1
+  z = 1
+    }
+
+  room_exits "shiroom22" {
+    room_id = rooms.shiroom22.id
+    north = rooms.shihole6.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom23.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom23" {
+      name = "石室"
+      description = "石室中有三个蒲团，仅正中蒲团坐有一人，正与一个面色焦黄的 女子对掌。那女子似是行有余力，尚有闲暇不时瞟一眼石壁(wall)， 空着的左手也在虚拟作势。一个书生手持笔墨，在地下随写随抹，摇 头晃脑地很是得意。"
+  x = 2
+  y = 0
+  z = 1
+    }
+
+  room_exits "shiroom23" {
+    room_id = rooms.shiroom23.id
+    west = rooms.shihole6.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/shiroom24.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shiroom24" {
+      name = "石室"
+      description = "这里火光昏暗，只见那龙岛主与木岛主盘膝坐在锦垫之上，面对 石壁(wall)，凝神苦思。此石室已是山腹最深处，却宽阔高大，足可 容下近百人。洞中火把亦是其他洞的二三倍之多。"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "shiroom24" {
+    room_id = rooms.shiroom24.id
+    east = rooms.shihole6.id
+    }
+
+
+
+
+  room_items "shiroom24" {
+    room_id = rooms.shiroom24.id
+    items = [
+      { id = items.long.id },
+      { id = items.mu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/shufang.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "shufang" {
+      name = "书房"
+      description = "这里是书房，靠墙是一排书架，摆满了当今武林各个门派的武功 密藉。石洞中间放着石桌和几个石凳，侠客岛龙木二岛主常常在这里 读书。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "shufang" {
+    room_id = rooms.shufang.id
+    west = rooms.dating.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/wangyun.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "wangyun" {
+      name = "望云台"
+      description = "这里就是侠客岛最高的 '望云台' 。在这里你可以远望大海， 运气好的时候还能看见一大奇景-- '云海' 。在石缝之间长着一颗 松树，俗称 '可怜松' 。在松树周围还顽强的生长着几颗小草(cao)。"
+  x = -2
+  y = -5
+  z = 4
+item_desc = {
+ cao = "几珠碧绿的小草，你不禁想拿(take)起来。"
+}
+    }
+
+  room_exits "wangyun" {
+    room_id = rooms.wangyun.id
+    northdown = rooms.road8.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/wuchang.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "wuchang" {
+      name = "武场"
+      description = "这是一个宽大的石洞，足可以装下几百人，两旁放着十八般兵器 。四周零散的放着许多椅子，中间一大块铺着猩红色的地毯，武士们 可以在这比试武功。"
+  x = 3
+  y = 0
+  z = 1
+    }
+
+  room_exits "wuchang" {
+    room_id = rooms.wuchang.id
+    west = rooms.shibi.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/wuqiku.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "wuqiku" {
+      name = "武器库"
+      description = "这里是侠客岛的武器库，架上摆满了各种武器，任由来岛的武士 们挑选。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuqiku" {
+    room_id = rooms.wuqiku.id
+    east = rooms.dating.id
+    }
+
+
+
+
+  room_items "wuqiku" {
+    room_id = rooms.wuqiku.id
+    items = [
+      { id = items.zhujian.id },
+      { id = items.zhubang.id },
+      { id = items.changbian.id },
+      { id = items.duanjian.id },
+      { id = items.gangdao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/xiaodian.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "xiaodian" {
+      name = "小吃店"
+      description = "这个小吃店布置简易，空空的石壁什么也没有，但生意却很好。 顾客多是匆匆的江湖人，买点包子、鸡腿、米酒就赶路去了。"
+  x = 1
+  y = 2
+  z = 0
+    }
+
+  room_exits "xiaodian" {
+    room_id = rooms.xiaodian.id
+    west = rooms.yingbin.id
+    }
+
+
+  room_characters "xiaodian" {
+    room_id = rooms.xiaodian.id
+    characters = [
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/xiaowu.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "xiaowu" {
+      name = "石室"
+      description = "这里是一个很小的石室，比之外面的任何一个都要小很多，室中 放着一些乱七八遭的家具，墙角边还有一张破烂的小床(bed) ，石室 内满是灰尘，已经好久没人来过了，你是不是走错地方了呀。"
+  x = 2
+  y = -1
+  z = 1
+item_desc = {
+ bed = "一张舒适得让人立马想睡的小床。"
+}
+    }
+
+  room_exits "xiaowu" {
+    room_id = rooms.xiaowu.id
+    north = rooms.shibi.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/xiuxis.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "xiuxis" {
+      name = "休息室"
+      description = "这是一间石洞，洞内中间摆着几张大床，几张桌子，看来是个休 息的地方，室中光线柔和，使人更增睡意。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "xiuxis" {
+    room_id = rooms.xiuxis.id
+    east = rooms.yingbin.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/xiuxis2.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "xiuxis2" {
+      name = "休息室"
+      description = "这是一间石洞，洞内中间摆着几张大床，几张桌子，看来是个休 息的地方，室中光线柔和，使人更增睡意。"
+  x = 1
+  y = 1
+  z = 1
+    }
+
+  room_exits "xiuxis2" {
+    room_id = rooms.xiuxis2.id
+    south = rooms.neiting.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/xkroad1.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "xkroad1" {
+      name = "南岭山口"
+      description = "这里是南岭的一个山口。南面就是佛山了，北面是横亘湖南广东 的五岭。这里地气炎热，百物速生快长，口音也远异中原了。"
+  x = 0
+  y = 0
+  z = 10
+    }
+
+  room_exits "xkroad1" {
+    room_id = rooms.xkroad1.id
+    down = rooms.shidong10.id
+    northup = rooms.hsroad9.id
+    south = rooms.xkroad2.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/xkroad2.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "xkroad2" {
+      name = "佛山"
+      description = "佛山是岭南繁华大镇，廛市街井，处处笙歌悦耳。"
+  x = 0
+  y = -1
+  z = 10
+    }
+
+  room_exits "xkroad2" {
+    room_id = rooms.xkroad2.id
+    south = rooms.xkroad3.id
+    north = rooms.xkroad1.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/xkroad3.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "xkroad3" {
+      name = "平原小路"
+      description = "你走在珠江三角洲的平原小路上。此处向称鱼米之乡，有花果之 都美誉，物产丰饶，民风淳朴。在这里隐居想必不错。"
+  x = 0
+  y = 2
+  z = 5
+    }
+
+  room_exits "xkroad3" {
+    room_id = rooms.xkroad3.id
+    south = rooms.xkroad4.id
+    north = rooms.southgate.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/xkroad4.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "xkroad4" {
+      name = "南海渔村"
+      description = "这是南海沿岸的偏僻小村，稀稀落落的几户人家。空地上晾着几 顶渔网。南面就是波涛浩淼的南海了。向西走好象还有个渔港。东面 是小村的沙滩晒网场。"
+  x = 0
+  y = 1
+  z = 5
+    }
+
+  room_exits "xkroad4" {
+    room_id = rooms.xkroad4.id
+    west = rooms.haigang.id
+    east = rooms.xkroad5.id
+    south = rooms.haibin.id
+    north = rooms.xkroad3.id
+    }
+
+
+  room_characters "xkroad4" {
+    room_id = rooms.xkroad4.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/xkroad5.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "xkroad5" {
+      name = "渔村晒网场"
+      description = "小村不大，却有个好大的晒网场。几个小孩在场中无忧地玩耍， 声音喧闹。靠南海边上，有个渔夫面向大海，悠然垂钓。"
+  x = 1
+  y = 1
+  z = 5
+    }
+
+  room_exits "xkroad5" {
+    room_id = rooms.xkroad5.id
+    west = rooms.xkroad4.id
+    north = rooms.xkroad6.id
+    }
+
+
+  room_characters "xkroad5" {
+    room_id = rooms.xkroad5.id
+    characters = [
+      { id = characters.boy.id },
+      { id = characters.girl.id },
+      { id = characters.yufu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/xkroad6.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "xkroad6" {
+      name = "渔村小屋"
+      description = "小村的渔民小屋十分简陋，几乎没什么家当，壁上挂满了早用旧 了的渔具。大概这里的人都出海了。"
+  x = 1
+  y = 2
+  z = 5
+    }
+
+  room_exits "xkroad6" {
+    room_id = rooms.xkroad6.id
+    south = rooms.xkroad5.id
+    }
+
+
+
+
+  room_items "xkroad6" {
+    room_id = rooms.xkroad6.id
+    items = [
+      { id = items.zhangsan2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/yadi.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "yadi" {
+      name = "崖底"
+      description = "这就是悬崖谷底面了，出乎意料这是一个天然的湖泊，你现在在 湖底，四周全是水(water)，不时有几条美丽的小鱼从你身边游过，四 面并无明显出口。"
+  x = 2
+  y = 0
+  z = 9
+item_desc = {
+ water = "碧绿碧绿的水，在阳光照耀下美丽级了，你不禁想游泳了(swim)。"
+}
+    }
+  room_exits "yadi" {
+    room_id = rooms.yadi.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/yingbin.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "yingbin" {
+      name = "迎宾馆"
+      description = "这是一个石洞，地下的青石板铺得甚是整齐，两旁有一些木制家 具，整个房间并无特殊之处，但收拾得干干净净，一尘不染。东面是 一个小吃店，西面是休息室。"
+  x = 0
+  y = 2
+  z = 0
+    }
+
+  room_exits "yingbin" {
+    room_id = rooms.yingbin.id
+    out = rooms.dongmen.id
+    south = rooms.shidong2.id
+    west = rooms.xiuxis.id
+    east = rooms.xiaodian.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/yongdao1.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "yongdao1" {
+      name = "甬道"
+      description = "这是一条长长的甬道，两边点着油灯，光线虽暗，却也可辨道 路，外面隐约能听见瀑布的隆隆水声，洞口水花飞溅，地面甚是湿润。"
+  x = -1
+  y = 4
+  z = 0
+    }
+
+  room_exits "yongdao1" {
+    room_id = rooms.yongdao1.id
+    out = rooms.pubu.id
+    south = rooms.yongdao2.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/yongdao2.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "yongdao2" {
+      name = "甬道"
+      description = "这是一条长长的甬道，两边点着油灯，光线虽暗，却也可辨道 路，甬道依着山腹中天然洞穴修凿而成，此处开凿的豁然开朗，有很 多的江湖豪杰在此休息。"
+  x = -1
+  y = 3
+  z = 0
+    }
+
+  room_exits "yongdao2" {
+    room_id = rooms.yongdao2.id
+    north = rooms.yongdao1.id
+    south = rooms.shidong1.id
+    }
+
+
+  room_characters "yongdao2" {
+    room_id = rooms.yongdao2.id
+    characters = [
+      { id = characters.haoke.id },
+      { id = characters.haoke.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/yongdao3.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "yongdao3" {
+      name = "甬道"
+      description = "这里往来者甚多，多数是急匆匆武林人物，亦有不少青衣弟子。 许多人都手持食物边走边吃，惟恐耽误了时间。几个衣衫褴褛的乞丐 便在墙边鼾然入睡。一个小僮踮起脚尖，正在添加灯油。"
+  x = 2
+  y = 1
+  z = 1
+    }
+
+  room_exits "yongdao3" {
+    room_id = rooms.yongdao3.id
+    north = rooms.dating.id
+    south = rooms.shimen.id
+    }
+
+
+  room_characters "yongdao3" {
+    room_id = rooms.yongdao3.id
+    characters = [
+      { id = characters.tongzi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xiakedao/zhuwu.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "zhuwu" {
+      name = "竹屋"
+      description = "这是一个用碗口粗大的竹子搭建的屋子，离地不足三尺。有一小竹梯 搭在门口。"
+  x = -1
+  y = 0
+  z = 5
+    }
+
+  room_exits "zhuwu" {
+    room_id = rooms.zhuwu.id
+    in = rooms.zhuwu2.id
+    east = rooms.haibin.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/zhuwu2.c by LPCConverter
+# Zone: xiakedao
+
+    rooms "zhuwu2" {
+      name = "竹屋"
+      description = "这是竹屋内部，里面几乎没有什么摆设，倒是有一盏古灯燃着，映得旁边的一尊泥佛的影子不住的晃动。整个屋子布置得极其朴素，看来主人是能耐的清苦的人。"
+  x = -1
+  y = 0
+  z = 5
+    }
+
+  room_exits "zhuwu2" {
+    room_id = rooms.zhuwu2.id
+    out = rooms.zhuwu.id
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/boy.c by LPCConverter
+# Zone: xiakedao
+
+    characters "boy" {
+      name = "男孩"
+      description = "这是个渔家少年，大概由于长期在室外的缘故，皮肤已晒得黝黑，人也长得很粗壮了。"
+  gender = "男性"
+  age = 13
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100
+    con = 15
+    dex = 16
+    int = 17
+    str = 17
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/daoseng.c by LPCConverter
+# Zone: xiakedao
+
+    characters "daoseng" {
+      name = "刀僧"
+      description = "他是一位云游四方的行者，风霜满面，行色匆匆，似乎正在办一件急事。"
+  title = "少林刀僧"
+  gender = "男性"
+  age = 35
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 200000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 1000
+    max_neili = 1500
+    max_qi = 2000
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 100 },
+    { skill = "unarmed" level = 100 },
+    { skill = "blade" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "shaolin-shenfa" level = 100 },
+    { skill = "xiuluo-dao" level = 100 },
+    { skill = "hunyuan-yiqi" level = 100 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "blade" skill = "xiuluo-dao" },
+    { type = "parry" skill = "xiuluo-dao" }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/diaoyu.c by LPCConverter
+# Zone: xiakedao
+
+    characters "diaoyu" {
+      name = "垂钓者"
+      description = "一个精神矍烁的老者，他正手持钓竿，稳坐于桥上，很有姜太公之风。"
+  gender = "男性"
+  age = 58
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 4000
+    con = 15
+    dex = 16
+    int = 17
+    str = 15
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/dizi.c by LPCConverter
+# Zone: xiakedao
+
+    characters "dizi" {
+      name = "弟子"
+      description = "这是三十多岁的壮汉，膀大腰圆，是岛主从中原招募来的。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+  score = 10
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 30000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "unarmed" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "parry" level = 70 },
+    { skill = "hand" level = 70 },
+    { skill = "staff" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/dizi1.c by LPCConverter
+# Zone: xiakedao
+
+    characters "dizi1" {
+      name = "侠客岛弟子"
+      description = "这是三十多岁的壮汉，膀大腰圆，是岛主从中原招募来的。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+  score = 10
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 30000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "unarmed" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "parry" level = 70 },
+    { skill = "hand" level = 70 },
+    { skill = "staff" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "侠客岛弟子说道：这位{respect}，快请到迎宾馆中歇歇脚吧。" },
+    { line = "侠客岛弟子恭手说道：这位{respect}，岛主正在等你呢。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/dizi2.c by LPCConverter
+# Zone: xiakedao
+
+    characters "dizi2" {
+      name = "黄衣弟子"
+      description = "这是三十多岁的壮汉，膀大腰圆，是岛主从中原招募来的。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+  score = 10
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 30000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "unarmed" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "parry" level = 70 },
+    { skill = "hand" level = 70 },
+    { skill = "staff" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.ycloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "侠客岛弟子说道：这位{respect}，欢迎欢迎。" },
+    { line = "侠客岛弟子恭手说道：这位{respect}，小弟这厢有礼了。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/dizi3.c by LPCConverter
+# Zone: xiakedao
+
+    characters "dizi3" {
+      name = "青衣弟子"
+      description = "这是三十多岁的壮汉，膀大腰圆，是岛主从中原招募来的。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+  score = 10
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 30000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "unarmed" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "parry" level = 70 },
+    { skill = "hand" level = 70 },
+    { skill = "staff" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.bcloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "侠客岛弟子说道：洞内有二十四座石室，各位可请随意来去取用，看得 厌了，可到洞外散心，一应饮食，石室内均有置备，各位随意取用，不 必客气。 {expr}" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/girl.c by LPCConverter
+# Zone: xiakedao
+
+    characters "girl" {
+      name = "女孩"
+      description = "这是个渔家少女，虽然只有十二、三岁，但由于处在热带，身材已经发育得很好了。"
+  gender = "女性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 70
+    con = 16
+    dex = 15
+    int = 15
+    str = 14
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/kid.c by LPCConverter
+# Zone: xiakedao
+
+    characters "kid" {
+      name = "小孩"
+      description = "这是个渔家小孩"
+  gender = "男性"
+  age = 7
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50
+    con = 11
+    dex = 11
+    int = 11
+    str = 11
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/maliu.c by LPCConverter
+# Zone: xiakedao
+
+    characters "maliu" {
+      name = "马六"
+      description = "他大约二十多岁，精明能干，总是阴沉着脸。但却嫉恶如仇，性如烈火。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+  score = 60000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 3000000
+    con = 27
+    dex = 28
+    int = 35
+    max_jing = 2000
+    max_neili = 3000
+    max_qi = 2000
+    str = 30
+  }
+
+  inquiries = [
+    { key = "here" value = "这里当然就是侠客岛啦" },
+    { key = "侠客行" value = "往南面走，进山后就明白了" }
+  ]
+
+  skills = [
+    { skill = "force" level = 150 },
+    { skill = "taiji-shengong" level = 150 },
+    { skill = "dodge" level = 150 },
+    { skill = "tiyunzong" level = 150 },
+    { skill = "unarmed" level = 150 },
+    { skill = "taiji-quan" level = 200 },
+    { skill = "parry" level = 150 },
+    { skill = "sword" level = 150 },
+    { skill = "taiji-jian" level = 200 },
+    { skill = "taoism" level = 100 },
+    { skill = "literate" level = 100 },
+    { type = "force" skill = "taiji-shengong" },
+    { type = "dodge" skill = "tiyunzong" },
+    { type = "unarmed" skill = "taiji-quan" },
+    { type = "parry" skill = "taiji-jian" },
+    { type = "sword" skill = "taiji-jian" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.whiterobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/qiaofu.c by LPCConverter
+# Zone: xiakedao
+
+    characters "qiaofu" {
+      name = "樵夫"
+      description = "一个一辈子以砍材为生的老樵夫，由于饱受风霜，显出与年龄不相称的衰老。"
+  gender = "男性"
+  age = 50
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+    con = 18
+    dex = 18
+    int = 18
+    str = 17
+  }
+
+  inquiries = [
+    { key = "刀" value = "(: inquiry_dao :)" },
+    { key = "柴刀" value = "(: inquiry_dao :)" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "money" min = 3000 accept = true msg = "谢谢好心的大爷，好人有好报。" },
+    { kind = "any" accept = true msg = ["谢谢好心的大爷，好人有好报。", "smile"] }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/renter.c by LPCConverter
+# Zone: xiakedao
+
+    characters "renter" {
+      name = "黄衣使者"
+      description = "他身着黄衫，表情郁郁，似乎身有武功。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+  }
+
+  inquiries = [
+    { key = "rent" value = "(: ask_rent :)" },
+    { key = "同门" value = "(: ask_rent :)" },
+    { key = "师兄" value = "(: ask_rent :)" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "money" accept = true msg = "你给我钱干什么？赞助我们侠客岛么？" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/shipopo.c by LPCConverter
+# Zone: xiakedao
+
+    characters "shipopo" {
+      name = "史婆婆"
+      description = "她是雪山派掌门人白自在的妻子，虽说现在人已显得苍老， 但几十年前提起“江湖一枝花”史小翠来，武林中却是无人不知。"
+  title = "金乌派掌门人"
+  gender = "女性"
+  age = 68
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 75000
+    int = 30
+    max_jing = 500
+    max_qi = 500
+  }
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "blade" level = 40 },
+    { skill = "parry" level = 90 },
+    { skill = "unarmed" level = 90 },
+    { skill = "jinwu-daofa" level = 70 },
+    { skill = "yan-fly" level = 70 },
+    { type = "blade" skill = "jinwu-daofa" },
+    { type = "parry" skill = "jinwu-daofa" },
+    { type = "dodge" skill = "yan-fly" }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/shipotian.c by LPCConverter
+# Zone: xiakedao
+
+    characters "shipotian" {
+      name = "石破天"
+      description = "他大约二十多岁，穿着一身破烂的衣服，却也挡不住他一身的英气。"
+  title = "长乐帮帮主"
+  gender = "男性"
+  age = 20
+  score = 30000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1000000
+    con = 25
+    dex = 25
+    int = 35
+    max_jing = 1000
+    max_neili = 2000
+    max_qi = 2000
+    str = 25
+  }
+
+  inquiries = [
+    { key = "石中玉" value = "他是我的兄弟，他现在在摩天崖。" },
+    { key = "阿绣" value = "呀！你见过她吗？她还好吧。" }
+  ]
+
+  chat_chance = 1
+chats = [
+    "石破天说道: 我来侠客岛这么多天了，也不知道阿绣和婆婆现在怎么样了。",
+    "石破天说: 江湖威望很重要，威望高大有好处啊。",
+    "石破天突然说道: 不行，我不放心阿绣，我要去看看她。",
+    "石破天突然说道: 矣！我的体内怎么好象有一群蝌蚪在动呢。"
+]
+
+
+  skills = [
+    { skill = "force" level = 100 },
+    { skill = "taixuan-gong" level = 150 },
+    { skill = "unarmed" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "begging" level = 50 },
+    { skill = "checking" level = 50 },
+    { type = "force" skill = "taixuan-gong" },
+    { type = "unarmed" skill = "taixuan-gong" },
+    { type = "dodge" skill = "taixuan-gong" },
+    { type = "parry" skill = "taixuan-gong" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/shizhe.c by LPCConverter
+# Zone: xiakedao
+
+    characters "shizhe" {
+      name = "黄衣使者"
+      description = "这是个身着黄衣的三十几岁汉子，手持木浆，面无表情。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 16000
+    con = 30
+    dex = 30
+    int = 39
+    max_jing = 320
+    max_neili = 300
+    max_qi = 330
+    str = 30
+  }
+
+  inquiries = [
+    { key = "出海" value = "南边还有几艘船，你自己看看去吧！" }
+  ]
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/sun.c by LPCConverter
+# Zone: xiakedao
+
+    characters "sun" {
+      name = "孙玉溪"
+      description = ""
+  gender = "男性"
+  age = 42
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000000
+    con = 38
+    dex = 33
+    int = 35
+    max_jing = 3000
+    max_neili = 6000
+    max_qi = 5200
+    str = 33
+  }
+
+  inquiries = [
+    { key = "七星指" value = "这正是在下的绝学，阁下为何知晓？" }
+  ]
+
+  skills = [
+    { skill = "force" level = 280 },
+    { skill = "hunyuan-yiqi" level = 280 },
+    { skill = "dodge" level = 280 },
+    { skill = "lingxu-bu" level = 280 },
+    { skill = "parry" level = 280 },
+    { skill = "qixing-zhi" level = 320 },
+    { skill = "finger" level = 320 },
+    { skill = "literate" level = 220 },
+    { skill = "martial-cognize" level = 220 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "qixing-zhi" },
+    { type = "finger" skill = "qixing-zhi" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/tongzi.c by LPCConverter
+# Zone: xiakedao
+
+    characters "tongzi" {
+      name = "童子"
+      description = "这是一个十五六岁的少年，眉清目秀，聪明伶俐，深得岛主喜爱。"
+  gender = "男性"
+  age = 15
+  shen_type = 100
+  score = 10
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 3000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 200
+    max_qi = 200
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "hand" level = 40 },
+    { skill = "staff" level = 40 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/wangwu.c by LPCConverter
+# Zone: xiakedao
+
+    characters "wangwu" {
+      name = "王五"
+      description = "他大约二十多岁，精明能干，笑嘻嘻的和蔼可亲。但却嫉恶如仇，性如烈火。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+  score = 60000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 3000000
+    con = 27
+    dex = 28
+    int = 35
+    max_jing = 2000
+    max_neili = 3000
+    max_qi = 2000
+    str = 30
+  }
+
+  inquiries = [
+    { key = "here" value = "这里当然就是侠客岛啦" },
+    { key = "侠客行" value = "往南面走，进山后就明白了" }
+  ]
+
+  skills = [
+    { skill = "force" level = 150 },
+    { skill = "taiji-shengong" level = 150 },
+    { skill = "dodge" level = 150 },
+    { skill = "lingxu-bu" level = 150 },
+    { skill = "unarmed" level = 150 },
+    { skill = "taiji-quan" level = 200 },
+    { skill = "parry" level = 150 },
+    { skill = "sword" level = 150 },
+    { skill = "taiji-jian" level = 200 },
+    { skill = "taoism" level = 100 },
+    { skill = "literate" level = 100 },
+    { type = "force" skill = "taiji-shengong" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "unarmed" skill = "taiji-quan" },
+    { type = "parry" skill = "taiji-jian" },
+    { type = "sword" skill = "taiji-jian" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.whiterobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/xiaoer2.c by LPCConverter
+# Zone: xiakedao
+
+    characters "xiaoer2" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  goods = [
+    { id = items.jitui.id },
+    { id = items.jiudai.id },
+    { id = items.baozi.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/yufu.c by LPCConverter
+# Zone: xiakedao
+
+    characters "yufu" {
+      name = "渔夫"
+      description = "这是一个饱受风霜的老渔夫，虽然不是江湖人士，但是多年在此却也 和不少武林人士打过交道，知道不少消息秘闻。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 62
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/obj/baozi.c by LPCConverter
+# Zone: xiakedao
+
+    characters "baozi" {
+      name = "包子"
+      description = "一个香喷喷的肉包子。"
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/obj/bcloth.c by LPCConverter
+# Zone: xiakedao
+
+    characters "bcloth" {
+      name = "青衫"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/obj/jitui.c by LPCConverter
+# Zone: xiakedao
+
+    characters "jitui" {
+      name = "烤鸡腿"
+      description = "一枝烤得香喷喷的鸡腿。"
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/obj/jiudai.c by LPCConverter
+# Zone: xiakedao
+
+    characters "jiudai" {
+      name = "牛皮酒袋"
+      description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/npc/obj/ycloth.c by LPCConverter
+# Zone: xiakedao
+
+    characters "ycloth" {
+      name = "黄衫"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/backleg.c by LPCConverter
+# Zone: xiakedao
+
+    items "backleg" {
+      name = "后腿"
+      description = "一只野猪后腿。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+  messages = {
+    wield = "{npc}抓起一根{name}，握在手中当武器。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/baihongjian.c by LPCConverter
+# Zone: xiakedao
+
+    items "baihongjian" {
+      name = "白虹剑"
+      description = "这是一口削铁如泥的宝剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄寒光闪闪的{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/birddie.c by LPCConverter
+# Zone: xiakedao
+
+    items "birddie" {
+      name = "鸟肉"
+      description = "一块喷香的鸟肉，真让人嘴馋。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/cao.c by LPCConverter
+# Zone: xiakedao
+
+    items "cao" {
+      name = "腐心草"
+      description = "这是一朵无根小草，长得很小，却给人一种欣欣向荣的感觉。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/forleg.c by LPCConverter
+# Zone: xiakedao
+
+    items "forleg" {
+      name = "猪腿"
+      description = "一只野猪前腿。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+  messages = {
+    wield = "{npc}抓起一根{name}，握在手中当武器。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/jiu.c by LPCConverter
+# Zone: xiakedao
+
+    items "jiu" {
+      name = "Item"
+      description = "这是一壶珍贵之极的玄冰碧火酒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/knife.c by LPCConverter
+# Zone: xiakedao
+
+    items "knife" {
+      name = "柴刀"
+      description = "这是一柄半新不旧的柴刀。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一把{name}握在手中。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/lazhu.c by LPCConverter
+# Zone: xiakedao
+
+    items "lazhu" {
+      name = "蜡烛"
+      description = "这是一只普通的蜡烛，上面镂着一些花纹，还比较精致。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/mangguo.c by LPCConverter
+# Zone: xiakedao
+
+    items "mangguo" {
+      name = "芒果"
+      description = "一颗新鲜的芒果，看了让人垂涎欲滴。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/pigdie.c by LPCConverter
+# Zone: xiakedao
+
+    items "pigdie" {
+      name = "死猪"
+      description = "这是一只死去的野猪，长得颇为粗壮，看来可以割点肉尝尝。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/qingcha.c by LPCConverter
+# Zone: xiakedao
+
+    items "qingcha" {
+      name = "清茶"
+      description = "一杯热茶，悠悠地冒着香气~~~~~~"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/shane-bu.c by LPCConverter
+# Zone: xiakedao
+
+    items "shane_bu" {
+      name = "赏善罚恶簿"
+      description = "这是一本赏善罚恶簿，里头记载着江湖善恶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/shoupa.c by LPCConverter
+# Zone: xiakedao
+
+    items "shoupa" {
+      name = "手帕"
+      description = "这是一个漂亮的手帕。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/stone.c by LPCConverter
+# Zone: xiakedao
+
+    items "stone" {
+      name = "石块"
+      description = "一块小石子。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/tongpai1.c by LPCConverter
+# Zone: xiakedao
+
+    items "tongpai1" {
+      name = "赏善铜牌"
+      description = "这是一块闪闪发光的白铜片子，约有巴掌大小，牌子正面刻着一张笑脸，和蔼慈祥。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/tongpai2.c by LPCConverter
+# Zone: xiakedao
+
+    items "tongpai2" {
+      name = "罚恶铜牌"
+      description = "这是一块闪闪发光的白铜片子，约有巴掌大小，牌子正面刻着一张狰狞的煞神凶脸，十分诡异。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/xuantie.c by LPCConverter
+# Zone: xiakedao
+
+    items "xuantie" {
+      name = "玄铁令"
+      description = "这是一块碧绿色的玉牌，莹洁光绿，真是一块好玉。 正面雕龙刻凤，正中写着玄铁两个大字。这便是江湖上传说的玄铁令。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/yezi.c by LPCConverter
+# Zone: xiakedao
+
+    items "yezi" {
+      name = "椰子"
+      description = "一颗新鲜的椰子，看了让人垂涎欲滴。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/zhou.c by LPCConverter
+# Zone: xiakedao
+
+    items "zhou" {
+      name = "腊八粥"
+      description = "这是一碗珍贵的补品腊八粥。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xiakedao/obj/zhutou.c by LPCConverter
+# Zone: xiakedao
+
+    items "zhutou" {
+      name = "猪头"
+      description = "一个大猪头。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+  messages = {
+    wield = "{npc}抓起一颗{name}，握在手中当武器。"
+  }
+    }

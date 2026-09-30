@@ -1,0 +1,622 @@
+# Generated from C:/files/git/mud/d/wuguan/guofu_caidi1.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_temp("mark/锄完了"))  →  
+  # if (me->query_temp("job_name") != "锄草")  →  
+  # if (me->is_busy())  →  
+  # if (me->is_fighting())  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || weapon->query("id") != "chu tou")  →  
+  # if (! arg || arg != "cao" )  →  
+  # if ((int)me->query("jing") < costj || (int)me->query("qi") < costq)  →  message_vision(HIR '\\\\\n$N' HIR '锄着锄着，结果不小心手一滑，锄在' '了自己的脚上。\\\\\n' NOR, me);
+  # if (! (int)me->query_condition("wuguan_job") && (int)me->query_temp("mark/锄") > 10 + (random(10)) && present("caiyuan guanshi", environment(me)))  →  message_vision(CYN '\\\\\n菜园管事对$N' CYN '说：干的不错，好了，你可' '以去向耶律大爷覆命(' HIY 'task ok' NOR + CYN ')了' '。\\\\\n' NOR, me);
+  # if ((int)me->query_skill("staff", 1) < 70 && (int)me->query_skill("cuff", 1) < 70 && me->can_improve_skill("staff") && me->can_improve_skill("cuff"))  →  write(HIC '你在锄草过程中对于杖法及拳法有些体会。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_chu) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_chu
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_caidi2.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_temp("mark/浇完了"))  →  
+  # if (me->query_temp("job_name") != "浇菜地")  →  
+  # if (me->is_busy())  →  
+  # if (me->is_fighting())  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || weapon->query("id") != "shui piao")  →  
+  # if (! arg || arg != "shui" )  →  
+  # if ((int)me->query("jing") < costj || (int)me->query("qi") < costq)  →  message_vision(HIR '\\\\\n$N' HIR '弯腰到大缸里舀水，结果一失足栽进了缸' '里。\\\\\n' NOR, me);
+  # if (! (int)me->query_condition("wuguan_job") && (int)me->query_temp("mark/浇") > 10 + (random(10)) && present("caiyuan guanshi", environment(me)))  →  message_vision(CYN '\\\\\n菜园管事对$N' CYN '说：干的不错，好了，你可' '以去向耶律大爷覆命(' HIY 'task ok' NOR + CYN ')了' '。\\\\\n' NOR, me);
+  # if ((int)me->query_skill("whip", 1) < 70 && (int)me->query_skill("finger", 1) < 70 && me->can_improve_skill("whip") && me->can_improve_skill("finger"))  →  write(HIC '你在浇水过程中对鞭法及指法有些体会。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_jiao) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_jiao
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_chaifang.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_temp("mark/劈完了"))  →  
+  # if (me->query_temp("job_name") != "劈柴")  →  
+  # if (me->is_busy())  →  
+  # if (me->is_fighting())  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || weapon->query("id")!= "chai dao")  →  
+  # if (! arg || arg != "chai" )  →  
+  # if ((int)me->query("jing") < costj || (int)me->query("qi") < costq)  →  message_vision(HIR '\\\\\n$N' HIR '手一歪，一不小心柴刀竟然劈在自己' '的腿上。\\\\\n' NOR, me);
+  # if (! (int)me->query_condition("wuguan_job") && (int)me->query_temp("mark/劈") > 10 + random(10) && present("chaifang guanshi", environment(me)))  →  message_vision(CYN '\\\\\n柴房管事对$N' CYN '说：干的不错，好了，你可' '以去向耶律大爷覆命(' HIY 'task ok' NOR + CYN ')了' '。\\\\\n' NOR, me);
+  # if ((int)me->query_skill("blade", 1) < 70 && (int)me->query_skill("strike", 1) < 70 && me->can_improve_skill("blade") && me->can_improve_skill("strike"))  →  write(HIC '你在劈柴过程中对于刀法及掌法有些体会。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_pi) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_pi
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_fanting.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((dir == "east") && present("chu shi", environment(me)))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_gate.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("mark/guofu_ok") && ! me->query("mark/guofu_out") && present("wu dunru", environment(me)) && dir == "south")  →  
+  # if (me->query("mark/guofu_ok") && present("wu dunru", environment(me)) && dir == "north" && objectp(riding = me->query_temp("is_riding")))  →  
+  # if (me->query("mark/guofu_over") && present("wu dunru", environment(me)) && dir == "north")  →  
+  # if (me->query("mark/guofu_out") && present("wu dunru", environment(me)) && dir == "north")  →  
+  # if (me->query("combat_exp") > 5000 && ! me->query("mark/guofu_ok") && present("wu dunru", environment(me)) && dir == "north")  →  
+  # if (! me->query("mark/guofu_ok") && present("wu dunru", environment(me)) && dir == "north")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_mafang.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_temp("mark/扫完了"))  →  
+  # if (me->query_temp("job_name") != "打扫马房")  →  
+  # if (me->is_busy())  →  
+  # if (me->is_fighting())  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || weapon->query("id") != "sao zhou")  →  
+  # if (! arg || arg != "mafang")  →  
+  # if ((int)me->query("jing") < costj || (int)me->query("qi") < costq)  →  message_vision(HIR '\\\\\n$N' HIR '脚一滑，结果不小心滑倒在粪堆里，吃' '了一大口马粪。\\\\\n' NOR, me);
+  # if (! (int)me->query_condition("wuguan_job") && (int)me->query_temp("mark/扫") > 10 + random(10) && present("mafang guanshi", environment(me)))  →  message_vision(CYN '\\\\\n马房管事对$N' CYN '说：干的不错，好了，你可' '以去向耶律大爷覆命(' HIY 'task ok' NOR + CYN ')了' '。\\\\\n' NOR, me);
+  # if ((int)me->query_skill("claw", 1) < 70 && (int)me->query_skill("club", 1) < 70 && me->can_improve_skill("claw") && me->can_improve_skill("club"))  →  write(HIC '你在扫地过程中对爪法及棍法有些体会。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_sao) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_sao
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/guofu_mufang.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_temp("mark/锯完了"))  →  
+  # if (me->query_temp("job_name") != "锯木头")  →  
+  # if (me->is_busy())  →  
+  # if (me->is_fighting())  →  
+  # if (! objectp(weapon = me->query_temp("weapon")) || weapon->query("id") != "ju zi")  →  
+  # if (! arg || arg != "mutou")  →  
+  # if ((int)me->query("jing") < costj || (int)me->query("qi") < costq)  →  message_vision(HIR '\\\\\n突然间木头竟然断了，弹起的半截木头正砸在$N' HIR '头上。\\\\\n', me);
+  # if (! (int)me->query_condition("wuguan_job") && (int)me->query_temp("mark/锯") > 10 + random(10) && present("mufang guanshi", environment(me)))  →  message_vision(CYN '\\\\\n木房管事对$N' CYN '说：干的不错，好了，你可' '以去向耶律大爷覆命(' HIY 'task ok' NOR + CYN ')了' '。\\\\\n' NOR, me);
+  # if ((int)me->query_skill("hand", 1) < 75 && (int)me->query_skill("sword", 1) < 75 && me->can_improve_skill("hand") && me->can_improve_skill("sword"))  →  write(HIC '你在锯木头的推拉中对手法及剑法有些体会。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_pi) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_pi
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wuguan/npc/chushi.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (present("rice", me) && present("tea", me))  →  
+  # if (objectp(present("rice", environment(me))) && objectp(present("tea", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (do_serve) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_serve
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/npc/fan.c by LPCConverter
+# Zone: wuguan
+
+# inherit F_BANKER;
+
+# Generated from C:/files/git/mud/d/wuguan/npc/guanjia1.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+  # if (ob->query_temp("job_name") != "劈柴")  →  
+  # if (! (present("chai dao", ob)))  →  command('hmm ' + ob->query('id')); command('say 你还没领工具吧，去东物品房找武爷要了再来。\\\\\n');
+  # if (ob->query_temp("job_name") == "劈柴")  →  command('nod ' + ob->query('id')); command('say 是耶律大爷吩咐你来的吧？那你就在这劈柴(' HIY 'pi chai' NOR + CYN ')好了。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/npc/guanjia2.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+  # if (ob->query_temp("job_name") != "锯木头")  →  
+  # if (! (present("ju zi", ob)))  →  command('hmm ' + ob->query('id')); command('say 你还没领工具吧，去东物品房找武爷要了再来。\\\\\n');
+  # if (ob->query_temp("job_name") == "锯木头")  →  command('nod ' + ob->query('id')); command('say 是耶律大爷吩咐你来的吧？那你就在这锯木(' HIY 'ju mutou' NOR + CYN ')好了。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/npc/guanjia3.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+  # if (ob->query_temp("job_name") != "打扫马房")  →  
+  # if (! (present("sao zhou", ob)))  →  command('hmm ' + ob->query('id')); command('say 你还没领工具吧，去东物品房找武爷要了再来。\\\\\n');
+  # if (ob->query_temp("job_name") == "打扫马房")  →  command('nod ' + ob->query('id')); command('say 是耶律大爷吩咐你来的吧？那你就在这打扫(' HIY 'sao mafang' NOR + CYN ')好了。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/npc/guanjia5.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+  # if (ob->query_temp("job_name") != "锄草")  →  
+  # if (! (present("chu tou", ob)))  →  command('hmm ' + ob->query('id')); command('say 你还没领工具吧，去东物品房找武爷要了再来。\\\\\n');
+  # if (ob->query_temp("job_name") == "锄草")  →  command('nod ' + ob->query('id')); command('say 是耶律大爷吩咐你来的吧？那你就在这锄草(' HIY 'chu cao' NOR + CYN ')好了。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/npc/guanjia6.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+  # if (ob->query_temp("job_name") != "浇菜地")  →  
+  # if (! (present("shui piao", ob)))  →  command('hmm ' + ob->query('id')); command('say 你还没领工具吧，去东物品房找武爷要了再来。\\\\\n');
+  # if (ob->query_temp("job_name") == "浇菜地")  →  command('nod ' + ob->query('id')); command('say 是耶律大爷吩咐你来的吧？那你就在这浇水(' HIY 'jiao shui' NOR + CYN ')好了。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/npc/guojing.c by LPCConverter
+# Zone: wuguan
+
+# inherit F_COAGENT;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob->query("can_learn/3skills/guojing"))  →  command('say 现在蒙古人围攻襄阳，我哪有心情授课啊。'); command('say 等你将来拜师之后你师父自然会教你，不用心急。');
+  # if (ob->query("combat_exp") > 40000 && ! ob->query("can_learn/3skills/guojing"))  →  command('say 你经验也不低了，应该多出去锻炼，呆在这对你帮助不大。\\\\\n');
+  # if (skill != "force" && skill != "guoshi-xinfa" && skill != "dodge" && skill != "feiyan-zoubi" && skill != "unarmed" && skill != "changquan")  →  command('shake'); command('say 我最多传授你几项较为基本的特殊技能，复杂了你领悟不了。'); command('say 你可以跟我学郭氏心法、飞檐走壁、太祖长拳和一些基本技能。\\\\\n');
+  # if (! ob->query_temp("can_learn/guojing"))  →  command('nod2'); command('say 念你勤奋刻苦，我便传授你一些技能，可要认真记好了。');
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+  # if (interactive(ob = this_player()) && userp(ob) && ! ob->query_temp("mark/guofu_wait") && ! is_fighting() && ! ob->query("can_learn/3skills/guojing"))  →  command('hmm'); command('say 我不是让你另谋出路吗？又跑回来干嘛？'); command('say 敦儒，修文，送' + ob->name() + NOR + CYN '出去！'); message_vision(HIC '\\\\\n只见$N' HIC '一招手，顿时从正厅进来了两' '位青年，将$n' HIC '架了出去。\\\\\n\\\\\n', this_object(), ob); command('say 你现在的武功已经有一定的底子了，应该多走动走动。'); command('say 别老是呆在我这里，这对你帮助不大。敦儒，修文，送客！'); message_vision(HIC '\\\\\n只见$N' HIC '一招手，顿时从正厅进来了两' '位青年，将$n' HIC '送了出去。\\\\\n\\\\\n', this_object(), ob); command('say 现在国难当头，蒙古人围攻襄阳，我这里事情繁多。'); command('say 恕郭某无礼，还请阁下回去。敦儒，修文，送客！'); command('sigh'); command('say 你杀性如此之重，我这里也留不得你，你还是走吧。'); command('say 敦儒，修文，送客！'); command('look ' + ob->query('id')); command('yi'); command('whisper ' + ob->query('id') + ' 你在我郭府内工作也有' '一定的时间\\\\\n了，怎么连一技之长也没有？以后怎能行走江' '湖啊？…嗯…这\\\\\n样好了，从今日起，你每天到我这里来，' '我传授你几项简单的\\\\\n特殊武功好了。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (init) ====
+  # if (! clonep(this_object()))  →  message_vision(CYN '\\\\\n$N' CYN '走了过来，环顾四' '周，深深叹了口气。\\\\\n' NOR, this_object());
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: unconcious
+  # UNHANDLED FUNCTION: recognize_apprentice
+  # UNHANDLED FUNCTION: attempt_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/wuguan/npc/wudunru.c by LPCConverter
+# Zone: wuguan
+
+# inherit F_MASTER;
+# inherit F_GUARDER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: heart_beat
+  # heart_beat: string start_room; object ob; if (stringp(start_room = query("startroom")) && find_object(start_room) == environment()) { foreach (ob in all_inventory(environment())) { if (! ob->is_character() || interactive(ob) || playerp(ob) || ob->query_temp("owner")) continue; if (stringp(start_room = ob->query("startroom")) && find_object(start_room) == environment()) continue; if (ob->query("id") == "guo jing" || base_name(ob) == CORPSE_OB) continue; message_vision(CYN "$N" CYN "环顾四周，摇了摇头，转身" "向南离去。\n" NOR, ob); ob->move("/d/xiangyang/westjie1");
+# ==== RAW CODE BLOCKS ====
+  # COMPLEX IF: if (arg == "roar") { message_vision(CYN "\n武敦儒喝道：什么人？郭府门" "前可由不得你嚣张！\n" NOR, ob); return 1; } return 0; } int do_kill(string arg) { object ob = this_object(); if (arg != "wu dunru" && arg != "wu" && arg != "dunru" ) { message_vision(CYN "\n武敦儒喝道：什么人？郭府门" "前可由不得你放肆！\n" NOR, ob); return 1; } return 0; } int do_join(string arg) { object ob = this_player(); if (! arg && arg != "guofu" && arg != "郭府") return notify_fail(CYN "武敦儒眉头一皱，道：你到" "底要干什么？怎么说话吞吞吐吐" "的？\n" NOR); if (ob->query("mark/guofu_over")) return notify_fail(CYN "武敦儒冷笑道：师傅让你走" "开，你还赖在这里干嘛？\n" NOR); if (ob->query("mark/guofu_ok")) return notify_fail(CYN "武敦儒皱眉道：你不是已经" "进来了吗？赶快干活去，罗嗦什" "么？\n" NOR); if (ob->query("mark/guofu_out")) return notify_fail(CYN "武敦儒微笑道：你现在的武" "功已经有一定的底子了，还是多" "闯荡闯荡吧。\n" NOR); if (ob->query("combat_exp") > 5000) return notify_fail(CYN "武敦儒微笑道：让你来打杂" "可太委屈你了，你还是另谋出路" "吧。\n" NOR); if (ob->query_temp("mark/guofu_join")) { message_vision(HIC "\n$N" HIC "对$n" HIC "点了点" "头，说道：甚好，甚好。入了郭府一" "切就要\n按规矩办事，你现在去耶律" "帮主那里，他会帮你安排事情的。\n" "\n", this_object(), ob); ob->set("mark/guofu_ok", 1); ob->set("startroom", "/d/wuguan/guofu_dayuan"); ob->delete_temp("mark/guofu_join"); } else { command("nod"); command("whisper " + ob->query("id") + " 你进郭" "府之后我们会确保你的安\n全，但是经验在" HIW "四万" NOR + WHT "前不能离开郭府。如" "果你决定下来了，请\n再输入一次此命令。" "\n" NOR); ob->set_temp("mark/guofu_join", 1); }
+# ==== COMPLEX CONDITIONALS ====
+  # else  →  command('say 找死。\\\\\n');
+  # if (ob->query("mark/guofu_ok"))  →  command('say 给我滚进去，跑到这里来瞎胡闹什么！');
+# ==== CONDITIONAL BRANCHES (accept_touxi) ====
+  # else  →  command('say 找死。\\\\\n');
+  # if (ob->query("mark/guofu_ok"))  →  command('say 给我滚进去，跑到这里来瞎胡闹什么！');
+# ==== CONDITIONAL BRANCHES (accept_kill) ====
+  # else  →  command('say 找死。\\\\\n');
+  # if (ob->query("mark/guofu_ok"))  →  command('say 给我滚进去，跑到这里来瞎胡闹什么！');
+# ==== CONDITIONAL BRANCHES (accept_hit) ====
+  # else  →  command('say 我现在没空。\\\\\n');
+  # if (ob->query("mark/guofu_ok"))  →  command('say 给我滚进去，跑到这里来瞎胡闹什么！');
+# ==== CONDITIONAL BRANCHES (accept_fight) ====
+  # if (! arg && arg != "guofu" && arg != "郭府")  →  
+  # if (ob->query("mark/guofu_over"))  →  
+  # if (ob->query("mark/guofu_ok"))  →  
+  # if (ob->query("mark/guofu_out"))  →  
+  # if (ob->query("combat_exp") > 5000)  →  
+  # else  →  command('nod'); command('whisper ' + ob->query('id') + ' 你进郭' '府之后我们会确保你的安\\\\\n全，但是经验在' HIW '四万' NOR + WHT '前不能离开郭府。如' '果你决定下来了，请\\\\\n再输入一次此命令。' '\\\\\n' NOR);
+  # if (ob->query_temp("mark/guofu_join"))  →  message_vision(HIC '\\\\\n$N' HIC '对$n' HIC '点了点' '头，说道：甚好，甚好。入了郭府一' '切就要\\\\\n按规矩办事，你现在去耶律' '帮主那里，他会帮你安排事情的。\\\\\n' '\\\\\n', this_object(), ob);
+# ==== CONDITIONAL BRANCHES (do_join) ====
+  # if (arg != "wu dunru" && arg != "wu" && arg != "dunru" )  →  message_vision(CYN '\\\\\n武敦儒喝道：什么人？郭府门' '前可由不得你放肆！\\\\\n' NOR, ob);
+# ==== CONDITIONAL BRANCHES (do_kill) ====
+  # if (arg == "roar")  →  message_vision(CYN '\\\\\n武敦儒喝道：什么人？郭府门' '前可由不得你嚣张！\\\\\n' NOR, ob);
+# ==== CONDITIONAL BRANCHES (do_yun) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  command('say 这位' + RANK_D->query_respect(ob) + '，武功这么差，怎么闯江湖呢？\\\\\n'); command('whisper ' + ob->query('id') + ' 现在正' '值兵荒马乱，这里正遭蒙\\\\\n古人的围攻，你' '还是别乱走动的好。我们郭府内正缺少人手' '打\\\\\n杂，你若有兴趣倒是可以进来 (' HIY 'join 郭府' NOR + WHT ')帮帮忙，顺便学' '点\\\\\n基本功夫防身。不知' + RANK_D->query_respect(ob) + '意下如何？\\\\\n'); command('look ' + ob->query('id')); command('haha'); command('whisper ' + ob->query('id') + ' 不错，' '不错。想不到你的进展如\\\\\n此神速，再留在' '郭府已无多大用处，今后还是多去闯荡闯荡吧。\\\\\n'); tell_object(ob, HIC '通过在郭府内的锻炼，你获得' '了' + chinese_number(exp) + '点' '经验、' + chinese_number(pot) + '点潜能\\\\\n以及' + chinese_number(sc) + '点江湖阅历，武技得到了提升。' '\\\\\n\\\\\n' NOR); command('sneer ' + ob->query('id')); command('nod ' + ob->query('id')); command('hi ' + ob->query('id')); command('say 现襄阳正值动乱时期，不及招呼，还请恕罪。'); command('hmm'); command('say 赶快干活去，没事瞎溜达什么？');
+# ==== CONDITIONAL BRANCHES (init) ====
+  # if (stringp(start_room = query("startroom")) && find_object(start_room) == environment())  →  message_vision(CYN '$N' CYN '环顾四周，摇了摇头，转身' '向南离去。\\\\\n' NOR, ob);
+# ==== CONDITIONAL BRANCHES (heart_beat) ====
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_kill
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_touxi
+  # UNHANDLED FUNCTION: receive_wound
+  # UNHANDLED FUNCTION: recover
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: heart_beat
+  # UNHANDLED FUNCTION: receive_damage
+  # UNHANDLED FUNCTION: do_yun
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: do_join
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: unconcious
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/npc/wusantong.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+  # if (ob->query_skill("force") > 99 && ob->query_skill("dodge") > 99 && ob->query_skill("parry") > 99)  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (ob->query("combat_exp") > 40000)  →  command('say 你现在应该多出去锻炼锻炼，呆在这里可不是办法。');
+  # if (skill != "force" && skill != "dodge" && skill != "parry")  →  command('hmm'); command('say 我最多传授你一些' HIY '内功' NOR + CYN '、' HIY '轻功' NOR + CYN '和' HIY '招架' NOR + CYN '的基本常识。' NOR); command('say 其它的还是等你将来拜师后找师父学吧。');
+  # if (skill == "force" && ob->query_skill("force", 1) > 99)  →  command('hehe'); command('say 你内功方面的造诣已经相当不错了，就到此为止吧。');
+  # if (skill == "parry" && ob->query_skill("parry", 1) > 99)  →  command('hehe'); command('say 你招架方面的造诣已经相当不错了，就到此为止吧。');
+  # if (skill == "dodge" && ob->query_skill("dodge", 1) > 99)  →  command('hehe'); command('say 你轻功方面的造诣已经相当不错了，就到此为止吧。');
+  # if (! ob->query_temp("can_learn/wusantong"))  →  command('smile'); command('say 不错，不错。趁现在多学点东西是好事。'); command('say 我就教你些内功、轻功和招架的基本常识吧。');
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: recognize_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/npc/wuxiuwen.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+  # if (ob->query_temp("mark/劈完了") || ob->query_temp("mark/浇完了") || ob->query_temp("mark/锄完了") || ob->query_temp("mark/锯完了") || ob->query_temp("mark/扫完了"))  →  command('nod ' + ob->query('id')); command('say 你的工作做完了？那现在把工具还给我吧。');
+  # if (ob->query_temp("mark/工具"))  →  
+  # if ((ob->query_temp("job_name") == "锯木头") || (ob->query_temp("job_name") == "锄草") || (ob->query_temp("job_name") == "浇菜地") || (ob->query_temp("job_name") == "劈柴") || (ob->query_temp("job_name") == "打扫马房"))  →  command('nod ' + ob->query('id')); command('say 你是来我这里领工具(' HIY 'ask wu xiuwen about 工具' NOR + CYN ')的吧。' NOR);
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (! (ob->query_temp("mark/劈完了") || ob->query_temp("mark/浇完了") || ob->query_temp("mark/锄完了") || ob->query_temp("mark/锯完了") || ob->query_temp("mark/扫完了")))  →  command('say 你还没完成工作，怎么就回来还工具了，偷懒吗？');
+  # if ((obj->query("id") != "ju zi") && (obj->query("id") != "chu tou") && (obj->query("id") != "shui piao") && (obj->query("id") != "sao zhou") && (obj->query("id") != "chai dao"))  →  command('say 你还错东西了吧，我从没有发过这样工具。');
+  # if (! ob->query_temp("job_name"))  →  command('shake'); command('say 我没有发给你过东西，你是不是还错了？');
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if (ob->query_temp("mark/工具"))  →  
+  # if (ob->query_temp("mark/还了"))  →  
+  # if (! ((ob->query_temp("job_name") == "锯木头") || (ob->query_temp("job_name") == "锄草") || (ob->query_temp("job_name") == "浇菜地") || (ob->query_temp("job_name") == "劈柴") || (ob->query_temp("job_name") == "打扫马房")))  →  
+  # else  →  
+  # else if (ob->query_temp("job_name") == "劈柴")  →  
+  # else if (ob->query_temp("job_name") == "锯木头")  →  
+  # else if (ob->query_temp("job_name") == "浇菜地")  →  
+  # if (ob->query_temp("job_name") == "锄草")  →  
+# ==== CONDITIONAL BRANCHES (give_tools) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: give_tools
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/wuguan/npc/yelvqi.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg != "ok")  →  
+  # if (! ob->query_temp("job_name"))  →  
+  # if (! (ob->query_temp("mark/劈完了") || ob->query_temp("mark/浇完了") || ob->query_temp("mark/锄完了") || ob->query_temp("mark/锯完了") || ob->query_temp("mark/扫完了") || ob->query_temp("mark/挑完了")))  →  
+  # if (interactive(ob) && (int)ob->query_condition("wuguan_job"))  →  command('hmm ' + ob->query('id'));
+  # if (! ob->query_temp("mark/还了"))  →  
+  # if (ob->query("potential") > ob->query_potential_limit())  →  
+# ==== CONDITIONAL BRANCHES (do_task) ====
+  # if (ob->query_temp("job_name"))  →  
+  # if (ob->query("combat_exp") >= 40000)  →  
+  # if (ob->query("mark/guofu_out"))  →  
+# ==== CONDITIONAL BRANCHES (ask_job) ====
+  # if (interactive(ob = this_player()) && ob->query("mark/guofu_ok") && ! ob->query_temp("job_name") && ob->query("combat_exp") < 40000)  →  command('nod ' + ob->query('id')); command('say 现在郭府内正缺人手，你可以找我领工作(' HIY 'ask yelv qi about 工作' NOR + CYN ')来做。' NOR);
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_job
+  # UNHANDLED FUNCTION: do_task
+  # UNHANDLED FUNCTION: unconcious
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/npc/zhuziliu.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+  # if (ob->query_skill("literate") > 99)  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (ob->query("combat_exp") > 40000)  →  command('say 你经验也不低了，应该多出去锻炼，可别埋没在这里。');
+  # if (skill != "literate")  →  command('shake'); command('say 在这儿我最多传授你一些读书写字的常识。'); command('say 其它的还是等你将来拜师后找师父学吧。');
+  # if (skill == "literate" && ob->query_skill("literate", 1) > 99)  →  command('haha'); command('say 你的文学造诣已经非常不错了，就到此为止吧。');
+  # if (! ob->query_temp("can_learn/zhuziliu"))  →  command('smile'); command('say 趁年轻多读点书是好事，我就教你点读书写字的常识吧。');
+# ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: recognize_apprentice
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/obj/chaidao.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/obj/chutou.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/obj/juzi.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/obj/piao.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/obj/rice.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/obj/saozhou.c by LPCConverter
+# Zone: wuguan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wuguan/obj/tea.c by LPCConverter
+# Zone: wuguan
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
