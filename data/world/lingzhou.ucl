@@ -1,0 +1,1727 @@
+zones "lingzhou" {
+  name = "lingzhou"
+}
+
+# Generated from C:/files/git/mud/d/lingzhou/baxian.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "baxian" {
+      name = "八仙道观"
+      description = "这里是八仙道观，内有八仙殿，供着张果老、铁拐李、吕洞宾等八 仙的塑像，香案上香烟缭绕。靠墙放着几张太师椅，地上放着几个蒲团。 东西两侧是走廊，北边是东二巷， 南边是后院,种着些杨柳和老槐树， 是道士们休息的地方。后院还有一口井，不过看上去有点异样。"
+  x = -3
+  y = 2
+  z = 0
+    }
+
+  room_exits "baxian" {
+    room_id = rooms.baxian.id
+    west = rooms.xiaolu2.id
+    }
+
+
+  room_characters "baxian" {
+    room_id = rooms.baxian.id
+    characters = [
+      { id = characters.laodaoshi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/beidajie.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "beidajie" {
+      name = "北大街"
+      description = "这是灵州北大街，干净、宽敞、安静。双人合抱的杨树十步一株， 整齐的排在路的两边。西面和东面都是高高的围墙，南面通向城中心， 北面就是西夏皇宫大门了。因为是皇城和城中心的唯一连接通道，便不 容许在两边开店，显得特别清静。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "beidajie" {
+    room_id = rooms.beidajie.id
+    north = rooms.gonggate.id
+    south = rooms.center.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/biangate.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "biangate" {
+      name = "边门"
+      description = "这里是皇宫的边门，供侍卫和内侍们出入之用，宫里所需的东西一 般都由此运入，因为比较偏僻，守卫的卫士也不多。"
+  x = -6
+  y = 2
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "west" && objectp(present("wei shi", environment(me)))
+direction = "west"
+  message = "卫士对你大吼一声：放肆！那不是你能进去的地方。"
+}
+
+]
+    }
+
+  room_exits "biangate" {
+    room_id = rooms.biangate.id
+    east = rooms.xiaolu3.id
+    }
+
+
+  room_characters "biangate" {
+    room_id = rooms.biangate.id
+    characters = [
+      { id = characters.gongweishi.id },
+      { id = characters.gongweishi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/biaoqiyin.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "biaoqiyin" {
+      name = "骠骑营"
+      description = "这里是皇室禁卫军的驻地，在灵州城西北，骠骑营占地面积庞大， 北面是营房，南面是小校场，西面紧挨着城墙是一排马厩，有东营门 和南营门通向皇宫和大街。骠骑营的军士俱是西夏军中千挑万选的猛 士，平时负责皇城外围的警戒，皇上出巡时便挑起开道护卫的重责， 战时更是一支生力军。"
+  x = -2
+  y = 0
+  z = 0
+    }
+
+  room_exits "biaoqiyin" {
+    room_id = rooms.biaoqiyin.id
+    northwest = rooms.ximen.id
+    west = rooms.malan.id
+    east = rooms.xidajie.id
+    north = rooms.yinfang.id
+    south = rooms.xiaoxiaochang.id
+    }
+
+
+  room_characters "biaoqiyin" {
+    room_id = rooms.biaoqiyin.id
+    characters = [
+      { id = characters.xixiabing.id },
+      { id = characters.xixiabing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/center.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "center" {
+      name = "城中心"
+      description = "这里是西夏都城灵州的中心广场，也是四条大街的交汇处，北面是 皇城，南面是商业繁华地段，西面是普通商人区和骠骑营，东面衙门和 王公贵族们的府第。灵州是西域最大的物资集散地和商业中心，也是西 域通往中原的必经之地。各色人等来来往往，马嘶人喊，热闹非凡，广 场空地上卖艺的、要饭的、大腹便便的财主、提笼携鸟的王公贵戚到处 都是，偶尔也有行色匆匆的江湖人士一晃而过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "center" {
+    room_id = rooms.center.id
+    west = rooms.xidajie.id
+    east = rooms.dongdajie.id
+    north = rooms.beidajie.id
+    south = rooms.nandajie.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/chema.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "chema" {
+      name = "车马店"
+      description = "一家低档的车马客栈，建筑相当陈旧，很不起眼，不过由于价钱低 廉，又是在北门的交通要道上，三教九流多选择这里落脚，生意也相当 不错，你也可以在这里打听到当地的风土人情。     墙上挂着一个牌子(paizi)。"
+  x = 1
+  y = -1
+  z = 0
+item_desc = {
+ paizi = "楼上雅房，每夜十两白银。"
+}
+valid_leave = [
+{
+   # 阻挡条件（原样保留）： !me->query_temp("rent_paid") && dir == "up" 
+direction = "up"
+  message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊！"
+}
+,
+{
+   # 阻挡条件（原样保留）： me->query_temp("rent_paid") && dir == "west" 
+direction = "west"
+  message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就走了呢！ 旁人还以为小店伺候不周呢！"
+}
+
+]
+    }
+
+  room_exits "chema" {
+    room_id = rooms.chema.id
+    up = rooms.chema2.id
+    west = rooms.nandajie.id
+    east = rooms.majiu.id
+    }
+
+
+  room_characters "chema" {
+    room_id = rooms.chema.id
+    characters = [
+      { id = characters.xiaoer.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/chema2.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "chema2" {
+      name = "车马店二楼"
+      description = "这是一间很大的客房，陈设十分简陋。靠墙放了十几张小木床，不 少客人正和衣而卧，满屋子都是呼呼的打酣声。西边有张床是空的，你 蹑手蹑脚地走了过去。"
+  x = 1
+  y = -1
+  z = 1
+    }
+
+  room_exits "chema2" {
+    room_id = rooms.chema2.id
+    down = rooms.chema.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/chiling.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "chiling" {
+      name = "赤陵"
+      description = "这是西夏前身平夏部开国之主拓跋赤辞的陵墓，因为年代久远而看 上去有点破败，不大的石制坟头，几棵小草从石缝里伸出头来看着你， 陵前的两棵松柏倒长得非常高大。毕竟是几百年前种的呀。"
+  x = 4
+  y = 8
+  z = -1
+    }
+
+  room_exits "chiling" {
+    room_id = rooms.chiling.id
+    north = rooms.deling.id
+    south = rooms.wangling.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/dalu.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "dalu" {
+      name = "林中大路"
+      description = "这是山间的土路，勉强可以通行一辆大车，路面上有两条深深的车 辙印，路边山坡上全是参天巨木，看上去密不透风，这里很幽静，除了 偶尔几声鸟叫才能打破寂静。土路向北蜿蜒延伸转了个弯。"
+  x = 3
+  y = 2
+  z = 0
+    }
+
+  room_exits "dalu" {
+    room_id = rooms.dalu.id
+    northeast = rooms.luorilin2.id
+    north = rooms.xiaolu1.id
+    south = rooms.luorilin1.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/daodian.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "daodian" {
+      name = "刀店"
+      description = "这是一家以卖西域特产“英吉儿”小刀出名的兵器铺，上百把各 式各样的“英吉儿”小刀整整齐齐的摆放在柜台上，说是小刀却尺寸 型制大不相同，既有长仅一寸的柳叶飞刀、也有长达三尺的阿拉伯弯 刀。最多的还是长六寸，宽三分，背厚一黍，刃薄如纸的匕首柜台后 面的墙上也挂着些长剑，钢刀，铁杖等中原兵器。"
+  x = -1
+  y = -1
+  z = 0
+    }
+
+  room_exits "daodian" {
+    room_id = rooms.daodian.id
+    north = rooms.xidajie.id
+    }
+
+
+  room_characters "daodian" {
+    room_id = rooms.daodian.id
+    characters = [
+      { id = characters.daodianhuoji.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/dawu.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "dawu" {
+      name = "林中大屋"
+      description = "这是一幢原木制成的三层高大建筑，看上去已有些年月但仍坚固异 常，底层是由数根巨木架空，一座木梯通向二楼，三楼的楼顶上挂着一 面绣着一条青龙的大旗，看上去已破旧不堪。人们只知道主人姓李。"
+  x = 5
+  y = 5
+  z = 0
+    }
+
+  room_exits "dawu" {
+    room_id = rooms.dawu.id
+    out = rooms.kongdi.id
+    }
+
+
+  room_characters "dawu" {
+    room_id = rooms.dawu.id
+    characters = [
+      { id = characters.ye.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/deling.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "deling" {
+      name = "德陵"
+      description = "这就是李元昊的父亲赵德明的陵墓。宽十米高五米，为整个王陵中 最高大也是最完整的建筑。陵前左右各有两个石人武士护卫，陵前有汉 白玉栏杆围成的平台，上面石桌石凳一应俱全。"
+  x = 4
+  y = 9
+  z = -1
+    }
+
+  room_exits "deling" {
+    room_id = rooms.deling.id
+    north = rooms.gongling.id
+    south = rooms.chiling.id
+    }
+
+
+  room_characters "deling" {
+    room_id = rooms.deling.id
+    characters = [
+      { id = characters.shiwushi.id },
+      { id = characters.shiwushi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/dongdajie.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "dongdajie" {
+      name = "东大街"
+      description = "这是灵州东大街，同样的宽阔与干净，相比西大街的冷清要热闹多 了，街上人来人往，熙熙攘攘，几个小孩正在胡同口玩耍，南面有不少 人围在一起，北面是衙门，路边有条狗正在追一只猫。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongdajie" {
+    room_id = rooms.dongdajie.id
+    east = rooms.dongmen.id
+    west = rooms.center.id
+    north = rooms.yamen.id
+    south = rooms.jiangjungate.id
+    }
+
+
+  room_characters "dongdajie" {
+    room_id = rooms.dongdajie.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/dongmen.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "dongmen" {
+      name = "灵州东门"
+      description = "这是东城门，城门正上方刻着几个西夏文字。城墙上贴着几张官府 告示。一条路往东北通向城外一片松林。"
+  x = 2
+  y = 0
+  z = 0
+    }
+
+  room_exits "dongmen" {
+    room_id = rooms.dongmen.id
+    northeast = rooms.luorilin1.id
+    west = rooms.dongdajie.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/gonggate.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "gonggate" {
+      name = "皇宫大门"
+      description = "这里就是西夏皇宫正门，四扇宽阔的朱红大门，上面包着拳头大的 铜钉。门的两边站着两排衣甲鲜明的武士，戒备深严。"
+  x = 0
+  y = 2
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "north" && objectp(present("wei shi", environment(me)))
+direction = "north"
+  message = "卫士对你大吼一声：放肆！那不是你能进去的地方。"
+}
+
+]
+    }
+
+  room_exits "gonggate" {
+    room_id = rooms.gonggate.id
+    south = rooms.beidajie.id
+    north = rooms.gongsquare.id
+    }
+
+
+  room_characters "gonggate" {
+    room_id = rooms.gonggate.id
+    characters = [
+      { id = characters.gongweishi.id },
+      { id = characters.gongweishi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/gongling.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "gongling" {
+      name = "恭陵"
+      description = "这是西夏先主拓跋思恭的陵墓，拓跋思恭当年率党项羌族归顺唐太 宗李世民而被赐姓为李，这李思恭在唐初也是极有名的大将。如今因为 年代久远他的陵墓也不复当年的雄伟而看上去有点破败。"
+  x = 4
+  y = 10
+  z = -1
+    }
+
+  room_exits "gongling" {
+    room_id = rooms.gongling.id
+    south = rooms.deling.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/gongsquare.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "gongsquare" {
+      name = "皇宫广场"
+      description = "这里是皇宫广场。"
+  x = 0
+  y = 3
+  z = 0
+    }
+
+  room_exits "gongsquare" {
+    room_id = rooms.gongsquare.id
+    south = rooms.gonggate.id
+    }
+
+
+  room_characters "gongsquare" {
+    room_id = rooms.gongsquare.id
+    characters = [
+      { id = characters.gongweishi.id },
+      { id = characters.gongweishi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/huangyangtan.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "huangyangtan" {
+      name = "黄羊滩"
+      description = "这里就是灵州西南著名的黄羊滩，本来是黄河边的一大片 水泽盐碱地，黄河水泛滥后退去形成了一大片低洼水滩，上面 水草丰盛，春秋两季吸引了大批塞北的野生黄羊到这里来饮水 嬉戏，休养生息，成为塞上一大景观。"
+  x = 0
+  y = -3
+  z = 0
+    }
+
+  room_exits "huangyangtan" {
+    room_id = rooms.huangyangtan.id
+    southwest = rooms.xiaoba.id
+    north = rooms.nanmen.id
+    }
+
+
+
+
+  room_items "huangyangtan" {
+    room_id = rooms.huangyangtan.id
+    items = [
+      { id = items.yang3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/jiangjungate.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "jiangjungate" {
+      name = "大将军府"
+      description = "这里是征东大将军赫连铁树的府第，在东大街的正中，对面就是衙 门。一色高檐大屋，两个校尉看上去彪悍骁勇，此刻正神气活现的挎着 弯刀守在门前。"
+  x = 1
+  y = -1
+  z = 0
+valid_leave = [
+{
+  direction = ~
+  message = "校尉上前挡住你，朗声说道：这位请回吧。老爷不见客。"
+}
+
+]
+    }
+
+  room_exits "jiangjungate" {
+    room_id = rooms.jiangjungate.id
+    south = rooms.jiangjunyuan.id
+    north = rooms.dongdajie.id
+    }
+
+
+  room_characters "jiangjungate" {
+    room_id = rooms.jiangjungate.id
+    characters = [
+      { id = characters.xiaowei.id },
+      { id = characters.xiaowei.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/jiangjunyuan.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "jiangjunyuan" {
+      name = "将军府大院"
+      description = "这里是将军府的大院，当面一堵宽阔的白玉照壁，上书“忠心报国” 四个大字，落款是当今西夏皇帝李元昊。一色的青砖铺地，有几个仆役 正在院中洒扫，南面是内宅，东面是个小院。"
+  x = 1
+  y = -2
+  z = 0
+    }
+
+  room_exits "jiangjunyuan" {
+    room_id = rooms.jiangjunyuan.id
+    north = rooms.jiangjungate.id
+    south = rooms.neizai.id
+    east = rooms.xiaoyuan.id
+    }
+
+
+  room_characters "jiangjunyuan" {
+    room_id = rooms.jiangjunyuan.id
+    characters = [
+      { id = characters.jiading.id },
+      { id = characters.jiading.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/jiuguan.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "jiuguan" {
+      name = "酒馆"
+      description = "这是一家小酒馆，紧挨着灵州西门，五开间的门面，规模颇大。来 来往往的行人多到这里来打尖歇脚，叫上一盘阿訇宰杀的牛羊肉，喝上 几口醇香的马奶酒，酒足饭饱离店之际带上几个有脸盆大小的馕，花钱 不多又很实惠，生意特别兴旺。北面是厨房，南面是上楼的楼梯，东面 有条布帘。"
+  x = -1
+  y = -1
+  z = 0
+    }
+
+  room_exits "jiuguan" {
+    room_id = rooms.jiuguan.id
+    east = rooms.nandajie.id
+    }
+
+
+  room_characters "jiuguan" {
+    room_id = rooms.jiuguan.id
+    characters = [
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/kongdi.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "kongdi" {
+      name = "林中空地"
+      description = "这是山谷中的一大块空地，错落有致的分布着数十幢木屋，炊烟袅 袅的飘荡在上空，几个小孩正在追逐嬉闹，两条大狗没精打采的趴在屋 檐下晒太阳，周围山坡上同样是巨木参天，看上去这里就象一个气氛祥 和的小村。靠北的空地上有座大木屋看上去有点引人注目。西北和东北 各有一条山路。"
+  x = 5
+  y = 5
+  z = 0
+    }
+
+  room_exits "kongdi" {
+    room_id = rooms.kongdi.id
+    northwest = rooms.qingxinquan.id
+    southwest = rooms.tulu.id
+    in = rooms.dawu.id
+    }
+
+
+  room_characters "kongdi" {
+    room_id = rooms.kongdi.id
+    characters = [
+      { id = characters.nan.id }    ]
+  }
+
+
+
+  room_items "kongdi" {
+    room_id = rooms.kongdi.id
+    items = [
+      { id = items.gou2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/luorilin1.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "luorilin1" {
+      name = "落日林"
+      description = "落日林位于灵州的东北，在西夏王陵和灵州的中间，延绵百里，多 长的是红松。"
+  x = 3
+  y = 1
+  z = 0
+    }
+
+  room_exits "luorilin1" {
+    room_id = rooms.luorilin1.id
+    southwest = rooms.dongmen.id
+    north = rooms.dalu.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/luorilin2.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "luorilin2" {
+      name = "落日林"
+      description = "这里是一片方圆百里的森林，林中古木参天，树荫蔽日，光线黯淡， 落日林的伐木场就在这里，这里是树木大都树龄百年以上，数人和抱的 大树比比皆是，一条不宽的土路蜿蜒通向前方。"
+  x = 4
+  y = 3
+  z = 0
+    }
+
+  room_exits "luorilin2" {
+    room_id = rooms.luorilin2.id
+    southwest = rooms.dalu.id
+    north = rooms.tulu.id
+    }
+
+
+
+
+  room_items "luorilin2" {
+    room_id = rooms.luorilin2.id
+    items = [
+      { id = items.shuzhi.id },
+      { id = items.dushe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/majiu.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "majiu" {
+      name = "马厩"
+      description = "这是车马店边上的马厩，常年供应新鲜草料。据说此地民风淳朴， 客人只要住店，马夫们就会把马牵到马厩好生照看，将它们喂饱饮足， 再洗刷得干乾净净。一直伺候到客人离店上路。马厩中堆放著几堆草料， 正中有一口泔槽。马厩雨檐下的烂木柱上钉着一块破木牌(paizi)。"
+  x = 2
+  y = -1
+  z = 0
+    }
+
+  room_exits "majiu" {
+    room_id = rooms.majiu.id
+    west = rooms.chema.id
+    }
+
+
+  room_characters "majiu" {
+    room_id = rooms.majiu.id
+    characters = [
+      { id = characters.mafu.id }    ]
+  }
+
+
+
+  room_items "majiu" {
+    room_id = rooms.majiu.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/malan.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "malan" {
+      name = "马栏"
+      description = "这里是骠骑营的马栏，清一色的蒙古高头战马。西夏军中多是骑 兵，所以行军作战来去如风，快若闪电，西夏铁骑的彪悍连大辽的骑 兵都颇有不如。骠骑营的战马俱是精选，膘肥体壮，马夫们正给马槽 里添黑豆和草料，一股马粪味和草料的混合味道飘了过来。"
+  x = -3
+  y = 0
+  z = 0
+    }
+
+  room_exits "malan" {
+    room_id = rooms.malan.id
+    east = rooms.biaoqiyin.id
+    }
+
+
+
+
+  room_items "malan" {
+    room_id = rooms.malan.id
+    items = [
+      { id = items.zaohongma.id },
+      { id = items.huangbiaoma.id },
+      { id = items.ziliuma.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/mingshazhou.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "mingshazhou" {
+      name = "鸣沙洲"
+      description = "鸣沙洲就在青铜峡的上游，附近就是连天的沙丘，这里正好处在 风口，强劲的西北风吹的黄沙漫天横飞、嗡嗡作响，鸣沙洲由此得名， 一走到这里你就觉得透体冰凉，飞沙打在你脸上生疼生疼，让你睁不 开眼睛。"
+  x = -3
+  y = -6
+  z = 0
+    }
+
+  room_exits "mingshazhou" {
+    room_id = rooms.mingshazhou.id
+    southwest = rooms.xuanhebao.id
+    northeast = rooms.qingtongxia.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/nandajie.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "nandajie" {
+      name = "南大街"
+      description = "这里是灵州南大街，也是商业最繁华的地段，一眼望去只见街两旁 店铺林立，五颜六色的店招和旗帜在阳光的照耀下分外鲜明，街上行人 很是不少，西面是一家酒馆，东面是一家车马店。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "nandajie" {
+    room_id = rooms.nandajie.id
+    west = rooms.jiuguan.id
+    east = rooms.chema.id
+    north = rooms.center.id
+    south = rooms.nanmen.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/nanmen.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "nanmen" {
+      name = "灵州南门"
+      description = "这是南城门，城门正上方刻得有几个西夏文字。城墙上贴着几张官 府告示。一条大路往南通向黄羊滩。"
+  x = 0
+  y = -2
+  z = 0
+    }
+
+  room_exits "nanmen" {
+    room_id = rooms.nanmen.id
+    north = rooms.nandajie.id
+    south = rooms.huangyangtan.id
+    }
+
+
+  room_characters "nanmen" {
+    room_id = rooms.nanmen.id
+    characters = [
+      { id = characters.xiaowei.id },
+      { id = characters.xixiabing.id },
+      { id = characters.xixiabing.id },
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/neizai.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "neizai" {
+      name = "将军府内宅"
+      description = "这里是将军府的内宅，零零落落的有一些小瓦房，小路幽静，隐隐 约约的能够听见一些人在嬉笑玩耍。"
+  x = 1
+  y = -3
+  z = 0
+    }
+
+  room_exits "neizai" {
+    room_id = rooms.neizai.id
+    north = rooms.jiangjunyuan.id
+    }
+
+
+  room_characters "neizai" {
+    room_id = rooms.neizai.id
+    characters = [
+      { id = characters.hao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/qingtongxia.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "qingtongxia" {
+      name = "青铜峡"
+      description = "这里是黄河河西走廊段中最遄急的青铜峡，黄河一路流淌到这里， 宽阔的河面一下子变窄，两岸的峭壁象一对生死恋人紧紧不愿分开， 黄河却象不懂事的孩子从中硬挤而过，结果水流一下子变得咆哮起来， 波浪滔天，水声隆隆。"
+  x = -2
+  y = -5
+  z = 0
+    }
+
+  room_exits "qingtongxia" {
+    room_id = rooms.qingtongxia.id
+    southwest = rooms.mingshazhou.id
+    northeast = rooms.xiaoba.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/qingxinquan.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "qingxinquan" {
+      name = "清新泉"
+      description = "这是山中的一口清泉，位于林场北面的山坡上，周围是翠绿的松树， 潺潺的山泉水从泉眼缓缓的涌出，聚成一个小潭，小潭水又溢出流向山 下，旁边一条小路通向山下。"
+  x = 4
+  y = 6
+  z = 0
+    }
+
+  room_exits "qingxinquan" {
+    room_id = rooms.qingxinquan.id
+    northdown = rooms.wangling.id
+    southeast = rooms.kongdi.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/tulu.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "tulu" {
+      name = "林中土路"
+      description = "这是山间的土路，勉强可以通行一辆大车，路面上有两条深深的车 辙印，路边山坡上全是参天巨木，看上去密不透风，这里很幽静，除了 偶尔几声鸟叫才能打破寂静。土路向东北蜿蜒延伸转了个弯，西南面隐 约可以看见林中一面大屋顶上的旗帜。"
+  x = 4
+  y = 4
+  z = 0
+    }
+
+  room_exits "tulu" {
+    room_id = rooms.tulu.id
+    northeast = rooms.kongdi.id
+    south = rooms.luorilin2.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/wangling.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "wangling" {
+      name = "西夏王陵"
+      description = "这里是西夏历代皇帝的陵墓。座落在灵州西北，周围四山环抱，环 境非常幽静，周围种满了苍松翠柏，其中当今西夏皇帝李元昊的父亲赵 德明的陵墓最为雄伟，概因西夏虽自唐初开国，然直至宋初赵德明才称 皇帝，所以李元昊常自比为李世民第二，而把他父亲陵墓造的异常宏大。"
+  x = 4
+  y = 7
+  z = -1
+    }
+
+  room_exits "wangling" {
+    room_id = rooms.wangling.id
+    north = rooms.chiling.id
+    southup = rooms.qingxinquan.id
+    }
+
+
+  room_characters "wangling" {
+    room_id = rooms.wangling.id
+    characters = [
+      { id = characters.shiwushi.id },
+      { id = characters.shiwushi.id },
+      { id = characters.shiwushi.id },
+      { id = characters.shiwushi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/xiaoba.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "xiaoba" {
+      name = "小坝"
+      description = "这里是黄河边的一条小支流大柳河与黄河汇合的地方，当地百 姓为了防止黄河的泥沙倒灌进大柳河而在这里修了一座小小的石坝， 小坝不高，有三孔泄沙的洞，一扇结实的石闸门，两边是绞盘用来 控制闸门的升降。小坝使得大柳河两岸的百姓免受了黄河泥沙的侵 扰。"
+  x = -1
+  y = -4
+  z = 0
+    }
+
+  room_exits "xiaoba" {
+    room_id = rooms.xiaoba.id
+    southwest = rooms.qingtongxia.id
+    northeast = rooms.huangyangtan.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/xiaolu1.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "xiaolu1" {
+      name = "林中小路"
+      description = "这是陡坡上的一条杂草丛生的羊肠小路，看起来平时没什 么人迹，路边开着不知名野花，两边松树依然高大挺拔。阳光 透下来照的你身上是斑斑驳驳的影子。"
+  x = -4
+  y = 1
+  z = 0
+    }
+
+  room_exits "xiaolu1" {
+    room_id = rooms.xiaolu1.id
+    north = rooms.xiaolu2.id
+    south = rooms.dalu.id
+    }
+
+
+
+
+  room_items "xiaolu1" {
+    room_id = rooms.xiaolu1.id
+    items = [
+      { id = items.tu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/xiaolu2.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "xiaolu2" {
+      name = "林中小路"
+      description = "这是陡坡上的一条杂草丛生的羊肠小路，看起来平时没什么人迹， 路边开着不知名的野花，两边的松树依然高大、挺拔。阳光透下来照 的你身上是斑斑驳驳的影子。"
+  x = -4
+  y = 2
+  z = 0
+    }
+
+  room_exits "xiaolu2" {
+    room_id = rooms.xiaolu2.id
+    east = rooms.baxian.id
+    west = rooms.xiaolu3.id
+    south = rooms.xiaolu1.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/xiaolu3.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "xiaolu3" {
+      name = "林中小路"
+      description = "这是陡坡上的一条杂草丛生的羊肠小路，看起来平时没什 么人迹，路边开着不知名的野花，两边松树依然高大挺拔。阳 光透下来照的你身上是斑斑驳驳的影子。"
+  x = -5
+  y = 2
+  z = 0
+    }
+
+  room_exits "xiaolu3" {
+    room_id = rooms.xiaolu3.id
+    east = rooms.xiaolu2.id
+    west = rooms.biangate.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/xiaoxiaochang.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "xiaoxiaochang" {
+      name = "小校场"
+      description = "这里是骠骑营的小校场，平时军士们就在这里操练，地上很平整， 居中是指挥台，有根长达数丈的旗杆，杆顶一面绣着一条红龙的骠骑 营白色军旗迎风猎猎作响。平时军士们一天三练，早上出操，中午出 城练马术和野战，晚上则负责皇城外的巡逻。"
+  x = -2
+  y = -1
+  z = 0
+    }
+
+  room_exits "xiaoxiaochang" {
+    room_id = rooms.xiaoxiaochang.id
+    north = rooms.biaoqiyin.id
+    }
+
+
+  room_characters "xiaoxiaochang" {
+    room_id = rooms.xiaoxiaochang.id
+    characters = [
+      { id = characters.xixiabing.id },
+      { id = characters.xixiabing.id },
+      { id = characters.xixiabing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/xiaoyuan.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "xiaoyuan" {
+      name = "将军府小院"
+      description = "这里是将军府的小院，一色的青砖铺地，有几个仆役正在院中洒 扫，远远的传来一阵嬉笑声。"
+  x = 2
+  y = -2
+  z = 0
+    }
+
+  room_exits "xiaoyuan" {
+    room_id = rooms.xiaoyuan.id
+    west = rooms.jiangjunyuan.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/xidajie.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "xidajie" {
+      name = "西大街"
+      description = "这是灵州西大街，街道宽敞而干净，青砖砌的路面被雨水冲得光明 如镜，街道两侧的瓦房高大而宏伟，双人合抱的杨树十步一株，整齐地 排在两边。大街北面一对大红灯笼，悬挂在朱门两旁。这里就是一品堂 总坛。大街南面有几家店铺，街道有点冷清。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "xidajie" {
+    room_id = rooms.xidajie.id
+    west = rooms.biaoqiyin.id
+    east = rooms.center.id
+    north = rooms.yipingate.id
+    south = rooms.daodian.id
+    }
+
+
+  room_characters "xidajie" {
+    room_id = rooms.xidajie.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/ximen.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "ximen" {
+      name = "灵州西门"
+      description = "这是西城门，城门正上方刻着几个西夏文字。城墙上贴着几张官府 告示。一条路往西通向城外玄冥峰。"
+  x = -3
+  y = 1
+  z = 0
+    }
+
+  room_exits "ximen" {
+    room_id = rooms.ximen.id
+    southeast = rooms.biaoqiyin.id
+    west = rooms.xiaolu1.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/xuanhebao.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "xuanhebao" {
+      name = "宣和堡"
+      description = "这里就是西北小镇宣和堡，南面是黄河，西面是沙漠，只 有这里有片不大的绿洲，住户们都是从关内迁移过来的，大多 以经营手工艺品为生，这里的手织羊毛挂毯颇有名气。每逢节 日附近的百姓都来到这摆渡过河 (river)到关内去赶集。河案 边熙熙攘攘，人们都在挣着叫船过河。"
+  x = -4
+  y = -7
+  z = 0
+  # River actions: yell [boat] / cross
+  # - yell boat: summons river_boat to arrive_room (3s)
+  # - cross: requires dodge>=270 & neili>=300, moves to arrive_room
+    }
+
+  room_exits "xuanhebao" {
+    room_id = rooms.xuanhebao.id
+    river = rooms.guchangcheng.id
+    northeast = rooms.mingshazhou.id
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/yamen.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "yamen" {
+      name = "衙门"
+      description = "这是灵州府衙所在地，黑色大门平时紧紧闭着，门前四个身着皂服 的衙役没精打采的拄着水火棍站着。边上有个大鼓。"
+  x = 1
+  y = 1
+  z = 0
+    }
+
+  room_exits "yamen" {
+    room_id = rooms.yamen.id
+    south = rooms.dongdajie.id
+    }
+
+
+  room_characters "yamen" {
+    room_id = rooms.yamen.id
+    characters = [
+      { id = characters.yayi.id },
+      { id = characters.yayi.id },
+      { id = characters.yayi.id },
+      { id = characters.yayi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/yinfang.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "yinfang" {
+      name = "营房"
+      description = "这里是骠骑营的营房，一排排木屋煞是齐整, 门口空地许多军士 们围成个圈在喧闹，西夏军中崇尚勇力，佩服的是英雄，士兵个个都 是彪形大汉。"
+  x = -2
+  y = 1
+  z = 0
+    }
+
+  room_exits "yinfang" {
+    room_id = rooms.yinfang.id
+    south = rooms.biaoqiyin.id
+    }
+
+
+  room_characters "yinfang" {
+    room_id = rooms.yinfang.id
+    characters = [
+      { id = characters.xixiabing.id },
+      { id = characters.xixiabing.id },
+      { id = characters.xixiabing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/yipindating.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "yipindating" {
+      name = "一品堂大厅"
+      description = "这里是西夏一品堂的大厅，厅内阔大，显得有点阴晦。数十根合抱 大柱撑着看不清顶的飞檐，厅里气氛很是森森煞人。北面正中一副楠木 匾额(bian)高悬，金字蓝底，隐隐生威。"
+  x = -1
+  y = 3
+  z = 0
+item_desc = {
+ bian = "一品堂"
+}
+    }
+
+  room_exits "yipindating" {
+    room_id = rooms.yipindating.id
+    south = rooms.yipindayuan.id
+    }
+
+
+  room_characters "yipindating" {
+    room_id = rooms.yipindating.id
+    characters = [
+      { id = characters.yipinwushi.id },
+      { id = characters.yipinwushi.id },
+      { id = characters.yipinwushi.id },
+      { id = characters.yipinwushi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/yipindayuan.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "yipindayuan" {
+      name = "一品堂大院"
+      description = "这里是西夏一品堂的大院，青石铺就的石板路，从大门直通正北面 那座构筑巍峨的一品堂大厅。东面立着一个旗杆，杆上一面不知颜色的 锦旗挺精神地飘扬着，杆后是个低矮一些的回廊厅堂。西面一排平房看 那样子也象是帐房。大院里有几棵老树撑着几片树荫，中央有一些武士 在练拳。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "yipindayuan" {
+    room_id = rooms.yipindayuan.id
+    west = rooms.yipinzhang.id
+    east = rooms.yipinjieyin.id
+    south = rooms.yipingate.id
+    north = rooms.yipindating.id
+    }
+
+
+  room_characters "yipindayuan" {
+    room_id = rooms.yipindayuan.id
+    characters = [
+      { id = characters.yun.id },
+      { id = characters.yipinwushi.id },
+      { id = characters.yipinwushi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/yipingate.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "yipingate" {
+      name = "一品堂大门"
+      description = "这里是西夏一品堂的所在地，座落在西大街的北面，是一座高大的 石头建筑，看上去坚固之极。门口有两个武士站着，既不高大也不彪悍， 和皇宫门口的守卫差远啦，就是和衙门口的衙役比也颇有不如，但从他 们阴鹫的眼神里你不难看出他们是身怀绝技的高手，谁不知西夏一品堂 广招天下高手为皇上效命。"
+  x = -1
+  y = 1
+  z = 0
+    }
+
+  room_exits "yipingate" {
+    room_id = rooms.yipingate.id
+    south = rooms.xidajie.id
+    north = rooms.yipindayuan.id
+    }
+
+
+  room_characters "yipingate" {
+    room_id = rooms.yipingate.id
+    characters = [
+      { id = characters.yipinwushi.id },
+      { id = characters.yipinwushi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/yipinjieyin.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "yipinjieyin" {
+      name = "接引堂"
+      description = "这里是西夏一品堂的接引堂，每个自愿加入一品堂的江湖高手，都 需有人充当接引人，查清底细，方能入堂。入堂以后，才有资格由赫连 主管分派任务，为一品堂效力。好在这里有个专职接引的汉子，为一品 堂广开贤路，所以一品堂在江湖中也确实声名雀起。"
+  x = 0
+  y = 2
+  z = 0
+    }
+
+  room_exits "yipinjieyin" {
+    room_id = rooms.yipinjieyin.id
+    west = rooms.yipindayuan.id
+    }
+
+
+  room_characters "yipinjieyin" {
+    room_id = rooms.yipinjieyin.id
+    characters = [
+      { id = characters.nuerhai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/yipinzhang.c by LPCConverter
+# Zone: lingzhou
+
+    rooms "yipinzhang" {
+      name = "一品堂帐房"
+      description = "这里是西夏一品堂的帐房，一品堂中的武士做下大案以后往往就是 来这里领取他们的酬劳的。一个老先生两眼一抹黑在此管帐。"
+  x = -2
+  y = 2
+  z = 0
+    }
+
+  room_exits "yipinzhang" {
+    room_id = rooms.yipinzhang.id
+    east = rooms.yipindayuan.id
+    }
+
+
+  room_characters "yipinzhang" {
+    room_id = rooms.yipinzhang.id
+    characters = [
+      { id = characters.zhangfang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/daodianhuoji.c by LPCConverter
+# Zone: lingzhou
+
+    characters "daodianhuoji" {
+      name = "小伙计"
+      description = ""
+  gender = "男性"
+  age = 33
+  shen_type = 1
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 400
+  }
+
+  # vendor_goods: "/clone/weapon/tudao" (file not found)
+  # vendor_goods: "/clone/weapon/dagger" (file not found)
+  # vendor_goods: "/clone/weapon/wandao" (file not found)
+  # vendor_goods: "/clone/weapon/gangdao" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/gongweishi.c by LPCConverter
+# Zone: lingzhou
+
+    characters "gongweishi" {
+      name = "皇宫卫士"
+      description = "这是皇宫的大内卫士，身披钢甲，手执长剑。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 90000
+    dex = 16
+    max_neili = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "blade" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 80 }
+  ]
+
+
+  carry = [
+    { id = items.tiejia.id },
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/hao.c by LPCConverter
+# Zone: lingzhou
+
+    characters "hao" {
+      name = "郝连铁树"
+      description = "这是西夏的征东大将军，声势显赫。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 300000
+    dex = 16
+    max_neili = 3000
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 120 },
+    { skill = "force" level = 120 },
+    { skill = "club" level = 120 },
+    { skill = "zhongping-qiang" level = 80 },
+    { skill = "dodge" level = 120 },
+    { skill = "parry" level = 120 },
+    { type = "club" skill = "zhongping-qiang" }
+  ]
+
+
+  carry = [
+    { id = items.tiejia.id },
+    { id = items.changqiang.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/laodaoshi.c by LPCConverter
+# Zone: lingzhou
+
+    characters "laodaoshi" {
+      name = "老道士"
+      description = "这是一个精壮老道士。"
+  gender = "男性"
+  age = 67
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "peace"
+    combat_exp = 20000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 100
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "tiyunzong" level = 50 },
+    { skill = "taiji-shengong" level = 50 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "tiyunzong" }
+  ]
+
+
+  carry = [
+    { id = items.greyrobe.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/nan.c by LPCConverter
+# Zone: lingzhou
+
+    characters "nan" {
+      name = "南海鳄神"
+      description = "此人的一个脑袋大得异乎寻常，一张阔嘴中露出白森森的利齿， 一对眼睛却是又圆又小。"
+  nickname = "凶神恶煞"
+  gender = "男性"
+  age = 34
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 250000
+    dex = 16
+    max_neili = 2000
+    str = 25
+  }
+
+  skills = [
+    { skill = "strike" level = 100 },
+    { skill = "claw" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "sanyin-wugongzhao" level = 100 },
+    { skill = "chousui-zhang" level = 100 },
+    { skill = "huagong-dafa" level = 100 },
+    { skill = "shaolin-shenfa" level = 100 },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "force" skill = "huagong-dafa" },
+    { type = "parry" skill = "chousui-zhang" },
+    { type = "claw" skill = "sanyin-wugongzhao" },
+    { type = "strike" skill = "chousui-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.bupao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/nuerhai.c by LPCConverter
+# Zone: lingzhou
+
+    characters "nuerhai" {
+      name = "努儿海"
+      description = "一个身形极高、鼻子极大，声音阴阳怪气的汉子。"
+  title = "西夏一品堂接引使"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    dex = 16
+    max_neili = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 80 }
+  ]
+
+
+  carry = [
+    { id = items.tiejia.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["join"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/shiwushi.c by LPCConverter
+# Zone: lingzhou
+
+    characters "shiwushi" {
+      name = "石人武士"
+      description = "这是守护西夏王陵的石人武士。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 30000
+    dex = 16
+    max_neili = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "club" level = 80 },
+    { skill = "zhongping-qiang" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 80 },
+    { type = "club" skill = "zhongping-qiang" }
+  ]
+
+
+  carry = [
+    { id = items.tiejia.id },
+    { id = items.changqiang.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/xiaoer.c by LPCConverter
+# Zone: lingzhou
+
+    characters "xiaoer" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+
+  accept = [
+    { kind = "money" min = 1000 accept = true msg = "小二一哈腰，说道：多谢您老，客官请上楼歇息。" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/xiaoer2.c by LPCConverter
+# Zone: lingzhou
+
+    characters "xiaoer2" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  goods = [
+    { id = items.paomo.id },
+    { id = items.kaoyangtui.id }
+  ]
+
+  # vendor_goods: "/d/xiyu/obj/nang" (file not found)
+  # vendor_goods: "/d/xiyu/obj/hu" (file not found)
+  # vendor_goods: "/d/xiyu/obj/yangrou" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/xiaowei.c by LPCConverter
+# Zone: lingzhou
+
+    characters "xiaowei" {
+      name = "校尉"
+      description = "一个魁武的西夏军官。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000
+    dex = 16
+    max_neili = 100
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.junfu.id },
+    { id = items.wandao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/xixiabing.c by LPCConverter
+# Zone: lingzhou
+
+    characters "xixiabing" {
+      name = "西夏兵"
+      description = "这是名魁武的西夏兵，身披钢甲，手执长枪。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 12000
+    dex = 16
+    max_neili = 100
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "force" level = 30 },
+    { skill = "club" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.changqiang.id },
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/ye.c by LPCConverter
+# Zone: lingzhou
+
+    characters "ye" {
+      name = "叶二娘"
+      description = "一个中年女子，身穿淡青色长袍，左右脸颊上各有三条血痕。"
+  nickname = "无恶不作"
+  gender = "女性"
+  age = 43
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 300000
+    dex = 16
+    max_neili = 2000
+    str = 25
+  }
+
+  skills = [
+    { skill = "strike" level = 100 },
+    { skill = "claw" level = 100 },
+    { skill = "force" level = 100 },
+    { skill = "blade" level = 100 },
+    { skill = "dodge" level = 100 },
+    { skill = "parry" level = 100 },
+    { skill = "sanyin-wugongzhao" level = 100 },
+    { skill = "chousui-zhang" level = 100 },
+    { skill = "huagong-dafa" level = 100 },
+    { skill = "kuangfeng-blade" level = 100 },
+    { skill = "shaolin-shenfa" level = 100 },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "force" skill = "huagong-dafa" },
+    { type = "blade" skill = "kuangfeng-blade" },
+    { type = "parry" skill = "kuangfeng-blade" },
+    { type = "claw" skill = "sanyin-wugongzhao" },
+    { type = "strike" skill = "chousui-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.bupao.id },
+    { id = items.gangdao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/yipinwushi.c by LPCConverter
+# Zone: lingzhou
+
+    characters "yipinwushi" {
+      name = "一品堂武士"
+      description = "这是一品堂的护院武士，身披钢甲，手执弯刀。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000
+    dex = 16
+    max_neili = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "blade" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 80 }
+  ]
+
+
+  carry = [
+    { id = items.tiejia.id },
+    { id = items.gangdao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/yun.c by LPCConverter
+# Zone: lingzhou
+
+    characters "yun" {
+      name = "云中鹤"
+      description = "此人长得又高又瘦象一杆大竹竿，说话声音忽尖忽粗，十分难 听，穿着一身青衫，一副色迷迷模样。"
+  nickname = "穷凶极恶"
+  gender = "男性"
+  age = 34
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 150000
+    dex = 16
+    max_neili = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "strike" level = 80 },
+    { skill = "claw" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "sanyin-wugongzhao" level = 80 },
+    { skill = "chousui-zhang" level = 80 },
+    { skill = "huagong-dafa" level = 80 },
+    { skill = "shaolin-shenfa" level = 80 },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "force" skill = "huagong-dafa" },
+    { type = "parry" skill = "chousui-zhang" },
+    { type = "claw" skill = "sanyin-wugongzhao" },
+    { type = "strike" skill = "chousui-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.bupao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/zhangfang.c by LPCConverter
+# Zone: lingzhou
+
+    characters "zhangfang" {
+      name = "帐房先生"
+      description = "他一身邋遢，整天迷迷糊糊的睡不醒模样。"
+  gender = "男性"
+  age = 61
+  shen_type = 0
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 1000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 100
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/obj/kaoyangtui.c by LPCConverter
+# Zone: lingzhou
+
+    characters "kaoyangtui" {
+      name = "烤羊腿"
+      description = "一条香喷喷的烤羊腿。"
+    }
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/obj/paomo.c by LPCConverter
+# Zone: lingzhou
+
+    characters "paomo" {
+      name = "羊肉泡馍"
+      description = "一碗香喷喷的羊肉泡馍。"
+    }

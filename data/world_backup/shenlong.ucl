@@ -1,0 +1,1073 @@
+zones "shenlong" {
+  name = "shenlong"
+}
+
+# Generated from C:/files/git/mud/d/shenlong/caodi.c by LPCConverter
+# Zone: shenlong
+
+    rooms "caodi" {
+      name = "草地"
+      description = "这里是一片青青的草地，有几个少年在玩耍。四周开满了各色的 鲜花，一阵凉风吹过，清新的空气中传来几缕淡淡的花香。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caodi" {
+    room_id = rooms.caodi.id
+  south = rooms.kongdi.id
+  north = rooms.xiaowu.id  }
+
+# Generated from C:/files/git/mud/d/shenlong/caoping.c by LPCConverter
+# Zone: shenlong
+
+    rooms "caoping" {
+      name = "草坪"
+      description = "这里是一片青青的草坪，四周开满了各色的鲜花，一阵凉风吹 过，清新的空气中传来几缕淡淡的花香。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caoping" {
+    room_id = rooms.caoping.id
+  east = rooms.kongdi.id  }
+
+# Generated from C:/files/git/mud/d/shenlong/chufang.c by LPCConverter
+# Zone: shenlong
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "这是神龙岛的厨房，中央摆着大圆桌，周围则放着几张竹椅。神 龙岛的弟子都在这里用餐。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+  west = rooms.zoulang.id  }
+
+
+
+
+  room_items "chufang" {
+    room_id = rooms.chufang.id
+    items = [
+      { id = items.jitui.id },
+      { id = items.jiudai.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenlong/dahai.c by LPCConverter
+# Zone: shenlong
+
+    rooms "dahai" {
+      name = "大海"
+      description = "你正处在茫茫大海之中。你极目远望，只见海天一线，周围连个 黑点都没有，耳边只有海浪的拍打声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/damen.c by LPCConverter
+# Zone: shenlong
+
+    rooms "damen" {
+      name = "大门"
+      description = "这是间很大的竹屋。门外站着几个年轻弟子.再住北就是神龙教大 厅，隔得虽远，却也可以听得到厅上众人齐声念颂之声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "damen" {
+    room_id = rooms.damen.id
+  south = rooms.road2.id
+  north = rooms.dating.id  }
+
+# Generated from C:/files/git/mud/d/shenlong/dating.c by LPCConverter
+# Zone: shenlong
+
+    rooms "dating" {
+      name = "神龙教大厅"
+      description = "过了一条长廊，眼前突然现出一座大厅。此厅硕大无朋，足可容 千人之众。只见一群群少年男女衣分五色，分站五个方位。青、白、 黑、黄四色的都是少年，穿红的却是少女，背上各负短剑。每一队约 有百人，煞是壮观。"
+  x = 0
+  y = 0
+  z = 0
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "wugen daozhang"
+  direction = "south"
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
+    }
+
+  room_exits "dating" {
+    room_id = rooms.dating.id
+  south = rooms.damen.id
+  north = rooms.houting.id
+  west = rooms.zhulin.id
+  east = rooms.zoulang.id  }
+
+
+  room_characters "dating" {
+    room_id = rooms.dating.id
+    characters = [
+      { id = characters.yunsumei.id }    ]
+  }
+
+
+
+  room_items "dating" {
+    room_id = rooms.dating.id
+    items = [
+      { id = items.hong.id },
+      { id = items.wugen.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenlong/haitan.c by LPCConverter
+# Zone: shenlong
+
+    rooms "haitan" {
+      name = "海滩"
+      description = "这里就是神龙岛了。南边是一望无际的大海；往北则是片 灌木林。岛上的空气似乎又热又闷，咸湿的海风中带着一股腥 臭，又夹杂了一缕奇特的花香，让人闻起来十分怪异。海边还 泊着一艘大船(chuan)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ chuan = "这是神龙岛对外联系的大船。岛上的客人或弟子只要 上船(enter)就可以回中原。"
+}
+    }
+
+  room_exits "haitan" {
+    room_id = rooms.haitan.id
+  north = rooms.lin1.id  }
+
+# Generated from C:/files/git/mud/d/shenlong/houting.c by LPCConverter
+# Zone: shenlong
+
+    rooms "houting" {
+      name = "神龙教后厅"
+      description = "这是神龙教的议事场所--潜龙厅。此厅较小，前面有两张大竹椅， 两边摆着五个小凳，看来是神龙教五龙使平时所坐的位置。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houting" {
+    room_id = rooms.houting.id
+  south = rooms.dating.id  }
+
+
+
+
+  room_items "houting" {
+    room_id = rooms.houting.id
+    items = [
+      { id = items.yin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenlong/jushi.c by LPCConverter
+# Zone: shenlong
+
+    rooms "jushi" {
+      name = "竹屋"
+      description = "这里是神龙教主的居室----仙福居，中间一张大桌，墙上挂着一 副水墨画，没有什么特别出奇之处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jushi" {
+    room_id = rooms.jushi.id
+  east = rooms.zhulin.id  }
+
+
+  room_characters "jushi" {
+    room_id = rooms.jushi.id
+    characters = [
+      { id = characters.mujianping.id },
+      { id = characters.fangyi.id }    ]
+  }
+
+
+
+  room_items "jushi" {
+    room_id = rooms.jushi.id
+    items = [
+      { id = items.su.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenlong/kongdi.c by LPCConverter
+# Zone: shenlong
+
+    rooms "kongdi" {
+      name = "空地"
+      description = "这是一片空地，四周都是乱石，杂草丛生。北边是一间小屋。南 面是深深的灌木林。东面有一条工整的大道，西面是一片草坪。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kongdi" {
+    room_id = rooms.kongdi.id
+  west = rooms.caoping.id
+  east = rooms.road.id
+  north = rooms.caodi.id
+  south = rooms.lin2.id  }
+
+
+  room_characters "kongdi" {
+    room_id = rooms.kongdi.id
+    characters = [
+      { id = characters.dizi.id }    ]
+  }
+
+
+
+  room_items "kongdi" {
+    room_id = rooms.kongdi.id
+    items = [
+      { id = items.xu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenlong/lin1.c by LPCConverter
+# Zone: shenlong
+
+    rooms "lin1" {
+      name = "灌木林"
+      description = "这是一片灌木林。你没有想到这样一个孤岛上竟有这样大一片灌 木林(bush)，不由感到非常吃惊。前面根本没有路，四周的密林中长 满了杂草。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ bush = "这片灌木林太深了,要想过去恐怕只有砍出一条路了(kan)。"
+}
+    }
+
+  room_exits "lin1" {
+    room_id = rooms.lin1.id
+  south = rooms.haitan.id  }
+
+
+
+
+  room_items "lin1" {
+    room_id = rooms.lin1.id
+    items = [
+      { id = items.dushe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenlong/lin2.c by LPCConverter
+# Zone: shenlong
+
+    rooms "lin2" {
+      name = "灌木林"
+      description = "这是一片灌木林。走了不远，你就可以看得见前面的空地了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lin2" {
+    room_id = rooms.lin2.id
+  north = rooms.kongdi.id
+  south = rooms.lin1.id  }
+
+
+
+
+  room_items "lin2" {
+    room_id = rooms.lin2.id
+    items = [
+      { id = items.dushe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenlong/road.c by LPCConverter
+# Zone: shenlong
+
+    rooms "road" {
+      name = "大道"
+      description = "这是一条宽敞的大道。全由乱石堆成，显然曾花了不少人力。西 边是一片开阔地。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road" {
+    room_id = rooms.road.id
+  west = rooms.kongdi.id
+  north = rooms.road2.id  }
+
+
+  room_characters "road" {
+    room_id = rooms.road.id
+    characters = [
+      { id = characters.old.id },
+      { id = characters.old.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenlong/road2.c by LPCConverter
+# Zone: shenlong
+
+    rooms "road2" {
+      name = "山道"
+      description = "这是一条狭窄的山道，向着北方一座山峰行去。转过了几个山坡，抬 头遥见峰顶建着几座大竹屋。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "road2" {
+    room_id = rooms.road2.id
+  north = rooms.damen.id
+  south = rooms.road.id  }
+
+
+  room_characters "road2" {
+    room_id = rooms.road2.id
+    characters = [
+      { id = characters.dizi.id },
+      { id = characters.old.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenlong/wuchang.c by LPCConverter
+# Zone: shenlong
+
+    rooms "wuchang" {
+      name = "练武场"
+      description = "这是一个宽大的练武场，有几个手执短剑的少年少女在这里练功。 旁边站着几人，有男有女，年纪轻的只有二三十岁，老的已有六七十 岁，身上却不带兵刃。东边、南边是一片更大的练武场，北边则通向 一条走廊。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuchang" {
+    room_id = rooms.wuchang.id
+  north = rooms.zoulang.id
+  south = rooms.wuchang2.id
+  east = rooms.wuchang3.id  }
+
+# Generated from C:/files/git/mud/d/shenlong/wuchang2.c by LPCConverter
+# Zone: shenlong
+
+    rooms "wuchang2" {
+      name = "练武场"
+      description = "这是一个比北面更为宽大的练武场，许多手执短剑的少年少女在 这里练功。不同于北面的是这里的老者很少，几乎都是一些年轻人在 练习武功。有一些则在窃窃私语，不知道在干些什么。一直向北走穿 越整个练功场就到走廊了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuchang2" {
+    room_id = rooms.wuchang2.id
+  north = rooms.wuchang.id  }
+
+# Generated from C:/files/git/mud/d/shenlong/wuchang3.c by LPCConverter
+# Zone: shenlong
+
+    rooms "wuchang3" {
+      name = "练武场"
+      description = "这是一个比西面更为宽大的练武场，许多手执短剑的少年少女在这里 练功。有的也在一旁观看，似乎在揣摩什么。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuchang3" {
+    room_id = rooms.wuchang3.id
+  west = rooms.wuchang.id  }
+
+# Generated from C:/files/git/mud/d/shenlong/xiaowu.c by LPCConverter
+# Zone: shenlong
+
+    rooms "xiaowu" {
+      name = "小屋"
+      description = "一进小屋，只见墙上挂满了无数名贵的字画，书架上也堆满了平 时难得一见的各种各样的书籍。一个相貌英武的中年文士正对着一幅 字画唉声叹气。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaowu" {
+    room_id = rooms.xiaowu.id
+  south = rooms.caodi.id  }
+
+
+
+
+  room_items "xiaowu" {
+    room_id = rooms.xiaowu.id
+    items = [
+      { id = items.lu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenlong/xiuxishi.c by LPCConverter
+# Zone: shenlong
+
+    rooms "xiuxishi" {
+      name = "休息室"
+      description = "这是间整洁的小房，房里别无他物，只有中间放着一张收拾得干 干净净的床，这是神龙岛弟子的休息场所。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiuxishi" {
+    room_id = rooms.xiuxishi.id
+  south = rooms.zoulang.id  }
+
+# Generated from C:/files/git/mud/d/shenlong/zhulin.c by LPCConverter
+# Zone: shenlong
+
+    rooms "zhulin" {
+      name = "竹林"
+      description = "这里是一片青竹林，一阵凉风吹过，竹叶沙沙作响。东边是神龙 教的大厅，西边则是教主的居室。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhulin" {
+    room_id = rooms.zhulin.id
+  east = rooms.dating.id
+  west = rooms.jushi.id  }
+
+# Generated from C:/files/git/mud/d/shenlong/zoulang.c by LPCConverter
+# Zone: shenlong
+
+    rooms "zoulang" {
+      name = "走廊"
+      description = "这是一条走廊，两边都是石头柱子。西边是大厅，东边是厨房， 南面是一片广阔的练武场，北面则是休息室。"
+  x = 0
+  y = 0
+  z = 0
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "zhang danyue"
+  direction = "west"
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
+    }
+
+  room_exits "zoulang" {
+    room_id = rooms.zoulang.id
+  east = rooms.chufang.id
+  west = rooms.dating.id
+  south = rooms.wuchang.id
+  north = rooms.xiuxishi.id  }
+
+
+
+
+  room_items "zoulang" {
+    room_id = rooms.zoulang.id
+    items = [
+      { id = items.zhang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/shenlong/npc/boy.c by LPCConverter
+# Zone: shenlong
+
+    characters "boy" {
+      name = "年轻弟子"
+      description = "这是一个神龙教弟子，一袭黄衣，混身透着一股邪气。"
+  title = "神龙教黄龙使座下弟子"
+  gender = "男性"
+
+  combat = {
+    attitude = "peaceful"
+    max_jing = 150
+    max_neili = 200
+    max_qi = 200
+  }
+
+  chat_chance = 3
+chats = [
+    "年轻弟子忽然高声叫道：教主宝训，时刻在心，建功克敌，无事不成！",
+    "年轻弟子忽然齐声叫道：众志齐心可成城，威震天下无比伦！",
+    "年轻弟子忽然齐声叫道：神龙飞天齐仰望，教主声威盖八方！",
+    "年轻弟子忽然齐声叫道：乘风破浪逞英豪，教主如同日月光！",
+    "年轻弟子齐声叫道：教主永享仙福，寿与天齐！"
+]
+
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 60 },
+    { skill = "shedao-qigong" level = 30 },
+    { type = "sword" skill = "shedao-qigong" }
+  ]
+
+
+  carry = [
+    { id = items.xionghuang.id },
+    { id = items.duanjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/npc/boy2.c by LPCConverter
+# Zone: shenlong
+
+    characters "boy2" {
+      name = "年轻弟子"
+      description = "这是一个神龙教弟子，一袭黑衣，混身透着一股邪气。"
+  title = "神龙教黑龙使座下弟子"
+  gender = "男性"
+
+  combat = {
+    attitude = "peaceful"
+    max_jing = 150
+    max_neili = 200
+    max_qi = 200
+  }
+
+  chat_chance = 3
+chats = [
+    "年轻弟子忽然高声叫道：教主宝训，时刻在心，建功克敌，无事不成！",
+    "年轻弟子忽然齐声叫道：众志齐心可成城，威震天下无比伦！",
+    "年轻弟子忽然齐声叫道：神龙飞天齐仰望，教主声威盖八方！",
+    "年轻弟子忽然齐声叫道：乘风破浪逞英豪，教主如同日月光！",
+    "年轻弟子齐声叫道：教主永享仙福，寿与天齐！"
+]
+
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 60 },
+    { skill = "shedao-qigong" level = 30 },
+    { type = "sword" skill = "shedao-qigong" }
+  ]
+
+
+  carry = [
+    { id = items.xionghuang.id },
+    { id = items.duanjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/npc/boy3.c by LPCConverter
+# Zone: shenlong
+
+    characters "boy3" {
+      name = "年轻弟子"
+      description = "这是一个神龙教弟子，一袭白衣，混身透着一股邪气。"
+  title = "神龙教白龙使座下弟子"
+  gender = "男性"
+
+  combat = {
+    attitude = "peaceful"
+    max_jing = 150
+    max_neili = 200
+    max_qi = 200
+  }
+
+  chat_chance = 3
+chats = [
+    "年轻弟子忽然高声叫道：教主宝训，时刻在心，建功克敌，无事不成！",
+    "年轻弟子忽然齐声叫道：众志齐心可成城，威震天下无比伦！",
+    "年轻弟子忽然齐声叫道：神龙飞天齐仰望，教主声威盖八方！",
+    "年轻弟子忽然齐声叫道：乘风破浪逞英豪，教主如同日月光！",
+    "年轻弟子齐声叫道：教主永享仙福，寿与天齐！"
+]
+
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 60 },
+    { skill = "shedao-qigong" level = 30 },
+    { type = "sword" skill = "shedao-qigong" }
+  ]
+
+
+  carry = [
+    { id = items.xionghuang.id },
+    { id = items.duanjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/npc/boy4.c by LPCConverter
+# Zone: shenlong
+
+    characters "boy4" {
+      name = "年轻弟子"
+      description = "这是一个神龙教弟子，一袭青衣，混身透着一股邪气。"
+  title = "神龙教青龙使座下弟子"
+  gender = "男性"
+
+  combat = {
+    attitude = "peaceful"
+    max_jing = 150
+    max_neili = 200
+    max_qi = 200
+  }
+
+  chat_chance = 3
+chats = [
+    "年轻弟子忽然高声叫道：教主宝训，时刻在心，建功克敌，无事不成！",
+    "年轻弟子忽然齐声叫道：众志齐心可成城，威震天下无比伦！",
+    "年轻弟子忽然齐声叫道：神龙飞天齐仰望，教主声威盖八方！",
+    "年轻弟子忽然齐声叫道：乘风破浪逞英豪，教主如同日月光！",
+    "年轻弟子齐声叫道：教主永享仙福，寿与天齐！"
+]
+
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 60 },
+    { skill = "shedao-qigong" level = 30 },
+    { type = "sword" skill = "shedao-qigong" }
+  ]
+
+
+  carry = [
+    { id = items.xionghuang.id },
+    { id = items.duanjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/npc/chuanfu.c by LPCConverter
+# Zone: shenlong
+
+    characters "chuanfu" {
+      name = "老船夫"
+      description = "这是一个老船夫。饱经风霜的脸上透出一丝狡猾。他经常出海，以前 曾经去过神龙岛。现在他拥有一艘大船可以出海。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 56
+  shen_type = 1
+
+  combat = {
+    combat_exp = 1000000
+    max_neili = 1000
+  }
+
+  inquiries = [
+    { key = "出海" value = "(: chu_hai :)" },
+    { key = "灵蛇岛" value = "灵蛇岛上有一帮大恶人，千万不能去！" },
+    { key = "神龙岛" value = "神龙岛上有一帮大恶人，千万不能去！" }
+  ]
+
+  skills = [
+    { skill = "force" level = 200 },
+    { skill = "unarmed" level = 400 },
+    { skill = "dodge" level = 200 },
+    { skill = "parry" level = 200 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "money" min = 10000 accept = true msg = "你在海上航行了很久很久......." },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/npc/dizi.c by LPCConverter
+# Zone: shenlong
+
+    characters "dizi" {
+      name = "弟子"
+      description = "这是一个神龙教弟子，混身透着一股邪气。"
+  title = "神龙教"
+  gender = "男性"
+
+  combat = {
+    attitude = "peaceful"
+    max_jing = 150
+    max_neili = 200
+    max_qi = 200
+  }
+
+  chat_chance = 3
+chats = [
+    "年轻弟子忽然高声叫道：教主宝训，时刻在心，建功克敌，无事不成！",
+    "年轻弟子忽然齐声叫道：众志齐心可成城，威震天下无比伦！",
+    "年轻弟子忽然齐声叫道：神龙飞天齐仰望，教主声威盖八方！",
+    "年轻弟子忽然齐声叫道：乘风破浪逞英豪，教主如同日月光！",
+    "年轻弟子齐声叫道：教主永享仙福，寿与天齐！"
+]
+
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 50 },
+    { skill = "blade" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.xionghuang.id },
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/npc/fangyi.c by LPCConverter
+# Zone: shenlong
+
+    characters "fangyi" {
+      name = "方怡"
+      description = "她原来是沐王府家将，现在是神龙教赤龙门女弟子，长得活泼可爱。"
+  title = "神龙教赤龙使座下弟子"
+  gender = "女性"
+
+  combat = {
+    attitude = "peaceful"
+    max_jing = 150
+    max_neili = 200
+    max_qi = 200
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 60 },
+    { skill = "shedao-qigong" level = 30 },
+    { type = "sword" skill = "shedao-qigong" }
+  ]
+
+
+  carry = [
+    { id = items.xionghuang.id },
+    { id = items.duanjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/npc/girl.c by LPCConverter
+# Zone: shenlong
+
+    characters "girl" {
+      name = "年轻女弟子"
+      description = "这是一个神龙教女弟子，一袭红衣，长得颇为可爱。"
+  title = "神龙教赤龙使座下弟子"
+  gender = "女性"
+
+  combat = {
+    attitude = "peaceful"
+    max_jing = 150
+    max_neili = 200
+    max_qi = 200
+  }
+
+  chat_chance = 3
+chats = [
+    "年轻弟子忽然高声叫道：教主宝训，时刻在心，建功克敌，无事不成！",
+    "年轻弟子忽然齐声叫道：众志齐心可成城，威震天下无比伦！",
+    "年轻弟子忽然齐声叫道：神龙飞天齐仰望，教主声威盖八方！",
+    "年轻弟子忽然齐声叫道：乘风破浪逞英豪，教主如同日月光！",
+    "年轻弟子齐声叫道：教主永享仙福，寿与天齐！"
+]
+
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 60 },
+    { skill = "shedao-qigong" level = 30 },
+    { type = "sword" skill = "shedao-qigong" }
+  ]
+
+
+  carry = [
+    { id = items.xionghuang.id },
+    { id = items.duanjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/npc/mujianping.c by LPCConverter
+# Zone: shenlong
+
+    characters "mujianping" {
+      name = "沐剑屏"
+      description = "她是沐王府小郡主，流落江湖成了神龙教赤龙门女弟子，长得十分娇羞秀美。"
+  title = "神龙教赤龙使座下弟子"
+  gender = "女性"
+  shen_type = 0
+
+  combat = {
+    attitude = "peaceful"
+    max_jing = 150
+    max_neili = 200
+    max_qi = 200
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 60 },
+    { skill = "shedao-qigong" level = 30 },
+    { type = "sword" skill = "shedao-qigong" }
+  ]
+
+
+  carry = [
+    { id = items.xionghuang.id },
+    { id = items.duanjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/npc/old.c by LPCConverter
+# Zone: shenlong
+
+    characters "old" {
+      name = "老者"
+      description = "这是一个神龙教老者，太阳穴高耸，两眼炯炯有神，显然武功甚高。 然而神色郁郁，对一帮年轻男女颇为有礼，似乎害怕什么，样子十分可怜。"
+  title = "神龙教老者"
+  gender = "男性"
+
+  combat = {
+    attitude = "peaceful"
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "sword" level = 80 }
+  ]
+
+
+  carry = [
+    { id = items.xionghuang.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/npc/yunsumei.c by LPCConverter
+# Zone: shenlong
+
+    characters "yunsumei" {
+      name = "云素梅"
+      description = "这是一个神龙教女弟子，一袭红衣，长得颇为可爱。"
+  title = "神龙教赤龙使座下弟子"
+  gender = "女性"
+
+  combat = {
+    attitude = "peaceful"
+    max_jing = 150
+    max_neili = 200
+    max_qi = 200
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 60 },
+    { skill = "shedao-qigong" level = 30 },
+    { type = "sword" skill = "shedao-qigong" }
+  ]
+
+
+  carry = [
+    { id = items.xionghuang.id },
+    { id = items.duanjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/npc/zhang3.c by LPCConverter
+# Zone: shenlong
+
+    characters "zhang3" {
+      name = "章老三"
+      description = "这是一个干瘦老头，一双小眼睛贼闪发光。"
+  title = "神龙教小头目"
+  gender = "男性"
+  age = 44
+  score = 2000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 25000
+    dex = 20
+    max_neili = 500
+    str = 25
+  }
+
+  inquiries = [
+    { key = "入教" value = "一般人是入不了我神龙教的(join shenlongjiao)。" },
+    { key = "口号" value = "万年不老！永享仙福！寿与天齐！文武仁圣！" },
+    { key = "教主" value = "教主脾气不好，要讨他欢心才好。" },
+    { key = "洪安通" value = "教主脾气不好，要讨他欢心才好。" },
+    { key = "神龙教" value = "一般人是入不了我神龙教的(join shenlongjiao)。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "unarmed" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "parry" level = 70 },
+    { skill = "yixingbu" level = 40 },
+    { skill = "shenlong-bashi" level = 50 },
+    { type = "parry" skill = "shenlong-bashi" },
+    { type = "dodge" skill = "yixingbu" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["join"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/obj/baihua.c by LPCConverter
+# Zone: shenlong
+
+    items "baihua" {
+      name = "百花腹蛇膏"
+      description = "这是一枚珍贵的百花腹蛇膏。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/obj/hua.c by LPCConverter
+# Zone: shenlong
+
+    items "hua" {
+      name = "百香花"
+      description = "这是一朵鲜艳的花，花香浓郁异常。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/obj/hua2.c by LPCConverter
+# Zone: shenlong
+
+    items "hua2" {
+      name = "无名花"
+      description = "这是一朵无名小花，花蕊虽小，却十分美丽。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/obj/hua3.c by LPCConverter
+# Zone: shenlong
+
+    items "hua3" {
+      name = "断肠花"
+      description = "这是一朵断肠花，通体通红，鲜嫩欲滴，美丽异常。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/obj/hua4.c by LPCConverter
+# Zone: shenlong
+
+    items "hua4" {
+      name = "翡翠兰"
+      description = "这是一朵千年难得一见的翡翠兰，据说能解百毒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/obj/jiudai.c by LPCConverter
+# Zone: shenlong
+
+    items "jiudai" {
+      name = "牛皮酒袋"
+      description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/obj/mitao.c by LPCConverter
+# Zone: shenlong
+
+    items "mitao" {
+      name = "水蜜桃"
+      description = "一碟水灵新鲜的水蜜桃。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/obj/usedgao.c by LPCConverter
+# Zone: shenlong
+
+    items "usedgao" {
+      name = "用过的百花腹蛇膏"
+      description = "这是一张用过的百花腹蛇膏。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/shenlong/obj/xionghuang.c by LPCConverter
+# Zone: shenlong
+
+    items "xionghuang" {
+      name = "雄黄"
+      description = "这是一包雄黄，据说可驱百毒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

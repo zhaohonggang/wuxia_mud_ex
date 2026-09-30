@@ -1,0 +1,159 @@
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/huanggong/inwell.c by LPCConverter
+# Zone: huanggong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!arg && (arg != "mutong") && (arg != "string"))  →  
+# ==== CONDITIONAL BRANCHES (do_jump) ====
+  # if (!arg && (arg != "wall")&& (arg != "string"))  →  
+  # if ( arg=="wall" )  →  message_vision( '\\\\\n$N接连试了好几次，可是井壁太滑，怎么也上不去。\\\\\n', me);
+  # if ( arg=="string" )  →  message_vision( '$N顺着长绳往上爬，终于爬出了深井，重见天日。\\\\\n', me); message_vision( '$N仰天长笑道：这世上就没有我做不成的事啊，哈哈哈。。。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_climb) ====
+  # if (!arg||arg=="")  →  
+  # if ( arg=="mutong")  →  message_vision( '\\\\\n$N试著去抓木桶，但总是差一点够着，要能跳高一点就好了。\\\\\n', me);
+  # if ( arg=="string")  →  message_vision( '\\\\\n$N试著去抓长绳，但总是差一点够着，要能跳高一点就好了。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_reach) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_climb
+  # UNHANDLED FUNCTION: do_jump
+  # UNHANDLED FUNCTION: do_reach
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/huanggong/shufang.c by LPCConverter
+# Zone: huanggong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !arg || arg=="")  →  
+  # if ( arg=="desk")  →  message_vision('你轻轻一按桌角,突然墙上书架列开一道暗门.\\\\\n', this_player());
+# ==== CONDITIONAL BRANCHES (do_press) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_press
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/huanggong/zoulang1.c by LPCConverter
+# Zone: huanggong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_writing
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/huanggong/npc/shiwei.c by LPCConverter
+# Zone: huanggong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob = this_player()) && (int)ob->query_condition("killer"))  →  
+  # if ( interactive(ob = this_player()) && !is_fighting() )  →  message_vision('\\\\\n侍卫忽然对$N大喝一声：何方刁民，竟敢在此撒野！看刀！\\\\\n',this_player());
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch(random(10)) { case 1: message_vision("\n侍卫忽然对$N大喝一声：何方刁民，竟敢在此撒野！看刀！\n",this_player()); remove_call_out("kill_ob"); call_out("kill_ob", 1, ob); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/huanggong/npc/shiwei2.c by LPCConverter
+# Zone: huanggong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob = this_player()) && (int)ob->query_condition("killer"))  →  
+  # if ( interactive(ob = this_player()) && !is_fighting() )  →  message_vision('\\\\\n侍卫忽然对$N大喝一声：何方刁民，竟敢在此撒野！看刀！\\\\\n',this_player());
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch(random(10)) { case 1: message_vision("\n侍卫忽然对$N大喝一声：何方刁民，竟敢在此撒野！看刀！\n",this_player()); remove_call_out("kill_ob"); call_out("kill_ob", 1, ob); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/huanggong/obj/nverhong.c by LPCConverter
+# Zone: huanggong
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/huanggong/obj/yuchanda.c by LPCConverter
+# Zone: huanggong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("max_neili") < me->query_neili_limit())  →  
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/huanggong/obj/yuchi.c by LPCConverter
+# Zone: huanggong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

@@ -443,14 +443,23 @@ defmodule Kantele.World.Loader do
     end
   end
 
-  # 概率闲聊：conditions/random 命中后从台词池随机说一条
+  # 概率闲聊：ChatChance 门控（冷却 + 概率）命中后从台词池随机说一条。
+  #
+  # 必须用 ChatChance 而不是裸的 Conditions.Random：NPC 订阅了所在房间频道，
+  # ChatAction 又往同一频道发言，因此「发言 → 收到自己的事件 → 掷骰 → 再发言」
+  # 会自激。房间里有 N 个同配置 NPC 时繁殖率 = N × chance/100，mingjiao 的
+  # miaorenbuluo（4 个 miaozuwushi × chat_chance 30）达到 1.2 > 1，指数刷屏。
+  # ChatChance 的时间冷却把过程变成有界速率。详见该模块的 @moduledoc。
   defp chat_node(chance, chats)
        when is_integer(chance) and chance > 0 and is_list(chats) and chats != [] do
     %Kalevala.Brain.ConditionalSelector{
       nodes: [
         %Kalevala.Brain.Condition{
-          type: Kantele.Brain.Conditions.Random,
-          data: %{chance: chance}
+          type: Kantele.Brain.Conditions.ChatChance,
+          data: %{
+            chance: chance,
+            cooldown_ms: Kantele.Brain.Conditions.ChatChance.default_cooldown_ms()
+          }
         },
         %Kalevala.Brain.Action{
           type: Kantele.Character.ChatAction,

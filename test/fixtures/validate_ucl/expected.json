@@ -43,7 +43,8 @@
       "input": "raw bytes",
       "rules": [
         "these three patterns must each be found somewhere in the file (multiline search): ^\\s*zones\\s+\"\\w+\" ; ^\\s*rooms\\s+\"\\w+\" ; ^\\s*room_exits\\s+\"\\w+\"",
-        "the detail must list which ones are missing"
+        "the detail must list which ones are missing",
+        "EXEMPTION: a room-less (object-only) zone needs only the `zones` block. See _is_object_only_zone and fixture 47_ok_object_only_zone: the file must have `zones`, zero `rooms` AND zero `room_exits`, and at least one `items`/`characters` block."
       ]
     },
     "integrity": {
@@ -52,7 +53,8 @@
         "rooms_count = number of matches of ^\\s*rooms\\s+\"(\\w+)\"",
         "room_exits_count = number of matches of ^\\s*room_exits\\s+\"(\\w+)\"",
         "PASS requires rooms_count == room_exits_count AND rooms_count > 0",
-        "detail is `rooms(N) != room_exits(M)` or `no rooms defined`"
+        "detail is `rooms(N) != room_exits(M)` or `no rooms defined`",
+        "EXEMPTION: the same room-less (object-only) zones that structure exempts also PASS integrity. See _is_object_only_zone and fixture 47_ok_object_only_zone."
       ]
     },
     "chars": {
@@ -172,6 +174,12 @@
       "why": "regression fixture for the real mingjiao bug, again found by the container: miaorenbuluo.c writes a @TEXT block whose line ends with a continuation backslash, so the intended text is the two lines joined with no separator. The converter collapsed the newline to a space but left the backslash, emitting `kou\\ zhong`. elias_parser.yrl only has `words -> back_slash word words` and `words -> back_slash quotes words`, so a backslash before whitespace has no production and Elias.parse/1 aborts with `syntax error before: ', ['\" \"']'` - the reported token is the space the backslash was hiding. Measured with an explicitly constructed backslash: `a\\ b` and `a\\` both fail, `a\\bcd` and a plain space are fine. The fix is _LPC_CONTINUATION, applied in _sanitize_ucl_sval BEFORE newlines collapse to spaces. Well-formed UCL, so `chars` is the only check that fires.",
       "exit_code": 1,
       "failing_checks": ["Chars"]
+    },
+    {
+      "file": "47_ok_object_only_zone.ucl",
+      "why": "regression fixture for the real tangmen zone, which is object-only: mud/d/tangmen contains just obj/feidao.c and obj/jili.c, so its converted output has a `zones` block plus `items` blocks and NO rooms at all. That output is genuinely valid - Elias.parse/1 accepts it and Kantele.World.Loader.load/1 loads the whole world with it present - so `structure` and `integrity` must exempt it. The exemption is deliberately narrow (`_is_object_only_zone`): a `zones` block, zero `rooms` AND zero `room_exits` blocks, and at least one `items`/`characters` block as proof the converter ran. So 22_bad_integrity_zero_rooms (only a zones block, no objects) still fails, 21_bad_structure_no_exits (rooms but no room_exits) still fails, and exits-without-rooms still fails. Contrast 30_bad_integrity_mismatch, which has 2 rooms and must still fail.",
+      "exit_code": 0,
+      "failing_checks": []
     },
     {
       "file": "50_bad_encoding_crlf.ucl",

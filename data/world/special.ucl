@@ -1,0 +1,97 @@
+zones "special" {
+  name = "special"
+}
+
+# Generated from C:/files/git/mud/d/special/liudaolunhui/chushengdao.c by LPCConverter
+# Zone: special
+
+    rooms "chushengdao" {
+      name = "畜        生        道"
+      description = "飞禽走兽，弱肉强食。因学习邪见、邪法而生慢心的众生，喜 欢以邪见与人争论，因为怀着怨憎心，就会投生喜欢互相残害 的畜生道。性情怯弱，常怀惊恐的动物，也是因过去生惊吓他 人在先，而得出这样的果报。"
+  x = 0
+  y = 0
+  z = 1
+    }
+  room_exits "chushengdao" {
+    room_id = rooms.chushengdao.id
+    down = rooms.rendao.id
+    up = rooms.diyudao.id
+    }
+
+# Generated from C:/files/git/mud/d/special/liudaolunhui/diyudao.c by LPCConverter
+# Zone: special
+
+    rooms "diyudao" {
+      name = "地        狱        道"
+      description = "极寒极冷，受尽各种折磨，毫无喜乐之所。若与人间比较，第 一狱以人间三千七百五十年为一年，在此须受困一万年，相当 于人间一百三十五亿年。而到了第十八地狱，便以亿亿亿年为 单位，如此长期的受刑可谓是名符其实的万劫不复。"
+  x = 0
+  y = 0
+  z = 2
+    }
+  room_exits "diyudao" {
+    room_id = rooms.diyudao.id
+    down = rooms.chushengdao.id
+    up = rooms.eguidao.id
+    }
+
+# Generated from C:/files/git/mud/d/special/liudaolunhui/eguidao.c by LPCConverter
+# Zone: special
+
+    rooms "eguidao" {
+      name = "饿        鬼        道"
+      description = "哀嚎四起，环顾周围，遍是咽细如针，口大如炬，腹鼓如山的 饿鬼。前世造作的善恶业不同，在饿鬼道所受的果报也会不同。 饿鬼多是汲汲于饮食，但却四处奔走求食不能，所见池水却都 变成脓血而不能饮用，不是遇水成火就是喉细无法咽食。"
+  x = 0
+  y = 0
+  z = 3
+    }
+  room_exits "eguidao" {
+    room_id = rooms.eguidao.id
+    down = rooms.diyudao.id
+    up = rooms.tiandao.id
+    }
+
+# Generated from C:/files/git/mud/d/special/liudaolunhui/rendao.c by LPCConverter
+# Zone: special
+
+    rooms "rendao" {
+      name = "人        间        道"
+      description = "仿佛踏进了嘈杂的闹市，又如闯进了民家大院。欢笑声、哭泣 声、怒骂声相互交杂。喜怒哀乐、恩怨情仇，世间百态尽集于 此。尝尽人间种种酸甜苦辣，悲欢离合。于痛苦中诞生，又于 痛苦中消逝。怜我世人，忧患实多。怜我世人，忧患实多。"
+  x = 0
+  y = 0
+  z = 0
+    }
+  room_exits "rendao" {
+    room_id = rooms.rendao.id
+    up = rooms.chushengdao.id
+    }
+
+# Generated from C:/files/git/mud/d/special/liudaolunhui/tiandao.c by LPCConverter
+# Zone: special
+
+    rooms "tiandao" {
+      name = "天        极        道"
+      description = "茫茫云海，渺无边际。四周金光散布，祥云朵朵，远处有凤凰 盘绕，麒麟逐戏。耳边传来阵阵梵音，令你茫然不知所措。天 道众生遍及欲界、色界及无色界三界。欲界有六欲天，色界有 四禅十八天，无色界四天，共有二十八天。"
+  x = 0
+  y = 0
+  z = 4
+    }
+  room_exits "tiandao" {
+    room_id = rooms.tiandao.id
+    down = rooms.eguidao.id
+    up = rooms.xiuluodao.id
+    }
+
+# Generated from C:/files/git/mud/d/special/liudaolunhui/xiuluodao.c by LPCConverter
+# Zone: special
+
+    rooms "xiuluodao" {
+      name = "修        罗        道"
+      description = "阿修罗原是印度远古诸神之一，被视为恶神，属于凶猛好斗的 鬼神，经常与帝释天争斗不休。因有福报而没有德性有的说法 只是将他纳入鬼神中，或说是堕落的天人，而北传佛教将他列 为善道，南传佛教则归类入恶道中。福如天人，德非天人。"
+  x = 0
+  y = 0
+  z = 5
+    }
+  room_exits "xiuluodao" {
+    room_id = rooms.xiuluodao.id
+    down = rooms.tiandao.id
+    }

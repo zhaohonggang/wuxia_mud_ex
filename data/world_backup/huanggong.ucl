@@ -1,0 +1,423 @@
+zones "huanggong" {
+  name = "huanggong"
+}
+
+# Generated from C:/files/git/mud/d/huanggong/fang1.c by LPCConverter
+# Zone: huanggong
+
+    rooms "fang1" {
+      name = "房舍"
+      description = "这里是一间小屋，一个太监正在休息。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fang1" {
+    room_id = rooms.fang1.id
+  north = rooms.zoulang1.id  }
+
+
+  room_characters "fang1" {
+    room_id = rooms.fang1.id
+    characters = [
+      { id = characters.taijian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanggong/fang2.c by LPCConverter
+# Zone: huanggong
+
+    rooms "fang2" {
+      name = "房舍"
+      description = "这里是一间小屋，一个太监正在这里休息。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fang2" {
+    room_id = rooms.fang2.id
+  south = rooms.zoulang1.id  }
+
+
+  room_characters "fang2" {
+    room_id = rooms.fang2.id
+    characters = [
+      { id = characters.taijian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanggong/houhuayuan.c by LPCConverter
+# Zone: huanggong
+
+    rooms "houhuayuan" {
+      name = "后花苑"
+      description = "这里是皇上赏花的后花苑.平日里皇上时常会来这儿,和贵妃娘娘 一起赏花品茗.所以,这儿是平常太监,侍卫不能来的.这里的宫女多是 心灵手巧,精通花道的.放眼四顾,满目皆是似锦繁花,你仔细分辨,竟 然品目齐全,大凡你想得的,甚至你想都不敢想的,这里都有了.你不经 有些妒疾起皇帝老儿来."
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houhuayuan" {
+    room_id = rooms.houhuayuan.id
+  west = rooms.houhuayuan2.id
+  south = rooms.qihedian.id  }
+
+
+  room_characters "houhuayuan" {
+    room_id = rooms.houhuayuan.id
+    characters = [
+      { id = characters.gonnv.id },
+      { id = characters.gonnv.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanggong/houhuayuan2.c by LPCConverter
+# Zone: huanggong
+
+    rooms "houhuayuan2" {
+      name = "后花苑"
+      description = "这里是皇上赏花的后花苑.平日里皇上时常会来这儿,和贵妃娘娘 一起赏花品茗.所以,这儿是平常太监,侍卫不能来的.这里的宫女多是 心灵手巧,精通花道的.放眼四顾,满目皆是似锦繁花,你仔细分辨,竟 然品目齐全,大凡你想得的,甚至你想都不敢想的,这里都有了.你不经 有些妒疾起皇帝老儿来."
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houhuayuan2" {
+    room_id = rooms.houhuayuan2.id
+  east = rooms.houhuayuan.id
+  west = rooms.majuan.id  }
+
+
+  room_characters "houhuayuan2" {
+    room_id = rooms.houhuayuan2.id
+    characters = [
+      { id = characters.gonnv.id },
+      { id = characters.gonnv.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanggong/houyuan.c by LPCConverter
+# Zone: huanggong
+
+    rooms "houyuan" {
+      name = "清和殿后院"
+      description = "这里是清和殿后院。院里种着些青菜。墙角有一口水井(well)。 站在水井边往下看，只觉深不见底，井壁上满是滑溜溜的青苔。一个 轱辘吊着一根长绳，绳端系着一个木桶。东边是一条走廊，通往清和 殿。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houyuan" {
+    room_id = rooms.houyuan.id
+  east = rooms.zoulang1.id  }
+
+# Generated from C:/files/git/mud/d/huanggong/inwell.c by LPCConverter
+# Zone: huanggong
+
+    rooms "inwell" {
+      name = "井底"
+      description = "这是一口极深的水井。浮在水面往上看，只觉得圆圆的天空是那么可 爱。井壁(wall)上满是滑溜溜的青苔。一个轱辘吊着一根长绳(string)， 绳端系着一个木桶(mutong)。木桶悬在空中，离你很近，只差一点就可 以够得着。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+# Generated from C:/files/git/mud/d/huanggong/majuan.c by LPCConverter
+# Zone: huanggong
+
+    rooms "majuan" {
+      name = "马圈"
+      description = "皇家马圈，自然是好马云集。一排排齐整的马厩，一匹匹英挺 高头俊马，让你不由想起大草原上万马奔腾的壮伟景象。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "majuan" {
+    room_id = rooms.majuan.id
+  east = rooms.houhuayuan2.id  }
+
+# Generated from C:/files/git/mud/d/huanggong/qihedian.c by LPCConverter
+# Zone: huanggong
+
+    rooms "qihedian" {
+      name = "清和殿"
+      description = "这里是清和殿。西边是一条长长的走廊，通往后院。走廊上有几间卧房， 那里是宫中太监的住所。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qihedian" {
+    room_id = rooms.qihedian.id
+  south = rooms.tinglang3.id
+  west = rooms.zoulang1.id
+  north = rooms.houhuayuan.id  }
+
+
+  room_characters "qihedian" {
+    room_id = rooms.qihedian.id
+    characters = [
+      { id = characters.shiwei.id },
+      { id = characters.taijian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanggong/shanfang.c by LPCConverter
+# Zone: huanggong
+
+    rooms "shanfang" {
+      name = "御膳房"
+      description = "皇宫里的膳食与平常民间的自然不同,这里就是负责皇上用膳的御 膳房.你不禁想把这里的美味都尝一遍,可别忘了这可是皇宫啊."
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanfang" {
+    room_id = rooms.shanfang.id
+  north = rooms.tinglang2.id  }
+
+
+
+
+  room_items "shanfang" {
+    room_id = rooms.shanfang.id
+    items = [
+      { id = items.yuchi.id },
+      { id = items.nverhong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/huanggong/shufang.c by LPCConverter
+# Zone: huanggong
+
+    rooms "shufang" {
+      name = "御书房"
+      description = "皇上用功读书的御书房.四下齐整地排着几排书架,看来都是些名典 巨著,你暗自道,原来皇上也读这么多书啊.书房正中有张精雕的檀香木 桌(desk),桌上摆着几本封面精美的帛书."
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ desk = "一张制作精良的檀香木书桌."
+}
+    }
+
+  room_exits "shufang" {
+    room_id = rooms.shufang.id
+  south = rooms.tinglang1.id  }
+
+# Generated from C:/files/git/mud/d/huanggong/tinglang1.c by LPCConverter
+# Zone: huanggong
+
+    rooms "tinglang1" {
+      name = "厅廊"
+      description = "飞檐雕栏的厅廊.两边是喜人的花草,站在这儿,隐约听得到后宫里 嫔妃宫女们嬉笑的声音,宫里的人来来往往的,显得井井有条,看来宫里 的规矩挺严的.有几个官员神情紧张地站在这儿,等着皇上召见."
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tinglang1" {
+    room_id = rooms.tinglang1.id
+  north = rooms.shufang.id
+  south = rooms.tinglang2.id  }
+
+# Generated from C:/files/git/mud/d/huanggong/tinglang2.c by LPCConverter
+# Zone: huanggong
+
+    rooms "tinglang2" {
+      name = "厅廊"
+      description = "飞檐雕栏的厅廊.两边是喜人的花草,站在这儿,隐约听得到后宫里 嫔妃宫女们嬉笑的声音,宫里的人来来往往的,显得井井有条,看来宫里 的规矩挺严的."
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tinglang2" {
+    room_id = rooms.tinglang2.id
+  north = rooms.tinglang1.id
+  south = rooms.shanfang.id
+  west = rooms.tinglang3.id  }
+
+# Generated from C:/files/git/mud/d/huanggong/tinglang3.c by LPCConverter
+# Zone: huanggong
+
+    rooms "tinglang3" {
+      name = "厅廊"
+      description = "飞檐雕栏的厅廊.两边是喜人的花草,站在这儿,隐约听得到后宫里 嫔妃宫女们嬉笑的声音,宫里的人来来往往的,显得井井有条,看来宫里 的规矩挺严的."
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tinglang3" {
+    room_id = rooms.tinglang3.id
+  north = rooms.qihedian.id
+  east = rooms.tinglang2.id  }
+
+# Generated from C:/files/git/mud/d/huanggong/zoulang1.c by LPCConverter
+# Zone: huanggong
+
+    rooms "zoulang1" {
+      name = "走廊"
+      description = "这是一条走廊。房顶一侧支在西面的高墙上，另一侧则与东 侧的清和殿屋顶相连。彩梁画栋，连顶棚也用彩漆绘满了各种飞 天的图形，每幅精美的雕画似乎都在诉说一个娓娓动人的故事。 往西通往后院，南北都有房间。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zoulang1" {
+    room_id = rooms.zoulang1.id
+  west = rooms.houyuan.id
+  east = rooms.qihedian.id
+  south = rooms.fang1.id
+  north = rooms.fang2.id  }
+
+# Generated from C:/files/git/mud/d/huanggong/npc/gonnv.c by LPCConverter
+# Zone: huanggong
+
+    characters "gonnv" {
+      name = "宫女"
+      description = "这是一个宫女,容貌很清秀,看来挺能干."
+  gender = "女性"
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 3000
+    con = 18
+    dex = 18
+    int = 19
+    str = 18
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanggong/npc/shiwei.c by LPCConverter
+# Zone: huanggong
+
+    characters "shiwei" {
+      name = "侍卫"
+      description = "他手握钢刀，目视前方，真是威风凛凛。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 75000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "blade" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanggong/npc/shiwei2.c by LPCConverter
+# Zone: huanggong
+
+    characters "shiwei2" {
+      name = "侍卫"
+      description = "他手握钢刀，目视前方，真是威风凛凛。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 75000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "blade" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanggong/npc/taijian.c by LPCConverter
+# Zone: huanggong
+
+    characters "taijian" {
+      name = "太监"
+      description = ""
+  gender = "无性"
+  shen_type = 0
+
+  combat = {
+    combat_exp = 5000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "blade" level = 40 },
+    { skill = "parry" level = 30 },
+    { skill = "dodge" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/huanggong/obj/nverhong.c by LPCConverter
+# Zone: huanggong
+
+    items "nverhong" {
+      name = "女儿红"
+      description = "一坛上好的女儿红,醇香诱人."
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/huanggong/obj/yuchanda.c by LPCConverter
+# Zone: huanggong
+
+    items "yuchanda" {
+      name = "雪参玉蟾丹"
+      description = "这是高丽进贡的灵药，服后解毒疗伤，灵验非凡。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/huanggong/obj/yuchi.c by LPCConverter
+# Zone: huanggong
+
+    items "yuchi" {
+      name = "鱼翅"
+      description = "上等鱼翅,味道鲜美.其实也就那么回事."
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }

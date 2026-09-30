@@ -1,0 +1,284 @@
+
+
+
+
+# Generated from C:/files/git/mud/d/lingzhou/biangate.c by LPCConverter
+# Zone: lingzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "west" && objectp(present("wei shi", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/lingzhou/chema.c by LPCConverter
+# Zone: lingzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !me->query_temp("rent_paid") && dir == "up" )  →  
+  # if ( me->query_temp("rent_paid") && dir == "west" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingzhou/chema2.c by LPCConverter
+# Zone: lingzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( dir == "out" )  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/lingzhou/gonggate.c by LPCConverter
+# Zone: lingzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "north" && objectp(present("wei shi", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/lingzhou/jiangjungate.c by LPCConverter
+# Zone: lingzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "south" || ! objectp(wei) || ! living(wei))  →  
+  # if (me->query("weiwang") >= 10000)  →  message_vision('$N笑道：“' + RANK_D->query_respect(me) + '，请进，请进！这就去让人通报。”\\\\\n', wei, me);
+  # if (me->query("special_skill/trick"))  →  message_vision('$N看见$n走了过来，刚想拦住，' '却听$n一声断喝：“散开！”\\\\\n' '不由得吓了一跳，讪讪的不敢说话。\\\\\n', wei, me);
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/daodianhuoji.c by LPCConverter
+# Zone: lingzhou
+
+# inherit F_DEALER;
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/nuerhai.c by LPCConverter
+# Zone: lingzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !arg || arg!="yipintang" )  →  
+  # if ( (int)ob->query("yipin/joined") )  →  
+  # if ( (int)ob->query("combat_exp") < 1000 )  →  
+# ==== CONDITIONAL BRANCHES (do_join) ====
+  # if ( interactive(ob) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_me
+  # UNHANDLED FUNCTION: do_join
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/xiaoer.c by LPCConverter
+# Zone: lingzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (ob->query("money_id") && ob->value() >= 1000)  →  tell_object(who, '小二一哈腰，说道：多谢您老，客官请上楼歇息。\\\\\n');
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # if ( !ob || environment(ob) != environment() )  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if ( interactive(ob = this_player()) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch( random(2) ) { case 0: say( "店小二笑咪咪地说道：这位" + RANK_D->query_respect(ob) + "，进来喝杯茶，歇歇腿吧。\n"); break; case 1: say( "店小二用脖子上的毛巾抹了抹手，说道：这位" + RANK_D->query_respect(ob) + "，请进请进。\n"); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/xiaoer2.c by LPCConverter
+# Zone: lingzhou
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch (random(2)) { case 0: say("店小二笑咪咪地说道：这位" + RANK_D->query_respect(ob) + "，进来喝杯茶，歇歇腿吧。\n"); break; case 1: say("店小二用脖子上的毛巾抹了抹手，说道：这位" + RANK_D->query_respect(ob) + "，请进请进。\n"); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/zhangfang.c by LPCConverter
+# Zone: lingzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: ask_for_gongzi
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/obj/kaoyangtui.c by LPCConverter
+# Zone: lingzhou
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/lingzhou/npc/obj/paomo.c by LPCConverter
+# Zone: lingzhou
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

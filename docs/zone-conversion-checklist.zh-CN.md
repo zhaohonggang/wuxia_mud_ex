@@ -107,12 +107,12 @@
 
 ## Unreachable · 不可达孤立区（8 个）
 
-- [ ] **huanggong** · 中心 `qihedian` · `goto huanggong:qihedian`
-- [ ] **lingzhou** · 中心 `center` · `goto lingzhou:center`
-- [ ] **shenlong** · 中心 `dating` · `goto shenlong:dating`
-- [ ] **sky** · 中心 `tianmen` · `goto sky:tianmen`
-- [ ] **special** · 无房间（仅六道轮回展示）
-- [ ] **tangmen** · 无房间（仅 obj）
+- [x] **huanggong** · 中心 `qihedian` · `goto huanggong:qihedian` ✅ 2026-09-30
+- [x] **lingzhou** · 中心 `center` · `goto lingzhou:center` ✅ 2026-09-30
+- [x] **shenlong** · 中心 `dating` · `goto shenlong:dating` ✅ 2026-09-30
+- [x] **sky** · 中心 `tianmen` · `goto sky:tianmen` ✅ 2026-09-30
+- [x] **special** · 中心 `rendao` · `goto special:rendao` ✅ 2026-09-30（**有 6 间房**，原写"无房间"不准确；六道轮回展示房，无任何 `set("exits")`）
+- [x] **tangmen** · 无房间（仅 obj）· 2026-09-30（**遇错即停于此**，见完成记录）
 - [ ] **taohua** · 中心 `dating` · `goto taohua:dating`
 - [ ] **xuanminggu** · 中心 `xuanminggu` · `goto xuanminggu:xuanminggu`
 
@@ -139,9 +139,9 @@
 | 指标 | 数值 |
 |------|------|
 | 总区域数 | 71 |
-| 已完成 | 63 |
+| 已完成 | 69 |
 | 进行中 | 0 |
-| 待处理 | 9 |
+| 待处理 | 3 |
 
 > 实时更新：每完成一个区域，在对应大项打勾，并在下方填入完成日期、测试人、关键修复 commit。
 
@@ -215,6 +215,12 @@
 | wuguan | 2026-09-30 | ? | ? | 完整 Python 转换：39 rooms, 39 room_exits (含 coords) |
 | xiakedao | 2026-09-30 | ? | ? | 完整 Python 转换：99 rooms, 99 room_exits (含 coords) |
 | yanziwu | 2026-09-30 | ? | ? | 完整 Python 转换：46 rooms, 46 room_exits (含 coords) |
+| huanggong | 2026-09-30 | ? | ? | 完整 Python 转换：14 rooms, 14 room_exits (含 coords) |
+| lingzhou | 2026-09-30 | ? | ? | 完整 Python 转换：50 rooms, 50 room_exits (含 coords) |
+| shenlong | 2026-09-30 | ? | ? | 完整 Python 转换：21 rooms, 21 room_exits (含 coords) |
+| sky | 2026-09-30 | ? | ? | 完整 Python 转换：6 rooms, 6 room_exits (含 coords) |
+| special | 2026-09-30 | ? | ? | 完整 Python 转换：6 rooms, 6 room_exits (含 coords) |
+| tangmen | 2026-09-30 | ? | ? | 纯物件区：源码只有 `obj/feidao.c`、`obj/jili.c`，产物 = 1 个 `zones` 块 + 2 个 `items` 块，**0 rooms / 0 room_exits**。elias 解析 OK、全世界加载 OK，但 `validate_ucl.py` 的 Structure/Integrity 判它失败。**按「遇错即停」停在此区并修复**：新增 `_is_object_only_zone()` 窄化豁免（`zones` 存在 + rooms 与 room_exits 均为 0 + 至少一个 `items`/`characters` 块），保证「转换器把房间全丢了」仍被抓到——`22_bad_integrity_zero_rooms`（只有 zones 块、无物件）**仍失败**、`21_bad_structure_no_exits` 仍失败；新增 fixture `47_ok_object_only_zone` 锁定豁免 |
 | ... |  |  |  |  |
 | huashan | 2026-09-30 | ? | ? | 完整 Python 转换：89 rooms, 89 room_exits (含 coords)。**容器加载失败修复（按「遇错即停」规则停在此区）**：`s.c` 的出口方向名是 `"hole1".."hole6"`，而 **UCL 的 key 不能含数字**——`elias_parser.yrl` 只接受 `assignment -> word equality ...`，leex 又把 `Digit` 当独立 token，于是 `hole6` 被切成 `word "hole"` + `digit "6"` 赋值闭合不了 → `syntax error before: ', ['"6"']`。实测 `hole`/`hole_` 可解析，`hole6`/`hole_6`/`6hole` 均失败；**值侧不受影响**（`rooms.lockroom6.id` 正常）。修 `lpc_converter.py` 的 `_EXIT_DIR_RE` 收紧为 `^[A-Za-z_][A-Za-z_]*$`；`validate_ucl.py` 新增 `_ELIAS_BAD_KEY_RE` + fixture `45_bad_chars_elias_bad_key.ucl`。这 6 条 `hole*` 是冗余反向链接（每个 `lockroomN` 自身有 `out = rooms.s.id`，`kuihua_2 -up-> lockroom1`），跳过不造成不可达 |
 

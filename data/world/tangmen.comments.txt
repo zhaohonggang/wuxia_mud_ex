@@ -1,0 +1,27 @@
+# Generated from C:/files/git/mud/d/tangmen/obj/feidao.c by LPCConverter
+# Zone: tangmen
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/tangmen/obj/jili.c by LPCConverter
+# Zone: tangmen
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

@@ -1,0 +1,34 @@
+zones "tangmen" {
+  name = "tangmen"
+}
+
+# Generated from C:/files/git/mud/d/tangmen/obj/feidao.c by LPCConverter
+# Zone: tangmen
+
+    items "feidao" {
+      name = "小飞刀"
+      description = "一把雪亮的飞刀。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/tangmen/obj/jili.c by LPCConverter
+# Zone: tangmen
+
+    items "jili" {
+      name = "毒蒺藜"
+      description = "毒蒺藜是淬毒暗器，寸许大小，发出诡异的光。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}迅速地从身上摸出一些毒蒺藜，捏在手中就待发出！"
+    unwield = "{npc}将手里剩下的毒蒺藜一抖就不见了。"
+  }
+    }

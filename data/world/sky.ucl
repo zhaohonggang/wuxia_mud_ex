@@ -1,0 +1,745 @@
+zones "sky" {
+  name = "sky"
+}
+
+# Generated from C:/files/git/mud/d/sky/sky1.c by LPCConverter
+# Zone: sky
+
+    rooms "sky1" {
+      name = "【一重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 1
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+
+  room_exits "sky1" {
+    room_id = rooms.sky1.id
+    up = rooms.sky2.id
+    down = rooms.tianmen.id
+    out = rooms.tianmen.id
+    }
+
+
+  room_characters "sky1" {
+    room_id = rooms.sky1.id
+    characters = [
+      { id = characters.tie.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/sky/sky2.c by LPCConverter
+# Zone: sky
+
+    rooms "sky2" {
+      name = "【二重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 2
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+  room_exits "sky2" {
+    room_id = rooms.sky2.id
+    down = rooms.sky1.id
+    up = rooms.sky3.id
+    }
+
+  room_characters "sky2" {
+    room_id = rooms.sky2.id
+    characters = [
+      { id = characters.li2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/sky/sky3.c by LPCConverter
+# Zone: sky
+
+    rooms "sky3" {
+      name = "【三重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 3
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+  room_exits "sky3" {
+    room_id = rooms.sky3.id
+    down = rooms.sky2.id
+    up = rooms.sky4.id
+    }
+
+  room_characters "sky3" {
+    room_id = rooms.sky3.id
+    characters = [
+      { id = characters.hua.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/sky/sky4.c by LPCConverter
+# Zone: sky
+
+    rooms "sky4" {
+      name = "【四重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 4
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+  room_exits "sky4" {
+    room_id = rooms.sky4.id
+    down = rooms.sky3.id
+    up = rooms.sky5.id
+    }
+
+  room_characters "sky4" {
+    room_id = rooms.sky4.id
+    characters = [
+      { id = characters.kou.id },
+      { id = characters.xu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/sky/sky5.c by LPCConverter
+# Zone: sky
+
+    rooms "sky5" {
+      name = "【五重天】"
+      description = ""
+  x = 0
+  y = 0
+  z = 5
+item_desc = {
+ yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
+}
+    }
+  room_exits "sky5" {
+    room_id = rooms.sky5.id
+    down = rooms.sky4.id
+    }
+
+  room_characters "sky5" {
+    room_id = rooms.sky5.id
+    characters = [
+      { id = characters.beichou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/sky/tianmen.c by LPCConverter
+# Zone: sky
+
+    rooms "tianmen" {
+      name = "【通天门】"
+      description = ""
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tianmen" {
+    room_id = rooms.tianmen.id
+    up = rooms.sky1.id
+    in = rooms.sky1.id
+    }
+
+
+  room_characters "tianmen" {
+    room_id = rooms.tianmen.id
+    characters = [
+      { id = characters.li.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/sky/npc/beichou.c by LPCConverter
+# Zone: sky
+
+    characters "beichou" {
+      name = "北丑"
+      description = "这是一个身着戏子打扮的瘦小老头，长得尖 嘴猴腮，天生一副奸相。这便是当今武林中 号称「南贤北丑」戏子北丑。"
+  title = "武林泰斗"
+  nickname = "北戏子"
+  gender = "男性"
+  age = 68
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 12000000
+    con = 50
+    dex = 50
+    int = 50
+    max_jing = 25000
+    max_neili = 50000
+    max_qi = 25000
+    str = 50
+  }
+
+  skills = [
+    { skill = "dodge" level = 500 },
+    { skill = "unarmed" level = 500 },
+    { skill = "force" level = 500 },
+    { skill = "parry" level = 500 },
+    { skill = "sword" level = 500 },
+    { skill = "poison" level = 500 },
+    { skill = "medical" level = 500 },
+    { skill = "hand" level = 500 },
+    { skill = "strike" level = 500 },
+    { skill = "staff" level = 500 },
+    { skill = "finger" level = 500 },
+    { skill = "claw" level = 500 },
+    { skill = "blade" level = 500 },
+    { skill = "pixie-jian" level = 500 },
+    { skill = "literate" level = 500 },
+    { skill = "taoism" level = 500 },
+    { skill = "buddhism" level = 500 },
+    { skill = "jiuyang-shengong" level = 500 },
+    { skill = "lingbo-weibu" level = 500 },
+    { skill = "qiankun-danuoyi" level = 500 },
+    { skill = "xuanming-zhang" level = 500 },
+    { skill = "jiuyin-baiguzhao" level = 500 },
+    { skill = "dugu-jiujian" level = 500 },
+    { skill = "six-finger" level = 500 },
+    { skill = "qianzhu-wandushou" level = 500 },
+    { skill = "ranmu-daofa" level = 500 },
+    { skill = "dagou-bang" level = 500 },
+    { skill = "shaolin-yishu" level = 500 },
+    { skill = "wudu-qishu" level = 500 },
+    { skill = "throwing" level = 500 },
+    { skill = "mantian-xing" level = 500 },
+    { skill = "idle-force" level = 500 },
+    { type = "unarmed" skill = "pixie-jian" },
+    { type = "force" skill = "jiuyang-shengong" },
+    { type = "dodge" skill = "lingbo-weibu" },
+    { type = "parry" skill = "qiankun-danuoyi" },
+    { type = "hand" skill = "qianzhu-wandushou" },
+    { type = "strike" skill = "xuanming-zhang" },
+    { type = "claw" skill = "jiuyin-baiguzhao" },
+    { type = "finger" skill = "six-finger" },
+    { type = "sword" skill = "dugu-jiujian" },
+    { type = "blade" skill = "ranmu-daofa" },
+    { type = "staff" skill = "dagou-bang" },
+    { type = "throwing" skill = "mantian-xing" },
+    { type = "poison" skill = "wudu-qishu" },
+    { type = "medical" skill = "shaolin-yishu" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/hua.c by LPCConverter
+# Zone: sky
+
+    characters "hua" {
+      name = "华英雄"
+      description = "一个俊俏的中年男子，衣着长衫，他就是华英雄。 传说他命犯天煞孤星，一生漂泊，落于异地。尔后 习得一身绝技，兼修炼「中华傲决」，大败「东洋 战神」无敌。"
+  title = "大宗师"
+  nickname = "中华英雄"
+  gender = "男性"
+  age = 26
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000000
+    con = 40
+    dex = 40
+    int = 40
+    max_jing = 6000
+    max_neili = 12000
+    max_qi = 8000
+    str = 40
+  }
+
+  skills = [
+    { skill = "dodge" level = 460 },
+    { skill = "strike" level = 460 },
+    { skill = "parry" level = 460 },
+    { skill = "unarmed" level = 460 },
+    { skill = "force" level = 460 },
+    { skill = "sword" level = 460 },
+    { skill = "siji-jianfa" level = 460 },
+    { skill = "zhonghua-aojue" level = 460 },
+    { skill = "literate" level = 200 },
+    { type = "force" skill = "zhonghua-aojue" },
+    { type = "sword" skill = "zhonghua-aojue" },
+    { type = "dodge" skill = "zhonghua-aojue" },
+    { type = "parry" skill = "zhonghua-aojue" },
+    { type = "strike" skill = "zhonghua-aojue" },
+    { type = "unarmed" skill = "zhonghua-aojue" }
+  ]
+
+
+  carry = [
+    { id = items.cloth3.id },
+    { id = items.chijian.id },
+    { id = items.miji2.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/kou.c by LPCConverter
+# Zone: sky
+
+    characters "kou" {
+      name = "寇仲"
+      description = "一个身着龙袍的魁梧少年，他就是少帅军的统帅寇仲。"
+  title = "大宗师"
+  nickname = "大唐双龙"
+  gender = "男性"
+  age = 27
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 8000000
+    con = 35
+    dex = 35
+    int = 35
+    max_jing = 5000
+    max_neili = 9000
+    max_qi = 7000
+    str = 35
+  }
+
+  skills = [
+    { skill = "dodge" level = 320 },
+    { skill = "parry" level = 320 },
+    { skill = "hand" level = 240 },
+    { skill = "unarmed" level = 240 },
+    { skill = "shou-yin" level = 240 },
+    { skill = "wudu-shu" level = 320 },
+    { skill = "force" level = 400 },
+    { skill = "changsheng-jue" level = 400 },
+    { skill = "blade" level = 320 },
+    { skill = "jingzhong-bafa" level = 320 },
+    { skill = "literate" level = 100 },
+    { type = "force" skill = "changsheng-jue" },
+    { type = "blade" skill = "jingzhong-bafa" },
+    { type = "dodge" skill = "wudu-shu" },
+    { type = "parry" skill = "jingzhong-bafa" },
+    { type = "hand" skill = "shou-yin" },
+    { type = "unarmed" skill = "shou-yin" }
+  ]
+
+
+  carry = [
+    { id = items.cloth2.id },
+    { id = items.jingzhongyue.id },
+    { id = items.heshibi.id },
+    { id = items.jue.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/li.c by LPCConverter
+# Zone: sky
+
+    characters "li" {
+      name = "李寻欢"
+      description = "一个身着白衫的中年男子，俊俏的面庞 毫无血色，似乎因酒色过度而苍白。他手中 握着一柄小刀，静静雕刻着一个木人。周围 发生的一切他仿佛都看不见。"
+  title = "大宗师"
+  nickname = "小李探花"
+  gender = "男性"
+  age = 34
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 5000000
+    con = 35
+    dex = 35
+    int = 35
+    max_jing = 3000
+    max_neili = 6000
+    max_qi = 6000
+    str = 35
+  }
+
+  chat_chance = 1
+chats = [
+    "李寻欢深深的叹了口气。",
+    "李寻欢静静地雕刻着手中的木偶。",
+    "李寻欢咳嗽了几声。",
+    "李寻欢：“咳…咳…”"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 350 },
+    { skill = "parry" level = 350 },
+    { skill = "unarmed" level = 350 },
+    { skill = "throwing" level = 350 },
+    { skill = "xiaoli-feidao" level = 350 },
+    { skill = "changquan" level = 350 },
+    { skill = "shexing-lifan" level = 350 },
+    { skill = "force" level = 350 },
+    { skill = "yijinjing" level = 350 },
+    { skill = "literate" level = 250 },
+    { type = "force" skill = "yijinjing" },
+    { type = "dodge" skill = "shexing-lifan" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xiaoli-feidao" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth1.id },
+    { id = items.renou.id },
+    { id = items.tianxiadan.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/li2.c by LPCConverter
+# Zone: sky
+
+    characters "li2" {
+      name = "李逍遥"
+      description = "仙剑奇侠传中的传奇人物，少年得蜀山剑派 高人授艺，兼习家传绝学飞龙探云手以及冰 心决，乃一代不世的剑侠。"
+  title = "大宗师"
+  nickname = "蜀山剑神"
+  gender = "男性"
+  age = 24
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000000
+    con = 50
+    dex = 50
+    int = 50
+    max_jing = 6000
+    max_neili = 12000
+    max_qi = 9000
+    str = 50
+  }
+
+  skills = [
+    { skill = "dodge" level = 460 },
+    { skill = "parry" level = 460 },
+    { skill = "unarmed" level = 460 },
+    { skill = "hand" level = 460 },
+    { skill = "sword" level = 460 },
+    { skill = "yujian-shu" level = 460 },
+    { skill = "feilong-shou" level = 460 },
+    { skill = "zuixian-bu" level = 460 },
+    { skill = "force" level = 460 },
+    { skill = "bingxin-jue" level = 460 },
+    { skill = "literate" level = 200 },
+    { type = "force" skill = "bingxin-jue" },
+    { type = "dodge" skill = "zuixian-bu" },
+    { type = "parry" skill = "yujian-shu" },
+    { type = "sword" skill = "yujian-shu" },
+    { type = "unarmed" skill = "feilong-shou" },
+    { type = "hand" skill = "feilong-shou" }
+  ]
+
+
+  carry = [
+    { id = items.pangukai.id },
+    { id = items.chiyoujian.id },
+    { id = items.miji3.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/tie.c by LPCConverter
+# Zone: sky
+
+    characters "tie" {
+      name = "铁传甲"
+      description = "一个身材魁梧的汉子。"
+  title = "忠心护卫"
+  nickname = "铁甲金刚"
+  gender = "男性"
+  age = 42
+  shen_type = 1
+  score = 5000
+  brain = brains.guarder
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1800000
+    con = 30
+    dex = 30
+    int = 20
+    max_jing = 3000
+    max_neili = 5000
+    max_qi = 4000
+    str = 40
+  }
+
+  skills = [
+    { skill = "unarmed" level = 220 },
+    { skill = "force" level = 220 },
+    { skill = "parry" level = 180 },
+    { skill = "dodge" level = 180 },
+    { skill = "cuff" level = 220 },
+    { skill = "literate" level = 100 },
+    { skill = "yijinjing" level = 220 },
+    { skill = "tiexian-quan" level = 220 },
+    { skill = "feiyan-huixiang" level = 180 },
+    { type = "parry" skill = "tiexian-quan" },
+    { type = "force" skill = "yijinjing" },
+    { type = "unarmed" skill = "tiexian-quan" },
+    { type = "cuff" skill = "tiexian-quan" },
+    { type = "dodge" skill = "feiyan-huixiang" }
+  ]
+
+
+  carry = [
+    { id = items.miji1.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/xu.c by LPCConverter
+# Zone: sky
+
+    characters "xu" {
+      name = "徐子陵"
+      description = "一个俊俏的白衣少年，他就是名震天下的徐子陵。"
+  title = "大宗师"
+  nickname = "大唐双龙"
+  gender = "男性"
+  age = 26
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 8000000
+    con = 35
+    dex = 35
+    int = 35
+    max_jing = 5000
+    max_neili = 9000
+    max_qi = 7000
+    str = 35
+  }
+
+  skills = [
+    { skill = "dodge" level = 320 },
+    { skill = "hand" level = 320 },
+    { skill = "parry" level = 320 },
+    { skill = "unarmed" level = 320 },
+    { skill = "shou-yin" level = 320 },
+    { skill = "wudu-shu" level = 320 },
+    { skill = "force" level = 400 },
+    { skill = "changsheng-jue" level = 400 },
+    { skill = "blade" level = 240 },
+    { skill = "badao-daofa" level = 240 },
+    { skill = "literate" level = 100 },
+    { type = "force" skill = "changsheng-jue" },
+    { type = "blade" skill = "badao-daofa" },
+    { type = "dodge" skill = "wudu-shu" },
+    { type = "parry" skill = "shou-yin" },
+    { type = "hand" skill = "shou-yin" },
+    { type = "unarmed" skill = "shou-yin" }
+  ]
+
+
+  carry = [
+    { id = items.cloth1.id },
+    { id = items.hands.id },
+    { id = items.yishu.id },
+    { id = items.sheli.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/chijian.c by LPCConverter
+# Zone: sky
+
+    characters "chijian" {
+      name = "赤剑"
+      description = "一柄四尺来长的长剑，整个剑身呈红色。"
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/chiyoujian.c by LPCConverter
+# Zone: sky
+
+    characters "chiyoujian" {
+      name = "玄蚩神剑"
+      description = "一柄玄铁铸造的长剑，剑柄上雕有蚩尤的头像。"
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/cloth1.c by LPCConverter
+# Zone: sky
+
+    characters "cloth1" {
+      name = "白色长衫"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/cloth2.c by LPCConverter
+# Zone: sky
+
+    characters "cloth2" {
+      name = "雕龙长袍"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/cloth3.c by LPCConverter
+# Zone: sky
+
+    characters "cloth3" {
+      name = "青色长衫"
+      description = ""
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/feidao.c by LPCConverter
+# Zone: sky
+
+    characters "feidao" {
+      name = "小李飞刀"
+      description = "一柄看似普通的飞刀，刀柄上刻了个小小的“李”字。"
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/hands.c by LPCConverter
+# Zone: sky
+
+    characters "hands" {
+      name = "残血手套"
+      description = "传说中的上古神器。"
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/jingzhongyue.c by LPCConverter
+# Zone: sky
+
+    characters "jingzhongyue" {
+      name = "井中月"
+      description = "一柄四尺来长的单刀，重达百斤，刀身散发着乌黑的光泽。"
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/pangukai.c by LPCConverter
+# Zone: sky
+
+    characters "pangukai" {
+      name = "盘古铠"
+      description = "一见黑黝黝的铁甲，上面雕有盘古的头像。"
+    }
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/renou.c by LPCConverter
+# Zone: sky
+
+    characters "renou" {
+      name = "人偶"
+      description = "一块未完工的木偶，但已经可以辨认出是个女子的雕像。"
+    }
+
+# Generated from C:/files/git/mud/d/sky/obj/heshibi.c by LPCConverter
+# Zone: sky
+
+    items "heshibi" {
+      name = "何氏壁"
+      description = "一块晶莹剔透的宝玉，其中一角镶嵌着一块黄 金，宝玉上雕刻着盘龙，这便是传说可以号令 天下的何氏壁。相传宝玉中蕴藏着奇异的能源， 武功高强者可以吸取(xi)其中的能量来增强功 力。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/sky/obj/jue.c by LPCConverter
+# Zone: sky
+
+    items "jue" {
+      name = "长生决"
+      description = "这便是四大奇书之一的长生决，传说可以修炼至高无上的武学。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/sky/obj/miji1.c by LPCConverter
+# Zone: sky
+
+    items "miji1" {
+      name = "铁线拳密芨"
+      description = "这是一本薄薄的小册，上面记载了不少精妙的拳法。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/sky/obj/miji2.c by LPCConverter
+# Zone: sky
+
+    items "miji2" {
+      name = "四季剑法"
+      description = "这是一本薄薄的小册，上面记载了四季剑法的奥决。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/sky/obj/miji3.c by LPCConverter
+# Zone: sky
+
+    items "miji3" {
+      name = "飞龙探云秘芨"
+      description = "李逍遥的家传绝学。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/sky/obj/sheli.c by LPCConverter
+# Zone: sky
+
+    items "sheli" {
+      name = "魔尊舍利"
+      description = "一个浑圆的暗色球体，通体透明。这便是传说 中的魔教至宝----魔尊舍利。相传其中蕴藏着 无比巨大的能量，武功高强者可以吸取(xi)其 中的能量来增强功力。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/sky/obj/shenjiu.c by LPCConverter
+# Zone: sky
+
+    items "shenjiu" {
+      name = "天乙神酒"
+      description = "这是一瓶天乙神酒，便是只闻闻也让你昏昏欲醉。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/sky/obj/tianxiadan.c by LPCConverter
+# Zone: sky
+
+    items "tianxiadan" {
+      name = "天霞神丹"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/sky/obj/yishu.c by LPCConverter
+# Zone: sky
+
+    items "yishu" {
+      name = "岳山遗书"
+      description = "这便是当年「霸刀」岳山临死前的遗书，上面记载了他对刀法的体会。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

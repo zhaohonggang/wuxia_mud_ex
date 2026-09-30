@@ -48,6 +48,31 @@ _STRUCT_EXITS_RE = re.compile(rb'^\s*room_exits\s+"\w+"', re.MULTILINE)
 _INTEGRITY_ROOMS_RE = re.compile(rb'^\s*rooms\s+"(\w+)"', re.MULTILINE)
 _INTEGRITY_EXITS_RE = re.compile(rb'^\s*room_exits\s+"(\w+)"', re.MULTILINE)
 
+_STRUCT_ITEMS_RE = re.compile(rb'^\s*items\s+"', re.MULTILINE)
+_STRUCT_CHARACTERS_RE = re.compile(rb'^\s*characters\s+"', re.MULTILINE)
+
+
+def _is_object_only_zone(data):
+    """True for a zone file that legitimately contains no rooms at all.
+
+    Some LPC zones are object-only: tangmen is just obj/feidao.c and
+    obj/jili.c, so its converted output has a `zones` block plus `items` blocks
+    and nothing else.  Such a file is valid - Elias parses it and
+    Kantele.World.Loader.load/1 loads the whole world with it in place.
+
+    The test is deliberately narrow so that a converter which dropped *every*
+    room still fails: the file must have a `zones` block, zero `rooms` AND zero
+    `room_exits` blocks, and at least one `items`/`characters` block as proof the
+    converter actually ran.  A file with only a `zones` block (fixture
+    22_bad_integrity_zero_rooms) therefore still fails, and so does one with
+    rooms but no room_exits (fixture 21) or exits without rooms.
+    """
+    if not _STRUCT_ZONE_RE.search(data):
+        return False
+    if _INTEGRITY_ROOMS_RE.search(data) or _INTEGRITY_EXITS_RE.search(data):
+        return False
+    return bool(_STRUCT_ITEMS_RE.search(data) or _STRUCT_CHARACTERS_RE.search(data))
+
 # Chars: horizontal whitespace [ \t], NOT \s (that was the .exs defect).
 _CHARS_DOUBLE_BRACE_RE = re.compile(rb'^[ \t]*}[ \t]*}', re.MULTILINE)
 _CHARS_TRAILING_COMMA_RE = re.compile(rb',[ \t]*}', re.MULTILINE)
@@ -314,6 +339,9 @@ def check_syntax(data):
 # 3. Structure
 # ---------------------------------------------------------------------------
 def check_structure(data):
+    if _is_object_only_zone(data):
+        # A room-less zone: only the `zones` block is required.
+        return (True, None)
     missing = []
     if not _STRUCT_ZONE_RE.search(data):
         missing.append("zones")
@@ -332,6 +360,8 @@ def check_structure(data):
 def check_integrity(data):
     rooms = len(_INTEGRITY_ROOMS_RE.findall(data))
     exits = len(_INTEGRITY_EXITS_RE.findall(data))
+    if _is_object_only_zone(data):
+        return (True, None)
     if rooms == exits and rooms > 0:
         return (True, None)
     if rooms == 0:

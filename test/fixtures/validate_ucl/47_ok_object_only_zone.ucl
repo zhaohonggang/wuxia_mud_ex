@@ -1,0 +1,13 @@
+zones "tangmen" {
+  name = "tangmen"
+}
+
+    items "feidao" {
+      name = "小飞刀"
+      id = items.feidao.id
+    }
+
+    items "jili" {
+      name = "吉利"
+      id = items.jili.id
+    }

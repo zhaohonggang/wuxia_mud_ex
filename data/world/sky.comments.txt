@@ -1,0 +1,470 @@
+# Generated from C:/files/git/mud/d/sky/sky1.c by LPCConverter
+# Zone: sky
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(CYN '只听铁传甲一声暴喝：“这位' + RANK_D->query_respect(me) + CYN '，请停步。”\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/sky2.c by LPCConverter
+# Zone: sky
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(HIC '只见李逍遥身形一晃，剑如闪电，一' '剑凌空刺出，剑气纵横，挡住了去路。\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/sky3.c by LPCConverter
+# Zone: sky
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(CYN '只听华英雄说道：“这位' + RANK_D->query_respect(me) + CYN '，你还是下来吧。”\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/sky4.c by LPCConverter
+# Zone: sky
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(CYN '只见一个人影突然晃动，挡在你面前。\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/sky5.c by LPCConverter
+# Zone: sky
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!arg || arg == "")  →  
+  # if (arg == "yunti")  →  write(CYN '只见一个人影突然晃动，挡在你面前。\\\\\n' NOR); message_vision(HIW '\\\\\n$N' HIW '顺着云梯轻轻一' '纵，身体便随着气流飘了上去……\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/sky/npc/hua.c by LPCConverter
+# Zone: sky
+
+# inherit F_UNIQUE;
+# inherit F_COAGENT;
+
+# Generated from C:/files/git/mud/d/sky/npc/kou.c by LPCConverter
+# Zone: sky
+
+# inherit F_UNIQUE;
+# inherit F_COAGENT;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (guard && !guard->is_fighting())  →  message_vision (CYN '$N大怒道：阁下欺人太甚，别怪我无情！\\\\\n' NOR, guard);
+# ==== CONDITIONAL BRANCHES (kill_ob) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: kill_ob
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/npc/li.c by LPCConverter
+# Zone: sky
+
+# inherit F_UNIQUE;
+# inherit F_COAGENT;
+
+# Generated from C:/files/git/mud/d/sky/npc/li2.c by LPCConverter
+# Zone: sky
+
+# inherit F_UNIQUE;
+# inherit F_COAGENT;
+
+# Generated from C:/files/git/mud/d/sky/npc/tie.c by LPCConverter
+# Zone: sky
+
+# inherit F_GUARDER;
+
+# Generated from C:/files/git/mud/d/sky/npc/xu.c by LPCConverter
+# Zone: sky
+
+# inherit F_UNIQUE;
+# inherit F_COAGENT;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (guard && !guard->is_fighting())  →  message_vision (CYN '$N大怒道：阁下欺人太甚，别怪我无情！\\\\\n' NOR, guard);
+# ==== CONDITIONAL BRANCHES (kill_ob) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: kill_ob
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/chijian.c by LPCConverter
+# Zone: sky
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/chiyoujian.c by LPCConverter
+# Zone: sky
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/cloth1.c by LPCConverter
+# Zone: sky
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/cloth2.c by LPCConverter
+# Zone: sky
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/cloth3.c by LPCConverter
+# Zone: sky
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/feidao.c by LPCConverter
+# Zone: sky
+
+# inherit THROWING;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/hands.c by LPCConverter
+# Zone: sky
+
+# inherit HANDS;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/jingzhongyue.c by LPCConverter
+# Zone: sky
+
+# inherit BLADE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/pangukai.c by LPCConverter
+# Zone: sky
+
+# inherit ARMOR;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/npc/obj/renou.c by LPCConverter
+# Zone: sky
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: setup
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/obj/heshibi.c by LPCConverter
+# Zone: sky
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  message_vision(HIR '\\\\\n只听$N' HIR '一声惨叫，经受不住能' '量的冲击，顿时全身筋脉尽断，鲜血狂喷，身' '体被炸了个粉碎。\\\\\n' NOR, me);
+  # if ( me->query("max_neili") > 5000 && me->query("max_jingli") > 1200 && me->query("combat_exp") > 2000000 && (int)me->query_skill("force") > 330)  →  message_vision(HIC '\\\\\n光华稍退，犹见$N' HIC '全身晶莹' '剔透，竟发出宝石光泽，似乎已和何氏壁' '合为一体了。\\\\\n\\\\\n' NOR, me); tell_object(me, HIY '你感到何氏壁中的能量源源不绝的流' '入了你的丹田，全身暖洋洋的，说不出的' '舒服受用。\\\\\n' NOR); tell_object(me, HIC '你获得了' + chinese_number(exp) + '点经验、' + chinese_number(pot) + '点' '潜能、' + chinese_number(li1) + '点最' '大内力和\\\\\n' + chinese_number(li2) + '点' '最大精力。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (xiqu7) ====
+  # if (!id(arg))  →  
+  # if ( me->is_busy() )  →  
+  # if ( me->query("power/何氏壁") )  →  
+# ==== CONDITIONAL BRANCHES (do_eat) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: xiqu3
+  # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: xiqu2
+  # UNHANDLED FUNCTION: xiqu4
+  # UNHANDLED FUNCTION: xiqu1
+  # UNHANDLED FUNCTION: xiqu6
+  # UNHANDLED FUNCTION: xiqu7
+  # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: xiqu5
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/obj/jue.c by LPCConverter
+# Zone: sky
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/obj/miji1.c by LPCConverter
+# Zone: sky
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/obj/miji2.c by LPCConverter
+# Zone: sky
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/obj/miji3.c by LPCConverter
+# Zone: sky
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/obj/sheli.c by LPCConverter
+# Zone: sky
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  message_vision(HIR '\\\\\n只听$N' HIR '一声惨叫，经受不住能' '量的冲击，顿时全身筋脉尽断，鲜血狂喷，身' '体被炸了个粉碎。\\\\\n' NOR, me);
+  # if ( me->query("max_neili") > 5000 && me->query("max_jingli") > 1200 && me->query("combat_exp") > 2000000 && (int)me->query_skill("force") > 330 && me->query("power/何氏壁") )  →  message_vision(HIW '\\\\\n光华稍退，犹见$N' HIW '全身晶莹' '剔透，竟发出宝石光泽，似乎已和魔尊舍利' '合为一体了。\\\\\n\\\\\n' NOR, me); tell_object(me, HIY '你感到魔尊舍利中的能量源源不绝的流' '入了你的丹田，顿时有一阵说不出的舒服。\\\\\n' NOR); tell_object(me, HIC '你获得了' + chinese_number(exp) + '点经验、' + chinese_number(pot) + '点' '潜能、' + chinese_number(li1) + '点最' '大内力和' + chinese_number(li2) + '点' '最\\\\\n大精力。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (xiqu7) ====
+  # if (!id(arg))  →  
+  # if ( me->is_busy() )  →  
+  # if ( me->query("power/魔尊舍利") )  →  
+# ==== CONDITIONAL BRANCHES (do_eat) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: xiqu3
+  # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: xiqu2
+  # UNHANDLED FUNCTION: xiqu4
+  # UNHANDLED FUNCTION: xiqu1
+  # UNHANDLED FUNCTION: xiqu6
+  # UNHANDLED FUNCTION: xiqu7
+  # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: xiqu5
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/obj/shenjiu.c by LPCConverter
+# Zone: sky
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! id(arg) && arg != "tianyi shenjiu" && arg != "jiu" && arg != "shenjiu" && arg != "tianyi")  →  
+  # if (me->is_busy())  →  
+  # if (random(30) > 1)  →  message_vision(WHT '$N' WHT '喝了几口，却发现瓶内所装不' '过是普通的女儿红。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_eat) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_eat
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/obj/tianxiadan.c by LPCConverter
+# Zone: sky
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( me->is_busy() )  →  
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/sky/obj/yishu.c by LPCConverter
+# Zone: sky
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

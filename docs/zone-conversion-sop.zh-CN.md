@@ -263,6 +263,7 @@ docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test'
 | 同坐标多房（菱形环路） | 朴素 BFS 下两条不同路径算出同一 delta，两房重叠 | `scripts\assign_room_coords.py` 的 `_visit_neighbour`（需用 `_place`/`_free_coord` 做去重放置） |
 | `Integrity: rooms(N) != room_exits(M)` | 孤儿房还没有 `room_exits` 块（**赋坐标前属正常**）；若赋坐标后仍失败则是 bug | `scripts\assign_room_coords.py` 的 `drain` / `visit_neighbour` / `orphans` |
 | 坐标冲突/全 0 | BFS 队列/方向向量/孤儿房逻辑 | `scripts\assign_room_coords.py` |
+| `Integrity: no rooms defined` / `Structure: missing rooms, room_exits` | **该区本来就一个房间都没有**（纯物件区）。`mud/d/tangmen` 只有 `obj/feidao.c`、`obj/jili.c`，产物就只有 `zones` + `items` 块。这类文件是**合法的**——elias 能解析，`Loader.load/1` 也带着它正常加载整个世界 | `validate_ucl.py` 的 `_is_object_only_zone()` 做**窄化豁免**：`zones` 块存在 + `rooms` 与 `room_exits` 均为 0 + 至少一个 `items`/`characters` 块（证明转换器确实跑过）。这样「转换器把房间全丢了」仍抓得到——`22_bad_integrity_zero_rooms` 只有 zones 块、无任何物件，**仍然失败**；fixture `47_ok_object_only_zone` 锁定豁免行为。**别与 `special` 混淆**：六道轮回那 6 间房是有房间的，只是完全没有 `set("exits")`，属于另一类，照常走赋坐标即可（`assign_room_coords.py` 会为无出口的孤儿房补 `room_exits` 块并使其可达） |
 | 跨区出口指向不存在房间 | 转换器未解析外部路径、或目标区未转 | `scripts\lpc_converter.py` 的 `extract_exit_*`、跨区依赖顺序 |
 
 ---

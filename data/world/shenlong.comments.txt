@@ -1,0 +1,360 @@
+
+
+# Generated from C:/files/git/mud/d/shenlong/caoping.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: reset
+  # reset: set("objects", ([ flower() : 1, flower() : 1, flower() : 1, ])); ::reset();
+# ==== RAW CODE BLOCKS ====
+  # if (objectp(present("duanchang hua", environment(me))))  →  write(HIG '你只觉一股淡香袭来,顿时脑中一阵麻木！\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (init) ====
+  # if (n == 88)  →  
+  # if (n < 50)  →  
+  # if (n < 80)  →  
+# ==== CONDITIONAL BRANCHES (flower) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: flower
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shenlong/damen.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ npcs[random(sizeof(npcs))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shenlong/dating.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "south")  →  
+  # if (objectp(guarder = present("wugen daozhang", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+  # COMPLEX MAPPING: ([ npcs[random(sizeof(npcs))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shenlong/haitan.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! objectp(ob) || find_object(__DIR__"dahai") != environment(ob))  →  
+# ==== CONDITIONAL BRANCHES (home) ====
+  # if (arg != "chuan")  →  tell_object(ob , '你要 enter 哪儿？\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_enter) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_enter
+  # UNHANDLED FUNCTION: home
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shenlong/lin1.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "bush")  →  
+  # if (! objectp(weapon = me->query_temp("weapon")))  →  
+  # if (weapon->query("skill_type") != "blade" && weapon->query("skill_type") != "sword")  →  
+  # else  →  message_vision('$N累得气喘吁吁,也没砍开一条路来。\\\\\n', me);
+  # if (me->query("neili") > 100)  →  message_vision('$N累得气喘吁吁,终于砍出一条小路。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_kan) ====
+# ==== CONDITIONAL BRANCHES ====
+  # COMPLEX MAPPING: ([ "/clone/beast/dushe" : 1 + random(2), npcs[random(sizeof(npcs))]
+# ==== COMPLEX MAPPINGS ====
+  # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_kan
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shenlong/lin2.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ "/clone/beast/dushe" : 1+random(2), npcs[random(sizeof(npcs))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shenlong/xiaowu.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ CLASS_D("shenlong")+"/lu": 1, books[random(sizeof(books))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shenlong/zoulang.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "west" )  →  
+  # if (objectp(guarder = present("zhang danyue", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shenlong/npc/chuanfu.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! objectp(ob) || find_object("/d/shenlong/dahai") != environment(ob))  →  
+# ==== CONDITIONAL BRANCHES (goto_shenlong) ====
+  # if (! (int)who->query_temp("出海"))  →  message_vision('老船夫笑着对$N说：无功不受禄，您' '还是自己留着吧！\\\\\n', who);
+  # else  →  
+  # if (ob->query("money_id") && ob->value() >= 10000)  →  message_vision('老船夫对$N说：好！既然这位' + RANK_D->query_respect(who) + '如此看得起我，\\\\\n那我也拼上这条破船，舍' '命陪君子便了！\\\\\n' , who); message_vision('老船夫一招手，叫来几个年轻船夫。\\\\\n年轻船' '夫和$N上了船，一声「起锚」船就开走了，但' '老船夫却没上船......\\\\\n', who); tell_object(who, BLU '你在海上航行了很久很久.......\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (accept_object) ====
+  # else  →  
+  # if (ob->query("party/party_name") == "神龙教")  →  message_vision('老船夫一招手，叫来几个年轻船夫。\\\\\n', ob); message_vision('年轻船夫和$N上了船，一声「起锚」船就开走了，但' '老船夫却没上船......\\\\\n', ob); tell_object(ob, BLU '你在海上航行了很久很久.......\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (chu_hai) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: goto_dao
+  # UNHANDLED FUNCTION: unconcious
+  # UNHANDLED FUNCTION: goto_shenlong
+  # UNHANDLED FUNCTION: chu_hai
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/shenlong/npc/zhang3.c by LPCConverter
+# Zone: shenlong
+
+# inherit F_UNIQUE;
+# inherit F_MASTER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: do_skills
+  # UNHANDLED FUNCTION: do_join
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shenlong/obj/baihua.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (me->query("max_neili") < limit)  →  message_vision(HIY '$N吃下一枚百花腹蛇膏，顿然间只觉一股清凉之气直沁心肺...\\\\\n' NOR, this_player());
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shenlong/obj/hua.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shenlong/obj/hua2.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shenlong/obj/hua3.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shenlong/obj/hua4.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shenlong/obj/jiudai.c by LPCConverter
+# Zone: shenlong
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shenlong/obj/mitao.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shenlong/obj/usedgao.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: dest
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/shenlong/obj/xionghuang.c by LPCConverter
+# Zone: shenlong
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
