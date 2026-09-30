@@ -1,0 +1,693 @@
+zones "xuedao" {
+  name = "xuedao"
+}
+
+# Generated from C:/files/git/mud/d/xuedao/hollow.c by LPCConverter
+# Zone: xuedao
+
+    rooms "hollow" {
+      name = "雪坑"
+      description = "这是大雪山脚下的一个雪坑，坑内四周光线阴暗，什么都 看不清楚。躲进这里，你感到暖和了一些。"
+  x = 0
+  y = -1
+  z = -1
+    }
+
+  room_exits "hollow" {
+    room_id = rooms.hollow.id
+    northup = rooms.sroad3.id
+    }
+
+
+
+
+  room_items "hollow" {
+    room_id = rooms.hollow.id
+    items = [
+      { id = items.xixuezhu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xuedao/nroad0.c by LPCConverter
+# Zone: xuedao
+
+    rooms "nroad0" {
+      name = "山路"
+      description = "山路越走越窄，能隐隐望见前方又分出了几条叉路。"
+  x = 0
+  y = 2
+  z = 0
+    }
+
+  room_exits "nroad0" {
+    room_id = rooms.nroad0.id
+    north = rooms.nroad1.id
+    south = rooms.sroad0.id
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/nroad1.c by LPCConverter
+# Zone: xuedao
+
+    rooms "nroad1" {
+      name = "山路"
+      description = "这是一条崎岖的山路，马队到了这里就不能在上去了。山 路两旁杂草从生，路开始越来越难走。山路越走越窄，能隐隐 望见前方又分出了几条叉路。"
+  x = 0
+  y = 3
+  z = 0
+    }
+
+  room_exits "nroad1" {
+    room_id = rooms.nroad1.id
+    north = rooms.nroad5.id
+    south = rooms.nroad0.id
+    west = rooms.nroad2.id
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/nroad2.c by LPCConverter
+# Zone: xuedao
+
+    rooms "nroad2" {
+      name = "山路"
+      description = "你走在一山路上，四周有一座座小山丘。能遥望见西南方 大雪山的北麓。山前隐隐约约象是有一座寺院。"
+  x = -1
+  y = 3
+  z = 0
+    }
+
+  room_exits "nroad2" {
+    room_id = rooms.nroad2.id
+    east = rooms.nroad1.id
+    west = rooms.nroad3.id
+    }
+
+
+  room_characters "nroad2" {
+    room_id = rooms.nroad2.id
+    characters = [
+      { id = characters.guest.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xuedao/nroad3.c by LPCConverter
+# Zone: xuedao
+
+    rooms "nroad3" {
+      name = "雪山北麓"
+      description = "这里山势比大雪山东面稍缓，也不是十分的严寒。山道两 旁长得有稀稀拉拉的一些野草。四下毫无人迹，只有几只秃鹰 在高处盘旋，俯视着茫茫雪山。"
+  x = -2
+  y = 3
+  z = 0
+    }
+
+  room_exits "nroad3" {
+    room_id = rooms.nroad3.id
+    east = rooms.nroad2.id
+    south = rooms.nroad4.id
+    }
+
+
+
+
+  room_items "nroad3" {
+    room_id = rooms.nroad3.id
+    items = [
+      { id = items.ying.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xuedao/nroad4.c by LPCConverter
+# Zone: xuedao
+
+    rooms "nroad4" {
+      name = "雪山山路"
+      description = "大雪山北麓的地势不是甚高，周围还有一些小山丘。西面 有一座寺院依山而建。显得异常高大。寺院呈平顶梯型，多由 大石砌成，墙体厚实，窗口窄小。"
+  x = -2
+  y = 2
+  z = 0
+    }
+
+  room_exits "nroad4" {
+    room_id = rooms.nroad4.id
+    westup = rooms.shanmen.id
+    north = rooms.nroad3.id
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/nroad5.c by LPCConverter
+# Zone: xuedao
+
+    rooms "nroad5" {
+      name = "山路"
+      description = "这是一条崎岖的山路，马队到了这里就不能在上去了。山 路两旁杂草从生，路开始越来越难走。"
+  x = 0
+  y = 4
+  z = 0
+    }
+
+  room_exits "nroad5" {
+    room_id = rooms.nroad5.id
+    south = rooms.nroad1.id
+    north = rooms.nroad6.id
+    }
+
+
+
+
+  room_items "nroad5" {
+    room_id = rooms.nroad5.id
+    items = [
+      { id = items.ying.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xuedao/nroad6.c by LPCConverter
+# Zone: xuedao
+
+    rooms "nroad6" {
+      name = "山路"
+      description = "你走在一山路上，四周有一座座小山丘。远处可以看见终 年积雪的山尖。周围的树草已经很难看得到了。"
+  x = 0
+  y = 5
+  z = 0
+    }
+
+  room_exits "nroad6" {
+    room_id = rooms.nroad6.id
+    south = rooms.nroad5.id
+    north = rooms.nroad7.id
+    }
+
+
+  room_characters "nroad6" {
+    room_id = rooms.nroad6.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xuedao/nroad7.c by LPCConverter
+# Zone: xuedao
+
+    rooms "nroad7" {
+      name = "山路"
+      description = "你走在一山路上，四周有一座座小山丘。"
+  x = 0
+  y = 6
+  z = 0
+    }
+
+  room_exits "nroad7" {
+    room_id = rooms.nroad7.id
+    south = rooms.nroad6.id
+    eastdown = rooms.shanjiao.id
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/shandong1.c by LPCConverter
+# Zone: xuedao
+
+    rooms "shandong1" {
+      name = "山洞"
+      description = "空空荡荡一个山洞，倒也还算干净，尽头摆了一张石床。"
+  x = -2
+  y = -3
+  z = 2
+    }
+
+  room_exits "shandong1" {
+    room_id = rooms.shandong1.id
+    out = rooms.sroad8.id
+    }
+
+
+
+
+  room_items "shandong1" {
+    room_id = rooms.shandong1.id
+    items = [
+      { id = items.dachang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xuedao/shandong2.c by LPCConverter
+# Zone: xuedao
+
+    rooms "shandong2" {
+      name = "洞口"
+      description = "山谷里积雪被拢成几个雪堆，这里时常有人扫除积雪。你 前面的峭壁下隐隐约约有一个山洞。南北两旁都是崖壁，东面 则是一处峭壁，非常险要。"
+  x = 1
+  y = -3
+  z = 2
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "bao xiang"
+  direction = "west"
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
+    }
+
+  room_exits "shandong2" {
+    room_id = rooms.shandong2.id
+    west = rooms.sroad9.id
+    in = rooms.shandong3.id
+    }
+
+
+
+
+  room_items "shandong2" {
+    room_id = rooms.shandong2.id
+    items = [
+      { id = items.baoxiang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xuedao/shandong3.c by LPCConverter
+# Zone: xuedao
+
+    rooms "shandong3" {
+      name = "山洞"
+      description = "这是一个小小的山洞，血刀老祖的藏身之地。由於此地比 较隐秘，仇家很难寻到这来。洞底有一张供桌，上面供了什麽 东西，你看不清。壁上画了一些模糊不清的文字图案，也不知 道是些什么。"
+  x = 1
+  y = -3
+  z = 2
+    }
+
+  room_exits "shandong3" {
+    room_id = rooms.shandong3.id
+    east = rooms.xiuxishi.id
+    out = rooms.shandong2.id
+    }
+
+
+  room_characters "shandong3" {
+    room_id = rooms.shandong3.id
+    characters = [
+      { id = characters.x_lama.id },
+      { id = characters.x_lama.id }    ]
+  }
+
+
+
+  room_items "shandong3" {
+    room_id = rooms.shandong3.id
+    items = [
+      { id = items.laozu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xuedao/sroad0.c by LPCConverter
+# Zone: xuedao
+
+    rooms "sroad0" {
+      name = "山路"
+      description = "山路越走越窄，能隐隐望见前方又分出了几条叉路。这里 是靠近川西的崇山峻岭，怪石嶙峋。再往东就是川西边缘。往 西有一座雪山高耸入云。"
+  x = 0
+  y = 1
+  z = 0
+    }
+
+  room_exits "sroad0" {
+    room_id = rooms.sroad0.id
+    north = rooms.nroad0.id
+    south = rooms.sroad3.id
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/sroad1.c by LPCConverter
+# Zone: xuedao
+
+    rooms "sroad1" {
+      name = "山路"
+      description = "川西多是崇山峻岭，交通不便。一条山路蜿蜒在山间，连 接着藏边和中原。"
+  x = 2
+  y = 0
+  z = 0
+    }
+
+  room_exits "sroad1" {
+    room_id = rooms.sroad1.id
+    northwest = rooms.boot.id
+    west = rooms.sroad2.id
+    north = rooms.nanheqiaos.id
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/sroad2.c by LPCConverter
+# Zone: xuedao
+
+    rooms "sroad2" {
+      name = "山路"
+      description = "一条山路蜿蜒在山间。向西望去，可以见到大雪山的银色 的雪顶在熠熠生辉。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "sroad2" {
+    room_id = rooms.sroad2.id
+    west = rooms.sroad3.id
+    east = rooms.sroad1.id
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/sroad3.c by LPCConverter
+# Zone: xuedao
+
+    rooms "sroad3" {
+      name = "山路"
+      description = "这里是靠近川西的崇山峻岭，怪石嶙峋。再往东去就是川 西边缘了。往西有一座雪山高耸入云。路边上有个雪坑。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sroad3" {
+    room_id = rooms.sroad3.id
+    westup = rooms.sroad4.id
+    north = rooms.sroad0.id
+    southdown = rooms.hollow.id
+    east = rooms.sroad2.id
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/sroad4.c by LPCConverter
+# Zone: xuedao
+
+    rooms "sroad4" {
+      name = "大雪山口"
+      description = "这里已经到了藏边，大雪山的山口。大雪山又叫岷山，位 于川藏之间，由于山势高峻，山顶终年不化积雪故而得名。四 下毫无人迹，只有几只秃鹰在高处盘旋，俯视着茫茫雪山。"
+  x = -1
+  y = 0
+  z = 1
+    }
+
+  room_exits "sroad4" {
+    room_id = rooms.sroad4.id
+    westup = rooms.sroad5.id
+    eastdown = rooms.sroad3.id
+    }
+
+
+
+
+  room_items "sroad4" {
+    room_id = rooms.sroad4.id
+    items = [
+      { id = items.ying.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xuedao/sroad5.c by LPCConverter
+# Zone: xuedao
+
+    rooms "sroad5" {
+      name = "大雪山口"
+      description = "这儿遍地冰雪，你眼前白皑皑的一片。"
+  x = -2
+  y = 0
+  z = 2
+    }
+
+  room_exits "sroad5" {
+    room_id = rooms.sroad5.id
+    southup = rooms.sroad6.id
+    eastdown = rooms.sroad4.id
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/sroad6.c by LPCConverter
+# Zone: xuedao
+
+    rooms "sroad6" {
+      name = "大雪山口"
+      description = "这里冰天雪地，寒风刺骨。如果不是内力高深的人，已然 经受不住冻了。"
+  x = -2
+  y = -1
+  z = 3
+    }
+
+  room_exits "sroad6" {
+    room_id = rooms.sroad6.id
+    south = rooms.sroad7.id
+    northdown = rooms.sroad5.id
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/sroad7.c by LPCConverter
+# Zone: xuedao
+
+    rooms "sroad7" {
+      name = "大雪山口"
+      description = "群山环绕，四周积雪终年不化。南边不远处有一个山谷。"
+  x = -2
+  y = -2
+  z = 3
+    }
+
+  room_exits "sroad7" {
+    room_id = rooms.sroad7.id
+    southdown = rooms.sroad8.id
+    north = rooms.sroad6.id
+    }
+
+
+  room_characters "sroad7" {
+    room_id = rooms.sroad7.id
+    characters = [
+      { id = characters.caiyaoren.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xuedao/sroad8.c by LPCConverter
+# Zone: xuedao
+
+    rooms "sroad8" {
+      name = "雪山山谷"
+      description = "一个宽大山谷，群山环绕，山顶上全是白闪闪的积雪，山 谷南方有两个山洞。附近有几棵说不出什么名字的古树，下面 有一些乱七八糟的零碎(mash)堆摆在那里。"
+  x = -2
+  y = -3
+  z = 2
+    }
+
+  room_exits "sroad8" {
+    room_id = rooms.sroad8.id
+    northup = rooms.sroad7.id
+    eastdown = rooms.wangyougu.id
+    in = rooms.shandong1.id
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/sroad9.c by LPCConverter
+# Zone: xuedao
+
+    rooms "sroad9" {
+      name = "雪山山谷"
+      description = "山谷里遍地积雪，四周都是峭壁。只北面有一个出口，东 面似乎有个山洞。"
+  x = 0
+  y = -3
+  z = 2
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "sheng di"
+  direction = "east"
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
+    }
+
+  room_exits "sroad9" {
+    room_id = rooms.sroad9.id
+    east = rooms.shandong2.id
+    westdown = rooms.wangyougu.id
+    }
+
+
+
+
+  room_items "sroad9" {
+    room_id = rooms.sroad9.id
+    items = [
+      { id = items.shengdi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xuedao/wangyougu.c by LPCConverter
+# Zone: xuedao
+
+    rooms "wangyougu" {
+      name = "忘忧谷"
+      description = "这里乃是大轮寺外一处僻静所在，四下绝无人迹。前前後 後，大大小小几百座佛塔，被白得耀眼的雪被披盖着。银白色 的山野、雪地里闪耀着红色和蓝色的光带，五彩缤纷，迷宫样 的琼楼仙阁在你眼前出现。南面一条小径不知通往何处。"
+  x = -1
+  y = -3
+  z = 1
+    }
+
+  room_exits "wangyougu" {
+    room_id = rooms.wangyougu.id
+    eastup = rooms.sroad9.id
+    westup = rooms.sroad8.id
+    }
+
+
+  room_characters "wangyougu" {
+    room_id = rooms.wangyougu.id
+    characters = [
+      { id = characters.zhuoma.id },
+      { id = characters.yangzong.id }    ]
+  }
+
+
+
+  room_items "wangyougu" {
+    room_id = rooms.wangyougu.id
+    items = [
+      { id = items.shanyong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xuedao/xiuxishi.c by LPCConverter
+# Zone: xuedao
+
+    rooms "xiuxishi" {
+      name = "侧洞"
+      description = "这里是一个小小的山洞，地上铺了很多茅草，非常的干燥。 光线有些昏暗，只是西面透出一些亮光。你不禁觉得有些疲倦 了，一时忍不住想躺下睡睡。"
+  x = 2
+  y = -3
+  z = 2
+    }
+
+  room_exits "xiuxishi" {
+    room_id = rooms.xiuxishi.id
+    west = rooms.shandong3.id
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/npc/caiyaoren.c by LPCConverter
+# Zone: xuedao
+
+    characters "caiyaoren" {
+      name = "采药人"
+      description = "一个辛苦工作的采药人。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 },
+    { skill = "hammer" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.yaochu.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/npc/x_lama.c by LPCConverter
+# Zone: xuedao
+
+    characters "x_lama" {
+      name = "小喇嘛"
+      description = "这是血刀老祖座前的小喇嘛，一脸的稚气，看来刚入门不久。"
+  gender = "男性"
+  age = 13
+  shen_type = 0
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 100
+    max_neili = 100
+    max_qi = 100
+    str = 20
+  }
+
+  carry = [
+    { id = items.y_jiasha.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/npc/yangzong.c by LPCConverter
+# Zone: xuedao
+
+    characters "yangzong" {
+      name = "央宗"
+      description = "他是一位藏族同胞。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+  score = 1000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 5000
+    con = 25
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 300
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 60 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 40 }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "央宗合什为礼，说道：阿弭佗佛！{respect}，贫僧这厢有礼了。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/npc/zhuoma.c by LPCConverter
+# Zone: xuedao
+
+    characters "zhuoma" {
+      name = "卓玛"
+      description = "她是一位藏族女同胞。"
+  nickname = "消息灵通"
+  gender = "女性"
+  age = 25
+  shen_type = 1
+  score = 1000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 5000
+    con = 25
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 300
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 60 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 40 }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "卓玛合什为礼，说道：阿弭佗佛！{respect}，贫尼这厢有礼了。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xuedao/obj/dachang.c by LPCConverter
+# Zone: xuedao
+
+    items "dachang" {
+      name = "Item"
+      description = "这是一领用秃鹰长羽织就的大氅。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

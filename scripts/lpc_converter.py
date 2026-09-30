@@ -1806,6 +1806,38 @@ def _looks_like_path(s):
     return isinstance(s, str) and ("/" in s or "__DIR__" in s)
 
 
+# Characters that mark a path fragment as a runtime expression rather than a
+# literal file path: array subscript (books[random(...)]), interpolation ($x),
+# parentheses (sizeof(...)), or a bare + concatenation whose right-hand side is
+# not a plain path literal.
+_DYNAMIC_EXPR_RE = re.compile(r'[\[\]()]|\$[A-Za-z_]')
+
+# Object ids must be bare UCL identifiers: lowercase letters, digits, underscore.
+_SAFE_ID_RE = re.compile(r'^[a-z0-9_]+$')
+
+
+def _is_dynamic_expr(path):
+    """True when a key path embeds a runtime expression instead of a literal path.
+
+    ``"/clone/book/" + books[random(sizeof(books))]`` is a *string* whose text
+    contains "/", so :func:`_looks_like_path` accepts it, but the trailing
+    ``books[random(sizeof(books))]`` cannot be resolved to a single object id at
+    conversion time.  Such keys must be skipped instead of leaking LPC source
+    into the generated UCL.
+    """
+    if not isinstance(path, str):
+        return False
+    if _DYNAMIC_EXPR_RE.search(path):
+        return True
+    # A trailing concatenation operand that is itself not a path literal,
+    # e.g. `"/clone/book/" + somevar` (var without __DIR__ or a leading quote).
+    if "+" in path:
+        tail = path.rsplit("+", 1)[1].strip()
+        if not (tail.startswith('"') or "__DIR__" in tail or "/" in tail):
+            return True
+    return False
+
+
 def _generate_room_objects(room_id, value):
     if value is None:
         return ""
@@ -1819,7 +1851,15 @@ def _generate_room_objects(room_id, value):
             # Skip keys that are expressions (like names[random(sizeof(names))])
             # rather than simple file paths
             continue
+        if _is_dynamic_expr(path):
+            # Path is built at runtime (e.g. "/clone/book/" + books[random(...)]).
+            # No single object id can be resolved; emitting it would leak LPC
+            # source into the UCL and break the parser.
+            continue
         id_ = _room_id_from_path(path)
+        if not _SAFE_ID_RE.match(id_):
+            # Defensive: never emit an id that is not a bare UCL identifier.
+            continue
         if _contains_npc(path):
             n = _count_or_one(count)
             char_links.extend([f"      {{ id = characters.{id_}.id }}" for _ in range(n)])

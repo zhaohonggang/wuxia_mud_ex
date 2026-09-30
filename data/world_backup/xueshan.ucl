@@ -1,0 +1,1303 @@
+zones "xueshan" {
+  name = "xueshan"
+}
+
+# Generated from C:/files/git/mud/d/xueshan/bieyuan.c by LPCConverter
+# Zone: xueshan
+
+    rooms "bieyuan" {
+      name = "雪山别院"
+      description = "这里是大轮寺的分部，当年贡唐仓大喇嘛不远万里进京面 圣，被封为国师，就在此处宣扬佛法。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bieyuan" {
+    room_id = rooms.bieyuan.id
+  east = rooms.road5.id  }
+
+
+  room_characters "bieyuan" {
+    room_id = rooms.bieyuan.id
+    characters = [
+      { id = characters.seng_bing1.id },
+      { id = characters.seng_bing1.id },
+      { id = characters.seng_bing1.id },
+      { id = characters.seng_bing1.id },
+      { id = characters.zhike.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/cangjing.c by LPCConverter
+# Zone: xueshan
+
+    rooms "cangjing" {
+      name = "藏经阁"
+      description = "这里是大轮寺的藏经之处。书架上林林总总都是梵文典籍。 可是你一个字也看不懂。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "cangjing" {
+    room_id = rooms.cangjing.id
+  south = rooms.dating.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/cangjingge.c by LPCConverter
+# Zone: xueshan
+
+    rooms "cangjingge" {
+      name = "藏经室"
+      description = "这里是大轮寺的藏经室，靠墙是一排书架，摆满了各种拳 谱、书籍。大多是当年掌门人鸠摩智翻译的佛经和从少林寺取 来的武学典籍。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "cangjingge" {
+    room_id = rooms.cangjingge.id
+  north = rooms.dating.id  }
+
+
+
+
+  room_items "cangjingge" {
+    room_id = rooms.cangjingge.id
+    items = [
+      { id = items.daerba.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/caoyuan.c by LPCConverter
+# Zone: xueshan
+
+    rooms "caoyuan" {
+      name = "草原"
+      description = "这里是雪山脚下的一片草原。北面是起伏的群山，山顶上 积着终年不化的雪。西边有一条土路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caoyuan" {
+    room_id = rooms.caoyuan.id
+  west = rooms.tulu1.id
+  northeast = rooms.silk4.id  }
+
+
+
+
+  room_items "caoyuan" {
+    room_id = rooms.caoyuan.id
+    items = [
+      { id = items.tu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/cedian1.c by LPCConverter
+# Zone: xueshan
+
+    rooms "cedian1" {
+      name = "侧殿"
+      description = "这里是大轮寺的东侧殿。殿内有神态各异的十八罗汉塑像， 金旒玉镶，很是庄严。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(! myfam || myfam["family_name"] != "大轮寺") && dir=="northup" && objectp(present ("jiamu huofo", environment(me)))
+direction = "northup"
+  message = "嘉木活佛说道：尔非大轮寺弟子，不能入内。"
+}
+
+]
+    }
+
+  room_exits "cedian1" {
+    room_id = rooms.cedian1.id
+  northup = rooms.zoulang1.id
+  west = rooms.dadian.id  }
+
+
+  room_characters "cedian1" {
+    room_id = rooms.cedian1.id
+    characters = [
+      { id = characters.xiang_ke.id },
+      { id = characters.xiang_ke.id },
+      { id = characters.xiang_ke.id }    ]
+  }
+
+
+
+  room_items "cedian1" {
+    room_id = rooms.cedian1.id
+    items = [
+      { id = items.jiamu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/cedian2.c by LPCConverter
+# Zone: xueshan
+
+    rooms "cedian2" {
+      name = "侧殿"
+      description = "这里是大轮寺的西侧殿。这里的墙壁上描绘着佛祖传道的 故事，佛祖手拈金花宝相庄严。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(! myfam || myfam["family_name"] != "大轮寺") && dir=="northup" && objectp(present ("samu huofo", environment(me)))
+direction = "northup"
+  message = "萨木活佛说道：你非大轮寺弟子，不得入内。"
+}
+
+]
+    }
+
+  room_exits "cedian2" {
+    room_id = rooms.cedian2.id
+  northup = rooms.zoulang2.id
+  east = rooms.dadian.id  }
+
+
+  room_characters "cedian2" {
+    room_id = rooms.cedian2.id
+    characters = [
+      { id = characters.xiang_ke.id },
+      { id = characters.xiang_ke.id },
+      { id = characters.xiang_ke.id }    ]
+  }
+
+
+
+  room_items "cedian2" {
+    room_id = rooms.cedian2.id
+    items = [
+      { id = items.samu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/chang.c by LPCConverter
+# Zone: xueshan
+
+    rooms "chang" {
+      name = "武场"
+      description = "这里是大轮寺的大练武场，树着好多木桩和沙袋，僧人们 日常均在此刻苦习武。往东走穿过整个大练武场就是广场，西 边有个小库房，南边一大片开阔地，就是雪山闻名海内的祭坛。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chang" {
+    room_id = rooms.chang.id
+  east = rooms.chang2.id
+  west = rooms.kufang.id
+  north = rooms.chang3.id
+  south = rooms.jitan.id  }
+
+
+  room_characters "chang" {
+    room_id = rooms.chang.id
+    characters = [
+      { id = characters.x_lama.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/chang2.c by LPCConverter
+# Zone: xueshan
+
+    rooms "chang2" {
+      name = "武场"
+      description = "这里是大轮寺的大练武场，树着好多木桩和沙袋，僧人们 日常均在此刻苦习武。往东就是广场，西边一直穿过大连武场 有个小库房。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chang2" {
+    room_id = rooms.chang2.id
+  east = rooms.guangchang.id
+  west = rooms.chang.id  }
+
+
+  room_characters "chang2" {
+    room_id = rooms.chang2.id
+    characters = [
+      { id = characters.x_lama.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/chang3.c by LPCConverter
+# Zone: xueshan
+
+    rooms "chang3" {
+      name = "武场"
+      description = "这里是大轮寺的小练武场，树着好多木桩和沙袋，僧人们 日常均在此刻苦习武。往南走就是大练武场，许多雪山弟子在 那里练功。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chang3" {
+    room_id = rooms.chang3.id
+  north = rooms.houyuan.id
+  south = rooms.chang.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/chanshi.c by LPCConverter
+# Zone: xueshan
+
+    rooms "chanshi" {
+      name = "禅室"
+      description = "这里是僧人门参禅打坐的地方。侧壁一列禅床让人看了就 想到该想的事。正对门的墙上有个黄铜轮盘(lunpan)，上面刻 着些希奇古怪的花纹，不知是什么意思。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ lunpan = "这是一个由黄铜所铸的大轮盘，轮盘上面刻着许多希奇古怪的花 纹，全是和风水有关。看样子你可以转(turn)动它。"
+}
+    }
+
+  room_exits "chanshi" {
+    room_id = rooms.chanshi.id
+  east = rooms.tiantai.id
+  south = rooms.houdian.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/chufang.c by LPCConverter
+# Zone: xueshan
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "这里是大轮寺的厨房，新来的僧人可以在此打杂。房中醒 目的位置有一块牌子，但已经破旧不堪，字迹模糊了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+  south = rooms.xiaoyuan.id  }
+
+
+
+
+  room_items "chufang" {
+    room_id = rooms.chufang.id
+    items = [
+      { id = items.cha.id },
+      { id = items.nailao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/dadian.c by LPCConverter
+# Zone: xueshan
+
+    rooms "dadian" {
+      name = "大殿"
+      description = "这里是大轮寺的大殿，中央供奉着佛祖塑像。僧人们在念 着经文，所以这里的香火很是旺盛。远来的香客们在这里虔诚 地膜拜。大殿两侧都是侧殿。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dadian" {
+    room_id = rooms.dadian.id
+  east = rooms.cedian1.id
+  west = rooms.cedian2.id
+  south = rooms.guangchang.id  }
+
+
+  room_characters "dadian" {
+    room_id = rooms.dadian.id
+    characters = [
+      { id = characters.xiang_ke.id },
+      { id = characters.xiang_ke.id }    ]
+  }
+
+
+
+  room_items "dadian" {
+    room_id = rooms.dadian.id
+    items = [
+      { id = items.lazhang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/dating.c by LPCConverter
+# Zone: xueshan
+
+    rooms "dating" {
+      name = "大厅"
+      description = "这里是寺内的大厅，几位有道的高僧在高声辩论。看来正 在引经据典，争斗机锋。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dating" {
+    room_id = rooms.dating.id
+  east = rooms.zoulang1.id
+  west = rooms.zoulang2.id
+  north = rooms.cangjing.id
+  south = rooms.cangjingge.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/dilao.c by LPCConverter
+# Zone: xueshan
+
+    rooms "dilao" {
+      name = "地牢"
+      description = "这里是大轮寺内的一个阴暗、潮湿的牢房。你感到奇怪的 是怎麽会不时听到一点怪声却怎么也找不到人呢。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "dilao" {
+    room_id = rooms.dilao.id
+  southup = rooms.houyuan.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/guangchang.c by LPCConverter
+# Zone: xueshan
+
+    rooms "guangchang" {
+      name = "广场"
+      description = "这里是大轮寺内的广场。广场石埕铺就，黄土垫砌，平整 而坚实。广场的北面就是依山而建的大轮寺大殿。往西是块练 武场，南面是山门。寺内有一些手持僧棍的僧兵在巡逻。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guangchang" {
+    room_id = rooms.guangchang.id
+  east = rooms.xiaoyuan.id
+  west = rooms.chang2.id
+  north = rooms.dadian.id
+  south = rooms.shanmen.id  }
+
+
+  room_characters "guangchang" {
+    room_id = rooms.guangchang.id
+    characters = [
+      { id = characters.seng_bing1.id },
+      { id = characters.seng_bing1.id },
+      { id = characters.seng_bing1.id },
+      { id = characters.seng_bing1.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/houdian.c by LPCConverter
+# Zone: xueshan
+
+    rooms "houdian" {
+      name = "后殿"
+      description = "这里是大轮寺的后殿，也是雪山弟子闭门练功的地方。殿 内是一些练功的蒲团和木人，还有一些吊挂着的沙袋和直竖的 木桩。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houdian" {
+    room_id = rooms.houdian.id
+  north = rooms.chanshi.id
+  south = rooms.neidian.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/houyuan.c by LPCConverter
+# Zone: xueshan
+
+    rooms "houyuan" {
+      name = "后院"
+      description = "这里是大轮寺的后院，后院不大，栽了几株参天雪松，在 白晃晃的雪山背景下，竟是飘然出世的心动。南边便是大轮寺 的练武场了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houyuan" {
+    room_id = rooms.houyuan.id
+  northdown = rooms.dilao.id
+  south = rooms.chang3.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/hubian1.c by LPCConverter
+# Zone: xueshan
+
+    rooms "hubian1" {
+      name = "湖边小路"
+      description = "这是圣湖边的小路。路侧的湖水极为清澈。阳光下映着白 顶雪山显出一片蓝幽幽的宁静。但是周围却是被极浓的雾气所 笼罩，使你的眼前一片朦胧，瞧不清四周。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hubian1" {
+    room_id = rooms.hubian1.id
+  west = rooms.shenghu.id
+  east = rooms.hubian2.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/hubian2.c by LPCConverter
+# Zone: xueshan
+
+    rooms "hubian2" {
+      name = "湖边小路"
+      description = "这是圣湖边的小路。长草越径，虫鸣阵阵，偶尔有白色水 禽掠湖点水，激起圈圈涟漪。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hubian2" {
+    room_id = rooms.hubian2.id
+  east = rooms.hubian3.id
+  west = rooms.hubian1.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/hubian3.c by LPCConverter
+# Zone: xueshan
+
+    rooms "hubian3" {
+      name = "湖边小路"
+      description = "这是圣湖边的小路。天兰兰的，白白云朵在湖里漂移，波 光潋滟。湖边生长着一些绿绿青青的不知名的矮树。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hubian3" {
+    room_id = rooms.hubian3.id
+  north = rooms.hubian4.id
+  west = rooms.hubian2.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/hubian4.c by LPCConverter
+# Zone: xueshan
+
+    rooms "hubian4" {
+      name = "湖边小路"
+      description = "这是圣湖边的小路。路侧长草没足, 青绿可喜。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hubian4" {
+    room_id = rooms.hubian4.id
+  north = rooms.shanjiao.id
+  south = rooms.hubian3.id  }
+
+
+  room_characters "hubian4" {
+    room_id = rooms.hubian4.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/jitan.c by LPCConverter
+# Zone: xueshan
+
+    rooms "jitan" {
+      name = "祭坛"
+      description = "这里是雪山寺的祭坛，中间一个高台，青石砌就。周围摆 满了木柴和酥油，旁边一个盛水的颅钵搁着摆着只法铃。一些 痛苦和可怜的亡灵可以在这里获得超度。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jitan" {
+    room_id = rooms.jitan.id
+  north = rooms.chang.id  }
+
+
+  room_characters "jitan" {
+    room_id = rooms.jitan.id
+    characters = [
+      { id = characters.x_lama.id },
+      { id = characters.x_lama.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/kedian.c by LPCConverter
+# Zone: xueshan
+
+    rooms "kedian" {
+      name = "客店"
+      description = "这里是一个路边的小客店。来往的行人都在这里稍事休息。 往东的路可以到达中原。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kedian" {
+    room_id = rooms.kedian.id
+  east = rooms.tulu2.id  }
+
+
+  room_characters "kedian" {
+    room_id = rooms.kedian.id
+    characters = [
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/kufang.c by LPCConverter
+# Zone: xueshan
+
+    rooms "kufang" {
+      name = "库房"
+      description = "这里是练武场旁边的小库房，房里密不通风，只有一丝光 线从屋檐小缝中投射进来。房中有些备用的武器，都是雪山弟 子日常练功需要用到的兵器。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kufang" {
+    room_id = rooms.kufang.id
+  east = rooms.chang.id  }
+
+
+
+
+  room_items "kufang" {
+    room_id = rooms.kufang.id
+    items = [
+      { id = items.zhujian.id },
+      { id = items.gangdao.id },
+      { id = items.mugun.id },
+      { id = items.falun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/midao.c by LPCConverter
+# Zone: xueshan
+
+    rooms "midao" {
+      name = "密道"
+      description = "这里是禅室下面的一条狭窄的暗道。阴森可怕，到处积满 了灰尘，结满了蛛网，也不知道通往何处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "midao" {
+    room_id = rooms.midao.id
+  north = rooms.mishi.id
+  up = rooms.chanshi.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/mishi.c by LPCConverter
+# Zone: xueshan
+
+    rooms "mishi" {
+      name = "密室"
+      description = "这是一条小房间。什么东西都没有，只是一个黑乎乎的小 洞口，不知道下面都隐藏了些什么。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "mishi" {
+    room_id = rooms.mishi.id
+  south = rooms.midao.id
+  north = rooms.xsmidao5.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/neidian.c by LPCConverter
+# Zone: xueshan
+
+    rooms "neidian" {
+      name = "内殿"
+      description = "这里是雪山寺的内殿，也是掌门人见客的地方。雪山寺的 掌门人、贵为蒙古国师的金轮法王是西域一代高僧，也是西域 不世出的武林宗师。他驻锡本寺后，雪山寺方声名远播。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "neidian" {
+    room_id = rooms.neidian.id
+  east = rooms.zoulang3.id
+  west = rooms.zoulang4.id
+  north = rooms.houdian.id  }
+
+
+
+
+  room_items "neidian" {
+    room_id = rooms.neidian.id
+    items = [
+      { id = items.fawang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/shanjiao.c by LPCConverter
+# Zone: xueshan
+
+    rooms "shanjiao" {
+      name = "雪山山脚"
+      description = "这里是山脚下的一片平地，山上不远处，皑皑白雪映照下 的一大片红墙金瓦处，就是远近闻名的雪山寺。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanjiao" {
+    room_id = rooms.shanjiao.id
+  westup = rooms.nroad7.id
+  south = rooms.hubian4.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/shanmen.c by LPCConverter
+# Zone: xueshan
+
+    rooms "shanmen" {
+      name = "大轮寺"
+      description = "这里是大轮寺的山门，门前是络绎不绝的进香朝圣的信徒 而有的甚至来自乌丝藏西南的波丝。山门前站了个手持法器的 葛伦布在维持秩序，东方是一条青石板铺成的山路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanmen" {
+    room_id = rooms.shanmen.id
+  north = rooms.guangchang.id
+  eastdown = rooms.nroad4.id  }
+
+
+  room_characters "shanmen" {
+    room_id = rooms.shanmen.id
+    characters = [
+      { id = characters.guest.id },
+      { id = characters.guest.id }    ]
+  }
+
+
+
+  room_items "shanmen" {
+    room_id = rooms.shanmen.id
+    items = [
+      { id = items.gelunbu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/shenghu.c by LPCConverter
+# Zone: xueshan
+
+    rooms "shenghu" {
+      name = "圣湖"
+      description = "眼前就是著名的圣湖，碧蓝的湖面倒影着蓝天和白云，浩 淼的水面让人心旷神怡。金碧辉煌的大轮寺清晰可见，再远处 是几座延绵的大雪山，其中最高大的是神山，相传山中有神仙 居住。雪山中融化的雪水都汇入湖中。但是周围却是被极浓的 雾气所笼罩，使你的眼前一片朦胧，瞧不清四周。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shenghu" {
+    room_id = rooms.shenghu.id
+  east = rooms.__file__.id
+  west = rooms.__file__.id
+  south = rooms.__file__.id
+  north = rooms.__file__.id  }
+
+
+  room_characters "shenghu" {
+    room_id = rooms.shenghu.id
+    characters = [
+      { id = characters.walker.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/tiantai.c by LPCConverter
+# Zone: xueshan
+
+    rooms "tiantai" {
+      name = "天台"
+      description = "这里是大轮寺的高处。北边可见雄伟的大雪山，南边可以 俯瞰美丽如镜的圣湖。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tiantai" {
+    room_id = rooms.tiantai.id
+  west = rooms.chanshi.id  }
+
+
+
+
+  room_items "tiantai" {
+    room_id = rooms.tiantai.id
+    items = [
+      { id = items.huodu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/xueshan/tulu1.c by LPCConverter
+# Zone: xueshan
+
+    rooms "tulu1" {
+      name = "土路"
+      description = "这是一条不起眼的土路，不宽却也不窄，松散的浮尘显露 出来往行商的频繁。它是连接大轮寺与中原的必经之路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tulu1" {
+    room_id = rooms.tulu1.id
+  east = rooms.caoyuan.id
+  west = rooms.tulu2.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/tulu2.c by LPCConverter
+# Zone: xueshan
+
+    rooms "tulu2" {
+      name = "土路"
+      description = "这是一条不起眼的土路，却是连接大轮寺与中原的必经之 路。西边点点的炊烟依稀可见。往北可以通往雪山寺。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tulu2" {
+    room_id = rooms.tulu2.id
+  east = rooms.tulu1.id
+  north = rooms.tulu3.id
+  west = rooms.kedian.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/tulu3.c by LPCConverter
+# Zone: xueshan
+
+    rooms "tulu3" {
+      name = "土路"
+      description = "这是一条不起眼的土路。尘埃泛起的远方，北边波光潋滟 的一大片幽蓝水光处，就是著名的圣湖。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tulu3" {
+    room_id = rooms.tulu3.id
+  south = rooms.tulu2.id
+  north = rooms.shenghu.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/xiaoyuan.c by LPCConverter
+# Zone: xueshan
+
+    rooms "xiaoyuan" {
+      name = "小院"
+      description = "这里是寺内的小院，收拾的相当干净利索。来来往往的香 客和喇嘛，一边在暗示着大轮寺香火之盛，一边也好象在表示 喇嘛的口福也真不坏。因为北边就是个厨房。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaoyuan" {
+    room_id = rooms.xiaoyuan.id
+  west = rooms.guangchang.id
+  north = rooms.chufang.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/zoulang1.c by LPCConverter
+# Zone: xueshan
+
+    rooms "zoulang1" {
+      name = "走廊"
+      description = "这里是雪山寺内的走廊。这里有点幽暗，天花板上有一些 不知道确切含义的雕刻，墙壁上则是很通俗的佛经故事壁画了。 壁上点着几碗大海灯照明。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zoulang1" {
+    room_id = rooms.zoulang1.id
+  southdown = rooms.cedian1.id
+  west = rooms.dating.id
+  north = rooms.zoulang3.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/zoulang2.c by LPCConverter
+# Zone: xueshan
+
+    rooms "zoulang2" {
+      name = "走廊"
+      description = "这里是雪山寺内的走廊。这里有点幽暗，天花板上有一些 不知道确切含义的雕刻，墙壁上则是很通俗的佛经故事壁画了。 壁上点着几碗大海灯照明。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zoulang2" {
+    room_id = rooms.zoulang2.id
+  southdown = rooms.cedian2.id
+  east = rooms.dating.id
+  north = rooms.zoulang4.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/zoulang3.c by LPCConverter
+# Zone: xueshan
+
+    rooms "zoulang3" {
+      name = "走廊"
+      description = "这里是雪山寺内的走廊。这里有点幽暗，天花板上有 一些不知道确切含义的雕刻，墙壁上则是很通俗的佛经故 事壁画了。壁上点着几碗大海灯照明。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zoulang3" {
+    room_id = rooms.zoulang3.id
+  west = rooms.neidian.id
+  south = rooms.zoulang1.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/zoulang4.c by LPCConverter
+# Zone: xueshan
+
+    rooms "zoulang4" {
+      name = "走廊"
+      description = "这里是雪山寺内的走廊。这里有点幽暗，天花板上有 一些不知道确切含义的雕刻，墙壁上则是很通俗的佛经故 事壁画了。壁上点着几碗大海灯照明。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zoulang4" {
+    room_id = rooms.zoulang4.id
+  east = rooms.neidian.id
+  south = rooms.zoulang2.id  }
+
+# Generated from C:/files/git/mud/d/xueshan/npc/seng-bing1.c by LPCConverter
+# Zone: xueshan
+
+    characters "seng_bing1" {
+      name = "守寺僧兵"
+      description = "这是一位身材高大的壮年僧人，两臂粗壮，膀 阔腰圆。他手持僧棍，身穿一袭黑色袈裟，似 乎怀有一身武艺。"
+  gender = "男性"
+  age = 40
+  score = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 300
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "xiaowuxiang" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "shenkong-xing" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "yujiamu-quan" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "staff" level = 50 },
+    { skill = "xiangmo-chu" level = 50 },
+    { type = "force" skill = "xiaowuxiang" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "unarmed" skill = "yujiamu-quan" },
+    { type = "parry" skill = "xiangmo-chu" },
+    { type = "staff" skill = "xiangmo-chu" }
+  ]
+
+
+  carry = [
+    { id = items.senggun.id },
+    { id = items.b_jiasha.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/npc/turou.c by LPCConverter
+# Zone: xueshan
+
+    characters "turou" {
+      name = "兔肉"
+      description = "一块鲜血淋漓肥的野兔肉。"
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/npc/x_lama.c by LPCConverter
+# Zone: xueshan
+
+    characters "x_lama" {
+      name = "小喇嘛"
+      description = "这是大轮寺的小喇嘛，一脸的稚气，看来刚入门不久。"
+  gender = "男性"
+  age = 13
+  shen_type = 0
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 100
+    max_neili = 100
+    max_qi = 100
+    str = 20
+  }
+
+  carry = [
+    { id = items.y_jiasha.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/npc/x_lama1.c by LPCConverter
+# Zone: xueshan
+
+    characters "x_lama1" {
+      name = "小喇嘛"
+      description = "这是大轮寺的小喇嘛，脸上挂着天真的笑容。"
+  gender = "男性"
+  age = 15
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 100
+    max_neili = 100
+    max_qi = 100
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 15 },
+    { skill = "dodge" level = 15 },
+    { skill = "unarmed" level = 15 },
+    { skill = "parry" level = 15 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/npc/xiang-ke.c by LPCConverter
+# Zone: xueshan
+
+    characters "xiang_ke" {
+      name = "进香客"
+      description = ""
+  gender = "男性"
+  age = 30
+
+  combat = {
+    combat_exp = 500
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/npc/xiaoer2.c by LPCConverter
+# Zone: xueshan
+
+    characters "xiaoer2" {
+      name = "店小二"
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  # vendor_goods: "/d/xueshan/obj/niupidai" (file not found)
+  # vendor_goods: "/d/xueshan/obj/qingke-m" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/npc/zhike.c by LPCConverter
+# Zone: xueshan
+
+    characters "zhike" {
+      name = "知客僧"
+      description = ""
+  nickname = "消息灵通"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 60000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "blade" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/b-jiasha.c by LPCConverter
+# Zone: xueshan
+
+    items "b_jiasha" {
+      name = "黑色袈裟"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/c-jiasha.c by LPCConverter
+# Zone: xueshan
+
+    items "c_jiasha" {
+      name = "青色袈裟"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/cha.c by LPCConverter
+# Zone: xueshan
+
+    items "cha" {
+      name = "奶茶"
+      description = "一碗浓浓的奶茶，散发出诱人的香气。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/falun.c by LPCConverter
+# Zone: xueshan
+
+    items "falun" {
+      name = "法轮"
+      description = "这是一柄法轮，僧人们用他来作法事。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}放回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/gangchu.c by LPCConverter
+# Zone: xueshan
+
+    items "gangchu" {
+      name = "钢杵"
+      description = "这是一柄全钢铸造的钢杵。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「呼」的一声抽出一柄{name}高举在手中。"
+    unwield = "{npc}将手中的{name}背回背上。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/gushan.c by LPCConverter
+# Zone: xueshan
+
+    items "gushan" {
+      name = "Item"
+      description = "这是一把铁骨扇，武林中人常常用它作为打穴的兵器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从兜里掏出一把{name}握在手中。"
+    unwield = "{npc}将手中的{name}放回兜里。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/jinlun.c by LPCConverter
+# Zone: xueshan
+
+    items "jinlun" {
+      name = "金轮"
+      description = "这是一柄金光闪闪的法轮。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}放回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/mugun.c by LPCConverter
+# Zone: xueshan
+
+    items "mugun" {
+      name = "木棍"
+      description = "这是一根木棍，举可齐眉，轻重合宜，可攻击大片敌人。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/nailao.c by LPCConverter
+# Zone: xueshan
+
+    items "nailao" {
+      name = "奶酪"
+      description = "一块乳黄色的奶酪。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/niupidai.c by LPCConverter
+# Zone: xueshan
+
+    items "niupidai" {
+      name = "牛皮袋"
+      description = "这是用来装酥油茶的牛皮袋，散发出淡淡的乳香。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/p-jiasha.c by LPCConverter
+# Zone: xueshan
+
+    items "p_jiasha" {
+      name = "紫色袈裟"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/qingke-m.c by LPCConverter
+# Zone: xueshan
+
+    items "qingke_m" {
+      name = "青稞面"
+      description = "一盆别有风味的青稞面。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/r-jiasha.c by LPCConverter
+# Zone: xueshan
+
+    items "r_jiasha" {
+      name = "红色袈裟"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/senggun.c by LPCConverter
+# Zone: xueshan
+
+    items "senggun" {
+      name = "僧棍"
+      description = "这是一根桦木白腊棍，举可齐眉，轻重合宜，可攻击大片敌人。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/sengmao.c by LPCConverter
+# Zone: xueshan
+
+    items "sengmao" {
+      name = "僧帽"
+      description = "这是一顶藏僧戴的僧帽。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/xuelian.c by LPCConverter
+# Zone: xueshan
+
+    items "xuelian" {
+      name = "天山雪莲"
+      description = "这是一支只有在寒冷的地方才能生长的雪莲。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/y-jiasha.c by LPCConverter
+# Zone: xueshan
+
+    items "y_jiasha" {
+      name = "黄色袈裟"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/xueshan/obj/yinlun.c by LPCConverter
+# Zone: xueshan
+
+    items "yinlun" {
+      name = "银轮"
+      description = "这是一柄银光闪闪的法轮。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}放回腰间。"
+  }
+    }

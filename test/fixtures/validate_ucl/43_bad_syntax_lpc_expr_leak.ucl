@@ -1,0 +1,23 @@
+zones "test" {
+  name = "test"
+}
+
+  room_items "cangjingge" {
+    room_id = rooms.cangjingge.id
+    items = [
+      { id = items.daotong.id },
+      { id = items. + books[random(sizeof(books))].id }
+    ]
+  }
+
+    rooms "cangjingge" {
+      name = "藏经阁"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "cangjingge" {
+    room_id = rooms.cangjingge.id
+  southdown = rooms.xilang.id
+  }

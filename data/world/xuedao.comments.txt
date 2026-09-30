@@ -1,0 +1,155 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/xuedao/shandong2.c by LPCConverter
+# Zone: xuedao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "west" || !objectp(guarder = present("bao xiang", this_object())) || !living(guarder))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/xuedao/sroad7.c by LPCConverter
+# Zone: xuedao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (dir == "southup") { message_vision(HIW "\n突然间只听得轰隆一声巨响，$N" HIW "脚下踏了个空，竟然是雪崩了！\n" NOR, me); if (me->query_dex() / 2 + random(me->query_dex()) < 13) { me->receive_damage("qi", 70); me->receive_wound("qi", 70); } tell_object(me, HIW "只见大片的积雪从山峰上奔腾而下，铺" "天盖地扑来，沿途并夹\n带了不少岩石。赶" "紧逃命吧！\n\n" NOR); if (me->query_dex() / 2 + random(me->query_dex()) >= 15) { me->move(__DIR__"sroad8"); return -1; } else { me->move(__DIR__"sroad5"); return -1; }
+# ==== COMPLEX CONDITIONALS ====
+  # if (! playerp(me))  →  
+  # if (dir == "southup")  →  message_vision(HIW '\\\\\n突然间只听得轰隆一声巨响，$N' HIW '脚下踏了个空，竟然是雪崩了！\\\\\n' NOR, me); tell_object(me, HIW '只见大片的积雪从山峰上奔腾而下，铺' '天盖地扑来，沿途并夹\\\\\n带了不少岩石。赶' '紧逃命吧！\\\\\n\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xuedao/sroad8.c by LPCConverter
+# Zone: xuedao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "mash")  →  
+  # if (me->query("family/family_name") != "血刀门")  →  
+# ==== CONDITIONAL BRANCHES (do_enter) ====
+  # if (!ob)  →  
+  # if (environment(ob))  →  
+  # if (!arg || arg == "")  →  
+  # if (arg == "zhongping qiangpu from mash" || arg == "zhongping from mash" || arg == "qiangpu from mash" || arg == "book from mash" || arg == "all from mash" || arg == "pu from mash")  →  message_vision(HIY '\\\\\n$N' HIY '从零碎中翻出一本「中平枪法」。\\\\\n\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_get) ====
+  # if (!ob)  →  
+  # else  →  
+  # if (!environment(ob))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_enter
+  # UNHANDLED FUNCTION: do_get
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xuedao/sroad9.c by LPCConverter
+# Zone: xuedao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "east" && objectp(guarder = present("sheng di", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/xuedao/npc/yangzong.c by LPCConverter
+# Zone: xuedao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob)  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xuedao/npc/zhuoma.c by LPCConverter
+# Zone: xuedao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob)  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xuedao/obj/dachang.c by LPCConverter
+# Zone: xuedao
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

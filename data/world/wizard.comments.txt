@@ -1,0 +1,78 @@
+# Generated from C:/files/git/mud/d/wizard/bug_room.c by LPCConverter
+# Zone: wizard
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: is_chat_room
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wizard/develop_room.c by LPCConverter
+# Zone: wizard
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: is_chat_room
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wizard/guest_room.c by LPCConverter
+# Zone: wizard
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: is_chat_room
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wizard/noname_room.c by LPCConverter
+# Zone: wizard
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "west" && ! wizardp(me))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wizard/player_room.c by LPCConverter
+# Zone: wizard
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: is_chat_room
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wizard/wenxuan.c by LPCConverter
+# Zone: wizard
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: is_chat_room
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+

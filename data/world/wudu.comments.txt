@@ -1,0 +1,1299 @@
+# Generated from C:/files/git/mud/d/wudu/baidu1.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "south")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/baidu2.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ npcs[random(sizeof(npcs))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/baidu3.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ npcs[random(sizeof(npcs))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/baidu4.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ npcs[random(sizeof(npcs))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/baidu5.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ npcs[random(sizeof(npcs))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudu/caodi.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (random(3) > 1)  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/wudu/chufang.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (present("baozi", who))  →  
+  # else  →  
+  # if (present("hulu", who))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudu/damen.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "east" || ! objectp(sha = present("sha qianli", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/wudu/dijiao.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (arg == "xi") { message_vision("\n$N掀开盖在洞口的草席爬了上去。\n", this_player()); me->move(__DIR__"minju10"); message_vision("\n盖在地上的草席忽然一掀，$N从下面钻了出来。\n",me); } else { message_vision("\n$N双手在空中比划了几下，但似乎什么也没抓住。\n", this_player()); }
+# ==== COMPLEX CONDITIONALS ====
+  # if (! arg || arg == "")  →  
+  # else  →  message_vision('\\\\\n$N双手在空中比划了几下，但似乎什么也没抓住。\\\\\n', this_player());
+  # if (arg == "xi")  →  message_vision('\\\\\n$N掀开盖在洞口的草席爬了上去。\\\\\n', this_player()); message_vision('\\\\\n盖在地上的草席忽然一掀，$N从下面钻了出来。\\\\\n',me);
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/dongxue.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( (!arg) ||!((arg == "岩壁") || (arg == "wall")))  →  
+# ==== CONDITIONAL BRANCHES (do_climb) ====
+  # if ((int)me->query_temp("fire_huoba")< 1)  →  
+  # if ( !arg || arg != "tong pai")  →  
+  # if ( !present(arg, me))  →  
+# ==== CONDITIONAL BRANCHES (do_insert) ====
+  # if ( !arg || arg != "huo ba" )  →  
+  # if ( !present(arg, me))  →  
+# ==== CONDITIONAL BRANCHES (do_fire) ====
+  # if ( !arg || arg == "" )  →  
+  # if ( !present("fire", me))  →  
+  # if ( arg == "fire" )  →  write( HIY '你点燃了火折，可是洞穴里实在太黑了，一支火折远不' '够，看来要找支火把才行。\\\\\n\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_use) ====
+  # if (random(10) > 5)  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_fire
+  # UNHANDLED FUNCTION: recreate
+  # UNHANDLED FUNCTION: precreate
+  # UNHANDLED FUNCTION: do_insert
+  # UNHANDLED FUNCTION: do_use
+  # UNHANDLED FUNCTION: do_climb
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudu/huating2.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg != "lu")  →  
+  # if (query("exits/down"))  →  
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/huating3.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (me->query("special_skill/clever"))  →  
+  # if (! living(me) || arg != "tu")  →  
+  # if (me->is_busy() || me->is_fighting())  →  
+  # if ((int)me->query_skill("sword", 1) < 30)  →  
+  # if ((int)me->query_skill("jinwu-goufa", 1) < 30)  →  
+  # if ((int)me->query_skill("jinwu-goufa", 1) > 150)  →  
+  # if ((int)me->query("jing") < 25)  →  
+  # if (me->can_improve_skill("jinwu-goufa"))  →  
+# ==== CONDITIONAL BRANCHES (do_think) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_think
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudu/huxue2.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((! arg) || ! ((arg == "bone") || (arg == "遗骨")))  →  
+  # if (query("not_tongpai"))  →  
+# ==== CONDITIONAL BRANCHES (do_search) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: regenerate
+  # UNHANDLED FUNCTION: do_search
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudu/liandu.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (arg == "heding hong") { if (! present("du nang", me) || ! present("shexin zi", me) || ! present("qianri zui", me)) return notify_fail("你身上的原料不齐，无法炼毒。\n"); destruct(present("du nang", me)); destruct(present("shexin zi", me)); destruct(present("qianri zui", me)); me->set_temp("liandu/wudu", "hedinghong"); } else if (arg == "furou gao") { if (! present("du nang", me) || ! present("fugu cao", me) || ! present("chuanxin lian", me)) return notify_fail("你身上的原料不齐，无法炼毒。\n"); destruct(present("du nang", me)); destruct(present("fugu cao", me)); destruct(present("chuanxin lian", me)); me->set_temp("liandu/wudu", "furougao"); } else if (arg == "kongque dan") { if (! present("du nang", me) || ! present("fugu cao", me) || ! present("qianri zui", me)) return notify_fail("你身上的原料不齐，无法炼毒。\n"); destruct(present("du nang", me)); destruct(present("fugu cao", me)); destruct(present("qianri zui", me)); me->set_temp("liandu/wudu", "kongquedan"); } else if (arg == "chixie fen") { if (! present("du nang", me) || ! present("shexin zi", me) || ! present("duanchang cao", me)) return notify_fail("你身上的原料不齐，无法炼毒。\n"); destruct(present("du nang", me)); destruct(present("shexin zi", me)); destruct(present("duanchang cao", me)); me->set_temp("liandu/wudu", "chixiefen"); } else if (arg == "duanchang san") { if (! present("du nang", me) || ! present("duanchang cao", me) || ! present("chuanxin lian", me)) return notify_fail("你身上的原料不齐，无法炼毒。\n"); destruct(present("du nang", me)); destruct(present("duanchang cao", me)); destruct(present("chuanxin lian", me)); me->set_temp("liandu/wudu", "duanchangsan"); } else if (arg == "wusheng san") { if (! present("du nang", me) || ! present("heding hong", me) || ! present("duanchang san", me) || ! present("furou gao", me) || ! present("chixie fen", me) || ! present("kongque dan", me) || ! present("jinshe duye", me)) return notify_fail("你身上的原料不齐，无法炼毒。\n"); destruct(present("du nang", me)); destruct(present("heding hong", me)); destruct(present("duanchang san", me)); destruct(present("furou gao", me)); destruct(present("chixie fen", me)); destruct(present("kongque dan", me)); destruct(present("jinshe duye", me)); me->set_temp("liandu/wudu", "wushengsan"); } message_vision (HIR "\n$N" HIR "将身上的药品投入丹炉，按照秘法小心" "炼制起来。\n\n" NOR, me); me->start_call_out((: call_other, __FILE__, "liandu", me :), time); me->start_busy(time / 2 + 1); return 1; } void liandu(object me) { object ob; int skill, lvl; int exp, pot, sco; exp = 300 + random(300); pot = 100 + random(200); sco = 100 + random(100); skill = (int)me->query_skill("wudu-qishu", 1); lvl = (int)me->query_skill("poison", 1) / 2 + (int)me->query_skill("wudu-qishu", 1) + 10; if (environment(me) != this_object()) return; me->receive_damage("jing", 50 + random(30)); me->receive_damage("qi", 50 + random(30)); if (random(skill) < 50 && random(3) == 1) { me->delete_temp("liandu/wudu"); message_vision(HIR "\n突然间一股腥恶的焦臭至$N" HIR "身旁传" "来，看来是炼毒失败了。\n"NOR,me); } else { message_vision(HIW "\n炉顶白雾渐渐转淡，传出阵刺鼻的腥味，$N" HIW "连忙小心翼翼地将药粉取出。\n" NOR, me); if (me->query_temp("liandu/wudu") == "hedinghong") { ob = new("/clone/poison/hedinghong"); ob->set("poison", ([ "level" : lvl, "id" : me->query("id"), "name" : "鹤顶红剧毒", "duration" : 15, ])); tell_object(me, HIY "你炼成了「" + NOR + ob->name() + NOR + HIY "」。\n" NOR); }
+# ==== COMPLEX CONDITIONALS ====
+  # if (environment(me) != this_object())  →  
+  # else  →  message_vision(HIW '\\\\\n炉顶白雾渐渐转淡，传出阵刺鼻的腥味，$N' HIW '连忙小心翼翼地将药粉取出。\\\\\n' NOR, me); tell_object(me, HIY '你炼成了「' + NOR + ob->name() + NOR + HIY '」。\\\\\n' NOR); tell_object(me, HIY '你炼成了五毒教独门秘药「' + NOR + ob->name() + NOR + HIY '」。\\\\\n' NOR); tell_object(me, HIC '你获得了' + chinese_number(exp) + '点经验、' + chinese_number(pot) + '点潜能以及' + chinese_number(sco) + '点江湖阅历。\\\\\n' NOR); tell_object(me, HIC '炼毒过程中你的「基本毒技」和「五毒奇术」' '提高了！\\\\\n\\\\\n' NOR);
+  # if (random(skill) < 50 && random(3) == 1)  →  message_vision(HIR '\\\\\n突然间一股腥恶的焦臭至$N' HIR '身旁传' '来，看来是炼毒失败了。\\\\\n'NOR,me);
+# ==== CONDITIONAL BRANCHES (liandu) ====
+  # if (me->query("family/family_name") != "五毒教")  →  
+  # if (me->query_temp("liandu/wudu"))  →  
+  # if (me->is_busy())  →  
+  # if (me->query_skill("wudu-qishu", 1) < 60 )  →  
+  # if (me->query("jing") < 80 || me->query("qi") < 80)  →  
+  # if (arg != "heding hong" && arg != "furou gao" && arg != "kongque dan" && arg != "chixie fen" && arg != "wusheng san" && arg != "duanchang san")  →  
+  # else if (arg == "wusheng san")  →  
+  # else if (arg == "duanchang san")  →  
+  # else if (arg == "chixie fen")  →  
+  # else if (arg == "kongque dan")  →  
+  # else if (arg == "furou gao")  →  
+  # if (arg == "heding hong")  →  
+# ==== CONDITIONAL BRANCHES (do_lianzhi) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: liandu
+  # UNHANDLED FUNCTION: do_lianzhi
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudu/minju10.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if( arg=="xi" ) { message_vision("\n$N掀开盖在洞口的草席走了下去。\n", this_player()); me->move(__DIR__"dijiao"); message_vision("\n盖在洞口的草席一掀，$N从上面走了下来。\n",me); } else { message_vision("\n$N双手在空中比划了几下，但似乎什么也没抓住。\n", this_player()); }
+# ==== COMPLEX CONDITIONALS ====
+  # if (!arg || arg == "")  →  
+  # else  →  message_vision('\\\\\n$N双手在空中比划了几下，但似乎什么也没抓住。\\\\\n', this_player());
+  # if ( arg=="xi" )  →  message_vision('\\\\\n$N掀开盖在洞口的草席走了下去。\\\\\n', this_player()); message_vision('\\\\\n盖在洞口的草席一掀，$N从上面走了下来。\\\\\n',me);
+# ==== CONDITIONAL BRANCHES (do_move) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudu/minju7.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !arg || arg == "" )  →  
+  # if ( arg=="zhuo" )  →  
+# ==== CONDITIONAL BRANCHES (do_enter) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_enter
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudu/mishi.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "wall")  →  
+  # if ( !ob->query("can_learn/qianzhu-wandushou"))  →  message_vision(HIR '$N' HIR '仔细端详了石壁半天，还是无法看懂上面的内容。\\\\\n' NOR, ob);
+  # if (ob->query("character") == "光明磊落")  →  tell_object(ob, HIY '你心中暗想：我为人光明磊落，岂能学习这种害人武功？\\\\\n' NOR);
+  # if (ob->query("character") == "狡黠多变")  →  tell_object(ob, HIY '你心中暗想：哼，这种武功虽然厉害，但对自身损害极大，学来何用？\\\\\n' NOR);
+  # if (ob->query("jing") < 50)  →  message_vision(HIR '$N' HIR '现在太累了，无法研读石壁的内容。\\\\\n' NOR, ob);
+  # if (c_skill > 119)  →  message_vision(WHT '$N' WHT '觉得石壁内容太肤浅了。\\\\\n' NOR, ob);
+  # if ((c_skill * c_skill * c_skill / 10) > c_exp)  →  message_vision(HIR '$N' HIR '的实战经验不足，无法领悟石壁内容。\\\\\n' NOR, ob);
+# ==== CONDITIONAL BRANCHES (do_think) ====
+  # if ( !arg || arg != "xia")  →  
+  # else  →  
+  # if ( query("mishi_book") == 1 && me->query("can_learn/qianzhu-wandushou") )  →  message_vision(HIC '$P' HIC '打开石匣，发现内有一束绢' '册，连忙取了出来。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_open) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_think
+  # UNHANDLED FUNCTION: do_open
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/nanyuan.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg != "tree")  →  
+# ==== CONDITIONAL BRANCHES (do_climb) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_climb
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/wudu/qiandu1.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "north")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/qiandu2.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ npcs[random(sizeof(npcs))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/qiandu3.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ npcs[random(sizeof(npcs))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/qiandu4.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ npcs[random(sizeof(npcs))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/qiandu5.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ npcs[random(sizeof(npcs))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudu/shanlu1.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_bei
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudu/taohua.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  message_vision (HIM '只闻一阵浓郁的香气袭来……$N' HIM '顿时觉得头重脚轻。\\\\\n' NOR, who);
+  # if (dir == "northwest")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: fall_down
+  # UNHANDLED FUNCTION: fall_down1
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/wudu/wandu1.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "south")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/wandu2.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ npcs[random(sizeof(npcs))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/wandu3.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( (!arg) ||!((arg == "wall") || (arg == "岩壁")))  →  
+# ==== CONDITIONAL BRANCHES (do_climb) ====
+# ==== CONDITIONAL BRANCHES ====
+  # COMPLEX MAPPING: ([ npcs[random(sizeof(npcs))]
+# ==== COMPLEX MAPPINGS ====
+  # UNHANDLED FUNCTION: do_climb
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudu/xiao3.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_pai
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudu/yaoshi.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ objs[random(sizeof(objs))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudu/npc/daoren.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("family/family_name") != "五毒教")  →  command('say 阁下与本派并无渊源，这话是从何而来？');
+  # if (query("book_count") < 1)  →  command('say 你来晚了，毒经我已经给别人了。');
+# ==== CONDITIONAL BRANCHES (ask_me) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_me
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudu/npc/sun.c by LPCConverter
+# Zone: wudu
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( ! ob || environment(ob) != environment() )  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if ( interactive(ob = this_player()) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch( random(2) ) { case 0: say( CYN "孙二娘笑咪咪地说道：这位" + RANK_D->query_respect(ob) + CYN + "，进来喝杯茶，歇歇腿吧。\n" NOR); break; case 1: say( CYN "孙二娘用脖子上的毛巾抹了抹手，说道：这位" + RANK_D->query_respect(ob) + CYN + "，请进请进。\n" NOR); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/npc/tian.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((int)this_player()->query("food") >= (int)this_player()->max_food_capacity()*90/100 )  →  
+  # if ((present("baozi", this_player())))  →  
+  # if ( present("baozi", environment()) )  →  
+# ==== CONDITIONAL BRANCHES (do_yao) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_yao
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudu/npc/zhuge.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (present("xingjun san", me))  →  
+# ==== CONDITIONAL BRANCHES (ask_me) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/baozi.c by LPCConverter
+# Zone: wudu
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/baozi2.c by LPCConverter
+# Zone: wudu
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/flagon.c by LPCConverter
+# Zone: wudu
+
+# inherit ITEM;
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/ganggou.c by LPCConverter
+# Zone: wudu
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/hanyan.c by LPCConverter
+# Zone: wudu
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/jiandao.c by LPCConverter
+# Zone: wudu
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/jinyi.c by LPCConverter
+# Zone: wudu
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/jitui.c by LPCConverter
+# Zone: wudu
+
+# inherit HAMMER;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !query("weapon_prop") )  →  
+# ==== CONDITIONAL BRANCHES (finish_eat) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: finish_eat
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/npc/obj/xingjunsan.c by LPCConverter
+# Zone: wudu
+
+# inherit ITEM;
+
+# Generated from C:/files/git/mud/d/wudu/obj/book2.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/chuanxin.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/duanchang.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/dujing1.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg == "jing1" || arg == "book1")  →  
+# ==== CONDITIONAL BRANCHES (do_read) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_read
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/dujing2.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/fugu.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/ganchai.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (environment()->query_temp("warm") >= 40)  →  
+# ==== CONDITIONAL BRANCHES (fire) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: fire
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/hulu.c by LPCConverter
+# Zone: wudu
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/huluobu.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/huoba.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/jiedudan.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((int)me->query_condition("tianchan_zhang") || (int)me->query_condition("sha_poison"))  →  tell_object(me, HIC '你感到内息一畅，体内的毒素开始慢慢消退。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/jinfenggou.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/jinsheduye.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/qhcwan.c by LPCConverter
+# Zone: wudu
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/wudu/obj/qianzhumiji.c by LPCConverter
+# Zone: wudu
+
+# inherit F_UNIQUE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if( arg == "miji" || arg == "qianzhu miji" || arg == "book" ) { write(HIY "\n秘笈里记载了不少千蛛万毒手的绝招窍门，你可以试着研究研究。\n" NOR); return 1; } } int do_yanjiu(string arg) { object me = this_player(); string skill, book; if(! arg) { write("研究千蛛万毒手秘笈指令格式：\n" "research|yanjiu <绝技> from <千蛛万毒手秘笈>\n"); return 1; } if(arg == "suck" || arg == "wan" || arg == "zhugu" || arg == "miji" || arg == "book" || arg == "qianzhu miji" ) { write("研究千蛛万毒手秘笈指令格式：\n" "research|yanjiu <绝技> from <千蛛万毒手秘笈>\n"); return 1; } if (sscanf(arg, "%s from %s", skill, book) != 2) return 0; if( me->is_busy()) { write("你现在正忙着呢。\n"); return 1; } if( me->is_fighting()) { write("你无法在战斗中专心下来研读新知！\n"); return 1; } if( ! me->query_skill("literate", 1) ) { write("你是个文盲，先学点文化(literate)吧。\n"); return 1; } if (! id(book)) { write("这里没有这本书。\n"); return 1; } if ( skill != "suck" && skill != "zhugu" && skill != "wan" ) { write(WHT "你可以从千蛛万毒手秘笈里研究到吸毒练功法" "门（suck）、蛛蛊决（zhugu）以及万蛊噬天绝" "技（wan）。\n\n" NOR,); return 1; } if( (int)me->query("jing") < 50 || (int)me->query("qi") < 50 ) { write("你现在过于疲倦，无法专心研读。\n"); return 1; } if ( skill == "suck" ) { if (me->query("can_perform/qianzhu-wandushou/suck")) { write("你已经学会了千蛛万毒手练毒的窍门。\n"); return 1; } if (me->query("potential") < 1) { write("你研读了一会儿，觉得有点迷糊，看来是自己的潜能不够了。\n"); return 1; } message("vision", me->name() + "正专心地研读千蛛万毒手秘笈。\n", environment(me), me); tell_object(me, "\n你仔细的研读千蛛万毒手秘笈吸毒练功这一章节。\n"); me->receive_damage("qi", 30); me->receive_damage("jing", 30); me->add("potential", -1); remove_call_out("suck"); call_out("suck", 1, me); me->start_busy(2); return 1; } if ( skill == "zhugu" ) { if (me->query("can_perform/qianzhu-wandushou/zhugu")) { write("你已经学会了「蛛蛊决」这一招。\n"); return 1; } if (me->query("potential") < 1) { write("你研读了一会儿，觉得有点迷糊，看来是自己的潜能不够了。\n"); return 1; } message("vision", me->name() + "正专心地研读千蛛万毒手秘笈。\n", environment(me), me); tell_object(me, "\n你仔细的研读千蛛万毒手秘笈蛛蛊决这一章节。\n"); me->receive_damage("qi", 30); me->receive_damage("jing", 30); me->add("potential", -1); remove_call_out("zhugu"); call_out("zhugu", 1, me); me->start_busy(2); return 1; } if ( skill == "wan" ) { if (me->query("can_perform/qianzhu-wandushou/wan")) { write("你已经学会了「万蛊噬天」这一招。\n"); return 1; } if (me->query("potential") < 1) { write("你研读了一会儿，觉得有点迷糊，看来是自己的潜能不够了。\n"); return 1; } message("vision", me->name() + "正专心地研读千蛛万毒手秘笈。\n", environment(me), me); tell_object(me, "\n你仔细的研读千蛛万毒手秘笈万蛊噬天这一章节。\n"); me->receive_damage("qi", 30); me->receive_damage("jing", 30); me->add("potential", -1); remove_call_out("wan"); call_out("wan", 1, me); me->start_busy(2); return 1; } } int suck(object me) { if( (int)me->query_skill("qianzhu-wandushou", 1) < 100) { write(HIC "你研读了半天，发现自己对千蛛万毒手领悟不够，无法学会练毒的窍门。\n" NOR); return 1; } if( (int)me->query_skill("hand", 1) < 100) { write(HIC "你研读了半天，发现自己对基本手法领悟不够，无法学会练毒的窍门。\n" NOR); return 1; } if( (int)me->query_skill("poison", 1) < 100) { write(HIC "你研读了半天，发现自己对基本毒技领悟不够，无法学会练毒的窍门。\n" NOR); return 1; } if( (int)me->query_skill("force") < 150) { write(HIC "你研读了半天，发现自己的内功火候太浅，无法学会练毒的窍门。\n" NOR); return 1; } if (me->query("max_neili") < 1000) { write(HIC "你研读了半天，发现自己的内力修为太浅，无法学会练毒的窍门。\n" NOR); return 1; } if (random(100) > 5) { write(HIY "你对吸毒练功似有所悟，但还是不够深刻，看来还需继续研读才行。\n" NOR); return 1; } else { me->improve_skill("qianzhu-wandushou", 5000000); me->improve_skill("poison", 5000000); me->set("can_perform/qianzhu-wandushou/suck", 1); tell_object(me, HIC "你学会了如何运用千蛛万毒手吸毒练功。\n" NOR); write(HIW "\n你仔细研读千蛛万毒手秘笈，终于领悟了吸毒练功的窍门所在。\n" NOR); return 1; }
+# ==== COMPLEX CONDITIONALS ====
+  # if ( (int)me->query_skill("qianzhu-wandushou", 1) < 220)  →  write(HIC '你研读了半天，发现自己对千蛛万毒手领悟不够，无法学会万蛊噬天。\\\\\n' NOR);
+  # if ( (int)me->query_skill("hand", 1) < 220)  →  write(HIC '你研读了半天，发现自己对基本手法领悟不够，无法学会万蛊噬天。\\\\\n' NOR);
+  # if ( (int)me->query_skill("poison", 1) < 200)  →  write(HIC '你研读了半天，发现自己对基本毒技领悟不够，无法学会万蛊噬天。\\\\\n' NOR);
+  # if ( (int)me->query_skill("force") < 300)  →  write(HIC '你研读了半天，发现自己的内功火候太浅，无法学会万蛊噬天。\\\\\n' NOR);
+  # if (me->query("max_neili") < 3500)  →  write(HIC '你研读了半天，发现自己的内力修为太浅，无法学会万蛊噬天。\\\\\n' NOR);
+  # else  →  tell_object(me, HIC '你学会了「万蛊噬天」这一招。\\\\\n' NOR); write(HIW '\\\\\n你仔细研读千蛛万毒手秘笈，终于领悟了万蛊噬天的窍门所在。\\\\\n' NOR);
+  # if (random(200) > 5)  →  write(HIY '你对万蛊噬天似有所悟，但还是不够深刻，看来还需继续研读才行。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (wan) ====
+  # if ( (int)me->query_skill("qianzhu-wandushou", 1) < 130)  →  write(HIC '你研读了半天，发现自己对千蛛万毒手领悟不够，无法学会蛛蛊决。\\\\\n' NOR);
+  # if ( (int)me->query_skill("hand", 1) < 130)  →  write(HIC '你研读了半天，发现自己对基本手法领悟不够，无法学会蛛蛊决。\\\\\n' NOR);
+  # if ( (int)me->query_skill("poison", 1) < 130)  →  write(HIC '你研读了半天，发现自己对基本毒技领悟不够，无法学会蛛蛊决。\\\\\n' NOR);
+  # if ( (int)me->query_skill("force") < 200)  →  write(HIC '你研读了半天，发现自己的内功火候太浅，无法学会蛛蛊决。\\\\\n' NOR);
+  # if (me->query("max_neili") < 1500)  →  write(HIC '你研读了半天，发现自己的内力修为太浅，无法学会蛛蛊决。\\\\\n' NOR);
+  # else  →  tell_object(me, HIC '你学会了「蛛蛊决」这一招。\\\\\n' NOR); write(HIW '\\\\\n你仔细研读千蛛万毒手秘笈，终于领悟了蛛蛊决的窍门所在。\\\\\n' NOR);
+  # if (random(150) > 5)  →  write(HIY '你对蛛蛊决似有所悟，但还是不够深刻，看来还需继续研读才行。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (zhugu) ====
+  # if ( (int)me->query_skill("qianzhu-wandushou", 1) < 100)  →  write(HIC '你研读了半天，发现自己对千蛛万毒手领悟不够，无法学会练毒的窍门。\\\\\n' NOR);
+  # if ( (int)me->query_skill("hand", 1) < 100)  →  write(HIC '你研读了半天，发现自己对基本手法领悟不够，无法学会练毒的窍门。\\\\\n' NOR);
+  # if ( (int)me->query_skill("poison", 1) < 100)  →  write(HIC '你研读了半天，发现自己对基本毒技领悟不够，无法学会练毒的窍门。\\\\\n' NOR);
+  # if ( (int)me->query_skill("force") < 150)  →  write(HIC '你研读了半天，发现自己的内功火候太浅，无法学会练毒的窍门。\\\\\n' NOR);
+  # if (me->query("max_neili") < 1000)  →  write(HIC '你研读了半天，发现自己的内力修为太浅，无法学会练毒的窍门。\\\\\n' NOR);
+  # else  →  tell_object(me, HIC '你学会了如何运用千蛛万毒手吸毒练功。\\\\\n' NOR); write(HIW '\\\\\n你仔细研读千蛛万毒手秘笈，终于领悟了吸毒练功的窍门所在。\\\\\n' NOR);
+  # if (random(100) > 5)  →  write(HIY '你对吸毒练功似有所悟，但还是不够深刻，看来还需继续研读才行。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (suck) ====
+  # if (! arg)  →  write('研究千蛛万毒手秘笈指令格式：\\\\\n' 'research|yanjiu <绝技> from <千蛛万毒手秘笈>\\\\\n');
+  # if (arg == "suck" || arg == "wan" || arg == "zhugu" || arg == "miji" || arg == "book" || arg == "qianzhu miji" )  →  write('研究千蛛万毒手秘笈指令格式：\\\\\n' 'research|yanjiu <绝技> from <千蛛万毒手秘笈>\\\\\n');
+  # if (sscanf(arg, "%s from %s", skill, book) != 2)  →  
+  # if ( me->is_busy())  →  write('你现在正忙着呢。\\\\\n');
+  # if ( me->is_fighting())  →  write('你无法在战斗中专心下来研读新知！\\\\\n');
+  # if ( ! me->query_skill("literate", 1) )  →  write('你是个文盲，先学点文化(literate)吧。\\\\\n');
+  # if (! id(book))  →  write('这里没有这本书。\\\\\n');
+  # if ( skill != "suck" && skill != "zhugu" && skill != "wan" )  →  write(WHT '你可以从千蛛万毒手秘笈里研究到吸毒练功法' '门（suck）、蛛蛊决（zhugu）以及万蛊噬天绝' '技（wan）。\\\\\n\\\\\n' NOR,);
+  # if ( (int)me->query("jing") < 50 || (int)me->query("qi") < 50 )  →  write('你现在过于疲倦，无法专心研读。\\\\\n');
+  # if ( skill == "suck" )  →  write('你已经学会了千蛛万毒手练毒的窍门。\\\\\n'); write('你研读了一会儿，觉得有点迷糊，看来是自己的潜能不够了。\\\\\n'); tell_object(me, '\\\\\n你仔细的研读千蛛万毒手秘笈吸毒练功这一章节。\\\\\n');
+  # if ( skill == "zhugu" )  →  write('你已经学会了「蛛蛊决」这一招。\\\\\n'); write('你研读了一会儿，觉得有点迷糊，看来是自己的潜能不够了。\\\\\n'); tell_object(me, '\\\\\n你仔细的研读千蛛万毒手秘笈蛛蛊决这一章节。\\\\\n');
+  # if ( skill == "wan" )  →  write('你已经学会了「万蛊噬天」这一招。\\\\\n'); write('你研读了一会儿，觉得有点迷糊，看来是自己的潜能不够了。\\\\\n'); tell_object(me, '\\\\\n你仔细的研读千蛛万毒手秘笈万蛊噬天这一章节。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_yanjiu) ====
+  # if ( ! arg || arg == "" )  →  
+  # if ( arg == "miji" || arg == "qianzhu miji" || arg == "book" )  →  write(HIY '\\\\\n秘笈里记载了不少千蛛万毒手的绝招窍门，你可以试着研究研究。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_du) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: wan
+  # UNHANDLED FUNCTION: do_yanjiu
+  # UNHANDLED FUNCTION: zhugu
+  # UNHANDLED FUNCTION: do_du
+  # UNHANDLED FUNCTION: suck
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/wudu/obj/shibing.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/shourou1.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/shourou2.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/tieshao.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: setup
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/tiezhui.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/tongpai.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_read
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/tudou.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/woodjian.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/wuxing.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/wudu/obj/zhulou.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: is_container
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudu/obj/zhulou2.c by LPCConverter
+# Zone: wudu
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: is_container
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================

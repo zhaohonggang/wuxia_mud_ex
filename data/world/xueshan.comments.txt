@@ -1,0 +1,482 @@
+# Generated from C:/files/git/mud/d/xueshan/bieyuan.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("id") == "seng bing" && dir == "east")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/xueshan/cangjingge.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX MAPPING: ([ books[random(sizeof(books))]
+# ==== COMPLEX MAPPINGS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/xueshan/cedian1.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((! myfam || myfam["family_name"] != "大轮寺") && dir=="northup" && objectp(present ("jiamu huofo", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/cedian2.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((! myfam || myfam["family_name"] != "大轮寺") && dir=="northup" && objectp(present ("samu huofo", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/xueshan/chanshi.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! arg || arg != "lunpan")  →  
+# ==== CONDITIONAL BRANCHES (do_turn) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_turn
+  # UNHANDLED FUNCTION: close
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/xueshan/shanmen.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "north" || ! objectp(glb = present("ge lunbu", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/shenghu.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  message_vision(HIM '\\\\\n突然间$N' HIM '发现眼前的景象有' '些迷乱，不禁觉得头晕目眩。\\\\\n\\\\\n' NOR, me);
+  # if (! userp(me) || me->query("family/family_name") == "大轮寺" || me->query("family/family_name") == "血刀门")  →  
+  # if (dir == "east")  →  
+  # if (dir == "south")  →  
+  # if (me->query_temp("taohua/steps") == total_steps)  →  write(HIC '\\\\\n雾气散开，你的眼前豁然开朗起来。\\\\\n\\\\\n' NOR);
+  # if (me->query_temp("taohua/steps") == - total_steps)  →  write(HIC '\\\\\n雾气散开，你的眼前豁然开朗起来。\\\\\n\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/xueshan/npc/seng-bing1.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob) && ! environment(ob)->query("no_fight") && ((fam=ob->query("family")) && fam["family_name"] != "大轮寺"))  →  command('say 你是谁？怎么闯入大轮寺来了！'); command('say 快给我速速离开，下次再看到你决不轻饶。'); command('say 喂，叫你离开，你怎么还呆在这里？'); command('say 天堂有路你不走，地狱无门你闯进来，死吧！');
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/npc/turou.c by LPCConverter
+# Zone: xueshan
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/xueshan/npc/xiaoer2.c by LPCConverter
+# Zone: xueshan
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! ob || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(ob = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch(random(2)) { case 0: say(CYN "店小二笑咪咪地说道：这位" + RANK_D->query_respect(ob) + CYN "，进来喝杯茶，歇歇腿吧。\n" NOR); break; case 1: say(CYN "店小二用脖子上的毛巾抹了抹手，说道：这位" + RANK_D->query_respect(ob) + CYN "，请进请进。\n" NOR); break; }
+# ==== SWITCH POOLS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/xueshan/obj/b-jiasha.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/c-jiasha.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/cha.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((int)me->query("water") >= (int)me->max_water_capacity())  →  
+  # else  →  message_vision('$N“咕咚咕咚”将剩下的奶茶一饮' '而尽，只觉得一股力量涌了上来。\\\\\n', me);
+  # if (query("remaining"))  →  message_vision('$N端起奶茶，“咕咚咕咚”喝了几口，觉' '得体力充沛多了。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/falun.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/gangchu.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/gushan.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/jinlun.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/mugun.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/nailao.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/niupidai.c by LPCConverter
+# Zone: xueshan
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/p-jiasha.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/qingke-m.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/r-jiasha.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/senggun.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/sengmao.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/xuelian.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((int)me->query("eff_qi") >= (int)me->query("max_qi"))  →  
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/y-jiasha.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/xueshan/obj/yinlun.c by LPCConverter
+# Zone: xueshan
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

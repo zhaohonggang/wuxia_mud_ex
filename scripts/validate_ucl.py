@@ -342,6 +342,11 @@ def check_chars(data):
         line, snippet = _find_python_repr(data)
         issues.append("raw Python repr inside UCL value at line %s (converter leaked "
                       "str(dict)/str(list)): %s" % (line, snippet))
+    # Check for an unconverted LPC runtime expression leaking into a reference.
+    # The converter resolves object paths to bare ids; when a key is built at
+    # runtime (e.g. "/clone/book/" + books[random(sizeof(books))]) the basename
+    # is still an expression, and emitting it produces invalid UCL such as
+    # `items. + books[random(sizeof(books))].id`.
     if issues:
         return (False, "; ".join(issues))
     return (True, None)

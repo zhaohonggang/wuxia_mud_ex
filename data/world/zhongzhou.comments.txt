@@ -1,0 +1,496 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/zhongzhou/miaojia_chufang.c by LPCConverter
+# Zone: zhongzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("family/family_name") != "中原苗家")  →  
+  # if (present("rice", this_player()))  →  
+  # if (present("soup", this_object()))  →  
+  # else  →  
+  # if (query("ricewater") > 0)  →  message_vision(CYN '厨师将热气腾腾的饭菜递到你手中，笑' '道：你慢用。\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (do_serve) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_serve
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/zhongzhou/miaojia_houting.c by LPCConverter
+# Zone: zhongzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "north" || dir == "south")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/zhongzhou/miaojia_houyuan.c by LPCConverter
+# Zone: zhongzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! living(me))  →  
+  # if (! living(this_player()) || arg != "jiashan")  →  
+  # if (me->is_busy())  →  
+  # if ((int)me->query_skill("miaojia-neigong", 1) < 1)  →  
+  # if ((int)me->query_skill("miaojia-neigong", 1) < 100)  →  
+  # if ((int)me->query_skill("miaojia-neigong", 1) > 180)  →  
+  # if (! me->can_improve_skill("miaojia-neigong"))  →  
+  # if ((int)me->query("jing") < 80)  →  
+  # if (me->can_improve_skill("miaojia-neigong"))  →  
+# ==== CONDITIONAL BRANCHES (do_think) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_think
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/zhongzhou/miaojia_men.c by LPCConverter
+# Zone: zhongzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "east" || ! objectp(wen = present("zhong zhaowen", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/zhongzhou/miaojia_shufang.c by LPCConverter
+# Zone: zhongzhou
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "wall" && arg != "shu")  →  
+  # if ((int)me->query("can_perform/panlong-zhao/tan"))  →  
+  # if (! (int)me->query_skill("panlong-zhao"))  →  
+  # if ((int)me->query_skill("panlong-zhao", 1) < 130)  →  
+  # if (me->is_busy())  →  
+  # if (me->query("potential") < me->query("learned_points") + 10)  →  
+  # if ((int)me->query("jing") < 30)  →  
+  # else  →  message_vision(WHT '$N' WHT '仔细翻看案台上的诸多书籍' '，阅读其中每个细节。\\\\\n' NOR, me); tell_object(me, HIY '过得良久，陡然间你双目一亮，终于' '领悟了书中记载越空盘\\\\\n龙爪「云中探爪' '」绝技的奥秘！\\\\\n' NOR + HIC '你学会了' '「云中探爪」。\\\\\n' NOR);
+  # if (random(20) < 18)  →  message_vision(WHT '$N' WHT '仔细翻看案台上的诸多书籍' '，阅读其中每个细节。\\\\\n' NOR, me); tell_object(me, HIY '你对越空盘龙爪有了更深的理解，但' '尚需进一步的参悟。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_canwu) ====
+  # if ( ! living(me))  →  
+  # if ( ! living(this_player()) || arg != "tu" )  →  
+  # if (me->is_busy())  →  
+  # if ((int)me->query_skill("strike", 1) < 30 || (int)me->query_skill("chongtian-zhang", 1) < 30)  →  
+  # if ((int)me->query_skill("strike", 1) > 149 && (int)me->query_skill("chongtian-zhang", 1) > 149)  →  
+  # if ((int)me->query("jing") < 50)  →  
+  # if ((int)me->query_skill("strike", 1) < 150 && me->can_improve_skill("strike"))  →  
+  # if ((int)me->query_skill("chongtian-zhang", 1) < 150 && me->can_improve_skill("chongtian-zhang"))  →  
+# ==== CONDITIONAL BRANCHES (do_think) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_canwu
+  # UNHANDLED FUNCTION: do_think
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/zhongzhou/npc/smith.c by LPCConverter
+# Zone: zhongzhou
+
+# inherit /inherit/char/smith.c;
+
+# Generated from C:/files/git/mud/d/zhongzhou/npc/wupanbing.c by LPCConverter
+# Zone: zhongzhou
+
+# inherit F_DEALER;
+
+
+
+# Generated from C:/files/git/mud/d/zhongzhou/npc/yaodezhong.c by LPCConverter
+# Zone: zhongzhou
+
+# inherit F_BANKER;
+
+
+
+
+
+# Generated from C:/files/git/mud/d/zhongzhou/npc/zhaolaoban.c by LPCConverter
+# Zone: zhongzhou
+
+# inherit F_DEALER;
+
+# Generated from C:/files/git/mud/d/zhongzhou/npc/zhousongtian.c by LPCConverter
+# Zone: zhongzhou
+
+# inherit F_DEALER;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: redeem
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: unconcious
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/zhongzhou/npc/obj/baozi.c by LPCConverter
+# Zone: zhongzhou
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/zhongzhou/npc/obj/beixin.c by LPCConverter
+# Zone: zhongzhou
+
+# inherit ARMOR;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/zhongzhou/npc/obj/changjian.c by LPCConverter
+# Zone: zhongzhou
+
+# inherit SWORD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/zhongzhou/npc/obj/gangdao.c by LPCConverter
+# Zone: zhongzhou
+
+# inherit BLADE;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/zhongzhou/npc/obj/goupi.c by LPCConverter
+# Zone: zhongzhou
+
+# inherit CLOTH;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/zhongzhou/npc/obj/jitui.c by LPCConverter
+# Zone: zhongzhou
+
+# inherit HAMMER;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !query("weapon_prop") )  →  
+# ==== CONDITIONAL BRANCHES (finish_eat) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: finish_eat
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/zhongzhou/npc/obj/kusang.c by LPCConverter
+# Zone: zhongzhou
+
+# inherit STAFF;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/zhongzhou/npc/obj/lingpai.c by LPCConverter
+# Zone: zhongzhou
+
+# inherit STAFF;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/zhongzhou/npc/obj/yaofang.c by LPCConverter
+# Zone: zhongzhou
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/zhongzhou/npc/obj/zhaohun.c by LPCConverter
+# Zone: zhongzhou
+
+# inherit STAFF;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

@@ -252,6 +252,7 @@ docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test'
 | `Chars: double closing brace` | 同行出现 `} }` | `scripts\lpc_converter.py` 的 `build_exits_block` |
 | `Syntax: expected '='`（`accept` 块附近） | 转换器把 Python 的 `str(dict)`/`str(list)` 直接插值进 UCL | `scripts\lpc_converter.py` 的 `_parse_accept_body` / `_build_accept_ucl`（注意 `or` 返回的是最后**操作数**，可能是 list 而不是 bool） |
 | `Chars: raw Python repr ...` | 同上，`[{'k': 'v'}]` 这类单引号 repr 漏出 | 同上 |
+| `Syntax: expected '='`（`items.` 附近） | objects 映射的 key 是**运行时拼接**的路径（如 `"/clone/book/" + books[random(sizeof(books))]`），字符串里含 `/` 被 `_looks_like_path` 误判为路径，basename 变成表达式 | `scripts/lpc_converter.py` 的 `_looks_like_path` / `_room_id_from_path`；须用 `_is_dynamic_expr()` + `_SAFE_ID_RE` 跳过（**注意**：不要为此加 Chars 检查项，shaolin 的 `items.fojing1+random(2).id` 是合法写法会误报） |
 | `Chars: duplicate exit key '<dir>' in room_exits '<id>'` | 同一房间同一方向写了两个出口；elias 会并成数组，loader `String.split` 收到数组而崩 | `scripts\assign_room_coords.py` 的 `_add_vertical_exits` / `_merge_new_exits`（垂直连接必须**换用空闲方向**，不能重复用同一方向） |
 | 赋坐标后**孤儿房不可达** | 垂直连接因为方向已被占用而被**跳过**，整层挂不上主区 | `scripts\assign_room_coords.py` 的 `_add_vertical_exits`（应从 `UP_DIR_CANDIDATES`/`DOWN_DIR_CANDIDATES` 里挑空闲方向，而不是 `continue`） |
 | 同坐标多房（菱形环路） | 朴素 BFS 下两条不同路径算出同一 delta，两房重叠 | `scripts\assign_room_coords.py` 的 `_visit_neighbour`（需用 `_place`/`_free_coord` 做去重放置） |

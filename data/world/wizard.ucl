@@ -1,0 +1,165 @@
+zones "wizard" {
+  name = "wizard"
+}
+
+# Generated from C:/files/git/mud/d/wizard/bug_room.c by LPCConverter
+# Zone: wizard
+
+    rooms "bug_room" {
+      name = "BUG留言室"
+      description = "这里是巫师处理玩家提出的bug的地方，为便于巫师统一管 理和玩家参看巫师解决后的反馈， 这里只能发表(post)有关游 戏bug问题，以供巫师解决。不能发表非该主题以外的闲杂话题， 如果发现经多次提醒仍然继续者，将一律删除其档案。如果您有 其他问题请您到「英雄圣殿」(help herohall) 相应的地方发表， 这样便于巫师和玩家交流，也便于统一管理，提高效率！玩家可 以在此发表任何符合该主题的文章，巫师也将尽力解决并回复之。 ★注意：如果您发现bug请将文章标题定为：“关于xxx的bug”， 并注明若有bug分加到哪个id上，请将您发现bug的详细情况描述 清楚最好能引用原文。请严格按照该格式发表，否则一切后果自 负。                                   ==炎黄群侠传全体巫师=="
+  x = 2
+  y = 0
+  z = 0
+    }
+
+  room_exits "bug_room" {
+    room_id = rooms.bug_room.id
+    west = rooms.guest_room.id
+    }
+
+# Generated from C:/files/git/mud/d/wizard/develop_room.c by LPCConverter
+# Zone: wizard
+
+    rooms "develop_room" {
+      name = "游戏开发室"
+      description = "这里是巫师和玩家交流的地方，为便于巫师统一管理，这 里只能发表(post)关于玩家对本游戏的见解以及开发建议或者 对游戏中某些问题的疑问，以供巫师参考。不能发表非该主题以外 的闲杂话题，如果发现经过多次提醒仍然继续者，将一律删除档案。 其他问题请到「英雄圣殿」(help herohall) 相应的地方发表，这 样便于巫师和玩家交流，也便于统一管理，提高效率！玩家可以在 此发表任何符合该主题的文章，巫师也将尽力回复之，并定期公布 开发进度和计划以供玩家参考，欢迎提出意见！                                     ==炎黄群侠传全体巫师=="
+  x = 2
+  y = 1
+  z = 0
+    }
+
+  room_exits "develop_room" {
+    room_id = rooms.develop_room.id
+    southwest = rooms.guest_room.id
+    }
+
+# Generated from C:/files/git/mud/d/wizard/guest_room.c by LPCConverter
+# Zone: wizard
+
+    rooms "guest_room" {
+      name = "巫师会客室"
+      description = "这里是巫师和玩家交流的地方，在这里你可以和巫师畅所 欲言，无拘无束。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "guest_room" {
+    room_id = rooms.guest_room.id
+    east = rooms.bug_room.id
+    northeast = rooms.develop_room.id
+    southeast = rooms.player_room.id
+    west = rooms.hall.id
+    }
+
+# Generated from C:/files/git/mud/d/wizard/hall.c by LPCConverter
+# Zone: wizard
+
+    rooms "hall" {
+      name = "服务大厅"
+      description = "这里是英雄圣殿的服务大厅，有关英雄圣殿的任何事情 都可以在这里了解到。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hall" {
+    room_id = rooms.hall.id
+    up = rooms.herodoor.id
+    out = rooms.herodoor.id
+    west = rooms.noname_room.id
+    east = rooms.guest_room.id
+    }
+
+# Generated from C:/files/git/mud/d/wizard/herodoor.c by LPCConverter
+# Zone: wizard
+
+    rooms "herodoor" {
+      name = "英雄圣殿"
+      description = "古   一   惯   白   几   青   是   浪   滚        今   壶   看   发   度   山   非   花   滚        多   浊   秋   渔   夕   依   成   淘   长        少   酒   月   樵   阳   旧   败   尽   江        事   喜   春   江   红   在   转   英   东        都   相   风   渚             头   雄   逝        付   逢        上             空        水        笑                                                谈                                                中"
+  x = 0
+  y = 0
+  z = 1
+    }
+
+  room_exits "herodoor" {
+    room_id = rooms.herodoor.id
+    down = rooms.hall.id
+    in = rooms.hall.id
+    up = rooms.wumiao.id
+    west = rooms.wenxuan.id
+    }
+
+# Generated from C:/files/git/mud/d/wizard/noname_room.c by LPCConverter
+# Zone: wizard
+
+    rooms "noname_room" {
+      name = "匿名留言室"
+      description = "如果您有问题留言给炎黄巫师但又不想其他玩家看到，那 么您可以在这里(post)，其他玩家将不能看到您的留言，在这 里您可以举报有问题的id和其他作弊行为，炎黄巫师将为您的 留言完全保密。                                 ==炎黄群侠传全体巫师=="
+  x = -1
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：dir == "west" && ! wizardp(me)
+direction = "west"
+  message = "只有巫师才能进去！"
+}
+
+]
+    }
+
+  room_exits "noname_room" {
+    room_id = rooms.noname_room.id
+    west = rooms.wizard_room.id
+    east = rooms.hall.id
+    }
+
+# Generated from C:/files/git/mud/d/wizard/player_room.c by LPCConverter
+# Zone: wizard
+
+    rooms "player_room" {
+      name = "玩家交流室"
+      description = "这里是巫师和玩家交流非技术的地方，你可以在这里放松 下来，也可以随意贴张(post)，你将感受到这里远离江湖，没 有争斗也没有屠杀。祝君好运！                                  ==炎黄群侠传全体巫师=="
+  x = 2
+  y = -1
+  z = 0
+    }
+
+  room_exits "player_room" {
+    room_id = rooms.player_room.id
+    northwest = rooms.guest_room.id
+    }
+
+# Generated from C:/files/git/mud/d/wizard/wenxuan.c by LPCConverter
+# Zone: wizard
+
+    rooms "wenxuan" {
+      name = "文选发表室"
+      description = "你可以在这里发表或转载文章，如被巫师选用将刊登出来。 注：禁止发表反动、暴力、淫秽、低俗的内容。"
+  x = -1
+  y = 0
+  z = 1
+    }
+
+  room_exits "wenxuan" {
+    room_id = rooms.wenxuan.id
+    east = rooms.herodoor.id
+    }
+
+# Generated from C:/files/git/mud/d/wizard/wizard_room.c by LPCConverter
+# Zone: wizard
+
+    rooms "wizard_room" {
+      name = "巫师休息室"
+      description = "这里就是地狱巫师的休息所在，刚粉刷过的四周墙壁上光 秃秃的什么都没有，屋子的正中央放着一张楠木桌，上面摆着 一本巫师留言簿(board)。地上则是零零碎碎的一些BUG，到处 乱爬。"
+  x = -2
+  y = 0
+  z = 0
+    }
+
+  room_exits "wizard_room" {
+    room_id = rooms.wizard_room.id
+    east = rooms.noname_room.id
+    }

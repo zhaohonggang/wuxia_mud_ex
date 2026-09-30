@@ -65,7 +65,8 @@
         "raw `$N` or `$n` placeholders not replaced by converter (must be {npc}/{name})",
         "square brackets inside string literals (elias parser rejects them; converter should emit ( ) )",
         "duplicate direction keys inside a single `room_exits \"...\"` block (elias merges them into an array, so the loader's String.split receives an array and crashes)",
-        "raw Python repr leaking into a UCL value, i.e. a single-quoted token directly after `[` or `{`, or a `'key': 'value'` pair. UCL only ever writes `key = value` with double quotes, so this can only come from the converter interpolating str(dict)/str(list). The detail must include the 1-based line number."
+        "raw Python repr leaking into a UCL value, i.e. a single-quoted token directly after `[` or `{`, or a `'key': 'value'` pair. UCL only ever writes `key = value` with double quotes, so this can only come from the converter interpolating str(dict)/str(list). The detail must include the 1-based line number.",
+        "an unconverted LPC runtime expression leaking into an object id, i.e. an `items.`/`characters.`/`rooms.` reference whose local name contains a subscript `[...]`, a `$var` interpolation, or parentheses (e.g. `items. + books[random(sizeof(books))].id`). The converter must skip such keys rather than emit them. The detail must include the 1-based line number."
       ]
     }
   },
@@ -147,6 +148,12 @@
       "why": "regression fixture for the real taishan bug: _parse_accept_body() computed `has_specific_rules = money_rule is not None or item_id_rules or item_name_rules`, which returns the non-empty LIST `item_name_rules` rather than a bool, and _build_accept_ucl() then interpolated str(list) straight into the output. Two independent checks must catch this: syntax (the `'key': 'value'` pair has no `=`) and chars (the python-repr rule).",
       "exit_code": 1,
       "failing_checks": ["Syntax", "Chars"]
+    },
+    {
+      "file": "43_bad_syntax_lpc_expr_leak.ucl",
+      "why": "regression fixture for the real wudang bug: cangjingge.c declares `string* books = ({...})` and spawns `\"/clone/book/\" + books[random(sizeof(books))]`. The key is a *string* containing \"/\", so the converter's _looks_like_path accepted it and _room_id_from_path returned the basename `books[random(sizeof(books))]`, emitting `items. + books[random(sizeof(books))].id` straight into the UCL. Only `syntax` is reported: the subscript breaks the dotted-reference grammar, and a chars-side rule was deliberately NOT added because shaolin legitimately contains `items.fojing1+random(2).id` (from `\"d/shaolin/obj/fojing1\"+random(2)`), so no chars rule can tell the two apart without false positives.",
+      "exit_code": 1,
+      "failing_checks": ["Syntax"]
     },
     {
       "file": "50_bad_encoding_crlf.ucl",

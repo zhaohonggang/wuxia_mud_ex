@@ -1,0 +1,673 @@
+# Generated from C:/files/git/mud/d/wudang/cangjingge.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (cost > 0)  →  
+  # if (me->add_temp("potential_cost", -cost) > 0)  →  
+# ==== CONDITIONAL BRANCHES (jingxiu) ====
+  # if (me->is_busy())  →  
+  # if (me->is_fighting())  →  
+  # if (me->query("jing") < me->query("max_jing") * 7 / 10)  →  
+  # if (me->query_skill("taoism", 1) < 250)  →  
+  # if (! arg || ! sscanf(arg, "%d", cost))  →  
+  # if (cost >= me->query("potential") - me->query("learned_points"))  →  
+  # if (cost < 100)  →  
+# ==== CONDITIONAL BRANCHES (do_jingxiu) ====
+# ==== CONDITIONAL BRANCHES ====
+  # COMPLEX MAPPING: ([ CLASS_D("wudang") + "/daotong" : 1, "/clone/book/" + books[random(sizeof(books))]
+# ==== COMPLEX MAPPINGS ====
+  # UNHANDLED FUNCTION: do_jingxiu
+  # UNHANDLED FUNCTION: halt_jingxiu
+  # UNHANDLED FUNCTION: jingxiu
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudang/donglang1.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "east")  →  
+  # if (! objectp(guarder = present("zhang songxi", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudang/guangchang.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_skill("tiyunzong", 1) < 120 || me->query_skill("dodge", 1) < 120)  →  message_vision('$N跳了跳，原地蹦哒了一会儿。\\\\\n', me);
+  # if (me->query("neili") < 100)  →  tell_object(me, '你的内力不够，还是休息一下再说吧。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_float) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_float
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudang/gyroad1.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( dir == "east" && objectp(present("mang she", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudang/gyroad2.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (arg == "guo" || arg == "renshen guo") { if (uptime() < 1800) { message_vision(HIY "$N" HIY "看了看人参果树，发现" "树上的果子都未成熟，不禁失望地叹了" "口气。\n", me); return 1; } else if (query("guocount") > 0 && random(10) == 1) { message_vision(HIC "\n$N" HIC "从人参果树上摘下一" "个熟透的" HIM "人参果" HIC "，不禁" "大喜过望。\n\n" NOR, me); guo = new(__DIR__"obj/renshenguo"); guo->move(me, 1); add("guocount", -1); return 1; } else { set("guocount", 0); message_vision(HIY "$N" HIY "看了看人参果树，发现" "果树的枝叶上有刚被采摘过的痕迹。\n", me); return 1; }
+# ==== COMPLEX CONDITIONALS ====
+  # if (! arg || arg == "")  →  
+  # if (arg == "guo" || arg == "renshen guo")  →  message_vision(HIY '$N' HIY '看了看人参果树，发现' '树上的果子都未成熟，不禁失望地叹了' '口气。\\\\\n', me); message_vision(HIC '\\\\\n$N' HIC '从人参果树上摘下一' '个熟透的' HIM '人参果' HIC '，不禁' '大喜过望。\\\\\n\\\\\n' NOR, me); message_vision(HIY '$N' HIY '看了看人参果树，发现' '果树的枝叶上有刚被采摘过的痕迹。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_zhai) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_zhai
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudang/jiejianyan.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((me->query_temp("weapon") || me->query_temp("secondary_weapon")) && dir == "westup" && objectp(present("zhang cuishan", environment(me))))  →  message_vision(CYN '\\\\\n张翠山喝道：各色人等，到解剑岩都需解剑，千百' '年来概无例外！\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudang/nanyan0.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir == "up")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudang/nanyanfeng.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((! myfam || myfam["family_name"] != "武当派") && dir == "southdown" && objectp(present("mo shenggu", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudang/nanyangong.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (! query("exits/down"))  →  
+  # if (room = find_object(__DIR__"nanyan0"))  →  
+# ==== CONDITIONAL BRANCHES (close_andao) ====
+  # if (! arg || arg != "xiang" )  →  
+  # if (room = find_object(__DIR__"nanyan0"))  →  
+# ==== CONDITIONAL BRANCHES (do_move) ====
+  # if ((int)ob->query("combat_exp", 1) < 10000 && (dir == "southup"))  →  
+  # if ((! myfam || (myfam["family_name"] != "武当派")) && (dir == "southup"))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: look_xiang
+  # UNHANDLED FUNCTION: close_andao
+  # UNHANDLED FUNCTION: do_move
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudang/sanqingdian.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "west" && dir != "south")  →  
+  # if (! objectp(guarder = present("song yuanqiao", environment(me))))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudang/shizhu.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!arg)  →  message_vision('$N面对着石柱趺坐静思良久，白' '忙一场，一无所获。\\\\\n', ob);
+  # if ((int)ob->query_skill("literate", 1) < 100)  →  message_vision('$N面对着石柱上满面蝌蚪文，没' '一个字认识。\\\\\n', ob);
+  # if ((int)ob->query_skill("taoism", 1) < 100)  →  message_vision('$N对石柱上每一个字都认识，就' '是不知道说的是什么。\\\\\n', ob);
+  # else  →  
+  # if (arg == "taiji-jian" || arg == "taiji-quan" || arg == "tiyunzong")  →  message_vision('$N的' + to_chinese(arg) + '显然太低，无法领悟石柱内容。\\\\\n', ob); message_vision('$N的' + to_chinese(arg) + '已经没必要读石柱内容了。\\\\\n', ob); message_vision('$N的实战经验不足，无法领悟石柱内容。\\\\\n', ob); message_vision('$N太累了，现在无法领悟石柱内容。\\\\\n', ob); message_vision(HIY '$N' HIY '面对着石柱趺坐静思，过得良' '久，似有所悟。\\\\\n' NOR, ob); write(HIC '你对「' + to_chinese(arg) + HIC '」有了新的理解。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_mianbi) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_mianbi
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudang/slxl2.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_shibei
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudang/wdroad5.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query_skill("tiyunzong", 1) < 160 || me->query_skill("dodge", 1) < 160)  →  message_vision('$N跳了跳，原地蹦哒了一会儿。\\\\\n', me);
+  # if (me->query("neili") < 150)  →  tell_object(me, '你的内力不够，还是休息一下再说吧。\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_float) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_float
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudang/npc/baibian.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (!ob || !userp(ob) || environment(ob) != environment())  →  
+# ==== CONDITIONAL BRANCHES (pretending) ====
+  # if (me->is_fighting() || wizardp(ob))  →  
+  # if ( !(skill_status = ob->query_skills()) )  →  
+  # if ( !(map_status = ob->query_skill_map()) )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # SWITCH POOL: switch( random(3) ) { case 0: command("grin " + ob->query("id")); command("pretend " + ob->query("id")); command("exert recover"); break; case 1: command("hi " + ob->query("id")); command("exert heal"); command("exert recover"); break; case 2: command("stare " + ob->query("id")); me->fight_ob(ob); ob->fight_ob(me); break; }
+# ==== SWITCH POOLS ====
+  # UNHANDLED FUNCTION: pretending
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/wudang/npc/mengmian.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( !living(guard[i]) || guard[i]==me )  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if ( interactive(ob=this_player()) && !is_fighting() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudang/npc/turou.c by LPCConverter
+# Zone: wudang
+
+# inherit ITEM;
+# inherit F_FOOD;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/wudang/obj/baguafu.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudang/obj/bluecloth.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudang/obj/dawancha.c by LPCConverter
+# Zone: wudang
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudang/obj/greenrobe.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudang/obj/greyrobe.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudang/obj/mitao.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudang/obj/nuerxiang.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (jing < e_jing ) { if ( (jing + recover) >= e_jing ) { this_player()->set("jing", e_jing); } else { this_player()->add("jing", recover); }
+  # COMPLEX IF: if ( e_jing < m_jing ) { if ( (e_jing + heal) >= m_jing ) { this_player()->set("eff_jing", m_jing); } else { this_player()->add("eff_jing", heal); }
+# ==== COMPLEX CONDITIONALS ====
+  # if ( !this_object()->id(arg) )  →  
+  # if ( this_player()->is_busy() )  →  
+  # if ( (int)this_player()->query("water") >= (int)this_player()->max_water_capacity() )  →  
+  # if ( e_jing < m_jing )  →  
+  # if (jing < e_jing )  →  
+  # if ( this_player()->is_fighting() )  →  
+  # else  →  message_vision('$N端起雕花小杯，把里面的「女儿香」一饮而尽。\\\\\n'+ '一股幽香直入心脾，$N顿时觉得精神大振。\\\\\n', this_player());
+  # if ( query("remaining") )  →  message_vision('$N端起杯香茶，有滋有味地品了几口。\\\\\n'+ '一股香气直入心脾，$N觉得精神好多了。\\\\\n', this_player());
+# ==== CONDITIONAL BRANCHES (do_drink) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_drink
+  # UNHANDLED FUNCTION: do_eat
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudang/obj/renshenguo.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (me->query("max_neili") > me->query_neili_limit())  →  
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+  # if (find_call_out("destguo") != -1)  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+  # UNHANDLED FUNCTION: destguo
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudang/obj/shitou.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudang/obj/table.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: is_container
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudang/obj/whiterobe.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudang/obj/wuxingfu.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/wudang/obj/xiangcha.c by LPCConverter
+# Zone: wudang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ((int)me->query("water") >= (int)me->max_water_capacity())  →  
+  # if (me->is_fighting())  →  
+  # else  →  message_vision('$N端起雕花小杯，把剩下的香茶一饮而尽。\\\\\n' + '一股香气直入心脾，$N觉得精神好多了。\\\\\n', me);
+  # if (query("remaining"))  →  message_vision('$N端起杯香茶，有滋有味地品了几口。\\\\\n'+ '一股香气直入心脾，$N觉得精神好多了。\\\\\n', me);
+# ==== CONDITIONAL BRANCHES (do_effect) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_effect
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================

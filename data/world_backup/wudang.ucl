@@ -1,0 +1,2568 @@
+zones "wudang" {
+  name = "wudang"
+}
+
+# Generated from C:/files/git/mud/d/wudang/cangjingge.c by LPCConverter
+# Zone: wudang
+
+    rooms "cangjingge" {
+      name = "藏经阁"
+      description = "这里是藏经阁，靠墙是一排书架，摆满了道教的典籍。中 央有一个长方形的大桌子，上面也堆满了书。一个道童正在整 理书籍。几个老道盘膝而做，正在此地静修(jingxiu)。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "cangjingge" {
+    room_id = rooms.cangjingge.id
+  southdown = rooms.xilang.id  }
+
+
+
+
+  room_items "cangjingge" {
+    room_id = rooms.cangjingge.id
+    items = [
+      { id = items.daotong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/caolian1.c by LPCConverter
+# Zone: wudang
+
+    rooms "caolian1" {
+      name = "南间操练房"
+      description = "这里摆满了大刀长剑、沙袋绑腿等，是武当弟子日常练功 的地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caolian1" {
+    room_id = rooms.caolian1.id
+  north = rooms.caolianfang.id  }
+
+# Generated from C:/files/git/mud/d/wudang/caolian2.c by LPCConverter
+# Zone: wudang
+
+    rooms "caolian2" {
+      name = "北间操练房"
+      description = "这里摆满了大刀长剑、沙袋绑腿等，是武当弟子日常练功 的地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caolian2" {
+    room_id = rooms.caolian2.id
+  south = rooms.caolianfang.id  }
+
+# Generated from C:/files/git/mud/d/wudang/caolian3.c by LPCConverter
+# Zone: wudang
+
+    rooms "caolian3" {
+      name = "西间操练房"
+      description = "这里摆满了大刀长剑、沙袋绑腿等，是武当弟子日常练功 的地方。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caolian3" {
+    room_id = rooms.caolian3.id
+  east = rooms.caolianfang.id  }
+
+# Generated from C:/files/git/mud/d/wudang/caolianfang.c by LPCConverter
+# Zone: wudang
+
+    rooms "caolianfang" {
+      name = "操练房"
+      description = "这是二楼操练房上，四面八方都是打斗声，武当弟子来去 匆匆，都在忙着操练。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "caolianfang" {
+    room_id = rooms.caolianfang.id
+  south = rooms.caolian1.id
+  north = rooms.caolian2.id
+  west = rooms.caolian3.id
+  eastdown = rooms.xilang.id  }
+
+
+
+
+  room_items "caolianfang" {
+    room_id = rooms.caolianfang.id
+    items = [
+      { id = items.yin.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/chaotiangong.c by LPCConverter
+# Zone: wudang
+
+    rooms "chaotiangong" {
+      name = "朝天宫"
+      description = "这里已近武当绝顶，只见石梯直耸，危蹬高悬，两旁辅以 索链、铁拦勾连。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chaotiangong" {
+    room_id = rooms.chaotiangong.id
+  northdown = rooms.hutouyan.id
+  south = rooms.huixianqiao.id  }
+
+
+
+
+  room_items "chaotiangong" {
+    room_id = rooms.chaotiangong.id
+    items = [
+      { id = items.qingxu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/chashi.c by LPCConverter
+# Zone: wudang
+
+    rooms "chashi" {
+      name = "茶室"
+      description = "满屋的果香和茶香，沁人心脾。山西面的茶农们因感激武 当弟子保护他们免受土匪的骚乱和官府的苛捐杂税，每年开春 采茶季节，总要送来上好的茶叶。这茶叶由少女在三更至日出 间采摘，放在怀中用体温焙制，得天地精华，汇处子体香，故 名女儿香，据说喝了能提精补神，十分珍贵。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chashi" {
+    room_id = rooms.chashi.id
+  north = rooms.donglang2.id  }
+
+
+  room_characters "chashi" {
+    room_id = rooms.chashi.id
+    characters = [
+      { id = characters.xiaocui.id }    ]
+  }
+
+
+
+  room_items "chashi" {
+    room_id = rooms.chashi.id
+    items = [
+      { id = items.mitao.id },
+      { id = items.dawancha.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/donglang1.c by LPCConverter
+# Zone: wudang
+
+    rooms "donglang1" {
+      name = "东厢走廊"
+      description = "你走在一条走廊上，东边有几间雅室，人来人往很是热闹。 西边则是武当派的大殿。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "donglang1" {
+    room_id = rooms.donglang1.id
+  east = rooms.donglang2.id
+  west = rooms.sanqingdian.id  }
+
+
+
+
+  room_items "donglang1" {
+    room_id = rooms.donglang1.id
+    items = [
+      { id = items.xi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/donglang2.c by LPCConverter
+# Zone: wudang
+
+    rooms "donglang2" {
+      name = "东厢走廊"
+      description = "你走在一条走廊上，隐约可以听到东边传来呼吸声，似乎 有人正在那里练功，北边有一扇门，好象是虚掩着。南边是间 竹子扎就的屋子，十分的素雅，里面飘出一阵阵的茶香，有人 轻声细语地不知说那些什么，引得女孩子笑出声来。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "donglang2" {
+    room_id = rooms.donglang2.id
+  south = rooms.chashi.id
+  north = rooms.xiuxishi.id
+  west = rooms.donglang1.id
+  east = rooms.liangongfang.id  }
+
+# Generated from C:/files/git/mud/d/wudang/ertiangate.c by LPCConverter
+# Zone: wudang
+
+    rooms "ertiangate" {
+      name = "二天门"
+      description = "这里是「二天门」，金光灿灿的金顶就在眼前了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "ertiangate" {
+    room_id = rooms.ertiangate.id
+  northdown = rooms.toutiangate.id
+  southup = rooms.santiangate.id  }
+
+# Generated from C:/files/git/mud/d/wudang/fuzhenguan.c by LPCConverter
+# Zone: wudang
+
+    rooms "fuzhenguan" {
+      name = "复真观五层楼"
+      description = "复真观五层楼构造奇特，其间有十二根梁枋交叉重叠，下 面仅用一柱支撑，即有名的「一柱十二梁」。在这里俯瞰群山 烟云迷离，远望金顶，一柱擎天，为观景胜地。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "fuzhenguan" {
+    room_id = rooms.fuzhenguan.id
+  west = rooms.taizipo.id  }
+
+# Generated from C:/files/git/mud/d/wudang/gaotai.c by LPCConverter
+# Zone: wudang
+
+    rooms "gaotai" {
+      name = "南岩宫高台"
+      description = "这里是就是南岩宫高台。高台孤悬崖侧，四望临渊，深不 可测。山风夹耳，松清涤面，顿觉心窍大开。武当真武剑阵就 在这里。真武剑阵由五名五行弟子按东西南北中木金、火、水、 土方位，八名八卦弟子按乾、坤、坎、离、巽、震、艮、兑八 方天、地、水、火、风、雷、山、泽排列。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "gaotai" {
+    room_id = rooms.gaotai.id
+  northdown = rooms.nanyangong.id  }
+
+
+
+
+  room_items "gaotai" {
+    room_id = rooms.gaotai.id
+    items = [
+      { id = items.wuxing.id },
+      { id = items.bagua.id },
+      { id = items.yan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/guangchang.c by LPCConverter
+# Zone: wudang
+
+    rooms "guangchang" {
+      name = "武当广场"
+      description = "这是一个由大石板铺成的广场，是武当弟子学习武功和互 相切磋的地点。周围种满了梧桐树，一到秋天就是满地的落叶。 有个年纪轻轻的道童正在打扫。南边是灵霄宫三清殿。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guangchang" {
+    room_id = rooms.guangchang.id
+  northdown = rooms.zixiaogate.id
+  south = rooms.sanqingdian.id
+  eastdown = rooms.tyroad1.id
+  east = rooms.shanlu2.id  }
+
+
+
+
+  room_items "guangchang" {
+    room_id = rooms.guangchang.id
+    items = [
+      { id = items.daotong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/gyroad1.c by LPCConverter
+# Zone: wudang
+
+    rooms "gyroad1" {
+      name = "果园小路"
+      description = "眼前豁然开朗，你轻松地走在果园边的小路上。路上落英 缤纷，两边是桃树林，盛开着粉红的桃花，红云一片，望不到 边。还可以看蜜蜂「嗡嗡」地在花间飞上飞下忙个不停，间或 传来猿猴的叽咋声。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）： dir == "east" && objectp(present("mang she", environment(me)))
+direction = "east"
+  message = "但见巨蟒一个盘身，顿时挡住了你的去路。"
+}
+
+]
+    }
+
+  room_exits "gyroad1" {
+    room_id = rooms.gyroad1.id
+  west = rooms.tyroad13.id
+  east = rooms.gyroad2.id  }
+
+
+
+
+  room_items "gyroad1" {
+    room_id = rooms.gyroad1.id
+    items = [
+      { id = items.mangshe.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/gyroad2.c by LPCConverter
+# Zone: wudang
+
+    rooms "gyroad2" {
+      name = "果园"
+      description = "你轻松地走进果园。园中落英缤纷，两边是桃树林，盛开 着粉红的桃花，红云一片，望不到边。中间却是一株冠盖数亩 的大树(tree)，遮住地面好大一片绿荫。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ tree = "这是一株人参果树，据说摘下人参果吃了对武功进益很有好处。"
+}
+    }
+
+  room_exits "gyroad2" {
+    room_id = rooms.gyroad2.id
+  west = rooms.gyroad1.id  }
+
+# Generated from C:/files/git/mud/d/wudang/haohanpo.c by LPCConverter
+# Zone: wudang
+
+    rooms "haohanpo" {
+      name = "好汉坡"
+      description = "此处连绵十几里山势陡峭，名为好汉坡，山路两旁种满了 细竹，翠色横空景象怡人，不知不觉让你忘记爬坡的疲劳。坡 顶有一座回龙观，是展望岳顶的最佳去处，但见天柱峰青紫插 天，如在眼前，而相去实际上还有五十里。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "haohanpo" {
+    room_id = rooms.haohanpo.id
+  northdown = rooms.wdbl.id
+  southdown = rooms.shanlu1.id  }
+
+# Generated from C:/files/git/mud/d/wudang/house.c by LPCConverter
+# Zone: wudang
+
+    rooms "house" {
+      name = "小土屋"
+      description = "这是一间小土屋，看样子是一户农家的房子。屋里简单地 摆着些家具，墙角里堆着些农具。炕上坐着一个老婆婆和一个 小孩，见有人冲进来，都神色紧张地望着你。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "house" {
+    room_id = rooms.house.id
+  north = rooms.wdroad6.id  }
+
+
+  room_characters "house" {
+    room_id = rooms.house.id
+    characters = [
+      { id = characters.oldwoman.id },
+      { id = characters.kid.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/houyuan.c by LPCConverter
+# Zone: wudang
+
+    rooms "houyuan" {
+      name = "后院"
+      description = "这里是后院，北面是三清殿，南面是一个圆形的门洞，有 条小路通往后山。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houyuan" {
+    room_id = rooms.houyuan.id
+  south = rooms.xiaolu1.id
+  north = rooms.sanqingdian.id  }
+
+
+
+
+  room_items "houyuan" {
+    room_id = rooms.houyuan.id
+    items = [
+      { id = items.yu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/huixianqiao.c by LPCConverter
+# Zone: wudang
+
+    rooms "huixianqiao" {
+      name = "会仙桥"
+      description = "这里地势稍平，一道山涧缓缓流过，一座窄窄的木桥横在 涧上，只溶一人经过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huixianqiao" {
+    room_id = rooms.huixianqiao.id
+  north = rooms.chaotiangong.id
+  south = rooms.toutiangate.id  }
+
+# Generated from C:/files/git/mud/d/wudang/hutouyan.c by LPCConverter
+# Zone: wudang
+
+    rooms "hutouyan" {
+      name = "虎头岩"
+      description = "一块巨大的岩石看上去好象一个虎头正张大了血盆大口咆 哮，虎身隐藏在草木丛中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "hutouyan" {
+    room_id = rooms.hutouyan.id
+  northdown = rooms.wulaofeng.id
+  southup = rooms.chaotiangong.id  }
+
+
+
+
+  room_items "hutouyan" {
+    room_id = rooms.hutouyan.id
+    items = [
+      { id = items.laohu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/jiejianyan.c by LPCConverter
+# Zone: wudang
+
+    rooms "jiejianyan" {
+      name = "解剑岩"
+      description = "这是武林中极负盛名的武当解剑岩，岩下解剑池水明澈照 人。武林人士经此都自觉解剑，以示对武当派的尊敬。千百年 来，概无例外。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+  direction = "westup"
+  message = "你慑于武当山规，不敢硬争，只得退了一步。"
+}
+
+]
+    }
+
+  room_exits "jiejianyan" {
+    room_id = rooms.jiejianyan.id
+  eastdown = rooms.slxl2.id
+  westup = rooms.slxl3.id  }
+
+
+
+
+  room_items "jiejianyan" {
+    room_id = rooms.jiejianyan.id
+    items = [
+      { id = items.shan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/jindian.c by LPCConverter
+# Zone: wudang
+
+    rooms "jindian" {
+      name = "金殿"
+      description = "金殿中间供着真武大帝铜像，披发跣足，体态丰满；左右 有金童玉女侍立，虔诚恭敬；水、火二将，威武庄严。殿前供 器皆为铜铸。殿宇和殿内铜像、供桌铆焊一体，构件精确，技 巧高超。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jindian" {
+    room_id = rooms.jindian.id
+  north = rooms.zijincheng.id  }
+
+# Generated from C:/files/git/mud/d/wudang/jinding.c by LPCConverter
+# Zone: wudang
+
+    rooms "jinding" {
+      name = "金顶"
+      description = "你感到寒意阵阵袭来，原来你已到了武当山的主峰天柱峰 的绝顶。前面的金殿由铜铸成，镀以黄金，每当旭日临空，整 个殿宇金光闪闪，故名金顶。天柱峰高高独立于群峰上，东西 壁立二山，名叫蜡烛峰，中壁一山似香炉名香炉峰，万山千壑 隐隐下伏。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jinding" {
+    room_id = rooms.jinding.id
+  northdown = rooms.santiangate.id
+  south = rooms.zijincheng.id
+  west = rooms.shierliantai.id  }
+
+# Generated from C:/files/git/mud/d/wudang/langmei.c by LPCConverter
+# Zone: wudang
+
+    rooms "langmei" {
+      name = "榔梅园"
+      description = "眼前豁然开朗，你轻松地走在榔梅园的小路上。两边是桃 树林，树上盛开着粉红的桃花，红云一片，望不到边。不时有 蜜蜂「嗡嗡」地飞过，消失在在花丛中；几只猴子在树上互相 追逐着，叽叽喳喳地争抢桃子。远处是高高的天柱峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "langmei" {
+    room_id = rooms.langmei.id
+  east = rooms.lameigt.id  }
+
+
+
+
+  room_items "langmei" {
+    room_id = rooms.langmei.id
+    items = [
+      { id = items.shouyuan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/langmeiyuan.c by LPCConverter
+# Zone: wudang
+
+    rooms "langmeiyuan" {
+      name = "榔梅园"
+      description = "这里种满了榔梅树，花色深浅一如桃花，蒂垂丝作海棠状。 榔和梅本是山中的两种树，相传有一天玄武帝把梅枝插在榔干 上，久而复合，成此异种。据说榔梅果核不可带出武当山，违 者必遭不昌。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "langmeiyuan" {
+    room_id = rooms.langmeiyuan.id
+  northup = rooms.taiziyan.id
+  southup = rooms.wuyaling.id
+  westup = rooms.nanyanfeng.id  }
+
+
+
+
+  room_items "langmeiyuan" {
+    room_id = rooms.langmeiyuan.id
+    items = [
+      { id = items.shouyuan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/liangongfang.c by LPCConverter
+# Zone: wudang
+
+    rooms "liangongfang" {
+      name = "练功房"
+      description = "这里是练功房，地下凌乱地放着几个蒲团，几位武当弟子 正盘膝坐在上面打坐。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liangongfang" {
+    room_id = rooms.liangongfang.id
+  west = rooms.donglang2.id  }
+
+
+
+
+  room_items "liangongfang" {
+    room_id = rooms.liangongfang.id
+    items = [
+      { id = items.zhujian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/mozhenjing.c by LPCConverter
+# Zone: wudang
+
+    rooms "mozhenjing" {
+      name = "磨针井"
+      description = "相传当年真武进山修炼，日久思归，偶遇一老妇持铁杵研 磨。问磨杵为何？答以磨针。又问铁杵岂能磨针？答云功到自 然成。真武由此醒悟，终于修炼成仙。后人因建磨针井道观以 为纪念。殿前立大铁杵一根，殿旁有老母亭，亭正中有井。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ jing = "井沿古朴，水色悠蓝，可以装瓶饮用。"
+}
+    }
+
+  room_exits "mozhenjing" {
+    room_id = rooms.mozhenjing.id
+  west = rooms.shanlu1.id  }
+
+# Generated from C:/files/git/mud/d/wudang/nanyan0.c by LPCConverter
+# Zone: wudang
+
+    rooms "nanyan0" {
+      name = "南岩宫地下室"
+      description = "这是一个干燥洁净的地下室，四壁用光滑的大理石砌就而 成，十数支松明照得这里通明透亮。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：me->query_skill("taiji-shengong", 1) < 80
+direction = ~
+  message = "你试着推了推顶上的砖盖，触手冰凉，纹丝不动。"
+}
+
+]
+    }
+
+  room_exits "nanyan0" {
+    room_id = rooms.nanyan0.id
+  up = rooms.nanyangong.id
+  east = rooms.nanyan1.id
+  west = rooms.nanyan2.id
+  south = rooms.nanyan3.id
+  north = rooms.nanyan4.id  }
+
+
+
+
+  room_items "nanyan0" {
+    room_id = rooms.nanyan0.id
+    items = [
+      { id = items.xiaosong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/nanyan1.c by LPCConverter
+# Zone: wudang
+
+    rooms "nanyan1" {
+      name = "南岩迷宫"
+      description = "你现在南岩宫地下密室中，高挂的腕粗的油烛照得满堂透 亮。但周围静谧如夜，除了烛火闪烁的风声外，你什么也听不 见。这里只有你一个人。你脚下缓缓而动，全神戒备，没有人 能帮助你。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nanyan1" {
+    room_id = rooms.nanyan1.id
+  east = rooms.nanyan1.id
+  south = rooms.nanyan2.id
+  west = rooms.nanyan3.id
+  north = rooms.nanyan4.id
+  southeast = rooms.nanyan0.id
+  southwest = rooms.nanyan2.id
+  northeast = rooms.nanyan3.id
+  northwest = rooms.nanyan4.id  }
+
+
+
+
+  room_items "nanyan1" {
+    room_id = rooms.nanyan1.id
+    items = [
+      { id = items.table.id },
+      { id = items.corpse.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/nanyan2.c by LPCConverter
+# Zone: wudang
+
+    rooms "nanyan2" {
+      name = "南岩迷宫"
+      description = "你现在南岩宫地下密室中，高挂的腕粗的油烛照得满堂透 亮。但周围静谧如夜，除了烛火闪烁的风声外，你什么也听不 见。这里只有你一个人。你脚下缓缓而动，全神戒备，没有人 能帮助你。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nanyan2" {
+    room_id = rooms.nanyan2.id
+  east = rooms.nanyan1.id
+  south = rooms.nanyan2.id
+  west = rooms.nanyan3.id
+  north = rooms.nanyan4.id
+  southeast = rooms.nanyan1.id
+  southwest = rooms.nanyan0.id
+  northeast = rooms.nanyan3.id
+  northwest = rooms.nanyan4.id  }
+
+
+
+
+  room_items "nanyan2" {
+    room_id = rooms.nanyan2.id
+    items = [
+      { id = items.table.id },
+      { id = items.corpse.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/nanyan3.c by LPCConverter
+# Zone: wudang
+
+    rooms "nanyan3" {
+      name = "南岩迷宫"
+      description = "你现在南岩宫地下密室中，高挂的腕粗的油烛照得满堂透 亮。但周围静谧如夜，除了烛火闪烁的风声外，你什么也听不 见。这里只有你一个人。你脚下缓缓而动，全神戒备，没有人 能帮助你。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nanyan3" {
+    room_id = rooms.nanyan3.id
+  east = rooms.nanyan1.id
+  south = rooms.nanyan2.id
+  west = rooms.nanyan3.id
+  north = rooms.nanyan4.id
+  southeast = rooms.nanyan1.id
+  southwest = rooms.nanyan2.id
+  northeast = rooms.nanyan0.id
+  northwest = rooms.nanyan4.id  }
+
+
+
+
+  room_items "nanyan3" {
+    room_id = rooms.nanyan3.id
+    items = [
+      { id = items.table.id },
+      { id = items.corpse.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/nanyan4.c by LPCConverter
+# Zone: wudang
+
+    rooms "nanyan4" {
+      name = "南岩迷宫"
+      description = "你现在南岩宫地下密室中，高挂的腕粗的油烛照得满堂透 亮。但周围静谧如夜，除了烛火闪烁的风声外，你什么也听不 见。这里只有你一个人。你脚下缓缓而动，全神戒备，没有人 能帮助你。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "nanyan4" {
+    room_id = rooms.nanyan4.id
+  east = rooms.nanyan1.id
+  south = rooms.nanyan2.id
+  west = rooms.nanyan3.id
+  north = rooms.nanyan4.id
+  southeast = rooms.nanyan1.id
+  southwest = rooms.nanyan2.id
+  northeast = rooms.nanyan3.id
+  northwest = rooms.nanyan0.id  }
+
+
+
+
+  room_items "nanyan4" {
+    room_id = rooms.nanyan4.id
+    items = [
+      { id = items.table.id },
+      { id = items.corpse.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/nanyanfeng.c by LPCConverter
+# Zone: wudang
+
+    rooms "nanyanfeng" {
+      name = "南岩峰"
+      description = "这里是武当三十六岩之最，松树翳天，木石争奇，峭壁万 仞。在悬崖之半筑有一宫宇，下临深渊，工程浩大。宫前有一 石柱，自峭壁上横出。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(! myfam || myfam["family_name"] != "武当派") && dir == "southdown" && objectp(present("mo shenggu", environment(me)))
+direction = "southdown"
+  message = "莫声谷拦住你说：此处乃本派禁地，请止步。"
+}
+
+]
+    }
+
+  room_exits "nanyanfeng" {
+    room_id = rooms.nanyanfeng.id
+  eastdown = rooms.langmeiyuan.id
+  southdown = rooms.shizhu.id
+  west = rooms.sheshenya.id  }
+
+
+
+
+  room_items "nanyanfeng" {
+    room_id = rooms.nanyanfeng.id
+    items = [
+      { id = items.mo.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/nanyangong.c by LPCConverter
+# Zone: wudang
+
+    rooms "nanyangong" {
+      name = "南岩宫"
+      description = "这里是就是武当山南岩宫。此宫半卧悬崖之下。殿内三清 坐像 (xiang)金光闪闪，气宇轩昂。殿内天井处芳草迷径，百 卉争妍。有几个装束醒目的武当三代弟子从这匆匆走过。南面 高台摆有真武剑阵，剑气逼人而来。"
+  x = 0
+  y = 0
+  z = 0
+valid_leave = [
+{
+   # 阻挡条件（原样保留）：(int)ob->query("combat_exp", 1) < 10000 && (dir == "southup")
+direction = "southup"
+  message = "外面的真武剑阵威力太大，你被内力鼓荡，不能上去。"
+}
+,
+{
+   # 阻挡条件（原样保留）：(! myfam || (myfam["family_name"] != "武当派")) && (dir == "southup")
+direction = "southup"
+  message = "外面的真武剑阵威力太大，你被内力鼓荡，退了回来。"
+}
+
+]
+    }
+
+  room_exits "nanyangong" {
+    room_id = rooms.nanyangong.id
+  out = rooms.shizhu.id
+  southup = rooms.gaotai.id  }
+
+# Generated from C:/files/git/mud/d/wudang/sanbuguan.c by LPCConverter
+# Zone: wudang
+
+    rooms "sanbuguan" {
+      name = "三不管"
+      description = "这里是四川、湖北与陕西的交界，俗称三不管。小土路的 两旁有疏疏落落的农舍耕田，几只牛羊正在吃草。路上行人很 少，都匆匆赶路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sanbuguan" {
+    room_id = rooms.sanbuguan.id
+  east = rooms.wdroad8.id
+  southeast = rooms.wdroad9.id
+  southwest = rooms.wdroad.id  }
+
+# Generated from C:/files/git/mud/d/wudang/sanlaofeng.c by LPCConverter
+# Zone: wudang
+
+    rooms "sanlaofeng" {
+      name = "三老峰"
+      description = "此处乃武当山三老峰，只见三座奇峰突兀，惊险无比，行 人多不敢放胆在此玩赏风景。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sanlaofeng" {
+    room_id = rooms.sanlaofeng.id
+  northdown = rooms.wuyaling.id
+  southup = rooms.wulaofeng.id  }
+
+# Generated from C:/files/git/mud/d/wudang/sanqingdian.c by LPCConverter
+# Zone: wudang
+
+    rooms "sanqingdian" {
+      name = "三清殿"
+      description = "这里是凌霄宫的三清殿，是武当派会客的地点。供着元始 天尊、太上道君和天上老君的神像，香案上香烟缭绕。靠墙放 着几张太师椅，地上放着几个蒲团。东西两侧是走廊，北边是 练武的广场，南边是后院。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sanqingdian" {
+    room_id = rooms.sanqingdian.id
+  north = rooms.guangchang.id
+  south = rooms.houyuan.id
+  east = rooms.donglang1.id
+  west = rooms.xilang.id  }
+
+
+
+
+  room_items "sanqingdian" {
+    room_id = rooms.sanqingdian.id
+    items = [
+      { id = items.guxu.id },
+      { id = items.song.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/santiangate.c by LPCConverter
+# Zone: wudang
+
+    rooms "santiangate" {
+      name = "三天门"
+      description = "这里是登山石阶的尽头三天门，再往上走就是武当绝顶了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "santiangate" {
+    room_id = rooms.santiangate.id
+  northdown = rooms.ertiangate.id
+  southup = rooms.jinding.id  }
+
+# Generated from C:/files/git/mud/d/wudang/shanlu1.c by LPCConverter
+# Zone: wudang
+
+    rooms "shanlu1" {
+      name = "山路"
+      description = "你走在登山的路径上，路的左右各有一条大铁链，象两条 长蛇向山上山下蜿蜒爬去。满眼是乔木夹道，如行于绿幕中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu1" {
+    room_id = rooms.shanlu1.id
+  northup = rooms.haohanpo.id
+  southup = rooms.taizipo.id
+  east = rooms.mozhenjing.id  }
+
+# Generated from C:/files/git/mud/d/wudang/shanlu2.c by LPCConverter
+# Zone: wudang
+
+    rooms "shanlu2" {
+      name = "山路"
+      description = "你走在登山的路径上，路的左右各有一条大铁链，象两条 长蛇向山上山下蜿蜒爬去。满眼是乔木夹道，如行于绿幕中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu2" {
+    room_id = rooms.shanlu2.id
+  west = rooms.guangchang.id
+  east = rooms.shanlu3.id  }
+
+# Generated from C:/files/git/mud/d/wudang/shanlu3.c by LPCConverter
+# Zone: wudang
+
+    rooms "shanlu3" {
+      name = "山路"
+      description = "你走在登山的路径上，路的左右各有一条大铁链，象两条 长蛇向山上山下蜿蜒爬去。满眼是乔木夹道，如行于绿幕中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu3" {
+    room_id = rooms.shanlu3.id
+  west = rooms.shanlu2.id
+  southup = rooms.shanlu4.id  }
+
+# Generated from C:/files/git/mud/d/wudang/shanlu4.c by LPCConverter
+# Zone: wudang
+
+    rooms "shanlu4" {
+      name = "山路"
+      description = "你走在登山的路径上，路的左右各有一条大铁链，象两条 长蛇向山上山下蜿蜒爬去。满眼是乔木夹道，如行于绿幕中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu4" {
+    room_id = rooms.shanlu4.id
+  northdown = rooms.shanlu3.id
+  southup = rooms.taiziyan.id  }
+
+# Generated from C:/files/git/mud/d/wudang/sheshenya.c by LPCConverter
+# Zone: wudang
+
+    rooms "sheshenya" {
+      name = "舍身崖"
+      description = "这是一处险峻的悬崖峭壁，相传真武帝在此舍身得道。崖 上立有铁栅栏，防止有人自杀步真武帝的后尘。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sheshenya" {
+    room_id = rooms.sheshenya.id
+  east = rooms.nanyanfeng.id  }
+
+# Generated from C:/files/git/mud/d/wudang/shibapan.c by LPCConverter
+# Zone: wudang
+
+    rooms "shibapan" {
+      name = "十八盘"
+      description = "这是一个很大的斜坡，俗称十八盘，大石阶一级一级笔直 而上，颇费脚力。这里坡坡有神，拐拐有祠，往上十里之后即 是灵霄宫。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shibapan" {
+    room_id = rooms.shibapan.id
+  northdown = rooms.shiliang.id
+  southup = rooms.shijie2.id  }
+
+# Generated from C:/files/git/mud/d/wudang/shierliantai.c by LPCConverter
+# Zone: wudang
+
+    rooms "shierliantai" {
+      name = "十二莲台"
+      description = "这里是武当绝顶的十二莲台，台与台之间以曲栏相连，雕 刻精美，是远眺的最佳所在。站立此台四眺，宛如身在千叶宝 莲之上，千峰万壑都在脚下。往西可望到七百里外的华山，东 望则汉水如练，襄、樊一带尽收眼底。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shierliantai" {
+    room_id = rooms.shierliantai.id
+  east = rooms.jinding.id  }
+
+# Generated from C:/files/git/mud/d/wudang/shijie1.c by LPCConverter
+# Zone: wudang
+
+    rooms "shijie1" {
+      name = "石阶"
+      description = "你走在一条坚实的石阶上，不时地有进香客从你的身边走 过。一边是峭壁，一边是悬崖，抬头隐约可见笼罩在云雾中的 天柱峰，听着流水淙淙，令人心旷神怡。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shijie1" {
+    room_id = rooms.shijie1.id
+  northdown = rooms.xuanyuegate.id
+  southup = rooms.yuzhengong.id  }
+
+
+  room_characters "shijie1" {
+    room_id = rooms.shijie1.id
+    characters = [
+      { id = characters.guest.id },
+      { id = characters.guest.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/shijie2.c by LPCConverter
+# Zone: wudang
+
+    rooms "shijie2" {
+      name = "石阶"
+      description = "你走在一条坚实的石阶上，不时地有进香客从你的身边走 过。一边是峭壁，一边是悬崖，抬头隐约可见笼罩在云雾中的 天柱峰，听着流水淙淙，令人心旷神怡。北边是一座牌坊。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shijie2" {
+    room_id = rooms.shijie2.id
+  northdown = rooms.shibapan.id
+  southup = rooms.zixiaogate.id  }
+
+
+  room_characters "shijie2" {
+    room_id = rooms.shijie2.id
+    characters = [
+      { id = characters.guest.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/shiliang.c by LPCConverter
+# Zone: wudang
+
+    rooms "shiliang" {
+      name = "石梁"
+      description = "你走入山坞中，有一道石梁跨溪而建，这里是九渡涧的下 流，各岭之水均在此交汇景色极佳。附近设有许多小吃店，游 人至此，大多小住歇歇脚力。再往上就是陡峭的十八盘了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shiliang" {
+    room_id = rooms.shiliang.id
+  northup = rooms.taizipo.id
+  southup = rooms.shibapan.id
+  east = rooms.shop.id  }
+
+# Generated from C:/files/git/mud/d/wudang/shizhu.c by LPCConverter
+# Zone: wudang
+
+    rooms "shizhu" {
+      name = "石柱"
+      description = "这是南岩宫前的一根石柱，雕成龙形，自峭壁上横出，犹 如飞龙在天。龙首刻一香炉，在此上香称为「上龙头香」，是 香客的最大心愿。石柱仅粗如屋梁，旁无扶栏，前有白云缭绕， 下有万丈深渊，稍一失足，即尸骨无存。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shizhu" {
+    room_id = rooms.shizhu.id
+  northup = rooms.nanyanfeng.id
+  in = rooms.nanyangong.id  }
+
+# Generated from C:/files/git/mud/d/wudang/shop.c by LPCConverter
+# Zone: wudang
+
+    rooms "shop" {
+      name = "小吃店"
+      description = "这里是石梁边的一间小吃店，卖些简单的饮食，专门赚那 些游客的钱。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shop" {
+    room_id = rooms.shop.id
+  west = rooms.shiliang.id  }
+
+
+  room_characters "shop" {
+    room_id = rooms.shop.id
+    characters = [
+      { id = characters.xiaoer2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/slxl1.c by LPCConverter
+# Zone: wudang
+
+    rooms "slxl1" {
+      name = "松林小路"
+      description = "这是山脚松林中的小路，两边长满参天的红松树，只能看 见一线天空。路旁有道士在奋力砍树。西边通向密林深处，东 边可回大道。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "slxl1" {
+    room_id = rooms.slxl1.id
+  west = rooms.slxl2.id
+  east = rooms.wdroad10.id  }
+
+# Generated from C:/files/git/mud/d/wudang/slxl2.c by LPCConverter
+# Zone: wudang
+
+    rooms "slxl2" {
+      name = "松林小路"
+      description = "这是山脚松林中的小路，两边长满参天的红松树，只能看 见一线天空。路旁有道士在奋力砍树。东边可回大道。路边有 个石碑(shibei)，很多游客在围那里。原来西边上去就是名镇 天下的解剑岩了，"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "slxl2" {
+    room_id = rooms.slxl2.id
+  westup = rooms.jiejianyan.id
+  east = rooms.slxl1.id
+  south = rooms.songlin1.id
+  north = rooms.songlin2.id  }
+
+# Generated from C:/files/git/mud/d/wudang/slxl3.c by LPCConverter
+# Zone: wudang
+
+    rooms "slxl3" {
+      name = "松林小路"
+      description = "这是山脚松林中的小路，两边长满参天的红松树，只能看 见一线天空。路旁有道士在奋力砍树。西边通向武当山门，东 边可通往解剑岩。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "slxl3" {
+    room_id = rooms.slxl3.id
+  west = rooms.xuanyuegate.id
+  eastdown = rooms.jiejianyan.id  }
+
+# Generated from C:/files/git/mud/d/wudang/songlin1.c by LPCConverter
+# Zone: wudang
+
+    rooms "songlin1" {
+      name = "松林"
+      description = "这是松林深处，暗无天日，朦胧中只感觉到左右前后到处 都是树影。地上有一两个死人骷髅，发着绿荧荧的磷光。你惊 骇之间，一脚踩在钢针般的松针上！"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "songlin1" {
+    room_id = rooms.songlin1.id
+  north = rooms.slxl2.id
+  south = rooms.songlin3.id  }
+
+
+
+
+  room_items "songlin1" {
+    room_id = rooms.songlin1.id
+    items = [
+      { id = items.famu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/songlin2.c by LPCConverter
+# Zone: wudang
+
+    rooms "songlin2" {
+      name = "松林"
+      description = "这是松林深处，暗无天日，朦胧中只感觉到左右前后到处 都是树影。地上有一两个死人骷髅，发着绿荧荧的磷光。你惊 骇之间，一脚踩在钢针般的松针上！"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "songlin2" {
+    room_id = rooms.songlin2.id
+  north = rooms.songlin4.id
+  south = rooms.slxl2.id  }
+
+# Generated from C:/files/git/mud/d/wudang/songlin3.c by LPCConverter
+# Zone: wudang
+
+    rooms "songlin3" {
+      name = "松林"
+      description = "这是松林深处，暗无天日，朦胧中只感觉到左右前后到处 都是树影。地上有一两个死人骷髅，发着绿荧荧的磷光。你惊 骇之间，一脚踩在钢针般的松针上！"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "songlin3" {
+    room_id = rooms.songlin3.id
+  north = rooms.songlin1.id  }
+
+
+
+
+  room_items "songlin3" {
+    room_id = rooms.songlin3.id
+    items = [
+      { id = items.hou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/songlin4.c by LPCConverter
+# Zone: wudang
+
+    rooms "songlin4" {
+      name = "松林"
+      description = "这是松林深处，暗无天日，朦胧中只感觉到左右前后到处 都是树影。地上有一两个死人骷髅，发着绿荧荧的磷光。你惊 骇之间，一脚踩在钢针般的松针上！"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "songlin4" {
+    room_id = rooms.songlin4.id
+  south = rooms.songlin2.id  }
+
+
+  room_characters "songlin4" {
+    room_id = rooms.songlin4.id
+    characters = [
+      { id = characters.xiao_louluo.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/taizipo.c by LPCConverter
+# Zone: wudang
+
+    rooms "taizipo" {
+      name = "太子坡"
+      description = "此处地处坡陀之隘，形势险要，相传净乐国太子少年真武 入山修道时，曾在此留住读书，故名叫太子坡，好象一朵出水 芙蓉，涌出绿波，瓣萼历历可数。远处峰回路转，忽明忽灭尽 在云雾之中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "taizipo" {
+    room_id = rooms.taizipo.id
+  northdown = rooms.shanlu1.id
+  southdown = rooms.shiliang.id
+  east = rooms.fuzhenguan.id  }
+
+# Generated from C:/files/git/mud/d/wudang/taiziyan.c by LPCConverter
+# Zone: wudang
+
+    rooms "taiziyan" {
+      name = "太子岩"
+      description = "这里是群山环抱中的太子岩，岩上有一块三清石和一座太子亭。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "taiziyan" {
+    room_id = rooms.taiziyan.id
+  northdown = rooms.shanlu4.id
+  southdown = rooms.langmeiyuan.id  }
+
+# Generated from C:/files/git/mud/d/wudang/toutiangate.c by LPCConverter
+# Zone: wudang
+
+    rooms "toutiangate" {
+      name = "头天门"
+      description = "只见有石梯无数通往山巅，一座石坊上写着头天门三个大 字，这是攀登武当绝顶天柱峰的起点。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "toutiangate" {
+    room_id = rooms.toutiangate.id
+  north = rooms.huixianqiao.id
+  southup = rooms.ertiangate.id  }
+
+# Generated from C:/files/git/mud/d/wudang/tufeiwo1.c by LPCConverter
+# Zone: wudang
+
+    rooms "tufeiwo1" {
+      name = "林中小路"
+      description = "你走在一条僻静的林中小路上，两旁是阴森森的树林。只 见左右前后，到处都是铺天盖地的松树林。几十丈高的大松树 簇在一块，密实的枝叶象一蓬蓬巨伞般伸向天空，把阳光遮得 丝毫也无。据说这里经常有土匪出没，不可久留。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tufeiwo1" {
+    room_id = rooms.tufeiwo1.id
+  south = rooms.tufeiwo2.id
+  northdown = rooms.wdroad10.id  }
+
+
+  room_characters "tufeiwo1" {
+    room_id = rooms.tufeiwo1.id
+    characters = [
+      { id = characters.tufei2.id },
+      { id = characters.tufei2.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/tufeiwo2.c by LPCConverter
+# Zone: wudang
+
+    rooms "tufeiwo2" {
+      name = "林中小路"
+      description = "你走在一条僻静的林中小路上，两旁是阴森森的树林。只 见左右前后，到处都是铺天盖地的松树林。几十丈高的大松树 簇在一块，密实的枝叶象一蓬蓬巨伞般伸向天空，把阳光遮得 丝毫也无。据说这里经常有土匪出没，不可久留。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tufeiwo2" {
+    room_id = rooms.tufeiwo2.id
+  east = rooms.tufeiwo3.id
+  north = rooms.tufeiwo1.id  }
+
+
+  room_characters "tufeiwo2" {
+    room_id = rooms.tufeiwo2.id
+    characters = [
+      { id = characters.tufei1.id },
+      { id = characters.tufei1.id },
+      { id = characters.tufei1.id },
+      { id = characters.baibian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/tufeiwo3.c by LPCConverter
+# Zone: wudang
+
+    rooms "tufeiwo3" {
+      name = "林中小路"
+      description = "你走在一条僻静的林中小路上，两旁是阴森森的树林。只 见左右前后，到处都是铺天盖地的松树林。几十丈高的大松树 簇在一块，密实的枝叶象一蓬蓬巨伞般伸向天空，把阳光遮得 丝毫也无。据说这里经常有土匪出没，不可久留。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tufeiwo3" {
+    room_id = rooms.tufeiwo3.id
+  west = rooms.tufeiwo2.id  }
+
+
+  room_characters "tufeiwo3" {
+    room_id = rooms.tufeiwo3.id
+    characters = [
+      { id = characters.tufei1.id },
+      { id = characters.tufei1.id },
+      { id = characters.tufeitou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/tygate1.c by LPCConverter
+# Zone: wudang
+
+    rooms "tygate1" {
+      name = "桃园篱笆"
+      description = "你走在一条通往桃树林深处的小道上，四周非常安静，景 色怡人。前面有个篱笆(fence)门。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ fence = "############################## 	############################## 	######　　　　　　　　　###### 	######　应怜屐齿印苍苔　###### 	######　　　　　　　　　###### 	######　小扣柴扉久不开　###### 	######　　　　　　　　　###### 	######　春色满园关不住　###### 	######　　　　　　　　　###### 	######　一枝红杏出墙来　###### 	######　　　　　　　　　###### 	############################## 	##############################"
+}
+    }
+
+  room_exits "tygate1" {
+    room_id = rooms.tygate1.id
+  south = rooms.tyroad10.id  }
+
+# Generated from C:/files/git/mud/d/wudang/tygate2.c by LPCConverter
+# Zone: wudang
+
+    rooms "tygate2" {
+      name = "桃园木门"
+      description = "你走在一条通往桃树林深处的小道上，四周非常安静，景 色怡人。前面有个桃木门(gate)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ gate = "############################## 	############################## 	######　　　　　　　　　###### 	######　去年今日此门中　###### 	######　　　　　　　　　###### 	######　人面桃花相映红　###### 	######　　　　　　　　　###### 	######　人面不知何处去　###### 	######　　　　　　　　　###### 	######　桃花依旧笑春风　###### 	######　　　　　　　　　###### 	############################## 	##############################"
+}
+    }
+
+  room_exits "tygate2" {
+    room_id = rooms.tygate2.id
+  north = rooms.tyroad10.id  }
+
+# Generated from C:/files/git/mud/d/wudang/tynroad.c by LPCConverter
+# Zone: wudang
+
+    rooms "tynroad" {
+      name = "桃园小路"
+      description = "眼前豁然开朗，你轻松地走在桃园边的小路上。路上落英 缤纷，一边是桃树林，盛开着粉红的桃花，红云一片，望不到 边。还可以看见蜜蜂「嗡嗡」地在花间飞上飞下忙个不停，间 或传来猿猴的叽咋声。北边是条环山的黄土路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tynroad" {
+    room_id = rooms.tynroad.id
+  south = rooms.tyroad8.id  }
+
+
+
+
+  room_items "tynroad" {
+    room_id = rooms.tynroad.id
+    items = [
+      { id = items.hou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/tyroad1.c by LPCConverter
+# Zone: wudang
+
+    rooms "tyroad1" {
+      name = "石阶"
+      description = "这是一条宽大坚实的石阶路，不时地有进香客和游人从你 的身边走过。抬头西望，雄伟的三清殿顶浮现在香烟袅绕之中， 巍峨壮观。东边一条石阶通往武当山脚下，隐约可见远处桃花 片片，赏心悦目。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tyroad1" {
+    room_id = rooms.tyroad1.id
+  westup = rooms.guangchang.id
+  east = rooms.tyroad2.id  }
+
+# Generated from C:/files/git/mud/d/wudang/tyroad10.c by LPCConverter
+# Zone: wudang
+
+    rooms "tyroad10" {
+      name = "桃园小路"
+      description = "眼前豁然开朗，你轻松地走在桃园边的小路上。两边是桃 树林，树上盛开着粉红的桃花，红云一片，望不到边。不时有 蜜蜂「嗡嗡」地飞过，消失在在花丛中；几只猴子在树上互相 追逐着，叽叽喳喳地争抢桃子。南北方向是通向桃园的入口。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tyroad10" {
+    room_id = rooms.tyroad10.id
+  east = rooms.tyroad11.id
+  west = rooms.tyroad9.id
+  north = rooms.tygate1.id
+  south = rooms.tygate2.id  }
+
+# Generated from C:/files/git/mud/d/wudang/tyroad11.c by LPCConverter
+# Zone: wudang
+
+    rooms "tyroad11" {
+      name = "桃园小路"
+      description = "眼前豁然开朗，你轻松地走在桃园边的小路上。路上落英 缤纷，一边是桃树林，盛开着粉红的桃花，红云一片，望不到 边。还可以看见蜜蜂「嗡嗡」地在花间飞上飞下忙个不停，间 或传来猿猴的叽咋声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tyroad11" {
+    room_id = rooms.tyroad11.id
+  west = rooms.tyroad10.id
+  east = rooms.tyroad12.id  }
+
+# Generated from C:/files/git/mud/d/wudang/tyroad12.c by LPCConverter
+# Zone: wudang
+
+    rooms "tyroad12" {
+      name = "桃园小路"
+      description = "眼前豁然开朗，你轻松地走在桃园边的小路上。路上落英 缤纷，一边是桃树林，盛开着粉红的桃花，红云一片，望不到 边。还可以看见蜜蜂「嗡嗡」地在花间飞上飞下忙个不停，间 或传来猿猴的叽咋声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tyroad12" {
+    room_id = rooms.tyroad12.id
+  west = rooms.tyroad11.id
+  east = rooms.tyroad13.id  }
+
+
+
+
+  room_items "tyroad12" {
+    room_id = rooms.tyroad12.id
+    items = [
+      { id = items.hou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/tyroad13.c by LPCConverter
+# Zone: wudang
+
+    rooms "tyroad13" {
+      name = "桃园"
+      description = "眼前豁然开朗，你轻松地走在桃园的小路上。两边是桃树 林，树上盛开着粉红的桃花，红云一片，望不到边。不时有蜜 蜂「嗡嗡」地飞过，消失在在花丛中；几只猴子在树上互相追 逐着，叽叽喳喳地争抢桃子。远处是高高的天柱峰。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tyroad13" {
+    room_id = rooms.tyroad13.id
+  east = rooms.gyroad1.id
+  west = rooms.tyroad12.id  }
+
+
+
+
+  room_items "tyroad13" {
+    room_id = rooms.tyroad13.id
+    items = [
+      { id = items.shouyuan.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/tyroad2.c by LPCConverter
+# Zone: wudang
+
+    rooms "tyroad2" {
+      name = "石阶"
+      description = "这是一条宽大坚实的石阶路，不时地有进香客和游人从你 的身边走过。抬头西望，雄伟的三清殿顶浮现在香烟袅绕之中， 巍峨壮观。东边一条石阶通往武当山脚下，隐约可见远处桃花 片片，赏心悦目。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tyroad2" {
+    room_id = rooms.tyroad2.id
+  west = rooms.tyroad1.id
+  east = rooms.tyroad3.id  }
+
+
+  room_characters "tyroad2" {
+    room_id = rooms.tyroad2.id
+    characters = [
+      { id = characters.guest.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/tyroad3.c by LPCConverter
+# Zone: wudang
+
+    rooms "tyroad3" {
+      name = "石阶"
+      description = "这是一条宽大坚实的石阶路，不时地有进香客和游人从你 的身边走过。抬头西望，雄伟的三清殿顶浮现在香烟袅绕之中 巍峨壮观；东边一条石阶通往武当山脚下，隐约可见远处桃花 片片，赏心悦目。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tyroad3" {
+    room_id = rooms.tyroad3.id
+  west = rooms.tyroad2.id
+  eastdown = rooms.tyroad4.id  }
+
+# Generated from C:/files/git/mud/d/wudang/tyroad4.c by LPCConverter
+# Zone: wudang
+
+    rooms "tyroad4" {
+      name = "崎岖山路"
+      description = "你走在一条崎岖狭隘的山路上，一边是峭壁，一边是悬崖。 高高的天柱峰笼罩在云雾中，隐约可见。可是身旁的进香客和 游人都仔细地町着自己的脚下，不敢抬头望一眼，惟恐一不小 心摔下去。更有强人趁机打劫，行人无不噤声闭气。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tyroad4" {
+    room_id = rooms.tyroad4.id
+  westup = rooms.tyroad3.id
+  southdown = rooms.tyroad5.id  }
+
+# Generated from C:/files/git/mud/d/wudang/tyroad5.c by LPCConverter
+# Zone: wudang
+
+    rooms "tyroad5" {
+      name = "崎岖山路"
+      description = "你走在一条崎岖狭隘的山路上，一边是峭壁，一边是悬崖。 高高的天柱峰笼罩在云雾中，隐约可见。可是身旁的进香客和 游人都仔细地町着自己的脚下，不敢抬头望一眼，惟恐一不小 心摔下去。更有强人趁机打劫，行人无不噤声闭气。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tyroad5" {
+    room_id = rooms.tyroad5.id
+  northup = rooms.tyroad4.id
+  eastdown = rooms.tyroad6.id  }
+
+# Generated from C:/files/git/mud/d/wudang/tyroad6.c by LPCConverter
+# Zone: wudang
+
+    rooms "tyroad6" {
+      name = "崎岖山路"
+      description = "你走在一条崎岖狭隘的山路上，一边是峭壁，一边是悬崖。 高高的天柱峰笼罩在云雾中，隐约可见。可是身旁的进香客和 游人都仔细地町着自己的脚下，不敢抬头望一眼，惟恐一不小 心摔下去。更有强人趁机打劫，行人无不噤声闭气。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tyroad6" {
+    room_id = rooms.tyroad6.id
+  westup = rooms.tyroad5.id
+  southdown = rooms.tyroad7.id  }
+
+# Generated from C:/files/git/mud/d/wudang/tyroad7.c by LPCConverter
+# Zone: wudang
+
+    rooms "tyroad7" {
+      name = "崎岖山路"
+      description = "你走在一条崎岖狭隘的山路上，一边是峭壁，一边是悬崖。 高高的天柱峰笼罩在云雾中，隐约可见。可是身旁的进香客和 游人都仔细地町着自己的脚下，不敢抬头望一眼，惟恐一不小 心摔下去。更有强人趁机打劫，行人无不噤声闭气，只求快点 赶路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tyroad7" {
+    room_id = rooms.tyroad7.id
+  northup = rooms.tyroad6.id
+  eastdown = rooms.tyroad8.id  }
+
+# Generated from C:/files/git/mud/d/wudang/tyroad8.c by LPCConverter
+# Zone: wudang
+
+    rooms "tyroad8" {
+      name = "桃园小路"
+      description = "眼前豁然开朗，你轻松地走在桃园边的小路上。两边是桃 树林，树上盛开着粉红的桃花，红云一片，望不到边。不时有 蜜蜂「嗡嗡」地飞过，消失在在花丛中；几只猴子在树上互相 追逐着，叽叽喳喳地争抢桃子。这是武当山脚，西边有条陡峭 的山路，通向山顶。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tyroad8" {
+    room_id = rooms.tyroad8.id
+  westup = rooms.tyroad7.id
+  east = rooms.tyroad9.id
+  north = rooms.tynroad.id
+  south = rooms.tysroad.id  }
+
+# Generated from C:/files/git/mud/d/wudang/tyroad9.c by LPCConverter
+# Zone: wudang
+
+    rooms "tyroad9" {
+      name = "桃园小路"
+      description = "眼前豁然开朗，你轻松地走在桃园边的小路上。两边是桃 树林，树上盛开着粉红的桃花，红云一片，望不到边。不时有 蜜蜂「嗡嗡」地飞过，消失在在花丛中；几只猴子在树上互相 追逐着，叽叽喳喳地争抢桃子。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tyroad9" {
+    room_id = rooms.tyroad9.id
+  east = rooms.tyroad10.id
+  west = rooms.tyroad8.id  }
+
+# Generated from C:/files/git/mud/d/wudang/tysroad.c by LPCConverter
+# Zone: wudang
+
+    rooms "tysroad" {
+      name = "桃园小路"
+      description = "眼前豁然开朗，你轻松地走在桃园边的小路上。路上落英 缤纷，一边是桃树林，盛开着粉红的桃花，红云一片，望不到 边。还可以看见蜜蜂「嗡嗡」地在花间飞上飞下忙个不停，间 或传来猿猴的叽咋声。南边是条环山的黄土路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tysroad" {
+    room_id = rooms.tysroad.id
+  north = rooms.tyroad8.id  }
+
+# Generated from C:/files/git/mud/d/wudang/wdbl.c by LPCConverter
+# Zone: wudang
+
+    rooms "wdbl" {
+      name = "武当柏林"
+      description = "你穿行在一片茂密的柏林中，阴森郁翠，怪石嶙峋，草深 没人。不时地有兔子从你的身边飞跑而过。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wdbl" {
+    room_id = rooms.wdbl.id
+  northdown = rooms.yuzhengong.id
+  southup = rooms.haohanpo.id  }
+
+
+
+
+  room_items "wdbl" {
+    room_id = rooms.wdbl.id
+    items = [
+      { id = items.tu.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/wdroad1.c by LPCConverter
+# Zone: wudang
+
+    rooms "wdroad1" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，人来人往非常繁忙，不时地有人 骑着马匆匆而过。大道两旁有一些小货摊，似乎是集市。北边 通向扬州城。东南是一大片树林。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wdroad1" {
+    room_id = rooms.wdroad1.id
+  south = rooms.wdroad2.id
+  north = rooms.nanmen.id  }
+
+# Generated from C:/files/git/mud/d/wudang/wdroad10.c by LPCConverter
+# Zone: wudang
+
+    rooms "wdroad10" {
+      name = "黄土路"
+      description = "你走在一条尘土飞扬的黄土路上，两旁尽是阴森森的树林。 这里是湖北境界，据说经常有土匪出没，不可久留。南边一条 小道，通向密林深处。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wdroad10" {
+    room_id = rooms.wdroad10.id
+  north = rooms.wdroad9.id
+  southup = rooms.tufeiwo1.id
+  west = rooms.slxl1.id  }
+
+
+  room_characters "wdroad10" {
+    room_id = rooms.wdroad10.id
+    characters = [
+      { id = characters.xiao_louluo.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/wdroad2.c by LPCConverter
+# Zone: wudang
+
+    rooms "wdroad2" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，北边隐约可见到扬州城的南城墙。 此处往东南望去，可以看到一个市镇。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wdroad2" {
+    room_id = rooms.wdroad2.id
+  south = rooms.wdroad3.id
+  north = rooms.wdroad1.id
+  southeast = rooms.yixing.id  }
+
+# Generated from C:/files/git/mud/d/wudang/wdroad3.c by LPCConverter
+# Zone: wudang
+
+    rooms "wdroad3" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，四周静悄悄的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wdroad3" {
+    room_id = rooms.wdroad3.id
+  south = rooms.wdroad4.id
+  north = rooms.wdroad2.id  }
+
+# Generated from C:/files/git/mud/d/wudang/wdroad4.c by LPCConverter
+# Zone: wudang
+
+    rooms "wdroad4" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，四周静悄悄的。西边是一条大道， 东边是好大的一片树林。往南还有一条大道，却掩映在了密密 的树林中。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wdroad4" {
+    room_id = rooms.wdroad4.id
+  west = rooms.wdroad5.id
+  east = rooms.shulin3.id
+  southup = rooms.hsroad1.id
+  north = rooms.wdroad3.id  }
+
+# Generated from C:/files/git/mud/d/wudang/wdroad5.c by LPCConverter
+# Zone: wudang
+
+    rooms "wdroad5" {
+      name = "青石大道"
+      description = "你走在一条青石大道上，四周静悄悄的。四周是浓密的树 林，阴森森的十分怕人。西北方不远就是陕鄂的边界了。北边 却是一片草地。你抬头向远方眺望，隐隐约约能够看到武当山 的影子，只令人想飞奔而上。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wdroad5" {
+    room_id = rooms.wdroad5.id
+  northwest = rooms.wdroad6.id
+  north = rooms.caodi6.id
+  east = rooms.wdroad4.id
+  southdown = rooms.jzbeimen.id  }
+
+# Generated from C:/files/git/mud/d/wudang/wdroad6.c by LPCConverter
+# Zone: wudang
+
+    rooms "wdroad6" {
+      name = "小路"
+      description = "这里是陕西境内的一条静悄悄的黄土路，两旁有些小土屋， 疏疏落落的。路上行人很少，都行色匆匆地向前赶路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wdroad6" {
+    room_id = rooms.wdroad6.id
+  south = rooms.house.id
+  southeast = rooms.wdroad5.id
+  west = rooms.wdroad7.id  }
+
+# Generated from C:/files/git/mud/d/wudang/wdroad7.c by LPCConverter
+# Zone: wudang
+
+    rooms "wdroad7" {
+      name = "小路"
+      description = "这里一条静悄悄的黄土路，两旁有些小土屋，疏疏落落的。 路上行人很少，都行色匆匆向前赶路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wdroad7" {
+    room_id = rooms.wdroad7.id
+  east = rooms.wdroad6.id
+  southwest = rooms.wdroad8.id  }
+
+# Generated from C:/files/git/mud/d/wudang/wdroad8.c by LPCConverter
+# Zone: wudang
+
+    rooms "wdroad8" {
+      name = "小路"
+      description = "这里是陕西境内。一条静悄悄的黄土路，两旁有些小土屋， 疏疏落落的。但路上行人很少，都行色匆匆向前赶路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wdroad8" {
+    room_id = rooms.wdroad8.id
+  northeast = rooms.wdroad7.id
+  west = rooms.sanbuguan.id  }
+
+
+
+
+  room_items "wdroad8" {
+    room_id = rooms.wdroad8.id
+    items = [
+      { id = items.shitou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/wdroad9.c by LPCConverter
+# Zone: wudang
+
+    rooms "wdroad9" {
+      name = "黄土路"
+      description = "你走在一条尘土飞扬的黄土路上，两旁尽是阴森森的树林。 这里是湖北境界，据说经常有土匪出没，不可久留。向东南去 可至湖南。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wdroad9" {
+    room_id = rooms.wdroad9.id
+  northwest = rooms.sanbuguan.id
+  south = rooms.wdroad10.id
+  southeast = rooms.hsroad8.id  }
+
+# Generated from C:/files/git/mud/d/wudang/wulaofeng.c by LPCConverter
+# Zone: wudang
+
+    rooms "wulaofeng" {
+      name = "五老峰"
+      description = "这里便是武当山五老峰。只见那五座奇峰突兀，惊险无比， 行人多不敢放胆在此玩赏风景。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wulaofeng" {
+    room_id = rooms.wulaofeng.id
+  northdown = rooms.sanlaofeng.id
+  southup = rooms.hutouyan.id  }
+
+# Generated from C:/files/git/mud/d/wudang/wuyaling.c by LPCConverter
+# Zone: wudang
+
+    rooms "wuyaling" {
+      name = "乌鸦岭"
+      description = "这是一狭长的脊岭，两侧悬削，一无所傍，但见白云朵朵 冉冉而过，山风拂拂，阵阵袭来。数百只乌鸦正翱翔云际，黑 白分明，蔚成奇观。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wuyaling" {
+    room_id = rooms.wuyaling.id
+  northdown = rooms.langmeiyuan.id
+  southup = rooms.sanlaofeng.id  }
+
+
+
+
+  room_items "wuyaling" {
+    room_id = rooms.wuyaling.id
+    items = [
+      { id = items.niao3.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/xiaolu1.c by LPCConverter
+# Zone: wudang
+
+    rooms "xiaolu1" {
+      name = "林间小径"
+      description = "你走在一条小径上，两旁种满了竹子，修篁森森，绿荫满 地，除了竹叶声和鸟鸣声，听不到别的动静。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaolu1" {
+    room_id = rooms.xiaolu1.id
+  south = rooms.xiaolu2.id
+  north = rooms.houyuan.id  }
+
+# Generated from C:/files/git/mud/d/wudang/xiaolu2.c by LPCConverter
+# Zone: wudang
+
+    rooms "xiaolu2" {
+      name = "林间小径"
+      description = "你走在一条小径上，两旁种满了竹子，修篁森森，绿荫满 地，除了竹叶声和鸟鸣声，听不到别的动静。南面似乎有一座 简陋的小院。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaolu2" {
+    room_id = rooms.xiaolu2.id
+  south = rooms.xiaoyuan.id
+  north = rooms.xiaolu1.id  }
+
+
+
+
+  room_items "xiaolu2" {
+    room_id = rooms.xiaolu2.id
+    items = [
+      { id = items.qingfeng.id },
+      { id = items.mingyue.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/xiaoyuan.c by LPCConverter
+# Zone: wudang
+
+    rooms "xiaoyuan" {
+      name = "后山小院"
+      description = "这里是武当后山的一座小院，布置简简单单，仅除了一床 一桌、一椅、一蒲团，再也没有别的什物。比较引人注目的是 墙上挂着一把剑。这里就是武当开山祖师张三丰的练功所在。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiaoyuan" {
+    room_id = rooms.xiaoyuan.id
+  north = rooms.xiaolu2.id  }
+
+
+
+
+  room_items "xiaoyuan" {
+    room_id = rooms.xiaoyuan.id
+    items = [
+      { id = items.zhang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/xilang.c by LPCConverter
+# Zone: wudang
+
+    rooms "xilang" {
+      name = "西厢走廊"
+      description = "你走在一条走廊上，东边是大殿，北边是一座楼阁。西面 楼上传来阵阵打斗声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xilang" {
+    room_id = rooms.xilang.id
+  northup = rooms.cangjingge.id
+  east = rooms.sanqingdian.id
+  westup = rooms.caolianfang.id  }
+
+# Generated from C:/files/git/mud/d/wudang/xiuxishi.c by LPCConverter
+# Zone: wudang
+
+    rooms "xiuxishi" {
+      name = "休息室"
+      description = "这是间整洁的厢房，因门窗常闭着，光线很昏暗。房里别 无他物，只有中间放着一张收拾得舒舒服服的大床，看着就让 人想睡觉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiuxishi" {
+    room_id = rooms.xiuxishi.id
+  south = rooms.donglang2.id  }
+
+# Generated from C:/files/git/mud/d/wudang/xuanyuegate.c by LPCConverter
+# Zone: wudang
+
+    rooms "xuanyuegate" {
+      name = "玄岳门"
+      description = "你的面前是一座林木繁茂的高山，几座山峰在云雾中隐约 可见，一条石阶向山上延伸，走着几个进香客。一个四柱三间 五楼式的石坊跨山而建，正面镌有「治世玄岳」四个大字，原 来这就是天下闻名的武当山。武当山一名太和山，为七十二福 地之一，有二十七峰、三十六岩、二十四涧、五台、五井、三 潭、三天门、三洞天和一福地，百里内密树森罗，蔽日参天景 物幽绝。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xuanyuegate" {
+    room_id = rooms.xuanyuegate.id
+  east = rooms.slxl3.id
+  southup = rooms.shijie1.id  }
+
+
+
+
+  room_items "xuanyuegate" {
+    room_id = rooms.xuanyuegate.id
+    items = [
+      { id = items.zhike.id },
+      { id = items.daotong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/yuzhengong.c by LPCConverter
+# Zone: wudang
+
+    rooms "yuzhengong" {
+      name = "遇真宫"
+      description = "这里是进入武当山的第一道宫宇遇真宫，宽敞无比，可容 千人食宿，是进香客的一大歇脚处。三丰真人曾在此结庵修炼， 因此宫中供着张三丰真人像。由于张真人闭关已久，外人不知 其是否仍在人间，民间传说他已得道仙逝，立像膜拜。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "yuzhengong" {
+    room_id = rooms.yuzhengong.id
+  northdown = rooms.shijie1.id
+  southup = rooms.wdbl.id  }
+
+
+
+
+  room_items "yuzhengong" {
+    room_id = rooms.yuzhengong.id
+    items = [
+      { id = items.zhixiang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/wudang/zijincheng.c by LPCConverter
+# Zone: wudang
+
+    rooms "zijincheng" {
+      name = "紫金城"
+      description = "这是守护金殿的紫金城墙，周长三里，城墙由花岗石依山 势砌成，东西北城门均面临绝壁，南门为上下路口，气势壮观。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zijincheng" {
+    room_id = rooms.zijincheng.id
+  north = rooms.jinding.id
+  south = rooms.jindian.id  }
+
+# Generated from C:/files/git/mud/d/wudang/zixiaogate.c by LPCConverter
+# Zone: wudang
+
+    rooms "zixiaogate" {
+      name = "紫霄宫大门"
+      description = "你已走到了展旗峰下，前面就是武当山最为宏大的宫宇紫 霄宫了。殿宇依山而筑，高低错落有致。周围古木森森，翠竹 成林，景色清幽。这里是武当师徒的主要活动场所。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zixiaogate" {
+    room_id = rooms.zixiaogate.id
+  northdown = rooms.shijie2.id
+  southup = rooms.guangchang.id  }
+
+# Generated from C:/files/git/mud/d/wudang/npc/baibian.c by LPCConverter
+# Zone: wudang
+
+    characters "baibian" {
+      name = "张三"
+      description = "一位邋邋遢遢的道士。"
+  title = "百变道人"
+  gender = "男性"
+  age = 50
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 25000
+    con = 30
+    dex = 23
+    int = 27
+    max_jing = 300
+    max_neili = 600
+    max_qi = 600
+    str = 21
+  }
+
+  skills = [
+    { skill = "force" level = 43 },
+    { skill = "unarmed" level = 51 },
+    { skill = "sword" level = 37 },
+    { skill = "dodge" level = 59 },
+    { skill = "parry" level = 40 },
+    { skill = "taiji-quan" level = 42 },
+    { skill = "taiji-jian" level = 41 },
+    { skill = "taiji-shengong" level = 40 },
+    { skill = "tiyunzong" level = 53 },
+    { type = "force" skill = "taiji-shengong" },
+    { type = "unarmed" skill = "taiji-quan" },
+    { type = "parry" skill = "taiji-quan" },
+    { type = "sword" skill = "taiji-jian" },
+    { type = "dodge" skill = "tiyunzong" }
+  ]
+
+
+  carry = [
+    { id = items.mask.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudang/npc/guest.c by LPCConverter
+# Zone: wudang
+
+    characters "guest" {
+      name = "进香客"
+      description = ""
+  gender = "男性"
+  shen_type = 1
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudang/npc/mengmian.c by LPCConverter
+# Zone: wudang
+
+    characters "mengmian" {
+      name = "蒙面大汉"
+      description = "他是一个蒙面大汉。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+  score = 1000
+
+  combat = {
+    attitude = "aggressive"
+    con = 35
+    dex = 30
+    int = 30
+    max_jing = 200
+    max_neili = 300
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 60 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "blade" level = 40 },
+    { skill = "yanxing-dao" level = 20 },
+    { skill = "taoism" level = 20 },
+    { type = "parry" skill = "yanxing-dao" },
+    { type = "blade" skill = "yanxing-dao" }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wudang/npc/tufei1.c by LPCConverter
+# Zone: wudang
+
+    characters "tufei1" {
+      name = "土匪"
+      description = "这家伙满脸横肉�一付凶神恶煞的模样，令人望而生畏。"
+  gender = "男性"
+  age = 30
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 10000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "sword" level = 20 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.duanjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudang/npc/tufei2.c by LPCConverter
+# Zone: wudang
+
+    characters "tufei2" {
+      name = "土匪"
+      description = "这家伙满脸横肉�一付凶神恶煞的模样，令人望而生畏。"
+  gender = "男性"
+  age = 20
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 5000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 25 },
+    { skill = "parry" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudang/npc/tufeitou.c by LPCConverter
+# Zone: wudang
+
+    characters "tufeitou" {
+      name = "土匪头"
+      description = "这家伙满脸杀气，一付凶神恶煞的模样，令人望而生畏。"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 20000
+  }
+
+  chat_chance = 5
+chats = [
+    "土匪头嘿嘿地冷笑着: 今天你就别想从这里活着出去了!"
+]
+
+
+  skills = [
+    { skill = "sword" level = 30 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudang/npc/turou.c by LPCConverter
+# Zone: wudang
+
+    characters "turou" {
+      name = "兔肉"
+      description = "一块鲜血淋漓肥的野兔肉。"
+    }
+
+# Generated from C:/files/git/mud/d/wudang/npc/xiao_louluo.c by LPCConverter
+# Zone: wudang
+
+    characters "xiao_louluo" {
+      name = "小喽罗"
+      description = "这是一个年纪不大的小喽罗，象是第一次出来做这无本生意。"
+  gender = "男性"
+  age = 18
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 500
+    con = 18
+    dex = 20
+    int = 15
+    str = 25
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudang/npc/xiao_tufei.c by LPCConverter
+# Zone: wudang
+
+    characters "xiao_tufei" {
+      name = "小土匪"
+      description = "这是个胆大包天的小土匪，杀人越或货，无恶不做。"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 750
+    con = 18
+    dex = 20
+    int = 15
+    str = 25
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudang/npc/xiaocui.c by LPCConverter
+# Zone: wudang
+
+    characters "xiaocui" {
+      name = "小翠"
+      description = "这是个年龄不大的小姑娘，便过去加茶倒水。"
+  gender = "女性"
+  shen_type = 1
+  score = 1000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000
+    con = 24
+    dex = 20
+    int = 28
+    max_jing = 100
+    max_neili = 150
+    max_qi = 150
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 30 },
+    { skill = "dodge" level = 20 },
+    { skill = "parry" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.greenrobe.id },
+    { id = items.necklace.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/wudang/obj/baguafu.c by LPCConverter
+# Zone: wudang
+
+    items "baguafu" {
+      name = "八卦服"
+      description = "这是八卦弟子练功服。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudang/obj/bluecloth.c by LPCConverter
+# Zone: wudang
+
+    items "bluecloth" {
+      name = "青布长衫"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudang/obj/dawancha.c by LPCConverter
+# Zone: wudang
+
+    items "dawancha" {
+      name = "粗磁大碗"
+      description = "一个蓝边粗磁大碗。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudang/obj/greenrobe.c by LPCConverter
+# Zone: wudang
+
+    items "greenrobe" {
+      name = "青色道袍"
+      description = "这是件质地轻软的青色道袍，边上还镂着花呢。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudang/obj/greyrobe.c by LPCConverter
+# Zone: wudang
+
+    items "greyrobe" {
+      name = "灰色道袍"
+      description = "一件普普通通的灰布道袍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudang/obj/mitao.c by LPCConverter
+# Zone: wudang
+
+    items "mitao" {
+      name = "水蜜桃"
+      description = "一碟水灵新鲜的水蜜桃，跟脸蛋儿一样红艳可人。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudang/obj/nuerxiang.c by LPCConverter
+# Zone: wudang
+
+    items "nuerxiang" {
+      name = "女儿香"
+      description = "叶若柳眉，香如处子。这便是茶中极品「女儿香」！"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudang/obj/renshenguo.c by LPCConverter
+# Zone: wudang
+
+    items "renshenguo" {
+      name = "人参果"
+      description = "这是一只已经成型的人参果，真的象极了三周不满的小孩。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudang/obj/shitou.c by LPCConverter
+# Zone: wudang
+
+    items "shitou" {
+      name = "大石头"
+      description = "这是一平平常常的大石头。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}搬起一块{name}准备战斗。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/wudang/obj/table.c by LPCConverter
+# Zone: wudang
+
+    items "table" {
+      name = "破桌子"
+      description = "这张破桌子放在这里，说不出的诡异。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudang/obj/whiterobe.c by LPCConverter
+# Zone: wudang
+
+    items "whiterobe" {
+      name = "白色道袍"
+      description = "这是件素雅洁净的白色道袍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudang/obj/wuxingfu.c by LPCConverter
+# Zone: wudang
+
+    items "wuxingfu" {
+      name = "五行服"
+      description = "这是五行弟子练功服。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/wudang/obj/xiangcha.c by LPCConverter
+# Zone: wudang
+
+    items "xiangcha" {
+      name = "香茶"
+      description = "一杯热茶，悠悠地冒着香气~~~~~~"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
