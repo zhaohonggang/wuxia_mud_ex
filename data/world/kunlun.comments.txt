@@ -1,0 +1,470 @@
+# Generated from C:/files/git/mud/d/kunlun/bainiushan.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (objectp(me))  →  
+# ==== CONDITIONAL BRANCHES (delete_done) ====
+  # if (! me->query_temp("marks/wo") )  →  
+  # if (me->is_busy())  →  
+  # if (me->query_temp("marks/done") )  →  
+  # if (me->query_skill("liangyi-shengong", 1) < 120 )  →  
+  # if (me->query_skill("liangyi-shengong", 1) > 199 )  →  
+  # if (! me->can_improve_skill("liangyi-shengong"))  →  
+  # if (me->query("qi") < 40 || me->query("jing") < 40)  →  
+  # if (me->can_improve_skill("liangyi-shengong"))  →  
+# ==== CONDITIONAL BRANCHES (do_breathe) ====
+  # if (! arg || (arg != "stone") )  →  
+  # if (this_player()->is_busy())  →  
+  # if (this_player()->query_temp("marks/wo"))  →  
+# ==== CONDITIONAL BRANCHES (do_wo) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_wo
+  # UNHANDLED FUNCTION: do_breathe
+  # UNHANDLED FUNCTION: delete_done
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kunlun/fufengshan.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (random(me->query_skill("dodge", 1)) <= 30)  →  message_vision(HIR '只见$N' HIR '一不小心脚下踏空，摔了下来。\\\\\n' NOR, me); tell_object(me, HIR '你从山上滚了下来，只觉得浑身疼痛无比，还受了几处伤。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (do_climb) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_climb
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kunlun/qianting.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "south" || ! objectp(xi = present("xi huazi", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+# Generated from C:/files/git/mud/d/kunlun/sanshengtang.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (dir != "north" || ! objectp(ban = present("ban shuxian", this_object())))  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/kunlun/npc/seller.c by LPCConverter
+# Zone: kunlun
+
+# inherit F_VENDOR;
+
+# Generated from C:/files/git/mud/d/kunlun/obj/cloth.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/da-shitou.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/dawancha.c by LPCConverter
+# Zone: kunlun
+
+# inherit F_LIQUID;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/force-book.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/fuchen.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/guzheng.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/jwqin.c by LPCConverter
+# Zone: kunlun
+
+# inherit MI_QIN;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/kaoya.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/lyj-book.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (arg != "shu" && arg!="book" && arg != "xinde" )  →  
+  # if ( (int)me->query("jing")<30 )  →  
+  # if ((int)me->query_skill("liangyi-jian", 1) > 100 && (int)me->query_skill("liangyi-jian", 1) <= 180)  →  message_vision('$N苦心研究「两仪剑心得」，思索良久，似乎有所领悟。\\\\\n',me);
+# ==== CONDITIONAL BRANCHES (do_study) ====
+  # if (this_player()==environment() )  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_study
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/pao1.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/pao2.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/pao3.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/pao4.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/rice.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/sangmending.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/sword.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/w-cloth.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/weiqi.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if ( clonep() )  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/kunlun/obj/xiangcha.c by LPCConverter
+# Zone: kunlun
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (jing < e_jing ) { if ( (jing + recover) >= e_jing ) { this_player()->set("jing", e_jing); } else { this_player()->set("jing", jing+recover); }
+# ==== COMPLEX CONDITIONALS ====
+  # if ( !this_object()->id(arg) )  →  
+  # if ( this_player()->is_busy() )  →  
+  # if ( (int)this_player()->query("water") >= (int)this_player()->max_water_capacity() )  →  
+  # if (jing < e_jing )  →  
+  # if ( this_player()->is_fighting() )  →  
+  # else  →  message_vision('$N端起雕花小杯，把剩下的香茶一饮而尽。\\\\\n'+ '一股香气直入心脾，$N觉得精神好多了。\\\\\n', this_player());
+  # if ( query("remaining") )  →  message_vision('$N端起杯香茶，有滋有味地品了几口。\\\\\n'+ '一股香气直入心脾，$N觉得精神好多了。\\\\\n', this_player());
+# ==== CONDITIONAL BRANCHES (do_drink) ====
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_drink
+  # UNHANDLED FUNCTION: do_eat
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================

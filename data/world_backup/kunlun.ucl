@@ -1,0 +1,1491 @@
+zones "kunlun" {
+  name = "kunlun"
+}
+
+# Generated from C:/files/git/mud/d/kunlun/bainiushan.c by LPCConverter
+# Zone: kunlun
+
+    rooms "bainiushan" {
+      name = "白牛山"
+      description = "这座山因终年覆盖白雪，且形状远望如一头正在吃草的牛 而得名。这里寒风呼啸，凛冽刺骨，你不禁打了个寒颤。山顶 有一处平地，放有一块青色的巨石(stone)。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ stone = "这块巨石很大，可以卧(wo)下一个人。巨石的表面十分平整光 滑，似乎常有人摩挲一般。"
+}
+    }
+
+  room_exits "bainiushan" {
+    room_id = rooms.bainiushan.id
+  southwest = rooms.fufengshan.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/bayankala.c by LPCConverter
+# Zone: kunlun
+
+    rooms "bayankala" {
+      name = "巴颜喀拉山"
+      description = "巴颜喀拉山山势低平，西接昆仑山垭口，又与通天河支流 德曲相隔，沼泽遍布。在山脚下放眼望去，随处可见一处处沼 泽草甸，乃是放牧各类牲畜的好地方。远处散布着一顶顶牧民 的蒙古包。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "bayankala" {
+    room_id = rooms.bayankala.id
+  northdown = rooms.shanlu2.id
+  west = rooms.kekexili.id  }
+
+
+
+
+  room_items "bayankala" {
+    room_id = rooms.bayankala.id
+    items = [
+      { id = items.da_shitou.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunlun/chufang.c by LPCConverter
+# Zone: kunlun
+
+    rooms "chufang" {
+      name = "厨房"
+      description = "这里是昆仑派弟子用餐的地方。由于天长日久，墙壁都被 烟熏黑了。屋里摆着几张桌椅，几位昆仑派的弟子正在这里大 吃大喝，行酒猜拳。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "chufang" {
+    room_id = rooms.chufang.id
+  west = rooms.liangong.id
+  northwest = rooms.xiuxishi.id  }
+
+
+  room_characters "chufang" {
+    room_id = rooms.chufang.id
+    characters = [
+      { id = characters.puren.id }    ]
+  }
+
+
+
+  room_items "chufang" {
+    room_id = rooms.chufang.id
+    items = [
+      { id = items.rice.id },
+      { id = items.xiangcha.id },
+      { id = items.kaoya.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunlun/conglinggu.c by LPCConverter
+# Zone: kunlun
+
+    rooms "conglinggu" {
+      name = "葱岭谷"
+      description = "你的眼前突然为之一亮，只见一条象被一刀劈开的峡谷岩 石间，高山的雪水泻落到千丈以下的山涧里去，溅起的密密的 飞沫激起一种惊心动魄的震憾。就在这深山野谷的溪流边，却 长满了各种各样的花草树木，春天繁花开遍峡谷秋天果实压满 山腰，人迹罕至，正是鸟兽们的乐园。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "conglinggu" {
+    room_id = rooms.conglinggu.id
+  south = rooms.shanlin.id  }
+
+
+
+
+  room_items "conglinggu" {
+    room_id = rooms.conglinggu.id
+    items = [
+      { id = items.huangqi.id },
+      { id = items.chongcao.id },
+      { id = items.qianjinzi.id },
+      { id = items.fuzi.id },
+      { id = items.renshen.id },
+      { id = items.mahuang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunlun/elang01.c by LPCConverter
+# Zone: kunlun
+
+    rooms "elang01" {
+      name = "长廊"
+      description = "这是一条长廊，连接前厅和客房，不断看见各种打扮的江 湖人士走过，看过廊外，是一片青色的树林，幽静雅致，只听 见不断传来的鸟鸣声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "elang01" {
+    room_id = rooms.elang01.id
+  west = rooms.qianting.id
+  east = rooms.keting1.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/fufengshan.c by LPCConverter
+# Zone: kunlun
+
+    rooms "fufengshan" {
+      name = "扶峰山"
+      description = "扶峰山的山壁 (cliff)极高且十分陡峭，山腰以上尽没入 茫茫云海，峰顶终年积雪，山腰以下却是郁郁苍苍，林木茂密 花团锦簇，春意烂漫。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ cliff = "扶峰山山壁很是陡峭，看样子要攀爬(climb)上去并不容易。"
+}
+    }
+
+  room_exits "fufengshan" {
+    room_id = rooms.fufengshan.id
+  in = rooms.houyuan.id
+  northeast = rooms.bainiushan.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/guangchang.c by LPCConverter
+# Zone: kunlun
+
+    rooms "guangchang" {
+      name = "广场"
+      description = "这里是一个平平开阔的大广场，广场上有昆仑派的弟子在 习武，前面不远处是一个巨大的石屏风，后面就是昆仑派的前 厅了，西面和东面仍然是广场。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guangchang" {
+    room_id = rooms.guangchang.id
+  north = rooms.shanlu04.id
+  south = rooms.pingfeng.id
+  west = rooms.guangchangw.id
+  east = rooms.guangchange.id  }
+
+
+  room_characters "guangchang" {
+    room_id = rooms.guangchang.id
+    characters = [
+      { id = characters.kl_dizi2.id },
+      { id = characters.kl_dizi2.id }    ]
+  }
+
+
+
+  room_items "guangchang" {
+    room_id = rooms.guangchang.id
+    items = [
+      { id = items.gaozecheng.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunlun/guangchange.c by LPCConverter
+# Zone: kunlun
+
+    rooms "guangchange" {
+      name = "广场东"
+      description = "这里是一个平平开阔的大广场，广场上有昆仑派的弟子在 习武，西面是仍然是广场，东面过去就是悬崖了，北面便是下 昆仑山的小路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guangchange" {
+    room_id = rooms.guangchange.id
+  northwest = rooms.shanlu04.id
+  west = rooms.guangchang.id  }
+
+
+  room_characters "guangchange" {
+    room_id = rooms.guangchange.id
+    characters = [
+      { id = characters.kl_dizi3.id },
+      { id = characters.kl_dizi3.id }    ]
+  }
+
+
+
+  room_items "guangchange" {
+    room_id = rooms.guangchange.id
+    items = [
+      { id = items.weisiniang.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunlun/guangchangw.c by LPCConverter
+# Zone: kunlun
+
+    rooms "guangchangw" {
+      name = "广场西"
+      description = "这里是一个平平开阔的大广场，广场上有昆仑派的弟子在 习武，东面是仍然是广场，西面过去就是悬崖了，北面便是下 昆仑山的小路。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "guangchangw" {
+    room_id = rooms.guangchangw.id
+  northeast = rooms.shanlu04.id
+  east = rooms.guangchang.id  }
+
+
+  room_characters "guangchangw" {
+    room_id = rooms.guangchangw.id
+    characters = [
+      { id = characters.kl_dizi3.id }    ]
+  }
+
+
+
+  room_items "guangchangw" {
+    room_id = rooms.guangchangw.id
+    items = [
+      { id = items.zhanchun.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunlun/houyuan.c by LPCConverter
+# Zone: kunlun
+
+    rooms "houyuan" {
+      name = "后院"
+      description = "由于这里一向少有人来，渐渐被人忘记，也就很久没有被 打扫过了。落叶满地，踩上去软绵绵的。墙壁已有些残破，檐 下结满了蜘蛛网，角落里的一扇小门因为日晒雨淋，开始朽烂。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "houyuan" {
+    room_id = rooms.houyuan.id
+  out = rooms.fufengshan.id
+  south = rooms.shanlin2.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/huayuan1.c by LPCConverter
+# Zone: kunlun
+
+    rooms "huayuan1" {
+      name = "花园"
+      description = "这是一条铺的十分平整的石板路，路面被打扫的干干净净 南面过去是个花圆，传来阵阵花香，西面是静修室，东面传来 些读书声，看来那里是书房了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "huayuan1" {
+    room_id = rooms.huayuan1.id
+  north = rooms.shilu1.id
+  south = rooms.lang2.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/jingshenfeng.c by LPCConverter
+# Zone: kunlun
+
+    rooms "jingshenfeng" {
+      name = "Room"
+      description = "你折而向北，又过了一岭，只见古柏三把百余章，皆挺直 端秀，凌霄托根树旁，作花柏顶，灿若云荼。走出十余丈，只 听得琴声之中杂有着无数鸟语，细细的听来，琴声竟似和鸟语 互相应答，间间关关，宛转啼鸣。只见三株大松树下一个白衣 男子背向而坐，膝上放这一张焦尾琴，整自弹奏。他身周树木 上停满了鸟雀，黄莺，杜鹃，喜鹊，八哥，还有许多不知其名 的，和琴声或一问一答，或齐声和唱。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jingshenfeng" {
+    room_id = rooms.jingshenfeng.id
+  south = rooms.sanshengao.id  }
+
+
+
+
+  room_items "jingshenfeng" {
+    room_id = rooms.jingshenfeng.id
+    items = [
+      { id = items.hezudao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunlun/jingxiushi.c by LPCConverter
+# Zone: kunlun
+
+    rooms "jingxiushi" {
+      name = "静修室"
+      description = "这里是静修室，地下顺序地放着几个蒲团，正中烧着几柱 香，轻烟袅袅升起。几位昆仑派弟子正盘膝坐在上面打坐静修。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jingxiushi" {
+    room_id = rooms.jingxiushi.id
+  east = rooms.shilu1.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/jiuqulang1.c by LPCConverter
+# Zone: kunlun
+
+    rooms "jiuqulang1" {
+      name = "九曲廊"
+      description = "九曲廊前后共有九进，曲曲折折地盘旋在水面。一路穿花 度柳，抚石依泉，落花浮荡，水色溶溶。两边垂柳杂着桃杏藤 蔓绕柱。白石为栏，飞楼插空，转折处皆由小亭相接。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jiuqulang1" {
+    room_id = rooms.jiuqulang1.id
+  west = rooms.tieqinju.id
+  east = rooms.sanshengtang.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/jiuqulang2.c by LPCConverter
+# Zone: kunlun
+
+    rooms "jiuqulang2" {
+      name = "九曲廊"
+      description = "九曲廊前后共有九进，曲曲折折地盘旋在水面。一路穿花 度柳，抚石依泉，落花浮荡，水色溶溶。两边垂柳杂着桃杏藤 蔓绕柱。白石为栏，飞楼插空，转折处皆由小亭相接。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "jiuqulang2" {
+    room_id = rooms.jiuqulang2.id
+  northwest = rooms.shanlin1.id
+  southeast = rooms.sanshengtang.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/keding1.c by LPCConverter
+# Zone: kunlun
+
+    rooms "keding1" {
+      name = "客厅"
+      description = "这里是客厅，里面简单，只有一些椅子和桌子，桌子上摆 着写茶和点心供客人食用。不少的江湖人士不远千里来到这里 往往先到这里歇息片刻，恢复一下。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "keding1" {
+    room_id = rooms.keding1.id
+  west = rooms.elang01.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/kekexili.c by LPCConverter
+# Zone: kunlun
+
+    rooms "kekexili" {
+      name = "可可西里山"
+      description = "可可西里山又称可可稀立山，蒙古语意为「青山」的意思。 西起木孜塔格峰，东接巴颜喀拉山，山势平缓，冻土广布，高 处少永久性积雪与冰川。除北侧有淡水湖钦马湖外，其余南北 星罗棋布的湖泊均为咸水湖。草木稀疏，人烟极少。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kekexili" {
+    room_id = rooms.kekexili.id
+  northwest = rooms.shankou.id
+  east = rooms.bayankala.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/keting1.c by LPCConverter
+# Zone: kunlun
+
+    rooms "keting1" {
+      name = "客厅"
+      description = "这里是客厅，里面简单，只有一些椅子和桌子，桌子上摆 着写茶和点心供客人食用。不少的江湖人士不远千里来到这里 往往先到这里歇息片刻，恢复一下。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "keting1" {
+    room_id = rooms.keting1.id
+  west = rooms.elang01.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/keting2.c by LPCConverter
+# Zone: kunlun
+
+    rooms "keting2" {
+      name = "客厅"
+      description = "这里是客厅，里面简单，只有几张床，供疲惫的客人们歇 息，屋子里烤着火，暖烘烘的。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "keting2" {
+    room_id = rooms.keting2.id
+  east = rooms.wlang01.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/klshanlu.c by LPCConverter
+# Zone: kunlun
+
+    rooms "klshanlu" {
+      name = "昆仑山麓"
+      description = "整个昆仑山脉雪山连绵，冰河垂悬。远望昆仑，有如横卧 云彩间的银色玉龙。每年春天以后，冰雪融化，汇成一股股清 澈溪流，流入长江，黄河。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "klshanlu" {
+    room_id = rooms.klshanlu.id
+  northup = rooms.shanmen.id
+  east = rooms.shankou.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/kuhanlou1.c by LPCConverter
+# Zone: kunlun
+
+    rooms "kuhanlou1" {
+      name = "苦寒楼一层"
+      description = "这里是苦寒楼的底层。苦寒楼结构简单，四周为浓密的云 杉包围。取名自“梅花香自苦寒来”之意，乃是昆仑派前辈为 了激励后进昆仑派弟子而建的，往上看，长长的木楼梯盘绕而 上，似乎永无尽头。青砖地相当洁净，看来经常有人打扫。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kuhanlou1" {
+    room_id = rooms.kuhanlou1.id
+  up = rooms.kuhanlou2.id
+  out = rooms.shanlin1.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/kuhanlou2.c by LPCConverter
+# Zone: kunlun
+
+    rooms "kuhanlou2" {
+      name = "苦寒楼二层"
+      description = "每个楼层上都铺设了结实的木楼板，八角形的墙身上则开 了四扇大窗。四周墙壁贴着昆仑派历代掌门和高手的画像，并 有专门的文字记载着他们的事迹。从这里往外眺望，只能看到 围绕塔周的密密匝匝的云杉林，正是通过这种忍饥耐寒，清心 寡欲的办法以求得对武学孜孜不倦的追求。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kuhanlou2" {
+    room_id = rooms.kuhanlou2.id
+  up = rooms.kuhanlou3.id
+  down = rooms.kuhanlou1.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/kuhanlou3.c by LPCConverter
+# Zone: kunlun
+
+    rooms "kuhanlou3" {
+      name = "苦寒楼三层"
+      description = "很快就到了苦寒楼顶层。这里可以看到山门以及北边的诸 多昆仑山峰，四周的杉林随风摇摆，发出「哗哗哗哗」的声音。 山风夹着隐隐寒气，远处的景色单调而苍凉，你心里顿时生出 一种莫名寂寞的感觉。房间里的布置十分简单。往外看，有个 很大的红木窗台。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "kuhanlou3" {
+    room_id = rooms.kuhanlou3.id
+  down = rooms.kuhanlou2.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/lang2.c by LPCConverter
+# Zone: kunlun
+
+    rooms "lang2" {
+      name = "长廊"
+      description = "这是一条长廊，连接三圣堂和花园，不断看见各种打扮的 江湖人士走过，看过廊外，是一片青色的树林，幽静雅致，只 听见不断传来的鸟鸣声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "lang2" {
+    room_id = rooms.lang2.id
+  southup = rooms.sanshengtang.id
+  north = rooms.huayuan1.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/liangong.c by LPCConverter
+# Zone: kunlun
+
+    rooms "liangong" {
+      name = "练功房"
+      description = "这里是练功房，地下凌乱地放着几个蒲团，正中烧着几柱 香，轻烟袅袅升起。几位昆仑派弟子正盘膝坐在上面打坐。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "liangong" {
+    room_id = rooms.liangong.id
+  south = rooms.sanshengtang.id
+  north = rooms.xiuxishi.id
+  east = rooms.chufang.id  }
+
+
+
+
+  room_items "liangong" {
+    room_id = rooms.liangong.id
+    items = [
+      { id = items.zhujian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunlun/pingfeng.c by LPCConverter
+# Zone: kunlun
+
+    rooms "pingfeng" {
+      name = "石屏风"
+      description = "这是一个巨大的屏风，用昆仑山特产的汗白玉雕成，屏风 上的图案是昆仑派的师祖昆仑三圣何足道挑战少林的风姿，英 姿挺拔，颇有一派宗师之象。屏风后面就是昆仑派的前厅了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "pingfeng" {
+    room_id = rooms.pingfeng.id
+  north = rooms.guangchang.id
+  south = rooms.qianting.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/qianting.c by LPCConverter
+# Zone: kunlun
+
+    rooms "qianting" {
+      name = "前厅"
+      description = "这里是座大厅，高檐大瓦，十分的简朴壮阔，厅内摆几张 高背方椅，一张八仙桌，看来是接待客人的地方，西面和东面 也是客厅，供客人歇息，南面一条长廊通向后面。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "qianting" {
+    room_id = rooms.qianting.id
+  north = rooms.pingfeng.id
+  south = rooms.shilu1.id
+  west = rooms.wlang01.id
+  east = rooms.elang01.id  }
+
+
+
+
+  room_items "qianting" {
+    room_id = rooms.qianting.id
+    items = [
+      { id = items.xihuazi.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunlun/sanshengao.c by LPCConverter
+# Zone: kunlun
+
+    rooms "sanshengao" {
+      name = "三圣坳"
+      description = "但见遍地绿草如锦，到处果树香花。原来那三圣坳四周都 是插天高山，挡住了寒气。昆仑派历代掌门人曾花了极大力气 整顿这个山坳，派遣弟子东至江南，西至天竺，搬移奇花异树 前来种植。忽听得山坳后隐隐传出一阵琴声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sanshengao" {
+    room_id = rooms.sanshengao.id
+  north = rooms.jingshenfeng.id
+  down = rooms.fufengshan.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/sanshengtang.c by LPCConverter
+# Zone: kunlun
+
+    rooms "sanshengtang" {
+      name = "三圣堂"
+      description = "昆仑山三圣堂乃“昆仑三圣”何足道所建，原为了修身养 性，读书练功。随着昆仑派日益壮大，名声远播，这里便成了 昆仑派聚众议事，接待各路江湖英雄的地方。「昆仑三圣」也 只好另觅安静所在了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sanshengtang" {
+    room_id = rooms.sanshengtang.id
+  west = rooms.jiuqulang1.id
+  northdown = rooms.lang2.id
+  north = rooms.liangong.id
+  northwest = rooms.jiuqulang2.id  }
+
+
+
+
+  room_items "sanshengtang" {
+    room_id = rooms.sanshengtang.id
+    items = [
+      { id = items.banshuxian.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunlun/shankou.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shankou" {
+      name = "昆仑山垭口"
+      description = "这是位于两山之间的一个小山口。只见昆仑山脉绵延千里， 群山复叠，山上的树木并不多，还不时露出光秃秃的山面和石 头，山腰以上均为冰雪覆盖，冰峰雄峙，高插云霄。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shankou" {
+    room_id = rooms.shankou.id
+  west = rooms.klshanlu.id
+  southeast = rooms.kekexili.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/shanlin1.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shanlin1" {
+      name = "云杉林"
+      description = "这里是一片蜿蜒无尽的翠绿的树林，密密的云杉像撑天的 巨伞，重重叠叠的枝丫，只漏下斑斑点点细碎的日影。林子里 十分幽静，连鸟雀也少飞来，只偶尔能听到远处的几声鸟鸣。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlin1" {
+    room_id = rooms.shanlin1.id
+  west = rooms.shanlin2.id
+  in = rooms.kuhanlou1.id
+  southeast = rooms.jiuqulang2.id
+  northeast = rooms.shanlin3.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/shanlin2.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shanlin2" {
+      name = "云杉林"
+      description = "这里是一片蜿蜒无尽的翠绿的树林，密密的云杉像撑天的 巨伞，重重叠叠的枝丫，只漏下斑斑点点细碎的日影。林子里 十分幽静，连鸟雀也少飞来，只偶尔能听到远处的几声鸟鸣。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlin2" {
+    room_id = rooms.shanlin2.id
+  north = rooms.houyuan.id
+  east = rooms.shanlin1.id
+  south = rooms.shanlin.id
+  west = rooms.shanlin.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/shanlin3.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shanlin3" {
+      name = "云杉林"
+      description = "这里是一片蜿蜒无尽的翠绿的树林，密密的云杉像撑天的 巨伞，重重叠叠的枝丫，只漏下斑斑点点细碎的日影。林子里 十分幽静，连鸟雀也少飞来，只偶尔能听到远处的几声鸟鸣。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlin3" {
+    room_id = rooms.shanlin3.id
+  west = rooms.shanlin.id
+  east = rooms.shanlin4.id
+  north = rooms.shanlin.id
+  south = rooms.shanlin.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/shanlin4.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shanlin4" {
+      name = "云杉林"
+      description = "这里是一片蜿蜒无尽的翠绿的树林，密密的云杉像撑天的 巨伞，重重叠叠的枝丫，只漏下斑斑点点细碎的日影。林子里 十分幽静，连鸟雀也少飞来，只偶尔能听到远处的几声鸟鸣。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlin4" {
+    room_id = rooms.shanlin4.id
+  west = rooms.shanlin.id
+  south = rooms.shanlin5.id
+  north = rooms.shanlin.id
+  east = rooms.shanlin.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/shanlin5.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shanlin5" {
+      name = "云杉林"
+      description = "这里是一片蜿蜒无尽的翠绿的树林，密密的云杉像撑天的 巨伞，重重叠叠的枝丫，只漏下斑斑点点细碎的日影。林子里 十分幽静，连鸟雀也少飞来，只偶尔能听到远处的几声鸟鸣。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlin5" {
+    room_id = rooms.shanlin5.id
+  east = rooms.shanlin.id
+  west = rooms.shanlin6.id
+  north = rooms.conglinggu.id
+  south = rooms.shanlin.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/shanlin6.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shanlin6" {
+      name = "云杉林"
+      description = "这里是一片蜿蜒无尽的翠绿的树林，密密的云杉像撑天的 巨伞，重重叠叠的枝丫，只漏下斑斑点点细碎的日影。林子里 十分幽静，连鸟雀也少飞来，只偶尔能听到远处的几声鸟鸣。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlin6" {
+    room_id = rooms.shanlin6.id
+  west = rooms.shanlin.id
+  east = rooms.kuhanlou1.id
+  north = rooms.shanlin.id
+  south = rooms.shanlin.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/shanlu.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shanlu" {
+      name = "西域山路"
+      description = "渐行渐西，天气一天冷似一天，西域昆仑派势力雄强，沿 途倒并无什么强盗，只是黄沙扑面，寒风透骨，却也着实难熬。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu" {
+    room_id = rooms.shanlu.id
+  west = rooms.shanlu1.id
+  east = rooms.zhenyuanqiao.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/shanlu01.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shanlu01" {
+      name = "山路"
+      description = "这里已经是昆仑派的地方了，路边花草满地，就算是寒冬 季节，这里却仍然生机勃勃，到处传来鸟兽的叫声，前面山上 就是昆仑派的居所了，北面是来的时候的山门。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu01" {
+    room_id = rooms.shanlu01.id
+  westdown = rooms.shanmen.id
+  southup = rooms.shanlu02.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/shanlu02.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shanlu02" {
+      name = "山路"
+      description = "这是一条盘山的路，路边花草满地，路面似乎很久没有修 整了，显得有些破旧，但是从遗留的痕迹依稀可以看出当年的 辉煌。北面是山下，南面山上是昆仑派的所在。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu02" {
+    room_id = rooms.shanlu02.id
+  northdown = rooms.shanlu01.id
+  southup = rooms.shanlu03.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/shanlu03.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shanlu03" {
+      name = "山路"
+      description = "这是一条盘山的路，山间穿来鸟鸣兽叫，路面似乎很久没 有修整了，显得有些破旧，但是从遗留的痕迹依稀可以看出当 年的辉煌。北面是山下，南面山上是昆仑派的所在。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu03" {
+    room_id = rooms.shanlu03.id
+  northdown = rooms.shanlu02.id
+  southup = rooms.shanlu04.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/shanlu04.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shanlu04" {
+      name = "山路"
+      description = "前面传来刀剑相碰的声音，快到了，你不由得加快了脚步， 远远望去，似乎是个大广场，围着不少人在练武。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu04" {
+    room_id = rooms.shanlu04.id
+  northdown = rooms.shanlu03.id
+  south = rooms.guangchang.id
+  southwest = rooms.guangchangw.id
+  southeast = rooms.guangchange.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/shanlu1.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shanlu1" {
+      name = "西域山路"
+      description = "渐行渐西，天气一天冷似一天，西域昆仑派势力雄强，沿 途倒并无什么强盗，只是黄沙扑面，寒风透骨，却也着实难熬。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu1" {
+    room_id = rooms.shanlu1.id
+  westup = rooms.shanlu2.id
+  east = rooms.shanlu.id  }
+
+
+  room_characters "shanlu1" {
+    room_id = rooms.shanlu1.id
+    characters = [
+      { id = characters.seller.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunlun/shanlu2.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shanlu2" {
+      name = "西域山路"
+      description = "渐行渐西，天气一天冷似一天，西域昆仑派势力雄强，沿 途倒并无什么强盗，只是黄沙扑面，寒风透骨，却也着实难熬。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanlu2" {
+    room_id = rooms.shanlu2.id
+  eastdown = rooms.shanlu1.id
+  southup = rooms.bayankala.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/shanmen.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shanmen" {
+      name = "昆仑派山门"
+      description = "你一路走来，饱受大风黄沙之苦，渐渐树木多了起来，不 时可听见枝叶中传来的鸟鸣，路边草丛偶尔也能发现一些开着 的野花。到得这里，已是绿树红花，十分茂盛，你万万没想到 深山中却有如此所在，精神大为一振。前面是一座山门，写着 昆仑派三个大字。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shanmen" {
+    room_id = rooms.shanmen.id
+  eastup = rooms.shanlu01.id
+  southdown = rooms.klshanlu.id  }
+
+
+  room_characters "shanmen" {
+    room_id = rooms.shanmen.id
+    characters = [
+      { id = characters.kl_dizi1.id },
+      { id = characters.kl_dizi2.id }    ]
+  }
+
+
+
+  room_items "shanmen" {
+    room_id = rooms.shanmen.id
+    items = [
+      { id = items.jiangtao.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunlun/shilu1.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shilu1" {
+      name = "石路"
+      description = "这是一条铺的十分平整的石板路，路面被打扫得干干净净， 南面过去是个花圆，传来阵阵花香，西面是静修室，东面传来 些读书声，想必那里是书房了。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shilu1" {
+    room_id = rooms.shilu1.id
+  north = rooms.qianting.id
+  south = rooms.huayuan1.id
+  west = rooms.jingxiushi.id
+  east = rooms.shufang.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/shufang.c by LPCConverter
+# Zone: kunlun
+
+    rooms "shufang" {
+      name = "书房"
+      description = "这里是书房，靠墙一排大书架，摆放着很多的书籍，昆仑 三圣何足道以琴棋剑而号称以「三圣」，故昆仑派一直引以为 荣，鼓励弟子学琴棋艺。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "shufang" {
+    room_id = rooms.shufang.id
+  west = rooms.shilu1.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/sleeproom.c by LPCConverter
+# Zone: kunlun
+
+    rooms "sleeproom" {
+      name = "卧室"
+      description = "这里是何太冲最宠爱的第五小妾五姑的卧房。刚一进房扑 鼻便是一股药气，里面还能闻到一股十分古怪的气息，过了片 刻，更觉得这气息忽浓忽淡，甚是奇特。床上躺着一个人，这 人面向帐里，喘气甚急，象是扯着风箱。窗子都是紧紧关着。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "sleeproom" {
+    room_id = rooms.sleeproom.id
+  east = rooms.tieqinju.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/tieqinju.c by LPCConverter
+# Zone: kunlun
+
+    rooms "tieqinju" {
+      name = "铁琴居"
+      description = "这儿便是“铁琴先生”何太冲的居处。房间陈设颇为精巧， 物品与中土所见别是不同。几个昆仑派弟子守在这里，个个深 有忧色。东边通往三圣堂，西边通往卧室。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "tieqinju" {
+    room_id = rooms.tieqinju.id
+  east = rooms.jiuqulang1.id
+  west = rooms.sleeproom.id  }
+
+
+  room_characters "tieqinju" {
+    room_id = rooms.tieqinju.id
+    characters = [
+      { id = characters.kl_dizi2.id },
+      { id = characters.kl_dizi4.id }    ]
+  }
+
+
+
+  room_items "tieqinju" {
+    room_id = rooms.tieqinju.id
+    items = [
+      { id = items.hetaichong.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunlun/wlang01.c by LPCConverter
+# Zone: kunlun
+
+    rooms "wlang01" {
+      name = "长廊"
+      description = "这是一条长廊，连接前厅和客房，不断看见各种打扮的江 湖人士走过，看过廊外，是一片青色的树林，幽静雅致，只听 见不断传来的鸟鸣声。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "wlang01" {
+    room_id = rooms.wlang01.id
+  east = rooms.qianting.id
+  west = rooms.keting2.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/xiuxishi.c by LPCConverter
+# Zone: kunlun
+
+    rooms "xiuxishi" {
+      name = "休息室"
+      description = "这是间整洁的厢房，因门窗常闭着，光线很昏暗。房里放 着几张收拾得舒舒服服的木床，看着就让人想睡觉。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "xiuxishi" {
+    room_id = rooms.xiuxishi.id
+  south = rooms.liangong.id
+  southeast = rooms.chufang.id  }
+
+# Generated from C:/files/git/mud/d/kunlun/zhenyuanqiao.c by LPCConverter
+# Zone: kunlun
+
+    rooms "zhenyuanqiao" {
+      name = "镇远桥"
+      description = "这座桥号称“天下黄河第一桥”，气势极为雄伟，扼守西 域，东往中原。黄河水从桥底倾泻而过，轰隆作响。"
+  x = 0
+  y = 0
+  z = 0
+    }
+
+  room_exits "zhenyuanqiao" {
+    room_id = rooms.zhenyuanqiao.id
+  west = rooms.shanlu.id
+  eastdown = rooms.shanjiao.id  }
+
+
+  room_characters "zhenyuanqiao" {
+    room_id = rooms.zhenyuanqiao.id
+    characters = [
+      { id = characters.wujiang.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id },
+      { id = characters.bing.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/kunlun/npc/kl-dizi1.c by LPCConverter
+# Zone: kunlun
+
+    characters "kl_dizi1" {
+      name = "昆仑派女弟子"
+      description = "她看起来身材娇小，似乎练过一点武功。"
+  gender = "女性"
+  age = 17
+  shen_type = 1
+  score = 400
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 3000
+    con = 20
+    dex = 23
+    int = 20
+    max_jing = 150
+    max_neili = 200
+    max_qi = 200
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "cuff" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.pao4.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/npc/kl-dizi2.c by LPCConverter
+# Zone: kunlun
+
+    characters "kl_dizi2" {
+      name = "昆仑派弟子"
+      description = "他看起来膀阔腰圆，似乎练过一点武功。"
+  gender = "男性"
+  age = 20
+  shen_type = 1
+  score = 4000
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 8000
+    con = 20
+    dex = 23
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 300
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 20 },
+    { skill = "dodge" level = 20 },
+    { skill = "chuanyun-bu" level = 20 },
+    { skill = "cuff" level = 30 },
+    { skill = "sword" level = 30 },
+    { type = "dodge" skill = "chuanyun-bu" }
+  ]
+
+
+  carry = [
+    { id = items.sword.id },
+    { id = items.pao4.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/npc/kl-dizi3.c by LPCConverter
+# Zone: kunlun
+
+    characters "kl_dizi3" {
+      name = "昆仑派女弟子"
+      description = "她看起来容貌俏丽，似乎练过一点武功。"
+  gender = "女性"
+  age = 25
+  shen_type = 1
+  score = 4000
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 15000
+    con = 20
+    dex = 24
+    int = 20
+    max_jing = 250
+    max_neili = 400
+    max_qi = 350
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 30 },
+    { skill = "kunlun-xinfa" level = 30 },
+    { skill = "dodge" level = 40 },
+    { skill = "chuanyun-bu" level = 40 },
+    { skill = "parry" level = 30 },
+    { skill = "sword" level = 30 },
+    { type = "force" skill = "kunlun-xinfa" },
+    { type = "dodge" skill = "chuanyun-bu" }
+  ]
+
+
+  carry = [
+    { id = items.sword.id },
+    { id = items.pao4.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/npc/kl-dizi4.c by LPCConverter
+# Zone: kunlun
+
+    characters "kl_dizi4" {
+      name = "昆仑派弟子"
+      description = "他看起来膀阔腰圆，似乎练过一点武功。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+  score = 4000
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 30000
+    con = 20
+    dex = 23
+    int = 20
+    max_jing = 300
+    max_neili = 500
+    max_qi = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "kunlun-xinfa" level = 40 },
+    { skill = "dodge" level = 50 },
+    { skill = "chuanyun-bu" level = 50 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 40 },
+    { skill = "strike" level = 40 },
+    { type = "force" skill = "kunlun-xinfa" },
+    { type = "dodge" skill = "chuanyun-bu" }
+  ]
+
+
+  carry = [
+    { id = items.sword.id },
+    { id = items.pao4.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/npc/puren.c by LPCConverter
+# Zone: kunlun
+
+    characters "puren" {
+      name = "仆人"
+      description = "这是个老实巴交的老仆人，虽然衣服上打了 很多补丁，却是十分的整洁。因为长期待在 厨房里，眼睛被烟熏成了一条缝。"
+  gender = "男性"
+  age = 50
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/npc/seller.c by LPCConverter
+# Zone: kunlun
+
+    characters "seller" {
+      name = "小贩"
+      description = "这是个小贩，别看他长的老老实实，可你别 想从他那儿掏便宜。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 32
+  brain = brains.vendor
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
+  # vendor_goods: "/d/quanzhen/npc/obj/stick" (file not found)
+  # vendor_goods: "/d/quanzhen/npc/obj/bottle" (file not found)
+  # vendor_goods: "/d/quanzhen/npc/obj/egg" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/cloth.c by LPCConverter
+# Zone: kunlun
+
+    items "cloth" {
+      name = "布衣"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/da-shitou.c by LPCConverter
+# Zone: kunlun
+
+    items "da_shitou" {
+      name = "大石头"
+      description = "这是一个大石头。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一个{name}，试了试重量后握在手中。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/dawancha.c by LPCConverter
+# Zone: kunlun
+
+    items "dawancha" {
+      name = "粗磁大碗"
+      description = "一个蓝边粗磁大碗。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/force-book.c by LPCConverter
+# Zone: kunlun
+
+    items "force_book" {
+      name = "Item"
+      description = "这是昆仑派内功心法的秘籍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/fuchen.c by LPCConverter
+# Zone: kunlun
+
+    items "fuchen" {
+      name = "拂尘"
+      description = "这是一柄拂尘，做工精细，是很阴毒的兵器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声从颈中抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}别回颈中。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/guzheng.c by LPCConverter
+# Zone: kunlun
+
+    items "guzheng" {
+      name = "古筝"
+      description = "这是一张做工十分考究的古筝，古香古色，音质极好。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/jwqin.c by LPCConverter
+# Zone: kunlun
+
+    items "jwqin" {
+      name = "Item"
+      description = "相传这便是当年蔡文姬从火中所救出的焦木做成的美琴，琴的 尾端仍可见焦黑色。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/kaoya.c by LPCConverter
+# Zone: kunlun
+
+    items "kaoya" {
+      name = "烤鸭"
+      description = "一只肥得流油的北京烤鸭。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/lyj-book.c by LPCConverter
+# Zone: kunlun
+
+    items "lyj_book" {
+      name = "Item"
+      description = "这是昆仑派前人所总结的正两仪剑法的秘籍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/pao1.c by LPCConverter
+# Zone: kunlun
+
+    items "pao1" {
+      name = "黑边白色长袍"
+      description = "这是一件黑色滚边的白色长袍，华贵异常，看不出是什么质料做的。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/pao2.c by LPCConverter
+# Zone: kunlun
+
+    items "pao2" {
+      name = "白边青色长袍"
+      description = "这是一件白色滚边做工精细的青色长袍，看不出是用什么质料裁成的。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/pao3.c by LPCConverter
+# Zone: kunlun
+
+    items "pao3" {
+      name = "白边蓝色长袍"
+      description = "这是一件白色滚边做工精细的蓝色长袍。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/pao4.c by LPCConverter
+# Zone: kunlun
+
+    items "pao4" {
+      name = "白边黄色长袍"
+      description = "这是一件白色滚边黄色长袍，做工似乎比较简单。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/rice.c by LPCConverter
+# Zone: kunlun
+
+    items "rice" {
+      name = "米饭"
+      description = "一碗刚从锅里盛出来的大米饭，还冒着热气~~~~~~"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/sangmending.c by LPCConverter
+# Zone: kunlun
+
+    items "sangmending" {
+      name = "丧门钉"
+      description = "这是一玫丧门钉，似乎喂的是“青陀罗花”的毒汁。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抓出一把丧门钉扣在手心。"
+    unwield = "{npc}将手中的丧门钉放回装暗器的皮囊里。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/sword.c by LPCConverter
+# Zone: kunlun
+
+    items "sword" {
+      name = "长剑"
+      description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/w-cloth.c by LPCConverter
+# Zone: kunlun
+
+    items "w_cloth" {
+      name = "白色道袍"
+      description = "这是件素雅洁净的白色道袍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/weiqi.c by LPCConverter
+# Zone: kunlun
+
+    items "weiqi" {
+      name = "围棋"
+      description = "这是一副围棋，棋盘用磁铁所制，棋子用铁铸成。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# Generated from C:/files/git/mud/d/kunlun/obj/xiangcha.c by LPCConverter
+# Zone: kunlun
+
+    items "xiangcha" {
+      name = "香茶"
+      description = "一杯热茶，悠悠地冒着香气~~~~~~"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

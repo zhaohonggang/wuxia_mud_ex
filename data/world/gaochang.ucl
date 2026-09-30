@@ -1,0 +1,773 @@
+zones "gaochang" {
+  name = "gaochang"
+}
+
+# Generated from C:/files/git/mud/d/gaochang/dadian.c by LPCConverter
+# Zone: gaochang
+
+    rooms "dadian" {
+      name = "高昌大殿"
+      description = "这里就是传说中埋藏着无数宝藏高昌迷宫的大殿，四壁供 的都是泥塑木雕的佛像(fo).大殿之上有一个大大的龙椅，大堂 之上透着一股威严，有一块大匾，上书：          ##==================================##         ##                                  ##         ##     文     成      武     德     ##         ##                                  ##         ##==================================##  东西两面都是殿堂。"
+  x = 0
+  y = 0
+  z = 0
+item_desc = {
+ fo = "这些佛像都摆着奇怪的姿势，你感觉可以参悟(think)基本拳脚的真意。"
+}
+    }
+
+  room_exits "dadian" {
+    room_id = rooms.dadian.id
+    up = rooms.entrance.id
+    west = rooms.wroom1.id
+    east = rooms.eroom1.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/entrance.c by LPCConverter
+# Zone: gaochang
+
+    rooms "entrance" {
+      name = "高昌大门"
+      description = "你转过了一排树木，来到这里。只见一座石山上嵌著两扇 铁铸的大门。两扇大门看样子重逾千钧，据说是古代高昌国王 为了抵御强敌而设计的。铁门上铁锈斑驳，显是历时已久的旧 物。但是门上的门环(huan)。铁门上写着：      ##==================================##     ##                                  ##     ##     高     昌      大     殿     ##     ##                                  ##     ##==================================##"
+  x = 0
+  y = 0
+  z = 1
+item_desc = {
+ huan = "一只锈迹斑斑的金属门环，看样子似乎可以扭(turn)动。"
+}
+    }
+
+  room_exits "entrance" {
+    room_id = rooms.entrance.id
+    up = rooms.shulin1.id
+    down = rooms.dadian.id
+    southdown = rooms.shijie3.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/eroom1.c by LPCConverter
+# Zone: gaochang
+
+    rooms "eroom1" {
+      name = "东大殿"
+      description = "每一间房中大都供有佛像。偶然在壁上见到几个汉文，写 的是高昌国国王，文泰，大唐贞观十三年等等字样。有一座殿 堂中供的都是汉人塑像，匾上写着大成至圣先师孔子位，左右 各有数十人，写着颜回、子路、子贡、子夏、子张等名字。"
+  x = 1
+  y = 0
+  z = 0
+    }
+
+  room_exits "eroom1" {
+    room_id = rooms.eroom1.id
+    west = rooms.dadian.id
+    north = rooms.eroom2.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/eroom2.c by LPCConverter
+# Zone: gaochang
+
+    rooms "eroom2" {
+      name = "东大殿"
+      description = "每一间房中大都供有佛像。偶然在壁上见到几个汉文，写 的是高昌国国王，文泰，大唐贞观十三年等等字样。有一座殿 堂中供的都是汉人塑像，匾上写着大成至圣先师孔子位，左右 各有数十人，写着颜回、子路、子贡、子夏、子张等名字。"
+  x = 1
+  y = 1
+  z = 0
+    }
+
+  room_exits "eroom2" {
+    room_id = rooms.eroom2.id
+    north = rooms.eroom3.id
+    south = rooms.eroom1.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/eroom3.c by LPCConverter
+# Zone: gaochang
+
+    rooms "eroom3" {
+      name = "东大殿"
+      description = "每一间房中大都供有佛像。偶然在壁上见到几个汉文，写 的是高昌国国王，文泰，大唐贞观十三年等等字样。有一座殿 堂中供的都是汉人塑像，匾上写着大成至圣先师孔子位，左右 各有数十人，写着颜回、子路、子贡、子夏、子张等名字。"
+  x = 1
+  y = 2
+  z = 0
+    }
+
+  room_exits "eroom3" {
+    room_id = rooms.eroom3.id
+    northeast = rooms.zoulange.id
+    south = rooms.eroom2.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/kongdi.c by LPCConverter
+# Zone: gaochang
+
+    rooms "kongdi" {
+      name = "空地"
+      description = "突然之间，眼前豁然开朗，出现一大片空地，尽头处又有 两扇铁门，嵌在大山岩中。"
+  x = -1
+  y = -3
+  z = -2
+    }
+
+  room_exits "kongdi" {
+    room_id = rooms.kongdi.id
+    east = rooms.shijie1.id
+    north = rooms.shulin14.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/mishi.c by LPCConverter
+# Zone: gaochang
+
+    rooms "mishi" {
+      name = "高昌后殿"
+      description = "这里是高昌迷宫的后殿，大厅里有几具白骨骷髅只见大半 宫室已然毁圯，殿堂中堆满了黄沙。往北边似乎还有路，在阴 暗处站有一人正好挡住了去路。"
+  x = -1
+  y = 5
+  z = 0
+    }
+
+  room_exits "mishi" {
+    room_id = rooms.mishi.id
+    north = rooms.mishi2.id
+    south = rooms.zoulang2.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/mishi2.c by LPCConverter
+# Zone: gaochang
+
+    rooms "mishi2" {
+      name = "地下室"
+      description = "这里是高昌迷宫后殿底下的地下密室。密室虽小，却也五 脏俱全，石桌石椅，石几石床，连室内放的几件器皿，也都是 石制的。看来似乎很久以前有人在这里住过。正中的石桌上平 放着一块薄薄的石板，上面好象刻着些什么。"
+  x = -1
+  y = 6
+  z = 0
+    }
+
+  room_exits "mishi2" {
+    room_id = rooms.mishi2.id
+    south = rooms.mishi.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/shijie1.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shijie1" {
+      name = "石阶"
+      description = "眼前遽然出现一大片松林。松林长得极密，石阶上铺满了 厚厚的朽黄的松针。踩在脚下，发出察察的响声。一只小松鼠 吱地在眼前闪过，消失在林海里。"
+  x = 0
+  y = -3
+  z = -2
+    }
+
+  room_exits "shijie1" {
+    room_id = rooms.shijie1.id
+    northup = rooms.shijie2.id
+    west = rooms.kongdi.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/shijie2.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shijie2" {
+      name = "石阶"
+      description = "眼前遽然出现一大片松林。松林长得极密，石阶上铺满了 厚厚的朽黄的松针。踩在脚下，发出察察的响声。一只小松鼠 吱地在眼前闪过，消失在林海里。"
+  x = 0
+  y = -2
+  z = -1
+    }
+
+  room_exits "shijie2" {
+    room_id = rooms.shijie2.id
+    northup = rooms.shijie3.id
+    southdown = rooms.shijie1.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/shijie3.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shijie3" {
+      name = "石阶"
+      description = "眼前遽然出现一大片松林。松林长得极密，石阶上铺满了 厚厚的朽黄的松针。踩在脚下，发出察察的响声。一只小松鼠 吱地在眼前闪过，消失在林海里。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "shijie3" {
+    room_id = rooms.shijie3.id
+    northup = rooms.entrance.id
+    southdown = rooms.shijie2.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/shulin1.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shulin1" {
+      name = "高昌迷宫"
+      description = "这是条黑沈沈的长甬道，甬道前出现了三条岔道。迷宫之 内并无足迹指引，你不知道要往哪条路走。俯身细看，见左首 右首和前方三条路上都有淡淡的足迹。"
+  x = 0
+  y = 0
+  z = 2
+    }
+
+  room_exits "shulin1" {
+    room_id = rooms.shulin1.id
+    up = rooms.shulin10.id
+    down = rooms.entrance.id
+    west = rooms.shulin.id
+    east = rooms.shulin2.id
+    north = rooms.shulin.id
+    south = rooms.caoyuan7.id
+    }
+
+
+  room_characters "shulin1" {
+    room_id = rooms.shulin1.id
+    characters = [
+      { id = characters.ghost.id },
+      { id = characters.ghost.id },
+      { id = characters.ghost.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gaochang/shulin10.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shulin10" {
+      name = "高昌迷宫"
+      description = "这是条黑沈沈的长甬道，甬道前出现了三条岔道。迷宫之 内并无足迹指引，你不知道要往哪条路走。俯身细看，见左首 右首和前方三条路上都有淡淡的足迹。你似乎迷失了方向，象 没头苍蝇般到处乱闯。"
+  x = 0
+  y = 0
+  z = 3
+    }
+
+  room_exits "shulin10" {
+    room_id = rooms.shulin10.id
+    up = rooms.shulin11.id
+    down = rooms.shulin1.id
+    east = rooms.shulin.id
+    west = rooms.shulin.id
+    south = rooms.shulin.id
+    north = rooms.shulin.id
+    }
+
+
+  room_characters "shulin10" {
+    room_id = rooms.shulin10.id
+    characters = [
+      { id = characters.ghost.id },
+      { id = characters.ghost.id },
+      { id = characters.ghost.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gaochang/shulin11.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shulin11" {
+      name = "高昌迷宫"
+      description = "这是条黑沈沈的长甬道，甬道前出现了三条岔道。迷宫之 内并无足迹指引，你不知道要往哪条路走。俯身细看，见左首 右首和前方三条路上都有淡淡的足迹。你似乎迷失了方向，象 没头苍蝇般到处乱闯。"
+  x = 0
+  y = 0
+  z = 4
+    }
+
+  room_exits "shulin11" {
+    room_id = rooms.shulin11.id
+    up = rooms.shulin12.id
+    down = rooms.shulin10.id
+    east = rooms.shulin.id
+    west = rooms.shulin.id
+    south = rooms.shulin.id
+    north = rooms.shulin.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/shulin12.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shulin12" {
+      name = "高昌迷宫"
+      description = "这是条黑沈沈的长甬道，甬道前出现了三条岔道。迷宫之 内并无足迹指引，你不知道要往哪条路走。俯身细看，见左首 右首和前方三条路上都有淡淡的足迹。你似乎迷失了方向，象 没头苍蝇般到处乱闯。"
+  x = 0
+  y = 0
+  z = 5
+    }
+
+  room_exits "shulin12" {
+    room_id = rooms.shulin12.id
+    up = rooms.shulin13.id
+    down = rooms.shulin11.id
+    east = rooms.shulin.id
+    west = rooms.shulin.id
+    south = rooms.shulin.id
+    north = rooms.shulin.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/shulin13.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shulin13" {
+      name = "高昌迷宫"
+      description = "这是条黑沈沈的长甬道，甬道前出现了三条岔道。迷宫之 内并无足迹指引，你不知道要往哪条路走。俯身细看，见左首 右首和前方三条路上都有淡淡的足迹。你似乎迷失了方向，象 没头苍蝇般到处乱闯。"
+  x = 0
+  y = 0
+  z = 6
+    }
+
+  room_exits "shulin13" {
+    room_id = rooms.shulin13.id
+    down = rooms.shulin12.id
+    east = rooms.shulin.id
+    west = rooms.shulin.id
+    south = rooms.shulin.id
+    north = rooms.shulin.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/shulin14.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shulin14" {
+      name = "高昌迷宫"
+      description = "这是条黑沈沈的长甬道，甬道前出现了三条岔道。迷宫之 内并无足迹指引，你不知道要往哪条路走。俯身细看，见左首 右首和前方三条路上都有淡淡的足迹。你似乎迷失了方向，象 没头苍蝇般到处乱闯。"
+  x = -1
+  y = -2
+  z = -2
+    }
+
+  room_exits "shulin14" {
+    room_id = rooms.shulin14.id
+    north = rooms.shulin.id
+    west = rooms.shulin8.id
+    south = rooms.kongdi.id
+    east = rooms.shulin.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/shulin2.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shulin2" {
+      name = "高昌迷宫"
+      description = "这是条黑沈沈的长甬道，甬道前出现了三条岔道。迷宫之 内并无足迹指引，你不知道要往哪条路走。俯身细看，见左首 右首和前方三条路上都有淡淡的足迹。你似乎迷失了方向，象 没头苍蝇般到处乱闯。"
+  x = 1
+  y = 0
+  z = 2
+    }
+
+  room_exits "shulin2" {
+    room_id = rooms.shulin2.id
+    north = rooms.shulin.id
+    south = rooms.shulin.id
+    west = rooms.shulin1.id
+    east = rooms.shulin3.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/shulin3.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shulin3" {
+      name = "高昌迷宫"
+      description = "这是条黑沈沈的长甬道，甬道前出现了三条岔道。迷宫之 内并无足迹指引，你不知道要往哪条路走。俯身细看，见左首 右首和前方三条路上都有淡淡的足迹。你似乎迷失了方向，象 没头苍蝇般到处乱闯。"
+  x = 2
+  y = 0
+  z = 2
+    }
+
+  room_exits "shulin3" {
+    room_id = rooms.shulin3.id
+    north = rooms.shulin.id
+    south = rooms.shulin4.id
+    west = rooms.shulin.id
+    east = rooms.shulin2.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/shulin4.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shulin4" {
+      name = "高昌迷宫"
+      description = "这是条黑沈沈的长甬道，甬道前出现了三条岔道。迷宫之 内并无足迹指引，你不知道要往哪条路走。俯身细看，见左首 右首和前方三条路上都有淡淡的足迹。你似乎迷失了方向，象 没头苍蝇般到处乱闯。"
+  x = 2
+  y = -1
+  z = 2
+    }
+
+  room_exits "shulin4" {
+    room_id = rooms.shulin4.id
+    north = rooms.shulin3.id
+    south = rooms.shulin.id
+    west = rooms.shulin.id
+    east = rooms.shulin5.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/shulin5.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shulin5" {
+      name = "高昌迷宫"
+      description = "这是条黑沈沈的长甬道，甬道前出现了三条岔道。迷宫之 内并无足迹指引，你不知道要往哪条路走。俯身细看，见左首 右首和前方三条路上都有淡淡的足迹。你似乎迷失了方向，象 没头苍蝇般到处乱闯。"
+  x = -2
+  y = -1
+  z = -2
+    }
+
+  room_exits "shulin5" {
+    room_id = rooms.shulin5.id
+    north = rooms.shulin6.id
+    south = rooms.shulin.id
+    west = rooms.shulin.id
+    east = rooms.shulin9.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/shulin6.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shulin6" {
+      name = "高昌迷宫"
+      description = "这是条黑沈沈的长甬道，甬道前出现了三条岔道。迷宫之 内并无足迹指引，你不知道要往哪条路走。俯身细看，见左首 右首和前方三条路上都有淡淡的足迹。你似乎迷失了方向，象 没头苍蝇般到处乱闯。"
+  x = -3
+  y = -1
+  z = -2
+    }
+
+  room_exits "shulin6" {
+    room_id = rooms.shulin6.id
+    north = rooms.shulin7.id
+    south = rooms.shulin.id
+    west = rooms.shulin.id
+    east = rooms.shulin5.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/shulin7.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shulin7" {
+      name = "高昌迷宫"
+      description = "这是条黑沈沈的长甬道，甬道前出现了三条岔道。迷宫之 内并无足迹指引，你不知道要往哪条路走。俯身细看，见左首 右首和前方三条路上都有淡淡的足迹。你似乎迷失了方向，象 没头苍蝇般到处乱闯。"
+  x = -3
+  y = -2
+  z = -2
+    }
+
+  room_exits "shulin7" {
+    room_id = rooms.shulin7.id
+    north = rooms.shulin6.id
+    south = rooms.shulin.id
+    west = rooms.shulin.id
+    east = rooms.shulin8.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/shulin8.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shulin8" {
+      name = "高昌迷宫"
+      description = "这是条黑沈沈的长甬道，甬道前出现了三条岔道。迷宫之 内并无足迹指引，你不知道要往哪条路走。俯身细看，见左首 右首和前方三条路上都有淡淡的足迹。你似乎迷失了方向，象 没头苍蝇般到处乱闯。"
+  x = -2
+  y = -2
+  z = -2
+    }
+
+  room_exits "shulin8" {
+    room_id = rooms.shulin8.id
+    north = rooms.shulin.id
+    south = rooms.shulin.id
+    east = rooms.shulin14.id
+    west = rooms.shulin7.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/shulin9.c by LPCConverter
+# Zone: gaochang
+
+    rooms "shulin9" {
+      name = "高昌迷宫"
+      description = "这是条黑沈沈的长甬道，甬道前出现了三条岔道。迷宫之 内并无足迹指引，你不知道要往哪条路走。俯身细看，见左首 右首和前方三条路上都有淡淡的足迹。你似乎迷失了方向，象 没头苍蝇般到处乱闯。"
+  x = -1
+  y = -1
+  z = -2
+    }
+
+  room_exits "shulin9" {
+    room_id = rooms.shulin9.id
+    north = rooms.shulin.id
+    south = rooms.shulin.id
+    west = rooms.shulin.id
+    east = rooms.shulin.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/wroom1.c by LPCConverter
+# Zone: gaochang
+
+    rooms "wroom1" {
+      name = "西大殿"
+      description = "每一间房中大都供有佛像。偶然在壁上见到几个汉文，写 的是高昌国国王，文泰，大唐贞观十三年等等字样。有一座殿 堂中供的都是汉人塑像，匾上写着大成至圣先师孔子位，左右 各有数十人，写着颜回、子路、子贡、子夏、子张等名字。"
+  x = -1
+  y = 0
+  z = 0
+    }
+
+  room_exits "wroom1" {
+    room_id = rooms.wroom1.id
+    north = rooms.wroom2.id
+    east = rooms.dadian.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/wroom2.c by LPCConverter
+# Zone: gaochang
+
+    rooms "wroom2" {
+      name = "西大殿"
+      description = "每一间房中大都供有佛像。偶然在壁上见到几个汉文，写 的是高昌国国王，文泰，大唐贞观十三年等等字样。有一座殿 堂中供的都是汉人塑像，匾上写着大成至圣先师孔子位，左右 各有数十人，写着颜回、子路、子贡、子夏、子张等名字。"
+  x = -1
+  y = 1
+  z = 0
+    }
+
+  room_exits "wroom2" {
+    room_id = rooms.wroom2.id
+    north = rooms.wroom3.id
+    south = rooms.wroom1.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/wroom3.c by LPCConverter
+# Zone: gaochang
+
+    rooms "wroom3" {
+      name = "西大殿"
+      description = "每一间房中大都供有佛像。偶然在壁上见到几个汉文，写 的是高昌国国王，文泰，大唐贞观十三年等等字样。有一座殿 堂中供的都是汉人塑像，匾上写着大成至圣先师孔子位，左右 各有数十人，写着颜回、子路、子贡、子夏、子张等名字。"
+  x = -1
+  y = 2
+  z = 0
+    }
+
+  room_exits "wroom3" {
+    room_id = rooms.wroom3.id
+    northwest = rooms.zoulangw.id
+    south = rooms.wroom2.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/zoulang2.c by LPCConverter
+# Zone: gaochang
+
+    rooms "zoulang2" {
+      name = "走廊"
+      description = "这里是殿堂走廊。房顶一侧支在南面的高墙上，另一侧则 与北边殿堂的屋顶相连。彩梁画栋，连顶棚也用彩漆绘满了各 种飞天的图形，每幅画似乎都在诉说一个娓娓动人的故事。"
+  x = -1
+  y = 4
+  z = 0
+valid_leave = [
+{
+  direction = ~
+  message = "霎时间，只听前面一个阴森森的声音喝道：“我已经在这里安 安静静地住了一千年，最讨厌人来打扰我。只要有谁敢大胆过 来，就立刻给我死。”你顿时只觉得心底涌气一股寒意，脚下 直哆嗦，不禁放慢了脚步。"
+}
+
+]
+    }
+
+  room_exits "zoulang2" {
+    room_id = rooms.zoulang2.id
+    north = rooms.mishi.id
+    southwest = rooms.zoulangw.id
+    southeast = rooms.zoulange.id
+    }
+
+
+  room_characters "zoulang2" {
+    room_id = rooms.zoulang2.id
+    characters = [
+      { id = characters.waer.id }    ]
+  }
+
+# Generated from C:/files/git/mud/d/gaochang/zoulange.c by LPCConverter
+# Zone: gaochang
+
+    rooms "zoulange" {
+      name = "走廊"
+      description = "这里是后殿走廊。房顶一侧支在南面的高墙上，另一侧则 与北边般若堂的屋顶相连。彩梁画栋，连顶棚也用彩漆绘满了 各种飞天的图形，每幅画似乎都在诉说一个娓娓动人的佛经故 事。南边墙(wall)上题着一个字。"
+  x = 2
+  y = 3
+  z = 0
+    }
+
+  room_exits "zoulange" {
+    room_id = rooms.zoulange.id
+    southwest = rooms.eroom3.id
+    northwest = rooms.zoulang2.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/zoulangw.c by LPCConverter
+# Zone: gaochang
+
+    rooms "zoulangw" {
+      name = "走廊"
+      description = "这里是殿堂走廊。房顶一侧支在南面的高墙上，另一侧则 与北边殿堂的屋顶相连。彩梁画栋，连顶棚也用彩漆绘满了各 种飞天的图形，每幅画似乎都在诉说着一个娓娓动人的佛经故 事。南边的墙壁(wall)上题着一个字。"
+  x = -2
+  y = 3
+  z = 0
+    }
+
+  room_exits "zoulangw" {
+    room_id = rooms.zoulangw.id
+    northeast = rooms.zoulang2.id
+    southeast = rooms.wroom3.id
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/npc/ghost.c by LPCConverter
+# Zone: gaochang
+
+    characters "ghost" {
+      name = "孤魂野鬼"
+      description = "他看起来若有若无，缥缈不定。一身有说不出的诡异。"
+  gender = "男性"
+  age = 100
+  shen_type = 1
+  score = 1
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 2000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 300
+    max_neili = 500
+    max_qi = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "unarmed" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.fake_map.id }
+  ]
+
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/npc/liwenxiu.c by LPCConverter
+# Zone: gaochang
+
+    characters "liwenxiu" {
+      name = "李文秀"
+      description = "她长得清纯脱秀，嫣然一笑，不禁让人怦然心动。"
+  gender = "女性"
+  age = 18
+  shen_type = 1
+
+  combat = {
+    combat_exp = 300000
+    max_neili = 1000
+    max_qi = 1500
+  }
+
+  inquiries = [
+    { key = "父母" value = "(: ask_parent :)" },
+    { key = "父母之仇" value = "(: ask_parent :)" },
+    { key = "白马李三" value = "他是我父亲，可是在我懂事之前，父母便都已去世了。" },
+    { key = "苏普" value = "(: ask_supu :)" },
+    { key = "高昌地图" value = "(: ask_gaochang:)" },
+    { key = "高昌迷宫" value = "(: ask_gaochang:)" }
+  ]
+
+  chat_chance = 3
+chats = [
+    "李文秀忧郁地看着远方，轻叹道：也不知何时才能再见到苏普……",
+    "李文秀恨恨地道：父母之仇，我一定要血债血还。"
+]
+
+
+  skills = [
+    { skill = "force" level = 150 },
+    { skill = "whip" level = 150 },
+    { skill = "unarmed" level = 150 },
+    { skill = "dodge" level = 150 },
+    { skill = "parry" level = 150 },
+    { skill = "liuxing-chui" level = 150 },
+    { skill = "yan-fly" level = 150 },
+    { type = "whip" skill = "liuxing-chui" },
+    { type = "parry" skill = "liuxing-chui" },
+    { type = "dodge" skill = "yan-fly" }
+  ]
+
+
+  carry = [
+    { id = items.liuxingchui.id },
+    { id = items.hat.id },
+    { id = items.boots.id },
+    { id = items.xian_cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/npc/waer.c by LPCConverter
+# Zone: gaochang
+
+    characters "waer" {
+      name = "瓦耳拉齐"
+      description = "他就是装神弄鬼的瓦耳拉齐。只见他面容枯槁， 由于长期不见阳光，皮肤惨白。"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    combat_exp = 50000
+    max_neili = 500
+    max_qi = 800
+  }
+
+  inquiries = [
+    { key = "回去" value = "(: ask_back :)" },
+    { key = "宝藏" value = "高昌迷宫一无所有，这一个房间是我住的。" },
+    { key = "李文秀" value = "她是一个好姑娘，也不知何时才能再见到她。" },
+    { key = "高昌迷宫" value = "高昌迷宫一无所有，这一个房间是我住的。" }
+  ]
+
+  skills = [
+    { skill = "force" level = 120 },
+    { skill = "whip" level = 120 },
+    { skill = "unarmed" level = 120 },
+    { skill = "dodge" level = 120 },
+    { skill = "parry" level = 120 }
+  ]
+
+
+  carry = [
+    { id = items.liuxingchui.id },
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/npc/obj/liuxingchui.c by LPCConverter
+# Zone: gaochang
+
+    characters "liuxingchui" {
+      name = "流星锤"
+      description = "一柄金光闪闪的流星锤。"
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/npc/obj/map.c by LPCConverter
+# Zone: gaochang
+
+    characters "map" {
+      name = "高昌迷宫地图"
+      description = "这是一张高昌迷宫地图，依照图示，按以下方位即可进入。  ##==========================================## ## ###东##东##南##东##北##北##东##东##南###### ##==========================================##"
+    }
+
+# Generated from C:/files/git/mud/d/gaochang/obj/fake_map.c by LPCConverter
+# Zone: gaochang
+
+    items "fake_map" {
+      name = "高昌迷宫地图"
+      description = "这是一张高昌迷宫地图，依照图示，按以下方位即可进入。  ##==========================================## ## ###东##东##南##西##北##北##东##东##南###### ##==========================================##"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

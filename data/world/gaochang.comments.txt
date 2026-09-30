@@ -1,0 +1,320 @@
+# Generated from C:/files/git/mud/d/gaochang/dadian.c by LPCConverter
+# Zone: gaochang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if ( ob->query_skill( "unarmed", 1 ) < 50 )  →  write( '你对基本拳脚的了解显然太低，无法从佛像领悟更深的要义。\\\\\n', ob );
+  # if ( !ob->can_improve_skill( "unarmed" ) )  →  write( '你的实战经验不足，无法从佛像领悟更高的武学。\\\\\n' );
+  # if ( ob->query( "jing" ) < 100 )  →  write( '你精力不能集中，现在无法领悟佛像真意。\\\\\n' );
+  # if ( c_skill > 180 )  →  write( '你感觉自己从佛像的姿势中学不到什么东西了。\\\\\n' );
+  # else  →  
+  # if ( ob->query( "special_skill/clever" ) )  →  
+# ==== CONDITIONAL BRANCHES (do_think) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_think
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaochang/entrance.c by LPCConverter
+# Zone: gaochang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # RAW BLOCK: reset
+  # reset: ::reset(); delete("left_trigger"); delete("right_trigger");
+# ==== RAW CODE BLOCKS ====
+  # COMPLEX IF: if (dir == "right" ) { if (query("exits/down")) return notify_fail("铁门已经被扭开了。\n"); message_vision(HIY "$N" HIY "将门环往右扭……忽然「喀」一声铁" "门又移回原位。\n" NOR, me); add("right_trigger", 1); check_trigger(); return 1; } else if (dir == "left") { if (query("exits/down")) return notify_fail("铁门已经被扭开了。\n"); message_vision(HIY "$N" HIY "将门环往左扭……忽然「喀」一声铁" "门又移回原位。\n" NOR, me); add("left_trigger", 1); check_trigger(); return 1; } else { write("你要将门环往哪边扭？\n"); return 1; }
+  # COMPLEX IF: if (arg == "huan") { if (me->query("max_neili") < 300) { write(HIC "\n你使足劲扭动门环，可是门环还是纹丝不动。\n" NOR); return 1; } else { write(HIC "\n你试着扭动门环，发现门环似乎可以左右滑动。\n" NOR); delete("left_trigger"); delete("right_trigger"); return 1; }
+# ==== COMPLEX CONDITIONALS ====
+  # if (! arg || arg == "" )  →  
+  # if (arg == "huan")  →  write(HIC '\\\\\n你使足劲扭动门环，可是门环还是纹丝不动。\\\\\n' NOR); write(HIC '\\\\\n你试着扭动门环，发现门环似乎可以左右滑动。\\\\\n' NOR);
+  # if (sscanf(arg, "huan %s", dir) == 1)  →  write(HIC '\\\\\n你使足劲扭动门环，可是门环还是纹丝不动。\\\\\n' NOR); message_vision(HIY '$N' HIY '将门环往右扭……忽然「喀」一声铁' '门又移回原位。\\\\\n' NOR, me); message_vision(HIY '$N' HIY '将门环往左扭……忽然「喀」一声铁' '门又移回原位。\\\\\n' NOR, me); write('你要将门环往哪边扭？\\\\\n');
+# ==== CONDITIONAL BRANCHES (do_turn) ====
+  # if (! query("exits/down"))  →  
+  # if (room = find_object(__DIR__"dadian"))  →  
+# ==== CONDITIONAL BRANCHES (close_passage) ====
+  # if ((int)query("left_trigger") == 2 && (int)query("right_trigger") == 5 && ! query("exits/down"))  →  tell_object(me, HIW '\\\\\n你成功的开启了高昌迷宫入口！\\\\\n' NOR + HIC '通' '过这次的历练，你获得了' + chinese_number(exp) + '点' '经验、' + chinese_number(pot) + '点潜能以及' + chinese_number(sc) + '点江湖阅历。\\\\\n\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (check_trigger) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: do_turn
+  # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: check_trigger
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/gaochang/mishi.c by LPCConverter
+# Zone: gaochang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  message_vision(HIR '\\\\\n突然之间，只听前面一个阴森森的声音冷喝道：“擅闯高昌迷\\\\\n' '宫者死！”顿时只见一点光向你袭来，你想躲也躲不开了。原\\\\\n' '来是一根毒针插入你的身体。\\\\\n\\\\\n' NOR, ob);
+  # if (present("map", ob))  →  message_vision(HIY '\\\\\n突然之间，只听前面一个阴森森的声音冷笑道：“果然是有胆\\\\\n' '之士，怎么你有高昌迷宫的地图？难道是天意？高昌迷宫真的\\\\\n' '有敌国的财富吗？哈……哈哈……哈哈哈哈……”笑声中透着\\\\\n' '无限的凄凉和悲状。\\\\\n\\\\\n' NOR, ob);
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/gaochang/shulin10.c by LPCConverter
+# Zone: gaochang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (userp(me) && random(2) == 0)  →  message_vision(HIR '\\\\\n$N' HIR '一不小心触动了机关，顿时只听得头' '上一阵巨响，一块巨石当头落下。\\\\\n$N' HIR '一声惨' '叫，痛得几乎失去了知觉……\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaochang/shulin11.c by LPCConverter
+# Zone: gaochang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (userp(me) && random(2) == 0)  →  message_vision(HIR '\\\\\n$N' HIR '一不小心触动了机关，顿时只听得头' '上一阵巨响，一块巨石当头落下。\\\\\n$N' HIR '一声惨' '叫，痛得几乎失去了知觉……\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaochang/shulin12.c by LPCConverter
+# Zone: gaochang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (userp(me) && random(2) == 0)  →  message_vision(HIR '\\\\\n$N' HIR '一不小心触动了机关，顿时只听得头' '上一阵巨响，一块巨石当头落下。\\\\\n$N' HIR '一声惨' '叫，痛得几乎失去了知觉……\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaochang/shulin13.c by LPCConverter
+# Zone: gaochang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (userp(me) && random(2) == 0)  →  message_vision(HIR '\\\\\n$N' HIR '一不小心触动了机关，顿时只听得头' '上一阵巨响，一块巨石当头落下。\\\\\n$N' HIR '一声惨' '叫，痛得几乎失去了知觉……\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/gaochang/shulin9.c by LPCConverter
+# Zone: gaochang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (userp(me) && random(2) == 0)  →  message_vision(HIR '\\\\\n$N' HIR '一不小心触动了机关，顿时只听得头' '上一阵巨响，一块巨石当头落下。\\\\\n$N' HIR '一声惨' '叫，痛得几乎失去了知觉……\\\\\n' NOR, me);
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+
+
+
+
+
+
+# Generated from C:/files/git/mud/d/gaochang/zoulang2.c by LPCConverter
+# Zone: gaochang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # COMPLEX IF: if (dir == "north") { i = (int)me->query_temp("long_road"); i = i + 1; if (i == 4) { me->delete_temp("long_road"); return 1; } else { me->set_temp("long_road", i); return notify_fail(HIW "\n霎时间，只听前面一个阴森森的声音喝" "道：“我已经在这里安\n安静静地住了一千年" "，最讨厌人来打扰我。只要有谁敢大胆过\n来" "，就立刻给我死。”你顿时只觉得心底涌气一" "股寒意，脚下\n直哆嗦，不禁放慢了脚步。\n\n" NOR); }
+# ==== COMPLEX CONDITIONALS ====
+  # else if (dir == "south")  →  
+  # if (dir == "north")  →  
+# ==== CONDITIONAL BRANCHES (valid_leave) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaochang/zoulange.c by LPCConverter
+# Zone: gaochang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_wall
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaochang/zoulangw.c by LPCConverter
+# Zone: gaochang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # UNHANDLED FUNCTION: look_wall
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaochang/npc/ghost.c by LPCConverter
+# Zone: gaochang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # if (interactive(ob))  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaochang/npc/liwenxiu.c by LPCConverter
+# Zone: gaochang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # else if (me->query_temp("marks/李2"))  →  say(CYN '李文秀叹道：高昌迷宫里其实什么都没有，这地图你要就拿去好了。\\\\\n' NOR); message_vision ('李文秀拿出' YEL '高昌迷宫地图' NOR '(map)给$N。\\\\\n', me); tell_object(me, HIW '\\\\\n你成功的得到了高昌迷宫地图！\\\\\n' NOR + HIC '通' '过这次的历练，你获得了' + chinese_number(exp) + '点' '经验、' + chinese_number(pot) + '点潜能以及' + chinese_number(sc) + '点江湖阅历。\\\\\n\\\\\n' NOR);
+  # else if (me->query_temp("marks/李2") && me->query("combat_exp") < 10000)  →  command('shake ' + me->query('id')); command('say 你的江湖经验太浅，何必去惹事上身？');
+  # if (me->query_temp("marks/李3"))  →  command('hmm ' + me->query('id')); command('say 我不是已经把地图给过你了吗？');
+# ==== CONDITIONAL BRANCHES (ask_gaochang) ====
+  # else  →  say(CYN '李文秀说道：父母之仇，不共戴天。\\\\\n' NOR);
+  # if ((int)this_player()->query_temp("marks/李1"))  →  say(CYN '李文秀哽咽道：我父母是被觊觎我家高昌地图的奸人所害。\\\\\n' '李文秀接着道：我一定要手刃仇人，为我父母报仇！\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (ask_parent) ====
+  # if (! me || environment(me) != environment())  →  
+  # else  →  
+  # if ((string)me->query("gender") == "男性")  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(me = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_supu
+  # UNHANDLED FUNCTION: ask_parent
+  # UNHANDLED FUNCTION: ask_gaochang
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaochang/npc/waer.c by LPCConverter
+# Zone: gaochang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  say(CYN '瓦耳拉齐冷笑道：你是自作自受，在这陪我一辈子吧！\\\\\n' NOR);
+  # if (! me->query_temp("marks/back"))  →  say(CYN '瓦耳拉齐冷笑道：好吧，这次我送你回去，下次再进来就别怪我' '不客气了。\\\\\n' NOR); message_vision(HIY '只见瓦耳拉齐拉着$N' HIY '，在迷宫内兜了几个圈' '子，快步奔出。\\\\\n' NOR, me); tell_object(me, HIC '\\\\\n你跟随瓦耳拉齐来到了高昌迷宫外。\\\\\n' NOR);
+# ==== CONDITIONAL BRANCHES (ask_back) ====
+  # if (! me || environment(me) != environment())  →  
+  # else  →  
+  # if (present("map", me))  →  
+# ==== CONDITIONAL BRANCHES (greeting) ====
+  # if (interactive(me = this_player()) && ! is_fighting())  →  
+# ==== CONDITIONAL BRANCHES (init) ====
+# ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: ask_back
+  # UNHANDLED FUNCTION: unconcious
+# ==== UNHANDLED FUNCTIONS ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaochang/npc/obj/liuxingchui.c by LPCConverter
+# Zone: gaochang
+
+# inherit WHIP;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaochang/npc/obj/map.c by LPCConverter
+# Zone: gaochang
+
+# inherit ITEM;
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================
+
+# Generated from C:/files/git/mud/d/gaochang/obj/fake_map.c by LPCConverter
+# Zone: gaochang
+
+
+
+# ========================================
+# UNHANDLED CONTENT (for manual review)
+# ========================================
+  # else  →  
+  # if (clonep())  →  
+# ==== CONDITIONAL BRANCHES (create) ====
+# ==== CONDITIONAL BRANCHES ====
+# ========================================

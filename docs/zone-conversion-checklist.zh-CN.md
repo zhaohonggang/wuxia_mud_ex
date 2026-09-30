@@ -74,34 +74,34 @@
 
 ## Layer 3 · 距离 3（21 个）
 
-- [ ] **guanwai** · 中心 `longmen` · `goto guanwai:longmen`
-- [ ] **hengshan** · 中心 `beiyuemiao` · `goto hengshan:beiyuemiao`
+- [x] **guanwai** · 中心 `longmen` · `goto guanwai:longmen`  ✅ 2026-09-30
+- [x] **hengshan** · 中心 `beiyuemiao` · `goto hengshan:beiyuemiao`  ✅ 2026-09-30
 - [x] **huashan** · 中心 `square` · `goto huashan:square` ✅ 2026-09-30（elias key 缺陷，见完成记录）
-- [ ] **item** · 中心 `road1` · `goto item:road1`
-- [ ] **jinshe** · 中心 `shandong` · `goto jinshe:shandong`
-- [ ] **jueqing** · 中心 `dating` · `goto jueqing:dating`
-- [ ] **lingjiu** · 中心 `damen` · `goto lingjiu:damen`
-- [ ] **meizhuang** · 中心 `gate` · `goto meizhuang:gate`
+- [x] **item** · 中心 `road1` · `goto item:road1`  ✅ 2026-09-30
+- [x] **jinshe** · 中心 `shandong` · `goto jinshe:shandong`  ✅ 2026-09-30
+- [x] **jueqing** · 中心 `dating` · `goto jueqing:dating`  ✅ 2026-09-30
+- [x] **lingjiu** · 中心 `damen` · `goto lingjiu:damen`  ✅ 2026-09-30
+- [x] **meizhuang** · 中心 `gate` · `goto meizhuang:gate`  ✅ 2026-09-30
 - [x] **mingjiao** · 中心 `dadian` · `goto mingjiao:dadian` ✅ 2026-09-30（elias 反斜杠缺陷，见完成记录）
-- [ ] **motianya** · 中心 `mtdating` · `goto motianya:mtdating`
-- [ ] **pk** · 中心 `entry` · `goto pk:entry`
-- [ ] **qingcheng** · 中心 `sanqingdian` · `goto qingcheng:sanqingdian`
-- [ ] **shenfeng** · 中心 `dadian` · `goto shenfeng:dadian`
-- [ ] **tianlongsi** · 中心 `baodian` · `goto tianlongsi:baodian`
-- [ ] **tiezhang** · 中心 `guangchang` · `goto tiezhang:guangchang`
-- [ ] **tulong** · 中心 `yubifeng/damen`（容器区，三子区统一）
-- [ ] **wanjiegu** · 中心 `hall` · `goto wanjiegu:hall`
-- [ ] **wuguan** · 中心 `guofu_dating` · `goto wuguan:guofu_dating`
-- [ ] **xiakedao** · 中心 `dating` · `goto xiakedao:dating`
-- [ ] **yanziwu** · 中心 `canheju` · `goto yanziwu:canheju`
+- [x] **motianya** · 中心 `mtdating` · `goto motianya:mtdating`  ✅ 2026-09-30
+- [x] **pk** · 中心 `entry` · `goto pk:entry`  ✅ 2026-09-30
+- [x] **qingcheng** · 中心 `sanqingdian` · `goto qingcheng:sanqingdian`  ✅ 2026-09-30
+- [x] **shenfeng** · 中心 `dadian` · `goto shenfeng:dadian`  ✅ 2026-09-30
+- [x] **tianlongsi** · 中心 `baodian` · `goto tianlongsi:baodian`  ✅ 2026-09-30
+- [x] **tiezhang** · 中心 `guangchang` · `goto tiezhang:guangchang`  ✅ 2026-09-30
+- [x] **tulong** · 中心 `damen` · `goto tulong:damen` ✅ 2026-09-30（原写 `yubifeng/damen`，但产物里无 `yubifeng` 房间；`damen` 存在且为三子区之一）
+- [x] **wanjiegu** · 中心 `hall` · `goto wanjiegu:hall`  ✅ 2026-09-30
+- [x] **wuguan** · 中心 `guofu_dating` · `goto wuguan:guofu_dating`  ✅ 2026-09-30
+- [x] **xiakedao** · 中心 `dating` · `goto xiakedao:dating`  ✅ 2026-09-30
+- [x] **yanziwu** · 中心 `canheju` · `goto yanziwu:canheju`  ✅ 2026-09-30
 
 ---
 
 ## Layer 4 · 距离 4（3 个）
 
-- [ ] **gaochang** · 中心 `dadian` · `goto gaochang:dadian`
+- [x] **gaochang** · 中心 `dadian` · `goto gaochang:dadian`  ✅ 2026-09-30
 - [ ] **jinshe** 已在 Layer 3 列出
-- [ ] **kunlun** · 中心 `guangchang` · `goto kunlun:guangchang`
+- [x] **kunlun** · 中心 `guangchang` · `goto kunlun:guangchang`  ✅ 2026-09-30
 
 ---
 
@@ -139,9 +139,9 @@
 | 指标 | 数值 |
 |------|------|
 | 总区域数 | 71 |
-| 已完成 | 41 |
+| 已完成 | 63 |
 | 进行中 | 0 |
-| 待处理 | 31 |
+| 待处理 | 9 |
 
 > 实时更新：每完成一个区域，在对应大项打勾，并在下方填入完成日期、测试人、关键修复 commit。
 
@@ -194,6 +194,27 @@
 | quanzhou | 2026-09-30 | ? | ? | 完整 Python 转换：36 rooms, 36 room_exits (含 coords) |
 | huashan | 2026-09-30 | ? | ? | 完整 Python 转换：89 rooms, 89 room_exits (含 coords)。**容器加载失败修复（按「遇错即停」规则停在此区）**：`s.c` 的出口方向名是 `"hole1".."hole6"`，而 **UCL 的 key 不能含数字**——`elias_parser.yrl` 只接受 `assignment -> word equality ...`，leex 又把 `Digit` 当独立 token，于是 `hole6` 被切成 `word "hole"` + `digit "6"` 赋值闭合不了 → `syntax error before: ', ['"6"']`。实测 `hole`/`hole_` 可解析，`hole6`/`hole_6`/`6hole` 均失败；**值侧不受影响**（`rooms.lockroom6.id` 正常）。修 `lpc_converter.py` 的 `_EXIT_DIR_RE` 收紧为 `^[A-Za-z_][A-Za-z_]*$`；`validate_ucl.py` 新增 `_ELIAS_BAD_KEY_RE` + fixture `45_bad_chars_elias_bad_key.ucl`。这 6 条 `hole*` 是冗余反向链接（每个 `lockroomN` 自身有 `out = rooms.s.id`，`kuihua_2 -up-> lockroom1`），跳过不造成不可达 |
 | mingjiao | 2026-09-30 | ? | ? | 完整 Python 转换：129 rooms, 129 room_exits (含 coords)。**容器加载失败修复**：`miaorenbuluo.c` 的 `@TEXT` 块某行以 `口\` 结尾，是 LPC **行尾续行符**（本意换行续接），转换器却先把换行折成空格、留下反斜杠，产出 `口\ 中`。elias 的 `words` 只有 `back_slash word` / `back_slash quotes` 产生式，反斜杠接空格无规则可走 → 报错 token 恰是那个被反斜杠藏起来的**空格**。修法：新增 `_LPC_CONTINUATION`，并在 `_sanitize_ucl_sval()` **换行转空格之前**应用（所有字符串的最终出口，heredoc 与普通字面量都覆盖），`_parse_heredocs_from_raw()` 另加一道；产出已恢复为 `口中`。`validate_ucl.py` 新增 `_ELIAS_STRAY_BACKSLASH_RE` + fixture `46_bad_chars_elias_stray_backslash.ucl` |
+| gaochang | 2026-09-30 | ? | ? | 完整 Python 转换：31 rooms, 31 room_exits (含 coords) |
+| kunlun | 2026-09-30 | ? | ? | 完整 Python 转换：51 rooms, 51 room_exits (含 coords) |
+| tulong | 2026-09-30 | ? | ? | 完整 Python 转换：60 rooms, 60 room_exits (含 coords)。容器区三子区（`was_*` 云龙派等）拍平进同一 zone；中心房原文档写 `yubifeng/damen`，但产物中不存在 `yubifeng` 房间，实际改用 `damen` |
+| guanwai | 2026-09-30 | ? | ? | 完整 Python 转换：67 rooms, 67 room_exits (含 coords) |
+| hengshan | 2026-09-30 | ? | ? | 完整 Python 转换：26 rooms, 26 room_exits (含 coords) |
+| item | 2026-09-30 | ? | ? | 完整 Python 转换：6 rooms, 6 room_exits (含 coords) |
+| jinshe | 2026-09-30 | ? | ? | 完整 Python 转换：4 rooms, 4 room_exits (含 coords) |
+| jueqing | 2026-09-30 | ? | ? | 完整 Python 转换：57 rooms, 57 room_exits (含 coords) |
+| lingjiu | 2026-09-30 | ? | ? | 完整 Python 转换：46 rooms, 46 room_exits (含 coords) |
+| meizhuang | 2026-09-30 | ? | ? | 完整 Python 转换：37 rooms, 37 room_exits (含 coords) |
+| motianya | 2026-09-30 | ? | ? | 完整 Python 转换：10 rooms, 10 room_exits (含 coords) |
+| pk | 2026-09-30 | ? | ? | 完整 Python 转换：14 rooms, 14 room_exits (含 coords) |
+| qingcheng | 2026-09-30 | ? | ? | 完整 Python 转换：23 rooms, 23 room_exits (含 coords) |
+| shenfeng | 2026-09-30 | ? | ? | 完整 Python 转换：51 rooms, 51 room_exits (含 coords) |
+| tianlongsi | 2026-09-30 | ? | ? | 完整 Python 转换：28 rooms, 28 room_exits (含 coords) |
+| tiezhang | 2026-09-30 | ? | ? | 完整 Python 转换：66 rooms, 66 room_exits (含 coords) |
+| tulong | 2026-09-30 | ? | ? | 完整 Python 转换：60 rooms, 60 room_exits (含 coords) |
+| wanjiegu | 2026-09-30 | ? | ? | 完整 Python 转换：29 rooms, 29 room_exits (含 coords) |
+| wuguan | 2026-09-30 | ? | ? | 完整 Python 转换：39 rooms, 39 room_exits (含 coords) |
+| xiakedao | 2026-09-30 | ? | ? | 完整 Python 转换：99 rooms, 99 room_exits (含 coords) |
+| yanziwu | 2026-09-30 | ? | ? | 完整 Python 转换：46 rooms, 46 room_exits (含 coords) |
 | ... |  |  |  |  |
 | huashan | 2026-09-30 | ? | ? | 完整 Python 转换：89 rooms, 89 room_exits (含 coords)。**容器加载失败修复（按「遇错即停」规则停在此区）**：`s.c` 的出口方向名是 `"hole1".."hole6"`，而 **UCL 的 key 不能含数字**——`elias_parser.yrl` 只接受 `assignment -> word equality ...`，leex 又把 `Digit` 当独立 token，于是 `hole6` 被切成 `word "hole"` + `digit "6"` 赋值闭合不了 → `syntax error before: ', ['"6"']`。实测 `hole`/`hole_` 可解析，`hole6`/`hole_6`/`6hole` 均失败；**值侧不受影响**（`rooms.lockroom6.id` 正常）。修 `lpc_converter.py` 的 `_EXIT_DIR_RE` 收紧为 `^[A-Za-z_][A-Za-z_]*$`；`validate_ucl.py` 新增 `_ELIAS_BAD_KEY_RE` + fixture `45_bad_chars_elias_bad_key.ucl`。这 6 条 `hole*` 是冗余反向链接（每个 `lockroomN` 自身有 `out = rooms.s.id`，`kuihua_2 -up-> lockroom1`），跳过不造成不可达 |
 
@@ -224,3 +245,16 @@
 > 遗留：`mix test test/kantele/world/` 183 tests / 2 failures（`loader_meta_test.exs` 的
 > 「秘籍物品解析 book 五元组」与「liandan_lin1 宏继承」），已用 `git stash` 对照确认
 > **在改动前就存在**（原版脚本同样 2 failures），与本轮工作无关。
+>
+> 2026-09-30 **Layer 3（20 区）+ Layer 4（gaochang / kunlun）完成，累计 63/71**。
+> 本轮起每区都跑「静态校验 + 容器内 `Elias.parse/1` 权威验证」——因为纯静态校验已三次漏掉
+> 只有 elias 才暴露的错误（xiangyang / huashan / mingjiao），单靠 `validate_ucl.py` 不够。
+> 期间修掉 2 个新的 elias 兼容缺陷（均只改脚本、不改产物）：
+> 5. `_EXIT_DIR_RE` 收紧为 `^[A-Za-z_][A-Za-z_]*$`——**UCL 的 key 不能含数字**
+>    （huashan/s.c 的方向名 `"hole1".."hole6"`），fixture 45
+> 6. `_LPC_CONTINUATION` 在 `_sanitize_ucl_sval()` 里**先于**换行转空格执行——LPC 行尾续行符
+>    若折叠成 `\` + 空格，elias 无产生式可走（mingjiao/miaorenbuluo.c 的 `@TEXT`），fixture 46
+> 数据修正：`changan` 中心房 `beian-daokou` → `beian_daokou`；`tulong` 中心房
+> `yubifeng/damen` → `damen`（产物中不存在 `yubifeng` 房间）。
+> **终态验证**：63 区 `validate_ucl` + `check_room_coords` 全 exit 0；`data/world/*.ucl`
+> 共 70 个文件在容器内 **elias 全部解析通过，0 失败**；fixture 回归 23/23。
