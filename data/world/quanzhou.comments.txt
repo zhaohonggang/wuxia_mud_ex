@@ -17,8 +17,8 @@
   # if (arg !="zhou")  →  tell_object(this_player() , '你要 enter 哪儿？\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_enter) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: tpenghu
   # UNHANDLED FUNCTION: do_enter
+  # UNHANDLED FUNCTION: tpenghu
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -39,8 +39,8 @@
   # if (arg !="chuan")  →  tell_object(ob, '你要去哪儿？\\\\\n' );
 # ==== CONDITIONAL BRANCHES (do_enter) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: tpenghu
   # UNHANDLED FUNCTION: do_enter
+  # UNHANDLED FUNCTION: tpenghu
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -81,9 +81,9 @@
   # if (arg == "chuan")  →  message_vision('船夫一见有人上船，忙叫了一声：开船喽！\\\\\n', ob); message_vision('船夫升起帆，船就向西方顺风航行。\\\\\n', ob);
 # ==== CONDITIONAL BRANCHES (do_enter) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: ttaiwan
-  # UNHANDLED FUNCTION: do_enter
   # UNHANDLED FUNCTION: tdalu
+  # UNHANDLED FUNCTION: do_enter
+  # UNHANDLED FUNCTION: ttaiwan
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -322,8 +322,8 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

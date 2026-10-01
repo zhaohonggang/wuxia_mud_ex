@@ -518,8 +518,8 @@
   # if (me->query_skill("force", 1) < 300)  →  message_vision(CYN '$N' CYN '呀呀嘿嘿废了半天力气，结果' '没什么动静。\\\\\n', me); tell_object(me, '看来是自己的内功火候还不够。\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_break) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_break
   # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_break
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -660,8 +660,8 @@
   # if (!ob->is_fighting())  →  
 # ==== CONDITIONAL BRANCHES (long) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: long
   # UNHANDLED FUNCTION: do_tiao
+  # UNHANDLED FUNCTION: long
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -720,8 +720,8 @@
   # if (random(3) == 1)  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_lifeheal
   # UNHANDLED FUNCTION: unconcious
+  # UNHANDLED FUNCTION: do_lifeheal
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -748,8 +748,8 @@
   # if ((int)ob->query("eff_qi") == (int)ob->query("max_qi"))  →  command('?'+ob->query('id')); command('say 你没有受任何伤啊？\\\\\n');
 # ==== CONDITIONAL BRANCHES (ask_me) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: ask_me
   # UNHANDLED FUNCTION: recover
+  # UNHANDLED FUNCTION: ask_me
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

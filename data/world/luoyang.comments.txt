@@ -170,8 +170,8 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH POOL: switch (random(5)) { case 1: ob = new ("/d/changan/npc/obj/hmeigui"); break; case 2: ob = new ("/d/changan/npc/obj/zi-luolan"); break; case 3: ob = new ("/d/changan/npc/obj/bai-chahua"); break; case 4: ob = new ("/d/changan/npc/obj/huang-meigui"); break; case 0: ob = new ("/d/changan/npc/obj/lan-tiane"); break; }
 # ==== SWITCH POOLS ====
-  # UNHANDLED FUNCTION: do_jiaoshui
   # UNHANDLED FUNCTION: do_peiyu
+  # UNHANDLED FUNCTION: do_jiaoshui
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -431,9 +431,9 @@
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
-  # UNHANDLED FUNCTION: unconcious
-  # UNHANDLED FUNCTION: die
   # UNHANDLED FUNCTION: redeem
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

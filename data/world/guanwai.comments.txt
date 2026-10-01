@@ -52,11 +52,11 @@
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
-  # UNHANDLED FUNCTION: working
-  # UNHANDLED FUNCTION: halt_working
-  # UNHANDLED FUNCTION: start_work
-  # UNHANDLED FUNCTION: end_working
   # UNHANDLED FUNCTION: coagent
+  # UNHANDLED FUNCTION: end_working
+  # UNHANDLED FUNCTION: working
+  # UNHANDLED FUNCTION: start_work
+  # UNHANDLED FUNCTION: halt_working
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -79,8 +79,8 @@
   # if (me->query_skill("miaojia-jian", 1) >= 250 && me->query("character") == "光明磊落" && !(int)me->query_skill("hujia-daofa", 1) && ( (ob = me->query_temp("weapon")) && ((string)ob->query("skill_type") == "blade" || (string)ob->query("skill_type") == "sword")) && random(10) == 1 && me->query("shen") > 50000)  →  write('你开始演练刀剑归真。\\\\\n'); write('但是你却发现你连一点胡家刀法都不会，难以继续演练，你长叹一声，心中暗怪命运总捉弄…\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_yanlian) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: learn_blade
   # UNHANDLED FUNCTION: do_yanlian
+  # UNHANDLED FUNCTION: learn_blade
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -128,11 +128,11 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH POOL: switch (random(2)) { case 0: message_vision("$N轻轻地敲了敲门，只听见里面有人很不耐烦地吼到：\n" "刚躺下就来敲门！我睡着了，听不见！！！\n", this_player()); break; case 1: message_vision("$N轻轻地敲了敲门，只听见里面有些响动，\n" "好象有人在踱来踱去，拿不定主意是否开门。\n", this_player()); break; }
 # ==== SWITCH POOLS ====
-  # UNHANDLED FUNCTION: close_men
-  # UNHANDLED FUNCTION: look_men
-  # UNHANDLED FUNCTION: do_knock
   # UNHANDLED FUNCTION: do_push
   # UNHANDLED FUNCTION: force_open
+  # UNHANDLED FUNCTION: look_men
+  # UNHANDLED FUNCTION: close_men
+  # UNHANDLED FUNCTION: do_knock
   # UNHANDLED FUNCTION: do_kick
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -247,9 +247,9 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH POOL: switch (random(3)) { case 0: message_vision("$N哈哈一笑，双足连环踏雪而走，身" "形飘洒之极！\n", me); break; case 1: message_vision("$N脸色木然，只是不住的凝神前行，" "背后几乎没有留下半点脚印。\n", me); break; default: message_vision("$N迈开大步，一步步的走了出去，不" "一会儿便走了一圈，自顾坐下冥神思索。\n", me); break; }
 # ==== SWITCH POOLS ====
-  # UNHANDLED FUNCTION: is_valid
   # UNHANDLED FUNCTION: do_amble
   # UNHANDLED FUNCTION: long
+  # UNHANDLED FUNCTION: is_valid
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -274,8 +274,8 @@
   # if (me->query_skill("hujia-daofa", 1) >= 250 && (me->query("character") == "光明磊落" || me->query("character") == "国士无双") && !(int)me->query_skill("miaojia-jian", 1) && ( (ob = me->query_temp("weapon")) && ((string)ob->query("skill_type") == "blade" || (string)ob->query("skill_type") == "sword")) && random(10) == 1 && me->query("shen") > 50000)  →  write('你开始演练刀剑归真。\\\\\n'); write('但是你却发现你连一点苗家剑法都不会，难以继续演练，你长叹一声，心中暗怪命运总捉弄…\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_yanlian) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: learn_sword
   # UNHANDLED FUNCTION: do_yanlian
+  # UNHANDLED FUNCTION: learn_sword
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -447,9 +447,9 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH: switch (me->query_temp("job/step")) { case 1: me->receive_damage("qi", 1); msg = "$N快步的朝山上走去。"; break; case 2: me->receive_damage("qi", 1); msg = "$N走到山腰，道：我是来搬石料的。"; break; case 3: me->receive_damage("qi", 1); msg = "来往的工人扫了$N一眼，似乎没看到。一个爆破手道：嗨，那儿，去那儿搬。"; break; case 4: me->receive_damage("qi", 6); msg = "$N赶到爆破的地方，选了一块正合适自己的石料，扛在肩头。"; break; case 5: case 7: case 9: me->receive_damage("qi", 8); msg = "$N扛着石料，一步一步往山下挨。"; break; case 6: me->receive_damage("qi", 9); msg = "$N喘了口气，掂了掂肩头的石料，继续前进。"; break; case 8: me->receive_damage("qi", 10); msg = "$N觉得肩头的石料越来越重，只好换一下肩扛。"; break; default: me->receive_damage("qi", 5); msg = "$N把石料扛到$n那里，把石料装上车子，总算松了口气。"; finish = 1; break; }
 # ==== SWITCH STATEMENTS ====
+  # UNHANDLED FUNCTION: halt_working
   # UNHANDLED FUNCTION: working
   # UNHANDLED FUNCTION: do_mine
-  # UNHANDLED FUNCTION: halt_working
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -476,8 +476,8 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH POOL: switch( random(2) ) { case 0: say( "酒馆老板得意的说道：这么冷的天，喝碗狗肉汤是最能暖和身子的！\n"); break; case 1: say( "酒馆老板搓了搓手，说道：这位" + RANK_D->query_respect(ob) + "，狗肉大补啊，尝尝吧。\n"); break; }
 # ==== SWITCH POOLS ====
-  # UNHANDLED FUNCTION: saying
   # UNHANDLED FUNCTION: kicking
+  # UNHANDLED FUNCTION: saying
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

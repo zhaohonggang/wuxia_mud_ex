@@ -211,9 +211,9 @@ item_desc = {
     room_id = rooms.shulin1.id
     up = rooms.shulin10.id
     down = rooms.entrance.id
-    west = rooms.shulin.id
+    west = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     east = rooms.shulin2.id
-    north = rooms.shulin.id
+    north = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     south = shenfeng.rooms.caoyuan7.id
     }
 
@@ -241,10 +241,10 @@ item_desc = {
     room_id = rooms.shulin10.id
     up = rooms.shulin11.id
     down = rooms.shulin1.id
-    east = rooms.shulin.id
-    west = rooms.shulin.id
-    south = rooms.shulin.id
-    north = rooms.shulin.id
+    east = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    west = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    south = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    north = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
     }
 
 
@@ -271,10 +271,10 @@ item_desc = {
     room_id = rooms.shulin11.id
     up = rooms.shulin12.id
     down = rooms.shulin10.id
-    east = rooms.shulin.id
-    west = rooms.shulin.id
-    south = rooms.shulin.id
-    north = rooms.shulin.id
+    east = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    west = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    south = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    north = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
     }
 
 # Generated from C:/files/git/mud/d/gaochang/shulin12.c by LPCConverter
@@ -292,10 +292,10 @@ item_desc = {
     room_id = rooms.shulin12.id
     up = rooms.shulin13.id
     down = rooms.shulin11.id
-    east = rooms.shulin.id
-    west = rooms.shulin.id
-    south = rooms.shulin.id
-    north = rooms.shulin.id
+    east = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    west = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    south = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    north = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
     }
 
 # Generated from C:/files/git/mud/d/gaochang/shulin13.c by LPCConverter
@@ -312,10 +312,10 @@ item_desc = {
   room_exits "shulin13" {
     room_id = rooms.shulin13.id
     down = rooms.shulin12.id
-    east = rooms.shulin.id
-    west = rooms.shulin.id
-    south = rooms.shulin.id
-    north = rooms.shulin.id
+    east = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    west = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    south = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    north = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
     }
 
 # Generated from C:/files/git/mud/d/gaochang/shulin14.c by LPCConverter
@@ -331,10 +331,10 @@ item_desc = {
 
   room_exits "shulin14" {
     room_id = rooms.shulin14.id
-    north = rooms.shulin.id
+    north = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     west = rooms.shulin8.id
     south = rooms.kongdi.id
-    east = rooms.shulin.id
+    east = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     }
 
 # Generated from C:/files/git/mud/d/gaochang/shulin2.c by LPCConverter
@@ -350,8 +350,8 @@ item_desc = {
 
   room_exits "shulin2" {
     room_id = rooms.shulin2.id
-    north = rooms.shulin.id
-    south = rooms.shulin.id
+    north = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
+    south = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     west = rooms.shulin1.id
     east = rooms.shulin3.id
     }
@@ -369,9 +369,9 @@ item_desc = {
 
   room_exits "shulin3" {
     room_id = rooms.shulin3.id
-    north = rooms.shulin.id
+    north = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     south = rooms.shulin4.id
-    west = rooms.shulin.id
+    west = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     east = rooms.shulin2.id
     }
 
@@ -389,8 +389,8 @@ item_desc = {
   room_exits "shulin4" {
     room_id = rooms.shulin4.id
     north = rooms.shulin3.id
-    south = rooms.shulin.id
-    west = rooms.shulin.id
+    south = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
+    west = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     east = rooms.shulin5.id
     }
 
@@ -408,8 +408,8 @@ item_desc = {
   room_exits "shulin5" {
     room_id = rooms.shulin5.id
     north = rooms.shulin6.id
-    south = rooms.shulin.id
-    west = rooms.shulin.id
+    south = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
+    west = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     east = rooms.shulin9.id
     }
 
@@ -427,8 +427,8 @@ item_desc = {
   room_exits "shulin6" {
     room_id = rooms.shulin6.id
     north = rooms.shulin7.id
-    south = rooms.shulin.id
-    west = rooms.shulin.id
+    south = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
+    west = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     east = rooms.shulin5.id
     }
 
@@ -446,8 +446,8 @@ item_desc = {
   room_exits "shulin7" {
     room_id = rooms.shulin7.id
     north = rooms.shulin6.id
-    south = rooms.shulin.id
-    west = rooms.shulin.id
+    south = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
+    west = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     east = rooms.shulin8.id
     }
 
@@ -464,8 +464,8 @@ item_desc = {
 
   room_exits "shulin8" {
     room_id = rooms.shulin8.id
-    north = rooms.shulin.id
-    south = rooms.shulin.id
+    north = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
+    south = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     east = rooms.shulin14.id
     west = rooms.shulin7.id
     }
@@ -483,10 +483,10 @@ item_desc = {
 
   room_exits "shulin9" {
     room_id = rooms.shulin9.id
-    north = rooms.shulin.id
-    south = rooms.shulin.id
-    west = rooms.shulin.id
-    east = rooms.shulin.id
+    north = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    south = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    west = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    east = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
     }
 
 # Generated from C:/files/git/mud/d/gaochang/wroom1.c by LPCConverter

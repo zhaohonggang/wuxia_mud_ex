@@ -54,8 +54,8 @@
 # ==== CONDITIONAL BRANCHES (do_jingxiu) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: jingxiu
-  # UNHANDLED FUNCTION: do_jingxiu
   # UNHANDLED FUNCTION: halt_jingxiu
+  # UNHANDLED FUNCTION: do_jingxiu
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

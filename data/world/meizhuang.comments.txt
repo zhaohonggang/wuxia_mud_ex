@@ -23,8 +23,8 @@
   # if (arg == "floor")  →  write('地上的木板现在已经拉开了。\\\\\n'); message_vision('$N拉起地上的木板，发现下面是空的。\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (do_open) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_open
   # UNHANDLED FUNCTION: close_path
+  # UNHANDLED FUNCTION: do_open
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -113,8 +113,8 @@
   # if ( arg=="shu jia")  →  write('你试图跳上书架的顶端，但老是跳不上去。\\\\\n'); write('你纵身跃上了书架顶端。\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_jump) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_jump
   # UNHANDLED FUNCTION: do_press
+  # UNHANDLED FUNCTION: do_jump
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -183,8 +183,8 @@
   # if (objectp(room))  →  message_vision('$N使劲把大门打了开来。\\\\\n', this_player());
 # ==== CONDITIONAL BRANCHES (do_open) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_open
   # UNHANDLED FUNCTION: close_gate
+  # UNHANDLED FUNCTION: do_open
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -492,8 +492,8 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_climb
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

@@ -180,8 +180,8 @@ zones "emei" {
     room_id = rooms.cangjingge.id
     items = [
       { id = items.dao.id },
-      { id = items.fojing1.id },
-      { id = items.fojing2.id }    ]
+      { id = [items.fojing10.id,items.fojing11.id] },
+      { id = [items.fojing20.id,items.fojing21.id] }    ]
   }
 
 # Generated from C:/files/git/mud/d/emei/cangjinglou.c by LPCConverter
@@ -215,8 +215,8 @@ direction = "south"
     room_id = rooms.cangjinglou.id
     items = [
       { id = items.daoming.id },
-      { id = items.fojing1.id },
-      { id = items.fojing2.id }    ]
+      { id = [items.fojing10.id,items.fojing11.id] },
+      { id = [items.fojing20.id,items.fojing21.id] }    ]
   }
 
 # Generated from C:/files/git/mud/d/emei/caopeng.c by LPCConverter

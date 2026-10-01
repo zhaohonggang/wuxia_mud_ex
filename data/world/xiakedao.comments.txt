@@ -36,8 +36,8 @@
   # if (n >= 100)  →  message_vision('$N丹田一运气，猛的一推，只见屏' '风之后，露出一条长长的甬道。\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (do_push) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close
   # UNHANDLED FUNCTION: do_push
+  # UNHANDLED FUNCTION: close
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -70,10 +70,10 @@
   # if (n > 100)  →  message_vision('大约过了半个时辰，$N恭恭敬敬的把老者的' '遗骨放了进去，埋了起来。突然东面\\\\\n出现' '了一个石门。\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (do_mai) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_mai
-  # UNHANDLED FUNCTION: close
-  # UNHANDLED FUNCTION: do_swim
   # UNHANDLED FUNCTION: do_climb
+  # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_mai
+  # UNHANDLED FUNCTION: do_swim
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -93,8 +93,8 @@
   # if (! lingpai = present("shangfa ling", ob))  →  
 # ==== CONDITIONAL BRANCHES (do_enter) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: home
   # UNHANDLED FUNCTION: do_enter
+  # UNHANDLED FUNCTION: home
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -111,8 +111,8 @@
   # if (arg != "boat")  →  
 # ==== CONDITIONAL BRANCHES (do_enter) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: home
   # UNHANDLED FUNCTION: do_enter
+  # UNHANDLED FUNCTION: home
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -228,8 +228,8 @@
   # if (n >= 80)  →  message_vision('只见$N脚尖一点地，身子轻飘飘的跃进瀑布之中。\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (do_jump) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_plump
   # UNHANDLED FUNCTION: do_jump
+  # UNHANDLED FUNCTION: do_plump
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -333,8 +333,8 @@
   # if (me->query_skill("literate", 1) || me->query("learned_literate"))  →  
 # ==== CONDITIONAL BRANCHES (look_bi) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_think
   # UNHANDLED FUNCTION: look_bi
+  # UNHANDLED FUNCTION: do_think
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -366,8 +366,8 @@
   # if (me->query_skill("literate", 1) || me->query("learned_literate"))  →  
 # ==== CONDITIONAL BRANCHES (look_bi) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_think
   # UNHANDLED FUNCTION: look_bi
+  # UNHANDLED FUNCTION: do_think
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -418,8 +418,8 @@
 # ==== CONDITIONAL BRANCHES (look_bi) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_canwu
-  # UNHANDLED FUNCTION: do_think
   # UNHANDLED FUNCTION: look_bi
+  # UNHANDLED FUNCTION: do_think
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -583,10 +583,10 @@
   # if (n > 150)  →  message_vision('只见$N一运丹田气，双膀一使劲，石门竟缓缓的开了。\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (do_push) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: close
   # UNHANDLED FUNCTION: do_push
   # UNHANDLED FUNCTION: do_swim
-  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -756,11 +756,11 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH POOL: switch (random(5)) { case 0: msg += "$N看了看$n，道：“你想找谁帮你的忙，不妨和我说说。”\n"; break; case 1: msg += "$N对$n道：“我的师兄弟水平各有高下，你找一个派得上用场的吧！”\n"; break; case 2: msg += "$N微微一笑，对$n道：“你觉得谁合适？”\n"; break; }
 # ==== SWITCH POOLS ====
-  # UNHANDLED FUNCTION: hire
-  # UNHANDLED FUNCTION: move_or_destruct
-  # UNHANDLED FUNCTION: remove
   # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: move_or_destruct
   # UNHANDLED FUNCTION: create_all_helper
+  # UNHANDLED FUNCTION: hire
+  # UNHANDLED FUNCTION: remove
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

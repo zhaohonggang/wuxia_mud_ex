@@ -21,9 +21,9 @@
 # ==== CONDITIONAL BRANCHES ====
   # COMPLEX MAPPING: ([ CLASS_D("wudang") + "/daotong" : 1, "/clone/book/" + books[random(sizeof(books))]
 # ==== COMPLEX MAPPINGS ====
-  # UNHANDLED FUNCTION: halt_jingxiu
   # UNHANDLED FUNCTION: jingxiu
   # UNHANDLED FUNCTION: do_jingxiu
+  # UNHANDLED FUNCTION: halt_jingxiu
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -195,9 +195,9 @@
   # if ((! myfam || (myfam["family_name"] != "武当派")) && (dir == "southup"))  →  
 # ==== CONDITIONAL BRANCHES (valid_leave) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_move
   # UNHANDLED FUNCTION: close_andao
   # UNHANDLED FUNCTION: look_xiang
-  # UNHANDLED FUNCTION: do_move
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -588,8 +588,8 @@
   # if (find_call_out("destguo") != -1)  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_effect
   # UNHANDLED FUNCTION: destguo
+  # UNHANDLED FUNCTION: do_effect
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

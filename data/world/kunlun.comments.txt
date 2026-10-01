@@ -23,8 +23,8 @@
 # ==== CONDITIONAL BRANCHES (do_wo) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_wo
-  # UNHANDLED FUNCTION: delete_done
   # UNHANDLED FUNCTION: do_breathe
+  # UNHANDLED FUNCTION: delete_done
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -464,7 +464,7 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_eat
   # UNHANDLED FUNCTION: do_drink
+  # UNHANDLED FUNCTION: do_eat
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

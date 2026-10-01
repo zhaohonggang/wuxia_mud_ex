@@ -339,9 +339,9 @@
   # if (! clonep(this_object()))  →  message_vision(CYN '\\\\\n$N' CYN '走了过来，环顾四' '周，深深叹了口气。\\\\\n' NOR, this_object());
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: recognize_apprentice
   # UNHANDLED FUNCTION: attempt_apprentice
   # UNHANDLED FUNCTION: unconcious
-  # UNHANDLED FUNCTION: recognize_apprentice
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -394,19 +394,19 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: do_yun
-  # UNHANDLED FUNCTION: do_join
-  # UNHANDLED FUNCTION: recover
-  # UNHANDLED FUNCTION: accept_fight
-  # UNHANDLED FUNCTION: heart_beat
-  # UNHANDLED FUNCTION: accept_hit
-  # UNHANDLED FUNCTION: die
-  # UNHANDLED FUNCTION: do_kill
-  # UNHANDLED FUNCTION: unconcious
   # UNHANDLED FUNCTION: receive_wound
-  # UNHANDLED FUNCTION: receive_damage
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: heart_beat
+  # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: accept_touxi
+  # UNHANDLED FUNCTION: do_kill
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: recover
+  # UNHANDLED FUNCTION: do_yun
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: unconcious
+  # UNHANDLED FUNCTION: do_join
+  # UNHANDLED FUNCTION: receive_damage
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -492,9 +492,9 @@
   # if (interactive(ob = this_player()) && ob->query("mark/guofu_ok") && ! ob->query_temp("job_name") && ob->query("combat_exp") < 40000)  →  command('nod ' + ob->query('id')); command('say 现在郭府内正缺人手，你可以找我领工作(' HIY 'ask yelv qi about 工作' NOR + CYN ')来做。' NOR);
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: unconcious
-  # UNHANDLED FUNCTION: ask_job
   # UNHANDLED FUNCTION: do_task
+  # UNHANDLED FUNCTION: ask_job
+  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

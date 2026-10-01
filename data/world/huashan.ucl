@@ -1393,9 +1393,9 @@ item_desc = {
 
   room_exits "songlin1" {
     room_id = rooms.songlin1.id
-    west = rooms.songlin.id
+    west = [rooms.songlin1.id,rooms.songlin2.id,rooms.songlin3.id,rooms.songlin4.id]
     east = rooms.songlin2.id
-    north = rooms.songlin.id
+    north = [rooms.songlin1.id,rooms.songlin2.id,rooms.songlin3.id,rooms.songlin4.id]
     south = rooms.changlang.id
     }
 
@@ -1413,9 +1413,9 @@ item_desc = {
   room_exits "songlin2" {
     room_id = rooms.songlin2.id
     west = rooms.songlin3.id
-    east = rooms.songlin.id
-    north = rooms.songlin.id
-    south = rooms.songlin.id
+    east = [rooms.songlin1.id,rooms.songlin2.id,rooms.songlin3.id,rooms.songlin4.id]
+    north = [rooms.songlin1.id,rooms.songlin2.id,rooms.songlin3.id,rooms.songlin4.id]
+    south = [rooms.songlin1.id,rooms.songlin2.id,rooms.songlin3.id,rooms.songlin4.id]
     }
 
 # Generated from C:/files/git/mud/d/huashan/songlin3.c by LPCConverter
@@ -1431,10 +1431,10 @@ item_desc = {
 
   room_exits "songlin3" {
     room_id = rooms.songlin3.id
-    west = rooms.songlin.id
+    west = [rooms.songlin1.id,rooms.songlin2.id,rooms.songlin3.id,rooms.songlin4.id]
     east = rooms.songlin3.id
-    north = rooms.songlin.id
-    south = rooms.songlin.id
+    north = [rooms.songlin1.id,rooms.songlin2.id,rooms.songlin3.id,rooms.songlin4.id]
+    south = [rooms.songlin1.id,rooms.songlin2.id,rooms.songlin3.id,rooms.songlin4.id]
     }
 
 # Generated from C:/files/git/mud/d/huashan/songlin4.c by LPCConverter
@@ -1450,10 +1450,10 @@ item_desc = {
 
   room_exits "songlin4" {
     room_id = rooms.songlin4.id
-    west = rooms.songlin.id
-    east = rooms.songlin.id
+    west = [rooms.songlin1.id,rooms.songlin2.id,rooms.songlin3.id,rooms.songlin4.id]
+    east = [rooms.songlin1.id,rooms.songlin2.id,rooms.songlin3.id,rooms.songlin4.id]
     north = rooms.songlin1.id
-    south = rooms.songlin.id
+    south = [rooms.songlin1.id,rooms.songlin2.id,rooms.songlin3.id,rooms.songlin4.id]
     }
 
 

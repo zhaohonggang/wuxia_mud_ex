@@ -364,10 +364,10 @@ direction = ~
   room_exits "bamboo1" {
     room_id = rooms.bamboo1.id
     south = rooms.qfdian.id
-    southeast = rooms.bamboo.id
-    northwest = rooms.bamboo.id
+    southeast = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
+    northwest = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     southwest = rooms.bamboo2.id
-    northeast = rooms.bamboo.id
+    northeast = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/bamboo10.c by LPCConverter
@@ -383,10 +383,10 @@ direction = ~
 
   room_exits "bamboo10" {
     room_id = rooms.bamboo10.id
-    west = rooms.bamboo.id
-    east = rooms.bamboo.id
+    west = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
+    east = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     south = rooms.bamboo11.id
-    north = rooms.bamboo.id
+    north = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/bamboo11.c by LPCConverter
@@ -402,10 +402,10 @@ direction = ~
 
   room_exits "bamboo11" {
     room_id = rooms.bamboo11.id
-    north = rooms.bamboo.id
-    south = rooms.bamboo.id
+    north = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
+    south = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     west = rooms.bamboo12.id
-    east = rooms.bamboo.id
+    east = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/bamboo12.c by LPCConverter
@@ -421,10 +421,10 @@ direction = ~
 
   room_exits "bamboo12" {
     room_id = rooms.bamboo12.id
-    west = rooms.bamboo.id
-    east = rooms.bamboo.id
+    west = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
+    east = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     north = rooms.bamboo13.id
-    south = rooms.bamboo.id
+    south = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/bamboo13.c by LPCConverter
@@ -440,10 +440,10 @@ direction = ~
 
   room_exits "bamboo13" {
     room_id = rooms.bamboo13.id
-    southwest = rooms.bamboo.id
-    southeast = rooms.bamboo.id
+    southwest = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
+    southeast = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     northwest = rooms.bamboo14.id
-    northeast = rooms.bamboo.id
+    northeast = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/bamboo14.c by LPCConverter
@@ -459,10 +459,10 @@ direction = ~
 
   room_exits "bamboo14" {
     room_id = rooms.bamboo14.id
-    west = rooms.bamboo.id
-    east = rooms.bamboo.id
+    west = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
+    east = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     north = rooms.damodong.id
-    south = rooms.bamboo.id
+    south = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/bamboo2.c by LPCConverter
@@ -478,10 +478,10 @@ direction = ~
 
   room_exits "bamboo2" {
     room_id = rooms.bamboo2.id
-    southeast = rooms.bamboo.id
-    northwest = rooms.bamboo.id
+    southeast = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
+    northwest = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     southwest = rooms.bamboo3.id
-    northeast = rooms.bamboo.id
+    northeast = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/bamboo3.c by LPCConverter
@@ -497,10 +497,10 @@ direction = ~
 
   room_exits "bamboo3" {
     room_id = rooms.bamboo3.id
-    west = rooms.bamboo.id
-    east = rooms.bamboo.id
+    west = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
+    east = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     north = rooms.bamboo4.id
-    south = rooms.bamboo.id
+    south = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/bamboo4.c by LPCConverter
@@ -516,10 +516,10 @@ direction = ~
 
   room_exits "bamboo4" {
     room_id = rooms.bamboo4.id
-    west = rooms.bamboo.id
-    east = rooms.bamboo.id
+    west = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
+    east = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     north = rooms.bamboo5.id
-    south = rooms.bamboo.id
+    south = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/bamboo5.c by LPCConverter
@@ -535,10 +535,10 @@ direction = ~
 
   room_exits "bamboo5" {
     room_id = rooms.bamboo5.id
-    west = rooms.bamboo.id
-    south = rooms.bamboo.id
+    west = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
+    south = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     north = rooms.bamboo6.id
-    east = rooms.bamboo.id
+    east = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/bamboo6.c by LPCConverter
@@ -554,10 +554,10 @@ direction = ~
 
   room_exits "bamboo6" {
     room_id = rooms.bamboo6.id
-    east = rooms.bamboo.id
-    south = rooms.bamboo.id
+    east = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
+    south = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     north = rooms.bamboo7.id
-    west = rooms.bamboo.id
+    west = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/bamboo7.c by LPCConverter
@@ -573,10 +573,10 @@ direction = ~
 
   room_exits "bamboo7" {
     room_id = rooms.bamboo7.id
-    north = rooms.bamboo.id
-    west = rooms.bamboo.id
+    north = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
+    west = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     south = rooms.bamboo8.id
-    east = rooms.bamboo.id
+    east = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/bamboo8.c by LPCConverter
@@ -592,10 +592,10 @@ direction = ~
 
   room_exits "bamboo8" {
     room_id = rooms.bamboo8.id
-    north = rooms.bamboo.id
-    south = rooms.bamboo.id
+    north = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
+    south = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     east = rooms.bamboo9.id
-    west = rooms.bamboo.id
+    west = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/bamboo9.c by LPCConverter
@@ -611,10 +611,10 @@ direction = ~
 
   room_exits "bamboo9" {
     room_id = rooms.bamboo9.id
-    north = rooms.bamboo.id
-    south = rooms.bamboo.id
+    north = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
+    south = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     east = rooms.bamboo10.id
-    west = rooms.bamboo.id
+    west = [rooms.bamboo1.id,rooms.bamboo2.id,rooms.bamboo3.id,rooms.bamboo4.id,rooms.bamboo5.id,rooms.bamboo6.id,rooms.bamboo7.id,rooms.bamboo8.id,rooms.bamboo9.id,rooms.bamboo10.id,rooms.bamboo11.id,rooms.bamboo12.id,rooms.bamboo13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/banruo1.c by LPCConverter
@@ -1011,10 +1011,8 @@ valid_leave = [
     items = [
       { id = items.dao_yi.id },
       { id = items.wuming.id },
-      { id = items.fojing10.id },
-      { id = items.fojing11.id },
-      { id = items.fojing20.id },
-      { id = items.fojing21.id }    ]
+      { id = [items.fojing10.id,items.fojing11.id] },
+      { id = [items.fojing20.id,items.fojing21.id] }    ]
   }
 
 # Generated from C:/files/git/mud/d/shaolin/cjlou1.c by LPCConverter
@@ -2164,8 +2162,7 @@ valid_leave = [
     room_id = rooms.jianyu.id
     items = [
       { id = items.qing_yuan.id },
-      { id = items.fojing10.id },
-      { id = items.fojing11.id }    ]
+      { id = [items.fojing10.id,items.fojing11.id] }    ]
   }
 
 # Generated from C:/files/git/mud/d/shaolin/jianyu1.c by LPCConverter
@@ -2767,7 +2764,7 @@ direction = ~
   room_exits "rukou" {
     room_id = rooms.rukou.id
     north = rooms.andao1.id
-    south = rooms.wuxing.id
+    south = [rooms.wuxing0.id,rooms.wuxing1.id,rooms.wuxing2.id,rooms.wuxing3.id,rooms.wuxing4.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/ruzhou.c by LPCConverter
@@ -3520,10 +3517,10 @@ direction = ~
 
   room_exits "shulin1" {
     room_id = rooms.shulin1.id
-    north = rooms.shulin.id
+    north = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     west = rooms.guangchang1e.id
     south = rooms.shulin2.id
-    east = rooms.shulin.id
+    east = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     }
 
 
@@ -3550,10 +3547,10 @@ direction = ~
     room_id = rooms.shulin10.id
     up = rooms.shulin11.id
     down = rooms.jiebei.id
-    east = rooms.shulin.id
-    south = rooms.shulin.id
-    west = rooms.shulin.id
-    north = rooms.shulin.id
+    east = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    south = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    west = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    north = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
     }
 
 
@@ -3580,10 +3577,10 @@ direction = ~
     room_id = rooms.shulin11.id
     up = rooms.shulin12.id
     down = rooms.shulin10.id
-    east = rooms.shulin.id
-    south = rooms.shulin.id
-    west = rooms.shulin.id
-    north = rooms.shulin.id
+    east = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    south = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    west = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    north = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/shulin12.c by LPCConverter
@@ -3601,10 +3598,10 @@ direction = ~
     room_id = rooms.shulin12.id
     up = rooms.shulin13.id
     down = rooms.shulin11.id
-    east = rooms.shulin.id
-    south = rooms.shulin.id
-    west = rooms.shulin.id
-    north = rooms.shulin.id
+    east = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    south = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    west = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    north = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/shulin13.c by LPCConverter
@@ -3622,10 +3619,10 @@ direction = ~
     room_id = rooms.shulin13.id
     up = rooms.shulin9.id
     down = rooms.shulin12.id
-    east = rooms.shulin.id
-    south = rooms.shulin.id
-    west = rooms.shulin.id
-    north = rooms.shulin.id
+    east = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    south = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    west = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    north = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/shulin14.c by LPCConverter
@@ -3641,10 +3638,10 @@ direction = ~
 
   room_exits "shulin14" {
     room_id = rooms.shulin14.id
-    north = rooms.shulin.id
+    north = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     west = rooms.shulin8.id
     south = rooms.qyping.id
-    east = rooms.shulin.id
+    east = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/shulin2.c by LPCConverter
@@ -3660,9 +3657,9 @@ direction = ~
 
   room_exits "shulin2" {
     room_id = rooms.shulin2.id
-    north = rooms.shulin.id
+    north = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     west = rooms.shulin1.id
-    south = rooms.shulin.id
+    south = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     east = rooms.shulin3.id
     }
 
@@ -3679,8 +3676,8 @@ direction = ~
 
   room_exits "shulin3" {
     room_id = rooms.shulin3.id
-    north = rooms.shulin.id
-    west = rooms.shulin.id
+    north = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
+    west = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     south = rooms.shulin4.id
     east = rooms.shulin2.id
     }
@@ -3699,8 +3696,8 @@ direction = ~
   room_exits "shulin4" {
     room_id = rooms.shulin4.id
     north = rooms.shulin3.id
-    west = rooms.shulin.id
-    south = rooms.shulin.id
+    west = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
+    south = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     east = rooms.shulin5.id
     }
 
@@ -3718,9 +3715,9 @@ direction = ~
   room_exits "shulin5" {
     room_id = rooms.shulin5.id
     north = rooms.shulin6.id
-    west = rooms.shulin.id
+    west = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     south = rooms.shulin4.id
-    east = rooms.shulin.id
+    east = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/shulin6.c by LPCConverter
@@ -3737,8 +3734,8 @@ direction = ~
   room_exits "shulin6" {
     room_id = rooms.shulin6.id
     north = rooms.shulin7.id
-    west = rooms.shulin.id
-    south = rooms.shulin.id
+    west = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
+    south = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     east = rooms.shulin5.id
     }
 
@@ -3756,8 +3753,8 @@ direction = ~
   room_exits "shulin7" {
     room_id = rooms.shulin7.id
     north = rooms.shulin6.id
-    west = rooms.shulin.id
-    south = rooms.shulin.id
+    west = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
+    south = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     east = rooms.shulin8.id
     }
 
@@ -3774,9 +3771,9 @@ direction = ~
 
   room_exits "shulin8" {
     room_id = rooms.shulin8.id
-    north = rooms.shulin.id
+    north = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     west = rooms.shulin14.id
-    south = rooms.shulin.id
+    south = [rooms.shulin2.id,rooms.shulin3.id,rooms.shulin4.id,rooms.shulin5.id,rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id]
     east = rooms.shulin7.id
     }
 
@@ -3795,10 +3792,10 @@ direction = ~
     room_id = rooms.shulin9.id
     up = rooms.wuxing0.id
     down = rooms.shulin13.id
-    east = rooms.shulin.id
-    south = rooms.shulin.id
-    west = rooms.shulin.id
-    north = rooms.shulin.id
+    east = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    south = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    west = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
+    north = [rooms.shulin6.id,rooms.shulin7.id,rooms.shulin8.id,rooms.shulin9.id,rooms.shulin10.id,rooms.shulin11.id,rooms.shulin12.id,rooms.shulin13.id]
     }
 
 # Generated from C:/files/git/mud/d/shaolin/smdian.c by LPCConverter

@@ -52,8 +52,8 @@
   # if (random(5) == 0)  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: reset
   # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: reset
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -84,8 +84,8 @@
   # if (me->query_temp("marks/pen"))  →  
 # ==== CONDITIONAL BRANCHES (do_knock) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: end_whisper
   # UNHANDLED FUNCTION: do_knock
+  # UNHANDLED FUNCTION: end_whisper
   # UNHANDLED FUNCTION: do_say
   # UNHANDLED FUNCTION: check_pass
 # ==== UNHANDLED FUNCTIONS ====
@@ -175,9 +175,9 @@
   # if (! arg || arg != "qin")  →  
 # ==== CONDITIONAL BRANCHES (do_tan) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_break
-  # UNHANDLED FUNCTION: do_tan
   # UNHANDLED FUNCTION: mantuo
+  # UNHANDLED FUNCTION: do_tan
+  # UNHANDLED FUNCTION: do_break
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -204,9 +204,9 @@
   # if (susu->query_temp("marks/served"))  →  message_vision('素素不耐烦地对$N说道：我这里忙着呢！\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (do_tap) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: delete_served
-  # UNHANDLED FUNCTION: do_sit
   # UNHANDLED FUNCTION: do_tap
+  # UNHANDLED FUNCTION: do_sit
+  # UNHANDLED FUNCTION: delete_served
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -331,8 +331,8 @@
   # if (interactive(ob = this_player()) && !is_fighting())  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: reset
   # UNHANDLED FUNCTION: serve_tea
+  # UNHANDLED FUNCTION: reset
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

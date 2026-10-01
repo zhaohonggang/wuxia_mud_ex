@@ -1645,12 +1645,22 @@ def _room_id_from_path(path):
 # point at.  An exit into one of them cannot be expressed as a zone reference.
 _UNLINKABLE_ROOTS = ("/clone/", "/b/", "/u/", "/adm/", "/cmds/", "/include/")
 
-# `__DIR__"shulin" + (random(8) + 6)` - an LPC runtime pick among n files,
-# offset by k: the driver evaluates str(random(8) + 6), i.e. 6..13, so the
-# destination is one of shulin6 .. shulin13.
-_RANDOM_OFFSET_RE = re.compile(
-    r'^(?P<stem>[^+\[\]()$]+?)\s*\+\s*\(\s*random\(\s*(?P<n>\d+)\s*\)\s*'
-    r'\+\s*(?P<k>\d+)\s*\)\s*$')
+# An LPC runtime pick: a literal path concatenated with random(n), optionally
+# offset by k.  The driver evaluates str(random(n) [+ k]) ONCE per key, so the
+# destination is exactly one of the candidates.
+#
+#     __DIR__"shulin" + (random(8) + 6)   ->  shulin6 .. shulin13   (offset 6)
+#     __DIR__"obj/fojing1" + random(2)   ->  fojing10, fojing11  (no offset)
+#     __DIR__"wuxing" + random(5)       ->  wuxing0 .. wuxing4   (no offset, no
+#                                                                 spaces, no parens)
+#
+# The last form is shaolin/rukou.c's "south" exit; requiring the parentheses and
+# the offset (an earlier version of this pattern) let it through unresolved and
+# emitted `rooms.wuxing+random(5).id` straight into the UCL.
+_RANDOM_PICK_RE = re.compile(
+    r'^(?P<stem>[^+\[\]()$]+?)\s*\+\s*'
+    r'\(?\s*random\(\s*(?P<n>\d+)\s*\)'
+    r'(?:\s*\+\s*(?P<k>\d+)\s*\)?)?\s*$')
 
 # A runtime-picked path: a literal path concatenated with `random(...)`, e.g.
 #     __DIR__"shulin" + (random(8) + 6)     ->  shulin6 .. shulin13
@@ -1671,7 +1681,8 @@ def _classify_exit_path(path, zone_id):
       ("sub",    room_id)               same zone, written with a subdirectory
                                          (e.g. "dule/xiaoyuan", "heisenlin/entry")
       ("random", [room_id, ...])        runtime pick among several rooms
-                                         (`__DIR__"shulin" + (random(8) + 6)`)
+                                         (`__DIR__"shulin" + (random(8) + 6)`,
+                                          `__DIR__"wuxing" + random(5)`)
       ("self",   None)                  __FILE__ / the room itself
       ("skip",   reason)                no data/world zone to point at
     """
@@ -1682,14 +1693,17 @@ def _classify_exit_path(path, zone_id):
     t = raw.replace("__DIR__", "").replace('"', "").strip()
 
     # A runtime-picked destination:  __DIR__"shulin" + (random(8) + 6)
-    # The MUD concatenates str(random(n) + k), so this names exactly the n files
-    # shulin<k+1> .. shulin<k+n>.  gaochang/shulin1.c and shaolin/shulin10.c use
-    # it in all four directions.  Returning the whole set (rather than the bare
-    # stem, which produced a reference to a room that does not exist) lets the
+    # The MUD concatenates str(random(n) [+ k]), so this names exactly the n
+    # files stem<k+0> .. stem<k+n-1>.  gaochang/shulin1.c and shaolin/shulin10.c
+    # use the offset form in all four directions; shaolin/rukou.c uses the bare
+    # `__DIR__"wuxing" + random(5)`.  Returning the whole candidate set (rather
+    # than the bare stem, which named a room that does not exist) lets the
     # loader pick one per room, exactly as the LPC driver did.
-    rand = _RANDOM_OFFSET_RE.match(t)
+    rand = _RANDOM_PICK_RE.match(t)
     if rand:
-        stem, n, k = rand.group(1), int(rand.group(2)), int(rand.group(3))
+        stem = rand.group("stem")
+        n = int(rand.group("n"))
+        k = int(rand.group("k") or 0)
         if n > 0 and stem:
             return ("random", [_room_id_from_path("%s%d" % (stem, k + i))
                                for i in range(n)])

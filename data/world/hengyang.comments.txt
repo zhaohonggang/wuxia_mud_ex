@@ -65,11 +65,11 @@
   # if (here->query_temp("marks/拉"))  →  write('蜘蛛网已经被拉破了。\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_pull) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: look_net
+  # UNHANDLED FUNCTION: do_think
+  # UNHANDLED FUNCTION: do_pull
   # UNHANDLED FUNCTION: look_wall
   # UNHANDLED FUNCTION: do_climb
-  # UNHANDLED FUNCTION: do_think
-  # UNHANDLED FUNCTION: look_net
-  # UNHANDLED FUNCTION: do_pull
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -240,12 +240,12 @@
   # if (! me->query_temp("gua"))  →  
 # ==== CONDITIONAL BRANCHES (look_bi) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: look_pic3
-  # UNHANDLED FUNCTION: do_gua
-  # UNHANDLED FUNCTION: look_pic2
   # UNHANDLED FUNCTION: look_pic1
   # UNHANDLED FUNCTION: look_bi
+  # UNHANDLED FUNCTION: look_pic3
+  # UNHANDLED FUNCTION: do_gua
   # UNHANDLED FUNCTION: do_canwu
+  # UNHANDLED FUNCTION: look_pic2
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -312,9 +312,9 @@
 # ==== CONDITIONAL BRANCHES (do_push) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: close_out
-  # UNHANDLED FUNCTION: do_push
-  # UNHANDLED FUNCTION: do_knock
   # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_knock
+  # UNHANDLED FUNCTION: do_push
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -360,8 +360,8 @@
   # if (me->query_temp("la_teng"))  →  
 # ==== CONDITIONAL BRANCHES (do_la) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_la
   # UNHANDLED FUNCTION: do_tiao
+  # UNHANDLED FUNCTION: do_la
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -426,10 +426,10 @@
   # if (here->query_temp("marks/推"))  →  
 # ==== CONDITIONAL BRANCHES (look_bi) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_tiao
-  # UNHANDLED FUNCTION: do_push
   # UNHANDLED FUNCTION: auto_close
   # UNHANDLED FUNCTION: look_bi
+  # UNHANDLED FUNCTION: do_tiao
+  # UNHANDLED FUNCTION: do_push
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -539,9 +539,9 @@
 # ==== CONDITIONAL BRANCHES (look_bi) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_xue
-  # UNHANDLED FUNCTION: do_he
-  # UNHANDLED FUNCTION: do_ba
   # UNHANDLED FUNCTION: look_bi
+  # UNHANDLED FUNCTION: do_ba
+  # UNHANDLED FUNCTION: do_he
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -709,11 +709,11 @@
   # if (here->query_temp("marks/移"))  →  write(HIG '\\\\\n你用力一推，将石桌移回了原处。\\\\\n\\\\\n' NOR);
 # ==== CONDITIONAL BRANCHES (do_move) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: do_pick
   # UNHANDLED FUNCTION: reset
   # UNHANDLED FUNCTION: look_desk
+  # UNHANDLED FUNCTION: do_move
   # UNHANDLED FUNCTION: look_keng
-  # UNHANDLED FUNCTION: do_pick
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -921,8 +921,8 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH POOL: switch( random(2) ) { case 0: say(CYN "店小二笑咪咪地说道：这位" + RANK_D->query_respect(ob) + "，进来喝杯茶，歇歇腿吧。\n" NOR); break; case 1: say(CYN "店小二用脖子上的毛巾抹了抹手，说道：这位" + RANK_D->query_respect(ob)+ "，请进请进。\n" NOR); break; }
 # ==== SWITCH POOLS ====
-  # UNHANDLED FUNCTION: saying
   # UNHANDLED FUNCTION: kicking
+  # UNHANDLED FUNCTION: saying
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -947,8 +947,8 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH POOL: switch( random(2) ) { case 0: say( "店小二笑咪咪地说道：这位" + RANK_D->query_respect(ob) + "，进来喝杯茶，歇歇腿吧。\n"); break; case 1: say( "店小二用脖子上的毛巾抹了抹手，说道：这位" + RANK_D->query_respect(ob) + "，请进请进。\n"); break; }
 # ==== SWITCH POOLS ====
-  # UNHANDLED FUNCTION: saying
   # UNHANDLED FUNCTION: kicking
+  # UNHANDLED FUNCTION: saying
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

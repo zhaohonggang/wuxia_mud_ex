@@ -167,6 +167,34 @@ check("render bracketed, no spaces",
 check("plain path is still local",
       C._classify_exit_path('__DIR__"shulin"', "gaochang"),
       ("local", "shulin"))
+# All three spellings of the runtime pick must resolve.  shaolin/rukou.c writes
+# the bare form with no spaces and no parentheses:
+#     "south" : __DIR__"wuxing"+random(5),
+# An earlier pattern required both the parentheses and the `+ k` offset, so this
+# one fell through and emitted `rooms.wuxing+random(5).id` into the UCL verbatim.
+for src, want in [
+    ('__DIR__"wuxing"+random(5)',
+     ["wuxing0", "wuxing1", "wuxing2", "wuxing3", "wuxing4"]),
+    ('__DIR__"wuxing" + random(5)',
+     ["wuxing0", "wuxing1", "wuxing2", "wuxing3", "wuxing4"]),
+    ('__DIR__"shulin" + (random(8) + 6)',
+     ["shulin6", "shulin7", "shulin8", "shulin9",
+      "shulin10", "shulin11", "shulin12", "shulin13"]),
+]:
+    kind, *rest = C._classify_exit_path(src, "shaolin")
+    check("pick(%s)" % src, (kind, rest[0]), ("random", want))
+
+# A variable concatenation is NOT a runtime pick and must not become one.
+check("variable concat is not a pick",
+      C._classify_exit_path('__DIR__"obj/" + weapon_file', "shaolin")[0],
+      "local")
+
+# No exit target may leak a raw runtime expression any more.
+check("no leak: rukou south",
+      C._resolve_exit_target(("var", '__DIR__"wuxing"+random(5)'),
+                             "shaolin", "rukou")[0],
+      "[rooms.wuxing0.id,rooms.wuxing1.id,rooms.wuxing2.id,"
+      "rooms.wuxing3.id,rooms.wuxing4.id]")
 
 
 # ---------------------------------------------------------------- D

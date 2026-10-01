@@ -178,8 +178,8 @@
   # if ( me->query("fight_times") >= 10 )  →  
 # ==== CONDITIONAL BRANCHES (accept_fight) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: checking
   # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: checking
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

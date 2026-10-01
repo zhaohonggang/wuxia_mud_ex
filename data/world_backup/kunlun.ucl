@@ -91,7 +91,7 @@ item_desc = {
 
   room_exits "conglinggu" {
     room_id = rooms.conglinggu.id
-  south = rooms.shanlin.id  }
+  south = [rooms.shanlin1.id,rooms.shanlin2.id,rooms.shanlin3.id,rooms.shanlin4.id,rooms.shanlin5.id]  }
 
 
 
@@ -643,8 +643,8 @@ item_desc = {
     room_id = rooms.shanlin2.id
   north = rooms.houyuan.id
   east = rooms.shanlin1.id
-  south = rooms.shanlin.id
-  west = rooms.shanlin.id  }
+  south = [rooms.shanlin1.id,rooms.shanlin2.id,rooms.shanlin3.id,rooms.shanlin4.id,rooms.shanlin5.id]
+  west = [rooms.shanlin1.id,rooms.shanlin2.id,rooms.shanlin3.id,rooms.shanlin4.id,rooms.shanlin5.id]  }
 
 # Generated from C:/files/git/mud/d/kunlun/shanlin3.c by LPCConverter
 # Zone: kunlun
@@ -659,10 +659,10 @@ item_desc = {
 
   room_exits "shanlin3" {
     room_id = rooms.shanlin3.id
-  west = rooms.shanlin.id
+  west = [rooms.shanlin1.id,rooms.shanlin2.id,rooms.shanlin3.id,rooms.shanlin4.id,rooms.shanlin5.id]
   east = rooms.shanlin4.id
-  north = rooms.shanlin.id
-  south = rooms.shanlin.id  }
+  north = [rooms.shanlin1.id,rooms.shanlin2.id,rooms.shanlin3.id,rooms.shanlin4.id,rooms.shanlin5.id]
+  south = [rooms.shanlin1.id,rooms.shanlin2.id,rooms.shanlin3.id,rooms.shanlin4.id,rooms.shanlin5.id]  }
 
 # Generated from C:/files/git/mud/d/kunlun/shanlin4.c by LPCConverter
 # Zone: kunlun
@@ -677,10 +677,10 @@ item_desc = {
 
   room_exits "shanlin4" {
     room_id = rooms.shanlin4.id
-  west = rooms.shanlin.id
+  west = [rooms.shanlin1.id,rooms.shanlin2.id,rooms.shanlin3.id,rooms.shanlin4.id,rooms.shanlin5.id]
   south = rooms.shanlin5.id
-  north = rooms.shanlin.id
-  east = rooms.shanlin.id  }
+  north = [rooms.shanlin1.id,rooms.shanlin2.id,rooms.shanlin3.id,rooms.shanlin4.id,rooms.shanlin5.id]
+  east = [rooms.shanlin1.id,rooms.shanlin2.id,rooms.shanlin3.id,rooms.shanlin4.id,rooms.shanlin5.id]  }
 
 # Generated from C:/files/git/mud/d/kunlun/shanlin5.c by LPCConverter
 # Zone: kunlun
@@ -695,10 +695,10 @@ item_desc = {
 
   room_exits "shanlin5" {
     room_id = rooms.shanlin5.id
-  east = rooms.shanlin.id
+  east = [rooms.shanlin1.id,rooms.shanlin2.id,rooms.shanlin3.id,rooms.shanlin4.id,rooms.shanlin5.id]
   west = rooms.shanlin6.id
   north = rooms.conglinggu.id
-  south = rooms.shanlin.id  }
+  south = [rooms.shanlin1.id,rooms.shanlin2.id,rooms.shanlin3.id,rooms.shanlin4.id,rooms.shanlin5.id]  }
 
 # Generated from C:/files/git/mud/d/kunlun/shanlin6.c by LPCConverter
 # Zone: kunlun
@@ -713,10 +713,10 @@ item_desc = {
 
   room_exits "shanlin6" {
     room_id = rooms.shanlin6.id
-  west = rooms.shanlin.id
+  west = [rooms.shanlin1.id,rooms.shanlin2.id,rooms.shanlin3.id,rooms.shanlin4.id,rooms.shanlin5.id]
   east = rooms.kuhanlou1.id
-  north = rooms.shanlin.id
-  south = rooms.shanlin.id  }
+  north = [rooms.shanlin1.id,rooms.shanlin2.id,rooms.shanlin3.id,rooms.shanlin4.id,rooms.shanlin5.id]
+  south = [rooms.shanlin1.id,rooms.shanlin2.id,rooms.shanlin3.id,rooms.shanlin4.id,rooms.shanlin5.id]  }
 
 # Generated from C:/files/git/mud/d/kunlun/shanlu.c by LPCConverter
 # Zone: kunlun
