@@ -29,7 +29,7 @@
 | **B** | `__FILE__` 丢弃补注释 | 低 | ✅ 2026-09-30 |
 | **C** | 动态选房悬空引用策略 | 中 | ✅ 2026-09-30 |
 | **D** | 修正八卦方向注释文案 | 低 | ✅ 2026-09-30 |
-| **E** | 2 条 LPC 源本身悬空 | — | ☐ 需决策 |
+| **E** | 2 条 LPC 源本身悬空 | — | ✅ 2026-10-01 |
 | **F** | 71 区人工验收 | 高 | ☐ |
 | **G** | 380 间不可达房间分类 | 中 | ☐ |
 | **H** | 跨区单向边可往返性验证 | 中 | ☐ |
@@ -146,15 +146,27 @@ loader 在加载时随机选一个——与 LPC 驱动「每个 key 求值一次
 
 ## 三、外部问题（转换侧无法修）
 
-### ☐ E. 2 条 LPC 源本身悬空的出口
+### ✅ E. 2 条 LPC 源本身悬空的出口（2026-10-01 全部处理完毕，无需改 LPC 语料）
 
-- [ ] 决定是否修改 LPC 语料（`C:\files\git\mud`，外部只读参考）
-- [ ] 或接受现状并在 SOP 登记
+两条最终都**不需要**动 LPC 语料，各有各的修法：
 
-| 位置 | 源码 | 情况 |
-|------|------|------|
-| `baituo/gebi -east->` | `/d/xiyu/shamo10` | `xiyu` 无此房间 |
-| `city/guangchang -liuxi->` | `/d/minimal_world/guangchang` | 靶场，按设计不转换 |
+- [x] `baituo/gebi -east-> /d/xiyu/shamo10` —— 随 B 项的**宏继承**修复一并恢复。`gebi` 的 `set("exits")` 写在宏里，之前宏继承没解析出来所以出口整体丢失，`xiyu:shamo10` 这个房间一直存在。产物现为 `east = xiyu.rooms.shamo10.id`。
+- [x] `city/guangchang -liuxi-> /d/minimal_world/guangchang` —— `minimal_world` 是靶场语料，按设计不转换，也没有 `data/world/minimal_world.ucl`。**修法是通用规则，不是为这个名字开的后门**：`scripts/lpc_converter.py` 新增 `_INSTALLED_ZONE_IDS`（`main()` 开头扫 `--output` 目录得出已安装的 zone id），当 `/d/<目录>/` 的目录**没有**已安装产物时，若出口方向名本身是一个已安装 zone id 就用它，否则丢弃并记原因。LPC 把这类出口按目的地命名，`"liuxi"` 正是已安装的柳溪镇 `data/world/liuxi.ucl`。
+  - **刻意不用房间名反查**：`guangchang`（镇广场）在 12 个已安装区里都存在，什么都定位不了。
+  - **刻意不做区名别名**：`minimal_world` 与 `liuxi` 是不同的地方（前者是更完整的 10 房柳溪镇、描述纯中文，后者是 8 房、双语），宣称两者同名会误导，还会顺手改掉别的区里任何 `/d/minimal_world/...` 引用。
+
+配套的运行时收尾（否则这条出口仍然走不通）：
+
+- [x] `Kantele.Character.LiuxiCommand` 从「柳溪系统暂未开放」桩改成真移动 `request_movement("liuxi")`。原先它是 `parse("liuxi", :run)` + `parse("柳溪", :run)` 的占位命令，玩家在扬州广场看得到 `liuxi` 方向却走不过去。保留独立模块（不并入 `MoveCommand`）是为了留住 LPC `cmds/std/liuxi.c` 的出处和 `柳溪` 中文别名。
+- [x] 反向出口：`data/world/liuxi.ucl` 的 `guangchang` 加 `yangzhou = city.rooms.guangchang.id`（LPC 原文用词：「镇口东北方向的官道(yangzhou)直通扬州府」；`commands.ex:719` + `move_command.ex:181` 已注册该方向）。`liuxi` / `signature` 不在那 71 个区的 SOP 转换清单里，属手工维护文件，SOP 重跑不覆盖。
+- [x] `north = signature.rooms.yinyi.id` 保留 —— 它是「隐世之境」区**唯一**的入口（509 行，全仓库仅此一处引用），改掉会让该区整体不可达。
+
+| 位置 | 源码 | 原判断 | 现状 |
+|------|------|------|------|
+| `baituo/gebi -east->` | `/d/xiyu/shamo10` | `xiyu` 无此房间 | ✅ 宏继承修复后已恢复，误判 |
+| `city/guangchang -liuxi->` | `/d/minimal_world/guangchang` | 靶场，按设计不转换 | ✅ 出口名反查已安装 zone，接通 `liuxi:guangchang` |
+
+验证：`scripts/test_lpc_path_rules.py` 全绿（E 段 7 条，含「无方向名则丢弃」「方向名不是 zone 则不救」「房间名不能选区」三条反向断言）；`liuxi_command_test` + `move_command_test` + `custom_direction_command_test` 46/46；`test/kantele/world/` 190 tests / 1 failure（即预存基线 `liandan_lin1`）。
 
 ---
 
@@ -321,4 +333,5 @@ mix test test/kantele/world/
 | 2026-09-30 | D 修复 | 方向跳过注释按真实原因分三类（空/CJK/数字/其它），不再误称 C 注释问题 | `test_lpc_path_rules.py` 48/48；70 区全绿；`mix test` 2991/1 |
 | 2026-09-30 | B 扩展 | `__FILE__` 137 条真实修正为自环（此前是跳过+注释） | `cross_zone_wiring_test` 5/5；70 区全绿；可达率不变 |
 | 2026-09-30 | A+B 修复 | `random(n)` 展开候选（shaolin 4 件佛经恢复）、同区子目录路径恢复 4 条、`d/<区名>/` 补前导斜杠恢复铁掌帮↔襄阳；`__FILE__` 133 条补注释 | 无注释丢失 136 → **0**；70 区 val/chk/elias 全绿；`test_lpc_path_rules.py` 28/28；`mix test` 2988/1 |
+| 2026-10-01 | E 完成 | 两条悬空出口均无需改 LPC 语料：`baituo/gebi` 随宏继承修复恢复；`city/guangchang -liuxi->` 改用「方向名反查已安装 zone」的通用规则（`_INSTALLED_ZONE_IDS`），接通 `liuxi:guangchang`；`LiuxiCommand` 桩改为真移动，`liuxi:guangchang` 补 `yangzhou` 回城 | `test_lpc_path_rules.py` E 段 7/7；`liuxi_command_test`+`move_command_test`+`custom_direction_command_test` 46/46；`test/kantele/world/` 190/1（预存基线 `liandan_lin1`） |
 | | | | |

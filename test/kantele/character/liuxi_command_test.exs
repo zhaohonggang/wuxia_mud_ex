@@ -55,15 +55,36 @@ defmodule Kantele.Character.LiuxiCommandTest do
     |> Enum.join("")
   end
 
+  defp movement_events(conn) do
+    Enum.filter(conn.events, fn event ->
+      event.topic == Kalevala.Event.Movement.Request
+    end)
+  end
+
   describe "liuxi 命令" do
-    test "显示暂未开放" do
+    test "发送 liuxi 移动请求" do
       p = player()
       conn = LiuxiCommand.run(build_conn(p), %{})
-      assert output_text(conn) =~ "暂未开放"
+      events = movement_events(conn)
+
+      assert length(events) == 1
+      assert hd(events).data.exit_name == "liuxi"
+    end
+
+    test "不再输出「暂未开放」" do
+      p = player()
+      conn = LiuxiCommand.run(build_conn(p), %{})
+
+      refute output_text(conn) =~ "暂未开放"
     end
 
     test "路由解析" do
       {:ok, parsed} = Kantele.Character.Commands.parse("liuxi")
+      assert parsed.module == LiuxiCommand
+    end
+
+    test "中文别名路由解析" do
+      {:ok, parsed} = Kantele.Character.Commands.parse("柳溪")
       assert parsed.module == LiuxiCommand
     end
   end

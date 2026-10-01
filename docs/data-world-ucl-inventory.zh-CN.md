@@ -153,20 +153,22 @@
 跨区出口在 UCL 里写成 `<zone>.rooms.<room>.id`。`Kantele.World.Loader.dereference/3`（`lib/kantele/world/loader.ex:1315-1343`）把参考的第一段当作 zone id 查找，因此这个形式可被加载器直接解析。
 
 - 全库跨区引用总数：**210**
-- 其中悬空：**2**
+- 其中悬空：**0**（2026-10-01，原 2 条均已解决）
 
 ### 悬空跨区引用
 
-| 来源文件 | 目标 | 原因 |
-|----------|------|------|
-| `baituo.ucl` | `xiyu/shamo10 (no such room)` | LPC 源本身悬空 |
-| `city.ucl` | `minimal_world/guangchang (no such zone)` | 目标区未转换（测试区） |
+- 悬空数已归零（2026-10-01，见 checklist E 项）。原表两条均已解决：
+
+| 来源文件 | 原目标 | 原原因 | 现状 |
+|----------|--------|--------|------|
+| `baituo.ucl` | `xiyu/shamo10` | 记为「LPC 源本身悬空」 | 误判。`gebi` 出口写在宏里，宏继承修复后已恢复为 `east = xiyu.rooms.shamo10.id` |
+| `city.ucl` | `minimal_world/guangchang` | 目标区未转换（测试区） | 已按出口方向名反查已安装 zone，接通 `liuxi.rooms.guangchang.id` |
 
 ### 按区域
 
 | zone | 跨区出口数 | 指向 |
 |------|-----------|------|
-| `city` | 13 | gaibang, guiyun, huanghe, jingzhou, luoyang, minimal_world, shaolin, taishan, wizard, wudang, xuedao, xueshan, zhongzhou |
+| `city` | 13 | gaibang, guiyun, huanghe, jingzhou, luoyang, liuxi, shaolin, taishan, wizard, wudang, xuedao, xueshan, zhongzhou |
 | `dali` | 8 | emei, foshan, kunming, tianlongsi, wanjiegu, wudu |
 | `huanghe` | 8 | changan, city, heimuya, lanzhou, lingzhou, taishan, village |
 | `wudang` | 8 | city, emei, guiyun, hengyang, jingzhou, xiangyang, xiaoyao |

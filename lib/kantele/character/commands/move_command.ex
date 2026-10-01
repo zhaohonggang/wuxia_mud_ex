@@ -145,9 +145,8 @@ defmodule Kantele.Character.MoveCommand do
   # 之前这些方向在房间里能看到、却打不出来（命令路由报 "What?"），
   # 因为 move_command.ex 只为固定方向定义了函数。
   #
-  # `liuxi` **故意不注册**：LPC 的 cmds/std/liuxi.c 已经占了这个词
-  # （Kantele.Character.LiuxiCommand，"柳溪系统暂未开放"），且该出口
-  # （city/guangchang）指向 minimal_world —— 按设计不转换的靶场，本来悬空。
+  # `liuxi` 由 Kantele.Character.LiuxiCommand 持有（它同时认 `柳溪` 这个中文
+  # 别名，且出自 LPC cmds/std/liuxi.c），那边同样是 request_movement("liuxi")。
   def leitai(conn, _params) do
     conn
     |> request_movement("leitai")

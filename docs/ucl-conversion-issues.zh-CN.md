@@ -569,12 +569,29 @@ Processing Kantele.Character.ChatAction, 47 left in the queue.
 把 `# skipped malformed exit direction '乾': ... (C comment artefact)` 改成
 准确描述（elias key 只接受 ASCII 标识符），与问题 3 的说明统一。
 
-## E. 两条 LPC 源本身的悬空出口（无法在转换侧修）
+## E. 两条 LPC 源本身的悬空出口（2026-10-01 已解决，都不必改 LPC 语料）
 
-| 位置 | 源码 | 情况 |
-|------|------|------|
-| `baituo/gebi -east->` | `/d/xiyu/shamo10` | `xiyu` 里没有 `shamo10` 房间，**LPC 源本身悬空** |
-| `city/guangchang -liuxi->` | `/d/minimal_world/guangchang` | `minimal_world` 是转换器靶场，按设计不转换 |
+原先判断是「无法在转换侧修」，两条都不成立，各有各的真实原因：
+
+| 位置 | 源码 | 原判断 | 真实原因与现状 |
+|------|------|------|------|
+| `baituo/gebi -east->` | `/d/xiyu/shamo10` | LPC 源本身悬空 | **误判**。`gebi` 的 `set("exits")` 写在宏里，宏继承没解析出来导致出口整体丢失；`xiyu:shamo10` 一直存在。随 B 项宏继承修复恢复，产物为 `east = xiyu.rooms.shamo10.id` |
+| `city/guangchang -liuxi->` | `/d/minimal_world/guangchang` | 靶场按设计不转换 | 事实成立但结论下早了。修法是**通用规则**：`scripts/lpc_converter.py` 新增 `_INSTALLED_ZONE_IDS`（`main()` 开头扫 `--output` 得出已安装 zone id），`/d/<目录>/` 的目录没有已安装产物时，若出口方向名本身是已安装 zone id 就用它。LPC 把这类出口按目的地命名，`"liuxi"` 正是已安装的柳溪镇 `data/world/liuxi.ucl` |
+
+两条都刻意避开的做法：
+
+- **不用房间名反查**：`guangchang`（镇广场）在 12 个已安装区里都存在，定位不了任何东西。
+- **不做区名别名**：`minimal_world` 与 `liuxi` 是不同的地方（前者 10 房、描述纯中文；后者 8 房、双语），宣称同名既误导，也会顺手改掉别的区里任何 `/d/minimal_world/...` 引用。
+
+运行时配套（否则出口仍走不通）：
+
+- `Kantele.Character.LiuxiCommand` 从「柳溪系统暂未开放」桩改为 `request_movement("liuxi")`（保留 `柳溪` 中文别名与 LPC `cmds/std/liuxi.c` 出处，故不并入 `MoveCommand`）。
+- `data/world/liuxi.ucl` 的 `guangchang` 补 `yangzhou = city.rooms.guangchang.id` 作回城方向（LPC 原文：「镇口东北方向的官道(yangzhou)直通扬州府」）。
+- `north = signature.rooms.yinyi.id` 保留 —— 它是「隐世之境」区唯一入口，全仓库仅此一处引用。
+
+验证：`test_lpc_path_rules.py` E 段 7/7；`liuxi_command_test` + `move_command_test` +
+`custom_direction_command_test` 46/46；`test/kantele/world/` 190 tests / 1 failure
+（即 I 项那个预存基线 `liandan_lin1`）。
 
 ## F. 71 区的人工验收尚未做
 

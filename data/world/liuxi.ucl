@@ -86,6 +86,7 @@ room_exits "guangchang" {
   west = rooms.lianwuchang.id
   east = rooms.tiepupu.id
   north = signature.rooms.yinyi.id
+  yangzhou = city.rooms.guangchang.id
 }
 
 rooms "lianwuchang" {
