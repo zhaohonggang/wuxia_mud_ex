@@ -266,6 +266,7 @@ docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test'
 | 坐标冲突/全 0 | BFS 队列/方向向量/孤儿房逻辑 | `scripts\assign_room_coords.py` |
 | `Integrity: no rooms defined` / `Structure: missing rooms, room_exits` | **该区本来就一个房间都没有**（纯物件区）。`mud/d/tangmen` 只有 `obj/feidao.c`、`obj/jili.c`，产物就只有 `zones` + `items` 块。这类文件是**合法的**——elias 能解析，`Loader.load/1` 也带着它正常加载整个世界 | `validate_ucl.py` 的 `_is_object_only_zone()` 做**窄化豁免**：`zones` 块存在 + `rooms` 与 `room_exits` 均为 0 + 至少一个 `items`/`characters` 块（证明转换器确实跑过）。这样「转换器把房间全丢了」仍抓得到——`22_bad_integrity_zero_rooms` 只有 zones 块、无任何物件，**仍然失败**；fixture `47_ok_object_only_zone` 锁定豁免行为。**别与 `special` 混淆**：六道轮回那 6 间房是有房间的，只是完全没有 `set("exits")`，属于另一类，照常走赋坐标即可（`assign_room_coords.py` 会为无出口的孤儿房补 `room_exits` 块并使其可达） |
 | 跨区出口指向不存在房间 | 转换器未解析外部路径、或目标区未转 | `scripts\lpc_converter.py` 的 `extract_exit_*`、跨区依赖顺序 |
+| 出口写成了 `rooms.<x>.id`，但 `<x>` 在本区不存在（悬空） | **已知源数据缺陷，非转换器问题**：LPC 源码里就写着这个不存在的房间名（房间被作者删除但出口未同步，或裸名指错了区——按 MudOS 语义裸名解析为同目录，或子目录路径写错）。加载器 `dereference/3` 返回 `nil`，`parse_exits/3` 的 `not is_nil` 过滤把它丢弃；elias 与 `validate_ucl.py` 都不报错，产物自洽，只是玩家看不到也走不了这个方向 | **不要在转换器里"发明"目标**。登记留档：`docs/ucl-dangling-exits.zh-CN.md`（当前 18 条 / 9 个区）。若要修，只能改 LPC 语料 `C:\files\git\mud`（外部只读参考，需先确认） |
 
 ---
 

@@ -229,6 +229,40 @@ for d in ("乾", "hole6", "a-b"):
     check("no false C-comment claim(%s)" % d, "C comment" in reason, False)
 
 
+# ---------------------------------------------------------------- E
+# A /d/<dir>/ exit whose LPC directory was never converted.  One city square
+# links out to another town under that town's name:
+#     "liuxi" : "/d/minimal_world/guangchang",
+# but that directory has no data/world zone, so the literal reference resolves to
+# nothing and the loader drops the exit.  LPC names the exit after the place it
+# leads to, and "liuxi" is the installed zone id of 柳溪镇, so the direction is the
+# recoverable signal.  Room-name matching is not: "guangchang" is a town square in
+# a dozen zones.
+print("\nE  unconverted cross-zone directory recovered from the direction")
+
+C._INSTALLED_ZONE_IDS = {"city", "liuxi", "shaolin", "xiangyang", "tiezhang"}
+
+check("direction names the installed zone",
+      C._classify_exit_path("/d/minimal_world/guangchang", "city", "liuxi"),
+      ("cross", "liuxi", "guangchang"))
+check("installed directory is untouched",
+      C._classify_exit_path("/d/shaolin/yidao", "city", "in"),
+      ("cross", "shaolin", "yidao"))
+check("no direction and no installed zone -> dropped",
+      C._classify_exit_path("/d/minimal_world/guangchang", "city"),
+      ("skip", "no installed zone 'minimal_world' for this room"))
+check("direction that is not a zone does not rescue it",
+      C._classify_exit_path("/d/minimal_world/guangchang", "city", "east"),
+      ("skip", "no installed zone 'minimal_world' for this room"))
+check("room name alone must not pick a zone",
+      C._classify_exit_path("/d/minimal_world/guangchang", "shaolin", "liuxi"),
+      ("cross", "liuxi", "guangchang"))
+check("ordinary slashless form still resolves",
+      C._classify_exit_path("d/xiangyang/caodi6", "tiezhang", "east"),
+      ("cross", "xiangyang", "caodi6"))
+check("installed-zone scan", "liuxi" in C.note_installed_zones("data/world"), True)
+
+
 print("")
 if FAILURES:
     print("FAILED: %d" % len(FAILURES))

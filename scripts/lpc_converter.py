@@ -1720,6 +1720,25 @@ def _room_id_from_path(path):
 # point at.  An exit into one of them cannot be expressed as a zone reference.
 _UNLINKABLE_ROOTS = ("/clone/", "/b/", "/u/", "/adm/", "/cmds/", "/include/")
 
+# Zone ids that actually exist as data/world/<zone>.ucl.  Refreshed by main() at
+# the start of every run so a cross-zone reference can be validated against what is
+# really installed rather than only against the LPC directory names.
+_INSTALLED_ZONE_IDS = set()
+
+
+def note_installed_zones(output_dir):
+    """Record which zone ids have a UCL file in the output directory."""
+    global _INSTALLED_ZONE_IDS
+    try:
+        names = os.listdir(output_dir)
+    except OSError:
+        _INSTALLED_ZONE_IDS = set()
+        return _INSTALLED_ZONE_IDS
+    _INSTALLED_ZONE_IDS = {n[:-4] for n in names
+                           if n.endswith(".ucl") and os.path.isfile(
+                               os.path.join(output_dir, n))}
+    return _INSTALLED_ZONE_IDS
+
 # An LPC runtime pick: a literal path concatenated with random(n), optionally
 # offset by k.  The driver evaluates str(random(n) [+ k]) ONCE per key, so the
 # destination is exactly one of the candidates.
@@ -1747,8 +1766,12 @@ _RUNTIME_PATH_RE = re.compile(
     r'^\s*(__DIR__)?"[^"]*"\s*\+\s*\(?\s*random\(')
 
 
-def _classify_exit_path(path, zone_id):
+def _classify_exit_path(path, zone_id, direction=None):
     """Classify an LPC exit target path.
+
+    `direction` is the exit key, used only as a last resort to recover the
+    destination zone when the LPC directory itself was never converted; see the
+    _INSTALLED_ZONE_IDS block below.
 
     Returns one of:
       ("local",  room_id)               same zone -> rooms.<room>.id
@@ -1801,6 +1824,20 @@ def _classify_exit_path(path, zone_id):
         room = _room_id_from_path(tail)
         if tzone == zone_id:
             return ("local", room)
+        if _INSTALLED_ZONE_IDS and tzone not in _INSTALLED_ZONE_IDS:
+            # The LPC directory has no data/world zone of its own, so
+            # "<tzone>.rooms.<room>.id" would resolve to nothing and the loader
+            # would drop the exit.  The author's intent is still recoverable from
+            # the direction itself: LPC names such an exit after the place it leads
+            # to, and the town square of one city links out to another town under
+            # that town's name.  When the direction is itself an installed zone id,
+            # prefer it over the unconvertible directory.  Room-name matching is
+            # deliberately NOT used as a fallback: "guangchang" is the town square
+            # of a dozen zones, so it identifies nothing.
+            if direction and direction in _INSTALLED_ZONE_IDS \
+                    and direction != zone_id:
+                return ("cross", direction, room)
+            return ("skip", "no installed zone %r for this room" % tzone)
         return ("cross", tzone, room)
 
     for root in _UNLINKABLE_ROOTS:
@@ -1829,7 +1866,7 @@ def _classify_exit_path(path, zone_id):
     return ("local", _room_id_from_path(t))
 
 
-def _resolve_exit_target(val, zone_id, room_id=None):
+def _resolve_exit_target(val, zone_id, room_id=None, direction=None):
     """Render an exit value as a UCL reference.
 
     Cross-zone targets become `<zone>.rooms.<room>.id` because that is the shape
@@ -1843,12 +1880,13 @@ def _resolve_exit_target(val, zone_id, room_id=None):
     beijing/road3).
 
     `room_id` is the room being generated; it is only needed to resolve
-    `__FILE__`, which names the room itself.
+    `__FILE__`, which names the room itself.  `direction` is the exit key, used to
+    recover the destination zone when the LPC directory was never converted.
     """
     if isinstance(val, tuple) and val[0] == "string":
-        kind, *rest = _classify_exit_path(val[1], zone_id)
+        kind, *rest = _classify_exit_path(val[1], zone_id, direction)
     elif isinstance(val, tuple) and val[0] == "var":
-        kind, *rest = _classify_exit_path(val[1].strip(), zone_id)
+        kind, *rest = _classify_exit_path(val[1].strip(), zone_id, direction)
     else:
         return None, "non-literal exit target"
 
@@ -2088,7 +2126,8 @@ def _generate_room_ucl(ast, zone_id):
                 # rather than emitting a dangling target the loader would follow.
                 skipped.append(direction)
                 continue
-            target, why = _resolve_exit_target(val, zone_id, room_id)
+            target, why = _resolve_exit_target(val, zone_id, room_id,
+                                               direction=direction)
             if target is None:
                 # No data/world zone to point at (/clone/shop, /b/, __FILE__,
                 # a relative path, ...).  Dropping it is correct: a bare
@@ -3184,6 +3223,13 @@ def main(argv):
     zone_id = opts.get("zone")
     output_dir = opts.get("output", "data/world")
     recursive = opts.get("recursive", True)
+
+    # Which zones are really installed.  A cross-zone exit into an LPC directory
+    # that was never converted can only be recovered from the exit direction, and
+    # that recovery must not fire while converting into a staging directory that
+    # has no zones in it yet, so only trust it when the directory already has
+    # something in it.
+    note_installed_zones(output_dir)
 
     if os.path.isdir(path):
         files = _walk_c_files(path)

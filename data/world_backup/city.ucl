@@ -512,7 +512,7 @@ item_desc = {
   west = rooms.xidajie1.id
   north = rooms.beidajie1.id
   in = gaibang.rooms.inhole.id
-  liuxi = minimal_world.rooms.guangchang.id  }
+  liuxi = liuxi.rooms.guangchang.id  }
 
 
   room_characters "guangchang" {

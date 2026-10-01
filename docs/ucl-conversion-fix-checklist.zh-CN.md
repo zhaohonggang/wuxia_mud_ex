@@ -27,7 +27,7 @@
 |----|------|--------|------|
 | **A** | 修 `_classify_exit_path` 三处分类错误 | 高 | ✅ 2026-09-30 |
 | **B** | `__FILE__` 丢弃补注释 | 低 | ✅ 2026-09-30 |
-| **C** | 动态选房 103 条悬空引用策略 | 中 | ☐ 待决策 |
+| **C** | 动态选房悬空引用策略 | 中 | ✅ 2026-09-30 |
 | **D** | 修正八卦方向注释文案 | 低 | ✅ 2026-09-30 |
 | **E** | 2 条 LPC 源本身悬空 | — | ☐ 需决策 |
 | **F** | 71 区人工验收 | 高 | ☐ |
@@ -99,26 +99,48 @@
 
 ## 二、数据层待决策
 
-### ☐ C. 动态选房 103 条悬空引用的处理策略
+### [x] C. 动态选房悬空引用的处理策略 ✅ 2026-09-30
 
-**先分类，再决策。** 103 条 / 12 个区：
+**先分类，再决策。** 调查时 103 条 / 12 个区；A 类（宏继承）修复又带回
+10 个文件，最终 **18 条 / 9 个区**，全部属「LPC 源本身写错」。
 
-| zone | 条数 | 备注 |
-|------|------|------|
-| `shaolin` | 46 | 非 `random(n)` 模式，需单独确认 |
-| `gaochang` | 17 | 典型 `__DIR__"shulin" + (random(10)+2)` |
-| `test` | 10 | 非 mud 语料区 |
-| `kunlun` | 8 | |
-| `global` | 7 | 非 mud 语料区 |
-| `huashan` | 5 | |
-| `city` / `quanzhou` | 各 3 | |
-| `lingxiao` / `suzhou` / 另 2 区 | 各 1 | |
+| zone | 剩余条数 | 备注 |
+|------|----------|------|
+| `quanzhou` | 5 | `laozhai` `wuqiku` `zhulin1` `zhulin3` `hsyuan2` |
+| `suzhou` | 3 | `jiaxing` `qzroad1` `qzroad3` |
+| `tulong` | 3 | `tongdao` `song2` `baihe` |
+| `death` | 2 | `heisenlin/exit` `heisenlin/entry`（子目录也不存在） |
+| `heimuya` | 1 | `mishi` |
+| `huashan` | 1 | `road1` |
+| `lingxiao` | 1 | `bingqiao` |
+| `wudang` | 1 | `lameigt` |
+| `zhongzhou` | 1 | `guandao6` |
 
-- [ ] 逐条判定：可展开的 `random` / LPC 源本身写错
-- [ ] 决策：展开候选 / 跳过并注释 / 登记为已知限制
-- [ ] 按决策实现
-- [ ] 重跑受影响区域
-- [ ] 在 `docs/zone-conversion-sop.zh-CN.md` 错误表登记该模式
+- [x] 逐条判定：可展开的 `random` / LPC 源本身写错
+- [x] 决策：展开候选 / 跳过并注释 / 登记为已知限制
+- [x] 按决策实现
+- [x] 重跑受影响区域
+- [x] 在 `docs/zone-conversion-sop.zh-CN.md` 错误表登记该模式
+
+### 实际结果
+
+**`random(n)` 类（已修）**　转换器把 `+ random(n) [+ k]` 展开成候选列表，
+loader 在加载时随机选一个——与 LPC 驱动「每个 key 求值一次」的语义一致：
+
+- 出口：144 条 `[rooms.a.id,rooms.b.id,...]`
+- 物件：9 条 `{ id = [items.a.id,items.b.id] }`
+- 覆盖三种拼法：`+ (random(8) + 6)` / `+ random(2)` / `+random(5)`（无空格无括号）
+- 全库原始表达式泄漏 **0**
+- 回归：`scripts/test_lpc_path_rules.py`（含三种拼法断言）、
+  `test/runtime_pick_item_test.exs`（emei/cangjingge 恰好 2 件佛经）、
+  `test/cross_zone_wiring_test.exs`
+
+**源数据缺陷类（登记不修）**　18 条 / 9 个区，目标房间在
+`C:\files\git\mud` 里就没有对应 `.c`。产物自洽（elias 与 `validate_ucl.py`
+都不报错），只是玩家看不到也走不了这些方向。**不要在转换器里"发明"目标。**
+
+- 逐条清单：`docs/ucl-dangling-exits.zh-CN.md`
+- SOP 错误表已登记（`docs/zone-conversion-sop.zh-CN.md` 错误分类与定位表）
 
 ---
 
@@ -280,11 +302,11 @@ mix test test/kantele/world/
 |------|------|
 | 待办大项 | 9（A–I） |
 | 已完成问题 | 20 |
-| 未完成问题 | 1（17） |
+| 未完成问题 | 1（17，已随 C 项登记为源数据缺陷） |
 | 待验收区域 | 71 |
 | 无注释丢失 | **0**（A+B 修复后） |
 | 有注释的省略 | 18（`__FILE__` 修复后不再计入） |
-| 同区悬空引用 | 103 |
+| 同区悬空引用 | 18（源数据缺陷，已登记） |
 | 不可达房间 | 380 / 4441 |
 
 ---
