@@ -263,6 +263,94 @@ check("ordinary slashless form still resolves",
 check("installed-zone scan", "liuxi" in C.note_installed_zones("data/world"), True)
 
 
+# ---------------------------------------------------------------- F
+# `set("exits", ...)` written outside create().  Measured over the 4287 corpus
+# files that contain one, only 4 put it elsewhere and just 2 of those are rooms:
+#     death/god1.c      void reset()
+#     death/lunhuisi.c  void recreate()   (its create() deliberately seals the room)
+#     taohua/obj/bagua.c, taohua/obj/xiang.c   items, so no room_exits is emitted
+# create() stays authoritative; the fallback only applies when it declares no exits.
+print("\nF  set(\"exits\") outside create()")
+
+_IN_RESET = """
+inherit ROOM;
+void create()
+{
+    set("short", HIY"天堂"NOR);
+    set("long", @LONG这里就是天堂。LONG NOR );
+    setup();
+}
+void reset()
+{
+    ::reset();
+    set("exits", ([ /* sizeof() == 2 */
+        "up" : __DIR__"god2",
+        "down": "/d/city/wumiao",
+    ]));
+}
+"""
+
+_SEALED_CREATE = """
+inherit ROOM;
+void create()
+{
+    set("short", HIB "轮回司" NOR);
+    setup();
+}
+void recreate()
+{
+    set("exits", ([ "out" : __DIR__ "lunhuisi_road1", ]));
+}
+"""
+
+_IN_CREATE = """
+inherit ROOM;
+void create()
+{
+    set("short", "北路" NOR);
+    set("exits", ([ "south" : __DIR__"street", ]));
+}
+void reset()
+{
+    set("exits", ([ "north" : "/d/city/beimen", ]));
+}
+"""
+
+_NO_EXITS_ANYWHERE = """
+inherit ROOM;
+void create()
+{
+    set("short", "空房" NOR);
+    setup();
+}
+"""
+
+
+def _parse(src):
+    return C._parse_lpc(src.encode("utf-8"), "t.c", ".")
+
+
+def _exits(src):
+    ast = _parse(src)
+    return ast.create_fn.get("sets", {}).get("exits")
+
+
+check("exits in reset() are recovered",
+      _exits(_IN_RESET),
+      ("mapping", [(("string", "up"), ("string", "god2")),
+                   (("string", "down"), ("string", "/d/city/wumiao"))]))
+check("a recovered exit still resolves cross-zone",
+      C._resolve_exit_target(("string", "/d/city/wumiao"), "death"),
+      ("city.rooms.wumiao.id", None))
+check("create() wins when both declare exits",
+      _exits(_IN_CREATE),
+      ("mapping", [(("string", "south"), ("string", "street"))]))
+check("no exits anywhere stays absent", _exits(_NO_EXITS_ANYWHERE), None)
+check("sealed create() picks up recreate()'s exits",
+      _exits(_SEALED_CREATE),
+      ("mapping", [(("string", "out"), ("string", "lunhuisi_road1"))]))
+
+
 print("")
 if FAILURES:
     print("FAILED: %d" % len(FAILURES))

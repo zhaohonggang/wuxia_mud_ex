@@ -192,10 +192,13 @@ valid_leave = [
   y = 0
   z = 5
     }
+
   room_exits "god1" {
     room_id = rooms.god1.id
-    down = rooms.emptyroom.id
+    northup = rooms.hantan1.id
+    northdown = rooms.emptyroom.id
     up = rooms.god2.id
+    down = city.rooms.wumiao.id
     }
 
 # Generated from C:/files/git/mud/d/death/god2.c by LPCConverter
@@ -210,8 +213,6 @@ valid_leave = [
     }
   room_exits "god2" {
     room_id = rooms.god2.id
-    down = rooms.god1.id
-    up = rooms.hantan1.id
     }
 
 # Generated from C:/files/git/mud/d/death/hantan1.c by LPCConverter
@@ -222,13 +223,13 @@ valid_leave = [
       description = ""
   x = 0
   y = 0
-  z = 7
+  z = 6
     }
 
   room_exits "hantan1" {
     room_id = rooms.hantan1.id
     up = rooms.chushengdao.id
-    down = rooms.god2.id
+    down = rooms.god1.id
     east = rooms.hantan1.id
     west = rooms.hantan1.id
     south = rooms.hantan1.id
@@ -243,7 +244,7 @@ valid_leave = [
       description = ""
   x = 0
   y = 1
-  z = 7
+  z = 6
     }
 
   room_exits "hantan2" {
@@ -262,7 +263,7 @@ valid_leave = [
       description = ""
   x = 0
   y = 0
-  z = 7
+  z = 6
     }
 
   room_exits "hantan3" {
@@ -281,7 +282,7 @@ valid_leave = [
       description = ""
   x = -1
   y = 0
-  z = 7
+  z = 6
     }
 
   room_exits "hantan4" {
@@ -300,7 +301,7 @@ valid_leave = [
       description = ""
   x = -1
   y = 1
-  z = 7
+  z = 6
     }
 
   room_exits "hantan5" {
@@ -319,7 +320,7 @@ valid_leave = [
       description = ""
   x = -2
   y = 1
-  z = 7
+  z = 6
     }
 
   room_exits "hantan6" {
@@ -338,7 +339,7 @@ valid_leave = [
       description = ""
   x = -2
   y = 0
-  z = 7
+  z = 6
     }
 
   room_exits "hantan7" {
@@ -357,7 +358,7 @@ valid_leave = [
       description = ""
   x = -1
   y = 0
-  z = 7
+  z = 6
     }
 
   room_exits "hantan8" {
@@ -553,7 +554,7 @@ direction = ~
       description = ""
   x = -1
   y = 0
-  z = 7
+  z = 6
 item_desc = {
  xuanwo = "一股由寒流形成的旋涡，你似乎可以通过它回到地面。"
 }
@@ -2189,7 +2190,7 @@ direction = ~
       description = "飞禽走兽，弱肉强食。因学习邪见、邪法而生慢心的众生，喜 欢以邪见与人争论，因为怀着怨憎心，就会投生喜欢互相残害 的畜生道。性情怯弱，常怀惊恐的动物，也是因过去生惊吓他 人在先，而得出这样的果报。"
   x = 0
   y = 0
-  z = 8
+  z = 7
     }
   room_exits "chushengdao" {
     room_id = rooms.chushengdao.id
@@ -2205,7 +2206,7 @@ direction = ~
       description = "极寒极冷，受尽各种折磨，毫无喜乐之所。若与人间比较，第 一狱以人间三千七百五十年为一年，在此须受困一万年，相当 于人间一百三十五亿年。而到了第十八地狱，便以亿亿亿年为 单位，如此长期的受刑可谓是名符其实的万劫不复。"
   x = 0
   y = 0
-  z = 9
+  z = 8
     }
   room_exits "diyudao" {
     room_id = rooms.diyudao.id
@@ -2221,7 +2222,7 @@ direction = ~
       description = "哀嚎四起，环顾周围，遍是咽细如针，口大如炬，腹鼓如山的 饿鬼。前世造作的善恶业不同，在饿鬼道所受的果报也会不同。 饿鬼多是汲汲于饮食，但却四处奔走求食不能，所见池水却都 变成脓血而不能饮用，不是遇水成火就是喉细无法咽食。"
   x = 0
   y = 0
-  z = 10
+  z = 9
     }
   room_exits "eguidao" {
     room_id = rooms.eguidao.id
@@ -2237,7 +2238,7 @@ direction = ~
       description = "仿佛踏进了嘈杂的闹市，又如闯进了民家大院。欢笑声、哭泣 声、怒骂声相互交杂。喜怒哀乐、恩怨情仇，世间百态尽集于 此。尝尽人间种种酸甜苦辣，悲欢离合。于痛苦中诞生，又于 痛苦中消逝。怜我世人，忧患实多。怜我世人，忧患实多。"
   x = 0
   y = 0
-  z = 11
+  z = 10
     }
   room_exits "rendao" {
     room_id = rooms.rendao.id
@@ -2253,7 +2254,7 @@ direction = ~
       description = "茫茫云海，渺无边际。四周金光散布，祥云朵朵，远处有凤凰 盘绕，麒麟逐戏。耳边传来阵阵梵音，令你茫然不知所措。天 道众生遍及欲界、色界及无色界三界。欲界有六欲天，色界有 四禅十八天，无色界四天，共有二十八天。"
   x = 0
   y = 0
-  z = 12
+  z = 11
     }
   room_exits "tiandao" {
     room_id = rooms.tiandao.id
@@ -2269,7 +2270,7 @@ direction = ~
       description = "这里是天地人三界不管的终极无间，这里没有任何出路，只有黑暗。"
   x = 0
   y = 0
-  z = 13
+  z = 12
     }
   room_exits "wujiandao" {
     room_id = rooms.wujiandao.id
@@ -2285,7 +2286,7 @@ direction = ~
       description = "阿修罗原是印度远古诸神之一，被视为恶神，属于凶猛好斗的 鬼神，经常与帝释天争斗不休。因有福报而没有德性有的说法 只是将他纳入鬼神中，或说是堕落的天人，而北传佛教将他列 为善道，南传佛教则归类入恶道中。福如天人，德非天人。"
   x = 0
   y = 0
-  z = 14
+  z = 13
     }
   room_exits "xiuluodao" {
     room_id = rooms.xiuluodao.id
@@ -4691,7 +4692,7 @@ chats = [
       description = ""
   x = 0
   y = 0
-  z = 15
+  z = 14
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
@@ -4719,7 +4720,7 @@ item_desc = {
       description = ""
   x = 0
   y = 0
-  z = 16
+  z = 15
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
@@ -4744,7 +4745,7 @@ item_desc = {
       description = ""
   x = 0
   y = 0
-  z = 17
+  z = 16
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
@@ -4769,7 +4770,7 @@ item_desc = {
       description = ""
   x = 0
   y = 0
-  z = 18
+  z = 17
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
@@ -4794,7 +4795,7 @@ item_desc = {
       description = ""
   x = 0
   y = 0
-  z = 19
+  z = 18
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
@@ -4819,7 +4820,7 @@ item_desc = {
       description = ""
   x = 0
   y = 0
-  z = 20
+  z = 19
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
@@ -4844,7 +4845,7 @@ item_desc = {
       description = ""
   x = 0
   y = 0
-  z = 21
+  z = 20
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
@@ -4869,7 +4870,7 @@ item_desc = {
       description = ""
   x = 0
   y = 0
-  z = 22
+  z = 21
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
@@ -4894,7 +4895,7 @@ item_desc = {
       description = ""
   x = 0
   y = 0
-  z = 23
+  z = 22
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
@@ -4919,7 +4920,7 @@ item_desc = {
       description = ""
   x = 0
   y = 0
-  z = 24
+  z = 23
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
@@ -4944,7 +4945,7 @@ item_desc = {
       description = ""
   x = 0
   y = 0
-  z = 25
+  z = 24
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
@@ -4969,7 +4970,7 @@ item_desc = {
       description = ""
   x = 0
   y = 0
-  z = 26
+  z = 25
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
@@ -4994,7 +4995,7 @@ item_desc = {
       description = ""
   x = 0
   y = 0
-  z = 27
+  z = 26
     }
   room_exits "skylocal" {
     room_id = rooms.skylocal.id
@@ -5015,7 +5016,7 @@ item_desc = {
       description = ""
   x = 0
   y = 0
-  z = 15
+  z = 14
     }
 
   room_exits "tianmen" {

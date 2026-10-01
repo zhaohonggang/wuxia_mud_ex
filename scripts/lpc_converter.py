@@ -3051,6 +3051,7 @@ def _parse_lpc(content: bytes, source_path: str, base_path: str):
         cleaned = _preprocess(utf8_content)
 
         create_fn = _parse_create_function(cleaned, create_body)
+        create_fn = _backfill_exits_outside_create(cleaned, create_fn)
         # Elixir: create_body || find_create_body(content) — "" is truthy, so
         # create_body (always a string) wins; find_create_body only for nil.
         function_calls = _parse_function_calls(create_body if create_body is not None else (_find_create_body(cleaned) or ""))
@@ -3100,6 +3101,38 @@ def _parse_create_function(content, create_body=None):
     if body is None:
         return {}
     return _parse_create_body(body)
+
+
+def _backfill_exits_outside_create(cleaned, create_fn):
+    """Recover `set("exits", ...)` written outside create().
+
+    create() is where the corpus normally declares a room's exits, and it stays
+    authoritative here.  But four corpus files put the call somewhere else, and two
+    of them are rooms:
+
+        death/god1.c      void reset()      "down": "/d/city/wumiao"
+        death/lunhuisi.c  void recreate()   "out" : __DIR__ "lunhuisi_road1"
+
+    lunhuisi's create() body happens to overrun its own braces, so its recreate()
+    exits were picked up anyway.  god1's did not: the room came out with no
+    `room_exits` block at all, and assign_room_coords.py then covered the gap by
+    synthesising up/down for the resulting orphan - silently replacing the author's
+    `down : "/d/city/wumiao"`, the one intended link from 冥界 back to 扬州武馆, with
+    a local hop to emptyroom.
+
+    Only consulted when create() declares no exits whatsoever, so a room wired the
+    normal way is untouched and lunhuisi's deliberately sealed create() (its `out`
+    only appears after the 石桌 puzzle is solved) keeps what it already had.
+    """
+    if "exits" in create_fn.get("sets", {}):
+        return create_fn
+    outside = _parse_set_calls(cleaned).get("sets", {}).get("exits")
+    if outside is None:
+        return create_fn
+    merged = dict(create_fn)
+    merged["sets"] = dict(merged.get("sets", {}))
+    merged["sets"]["exits"] = outside
+    return merged
 
 
 def _find_create_body(content):

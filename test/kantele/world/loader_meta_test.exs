@@ -264,10 +264,14 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   # ---- item_desc 墙牌/菜单 + valid_leave 出口阻挡（room 数据化） ----
+  #
+  # 全部按 `id`（含区名）定位，不按 `key`。房间 key 在全库大量重名（432 个 key 有
+  # 多个属主：`majiu` 22 个区、`kedian` 19 个、`liandan_lin1` 同时属于 beijing 和
+  # test），`Enum.find` 按 key 只会拿到迭代顺序里第一个，未必是想验的那个。
 
   test "bet 房间：item_desc 解析 paizi 规则板" do
     world = Kantele.World.Loader.load()
-    bet = Enum.find(world.rooms, &(&1.key == "bet"))
+    bet = Enum.find(world.rooms, &(&1.id == "test:bet"))
 
     assert bet != nil
     assert Map.has_key?(bet.item_desc, "paizi")
@@ -277,7 +281,7 @@ defmodule Kantele.World.LoaderMetaTest do
 
   test "cave 房间：valid_leave 阻挡结构化为 exit_vetoes" do
     world = Kantele.World.Loader.load()
-    cave = Enum.find(world.rooms, &(&1.key == "cave"))
+    cave = Enum.find(world.rooms, &(&1.id == "test:cave"))
 
     assert cave != nil
     assert cave.exit_vetoes == [
@@ -291,16 +295,28 @@ defmodule Kantele.World.LoaderMetaTest do
 
   test "kedian 房间：两条条件阻挡都被保留" do
     world = Kantele.World.Loader.load()
-    kedian = Enum.find(world.rooms, &(&1.key == "kedian"))
+    kedian = Enum.find(world.rooms, &(&1.id == "test:kedian"))
 
+    assert kedian != nil
     assert length(kedian.exit_vetoes) == 2
     assert Enum.any?(kedian.exit_vetoes, &(&1.direction == "up"))
     assert Enum.any?(kedian.exit_vetoes, &(&1.direction == "west"))
   end
 
+  # Locate by `id`, never by `key`: room keys repeat across zones (there are 432
+  # duplicated keys in the world - `majiu` in 22 zones, `chufang` in 20, `road2` in
+  # 19, `liandan_lin1` in both beijing and test).  An `Enum.find` on `key` returns
+  # whichever zone comes first in iteration order, which is how this test used to
+  # assert against beijing:liandan_lin1 - a room that legitimately has four exits -
+  # while claiming to check test:liandan_lin1's dangling ones.
   test "liandan_lin1 房间：宏继承合并属性生效（名称/描述），悬挂出口被丢弃" do
     world = Kantele.World.Loader.load()
-    room = Enum.find(world.rooms, &(&1.key == "liandan_lin1"))
+
+    # beijing owns a room with the same key and it has all four exits wired up, so
+    # the ambiguity is real rather than theoretical.
+    assert Enum.any?(world.rooms, &(&1.id == "beijing:liandan_lin1"))
+
+    room = Enum.find(world.rooms, &(&1.id == "test:liandan_lin1"))
 
     assert room != nil
     assert room.name == "城西后林"
@@ -323,7 +339,7 @@ defmodule Kantele.World.LoaderMetaTest do
 
   test "liandan_lin 房间：父类（inherit ROOM）也正常加载" do
     world = Kantele.World.Loader.load()
-    room = Enum.find(world.rooms, &(&1.key == "liandan_lin"))
+    room = Enum.find(world.rooms, &(&1.id == "test:liandan_lin"))
     assert room != nil
   end
 end

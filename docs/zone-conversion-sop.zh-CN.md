@@ -242,6 +242,50 @@ docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test'
 
 ---
 
+## 全库可达性排查（`world_reachability.py`）
+
+`check_room_coords.py` 只保证**单区内**每间房都能从该区中心房走到，不保证这个区能从世界别处走到。
+跨区连通性用另一个工具：
+
+```powershell
+# 全库可达率 + 分类明细 + 每区表格
+python scripts\world_reachability.py --zones
+
+# 逐个不可达房间回 mud\d\<区> 找同名 .c，打印其 set("exits", ...)
+python scripts\world_reachability.py --show-sources
+
+# 机器可读
+python scripts\world_reachability.py --json out.json
+```
+
+当前基线（2026-10-01）：从 `city:guangchang` 可达 **4115/4455（92.4%）**，340 间不可达，
+**全部属于设计/语料层面的原因，无一是转换缺陷**（分类明细见
+`docs/ucl-conversion-fix-checklist.zh-CN.md` 的 G 项）。
+
+> ⚠️ **这个工具必须与 loader 侧对账。** 初版因为三个缺陷报成 4099/4455，被
+> `test/cross_zone_wiring_test.exs` 里的真实 BFS 抓出来：
+> ① 出口值带双引号（`south = "sammatti.rooms.blacksmith.id"`，手工维护区常见）被正则丢弃 ——
+>    Elias 解析成字符串、`Loader.dereference/3` 照样能解引用，少算了 29 个房间；
+> ② 区名正则不允许连字符（`kissa-jarvi`）；
+> ③ BFS 不检查目标房间是否存在，把 58 条悬空出口也计进 `seen`。
+>
+> 手工维护区里被双引号包住的跨区出口共 3 处：`liuxi:shanlu -south-> "sammatti.rooms.blacksmith.id"`、
+> `sammatti:town_square -south-> "kissa-jarvi.rooms.gates.id"`、
+> `sammatti:blacksmith -north-> "liuxi.rooms.shanlu.id"`。它们构成
+> `city → liuxi → sammatti → kissa-jarvi` 这条链，改这些文件时别把引号去掉（loader 能处理，
+> 但任何按文本匹配的诊断工具都会漏）。
+
+判定「真缺陷 vs 语料如此」的顺序：
+
+1. 全语料扫 `/d/<区>/<文件>` 的 inbound 引用，逐行区分**静态出口** / `startroom=` /
+   `me->move()` / `#define` 物件路径 / NPC 表 —— 只有静态出口才该被转换；
+2. 逐房间比对「LPC 源码图的邻居集合」与「UCL 产物图的邻居集合」，差集才是转换丢失。
+
+> 出口值 `[a,b,c]` 形式的运行时选房，工具按「并集可达」处理。因为加载器每次只挑一个，
+> 这是**乐观**读法：报出来的不可达房间在任何取随机结果下都不可达，「有时到不了」的房间不会出现在报告里。
+
+---
+
 ## 错误分类与定位表
 
 | 现象 | 可能原因 | 定位脚本 |
@@ -260,6 +304,9 @@ docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test'
 | 容器报 `elias ... syntax error before: ', ['" "']]'`（token 是个**空格**） | **引号串里 `\` 后面跟空白**。`elias_parser.yrl` 只有 `words -> back_slash word words` 和 `words -> back_slash quotes words`，反斜杠接空格/行尾都没有产生式。根因通常是转换器把 LPC 的**行尾续行符 `\`** 保留了：mingjiao/miaorenbuluo.c 的 `@TEXT` 块某行以 `口\` 结尾，本意是换行续接，转换器却先把换行折成空格再留下反斜杠，产出 `口\ 中` | `_LPC_CONTINUATION = \\[ \t]*\r?\n` 必须在**换行转空格之前**应用——已在 `scripts/lpc_converter.py` 的 `_sanitize_ucl_sval()` 开头处理（那是所有字符串的最终出口，heredoc 与普通字面量都覆盖），`_parse_heredocs_from_raw()` 里也加了一道。`validate_ucl.py` 的 `_ELIAS_STRAY_BACKSLASH_RE` 负责回归（fixture 46）。实测：`a\ b` 与结尾 `a\` 失败，`a\bcd` 与普通空格正常 |
 | `Chars: duplicate exit key '<dir>' in room_exits '<id>'` | 同一房间同一方向写了两个出口；elias 会并成数组，loader `String.split` 收到数组而崩 | `scripts\assign_room_coords.py` 的 `_add_vertical_exits` / `_merge_new_exits`（垂直连接必须**换用空闲方向**，不能重复用同一方向） |
 | 赋坐标后**孤儿房不可达** | 垂直连接因为方向已被占用而被**跳过**，整层挂不上主区 | `scripts\assign_room_coords.py` 的 `_add_vertical_exits`（应从 `UP_DIR_CANDIDATES`/`DOWN_DIR_CANDIDATES` 里挑空闲方向，而不是 `continue`） |
+| 某区整区不可达，且**语料里也没有别的区指向它** | 语料本身从未接入，引擎不校验单向可达 | 语料级缺口，不是转换缺陷。`register` 有 4 条 `out = city.rooms.guangchang.id` 但没人走进去；`tulong` 全语料零条 inbound 引用 |
+| 某区整区不可达，但语料里有 `startroom = "/d/xxx/..."` 或 `me->move("/d/xxx/...")` | 该区**运行时靠脚本送达**，本来就不该走进去 | 转换器不把 `startroom` / `move()` / 物件表变成出口是正确的。`death`、`jinshe` 属此类 |
+| 房间明明有 `set("exits", ...)`，产物却没有 `room_exits` 块 | **`set("exits")` 写在了 `create()` 之外的函数里** —— 转换器只从 `create()` 抽 `set()` | 全语料 4287 个含 `set("exits")` 的文件里只有 4 个写在别处，其中 2 个是房间：`death/god1.c`（`reset()`）、`death/lunhuisi.c`（`recreate()`，且它的 `create()` 是故意封死的机关房）。已在 `scripts\lpc_converter.py` 的 `_backfill_exits_outside_create()` 处理：**`create()` 保持权威**，只在完全没有声明出口时回退全文扫描。**危害不只是少两条边** —— 房间变成无出口孤儿后，`assign_room_coords.py` 会给它合成 `up`/`down`，**静默顶替**作者写的出口（`god1` 的 `down : "/d/city/wumiao"` 被换成了本地 `emptyroom`） |
 | 同坐标多房（菱形环路） | 朴素 BFS 下两条不同路径算出同一 delta，两房重叠 | `scripts\assign_room_coords.py` 的 `_visit_neighbour`（需用 `_place`/`_free_coord` 做去重放置） |
 | `Integrity: rooms(N) != room_exits(M)` | 孤儿房还没有 `room_exits` 块（**赋坐标前属正常**）；若赋坐标后仍失败则是 bug | `scripts\assign_room_coords.py` 的 `drain` / `visit_neighbour` / `orphans` |
 | 容器日志 `Delaying ...ChatAction` 刷屏、队列涨到几十上百 | **NPC 闲聊自激反馈环**（运行时缺陷，与转换无关）。`SpawnController.event/2` 对每个收到的事件都跑行为树，NPC 又订阅了 `rooms:<room>`，而 `ChatAction` 恰好发回同一频道——**发言者收到自己的消息**。每条消息引发房间内 N 个 NPC 各掷一次骰，繁殖率 = N × `chat_chance`/100，>1 即指数发散（mingjiao `miaorenbuluo` 放 4 个 `miaozuwushi` × 30 = **1.2**）。LPC 原本在 `call_out` 心跳上评估 | `Kantele.Brain.Conditions.ChatChance`（冷却 + 概率，默认 500 ms）替代裸 `Random`，`ChatAction` 在**发布前**写 session 时间戳。详见 `docs/npc-chat-cooldown.zh-CN.md` |

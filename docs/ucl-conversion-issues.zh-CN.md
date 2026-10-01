@@ -593,34 +593,161 @@ Processing Kantele.Character.ChatAction, 47 left in the queue.
 `custom_direction_command_test` 46/46；`test/kantele/world/` 190 tests / 1 failure
 （即 I 项那个预存基线 `liandan_lin1`）。
 
-## F. 71 区的人工验收尚未做
+## F. 71 区的人工验收（2026-10-01 已完成）
 
-SOP Step 5 / checklist 步骤 8、9（巫师巡游、玩家验收）**全部未执行**，
-完成记录表里「巫师测试」「玩家测试」两列目前都是 `?`。
-`docs/zone-conversion-checklist.zh-CN.md` 每行已附 `goto <区名>:<中心房>`
-语句，可直接复制进游戏逐区验收。
+SOP Step 5 / checklist 步骤 8、9（巫师巡游、玩家验收）已执行完毕，
+`docs/zone-conversion-checklist.zh-CN.md` 的「巫师测试」「玩家测试」两列不再是 `?`。
+每区记录见 `test_logs/<zone>_wizard_<date>.md`。
 
-## G. 跨区连通性目前 91.4%，剩余 380 间不可达
+## G. 跨区连通性 92.4%，剩余 340 间不可达（2026-10-01 已分类完毕）
 
-需要分类确认哪些是**设计上就孤立**、哪些是真缺陷：
+当前从 `city:guangchang` 可达 **4115/4455**（**92.4%**），**340** 间不可达，
+**全部属于设计/语料层面的原因，无一是转换缺陷**：
 
-- 设计孤立：`taohua`（`__FILE__` 自指幻阵）、`special`（六道轮回 6 间房，
-  LPC 里完全没有 `set("exits")`）、`huanggong`（皇宫无对外出口）
-- 非 mud 语料区：`test` / `global` / `kissa-jarvi` / `sammatti` /
-  `signature` / `lepakko-luola` / `liuxi`
-- **待查**：`lingjiu`（宫门区，长廊群）、`death` 的 `road4`/`road6`/
-  `gateway`/`sky12`、`wanjiegu` 的 `left_room`/`stone_room`/`backyard`、
-  `tulong:was_*`、`shenlong`、`register:prison`/`roomw`
+| 类别 | 区 | 间数 |
+|------|----|------|
+| 设计孤立（`mud-d-zone-connectivity` §4.4 的 6 孤立区） | `taohua`31 / `shenlong`21 / `huanggong`14 / `sky`6 / `special`6 | 78 |
+| 非 mud 语料区 | `test`34 / `global`27 | 61 |
+| 语料本身从未接入（全语料零条 inbound 引用） | `tulong`60 / `register`7 | 67 |
+| 只能靠脚本传送抵达（`startroom=` / `me->move()` / 物件表） | `death`76 / `jinshe`4 | 80 |
+| 区可达但源码内部断连（比对源码图与产物图，丢失边 0 条） | `lingjiu`38 / `wanjiegu`12 / `motianya`2 | 52 |
+| 无出口房间（`liuxi:nether` / `liuxi:zixu_guan`，后者由 MirrorDaemon 投放 NPC） | `liuxi`2 | 2 |
 
-## H. 跨区边大多是单向的
+诊断工具 `scripts/world_reachability.py`（BFS + 分类 + `--show-sources` 回查 LPC 源码）。
 
-`docs/mud-d-zone-center-connections.zh-CN.md` 指出「大量区域间是单向出口」。
-文档说引擎允许单向，但**能否正常来回走**尚未验证（例如
-`shaolin/yidao -south-> city/beimen` 存在，但 `city/beimen` 回来的路是否
-同一条、方向名是否对称，需要实机走一遍确认）。
+### G-x 工具自身的三个缺陷（值得单列，因为它反向污染了结论）
 
-## I. 一个预存测试失败（与转换无关）
+初版工具报 4099/4455 / 369 间，而 `cross_zone_wiring_test.exs` 里 loader 侧的真实 BFS 报
+4115/4455。三处原因：
 
-`mix test test/kantele/world/loader_meta_test.exs` 的
-`liandan_lin1 房间：宏继承合并属性生效` 仍失败。已用 `git stash` 对照确认
-**在本次全部改动之前就存在**，涉及 `data/world/test.ucl` 的宏继承合并。
+1. **出口值带双引号被丢弃** —— `liuxi:shanlu -south-> "sammatti.rooms.blacksmith.id"` 这类手工
+   维护的写法，Elias 解析成字符串、`Loader.dereference/3` 照样解引用，正则却匹配不上。
+   少了这三条边，`sammatti`(16) / `kissa-jarvi`(11) / `lepakko-luola`(2) 会被误判成不可达。
+2. **区名正则不允许连字符** —— `kissa-jarvi.rooms.gates.id` 的区名段 `[a-z][a-z0-9_]*` 匹配不上。
+3. **BFS 不检查目标房间是否存在** —— 58 条出口指向不存在的房间（即已登记的悬空出口，loader 用
+   `parse_exits` 的 `not is_nil` 丢弃），工具却把它们计进 `seen`，虚增 13。
+
+修完 Python 与 loader 数字完全一致。**教训：诊断工具必须与被诊断对象对账，
+否则工具的 bug 会被当成数据的 bug。**
+
+### G-1 唯一真缺陷：`set("exits")` 写在 `create()` 之外被丢弃
+
+`death/god1.c` 把出口声明放在 `void reset()` 里：
+
+```c
+void reset()
+{
+    ::reset();
+    set("exits", ([ "up" : __DIR__"god2", "down": "/d/city/wumiao" ]));
+}
+```
+
+转换器只从 `create()` 抽 `set()`（`_parse_lpc` → `_extract_create_body`），
+`reset` 不在 `handled` 集合里，只在 `.comments.txt` 留 `# RAW BLOCK: reset`。
+
+**真正的危害不是少两条边**：`god1` 成了无出口孤儿房后，`assign_room_coords.py` 按既定行为
+给它合成 `up`/`down`，**静默顶替**了作者的 `down : "/d/city/wumiao"`（冥界回扬州武馆的
+唯一设计连线），换成通往本地 `emptyroom` 的假路。
+
+修法：`_backfill_exits_outside_create()` —— **`create()` 保持权威**，只在它完全没声明出口时
+才回退到全文扫描。4287 个含 `set("exits")` 的语料文件里只有 **1 个房间**受影响；
+另 2 个是 `taohua` 的物件（`env->query("org_exits")`，不产 `room_exits`）。
+
+顺带去掉一条伪边：`death/god2` 源码本就没有出口，之前被合成成 `up = rooms.hantan1.id`
+（凭空多出一条通往寒潭的路）。
+
+### 已复查、确认**不是**缺陷的疑似丢失
+
+| 位置 | 实际原因 |
+|------|----------|
+| `death/baihuxue -south->`、`death/jimiesi -north->` | `death/heisenlin/` 目录不存在，源码本身悬空（已在 18 条悬空登记里） |
+| `death/qiao2` 缺 `north -> hell1` | 源码里是 `// "north" : ...`，已被注释 |
+| `jinshe/yongdao2` 缺 `north -> shandong` | 同上，`//"north" : ...` |
+| `tulong/xuedi1` 缺 `dongcheng` / `xuedi2` | 同上，两条都是 `//` 注释 |
+
+## H. 跨区边大多是单向的 —— 实际是 23/218，且全部原生单向（2026-10-01 已验证）
+
+`docs/mud-d-zone-center-connections.zh-CN.md` 指出「大量区域间是单向出口」，文档说引擎允许单向，
+但此前**未验证**。结论：全库 218 条跨区边里 **195 条双向**（186 条反向方向名恰为相反罗盘方向、
+6 条自定义方向 `in`/`out`/`liuxi`/`yangzhou`/`river`、3 条有意不对称），**23 条单向**。
+
+### 23 条单向边：逐条回查 LPC 源码，全部原生单向
+
+对每条 `<A:a> -dir-> <B:b>`，检查 **`<B:b>` 自己有没有出口指向 `<A:a>`**。
+不能用「反向索引按源过滤」—— 那会找到正向边自己（本项第一版探针就犯了这个错，
+误报成「213 条全部双向且全部不对称」）。19 条 mud 语料区的单向边全部重新读了目标房的
+`set("exits")` 并解析出邻居集合，**没有一条声明回边**：
+
+| 成因 | 条数 | 例子 |
+|------|------|------|
+| 目标房根本没有 `set("exits")` | 1 | `baituo:gebi -east-> xiyu:shamo10` |
+| 密室/迷宫的脱身出口 | 7 | `gumu:mishi8 -out-> city:guangchang`、`register:room{e,n,s,w} -out->` |
+| 垂直单向支线 | 6 | `emei:midao5 -up-> chengdu:qingyanggong`、`death:god1 -down-> city:wumiao` |
+| 死胡同支线 | 6 | `suzhou:taihu -west-> yanziwu:hupan`（`hupan` 唯一出口是 `northeast -> suzhou:road5`） |
+| 同名房间歧义 | 2 | `heimuya:bridge -east-> baituo:xijie` —— `baituo/xijie.c` 的 `"west" : __DIR__"bridge"` 解析到 **`baituo:bridge`**（两个 `bridge` 房都真实存在，只是不同区） |
+| 非语料区 | 1 | `tulong:haigang -west-> beijing:road10` |
+
+**决定：不补反向出口。** SOP 明写「不要在转换器里"发明"目标」；这 23 条的作者意图就是单向。
+补边会凭空造出作者没写的路。
+
+### 3 条双向但方向名不对称
+
+| 边 | 正向 | 回程 | 说明 |
+|----|------|------|------|
+| `shenfeng:caoyuan5 -south-> xiyu:nanjiang2` | `south` | `northeast` | 源码里 `caoyuan5` 有 `south` 与 `southwest` 都通 `nanjiang2`，而 `nanjiang2` 只有 `northeast` 一条回程 |
+| `liuxi:guangchang -north-> signature:yinyi` | `north` | `north` | 手工维护区，两侧都叫 north |
+| `signature:yinyi -north-> liuxi:guangchang` | `north` | `north` | 同上 |
+
+后两条语义不理想（同一句「向北」既进又出），但不由本转换器产出，不是转换缺陷。
+
+### `valid_leave` 出口守卫：已数据化，运行时**故意不拦截**
+
+- `data/world` 有 **183 处** `valid_leave` 块 / **48 个区**。`pk:entry` 的守卫完整保留：
+  `direction = "north"` + `message = "乌老大喝道：给我站住！那儿不能随意进入。"`
+- loader 解析进 `Room.exit_vetoes`（`loader.ex:290`），但**全仓库没有任何消费方** ——
+  `grep exit_vetoes` 只命中 loader 自己的解析函数。玩家可以直接从 `pk:entry` 往北进 `pk:ready`。
+- **为什么不做拦截**：每条阻挡都带 LPC 条件表达式（`! me->query_temp("rent_paid") && dir == "up"`、
+  `objectp(present("mang she", environment(me)))`），没有 LPC 求值器；且 UCL 字符串里不能出现
+  `(`、`)`、`,`，条件只能以 `# 阻挡条件（原样保留）：...` 注释留存，loader 拿到的 `condition`
+  恒为 `nil` —— **运行时无法区分「有条件」与「无条件」阻挡**，强行拦截会误封。
+- `taohua` 幻阵**不是** `valid_leave` 守卫：31 个房间的 `valid_leave` 数量为 **0**，
+  它靠 `__FILE__` 自指出口（4 条自环）实现，本来就不与外界相连。
+
+### 新增回归
+
+`test/cross_zone_wiring_test.exs` 加了 3 条断言（8/8 通过）：
+
+- 每条无回边的跨区边必须在 `@one_way` 白名单里（23 条，逐条注明成因）；
+- 双向边的回程方向必须是相反罗盘方向，或落在 `@custom_dirs` / `@asymmetric` 显式例外里；
+- 白名单自身不许漂移（有回边可删 / 边不存在，需处理，都失败）。
+
+## I. 一个长期失败的测试（2026-10-01 已解决：是测试自己的 bug）
+
+`mix test test/kantele/world/loader_meta_test.exs` 长期失败：
+
+```
+1) test liandan_lin1 房间：宏继承合并属性生效（名称/描述），悬挂出口被丢弃
+   悬挂出口 south 不应被保留
+```
+
+**既不是 loader 的宏继承合并问题，也不是 `parse_exits` 的 `not is_nil` 过滤失效。**
+
+原代码 `Enum.find(world.rooms, &(&1.key == "liandan_lin1"))`。房间 `key` 不带区名，
+在全库**大量重名 —— 432 个 key 有多个属主**（`majiu` 22 个区、`chufang` 20 个、
+`road2` 19 个、`kedian` 19 个），而 `liandan_lin1` **同时属于 `beijing` 和 `test`**。
+`Enum.find` 按迭代顺序取第一个，拿到的是 `beijing:liandan_lin1` —— 一个四条出口
+**全部接通**的房间。测试声称要验的 `test:liandan_lin1` 行为其实一直正确：
+
+```
+test:liandan_lin1  name="城西后林"   exits (1):  "down" -> "test:liandan_lin"
+```
+
+失败信息「悬挂出口 south 不应被保留」是对的 —— `beijing:liandan_lin1` 确实有 `south`。
+断言对象一直是错的。
+
+修法：一律按带区名的 `id` 定位。同一文件另外三处（`bet` / `cave` / `kedian`）同样按 `key`，
+其中 `kedian` 重名 19 个区，属同一隐患，一并修掉。
+
+**教训**：跨区世界里 `key` 不是唯一键。要断言某个区的某个房间，必须用 `id`。
+
+**全量基线**：`mix test --seed 12345` → **3018 tests, 0 failures**（此前长期 3008/1）。
