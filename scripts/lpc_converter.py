@@ -426,7 +426,23 @@ def _extract_create_body(content):
 def _parse_lpc_value(value_str):
     value_str = value_str.strip()
 
-    # color-macro wrapped string: HIW "未亡人" NOR
+    # A runtime-picked path must survive as one unit.  `__DIR__"shulin" +
+    # (random(8) + 6)` would otherwise be treated as a plain string by the
+    # `__DIR__"..."` handling below, and _parse_lpc_string would keep only the
+    # quoted part - silently turning the exit into a reference to a room named
+    # `shulin`, which does not exist.  Hand the whole text to the caller as a var
+    # so _classify_exit_path/_split_runtime_suffix can expand the candidates.
+    #
+    # Deliberately narrow: only concatenations naming `random(`, which have a
+    # determinate candidate set.  A bare variable concatenation such as
+    # changan/npc/fujiang.c's `carry_object(__DIR__"obj/" + weapon_file)` must
+    # keep the previous behaviour (truncate to the quoted prefix, then skip the
+    # unresolvable id) - letting it through would emit `items. + weapon_file.id`
+    # into the UCL, which is not even valid syntax.
+    if _RUNTIME_PATH_RE.match(value_str):
+        return ("var", value_str)
+
+    # color-macro wrapped string: HIW "δ����" NOR
     if re.match(r"^[A-Z_]+", value_str, _A):
         extracted = _extract_strings_from_macro_wrapped(value_str)
         if extracted != "":
@@ -1629,6 +1645,22 @@ def _room_id_from_path(path):
 # point at.  An exit into one of them cannot be expressed as a zone reference.
 _UNLINKABLE_ROOTS = ("/clone/", "/b/", "/u/", "/adm/", "/cmds/", "/include/")
 
+# `__DIR__"shulin" + (random(8) + 6)` - an LPC runtime pick among n files,
+# offset by k: the driver evaluates str(random(8) + 6), i.e. 6..13, so the
+# destination is one of shulin6 .. shulin13.
+_RANDOM_OFFSET_RE = re.compile(
+    r'^(?P<stem>[^+\[\]()$]+?)\s*\+\s*\(\s*random\(\s*(?P<n>\d+)\s*\)\s*'
+    r'\+\s*(?P<k>\d+)\s*\)\s*$')
+
+# A runtime-picked path: a literal path concatenated with `random(...)`, e.g.
+#     __DIR__"shulin" + (random(8) + 6)     ->  shulin6 .. shulin13
+#     "d/shaolin/obj/fojing1" + random(2)  ->  fojing10, fojing11
+# Only these are preserved whole; a concatenation with a plain variable
+# (changan's `__DIR__"obj/" + weapon_file`) has no determinate candidate set and
+# keeps the old truncate-then-skip behaviour.
+_RUNTIME_PATH_RE = re.compile(
+    r'^\s*(__DIR__)?"[^"]*"\s*\+\s*\(?\s*random\(')
+
 
 def _classify_exit_path(path, zone_id):
     """Classify an LPC exit target path.
@@ -1638,6 +1670,8 @@ def _classify_exit_path(path, zone_id):
       ("cross",  zone, room_id)         other d/ zone -> <zone>.rooms.<room>.id
       ("sub",    room_id)               same zone, written with a subdirectory
                                          (e.g. "dule/xiaoyuan", "heisenlin/entry")
+      ("random", [room_id, ...])        runtime pick among several rooms
+                                         (`__DIR__"shulin" + (random(8) + 6)`)
       ("self",   None)                  __FILE__ / the room itself
       ("skip",   reason)                no data/world zone to point at
     """
@@ -1646,6 +1680,19 @@ def _classify_exit_path(path, zone_id):
         return ("self", None)
 
     t = raw.replace("__DIR__", "").replace('"', "").strip()
+
+    # A runtime-picked destination:  __DIR__"shulin" + (random(8) + 6)
+    # The MUD concatenates str(random(n) + k), so this names exactly the n files
+    # shulin<k+1> .. shulin<k+n>.  gaochang/shulin1.c and shaolin/shulin10.c use
+    # it in all four directions.  Returning the whole set (rather than the bare
+    # stem, which produced a reference to a room that does not exist) lets the
+    # loader pick one per room, exactly as the LPC driver did.
+    rand = _RANDOM_OFFSET_RE.match(t)
+    if rand:
+        stem, n, k = rand.group(1), int(rand.group(2)), int(rand.group(3))
+        if n > 0 and stem:
+            return ("random", [_room_id_from_path("%s%d" % (stem, k + i))
+                               for i in range(n)])
 
     # A `d/<zone>/<file>` path written WITHOUT the leading slash.  This is a known
     # data bug in the corpus - tiezhang/hunanroad1.c has
@@ -1718,6 +1765,16 @@ def _resolve_exit_target(val, zone_id, room_id=None):
 
     if kind == "local" or kind == "sub":
         return "rooms." + rest[0] + ".id", None
+    if kind == "random":
+        # One direction that the MUD resolves to one of several rooms at run time
+        # (gaochang/shulin1.c's `__DIR__"shulin" + (random(8) + 6)`).  Emit all
+        # candidates as a bracketed list; the loader picks one per room, the same
+        # way the LPC driver did.  elias only accepts this WITHOUT spaces between
+        # the elements - `[a, b]` is a syntax error, `[a,b]` parses to the string
+        # "a,b".
+        if not rest[0]:
+            return None, "runtime random with no candidates"
+        return "[" + ",".join("rooms.%s.id" % c for c in rest[0]) + "]", None
     if kind == "cross":
         return "%s.rooms.%s.id" % (rest[0], rest[1]), None
     if kind == "self":
@@ -2155,8 +2212,13 @@ def _generate_room_objects(room_id, value):
             continue
 
         # A key may be "<literal path>" + random(n).  The literal part is a real
-        # path and random(n) enumerates n candidates, so emit all of them instead
-        # of dropping the key (shaolin/cjlou.c's fojing1/fojing2 pair).
+        # path and random(n) enumerates n candidates.  LPC evaluates random(n)
+        # ONCE per key at load time, so the room ends up with exactly ONE of the
+        # candidates - not all of them.  Emit them as an alternative list and let
+        # Kantele.World.Loader pick one, the same way exits do; writing every
+        # candidate out would put four fojings in emei/cangjingge.c's
+        # "obj/fojing1" + random(2) / "obj/fojing2" + random(2) where the MUD
+        # puts two.
         literal, cands = _split_runtime_suffix(path)
         if literal is None or _is_dynamic_expr(path):
             # Not resolvable to any id (e.g. "/clone/book/" + books[random(...)]).
@@ -2164,18 +2226,28 @@ def _generate_room_objects(room_id, value):
             skipped_dynamic.append(path)
             continue
 
-        id_list = cands if cands is not None else [literal]
-        for candidate in id_list:
-            id_ = _room_id_from_path(candidate)
-            if not _SAFE_ID_RE.match(id_):
-                # Defensive: never emit an id that is not a bare UCL identifier.
+        if cands is not None:
+            ids = [_room_id_from_path(c) for c in cands]
+            ids = [i for i in ids if _SAFE_ID_RE.match(i)]
+            if not ids:
                 continue
-            if _contains_npc(candidate):
-                n = _count_or_one(count)
-                char_links.extend(
-                    [f"      {{ id = characters.{id_}.id }}" for _ in range(n)])
-            else:
-                item_links.append(f"      {{ id = items.{id_}.id }}")
+            n = _count_or_one(count)
+            # `n` copies of "one of these", e.g. random(2) listed twice.
+            joined = ",".join("items.%s.id" % i for i in ids)
+            for _ in range(n):
+                item_links.append("      { id = [%s] }" % joined)
+            continue
+
+        id_ = _room_id_from_path(literal)
+        if not _SAFE_ID_RE.match(id_):
+            # Defensive: never emit an id that is not a bare UCL identifier.
+            continue
+        if _contains_npc(literal):
+            n = _count_or_one(count)
+            char_links.extend(
+                [f"      {{ id = characters.{id_}.id }}" for _ in range(n)])
+        else:
+            item_links.append(f"      {{ id = items.{id_}.id }}")
 
     char_block = ""
     if char_links:

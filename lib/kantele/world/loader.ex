@@ -478,9 +478,32 @@ defmodule Kantele.World.Loader do
 
   defp parse_goods(goods) when is_list(goods) do
     Enum.map(goods, fn
-      %{id: ref} when is_binary(ref) -> ref
-      ref when is_binary(ref) -> ref
-      _ -> nil
+      # `{ id = [items.a.id,items.b.id] }` - the converter's alternative list for
+      # an LPC runtime pick, e.g. emei/cangjingge.c's
+      #     __DIR__"obj/fojing1" + random(2)
+      # The driver calls random(2) ONCE, so the room gets exactly one of the two.
+      # Expand the list here and pick, rather than letting the converter emit
+      # every candidate (which would put two fojings where the MUD puts one).
+      %{id: choices} when is_list(choices) ->
+        choices
+        |> Enum.flat_map(fn
+          item when is_binary(item) -> String.split(item, ",")
+          _other -> []
+        end)
+        |> Enum.reject(&(String.trim(&1) == ""))
+        |> case do
+          [] -> nil
+          candidates -> Enum.random(candidates)
+        end
+
+      %{id: ref} when is_binary(ref) ->
+        ref
+
+      ref when is_binary(ref) ->
+        ref
+
+      _ ->
+        nil
     end)
     |> Enum.reject(&is_nil/1)
   end
@@ -1128,6 +1151,39 @@ defmodule Kantele.World.Loader do
   defp parse_book(_), do: nil
 
   @doc """
+  Collapse a runtime-picked exit target to a single room reference.
+
+  Some LPC rooms choose their destination at run time, e.g. gaochang/shulin1.c
+
+      "east" : __DIR__"shulin" + (random(10) + 2),
+
+  which names one of shulin2..shulin11.  lpc_converter.py expands the whole set
+  into a bracketed UCL list of candidates:
+
+      east = [rooms.shulin2.id,rooms.shulin3.id,...,rooms.shulin11.id]
+
+  elias parses that as a one-element array whose single element is the whole
+  comma-joined string (it has no nested-reference grammar), so unwrap it, split
+  on commas, and pick one - the same choice `random(n) + k` made in the driver.
+  The pick happens once, at load time, so a room's exits are stable for the
+  lifetime of the world rather than changing on every step.
+  """
+  defp pick_runtime_exit(value) when is_list(value) do
+    value
+    |> Enum.flat_map(fn
+      item when is_binary(item) -> String.split(item, ",")
+      _other -> []
+    end)
+    |> Enum.reject(&(String.trim(&1) == ""))
+    |> case do
+      [] -> nil
+      candidates -> Enum.random(candidates)
+    end
+  end
+
+  defp pick_runtime_exit(value), do: value
+
+  @doc """
   Parse exits for zones
 
   Dereferences the exit exit_names, creates structs for each exit_name,
@@ -1142,7 +1198,7 @@ defmodule Kantele.World.Loader do
       Enum.flat_map(room_exits, fn {_key, room_exit} ->
         room_exit =
           Enum.into(room_exit, %{}, fn {key, value} ->
-            {key, dereference(zones, zone, value)}
+            {key, dereference(zones, zone, pick_runtime_exit(value))}
           end)
 
         room_id = room_exit.room_id
@@ -1266,7 +1322,31 @@ defmodule Kantele.World.Loader do
       room_id = dereference(zones, zone, room_item.room_id)
 
       Enum.reduce(room_item.items, zone, fn item_data, zone ->
-        item_id = dereference(zones, zone, item_data.id)
+        # `{ id = [items.a.id,items.b.id] }` - the converter's alternative list for
+        # an LPC runtime pick, e.g. emei/cangjingge.c's
+        #     __DIR__"obj/fojing1" + random(2)
+        # The driver calls random(2) ONCE per key, so the room ends up with exactly
+        # one of the two.  Picking here (rather than letting the converter emit
+        # every candidate) keeps the room's contents the same size as the MUD's.
+        item_id =
+          case item_data do
+            %{id: choices} when is_list(choices) ->
+              choices
+              |> Enum.flat_map(fn
+                choice when is_binary(choice) -> String.split(choice, ",")
+                _other -> []
+              end)
+              |> Enum.reject(&(String.trim(&1) == ""))
+              |> case do
+                [] -> nil
+                candidates -> Enum.random(candidates)
+              end
+
+            _ ->
+              item_data.id
+          end
+
+        item_id = dereference(zones, zone, item_id)
 
         # 物品数据缺失（引用不存在）时跳过，避免悬挂引用
         if is_nil(item_id) do

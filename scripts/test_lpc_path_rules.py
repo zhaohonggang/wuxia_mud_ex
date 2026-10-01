@@ -136,8 +136,42 @@ kind, *rest = C._classify_exit_path('"guangchang"', "city")
 check("bare name", (kind, rest[0]), ("local", "guangchang"))
 
 
+# ---------------------------------------------------------------- C
+print("\nC  runtime-picked exits: __DIR__\"x\" + (random(n) + k)")
+
+for src, want in [
+    ('__DIR__"shulin" + (random(8) + 6)',
+     ["shulin6", "shulin7", "shulin8", "shulin9",
+      "shulin10", "shulin11", "shulin12", "shulin13"]),
+    ('"shulin" + (random(10) + 2)',
+     ["shulin2", "shulin3", "shulin4", "shulin5", "shulin6",
+      "shulin7", "shulin8", "shulin9", "shulin10", "shulin11"]),
+]:
+    kind, *rest = C._classify_exit_path(src, "gaochang")
+    check("classify(%s)" % src, (kind, rest[0]), ("random", want))
+
+# The LPC value must survive parsing as one unit.  Before the fix
+# _parse_lpc_value saw the leading __DIR__" and _parse_lpc_string kept only
+# the quoted part, silently turning the exit into a reference to a room named
+# `shulin` - which does not exist.
+check("parse keeps whole expression",
+      C._parse_lpc_value('__DIR__"shulin" + (random(8) + 6)'),
+      ("var", '__DIR__"shulin" + (random(8) + 6)'))
+
+# elias only accepts the bracket form WITHOUT spaces between elements.
+check("render bracketed, no spaces",
+      C._resolve_exit_target(("var", '__DIR__"shulin" + (random(2) + 6)'),
+                            "gaochang", "shulin1")[0],
+      "[rooms.shulin6.id,rooms.shulin7.id]")
+
+check("plain path is still local",
+      C._classify_exit_path('__DIR__"shulin"', "gaochang"),
+      ("local", "shulin"))
+
+
 # ---------------------------------------------------------------- D
 print("\nD  exit-direction skip reasons must name the real cause")
+
 
 # A valid direction is not skipped at all.
 for ok in ("north", "south", "east", "west", "up", "down", "in", "out",
