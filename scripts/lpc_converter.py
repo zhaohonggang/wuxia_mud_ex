@@ -42,7 +42,20 @@ _C_COMMENT = re.compile(r"/\*[\s\S]*?\*/")
 _CPP_LINE_COMMENT = re.compile(r"//.*")
 
 _CREATE_SIG = re.compile(r"void\s+create\s*\(\s*\)\s*\{")
-_INHERIT = re.compile(r'inherit\s+(["\']?)([^;"\']+)\1\s*;')
+# The operand may be a bare marker (ROOM), a quoted path ("/inherit/char/x.c"),
+# or an expression that concatenates quoted parts:
+#     __DIR__"underlt"                     (city/wudao1.c, macro-inherits a room)
+#     CLASS_D("generate") + "/chinese"     (room/roomnpc/shouwei.c)
+# The previous pattern used ([^;"']+) for the operand, which cannot match either
+# expression form: it stops at the first quote, so `inherit __DIR__"underlt";`
+# yielded an EMPTY inherit list, _determine_object_type/2 then saw no ROOM marker,
+# classified the file as "generic" and emitted an empty .ucl - silently dropping
+# the room from the zone (4 rooms in city, 1 in room; 11 files in total).
+# The operand is therefore "the rest of the line", quotes included, and the
+# leading quote group is kept so group(2) still addresses the operand.  It must
+# not span newlines: an `inherit` with no terminating semicolon would otherwise
+# make [^;]+ swallow the rest of the file and break parsing everywhere.
+_INHERIT = re.compile(r'inherit\s+(["\']?)([^;\n]+)\1\s*;')
 _DEFINE = re.compile(r"#\s*define\s+([A-Za-z_]\w*)\s+([^\s;()]+)")
 _DIR_STR = re.compile(r'^\s*__DIR__\s*["\']([^"\']+)["\']\s*$')
 _QUOTED_STR = re.compile(r'^["\']([^"\']+)["\']\s*$')
@@ -659,6 +672,20 @@ def _resolve_inherit_ref(token, defines):
     token = token.strip()
     if token.startswith("/"):
         path = token
+    elif token.startswith("__DIR__"):
+        # Macro-inherit of a sibling file: `inherit __DIR__"underlt";`
+        # (city/wudao1.c).  The quoted tail is a path relative to this file's
+        # directory, which _parse_inherit_files/2 joins onto.  Without this the
+        # inherit chain was never followed, the type marker was lost and the room
+        # was emitted as an empty "generic" entry - i.e. dropped from the zone.
+        m = _QUOTED_STR.match(token[len("__DIR__"):].strip())
+        path = m.group(1) if m else None
+    elif "CLASS_D(" in token:
+        # `inherit CLASS_D("generate") + "/chinese";` (room/roomnpc/shouwei.c).
+        # CLASS_D only supplies the class directory, so the object id comes from
+        # the last quoted segment.
+        parts = re.findall(r'"([^"]*)"', token)
+        path = parts[-1] if parts else None
     elif token in defines:
         value = defines[token]
         m = _DIR_STR.match(value)
@@ -673,8 +700,10 @@ def _resolve_inherit_ref(token, defines):
 
     if path is None or path == "":
         return None
-    if path.startswith("/"):
-        return path.lstrip("/")
+    # Keep a leading "/" here: _parse_inherit_files/2 needs to tell an
+    # LPC-root-relative path ("/d/xiyu/shamo") from a file-relative one, and it
+    # resolves the two against different bases.  Stripping it here used to make
+    # both look relative, producing ".../d/xiyu/d/xiyu/shamo".
     return path
 
 
@@ -686,7 +715,28 @@ def _parse_inherit_files(content, source_path):
         rel = _resolve_inherit_ref(token, defines)
         if rel is None:
             continue
-        joined = _normpath_forward(os.path.join(dir_, rel))
+        # A leading "/" is an LPC-root-relative path ("/d/xiyu/shamo"), not a
+        # path relative to this file's directory.  Joining it onto dir_ produced
+        # ".../d/xiyu/d/xiyu/shamo", the parent could not be opened, the inherit
+        # chain was never followed, shamo1/4/10 lost their ROOM marker and were
+        # emitted as empty "generic" entries.  Resolve it against the LPC root
+        # instead - the directory that contains the zone directory.
+        if rel.startswith("/"):
+            # LPC root = the directory that holds "d/".  The file lives at
+            # <root>/d/<zone>[/<sub>...], so drop the trailing zone and any
+            # subdirectory segments: ".../mud/d/xiyu" -> ".../mud", then
+            # append the reference's own "/d/xiyu/shamo".
+            zone_dir = _normpath_forward(dir_)
+            parts = [p for p in zone_dir.split("/") if p]
+            zone_idx = None
+            for i in range(len(parts) - 1, -1, -1):
+                if parts[i] == "d":
+                    zone_idx = i
+                    break
+            root = "/".join(parts[:zone_idx]) if zone_idx else "/".join(parts[:-1])
+            joined = _normpath_forward(root + rel)
+        else:
+            joined = _normpath_forward(os.path.join(dir_, rel))
         if joined not in out:
             out.append(joined)
     return out
@@ -1452,7 +1502,11 @@ def _merge_inherit_level(ast, visited):
         "exit_vetoes": [], "valid_leave": None,
     }
     for parent_ref in parents:
-        path = parent_ref + ".c"
+        # The corpus spells the parent both ways: `inherit "/d/xiyu/shamo";`
+        # and `inherit "/d/xiyu/shamo.c";` (xiyu/shamo4.c).  Appending ".c"
+        # blindly turned the second form into "shamo.c.c", so the parent could
+        # not be opened and the room lost its ROOM marker.
+        path = parent_ref if parent_ref.endswith(".c") else parent_ref + ".c"
         try:
             with open(path, "rb") as f:
                 content = f.read()
@@ -1507,6 +1561,18 @@ def _skill_inherit(inherit):
     return "SKILL" in up or "FORCE" in up
 
 
+# NPC feature macros, mixed in with `inherit CLASS_D(...) + "/chinese";` by
+# room/roomnpc/shouwei.c.  They mark the file as an NPC even though no line
+# carries the NPC keyword.
+_NPC_FEATURE_KWS = ("F_GUARDER", "F_COAGENT", "F_COUNTER", "F_PERFORMER",
+                    "F_TRADE", "F_SCHOLAR", "F_HUTTER")
+
+
+def _is_npc_feature_inherit(inherit):
+    up = inherit.upper()
+    return any(kw in up for kw in _NPC_FEATURE_KWS)
+
+
 def _item_features(ast):
     create = ast.create_fn or {}
     sets = create.get("sets", {})
@@ -1529,6 +1595,15 @@ def _determine_object_type(ast):
     if any("RIVER" in i for i in inherits):
         return "room"
     if any("NPC" in i for i in inherits):
+        return "npc"
+    if any(_is_npc_feature_inherit(i) for i in inherits):
+        # NPC feature macros, e.g. room/roomnpc/shouwei.c:
+        #     inherit CLASS_D("generate") + "/chinese";
+        #     inherit F_GUARDER;
+        #     inherit F_COAGENT;
+        # The CLASS_D line names no type, so without the feature macros the file
+        # fell through to "generic" and the guard was dropped from the zone -
+        # its four siblings in the same directory all use `inherit NPC;`.
         return "npc"
     if any("KNOWER" in i for i in inherits):
         return "npc"

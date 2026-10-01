@@ -96,8 +96,8 @@
   # if (objectp(guarder = present("zhu jian", environment(me))))  →  
 # ==== CONDITIONAL BRANCHES (valid_leave) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: look_duilian
   # UNHANDLED FUNCTION: look_bian
+  # UNHANDLED FUNCTION: look_duilian
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

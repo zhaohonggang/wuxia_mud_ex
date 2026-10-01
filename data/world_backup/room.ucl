@@ -564,6 +564,39 @@ zones "room" {
   ]
     }
 
+# Generated from C:/files/git/mud/d/room/roomnpc/shouwei.c by LPCConverter
+# Zone: room
+
+    characters "shouwei" {
+      name = "NPC"
+      description = "这是看护庄园的守卫，看上去似乎身怀绝技。"
+  gender = "男性"
+  brain = brains.guarder
+
+  combat = {
+    attitude = "friendly"
+    max_jing = 2400
+    max_neili = 5200
+    max_qi = 4800
+  }
+
+  init = {
+    greet_delay = 0
+    add_actions = ["invite", "show"]
+  }
+
+  accept = [
+    { kind = "money" accept = true msg = "对{npc}施了一礼。" },
+    { kind = "any" accept = false msg = ["对{npc}施了一礼。"] }
+  ]
+
+  engage = {
+    fight = { accept = false msg = "{npc}吓了一跳，慌忙对{name}道：“小的不敢，小的不敢！”" }
+    hit = { accept = false msg = "{npc}连忙摆摆手，对{name}道：“可不要和我开这种玩笑！”" }
+    kill = { accept = false msg = "{npc}一声长叹，道：“既然主人不留我了，罢罢罢！合则留，不合则去！我走了。” 说罢，{npc}一扬手，切下一角衣抉，飘然而去。" }
+  }
+    }
+
 # Generated from C:/files/git/mud/d/room/roomnpc/teagirl.c by LPCConverter
 # Zone: room
 

@@ -14,8 +14,8 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH POOL: switch (random(2)) { case 0: return notify_fail("童子把嘴一撇：吃饱了喝足了" "还不够，临走怀里还揣上一些！\n"); case 1: message_vision("童子对$N鞠了个躬：岛主吩咐，饮食不得带出茶房。", me); return -1; }
 # ==== SWITCH POOLS ====
-  # UNHANDLED FUNCTION: do_sit
   # UNHANDLED FUNCTION: delete_served
+  # UNHANDLED FUNCTION: do_sit
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -72,8 +72,8 @@
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: close
-  # UNHANDLED FUNCTION: do_mai
   # UNHANDLED FUNCTION: do_swim
+  # UNHANDLED FUNCTION: do_mai
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -93,8 +93,8 @@
   # if (! lingpai = present("shangfa ling", ob))  →  
 # ==== CONDITIONAL BRANCHES (do_enter) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_enter
   # UNHANDLED FUNCTION: home
+  # UNHANDLED FUNCTION: do_enter
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -111,8 +111,8 @@
   # if (arg != "boat")  →  
 # ==== CONDITIONAL BRANCHES (do_enter) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_enter
   # UNHANDLED FUNCTION: home
+  # UNHANDLED FUNCTION: do_enter
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -583,10 +583,10 @@
   # if (n > 150)  →  message_vision('只见$N一运丹田气，双膀一使劲，石门竟缓缓的开了。\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (do_push) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_climb
-  # UNHANDLED FUNCTION: close
   # UNHANDLED FUNCTION: do_push
+  # UNHANDLED FUNCTION: close
   # UNHANDLED FUNCTION: do_swim
+  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -756,10 +756,10 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH POOL: switch (random(5)) { case 0: msg += "$N看了看$n，道：“你想找谁帮你的忙，不妨和我说说。”\n"; break; case 1: msg += "$N对$n道：“我的师兄弟水平各有高下，你找一个派得上用场的吧！”\n"; break; case 2: msg += "$N微微一笑，对$n道：“你觉得谁合适？”\n"; break; }
 # ==== SWITCH POOLS ====
-  # UNHANDLED FUNCTION: reset
-  # UNHANDLED FUNCTION: move_or_destruct
   # UNHANDLED FUNCTION: create_all_helper
   # UNHANDLED FUNCTION: hire
+  # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: move_or_destruct
   # UNHANDLED FUNCTION: remove
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

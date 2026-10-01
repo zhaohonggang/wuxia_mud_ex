@@ -291,6 +291,7 @@
 # Zone: zhongzhou
 
 # inherit /inherit/char/smith.c;
+# inherit F_DEALER;
 
 # Generated from C:/files/git/mud/d/zhongzhou/npc/wupanbing.c by LPCConverter
 # Zone: zhongzhou
@@ -324,8 +325,8 @@
 # UNHANDLED CONTENT (for manual review)
 # ========================================
   # UNHANDLED FUNCTION: die
-  # UNHANDLED FUNCTION: redeem
   # UNHANDLED FUNCTION: unconcious
+  # UNHANDLED FUNCTION: redeem
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

@@ -58,8 +58,8 @@
   # if (arg == "3")  →  message_vision(HIC '$N' HIC '走上前去将门上铜环敲了三下。\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_knock) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close_passage
   # UNHANDLED FUNCTION: do_knock
+  # UNHANDLED FUNCTION: close_passage
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -113,8 +113,8 @@
   # if ( arg=="shu jia")  →  write('你试图跳上书架的顶端，但老是跳不上去。\\\\\n'); write('你纵身跃上了书架顶端。\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_jump) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_press
   # UNHANDLED FUNCTION: do_jump
+  # UNHANDLED FUNCTION: do_press
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -183,8 +183,8 @@
   # if (objectp(room))  →  message_vision('$N使劲把大门打了开来。\\\\\n', this_player());
 # ==== CONDITIONAL BRANCHES (do_open) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close_gate
   # UNHANDLED FUNCTION: do_open
+  # UNHANDLED FUNCTION: close_gate
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -256,8 +256,8 @@
   # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "sword")  →  command('say 你不拿剑我还和你比什么？');
 # ==== CONDITIONAL BRANCHES (ask_bijian) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_accept
   # UNHANDLED FUNCTION: ask_bijian
+  # UNHANDLED FUNCTION: do_accept
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -492,8 +492,8 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

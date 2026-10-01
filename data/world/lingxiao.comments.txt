@@ -142,9 +142,9 @@
   # if (objectp(room))  →  
 # ==== CONDITIONAL BRANCHES (close_bridge) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_open
-  # UNHANDLED FUNCTION: do_close
   # UNHANDLED FUNCTION: close_bridge
+  # UNHANDLED FUNCTION: do_close
+  # UNHANDLED FUNCTION: do_open
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -292,8 +292,8 @@
   # if (! arg || arg != "bridge" )  →  
 # ==== CONDITIONAL BRANCHES (do_open) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_open
   # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_open
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -362,8 +362,8 @@
 # ==== CONDITIONAL BRANCHES (do_break) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: close_out
-  # UNHANDLED FUNCTION: do_break
   # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_break
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -419,8 +419,8 @@
 # UNHANDLED CONTENT (for manual review)
 # ========================================
   # UNHANDLED FUNCTION: accept_fight
-  # UNHANDLED FUNCTION: attempt_apprentice
   # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: attempt_apprentice
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

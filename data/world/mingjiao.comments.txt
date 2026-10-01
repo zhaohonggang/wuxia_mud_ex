@@ -139,8 +139,8 @@
   # if (n < 15)  →  message_vision(HIW '$N' HIW '爬进数丈，忽见前面透进光' '亮，心中大喜，手足兼施，加速前行。\\\\\n\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_enter) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: do_enter
+  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1038,8 +1038,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1148,8 +1148,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

@@ -22,9 +22,9 @@
   # if (this_player()->query_temp("marks/wo"))  →  
 # ==== CONDITIONAL BRANCHES (do_wo) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_wo
   # UNHANDLED FUNCTION: do_breathe
   # UNHANDLED FUNCTION: delete_done
+  # UNHANDLED FUNCTION: do_wo
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -464,7 +464,7 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_drink
   # UNHANDLED FUNCTION: do_eat
+  # UNHANDLED FUNCTION: do_drink
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

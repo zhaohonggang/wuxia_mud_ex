@@ -37,14 +37,14 @@
   # if (! wizardp(this_player()))  →  command('say 你在我面前瞎抓个什么劲？别地试去！');
 # ==== CONDITIONAL BRANCHES (do_summon) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: fight_ob
-  # UNHANDLED FUNCTION: do_summon
-  # UNHANDLED FUNCTION: ask_me
-  # UNHANDLED FUNCTION: accept_fight
-  # UNHANDLED FUNCTION: accept_ansuan
-  # UNHANDLED FUNCTION: receive_damage
-  # UNHANDLED FUNCTION: do_show
   # UNHANDLED FUNCTION: receive_wound
+  # UNHANDLED FUNCTION: do_show
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: do_summon
+  # UNHANDLED FUNCTION: fight_ob
+  # UNHANDLED FUNCTION: receive_damage
+  # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: ask_me
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

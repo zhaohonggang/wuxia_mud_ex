@@ -201,9 +201,9 @@
   # if (! arg || arg != "down")  →  
 # ==== CONDITIONAL BRANCHES (do_climb) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_climb
-  # UNHANDLED FUNCTION: do_push
   # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: do_push
+  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -340,8 +340,8 @@
   # if (this_player()->query_temp("marks/爬1"))  →  
 # ==== CONDITIONAL BRANCHES (do_climb) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

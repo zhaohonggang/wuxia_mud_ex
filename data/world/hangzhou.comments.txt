@@ -180,10 +180,10 @@
 # ==== CONDITIONAL BRANCHES (create_food) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: create_water
-  # UNHANDLED FUNCTION: create_wine
-  # UNHANDLED FUNCTION: create_food
-  # UNHANDLED FUNCTION: do_order
   # UNHANDLED FUNCTION: do_open
+  # UNHANDLED FUNCTION: create_wine
+  # UNHANDLED FUNCTION: do_order
+  # UNHANDLED FUNCTION: create_food
   # UNHANDLED FUNCTION: do_close
   # UNHANDLED FUNCTION: do_broadcast
 # ==== UNHANDLED FUNCTIONS ====
@@ -641,10 +641,10 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH: switch (me->query_temp("job/step")) { case 1: me->receive_damage("qi", 1); msg = "$N快步的朝井上走去。"; break; case 2: me->receive_damage("qi", 1); msg = "$N走到井口，道：我是来采矿石的。"; break; case 3: me->receive_damage("qi", 1); msg = "井口几个人看了看$N，一个人摆了摆手，让你坐到篮子里。"; break; case 4: me->receive_damage("qi", 1); msg = "$N坐在篮中，井口的人开始放绳，只听吱吱嘎嘎的，你慢慢的向下坠去。"; break; case 5: me->receive_damage("qi", 1); msg = "$N眼前越来越黑，可是绳子还是放个不停。"; break; case 6: me->receive_damage("qi", 1); msg = "忽然$N的眼前一亮，原来是一盏油灯，昏暗的火焰不断的跳动。"; break; case 7: me->receive_damage("qi", 1); msg = "绳子还是不断的向下放，漫漫似乎没有尽头。"; break; case 8: me->receive_damage("qi", 1); msg = "篮子忽然停住了，看来是到了地方，$N不禁松了一口气。"; break; case 9: me->receive_damage("qi", 3); msg = "$N看到有一些人正在努力的干活，$N连忙赶上去，也拿起铲子。"; break; case 10: me->receive_damage("qi", 6); msg = "$N慢慢的收集蓝色的矿石，将它们放到篮中。"; break; case 11: me->receive_damage("qi", 8); msg = "$N觉得分量差不多了，跨进篮中，拉了拉绳子。"; break; case 12: me->receive_damage("qi", 1); msg = "等了片刻，篮子忽然晃了晃，$N渐渐的向上升了上去。"; break; case 13: me->receive_damage("qi", 1); msg = "光线越来越亮，终于到了洞口，只见井口几个人忙得满头大汗。"; break; case 14: me->receive_damage("qi", 7); msg = "$N不及道谢，连忙扛起篮子，奔大车去了。"; break; case 15: me->receive_damage("qi", 6); msg = "$N赶到大车旁边，“哗啦啦”将矿石撒到车中。"; break; default: me->receive_damage("qi", 4); msg = "$N摸了摸了汗，看看空篮子，总算是干完一趟了。"; finish = 1; break; }
 # ==== SWITCH STATEMENTS ====
-  # UNHANDLED FUNCTION: do_mine
+  # UNHANDLED FUNCTION: working
   # UNHANDLED FUNCTION: halt_working
   # UNHANDLED FUNCTION: do_move
-  # UNHANDLED FUNCTION: working
+  # UNHANDLED FUNCTION: do_mine
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -695,6 +695,7 @@
 # Zone: hangzhou
 
 # inherit /inherit/char/smith.c;
+# inherit F_DEALER;
 
 
 

@@ -235,8 +235,8 @@
   # if (me->query("max_neili") < 1000)  →  message_vision(HIR '结果哪知$N' HIR '内力不济，连吃奶' '的劲都用上了，石桌还是纹丝不动。\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_move) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close_passage
   # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: close_passage
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -550,16 +550,16 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: catch_killer
+  # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: return_back
-  # UNHANDLED FUNCTION: catch_ob
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: scan
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: do_chat
   # UNHANDLED FUNCTION: attack
   # UNHANDLED FUNCTION: do_halt
-  # UNHANDLED FUNCTION: scan
-  # UNHANDLED FUNCTION: do_chat
-  # UNHANDLED FUNCTION: accept_hit
-  # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: catch_killer
-  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: catch_ob
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -602,16 +602,16 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: catch_killer
+  # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: return_back
-  # UNHANDLED FUNCTION: catch_ob
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: scan
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: do_chat
   # UNHANDLED FUNCTION: attack
   # UNHANDLED FUNCTION: do_halt
-  # UNHANDLED FUNCTION: scan
-  # UNHANDLED FUNCTION: do_chat
-  # UNHANDLED FUNCTION: accept_hit
-  # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: catch_killer
-  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: catch_ob
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

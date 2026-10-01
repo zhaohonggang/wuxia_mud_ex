@@ -174,11 +174,11 @@
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_fire
-  # UNHANDLED FUNCTION: precreate
-  # UNHANDLED FUNCTION: recreate
-  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: do_insert
+  # UNHANDLED FUNCTION: recreate
   # UNHANDLED FUNCTION: do_use
+  # UNHANDLED FUNCTION: precreate
+  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -392,8 +392,8 @@
   # if ( query("mishi_book") == 1 && me->query("can_learn/qianzhu-wandushou") )  →  message_vision(HIC '$P' HIC '打开石匣，发现内有一束绢' '册，连忙取了出来。\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_open) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_open
   # UNHANDLED FUNCTION: do_think
+  # UNHANDLED FUNCTION: do_open
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -529,8 +529,8 @@
   # if (dir == "northwest")  →  
 # ==== CONDITIONAL BRANCHES (valid_leave) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: fall_down1
   # UNHANDLED FUNCTION: fall_down
+  # UNHANDLED FUNCTION: fall_down1
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1129,11 +1129,11 @@
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: zhugu
-  # UNHANDLED FUNCTION: wan
-  # UNHANDLED FUNCTION: do_yanjiu
-  # UNHANDLED FUNCTION: setup
-  # UNHANDLED FUNCTION: do_du
   # UNHANDLED FUNCTION: suck
+  # UNHANDLED FUNCTION: do_du
+  # UNHANDLED FUNCTION: setup
+  # UNHANDLED FUNCTION: do_yanjiu
+  # UNHANDLED FUNCTION: wan
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1215,8 +1215,8 @@
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_read
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

@@ -84,9 +84,9 @@
   # if (me->query_temp("marks/pen"))  →  
 # ==== CONDITIONAL BRANCHES (do_knock) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_knock
   # UNHANDLED FUNCTION: end_whisper
   # UNHANDLED FUNCTION: do_say
+  # UNHANDLED FUNCTION: do_knock
   # UNHANDLED FUNCTION: check_pass
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -175,9 +175,9 @@
   # if (! arg || arg != "qin")  →  
 # ==== CONDITIONAL BRANCHES (do_tan) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_break
   # UNHANDLED FUNCTION: mantuo
   # UNHANDLED FUNCTION: do_tan
-  # UNHANDLED FUNCTION: do_break
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -205,8 +205,8 @@
 # ==== CONDITIONAL BRANCHES (do_tap) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_tap
-  # UNHANDLED FUNCTION: do_sit
   # UNHANDLED FUNCTION: delete_served
+  # UNHANDLED FUNCTION: do_sit
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

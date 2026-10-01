@@ -47,9 +47,9 @@
   # if (! me->query_temp("marks/跳"))  →  write(HIR '你真的要跳下' HIW '断肠崖' HIR '吗，如果确定' '再执行一次该指令。\\\\\n' NOR);
 # ==== CONDITIONAL BRANCHES (do_jump) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: look_zi
   # UNHANDLED FUNCTION: do_jump
   # UNHANDLED FUNCTION: tell_player
-  # UNHANDLED FUNCTION: look_zi
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -333,10 +333,10 @@
   # if (me->query_temp("marks/抱"))  →  
 # ==== CONDITIONAL BRANCHES (do_bao) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_climb
-  # UNHANDLED FUNCTION: do_jump
-  # UNHANDLED FUNCTION: do_bao
   # UNHANDLED FUNCTION: out_water
+  # UNHANDLED FUNCTION: do_bao
+  # UNHANDLED FUNCTION: do_jump
+  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -383,8 +383,8 @@
 # ==== CONDITIONAL BRANCHES (do_turn) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_jump
-  # UNHANDLED FUNCTION: do_turn
   # UNHANDLED FUNCTION: tell_player
+  # UNHANDLED FUNCTION: do_turn
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

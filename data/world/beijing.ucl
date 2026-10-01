@@ -8102,6 +8102,7 @@ chats = [
   gender = "男性"
   age = 37
   shen_type = 1
+  brain = brains.dealer
 
   combat = {
     attitude = "peaceful"

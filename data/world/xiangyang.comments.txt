@@ -352,9 +352,9 @@
 # ==== CONDITIONAL BRANCHES (do_join) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_yao
-  # UNHANDLED FUNCTION: do_unjoin
-  # UNHANDLED FUNCTION: do_decide
   # UNHANDLED FUNCTION: do_join
+  # UNHANDLED FUNCTION: do_decide
+  # UNHANDLED FUNCTION: do_unjoin
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -379,8 +379,8 @@
 # ==== CONDITIONAL BRANCHES (recognize_apprentice) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: ask_buy
-  # UNHANDLED FUNCTION: ask_degree
   # UNHANDLED FUNCTION: recognize_apprentice
+  # UNHANDLED FUNCTION: ask_degree
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -442,6 +442,7 @@
 # Zone: xiangyang
 
 # inherit /inherit/char/smith.c;
+# inherit F_DEALER;
 
 # Generated from C:/files/git/mud/d/xiangyang/npc/tuolei.c by LPCConverter
 # Zone: xiangyang

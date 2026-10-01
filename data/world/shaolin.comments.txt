@@ -390,8 +390,8 @@
   # if (me->query("max_neili") < 1000)  →  message_vision(HIR '结果哪知$N' HIR '内力不济，连吃奶' '的劲都用上了，佛塔还是纹丝不动。\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_move) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: look_tower
   # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: look_tower
   # UNHANDLED FUNCTION: look_stone
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -595,9 +595,9 @@
   # if (objectp(room))  →  
 # ==== CONDITIONAL BRANCHES (close_gate) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_knock
   # UNHANDLED FUNCTION: do_open
   # UNHANDLED FUNCTION: look_gate
+  # UNHANDLED FUNCTION: do_knock
   # UNHANDLED FUNCTION: close_gate
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -712,10 +712,10 @@
   # if (random(me->query("dex")) < 5)  →  message_vision('$N一不小心敲到自己头上了。\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (do_hit) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_hit
-  # UNHANDLED FUNCTION: look_drum
-  # UNHANDLED FUNCTION: look_out
   # UNHANDLED FUNCTION: do_out
+  # UNHANDLED FUNCTION: look_out
+  # UNHANDLED FUNCTION: look_drum
+  # UNHANDLED FUNCTION: do_hit
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -833,8 +833,8 @@
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: responsing
-  # UNHANDLED FUNCTION: processing
   # UNHANDLED FUNCTION: beating
+  # UNHANDLED FUNCTION: processing
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -926,10 +926,10 @@
   # SWITCH: switch (query("status")) { case 1: if (arg == "梦") right = 2; break; case 2: if (arg == "如" && n == 3) right = 3; break; case 3: if (arg == "是") right = 4; break; }
 # ==== SWITCH STATEMENTS ====
   # UNHANDLED FUNCTION: look_hole
-  # UNHANDLED FUNCTION: do_xian
   # UNHANDLED FUNCTION: do_get
   # UNHANDLED FUNCTION: look_jing
   # UNHANDLED FUNCTION: close_hole
+  # UNHANDLED FUNCTION: do_xian
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1232,8 +1232,8 @@
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_open
   # UNHANDLED FUNCTION: look_gate
-  # UNHANDLED FUNCTION: close_gate
   # UNHANDLED FUNCTION: do_close
+  # UNHANDLED FUNCTION: close_gate
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1393,9 +1393,9 @@
   # if ( arg=="brick" && !query("exits/down") )  →  message_vision( '$N走到楼梯下，趴在地上，试着用戒刀伸进青砖缝里，慢慢的撬着……\\\\\n' '等到青砖一块块地起了出来，地上露出一个大洞，几排石阶往下伸去，\\\\\n' '从这里分明通向一个暗道。\\\\\n', this_player());
 # ==== CONDITIONAL BRANCHES (do_open) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: look_floor
   # UNHANDLED FUNCTION: do_open
   # UNHANDLED FUNCTION: close_passage
-  # UNHANDLED FUNCTION: look_floor
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1427,10 +1427,10 @@
   # if (random(2)==0)  →  
 # ==== CONDITIONAL BRANCHES (do_knock) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_out
+  # UNHANDLED FUNCTION: look_out
   # UNHANDLED FUNCTION: do_knock
   # UNHANDLED FUNCTION: look_bell
-  # UNHANDLED FUNCTION: look_out
-  # UNHANDLED FUNCTION: do_out
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1462,10 +1462,10 @@
   # if ( arg=="stone" && query_temp("available"))  →  write('你试著把石块一块块地搬开，突然发现下面埋着个奄奄一息的老人 !\\\\\n\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_move) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_remove
+  # UNHANDLED FUNCTION: do_move
   # UNHANDLED FUNCTION: fainting
   # UNHANDLED FUNCTION: look_stone
-  # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: do_remove
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1541,8 +1541,8 @@
   # if (ob->query("money_id") && ob->value() >= 1000)  →  message_vision('船夫掂了掂' + ob->name() + '，对$N说：好！这就上船吧！\\\\\n' , who); message_vision('船夫叫来几个年轻船夫，帮$N将货拖上船，一声「起锚」船就开走了。\\\\\n', who); tell_object(who, HIG '你悠闲的站在船头，晃晃悠悠的过了汉水......\\\\\n' NOR);
 # ==== CONDITIONAL BRANCHES (accept_object) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: unconcious
   # UNHANDLED FUNCTION: goto_peer
+  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1562,8 +1562,8 @@
   # if (ob->query("money_id") && ob->value() >= 1000)  →  message_vision('船夫掂了掂' + ob->name() + '，对$N说：好！这就上船吧！\\\\\n' , who); message_vision('船夫叫来几个年轻船夫，帮$N将货拖上船，一声「起锚」船就开走了。\\\\\n', who); tell_object(who, HIG '你悠闲的站在船头，晃晃悠悠的过了汉水......\\\\\n' NOR);
 # ==== CONDITIONAL BRANCHES (accept_object) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: unconcious
   # UNHANDLED FUNCTION: goto_peer
+  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1605,8 +1605,8 @@
   # if (this_player()->query_temp("marks/问过老乔"))  →  command('say 哎呀，我真记不清楚！\\\\\n');
 # ==== CONDITIONAL BRANCHES (ask_qiao) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: reset
   # UNHANDLED FUNCTION: ask_qiao
+  # UNHANDLED FUNCTION: reset
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1628,8 +1628,8 @@
 # ==== CONDITIONAL BRANCHES (ask_me) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: recognize_apprentice
-  # UNHANDLED FUNCTION: ask_book
   # UNHANDLED FUNCTION: ask_me
+  # UNHANDLED FUNCTION: ask_book
   # UNHANDLED FUNCTION: ask_hujia_book
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

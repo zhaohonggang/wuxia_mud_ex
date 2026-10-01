@@ -215,8 +215,8 @@
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: unconcious
-  # UNHANDLED FUNCTION: die
   # UNHANDLED FUNCTION: convert
+  # UNHANDLED FUNCTION: die
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -268,6 +268,7 @@
 # Zone: baituo
 
 # inherit /inherit/char/smith.c;
+# inherit F_DEALER;
 
 # Generated from C:/files/git/mud/d/baituo/npc/snake.c by LPCConverter
 # Zone: baituo
@@ -558,9 +559,9 @@
   # if (used)  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: cure_ob
   # UNHANDLED FUNCTION: decay
   # UNHANDLED FUNCTION: delete_benefit
+  # UNHANDLED FUNCTION: cure_ob
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -811,10 +812,10 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: is_container
   # UNHANDLED FUNCTION: reject
-  # UNHANDLED FUNCTION: do_catch
+  # UNHANDLED FUNCTION: is_container
   # UNHANDLED FUNCTION: no_limit_amount
   # UNHANDLED FUNCTION: do_free
+  # UNHANDLED FUNCTION: do_catch
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

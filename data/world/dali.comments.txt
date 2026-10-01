@@ -627,11 +627,11 @@
   # if ((strsrch(oldtitle, "大理镇南王府家丁") >= 0) || (strsrch(oldtitle, "大理镇南王府婢女") >= 0))  →  command('say 好，既然如此想切磋，那就看你的本事如何了。\\\\\n');
 # ==== CONDITIONAL BRANCHES (ask_me) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: accept_fight
-  # UNHANDLED FUNCTION: clear_title
-  # UNHANDLED FUNCTION: checking
   # UNHANDLED FUNCTION: ask_me
   # UNHANDLED FUNCTION: upgrade_title
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: checking
+  # UNHANDLED FUNCTION: clear_title
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

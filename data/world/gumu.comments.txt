@@ -60,8 +60,8 @@
   # if (random(10) > 8)  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_tang
   # UNHANDLED FUNCTION: do_niu
+  # UNHANDLED FUNCTION: do_tang
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -103,9 +103,9 @@
   # if (!objectp(weapon = me->query_temp("weapon")))  →  
 # ==== CONDITIONAL BRANCHES (do_ci) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_zhan
-  # UNHANDLED FUNCTION: do_ci
   # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_ci
+  # UNHANDLED FUNCTION: do_zhan
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -159,8 +159,8 @@
   # if ( !arg || arg != "shi" )  →  
 # ==== CONDITIONAL BRANCHES (do_move) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close
   # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: close
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -280,8 +280,8 @@
   # if ( !arg || arg != "up")  →  write('那个方向没法爬。\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_climb) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_swim
   # UNHANDLED FUNCTION: do_climb
+  # UNHANDLED FUNCTION: do_swim
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

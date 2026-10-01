@@ -536,12 +536,218 @@ item_desc = {
 
   room_exits "shamo" {
     room_id = rooms.shamo.id
-    up = rooms.tianroad4.id
+    up = rooms.shamo10.id
     down = rooms.nanjiang1.id
     east = rooms.shamo.id
     west = rooms.shamo.id
     south = rooms.shamo.id
     north = rooms.shamo.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/shamo1.c by LPCConverter
+# Zone: xiyu
+
+    rooms "shamo1" {
+      name = "大沙漠"
+      description = "这是一片一望无际的大沙漠。你一进来就迷失了方向。看 来要走出这块沙漠并非易事。"
+  x = 0
+  y = -1
+  z = 0
+    }
+
+  room_exits "shamo1" {
+    room_id = rooms.shamo1.id
+    north = rooms.shamo1.id
+    south = rooms.shamo1.id
+    west = rooms.shamo1.id
+    east = rooms.shamo1.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/shamo10.c by LPCConverter
+# Zone: xiyu
+
+    rooms "shamo10" {
+      name = "大沙漠"
+      description = "这是一片一望无际的大沙漠。你一进来就迷失了方向。看 来要走出这块沙漠并非易事。"
+  x = 0
+  y = 0
+  z = 5
+    }
+
+  room_exits "shamo10" {
+    room_id = rooms.shamo10.id
+    up = rooms.shamo2.id
+    down = rooms.shamo.id
+    east = rooms.shamo10.id
+    west = rooms.shamo10.id
+    south = rooms.shamo10.id
+    north = rooms.shamo10.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/shamo2.c by LPCConverter
+# Zone: xiyu
+
+    rooms "shamo2" {
+      name = "大沙漠"
+      description = "这是一片一望无际的大沙漠。你一进来就迷失了方向。看 来要走出这块沙漠并非易事。"
+  x = 0
+  y = 0
+  z = 6
+    }
+
+  room_exits "shamo2" {
+    room_id = rooms.shamo2.id
+    up = rooms.shamo3.id
+    down = rooms.shamo10.id
+    east = rooms.shamo2.id
+    west = rooms.shamo2.id
+    south = rooms.shamo2.id
+    north = rooms.shamo2.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/shamo3.c by LPCConverter
+# Zone: xiyu
+
+    rooms "shamo3" {
+      name = "大沙漠"
+      description = "这是一片一望无际的大沙漠。你一进来就迷失了方向。看 来要走出这块沙漠并非易事。"
+  x = 0
+  y = 0
+  z = 7
+    }
+
+  room_exits "shamo3" {
+    room_id = rooms.shamo3.id
+    up = rooms.shamo5.id
+    down = rooms.shamo2.id
+    east = rooms.shamo3.id
+    west = rooms.shamo3.id
+    south = rooms.shamo3.id
+    north = rooms.shamo3.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/shamo4.c by LPCConverter
+# Zone: xiyu
+
+    rooms "shamo4" {
+      name = "大沙漠"
+      description = "这是一片一望无际的大沙漠。你一进来就迷失了方向。看 来要走出这块沙漠并非易事。"
+  x = 1
+  y = 0
+  z = 1
+    }
+
+  room_exits "shamo4" {
+    room_id = rooms.shamo4.id
+    north = rooms.shamo4.id
+    south = rooms.shamo4.id
+    west = rooms.shamo4.id
+    east = rooms.shamo4.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/shamo5.c by LPCConverter
+# Zone: xiyu
+
+    rooms "shamo5" {
+      name = "大沙漠"
+      description = "这是一片一望无际的大沙漠。你一进来就迷失了方向。看 来要走出这块沙漠并非易事。"
+  x = 0
+  y = 0
+  z = 8
+    }
+
+  room_exits "shamo5" {
+    room_id = rooms.shamo5.id
+    up = rooms.shamo6.id
+    down = rooms.shamo3.id
+    east = rooms.shamo5.id
+    west = rooms.shamo5.id
+    south = rooms.shamo5.id
+    north = rooms.shamo5.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/shamo6.c by LPCConverter
+# Zone: xiyu
+
+    rooms "shamo6" {
+      name = "大沙漠"
+      description = "这是一片一望无际的大沙漠。你一进来就迷失了方向。看 来要走出这块沙漠并非易事。"
+  x = 0
+  y = 0
+  z = 9
+    }
+
+  room_exits "shamo6" {
+    room_id = rooms.shamo6.id
+    up = rooms.shamo7.id
+    down = rooms.shamo5.id
+    east = rooms.shamo6.id
+    west = rooms.shamo6.id
+    south = rooms.shamo6.id
+    north = rooms.shamo6.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/shamo7.c by LPCConverter
+# Zone: xiyu
+
+    rooms "shamo7" {
+      name = "大沙漠"
+      description = "这是一片一望无际的大沙漠。你一进来就迷失了方向。看 来要走出这块沙漠并非易事。"
+  x = 0
+  y = 0
+  z = 10
+    }
+
+  room_exits "shamo7" {
+    room_id = rooms.shamo7.id
+    up = rooms.shamo8.id
+    down = rooms.shamo6.id
+    east = rooms.shamo7.id
+    west = rooms.shamo7.id
+    south = rooms.shamo7.id
+    north = rooms.shamo7.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/shamo8.c by LPCConverter
+# Zone: xiyu
+
+    rooms "shamo8" {
+      name = "大沙漠"
+      description = "这是一片一望无际的大沙漠。你一进来就迷失了方向。看 来要走出这块沙漠并非易事。"
+  x = 0
+  y = 0
+  z = 11
+    }
+
+  room_exits "shamo8" {
+    room_id = rooms.shamo8.id
+    up = rooms.shamo9.id
+    down = rooms.shamo7.id
+    east = rooms.shamo8.id
+    west = rooms.shamo8.id
+    south = rooms.shamo8.id
+    north = rooms.shamo8.id
+    }
+
+# Generated from C:/files/git/mud/d/xiyu/shamo9.c by LPCConverter
+# Zone: xiyu
+
+    rooms "shamo9" {
+      name = "大沙漠"
+      description = "这是一片一望无际的大沙漠。你一进来就迷失了方向。看 来要走出这块沙漠并非易事。"
+  x = 0
+  y = 0
+  z = 12
+    }
+
+  room_exits "shamo9" {
+    room_id = rooms.shamo9.id
+    up = rooms.tianroad4.id
+    down = rooms.shamo8.id
+    east = rooms.shamo9.id
+    west = rooms.shamo9.id
+    south = rooms.shamo9.id
+    north = rooms.shamo9.id
     }
 
 # Generated from C:/files/git/mud/d/xiyu/shanjiao.c by LPCConverter
@@ -800,7 +1006,7 @@ item_desc = {
       description = "这里是天山东麓，山风从山上吹来，你冷得瑟瑟发抖。路 边是一片针叶林。石壁上盛开着一朵洁白的天山雪莲，一个采 药人正在采药。东面一条深涧(valley)挡住了下山的路。"
   x = 0
   y = 0
-  z = 5
+  z = 13
 item_desc = {
  valley = "深涧足有三丈多宽，不知道能不能跳过去。"
 }
@@ -809,7 +1015,7 @@ item_desc = {
   room_exits "tianroad4" {
     room_id = rooms.tianroad4.id
     up = rooms.xxroad7.id
-    down = rooms.shamo.id
+    down = rooms.shamo9.id
     westup = rooms.tianroad5.id
     }
 
@@ -830,7 +1036,7 @@ item_desc = {
       description = "这里是天山东麓，山风从山上吹来，你冷得瑟瑟发抖。路 边是一片针叶林。西边望去，顶峰遥遥可见。"
   x = -1
   y = 0
-  z = 6
+  z = 14
     }
 
   room_exits "tianroad5" {
@@ -854,7 +1060,7 @@ item_desc = {
       description = "这里是天山顶峰。从这里向周围望去，帕米尔高原的风光 尽收眼底。东面一条小路可以下山。山风凛冽，极为强劲，几 乎无法站立。"
   x = -2
   y = 0
-  z = 7
+  z = 15
     }
 
   room_exits "tianroad6" {
@@ -1222,7 +1428,7 @@ behavior_config = {
       description = "你走在一条崎岖的小路上，这里荒无人烟，寒风凛冽。"
   x = 0
   y = 0
-  z = 6
+  z = 14
     }
 
   room_exits "xxroad7" {
@@ -1240,7 +1446,7 @@ behavior_config = {
       description = "你走在一条崎岖的小路上，这里荒无人烟，寒风凛冽。"
   x = -1
   y = 0
-  z = 6
+  z = 14
     }
 
   room_exits "xxroad8" {

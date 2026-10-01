@@ -126,6 +126,7 @@
 # Zone: village
 
 # inherit /inherit/char/smith.c;
+# inherit F_DEALER;
 
 
 

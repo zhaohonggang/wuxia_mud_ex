@@ -30,9 +30,9 @@
   # if (wiz_level(this_player()) >= 3)  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_open
-  # UNHANDLED FUNCTION: do_look
   # UNHANDLED FUNCTION: do_close
+  # UNHANDLED FUNCTION: do_look
+  # UNHANDLED FUNCTION: do_open
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -113,8 +113,8 @@
 # ========================================
 # UNHANDLED CONTENT (for manual review)
 # ========================================
-  # UNHANDLED FUNCTION: die
   # UNHANDLED FUNCTION: redeem
+  # UNHANDLED FUNCTION: die
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

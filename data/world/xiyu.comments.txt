@@ -31,10 +31,10 @@
   # if (me->query_skill("poison", 1) < 160)  →  
 # ==== CONDITIONAL BRANCHES (look_desk) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: look_desk
   # UNHANDLED FUNCTION: do_pick
   # UNHANDLED FUNCTION: look_pet
   # UNHANDLED FUNCTION: do_move
+  # UNHANDLED FUNCTION: look_desk
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -171,9 +171,7 @@
 # Generated from C:/files/git/mud/d/xiyu/shamo1.c by LPCConverter
 # Zone: xiyu
 
-# Generic LPC file: C:/files/git/mud/d/xiyu/shamo1.c
-
-# Requires manual conversion
+# inherit /d/xiyu/shamo;
 
 
 
@@ -188,9 +186,7 @@
 # Generated from C:/files/git/mud/d/xiyu/shamo10.c by LPCConverter
 # Zone: xiyu
 
-# Generic LPC file: C:/files/git/mud/d/xiyu/shamo10.c
-
-# Requires manual conversion
+# inherit /d/xiyu/shamo;
 
 
 
@@ -205,58 +201,42 @@
 # Generated from C:/files/git/mud/d/xiyu/shamo2.c by LPCConverter
 # Zone: xiyu
 
-# Generic LPC file: C:/files/git/mud/d/xiyu/shamo2.c
-
-# Requires manual conversion
+# inherit /d/xiyu/shamo;
 
 # Generated from C:/files/git/mud/d/xiyu/shamo3.c by LPCConverter
 # Zone: xiyu
 
-# Generic LPC file: C:/files/git/mud/d/xiyu/shamo3.c
-
-# Requires manual conversion
+# inherit /d/xiyu/shamo;
 
 # Generated from C:/files/git/mud/d/xiyu/shamo4.c by LPCConverter
 # Zone: xiyu
 
-# Generic LPC file: C:/files/git/mud/d/xiyu/shamo4.c
-
-# Requires manual conversion
+# inherit /d/xiyu/shamo.c;
 
 # Generated from C:/files/git/mud/d/xiyu/shamo5.c by LPCConverter
 # Zone: xiyu
 
-# Generic LPC file: C:/files/git/mud/d/xiyu/shamo5.c
-
-# Requires manual conversion
+# inherit /d/xiyu/shamo;
 
 # Generated from C:/files/git/mud/d/xiyu/shamo6.c by LPCConverter
 # Zone: xiyu
 
-# Generic LPC file: C:/files/git/mud/d/xiyu/shamo6.c
-
-# Requires manual conversion
+# inherit /d/xiyu/shamo;
 
 # Generated from C:/files/git/mud/d/xiyu/shamo7.c by LPCConverter
 # Zone: xiyu
 
-# Generic LPC file: C:/files/git/mud/d/xiyu/shamo7.c
-
-# Requires manual conversion
+# inherit /d/xiyu/shamo;
 
 # Generated from C:/files/git/mud/d/xiyu/shamo8.c by LPCConverter
 # Zone: xiyu
 
-# Generic LPC file: C:/files/git/mud/d/xiyu/shamo8.c
-
-# Requires manual conversion
+# inherit /d/xiyu/shamo;
 
 # Generated from C:/files/git/mud/d/xiyu/shamo9.c by LPCConverter
 # Zone: xiyu
 
-# Generic LPC file: C:/files/git/mud/d/xiyu/shamo9.c
-
-# Requires manual conversion
+# inherit /d/xiyu/shamo;
 
 # Generated from C:/files/git/mud/d/xiyu/shanjiao.c by LPCConverter
 # Zone: xiyu
@@ -681,8 +661,8 @@
   # if (clonep())  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_ride
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

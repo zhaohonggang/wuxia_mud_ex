@@ -85,8 +85,8 @@
   # if (me->query_temp("la_teng_huashan"))  →  
 # ==== CONDITIONAL BRANCHES (do_la) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_jump
   # UNHANDLED FUNCTION: do_la
+  # UNHANDLED FUNCTION: do_jump
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -112,8 +112,8 @@
   # if ( present("soup", me) || present("rice", me))  →  
 # ==== CONDITIONAL BRANCHES (valid_leave) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: reset
   # UNHANDLED FUNCTION: do_serve
+  # UNHANDLED FUNCTION: reset
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -167,13 +167,13 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH: switch(arg) { case "fir sword" : return notify_fail(HIC "你将竹剑拿起来看了看，觉得普通之极，便又放了回去。\n" NOR); case "sec sword": if (environment(xuantie)) return notify_fail("上面的东西已被人拿走了！\n"); if (me->query("str") < 34) return notify_fail("你将铁剑只提起数尺，呛的一声，竟然脱手掉下" "，在石上一碰，火花四溅，不禁吓了一跳。\n"); message_vision(HIM "$N" HIM "将玄铁重剑提了起来。\n" NOR, me); xuantie->move(me); return 1; case "thi sword": if (environment(noname)) return notify_fail("上面的东西已被人拿走了！\n"); message_vision(HIM "$N" HIM "将无名剑提了起来。\n" NOR, me); noname->move(me); return 1; }
 # ==== SWITCH STATEMENTS ====
-  # UNHANDLED FUNCTION: do_pick
-  # UNHANDLED FUNCTION: do_jump
   # UNHANDLED FUNCTION: look_sword3
-  # UNHANDLED FUNCTION: do_move
-  # UNHANDLED FUNCTION: look_stone
   # UNHANDLED FUNCTION: look_fen
+  # UNHANDLED FUNCTION: do_jump
+  # UNHANDLED FUNCTION: look_stone
+  # UNHANDLED FUNCTION: do_move
   # UNHANDLED FUNCTION: look_sword2
+  # UNHANDLED FUNCTION: do_pick
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -207,10 +207,10 @@
   # if (! environment(ob))  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: look_sword
-  # UNHANDLED FUNCTION: do_wa
   # UNHANDLED FUNCTION: do_ba
+  # UNHANDLED FUNCTION: do_wa
+  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -240,8 +240,8 @@
   # if (! query("had_yunu"))  →  message_vision('$N轻轻的拉开抽屉，发现里面有一' '本书...。\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (do_move) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_pick
   # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: do_pick
   # UNHANDLED FUNCTION: do_move
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -272,8 +272,8 @@
   # if ( arg=="fire" )  →  write( '你点燃了火折，发现是一围大树，被削去树皮的树干上书“中条山”三字。 侧边一个树洞，似乎可以钻(zuan)过去。\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_use) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_zuan
   # UNHANDLED FUNCTION: do_use
+  # UNHANDLED FUNCTION: do_zuan
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -302,27 +302,27 @@
   # if (! environment(ob) && ! query("begin") && ! query("over") && me->query("gender") == "无性")  →  tell_object(me, HIB '你刚到这里，忽然听见上方窗户传来阵阵耳' '语，不禁想朝窗户望(view)去！\\\\\n' NOR);
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_talk20
   # UNHANDLED FUNCTION: do_talk1
-  # UNHANDLED FUNCTION: do_talk7
+  # UNHANDLED FUNCTION: do_talk14
+  # UNHANDLED FUNCTION: do_talk5
+  # UNHANDLED FUNCTION: do_talk19
+  # UNHANDLED FUNCTION: do_talk3
   # UNHANDLED FUNCTION: do_talk15
-  # UNHANDLED FUNCTION: do_talk18
-  # UNHANDLED FUNCTION: do_talk2
-  # UNHANDLED FUNCTION: do_talk6
+  # UNHANDLED FUNCTION: do_talk11
+  # UNHANDLED FUNCTION: do_talk12
+  # UNHANDLED FUNCTION: do_talk7
   # UNHANDLED FUNCTION: do_talk9
-  # UNHANDLED FUNCTION: do_talk4
-  # UNHANDLED FUNCTION: do_talk8
+  # UNHANDLED FUNCTION: do_talk16
+  # UNHANDLED FUNCTION: do_talk6
+  # UNHANDLED FUNCTION: do_talk2
+  # UNHANDLED FUNCTION: do_talk10
+  # UNHANDLED FUNCTION: do_talk17
+  # UNHANDLED FUNCTION: do_talk18
   # UNHANDLED FUNCTION: do_look
   # UNHANDLED FUNCTION: do_talk13
-  # UNHANDLED FUNCTION: do_talk11
-  # UNHANDLED FUNCTION: do_talk17
-  # UNHANDLED FUNCTION: do_talk3
-  # UNHANDLED FUNCTION: do_talk16
-  # UNHANDLED FUNCTION: do_talk12
-  # UNHANDLED FUNCTION: do_talk19
-  # UNHANDLED FUNCTION: do_talk10
-  # UNHANDLED FUNCTION: do_talk20
-  # UNHANDLED FUNCTION: do_talk5
-  # UNHANDLED FUNCTION: do_talk14
+  # UNHANDLED FUNCTION: do_talk8
+  # UNHANDLED FUNCTION: do_talk4
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -374,8 +374,8 @@
   # if (me->query_temp("xunshan"))  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_tiao
   # UNHANDLED FUNCTION: do_jump
+  # UNHANDLED FUNCTION: do_tiao
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -383,17 +383,35 @@
 
 
 
+# Generated from C:/files/git/mud/d/huashan/lockroom1.c by LPCConverter
+# Zone: huashan
 
+# inherit __DIR__"tsr_room_dugu-jiujian.c";
 
+# Generated from C:/files/git/mud/d/huashan/lockroom2.c by LPCConverter
+# Zone: huashan
 
+# inherit __DIR__"tsr_room_dugu-jiujian.c";
 
+# Generated from C:/files/git/mud/d/huashan/lockroom3.c by LPCConverter
+# Zone: huashan
 
+# inherit __DIR__"tsr_room_dugu-jiujian.c";
 
+# Generated from C:/files/git/mud/d/huashan/lockroom4.c by LPCConverter
+# Zone: huashan
 
+# inherit __DIR__"tsr_room_dugu-jiujian.c";
 
+# Generated from C:/files/git/mud/d/huashan/lockroom5.c by LPCConverter
+# Zone: huashan
 
+# inherit __DIR__"tsr_room_dugu-jiujian.c";
 
+# Generated from C:/files/git/mud/d/huashan/lockroom6.c by LPCConverter
+# Zone: huashan
 
+# inherit __DIR__"tsr_room_dugu-jiujian.c";
 
 # Generated from C:/files/git/mud/d/huashan/luoyan.c by LPCConverter
 # Zone: huashan
@@ -476,9 +494,9 @@
   # if (me->query("neili") < 200)  →  message_vision(HIC '结果只听一声闷哼，$N被石壁的反弹力震得眼前一黑....\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_break) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: close_out
   # UNHANDLED FUNCTION: do_break
   # UNHANDLED FUNCTION: close
-  # UNHANDLED FUNCTION: close_out
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -611,8 +629,8 @@
   # if (me->query_skill("dodge") < 240)  →  
 # ==== CONDITIONAL BRANCHES (do_jump) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_cross
   # UNHANDLED FUNCTION: do_jump
+  # UNHANDLED FUNCTION: do_cross
   # UNHANDLED FUNCTION: look_hongshui
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -636,8 +654,8 @@
   # if ((query("book_count") > 0) && (random(5) == 3))  →  message_vision(HIY '$N' HIY '辛辛苦苦整理了好半天，居然在' '破杂物堆里发现了一本书。\\\\\n'NOR,me);
 # ==== CONDITIONAL BRANCHES (do_zhengli) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: reset
   # UNHANDLED FUNCTION: do_zhengli
+  # UNHANDLED FUNCTION: reset
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -714,8 +732,8 @@
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: openlock
-  # UNHANDLED FUNCTION: init_data
   # UNHANDLED FUNCTION: get_result
+  # UNHANDLED FUNCTION: init_data
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -808,12 +826,12 @@
 # ==== CONDITIONAL BRANCHES ====
   # SWITCH POOL: switch( random(2) ) { case 0: message_vision( "$N轻轻地敲了敲门，只听见里面有人很不耐烦地吼到：\n" "刚躺下就来敲门！我睡着了，听不见！！！\n", this_player()); break; case 1: message_vision( "$N轻轻地敲了敲门，只听见里面有些响动，\n" "好象有人在踱来踱去，拿不定主意是否开门。\n", this_player()); break; }
 # ==== SWITCH POOLS ====
-  # UNHANDLED FUNCTION: do_push
-  # UNHANDLED FUNCTION: force_open
   # UNHANDLED FUNCTION: do_kick
-  # UNHANDLED FUNCTION: do_knock
-  # UNHANDLED FUNCTION: close_men
   # UNHANDLED FUNCTION: look_men
+  # UNHANDLED FUNCTION: close_men
+  # UNHANDLED FUNCTION: do_knock
+  # UNHANDLED FUNCTION: force_open
+  # UNHANDLED FUNCTION: do_push
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -858,8 +876,8 @@
   # if (me->query_temp("xunshan"))  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close_men
   # UNHANDLED FUNCTION: do_open
+  # UNHANDLED FUNCTION: close_men
   # UNHANDLED FUNCTION: do_close
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================

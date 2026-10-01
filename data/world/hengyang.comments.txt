@@ -65,10 +65,10 @@
   # if (here->query_temp("marks/拉"))  →  write('蜘蛛网已经被拉破了。\\\\\n');
 # ==== CONDITIONAL BRANCHES (do_pull) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: look_net
-  # UNHANDLED FUNCTION: do_think
-  # UNHANDLED FUNCTION: do_pull
   # UNHANDLED FUNCTION: look_wall
+  # UNHANDLED FUNCTION: do_pull
+  # UNHANDLED FUNCTION: do_think
+  # UNHANDLED FUNCTION: look_net
   # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -194,9 +194,9 @@
   # if (arg == "fire" )  →  write(HIW'\\\\\n你点燃了火折，发现洞中似乎有一条路可以顺着走(zou)下去。\\\\\n\\\\\n'NOR);
 # ==== CONDITIONAL BRANCHES (do_use) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_zou
   # UNHANDLED FUNCTION: enter_furong
   # UNHANDLED FUNCTION: do_use
-  # UNHANDLED FUNCTION: do_zou
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -242,10 +242,10 @@
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: look_pic1
   # UNHANDLED FUNCTION: look_bi
-  # UNHANDLED FUNCTION: look_pic3
-  # UNHANDLED FUNCTION: do_gua
-  # UNHANDLED FUNCTION: do_canwu
   # UNHANDLED FUNCTION: look_pic2
+  # UNHANDLED FUNCTION: look_pic3
+  # UNHANDLED FUNCTION: do_canwu
+  # UNHANDLED FUNCTION: do_gua
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -311,10 +311,10 @@
   # if ( !arg || arg != "gate" )  →  
 # ==== CONDITIONAL BRANCHES (do_push) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: close_out
   # UNHANDLED FUNCTION: close
-  # UNHANDLED FUNCTION: do_knock
   # UNHANDLED FUNCTION: do_push
+  # UNHANDLED FUNCTION: do_knock
+  # UNHANDLED FUNCTION: close_out
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -360,8 +360,8 @@
   # if (me->query_temp("la_teng"))  →  
 # ==== CONDITIONAL BRANCHES (do_la) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_tiao
   # UNHANDLED FUNCTION: do_la
+  # UNHANDLED FUNCTION: do_tiao
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -396,8 +396,8 @@
   # if (! arg || arg != "stone")  →  
 # ==== CONDITIONAL BRANCHES (do_tiao) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_tiao
   # UNHANDLED FUNCTION: do_climb
+  # UNHANDLED FUNCTION: do_tiao
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -427,9 +427,9 @@
 # ==== CONDITIONAL BRANCHES (look_bi) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: auto_close
-  # UNHANDLED FUNCTION: look_bi
-  # UNHANDLED FUNCTION: do_tiao
   # UNHANDLED FUNCTION: do_push
+  # UNHANDLED FUNCTION: do_tiao
+  # UNHANDLED FUNCTION: look_bi
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -538,10 +538,10 @@
   # if (!zigai&&furong)  →  
 # ==== CONDITIONAL BRANCHES (look_bi) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_he
+  # UNHANDLED FUNCTION: do_ba
   # UNHANDLED FUNCTION: do_xue
   # UNHANDLED FUNCTION: look_bi
-  # UNHANDLED FUNCTION: do_ba
-  # UNHANDLED FUNCTION: do_he
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -574,8 +574,8 @@
   # if (random(99)<62)  →  
 # ==== CONDITIONAL BRANCHES (do_tiao) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_tiao
   # UNHANDLED FUNCTION: do_climb
+  # UNHANDLED FUNCTION: do_tiao
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -670,8 +670,8 @@
   # if (present("fire", me))  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_use
   # UNHANDLED FUNCTION: do_zou
+  # UNHANDLED FUNCTION: do_use
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
