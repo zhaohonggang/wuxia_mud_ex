@@ -687,6 +687,39 @@ defmodule Kantele.Character.Commands do
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
+    # 自定义方向名（LPC 允许任意字符串做方向）：擂台/渡船/建房三子区/柳溪/靶场。
+    # 缺了它们这些方向在房间里显示得出来、却打不出（"What?"）。
+    # parse/3 是编译期宏，只能逐个展开，不能放进 for。
+    parse("leitai", :leitai, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("river", :river, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("dule", :dule, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("caihong", :caihong, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("panlong", :panlong, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("yangzhou", :yangzhou, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
   end
 
   module(PerformCommand) do

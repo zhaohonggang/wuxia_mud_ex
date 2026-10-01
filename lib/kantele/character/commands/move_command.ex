@@ -134,4 +134,53 @@ defmodule Kantele.Character.MoveCommand do
     |> request_movement("climb")
     |> assign(:prompt, false)
   end
+
+  # ---- 自定义方向名 ----
+  #
+  # LPC 允许任意字符串做方向名，语料里除标准 22 个之外还有 7 个真实在用：
+  #   leitai  city/wudao1~4      擂台（4 个房间）
+  #   river   guanwai/heimuya 19 处  渡船
+  #   dule / caihong / panlong  room/xiaoyuan  建房系统三个子区
+  #   yangzhou test/global 靶场出口
+  # 之前这些方向在房间里能看到、却打不出来（命令路由报 "What?"），
+  # 因为 move_command.ex 只为固定方向定义了函数。
+  #
+  # `liuxi` **故意不注册**：LPC 的 cmds/std/liuxi.c 已经占了这个词
+  # （Kantele.Character.LiuxiCommand，"柳溪系统暂未开放"），且该出口
+  # （city/guangchang）指向 minimal_world —— 按设计不转换的靶场，本来悬空。
+  def leitai(conn, _params) do
+    conn
+    |> request_movement("leitai")
+    |> assign(:prompt, false)
+  end
+
+  def river(conn, _params) do
+    conn
+    |> request_movement("river")
+    |> assign(:prompt, false)
+  end
+
+  def dule(conn, _params) do
+    conn
+    |> request_movement("dule")
+    |> assign(:prompt, false)
+  end
+
+  def caihong(conn, _params) do
+    conn
+    |> request_movement("caihong")
+    |> assign(:prompt, false)
+  end
+
+  def panlong(conn, _params) do
+    conn
+    |> request_movement("panlong")
+    |> assign(:prompt, false)
+  end
+
+  def yangzhou(conn, _params) do
+    conn
+    |> request_movement("yangzhou")
+    |> assign(:prompt, false)
+  end
 end
