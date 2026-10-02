@@ -524,6 +524,11 @@ defmodule Kantele.World.Room do
         not Kantele.World.LpcCondition.direction_scoped?(Map.get(veto, :condition)) ->
           apply_vetoes(rest, room, context, mover, dir)
 
+        # 条件依赖运行时不存在的数据（如玩家性别）-> 同样不执行，
+        # 否则 \me->query(\'gender\') != \'\u7537\'\u6027\'\ 恒真会把人永久拦住
+        not Kantele.World.LpcCondition.supported?(Map.get(veto, :condition)) ->
+          apply_vetoes(rest, room, context, mover, dir)
+
         not Kantele.World.LpcCondition.enforceable?(Map.get(veto, :condition)) ->
           # 求值器不支持的形态 -> 跳过这一条，继续看下一条
           apply_vetoes(rest, room, context, mover, dir)

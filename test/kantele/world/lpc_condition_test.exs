@@ -200,6 +200,37 @@ defmodule Kantele.World.LpcConditionTest do
     end
   end
 
+  describe "supported?/1" do
+    test "依赖玩家性别的条件视为不可执行（运行时没有该数据）" do
+      refute Cond.supported?("me->query('gender') != '男性' && dir == 'in'")
+      refute Cond.supported?("(string)me->query(\"gender\") == '女性'")
+    end
+
+    test "不依赖缺失数据的条件照常执行" do
+      assert Cond.supported?("dir == 'east' && objectp(present('shi wei',environment(me)))")
+      assert Cond.supported?("!me->query_temp('rent_paid') && dir == 'up'")
+    end
+
+    @tag :world_data
+    test "数据里依赖缺失字段的条件会被守卫排除（避免恒真误拦）" do
+      world = Kantele.World.Loader.load()
+
+      conds =
+        Enum.flat_map(world.rooms, fn r -> Enum.map(r.exit_vetoes || [], &{r.id, &1}) end)
+        |> Enum.filter(fn {_id, v} -> is_binary(Map.get(v, :condition)) end)
+        |> Enum.filter(fn {_id, v} -> Cond.direction_scoped?(v.condition) end)
+        |> Enum.filter(fn {_id, v} -> not Cond.supported?(v.condition) end)
+        |> Enum.map(fn {_id, v} -> v.condition end)
+
+      # 若执行，`!= '男性'` / `!= '女性'` 会恒真，把 mingjiao 门、xiangyang 聚义花园
+      # 这类地方永久拦住
+      assert length(conds) == 9,
+             "预期 9 条依赖 gender 的条件被排除，实际 #{length(conds)}"
+
+      assert Enum.all?(conds, &String.contains?(&1, "gender"))
+    end
+  end
+
   @tag :world_data
   test "数据里方向未限定的条件不会被执行（防锁死）" do
     world = Kantele.World.Loader.load()

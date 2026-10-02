@@ -54,6 +54,28 @@ defmodule Kantele.World.LpcCondition do
 
   def direction_scoped?(_), do: false
 
+  @doc """
+  条件所依赖的数据在当前运行时是否可用。
+
+  `direction_scoped?/1` 之外的第二类「不能执行」：条件引用了**本项目根本没有的数据**。
+  目前是玩家性别 —— accounts/characters 表没有该列，`meta.env` 也没人写 `gender`，
+  于是 `me->query("gender")` 恒为 nil：
+
+      me->query('gender') != '男性'   ->  "" != "男性"  ->  恒真（会误拦）
+      me->query('gender') == '女性'   ->  恒假（放行）
+
+  已迁入的 166 条里有 9 条落在这两类里（分布在 mingjiao 门、xiangyang 聚义花园、
+  guiyun 华庭、luoyang 浴池、quanzhou 西街），其中 6 条会永久拦住本不该拦的方向。
+  与方向未限定的条件一样：先不执行，等玩家性别真正落地后再放开。
+  """
+  @unsupported_fields ["query('gender')", "query(\"gender\")"]
+
+  def supported?(expr) when is_binary(expr) do
+    not Enum.any?(@unsupported_fields, &String.contains?(expr, &1))
+  end
+
+  def supported?(_), do: false
+
   @doc "表达式能否被本求值器处理（不能则保留原文、不执行）"
   def enforceable?(expr) when is_binary(expr) do
     case parse(expr) do
