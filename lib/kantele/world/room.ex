@@ -441,7 +441,12 @@ defmodule Kantele.World.Room do
 
     @impl true
     def movement_request(room, context, event, room_exit) do
-      mover = Enum.find(context.characters, &(&1.pid == event.from_pid))
+      # 玩家本人**不在** context.characters 里（那里只有房间生成的 NPC），
+      # 必须从事件里取 —— 早期版本用 context.characters 找 mover，玩家恒为 nil，
+      # 于是这段（含原有的 guarder 拦截）对玩家从不执行。
+      mover =
+        Map.get(event.data, :character) ||
+          Enum.find(context.characters, &(&1.pid == event.from_pid))
 
       if mover do
         guarder_result = check_guarders(context, mover, room_exit)
@@ -478,7 +483,14 @@ defmodule Kantele.World.Room do
     # 灰度开关 `config :ex_venture, enforce_exit_vetoes: false`（默认关）。
     # 开启即行为变更：条件为真时拒绝移动并提示 LPC notify_fail 的原文。
     # 求值器无法解析/求值失败一律放行 —— 宁可少拦，不能把玩家锁死在房里。
-    defp check_exit_vetoes(room, context, mover, dir) do
+    # 公开：便于单测直接验证「玩家在场时是否真的被拦」
+    @doc """
+    valid_leave 阻挡条件判定：返回 `:allow` 或 `{:deny, message}`。
+
+    调用点见 `movement_request/4`。开关 `config :ex_venture, enforce_exit_vetoes`
+    （默认关）；条件解析不了/求值失败/方向未限定一律放行。
+    """
+    def check_exit_vetoes(room, context, mover, dir) do
       case Application.get_env(:ex_venture, :enforce_exit_vetoes, false) do
         true ->
           vetoes = Map.get(room, :exit_vetoes, []) || []
