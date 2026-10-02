@@ -1569,8 +1569,8 @@ item_desc = {
   room_exits "majiu" {
     room_id = rooms.majiu.id
     south = rooms.huarui1.id
+    up = rooms.changan_shop.id
     }
-  # skipped exit up: target outside d/: /clone/shop/changan_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -6568,3 +6568,46 @@ chats = [
         unit = "壶"
       }
     }
+
+# Source: /clone/shop/changan_shop
+# Zone: changan
+
+    rooms "changan_shop" {
+      name = "百宝斋"
+      description = "这里是长安城里小有名气的店堂--百宝斋。长安城民众富裕，铺里出售的货物也是别具一格。整个铺面装潢得非常雅致，不过货柜上却空无一物，看来已很久没人打理了。"
+  flags = [
+    "no_fight"
+  ]
+  x = -3
+  y = -7
+  z = 1
+    }
+
+  room_exits "changan_shop" {
+    room_id = rooms.changan_shop.id
+    down = rooms.majiu.id
+    }
+
+# Source: C:/files/git/mud/clone/shop/waiter.c
+# Zone: changan
+
+    characters "waiter" {
+      name = "伙计"
+      description = "一个忙前忙后的店伙计。"
+  brain = brains.vendor
+
+  carry = [
+    { id = clone_lib.items.cloth.id }
+  ]
+
+  init = {
+    add_actions = ["list", "buy"]
+  }
+    }
+
+  room_characters "changan_shop" {
+    room_id = rooms.changan_shop.id
+    characters = [
+      { id = characters.waiter.id }    ]
+  }
+

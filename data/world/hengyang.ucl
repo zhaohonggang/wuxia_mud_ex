@@ -1041,8 +1041,8 @@ item_desc = {
   room_exits "majiu" {
     room_id = rooms.majiu.id
     north = rooms.hengyang11.id
+    up = rooms.hengyang_shop.id
     }
-  # skipped exit up: target outside d/: /clone/shop/hengyang_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -3724,3 +3724,46 @@ chats = [
         material = "bamboo"
       }
     }
+
+# Source: /clone/shop/hengyang_shop
+# Zone: hengyang
+
+    rooms "hengyang_shop" {
+      name = "祝融居"
+      description = "这里是衡阳城内的一家店铺，衡阳城虽小，南岳衡山却尤为著名。店铺由衡山五峰之一的祝融峰而得名。从红木雕窗放眼望去，整个衡阳古城熙熙攘攘的街道尽收眼底。"
+  flags = [
+    "no_fight"
+  ]
+  x = 2
+  y = -22
+  z = -3
+    }
+
+  room_exits "hengyang_shop" {
+    room_id = rooms.hengyang_shop.id
+    down = rooms.majiu.id
+    }
+
+# Source: C:/files/git/mud/clone/shop/waiter.c
+# Zone: hengyang
+
+    characters "waiter" {
+      name = "伙计"
+      description = "一个忙前忙后的店伙计。"
+  brain = brains.vendor
+
+  carry = [
+    { id = clone_lib.items.cloth.id }
+  ]
+
+  init = {
+    add_actions = ["list", "buy"]
+  }
+    }
+
+  room_characters "hengyang_shop" {
+    room_id = rooms.hengyang_shop.id
+    characters = [
+      { id = characters.waiter.id }    ]
+  }
+

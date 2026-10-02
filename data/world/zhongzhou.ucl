@@ -559,8 +559,8 @@ item_desc = {
   room_exits "majiu" {
     room_id = rooms.majiu.id
     west = rooms.yinghao.id
+    up = rooms.zhongzhou_shop.id
     }
-  # skipped exit up: target outside d/: /clone/shop/zhongzhou_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -2600,3 +2600,46 @@ chats = [
       name = "招魂幡"
       description = "这是一面精铁打铸的招魂幡。"
     }
+
+# Source: /clone/shop/zhongzhou_shop
+# Zone: zhongzhou
+
+    rooms "zhongzhou_shop" {
+      name = "百鹤斋"
+      description = "这里是中州城里最著名的店铺，整个铺面装修得相当精美雅致，红木铺地，漆门雕窗，大堂正中挂着一幅百鹤图。不过店里的货柜上却空无一物，看来已很久没人打理了。"
+  flags = [
+    "no_fight"
+  ]
+  x = 2
+  y = 1
+  z = 1
+    }
+
+  room_exits "zhongzhou_shop" {
+    room_id = rooms.zhongzhou_shop.id
+    down = rooms.majiu.id
+    }
+
+# Source: C:/files/git/mud/clone/shop/waiter.c
+# Zone: zhongzhou
+
+    characters "waiter" {
+      name = "伙计"
+      description = "一个忙前忙后的店伙计。"
+  brain = brains.vendor
+
+  carry = [
+    { id = clone_lib.items.cloth.id }
+  ]
+
+  init = {
+    add_actions = ["list", "buy"]
+  }
+    }
+
+  room_characters "zhongzhou_shop" {
+    room_id = rooms.zhongzhou_shop.id
+    characters = [
+      { id = characters.waiter.id }    ]
+  }
+

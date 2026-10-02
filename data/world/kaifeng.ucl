@@ -1872,8 +1872,8 @@ direction = ~
   room_exits "majiu" {
     room_id = rooms.majiu.id
     west = rooms.daoxiang.id
+    up = rooms.kaifeng_shop.id
     }
-  # skipped exit up: target outside d/: /clone/shop/kaifeng_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -4560,3 +4560,46 @@ chats = [
         unit = "只"
       }
     }
+
+# Source: /clone/shop/kaifeng_shop
+# Zone: kaifeng
+
+    rooms "kaifeng_shop" {
+      name = "万景庄"
+      description = "这里是开封城内有名的店铺万景庄，开封为百年古都，民众富饶。店铺内装饰得非常豪华，不过柜上却空无一物。伙计在一旁打着盹，看样子已经很久没人来打理了。"
+  flags = [
+    "no_fight"
+  ]
+  x = -1
+  y = -6
+  z = 1
+    }
+
+  room_exits "kaifeng_shop" {
+    room_id = rooms.kaifeng_shop.id
+    down = rooms.majiu.id
+    }
+
+# Source: C:/files/git/mud/clone/shop/waiter.c
+# Zone: kaifeng
+
+    characters "waiter" {
+      name = "伙计"
+      description = "一个忙前忙后的店伙计。"
+  brain = brains.vendor
+
+  carry = [
+    { id = clone_lib.items.cloth.id }
+  ]
+
+  init = {
+    add_actions = ["list", "buy"]
+  }
+    }
+
+  room_characters "kaifeng_shop" {
+    room_id = rooms.kaifeng_shop.id
+    characters = [
+      { id = characters.waiter.id }    ]
+  }
+

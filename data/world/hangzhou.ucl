@@ -1199,8 +1199,8 @@ valid_leave = [
   room_exits "majiu" {
     room_id = rooms.majiu.id
     west = rooms.kedian.id
+    up = rooms.hangzhou_shop.id
     }
-  # skipped exit up: target outside d/: /clone/shop/hangzhou_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -5257,3 +5257,46 @@ chats = [
         food = 20
       }
     }
+
+# Source: /clone/shop/hangzhou_shop
+# Zone: hangzhou
+
+    rooms "hangzhou_shop" {
+      name = "玉皇阁"
+      description = "玉皇阁乃是由杭州城郊的玉皇山而得名，所谓「上有天堂下有苏杭」，杭州城建筑别具一格，这家店铺也不例外。不过货柜上却空无一物，看样子已很久没人来打理了。"
+  flags = [
+    "no_fight"
+  ]
+  x = 3
+  y = -3
+  z = 1
+    }
+
+  room_exits "hangzhou_shop" {
+    room_id = rooms.hangzhou_shop.id
+    down = rooms.majiu.id
+    }
+
+# Source: C:/files/git/mud/clone/shop/waiter.c
+# Zone: hangzhou
+
+    characters "waiter" {
+      name = "伙计"
+      description = "一个忙前忙后的店伙计。"
+  brain = brains.vendor
+
+  carry = [
+    { id = clone_lib.items.cloth.id }
+  ]
+
+  init = {
+    add_actions = ["list", "buy"]
+  }
+    }
+
+  room_characters "hangzhou_shop" {
+    room_id = rooms.hangzhou_shop.id
+    characters = [
+      { id = characters.waiter.id }    ]
+  }
+

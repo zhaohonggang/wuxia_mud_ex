@@ -1816,8 +1816,8 @@ direction = "north"
     room_id = rooms.huiying.id
     down = rooms.aofu_shufang.id
     north = rooms.yong_1.id
+    up = tulong.rooms.jiulou.id
     }
-  # skipped exit up: target outside d/: /b/yitian/jiulou: no data/world zone to reference
 
 
   room_characters "huiying" {
@@ -2429,8 +2429,8 @@ item_desc = {
   room_exits "majiu" {
     room_id = rooms.majiu.id
     east = rooms.niaoshi.id
+    up = rooms.beijing_shop.id
     }
-  # skipped exit up: target outside d/: /clone/shop/beijing_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -2916,8 +2916,8 @@ item_desc = {
     room_id = rooms.road10.id
     north = rooms.road9.id
     south = shaolin.rooms.ruzhou.id
+    east = tulong.rooms.haigang.id
     }
-  # skipped exit east: target outside d/: /b/tulong/haigang: no data/world zone to reference
 
 
   room_characters "road10" {
@@ -10219,3 +10219,46 @@ chats = [
         material = "steel"
       }
     }
+
+# Source: /clone/shop/beijing_shop
+# Zone: beijing
+
+    rooms "beijing_shop" {
+      name = "聚宝堂"
+      description = "这里便是北京城里最有名的聚宝堂，铺里人来人往，川流不息，显出天子之都繁华大方的气派。不过店里的货柜上却空无一物，看样子已经很久没人来打理了。"
+  flags = [
+    "no_fight"
+  ]
+  x = -5
+  y = -5
+  z = 1
+    }
+
+  room_exits "beijing_shop" {
+    room_id = rooms.beijing_shop.id
+    down = rooms.majiu.id
+    }
+
+# Source: C:/files/git/mud/clone/shop/waiter.c
+# Zone: beijing
+
+    characters "waiter" {
+      name = "伙计"
+      description = "一个忙前忙后的店伙计。"
+  brain = brains.vendor
+
+  carry = [
+    { id = clone_lib.items.cloth.id }
+  ]
+
+  init = {
+    add_actions = ["list", "buy"]
+  }
+    }
+
+  room_characters "beijing_shop" {
+    room_id = rooms.beijing_shop.id
+    characters = [
+      { id = characters.waiter.id }    ]
+  }
+

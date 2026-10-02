@@ -75,8 +75,8 @@ item_desc = {
   room_exits "majiu" {
     room_id = rooms.majiu.id
     north = rooms.yingxionglou.id
+    up = rooms.foshan_shop.id
     }
-  # skipped exit up: target outside d/: /clone/shop/foshan_shop: no data/world zone to reference
 
 
   room_characters "majiu" {
@@ -1260,3 +1260,23 @@ chats = [
         material = "wood"
       }
     }
+
+# Source: /clone/shop/foshan_shop
+# Zone: foshan
+
+    rooms "foshan_shop" {
+      name = "英雄楼"
+      description = "英雄楼本是佛山镇凤天南所开，现在却已经张罗给了别人。整个店堂金碧辉煌，珠光宝器映得满堂生辉。不过店里的货柜上却空无一物，看样子已经很久没人来打理了。"
+  flags = [
+    "no_fight"
+  ]
+  x = 0
+  y = -2
+  z = 1
+    }
+
+  room_exits "foshan_shop" {
+    room_id = rooms.foshan_shop.id
+    down = rooms.majiu.id
+    }
+

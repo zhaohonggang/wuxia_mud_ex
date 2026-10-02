@@ -193,7 +193,6 @@ defmodule CrossZoneWiringTest do
     {"jinshe:shanbi", "up", "huashan:ziqitai"},
     {"wudu:midao5", "up", "city:ma_chufang"},
     {"death:god1", "down", "city:wumiao"},
-    {"tulong:jiulou", "down", "beijing:huiying"},
 
     # 走廊尽头的死胡同支线：目标区的回程出口指向别处
     {"baituo:midao", "east", "city:beidajie1"},
@@ -207,11 +206,17 @@ defmodule CrossZoneWiringTest do
     # baituo/xijie.c 的 "west" : __DIR__"bridge" 按 MudOS 语义解析到 baituo:bridge，
     # 于是回不到 heimuya:bridge。源码级同名歧义，不是转换缺陷。
     {"heimuya:bridge", "northwest", "baituo:guangchang"},
-    {"heimuya:bridge", "east", "baituo:xijie"},
-
-    # 非 mud 语料区（手工维护），不参与 LPC 对照
-    {"tulong:haigang", "west", "beijing:road10"}
+    {"heimuya:bridge", "east", "baituo:xijie"}
   ]
+
+  # 原先登记为单向的两条已在 P1 补回程，移出白名单：
+  #   {"tulong:jiulou", "down", "beijing:huiying"}
+  #   {"tulong:haigang", "west", "beijing:road10"}
+  # 起因是 beijing 侧的目标房在 mud/d 之外（/b/yitian/jiulou.c、/b/tulong/haigang.c），
+  # 转换时被跳过；而这两间房本身已由 /d/tulong/yitian/jiulou.c、/d/tulong/tulong/haigang.c
+  # 转进了 tulong 区（同一间房的两份拷贝，内容只差函数内路径）。
+  # P1 按源文件内容指纹认出它们，直接发跨区引用接上，于是两条边都成了双向。
+  # 见 docs/ucl-comment-implementation-plan.zh-CN.md §3.3。
 
   # Two-way edges whose reverse direction is deliberately NOT the opposite compass.
   @asymmetric %{
