@@ -17,7 +17,7 @@
 | **C** | 动态选房 103 条悬空引用的处理策略 | 中 | ✅ 2026-09-30 | checklist §C |
 | **D** | 修正八卦方向被跳过的注释文案 | 低 | ✅ 2026-09-30 | checklist §D |
 | **E** | 2 条 LPC 源本身悬空的出口 | — | ✅ 2026-10-01 | checklist §E |
-| **F** | 71 区人工验收（巫师巡游 / 玩家测试） | 高 | ✅ 2026-10-01 | checklist §F |
+| **F** | 71 区人工验收（巫师巡游 / 玩家测试） | 高 | ⚠ 自动化全绿，巡游记录缺失 | checklist §F |
 | **G** | 不可达房间的分类确认 | 中 | ✅ 2026-10-01 | checklist §G |
 | **H** | 跨区单向边的可往返性验证 | 中 | ✅ 2026-10-01 | checklist §H |
 | **I** | 1 个预存测试失败 | 低 | ✅ 2026-10-01 | checklist §I |
@@ -36,7 +36,7 @@ SOP 重跑 70/70（含容器内 elias 解析）；全库可达 4115/4455（92.4%
 | **C** | 运行时选房保留候选列表、由 loader 每次加载挑一个（恢复 shaolin 4 件佛经、修 gaochang 沙漠随机支路） | `world_reachability` 无关；loader `pick_runtime_exit` |
 | **D** | 方向跳过注释按真实原因分三类（空/CJK/数字/其它），不再一律误称「C 注释问题」 | `_exit_dir_skip_reason()` |
 | **E** | 两条跨区悬空出口都不用改 LPC 语料：`baituo/gebi` 随宏继承恢复；`city/guangchang -liuxi->` 用「方向名反查已安装 zone」的通用规则接通，`LiuxiCommand` 桩同时改为真移动 | `_INSTALLED_ZONE_IDS` / `liuxi_command.ex` |
-| **F** | 71 区巫师巡游与玩家验收完成，记录在 `test_logs/` | — |
+| **F** | 71 区巫师巡游与玩家验收 —— 自动化前置全绿，但 `test_logs/` 不存在、72 个区行的巫师/玩家测试列仍是 `?` | — |
 | **G** | 340 间不可达**全部有归属、无一是转换缺陷**（78 设计孤立 / 61 非语料 / 67 语料未接入 / 80 仅脚本传送 / 52 源码内部断连 / 2 无出口） | `scripts/world_reachability.py`（新增） |
 | **H** | 218 条跨区边中 195 双向、23 单向且**全部原生单向**，不补反向出口；`valid_leave` 已数据化（183 处）但运行时故意不拦截 | `test/cross_zone_wiring_test.exs` |
 | **I** | 最后一个失败是**测试自己按 `key` 定位房间**（全库 432 个 key 重名），拿到 `beijing:liandan_lin1`；改按 `id` | `test/kantele/world/loader_meta_test.exs` |

@@ -13,7 +13,7 @@
 | 与 git HEAD 相同 | **78** |
 | 与 git HEAD 不同 | 0 |
 | 未被 git 跟踪 | 0 |
-| 房间 `rooms` 块 | 4441 |
+| 房间 `rooms` 块 | 4455 |
 | 出口 `room_exits` 块 | 4439 |
 | NPC `characters` 块 | 1855 |
 | 物品 `items` 块 | 841 |

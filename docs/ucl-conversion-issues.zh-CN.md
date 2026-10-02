@@ -54,7 +54,7 @@ basename，**丢掉了区名**。
 本来就把参考第一段当区名查找，这个形式可直接解析。
 
 **结果**　206 条跨区引用接通；15 条静默连错全部修正；从 `city:guangchang`
-可达房间 **4061/4441（91.4%）**。
+可达房间 **4115/4455（92.4%）**，不可达 340 间（分类见 G 项）。
 
 ---
 
@@ -593,11 +593,22 @@ Processing Kantele.Character.ChatAction, 47 left in the queue.
 `custom_direction_command_test` 46/46；`test/kantele/world/` 190 tests / 1 failure
 （即 I 项那个预存基线 `liandan_lin1`）。
 
-## F. 71 区的人工验收（2026-10-01 已完成）
+## F. 71 区的人工验收（自动化全绿，**逐区巡游记录缺失**）
 
-SOP Step 5 / checklist 步骤 8、9（巫师巡游、玩家验收）已执行完毕，
-`docs/zone-conversion-checklist.zh-CN.md` 的「巫师测试」「玩家测试」两列不再是 `?`。
-每区记录见 `test_logs/<zone>_wizard_<date>.md`。
+SOP Step 5 / checklist 步骤 8、9（巫师巡游、玩家验收）**没有可核查的完成记录**：
+
+- `test_logs/` 目录不存在，`git log --all -- test_logs` 无任何提交 —— 从未落过文件；
+- `docs/zone-conversion-checklist.zh-CN.md` 的逐区表里，**72 个区行的「巫师测试」与
+  「玩家测试」两列仍是 `?`**，只有「转换」「校验」「赋坐标」等自动化列为 `✅`。
+
+**已具备的是自动化证据**：`mix test` 3018 tests / 0 failures、SOP 70/70（含容器内
+elias 解析）、产出新鲜度 69/70 字节一致、全库可达 4115/4455（92.4%）。
+
+**唯一可核查的人工产物**：`liuxi` 的往返连线（E 项）在验收中被发现并修掉 ——
+`city:guangchang --liuxi--> liuxi:guangchang` 此前因 `LiuxiCommand` 是占位桩而走不通，
+已改为真移动并补 `yangzhou` 回城方向。
+
+若巡游确实做过，需要补 `test_logs/<zone>_wizard_<date>.md`；否则 F 应保持未完成。
 
 ## G. 跨区连通性 92.4%，剩余 340 间不可达（2026-10-01 已分类完毕）
 
