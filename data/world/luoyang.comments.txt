@@ -432,8 +432,8 @@
 # UNHANDLED CONTENT (for manual review)
 # ========================================
   # UNHANDLED FUNCTION: die
-  # UNHANDLED FUNCTION: unconcious
   # UNHANDLED FUNCTION: redeem
+  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

@@ -84,10 +84,10 @@
   # if (me->query_temp("marks/pen"))  →  
 # ==== CONDITIONAL BRANCHES (do_knock) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: end_whisper
-  # UNHANDLED FUNCTION: do_say
-  # UNHANDLED FUNCTION: do_knock
   # UNHANDLED FUNCTION: check_pass
+  # UNHANDLED FUNCTION: do_knock
+  # UNHANDLED FUNCTION: do_say
+  # UNHANDLED FUNCTION: end_whisper
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -176,8 +176,8 @@
 # ==== CONDITIONAL BRANCHES (do_tan) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: do_break
-  # UNHANDLED FUNCTION: mantuo
   # UNHANDLED FUNCTION: do_tan
+  # UNHANDLED FUNCTION: mantuo
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -204,9 +204,9 @@
   # if (susu->query_temp("marks/served"))  →  message_vision('素素不耐烦地对$N说道：我这里忙着呢！\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (do_tap) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_tap
   # UNHANDLED FUNCTION: delete_served
   # UNHANDLED FUNCTION: do_sit
+  # UNHANDLED FUNCTION: do_tap
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -245,8 +245,8 @@
   # if (me->query("gender") != "女性")  →  
 # ==== CONDITIONAL BRANCHES (ask_me) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: recognize_apprentice
   # UNHANDLED FUNCTION: inquiry_tanqin
+  # UNHANDLED FUNCTION: recognize_apprentice
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -331,8 +331,8 @@
   # if (interactive(ob = this_player()) && !is_fighting())  →  
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: serve_tea
   # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: serve_tea
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

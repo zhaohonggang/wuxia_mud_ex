@@ -53,3 +53,8 @@ npm-debug.log
 
 # stray compiled artifacts from standalone migration compile checks
 *.beam
+
+# Python bytecode from the scripts/ SOP tooling (lpc_converter.py, validate_ucl.py,
+# world_reachability.py).  Regenerated on every run, must never be committed.
+__pycache__/
+*.py[cod]

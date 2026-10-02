@@ -46,8 +46,8 @@
   # if (mapp(query("exits")))  →  
 # ==== CONDITIONAL BRANCHES (long) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: long
   # UNHANDLED FUNCTION: do_quit
+  # UNHANDLED FUNCTION: long
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

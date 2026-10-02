@@ -942,7 +942,12 @@ def _extract_unhandled_content(content, unhandled_fn_names):
     }
 
     # 1. unhandled functions
-    for fn_name in unhandled_fn_names:
+    # sorted(): the caller passes a set (`other_fn_names - handled`), and Python
+    # randomises string hashing per process (PYTHONHASHSEED), so iterating it
+    # directly emitted these lines in a different order on every run.  The .ucl was
+    # unaffected, but all 54 regenerated data/world/*.comments.txt files showed up
+    # as pure reordering noise in git diff after every SOP re-run.
+    for fn_name in sorted(unhandled_fn_names):
         unhandled["functions"] = [fn_name] + unhandled["functions"]
 
     # 2. globals
@@ -1824,20 +1829,26 @@ def _classify_exit_path(path, zone_id, direction=None):
         room = _room_id_from_path(tail)
         if tzone == zone_id:
             return ("local", room)
-        if _INSTALLED_ZONE_IDS and tzone not in _INSTALLED_ZONE_IDS:
-            # The LPC directory has no data/world zone of its own, so
-            # "<tzone>.rooms.<room>.id" would resolve to nothing and the loader
-            # would drop the exit.  The author's intent is still recoverable from
-            # the direction itself: LPC names such an exit after the place it leads
-            # to, and the town square of one city links out to another town under
-            # that town's name.  When the direction is itself an installed zone id,
-            # prefer it over the unconvertible directory.  Room-name matching is
-            # deliberately NOT used as a fallback: "guangchang" is the town square
-            # of a dozen zones, so it identifies nothing.
-            if direction and direction in _INSTALLED_ZONE_IDS \
-                    and direction != zone_id:
-                return ("cross", direction, room)
-            return ("skip", "no installed zone %r for this room" % tzone)
+        # When the LPC directory has no data/world zone of its own, "<tzone>" names
+        # a zone the loader cannot find and the exit is dropped.  The author's intent
+        # is still recoverable from the direction: LPC names such an exit after the
+        # place it leads to, and one town's square links out to another town under
+        # that town's name.  So when the direction is itself an installed zone id,
+        # prefer it over the unconvertible directory.
+        #
+        # This is a PREFERENCE, never a gate.  Gating on it ("if tzone is not
+        # installed then skip") makes the output depend on whatever happens to be in
+        # --output: converting into a fresh or partial directory dropped every
+        # cross-zone exit, e.g. city lost `-north-> shaolin`, `-in-> gaibang` and
+        # `-liuxi-> liuxi` and emitted `# skipped exit ...` for them.  With nothing
+        # known about the target zone we emit the plain cross-zone reference and let
+        # the loader's `not is_nil` filter deal with a genuinely dead link.  Room
+        # name is deliberately NOT used as a fallback: "guangchang" is the town
+        # square of a dozen zones, so it identifies nothing.
+        if _INSTALLED_ZONE_IDS and tzone not in _INSTALLED_ZONE_IDS \
+                and direction and direction in _INSTALLED_ZONE_IDS \
+                and direction != zone_id:
+            return ("cross", direction, room)
         return ("cross", tzone, room)
 
     for root in _UNLINKABLE_ROOTS:

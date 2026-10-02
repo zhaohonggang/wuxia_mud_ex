@@ -105,15 +105,15 @@
   # if (! query("exits/enter"))  →  
 # ==== CONDITIONAL BRANCHES (check_trigger) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: reset
-  # UNHANDLED FUNCTION: do_yell
+  # UNHANDLED FUNCTION: arrive
   # UNHANDLED FUNCTION: check_trigger
   # UNHANDLED FUNCTION: close_passage
-  # UNHANDLED FUNCTION: do_shang
-  # UNHANDLED FUNCTION: on_board
-  # UNHANDLED FUNCTION: rjinbing
-  # UNHANDLED FUNCTION: arrive
   # UNHANDLED FUNCTION: do_cross
+  # UNHANDLED FUNCTION: do_shang
+  # UNHANDLED FUNCTION: do_yell
+  # UNHANDLED FUNCTION: on_board
+  # UNHANDLED FUNCTION: reset
+  # UNHANDLED FUNCTION: rjinbing
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -136,8 +136,8 @@
   # if (ob->query("family/family_name") != "桃花岛")  →  message_vision(HIW '\\\\\n$N' HIW '一跃身跨上了白雕。只见白雕' '仰天长唳，突然猛然一颠……\\\\\n' HIR '结果$N' HIR '摔了个鼻青脸肿，看来白雕对$N' HIR '并' '不太感兴趣。\\\\\n' NOR, ob);
 # ==== CONDITIONAL BRANCHES (do_ride) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: taohua
   # UNHANDLED FUNCTION: do_ride
+  # UNHANDLED FUNCTION: taohua
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -194,13 +194,13 @@
   # if (! query("exits/enter"))  →  
 # ==== CONDITIONAL BRANCHES (check_trigger) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: reset
-  # UNHANDLED FUNCTION: do_yell
+  # UNHANDLED FUNCTION: arrive
   # UNHANDLED FUNCTION: check_trigger
   # UNHANDLED FUNCTION: close_passage
-  # UNHANDLED FUNCTION: on_board
-  # UNHANDLED FUNCTION: arrive
   # UNHANDLED FUNCTION: do_cross
+  # UNHANDLED FUNCTION: do_yell
+  # UNHANDLED FUNCTION: on_board
+  # UNHANDLED FUNCTION: reset
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

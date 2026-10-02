@@ -156,8 +156,8 @@
   # if ( mapp(cards) )  →  message_vision('$N将' + cards[dir]['name'] + '插入。\\\\\n', me);
 # ==== CONDITIONAL BRANCHES (main) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: main
   # UNHANDLED FUNCTION: help
+  # UNHANDLED FUNCTION: main
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -335,12 +335,12 @@
   # if (!query("exits/enter") )  →  
 # ==== CONDITIONAL BRANCHES (check_trigger) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: on_board
-  # UNHANDLED FUNCTION: do_insert
-  # UNHANDLED FUNCTION: close_passage
-  # UNHANDLED FUNCTION: reset
-  # UNHANDLED FUNCTION: check_trigger
   # UNHANDLED FUNCTION: arrive
+  # UNHANDLED FUNCTION: check_trigger
+  # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: do_insert
+  # UNHANDLED FUNCTION: on_board
+  # UNHANDLED FUNCTION: reset
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -368,12 +368,12 @@
   # if (!query("exits/enter") )  →  
 # ==== CONDITIONAL BRANCHES (check_trigger) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: on_board
-  # UNHANDLED FUNCTION: do_insert
-  # UNHANDLED FUNCTION: close_passage
-  # UNHANDLED FUNCTION: reset
-  # UNHANDLED FUNCTION: check_trigger
   # UNHANDLED FUNCTION: arrive
+  # UNHANDLED FUNCTION: check_trigger
+  # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: do_insert
+  # UNHANDLED FUNCTION: on_board
+  # UNHANDLED FUNCTION: reset
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -401,12 +401,12 @@
   # if (!query("exits/enter") )  →  
 # ==== CONDITIONAL BRANCHES (check_trigger) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: on_board
-  # UNHANDLED FUNCTION: do_insert
-  # UNHANDLED FUNCTION: close_passage
-  # UNHANDLED FUNCTION: reset
-  # UNHANDLED FUNCTION: check_trigger
   # UNHANDLED FUNCTION: arrive
+  # UNHANDLED FUNCTION: check_trigger
+  # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: do_insert
+  # UNHANDLED FUNCTION: on_board
+  # UNHANDLED FUNCTION: reset
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

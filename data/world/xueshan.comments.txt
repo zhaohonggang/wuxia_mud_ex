@@ -70,8 +70,8 @@
   # if (! arg || arg != "lunpan")  →  
 # ==== CONDITIONAL BRANCHES (do_turn) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_turn
   # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_turn
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

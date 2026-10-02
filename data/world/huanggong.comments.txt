@@ -51,8 +51,8 @@
   # if ( arg=="desk")  →  message_vision('你轻轻一按桌角,突然墙上书架列开一道暗门.\\\\\n', this_player());
 # ==== CONDITIONAL BRANCHES (do_press) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_press
   # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_press
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

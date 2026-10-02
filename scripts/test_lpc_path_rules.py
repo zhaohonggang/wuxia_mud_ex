@@ -238,6 +238,14 @@ for d in ("乾", "hole6", "a-b"):
 # leads to, and "liuxi" is the installed zone id of 柳溪镇, so the direction is the
 # recoverable signal.  Room-name matching is not: "guangchang" is a town square in
 # a dozen zones.
+#
+# CRITICAL: the direction only ever *overrides* the zone, it never gates it.  When
+# this was written as a gate ("if the target zone is not installed, skip"), the
+# output depended on whatever happened to be in --output: converting into a fresh
+# or partial directory dropped EVERY cross-zone exit.  city lost -north-> shaolin,
+# -in-> gaibang and -liuxi-> liuxi, replaced by `# skipped exit ...` comments.  So
+# the cases below pin both halves: the override fires when the direction names an
+# installed zone, and a plain cross-zone reference survives with no knowledge at all.
 print("\nE  unconverted cross-zone directory recovered from the direction")
 
 C._INSTALLED_ZONE_IDS = {"city", "liuxi", "shaolin", "xiangyang", "tiezhang"}
@@ -248,18 +256,30 @@ check("direction names the installed zone",
 check("installed directory is untouched",
       C._classify_exit_path("/d/shaolin/yidao", "city", "in"),
       ("cross", "shaolin", "yidao"))
-check("no direction and no installed zone -> dropped",
-      C._classify_exit_path("/d/minimal_world/guangchang", "city"),
-      ("skip", "no installed zone 'minimal_world' for this room"))
-check("direction that is not a zone does not rescue it",
-      C._classify_exit_path("/d/minimal_world/guangchang", "city", "east"),
-      ("skip", "no installed zone 'minimal_world' for this room"))
 check("room name alone must not pick a zone",
       C._classify_exit_path("/d/minimal_world/guangchang", "shaolin", "liuxi"),
       ("cross", "liuxi", "guangchang"))
 check("ordinary slashless form still resolves",
       C._classify_exit_path("d/xiangyang/caodi6", "tiezhang", "east"),
       ("cross", "xiangyang", "caodi6"))
+
+# Nothing is known about the output directory (fresh/partial --output): an ordinary
+# cross-zone reference must still be emitted rather than skipped.
+_saved = C._INSTALLED_ZONE_IDS
+try:
+    C._INSTALLED_ZONE_IDS = set()
+    check("empty installed set keeps a plain cross-zone exit",
+          C._classify_exit_path("/d/shaolin/yidao", "city", "north"),
+          ("cross", "shaolin", "yidao"))
+    check("empty installed set keeps the in-> gaibang style reference",
+          C._classify_exit_path("/d/gaibang/inhole", "city", "in"),
+          ("cross", "gaibang", "inhole"))
+    check("empty installed set falls back to the literal zone",
+          C._classify_exit_path("/d/minimal_world/guangchang", "city", "liuxi"),
+          ("cross", "minimal_world", "guangchang"))
+finally:
+    C._INSTALLED_ZONE_IDS = _saved
+
 check("installed-zone scan", "liuxi" in C.note_installed_zones("data/world"), True)
 
 

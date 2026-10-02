@@ -159,8 +159,8 @@
   # if ( !arg || arg != "shi" )  →  
 # ==== CONDITIONAL BRANCHES (do_move) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_move
   # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_move
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

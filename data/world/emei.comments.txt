@@ -113,8 +113,8 @@
   # if (query("exits/down"))  →  
 # ==== CONDITIONAL BRANCHES (do_move) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_move
   # UNHANDLED FUNCTION: close
+  # UNHANDLED FUNCTION: do_move
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -300,8 +300,8 @@
   # if (environment(book))  →  write(HIG '你回头一看，却发现盒子是空的！\\\\\n' NOR);
 # ==== CONDITIONAL BRANCHES (do_bai) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_climb
   # UNHANDLED FUNCTION: do_bai
+  # UNHANDLED FUNCTION: do_climb
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

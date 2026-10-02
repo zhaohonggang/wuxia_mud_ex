@@ -125,9 +125,9 @@
   # if ( me->query( "score" ) < 3000 )  →  
 # ==== CONDITIONAL BRANCHES (look_hua) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: look_liang
   # UNHANDLED FUNCTION: do_jump
   # UNHANDLED FUNCTION: look_hua
+  # UNHANDLED FUNCTION: look_liang
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

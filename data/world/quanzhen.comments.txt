@@ -53,9 +53,9 @@
   # if (cost < 100)  →  
 # ==== CONDITIONAL BRANCHES (do_jingxiu) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: do_jingxiu
   # UNHANDLED FUNCTION: halt_jingxiu
   # UNHANDLED FUNCTION: jingxiu
-  # UNHANDLED FUNCTION: do_jingxiu
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -252,8 +252,8 @@
   # if (me->query("qi") > qi_cost)  →  tell_object(me, HIC '你对「基本指法」有了新的领悟。\\\\\n' NOR);
 # ==== CONDITIONAL BRANCHES (do_finger) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_strike
   # UNHANDLED FUNCTION: do_finger
+  # UNHANDLED FUNCTION: do_strike
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

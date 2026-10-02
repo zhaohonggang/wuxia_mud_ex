@@ -194,9 +194,9 @@
   # if ((int)me->query_skill("force", 1) < 100 )  →  
 # ==== CONDITIONAL BRANCHES (do_move) ====
 # ==== CONDITIONAL BRANCHES ====
+  # UNHANDLED FUNCTION: close_passage
   # UNHANDLED FUNCTION: do_move
   # UNHANDLED FUNCTION: look_bei
-  # UNHANDLED FUNCTION: close_passage
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

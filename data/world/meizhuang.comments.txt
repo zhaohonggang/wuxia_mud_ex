@@ -58,8 +58,8 @@
   # if (arg == "3")  →  message_vision(HIC '$N' HIC '走上前去将门上铜环敲了三下。\\\\\n' NOR, me);
 # ==== CONDITIONAL BRANCHES (do_knock) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_knock
   # UNHANDLED FUNCTION: close_passage
+  # UNHANDLED FUNCTION: do_knock
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -183,8 +183,8 @@
   # if (objectp(room))  →  message_vision('$N使劲把大门打了开来。\\\\\n', this_player());
 # ==== CONDITIONAL BRANCHES (do_open) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_open
   # UNHANDLED FUNCTION: close_gate
+  # UNHANDLED FUNCTION: do_open
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -492,8 +492,8 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_climb
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

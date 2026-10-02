@@ -240,6 +240,33 @@ docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test test/kantel
 docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test'
 ```
 
+## 产出新鲜度自检（改了转换器必跑）
+
+`data/world_backup/<zone>.ucl` 是 SOP Step 3.1 在 `assign_room_coords.py` 就地改写**之前**做的
+字节级拷贝，所以它正好等于「当前转换器对该区会产出什么」。重新转换到**各自独立的空目录**再
+比对哈希，就能回答「`data/world` 是不是当前脚本的产物」：
+
+```python
+# 每个区用自己的 mkdtemp 空目录，绝不能共用一个 —— 共用会让先转的区污染后转的区
+out = subprocess.run([PY, CONV, LPC/z, "--zone", z, "--output", mkdtemp()])
+assert sha256(out) == sha256(f"data/world_backup/{z}.ucl")
+```
+
+当前基线（2026-10-01）：**70 个区中 69 个字节级一致，唯一例外是 `city`，差 8 字节**，就是
+`guangchang` 的 `liuxi` 出口：
+
+```
+转换到 data/world（已填充）  liuxi = liuxi.rooms.guangchang.id
+转换到空目录（集合为空）    liuxi = minimal_world.rooms.guangchang.id
+```
+
+这是**设计内的**，不是缺陷：`_INSTALLED_ZONE_IDS` 来自 `--output` 的内容，只有目录被填满时
+方向名反查才生效；查不到时退回字面区名，得到一条诚实的悬空引用（loader 会丢弃），而不是把
+出口整个删掉。SOP 始终以 `--output data\world` 转换，所以入库产物是可复现的。
+
+> 这个自检是必需的 —— 就是它抓出了 E 项把「未安装」写成**门禁**的那个缺陷（见错误表）。
+> **共用一个暂存目录做新鲜度检查，本身就会造成假漂移**，因为后转的区会看见先转区的 `.ucl`。
+
 ---
 
 ## 全库可达性排查（`world_reachability.py`）
@@ -306,6 +333,8 @@ python scripts\world_reachability.py --json out.json
 | 赋坐标后**孤儿房不可达** | 垂直连接因为方向已被占用而被**跳过**，整层挂不上主区 | `scripts\assign_room_coords.py` 的 `_add_vertical_exits`（应从 `UP_DIR_CANDIDATES`/`DOWN_DIR_CANDIDATES` 里挑空闲方向，而不是 `continue`） |
 | 某区整区不可达，且**语料里也没有别的区指向它** | 语料本身从未接入，引擎不校验单向可达 | 语料级缺口，不是转换缺陷。`register` 有 4 条 `out = city.rooms.guangchang.id` 但没人走进去；`tulong` 全语料零条 inbound 引用 |
 | 某区整区不可达，但语料里有 `startroom = "/d/xxx/..."` 或 `me->move("/d/xxx/...")` | 该区**运行时靠脚本送达**，本来就不该走进去 | 转换器不把 `startroom` / `move()` / 物件表变成出口是正确的。`death`、`jinshe` 属此类 |
+| SOP 重跑后 `git diff` 里几十个 `.comments.txt` 全是**同样几行在换顺序**，`.ucl` 却没变 | 转换器里遍历了 **set**（`other_fn_names - handled`），而 Python 每进程随机化字符串哈希（`PYTHONHASHSEED`），迭代顺序逐次不同 | `scripts\lpc_converter.py` 的 `_extract_unhandled_content()` 改用 `sorted(unhandled_fn_names)`。**排查手法**：同一区转换两次、显式设不同的 `PYTHONHASHSEED` 再比哈希。修完后 SOP 已幂等 —— 连续两次重跑 `git diff --stat` 完全相同 |
+| 转换到**空目录/ 部分目录**后，产物里所有跨区出口变成 `# skipped exit ...` | `_classify_exit_path` 曾把「目标区未安装」写成**门禁**（`if tzone not in installed: skip`），于是产出取决于 `--output` 里恰好有哪些 `.ucl` | 已改成**优先**而非门禁：方向名能反查到已安装 zone 时用它，否则照常输出 `<zone>.rooms.<room>.id`，让 loader 的 `not is_nil` 去处理真死链。见 `scripts/lpc_converter.py` 的 `_INSTALLED_ZONE_IDS` 注释块 |
 | 房间明明有 `set("exits", ...)`，产物却没有 `room_exits` 块 | **`set("exits")` 写在了 `create()` 之外的函数里** —— 转换器只从 `create()` 抽 `set()` | 全语料 4287 个含 `set("exits")` 的文件里只有 4 个写在别处，其中 2 个是房间：`death/god1.c`（`reset()`）、`death/lunhuisi.c`（`recreate()`，且它的 `create()` 是故意封死的机关房）。已在 `scripts\lpc_converter.py` 的 `_backfill_exits_outside_create()` 处理：**`create()` 保持权威**，只在完全没有声明出口时回退全文扫描。**危害不只是少两条边** —— 房间变成无出口孤儿后，`assign_room_coords.py` 会给它合成 `up`/`down`，**静默顶替**作者写的出口（`god1` 的 `down : "/d/city/wumiao"` 被换成了本地 `emptyroom`） |
 | 同坐标多房（菱形环路） | 朴素 BFS 下两条不同路径算出同一 delta，两房重叠 | `scripts\assign_room_coords.py` 的 `_visit_neighbour`（需用 `_place`/`_free_coord` 做去重放置） |
 | `Integrity: rooms(N) != room_exits(M)` | 孤儿房还没有 `room_exits` 块（**赋坐标前属正常**）；若赋坐标后仍失败则是 bug | `scripts\assign_room_coords.py` 的 `drain` / `visit_neighbour` / `orphans` |

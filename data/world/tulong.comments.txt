@@ -52,8 +52,8 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_du
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -104,8 +104,8 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_du
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -155,8 +155,8 @@
   # if ( clonep() )  →  
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: setup
   # UNHANDLED FUNCTION: do_du
+  # UNHANDLED FUNCTION: setup
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -176,8 +176,8 @@
   # if (!objectp(inv))  →  
 # ==== CONDITIONAL BRANCHES (do_break) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: do_dao
   # UNHANDLED FUNCTION: do_break
+  # UNHANDLED FUNCTION: do_dao
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -230,10 +230,10 @@
   # if (objectp(dao))  →  tell_object(me, HIC '\\\\\n只见岸边上泊满了海船，所有的海船全部标记着天' '鹰教的标志。\\\\\n' NOR); tell_object(me, CYN '\\\\\n白龟寿对你说道：此次我天鹰教得到了屠' '龙宝刀，这位武林同\\\\\n道可愿意参加扬刀立威大' '会，选出此刀该为何人所有？\\\\\n' NOR); tell_object(me, HIR '\\\\\n你愿意参加(' HIY 'accept' HIR ')王盘' '山岛扬刀立威大会吗？\\\\\n' NOR);
 # ==== CONDITIONAL BRANCHES (init) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: moveto
-  # UNHANDLED FUNCTION: arrive2
   # UNHANDLED FUNCTION: arrive1
+  # UNHANDLED FUNCTION: arrive2
   # UNHANDLED FUNCTION: do_accept
+  # UNHANDLED FUNCTION: moveto
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -265,12 +265,12 @@
 # ==== CONDITIONAL BRANCHES (create) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: accept_hit
   # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: do_get
-  # UNHANDLED FUNCTION: accept_fight
-  # UNHANDLED FUNCTION: put
   # UNHANDLED FUNCTION: do_bi
+  # UNHANDLED FUNCTION: do_get
+  # UNHANDLED FUNCTION: put
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -294,14 +294,14 @@
   # if (me->query("max_neili")>2000)  →  
 # ==== CONDITIONAL BRANCHES (begin) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: die
   # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: accept_hit
   # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: do_get
-  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: die
   # UNHANDLED FUNCTION: do_bi
+  # UNHANDLED FUNCTION: do_get
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -363,15 +363,15 @@
   # if (objectp(present("yuan guangbo",environment())))  →  
 # ==== CONDITIONAL BRANCHES (begin) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: die
-  # UNHANDLED FUNCTION: guo
   # UNHANDLED FUNCTION: accept_ansuan
-  # UNHANDLED FUNCTION: accept_hit
-  # UNHANDLED FUNCTION: unconcious
-  # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: do_get
   # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: do_get
+  # UNHANDLED FUNCTION: guo
+  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -411,12 +411,12 @@
 # ==== CONDITIONAL BRANCHES (put) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: accept_hit
   # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: do_get
-  # UNHANDLED FUNCTION: accept_fight
-  # UNHANDLED FUNCTION: put
   # UNHANDLED FUNCTION: do_bi
+  # UNHANDLED FUNCTION: do_get
+  # UNHANDLED FUNCTION: put
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -431,13 +431,13 @@
   # if (arg == "roar" )  →  message_vision(CYN '\\\\\n殷素素喝道：贼子，要想行凶么？在这里恐怕由不得你！\\\\\n' NOR, obj);
 # ==== CONDITIONAL BRANCHES (do_yun) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: receive_wound
   # UNHANDLED FUNCTION: accept_ansuan
-  # UNHANDLED FUNCTION: accept_hit
-  # UNHANDLED FUNCTION: receive_damage
-  # UNHANDLED FUNCTION: do_yun
-  # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_kill
+  # UNHANDLED FUNCTION: do_yun
+  # UNHANDLED FUNCTION: receive_damage
+  # UNHANDLED FUNCTION: receive_wound
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -461,14 +461,14 @@
   # if (objectp(present("chang jinpeng",environment())))  →  
 # ==== CONDITIONAL BRANCHES (begin) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: die
   # UNHANDLED FUNCTION: accept_ansuan
-  # UNHANDLED FUNCTION: accept_hit
-  # UNHANDLED FUNCTION: unconcious
-  # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: do_get
   # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: die
+  # UNHANDLED FUNCTION: do_get
+  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -497,25 +497,25 @@
   # if (me->query_temp("biwu"))  →  
 # ==== CONDITIONAL BRANCHES (begin) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: storm
-  # UNHANDLED FUNCTION: shu
-  # UNHANDLED FUNCTION: biwu3
-  # UNHANDLED FUNCTION: biwu2
-  # UNHANDLED FUNCTION: biwu
-  # UNHANDLED FUNCTION: end
-  # UNHANDLED FUNCTION: receive_wound
-  # UNHANDLED FUNCTION: accept_hit
-  # UNHANDLED FUNCTION: receive_damage
-  # UNHANDLED FUNCTION: do_get
-  # UNHANDLED FUNCTION: accept_fight
-  # UNHANDLED FUNCTION: storm4
-  # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: begin
-  # UNHANDLED FUNCTION: storm3
   # UNHANDLED FUNCTION: accept_ansuan
-  # UNHANDLED FUNCTION: storm5
+  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: arrive
+  # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: biwu
+  # UNHANDLED FUNCTION: biwu2
+  # UNHANDLED FUNCTION: biwu3
+  # UNHANDLED FUNCTION: do_get
+  # UNHANDLED FUNCTION: end
+  # UNHANDLED FUNCTION: receive_damage
+  # UNHANDLED FUNCTION: receive_wound
+  # UNHANDLED FUNCTION: shu
+  # UNHANDLED FUNCTION: storm
   # UNHANDLED FUNCTION: storm2
+  # UNHANDLED FUNCTION: storm3
+  # UNHANDLED FUNCTION: storm4
+  # UNHANDLED FUNCTION: storm5
   # UNHANDLED FUNCTION: storm6
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
@@ -712,8 +712,8 @@
   # if (me->query_temp("want_leave"))  →  tell_object(me, HIR '你决定离开万安寺。\\\\\n' NOR);
 # ==== CONDITIONAL BRANCHES (do_leave) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: mes
   # UNHANDLED FUNCTION: do_leave
+  # UNHANDLED FUNCTION: mes
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -871,11 +871,11 @@
 # ==== CONDITIONAL BRANCHES (begin) ====
 # ==== CONDITIONAL BRANCHES ====
   # UNHANDLED FUNCTION: accept_ansuan
-  # UNHANDLED FUNCTION: accept_hit
-  # UNHANDLED FUNCTION: unconcious
-  # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: accept_hit
+  # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: unconcious
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -898,12 +898,12 @@
   # if (objectp(weapon = me->query_temp("weapon")))  →  command('shake'); command('say 我也和你比空手，放下你的' + weapon->name() + '再说。');
 # ==== CONDITIONAL BRANCHES (begin) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: die
   # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: accept_hit
   # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: die
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -924,12 +924,12 @@
   # if (objectp(weapon = me->query_temp("weapon")))  →  command('say 我和你比空手，请将' + weapon->name() + '放下。');
 # ==== CONDITIONAL BRANCHES (begin) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: die
   # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: accept_hit
   # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: die
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -978,12 +978,12 @@
   # if (! objectp(weapon = me->query_temp("weapon")) || (string)weapon->query("skill_type") != "sword")  →  command('say 我内力全失，现在只能和你比剑！');
 # ==== CONDITIONAL BRANCHES (begin) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: die
   # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: accept_hit
   # UNHANDLED FUNCTION: accept_kill
-  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: begin
+  # UNHANDLED FUNCTION: die
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
@@ -1036,14 +1036,14 @@
   # if (arg == "roar" )  →  message_vision(CYN '\\\\\n赵敏喝道：无耻贼子，在我这儿由不得你猖狂！\\\\\n' NOR, obj);
 # ==== CONDITIONAL BRANCHES (do_yun) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: receive_wound
   # UNHANDLED FUNCTION: accept_ansuan
+  # UNHANDLED FUNCTION: accept_fight
   # UNHANDLED FUNCTION: accept_hit
-  # UNHANDLED FUNCTION: receive_damage
-  # UNHANDLED FUNCTION: do_yun
   # UNHANDLED FUNCTION: accept_kill
   # UNHANDLED FUNCTION: do_get
-  # UNHANDLED FUNCTION: accept_fight
+  # UNHANDLED FUNCTION: do_yun
+  # UNHANDLED FUNCTION: receive_damage
+  # UNHANDLED FUNCTION: receive_wound
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 

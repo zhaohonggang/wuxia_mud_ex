@@ -21,10 +21,10 @@
   # if ((int)query("trigger") == 9 && !query("exits/north"))  →  
 # ==== CONDITIONAL BRANCHES (check_trigger) ====
 # ==== CONDITIONAL BRANCHES ====
-  # UNHANDLED FUNCTION: reset
   # UNHANDLED FUNCTION: check_trigger
   # UNHANDLED FUNCTION: do_push
   # UNHANDLED FUNCTION: pushstone
+  # UNHANDLED FUNCTION: reset
 # ==== UNHANDLED FUNCTIONS ====
 # ========================================
 
