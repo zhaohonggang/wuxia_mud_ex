@@ -152,7 +152,7 @@
 
 跨区出口在 UCL 里写成 `<zone>.rooms.<room>.id`。`Kantele.World.Loader.dereference/3`（`lib/kantele/world/loader.ex:1315-1343`）把参考的第一段当作 zone id 查找，因此这个形式可被加载器直接解析。
 
-- 全库跨区引用总数：**210**
+- 全库跨区引用总数：**218**（2026-10-01 重算；原 210 是 E 项接通方向名反查、以及引号引用/连字符区名解析修复之前的数）
 - 其中悬空：**0**（2026-10-01，原 2 条均已解决）
 
 ### 悬空跨区引用
@@ -168,7 +168,7 @@
 
 | zone | 跨区出口数 | 指向 |
 |------|-----------|------|
-| `city` | 13 | gaibang, guiyun, huanghe, jingzhou, luoyang, liuxi, shaolin, taishan, wizard, wudang, xuedao, xueshan, zhongzhou |
+| `city` | 13 | gaibang, guiyun, huanghe, jingzhou, liuxi, luoyang, shaolin, taishan, wizard, wudang, xuedao, xueshan, zhongzhou |
 | `dali` | 8 | emei, foshan, kunming, tianlongsi, wanjiegu, wudu |
 | `huanghe` | 8 | changan, city, heimuya, lanzhou, lingzhou, taishan, village |
 | `wudang` | 8 | city, emei, guiyun, hengyang, jingzhou, xiangyang, xiaoyao |
@@ -200,17 +200,21 @@
 | `huashan` | 3 | kaifeng, village |
 | `kaifeng` | 3 | huashan, songshan, zhongzhou |
 | `kunming` | 3 | dali, jingzhou |
+| `liuxi` | 3 | city, sammatti, signature |
 | `mingjiao` | 3 | kunlun, lanzhou, xiyu |
 | `songshan` | 3 | kaifeng, shaolin |
 | `taishan` | 3 | city, huanghe, quanzhou |
 | `wudu` | 3 | city, dali |
 | `baituo` | 2 | city, xiyu |
 | `hangzhou` | 2 | meizhuang, quanzhou |
+| `kissa-jarvi` | 2 | lepakko-luola, sammatti |
 | `lingzhou` | 2 | huanghe, xuanminggu |
 | `meizhuang` | 2 | hangzhou, quanzhou |
+| `sammatti` | 2 | kissa-jarvi, liuxi |
 | `tianlongsi` | 2 | dali, emei |
 | `tulong` | 2 | beijing |
 | `xiakedao` | 2 | foshan, hengyang |
+| `death` | 1 | city |
 | `gaibang` | 1 | city |
 | `gaochang` | 1 | shenfeng |
 | `guanwai` | 1 | beijing |
@@ -218,16 +222,16 @@
 | `item` | 1 | suzhou |
 | `jinshe` | 1 | huashan |
 | `jueqing` | 1 | xiangyang |
-| `kissa-jarvi` | 1 | sammatti |
 | `kunlun` | 1 | mingjiao |
+| `lepakko-luola` | 1 | kissa-jarvi |
 | `lingjiu` | 1 | xiyu |
 | `lingxiao` | 1 | xuedao |
-| `liuxi` | 1 | signature |
 | `motianya` | 1 | hengyang |
 | `pk` | 1 | changan |
 | `qingcheng` | 1 | chengdu |
 | `room` | 1 | shaolin |
 | `signature` | 1 | liuxi |
+| `tiezhang` | 1 | xiangyang |
 | `wanjiegu` | 1 | dali |
 | `wizard` | 1 | city |
 | `wuguan` | 1 | xiangyang |
