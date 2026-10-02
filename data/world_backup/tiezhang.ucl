@@ -23,12 +23,11 @@ zones "tiezhang" {
   room_items "bqshi" {
     room_id = rooms.bqshi.id
     items = [
+      { id = items.gangdao.id },
       { id = items.gangjian.id },
       { id = items.gangzhang.id },
       { id = items.changbian.id }    ]
   }
-
-  # skipped unresolvable object path '/* sizeof() == 4 */\n  __DIR__"obj/gangdao"': no determinate object id
 
 # Generated from C:/files/git/mud/d/tiezhang/chufang.c by LPCConverter
 # Zone: tiezhang
@@ -697,7 +696,12 @@ item_desc = {
   south = rooms.shanlu_1.id  }
 
 
-  # skipped unresolvable object path '/* sizeof() == 3 */\n      __DIR__"npc/huiyi"': no determinate object id
+  room_characters "shanlu_2" {
+    room_id = rooms.shanlu_2.id
+    characters = [
+      { id = characters.huiyi.id },
+      { id = characters.huiyi.id }    ]
+  }
 
 # Generated from C:/files/git/mud/d/tiezhang/shanlu-3.c by LPCConverter
 # Zone: tiezhang
@@ -820,6 +824,9 @@ item_desc = {
   x = 0
   y = 0
   z = 0
+item_desc = {
+ paizi = "(31m“擅入者--死” (0 37 0m"
+}
 valid_leave = [
 {
    # 阻挡条件（原样保留）：(!myfam || myfam["family_name"] != "铁掌帮") && dir == "northup" && (int)me->query("combat_exp", 1) >= 10000 && objectp(present("heiyi bangzhong", environment(me)))
@@ -836,7 +843,12 @@ direction = "northup"
   southdown = rooms.shanjiao.id  }
 
 
-  # skipped unresolvable object path '/* sizeof() == 2 */\n    __DIR__"npc/heiyi"': no determinate object id
+  room_characters "shanmen" {
+    room_id = rooms.shanmen.id
+    characters = [
+      { id = characters.heiyi.id },
+      { id = characters.heiyi.id }    ]
+  }
 
 # Generated from C:/files/git/mud/d/tiezhang/shijie-1.c by LPCConverter
 # Zone: tiezhang

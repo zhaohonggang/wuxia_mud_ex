@@ -371,6 +371,51 @@ check("sealed create() picks up recreate()'s exits",
       ("mapping", [(("string", "out"), ("string", "lunhuisi_road1"))]))
 
 
+# ---------------------------------------------------------------- G
+# `/* ... */` inside create() must not leak into parsed values.
+#
+# create_body is cut out of the RAW source, so before this only `//` line comments
+# were stripped from it.  The corpus writes an object count as a block comment
+# immediately before the list:
+#     set("objects", ([ /* sizeof() == 5 */ __DIR__"npc/fujiang" : 1, ...
+# so the path arrived as '/* sizeof() == 5 */\n  __DIR__"npc/fujiang"', had no
+# determinate object id, and the whole entry was dropped.  That silently emptied
+# six changan barracks (bingying1..6 lost their 府兵 and 4 卫兵 each), plus
+# dangpu's shopkeeper and kezhan's page -- 19 objects in 6 zones.
+print("\nG  block comments inside create() are stripped")
+
+
+_BLOCK_COMMENT = """
+inherit ROOM;
+void create()
+{
+    set("short", "兵营" NOR);
+    set("objects", ([ /* sizeof() == 5 */
+                     __DIR__"npc/fujiang" : 1,
+                     __DIR__"npc/guanbing" : 4,
+    ]));
+    setup();
+}
+"""
+
+
+def _objects(src):
+    ast = _parse(src)
+    merged = C._merge_inherit_chain(ast)
+    return merged.create_fn.get("sets", {}).get("objects")
+
+
+check("object path is recovered despite the leading block comment",
+      _objects(_BLOCK_COMMENT),
+      ("mapping", [(("string", "npc/fujiang"), ("int", 1)),
+                   (("string", "npc/guanbing"), ("int", 4))]))
+
+_uct = _objects(_BLOCK_COMMENT)
+check("no '/*' survives into the parsed path",
+      "/*" in repr(_uct),
+      False)
+
+
 print("")
 if FAILURES:
     print("FAILED: %d" % len(FAILURES))

@@ -350,13 +350,12 @@ item_desc = {
   room_characters "bingying1" {
     room_id = rooms.bingying1.id
     characters = [
+      { id = characters.fujiang.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id }    ]
   }
-
-  # skipped unresolvable object path '/* sizeof() == 5 */\n             __DIR__"npc/fujiang"': no determinate object id
 
 # Generated from C:/files/git/mud/d/changan/bingying2.c by LPCConverter
 # Zone: changan
@@ -378,13 +377,12 @@ item_desc = {
   room_characters "bingying2" {
     room_id = rooms.bingying2.id
     characters = [
+      { id = characters.fujiang.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id }    ]
   }
-
-  # skipped unresolvable object path '/* sizeof() == 5 */\n             __DIR__"npc/fujiang"': no determinate object id
 
 # Generated from C:/files/git/mud/d/changan/bingying3.c by LPCConverter
 # Zone: changan
@@ -406,13 +404,12 @@ item_desc = {
   room_characters "bingying3" {
     room_id = rooms.bingying3.id
     characters = [
+      { id = characters.fujiang.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id }    ]
   }
-
-  # skipped unresolvable object path '/* sizeof() == 5 */\n             __DIR__"npc/fujiang"': no determinate object id
 
 # Generated from C:/files/git/mud/d/changan/bingying4.c by LPCConverter
 # Zone: changan
@@ -434,13 +431,12 @@ item_desc = {
   room_characters "bingying4" {
     room_id = rooms.bingying4.id
     characters = [
+      { id = characters.fujiang.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id }    ]
   }
-
-  # skipped unresolvable object path '/* sizeof() == 5 */\n             __DIR__"npc/fujiang"': no determinate object id
 
 # Generated from C:/files/git/mud/d/changan/bingying5.c by LPCConverter
 # Zone: changan
@@ -462,13 +458,12 @@ item_desc = {
   room_characters "bingying5" {
     room_id = rooms.bingying5.id
     characters = [
+      { id = characters.fujiang.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id }    ]
   }
-
-  # skipped unresolvable object path '/* sizeof() == 5 */\n             __DIR__"npc/fujiang"': no determinate object id
 
 # Generated from C:/files/git/mud/d/changan/bingying6.c by LPCConverter
 # Zone: changan
@@ -490,13 +485,12 @@ item_desc = {
   room_characters "bingying6" {
     room_id = rooms.bingying6.id
     characters = [
+      { id = characters.fujiang.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id },
       { id = characters.guanbing.id }    ]
   }
-
-  # skipped unresolvable object path '/* sizeof() == 5 */\n             __DIR__"npc/fujiang"': no determinate object id
 
 # Generated from C:/files/git/mud/d/changan/bridge1.c by LPCConverter
 # Zone: changan
@@ -593,6 +587,9 @@ item_desc = {
   x = -1
   y = -1
   z = 0
+item_desc = {
+ paizi = "本当铺财力雄厚，童叟无欺，欢迎惠顾。 客官可以在这里：            ******************************           **    卖断(sell)        **           **    估价(value)        **           **    购买(buy) 用list查看。    **            ****************************** 各种货物，铜钱、银两、黄金、银票一概通用。"
+}
     }
 
   room_exits "dangpu" {
@@ -601,7 +598,11 @@ item_desc = {
     }
 
 
-  # skipped unresolvable object path '/* sizeof() == 1 */\n            __DIR__"npc/wanxi"': no determinate object id
+  room_characters "dangpu" {
+    room_id = rooms.dangpu.id
+    characters = [
+      { id = characters.wanxi.id }    ]
+  }
 
 # Generated from C:/files/git/mud/d/changan/dong-chengmen.c by LPCConverter
 # Zone: changan
@@ -1358,7 +1359,11 @@ direction = "up"
     }
 
 
-  # skipped unresolvable object path '/* sizeof() == 1 */\n            __DIR__"npc/xiaoer"': no determinate object id
+  room_characters "kezhan" {
+    room_id = rooms.kezhan.id
+    characters = [
+      { id = characters.xiaoer.id }    ]
+  }
 
 # Generated from C:/files/git/mud/d/changan/kzsleep.c by LPCConverter
 # Zone: changan
@@ -1369,6 +1374,9 @@ direction = "up"
   x = -3
   y = -1
   z = 1
+item_desc = {
+ bed = "一张白色的软榻，看上去极为精致。"
+}
     }
 
   room_exits "kzsleep" {

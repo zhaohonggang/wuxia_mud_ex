@@ -428,7 +428,11 @@ item_desc = {
     }
 
 
-  # skipped unresolvable object path '/* sizeof() == 1 */\n            __DIR__"npc/mu"': no determinate object id
+  room_characters "stone_room" {
+    room_id = rooms.stone_room.id
+    characters = [
+      { id = characters.mu.id }    ]
+  }
 
 # Generated from C:/files/git/mud/d/wanjiegu/tree_hole.c by LPCConverter
 # Zone: wanjiegu

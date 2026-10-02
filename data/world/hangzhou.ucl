@@ -2288,7 +2288,11 @@ valid_leave = [
     }
 
 
-  # skipped unresolvable object path '/* sizeof() == 1 */\n\n            __DIR__"npc/smith"': no determinate object id
+  room_characters "tiejiangpu" {
+    room_id = rooms.tiejiangpu.id
+    characters = [
+      { id = characters.smith.id }    ]
+  }
 
 # Generated from C:/files/git/mud/d/hangzhou/tulu1.c by LPCConverter
 # Zone: hangzhou

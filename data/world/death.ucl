@@ -1117,11 +1117,10 @@ direction = ~
   room_characters "youmingdian" {
     room_id = rooms.youmingdian.id
     characters = [
+      { id = characters.yanluo.id },
       { id = characters.yinchangsheng.id },
       { id = characters.wangfangping.id }    ]
   }
-
-  # skipped unresolvable object path '/* sizeof() == 2 */\n                __DIR__"npc/yanluo"': no determinate object id
 
 # Generated from C:/files/git/mud/d/death/youmingjie.c by LPCConverter
 # Zone: death
@@ -5054,56 +5053,6 @@ item_desc = {
     str = 50
   }
 
-  skills = [
-    { skill = "dodge" level = 500 },
-    { skill = "unarmed" level = 500 },
-    { skill = "force" level = 500 },
-    { skill = "parry" level = 500 },
-    { skill = "sword" level = 500 },
-    { skill = "poison" level = 500 },
-    { skill = "medical" level = 500 },
-    { skill = "hand" level = 500 },
-    { skill = "strike" level = 500 },
-    { skill = "staff" level = 500 },
-    { skill = "finger" level = 500 },
-    { skill = "claw" level = 500 },
-    { skill = "blade" level = 500 },
-    { skill = "pixie-jian" level = 500 },
-    { skill = "literate" level = 500 },
-    { skill = "taoism" level = 500 },
-    { skill = "buddhism" level = 500 },
-    { skill = "jiuyang-shengong" level = 500 },
-    { skill = "lingbo-weibu" level = 500 },
-    { skill = "qiankun-danuoyi" level = 500 },
-    { skill = "xuanming-zhang" level = 500 },
-    { skill = "jiuyin-baiguzhao" level = 500 },
-    { skill = "dugu-jiujian" level = 500 },
-    { skill = "six-finger" level = 500 },
-    { skill = "qianzhu-wandushou" level = 500 },
-    { skill = "ranmu-daofa" level = 500 },
-    { skill = "dagou-bang" level = 500 },
-    { skill = "shaolin-yishu" level = 500 },
-    { skill = "wudu-qishu" level = 500 },
-    { skill = "throwing" level = 500 },
-    { skill = "mantian-xing" level = 500 },
-    { skill = "idle-force" level = 500 },
-    { type = "unarmed" skill = "pixie-jian" },
-    { type = "force" skill = "jiuyang-shengong" },
-    { type = "dodge" skill = "lingbo-weibu" },
-    { type = "parry" skill = "qiankun-danuoyi" },
-    { type = "hand" skill = "qianzhu-wandushou" },
-    { type = "strike" skill = "xuanming-zhang" },
-    { type = "claw" skill = "jiuyin-baiguzhao" },
-    { type = "finger" skill = "six-finger" },
-    { type = "sword" skill = "dugu-jiujian" },
-    { type = "blade" skill = "ranmu-daofa" },
-    { type = "staff" skill = "dagou-bang" },
-    { type = "throwing" skill = "mantian-xing" },
-    { type = "poison" skill = "wudu-qishu" },
-    { type = "medical" skill = "shaolin-yishu" }
-  ]
-
-
   carry = [
     { id = items.cloth.id }
   ]
@@ -5133,25 +5082,6 @@ item_desc = {
     max_qi = 8000
     str = 40
   }
-
-  skills = [
-    { skill = "dodge" level = 460 },
-    { skill = "strike" level = 460 },
-    { skill = "parry" level = 460 },
-    { skill = "unarmed" level = 460 },
-    { skill = "force" level = 460 },
-    { skill = "sword" level = 460 },
-    { skill = "siji-jianfa" level = 460 },
-    { skill = "zhonghua-aojue" level = 460 },
-    { skill = "literate" level = 200 },
-    { type = "force" skill = "zhonghua-aojue" },
-    { type = "sword" skill = "zhonghua-aojue" },
-    { type = "dodge" skill = "zhonghua-aojue" },
-    { type = "parry" skill = "zhonghua-aojue" },
-    { type = "strike" skill = "zhonghua-aojue" },
-    { type = "unarmed" skill = "zhonghua-aojue" }
-  ]
-
 
   carry = [
     { id = items.cloth3.id },
@@ -5183,27 +5113,6 @@ item_desc = {
     max_qi = 7000
     str = 35
   }
-
-  skills = [
-    { skill = "dodge" level = 320 },
-    { skill = "parry" level = 320 },
-    { skill = "hand" level = 240 },
-    { skill = "unarmed" level = 240 },
-    { skill = "shou-yin" level = 240 },
-    { skill = "wudu-shu" level = 320 },
-    { skill = "force" level = 400 },
-    { skill = "changsheng-jue" level = 400 },
-    { skill = "blade" level = 320 },
-    { skill = "jingzhong-bafa" level = 320 },
-    { skill = "literate" level = 100 },
-    { type = "force" skill = "changsheng-jue" },
-    { type = "blade" skill = "jingzhong-bafa" },
-    { type = "dodge" skill = "wudu-shu" },
-    { type = "parry" skill = "jingzhong-bafa" },
-    { type = "hand" skill = "shou-yin" },
-    { type = "unarmed" skill = "shou-yin" }
-  ]
-
 
   carry = [
     { id = items.cloth2.id },
@@ -5245,25 +5154,6 @@ chats = [
 ]
 
 
-  skills = [
-    { skill = "dodge" level = 350 },
-    { skill = "parry" level = 350 },
-    { skill = "unarmed" level = 350 },
-    { skill = "throwing" level = 350 },
-    { skill = "xiaoli-feidao" level = 350 },
-    { skill = "changquan" level = 350 },
-    { skill = "shexing-lifan" level = 350 },
-    { skill = "force" level = 350 },
-    { skill = "yijinjing" level = 350 },
-    { skill = "literate" level = 250 },
-    { type = "force" skill = "yijinjing" },
-    { type = "dodge" skill = "shexing-lifan" },
-    { type = "parry" skill = "changquan" },
-    { type = "throwing" skill = "xiaoli-feidao" },
-    { type = "unarmed" skill = "changquan" }
-  ]
-
-
   carry = [
     { id = items.cloth1.id },
     { id = items.renou.id }
@@ -5294,27 +5184,6 @@ chats = [
     max_qi = 9000
     str = 50
   }
-
-  skills = [
-    { skill = "dodge" level = 460 },
-    { skill = "parry" level = 460 },
-    { skill = "unarmed" level = 460 },
-    { skill = "hand" level = 460 },
-    { skill = "sword" level = 460 },
-    { skill = "yujian-shu" level = 460 },
-    { skill = "feilong-shou" level = 460 },
-    { skill = "zuixian-bu" level = 460 },
-    { skill = "force" level = 460 },
-    { skill = "bingxin-jue" level = 460 },
-    { skill = "literate" level = 200 },
-    { type = "force" skill = "bingxin-jue" },
-    { type = "dodge" skill = "zuixian-bu" },
-    { type = "parry" skill = "yujian-shu" },
-    { type = "sword" skill = "yujian-shu" },
-    { type = "unarmed" skill = "feilong-shou" },
-    { type = "hand" skill = "feilong-shou" }
-  ]
-
 
   carry = [
     { id = items.pangukai.id },
@@ -5473,24 +5342,6 @@ chats = [
     str = 40
   }
 
-  skills = [
-    { skill = "unarmed" level = 220 },
-    { skill = "force" level = 220 },
-    { skill = "parry" level = 180 },
-    { skill = "dodge" level = 180 },
-    { skill = "cuff" level = 220 },
-    { skill = "literate" level = 100 },
-    { skill = "yijinjing" level = 220 },
-    { skill = "tiexian-quan" level = 220 },
-    { skill = "feiyan-huixiang" level = 180 },
-    { type = "parry" skill = "tiexian-quan" },
-    { type = "force" skill = "yijinjing" },
-    { type = "unarmed" skill = "tiexian-quan" },
-    { type = "cuff" skill = "tiexian-quan" },
-    { type = "dodge" skill = "feiyan-huixiang" }
-  ]
-
-
   carry = [
     { id = items.cloth.id }
   ]
@@ -5520,27 +5371,6 @@ chats = [
     max_qi = 7000
     str = 35
   }
-
-  skills = [
-    { skill = "dodge" level = 320 },
-    { skill = "hand" level = 320 },
-    { skill = "parry" level = 320 },
-    { skill = "unarmed" level = 320 },
-    { skill = "shou-yin" level = 320 },
-    { skill = "wudu-shu" level = 320 },
-    { skill = "force" level = 400 },
-    { skill = "changsheng-jue" level = 400 },
-    { skill = "blade" level = 240 },
-    { skill = "badao-daofa" level = 240 },
-    { skill = "literate" level = 100 },
-    { type = "force" skill = "changsheng-jue" },
-    { type = "blade" skill = "badao-daofa" },
-    { type = "dodge" skill = "wudu-shu" },
-    { type = "parry" skill = "shou-yin" },
-    { type = "hand" skill = "shou-yin" },
-    { type = "unarmed" skill = "shou-yin" }
-  ]
-
 
   carry = [
     { id = items.cloth1.id },

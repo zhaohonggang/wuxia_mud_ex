@@ -3057,7 +3057,18 @@ def _parse_lpc(content: bytes, source_path: str, base_path: str):
         heredocs = _parse_heredocs_from_raw(utf8_content)
         content_for_brace = _strip_heredocs_for_brace(utf8_content)
         create_body = _extract_create_body(content_for_brace)
-        create_body = _strip_cpp_comments(create_body)
+        # Both comment syntaxes, not just `//`.  `create_body` is cut out of the RAW
+        # text, so before this only line comments were removed and a block comment
+        # survived into the parsed values.  That silently cost 18 room objects: the
+        # corpus writes the object count as a block comment immediately before the
+        # list, e.g.
+        #     set("objects", ([ /* sizeof() == 5 */ __DIR__"npc/fujiang" : 1, ...
+        # so the path arrived as '/* sizeof() == 5 */\n  __DIR__"npc/fujiang"',
+        # had no determinate object id, and the whole entry was dropped with a
+        # `# skipped unresolvable object path` comment (changan 8, meizhuang 4,
+        # tiezhang 3, death 1, hangzhou 1, wanjiegu 1).  400 corpus files carry a
+        # block comment inside create(); only those 18 entries actually broke.
+        create_body = _strip_c_comments(_strip_cpp_comments(create_body))
 
         cleaned = _preprocess(utf8_content)
 

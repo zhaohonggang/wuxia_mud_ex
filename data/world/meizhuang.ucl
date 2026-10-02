@@ -16,12 +16,16 @@ zones "meizhuang" {
   room_exits "chufang" {
     room_id = rooms.chufang.id
     up = rooms.didao1.id
-    down = rooms.gate.id
+    down = rooms.hupan.id
     east = rooms.zoulang3.id
     }
 
 
-  # skipped unresolvable object path '/* sizeof() == 1 */\n            __DIR__"npc/chushi"': no determinate object id
+  room_characters "chufang" {
+    room_id = rooms.chufang.id
+    characters = [
+      { id = characters.chushi.id }    ]
+  }
 
 # Generated from C:/files/git/mud/d/meizhuang/dating.c by LPCConverter
 # Zone: meizhuang
@@ -32,6 +36,9 @@ zones "meizhuang" {
   x = 1
   y = -6
   z = 1
+item_desc = {
+ bian = "这块匾已经很陈旧了，看起来摇摇晃晃的，似乎不大结实。"
+}
     }
 
   room_exits "dating" {
@@ -187,12 +194,18 @@ item_desc = {
 
   room_exits "dingduan" {
     room_id = rooms.dingduan.id
-    up = rooms.hupan.id
+    up = rooms.lingmu.id
     down = rooms.mishi.id
     }
 
 
-  # skipped unresolvable object path '/* sizeof() == 1 */\n            __DIR__"obj/hongchou"': no determinate object id
+
+
+  room_items "dingduan" {
+    room_id = rooms.dingduan.id
+    items = [
+      { id = items.hongchou.id }    ]
+  }
 
 # Generated from C:/files/git/mud/d/meizhuang/gate.c by LPCConverter
 # Zone: meizhuang
@@ -201,13 +214,12 @@ item_desc = {
       name = "梅庄大门"
       description = "走过一大片梅林，走上一条青石板大路，来到一座朱门白墙的大 庄院外，行到近处，见大门外写着“梅庄”两个大字，旁边署着“虞 允文题”四字。那虞允文是南宋破金的大功臣，这几个字儒雅之中透 着勃勃英气。"
   x = 0
-  y = 0
+  y = 2
   z = 0
     }
 
   room_exits "gate" {
     room_id = rooms.gate.id
-    up = rooms.chufang.id
     south = rooms.xiaolu.id
     }
 
@@ -269,13 +281,12 @@ item_desc = {
       description = "顺着南湖一直走过去，你欣赏着湖边的杨柳，不知不觉地已经走 到南湖的尽头，这里有一条蜿蜒的小路向前延伸着，隐隐约约可以看 到一座庄园，你不禁想走过去看看那里是什么地方．"
   x = 0
   y = 0
-  z = 5
+  z = 0
     }
 
   room_exits "hupan" {
     room_id = rooms.hupan.id
-    up = rooms.lingmu.id
-    down = rooms.dingduan.id
+    up = rooms.chufang.id
     west = quanzhou.rooms.nanhu1.id
     north = rooms.xiaolu.id
     }
@@ -333,19 +344,25 @@ item_desc = {
       description = "你一走到这里，突然一片明亮，原来这里竟然是古代蚕丛王的陵 墓，中间停放着一具棺木，棺木的上方悬挂着一颗鹅蛋一般大小的夜 明珠，把这里照得异常明亮，棺木的正中放着一本书，书看起来很陈 旧，似乎是一位前辈异人留下的。"
   x = 0
   y = 0
-  z = 6
+  z = 5
     }
 
   room_exits "lingmu" {
     room_id = rooms.lingmu.id
     up = rooms.mishi2.id
-    down = rooms.hupan.id
+    down = rooms.dingduan.id
     south = rooms.didao5.id
     out = rooms.hupan.id
     }
 
 
-  # skipped unresolvable object path '/* sizeof() == 1 */\n            "/clone/book/qunxing-tu.c"': no determinate object id
+
+
+  room_items "lingmu" {
+    room_id = rooms.lingmu.id
+    items = [
+      { id = items.qunxing_tu.id }    ]
+  }
 
 # Generated from C:/files/git/mud/d/meizhuang/mishi.c by LPCConverter
 # Zone: meizhuang
@@ -385,11 +402,12 @@ item_desc = {
       description = "这是一座小小的园子，里面种满了大大小小的柳树，柳枝有的长可及 地，有的还是新枝嫩叶，但中间有一株灌木(guanmu)低低矮矮的，长在那 里，非常惹人注目，你不禁朝那里多看了两眼。"
   x = 0
   y = 0
-  z = 7
+  z = 6
     }
 
   room_exits "mishi2" {
     room_id = rooms.mishi2.id
+    up = rooms.shijie.id
     down = rooms.lingmu.id
     west = rooms.xiaoyuan.id
     }
@@ -440,7 +458,11 @@ item_desc = {
     }
 
 
-  # skipped unresolvable object path '/* sizeof() == 1 */\n            __DIR__"npc/huyuan.c"': no determinate object id
+  room_characters "neiyuan" {
+    room_id = rooms.neiyuan.id
+    characters = [
+      { id = characters.huyuan.id }    ]
+  }
 
 # Generated from C:/files/git/mud/d/meizhuang/qhpo.c by LPCConverter
 # Zone: meizhuang
@@ -528,14 +550,15 @@ item_desc = {
       name = "孤山石级"
       description = "你向孤山边的石级上行去，一路欣赏着湖边长曳的杨柳。不知不 觉地转了几个弯，却见遍地都是梅树，老干横斜，枝叶茂密，想像初 春梅花盛开之日，香雪如海，定然观赏不尽。"
   x = 0
-  y = -2
-  z = 0
+  y = 0
+  z = 7
     }
 
   room_exits "shijie" {
     room_id = rooms.shijie.id
-    north = rooms.xiaolu.id
+    down = rooms.mishi2.id
     eastdown = hangzhou.rooms.gushan.id
+    north = rooms.xiaolu.id
     }
 
 # Generated from C:/files/git/mud/d/meizhuang/shushi.c by LPCConverter
@@ -582,7 +605,11 @@ item_desc = {
     }
 
 
-  # skipped unresolvable object path '/* sizeof() == 2 */\n            __DIR__"npc/huyuan"': no determinate object id
+  room_characters "tianjing" {
+    room_id = rooms.tianjing.id
+    characters = [
+      { id = characters.huyuan.id }    ]
+  }
 
 # Generated from C:/files/git/mud/d/meizhuang/xiaodao.c by LPCConverter
 # Zone: meizhuang
@@ -608,7 +635,7 @@ item_desc = {
       name = "蜿蜒小径"
       description = "这条小路的两旁种着无数的梅花，虽然还没到梅花盛开的季节， 但透过这密密的梅林，你似乎已经闻到了阵阵的梅花的幽香，这时你 已经发现你快走到庄园的门口，你暗地里加快了脚步。"
   x = 0
-  y = -1
+  y = 1
   z = 0
     }
 
