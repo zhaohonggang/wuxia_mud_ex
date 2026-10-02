@@ -787,6 +787,7 @@ item_desc = {
 
     characters "boy" {
       name = "男孩"
+      aliases = ["boy"]
       description = "这是个城里的少年。"
   gender = "男性"
   age = 13
@@ -812,6 +813,7 @@ item_desc = {
 
     characters "chen" {
       name = "陈阿婆"
+      aliases = ["chen apo", "chen", "apo"]
       description = "陈阿婆久居泉州城，据说她年轻时很有几分风韵，福威镖局 当时的少镖头林震南还追求过她。"
   title = "杂货铺老板娘"
   gender = "女性"
@@ -855,6 +857,7 @@ item_desc = {
 
     characters "chuanfu" {
       name = "船夫"
+      aliases = ["chuan fu"]
       description = "这是一个船夫。懒洋洋的靠在岸边，打量着来往的行人。眼神中透露 出一股狡黠之气。"
   nickname = "消息灵通"
   gender = "男性"
@@ -888,6 +891,7 @@ item_desc = {
 
     characters "girl" {
       name = "女孩"
+      aliases = ["girl"]
       description = "这是个农家少女，虽然只有十二、三岁，身材已经开始发育。"
   gender = "女性"
   age = 12
@@ -921,6 +925,7 @@ item_desc = {
 
     characters "hongmao" {
       name = "红毛鬼"
+      aliases = ["hongmao gui", "gui"]
       description = "入侵我天朝宝岛台湾的荷兰红毛鬼。他手上端着一支火枪，枪口还冒着青烟。"
   gender = "男性"
   shen_type = 1
@@ -952,6 +957,7 @@ item_desc = {
 
     characters "liu" {
       name = "刘国轩"
+      aliases = ["liu guoxuan", "liu"]
       description = "他就是延平王府的宿将，台海安危的干城，台湾三虎的刘大将军。"
   gender = "男性"
   shen_type = 1
@@ -993,6 +999,7 @@ item_desc = {
 
     characters "wokou" {
       name = "倭寇"
+      aliases = ["wo kou", "wo", "kou"]
       description = "入侵我天朝宝岛台湾的日本武人，江湖通称武士。我天朝篾之倭寇。"
   gender = "男性"
   shen_type = 1
@@ -1029,6 +1036,7 @@ item_desc = {
 
     characters "xiaoer" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1070,6 +1078,7 @@ item_desc = {
 
     characters "cloth" {
       name = "布衣"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -1078,6 +1087,7 @@ item_desc = {
 
     characters "fuchen" {
       name = "拂尘"
+      aliases = ["fuchen"]
       description = "这是一柄拂尘，做工精细，是很阴毒的兵器。"
     }
 
@@ -1086,6 +1096,7 @@ item_desc = {
 
     characters "huoqiang" {
       name = "荷兰火枪"
+      aliases = ["helan huoqiang", "huoqiang"]
       description = "一支荷兰火枪。可惜只能放一枪。"
     }
 
@@ -1094,6 +1105,7 @@ item_desc = {
 
     characters "tiexiang" {
       name = "铁箱"
+      aliases = ["tie xiang", "xiang", "box"]
       description = "一只有大又笨的铁箱子，有些生锈了。"
 
   init = {
@@ -1107,6 +1119,7 @@ item_desc = {
 
     characters "wodao" {
       name = "倭刀"
+      aliases = ["wo dao", "blade"]
       description = "这是一柄亮晃晃的弧形弯刀，十分锋利。"
     }
 
@@ -1115,6 +1128,7 @@ item_desc = {
 
     characters "xiuhua" {
       name = "绣花针"
+      aliases = ["xiuhua zhen", "zhen", "needle"]
       description = "这是一根精钢细磨的绣花针，是绣花用的绝佳工具。"
     }
 
@@ -1123,6 +1137,7 @@ item_desc = {
 
     characters "yadan" {
       name = "臭鸭蛋"
+      aliases = ["chou yadan", "yadan", "egg"]
       description = "臭鸭蛋闻着臭，吃着香。"
     }
 
@@ -1131,6 +1146,7 @@ item_desc = {
 
     characters "zongzi" {
       name = "粽子"
+      aliases = ["zongzi"]
       description = "一个香喷喷的肉粽子，包它的粽子叶泛出一股清香。"
     }
 
@@ -1139,6 +1155,7 @@ item_desc = {
 
     items "flower_shoe" {
       name = "绣花小鞋"
+      aliases = ["flower shoes", "shoes"]
       description = ""
   verbs = [
     "get",
@@ -1159,6 +1176,7 @@ item_desc = {
 
     items "pink_cloth" {
       name = "粉红绸衫"
+      aliases = ["pink cloth", "cloth"]
       description = "这件粉红色的绸衫上面绣着几只黄鹊，闻起来还有一股淡香。"
   verbs = [
     "get",

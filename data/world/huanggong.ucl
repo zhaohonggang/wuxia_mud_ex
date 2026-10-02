@@ -293,6 +293,7 @@ item_desc = {
 
     characters "gonnv" {
       name = "宫女"
+      aliases = ["gong nv", "nv"]
       description = "这是一个宫女,容貌很清秀,看来挺能干."
   gender = "女性"
   shen_type = 1
@@ -317,6 +318,7 @@ item_desc = {
 
     characters "shiwei" {
       name = "侍卫"
+      aliases = ["shi wei", "shi", "wei"]
       description = "他手握钢刀，目视前方，真是威风凛凛。"
   gender = "男性"
   shen_type = 1
@@ -349,6 +351,7 @@ item_desc = {
 
     characters "shiwei2" {
       name = "侍卫"
+      aliases = ["shi wei", "shi", "wei"]
       description = "他手握钢刀，目视前方，真是威风凛凛。"
   gender = "男性"
   shen_type = 1
@@ -381,6 +384,7 @@ item_desc = {
 
     characters "taijian" {
       name = "太监"
+      aliases = ["tai jian", "tai", "jian"]
       description = ""
   gender = "无性"
   shen_type = 0
@@ -408,6 +412,7 @@ item_desc = {
 
     items "nverhong" {
       name = "女儿红"
+      aliases = ["nver hong", "wine"]
       description = "一坛上好的女儿红,醇香诱人."
   verbs = [
     "get",
@@ -426,6 +431,7 @@ item_desc = {
 
     items "yuchanda" {
       name = "雪参玉蟾丹"
+      aliases = ["yuchan dan", "dan"]
       description = "这是高丽进贡的灵药，服后解毒疗伤，灵验非凡。"
   verbs = [
     "get",
@@ -443,6 +449,7 @@ item_desc = {
 
     items "yuchi" {
       name = "鱼翅"
+      aliases = ["yu chi", "yu"]
       description = "上等鱼翅,味道鲜美.其实也就那么回事."
   verbs = [
     "get",

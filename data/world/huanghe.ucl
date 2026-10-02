@@ -1223,6 +1223,7 @@ item_desc = {
 
     characters "bangzong" {
       name = "大汉"
+      aliases = ["da han", "han"]
       description = "一名身材高大的壮汉，满脸杀气，一付凶神恶煞的模样。"
   title = "黄河帮帮众"
   gender = "男性"
@@ -1256,6 +1257,7 @@ item_desc = {
 
     characters "caishiren" {
       name = "采石人"
+      aliases = ["caishi ren", "ren"]
       description = "这是一个精壮汉子。"
   gender = "男性"
   age = 22
@@ -1280,6 +1282,7 @@ item_desc = {
 
     characters "hou" {
       name = "侯通海"
+      aliases = ["hou tonghai", "hou", "tonghai"]
       description = "侯通海是个青脸瘦子，面颊极长，额角上肿起了三个大肉瘤，非 常难看。"
   nickname = "三头蛟"
   gender = "男性"
@@ -1314,6 +1317,7 @@ item_desc = {
 
     characters "huoji" {
       name = "伙计"
+      aliases = ["huoji"]
       description = "他是这儿的伙计，正在店里忙里忙外。"
   gender = "男性"
   age = 18
@@ -1347,6 +1351,7 @@ item_desc = {
 
     characters "liang" {
       name = "梁子翁"
+      aliases = ["liang ziwen", "liang", "ziwen"]
       description = "梁子翁身材中等，满头白发如银，但脸色光润，神采弈弈，穿一 件葛布长袍，打扮非道非俗。他是长白山武学的一派宗师。"
   nickname = "参仙老怪"
   gender = "男性"
@@ -1379,6 +1384,7 @@ item_desc = {
 
     characters "ma" {
       name = "马青雄"
+      aliases = ["ma qingxiong", "ma", "qingxiong"]
       description = "马青雄是黄河四鬼的老三，是鬼门龙王沙通天的三弟子，擅 于鞭法。"
   title = "黄河四鬼老三"
   nickname = "夺魄鞭"
@@ -1414,6 +1420,7 @@ item_desc = {
 
     characters "mazei" {
       name = "马贼"
+      aliases = ["ma zei", "zei"]
       description = "一个彪悍的马贼。"
   gender = "男性"
 
@@ -1460,6 +1467,7 @@ item_desc = {
 
     characters "menmian" {
       name = "蒙面人"
+      aliases = ["menmian ren", "menmian", "ren"]
       description = "一个黑布蒙面，神秘兮兮的家伙。"
   gender = "男性"
 
@@ -1492,6 +1500,7 @@ item_desc = {
 
     characters "peng" {
       name = "彭连虎"
+      aliases = ["peng lianhu", "peng", "lianhu"]
       description = "彭连虎五短身材，满眼红丝，目光如电，上唇短须翘起。他生性 残暴，和沙通天有深厚的交情。"
   nickname = "千手人屠"
   gender = "男性"
@@ -1526,6 +1535,7 @@ item_desc = {
 
     characters "qian" {
       name = "钱青健"
+      aliases = ["qian qingjian", "qian", "qingjian"]
       description = "钱青健是黄河四鬼的老四，是鬼门龙王沙通天的四弟子，擅 于斧法。"
   title = "黄河四鬼老四"
   nickname = "丧门斧"
@@ -1561,6 +1571,7 @@ item_desc = {
 
     characters "qiaofu" {
       name = "樵夫"
+      aliases = ["qiao fu", "fu"]
       description = "这是一个精壮老汉。"
   gender = "男性"
   age = 52
@@ -1585,6 +1596,7 @@ item_desc = {
 
     characters "sha" {
       name = "沙通天"
+      aliases = ["sha tongtian", "sha", "tongtian"]
       description = "沙通天是个秃子，头上油光光地没半根头发，双目布满红丝，眼 珠突出，生就一副异相。性子暴躁，武功却是出奇地高，江湖上 无人不晓。"
   title = "黄河帮帮主"
   nickname = "鬼门龙王"
@@ -1620,6 +1632,7 @@ item_desc = {
 
     characters "shen" {
       name = "沈青刚"
+      aliases = ["shen qinggang", "shen", "qinggang"]
       description = "沈青刚是黄河四鬼的老大，是鬼门龙王沙通天的大弟子，擅 使单刀。"
   title = "黄河四鬼老大"
   nickname = "断魂刀"
@@ -1655,6 +1668,7 @@ item_desc = {
 
     characters "wu" {
       name = "吴青烈"
+      aliases = ["wu qinglie", "wu", "qinglie"]
       description = "吴青烈是黄河四鬼的老二，是鬼门龙王沙通天的二弟子，擅 使长枪。"
   title = "黄河四鬼老二"
   nickname = "追命枪"
@@ -1690,6 +1704,7 @@ item_desc = {
 
     characters "wudong" {
       name = "无洞上人"
+      aliases = ["wudong shangren", "wudong", "shangren"]
       description = ""
   nickname = "祁连山"
   gender = "男性"
@@ -1741,6 +1756,7 @@ item_desc = {
 
     characters "xiucai" {
       name = "老秀才"
+      aliases = ["lao xiucai", "lao"]
       description = "一个穷困潦倒的落第秀才，在这里开堂授课为生。"
   gender = "男性"
   age = 65
@@ -1775,6 +1791,7 @@ item_desc = {
 
     characters "xixiabing" {
       name = "西夏兵"
+      aliases = ["xixia bing", "bing"]
       description = "一个魁武的西夏士兵。"
   gender = "男性"
   shen_type = 1
@@ -1808,6 +1825,7 @@ item_desc = {
 
     characters "zu" {
       name = "祖千秋"
+      aliases = ["zu qianqiu", "zu", "qianqiu"]
       description = "一个衣衫褴偻的落魄书生。焦黄脸皮，一个酒糟鼻，疏疏落落的 几根胡子，两眼无神。衣衫上一片油光，右手拿了一把破折扇。"
   title = "黄河老祖"
   nickname = "消息灵通"
@@ -1843,6 +1861,7 @@ item_desc = {
 
     characters "axe" {
       name = "丧门斧"
+      aliases = ["sangmen fu"]
       description = "这是一杆三尖开刃的三股叉。"
     }
 
@@ -1851,6 +1870,7 @@ item_desc = {
 
     characters "bi" {
       name = "判官笔"
+      aliases = ["panguan bi"]
       description = "这是一枝精铁打就的判官笔。"
     }
 
@@ -1859,6 +1879,7 @@ item_desc = {
 
     characters "changpao" {
       name = "葛布长袍"
+      aliases = ["gebu changpao", "cloth"]
       description = ""
     }
 
@@ -1867,6 +1888,7 @@ item_desc = {
 
     characters "fenshuici" {
       name = "分水刺"
+      aliases = ["fenshui ci", "ci"]
       description = "这是一只水中分水峨嵋刺。"
     }
 
@@ -1875,6 +1897,7 @@ item_desc = {
 
     characters "fork" {
       name = "三股叉"
+      aliases = ["sangu cha"]
       description = "这是一杆三尖开刃的三股叉。"
     }
 
@@ -1883,6 +1906,7 @@ item_desc = {
 
     characters "futou" {
       name = "大斧头"
+      aliases = ["futou", "da futou"]
       description = "这是一把砍柴的大斧头。"
     }
 
@@ -1891,6 +1915,7 @@ item_desc = {
 
     characters "shuikao" {
       name = "夜行水靠"
+      aliases = ["Shui kao", "kao"]
       description = ""
     }
 
@@ -1899,5 +1924,6 @@ item_desc = {
 
     characters "tieqiao" {
       name = "铁锹"
+      aliases = ["tie qiao", "qiao"]
       description = "这是一把挖矿的铁锹。"
     }

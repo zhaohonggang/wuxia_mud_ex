@@ -402,6 +402,7 @@ defmodule Kantele.World.Loader do
         combat: Kantele.Character.Combat.new(),
         goods: parse_goods(Map.get(character_data, :goods)),
         inquiries: parse_inquiries(Map.get(character_data, :inquiries)),
+        aliases: parse_aliases(Map.get(character_data, :aliases)),
         teach: parse_teach(Map.get(character_data, :teach)),
         apprentice: parse_apprentice(Map.get(character_data, :apprentice)),
         turn_in: parse_turn_in(Map.get(character_data, :turn_in)),
@@ -509,6 +510,16 @@ defmodule Kantele.World.Loader do
   end
 
   defp parse_goods(_), do: nil
+
+  # LPC set_name 的 id 表（present/ask/get 的匹配依据）
+  defp parse_aliases(nil), do: []
+
+  defp parse_aliases(list) when is_list(list) do
+    Enum.map(list, &to_string/1)
+  end
+
+  defp parse_aliases(other) when is_binary(other), do: [other]
+  defp parse_aliases(_), do: []
 
   # 商品引用形如 `items.<名>.id`（本区）或 `<区>.items.<名>.id`（跨区）。
   # 跨区是 LPC 原有语义：vendor_goods 里写的是绝对路径（`/d/xiyu/obj/fire`），
@@ -1133,7 +1144,8 @@ defmodule Kantele.World.Loader do
       no_sell: Map.get(meta, :no_sell),
       no_put: Map.get(meta, :no_put),
       owner: Map.get(meta, :owner),
-      owner_id: Map.get(meta, :owner_id)
+      owner_id: Map.get(meta, :owner_id),
+      aliases: parse_aliases(Map.get(meta, :aliases))
     }
 
     meta

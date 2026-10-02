@@ -436,6 +436,7 @@ item_desc = {
 
     characters "fang" {
       name = "方人智"
+      aliases = ["fang renzhi", "fang", "renzhi"]
       description = "他就是「青城派」年轻一代弟子，以智计为师尊喜爱。"
   gender = "男性"
   age = 20
@@ -467,6 +468,7 @@ item_desc = {
 
     characters "hai" {
       name = "余沧海"
+      aliases = ["yu canghai", "yu", "canghai"]
       description = "他身形矮小，可是神情凝重，俨然一派大宗师气。"
   gender = "男性"
   age = 52
@@ -498,6 +500,7 @@ item_desc = {
 
     characters "hong" {
       name = "洪人雄"
+      aliases = ["hong renxiong", "xiong", "renxiong"]
       description = "他就是「英雄豪杰，青城四秀」之一，武功也远高同门。"
   gender = "男性"
   age = 25
@@ -529,6 +532,7 @@ item_desc = {
 
     characters "hou" {
       name = "侯人英"
+      aliases = ["huo renying", "huo", "renying"]
       description = "他就是「英雄豪杰，青城四秀」之一，武功也远高同门。"
   gender = "男性"
   age = 25
@@ -560,6 +564,7 @@ item_desc = {
 
     characters "ji" {
       name = "吉人通"
+      aliases = ["ji rentong", "ji", "rentong"]
       description = "他就是和申人俊焦孟不离的吉人通。"
   gender = "男性"
   age = 25
@@ -591,6 +596,7 @@ item_desc = {
 
     characters "jia" {
       name = "贾人达"
+      aliases = ["jia renda", "jia", "renda"]
       description = "他就是「青城派」中最为同门不齿、最下达的家伙。"
   gender = "男性"
   age = 25
@@ -631,6 +637,7 @@ item_desc = {
 
     characters "luo" {
       name = "罗人杰"
+      aliases = ["luo renjie", "luo", "renjie"]
       description = "他就是「英雄豪杰，青城四秀」之一，武功也远高同门。"
   gender = "男性"
   age = 25
@@ -662,6 +669,7 @@ item_desc = {
 
     characters "shen" {
       name = "申人俊"
+      aliases = ["shen renjun", "shen", "renjun"]
       description = "他就是和吉人通焦孟不离的申人俊。"
   gender = "男性"
   age = 25
@@ -693,6 +701,7 @@ item_desc = {
 
     characters "yu" {
       name = "于人豪"
+      aliases = ["yu renhao", "yu", "renhao"]
       description = "他就是「英雄豪杰，青城四秀」之一，武功也远高同门。"
   gender = "男性"
   age = 25
@@ -732,6 +741,7 @@ item_desc = {
 
     characters "yuyan" {
       name = "余人彦"
+      aliases = ["yu renyan", "yu", "renyan"]
       description = "他就是「青城派」掌门人余沧海的独生爱子。可是他实在很不争气。"
   gender = "男性"
   age = 20

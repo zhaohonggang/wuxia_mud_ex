@@ -139,6 +139,11 @@ defmodule Kantele.World.Item.Meta do
     :flag,
     :storage_bag,
 
+    # LPC `set_name(<名>, ({ "id1", "id2" }))` 的 id 表（对应 present/get 的匹配依据）。
+    # 转换早期整组丢失，导致 `present('mian')` 这类拼音 id 匹配不上，
+    # 由 scripts/migrate_aliases.py 从源 .c 回填。
+    {:aliases, []},
+
     # 任务物品扩展（Q5 宝镜任务，对应 LPC set_task 物品的 meta 字段）
     :no_sell,
     :no_put,

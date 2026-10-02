@@ -608,6 +608,7 @@ item_desc = {
 
     characters "dabei" {
       name = "大悲老人"
+      aliases = ["dabei laoren", "dabei", "laoren"]
       description = "他是个红面老者，白发拂胸，甚是雄伟。"
   title = "白鲸岛岛主"
   gender = "男性"
@@ -655,6 +656,7 @@ item_desc = {
 
     characters "duantiande" {
       name = "段天德"
+      aliases = ["duan tiande", "duan"]
       description = "他是大宋临安兵马指挥使。"
   title = "大宋兵马指挥使"
   gender = "男性"
@@ -681,6 +683,7 @@ item_desc = {
 
     characters "fanyifei" {
       name = "范一飞"
+      aliases = ["fan yifei", "fan"]
       description = "他是一个矮瘦的老者，一张黑脸。腰里插着判官 笔，人称‘辽东鹤’。"
   title = "鹤笔门掌门人"
   gender = "男性"
@@ -724,6 +727,7 @@ item_desc = {
 
     characters "fengliang" {
       name = "风良"
+      aliases = ["feng liang", "feng"]
       description = "他是个高大的中年汉子，腰里缠九节鞭。"
   title = "青龙门掌门人"
   gender = "男性"
@@ -767,6 +771,7 @@ item_desc = {
 
     characters "gaosan" {
       name = "高三娘子"
+      aliases = ["gao san", "gao"]
       description = "这女子颇有几分姿色，两幅罗裙外面系着绣花鸾带。 腰间整整齐齐插着两排短刀。"
   title = "万马庄女庄主"
   gender = "女性"
@@ -810,6 +815,7 @@ item_desc = {
 
     characters "hanbaoju" {
       name = "韩宝驹"
+      aliases = ["han baoju", "han"]
       description = "他是个又矮又胖的猥琐汉子，犹如一个大肉团一般。他手短足短， 没有脖子，一个头大的出奇，却又缩在双肩之中。一个酒糟鼻又 大又圆，就如一只红柿子旒在脸上。"
   title = "江南七侠"
   nickname = "马王神"
@@ -873,6 +879,7 @@ item_desc = {
 
     characters "hanxiaoyin" {
       name = "韩小莹"
+      aliases = ["han xiaoyin", "han"]
       description = "她大约十八九岁年纪，身形苗条，大眼睛，皮肤如雪，露出一 头乌云般的秀发。正是江南水乡的人物。"
   title = "江南七侠"
   nickname = "越女剑"
@@ -936,6 +943,7 @@ item_desc = {
 
     characters "haojie" {
       name = "太湖豪杰"
+      aliases = ["hao jie", "hao", "jie"]
       description = "这是归云庄属下的在太湖劫富济贫的太湖豪杰。"
   gender = "男性"
   age = 25
@@ -967,6 +975,7 @@ item_desc = {
 
     characters "jiading" {
       name = "家丁"
+      aliases = ["jia ding", "jia"]
       description = "归云庄家丁。"
   gender = "男性"
   age = 35
@@ -998,6 +1007,7 @@ item_desc = {
 
     characters "jinbing" {
       name = "大金兵"
+      aliases = ["jin bing", "bing"]
       description = "那些大汉个个虎背熊腰，甚是剽健。"
   gender = "男性"
   age = 25
@@ -1024,6 +1034,7 @@ item_desc = {
 
     characters "kezhene" {
       name = "柯镇恶"
+      aliases = ["ke zhene", "ke"]
       description = "他是一个衣衫褴褛的瞎子，右手握着一根粗大的铁杖。只见他 尖嘴削腮，脸色灰扑扑地，颇有凶恶之态。"
   title = "江南七侠"
   nickname = "飞天蝙蝠"
@@ -1092,6 +1103,7 @@ item_desc = {
 
     characters "luzhengping" {
       name = "吕正平"
+      aliases = ["lu zhengping", "lu"]
       description = "只见他一张国字方脸，腮上一部虬髯，将大半张脸都遮没了。"
   title = "快刀门掌门人"
   gender = "男性"
@@ -1135,6 +1147,7 @@ item_desc = {
 
     characters "nanxiren" {
       name = "南希仁"
+      aliases = ["nan xiren", "nan"]
       description = "他是个挑柴模样的汉子，三十岁上下年纪，一身青布衣裤，腰里 束了根粗草绳，足穿草鞋，粗手大脚，神请木讷。"
   title = "江南七侠"
   nickname = "南山樵子"
@@ -1202,6 +1215,7 @@ item_desc = {
 
     characters "qiuqianzhang" {
       name = "裘千丈"
+      aliases = ["qiu qianzhang", "qiu"]
       description = "他有个弟弟叫裘千仞，他还有个妹妹叫裘千尺。他自己，虽然比弟弟 多了三千尺，比妹妹更是多了九千尺，手上的功夫呢却比他们稀松至 少九万尺。"
   nickname = "肉掌水底钻"
   gender = "男性"
@@ -1234,6 +1248,7 @@ item_desc = {
 
     characters "quanjinfa" {
       name = "全金发"
+      aliases = ["quan jinfa", "quan"]
       description = "那人五短身材，头戴小毡帽，白净面皮，手里提了一杆秤，一 个竹篓，似是个小商贩。"
   title = "江南七侠"
   nickname = "闹市侠隐"
@@ -1297,6 +1312,7 @@ item_desc = {
 
     characters "seller" {
       name = "小贩"
+      aliases = ["seller"]
       description = "这是个小贩，别看他长的老老实实，可你 别想从他那儿掏便宜。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1333,6 +1349,7 @@ item_desc = {
 
     characters "shutong" {
       name = "书童"
+      aliases = ["shu tong", "tong"]
       description = "他是庄主的随身书童，平素看管藏书。"
   gender = "男性"
   age = 35
@@ -1358,6 +1375,7 @@ item_desc = {
 
     characters "wanyanhonglie" {
       name = "完颜洪烈"
+      aliases = ["wanyan honglie", "honglie", "wanyan"]
       description = ""
   title = "大金国赵王爷"
   gender = "男性"
@@ -1398,6 +1416,7 @@ item_desc = {
 
     characters "wanyankang" {
       name = "完颜康"
+      aliases = ["wanyan kang", "kang", "wanyan"]
       description = "他本名杨康。随母包惜弱嫁完颜洪烈后，成了小王子， 贪图富贵，至死不改。"
   title = "大金国小王爷"
   gender = "男性"
@@ -1451,6 +1470,7 @@ item_desc = {
 
     characters "xiaoju" {
       name = "小菊"
+      aliases = ["xiao ju", "ju"]
       description = "一个模样乖巧的小丫环，瓜子脸，肤色白晰。细看时，嘴角有一颗小痣。"
   gender = "女性"
   age = 15
@@ -1477,6 +1497,7 @@ item_desc = {
 
     characters "xiaolan" {
       name = "小兰"
+      aliases = ["xiao lan", "lan"]
       description = "一个模样乖巧的小丫环，扎两个发环，眼睛大大的，嘴角浅浅一对酒窝。"
   gender = "女性"
   age = 15
@@ -1503,6 +1524,7 @@ item_desc = {
 
     characters "xiaolu" {
       name = "陆冠英"
+      aliases = ["lu guanying", "lu"]
       description = "他是归云庄少庄主陆冠英。他肩宽背阔，躯体甚是壮健， 但行动之间温文尔雅，谦恭有礼，一派世家子弟风范。 传闻他就是太湖群盗的首领，不知是真是假。"
   title = "归云庄少庄主"
   gender = "男性"
@@ -1561,6 +1583,7 @@ item_desc = {
 
     characters "zhangasheng" {
       name = "张阿生"
+      aliases = ["zhang asheng", "zhang"]
       description = "一人身材魁梧，少说也有二百五六十斤，围着一条长围裙，全 身油腻，敞开衣襟，露出毛茸茸的胸膛，袖子卷得高高的，手 臂上全是寸许长的黑毛，腰间皮带上别着柄尺来长的尖刀，瞧 模样是个杀猪宰羊的屠夫。"
   title = "江南七侠"
   nickname = "笑弥陀"
@@ -1624,6 +1647,7 @@ item_desc = {
 
     characters "zhucong" {
       name = "朱聪"
+      aliases = ["zhu cong", "zhu"]
       description = "他看起来象一个中年士人，拖着鞋皮，踢踏踢踏的直响，一路打 着哈欠。似笑非笑，挤眉弄眼，一副惫懒神气，全身油腻，衣冠 不整，满脸污垢，看来少说也有十多天没洗脸了，拿着一柄破烂 的油纸黑扇，边摇边行。突听干笑数声，声音甚是刺耳。"
   title = "江南七侠"
   nickname = "妙手书生"
@@ -1688,6 +1712,7 @@ item_desc = {
 
     characters "axe" {
       name = "砍柴斧"
+      aliases = ["fu"]
       description = "一柄砍柴用的短斧，斧刃上有几个缺口。"
     }
 
@@ -1696,6 +1721,7 @@ item_desc = {
 
     characters "biandan" {
       name = "熟铁扁担"
+      aliases = ["bian dan"]
       description = "通身黑油油地，中间微弯，两头各有一个突起的鞘子。"
     }
 
@@ -1704,6 +1730,7 @@ item_desc = {
 
     characters "gancheng" {
       name = "杆秤"
+      aliases = ["gan cheng"]
       description = "一杆闹市货物常用的杆秤。"
     }
 
@@ -1712,6 +1739,7 @@ item_desc = {
 
     characters "green_cloth" {
       name = "青布衣"
+      aliases = ["green cloth"]
       description = ""
     }
 
@@ -1720,6 +1748,7 @@ item_desc = {
 
     characters "jiandao" {
       name = "尖刀"
+      aliases = ["jian dao", "blade"]
       description = "一柄杀猪刀。"
     }
 
@@ -1728,6 +1757,7 @@ item_desc = {
 
     characters "jiujiebian" {
       name = "九节鞭"
+      aliases = ["jiujie bian", "bian"]
       description = "这是一条九节鞭，由精钢铸就而成。"
     }
 
@@ -1736,6 +1766,7 @@ item_desc = {
 
     characters "red_cloth" {
       name = "红绫袄"
+      aliases = ["red cloth"]
       description = ""
     }
 
@@ -1744,6 +1775,7 @@ item_desc = {
 
     characters "shortblade" {
       name = "短刀"
+      aliases = ["short blade", "dao"]
       description = "这是一捆飞刀。"
     }
 
@@ -1752,6 +1784,7 @@ item_desc = {
 
     characters "xin" {
       name = "书信"
+      aliases = ["guiyun shuxin", "shu xin", "xin"]
       description = "这是一封陆冠英写的邀请进入归云庄的书信。"
     }
 
@@ -1760,6 +1793,7 @@ item_desc = {
 
     characters "zheshan" {
       name = "油纸折扇"
+      aliases = ["zhe shan", "shan"]
       description = "这是一对用镔铁为骨的油纸折扇。"
     }
 
@@ -1768,6 +1802,7 @@ item_desc = {
 
     items "zongzi" {
       name = "粽子"
+      aliases = ["zongzi"]
       description = "一个香喷喷的肉粽子，包它的粽子叶泛出一股清香。"
   verbs = [
     "get",

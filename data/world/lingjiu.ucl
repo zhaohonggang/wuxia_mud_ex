@@ -987,6 +987,7 @@ item_desc = {
 
     characters "jiuyi" {
       name = "九翼道人"
+      aliases = ["jiuyi daoren", "jiuyi"]
       description = "他是西夏一品堂礼聘的高手，身材高瘦，脸上总是阴沉沉的。 他轻功极高，擅使雷公挡，凭一手雷公挡功夫，成为江湖的一流高手。"
   title = "西夏一品堂高手"
   nickname = "消息灵通"
@@ -1012,6 +1013,7 @@ item_desc = {
 
     characters "lisao" {
       name = "李嫂"
+      aliases = ["li sao", "li", "sao"]
       description = "她是 (灵鹫宫) 的厨师."
   gender = "女性"
   age = 30
@@ -1062,6 +1064,7 @@ item_desc = {
 
     characters "baiyunwan" {
       name = "白云熊胆丸"
+      aliases = ["baiyunxiudan wan", "wan"]
       description = "这是一颗武林人士梦寐以求的疗伤圣药。"
     }
 
@@ -1070,6 +1073,7 @@ item_desc = {
 
     characters "diaogan" {
       name = "钓竿"
+      aliases = ["diao gan", "diao", "gan"]
       description = "这是一根桦木制的钓竿，制作得颇为奇特。"
     }
 
@@ -1078,6 +1082,7 @@ item_desc = {
 
     characters "jieyao" {
       name = "药丸"
+      aliases = ["yao wan", "yao", "wan"]
       description = "一颗浑圆的药丸，乃是乌老大所配制的独门解药。"
     }
 
@@ -1086,6 +1091,7 @@ item_desc = {
 
     characters "jinzhen" {
       name = "斓蜈金针"
+      aliases = ["lanwu jinzhen", "lanwu", "jinzhen", "zhen"]
       description = "这是一些血红色的细长金针，长约寸许。"
     }
 
@@ -1094,6 +1100,7 @@ item_desc = {
 
     characters "yuping" {
       name = "玉瓶"
+      aliases = ["yu ping", "yu", "ping"]
       description = "一支白玉雕制的玉瓶，瓶上的木塞已甚为古旧。"
     }
 
@@ -1102,6 +1109,7 @@ item_desc = {
 
     items "changpao" {
       name = "长袍"
+      aliases = ["chang pao", "cloth", "pao"]
       description = "这是件质量上佳长袍，是由(针神)亲手缝制的。"
   verbs = [
     "get",
@@ -1122,6 +1130,7 @@ item_desc = {
 
     items "doupeng" {
       name = "斗篷"
+      aliases = ["dou peng", "peng"]
       description = "这是件斗篷。"
   verbs = [
     "get",
@@ -1142,6 +1151,7 @@ item_desc = {
 
     items "gao" {
       name = "冰雪翡翠糕"
+      aliases = ["gao"]
       description = "这是一块糕点，引人食欲大增。"
   verbs = [
     "get",
@@ -1162,6 +1172,7 @@ item_desc = {
 
     items "key" {
       name = "钥匙"
+      aliases = ["key"]
       description = "这是一把普通的铜钥匙。"
   verbs = [
     "get",
@@ -1181,6 +1192,7 @@ item_desc = {
 
     items "qingyi" {
       name = "青衣"
+      aliases = ["qing yi", "cloth", "yi"]
       description = "这是件质量上佳青衣，是由(针神)亲手缝制的。"
   verbs = [
     "get",
@@ -1201,6 +1213,7 @@ item_desc = {
 
     items "suanmei" {
       name = "酸梅汤"
+      aliases = ["suanmei tang", "tang"]
       description = "这是一碗解渴良汤。!"
   verbs = [
     "get",

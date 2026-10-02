@@ -488,6 +488,7 @@ zones "xiaoyao" {
 
     characters "mengmianr" {
       name = "蒙面人"
+      aliases = ["mengmian ren", "ren"]
       description = "一个蒙着面部，身穿黑色夜行衣服的神秘人。"
   gender = "男性"
   age = 25
@@ -530,6 +531,7 @@ zones "xiaoyao" {
 
     characters "wangyuyan" {
       name = "王语嫣"
+      aliases = ["wang yuyan", "wang"]
       description = ""
   gender = "女性"
   age = 20
@@ -568,6 +570,7 @@ zones "xiaoyao" {
 
     characters "blade" {
       name = "钢刀"
+      aliases = ["blade"]
       description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
     }
 
@@ -576,6 +579,7 @@ zones "xiaoyao" {
 
     characters "cloth" {
       name = "布衣"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -584,6 +588,7 @@ zones "xiaoyao" {
 
     items "bowl" {
       name = "水碗"
+      aliases = ["wan", "bowl"]
       description = "这是一个水碗，里面有什么呢？当然是水啦。"
   verbs = [
     "get",
@@ -602,6 +607,7 @@ zones "xiaoyao" {
 
     items "menghan_yao" {
       name = "蒙汗药"
+      aliases = ["menghan yao", "yao"]
       description = "这是极普通的蒙汗药"
   verbs = [
     "get",
@@ -620,6 +626,7 @@ zones "xiaoyao" {
 
     items "putuan" {
       name = "小蒲团"
+      aliases = ["putuan", "pu", "tuan"]
       description = "一个普通的小蒲团。"
   verbs = [
     "get",
@@ -638,6 +645,7 @@ zones "xiaoyao" {
 
     items "rice" {
       name = "米饭"
+      aliases = ["rice"]
       description = "一个碗香喷喷米饭。"
   verbs = [
     "get",

@@ -2871,6 +2871,7 @@ direction = ~
 
     characters "baozheng" {
       name = "包拯"
+      aliases = ["bao zheng", "bao", "zheng"]
       description = "他就是朝中的龙图大学士包丞相。只见他面色黝 黑，相貌清奇，气度不凡。让你不由自主，好生 敬仰"
   title = "龙图大学士"
   gender = "男性"
@@ -2905,6 +2906,7 @@ direction = ~
 
     characters "fujiazi" {
       name = "富家弟子"
+      aliases = ["fujia dizi", "dizi", "fujia"]
       description = "一个白白胖胖的年轻人，一看就知道是娇生惯养惯了的。"
   gender = "男性"
   age = 21
@@ -2936,6 +2938,7 @@ direction = ~
 
     characters "gaoyanei" {
       name = "高衙内"
+      aliases = ["gao yanei", "gao", "yanei"]
       description = ""
   gender = "男性"
   age = 22
@@ -2972,6 +2975,7 @@ direction = ~
 
     characters "guanbing" {
       name = "官兵"
+      aliases = ["guan bing", "bing"]
       description = "虽然官兵的武艺不能和武林人士相比，可是他们讲究的是人多力量大。"
   gender = "男性"
   age = 22
@@ -3009,6 +3013,7 @@ direction = ~
 
     characters "hanzi" {
       name = "菜贩子"
+      aliases = ["cai fan", "cai", "fan"]
       description = "一个老实巴交的农民，卖些新鲜的蔬菜。"
   gender = "男性"
   age = 32
@@ -3065,6 +3070,7 @@ chats = [
 
     characters "honghua1" {
       name = "红花会众"
+      aliases = ["honghua huizhong", "hong", "honghua", "huizhong"]
       description = "这是位青年壮汉，虎背熊腰，胸前配带一朵大红花。"
   gender = "男性"
   age = 25
@@ -3095,6 +3101,7 @@ chats = [
 
     characters "honghua2" {
       name = "红花弟子"
+      aliases = ["honghua dizi", "hong", "honghua", "dizi"]
       description = "这是位青年弟子，胸前配带一朵大红花。"
   gender = "男性"
   age = 25
@@ -3124,6 +3131,7 @@ chats = [
 
     characters "hufa" {
       name = "护寺僧人"
+      aliases = ["seng ren"]
       description = "他是一位身材高大的青年僧人，两臂粗壮，膀阔腰圆。他手持兵 刃，身穿一袭白布镶边袈裟，似乎有一身武艺。"
   gender = "男性"
   age = 20
@@ -3172,6 +3180,7 @@ chats = [
 
     characters "huizhang" {
       name = "皮货商"
+      aliases = ["pihuo shang", "pihuo", "shang"]
       description = "这是一位皮货商，他自己也是满身皮裘。"
   gender = "男性"
   age = 25
@@ -3202,6 +3211,7 @@ chats = [
 
     characters "jiansi" {
       name = "监寺僧人"
+      aliases = ["jiansi seng"]
       description = "他是一位身材高大的青年僧人，两臂粗壮，膀阔腰圆。他手持兵 刃，身穿一袭白布镶边袈裟，似乎有一身武艺。"
   gender = "男性"
   age = 20
@@ -3250,6 +3260,7 @@ chats = [
 
     characters "kong" {
       name = "孔大官人"
+      aliases = ["kong guanren", "kong"]
       description = "开封府中的富户。"
   gender = "男性"
   age = 42
@@ -3283,6 +3294,7 @@ chats = [
 
     characters "lisi" {
       name = "李四"
+      aliases = ["li si", "li", "si"]
       description = "他长得奸嘴猴腮的，一看就不像是个好人。"
   title = "青草蛇"
   gender = "男性"
@@ -3310,6 +3322,7 @@ chats = [
 
     characters "liucaizhu" {
       name = "刘财主"
+      aliases = ["liu caizhu", "liu", "caizhu"]
       description = "开封府中的富户。"
   gender = "男性"
   age = 42
@@ -3343,6 +3356,7 @@ chats = [
 
     characters "liuzhanggui" {
       name = "刘掌柜"
+      aliases = ["liu zhanggui", "liu", "zhanggui"]
       description = ""
   title = "雅琪轩老板"
   gender = "男性"
@@ -3376,6 +3390,7 @@ chats = [
 
     characters "luyuhou" {
       name = "陆虞候"
+      aliases = ["lu yuhou", "lu"]
       description = ""
   gender = "男性"
   age = 53
@@ -3409,6 +3424,7 @@ chats = [
 
     characters "luzhisheng" {
       name = "鲁智深"
+      aliases = ["lu zhisheng", "lu", "zhisheng"]
       description = "这个胖大和尚露出好一身花绣，正是五台山来的僧人。"
   title = "梁山好汉"
   nickname = "花和尚"
@@ -3464,6 +3480,7 @@ chats = [
 
     characters "oldseng" {
       name = "老僧人"
+      aliases = ["lao seng", "lao", "seng"]
       description = "一个老朽的僧人，脸上满是皱纹，眼睛都睁不开来了。"
   gender = "男性"
   age = 87
@@ -3496,6 +3513,7 @@ chats = [
 
     characters "oldwomen" {
       name = "烧香老太"
+      aliases = ["lao taitai", "lao", "taitai"]
       description = "见佛烧香的老太太。"
   gender = "女性"
   age = 64
@@ -3532,6 +3550,7 @@ chats = [
 
     characters "pihuoshang" {
       name = "皮货商"
+      aliases = ["pihuo shang", "pihuo", "shang"]
       description = "这是一位皮货商，他自己也是满身皮裘。"
   gender = "男性"
   age = 25
@@ -3562,6 +3581,7 @@ chats = [
 
     characters "popi" {
       name = "泼皮"
+      aliases = ["po pi", "po", "pi"]
       description = "大相国寺附近的泼皮,平时专到菜园中偷菜."
   gender = "男性"
   age = 25
@@ -3588,6 +3608,7 @@ chats = [
 
     characters "qigai" {
       name = "乞丐"
+      aliases = ["qi gai", "qi", "gai"]
       description = ""
   gender = "男性"
   age = 25
@@ -3614,6 +3635,7 @@ chats = [
 
     characters "qingyi" {
       name = "青衣"
+      aliases = ["qing yi"]
       description = "戏剧中的一个脚色!"
   gender = "女性"
   age = 25
@@ -3641,6 +3663,7 @@ chats = [
 
     characters "shaohuo" {
       name = "烧火僧人"
+      aliases = ["shaohuo seng", "seng", "shaohuo"]
       description = "专职在灶下烧火的僧人。"
   gender = "男性"
   age = 23
@@ -3677,6 +3700,7 @@ chats = [
 
     characters "shike" {
       name = "食客"
+      aliases = ["shi ke", "shi", "ke"]
       description = ""
   gender = "男性"
   age = 25
@@ -3704,6 +3728,7 @@ chats = [
 
     characters "suzhai" {
       name = "素斋师傅"
+      aliases = ["suzhai shifu", "shifu", "suzhai"]
       description = "在寺庙中烧饭的和尚。"
   gender = "男性"
   age = 43
@@ -3739,6 +3764,7 @@ chats = [
 
     characters "woman" {
       name = "踏青妇人"
+      aliases = ["woman"]
       description = "春天出来游览的妇人。"
   gender = "女性"
   age = 34
@@ -3767,6 +3793,7 @@ chats = [
 
     characters "wulai" {
       name = "无赖"
+      aliases = ["wu lai", "wu", "lai"]
       description = "大相国寺附近的无赖，平时专到菜园中偷菜。"
   gender = "男性"
   age = 25
@@ -3793,6 +3820,7 @@ chats = [
 
     characters "xianghuo" {
       name = "老僧人"
+      aliases = ["lao seng", "lao", "seng"]
       description = "一个老朽的僧人，脸上满是皱纹，眼睛都睁不开来了。"
   gender = "男性"
   age = 87
@@ -3825,6 +3853,7 @@ chats = [
 
     characters "xiaosheng" {
       name = "小生"
+      aliases = ["xiao sheng", "xiao", "sheng"]
       description = "戏剧中的一个脚色。"
   gender = "女性"
   age = 25
@@ -3852,6 +3881,7 @@ chats = [
 
     characters "xinyan" {
       name = "心砚"
+      aliases = ["xin yan", "yan", "xin"]
       description = "他是红花会总舵主陈家洛的贴身书僮。"
   title = "陈家洛书僮"
   gender = "男性"
@@ -3901,6 +3931,7 @@ chats = [
 
     characters "zhanglong" {
       name = "张龙"
+      aliases = ["zhang long", "zhang", "long"]
       description = "这便是开封府赫赫有名的捕头张龙，他身体强 壮，看上去武功不错。"
   title = "开封府捕头"
   gender = "男性"
@@ -3959,6 +3990,7 @@ chats = [
 
     characters "zhangsan" {
       name = "混混张三"
+      aliases = ["zhang san"]
       description = "他长得奸嘴猴腮的，一看就不像是个好人。"
   title = "过街老鼠"
   gender = "男性"
@@ -3985,6 +4017,7 @@ chats = [
 
     characters "zhangzao" {
       name = "掌澡僧人"
+      aliases = ["seng ren"]
       description = "管理澡堂的僧人。"
   gender = "男性"
   age = 34
@@ -4013,6 +4046,7 @@ chats = [
 
     characters "zhaohu" {
       name = "赵虎"
+      aliases = ["zhao hu", "zhao", "hu"]
       description = "这便是开封府赫赫有名的捕头赵虎，他身体强 壮，看上去武功不错。"
   title = "开封府捕头"
   gender = "男性"
@@ -4071,6 +4105,7 @@ chats = [
 
     characters "zhifa" {
       name = "智法长老"
+      aliases = ["zhifa zhanglao", "zhanglao"]
       description = ""
   gender = "男性"
   age = 20
@@ -4118,6 +4153,7 @@ chats = [
 
     characters "zhike" {
       name = "知客僧"
+      aliases = ["zhike seng", "seng"]
       description = "一个精壮僧人。"
   gender = "男性"
   age = 34
@@ -4154,6 +4190,7 @@ chats = [
 
     characters "zhiqing" {
       name = "智清长老"
+      aliases = ["zhiqing zhanglao", "zhanglao"]
       description = ""
   gender = "男性"
   age = 20
@@ -4201,6 +4238,7 @@ chats = [
 
     characters "zhukao3" {
       name = "考官"
+      aliases = ["kao guan", "kao", "guan"]
       description = ""
   gender = "男性"
   age = 53
@@ -4234,6 +4272,7 @@ chats = [
 
     characters "baicai" {
       name = "大白菜"
+      aliases = ["bai cai", "bai", "cai"]
       description = "新鲜的白菜。"
     }
 
@@ -4242,6 +4281,7 @@ chats = [
 
     characters "bibohu" {
       name = "胭脂碧波瓠"
+      aliases = ["bibo hai", "bibo", "hai"]
       description = "碧绿的瓷壁上留着点点胭脂红,乃是磁中绝品。"
     }
 
@@ -4250,6 +4290,7 @@ chats = [
 
     characters "caidao" {
       name = "菜刀"
+      aliases = ["cai dao", "blade"]
       description = "这是一柄亮晃晃的菜刀。"
     }
 
@@ -4258,6 +4299,7 @@ chats = [
 
     characters "caikuang" {
       name = "菜筐子"
+      aliases = ["cai kuang"]
       description = "一只翠绿细竹子竹筐。"
     }
 
@@ -4266,6 +4308,7 @@ chats = [
 
     characters "chaihe1" {
       name = "柴禾"
+      aliases = ["chai he", "staff"]
       description = "这是一根粗长的树枝。"
     }
 
@@ -4274,6 +4317,7 @@ chats = [
 
     characters "cheng_cloth" {
       name = "金边黑布袈裟"
+      aliases = ["jia sha", "cloth"]
       description = ""
     }
 
@@ -4282,6 +4326,7 @@ chats = [
 
     characters "chuihuo" {
       name = "吹火管"
+      aliases = ["chui huoguan", "guan"]
       description = "在一端吹气,使灶火旺盛的竹管."
     }
 
@@ -4290,6 +4335,7 @@ chats = [
 
     characters "ciwan" {
       name = "白天目磁碗"
+      aliases = ["baitianmu ciwan", "ciwan", "bai"]
       description = "纯白无瑕,薄如纸的上佳瓷器。"
     }
 
@@ -4298,6 +4344,7 @@ chats = [
 
     characters "dao_cloth" {
       name = "灰布镶边袈裟"
+      aliases = ["jia sha", "cloth"]
       description = ""
     }
 
@@ -4306,6 +4353,7 @@ chats = [
 
     characters "dayu" {
       name = "禹王神像"
+      aliases = ["xiang"]
       description = "大禹治水，历四十年，后人为纪念而设。"
     }
 
@@ -4314,6 +4362,7 @@ chats = [
 
     characters "fozhu" {
       name = "紫檀佛串"
+      aliases = ["fo chuan"]
       description = ""
     }
 
@@ -4322,6 +4371,7 @@ chats = [
 
     characters "guanyin" {
       name = "千手观音神像"
+      aliases = ["xiang"]
       description = "从身上伸出一千只手，每只手掌上都有一只眼睛。"
     }
 
@@ -4330,6 +4380,7 @@ chats = [
 
     characters "guanyu" {
       name = "关帝神像"
+      aliases = ["xiang"]
       description = "红面长须，一手持刀，一手拿着《春秋》。"
     }
 
@@ -4338,6 +4389,7 @@ chats = [
 
     characters "jindi" {
       name = "金笛"
+      aliases = ["jin di", "jin", "di"]
       description = "一根由纯金打铸的笛子，在阳光下闪闪生辉。"
     }
 
@@ -4346,6 +4398,7 @@ chats = [
 
     characters "jing1" {
       name = "NPC"
+      aliases = ["shu", "book"]
       description = "这是一册佛经。"
     }
 
@@ -4354,6 +4407,7 @@ chats = [
 
     characters "jing2" {
       name = "NPC"
+      aliases = ["shu", "book"]
       description = "这是一册佛经。"
     }
 
@@ -4362,6 +4416,7 @@ chats = [
 
     characters "jing3" {
       name = "NPC"
+      aliases = ["shu", "book"]
       description = "这是一册佛经。"
     }
 
@@ -4370,6 +4425,7 @@ chats = [
 
     characters "jing4" {
       name = "NPC"
+      aliases = ["shu", "book"]
       description = "这是一册佛经。"
     }
 
@@ -4378,6 +4434,7 @@ chats = [
 
     characters "jinzhen" {
       name = "芙蓉金针"
+      aliases = ["furong jinzhen", "furong", "jinzhen", "zhen"]
       description = "这是一些细长的金针，长约寸许。"
     }
 
@@ -4386,6 +4443,7 @@ chats = [
 
     characters "luowenhai" {
       name = "淡青螺纹醢"
+      aliases = ["luowen hai"]
       description = "淡青色，内外都有螺旋形的条纹。"
     }
 
@@ -4394,6 +4452,7 @@ chats = [
 
     characters "milexiang" {
       name = "八宝弥勒佛像"
+      aliases = ["xiang"]
       description = "身上缀满各类宝石,翡翠,黄金的弥勒佛像."
     }
 
@@ -4402,6 +4461,7 @@ chats = [
 
     characters "qingcai" {
       name = "大青菜"
+      aliases = ["qing cai", "qing", "cai"]
       description = "新鲜的青菜。"
     }
 
@@ -4410,6 +4470,7 @@ chats = [
 
     characters "rulaixiang" {
       name = "如来佛像"
+      aliases = ["xiang"]
       description = "佛教中的至尊，坐八宝莲花。"
     }
 
@@ -4418,6 +4479,7 @@ chats = [
 
     characters "sanqingxiang" {
       name = "三清神像"
+      aliases = ["xiang"]
       description = "道家的三清神像，据说老子一气化三清。"
     }
 
@@ -4426,6 +4488,7 @@ chats = [
 
     characters "tiebian" {
       name = "铁鞭"
+      aliases = ["tie bian", "tie", "bian"]
       description = "这是一柄粗大的铁鞭，总有三十来斤重。"
     }
 
@@ -4434,6 +4497,7 @@ chats = [
 
     characters "tiefutu" {
       name = "青铜浮屠"
+      aliases = ["futu"]
       description = "这是佛门中的浮屠，上面雕刻着金刚经。"
     }
 
@@ -4442,6 +4506,7 @@ chats = [
 
     characters "tiejiang" {
       name = "铁桨"
+      aliases = ["tie jiang", "tie", "jiang"]
       description = "这是一根铁桨，举可齐眉，看来很是沉重，可攻击大片敌人。"
     }
 
@@ -4450,6 +4515,7 @@ chats = [
 
     characters "xuan_cloth" {
       name = "护法袈裟"
+      aliases = ["jia sha", "cloth"]
       description = ""
     }
 
@@ -4458,6 +4524,7 @@ chats = [
 
     characters "yudixiang" {
       name = "白玉雕玉皇像"
+      aliases = ["xiang"]
       description = "玉帝手持玉版，端坐微笑不语。"
     }
 
@@ -4466,6 +4533,7 @@ chats = [
 
     characters "zaopeng" {
       name = "木澡盆"
+      aliases = ["zaopen"]
       description = "木头的澡盆,已经很陈旧。"
     }
 
@@ -4474,6 +4542,7 @@ chats = [
 
     items "rice" {
       name = "稻香小米粥"
+      aliases = ["rice", "fan"]
       description = "一碗热气腾腾的小米粥。"
   verbs = [
     "get",
@@ -4494,6 +4563,7 @@ chats = [
 
     items "soup" {
       name = "爆姜鲫鱼汤"
+      aliases = ["soup"]
       description = "一碗香气扑鼻的鲫鱼汤。"
   verbs = [
     "get",

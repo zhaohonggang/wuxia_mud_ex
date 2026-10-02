@@ -2481,6 +2481,7 @@ item_desc = {
 
     characters "bing" {
       name = "官兵"
+      aliases = ["guan bing", "guan", "bing"]
       description = "虽然官兵的武艺不能和武林人士相比，可是他们讲究的是人多力量大。"
   gender = "男性"
   age = 22
@@ -2518,6 +2519,7 @@ item_desc = {
 
     characters "boy" {
       name = "男孩"
+      aliases = ["boy"]
       description = "这是个农家少年，大概因从小物农，虽然年 纪不大，可已长的很粗壮了。"
   gender = "男性"
   age = 13
@@ -2543,6 +2545,7 @@ item_desc = {
 
     characters "cunmin" {
       name = "村民"
+      aliases = ["cun min", "min"]
       description = "一个魁梧的庄稼汉子。"
   gender = "男性"
   age = 30
@@ -2568,6 +2571,7 @@ item_desc = {
 
     characters "daotong" {
       name = "道童"
+      aliases = ["dao tong", "dao", "tong"]
       description = "这是一位小道童，看来年纪不大，脸上稚气 犹存，整天笑嘻嘻的无忧无虑。"
   gender = "男性"
   age = 14
@@ -2595,6 +2599,7 @@ item_desc = {
 
     characters "daotong1" {
       name = "小道童"
+      aliases = ["xiao daotong", "xiao", "daotong"]
       description = "这是一位小道童，看来年纪不大，脸上稚气 犹存，整天笑嘻嘻的无忧无虑。"
   gender = "男性"
   age = 14
@@ -2622,6 +2627,7 @@ item_desc = {
 
     characters "dibao" {
       name = "地保"
+      aliases = ["di bao", "di", "bao"]
       description = "他是这个村子土生土长的人，年轻的时候到 外面去闯荡过一阵。在镖局当过趟子手，攒 了点钱，回来後娶了房老婆，物农为生。村 里人因他在外见过世面，又会些武功，就推 他做了地保。"
   gender = "男性"
   age = 43
@@ -2653,6 +2659,7 @@ item_desc = {
 
     characters "dipi" {
       name = "地痞"
+      aliases = ["di pi", "di", "pi"]
       description = "这是一个喝的醉醺醺的地痞。"
   gender = "男性"
   age = 20
@@ -2684,6 +2691,7 @@ chats = [
 
     characters "girl" {
       name = "女孩"
+      aliases = ["girl"]
       description = "这是个农家少女，虽然她才只有十二、三岁， 身材已经开始发育。"
   gender = "女性"
   age = 12
@@ -2709,6 +2717,7 @@ chats = [
 
     characters "guanjia" {
       name = "管家"
+      aliases = ["guan jia", "guan", "jia"]
       description = "这是一位尖嘴候腮的老管家，一对小绿豆眼 总在不停地转动着。"
   gender = "男性"
   age = 65
@@ -2735,6 +2744,7 @@ chats = [
 
     characters "huogong" {
       name = "火工道人"
+      aliases = ["huogong daoren", "huogong", "daoren"]
       description = "这里全真教掌管厨房的火工道人。"
   gender = "男性"
   age = 35
@@ -2774,6 +2784,7 @@ chats = [
 
     characters "jiading" {
       name = "家丁"
+      aliases = ["jia ding", "jia", "ding"]
       description = ""
   gender = "男性"
   age = 35
@@ -2799,6 +2810,7 @@ chats = [
 
     characters "kid" {
       name = "小孩"
+      aliases = ["kid"]
       description = "这是个农家小孩子"
   gender = "男性"
   age = 7
@@ -2824,6 +2836,7 @@ chats = [
 
     characters "liumang" {
       name = "流氓"
+      aliases = ["liu mang", "liu", "mang"]
       description = "他是一个成天游手好闲的流氓，长得倒是白 白胖胖的，也许以前有过钱。"
   gender = "男性"
   age = 19
@@ -2850,6 +2863,7 @@ chats = [
 
     characters "poorman" {
       name = "穷汉"
+      aliases = ["qiong han", "qiong", "han"]
       description = "一个骨瘦如柴，满脸菜色的穷汉。"
   gender = "男性"
   age = 33
@@ -2882,6 +2896,7 @@ chats = [
 
     characters "punk" {
       name = "小流氓"
+      aliases = ["xiao liumang", "xiao", "liumang"]
       description = "这是一个游手好闲的小流氓。"
   gender = "男性"
   age = 18
@@ -2914,6 +2929,7 @@ chats = [
 
     characters "seller" {
       name = "小贩"
+      aliases = ["xiao fan", "xiao", "fan"]
       description = "这是个小贩，别看他长的老老实实，可你别 想从他那儿掏便宜。"
   nickname = "消息灵通"
   gender = "男性"
@@ -2964,6 +2980,7 @@ chats = [
 
     characters "wujiang" {
       name = "武将"
+      aliases = ["wu jiang", "wu", "jiang"]
       description = "他站在那里，的确有说不出的威风。"
   gender = "男性"
   shen_type = 1
@@ -2997,6 +3014,7 @@ chats = [
 
     characters "xiangke" {
       name = "香客"
+      aliases = ["xiang ke", "xiang", "ke"]
       description = "这是一位到山上进香的香客。"
   gender = "男性"
   shen_type = 1
@@ -3021,6 +3039,7 @@ chats = [
 
     characters "xiaoer" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -3060,6 +3079,7 @@ chats = [
 
     characters "xiaoer1" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -3099,6 +3119,7 @@ chats = [
 
     characters "youfang" {
       name = "游方道人"
+      aliases = ["youfang daoren", "youfang", "daoren"]
       description = "他是一位未通世故的青年道人，脸上挂着孩 儿般的微笑。"
   gender = "男性"
   age = 20
@@ -3148,6 +3169,7 @@ chats = [
 
     characters "youke" {
       name = "游客"
+      aliases = ["you ke", "you", "ke"]
       description = "这是一个游山玩水的游人。"
   gender = "男性"
   shen_type = 1
@@ -3172,6 +3194,7 @@ chats = [
 
     characters "yuanwai" {
       name = "侯员外"
+      aliases = ["hou yuanwai", "hou", "yuanwai"]
       description = "侯员外据说是这长安镇上的首富，谁也 不知道他到底有多少家财。他大约五十 出头，长的富富态态。"
   gender = "男性"
   age = 52
@@ -3198,6 +3221,7 @@ chats = [
 
     characters "zhanggui" {
       name = "掌柜"
+      aliases = ["zhang gui", "zhang", "gui"]
       description = "这是位和和气气的生意人。"
   gender = "男性"
   age = 45
@@ -3236,6 +3260,7 @@ chats = [
 
     characters "zhangjing" {
       name = "掌经道长"
+      aliases = ["zhangjing daozhang", "zhangjing", "daozhang"]
       description = "这位是全真教里掌管经书的道长。他以前是长 安镇上一个私塾的夫子，因为仰慕大道，才拜 到了全真门下。不过毕竟因为年岁大了，功夫 的根基扎得不牢，这也正合他意，可以安安心 心地研读经书了。"
   gender = "男性"
   age = 36
@@ -3292,6 +3317,7 @@ chats = [
 
     characters "zhangli" {
       name = "掌理道长"
+      aliases = ["zhangli daozhang", "zhangli", "daozhang"]
       description = "这是一位年纪很轻的道人，他精明能干，是全 真教第四代弟子中出类拔瘁的人物，前辈真人 们分派他来掌理全教上下的杂务。"
   gender = "男性"
   age = 22
@@ -3348,6 +3374,7 @@ chats = [
 
     characters "zhangyao" {
       name = "掌药道长"
+      aliases = ["zhangyao daozhang", "zhangyao", "daozhang"]
       description = "这是全真教中的掌管所有药物的道人。他年纪 不大，但看起来显得少年老成。"
   gender = "男性"
   age = 28
@@ -3409,6 +3436,7 @@ chats = [
 
     characters "zhangyuan" {
       name = "掌园道长"
+      aliases = ["zhangyuan daozhang", "zhangyuan", "daozhang"]
       description = "他本是服侍重阳祖师的道徒，现在他年纪大了。 重阳祖师见他忠心耿耿，就分配他一个闲差到 小花园来打理花木。"
   gender = "男性"
   age = 52
@@ -3464,6 +3492,7 @@ chats = [
 
     characters "zhike" {
       name = "知客道长"
+      aliases = ["zhike daozhang", "zhike", "daozhang"]
       description = "他是全真教第四代弟子中年纪最大的一位，以 前做过小买卖，走南闯北，见多识广，后来拜 到全真门下。掌教见他岁数毕竟大了，不适宜 再修练上乘功夫。且喜他能言善道，熟识礼节， 就安排在山门处专事接待访客。"
   gender = "男性"
   age = 42
@@ -3518,6 +3547,7 @@ chats = [
 
     characters "baozi" {
       name = "包子"
+      aliases = ["baozi", "dumpling"]
       description = "一个香喷喷的肉包子。"
     }
 
@@ -3526,6 +3556,7 @@ chats = [
 
     characters "bottle" {
       name = "水壶"
+      aliases = ["water bottle", "bottle"]
       description = "一个不知道用什么动物的皮制成的水壶。"
     }
 
@@ -3534,6 +3565,7 @@ chats = [
 
     characters "cloth" {
       name = "布衣"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -3542,6 +3574,7 @@ chats = [
 
     characters "daodejing_i" {
       name = "道德经「上卷」"
+      aliases = ["jing", "daode jing"]
       description = "这是一册道德经「上卷」，由体道第一始至去用第四十止。"
     }
 
@@ -3550,6 +3583,7 @@ chats = [
 
     characters "daodejing_ii" {
       name = "道德经「下卷」"
+      aliases = ["jing", "daode jing"]
       description = "这是一册道德经「下卷」，由同异第四十一始至显质第八十一止。"
     }
 
@@ -3558,6 +3592,7 @@ chats = [
 
     characters "egg" {
       name = "五香茶叶蛋"
+      aliases = ["spicy egg", "egg"]
       description = "一颗用五种香料炮制出来的茶叶蛋。"
     }
 
@@ -3566,6 +3601,7 @@ chats = [
 
     characters "gangdao" {
       name = "钢刀"
+      aliases = ["blade"]
       description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
     }
 
@@ -3574,6 +3610,7 @@ chats = [
 
     characters "gangjian" {
       name = "钢剑"
+      aliases = ["jian", "sword"]
       description = "这是一柄精工制成的钢剑，这种剑在将领之间非常流行。"
     }
 
@@ -3582,6 +3619,7 @@ chats = [
 
     characters "gao" {
       name = "NPC"
+      aliases = ["guiling gao", "guiling", "gao"]
       description = "这是一块用乌龟甲和茯苓配置成的龟苓膏，功能延年益寿。"
     }
 
@@ -3590,6 +3628,7 @@ chats = [
 
     characters "goupi" {
       name = "狗皮"
+      aliases = ["gou pi", "pi"]
       description = ""
     }
 
@@ -3598,6 +3637,7 @@ chats = [
 
     characters "grayrobe" {
       name = "灰色道袍"
+      aliases = ["pao", "cloth", "dao pao"]
       description = "一件普普通通的灰布道袍。"
     }
 
@@ -3606,6 +3646,7 @@ chats = [
 
     characters "greenrobe" {
       name = "青色道袍"
+      aliases = ["pao", "cloth", "dao pao"]
       description = "这是件质地柔软的青色道袍。"
     }
 
@@ -3614,6 +3655,7 @@ chats = [
 
     characters "greyrobe" {
       name = "灰色道袍"
+      aliases = ["pao", "cloth", "dao pao"]
       description = "一件普普通通的灰布道袍。"
     }
 
@@ -3622,6 +3664,7 @@ chats = [
 
     characters "jinduan" {
       name = "锦缎"
+      aliases = ["jin duan", "jin", "duan"]
       description = ""
     }
 
@@ -3630,6 +3673,7 @@ chats = [
 
     characters "jitui" {
       name = "烤鸡腿"
+      aliases = ["jitui", "tui"]
       description = "一枝烤得香喷喷的鸡腿。"
     }
 
@@ -3638,6 +3682,7 @@ chats = [
 
     characters "jiudai" {
       name = "牛皮酒袋"
+      aliases = ["jiudai", "wineskin", "skin"]
       description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
     }
 
@@ -3646,6 +3691,7 @@ chats = [
 
     characters "junfu" {
       name = "军服"
+      aliases = ["junfu", "cloth"]
       description = "这是一件有点旧的官兵服。"
     }
 
@@ -3654,6 +3700,7 @@ chats = [
 
     characters "kaoya" {
       name = "烤鸭"
+      aliases = ["kaoya", "ya"]
       description = "一只肥得流油的北京烤鸭。"
     }
 
@@ -3662,6 +3709,7 @@ chats = [
 
     characters "shanshen" {
       name = "老山参"
+      aliases = ["laoshan shen", "shen"]
       description = "这是一株沾满山泥的老山参。"
     }
 
@@ -3670,6 +3718,7 @@ chats = [
 
     characters "shouwu" {
       name = "NPC"
+      aliases = ["he shouwu", "he", "shouwu"]
       description = "这是一支已成人形的何首乌，看来可以入药。"
     }
 
@@ -3678,6 +3727,7 @@ chats = [
 
     characters "stick" {
       name = "手杖"
+      aliases = ["walking stick", "stick"]
       description = "这是一根爬山用的手杖。"
     }
 
@@ -3686,6 +3736,7 @@ chats = [
 
     characters "tie_ling" {
       name = "重阳令"
+      aliases = ["chongyang ling", "ling", "iron"]
       description = "这是一块用于通行重阳宫的铁铸令牌。 由丹阳真人签发，邀各路英雄入宫观礼。"
     }
 
@@ -3694,6 +3745,7 @@ chats = [
 
     characters "tiejia" {
       name = "铁甲"
+      aliases = ["armor"]
       description = ""
     }
 
@@ -3702,6 +3754,7 @@ chats = [
 
     items "bowl" {
       name = "水碗"
+      aliases = ["wan", "bowl"]
       description = "这是一个水碗，里面有什么呢？当然是水啦。"
   verbs = [
     "get",
@@ -3720,6 +3773,7 @@ chats = [
 
     items "fuling" {
       name = "茯苓"
+      aliases = ["fu ling"]
       description = "这是一块成型的茯苓，看来可以入药。"
   verbs = [
     "get",
@@ -3737,6 +3791,7 @@ chats = [
 
     items "rice" {
       name = "米饭"
+      aliases = ["rice"]
       description = "一个碗香喷喷米饭。"
   verbs = [
     "get",

@@ -547,6 +547,7 @@ behavior_config = {
 
     characters "caiyaoren" {
       name = "采药人"
+      aliases = ["caiyao ren", "caiyao", "ren"]
       description = "一个辛苦工作的采药人。"
   gender = "男性"
   shen_type = 1
@@ -574,6 +575,7 @@ behavior_config = {
 
     characters "x_lama" {
       name = "小喇嘛"
+      aliases = ["xiao lama", "xiao", "lama"]
       description = "这是血刀老祖座前的小喇嘛，一脸的稚气，看来刚入门不久。"
   gender = "男性"
   age = 13
@@ -602,6 +604,7 @@ behavior_config = {
 
     characters "yangzong" {
       name = "央宗"
+      aliases = ["yang zong", "yang", "zong"]
       description = "他是一位藏族同胞。"
   gender = "男性"
   age = 30
@@ -643,6 +646,7 @@ behavior_config = {
 
     characters "zhuoma" {
       name = "卓玛"
+      aliases = ["zhuo ma", "zhuo", "ma"]
       description = "她是一位藏族女同胞。"
   nickname = "消息灵通"
   gender = "女性"
@@ -685,6 +689,7 @@ behavior_config = {
 
     items "dachang" {
       name = "Item"
+      aliases = ["yu chang", "yu", "chang"]
       description = "这是一领用秃鹰长羽织就的大氅。"
   verbs = [
     "get",

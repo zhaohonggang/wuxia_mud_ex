@@ -2551,6 +2551,7 @@ direction = "east"
 
     characters "biaotou" {
       name = "镖头"
+      aliases = ["biao tou", "biao"]
       description = ""
   gender = "男性"
   age = 35
@@ -2580,6 +2581,7 @@ direction = "east"
 
     characters "bing" {
       name = "宋兵"
+      aliases = ["song bing", "bing"]
       description = "大宋官兵的武艺不能和武林人士相比，但襄阳守军之精，天下第一。"
   gender = "男性"
   age = 22
@@ -2621,6 +2623,7 @@ direction = "east"
 
     characters "boy" {
       name = "男孩"
+      aliases = ["boy"]
       description = "这是个平民少年，从小在城中混混，油条得很了。"
   gender = "男性"
   age = 13
@@ -2646,6 +2649,7 @@ direction = "east"
 
     characters "gaoli" {
       name = "高丽商"
+      aliases = ["gaoli shang", "shang"]
       description = "这是个高丽商人，长得和中国人没啥区别。连卖的东西也差不多。"
   title = "新罗坊老板"
   gender = "男性"
@@ -2698,6 +2702,7 @@ direction = "east"
 
     characters "girl" {
       name = "女孩"
+      aliases = ["girl"]
       description = "这是个平民少女，只有十二、三岁，身材已经很成形了。"
   gender = "女性"
   age = 12
@@ -2723,6 +2728,7 @@ direction = "east"
 
     characters "guo" {
       name = "郭靖"
+      aliases = ["guo jing", "guo", "jing"]
       description = "他就是人称北侠的郭靖，既是蒙古成吉思汗的金刀驸马，又是 江南七怪、全真派马钰道长、「北丐」洪七公和「老顽童」周 伯通等人的徒弟，身兼数门武功。 他身着一件灰色长袍，体态魁梧，敦厚的面目中透出一股威严 令人不由得产生一股钦佩之情。"
   nickname = "北侠"
   gender = "男性"
@@ -2800,6 +2806,7 @@ chats = [
 
     characters "guofu" {
       name = "郭芙"
+      aliases = ["guo fu", "guo", "fu"]
       description = "她是郭靖黄蓉的大女儿，东邪黄药师的大外孙女，长得如花似玉。"
   gender = "女性"
   age = 19
@@ -2847,6 +2854,7 @@ chats = [
 
     characters "huangzhen" {
       name = "黄真"
+      aliases = ["huang zhen", "zhen", "huang"]
       description = "黄真是神剑仙猿穆人清的开门大弟子，也是这 个钱庄的老板，管理襄阳军饷。"
   nickname = "铜笔铁算盘"
   gender = "男性"
@@ -2910,6 +2918,7 @@ chats = [
 
     characters "jia" {
       name = "家丁"
+      aliases = ["jia ding", "jia"]
       description = "郭府家丁。"
   gender = "男性"
   age = 35
@@ -2936,6 +2945,7 @@ chats = [
 
     characters "jiading" {
       name = "家丁"
+      aliases = ["jia ding", "jia"]
       description = "郭府家丁。"
   gender = "男性"
   age = 35
@@ -2962,6 +2972,7 @@ chats = [
 
     characters "kid" {
       name = "小孩"
+      aliases = ["kid"]
       description = "这是个襄阳城中贫民小孩，淘气得很。"
   gender = "男性"
   age = 7
@@ -2987,6 +2998,7 @@ chats = [
 
     characters "laoxiansheng" {
       name = "老先生"
+      aliases = ["lao xiansheng", "lao", "xiansheng"]
       description = "这位老先生曾中过状元，做过大官，现因年老回老家襄阳颐养天年，经 安抚使吕文德的再三邀请，在这儿为秀才们讲课。"
   gender = "男性"
   age = 65
@@ -3015,6 +3027,7 @@ chats = [
 
     characters "menggubing" {
       name = "蒙古兵"
+      aliases = ["menggu bing", "bing", "menggu"]
       description = "蒙古兵长年跃马横枪，十分骁勇。"
   gender = "男性"
   age = 18
@@ -3054,6 +3067,7 @@ chats = [
 
     characters "pi" {
       name = "裨将"
+      aliases = ["pi jiang", "pi", "jiang"]
       description = "这是一个大宋年轻将领，满脸征尘。"
   gender = "男性"
   shen_type = 1
@@ -3089,6 +3103,7 @@ chats = [
 
     characters "pian" {
       name = "偏将"
+      aliases = ["pian jiang", "pian", "jiang"]
       description = "这是一个大宋将领，满脸征尘。"
   gender = "男性"
   shen_type = 1
@@ -3124,6 +3139,7 @@ chats = [
 
     characters "poorman" {
       name = "穷汉"
+      aliases = ["qiong han", "qiong", "han"]
       description = "一个骨瘦如柴，满脸菜色的穷汉。"
   gender = "男性"
   age = 33
@@ -3156,6 +3172,7 @@ chats = [
 
     characters "qiuhang" {
       name = "邱航"
+      aliases = ["qiu hang", "qiu"]
       description = "一个老奸商，你要被宰了！"
   title = "当铺老板"
   nickname = "老滑头"
@@ -3192,6 +3209,7 @@ chats = [
 
     characters "shaofanshifu" {
       name = "烧饭师傅"
+      aliases = ["shaofan shifu", "shifu"]
       description = "他是聚义馆厨房的烧饭师傅。"
   gender = "男性"
   age = 18
@@ -3214,6 +3232,7 @@ chats = [
 
     characters "shudianboss" {
       name = "书店老板"
+      aliases = ["shudian laoban", "boss"]
       description = "一个让孩子们一见就觉得可亲的老翁。"
   gender = "男性"
   age = 62
@@ -3248,6 +3267,7 @@ chats = [
 
     characters "smith" {
       name = "铁匠"
+      aliases = ["tiejiang", "smith"]
       description = "铁匠正用铁钳夹住一块红热的铁块放进炉中。"
   title = "铁匠铺老板"
   gender = "男性"
@@ -3286,6 +3306,7 @@ chats = [
 
     characters "tuolei" {
       name = "拖雷"
+      aliases = ["tuo lei", "lei", "tuo"]
       description = "拖雷是成吉思汗幼子，坚忍果决。此次带兵南来，势如破竹，兵锋毕露。"
   gender = "男性"
   age = 18
@@ -3322,6 +3343,7 @@ chats = [
 
     characters "wang" {
       name = "王坚"
+      aliases = ["wang jian", "wang", "jian"]
       description = "这是一个大宋襄阳守备主将，满脸征尘。"
   title = "襄阳守备大将"
   gender = "男性"
@@ -3360,6 +3382,7 @@ chats = [
 
     characters "wudunru" {
       name = "武敦儒"
+      aliases = ["wu dunru", "wu", "dunru"]
       description = "他是郭靖大弟子，相貌和蔼，一天到晚笑呵呵的。"
   title = "郭靖大弟子"
   nickname = "消息灵通"
@@ -3410,6 +3433,7 @@ chats = [
 
     characters "wusantong" {
       name = "武三通"
+      aliases = ["wu santong", "wu", "santong"]
       description = "一灯大师的四大弟子之一，现在襄阳协助郭靖、黄蓉守城。"
   gender = "男性"
   age = 55
@@ -3455,6 +3479,7 @@ chats = [
 
     characters "wuxiuwen" {
       name = "武修文"
+      aliases = ["wu xiuwen", "wu", "xiuwen"]
       description = "他是郭靖的二弟子，精明强干，专门负责后勤。"
   title = "郭靖二弟子"
   gender = "男性"
@@ -3506,6 +3531,7 @@ chats = [
 
     characters "xiaoer2" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -3544,6 +3570,7 @@ chats = [
 
     characters "ya" {
       name = "牙将"
+      aliases = ["ya jiang", "ya", "jiang"]
       description = "这是一个大宋将领，满脸征尘。"
   gender = "男性"
   shen_type = 1
@@ -3579,6 +3606,7 @@ chats = [
 
     characters "yelvqi" {
       name = "耶律齐"
+      aliases = ["Yelv qi", "yelv", "qi"]
       description = ""
   title = "全真教第二代弟子 丐帮第二十一代帮主"
   gender = "男性"
@@ -3618,6 +3646,7 @@ chats = [
 
     characters "zhuziliu" {
       name = "朱子柳"
+      aliases = ["zhu ziliu", "zhu", "ziliu"]
       description = "一灯大师的四大弟子之一，现在襄阳协助郭靖、黄蓉守城。"
   gender = "男性"
   age = 55
@@ -3664,6 +3693,7 @@ chats = [
 
     characters "zuo" {
       name = "佐将"
+      aliases = ["zuo jiang", "zuo", "jiang"]
       description = "这是一个大宋将领，满脸征尘。"
   gender = "男性"
   shen_type = 1
@@ -3699,6 +3729,7 @@ chats = [
 
     characters "mudao" {
       name = "木刀"
+      aliases = ["mu dao", "blade", "dao"]
       description = "这是一柄木匠做的木刀，手工相当精细。"
     }
 
@@ -3707,6 +3738,7 @@ chats = [
 
     characters "mugun" {
       name = "木棍"
+      aliases = ["mu gun", "club", "gun"]
       description = "这是一杆木匠做的木棍，手工相当精细。"
     }
 
@@ -3715,6 +3747,7 @@ chats = [
 
     characters "mujian" {
       name = "木剑"
+      aliases = ["mu jian", "sword", "jian"]
       description = "这是一柄木匠做的木剑，手工相当精细。"
     }
 
@@ -3723,6 +3756,7 @@ chats = [
 
     items "rice" {
       name = "高粱米饭"
+      aliases = ["rice", "mi fan"]
       description = "一碗香喷喷的高粱米饭。"
   verbs = [
     "get",
@@ -3743,6 +3777,7 @@ chats = [
 
     items "soup" {
       name = "野菜汤碗"
+      aliases = ["soup"]
       description = "一碗新鲜野菜做的汤。"
   verbs = [
     "get",

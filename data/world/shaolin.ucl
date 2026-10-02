@@ -4869,6 +4869,7 @@ direction = ~
 
     characters "chuanfu1" {
       name = "船夫"
+      aliases = ["chuan fu"]
       description = "这是常年在汉水专门管货运的一位船夫。"
   gender = "男性"
   age = 42
@@ -4893,6 +4894,7 @@ direction = ~
 
     characters "chuanfu2" {
       name = "船夫"
+      aliases = ["chuan fu"]
       description = "这是常年在汉水专门管货运的一位船夫。"
   gender = "男性"
   age = 42
@@ -4917,6 +4919,7 @@ direction = ~
 
     characters "da_shou" {
       name = "打手"
+      aliases = ["da shou", "da", "shou"]
       description = "他是一位身穿黄布袈裟的青年僧人。脸上稚气未脱， 身手却已相当矫捷，看来似乎学过一点武功。"
   gender = "男性"
   age = 20
@@ -4959,6 +4962,7 @@ direction = ~
 
     characters "datie_seng" {
       name = "打铁僧"
+      aliases = ["datie seng", "datie", "seng"]
       description = "这是个身强力壮、皮肤拗黑的打铁僧人。"
   gender = "男性"
   age = 38
@@ -4997,6 +5001,7 @@ chats = [
 
     characters "lao_qiao" {
       name = "乔三槐"
+      aliases = ["lao qiao", "qiao"]
       description = ""
   gender = "男性"
   age = 55
@@ -5018,6 +5023,7 @@ chats = [
 
     characters "miao" {
       name = "苗人凤"
+      aliases = ["miao renfeng", "miao"]
       description = "他看上去脸色透黄，似乎蒙了一层淡淡的金纸。身材高大魁梧，确 是全然不修篇幅，令人称奇。"
   nickname = "金面佛"
   gender = "男性"
@@ -5070,6 +5076,7 @@ chats = [
 
     characters "saodi_seng" {
       name = "扫地僧"
+      aliases = ["saodi seng", "saodi", "seng"]
       description = "这是一位专职负责塔楼清埽工作的寺内杂役僧人。"
   gender = "男性"
   age = 35
@@ -5108,6 +5115,7 @@ chats = [
 
     characters "seng_bing1" {
       name = "护林僧兵"
+      aliases = ["seng bing", "seng", "bing"]
       description = "他是一位身材高大的青年僧人，两臂粗壮，膀阔腰圆。他手持兵 刃，身穿一袭白布镶边袈裟，似乎有一身武艺。"
   gender = "男性"
   age = 20
@@ -5156,6 +5164,7 @@ chats = [
 
     characters "seng_bing2" {
       name = "执法僧兵"
+      aliases = ["seng bing", "seng", "bing"]
       description = "他是一位身材高大的中年僧人，两臂粗壮，膀阔腰圆。他手持兵 刃，身穿一袭灰布镶边袈裟，似乎有一身武艺。"
   gender = "男性"
   age = 25
@@ -5204,6 +5213,7 @@ chats = [
 
     characters "seng_bing3" {
       name = "守寺僧兵"
+      aliases = ["seng bing", "seng", "bing"]
       description = "他是一位身材高大的壮年僧人，两臂粗壮，膀阔腰圆。他手持兵 刃，身穿一袭灰布镶边袈裟，似乎有一身武艺。"
   gender = "男性"
   age = 40
@@ -5252,6 +5262,7 @@ chats = [
 
     characters "shang1" {
       name = "丫鬟"
+      aliases = ["ya huan", "ya", "huan"]
       description = "一个十多岁的小姑娘，在这里当丫鬟。"
   gender = "女性"
   age = 12
@@ -5283,6 +5294,7 @@ chats = [
 
     characters "shang2" {
       name = "家丁"
+      aliases = ["jia ding", "jia", "ding"]
       description = "一个二十来岁的青年，在商家堡内当差。"
   gender = "男性"
   age = 20
@@ -5314,6 +5326,7 @@ chats = [
 
     characters "shang3" {
       name = "厨师"
+      aliases = ["chu shi", "chu", "shi"]
       description = "商家堡内的厨师，你可以问他要(serve)一些吃的。"
   gender = "男性"
   age = 65
@@ -5341,6 +5354,7 @@ chats = [
 
     characters "shaofan_seng" {
       name = "烧饭僧"
+      aliases = ["shaofan seng", "shaofan", "seng"]
       description = "这是位胖胖的中年僧人，大概是因为长年烧饭作菜的缘故，才如此发福的吧。"
   gender = "男性"
   age = 44
@@ -5373,6 +5387,7 @@ chats = [
 
     characters "tiao_fu" {
       name = "挑夫"
+      aliases = ["tiao fu", "porter"]
       description = "这是个老实巴交的穷挑夫，长得膀阔腰圆，一身肌肉。"
   gender = "男性"
   age = 28
@@ -5397,6 +5412,7 @@ chats = [
 
     characters "xiang_ke" {
       name = "进香客"
+      aliases = ["jingxiang ke", "ke", "guest"]
       description = ""
   gender = "男性"
   shen_type = 0
@@ -5407,6 +5423,7 @@ chats = [
 
     characters "xiao_bei" {
       name = "小沙弥"
+      aliases = ["xiao shami", "xiao", "shami"]
       description = "他是一位未通世故的少年和尚，脸上挂着天真的稚笑。"
   gender = "男性"
   age = 14
@@ -5439,6 +5456,7 @@ chats = [
 
     characters "xiao_ci" {
       name = "小沙弥"
+      aliases = ["xiao shami", "xiao", "shami"]
       description = "他是一位未通世故的少年和尚，脸上挂着天真的稚笑。"
   gender = "男性"
   age = 15
@@ -5471,6 +5489,7 @@ chats = [
 
     characters "xiao_er" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -5501,6 +5520,7 @@ chats = [
 
     characters "xiao_er2" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -5539,6 +5559,7 @@ chats = [
 
     characters "xiao_fan" {
       name = "小贩"
+      aliases = ["xiao fan", "seller", "fan"]
       description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
   gender = "男性"
   age = 32
@@ -5578,6 +5599,7 @@ chats = [
 
     characters "xiao_hai" {
       name = "小孩"
+      aliases = ["xiao hai", "kid"]
       description = "这是个农家小孩子。不知为何跑到山上玩耍。"
   gender = "男性"
   age = 11
@@ -5602,6 +5624,7 @@ chats = [
 
     characters "xiao_ku" {
       name = "小沙弥"
+      aliases = ["xiao shami", "xiao", "shami"]
       description = "他是一位未通世故的少年和尚，脸上挂着天真的稚笑。"
   gender = "男性"
   age = 13
@@ -5634,6 +5657,7 @@ chats = [
 
     characters "xiao_nan" {
       name = "小沙弥"
+      aliases = ["xiao shami", "xiao", "shami"]
       description = "他是一位未通世故的少年和尚，脸上挂着天真的稚笑。"
   gender = "男性"
   age = 10
@@ -5666,6 +5690,7 @@ chats = [
 
     characters "xiao_tong" {
       name = "小沙弥"
+      aliases = ["xiao shami", "xiao", "shami"]
       description = "他是一位未通世故的少年和尚，脸上挂着天真的稚笑。"
   gender = "男性"
   age = 10
@@ -5698,6 +5723,7 @@ chats = [
 
     characters "xingzhe" {
       name = "行者"
+      aliases = ["xingzhe", "walker"]
       description = "他是一位云游四方的行者，风霜满面，行色匆匆，似乎正在办一件急事。"
   title = "少林派弟子"
   gender = "男性"
@@ -5745,6 +5771,7 @@ chats = [
 
     characters "yu_zu" {
       name = "狱卒"
+      aliases = ["yu zu", "zu"]
       description = "这是一个长相十分凶恶的狱卒，满脸横肉，眼神里带着股杀气。"
   age = 50
 
@@ -5779,6 +5806,7 @@ chats = [
 
     items "allow_letter" {
       name = "手谕"
+      aliases = ["shou yu", "yu", "letter"]
       description = "这是一封由方丈签发的手谕，凭此可自由进入藏经阁二楼研习上乘武功。"
   verbs = [
     "get",
@@ -5797,6 +5825,7 @@ chats = [
 
     items "basi_shanyao" {
       name = "拔丝山药"
+      aliases = ["basi shanyao", "shanyao"]
       description = "一盆色若玫瑰，甜嫩香嫩的拔丝山药。"
   verbs = [
     "get",
@@ -5817,6 +5846,7 @@ chats = [
 
     items "beixin" {
       name = "铁背心"
+      aliases = ["tie beixin", "beixin"]
       description = ""
   verbs = [
     "get",
@@ -5837,6 +5867,7 @@ chats = [
 
     items "bocai_fentiao" {
       name = "菠菜粉条"
+      aliases = ["bocai fentiao", "fentiao"]
       description = "一盆白绿相间，清香可口的菠菜粉条。"
   verbs = [
     "get",
@@ -5857,6 +5888,7 @@ chats = [
 
     items "changbian" {
       name = "长鞭"
+      aliases = ["changbian", "bian"]
       description = "这是一柄普通的长鞭，由水牛精工编织而成。"
   verbs = [
     "get",
@@ -5885,6 +5917,7 @@ chats = [
 
     items "changjian" {
       name = "长剑"
+      aliases = ["changjian", "jian"]
       description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
   verbs = [
     "get",
@@ -5913,6 +5946,7 @@ chats = [
 
     items "chanzhang" {
       name = "禅杖"
+      aliases = ["chan zhang", "zhang"]
       description = "这是一根黑黝黝的镔铁禅杖，约四十来斤，是件称手的重兵器。"
   verbs = [
     "get",
@@ -5941,6 +5975,7 @@ chats = [
 
     items "cheng_cloth" {
       name = "金边黑布袈裟"
+      aliases = ["jia sha", "cloth"]
       description = ""
   verbs = [
     "get",
@@ -5960,6 +5995,7 @@ chats = [
 
     items "cloth" {
       name = "青布僧衣"
+      aliases = ["cloth"]
       description = ""
   verbs = [
     "get",
@@ -5979,6 +6015,7 @@ chats = [
 
     items "damo_ling" {
       name = "达摩令"
+      aliases = ["damo ling", "letter", "ling"]
       description = "这是一面金光闪闪的令牌，由方丈签发，凭此可弟子自由向师尊挑战。"
   verbs = [
     "get",
@@ -5997,6 +6034,7 @@ chats = [
 
     items "dao_cloth" {
       name = "灰布镶边袈裟"
+      aliases = ["jia sha", "cloth"]
       description = ""
   verbs = [
     "get",
@@ -6016,6 +6054,7 @@ chats = [
 
     items "fake_gold" {
       name = "黄金"
+      aliases = ["gold", "ingot", "gold_money"]
       description = "黄澄澄的金子，人见人爱的金子，不过 ...颜色有点不对。"
   verbs = [
     "get",
@@ -6034,6 +6073,7 @@ chats = [
 
     items "fojing10" {
       name = "Item"
+      aliases = ["shu", "book"]
       description = "这是一册佛经。"
   verbs = [
     "get",
@@ -6060,6 +6100,7 @@ chats = [
 
     items "fojing11" {
       name = "Item"
+      aliases = ["shu", "book"]
       description = "这是一册佛经。"
   verbs = [
     "get",
@@ -6086,6 +6127,7 @@ chats = [
 
     items "fojing20" {
       name = "Item"
+      aliases = ["shu", "book"]
       description = "这是一册佛经。"
   verbs = [
     "get",
@@ -6112,6 +6154,7 @@ chats = [
 
     items "fojing21" {
       name = "Item"
+      aliases = ["shu", "book"]
       description = "这是一册佛经。"
   verbs = [
     "get",
@@ -6138,6 +6181,7 @@ chats = [
 
     items "food" {
       name = "糖醋里脊"
+      aliases = ["tangcu liji", "tangcu", "liji"]
       description = "一份热气腾腾的糖醋里脊。"
   verbs = [
     "get",
@@ -6158,6 +6202,7 @@ chats = [
 
     items "fumo_zhang" {
       name = "伏魔杖"
+      aliases = ["fumo zhang", "zhang"]
       description = "这是一把银光雪亮的伏魔杖，流苏闪动，耀人耳目。此乃数百年前由 达摩老祖携入中原，一路用之除妖灭魔，乃是佛家无上降魔法宝。"
   verbs = [
     "get",
@@ -6186,6 +6231,7 @@ chats = [
 
     items "furong_huagu" {
       name = "芙蓉花菇"
+      aliases = ["furong huagu", "huagu"]
       description = "一盆汤稠汁浓，味滑爽口的芙蓉花菇汤。"
   verbs = [
     "get",
@@ -6206,6 +6252,7 @@ chats = [
 
     items "guide" {
       name = "『少林拜师必读』"
+      aliases = ["bidu", "guide"]
       description = "『少林拜师必读』  少林位于扬州城北少室山，新玩家由南麓北上山道，沿途攀 登八里十六段的石级到达山门。女性及手持兵刃的非少林弟 子都不能进山门。按约放下兵器，由守护山门的两位知客僧 收存後，再行向上攀登。寺前是一个松柏围绕的广场，排列 着一组组石人石兽，东西各是郁郁苍苍的忪林，正前方往北 就是少林寺的正门，广场上寥寥站着几个青年僧人，他们是 清无，清为，和清法三僧，俗家弟子到此止步，可直接拜三 僧为师学些入门的少林功夫。如果愿易剃度入我佛门，取法 号後可进入少林寺，从今以後就成为一名正式的少林弟子。 穿过少林寺的三进大雄宝殿，参拜如来等诸佛後，即到达寺 前的练武场。练武场上有各种习武的设施，如木人，沙坑， 草靶以及练习硬功的砖石等，大部分慧字辈和道字辈的僧人 都在练武场上授徒，新进的少林弟子可拜师而从，学习自己 感兴趣的武功。平时可下山除暴安良，履行一名正派弟子的 职责。武功达到一定水平後可凭达摩令挑战，如能战胜高辈 弟子或师友，则可晋升为道字辈或慧字辈，与以前的师父并 列，玩家之间也可切磋技艺，以求提高。本寺弟子武艺达到 一定程度，即可以进入藏经阁进修本派武功，待时机成熟， 可以向罗汉堂玄苦，玄难二长老提出破罗汉阵的要求。罗汉 阵由本寺十八罗汉组成，每人各擅长一种一种武功，长老同 意後十八位高僧即鱼贯而出在练武场中心布下罗汉阵，若要 破阵，玩家需承受每位罗汉僧集毕生精力之一击，玩家可凭 轻功躲避或以本身擅长的武功拆解，总之，如果能承受十八 招不死或昏迷，该弟子即升为澄字辈与十八罗汉并列，并可 获准进入达摩院研习破解别门武功的方法。并且自身的各项 属性都会有较大提高。玩家的下个目标就是等待每年正月十 五，本寺两位渡字辈长老驾临，他们将根据该弟子的根骨， 资质以及行侠仗仪的事迹，决定是否破格收录为弟子。该玩 家一但有幸成为二位长老的关门弟子，他即可与本寺五大神 僧并列玄字辈，位尊无比，并可委任为藏经阁阁主或僧监监 长一职，并可直接进入武林大会的决赛圈。其他诸多好处， 不必细表。"
   verbs = [
     "get",
@@ -6225,6 +6272,7 @@ chats = [
 
     items "heisuo" {
       name = "黑索"
+      aliases = ["black whip", "hei suo", "suo", "whip"]
       description = "这是一根漆黑的长鞭，毫不起眼，但是入手沉重，且 不失柔韧，实在是千锤百炼之物。"
   verbs = [
     "get",
@@ -6253,6 +6301,7 @@ chats = [
 
     items "hui_cloth" {
       name = "青布镶边袈裟"
+      aliases = ["jia sha", "cloth"]
       description = ""
   verbs = [
     "get",
@@ -6272,6 +6321,7 @@ chats = [
 
     items "hulu" {
       name = "葫芦"
+      aliases = ["hulu", "shui", "hu", "bottle"]
       description = "一个用葫芦制成的水壶。"
   verbs = [
     "get",
@@ -6290,6 +6340,7 @@ chats = [
 
     items "huwan" {
       name = "铁护腕"
+      aliases = ["hu wan", "huwan"]
       description = "这是一件皮质的护腕，上面满布铁钉，用以保护腕部。"
   verbs = [
     "get",
@@ -6310,6 +6361,7 @@ chats = [
 
     items "huyao" {
       name = "铁护腰"
+      aliases = ["hu yao", "huyao"]
       description = "这是一件皮质的护腰，上面满布铁钉，用以保护腰部。"
   verbs = [
     "get",
@@ -6330,6 +6382,7 @@ chats = [
 
     items "jiaxin_biji" {
       name = "夹心荸荠"
+      aliases = ["jiaxin biji", "biji"]
       description = "一盆形态精巧别致，外脆里嫩，而又别有风味的夹心荸荠。"
   verbs = [
     "get",
@@ -6350,6 +6403,7 @@ chats = [
 
     items "jiedao" {
       name = "戒刀"
+      aliases = ["jie dao", "dao", "blade"]
       description = "这是一柄尺半长的戒刀，刀光闪闪，入手沉重，似是精铁打成。"
   verbs = [
     "get",
@@ -6377,6 +6431,7 @@ chats = [
 
     items "jinchuang_yao" {
       name = "金创药"
+      aliases = ["jin chuangyao", "yao"]
       description = "这是一包别具灵效的少林金创药，专治内外伤等。"
   verbs = [
     "get",
@@ -6394,6 +6449,7 @@ chats = [
 
     items "jingang_zhao" {
       name = "金刚罩"
+      aliases = ["jingang zhao", "zhao"]
       description = "这是一件金光闪闪的袈裟，通体用天山雪蚕丝织成，坚韧无比刀剑 不能伤。此袈裟数百年前由达摩老祖携入中原，邪魔见之辟易，乃 是佛家无上降魔法宝。"
   verbs = [
     "get",
@@ -6416,6 +6472,7 @@ chats = [
 
     items "liuli_qiezi" {
       name = "琉璃茄子"
+      aliases = ["liuli qiezi", "qiezi"]
       description = "一盆青红相间，金黄透烂，清香四溢的琉璃茄子。"
   verbs = [
     "get",
@@ -6436,6 +6493,7 @@ chats = [
 
     items "mala_doufu" {
       name = "麻辣豆腐"
+      aliases = ["mala doufu", "doufu"]
       description = "一盆颜色红亮，细中带嫩，香辣可口的麻辣豆腐。"
   verbs = [
     "get",
@@ -6456,6 +6514,7 @@ chats = [
 
     items "map" {
       name = "『少林旅游图』"
+      aliases = ["luyou tu", "tu"]
       description = "『少林旅游图』  +----------------------+-----------------------+-----------------------+ |                      |                       |                       | +------------+         |        千佛殿         |          +------------+ |            |         |                       |          |            | |  地藏殿    O         +----------OO-----------+          O  白衣殿    | |            |                   ====                     |            | +------------+                   广场                     +------------+ |                            +----OO----+                              | |                            |          |                              | |                            |  达摩院 ?|                              | |                            |          |                              | +------------+---------------+----OO----+-----------------+------------+ |############|###################====#####################|############| |      竹-6  O    和-6    |                  |    和-3     O  竹-3     | |            |            |                  |             |           | +------+..o..+------O-----+                  +------O------+..o..+-----| |  藏  |     |            |                  |             |    |  武  | |  经  O林-5 O    尚-5    |     武   场      |      尚-2  O林-2 X  器  | |  楼? |     |            |         (1)      |             |    |  库  | +------+..o..+-----O------+                  +------O------+.o..+------| |            |            |                  |             |           | |      竹-4  O    院-4    O                  O      院-1   O  竹-1     | |            |            |                  |             |           | +----O-------+------O-----+-------OO---------+------O------+-----O-----+ |            |            |                  |             |           | |  走廊-5    O   走廊-6   O     方丈室  ?    O    走廊-7   O   走廊-8  | |            |            |                  |             |           | +----O-------+------------+-------OO---------+-------------+-----O-----+ |###===######|###################====######################|####===####| |  般若-9    |                                             |   罗汉-9  | +----O-------+                                             +-----O-----+ |  般若-8    |                                             |   罗汉-8  | +----O-------+                                             +-----O-----+ |  般若-7    |                                             |   罗汉-7  | +----O-------+                                             +-----O-----+ |  般若-6    |                                             |   罗汉-6  | +----O-------+                                             +-----O-----+ |  般若-5    O           练       武        场             O   罗汉-5  | +----O-------+                                             +----O------+ |  般若-4    |                                             |   罗汉-4  | +----O-------+                                             +-----O-----+ |  般若-3    |                                             |   罗汉-3  | +----O-------+                                             +-----O-----+ |  般若-2    |                                             |   罗汉-2  | +----O-------+                                             +-----O-----+ |  般若-1    |                                             |   罗汉-1  | +----O-------+-------------+-----------------+-------------+-----O-----+ |            |             |                 |             |           | |  走廊-1    O    走廊-2   O    后    殿     O    走廊-3   O   走廊-4  | |            |             |                 |             |           | +------------+-------------+-------OO--------+-------------+-----------+ |############|####################====#################################|                                   ｜｜（通往后殿)                                   ｜｜ +------------+----------+---------O??O--------------------+-----------+ |############|####################====####################|###########| |   厨房     |                                                        | |            |                    广场-4                              | |-----O------+------O---+-----------------------+----------------#----+ |            |          |                       |                     | |   饭厅-2   |          |      戒  律  院       |                     | |            |          |                       |                     | |-----O------+          +---------O??O----------+                     | |            |                    ====                                | |   饭厅-1   O                                                        | |            |                    广场-3                              | |------------+          +-----------------------+                     | |                       |                       |                     | |                       |        大雄宝殿       |                     | |                       |                       |                     | |-----------------------+---------O??O----------+---------------------| |                                 ====                                | |                                 广场-2                              | +---------+------------+                        +---------------X-----+ |         |            |                        |           |         | |  鼓楼   O||  小院    O                        O  小院   ||O  钟楼   | |         |            |                        |           |         | +---------+  +---------+-----------OO-----------+-----------+  +------+ |         |             |                       |           |         | |         |    侧殿     O        天王殿         O    侧殿   |         | |         |             |                       |           |         | +---------+-------------+----------OO-----------+---------------------+ |#######################|#########====##########|#####################| |                       |                       |                     | |  I      i    碑林     O    碑          林     O     碑林   i     I i| |                       |                       |                     | |       i    +----------+----------OO-----------+--------+   i        | |            |          |                       |        |            | |  i         |  侧殿    O        山门殿         O  侧殿  |         i  | |            |          |                       |        |            | +==================================X?X================================+ |#######################|#########====##########|#####################|              |          |                       |             |              |          |                       |             |         松林 O 石坊     O        寺前广场-1     O   石坊      O  松林              |          |                       |             |              |          |                       |             |              +----------+----------OO-----------+-------------+ 注：?    检查站         |         ====          |     ##   高墙           |                       |     ==   台阶           |         石阶          |     O    开放           |==========OO===========|     X    关着的门"
   verbs = [
     "get",
@@ -6475,6 +6534,7 @@ chats = [
 
     items "mizhi_tianou" {
       name = "密汁甜藕"
+      aliases = ["mizhi tianou", "tianou"]
       description = "一盆香甜软糯，色泽粉红的蜜汁甜藕。"
   verbs = [
     "get",
@@ -6495,6 +6555,7 @@ chats = [
 
     items "muchui" {
       name = "木鱼槌"
+      aliases = ["muyu chui", "chui"]
       description = "这是一把和尚念经俏木鱼用的小木槌。"
   verbs = [
     "get",
@@ -6522,6 +6583,7 @@ chats = [
 
     items "mudao" {
       name = "木刀"
+      aliases = ["mu dao", "dao", "blade"]
       description = "这是一柄木制的短刀，少林寺僧习武均用此刀，以免伤人。"
   verbs = [
     "get",
@@ -6549,6 +6611,7 @@ chats = [
 
     items "qimeigun" {
       name = "齐眉棍"
+      aliases = ["qimei gun", "gun"]
       description = "这是一根桦木白腊棍，举可齐眉，轻重合宜，可攻击大片敌人。"
   verbs = [
     "get",
@@ -6577,6 +6640,7 @@ chats = [
 
     items "qing_cloth" {
       name = "白布黑边袈裟"
+      aliases = ["jia sha", "cloth"]
       description = ""
   verbs = [
     "get",
@@ -6596,6 +6660,7 @@ chats = [
 
     items "qingshui_hulu" {
       name = "清水葫芦"
+      aliases = ["qingshui hulu", "hulu", "bottle"]
       description = "一个用葫芦制成的水壶。"
   verbs = [
     "get",
@@ -6614,6 +6679,7 @@ chats = [
 
     items "sengxie" {
       name = "僧鞋"
+      aliases = ["seng xie", "xie"]
       description = "一双青布僧鞋"
   verbs = [
     "get",
@@ -6633,6 +6699,7 @@ chats = [
 
     items "shanhu_baicai" {
       name = "珊瑚白菜"
+      aliases = ["shanhu baicai", "baicai"]
       description = "一盆红白相间，脆嫩爽口，清香诱人的珊瑚白菜。"
   verbs = [
     "get",
@@ -6653,6 +6720,7 @@ chats = [
 
     items "shoutao" {
       name = "皮手套"
+      aliases = ["pi shoutao", "shoutao"]
       description = "这是一双皮手套，上面有硬物刻勒的痕迹。"
   verbs = [
     "get",
@@ -6672,6 +6740,7 @@ chats = [
 
     items "soup" {
       name = "酸菜粉丝汤"
+      aliases = ["soup"]
       description = "一碗香气扑鼻的酸菜粉丝汤。"
   verbs = [
     "get",
@@ -6690,6 +6759,7 @@ chats = [
 
     items "suji" {
       name = "素鸡"
+      aliases = ["suji", "ji"]
       description = "一只做工考究素鸡。"
   verbs = [
     "get",
@@ -6710,6 +6780,7 @@ chats = [
 
     items "suya" {
       name = "素鸭"
+      aliases = ["suya", "ya"]
       description = "一只做工考究素鸭。"
   verbs = [
     "get",
@@ -6730,6 +6801,7 @@ chats = [
 
     items "test" {
       name = "青布僧衣"
+      aliases = ["cloth"]
       description = ""
   verbs = [
     "get",
@@ -6749,6 +6821,7 @@ chats = [
 
     items "tie_ling" {
       name = "少林英雄令"
+      aliases = ["yingxiong ling", "ling", "iron"]
       description = "这是一块用于通行少林寺的铁铸令牌。 由方丈签发，邀各路英雄入寺观礼。"
   verbs = [
     "get",
@@ -6768,6 +6841,7 @@ chats = [
 
     items "tieshou" {
       name = "铁手掌"
+      aliases = ["iron hand", "hand"]
       description = ""
   verbs = [
     "get",
@@ -6788,6 +6862,7 @@ chats = [
 
     items "toukui" {
       name = "头盔"
+      aliases = ["tou kui", "kui"]
       description = "这是一顶金属头盔，用以保护头部。"
   verbs = [
     "get",
@@ -6808,6 +6883,7 @@ chats = [
 
     items "tuijianxin_1" {
       name = "推荐信"
+      aliases = ["tuijian xin1", "xin1", "letter1"]
       description = "这是一封清字辈师尊们为你写的推荐信，凭此可直接向道字辈高僧们学习武艺。"
   verbs = [
     "get",
@@ -6826,6 +6902,7 @@ chats = [
 
     items "tuijianxin_2" {
       name = "推荐信"
+      aliases = ["tuijian xin2", "xin2", "letter2"]
       description = "这是一封道字辈师尊们为你写的推荐信，凭此可直接向慧字辈高僧们学习武艺。"
   verbs = [
     "get",
@@ -6844,6 +6921,7 @@ chats = [
 
     items "tuijianxin_3" {
       name = "推荐信"
+      aliases = ["tuijian xin3", "xin3", "letter3"]
       description = "这是一封慧字辈师尊们为你写的推荐信，凭此可直接向澄字辈高僧们学习武艺。"
   verbs = [
     "get",
@@ -6862,6 +6940,7 @@ chats = [
 
     items "tuijianxin_4" {
       name = "推荐信"
+      aliases = ["tuijian xin4", "xin4", "letter4"]
       description = "这是一封澄字辈师尊们为你写的推荐信，凭此可直接向玄字辈高僧们学习武艺。"
   verbs = [
     "get",
@@ -6880,6 +6959,7 @@ chats = [
 
     items "weibo" {
       name = "围脖"
+      aliases = ["wei bo", "bo"]
       description = "这是一皮围脖，用以保护颈部。"
   verbs = [
     "get",
@@ -6900,6 +6980,7 @@ chats = [
 
     items "xu_cloth" {
       name = "黄布袈裟"
+      aliases = ["jia sha", "cloth"]
       description = ""
   verbs = [
     "get",
@@ -6919,6 +7000,7 @@ chats = [
 
     items "xuan_cloth" {
       name = "护法袈裟"
+      aliases = ["jia sha", "jia", "sha"]
       description = ""
   verbs = [
     "get",
@@ -6938,6 +7020,7 @@ chats = [
 
     items "yaodai" {
       name = "皮腰带"
+      aliases = ["yao dai", "yaodai"]
       description = "这是一件皮质的宽腰带，夹层透空，可以放各种软兵刃。"
   verbs = [
     "get",
@@ -6958,6 +7041,7 @@ chats = [
 
     items "zhitao" {
       name = "铁指套"
+      aliases = ["zhitao", "zhi tao"]
       description = "这是五个环环相链的铁指套，前端锋利如刃，既可暗藏掌中伤人，又可保护指关节。"
   verbs = [
     "get",
@@ -6978,6 +7062,7 @@ chats = [
 
     items "zhujian" {
       name = "竹剑"
+      aliases = ["zhu jian", "jian", "sword"]
       description = "这是一柄三尺来长，精工制成的青竹剑，虽不致命，却可伤人。"
   verbs = [
     "get",

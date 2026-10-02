@@ -232,6 +232,7 @@ direction = "east"
 
     characters "dingdang" {
       name = "丁当"
+      aliases = ["ding dang", "ding"]
       description = "一个十七八岁的少女，身穿淡绿衫子，一张瓜子脸，秀丽美艳。"
   gender = "女性"
   age = 18
@@ -276,6 +277,7 @@ direction = "east"
 
     characters "qiaofu" {
       name = "樵夫"
+      aliases = ["qiao fu", "qiao", "fu"]
       description = "这是一个一辈子以砍材为生的老樵夫，由于饱 受风霜，显出与年龄不相称的衰老。"
   nickname = "消息灵通"
   gender = "男性"
@@ -304,6 +306,7 @@ direction = "east"
 
     characters "shizhongyu" {
       name = "石中玉"
+      aliases = ["shi zhongyu", "shi", "zhongyu"]
       description = "这是一个年轻公子，大约二十左右岁，面若中秋之月，色如春晓 之花，鬓若刀裁，眉如墨画，鼻如悬胆，情若秋波，虽怒而时笑，即视而有情。"
   gender = "男性"
   age = 20
@@ -358,6 +361,7 @@ chats = [
 
     characters "xieyan" {
       name = "谢烟客"
+      aliases = ["xie yanke", "xie"]
       description = "摩天居士谢烟客乃天下第一奇人，武功高强，曾经散出 玄铁令三枚，誓言可以满足拥有此令的三人任何愿望。"
   nickname = "摩天居士"
   gender = "男性"

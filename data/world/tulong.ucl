@@ -7,6 +7,7 @@ zones "tulong" {
 
     items "duan1" {
       name = "断了的倚天剑"
+      aliases = ["duan jian", "sword"]
       description = "一柄断了的长剑"
   verbs = [
     "get",
@@ -30,6 +31,7 @@ zones "tulong" {
 
     items "duan2" {
       name = "断了的屠龙刀"
+      aliases = ["duan dao", "blade", "dao"]
       description = "一柄断了的刀。"
   verbs = [
     "get",
@@ -53,6 +55,7 @@ zones "tulong" {
 
     items "miji" {
       name = "降龙十八掌秘笈"
+      aliases = ["xianglong miji", "book", "miji"]
       description = ""
   verbs = [
     "get",
@@ -71,6 +74,7 @@ zones "tulong" {
 
     items "tulongdao" {
       name = "屠龙刀"
+      aliases = ["tulong blade", "blade", "dao", "tulong"]
       description = "这便是号称武林至尊的屠龙宝刀，四尺来长的单刀，竟达一百多斤之重。 相传其中藏有旷世的大秘密。"
   verbs = [
     "get",
@@ -99,6 +103,7 @@ zones "tulong" {
 
     items "yishu" {
       name = "武穆遗书"
+      aliases = ["wumu yishu", "book", "yishu"]
       description = ""
   verbs = [
     "get",
@@ -117,6 +122,7 @@ zones "tulong" {
 
     items "yitianjian" {
       name = "倚天剑"
+      aliases = ["yitian sword", "jian", "sword"]
       description = "这便与天下至尊的屠龙宝刀并称的倚天剑。 相传让刀剑对砍(duikan)可以得到旷世的武林秘籍。"
   verbs = [
     "get",
@@ -145,6 +151,7 @@ zones "tulong" {
 
     items "zhenjing" {
       name = "Item"
+      aliases = ["jiuyin zhenjing", "zhenjing"]
       description = "这是一本用薄纸写成的书。书面上写着《九阴真经》。书皮泛黄，看来已经保存很久了。 真经里记载了催心掌、九阴白骨爪、易筋锻骨和蛇行狸翻，你可以试着研究研究。"
   verbs = [
     "get",
@@ -434,6 +441,7 @@ item_desc = {
 
     characters "bai" {
       name = "白龟寿"
+      aliases = ["bai guishou", "bai", "guishou"]
       description = "一个五十来岁的老者，秃着头顶，一身结实的肌肉。"
   title = "天鹰教"
   nickname = "玄武坛坛主"
@@ -463,6 +471,7 @@ item_desc = {
 
     characters "chang" {
       name = "常金鹏"
+      aliases = ["chang jinpeng", "chang"]
       description = "这便是天鹰教朱雀坛的坛主常金鹏。 五十来岁年纪，脸上手上的肌肉凹凹凸凸、盘根错节。"
   title = "天鹰教"
   nickname = "朱雀坛坛主"
@@ -507,6 +516,7 @@ item_desc = {
 
     characters "guo" {
       name = "过三拳"
+      aliases = ["guo sanquan", "guo", "sanquan"]
       description = "这是神拳门掌门人过三拳。身材高大，双 臂肌肉结实，一看就知道是外家好手。"
   title = "神拳门掌门人"
   age = 56
@@ -538,6 +548,7 @@ item_desc = {
 
     characters "huiyue" {
       name = "辉月使"
+      aliases = ["huiyue shi", "huiyue", "shi"]
       description = "这是一个三十多岁的中年男子，装束奇异，不 同普通的中土人士。这便是波斯明教总教教主 座下的辉月使。"
   title = "波斯总教教主座下"
   nickname = "云风月三使"
@@ -592,6 +603,7 @@ item_desc = {
 
     characters "jiaozhong1" {
       name = "教众"
+      aliases = ["jiao zhong", "jiao", "zhong"]
       description = "一个天鹰教的教众，手中挥舞着一面大旗。"
   title = "天鹰教朱雀坛"
 
@@ -611,6 +623,7 @@ item_desc = {
 
     characters "jiaozhong2" {
       name = "教众"
+      aliases = ["jiao zhong", "jiao", "zhong"]
       description = "一个天鹰教的教众，手中挥舞着一面大旗。"
   title = "天鹰教玄武坛"
 
@@ -630,6 +643,7 @@ item_desc = {
 
     characters "liuyun" {
       name = "流云使"
+      aliases = ["liuyun shi", "liuyun", "shi"]
       description = "这是一个四十多岁的中年男子，装束奇异，不 像普通的中土人士。这便是波斯明教总教教主 座下排名三百七十四的流云使。"
   title = "波斯总教教主座下"
   nickname = "云风月三使"
@@ -685,6 +699,7 @@ item_desc = {
 
     characters "mai" {
       name = "麦鲸"
+      aliases = ["mai jing", "mai", "jing"]
       description = "这是巨鲸帮帮主麦鲸，身高七尺，满面 扎须，相貌很是威猛。"
   title = "巨鲸帮帮主"
   age = 47
@@ -716,6 +731,7 @@ item_desc = {
 
     characters "miaofeng" {
       name = "妙风使"
+      aliases = ["miaofeng shi", "miaofeng", "shi"]
       description = "这是一个三十多岁的中年美妇，装束奇异，不 同普通的中土人士。这便是波斯明教总教教主 座下的妙风使。"
   title = "波斯总教教主座下"
   nickname = "云风月三使"
@@ -770,6 +786,7 @@ item_desc = {
 
     characters "qqq" {
       name = "常金鹏"
+      aliases = ["chang jinpeng", "chang"]
       description = "这便是天鹰教朱雀坛的坛主常金鹏。 五十来岁年纪，脸上手上的肌肉凹凹凸凸、盘根错节。"
   title = "天鹰教"
   nickname = "朱雀坛坛主"
@@ -814,6 +831,7 @@ item_desc = {
 
     characters "yin" {
       name = "殷素素"
+      aliases = ["yin susu", "yin", "susu"]
       description = "只见她身穿淡绿衫子，清丽不可方物。"
   title = "天鹰教"
   nickname = "紫微堂堂主"
@@ -847,6 +865,7 @@ item_desc = {
 
     characters "yuan" {
       name = "元广波"
+      aliases = ["yuan guangbo", "yuan", "guangbo"]
       description = "这是海沙派总舵主元广波，目光如电，身材彪捍。"
   title = "海沙派总舵主"
   age = 15
@@ -878,6 +897,7 @@ item_desc = {
 
     characters "zhang" {
       name = "张翠山"
+      aliases = ["zhang cuishan", "zhang"]
       description = "一个二十一二岁的少年，面目俊秀，虽然略觉清 癯，但神朗气爽，身形的瘦弱竟掩不住一股剽悍 之意。"
   title = "武当五侠"
   nickname = "银钩铁划"
@@ -913,6 +933,7 @@ item_desc = {
 
     characters "bosi" {
       name = "NPC"
+      aliases = ["bosi cloth", "bosi", "cloth"]
       description = "这是一件波斯明教总舵的教服。"
     }
 
@@ -921,6 +942,7 @@ item_desc = {
 
     characters "flag" {
       name = "大旗"
+      aliases = ["flag", "qi"]
       description = "旗上绣着一头大鹰，双翅伸展，甚是威武。"
     }
 
@@ -929,6 +951,7 @@ item_desc = {
 
     characters "hammer" {
       name = "NPC"
+      aliases = ["green xigua", "xigua", "hammer"]
       description = "这西瓜由精钢铸成，瓜上漆成绿黑间条之色，共有一对，系以钢链。"
     }
 
@@ -937,6 +960,7 @@ item_desc = {
 
     characters "jiaofu" {
       name = "天鹰教服"
+      aliases = ["ying cloth", "cloth"]
       description = "这是一件天鹰教服。"
     }
 
@@ -945,6 +969,7 @@ item_desc = {
 
     characters "ling" {
       name = "NPC"
+      aliases = ["bintie ling", "bintie", "ling"]
       description = ""
     }
 
@@ -953,6 +978,7 @@ item_desc = {
 
     items "ding" {
       name = "铜鼎"
+      aliases = ["ding"]
       description = "铜鼎中烧着熊熊烈火，火焰冲起一丈来高。"
   verbs = [
     "get",
@@ -971,6 +997,7 @@ item_desc = {
 
     items "ling1" {
       name = "圣火令"
+      aliases = ["shenghuo ling", "shenghuo", "ling"]
       description = "这是一柄两尺来长的黑牌，非金非铁。质地坚硬无比， 似透明，令中隐隐似有火焰飞腾，实则是令质映光，颜 色变幻。令上刻得有不少波斯文字。"
   verbs = [
     "get",
@@ -999,6 +1026,7 @@ item_desc = {
 
     items "stone" {
       name = "大石头"
+      aliases = ["stone"]
       description = "一块大大的圆滚滚的石头。"
   verbs = [
     "get",
@@ -1020,6 +1048,7 @@ item_desc = {
 
     items "xuantie_ling" {
       name = "玄铁令"
+      aliases = ["xuantie ling", "xuantie", "ling"]
       description = "一块黑黝黝的令牌，竟是玄铁所铸。"
   verbs = [
     "get",
@@ -1659,6 +1688,7 @@ direction = "down"
 
     characters "18jingang_4bo" {
       name = "钹僧"
+      aliases = ["bo seng", "bo", "seng"]
       description = "一个秃顶和尚，裸露着上身，肌肉结实。 这便是汝阳王手下的十八金刚之一。"
   title = "汝阳王座下十八金刚"
   nickname = "四钹金刚"
@@ -1693,6 +1723,7 @@ direction = "down"
 
     characters "18jingang_4zhang" {
       name = "杖僧"
+      aliases = ["zhang seng", "zhang", "seng"]
       description = "一个秃顶和尚，裸露着上身，肌肉结实。 这便是汝阳王手下的十八金刚之一。"
   title = "汝阳王座下十八金刚"
   nickname = "四杖金刚"
@@ -1727,6 +1758,7 @@ direction = "down"
 
     characters "18jingang_5dao" {
       name = "刀僧"
+      aliases = ["dao seng", "dao", "seng"]
       description = "一个秃顶和尚，裸露着上身，肌肉结实。 这便是汝阳王手下的十八金刚之一。"
   title = "汝阳王座下十八金刚"
   nickname = "五刀金刚"
@@ -1761,6 +1793,7 @@ direction = "down"
 
     characters "18jingang_5jian" {
       name = "剑僧"
+      aliases = ["jian seng", "jian", "seng"]
       description = "一个秃顶和尚，裸露着上身，肌肉结实。 这便是汝阳王手下的十八金刚之一。"
   title = "汝阳王座下十八金刚"
   nickname = "五剑金刚"
@@ -1795,6 +1828,7 @@ direction = "down"
 
     characters "ada" {
       name = "阿大"
+      aliases = ["a da", "a", "da"]
       description = "八臂神剑方东白是丐帮四大长老之首，剑术 之精，名动江湖，只因他出剑奇快，有如生 了七八条手臂一般，因此上得了这个外号。 十多年前听说他身染重病身亡，当时人人都 感惋惜，不觉他竟尚在人世。"
   title = "丐帮四大长老之首"
   nickname = "八臂神剑"
@@ -1856,6 +1890,7 @@ direction = "down"
 
     characters "ada2" {
       name = "阿大"
+      aliases = ["a da", "a", "da"]
       description = "八臂神剑方东白本是丐帮四大长老之首，剑术 之精，名动江湖，只因他出剑奇快，有如生了 七八条手臂一般，因此上得了这个外号。十多 年前听说他身染重病身亡，当时人人都感惋惜， 不觉他竟尚在人世。"
   title = "丐帮四大长老之首"
   nickname = "八臂神剑"
@@ -1917,6 +1952,7 @@ direction = "down"
 
     characters "aer" {
       name = "阿二"
+      aliases = ["a er", "a", "er"]
       description = "阿二乃阿三的同门师兄，也是西域少林派一 等一的高手，被汝阳王一重金安置于麾下， 非常得汝阳王的赏识。"
   title = "西域少林派高手"
   gender = "男性"
@@ -1974,6 +2010,7 @@ direction = "down"
 
     characters "asan" {
       name = "阿三"
+      aliases = ["a san", "a", "san"]
       description = "一个五十来岁的男子，上身裸露，右嘴角处 生有一个大痣，双臂肌肉结实无比，一看便 知是外家好手。"
   title = "西域少林派高手"
   gender = "男性"
@@ -2031,6 +2068,7 @@ direction = "down"
 
     characters "bing1" {
       name = "蒙古官兵"
+      aliases = ["guan bing", "bing"]
       description = "蒙古汝阳王手下精兵，一个个 体格健壮，神情严肃。"
   gender = "男性"
   age = 22
@@ -2068,6 +2106,7 @@ direction = "down"
 
     characters "bing2" {
       name = "千夫长"
+      aliases = ["qianfu zhang", "qianfu", "zhang"]
       description = "蒙古汝阳王手下精兵的头领， 体格健壮，神情严肃。"
   gender = "男性"
   age = 32
@@ -2111,6 +2150,7 @@ direction = "down"
 
     characters "he" {
       name = "何太冲"
+      aliases = ["he taichong", "he", "taichong"]
       description = "一个五十多岁的中年男子，眉头紧锁，原来 这就是昆仑派的掌门，人称“铁琴先生”的 何太冲，至六大门派围攻光明顶之后，被赵 用计擒拿，关押在这里。"
   title = "昆仑派第三代掌门"
   nickname = "铁琴先生"
@@ -2174,6 +2214,7 @@ direction = "down"
 
     characters "hebiweng" {
       name = "鹤笔翁"
+      aliases = ["he biweng", "he", "biweng"]
       description = "一个六十多岁的老者，头发花白，满面红光， 身材魁梧高大，这便是汝阳王用重金聘请的 高手，玄冥二老中的鹤笔翁，一双玄冥毒掌 使得出神入化，武艺超群，很得汝阳王的赏 识。"
   title = "玄冥二老"
   gender = "男性"
@@ -2219,6 +2260,7 @@ direction = "down"
 
     characters "li4" {
       name = "李四摧"
+      aliases = ["li sicui", "sicui", "li"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -2264,6 +2306,7 @@ direction = "down"
 
     characters "luzhangke" {
       name = "鹿杖客"
+      aliases = ["lu zhangke", "lu", "zhangke"]
       description = "一个六十多岁的老者，头发花白，满面红光， 身材魁梧高大，这便是汝阳王用重金聘请的 高手，玄冥二老中的鹿杖客，一双玄冥毒掌 使得出神入化，武艺超群，很得汝阳王的赏 识。"
   title = "玄冥二老"
   gender = "男性"
@@ -2309,6 +2352,7 @@ direction = "down"
 
     characters "qian2" {
       name = "钱二败"
+      aliases = ["qian erbai", "erbai", "qian"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -2354,6 +2398,7 @@ direction = "down"
 
     characters "sun3" {
       name = "孙三毁"
+      aliases = ["sun sanhui", "sanhui", "sun"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -2399,6 +2444,7 @@ direction = "down"
 
     characters "wang8" {
       name = "王八衰"
+      aliases = ["wang bashuai", "bashuai", "wang"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -2444,6 +2490,7 @@ direction = "down"
 
     characters "wu6" {
       name = "吴六破"
+      aliases = ["wu liupo", "liupo", "wu"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -2489,6 +2536,7 @@ direction = "down"
 
     characters "zhao" {
       name = "赵敏"
+      aliases = ["zhao min", "min", "zhao"]
       description = "她脸泛红霞，容色丽都。十分美丽之中，更带着三分英气，三分豪态，同 时雍容华贵，自有一副端严之姿，令人肃然起敬，不敢逼视。"
   title = "大元绍敏郡主"
   gender = "女性"
@@ -2555,6 +2603,7 @@ direction = "down"
 
     characters "zhao1" {
       name = "赵一伤"
+      aliases = ["zhao yishang", "yishang", "zhao"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -2600,6 +2649,7 @@ direction = "down"
 
     characters "zhaomin2" {
       name = "赵敏"
+      aliases = ["zhao min", "min", "zhao"]
       description = "她脸泛红霞，容色丽都。十分美丽之中，更带着三分英气，三分豪态，同 时雍容华贵，自有一副端严之姿，令人肃然起敬，不敢逼视。"
   title = "大元绍敏郡主"
   gender = "女性"
@@ -2652,6 +2702,7 @@ direction = "down"
 
     characters "zheng7" {
       name = "郑七灭"
+      aliases = ["zheng qimie", "qimie", "zheng"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -2697,6 +2748,7 @@ direction = "down"
 
     characters "zhou5" {
       name = "周五输"
+      aliases = ["zhou wushu", "wushu", "zhou"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -2742,6 +2794,7 @@ direction = "down"
 
     characters "gong" {
       name = "点金盘龙弓"
+      aliases = ["panlong gong", "gong", "panlong"]
       description = ""
     }
 
@@ -2750,6 +2803,7 @@ direction = "down"
 
     characters "jian" {
       name = "NPC"
+      aliases = ["yitian jian", "yitian", "jian", "sword"]
       description = "这便与天下至尊的屠龙宝刀并称的倚天剑。"
     }
 
@@ -2758,6 +2812,7 @@ direction = "down"
 
     characters "spear" {
       name = "镔铁长枪"
+      aliases = ["chang qiang", "qiang", "spear"]
       description = ""
     }
 
@@ -2766,6 +2821,7 @@ direction = "down"
 
     characters "tiezhang" {
       name = "精铁杖"
+      aliases = ["tie zhang", "tie", "zhang"]
       description = "一柄用镔铁打造的杖。"
     }
 
@@ -2774,6 +2830,7 @@ direction = "down"
 
     characters "tongbo" {
       name = "铜钹"
+      aliases = ["tong bo", "tong", "bo"]
       description = "一柄用熟铜打造的钹。"
     }
 
@@ -2782,6 +2839,7 @@ direction = "down"
 
     items "shelf" {
       name = "红木剑架"
+      aliases = ["shelf"]
       description = "一只由名贵红木所制，用来存放配剑的架子。"
   verbs = [
     "get",

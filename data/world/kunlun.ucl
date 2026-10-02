@@ -1069,6 +1069,7 @@ item_desc = {
 
     characters "kl_dizi1" {
       name = "昆仑派女弟子"
+      aliases = ["dizi"]
       description = "她看起来身材娇小，似乎练过一点武功。"
   gender = "女性"
   age = 17
@@ -1104,6 +1105,7 @@ item_desc = {
 
     characters "kl_dizi2" {
       name = "昆仑派弟子"
+      aliases = ["dizi"]
       description = "他看起来膀阔腰圆，似乎练过一点武功。"
   gender = "男性"
   age = 20
@@ -1144,6 +1146,7 @@ item_desc = {
 
     characters "kl_dizi3" {
       name = "昆仑派女弟子"
+      aliases = ["dizi"]
       description = "她看起来容貌俏丽，似乎练过一点武功。"
   gender = "女性"
   age = 25
@@ -1186,6 +1189,7 @@ item_desc = {
 
     characters "kl_dizi4" {
       name = "昆仑派弟子"
+      aliases = ["dizi"]
       description = "他看起来膀阔腰圆，似乎练过一点武功。"
   gender = "男性"
   age = 30
@@ -1229,6 +1233,7 @@ item_desc = {
 
     characters "puren" {
       name = "仆人"
+      aliases = ["pu ren", "pu"]
       description = "这是个老实巴交的老仆人，虽然衣服上打了 很多补丁，却是十分的整洁。因为长期待在 厨房里，眼睛被烟熏成了一条缝。"
   gender = "男性"
   age = 50
@@ -1249,6 +1254,7 @@ item_desc = {
 
     characters "seller" {
       name = "小贩"
+      aliases = ["xiao fan", "xiao", "fan"]
       description = "这是个小贩，别看他长的老老实实，可你别 想从他那儿掏便宜。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1287,6 +1293,7 @@ item_desc = {
 
     items "cloth" {
       name = "布衣"
+      aliases = ["cloth"]
       description = ""
   verbs = [
     "get",
@@ -1306,6 +1313,7 @@ item_desc = {
 
     items "da_shitou" {
       name = "大石头"
+      aliases = ["da shitou", "shitou"]
       description = "这是一个大石头。"
   verbs = [
     "get",
@@ -1333,6 +1341,7 @@ item_desc = {
 
     items "dawancha" {
       name = "粗磁大碗"
+      aliases = ["wan", "da wan", "ci wan"]
       description = "一个蓝边粗磁大碗。"
   verbs = [
     "get",
@@ -1351,6 +1360,7 @@ item_desc = {
 
     items "force_book" {
       name = "Item"
+      aliases = ["shu", "book"]
       description = "这是昆仑派内功心法的秘籍。"
   verbs = [
     "get",
@@ -1377,6 +1387,7 @@ item_desc = {
 
     items "fuchen" {
       name = "拂尘"
+      aliases = ["fuchen"]
       description = "这是一柄拂尘，做工精细，是很阴毒的兵器。"
   verbs = [
     "get",
@@ -1405,6 +1416,7 @@ item_desc = {
 
     items "guzheng" {
       name = "古筝"
+      aliases = ["gu zheng", "zheng", "qin"]
       description = "这是一张做工十分考究的古筝，古香古色，音质极好。"
   verbs = [
     "get",
@@ -1424,6 +1436,7 @@ item_desc = {
 
     items "jwqin" {
       name = "Item"
+      aliases = ["jiaowei qin", "jiaowei", "qin"]
       description = "相传这便是当年蔡文姬从火中所救出的焦木做成的美琴，琴的 尾端仍可见焦黑色。"
   verbs = [
     "get",
@@ -1443,6 +1456,7 @@ item_desc = {
 
     items "kaoya" {
       name = "烤鸭"
+      aliases = ["kaoya", "ya"]
       description = "一只肥得流油的北京烤鸭。"
   verbs = [
     "get",
@@ -1463,6 +1477,7 @@ item_desc = {
 
     items "lyj_book" {
       name = "Item"
+      aliases = ["shu", "book"]
       description = "这是昆仑派前人所总结的正两仪剑法的秘籍。"
   verbs = [
     "get",
@@ -1489,6 +1504,7 @@ item_desc = {
 
     items "pao1" {
       name = "黑边白色长袍"
+      aliases = ["chang pao", "cloth", "changpao", "pao"]
       description = "这是一件黑色滚边的白色长袍，华贵异常，看不出是什么质料做的。"
   verbs = [
     "get",
@@ -1511,6 +1527,7 @@ item_desc = {
 
     items "pao2" {
       name = "白边青色长袍"
+      aliases = ["chang pao", "cloth", "changpao", "pao"]
       description = "这是一件白色滚边做工精细的青色长袍，看不出是用什么质料裁成的。"
   verbs = [
     "get",
@@ -1533,6 +1550,7 @@ item_desc = {
 
     items "pao3" {
       name = "白边蓝色长袍"
+      aliases = ["chang pao", "cloth", "changpao", "pao"]
       description = "这是一件白色滚边做工精细的蓝色长袍。"
   verbs = [
     "get",
@@ -1555,6 +1573,7 @@ item_desc = {
 
     items "pao4" {
       name = "白边黄色长袍"
+      aliases = ["chang pao", "cloth", "changpao", "pao"]
       description = "这是一件白色滚边黄色长袍，做工似乎比较简单。"
   verbs = [
     "get",
@@ -1577,6 +1596,7 @@ item_desc = {
 
     items "rice" {
       name = "米饭"
+      aliases = ["rice", "mi fan", "fan"]
       description = "一碗刚从锅里盛出来的大米饭，还冒着热气~~~~~~"
   verbs = [
     "get",
@@ -1597,6 +1617,7 @@ item_desc = {
 
     items "sangmending" {
       name = "丧门钉"
+      aliases = ["sangmen ding", "ding"]
       description = "这是一玫丧门钉，似乎喂的是“青陀罗花”的毒汁。"
   verbs = [
     "get",
@@ -1625,6 +1646,7 @@ item_desc = {
 
     items "sword" {
       name = "长剑"
+      aliases = ["changjian", "jian"]
       description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
   verbs = [
     "get",
@@ -1653,6 +1675,7 @@ item_desc = {
 
     items "w_cloth" {
       name = "白色道袍"
+      aliases = ["pao", "cloth", "dao pao"]
       description = "这是件素雅洁净的白色道袍。"
   verbs = [
     "get",
@@ -1672,6 +1695,7 @@ item_desc = {
 
     items "weiqi" {
       name = "围棋"
+      aliases = ["wei qi", "weiqi", "qi", "go"]
       description = "这是一副围棋，棋盘用磁铁所制，棋子用铁铸成。"
   verbs = [
     "get",
@@ -1692,6 +1716,7 @@ item_desc = {
 
     items "xiangcha" {
       name = "香茶"
+      aliases = ["tea", "cha", "xiang cha"]
       description = "一杯热茶，悠悠地冒着香气~~~~~~"
   verbs = [
     "get",

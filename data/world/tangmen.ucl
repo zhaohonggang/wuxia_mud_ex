@@ -7,6 +7,7 @@ zones "tangmen" {
 
     items "feidao" {
       name = "小飞刀"
+      aliases = ["xiao feidao", "feidao"]
       description = "一把雪亮的飞刀。"
   verbs = [
     "get",
@@ -28,6 +29,7 @@ zones "tangmen" {
 
     items "jili" {
       name = "毒蒺藜"
+      aliases = ["du jili", "jili"]
       description = "毒蒺藜是淬毒暗器，寸许大小，发出诡异的光。"
   verbs = [
     "get",

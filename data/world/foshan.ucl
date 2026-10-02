@@ -777,6 +777,7 @@ direction = "south"
 
     characters "chaofeng" {
       name = "老朝奉"
+      aliases = ["lao chaofeng", "chaofeng"]
       description = "一个衣着光鲜的老朝奉。"
   title = "当铺老板"
   gender = "男性"
@@ -811,6 +812,7 @@ direction = "south"
 
     characters "fengqi" {
       name = "凤七"
+      aliases = ["feng qi", "feng", "qi"]
       description = "凤七是凤天南的远房祖弟，在这英雄楼当掌柜。武功没有什么，为人 却极是机灵，江湖上大大小小的事情都知道一些"
   title = "酒楼老板"
   nickname = "消息灵通"
@@ -850,6 +852,7 @@ direction = "south"
 
     characters "fengyiming" {
       name = "凤一鸣"
+      aliases = ["feng yiming", "feng", "yiming"]
       description = "凤一鸣是佛山镇上大财主凤天南之子。只见他 步履轻捷，脸上英气勃勃，显是武功不弱。"
   title = "佛山五虎门传人"
   gender = "男性"
@@ -880,6 +883,7 @@ direction = "south"
 
     characters "jiading" {
       name = "家丁"
+      aliases = ["jia ding", "jia"]
       description = "佛山凤老爷府上的家丁。占势欺人，横行霸道。"
   gender = "男性"
   age = 35
@@ -905,6 +909,7 @@ direction = "south"
 
     characters "pang" {
       name = "胖商人"
+      aliases = ["pang shangren", "pang"]
       description = "他肥肥胖胖的，一脸富贵相。"
   gender = "男性"
   age = 43
@@ -931,6 +936,7 @@ direction = "south"
 
     characters "shou" {
       name = "瘦商人"
+      aliases = ["shou shangren", "shou"]
       description = "他瘦兮兮的，一脸穷苦相。"
   gender = "男性"
   age = 43
@@ -957,6 +963,7 @@ direction = "south"
 
     characters "youming" {
       name = "幽冥道人"
+      aliases = ["youming daoren", "youming", "daoren"]
       description = ""
   nickname = "岭南"
   gender = "男性"
@@ -1008,6 +1015,7 @@ direction = "south"
 
     characters "zhang" {
       name = "张朝唐"
+      aliases = ["zhang chaotang", "zhang"]
       description = "这是个饱读诗书的南洋书生，他一直向往中土文化，特来赶考。"
   gender = "男性"
   age = 22
@@ -1033,6 +1041,7 @@ direction = "south"
 
     characters "zhangkang" {
       name = "张康"
+      aliases = ["zhang kang", "zhang"]
       description = "这是个老实巴交的汉子，是张朝唐的从人。"
   gender = "男性"
   age = 25
@@ -1059,6 +1068,7 @@ direction = "south"
 
     characters "zhongsisao" {
       name = "钟四嫂"
+      aliases = ["zhong sisao", "zhong", "sisao"]
       description = "她就是钟阿四的老婆。凤老爷后院中养了十只肥鹅，忽然不见了一只。家丁 说是锺家的小二子、小三子兄弟俩偷了，到巡检衙门去告了一状，差役便来 将锺阿四锁了去整治得奄奄一息。锺四嫂心里一急，便横了心。她赶回家里， 一手拖了小三子，一手拿了柄菜刀，叫了左右乡邻，一齐上祖庙去。 锺四嫂在北帝爷爷座前磕了几个响头，说道：‘北帝爷爷，我孩子决不能偷 人家的鹅。他今年还只四岁，刁嘴拗舌，说不清楚，在财主爷面前说什么吃 我，吃我！小妇人一家横遭不白，赃官受了贿，断事不明，只有请北帝爷爷 伸冤！’说着提起刀来，一刀便将小三子的肚子剖了。自己也发疯了。"
   gender = "女性"
   age = 35
@@ -1095,6 +1105,7 @@ chats = [
 
     characters "zhongxiaoer" {
       name = "钟小二"
+      aliases = ["zhong xiaoer", "zhong", "xiaoer"]
       description = "他是钟阿四的二儿子，几只狼狗在追着撕咬他。"
   gender = "男性"
   age = 3
@@ -1120,6 +1131,7 @@ chats = [
 
     characters "caidao" {
       name = "菜刀"
+      aliases = ["cai dao", "blade"]
       description = "这是一柄亮晃晃的菜刀。"
     }
 
@@ -1128,6 +1140,7 @@ chats = [
 
     characters "goupi" {
       name = "狗皮"
+      aliases = ["gou pi", "pi"]
       description = ""
     }
 
@@ -1136,6 +1149,7 @@ chats = [
 
     characters "magcloth" {
       name = "紫袍"
+      aliases = ["zi pao", "cloth"]
       description = ""
     }
 
@@ -1144,6 +1158,7 @@ chats = [
 
     items "hua1" {
       name = "白合花"
+      aliases = ["flower", "hua"]
       description = "这是一朵美丽的小野花，香气清新。"
   verbs = [
     "get",
@@ -1166,6 +1181,7 @@ chats = [
 
     items "hua2" {
       name = "莎椤花"
+      aliases = ["flower", "hua"]
       description = "这是一朵美丽的小野花，香气清新。"
   verbs = [
     "get",
@@ -1188,6 +1204,7 @@ chats = [
 
     items "hua3" {
       name = "蕙兰花"
+      aliases = ["flower", "hua"]
       description = "这是一朵美丽的小野花，香气清新。"
   verbs = [
     "get",
@@ -1210,6 +1227,7 @@ chats = [
 
     items "shikuai" {
       name = "石块"
+      aliases = ["shikuai", "stone"]
       description = "这是一平平常常的鹅卵石。"
   verbs = [
     "get",
@@ -1238,6 +1256,7 @@ chats = [
 
     items "shuzhi" {
       name = "大树枝"
+      aliases = ["shu zhi"]
       description = "这是一根爬山用的树枝。"
   verbs = [
     "get",

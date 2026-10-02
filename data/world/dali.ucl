@@ -4739,6 +4739,7 @@ behavior_config = {
 
     characters "biaotou" {
       name = "「平通镖局」镖头"
+      aliases = ["biao tou", "biao"]
       description = ""
   gender = "男性"
   age = 35
@@ -4768,6 +4769,7 @@ behavior_config = {
 
     characters "bing" {
       name = "士兵"
+      aliases = ["shi bing", "bing"]
       description = "他是一个大理国禁卫军士兵，身着锦衣，手执钢刀，双目精光炯 炯，警惕地巡视着四周的情形。"
   gender = "男性"
   age = 32
@@ -4805,6 +4807,7 @@ behavior_config = {
 
     characters "bshangfan" {
       name = "台夷商贩"
+      aliases = ["shang fan", "shang", "fan"]
       description = "一个摆夷妇女，背着个竹篓贩买些丝织物品和手工艺品。"
   gender = "女性"
   age = 32
@@ -4830,6 +4833,7 @@ behavior_config = {
 
     characters "caisangnu" {
       name = "采桑女"
+      aliases = ["caisang nu", "girl"]
       description = "一个年轻的摆夷采桑姑娘。"
   gender = "女性"
   age = 17
@@ -4855,6 +4859,7 @@ behavior_config = {
 
     characters "caisunren" {
       name = "采笋人"
+      aliases = ["caisun ren", "ren"]
       description = "一个卢鹿部的青年台夷妇女，背后背了个竹筐，手拿一把砍柴刀，来采竹笋。"
   gender = "女性"
   age = 22
@@ -4881,6 +4886,7 @@ behavior_config = {
 
     characters "caisunren1" {
       name = "采笋人"
+      aliases = ["caisun ren", "ren"]
       description = "一个壮年村民，住在数里外的村庄，背后背了个竹筐，手拿一把砍柴刀，上山来采竹笋。"
   gender = "男性"
   age = 22
@@ -4907,6 +4913,7 @@ behavior_config = {
 
     characters "cunfu" {
       name = "村妇"
+      aliases = ["cun fu", "woman"]
       description = "一个年轻的摆夷村妇。"
   gender = "女性"
   age = 27
@@ -4932,6 +4939,7 @@ behavior_config = {
 
     characters "datusi" {
       name = "大土司"
+      aliases = ["da tusi", "tusi"]
       description = "大土司是摆夷族人氏，是苍山纳苏系的。他倒是长的肥头大耳的， 每说一句话，每有一点表情，满脸的肉纹便象是洱海里的波浪一样。 他身着彩绸，头带凤羽，脚踩藤鞋，满身挂着不同色彩的贝壳。只见 他傲气凛然地高居上座，不把来人看在眼里。"
   gender = "男性"
   age = 42
@@ -4964,6 +4972,7 @@ behavior_config = {
 
     characters "duanwuwei" {
       name = "段无畏"
+      aliases = ["duan wuwei", "duan"]
       description = "他是大理国镇南王府管家。"
   title = "镇南王府管家"
   gender = "男性"
@@ -5013,6 +5022,7 @@ behavior_config = {
 
     characters "enu" {
       name = "恶奴"
+      aliases = ["e nu", "nu"]
       description = "他看上去膀大腰粗，横眉怒目，满面横肉。看来手下倒也有点功夫 。"
   gender = "男性"
   age = 32
@@ -5045,6 +5055,7 @@ behavior_config = {
 
     characters "fangshanu" {
       name = "纺纱女"
+      aliases = ["fangsha nu", "girl"]
       description = "一个年轻的摆夷村妇，心灵手巧，专擅纺纱。"
   gender = "女性"
   age = 17
@@ -5070,6 +5081,7 @@ behavior_config = {
 
     characters "funu" {
       name = "台夷妇女"
+      aliases = ["fu nu", "woman"]
       description = "一位中年的台夷妇女，上着无领衬花对襟，下穿五色筒裙，正在编织渔网。"
   gender = "女性"
   age = 37
@@ -5095,6 +5107,7 @@ behavior_config = {
 
     characters "genu" {
       name = "歌女"
+      aliases = ["ge nu", "girl"]
       description = "她是一个卖唱为生的歌女。"
   gender = "女性"
   age = 17
@@ -5121,6 +5134,7 @@ behavior_config = {
 
     characters "girl" {
       name = "摆夷女子"
+      aliases = ["girl"]
       description = "她是一个身着白衣的摆夷女子，长发飘飘，身态娥娜。"
   gender = "女性"
   age = 22
@@ -5146,6 +5160,7 @@ behavior_config = {
 
     characters "girl1" {
       name = "南国姑娘"
+      aliases = ["girl"]
       description = "南国的大姑娘颇带有当地优美秀丽山水的风韵，甜甜的笑，又有 天真的浪漫。她穿着白色上衣，蓝色的宽裤，外面套着黑丝绒领褂， 头上缠着彩色的头巾。"
   gender = "女性"
   age = 22
@@ -5171,6 +5186,7 @@ behavior_config = {
 
     characters "gongnu" {
       name = "宫女"
+      aliases = ["gong nu", "girl"]
       description = "一位大理皇宫乌夷族宫女，以酥泽发，盘成两环，一身宫装，目无表情。"
   gender = "女性"
   age = 17
@@ -5196,6 +5212,7 @@ behavior_config = {
 
     characters "guanjia" {
       name = "管家"
+      aliases = ["guan jia", "guan"]
       description = "他是大理国镇南王府管家。"
   title = "镇南府管家"
   gender = "男性"
@@ -5245,6 +5262,7 @@ behavior_config = {
 
     characters "guigongzi" {
       name = "贵公子"
+      aliases = ["gongzi"]
       description = "这是一介翩翩贵公子，长得到也算玉树临风、一表人才，可偏偏一双眼睛却爱斜着瞟人。"
   gender = "男性"
   age = 29
@@ -5267,6 +5285,7 @@ behavior_config = {
 
     characters "guniang" {
       name = "台夷姑娘"
+      aliases = ["gu niang", "girl"]
       description = "一位年轻的台夷姑娘，上着无领衬花对襟，下穿五色筒裙。"
   gender = "女性"
   age = 17
@@ -5292,6 +5311,7 @@ behavior_config = {
 
     characters "hehongyao" {
       name = "何红药"
+      aliases = ["he hongyao", "he"]
       description = "这女人就象个老乞婆，蓬头垢面，头发乱得象鸡窝，十指尤如 鸡爪。满脸都是奇怪的伤痕，好象是被虫蛇撕咬所致，伤痕青 黑不堪入目。"
   gender = "女性"
   age = 47
@@ -5311,6 +5331,7 @@ behavior_config = {
 
     characters "huangmei" {
       name = "黄眉大师"
+      aliases = ["huangmei dashi", "dashi", "huangmei"]
       description = "这是一个满脸皱纹、身形高大的老僧。这老僧两道焦黄长眉， 眉尾下垂，是拈花寺主持。"
   gender = "男性"
   age = 69
@@ -5365,6 +5386,7 @@ behavior_config = {
 
     characters "huanu" {
       name = "养花女"
+      aliases = ["yanghua nu", "girl"]
       description = "一位养花少女，她每天就是照顾这数也数不清的茶花。"
   gender = "女性"
   age = 17
@@ -5390,6 +5412,7 @@ behavior_config = {
 
     characters "huo" {
       name = "霍先生"
+      aliases = ["huo xiansheng", "huo", "xiansheng"]
       description = "他一身邋遢，形容委琐，整天迷迷糊糊的睡不醒模样。可是他的账务十几年来无可挑剔。  原来他就是伏牛派的崔百泉，为避仇祸隐居于此。"
   gender = "男性"
   age = 51
@@ -5437,6 +5460,7 @@ behavior_config = {
 
     characters "jiading" {
       name = "家丁"
+      aliases = ["jia ding", "ding"]
       description = "他是大理国镇南王府的家丁。"
   title = "大理镇南王府"
   gender = "男性"
@@ -5494,6 +5518,7 @@ behavior_config = {
 
     characters "jiang" {
       name = "武将"
+      aliases = ["wu jiang", "wu", "jiang"]
       description = "他站在那里，的确有说不出的威风。"
   gender = "男性"
   shen_type = 1
@@ -5527,6 +5552,7 @@ behavior_config = {
 
     characters "jianghuyiren" {
       name = "江湖艺人"
+      aliases = ["jianghu yiren", "yiren"]
       description = "他是一个外地来的江湖艺人，手里牵着一只金丝猴儿，满脸风尘之色。"
   gender = "男性"
   age = 53
@@ -5561,6 +5587,7 @@ behavior_config = {
 
     characters "jisi" {
       name = "祭司"
+      aliases = ["ji si", "si"]
       description = "一位满脸皱纹的老年妇女，是本村的大祭司，常年司守祭台。台夷时处母系氏族，祭司要职皆为妇女。"
   gender = "女性"
   age = 62
@@ -5593,6 +5620,7 @@ behavior_config = {
 
     characters "jisi1" {
       name = "老祭司"
+      aliases = ["lao jisi", "jisi"]
       description = "一个颇老朽的摆夷老人，穿戴齐整，是本村的祭司，权力颇大，相当于族长。"
   gender = "男性"
   age = 62
@@ -5625,6 +5653,7 @@ behavior_config = {
 
     characters "kanzhuren" {
       name = "砍竹人"
+      aliases = ["kanzhu ren", "ren"]
       description = "一个壮年村民，住在山下的村落里，是上山来砍伐竹子的。"
   gender = "男性"
   age = 22
@@ -5651,6 +5680,7 @@ behavior_config = {
 
     characters "keshang" {
       name = "盛皮罗客商"
+      aliases = ["ke shang", "shang"]
       description = "这是一位从印度来的客商，皮肤黝黑，白布包头，大理把印度人叫作盛皮罗。"
   gender = "男性"
   age = 32
@@ -5676,6 +5706,7 @@ behavior_config = {
 
     characters "kid" {
       name = "摆夷小孩"
+      aliases = ["kid"]
       description = "一个幼小的摆夷儿童。"
   gender = "男性"
   age = 5
@@ -5701,6 +5732,7 @@ behavior_config = {
 
     characters "laojisi" {
       name = "乌夷老祭司"
+      aliases = ["lao jisi", "lao", "jisi"]
       description = "一个乌夷族的祭司，身披乌夷大麾，戴着颇多金银饰物，显示其地位不凡。"
   gender = "男性"
   shen_type = 1
@@ -5733,6 +5765,7 @@ behavior_config = {
 
     characters "lieren" {
       name = "猎人"
+      aliases = ["lie ren", "lie"]
       description = "一位身强力壮的乌夷族猎手。"
   gender = "男性"
   age = 32
@@ -5765,6 +5798,7 @@ behavior_config = {
 
     characters "lieshou" {
       name = "台夷猎人"
+      aliases = ["lie ren", "lie"]
       description = "一位台夷族的猎手，擅用短弩，射飞鸟。"
   gender = "男性"
   age = 32
@@ -5798,6 +5832,7 @@ behavior_config = {
 
     characters "muwanqing" {
       name = "木婉清"
+      aliases = ["mu wanqing", "mu", "wanqing"]
       description = "她长得似新月清晕，如花树堆雪，一张脸秀丽绝俗，只是过于苍白， 没半点血色，想是她长时面幕蒙脸之故，两片薄薄的嘴唇，也是血 色极淡，神情楚楚可怜，娇柔婉转。"
   gender = "女性"
   age = 17
@@ -5851,6 +5886,7 @@ behavior_config = {
 
     characters "muyangnu" {
       name = "牧羊女"
+      aliases = ["muyang nu", "nu"]
       description = "她是一个摆夷牧羊女子。"
   gender = "女性"
   age = 22
@@ -5877,6 +5913,7 @@ behavior_config = {
 
     characters "muyangren" {
       name = "牧羊人"
+      aliases = ["muyang ren", "ren"]
       description = "他一个摆夷牧羊男子。"
   gender = "男性"
   age = 22
@@ -5903,6 +5940,7 @@ behavior_config = {
 
     characters "nongfu" {
       name = "农夫"
+      aliases = ["nong fu", "fu"]
       description = "一位乌夷族的农夫，束发总于脑后，用布纱包着，上半身裸露，下著兽皮。"
   gender = "男性"
   age = 22
@@ -5928,6 +5966,7 @@ behavior_config = {
 
     characters "nongfu1" {
       name = "台夷农妇"
+      aliases = ["nong fu", "fu"]
       description = "一位年轻的台夷农妇，在田里辛勤地劳作着。"
   gender = "女性"
   age = 22
@@ -5953,6 +5992,7 @@ behavior_config = {
 
     characters "nongfu2" {
       name = "农夫"
+      aliases = ["nong fu", "fu"]
       description = "一位身强体壮的摆夷族农夫。"
   gender = "男性"
   age = 22
@@ -5978,6 +6018,7 @@ behavior_config = {
 
     characters "oldman" {
       name = "摆夷老叟"
+      aliases = ["old man", "old", "man"]
       description = "一个摆夷老叟大大咧咧地坐在竹篱板舍门口，甩着三四个巴掌大的棕吕树叶，瞧着道 上来来往往的人们，倒也快活自在。"
   gender = "男性"
   age = 72
@@ -6003,6 +6044,7 @@ behavior_config = {
 
     characters "peicong" {
       name = "陪从"
+      aliases = ["pei cong", "cong", "pei"]
       description = "一个部族头领的陪从。"
   gender = "男性"
   age = 22
@@ -6034,6 +6076,7 @@ behavior_config = {
 
     characters "pihuoshang" {
       name = "皮货商"
+      aliases = ["pihuo shang", "shang"]
       description = "一位来远道而来的汉族商人，来此采购皮货。"
   gender = "男性"
   age = 32
@@ -6066,6 +6109,7 @@ behavior_config = {
 
     characters "pochen" {
       name = "破嗔"
+      aliases = ["po chen", "chen"]
       description = "他是一个和尚，是黄眉大师的二弟子。"
   gender = "男性"
   age = 22
@@ -6097,6 +6141,7 @@ behavior_config = {
 
     characters "poyi" {
       name = "破疑"
+      aliases = ["po yi", "yi"]
       description = "他是一个和尚，是黄眉大师的大弟子。"
   gender = "男性"
   age = 22
@@ -6128,6 +6173,7 @@ behavior_config = {
 
     characters "seng" {
       name = "僧人"
+      aliases = ["seng ren", "seng"]
       description = "一个精壮僧人。"
   gender = "男性"
   age = 37
@@ -6166,6 +6212,7 @@ behavior_config = {
 
     characters "shaonu" {
       name = "少女"
+      aliases = ["shao nu", "girl"]
       description = "一位乌夷族的少女，以酥泽发，盘成两环，上披蓝纱头巾，饰以花边。"
   gender = "女性"
   age = 17
@@ -6191,6 +6238,7 @@ behavior_config = {
 
     characters "shennongdizi" {
       name = "神农帮弟子"
+      aliases = ["shennong dizi", "dizi"]
       description = "这是一个神农帮的帮众，身穿黄衣，肩悬药囊，手持一柄药锄。"
   gender = "男性"
   age = 32
@@ -6224,6 +6272,7 @@ behavior_config = {
 
     characters "shicong" {
       name = "侍从"
+      aliases = ["shi cong", "shi", "cong"]
       description = "这位倒也打扮的利索，一身短打，白布包头，翘起的裤腿，一双 洁白的布鞋，格外醒目。他正准备出去酬备白尼族一年一度的大会。"
   gender = "男性"
   age = 32
@@ -6255,6 +6304,7 @@ behavior_config = {
 
     characters "shijiang" {
       name = "石匠"
+      aliases = ["shi jiang", "jiang"]
       description = "他是一个打磨大理石的石匠，身上只穿了一件坎肩，全身布满了厚实的肌肉。"
   gender = "男性"
   age = 52
@@ -6287,6 +6337,7 @@ chats = [
 
     characters "shizhe" {
       name = "侍者"
+      aliases = ["shi zhe", "shi", "zhe"]
       description = "他看上去长的眉清目秀。"
   gender = "男性"
   age = 32
@@ -6320,6 +6371,7 @@ chats = [
 
     characters "shouling" {
       name = "傣族首领"
+      aliases = ["daizu shouling", "shouling"]
       description = "这是一个身裹虎皮的高大男性。"
   title = "洪源洞洞主"
   gender = "男性"
@@ -6354,6 +6406,7 @@ chats = [
 
     characters "taijian" {
       name = "太监"
+      aliases = ["tai jian", "tai", "jian"]
       description = ""
   gender = "无性"
   shen_type = 0
@@ -6381,6 +6434,7 @@ chats = [
 
     characters "tshangfan" {
       name = "台夷商贩"
+      aliases = ["shang fan", "shang", "fan"]
       description = "一位台夷族的商贩，正在贩卖一竹篓刚打上来的活蹦乱跳的鲜鱼。"
   gender = "男性"
   age = 22
@@ -6407,6 +6461,7 @@ chats = [
 
     characters "turou" {
       name = "兔肉"
+      aliases = ["tu rou", "rou"]
       description = "一只烧烤得香香的兔肉。"
     }
 
@@ -6415,6 +6470,7 @@ chats = [
 
     characters "weishi" {
       name = "素衣卫士"
+      aliases = ["wei shi", "shi", "wei"]
       description = "这是位身怀绝技的武士。"
   gender = "男性"
   age = 32
@@ -6448,6 +6504,7 @@ chats = [
 
     characters "weishi1" {
       name = "黄衣卫士"
+      aliases = ["wei shi", "shi", "wei"]
       description = "这是位黄衣卫士，身着锦衣，手执钢刀，双目精光炯炯，警惕地巡视着四周的情形。"
   gender = "男性"
   age = 32
@@ -6481,6 +6538,7 @@ chats = [
 
     characters "weishi2" {
       name = "锦衣卫士"
+      aliases = ["wei shi", "shi", "wei"]
       description = "这是位锦衣卫士，身着锦衣，手执钢刀，双目精光炯炯，警惕地巡视着四周的情形。"
   gender = "男性"
   age = 32
@@ -6514,6 +6572,7 @@ chats = [
 
     characters "wshangfan" {
       name = "乌夷商贩"
+      aliases = ["shang fan", "shang", "fan"]
       description = "一位乌夷族的商贩，挑着一担皮毛野味在贩卖。"
   gender = "男性"
   age = 22
@@ -6539,6 +6598,7 @@ chats = [
 
     characters "wuliangdizi" {
       name = "无量剑弟子"
+      aliases = ["wuliang dizi", "dizi"]
       description = "这是无量剑派的一名弟子，腰挎一柄长剑，神情有些鬼祟，象是惧怕些什么。"
   gender = "男性"
   age = 42
@@ -6572,6 +6632,7 @@ chats = [
 
     characters "xiaodaogu" {
       name = "小道姑"
+      aliases = ["xiao daogu", "daogu"]
       description = "玉虚观的小道姑，她是在这接待香客的。"
   gender = "女性"
   age = 16
@@ -6609,6 +6670,7 @@ chats = [
 
     characters "xiaoer" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -6639,6 +6701,7 @@ chats = [
 
     characters "xiaoer2" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -6679,6 +6742,7 @@ chats = [
 
     characters "xueboss" {
       name = "薛老板"
+      aliases = ["xue laoban", "xue"]
       description = "这是一个经验老到的生意人，一双精明的眼睛不停的打量着你。"
   gender = "男性"
   age = 32
@@ -6717,6 +6781,7 @@ chats = [
 
     characters "yangcannu" {
       name = "养蚕女"
+      aliases = ["yangcan nu", "girl"]
       description = "一个年轻的摆夷村妇，养蚕纺丝为生。"
   gender = "女性"
   age = 21
@@ -6742,6 +6807,7 @@ chats = [
 
     characters "youke" {
       name = "游客"
+      aliases = ["youke"]
       description = "一个远道来的汉族游客，风尘仆仆，但显然为眼前美景所动，兴高彩烈。"
   gender = "男性"
   shen_type = 1
@@ -6767,6 +6833,7 @@ chats = [
 
     characters "yufu" {
       name = "渔夫"
+      aliases = ["yu fu", "yu", "fu"]
       description = "一位台夷族的渔夫，扛这两条竹桨，提着一个鱼篓。"
   gender = "男性"
   age = 22
@@ -6800,6 +6867,7 @@ chats = [
 
     characters "zutouren" {
       name = "族头人"
+      aliases = ["zu touren", "touren"]
       description = "这位是哈尼的族头人，哈尼是大理国的第三大族，大多聚在大都 附近。此人貌甚精明，身穿对襟衣，亦是白布包头。他坐在大土司的 右下首，对来人细细打量着。"
   gender = "男性"
   age = 42
@@ -6832,6 +6900,7 @@ chats = [
 
     characters "zuzhang" {
       name = "族长"
+      aliases = ["zu zhang", "zhang"]
       description = "一位满脸皱纹的老年妇女，正是本村的族长。台夷时处母系氏族，族中权贵皆为妇女。"
   gender = "女性"
   age = 62
@@ -6864,6 +6933,7 @@ chats = [
 
     characters "bduanqun" {
       name = "摆夷短裙"
+      aliases = ["duan qun"]
       description = "这是一件摆夷短裙。"
     }
 
@@ -6872,6 +6942,7 @@ chats = [
 
     characters "cynrobe" {
       name = "青色道袍"
+      aliases = ["pao", "cloth", "dao pao"]
       description = "一件普普通通的青布道袍。"
     }
 
@@ -6880,6 +6951,7 @@ chats = [
 
     characters "diaogan" {
       name = "钓杆"
+      aliases = ["diao gan", "diao", "gan"]
       description = "这是一根细长的铁杆，猛然一看不过是根普通钓鱼用的吊杆。"
     }
 
@@ -6888,6 +6960,7 @@ chats = [
 
     characters "doupeng" {
       name = "斗篷"
+      aliases = ["dou peng"]
       description = "这是一件绿色宽大的斗篷。"
     }
 
@@ -6896,6 +6969,7 @@ chats = [
 
     characters "guazi" {
       name = "对衿褂子"
+      aliases = ["duijin guazi"]
       description = "这是一件少数民族常用的对衿褂子。"
     }
 
@@ -6904,6 +6978,7 @@ chats = [
 
     characters "huotui" {
       name = "宣威火腿"
+      aliases = ["xuanwei huotui", "huotui"]
       description = "这是一块用蜜饯莲子煮过，流着红油的香喷喷的宣威火腿。"
     }
 
@@ -6912,6 +6987,7 @@ chats = [
 
     characters "hupi" {
       name = "虎皮"
+      aliases = ["hu pi"]
       description = ""
     }
 
@@ -6920,6 +6996,7 @@ chats = [
 
     characters "jjunfu" {
       name = "锦衣军服"
+      aliases = ["junfu", "cloth"]
       description = "这是一件颜色鲜亮的锦衣军服。"
     }
 
@@ -6928,6 +7005,7 @@ chats = [
 
     characters "junfu" {
       name = "黄衣军服"
+      aliases = ["junfu", "cloth"]
       description = "这是一件有点旧的黄衣军服。"
     }
 
@@ -6936,6 +7014,7 @@ chats = [
 
     characters "kandao" {
       name = "砍刀"
+      aliases = ["kan dao", "dao", "blade"]
       description = "这是一柄很粗笨的砍刀，大概砍柴砍竹笋还凑合。"
     }
 
@@ -6944,6 +7023,7 @@ chats = [
 
     characters "kenao" {
       name = "窄裉袄"
+      aliases = ["ken ao"]
       description = "这是一件少数民族常用的窄裉袄。"
     }
 
@@ -6952,6 +7032,7 @@ chats = [
 
     characters "lace" {
       name = "贝壳项链"
+      aliases = ["shell lace", "lace"]
       description = ""
     }
 
@@ -6960,6 +7041,7 @@ chats = [
 
     characters "magcloth" {
       name = "紫袍"
+      aliases = ["zi pao", "cloth"]
       description = ""
     }
 
@@ -6968,6 +7050,7 @@ chats = [
 
     characters "mandao" {
       name = "蛮刀"
+      aliases = ["man dao", "dao", "blade"]
       description = "这是一柄亮晃晃的蛮刀，是云贵少数民族首领的常备武器。"
     }
 
@@ -6976,6 +7059,7 @@ chats = [
 
     characters "maotan" {
       name = "毛毯"
+      aliases = ["mao tan"]
       description = ""
     }
 
@@ -6984,6 +7068,7 @@ chats = [
 
     characters "mixian" {
       name = "过桥米线"
+      aliases = ["guoqiao mixian", "mixian"]
       description = "这是一碗热气腾腾的油浸的米粉，正是大理名菜过桥米线。"
     }
 
@@ -6992,6 +7077,7 @@ chats = [
 
     characters "puercha" {
       name = "茶壶"
+      aliases = ["chahu", "hu", "bottle"]
       description = "一个用来装茶的大茶壶，大概装得八、九杯的茶。"
     }
 
@@ -7000,6 +7086,7 @@ chats = [
 
     characters "qiguoji" {
       name = "汽锅鸡"
+      aliases = ["qiguo ji", "chicken", "ji"]
       description = "这是一锅热气腾腾的汽锅鸡。"
     }
 
@@ -7008,6 +7095,7 @@ chats = [
 
     characters "qun" {
       name = "白纱挑线镶边裙"
+      aliases = ["xiangbian qun"]
       description = "这是一件当地土著常用的白纱挑线镶边裙。"
     }
 
@@ -7016,6 +7104,7 @@ chats = [
 
     characters "shoes" {
       name = "绣花小鞋"
+      aliases = ["flower shoes", "shoes"]
       description = ""
     }
 
@@ -7024,6 +7113,7 @@ chats = [
 
     characters "tduanqun" {
       name = "台夷短裙"
+      aliases = ["duan qun"]
       description = "这是一件台夷短裙。"
     }
 
@@ -7032,6 +7122,7 @@ chats = [
 
     characters "tiedi" {
       name = "铁笛"
+      aliases = ["tie di"]
       description = "一支黑铁做成的长笛，看上去坚忍异常。"
     }
 
@@ -7040,6 +7131,7 @@ chats = [
 
     characters "tiejia" {
       name = "铁甲"
+      aliases = ["armor"]
       description = ""
     }
 
@@ -7048,6 +7140,7 @@ chats = [
 
     characters "tongqun" {
       name = "筒裙"
+      aliases = ["tong qun"]
       description = "这是一件台夷筒裙。"
     }
 
@@ -7056,6 +7149,7 @@ chats = [
 
     characters "ttoujin" {
       name = "台夷头巾"
+      aliases = ["tou jin"]
       description = "这是一条台夷头巾，用以缠绕头部。"
     }
 
@@ -7064,6 +7158,7 @@ chats = [
 
     characters "wchangqun" {
       name = "乌夷长裙"
+      aliases = ["chang qun"]
       description = "这是一件乌夷长裙。"
     }
 
@@ -7072,6 +7167,7 @@ chats = [
 
     characters "wdahui" {
       name = "乌夷大麾"
+      aliases = ["da hui"]
       description = "这是一件乌夷大麾。"
     }
 
@@ -7080,6 +7176,7 @@ chats = [
 
     characters "whitecloth" {
       name = "白衣"
+      aliases = ["bai yi", "cloth"]
       description = ""
     }
 
@@ -7088,6 +7185,7 @@ chats = [
 
     characters "whitecloth1" {
       name = "白绸衫"
+      aliases = ["white cloth", "cloth"]
       description = ""
     }
 
@@ -7096,6 +7194,7 @@ chats = [
 
     characters "xiaoao" {
       name = "圆领小袄"
+      aliases = ["xiao ao", "cloth"]
       description = "这是一件台夷族的圆领小袄。"
     }
 
@@ -7104,6 +7203,7 @@ chats = [
 
     characters "yaoqin" {
       name = "瑶琴"
+      aliases = ["yao qin"]
       description = "这是一把歌女用的瑶琴，制做得相当精巧细腻。"
 
   init = {
@@ -7117,6 +7217,7 @@ chats = [
 
     characters "yeerba" {
       name = "叶儿粑"
+      aliases = ["ye er ba", "ba"]
       description = "这是一块飘着清香的叶ㄦ粑。"
     }
 
@@ -7125,6 +7226,7 @@ chats = [
 
     items "chahua11" {
       name = "Item"
+      aliases = ["cha hua", "hua"]
       description = "一株茶花，白色花瓣上似乎洒了些红斑。"
   verbs = [
     "get",
@@ -7147,6 +7249,7 @@ chats = [
 
     items "chahua12" {
       name = "Item"
+      aliases = ["cha hua", "hua"]
       description = "一株茶花，白色花瓣上有一抹绿晕、一丝红条。"
   verbs = [
     "get",
@@ -7169,6 +7272,7 @@ chats = [
 
     items "chahua13" {
       name = "Item"
+      aliases = ["cha hua", "hua"]
       description = "一株茶花，白色花瓣上有一抹绿晕、一长列红条。"
   verbs = [
     "get",
@@ -7191,6 +7295,7 @@ chats = [
 
     items "fangshaji" {
       name = "纺纱机"
+      aliases = ["fangsha ji", "ji"]
       description = "一台构造相当简单的手工纺纱机，心灵手巧的摆夷妇女就用这种粗糙的飞梭编织精秀的织品。"
   verbs = [
     "get",
@@ -7208,6 +7313,7 @@ chats = [
 
     items "fuchen" {
       name = "拂尘"
+      aliases = ["fuchen"]
       description = "这是一柄拂尘，做工精细，是很阴毒的兵器。"
   verbs = [
     "get",
@@ -7236,6 +7342,7 @@ chats = [
 
     items "shanchahua" {
       name = "山茶花"
+      aliases = ["cha hua", "hua"]
       description = "一株盛开的茶花，几朵不同色的大花开放在一枝，看来定然十分名贵不是凡品。"
   verbs = [
     "get",
@@ -7253,6 +7360,7 @@ chats = [
 
     items "xueli" {
       name = "大理雪梨"
+      aliases = ["li", "xue li"]
       description = "一碟新鲜的大理雪梨。"
   verbs = [
     "get",

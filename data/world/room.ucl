@@ -124,6 +124,7 @@ zones "room" {
 
     characters "jinlin" {
       name = "金临"
+      aliases = ["jinlin", "jin"]
       description = "这是一位垂髫童子，是鲁班手下五行童子之一。"
   title = "南方丙丁◎火"
   nickname = "五行童子"
@@ -144,6 +145,7 @@ zones "room" {
 
     items "advance" {
       name = "免费卡"
+      aliases = ["card", "fee free card"]
       description = ""
   verbs = [
     "get",
@@ -163,6 +165,7 @@ zones "room" {
 
     items "card" {
       name = "免费卡"
+      aliases = ["card", "fee free card"]
       description = ""
   verbs = [
     "get",
@@ -182,6 +185,7 @@ zones "room" {
 
     items "paper" {
       name = "纸张"
+      aliases = ["paper", "paper of drawing"]
       description = "这是一张上等宣纸，你可以在上面画(draw)点东西。"
   verbs = [
     "get",
@@ -200,6 +204,7 @@ zones "room" {
 
     items "super" {
       name = "免费卡"
+      aliases = ["card", "fee free card"]
       description = ""
   verbs = [
     "get",
@@ -219,6 +224,7 @@ zones "room" {
 
     items "ultracard" {
       name = "免费卡"
+      aliases = ["card", "fee free card"]
       description = "这是一张无上住房免费卡，凭这张卡可以免费购买任何住房。"
   verbs = [
     "get",
@@ -564,6 +570,7 @@ zones "room" {
 
     characters "laopu" {
       name = "扫地老仆"
+      aliases = ["lao pu", "saodi laopu"]
       description = "这是一个扫地的老仆人，不过看上去似乎身怀绝技。"
   gender = "男性"
   brain = brains.guarder
@@ -624,6 +631,7 @@ zones "room" {
 
     characters "puren" {
       name = "仆人"
+      aliases = ["pu ren"]
       description = "这是一个仆人，长得忠厚老实。"
   gender = "男性"
 
@@ -642,6 +650,7 @@ zones "room" {
 
     characters "shouwei" {
       name = "NPC"
+      aliases = ["id", "shou wei", "guarder"]
       description = "这是看护庄园的守卫，看上去似乎身怀绝技。"
   gender = "男性"
   brain = brains.guarder
@@ -675,6 +684,7 @@ zones "room" {
 
     characters "teagirl" {
       name = "伺茶丫鬟"
+      aliases = ["girl", "ya huan"]
       description = "这是个年龄不大的小姑娘，一脸聪明乖巧，正在准备为客人上茶。"
   gender = "女性"
 
@@ -703,6 +713,7 @@ zones "room" {
 
     characters "yahuan" {
       name = "丫鬟"
+      aliases = ["girl", "ya huan"]
       description = "这是个年龄不大的小姑娘，一脸聪明乖巧。"
   gender = "女性"
 
@@ -730,6 +741,7 @@ zones "room" {
 
     items "mantou" {
       name = "白面馒头"
+      aliases = ["mantou"]
       description = "一个香喷喷的白面馒头。"
   verbs = [
     "get",
@@ -750,6 +762,7 @@ zones "room" {
 
     items "pass" {
       name = "手谕"
+      aliases = ["pass"]
       description = "一张手谕。"
   verbs = [
     "get",
@@ -768,6 +781,7 @@ zones "room" {
 
     items "rice" {
       name = "白米饭"
+      aliases = ["rice", "mi fan"]
       description = "一碗香喷喷的白米饭。"
   verbs = [
     "get",
@@ -788,6 +802,7 @@ zones "room" {
 
     items "soup" {
       name = "汤碗"
+      aliases = ["soup"]
       description = "一碗香气扑鼻的青菜汤。"
   verbs = [
     "get",

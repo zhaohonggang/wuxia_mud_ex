@@ -1249,6 +1249,7 @@ direction = "west"
 
     characters "chaxiaoer" {
       name = "茶小二"
+      aliases = ["xiao er", "xiao"]
       description = "这个茶小二正忙着给客人送茶，递烟。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1288,6 +1289,7 @@ direction = "west"
 
     characters "laoban" {
       name = "元财"
+      aliases = ["yuan cai", "yuan"]
       description = "他是这里的店主，看上去忠厚老实的样子。"
   title = "店主"
   gender = "男性"
@@ -1309,6 +1311,7 @@ direction = "west"
 
     characters "liu" {
       name = "刘通"
+      aliases = ["liu tong", "liu"]
       description = "一个一看就知道是个精明的人。"
   title = "当铺老板"
   gender = "男性"
@@ -1343,6 +1346,7 @@ direction = "west"
 
     characters "qinbing" {
       name = "王府亲兵"
+      aliases = ["qin bing", "qin", "bing"]
       description = "一名尽忠职守的亲兵，警惕的注视着过往的人。"
   gender = "男性"
   age = 32
@@ -1376,6 +1380,7 @@ direction = "west"
 
     characters "wusangui" {
       name = "吴三桂"
+      aliases = ["wu sangui", "wu"]
       description = "这就是大名鼎鼎的引清兵入关的平西王吴三桂"
   title = "平西王"
   gender = "男性"
@@ -1423,6 +1428,7 @@ direction = "west"
 
     characters "xiaoer" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1462,6 +1468,7 @@ direction = "west"
 
     characters "armor" {
       name = "铁甲"
+      aliases = ["armor", "jia"]
       description = ""
     }
 
@@ -1470,6 +1477,7 @@ direction = "west"
 
     characters "baozi" {
       name = "包子"
+      aliases = ["baozi", "dumpling"]
       description = "一个香喷喷的肉包子。"
     }
 
@@ -1478,6 +1486,7 @@ direction = "west"
 
     characters "changjian" {
       name = "长剑"
+      aliases = ["changjian", "jian"]
       description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
     }
 
@@ -1486,6 +1495,7 @@ direction = "west"
 
     characters "gangdao" {
       name = "钢刀"
+      aliases = ["blade"]
       description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
     }
 
@@ -1494,6 +1504,7 @@ direction = "west"
 
     characters "guanfu" {
       name = "官服"
+      aliases = ["guan fu", "fu"]
       description = ""
     }
 
@@ -1502,6 +1513,7 @@ direction = "west"
 
     characters "huasheng" {
       name = "油炸花生"
+      aliases = ["huasheng", "peanut"]
       description = "一碟香喷喷的花生米。"
     }
 
@@ -1510,6 +1522,7 @@ direction = "west"
 
     characters "huoqiang" {
       name = "金火枪"
+      aliases = ["jin huoqiang", "jin", "huoqiang"]
       description = "一支由黄金铸成，做工精细的火枪。"
     }
 
@@ -1518,6 +1531,7 @@ direction = "west"
 
     characters "jitui" {
       name = "烤鸡腿"
+      aliases = ["jitui", "tui"]
       description = "一枝烤得香喷喷的鸡腿。"
     }
 
@@ -1526,6 +1540,7 @@ direction = "west"
 
     characters "jiudai" {
       name = "牛皮酒袋"
+      aliases = ["jiudai", "wineskin", "skin"]
       description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
     }
 
@@ -1534,6 +1549,7 @@ direction = "west"
 
     characters "niurou" {
       name = "熟牛肉"
+      aliases = ["niu rou", "rou"]
       description = "一块香喷喷的熟牛肉。"
     }
 
@@ -1542,6 +1558,7 @@ direction = "west"
 
     characters "wan" {
       name = "大碗茶"
+      aliases = ["wan", "da wan", "ci wan"]
       description = "一个粗磁大碗。"
     }
 
@@ -1550,6 +1567,7 @@ direction = "west"
 
     characters "yan" {
       name = "水烟"
+      aliases = ["shui yan", "shui", "yan"]
       description = "这是一卷水烟丝。"
     }
 
@@ -1558,6 +1576,7 @@ direction = "west"
 
     characters "yantong" {
       name = "水烟筒"
+      aliases = ["yan tong", "yan", "tong"]
       description = "这是一支云南人喜爱的水烟筒。你可以用(fire)来吸烟。"
 
   init = {
@@ -1571,6 +1590,7 @@ direction = "west"
 
     items "book14_1" {
       name = "四十二章经一"
+      aliases = ["book1"]
       description = "一本镶黄旗的经书,封皮(binding)很精致。"
   verbs = [
     "get",
@@ -1589,6 +1609,7 @@ direction = "west"
 
     items "pingfeng" {
       name = "大理石屏风"
+      aliases = ["ping feng", "ping", "feng"]
       description = "一座大理石的屏风，上面的天然花纹栩栩如生。"
   verbs = [
     "get",

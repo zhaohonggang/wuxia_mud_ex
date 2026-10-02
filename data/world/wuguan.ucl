@@ -829,6 +829,7 @@ item_desc = {
 
     characters "chushi" {
       name = "厨师"
+      aliases = ["chu shi", "chu", "shi"]
       description = "他是郭府的厨子，敦厚老实。你可以问他要(serve)些吃的。"
   gender = "男性"
   age = 65
@@ -861,6 +862,7 @@ item_desc = {
 
     characters "fan" {
       name = "范先生"
+      aliases = ["fan xiansheng", "fan", "xiansheng"]
       description = ""
   title = "帐房先生"
   gender = "男性"
@@ -896,6 +898,7 @@ item_desc = {
 
     characters "guanjia1" {
       name = "柴房管事"
+      aliases = ["chaifang guanshi", "guanshi"]
       description = "他是柴房管事，专管柴房！"
   gender = "男性"
   age = 50
@@ -924,6 +927,7 @@ item_desc = {
 
     characters "guanjia2" {
       name = "木房管事"
+      aliases = ["mufang guanshi", "guanshi"]
       description = "他是木房管事，专管木房！"
   gender = "男性"
   age = 50
@@ -952,6 +956,7 @@ item_desc = {
 
     characters "guanjia3" {
       name = "马房管事"
+      aliases = ["mafang guanshi", "guanshi"]
       description = "他是马房管事，专管马房里的大小杂事！"
   gender = "男性"
   age = 50
@@ -975,6 +980,7 @@ item_desc = {
 
     characters "guanjia5" {
       name = "菜园管事"
+      aliases = ["caiyuan guanshi", "guanshi"]
       description = "他是菜园管事，专管菜园里大小杂事！"
   gender = "男性"
   age = 50
@@ -998,6 +1004,7 @@ item_desc = {
 
     characters "guanjia6" {
       name = "菜园管事"
+      aliases = ["caiyuan guanshi", "guanshi"]
       description = "他是菜园管事，专管菜园里大小杂事！"
   gender = "男性"
   age = 50
@@ -1021,6 +1028,7 @@ item_desc = {
 
     characters "guojing" {
       name = "郭靖"
+      aliases = ["guo jing", "guo", "jing"]
       description = "他就是人称北侠的郭靖，既是蒙古成吉思汗的金刀 驸马，又是江南七怪、全真派马钰道长、「北丐」 洪七公和「老顽童」周伯通等人的徒弟，身兼数门 武功。他身着一件灰色长袍，体态魁梧，敦厚的面 目中透出一股威严令人不由得产生一股钦佩之情。"
   title = "襄阳城大将"
   nickname = "北侠"
@@ -1116,6 +1124,7 @@ chats = [
 
     characters "puren1" {
       name = "仆人"
+      aliases = ["pu ren", "puren", "ren"]
       description = "这是个仆人打扮的年青人，两眼乱转，四处看个不停。"
   gender = "男性"
   age = 25
@@ -1143,6 +1152,7 @@ chats = [
 
     characters "wudunru" {
       name = "武敦儒"
+      aliases = ["wu dunru", "wu", "dunru"]
       description = "他是郭靖大弟子，相貌和蔼，一天到晚笑呵呵的。"
   title = "郭靖大弟子"
   nickname = "消息灵通"
@@ -1212,6 +1222,7 @@ chats = [
 
     characters "wusantong" {
       name = "武三通"
+      aliases = ["wu santong", "wu", "santong"]
       description = "朱子柳乃是一灯大师的四大弟子之一，现在正协助 郭靖、黄蓉镇守襄阳城。"
   title = "南帝四大弟子"
   gender = "男性"
@@ -1268,6 +1279,7 @@ chats = [
 
     characters "wuxiuwen" {
       name = "武修文"
+      aliases = ["wu xiuwen", "wu", "xiuwen"]
       description = "他是郭靖的二弟子，精明强干，专门负责后勤。"
   title = "郭靖二弟子"
   gender = "男性"
@@ -1334,6 +1346,7 @@ chats = [
 
     characters "yahuan" {
       name = "丫环"
+      aliases = ["ya huan", "ya", "huan"]
       description = "这是一个小丫环，容貌清秀脱俗。"
   gender = "女性"
   shen_type = 1
@@ -1358,6 +1371,7 @@ chats = [
 
     characters "yelvqi" {
       name = "耶律齐"
+      aliases = ["yelv qi", "yelv", "qi"]
       description = "耶律齐是郭靖和黄蓉的大女婿，郭芙的丈夫。"
   title = "全真教第二代弟子"
   nickname = "丐帮帮主"
@@ -1427,6 +1441,7 @@ chats = [
 
     characters "zhuziliu" {
       name = "朱子柳"
+      aliases = ["zhu ziliu", "zhu", "ziliu"]
       description = "朱子柳乃是一灯大师的四大弟子之一，现在正协助 郭靖、黄蓉镇守襄阳城。"
   title = "南帝四大弟子"
   gender = "男性"
@@ -1484,6 +1499,7 @@ chats = [
 
     items "chaidao" {
       name = "柴刀"
+      aliases = ["chai dao", "chai", "dao"]
       description = "这是一柄沉甸甸的砍柴刀，普通百姓的日常用品。"
   verbs = [
     "get",
@@ -1512,6 +1528,7 @@ chats = [
 
     items "chutou" {
       name = "锄头"
+      aliases = ["chu tou", "chu", "tou"]
       description = "这是一把锄头，普通百姓的日常务农用品。"
   verbs = [
     "get",
@@ -1540,6 +1557,7 @@ chats = [
 
     items "juzi" {
       name = "锯子"
+      aliases = ["ju zi", "ju", "zi"]
       description = "这是一用来锯木头的锯子，普通百姓的日常用品。"
   verbs = [
     "get",
@@ -1568,6 +1586,7 @@ chats = [
 
     items "piao" {
       name = "水瓢"
+      aliases = ["shui piao", "shui", "piao"]
       description = "这是一个用老葫芦劈开做成的瓢，普通百姓的日常务农用品。"
   verbs = [
     "get",
@@ -1596,6 +1615,7 @@ chats = [
 
     items "rice" {
       name = "小米饭"
+      aliases = ["rice"]
       description = "一碗香喷喷的小米饭。"
   verbs = [
     "get",
@@ -1616,6 +1636,7 @@ chats = [
 
     items "saozhou" {
       name = "扫帚"
+      aliases = ["sao zhou", "sao", "zhou"]
       description = "这是一把扫帚，普通百姓的日常用品。"
   verbs = [
     "get",
@@ -1644,6 +1665,7 @@ chats = [
 
     items "tea" {
       name = "花茶"
+      aliases = ["tea"]
       description = "一杯茶杯，里面盛有清香浓郁的花茶。"
   verbs = [
     "get",

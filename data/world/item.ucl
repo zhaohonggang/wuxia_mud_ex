@@ -115,6 +115,7 @@ zones "item" {
 
     characters "zhang" {
       name = "张天师"
+      aliases = ["zhang tianshi", "zhang"]
       description = "这是一位仙风神骨，道貌岸然的法师。"
   nickname = "消息灵通"
   gender = "男性"
@@ -174,6 +175,7 @@ zones "item" {
 
     items "butian" {
       name = "补天石"
+      aliases = ["magic stone", "butian shi", "shi"]
       description = "传说这是女娲补天剩下的五彩石，不知是真是假。"
   verbs = [
     "get",
@@ -192,6 +194,7 @@ zones "item" {
 
     items "chanhs" {
       name = "缠魂丝"
+      aliases = ["silk", "chan hunsi", "si"]
       description = "一束晶莹透明的细丝，是用蛛丝和蚕丝混合织就而成的。"
   verbs = [
     "get",
@@ -210,6 +213,7 @@ zones "item" {
 
     items "hantie" {
       name = "玄冰寒铁"
+      aliases = ["ice steel", "han tie", "tie"]
       description = "一块亮晶晶的金属，据说是在上古玄冰中孕育出的寒铁。"
   verbs = [
     "get",
@@ -228,6 +232,7 @@ zones "item" {
 
     items "jingtie" {
       name = "百炼精铁"
+      aliases = ["iron", "tie"]
       description = "一块黑黝黝的经过精心冶炼的精铁。"
   verbs = [
     "get",
@@ -246,6 +251,7 @@ zones "item" {
 
     items "tiancs" {
       name = "冰蚕丝"
+      aliases = ["white silk", "bingcan si", "si"]
       description = "一束晶莹剔透的细丝，隐然泛出白光。"
   verbs = [
     "get",
@@ -264,6 +270,7 @@ zones "item" {
 
     items "wujins" {
       name = "乌金丝"
+      aliases = ["black silk", "wujin si", "si"]
       description = "一束黑白相间的细丝，是由乌金丝和蚕丝混合织就而成。"
   verbs = [
     "get",
@@ -282,6 +289,7 @@ zones "item" {
 
     items "xuantie" {
       name = "玄铁石"
+      aliases = ["xuan tie", "tie"]
       description = "一块黑黝黝有些泛光石头，掂在手中感到极为沉重，远胜铜铁。"
   verbs = [
     "get",

@@ -368,6 +368,7 @@ zones "lanzhou" {
 
     items "huasen" {
       name = "五香花生"
+      aliases = ["huasheng", "peanut"]
       description = "一碟香喷喷的花生米。"
   verbs = [
     "get",
@@ -893,6 +894,7 @@ direction = "west"
 
     characters "boy" {
       name = "男孩"
+      aliases = ["boy"]
       description = "这是个农家少年，大概因从小物农，虽然年纪不大，可已长的很粗壮了。"
   gender = "男性"
   age = 13
@@ -918,6 +920,7 @@ direction = "west"
 
     characters "cainong" {
       name = "菜贩子"
+      aliases = ["cai fan", "cai", "fan"]
       description = "一个老实巴交的农民，卖些新鲜的蔬菜。"
   gender = "男性"
   age = 32
@@ -973,6 +976,7 @@ chats = [
 
     characters "girl" {
       name = "女孩"
+      aliases = ["girl"]
       description = "这是个农家少女，虽然只有十二、三 岁，身材已经开始发育。"
   gender = "女性"
   age = 12
@@ -998,6 +1002,7 @@ chats = [
 
     characters "kid" {
       name = "小孩"
+      aliases = ["kid"]
       description = "这是个农家小孩子"
   gender = "男性"
   age = 7
@@ -1023,6 +1028,7 @@ chats = [
 
     characters "liumang" {
       name = "流氓"
+      aliases = ["liu mang", "liu"]
       description = "他是一个成天游手好闲的流氓，长得倒是白白胖胖的，也许以前有过钱。"
   gender = "男性"
   age = 19
@@ -1049,6 +1055,7 @@ chats = [
 
     characters "liumangtou" {
       name = "流氓头"
+      aliases = ["liumang tou", "liumang", "liu"]
       description = "他长得奸嘴猴腮的，一看就不像是个好人。"
   gender = "男性"
   age = 25
@@ -1075,6 +1082,7 @@ chats = [
 
     characters "qian" {
       name = "钱迷心"
+      aliases = ["qian mixin", "qian", "mixin"]
       description = ""
   title = "钱庄老板"
   nickname = "心迷钱"
@@ -1123,6 +1131,7 @@ chats = [
 
     characters "xiaoer" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1162,6 +1171,7 @@ chats = [
 
     characters "xiaoer2" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1200,6 +1210,7 @@ chats = [
 
     characters "xiaoer3" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1239,6 +1250,7 @@ chats = [
 
     characters "xiaofan" {
       name = "小贩"
+      aliases = ["xiao fan", "seller", "fan"]
       description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1285,6 +1297,7 @@ chats = [
 
     characters "bottle" {
       name = "水壶"
+      aliases = ["water bottle", "bottle"]
       description = "一个不知道用什么动物的皮制成的水壶。"
     }
 
@@ -1293,6 +1306,7 @@ chats = [
 
     characters "cloth" {
       name = "布衣"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -1301,6 +1315,7 @@ chats = [
 
     characters "gourou" {
       name = "红烧狗肉"
+      aliases = ["gou rou", "gou"]
       description = "一碗香喷喷的红烧狗肉"
     }
 
@@ -1309,6 +1324,7 @@ chats = [
 
     characters "jiouhulu" {
       name = "酒葫芦"
+      aliases = ["jiouhulu", "hulu"]
       description = "一个用葫芦制成的酒壶。"
     }
 
@@ -1317,6 +1333,7 @@ chats = [
 
     characters "jiudai" {
       name = "牛皮酒袋"
+      aliases = ["jiudai", "wineskin", "skin"]
       description = "一个用来装酒的大酒袋，大概装得八、九升的酒。"
     }
 
@@ -1325,6 +1342,7 @@ chats = [
 
     characters "kaoya" {
       name = "烤鸭"
+      aliases = ["kaoya", "ya"]
       description = "一只肥得流油的北京烤鸭。"
     }
 
@@ -1333,6 +1351,7 @@ chats = [
 
     characters "maoniurou" {
       name = "耗牛肉"
+      aliases = ["maoniu rou", "rou"]
       description = "一块烧烤得香喷喷的耗牛肉。"
     }
 
@@ -1341,6 +1360,7 @@ chats = [
 
     characters "shoes" {
       name = "麻鞋"
+      aliases = ["gunny shoes", "shoes"]
       description = "这是一双麻布鞋，不易大滑，供游人登山使用。"
     }
 
@@ -1349,6 +1369,7 @@ chats = [
 
     characters "stick" {
       name = "手杖"
+      aliases = ["walking stick", "stick"]
       description = "这是一根爬山用的手杖。"
     }
 
@@ -1357,6 +1378,7 @@ chats = [
 
     characters "tangbo" {
       name = "汤包"
+      aliases = ["tangbo"]
       description = "一个香喷喷的鲜肉汤包。"
     }
 
@@ -1365,6 +1387,7 @@ chats = [
 
     characters "tanghulu" {
       name = "冰糖葫芦"
+      aliases = ["bingtang hulu", "bingtang", "hulu"]
       description = "一串火红的冰糖葫芦"
     }
 

@@ -1994,6 +1994,7 @@ item_desc = {
 
     characters "chushi" {
       name = "厨师"
+      aliases = ["chu shi", "chu", "shi"]
       description = "苗家聘请的厨师，你可以问他要(serve)一些吃的。"
   gender = "男性"
   age = 65
@@ -2021,6 +2022,7 @@ item_desc = {
 
     characters "dudajin" {
       name = "都大锦"
+      aliases = ["du dajin", "du", "dajin"]
       description = "这便是龙门镖局的总镖头都大锦，乃是少林寺俗家弟子。"
   title = "龙门镖局总镖头"
   nickname = "多臂熊"
@@ -2070,6 +2072,7 @@ item_desc = {
 
     characters "fushang" {
       name = "富商"
+      aliases = ["fu shang", "fu", "shang"]
       description = "中州本地的暴发户。"
   gender = "男性"
   age = 35
@@ -2096,6 +2099,7 @@ item_desc = {
 
     characters "guanjia" {
       name = "管家"
+      aliases = ["guan jia", "guan"]
       description = ""
   gender = "男性"
   age = 65
@@ -2122,6 +2126,7 @@ item_desc = {
 
     characters "gugong" {
       name = "雇工"
+      aliases = ["gu gong", "gong"]
       description = "年轻力壮的外地人。"
   gender = "男性"
   age = 25
@@ -2150,6 +2155,7 @@ item_desc = {
 
     characters "jiading" {
       name = "家丁"
+      aliases = ["jia ding", "jia"]
       description = ""
   gender = "男性"
   age = 35
@@ -2175,6 +2181,7 @@ item_desc = {
 
     characters "laogugong" {
       name = "老雇工"
+      aliases = ["lao gugong", "lao"]
       description = "年迈的外地讨生活人。"
   gender = "男性"
   age = 50
@@ -2203,6 +2210,7 @@ item_desc = {
 
     characters "poorman" {
       name = "穷汉"
+      aliases = ["qong han", "han"]
       description = "一个穷困潦倒的汉子。"
   gender = "男性"
   age = 33
@@ -2231,6 +2239,7 @@ item_desc = {
 
     characters "qiying" {
       name = "弃婴"
+      aliases = ["qi ying", "qi", "ying", "baby"]
       description = "不知是谁家小姐的私生子，不要了丢在街上。"
   gender = "男性"
   age = 3
@@ -2246,6 +2255,7 @@ item_desc = {
 
     characters "smith" {
       name = "铁匠"
+      aliases = ["tiejiang", "smith"]
       description = "铁匠正用铁钳夹住一块红热的铁块放进炉中。"
   title = "甲胄店老板"
   gender = "男性"
@@ -2275,6 +2285,7 @@ item_desc = {
 
     characters "wupanbing" {
       name = "巫攀冰"
+      aliases = ["wu panbing", "wu", "panbing"]
       description = ""
   title = "药铺老板"
   gender = "男性"
@@ -2327,6 +2338,7 @@ chats = [
 
     characters "yahuan" {
       name = "丫鬟"
+      aliases = ["ya huan", "ya", "huan"]
       description = "一个十多岁的小姑娘，在这里当丫鬟。"
   gender = "女性"
   age = 12
@@ -2358,6 +2370,7 @@ chats = [
 
     characters "yaodezhong" {
       name = "姚德忠"
+      aliases = ["yao dezhong", "yao"]
       description = ""
   gender = "男性"
   age = 34
@@ -2397,6 +2410,7 @@ chats = [
 
     characters "yayi" {
       name = "衙役"
+      aliases = ["ya yi", "ya"]
       description = "一个高大威猛的汉子，因为久在官府做事，脸 上已经磨炼得毫无表情。"
   gender = "男性"
   age = 25
@@ -2423,6 +2437,7 @@ chats = [
 
     characters "yitai" {
       name = "姨太太"
+      aliases = ["yi taitai", "yi", "taitai"]
       description = "她是周松天的姨太太，打扮得非常的妖艳。"
   gender = "女性"
   age = 22
@@ -2450,6 +2465,7 @@ chats = [
 
     characters "zhaolaoban" {
       name = "赵德言"
+      aliases = ["zhao deyan", "zhao", "deyan"]
       description = "赵德言是土生土长的中州人，做了几十年的小买卖。"
   title = "杂货铺老板"
   gender = "男性"
@@ -2491,6 +2507,7 @@ chats = [
 
     characters "zhousongtian" {
       name = "周松天"
+      aliases = ["zhou songtian", "zhou", "songtian"]
       description = "周松天乃中州城内的富豪。"
   title = "当铺老板"
   gender = "男性"
@@ -2526,6 +2543,7 @@ chats = [
 
     characters "baozi" {
       name = "包子"
+      aliases = ["baozi", "dumpling"]
       description = "一个香喷喷的肉包子。"
     }
 
@@ -2534,6 +2552,7 @@ chats = [
 
     characters "beixin" {
       name = "皮背心"
+      aliases = ["pi beixin", "beixin"]
       description = ""
     }
 
@@ -2542,6 +2561,7 @@ chats = [
 
     characters "changjian" {
       name = "长剑"
+      aliases = ["changjian", "sword", "chang jian", "jian"]
       description = "这是一把看起相当普通的长剑。"
     }
 
@@ -2550,6 +2570,7 @@ chats = [
 
     characters "gangdao" {
       name = "钢刀"
+      aliases = ["blade"]
       description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
     }
 
@@ -2558,6 +2579,7 @@ chats = [
 
     characters "goupi" {
       name = "狗皮"
+      aliases = ["gou pi", "pi"]
       description = ""
     }
 
@@ -2566,6 +2588,7 @@ chats = [
 
     characters "jitui" {
       name = "炸鸡腿"
+      aliases = ["jitui", "tui", "leg"]
       description = "一根啃得姬的炸鸡腿。"
     }
 
@@ -2574,6 +2597,7 @@ chats = [
 
     characters "kusang" {
       name = "哭丧棒"
+      aliases = ["kusang bang", "kusang", "bang"]
       description = "这是一根精铁打铸的哭丧棒。"
     }
 
@@ -2582,6 +2606,7 @@ chats = [
 
     characters "lingpai" {
       name = "铁灵牌"
+      aliases = ["tie lingpai", "tie", "lingpai"]
       description = "这是一副精铁打铸的铁灵牌。"
     }
 
@@ -2590,6 +2615,7 @@ chats = [
 
     characters "yaofang" {
       name = "残破药方"
+      aliases = ["yaofang"]
       description = ""
     }
 
@@ -2598,6 +2624,7 @@ chats = [
 
     characters "zhaohun" {
       name = "招魂幡"
+      aliases = ["zhaohun fan", "zhaohun", "fan"]
       description = "这是一面精铁打铸的招魂幡。"
     }
 

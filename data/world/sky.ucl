@@ -159,6 +159,7 @@ item_desc = {
 
     characters "beichou" {
       name = "北丑"
+      aliases = ["bei chou", "bei", "chou", "xizi"]
       description = "这是一个身着戏子打扮的瘦小老头，长得尖 嘴猴腮，天生一副奸相。这便是当今武林中 号称「南贤北丑」戏子北丑。"
   title = "武林泰斗"
   nickname = "北戏子"
@@ -238,6 +239,7 @@ item_desc = {
 
     characters "hua" {
       name = "华英雄"
+      aliases = ["hua yingxiong", "hua", "yingxiong"]
       description = "一个俊俏的中年男子，衣着长衫，他就是华英雄。 传说他命犯天煞孤星，一生漂泊，落于异地。尔后 习得一身绝技，兼修炼「中华傲决」，大败「东洋 战神」无敌。"
   title = "大宗师"
   nickname = "中华英雄"
@@ -289,6 +291,7 @@ item_desc = {
 
     characters "kou" {
       name = "寇仲"
+      aliases = ["kou zhong", "kou", "zhong"]
       description = "一个身着龙袍的魁梧少年，他就是少帅军的统帅寇仲。"
   title = "大宗师"
   nickname = "大唐双龙"
@@ -343,6 +346,7 @@ item_desc = {
 
     characters "li" {
       name = "李寻欢"
+      aliases = ["li xunhuan", "li", "xunhuan"]
       description = "一个身着白衫的中年男子，俊俏的面庞 毫无血色，似乎因酒色过度而苍白。他手中 握着一柄小刀，静静雕刻着一个木人。周围 发生的一切他仿佛都看不见。"
   title = "大宗师"
   nickname = "小李探花"
@@ -403,6 +407,7 @@ chats = [
 
     characters "li2" {
       name = "李逍遥"
+      aliases = ["li xiaoyao", "li", "xiaoyao"]
       description = "仙剑奇侠传中的传奇人物，少年得蜀山剑派 高人授艺，兼习家传绝学飞龙探云手以及冰 心决，乃一代不世的剑侠。"
   title = "大宗师"
   nickname = "蜀山剑神"
@@ -456,6 +461,7 @@ chats = [
 
     characters "tie" {
       name = "铁传甲"
+      aliases = ["tie chuanjia", "tie", "chuanjia"]
       description = "一个身材魁梧的汉子。"
   title = "忠心护卫"
   nickname = "铁甲金刚"
@@ -507,6 +513,7 @@ chats = [
 
     characters "xu" {
       name = "徐子陵"
+      aliases = ["xu ziling", "xu", "ziling"]
       description = "一个俊俏的白衣少年，他就是名震天下的徐子陵。"
   title = "大宗师"
   nickname = "大唐双龙"
@@ -561,6 +568,7 @@ chats = [
 
     characters "chijian" {
       name = "赤剑"
+      aliases = ["chi jian", "jian", "sword", "chi", "chijian"]
       description = "一柄四尺来长的长剑，整个剑身呈红色。"
     }
 
@@ -569,6 +577,7 @@ chats = [
 
     characters "chiyoujian" {
       name = "玄蚩神剑"
+      aliases = ["chiyou jian", "sword", "jian"]
       description = "一柄玄铁铸造的长剑，剑柄上雕有蚩尤的头像。"
     }
 
@@ -577,6 +586,7 @@ chats = [
 
     characters "cloth1" {
       name = "白色长衫"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -585,6 +595,7 @@ chats = [
 
     characters "cloth2" {
       name = "雕龙长袍"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -593,6 +604,7 @@ chats = [
 
     characters "cloth3" {
       name = "青色长衫"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -601,6 +613,7 @@ chats = [
 
     characters "feidao" {
       name = "小李飞刀"
+      aliases = ["xiaoli feidao", "feidao"]
       description = "一柄看似普通的飞刀，刀柄上刻了个小小的“李”字。"
     }
 
@@ -609,6 +622,7 @@ chats = [
 
     characters "hands" {
       name = "残血手套"
+      aliases = ["canxue shoutao", "shoutao", "canxue", "hand", "tao"]
       description = "传说中的上古神器。"
     }
 
@@ -617,6 +631,7 @@ chats = [
 
     characters "jingzhongyue" {
       name = "井中月"
+      aliases = ["jingzhong yue", "blade", "dao", "yue", "jingzhong"]
       description = "一柄四尺来长的单刀，重达百斤，刀身散发着乌黑的光泽。"
     }
 
@@ -625,6 +640,7 @@ chats = [
 
     characters "pangukai" {
       name = "盘古铠"
+      aliases = ["pangu kai", "kai", "armor"]
       description = "一见黑黝黝的铁甲，上面雕有盘古的头像。"
     }
 
@@ -633,6 +649,7 @@ chats = [
 
     characters "renou" {
       name = "人偶"
+      aliases = ["renou"]
       description = "一块未完工的木偶，但已经可以辨认出是个女子的雕像。"
     }
 
@@ -641,6 +658,7 @@ chats = [
 
     items "heshibi" {
       name = "何氏壁"
+      aliases = ["heshi bi", "heshi", "bi"]
       description = "一块晶莹剔透的宝玉，其中一角镶嵌着一块黄 金，宝玉上雕刻着盘龙，这便是传说可以号令 天下的何氏壁。相传宝玉中蕴藏着奇异的能源， 武功高强者可以吸取(xi)其中的能量来增强功 力。"
   verbs = [
     "get",
@@ -659,6 +677,7 @@ chats = [
 
     items "jue" {
       name = "长生决"
+      aliases = ["changsheng jue", "book", "jue"]
       description = "这便是四大奇书之一的长生决，传说可以修炼至高无上的武学。"
   verbs = [
     "get",
@@ -685,6 +704,7 @@ chats = [
 
     items "miji1" {
       name = "铁线拳密芨"
+      aliases = ["miji", "book"]
       description = "这是一本薄薄的小册，上面记载了不少精妙的拳法。"
   verbs = [
     "get",
@@ -711,6 +731,7 @@ chats = [
 
     items "miji2" {
       name = "四季剑法"
+      aliases = ["jianfa miji", "book", "miji"]
       description = "这是一本薄薄的小册，上面记载了四季剑法的奥决。"
   verbs = [
     "get",
@@ -737,6 +758,7 @@ chats = [
 
     items "miji3" {
       name = "飞龙探云秘芨"
+      aliases = ["tanyun miji", "book", "miji"]
       description = "李逍遥的家传绝学。"
   verbs = [
     "get",
@@ -763,6 +785,7 @@ chats = [
 
     items "sheli" {
       name = "魔尊舍利"
+      aliases = ["mozun sheli", "sheli"]
       description = "一个浑圆的暗色球体，通体透明。这便是传说 中的魔教至宝----魔尊舍利。相传其中蕴藏着 无比巨大的能量，武功高强者可以吸取(xi)其 中的能量来增强功力。"
   verbs = [
     "get",
@@ -780,6 +803,7 @@ chats = [
 
     items "shenjiu" {
       name = "天乙神酒"
+      aliases = ["tianyi shenjiu", "jiu", "shenjiu", "tianyi"]
       description = "这是一瓶天乙神酒，便是只闻闻也让你昏昏欲醉。"
   verbs = [
     "get",
@@ -797,6 +821,7 @@ chats = [
 
     items "tianxiadan" {
       name = "天霞神丹"
+      aliases = ["tianxia shendan", "dan"]
       description = ""
   verbs = [
     "get",
@@ -814,6 +839,7 @@ chats = [
 
     items "yishu" {
       name = "岳山遗书"
+      aliases = ["yishu", "shu", "book"]
       description = "这便是当年「霸刀」岳山临死前的遗书，上面记载了他对刀法的体会。"
   verbs = [
     "get",

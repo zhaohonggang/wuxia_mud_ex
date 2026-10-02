@@ -501,6 +501,7 @@ zones "hengshan" {
 
     characters "he" {
       name = "仪和"
+      aliases = ["yi he", "he"]
       description = ""
   gender = "女性"
   age = 35
@@ -544,6 +545,7 @@ zones "hengshan" {
 
     characters "jing" {
       name = "定静师太"
+      aliases = ["dingjing shitai", "shitai", "dingjing"]
       description = ""
   gender = "女性"
   age = 45
@@ -587,6 +589,7 @@ zones "hengshan" {
 
     characters "lin" {
       name = "仪琳"
+      aliases = ["yi lin", "lin"]
       description = ""
   gender = "女性"
   age = 16
@@ -630,6 +633,7 @@ zones "hengshan" {
 
     characters "qin" {
       name = "秦绢"
+      aliases = ["qin juan", "qin", "juan"]
       description = ""
   gender = "女性"
   age = 16
@@ -673,6 +677,7 @@ zones "hengshan" {
 
     characters "qing" {
       name = "仪清"
+      aliases = ["yi qing", "qing"]
       description = ""
   gender = "女性"
   age = 35
@@ -716,6 +721,7 @@ zones "hengshan" {
 
     characters "wen" {
       name = "仪文"
+      aliases = ["yi wen", "wen"]
       description = ""
   gender = "女性"
   age = 28
@@ -759,6 +765,7 @@ zones "hengshan" {
 
     characters "xian" {
       name = "定闲师太"
+      aliases = ["dingxian shitai", "shitai", "dingxian"]
       description = ""
   title = "恒山派第十三代掌门"
   gender = "女性"
@@ -803,6 +810,7 @@ zones "hengshan" {
 
     characters "yafu" {
       name = "哑妇"
+      aliases = ["yafu"]
       description = "这是个终年不开口的哑妇"
   gender = "女性"
   age = 37
@@ -828,6 +836,7 @@ zones "hengshan" {
 
     characters "yi" {
       name = "定逸师太"
+      aliases = ["dingyi shitai", "shitai", "dingyi"]
       description = ""
   gender = "女性"
   age = 45
@@ -871,6 +880,7 @@ zones "hengshan" {
 
     characters "zheng" {
       name = "郑萼"
+      aliases = ["zheng e", "zheng", "e"]
       description = ""
   gender = "女性"
   age = 16
@@ -914,6 +924,7 @@ zones "hengshan" {
 
     characters "zhi" {
       name = "仪质"
+      aliases = ["yi zhi", "zhi"]
       description = ""
   gender = "女性"
   age = 25

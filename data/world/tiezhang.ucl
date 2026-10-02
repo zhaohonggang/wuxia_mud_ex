@@ -1319,6 +1319,7 @@ item_desc = {
 
     characters "bangzhon" {
       name = "黑衣帮众"
+      aliases = ["heiyi bangzhong", "heiyi", "bangzhong"]
       description = "他是一个身行健壮的汉子，两臂粗壮，膀阔腰圆。满脸的凶相。"
   gender = "男性"
   age = 30
@@ -1362,6 +1363,7 @@ item_desc = {
 
     characters "dizi" {
       name = "厚土旗弟子"
+      aliases = ["dizi"]
       description = "他是身材矮小，两臂粗壮，膀阔腰圆。他手持兵 刃，身穿一黑色圣衣，似乎有一身武艺。"
   gender = "男性"
   age = 35
@@ -1405,6 +1407,7 @@ item_desc = {
 
     characters "dizi1" {
       name = "巨木旗教众"
+      aliases = ["dizi"]
       description = "他是身材高大，两臂粗壮，膀阔腰圆。他手持兵 刃，身穿一绿色圣衣，似乎有一身武艺。"
   gender = "男性"
   age = 35
@@ -1445,6 +1448,7 @@ item_desc = {
 
     characters "gu" {
       name = "顾炎武"
+      aliases = ["gu yanwu", "gu"]
       description = "顾先生名炎武，字亭林，江苏昆山人士。 顾先生是当世大儒，明亡之后，心伤国变，隐居不仕。 他又高又瘦，面目黝黑。"
   gender = "男性"
   age = 55
@@ -1490,6 +1494,7 @@ chats = [
 
     characters "heiyi" {
       name = "黑衣帮众"
+      aliases = ["heiyi bangzhong", "heiyi", "bangzhong"]
       description = "他是一个身行健壮的汉子，两臂粗壮，膀阔腰圆。满脸的凶相。"
   gender = "男性"
   age = 30
@@ -1533,6 +1538,7 @@ chats = [
 
     characters "huiyi" {
       name = "灰衣帮众"
+      aliases = ["huiyi bangzhong", "huiyi", "bangzhong"]
       description = "他是一个身行健壮的汉子，两臂粗壮，膀阔腰圆。满脸的凶相。"
   gender = "男性"
   age = 30
@@ -1576,6 +1582,7 @@ chats = [
 
     characters "mayi" {
       name = "麻衣长老"
+      aliases = ["mayi zhanglao", "mayi", "zhanglao"]
       description = "他是一个年约六旬的老者，满头花发，两鬓斑白。 他两侧的太阳穴高高鼓起，微闭的双目中时而闪过凌厉的眼神，似乎身怀绝技。"
   gender = "男性"
   age = 30
@@ -1619,6 +1626,7 @@ chats = [
 
     characters "xiaoer" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1658,6 +1666,7 @@ chats = [
 
     characters "xiaotong" {
       name = "小童"
+      aliases = ["xiao tong", "xiao", "tong"]
       description = "他是一位未通世故的少年，脸上挂着天真的稚笑。"
   gender = "男性"
   age = 10
@@ -1690,6 +1699,7 @@ chats = [
 
     characters "yahuan" {
       name = "丫鬟"
+      aliases = ["ya huan", "ya"]
       description = "她是一个长得很好看的小姑娘。"
   gender = "女性"
   age = 16
@@ -1712,6 +1722,7 @@ chats = [
 
     characters "black_cloth" {
       name = "黑衣"
+      aliases = ["cloth"]
       description = "这是一件绣着红色火焰的黑色圣衣。"
     }
 
@@ -1720,6 +1731,7 @@ chats = [
 
     characters "green_cloth" {
       name = "绿色圣衣"
+      aliases = ["cloth"]
       description = "这是一件绣着红色火焰的绿色圣衣。"
     }
 
@@ -1728,6 +1740,7 @@ chats = [
 
     characters "hupi" {
       name = "虎皮"
+      aliases = ["hu pi", "pi"]
       description = ""
     }
 
@@ -1736,6 +1749,7 @@ chats = [
 
     items "axe" {
       name = "大板斧"
+      aliases = ["bigaxe", "axe"]
       description = "这是一把沉重的大板斧，砍起东西来非常顺手。"
   verbs = [
     "get",
@@ -1762,6 +1776,7 @@ chats = [
 
     items "changbian" {
       name = "长鞭"
+      aliases = ["changbian", "bian"]
       description = "这是一柄普通的长鞭，由水牛精工编织而成。"
   verbs = [
     "get",
@@ -1790,6 +1805,7 @@ chats = [
 
     items "fan" {
       name = "大米饭"
+      aliases = ["mi fan", "fan"]
       description = "一碗香喷喷的大米饭。"
   verbs = [
     "get",
@@ -1810,6 +1826,7 @@ chats = [
 
     items "gangdao" {
       name = "钢刀"
+      aliases = ["blade"]
       description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
   verbs = [
     "get",
@@ -1838,6 +1855,7 @@ chats = [
 
     items "gangjian" {
       name = "钢剑"
+      aliases = ["jian", "sword"]
       description = "这是一柄精工制成的钢剑，这种剑在将领之间非常流行。"
   verbs = [
     "get",
@@ -1866,6 +1884,7 @@ chats = [
 
     items "gangzhang" {
       name = "钢杖"
+      aliases = ["gangzhang"]
       description = "这是一根粗重的钢杖，是星宿派专用之物。"
   verbs = [
     "get",
@@ -1894,6 +1913,7 @@ chats = [
 
     items "haigu_1" {
       name = "骸骨"
+      aliases = ["haigu", "skeleton"]
       description = "这副骸骨躺在这里已经很久了。"
   verbs = [
     "get",
@@ -1913,6 +1933,7 @@ chats = [
 
     items "haigu" {
       name = "骸骨"
+      aliases = ["haigu", "skeleton"]
       description = "这副骸骨躺在这里已经很久了。"
   verbs = [
     "get",
@@ -1932,6 +1953,7 @@ chats = [
 
     items "haigu1" {
       name = "骸骨"
+      aliases = ["haigu"]
       description = "这是一具男子的骸骨。"
   verbs = [
     "get",
@@ -1951,6 +1973,7 @@ chats = [
 
     items "haigu2" {
       name = "骸骨"
+      aliases = ["haigu"]
       description = "这是一具女子的骸骨。在其胸部插着一把短剑。"
   verbs = [
     "get",
@@ -1970,6 +1993,7 @@ chats = [
 
     items "hsnr" {
       name = "红烧牛肉"
+      aliases = ["hongshao niurou", "niurou"]
       description = "一盘炖得很烂很香的牛肉，看得你直流口水。"
   verbs = [
     "get",
@@ -1990,6 +2014,7 @@ chats = [
 
     items "qingshui_hulu" {
       name = "清水葫芦"
+      aliases = ["qingshui hulu", "hulu", "bottle"]
       description = "一个用葫芦制成的水壶。"
   verbs = [
     "get",
@@ -2008,6 +2033,7 @@ chats = [
 
     items "ruzhu" {
       name = "片皮乳猪"
+      aliases = ["ruzhu"]
       description = "鸡豆花色白细嫩，汤清味鲜，源于豆花，高于豆花， 被誉名为“豆花不用豆，吃鸡不见鸡”的佳肴美馔。"
   verbs = [
     "get",
@@ -2028,6 +2054,7 @@ chats = [
 
     items "shanshui" {
       name = "山水画"
+      aliases = ["shanshui hua", "shanshui", "hua"]
       description = "只见画中是一座陡峭突兀的高山，共有五座山峰，中间一峰尤高，笔立指天，耸入云表， 山侧生着一排松树，松梢积雪，树身尽皆向南弯曲，想见北风之烈。峰西独有一棵老松， 却是挺然直起，巍巍秀拔，树下朱笔画着一个迎风舞剑的将军。这人面目难见，但衣袂飘 举，资形脱俗。全幅画都是水墨山水，独此人殷红如火，更加显得卓然不群。画上并无书 款，只题着一首诗云：“经年尘土满征衣，特特寻芳上翠微，好山好水看不足，马蹄催趁 月明归。”"
   verbs = [
     "get",
@@ -2045,6 +2072,7 @@ chats = [
 
     items "wumu_yishu" {
       name = "「武穆遗书」"
+      aliases = ["wumu yishu", "yishu"]
       description = "这就是岳武穆临死前留下的“破金要诀”。 只见第一页上写了十八个大字： “重搜选，谨训习” “公赏罚，明号令” “严纪  ，同甘苦”"
   verbs = [
     "get",
@@ -2064,6 +2092,7 @@ chats = [
 
     items "ycj" {
       name = "鱼肠剑"
+      aliases = ["yuchang jian", "jian"]
       description = "这就是传说中的鱼肠剑，没想到会在这里出现！ 你忍不住想把它捡(jian)起来！！！"
   verbs = [
     "get",
@@ -2087,6 +2116,7 @@ chats = [
 
     items "zhangpu" {
       name = "铁掌掌谱"
+      aliases = ["tiezhang zhangpu", "zhangpu", "pu"]
       description = "这是一本落满灰尘的破书，纸质发黄，边缘处也已残缺不全了。"
   verbs = [
     "get",
@@ -2106,6 +2136,7 @@ chats = [
 
     items "zitie" {
       name = "字帖"
+      aliases = ["zitie", "tie"]
       description = "“满江红”  怒发冲冠，凭阑处，潇潇雨歇。 抬望眼，仰天长啸，壮怀激烈。 三十功名尘与土，八千里路云和月。 莫等闲，白了少年头，空悲切。  靖康耻，尤未雪；臣子憾，何时灭。 驾长车踏破，贺兰山缺。 壮志饥餐胡虏肉，笑谈渴饮匈奴血。 待从头，收拾旧山河，朝天阙。"
   verbs = [
     "get",

@@ -2287,6 +2287,7 @@ behavior_config = {
 
     characters "chaboshi" {
       name = "茶博士"
+      aliases = ["cha boshi", "boshi"]
       description = "这个茶博士可是衡阳城里消息灵通人士，每日迎来送往， 所以对城里的一举一动都了如指掌。"
   title = "茶馆老板"
   nickname = "消息灵通"
@@ -2327,6 +2328,7 @@ behavior_config = {
 
     characters "chushi" {
       name = "厨师"
+      aliases = ["chu shi", "chu", "shi"]
       description = "衡山派的厨师，你可以问他要(serve)一些吃的。"
   gender = "男性"
   age = 50
@@ -2354,6 +2356,7 @@ behavior_config = {
 
     characters "dao_ke" {
       name = "刀客"
+      aliases = ["dao ke", "ke"]
       description = "这家伙满脸横肉，一付凶神恶煞的模样，令人望而生畏。"
   gender = "男性"
   age = 20
@@ -2383,6 +2386,7 @@ behavior_config = {
 
     characters "dizi1" {
       name = "弟子"
+      aliases = ["di zi", "di", "zi"]
       description = ""
   gender = "男性"
   age = 23
@@ -2426,6 +2430,7 @@ behavior_config = {
 
     characters "dufeng" {
       name = "杜凤鄂"
+      aliases = ["du fenge", "du", "fenge"]
       description = "杜凤鄂一脸惆怅，不知道他心中所烦为何事。"
   gender = "男性"
   age = 22
@@ -2490,6 +2495,7 @@ behavior_config = {
 
     characters "feiyan" {
       name = "绯胭"
+      aliases = ["fei yan", "fei", "yan"]
       description = "绯胭原本在青楼以卖唱为生，因为被逼无奈，误杀县老 爷的公子，险被处死，后来据说她被狐仙所救，从此隐 姓埋名，做起这乐器的买卖。还有的说她本身就是狐仙 所化，又由于她的一曲《恋八音》，所以人人都称她为 「八音狐仙」。"
   title = "老板娘"
   nickname = "八音狐仙"
@@ -2555,6 +2561,7 @@ behavior_config = {
 
     characters "guanjia" {
       name = "管家"
+      aliases = ["guan jia", "guan"]
       description = ""
   gender = "男性"
   age = 65
@@ -2581,6 +2588,7 @@ behavior_config = {
 
     characters "haoke" {
       name = "江湖豪客"
+      aliases = ["jianghu haoke", "haoke"]
       description = "一名满脸彪捍之色的江湖豪客。"
   gender = "男性"
   age = 30
@@ -2618,6 +2626,7 @@ behavior_config = {
 
     characters "hunter" {
       name = "猎人"
+      aliases = ["hunter"]
       description = ""
   gender = "男性"
   age = 45
@@ -2662,6 +2671,7 @@ behavior_config = {
 
     characters "jiading" {
       name = "家丁"
+      aliases = ["jia ding", "jia"]
       description = ""
   gender = "男性"
   age = 35
@@ -2687,6 +2697,7 @@ behavior_config = {
 
     characters "jian_ke" {
       name = "剑客"
+      aliases = ["jian ke", "ke"]
       description = "这是位中年武人，肩背长剑，长长的剑穗随风飘扬，看来似乎身怀绝艺。"
   gender = "男性"
   age = 45
@@ -2716,6 +2727,7 @@ behavior_config = {
 
     characters "liufuren" {
       name = "刘夫人"
+      aliases = ["liu furen", "furen"]
       description = "她是刘正风的夫人。"
   gender = "女性"
   age = 42
@@ -2739,6 +2751,7 @@ behavior_config = {
 
     characters "liujing" {
       name = "刘菁"
+      aliases = ["liu jing", "jing"]
       description = "她是刘正风的女儿。"
   gender = "女性"
   age = 17
@@ -2782,6 +2795,7 @@ behavior_config = {
 
     characters "liuqin" {
       name = "刘芹"
+      aliases = ["liu qin", "qin"]
       description = "他是刘正风的最宠爱的小儿子。"
   gender = "男性"
   age = 15
@@ -2825,6 +2839,7 @@ behavior_config = {
 
     characters "qiang" {
       name = "黄智强"
+      aliases = ["huang zhiqiang", "zhiqiang", "huang"]
       description = ""
   title = "杂货铺老板"
   nickname = "食人魔"
@@ -2875,6 +2890,7 @@ behavior_config = {
 
     characters "sherou" {
       name = "蟒蛇肉"
+      aliases = ["she rou", "she"]
       description = "一大块蟒蛇肉。"
     }
 
@@ -2883,6 +2899,7 @@ behavior_config = {
 
     characters "tian" {
       name = "田伯光"
+      aliases = ["tian boguang", "tian", "boguang"]
       description = "他一身飘逸的白色长衫，风流儒雅。"
   nickname = "万里独行"
   gender = "男性"
@@ -2947,6 +2964,7 @@ chats = [
 
     characters "turou" {
       name = "兔肉"
+      aliases = ["tu rou", "tu"]
       description = "一块鲜血淋漓肥的野兔肉。"
     }
 
@@ -2955,6 +2973,7 @@ chats = [
 
     characters "xiangke" {
       name = "敬香客"
+      aliases = ["jingxiang ke", "ke", "jingxiang"]
       description = "这是来衡山朝拜的人。"
   gender = "男性"
   age = 45
@@ -2975,6 +2994,7 @@ chats = [
 
     characters "xiaoer" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   gender = "男性"
   age = 22
@@ -3012,6 +3032,7 @@ chats = [
 
     characters "xiaoer2" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   gender = "男性"
   age = 22
@@ -3049,6 +3070,7 @@ chats = [
 
     characters "yilin" {
       name = "仪琳"
+      aliases = ["yi lin", "yi", "lin"]
       description = "仪琳是恒山派定逸师太的心爱弟子。"
   gender = "女性"
   age = 16
@@ -3085,6 +3107,7 @@ chats = [
 
     characters "youke" {
       name = "游客"
+      aliases = ["you ke", "ke", "you"]
       description = "这是来衡山旅游的游客。"
   gender = "男性"
   age = 25
@@ -3105,6 +3128,7 @@ chats = [
 
     characters "yuanziyi" {
       name = "袁紫衣"
+      aliases = ["yuan ziyi", "ziyi", "yuan"]
       description = "她是峨嵋派一个辈份极高的老尼的关门徒弟。 一张脸秀丽绝俗。身着一身淡紫衣裳。 这一路上去京师她夺了好几家掌门。"
   title = "九家半门派总掌门"
   gender = "女性"
@@ -3168,6 +3192,7 @@ chats = [
 
     characters "blackcloth" {
       name = "黑色布衣"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -3176,6 +3201,7 @@ chats = [
 
     characters "female_shoe" {
       name = "绣花小鞋"
+      aliases = ["flower shoes", "shoes"]
       description = "一双女人穿的缝制得很精美的绣花鞋。"
     }
 
@@ -3184,6 +3210,7 @@ chats = [
 
     characters "female1" {
       name = "湖绿长裙"
+      aliases = ["green skirt", "cloth"]
       description = "一件清新可人的湖绿长裙。"
     }
 
@@ -3192,6 +3219,7 @@ chats = [
 
     characters "huqin" {
       name = "NPC"
+      aliases = ["hu qin", "hu", "qin"]
       description = "这是一把普通的胡琴。"
 
   init = {
@@ -3205,6 +3233,7 @@ chats = [
 
     characters "luo_cloth" {
       name = "熟罗长袍"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -3213,6 +3242,7 @@ chats = [
 
     characters "tanmuqin" {
       name = "NPC"
+      aliases = ["tanmu qin", "tanmu", "qin"]
       description = "一把檀木所制的木琴，古典雅致。"
 
   init = {
@@ -3226,6 +3256,7 @@ chats = [
 
     characters "zhuxiao" {
       name = "NPC"
+      aliases = ["zhu xiao", "zhu", "xiao"]
       description = "一把翠竹所制的洞萧，隐隐泛出绿光。"
 
   init = {
@@ -3239,6 +3270,7 @@ chats = [
 
     items "jia" {
       name = "捕兽夹"
+      aliases = ["bushou jia", "jia", "bushou"]
       description = "这是专门用来捕捉各种禽兽的，夹齿锋利无比。"
   verbs = [
     "get",
@@ -3258,6 +3290,7 @@ chats = [
 
     items "longzi" {
       name = "笼子"
+      aliases = ["long zi", "long", "zi"]
       description = "这个笼子不太大，看来只能装(zhuang)下较小的动物。"
   verbs = [
     "get",
@@ -3277,6 +3310,7 @@ chats = [
 
     items "mantou" {
       name = "馒头"
+      aliases = ["man tou", "man", "tou"]
       description = "一个馒头。"
   verbs = [
     "get",
@@ -3297,6 +3331,7 @@ chats = [
 
     items "mujian" {
       name = "木剑"
+      aliases = ["mu jian", "jian"]
       description = "这是一柄用树枝削成的木剑。"
   verbs = [
     "get",
@@ -3325,6 +3360,7 @@ chats = [
 
     items "water" {
       name = "清水"
+      aliases = ["water", "shui"]
       description = "一碗清水。"
   verbs = [
     "get",
@@ -3343,6 +3379,7 @@ chats = [
 
     items "zigai_book" {
       name = "「紫盖剑谱」"
+      aliases = ["zigai jianpu", "jianpu", "zigai", "pu"]
       description = "封面上写著「紫盖剑谱」。"
   verbs = [
     "get",
@@ -3369,6 +3406,7 @@ chats = [
 
     items "honghuqin" {
       name = "红木胡琴·五玄"
+      aliases = ["hongmu huqin", "qin", "huqin", "hongmu"]
       description = "一把精致的红木胡琴，琴身光滑，微泛红光。"
   verbs = [
     "get",
@@ -3388,6 +3426,7 @@ chats = [
 
     items "huxian_book" {
       name = "「狐仙」"
+      aliases = ["huxian book", "huxian", "book"]
       description = "一本破旧的书，也不知道这是谁写的。没事可以看看(read)。"
   verbs = [
     "get",
@@ -3407,6 +3446,7 @@ chats = [
 
     items "jiaoyeqin" {
       name = "蕉叶古琴·明朝"
+      aliases = ["jiaoye qin", "jiaoye", "qin"]
       description = "此琴乃弘治嘉靖年间著名斫琴家祝海鹤所制 琴形旖旎秀逸，蕉叶卷边工雅生动，音色润 匀透静，为琴器中难得一见的珍品。"
   verbs = [
     "get",
@@ -3426,6 +3466,7 @@ chats = [
 
     items "jiuxiaoqin" {
       name = "九霄环佩·唐朝"
+      aliases = ["jiuxiao qin", "jiuxiao", "qin"]
       description = "这是历史最悠久的传世之琴，盛唐开元之器。 此琴形体饱满，上髹紫漆，间杂朱砂后补之   色，贵在声形俱佳，为传世之器的极品。"
   verbs = [
     "get",
@@ -3445,6 +3486,7 @@ chats = [
 
     items "qin_jimo" {
       name = "七玄流银·寂寞"
+      aliases = ["jimo qin", "jimo", "qin"]
       description = "此琴通体泛出银光，耀眼夺目。上刻「寂寞」。"
   verbs = [
     "get",
@@ -3464,6 +3506,7 @@ chats = [
 
     items "qin_jueyin" {
       name = "七玄流银·绝音"
+      aliases = ["jueyin qin", "jueyin", "qin"]
       description = "此琴通体泛出银光，耀眼夺目。上刻「绝音」。"
   verbs = [
     "get",
@@ -3483,6 +3526,7 @@ chats = [
 
     items "qin_konggu" {
       name = "七玄流银·空谷"
+      aliases = ["konggu qin", "konggu", "qin"]
       description = "此琴通体泛出银光，耀眼夺目。上刻「空谷」。"
   verbs = [
     "get",
@@ -3502,6 +3546,7 @@ chats = [
 
     items "qin_tianlai" {
       name = "七玄流银·天籁"
+      aliases = ["tianlai qin", "tianlai", "qin"]
       description = "此琴通体泛出银光，耀眼夺目。上刻「天籁」。"
   verbs = [
     "get",
@@ -3521,6 +3566,7 @@ chats = [
 
     items "shixuanqin_zhanguo" {
       name = "十玄古琴·战国"
+      aliases = ["shixuan qin", "shixuan", "qin"]
       description = "这是迄今能看到的中国最早的琴类乐器，此 琴埋于战国曾候乙墓之中，琴长67公分，琴 面起伏有致。"
   verbs = [
     "get",
@@ -3540,6 +3586,7 @@ chats = [
 
     items "tanhuqin" {
       name = "檀木胡琴"
+      aliases = ["tanmu huqin", "qin", "huqin", "tanmu"]
       description = "一把精致的檀木胡琴。"
   verbs = [
     "get",
@@ -3559,6 +3606,7 @@ chats = [
 
     items "yuepu_book" {
       name = "「古乐谱篇」"
+      aliases = ["yuepu book", "yuepu", "book"]
       description = "记载着古代乐谱的笔记，你闲着没事儿可以看看(read)。"
   verbs = [
     "get",
@@ -3578,6 +3626,7 @@ chats = [
 
     items "yueqi_book" {
       name = "「古乐器篇」"
+      aliases = ["yueqi book", "yueqi", "book"]
       description = "记载着古代乐器的笔记，你闲着没事儿可以看看(read)。"
   verbs = [
     "get",
@@ -3597,6 +3646,7 @@ chats = [
 
     items "zhongnishi" {
       name = "仲尼式琴·宋朝"
+      aliases = ["zhongni qin", "zhongni", "qin"]
       description = "此琴体扁身薄，琴体怪异，琴轸右面垂下深 舌罗汉腿，漆色亮绿，微泛绿光，仲尼式琴 为元朝主流。"
   verbs = [
     "get",
@@ -3616,6 +3666,7 @@ chats = [
 
     items "zhuxiao_liuquan" {
       name = "碧玉洞萧·流泉"
+      aliases = ["liuquan xiao", "liuquan", "xiao"]
       description = "一把碧玉所制的洞萧，隐隐泛出绿光。上刻「流泉」。"
   verbs = [
     "get",
@@ -3635,6 +3686,7 @@ chats = [
 
     items "zhuxiao_qingyin" {
       name = "碧玉洞萧·清音"
+      aliases = ["qingyin xiao", "qingyin", "xiao"]
       description = "一把碧玉所制的洞萧，隐隐泛出绿光。上刻「清音」。"
   verbs = [
     "get",
@@ -3654,6 +3706,7 @@ chats = [
 
     items "zhuxiao_shuiyun" {
       name = "碧玉洞萧·水云"
+      aliases = ["shuiyun xiao", "shuiyun", "xiao"]
       description = "一把碧玉所制的洞萧，隐隐泛出绿光。上刻「水云」。"
   verbs = [
     "get",
@@ -3673,6 +3726,7 @@ chats = [
 
     items "zhuxiao_youlan" {
       name = "碧玉洞萧·幽兰"
+      aliases = ["youlan xiao", "youlan", "xiao"]
       description = "一把碧玉所制的洞萧，隐隐泛出绿光。上刻「幽兰」。"
   verbs = [
     "get",

@@ -1462,6 +1462,7 @@ item_desc = {
 
     characters "sun" {
       name = "孙婆婆"
+      aliases = ["sun popo", "sun", "popo"]
       description = "这是一位慈祥的老婆婆，正看着你微微一笑。"
   gender = "女性"
   age = 55
@@ -1508,6 +1509,7 @@ item_desc = {
 
     characters "baipao" {
       name = "白袍"
+      aliases = ["bai pao", "pao"]
       description = "这是件轻纱制成的白色长袍。"
     }
 
@@ -1516,6 +1518,7 @@ item_desc = {
 
     items "bingpo_zhen" {
       name = "冰魄银针"
+      aliases = ["bingpo zhen", "bingpo", "zhen"]
       description = "这是一根细长的银针，针尖透出阵阵寒气。"
   verbs = [
     "get",
@@ -1537,6 +1540,7 @@ item_desc = {
 
     items "fengmi" {
       name = "玉蜂蜜"
+      aliases = ["yufeng mi", "yufeng", "mi"]
       description = "这是一罐玉蜂酿成的蜜，可解玉蜂毒。"
   verbs = [
     "get",
@@ -1555,6 +1559,7 @@ item_desc = {
 
     items "ping" {
       name = "蜂浆瓶"
+      aliases = ["fengjiang ping", "ping"]
       description = "这是一个用上古美玉雕成的小瓶，还未拔开瓶塞，就可以闻到 一股浓郁的香味，可以用来驱蜂。"
   verbs = [
     "get",
@@ -1574,6 +1579,7 @@ item_desc = {
 
     items "yufeng_zhen" {
       name = "玉蜂针"
+      aliases = ["yufeng zhen", "yufeng", "zhen"]
       description = "这是一根细长的银针，散发着淡淡的清香。"
   verbs = [
     "get",

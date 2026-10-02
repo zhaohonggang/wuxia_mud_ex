@@ -1690,6 +1690,7 @@ direction = "up"
 
     characters "chenhu" {
       name = "陈浒"
+      aliases = ["chen hu", "chen"]
       description = "陈老爷子在武馆也忙了几十年了，仍勇于提携后生。"
   title = "金牛武馆教习"
   gender = "男性"
@@ -1717,6 +1718,7 @@ direction = "up"
 
     characters "chuniang" {
       name = "厨娘"
+      aliases = ["chu niang", "chu", "niang"]
       description = "她是一个看上去普普通通的厨娘，戴着油腻的围裙，因为常年累 月的在厨房烧菜做饭，双手粗糙，看起来貌不惊人，可是她做的饭菜 却是川中一绝。她为人似乎十分傲慢，看来不是一般的人物。"
   gender = "女性"
   age = 30
@@ -1769,6 +1771,7 @@ direction = "up"
 
     characters "huoji" {
       name = "药店伙计"
+      aliases = ["yaodian huoji", "huoji"]
       description = "他是模样老老实实的年轻人。"
   gender = "男性"
   age = 18
@@ -1802,6 +1805,7 @@ direction = "up"
 
     characters "liuhongying" {
       name = "刘虹瑛"
+      aliases = ["liu hongying", "liu"]
       description = "刘教头是武馆的新来教习，你可别小看她哦。"
   title = "金牛武馆教习"
   gender = "女性"
@@ -1828,6 +1832,7 @@ direction = "up"
 
     characters "longquan" {
       name = "龙铨"
+      aliases = ["long quan", "long"]
       description = "龙老爷子在武馆也干了好多年头了，仍老当益壮。"
   title = "金牛武馆教习"
   gender = "男性"
@@ -1913,6 +1918,7 @@ direction = "up"
 
     characters "mawude" {
       name = "马五德"
+      aliases = ["ma wude", "ma"]
       description = "马老爷子是武馆的缔造者，辛苦一辈子了，仍勇于提携后生。"
   title = "金牛武馆馆长"
   gender = "男性"
@@ -1999,6 +2005,7 @@ direction = "up"
 
     characters "qinbing" {
       name = "亲兵"
+      aliases = ["qin bing", "qin", "bing"]
       description = "他手握钢刀，目视前方，真是威风凛凛。"
   gender = "男性"
   shen_type = 1
@@ -2031,6 +2038,7 @@ direction = "up"
 
     characters "shicong" {
       name = "侍从"
+      aliases = ["shi cong", "shi", "cong"]
       description = "一个文职大扮的侍从，他手持钢刀，寸步不离提督大人。"
   gender = "男性"
   shen_type = 1
@@ -2063,6 +2071,7 @@ direction = "up"
 
     characters "tangdun" {
       name = "唐钝"
+      aliases = ["tang dun"]
       description = "这是一个唐门长房弟子，一袭青衣，浑身透着一股邪气。本月长房轮值。"
   title = "唐门长房弟子"
   gender = "男性"
@@ -2097,6 +2106,7 @@ chats = [
 
     characters "tanghua" {
       name = "唐掌柜"
+      aliases = ["tang hua", "boss"]
       description = "唐掌柜是这家大酒楼的主人，别看他只是一个小小的酒楼老板，在成 都除了提督老爷以外，恐怕就属他最财大势大。"
   age = 46
 
@@ -2129,6 +2139,7 @@ chats = [
 
     characters "tanghuai" {
       name = "唐槐"
+      aliases = ["tang huai", "tang"]
       description = "据说唐槐是四川唐家的后代。"
   title = "兵器铺老板"
   gender = "男性"
@@ -2170,6 +2181,7 @@ chats = [
 
     characters "wutiande" {
       name = "吴天德"
+      aliases = ["wu tiande", "wu"]
       description = "吴天德大人原来只是一个参将，自从给令狐冲变成小白脸后，居然官运亨通，不但提 为总兵，还能出督全川之兵。"
   title = "成都提督"
   gender = "男性"
@@ -2198,6 +2210,7 @@ chats = [
 
     characters "xiaoer" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -2228,6 +2241,7 @@ chats = [
 
     characters "xiaoer2" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -2266,6 +2280,7 @@ chats = [
 
     characters "xiaofei" {
       name = "萧飞"
+      aliases = ["xiao fei", "xiao"]
       description = "萧教头是武馆的新来教习，但他的弟子也有在江湖出头的了。"
   title = "金牛武馆教习"
   gender = "男性"
@@ -2291,6 +2306,7 @@ chats = [
 
     characters "xiaozei" {
       name = "小贼"
+      aliases = ["xiao zei", "xiao", "zei"]
       description = "一个笑嘻嘻看着你的小孩。"
   gender = "男性"
   age = 15
@@ -2342,6 +2358,7 @@ chats = [
 
     characters "zhangfang" {
       name = "账房老夫子"
+      aliases = ["lao zhangfang", "zhangfang", "lao"]
       description = ""
   gender = "男性"
   age = 56
@@ -2385,6 +2402,7 @@ chats = [
 
     characters "baozi" {
       name = "包子"
+      aliases = ["baozi", "dumpling"]
       description = "一个香喷喷的肉包子。"
     }
 
@@ -2393,6 +2411,7 @@ chats = [
 
     characters "feihuangshi" {
       name = "飞蝗石"
+      aliases = ["feihuang shi", "shi"]
       description = "仔细挑选的鹅卵石，大小一致，个个都滴溜溜圆。"
     }
 
@@ -2401,6 +2420,7 @@ chats = [
 
     characters "flower_leaf" {
       name = "花瓣"
+      aliases = ["flower leaf", "hua ban", "ban"]
       description = "新鲜的玫瑰花的花瓣，上面还挂这晶莹的露珠。"
     }
 
@@ -2409,6 +2429,7 @@ chats = [
 
     characters "jitui" {
       name = "烤鸡腿"
+      aliases = ["jitui", "tui"]
       description = "一枝烤得香喷喷的鸡腿。"
     }
 
@@ -2417,6 +2438,7 @@ chats = [
 
     characters "jiudai" {
       name = "牛皮酒袋"
+      aliases = ["jiudai", "wineskin", "skin"]
       description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
     }
 
@@ -2425,6 +2447,7 @@ chats = [
 
     characters "lianzi" {
       name = "铁莲子"
+      aliases = ["tie lianzi", "lianzi", "tie"]
       description = "铁莲子是一种以量取胜的暗器，沉颠颠的。"
     }
 
@@ -2433,6 +2456,7 @@ chats = [
 
     characters "tea_leaf" {
       name = "茶叶"
+      aliases = ["tea leaf", "tea"]
       description = "才采的新茶，发出一股淡淡的香气。"
     }
 
@@ -2441,6 +2465,7 @@ chats = [
 
     characters "tielianzi" {
       name = "铁莲子"
+      aliases = ["tie lianzi", "lianzi", "zi"]
       description = "精铁打制的莲子状暗器。"
     }
 
@@ -2464,6 +2489,7 @@ chats = [
 
     items "shelf" {
       name = "破烂的书架"
+      aliases = ["shelf"]
       description = "一只破烂的书架，腐朽不堪，也不知搁在这里多久了。"
   verbs = [
     "get",

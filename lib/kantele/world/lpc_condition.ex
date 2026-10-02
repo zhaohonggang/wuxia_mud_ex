@@ -34,6 +34,26 @@ defmodule Kantele.World.LpcCondition do
   @known_funcs ~w(present environment objectp living userp wizardp this_object this_player id)
   @known_methods ~w(query query_temp query_skill query_condition id)
 
+  @doc """
+  条件是否限定了方向（出现 `dir`）。
+
+  转换器处理嵌套 `if` 时只保留了**最内层**条件，丢掉了外层守卫。典型受害例子：
+
+      # mud/d/beijing/kediandayuan.c
+      if (dir != "east") return ::valid_leave(me, dir);   # <- 外层守卫被丢
+      ...
+      if ((int)me->query_skill("force") < 100) return notify_fail(...);
+
+  于是 UCL 里只剩 `(int)me->query_skill('force') < 100`，若照此执行会把该房
+  **所有**方向都拦掉（玩家可能被锁死）。所以这类「方向未限定」的条件一律
+  暂不执行，等逐房把外层守卫补回（见 scripts/audit_exit_veto_locks.py）。
+  """
+  def direction_scoped?(expr) when is_binary(expr) do
+    String.contains?(expr, "dir")
+  end
+
+  def direction_scoped?(_), do: false
+
   @doc "表达式能否被本求值器处理（不能则保留原文、不执行）"
   def enforceable?(expr) when is_binary(expr) do
     case parse(expr) do

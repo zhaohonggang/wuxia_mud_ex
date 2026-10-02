@@ -74,6 +74,7 @@ zones "gaibang" {
 
     items "midao" {
       name = "丐帮密道"
+      aliases = ["midao"]
       description = "这是丐帮极其秘密的地下通道，乃用丐帮几辈人心血掘成。"
   verbs = [
     "get",
@@ -514,6 +515,7 @@ item_desc = {
 
     characters "cloth" {
       name = "NPC"
+      aliases = ["cloth"]
       description = "这是一件满是油腻的破布衣。"
     }
 
@@ -522,6 +524,7 @@ item_desc = {
 
     characters "jiaohuaji" {
       name = "叫化鸡"
+      aliases = ["jiaohua ji", "jiaohua", "ji"]
       description = "这是一只被烤得流油，香味扑鼻的叫化鸡。"
     }
 
@@ -530,6 +533,7 @@ item_desc = {
 
     characters "po_bu" {
       name = "NPC"
+      aliases = ["po bu", "po", "bu", "piece"]
       description = "这是一块破布，不知道有什么用。"
     }
 
@@ -538,6 +542,7 @@ item_desc = {
 
     characters "qingzhu_ling" {
       name = "NPC"
+      aliases = ["qingzhu ling", "qingzhu", "ling"]
       description = "这是一面用青竹做成的令牌，凭此可向帮内师兄挑战。"
     }
 
@@ -546,5 +551,6 @@ item_desc = {
 
     characters "staff" {
       name = "NPC"
+      aliases = ["zhu bang", "zhu", "bang"]
       description = "这是一根颇为破旧的竹棒，可以作为手杖使用。"
     }

@@ -1477,6 +1477,7 @@ behavior_config = {
 
     characters "afanti" {
       name = "阿凡提"
+      aliases = ["afanti"]
       description = "他头上包着头巾，长着向上翘的八字胡，最喜欢 捉弄巴依、帮助穷人。他常给别人出谜语。"
   gender = "男性"
   age = 48
@@ -1525,6 +1526,7 @@ behavior_config = {
 
     characters "alamuhan" {
       name = "阿拉木罕"
+      aliases = ["ala muhan", "ala", "muhan"]
       description = "她身段不肥也不瘦。她的眉毛像弯月，她的眼睛很多情。"
   title = "牧羊姑娘"
   gender = "女性"
@@ -1556,6 +1558,7 @@ behavior_config = {
 
     characters "bing" {
       name = "官兵"
+      aliases = ["guan bing", "guan", "bing"]
       description = "他是个戍边多年的老兵。年纪不小了，但尚未成家。"
   gender = "男性"
   age = 22
@@ -1593,6 +1596,7 @@ behavior_config = {
 
     characters "boshou" {
       name = "星宿派钹手"
+      aliases = ["bo shou", "bo", "shou"]
       description = "他手中拿着一对铜钹，一边敲一边扯着 嗓子唱些肉麻的话。"
   gender = "男性"
   age = 33
@@ -1637,6 +1641,7 @@ chats = [
 
     characters "caihua" {
       name = "采花子"
+      aliases = ["caihua zi", "caihua", "zi"]
       description = "采花子是星宿派的一个小喽罗，武功虽 不好，但生性淫邪常奸淫良家妇女。乃 是官府通缉的犯人，故而星宿派名义上 也不承认有这个弟子。"
   nickname = "赛昆仑"
   gender = "男性"
@@ -1688,6 +1693,7 @@ chats = [
 
     characters "caiyaoren" {
       name = "采药人"
+      aliases = ["caiyao ren", "caiyao", "ren"]
       description = "一个辛苦工作的采药人。"
   gender = "男性"
   shen_type = 1
@@ -1716,6 +1722,7 @@ chats = [
 
     characters "gushou" {
       name = "星宿派鼓手"
+      aliases = ["gu shou", "gu", "shou"]
       description = "他面前放着一只铜鼓，一边敲一边扯着 嗓子唱些肉麻的话。"
   gender = "男性"
   age = 43
@@ -1760,6 +1767,7 @@ chats = [
 
     characters "haoshou" {
       name = "星宿派号手"
+      aliases = ["hao shou", "hao", "shou"]
       description = "他手中拿着一只铜号，鼓足力气沉醉地 吹着。"
   gender = "男性"
   age = 33
@@ -1804,6 +1812,7 @@ chats = [
 
     characters "herdsman" {
       name = "牧羊人"
+      aliases = ["muyang ren", "ren", "heardsman"]
       description = "一个维吾尔族老汉，赶着几十只羊。"
   gender = "男性"
   shen_type = 1
@@ -1846,6 +1855,7 @@ chats = [
 
     characters "kid" {
       name = "小孩"
+      aliases = ["kid"]
       description = "这是个维吾尔族小孩子"
   gender = "男性"
   age = 7
@@ -1871,6 +1881,7 @@ chats = [
 
     characters "maimaiti" {
       name = "买卖提"
+      aliases = ["maimaiti", "seller"]
       description = "买卖提是个中年维吾尔族商人，去过几 次中原，能讲一点儿汉话。"
   title = "杂货铺老板"
   gender = "男性"
@@ -1918,6 +1929,7 @@ chats = [
 
     characters "shachong" {
       name = "沙虫"
+      aliases = ["sha chong", "chong", "bug"]
       description = "一只黄褐色的小甲虫，尾巴上有黄蓝相 间的环纹。你的直觉告诉你它一定有毒。"
   age = 3
 
@@ -1932,6 +1944,7 @@ chats = [
 
     characters "shachongke" {
       name = "沙虫壳"
+      aliases = ["shachong ke", "ke"]
       description = "这是一只沙虫的干壳，是制备毒药的原料。"
     }
 
@@ -1940,6 +1953,7 @@ chats = [
 
     characters "shaonv" {
       name = "维吾尔少女"
+      aliases = ["shao nv", "shao", "nv"]
       description = "这位小姑娘一边忙里忙外，还和客人有说有笑。"
   gender = "女性"
   age = 19
@@ -1969,6 +1983,7 @@ chats = [
 
     characters "trader" {
       name = "波斯商人"
+      aliases = ["bosi shangren", "shangren", "bosi"]
       description = "一个高鼻蓝眼的波斯商人。他看着你脸上露出狡猾的笑容。"
   nickname = "消息灵通"
   gender = "男性"
@@ -2007,6 +2022,7 @@ chats = [
 
     characters "woman" {
       name = "维吾尔族妇女"
+      aliases = ["fu nv", "fu", "nv"]
       description = "一个很胖的维吾尔族中年妇女。"
   gender = "女性"
   age = 40
@@ -2031,6 +2047,7 @@ chats = [
 
     characters "wujiang" {
       name = "武将"
+      aliases = ["wu jiang", "wu", "jiang"]
       description = "他是嘉峪关的守将。"
   gender = "男性"
   shen_type = 1
@@ -2068,6 +2085,7 @@ chats = [
 
     items "bilinzhen" {
       name = "碧磷针"
+      aliases = ["bilin zhen", "zhen"]
       description = "碧磷针是星宿派使用的，暗器，常常淬毒。针长寸许，发出诡异的光。"
   verbs = [
     "get",
@@ -2096,6 +2114,7 @@ chats = [
 
     items "changpao" {
       name = "波斯长袍"
+      aliases = ["bosi robe", "robe"]
       description = "这是一件脏兮兮的波斯长袍。"
   verbs = [
     "get",
@@ -2116,6 +2135,7 @@ chats = [
 
     items "dongbula" {
       name = "冬不拉"
+      aliases = ["dongbula", "dong", "bula"]
       description = "这是一把维吾尔族的弦乐器冬不拉。你可以演奏(play)它。"
   verbs = [
     "get",
@@ -2133,6 +2153,7 @@ chats = [
 
     items "fire" {
       name = "火折"
+      aliases = ["fire", "huozhe"]
       description = "这是一支用于引火的火折，可以用来点燃(light)东西，或者是 到了黑暗的地方使用(use)。"
   verbs = [
     "get",
@@ -2151,6 +2172,7 @@ chats = [
 
     items "hamigua" {
       name = "哈密瓜"
+      aliases = ["hamigua", "gua", "melon"]
       description = "一颗香甜的哈密瓜。不吃哈密瓜等于白来西域。"
   verbs = [
     "get",
@@ -2171,6 +2193,7 @@ chats = [
 
     items "horse" {
       name = "伊犁马"
+      aliases = ["horse", "yili ma", "ma"]
       description = "一匹良种的伊犁马，可以骑(ride)，也可以驮东西。"
   verbs = [
     "get",
@@ -2189,6 +2212,7 @@ chats = [
 
     items "hu" {
       name = "马奶酒壶"
+      aliases = ["hu", "bottle"]
       description = "一个用来装马奶酒的大酒壶，大概装得八、九升的酒。"
   verbs = [
     "get",
@@ -2207,6 +2231,7 @@ chats = [
 
     items "hulu" {
       name = "青葫芦"
+      aliases = ["qing hulu", "hulu"]
       description = "这是一个碧绿色的葫芦。"
   verbs = [
     "get",
@@ -2225,6 +2250,7 @@ chats = [
 
     items "junfu" {
       name = "军服"
+      aliases = ["junfu", "cloth"]
       description = "这是一件有点旧的官兵服。"
   verbs = [
     "get",
@@ -2245,6 +2271,7 @@ chats = [
 
     items "lianxindan" {
       name = "炼心弹"
+      aliases = ["lianxin dan", "dan"]
       description = "炼心弹是星宿派淬毒暗器，针长寸许，发出诡异的光。"
   verbs = [
     "get",
@@ -2273,6 +2300,7 @@ chats = [
 
     items "menghan_yao" {
       name = "蒙汗药"
+      aliases = ["menghan yao", "yao"]
       description = "这是极普通的蒙汗药"
   verbs = [
     "get",
@@ -2291,6 +2319,7 @@ chats = [
 
     items "nang" {
       name = "馕"
+      aliases = ["nang", "cake"]
       description = "这是维吾尔族人日常吃的一种面饼。"
   verbs = [
     "get",
@@ -2311,6 +2340,7 @@ chats = [
 
     items "sanxiaosan" {
       name = "Item"
+      aliases = ["sanxiao san", "san"]
       description = "一包无色的粉末, 看样子不是寻常物品."
   verbs = [
     "get",
@@ -2328,6 +2358,7 @@ chats = [
 
     items "shedan" {
       name = "毒蛇胆"
+      aliases = ["shedan", "dan"]
       description = "这是一只绿莹莹的毒蛇胆，是制备毒药的原料。"
   verbs = [
     "get",
@@ -2345,6 +2376,7 @@ chats = [
 
     items "shoutao" {
       name = "金丝手套"
+      aliases = ["jinsi shoutao", "shoutao", "jinsi"]
       description = "这是一双用金丝编制而成的手套，戴上他可以拿取或触摸带毒的物品而不会中毒。"
   verbs = [
     "get",
@@ -2365,6 +2397,7 @@ chats = [
 
     items "tongbo" {
       name = "铜钹"
+      aliases = ["tongbo"]
       description = "这是一对金光闪亮的铜钹。"
   verbs = [
     "get",
@@ -2383,6 +2416,7 @@ chats = [
 
     items "tonggu" {
       name = "铜鼓"
+      aliases = ["tonggu"]
       description = "这是一只金光闪亮的铜鼓。"
   verbs = [
     "get",
@@ -2401,6 +2435,7 @@ chats = [
 
     items "tonghao" {
       name = "铜号"
+      aliases = ["tonghao"]
       description = "这是一把金光闪亮的铜号。"
   verbs = [
     "get",
@@ -2419,6 +2454,7 @@ chats = [
 
     items "xxjiudai" {
       name = "花雕酒袋"
+      aliases = ["jiudai", "skin", "huadiao"]
       description = "一个用来装高级花雕酒的大酒袋。"
   verbs = [
     "get",
@@ -2437,6 +2473,7 @@ chats = [
 
     items "xxqingxin_san" {
       name = "清心散"
+      aliases = ["qingxin san", "san"]
       description = ""
   verbs = [
     "get",
@@ -2455,6 +2492,7 @@ chats = [
 
     items "yangrou" {
       name = "羊肉串"
+      aliases = ["yangrou chuan", "yangrou", "chuan"]
       description = "一串香喷喷的羊肉串，上面沾满了孜然和辣椒面。"
   verbs = [
     "get",
@@ -2475,6 +2513,7 @@ chats = [
 
     items "yaochu" {
       name = "药锄"
+      aliases = ["yaochu", "chu"]
       description = "这是一把采药用的药锄，已经有些生锈了。"
   verbs = [
     "get",

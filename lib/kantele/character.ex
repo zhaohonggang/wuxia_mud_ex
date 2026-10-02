@@ -312,6 +312,10 @@ defmodule Kantele.Character.NonPlayerMeta do
     :defeated_by,
     :greetings,
     :init,
+
+    # LPC `set_name(<名>, ({ "id1", ... }))` 的 id 表：present/ask/get 的匹配依据。
+    # 转换早期整组丢失，由 scripts/migrate_aliases.py 从源 .c 回填。
+    {:aliases, []},
     :accept,
     :guarder,
     :engage

@@ -1190,6 +1190,7 @@ direction = "west"
 
     characters "cungu" {
       name = "村姑"
+      aliases = ["cun gu", "gu", "cun"]
       description = "一个很清秀的年轻农村姑娘，挎着一只盖着布小篮子。"
   gender = "女性"
   age = 20
@@ -1216,6 +1217,7 @@ direction = "west"
 
     characters "feifei" {
       name = "厨师"
+      aliases = ["chu shi", "chu", "shi"]
       description = "一个肥头大耳的厨师，两只小眼睛不停地眨巴着。"
   gender = "男性"
   age = 35
@@ -1240,6 +1242,7 @@ direction = "west"
 
     characters "guafu" {
       name = "寡妇"
+      aliases = ["gua fu", "gua", "fu"]
       description = "一个年轻漂亮又不甘寂寞的小寡妇。"
   gender = "女性"
   age = 25
@@ -1271,6 +1274,7 @@ chats = [
 
     characters "guanjia" {
       name = "管家"
+      aliases = ["guan jia", "guan", "jia"]
       description = "一个管家。"
   gender = "男性"
   age = 30
@@ -1308,6 +1312,7 @@ chats = [
 
     characters "jinhua" {
       name = "金花"
+      aliases = ["jin hua", "jin", "hua"]
       description = "一个年少貌美的姑娘。"
   gender = "女性"
   age = 24
@@ -1358,6 +1363,7 @@ chats = [
 
     characters "kid" {
       name = "小孩"
+      aliases = ["kid"]
       description = "这是个农家小孩子"
   gender = "男性"
   age = 6
@@ -1383,6 +1389,7 @@ chats = [
 
     characters "li" {
       name = "李管家"
+      aliases = ["li guanjia", "li", "guanjia"]
       description = "这是个和蔼可亲的大管家。"
   gender = "男性"
   age = 25
@@ -1425,6 +1432,7 @@ chats = [
 
     characters "lingshe" {
       name = "灵蛇"
+      aliases = ["ling she", "she", "snake"]
       description = "一条银光闪闪的小蛇，产于西域，极为罕见。"
   age = 4
 
@@ -1447,6 +1455,7 @@ chats = [
 
     characters "man" {
       name = "农民"
+      aliases = ["nong min", "nong", "min"]
       description = "一个很健壮的壮年农民。"
   gender = "男性"
   age = 29
@@ -1472,6 +1481,7 @@ chats = [
 
     characters "menwei" {
       name = "门卫"
+      aliases = ["men wei", "men", "wei"]
       description = "这是个年富力强的卫兵，样子十分威严。虽然 他们武艺不高，但是经过欧阳锋的训练，决非 常人可敌。"
   nickname = "铁狮子"
   gender = "男性"
@@ -1518,6 +1528,7 @@ chats = [
 
     characters "playboy" {
       name = "花花公子"
+      aliases = ["gong zi", "gong", "zi"]
       description = "这是个流里流气的花花公子。"
   nickname = "采花大盗"
   gender = "男性"
@@ -1564,6 +1575,7 @@ chats = [
 
     characters "qiaofu" {
       name = "樵夫"
+      aliases = ["qiao fu", "qiao", "fu"]
       description = "这是一个很健壮的樵夫。"
   gender = "男性"
   age = 33
@@ -1591,6 +1603,7 @@ chats = [
 
     characters "shanzei1" {
       name = "小山贼"
+      aliases = ["xiao shanzei", "xiao", "shanzei"]
       description = "这是个尚未成年的小山贼。"
   gender = "男性"
   age = 12
@@ -1618,6 +1631,7 @@ chats = [
 
     characters "shanzei2" {
       name = "山贼"
+      aliases = ["shan zei", "shan", "zei"]
       description = "这是个面目可憎的山贼。"
   gender = "男性"
   age = 20
@@ -1647,6 +1661,7 @@ chats = [
 
     characters "shanzei3" {
       name = "山贼头"
+      aliases = ["shanzei tou", "shanzei", "tou"]
       description = "这是个粗鲁的山贼头。"
   gender = "男性"
   age = 29
@@ -1676,6 +1691,7 @@ chats = [
 
     characters "shiwei" {
       name = "仕卫"
+      aliases = ["shi wei", "wei"]
       description = "这是个样子威严的仕卫。"
   gender = "男性"
   age = 25
@@ -1705,6 +1721,7 @@ chats = [
 
     characters "smith" {
       name = "铁匠"
+      aliases = ["tie jiang", "tie", "jiang", "smith"]
       description = "铁匠正用铁钳夹住一块红热的铁块放进炉中。"
   title = "铁匠铺老板"
   gender = "男性"
@@ -1741,6 +1758,7 @@ chats = [
 
     characters "snake" {
       name = "毒蛇"
+      aliases = ["snake", "she"]
       description = "一只有着三角形脑袋的蛇，尾巴沙沙做响。"
   age = 4
 
@@ -1762,6 +1780,7 @@ chats = [
 
     characters "snaker" {
       name = "舞蛇人"
+      aliases = ["wushe ren", "wushen", "ren"]
       description = "他是一个西域来的舞蛇人。"
   title = "西域蛇王"
   nickname = "蛇见怕"
@@ -1829,6 +1848,7 @@ chats = [
 
     characters "trainer" {
       name = "教练"
+      aliases = ["jiao lian", "jiao", "lian"]
       description = "这是个和蔼可亲的教练。"
   gender = "男性"
   age = 25
@@ -1870,6 +1890,7 @@ chats = [
 
     characters "whitelady" {
       name = "白衣少女"
+      aliases = ["shao nv", "shao", "nv"]
       description = "这是一个聪明伶俐的白衣少女。"
   gender = "女性"
   age = 18
@@ -1906,6 +1927,7 @@ chats = [
 
     characters "woman" {
       name = "农家妇女"
+      aliases = ["fu nv", "fu", "nv"]
       description = "一个很精明能干的农家妇女。"
   gender = "女性"
   age = 32
@@ -1931,6 +1953,7 @@ chats = [
 
     characters "xiaoqing" {
       name = "小青"
+      aliases = ["xiao qing", "xiao", "qing"]
       description = "这是个打扮很朴素小姑娘，一袭青衣，却也显得落落有致。"
   title = "白骆山庄药师"
   gender = "女性"
@@ -1973,6 +1996,7 @@ chats = [
 
     characters "yahuan" {
       name = "丫环"
+      aliases = ["ya huan", "ya", "huan"]
       description = "一个很能干的丫环。"
   gender = "女性"
   age = 14
@@ -1998,6 +2022,7 @@ chats = [
 
     characters "zhangma" {
       name = "张妈"
+      aliases = ["zhang ma", "zhang", "ma"]
       description = "一个历经沧桑的老婆婆。"
   gender = "女性"
   age = 50
@@ -2035,6 +2060,7 @@ chats = [
 
     items "baipao" {
       name = "白色长袍"
+      aliases = ["chang pao", "cloth", "pao"]
       description = "这是件质量上佳的白色长袍。"
   verbs = [
     "get",
@@ -2055,6 +2081,7 @@ chats = [
 
     items "bowl" {
       name = "海口大碗"
+      aliases = ["wan", "bowl"]
       description = "这是一只可盛水的粗瓷大碗。"
   verbs = [
     "get",
@@ -2073,6 +2100,7 @@ chats = [
 
     items "cake" {
       name = "Item"
+      aliases = ["hong bing", "hong", "bing"]
       description = "这是一块香喷喷的大烘饼。"
   verbs = [
     "get",
@@ -2093,6 +2121,7 @@ chats = [
 
     items "caomei" {
       name = "草莓"
+      aliases = ["cao mei", "mei"]
       description = "一颗鲜红的草莓。"
   verbs = [
     "get",
@@ -2113,6 +2142,7 @@ chats = [
 
     items "chai" {
       name = "柴"
+      aliases = ["chai"]
       description = "这是一捆木柴。"
   verbs = [
     "get",
@@ -2132,6 +2162,7 @@ chats = [
 
     items "chaidao" {
       name = "柴刀"
+      aliases = ["chai dao", "dao"]
       description = "这是一柄半新不旧的柴刀。"
   verbs = [
     "get",
@@ -2159,6 +2190,7 @@ chats = [
 
     items "dadao" {
       name = "大刀"
+      aliases = ["da dao", "dao"]
       description = "这是一柄铁打的大刀。"
   verbs = [
     "get",
@@ -2186,6 +2218,7 @@ chats = [
 
     items "doujiang" {
       name = "杯子"
+      aliases = ["cup", "beizi"]
       description = "一个磁杯子。"
   verbs = [
     "get",
@@ -2203,6 +2236,7 @@ chats = [
 
     items "fen" {
       name = "Item"
+      aliases = ["shedan fen", "shedan", "fen"]
       description = "这是一包治疗外伤的蛇胆粉。"
   verbs = [
     "get",
@@ -2220,6 +2254,7 @@ chats = [
 
     items "jindan" {
       name = "金蛇胆"
+      aliases = ["jin", "jin dan"]
       description = "这是一只黄灿灿的金蛇胆，是制备『蛇胆膏』的原料。"
   verbs = [
     "get",
@@ -2237,6 +2272,7 @@ chats = [
 
     items "key" {
       name = "钥匙"
+      aliases = ["yao shi", "shi"]
       description = "这是一把普通的铜钥匙。"
   verbs = [
     "get",
@@ -2256,6 +2292,7 @@ chats = [
 
     items "lingshezhang" {
       name = "灵蛇杖"
+      aliases = ["lingshe zhang", "staff", "shezhang", "zhang"]
       description = "一根弯弯曲曲的黑色粗杖，似是钢铁所制， 杖头铸着个裂口而笑的人头，人头口中露出尖利雪白的牙齿， 模样甚是狰狞诡异，更奇的是杖上盘着两条银鳞闪闪的小蛇，不住的蜿蜒上下。"
   verbs = [
     "get",
@@ -2284,6 +2321,7 @@ chats = [
 
     items "mangshe_dan" {
       name = "蟒蛇胆"
+      aliases = ["shedan", "dan"]
       description = "一枚深紫色的蟒蛇胆，甚是腥臭。"
   verbs = [
     "get",
@@ -2301,6 +2339,7 @@ chats = [
 
     items "qingdan" {
       name = "青蛇胆"
+      aliases = ["qing", "qing dan"]
       description = "这是一只绿莹莹的青蛇胆，是制备『蛇胆膏』的原料。"
   verbs = [
     "get",
@@ -2318,6 +2357,7 @@ chats = [
 
     items "qingpao" {
       name = "青色丝袍"
+      aliases = ["si pao", "cloth", "pao"]
       description = "这是件质地轻柔的青色镂花丝袍，特别受女性青睐。"
   verbs = [
     "get",
@@ -2338,6 +2378,7 @@ chats = [
 
     items "shebian" {
       name = "蛇鞭"
+      aliases = ["shebian", "bian"]
       description = "这是一柄蛇皮长鞭。"
   verbs = [
     "get",
@@ -2366,6 +2407,7 @@ chats = [
 
     items "shedan" {
       name = "毒蛇胆"
+      aliases = ["shedan", "dan"]
       description = "这是一只绿莹莹的毒蛇胆。"
   verbs = [
     "get",
@@ -2383,6 +2425,7 @@ chats = [
 
     items "shedangao" {
       name = "蛇胆膏"
+      aliases = ["shedan gao", "gao"]
       description = "这是珍贵补品『蛇胆膏』。"
   verbs = [
     "get",
@@ -2400,6 +2443,7 @@ chats = [
 
     items "shenshe" {
       name = "引路神蛇"
+      aliases = ["shen she", "snake"]
       description = "一条有识路能力的神蛇，可以把主人带到白驼山。(键入home即可)"
   verbs = [
     "get",
@@ -2418,6 +2462,7 @@ chats = [
 
     items "shepi" {
       name = "蛇皮"
+      aliases = ["she pi", "pi"]
       description = ""
   verbs = [
     "get",
@@ -2438,6 +2483,7 @@ chats = [
 
     items "sherou" {
       name = "蛇肉"
+      aliases = ["she rou", "rou"]
       description = "一条烧烤得香喷喷的蛇肉。"
   verbs = [
     "get",
@@ -2458,6 +2504,7 @@ chats = [
 
     items "shezhang" {
       name = "蛇杖"
+      aliases = ["shezhang", "staff", "zhang"]
       description = "一根长约七尺的黑光铮亮的钢杖，杖端有一个蛇头，有机关可射出毒针伤人。"
   verbs = [
     "get",
@@ -2486,6 +2533,7 @@ chats = [
 
     items "shoe" {
       name = "绣花鞋"
+      aliases = ["shoe"]
       description = "这是一只漂亮的绣花鞋。"
   verbs = [
     "get",
@@ -2506,6 +2554,7 @@ chats = [
 
     items "tiezheng" {
       name = "Item"
+      aliases = ["tie zheng", "tie", "zheng"]
       description = "这是一台黑黝黝的铁筝。"
   verbs = [
     "get",
@@ -2525,6 +2574,7 @@ chats = [
 
     items "turou" {
       name = "兔肉"
+      aliases = ["tu rou", "rou"]
       description = "一只烧烤得香香的兔肉。"
   verbs = [
     "get",
@@ -2545,6 +2595,7 @@ chats = [
 
     items "zheng" {
       name = "Item"
+      aliases = ["gu zheng", "gu", "zheng"]
       description = "这是一台看上去有些陈旧的古筝。"
   verbs = [
     "get",
@@ -2564,6 +2615,7 @@ chats = [
 
     items "zhulou" {
       name = "竹篓"
+      aliases = ["zhu lou", "lou", "basket"]
       description = "一个竹条编成的篓子，是欧阳世家的人专门用来捕蛇的。"
   verbs = [
     "get",

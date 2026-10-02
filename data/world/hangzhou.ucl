@@ -2562,6 +2562,7 @@ item_desc = {
 
     characters "an" {
       name = "安健刚"
+      aliases = ["an jiangang", "an", "jiangang"]
       description = "他是铁胆周仲英的二弟子，对师父始终忠心不二。"
   nickname = "独角虎"
   gender = "男性"
@@ -2610,6 +2611,7 @@ item_desc = {
 
     characters "chang1" {
       name = "常赫志"
+      aliases = ["chang hezhi", "chang", "hezhi"]
       description = "他身材又高又瘦，脸色蜡黄，眼睛凹进，眼角上有一粒黑痣，眉毛 斜斜的倒垂下来，形相甚是可怖。他是青城派慧侣道人的徒弟。黑沙 掌的功夫，江湖上无人能敌。黑白无常两兄弟是川江上著名的侠盗， 一向劫富济贫，不过心狠手辣，因此得了这难听的外号。"
   title = "红花会五当家"
   nickname = "黑无常"
@@ -2658,6 +2660,7 @@ item_desc = {
 
     characters "chang2" {
       name = "常伯志"
+      aliases = ["chang bozhi", "chang", "bozhi"]
       description = "他身材又高又瘦，脸色蜡黄，眼睛凹进，眉毛斜斜的倒垂下来，形 相甚是可怖。他是青城派慧侣道人的徒弟。黑沙掌的功夫，江湖上无 人能敌。黑白无常两兄弟是川江上著名的侠盗，一向劫富济贫，不过 心狠手辣，因此得了这难听的外号。"
   title = "红花会六当家"
   nickname = "白无常"
@@ -2706,6 +2709,7 @@ item_desc = {
 
     characters "chen" {
       name = "陈家洛"
+      aliases = ["chen jialuo", "chen", "jialuo"]
       description = "他一副模样直是个富贵人家的纨裤子弟，丰姿如玉，目朗似星，轻 袍缓带，手中摇着一柄折扇，神采飞扬，气度闲雅，吐属斯文。服 饰俨然是个贵介公子。"
   title = "红花会总舵主"
   nickname = "玉面神龙"
@@ -2763,6 +2767,7 @@ item_desc = {
 
     characters "huo" {
       name = "霍青桐"
+      aliases = ["huo qingtong", "huo", "qingtong"]
       description = "这女郎秀美中透着一股英气，光采照人，当真 丽若春梅绽雪，神如秋蕙披霜，两颊融融，霞 映澄塘，双目晶晶，月射寒江。腰插匕首，长 辨垂肩，鹅黄衫子，头戴金丝绣的小帽，帽边 插了根长长的翠绿羽毛，革履青马，旖旎如画。"
   nickname = "翠羽黄衫"
   gender = "女性"
@@ -2824,6 +2829,7 @@ item_desc = {
 
     characters "jiang" {
       name = "蒋四根"
+      aliases = ["jiang sigen", "jiang", "sigen"]
       description = "铜头鳄鱼蒋四根在会中坐第十三把交椅，兵器是铁桨。"
   title = "红花会十三当家"
   nickname = "铜头鳄鱼"
@@ -2873,6 +2879,7 @@ item_desc = {
 
     characters "lu" {
       name = "陆菲青"
+      aliases = ["lu feiqing", "lu", "feiqing"]
       description = "陆菲青，乃武当派大侠，壮年时在大江南北行侠仗义，端的名 震江湖，原是屠龙帮中一位响当当的人物。屠龙帮是反清的秘 帮，雍正年间声势十分浩大，后来雍正、乾隆两朝厉行镇压， 到乾隆七八年时，屠龙帮终于落得瓦解冰消。陆菲青远走边疆。 当时清廷曾四下派人追拿，但他为人机警，兼之武功高强，得 脱大难，但清廷继续严加查缉。陆菲青想到“大隐隐于朝、中 隐隐于市、小隐隐于野”之理，混到李可秀府中设帐教读。"
   nickname = "绵里针"
   gender = "男性"
@@ -2926,6 +2933,7 @@ item_desc = {
 
     characters "luo" {
       name = "骆冰"
+      aliases = ["luo bing", "luo", "bing"]
       description = "她是一个秀美的少妇。一手短刀，一手握着一柄长刀。"
   title = "红花会十一当家"
   nickname = "鸳鸯刀"
@@ -2979,6 +2987,7 @@ item_desc = {
 
     characters "meng" {
       name = "孟健雄"
+      aliases = ["meng jianxiong", "meng", "jianxiong"]
       description = "他是铁胆周仲英的大弟子，对师父忠心耿耿。"
   nickname = "神弹子"
   gender = "男性"
@@ -3027,6 +3036,7 @@ item_desc = {
 
     characters "shi" {
       name = "石双英"
+      aliases = ["shi shuangying", "shi", "shuangying"]
       description = "鬼见愁石双英在会中坐第十二把交椅，执掌刑堂，铁面无私，心狠手 辣，犯了规条的就是逃到天涯海角，他也必派人抓来处刑，原来依据红 花会规条，会中兄弟犯了大罪，若是一时胡涂，此后诚心悔悟，可在开 香堂执法之前，自行用尖刀在大腿上连戳三刀，这三刀须对穿而过，即 所谓“三刀六洞”，然后向该管舵主和执法香主求恕，有望从轻发落， 但若真正罪重出自不能饶恕。是以红花会数万兄弟，提到鬼见愁时无不 悚然。"
   title = "红花会十二当家"
   nickname = "鬼见愁"
@@ -3076,6 +3086,7 @@ item_desc = {
 
     characters "wei" {
       name = "卫春华"
+      aliases = ["wei chunhua", "wei", "chunhua"]
       description = "他长得面目英俊，穿一件青布长衫，三十岁左右年纪，双目炯炯， 英气逼人。凡逢江湖上凶殴争斗、对抗官兵之时，卫春华总是不顾 性命的勇往直前，一生所遇凶险不计其数，但连重伤也未受过一次， 是以说他有九条性命。"
   title = "红花会九当家"
   nickname = "九命锦豹子"
@@ -3126,6 +3137,7 @@ item_desc = {
 
     characters "wen" {
       name = "文泰来"
+      aliases = ["wen tailai", "wen", "tailai"]
       description = "文泰来号称“奔雷手”，十五岁起浪荡江湖，手掌下不知击毙 过多少神奸巨憝、凶徒恶霸。"
   title = "红花会四当家"
   nickname = "奔雷手"
@@ -3175,6 +3187,7 @@ item_desc = {
 
     characters "wuchen" {
       name = "无尘道长"
+      aliases = ["wuchen daozhang", "wuchen", "daozhang"]
       description = "他就是无尘道人。少年时混迹绿林，劫富济贫，做下了无数巨案，武 功高强，手下兄弟又众，官府奈何他不得。有一次他见到一位官家小 姐，竟然死心塌地的爱上了她。那位小姐却对无尘并没真心，受了父 亲教唆，一天夜里无尘偷偷来见她之时，那小姐说：“你对我全是假 意，没半点诚心。”无尘当然赌誓罚咒。那小姐道：“你们男人啊， 这样的话个个会说。你隔这么久来瞧我一次，我可不够。你要是真心 爱我，就把你一条手膀砍来给我。有你这条臂膀陪着，也免得我寂寞 孤单。”无尘一语不发，真的拔剑将自己的左臂砍了下来。小姐楼上 早埋伏了许多官差，一见都涌了出来。无尘已痛晕在地，哪里还能抵 抗？无尘手下的兄弟们大会群豪，打破城池，将他救出，又把小姐全 家都捉了来听他发落。众人以为无尘不是把他们都杀了，就是要了这 小姐做妻子。哪知他看见小姐，心肠一软，叫众人把她和家人都放了， 自己当夜悄悄离开了那地方，心灰意懒，就此出家做了道人。人虽然 出了家，可是本性难移，仍是豪迈豁达，行侠江湖，被红花会老当家 于万亭请出来做了副手。"
   title = "红花会二当家"
   nickname = "追魂夺命剑"
@@ -3222,6 +3235,7 @@ item_desc = {
 
     characters "xinyan" {
       name = "心砚"
+      aliases = ["xin yan", "yan"]
       description = "他是红花会总舵主陈家洛的贴身书僮。"
   title = "红花会书僮"
   gender = "男性"
@@ -3276,6 +3290,7 @@ item_desc = {
 
     characters "xu" {
       name = "徐天宏"
+      aliases = ["xu tianhong", "xu", "tianhong"]
       description = "其人身材矮小，足智多谋，是红花会的智囊军师，武功也颇 不弱，冷静持重。"
   title = "红花会七当家"
   nickname = "武诸葛"
@@ -3329,6 +3344,7 @@ item_desc = {
 
     characters "yang" {
       name = "杨成协"
+      aliases = ["yang chengxie", "yang", "chengxie"]
       description = "他又肥又高，手执钢鞭，鞭身甚是粗重，看模样少说也有三十来斤。"
   title = "红花会八当家"
   nickname = "铁塔"
@@ -3381,6 +3397,7 @@ item_desc = {
 
     characters "yu" {
       name = "余鱼同"
+      aliases = ["yu yutong", "yu", "yutong"]
       description = "一个长身玉立，眉清目秀，风流英俊的书生。余鱼同乃江南望族 子弟，中过秀才。他父亲因和一家豪门争一块坟地，官司打得倾家 荡产，又被豪门借故陷害，瘐死狱中。余鱼同一气出走，得遇机缘， 拜马真为师，弃文习武，回来把士豪刺死，从此亡命江湖，后来入 了红花会。他为人机警灵巧，多识各地乡谈，在会中任联络四方、 刺探讯息之职。"
   title = "红花会十四当家"
   nickname = "金笛秀才"
@@ -3446,6 +3463,7 @@ item_desc = {
 
     characters "zhang" {
       name = "章进"
+      aliases = ["zhang jin", "zhang", "jin"]
       description = "他是个驼子，最是直性子。他天生残疾，可是神力惊人，练 就了一身外家的硬功夫。他身有缺陷，最恼别人取笑他的驼 背，他和人说话时自称“章驼子”，那是好端端地，然而别 人若是在他面前提到个“驼”字，甚至冲着他的驼背一笑， 这人算是惹上了祸啦。笑他之人如是常人也还罢了，如会武 艺，往往就被他结结实实的打上一顿。他在红花会中最听骆 冰的话，因他脾气古怪，旁人都忌他三分，骆冰却怜他残废， 衣着饮食，时加细心照料，当他是小兄弟一般。衣服极为光 鲜。相貌却颇为丑陋。"
   title = "红花会十当家"
   nickname = "石敢当"
@@ -3498,6 +3516,7 @@ item_desc = {
 
     characters "zhao" {
       name = "赵半山"
+      aliases = ["zhao banshan", "zhao", "banshan"]
       description = "他一张胖胖的脸，笑起来给人一副很慈祥的感觉。他 原是温州王氏太极门掌门大弟子。豪迈豁达，行侠江 湖，一手暗器功夫和太极剑少有能匹敌。屠龙帮风流 云散之后，投入红花会。很得被红花会老当家于万亭 赏识。"
   title = "红花会三当家"
   nickname = "千臂如来"
@@ -3551,6 +3570,7 @@ item_desc = {
 
     characters "zhou" {
       name = "周仲英"
+      aliases = ["zhou zhongying", "zhou", "zhongying"]
       description = "他白发飘动，精神矍铄，乃是西北武林的领袖人物铁胆周仲英。"
   title = "铁胆庄庄主"
   nickname = "铁胆"
@@ -3601,6 +3621,7 @@ item_desc = {
 
     characters "zhouyi" {
       name = "周绮"
+      aliases = ["zhou yi", "zhou", "yi"]
       description = "这是铁胆庄的大小姐，周仲英的宝贝女儿。她性格豪迈，颇 有乃父之风，爱管闲事，好打不平，西北武林中人送了她个 外号，叫做“俏李逵”。"
   title = "铁胆庄大小姐"
   nickname = "俏李逵"
@@ -3650,6 +3671,7 @@ item_desc = {
 
     items "cuiyu" {
       name = "翠羽"
+      aliases = ["cui yu", "yu"]
       description = "一支翠绿的羽毛。"
   verbs = [
     "get",
@@ -3672,6 +3694,7 @@ item_desc = {
 
     items "huangshan" {
       name = "黄衫"
+      aliases = ["huang shan", "shan", "cloth"]
       description = "一件鹅黄色的女子长衫。"
   verbs = [
     "get",
@@ -3691,6 +3714,7 @@ item_desc = {
 
     items "shortsword" {
       name = "短剑"
+      aliases = ["short sword", "sword", "jian"]
       description = "这是一柄的短剑，据说剑里藏着一个极大秘密，几 百年来辗转相传，始终无人参详得出。"
   verbs = [
     "get",
@@ -3719,6 +3743,7 @@ item_desc = {
 
     items "tiebian" {
       name = "铁鞭"
+      aliases = ["changbian", "bian"]
       description = "这是一柄粗大的铁鞭，总有三十来斤重。"
   verbs = [
     "get",
@@ -3747,6 +3772,7 @@ item_desc = {
 
     items "tiedan" {
       name = "铁胆"
+      aliases = ["tiedan", "dan"]
       description = "一些溜圆的铁胆，是一种凶猛的暗器。"
   verbs = [
     "get",
@@ -3775,6 +3801,7 @@ item_desc = {
 
     items "tiejiang" {
       name = "铁桨"
+      aliases = ["tie jiang", "jiang"]
       description = "这是一根铁桨，举可齐眉，看来很是沉重，可攻击大片敌人。"
   verbs = [
     "get",
@@ -3803,6 +3830,7 @@ item_desc = {
 
     characters "baizhen" {
       name = "白振"
+      aliases = ["bai zhen", "bai", "zhen"]
       description = "白振是嵩阳派高手，三十年前就驰名武林了。"
   title = "御前侍卫"
   nickname = "金爪铁钩"
@@ -3839,6 +3867,7 @@ item_desc = {
 
     characters "boy" {
       name = "男孩"
+      aliases = ["boy"]
       description = "这是个农家少年，大概因从小物农，虽然年纪不大，可已长的很粗壮了。"
   gender = "男性"
   age = 13
@@ -3864,6 +3893,7 @@ item_desc = {
 
     characters "caichanu" {
       name = "采茶女"
+      aliases = ["girl"]
       description = "江南清秀的采茶姑娘一样楚楚动人。"
   gender = "女性"
   age = 19
@@ -3897,6 +3927,7 @@ chats = [
 
     characters "chuyuan" {
       name = "褚圆"
+      aliases = ["chu yuan", "chu", "yuan"]
       description = "褚圆原是和尚，法名智圆，后来犯了清规，被追缴度牒，逐 出庙门，他索性还了俗，做了大内侍卫。"
   title = "御前侍卫"
   gender = "男性"
@@ -3932,6 +3963,7 @@ chats = [
 
     characters "dabei" {
       name = "大悲尊者"
+      aliases = ["dabei zunzhe", "dabei", "zunzhe"]
       description = "他看上去须眉皆白，眼神却异常有神。"
   nickname = "灵隐寺住持"
   gender = "男性"
@@ -3983,6 +4015,7 @@ chats = [
 
     characters "dao_ke" {
       name = "刀客"
+      aliases = ["dao ke", "ke"]
       description = "这家伙满脸横肉，一付凶神恶煞的模样，令人望而生畏。"
   gender = "男性"
   age = 20
@@ -4012,6 +4045,7 @@ chats = [
 
     characters "girl" {
       name = "女孩"
+      aliases = ["girl"]
       description = "这是个农家少女，虽然只有十二、三岁，身材已经开始发育。"
   gender = "女性"
   age = 12
@@ -4037,6 +4071,7 @@ chats = [
 
     characters "guanjia" {
       name = "管家"
+      aliases = ["guan jia", "guan"]
       description = ""
   gender = "男性"
   age = 65
@@ -4063,6 +4098,7 @@ chats = [
 
     characters "guest" {
       name = "进香客"
+      aliases = ["jinxiang ke", "ke", "guest"]
       description = ""
   gender = "男性"
   shen_type = 1
@@ -4079,6 +4115,7 @@ chats = [
 
     characters "honghua1" {
       name = "红花会众"
+      aliases = ["hong hua", "hong", "hua"]
       description = "这是位青年壮汉，虎背熊腰，胸前配带一朵大红花。"
   gender = "男性"
   age = 25
@@ -4109,6 +4146,7 @@ chats = [
 
     characters "honghua2" {
       name = "绿营会众"
+      aliases = ["hui zhong", "hui", "zhong"]
       description = "这是位手执长枪的绿营清兵，红花会在江南 声势大盛，绿营也多有会众。"
   gender = "男性"
   age = 25
@@ -4139,6 +4177,7 @@ chats = [
 
     characters "huqingyu" {
       name = "胡庆余"
+      aliases = ["hu qingyu", "hu"]
       description = "胡庆余是当世一大巫医，他的本事神奇无比。真有生死肉骨之功。"
   gender = "男性"
   age = 63
@@ -4154,6 +4193,7 @@ chats = [
 
     characters "jiading" {
       name = "家丁"
+      aliases = ["jia ding", "jia"]
       description = ""
   gender = "男性"
   age = 35
@@ -4179,6 +4219,7 @@ chats = [
 
     characters "jian_ke" {
       name = "剑客"
+      aliases = ["jian ke", "ke"]
       description = "这是位中年武人，肩背长剑，长长的剑穗随风飘扬，看来似乎身怀绝艺。"
   gender = "男性"
   age = 45
@@ -4208,6 +4249,7 @@ chats = [
 
     characters "jiangong" {
       name = "监工"
+      aliases = ["jian gong", "jian", "gong", "jiangong"]
       description = "这是一个监工，手持长鞭，眼光一眨不眨的盯着众人，口中吆喝个不停。"
   gender = "男性"
   age = 32
@@ -4262,6 +4304,7 @@ chats = [
 
     characters "likexiu" {
       name = "李可秀"
+      aliases = ["li kexiu", "li", "kexiu"]
       description = "李可秀一身军功而成封疆大吏，一身武功自然不容轻视。"
   title = "杭州提督"
   gender = "男性"
@@ -4292,6 +4335,7 @@ chats = [
 
     characters "liumang" {
       name = "流氓"
+      aliases = ["liu mang", "liu"]
       description = "他是一个成天游手好闲的流氓，长得倒是白白胖胖的，也许以前有过钱。"
   gender = "男性"
   age = 19
@@ -4318,6 +4362,7 @@ chats = [
 
     characters "liumangtou" {
       name = "流氓头"
+      aliases = ["liumang tou", "liumang", "liu"]
       description = "他长得奸嘴猴腮的，一看就不像是个好人。"
   gender = "男性"
   age = 25
@@ -4344,6 +4389,7 @@ chats = [
 
     characters "liyuanzhi" {
       name = "李沅芷"
+      aliases = ["li yuanzhi", "li", "yuanzhi"]
       description = "她是杭州提督李可秀的千金，武当名宿陆菲青的入室弟子。"
   gender = "女性"
   age = 16
@@ -4391,6 +4437,7 @@ chats = [
 
     characters "longjun" {
       name = "龙骏"
+      aliases = ["long jun", "long", "jun"]
       description = "龙骏是大内高手，一手喂毒暗器，少有其匹。"
   title = "御前侍卫"
   gender = "男性"
@@ -4427,6 +4474,7 @@ chats = [
 
     characters "mengmian" {
       name = "蒙面人"
+      aliases = ["mengmianren"]
       description = "一个蒙面大汉，杀气腾腾。"
   gender = "男性"
   age = 38
@@ -4473,6 +4521,7 @@ chats = [
 
     characters "oldwoman" {
       name = "老大娘"
+      aliases = ["old woman", "woman"]
       description = "一个满脸风霜之色的老婆婆。"
   gender = "女性"
   age = 63
@@ -4511,6 +4560,7 @@ chats = [
 
     characters "poorman" {
       name = "穷汉"
+      aliases = ["poor man", "man"]
       description = "一个骨瘦如柴，满脸菜色的穷汉。"
   gender = "男性"
   age = 33
@@ -4543,6 +4593,7 @@ chats = [
 
     characters "qianlong" {
       name = "乾隆皇帝"
+      aliases = ["qianlong", "emperor"]
       description = "乾隆皇帝姓爱新觉罗，名弘历，是大清入关后第四位在位皇帝，生平 号称有十大武功，自称“十全老人”。"
   title = "清高宗"
   gender = "男性"
@@ -4569,6 +4620,7 @@ chats = [
 
     characters "qingbing" {
       name = "绿营清兵"
+      aliases = ["qing bing", "bing"]
       description = "这是位手执长枪的绿营清兵，满脸凶狠。"
   gender = "男性"
   age = 25
@@ -4598,6 +4650,7 @@ chats = [
 
     characters "seng" {
       name = "老和尚"
+      aliases = ["lao heshang", "lao", "heshang", "seng"]
       description = "一个慈眉善目的老和尚。"
   gender = "男性"
   age = 67
@@ -4643,6 +4696,7 @@ chats = [
 
     characters "shami" {
       name = "小沙弥"
+      aliases = ["xiao shami", "shami"]
       description = "他是本寺小沙弥。"
   gender = "男性"
   age = 12
@@ -4680,6 +4734,7 @@ chats = [
 
     characters "shu_sheng" {
       name = "书生"
+      aliases = ["shu sheng", "sheng"]
       description = "这是个饱读诗书，却手无搏鸡之力的年轻书生。"
   gender = "男性"
   age = 22
@@ -4700,6 +4755,7 @@ chats = [
 
     characters "smith" {
       name = "铁匠"
+      aliases = ["tiejiang", "smith"]
       description = "铁匠正用铁钳夹住一块红热的铁块放进炉中。"
   title = "铁匠铺老板"
   gender = "男性"
@@ -4738,6 +4794,7 @@ chats = [
 
     characters "tiao_fu" {
       name = "挑夫"
+      aliases = ["tiao fu", "porter"]
       description = "这是个老实巴交的穷挑夫，长得膀阔腰圆，一身肌肉。"
   gender = "男性"
 
@@ -4760,6 +4817,7 @@ chats = [
 
     characters "xianghuo" {
       name = "香火道人"
+      aliases = ["xianghuo daoren", "daoren", "xianghuo"]
       description = "武当派四方香火的弟子。"
   gender = "男性"
   age = 32
@@ -4798,6 +4856,7 @@ chats = [
 
     characters "xiaoer" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -4828,6 +4887,7 @@ chats = [
 
     characters "xiaoer2" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -4870,6 +4930,7 @@ chats = [
 
     characters "you_ke" {
       name = "游客"
+      aliases = ["youke"]
       description = ""
   gender = "男性"
   shen_type = 1
@@ -4890,6 +4951,7 @@ chats = [
 
     characters "youfang" {
       name = "游方道人"
+      aliases = ["youfang daoren", "daoren", "youfang"]
       description = "武当派游方道人．"
   gender = "男性"
   age = 35
@@ -4923,6 +4985,7 @@ chats = [
 
     characters "yuenv" {
       name = "越女"
+      aliases = ["yue nv", "yuenv"]
       description = "她是一位年轻的牧羊女，脸上挂着一丝与年龄不相称的哀思。"
   gender = "女性"
   age = 18
@@ -4969,6 +5032,7 @@ chats = [
 
     characters "baozi" {
       name = "百果油包"
+      aliases = ["baozi", "dumpling"]
       description = "一个煎得油澄澄、香喷喷的百果油包。"
     }
 
@@ -4977,6 +5041,7 @@ chats = [
 
     characters "chicken" {
       name = "叫化童鸡"
+      aliases = ["chicken"]
       description = "一只被烤得流油，香味扑鼻的叫化鸡。"
     }
 
@@ -4985,6 +5050,7 @@ chats = [
 
     characters "cloth" {
       name = "布衣"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -4993,6 +5059,7 @@ chats = [
 
     characters "fish" {
       name = "西湖醋鱼"
+      aliases = ["fish"]
       description = "一盘清甜可人的西湖醋鱼，用西湖中的金色鲤鱼 烧制而成，是西湖第一名菜。"
     }
 
@@ -5001,6 +5068,7 @@ chats = [
 
     characters "geng" {
       name = "桂花鲜栗羹"
+      aliases = ["Guihua geng", "guihua", "geng"]
       description = "一碗香气馥郁的桂花鲜栗羹。"
     }
 
@@ -5009,6 +5077,7 @@ chats = [
 
     characters "goupi" {
       name = "狗皮"
+      aliases = ["gou pi", "pi"]
       description = ""
     }
 
@@ -5017,6 +5086,7 @@ chats = [
 
     characters "jiuping" {
       name = "酒瓶"
+      aliases = ["jiuping", "bottle"]
       description = "一个晶莹碧绿的的大酒瓶，装了熏熏醉人的竹叶青。"
     }
 
@@ -5025,6 +5095,7 @@ chats = [
 
     characters "pork" {
       name = "东坡肉"
+      aliases = ["pork"]
       description = "一碗香喷喷的东坡肉，用文火煨肥猪肉而成， 苏东坡在牧守杭州时看到民间吃肉而烧制不得法，遗惠此法至千年以下。"
     }
 
@@ -5033,6 +5104,7 @@ chats = [
 
     characters "shrimp" {
       name = "龙井虾仁"
+      aliases = ["shrimp"]
       description = "酽酽浓浓的一盘龙井虾仁。"
     }
 
@@ -5041,6 +5113,7 @@ chats = [
 
     items "eluanshi" {
       name = "鹅卵石"
+      aliases = ["eluan shi", "shi"]
       description = "这是一粒平平常常的鹅卵石。"
   verbs = [
     "get",
@@ -5069,6 +5142,7 @@ chats = [
 
     items "shitou" {
       name = "大石头"
+      aliases = ["da shikuai", "shitou"]
       description = "这是一平平常常的大石头。"
   verbs = [
     "get",
@@ -5097,6 +5171,7 @@ chats = [
 
     items "shuzhi" {
       name = "大树枝"
+      aliases = ["shu zhi"]
       description = "这是一根爬山用的树枝。"
   verbs = [
     "get",

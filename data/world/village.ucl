@@ -660,6 +660,7 @@ item_desc = {
 
     characters "boy" {
       name = "男孩"
+      aliases = ["boy"]
       description = "这是个农家少年，大概因从小物农，虽然年纪不大，可已长的很粗壮了。"
   gender = "男性"
   age = 13
@@ -685,6 +686,7 @@ item_desc = {
 
     characters "cuihua" {
       name = "翠花"
+      aliases = ["cui hua", "hua"]
       description = "这是个打扮很妖艳的少妇，时不时的用眼角向你扫一眼。"
   gender = "女性"
   age = 25
@@ -709,6 +711,7 @@ item_desc = {
 
     characters "dibao" {
       name = "地保"
+      aliases = ["dibao"]
       description = "赵洪是这个村子土生土长的人，年轻的时候到外面去闯荡过一阵。 在镖局当过趟子手，攒了点钱，回来後娶了房老婆，物农为生。 村里人因他在外见过世面，又会些武功，就推他做了地保。"
   gender = "男性"
   age = 43
@@ -740,6 +743,7 @@ item_desc = {
 
     characters "dipi" {
       name = "地痞"
+      aliases = ["dipi"]
       description = "这是一个喝的醉醺醺的地痞。"
   gender = "男性"
   age = 20
@@ -771,6 +775,7 @@ chats = [
 
     characters "girl" {
       name = "女孩"
+      aliases = ["girl"]
       description = "这是个农家少女，虽然只有十二、三岁，身材已经开始发育。"
   gender = "女性"
   age = 12
@@ -796,6 +801,7 @@ chats = [
 
     characters "kid" {
       name = "小孩"
+      aliases = ["kid"]
       description = "这是个农家小孩子"
   gender = "男性"
   age = 7
@@ -821,6 +827,7 @@ chats = [
 
     characters "oldwoman" {
       name = "老大娘"
+      aliases = ["old woman", "woman"]
       description = "一个满脸风霜之色的老婆婆。"
   gender = "女性"
   age = 63
@@ -859,6 +866,7 @@ chats = [
 
     characters "poorman" {
       name = "穷汉"
+      aliases = ["poor man", "man"]
       description = "一个骨瘦如柴，满脸菜色的穷汉。"
   gender = "男性"
   age = 33
@@ -891,6 +899,7 @@ chats = [
 
     characters "punk" {
       name = "小流氓"
+      aliases = ["punk"]
       description = "这是一个游手好闲的小流氓。"
   gender = "男性"
   age = 18
@@ -930,6 +939,7 @@ chats = [
 
     characters "seller" {
       name = "小贩"
+      aliases = ["seller"]
       description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
   nickname = "消息灵通"
   gender = "男性"
@@ -968,6 +978,7 @@ chats = [
 
     characters "smith" {
       name = "冯铁匠"
+      aliases = ["feng", "smith"]
       description = "冯铁匠想是常年弯腰打铁，背已驼了，双眼被烟火薰的又红又细， 左腿残废，肩窝下撑著一根拐杖。"
   gender = "男性"
   age = 53
@@ -1027,6 +1038,7 @@ chats = [
 
     characters "wang" {
       name = "王小二"
+      aliases = ["wang xiaoer", "wang"]
       description = "这是个典型的关西汉子，一脸彪悍之色。"
   gender = "男性"
   age = 21
@@ -1063,6 +1075,7 @@ chats = [
 
     characters "xiejian" {
       name = "李四"
+      aliases = ["li si", "li"]
       description = "这是整天笑咪咪的小店老板，虽然不卖什麽东西，却也过得自在。"
   title = "小店老板"
   gender = "男性"
@@ -1112,6 +1125,7 @@ chats = [
 
     characters "bottle" {
       name = "水壶"
+      aliases = ["water bottle", "bottle"]
       description = "一个不知道用什么动物的皮制成的水壶。"
     }
 
@@ -1120,6 +1134,7 @@ chats = [
 
     characters "cloth" {
       name = "布衣"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -1128,6 +1143,7 @@ chats = [
 
     characters "egg" {
       name = "五香茶叶蛋"
+      aliases = ["spicy egg", "egg"]
       description = "一颗用五种香料炮制出来的茶叶蛋。"
     }
 
@@ -1136,6 +1152,7 @@ chats = [
 
     characters "hammer" {
       name = "铁锤"
+      aliases = ["hammer"]
       description = "这是一把沈重的铁锤，打造的相当坚实。"
     }
 
@@ -1144,6 +1161,7 @@ chats = [
 
     characters "hothammer" {
       name = "烧红的铁锤"
+      aliases = ["hot hammer"]
       description = "这是一把沈重的铁锤，打造的相当坚实。"
     }
 
@@ -1152,6 +1170,7 @@ chats = [
 
     characters "shoes" {
       name = "麻鞋"
+      aliases = ["gunny shoes", "shoes"]
       description = "这是一双麻布鞋，不易大滑，供游人登山使用。"
     }
 
@@ -1160,6 +1179,7 @@ chats = [
 
     characters "stick" {
       name = "手杖"
+      aliases = ["walking stick", "stick"]
       description = "这是一根爬山用的手杖。"
     }
 
@@ -1168,6 +1188,7 @@ chats = [
 
     characters "youlong" {
       name = "游龙剑"
+      aliases = ["youlong sword", "youlong", "sword"]
       description = "这是把看起来很普通的长剑，但仔细一看，剑身上有几条细纹闪烁不定。"
     }
 
@@ -1176,6 +1197,7 @@ chats = [
 
     items "zhujian" {
       name = "竹剑"
+      aliases = ["zhujian", "jian", "sword"]
       description = "这是一把练习剑法用的竹剑。"
   verbs = [
     "get",

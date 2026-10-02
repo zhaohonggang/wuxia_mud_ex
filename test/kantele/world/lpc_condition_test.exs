@@ -181,8 +181,103 @@ defmodule Kantele.World.LpcConditionTest do
     end
 
     @tag :world_data
-    test "开关默认关闭：阻挡条件不参与移动判定" do
-      assert Application.get_env(:ex_venture, :enforce_exit_vetoes, false) == false
+    test "灰度开关已开启" do
+      assert Application.get_env(:ex_venture, :enforce_exit_vetoes, false) == true
     end
+  end
+
+  describe "direction_scoped?/1" do
+    test "提到 dir 即视为方向限定" do
+      assert Cond.direction_scoped?("dir == 'east' && objectp(present('shi wei',environment(me)))")
+      assert Cond.direction_scoped?("dir != \"north\"")
+    end
+
+    test "不提 dir 即为「所有方向都拦」——必须被识别出来" do
+      # 这类来自转换器丢了外层 `if (dir != "east")` 守卫的情形
+      refute Cond.direction_scoped?("(int)me->query_skill('force') < 100")
+      refute Cond.direction_scoped?("me->query_temp('rent_paid')")
+      refute Cond.direction_scoped?("objectp(present('niu tou',environment(me)))")
+    end
+  end
+
+  @tag :world_data
+  test "数据里方向未限定的条件不会被执行（防锁死）" do
+    world = Kantele.World.Loader.load()
+
+    conds =
+      Enum.flat_map(world.rooms, fn r -> Enum.map(r.exit_vetoes || [], &{r.id, &1}) end)
+      |> Enum.filter(fn {_id, v} -> is_binary(Map.get(v, :condition)) end)
+
+    unscoped = Enum.filter(conds, fn {_id, v} -> not Cond.direction_scoped?(v.condition) end)
+
+    # 这批暂不执行；补齐外层守卫后应逐步下降（见 scripts/audit_exit_veto_locks.py）
+    assert length(unscoped) > 0
+    assert length(unscoped) < length(conds)
+  end
+
+  # ---- 集成：用真实世界数据复现线上场景 ----
+
+  describe "真实数据集成" do
+    @tag :world_data
+    test "康府大门：侍卫在场时禁止向东，提示为 LPC 原文" do
+      {room, occupants} = kangfu_men()
+
+      veto = Enum.find(room.exit_vetoes, &(Map.get(&1, :direction) == "east"))
+      assert veto, "kangfu_men 应有向东的阻挡条件"
+      assert Cond.enforceable?(veto.condition)
+
+      npc_ctx =
+        Kantele.World.ExitVetoContext.build(
+          dir: "east",
+          me: nil,
+          room: room,
+          context: %{characters: occupants}
+        )
+
+      # 房里确实有康府侍卫，且带 "shi wei" 别名
+      assert Enum.any?(occupants, &(to_string(&1.name) =~ "侍卫"))
+
+      assert Enum.any?(occupants, fn c ->
+               Enum.member?(Map.get(c.meta, :aliases) || [], "shi wei")
+             end)
+
+      assert {:block, msg} = Cond.check(veto, npc_ctx)
+      assert msg =~ "康府侍卫"
+
+      # 换方向不受影响
+      other =
+        Kantele.World.ExitVetoContext.build(
+          dir: "west",
+          me: nil,
+          room: room,
+          context: %{characters: occupants}
+        )
+
+      assert :allow = Cond.check(veto, other)
+    end
+
+    @tag :world_data
+    test "房里没有侍卫时放行（条件为假）" do
+      {room, _occupants} = kangfu_men()
+      veto = Enum.find(room.exit_vetoes, &(Map.get(&1, :direction) == "east"))
+
+      empty_ctx =
+        Kantele.World.ExitVetoContext.build(
+          dir: "east",
+          me: nil,
+          room: room,
+          context: %{characters: []}
+        )
+
+      assert :allow = Cond.check(veto, empty_ctx)
+    end
+  end
+
+  defp kangfu_men do
+    world = Kantele.World.Loader.load()
+
+    room = Enum.find(world.rooms, &(&1.id == "beijing:kangfu_men"))
+    occupants = Enum.filter(world.characters, &(&1.room_id == "beijing:kangfu_men"))
+    {room, occupants}
   end
 end

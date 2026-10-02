@@ -505,8 +505,20 @@ defmodule Kantele.World.Room do
         not applies? ->
           apply_vetoes(rest, room, context, mover, dir)
 
+        # 条件缺失 -> 跳过
+        is_nil(Map.get(veto, :condition)) ->
+          apply_vetoes(rest, room, context, mover, dir)
+
+        # 条件不限定方向 -> 暂不执行。转换器处理嵌套 if 时丢了外层守卫
+        # （如 kediandayuan 的 `if (dir != "east") return ...`），照此执行会
+        # 把该房所有方向都拦掉、把人锁死。等守卫补回后再放开。
+        # 见 Kantele.World.LpcCondition.direction_scoped?/1 与
+        # scripts/audit_exit_veto_locks.py
+        not Kantele.World.LpcCondition.direction_scoped?(Map.get(veto, :condition)) ->
+          apply_vetoes(rest, room, context, mover, dir)
+
         not Kantele.World.LpcCondition.enforceable?(Map.get(veto, :condition)) ->
-          # 条件缺失或求值器不支持 -> 跳过这一条，继续看下一条
+          # 求值器不支持的形态 -> 跳过这一条，继续看下一条
           apply_vetoes(rest, room, context, mover, dir)
 
         true ->

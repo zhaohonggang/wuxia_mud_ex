@@ -1616,6 +1616,7 @@ direction = "west"
 
     characters "feng" {
       name = "冯正东"
+      aliases = ["feng zhengdong", "feng"]
       description = "他就是冯正东，苏州现任知府。"
   title = "苏州知府"
   gender = "男性"
@@ -1651,6 +1652,7 @@ direction = "west"
 
     characters "gongzi" {
       name = "公子哥"
+      aliases = ["gongzi ge", "gongzi", "ge"]
       description = "这是个流里流气到处揩油挥霍的花花公子。"
   gender = "男性"
   age = 19
@@ -1682,6 +1684,7 @@ direction = "west"
 
     characters "huoji" {
       name = "药铺伙计"
+      aliases = ["yaopu huoji", "huoji"]
       description = "他是苏州乡下小伙子。"
   gender = "男性"
   age = 18
@@ -1713,6 +1716,7 @@ direction = "west"
 
     characters "jiaoxi" {
       name = "老夫子"
+      aliases = ["lao fuzi", "lao", "fuzi"]
       description = "一个唯利是图的苏州老教习，肚子里有墨水，可你还要有钱。"
   gender = "男性"
   age = 65
@@ -1747,6 +1751,7 @@ direction = "west"
 
     characters "kid" {
       name = "小孩"
+      aliases = ["kid"]
       description = "这是个在路边顽耍的小孩子."
   gender = "男性"
   age = 7
@@ -1772,6 +1777,7 @@ direction = "west"
 
     characters "lady1" {
       name = "苏州女孩"
+      aliases = ["girl"]
       description = "这是个十六、七岁的苏州女孩，清丽绝俗，一脸温柔的颜色。"
   gender = "女性"
   age = 16
@@ -1797,6 +1803,7 @@ direction = "west"
 
     characters "lady2" {
       name = "苏州少女"
+      aliases = ["girl"]
       description = "她一脸聪明乖巧，满口伶牙俐齿。见有人稍微示意，便过去加茶倒水。"
   gender = "女性"
   age = 21
@@ -1822,6 +1829,7 @@ direction = "west"
 
     characters "lady3" {
       name = "丫环"
+      aliases = ["ya huan", "ya", "huan"]
       description = "这是一个容貌清秀的天真无邪的丫环，正在打闹的开心。"
   gender = "女性"
   age = 16
@@ -1867,6 +1875,7 @@ direction = "west"
 
     characters "lady4" {
       name = "婢女"
+      aliases = ["bi nu", "nu"]
       description = "这是一个容貌清秀的天真无邪的婢女。"
   gender = "女性"
   age = 16
@@ -1904,6 +1913,7 @@ direction = "west"
 
     characters "nigu1" {
       name = "尼姑"
+      aliases = ["ni gu", "ni", "gu"]
       description = "这位尼姑正坐在铺垫上，双手捻着珠链，嘴中念念有词。"
   gender = "女性"
   age = 32
@@ -1927,6 +1937,7 @@ direction = "west"
 
     characters "nigu2" {
       name = "尼姑"
+      aliases = ["ni gu", "ni", "gu"]
       description = "这位尼姑正坐在铺垫上，双手捻着珠链，嘴中念念有词。"
   gender = "女性"
   age = 32
@@ -1942,6 +1953,7 @@ direction = "west"
 
     characters "piaoyou" {
       name = "票友"
+      aliases = ["piao you", "piao", "you"]
       description = ""
   gender = "男性"
   shen_type = 0
@@ -1957,6 +1969,7 @@ direction = "west"
 
     characters "seller" {
       name = "小贩"
+      aliases = ["seller"]
       description = "这位小贩子正笑咪咪地来回忙著，还不时招呼过往的客人进来。"
   gender = "男性"
   age = 32
@@ -1998,6 +2011,7 @@ direction = "west"
 
     characters "shiye" {
       name = "甄有庆"
+      aliases = ["zhen youqing", "zhen"]
       description = ""
   title = "知府师爷"
   gender = "男性"
@@ -2025,6 +2039,7 @@ direction = "west"
 
     characters "sun" {
       name = "孙剥皮"
+      aliases = ["sun baopi", "sun", "baopi"]
       description = ""
   title = "钱庄老板"
   nickname = "一毛不拔"
@@ -2068,6 +2083,7 @@ chats = [
 
     characters "wang" {
       name = "王合计"
+      aliases = ["wang heji", "heji", "wang"]
       description = "他带着一脸诡秘、奸诈的笑容。"
   title = "当铺老板"
   gender = "男性"
@@ -2102,6 +2118,7 @@ chats = [
 
     characters "yayi" {
       name = "衙役"
+      aliases = ["ya yi", "ya"]
       description = "一个高大威猛的汉子，因为久在官府做事，脸上已经磨炼得毫无表情。"
   gender = "男性"
   age = 25
@@ -2128,6 +2145,7 @@ chats = [
 
     characters "doufu" {
       name = "日本豆腐"
+      aliases = ["riben doufu", "doufu"]
       description = "一碗嫩白油滑的日本豆腐。"
     }
 
@@ -2136,6 +2154,7 @@ chats = [
 
     characters "huotui" {
       name = "樱桃火腿"
+      aliases = ["yingtao huotui", "huotui"]
       description = "一盆香喷喷热气腾腾的樱桃火腿。"
     }
 
@@ -2144,6 +2163,7 @@ chats = [
 
     characters "potato" {
       name = "土豆炖牛肉"
+      aliases = ["potato"]
       description = "一碗热气腾腾的土豆炖牛肉，散发出诱人的香气。"
     }
 
@@ -2152,6 +2172,7 @@ chats = [
 
     characters "soup" {
       name = "荷叶冬笋汤"
+      aliases = ["soup"]
       description = "一碗香气扑鼻的荷叶冬笋汤。"
     }
 
@@ -2160,6 +2181,7 @@ chats = [
 
     characters "xianggu" {
       name = "清炒香菇"
+      aliases = ["qingchao xianggu", "xianggu"]
       description = "一碟香喷喷的清炒香菇。"
     }
 
@@ -2168,6 +2190,7 @@ chats = [
 
     characters "xiaren" {
       name = "菱白虾仁"
+      aliases = ["lingbai xiaren", "xiaren"]
       description = "一盆香喷喷热气腾腾的菱白虾仁。"
     }
 
@@ -2176,6 +2199,7 @@ chats = [
 
     characters "yayifu" {
       name = "衙役服"
+      aliases = ["yayi cloth", "cloth"]
       description = "这是一件崭新的白棉布衙役服。"
     }
 
@@ -2184,6 +2208,7 @@ chats = [
 
     items "box" {
       name = "慈善箱"
+      aliases = ["cishang xiang", "xiang", "box"]
       description = "这是一个小庙里常见的慈善箱，专门用来接受善男信女们的捐款。"
   verbs = [
     "get",

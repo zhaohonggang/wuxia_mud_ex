@@ -1092,6 +1092,7 @@ item_desc = {
 
     characters "chushi" {
       name = "厨师"
+      aliases = ["chu shi", "chu", "shi"]
       description = "绝情谷的厨师，你可以问他要(serve)一些吃的。"
   gender = "男性"
   age = 50
@@ -1119,6 +1120,7 @@ item_desc = {
 
     characters "dizi1" {
       name = "弟子"
+      aliases = ["di zi", "di", "zi"]
       description = ""
   gender = "男性"
   age = 23
@@ -1164,6 +1166,7 @@ item_desc = {
 
     characters "dizi2" {
       name = "绿衫少女"
+      aliases = ["lvshan shaonv", "lvshan", "shaonv"]
       description = ""
   gender = "女性"
   age = 17
@@ -1210,6 +1213,7 @@ item_desc = {
 
     characters "lve" {
       name = "公孙绿萼"
+      aliases = ["gongsun lve", "gongsun", "lve"]
       description = "她就是绝情谷主的女儿公孙绿萼，只见她长 挑身材、脸色白嫩、嘴角旁有颗小痣，自有 一股清新脱俗之气。"
   nickname = "绝情谷主女儿"
   gender = "女性"
@@ -1256,6 +1260,7 @@ item_desc = {
 
     characters "lvshan" {
       name = "绿衫"
+      aliases = ["lv shan", "lv", "shan", "cloth"]
       description = ""
     }
 
@@ -1264,6 +1269,7 @@ item_desc = {
 
     characters "mantou" {
       name = "馒头"
+      aliases = ["man tou", "man", "tou"]
       description = "一个馒头。"
     }
 
@@ -1272,5 +1278,6 @@ item_desc = {
 
     characters "water" {
       name = "清水"
+      aliases = ["water", "shui"]
       description = "一碗清水。"
     }

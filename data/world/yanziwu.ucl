@@ -945,6 +945,7 @@ item_desc = {
 
     characters "abi" {
       name = "阿碧"
+      aliases = ["abi", "bi"]
       description = "这是个身穿绿衣的女郎，约十六七岁年纪，满脸都是温柔， 满身都是秀气。一张可爱的瓜子脸，肤白如新剥鲜藕，说话 声音极甜极清，令人一听之下说不出的舒适。嘴角边一粒细 细的黑痔，更增俏媚。"
   gender = "女性"
   age = 16
@@ -987,6 +988,7 @@ item_desc = {
 
     characters "azhu" {
       name = "阿朱"
+      aliases = ["azhu", "zhu"]
       description = "这是个身穿红衣的女郎，大约十七八岁，一脸精灵顽皮的神气。 一张鹅蛋脸，眼珠灵动，别有一番动人风韵。"
   gender = "女性"
   age = 17
@@ -1034,6 +1036,7 @@ item_desc = {
 
     characters "bao" {
       name = "包不同"
+      aliases = ["bao butong", "bao"]
       description = "他是慕容家四大家臣之三，生性喜欢饶舌。"
   gender = "男性"
   age = 31
@@ -1082,6 +1085,7 @@ item_desc = {
 
     characters "deng" {
       name = "邓百川"
+      aliases = ["deng baichuan", "deng"]
       description = "他是慕容家四大家臣之首，功力最为深厚。"
   gender = "男性"
   age = 42
@@ -1130,6 +1134,7 @@ item_desc = {
 
     characters "feng" {
       name = "风波恶"
+      aliases = ["feng boe", "feng"]
       description = "他是慕容家四大家臣之四，最喜欢打架，轻易却不服输。"
   gender = "男性"
   age = 28
@@ -1182,6 +1187,7 @@ item_desc = {
 
     characters "gongye" {
       name = "公冶乾"
+      aliases = ["gongye qian", "gongye"]
       description = "他是慕容家四大家臣之二，为人稳重。"
   gender = "男性"
   age = 35
@@ -1234,6 +1240,7 @@ item_desc = {
 
     characters "nanpu" {
       name = "男仆"
+      aliases = ["nan pu", "pu"]
       description = ""
   gender = "男性"
   age = 25
@@ -1259,6 +1266,7 @@ item_desc = {
 
     characters "susu" {
       name = "素素"
+      aliases = ["su su", "su"]
       description = "这是个年年龄不大的小丫鬟，但宽松的衣服也遮不住她过早发育的身体。 一脸聪明乖巧，满口伶牙俐齿。见有人稍微示意，便过去加茶倒水。"
   nickname = "伺茶丫鬟"
   gender = "女性"
@@ -1297,6 +1305,7 @@ item_desc = {
 
     characters "yahuan" {
       name = "丫环"
+      aliases = ["yahuan", "ya", "huan"]
       description = "这是一个容貌清秀的丫环，正在打闹的开心。"
   gender = "女性"
   age = 18
@@ -1341,6 +1350,7 @@ item_desc = {
 
     characters "yufu" {
       name = "渔夫"
+      aliases = ["yu fu", "yu", "fu"]
       description = "一个头戴斗笠的渔夫，正悠然自得地在岸边垂钓。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1376,6 +1386,7 @@ chats = [
 
     characters "changjian" {
       name = "长剑"
+      aliases = ["changjian", "jian"]
       description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
     }
 
@@ -1384,6 +1395,7 @@ chats = [
 
     characters "cloth" {
       name = "布衣"
+      aliases = ["buyi", "cloth"]
       description = ""
     }
 
@@ -1392,6 +1404,7 @@ chats = [
 
     characters "flower_shoe" {
       name = "绣花小鞋"
+      aliases = ["flower shoes", "shoes"]
       description = ""
     }
 
@@ -1400,6 +1413,7 @@ chats = [
 
     characters "goldring" {
       name = "金戒指"
+      aliases = ["golden ring", "ring"]
       description = ""
     }
 
@@ -1408,6 +1422,7 @@ chats = [
 
     characters "green_cloth" {
       name = "翠绿绸衫"
+      aliases = ["green cloth", "cloth"]
       description = "这件翠绿色的绸衫上面绣着几只黄鹊，闻起来还有一股淡香。"
     }
 
@@ -1416,6 +1431,7 @@ chats = [
 
     characters "necklace" {
       name = "金项链"
+      aliases = ["golden necklace", "necklace", "lace"]
       description = ""
     }
 
@@ -1424,6 +1440,7 @@ chats = [
 
     characters "pink_cloth" {
       name = "粉红绸衫"
+      aliases = ["pink cloth", "cloth"]
       description = "这件粉红色的绸衫上面绣着几只黄鹊，闻起来还有一股淡香。"
     }
 
@@ -1432,6 +1449,7 @@ chats = [
 
     items "cha" {
       name = "碧螺春"
+      aliases = ["biluo chun", "cha"]
       description = "这是一杯颜色碧绿、香味浓郁上等好茶。本地人称作吓煞人香。!"
   verbs = [
     "get",
@@ -1450,6 +1468,7 @@ chats = [
 
     items "dodgebook" {
       name = "轻功篇"
+      aliases = ["dodgebook", "shu", "book"]
       description = "轻功篇 这是一本还施水阁的轻功藏本，书色泛黄，有不少的批注。"
   verbs = [
     "get",
@@ -1476,6 +1495,7 @@ chats = [
 
     items "gao" {
       name = "四色点心"
+      aliases = ["gao"]
       description = "四色点心形状精雅,似乎是用来玩赏一般"
   verbs = [
     "get",
@@ -1496,6 +1516,7 @@ chats = [
 
     items "heiyugao" {
       name = "黑玉断续膏"
+      aliases = ["heiyugao"]
       description = "这是一粒千年极其难配制的的黑玉断续膏,据说能起死回生。"
   verbs = [
     "get",

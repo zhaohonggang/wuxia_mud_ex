@@ -498,6 +498,7 @@ behavior_config = {
 
     characters "boy" {
       name = "年轻弟子"
+      aliases = ["young boy", "boy", "young"]
       description = "这是一个神龙教弟子，一袭黄衣，混身透着一股邪气。"
   title = "神龙教黄龙使座下弟子"
   gender = "男性"
@@ -543,6 +544,7 @@ chats = [
 
     characters "boy2" {
       name = "年轻弟子"
+      aliases = ["young boy", "boy", "young"]
       description = "这是一个神龙教弟子，一袭黑衣，混身透着一股邪气。"
   title = "神龙教黑龙使座下弟子"
   gender = "男性"
@@ -588,6 +590,7 @@ chats = [
 
     characters "boy3" {
       name = "年轻弟子"
+      aliases = ["young boy", "boy", "young"]
       description = "这是一个神龙教弟子，一袭白衣，混身透着一股邪气。"
   title = "神龙教白龙使座下弟子"
   gender = "男性"
@@ -633,6 +636,7 @@ chats = [
 
     characters "boy4" {
       name = "年轻弟子"
+      aliases = ["young boy", "boy", "young"]
       description = "这是一个神龙教弟子，一袭青衣，混身透着一股邪气。"
   title = "神龙教青龙使座下弟子"
   gender = "男性"
@@ -678,6 +682,7 @@ chats = [
 
     characters "chuanfu" {
       name = "老船夫"
+      aliases = ["lao chuanfu", "chuanfu", "lao"]
       description = "这是一个老船夫。饱经风霜的脸上透出一丝狡猾。他经常出海，以前 曾经去过神龙岛。现在他拥有一艘大船可以出海。"
   nickname = "消息灵通"
   gender = "男性"
@@ -719,6 +724,7 @@ chats = [
 
     characters "dizi" {
       name = "弟子"
+      aliases = ["dizi"]
       description = "这是一个神龙教弟子，混身透着一股邪气。"
   title = "神龙教"
   gender = "男性"
@@ -763,6 +769,7 @@ chats = [
 
     characters "fangyi" {
       name = "方怡"
+      aliases = ["fang yi", "fang", "yi"]
       description = "她原来是沐王府家将，现在是神龙教赤龙门女弟子，长得活泼可爱。"
   title = "神龙教赤龙使座下弟子"
   gender = "女性"
@@ -798,6 +805,7 @@ chats = [
 
     characters "girl" {
       name = "年轻女弟子"
+      aliases = ["young girl", "girl", "young"]
       description = "这是一个神龙教女弟子，一袭红衣，长得颇为可爱。"
   title = "神龙教赤龙使座下弟子"
   gender = "女性"
@@ -843,6 +851,7 @@ chats = [
 
     characters "mujianping" {
       name = "沐剑屏"
+      aliases = ["mu jianping", "mu"]
       description = "她是沐王府小郡主，流落江湖成了神龙教赤龙门女弟子，长得十分娇羞秀美。"
   title = "神龙教赤龙使座下弟子"
   gender = "女性"
@@ -879,6 +888,7 @@ chats = [
 
     characters "old" {
       name = "老者"
+      aliases = ["old man", "old", "man"]
       description = "这是一个神龙教老者，太阳穴高耸，两眼炯炯有神，显然武功甚高。 然而神色郁郁，对一帮年轻男女颇为有礼，似乎害怕什么，样子十分可怜。"
   title = "神龙教老者"
   gender = "男性"
@@ -908,6 +918,7 @@ chats = [
 
     characters "yunsumei" {
       name = "云素梅"
+      aliases = ["yun sumei", "yun"]
       description = "这是一个神龙教女弟子，一袭红衣，长得颇为可爱。"
   title = "神龙教赤龙使座下弟子"
   gender = "女性"
@@ -943,6 +954,7 @@ chats = [
 
     characters "zhang3" {
       name = "章老三"
+      aliases = ["zhang laosan", "zhang"]
       description = "这是一个干瘦老头，一双小眼睛贼闪发光。"
   title = "神龙教小头目"
   gender = "男性"
@@ -993,6 +1005,7 @@ chats = [
 
     items "baihua" {
       name = "百花腹蛇膏"
+      aliases = ["baihua gao", "gao", "baihua"]
       description = "这是一枚珍贵的百花腹蛇膏。"
   verbs = [
     "get",
@@ -1010,6 +1023,7 @@ chats = [
 
     items "hua" {
       name = "百香花"
+      aliases = ["baixiang hua", "baixiang"]
       description = "这是一朵鲜艳的花，花香浓郁异常。"
   verbs = [
     "get",
@@ -1026,6 +1040,7 @@ chats = [
 
     items "hua2" {
       name = "无名花"
+      aliases = ["wuming hua", "wuming", "hua"]
       description = "这是一朵无名小花，花蕊虽小，却十分美丽。"
   verbs = [
     "get",
@@ -1042,6 +1057,7 @@ chats = [
 
     items "hua3" {
       name = "断肠花"
+      aliases = ["duanchang hua", "duanchang"]
       description = "这是一朵断肠花，通体通红，鲜嫩欲滴，美丽异常。"
   verbs = [
     "get",
@@ -1058,6 +1074,7 @@ chats = [
 
     items "hua4" {
       name = "翡翠兰"
+      aliases = ["feicui lan", "feicui", "lan"]
       description = "这是一朵千年难得一见的翡翠兰，据说能解百毒。"
   verbs = [
     "get",
@@ -1075,6 +1092,7 @@ chats = [
 
     items "jiudai" {
       name = "牛皮酒袋"
+      aliases = ["jiudai", "wineskin", "skin"]
       description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
   verbs = [
     "get",
@@ -1093,6 +1111,7 @@ chats = [
 
     items "mitao" {
       name = "水蜜桃"
+      aliases = ["tao", "mi tao"]
       description = "一碟水灵新鲜的水蜜桃。"
   verbs = [
     "get",
@@ -1113,6 +1132,7 @@ chats = [
 
     items "usedgao" {
       name = "用过的百花腹蛇膏"
+      aliases = ["usedgao", "used gao"]
       description = "这是一张用过的百花腹蛇膏。"
   verbs = [
     "get",
@@ -1130,6 +1150,7 @@ chats = [
 
     items "xionghuang" {
       name = "雄黄"
+      aliases = ["xionghuang"]
       description = "这是一包雄黄，据说可驱百毒。"
   verbs = [
     "get",

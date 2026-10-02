@@ -1047,6 +1047,7 @@ item_desc = {
 
     characters "aman" {
       name = "阿曼"
+      aliases = ["a man", "a", "man"]
       description = "美丽的哈萨克姑娘，身形袅娜面目姣好，眼光中闪烁著笑意。"
   nickname = "消息灵通"
   gender = "女性"
@@ -1079,6 +1080,7 @@ item_desc = {
 
     characters "dealer" {
       name = "波斯商人"
+      aliases = ["bosi shangren", "shangren", "bosi"]
       description = "一个高鼻蓝眼的波斯商人。他看着你脸上露出狡猾的笑容。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1117,6 +1119,7 @@ chats = [
 
     characters "hasake" {
       name = "哈萨克人"
+      aliases = ["hasake ren", "hasake", "ren"]
       description = "一个哈萨克族青年，赶着几十只羊。"
   gender = "男性"
   age = 26
@@ -1167,6 +1170,7 @@ chats = [
 
     characters "ji" {
       name = "计老人"
+      aliases = ["ji laoren", "ji", "laoren"]
       description = "他满头白发，竟无一根是黑的。身材甚是高大，只 是弓腰曲背衰老已极。"
   gender = "男性"
   age = 70
@@ -1206,6 +1210,7 @@ chats = [
 
     characters "jinxiangyu" {
       name = "金湘玉"
+      aliases = ["jin xiangyu", "jin", "xiangyu"]
       description = "金湘玉是黄土高原一带有名的大美人。一些达官 贵人，江湖浪子常常在这里歇息，所以她对这一 带的一举一动都了如指掌。"
   title = "龙门客栈老板娘"
   nickname = "消息灵通"
@@ -1246,6 +1251,7 @@ chats = [
 
     characters "seller" {
       name = "珠宝商"
+      aliases = ["zhubao shang", "zhubao", "shang"]
       description = "这是一个来自西域的珠宝商人。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1284,6 +1290,7 @@ chats = [
 
     characters "su" {
       name = "苏普"
+      aliases = ["su pu", "su", "pu"]
       description = "一个年轻的哈萨克牧羊人，哈萨克第一勇士苏鲁克的儿子。"
   gender = "男性"
   age = 23
@@ -1327,6 +1334,7 @@ chats = [
 
     characters "dogrou" {
       name = "狗肉"
+      aliases = ["gou rou", "rou"]
       description = "一块香喷喷的狗肉。"
     }
 
@@ -1335,6 +1343,7 @@ chats = [
 
     characters "duandao" {
       name = "哈萨克弯刀"
+      aliases = ["hasake wandao", "hasake", "wandao", "dao", "blade"]
       description = "这是一柄亮晃晃的哈萨克短刀, 是哈萨克人的防身武器。"
     }
 
@@ -1343,6 +1352,7 @@ chats = [
 
     characters "duanjian" {
       name = "短剑"
+      aliases = ["duan jian", "duan", "jian", "sword"]
       description = "这是一柄剑身短小的精钢剑。"
     }
 
@@ -1351,6 +1361,7 @@ chats = [
 
     characters "hulu" {
       name = "酒葫芦"
+      aliases = ["jiu hulu", "hulu", "jiu"]
       description = "一个用来装酒的大葫芦，外皮金黄，里面能装好几斤酒。"
     }
 
@@ -1359,6 +1370,7 @@ chats = [
 
     characters "qcloth" {
       name = "哈萨克袄裙"
+      aliases = ["ao qun", "qun"]
       description = "这是一件织著红花绿草的袄裙，哈萨克女孩常穿的衣着。"
     }
 
@@ -1367,6 +1379,7 @@ chats = [
 
     characters "ycloth" {
       name = "羊皮袄"
+      aliases = ["yangpi ao", "ao"]
       description = "这是一件灰色的羊皮袄。牧羊人不管春夏秋冬都穿着它。"
     }
 
@@ -1375,6 +1388,7 @@ chats = [
 
     items "skeleton" {
       name = "枯乾的骸骨"
+      aliases = ["Skeleton", "skeleton", "骸骨"]
       description = "这副骸骨已经躺在这里很久了。"
   verbs = [
     "get",
@@ -1393,6 +1407,7 @@ chats = [
 
     items "skeleton1" {
       name = "枯乾的骸骨"
+      aliases = ["Skeleton", "skeleton", "骸骨"]
       description = "这副骸骨已经躺在这里很久了。"
   verbs = [
     "get",
@@ -1411,6 +1426,7 @@ chats = [
 
     items "skeleton2" {
       name = "枯乾的骸骨"
+      aliases = ["Skeleton", "skeleton", "骸骨"]
       description = "这副骸骨已经躺在这里很久了。"
   verbs = [
     "get",
@@ -1429,6 +1445,7 @@ chats = [
 
     items "skeleton3" {
       name = "枯乾的骸骨"
+      aliases = ["Skeleton", "skeleton", "骸骨"]
       description = "这副骸骨已经躺在这里很久了。"
   verbs = [
     "get",
@@ -1447,6 +1464,7 @@ chats = [
 
     items "yudao" {
       name = "玉刀"
+      aliases = ["yu dao", "yu", "dao", "blade"]
       description = "一柄用白玉做成的单刀，相当的精美。"
   verbs = [
     "get",
@@ -1470,6 +1488,7 @@ chats = [
 
     items "yufu" {
       name = "玉斧"
+      aliases = ["yu fu", "yu", "fu"]
       description = "一柄用白玉做成的斧头，相当的精美。"
   verbs = [
     "get",
@@ -1491,6 +1510,7 @@ chats = [
 
     items "yujian" {
       name = "玉剑"
+      aliases = ["yu jian", "yu", "jian", "sword"]
       description = "一柄用白玉做成的长剑，相当的精美。"
   verbs = [
     "get",

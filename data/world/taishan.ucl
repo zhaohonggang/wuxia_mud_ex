@@ -746,6 +746,7 @@ direction = ~
 
     characters "chi" {
       name = "迟百城"
+      aliases = ["chi baicheng", "baicheng", "chi"]
       description = ""
   gender = "男性"
   age = 25
@@ -789,6 +790,7 @@ direction = ~
 
     characters "dao_ke" {
       name = "刀客"
+      aliases = ["dao ke", "ke"]
       description = "这家伙满脸横肉，一付凶神恶煞的模样，令人望而生畏。"
   gender = "男性"
   age = 20
@@ -818,6 +820,7 @@ direction = ~
 
     characters "jian_ke" {
       name = "剑客"
+      aliases = ["jian ke", "ke"]
       description = "这是位中年武人，肩背长剑，长长的剑穗随风飘扬，看来似乎身怀绝艺。"
   gender = "男性"
   age = 45
@@ -847,6 +850,7 @@ direction = ~
 
     characters "jianchu" {
       name = "建除道人"
+      aliases = ["jianchu daoren", "daoren", "jianchu"]
       description = ""
   gender = "男性"
   age = 25
@@ -892,6 +896,7 @@ direction = ~
 
     characters "jiang" {
       name = "江百胜"
+      aliases = ["jiang baisheng", "jiang", "baisheng"]
       description = "当今武林盟主魏无双之手下之亲兵队长。"
   gender = "男性"
   age = 30
@@ -927,6 +932,7 @@ direction = ~
 
     characters "seng_ren" {
       name = "游方和尚"
+      aliases = ["seng ren", "seng"]
       description = "他是一位中年游方和尚，骨瘦如柴，身上的袈裟打满了补丁。"
   gender = "男性"
   age = 45
@@ -968,6 +974,7 @@ direction = ~
 
     characters "shu_sheng" {
       name = "书生"
+      aliases = ["shu sheng", "sheng"]
       description = "这是个饱读诗书，却手无搏鸡之力的年轻书生。"
   gender = "男性"
   age = 22
@@ -988,6 +995,7 @@ direction = ~
 
     characters "tangzi" {
       name = "趟子手"
+      aliases = ["tangzi shou", "shou"]
       description = "这是个镖局趟子手，长得虎背熊腰，一身横练功夫。"
   gender = "男性"
   age = 30
@@ -1024,6 +1032,7 @@ chats = [
 
     characters "tianbai" {
       name = "天柏道人"
+      aliases = ["tianbai daoren", "daoren", "tianbai"]
       description = ""
   gender = "男性"
   age = 45
@@ -1069,6 +1078,7 @@ chats = [
 
     characters "tianmen" {
       name = "天门道人"
+      aliases = ["tianmen daoren", "daoren", "tianmen"]
       description = ""
   title = "泰山派第十三代掌门"
   gender = "男性"
@@ -1114,6 +1124,7 @@ chats = [
 
     characters "tiansong" {
       name = "天松道人"
+      aliases = ["tiansong daoren", "daoren", "tiansong"]
       description = ""
   gender = "男性"
   age = 45
@@ -1159,6 +1170,7 @@ chats = [
 
     characters "tianyi" {
       name = "天乙道人"
+      aliases = ["tianyi daoren", "daoren", "tianyi"]
       description = ""
   gender = "男性"
   age = 45
@@ -1204,6 +1216,7 @@ chats = [
 
     characters "tiao_fu" {
       name = "挑夫"
+      aliases = ["tiao fu", "porter"]
       description = "这是个老实巴交的穷挑夫，长得膀阔腰圆，一身肌肉。"
   gender = "男性"
 
@@ -1226,6 +1239,7 @@ chats = [
 
     characters "wei_shi1" {
       name = "白衣武士"
+      aliases = ["wei shi", "shi", "guard"]
       description = "这是位白衣武士，身披钢甲，手执长剑，双目精光炯炯，警惕地巡视着四周的情形。"
   gender = "男性"
   age = 35
@@ -1263,6 +1277,7 @@ chats = [
 
     characters "wei_shi2" {
       name = "红衣武士"
+      aliases = ["wei shi", "shi", "guard"]
       description = "这是位红衣武士，身披钢甲，手执长剑，双目精光炯炯，警惕地巡视着四周的情形。"
   gender = "男性"
   age = 35
@@ -1300,6 +1315,7 @@ chats = [
 
     characters "wei_shi3" {
       name = "青衣武士"
+      aliases = ["wei shi", "shi", "guard"]
       description = "这是位青衣武士，身披钢甲，手执长剑，双目精光炯炯，警惕地巡视着四周的情形。"
   gender = "男性"
   age = 35
@@ -1337,6 +1353,7 @@ chats = [
 
     characters "xiao_fan" {
       name = "小贩"
+      aliases = ["xiao fan", "seller", "fan"]
       description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
   gender = "男性"
   age = 32
@@ -1373,6 +1390,7 @@ chats = [
 
     characters "xiaoer" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1403,6 +1421,7 @@ chats = [
 
     characters "yujizi" {
       name = "玉玑子"
+      aliases = ["yuji zi", "zi", "yuji"]
       description = ""
   gender = "男性"
   age = 45
@@ -1447,6 +1466,7 @@ chats = [
 
     characters "yuqingzi" {
       name = "玉磬子"
+      aliases = ["yuqing zi", "zi", "yuqing"]
       description = ""
   gender = "男性"
   age = 45
@@ -1491,6 +1511,7 @@ chats = [
 
     characters "yuyinzi" {
       name = "玉音子"
+      aliases = ["yuyin zi", "zi", "yuyin"]
       description = ""
   gender = "男性"
   age = 45

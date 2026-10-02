@@ -1814,6 +1814,7 @@ item_desc = {
 
     characters "a_xiu" {
       name = "阿绣"
+      aliases = ["a xiu", "xiu", "a"]
       description = "她是凌霄城主的孙女，十多岁年纪。聪明伶俐 美丽可人。"
   title = "凌霄城主孙女"
   gender = "女性"
@@ -1888,6 +1889,7 @@ chats = [
 
     characters "daifu" {
       name = "阎大夫"
+      aliases = ["yan daifu", "yan", "daifu"]
       description = "阎大夫是凌宵城中的医生，声得称赞。"
   gender = "男性"
   age = 18
@@ -1927,6 +1929,7 @@ chats = [
 
     characters "dizi" {
       name = "凌霄弟子"
+      aliases = ["lingxiao dizi", "dizi", "lingxiao"]
       description = "这是一个凌霄城的普通弟子。"
   gender = "男性"
   age = 20
@@ -1985,6 +1988,7 @@ chats = [
 
     characters "feng" {
       name = "封万里"
+      aliases = ["feng wanli", "feng", "wanli"]
       description = "他是凌霄城第六代弟子封万里，是第六代弟子中 最为出类拔萃的人物。其剑法刚猛迅捷，如狂风 似烈火，因此得了个风火神龙的外号。但不知为 何，他少了一只手臂,眼中全是愤怒悔恨之色。"
   nickname = "风火神龙"
   gender = "男性"
@@ -2045,6 +2049,7 @@ chats = [
 
     characters "laoban" {
       name = "陈朝奉"
+      aliases = ["chen chaofeng", "chen", "chaofeng"]
       description = "陈朝奉是水晶当的老板，据说为人还不错。"
   title = "当铺老板"
   gender = "男性"
@@ -2080,6 +2085,7 @@ chats = [
 
     characters "shi" {
       name = "时万年"
+      aliases = ["shi wannian", "shi", "wannian"]
       description = "他是凌霄城第六代弟子时万年，乃是继白万剑、封 万里后武功最高、剑法最精的弟子。此时他在此守 卫监狱。"
   gender = "男性"
   age = 24
@@ -2139,6 +2145,7 @@ chats = [
 
     characters "su" {
       name = "苏万虹"
+      aliases = ["su wanhong", "su", "wanhong"]
       description = "他是凌霄城第六代弟子苏万虹，很得白自在的喜欢。"
   gender = "男性"
   age = 24
@@ -2191,6 +2198,7 @@ chats = [
 
     characters "sun" {
       name = "孙万年"
+      aliases = ["sun wannian", "sun", "wannian"]
       description = "他是凌宵城第六代弟子孙万年，生得獐头鼠目。 因为品行不端，被关在这里思过。"
   age = 24
 
@@ -2241,6 +2249,7 @@ chats = [
 
     characters "wang_wanyi" {
       name = "汪万翼"
+      aliases = ["wang wanyi", "wang"]
       description = "他是凌霄城第六代弟子汪万翼，在凌霄城中以轻功见长。"
   gender = "男性"
   age = 24
@@ -2293,6 +2302,7 @@ chats = [
 
     characters "yan" {
       name = "燕万鹏"
+      aliases = ["yan wanpeng", "yan", "wanpeng"]
       description = "他是凌霄城第六代弟子燕万鹏。第六代弟子中，为 人数他最为梗直，素有铁面之称，所以在此镇狱。"
   gender = "男性"
   age = 24
@@ -2346,6 +2356,7 @@ chats = [
 
     characters "yaoniang" {
       name = "窈娘"
+      aliases = ["yao niang", "yao", "niang"]
       description = "窈娘是白自在的妾侍，很得白自在宠信。"
   gender = "女性"
   age = 17
@@ -2377,6 +2388,7 @@ chats = [
 
     characters "zhu" {
       name = "褚万春"
+      aliases = ["zhu wanchun", "zhu", "wanchun"]
       description = "他是凌霄城第六代弟子褚万春，和孙万年一样，贼眉鼠眼。 也因为行止不端，被关在这里。"
   gender = "男性"
   age = 24
@@ -2428,6 +2440,7 @@ chats = [
 
     items "ban" {
       name = "Item"
+      aliases = ["mei ban", "mei", "ban"]
       description = "一片刚刚从树上飘落的梅瓣。"
   verbs = [
     "get",
@@ -2447,6 +2460,7 @@ chats = [
 
     items "book_bamboo" {
       name = "旧竹片"
+      aliases = ["bamboo", "shu", "book"]
       description = "易筋经轻功篇 这是一片两边去皮的旧竹片，正面和背面都画了无数个飞翔纵跃的小图形。"
   verbs = [
     "get",
@@ -2473,6 +2487,7 @@ chats = [
 
     items "book_iron" {
       name = "铁手掌"
+      aliases = ["iron hand", "hand", "shu", "book"]
       description = "易筋经攻防篇 这是一块铁手掌，上面凹凹凸凸刻满了人形搏击的场面。"
   verbs = [
     "get",
@@ -2500,6 +2515,7 @@ chats = [
 
     items "book_silk" {
       name = "薄绢"
+      aliases = ["silk", "shu", "book"]
       description = "这是小册易筋经修行篇 由一束薄绢钉成，里面密密麻麻的画了不少打坐吐呐的姿势。"
   verbs = [
     "get",
@@ -2526,6 +2542,7 @@ chats = [
 
     items "book_stone" {
       name = "石板"
+      aliases = ["stone", "shu", "book"]
       description = "易筋经拳法篇 这是一块园园的石板，似乎用手指刻划了数个指印。"
   verbs = [
     "get",
@@ -2552,6 +2569,7 @@ chats = [
 
     items "ganjiang" {
       name = "干将"
+      aliases = ["ganjiang", "jian"]
       description = "这就是赫赫有名的干将,剑锋上隐隐透出一股清气,仔细凝望,只觉一股肃杀之气森热煌馍ⅰ�n"
   verbs = [
     "get",
@@ -2580,6 +2598,7 @@ chats = [
 
     items "hanyu" {
       name = "极北寒玉"
+      aliases = ["jibei hanyu", "jibei", "hanyu", "yu"]
       description = "极地万年寒冰凝结而成，看上去洁白剔透，散发出雪一般的光泽。"
   verbs = [
     "get",
@@ -2598,6 +2617,7 @@ chats = [
 
     items "mei" {
       name = "Item"
+      aliases = ["mei hua", "mei", "hua"]
       description = "一朵刚刚从树上飘落的梅花。"
   verbs = [
     "get",
@@ -2617,6 +2637,7 @@ chats = [
 
     items "moye" {
       name = "莫邪"
+      aliases = ["moye", "jian"]
       description = "这就是赫赫有名的莫邪,剑锋上隐隐透出一股紫气,仔细凝望,只觉一股肃杀之气森然外散。"
   verbs = [
     "get",
@@ -2645,6 +2666,7 @@ chats = [
 
     items "rice" {
       name = "珍珠饭"
+      aliases = ["rice", "fan"]
       description = "一碗用雪山珍珠米作的饭。"
   verbs = [
     "get",
@@ -2665,6 +2687,7 @@ chats = [
 
     items "soup" {
       name = "雪鹤汤"
+      aliases = ["soup"]
       description = "一碗香气扑鼻的雪鹤汤。"
   verbs = [
     "get",

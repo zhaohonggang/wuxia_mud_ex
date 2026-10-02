@@ -611,6 +611,7 @@ valid_leave = [
 
     characters "ghost" {
       name = "孤魂野鬼"
+      aliases = ["ghost"]
       description = "他看起来若有若无，缥缈不定。一身有说不出的诡异。"
   gender = "男性"
   age = 100
@@ -648,6 +649,7 @@ valid_leave = [
 
     characters "liwenxiu" {
       name = "李文秀"
+      aliases = ["li wenxiu", "li", "wenxiu"]
       description = "她长得清纯脱秀，嫣然一笑，不禁让人怦然心动。"
   gender = "女性"
   age = 18
@@ -707,6 +709,7 @@ chats = [
 
     characters "waer" {
       name = "瓦耳拉齐"
+      aliases = ["waer laqi", "waer", "laqi"]
       description = "他就是装神弄鬼的瓦耳拉齐。只见他面容枯槁， 由于长期不见阳光，皮肤惨白。"
   gender = "男性"
   age = 45
@@ -749,6 +752,7 @@ chats = [
 
     characters "liuxingchui" {
       name = "流星锤"
+      aliases = ["liuxing chui", "liuxing", "chui"]
       description = "一柄金光闪闪的流星锤。"
     }
 
@@ -757,6 +761,7 @@ chats = [
 
     characters "map" {
       name = "高昌迷宫地图"
+      aliases = ["map", "ditu"]
       description = "这是一张高昌迷宫地图，依照图示，按以下方位即可进入。  ##==========================================## ## ###东##东##南##东##北##北##东##东##南###### ##==========================================##"
     }
 
@@ -765,6 +770,7 @@ chats = [
 
     items "fake_map" {
       name = "高昌迷宫地图"
+      aliases = ["map", "ditu"]
       description = "这是一张高昌迷宫地图，依照图示，按以下方位即可进入。  ##==========================================## ## ###东##东##南##西##北##北##东##东##南###### ##==========================================##"
   verbs = [
     "get",

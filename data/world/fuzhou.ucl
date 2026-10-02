@@ -1337,6 +1337,7 @@ direction = ~
 
     characters "baier" {
       name = "白二"
+      aliases = ["bai er", "bai"]
       description = "这是个镖局趟子手，长得虎背熊腰，一身横练功夫。"
   title = "趟子手"
   gender = "男性"
@@ -1366,6 +1367,7 @@ direction = ~
 
     characters "boy" {
       name = "男孩"
+      aliases = ["boy"]
       description = "这是个城里的少年。"
   gender = "男性"
   age = 13
@@ -1391,6 +1393,7 @@ direction = ~
 
     characters "chen" {
       name = "陈阿婆"
+      aliases = ["chen apo", "chen", "apo"]
       description = "陈阿婆久居佛州城，据说她年轻时很有几分风韵。"
   title = "杂货铺老板"
   nickname = "消息灵通"
@@ -1438,6 +1441,7 @@ direction = ~
 
     characters "chenqi" {
       name = "陈七"
+      aliases = ["chen qi", "chen"]
       description = "这是个镖局趟子手，长得虎背熊腰，一身横练功夫。"
   title = "趟子手"
   gender = "男性"
@@ -1467,6 +1471,7 @@ direction = ~
 
     characters "cui" {
       name = "崔镖头"
+      aliases = ["cui biaotou", "cui"]
       description = ""
   gender = "男性"
   age = 35
@@ -1496,6 +1501,7 @@ direction = ~
 
     characters "flower_shoe" {
       name = "绣花小鞋"
+      aliases = ["flower shoes", "shoes"]
       description = ""
     }
 
@@ -1504,6 +1510,7 @@ direction = ~
 
     characters "geshiha" {
       name = "戈什哈"
+      aliases = ["ge shiha"]
       description = "一个高大威猛的汉子，是靖海侯施琅大人的亲兵戈什哈。"
   gender = "男性"
   age = 25
@@ -1530,6 +1537,7 @@ direction = ~
 
     characters "girl" {
       name = "女孩"
+      aliases = ["girl"]
       description = "这是个农家少女，虽然只有十二、三岁，身材已经开始发育。"
   gender = "女性"
   age = 12
@@ -1555,6 +1563,7 @@ direction = ~
 
     characters "linzhennan" {
       name = "林震南"
+      aliases = ["lin zhennan", "lin", "zhennan"]
       description = "他就是「福威镖局」的总镖头林震南。"
   title = "福威镖局总镖头"
   gender = "男性"
@@ -1599,6 +1608,7 @@ direction = ~
 
     characters "shi" {
       name = "史镖头"
+      aliases = ["shi biaotou", "shi"]
       description = ""
   gender = "男性"
   age = 45
@@ -1628,6 +1638,7 @@ direction = ~
 
     characters "wang" {
       name = "王夫人"
+      aliases = ["wang furen", "wang"]
       description = "她是洛阳金刀王老爷子的独生爱女，福威镖局总镖头夫人。"
   title = "金刀"
   gender = "女性"
@@ -1661,6 +1672,7 @@ direction = ~
 
     characters "xiaoer" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1691,6 +1703,7 @@ direction = ~
 
     characters "xiaoer2" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1730,6 +1743,7 @@ direction = ~
 
     characters "xiaoer3" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1767,6 +1781,7 @@ direction = ~
 
     characters "xiaofan" {
       name = "小贩"
+      aliases = ["seller"]
       description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
   gender = "男性"
   age = 32
@@ -1810,6 +1825,7 @@ direction = ~
 
     characters "zheng" {
       name = "郑镖头"
+      aliases = ["zheng biaotou", "zheng"]
       description = ""
   gender = "男性"
   age = 45
@@ -1839,6 +1855,7 @@ direction = ~
 
     characters "bluecloth" {
       name = "青布长衫"
+      aliases = ["shan", "cloth"]
       description = ""
     }
 
@@ -1847,6 +1864,7 @@ direction = ~
 
     characters "cloth" {
       name = "布衣"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -1855,6 +1873,7 @@ direction = ~
 
     characters "fotiaoqiang" {
       name = "佛跳墙"
+      aliases = ["fotiaoqiang"]
       description = "一碗香喷喷的佛跳墙，是福建第一名菜。"
     }
 
@@ -1863,6 +1882,7 @@ direction = ~
 
     characters "fuchen" {
       name = "拂尘"
+      aliases = ["fuchen"]
       description = "这是一柄拂尘，做工精细，是很阴毒的兵器。"
     }
 
@@ -1871,6 +1891,7 @@ direction = ~
 
     characters "jiuping" {
       name = "酒瓶"
+      aliases = ["jiuping", "bottle"]
       description = "一个晶莹碧绿的的大酒瓶，装了熏熏醉人的福建老酒。"
     }
 
@@ -1879,6 +1900,7 @@ direction = ~
 
     characters "tiexiang" {
       name = "铁箱"
+      aliases = ["tie xiang", "xiang", "box"]
       description = "一只有大又笨的铁箱子，有些生锈了。"
 
   init = {
@@ -1892,6 +1914,7 @@ direction = ~
 
     characters "xiuhua" {
       name = "绣花针"
+      aliases = ["xiuhua zhen", "zhen", "needle"]
       description = "这是一根精钢细磨的绣花针，是绣花用的工具。"
     }
 
@@ -1900,6 +1923,7 @@ direction = ~
 
     characters "yadan" {
       name = "臭鸭蛋"
+      aliases = ["chou yadan", "yadan", "egg"]
       description = "臭鸭蛋闻着臭，吃着香。"
     }
 
@@ -1908,6 +1932,7 @@ direction = ~
 
     characters "zongzi" {
       name = "粽子"
+      aliases = ["zongzi"]
       description = "一个香喷喷的肉粽子，包它的粽子叶泛出一股清香。"
     }
 
@@ -1916,6 +1941,7 @@ direction = ~
 
     items "jiasha" {
       name = "袈裟"
+      aliases = ["jia sha", "jia", "sha"]
       description = "一件旧得已经看不出颜色的袈裟，上面有好多窟窿。"
   verbs = [
     "get",
@@ -1934,6 +1960,7 @@ direction = ~
 
     items "pink_cloth" {
       name = "粉红绸衫"
+      aliases = ["pink cloth", "cloth"]
       description = "这件粉红色的绸衫上面绣着几只黄鹊，闻起来还有一股淡香。"
   verbs = [
     "get",

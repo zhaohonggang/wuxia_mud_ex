@@ -2228,6 +2228,7 @@ item_desc = {
 
     characters "baibian" {
       name = "张三"
+      aliases = ["zhang san", "zhang", "san", "bai bian"]
       description = "一位邋邋遢遢的道士。"
   title = "百变道人"
   gender = "男性"
@@ -2274,6 +2275,7 @@ item_desc = {
 
     characters "guest" {
       name = "进香客"
+      aliases = ["jinxiang ke", "ke", "guest"]
       description = ""
   gender = "男性"
   shen_type = 1
@@ -2290,6 +2292,7 @@ item_desc = {
 
     characters "mengmian" {
       name = "蒙面大汉"
+      aliases = ["dahan"]
       description = "他是一个蒙面大汉。"
   gender = "男性"
   age = 30
@@ -2334,6 +2337,7 @@ item_desc = {
 
     characters "tufei1" {
       name = "土匪"
+      aliases = ["tufei", "bandit", "fei"]
       description = "这家伙满脸横肉�一付凶神恶煞的模样，令人望而生畏。"
   gender = "男性"
   age = 30
@@ -2363,6 +2367,7 @@ item_desc = {
 
     characters "tufei2" {
       name = "土匪"
+      aliases = ["tufei", "bandit", "fei"]
       description = "这家伙满脸横肉�一付凶神恶煞的模样，令人望而生畏。"
   gender = "男性"
   age = 20
@@ -2390,6 +2395,7 @@ item_desc = {
 
     characters "tufeitou" {
       name = "土匪头"
+      aliases = ["tufei tou", "bandit leader", "tou"]
       description = "这家伙满脸杀气，一付凶神恶煞的模样，令人望而生畏。"
   gender = "男性"
   age = 45
@@ -2425,6 +2431,7 @@ chats = [
 
     characters "turou" {
       name = "兔肉"
+      aliases = ["tu rou", "tu"]
       description = "一块鲜血淋漓肥的野兔肉。"
     }
 
@@ -2433,6 +2440,7 @@ chats = [
 
     characters "xiao_louluo" {
       name = "小喽罗"
+      aliases = ["xiao louluo", "louluo"]
       description = "这是一个年纪不大的小喽罗，象是第一次出来做这无本生意。"
   gender = "男性"
   age = 18
@@ -2457,6 +2465,7 @@ chats = [
 
     characters "xiao_tufei" {
       name = "小土匪"
+      aliases = ["xiao tufei", "tufei"]
       description = "这是个胆大包天的小土匪，杀人越或货，无恶不做。"
   gender = "男性"
   age = 22
@@ -2481,6 +2490,7 @@ chats = [
 
     characters "xiaocui" {
       name = "小翠"
+      aliases = ["xiao cui", "xiao", "cui"]
       description = "这是个年龄不大的小姑娘，便过去加茶倒水。"
   gender = "女性"
   shen_type = 1
@@ -2517,6 +2527,7 @@ chats = [
 
     items "baguafu" {
       name = "八卦服"
+      aliases = ["baguafu"]
       description = "这是八卦弟子练功服。"
   verbs = [
     "get",
@@ -2537,6 +2548,7 @@ chats = [
 
     items "bluecloth" {
       name = "青布长衫"
+      aliases = ["shan", "cloth"]
       description = ""
   verbs = [
     "get",
@@ -2556,6 +2568,7 @@ chats = [
 
     items "dawancha" {
       name = "粗磁大碗"
+      aliases = ["wan", "dawan", "cha"]
       description = "一个蓝边粗磁大碗。"
   verbs = [
     "get",
@@ -2574,6 +2587,7 @@ chats = [
 
     items "greenrobe" {
       name = "青色道袍"
+      aliases = ["pao", "cloth", "dao pao"]
       description = "这是件质地轻软的青色道袍，边上还镂着花呢。"
   verbs = [
     "get",
@@ -2593,6 +2607,7 @@ chats = [
 
     items "greyrobe" {
       name = "灰色道袍"
+      aliases = ["pao", "cloth", "dao pao"]
       description = "一件普普通通的灰布道袍。"
   verbs = [
     "get",
@@ -2612,6 +2627,7 @@ chats = [
 
     items "mitao" {
       name = "水蜜桃"
+      aliases = ["shuimi tao", "shuimi", "tao"]
       description = "一碟水灵新鲜的水蜜桃，跟脸蛋儿一样红艳可人。"
   verbs = [
     "get",
@@ -2632,6 +2648,7 @@ chats = [
 
     items "nuerxiang" {
       name = "女儿香"
+      aliases = ["nuer xiang", "xiang", "tea"]
       description = "叶若柳眉，香如处子。这便是茶中极品「女儿香」！"
   verbs = [
     "get",
@@ -2650,6 +2667,7 @@ chats = [
 
     items "renshenguo" {
       name = "人参果"
+      aliases = ["renshen guo", "renshen", "guo"]
       description = "这是一只已经成型的人参果，真的象极了三周不满的小孩。"
   verbs = [
     "get",
@@ -2666,6 +2684,7 @@ chats = [
 
     items "shitou" {
       name = "大石头"
+      aliases = ["stone"]
       description = "这是一平平常常的大石头。"
   verbs = [
     "get",
@@ -2694,6 +2713,7 @@ chats = [
 
     items "table" {
       name = "破桌子"
+      aliases = ["table", "zhuo zi"]
       description = "这张破桌子放在这里，说不出的诡异。"
   verbs = [
     "get",
@@ -2712,6 +2732,7 @@ chats = [
 
     items "whiterobe" {
       name = "白色道袍"
+      aliases = ["pao", "cloth", "dao pao"]
       description = "这是件素雅洁净的白色道袍。"
   verbs = [
     "get",
@@ -2731,6 +2752,7 @@ chats = [
 
     items "wuxingfu" {
       name = "五行服"
+      aliases = ["wuxingfu"]
       description = "这是五行弟子练功服。"
   verbs = [
     "get",
@@ -2751,6 +2773,7 @@ chats = [
 
     items "xiangcha" {
       name = "香茶"
+      aliases = ["tea", "cha", "xiang cha"]
       description = "一杯热茶，悠悠地冒着香气~~~~~~"
   verbs = [
     "get",

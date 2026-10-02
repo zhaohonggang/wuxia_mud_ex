@@ -2186,6 +2186,7 @@ direction = ~
 
     characters "boydizi" {
       name = "男弟子"
+      aliases = ["dizi", "nan dizi"]
       description = "他是峨嵋派的第五代俗家弟子。"
   gender = "男性"
   age = 16
@@ -2224,6 +2225,7 @@ direction = ~
 
     characters "frog" {
       name = "大青蛙"
+      aliases = ["frog"]
       description = "这是一只黑丝大青蛙，长在深不见日的水潭 里，全身恶臭，肥肥壮壮，一对血红的眼睛 十分恶心，你真想杀了它。"
   age = 7
 
@@ -2242,6 +2244,7 @@ direction = ~
 
     characters "girldizi" {
       name = "女弟子"
+      aliases = ["dizi", "nu dizi"]
       description = "她是峨嵋派的第五代俗家弟子。"
   gender = "女性"
   age = 15
@@ -2280,6 +2283,7 @@ direction = ~
 
     characters "guest" {
       name = "进香客"
+      aliases = ["jinxiang ke", "ke", "guest"]
       description = ""
   gender = "男性"
   shen_type = 1
@@ -2296,6 +2300,7 @@ direction = ~
 
     characters "puren" {
       name = "仆人"
+      aliases = ["pu ren", "pu", "ren"]
       description = "这是一个长途陪伴侍侯少妇的仆人。"
   nickname = "消息灵通"
   gender = "男性"
@@ -2330,6 +2335,7 @@ direction = ~
 
     characters "songqingshu" {
       name = "宋青书"
+      aliases = ["song qingshu", "song"]
       description = "他就是宋远桥的儿子宋青书。 他今年二十岁，乃是武当第三代中出类拔萃的人物。"
   gender = "男性"
   age = 20
@@ -2397,6 +2403,7 @@ direction = ~
 
     characters "xiao_fan" {
       name = "小贩"
+      aliases = ["xiao fan", "seller", "fan"]
       description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
   nickname = "消息灵通"
   gender = "男性"
@@ -2435,6 +2442,7 @@ direction = ~
 
     characters "youngwoman" {
       name = "年轻少妇"
+      aliases = ["nianqing shaofu", "shaofu"]
       description = "这是一个长途疲惫的年轻少妇。"
   gender = "女性"
   age = 16
@@ -2469,6 +2477,7 @@ direction = ~
 
     items "bocai_fentiao" {
       name = "菠菜粉条"
+      aliases = ["bocai fentiao", "fentiao"]
       description = "一盆白绿相间，清香可口的菠菜粉条。"
   verbs = [
     "get",
@@ -2489,6 +2498,7 @@ direction = ~
 
     items "fojing10" {
       name = "Item"
+      aliases = ["shu", "book"]
       description = "这是一册佛经。"
   verbs = [
     "get",
@@ -2515,6 +2525,7 @@ direction = ~
 
     items "fojing11" {
       name = "Item"
+      aliases = ["shu", "book"]
       description = "这是一册佛经。"
   verbs = [
     "get",
@@ -2541,6 +2552,7 @@ direction = ~
 
     items "fojing20" {
       name = "Item"
+      aliases = ["shu", "book"]
       description = "这是一册佛经。"
   verbs = [
     "get",
@@ -2567,6 +2579,7 @@ direction = ~
 
     items "fojing21" {
       name = "Item"
+      aliases = ["shu", "book"]
       description = "这是一册佛经。"
   verbs = [
     "get",
@@ -2593,6 +2606,7 @@ direction = ~
 
     items "fuchen" {
       name = "拂尘"
+      aliases = ["fuchen"]
       description = "这是一柄拂尘，做工精细，是很阴毒的兵器。"
   verbs = [
     "get",
@@ -2621,6 +2635,7 @@ direction = ~
 
     items "jiudai" {
       name = "牛皮酒袋"
+      aliases = ["jiudai", "wineskin", "skin"]
       description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
   verbs = [
     "get",
@@ -2639,6 +2654,7 @@ direction = ~
 
     items "liuli_qiezi" {
       name = "琉璃茄子"
+      aliases = ["liuli qiezi", "qiezi"]
       description = "一盆青红相间，金黄透烂，清香四溢的琉璃茄子。"
   verbs = [
     "get",
@@ -2659,6 +2675,7 @@ direction = ~
 
     items "mala_doufu" {
       name = "麻辣豆腐"
+      aliases = ["mala doufu", "doufu"]
       description = "一盆颜色红亮，细中带嫩，香辣可口的麻辣豆腐。"
   verbs = [
     "get",
@@ -2679,6 +2696,7 @@ direction = ~
 
     items "map" {
       name = "『峨嵋旅游图』"
+      aliases = ["luyou tu", "tu", "map"]
       description = "『峨嵋旅游图』  　　　【地图一】　　　　　　　　　＾　　　＜　ｕｐ  　　　　　　　　　　　　　　　　北  　　　白　　　　　　　　　　　　　　　　　　　　　　　 　====== 　　　龙　　　　　　　　　　　　　　　　　　　　　　　 　==保==　山 　　　洞＼清　　　　　　　　　　　　　　　　　　　　　 　==国==<-- 　　　　　音　　　　　　　　　　　　　　　++++++++++++ ／==寺==　门 　　　　／阁＼中　神　纯　归　观　解　密++ 伏 ++密　====== 　黑龙江　　　峰--水--阳--云--音--脱-- <--虎-- 　栈道　　　　寺　阁　殿　阁　堂　坡　林++ 寺 ++林 　　　　 　　　　 ｜　　　　｜　　　　　 ++++++++++++++ 　　　　 　　　　 福 灵 　　玉 　　　　 　　　　 寿 文 　　女 　　　　 　　　　 庵 阁 　　峰   　　　【地图二】　                    　　　　　　　　　　　　　　　　十二盘<-万年庵== 　　　　　　　　　　　　　　　　　　　　　　　　　／　　　======== 　　　　　＾　　　　　　　　　　　　　　　　　　／　　　　　＾ 　　　　　北　　　　　　　　　　　　　　　　　／　　　古++++｜++++ 　　　　　　　　　　　　　　　　十二盘--十二盘　　　　德++白龙洞 　　　　　　　　　　　　　　　／　　　　　　　　　　　林++++++++＼ 　　　　　　　　　　　　　　／　　　　　　　　　　　　　　　　　　清音阁 　****<---华严顶<---十二盘　　　　　　　　　　　　　　　　　　　　／ 　**莲**　　　　　　　　　　　　　　　　　　　　　　　　　黑龙江栈道 　**　**　　　　　　　　　　　　　　　　　　　　　　　　　　　｜ 　**花**　　　　　　　 　　　　　　　　　　　 　　========== 　**　**　　　　　　　　　　　　　　　　　　　　　　　　　==千佛庵== 　**石**　　　　　　　　　　　　　　九十九道拐<-九十九道拐　======== 　　　＼　　　九十九道拐<-九十九道拐 　　　　＼　　／ 　　　||九老洞口|| 　　　||||||||||||     　　　　　　　　　　　　　　　~~洗象池<-坡道<-坡道<-**莲花石** 　　　【地图三】　　　　　　　~~~~~~~~　　　　　　　********** 　　　　　　　　　　　　　　　　　｜　　　　　　　　　　　　　＼|||||||||| 　　　　　　　　　　　　　　　　凌云梯　　　　　　　　　　　　　||九老洞|| 　　　　　＾　　　　　　　　　　　｜　　　++　　　　　　　　　　|||||||||| 　　　　　北　　　　　　　　　　雷洞坪　++++++ 　　　　　　　　　　　　　　　　　｜　　++++++++ 　　　　　　　　　　　　　　　　八十四盘++　冷++++ 　　　　　　　　　　　　　　　／　++++++++　　++++ 　　　　　　　　　　　　八十四盘　++++++++杉　++++ 　　　　　　　　　　　　　｜　　++++++++　　　++++ 　　　　　　　　　　　　　ˇ　　++++++++林　++++ 　　　　　　　　　　　　　　　八十四盘　++++++++++++++ 　　　　　　　　　　　　　　＼　++++++++++++ 　　　　　　　　　==========　＼ 　　　　　　　　　==万行庵==<-接引殿 　　　　　　　　　========== 　　　　　　　　　　　｜ 　　　　　　　　　　　ˇ 　　　　　 　　　金顶 　　　　　　　　　　／ 　　　　　==========　｜ 　　　　　==卧云庵==　｜ 　　　　　========　========== 　　　　　　　｜　　==华藏庵== 　　　　　　　｜　　========== 　　　　　　　｜　　　　｜ 　　　　　　~~~~~~~~~~~~~~~~~~ 　　　　　　~~　　　　　　　~~ 　　　　　　~~　睹　光　台　~~ 　　　　　　~~　　　　　　　~~ 　　　　　　~~~~~~~~~~~~~~~~~~"
   verbs = [
     "get",
@@ -2698,6 +2716,7 @@ direction = ~
 
     items "pantao" {
       name = "蟠桃"
+      aliases = ["pan tao", "pan", "tao"]
       description = "一个火红色的大蟠桃，正散发着扑鼻的清香。"
   verbs = [
     "get",
@@ -2716,6 +2735,7 @@ direction = ~
 
     items "qingshui_hulu" {
       name = "清水葫芦"
+      aliases = ["qingshui hulu", "hulu", "bottle"]
       description = "一个用葫芦制成的水壶。"
   verbs = [
     "get",
@@ -2734,6 +2754,7 @@ direction = ~
 
     items "ruanjian" {
       name = "软剑"
+      aliases = ["ruanjian", "jian"]
       description = "这是一柄用特殊材料制成的钢剑。"
   verbs = [
     "get",
@@ -2762,6 +2783,7 @@ direction = ~
 
     items "shanhu_baicai" {
       name = "珊瑚白菜"
+      aliases = ["shanhu baicai", "baicai"]
       description = "一盆红白相间，脆嫩爽口，清香诱人的珊瑚白菜。"
   verbs = [
     "get",
@@ -2782,6 +2804,7 @@ direction = ~
 
     items "tianxiang_gao" {
       name = "天香断续膏"
+      aliases = ["tianxiang gao", "gao"]
       description = "这是一盒黑色的疗伤膏药，可以擦涂（smear）。"
   verbs = [
     "get",
@@ -2798,6 +2821,7 @@ direction = ~
 
     items "xiang" {
       name = "普贤菩萨像"
+      aliases = ["xiang"]
       description = "这是一尊普贤菩萨像，坐八宝莲花，神圣庄严。不过这尊菩萨 像看起来似乎曾有被移动(move)过的痕迹。"
   verbs = [
     "get",
@@ -2816,6 +2840,7 @@ direction = ~
 
     items "yaodai" {
       name = "皮腰带"
+      aliases = ["yao dai", "yaodai"]
       description = "这是一件皮质的宽腰带，夹层透空，可以放各种软兵刃。"
   verbs = [
     "get",
@@ -2836,6 +2861,7 @@ direction = ~
 
     items "ycloth" {
       name = "淡黄衫"
+      aliases = ["cloth"]
       description = ""
   verbs = [
     "get",
@@ -2855,6 +2881,7 @@ direction = ~
 
     items "zhujian" {
       name = "竹剑"
+      aliases = ["zhujian", "jian", "sword"]
       description = "这是一把练习剑法用的竹剑。"
   verbs = [
     "get",

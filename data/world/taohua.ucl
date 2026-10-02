@@ -666,6 +666,7 @@ item_desc = {
 
     characters "binu" {
       name = "婢奴"
+      aliases = ["bi nu", "binu"]
       description = "桃花岛主的独生女的婢奴清丽可人。"
   gender = "女性"
   age = 16
@@ -700,6 +701,7 @@ item_desc = {
 
     characters "cheng" {
       name = "程英"
+      aliases = ["cheng ying", "cheng", "ying"]
       description = "程英是黄药师从小收养的孤女。由黄药师亲手 教得了一手人人称绝的烹调手法，因此桃花岛 的膳食就由她负责。"
   gender = "女性"
   age = 18
@@ -730,6 +732,7 @@ item_desc = {
 
     characters "chuanfu" {
       name = "老船夫"
+      aliases = ["lao chuanfu", "chuanfu"]
       description = "这是一个老船夫。饱经风霜的脸上透出一丝狡猾。他经常出海，以前 曾经去过桃花岛。现在他拥有一艘大船可以出海。"
   gender = "男性"
   age = 56
@@ -769,6 +772,7 @@ item_desc = {
 
     characters "puren" {
       name = "仆人"
+      aliases = ["pu ren"]
       description = "这是一个桃花岛的仆人。"
   gender = "男性"
   age = 18
@@ -801,6 +805,7 @@ item_desc = {
 
     characters "shitong" {
       name = "侍童"
+      aliases = ["shi tong", "tong"]
       description = "这是一个桃花岛试剑亭的侍童。"
   gender = "男性"
   age = 8
@@ -833,6 +838,7 @@ item_desc = {
 
     characters "shoumu" {
       name = "守墓家奴"
+      aliases = ["shou mu"]
       description = "他是桃花岛岛主夫人的守墓家奴。"
   gender = "男性"
   age = 28
@@ -875,6 +881,7 @@ item_desc = {
 
     characters "yapu" {
       name = "哑仆"
+      aliases = ["ya pu"]
       description = "这是一个桃花岛的哑仆。他们全是十恶不赦的混蛋，黄药师刺哑他们，  充为下御。"
   gender = "男性"
   age = 18
@@ -907,6 +914,7 @@ item_desc = {
 
     items "bagua" {
       name = "Item"
+      aliases = ["tie bagua", "tie", "bagua"]
       description = "这是一个生铁所铸的八卦盘，盘上雕满了太极八卦 纹样，制作得非常精致。风水师常常借此来观测风 水和卜卦，也可以用来破除(break)各种奇门阵法。"
   verbs = [
     "get",
@@ -926,6 +934,7 @@ item_desc = {
 
     items "baichou" {
       name = "白绸裙"
+      aliases = ["baichou qun", "qun"]
       description = ""
   verbs = [
     "get",
@@ -945,6 +954,7 @@ item_desc = {
 
     items "baipao" {
       name = "白袍"
+      aliases = ["bai pao", "pao"]
       description = ""
   verbs = [
     "get",
@@ -964,6 +974,7 @@ item_desc = {
 
     items "baiyi" {
       name = "白丝衣"
+      aliases = ["bai siyi", "siyi"]
       description = ""
   verbs = [
     "get",
@@ -983,6 +994,7 @@ item_desc = {
 
     items "bupao" {
       name = "青布袍"
+      aliases = ["qing bupao", "bupao", "pao"]
       description = ""
   verbs = [
     "get",
@@ -1002,6 +1014,7 @@ item_desc = {
 
     items "cha" {
       name = "醉仙茶"
+      aliases = ["zuixian cha", "cha"]
       description = "这是一杯颜色碧绿、香味浓郁上等好茶。是招待桃花岛来客的。!"
   verbs = [
     "get",
@@ -1020,6 +1033,7 @@ item_desc = {
 
     items "cubupao" {
       name = "粗布袍"
+      aliases = ["cu bupao", "bupao", "pao"]
       description = ""
   verbs = [
     "get",
@@ -1039,6 +1053,7 @@ item_desc = {
 
     items "gao" {
       name = "桃花糕"
+      aliases = ["gao"]
       description = "这是一块粉红色的点心，做成了桃花状，引人食欲大增。"
   verbs = [
     "get",
@@ -1059,6 +1074,7 @@ item_desc = {
 
     items "huaban" {
       name = "桃花瓣"
+      aliases = ["flower leaf", "hua ban", "ban"]
       description = "新鲜的桃花花瓣，上面还挂这晶莹的露珠。"
   verbs = [
     "get",
@@ -1080,6 +1096,7 @@ item_desc = {
 
     items "jindai" {
       name = "束发金带"
+      aliases = ["jindai"]
       description = ""
   verbs = [
     "get",
@@ -1102,6 +1119,7 @@ item_desc = {
 
     items "mingzhu" {
       name = "明珠"
+      aliases = ["ming zhu", "zhu"]
       description = "这是一颗罕见的上好明珠，看来值不少钱。"
   verbs = [
     "get",
@@ -1120,6 +1138,7 @@ item_desc = {
 
     items "ruanwei" {
       name = "软猬甲"
+      aliases = ["ruanwei jia", "jia"]
       description = "一件轻飘飘的、生满尖锐倒刺的护甲。"
   verbs = [
     "get",
@@ -1142,6 +1161,7 @@ item_desc = {
 
     items "shizi" {
       name = "石子"
+      aliases = ["shi zi", "shi", "zi"]
       description = "一颗不同的小石子。"
   verbs = [
     "get",
@@ -1163,6 +1183,7 @@ item_desc = {
 
     items "shudai" {
       name = "束发金带"
+      aliases = ["jindai"]
       description = "这是一条用金丝织成的束发带子"
   verbs = [
     "get",
@@ -1185,6 +1206,7 @@ item_desc = {
 
     items "taojian" {
       name = "桃木剑"
+      aliases = ["taomu jian", "jian"]
       description = "这是一把练习剑法用的桃木剑。"
   verbs = [
     "get",
@@ -1212,6 +1234,7 @@ item_desc = {
 
     items "xiang" {
       name = "Item"
+      aliases = ["buzhen xiang", "buzhen", "xiang"]
       description = "这是一个颇为陈旧的墨漆木箱，箱中装有各种各样 的道具，大非寻常。可以用来布阵(array)惑敌。"
   verbs = [
     "get",
@@ -1231,6 +1254,7 @@ item_desc = {
 
     items "yuxiao" {
       name = "玉萧"
+      aliases = ["yu xiao", "xiao"]
       description = "一支白玉做成的长萧，看上去晶莹温润。武林中人经常以萧代剑。"
   verbs = [
     "get",
@@ -1257,6 +1281,7 @@ item_desc = {
 
     items "zhuxiao" {
       name = "竹萧"
+      aliases = ["zhuxiao"]
       description = "一根普普通通的竹萧，但是也能吹出动人的曲子。"
   verbs = [
     "get",

@@ -1417,6 +1417,7 @@ behavior_config = {
 
     characters "chuanfu" {
       name = "船夫"
+      aliases = ["chuan fu", "fu"]
       description = "这是一个松花江上的船夫。饱经风霜的脸上透出东北人的豪爽。"
   gender = "男性"
   age = 36
@@ -1443,6 +1444,7 @@ behavior_config = {
 
     characters "dahu" {
       name = "忽伦大虎"
+      aliases = ["da hu"]
       description = "他是一个满洲巨人，手脚粗大，善于相扑，却生性纯朴。"
   nickname = "巨人"
   gender = "男性"
@@ -1471,6 +1473,7 @@ behavior_config = {
 
     characters "erhu" {
       name = "忽伦二虎"
+      aliases = ["er hu"]
       description = "他是一个满洲巨人，手脚粗大，善于相扑，却生性纯朴。"
   nickname = "巨人"
   gender = "男性"
@@ -1499,6 +1502,7 @@ behavior_config = {
 
     characters "fengxifan" {
       name = "冯锡范"
+      aliases = ["feng xifan", "feng"]
       description = "冯锡范是延平王府卫队长，武夷派第一高手，一张白湛湛的面皮。"
   nickname = "一剑无血"
   gender = "男性"
@@ -1551,6 +1555,7 @@ behavior_config = {
 
     characters "hadani" {
       name = "哈达尼"
+      aliases = ["ha dani", "dani", "ha"]
       description = "这是一位年轻的小伙子，靠打造出售铁器为生。"
   title = "铁匠"
   gender = "男性"
@@ -1590,6 +1595,7 @@ behavior_config = {
 
     characters "heersu" {
       name = "赫尔苏"
+      aliases = ["he ersu", "he", "ersu", "heersu"]
       description = "他是一个老参客，可是一贫如洗。"
   title = "参客"
   nickname = "消息灵通"
@@ -1626,6 +1632,7 @@ behavior_config = {
 
     characters "jiangong" {
       name = "监工"
+      aliases = ["jian gong", "jian", "gong", "jiangong"]
       description = "这是一个监工，眼光不断闪烁，不知道在打什么坏主意"
   gender = "男性"
   age = 38
@@ -1675,6 +1682,7 @@ chats = [
 
     characters "jiaowenqi" {
       name = "焦文期"
+      aliases = ["jiao wenqi", "jiao"]
       description = "他是关外六魔中的三魔焦文期。背上一把铁琵琶，是武林中少见的奇门兵器。"
   nickname = "关外三魔"
   gender = "男性"
@@ -1723,6 +1731,7 @@ chats = [
 
     characters "laoban" {
       name = "酒馆老板"
+      aliases = ["lao ban"]
       description = "这位酒馆老板满身狗肉香，点头哈腰着对你笑着。"
   gender = "男性"
   age = 32
@@ -1760,6 +1769,7 @@ chats = [
 
     characters "pihuoshang" {
       name = "皮货商"
+      aliases = ["pihuo shang", "pihuo", "shang"]
       description = "这是一位皮货商，他自己也是满身皮裘。"
   gender = "男性"
   age = 25
@@ -1790,6 +1800,7 @@ chats = [
 
     characters "sanhu" {
       name = "忽伦三虎"
+      aliases = ["san hu"]
       description = "他是一个满洲巨人，手脚粗大，善于相扑，却生性纯朴。"
   nickname = "巨人"
   gender = "男性"
@@ -1818,6 +1829,7 @@ chats = [
 
     characters "shenke" {
       name = "参客"
+      aliases = ["shen ke", "shen", "ke"]
       description = "他是一个参客，常年在关外经营，颇为富有。"
   age = 65
   startroom = "/d/beijing/majiu"
@@ -1847,6 +1859,7 @@ chats = [
 
     characters "sihu" {
       name = "忽伦四虎"
+      aliases = ["si hu"]
       description = "他是一个满洲巨人，手脚粗大，善于相扑，却生性纯朴。"
   nickname = "巨人"
   gender = "男性"
@@ -1875,6 +1888,7 @@ chats = [
 
     characters "tengyilei" {
       name = "滕一雷"
+      aliases = ["teng yilei", "teng"]
       description = "他是关外六魔中的大魔滕一雷。手中一只独脚铜人，看来大是不轻。"
   nickname = "关外大魔"
   gender = "男性"
@@ -1923,6 +1937,7 @@ chats = [
 
     characters "xiaoer" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1953,6 +1968,7 @@ chats = [
 
     characters "xiaoyuanshan" {
       name = "萧远山"
+      aliases = ["xiao yuanshan", "xiao", "yuanshan"]
       description = "他就是丐帮前任帮主萧峰的父亲，潜伏少林数十年了。 他身穿一件普通的黑僧袍，腰间用一条麻绳随便一系。 他身高六尺有余，体格十分魁梧，长有一张线条粗旷、十 分男性化的脸庞，双目如电，炯炯有神。"
   nickname = "黑衣僧"
   gender = "男性"
@@ -1997,6 +2013,7 @@ chats = [
 
     characters "xiucai" {
       name = "落第秀才"
+      aliases = ["xiu cai"]
       description = "这是个饱读诗书，却手无搏鸡之力的落第秀才。"
   gender = "男性"
   age = 26
@@ -2017,6 +2034,7 @@ chats = [
 
     characters "yanji" {
       name = "阎基"
+      aliases = ["yan ji", "yan"]
       description = "他是一个没落江湖医生。"
   title = "江湖医生"
   gender = "男性"
@@ -2055,6 +2073,7 @@ chats = [
 
     characters "yuzhenzi" {
       name = "玉真子"
+      aliases = ["yuzhen zi", "yuzhen"]
       description = "这是一位颇有仙风道骨的潇洒全真，手握长剑，目视前方。"
   title = "铁剑门掌门人"
   nickname = "护国真人"
@@ -2100,6 +2119,7 @@ chats = [
 
     characters "gourou" {
       name = "狗肉"
+      aliases = ["gou rou", "rou"]
       description = "一块香喷喷的狗肉。"
     }
 
@@ -2108,6 +2128,7 @@ chats = [
 
     characters "gouroutang" {
       name = "狗肉汤"
+      aliases = ["gourou tang", "tang"]
       description = "一个满满一碗狗肉汤的大海碗，够喝一气的了。"
     }
 
@@ -2116,6 +2137,7 @@ chats = [
 
     characters "map" {
       name = "『长白山旅游图』"
+      aliases = ["luyou tu", "tu", "map"]
       description = "『长白山导游图』  　　　【地图一】　　　　　　　　　   ＾                                      ｜                                      ＾                                                                         白  大                                                                  云  门                                                  鸡              峰  坎＼二                                        铁    冠    鹿      ／  ＼  子  门    满                                  壁 --    -- 鸣＼玉／  天  ＼龙      坎 -- 天  谷    白    密    黑    夹      崖    砬    峰  柱          门            星＼草 --    --    -- 风 -- 心      ｜    子        峰＼  池  ／峰                垛    河    林    口    子      长                  ＼  ／                                        ｜      白                    梯                                        二＼半／瀑                    云                                        龙  拉  布                    峰                                        斗  瓢   　　　【地图二】                                          山神庙                                        ／                                     荒路          船厂 -- 冰面 -- 大门坎子                                    ／              ｜                 小巷 -- 北城    荒路        雪地--雪地                ／        ｜      ｜        ／           小土屋        集市 -- 东城 -- 雪地                          ｜      ｜               香肉馆 -- 南城    土窑馆                          ｜                         木桥                          ｜                         大道                          ｜                         大道                       ／                    大道                     ｜                    宁远                   ／                官道               ／            官道           ／      山海关           ＼            老龙头"
     }
 
@@ -2124,6 +2146,7 @@ chats = [
 
     characters "piqiu" {
       name = "皮裘"
+      aliases = ["piqiu"]
       description = ""
     }
 
@@ -2132,6 +2155,7 @@ chats = [
 
     characters "tiepipa" {
       name = "铁琵琶"
+      aliases = ["tiepipa"]
       description = "这是一把奇形铁琵琶，打造的相当精巧坚实。"
     }
 
@@ -2140,6 +2164,7 @@ chats = [
 
     characters "tongren" {
       name = "独脚铜人"
+      aliases = ["tongren"]
       description = "这是一只沉重的独脚铜人，打造的相当粗大坚实。"
     }
 
@@ -2148,6 +2173,7 @@ chats = [
 
     items "axe" {
       name = "斧头"
+      aliases = ["axe", "fu tou"]
       description = "这是一把斧头，颇为沉重，是伐树的好工具。"
   verbs = [
     "get",
@@ -2174,6 +2200,7 @@ chats = [
 
     items "cwbdao" {
       name = "闯王宝刀"
+      aliases = ["chuangwang baodao", "blade", "baodao"]
       description = "这是闯王所使用过的刀，上面刻有几行小字。"
   verbs = [
     "get",
@@ -2202,6 +2229,7 @@ chats = [
 
     items "largewood" {
       name = "大木材"
+      aliases = ["large wood", "wood"]
       description = "这是伐自长白山的上好的大木料。"
   verbs = [
     "get",
@@ -2220,6 +2248,7 @@ chats = [
 
     items "lengyue" {
       name = "冷月宝刀"
+      aliases = ["moon blade", "blade"]
       description = "这是胡家祖传的宝刀，冷气森森，锐利无比。"
   verbs = [
     "get",
@@ -2248,6 +2277,7 @@ chats = [
 
     items "mantou" {
       name = "白面馒头"
+      aliases = ["mantou"]
       description = "一个香喷喷的白面馒头。"
   verbs = [
     "get",
@@ -2268,6 +2298,7 @@ chats = [
 
     items "renshen" {
       name = "人参"
+      aliases = ["renshen", "shen"]
       description = "这是一棵初具人形的老山参。"
   verbs = [
     "get",
@@ -2285,6 +2316,7 @@ chats = [
 
     items "saw" {
       name = "钢锯"
+      aliases = ["gang ju", "ju", "saw"]
       description = "这是一条黑黝黝的钢锯，一般用来伐木。"
   verbs = [
     "get",
@@ -2304,6 +2336,7 @@ chats = [
 
     items "shouwu" {
       name = "何首乌"
+      aliases = ["heshou wu", "wu"]
       description = "这是一棵初具人形的何首乌。"
   verbs = [
     "get",
@@ -2321,6 +2354,7 @@ chats = [
 
     items "wan" {
       name = "粗瓷碗"
+      aliases = ["wan"]
       description = "一碗热气腾腾的粥。"
   verbs = [
     "get",

@@ -889,6 +889,7 @@ item_desc = {
 
     characters "seng_bing1" {
       name = "守寺僧兵"
+      aliases = ["seng bing", "seng", "bing"]
       description = "这是一位身材高大的壮年僧人，两臂粗壮，膀 阔腰圆。他手持僧棍，身穿一袭黑色袈裟，似 乎怀有一身武艺。"
   gender = "男性"
   age = 40
@@ -936,6 +937,7 @@ item_desc = {
 
     characters "turou" {
       name = "兔肉"
+      aliases = ["tu rou", "tu"]
       description = "一块鲜血淋漓肥的野兔肉。"
     }
 
@@ -944,6 +946,7 @@ item_desc = {
 
     characters "x_lama" {
       name = "小喇嘛"
+      aliases = ["xiao lama", "xiao", "lama"]
       description = "这是大轮寺的小喇嘛，一脸的稚气，看来刚入门不久。"
   gender = "男性"
   age = 13
@@ -972,6 +975,7 @@ item_desc = {
 
     characters "x_lama1" {
       name = "小喇嘛"
+      aliases = ["xiao lama", "xiao", "lama"]
       description = "这是大轮寺的小喇嘛，脸上挂着天真的笑容。"
   gender = "男性"
   age = 15
@@ -1009,6 +1013,7 @@ item_desc = {
 
     characters "xiang_ke" {
       name = "进香客"
+      aliases = ["jinxiang ke", "ke", "guest"]
       description = ""
   gender = "男性"
   age = 30
@@ -1023,6 +1028,7 @@ item_desc = {
 
     characters "xiaoer2" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1060,6 +1066,7 @@ item_desc = {
 
     characters "zhike" {
       name = "知客僧"
+      aliases = ["zhike seng", "zhike", "seng"]
       description = ""
   nickname = "消息灵通"
   gender = "男性"
@@ -1089,6 +1096,7 @@ item_desc = {
 
     items "b_jiasha" {
       name = "黑色袈裟"
+      aliases = ["jiasha", "jia sha", "cloth"]
       description = ""
   verbs = [
     "get",
@@ -1109,6 +1117,7 @@ item_desc = {
 
     items "c_jiasha" {
       name = "青色袈裟"
+      aliases = ["jiasha", "jia sha", "cloth"]
       description = ""
   verbs = [
     "get",
@@ -1129,6 +1138,7 @@ item_desc = {
 
     items "cha" {
       name = "奶茶"
+      aliases = ["tea", "cha", "nai cha"]
       description = "一碗浓浓的奶茶，散发出诱人的香气。"
   verbs = [
     "get",
@@ -1147,6 +1157,7 @@ item_desc = {
 
     items "falun" {
       name = "法轮"
+      aliases = ["fa lun", "lun", "falun"]
       description = "这是一柄法轮，僧人们用他来作法事。"
   verbs = [
     "get",
@@ -1175,6 +1186,7 @@ item_desc = {
 
     items "gangchu" {
       name = "钢杵"
+      aliases = ["gang chu", "gang", "chu"]
       description = "这是一柄全钢铸造的钢杵。"
   verbs = [
     "get",
@@ -1203,6 +1215,7 @@ item_desc = {
 
     items "gushan" {
       name = "Item"
+      aliases = ["tiegu shan", "tigu", "shan"]
       description = "这是一把铁骨扇，武林中人常常用它作为打穴的兵器。"
   verbs = [
     "get",
@@ -1229,6 +1242,7 @@ item_desc = {
 
     items "jinlun" {
       name = "金轮"
+      aliases = ["jin lun", "lun", "jinlun"]
       description = "这是一柄金光闪闪的法轮。"
   verbs = [
     "get",
@@ -1257,6 +1271,7 @@ item_desc = {
 
     items "mugun" {
       name = "木棍"
+      aliases = ["mu gun", "gun"]
       description = "这是一根木棍，举可齐眉，轻重合宜，可攻击大片敌人。"
   verbs = [
     "get",
@@ -1285,6 +1300,7 @@ item_desc = {
 
     items "nailao" {
       name = "奶酪"
+      aliases = ["nai lao", "nailao"]
       description = "一块乳黄色的奶酪。"
   verbs = [
     "get",
@@ -1305,6 +1321,7 @@ item_desc = {
 
     items "niupidai" {
       name = "牛皮袋"
+      aliases = ["niu pidai", "pidai", "dai", "skin"]
       description = "这是用来装酥油茶的牛皮袋，散发出淡淡的乳香。"
   verbs = [
     "get",
@@ -1323,6 +1340,7 @@ item_desc = {
 
     items "p_jiasha" {
       name = "紫色袈裟"
+      aliases = ["jiasha", "jia sha", "cloth"]
       description = ""
   verbs = [
     "get",
@@ -1343,6 +1361,7 @@ item_desc = {
 
     items "qingke_m" {
       name = "青稞面"
+      aliases = ["qingke mian", "mian"]
       description = "一盆别有风味的青稞面。"
   verbs = [
     "get",
@@ -1363,6 +1382,7 @@ item_desc = {
 
     items "r_jiasha" {
       name = "红色袈裟"
+      aliases = ["jiasha", "jia sha", "cloth"]
       description = ""
   verbs = [
     "get",
@@ -1383,6 +1403,7 @@ item_desc = {
 
     items "senggun" {
       name = "僧棍"
+      aliases = ["seng gun", "gun"]
       description = "这是一根桦木白腊棍，举可齐眉，轻重合宜，可攻击大片敌人。"
   verbs = [
     "get",
@@ -1411,6 +1432,7 @@ item_desc = {
 
     items "sengmao" {
       name = "僧帽"
+      aliases = ["seng mao", "mao"]
       description = "这是一顶藏僧戴的僧帽。"
   verbs = [
     "get",
@@ -1431,6 +1453,7 @@ item_desc = {
 
     items "xuelian" {
       name = "天山雪莲"
+      aliases = ["xuelian", "lian", "lotus"]
       description = "这是一支只有在寒冷的地方才能生长的雪莲。"
   verbs = [
     "get",
@@ -1448,6 +1471,7 @@ item_desc = {
 
     items "y_jiasha" {
       name = "黄色袈裟"
+      aliases = ["jiasha", "jia sha", "cloth"]
       description = ""
   verbs = [
     "get",
@@ -1468,6 +1492,7 @@ item_desc = {
 
     items "yinlun" {
       name = "银轮"
+      aliases = ["yin lun", "lun", "yinlun"]
       description = "这是一柄银光闪闪的法轮。"
   verbs = [
     "get",

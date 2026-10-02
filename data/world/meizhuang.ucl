@@ -789,6 +789,7 @@ item_desc = {
 
     characters "chushi" {
       name = "厨师"
+      aliases = ["chu shi", "chu", "shi"]
       description = "他是梅庄的厨子，敦厚老实。你可以问他要(serve)些吃的。"
   gender = "男性"
   age = 65
@@ -821,6 +822,7 @@ item_desc = {
 
     characters "huyuan" {
       name = "护院"
+      aliases = ["hu yuan", "yuan"]
       description = ""
   gender = "男性"
   age = 30
@@ -858,6 +860,7 @@ item_desc = {
 
     characters "jiading" {
       name = "家丁"
+      aliases = ["jia ding", "ding"]
       description = "他是一位身着青衣的梅庄家丁，衣服的袖口上绣着一朵梅花。 手中拿着一对判官笔，似乎有一身武艺。"
   gender = "男性"
   age = 20
@@ -895,6 +898,7 @@ item_desc = {
 
     characters "ren" {
       name = "任我行"
+      aliases = ["ren woxing", "ren", "woxing"]
       description = "这便是日月神教上任教主任我行。只见 他一张长长的脸孔，脸色雪白，更无半 分血色。他眉目清秀，身材甚高，一头 黑发，穿的是一袭青衫。"
   title = "日月神教上任教主"
   gender = "男性"
@@ -957,6 +961,7 @@ item_desc = {
 
     characters "shi" {
       name = "施令威"
+      aliases = ["shi lingwei", "shi", "lingwei"]
       description = "他就是隐居江湖数年的五路神施令威，现在在梅庄当管家。"
   title = "梅庄仆从"
   nickname = "五路神"
@@ -1012,6 +1017,7 @@ item_desc = {
 
     characters "heiyi" {
       name = "黑色长衫"
+      aliases = ["chang shan", "cloth"]
       description = ""
     }
 
@@ -1020,6 +1026,7 @@ item_desc = {
 
     characters "lingpai" {
       name = "梅花令牌"
+      aliases = ["ling pai", "ling"]
       description = ""
     }
 
@@ -1028,6 +1035,7 @@ item_desc = {
 
     characters "panguan_bi" {
       name = "镔铁判官笔"
+      aliases = ["panguan bi", "bi", "dagger"]
       description = "这是一对用镔铁打造的判官笔。"
     }
 
@@ -1036,6 +1044,7 @@ item_desc = {
 
     characters "qingyi" {
       name = "绣梅青衣"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -1044,6 +1053,7 @@ item_desc = {
 
     items "guanmu" {
       name = "灌木"
+      aliases = ["guanmu", "灌木"]
       description = "这是一丛不知名的灌木，生长得很茂盛。"
   verbs = [
     "get",
@@ -1062,6 +1072,7 @@ item_desc = {
 
     items "hongchou" {
       name = "红绸"
+      aliases = ["hong chou", "chou"]
       description = "一块很完整的红绸，但已经开始变色了。"
   verbs = [
     "get",
@@ -1080,6 +1091,7 @@ item_desc = {
 
     items "honghua" {
       name = "无忧红花"
+      aliases = ["wuyou honghua", "honghua"]
       description = "一朵鲜红的花。"
   verbs = [
     "get",
@@ -1098,6 +1110,7 @@ item_desc = {
 
     items "maobi" {
       name = "毛笔"
+      aliases = ["mao bi", "bi", "mao"]
       description = "一支普通的毛笔，武林中人常常用它作为打穴的兵器。"
   verbs = [
     "get",
@@ -1124,6 +1137,7 @@ item_desc = {
 
     items "panguanbi" {
       name = "Item"
+      aliases = ["panguan bi", "bi", "panguan"]
       description = "一支镔铁所铸的判官笔，武林中人常常用它作为打穴的兵器。"
   verbs = [
     "get",
@@ -1150,6 +1164,7 @@ item_desc = {
 
     items "qin" {
       name = "檀木琴"
+      aliases = ["tanmu qin", "tanmu", "qin"]
       description = ""
   verbs = [
     "get",
@@ -1178,6 +1193,7 @@ item_desc = {
 
     items "qipan" {
       name = "铁棋盘"
+      aliases = ["tie qipan", "tie", "qipan", "pan"]
       description = "一个用生铁铸成的棋盘，非常的重。"
   verbs = [
     "get",
@@ -1199,6 +1215,7 @@ item_desc = {
 
     items "qizi" {
       name = "棋子"
+      aliases = ["qi zi", "qi", "zi"]
       description = ""
   verbs = [
     "get",
@@ -1220,6 +1237,7 @@ item_desc = {
 
     items "sea_wood" {
       name = "南海神木"
+      aliases = ["sea wood", "wood", "sword"]
       description = "这是一根遍体发出青光的剑形木棍。"
   verbs = [
     "get",
@@ -1248,6 +1266,7 @@ item_desc = {
 
     items "tizi" {
       name = "梯子"
+      aliases = ["ti zi", "ti"]
       description = "一架长梯，靠在书架的旁边。"
   verbs = [
     "get",
@@ -1266,6 +1285,7 @@ item_desc = {
 
     items "xiao" {
       name = "绿玉洞箫"
+      aliases = ["xu xiao", "xiao"]
       description = "这是一根用绿玉做成的洞箫。"
   verbs = [
     "get",
@@ -1294,6 +1314,7 @@ item_desc = {
 
     items "yaoshi" {
       name = "红玉钥匙"
+      aliases = ["tong yaoshi", "yaoshi"]
       description = "这是一把看起来很古怪的钥匙。"
   verbs = [
     "get",
@@ -1311,6 +1332,7 @@ item_desc = {
 
     items "zhuguo" {
       name = "朱果"
+      aliases = ["zhu guo", "guo"]
       description = "这是一颗朱果，通体鲜红，一望而知是不可多得的珍品。"
   verbs = [
     "get",

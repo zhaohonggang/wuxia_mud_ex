@@ -92,6 +92,7 @@ item_desc = {
 
     items "bigbox" {
       name = "大铁盒"
+      aliases = ["big box", "box"]
       description = "这盒子高约一尺，然而入手轻飘飘地，似乎盒里并没藏着甚么 东西。打开盒盖，那盒子竟浅得出奇，离底仅只一寸，一只尺 来高的盒子，怎地盒里却这般浅？料得必有夹层。"
   verbs = [
     "get",
@@ -109,6 +110,7 @@ item_desc = {
 
     items "jinshe_jian" {
       name = "金蛇剑"
+      aliases = ["jinshe jian", "sword", "jian"]
       description = "这剑金光灿烂，握在手中甚是沉重，看来竟是黄金混和了其他五 金所铸，剑身上一道血痕，发出碧油油的暗光，极是诡异。剑的 形状甚是奇特，整柄剑就如是一条蛇盘曲而成，蛇尾勾成剑柄， 蛇头则是剑尖，蛇舌伸出分叉，是以剑尖竟有两叉。"
   verbs = [
     "get",
@@ -137,6 +139,7 @@ item_desc = {
 
     items "jinshe_zhui" {
       name = "金蛇锥"
+      aliases = ["jinshe zhui", "zhui"]
       description = "金蛇锥是黄金所铸，灿烂生光。长约二寸八分，打成昂首吐舌的蛇 形，蛇舌尖端分成双叉，每一叉都是一个倒刺。"
   verbs = [
     "get",
@@ -157,6 +160,7 @@ item_desc = {
 
     items "skeleton" {
       name = "骸骨"
+      aliases = ["skeleton"]
       description = "这副骸骨已经躺在这里很久了。"
   verbs = [
     "get",
@@ -173,6 +177,7 @@ item_desc = {
 
     items "smallbox" {
       name = "小铁盒"
+      aliases = ["small box", "box"]
       description = "这只盒子小得多，只一尺见方。盒中一张笺上写道：“君 是忠厚仁者，葬我骸骨，当酬以重宝秘术。大铁盒开启时 有毒箭射出，愈中书谱地图均假，上有剧毒，以惩贪欲恶 徒。真者在此小铁盒内。”"
   verbs = [
     "get",

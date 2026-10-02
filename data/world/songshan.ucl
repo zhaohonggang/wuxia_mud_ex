@@ -585,6 +585,7 @@ valid_leave = [
 
     characters "bo" {
       name = "卜沉"
+      aliases = ["bo chen", "chen", "bo"]
       description = ""
   nickname = "白头翁"
   gender = "男性"
@@ -630,6 +631,7 @@ valid_leave = [
 
     characters "chushi" {
       name = "厨师"
+      aliases = ["chu shi", "chu", "shi"]
       description = "嵩山派的厨师，你可以问他要(serve)一些吃的。"
   gender = "男性"
   age = 50
@@ -657,6 +659,7 @@ valid_leave = [
 
     characters "deng" {
       name = "邓八年"
+      aliases = ["deng banian", "banian", "deng"]
       description = ""
   nickname = "神鞭"
   gender = "男性"
@@ -701,6 +704,7 @@ valid_leave = [
 
     characters "di" {
       name = "狄修"
+      aliases = ["di xiu", "xiu", "di"]
       description = ""
   gender = "男性"
   age = 25
@@ -745,6 +749,7 @@ valid_leave = [
 
     characters "ding" {
       name = "丁勉"
+      aliases = ["ding mian", "ding", "mian"]
       description = ""
   nickname = "托塔手"
   gender = "男性"
@@ -790,6 +795,7 @@ valid_leave = [
 
     characters "fei" {
       name = "费彬"
+      aliases = ["fei bing", "bing", "fei"]
       description = ""
   nickname = "大嵩阳手"
   gender = "男性"
@@ -834,6 +840,7 @@ valid_leave = [
 
     characters "gao" {
       name = "高克新"
+      aliases = ["gao kexin", "kexin", "gao"]
       description = ""
   nickname = "锦毛狮"
   gender = "男性"
@@ -879,6 +886,7 @@ valid_leave = [
 
     characters "lu" {
       name = "陆柏"
+      aliases = ["lu bai", "bai", "lu"]
       description = ""
   nickname = "仙鹤手"
   gender = "男性"
@@ -924,6 +932,7 @@ valid_leave = [
 
     characters "seller" {
       name = "小贩"
+      aliases = ["seller"]
       description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
   nickname = "消息灵通"
   gender = "男性"
@@ -961,6 +970,7 @@ valid_leave = [
 
     characters "sha" {
       name = "沙天江"
+      aliases = ["sha tianjiang", "tianjiang", "sha"]
       description = ""
   nickname = "秃鹰"
   gender = "男性"
@@ -1006,6 +1016,7 @@ valid_leave = [
 
     characters "shi" {
       name = "史登达"
+      aliases = ["shi dengda", "dengda", "shi"]
       description = ""
   nickname = "千丈松"
   gender = "男性"
@@ -1051,6 +1062,7 @@ valid_leave = [
 
     characters "tang" {
       name = "汤英鹄"
+      aliases = ["tang yinghu", "yinghu", "tang"]
       description = ""
   gender = "男性"
   age = 45
@@ -1095,6 +1107,7 @@ valid_leave = [
 
     characters "wan" {
       name = "万大平"
+      aliases = ["wan daping", "daping", "wan"]
       description = ""
   gender = "男性"
   age = 25
@@ -1139,6 +1152,7 @@ valid_leave = [
 
     characters "yao" {
       name = "乐厚"
+      aliases = ["yao hou", "hou", "yao"]
       description = ""
   nickname = "大阴阳手"
   gender = "男性"
@@ -1185,6 +1199,7 @@ valid_leave = [
 
     characters "zhong" {
       name = "钟镇"
+      aliases = ["zhong zhen", "zhen", "zhong"]
       description = ""
   nickname = "九曲剑"
   gender = "男性"
@@ -1230,6 +1245,7 @@ valid_leave = [
 
     characters "zuo" {
       name = "左冷禅"
+      aliases = ["zuo lengchan", "zuo"]
       description = ""
   title = "五岳剑派盟主嵩山派第十三掌门"
   gender = "男性"

@@ -22,19 +22,22 @@ defmodule Kantele.World.ExitVetoContext do
 
   @doc "按 `%{dir:, me:, room:, context:}` 构造 ctx"
   def build(opts) do
+    room = Keyword.get(opts, :room)
+
     %{
       dir: Keyword.get(opts, :dir),
       me: Keyword.get(opts, :me),
-      room: Keyword.get(opts, :room),
+      room: room,
       vars: %{},
-      resolver: resolver(Keyword.get(opts, :context))
+      resolver: resolver(Keyword.get(opts, :context), room)
     }
   end
 
-  defp resolver(context) do
+  defp resolver(context, room) do
     %{
-      present: fn id, scope -> present(context, id, scope) end,
-      environment: fn _target -> {:ok, nil} end,
+      present: fn id, scope -> present(context, room, id, scope) end,
+      # environment(me) = 玩家当前所在房，也就是正在离开的这间（veto 所在房）
+      environment: fn _target -> {:ok, room} end,
       living: fn target -> living?(target) end,
       wizardp: fn target -> wizard?(target) end,
       userp: fn target -> userp?(target) end,
@@ -45,24 +48,26 @@ defmodule Kantele.World.ExitVetoContext do
 
   # ---- present(id, scope) ----
 
-  defp present(context, id, scope) when is_binary(id) do
+  defp present(context, room, id, scope) when is_binary(id) do
     cond do
-      scope_is_room?(scope) -> find_in_room(context, id)
+      scope_is_room?(scope) -> find_in_room(context, room, id)
       true -> find_in_inventory(context, id)
     end
   end
 
-  defp present(_context, _id, _scope), do: :error
+  defp present(_context, _room, _id, _scope), do: :error
 
-  # LPC 的 environment(me) 传进来的是房间 struct（ctx 里 room 字段）
-  defp scope_is_room?(%{__struct__: _} = scope) do
-    match?(%{exits: _}, scope)
-  end
-
+  # LPC 的 environment(me) 传进来的是房间 struct（resolver 里固定回当前房）
+  defp scope_is_room?(%{__struct__: _} = scope), do: match?(%{exits: _}, scope)
   defp scope_is_room?(_), do: false
 
-  defp find_in_room(context, id) do
-    characters = Map.get(context, :characters, []) || []
+  defp find_in_room(context, room, id) do
+    # 优先用上下文的角色表（运行时就是该房间在场的人），退回房间自身的 characters
+    characters =
+      case Map.get(context, :characters) do
+        list when is_list(list) -> list
+        _ -> Map.get(room || %{}, :characters) || []
+      end
 
     case Enum.find(characters, fn c -> name_matches?(c, id) end) do
       nil ->
@@ -93,23 +98,50 @@ defmodule Kantele.World.ExitVetoContext do
     end
   end
 
-  # NPC/玩家名匹配：全名或「名 + 别名」，与房间 NameMatch 同口径
+  # LPC 的 present(id, ...) 按 `set_name` 的 id 表匹配，不是按中文名。
+  # 名字与 aliases（迁移时从源 .c 回填的拼音 id）都算命中。
   defp name_matches?(character, id) do
-    keyword = id |> String.downcase() |> String.trim()
-    name = character |> Map.get(:name, "") |> to_string() |> String.downcase()
+    keyword = normalize_id(id)
+    name = character |> Map.get(:name, "") |> to_string() |> normalize_id()
+    aliases = character |> Map.get(:meta, %{}) |> aliases_of() |> Enum.map(&normalize_id/1)
 
-    name == keyword or String.starts_with?(name, keyword <> " ")
+    name == keyword or String.starts_with?(name, keyword <> " ") or
+      Enum.any?(aliases, &(&1 == keyword))
   end
 
+  defp normalize_id(s), do: s |> to_string() |> String.downcase() |> String.trim()
+
+  defp aliases_of(meta) when is_map(meta) do
+    case Map.get(meta, :aliases) do
+      list when is_list(list) -> list
+      _ -> []
+    end
+  end
+
+  defp aliases_of(_), do: []
+
   defp instance_matches?(instance, id) do
-    case Map.get(instance, :item_id) do
-      nil ->
+    keyword = normalize_id(id)
+
+    short =
+      case Map.get(instance, :item_id) do
+        nil -> nil
+        item_id -> item_id |> String.split(":") |> List.last()
+      end
+
+    cond do
+      is_nil(short) ->
         false
 
-      item_id ->
-        keyword = id |> String.downcase() |> String.trim()
-        short = item_id |> String.split(":") |> List.last() |> String.downcase()
-        short == keyword or String.starts_with?(short, keyword)
+      normalize_id(short) == keyword ->
+        true
+
+      true ->
+        # 物品也可能有 set_name 别名（如 rice / mi fan）
+        case Kantele.World.Items.get!(Map.get(instance, :item_id)) do
+          %{meta: %{aliases: aliases}} -> Enum.any?(aliases || [], &(normalize_id(&1) == keyword))
+          _ -> false
+        end
     end
   end
 

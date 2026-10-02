@@ -277,6 +277,7 @@ direction = "north"
 
     characters "wu" {
       name = "乌老大"
+      aliases = ["wu laoda", "wu", "laodao"]
       description = "一位身材魁梧的汉子，满面髯须，神情甚是威 武。他便是回疆碧刀门掌门乌老大，他在天山 缥缈峰灵鹫宫下组织了万仙大会，预谋铲除天 山童姥，后来被虚竹子所降服。"
   title = "回疆碧刀门掌门"
   gender = "男性"

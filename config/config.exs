@@ -16,11 +16,14 @@ config :ex_venture, :listener, start: true
 # 机器人（data/bots/*.ucl）：压测/验收工具；开发环境可开启，测试环境关闭
 config :ex_venture, :bots, enabled: true
 
-# 出口阻挡条件（房间 valid_leave）是否真正拦截移动。默认关 —— 开启即行为变更，
-# 需要逐区灰度。数据侧 183 条条件见 data/world/*/… 的 valid_leave.condition
-# （由 scripts/migrate_exit_vetoes.py 从注释搬入），求值器见
-# Kantele.World.LpcCondition（183 条里 171 条可执行，其余保留原文不拦）。
-config :ex_venture, :enforce_exit_vetoes, false
+# 出口阻挡条件（房间 valid_leave）是否真正拦截移动。
+# 打开前请看 docs/ucl-comment-implementation-plan.zh-CN.md §2 与
+# lib/kantele/world/lpc_condition.ex 的 moduledoc：
+#   - 数据侧 166 条条件（43 个区），其中 148 条可执行
+#   - 求值器解析不了/求值失败一律放行（宁可少拦，不能把玩家锁死在房里）
+#   - 另 18 条是 check_dirs/check_out/ob->refuse 三种自定义函数形态，未实现
+# 改本项需重启应用（config.exs 是编译期读取）。
+config :ex_venture, :enforce_exit_vetoes, true
 
 # Configures the endpoint
 config :ex_venture, Web.Endpoint,

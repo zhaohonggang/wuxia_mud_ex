@@ -611,6 +611,7 @@ item_desc = {
 
     characters "hutaseng1" {
       name = "护塔僧"
+      aliases = ["huta seng", "seng"]
       description = ""
   gender = "男性"
   age = 33
@@ -644,6 +645,7 @@ item_desc = {
 
     characters "laoniansengren" {
       name = "老年僧人"
+      aliases = ["laonian sengren", "seng", "sengren"]
       description = "他是寺中掌管烟火的僧人。"
   gender = "男性"
   age = 80
@@ -682,6 +684,7 @@ item_desc = {
 
     characters "saodiseng" {
       name = "扫地僧"
+      aliases = ["saodi seng", "saodi", "seng"]
       description = ""
   nickname = "消息灵通"
   gender = "男性"
@@ -717,6 +720,7 @@ item_desc = {
 
     characters "xiaoshami" {
       name = "小沙弥"
+      aliases = ["xiao shami", "shami"]
       description = ""
   gender = "男性"
   age = 15
@@ -758,6 +762,7 @@ item_desc = {
 
     items "box" {
       name = "锦盒"
+      aliases = ["jin he", "he"]
       description = "这是装舍利子的盒子,你似乎应该交还失主。"
   verbs = [
     "get",
@@ -777,6 +782,7 @@ item_desc = {
 
     items "xiang" {
       name = "香"
+      aliases = ["xiang"]
       description = "这是一柱香,你可以点燃它(dian)。"
   verbs = [
     "get",
@@ -796,6 +802,7 @@ item_desc = {
 
     items "xianglu" {
       name = "香炉"
+      aliases = ["xiang lu", "lu"]
       description = "这是一个庙里常见的香炉，用来让善男信女们插香(pushin)进愿。"
   verbs = [
     "get",

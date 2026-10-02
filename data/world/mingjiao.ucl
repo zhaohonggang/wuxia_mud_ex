@@ -2595,6 +2595,7 @@ direction = ~
 
     characters "baiguishou" {
       name = "白龟寿"
+      aliases = ["bai guishou", "bai", "guishou"]
       description = "他是一位两鬓斑白的老者，身穿一件白布长袍。 他脸上总是浮现出可亲的微笑，但有时又透出一丝狡谲。"
   title = "明教玄武坛坛主"
   gender = "男性"
@@ -2645,6 +2646,7 @@ direction = ~
 
     characters "bigmonkey" {
       name = "NPC"
+      aliases = ["bai yuan", "bai", "yuan"]
       description = ""
   age = 65
 
@@ -2667,6 +2669,7 @@ direction = ~
 
     characters "changjinpeng" {
       name = "常金鹏"
+      aliases = ["chang jinpeng", "chang", "jinpeng"]
       description = "他是一位体健如牛的大汉，身穿一件白布长袍。 他脸上手上的肌肉凹凹凸凸，盘根错节，看来武功修为不浅。"
   title = "明教朱雀坛坛主"
   gender = "男性"
@@ -2717,6 +2720,7 @@ direction = ~
 
     characters "chengchaofeng" {
       name = "程嘲风"
+      aliases = ["cheng chaofeng", "cheng", "chaofeng"]
       description = "他是一位身宽体胖的老者，身穿一件白布长袍。 他正笑嘻嘻地看着你，好象对你颇有好感。"
   title = "明教青龙坛坛主"
   gender = "男性"
@@ -2767,6 +2771,7 @@ direction = ~
 
     characters "fenggongying" {
       name = "封弓影"
+      aliases = ["feng gongying", "feng", "gongying"]
       description = "他是一个阴郁的瘦子，身穿一件白布长袍。 他脸上阴沉沉的，看来心胸必不开阔。"
   title = "明教神蛇坛坛主"
   gender = "男性"
@@ -2817,6 +2822,7 @@ direction = ~
 
     characters "gaoshanwang" {
       name = "高山王"
+      aliases = ["gao shanwang", "gao", "shanwang"]
       description = "他是一位身宽体胖的老者，身穿一件白布长袍。 他正笑嘻嘻地看着你，好象对你颇有好感。"
   title = "明教白虎坛坛主"
   gender = "男性"
@@ -2867,6 +2873,7 @@ direction = ~
 
     characters "hu" {
       name = "胡青牛"
+      aliases = ["hu qingniu", "hu"]
       description = "他就是明教号称见死不救的胡青牛，据说他精通医理，可以起死回 生。但他从不医教外人士。"
   title = "明教教众"
   nickname = "蝶谷医仙"
@@ -2909,6 +2916,7 @@ direction = ~
 
     characters "jieyinshi" {
       name = "接引使"
+      aliases = ["jieyin shi", "jieyin", "shi"]
       description = "他是一位精明的中年人，身穿一件白布长袍。 他正在上下打量着你。"
   title = "明教"
   gender = "男性"
@@ -2957,6 +2965,7 @@ direction = ~
 
     characters "litianyuan" {
       name = "李天垣"
+      aliases = ["li tianyuan", "li", "tianyuan"]
       description = "他是一位看起来很慈祥的老者，身穿一件白布长袍。 他是白眉鹰王殷天正的师弟。一双眼睛总是笑眯眯的，但不知为什么，他的下属 对他畏如蛇蝎。"
   title = "明教天市堂堂主"
   nickname = "慈眉善目"
@@ -3005,6 +3014,7 @@ direction = ~
 
     characters "menwei1" {
       name = "大汉"
+      aliases = ["da han", "han"]
       description = "明教的守门武士，是烈火旗属下。"
   gender = "男性"
   age = 35
@@ -3034,6 +3044,7 @@ direction = ~
 
     characters "miaozuwushi" {
       name = "巫士"
+      aliases = ["wushi"]
       description = "诡异的苗人巫士，好象想杀了你祭神。"
   gender = "男性"
   age = 45
@@ -3073,6 +3084,7 @@ chats = [
 
     characters "monkey" {
       name = "猴子"
+      aliases = ["monkey"]
       description = "这只猴子在在桃树间跳上跳下，还不时津津有味地啃几口着蜜桃。"
   gender = "雄性"
   age = 5
@@ -3095,6 +3107,7 @@ chats = [
 
     characters "pengyingyu" {
       name = "彭莹玉"
+      aliases = ["peng yingyu", "peng", "yingyu"]
       description = "他是一位高高瘦瘦的僧人，身穿一件白布长袍。"
   title = "明教五散人"
   nickname = "彭和尚"
@@ -3144,6 +3157,7 @@ chats = [
 
     characters "sheep" {
       name = "野羊"
+      aliases = ["sheep"]
       description = "这只野羊在低头吃草，见了人也不惊避。"
   gender = "雄性"
   age = 2
@@ -3159,6 +3173,7 @@ chats = [
 
     characters "shuobude" {
       name = "说不得"
+      aliases = ["shuo bude", "shuo", "bude"]
       description = "他是一位笑嘻嘻的僧人，身穿一件白布长袍。"
   title = "明教五散人"
   nickname = "布袋和尚"
@@ -3208,6 +3223,7 @@ chats = [
 
     characters "tangyang" {
       name = "唐洋"
+      aliases = ["tang yang", "tang", "yang"]
       description = "他是一位高大魁伟的中年男子，身穿一件白布长袍。 他天生神力，手中的两头狼牙棒有万夫不当之勇，真是一条威风凛凛的汉子。"
   title = "明教洪水旗掌旗使"
   gender = "男性"
@@ -3255,6 +3271,7 @@ chats = [
 
     characters "tuoba" {
       name = "拓跋"
+      aliases = ["tuoba"]
       description = "他是一位带发修行的头陀，身穿一件白布长袍。 他个子不高，但很结实，看上去颇为纯朴。可是脸上经常浮现出奇怪的笑容，让 人有些摸不着头脑。"
   title = "明教风字门门主"
   gender = "男性"
@@ -3306,6 +3323,7 @@ chats = [
 
     characters "wensong" {
       name = "闻苍松"
+      aliases = ["wen cangsong", "wen", "cangsong"]
       description = "他是一位高大魁伟的中年男子，身穿一件白布长袍。 他天生神力，手中的两头狼牙棒有万夫不当之勇，真是一条威风凛凛的汉子。"
   title = "明教巨木旗掌旗使"
   gender = "男性"
@@ -3354,6 +3372,7 @@ chats = [
 
     characters "xinran" {
       name = "辛然"
+      aliases = ["xin ran", "xin", "ran"]
       description = "他是一位高大魁伟的中年男子，身穿一件白布长袍。 他天生神力，手中的两头狼牙棒有万夫不当之勇，真是一条威风凛凛的汉子。"
   title = "明教烈火旗掌旗使"
   gender = "男性"
@@ -3401,6 +3420,7 @@ chats = [
 
     characters "yanyuan" {
       name = "颜垣"
+      aliases = ["yan yuan", "yan", "yuan"]
       description = "他是一个矮矮胖胖的汉子，身穿一件白布长袍。 他天生神力，手中的两头狼牙棒有万夫不当之勇，真是一条威风凛凛的汉子。"
   title = "明教厚土旗掌旗使"
   gender = "男性"
@@ -3448,6 +3468,7 @@ chats = [
 
     characters "yinwufu" {
       name = "殷无福"
+      aliases = ["yin wufu", "yin", "wufu"]
       description = "他是一位老者，身穿一件白布长袍。 他是白眉鹰王殷天正的仆从。一双三角眼阴光四射，让人胆寒。"
   title = "明教天微堂属下"
   gender = "男性"
@@ -3495,6 +3516,7 @@ chats = [
 
     characters "yinwulu" {
       name = "殷无禄"
+      aliases = ["yin wulu", "yin", "wulu"]
       description = "他是一位老者，身穿一件白布长袍。 他是白眉鹰王殷天正的仆从。一双怪眼正恶狠狠地瞪着你呢！"
   title = "明教天市堂属下"
   gender = "男性"
@@ -3542,6 +3564,7 @@ chats = [
 
     characters "yinwushou" {
       name = "殷无寿"
+      aliases = ["yin wushou", "yin", "wushou"]
       description = "他是一位老者，身穿一件白布长袍。 他是白眉鹰王殷天正的仆从。整天愁眉苦脸的，一副短命横死相。"
   title = "明教紫微堂属下"
   gender = "男性"
@@ -3589,6 +3612,7 @@ chats = [
 
     characters "yinyewang" {
       name = "殷野王"
+      aliases = ["yin yewang", "yin", "yewang"]
       description = "他是一位手摇折扇的中年男子，身穿一件白布长袍。 他是白眉鹰王殷天正之子。一双眼睛犹如冷电，精光四射，气势摄人。"
   title = "明教天微堂堂主"
   nickname = "一飞冲天"
@@ -3637,6 +3661,7 @@ chats = [
 
     characters "zhangzhong" {
       name = "张中"
+      aliases = ["zhang zhong", "zhang", "zhong"]
       description = "他是一位高高瘦瘦的道人，身穿一件白布长袍。"
   title = "明教五散人"
   nickname = "铁冠道人"
@@ -3686,6 +3711,7 @@ chats = [
 
     characters "zhoudian" {
       name = "周颠"
+      aliases = ["zhou dian", "zhou", "dian"]
       description = "他是一位疯疯颠颠的老者，身穿一件白布长袍。 他总是慌慌张张的，先天下之急而急。"
   title = "明教五散人"
   nickname = "没事不颠有事颠"
@@ -3735,6 +3761,7 @@ chats = [
 
     characters "zhuangzheng" {
       name = "庄铮"
+      aliases = ["zhuang zheng", "zhuang", "zheng"]
       description = "他是一位高大魁伟的中年男子，身穿一件白布长袍。 他天生神力，手中的两头狼牙棒有万夫不当之勇，真是一条威风凛凛的汉子。"
   title = "明教锐金旗掌旗使"
   gender = "男性"
@@ -3783,6 +3810,7 @@ chats = [
 
     items "bag" {
       name = "油布包"
+      aliases = ["bag", "bao"]
       description = "这是一个油布包裹。"
   verbs = [
     "get",
@@ -3802,6 +3830,7 @@ chats = [
 
     items "baipao" {
       name = "白布长袍"
+      aliases = ["cloth", "pao"]
       description = "这是件白布长袍，虽不奢华，却洗得一尘不染，在袍襟上锈了一团血红的火焰， 颇为鲜艳。"
   verbs = [
     "get",
@@ -3821,6 +3850,7 @@ chats = [
 
     items "beixin" {
       name = "铁背心"
+      aliases = ["tie beixin", "beixin"]
       description = ""
   verbs = [
     "get",
@@ -3841,6 +3871,7 @@ chats = [
 
     items "changbian" {
       name = "长鞭"
+      aliases = ["changbian", "bian"]
       description = "这是一柄普通的长鞭，由水牛精工编织而成。"
   verbs = [
     "get",
@@ -3869,6 +3900,7 @@ chats = [
 
     items "changjian" {
       name = "长剑"
+      aliases = ["changjian", "jian"]
       description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
   verbs = [
     "get",
@@ -3897,6 +3929,7 @@ chats = [
 
     items "chanzhang" {
       name = "禅杖"
+      aliases = ["chan zhang", "zhang"]
       description = "这是一根黑黝黝的镔铁禅杖，约四十来斤，是件称手的重兵器。"
   verbs = [
     "get",
@@ -3925,6 +3958,7 @@ chats = [
 
     items "dahuan_dan" {
       name = "大还丹"
+      aliases = ["dahuan dan", "dahuan", "dan"]
       description = "这是一颗紫红晶亮的大还丹。此丹乃少林珍药，提高功力，灵效无比。"
   verbs = [
     "get",
@@ -3942,6 +3976,7 @@ chats = [
 
     items "fish" {
       name = "大白鱼"
+      aliases = ["fish"]
       description = "这是一尾大白鱼，长达一尺。"
   verbs = [
     "get",
@@ -3963,6 +3998,7 @@ chats = [
 
     items "gangdao" {
       name = "戒刀"
+      aliases = ["jie dao", "dao", "blade"]
       description = "这是一柄尺半长的戒刀，刀光闪闪，入手沉重，似是精铁打成。"
   verbs = [
     "get",
@@ -3990,6 +4026,7 @@ chats = [
 
     items "hulu" {
       name = "葫芦"
+      aliases = ["hulu", "shui", "hu", "bottle"]
       description = "一个用葫芦制成的水壶。"
   verbs = [
     "get",
@@ -4008,6 +4045,7 @@ chats = [
 
     items "huwan" {
       name = "铁护腕"
+      aliases = ["hu wan", "huwan"]
       description = "这是一件皮质的护腕，上面满布铁钉，用以保护腕部。"
   verbs = [
     "get",
@@ -4028,6 +4066,7 @@ chats = [
 
     items "huyao" {
       name = "铁护腰"
+      aliases = ["hu yao", "huyao"]
       description = "这是一件皮质的护腰，上面满布铁钉，用以保护腰部。"
   verbs = [
     "get",
@@ -4048,6 +4087,7 @@ chats = [
 
     items "jiedao" {
       name = "戒刀"
+      aliases = ["jie dao", "dao", "blade"]
       description = "这是一柄尺半长的戒刀，刀光闪闪，入手沉重，似是精铁打成。"
   verbs = [
     "get",
@@ -4075,6 +4115,7 @@ chats = [
 
     items "jinchuang_yao" {
       name = "金创药"
+      aliases = ["jin chuangyao", "jin"]
       description = "这是一包别具灵效的金创药，专治内外伤等。"
   verbs = [
     "get",
@@ -4092,6 +4133,7 @@ chats = [
 
     items "jing" {
       name = "「楞伽经」"
+      aliases = ["lengjia jing", "jing", "book"]
       description = "这是一本薄薄的经书，只因油布包得紧密，虽长期 藏在猿腹之中，书页仍然完好无损。书面上写著几 个弯弯曲曲的文字，你却是一个也不识得。"
   verbs = [
     "get",
@@ -4119,6 +4161,7 @@ chats = [
 
     items "langyabang" {
       name = "狼牙棒"
+      aliases = ["langya bang", "bang"]
       description = "这是一根两头狼牙棒，约两百来斤，是件称手的重兵器。"
   verbs = [
     "get",
@@ -4147,6 +4190,7 @@ chats = [
 
     items "mutang" {
       name = "木镗"
+      aliases = ["mu tang", "mu", "tang"]
       description = "这是一把作神道用的木镗。"
   verbs = [
     "get",
@@ -4175,6 +4219,7 @@ chats = [
 
     items "muzhang" {
       name = "木杖"
+      aliases = ["mu zhang"]
       description = "这是一根龙头木杖。"
   verbs = [
     "get",
@@ -4203,6 +4248,7 @@ chats = [
 
     items "qimeigun" {
       name = "齐眉棍"
+      aliases = ["qimei gun", "gun"]
       description = "这是一根桦木白腊棍，举可齐眉，轻重合宜，可攻击大片敌人。"
   verbs = [
     "get",
@@ -4231,6 +4277,7 @@ chats = [
 
     items "qingshui_hulu" {
       name = "清水葫芦"
+      aliases = ["qingshui hulu", "hulu", "bottle"]
       description = "一个用葫芦制成的水壶。"
   verbs = [
     "get",
@@ -4249,6 +4296,7 @@ chats = [
 
     items "sengxie" {
       name = "僧鞋"
+      aliases = ["seng xie", "xie"]
       description = "一双青布僧鞋"
   verbs = [
     "get",
@@ -4268,6 +4316,7 @@ chats = [
 
     items "shigu" {
       name = "尸骨"
+      aliases = ["shi gu", "shi", "gu"]
       description = "这是一只白森森的尸骨。"
   verbs = [
     "get",
@@ -4296,6 +4345,7 @@ chats = [
 
     items "shoutao" {
       name = "皮手套"
+      aliases = ["pi shoutao", "shoutao"]
       description = "这是一双皮手套，上面有硬物刻勒的痕迹。"
   verbs = [
     "get",
@@ -4316,6 +4366,7 @@ chats = [
 
     items "tie_ling" {
       name = "少林英雄令"
+      aliases = ["yingxiong ling", "ling", "iron"]
       description = "这是一块用于通行少林寺的铁铸令牌。 由方丈签发，邀各路英雄入寺观礼。"
   verbs = [
     "get",
@@ -4335,6 +4386,7 @@ chats = [
 
     items "tieshou" {
       name = "铁手掌"
+      aliases = ["iron hand", "hand"]
       description = ""
   verbs = [
     "get",
@@ -4355,6 +4407,7 @@ chats = [
 
     items "tieyanling" {
       name = "铁焰令"
+      aliases = ["tieyan ling", "tieyan", "ling"]
       description = "这是一面黑黝黝的令牌，由教主签发，凭此可向尊长挑战。"
   verbs = [
     "get",
@@ -4373,6 +4426,7 @@ chats = [
 
     items "toukui" {
       name = "头盔"
+      aliases = ["tou kui", "kui"]
       description = "这是一顶金属头盔，用以保护头部。"
   verbs = [
     "get",
@@ -4393,6 +4447,7 @@ chats = [
 
     items "tuijianxin_1" {
       name = "推荐信"
+      aliases = ["tuijian xin1", "xin1", "letter1"]
       description = "这是一封坛主为你写的推荐信，凭此可去见接引使者。"
   verbs = [
     "get",
@@ -4411,6 +4466,7 @@ chats = [
 
     items "tuijianxin_2" {
       name = "推荐信"
+      aliases = ["tuijian xin2", "xin2", "letter2"]
       description = "这是一封门主为你写的推荐信，凭此可去见五行旗掌旗使。"
   verbs = [
     "get",
@@ -4429,6 +4485,7 @@ chats = [
 
     items "tuijianxin_3" {
       name = "推荐信"
+      aliases = ["tuijian xin3", "xin3", "letter3"]
       description = "这是一封掌旗使为你写的推荐信，凭此可去见内三堂堂主。"
   verbs = [
     "get",
@@ -4447,6 +4504,7 @@ chats = [
 
     items "tuijianxin_4" {
       name = "推荐信"
+      aliases = ["tuijian xin4", "xin4", "letter4"]
       description = "这是一封堂主为你写的推荐信，凭此可去见护教法王。"
   verbs = [
     "get",
@@ -4465,6 +4523,7 @@ chats = [
 
     items "weibo" {
       name = "围脖"
+      aliases = ["wei bo", "bo"]
       description = "这是一皮围脖，用以保护颈部。"
   verbs = [
     "get",
@@ -4485,6 +4544,7 @@ chats = [
 
     items "xiaohuan_dan" {
       name = "小还丹"
+      aliases = ["xiaohuan dan", "xiaohuan", "dan"]
       description = "这是一颗莹白溜圆的小还丹。此丹乃少林奇药，助长内力，灵效无比。"
   verbs = [
     "get",
@@ -4502,6 +4562,7 @@ chats = [
 
     items "yangdt" {
       name = "阳顶天遗骨"
+      aliases = ["corpse"]
       description = "这是一具明教前任教主阳顶的遗骨。他英雄一世，现在是什么都不知道了。"
   verbs = [
     "get",
@@ -4519,6 +4580,7 @@ chats = [
 
     items "yangfr" {
       name = "阳夫人遗骨"
+      aliases = ["corpse"]
       description = "这是一具明教前任教主阳顶夫人的遗骨。她胸口插着一口精亮的匕首。"
   verbs = [
     "get",
@@ -4536,6 +4598,7 @@ chats = [
 
     items "yaodai" {
       name = "皮腰带"
+      aliases = ["yao dai", "yaodai"]
       description = "这是一件皮质的宽腰带，夹层透空，可以放各种软兵刃。"
   verbs = [
     "get",
@@ -4556,6 +4619,7 @@ chats = [
 
     items "yixin" {
       name = "阳教主遗信"
+      aliases = ["yi xin", "xin", "letter"]
       description = "夫人亲启：      夫人妆次：夫人自归阳门，日夕郁郁。余粗鄙寡德，无足为欢，甚可歉咎， 兹当永别，唯夫人谅之。三十二代衣教主遗命，令余练成乾坤大挪移神功后，率 众前赴波斯总教，设法迎回圣火令。本教虽发源于波斯，然在中华生根，开枝散 叶，已数百年于兹。今鞑子占我中土，本教誓与周旋到底，决不可遵波斯总教无 理命令，而奉蒙古元人为主。圣火令若重入我手，我中华明教即可与波斯总教分 庭抗礼也。      今余神功第四层初成，即悉成昆之事，血气翻涌不克自制，真力将散，行当 大归。天也命也，复何如耶？      今余命在旦夕，有负衣教主重托，实为本教罪人。盼夫人持余此亲笔遗书， 召聚左右光明使者、四大护教法王、五行旗使、五散人，颁余遗命曰：“不论何 人重获圣火令者，为本教第三十四代教主。不服者杀无赦。令谢逊暂摄副教主之 位，处分本教重务。”      乾坤大挪移心法暂由谢逊接掌，日后转奉新教主。光大我教，驱除胡虏，行 善去恶，持正除奸，令我明尊圣火普惠天下世人，新教主其勉之。      余将以身上残存功力，掩石门而和成昆共处。夫人可依秘道全图脱困。当世 无第二人有乾坤大挪移之功，即无第二人能推动此‘无妄’位石门，待后世豪杰 练成，余及成昆骸骨朽矣。                                                   顶天谨白。      余名顶天，然于世无功，于教无勋，伤夫人之心，赍恨而没，狂言顶天立地， 诚可笑也。"
   verbs = [
     "get",
@@ -4574,6 +4638,7 @@ chats = [
 
     items "zhitao" {
       name = "铁指套"
+      aliases = ["zhitao", "zhi tao"]
       description = "这是五个环环相链的铁指套，前端锋利如刃，既可暗藏掌中伤人，又可保护指关节。"
   verbs = [
     "get",
@@ -4594,6 +4659,7 @@ chats = [
 
     characters "li4" {
       name = "李四摧"
+      aliases = ["li sicui", "sicui", "li"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -4635,6 +4701,7 @@ chats = [
 
     characters "qian2" {
       name = "钱二败"
+      aliases = ["qian erbai", "erbai", "qian"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -4676,6 +4743,7 @@ chats = [
 
     characters "sun3" {
       name = "孙三毁"
+      aliases = ["sun sanhui", "sanhui", "sun"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -4717,6 +4785,7 @@ chats = [
 
     characters "wang8" {
       name = "王八衰"
+      aliases = ["wang bashuai", "bashuai", "wang"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -4758,6 +4827,7 @@ chats = [
 
     characters "wu6" {
       name = "吴六破"
+      aliases = ["wu liupo", "liupo", "wu"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -4799,6 +4869,7 @@ chats = [
 
     characters "zhao1" {
       name = "赵一伤"
+      aliases = ["zhao yishang", "yishang", "zhao"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -4840,6 +4911,7 @@ chats = [
 
     characters "zhaomin" {
       name = "赵敏"
+      aliases = ["zhao min", "min", "zhao"]
       description = "她脸泛红霞，容色丽都。十分美丽之中，更带着三分英气，三分豪态，同 时雍容华贵，自有一副端严之致，令人肃然起敬，不敢逼视。"
   title = "大元绍敏郡主"
   gender = "女性"
@@ -4892,6 +4964,7 @@ chats = [
 
     characters "zheng7" {
       name = "郑七灭"
+      aliases = ["zheng qimie", "qimie", "zheng"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -4933,6 +5006,7 @@ chats = [
 
     characters "zhou5" {
       name = "周五输"
+      aliases = ["zhou wushu", "wushu", "zhou"]
       description = ""
   title = "神箭八雄"
   gender = "男性"
@@ -4974,6 +5048,7 @@ chats = [
 
     items "arrow" {
       name = "凤尾箭"
+      aliases = ["fengwei jian", "arrow", "jian"]
       description = "这是凤尾箭，可以连珠箭发，势道十分凶猛。"
   verbs = [
     "get",

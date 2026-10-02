@@ -2339,6 +2339,7 @@ item_desc = {
 
     characters "boy" {
       name = "男孩"
+      aliases = ["boy"]
       description = "这是个农家少年，大概因从小物农，虽然年纪不大，可已长的很粗壮了。"
   gender = "男性"
   age = 12
@@ -2364,6 +2365,7 @@ item_desc = {
 
     characters "cuilan" {
       name = "翠兰"
+      aliases = ["cui lan", "lan"]
       description = "这是个普普通通的农家少女，看见生人羞的低下了头。"
   gender = "女性"
   age = 18
@@ -2402,6 +2404,7 @@ chats = [
 
     characters "cunfu" {
       name = "NPC"
+      aliases = ["cun fu"]
       description = "这是个普普通通的农家妇女，脸上擦着厚厚的白粉。"
   gender = "女性"
   age = 32
@@ -2428,6 +2431,7 @@ chats = [
 
     characters "cunmin" {
       name = "NPC"
+      aliases = ["cun min"]
       description = "这是个普普通通的乡下人，紫红的脸膛，手上长满了厚厚的老茧。"
   gender = "男性"
   age = 32
@@ -2454,6 +2458,7 @@ chats = [
 
     characters "cunzhang" {
       name = "苗三斤"
+      aliases = ["miao sanjin", "miao"]
       description = "这是本村的村长，凡是村里各家各户，老老少少的事他没有不知道的。"
   gender = "男性"
   age = 58
@@ -2494,6 +2499,7 @@ chats = [
 
     characters "daoren" {
       name = "毒道人"
+      aliases = ["du daoren", "daoren"]
       description = "一位身穿道服，干瘪黑瘦的中年道人．"
   title = "五毒教小头目"
   gender = "男性"
@@ -2551,6 +2557,7 @@ chats = [
 
     characters "dizi" {
       name = "五毒教弟子"
+      aliases = ["di zi", "dizi"]
       description = "一个身体强壮的苗族青年，看来武功已小由所成。"
   gender = "男性"
   age = 28
@@ -2584,6 +2591,7 @@ chats = [
 
     characters "girl" {
       name = "女孩"
+      aliases = ["girl"]
       description = "这是个农家少女，虽然只有十二、三岁，身材已经开始发育。"
   gender = "女性"
   age = 12
@@ -2609,6 +2617,7 @@ chats = [
 
     characters "jiaotu" {
       name = "五毒教徒"
+      aliases = ["jiao tu", "tu"]
       description = "一个五毒的基层教徒，看来刚入教不久。"
   gender = "男性"
   age = 25
@@ -2644,6 +2653,7 @@ chats = [
 
     characters "kid" {
       name = "小孩"
+      aliases = ["kid"]
       description = "这是个农家小孩子"
   gender = "男性"
   age = 7
@@ -2670,6 +2680,7 @@ chats = [
 
     characters "oldman" {
       name = "白髯老者"
+      aliases = ["lao zhe", "lao", "zhe"]
       description = "一个须发皆白的老者，精神矍铄，满面红光。"
   gender = "男性"
   age = 64
@@ -2705,6 +2716,7 @@ chats = [
 
     characters "qiaofu" {
       name = "樵夫"
+      aliases = ["qiaofu"]
       description = "一位面色黑红，悠然自得的樵夫．"
   gender = "男性"
   age = 30
@@ -2746,6 +2758,7 @@ chats = [
 
     characters "sun" {
       name = "孙二娘"
+      aliases = ["sun erniang", "sun", "waiter"]
       description = "这位老板娘正笑咪咪地坐在柜台后面，向着门外张望。"
   gender = "女性"
   age = 22
@@ -2791,6 +2804,7 @@ chats = [
 
     characters "tian" {
       name = "田嫂"
+      aliases = ["tian sao", "tian", "sao"]
       description = "一个白皙丰满的中年妇人。"
   title = "女易牙"
   gender = "女性"
@@ -2817,6 +2831,7 @@ chats = [
 
     characters "tongzi" {
       name = "锦衣童子"
+      aliases = ["tong zi", "tong"]
       description = "一个眉清目秀的童子，别看他年纪不大，已深得五毒教真传。"
   gender = "男性"
   age = 15
@@ -2849,6 +2864,7 @@ chats = [
 
     characters "xiansheng" {
       name = "教书先生"
+      aliases = ["xian sheng", "xian"]
       description = "一位白面无须的中年文士，正摇头晃脑的在教学生念书。"
   gender = "男性"
   age = 40
@@ -2886,6 +2902,7 @@ chats = [
 
     characters "xuetong" {
       name = "小学童"
+      aliases = ["xue tong", "tong"]
       description = "这是一个十三四岁的小童，正心不在焉的跟着先生胡乱念着。"
   gender = "男性"
   age = 14
@@ -2923,6 +2940,7 @@ chats = [
 
     characters "youngboy" {
       name = "苗族少年"
+      aliases = ["young boy", "boy"]
       description = "一个身穿苗族服饰的英俊少年。"
   gender = "男性"
   age = 20
@@ -2950,6 +2968,7 @@ chats = [
 
     characters "zhuge" {
       name = "诸葛不亮"
+      aliases = ["zhuge buliang", "zhuge", "buliang"]
       description = "一位羽扇纶巾，仙风道骨的文士。"
   gender = "男性"
   age = 35
@@ -2995,6 +3014,7 @@ chats = [
 
     characters "baozi" {
       name = "肉包子"
+      aliases = ["baozi", "bao"]
       description = "一个香喷喷的肉包子,不知道是用什么肉做的。"
     }
 
@@ -3003,6 +3023,7 @@ chats = [
 
     characters "baozi2" {
       name = "蛇肉包子"
+      aliases = ["baozi", "bao"]
       description = "一个香喷喷的蛇肉包子。"
     }
 
@@ -3011,6 +3032,7 @@ chats = [
 
     characters "flagon" {
       name = "酒壶"
+      aliases = ["jiu hu", "hu", "flagon"]
       description = "一个用来装烧酒的大酒壶。"
     }
 
@@ -3019,6 +3041,7 @@ chats = [
 
     characters "ganggou" {
       name = "钢钩"
+      aliases = ["ganggou", "gou"]
       description = "这是一柄特殊的精钢剑，剑端带着一个倒钩。"
     }
 
@@ -3027,6 +3050,7 @@ chats = [
 
     characters "hanyan" {
       name = "旱烟袋"
+      aliases = ["han yan", "yan"]
       description = "这是一只用了好多年的铜烟袋。"
     }
 
@@ -3035,6 +3059,7 @@ chats = [
 
     characters "jiandao" {
       name = "五毒神剪"
+      aliases = ["wudu shenjian", "jian", "shenjian"]
       description = "这是一柄奇门兵器，好似一只大剪刀。"
     }
 
@@ -3043,6 +3068,7 @@ chats = [
 
     characters "jinyi" {
       name = "锦衣"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -3051,6 +3077,7 @@ chats = [
 
     characters "jitui" {
       name = "烤山鸡腿"
+      aliases = ["jitui", "tui"]
       description = "一枝烤得香喷喷的山鸡腿。"
     }
 
@@ -3059,6 +3086,7 @@ chats = [
 
     characters "xingjunsan" {
       name = "NPC"
+      aliases = ["xingjun san", "xingjun", "san"]
       description = "这是一包预防瘴气的药散，带在身上可以预防瘴气。"
     }
 
@@ -3067,6 +3095,7 @@ chats = [
 
     items "book2" {
       name = "拆招秘术"
+      aliases = ["book"]
       description = "这是一本薄薄的小册，上面绘了许多互相打斗的人像。"
   verbs = [
     "get",
@@ -3093,6 +3122,7 @@ chats = [
 
     items "chuanxin" {
       name = "穿心莲"
+      aliases = ["chuanxin lian", "chuanxin", "lian"]
       description = "这是一朵碧蓝色的莲花，含剧毒。"
   verbs = [
     "get",
@@ -3111,6 +3141,7 @@ chats = [
 
     items "duanchang" {
       name = "断肠草"
+      aliases = ["duanchang cao", "duanchang", "cao"]
       description = "这是一株闪烁着磷光的小草。"
   verbs = [
     "get",
@@ -3129,6 +3160,7 @@ chats = [
 
     items "dujing1" {
       name = "Item"
+      aliases = ["du jing1", "jing1", "book1"]
       description = "这是一本薄薄的小册，上面密密麻麻的写满了各种用毒 的基本方法和毒药的配方。你可以用读(read)一读。"
   verbs = [
     "get",
@@ -3155,6 +3187,7 @@ chats = [
 
     items "dujing2" {
       name = "「毒经中篇」"
+      aliases = ["du jing2", "jing2", "book2"]
       description = "这是一本薄薄的小册，上面密密麻麻的记满了各种用毒的法门。"
   verbs = [
     "get",
@@ -3182,6 +3215,7 @@ chats = [
 
     items "fugu" {
       name = "腐骨草"
+      aliases = ["fugu cao", "fugu", "cao"]
       description = "这是一株普通的小草，叶面发出一股难闻的臭气。"
   verbs = [
     "get",
@@ -3200,6 +3234,7 @@ chats = [
 
     items "ganchai" {
       name = "Item"
+      aliases = ["gan chai", "gan", "chai"]
       description = "这是一捆木柴。"
   verbs = [
     "get",
@@ -3219,6 +3254,7 @@ chats = [
 
     items "hulu" {
       name = "葫芦"
+      aliases = ["hulu", "hu"]
       description = "一个用葫芦制成的水壶。"
   verbs = [
     "get",
@@ -3237,6 +3273,7 @@ chats = [
 
     items "huluobu" {
       name = "胡箩卜干"
+      aliases = ["hu luobu", "luobu"]
       description = "一块晾干了的胡箩卜干，比较方便储藏。"
   verbs = [
     "get",
@@ -3257,6 +3294,7 @@ chats = [
 
     items "huoba" {
       name = "火把"
+      aliases = ["huo ba"]
       description = "这是支火把。"
   verbs = [
     "get",
@@ -3284,6 +3322,7 @@ chats = [
 
     items "jiedudan" {
       name = "凝冰丹"
+      aliases = ["ningbing dan", "dan"]
       description = "五毒教的神丹，能解蟾毒及砂毒。"
   verbs = [
     "get",
@@ -3301,6 +3340,7 @@ chats = [
 
     items "jinfenggou" {
       name = "金蜈钩"
+      aliases = ["jinwu gou", "gou", "jinwu"]
       description = "一柄金光闪闪的钩子，顶端好似一只蛇头。"
   verbs = [
     "get",
@@ -3329,6 +3369,7 @@ chats = [
 
     items "jinsheduye" {
       name = "金蛇毒液"
+      aliases = ["jinshe duye", "jinshe", "duye"]
       description = "这是一瓶剧毒的金蛇毒液。"
   verbs = [
     "get",
@@ -3347,6 +3388,7 @@ chats = [
 
     items "qhcwan" {
       name = "缺口的青花瓷碗"
+      aliases = ["qinghua ciwan", "wan", "ciwan"]
       description = "一个缺了口的粗瓷碗。"
   verbs = [
     "get",
@@ -3365,6 +3407,7 @@ chats = [
 
     items "qianrizui" {
       name = "千日醉"
+      aliases = ["qianri zui", "qianri", "zui"]
       description = "这是一颗核桃大小的果实，散发着一股浓郁的酒香。"
   verbs = [
     "get",
@@ -3383,6 +3426,7 @@ chats = [
 
     items "qianzhumiji" {
       name = "千蛛万毒手秘笈"
+      aliases = ["qianzhu miji", "miji", "book"]
       description = "这是失传已久的千蛛万毒手秘笈下半部，你可以从中研究一些千蛛万毒手的绝招。"
   verbs = [
     "get",
@@ -3401,6 +3445,7 @@ chats = [
 
     items "shexinzi" {
       name = "蛇信子"
+      aliases = ["shexin zi", "shexing", "zi"]
       description = "这是一颗植物的果实。"
   verbs = [
     "get",
@@ -3419,6 +3464,7 @@ chats = [
 
     items "shibing" {
       name = "柿饼"
+      aliases = ["shi bing", "bing"]
       description = "一个好甜的柿饼。"
   verbs = [
     "get",
@@ -3439,6 +3485,7 @@ chats = [
 
     items "shourou1" {
       name = "狍子肉"
+      aliases = ["paozi rou", "rou"]
       description = "一块风干的腊肉。"
   verbs = [
     "get",
@@ -3459,6 +3506,7 @@ chats = [
 
     items "shourou2" {
       name = "野猪腿"
+      aliases = ["yezhu tui", "yezhu", "tui"]
       description = "一块风干的腊肉。"
   verbs = [
     "get",
@@ -3479,6 +3527,7 @@ chats = [
 
     items "tieshao" {
       name = "铁哨"
+      aliases = ["tie shao", "shao"]
       description = "这是一个黑黝黝的铁哨子，看不出有什么不同。"
   verbs = [
     "get",
@@ -3497,6 +3546,7 @@ chats = [
 
     items "tiezhui" {
       name = "大铁锤"
+      aliases = ["tiechui", "chui", "hammer"]
       description = "这是一柄沉重的大铁锤，后面带着长长的铁链。"
   verbs = [
     "get",
@@ -3525,6 +3575,7 @@ chats = [
 
     items "tongpai" {
       name = "铜牌"
+      aliases = ["tong pai"]
       description = "这是一面四四方方的铜牌,上面刻着:“千蛛万毒”四个大字。 铜牌背面好象雕着一些细细的花纹，需要仔细看(see)才能勉强看清楚。"
   verbs = [
     "get",
@@ -3543,6 +3594,7 @@ chats = [
 
     items "tudou" {
       name = "土豆"
+      aliases = ["tu dou", "dou"]
       description = "一块圆滚滚的土豆。"
   verbs = [
     "get",
@@ -3563,6 +3615,7 @@ chats = [
 
     items "woodjian" {
       name = "木剑"
+      aliases = ["woodjian", "jian"]
       description = "这是一柄练功用的木剑，剑头是平的。"
   verbs = [
     "get",
@@ -3591,6 +3644,7 @@ chats = [
 
     items "wuxing" {
       name = "无形之毒"
+      aliases = ["wuxing du", "yao"]
       description = "这是一包五毒教的秘制的毒药，吃了它必死无疑。"
   verbs = [
     "get",
@@ -3609,6 +3663,7 @@ chats = [
 
     items "xiang" {
       name = "龙涎香"
+      aliases = ["longxian xiang", "longxian", "xiang"]
       description = "这是一块黑红色的东西，散发出奇异香气。"
   verbs = [
     "get",
@@ -3627,6 +3682,7 @@ chats = [
 
     items "zhulou" {
       name = "竹篓"
+      aliases = ["zhu lou", "zhu", "lou"]
       description = "这是一个小口大肚的竹篓，常用来存放草药。"
   verbs = [
     "get",
@@ -3649,6 +3705,7 @@ chats = [
 
     items "zhulou2" {
       name = "竹篓"
+      aliases = ["zhu lou", "zhu", "lou"]
       description = "这是一个小口大肚的竹篓，常用来存放草药。"
   verbs = [
     "get",

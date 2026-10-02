@@ -1144,6 +1144,7 @@ direction = ~
 
     characters "1" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "男性"
   age = 40
@@ -1205,6 +1206,7 @@ direction = ~
 
     characters "10" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "男性"
   age = 40
@@ -1266,6 +1268,7 @@ direction = ~
 
     characters "11" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "男性"
   age = 40
@@ -1327,6 +1330,7 @@ direction = ~
 
     characters "12" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "男性"
   age = 40
@@ -1388,6 +1392,7 @@ direction = ~
 
     characters "13" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "男性"
   age = 40
@@ -1449,6 +1454,7 @@ direction = ~
 
     characters "14" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "男性"
   age = 40
@@ -1510,6 +1516,7 @@ direction = ~
 
     characters "15" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "男性"
   age = 40
@@ -1571,6 +1578,7 @@ direction = ~
 
     characters "16" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "男性"
   age = 40
@@ -1632,6 +1640,7 @@ direction = ~
 
     characters "17" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "男性"
   age = 40
@@ -1693,6 +1702,7 @@ direction = ~
 
     characters "18" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "男性"
   age = 40
@@ -1754,6 +1764,7 @@ direction = ~
 
     characters "2" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "女性"
   age = 40
@@ -1807,6 +1818,7 @@ direction = ~
 
     characters "3" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "男性"
   age = 40
@@ -1860,6 +1872,7 @@ direction = ~
 
     characters "4" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "男性"
   age = 40
@@ -1924,6 +1937,7 @@ direction = ~
 
     characters "5" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "男性"
   age = 40
@@ -1978,6 +1992,7 @@ direction = ~
 
     characters "6" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "女性"
   age = 40
@@ -2030,6 +2045,7 @@ direction = ~
 
     characters "7" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "男性"
   age = 40
@@ -2080,6 +2096,7 @@ direction = ~
 
     characters "8" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "男性"
   age = 40
@@ -2128,6 +2145,7 @@ direction = ~
 
     characters "9" {
       name = "NPC"
+      aliases = ["ghost"]
       description = ""
   gender = "女性"
   age = 40
@@ -2298,6 +2316,7 @@ direction = ~
 
     characters "bai" {
       name = "白无常"
+      aliases = ["bai wuchang", "bai", "wuchang"]
       description = "白无常瞪著你，焦黄的脸上看不出任何喜怒哀乐。"
   title = "冥府地藏王殿前"
   age = 217
@@ -2357,6 +2376,7 @@ chats = [
 
     characters "baihu" {
       name = "白虎"
+      aliases = ["bai hu", "bai", "hu", "tiger"]
       description = "一只长达丈许的巨型猛虎，乃四神兽之一的白虎。 它全身毛皮洁白无暇，很是高贵。"
   title = "神兽"
   age = 10000
@@ -2388,6 +2408,7 @@ chats = [
 
     characters "bgargoyle" {
       name = "黑无常"
+      aliases = ["black gargoyle", "gargoyle"]
       description = "黑无常瞪著你，焦黄的脸上看不出任何喜怒哀乐。"
   title = "冥府地藏王殿前"
   age = 217
@@ -2418,6 +2439,7 @@ chats = [
 
     characters "dizangwang" {
       name = "地藏王"
+      aliases = ["dizang"]
       description = "他容貌威严，不可一世。哇！他可是掌管人间生死的神仙。"
   title = "幽冥之主"
   gender = "男性"
@@ -2481,6 +2503,7 @@ chats = [
 
     characters "ghost" {
       name = "亡魂"
+      aliases = ["ghost"]
       description = "一个死者的魂魄。"
   title = "(鬼气)"
 
@@ -2494,6 +2517,7 @@ chats = [
 
     characters "hei" {
       name = "黑无常"
+      aliases = ["hei wuchang", "hei", "wuchang"]
       description = "黑无常瞪著你，焦黄的脸上看不出任何喜怒哀乐。"
   title = "冥府地藏王殿前"
   age = 217
@@ -2553,6 +2577,7 @@ chats = [
 
     characters "mamian" {
       name = "马面"
+      aliases = ["ma mian", "ma", "mian"]
       description = "一个高达丈许，马面人身的怪物，看起来很不好惹。"
   title = "冥府地藏王殿前"
   nickname = "金盔银甲"
@@ -2618,6 +2643,7 @@ chats = [
 
     characters "mengpo" {
       name = "孟婆"
+      aliases = ["meng po", "meng", "po"]
       description = "这就是奈河桥的孟婆，她面颊深陷，瘦骨零丁。"
   title = "奈河桥渡者"
   gender = "女性"
@@ -2655,6 +2681,7 @@ chats = [
 
     characters "niutou" {
       name = "牛头"
+      aliases = ["niu tou", "niu", "tou"]
       description = "一个高达丈许，牛头人身的怪物，看起来很不好惹。"
   title = "冥府地藏王殿前"
   nickname = "金盔银甲"
@@ -2720,6 +2747,7 @@ chats = [
 
     characters "qinglong" {
       name = "青龙"
+      aliases = ["qing long", "qing", "long", "dragon"]
       description = "一条长达数十丈的神龙，乃四神兽之一。它腾 云驾雾，张牙舞爪，口中喷着熊熊烈火。"
   title = "神兽"
   age = 10000
@@ -2751,6 +2779,7 @@ chats = [
 
     characters "qinguangwang" {
       name = "秦广王"
+      aliases = ["qin guangwang", "qin", "guangwang"]
       description = "秦广王乃是阴间十王之一。"
   title = "冥府地藏王殿前"
   nickname = "魂王"
@@ -2807,6 +2836,7 @@ chats = [
 
     characters "wangfangping" {
       name = "王方平"
+      aliases = ["wang fangping", "wang", "fangping"]
       description = "王方平本是山中道士，后在丰都山修炼成仙，御封「鬼王」。"
   title = "冥府地藏王殿前"
   nickname = "鬼王"
@@ -2928,6 +2958,7 @@ chats = [
 
     characters "wgargoyle" {
       name = "白无常"
+      aliases = ["white gargoyle", "gargoyle"]
       description = "白无常瞪著你，死白的脸上看不出任何喜怒哀乐。"
   title = "冥府地藏王殿前"
   age = 217
@@ -2958,6 +2989,7 @@ chats = [
 
     characters "xuanwu" {
       name = "玄武"
+      aliases = ["xuan wu", "xuan", "wu"]
       description = "一只龙头龟身的庞然大物，乃四神兽之一的玄武。 它全身被厚厚的甲壳保护着。"
   title = "神兽"
   age = 10000
@@ -2989,6 +3021,7 @@ chats = [
 
     characters "yanluo" {
       name = "十殿阎罗"
+      aliases = ["shidian yanluo", "shidian", "yanluo", "shi", "yan"]
       description = "一位面如锅底，须若钢针，身穿红袍的大汉。 这就是阴间的十殿阎罗。"
   title = "冥府地藏王殿前"
   nickname = "阴司总管"
@@ -3106,6 +3139,7 @@ chats = [
 
     characters "yinchangsheng" {
       name = "阴长生"
+      aliases = ["yin changsheng", "yin", "changsheng"]
       description = "阴长生本是个落弟秀才，后在丰都山修练成仙，御封「阴王」。"
   title = "冥府地藏王殿前"
   nickname = "阴王"
@@ -3148,6 +3182,7 @@ chats = [
 
     characters "zhuque" {
       name = "朱雀"
+      aliases = ["zhu que", "zhu", "que", "bird"]
       description = "一只宽达丈许的浴火凤凰，乃四神兽之一的朱雀。 它全身羽毛血红似火，整个身体便如一团火焰。"
   title = "神兽"
   age = 10000
@@ -3179,6 +3214,7 @@ chats = [
 
     characters "armor1" {
       name = "银甲"
+      aliases = ["armor"]
       description = ""
     }
 
@@ -3187,6 +3223,7 @@ chats = [
 
     characters "armor2" {
       name = "金盔"
+      aliases = ["head"]
       description = ""
     }
 
@@ -3195,6 +3232,7 @@ chats = [
 
     characters "bi" {
       name = "判官笔"
+      aliases = ["bi"]
       description = ""
     }
 
@@ -3203,6 +3241,7 @@ chats = [
 
     characters "blade1" {
       name = "枯骨刀"
+      aliases = ["blade"]
       description = ""
     }
 
@@ -3211,6 +3250,7 @@ chats = [
 
     characters "book" {
       name = "生死薄"
+      aliases = ["book"]
       description = "一本记载人间生死的名册。"
     }
 
@@ -3219,6 +3259,7 @@ chats = [
 
     characters "cloth1" {
       name = "无常袍"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -3227,6 +3268,7 @@ chats = [
 
     characters "cloth2" {
       name = "阎罗袍"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -3235,6 +3277,7 @@ chats = [
 
     characters "cloth3" {
       name = "云裳"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -3243,6 +3286,7 @@ chats = [
 
     characters "cloth4" {
       name = "鬼王袍"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -3251,6 +3295,7 @@ chats = [
 
     characters "cloth5" {
       name = "阴王袍"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -3259,6 +3304,7 @@ chats = [
 
     characters "jiasuo" {
       name = "枷锁"
+      aliases = ["jia suo", "suo", "jia"]
       description = ""
     }
 
@@ -3267,6 +3313,7 @@ chats = [
 
     characters "suolian" {
       name = "锁链"
+      aliases = ["suo lian", "suo", "lian"]
       description = ""
     }
 
@@ -3275,6 +3322,7 @@ chats = [
 
     items "hugu" {
       name = "虎骨"
+      aliases = ["hu gu", "hu", "gu"]
       description = "一根新鲜的虎骨，从神兽白虎的身体里取出，可以入药。"
   verbs = [
     "get",
@@ -3292,6 +3340,7 @@ chats = [
 
     items "hupi" {
       name = "白虎皮"
+      aliases = ["baihu pi", "pi"]
       description = "一张从神兽白虎身上剥下的皮，雪白无暇，无比的坚韧。"
   verbs = [
     "get",
@@ -3310,6 +3359,7 @@ chats = [
 
     items "jiake" {
       name = "玄武甲壳"
+      aliases = ["xuanwu jiake", "jiake"]
       description = "一块神兽玄武的甲壳，相当的坚韧。"
   verbs = [
     "get",
@@ -3328,6 +3378,7 @@ chats = [
 
     items "jingyuandan" {
       name = "精元丹"
+      aliases = ["jingyuan dan", "jingyuan", "dan"]
       description = "一颗神秘的神丹，散发出隐隐血光。"
   verbs = [
     "get",
@@ -3346,6 +3397,7 @@ chats = [
 
     items "longdan" {
       name = "龙胆"
+      aliases = ["long dan", "dan", "long"]
       description = "一只血淋淋的新鲜龙胆，从神兽青龙的身体里取出，可以入药。"
   verbs = [
     "get",
@@ -3363,6 +3415,7 @@ chats = [
 
     items "longjin" {
       name = "龙筋"
+      aliases = ["long jin", "jin"]
       description = "一根从神兽青龙身上取出的筋，相当的坚韧。晶莹剔透，隐然泛出白光。"
   verbs = [
     "get",
@@ -3381,6 +3434,7 @@ chats = [
 
     items "qilinxue" {
       name = "麒麟靴"
+      aliases = ["qilin xue", "xue", "boots"]
       description = "这是一双用上麒麟皮作的皮靴，据说可以赴汤蹈火。用以保护足部。"
   verbs = [
     "get",
@@ -3400,6 +3454,7 @@ chats = [
 
     items "qise" {
       name = "七色璎珞"
+      aliases = ["qise yingluo"]
       description = "一块纯白色的水晶，晶莹剔透，无暇的表面射 出耀眼的光泽。其中仿佛蕴藏着千千万万的生 命，生命流动不息，散发出宇宙的力量。这便 是传说中的至宝----七色璎珞，相传只有在地 狱中才会出现。"
   verbs = [
     "get",
@@ -3418,6 +3473,7 @@ chats = [
 
     items "shuizao" {
       name = "水藻"
+      aliases = ["shui zao", "shui", "zao"]
       description = "一丛生长在碧水寒潭里的耐寒水藻。"
   verbs = [
     "get",
@@ -3436,6 +3492,7 @@ chats = [
 
     items "tang" {
       name = "孟婆汤"
+      aliases = ["mengpo tang", "soup", "tang"]
       description = "一碗热气腾腾的孟婆汤，散发着浓烈的草药气味。"
   verbs = [
     "get",
@@ -3452,6 +3509,7 @@ chats = [
 
     items "tianjing" {
       name = "寰宇天晶"
+      aliases = ["tian jing", "tian", "jing"]
       description = "一块纯白色的水晶，晶莹剔透，无暇的表面射 出耀眼的光泽。其中仿佛蕴藏着千千万万的生 命，生命流动不息，散发出宇宙的力量。这便 是传说中的至宝----寰宇天晶，相传只有在天 宫中才会出现。"
   verbs = [
     "get",
@@ -3470,6 +3528,7 @@ chats = [
 
     items "weapon1" {
       name = "如意盘龙棍"
+      aliases = ["panlong gun", "gun", "panlong"]
       description = "一根沉甸甸雕着盘龙的长棍。"
   verbs = [
     "get",
@@ -3491,6 +3550,7 @@ chats = [
 
     items "weapon10" {
       name = "定海神针·破九域"
+      aliases = ["po jiuyu", "club", "gun", "shenzhen"]
       description = "定海神针·破九域乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -3518,6 +3578,7 @@ chats = [
 
     items "weapon11" {
       name = "天罗锤"
+      aliases = ["tianluo chui", "chui", "tianluo", "hammer"]
       description = ""
   verbs = [
     "get",
@@ -3539,6 +3600,7 @@ chats = [
 
     items "weapon12" {
       name = "定妖神锤"
+      aliases = ["dingyao chui", "chui", "dingyao", "hammer"]
       description = ""
   verbs = [
     "get",
@@ -3560,6 +3622,7 @@ chats = [
 
     items "weapon13" {
       name = "盘龙杖"
+      aliases = ["panlong zhang", "zhang", "panlong", "staff"]
       description = ""
   verbs = [
     "get",
@@ -3581,6 +3644,7 @@ chats = [
 
     items "weapon14" {
       name = "九凰杖"
+      aliases = ["jiuhuang zhang", "zhang", "jiuhuang", "staff"]
       description = ""
   verbs = [
     "get",
@@ -3602,6 +3666,7 @@ chats = [
 
     items "weapon15" {
       name = "天涯拐"
+      aliases = ["tianya guai", "guai", "tianya", "staff"]
       description = ""
   verbs = [
     "get",
@@ -3623,6 +3688,7 @@ chats = [
 
     items "weapon16" {
       name = "八仙杖"
+      aliases = ["baxian zhang", "zhang", "baxian", "staff"]
       description = ""
   verbs = [
     "get",
@@ -3644,6 +3710,7 @@ chats = [
 
     items "weapon17" {
       name = "七星杖·轮回"
+      aliases = ["lun hui", "qixingzhang", "zhang", "staff"]
       description = "七星杖·轮回乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -3671,6 +3738,7 @@ chats = [
 
     items "weapon18" {
       name = "七星杖·诛天"
+      aliases = ["zhu tian", "qixingzhang", "zhang", "staff"]
       description = "七星杖·诛天乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -3698,6 +3766,7 @@ chats = [
 
     items "weapon19" {
       name = "七星杖·寂灭"
+      aliases = ["ji mie", "qixingzhang", "zhang", "staff"]
       description = "七星杖·寂灭乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -3725,6 +3794,7 @@ chats = [
 
     items "weapon2" {
       name = "方天画戟"
+      aliases = ["fangtian huaji", "huaji", "ji"]
       description = "一杆玄铁打制的方天画戟，传说是三国名将吕布所用过的武器。"
   verbs = [
     "get",
@@ -3752,6 +3822,7 @@ chats = [
 
     items "weapon20" {
       name = "七星杖·麒麟火"
+      aliases = ["qilin huo", "qixingzhang", "zhang", "staff"]
       description = "七星杖·麒麟火乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -3779,6 +3850,7 @@ chats = [
 
     items "weapon21" {
       name = "老君绝灭杖·三味火"
+      aliases = ["sanwei huo", "laojunzhang", "zhang", "staff"]
       description = "老君绝灭杖·三味火乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -3806,6 +3878,7 @@ chats = [
 
     items "weapon22" {
       name = "仙鹤神针"
+      aliases = ["xianhe shenzhen", "zhen"]
       description = ""
   verbs = [
     "get",
@@ -3827,6 +3900,7 @@ chats = [
 
     items "weapon23" {
       name = "天穹神针"
+      aliases = ["tianqiong shenzhen", "zhen"]
       description = ""
   verbs = [
     "get",
@@ -3848,6 +3922,7 @@ chats = [
 
     items "weapon24" {
       name = "龙翔神针"
+      aliases = ["longxiang shenzhen", "zhen"]
       description = ""
   verbs = [
     "get",
@@ -3869,6 +3944,7 @@ chats = [
 
     items "weapon25" {
       name = "雷霆神针"
+      aliases = ["leiting shenzhen", "zhen"]
       description = ""
   verbs = [
     "get",
@@ -3890,6 +3966,7 @@ chats = [
 
     items "weapon26" {
       name = "缠魂丝"
+      aliases = ["chanhun si", "si", "chanhun", "whip"]
       description = ""
   verbs = [
     "get",
@@ -3911,6 +3988,7 @@ chats = [
 
     items "weapon27" {
       name = "盘龙索"
+      aliases = ["panlong suo", "suo", "panlong", "whip"]
       description = ""
   verbs = [
     "get",
@@ -3932,6 +4010,7 @@ chats = [
 
     items "weapon28" {
       name = "烈火神鞭"
+      aliases = ["liehuo bian", "bian", "liehuo", "whip"]
       description = ""
   verbs = [
     "get",
@@ -3953,6 +4032,7 @@ chats = [
 
     items "weapon29" {
       name = "麒麟鞭"
+      aliases = ["qilin bian", "qilin", "bian", "whip"]
       description = ""
   verbs = [
     "get",
@@ -3974,6 +4054,7 @@ chats = [
 
     items "weapon3" {
       name = "天雷神挡"
+      aliases = ["tianlei shendang", "tianlei", "shendang", "dang"]
       description = "一杆上古神木所铸造的棍子，乃不世之神兵。"
   verbs = [
     "get",
@@ -4001,6 +4082,7 @@ chats = [
 
     items "weapon30" {
       name = "馄饨灵索"
+      aliases = ["huntun suo", "huntun", "suo", "whip"]
       description = ""
   verbs = [
     "get",
@@ -4022,6 +4104,7 @@ chats = [
 
     items "weapon31" {
       name = "玄冰索"
+      aliases = ["xuanbing suo", "xuanbing", "suo", "whip"]
       description = "玄冰索乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4049,6 +4132,7 @@ chats = [
 
     items "weapon32" {
       name = "神蛟丝·天残"
+      aliases = ["tian can", "shenjiaosi", "suo", "whip"]
       description = "神蛟丝·天残乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4076,6 +4160,7 @@ chats = [
 
     items "weapon33" {
       name = "神蛟丝·天缺"
+      aliases = ["tian que", "shenjiaosi", "suo", "whip"]
       description = "神蛟丝·天缺乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4103,6 +4188,7 @@ chats = [
 
     items "weapon34" {
       name = "神蛟丝·噬月"
+      aliases = ["shi yue", "shenjiaosi", "suo", "whip"]
       description = "神蛟丝·噬月乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4130,6 +4216,7 @@ chats = [
 
     items "weapon35" {
       name = "神蛟丝·吞日"
+      aliases = ["tun ri", "shenjiaosi", "suo", "whip"]
       description = "神蛟丝·吞日乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4157,6 +4244,7 @@ chats = [
 
     items "weapon36" {
       name = "乌龙神蛟丝"
+      aliases = ["wulong si", "shenjiaosi", "si", "whip"]
       description = "乌龙神蛟丝乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4184,6 +4272,7 @@ chats = [
 
     items "weapon37" {
       name = "鱼肠剑"
+      aliases = ["yuchang dagger", "dagger", "yuchang"]
       description = ""
   verbs = [
     "get",
@@ -4205,6 +4294,7 @@ chats = [
 
     items "weapon38" {
       name = "毒绫子"
+      aliases = ["duling dagger", "dagger", "duling"]
       description = ""
   verbs = [
     "get",
@@ -4226,6 +4316,7 @@ chats = [
 
     items "weapon39" {
       name = "青阳神匕"
+      aliases = ["qingyang dagger", "dagger", "qingyang"]
       description = ""
   verbs = [
     "get",
@@ -4247,6 +4338,7 @@ chats = [
 
     items "weapon4" {
       name = "玄天棍·鬼虐"
+      aliases = ["gui nue", "club", "gun", "xuantian gun"]
       description = "玄天棍·鬼虐乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4274,6 +4366,7 @@ chats = [
 
     items "weapon40" {
       name = "缺月刃"
+      aliases = ["queyue ren", "queyue", "ren", "blade", "dao"]
       description = ""
   verbs = [
     "get",
@@ -4297,6 +4390,7 @@ chats = [
 
     items "weapon41" {
       name = "蝉翼刀"
+      aliases = ["chanyi dao", "chanyi", "blade", "dao"]
       description = ""
   verbs = [
     "get",
@@ -4320,6 +4414,7 @@ chats = [
 
     items "weapon42" {
       name = "齐王天刀"
+      aliases = ["qiwang dao", "qiwang", "blade", "dao"]
       description = ""
   verbs = [
     "get",
@@ -4343,6 +4438,7 @@ chats = [
 
     items "weapon43" {
       name = "凤凰镢"
+      aliases = ["fenghuang jue", "fenghuang", "jue", "blade", "dao"]
       description = ""
   verbs = [
     "get",
@@ -4366,6 +4462,7 @@ chats = [
 
     items "weapon44" {
       name = "厚背鹰刀"
+      aliases = ["ying dao", "ying", "blade", "dao"]
       description = ""
   verbs = [
     "get",
@@ -4389,6 +4486,7 @@ chats = [
 
     items "weapon45" {
       name = "青龙牙"
+      aliases = ["qinglong ya", "qinglong", "ya", "blade", "dao"]
       description = ""
   verbs = [
     "get",
@@ -4412,6 +4510,7 @@ chats = [
 
     items "weapon46" {
       name = "青雕玉琢"
+      aliases = ["qingyu dao", "qingyu", "blade", "dao"]
       description = ""
   verbs = [
     "get",
@@ -4435,6 +4534,7 @@ chats = [
 
     items "weapon47" {
       name = "五鬼月华刃"
+      aliases = ["wugui ren", "ren", "blade", "dao"]
       description = ""
   verbs = [
     "get",
@@ -4458,6 +4558,7 @@ chats = [
 
     items "weapon48" {
       name = "七煞阴阳刃"
+      aliases = ["yinyang ren", "ren", "blade", "dao"]
       description = ""
   verbs = [
     "get",
@@ -4481,6 +4582,7 @@ chats = [
 
     items "weapon49" {
       name = "金阳神刀"
+      aliases = ["jinyang dao", "jinyang", "blade", "dao"]
       description = ""
   verbs = [
     "get",
@@ -4504,6 +4606,7 @@ chats = [
 
     items "weapon5" {
       name = "如意棍·千钧"
+      aliases = ["qian jun", "ruyi gun", "club", "gun"]
       description = "如意棍·千钧乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4531,6 +4634,7 @@ chats = [
 
     items "weapon50" {
       name = "碧海残镢"
+      aliases = ["bihai canjue", "bihai", "blade", "dao"]
       description = "碧海残镢乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4558,6 +4662,7 @@ chats = [
 
     items "weapon51" {
       name = "青天羽·七重天"
+      aliases = ["qi chongtian", "qingtianyu", "blade", "dao"]
       description = "青天羽·七重天乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4585,6 +4690,7 @@ chats = [
 
     items "weapon52" {
       name = "青天羽·九重天"
+      aliases = ["jiu chongtian", "qingtianyu", "blade", "dao"]
       description = "青天羽·九重天乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4612,6 +4718,7 @@ chats = [
 
     items "weapon53" {
       name = "青天羽·十二重天"
+      aliases = ["shier chongtian", "qingtianyu", "blade", "dao"]
       description = "青天羽·十二重天乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4639,6 +4746,7 @@ chats = [
 
     items "weapon54" {
       name = "玄金斩·九馄阳"
+      aliases = ["jiu hunyang", "xuanjinzhan", "blade", "dao"]
       description = "玄金斩·九馄阳乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4666,6 +4774,7 @@ chats = [
 
     items "weapon55" {
       name = "玄金斩·披靡一阳"
+      aliases = ["pimi yiyang", "xuanjinzhan", "blade", "dao"]
       description = "玄金斩·披靡一阳乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4693,6 +4802,7 @@ chats = [
 
     items "weapon56" {
       name = "玄金斩·虚空"
+      aliases = ["xu kong", "xuanjinzhan", "blade", "dao"]
       description = "玄金斩·虚空乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4720,6 +4830,7 @@ chats = [
 
     items "weapon57" {
       name = "乾坤刀·乾坤"
+      aliases = ["qian kun", "qiankundao", "blade", "dao"]
       description = "乾坤刀·乾坤乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4747,6 +4858,7 @@ chats = [
 
     items "weapon58" {
       name = "乾坤刀·逆乾坤"
+      aliases = ["ni qiankun", "qiankundao", "blade", "dao"]
       description = "乾坤刀·逆乾坤乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4774,6 +4886,7 @@ chats = [
 
     items "weapon59" {
       name = "七狱地藏斩"
+      aliases = ["dizang zhan", "dizang", "zhan", "blade", "dao"]
       description = "七狱地藏斩乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4801,6 +4914,7 @@ chats = [
 
     items "weapon6" {
       name = "七星锤·镇邪"
+      aliases = ["zhen xie", "hammer", "chui"]
       description = "七星锤·镇邪乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4828,6 +4942,7 @@ chats = [
 
     items "weapon60" {
       name = "九仪天尊剑"
+      aliases = ["tianzun jian", "tianzun", "jian", "sword"]
       description = "九仪天尊剑乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4855,6 +4970,7 @@ chats = [
 
     items "weapon61" {
       name = "轩辕神剑"
+      aliases = ["xuanyuan jian", "xuanyuan", "jian", "sword"]
       description = "轩辕神剑乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4882,6 +4998,7 @@ chats = [
 
     items "weapon62" {
       name = "苍穹神剑"
+      aliases = ["cangqiong jian", "cangqiong", "jian", "sword"]
       description = "苍穹神剑乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4909,6 +5026,7 @@ chats = [
 
     items "weapon63" {
       name = "金刚剑·鬼龙"
+      aliases = ["gui long", "jingangjian", "jian", "sword"]
       description = "金刚剑·鬼龙乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4936,6 +5054,7 @@ chats = [
 
     items "weapon64" {
       name = "太阿"
+      aliases = ["tai a", "taia", "jian", "sword"]
       description = "太阿乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4963,6 +5082,7 @@ chats = [
 
     items "weapon65" {
       name = "麒麟金·破"
+      aliases = ["po", "qilinjin", "jian", "sword"]
       description = "麒麟金·破乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -4990,6 +5110,7 @@ chats = [
 
     items "weapon66" {
       name = "麒麟金·曦"
+      aliases = ["xi", "qilinjin", "jian", "sword"]
       description = "麒麟金·曦乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -5017,6 +5138,7 @@ chats = [
 
     items "weapon67" {
       name = "麒麟金·鲸吞"
+      aliases = ["jing tun", "qilinjin", "jian", "sword"]
       description = "麒麟金·鲸吞乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -5044,6 +5166,7 @@ chats = [
 
     items "weapon68" {
       name = "龙凰紫珠"
+      aliases = ["longhuang jian", "longhuang", "jian", "sword"]
       description = "龙凰紫珠乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -5071,6 +5194,7 @@ chats = [
 
     items "weapon69" {
       name = "凤凰琴"
+      aliases = ["fenghuang qin", "fenghuang", "qin", "jian", "sword"]
       description = "凤凰琴乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -5098,6 +5222,7 @@ chats = [
 
     items "weapon7" {
       name = "七星锤·紫苍"
+      aliases = ["zi cang", "hammer", "chui"]
       description = "七星锤·紫苍乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -5125,6 +5250,7 @@ chats = [
 
     items "weapon70" {
       name = "九天艳阳尺"
+      aliases = ["yanyang chi", "yanyang", "chi", "jian", "sword"]
       description = "九天艳阳尺乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -5152,6 +5278,7 @@ chats = [
 
     items "weapon71" {
       name = "量天尺"
+      aliases = ["liangtian chi", "liangtian", "chi", "jian", "sword"]
       description = "量天尺乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -5179,6 +5306,7 @@ chats = [
 
     items "weapon72" {
       name = "盘龙七刹剑"
+      aliases = ["panlong jian", "panlong", "jian", "sword"]
       description = "盘龙七刹剑乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -5206,6 +5334,7 @@ chats = [
 
     items "weapon73" {
       name = "青鲨嗜"
+      aliases = ["qingsha jian", "qingsha", "jian", "sword"]
       description = ""
   verbs = [
     "get",
@@ -5229,6 +5358,7 @@ chats = [
 
     items "weapon74" {
       name = "天月寒镢"
+      aliases = ["tianyue jian", "tianyue", "jian", "sword"]
       description = ""
   verbs = [
     "get",
@@ -5252,6 +5382,7 @@ chats = [
 
     items "weapon75" {
       name = "蹊云寒镢"
+      aliases = ["qiyun jian", "qiyun", "jian", "sword"]
       description = ""
   verbs = [
     "get",
@@ -5275,6 +5406,7 @@ chats = [
 
     items "weapon76" {
       name = "古松残镢"
+      aliases = ["gusong jian", "gusong", "jian", "sword"]
       description = ""
   verbs = [
     "get",
@@ -5298,6 +5430,7 @@ chats = [
 
     items "weapon77" {
       name = "吴阳剑"
+      aliases = ["wuyang jian", "wuyang", "jian", "sword"]
       description = ""
   verbs = [
     "get",
@@ -5321,6 +5454,7 @@ chats = [
 
     items "weapon78" {
       name = "黄龙剑"
+      aliases = ["huanglong jian", "huanglong", "jian", "sword"]
       description = ""
   verbs = [
     "get",
@@ -5344,6 +5478,7 @@ chats = [
 
     items "weapon79" {
       name = "吴钩剑"
+      aliases = ["wugou jian", "wugou", "jian", "sword"]
       description = ""
   verbs = [
     "get",
@@ -5367,6 +5502,7 @@ chats = [
 
     items "weapon8" {
       name = "七星锤·刹神"
+      aliases = ["sha shen", "hammer", "chui"]
       description = "七星锤·刹神乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -5394,6 +5530,7 @@ chats = [
 
     items "weapon80" {
       name = "孤星剑"
+      aliases = ["guxing jian", "guxing", "jian", "sword"]
       description = ""
   verbs = [
     "get",
@@ -5417,6 +5554,7 @@ chats = [
 
     items "weapon9" {
       name = "冥王破狱锤"
+      aliases = ["mingwang chui", "mingwang", "chui", "hammer"]
       description = "冥王破狱锤乃九穹七狱神兵之一。"
   verbs = [
     "get",
@@ -5444,6 +5582,7 @@ chats = [
 
     items "wujian" {
       name = "无间闪电"
+      aliases = ["wujian shandian", "wujian", "shandian"]
       description = ""
   verbs = [
     "get",
@@ -5472,6 +5611,7 @@ chats = [
 
     items "yumao" {
       name = "朱羽"
+      aliases = ["zhu yu", "yu", "yumao"]
       description = "一束神兽朱雀的羽毛，不知道有什么用。"
   verbs = [
     "get",
@@ -5837,6 +5977,7 @@ item_desc = {
 
     characters "beichou" {
       name = "北丑"
+      aliases = ["bei chou", "bei", "chou", "xizi"]
       description = "这是一个身着戏子打扮的瘦小老头，长得尖 嘴猴腮，天生一副奸相。这便是当今武林中 号称「南贤北丑」戏子北丑。"
   title = "武林泰斗"
   nickname = "北戏子"
@@ -5866,6 +6007,7 @@ item_desc = {
 
     characters "hua" {
       name = "华英雄"
+      aliases = ["hua yingxiong", "hua", "yingxiong"]
       description = "一个俊俏的中年男子，衣着长衫，他就是华英雄。 传说他命犯天煞孤星，一生漂泊，落于异地。尔后 习得一身绝技，兼修炼「中华傲决」，大败「东洋 战神」无敌。"
   title = "大宗师"
   nickname = "中华英雄"
@@ -5897,6 +6039,7 @@ item_desc = {
 
     characters "kou" {
       name = "寇仲"
+      aliases = ["kou zhong", "kou", "zhong"]
       description = "一个身着龙袍的魁梧少年，他就是少帅军的统帅寇仲。"
   title = "大宗师"
   nickname = "大唐双龙"
@@ -5928,6 +6071,7 @@ item_desc = {
 
     characters "li" {
       name = "李寻欢"
+      aliases = ["li xunhuan", "li", "xunhuan"]
       description = "一个身着白衫的中年男子，俊俏的面庞 毫无血色，似乎因酒色过度而苍白。他手中 握着一柄小刀，静静雕刻着一个木人。周围 发生的一切他仿佛都看不见。"
   title = "大宗师"
   nickname = "小李探花"
@@ -5968,6 +6112,7 @@ chats = [
 
     characters "li2" {
       name = "李逍遥"
+      aliases = ["li xiaoyao", "li", "xiaoyao"]
       description = "仙剑奇侠传中的传奇人物，少年得蜀山剑派 高人授艺，兼习家传绝学飞龙探云手以及冰 心决，乃一代不世的剑侠。"
   title = "大宗师"
   nickname = "蜀山剑神"
@@ -5999,6 +6144,7 @@ chats = [
 
     characters "lonely" {
       name = "高处不胜寒"
+      aliases = ["gaochu busheng han", "gaochu", "han", "lonely"]
       description = "他就是泥潭世界的大boss----高处不胜寒。"
   title = "三界之主"
   gender = "男性"
@@ -6066,6 +6212,7 @@ chats = [
 
     characters "tianshen" {
       name = "天神"
+      aliases = ["tian shen", "tian", "shen"]
       description = "他就是跟随泥潭世界大boss----高处不胜寒的仆人，如今成了天神。"
   title = "天界总管"
   gender = "男性"
@@ -6123,6 +6270,7 @@ chats = [
 
     characters "tie" {
       name = "铁传甲"
+      aliases = ["tie chuanjia", "tie", "chuanjia"]
       description = "一个身材魁梧的汉子。"
   title = "忠心护卫"
   nickname = "铁甲金刚"
@@ -6155,6 +6303,7 @@ chats = [
 
     characters "xu" {
       name = "徐子陵"
+      aliases = ["xu ziling", "xu", "ziling"]
       description = "一个俊俏的白衣少年，他就是名震天下的徐子陵。"
   title = "大宗师"
   nickname = "大唐双龙"
@@ -6186,6 +6335,7 @@ chats = [
 
     characters "chijian" {
       name = "赤剑"
+      aliases = ["chi jian", "jian", "sword", "chi", "chijian"]
       description = "一柄四尺来长的长剑，整个剑身呈红色。"
     }
 
@@ -6194,6 +6344,7 @@ chats = [
 
     characters "chiyoujian" {
       name = "玄蚩神剑"
+      aliases = ["chiyou jian", "sword", "jian"]
       description = "一柄玄铁铸造的长剑，剑柄上雕有蚩尤的头像。"
     }
 
@@ -6202,6 +6353,7 @@ chats = [
 
     characters "feidao" {
       name = "小李飞刀"
+      aliases = ["xiaoli feidao", "feidao"]
       description = "一柄看似普通的飞刀，刀柄上刻了个小小的“李”字。"
     }
 
@@ -6210,6 +6362,7 @@ chats = [
 
     characters "hands" {
       name = "残血手套"
+      aliases = ["canxue shoutao", "shoutao", "canxue", "hand", "tao"]
       description = "传说中的上古神器。"
     }
 
@@ -6218,6 +6371,7 @@ chats = [
 
     characters "jingzhongyue" {
       name = "井中月"
+      aliases = ["jingzhong yue", "blade", "dao", "yue", "jingzhong"]
       description = "一柄四尺来长的单刀，重达百斤，刀身散发着乌黑的光泽。"
     }
 
@@ -6226,6 +6380,7 @@ chats = [
 
     characters "pangukai" {
       name = "盘古铠"
+      aliases = ["pangu kai", "kai", "armor"]
       description = "一见黑黝黝的铁甲，上面雕有盘古的头像。"
     }
 
@@ -6234,6 +6389,7 @@ chats = [
 
     characters "renou" {
       name = "人偶"
+      aliases = ["renou"]
       description = "一块未完工的木偶，但已经可以辨认出是个女子的雕像。"
     }
 
@@ -6242,6 +6398,7 @@ chats = [
 
     items "heshibi" {
       name = "何氏壁"
+      aliases = ["heshi bi", "heshi", "bi"]
       description = "一块晶莹剔透的宝玉，其中一角镶嵌着一块黄 金，宝玉上雕刻着盘龙，这便是传说可以号令 天下的何氏壁。相传宝玉中蕴藏着奇异的能源， 武功高强者可以吸取(xi)其中的能量来增强功 力。"
   verbs = [
     "get",
@@ -6260,6 +6417,7 @@ chats = [
 
     items "jue" {
       name = "长生决"
+      aliases = ["changsheng jue", "book", "jue"]
       description = "这便是四大奇书之一的长生决，传说可以修炼至高无上的武学。"
   verbs = [
     "get",
@@ -6286,6 +6444,7 @@ chats = [
 
     items "miji1" {
       name = "铁线拳密芨"
+      aliases = ["miji", "book"]
       description = "这是一本薄薄的小册，上面记载了不少精妙的拳法。"
   verbs = [
     "get",
@@ -6312,6 +6471,7 @@ chats = [
 
     items "miji2" {
       name = "四季剑法"
+      aliases = ["jianfa miji", "book", "miji"]
       description = "这是一本薄薄的小册，上面记载了四季剑法的奥决。"
   verbs = [
     "get",
@@ -6338,6 +6498,7 @@ chats = [
 
     items "miji3" {
       name = "飞龙探云秘芨"
+      aliases = ["tanyun miji", "book", "miji"]
       description = "李逍遥的家传绝学。"
   verbs = [
     "get",
@@ -6364,6 +6525,7 @@ chats = [
 
     items "sheli" {
       name = "魔尊舍利"
+      aliases = ["mozun sheli", "sheli"]
       description = "一个浑圆的暗色球体，通体透明。这便是传说 中的魔教至宝----魔尊舍利。相传其中蕴藏着 无比巨大的能量，武功高强者可以吸取(xi)其 中的能量来增强功力。"
   verbs = [
     "get",
@@ -6381,6 +6543,7 @@ chats = [
 
     items "shenjiu" {
       name = "天乙神酒"
+      aliases = ["tianyi shenjiu", "jiu", "shenjiu", "tianyi"]
       description = "这是一瓶天乙神酒，便是只闻闻也让你昏昏欲醉。"
   verbs = [
     "get",
@@ -6398,6 +6561,7 @@ chats = [
 
     items "tianxiadan" {
       name = "天霞神丹"
+      aliases = ["tianxia shendan", "dan"]
       description = ""
   verbs = [
     "get",
@@ -6415,6 +6579,7 @@ chats = [
 
     items "yishu" {
       name = "岳山遗书"
+      aliases = ["yishu", "shu", "book"]
       description = "这便是当年「霸刀」岳山临死前的遗书，上面记载了他对刀法的体会。"
   verbs = [
     "get",

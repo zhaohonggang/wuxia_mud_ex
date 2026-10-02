@@ -3453,6 +3453,7 @@ direction = "up"
 
     characters "han" {
       name = "韩云"
+      aliases = ["han yun", "han", "yun"]
       description = "洛阳城瓷器店的老板，他的货都是直接从唐三彩进的。"
   title = "瓷器店老板"
   gender = "男性"
@@ -3502,6 +3503,7 @@ direction = "up"
 
     characters "hu" {
       name = "胡雪源"
+      aliases = ["hu xueyuan", "hu", "xueyuan"]
       description = ""
   title = "钱庄老板"
   gender = "男性"
@@ -3537,6 +3539,7 @@ direction = "up"
 
     characters "huanong" {
       name = "花农"
+      aliases = ["hua nong", "hua", "nong"]
       description = "一个衣着朴素的老农，他在洛阳苗铺栽花 种草数十年，如果你也想在此种花，可以 向他买一些种子。"
   title = "洛阳苗铺"
   gender = "男性"
@@ -3570,6 +3573,7 @@ direction = "up"
 
     characters "lang" {
       name = "浪翻云"
+      aliases = ["lang fangyun", "lang", "fangyun"]
       description = "他是一位神秘的江湖人氏，没有人知道他的来历，也没人知 道他的过去，他行踪不定，来去无影。只见他身着布衣，手 执长剑，身上背着一个酒葫芦，长发披肩，脸色看似十分之 憔悴和惆怅，双目正柔情地看着长空。"
   title = "神秘人"
   nickname = "江湖卖艺人"
@@ -3631,6 +3635,7 @@ chats = [
 
     characters "laobao" {
       name = "老鸨婆"
+      aliases = ["laobao po", "laobao", "po"]
       description = "这老鸨婆虽是徐娘半老，但仍风韵尤存，只不 过脸上的粉太厚了。"
   title = "春月楼老板娘"
   gender = "女性"
@@ -3663,6 +3668,7 @@ chats = [
 
     characters "liangcao" {
       name = "粮草官"
+      aliases = ["liangcao guan", "liangcao", "guan"]
       description = "一个管理粮草的小官。"
   gender = "男性"
   age = 22
@@ -3694,6 +3700,7 @@ chats = [
 
     characters "libai" {
       name = "李白"
+      aliases = ["li bai", "li", "bai"]
       description = "这便是唐朝第一大诗人李太白，只见他须垂三 尺，面如冠玉，双目炯炯有神。一手持青铜爵， 一手持长剑，正在独饮。"
   title = "唐朝大诗人"
   nickname = "诗仙"
@@ -3758,6 +3765,7 @@ chats = [
 
     characters "lu" {
       name = "鲁开"
+      aliases = ["lu kai", "lu", "kai"]
       description = "这就是木匠铺老板鲁开，他一手绝活扬名洛阳。"
   gender = "男性"
   age = 32
@@ -3801,6 +3809,7 @@ chats = [
 
     characters "lvzhu" {
       name = "绿竹翁"
+      aliases = ["lvzhu weng", "lv", "lvzhu", "weng"]
       description = "他便是洛阳东城的绿竹翁。"
   gender = "男性"
   age = 71
@@ -3845,6 +3854,7 @@ chats = [
 
     characters "qi" {
       name = "祁老二"
+      aliases = ["qi laoer", "qi", "laoer"]
       description = "据说祁老二本是祁连山的二寨主，后来不知 怎么的改行做了这个。"
   title = "当铺老板"
   gender = "男性"
@@ -3880,6 +3890,7 @@ chats = [
 
     characters "qin" {
       name = "秦掌柜"
+      aliases = ["qin zhanggui", "qin", "zhanggui"]
       description = "洛阳唐三彩的老板，他这里所出的瓷器闻名全国。"
   title = "洛阳唐三彩"
   gender = "男性"
@@ -3933,6 +3944,7 @@ chats = [
 
     characters "shudianboss" {
       name = "书店老板"
+      aliases = ["shudian laoban", "laoban", "shudian"]
       description = "一个让孩子们一见就觉得可亲的老翁。"
   gender = "男性"
   age = 62
@@ -3970,6 +3982,7 @@ chats = [
 
     characters "smith" {
       name = "铁匠"
+      aliases = ["tiejiang", "smith"]
       description = "铁匠正用铁钳夹住一块红热的铁块放进炉中。"
   title = "打铁铺老板"
   gender = "男性"
@@ -4008,6 +4021,7 @@ chats = [
 
     characters "tianlong" {
       name = "大天龙"
+      aliases = ["da tianlong", "da", "tianlong"]
       description = ""
   nickname = "关东"
   gender = "男性"
@@ -4059,6 +4073,7 @@ chats = [
 
     characters "xiao" {
       name = "萧南忠"
+      aliases = ["xiao nanzhong", "xiao", "nanzhong"]
       description = ""
   title = "杂货铺老板"
   gender = "男性"
@@ -4111,6 +4126,7 @@ chats = [
 
     characters "xiaofan" {
       name = "小贩"
+      aliases = ["xiao fan", "seller", "fan"]
       description = "这是个小贩，别看他长的老老实实，可你别 想从他那儿掏便宜。"
   gender = "男性"
   age = 32
@@ -4156,6 +4172,7 @@ chats = [
 
     characters "zaotang" {
       name = "澡堂伙计"
+      aliases = ["zaotang huoji", "zaotang", "huoji"]
       description = ""
   gender = "男性"
   age = 22
@@ -4187,6 +4204,7 @@ chats = [
 
     characters "zhou" {
       name = "周逸风"
+      aliases = ["zhou yifeng", "zhou", "yifeng"]
       description = ""
   title = "首饰店老板"
   gender = "男性"
@@ -4231,6 +4249,7 @@ chats = [
 
     characters "zhu" {
       name = "朱政"
+      aliases = ["zhu zheng", "zhu", "zheng"]
       description = ""
   title = "盔甲店老板"
   gender = "男性"
@@ -4286,6 +4305,7 @@ chats = [
 
     characters "zhu2" {
       name = "朱饮"
+      aliases = ["zhu yin", "zhu", "yin"]
       description = ""
   title = "武器店老板"
   gender = "男性"
@@ -4345,6 +4365,7 @@ chats = [
 
     characters "armor1" {
       name = "金环锁子甲"
+      aliases = ["suozi jia", "jia"]
       description = ""
     }
 
@@ -4353,6 +4374,7 @@ chats = [
 
     characters "blade1" {
       name = "赤金刀"
+      aliases = ["chijin dao", "chijin", "blade", "dao"]
       description = ""
     }
 
@@ -4361,6 +4383,7 @@ chats = [
 
     characters "club1" {
       name = "赤金棍"
+      aliases = ["chijin gun", "chijin", "club", "gun"]
       description = ""
     }
 
@@ -4369,6 +4392,7 @@ chats = [
 
     characters "dagger1" {
       name = "赤金匕首"
+      aliases = ["chijin bishou", "chijin", "dagger", "bishou"]
       description = ""
     }
 
@@ -4377,6 +4401,7 @@ chats = [
 
     characters "finger" {
       name = "黄金指套"
+      aliases = ["gold finger", "finger", "zhitao"]
       description = "这是五个环环相链的黄金指套，可以加强指法、手法和爪法的伤害力。"
     }
 
@@ -4385,6 +4410,7 @@ chats = [
 
     characters "guo1" {
       name = "苹果"
+      aliases = ["pingguo"]
       description = ""
     }
 
@@ -4393,6 +4419,7 @@ chats = [
 
     characters "guo2" {
       name = "橘子"
+      aliases = ["juzi"]
       description = ""
     }
 
@@ -4401,6 +4428,7 @@ chats = [
 
     characters "guo3" {
       name = "香蕉"
+      aliases = ["xiangjiao"]
       description = ""
     }
 
@@ -4409,6 +4437,7 @@ chats = [
 
     characters "guo4" {
       name = "荔枝"
+      aliases = ["lizhi"]
       description = ""
     }
 
@@ -4417,6 +4446,7 @@ chats = [
 
     characters "guo5" {
       name = "西瓜"
+      aliases = ["xigua"]
       description = ""
     }
 
@@ -4425,6 +4455,7 @@ chats = [
 
     characters "hammer1" {
       name = "赤金锤"
+      aliases = ["chijin chui", "chijin", "hammer", "chui"]
       description = ""
     }
 
@@ -4433,6 +4464,7 @@ chats = [
 
     characters "hand" {
       name = "黄金手掌"
+      aliases = ["gold hand", "hand"]
       description = "这是一块黄金制成的掌套，可以加强拳法、掌法和拳脚的伤害力。"
     }
 
@@ -4441,6 +4473,7 @@ chats = [
 
     characters "head1" {
       name = "琉金盔"
+      aliases = ["liujin kui", "kui"]
       description = ""
     }
 
@@ -4449,6 +4482,7 @@ chats = [
 
     characters "huazhong" {
       name = "花种"
+      aliases = ["hua zhong", "hua", "zhong"]
       description = "一枚无法确定品种的花种。"
 
   init = {
@@ -4462,6 +4496,7 @@ chats = [
 
     characters "staff1" {
       name = "赤金杖"
+      aliases = ["chijin zhang", "chijin", "staff", "zhang"]
       description = ""
     }
 
@@ -4470,6 +4505,7 @@ chats = [
 
     characters "sword1" {
       name = "赤金剑"
+      aliases = ["chijin jian", "chijin", "sword", "jian"]
       description = ""
     }
 
@@ -4478,6 +4514,7 @@ chats = [
 
     characters "taoci" {
       name = "翡翠鼻烟壶"
+      aliases = ["biyan hu", "biyan"]
       description = "陶瓷烧得便如翡翠一般，以此陶瓷所制的鼻烟壶。"
     }
 
@@ -4486,6 +4523,7 @@ chats = [
 
     characters "taoci2" {
       name = "碧玉瓷马"
+      aliases = ["biyu cima", "biyu", "cima"]
       description = "经唐三彩烧制的碧玉陶瓷马，非常的昂贵。"
     }
 
@@ -4494,6 +4532,7 @@ chats = [
 
     characters "taoci3" {
       name = "淡朱菩提树"
+      aliases = ["puti shu", "puti", "shu"]
       description = "经唐三彩烧制的淡朱菩提树，非常的昂贵。"
     }
 
@@ -4502,6 +4541,7 @@ chats = [
 
     characters "taoci4" {
       name = "八宝莲花座"
+      aliases = ["lianhua zuo", "lianhua", "zuo"]
       description = "经唐三彩烧制的八宝莲花座，非常的昂贵。"
     }
 
@@ -4510,6 +4550,7 @@ chats = [
 
     characters "taoci5" {
       name = "玲珑飞天佩"
+      aliases = ["feitian pei", "feitian", "pei"]
       description = "经唐三彩烧制的玲珑飞天佩，非常的昂贵。"
     }
 
@@ -4518,6 +4559,7 @@ chats = [
 
     characters "taoci6" {
       name = "白瓷观音像"
+      aliases = ["guanyin xiang", "guanyin", "xiang"]
       description = "经唐三彩烧制的白瓷观音像，非常的昂贵。"
     }
 
@@ -4526,6 +4568,7 @@ chats = [
 
     characters "taoci7" {
       name = "七窍墨云斗"
+      aliases = ["moyun dou", "moyun", "dou"]
       description = "经唐三彩烧制的七窍墨云斗，非常的昂贵。"
     }
 
@@ -4534,6 +4577,7 @@ chats = [
 
     characters "taoci8" {
       name = "碧海青天爵"
+      aliases = ["qingtian jue", "qingtian", "jue"]
       description = "经唐三彩烧制的碧海青天爵，非常的昂贵。"
     }
 
@@ -4542,6 +4586,7 @@ chats = [
 
     characters "wanlun1" {
       name = "绞金腕轮"
+      aliases = ["jiaojin wanlun", "wanlun"]
       description = ""
     }
 
@@ -4550,6 +4595,7 @@ chats = [
 
     characters "whip1" {
       name = "赤金鞭"
+      aliases = ["chijin bian", "chijin", "whip", "bian"]
       description = ""
     }
 

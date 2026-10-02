@@ -1175,6 +1175,7 @@ item_desc = {
 
     characters "daodianhuoji" {
       name = "小伙计"
+      aliases = ["xiao huoji", "huoji"]
       description = ""
   gender = "男性"
   age = 33
@@ -1209,6 +1210,7 @@ item_desc = {
 
     characters "gongweishi" {
       name = "皇宫卫士"
+      aliases = ["wei shi", "shi"]
       description = "这是皇宫的大内卫士，身披钢甲，手执长剑。"
   gender = "男性"
   shen_type = 1
@@ -1242,6 +1244,7 @@ item_desc = {
 
     characters "hao" {
       name = "郝连铁树"
+      aliases = ["haolian tieshu", "tieshu"]
       description = "这是西夏的征东大将军，声势显赫。"
   gender = "男性"
   shen_type = 1
@@ -1277,6 +1280,7 @@ item_desc = {
 
     characters "laodaoshi" {
       name = "老道士"
+      aliases = ["lao daoshi", "daoshi"]
       description = "这是一个精壮老道士。"
   gender = "男性"
   age = 67
@@ -1318,6 +1322,7 @@ item_desc = {
 
     characters "nan" {
       name = "南海鳄神"
+      aliases = ["nanhai eshen", "eshen"]
       description = "此人的一个脑袋大得异乎寻常，一张阔嘴中露出白森森的利齿， 一对眼睛却是又圆又小。"
   nickname = "凶神恶煞"
   gender = "男性"
@@ -1360,6 +1365,7 @@ item_desc = {
 
     characters "nuerhai" {
       name = "努儿海"
+      aliases = ["nu erhai", "nu"]
       description = "一个身形极高、鼻子极大，声音阴阳怪气的汉子。"
   title = "西夏一品堂接引使"
   gender = "男性"
@@ -1397,6 +1403,7 @@ item_desc = {
 
     characters "shiwushi" {
       name = "石人武士"
+      aliases = ["wu shi", "shi"]
       description = "这是守护西夏王陵的石人武士。"
   gender = "男性"
   shen_type = 1
@@ -1432,6 +1439,7 @@ item_desc = {
 
     characters "xiaoer" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1462,6 +1470,7 @@ item_desc = {
 
     characters "xiaoer2" {
       name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
       description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
   nickname = "消息灵通"
   gender = "男性"
@@ -1503,6 +1512,7 @@ item_desc = {
 
     characters "xiaowei" {
       name = "校尉"
+      aliases = ["xiao wei", "wei"]
       description = "一个魁武的西夏军官。"
   gender = "男性"
   shen_type = 1
@@ -1535,6 +1545,7 @@ item_desc = {
 
     characters "xixiabing" {
       name = "西夏兵"
+      aliases = ["xixia bing", "bing"]
       description = "这是名魁武的西夏兵，身披钢甲，手执长枪。"
   gender = "男性"
   shen_type = 1
@@ -1568,6 +1579,7 @@ item_desc = {
 
     characters "ye" {
       name = "叶二娘"
+      aliases = ["ye erniang", "ye"]
       description = "一个中年女子，身穿淡青色长袍，左右脸颊上各有三条血痕。"
   nickname = "无恶不作"
   gender = "女性"
@@ -1614,6 +1626,7 @@ item_desc = {
 
     characters "yipinwushi" {
       name = "一品堂武士"
+      aliases = ["wu shi", "shi"]
       description = "这是一品堂的护院武士，身披钢甲，手执弯刀。"
   gender = "男性"
   shen_type = 1
@@ -1647,6 +1660,7 @@ item_desc = {
 
     characters "yun" {
       name = "云中鹤"
+      aliases = ["yun zhonghe", "yun"]
       description = "此人长得又高又瘦象一杆大竹竿，说话声音忽尖忽粗，十分难 听，穿着一身青衫，一副色迷迷模样。"
   nickname = "穷凶极恶"
   gender = "男性"
@@ -1689,6 +1703,7 @@ item_desc = {
 
     characters "zhangfang" {
       name = "帐房先生"
+      aliases = ["zhang fang", "zhang", "fang"]
       description = "他一身邋遢，整天迷迷糊糊的睡不醒模样。"
   gender = "男性"
   age = 61
@@ -1717,6 +1732,7 @@ item_desc = {
 
     characters "kaoyangtui" {
       name = "烤羊腿"
+      aliases = ["kao yangtui", "yangtui", "leg"]
       description = "一条香喷喷的烤羊腿。"
     }
 
@@ -1725,6 +1741,7 @@ item_desc = {
 
     characters "paomo" {
       name = "羊肉泡馍"
+      aliases = ["yangrou paomo", "yangrou", "paomo"]
       description = "一碗香喷喷的羊肉泡馍。"
     }
 

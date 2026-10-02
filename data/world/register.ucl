@@ -178,6 +178,7 @@ item_desc = {
 
     characters "diyun" {
       name = "狄云"
+      aliases = ["di yun", "di", "yun"]
       description = "他英武刚正，有一股豪迈之气。"
   gender = "男性"
   age = 25
@@ -198,6 +199,7 @@ item_desc = {
 
     characters "dizangwang" {
       name = "地藏王"
+      aliases = ["dizang wang", "dizang", "wang"]
       description = "他容貌威严，不可一世，乃是掌管人间生死的神仙。"
   title = "幽冥地府生死之神"
   nickname = "幽冥之主"
@@ -225,6 +227,7 @@ item_desc = {
 
     characters "hua" {
       name = "花铁干"
+      aliases = ["hua tiegan", "hua", "tiegan"]
       description = "他一脸来上去大义凛然，却总让感觉有点什么不对。"
   gender = "男性"
   age = 41
@@ -244,6 +247,7 @@ item_desc = {
 
     characters "li" {
       name = "李自成"
+      aliases = ["li zicheng", "li", "zicheng"]
       description = "他面透煞气，暴戾异常，看得你心里毛毛的。"
   gender = "男性"
   age = 49
@@ -263,6 +267,7 @@ item_desc = {
 
     characters "lu" {
       name = "陆天抒"
+      aliases = ["lu tianshu", "lu", "tianshu"]
       description = "他一脸正气，眉宇之间乃显侠义雄风。"
   gender = "男性"
   age = 45
@@ -283,6 +288,7 @@ item_desc = {
 
     characters "shuisheng" {
       name = "水笙"
+      aliases = ["shui sheng", "shui", "sheng"]
       description = "她轻妆淡抹，眉目之中深深的透露哀思。"
   gender = "女性"
   age = 22
@@ -315,6 +321,7 @@ item_desc = {
 
     characters "wei" {
       name = "韦小宝"
+      aliases = ["wei xiaobao", "wei", "xiaobao"]
       description = "他一脸顽皮像，眼神中透露着狡黠，没有半点正经。"
   gender = "男性"
   age = 21

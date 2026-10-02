@@ -1906,6 +1906,7 @@ item_desc = {
 
     characters "cungu" {
       name = "村姑"
+      aliases = ["cun gu", "gu", "cun"]
       description = "一个很清秀的年轻农村姑娘，挎着一只盖着布小篮子。"
   gender = "女性"
   age = 20
@@ -1932,6 +1933,7 @@ item_desc = {
 
     characters "dizi" {
       name = "日月弟子"
+      aliases = ["riyue dizi", "riyue", "dizi"]
       description = "这是成德殿殿下弟子，他警惕地巡视着四周的情形。"
   title = "成德殿"
   gender = "男性"
@@ -1979,6 +1981,7 @@ item_desc = {
 
     characters "dizi2" {
       name = "日月弟子"
+      aliases = ["riyue dizi", "riyue", "dizi"]
       description = "这是驻扎黑木崖的弟子，他警惕地巡视着四周的情形。"
   title = "黑木崖"
   gender = "男性"
@@ -2025,6 +2028,7 @@ item_desc = {
 
     characters "dizi3" {
       name = "日月弟子"
+      aliases = ["riyue dizi", "riyue", "dizi"]
       description = "这是日月神教风雷堂下的弟子，他警惕地巡视着四周的情形。"
   title = "风雷堂"
   gender = "男性"
@@ -2072,6 +2076,7 @@ item_desc = {
 
     characters "dizi4" {
       name = "日月弟子"
+      aliases = ["riyue dizi", "riyue", "dizi"]
       description = "这是日月神教白虎堂下的弟子，他警惕地巡视着四周的情形。"
   title = "白虎堂"
   gender = "男性"
@@ -2118,6 +2123,7 @@ item_desc = {
 
     characters "dizi5" {
       name = "日月弟子"
+      aliases = ["riyue dizi", "riyue", "dizi"]
       description = "这是日月神教青龙堂下的弟子，他警惕地巡视着四周的情形。"
   title = "青龙堂"
   gender = "男性"
@@ -2164,6 +2170,7 @@ item_desc = {
 
     characters "dizi6" {
       name = "日月弟子"
+      aliases = ["riyue dizi", "riyue", "dizi"]
       description = "这是日月神教天香堂下的弟子，他警惕地巡视着四周的情形。"
   title = "天香堂"
   gender = "女性"
@@ -2211,6 +2218,7 @@ item_desc = {
 
     characters "dizi7" {
       name = "青旗弟子"
+      aliases = ["qingqi dizi", "qingqi", "dizi"]
       description = "这是日月神教的青旗弟子。"
   gender = "女性"
   score = 50000
@@ -2257,6 +2265,7 @@ item_desc = {
 
     characters "huang" {
       name = "黄伯流"
+      aliases = ["huang boliu", "huang", "boliu"]
       description = "这便是日月神教黄河帮帮主黄伯流，他看上去 已经甚为苍老了，但是双目精光四射，银髯飘 飘，模样威武之极。"
   title = "黄河帮帮主"
   nickname = "银髯蛟"
@@ -2315,6 +2324,7 @@ item_desc = {
 
     characters "kid" {
       name = "小孩"
+      aliases = ["kid"]
       description = "这是个农家小孩子"
   gender = "男性"
   age = 6
@@ -2340,6 +2350,7 @@ item_desc = {
 
     characters "laozhe" {
       name = "老者"
+      aliases = ["lao zhe", "oldman"]
       description = "这个老头正抽旱烟抽得上瘾呢。"
   gender = "男性"
   age = 70
@@ -2360,6 +2371,7 @@ item_desc = {
 
     characters "seller" {
       name = "小贩"
+      aliases = ["xiao fan", "xiao", "fan"]
       description = "这是个小贩，别看他长的老老实实，可你别 想从他那儿掏便宜。"
   nickname = "消息灵通"
   gender = "男性"
@@ -2395,6 +2407,7 @@ item_desc = {
 
     characters "shinu" {
       name = "侍女"
+      aliases = ["shi nu"]
       description = "美目四盼，矫揉造作，让你恨不得在她脸蛋儿掐上一把。"
   gender = "女性"
   age = 20
@@ -2419,6 +2432,7 @@ item_desc = {
 
     characters "yang" {
       name = "杨莲亭"
+      aliases = ["yang lianting", "yang"]
       description = "他身形魁梧，满脸虬髯，形貌极为雄健。"
   title = "日月神教成德堂总管"
   gender = "男性"
@@ -2448,6 +2462,7 @@ item_desc = {
 
     characters "zish" {
       name = "紫衫侍者"
+      aliases = ["shi zhe", "shi", "zhe"]
       description = ""
   title = "成德殿"
   gender = "男性"
@@ -2475,6 +2490,7 @@ item_desc = {
 
     characters "bishou" {
       name = "月牙匕"
+      aliases = ["yueya bi", "yueya", "bi", "dagger"]
       description = "一柄做工精细的玉制匕首。"
     }
 
@@ -2483,6 +2499,7 @@ item_desc = {
 
     characters "cloth" {
       name = "布衣"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -2491,6 +2508,7 @@ item_desc = {
 
     characters "dadao" {
       name = "大刀"
+      aliases = ["da dao", "dao"]
       description = "这是一柄铁打的大刀。"
     }
 
@@ -2499,6 +2517,7 @@ item_desc = {
 
     characters "dafu" {
       name = "开山斧"
+      aliases = ["kaishan fu", "kaishan", "fu"]
       description = "一柄十分锋利的大斧。"
     }
 
@@ -2507,6 +2526,7 @@ item_desc = {
 
     characters "hongchouxiaoshan" {
       name = "红绸小杉"
+      aliases = ["cloth"]
       description = ""
     }
 
@@ -2515,6 +2535,7 @@ item_desc = {
 
     characters "jinpao" {
       name = "日月锦袍"
+      aliases = ["jin pao", "jin", "pao", "cloth"]
       description = "这是一件日月神教长老所穿戴的华丽锦袍。"
     }
 
@@ -2523,6 +2544,7 @@ item_desc = {
 
     characters "leizhendang" {
       name = "雷震挡"
+      aliases = ["leizhen dang", "leizhen", "dang"]
       description = "一杆十分沉重的雷震挡。"
     }
 
@@ -2531,6 +2553,7 @@ item_desc = {
 
     characters "shenzhen" {
       name = "黑血神针"
+      aliases = ["heixue shenzhen", "heixue", "shenzhen", "zhen"]
       description = "这是一些暗灰色的细长金针，长约寸许。"
     }
 
@@ -2539,6 +2562,7 @@ item_desc = {
 
     characters "shutonggun" {
       name = "熟铜棍"
+      aliases = ["shutong gun", "shutong", "gun", "club"]
       description = "一杆十分灵便的熟铜棍。"
     }
 
@@ -2547,6 +2571,7 @@ item_desc = {
 
     characters "tongchui" {
       name = "铜锤"
+      aliases = ["tong chui", "tong", "chui", "hammer"]
       description = "这是一对由青铜铸造的大锤，显得极是沉重。"
     }
 
@@ -2555,6 +2580,7 @@ item_desc = {
 
     characters "yaoshi" {
       name = "地牢钥匙"
+      aliases = ["dilao key", "key"]
       description = "这是一把很普通的钥匙。"
     }
 
@@ -2563,6 +2589,7 @@ item_desc = {
 
     characters "zaohong" {
       name = "枣红缎面皮袍"
+      aliases = ["zaohong pao", "zaohong", "pao"]
       description = ""
     }
 
@@ -2571,6 +2598,7 @@ item_desc = {
 
     characters "zichoush" {
       name = "紫绸衫"
+      aliases = ["zichou shan", "zichou", "shan", "cloth"]
       description = ""
     }
 
@@ -2579,6 +2607,7 @@ item_desc = {
 
     items "heimu_ling" {
       name = "黑木令"
+      aliases = ["heimu ling", "heimu", "ling"]
       description = "这是一块是块枯焦的黑色木头，长约半尺，上 面雕刻有花纹文字，看来十分诡异。"
   verbs = [
     "get",
@@ -2597,6 +2626,7 @@ item_desc = {
 
     items "sherou" {
       name = "蛇肉"
+      aliases = ["she rou", "rou"]
       description = "一条烧烤得香喷喷的蛇肉。"
   verbs = [
     "get",
@@ -2617,6 +2647,7 @@ item_desc = {
 
     items "tea" {
       name = "香茶"
+      aliases = ["tea"]
       description = "一杯香茶。"
   verbs = [
     "get",
