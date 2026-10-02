@@ -5512,9 +5512,11 @@ chats = [
     combat_exp = 100
   }
 
-  # vendor_goods: "/d/city/npc/obj/jitui" (file not found)
-  # vendor_goods: "/d/city/npc/obj/jiudai" (file not found)
-  # vendor_goods: "/d/city/npc/obj/baozi" (file not found)
+  goods = [
+    { id = city.items.jitui.id },
+    { id = city.items.jiudai.id },
+    { id = city.items.baozi.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
@@ -5554,11 +5556,11 @@ chats = [
 
   goods = [
     { id = items.map.id },
-    { id = items.guide.id }
+    { id = items.guide.id },
+    { id = village.items.stick.id },
+    { id = village.items.shoes.id },
+    { id = village.items.bottle.id }
   ]
-  # vendor_goods: "/d/village/npc/obj/stick" (file not found)
-  # vendor_goods: "/d/village/npc/obj/shoes" (file not found)
-  # vendor_goods: "/d/village/npc/obj/bottle" (file not found)
 
   carry = [
     { id = items.cloth.id }

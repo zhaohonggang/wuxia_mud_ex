@@ -1219,11 +1219,11 @@ chats = [
   }
 
   goods = [
-    { id = xiyu.items.fire.id }
+    { id = xiyu.items.fire.id },
+    { id = city.items.jiudai.id },
+    { id = items.dogrou.id },
+    { id = items.hulu.id }
   ]
-  # vendor_goods: "/d/city/npc/obj/jiudai" (file not found)
-  # vendor_goods: "/d/shenfeng/npc/obj/dogrou" (file not found)
-  # vendor_goods: "/d/shenfeng/npc/obj/hulu" (file not found)
 
   carry = [
     { id = items.yan_dress.id }
@@ -1261,10 +1261,12 @@ chats = [
     str = 17
   }
 
-  # vendor_goods: "/clone/fam/etc/va2" (file not found)
-  # vendor_goods: "/clone/fam/etc/va3" (file not found)
-  # vendor_goods: "/clone/fam/etc/va5" (file not found)
-  # vendor_goods: "/clone/fam/etc/va6" (file not found)
+  goods = [
+    { id = clone_lib.items.va2.id },
+    { id = clone_lib.items.va3.id },
+    { id = clone_lib.items.va5.id },
+    { id = clone_lib.items.va6.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
@@ -1504,5 +1506,43 @@ chats = [
         weight = 500
         unit = "柄"
         material = "jade"
+      }
+    }
+
+# Source: C:/files/git/mud/d/shenfeng/npc/obj/dogrou.c
+# Zone: shenfeng
+
+    items "dogrou" {
+      name = "狗肉"
+      description = "一块香喷喷的狗肉。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 200
+        weight = 300
+        unit = "块"
+        food = 50
+      }
+    }
+
+# Source: C:/files/git/mud/d/shenfeng/npc/obj/hulu.c
+# Zone: shenfeng
+
+    items "hulu" {
+      name = "酒葫芦"
+      description = "一个用来装酒的大葫芦，外皮金黄，里面能装好几斤酒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "个"
       }
     }

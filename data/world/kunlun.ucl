@@ -1265,11 +1265,11 @@ item_desc = {
   }
 
   goods = [
-    { id = xiyu.items.fire.id }
+    { id = xiyu.items.fire.id },
+    { id = quanzhen.items.stick.id },
+    { id = quanzhen.items.bottle.id },
+    { id = quanzhen.items.egg.id }
   ]
-  # vendor_goods: "/d/quanzhen/npc/obj/stick" (file not found)
-  # vendor_goods: "/d/quanzhen/npc/obj/bottle" (file not found)
-  # vendor_goods: "/d/quanzhen/npc/obj/egg" (file not found)
 
   carry = [
     { id = items.cloth.id }

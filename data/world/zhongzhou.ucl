@@ -2260,9 +2260,9 @@ item_desc = {
 
   goods = [
     { id = jingzhou.items.armor.id },
-    { id = jingzhou.items.beixin.id }
+    { id = jingzhou.items.beixin.id },
+    { id = city.items.jinsijia.id }
   ]
-  # vendor_goods: "/d/city/npc/obj/jinsijia" (file not found)
 
   carry = [
     { id = items.cloth.id }
@@ -2462,12 +2462,12 @@ chats = [
     combat_exp = 40000
   }
 
-  # vendor_goods: "/clone/cloth/cuttonp" (file not found)
   goods = [
     { id = xiyu.items.fire.id },
-    { id = item.items.chanhs.id }
+    { id = item.items.chanhs.id },
+    { id = clone_lib.items.cuttonp.id },
+    { id = clone_lib.items.wood.id }
   ]
-  # vendor_goods: "/clone/misc/wood" (file not found)
 
   skills = [
     { skill = "unarmed" level = 50 },

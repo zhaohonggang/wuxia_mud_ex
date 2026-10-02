@@ -1352,8 +1352,10 @@ chats = [
     str = 17
   }
 
-  # vendor_goods: "/d/village/npc/obj/shoes" (file not found)
-  # vendor_goods: "/d/village/npc/obj/bottle" (file not found)
+  goods = [
+    { id = village.items.shoes.id },
+    { id = village.items.bottle.id }
+  ]
 
   carry = [
     { id = items.cloth.id }

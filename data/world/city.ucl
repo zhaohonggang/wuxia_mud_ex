@@ -3316,18 +3316,18 @@ chats = [
     str = 20
   }
 
-  # vendor_goods: "/clone/misc/jinchuang" (file not found)
-  # vendor_goods: "/clone/misc/yangjing" (file not found)
-  # vendor_goods: "/clone/misc/dust" (file not found)
-  # vendor_goods: "/clone/misc/fashao" (file not found)
-  # vendor_goods: "/clone/misc/shanghan" (file not found)
-  # vendor_goods: "/clone/misc/xiaoshu" (file not found)
-  # vendor_goods: "/clone/misc/dongshang" (file not found)
-  # vendor_goods: "/clone/misc/zhike" (file not found)
   goods = [
-    { id = shenlong.items.xionghuang.id }
+    { id = shenlong.items.xionghuang.id },
+    { id = clone_lib.items.jinchuang.id },
+    { id = clone_lib.items.yangjing.id },
+    { id = clone_lib.items.dust.id },
+    { id = clone_lib.items.fashao.id },
+    { id = clone_lib.items.shanghan.id },
+    { id = clone_lib.items.xiaoshu.id },
+    { id = clone_lib.items.dongshang.id },
+    { id = clone_lib.items.zhike.id },
+    { id = clone_lib.items.food1.id }
   ]
-  # vendor_goods: "/clone/fam/pill/food1" (file not found)
 
   carry = [
     { id = items.cloth.id }
@@ -3356,8 +3356,10 @@ chats = [
     str = 20
   }
 
-  # vendor_goods: "/d/city/obj/jinchuang" (file not found)
-  # vendor_goods: "/d/city/obj/yangjing" (file not found)
+  goods = [
+    { id = items.jinchuang.id },
+    { id = items.yangjing.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
@@ -3439,7 +3441,9 @@ chats = [
     str = 18
   }
 
-  # vendor_goods: "/clone/misc/cailiao" (file not found)
+  goods = [
+    { id = clone_lib.items.cailiao.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
@@ -3711,10 +3715,10 @@ chats = [
     { id = clone_lib.items.yuanzhi.id },
     { id = clone_lib.items.zihua.id },
     { id = clone_lib.items.zzfen.id },
-    { id = shenlong.items.hua4.id }
+    { id = shenlong.items.hua4.id },
+    { id = clone_lib.items.yanbo.id }
   ]
 
-  # vendor_goods: "/clone/misc/yanbo" (file not found)
 
   inquiries = [
     { key = "job" value = "(: ask_job :)" },
@@ -4033,20 +4037,20 @@ chats = [
     combat_exp = 400
   }
 
-  # vendor_goods: "/clone/weapon/changjian" (file not found)
-  # vendor_goods: "/clone/weapon/gangzhang" (file not found)
-  # vendor_goods: "/clone/weapon/changbian" (file not found)
-  # vendor_goods: "/clone/weapon/gangdao" (file not found)
-  # vendor_goods: "/clone/weapon/hammer" (file not found)
-  # vendor_goods: "/clone/weapon/dagger" (file not found)
-  # vendor_goods: "/clone/weapon/tiegun" (file not found)
-  # vendor_goods: "/clone/weapon/arrow" (file not found)
-  # vendor_goods: "/clone/weapon/bow" (file not found)
-  # vendor_goods: "/clone/weapon/longbow" (file not found)
-  # vendor_goods: "/clone/weapon/wolfarrow" (file not found)
-  # vendor_goods: "/clone/cloth/tiejia" (file not found)
   goods = [
-    { id = item.items.jingtie.id }
+    { id = item.items.jingtie.id },
+    { id = clone_lib.items.changjian.id },
+    { id = clone_lib.items.gangzhang.id },
+    { id = clone_lib.items.changbian.id },
+    { id = clone_lib.items.gangdao.id },
+    { id = clone_lib.items.hammer.id },
+    { id = clone_lib.items.dagger.id },
+    { id = clone_lib.items.tiegun.id },
+    { id = clone_lib.items.arrow.id },
+    { id = clone_lib.items.bow.id },
+    { id = clone_lib.items.longbow.id },
+    { id = clone_lib.items.wolfarrow.id },
+    { id = clone_lib.items.tiejia.id }
   ]
 
   inquiries = [
@@ -4431,11 +4435,11 @@ chats = [
     { id = items.jitui.id },
     { id = items.jiudai.id },
     { id = items.baozi.id },
-    { id = items.kaoya.id }
+    { id = items.kaoya.id },
+    { id = clone_lib.items.food.id },
+    { id = clone_lib.items.water.id }
   ]
 
-  # vendor_goods: "/clone/fam/pill/food" (file not found)
-  # vendor_goods: "/clone/fam/pill/water" (file not found)
 
   carry = [
     { id = items.cloth.id }
@@ -4522,14 +4526,14 @@ chats = [
     { id = items.jinsijia.id },
     { id = xiyu.items.fire.id },
     { id = taohua.items.bagua.id },
-    { id = item.items.chanhs.id }
+    { id = item.items.chanhs.id },
+    { id = clone_lib.items.cuttonp.id },
+    { id = clone_lib.items.wood.id },
+    { id = clone_lib.items.shoeshine.id },
+    { id = clone_lib.items.brush.id },
+    { id = clone_lib.items.sleepbag.id }
   ]
 
-  # vendor_goods: "/clone/cloth/cuttonp" (file not found)
-  # vendor_goods: "/clone/misc/wood" (file not found)
-  # vendor_goods: "/clone/misc/shoeshine" (file not found)
-  # vendor_goods: "/clone/misc/brush" (file not found)
-  # vendor_goods: "/clone/misc/sleepbag" (file not found)
 
   skills = [
     { skill = "unarmed" level = 50 },
@@ -4769,10 +4773,12 @@ chats = [
     combat_exp = 400000
   }
 
-  # vendor_goods: "/clone/book/lbook0" (file not found)
-  # vendor_goods: "/clone/book/lbook1" (file not found)
-  # vendor_goods: "/clone/book/lbook2" (file not found)
-  # vendor_goods: "/clone/book/lbook3" (file not found)
+  goods = [
+    { id = clone_lib.items.lbook0.id },
+    { id = clone_lib.items.lbook1.id },
+    { id = clone_lib.items.lbook2.id },
+    { id = clone_lib.items.lbook3.id }
+  ]
 
   inquiries = [
     { key = "job" value = "(: ask_job :)" },
@@ -7115,5 +7121,162 @@ direction = ~
         unit = "件"
         material = "cloth"
         armor = 3
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/flower_shoe.c
+# Zone: city
+
+    items "flower_shoe" {
+      name = "绣花小鞋"
+      description = "绣花小鞋"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 900
+        unit = "双"
+        material = "cloth"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/goldring.c
+# Zone: city
+
+    items "goldring" {
+      name = "金戒指"
+      description = "金戒指"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 400
+        unit = "个"
+        material = "gold"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/goupi.c
+# Zone: city
+
+    items "goupi" {
+      name = "狗皮"
+      description = "狗皮"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 5000
+        unit = "块"
+        material = "fur"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/jinchuang.c
+# Zone: city
+
+    items "jinchuang" {
+      name = "金创药"
+      description = "这是一包武林人士必备的金创药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        unit = "包"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/necklace.c
+# Zone: city
+
+    items "necklace" {
+      name = "金项链"
+      description = "金项链"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2500
+        weight = 500
+        unit = "串"
+        material = "gold"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/pink_cloth.c
+# Zone: city
+
+    items "pink_cloth" {
+      name = "粉红绸衫"
+      description = "这件粉红色的绸衫上面绣着几只黄鹊，闻起来还有一股淡香。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 600
+        weight = 1000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/yangjing.c
+# Zone: city
+
+    items "yangjing" {
+      name = "养精丹"
+      description = "养精丹"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        unit = "粒"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/zhubang.c
+# Zone: city
+
+    items "zhubang" {
+      name = "竹棒"
+      description = "这是一根发黄的竹棒，入手沉甸甸的，似乎相当结实。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 10
+        skill_type = "staff"
+        value = 200
+        weight = 3000
+        unit = "根"
+        material = "bamboo"
       }
     }

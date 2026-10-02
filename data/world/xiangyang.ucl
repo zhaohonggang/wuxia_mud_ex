@@ -2658,22 +2658,22 @@ direction = "east"
     combat_exp = 40000
   }
 
-  # vendor_goods: "/d/city/npc/obj/mabudai" (file not found)
-  # vendor_goods: "/d/city/npc/obj/beixin" (file not found)
-  # vendor_goods: "/d/city/npc/obj/toukui" (file not found)
-  # vendor_goods: "/d/city/npc/obj/cycle" (file not found)
-  # vendor_goods: "/d/city/npc/obj/surcoat" (file not found)
-  # vendor_goods: "/d/city/npc/obj/shield" (file not found)
-  # vendor_goods: "/d/city/npc/obj/huwan" (file not found)
-  # vendor_goods: "/d/city/npc/obj/zhitao" (file not found)
-  # vendor_goods: "/d/city/npc/obj/huyao" (file not found)
-  # vendor_goods: "/d/city/npc/obj/caoxie" (file not found)
-  # vendor_goods: "/d/city/npc/obj/pixue" (file not found)
-  # vendor_goods: "/d/city/npc/obj/shoutao" (file not found)
-  # vendor_goods: "/d/city/npc/obj/tieshou" (file not found)
-  # vendor_goods: "/d/city/npc/obj/jinsijia" (file not found)
   goods = [
-    { id = xiyu.items.fire.id }
+    { id = xiyu.items.fire.id },
+    { id = city.items.mabudai.id },
+    { id = city.items.beixin.id },
+    { id = city.items.toukui.id },
+    { id = city.items.cycle.id },
+    { id = city.items.surcoat.id },
+    { id = city.items.shield.id },
+    { id = city.items.huwan.id },
+    { id = city.items.zhitao.id },
+    { id = city.items.huyao.id },
+    { id = city.items.caoxie.id },
+    { id = city.items.pixue.id },
+    { id = city.items.shoutao.id },
+    { id = city.items.tieshou.id },
+    { id = city.items.jinsijia.id }
   ]
 
   skills = [
@@ -3228,7 +3228,9 @@ chats = [
     str = 17
   }
 
-  # vendor_goods: "/clone/book/parry_book" (file not found)
+  goods = [
+    { id = clone_lib.items.parry_book.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
@@ -3258,13 +3260,15 @@ chats = [
     combat_exp = 400
   }
 
-  # vendor_goods: "/clone/weapon/changjian" (file not found)
-  # vendor_goods: "/clone/weapon/hammer" (file not found)
-  # vendor_goods: "/clone/weapon/tudao" (file not found)
-  # vendor_goods: "/clone/weapon/dagger" (file not found)
-  # vendor_goods: "/clone/weapon/tiegun" (file not found)
-  # vendor_goods: "/clone/weapon/gangdao" (file not found)
-  # vendor_goods: "/clone/cloth/tiejia" (file not found)
+  goods = [
+    { id = clone_lib.items.changjian.id },
+    { id = clone_lib.items.hammer.id },
+    { id = clone_lib.items.tudao.id },
+    { id = clone_lib.items.dagger.id },
+    { id = clone_lib.items.tiegun.id },
+    { id = clone_lib.items.gangdao.id },
+    { id = clone_lib.items.tiejia.id }
+  ]
 
   inquiries = [
     { key = "job" value = "(: ask_me :)" },
@@ -3513,9 +3517,11 @@ chats = [
     combat_exp = 100
   }
 
-  # vendor_goods: "/clone/food/jitui" (file not found)
-  # vendor_goods: "/clone/food/jiudai" (file not found)
-  # vendor_goods: "/clone/food/baozi" (file not found)
+  goods = [
+    { id = clone_lib.items.jitui.id },
+    { id = clone_lib.items.jiudai.id },
+    { id = clone_lib.items.baozi.id }
+  ]
 
   carry = [
     { id = items.cloth.id }

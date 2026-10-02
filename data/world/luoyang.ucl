@@ -3714,7 +3714,9 @@ chats = [
     str = 50
   }
 
-  # vendor_goods: "/clone/gift/jiuzhuan" (file not found)
+  goods = [
+    { id = clone_lib.items.jiuzhuan.id }
+  ]
 
   skills = [
     { skill = "dodge" level = 400 },
@@ -3771,11 +3773,11 @@ chats = [
     str = 17
   }
 
-  # vendor_goods: "/clone/weapon/mudao" (file not found)
   goods = [
-    { id = shaolin.items.qimeigun.id }
+    { id = shaolin.items.qimeigun.id },
+    { id = clone_lib.items.mudao.id },
+    { id = clone_lib.items.zhujian.id }
   ]
-  # vendor_goods: "/clone/weapon/zhujian" (file not found)
 
   skills = [
     { skill = "dodge" level = 20 },
@@ -3902,12 +3904,12 @@ chats = [
     { id = items.taoci5.id },
     { id = items.taoci6.id },
     { id = items.taoci7.id },
-    { id = items.taoci8.id }
+    { id = items.taoci8.id },
+    { id = kaifeng.items.ciwan.id },
+    { id = kaifeng.items.luowenhai.id },
+    { id = kaifeng.items.bibohu.id }
   ]
 
-  # vendor_goods: "/d/kaifeng/npc/obj/ciwan" (file not found)
-  # vendor_goods: "/d/kaifeng/npc/obj/luowenhai" (file not found)
-  # vendor_goods: "/d/kaifeng/npc/obj/bibohu" (file not found)
 
   skills = [
     { skill = "dodge" level = 20 },
@@ -3945,10 +3947,12 @@ chats = [
     str = 17
   }
 
-  # vendor_goods: "/clone/book/book-paper" (file not found)
-  # vendor_goods: "/clone/book/lbook1" (file not found)
-  # vendor_goods: "/clone/book/lbook2" (file not found)
-  # vendor_goods: "/clone/book/lbook3" (file not found)
+  goods = [
+    { id = clone_lib.items.lbook1.id },
+    { id = clone_lib.items.lbook2.id },
+    { id = clone_lib.items.lbook3.id },
+    { id = clone_lib.items.book_paper.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
@@ -3978,20 +3982,20 @@ chats = [
     combat_exp = 400
   }
 
-  # vendor_goods: "/clone/weapon/changjian" (file not found)
-  # vendor_goods: "/clone/weapon/hammer" (file not found)
-  # vendor_goods: "/clone/weapon/tudao" (file not found)
-  # vendor_goods: "/clone/weapon/dagger" (file not found)
-  # vendor_goods: "/clone/weapon/tiegun" (file not found)
-  # vendor_goods: "/clone/weapon/gangdao" (file not found)
-  # vendor_goods: "/clone/cloth/tiejia" (file not found)
   goods = [
-    { id = item.items.jingtie.id }
+    { id = item.items.jingtie.id },
+    { id = clone_lib.items.changjian.id },
+    { id = clone_lib.items.hammer.id },
+    { id = clone_lib.items.tudao.id },
+    { id = clone_lib.items.dagger.id },
+    { id = clone_lib.items.tiegun.id },
+    { id = clone_lib.items.gangdao.id },
+    { id = clone_lib.items.tiejia.id },
+    { id = clone_lib.items.arrow.id },
+    { id = clone_lib.items.wolfarrow.id },
+    { id = clone_lib.items.bow.id },
+    { id = clone_lib.items.longbow.id }
   ]
-  # vendor_goods: "/clone/weapon/arrow" (file not found)
-  # vendor_goods: "/clone/weapon/wolfarrow" (file not found)
-  # vendor_goods: "/clone/weapon/bow" (file not found)
-  # vendor_goods: "/clone/weapon/longbow" (file not found)
 
   carry = [
     { id = items.cloth.id }
@@ -4067,22 +4071,22 @@ chats = [
     combat_exp = 40000
   }
 
-  # vendor_goods: "/d/city/npc/obj/mabudai" (file not found)
-  # vendor_goods: "/d/city/npc/obj/beixin" (file not found)
-  # vendor_goods: "/d/city/npc/obj/toukui" (file not found)
-  # vendor_goods: "/d/city/npc/obj/cycle" (file not found)
-  # vendor_goods: "/d/city/npc/obj/surcoat" (file not found)
-  # vendor_goods: "/d/city/npc/obj/shield" (file not found)
-  # vendor_goods: "/d/city/npc/obj/huwan" (file not found)
-  # vendor_goods: "/d/city/npc/obj/zhitao" (file not found)
-  # vendor_goods: "/d/city/npc/obj/huyao" (file not found)
-  # vendor_goods: "/d/city/npc/obj/caoxie" (file not found)
-  # vendor_goods: "/d/city/npc/obj/pixue" (file not found)
-  # vendor_goods: "/d/city/npc/obj/shoutao" (file not found)
-  # vendor_goods: "/d/city/npc/obj/tieshou" (file not found)
-  # vendor_goods: "/d/city/npc/obj/jinsijia" (file not found)
   goods = [
-    { id = xiyu.items.fire.id }
+    { id = xiyu.items.fire.id },
+    { id = city.items.mabudai.id },
+    { id = city.items.beixin.id },
+    { id = city.items.toukui.id },
+    { id = city.items.cycle.id },
+    { id = city.items.surcoat.id },
+    { id = city.items.shield.id },
+    { id = city.items.huwan.id },
+    { id = city.items.zhitao.id },
+    { id = city.items.huyao.id },
+    { id = city.items.caoxie.id },
+    { id = city.items.pixue.id },
+    { id = city.items.shoutao.id },
+    { id = city.items.tieshou.id },
+    { id = city.items.jinsijia.id }
   ]
 
   skills = [
@@ -4196,12 +4200,14 @@ chats = [
     str = 35
   }
 
-  # vendor_goods: "/d/changan/npc/obj/ring" (file not found)
-  # vendor_goods: "/d/changan/npc/obj/wrists" (file not found)
-  # vendor_goods: "/d/changan/npc/obj/neck" (file not found)
-  # vendor_goods: "/d/kaifeng/npc/obj/ciwan" (file not found)
-  # vendor_goods: "/d/kaifeng/npc/obj/luowenhai" (file not found)
-  # vendor_goods: "/d/kaifeng/npc/obj/bibohu" (file not found)
+  goods = [
+    { id = changan.items.ring.id },
+    { id = changan.items.wrists.id },
+    { id = changan.items.neck.id },
+    { id = kaifeng.items.ciwan.id },
+    { id = kaifeng.items.luowenhai.id },
+    { id = kaifeng.items.bibohu.id }
+  ]
 
   skills = [
     { skill = "unarmed" level = 60 },
@@ -4236,19 +4242,21 @@ chats = [
     combat_exp = 400000
   }
 
-  # vendor_goods: "/d/city/npc/obj/toukui" (file not found)
-  # vendor_goods: "/d/city/npc/obj/cycle" (file not found)
-  # vendor_goods: "/d/city/npc/obj/shield" (file not found)
-  # vendor_goods: "/d/city/npc/obj/huwan" (file not found)
-  # vendor_goods: "/d/city/npc/obj/zhitao" (file not found)
-  # vendor_goods: "/d/city/npc/obj/huyao" (file not found)
-  # vendor_goods: "/d/city/npc/obj/tieshou" (file not found)
-  # vendor_goods: "/d/city/npc/obj/jinsijia" (file not found)
-  # vendor_goods: "/d/luoyang/npc/obj/armor1" (file not found)
-  # vendor_goods: "/d/luoyang/npc/obj/head1" (file not found)
-  # vendor_goods: "/d/luoyang/npc/obj/wanlun1" (file not found)
-  # vendor_goods: "/d/luoyang/npc/obj/hand" (file not found)
-  # vendor_goods: "/d/luoyang/npc/obj/finger" (file not found)
+  goods = [
+    { id = city.items.toukui.id },
+    { id = city.items.cycle.id },
+    { id = city.items.shield.id },
+    { id = city.items.huwan.id },
+    { id = city.items.zhitao.id },
+    { id = city.items.huyao.id },
+    { id = city.items.tieshou.id },
+    { id = city.items.jinsijia.id },
+    { id = items.armor1.id },
+    { id = items.head1.id },
+    { id = items.wanlun1.id },
+    { id = items.hand.id },
+    { id = items.finger.id }
+  ]
 
   skills = [
     { skill = "dodge" level = 80 },
@@ -4289,23 +4297,25 @@ chats = [
     combat_exp = 400000
   }
 
-  # vendor_goods: "/clone/weapon/changjian" (file not found)
-  # vendor_goods: "/clone/weapon/hammer" (file not found)
-  # vendor_goods: "/clone/weapon/tudao" (file not found)
-  # vendor_goods: "/clone/weapon/dagger" (file not found)
-  # vendor_goods: "/clone/weapon/tiegun" (file not found)
-  # vendor_goods: "/clone/weapon/gangdao" (file not found)
-  # vendor_goods: "/clone/weapon/arrow" (file not found)
-  # vendor_goods: "/clone/weapon/wolfarrow" (file not found)
-  # vendor_goods: "/clone/weapon/bow" (file not found)
-  # vendor_goods: "/clone/weapon/longbow" (file not found)
-  # vendor_goods: "/d/luoyang/npc/obj/sword1" (file not found)
-  # vendor_goods: "/d/luoyang/npc/obj/blade1" (file not found)
-  # vendor_goods: "/d/luoyang/npc/obj/club1" (file not found)
-  # vendor_goods: "/d/luoyang/npc/obj/whip1" (file not found)
-  # vendor_goods: "/d/luoyang/npc/obj/staff1" (file not found)
-  # vendor_goods: "/d/luoyang/npc/obj/hammer1" (file not found)
-  # vendor_goods: "/d/luoyang/npc/obj/dagger1" (file not found)
+  goods = [
+    { id = clone_lib.items.changjian.id },
+    { id = clone_lib.items.hammer.id },
+    { id = clone_lib.items.tudao.id },
+    { id = clone_lib.items.dagger.id },
+    { id = clone_lib.items.tiegun.id },
+    { id = clone_lib.items.gangdao.id },
+    { id = clone_lib.items.arrow.id },
+    { id = clone_lib.items.wolfarrow.id },
+    { id = clone_lib.items.bow.id },
+    { id = clone_lib.items.longbow.id },
+    { id = items.sword1.id },
+    { id = items.blade1.id },
+    { id = items.club1.id },
+    { id = items.whip1.id },
+    { id = items.staff1.id },
+    { id = items.hammer1.id },
+    { id = items.dagger1.id }
+  ]
 
   skills = [
     { skill = "dodge" level = 80 },
@@ -4784,5 +4794,266 @@ chats = [
         value = 1500
         weight = 5000
         unit = "只"
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/armor1.c
+# Zone: luoyang
+
+    items "armor1" {
+      name = "金环锁子甲"
+      description = "金环锁子甲"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300000
+        weight = 20000
+        unit = "件"
+        material = "leather"
+        armor = 200
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/blade1.c
+# Zone: luoyang
+
+    items "blade1" {
+      name = "赤金刀"
+      description = "赤金刀"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 80
+        skill_type = "blade"
+        value = 200000
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/club1.c
+# Zone: luoyang
+
+    items "club1" {
+      name = "赤金棍"
+      description = "赤金棍"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 80
+        skill_type = "club"
+        value = 200000
+        weight = 5000
+        unit = "根"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/dagger1.c
+# Zone: luoyang
+
+    items "dagger1" {
+      name = "赤金匕首"
+      description = "赤金匕首"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 60
+        skill_type = "dagger"
+        value = 150000
+        weight = 3000
+        unit = "柄"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/finger.c
+# Zone: luoyang
+
+    items "finger" {
+      name = "黄金指套"
+      description = "这是五个环环相链的黄金指套，可以加强指法、手法和爪法的伤害力。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200000
+        weight = 2000
+        unit = "副"
+        material = "steel"
+        armor = 10
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/hammer1.c
+# Zone: luoyang
+
+    items "hammer1" {
+      name = "赤金锤"
+      description = "赤金锤"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 80
+        skill_type = "hammer"
+        value = 200000
+        weight = 5000
+        unit = "把"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/hand.c
+# Zone: luoyang
+
+    items "hand" {
+      name = "黄金手掌"
+      description = "这是一块黄金制成的掌套，可以加强拳法、掌法和拳脚的伤害力。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200000
+        weight = 2000
+        unit = "块"
+        material = "steel"
+        armor = 10
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/head1.c
+# Zone: luoyang
+
+    items "head1" {
+      name = "琉金盔"
+      description = "琉金盔"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 250000
+        weight = 20000
+        unit = "个"
+        material = "leather"
+        armor = 80
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/staff1.c
+# Zone: luoyang
+
+    items "staff1" {
+      name = "赤金杖"
+      description = "赤金杖"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 80
+        skill_type = "staff"
+        value = 200000
+        weight = 5000
+        unit = "根"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/sword1.c
+# Zone: luoyang
+
+    items "sword1" {
+      name = "赤金剑"
+      description = "赤金剑"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 80
+        skill_type = "sword"
+        value = 200000
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/wanlun1.c
+# Zone: luoyang
+
+    items "wanlun1" {
+      name = "绞金腕轮"
+      description = "绞金腕轮"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 220000
+        weight = 20000
+        unit = "对"
+        material = "leather"
+        armor = 60
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/whip1.c
+# Zone: luoyang
+
+    items "whip1" {
+      name = "赤金鞭"
+      description = "赤金鞭"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 80
+        skill_type = "whip"
+        value = 200000
+        weight = 5000
+        unit = "柄"
+        material = "steel"
       }
     }

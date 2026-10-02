@@ -3182,7 +3182,9 @@ chats = [
     combat_exp = 5000
   }
 
-  # vendor_goods: "/d/guanwai/npc/obj/piqiu" (file not found)
+  goods = [
+    { id = guanwai.items.piqiu.id }
+  ]
 
   carry = [
     { id = items.piqiu.id }
@@ -3540,7 +3542,9 @@ chats = [
     combat_exp = 5000
   }
 
-  # vendor_goods: "/d/guanwai/npc/obj/piqiu" (file not found)
+  goods = [
+    { id = guanwai.items.piqiu.id }
+  ]
 
   carry = [
     { id = items.piqiu.id }

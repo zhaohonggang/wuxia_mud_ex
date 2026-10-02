@@ -825,13 +825,13 @@ item_desc = {
     str = 20
   }
 
-  # vendor_goods: "/d/quanzhou/obj/xiuhua" (file not found)
   goods = [
     { id = items.flower_shoe.id },
-    { id = items.pink_cloth.id }
+    { id = items.pink_cloth.id },
+    { id = items.xiuhua.id },
+    { id = city.items.goldring.id },
+    { id = city.items.necklace.id }
   ]
-  # vendor_goods: "/d/city/obj/goldring" (file not found)
-  # vendor_goods: "/d/city/obj/necklace" (file not found)
 
   inquiries = [
     { key = "here" value = "泉州是个港口，会行船的人很多。" },
@@ -1042,12 +1042,12 @@ item_desc = {
 
   goods = [
     { id = items.yadan.id },
-    { id = items.zongzi.id }
+    { id = items.zongzi.id },
+    { id = city.items.jitui.id },
+    { id = city.items.jiudai.id },
+    { id = city.items.baozi.id }
   ]
 
-  # vendor_goods: "/d/city/obj/jitui" (file not found)
-  # vendor_goods: "/d/city/obj/jiudai" (file not found)
-  # vendor_goods: "/d/city/obj/baozi" (file not found)
 
   carry = [
     { id = items.cloth.id }
@@ -1211,5 +1211,28 @@ item_desc = {
         weight = 100
         unit = "个"
         food = 50
+      }
+    }
+
+# Source: C:/files/git/mud/d/quanzhou/npc/obj/xiuhua.c
+# Zone: quanzhou
+
+    items "xiuhua" {
+      name = "绣花针"
+      description = "这是一根精钢细磨的绣花针，是绣花用的绝佳工具。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 10
+        skill_type = "sword"
+        value = 100
+        weight = 5
+        unit = "根"
+        material = "steel"
       }
     }

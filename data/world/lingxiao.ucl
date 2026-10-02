@@ -1899,16 +1899,16 @@ chats = [
     str = 20
   }
 
-  # vendor_goods: "/clone/misc/jinchuang" (file not found)
-  # vendor_goods: "/clone/misc/yangjing" (file not found)
-  # vendor_goods: "/clone/misc/dust" (file not found)
-  # vendor_goods: "/clone/misc/fashao" (file not found)
-  # vendor_goods: "/clone/misc/shanghan" (file not found)
-  # vendor_goods: "/clone/misc/xiaoshu" (file not found)
-  # vendor_goods: "/clone/misc/dongshang" (file not found)
-  # vendor_goods: "/clone/misc/zhike" (file not found)
   goods = [
-    { id = shenlong.items.xionghuang.id }
+    { id = shenlong.items.xionghuang.id },
+    { id = clone_lib.items.jinchuang.id },
+    { id = clone_lib.items.yangjing.id },
+    { id = clone_lib.items.dust.id },
+    { id = clone_lib.items.fashao.id },
+    { id = clone_lib.items.shanghan.id },
+    { id = clone_lib.items.xiaoshu.id },
+    { id = clone_lib.items.dongshang.id },
+    { id = clone_lib.items.zhike.id }
   ]
 
   carry = [

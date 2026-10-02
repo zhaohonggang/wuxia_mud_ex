@@ -5,354 +5,52 @@ zones "clone_lib" {
   name = "标准库"
 }
 
-# Source: C:/files/git/mud/clone/herb/chaihu.c
+# Source: C:/files/git/mud/clone/weapon/arrow.c
 # Zone: clone_lib
 
-    items "chaihu" {
-      name = "柴胡"
-      description = "柴胡是常见的中药药材。"
+    items "arrow" {
+      name = "羽箭"
+      description = "一根细长的箭，箭翎修长，簇失锋利。"
   verbs = [
     "get",
     "drop"
   ]
 
       meta = {
-        value = 4000
-        weight = 60
-        unit = "块"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/chenpi.c
-# Zone: clone_lib
-
-    items "chenpi" {
-      name = "陈皮"
-      description = "陈皮是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 10
-        weight = 20
-        unit = "块"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/chongcao.c
-# Zone: clone_lib
-
-    items "chongcao" {
-      name = "东虫夏草"
-      description = "东为虫，夏为草。乃是极为名贵的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 10000
-        weight = 85
-        unit = "根"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/chuanwu.c
-# Zone: clone_lib
-
-    items "chuanwu" {
-      name = "川乌"
-      description = "川乌是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
+        damage = 200
+        skill_type = "throwing"
         value = 200
-        weight = 50
-        unit = "根"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/dahuang.c
-# Zone: clone_lib
-
-    items "dahuang" {
-      name = "大黄"
-      description = "大黄是颇为名贵的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 7000
         weight = 100
-        unit = "块"
+        unit = "把"
       }
     }
 
-# Source: C:/files/git/mud/clone/herb/dangui.c
+# Source: C:/files/git/mud/clone/food/baozi.c
 # Zone: clone_lib
 
-    items "dangui" {
-      name = "当归"
-      description = "当归是常见的中药药材。"
+    items "baozi" {
+      name = "包子"
+      description = "一个香喷喷的肉包子。"
   verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
-        value = 1000
-        weight = 70
-        unit = "块"
+        value = 15
+        weight = 80
+        unit = "个"
+        food = 20
       }
     }
 
-# Source: C:/files/git/mud/clone/herb/duhuo.c
+# Source: C:/files/git/mud/clone/misc/bicanfeng.c
 # Zone: clone_lib
 
-    items "duhuo" {
-      name = "独活"
-      description = "独活是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 4000
-        weight = 50
-        unit = "根"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/fangfeng.c
-# Zone: clone_lib
-
-    items "fangfeng" {
-      name = "防风"
-      description = "防风是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 5000
-        weight = 40
-        unit = "片"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/fuzi.c
-# Zone: clone_lib
-
-    items "fuzi" {
-      name = "附子"
-      description = "附子是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 1000
-        weight = 20
-        unit = "粒"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/gsliu.c
-# Zone: clone_lib
-
-    items "gsliu" {
-      name = "干石榴"
-      description = "干石榴是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 200
-        weight = 75
-        unit = "片"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/guiwei.c
-# Zone: clone_lib
-
-    items "guiwei" {
-      name = "归尾"
-      description = "归尾是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 3000
-        weight = 50
-        unit = "块"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/hafen.c
-# Zone: clone_lib
-
-    items "hafen" {
-      name = "蛤粉"
-      description = "蛤粉是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 5000
-        weight = 50
-        unit = "包"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/heshouwu.c
-# Zone: clone_lib
-
-    items "heshouwu" {
-      name = "何首乌"
-      description = "何首乌是颇为名贵的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 10000
-        weight = 85
-        unit = "根"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/honghua.c
-# Zone: clone_lib
-
-    items "honghua" {
-      name = "红花"
-      description = "红花是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 80
-        weight = 20
-        unit = "朵"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/huangqi.c
-# Zone: clone_lib
-
-    items "huangqi" {
-      name = "黄芪"
-      description = "黄芪是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 5000
-        weight = 35
-        unit = "根"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/hugu.c
-# Zone: clone_lib
-
-    items "hugu" {
-      name = "虎骨"
-      description = "成年虎的骨头，药性强烈，是非常名贵的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 12000
-        weight = 100
-        unit = "根"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/juhua.c
-# Zone: clone_lib
-
-    items "juhua" {
-      name = "菊花"
-      description = "菊花是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 60
-        weight = 20
-        unit = "朵"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/lanhua.c
-# Zone: clone_lib
-
-    items "lanhua" {
-      name = "兰花"
-      description = "兰花是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 500
-        weight = 20
-        unit = "朵"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/lingxian.c
-# Zone: clone_lib
-
-    items "lingxian" {
-      name = "灵仙"
-      description = "灵仙是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 5000
-        weight = 40
-        unit = "块"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/lingzhi.c
-# Zone: clone_lib
-
-    items "lingzhi" {
-      name = "灵芝"
-      description = "灵芝是颇为名贵的中药药材。"
+    items "bicanfeng" {
+      name = "碧蚕粉"
+      description = "一袋剧毒的毒药，如果用来炼暗器有见血封喉之效。"
   verbs = [
     "get",
     "drop"
@@ -360,179 +58,60 @@ zones "clone_lib" {
 
       meta = {
         value = 20000
-        weight = 70
-        unit = "块"
+        unit = "袋"
       }
     }
 
-# Source: C:/files/git/mud/clone/herb/lurong.c
+# Source: C:/files/git/mud/clone/book/book-paper.c
 # Zone: clone_lib
 
-    items "lurong" {
-      name = "鹿茸"
-      description = "雄鹿的茸角，可以入药，非常的名贵。"
+    items "book_paper" {
+      name = "易筋经文学篇"
+      description = "这是一本薄薄的小册，上面密密麻麻的写满了蝇头小楷，八股文章。"
   verbs = [
     "get",
     "drop"
   ]
 
       meta = {
-        value = 8000
-        weight = 150
-        unit = "根"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/mahuang.c
-# Zone: clone_lib
-
-    items "mahuang" {
-      name = "麻黄"
-      description = "麻黄是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 1000
+        value = 500
         weight = 50
-        unit = "包"
+        unit = "本"
+        material = "silk"
+        book = {
+          skill = "literate"
+          min_skill = 100
+          max_skill = 119
+          jing_cost = 20
+          difficulty = 20
+        }
       }
     }
 
-# Source: C:/files/git/mud/clone/herb/moyao.c
+# Source: C:/files/git/mud/clone/weapon/bow.c
 # Zone: clone_lib
 
-    items "moyao" {
-      name = "没药"
-      description = "没药是常见的中药药材。"
+    items "bow" {
+      name = "短弓"
+      description = "一张短弓，打造得颇为精致，具有不错的准确度。"
   verbs = [
     "get",
     "drop"
   ]
 
       meta = {
-        value = 300
-        weight = 50
-        unit = "根"
+        value = 20000
+        weight = 2000
+        unit = "张"
       }
     }
 
-# Source: C:/files/git/mud/clone/herb/niuhuang.c
+# Source: C:/files/git/mud/clone/misc/brush.c
 # Zone: clone_lib
 
-    items "niuhuang" {
-      name = "牛黄"
-      description = "牛黄是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 1000
-        weight = 60
-        unit = "颗"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/niuxi.c
-# Zone: clone_lib
-
-    items "niuxi" {
-      name = "牛膝"
-      description = "牛膝是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 2000
-        weight = 50
-        unit = "块"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/qianjinzi.c
-# Zone: clone_lib
-
-    items "qianjinzi" {
-      name = "千金子"
-      description = "千金子是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 3000
-        weight = 20
-        unit = "颗"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/renshen.c
-# Zone: clone_lib
-
-    items "renshen" {
-      name = "人参"
-      description = "人参是颇为名贵的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 10000
-        weight = 90
-        unit = "根"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/ruxiang.c
-# Zone: clone_lib
-
-    items "ruxiang" {
-      name = "乳香"
-      description = "乳香是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 5000
-        weight = 50
-        unit = "块"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/shadan.c
-# Zone: clone_lib
-
-    items "shadan" {
-      name = "鲨胆"
-      description = "海中鲨鱼的胆脏，是非常名贵的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 10000
-        weight = 35
-        unit = "块"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/shancha.c
-# Zone: clone_lib
-
-    items "shancha" {
-      name = "山茶"
-      description = "山茶是常见的中药药材。"
+    items "brush" {
+      name = "刷子"
+      description = "一把刷子，是专门用来刷鞋用的。"
   verbs = [
     "get",
     "drop"
@@ -540,197 +119,17 @@ zones "clone_lib" {
 
       meta = {
         value = 200
-        weight = 20
-        unit = "朵"
+        weight = 500
+        unit = "把"
       }
     }
 
-# Source: C:/files/git/mud/clone/herb/shanjia.c
+# Source: C:/files/git/mud/clone/misc/bushoujia.c
 # Zone: clone_lib
 
-    items "shanjia" {
-      name = "山甲"
-      description = "山甲是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 2000
-        weight = 60
-        unit = "片"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/shengdi.c
-# Zone: clone_lib
-
-    items "shengdi" {
-      name = "生地"
-      description = "生地是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 500
-        weight = 60
-        unit = "块"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/shenglg.c
-# Zone: clone_lib
-
-    items "shenglg" {
-      name = "生龙骨"
-      description = "海马的骨络，乃是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 4000
-        weight = 120
-        unit = "根"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/sumu.c
-# Zone: clone_lib
-
-    items "sumu" {
-      name = "苏木"
-      description = "苏木是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 5000
-        weight = 60
-        unit = "根"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/taoxian.c
-# Zone: clone_lib
-
-    items "taoxian" {
-      name = "桃仙"
-      description = "桃仙是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 5000
-        weight = 40
-        unit = "块"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/tenghuang.c
-# Zone: clone_lib
-
-    items "tenghuang" {
-      name = "藤黄"
-      description = "藤黄是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 5000
-        weight = 50
-        unit = "包"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/tianqi.c
-# Zone: clone_lib
-
-    items "tianqi" {
-      name = "田七"
-      description = "田七是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 400
-        weight = 55
-        unit = "根"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/tugou.c
-# Zone: clone_lib
-
-    items "tugou" {
-      name = "土狗"
-      description = "土狗是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 8000
-        weight = 80
-        unit = "块"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/wulingzhi.c
-# Zone: clone_lib
-
-    items "wulingzhi" {
-      name = "五灵脂"
-      description = "五灵脂是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 5000
-        weight = 100
-        unit = "块"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/xiefen.c
-# Zone: clone_lib
-
-    items "xiefen" {
-      name = "蝎粉"
-      description = "蝎粉是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 500
-        weight = 35
-        unit = "包"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/xijiao.c
-# Zone: clone_lib
-
-    items "xijiao" {
-      name = "犀角"
-      description = "犀牛的角，药性强烈，是名贵的中药药材。"
+    items "bushoujia" {
+      name = "捕兽夹"
+      description = "夹齿锋利的捕兽夹，你可通过它布置(snare)陷阱来捕猎。"
   verbs = [
     "get",
     "drop"
@@ -738,143 +137,17 @@ zones "clone_lib" {
 
       meta = {
         value = 10000
-        weight = 35
-        unit = "根"
+        weight = 3000
+        unit = "只"
       }
     }
 
-# Source: C:/files/git/mud/clone/herb/xiongdan.c
+# Source: C:/files/git/mud/clone/misc/cailiao.c
 # Zone: clone_lib
 
-    items "xiongdan" {
-      name = "熊胆"
-      description = "这是一副新鲜的熊胆，颇具药力。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 15000
-        weight = 200
-        unit = "副"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/xionghuang.c
-# Zone: clone_lib
-
-    items "xionghuang" {
-      name = "雄黄"
-      description = "药性极强的中药药材，带在身上可以防止蛇虫及身。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 500
-        weight = 30
-        unit = "块"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/xuejie.c
-# Zone: clone_lib
-
-    items "xuejie" {
-      name = "血竭"
-      description = "血竭是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 200
-        weight = 40
-        unit = "块"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/xuelian.c
-# Zone: clone_lib
-
-    items "xuelian" {
-      name = "雪莲"
-      description = "雪莲是颇为名贵的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 30000
-        weight = 40
-        unit = "朵"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/yanwo.c
-# Zone: clone_lib
-
-    items "yanwo" {
-      name = "燕窝"
-      description = "雪燕在峭壁所制的窝巢，乃是极为名贵的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 50000
-        weight = 35
-        unit = "块"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/yjhua.c
-# Zone: clone_lib
-
-    items "yjhua" {
-      name = "洋金花"
-      description = "洋金花是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 400
-        weight = 20
-        unit = "朵"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/yuanzhi.c
-# Zone: clone_lib
-
-    items "yuanzhi" {
-      name = "远志"
-      description = "远志是常见的中药药材。"
-  verbs = [
-    "get",
-    "drop"
-  ]
-
-      meta = {
-        value = 3000
-        weight = 75
-        unit = "根"
-      }
-    }
-
-# Source: C:/files/git/mud/clone/herb/zihua.c
-# Zone: clone_lib
-
-    items "zihua" {
-      name = "紫花"
-      description = "紫花是常见的中药药材。"
+    items "cailiao" {
+      name = "菜料"
+      description = "做菜的原料，青菜萝卜、鸡鸭鱼肉。"
   verbs = [
     "get",
     "drop"
@@ -882,17 +155,593 @@ zones "clone_lib" {
 
       meta = {
         value = 50
-        weight = 20
-        unit = "朵"
+        weight = 80
+        unit = "份"
       }
     }
 
-# Source: C:/files/git/mud/clone/herb/zzfen.c
+# Source: C:/files/git/mud/clone/weapon/changbian.c
 # Zone: clone_lib
 
-    items "zzfen" {
-      name = "珍珠粉"
-      description = "珍珠磨成的粉末，药性温和，亦有养颜之功。"
+    items "changbian" {
+      name = "长鞭"
+      description = "这是一根普通的长鞭，由水牛皮精工编织而成。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 25
+        skill_type = "whip"
+        value = 100
+        weight = 500
+        unit = "根"
+        material = "leather"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/weapon/changjian.c
+# Zone: clone_lib
+
+    items "changjian" {
+      name = "长剑"
+      description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 25
+        skill_type = "sword"
+        value = 200
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/weapon/changqiang.c
+# Zone: clone_lib
+
+    items "changqiang" {
+      name = "长枪"
+      description = "这是一根白缨长钢枪，长可丈二，枪头隐隐透出寒光。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 25
+        skill_type = "club"
+        value = 500
+        weight = 5000
+        unit = "杆"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/cloth/cuttonp.c
+# Zone: clone_lib
+
+    items "cuttonp" {
+      name = "棉衣"
+      description = "棉衣"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 8000
+        unit = "件"
+        material = "cloth"
+        armor = 5
+      }
+    }
+
+# Source: C:/files/git/mud/clone/weapon/dagger.c
+# Zone: clone_lib
+
+    items "dagger" {
+      name = "普通匕首"
+      description = "这是一把普通的小匕首。用来暗算别人比较合适。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        value = 200
+        weight = 6000
+        unit = "把"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/diaogan.c
+# Zone: clone_lib
+
+    items "diaogan" {
+      name = "钓竿"
+      description = "这是一根钓鱼者常用的钓竿，常用它来钓鱼(fish)。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        unit = "根"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/dongshang.c
+# Zone: clone_lib
+
+    items "dongshang" {
+      name = "祛疮粉"
+      description = "这是一治疗冻疮的药粉，涂抹(mo)在患处立刻见效。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        unit = "包"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/dust.c
+# Zone: clone_lib
+
+    items "dust" {
+      name = "化尸粉"
+      description = "这是一包用毁尸灭迹的化尸粉，只要一丁点就可以化去(dissolve)一具尸体。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50000
+        unit = "颗"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face1.c
+# Zone: clone_lib
+
+    items "face1" {
+      name = "龍爪图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face10.c
+# Zone: clone_lib
+
+    items "face10" {
+      name = "蝎子图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face11.c
+# Zone: clone_lib
+
+    items "face11" {
+      name = "蝴蝶图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face12.c
+# Zone: clone_lib
+
+    items "face12" {
+      name = "太极图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face13.c
+# Zone: clone_lib
+
+    items "face13" {
+      name = "蜈蚣图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face14.c
+# Zone: clone_lib
+
+    items "face14" {
+      name = "龙牙图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face15.c
+# Zone: clone_lib
+
+    items "face15" {
+      name = "残月图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face16.c
+# Zone: clone_lib
+
+    items "face16" {
+      name = "眼泪图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face17.c
+# Zone: clone_lib
+
+    items "face17" {
+      name = "青蛇图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face18.c
+# Zone: clone_lib
+
+    items "face18" {
+      name = "羽箭图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face19.c
+# Zone: clone_lib
+
+    items "face19" {
+      name = "凤羽图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face2.c
+# Zone: clone_lib
+
+    items "face2" {
+      name = "虎爪图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face20.c
+# Zone: clone_lib
+
+    items "face20" {
+      name = "燕子图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face3.c
+# Zone: clone_lib
+
+    items "face3" {
+      name = "刀锋图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face4.c
+# Zone: clone_lib
+
+    items "face4" {
+      name = "火焰图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face5.c
+# Zone: clone_lib
+
+    items "face5" {
+      name = "骷髅图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face6.c
+# Zone: clone_lib
+
+    items "face6" {
+      name = "玫瑰图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face7.c
+# Zone: clone_lib
+
+    items "face7" {
+      name = "彩霞图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face8.c
+# Zone: clone_lib
+
+    items "face8" {
+      name = "闪电图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/tattoo/face9.c
+# Zone: clone_lib
+
+    items "face9" {
+      name = "慧眼图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/fashao.c
+# Zone: clone_lib
+
+    items "fashao" {
+      name = "退烧灵"
+      description = "这是一包治发烧的药，疗效显著。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        unit = "包"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/pill/food.c
+# Zone: clone_lib
+
+    items "food" {
+      name = "干粮"
+      description = "这是一块便于携带的干粮。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 10
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/pill/food1.c
+# Zone: clone_lib
+
+    items "food1" {
+      name = "养生丹"
+      description = "以名贵药材精炼而成，乃是高丽国的贡物。"
   verbs = [
     "get",
     "drop"
@@ -900,7 +749,822 @@ zones "clone_lib" {
 
       meta = {
         value = 10000
-        weight = 30
+        weight = 55
+        unit = "粒"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/weapon/gangdao.c
+# Zone: clone_lib
+
+    items "gangdao" {
+      name = "钢刀"
+      description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 25
+        skill_type = "blade"
+        value = 300
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/weapon/gangjian.c
+# Zone: clone_lib
+
+    items "gangjian" {
+      name = "钢剑"
+      description = "这是一柄精工制成的钢剑，这种剑在将领之间非常流行。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 25
+        skill_type = "sword"
+        value = 400
+        weight = 6000
+        unit = "柄"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/weapon/gangzhang.c
+# Zone: clone_lib
+
+    items "gangzhang" {
+      name = "钢杖"
+      description = "这是一根粗重的钢杖。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 30
+        skill_type = "staff"
+        value = 200
+        weight = 5000
+        unit = "根"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/gaoyao.c
+# Zone: clone_lib
+
+    items "gaoyao" {
+      name = "狗皮膏药"
+      description = "这是一帖武林人士常贴(tie)的狗皮膏药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        unit = "帖"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/weapon/hammer.c
+# Zone: clone_lib
+
+    items "hammer" {
+      name = "铁锤"
+      description = "这是一把沈重的铁锤，打造的相当坚实。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 25
+        skill_type = "hammer"
+        value = 300
+        weight = 20000
+        unit = "把"
+        material = "iron"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/jinchuang.c
+# Zone: clone_lib
+
+    items "jinchuang" {
+      name = "金创药"
+      description = "这是一包武林人士必备的金创药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
         unit = "包"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/food/jitui.c
+# Zone: clone_lib
+
+    items "jitui" {
+      name = "烤鸡腿"
+      description = "一枝烤得香喷喷的鸡腿。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 1
+        skill_type = "hammer"
+        value = 30
+        weight = 350
+        unit = "根"
+        material = "bone"
+        food = 40
+      }
+    }
+
+# Source: C:/files/git/mud/clone/food/jiudai.c
+# Zone: clone_lib
+
+    items "jiudai" {
+      name = "牛皮酒袋"
+      description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 20
+        weight = 700
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/gift/jiuzhuan.c
+# Zone: clone_lib
+
+    items "jiuzhuan" {
+      name = "九转金丹"
+      description = "一粒金色的仙丹，传说是太上老君精心炼制的灵丹妙药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50000000
+        weight = 200
+        unit = "粒"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/book/lbook0.c
+# Zone: clone_lib
+
+    items "lbook0" {
+      name = "「唐诗选辑」"
+      description = "一本在民间流传甚广的诗选。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 500
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "literate"
+          min_skill = 0
+          max_skill = 9
+          jing_cost = 5
+          difficulty = 10
+        }
+      }
+    }
+
+# Source: C:/files/git/mud/clone/book/lbook1.c
+# Zone: clone_lib
+
+    items "lbook1" {
+      name = "「三字经」"
+      description = "读书人必读的三字经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 500
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "literate"
+          min_skill = 10
+          max_skill = 29
+          jing_cost = 15
+          difficulty = 25
+        }
+      }
+    }
+
+# Source: C:/files/git/mud/clone/book/lbook2.c
+# Zone: clone_lib
+
+    items "lbook2" {
+      name = "「百家姓」"
+      description = "读书人必读的百家姓。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        weight = 500
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "literate"
+          min_skill = 30
+          max_skill = 49
+          jing_cost = 25
+          difficulty = 20
+        }
+      }
+    }
+
+# Source: C:/files/git/mud/clone/book/lbook3.c
+# Zone: clone_lib
+
+    items "lbook3" {
+      name = "「千字文」"
+      description = "读书人必读的千字文。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 20000
+        weight = 500
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "literate"
+          min_skill = 50
+          max_skill = 99
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
+    }
+
+# Source: C:/files/git/mud/clone/weapon/longbow.c
+# Zone: clone_lib
+
+    items "longbow" {
+      name = "长弓"
+      description = "一张长弓，打造得颇为精致，具有相当好的准确度。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 40000
+        weight = 2000
+        unit = "张"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/weapon/mudao.c
+# Zone: clone_lib
+
+    items "mudao" {
+      name = "木刀"
+      description = "这是一柄木制的短刀，胡家弟子用此刀练习刀法。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 3
+        skill_type = "blade"
+        value = 10
+        weight = 2000
+        unit = "把"
+        material = "wood"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/book/parry_book.c
+# Zone: clone_lib
+
+    items "parry_book" {
+      name = "招架入门"
+      description = "这是一本走江湖武师写的关于趋避招架的书籍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "parry"
+          min_skill = 0
+          max_skill = 19
+          exp_required = 1
+          jing_cost = 10
+          difficulty = 10
+        }
+      }
+    }
+
+# Source: C:/files/git/mud/clone/weapon/qimeigun.c
+# Zone: clone_lib
+
+    items "qimeigun" {
+      name = "齐眉棍"
+      description = "这是一根桦木白腊棍，举可齐眉，轻重合宜，可攻击大片敌人。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 15
+        skill_type = "club"
+        value = 200
+        weight = 3000
+        unit = "根"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/shanghan.c
+# Zone: clone_lib
+
+    items "shanghan" {
+      name = "伤寒愁"
+      description = "这是一包专治伤寒的药，灵验无比。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        unit = "包"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/shexiang.c
+# Zone: clone_lib
+
+    items "shexiang" {
+      name = "麝香"
+      description = "散发着浓厚香味的麝香，可以入药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        weight = 50
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/shier.c
+# Zone: clone_lib
+
+    items "shier" {
+      name = "食饵"
+      description = "这是猎人常用的诱饵。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10
+        weight = 50
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/shoeshine.c
+# Zone: clone_lib
+
+    items "shoeshine" {
+      name = "鞋油"
+      description = "鞋油"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 90
+        weight = 200
+        unit = "支"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/sleepbag.c
+# Zone: clone_lib
+
+    items "sleepbag" {
+      name = "睡袋"
+      description = "一个睡袋，江湖人士用来在野外睡觉用的。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 7000
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/weapon/tiegun.c
+# Zone: clone_lib
+
+    items "tiegun" {
+      name = "铁棍"
+      description = "这是一根浑铁棍，似乎威力不大。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 10
+        skill_type = "club"
+        value = 100
+        weight = 1500
+        unit = "根"
+        material = "iron"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/cloth/tiejia.c
+# Zone: clone_lib
+
+    items "tiejia" {
+      name = "铁甲"
+      description = "铁甲"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 20000
+        unit = "件"
+        material = "steel"
+        armor = 50
+      }
+    }
+
+# Source: C:/files/git/mud/clone/weapon/tudao.c
+# Zone: clone_lib
+
+    items "tudao" {
+      name = "屠刀"
+      description = "这是一血淋淋的屠刀。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 30
+        skill_type = "blade"
+        value = 200
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/etc/va2.c
+# Zone: clone_lib
+
+    items "va2" {
+      name = "翡翠"
+      description = "这是一块上等翡翠，相信可以卖个好价钱。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 180000
+        weight = 1000
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/etc/va3.c
+# Zone: clone_lib
+
+    items "va3" {
+      name = "玉石"
+      description = "这是一块上等宝玉，相信可以卖个好价钱。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 160000
+        weight = 1000
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/etc/va5.c
+# Zone: clone_lib
+
+    items "va5" {
+      name = "玛瑙"
+      description = "这是一块上等玛瑙，相信可以卖个好价钱。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 120000
+        weight = 1000
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/etc/va6.c
+# Zone: clone_lib
+
+    items "va6" {
+      name = "钻石"
+      description = "这是一颗上等钻石，相信可以卖个好价钱。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200000
+        weight = 1000
+        unit = "颗"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/weapon/wandao.c
+# Zone: clone_lib
+
+    items "wandao" {
+      name = "阿拉伯弯刀"
+      description = "这是一柄亮晃晃的阿拉伯弯刀，刀身呈新月状，是中东地区最常见的兵刃。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 35
+        skill_type = "blade"
+        value = 500
+        weight = 6000
+        unit = "柄"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/pill/water.c
+# Zone: clone_lib
+
+    items "water" {
+      name = "牛皮水袋"
+      description = "这是一支特大号的牛皮水袋，质量相当不错。甚至可以用它来穿越沙漠。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        weight = 5000
+        unit = "支"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/weapon/wolfarrow.c
+# Zone: clone_lib
+
+    items "wolfarrow" {
+      name = "狼牙箭"
+      description = "一根细长的箭，簇失略弯，如同狼牙一般阴森森的。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 300
+        skill_type = "throwing"
+        value = 500
+        weight = 150
+        unit = "把"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/wood.c
+# Zone: clone_lib
+
+    items "wood" {
+      name = "木材"
+      description = "这是一小捆木材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10
+        weight = 5000
+        unit = "捆"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/xiaoshu.c
+# Zone: clone_lib
+
+    items "xiaoshu" {
+      name = "消暑丸"
+      description = "这是一包治疗中暑的药，立刻见效。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 600
+        unit = "包"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/yanbo.c
+# Zone: clone_lib
+
+    items "yanbo" {
+      name = "研钵"
+      description = "一只沉甸甸的瓷碗，可以用来磨药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 600
+        unit = "只"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/yangjing.c
+# Zone: clone_lib
+
+    items "yangjing" {
+      name = "养精丹"
+      description = "养精丹"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        unit = "粒"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/yanwu.c
+# Zone: clone_lib
+
+    items "yanwu" {
+      name = "烟雾弹"
+      description = "一颗特制的烟雾弹。它可以用(apply)来制造混乱，趁机逃走。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        weight = 100
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/yuer.c
+# Zone: clone_lib
+
+    items "yuer" {
+      name = "鱼饵"
+      description = "这是钓鱼者常用的鱼食。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 7
+        weight = 30
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/misc/zhike.c
+# Zone: clone_lib
+
+    items "zhike" {
+      name = "止咳药"
+      description = "这是一包常见的止咳药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        unit = "包"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/weapon/zhujian.c
+# Zone: clone_lib
+
+    items "zhujian" {
+      name = "竹剑"
+      description = "这是一把练习剑法用的竹剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 5
+        skill_type = "sword"
+        value = 100
+        weight = 1000
+        unit = "把"
+        material = "bamboo"
       }
     }

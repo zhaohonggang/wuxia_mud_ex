@@ -1717,11 +1717,13 @@ chats = [
     combat_exp = 400
   }
 
-  # vendor_goods: "/clone/weapon/changjian" (file not found)
-  # vendor_goods: "/clone/weapon/tudao" (file not found)
-  # vendor_goods: "/clone/weapon/tiegun" (file not found)
-  # vendor_goods: "/clone/weapon/gangdao" (file not found)
-  # vendor_goods: "/clone/cloth/tiejia" (file not found)
+  goods = [
+    { id = clone_lib.items.changjian.id },
+    { id = clone_lib.items.tudao.id },
+    { id = clone_lib.items.tiegun.id },
+    { id = clone_lib.items.gangdao.id },
+    { id = clone_lib.items.tiejia.id }
+  ]
 
   inquiries = [
     { key = "job" value = "(: ask_me :)" },

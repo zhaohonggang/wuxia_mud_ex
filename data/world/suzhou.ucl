@@ -1693,7 +1693,9 @@ direction = "west"
     str = 20
   }
 
-  # vendor_goods: "/clone/misc/jinchuang" (file not found)
+  goods = [
+    { id = clone_lib.items.jinchuang.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
@@ -1972,9 +1974,9 @@ direction = "west"
   goods = [
     { id = shaolin.items.hulu.id },
     { id = village.items.zhujian.id },
-    { id = xiyu.items.fire.id }
+    { id = xiyu.items.fire.id },
+    { id = city.items.zhubang.id }
   ]
-  # vendor_goods: "/d/city/obj/zhubang" (file not found)
 
   carry = [
     { id = items.cloth.id }

@@ -3119,7 +3119,9 @@ chats = [
     combat_exp = 20000000
   }
 
-  # vendor_goods: "/d/death/obj/armor1" (file not found)
+  goods = [
+    { id = items.armor1.id }
+  ]
 
   skills = [
     { skill = "unarmed" level = 500 },
@@ -6431,5 +6433,26 @@ chats = [
           jing_cost = 80
           difficulty = 80
         }
+      }
+    }
+
+# Source: C:/files/git/mud/d/death/npc/obj/armor1.c
+# Zone: death
+
+    items "armor1" {
+      name = "银甲"
+      description = "银甲"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 100
       }
     }

@@ -2472,9 +2472,9 @@ chats = [
   goods = [
     { id = items.changjian.id },
     { id = items.armor.id },
-    { id = items.beixin.id }
+    { id = items.beixin.id },
+    { id = items.gangdao.id }
   ]
-  # vendor_goods: "/d/jingzhou/obj/gangdao" (file not found)
 
   carry = [
     { id = items.cloth.id }
@@ -3572,6 +3572,29 @@ chats = [
         value = 200
         weight = 3000
         unit = "根"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/d/jingzhou/npc/obj/gangdao.c
+# Zone: jingzhou
+
+    items "gangdao" {
+      name = "钢刀"
+      description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 20
+        skill_type = "blade"
+        value = 1000
+        weight = 7000
+        unit = "柄"
         material = "steel"
       }
     }

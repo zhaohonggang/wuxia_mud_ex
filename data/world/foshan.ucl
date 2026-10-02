@@ -823,9 +823,11 @@ direction = "south"
     combat_exp = 10000
   }
 
-  # vendor_goods: "/clone/food/jitui" (file not found)
-  # vendor_goods: "/clone/food/jiudai" (file not found)
-  # vendor_goods: "/clone/food/baozi" (file not found)
+  goods = [
+    { id = clone_lib.items.jitui.id },
+    { id = clone_lib.items.jiudai.id },
+    { id = clone_lib.items.baozi.id }
+  ]
 
   carry = [
     { id = items.cloth.id }

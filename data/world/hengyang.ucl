@@ -2301,8 +2301,10 @@ behavior_config = {
     str = 30
   }
 
-  # vendor_goods: "/d/city/npc/obj/peanut" (file not found)
-  # vendor_goods: "/d/city/npc/obj/tofu" (file not found)
+  goods = [
+    { id = city.items.peanut.id },
+    { id = city.items.tofu.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
@@ -2434,26 +2436,28 @@ behavior_config = {
     combat_exp = 400000
   }
 
-  # vendor_goods: "/clone/tattoo/face1" (file not found)
-  # vendor_goods: "/clone/tattoo/face2" (file not found)
-  # vendor_goods: "/clone/tattoo/face3" (file not found)
-  # vendor_goods: "/clone/tattoo/face4" (file not found)
-  # vendor_goods: "/clone/tattoo/face5" (file not found)
-  # vendor_goods: "/clone/tattoo/face6" (file not found)
-  # vendor_goods: "/clone/tattoo/face7" (file not found)
-  # vendor_goods: "/clone/tattoo/face8" (file not found)
-  # vendor_goods: "/clone/tattoo/face9" (file not found)
-  # vendor_goods: "/clone/tattoo/face10" (file not found)
-  # vendor_goods: "/clone/tattoo/face11" (file not found)
-  # vendor_goods: "/clone/tattoo/face12" (file not found)
-  # vendor_goods: "/clone/tattoo/face13" (file not found)
-  # vendor_goods: "/clone/tattoo/face14" (file not found)
-  # vendor_goods: "/clone/tattoo/face15" (file not found)
-  # vendor_goods: "/clone/tattoo/face16" (file not found)
-  # vendor_goods: "/clone/tattoo/face17" (file not found)
-  # vendor_goods: "/clone/tattoo/face18" (file not found)
-  # vendor_goods: "/clone/tattoo/face19" (file not found)
-  # vendor_goods: "/clone/tattoo/face20" (file not found)
+  goods = [
+    { id = clone_lib.items.face1.id },
+    { id = clone_lib.items.face2.id },
+    { id = clone_lib.items.face3.id },
+    { id = clone_lib.items.face4.id },
+    { id = clone_lib.items.face5.id },
+    { id = clone_lib.items.face6.id },
+    { id = clone_lib.items.face7.id },
+    { id = clone_lib.items.face8.id },
+    { id = clone_lib.items.face9.id },
+    { id = clone_lib.items.face10.id },
+    { id = clone_lib.items.face11.id },
+    { id = clone_lib.items.face12.id },
+    { id = clone_lib.items.face13.id },
+    { id = clone_lib.items.face14.id },
+    { id = clone_lib.items.face15.id },
+    { id = clone_lib.items.face16.id },
+    { id = clone_lib.items.face17.id },
+    { id = clone_lib.items.face18.id },
+    { id = clone_lib.items.face19.id },
+    { id = clone_lib.items.face20.id }
+  ]
 
   inquiries = [
     { key = "狐仙" value = "听说狐能化成狐仙，我倒是遇见过一回。" },
@@ -2499,26 +2503,26 @@ behavior_config = {
     combat_exp = 800000
   }
 
-  # vendor_goods: "/d/hengyang/yueqi/shixuanqin-zhanguo" (file not found)
   goods = [
     { id = items.jiuxiaoqin.id },
     { id = items.zhongnishi.id },
     { id = items.jiaoyeqin.id },
-    { id = items.honghuqin.id }
+    { id = items.honghuqin.id },
+    { id = items.huqin.id },
+    { id = items.zhuxiao.id },
+    { id = items.shixuanqin_zhanguo.id },
+    { id = items.qin_jueyin.id },
+    { id = items.qin_konggu.id },
+    { id = items.qin_jimo.id },
+    { id = items.qin_tianlai.id },
+    { id = items.zhuxiao_youlan.id },
+    { id = items.zhuxiao_shuiyun.id },
+    { id = items.zhuxiao_liuquan.id },
+    { id = items.zhuxiao_qingyin.id },
+    { id = items.yuepu_book.id },
+    { id = items.yueqi_book.id },
+    { id = items.huxian_book.id }
   ]
-  # vendor_goods: "/d/hengyang/yueqi/qin-jueyin" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/qin-konggu" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/qin-jimo" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/qin-tianlai" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/huqin" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/zhuxiao" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/zhuxiao-youlan" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/zhuxiao-shuiyun" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/zhuxiao-liuquan" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/zhuxiao-qingyin" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/yuepu-book" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/yueqi-book" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/huxian-book" (file not found)
 
   inquiries = [
     { key = "杜凤鄂" value = "杜公子，他还好吗？" }
@@ -2839,11 +2843,11 @@ behavior_config = {
     { id = items.mujian.id },
     { id = item.items.chanhs.id },
     { id = city.items.rrose.id },
-    { id = city.items.yrose.id }
+    { id = city.items.yrose.id },
+    { id = clone_lib.items.wood.id },
+    { id = clone_lib.items.bushoujia.id },
+    { id = clone_lib.items.shier.id }
   ]
-  # vendor_goods: "/clone/misc/wood" (file not found)
-  # vendor_goods: "/clone/misc/bushoujia" (file not found)
-  # vendor_goods: "/clone/misc/shier" (file not found)
 
   skills = [
     { skill = "unarmed" level = 200 },
@@ -2981,9 +2985,11 @@ chats = [
     combat_exp = 100
   }
 
-  # vendor_goods: "/d/city/npc/obj/jitui" (file not found)
-  # vendor_goods: "/d/city/npc/obj/jiudai" (file not found)
-  # vendor_goods: "/d/city/npc/obj/baozi" (file not found)
+  goods = [
+    { id = city.items.jitui.id },
+    { id = city.items.jiudai.id },
+    { id = city.items.baozi.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
@@ -3016,9 +3022,11 @@ chats = [
     combat_exp = 100
   }
 
-  # vendor_goods: "/d/city/npc/obj/jitui" (file not found)
-  # vendor_goods: "/d/city/npc/obj/jiudai" (file not found)
-  # vendor_goods: "/d/city/npc/obj/baozi" (file not found)
+  goods = [
+    { id = city.items.jitui.id },
+    { id = city.items.jiudai.id },
+    { id = city.items.baozi.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
@@ -3676,5 +3684,43 @@ chats = [
         weight = 600
         unit = "把"
         material = "stone"
+      }
+    }
+
+# Source: C:/files/git/mud/d/hengyang/npc/obj/huqin.c
+# Zone: hengyang
+
+    items "huqin" {
+      name = "胡琴"
+      description = "这是一把普通的胡琴。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 600
+        unit = "把"
+        material = "wood"
+      }
+    }
+
+# Source: C:/files/git/mud/d/hengyang/npc/obj/zhuxiao.c
+# Zone: hengyang
+
+    items "zhuxiao" {
+      name = "翠竹萧"
+      description = "一把翠竹所制的洞萧，隐隐泛出绿光。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 600
+        unit = "把"
+        material = "bamboo"
       }
     }

@@ -34,6 +34,7 @@ EXCLUDED = {'test', 'global', 'liuxi', 'kissa-jarvi', 'lepakko-luola', 'sammatti
             CLONE_ZONE}
 
 ENTRY_RE = re.compile(r'^(\s*)\{ id = (items\.[a-z0-9_]+\.id) \},?\s*$')
+COMMENT_RE = re.compile(r'^\s*#\s*vendor_goods:\s*"([^"]+)"\s*\(file not found\)\s*$')
 
 
 def skeleton(line):
@@ -200,18 +201,61 @@ def scan_dangling():
     return found
 
 
+def scan_comment_targets(zone_items):
+    """P0c：注释里 vendor_goods 指向、但目标区/标准库还没有的物品
+
+    注释有两种：
+      /d/<zone>/...  目标区还没有该物品 -> 同区（或他区）建物品
+      /clone/...     标准库还没有       -> 搬进 clone_lib
+    已经存在的目标不在此列（由 migrate_vendor_goods.exs 直接转成 goods 条目）。
+    """
+    clone_keys = zone_items.get(CLONE_ZONE, set())
+    need_d = set()    # (zone, name)
+    need_clone = set()
+
+    for fn in sorted(os.listdir(WORLD)):
+        if not fn.endswith('.ucl'):
+            continue
+        z = fn[:-4]
+        if z in EXCLUDED:
+            continue
+        for line in open(os.path.join(WORLD, fn), encoding='utf-8'):
+            m = COMMENT_RE.match(line)
+            if not m:
+                continue
+            p = m.group(1)
+            if p.startswith('/clone/'):
+                nm = os.path.basename(p).replace('.c', '').replace('-', '_').lower()
+                if nm not in clone_keys:
+                    need_clone.add(nm)
+            elif p.startswith('/d/'):
+                parts = p.split('/')
+                tz = parts[2] if len(parts) > 2 else ''
+                nm = parts[-1].replace('.c', '').replace('-', '_').lower()
+                if tz and nm not in zone_items.get(tz, set()):
+                    need_d.add((tz, nm))
+
+    return need_d, need_clone
+
+
 def main():
     apply_ = '--apply' in sys.argv
+    zone_items = {}
+    for fn in os.listdir(WORLD):
+        if fn.endswith('.ucl'):
+            zone_items[fn[:-4]] = existing_items(os.path.join(WORLD, fn))
+
     found = scan_dangling()
     srcs = index_sources()
 
-    print('dangling (zone,name): %d  refs: %d'
+    print('dangling goods refs: %d 个 (区,名) / %d 条引用'
           % (len(found), sum(len(v) for v in found.values())))
 
     per_zone = collections.defaultdict(list)   # zone -> [(key, src, d)]
     clone_items = []
     rewritten = collections.defaultdict(list)  # file -> [(lineno, old, new)]
     unresolved = []
+    planned = set()
 
     for (z, nm), refs in sorted(found.items()):
         src, origin = find_source(nm, z, srcs)
@@ -225,6 +269,7 @@ def main():
             unresolved.append((z, nm, why))
             continue
         d['verbs'] = lpc_item.infer_verbs(d.get('_inherits', []), d)
+        planned.add((z, nm) if origin == 'same' else ('clone', nm))
 
         if origin == 'same':
             per_zone[z].append((nm, src, d))
@@ -235,8 +280,49 @@ def main():
                 rewritten[fn].append((lineno, 'items.%s.id' % nm,
                                       '%s.items.%s.id' % (CLONE_ZONE, nm)))
 
-    print('同区新建: %d   /clone 搬运: %d   无法定位: %d'
-          % (sum(len(v) for v in per_zone.values()), len(clone_items), len(unresolved)))
+    # P0c：注释目标（转换器整段漏掉的物品 + /clone 标准库）
+    need_d, need_clone = scan_comment_targets(zone_items)
+    added_d = added_clone = 0
+
+    for z, nm in sorted(need_d):
+        if (z, nm) in planned:
+            continue
+        src, origin = find_source(nm, z, srcs)
+        if not src:
+            unresolved.append((z, nm, 'comment: no source'))
+            continue
+        d = lpc_item.extract(src)
+        good, why = lpc_item.is_item_like(d, lpc_item.strip_comments(
+            open(src, encoding='utf-8', errors='replace').read()))
+        if not good:
+            unresolved.append((z, nm, 'comment: ' + why))
+            continue
+        d['verbs'] = lpc_item.infer_verbs(d.get('_inherits', []), d)
+        planned.add((z, nm))
+        per_zone[z].append((nm, src, d))
+        added_d += 1
+
+    for nm in sorted(need_clone):
+        if ('clone', nm) in planned:
+            continue
+        srcs_n = [p for p in srcs.get(nm, []) if '/clone/' in p.replace('\\', '/')]
+        if not srcs_n:
+            unresolved.append(('clone', nm, 'comment: no /clone source'))
+            continue
+        d = lpc_item.extract(srcs_n[0])
+        good, why = lpc_item.is_item_like(d, lpc_item.strip_comments(
+            open(srcs_n[0], encoding='utf-8', errors='replace').read()))
+        if not good:
+            unresolved.append(('clone', nm, 'comment: ' + why))
+            continue
+        d['verbs'] = lpc_item.infer_verbs(d.get('_inherits', []), d)
+        planned.add(('clone', nm))
+        clone_items.append((nm, srcs_n[0], d))
+        added_clone += 1
+
+    print('同区新建: %d（其中来自注释 %d）   /clone 搬运: %d（其中来自注释 %d）   无法定位: %d'
+          % (sum(len(v) for v in per_zone.values()), added_d,
+             len(clone_items), added_clone, len(unresolved)))
     if unresolved:
         print('\n=== 无法定位 ===')
         for u in unresolved:

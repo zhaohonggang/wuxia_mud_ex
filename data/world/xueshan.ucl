@@ -1035,9 +1035,9 @@ item_desc = {
   }
 
   goods = [
-    { id = items.niupidai.id }
+    { id = items.niupidai.id },
+    { id = items.qingke_m.id }
   ]
-  # vendor_goods: "/d/xueshan/obj/qingke-m" (file not found)
 
   carry = [
     { id = items.cloth.id }

@@ -85,7 +85,11 @@ defmodule VendorGoodsMigration do
     end)
   end
 
-  @doc "路径 -> {目标区, items 名}；非 /d/ 目标返回 nil（镜像 room_id_from_path）"
+  # 原 LPC 的 /clone 下的物件在 mud/d 转换中无处落放，P0c 已集中搬到
+  # clone_lib 区（见 scripts/build_missing_items.py），引用写成跨区形式。
+  @clone_zone "clone_lib"
+
+  @doc "路径 -> {目标区, items 名}；非 /d 目标返回 nil（镜像 room_id_from_path）"
   def resolve_path(path) do
     base =
       path
@@ -95,9 +99,26 @@ defmodule VendorGoodsMigration do
       |> String.replace("\\", "/")
       |> String.trim()
 
-    case Regex.run(~r{^/d/([^/]+)/.*/([^/.]+)$}, base) do
-      [_, zone, name] -> {zone, name}
-      _ -> nil
+    # items 名归一必须与 LPCConverter.room_id_from_path 一致：
+    # basename 去扩展名 -> `-` 换 `_` -> 小写。
+    # 少了这一步，`/d/hengyang/yueqi/qin-jueyin` 就找不到 items "qin_jueyin"。
+    norm = fn name ->
+      name
+      |> String.replace("-", "_")
+      |> String.downcase()
+    end
+
+    cond do
+      match = Regex.run(~r{^/d/([^/]+)/.*/([^/.]+)$}, base) ->
+        [_, zone, name] = match
+        {zone, norm.(name)}
+
+      match = Regex.run(~r{^/clone/.*/([^/.]+)$}, base) ->
+        [_, name] = match
+        {@clone_zone, norm.(name)}
+
+      true ->
+        nil
     end
   end
 

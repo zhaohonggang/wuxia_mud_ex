@@ -1405,13 +1405,13 @@ direction = ~
     str = 20
   }
 
-  # vendor_goods: "/d/fuzhou/obj/xiuhua" (file not found)
-  # vendor_goods: "/d/fuzhou/obj/flower_shoe" (file not found)
   goods = [
-    { id = items.pink_cloth.id }
+    { id = items.pink_cloth.id },
+    { id = items.xiuhua.id },
+    { id = items.flower_shoe.id },
+    { id = city.items.goldring.id },
+    { id = city.items.necklace.id }
   ]
-  # vendor_goods: "/d/city/obj/goldring" (file not found)
-  # vendor_goods: "/d/city/obj/necklace" (file not found)
 
   inquiries = [
     { key = "林震南" value = "阿南生着那俊，那会琢一个河南七子婆，唉。" }
@@ -1781,8 +1781,10 @@ direction = ~
     str = 17
   }
 
-  # vendor_goods: "/d/village/npc/obj/bottle" (file not found)
-  # vendor_goods: "/d/village/npc/obj/egg" (file not found)
+  goods = [
+    { id = village.items.bottle.id },
+    { id = village.items.egg.id }
+  ]
 
   inquiries = [
     { key = "大力丸" value = "看你也是正人君子，怎么问这个？" }
@@ -2022,5 +2024,48 @@ direction = ~
         weight = 100
         unit = "个"
         food = 50
+      }
+    }
+
+# Source: C:/files/git/mud/d/fuzhou/npc/flower_shoe.c
+# Zone: fuzhou
+
+    items "flower_shoe" {
+      name = "绣花小鞋"
+      description = "绣花小鞋"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 900
+        unit = "双"
+        material = "cloth"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/fuzhou/npc/obj/xiuhua.c
+# Zone: fuzhou
+
+    items "xiuhua" {
+      name = "绣花针"
+      description = "这是一根精钢细磨的绣花针，是绣花用的工具。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 10
+        skill_type = "sword"
+        value = 100
+        weight = 5
+        unit = "根"
+        material = "steel"
       }
     }

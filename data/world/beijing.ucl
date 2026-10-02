@@ -5186,9 +5186,9 @@ chats = [
     str = 20
   }
 
-  # vendor_goods: "/d/city/obj/hdjiudai" (file not found)
   goods = [
-    { id = items.kaoya.id }
+    { id = items.kaoya.id },
+    { id = city.items.hdjiudai.id }
   ]
 
   skills = [
@@ -6319,10 +6319,12 @@ chats = [
     combat_exp = 50000
   }
 
-  # vendor_goods: "/d/city/obj/beixin" (file not found)
-  # vendor_goods: "/d/quanzhou/obj/xiuhua" (file not found)
-  # vendor_goods: "/d/city/obj/flower_shoe" (file not found)
-  # vendor_goods: "/d/city/obj/pink_cloth" (file not found)
+  goods = [
+    { id = city.items.beixin.id },
+    { id = quanzhou.items.xiuhua.id },
+    { id = city.items.flower_shoe.id },
+    { id = city.items.pink_cloth.id }
+  ]
 
   skills = [
     { skill = "unarmed" level = 60 },
@@ -8229,11 +8231,11 @@ chats = [
     combat_exp = 100
   }
 
-  # vendor_goods: "/d/city/obj/jitui" (file not found)
-  # vendor_goods: "/d/city/obj/jiudai" (file not found)
-  # vendor_goods: "/d/city/obj/baozi" (file not found)
   goods = [
-    { id = items.mian.id }
+    { id = items.mian.id },
+    { id = city.items.jitui.id },
+    { id = city.items.jiudai.id },
+    { id = city.items.baozi.id }
   ]
 
   carry = [
@@ -8268,11 +8270,11 @@ chats = [
     combat_exp = 100
   }
 
-  # vendor_goods: "/d/city/obj/jitui" (file not found)
-  # vendor_goods: "/d/city/obj/jiudai" (file not found)
-  # vendor_goods: "/d/city/obj/baozi" (file not found)
   goods = [
-    { id = items.mian.id }
+    { id = items.mian.id },
+    { id = city.items.jitui.id },
+    { id = city.items.jiudai.id },
+    { id = city.items.baozi.id }
   ]
 
   carry = [
@@ -8307,11 +8309,11 @@ chats = [
     combat_exp = 100
   }
 
-  # vendor_goods: "/d/city/obj/jitui" (file not found)
-  # vendor_goods: "/d/city/obj/jiudai" (file not found)
-  # vendor_goods: "/d/city/obj/baozi" (file not found)
   goods = [
-    { id = items.mian.id }
+    { id = items.mian.id },
+    { id = city.items.jitui.id },
+    { id = city.items.jiudai.id },
+    { id = city.items.baozi.id }
   ]
 
   carry = [
@@ -8346,11 +8348,11 @@ chats = [
     combat_exp = 100
   }
 
-  # vendor_goods: "/d/city/obj/jitui" (file not found)
-  # vendor_goods: "/d/city/obj/jiudai" (file not found)
-  # vendor_goods: "/d/city/obj/baozi" (file not found)
   goods = [
-    { id = items.mian.id }
+    { id = items.mian.id },
+    { id = city.items.jitui.id },
+    { id = city.items.jiudai.id },
+    { id = city.items.baozi.id }
   ]
 
   carry = [

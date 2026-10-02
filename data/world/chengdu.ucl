@@ -1735,7 +1735,9 @@ direction = "up"
     str = 21
   }
 
-  # vendor_goods: "/clone/misc/cailiao" (file not found)
+  goods = [
+    { id = clone_lib.items.cailiao.id }
+  ]
 
   inquiries = [
     { key = "job" value = "(: ask_job :)" },
@@ -1778,9 +1780,11 @@ direction = "up"
     str = 20
   }
 
-  # vendor_goods: "/clone/misc/jinchuang" (file not found)
-  # vendor_goods: "/clone/misc/yangjing" (file not found)
-  # vendor_goods: "/clone/misc/bicanfeng" (file not found)
+  goods = [
+    { id = clone_lib.items.jinchuang.id },
+    { id = clone_lib.items.yangjing.id },
+    { id = clone_lib.items.bicanfeng.id }
+  ]
 
   carry = [
     { id = items.cloth.id }

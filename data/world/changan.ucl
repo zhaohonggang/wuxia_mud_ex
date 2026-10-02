@@ -4073,14 +4073,14 @@ chats = [
     { id = items.shield.id },
     { id = items.muqin.id },
     { id = xiyu.items.fire.id },
-    { id = item.items.chanhs.id }
+    { id = item.items.chanhs.id },
+    { id = clone_lib.items.wood.id },
+    { id = clone_lib.items.diaogan.id },
+    { id = clone_lib.items.yuer.id },
+    { id = clone_lib.items.yanwu.id },
+    { id = clone_lib.items.shexiang.id }
   ]
 
-  # vendor_goods: "/clone/misc/wood" (file not found)
-  # vendor_goods: "/clone/misc/diaogan" (file not found)
-  # vendor_goods: "/clone/misc/yuer" (file not found)
-  # vendor_goods: "/clone/misc/yanwu" (file not found)
-  # vendor_goods: "/clone/misc/shexiang" (file not found)
 
   skills = [
     { skill = "unarmed" level = 40 },
@@ -4166,16 +4166,16 @@ chats = [
   goods = [
     { id = items.changjian.id },
     { id = items.blade.id },
-    { id = items.hammer.id }
+    { id = items.hammer.id },
+    { id = clone_lib.items.arrow.id },
+    { id = clone_lib.items.wolfarrow.id },
+    { id = clone_lib.items.tudao.id },
+    { id = clone_lib.items.longbow.id },
+    { id = clone_lib.items.gangjian.id },
+    { id = clone_lib.items.qimeigun.id },
+    { id = clone_lib.items.changqiang.id }
   ]
 
-  # vendor_goods: "/clone/weapon/arrow" (file not found)
-  # vendor_goods: "/clone/weapon/wolfarrow" (file not found)
-  # vendor_goods: "/clone/weapon/tudao" (file not found)
-  # vendor_goods: "/clone/weapon/longbow" (file not found)
-  # vendor_goods: "/clone/weapon/gangjian" (file not found)
-  # vendor_goods: "/clone/weapon/qimeigun" (file not found)
-  # vendor_goods: "/clone/weapon/changqiang" (file not found)
 
   skills = [
     { skill = "sword" level = 50 },

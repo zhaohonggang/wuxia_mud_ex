@@ -1325,9 +1325,11 @@ item_desc = {
     str = 20
   }
 
-  # vendor_goods: "/d/city/obj/goupi" (file not found)
-  # vendor_goods: "/d/city/obj/beixin" (file not found)
-  # vendor_goods: "/clone/misc/gaoyao" (file not found)
+  goods = [
+    { id = city.items.goupi.id },
+    { id = city.items.beixin.id },
+    { id = clone_lib.items.gaoyao.id }
+  ]
 
   carry = [
     { id = items.cloth.id }

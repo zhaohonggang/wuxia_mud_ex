@@ -1186,10 +1186,12 @@ item_desc = {
     combat_exp = 400
   }
 
-  # vendor_goods: "/clone/weapon/tudao" (file not found)
-  # vendor_goods: "/clone/weapon/dagger" (file not found)
-  # vendor_goods: "/clone/weapon/wandao" (file not found)
-  # vendor_goods: "/clone/weapon/gangdao" (file not found)
+  goods = [
+    { id = clone_lib.items.tudao.id },
+    { id = clone_lib.items.dagger.id },
+    { id = clone_lib.items.wandao.id },
+    { id = clone_lib.items.gangdao.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
