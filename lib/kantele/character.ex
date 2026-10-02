@@ -63,8 +63,11 @@ defmodule Kantele.Character.PlayerMeta do
   ]
 
   defimpl Kalevala.Meta.Trim do
+    # `:aliases` 必须保留 —— LPC 的 present/get/ask 全靠 set_name 的 id 表匹配，
+    # 裁掉它会让 valid_leave 里的 `present('shi wei', ...)` 永远匹配不到人。
+    # 它只是一个短字符串列表，内存开销可忽略。
     def trim(meta) do
-      Map.take(meta, [:vitals])
+      Map.take(meta, [:vitals, :aliases])
     end
   end
 
@@ -322,8 +325,11 @@ defmodule Kantele.Character.NonPlayerMeta do
   ]
 
   defimpl Kalevala.Meta.Trim do
+    # `:aliases` 必须保留 —— LPC 的 present/get/ask 全靠 set_name 的 id 表匹配，
+    # 裁掉它会让 valid_leave 里的 `present('shi wei', ...)` 永远匹配不到人。
+    # 它只是一个短字符串列表，内存开销可忽略。
     def trim(meta) do
-      Map.take(meta, [:vitals])
+      Map.take(meta, [:vitals, :aliases])
     end
   end
 

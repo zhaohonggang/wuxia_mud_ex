@@ -1,3 +1,33 @@
+defmodule Kantele.World.Room.Probe do
+  @moduledoc """
+  临时诊断：把 valid_leave 拦截链路写进文件 + 日志。
+
+  不用 Logger 作为唯一通道：`docker logs` 在本机（Docker Desktop/WSL2）不可信 ——
+  全量 dump 里没有任何当前启动的日志行，而 `--tail` 却能读到当前日志，
+  导致「探针日志计数」完全不可用。文件通道绕开这个问题。
+  """
+
+  require Logger
+
+  @probe_file "/tmp/veto_probe.log"
+
+  def path, do: @probe_file
+
+  def log(line) do
+    text = "[probe] #{line}\n"
+
+    result =
+      try do
+        File.write!(@probe_file, text, [:append])
+        :ok
+      rescue
+        e -> {:error, e}
+      end
+
+    Logger.info(text <> " file_write=#{inspect(result)}")
+  end
+end
+
 defmodule Kantele.World.Room do
   @moduledoc """
   Callbacks for a Kalevala room
@@ -457,7 +487,7 @@ defmodule Kantele.World.Room do
               text: msg <> "\n"
             })
 
-            {:abort, event, :guarder_denied, msg}
+            {:abort, event, :guarder_denied}
 
           :allow ->
             # 阻挡条件（valid_leave）：受 enforce_exit_vetoes 开关灰度，默认关
@@ -467,7 +497,7 @@ defmodule Kantele.World.Room do
                   text: msg <> "\n"
                 })
 
-                {:abort, event, :exit_vetoed, msg}
+                {:abort, event, :exit_vetoed}
 
               :allow ->
                 BasicRoom.movement_request(context, event, room_exit)
@@ -491,6 +521,16 @@ defmodule Kantele.World.Room do
     （默认关）；条件解析不了/求值失败/方向未限定一律放行。
     """
     def check_exit_vetoes(room, context, mover, dir) do
+      chars =
+        Enum.map_join(context.characters || [], "|", fn c ->
+          "#{Map.get(c, :name)}~aliases=#{inspect(Map.get(Map.get(c, :meta) || %{}, :aliases))}"
+        end)
+
+      Room.Probe.log("check room=#{inspect(Map.get(room, :id))} dir=#{inspect(dir)} " <>
+                     "mover=#{if(mover, do: "yes", else: "NIL")} " <>
+                     "switch=#{inspect(Application.get_env(:ex_venture, :enforce_exit_vetoes, false))} " <>
+                     "vetoes=#{length(Map.get(room, :exit_vetoes, []) || [])} chars=[#{chars}]")
+
       case Application.get_env(:ex_venture, :enforce_exit_vetoes, false) do
         true ->
           vetoes = Map.get(room, :exit_vetoes, []) || []
@@ -542,7 +582,11 @@ defmodule Kantele.World.Room do
               context: context
             )
 
-          case Kantele.World.LpcCondition.check(veto, ctx) do
+          result = Kantele.World.LpcCondition.check(veto, ctx)
+
+          Room.Probe.log("  eval  condition=#{veto.condition} -> #{inspect(result)}")
+
+          case result do
             {:block, msg} -> {:deny, msg || "过不去。"}
             :allow -> apply_vetoes(rest, room, context, mover, dir)
           end
