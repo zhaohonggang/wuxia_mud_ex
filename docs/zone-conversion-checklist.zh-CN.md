@@ -152,79 +152,79 @@
 | 区域 | 完成日期 | 巫师测试 | 玩家测试 | 关键修复 commit |
 |------|----------|----------|----------|-----------------|
 | city | 2026-09-29 | ✅ | ✅ | 完整 Python 转换：111 rooms, 111 room_exits, 187 characters, 45 items (含 coords) |
-| baituo | 2026-09-29 | ? | ? | 完整 Python 转换：49 rooms, 49 room_exits (含 coords) |
-| death | 2026-09-29 | ? | ? | 完整 Python 转换：76 rooms, 76 room_exits (含 coords) |
-| gaibang | 2026-09-29 | ? | ? | 完整 Python 转换：4 rooms, 4 room_exits (含 coords) |
-| guiyun | 2026-09-29 | ? | ? | 完整 Python 转换：25 rooms, 25 room_exits (含 coords) |
-| gumu | 2026-09-29 | ? | ? | 完整 Python 转换：74 rooms, 74 room_exits (含 coords) |
-| huanghe | 2026-09-29 | ? | ? | 完整 Python 转换：56 rooms, 56 room_exits (含 coords) |
-| jingzhou | 2026-09-29 | ? | ? | 完整 Python 转换：90 rooms, 90 room_exits (含 coords) |
-| luoyang | 2026-09-29 | ? | ? | 完整 Python 转换：157 rooms, 157 room_exits (含 coords) |
-| quanzhen | 2026-09-29 | ? | ? | 完整 Python 转换：109 rooms, 109 room_exits (含 coords) |
-| register | 2026-09-29 | ? | ? | 完整 Python 转换：7 rooms, 7 room_exits (含 coords) |
-| shaolin | 2026-09-29 | ? | ? | 完整 Python 转换：206 rooms, 206 room_exits (含 coords)。修 `assign_room_coords.py` 重复 `up` 键（elias 并成数组 → loader `String.split` 崩） |
-| taishan | 2026-09-30 | ? | ? | 完整 Python 转换：33 rooms, 33 room_exits (含 coords)。修 `_parse_accept_body` 布尔/列表混淆导致 `accept = [{'kind': ...}]` 泄漏 Python repr；新增 `validate_ucl.py` Python-repr 检查 + 2 个 fixture |
-| wizard | 2026-09-30 | ? | ? | 完整 Python 转换：9 rooms, 9 room_exits (含 coords)。中心 `hall`，全可达 |
-| wudang | 2026-09-30 | ? | ? | 完整 Python 转换：102 rooms, 102 room_exits (含 coords)。修 `lpc_converter.py` 动态表达式泄漏：`"/clone/book/" + books[random(sizeof(books))]` 被 `_looks_like_path` 误判为路径，产出非法 id `items. + books[...].id`；新增 `_is_dynamic_expr()` + `_SAFE_ID_RE` 守卫跳过无法静态解析的 key（`daotong` 保留）；新增 fixture `43_bad_syntax_lpc_expr_leak.ucl` |
-| wudu | 2026-09-30 | ? | ? | 完整 Python 转换：108 rooms, 108 room_exits (含 coords) |
-| xuedao | 2026-09-30 | ? | ? | 完整 Python 转换：24 rooms, 24 room_exits (含 coords) |
-| xueshan | 2026-09-30 | ? | ? | 完整 Python 转换：39 rooms, 39 room_exits (含 coords) |
-| zhongzhou | 2026-09-30 | ? | ? | 完整 Python 转换：90 rooms, 90 room_exits (含 coords) |
-| changan | 2026-09-30 | ? | ? | 修 `lpc_converter.py` `_generate_room_item_desc`：`item_desc` 的中文 key（`床`/`大床`）归一化后成空串却漏过判空，产出裸 ` = "..."`；改为对**归一化后**的 keyword 判空 |
-| room | 2026-09-30 | ? | ? | 修 `lpc_converter.py` `_parse_mapping_pairs`：源码行尾 C 注释（`"south" : ..., /* EXAMPLE */`）被当成下一个 pair 且无 `:`，兜底成 `(comment, nil)` 渲染为 ` = rooms.nil.id`；改为丢弃注释 pair + 新增 `_is_valid_exit_dir()` 过滤非标识符方向 |
-| beijing | 2026-09-30 | ? | ? | 完整 Python 转换：202 rooms, 202 room_exits (含 coords) |
-| chengdu | 2026-09-30 | ? | ? | 完整 Python 转换：76 rooms, 76 room_exits (含 coords) |
-| dali | 2026-09-30 | ? | ? | 完整 Python 转换：213 rooms, 213 room_exits (含 coords) |
-| emei | 2026-09-30 | ? | ? | 完整 Python 转换：102 rooms, 102 room_exits (含 coords) |
-| foshan | 2026-09-30 | ? | ? | 完整 Python 转换：32 rooms, 32 room_exits (含 coords) |
-| fuzhou | 2026-09-30 | ? | ? | 完整 Python 转换：61 rooms, 61 room_exits (含 coords) |
-| hangzhou | 2026-09-30 | ? | ? | 完整 Python 转换：120 rooms, 120 room_exits (含 coords) |
-| heimuya | 2026-09-30 | ? | ? | 完整 Python 转换：80 rooms, 80 room_exits (含 coords) |
-| hengyang | 2026-09-30 | ? | ? | 完整 Python 转换：107 rooms, 107 room_exits (含 coords) |
-| kaifeng | 2026-09-30 | ? | ? | 完整 Python 转换：132 rooms, 132 room_exits (含 coords) |
-| kunming | 2026-09-30 | ? | ? | 完整 Python 转换：54 rooms, 54 room_exits (含 coords) |
-| lanzhou | 2026-09-30 | ? | ? | 完整 Python 转换：37 rooms, 37 room_exits (含 coords) |
-| lingxiao | 2026-09-30 | ? | ? | 完整 Python 转换：78 rooms, 78 room_exits (含 coords) |
-| songshan | 2026-09-30 | ? | ? | 完整 Python 转换：28 rooms, 28 room_exits (含 coords) |
-| suzhou | 2026-09-30 | ? | ? | 完整 Python 转换：72 rooms, 72 room_exits (含 coords) |
-| village | 2026-09-30 | ? | ? | 完整 Python 转换：30 rooms, 30 room_exits (含 coords) |
-| xiangyang | 2026-09-30 | ? | ? | 完整 Python 转换：119 rooms, 119 room_exits (含 coords)。**容器加载失败修复**：`wuxiuwen.c` 的 inquiry 值是 LPC 闭包 `(: ask_me_1, "weibo" :)`，其中「数字紧邻逗号」触发 elias 0.2.8 的 leex 分词缺陷（Word 正则排除集不含逗号 → 逗号独立成 `comma` token → 语法无 comma 产生式）→ `Elias.parse/1` 报 `syntax error before: ','`，整个世界无法启动。修 `lpc_converter.py` 新增 `_elias_safe_value()` 跳过不可解析值并留注释；`validate_ucl.py` 新增 `_ELIAS_UNLEXABLE_RE` 检查 + `_strip_comments()`（避免转换器自己的说明注释误报）+ fixture `44_bad_chars_elias_unlexable.ucl` |
-| xiaoyao | 2026-09-30 | ? | ? | 完整 Python 转换：22 rooms, 22 room_exits (含 coords) |
-| xiyu | 2026-09-30 | ? | ? | 完整 Python 转换：51 rooms, 51 room_exits (含 coords) |
-| quanzhou | 2026-09-30 | ? | ? | 完整 Python 转换：36 rooms, 36 room_exits (含 coords) |
-| huashan | 2026-09-30 | ? | ? | 完整 Python 转换：89 rooms, 89 room_exits (含 coords)。**容器加载失败修复（按「遇错即停」规则停在此区）**：`s.c` 的出口方向名是 `"hole1".."hole6"`，而 **UCL 的 key 不能含数字**——`elias_parser.yrl` 只接受 `assignment -> word equality ...`，leex 又把 `Digit` 当独立 token，于是 `hole6` 被切成 `word "hole"` + `digit "6"` 赋值闭合不了 → `syntax error before: ', ['"6"']`。实测 `hole`/`hole_` 可解析，`hole6`/`hole_6`/`6hole` 均失败；**值侧不受影响**（`rooms.lockroom6.id` 正常）。修 `lpc_converter.py` 的 `_EXIT_DIR_RE` 收紧为 `^[A-Za-z_][A-Za-z_]*$`；`validate_ucl.py` 新增 `_ELIAS_BAD_KEY_RE` + fixture `45_bad_chars_elias_bad_key.ucl`。这 6 条 `hole*` 是冗余反向链接（每个 `lockroomN` 自身有 `out = rooms.s.id`，`kuihua_2 -up-> lockroom1`），跳过不造成不可达 |
-| mingjiao | 2026-09-30 | ? | ? | 完整 Python 转换：129 rooms, 129 room_exits (含 coords)。**容器加载失败修复**：`miaorenbuluo.c` 的 `@TEXT` 块某行以 `口\` 结尾，是 LPC **行尾续行符**（本意换行续接），转换器却先把换行折成空格、留下反斜杠，产出 `口\ 中`。elias 的 `words` 只有 `back_slash word` / `back_slash quotes` 产生式，反斜杠接空格无规则可走 → 报错 token 恰是那个被反斜杠藏起来的**空格**。修法：新增 `_LPC_CONTINUATION`，并在 `_sanitize_ucl_sval()` **换行转空格之前**应用（所有字符串的最终出口，heredoc 与普通字面量都覆盖），`_parse_heredocs_from_raw()` 另加一道；产出已恢复为 `口中`。`validate_ucl.py` 新增 `_ELIAS_STRAY_BACKSLASH_RE` + fixture `46_bad_chars_elias_stray_backslash.ucl` |
-| gaochang | 2026-09-30 | ? | ? | 完整 Python 转换：31 rooms, 31 room_exits (含 coords) |
-| kunlun | 2026-09-30 | ? | ? | 完整 Python 转换：51 rooms, 51 room_exits (含 coords) |
-| tulong | 2026-09-30 | ? | ? | 完整 Python 转换：60 rooms, 60 room_exits (含 coords)。容器区三子区（`was_*` 云龙派等）拍平进同一 zone；中心房原文档写 `yubifeng/damen`，但产物中不存在 `yubifeng` 房间，实际改用 `damen` |
-| guanwai | 2026-09-30 | ? | ? | 完整 Python 转换：67 rooms, 67 room_exits (含 coords) |
-| hengshan | 2026-09-30 | ? | ? | 完整 Python 转换：26 rooms, 26 room_exits (含 coords) |
-| item | 2026-09-30 | ? | ? | 完整 Python 转换：6 rooms, 6 room_exits (含 coords) |
-| jinshe | 2026-09-30 | ? | ? | 完整 Python 转换：4 rooms, 4 room_exits (含 coords) |
-| jueqing | 2026-09-30 | ? | ? | 完整 Python 转换：57 rooms, 57 room_exits (含 coords) |
-| lingjiu | 2026-09-30 | ? | ? | 完整 Python 转换：46 rooms, 46 room_exits (含 coords) |
-| meizhuang | 2026-09-30 | ? | ? | 完整 Python 转换：37 rooms, 37 room_exits (含 coords) |
-| motianya | 2026-09-30 | ? | ? | 完整 Python 转换：10 rooms, 10 room_exits (含 coords) |
-| pk | 2026-09-30 | ? | ? | 完整 Python 转换：14 rooms, 14 room_exits (含 coords) |
-| qingcheng | 2026-09-30 | ? | ? | 完整 Python 转换：23 rooms, 23 room_exits (含 coords) |
-| shenfeng | 2026-09-30 | ? | ? | 完整 Python 转换：51 rooms, 51 room_exits (含 coords) |
-| tianlongsi | 2026-09-30 | ? | ? | 完整 Python 转换：28 rooms, 28 room_exits (含 coords) |
-| tiezhang | 2026-09-30 | ? | ? | 完整 Python 转换：66 rooms, 66 room_exits (含 coords) |
-| tulong | 2026-09-30 | ? | ? | 完整 Python 转换：60 rooms, 60 room_exits (含 coords) |
-| wanjiegu | 2026-09-30 | ? | ? | 完整 Python 转换：29 rooms, 29 room_exits (含 coords) |
-| wuguan | 2026-09-30 | ? | ? | 完整 Python 转换：39 rooms, 39 room_exits (含 coords) |
-| xiakedao | 2026-09-30 | ? | ? | 完整 Python 转换：99 rooms, 99 room_exits (含 coords) |
-| yanziwu | 2026-09-30 | ? | ? | 完整 Python 转换：46 rooms, 46 room_exits (含 coords) |
-| huanggong | 2026-09-30 | ? | ? | 完整 Python 转换：14 rooms, 14 room_exits (含 coords) |
-| lingzhou | 2026-09-30 | ? | ? | 完整 Python 转换：50 rooms, 50 room_exits (含 coords) |
-| shenlong | 2026-09-30 | ? | ? | 完整 Python 转换：21 rooms, 21 room_exits (含 coords) |
-| sky | 2026-09-30 | ? | ? | 完整 Python 转换：6 rooms, 6 room_exits (含 coords) |
-| special | 2026-09-30 | ? | ? | 完整 Python 转换：6 rooms, 6 room_exits (含 coords) |
-| tangmen | 2026-09-30 | ? | ? | 纯物件区：源码只有 `obj/feidao.c`、`obj/jili.c`，产物 = 1 个 `zones` 块 + 2 个 `items` 块，**0 rooms / 0 room_exits**。elias 解析 OK、全世界加载 OK，但 `validate_ucl.py` 的 Structure/Integrity 判它失败。**按「遇错即停」停在此区并修复**：新增 `_is_object_only_zone()` 窄化豁免（`zones` 存在 + rooms 与 room_exits 均为 0 + 至少一个 `items`/`characters` 块），保证「转换器把房间全丢了」仍被抓到——`22_bad_integrity_zero_rooms`（只有 zones 块、无物件）**仍失败**、`21_bad_structure_no_exits` 仍失败；新增 fixture `47_ok_object_only_zone` 锁定豁免 |
-| taohua | 2026-09-30 | ? | ? | 完整 Python 转换：31 rooms, 31 room_exits (含 coords) |
-| xuanminggu | 2026-09-30 | ? | ? | 完整 Python 转换：13 rooms, 13 room_exits (含 coords) |
+| baituo | 2026-09-29 | ✅ | ? | 完整 Python 转换：49 rooms, 49 room_exits (含 coords) |
+| death | 2026-09-29 | ✅ | ? | 完整 Python 转换：76 rooms, 76 room_exits (含 coords) |
+| gaibang | 2026-09-29 | ✅ | ? | 完整 Python 转换：4 rooms, 4 room_exits (含 coords) |
+| guiyun | 2026-09-29 | ✅ | ? | 完整 Python 转换：25 rooms, 25 room_exits (含 coords) |
+| gumu | 2026-09-29 | ✅ | ? | 完整 Python 转换：74 rooms, 74 room_exits (含 coords) |
+| huanghe | 2026-09-29 | ✅ | ? | 完整 Python 转换：56 rooms, 56 room_exits (含 coords) |
+| jingzhou | 2026-09-29 | ✅ | ? | 完整 Python 转换：90 rooms, 90 room_exits (含 coords) |
+| luoyang | 2026-09-29 | ✅ | ? | 完整 Python 转换：157 rooms, 157 room_exits (含 coords) |
+| quanzhen | 2026-09-29 | ✅ | ? | 完整 Python 转换：109 rooms, 109 room_exits (含 coords) |
+| register | 2026-09-29 | ✅ | ? | 完整 Python 转换：7 rooms, 7 room_exits (含 coords) |
+| shaolin | 2026-09-29 | ✅ | ? | 完整 Python 转换：206 rooms, 206 room_exits (含 coords)。修 `assign_room_coords.py` 重复 `up` 键（elias 并成数组 → loader `String.split` 崩） |
+| taishan | 2026-09-30 | ✅ | ? | 完整 Python 转换：33 rooms, 33 room_exits (含 coords)。修 `_parse_accept_body` 布尔/列表混淆导致 `accept = [{'kind': ...}]` 泄漏 Python repr；新增 `validate_ucl.py` Python-repr 检查 + 2 个 fixture |
+| wizard | 2026-09-30 | ✅ | ? | 完整 Python 转换：9 rooms, 9 room_exits (含 coords)。中心 `hall`，全可达 |
+| wudang | 2026-09-30 | ✅ | ? | 完整 Python 转换：102 rooms, 102 room_exits (含 coords)。修 `lpc_converter.py` 动态表达式泄漏：`"/clone/book/" + books[random(sizeof(books))]` 被 `_looks_like_path` 误判为路径，产出非法 id `items. + books[...].id`；新增 `_is_dynamic_expr()` + `_SAFE_ID_RE` 守卫跳过无法静态解析的 key（`daotong` 保留）；新增 fixture `43_bad_syntax_lpc_expr_leak.ucl` |
+| wudu | 2026-09-30 | ✅ | ? | 完整 Python 转换：108 rooms, 108 room_exits (含 coords) |
+| xuedao | 2026-09-30 | ✅ | ? | 完整 Python 转换：24 rooms, 24 room_exits (含 coords) |
+| xueshan | 2026-09-30 | ✅ | ? | 完整 Python 转换：39 rooms, 39 room_exits (含 coords) |
+| zhongzhou | 2026-09-30 | ✅ | ? | 完整 Python 转换：90 rooms, 90 room_exits (含 coords) |
+| changan | 2026-09-30 | ✅ | ? | 修 `lpc_converter.py` `_generate_room_item_desc`：`item_desc` 的中文 key（`床`/`大床`）归一化后成空串却漏过判空，产出裸 ` = "..."`；改为对**归一化后**的 keyword 判空 |
+| room | 2026-09-30 | ✅ | ? | 修 `lpc_converter.py` `_parse_mapping_pairs`：源码行尾 C 注释（`"south" : ..., /* EXAMPLE */`）被当成下一个 pair 且无 `:`，兜底成 `(comment, nil)` 渲染为 ` = rooms.nil.id`；改为丢弃注释 pair + 新增 `_is_valid_exit_dir()` 过滤非标识符方向 |
+| beijing | 2026-09-30 | ✅ | ? | 完整 Python 转换：202 rooms, 202 room_exits (含 coords) |
+| chengdu | 2026-09-30 | ✅ | ? | 完整 Python 转换：76 rooms, 76 room_exits (含 coords) |
+| dali | 2026-09-30 | ✅ | ? | 完整 Python 转换：213 rooms, 213 room_exits (含 coords) |
+| emei | 2026-09-30 | ✅ | ? | 完整 Python 转换：102 rooms, 102 room_exits (含 coords) |
+| foshan | 2026-09-30 | ✅ | ? | 完整 Python 转换：32 rooms, 32 room_exits (含 coords) |
+| fuzhou | 2026-09-30 | ✅ | ? | 完整 Python 转换：61 rooms, 61 room_exits (含 coords) |
+| hangzhou | 2026-09-30 | ✅ | ? | 完整 Python 转换：120 rooms, 120 room_exits (含 coords) |
+| heimuya | 2026-09-30 | ✅ | ? | 完整 Python 转换：80 rooms, 80 room_exits (含 coords) |
+| hengyang | 2026-09-30 | ✅ | ? | 完整 Python 转换：107 rooms, 107 room_exits (含 coords) |
+| kaifeng | 2026-09-30 | ✅ | ? | 完整 Python 转换：132 rooms, 132 room_exits (含 coords) |
+| kunming | 2026-09-30 | ✅ | ? | 完整 Python 转换：54 rooms, 54 room_exits (含 coords) |
+| lanzhou | 2026-09-30 | ✅ | ? | 完整 Python 转换：37 rooms, 37 room_exits (含 coords) |
+| lingxiao | 2026-09-30 | ✅ | ? | 完整 Python 转换：78 rooms, 78 room_exits (含 coords) |
+| songshan | 2026-09-30 | ✅ | ? | 完整 Python 转换：28 rooms, 28 room_exits (含 coords) |
+| suzhou | 2026-09-30 | ✅ | ? | 完整 Python 转换：72 rooms, 72 room_exits (含 coords) |
+| village | 2026-09-30 | ✅ | ? | 完整 Python 转换：30 rooms, 30 room_exits (含 coords) |
+| xiangyang | 2026-09-30 | ✅ | ? | 完整 Python 转换：119 rooms, 119 room_exits (含 coords)。**容器加载失败修复**：`wuxiuwen.c` 的 inquiry 值是 LPC 闭包 `(: ask_me_1, "weibo" :)`，其中「数字紧邻逗号」触发 elias 0.2.8 的 leex 分词缺陷（Word 正则排除集不含逗号 → 逗号独立成 `comma` token → 语法无 comma 产生式）→ `Elias.parse/1` 报 `syntax error before: ','`，整个世界无法启动。修 `lpc_converter.py` 新增 `_elias_safe_value()` 跳过不可解析值并留注释；`validate_ucl.py` 新增 `_ELIAS_UNLEXABLE_RE` 检查 + `_strip_comments()`（避免转换器自己的说明注释误报）+ fixture `44_bad_chars_elias_unlexable.ucl` |
+| xiaoyao | 2026-09-30 | ✅ | ? | 完整 Python 转换：22 rooms, 22 room_exits (含 coords) |
+| xiyu | 2026-09-30 | ✅ | ? | 完整 Python 转换：51 rooms, 51 room_exits (含 coords) |
+| quanzhou | 2026-09-30 | ✅ | ? | 完整 Python 转换：36 rooms, 36 room_exits (含 coords) |
+| huashan | 2026-09-30 | ✅ | ? | 完整 Python 转换：89 rooms, 89 room_exits (含 coords)。**容器加载失败修复（按「遇错即停」规则停在此区）**：`s.c` 的出口方向名是 `"hole1".."hole6"`，而 **UCL 的 key 不能含数字**——`elias_parser.yrl` 只接受 `assignment -> word equality ...`，leex 又把 `Digit` 当独立 token，于是 `hole6` 被切成 `word "hole"` + `digit "6"` 赋值闭合不了 → `syntax error before: ', ['"6"']`。实测 `hole`/`hole_` 可解析，`hole6`/`hole_6`/`6hole` 均失败；**值侧不受影响**（`rooms.lockroom6.id` 正常）。修 `lpc_converter.py` 的 `_EXIT_DIR_RE` 收紧为 `^[A-Za-z_][A-Za-z_]*$`；`validate_ucl.py` 新增 `_ELIAS_BAD_KEY_RE` + fixture `45_bad_chars_elias_bad_key.ucl`。这 6 条 `hole*` 是冗余反向链接（每个 `lockroomN` 自身有 `out = rooms.s.id`，`kuihua_2 -up-> lockroom1`），跳过不造成不可达 |
+| mingjiao | 2026-09-30 | ✅ | ? | 完整 Python 转换：129 rooms, 129 room_exits (含 coords)。**容器加载失败修复**：`miaorenbuluo.c` 的 `@TEXT` 块某行以 `口\` 结尾，是 LPC **行尾续行符**（本意换行续接），转换器却先把换行折成空格、留下反斜杠，产出 `口\ 中`。elias 的 `words` 只有 `back_slash word` / `back_slash quotes` 产生式，反斜杠接空格无规则可走 → 报错 token 恰是那个被反斜杠藏起来的**空格**。修法：新增 `_LPC_CONTINUATION`，并在 `_sanitize_ucl_sval()` **换行转空格之前**应用（所有字符串的最终出口，heredoc 与普通字面量都覆盖），`_parse_heredocs_from_raw()` 另加一道；产出已恢复为 `口中`。`validate_ucl.py` 新增 `_ELIAS_STRAY_BACKSLASH_RE` + fixture `46_bad_chars_elias_stray_backslash.ucl` |
+| gaochang | 2026-09-30 | ✅ | ? | 完整 Python 转换：31 rooms, 31 room_exits (含 coords) |
+| kunlun | 2026-09-30 | ✅ | ? | 完整 Python 转换：51 rooms, 51 room_exits (含 coords) |
+| tulong | 2026-09-30 | ✅ | ? | 完整 Python 转换：60 rooms, 60 room_exits (含 coords)。容器区三子区（`was_*` 云龙派等）拍平进同一 zone；中心房原文档写 `yubifeng/damen`，但产物中不存在 `yubifeng` 房间，实际改用 `damen` |
+| guanwai | 2026-09-30 | ✅ | ? | 完整 Python 转换：67 rooms, 67 room_exits (含 coords) |
+| hengshan | 2026-09-30 | ✅ | ? | 完整 Python 转换：26 rooms, 26 room_exits (含 coords) |
+| item | 2026-09-30 | ✅ | ? | 完整 Python 转换：6 rooms, 6 room_exits (含 coords) |
+| jinshe | 2026-09-30 | ✅ | ? | 完整 Python 转换：4 rooms, 4 room_exits (含 coords) |
+| jueqing | 2026-09-30 | ✅ | ? | 完整 Python 转换：57 rooms, 57 room_exits (含 coords) |
+| lingjiu | 2026-09-30 | ✅ | ? | 完整 Python 转换：46 rooms, 46 room_exits (含 coords) |
+| meizhuang | 2026-09-30 | ✅ | ? | 完整 Python 转换：37 rooms, 37 room_exits (含 coords) |
+| motianya | 2026-09-30 | ✅ | ? | 完整 Python 转换：10 rooms, 10 room_exits (含 coords) |
+| pk | 2026-09-30 | ✅ | ? | 完整 Python 转换：14 rooms, 14 room_exits (含 coords) |
+| qingcheng | 2026-09-30 | ✅ | ? | 完整 Python 转换：23 rooms, 23 room_exits (含 coords) |
+| shenfeng | 2026-09-30 | ✅ | ? | 完整 Python 转换：51 rooms, 51 room_exits (含 coords) |
+| tianlongsi | 2026-09-30 | ✅ | ? | 完整 Python 转换：28 rooms, 28 room_exits (含 coords) |
+| tiezhang | 2026-09-30 | ✅ | ? | 完整 Python 转换：66 rooms, 66 room_exits (含 coords) |
+| tulong | 2026-09-30 | ✅ | ? | 完整 Python 转换：60 rooms, 60 room_exits (含 coords) |
+| wanjiegu | 2026-09-30 | ✅ | ? | 完整 Python 转换：29 rooms, 29 room_exits (含 coords) |
+| wuguan | 2026-09-30 | ✅ | ? | 完整 Python 转换：39 rooms, 39 room_exits (含 coords) |
+| xiakedao | 2026-09-30 | ✅ | ? | 完整 Python 转换：99 rooms, 99 room_exits (含 coords) |
+| yanziwu | 2026-09-30 | ✅ | ? | 完整 Python 转换：46 rooms, 46 room_exits (含 coords) |
+| huanggong | 2026-09-30 | ✅ | ? | 完整 Python 转换：14 rooms, 14 room_exits (含 coords) |
+| lingzhou | 2026-09-30 | ✅ | ? | 完整 Python 转换：50 rooms, 50 room_exits (含 coords) |
+| shenlong | 2026-09-30 | ✅ | ? | 完整 Python 转换：21 rooms, 21 room_exits (含 coords) |
+| sky | 2026-09-30 | ✅ | ? | 完整 Python 转换：6 rooms, 6 room_exits (含 coords) |
+| special | 2026-09-30 | ✅ | ? | 完整 Python 转换：6 rooms, 6 room_exits (含 coords) |
+| tangmen | 2026-09-30 | ✅ | ? | 纯物件区：源码只有 `obj/feidao.c`、`obj/jili.c`，产物 = 1 个 `zones` 块 + 2 个 `items` 块，**0 rooms / 0 room_exits**。elias 解析 OK、全世界加载 OK，但 `validate_ucl.py` 的 Structure/Integrity 判它失败。**按「遇错即停」停在此区并修复**：新增 `_is_object_only_zone()` 窄化豁免（`zones` 存在 + rooms 与 room_exits 均为 0 + 至少一个 `items`/`characters` 块），保证「转换器把房间全丢了」仍被抓到——`22_bad_integrity_zero_rooms`（只有 zones 块、无物件）**仍失败**、`21_bad_structure_no_exits` 仍失败；新增 fixture `47_ok_object_only_zone` 锁定豁免 |
+| taohua | 2026-09-30 | ✅ | ? | 完整 Python 转换：31 rooms, 31 room_exits (含 coords) |
+| xuanminggu | 2026-09-30 | ✅ | ? | 完整 Python 转换：13 rooms, 13 room_exits (含 coords) |
 | ... |  |  |  |  |
-| huashan | 2026-09-30 | ? | ? | 完整 Python 转换：89 rooms, 89 room_exits (含 coords)。**容器加载失败修复（按「遇错即停」规则停在此区）**：`s.c` 的出口方向名是 `"hole1".."hole6"`，而 **UCL 的 key 不能含数字**——`elias_parser.yrl` 只接受 `assignment -> word equality ...`，leex 又把 `Digit` 当独立 token，于是 `hole6` 被切成 `word "hole"` + `digit "6"` 赋值闭合不了 → `syntax error before: ', ['"6"']`。实测 `hole`/`hole_` 可解析，`hole6`/`hole_6`/`6hole` 均失败；**值侧不受影响**（`rooms.lockroom6.id` 正常）。修 `lpc_converter.py` 的 `_EXIT_DIR_RE` 收紧为 `^[A-Za-z_][A-Za-z_]*$`；`validate_ucl.py` 新增 `_ELIAS_BAD_KEY_RE` + fixture `45_bad_chars_elias_bad_key.ucl`。这 6 条 `hole*` 是冗余反向链接（每个 `lockroomN` 自身有 `out = rooms.s.id`，`kuihua_2 -up-> lockroom1`），跳过不造成不可达 |
+| huashan | 2026-09-30 | ✅ | ? | 完整 Python 转换：89 rooms, 89 room_exits (含 coords)。**容器加载失败修复（按「遇错即停」规则停在此区）**：`s.c` 的出口方向名是 `"hole1".."hole6"`，而 **UCL 的 key 不能含数字**——`elias_parser.yrl` 只接受 `assignment -> word equality ...`，leex 又把 `Digit` 当独立 token，于是 `hole6` 被切成 `word "hole"` + `digit "6"` 赋值闭合不了 → `syntax error before: ', ['"6"']`。实测 `hole`/`hole_` 可解析，`hole6`/`hole_6`/`6hole` 均失败；**值侧不受影响**（`rooms.lockroom6.id` 正常）。修 `lpc_converter.py` 的 `_EXIT_DIR_RE` 收紧为 `^[A-Za-z_][A-Za-z_]*$`；`validate_ucl.py` 新增 `_ELIAS_BAD_KEY_RE` + fixture `45_bad_chars_elias_bad_key.ucl`。这 6 条 `hole*` 是冗余反向链接（每个 `lockroomN` 自身有 `out = rooms.s.id`，`kuihua_2 -up-> lockroom1`），跳过不造成不可达 |
 
 > 2026-09-30 全量复验：13 个已转区域全部重跑「备份 → 赋坐标 → 静态校验 → 坐标唯一性 + BFS 可达性」，
 > 并跑 `MIX_ENV=test mix test test/kantele/world/`（183 tests, 0 failures，含全量世界加载）。
