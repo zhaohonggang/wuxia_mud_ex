@@ -124,10 +124,34 @@ defmodule Kantele.Character.LoginController do
   defp process_character_token(conn, token) do
     case Phoenix.Token.verify(Web.Endpoint, "character id", token, max_age: 3600) do
       {:ok, character_id} ->
-        {:ok, character} = Characters.get(character_id)
+        case Characters.get(character_id) do
+          {:ok, character} ->
+            process_character(conn, character.name)
 
-        process_character(conn, character.name)
+          {:error, _reason} ->
+            token_rejected(conn, :unknown_character)
+        end
+
+      {:error, reason} when reason in [:expired, :invalid] ->
+        # 浏览器里那个 token 超过 1 小时了（调试久了就会遇到）。
+        # 以前这里没有子句 -> CaseClauseError -> Foreman 崩掉 -> 玩家表现为
+        # 「一登进去就断线」。现在把会话退回用户名步骤，让玩家重新登录。
+        Logger.info("Character token rejected (#{reason}), returning to username prompt")
+
+        token_rejected(conn, reason)
+
+      {:error, reason} ->
+        token_rejected(conn, reason)
     end
+  end
+
+  defp token_rejected(conn, reason) do
+    conn
+    |> put_session(:login_state, :username)
+    |> put_session(:username, nil)
+    |> send_option(:echo, true)
+    |> render(LoginView, "token-expired", %{reason: reason})
+    |> prompt(LoginView, "name", %{})
   end
 
   defp build_character(name) do

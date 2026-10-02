@@ -14,7 +14,31 @@ defmodule Kantele.Character.Stats do
   - `weiwang` 威望
   - `gongxian` 门派贡献（拜师后击杀/任务累积）
   - `shen` 正邪（正数为正道；本期只存不用）
+
+  `stats` 会随 `Kalevala.Meta.Trim` 一起进房间侧角色副本（valid_leave 的
+  `me->query_skill("force") < 500` 这类条件要读技能等级），而房间副本会被送到
+  web 客户端做 JSON 编码（`Kalevala.Websocket.Handler`），所以这里必须有
+  `Jason.Encoder`。`performs` 是 `MapSet`、Jason 编不了，故不列入。
   """
+
+  @derive {Jason.Encoder,
+           only: [
+             :str,
+             :dex,
+             :con,
+             :int,
+             :combat_exp,
+             :potential,
+             :learned_points,
+             :skills,
+             :mapped,
+             :score,
+             :weiwang,
+             :gongxian,
+             :shen,
+             :tattoo,
+             :reborn
+           ]}
 
   defstruct [
     :str,

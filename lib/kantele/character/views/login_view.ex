@@ -70,6 +70,21 @@ defmodule Kantele.Character.LoginView do
     }
   end
 
+  # 角色选择 token 过期/无效（浏览器挂太久）——退回用户名步骤重新登录
+  def render("token-expired", %{reason: reason}) do
+    text =
+      case reason do
+        :expired -> "\nYour character selection expired. Please sign in again.\n"
+        _ -> "\nYour character selection could not be verified. Please sign in again.\n"
+      end
+
+    %EventText{
+      topic: "Login.TokenExpired",
+      data: %{reason: reason},
+      text: text
+    }
+  end
+
   def render("enter-world", %{character: character}) do
     %EventText{
       topic: "Login.EnterWorld",
