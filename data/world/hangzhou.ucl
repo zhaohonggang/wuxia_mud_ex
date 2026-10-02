@@ -5117,3 +5117,141 @@ chats = [
         material = "wood"
       }
     }
+
+# Source: C:/files/git/mud/d/hangzhou/npc/obj/baozi.c
+# Zone: hangzhou
+
+    items "baozi" {
+      name = "百果油包"
+      description = "一个煎得油澄澄、香喷喷的百果油包。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 70
+        weight = 80
+        unit = "个"
+        food = 20
+      }
+    }
+
+# Source: C:/files/git/mud/d/hangzhou/npc/obj/chicken.c
+# Zone: hangzhou
+
+    items "chicken" {
+      name = "叫化童鸡"
+      description = "一只被烤得流油，香味扑鼻的叫化鸡。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 120
+        weight = 200
+        unit = "只"
+        food = 100
+      }
+    }
+
+# Source: C:/files/git/mud/d/hangzhou/npc/obj/fish.c
+# Zone: hangzhou
+
+    items "fish" {
+      name = "西湖醋鱼"
+      description = "一盘清甜可人的西湖醋鱼，用西湖中的金色鲤鱼烧制而成，是西湖第一名菜。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 120
+        weight = 1300
+        unit = "碗"
+        food = 20
+      }
+    }
+
+# Source: C:/files/git/mud/d/hangzhou/npc/obj/geng.c
+# Zone: hangzhou
+
+    items "geng" {
+      name = "桂花鲜栗羹"
+      description = "一碗香气馥郁的桂花鲜栗羹。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 120
+        weight = 80
+        unit = "碗"
+        food = 20
+      }
+    }
+
+# Source: C:/files/git/mud/d/hangzhou/npc/obj/jiuping.c
+# Zone: hangzhou
+
+    items "jiuping" {
+      name = "酒瓶"
+      description = "一个晶莹碧绿的的大酒瓶，装了熏熏醉人的竹叶青。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1600
+        weight = 700
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/d/hangzhou/npc/obj/pork.c
+# Zone: hangzhou
+
+    items "pork" {
+      name = "东坡肉"
+      description = "一碗香喷喷的东坡肉，用文火煨肥猪肉而成，苏东坡在牧守杭州时看到民间吃肉而烧制不得法，遗惠此法至千年以下。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 120
+        weight = 1000
+        unit = "碗"
+        food = 100
+      }
+    }
+
+# Source: C:/files/git/mud/d/hangzhou/npc/obj/shrimp.c
+# Zone: hangzhou
+
+    items "shrimp" {
+      name = "龙井虾仁"
+      description = "酽酽浓浓的一盘龙井虾仁。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 50
+        weight = 1300
+        unit = "碗"
+        food = 20
+      }
+    }

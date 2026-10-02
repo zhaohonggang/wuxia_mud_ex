@@ -7267,3 +7267,201 @@ chats = [
         food = 40
       }
     }
+
+# Source: C:/files/git/mud/d/dali/npc/obj/doupeng.c
+# Zone: dali
+
+    items "doupeng" {
+      name = "斗篷"
+      description = "这是一件绿色宽大的斗篷。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
+    }
+
+# Source: C:/files/git/mud/d/dali/npc/obj/guazi.c
+# Zone: dali
+
+    items "guazi" {
+      name = "对衿褂子"
+      description = "这是一件少数民族常用的对衿褂子。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 350
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 5
+      }
+    }
+
+# Source: C:/files/git/mud/d/dali/npc/obj/huotui.c
+# Zone: dali
+
+    items "huotui" {
+      name = "宣威火腿"
+      description = "这是一块用蜜饯莲子煮过，流着红油的香喷喷的宣威火腿。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 200
+        weight = 280
+        unit = "块"
+        food = 30
+      }
+    }
+
+# Source: C:/files/git/mud/d/dali/npc/obj/kenao.c
+# Zone: dali
+
+    items "kenao" {
+      name = "窄裉袄"
+      description = "这是一件少数民族常用的窄裉袄。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 400
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 5
+      }
+    }
+
+# Source: C:/files/git/mud/d/dali/npc/obj/mixian.c
+# Zone: dali
+
+    items "mixian" {
+      name = "过桥米线"
+      description = "这是一碗热气腾腾的油浸的米粉，正是大理名菜过桥米线。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 80
+        weight = 80
+        unit = "碗"
+        food = 20
+      }
+    }
+
+# Source: C:/files/git/mud/d/dali/npc/obj/puercha.c
+# Zone: dali
+
+    items "puercha" {
+      name = "茶壶"
+      description = "一个用来装茶的大茶壶，大概装得八、九杯的茶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 150
+        weight = 700
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/d/dali/npc/obj/qiguoji.c
+# Zone: dali
+
+    items "qiguoji" {
+      name = "汽锅鸡"
+      description = "这是一锅热气腾腾的汽锅鸡。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 200
+        weight = 280
+        unit = "锅"
+        food = 40
+      }
+    }
+
+# Source: C:/files/git/mud/d/dali/npc/obj/qun.c
+# Zone: dali
+
+    items "qun" {
+      name = "白纱挑线镶边裙"
+      description = "这是一件当地土著常用的白纱挑线镶边裙。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 250
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/dali/npc/obj/shoes.c
+# Zone: dali
+
+    items "shoes" {
+      name = "绣花小鞋"
+      description = "绣花小鞋"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 900
+        unit = "双"
+        material = "cloth"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/dali/npc/obj/yeerba.c
+# Zone: dali
+
+    items "yeerba" {
+      name = "叶儿粑"
+      description = "这是一块飘着清香的叶ㄦ粑。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 100
+        weight = 80
+        unit = "碗"
+        food = 20
+      }
+    }

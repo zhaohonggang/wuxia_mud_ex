@@ -3665,3 +3665,65 @@ chats = [
         armor = 3
       }
     }
+
+# Source: C:/files/git/mud/d/wudu/npc/obj/baozi.c
+# Zone: wudu
+
+    items "baozi" {
+      name = "肉包子"
+      description = "一个香喷喷的肉包子,不知道是用什么肉做的。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 20
+        weight = 80
+        unit = "个"
+        food = 20
+      }
+    }
+
+# Source: C:/files/git/mud/d/wudu/npc/obj/flagon.c
+# Zone: wudu
+
+    items "flagon" {
+      name = "酒壶"
+      description = "一个用来装烧酒的大酒壶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/d/wudu/npc/obj/jitui.c
+# Zone: wudu
+
+    items "jitui" {
+      name = "烤山鸡腿"
+      description = "一枝烤得香喷喷的山鸡腿。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 1
+        skill_type = "hammer"
+        value = 80
+        weight = 350
+        unit = "根"
+        material = "bone"
+        food = 15
+      }
+    }

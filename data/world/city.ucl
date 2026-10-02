@@ -3661,56 +3661,56 @@ chats = [
   }
 
   goods = [
-    { id = items.chaihu.id },
-    { id = items.chenpi.id },
-    { id = items.chongcao.id },
-    { id = items.chuanwu.id },
-    { id = items.dahuang.id },
-    { id = items.dangui.id },
-    { id = items.duhuo.id },
-    { id = items.fangfeng.id },
-    { id = items.fuzi.id },
-    { id = items.gsliu.id },
-    { id = items.guiwei.id },
-    { id = items.hafen.id },
-    { id = items.heshouwu.id },
-    { id = items.honghua.id },
-    { id = items.huangqi.id },
-    { id = items.hugu.id },
-    { id = items.juhua.id },
-    { id = items.lanhua.id },
-    { id = items.lingxian.id },
-    { id = items.lingzhi.id },
-    { id = items.lurong.id },
-    { id = items.mahuang.id },
-    { id = items.moyao.id },
-    { id = items.niuhuang.id },
-    { id = items.niuxi.id },
-    { id = items.qianjinzi.id },
-    { id = items.renshen.id },
-    { id = items.ruxiang.id },
-    { id = items.shadan.id },
-    { id = items.shancha.id },
-    { id = items.shanjia.id },
-    { id = items.shengdi.id },
-    { id = items.shenglg.id },
-    { id = items.sumu.id },
-    { id = items.taoxian.id },
-    { id = items.tenghuang.id },
-    { id = items.tianqi.id },
-    { id = items.tugou.id },
-    { id = items.wulingzhi.id },
-    { id = items.xiefen.id },
-    { id = items.xijiao.id },
-    { id = items.xiongdan.id },
-    { id = items.xionghuang.id },
-    { id = items.xuejie.id },
-    { id = items.xuelian.id },
-    { id = items.yanwo.id },
-    { id = items.yjhua.id },
-    { id = items.yuanzhi.id },
-    { id = items.zihua.id },
-    { id = items.zzfen.id },
+    { id = clone_lib.items.chaihu.id },
+    { id = clone_lib.items.chenpi.id },
+    { id = clone_lib.items.chongcao.id },
+    { id = clone_lib.items.chuanwu.id },
+    { id = clone_lib.items.dahuang.id },
+    { id = clone_lib.items.dangui.id },
+    { id = clone_lib.items.duhuo.id },
+    { id = clone_lib.items.fangfeng.id },
+    { id = clone_lib.items.fuzi.id },
+    { id = clone_lib.items.gsliu.id },
+    { id = clone_lib.items.guiwei.id },
+    { id = clone_lib.items.hafen.id },
+    { id = clone_lib.items.heshouwu.id },
+    { id = clone_lib.items.honghua.id },
+    { id = clone_lib.items.huangqi.id },
+    { id = clone_lib.items.hugu.id },
+    { id = clone_lib.items.juhua.id },
+    { id = clone_lib.items.lanhua.id },
+    { id = clone_lib.items.lingxian.id },
+    { id = clone_lib.items.lingzhi.id },
+    { id = clone_lib.items.lurong.id },
+    { id = clone_lib.items.mahuang.id },
+    { id = clone_lib.items.moyao.id },
+    { id = clone_lib.items.niuhuang.id },
+    { id = clone_lib.items.niuxi.id },
+    { id = clone_lib.items.qianjinzi.id },
+    { id = clone_lib.items.renshen.id },
+    { id = clone_lib.items.ruxiang.id },
+    { id = clone_lib.items.shadan.id },
+    { id = clone_lib.items.shancha.id },
+    { id = clone_lib.items.shanjia.id },
+    { id = clone_lib.items.shengdi.id },
+    { id = clone_lib.items.shenglg.id },
+    { id = clone_lib.items.sumu.id },
+    { id = clone_lib.items.taoxian.id },
+    { id = clone_lib.items.tenghuang.id },
+    { id = clone_lib.items.tianqi.id },
+    { id = clone_lib.items.tugou.id },
+    { id = clone_lib.items.wulingzhi.id },
+    { id = clone_lib.items.xiefen.id },
+    { id = clone_lib.items.xijiao.id },
+    { id = clone_lib.items.xiongdan.id },
+    { id = clone_lib.items.xionghuang.id },
+    { id = clone_lib.items.xuejie.id },
+    { id = clone_lib.items.xuelian.id },
+    { id = clone_lib.items.yanwo.id },
+    { id = clone_lib.items.yjhua.id },
+    { id = clone_lib.items.yuanzhi.id },
+    { id = clone_lib.items.zihua.id },
+    { id = clone_lib.items.zzfen.id },
     { id = shenlong.items.hua4.id }
   ]
 
@@ -6042,5 +6042,1078 @@ direction = ~
         weight = 200000
         unit = "张"
         material = "stone"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/shanzi/bajiao-shan.c
+# Zone: city
+
+    items "bajiao_shan" {
+      name = "芭蕉扇"
+      description = "芭蕉扇蒲扇，轻便风大，价格低廉。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 15
+        skill_type = "dagger"
+        value = 1000
+        weight = 200
+        unit = "把"
+        material = "wood"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/baozi.c
+# Zone: city
+
+    items "baozi" {
+      name = "包子"
+      description = "一个香喷喷的肉包子。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 50
+        weight = 80
+        unit = "个"
+        food = 20
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/beixin.c
+# Zone: city
+
+    items "beixin" {
+      name = "皮背心"
+      description = "皮背心"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 4000
+        weight = 1000
+        unit = "件"
+        material = "leather"
+        armor = 6
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/belt.c
+# Zone: city
+
+    items "belt" {
+      name = "软金束带"
+      description = "软金束带"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 1000
+        unit = "条"
+        material = "cloth"
+        armor = 4
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/boots.c
+# Zone: city
+
+    items "boots" {
+      name = "羊皮靴"
+      description = "羊皮靴"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 800
+        weight = 1000
+        unit = "双"
+        material = "leather"
+        armor = 2
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/bu-shoes.c
+# Zone: city
+
+    items "bu_shoes" {
+      name = "布鞋"
+      description = "布鞋"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 1000
+        unit = "双"
+        material = "cloth"
+        armor = 2
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/caoxie.c
+# Zone: city
+
+    items "caoxie" {
+      name = "草鞋"
+      description = "这是一双草编的草鞋，用以保护足部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 200
+        unit = "双"
+        material = "wood"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/shanzi/chouwu-shan.c
+# Zone: city
+
+    items "chouwu_shan" {
+      name = "绸舞扇"
+      description = "这是一把丝绸扇面，彩绘花草，舞动时绚丽多彩的绸舞扇。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 15
+        skill_type = "dagger"
+        value = 1000
+        weight = 200
+        unit = "把"
+        material = "wood"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/cloth.c
+# Zone: city
+
+    items "cloth" {
+      name = "浅蓝色马褂"
+      description = "浅蓝色马褂"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 2
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/color-dress.c
+# Zone: city
+
+    items "color_dress" {
+      name = "五彩绣花裙"
+      description = "五彩绣花裙"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/cycle.c
+# Zone: city
+
+    items "cycle" {
+      name = "武者项圈"
+      description = "这是一串铁质的项链，用以保护颈部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1800
+        weight = 1000
+        unit = "串"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/fu-cloth.c
+# Zone: city
+
+    items "fu_cloth" {
+      name = "富贵团金褂"
+      description = "富贵团金褂"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 2
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/gui-dress.c
+# Zone: city
+
+    items "gui_dress" {
+      name = "桂花浮玉衫"
+      description = "桂花浮玉衫"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/hat.c
+# Zone: city
+
+    items "hat" {
+      name = "缨子帽"
+      description = "缨子帽"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 1000
+        unit = "顶"
+        material = "cloth"
+        armor = 4
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/hdjiudai.c
+# Zone: city
+
+    items "hdjiudai" {
+      name = "花雕酒袋"
+      description = "一个用来装高级花雕酒的大酒袋。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 120
+        weight = 700
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/huwan.c
+# Zone: city
+
+    items "huwan" {
+      name = "护腕"
+      description = "这是一件布质的护腕，用以保护腕部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1300
+        weight = 500
+        unit = "双"
+        material = "cloth"
+        armor = 5
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/huyao.c
+# Zone: city
+
+    items "huyao" {
+      name = "护腰"
+      description = "这是一条皮质的护腰，用以保护腰部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1600
+        weight = 500
+        unit = "条"
+        material = "leather"
+        armor = 5
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/jade-belt.c
+# Zone: city
+
+    items "jade_belt" {
+      name = "蓝宝石腰带"
+      description = "蓝宝石腰带"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 3000
+        weight = 1000
+        unit = "条"
+        material = "cloth"
+        armor = 4
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/jinsijia.c
+# Zone: city
+
+    items "jinsijia" {
+      name = "金丝甲"
+      description = "金丝甲"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 30000
+        weight = 10000
+        unit = "件"
+        material = "leather"
+        armor = 100
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/jitui.c
+# Zone: city
+
+    items "jitui" {
+      name = "烤鸡腿"
+      description = "一枝烤得香喷喷的鸡腿。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 1
+        skill_type = "hammer"
+        value = 80
+        weight = 350
+        unit = "根"
+        material = "bone"
+        food = 15
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/jiudai.c
+# Zone: city
+
+    items "jiudai" {
+      name = "牛皮酒袋"
+      description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/kaoya.c
+# Zone: city
+
+    items "kaoya" {
+      name = "烤鸭"
+      description = "一只肥得流油的北京烤鸭。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "只"
+        food = 60
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/liu-dress.c
+# Zone: city
+
+    items "liu_dress" {
+      name = "翠柳鹦鹉服"
+      description = "翠柳鹦鹉服"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/mabudai.c
+# Zone: city
+
+    items "mabudai" {
+      name = "麻布袋"
+      description = "一只用麻布织成的袋子，好像可以装东西。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 500
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/marry-dress.c
+# Zone: city
+
+    items "marry_dress" {
+      name = "结婚礼服"
+      description = "结婚礼服"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 20000
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/mini-dress.c
+# Zone: city
+
+    items "mini_dress" {
+      name = "彩缎紧身袄"
+      description = "彩缎紧身袄"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/moon-dress.c
+# Zone: city
+
+    items "moon_dress" {
+      name = "琼花皎月裳"
+      description = "琼花皎月裳"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/peanut.c
+# Zone: city
+
+    items "peanut" {
+      name = "五香花生"
+      description = "一碟香喷喷的花生米。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 30
+        weight = 60
+        unit = "碟"
+        food = 30
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/pink-dress.c
+# Zone: city
+
+    items "pink_dress" {
+      name = "梨花飘雪裳"
+      description = "梨花飘雪裳"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/pixue.c
+# Zone: city
+
+    items "pixue" {
+      name = "皮靴"
+      description = "这是一双用上好牛皮作的皮靴，据说由上海进口。用以保护足部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 800
+        unit = "双"
+        material = "leather"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/qi-dress.c
+# Zone: city
+
+    items "qi_dress" {
+      name = "七彩霞云衣"
+      description = "七彩霞云衣"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/red-dress.c
+# Zone: city
+
+    items "red_dress" {
+      name = "霓红连衣裙"
+      description = "霓红连衣裙"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/scarf.c
+# Zone: city
+
+    items "scarf" {
+      name = "一字逍遥巾"
+      description = "一字逍遥巾"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 1000
+        unit = "条"
+        material = "cloth"
+        armor = 4
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/sha-dress.c
+# Zone: city
+
+    items "sha_dress" {
+      name = "梨芯淡烟纱"
+      description = "梨芯淡烟纱"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/shanzi/shan-book.c
+# Zone: city
+
+    items "shan_book" {
+      name = "「扇赏」"
+      description = "这是一本介绍扇的小册，没事可以看看(read)。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 200
+        unit = "本"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/shield.c
+# Zone: city
+
+    items "shield" {
+      name = "牛皮盾"
+      description = "牛皮盾"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1200
+        weight = 7000
+        unit = "面"
+        material = "leather"
+        armor = 5
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/shoes.c
+# Zone: city
+
+    items "shoes" {
+      name = "绣花鞋"
+      description = "绣花鞋"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 1000
+        unit = "双"
+        material = "cloth"
+        armor = 2
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/shoutao.c
+# Zone: city
+
+    items "shoutao" {
+      name = "皮手套"
+      description = "这是一双皮手套，上面有硬物刻勒的痕迹。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 4000
+        weight = 500
+        unit = "双"
+        material = "leather"
+        armor = 3
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/surcoat.c
+# Zone: city
+
+    items "surcoat" {
+      name = "肚带"
+      description = "这是一件皮质的肚带，用以保护腹部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 800
+        weight = 500
+        unit = "条"
+        material = "leather"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/shanzi/tanxiang-shan.c
+# Zone: city
+
+    items "tanxiang_shan" {
+      name = "檀香扇"
+      description = "这是一把由紫檀木刻制的香木扇，芬芳馥郁。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 15
+        skill_type = "dagger"
+        value = 3000
+        weight = 200
+        unit = "把"
+        material = "wood"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/tieshou.c
+# Zone: city
+
+    items "tieshou" {
+      name = "铁手掌"
+      description = "这是一块铁质的手掌形护具，用以保护手掌。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 900
+        weight = 2000
+        unit = "块"
+        material = "steel"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/tofu.c
+# Zone: city
+
+    items "tofu" {
+      name = "翡翠豆腐"
+      description = "一块水灵灵的大豆腐，嫩的令人不禁想到阿庆嫂的脸蛋儿。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 40
+        weight = 40
+        unit = "块"
+        food = 50
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/toukui.c
+# Zone: city
+
+    items "toukui" {
+      name = "头盔"
+      description = "这是一顶铁质的肚带，用以保护头部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 2000
+        unit = "顶"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/shanzi/tuan-shan.c
+# Zone: city
+
+    items "tuan_shan" {
+      name = "团扇"
+      description = "这是一把用上好绢丝制作的团宫，绣着精细的花鸟。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 15
+        skill_type = "dagger"
+        value = 3000
+        weight = 200
+        unit = "把"
+        material = "wood"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/xian-cloth.c
+# Zone: city
+
+    items "xian_cloth" {
+      name = "玄色紧身袄"
+      description = "玄色紧身袄"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 2
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/xiu-cloth.c
+# Zone: city
+
+    items "xiu_cloth" {
+      name = "淡烟秀才装"
+      description = "淡烟秀才装"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 2
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/xiu-scarf.c
+# Zone: city
+
+    items "xiu_scarf" {
+      name = "绣花小方巾"
+      description = "绣花小方巾"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 1000
+        unit = "条"
+        material = "cloth"
+        armor = 4
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/yan-dress.c
+# Zone: city
+
+    items "yan_dress" {
+      name = "艳露凝香衣"
+      description = "艳露凝香衣"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/shanzi/yuban-shan.c
+# Zone: city
+
+    items "yuban_shan" {
+      name = "玉版扇"
+      description = "这是一把由苍山巨竹雕琢为扇骨，色白润如玉，因此叫做玉版扇。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 15
+        skill_type = "dagger"
+        value = 5000
+        weight = 200
+        unit = "把"
+        material = "wood"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/shanzi/yumao-shan.c
+# Zone: city
+
+    items "yumao_shan" {
+      name = "羽毛扇"
+      description = "这是一把用雪白色的鹤翅硬翎制作的羽毛扇。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 15
+        skill_type = "dagger"
+        value = 1000
+        weight = 200
+        unit = "把"
+        material = "wood"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/shanzi/zhe-shan.c
+# Zone: city
+
+    items "zhe_shan" {
+      name = "折扇"
+      description = "这是一把做工精巧的纸面折扇。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 15
+        skill_type = "dagger"
+        value = 1000
+        weight = 200
+        unit = "把"
+        material = "wood"
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/obj/zhitao.c
+# Zone: city
+
+    items "zhitao" {
+      name = "指套"
+      description = "这是五个环环相链的铁指套，前端锋利如刃，既可暗藏掌中伤人，又可保护指关节。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 6000
+        weight = 500
+        unit = "副"
+        material = "steel"
+        armor = 5
+      }
+    }
+
+# Source: C:/files/git/mud/d/city/npc/cloth/zi-dress.c
+# Zone: city
+
+    items "zi_dress" {
+      name = "紫绫纱湘裙"
+      description = "紫绫纱湘裙"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 700
+        unit = "件"
+        material = "cloth"
+        armor = 3
       }
     }

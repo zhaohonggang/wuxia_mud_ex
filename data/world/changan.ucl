@@ -5718,3 +5718,853 @@ chats = [
       name = "醉熏风"
       description = "一壶巴蜀佳酿醉熏风，甜美醇绵。"
     }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/bai-chahua.c
+# Zone: changan
+
+    items "bai_chahua" {
+      name = "白茶花"
+      description = "冰清玉洁的白茶花。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 6
+        weight = 10
+        unit = "朵"
+        material = "plant"
+        armor = 0
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/baijie.c
+# Zone: changan
+
+    items "baijie" {
+      name = "白金戒指"
+      description = "白金戒指"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        weight = 400
+        unit = "个"
+        material = "gold"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/baijiu.c
+# Zone: changan
+
+    items "baijiu" {
+      name = "粗劣酒瓶"
+      description = "一个用来装酒的酒瓶，能装两，三斤白酒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 800
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/bao1.c
+# Zone: changan
+
+    items "bao1" {
+      name = "猪肉包子"
+      description = "一个香喷喷、热腾腾的猪肉灌汤包。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 25
+        weight = 80
+        unit = "个"
+        food = 40
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/bao2.c
+# Zone: changan
+
+    items "bao2" {
+      name = "海鲜包子"
+      description = "一个香喷喷、热腾腾的海鲜灌汤包。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 25
+        weight = 80
+        unit = "个"
+        food = 40
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/bao3.c
+# Zone: changan
+
+    items "bao3" {
+      name = "素菜包子"
+      description = "一个香喷喷、热腾腾的素菜灌汤包。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 25
+        weight = 80
+        unit = "个"
+        food = 40
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/baojie.c
+# Zone: changan
+
+    items "baojie" {
+      name = "宝石戒指"
+      description = "宝石戒指"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        weight = 400
+        unit = "个"
+        material = "gold"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/beixin.c
+# Zone: changan
+
+    items "beixin" {
+      name = "皮背心"
+      description = "皮背心"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 4000
+        weight = 1000
+        unit = "件"
+        material = "leather"
+        armor = 6
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/blade.c
+# Zone: changan
+
+    items "blade" {
+      name = "钢刀"
+      description = "这是一寻常的单刀，份量大约六、七斤重。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 25
+        skill_type = "blade"
+        value = 500
+        weight = 4000
+        unit = "柄"
+        material = "iron"
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/book_blade.c
+# Zone: changan
+
+    items "book_blade" {
+      name = "〖刀法简介〗"
+      description = "〖刀法简介〗"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 600
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "blade"
+          max_skill = 20
+          exp_required = 100
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/book_unarmed.c
+# Zone: changan
+
+    items "book_unarmed" {
+      name = "〖拳法简介〗"
+      description = "〖拳法简介〗"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 600
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "unarmed"
+          max_skill = 20
+          exp_required = 100
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/changjian.c
+# Zone: changan
+
+    items "changjian" {
+      name = "长剑"
+      description = "这是一柄长长的精钢剑，剑口锋利无比。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 25
+        skill_type = "sword"
+        value = 200
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/gourou.c
+# Zone: changan
+
+    items "gourou" {
+      name = "红烧狗肉"
+      description = "一碗香喷喷的红烧狗肉"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 100
+        weight = 300
+        unit = "碗"
+        food = 100
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/hamigua.c
+# Zone: changan
+
+    items "hamigua" {
+      name = "哈密瓜"
+      description = "一颗散发清香的哈密瓜。�n"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 120
+        weight = 80
+        unit = "颗"
+        food = 30
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/hammer.c
+# Zone: changan
+
+    items "hammer" {
+      name = "铁锤"
+      description = "这是一把沉重的铁锤，打造的相当坚实。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 15
+        skill_type = "hammer"
+        value = 300
+        weight = 8000
+        unit = "把"
+        material = "iron"
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/hei-mudan.c
+# Zone: changan
+
+    items "hei_mudan" {
+      name = "黑牡丹"
+      description = "清高冷傲的黑牡丹。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 6
+        weight = 10
+        unit = "朵"
+        material = "plant"
+        armor = 0
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/hong-meigui.c
+# Zone: changan
+
+    items "hong_meigui" {
+      name = "红玫瑰"
+      description = "热奔奔放的红玫瑰。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100000
+        weight = 10
+        unit = "朵"
+        material = "plant"
+        armor = 0
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/huang-meigui.c
+# Zone: changan
+
+    items "huang_meigui" {
+      name = "黄玫瑰"
+      description = "含情脉脉的黄玫瑰。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 6
+        weight = 10
+        unit = "朵"
+        material = "plant"
+        armor = 0
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/jinchuang.c
+# Zone: changan
+
+    items "jinchuang" {
+      name = "金创药"
+      description = "这是一包武林人士必备的金创药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        unit = "包"
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/jinjie.c
+# Zone: changan
+
+    items "jinjie" {
+      name = "金戒指"
+      description = "金戒指"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        weight = 400
+        unit = "个"
+        material = "gold"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/jitui.c
+# Zone: changan
+
+    items "jitui" {
+      name = "炸鸡腿"
+      description = "一枝炸得香喷喷的鸡腿。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 1
+        skill_type = "hammer"
+        value = 80
+        weight = 350
+        unit = "根"
+        material = "bone"
+        food = 15
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/jiudai.c
+# Zone: changan
+
+    items "jiudai" {
+      name = "牛皮酒袋"
+      description = "一个用来装竹叶青酒的大酒袋，大概装得八、九升的酒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/juzi.c
+# Zone: changan
+
+    items "juzi" {
+      name = "桔子"
+      description = "一个黄橙橙的桔子。�n"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 100
+        weight = 80
+        unit = "个"
+        food = 20
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/lan-tiane.c
+# Zone: changan
+
+    items "lan_tiane" {
+      name = "蓝天鹅"
+      description = "庄重朴实的蓝天鹅。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 6
+        weight = 10
+        unit = "朵"
+        material = "plant"
+        armor = 0
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/lhjiyu.c
+# Zone: changan
+
+    items "lhjiyu" {
+      name = "罗汉鲫鱼"
+      description = "一盘令人垂涎的罗汉鲫鱼。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 300
+        unit = "盘"
+        food = 30
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/miantang.c
+# Zone: changan
+
+    items "miantang" {
+      name = "面汤"
+      description = "一碗热气腾腾的面汤。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 100
+        weight = 100
+        unit = "碗"
+        food = 10
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/miantiao1.c
+# Zone: changan
+
+    items "miantiao1" {
+      name = "刀削面"
+      description = "一碗热气腾腾的刀削面。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 200
+        weight = 100
+        unit = "碗"
+        food = 35
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/miantiao2.c
+# Zone: changan
+
+    items "miantiao2" {
+      name = "牛肉面"
+      description = "一碗热气腾腾的牛肉面。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 200
+        weight = 100
+        unit = "碗"
+        food = 35
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/miantiao3.c
+# Zone: changan
+
+    items "miantiao3" {
+      name = "排骨面"
+      description = "一碗热气腾腾的面条。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 200
+        weight = 100
+        unit = "碗"
+        food = 35
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/muqin.c
+# Zone: changan
+
+    items "muqin" {
+      name = "木琴"
+      description = "一个平凡的木琴，没有什么特殊之处。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 600
+        unit = "台"
+        material = "wood"
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/neck.c
+# Zone: changan
+
+    items "neck" {
+      name = "白金项圈"
+      description = "白金项圈"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 3500
+        weight = 200
+        unit = "个"
+        material = "gold"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/pingguo.c
+# Zone: changan
+
+    items "pingguo" {
+      name = "苹果"
+      description = "一个大苹果。�n"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 100
+        weight = 80
+        unit = "个"
+        food = 20
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/ring.c
+# Zone: changan
+
+    items "ring" {
+      name = "紫金戒指"
+      description = "紫金戒指"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 100
+        unit = "个"
+        material = "gold"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/shield.c
+# Zone: changan
+
+    items "shield" {
+      name = "牛皮盾"
+      description = "牛皮盾"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1200
+        weight = 7000
+        unit = "面"
+        material = "leather"
+        armor = 5
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/snxiangji.c
+# Zone: changan
+
+    items "snxiangji" {
+      name = "素暖香鸡"
+      description = "一盘令人垂涎的素暖香鸡。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 300
+        unit = "盘"
+        food = 30
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/teapot.c
+# Zone: changan
+
+    items "teapot" {
+      name = "茶壶"
+      description = "一个茶馆卖的茶壶，大概装得几升水。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 30
+        weight = 500
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/wrists.c
+# Zone: changan
+
+    items "wrists" {
+      name = "鎏金腕链"
+      description = "鎏金腕链"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        weight = 200
+        unit = "个"
+        material = "gold"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/yangjing.c
+# Zone: changan
+
+    items "yangjing" {
+      name = "养精丹"
+      description = "养精丹"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        unit = "粒"
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/yinjie.c
+# Zone: changan
+
+    items "yinjie" {
+      name = "银戒指"
+      description = "银戒指"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 400
+        unit = "个"
+        material = "silver"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/zi-luolan.c
+# Zone: changan
+
+    items "zi_luolan" {
+      name = "紫罗兰"
+      description = "高贵典雅的紫罗兰，闻起来还有一股淡淡的香味儿。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 6
+        weight = 10
+        unit = "朵"
+        material = "plant"
+        armor = 0
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/zuanjie.c
+# Zone: changan
+
+    items "zuanjie" {
+      name = "钻石戒指"
+      description = "钻石戒指"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 12000
+        weight = 400
+        unit = "个"
+        material = "diamond"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/changan/npc/obj/zuixunfeng.c
+# Zone: changan
+
+    items "zuixunfeng" {
+      name = "醉熏风"
+      description = "一壶巴蜀佳酿醉熏风，甜美醇绵。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 300
+        unit = "壶"
+      }
+    }

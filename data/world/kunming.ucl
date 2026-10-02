@@ -1599,3 +1599,39 @@ direction = "west"
         unit = "座"
       }
     }
+
+# Source: C:/files/git/mud/d/kunming/npc/obj/wan.c
+# Zone: kunming
+
+    items "wan" {
+      name = "大碗茶"
+      description = "一个粗磁大碗。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 0
+        weight = 50
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/d/kunming/npc/obj/yan.c
+# Zone: kunming
+
+    items "yan" {
+      name = "水烟"
+      description = "这是一卷水烟丝。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10
+        weight = 50
+        unit = "卷"
+      }
+    }

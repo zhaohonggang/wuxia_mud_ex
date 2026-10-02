@@ -1197,3 +1197,107 @@ chats = [
         material = "bamboo"
       }
     }
+
+# Source: C:/files/git/mud/d/village/npc/obj/bottle.c
+# Zone: village
+
+    items "bottle" {
+      name = "水壶"
+      description = "一个不知道用什么动物的皮制成的水壶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/d/village/npc/obj/egg.c
+# Zone: village
+
+    items "egg" {
+      name = "五香茶叶蛋"
+      description = "一颗用五种香料炮制出来的茶叶蛋。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 50
+        weight = 60
+        unit = "颗"
+        food = 50
+      }
+    }
+
+# Source: C:/files/git/mud/d/village/npc/obj/hammer.c
+# Zone: village
+
+    items "hammer" {
+      name = "铁锤"
+      description = "这是一把沈重的铁锤，打造的相当坚实。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 25
+        skill_type = "hammer"
+        value = 300
+        weight = 8000
+        unit = "把"
+        material = "iron"
+      }
+    }
+
+# Source: C:/files/git/mud/d/village/npc/obj/shoes.c
+# Zone: village
+
+    items "shoes" {
+      name = "麻鞋"
+      description = "这是一双麻布鞋，不易大滑，供游人登山使用。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 150
+        weight = 500
+        unit = "双"
+        material = "cloth"
+        armor = 1
+      }
+    }
+
+# Source: C:/files/git/mud/d/village/npc/obj/stick.c
+# Zone: village
+
+    items "stick" {
+      name = "手杖"
+      description = "这是一根爬山用的手杖。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 5
+        skill_type = "staff"
+        value = 100
+        weight = 1000
+        unit = "根"
+        material = "wood"
+      }
+    }

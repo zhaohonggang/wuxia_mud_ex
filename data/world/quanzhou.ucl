@@ -1173,3 +1173,43 @@ item_desc = {
         armor = 1
       }
     }
+
+# Source: C:/files/git/mud/d/quanzhou/npc/obj/yadan.c
+# Zone: quanzhou
+
+    items "yadan" {
+      name = "臭鸭蛋"
+      description = "臭鸭蛋闻着臭，吃着香。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 80
+        weight = 70
+        unit = "颗"
+        food = 80
+      }
+    }
+
+# Source: C:/files/git/mud/d/quanzhou/npc/obj/zongzi.c
+# Zone: quanzhou
+
+    items "zongzi" {
+      name = "粽子"
+      description = "一个香喷喷的肉粽子，包它的粽子叶泛出一股清香。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 100
+        weight = 100
+        unit = "个"
+        food = 50
+      }
+    }

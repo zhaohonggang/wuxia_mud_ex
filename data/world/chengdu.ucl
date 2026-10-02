@@ -2472,3 +2472,149 @@ chats = [
         unit = "只"
       }
     }
+
+# Source: C:/files/git/mud/d/chengdu/npc/obj/baozi.c
+# Zone: chengdu
+
+    items "baozi" {
+      name = "包子"
+      description = "一个香喷喷的肉包子。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 50
+        weight = 80
+        unit = "个"
+        food = 20
+      }
+    }
+
+# Source: C:/files/git/mud/d/chengdu/npc/obj/feihuangshi.c
+# Zone: chengdu
+
+    items "feihuangshi" {
+      name = "飞蝗石"
+      description = "仔细挑选的鹅卵石，大小一致，个个都滴溜溜圆。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 25
+        skill_type = "throwing"
+        value = 0
+        weight = 1
+        unit = "把"
+        material = "stone"
+      }
+    }
+
+# Source: C:/files/git/mud/d/chengdu/npc/obj/flower-leaf.c
+# Zone: chengdu
+
+    items "flower_leaf" {
+      name = "花瓣"
+      description = "新鲜的玫瑰花的花瓣，上面还挂这晶莹的露珠。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 2
+        skill_type = "throwing"
+        value = 0
+        weight = 1
+        unit = "把"
+        material = "wood"
+      }
+    }
+
+# Source: C:/files/git/mud/d/chengdu/npc/obj/jitui.c
+# Zone: chengdu
+
+    items "jitui" {
+      name = "烤鸡腿"
+      description = "一枝烤得香喷喷的鸡腿。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 1
+        skill_type = "hammer"
+        value = 80
+        weight = 350
+        unit = "根"
+        material = "bone"
+        food = 15
+      }
+    }
+
+# Source: C:/files/git/mud/d/chengdu/npc/obj/jiudai.c
+# Zone: chengdu
+
+    items "jiudai" {
+      name = "牛皮酒袋"
+      description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/d/chengdu/npc/obj/tea-leaf.c
+# Zone: chengdu
+
+    items "tea_leaf" {
+      name = "茶叶"
+      description = "才采的新茶，发出一股淡淡的香气。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 1
+        skill_type = "throwing"
+        value = 1
+        weight = 1
+        unit = "把"
+        material = "wood"
+      }
+    }
+
+# Source: C:/files/git/mud/d/chengdu/npc/obj/tielianzi.c
+# Zone: chengdu
+
+    items "tielianzi" {
+      name = "铁莲子"
+      description = "精铁打制的莲子状暗器。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 15
+        skill_type = "throwing"
+        value = 1
+        weight = 1
+        unit = "把"
+        material = "iron"
+      }
+    }

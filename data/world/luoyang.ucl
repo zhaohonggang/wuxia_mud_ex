@@ -4542,3 +4542,247 @@ chats = [
       name = "赤金鞭"
       description = ""
     }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/guo1.c
+# Zone: luoyang
+
+    items "guo1" {
+      name = "苹果"
+      description = "苹果"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 50
+        weight = 100
+        unit = "个"
+        food = 5
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/guo2.c
+# Zone: luoyang
+
+    items "guo2" {
+      name = "橘子"
+      description = "橘子"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 50
+        weight = 100
+        unit = "个"
+        food = 5
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/guo3.c
+# Zone: luoyang
+
+    items "guo3" {
+      name = "香蕉"
+      description = "香蕉"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 50
+        weight = 100
+        unit = "根"
+        food = 5
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/guo4.c
+# Zone: luoyang
+
+    items "guo4" {
+      name = "荔枝"
+      description = "荔枝"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 50
+        weight = 100
+        unit = "串"
+        food = 5
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/guo5.c
+# Zone: luoyang
+
+    items "guo5" {
+      name = "西瓜"
+      description = "西瓜"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 100
+        weight = 100
+        unit = "个"
+        food = 20
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/taoci.c
+# Zone: luoyang
+
+    items "taoci" {
+      name = "翡翠鼻烟壶"
+      description = "陶瓷烧得便如翡翠一般，以此陶瓷所制的鼻烟壶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 5000
+        unit = "只"
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/taoci2.c
+# Zone: luoyang
+
+    items "taoci2" {
+      name = "碧玉瓷马"
+      description = "经唐三彩烧制的碧玉陶瓷马，非常的昂贵。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 5000
+        unit = "只"
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/taoci3.c
+# Zone: luoyang
+
+    items "taoci3" {
+      name = "淡朱菩提树"
+      description = "经唐三彩烧制的淡朱菩提树，非常的昂贵。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 5000
+        unit = "只"
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/taoci4.c
+# Zone: luoyang
+
+    items "taoci4" {
+      name = "八宝莲花座"
+      description = "经唐三彩烧制的八宝莲花座，非常的昂贵。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 5000
+        unit = "只"
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/taoci5.c
+# Zone: luoyang
+
+    items "taoci5" {
+      name = "玲珑飞天佩"
+      description = "经唐三彩烧制的玲珑飞天佩，非常的昂贵。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 5000
+        unit = "只"
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/taoci6.c
+# Zone: luoyang
+
+    items "taoci6" {
+      name = "白瓷观音像"
+      description = "经唐三彩烧制的白瓷观音像，非常的昂贵。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 5000
+        unit = "只"
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/taoci7.c
+# Zone: luoyang
+
+    items "taoci7" {
+      name = "七窍墨云斗"
+      description = "经唐三彩烧制的七窍墨云斗，非常的昂贵。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 5000
+        unit = "只"
+      }
+    }
+
+# Source: C:/files/git/mud/d/luoyang/npc/obj/taoci8.c
+# Zone: luoyang
+
+    items "taoci8" {
+      name = "碧海青天爵"
+      description = "经唐三彩烧制的碧海青天爵，非常的昂贵。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 5000
+        unit = "只"
+      }
+    }

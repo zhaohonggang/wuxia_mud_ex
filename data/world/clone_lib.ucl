@@ -1,0 +1,906 @@
+# 标准库物品：原 LPC /clone 下的物件在 mud/d 转换中无处落放，
+# 集中放在本区，商人跨区引用（loader.dereference 支持 <区>.items.<名>.id）。
+
+zones "clone_lib" {
+  name = "标准库"
+}
+
+# Source: C:/files/git/mud/clone/herb/chaihu.c
+# Zone: clone_lib
+
+    items "chaihu" {
+      name = "柴胡"
+      description = "柴胡是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 4000
+        weight = 60
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/chenpi.c
+# Zone: clone_lib
+
+    items "chenpi" {
+      name = "陈皮"
+      description = "陈皮是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10
+        weight = 20
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/chongcao.c
+# Zone: clone_lib
+
+    items "chongcao" {
+      name = "东虫夏草"
+      description = "东为虫，夏为草。乃是极为名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        weight = 85
+        unit = "根"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/chuanwu.c
+# Zone: clone_lib
+
+    items "chuanwu" {
+      name = "川乌"
+      description = "川乌是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 50
+        unit = "根"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/dahuang.c
+# Zone: clone_lib
+
+    items "dahuang" {
+      name = "大黄"
+      description = "大黄是颇为名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 7000
+        weight = 100
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/dangui.c
+# Zone: clone_lib
+
+    items "dangui" {
+      name = "当归"
+      description = "当归是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 70
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/duhuo.c
+# Zone: clone_lib
+
+    items "duhuo" {
+      name = "独活"
+      description = "独活是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 4000
+        weight = 50
+        unit = "根"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/fangfeng.c
+# Zone: clone_lib
+
+    items "fangfeng" {
+      name = "防风"
+      description = "防风是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        weight = 40
+        unit = "片"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/fuzi.c
+# Zone: clone_lib
+
+    items "fuzi" {
+      name = "附子"
+      description = "附子是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 20
+        unit = "粒"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/gsliu.c
+# Zone: clone_lib
+
+    items "gsliu" {
+      name = "干石榴"
+      description = "干石榴是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 75
+        unit = "片"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/guiwei.c
+# Zone: clone_lib
+
+    items "guiwei" {
+      name = "归尾"
+      description = "归尾是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 3000
+        weight = 50
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/hafen.c
+# Zone: clone_lib
+
+    items "hafen" {
+      name = "蛤粉"
+      description = "蛤粉是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        weight = 50
+        unit = "包"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/heshouwu.c
+# Zone: clone_lib
+
+    items "heshouwu" {
+      name = "何首乌"
+      description = "何首乌是颇为名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        weight = 85
+        unit = "根"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/honghua.c
+# Zone: clone_lib
+
+    items "honghua" {
+      name = "红花"
+      description = "红花是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 80
+        weight = 20
+        unit = "朵"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/huangqi.c
+# Zone: clone_lib
+
+    items "huangqi" {
+      name = "黄芪"
+      description = "黄芪是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        weight = 35
+        unit = "根"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/hugu.c
+# Zone: clone_lib
+
+    items "hugu" {
+      name = "虎骨"
+      description = "成年虎的骨头，药性强烈，是非常名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 12000
+        weight = 100
+        unit = "根"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/juhua.c
+# Zone: clone_lib
+
+    items "juhua" {
+      name = "菊花"
+      description = "菊花是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 60
+        weight = 20
+        unit = "朵"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/lanhua.c
+# Zone: clone_lib
+
+    items "lanhua" {
+      name = "兰花"
+      description = "兰花是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 20
+        unit = "朵"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/lingxian.c
+# Zone: clone_lib
+
+    items "lingxian" {
+      name = "灵仙"
+      description = "灵仙是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        weight = 40
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/lingzhi.c
+# Zone: clone_lib
+
+    items "lingzhi" {
+      name = "灵芝"
+      description = "灵芝是颇为名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 20000
+        weight = 70
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/lurong.c
+# Zone: clone_lib
+
+    items "lurong" {
+      name = "鹿茸"
+      description = "雄鹿的茸角，可以入药，非常的名贵。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 8000
+        weight = 150
+        unit = "根"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/mahuang.c
+# Zone: clone_lib
+
+    items "mahuang" {
+      name = "麻黄"
+      description = "麻黄是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 50
+        unit = "包"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/moyao.c
+# Zone: clone_lib
+
+    items "moyao" {
+      name = "没药"
+      description = "没药是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 50
+        unit = "根"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/niuhuang.c
+# Zone: clone_lib
+
+    items "niuhuang" {
+      name = "牛黄"
+      description = "牛黄是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 60
+        unit = "颗"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/niuxi.c
+# Zone: clone_lib
+
+    items "niuxi" {
+      name = "牛膝"
+      description = "牛膝是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 50
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/qianjinzi.c
+# Zone: clone_lib
+
+    items "qianjinzi" {
+      name = "千金子"
+      description = "千金子是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 3000
+        weight = 20
+        unit = "颗"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/renshen.c
+# Zone: clone_lib
+
+    items "renshen" {
+      name = "人参"
+      description = "人参是颇为名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        weight = 90
+        unit = "根"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/ruxiang.c
+# Zone: clone_lib
+
+    items "ruxiang" {
+      name = "乳香"
+      description = "乳香是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        weight = 50
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/shadan.c
+# Zone: clone_lib
+
+    items "shadan" {
+      name = "鲨胆"
+      description = "海中鲨鱼的胆脏，是非常名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        weight = 35
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/shancha.c
+# Zone: clone_lib
+
+    items "shancha" {
+      name = "山茶"
+      description = "山茶是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 20
+        unit = "朵"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/shanjia.c
+# Zone: clone_lib
+
+    items "shanjia" {
+      name = "山甲"
+      description = "山甲是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 60
+        unit = "片"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/shengdi.c
+# Zone: clone_lib
+
+    items "shengdi" {
+      name = "生地"
+      description = "生地是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 60
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/shenglg.c
+# Zone: clone_lib
+
+    items "shenglg" {
+      name = "生龙骨"
+      description = "海马的骨络，乃是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 4000
+        weight = 120
+        unit = "根"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/sumu.c
+# Zone: clone_lib
+
+    items "sumu" {
+      name = "苏木"
+      description = "苏木是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        weight = 60
+        unit = "根"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/taoxian.c
+# Zone: clone_lib
+
+    items "taoxian" {
+      name = "桃仙"
+      description = "桃仙是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        weight = 40
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/tenghuang.c
+# Zone: clone_lib
+
+    items "tenghuang" {
+      name = "藤黄"
+      description = "藤黄是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        weight = 50
+        unit = "包"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/tianqi.c
+# Zone: clone_lib
+
+    items "tianqi" {
+      name = "田七"
+      description = "田七是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 400
+        weight = 55
+        unit = "根"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/tugou.c
+# Zone: clone_lib
+
+    items "tugou" {
+      name = "土狗"
+      description = "土狗是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 8000
+        weight = 80
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/wulingzhi.c
+# Zone: clone_lib
+
+    items "wulingzhi" {
+      name = "五灵脂"
+      description = "五灵脂是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        weight = 100
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/xiefen.c
+# Zone: clone_lib
+
+    items "xiefen" {
+      name = "蝎粉"
+      description = "蝎粉是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 35
+        unit = "包"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/xijiao.c
+# Zone: clone_lib
+
+    items "xijiao" {
+      name = "犀角"
+      description = "犀牛的角，药性强烈，是名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        weight = 35
+        unit = "根"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/xiongdan.c
+# Zone: clone_lib
+
+    items "xiongdan" {
+      name = "熊胆"
+      description = "这是一副新鲜的熊胆，颇具药力。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 15000
+        weight = 200
+        unit = "副"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/xionghuang.c
+# Zone: clone_lib
+
+    items "xionghuang" {
+      name = "雄黄"
+      description = "药性极强的中药药材，带在身上可以防止蛇虫及身。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 30
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/xuejie.c
+# Zone: clone_lib
+
+    items "xuejie" {
+      name = "血竭"
+      description = "血竭是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 40
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/xuelian.c
+# Zone: clone_lib
+
+    items "xuelian" {
+      name = "雪莲"
+      description = "雪莲是颇为名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 30000
+        weight = 40
+        unit = "朵"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/yanwo.c
+# Zone: clone_lib
+
+    items "yanwo" {
+      name = "燕窝"
+      description = "雪燕在峭壁所制的窝巢，乃是极为名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50000
+        weight = 35
+        unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/yjhua.c
+# Zone: clone_lib
+
+    items "yjhua" {
+      name = "洋金花"
+      description = "洋金花是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 400
+        weight = 20
+        unit = "朵"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/yuanzhi.c
+# Zone: clone_lib
+
+    items "yuanzhi" {
+      name = "远志"
+      description = "远志是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 3000
+        weight = 75
+        unit = "根"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/zihua.c
+# Zone: clone_lib
+
+    items "zihua" {
+      name = "紫花"
+      description = "紫花是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 20
+        unit = "朵"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/herb/zzfen.c
+# Zone: clone_lib
+
+    items "zzfen" {
+      name = "珍珠粉"
+      description = "珍珠磨成的粉末，药性温和，亦有养颜之功。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        weight = 30
+        unit = "包"
+      }
+    }

@@ -1725,3 +1725,43 @@ item_desc = {
       name = "羊肉泡馍"
       description = "一碗香喷喷的羊肉泡馍。"
     }
+
+# Source: C:/files/git/mud/d/lingzhou/npc/obj/kaoyangtui.c
+# Zone: lingzhou
+
+    items "kaoyangtui" {
+      name = "烤羊腿"
+      description = "一条香喷喷的烤羊腿。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 100
+        weight = 500
+        unit = "碗"
+        food = 30
+      }
+    }
+
+# Source: C:/files/git/mud/d/lingzhou/npc/obj/paomo.c
+# Zone: lingzhou
+
+    items "paomo" {
+      name = "羊肉泡馍"
+      description = "一碗香喷喷的羊肉泡馍。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 150
+        weight = 300
+        unit = "碗"
+        food = 40
+      }
+    }

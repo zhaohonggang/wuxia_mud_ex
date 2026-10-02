@@ -1946,3 +1946,81 @@ direction = ~
         armor = 1
       }
     }
+
+# Source: C:/files/git/mud/d/fuzhou/npc/obj/fotiaoqiang.c
+# Zone: fuzhou
+
+    items "fotiaoqiang" {
+      name = "佛跳墙"
+      description = "一碗香喷喷的佛跳墙，是福建第一名菜。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 500
+        weight = 1000
+        unit = "碗"
+        food = 100
+      }
+    }
+
+# Source: C:/files/git/mud/d/fuzhou/npc/obj/jiuping.c
+# Zone: fuzhou
+
+    items "jiuping" {
+      name = "酒瓶"
+      description = "一个晶莹碧绿的的大酒瓶，装了熏熏醉人的福建老酒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 700
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/d/fuzhou/npc/obj/yadan.c
+# Zone: fuzhou
+
+    items "yadan" {
+      name = "臭鸭蛋"
+      description = "臭鸭蛋闻着臭，吃着香。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 80
+        weight = 70
+        unit = "颗"
+        food = 80
+      }
+    }
+
+# Source: C:/files/git/mud/d/fuzhou/npc/obj/zongzi.c
+# Zone: fuzhou
+
+    items "zongzi" {
+      name = "粽子"
+      description = "一个香喷喷的肉粽子，包它的粽子叶泛出一股清香。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 100
+        weight = 100
+        unit = "个"
+        food = 50
+      }
+    }

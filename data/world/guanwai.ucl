@@ -2333,3 +2333,80 @@ chats = [
         unit = "碗"
       }
     }
+
+# Source: C:/files/git/mud/d/guanwai/npc/obj/gourou.c
+# Zone: guanwai
+
+    items "gourou" {
+      name = "狗肉"
+      description = "一块香喷喷的狗肉。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 100
+        weight = 90
+        unit = "块"
+        food = 40
+      }
+    }
+
+# Source: C:/files/git/mud/d/guanwai/npc/obj/gouroutang.c
+# Zone: guanwai
+
+    items "gouroutang" {
+      name = "狗肉汤"
+      description = "一个满满一碗狗肉汤的大海碗，够喝一气的了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 700
+        unit = "碗"
+      }
+    }
+
+# Source: C:/files/git/mud/d/guanwai/npc/obj/map.c
+# Zone: guanwai
+
+    items "map" {
+      name = "『长白山旅游图』"
+      description = "『长白山导游图』 【地图一】 ＾ ｜ ＾ 白 大 云 门 鸡 峰 坎＼二 铁 冠 鹿 ／ ＼ 子 门 满 壁 -- -- 鸣＼玉／ 天 ＼龙 坎 -- 天 谷 白 密 黑 夹 崖 砬 峰 柱 门 星＼草 -- -- -- 风 -- 心 ｜ 子 峰＼ 池 ／峰 垛 河 林 口 子 长 ＼ ／ ｜ 白 梯 二＼半／瀑 云 龙 拉 布 峰 斗 瓢 【地图二】 山神庙 ／ 荒路 船厂 -- 冰面 -- 大门坎子 ／ ｜ 小巷 -- 北城 荒路 雪地--雪地 ／ ｜ ｜ ／ 小土屋 集市 -- 东城 -- 雪地 ｜ ｜ 香肉馆 -- 南城 土窑馆 ｜ 木桥 ｜ 大道 ｜ 大道 ／ 大道 ｜ 宁远 ／ 官道 ／ 官道 ／ 山海关 ＼ 老龙头"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 10
+        unit = "张"
+        material = "paper"
+      }
+    }
+
+# Source: C:/files/git/mud/d/guanwai/npc/obj/piqiu.c
+# Zone: guanwai
+
+    items "piqiu" {
+      name = "皮裘"
+      description = "皮裘"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 10
+      }
+    }

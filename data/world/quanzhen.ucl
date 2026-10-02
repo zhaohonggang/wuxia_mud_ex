@@ -3751,3 +3751,146 @@ chats = [
         food = 60
       }
     }
+
+# Source: C:/files/git/mud/d/quanzhen/npc/obj/baozi.c
+# Zone: quanzhen
+
+    items "baozi" {
+      name = "包子"
+      description = "一个香喷喷的肉包子。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 50
+        weight = 80
+        unit = "个"
+        food = 20
+      }
+    }
+
+# Source: C:/files/git/mud/d/quanzhen/npc/obj/bottle.c
+# Zone: quanzhen
+
+    items "bottle" {
+      name = "水壶"
+      description = "一个不知道用什么动物的皮制成的水壶。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/d/quanzhen/npc/obj/egg.c
+# Zone: quanzhen
+
+    items "egg" {
+      name = "五香茶叶蛋"
+      description = "一颗用五种香料炮制出来的茶叶蛋。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 50
+        weight = 60
+        unit = "颗"
+        food = 50
+      }
+    }
+
+# Source: C:/files/git/mud/d/quanzhen/npc/obj/jitui.c
+# Zone: quanzhen
+
+    items "jitui" {
+      name = "烤鸡腿"
+      description = "一枝烤得香喷喷的鸡腿。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 1
+        skill_type = "hammer"
+        value = 80
+        weight = 350
+        unit = "根"
+        material = "bone"
+        food = 15
+      }
+    }
+
+# Source: C:/files/git/mud/d/quanzhen/npc/obj/jiudai.c
+# Zone: quanzhen
+
+    items "jiudai" {
+      name = "牛皮酒袋"
+      description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "个"
+      }
+    }
+
+# Source: C:/files/git/mud/d/quanzhen/npc/obj/kaoya.c
+# Zone: quanzhen
+
+    items "kaoya" {
+      name = "烤鸭"
+      description = "一只肥得流油的北京烤鸭。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "只"
+        food = 60
+      }
+    }
+
+# Source: C:/files/git/mud/d/quanzhen/npc/obj/stick.c
+# Zone: quanzhen
+
+    items "stick" {
+      name = "手杖"
+      description = "这是一根爬山用的手杖。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 5
+        skill_type = "staff"
+        value = 100
+        weight = 1000
+        unit = "根"
+        material = "wood"
+      }
+    }

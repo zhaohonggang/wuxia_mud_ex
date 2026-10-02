@@ -4502,3 +4502,57 @@ chats = [
         unit = "碗"
       }
     }
+
+# Source: C:/files/git/mud/d/kaifeng/npc/obj/bibohu.c
+# Zone: kaifeng
+
+    items "bibohu" {
+      name = "胭脂碧波瓠"
+      description = "碧绿的瓷壁上留着点点胭脂红,乃是磁中绝品。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 5000
+        unit = "只"
+      }
+    }
+
+# Source: C:/files/git/mud/d/kaifeng/npc/obj/ciwan.c
+# Zone: kaifeng
+
+    items "ciwan" {
+      name = "白天目磁碗"
+      description = "纯白无瑕,薄如纸的上佳瓷器。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 5000
+        unit = "只"
+      }
+    }
+
+# Source: C:/files/git/mud/d/kaifeng/npc/obj/luowenhai.c
+# Zone: kaifeng
+
+    items "luowenhai" {
+      name = "淡青螺纹醢"
+      description = "淡青色，内外都有螺旋形的条纹。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 5000
+        unit = "只"
+      }
+    }
