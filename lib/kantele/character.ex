@@ -63,11 +63,21 @@ defmodule Kantele.Character.PlayerMeta do
   ]
 
   defimpl Kalevala.Meta.Trim do
-    # `:aliases` 必须保留 —— LPC 的 present/get/ask 全靠 set_name 的 id 表匹配，
-    # 裁掉它会让 valid_leave 里的 `present('shi wei', ...)` 永远匹配不到人。
-    # 它只是一个短字符串列表，内存开销可忽略。
+    # 保留清单说明（两处 defimpl 的字段需求不同）：
+    #
+    #   vitals  战斗/显示必需
+    #   stats   valid_leave 条件 `me->query_skill("force") < 500` 等要读技能等级
+    #   family  门派相关条件（born_family / family/family_name）
+    #   temp    会话态：`query_temp`（客栈 rent_paid、战斗 marks 等）——仅 PlayerMeta 有
+    #   env     LPC set() 属性仓库：`query("...")`——仅 PlayerMeta 有
+    #   aliases LPC present/get/ask 的 id 表匹配依据
+    #
+    # 这些字段都会被**房间侧**读到：移动事件的 character、房间 state 的 characters
+    # 都经过 `Kalevala.Character.Conn.private/1`（= Meta.trim）。裁掉它们会导致
+    # valid_leave 条件恒真/恒假（例如少了 temp，`!me->query_temp('rent_paid')` 永真，
+    # 玩家就永远上不了客栈二楼）。
     def trim(meta) do
-      Map.take(meta, [:vitals, :aliases])
+      Map.take(meta, [:vitals, :stats, :family, :temp, :env])
     end
   end
 
@@ -325,14 +335,23 @@ defmodule Kantele.Character.NonPlayerMeta do
   ]
 
   defimpl Kalevala.Meta.Trim do
-    # `:aliases` 必须保留 —— LPC 的 present/get/ask 全靠 set_name 的 id 表匹配，
-    # 裁掉它会让 valid_leave 里的 `present('shi wei', ...)` 永远匹配不到人。
-    # 它只是一个短字符串列表，内存开销可忽略。
+    # 保留清单说明（两处 defimpl 的字段需求不同）：
+    #
+    #   vitals  战斗/显示必需
+    #   stats   valid_leave 条件 `me->query_skill("force") < 500` 等要读技能等级
+    #   family  门派相关条件（born_family / family/family_name）
+    #   temp    会话态：`query_temp`（客栈 rent_paid、战斗 marks 等）——仅 PlayerMeta 有
+    #   env     LPC set() 属性仓库：`query("...")`——仅 PlayerMeta 有
+    #   aliases LPC present/get/ask 的 id 表匹配依据
+    #
+    # 这些字段都会被**房间侧**读到：移动事件的 character、房间 state 的 characters
+    # 都经过 `Kalevala.Character.Conn.private/1`（= Meta.trim）。裁掉它们会导致
+    # valid_leave 条件恒真/恒假（例如少了 temp，`!me->query_temp('rent_paid')` 永真，
+    # 玩家就永远上不了客栈二楼）。
     def trim(meta) do
-      Map.take(meta, [:vitals, :aliases])
+      Map.take(meta, [:vitals, :stats, :guarder, :aliases])
     end
   end
-
   defimpl Kalevala.Meta.Access do
     def get(meta, key), do: Map.get(meta, key)
 
