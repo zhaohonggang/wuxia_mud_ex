@@ -120,7 +120,7 @@ zones "luoyang" {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：! wizardp(me) && objectp(present("guan bing", environment(me))) && dir == "north"
+   condition = "! wizardp(me) && objectp(present('guan bing',environment(me))) && dir == 'north'"
 direction = "north"
   message = "官兵拦住了你的去路。"
 }
@@ -3163,13 +3163,13 @@ item_desc = {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：me->query("gender") == "女性" && dir == "east"
+   condition = "me->query('gender') == '女性' && dir == 'east'"
 direction = "east"
   message = "澡堂伙计一把拦住你，说道：姑娘，男女有别，请到上面去。"
 }
 ,
 {
-   # 阻挡条件（原样保留）：me->query("gender") != "女性" && dir == "up"
+   condition = "me->query('gender') != '女性' && dir == 'up'"
 direction = "up"
   message = "澡堂伙计一把拦住你，说道：喂！你一个大老爷们儿怎么往女浴池钻啊？"
 }

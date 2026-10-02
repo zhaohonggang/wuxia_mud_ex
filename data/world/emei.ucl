@@ -195,7 +195,7 @@ zones "emei" {
   z = -21
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "south" && present("shu", me) && objectp(present("dao ming", environment(me)))
+   condition = "dir == 'south' && present('shu',me) && objectp(present('dao ming',environment(me)))"
 direction = "south"
   message = "道明小师父见你想把经书拿走，上前轻声说道：本阁经书恕不外借。"
 }
@@ -2060,7 +2060,7 @@ item_desc = {
   z = 2
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：(string)me->query("family/family_name") != "峨嵋派" & objectp(present("song qingshu", environment(me)))
+   condition = "(string)me->query('family/family_name') != '峨嵋派' & objectp(present('song qingshu',environment(me)))"
 direction = ~
   message = "宋青书一声冷喝：阁下什么人，在这里鬼头鬼脑的想干什么？"
 }

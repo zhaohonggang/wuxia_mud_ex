@@ -626,7 +626,7 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：!wizardp(me) && objectp(present("guan jia", environment(me))) && (dir == "west" || dir =="east")
+   condition = "!wizardp(me) && objectp(present('guan jia',environment(me))) && (dir == 'west' || dir =='east')"
 direction = "west"
   message = "管家挡住了你：请勿入内宅。"
 }
@@ -862,7 +862,7 @@ valid_leave = [
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "south" && objectp(present("ya yi", environment(me)))
+   condition = "dir == 'south' && objectp(present('ya yi',environment(me)))"
 direction = "south"
   message = "衙役齐声喝道：威……武……"
 }
@@ -900,7 +900,7 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "up" 
+   condition = "! me->query_temp('rent_paid') && dir == 'up'"
 direction = "up"
   message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊！"
 }
@@ -966,7 +966,7 @@ direction = "up"
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "east" && objectp(present("guan bing", environment(me)))
+   condition = "dir == 'east' && objectp(present('guan bing',environment(me)))"
 direction = "east"
   message = "官兵一把拦住你，骂道：粮仓重地，岂是你们这些泥腿子随便来得的？"
 }
@@ -1585,7 +1585,7 @@ item_desc = {
   z = 3
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：(dir == "southdown" || dir == "northeast") && me->query("zha/山") == 1
+   condition = "(dir == 'southdown' || dir == 'northeast') && me->query('zha/山') == 1"
 direction = "southdown"
   message = "你的雷管还插在那里，想留下来害人吗？"
 }
@@ -1612,7 +1612,7 @@ direction = "southdown"
   z = 2
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "northup" && me->query_temp("zha/山") == 1
+   condition = "dir == 'northup' && me->query_temp('zha/山') == 1"
 direction = "northup"
   message = "你的雷管还插在那里，想留下来害人吗？"
 }
@@ -1734,7 +1734,7 @@ direction = "northup"
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "north" && objectp(present("jia ding", environment(me)))
+   condition = "dir == 'north' && objectp(present('jia ding',environment(me)))"
 direction = "north"
   message = "家丁拦住你骂道：什么东西，居然连万老爷的府邸都敢乱闯！"
 }
@@ -2013,7 +2013,7 @@ direction = "north"
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：! wizardp(me) && objectp(present("ling tuisi", environment(me))) && dir == "east"
+   condition = "! wizardp(me) && objectp(present('ling tuisi',environment(me))) && dir == 'east'"
 direction = "east"
   message = "凌翰林挡住了你：请勿入牢房。"
 }

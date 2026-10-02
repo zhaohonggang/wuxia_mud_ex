@@ -159,7 +159,7 @@ item_desc = {
   z = 2
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：! userp(me) && dir == "north"
+   condition = "! userp(me) && dir == 'north'"
 direction = "north"
   message = "高昌迷宮NPC立入禁止。"
 }

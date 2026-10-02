@@ -636,7 +636,7 @@ item_desc = {
   z = -9
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "in" && objectp(present("da han", environment(me)))
+   condition = "dir == 'in' && objectp(present('da han',environment(me)))"
 direction = "in"
   message = "大汉拦住你说：此处乃明教重地，只有教主才能入内。"
 }
@@ -921,7 +921,7 @@ valid_leave = [
   z = -4
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：(me->query("family/family_name") != "明教") && (dir=="northup") && (objectp(present("tuoba", environment(me))))
+   condition = "(me->query('family/family_name') != '明教') && (dir=='northup') && (objectp(present('tuoba',environment(me))))"
 direction = "northup"
   message = "拓跋拦住你说：此处乃明教重地，请止步。"
 }
@@ -1481,7 +1481,7 @@ direction = "northup"
   z = -11
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：(me->query("gender") != "男性") && (dir == "in")
+   condition = "(me->query('gender') != '男性') && (dir == 'in')"
 direction = "in"
   message = "请你自重，以免不测！"
 }
@@ -1917,7 +1917,7 @@ valid_leave = [
   z = -11
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("leng qian", environment(me)))
+   condition = "objectp(present('leng qian',environment(me)))"
 direction = ~
   message = "冷谦拦住你说道：这位请放下兵刃。我教教规严厉，外客不 得持兵刃上山。请见谅。"
 }
@@ -1957,7 +1957,7 @@ direction = ~
   z = -1
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：me->query("family/family_name") != "明教" && (dir!="south") && ((objectp(present("peng yinyu", environment(me)))) || (objectp(present("zhang zhong", environment(me)))) || (objectp(present("shuo bude", environment(me)))) || (objectp(present("leng qian", environment(me)))) || (objectp(present("zhou dian", environment(me)))))
+   condition = "me->query('family/family_name') != '明教' && (dir!='south') && ((objectp(present('peng yinyu',environment(me)))) || (objectp(present('zhang zhong',environment(me)))) || (objectp(present('shuo bude',environment(me)))) || (objectp(present('leng qian',environment(me)))) || (objectp(present('zhou dian',environment(me)))))"
 direction = ~
   message = "明教五散人拦住你说：此处乃明教重地，请止步。"
 }

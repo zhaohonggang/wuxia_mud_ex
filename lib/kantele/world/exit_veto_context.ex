@@ -1,0 +1,221 @@
+defmodule Kantele.World.ExitVetoContext do
+  @moduledoc """
+  为 `Kantele.World.LpcCondition` 构造求值上下文
+
+  阻挡条件里的 LPC 内建（`present` / `environment` / `objectp` / `living` /
+  `userp` / `wizardp` / `id`）与方法调用（`->query` / `->query_temp` /
+  `->query_skill` / `->query_condition`）在这里落到真实游戏状态上。
+
+  语义对齐 MudOS：
+    - `present(id, environment(me))` 房里按 id 找活物/物品
+    - `present(id, me)`              身上（inventory）按 id 找
+    - `me->query("a/b")`             LPC set() 属性仓库（`meta.env`），
+                                      路径式读取走 `Kantele.Util.TreeMap`
+    - `me->query_temp("k")`          `meta.temp`（会话态，`rent_paid` 等）
+    - `me->query_skill("k")`         技能等级
+    - `me->query_condition("k")`     状态（中毒/媚药等）
+
+  任何查不到的东西一律返回 nil（条件为假），与 LPC 里「找不到即 0」一致。
+  """
+
+  alias Kantele.Util.TreeMap
+
+  @doc "按 `%{dir:, me:, room:, context:}` 构造 ctx"
+  def build(opts) do
+    %{
+      dir: Keyword.get(opts, :dir),
+      me: Keyword.get(opts, :me),
+      room: Keyword.get(opts, :room),
+      vars: %{},
+      resolver: resolver(Keyword.get(opts, :context))
+    }
+  end
+
+  defp resolver(context) do
+    %{
+      present: fn id, scope -> present(context, id, scope) end,
+      environment: fn _target -> {:ok, nil} end,
+      living: fn target -> living?(target) end,
+      wizardp: fn target -> wizard?(target) end,
+      userp: fn target -> userp?(target) end,
+      id: fn target -> target_id(target) end,
+      call: fn target, method, args -> call(target, method, args) end
+    }
+  end
+
+  # ---- present(id, scope) ----
+
+  defp present(context, id, scope) when is_binary(id) do
+    cond do
+      scope_is_room?(scope) -> find_in_room(context, id)
+      true -> find_in_inventory(context, id)
+    end
+  end
+
+  defp present(_context, _id, _scope), do: :error
+
+  # LPC 的 environment(me) 传进来的是房间 struct（ctx 里 room 字段）
+  defp scope_is_room?(%{__struct__: _} = scope) do
+    match?(%{exits: _}, scope)
+  end
+
+  defp scope_is_room?(_), do: false
+
+  defp find_in_room(context, id) do
+    characters = Map.get(context, :characters, []) || []
+
+    case Enum.find(characters, fn c -> name_matches?(c, id) end) do
+      nil ->
+        items = Map.get(context, :item_instances, []) || []
+
+        case Enum.find(items, fn i -> instance_matches?(i, id) end) do
+          nil -> :error
+          instance -> {:ok, instance}
+        end
+
+      character ->
+        {:ok, character}
+    end
+  end
+
+  defp find_in_inventory(context, id) do
+    case Map.get(context, :character) do
+      nil ->
+        :error
+
+      character ->
+        items = Map.get(character, :inventory, []) || []
+
+        case Enum.find(items, fn i -> instance_matches?(i, id) end) do
+          nil -> :error
+          instance -> {:ok, instance}
+        end
+    end
+  end
+
+  # NPC/玩家名匹配：全名或「名 + 别名」，与房间 NameMatch 同口径
+  defp name_matches?(character, id) do
+    keyword = id |> String.downcase() |> String.trim()
+    name = character |> Map.get(:name, "") |> to_string() |> String.downcase()
+
+    name == keyword or String.starts_with?(name, keyword <> " ")
+  end
+
+  defp instance_matches?(instance, id) do
+    case Map.get(instance, :item_id) do
+      nil ->
+        false
+
+      item_id ->
+        keyword = id |> String.downcase() |> String.trim()
+        short = item_id |> String.split(":") |> List.last() |> String.downcase()
+        short == keyword or String.starts_with?(short, keyword)
+    end
+  end
+
+  # ---- 对象判定 ----
+
+  # 只有 NPC（房间里除自己以外的活物）算 living
+  defp living?(%{pid: pid}) when is_pid(pid), do: true
+  defp living?(_), do: false
+
+  defp wizard?(target), do: is_map(target) and Map.get(target, :option, nil) == "wizard"
+
+  defp userp?(%{pid: pid}) when is_pid(pid), do: true
+  defp userp?(_), do: false
+
+  defp target_id(%{id: id}) when is_binary(id), do: id
+  defp target_id(_), do: nil
+
+  # ---- 方法调用 ----
+
+  # LPC 的 query 走 set() 属性仓库（meta.env），路径式读取用 TreeMap
+  defp call(target, "query", [key]) when is_binary(key) do
+    {:ok, query_prop(target, key)}
+  end
+
+  defp call(target, "query", _args), do: :error
+
+  defp call(target, "query_temp", [key]) when is_binary(key) do
+    {:ok, Map.get(temp_of(target), key)}
+  end
+
+  defp call(target, "query_temp", _args), do: :error
+
+  defp call(target, "query_skill", [key]) when is_binary(key) do
+    {:ok, skill_level(target, key)}
+  end
+
+  defp call(target, "query_skill", _args), do: :error
+
+  defp call(target, "query_condition", [key]) when is_binary(key) do
+    {:ok, Kantele.Character.Conditions.query_condition(meta_of(target), key)}
+  end
+
+  defp call(target, "query_condition", _args), do: :error
+
+  # 其余方法（如 ob->refuse(me)、ob->query("weapon_prop")）本项目未实现，
+  # 返回 nil 而不是报错：条件为假即放行。
+  defp call(_target, _method, _args), do: :error
+
+  defp meta_of(%{meta: meta}), do: meta
+  defp meta_of(_), do: %{}
+
+  # 会话态：LPC get_temp/put_temp 的落点（PlayerMeta.temp / NonPlayerMeta.temp）
+  defp temp_of(target) do
+    case meta_of(target) do
+      %{temp: temp} when is_map(temp) -> temp
+      _ -> %{}
+    end
+  end
+
+  defp query_prop(target, key) do
+    meta = meta_of(target)
+    env = Map.get(meta, :env, %{}) || %{}
+
+    case TreeMap.query(env, path_parts(key)) do
+      nil -> fallback_prop(target, key)
+      value -> value
+    end
+  end
+
+  # LPC set() 里没存过的键，回落到结构体常见字段
+  defp fallback_prop(target, key) do
+    meta = meta_of(target)
+
+    case key do
+      "gender" -> Map.get(meta, :option) && Map.get(meta, :family, %{}).family_name
+      "born_family" -> family_name(Map.get(meta, :born_family))
+      "family/family_name" -> family_name(Map.get(meta, :family))
+      "combat_exp" -> exp_of(target)
+      _ -> nil
+    end
+  end
+
+  defp family_name(nil), do: nil
+
+  defp family_name(%{family_name: name}), do: name
+  defp family_name(name) when is_binary(name), do: name
+  defp family_name(_), do: nil
+
+  defp exp_of(%{meta: %{stats: %{combat_exp: exp}}}), do: exp
+  defp exp_of(_), do: nil
+
+  defp skill_level(target, key) do
+    meta = meta_of(target)
+
+    case get_in(meta, [:stats, :skills]) do
+      skills when is_map(skills) ->
+        case Map.get(skills, key) do
+          %{level: level} -> level
+          level when is_integer(level) -> level
+          _ -> 0
+        end
+
+      _ ->
+        0
+    end
+  end
+
+  defp path_parts(key), do: key |> String.split("/") |> Enum.map(&String.to_atom/1)
+end

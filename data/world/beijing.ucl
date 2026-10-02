@@ -13,7 +13,7 @@ zones "beijing" {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(ob = present("ao bai", environment(me))) && living(ob) && dir == "north"
+   condition = "objectp(ob = present('ao bai',environment(me))) && living(ob) && dir == 'north'"
 direction = "north"
   message = "鳌拜大声喝道：他奶奶的，你要干嘛？"
 }
@@ -70,7 +70,7 @@ direction = "north"
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("shi wei", environment(me))) && dir == "north"
+   condition = "objectp(present('shi wei',environment(me))) && dir == 'north'"
 direction = "north"
   message = "鳌府侍卫拦住你道：没有王爷的吩咐，谁也不能进去。"
 }
@@ -104,7 +104,7 @@ direction = "north"
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("shi wei", environment(me))) && dir == "north"
+   condition = "objectp(present('shi wei',environment(me))) && dir == 'north'"
 direction = "north"
   message = "鳌府侍卫一把拦住你，朗声喝道：王府要地，怎由闲杂人等随便进出。"
 }
@@ -1670,7 +1670,7 @@ item_desc = {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("guan bing", environment(me))) && dir == "south"
+   condition = "objectp(present('guan bing',environment(me))) && dir == 'south'"
 direction = "south"
   message = "御前侍卫伸手拦住你朗声说道：皇宫重地，岂容寻常百姓出入。"
 }
@@ -1704,7 +1704,7 @@ direction = "south"
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("guan bing", environment(me))) && dir == "north"
+   condition = "objectp(present('guan bing',environment(me))) && dir == 'north'"
 direction = "north"
   message = "御前侍卫伸手拦住你朗声说道：皇宫重地，岂容寻常百姓出入。"
 }
@@ -1939,7 +1939,7 @@ direction = "north"
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("shi wei", environment(me))) && dir == "east"
+   condition = "objectp(present('shi wei',environment(me))) && dir == 'east'"
 direction = "east"
   message = "康府侍卫一把拦住你，朗声喝道：王府要地，怎由闲杂人等随便进出。"
 }
@@ -2097,7 +2097,7 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：(int)me->query_skill("force") < 100
+   condition = "(int)me->query_skill('force') < 100"
 direction = ~
   message = "你一步踏进客房，突觉一股力道奇大的劲风激扑出来，将你一撞， 你登时立足不稳，腾腾腾到退三步，摔了一跤。"
 }
@@ -3875,7 +3875,7 @@ item_desc = {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("li lishi", environment(me))) && dir == "west"
+   condition = "objectp(present('li lishi',environment(me))) && dir == 'west'"
 direction = "west"
   message = "李力世喝道：别乱逛，公爷今天不见客。"
 }
@@ -4083,7 +4083,7 @@ direction = "west"
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：(dir == "east") && present("mian", this_player()) && objectp(present("xiao er", environment(me)))
+   condition = "(dir == 'east') && present('mian',this_player()) && objectp(present('xiao er',environment(me)))"
 direction = "east"
   message = "小二追出来说道：这位客官，吃面还想连碗端走啊？"
 }

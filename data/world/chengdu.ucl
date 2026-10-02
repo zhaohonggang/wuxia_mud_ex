@@ -298,13 +298,13 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "up"
+   condition = "! me->query_temp('rent_paid') && dir == 'up'"
 direction = "up"
   message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊？"
 }
 ,
 {
-   # 阻挡条件（原样保留）：me->query_temp("rent_paid") && dir == "west"
+   condition = "me->query_temp('rent_paid') && dir == 'west'"
 direction = "west"
   message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就走了呢！"
 }
@@ -509,7 +509,7 @@ direction = "west"
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "south" && me->query("born_family") != "唐门世家"
+   condition = "dir == 'south' && me->query('born_family') != '唐门世家'"
 direction = "south"
   message = "你一抬足，发现地上有毒，忙抽腿退回。"
 }
@@ -1494,7 +1494,7 @@ valid_leave = [
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：! me->query_temp("marks/jinniu_paied") && (dir == "up" || dir == "down")
+   condition = "! me->query_temp('marks/jinniu_paied') && (dir == 'up' || dir == 'down')"
 direction = "up"
   message = "马五德笑道: 那是本馆弟子才能进去的。"
 }

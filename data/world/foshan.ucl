@@ -140,7 +140,7 @@ item_desc = {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：(me->query("balance") < 5000000 || me->query("weiwang") < 3000) && dir == "south" && ! wizardp(me)
+   condition = "(me->query('balance') < 5000000 || me->query('weiwang') < 3000) && dir == 'south' && ! wizardp(me)"
 direction = "south"
   message = "凤一鸣拦住你，冷笑道：以阁下的财产和地位，尚不足以进去。"
 }

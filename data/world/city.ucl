@@ -432,7 +432,7 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：me->query_temp("pigging_seat")
+   condition = "me->query_temp('pigging_seat')"
 direction = ~
   message = "先离开拱猪桌才能行动。"
 }
@@ -850,13 +850,13 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "up"
+   condition = "! me->query_temp('rent_paid') && dir == 'up'"
 direction = "up"
   message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊？"
 }
 ,
 {
-   # 阻挡条件（原样保留）：me->query_temp("rent_paid") && dir == "west"
+   condition = "me->query_temp('rent_paid') && dir == 'west'"
 direction = "west"
   message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就走了呢！"
 }
@@ -1018,7 +1018,7 @@ direction = "west"
   z = 1
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：me->query_condition("prostitute")
+   condition = "me->query_condition('prostitute')"
 direction = ~
   message = "龟公一把抱住你，喝道：看你往哪里逃！"
 }
@@ -1622,7 +1622,7 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "enter" && !userp(me)
+   condition = "dir == 'enter' && !userp(me)"
 direction = "enter"
   message = "你感觉前方有一种奇异的力场拦住了你的去路。"
 }
@@ -1774,7 +1774,7 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：me->query_temp("pigging_seat")
+   condition = "me->query_temp('pigging_seat')"
 direction = ~
   message = "先离开拱猪桌才能行动。"
 }
@@ -1942,7 +1942,7 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：me->query_temp("pigging_seat")
+   condition = "me->query_temp('pigging_seat')"
 direction = ~
   message = "先离开拱猪桌才能行动。"
 }
@@ -1995,7 +1995,7 @@ item_desc = {
   z = 5
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：ob->refuse(me)
+   condition = "ob->refuse(me)"
 direction = ~
   message = "你凑什么热闹，现在不是你上去的时候。"
 }
@@ -2022,7 +2022,7 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：me->query_temp("pigging_seat")
+   condition = "me->query_temp('pigging_seat')"
 direction = ~
   message = "先离开拱猪桌才能行动。"
 }
@@ -2046,7 +2046,7 @@ direction = ~
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：ob->refuse(me)
+   condition = "ob->refuse(me)"
 direction = ~
   message = "你凑什么热闹，现在不是你上去的时候。"
 }
@@ -2072,7 +2072,7 @@ direction = ~
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：ob->refuse(me)
+   condition = "ob->refuse(me)"
 direction = ~
   message = "你凑什么热闹，现在不是你上去的时候。"
 }
@@ -2098,7 +2098,7 @@ direction = ~
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：ob->refuse(me)
+   condition = "ob->refuse(me)"
 direction = ~
   message = "你凑什么热闹，现在不是你上去的时候。"
 }
@@ -2124,7 +2124,7 @@ direction = ~
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：ob->refuse(me)
+   condition = "ob->refuse(me)"
 direction = ~
   message = "你凑什么热闹，现在不是你上去的时候。"
 }
@@ -2521,7 +2521,7 @@ item_desc = {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("ya yi", environment(me))) && dir == "north"
+   condition = "objectp(present('ya yi',environment(me))) && dir == 'north'"
 direction = "north"
   message = "衙役齐声喝道：威……武……"
 }
@@ -5876,7 +5876,7 @@ chats = [
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）： room->query_temp("action") == 1 
+   condition = "room->query_temp('action') == 1"
 direction = ~
   message = "那间棋室已经有人开始下棋了，请勿打扰"
 }
@@ -5903,7 +5903,7 @@ direction = ~
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）： me->query_temp("weiqi_seat") 
+   condition = "me->query_temp('weiqi_seat')"
 direction = ~
   message = "你现在还坐着呢，怎么离开啊？"
 }
@@ -5937,7 +5937,7 @@ direction = ~
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）： me->query_temp("weiqi_seat") 
+   condition = "me->query_temp('weiqi_seat')"
 direction = ~
   message = "你现在还坐着呢，怎么离开啊？"
 }
@@ -5971,7 +5971,7 @@ direction = ~
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）： me->query_temp("weiqi_seat") 
+   condition = "me->query_temp('weiqi_seat')"
 direction = ~
   message = "你现在还坐着呢，怎么离开啊？"
 }

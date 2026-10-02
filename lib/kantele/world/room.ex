@@ -440,7 +440,7 @@ defmodule Kantele.World.Room do
     end
 
     @impl true
-    def movement_request(_room, context, event, room_exit) do
+    def movement_request(room, context, event, room_exit) do
       mover = Enum.find(context.characters, &(&1.pid == event.from_pid))
 
       if mover do
@@ -455,10 +455,73 @@ defmodule Kantele.World.Room do
             {:abort, event, :guarder_denied, msg}
 
           :allow ->
-            BasicRoom.movement_request(context, event, room_exit)
+            # 阻挡条件（valid_leave）：受 enforce_exit_vetoes 开关灰度，默认关
+            case check_exit_vetoes(room, context, mover, event.data.exit_name) do
+              {:deny, msg} ->
+                Context.render(context, mover.pid, Kantele.Character.CommandView, "text", %{
+                  text: msg <> "\n"
+                })
+
+                {:abort, event, :exit_vetoed, msg}
+
+              :allow ->
+                BasicRoom.movement_request(context, event, room_exit)
+            end
         end
       else
         BasicRoom.movement_request(context, event, room_exit)
+      end
+    end
+
+    # ---- 阻挡条件（valid_leave） ----
+    #
+    # 灰度开关 `config :ex_venture, enforce_exit_vetoes: false`（默认关）。
+    # 开启即行为变更：条件为真时拒绝移动并提示 LPC notify_fail 的原文。
+    # 求值器无法解析/求值失败一律放行 —— 宁可少拦，不能把玩家锁死在房里。
+    defp check_exit_vetoes(room, context, mover, dir) do
+      case Application.get_env(:ex_venture, :enforce_exit_vetoes, false) do
+        true ->
+          vetoes = Map.get(room, :exit_vetoes, []) || []
+          apply_vetoes(vetoes, room, context, mover, dir)
+
+        _ ->
+          :allow
+      end
+    end
+
+    defp apply_vetoes([], _room, _context, _mover, _dir), do: :allow
+
+    defp apply_vetoes([veto | rest], room, context, mover, dir) do
+      # direction = "*" 表示不挑方向
+      applies? =
+        case Map.get(veto, :direction) do
+          nil -> true
+          "*" -> true
+          ^dir -> true
+          _ -> false
+        end
+
+      cond do
+        not applies? ->
+          apply_vetoes(rest, room, context, mover, dir)
+
+        not Kantele.World.LpcCondition.enforceable?(Map.get(veto, :condition)) ->
+          # 条件缺失或求值器不支持 -> 跳过这一条，继续看下一条
+          apply_vetoes(rest, room, context, mover, dir)
+
+        true ->
+          ctx =
+            Kantele.World.ExitVetoContext.build(
+              dir: dir,
+              me: mover,
+              room: room,
+              context: context
+            )
+
+          case Kantele.World.LpcCondition.check(veto, ctx) do
+            {:block, msg} -> {:deny, msg || "过不去。"}
+            :allow -> apply_vetoes(rest, room, context, mover, dir)
+          end
       end
     end
 

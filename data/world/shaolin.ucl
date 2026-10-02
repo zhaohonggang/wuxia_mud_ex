@@ -94,7 +94,7 @@ item_desc = {
   z = 3
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：check_dirs(me, dir)
+   condition = "check_dirs(me,dir)"
 direction = ~
   message = "你踩动了机关，掉进僧监。"
 }
@@ -125,7 +125,7 @@ direction = ~
   z = 5
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：check_dirs(me, dir)
+   condition = "check_dirs(me,dir)"
 direction = ~
   message = "你踩动了机关，掉进僧监。"
 }
@@ -158,7 +158,7 @@ direction = ~
   z = 6
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：check_dirs(me, dir)
+   condition = "check_dirs(me,dir)"
 direction = ~
   message = "你踩动了机关，掉进僧监。"
 }
@@ -191,7 +191,7 @@ direction = ~
   z = 7
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：check_dirs(me, dir)
+   condition = "check_dirs(me,dir)"
 direction = ~
   message = "你踩动了机关，掉进僧监。"
 }
@@ -229,7 +229,7 @@ direction = ~
   z = 8
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：check_dirs(me, dir)
+   condition = "check_dirs(me,dir)"
 direction = ~
   message = "你踩动了机关，掉进僧监。"
 }
@@ -262,7 +262,7 @@ direction = ~
   z = 9
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：check_dirs(me, dir)
+   condition = "check_dirs(me,dir)"
 direction = ~
   message = "你踩动了机关，掉进僧监。"
 }
@@ -295,7 +295,7 @@ direction = ~
   z = 10
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：check_dirs(me, dir)
+   condition = "check_dirs(me,dir)"
 direction = ~
   message = "你踩动了机关，掉进僧监。"
 }
@@ -328,7 +328,7 @@ direction = ~
   z = 11
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：check_dirs(me, dir)
+   condition = "check_dirs(me,dir)"
 direction = ~
   message = "你踩动了机关，掉进僧监。"
 }
@@ -1107,7 +1107,7 @@ direction = ~
   z = 2
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：! present("xisui jing", this_object())
+   condition = "! present('xisui jing',this_object())"
 direction = ~
   message = "本寺最高心法不见了，你怎敢就走？"
 }
@@ -2305,13 +2305,13 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "up"
+   condition = "! me->query_temp('rent_paid') && dir == 'up'"
 direction = "up"
   message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊！"
 }
 ,
 {
-   # 阻挡条件（原样保留）：me->query_temp("rent_paid") && dir == "west"
+   condition = "me->query_temp('rent_paid') && dir == 'west'"
 direction = "west"
   message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就走了呢！ 旁人还以为小店伺候不周呢！"
 }
@@ -2736,7 +2736,7 @@ direction = "west"
   z = 22
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：present("fumo dao", me) || present("jingang zhao", me) || present("fumo dao", environment(me)) || present("jingang zhao", environment(me))
+   condition = "present('fumo dao',me) || present('jingang zhao',me) || present('fumo dao',environment(me)) || present('jingang zhao',environment(me))"
 direction = ~
   message = "只听里面有人说道: 大侠上回已来过此处，此刻身携重宝，不便进入， 恕老衲等失礼了。"
 }
@@ -2831,7 +2831,7 @@ direction = ~
   z = 16
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：(string)me->query("family/family_name") != "商家堡" && (string)me->query("born_family") != "山东商家" && objectp(present("shang jianming", environment(me)))
+   condition = "(string)me->query('family/family_name') != '商家堡' && (string)me->query('born_family') != '山东商家' && objectp(present('shang jianming',environment(me)))"
 direction = ~
   message = "商剑鸣对你喝道：什么东西，居然敢在我面前放肆！"
 }
@@ -3241,25 +3241,25 @@ item_desc = {
   z = 18
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("xu tong", environment(me)))
+   condition = "objectp(present('xu tong',environment(me)))"
 direction = ~
   message = "虚通伸手拦住你白眼一翻说道：千年以来，少林向不许女流擅入。 请下山去吧，免得自讨没趣。"
 }
 ,
 {
-   # 阻挡条件（原样保留）：objectp(present("xu ming", environment(me)))
+   condition = "objectp(present('xu ming',environment(me)))"
 direction = ~
   message = "虚明迈步挡在你身前，双手合什说道：阿弥陀佛，这位请留步， 恕小寺不接待女客。女施主倘若一心向佛，何妨去峨眉山随喜？"
 }
 ,
 {
-   # 阻挡条件（原样保留）：objectp(present("xu tong", environment(me)))
+   condition = "objectp(present('xu tong',environment(me)))"
 direction = ~
   message = "虚通拦住你说道：这位请放下兵刃。少林千年的规矩，外客 不得持兵刃上山。"
 }
 ,
 {
-   # 阻挡条件（原样保留）：objectp(present("xu ming", environment(me)))
+   condition = "objectp(present('xu ming',environment(me)))"
 direction = ~
   message = "虚明迈步挡在你身前，双手合什说道：阿弥陀佛，这位请收起 兵刃。佛门清静之地，不便随意舞刀弄剑。还请施主鉴谅。"
 }
@@ -4130,7 +4130,7 @@ valid_leave = [
   z = 27
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：check_out(me)
+   condition = "check_out(me)"
 direction = ~
   message = "你顺利地走出了五行迷宫。"
 }
@@ -4163,7 +4163,7 @@ direction = ~
   z = 27
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：check_out(me)
+   condition = "check_out(me)"
 direction = ~
   message = "你顺利地走出了五行迷宫。"
 }
@@ -4195,7 +4195,7 @@ direction = ~
   z = 27
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：check_out(me)
+   condition = "check_out(me)"
 direction = ~
   message = "你顺利地走出了五行迷宫。"
 }
@@ -4227,7 +4227,7 @@ direction = ~
   z = 27
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：check_out(me)
+   condition = "check_out(me)"
 direction = ~
   message = "你顺利地走出了五行迷宫。"
 }
@@ -4259,7 +4259,7 @@ direction = ~
   z = 27
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：check_out(me)
+   condition = "check_out(me)"
 direction = ~
   message = "你顺利地走出了五行迷宫。"
 }

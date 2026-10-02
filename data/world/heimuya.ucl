@@ -13,7 +13,7 @@ zones "heimuya" {
   z = 1
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("riyue dizi", environment(me))) && dir == "west" && me->query("family/family_name") != "日月神教"
+   condition = "objectp(present('riyue dizi',environment(me))) && dir == 'west' && me->query('family/family_name') != '日月神教'"
 direction = "west"
   message = "日月弟子将你拦住，说道：这里乃神教重地，他人不得入内。"
 }
@@ -236,7 +236,7 @@ direction = "west"
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：(string)me->query("family/family_name") != "日月神教" & objectp(present("ren woxing", environment(me)))
+   condition = "(string)me->query('family/family_name') != '日月神教' & objectp(present('ren woxing',environment(me)))"
 direction = ~
   message = "任我行喝道：阁下未免太过放肆，在老夫面前也敢这般横行！"
 }
@@ -744,7 +744,7 @@ item_desc = {
   z = 1
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("riyue dizi", environment(me))) && dir == "south" && me->query("family/family_name") != "日月神教"
+   condition = "objectp(present('riyue dizi',environment(me))) && dir == 'south' && me->query('family/family_name') != '日月神教'"
 direction = "south"
   message = "日月弟子将你拦住，说道：这里乃神教重地，他人不得入内。"
 }
@@ -1124,7 +1124,7 @@ direction = "south"
   z = 2
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("riyue dizi", environment(me))) && dir == "south" && me->query("family/family_name") != "日月神教"
+   condition = "objectp(present('riyue dizi',environment(me))) && dir == 'south' && me->query('family/family_name') != '日月神教'"
 direction = "south"
   message = "日月弟子将你拦住，说道：这里乃神教重地，他人不得入内。"
 }
@@ -1584,13 +1584,13 @@ item_desc = {
   z = 1
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("sang sanniang", environment(me))) && dir == "south" && me->query("family/family_name") && me->query("family/family_name") != "日月神教"
+   condition = "objectp(present('sang sanniang',environment(me))) && dir == 'south' && me->query('family/family_name') && me->query('family/family_name') != '日月神教'"
 direction = "south"
   message = "桑三娘将你拦住，说道：后面是圣姑的住所，他人不得入内。"
 }
 ,
 {
-   # 阻挡条件（原样保留）：objectp(present("sang sanniang", environment(me))) && (string)me->query("gender") != "女性" && dir == "south"
+   condition = "objectp(present('sang sanniang',environment(me))) && (string)me->query('gender') != '女性' && dir == 'south'"
 direction = "south"
   message = "桑三娘将你拦住，说道：后面是圣姑的住所，你一个男人进去干嘛？"
 }
@@ -1635,7 +1635,7 @@ direction = "south"
   z = 1
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("riyue dizi", environment(me))) && dir == "south" && me->query("family/family_name") && me->query("family/family_name") != "日月神教"
+   condition = "objectp(present('riyue dizi',environment(me))) && dir == 'south' && me->query('family/family_name') && me->query('family/family_name') != '日月神教'"
 direction = "south"
   message = "日月弟子将你拦住，说道：这里乃神教重地，他人不得入内。"
 }

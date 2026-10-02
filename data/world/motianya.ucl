@@ -13,7 +13,7 @@ zones "motianya" {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "east" && objectp(ob = present("xie yanke", this_object())) && living(ob)
+   condition = "dir == 'east' && objectp(ob = present('xie yanke',this_object())) && living(ob)"
 direction = "east"
   message = "谢烟客把手一拦，喝道：“给我回来！”"
 }

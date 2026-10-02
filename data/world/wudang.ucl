@@ -309,7 +309,7 @@ zones "wudang" {
   z = -6
 valid_leave = [
 {
-   # 阻挡条件（原样保留）： dir == "east" && objectp(present("mang she", environment(me)))
+   condition = "dir == 'east' && objectp(present('mang she',environment(me)))"
 direction = "east"
   message = "但见巨蟒一个盘身，顿时挡住了你的去路。"
 }

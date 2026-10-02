@@ -144,13 +144,13 @@ zones "wuguan" {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：present("tea", me)
+   condition = "present('tea',me)"
 direction = ~
   message = "厨师拦住你道：你还是先把茶喝完再走吧。"
 }
 ,
 {
-   # 阻挡条件（原样保留）：present("rice", me)
+   condition = "present('rice',me)"
 direction = ~
   message = "厨师拦住你道：你还是先把饭吃完再走吧。"
 }
@@ -181,31 +181,31 @@ direction = ~
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：me->query("mark/guofu_ok") && ! me->query("mark/guofu_out") && present("wu dunru", environment(me)) && dir == "south"
+   condition = "me->query('mark/guofu_ok') && ! me->query('mark/guofu_out') && present('wu dunru',environment(me)) && dir == 'south'"
 direction = "south"
   message = "武敦儒伸手将你拦住道：现在襄阳城内不太平，你还是多呆一会吧。"
 }
 ,
 {
-   # 阻挡条件（原样保留）：me->query("mark/guofu_ok") && present("wu dunru", environment(me)) && dir == "north" && objectp(riding = me->query_temp("is_riding"))
+   condition = "me->query('mark/guofu_ok') && present('wu dunru',environment(me)) && dir == 'north' && objectp(riding = me->query_temp('is_riding'))"
 direction = "north"
   message = "武敦儒伸手将你拦住道：不能骑马进郭府，你撞到其他人怎么办？"
 }
 ,
 {
-   # 阻挡条件（原样保留）：me->query("mark/guofu_over") && present("wu dunru", environment(me)) && dir == "north"
+   condition = "me->query('mark/guofu_over') && present('wu dunru',environment(me)) && dir == 'north'"
 direction = "north"
   message = "武敦儒将你拦住，冷笑道：郭府留你不下，你还是走吧。"
 }
 ,
 {
-   # 阻挡条件（原样保留）：me->query("combat_exp") > 5000 && ! me->query("mark/guofu_ok") && present("wu dunru", environment(me)) && dir == "north"
+   condition = "me->query('combat_exp') > 5000 && ! me->query('mark/guofu_ok') && present('wu dunru',environment(me)) && dir == 'north'"
 direction = "north"
   message = "武敦儒抱拳道：现襄阳正值动乱时期，没师父许可，任何人不得入内。"
 }
 ,
 {
-   # 阻挡条件（原样保留）：! me->query("mark/guofu_ok") && present("wu dunru", environment(me)) && dir == "north"
+   condition = "! me->query('mark/guofu_ok') && present('wu dunru',environment(me)) && dir == 'north'"
 direction = "north"
   message = "武敦儒伸手将你拦住道：如果你不打算帮忙打杂，就别进来。"
 }

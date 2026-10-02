@@ -231,7 +231,7 @@ item_desc = {
   z = 3
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：!me->query_temp("dao") && dir=="east"
+   condition = "!me->query_temp('dao') && dir=='east'"
 direction = "east"
   message = "一进了会场就是生死之斗，还是先砸了他们的船(break boat)以防不测。"
 }
@@ -1257,25 +1257,25 @@ item_desc = {
   z = 10
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "north" && objectp(present("bo seng", environment(me)))
+   condition = "dir == 'north' && objectp(present('bo seng',environment(me)))"
 direction = "north"
   message = "钹僧齐声喝道：哪里走？滚下来！"
 }
 ,
 {
-   # 阻挡条件（原样保留）：dir == "south" && objectp(present("bo seng", environment(me)))
+   condition = "dir == 'south' && objectp(present('bo seng',environment(me)))"
 direction = "south"
   message = "钹僧齐声喝道：哪里逃？纳命来！"
 }
 ,
 {
-   # 阻挡条件（原样保留）：dir == "west" && objectp(present("bo seng", environment(me)))
+   condition = "dir == 'west' && objectp(present('bo seng',environment(me)))"
 direction = "west"
   message = "钹僧齐声喝道：哪里逃？纳命来！"
 }
 ,
 {
-   # 阻挡条件（原样保留）：dir == "east" && objectp(present("bo seng", environment(me)))
+   condition = "dir == 'east' && objectp(present('bo seng',environment(me)))"
 direction = "east"
   message = "钹僧齐声喝道：哪里逃？纳命来！"
 }
@@ -1387,13 +1387,13 @@ valid_leave = [
   z = 10
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "up" && objectp(present("dao seng", environment(me)))
+   condition = "dir == 'up' && objectp(present('dao seng',environment(me)))"
 direction = "up"
   message = "刀僧齐声喝道：哪里走？滚下来！"
 }
 ,
 {
-   # 阻挡条件（原样保留）：dir == "south" && objectp(present("dao seng", environment(me)))
+   condition = "dir == 'south' && objectp(present('dao seng',environment(me)))"
 direction = "south"
   message = "刀僧齐声喝道：哪里逃？纳命来！"
 }
@@ -1429,13 +1429,13 @@ direction = "south"
   z = 11
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "up" && objectp(present("zhang seng", environment(me)))
+   condition = "dir == 'up' && objectp(present('zhang seng',environment(me)))"
 direction = "up"
   message = "杖僧齐声喝道：哪里走？滚下来！"
 }
 ,
 {
-   # 阻挡条件（原样保留）：dir == "down" && objectp(present("zhang seng", environment(me)))
+   condition = "dir == 'down' && objectp(present('zhang seng',environment(me)))"
 direction = "down"
   message = "杖僧齐声喝道：哪里逃？纳命来！"
 }
@@ -1470,13 +1470,13 @@ direction = "down"
   z = 12
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "up" && objectp(present("jian seng", environment(me)))
+   condition = "dir == 'up' && objectp(present('jian seng',environment(me)))"
 direction = "up"
   message = "剑僧齐声喝道：哪里走？滚下来！"
 }
 ,
 {
-   # 阻挡条件（原样保留）：dir == "down" && objectp(present("jian seng", environment(me)))
+   condition = "dir == 'down' && objectp(present('jian seng',environment(me)))"
 direction = "down"
   message = "剑僧齐声喝道：哪里逃？纳命来！"
 }

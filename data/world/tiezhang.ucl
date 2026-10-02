@@ -71,7 +71,7 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "in" && objectp(present("mayi zhanglao", environment(me)))
+   condition = "dir == 'in' && objectp(present('mayi zhanglao',environment(me)))"
 direction = "in"
   message = "麻衣长老喝道：此乃铁掌帮禁地，任何人不得入内，否则有死无生！"
 }
@@ -389,13 +389,13 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）： !me->query_temp("rent_paid") && dir == "up" 
+   condition = "!me->query_temp('rent_paid') && dir == 'up'"
 direction = "up"
   message = "怎么着，想白住啊！"
 }
 ,
 {
-   # 阻挡条件（原样保留）： me->query_temp("rent_paid") && dir == "west" 
+   condition = "me->query_temp('rent_paid') && dir == 'west'"
 direction = "west"
   message = "客官已经付了银子，怎么不住店就走了呢！ 旁人还以为小店伺候不周呢！"
 }

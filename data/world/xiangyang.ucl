@@ -808,7 +808,7 @@ item_desc = {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "north" && objectp(present("song bing", environment(me)))
+   condition = "dir == 'north' && objectp(present('song bing',environment(me)))"
 direction = "north"
   message = "宋兵向你喝道：什么人胆敢擅闯守备府衙门！"
 }
@@ -964,7 +964,7 @@ direction = "north"
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）： present("soup", me) || present("rice", me)
+   condition = "present('soup',me) || present('rice',me)"
 direction = ~
   message = "烧饭师傅瞪着一双怪眼：吃不了要兜着走啊？"
 }
@@ -1011,13 +1011,13 @@ direction = ~
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：me->query("gender") != "男性" && dir == "west"
+   condition = "me->query('gender') != '男性' && dir == 'west'"
 direction = "west"
   message = "男女有别，请到对面住！"
 }
 ,
 {
-   # 阻挡条件（原样保留）：me->query("gender") != "女性" && dir == "east"
+   condition = "me->query('gender') != '女性' && dir == 'east'"
 direction = "east"
   message = "男女有别，请到对面住！"
 }

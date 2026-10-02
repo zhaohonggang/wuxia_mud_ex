@@ -13,7 +13,7 @@ zones "pk" {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "north"
+   condition = "dir == 'north'"
 direction = "north"
   message = "乌老大喝道：给我站住！那儿不能随意进入。"
 }

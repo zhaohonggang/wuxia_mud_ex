@@ -217,13 +217,13 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "up"
+   condition = "! me->query_temp('rent_paid') && dir == 'up'"
 direction = "up"
   message = "维吾尔少女连忙挡在楼梯前，急道：客官，您得先付钱啊！"
 }
 ,
 {
-   # 阻挡条件（原样保留）：me->query_temp("rent_paid") && dir == "west"
+   condition = "me->query_temp('rent_paid') && dir == 'west'"
 direction = "west"
   message = "维吾尔少女跑到门边拦住：您付了银子，怎麽不住店就走了呢？"
 }
@@ -1299,13 +1299,13 @@ direction = ~
 }
 ,
 {
-   # 阻挡条件（原样保留）：me->query("gender") == "无性"
+   condition = "me->query('gender') == '无性'"
 direction = ~
   message = "采花子挡住了你，一脸讥笑：您这小身板还想玩妞？别开玩笑了。"
 }
 ,
 {
-   # 阻挡条件（原样保留）：!(int)this_player()->query_temp("marks/花")
+   condition = "!(int)this_player()->query_temp('marks/花')"
 direction = ~
   message = "采花子挡住了你：喂，你总该意思意思吧？"
 }

@@ -13,7 +13,7 @@ zones "wudu" {
   z = -1
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：(string)me->query("family/family_name") != "五毒教" & objectp(present("jiao tu", environment(me)))
+   condition = "(string)me->query('family/family_name') != '五毒教' & objectp(present('jiao tu',environment(me)))"
 direction = ~
   message = "五毒教徒忽然挡住你，厉声喝道：这位鬼头鬼脑的想干什么？"
 }
@@ -1502,7 +1502,7 @@ item_desc = {
   z = -1
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：(string)me->query("family/family_name") != "五毒教" & objectp(present("di zi", environment(me)))
+   condition = "(string)me->query('family/family_name') != '五毒教' & objectp(present('di zi',environment(me)))"
 direction = ~
   message = "五毒教弟子忽然挡住你，厉声喝道：这位鬼头鬼脑的想干什么？"
 }
@@ -1961,7 +1961,7 @@ valid_leave = [
   z = -2
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：me->query("family/master_name") != "何铁手" & objectp(present("he hongyao", environment(me)))
+   condition = "me->query('family/master_name') != '何铁手' & objectp(present('he hongyao',environment(me)))"
 direction = ~
   message = "何红药身形一晃，挡住你喝道：没有教主准许，谁也不得进入本教圣地。"
 }

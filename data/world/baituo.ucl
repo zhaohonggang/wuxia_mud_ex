@@ -145,7 +145,7 @@ zones "baituo" {
   z = 4
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "in" && objectp(present("mang she", environment(me)))
+   condition = "dir == 'in' && objectp(present('mang she',environment(me)))"
 direction = "in"
   message = "蟒蛇盘在岩洞口，将路封了个严实。"
 }
@@ -1060,7 +1060,7 @@ behavior_config = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "west" && (int)me->query("combat_exp") < 600 && guarder
+   condition = "dir == 'west' && (int)me->query('combat_exp') < 600 && guarder"
 direction = "west"
   message = "门卫拦住你道：你经验太低，会被毒蛇咬死，还是不要乱闯的好。"
 }

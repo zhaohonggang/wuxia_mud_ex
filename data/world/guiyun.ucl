@@ -119,13 +119,13 @@ direction = "east"
 }
 ,
 {
-   # 阻挡条件（原样保留）：me->query("gender") != "男性" && dir == "east"
+   condition = "me->query('gender') != '男性' && dir == 'east'"
 direction = "east"
   message = "男女有别，请到对面住！"
 }
 ,
 {
-   # 阻挡条件（原样保留）：me->query("gender") != "女性" && dir == "west"
+   condition = "me->query('gender') != '女性' && dir == 'west'"
 direction = "west"
   message = "男女有别，请到对面住！"
 }

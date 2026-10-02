@@ -53,7 +53,7 @@ zones "lingzhou" {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "west" && objectp(present("wei shi", environment(me)))
+   condition = "dir == 'west' && objectp(present('wei shi',environment(me)))"
 direction = "west"
   message = "卫士对你大吼一声：放肆！那不是你能进去的地方。"
 }
@@ -135,13 +135,13 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）： !me->query_temp("rent_paid") && dir == "up" 
+   condition = "!me->query_temp('rent_paid') && dir == 'up'"
 direction = "up"
   message = "店小二一下挡在楼梯前，白眼一翻：怎麽着，想白住啊！"
 }
 ,
 {
-   # 阻挡条件（原样保留）： me->query_temp("rent_paid") && dir == "west" 
+   condition = "me->query_temp('rent_paid') && dir == 'west'"
 direction = "west"
   message = "店小二跑到门边拦住：客官已经付了银子，怎麽不住店就走了呢！ 旁人还以为小店伺候不周呢！"
 }
@@ -339,7 +339,7 @@ direction = "west"
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "north" && objectp(present("wei shi", environment(me)))
+   condition = "dir == 'north' && objectp(present('wei shi',environment(me)))"
 direction = "north"
   message = "卫士对你大吼一声：放肆！那不是你能进去的地方。"
 }

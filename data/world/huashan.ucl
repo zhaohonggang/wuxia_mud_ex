@@ -30,7 +30,7 @@ zones "huashan" {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：j > 1
+   condition = "j > 1"
 direction = ~
   message = "这位别那麽贪心，带走一把竹剑就够啦。"
 }
@@ -279,7 +279,7 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）： present("soup", me) || present("rice", me)
+   condition = "present('soup',me) || present('rice',me)"
 direction = ~
   message = "小师妹瞪了你一眼: 吃不了要兜着走啊?"
 }

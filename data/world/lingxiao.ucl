@@ -450,7 +450,7 @@ item_desc = {
 }
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("wen wanfu", environment(me)))
+   condition = "objectp(present('wen wanfu',environment(me)))"
 direction = ~
   message = "闻万夫身形一展，挡住你道：凌霄城历年来的规矩，外人入城不得佩带兵刃。"
 }
@@ -1550,7 +1550,7 @@ item_desc = {
   z = 4
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：objectp(present("xuanbing chimang", environment(me)))
+   condition = "objectp(present('xuanbing chimang',environment(me)))"
 direction = ~
   message = "你正欲离开此地，却只见玄冰赤蟒一个盘旋，顿时将去路完全封锁。"
 }

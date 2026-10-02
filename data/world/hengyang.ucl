@@ -1237,7 +1237,7 @@ item_desc = {
   z = 7
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir=="down"
+   condition = "dir=='down'"
 direction = "down"
   message = "这里又没有路，看来只有跳下去了。"
 }

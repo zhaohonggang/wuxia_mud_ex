@@ -1344,7 +1344,7 @@ item_desc = {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：!me->query_temp("rent_paid") && dir == "up" 
+   condition = "!me->query_temp('rent_paid') && dir == 'up'"
 direction = "up"
   message = "店小二满脸堆笑地挡住了你：对不起，上面是客人的卧房，不是本店的客人，不能上去。"
 }
@@ -2027,7 +2027,7 @@ item_desc = {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：(string)me->query("gender")=="女性"
+   condition = "(string)me->query('gender')=='女性'"
 direction = ~
   message = "一把抓住了你，说道:“这里不是女人该来的地方，你别进去。”"
 }

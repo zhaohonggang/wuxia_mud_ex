@@ -627,7 +627,7 @@ item_desc = {
   z = 7
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "west" && ((string)me->query("gender") =="男性") && !wizardp(me)
+   condition = "dir == 'west' && ((string)me->query('gender') =='男性') && !wizardp(me)"
 direction = "west"
   message = "你个大老爷们儿去那干嘛！！"
 }

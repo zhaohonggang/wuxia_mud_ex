@@ -307,7 +307,7 @@ item_desc = {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：! me->query_temp("rent_paid") && dir == "westup" 
+   condition = "! me->query_temp('rent_paid') && dir == 'westup'"
 direction = "westup"
   message = "元财对你赔笑道：这位客官，请先这里付了钱再上楼住店。"
 }
@@ -867,7 +867,7 @@ item_desc = {
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "north" && objectp(present("qin bing", environment(me)))
+   condition = "dir == 'north' && objectp(present('qin bing',environment(me)))"
 direction = "north"
   message = "亲兵拦住你说道：王府大院，闲杂人等一律回避。"
 }
@@ -1064,7 +1064,7 @@ direction = "north"
   z = 0
 valid_leave = [
 {
-   # 阻挡条件（原样保留）：dir == "west" && objectp(present("qin bing", environment(me)))
+   condition = "dir == 'west' && objectp(present('qin bing',environment(me)))"
 direction = "west"
   message = "亲兵拦住你说道：王爷吩咐了，没有他的允许，任何人不得进入打扰。"
 }
