@@ -1,11 +1,18 @@
 # UCL 转换修复核对单（Checklist）
 
+> ## ✅ 已全部完成（2026-10-01）—— 转换器工作收尾
+>
+> A–I 九项全部完成（表中状态列各标 ✅），**不再运行转换器、不再使用转换 SOP**。
+> 本次转换的历史过程到本文件为止；后续在 `data/world` 及各区 UCL 上的改动
+> 改用**新的方法**（由后续任务自行定义），本文件与其配套文档保留为历史记录。
+> 转换 SOP 已被 `docs/zone-conversion-sop.zh-CN.md` 顶部的归档横幅废止。
+
 > 配套文档：
 > - `docs/ucl-conversion-issues.zh-CN.md` —— 20 个问题的完整分析（**先读这个**）
 > - `docs/ucl-conversion-todo.zh-CN.md` —— A–I 待办详解
 > - `docs/data-world-info-loss.zh-CN.md` —— 信息丢失排查报告
 > - `docs/data-world-ucl-inventory.zh-CN.md` —— `data/world` 现状清单
-> - `docs/zone-conversion-sop.zh-CN.md` —— 转换 SOP
+> - `docs/zone-conversion-sop.zh-CN.md` —— 转换 SOP（**已归档**）
 >
 > 生成时间：2026-09-30　基线 git HEAD：`1c97437`
 
@@ -16,7 +23,8 @@
 - 每个方框是一个**可验证**的具体条件，完成后把 `- [ ]` 改成 `- [x]`
 - 大项下方的子项**全部打勾**才能把大项标 ✅
 - 完成即 `git commit`，并在本文件「完成记录」表追加一行
-- 重跑任何区域都按 `docs/zone-conversion-sop.zh-CN.md` 的 5 步流程，不要手改 `.ucl`
+- ~~重跑任何区域都按 `docs/zone-conversion-sop.zh-CN.md` 的 5 步流程，不要手改 `.ucl`~~
+  （**已过时**：转换工作已收尾，不再用转换器/SOP，后续改动用新方法）
 - 改 `scripts/validate_ucl.py` 后必须跑 `test\fixtures\validate_ucl` 全部 fixture 回归
 
 ---

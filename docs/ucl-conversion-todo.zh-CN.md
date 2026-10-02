@@ -5,6 +5,10 @@
 > 早先 C–I 各节在此被一次批量编辑截断，重建时若把 checklist 的长篇分析再抄一份，
 > 就会重新产生第二份真相源并再次漂移。
 >
+> **转换器工作已收尾（2026-10-01）**：**不再运行转换器，也不再使用转换 SOP
+> （`docs/zone-conversion-sop.zh-CN.md` 已归档）**。后续在 `data/world` 及各区
+> UCL 上的改动改用新方法，由后续任务自行定义。
+>
 > 配套文档：`docs/ucl-conversion-issues.zh-CN.md`（20 个问题的完整分析）
 > 数据：`docs/data-world-info-loss.zh-CN.md`（信息丢失排查）、`world_bak2/`（旧版快照）
 

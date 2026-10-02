@@ -1,5 +1,14 @@
 # LPC→UCL 转换器使用文档（LPCConverter）
 
+> ## 🛑 已归档（2026-10-01）—— 转换器工作已完成，不再运行转换器
+>
+> LPC → UCL 转换已全部完成并验收（checklist A–I 全 ✅、3018 tests / 0 failures、
+> 全库可达 4115/4455、跨区悬空 0）。**本文件是当时的使用手册，仅作历史/参考保留**，
+> 不是当前主流程；后续在 `data/world` 及各区 UCL 上的改动请改用新的方法。
+> 若确需重出/修改某区 UCL，须先阅读 `docs/ucl-conversion-fix-checklist.zh-CN.md`
+> 与 `docs/zone-conversion-sop.zh-CN.md`（已归档）的「产出新鲜度自检」，恢复可复现
+> 环境后再做。
+
 > 关联代码：**主用实现** `scripts/lpc_converter.py`（2608 行，Python）；**遗留/参考** `lib/kantele/world/lpc_converter.ex`（3166 行，Elixir）、`lib/mix/tasks/kantele.convert_lpc.ex`（Mix task）
 > 消费方：`lib/kantele/world/loader.ex`（载入 `data/world/*.ucl`）
 > 语料：`C:\files\git\mud\d\`（7140 个 `.c`）→ 分析样本见 `lpc_example/`，测试世界见 `test_minimal_world_v2_modified/`

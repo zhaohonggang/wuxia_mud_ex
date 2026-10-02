@@ -1,11 +1,18 @@
 # 区域转换核对单（Checklist）
 
+> ## ✅ 已全部完成（2026-10-01）—— 本清单仅作历史记录
+>
+> 71 个正式区域已全部转换并验收（巫师巡游全 ✅，见下方逐区表）。**转换器工作已收尾：
+> 不再运行转换器、不再使用 SOP 流程**（`docs/zone-conversion-sop.zh-CN.md` 已归档）。
+> 后续在 `data/world` 及各区 UCL 上的改动改用**新的方法**（由后续任务自行定义）。
+> 本文件是当时逐区执行 SOP 的台账，不再受理新的「重跑请求」。
+
 > 基于 `docs/zone-conversion-plan.zh-CN.md`，**跳过 `minimal_world` 与 `minimal_world_v2`**（测试区，不接入正式世界）。
 > 共 71 个正式区域，按 BFS 层序逐个勾选。
 >
 > **游戏环境与热更/测试详见：** `docs/dev-reload-guide.zh-CN.md`
 >
-> **标准化转换流程（SOP）详见：** `docs/zone-conversion-sop.zh-CN.md`
+> **标准化转换流程（SOP）详见：** `docs/zone-conversion-sop.zh-CN.md`（**已归档**）
 
 ---
 

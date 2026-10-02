@@ -243,6 +243,6 @@
 
 - **`.comments.txt` 缺失即非 LPC 语料**：转换器每次都会写 `<zone>.comments.txt`，因此该文件的有无是判断「是否由 `scripts/lpc_converter.py` 生成」的可靠依据。
 - **`rooms` ≠ `room_exits` 表示存在无出口的孤儿房**：赋坐标前的正常中间态；转换完成的产物两者应相等。`special`（六道轮回 6 间房）例外，其 LPC 源码完全没有 `set("exits")`。
-- **重新生成方式**：见 `docs/zone-conversion-sop.zh-CN.md`。重跑任何区都会整体覆盖 `data/world/<zone>.ucl` 并丢弃已赋坐标，务必按 SOP 顺序执行。
+- **重新生成方式**：见 `docs/zone-conversion-sop.zh-CN.md`。重跑任何区都会整体覆盖 `data/world/<zone>.ucl` 并丢弃已赋坐标，务必按 SOP 顺序执行。~~**（此方式已随转换器收尾归档，不再重跑任何区；后续改动用新方法。）**~~
 - **刷新本文件**：重跑生成脚本后重新采集 `.ucl_inventory.json` 并重新渲染本文。
 
