@@ -654,7 +654,9 @@ item_desc = {
     combat_exp = 1000
   }
 
-  # vendor_goods: "/d/tianlongsi/obj/xiang" (file not found)
+  goods = [
+    { id = items.xiang.id }
+  ]
 
   inquiries = [
     { key = "舍利子" value = "(:ask_me():)" }

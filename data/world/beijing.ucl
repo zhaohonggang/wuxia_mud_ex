@@ -5058,11 +5058,13 @@ item_desc = {
     str = 10
   }
 
-  # vendor_goods: "/d/beijing/obj/luobo" (file not found)
-  # vendor_goods: "/d/beijing/obj/huluobo" (file not found)
-  # vendor_goods: "/d/beijing/obj/baicai" (file not found)
-  # vendor_goods: "/d/beijing/obj/dacong" (file not found)
-  # vendor_goods: "/d/beijing/obj/tudou" (file not found)
+  goods = [
+    { id = items.luobo.id },
+    { id = items.huluobo.id },
+    { id = items.baicai.id },
+    { id = items.dacong.id },
+    { id = items.tudou.id }
+  ]
 
   chat_chance = 10
 chats = [
@@ -5185,7 +5187,9 @@ chats = [
   }
 
   # vendor_goods: "/d/city/obj/hdjiudai" (file not found)
-  # vendor_goods: "/d/beijing/obj/kaoya" (file not found)
+  goods = [
+    { id = items.kaoya.id }
+  ]
 
   skills = [
     { skill = "unarmed" level = 60 },
@@ -6358,7 +6362,9 @@ chats = [
     str = 17
   }
 
-  # vendor_goods: "/d/beijing/obj/hua" (file not found)
+  goods = [
+    { id = items.hua.id }
+  ]
 
   skills = [
     { skill = "dodge" level = 20 },
@@ -7957,10 +7963,12 @@ chats = [
     str = 10
   }
 
-  # vendor_goods: "/d/beijing/obj/tea1" (file not found)
-  # vendor_goods: "/d/beijing/obj/tea2" (file not found)
-  # vendor_goods: "/d/beijing/obj/tea3" (file not found)
-  # vendor_goods: "/d/beijing/obj/tea4" (file not found)
+  goods = [
+    { id = items.tea1.id },
+    { id = items.tea2.id },
+    { id = items.tea3.id },
+    { id = items.tea4.id }
+  ]
 
   chat_chance = 2
 chats = [
@@ -8224,7 +8232,9 @@ chats = [
   # vendor_goods: "/d/city/obj/jitui" (file not found)
   # vendor_goods: "/d/city/obj/jiudai" (file not found)
   # vendor_goods: "/d/city/obj/baozi" (file not found)
-  # vendor_goods: "/d/beijing/obj/mian" (file not found)
+  goods = [
+    { id = items.mian.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
@@ -8261,7 +8271,9 @@ chats = [
   # vendor_goods: "/d/city/obj/jitui" (file not found)
   # vendor_goods: "/d/city/obj/jiudai" (file not found)
   # vendor_goods: "/d/city/obj/baozi" (file not found)
-  # vendor_goods: "/d/beijing/obj/mian" (file not found)
+  goods = [
+    { id = items.mian.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
@@ -8298,7 +8310,9 @@ chats = [
   # vendor_goods: "/d/city/obj/jitui" (file not found)
   # vendor_goods: "/d/city/obj/jiudai" (file not found)
   # vendor_goods: "/d/city/obj/baozi" (file not found)
-  # vendor_goods: "/d/beijing/obj/mian" (file not found)
+  goods = [
+    { id = items.mian.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
@@ -8335,7 +8349,9 @@ chats = [
   # vendor_goods: "/d/city/obj/jitui" (file not found)
   # vendor_goods: "/d/city/obj/jiudai" (file not found)
   # vendor_goods: "/d/city/obj/baozi" (file not found)
-  # vendor_goods: "/d/beijing/obj/mian" (file not found)
+  goods = [
+    { id = items.mian.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
@@ -8373,7 +8389,9 @@ chats = [
     str = 17
   }
 
-  # vendor_goods: "/d/beijing/obj/tanghulu" (file not found)
+  goods = [
+    { id = items.tanghulu.id }
+  ]
 
   chat_chance = 20
 chats = [
@@ -8670,9 +8688,11 @@ chats = [
     str = 20
   }
 
-  # vendor_goods: "/d/beijing/obj/yao1" (file not found)
-  # vendor_goods: "/d/beijing/obj/yao2" (file not found)
-  # vendor_goods: "/d/beijing/obj/yao3" (file not found)
+  goods = [
+    { id = items.yao1.id },
+    { id = items.yao2.id },
+    { id = items.yao3.id }
+  ]
 
   skills = [
     { skill = "unarmed" level = 60 },

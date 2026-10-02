@@ -1218,7 +1218,9 @@ chats = [
     combat_exp = 500
   }
 
-  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
+  goods = [
+    { id = xiyu.items.fire.id }
+  ]
   # vendor_goods: "/d/city/npc/obj/jiudai" (file not found)
   # vendor_goods: "/d/shenfeng/npc/obj/dogrou" (file not found)
   # vendor_goods: "/d/shenfeng/npc/obj/hulu" (file not found)

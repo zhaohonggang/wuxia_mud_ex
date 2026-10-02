@@ -2258,8 +2258,10 @@ item_desc = {
     combat_exp = 400
   }
 
-  # vendor_goods: "/d/jingzhou/obj/armor" (file not found)
-  # vendor_goods: "/d/jingzhou/obj/beixin" (file not found)
+  goods = [
+    { id = jingzhou.items.armor.id },
+    { id = jingzhou.items.beixin.id }
+  ]
   # vendor_goods: "/d/city/npc/obj/jinsijia" (file not found)
 
   carry = [
@@ -2461,8 +2463,10 @@ chats = [
   }
 
   # vendor_goods: "/clone/cloth/cuttonp" (file not found)
-  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
-  # vendor_goods: "/d/item/obj/chanhs" (file not found)
+  goods = [
+    { id = xiyu.items.fire.id },
+    { id = item.items.chanhs.id }
+  ]
   # vendor_goods: "/clone/misc/wood" (file not found)
 
   skills = [

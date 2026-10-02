@@ -1264,7 +1264,9 @@ item_desc = {
     str = 17
   }
 
-  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
+  goods = [
+    { id = xiyu.items.fire.id }
+  ]
   # vendor_goods: "/d/quanzhen/npc/obj/stick" (file not found)
   # vendor_goods: "/d/quanzhen/npc/obj/bottle" (file not found)
   # vendor_goods: "/d/quanzhen/npc/obj/egg" (file not found)

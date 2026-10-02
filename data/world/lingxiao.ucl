@@ -1907,7 +1907,9 @@ chats = [
   # vendor_goods: "/clone/misc/xiaoshu" (file not found)
   # vendor_goods: "/clone/misc/dongshang" (file not found)
   # vendor_goods: "/clone/misc/zhike" (file not found)
-  # vendor_goods: "/d/shenlong/obj/xionghuang" (file not found)
+  goods = [
+    { id = shenlong.items.xionghuang.id }
+  ]
 
   carry = [
     { id = items.cloth.id }

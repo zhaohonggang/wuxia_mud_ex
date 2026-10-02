@@ -510,23 +510,31 @@ defmodule Kantele.World.Loader do
 
   defp parse_goods(_), do: nil
 
-  # 解引用商品引用（items.baozi.id -> "liuxi:baozi"；普通 id 原样保留）
-  defp resolve_goods(nil, _zone, _zones), do: nil
+  # 商品引用形如 `items.<名>.id`（本区）或 `<区>.items.<名>.id`（跨区）。
+  # 跨区是 LPC 原有语义：vendor_goods 里写的是绝对路径（`/d/xiyu/obj/fire`），
+  # 哪个区的商人都能卖，因此引用也必须能指向别的区。
+  # 只对「点分隔的小写标识符」尝试解引用，普通 id（含 `:`）原样保留。
+  @item_ref ~r/^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/
 
   defp resolve_goods(goods, zone, zones) when is_list(goods) do
     Enum.map(goods, fn
-      "items." <> _rest = ref ->
-        case safe_dereference(zones, zone, ref) do
-          {:ok, item_id} when is_binary(item_id) -> item_id
-          _ -> ref
-        end
-
-      id ->
-        id
+      ref when is_binary(ref) -> deref_item_ref(ref, zone, zones)
+      id -> id
     end)
   end
 
   defp resolve_goods(goods, _zone, _zones), do: goods
+
+  defp deref_item_ref(ref, zone, zones) do
+    if Regex.match?(@item_ref, ref) do
+      case safe_dereference(zones, zone, ref) do
+        {:ok, item_id} when is_binary(item_id) -> item_id
+        _ -> ref
+      end
+    else
+      ref
+    end
+  end
 
   defp safe_dereference(zones, zone, reference) do
     {:ok, dereference(zones, zone, reference)}
@@ -534,20 +542,21 @@ defmodule Kantele.World.Loader do
     _ -> :error
   end
 
-  # 解引用任务交付物品（items.yupai.id -> "liuxi:yupai"）
+  # 解引用任务交付物品（items.yupai.id -> "liuxi:yupai"，跨区同 goods）
   defp resolve_turn_in(nil, _zone, _zones), do: nil
 
   defp resolve_turn_in(turn_in, zone, zones) do
     item =
       case Map.get(turn_in, :item) do
-        "items." <> _rest ->
-          case safe_dereference(zones, zone, turn_in.item) do
-            {:ok, item_id} when is_binary(item_id) -> item_id
-            _ -> nil
-          end
-
         item when is_binary(item) ->
-          item
+          case safe_dereference(zones, zone, item) do
+            {:ok, item_id} when is_binary(item_id) ->
+              item_id
+
+            _ ->
+              # 引用形态解不出 -> nil（悬空交付物）；普通 id 原样保留
+              if Regex.match?(@item_ref, item), do: nil, else: item
+          end
 
         _ ->
           nil

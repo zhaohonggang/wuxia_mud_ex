@@ -1969,10 +1969,12 @@ direction = "west"
     str = 17
   }
 
-  # vendor_goods: "/d/shaolin/obj/hulu" (file not found)
+  goods = [
+    { id = shaolin.items.hulu.id },
+    { id = village.items.zhujian.id },
+    { id = xiyu.items.fire.id }
+  ]
   # vendor_goods: "/d/city/obj/zhubang" (file not found)
-  # vendor_goods: "/d/village/obj/zhujian" (file not found)
-  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
 
   carry = [
     { id = items.cloth.id }

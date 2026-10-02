@@ -826,8 +826,10 @@ item_desc = {
   }
 
   # vendor_goods: "/d/quanzhou/obj/xiuhua" (file not found)
-  # vendor_goods: "/d/quanzhou/obj/flower_shoe" (file not found)
-  # vendor_goods: "/d/quanzhou/obj/pink_cloth" (file not found)
+  goods = [
+    { id = items.flower_shoe.id },
+    { id = items.pink_cloth.id }
+  ]
   # vendor_goods: "/d/city/obj/goldring" (file not found)
   # vendor_goods: "/d/city/obj/necklace" (file not found)
 

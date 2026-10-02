@@ -1473,12 +1473,12 @@ item_desc = {
 
   goods = [
     { id = items.paomo.id },
-    { id = items.kaoyangtui.id }
+    { id = items.kaoyangtui.id },
+    { id = xiyu.items.nang.id },
+    { id = xiyu.items.hu.id },
+    { id = xiyu.items.yangrou.id }
   ]
 
-  # vendor_goods: "/d/xiyu/obj/nang" (file not found)
-  # vendor_goods: "/d/xiyu/obj/hu" (file not found)
-  # vendor_goods: "/d/xiyu/obj/yangrou" (file not found)
 
   carry = [
     { id = items.cloth.id }

@@ -1883,11 +1883,13 @@ chats = [
     combat_exp = 50000
   }
 
-  # vendor_goods: "/d/xiyu/obj/hu" (file not found)
-  # vendor_goods: "/d/xiyu/obj/nang" (file not found)
-  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
-  # vendor_goods: "/d/xiyu/obj/hamigua" (file not found)
-  # vendor_goods: "/d/xiyu/obj/dongbula" (file not found)
+  goods = [
+    { id = items.hu.id },
+    { id = items.nang.id },
+    { id = items.fire.id },
+    { id = items.hamigua.id },
+    { id = items.dongbula.id }
+  ]
 
   skills = [
     { skill = "unarmed" level = 50 },

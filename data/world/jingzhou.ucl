@@ -2290,7 +2290,9 @@ item_desc = {
     str = 20
   }
 
-  # vendor_goods: "/d/beijing/obj/yao3" (file not found)
+  goods = [
+    { id = beijing.items.yao3.id }
+  ]
 
   carry = [
     { id = items.cloth.id }
@@ -2467,10 +2469,12 @@ chats = [
     combat_exp = 400
   }
 
-  # vendor_goods: "/d/jingzhou/obj/changjian" (file not found)
+  goods = [
+    { id = items.changjian.id },
+    { id = items.armor.id },
+    { id = items.beixin.id }
+  ]
   # vendor_goods: "/d/jingzhou/obj/gangdao" (file not found)
-  # vendor_goods: "/d/jingzhou/obj/armor" (file not found)
-  # vendor_goods: "/d/jingzhou/obj/beixin" (file not found)
 
   carry = [
     { id = items.cloth.id }

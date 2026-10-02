@@ -3324,7 +3324,9 @@ chats = [
   # vendor_goods: "/clone/misc/xiaoshu" (file not found)
   # vendor_goods: "/clone/misc/dongshang" (file not found)
   # vendor_goods: "/clone/misc/zhike" (file not found)
-  # vendor_goods: "/d/shenlong/obj/xionghuang" (file not found)
+  goods = [
+    { id = shenlong.items.xionghuang.id }
+  ]
   # vendor_goods: "/clone/fam/pill/food1" (file not found)
 
   carry = [
@@ -3708,11 +3710,11 @@ chats = [
     { id = items.yjhua.id },
     { id = items.yuanzhi.id },
     { id = items.zihua.id },
-    { id = items.zzfen.id }
+    { id = items.zzfen.id },
+    { id = shenlong.items.hua4.id }
   ]
 
   # vendor_goods: "/clone/misc/yanbo" (file not found)
-  # vendor_goods: "/d/shenlong/obj/hua4" (file not found)
 
   inquiries = [
     { key = "job" value = "(: ask_job :)" },
@@ -4043,7 +4045,9 @@ chats = [
   # vendor_goods: "/clone/weapon/longbow" (file not found)
   # vendor_goods: "/clone/weapon/wolfarrow" (file not found)
   # vendor_goods: "/clone/cloth/tiejia" (file not found)
-  # vendor_goods: "/d/item/obj/jingtie" (file not found)
+  goods = [
+    { id = item.items.jingtie.id }
+  ]
 
   inquiries = [
     { key = "job" value = "(: ask_me :)" },
@@ -4515,13 +4519,13 @@ chats = [
     { id = items.pixue.id },
     { id = items.shoutao.id },
     { id = items.tieshou.id },
-    { id = items.jinsijia.id }
+    { id = items.jinsijia.id },
+    { id = xiyu.items.fire.id },
+    { id = taohua.items.bagua.id },
+    { id = item.items.chanhs.id }
   ]
 
   # vendor_goods: "/clone/cloth/cuttonp" (file not found)
-  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
-  # vendor_goods: "/d/taohua/obj/bagua" (file not found)
-  # vendor_goods: "/d/item/obj/chanhs" (file not found)
   # vendor_goods: "/clone/misc/wood" (file not found)
   # vendor_goods: "/clone/misc/shoeshine" (file not found)
   # vendor_goods: "/clone/misc/brush" (file not found)

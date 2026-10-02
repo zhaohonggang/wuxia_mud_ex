@@ -1034,7 +1034,9 @@ item_desc = {
     combat_exp = 100
   }
 
-  # vendor_goods: "/d/xueshan/obj/niupidai" (file not found)
+  goods = [
+    { id = items.niupidai.id }
+  ]
   # vendor_goods: "/d/xueshan/obj/qingke-m" (file not found)
 
   carry = [

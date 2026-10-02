@@ -5552,8 +5552,10 @@ chats = [
     str = 17
   }
 
-  # vendor_goods: "/d/shaolin/obj/map" (file not found)
-  # vendor_goods: "/d/shaolin/obj/guide" (file not found)
+  goods = [
+    { id = items.map.id },
+    { id = items.guide.id }
+  ]
   # vendor_goods: "/d/village/npc/obj/stick" (file not found)
   # vendor_goods: "/d/village/npc/obj/shoes" (file not found)
   # vendor_goods: "/d/village/npc/obj/bottle" (file not found)

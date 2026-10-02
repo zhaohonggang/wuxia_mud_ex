@@ -200,7 +200,70 @@ defmodule Kantele.World.LoaderMetaTest do
 
     assert xiaoer2.meta.init.add_actions == ["buy", "list"]
     assert length(xiaoer2.meta.greetings) == 2
+
+    # test 区是旧转换器的测试夹具，不在 vendor 商品补齐范围内：
+    # 它的 vendor_goods 仍以注释留存，goods 为 nil
     assert xiaoer2.meta.goods == nil
+  end
+
+  # ---- 商品引用解引用（同区 / 跨区 / 悬空） ----
+  #
+  # 注意：解引用发生在 Loader.parse_characters，结果只写进 world.characters
+  # （房间里那份 Character 副本）；world.zones[].characters 里仍是未解引用的
+  # 原始 meta。断言解引用结果必须从 world.characters 取。
+
+  defp vendor(world, zone_id, name) do
+    Enum.find(world.characters, &(&1.meta.zone_id == zone_id and &1.name == name))
+  end
+
+  test "跨区商品引用解引用成目标区物品 id" do
+    world = Kantele.World.Loader.load()
+
+    # 原 LPC changan/npc/liu.c 的 vendor_goods 写的是绝对路径
+    # （/d/xiyu/obj/fire、/d/item/obj/chanhs），跨区售卖是原有语义
+    liu = vendor(world, "changan", "刘老实")
+    assert "xiyu:fire" in liu.meta.goods
+    assert "item:chanhs" in liu.meta.goods
+
+    # 原 LPC kaifeng/npc/hanzi.c 卖的是 /d/beijing/obj/luobo 等
+    hanzi = vendor(world, "kaifeng", "菜贩子")
+    assert "beijing:luobo" in hanzi.meta.goods
+    assert "beijing:tudou" in hanzi.meta.goods
+  end
+
+  test "同区商品引用解引用成 <区>:<名>" do
+    world = Kantele.World.Loader.load()
+
+    # 原 LPC beijing/npc/caifan.c：vendor_goods 为本区 obj/luobo、obj/tudou 等
+    caifan = vendor(world, "beijing", "菜贩子")
+    assert "beijing:luobo" in caifan.meta.goods
+    assert "beijing:tudou" in caifan.meta.goods
+
+    # 同区引用必须原样保留顺序（vendor_list 按 goods 顺序列货）
+    assert caifan.meta.goods == [
+             "beijing:luobo",
+             "beijing:huluobo",
+             "beijing:baicai",
+             "beijing:dacong",
+             "beijing:tudou"
+           ]
+  end
+
+  test "goods 不残留未解引用的跨区引用串" do
+    world = Kantele.World.Loader.load()
+
+    dangling =
+      Enum.flat_map(world.characters, fn ch ->
+        case ch.meta && ch.meta.goods do
+          nil -> []
+          goods -> Enum.filter(goods, &String.match?(&1, ~r/^[a-z0-9_]+\.items\./))
+        end
+      end)
+
+    # 跨区引用（<区>.items.<名>.id）解不出 = loader 解引用坏了，必须为空。
+    # 同区悬空（items.<名>.id）是「物品尚未建」的待补清单，随商品补齐逐步减少，
+    # 不用在这里钉死数量。
+    assert dangling == []
   end
 
   # ---- engage（accept_fight/hit/kill 抽取 → meta 落位） ----

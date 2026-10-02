@@ -2672,7 +2672,9 @@ direction = "east"
   # vendor_goods: "/d/city/npc/obj/shoutao" (file not found)
   # vendor_goods: "/d/city/npc/obj/tieshou" (file not found)
   # vendor_goods: "/d/city/npc/obj/jinsijia" (file not found)
-  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
+  goods = [
+    { id = xiyu.items.fire.id }
+  ]
 
   skills = [
     { skill = "unarmed" level = 50 },

@@ -2500,16 +2500,18 @@ behavior_config = {
   }
 
   # vendor_goods: "/d/hengyang/yueqi/shixuanqin-zhanguo" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/jiuxiaoqin" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/zhongnishi" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/jiaoyeqin" (file not found)
+  goods = [
+    { id = items.jiuxiaoqin.id },
+    { id = items.zhongnishi.id },
+    { id = items.jiaoyeqin.id },
+    { id = items.honghuqin.id }
+  ]
   # vendor_goods: "/d/hengyang/yueqi/qin-jueyin" (file not found)
   # vendor_goods: "/d/hengyang/yueqi/qin-konggu" (file not found)
   # vendor_goods: "/d/hengyang/yueqi/qin-jimo" (file not found)
   # vendor_goods: "/d/hengyang/yueqi/qin-tianlai" (file not found)
   # vendor_goods: "/d/hengyang/yueqi/huqin" (file not found)
   # vendor_goods: "/d/hengyang/yueqi/zhuxiao" (file not found)
-  # vendor_goods: "/d/hengyang/yueqi/honghuqin" (file not found)
   # vendor_goods: "/d/hengyang/yueqi/zhuxiao-youlan" (file not found)
   # vendor_goods: "/d/hengyang/yueqi/zhuxiao-shuiyun" (file not found)
   # vendor_goods: "/d/hengyang/yueqi/zhuxiao-liuquan" (file not found)
@@ -2832,11 +2834,13 @@ behavior_config = {
     combat_exp = 800000
   }
 
-  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
-  # vendor_goods: "/d/hengyang/obj/mujian" (file not found)
-  # vendor_goods: "/d/item/obj/chanhs" (file not found)
-  # vendor_goods: "/d/city/obj/rrose" (file not found)
-  # vendor_goods: "/d/city/obj/yrose" (file not found)
+  goods = [
+    { id = xiyu.items.fire.id },
+    { id = items.mujian.id },
+    { id = item.items.chanhs.id },
+    { id = city.items.rrose.id },
+    { id = city.items.yrose.id }
+  ]
   # vendor_goods: "/clone/misc/wood" (file not found)
   # vendor_goods: "/clone/misc/bushoujia" (file not found)
   # vendor_goods: "/clone/misc/shier" (file not found)

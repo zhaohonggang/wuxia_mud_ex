@@ -1633,7 +1633,9 @@ chats = [
   # vendor_goods: "/d/city/obj/jitui" (file not found)
   # vendor_goods: "/d/city/obj/jiudai" (file not found)
   # vendor_goods: "/d/city/obj/baozi" (file not found)
-  # vendor_goods: "/d/beijing/obj/mian" (file not found)
+  goods = [
+    { id = beijing.items.mian.id }
+  ]
 
   carry = [
     { id = items.cloth.id }

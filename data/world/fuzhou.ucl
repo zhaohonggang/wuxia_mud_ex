@@ -1407,7 +1407,9 @@ direction = ~
 
   # vendor_goods: "/d/fuzhou/obj/xiuhua" (file not found)
   # vendor_goods: "/d/fuzhou/obj/flower_shoe" (file not found)
-  # vendor_goods: "/d/fuzhou/obj/pink_cloth" (file not found)
+  goods = [
+    { id = items.pink_cloth.id }
+  ]
   # vendor_goods: "/d/city/obj/goldring" (file not found)
   # vendor_goods: "/d/city/obj/necklace" (file not found)
 

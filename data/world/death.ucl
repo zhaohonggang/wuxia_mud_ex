@@ -2820,86 +2820,88 @@ chats = [
     combat_exp = 20000000
   }
 
-  # vendor_goods: "/d/death/obj/weapon1" (file not found)
-  # vendor_goods: "/d/death/obj/weapon2" (file not found)
-  # vendor_goods: "/d/death/obj/weapon3" (file not found)
-  # vendor_goods: "/d/death/obj/weapon4" (file not found)
-  # vendor_goods: "/d/death/obj/weapon5" (file not found)
-  # vendor_goods: "/d/death/obj/weapon6" (file not found)
-  # vendor_goods: "/d/death/obj/weapon7" (file not found)
-  # vendor_goods: "/d/death/obj/weapon8" (file not found)
-  # vendor_goods: "/d/death/obj/weapon9" (file not found)
-  # vendor_goods: "/d/death/obj/weapon10" (file not found)
-  # vendor_goods: "/d/death/obj/weapon11" (file not found)
-  # vendor_goods: "/d/death/obj/weapon12" (file not found)
-  # vendor_goods: "/d/death/obj/weapon13" (file not found)
-  # vendor_goods: "/d/death/obj/weapon14" (file not found)
-  # vendor_goods: "/d/death/obj/weapon15" (file not found)
-  # vendor_goods: "/d/death/obj/weapon16" (file not found)
-  # vendor_goods: "/d/death/obj/weapon17" (file not found)
-  # vendor_goods: "/d/death/obj/weapon18" (file not found)
-  # vendor_goods: "/d/death/obj/weapon19" (file not found)
-  # vendor_goods: "/d/death/obj/weapon20" (file not found)
-  # vendor_goods: "/d/death/obj/weapon21" (file not found)
-  # vendor_goods: "/d/death/obj/weapon22" (file not found)
-  # vendor_goods: "/d/death/obj/weapon23" (file not found)
-  # vendor_goods: "/d/death/obj/weapon24" (file not found)
-  # vendor_goods: "/d/death/obj/weapon25" (file not found)
-  # vendor_goods: "/d/death/obj/weapon26" (file not found)
-  # vendor_goods: "/d/death/obj/weapon27" (file not found)
-  # vendor_goods: "/d/death/obj/weapon28" (file not found)
-  # vendor_goods: "/d/death/obj/weapon29" (file not found)
-  # vendor_goods: "/d/death/obj/weapon30" (file not found)
-  # vendor_goods: "/d/death/obj/weapon31" (file not found)
-  # vendor_goods: "/d/death/obj/weapon32" (file not found)
-  # vendor_goods: "/d/death/obj/weapon33" (file not found)
-  # vendor_goods: "/d/death/obj/weapon34" (file not found)
-  # vendor_goods: "/d/death/obj/weapon35" (file not found)
-  # vendor_goods: "/d/death/obj/weapon36" (file not found)
-  # vendor_goods: "/d/death/obj/weapon37" (file not found)
-  # vendor_goods: "/d/death/obj/weapon38" (file not found)
-  # vendor_goods: "/d/death/obj/weapon39" (file not found)
-  # vendor_goods: "/d/death/obj/weapon40" (file not found)
-  # vendor_goods: "/d/death/obj/weapon41" (file not found)
-  # vendor_goods: "/d/death/obj/weapon42" (file not found)
-  # vendor_goods: "/d/death/obj/weapon43" (file not found)
-  # vendor_goods: "/d/death/obj/weapon44" (file not found)
-  # vendor_goods: "/d/death/obj/weapon45" (file not found)
-  # vendor_goods: "/d/death/obj/weapon46" (file not found)
-  # vendor_goods: "/d/death/obj/weapon47" (file not found)
-  # vendor_goods: "/d/death/obj/weapon48" (file not found)
-  # vendor_goods: "/d/death/obj/weapon49" (file not found)
-  # vendor_goods: "/d/death/obj/weapon50" (file not found)
-  # vendor_goods: "/d/death/obj/weapon51" (file not found)
-  # vendor_goods: "/d/death/obj/weapon52" (file not found)
-  # vendor_goods: "/d/death/obj/weapon53" (file not found)
-  # vendor_goods: "/d/death/obj/weapon54" (file not found)
-  # vendor_goods: "/d/death/obj/weapon55" (file not found)
-  # vendor_goods: "/d/death/obj/weapon56" (file not found)
-  # vendor_goods: "/d/death/obj/weapon57" (file not found)
-  # vendor_goods: "/d/death/obj/weapon58" (file not found)
-  # vendor_goods: "/d/death/obj/weapon59" (file not found)
-  # vendor_goods: "/d/death/obj/weapon60" (file not found)
-  # vendor_goods: "/d/death/obj/weapon61" (file not found)
-  # vendor_goods: "/d/death/obj/weapon62" (file not found)
-  # vendor_goods: "/d/death/obj/weapon63" (file not found)
-  # vendor_goods: "/d/death/obj/weapon64" (file not found)
-  # vendor_goods: "/d/death/obj/weapon65" (file not found)
-  # vendor_goods: "/d/death/obj/weapon66" (file not found)
-  # vendor_goods: "/d/death/obj/weapon67" (file not found)
-  # vendor_goods: "/d/death/obj/weapon68" (file not found)
-  # vendor_goods: "/d/death/obj/weapon69" (file not found)
-  # vendor_goods: "/d/death/obj/weapon70" (file not found)
-  # vendor_goods: "/d/death/obj/weapon71" (file not found)
-  # vendor_goods: "/d/death/obj/weapon72" (file not found)
-  # vendor_goods: "/d/death/obj/weapon73" (file not found)
-  # vendor_goods: "/d/death/obj/weapon74" (file not found)
-  # vendor_goods: "/d/death/obj/weapon75" (file not found)
-  # vendor_goods: "/d/death/obj/weapon76" (file not found)
-  # vendor_goods: "/d/death/obj/weapon77" (file not found)
-  # vendor_goods: "/d/death/obj/weapon78" (file not found)
-  # vendor_goods: "/d/death/obj/weapon79" (file not found)
-  # vendor_goods: "/d/death/obj/weapon80" (file not found)
+  goods = [
+    { id = items.weapon1.id },
+    { id = items.weapon2.id },
+    { id = items.weapon3.id },
+    { id = items.weapon4.id },
+    { id = items.weapon5.id },
+    { id = items.weapon6.id },
+    { id = items.weapon7.id },
+    { id = items.weapon8.id },
+    { id = items.weapon9.id },
+    { id = items.weapon10.id },
+    { id = items.weapon11.id },
+    { id = items.weapon12.id },
+    { id = items.weapon13.id },
+    { id = items.weapon14.id },
+    { id = items.weapon15.id },
+    { id = items.weapon16.id },
+    { id = items.weapon17.id },
+    { id = items.weapon18.id },
+    { id = items.weapon19.id },
+    { id = items.weapon20.id },
+    { id = items.weapon21.id },
+    { id = items.weapon22.id },
+    { id = items.weapon23.id },
+    { id = items.weapon24.id },
+    { id = items.weapon25.id },
+    { id = items.weapon26.id },
+    { id = items.weapon27.id },
+    { id = items.weapon28.id },
+    { id = items.weapon29.id },
+    { id = items.weapon30.id },
+    { id = items.weapon31.id },
+    { id = items.weapon32.id },
+    { id = items.weapon33.id },
+    { id = items.weapon34.id },
+    { id = items.weapon35.id },
+    { id = items.weapon36.id },
+    { id = items.weapon37.id },
+    { id = items.weapon38.id },
+    { id = items.weapon39.id },
+    { id = items.weapon40.id },
+    { id = items.weapon41.id },
+    { id = items.weapon42.id },
+    { id = items.weapon43.id },
+    { id = items.weapon44.id },
+    { id = items.weapon45.id },
+    { id = items.weapon46.id },
+    { id = items.weapon47.id },
+    { id = items.weapon48.id },
+    { id = items.weapon49.id },
+    { id = items.weapon50.id },
+    { id = items.weapon51.id },
+    { id = items.weapon52.id },
+    { id = items.weapon53.id },
+    { id = items.weapon54.id },
+    { id = items.weapon55.id },
+    { id = items.weapon56.id },
+    { id = items.weapon57.id },
+    { id = items.weapon58.id },
+    { id = items.weapon59.id },
+    { id = items.weapon60.id },
+    { id = items.weapon61.id },
+    { id = items.weapon62.id },
+    { id = items.weapon63.id },
+    { id = items.weapon64.id },
+    { id = items.weapon65.id },
+    { id = items.weapon66.id },
+    { id = items.weapon67.id },
+    { id = items.weapon68.id },
+    { id = items.weapon69.id },
+    { id = items.weapon70.id },
+    { id = items.weapon71.id },
+    { id = items.weapon72.id },
+    { id = items.weapon73.id },
+    { id = items.weapon74.id },
+    { id = items.weapon75.id },
+    { id = items.weapon76.id },
+    { id = items.weapon77.id },
+    { id = items.weapon78.id },
+    { id = items.weapon79.id },
+    { id = items.weapon80.id }
+  ]
 
   skills = [
     { skill = "unarmed" level = 500 },

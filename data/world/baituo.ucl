@@ -1778,7 +1778,9 @@ chats = [
     str = 25
   }
 
-  # vendor_goods: "/d/baituo/obj/fen" (file not found)
+  goods = [
+    { id = items.fen.id }
+  ]
 
   inquiries = [
     { key = "白驼山" value = "我这里的蛇胆粉就是用白驼山的蛇精心制作的。" },

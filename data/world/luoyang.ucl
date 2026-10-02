@@ -3772,7 +3772,9 @@ chats = [
   }
 
   # vendor_goods: "/clone/weapon/mudao" (file not found)
-  # vendor_goods: "/d/shaolin/obj/qimeigun" (file not found)
+  goods = [
+    { id = shaolin.items.qimeigun.id }
+  ]
   # vendor_goods: "/clone/weapon/zhujian" (file not found)
 
   skills = [
@@ -3983,7 +3985,9 @@ chats = [
   # vendor_goods: "/clone/weapon/tiegun" (file not found)
   # vendor_goods: "/clone/weapon/gangdao" (file not found)
   # vendor_goods: "/clone/cloth/tiejia" (file not found)
-  # vendor_goods: "/d/item/obj/jingtie" (file not found)
+  goods = [
+    { id = item.items.jingtie.id }
+  ]
   # vendor_goods: "/clone/weapon/arrow" (file not found)
   # vendor_goods: "/clone/weapon/wolfarrow" (file not found)
   # vendor_goods: "/clone/weapon/bow" (file not found)
@@ -4077,7 +4081,9 @@ chats = [
   # vendor_goods: "/d/city/npc/obj/shoutao" (file not found)
   # vendor_goods: "/d/city/npc/obj/tieshou" (file not found)
   # vendor_goods: "/d/city/npc/obj/jinsijia" (file not found)
-  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
+  goods = [
+    { id = xiyu.items.fire.id }
+  ]
 
   skills = [
     { skill = "unarmed" level = 50 },

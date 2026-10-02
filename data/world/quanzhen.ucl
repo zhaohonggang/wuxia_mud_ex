@@ -2932,10 +2932,10 @@ chats = [
   goods = [
     { id = items.stick.id },
     { id = items.bottle.id },
-    { id = items.egg.id }
+    { id = items.egg.id },
+    { id = xiyu.items.fire.id }
   ]
 
-  # vendor_goods: "/d/xiyu/obj/fire" (file not found)
 
   inquiries = [
     { key = "何首乌" value = "(: ask_me :)" },

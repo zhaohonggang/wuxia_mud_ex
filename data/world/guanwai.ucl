@@ -1562,8 +1562,10 @@ behavior_config = {
     combat_exp = 30000
   }
 
-  # vendor_goods: "/d/guanwai/obj/saw" (file not found)
-  # vendor_goods: "/d/guanwai/obj/axe" (file not found)
+  goods = [
+    { id = items.saw.id },
+    { id = items.axe.id }
+  ]
 
   inquiries = [
     { key = "斧头" value = "我这儿有，来一把吧。" },

@@ -3024,11 +3024,13 @@ direction = ~
     str = 10
   }
 
-  # vendor_goods: "/d/beijing/obj/luobo" (file not found)
-  # vendor_goods: "/d/beijing/obj/huluobo" (file not found)
-  # vendor_goods: "/d/beijing/obj/baicai" (file not found)
-  # vendor_goods: "/d/beijing/obj/dacong" (file not found)
-  # vendor_goods: "/d/beijing/obj/tudou" (file not found)
+  goods = [
+    { id = beijing.items.luobo.id },
+    { id = beijing.items.huluobo.id },
+    { id = beijing.items.baicai.id },
+    { id = beijing.items.dacong.id },
+    { id = beijing.items.tudou.id }
+  ]
 
   chat_chance = 10
 chats = [
