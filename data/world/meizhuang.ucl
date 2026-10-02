@@ -1049,6 +1049,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 500
+        unit = "丛"
+      }
     }
 
 # Generated from C:/files/git/mud/d/meizhuang/obj/hongchou.c by LPCConverter
@@ -1061,6 +1067,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 800
+        unit = "件"
+        material = "cloth"
+      }
     }
 
 # Generated from C:/files/git/mud/d/meizhuang/obj/honghua.c by LPCConverter
@@ -1073,6 +1085,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 5
+        unit = "朵"
+      }
     }
 
 # Generated from C:/files/git/mud/d/meizhuang/obj/maobi.c by LPCConverter
@@ -1092,6 +1110,13 @@ item_desc = {
     wield = "{npc}从兜里掏出一把{name}握在手中。"
     unwield = "{npc}将手中的{name}放回兜里。"
   }
+
+      meta = {
+        value = 200
+        weight = 6000
+        unit = "支"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/meizhuang/obj/panguanbi.c by LPCConverter
@@ -1111,6 +1136,13 @@ item_desc = {
     wield = "{npc}从兜里掏出一把{name}握在手中。"
     unwield = "{npc}将手中的{name}放回兜里。"
   }
+
+      meta = {
+        value = 1000
+        weight = 6000
+        unit = "支"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/meizhuang/obj/qin.c by LPCConverter
@@ -1130,6 +1162,15 @@ item_desc = {
     wield = "{npc}从背后缓缓取出一具檀木琴合抱在手中。"
     unwield = "{npc}将手中的檀木琴收了起来，放到背后。"
   }
+
+      meta = {
+        damage = 20
+        skill_type = "sword"
+        value = 5000
+        weight = 9000
+        unit = "具"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/meizhuang/obj/qipan.c by LPCConverter
@@ -1142,6 +1183,15 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 40
+        skill_type = "hammer"
+        value = 3000
+        weight = 10000
+        unit = "个"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/meizhuang/obj/qizi.c by LPCConverter
@@ -1154,6 +1204,15 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 10
+        skill_type = "throwing"
+        value = 0
+        weight = 1
+        unit = "些"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/meizhuang/obj/sea-wood.c by LPCConverter
@@ -1173,6 +1232,15 @@ item_desc = {
     wield = "{npc}从背后将南海神木拔出来，拿在手中。"
     unwield = "{npc}将手中的{name}重新插回背后。"
   }
+
+      meta = {
+        damage = 55
+        skill_type = "sword"
+        value = 2000
+        weight = 2000
+        unit = "根"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/meizhuang/obj/tizi.c by LPCConverter
@@ -1185,6 +1253,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 200000
+        unit = "架"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/meizhuang/obj/xiao.c by LPCConverter
@@ -1204,6 +1278,15 @@ item_desc = {
     wield = "{npc}「唰」的一声从怀中掏出一根{name}握在手中。"
     unwield = "{npc}将手中的{name}揣回怀里。"
   }
+
+      meta = {
+        damage = 50
+        skill_type = "dagger"
+        value = 2000
+        weight = 4000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/meizhuang/obj/yaoshi.c by LPCConverter
@@ -1216,6 +1299,11 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 10
+        unit = "把"
+      }
     }
 
 # Generated from C:/files/git/mud/d/meizhuang/obj/zhuguo.c by LPCConverter
@@ -1228,4 +1316,10 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        weight = 20
+        unit = "颗"
+      }
     }

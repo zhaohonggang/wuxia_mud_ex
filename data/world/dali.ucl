@@ -7132,6 +7132,14 @@ chats = [
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 50
+        weight = 10
+        unit = "朵"
+        material = "plant"
+        armor = 0
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/obj/chahua12.c by LPCConverter
@@ -7146,6 +7154,14 @@ chats = [
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 50
+        weight = 10
+        unit = "朵"
+        material = "plant"
+        armor = 0
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/obj/chahua13.c by LPCConverter
@@ -7160,6 +7176,14 @@ chats = [
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 50
+        weight = 10
+        unit = "朵"
+        material = "plant"
+        armor = 0
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/obj/fangshaji.c by LPCConverter
@@ -7172,6 +7196,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10
+        unit = "台"
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/obj/fuchen.c by LPCConverter
@@ -7191,6 +7220,15 @@ chats = [
     wield = "{npc}「唰」的一声从颈中抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}别回颈中。"
   }
+
+      meta = {
+        damage = 20
+        skill_type = "whip"
+        value = 30
+        weight = 300
+        unit = "柄"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/obj/shanchahua.c by LPCConverter
@@ -7203,6 +7241,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10
+        unit = "朵"
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/obj/xueli.c by LPCConverter
@@ -7216,4 +7259,11 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 80
+        weight = 40
+        unit = "碟"
+        food = 40
+      }
     }

@@ -1094,6 +1094,14 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/c-jiasha.c by LPCConverter
@@ -1106,6 +1114,14 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/cha.c by LPCConverter
@@ -1118,6 +1134,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 300
+        weight = 50
+        unit = "碗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/falun.c by LPCConverter
@@ -1137,6 +1159,15 @@ item_desc = {
     wield = "{npc}抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}放回腰间。"
   }
+
+      meta = {
+        damage = 5
+        skill_type = "hammer"
+        value = 50
+        weight = 1000
+        unit = "把"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/gangchu.c by LPCConverter
@@ -1156,6 +1187,15 @@ item_desc = {
     wield = "{npc}「呼」的一声抽出一柄{name}高举在手中。"
     unwield = "{npc}将手中的{name}背回背上。"
   }
+
+      meta = {
+        damage = 50
+        skill_type = "hammer"
+        value = 3000
+        weight = 5000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/gushan.c by LPCConverter
@@ -1175,6 +1215,13 @@ item_desc = {
     wield = "{npc}从兜里掏出一把{name}握在手中。"
     unwield = "{npc}将手中的{name}放回兜里。"
   }
+
+      meta = {
+        value = 3000
+        weight = 6000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/jinlun.c by LPCConverter
@@ -1194,6 +1241,15 @@ item_desc = {
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}放回腰间。"
   }
+
+      meta = {
+        damage = 75
+        skill_type = "hammer"
+        value = 10000
+        weight = 5000
+        unit = "把"
+        material = "gold"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/mugun.c by LPCConverter
@@ -1213,6 +1269,15 @@ item_desc = {
     wield = "{npc}抽出一根{name}握在手中。"
     unwield = "{npc}将手中的{name}插回腰间。"
   }
+
+      meta = {
+        damage = 5
+        skill_type = "staff"
+        value = 50
+        weight = 1000
+        unit = "根"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/nailao.c by LPCConverter
@@ -1226,6 +1291,13 @@ item_desc = {
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 300
+        unit = "块"
+        food = 60
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/niupidai.c by LPCConverter
@@ -1238,6 +1310,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/p-jiasha.c by LPCConverter
@@ -1250,6 +1328,14 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/qingke-m.c by LPCConverter
@@ -1263,6 +1349,13 @@ item_desc = {
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 200
+        weight = 200
+        unit = "盆"
+        food = 60
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/r-jiasha.c by LPCConverter
@@ -1275,6 +1368,14 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/senggun.c by LPCConverter
@@ -1294,6 +1395,15 @@ item_desc = {
     wield = "{npc}抽出一根{name}握在手中。"
     unwield = "{npc}将手中的{name}插回腰间。"
   }
+
+      meta = {
+        damage = 15
+        skill_type = "staff"
+        value = 200
+        weight = 3000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/sengmao.c by LPCConverter
@@ -1306,6 +1416,14 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 500
+        unit = "顶"
+        material = "head"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/xuelian.c by LPCConverter
@@ -1318,6 +1436,11 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        unit = "支"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/y-jiasha.c by LPCConverter
@@ -1330,6 +1453,14 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/yinlun.c by LPCConverter
@@ -1349,4 +1480,13 @@ item_desc = {
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}放回腰间。"
   }
+
+      meta = {
+        damage = 50
+        skill_type = "hammer"
+        value = 10000
+        weight = 5000
+        unit = "把"
+        material = "silver"
+      }
     }

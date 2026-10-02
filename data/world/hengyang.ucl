@@ -3236,6 +3236,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1000
+        weight = 1000
+        unit = "个"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/obj/longzi.c by LPCConverter
@@ -3248,6 +3255,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 1000
+        unit = "个"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/obj/mantou.c by LPCConverter
@@ -3261,6 +3275,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 40
+        unit = "个"
+        material = "rice"
+        food = 15
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/obj/mujian.c by LPCConverter
@@ -3280,6 +3301,15 @@ chats = [
     wield = "{npc}抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}插回剑鞘。"
   }
+
+      meta = {
+        damage = 1
+        skill_type = "sword"
+        value = 50
+        weight = 800
+        unit = "柄"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/obj/water.c by LPCConverter
@@ -3292,6 +3322,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10
+        weight = 50
+        unit = "碗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/obj/zigai-book.c by LPCConverter
@@ -3304,6 +3340,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 600
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "zigai"
+          max_skill = 120
+          exp_required = 10000
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/honghuqin.c by LPCConverter
@@ -3316,6 +3366,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 2000
+        weight = 800
+        unit = "把"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/huxian-book.c by LPCConverter
@@ -3328,6 +3385,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 50
+        weight = 200
+        unit = "本"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/jiaoyeqin.c by LPCConverter
@@ -3340,6 +3404,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 800000
+        weight = 700
+        unit = "把"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/jiuxiaoqin.c by LPCConverter
@@ -3352,6 +3423,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 400000
+        weight = 600
+        unit = "把"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/qin-jimo.c by LPCConverter
@@ -3364,6 +3442,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000000
+        weight = 1000
+        unit = "把"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/qin-jueyin.c by LPCConverter
@@ -3376,6 +3461,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000000
+        weight = 1000
+        unit = "把"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/qin-konggu.c by LPCConverter
@@ -3388,6 +3480,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000000
+        weight = 1000
+        unit = "把"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/qin-tianlai.c by LPCConverter
@@ -3400,6 +3499,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000000
+        weight = 1000
+        unit = "把"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/shixuanqin-zhanguo.c by LPCConverter
@@ -3412,6 +3518,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100000
+        weight = 700
+        unit = "把"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/tanhuqin.c by LPCConverter
@@ -3424,6 +3537,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1000
+        weight = 800
+        unit = "把"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/yuepu-book.c by LPCConverter
@@ -3436,6 +3556,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 50
+        weight = 200
+        unit = "本"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/yueqi-book.c by LPCConverter
@@ -3448,6 +3575,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 50
+        weight = 200
+        unit = "本"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/zhongnishi.c by LPCConverter
@@ -3460,6 +3594,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 200000
+        weight = 500
+        unit = "把"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/zhuxiao-liuquan.c by LPCConverter
@@ -3472,6 +3613,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000000
+        weight = 600
+        unit = "把"
+        material = "stone"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/zhuxiao-qingyin.c by LPCConverter
@@ -3484,6 +3632,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000000
+        weight = 600
+        unit = "把"
+        material = "stone"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/zhuxiao-shuiyun.c by LPCConverter
@@ -3496,6 +3651,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000000
+        weight = 600
+        unit = "把"
+        material = "stone"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/yueqi/zhuxiao-youlan.c by LPCConverter
@@ -3508,4 +3670,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000000
+        weight = 600
+        unit = "把"
+        material = "stone"
+      }
     }

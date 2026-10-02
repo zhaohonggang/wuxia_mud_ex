@@ -1107,6 +1107,14 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingjiu/obj/doupeng.c by LPCConverter
@@ -1119,6 +1127,14 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingjiu/obj/gao.c by LPCConverter
@@ -1132,6 +1148,13 @@ item_desc = {
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 50
+        weight = 1000
+        unit = "块"
+        food = 100
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingjiu/obj/key.c by LPCConverter
@@ -1144,6 +1167,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 100
+        unit = "把"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingjiu/obj/qingyi.c by LPCConverter
@@ -1156,6 +1186,14 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingjiu/obj/suanmei.c by LPCConverter
@@ -1168,4 +1206,10 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 20
+        weight = 1000
+        unit = "碗"
+      }
     }

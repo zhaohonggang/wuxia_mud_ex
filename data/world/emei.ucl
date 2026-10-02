@@ -2473,6 +2473,13 @@ direction = ~
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "盆"
+        food = 40
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/fojing10.c by LPCConverter
@@ -2485,6 +2492,20 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "buddhism"
+          max_skill = 50
+          exp_required = 0
+          jing_cost = 10
+          difficulty = 10
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/fojing11.c by LPCConverter
@@ -2497,6 +2518,20 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "buddhism"
+          max_skill = 100
+          exp_required = 0
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/fojing20.c by LPCConverter
@@ -2509,6 +2544,20 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "mahayana"
+          max_skill = 50
+          exp_required = 0
+          jing_cost = 10
+          difficulty = 10
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/fojing21.c by LPCConverter
@@ -2521,6 +2570,20 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "mahayana"
+          max_skill = 100
+          exp_required = 0
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/fuchen.c by LPCConverter
@@ -2540,6 +2603,15 @@ direction = ~
     wield = "{npc}「唰」的一声从颈中抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}别回颈中。"
   }
+
+      meta = {
+        damage = 20
+        skill_type = "whip"
+        value = 30
+        weight = 300
+        unit = "柄"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/jiudai.c by LPCConverter
@@ -2552,6 +2624,12 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/liuli-qiezi.c by LPCConverter
@@ -2565,6 +2643,13 @@ direction = ~
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "盆"
+        food = 40
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/mala-doufu.c by LPCConverter
@@ -2578,6 +2663,13 @@ direction = ~
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "盆"
+        food = 40
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/map.c by LPCConverter
@@ -2590,6 +2682,13 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 50
+        weight = 10
+        unit = "张"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/pantao.c by LPCConverter
@@ -2602,6 +2701,12 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 3000
+        weight = 150
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/qingshui-hulu.c by LPCConverter
@@ -2614,6 +2719,12 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/ruanjian.c by LPCConverter
@@ -2633,6 +2744,15 @@ direction = ~
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}插回剑鞘。"
   }
+
+      meta = {
+        damage = 35
+        skill_type = "sword"
+        value = 150
+        weight = 500
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/shanhu-baicai.c by LPCConverter
@@ -2646,6 +2766,13 @@ direction = ~
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "盆"
+        food = 40
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/tianxiang-gao.c by LPCConverter
@@ -2658,6 +2785,10 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        unit = "盒"
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/xiang.c by LPCConverter
@@ -2670,6 +2801,12 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 50
+        weight = 500000
+        unit = "座"
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/yaodai.c by LPCConverter
@@ -2682,6 +2819,14 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 6000
+        weight = 300
+        unit = "条"
+        material = "waist"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/ycloth.c by LPCConverter
@@ -2694,6 +2839,13 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/emei/obj/zhujian.c by LPCConverter
@@ -2712,4 +2864,13 @@ direction = ~
   messages = {
     wield = "{npc}拿出一把{name}，握在手中。"
   }
+
+      meta = {
+        damage = 3
+        skill_type = "sword"
+        value = 100
+        weight = 1000
+        unit = "把"
+        material = "bamboo"
+      }
     }

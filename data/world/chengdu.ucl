@@ -2465,4 +2465,10 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 5000000
+        unit = "只"
+      }
     }

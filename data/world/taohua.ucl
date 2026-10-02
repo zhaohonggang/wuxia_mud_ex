@@ -912,6 +912,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 300000
+        weight = 2000
+        unit = "只"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/baichou.c by LPCConverter
@@ -924,6 +931,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000
+        weight = 500
+        unit = "件"
+        armor = 2
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/baipao.c by LPCConverter
@@ -936,6 +950,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 200
+        weight = 1000
+        unit = "件"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/baiyi.c by LPCConverter
@@ -948,6 +969,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 2500
+        weight = 1000
+        unit = "件"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/bupao.c by LPCConverter
@@ -960,6 +988,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 1000
+        unit = "件"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/cha.c by LPCConverter
@@ -972,6 +1007,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 20
+        weight = 1000
+        unit = "杯"
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/cubupao.c by LPCConverter
@@ -984,6 +1025,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 1000
+        unit = "件"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/gao.c by LPCConverter
@@ -997,6 +1045,13 @@ item_desc = {
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 50
+        weight = 1000
+        unit = "块"
+        food = 100
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/huaban.c by LPCConverter
@@ -1009,6 +1064,15 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 2
+        skill_type = "throwing"
+        value = 0
+        weight = 1
+        unit = "把"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/jindai.c by LPCConverter
@@ -1023,6 +1087,14 @@ item_desc = {
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 1500
+        weight = 50
+        unit = "条"
+        material = "silk"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/mingzhu.c by LPCConverter
@@ -1035,6 +1107,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        weight = 100
+        unit = "颗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/ruanwei.c by LPCConverter
@@ -1049,6 +1127,14 @@ item_desc = {
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 20000
+        weight = 1000
+        unit = "件"
+        material = "copper"
+        armor = 75
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/shizi.c by LPCConverter
@@ -1061,6 +1147,15 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 2
+        skill_type = "throwing"
+        value = 0
+        weight = 100
+        unit = "些"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/shudai.c by LPCConverter
@@ -1075,6 +1170,14 @@ item_desc = {
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 1500
+        weight = 50
+        unit = "条"
+        material = "silk"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/taojian.c by LPCConverter
@@ -1093,6 +1196,15 @@ item_desc = {
   messages = {
     wield = "{npc}拿出一把练剑用的{name}，握在手中。"
   }
+
+      meta = {
+        damage = 10
+        skill_type = "sword"
+        value = 100
+        weight = 1000
+        unit = "把"
+        material = "bamboo"
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/xiang.c by LPCConverter
@@ -1105,6 +1217,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000
+        weight = 4000
+        unit = "个"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/yuxiao.c by LPCConverter
@@ -1124,6 +1243,13 @@ item_desc = {
     wield = "{npc}大袖一挥，手中已多了一支晶莹温润的玉萧。"
     unwield = "{npc}手中玉萧一转，眨眼间玉萧已然不见影踪。"
   }
+
+      meta = {
+        value = 10000
+        weight = 500
+        unit = "支"
+        material = "stone"
+      }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/zhuxiao.c by LPCConverter
@@ -1136,4 +1262,11 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10
+        weight = 300
+        unit = "根"
+        material = "bamboo"
+      }
     }

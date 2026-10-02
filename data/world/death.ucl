@@ -3278,6 +3278,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 6000
+        unit = "根"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/hupi.c by LPCConverter
@@ -3290,6 +3295,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1000000
+        weight = 700
+        unit = "张"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/jiake.c by LPCConverter
@@ -3302,6 +3313,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 120000
+        weight = 25000
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/jingyuandan.c by LPCConverter
@@ -3314,6 +3331,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 20000
+        weight = 700
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/longdan.c by LPCConverter
@@ -3326,6 +3349,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 8000
+        unit = "只"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/longjin.c by LPCConverter
@@ -3338,6 +3366,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 200000
+        weight = 700
+        unit = "根"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/qilinxue.c by LPCConverter
@@ -3350,6 +3384,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100000
+        weight = 800
+        unit = "双"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/qise.c by LPCConverter
@@ -3362,6 +3403,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000000
+        weight = 10000
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/shuizao.c by LPCConverter
@@ -3374,6 +3421,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 700
+        unit = "丛"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/tang.c by LPCConverter
@@ -3386,6 +3439,10 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        unit = "碗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/tianjing.c by LPCConverter
@@ -3398,6 +3455,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000000
+        weight = 10000
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon1.c by LPCConverter
@@ -3410,6 +3473,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 50
+        skill_type = "club"
+        value = 250000
+        weight = 8000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon10.c by LPCConverter
@@ -3428,6 +3500,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 220
+        skill_type = "club"
+        value = 3400000
+        weight = 20000
+        unit = "支"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon11.c by LPCConverter
@@ -3440,6 +3521,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 50
+        skill_type = "hammer"
+        value = 250000
+        weight = 18000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon12.c by LPCConverter
@@ -3452,6 +3542,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 80
+        skill_type = "hammer"
+        value = 600000
+        weight = 18000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon13.c by LPCConverter
@@ -3464,6 +3563,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 50
+        skill_type = "staff"
+        value = 250000
+        weight = 8000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon14.c by LPCConverter
@@ -3476,6 +3584,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 65
+        skill_type = "staff"
+        value = 450000
+        weight = 13000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon15.c by LPCConverter
@@ -3488,6 +3605,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 80
+        skill_type = "staff"
+        value = 900000
+        weight = 13000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon16.c by LPCConverter
@@ -3500,6 +3626,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 100
+        skill_type = "staff"
+        value = 1400000
+        weight = 13000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon17.c by LPCConverter
@@ -3518,6 +3653,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 120
+        skill_type = "staff"
+        value = 1600000
+        weight = 18000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon18.c by LPCConverter
@@ -3536,6 +3680,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 150
+        skill_type = "staff"
+        value = 1800000
+        weight = 18000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon19.c by LPCConverter
@@ -3554,6 +3707,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 150
+        skill_type = "staff"
+        value = 2600000
+        weight = 22000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon2.c by LPCConverter
@@ -3572,6 +3734,15 @@ chats = [
   messages = {
     wield = "{npc}提起{name}握在手中，威风凛凛。"
   }
+
+      meta = {
+        damage = 75
+        skill_type = "club"
+        value = 500000
+        weight = 15000
+        unit = "杆"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon20.c by LPCConverter
@@ -3590,6 +3761,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 180
+        skill_type = "staff"
+        value = 3200000
+        weight = 22000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon21.c by LPCConverter
@@ -3608,6 +3788,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 220
+        skill_type = "staff"
+        value = 4000000
+        weight = 22000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon22.c by LPCConverter
@@ -3620,6 +3809,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 50
+        skill_type = "throwing"
+        value = 50000
+        weight = 300
+        unit = "些"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon23.c by LPCConverter
@@ -3632,6 +3830,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 70
+        skill_type = "throwing"
+        value = 100000
+        weight = 300
+        unit = "些"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon24.c by LPCConverter
@@ -3644,6 +3851,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 100
+        skill_type = "throwing"
+        value = 200000
+        weight = 300
+        unit = "些"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon25.c by LPCConverter
@@ -3656,6 +3872,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 120
+        skill_type = "throwing"
+        value = 250000
+        weight = 300
+        unit = "些"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon26.c by LPCConverter
@@ -3668,6 +3893,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 50
+        skill_type = "whip"
+        value = 230000
+        weight = 4000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon27.c by LPCConverter
@@ -3680,6 +3914,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 55
+        skill_type = "whip"
+        value = 360000
+        weight = 4000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon28.c by LPCConverter
@@ -3692,6 +3935,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 60
+        skill_type = "whip"
+        value = 420000
+        weight = 4000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon29.c by LPCConverter
@@ -3704,6 +3956,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 70
+        skill_type = "whip"
+        value = 650000
+        weight = 4000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon3.c by LPCConverter
@@ -3722,6 +3983,15 @@ chats = [
   messages = {
     wield = "{npc}提起{name}握在手中，威风凛凛。"
   }
+
+      meta = {
+        damage = 120
+        skill_type = "club"
+        value = 1200000
+        weight = 10000
+        unit = "杆"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon30.c by LPCConverter
@@ -3734,6 +4004,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 90
+        skill_type = "whip"
+        value = 1200000
+        weight = 4000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon31.c by LPCConverter
@@ -3752,6 +4031,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 110
+        skill_type = "whip"
+        value = 1200000
+        weight = 4000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon32.c by LPCConverter
@@ -3770,6 +4058,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 140
+        skill_type = "whip"
+        value = 1600000
+        weight = 4000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon33.c by LPCConverter
@@ -3788,6 +4085,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 160
+        skill_type = "whip"
+        value = 2300000
+        weight = 4000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon34.c by LPCConverter
@@ -3806,6 +4112,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 180
+        skill_type = "whip"
+        value = 3200000
+        weight = 4000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon35.c by LPCConverter
@@ -3824,6 +4139,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 200
+        skill_type = "whip"
+        value = 3600000
+        weight = 4000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon36.c by LPCConverter
@@ -3842,6 +4166,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 220
+        skill_type = "whip"
+        value = 3900000
+        weight = 4000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon37.c by LPCConverter
@@ -3854,6 +4187,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 100
+        skill_type = "dagger"
+        value = 2000000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon38.c by LPCConverter
@@ -3866,6 +4208,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 140
+        skill_type = "dagger"
+        value = 2500000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon39.c by LPCConverter
@@ -3878,6 +4229,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 160
+        skill_type = "dagger"
+        value = 3000000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon4.c by LPCConverter
@@ -3896,6 +4256,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 200
+        skill_type = "club"
+        value = 3000000
+        weight = 20000
+        unit = "杆"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon40.c by LPCConverter
@@ -3910,6 +4279,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 50
+        skill_type = "blade"
+        value = 240000
+        weight = 4000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon41.c by LPCConverter
@@ -3924,6 +4302,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 50
+        skill_type = "blade"
+        value = 250000
+        weight = 4000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon42.c by LPCConverter
@@ -3938,6 +4325,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 55
+        skill_type = "blade"
+        value = 300000
+        weight = 4000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon43.c by LPCConverter
@@ -3952,6 +4348,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 58
+        skill_type = "blade"
+        value = 320000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon44.c by LPCConverter
@@ -3966,6 +4371,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 65
+        skill_type = "blade"
+        value = 340000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon45.c by LPCConverter
@@ -3980,6 +4394,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 70
+        skill_type = "blade"
+        value = 580000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon46.c by LPCConverter
@@ -3994,6 +4417,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 80
+        skill_type = "blade"
+        value = 1000000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon47.c by LPCConverter
@@ -4008,6 +4440,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 90
+        skill_type = "blade"
+        value = 1200000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon48.c by LPCConverter
@@ -4022,6 +4463,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 100
+        skill_type = "blade"
+        value = 1300000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon49.c by LPCConverter
@@ -4036,6 +4486,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 120
+        skill_type = "blade"
+        value = 1400000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon5.c by LPCConverter
@@ -4054,6 +4513,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 160
+        skill_type = "club"
+        value = 2400000
+        weight = 20000
+        unit = "杆"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon50.c by LPCConverter
@@ -4072,6 +4540,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 140
+        skill_type = "blade"
+        value = 1700000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon51.c by LPCConverter
@@ -4090,6 +4567,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 150
+        skill_type = "blade"
+        value = 2200000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon52.c by LPCConverter
@@ -4108,6 +4594,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 160
+        skill_type = "blade"
+        value = 2500000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon53.c by LPCConverter
@@ -4126,6 +4621,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 170
+        skill_type = "blade"
+        value = 2800000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon54.c by LPCConverter
@@ -4144,6 +4648,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 180
+        skill_type = "blade"
+        value = 3000000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon55.c by LPCConverter
@@ -4162,6 +4675,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 190
+        skill_type = "blade"
+        value = 3200000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon56.c by LPCConverter
@@ -4180,6 +4702,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 195
+        skill_type = "blade"
+        value = 3300000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon57.c by LPCConverter
@@ -4198,6 +4729,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 200
+        skill_type = "blade"
+        value = 3600000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon58.c by LPCConverter
@@ -4216,6 +4756,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 210
+        skill_type = "blade"
+        value = 4000000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon59.c by LPCConverter
@@ -4234,6 +4783,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 230
+        skill_type = "blade"
+        value = 4500000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon6.c by LPCConverter
@@ -4252,6 +4810,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 175
+        skill_type = "hammer"
+        value = 2600000
+        weight = 28000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon60.c by LPCConverter
@@ -4270,6 +4837,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 230
+        skill_type = "sword"
+        value = 4500000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon61.c by LPCConverter
@@ -4288,6 +4864,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 220
+        skill_type = "sword"
+        value = 4000000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon62.c by LPCConverter
@@ -4306,6 +4891,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 210
+        skill_type = "sword"
+        value = 3800000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon63.c by LPCConverter
@@ -4324,6 +4918,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 200
+        skill_type = "sword"
+        value = 3700000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon64.c by LPCConverter
@@ -4342,6 +4945,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 190
+        skill_type = "sword"
+        value = 3600000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon65.c by LPCConverter
@@ -4360,6 +4972,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 180
+        skill_type = "sword"
+        value = 3500000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon66.c by LPCConverter
@@ -4378,6 +4999,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 175
+        skill_type = "sword"
+        value = 3500000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon67.c by LPCConverter
@@ -4396,6 +5026,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 170
+        skill_type = "sword"
+        value = 3400000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon68.c by LPCConverter
@@ -4414,6 +5053,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 160
+        skill_type = "sword"
+        value = 3100000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon69.c by LPCConverter
@@ -4432,6 +5080,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 160
+        skill_type = "sword"
+        value = 3000000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon7.c by LPCConverter
@@ -4450,6 +5107,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 180
+        skill_type = "hammer"
+        value = 2800000
+        weight = 28000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon70.c by LPCConverter
@@ -4468,6 +5134,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 155
+        skill_type = "sword"
+        value = 2800000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon71.c by LPCConverter
@@ -4486,6 +5161,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 140
+        skill_type = "sword"
+        value = 2200000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon72.c by LPCConverter
@@ -4504,6 +5188,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 130
+        skill_type = "sword"
+        value = 2000000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon73.c by LPCConverter
@@ -4518,6 +5211,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 120
+        skill_type = "sword"
+        value = 1600000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon74.c by LPCConverter
@@ -4532,6 +5234,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 110
+        skill_type = "sword"
+        value = 1500000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon75.c by LPCConverter
@@ -4546,6 +5257,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 95
+        skill_type = "sword"
+        value = 1200000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon76.c by LPCConverter
@@ -4560,6 +5280,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 90
+        skill_type = "sword"
+        value = 1000000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon77.c by LPCConverter
@@ -4574,6 +5303,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 80
+        skill_type = "sword"
+        value = 900000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon78.c by LPCConverter
@@ -4588,6 +5326,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 60
+        skill_type = "sword"
+        value = 700000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon79.c by LPCConverter
@@ -4602,6 +5349,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 60
+        skill_type = "sword"
+        value = 400000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon8.c by LPCConverter
@@ -4620,6 +5376,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 200
+        skill_type = "hammer"
+        value = 3600000
+        weight = 28000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon80.c by LPCConverter
@@ -4634,6 +5399,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 50
+        skill_type = "sword"
+        value = 300000
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/weapon9.c by LPCConverter
@@ -4652,6 +5426,15 @@ chats = [
   messages = {
     wield = "{npc}轻轻抖出{name}，刹时雷声轰鸣，一股杀气直聂九霄。"
   }
+
+      meta = {
+        damage = 210
+        skill_type = "hammer"
+        value = 3800000
+        weight = 28000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/wujian.c by LPCConverter
@@ -4671,6 +5454,15 @@ chats = [
     wield = "{npc}(噌)的一声抽出一把无间闪电，漫天乌云，电闪雷鸣，杀气四溅。"
     unwield = "{npc}把手中的无间闪电插入剑鞘，乌云速散，雷电消失，杀气顿无。"
   }
+
+      meta = {
+        damage = 2100000
+        skill_type = "sword"
+        value = 100000
+        weight = 15000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/yumao.c by LPCConverter
@@ -4683,6 +5475,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1000
+        weight = 100
+        unit = "束"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/sky1.c by LPCConverter
@@ -5447,6 +6245,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 3000000
+        weight = 10000
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/obj/jue.c by LPCConverter
@@ -5459,6 +6263,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 300
+        weight = 50
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "changsheng"
+          max_skill = 250
+          exp_required = 100000
+          jing_cost = 50
+          difficulty = 50
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/obj/miji1.c by LPCConverter
@@ -5471,6 +6289,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 50
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "tiexian"
+          max_skill = 150
+          exp_required = 0
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/obj/miji2.c by LPCConverter
@@ -5483,6 +6315,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 30
+        weight = 50
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "siji"
+          max_skill = 150
+          exp_required = 0
+          jing_cost = 50
+          difficulty = 50
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/obj/miji3.c by LPCConverter
@@ -5495,6 +6341,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 50
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "feilong"
+          max_skill = 150
+          exp_required = 0
+          jing_cost = 100
+          difficulty = 100
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/obj/sheli.c by LPCConverter
@@ -5507,6 +6367,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1000000
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/obj/shenjiu.c by LPCConverter
@@ -5519,6 +6384,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 50000
+        unit = "瓶"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/obj/tianxiadan.c by LPCConverter
@@ -5531,6 +6401,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        unit = "粒"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/obj/yishu.c by LPCConverter
@@ -5543,4 +6418,18 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 50
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "badao"
+          max_skill = 150
+          exp_required = 500000
+          jing_cost = 80
+          difficulty = 80
+        }
+      }
     }

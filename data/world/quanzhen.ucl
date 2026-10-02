@@ -3707,6 +3707,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 400
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/obj/fuling.c by LPCConverter
@@ -3719,6 +3725,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 500
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/obj/rice.c by LPCConverter
@@ -3732,4 +3743,11 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 0
+        weight = 80
+        unit = "碗"
+        food = 60
+      }
     }

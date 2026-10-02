@@ -374,6 +374,13 @@ zones "lanzhou" {
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 30
+        weight = 60
+        unit = "碟"
+        food = 30
+      }
     }
 
 # Generated from C:/files/git/mud/d/lanzhou/jioudian.c by LPCConverter

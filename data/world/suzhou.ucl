@@ -2187,4 +2187,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1000
+        weight = 3000
+        unit = "个"
+        material = "wood"
+      }
     }

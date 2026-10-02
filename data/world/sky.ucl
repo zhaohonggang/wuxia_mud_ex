@@ -646,6 +646,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 3000000
+        weight = 10000
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/sky/obj/jue.c by LPCConverter
@@ -658,6 +664,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 300
+        weight = 50
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "changsheng"
+          max_skill = 250
+          exp_required = 100000
+          jing_cost = 50
+          difficulty = 50
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/sky/obj/miji1.c by LPCConverter
@@ -670,6 +690,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 50
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "tiexian"
+          max_skill = 150
+          exp_required = 0
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/sky/obj/miji2.c by LPCConverter
@@ -682,6 +716,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 30
+        weight = 50
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "siji"
+          max_skill = 150
+          exp_required = 0
+          jing_cost = 50
+          difficulty = 50
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/sky/obj/miji3.c by LPCConverter
@@ -694,6 +742,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 50
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "feilong"
+          max_skill = 150
+          exp_required = 0
+          jing_cost = 100
+          difficulty = 100
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/sky/obj/sheli.c by LPCConverter
@@ -706,6 +768,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1000000
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/sky/obj/shenjiu.c by LPCConverter
@@ -718,6 +785,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 750000
+        unit = "瓶"
+      }
     }
 
 # Generated from C:/files/git/mud/d/sky/obj/tianxiadan.c by LPCConverter
@@ -730,6 +802,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        unit = "粒"
+      }
     }
 
 # Generated from C:/files/git/mud/d/sky/obj/yishu.c by LPCConverter
@@ -742,4 +819,18 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 50
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "badao"
+          max_skill = 150
+          exp_required = 500000
+          jing_cost = 80
+          difficulty = 80
+        }
+      }
     }

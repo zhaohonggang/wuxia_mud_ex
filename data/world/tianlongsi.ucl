@@ -763,6 +763,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1000
+        weight = 3000
+        unit = "个"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tianlongsi/obj/xiang.c by LPCConverter
@@ -775,6 +782,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 30
+        unit = "柱"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tianlongsi/obj/xianglu.c by LPCConverter
@@ -787,4 +801,11 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1000
+        weight = 3000
+        unit = "个"
+        material = "gold"
+      }
     }

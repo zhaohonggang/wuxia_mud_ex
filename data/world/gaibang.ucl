@@ -79,6 +79,12 @@ zones "gaibang" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 200000
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/gaibang/mishi.c by LPCConverter

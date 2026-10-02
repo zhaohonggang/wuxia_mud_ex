@@ -770,4 +770,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10
+        weight = 200
+        unit = "张"
+        material = "paper"
+      }
     }

@@ -1437,6 +1437,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 20
+        weight = 1000
+        unit = "杯"
+      }
     }
 
 # Generated from C:/files/git/mud/d/yanziwu/obj/dodgebook.c by LPCConverter
@@ -1449,6 +1455,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 100
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "dodge"
+          max_skill = 100
+          exp_required = 10000
+          jing_cost = 1
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/yanziwu/obj/gao.c by LPCConverter
@@ -1462,6 +1482,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 50
+        weight = 1500
+        unit = "块"
+        food = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/yanziwu/obj/heiyugao.c by LPCConverter
@@ -1474,4 +1501,8 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        unit = "粒"
+      }
     }

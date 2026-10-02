@@ -1191,6 +1191,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 500
+        unit = "堆"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wanjiegu/obj/flower.c by LPCConverter
@@ -1203,6 +1209,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 80
+        unit = "一朵"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wanjiegu/obj/mortar.c by LPCConverter
@@ -1215,6 +1227,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 500
+        unit = "只"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wanjiegu/obj/x-drug.c by LPCConverter
@@ -1227,4 +1245,10 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 80
+        unit = "包"
+      }
     }

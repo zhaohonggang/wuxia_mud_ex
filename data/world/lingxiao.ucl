@@ -2433,6 +2433,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 1
+        unit = "片"
+        material = "plant"
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingxiao/obj/book-bamboo.c by LPCConverter
@@ -2445,6 +2452,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 100
+        unit = "片"
+        material = "bamboo"
+        book = {
+          skill = "dodge"
+          max_skill = 99
+          exp_required = 0
+          jing_cost = 10
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingxiao/obj/book-iron.c by LPCConverter
@@ -2457,6 +2478,21 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 2000
+        unit = "块"
+        material = "steel"
+        armor = 3
+        book = {
+          skill = "parry"
+          max_skill = 99
+          exp_required = 0
+          jing_cost = 10
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingxiao/obj/book-silk.c by LPCConverter
@@ -2469,6 +2505,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 50
+        unit = "束"
+        material = "silk"
+        book = {
+          skill = "force"
+          max_skill = 99
+          exp_required = 0
+          jing_cost = 10
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingxiao/obj/book-stone.c by LPCConverter
@@ -2481,6 +2531,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 500
+        unit = "块"
+        material = "stone"
+        book = {
+          skill = "skills"
+          max_skill = 49
+          exp_required = 0
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingxiao/obj/ganjiang.c by LPCConverter
@@ -2500,6 +2564,15 @@ chats = [
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中,顿时风沙飞扬,黑云罩日,漫天神鬼惊惧。"
     unwield = "{npc}将手中的{name}插回剑鞘,一下子风平浪静,晴空万里。"
   }
+
+      meta = {
+        damage = 100
+        skill_type = "sword"
+        value = 20000
+        weight = 8000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingxiao/obj/hanyu.c by LPCConverter
@@ -2512,6 +2585,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        weight = 1000
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingxiao/obj/mei.c by LPCConverter
@@ -2524,6 +2603,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 1
+        unit = "朵"
+        material = "plant"
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingxiao/obj/moye.c by LPCConverter
@@ -2543,6 +2629,15 @@ chats = [
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中,顿时只听冤魂惨嚎,令人毛骨悚然。"
     unwield = "{npc}将手中的{name}插回剑鞘,一下子风平浪静,晴空万里。"
   }
+
+      meta = {
+        damage = 100
+        skill_type = "sword"
+        value = 20000
+        weight = 8000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingxiao/obj/rice.c by LPCConverter
@@ -2556,6 +2651,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 80
+        unit = "碗"
+        material = "rice"
+        food = 15
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingxiao/obj/soup.c by LPCConverter
@@ -2568,4 +2670,10 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 80
+        weight = 50
+        unit = "碗"
+      }
     }

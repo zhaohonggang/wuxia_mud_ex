@@ -2584,6 +2584,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 500
+        unit = "面"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/heimuya/obj/sherou.c by LPCConverter
@@ -2597,6 +2603,13 @@ item_desc = {
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 50
+        weight = 350
+        unit = "条"
+        food = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/heimuya/obj/tea.c by LPCConverter
@@ -2609,4 +2622,10 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10
+        weight = 30
+        unit = "碗"
+      }
     }

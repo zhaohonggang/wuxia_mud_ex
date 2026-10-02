@@ -998,6 +998,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 20000
+        unit = "枚"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenlong/obj/hua.c by LPCConverter
@@ -1010,6 +1015,10 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        unit = "朵"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenlong/obj/hua2.c by LPCConverter
@@ -1022,6 +1031,10 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        unit = "朵"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenlong/obj/hua3.c by LPCConverter
@@ -1034,6 +1047,10 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        unit = "朵"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenlong/obj/hua4.c by LPCConverter
@@ -1046,6 +1063,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1000000
+        unit = "朵"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenlong/obj/jiudai.c by LPCConverter
@@ -1058,6 +1080,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 20
+        weight = 700
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenlong/obj/mitao.c by LPCConverter
@@ -1071,6 +1099,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 80
+        weight = 40
+        unit = "碟"
+        food = 30
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenlong/obj/usedgao.c by LPCConverter
@@ -1083,6 +1118,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1000
+        unit = "张"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenlong/obj/xionghuang.c by LPCConverter
@@ -1095,4 +1135,9 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1000
+        unit = "包"
+      }
     }

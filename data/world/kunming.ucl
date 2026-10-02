@@ -1574,6 +1574,12 @@ direction = "west"
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 1000
+        unit = "本"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunming/obj/pingfeng.c by LPCConverter
@@ -1586,4 +1592,10 @@ direction = "west"
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000000
+        weight = 500000
+        unit = "座"
+      }
     }

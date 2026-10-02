@@ -1144,6 +1144,14 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 300
+        weight = 900
+        unit = "双"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhou/obj/pink_cloth.c by LPCConverter
@@ -1156,4 +1164,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 600
+        weight = 1000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }

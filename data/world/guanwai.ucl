@@ -2160,6 +2160,13 @@ chats = [
     wield = "{npc}抓起一把斧头，握在手中。"
     unwield = "{npc}将手中的斧头收了回来。"
   }
+
+      meta = {
+        value = 1000
+        weight = 10000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guanwai/obj/cwbdao.c by LPCConverter
@@ -2179,6 +2186,15 @@ chats = [
     wield = "一道白光，{name}已在{npc}手中，只觉青光四射，寒气透骨，不禁机伶伶的打个冷战。"
     unwield = "{npc}将{name}插回腰间，华光顿敛，天地间只闻龙鸣。"
   }
+
+      meta = {
+        damage = 150
+        skill_type = "blade"
+        value = 500000
+        weight = 6000
+        unit = "柄"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guanwai/obj/largewood.c by LPCConverter
@@ -2191,6 +2207,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 2000
+        weight = 50000
+        unit = "批"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guanwai/obj/lengyue.c by LPCConverter
@@ -2210,6 +2232,15 @@ chats = [
     wield = "{npc}抓起刀柄，众人只觉眼前青光一闪，寒气逼人，{npc}手中已经多了一柄{name}，刀光如水，流转不定。"
     unwield = "{npc}弹刀清啸，心中感慨，将{name}插回刀鞘。"
   }
+
+      meta = {
+        damage = 180
+        skill_type = "blade"
+        value = 1000000
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guanwai/obj/mantou.c by LPCConverter
@@ -2223,6 +2254,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 10
+        weight = 200
+        unit = "个"
+        food = 30
+      }
     }
 
 # Generated from C:/files/git/mud/d/guanwai/obj/renshen.c by LPCConverter
@@ -2235,6 +2273,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        unit = "棵"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guanwai/obj/saw.c by LPCConverter
@@ -2247,6 +2290,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 800
+        weight = 2000
+        unit = "条"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guanwai/obj/shouwu.c by LPCConverter
@@ -2259,6 +2309,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        unit = "棵"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guanwai/obj/wan.c by LPCConverter
@@ -2271,4 +2326,10 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 20
+        weight = 50
+        unit = "碗"
+      }
     }

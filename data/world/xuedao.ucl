@@ -690,4 +690,11 @@ behavior_config = {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 3000
+        unit = "领"
+        material = "cloth"
+        armor = 15
+      }
     }

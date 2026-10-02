@@ -3657,6 +3657,14 @@ item_desc = {
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 800
+        weight = 10
+        unit = "支"
+        material = "plant"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/obj/huangshan.c by LPCConverter
@@ -3669,6 +3677,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/obj/shortsword.c by LPCConverter
@@ -3688,6 +3703,15 @@ item_desc = {
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}插回剑鞘。"
   }
+
+      meta = {
+        damage = 25
+        skill_type = "sword"
+        value = 100
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/obj/tiebian.c by LPCConverter
@@ -3707,6 +3731,15 @@ item_desc = {
     wield = "{npc}「唰」的一声抖出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}别回腰间。"
   }
+
+      meta = {
+        damage = 40
+        skill_type = "whip"
+        value = 100
+        weight = 500
+        unit = "柄"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/obj/tiedan.c by LPCConverter
@@ -3726,6 +3759,15 @@ item_desc = {
     wield = "{npc}迅速地从身上摸出一些铁胆，捏在手中就待发出！"
     unwield = "{npc}将手里剩下的铁胆一抖就不见了。"
   }
+
+      meta = {
+        damage = 30
+        skill_type = "throwing"
+        value = 0
+        weight = 300
+        unit = "些"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/obj/tiejiang.c by LPCConverter
@@ -3745,6 +3787,15 @@ item_desc = {
     wield = "{npc}抽出一根{name}握在手中。"
     unwield = "{npc}将手中的{name}插回腰间。"
   }
+
+      meta = {
+        damage = 30
+        skill_type = "club"
+        value = 200
+        weight = 3000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/npc/baizhen.c by LPCConverter
@@ -5000,6 +5051,15 @@ chats = [
     wield = "{npc}掏出一粒{name}准备战斗。"
     unwield = "{npc}放下手中的{name}。"
   }
+
+      meta = {
+        damage = 1
+        skill_type = "throwing"
+        value = 0
+        weight = 300
+        unit = "些"
+        material = "stone"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/obj/shitou.c by LPCConverter
@@ -5019,6 +5079,15 @@ chats = [
     wield = "{npc}搬起一块{name}准备战斗。"
     unwield = "{npc}放下手中的{name}。"
   }
+
+      meta = {
+        damage = 1
+        skill_type = "hammer"
+        value = 0
+        weight = 5000
+        unit = "块"
+        material = "stone"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/obj/shuzhi.c by LPCConverter
@@ -5038,4 +5107,13 @@ chats = [
     wield = "{npc}拿出一根{name}，握在手中。"
     unwield = "{npc}放下手中的{name}。"
   }
+
+      meta = {
+        damage = 5
+        skill_type = "staff"
+        value = 50
+        weight = 1000
+        unit = "根"
+        material = "wood"
+      }
     }

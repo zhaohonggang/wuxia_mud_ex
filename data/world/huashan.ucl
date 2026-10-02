@@ -1528,6 +1528,10 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/huashan/wuchang1.c by LPCConverter
@@ -2501,6 +2505,15 @@ item_desc = {
   messages = {
     wield = "只听见「飕」地一声，{npc}的手中已经多了一把寒光四射的宝剑----{name}。"
   }
+
+      meta = {
+        damage = 60
+        skill_type = "sword"
+        value = 2400
+        weight = 4000
+        unit = "柄"
+        material = "blacksteel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/huashan/obj/paper.c by LPCConverter
@@ -2513,6 +2526,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 100
+        unit = "张"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/huashan/obj/rice.c by LPCConverter
@@ -2526,6 +2545,13 @@ item_desc = {
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 80
+        unit = "碗"
+        material = "rice"
+        food = 30
+      }
     }
 
 # Generated from C:/files/git/mud/d/huashan/obj/soup.c by LPCConverter
@@ -2538,4 +2564,10 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 80
+        weight = 50
+        unit = "碗"
+      }
     }

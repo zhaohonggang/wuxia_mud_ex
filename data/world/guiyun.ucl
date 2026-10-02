@@ -1772,4 +1772,11 @@ item_desc = {
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 50
+        weight = 80
+        unit = "个"
+        food = 20
+      }
     }

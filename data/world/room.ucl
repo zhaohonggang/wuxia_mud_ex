@@ -149,6 +149,13 @@ zones "room" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 10
+        unit = "张"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/room/obj/card.c by LPCConverter
@@ -161,6 +168,13 @@ zones "room" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 10
+        unit = "张"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/room/obj/paper.c by LPCConverter
@@ -173,6 +187,12 @@ zones "room" {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 10
+        unit = "张"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/room/obj/super.c by LPCConverter
@@ -185,6 +205,13 @@ zones "room" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 10
+        unit = "张"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/room/obj/ultracard.c by LPCConverter
@@ -197,6 +224,13 @@ zones "room" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 10
+        unit = "张"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/room/panlong/chashi.c by LPCConverter
@@ -702,6 +736,13 @@ zones "room" {
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 10
+        weight = 200
+        unit = "个"
+        food = 30
+      }
     }
 
 # Generated from C:/files/git/mud/d/room/roomobj/pass.c by LPCConverter
@@ -714,6 +755,12 @@ zones "room" {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 10
+        unit = "张"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/room/roomobj/rice.c by LPCConverter
@@ -727,6 +774,13 @@ zones "room" {
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 10
+        unit = "碗"
+        material = "rice"
+        food = 30
+      }
     }
 
 # Generated from C:/files/git/mud/d/room/roomobj/soup.c by LPCConverter
@@ -739,4 +793,10 @@ zones "room" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10
+        weight = 50
+        unit = "只"
+      }
     }

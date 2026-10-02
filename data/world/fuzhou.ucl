@@ -1919,6 +1919,12 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 800
+        unit = "件"
+        material = "cloth"
+      }
     }
 
 # Generated from C:/files/git/mud/d/fuzhou/obj/pink_cloth.c by LPCConverter
@@ -1931,4 +1937,12 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 600
+        weight = 1000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }

@@ -3072,6 +3072,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 50
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "parry"
+          max_skill = 50
+          exp_required = 0
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/chuanxin.c by LPCConverter
@@ -3084,6 +3098,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10
+        weight = 100
+        unit = "朵"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/duanchang.c by LPCConverter
@@ -3096,6 +3116,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10
+        weight = 100
+        unit = "株"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/dujing1.c by LPCConverter
@@ -3108,6 +3134,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 50
+        unit = "本"
+        material = "silk"
+        book = {
+          skill = "poison"
+          max_skill = 49
+          exp_required = 500
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/dujing2.c by LPCConverter
@@ -3120,6 +3160,21 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 50
+        unit = "本"
+        material = "silk"
+        book = {
+          skill = "poison"
+          min_skill = 50
+          max_skill = 99
+          exp_required = 100000
+          jing_cost = 40
+          difficulty = 40
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/fugu.c by LPCConverter
@@ -3132,6 +3187,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10
+        weight = 100
+        unit = "株"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/ganchai.c by LPCConverter
@@ -3144,6 +3205,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10
+        weight = 10000
+        unit = "捆"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/hulu.c by LPCConverter
@@ -3156,6 +3224,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/huluobu.c by LPCConverter
@@ -3169,6 +3243,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 20
+        weight = 80
+        unit = "块"
+        food = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/huoba.c by LPCConverter
@@ -3187,6 +3268,15 @@ chats = [
   messages = {
     wield = "{npc}拿出一根{name}，握在手中。"
   }
+
+      meta = {
+        damage = 5
+        skill_type = "sword"
+        value = 10000
+        weight = 10000
+        unit = "支"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/jiedudan.c by LPCConverter
@@ -3199,6 +3289,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 3000
+        unit = "粒"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/jinfenggou.c by LPCConverter
@@ -3218,6 +3313,15 @@ chats = [
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}插回鞘中。"
   }
+
+      meta = {
+        damage = 200
+        skill_type = "sword"
+        value = 10000
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/jinsheduye.c by LPCConverter
@@ -3230,6 +3334,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 100
+        unit = "瓶"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/qhcwan.c by LPCConverter
@@ -3242,6 +3352,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 100
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/qianrizui.c by LPCConverter
@@ -3254,6 +3370,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 200
+        weight = 50
+        unit = "颗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/qianzhumiji.c by LPCConverter
@@ -3266,6 +3388,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 500
+        unit = "本"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/shexinzi.c by LPCConverter
@@ -3278,6 +3406,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10
+        weight = 10
+        unit = "颗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/shibing.c by LPCConverter
@@ -3291,6 +3425,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 20
+        weight = 80
+        unit = "个"
+        food = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/shourou1.c by LPCConverter
@@ -3304,6 +3445,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 20
+        weight = 200
+        unit = "块"
+        food = 100
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/shourou2.c by LPCConverter
@@ -3317,6 +3465,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 20
+        weight = 200
+        unit = "条"
+        food = 100
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/tieshao.c by LPCConverter
@@ -3329,6 +3484,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 500
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/tiezhui.c by LPCConverter
@@ -3348,6 +3509,15 @@ chats = [
     wield = "{npc}「哗啷」的一声,取出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}挂回腰间。"
   }
+
+      meta = {
+        damage = 30
+        skill_type = "hammer"
+        value = 300
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/tongpai.c by LPCConverter
@@ -3360,6 +3530,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 50
+        weight = 200
+        unit = "面"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/tudou.c by LPCConverter
@@ -3373,6 +3549,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 20
+        weight = 80
+        unit = "块"
+        food = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/woodjian.c by LPCConverter
@@ -3392,6 +3575,15 @@ chats = [
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}插回剑鞘。"
   }
+
+      meta = {
+        damage = 5
+        skill_type = "sword"
+        value = 100
+        weight = 500
+        unit = "柄"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/wuxing.c by LPCConverter
@@ -3404,6 +3596,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 50
+        weight = 50
+        unit = "包"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/xiang.c by LPCConverter
@@ -3416,6 +3614,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1000
+        weight = 50
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/zhulou.c by LPCConverter
@@ -3430,6 +3634,14 @@ chats = [
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 50
+        weight = 300
+        unit = "个"
+        material = "bamboo"
+        armor = 3
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/zhulou2.c by LPCConverter
@@ -3444,4 +3656,12 @@ chats = [
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 50
+        weight = 300
+        unit = "个"
+        material = "bamboo"
+        armor = 3
+      }
     }

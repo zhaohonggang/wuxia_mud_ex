@@ -2695,6 +2695,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 4000
+        weight = 1000
+        unit = "件"
+        material = "leather"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/beixin.c by LPCConverter
@@ -2707,6 +2715,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 2000
+        weight = 1000
+        unit = "件"
+        material = "leather"
+        armor = 6
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/caoxie.c by LPCConverter
@@ -2719,6 +2735,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 200
+        unit = "双"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/changjian.c by LPCConverter
@@ -2738,6 +2761,15 @@ chats = [
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}插回剑鞘。"
   }
+
+      meta = {
+        damage = 25
+        skill_type = "sword"
+        value = 1500
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/cycle.c by LPCConverter
@@ -2750,6 +2782,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1800
+        weight = 1000
+        unit = "串"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/dagger.c by LPCConverter
@@ -2769,6 +2808,13 @@ chats = [
     wield = "{npc}从兜里掏出一把{name}握在手中。"
     unwield = "{npc}将手中的{name}放会兜里。"
   }
+
+      meta = {
+        value = 2000
+        weight = 6000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/duanjian.c by LPCConverter
@@ -2788,6 +2834,15 @@ chats = [
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}插回剑鞘。"
   }
+
+      meta = {
+        damage = 15
+        skill_type = "sword"
+        value = 500
+        weight = 2000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/fake-zi.c by LPCConverter
@@ -2800,6 +2855,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        unit = "颗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/flower_shoe.c by LPCConverter
@@ -2812,6 +2872,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 300
+        weight = 900
+        unit = "双"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/goldarmor.c by LPCConverter
@@ -2824,6 +2892,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 20000
+        weight = 35000
+        unit = "件"
+        material = "leather"
+        armor = 50
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/goupi.c by LPCConverter
@@ -2836,6 +2912,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 300
+        weight = 5000
+        unit = "块"
+        material = "fur"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/gourou.c by LPCConverter
@@ -2849,6 +2933,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 200
+        weight = 300
+        unit = "碗"
+        food = 50
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/guiyuan.c by LPCConverter
@@ -2861,6 +2952,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        unit = "颗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/hammer.c by LPCConverter
@@ -2880,6 +2976,15 @@ chats = [
     wield = "{npc}拿出一把{name}，试了试重量，然後握在手中。"
     unwield = "{npc}放下手中的{name}。"
   }
+
+      meta = {
+        damage = 15
+        skill_type = "hammer"
+        value = 3
+        weight = 8000
+        unit = "把"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/hdjiudai.c by LPCConverter
@@ -2892,6 +2997,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 120
+        weight = 700
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/huwan.c by LPCConverter
@@ -2904,6 +3015,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1300
+        weight = 500
+        unit = "双"
+        material = "cloth"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/huyao.c by LPCConverter
@@ -2916,6 +3035,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1600
+        weight = 500
+        unit = "条"
+        material = "leather"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/jiaohuaji.c by LPCConverter
@@ -2929,6 +3056,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 2000
+        weight = 300
+        unit = "只"
+        food = 70
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/jinchuang.c by LPCConverter
@@ -2941,6 +3075,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000
+        unit = "包"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/kaoya.c by LPCConverter
@@ -2954,6 +3093,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "只"
+        food = 60
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/lvju.c by LPCConverter
@@ -2966,6 +3112,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        weight = 10
+        unit = "盆"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/mabudai.c by LPCConverter
@@ -2978,6 +3130,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 500
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/mian.c by LPCConverter
@@ -2991,6 +3149,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 50
+        weight = 100
+        unit = "碗"
+        food = 50
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/mianju.c by LPCConverter
@@ -3003,6 +3168,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 3000
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/peanut.c by LPCConverter
@@ -3016,6 +3186,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 30
+        weight = 60
+        unit = "碟"
+        food = 30
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/pixue.c by LPCConverter
@@ -3028,6 +3205,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1000
+        weight = 800
+        unit = "双"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/shanshen.c by LPCConverter
@@ -3040,6 +3224,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        unit = "株"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/shield.c by LPCConverter
@@ -3052,6 +3241,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1200
+        weight = 7000
+        unit = "面"
+        material = "leather"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/shoutao.c by LPCConverter
@@ -3064,6 +3261,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 4000
+        weight = 500
+        unit = "双"
+        material = "leather"
+        armor = 3
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/shouwu.c by LPCConverter
@@ -3076,6 +3281,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        unit = "棵"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/silverarmor.c by LPCConverter
@@ -3088,6 +3298,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        weight = 30000
+        unit = "件"
+        material = "leather"
+        armor = 45
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/surcoat.c by LPCConverter
@@ -3100,6 +3318,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 800
+        weight = 500
+        unit = "条"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/tiejia.c by LPCConverter
@@ -3112,6 +3337,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 2000
+        weight = 20000
+        unit = "件"
+        material = "steel"
+        armor = 50
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/tieshou.c by LPCConverter
@@ -3124,6 +3357,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 900
+        weight = 2000
+        unit = "块"
+        material = "steel"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/tofu.c by LPCConverter
@@ -3137,6 +3378,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 40
+        weight = 40
+        unit = "块"
+        food = 50
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/toukui.c by LPCConverter
@@ -3149,6 +3397,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1500
+        weight = 2000
+        unit = "顶"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/xblade.c by LPCConverter
@@ -3168,6 +3423,15 @@ chats = [
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}插回刀鞘。"
   }
+
+      meta = {
+        damage = 20
+        skill_type = "blade"
+        value = 1000
+        weight = 1000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/xuedao-jing.c by LPCConverter
@@ -3180,6 +3444,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 600
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "blade"
+          max_skill = 40
+          exp_required = 1000
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/yangjing.c by LPCConverter
@@ -3192,6 +3470,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 2000
+        unit = "粒"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/yangxin.c by LPCConverter
@@ -3204,6 +3487,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        unit = "颗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/yaoshi.c by LPCConverter
@@ -3216,6 +3504,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 10
+        unit = "把"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/zaisheng.c by LPCConverter
@@ -3228,6 +3521,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 2000
+        unit = "颗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/zhitao.c by LPCConverter
@@ -3240,6 +3538,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 6000
+        weight = 500
+        unit = "副"
+        material = "steel"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/zhubang.c by LPCConverter
@@ -3259,4 +3565,13 @@ chats = [
     wield = "{npc}抽出一根{name}握在手中。"
     unwield = "{npc}将手中的{name}插回腰间。"
   }
+
+      meta = {
+        damage = 25
+        skill_type = "staff"
+        value = 200
+        weight = 3000
+        unit = "根"
+        material = "steel"
+      }
     }

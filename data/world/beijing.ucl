@@ -9817,6 +9817,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 2
+        weight = 100
+        unit = "捆"
+        food = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/dacong.c by LPCConverter
@@ -9830,6 +9837,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 2
+        weight = 100
+        unit = "捆"
+        food = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/dandao.c by LPCConverter
@@ -9849,6 +9863,13 @@ chats = [
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}插回刀鞘。"
   }
+
+      meta = {
+        value = 1000
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/hanxin.c by LPCConverter
@@ -9861,6 +9882,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 100
+        unit = "封"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/hua.c by LPCConverter
@@ -9873,6 +9901,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 3
+        unit = "朵"
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/huluobo.c by LPCConverter
@@ -9886,6 +9920,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 2
+        weight = 100
+        unit = "个"
+        food = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/kaoya.c by LPCConverter
@@ -9899,6 +9940,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "只"
+        food = 60
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/luobo.c by LPCConverter
@@ -9912,6 +9960,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 2
+        weight = 100
+        unit = "支"
+        food = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/mian.c by LPCConverter
@@ -9924,6 +9979,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 100
+        unit = "碗"
+        food = 25
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/tanghulu.c by LPCConverter
@@ -9937,6 +9999,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 50
+        weight = 100
+        unit = "串"
+        food = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/tea1.c by LPCConverter
@@ -9949,6 +10018,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 2
+        weight = 50
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/tea2.c by LPCConverter
@@ -9961,6 +10036,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 4
+        weight = 50
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/tea3.c by LPCConverter
@@ -9973,6 +10054,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 4
+        weight = 50
+        unit = "碗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/tea4.c by LPCConverter
@@ -9985,6 +10072,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 20
+        weight = 50
+        unit = "碗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/tudou.c by LPCConverter
@@ -9998,6 +10091,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 2
+        weight = 100
+        unit = "个"
+        food = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/wangxin.c by LPCConverter
@@ -10010,6 +10110,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 100
+        unit = "封"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/yao1.c by LPCConverter
@@ -10022,6 +10129,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 100
+        unit = "副"
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/yao2.c by LPCConverter
@@ -10034,6 +10147,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 2000
+        unit = "粒"
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/yao3.c by LPCConverter
@@ -10046,6 +10164,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000
+        unit = "包"
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/yinzhen.c by LPCConverter
@@ -10058,6 +10181,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 30
+        skill_type = "throwing"
+        value = 0
+        weight = 200
+        unit = "枚"
+        material = "crimsonsteel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/zijinblade.c by LPCConverter
@@ -10077,4 +10209,11 @@ chats = [
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}插回刀鞘。"
   }
+
+      meta = {
+        value = 2000
+        weight = 2000
+        unit = "把"
+        material = "steel"
+      }
     }

@@ -1378,6 +1378,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 500
+        unit = "具"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenfeng/obj/skeleton1.c by LPCConverter
@@ -1390,6 +1396,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 500
+        unit = "具"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenfeng/obj/skeleton2.c by LPCConverter
@@ -1402,6 +1414,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 500
+        unit = "具"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenfeng/obj/skeleton3.c by LPCConverter
@@ -1414,6 +1432,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 500
+        unit = "副"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenfeng/obj/yudao.c by LPCConverter
@@ -1428,6 +1452,15 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 10
+        skill_type = "blade"
+        value = 5000
+        weight = 500
+        unit = "柄"
+        material = "jade"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenfeng/obj/yufu.c by LPCConverter
@@ -1440,6 +1473,15 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 10
+        skill_type = "hammer"
+        value = 5000
+        weight = 500
+        unit = "柄"
+        material = "jade"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenfeng/obj/yujian.c by LPCConverter
@@ -1454,4 +1496,13 @@ chats = [
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 10
+        skill_type = "sword"
+        value = 5000
+        weight = 500
+        unit = "柄"
+        material = "jade"
+      }
     }

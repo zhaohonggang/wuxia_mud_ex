@@ -413,6 +413,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 700
+        unit = "坛"
+      }
     }
 
 # Generated from C:/files/git/mud/d/huanggong/obj/yuchanda.c by LPCConverter
@@ -425,6 +431,11 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        unit = "丸"
+      }
     }
 
 # Generated from C:/files/git/mud/d/huanggong/obj/yuchi.c by LPCConverter
@@ -438,4 +449,11 @@ item_desc = {
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 100
+        weight = 80
+        unit = "碟"
+        food = 1
+      }
     }

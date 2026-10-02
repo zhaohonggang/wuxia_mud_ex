@@ -1521,6 +1521,15 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 80
+        skill_type = "throwing"
+        value = 0
+        weight = 500
+        unit = "些"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/gumu/obj/fengmi.c by LPCConverter
@@ -1533,6 +1542,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 750
+        unit = "罐"
+      }
     }
 
 # Generated from C:/files/git/mud/d/gumu/obj/ping.c by LPCConverter
@@ -1545,6 +1560,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 4500
+        unit = "个"
+        material = "玉"
+      }
     }
 
 # Generated from C:/files/git/mud/d/gumu/obj/yufeng-zhen.c by LPCConverter
@@ -1557,4 +1579,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 50
+        skill_type = "throwing"
+        value = 0
+        weight = 500
+        unit = "些"
+        material = "iron"
+      }
     }

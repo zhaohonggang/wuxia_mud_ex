@@ -179,6 +179,12 @@ zones "item" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        weight = 6000
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/item/obj/chanhs.c by LPCConverter
@@ -191,6 +197,12 @@ zones "item" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        weight = 500
+        unit = "束"
+      }
     }
 
 # Generated from C:/files/git/mud/d/item/obj/hantie.c by LPCConverter
@@ -203,6 +215,12 @@ zones "item" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        weight = 5000
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/item/obj/jingtie.c by LPCConverter
@@ -215,6 +233,12 @@ zones "item" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000
+        weight = 4500
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/item/obj/tiancs.c by LPCConverter
@@ -227,6 +251,12 @@ zones "item" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100000
+        weight = 700
+        unit = "束"
+      }
     }
 
 # Generated from C:/files/git/mud/d/item/obj/wujins.c by LPCConverter
@@ -239,6 +269,12 @@ zones "item" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 20000
+        weight = 1800
+        unit = "束"
+      }
     }
 
 # Generated from C:/files/git/mud/d/item/obj/xuantie.c by LPCConverter
@@ -251,4 +287,10 @@ zones "item" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 30000
+        weight = 30000
+        unit = "块"
+      }
     }

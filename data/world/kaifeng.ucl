@@ -4476,6 +4476,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 80
+        unit = "碗"
+        material = "rice"
+        food = 15
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/obj/soup.c by LPCConverter
@@ -4488,4 +4495,10 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 80
+        weight = 50
+        unit = "碗"
+      }
     }

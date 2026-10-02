@@ -5522,6 +5522,14 @@ chats = [
   messages = {
     wield = "{npc}抓起一根{name}，握在手中当武器。"
   }
+
+      meta = {
+        damage = 1
+        skill_type = "hammer"
+        weight = 150
+        unit = "根"
+        material = "bone"
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/obj/food.c by LPCConverter
@@ -5535,6 +5543,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 40
+        weight = 40
+        unit = "盘"
+        food = 15
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/obj/jiaonei.c by LPCConverter
@@ -5564,6 +5579,14 @@ chats = [
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 100000
+        weight = 10
+        unit = "朵"
+        material = "plant"
+        armor = 0
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/obj/shitou.c by LPCConverter
@@ -5583,6 +5606,15 @@ chats = [
     wield = "{npc}搬起一块{name}准备战斗。"
     unwield = "{npc}放下手中的{name}。"
   }
+
+      meta = {
+        damage = 1
+        skill_type = "hammer"
+        value = 0
+        weight = 5000
+        unit = "块"
+        material = "stone"
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/obj/shuzhi.c by LPCConverter
@@ -5602,6 +5634,15 @@ chats = [
     wield = "{npc}拿出一根{name}，握在手中。"
     unwield = "{npc}放下手中的{name}。"
   }
+
+      meta = {
+        damage = 5
+        skill_type = "staff"
+        value = 50
+        weight = 1000
+        unit = "根"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/obj/water.c by LPCConverter
@@ -5614,6 +5655,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "杯"
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/obj/wine.c by LPCConverter
@@ -5626,6 +5673,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "杯"
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/obj/yaofen.c by LPCConverter
@@ -5638,6 +5691,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1000
+        unit = "包"
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/obj/yrose.c by LPCConverter
@@ -5652,6 +5710,14 @@ chats = [
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 10
+        weight = 10
+        unit = "朵"
+        material = "plant"
+        armor = 0
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/obj/cgift/ccloth.c by LPCConverter
@@ -5664,6 +5730,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/obj/cgift/chang.c by LPCConverter
@@ -5676,6 +5749,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 300
+        unit = "根"
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/obj/cgift/christmasman.c by LPCConverter
@@ -5735,6 +5814,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 300
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/obj/cgift/hanbao.c by LPCConverter
@@ -5747,6 +5832,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 300
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/obj/cgift/maozi.c by LPCConverter
@@ -5759,6 +5850,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 1000
+        unit = "顶"
+        material = "cloth"
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/qiyuan/qiyuan1.c by LPCConverter
@@ -5900,6 +5998,13 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 3000000
+        unit = "张"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/qiyuan/obj/seat.c by LPCConverter
@@ -5912,6 +6017,13 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 2000
+        weight = 20000
+        unit = "张"
+        material = "stone"
+      }
     }
 
 # Generated from C:/files/git/mud/d/city/qiyuan/obj/table.c by LPCConverter
@@ -5924,4 +6036,11 @@ direction = ~
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 2000
+        weight = 200000
+        unit = "张"
+        material = "stone"
+      }
     }

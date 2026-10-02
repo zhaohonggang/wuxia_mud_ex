@@ -14,6 +14,15 @@ zones "tulong" {
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 1
+        skill_type = "sword"
+        value = 0
+        weight = 10000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/obj/duan2.c by LPCConverter
@@ -28,6 +37,15 @@ zones "tulong" {
     "wield",
     "unwield"
   ]
+
+      meta = {
+        damage = 1
+        skill_type = "blade"
+        value = 0
+        weight = 30000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/obj/miji.c by LPCConverter
@@ -40,6 +58,12 @@ zones "tulong" {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 500
+        unit = "本"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/obj/tulongdao.c by LPCConverter
@@ -59,6 +83,15 @@ zones "tulong" {
     wield = "{npc}一声狂笑，从背后抽出那柄号称“武林至尊”的屠龙宝刀高高举起。"
     unwield = "{npc}哈哈一笑，将屠龙宝刀插回背后。"
   }
+
+      meta = {
+        damage = 500
+        skill_type = "blade"
+        value = 100000
+        weight = 30000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/obj/yishu.c by LPCConverter
@@ -71,6 +104,12 @@ zones "tulong" {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 500
+        unit = "本"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/obj/yitianjian.c by LPCConverter
@@ -90,6 +129,15 @@ zones "tulong" {
     wield = "只听“嗖”的一声破空声响，号称天下第一神兵的倚天剑已被{npc}握在手中。"
     unwield = "{npc}将倚天剑插回腰间，天地又渐渐放出光芒。"
   }
+
+      meta = {
+        damage = 500
+        skill_type = "sword"
+        value = 100000
+        weight = 1000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/obj/zhenjing.c by LPCConverter
@@ -102,6 +150,12 @@ zones "tulong" {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 500
+        unit = "本"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/boat.c by LPCConverter
@@ -904,6 +958,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 500
+        unit = "只"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/obj/ling1.c by LPCConverter
@@ -923,6 +983,15 @@ item_desc = {
     wield = "{npc}“唰”的一声，从腰间抽出一片黑黝的铁牌握在手中。"
     unwield = "{npc}将圣火令插回腰间。"
   }
+
+      meta = {
+        damage = 100
+        skill_type = "sword"
+        value = 10000
+        weight = 1000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/obj/stone.c by LPCConverter
@@ -935,6 +1004,15 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 10
+        skill_type = "hammer"
+        value = 0
+        weight = 16000
+        unit = "块"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/obj/xuantie-ling.c by LPCConverter
@@ -947,6 +1025,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 500
+        unit = "只"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/jiulou.c by LPCConverter
@@ -2703,6 +2787,12 @@ direction = "down"
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 1
+        weight = 50000
+        unit = "只"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/yubifeng/baozang.c by LPCConverter

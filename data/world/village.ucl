@@ -1187,4 +1187,13 @@ chats = [
   messages = {
     wield = "{npc}拿出一把{name}，握在手中。"
   }
+
+      meta = {
+        damage = 5
+        skill_type = "sword"
+        value = 100
+        weight = 1000
+        unit = "把"
+        material = "bamboo"
+      }
     }

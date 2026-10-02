@@ -12,6 +12,15 @@ zones "tangmen" {
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 15
+        skill_type = "throwing"
+        value = 500
+        weight = 1000
+        unit = "些"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tangmen/obj/jili.c by LPCConverter
@@ -31,4 +40,13 @@ zones "tangmen" {
     wield = "{npc}迅速地从身上摸出一些毒蒺藜，捏在手中就待发出！"
     unwield = "{npc}将手里剩下的毒蒺藜一抖就不见了。"
   }
+
+      meta = {
+        damage = 50
+        skill_type = "throwing"
+        value = 0
+        weight = 300
+        unit = "些"
+        material = "iron"
+      }
     }

@@ -3723,6 +3723,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 10
+        unit = "碗"
+        material = "rice"
+        food = 30
+      }
     }
 
 # Generated from C:/files/git/mud/d/xiangyang/obj/soup.c by LPCConverter
@@ -3735,4 +3742,10 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10
+        weight = 50
+        unit = "碗"
+      }
     }

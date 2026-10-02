@@ -5782,6 +5782,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 100
+        unit = "封"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/basi-shanyao.c by LPCConverter
@@ -5795,6 +5801,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "盆"
+        food = 40
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/beixin.c by LPCConverter
@@ -5807,6 +5820,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 15
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/bocai-fentiao.c by LPCConverter
@@ -5820,6 +5841,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "盆"
+        food = 40
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/changbian.c by LPCConverter
@@ -5839,6 +5867,15 @@ chats = [
     wield = "{npc}「唰」的一声抖出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}卷回腰间。"
   }
+
+      meta = {
+        damage = 20
+        skill_type = "whip"
+        value = 100
+        weight = 500
+        unit = "柄"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/changjian.c by LPCConverter
@@ -5858,6 +5895,15 @@ chats = [
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}插回剑鞘。"
   }
+
+      meta = {
+        damage = 25
+        skill_type = "sword"
+        value = 200
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/chanzhang.c by LPCConverter
@@ -5877,6 +5923,15 @@ chats = [
     wield = "{npc}抽出一根{name}握在手中。"
     unwield = "{npc}将手中的{name}插回腰间。"
   }
+
+      meta = {
+        damage = 25
+        skill_type = "staff"
+        value = 200
+        weight = 6000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/cheng-cloth.c by LPCConverter
@@ -5889,6 +5944,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/cloth.c by LPCConverter
@@ -5901,6 +5963,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/damo-ling.c by LPCConverter
@@ -5913,6 +5982,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 500
+        unit = "面"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/dao-cloth.c by LPCConverter
@@ -5925,6 +6000,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 6
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/fake-gold.c by LPCConverter
@@ -5937,6 +6019,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 150000
+        unit = "块"
+        material = "lead"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/fojing10.c by LPCConverter
@@ -5949,6 +6037,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "buddhism"
+          max_skill = 50
+          exp_required = 0
+          jing_cost = 10
+          difficulty = 10
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/fojing11.c by LPCConverter
@@ -5961,6 +6063,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "buddhism"
+          max_skill = 50
+          exp_required = 0
+          jing_cost = 10
+          difficulty = 10
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/fojing20.c by LPCConverter
@@ -5973,6 +6089,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "buddhism"
+          max_skill = 100
+          exp_required = 0
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/fojing21.c by LPCConverter
@@ -5985,6 +6115,20 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "buddhism"
+          max_skill = 100
+          exp_required = 0
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/food.c by LPCConverter
@@ -5998,6 +6142,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 160
+        unit = "份"
+        material = "meet"
+        food = 30
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/fumo-zhang.c by LPCConverter
@@ -6017,6 +6168,15 @@ chats = [
     wield = "只听「铮」的一声，伏魔杖腾空而出，自行跃入{npc}掌中。 瞬时天际间风云变色，电闪雷鸣，弥漫着一片无边杀意。"
     unwield = "伏魔杖自{npc}掌中飞起，在半空中一转，「唰」地靠在{npc}身后。"
   }
+
+      meta = {
+        damage = 200
+        skill_type = "staff"
+        value = 1000000
+        weight = 10000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/furong-huagu.c by LPCConverter
@@ -6030,6 +6190,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "盆"
+        food = 40
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/guide.c by LPCConverter
@@ -6042,6 +6209,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 10
+        unit = "本"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/heisuo.c by LPCConverter
@@ -6061,6 +6235,15 @@ chats = [
     wield = "{npc}一伸手，悄无声息的将{name}握在手中。"
     unwield = "{npc}将手中的{name}卷起收好。"
   }
+
+      meta = {
+        damage = 120
+        skill_type = "whip"
+        value = 50000
+        weight = 800
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/hui-cloth.c by LPCConverter
@@ -6073,6 +6256,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 8
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/hulu.c by LPCConverter
@@ -6085,6 +6275,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/huwan.c by LPCConverter
@@ -6097,6 +6293,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 6000
+        weight = 500
+        unit = "双"
+        material = "wrists"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/huyao.c by LPCConverter
@@ -6109,6 +6313,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 6000
+        weight = 500
+        unit = "条"
+        material = "waist"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/jiaxin-biji.c by LPCConverter
@@ -6122,6 +6334,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "盆"
+        food = 40
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/jiedao.c by LPCConverter
@@ -6140,6 +6359,15 @@ chats = [
   messages = {
     wield = "{npc}抽出一把明晃晃的{name}握在手中。"
   }
+
+      meta = {
+        damage = 25
+        skill_type = "blade"
+        value = 200
+        weight = 4000
+        unit = "把"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/jinchuang-yao.c by LPCConverter
@@ -6152,6 +6380,11 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 2000
+        unit = "包"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/jingang-zhao.c by LPCConverter
@@ -6166,6 +6399,14 @@ chats = [
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 1000000
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 220
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/liuli-qiezi.c by LPCConverter
@@ -6179,6 +6420,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "盆"
+        food = 40
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/mala-doufu.c by LPCConverter
@@ -6192,6 +6440,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "盆"
+        food = 40
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/map.c by LPCConverter
@@ -6204,6 +6459,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 50
+        weight = 10
+        unit = "张"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/mizhi-tianou.c by LPCConverter
@@ -6217,6 +6479,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "盆"
+        food = 40
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/muchui.c by LPCConverter
@@ -6235,6 +6504,15 @@ chats = [
   messages = {
     wield = "{npc}从衣袋里掏出一根{name}，握在手中当武器。"
   }
+
+      meta = {
+        damage = 1
+        skill_type = "hammer"
+        value = 50
+        weight = 500
+        unit = "把"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/mudao.c by LPCConverter
@@ -6253,6 +6531,15 @@ chats = [
   messages = {
     wield = "{npc}抽出一把{name}握在手中。"
   }
+
+      meta = {
+        damage = 5
+        skill_type = "blade"
+        value = 500
+        weight = 2000
+        unit = "把"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/qimeigun.c by LPCConverter
@@ -6272,6 +6559,15 @@ chats = [
     wield = "{npc}抽出一根{name}握在手中。"
     unwield = "{npc}将手中的{name}插回腰间。"
   }
+
+      meta = {
+        damage = 15
+        skill_type = "club"
+        value = 50
+        weight = 3000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/qing-cloth.c by LPCConverter
@@ -6284,6 +6580,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 4
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/qingshui-hulu.c by LPCConverter
@@ -6296,6 +6599,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/sengxie.c by LPCConverter
@@ -6308,6 +6617,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 6000
+        weight = 1000
+        unit = "双"
+        material = "boots"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/shanhu-baicai.c by LPCConverter
@@ -6321,6 +6637,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "盆"
+        food = 40
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/shoutao.c by LPCConverter
@@ -6333,6 +6656,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 3000
+        weight = 500
+        unit = "双"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/soup.c by LPCConverter
@@ -6345,6 +6675,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 160
+        weight = 50
+        unit = "碗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/suji.c by LPCConverter
@@ -6358,6 +6694,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "只"
+        food = 40
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/suya.c by LPCConverter
@@ -6371,6 +6714,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "只"
+        food = 50
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/test.c by LPCConverter
@@ -6383,6 +6733,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/tie-ling.c by LPCConverter
@@ -6395,6 +6752,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 100
+        unit = "块"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/tieshou.c by LPCConverter
@@ -6407,6 +6771,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 2000
+        unit = "块"
+        material = "steel"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/toukui.c by LPCConverter
@@ -6419,6 +6791,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 500
+        unit = "顶"
+        material = "head"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/tuijianxin-1.c by LPCConverter
@@ -6431,6 +6811,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 100
+        unit = "封"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/tuijianxin-2.c by LPCConverter
@@ -6443,6 +6829,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 100
+        unit = "封"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/tuijianxin-3.c by LPCConverter
@@ -6455,6 +6847,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 100
+        unit = "封"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/tuijianxin-4.c by LPCConverter
@@ -6467,6 +6865,12 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 100
+        unit = "封"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/weibo.c by LPCConverter
@@ -6479,6 +6883,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 500
+        unit = "条"
+        material = "neck"
+        armor = 3
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/xu-cloth.c by LPCConverter
@@ -6491,6 +6903,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 2
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/xuan-cloth.c by LPCConverter
@@ -6503,6 +6922,13 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 8000
+        unit = "件"
+        material = "cloth"
+        armor = 30
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/yaodai.c by LPCConverter
@@ -6515,6 +6941,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 6000
+        weight = 300
+        unit = "条"
+        material = "waist"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/zhitao.c by LPCConverter
@@ -6527,6 +6961,14 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 6000
+        weight = 500
+        unit = "副"
+        material = "finger"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/zhujian.c by LPCConverter
@@ -6545,4 +6987,13 @@ chats = [
   messages = {
     wield = "{npc}拿出一把{name}，握在手中。"
   }
+
+      meta = {
+        damage = 10
+        skill_type = "sword"
+        value = 100
+        weight = 1000
+        unit = "把"
+        material = "bamboo"
+      }
     }

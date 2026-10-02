@@ -1496,6 +1496,15 @@ chats = [
     wield = "{npc}「唰」的一声抽出一柄柴刀握在手中。"
     unwield = "{npc}将手中的柴刀插回腰间。"
   }
+
+      meta = {
+        damage = 4
+        skill_type = "blade"
+        value = 10
+        weight = 500
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wuguan/obj/chutou.c by LPCConverter
@@ -1515,6 +1524,15 @@ chats = [
     wield = "{npc}拿出一把锄头握在手中。"
     unwield = "{npc}将手中的锄头抗在肩上。"
   }
+
+      meta = {
+        damage = 4
+        skill_type = "hammer"
+        value = 50
+        weight = 500
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wuguan/obj/juzi.c by LPCConverter
@@ -1534,6 +1552,15 @@ chats = [
     wield = "{npc}拿出一把锯子握在手中。"
     unwield = "{npc}将手中的锯子抗在肩上。"
   }
+
+      meta = {
+        damage = 4
+        skill_type = "blade"
+        value = 30
+        weight = 500
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wuguan/obj/piao.c by LPCConverter
@@ -1553,6 +1580,15 @@ chats = [
     wield = "{npc}拿出一个水瓢握在手中。"
     unwield = "{npc}将手中的水瓢插在腰上。"
   }
+
+      meta = {
+        damage = 4
+        skill_type = "hammer"
+        value = 10
+        weight = 500
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wuguan/obj/rice.c by LPCConverter
@@ -1566,6 +1602,13 @@ chats = [
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 0
+        weight = 280
+        unit = "碗"
+        food = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/wuguan/obj/saozhou.c by LPCConverter
@@ -1585,6 +1628,15 @@ chats = [
     wield = "{npc}拿出一把扫帚握在手中。"
     unwield = "{npc}将手中的扫帚抗在肩上。"
   }
+
+      meta = {
+        damage = 4
+        skill_type = "hammer"
+        value = 10
+        weight = 500
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wuguan/obj/tea.c by LPCConverter
@@ -1597,4 +1649,10 @@ chats = [
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 700
+        unit = "杯"
+      }
     }

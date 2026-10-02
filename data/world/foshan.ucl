@@ -1149,6 +1149,14 @@ chats = [
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 0
+        weight = 10
+        unit = "朵"
+        material = "plant"
+        armor = 0
+      }
     }
 
 # Generated from C:/files/git/mud/d/foshan/obj/hua2.c by LPCConverter
@@ -1163,6 +1171,14 @@ chats = [
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 0
+        weight = 10
+        unit = "朵"
+        material = "plant"
+        armor = 0
+      }
     }
 
 # Generated from C:/files/git/mud/d/foshan/obj/hua3.c by LPCConverter
@@ -1177,6 +1193,14 @@ chats = [
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 0
+        weight = 10
+        unit = "朵"
+        material = "plant"
+        armor = 0
+      }
     }
 
 # Generated from C:/files/git/mud/d/foshan/obj/shikuai.c by LPCConverter
@@ -1196,6 +1220,15 @@ chats = [
     wield = "{npc}搬起一块{name}准备战斗。"
     unwield = "{npc}放下手中的{name}。"
   }
+
+      meta = {
+        damage = 1
+        skill_type = "hammer"
+        value = 0
+        weight = 5000
+        unit = "块"
+        material = "stone"
+      }
     }
 
 # Generated from C:/files/git/mud/d/foshan/obj/shuzhi.c by LPCConverter
@@ -1215,4 +1248,13 @@ chats = [
     wield = "{npc}拿出一根{name}，握在手中。"
     unwield = "{npc}放下手中的{name}。"
   }
+
+      meta = {
+        damage = 5
+        skill_type = "staff"
+        value = 50
+        weight = 1000
+        unit = "根"
+        material = "wood"
+      }
     }

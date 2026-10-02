@@ -1292,6 +1292,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 1000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/da-shitou.c by LPCConverter
@@ -1310,6 +1317,15 @@ item_desc = {
   messages = {
     wield = "{npc}拿出一个{name}，试了试重量后握在手中。"
   }
+
+      meta = {
+        damage = 8
+        skill_type = "hammer"
+        value = 0
+        weight = 2000
+        unit = "个"
+        material = "bamboo"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/dawancha.c by LPCConverter
@@ -1322,6 +1338,12 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 50
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/force-book.c by LPCConverter
@@ -1334,6 +1356,20 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "force"
+          max_skill = 41
+          exp_required = 1000
+          jing_cost = 15
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/fuchen.c by LPCConverter
@@ -1353,6 +1389,15 @@ item_desc = {
     wield = "{npc}「唰」的一声从颈中抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}别回颈中。"
   }
+
+      meta = {
+        damage = 50
+        skill_type = "whip"
+        value = 30
+        weight = 300
+        unit = "柄"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/guzheng.c by LPCConverter
@@ -1365,6 +1410,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000
+        weight = 2000
+        unit = "张"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/jwqin.c by LPCConverter
@@ -1377,6 +1429,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10000
+        weight = 600
+        unit = "台"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/kaoya.c by LPCConverter
@@ -1390,6 +1449,13 @@ item_desc = {
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "只"
+        food = 60
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/lyj-book.c by LPCConverter
@@ -1402,6 +1468,20 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "liangyi"
+          max_skill = 180
+          exp_required = 100000
+          jing_cost = 40
+          difficulty = 30
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/pao1.c by LPCConverter
@@ -1416,6 +1496,14 @@ item_desc = {
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 100
+        weight = 6000
+        unit = "件"
+        material = "cloth"
+        armor = 65
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/pao2.c by LPCConverter
@@ -1430,6 +1518,14 @@ item_desc = {
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 100
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 45
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/pao3.c by LPCConverter
@@ -1444,6 +1540,14 @@ item_desc = {
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 100
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 30
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/pao4.c by LPCConverter
@@ -1458,6 +1562,14 @@ item_desc = {
     "wear",
     "remove"
   ]
+
+      meta = {
+        value = 100
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/rice.c by LPCConverter
@@ -1471,6 +1583,13 @@ item_desc = {
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 120
+        weight = 50
+        unit = "碗"
+        food = 40
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/sangmending.c by LPCConverter
@@ -1490,6 +1609,15 @@ item_desc = {
     wield = "{npc}抓出一把丧门钉扣在手心。"
     unwield = "{npc}将手中的丧门钉放回装暗器的皮囊里。"
   }
+
+      meta = {
+        damage = 10
+        skill_type = "throwing"
+        value = 1
+        weight = 50
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/sword.c by LPCConverter
@@ -1509,6 +1637,15 @@ item_desc = {
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
     unwield = "{npc}将手中的{name}插回剑鞘。"
   }
+
+      meta = {
+        damage = 25
+        skill_type = "sword"
+        value = 100
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/w-cloth.c by LPCConverter
@@ -1521,6 +1658,13 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 4500
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/weiqi.c by LPCConverter
@@ -1533,6 +1677,14 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 5000
+        weight = 2000
+        unit = "副"
+        material = "steel"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/xiangcha.c by LPCConverter
@@ -1545,4 +1697,10 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 10
+        weight = 50
+        unit = "杯"
+      }
     }

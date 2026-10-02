@@ -97,6 +97,11 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 2000
+        unit = "只"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jinshe/obj/jinshe-jian.c by LPCConverter
@@ -116,6 +121,15 @@ item_desc = {
     wield = "{npc}「唰」的一声抽出一柄{name}握在手中，顿时全身凉飕飕地只感寒气逼人。"
     unwield = "{npc}将手中的{name}插回剑鞘。"
   }
+
+      meta = {
+        damage = 70
+        skill_type = "sword"
+        value = 200000
+        weight = 10000
+        unit = "柄"
+        material = "gold"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jinshe/obj/jinshe-zhui.c by LPCConverter
@@ -128,6 +142,14 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        damage = 35
+        skill_type = "throwing"
+        value = 0
+        weight = 10
+        unit = "把"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jinshe/obj/skeleton.c by LPCConverter
@@ -140,6 +162,10 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        unit = "具"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jinshe/obj/smallbox.c by LPCConverter
@@ -152,4 +178,9 @@ item_desc = {
     "get",
     "drop"
   ]
+
+      meta = {
+        weight = 1000
+        unit = "只"
+      }
     }

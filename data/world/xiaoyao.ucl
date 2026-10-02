@@ -589,6 +589,12 @@ zones "xiaoyao" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 0
+        weight = 400
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xiaoyao/obj/menghan_yao.c by LPCConverter
@@ -601,6 +607,12 @@ zones "xiaoyao" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 700
+        weight = 30
+        unit = "包"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xiaoyao/obj/putuan.c by LPCConverter
@@ -613,6 +625,12 @@ zones "xiaoyao" {
     "get",
     "drop"
   ]
+
+      meta = {
+        value = 100
+        weight = 500
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xiaoyao/obj/rice.c by LPCConverter
@@ -626,4 +644,11 @@ zones "xiaoyao" {
     "drop",
     "eat"
   ]
+
+      meta = {
+        value = 0
+        weight = 80
+        unit = "碗"
+        food = 60
+      }
     }
