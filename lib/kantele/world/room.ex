@@ -483,9 +483,9 @@ defmodule Kantele.World.Room do
 
         case guarder_result do
           {:deny, msg} ->
-            Context.render(context, mover.pid, Kantele.Character.CommandView, "text", %{
-              text: msg <> "\n"
-            })
+            # 正文由角色侧在 abort 时回查房间数据渲染（见 MoveView.render("fail", ...)）：
+            # 这里 Context.render 只会把文本塞进 context.output，移动链路会丢弃 context。
+            Room.Probe.log("guarder denied room=#{inspect(Map.get(room, :id))} msg=#{inspect(msg)}")
 
             {:abort, event, :guarder_denied}
 
@@ -493,9 +493,11 @@ defmodule Kantele.World.Room do
             # 阻挡条件（valid_leave）：受 enforce_exit_vetoes 开关灰度，默认关
             case check_exit_vetoes(room, context, mover, event.data.exit_name) do
               {:deny, msg} ->
-                Context.render(context, mover.pid, Kantele.Character.CommandView, "text", %{
-                  text: msg <> "\n"
-                })
+                # 正文由角色侧回查渲染，理由同 guarder 分支注释
+                Room.Probe.log(
+                  "veto denied room=#{inspect(Map.get(room, :id))} " <>
+                    "dir=#{inspect(event.data.exit_name)} msg=#{inspect(msg)}"
+                )
 
                 {:abort, event, :exit_vetoed}
 

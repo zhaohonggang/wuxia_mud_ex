@@ -11,6 +11,37 @@ defmodule Kantele.World do
   defstruct characters: [], items: [], rooms: [], zones: []
 
   @doc """
+  取某个房间某个方向的 valid_leave 提示语（LPC `notify_fail` 原文）
+
+  房间侧判定成立时把移动中止掉，但中止事件里只有 reason 这个原子、带不了正文
+  （Kalevala 的 `Movement.handle_request({:abort, event, reason})`），而房间回调里
+  调用的 `Context.render/5` 只是把文本累积进 `context.output`、在移动链路上会被
+  丢弃 —— 所以正文由角色侧在 abort 时按「房间 id + 方向」回查并渲染。
+  """
+  def exit_veto_message(room_id, dir) when is_binary(room_id) and is_binary(dir) do
+    with [zone_id | _] <- String.split(room_id, ":"),
+         {:ok, zone} <- ZoneCache.get(zone_id),
+         room when not is_nil(room) <- find_room(zone, room_id) do
+      room
+      |> Map.get(:exit_vetoes, [])
+      |> Enum.find_value(fn veto ->
+        case Map.get(veto, :direction) do
+          ^dir -> Map.get(veto, :message)
+          _ -> nil
+        end
+      end)
+    else
+      _ -> nil
+    end
+  end
+
+  def exit_veto_message(_room_id, _dir), do: nil
+
+  defp find_room(zone, room_id) do
+    Enum.find(Map.get(zone, :rooms, []) || [], &(&1.id == room_id))
+  end
+
+  @doc """
   Dereference a world variable reference
   """
   def dereference(reference) when is_binary(reference) do

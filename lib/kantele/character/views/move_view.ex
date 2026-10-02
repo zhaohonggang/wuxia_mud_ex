@@ -32,9 +32,15 @@ defmodule Kantele.Character.MoveView do
     ~i(There is no exit #{exit_name}.\n)
   end
 
-  # 房间侧已经用 Context.render 把 LPC notify_fail 的原文发给玩家了
-  # （见 Kantele.World.Room 的 movement_request：guarder_denied / exit_vetoed），
-  # 所以这里只需给个空渲染，避免自定义 reason 走到没有子句而崩掉角色进程。
+  # valid_leave 拦下时的正文：房间侧判定成立，但中止事件只能带 reason（原子），
+  # 所以正文由这里按「房间 id + 方向」回查房间数据取 LPC notify_fail 原文。
+  def render("fail", %{reason: reason, from: room_id, exit_name: exit_name}) do
+    case Kantele.World.exit_veto_message(room_id, exit_name) do
+      nil -> render("fail", %{reason: reason})
+      msg -> msg
+    end
+  end
+
   def render("fail", %{reason: reason}) do
     _ = reason
     ~i()

@@ -29,6 +29,12 @@ defmodule Kantele.World.ExitVetoRuntimeTest do
     world = Loader.load()
     room = Enum.find(world.rooms, &(&1.id == @room_id))
 
+    # ZoneCache 真实运行时由 Kickoff 填充；这里播种，供 exit_veto_message 回查提示语
+    Enum.each(world.zones, fn
+      %{id: zone_id} = zone -> Kantele.World.ZoneCache.cache(zone)
+      _ -> :skip
+    end)
+
     %{room: room, occupants: Enum.filter(world.characters, &(&1.room_id == @room_id))}
   end
 
@@ -89,5 +95,48 @@ defmodule Kantele.World.ExitVetoRuntimeTest do
 
     empty = context_with(ctx.room, [], player)
     assert :allow = @handler.check_exit_vetoes(ctx.room, empty, player, "east")
+  end
+
+  # ---- 回归：曾经让拦截必然失效的三个缺陷 ----
+
+  @tag :world_data
+  test "别名字段能穿过 Meta.Trim（否则 present() 永远匹配不到人）", ctx do
+    guard = Enum.find(ctx.occupants, &(to_string(&1.name) =~ "侍卫"))
+
+    trimmed = Kalevala.Meta.trim(Map.get(guard, :meta))
+
+    assert Enum.member?(Map.get(trimmed, :aliases) || [], "shi wei"),
+           "trim 之后必须仍保留 aliases，否则 present('shi wei') 失效"
+  end
+
+  @tag :world_data
+  test "能按房间+方向取回 LPC 提示语（房间侧 Context.render 在移动链路是空操作）" do
+    assert Kantele.World.exit_veto_message("beijing:kangfu_men", "east") =~ "康府侍卫"
+
+    # 方向不匹配 / 房间不存在 -> nil，视图要能兜底
+    assert Kantele.World.exit_veto_message("beijing:kangfu_men", "west") == nil
+    assert Kantele.World.exit_veto_message("beijing:no_such_room", "east") == nil
+  end
+
+  test "MoveView fail 子句：自定义 reason 不崩，且能渲染提示语" do
+    event = %{reason: :exit_vetoed, from: "beijing:kangfu_men", exit_name: "east"}
+
+    assert Kantele.Character.MoveView.render("fail", event) =~ "康府侍卫"
+
+    # 没有房间数据时也要安全返回（不能崩掉角色进程）
+    safe = Kantele.Character.MoveView.render("fail", %{reason: :exit_vetoed})
+
+    assert IO.iodata_to_binary(safe) |> String.trim() == ""
+  end
+
+  test "中止返回值必须是 Kalevala 期望的 3 元组（4 元组会让房间抛 CaseClauseError）" do
+    # Kalevala.World.Room.Movement.handle_request/3 只匹配这两个形状
+    source = File.read!("lib/kantele/world/room.ex")
+
+    refute source =~ "{:abort, event, :exit_vetoed,",
+           "exit_vetoed 中止必须是 3 元组 {:abort, event, reason}"
+
+    refute source =~ "{:abort, event, :guarder_denied,",
+           "guarder_denied 中止必须是 3 元组 {:abort, event, reason}"
   end
 end
