@@ -7,6 +7,7 @@ defmodule Kantele.Character.TrapEvent do
   本模块负责真正落地：
 
     * `{:set_temp, key, value}`  -> LPC `set_temp/3`
+    * `{:delete_temp, key}`      -> LPC `delete_temp("bagua/count")`（删单个键）
     * `{:delete_prefix, prefix}` -> LPC `delete_temp("wuxing")`（删整棵子树）
     * `{:force_move, room_id}`   -> LPC `me->move(...)`
     * `{:add, field, delta}`     -> LPC `me->add("neili", -50)` 之类
@@ -27,6 +28,7 @@ defmodule Kantele.Character.TrapEvent do
   import Kalevala.Character.Conn
 
   alias Kantele.Character.CommandView
+  alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Records
   alias Kantele.Character.Teleport
   alias Kantele.FeatureDamage
@@ -69,8 +71,15 @@ defmodule Kantele.Character.TrapEvent do
 
   defp apply_effect(conn, {:set_temp, key, value}, texts) do
     # LPC set_temp/3
-    meta = Kantele.Character.PlayerMeta.put_temp(current(conn).meta, key, value)
+    meta = PlayerMeta.put_temp(current(conn).meta, key, value)
     {stage(conn, %{current(conn) | meta: meta}), texts}
+  end
+
+  defp apply_effect(conn, {:delete_temp, key}, texts) do
+    # LPC delete_temp("bagua/count") —— 只删这一个键。
+    # 与下面的 delete_prefix（delete_temp("bagua")，删整棵子树）是两回事。
+    meta = current(conn).meta
+    {stage(conn, %{current(conn) | meta: PlayerMeta.delete_temp(meta, key)}), texts}
   end
 
   defp apply_effect(conn, {:delete_prefix, prefix}, texts) do

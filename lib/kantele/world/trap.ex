@@ -7,7 +7,7 @@ defmodule Kantele.World.Trap do
   valid_leave 里有三类函数会改玩家状态并强制传送：
 
     - `check_out(me)`    d/shaolin/wuxing*.c 五行迷宫（5 个房间）
-    - `check_dirs(me,dir)`  d/shaolin/bagua*.c 八卦阵（8 个房间）
+    - `check_dirs(me,dir)`  d/shaolin/bagua.h 八卦阵（8 个房间，共享头文件、规则一致）
     - `ob->refuse(me)`   d/city/underlt.c 擂台（5 个房间）
 
   它们被 `LpcCondition.enforceable?/1` 判为不可执行，条件原文保留、**不拦** ——
@@ -76,7 +76,7 @@ defmodule Kantele.World.Trap do
       c when is_binary(c) ->
         cond do
           String.contains?(c, "check_out(") -> :wuxing
-          # check_dirs(me,dir) 八卦阵：等 Trap.Bagua 落地后再加
+          String.contains?(c, "check_dirs(") -> :bagua
           true -> nil
         end
 
@@ -87,6 +87,10 @@ defmodule Kantele.World.Trap do
 
   defp run(:wuxing, mover_meta, dir, room_id),
     do: Wuxing.evaluate(Map.get(mover_meta, :temp) || %{}, dir, room_key(room_id))
+
+  # 八卦阵的规则八个房间一致（bagua.h 是共享头文件），所以不需要 room_key。
+  defp run(:bagua, mover_meta, dir, _room_id),
+    do: Kantele.World.Trap.Bagua.evaluate(Map.get(mover_meta, :temp) || %{}, dir)
 
   # 五行迷宫每个房间的规则不同（递增哪个元素、在哪个方向、机关在哪），
   # 所以必须知道**具体是哪个房间**，不能只拿 dir。
