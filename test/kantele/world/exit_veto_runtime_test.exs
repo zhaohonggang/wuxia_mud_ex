@@ -245,7 +245,7 @@ defmodule Kantele.World.ExitVetoRuntimeTest do
     end
 
     @tag :world_data
-    test "无法合并的只剩 4 条，且都是表达能力不足而非遗漏" do
+    test "无法合并的只剩 6 条，且都是表达能力不足而非遗漏" do
       world = Kantele.World.Loader.load()
 
       unscoped =
@@ -258,8 +258,12 @@ defmodule Kantele.World.ExitVetoRuntimeTest do
         end)
         |> Enum.map(fn {id, _v} -> id end)
 
-      assert length(unscoped) == 4,
-             "预期剩 4 条，实际 #{length(unscoped)}: #{inspect(unscoped)}"
+      # 6 = 原有 4 条 + changan:qunyulou 与 xiyu:xxh6 各多一条。
+      # 后两条是纯 gender 条件（`=='女性'` / `!='无性'`），本来被 supported? 挡着；
+      # gender 落地后它们进入这一组，但**仍然不能执行** —— 因为没限定方向，
+      # 一旦执行就是把该房间所有出口都变成女性门禁（男玩家出不来）。
+      assert length(unscoped) == 6,
+             "预期剩 6 条，实际 #{length(unscoped)}: #{inspect(unscoped)}"
 
       joined = Enum.join(unscoped, " | ")
 
@@ -267,6 +271,7 @@ defmodule Kantele.World.ExitVetoRuntimeTest do
       assert joined =~ "bingqifang"    # 需要按 id 统计背包数量（转换残留 j > 1）
       assert joined =~ "nantian"       # 裸标识符 mengzhu
       assert joined =~ "xxh6"          # this_player()-> 链式调用
+      assert joined =~ "qunyulou"      # gender 已可用，但没限定方向
     end
   end
 

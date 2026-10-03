@@ -27,6 +27,7 @@ defmodule Kantele.World.ArenaRuntimeTest do
 
   @handler Kalevala.World.Room.Callbacks.Kantele.World.Room
   @leitai "city:leitai"
+  @wudao1 "city:wudao1"
 
   setup_all do
     world = Loader.load()
@@ -53,7 +54,7 @@ defmodule Kantele.World.ArenaRuntimeTest do
   # 的头个子句按结构体匹配，传普通 map 会落到兜底的 `wizardp(_) -> false`，
   # 于是巫师会被当成普通玩家拦下 —— 那是夹具问题，不是生产问题
   # （movement_request 里 event.data.character 就是真结构体）。
-  defp player(wiz_level \\ 0, room \\ "city:wudao1") do
+  defp player(wiz_level \\ 0, room \\ @wudao1) do
     %Kalevala.Character{
       id: "arena-test",
       name: "grant",

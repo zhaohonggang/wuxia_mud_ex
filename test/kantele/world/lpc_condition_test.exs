@@ -295,9 +295,12 @@ defmodule Kantele.World.LpcConditionTest do
   end
 
   describe "supported?/1" do
-    test "依赖玩家性别的条件视为不可执行（运行时没有该数据）" do
-      refute Cond.supported?("me->query('gender') != '男性' && dir == 'in'")
-      refute Cond.supported?("(string)me->query(\"gender\") == '女性'")
+    test "依赖玩家性别的条件**现在**可执行（gender 已落地）" do
+      # character_metadata.gender 有列、默认值「男性」，apply_to_character 会写进
+      # meta.env[:gender]。此前这里曾是 refute —— 正是那个「恒真 -> 永久拦死玩家」
+      # 的守卫把它整批挡下的。
+      assert Cond.supported?("me->query('gender') != '男性' && dir == 'in'")
+      assert Cond.supported?("(string)me->query(\"gender\") == '女性'")
     end
 
     test "不依赖缺失数据的条件照常执行" do
@@ -306,7 +309,7 @@ defmodule Kantele.World.LpcConditionTest do
     end
 
     @tag :world_data
-    test "数据里依赖缺失字段的条件会被守卫排除（避免恒真误拦）" do
+    test "数据里已没有「依赖缺失字段而被守卫排除」的条件" do
       world = Kantele.World.Loader.load()
 
       conds =
@@ -314,14 +317,27 @@ defmodule Kantele.World.LpcConditionTest do
         |> Enum.filter(fn {_id, v} -> is_binary(Map.get(v, :condition)) end)
         |> Enum.filter(fn {_id, v} -> Cond.direction_scoped?(v.condition) end)
         |> Enum.filter(fn {_id, v} -> not Cond.supported?(v.condition) end)
-        |> Enum.map(fn {_id, v} -> v.condition end)
+        |> Enum.map(fn {id, v} -> {id, v.condition} end)
 
-      # 若执行，`!= '男性'` / `!= '女性'` 会恒真，把 mingjiao 门、xiangyang 聚义花园
-      # 这类地方永久拦住
-      assert length(conds) == 9,
-             "预期 9 条依赖 gender 的条件被排除，实际 #{length(conds)}"
+      # 曾经这里是 9 条依赖 gender 的条件。因为 `me->query("gender")` 恒为 nil，
+      # `!= '男性'` / `!= '女性'` 会恒真，把 mingjiao 门、xiangyang 聚义花园这类
+      # 地方永久拦住 —— 所以当时整批挡下。现在 gender 落地了，这一类归零。
+      assert conds == [],
+             "不应再有被 supported? 排除的条件，实际 #{inspect(conds)}"
+    end
 
-      assert Enum.all?(conds, &String.contains?(&1, "gender"))
+    @tag :world_data
+    test "11 条 gender 条件现在全部 supported 且可执行" do
+      world = Kantele.World.Loader.load()
+
+      conds =
+        Enum.flat_map(world.rooms, fn r ->
+          Enum.map(r.exit_vetoes || [], fn v -> Map.get(v, :condition) end)
+        end)
+        |> Enum.filter(fn c -> is_binary(c) and String.contains?(c, "gender") end)
+
+      assert length(conds) == 11, "预期 11 条 gender 条件，实际 #{length(conds)}"
+      assert Enum.all?(conds, &Cond.supported?/1)
     end
   end
 

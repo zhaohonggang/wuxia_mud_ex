@@ -56,21 +56,21 @@ defmodule Kantele.World.LpcCondition do
 
   def direction_scoped?(_), do: false
 
-  @doc """
-  条件所依赖的数据在当前运行时是否可用。
-
-  `direction_scoped?/1` 之外的第二类「不能执行」：条件引用了**本项目根本没有的数据**。
-  目前是玩家性别 —— accounts/characters 表没有该列，`meta.env` 也没人写 `gender`，
-  于是 `me->query("gender")` 恒为 nil：
-
-      me->query('gender') != '男性'   ->  "" != "男性"  ->  恒真（会误拦）
-      me->query('gender') == '女性'   ->  恒假（放行）
-
-  已迁入的 166 条里有 9 条落在这两类里（分布在 mingjiao 门、xiangyang 聚义花园、
-  guiyun 华庭、luoyang 浴池、quanzhou 西街），其中 6 条会永久拦住本不该拦的方向。
-  与方向未限定的条件一样：先不执行，等玩家性别真正落地后再放开。
-  """
-  @unsupported_fields ["query('gender')", "query(\"gender\")"]
+  # `@unsupported_fields`：条件引用了**运行时根本拿不到的数据**时整条跳过。
+  #
+  # 这张名单过去只有 gender 一项，原因是 `me->query("gender")` 恒为 nil：
+  #
+  #     me->query('gender') != '男性'   ->  "" != "男性"  ->  恒真（**会误拦**）
+  #     me->query('gender') == '女性'   ->  恒假（放行）
+  #
+  # 11 条 valid_leave 条件里有 4 条属于「恒真」那一类，会把玩家**永久拦死在房外**，
+  # 所以当时整批挡下。现在 `character_metadata.gender` 有列、默认值「男性」，
+  # `Records.apply_to_character/3` 会把它写进 `meta.env["gender"]`，
+  # `query("gender")` 于是读得到 —— 这个字段就从名单里去掉了。
+  #
+  # 以后再往这张名单加字段时，务必同时评估**恒假 / 恒真两个方向**：
+  # 像 `!= '女性'` 这种条件恒真是「变成拦人的门禁」，比「不生效」严重得多。
+@unsupported_fields []
 
   def supported?(expr) when is_binary(expr) do
     not Enum.any?(@unsupported_fields, &String.contains?(expr, &1))

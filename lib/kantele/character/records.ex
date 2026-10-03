@@ -30,6 +30,9 @@ defmodule ExVenture.Characters.Metadata do
     field(:gongxian, :integer, default: 0)
     field(:shen, :integer, default: 0)
     field(:family, :map, default: %{})
+    # LPC `set("gender", "男性")`。经 apply_to_character 写进 meta.env["gender"]，
+    # 供 `me->query("gender")` 读取（11 条 valid_leave 条件依赖它）。
+    field(:gender, :string, default: "男性")
     field(:skills, :map, default: %{})
     field(:mapped, :map, default: %{})
     field(:performs, {:array, :string}, default: [])
@@ -71,6 +74,7 @@ defmodule ExVenture.Characters.Metadata do
       :gongxian,
       :shen,
       :family,
+      :gender,
       :skills,
       :mapped,
       :performs,
@@ -294,6 +298,15 @@ defmodule Kantele.Character.Records do
       |> Map.put(:stats, stats)
       |> Map.put(:vitals, vitals)
       |> Map.put(:combat, combat)
+      # gender 走 meta.env —— LPC 的 set() 属性在本框架里对应 meta.env，
+      # `ExitVetoContext.query("gender")` 就是从那儿读的。
+      #
+      # key 必须是**原子** :gender：`query_prop/2` 走
+      # `TreeMap.query(env, path_parts(key))`，而 `path_parts/1` 做的是
+      # `String.to_atom/1`。用字符串 key 的话 query 永远读不到
+      # （顺带发现：`set` 命令写的是字符串 key，所以 `set gender 男性`
+      #   与 `query("gender")` 本来就接不上，那是另一个既有问题）。
+      |> Map.update(:env, %{}, &Map.put_new(&1, :gender, metadata.gender || "男性"))
       |> Map.put(:coins, max(metadata.coins || 0, 0))
       |> Map.put(:bank_coins, metadata.bank_coins || 0)
       |> Map.put(:family, restore_family(metadata.family))
