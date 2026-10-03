@@ -233,6 +233,18 @@ defmodule Kantele.World.ExitVetoRuntimeTest do
     end
 
     @tag :world_data
+    test "通配方向（direction = ~）的 veto 也能取到提示语" do
+      # shaolin:dmyuan2 的条件是 all_dirs（direction 为 ~），若只按方向精确匹配，
+      # 玩家会被拦下却看不到原因 —— 这正是线上反馈的现象
+      assert Kantele.World.exit_veto_message("shaolin:dmyuan2", "south") =~ "心法"
+      assert Kantele.World.exit_veto_message("shaolin:dmyuan2", "down") =~ "心法"
+
+      # 方向精确匹配的仍然优先
+      assert Kantele.World.exit_veto_message("beijing:kangfu_men", "east") =~ "康府侍卫"
+      assert Kantele.World.exit_veto_message("beijing:kangfu_men", "west") == nil
+    end
+
+    @tag :world_data
     test "无法合并的只剩 4 条，且都是表达能力不足而非遗漏" do
       world = Kantele.World.Loader.load()
 

@@ -22,14 +22,25 @@ defmodule Kantele.World do
     with [zone_id | _] <- String.split(room_id, ":"),
          {:ok, zone} <- ZoneCache.get(zone_id),
          room when not is_nil(room) <- find_room(zone, room_id) do
-      room
-      |> Map.get(:exit_vetoes, [])
-      |> Enum.find_value(fn veto ->
-        case Map.get(veto, :direction) do
-          ^dir -> Map.get(veto, :message)
-          _ -> nil
-        end
-      end)
+      vetoes = Map.get(room, :exit_vetoes, []) || []
+
+      # 先找方向精确匹配的，再退回通配（direction = "*" / nil）。
+      # all_dirs 的条件本来就是「所有方向都拦」（如 shaolin:dmyuan2 的心法门、
+      # city:eproom 的拱猪桌），只按方向找会找不到提示语，玩家就只看到被拦、
+      # 看不到原因。
+      msg =
+        Enum.find_value(vetoes, fn veto ->
+          if Map.get(veto, :direction) == dir, do: Map.get(veto, :message)
+        end)
+
+      msg ||
+        Enum.find_value(vetoes, fn veto ->
+          case Map.get(veto, :direction) do
+            "*" -> Map.get(veto, :message)
+            nil -> Map.get(veto, :message)
+            _ -> nil
+          end
+        end)
     else
       _ -> nil
     end
