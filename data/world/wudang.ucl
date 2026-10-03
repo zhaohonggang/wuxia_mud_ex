@@ -24,11 +24,12 @@ zones "wudang" {
   room_items "cangjingge" {
     room_id = rooms.cangjingge.id
     items = [
-      { id = items.daotong.id }    ]
+      { id = items.daotong.id },
+      { id = [clone_lib.items.laozi1.id,clone_lib.items.daodejing.id,clone_lib.items.laozi2.id,clone_lib.items.daodejing.id,clone_lib.items.laozi8.id,clone_lib.items.daodejing.id,clone_lib.items.laozi13.id,clone_lib.items.laozi1.id,clone_lib.items.laozi16.id,clone_lib.items.daodejing.id,clone_lib.items.laozi18.id] },
+      { id = [clone_lib.items.laozi1.id,clone_lib.items.daodejing.id,clone_lib.items.laozi2.id,clone_lib.items.daodejing.id,clone_lib.items.laozi8.id,clone_lib.items.daodejing.id,clone_lib.items.laozi13.id,clone_lib.items.laozi1.id,clone_lib.items.laozi16.id,clone_lib.items.daodejing.id,clone_lib.items.laozi18.id] }
+    ]
   }
 
-  # skipped unresolvable object path '"/clone/book/" + books[random(sizeof(books))]': no determinate object id
-  # skipped unresolvable object path '"/clone/book/" + books[random(sizeof(books))]': no determinate object id
 
 # Generated from C:/files/git/mud/d/wudang/caolian1.c by LPCConverter
 # Zone: wudang

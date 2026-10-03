@@ -103,16 +103,16 @@ direction = ~
     }
   room_exits "bagua0" {
     room_id = rooms.bagua0.id
+    qian = rooms.bagua7.id
+    xun = rooms.bagua6.id
+    li = rooms.bagua5.id
+    gen = rooms.bagua4.id
+    dui = rooms.bagua3.id
+    kan = rooms.bagua2.id
+    zhen = rooms.bagua1.id
+    kun = rooms.bagua0.id
     }
 
-  # skipped exit direction '乾': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '巽': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '离': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '艮': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '兑': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坎': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '震': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坤': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
 
 # Generated from C:/files/git/mud/d/shaolin/bagua1.c by LPCConverter
 # Zone: shaolin
@@ -136,16 +136,16 @@ direction = ~
     room_id = rooms.bagua1.id
     down = rooms.zhonglou6.id
     up = rooms.bagua2.id
+    qian = rooms.bagua7.id
+    xun = rooms.bagua6.id
+    li = rooms.bagua5.id
+    gen = rooms.bagua4.id
+    dui = rooms.bagua3.id
+    kan = rooms.bagua2.id
+    zhen = rooms.bagua1.id
+    kun = rooms.bagua0.id
     }
 
-  # skipped exit direction '乾': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '巽': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '离': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '艮': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '兑': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坎': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '震': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坤': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
 
 # Generated from C:/files/git/mud/d/shaolin/bagua2.c by LPCConverter
 # Zone: shaolin
@@ -169,16 +169,16 @@ direction = ~
     room_id = rooms.bagua2.id
     down = rooms.bagua1.id
     up = rooms.bagua3.id
+    qian = rooms.bagua7.id
+    xun = rooms.bagua6.id
+    li = rooms.bagua5.id
+    gen = rooms.bagua4.id
+    dui = rooms.bagua3.id
+    kan = rooms.bagua2.id
+    zhen = rooms.bagua1.id
+    kun = rooms.bagua0.id
     }
 
-  # skipped exit direction '乾': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '巽': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '离': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '艮': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '兑': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坎': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '震': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坤': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
 
 # Generated from C:/files/git/mud/d/shaolin/bagua3.c by LPCConverter
 # Zone: shaolin
@@ -207,16 +207,16 @@ direction = ~
     room_id = rooms.bagua3.id
     down = rooms.bagua2.id
     up = rooms.bagua4.id
+    qian = rooms.bagua7.id
+    xun = rooms.bagua6.id
+    li = rooms.bagua5.id
+    gen = rooms.bagua4.id
+    dui = rooms.bagua3.id
+    kan = rooms.bagua2.id
+    zhen = rooms.bagua1.id
+    kun = rooms.bagua0.id
     }
 
-  # skipped exit direction '乾': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '巽': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '离': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '艮': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '兑': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坎': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '震': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坤': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
 
 # Generated from C:/files/git/mud/d/shaolin/bagua4.c by LPCConverter
 # Zone: shaolin
@@ -240,16 +240,16 @@ direction = ~
     room_id = rooms.bagua4.id
     down = rooms.bagua3.id
     up = rooms.bagua5.id
+    qian = rooms.bagua7.id
+    xun = rooms.bagua6.id
+    li = rooms.bagua5.id
+    gen = rooms.bagua4.id
+    dui = rooms.bagua3.id
+    kan = rooms.bagua2.id
+    zhen = rooms.bagua1.id
+    kun = rooms.bagua0.id
     }
 
-  # skipped exit direction '乾': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '巽': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '离': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '艮': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '兑': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坎': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '震': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坤': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
 
 # Generated from C:/files/git/mud/d/shaolin/bagua5.c by LPCConverter
 # Zone: shaolin
@@ -273,16 +273,16 @@ direction = ~
     room_id = rooms.bagua5.id
     down = rooms.bagua4.id
     up = rooms.bagua6.id
+    qian = rooms.bagua7.id
+    xun = rooms.bagua6.id
+    li = rooms.bagua5.id
+    gen = rooms.bagua4.id
+    dui = rooms.bagua3.id
+    kan = rooms.bagua2.id
+    zhen = rooms.bagua1.id
+    kun = rooms.bagua0.id
     }
 
-  # skipped exit direction '乾': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '巽': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '离': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '艮': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '兑': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坎': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '震': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坤': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
 
 # Generated from C:/files/git/mud/d/shaolin/bagua6.c by LPCConverter
 # Zone: shaolin
@@ -306,16 +306,16 @@ direction = ~
     room_id = rooms.bagua6.id
     down = rooms.bagua5.id
     up = rooms.bagua7.id
+    qian = rooms.bagua7.id
+    xun = rooms.bagua6.id
+    li = rooms.bagua5.id
+    gen = rooms.bagua4.id
+    dui = rooms.bagua3.id
+    kan = rooms.bagua2.id
+    zhen = rooms.bagua1.id
+    kun = rooms.bagua0.id
     }
 
-  # skipped exit direction '乾': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '巽': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '离': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '艮': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '兑': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坎': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '震': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坤': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
 
 # Generated from C:/files/git/mud/d/shaolin/bagua7.c by LPCConverter
 # Zone: shaolin
@@ -339,16 +339,16 @@ direction = ~
     room_id = rooms.bagua7.id
     down = rooms.bagua6.id
     up = rooms.beilin3.id
+    qian = rooms.bagua7.id
+    xun = rooms.bagua6.id
+    li = rooms.bagua5.id
+    gen = rooms.bagua4.id
+    dui = rooms.bagua3.id
+    kan = rooms.bagua2.id
+    zhen = rooms.bagua1.id
+    kun = rooms.bagua0.id
     }
 
-  # skipped exit direction '乾': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '巽': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '离': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '艮': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '兑': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坎': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '震': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
-  # skipped exit direction '坤': direction is not ASCII; elias's Word token is ASCII-only, so this key cannot be lexed
 
 # Generated from C:/files/git/mud/d/shaolin/bamboo1.c by LPCConverter
 # Zone: shaolin

@@ -720,6 +720,85 @@ defmodule Kantele.Character.Commands do
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
+    # 八卦阵的八个卦名方向（/d/shaolin/bagua*.c）。原 LPC 直接用「乾兑坎坤
+    # 巽离艮震」当方向名，elias 的 key 只收 ASCII，转换时被跳过；这里按拼音
+    # 注册（数据侧见 scripts/restore_bagua_exits.py）。
+    #
+    # 注意这些不是东南西北，而是八卦阵的走法，阵法判定在 check_dirs 里。
+    # `li` 与 `list`/`liuxi`、`gen` 与 `general` 前缀相同，靠 lookahead_not
+    # 消歧（与 `n` vs `north` 同一机制）。
+    parse("qian", :qian, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("dui", :dui, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("kan", :kan, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("kun", :kun, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("xun", :xun, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("li", :li, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("gen", :gen, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("zhen", :zhen, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    # 华山石门六洞（原 LPC 用 hole1..hole6，方向名带数字过不了 elias 的 key 语法，
+    # 数据侧改名为 hole_a..hole_f，见 scripts/restore_hole_exits.py）
+    parse("hole_a", :hole_a, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("hole_b", :hole_b, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("hole_c", :hole_c, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("hole_d", :hole_d, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("hole_e", :hole_e, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
+
+    parse("hole_f", :hole_f, [], fn command ->
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    end)
   end
 
   module(PerformCommand) do

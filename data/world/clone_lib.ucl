@@ -1568,3 +1568,191 @@ zones "clone_lib" {
         material = "bamboo"
       }
     }
+
+# Source: C:/files/git/mud/clone/book/laozi1.c
+# Zone: clone_lib
+
+    items "laozi1" {
+      name = "道德经「第一章」"
+      description = "第一章 道可道，非常道。名可名，非常名。 无名天地之始；有名万物之母。 故常无，欲以观其妙；常有，欲以观其徼。 此两者，同出而异名，同谓之玄。玄之又玄，众妙之门。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "taoism"
+          max_skill = 9
+          exp_required = 0
+          jing_cost = 10
+          difficulty = 15
+        }
+      }
+    }
+
+# Source: C:/files/git/mud/clone/book/daodejing.c
+# Zone: clone_lib
+
+    items "daodejing" {
+      name = "道德经"
+      description = "这是一册道德经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "taoism"
+          min_skill = 60
+          max_skill = 119
+          exp_required = 100000
+          jing_cost = 20
+          difficulty = 30
+        }
+      }
+    }
+
+# Source: C:/files/git/mud/clone/book/laozi2.c
+# Zone: clone_lib
+
+    items "laozi2" {
+      name = "道德经「第二章」"
+      description = "第二章 天下皆知美之为美，斯恶已。皆知善之为善，斯不善已。 有无相生，难易相成，长短相形，高下相盈，音声相和，前后相 随。恒也。 是以圣人处无为之事，行不言之教；万物作而弗始，生而弗有， 为而弗恃，功成而不居。夫唯弗居，是以不去。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "taoism"
+          min_skill = 10
+          max_skill = 19
+          exp_required = 0
+          jing_cost = 10
+          difficulty = 15
+        }
+      }
+    }
+
+# Source: C:/files/git/mud/clone/book/laozi8.c
+# Zone: clone_lib
+
+    items "laozi8" {
+      name = "道德经「第八章」"
+      description = "第八章 上善若水。水善利万物而不争，处众人之所恶，故几于道。 居善地，心善渊，与善仁，言善信，政善治，事善能，动善时。 夫唯不争，故无尤。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "taoism"
+          min_skill = 20
+          max_skill = 29
+          exp_required = 0
+          jing_cost = 10
+          difficulty = 15
+        }
+      }
+    }
+
+# Source: C:/files/git/mud/clone/book/laozi13.c
+# Zone: clone_lib
+
+    items "laozi13" {
+      name = "道德经「第十三章」"
+      description = "第十三章 宠辱若惊，贵大患若身。 何谓宠辱若惊？宠为下，得之若惊，失之若惊，是谓宠辱若惊。 何谓贵大患若身？吾所以有大患者，为吾有身，及吾无身，吾有 何患？ 故贵以身为天下，若可寄天下；爱以身为天下，若可托天下。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "taoism"
+          min_skill = 30
+          max_skill = 39
+          exp_required = 0
+          jing_cost = 10
+          difficulty = 15
+        }
+      }
+    }
+
+# Source: C:/files/git/mud/clone/book/laozi16.c
+# Zone: clone_lib
+
+    items "laozi16" {
+      name = "道德经「第十六章」"
+      description = "第十六 致虚极，守静笃。 万物并作，吾以观复。 夫物芸芸，各复归其根。归根曰静，静曰复命。复命曰常，知常 曰明。不知常，妄作凶。 知常容，容乃公，公乃全，全乃天，天乃道，道乃久，没身不殆。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "taoism"
+          min_skill = 40
+          max_skill = 49
+          exp_required = 0
+          jing_cost = 15
+          difficulty = 15
+        }
+      }
+    }
+
+# Source: C:/files/git/mud/clone/book/laozi18.c
+# Zone: clone_lib
+
+    items "laozi18" {
+      name = "道德经「第十八章」"
+      description = "第十八章 大道废，有仁义；智慧出，有大伪；六亲不和，有孝慈；国家昏 乱，有忠臣。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "taoism"
+          min_skill = 50
+          max_skill = 59
+          exp_required = 0
+          jing_cost = 15
+          difficulty = 15
+        }
+      }
+    }

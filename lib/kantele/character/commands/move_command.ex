@@ -182,4 +182,102 @@ defmodule Kantele.Character.MoveCommand do
     |> request_movement("yangzhou")
     |> assign(:prompt, false)
   end
+
+  # ---- 八卦阵的八个卦名方向 ----
+  #
+  # 原 LPC（/d/shaolin/bagua*.c）直接用「乾兑坎坤巽离艮震」当出口方向名，
+  # elias 的 key 只接受 ASCII，转换时这 64 条出口被跳过（数据侧已用拼音还原，
+  # 见 scripts/restore_bagua_exits.py）。
+  #
+  # 这些不是地理方位，而是八卦阵的走法 —— 踩哪一卦决定阵法计数（见 LPC
+  # /d/shaolin/bagua.h 的 check_dirs）。因此这里保留拼音原名，不映射成
+  # nw/ne 之类，免得把「阵法走法」误导成「方位」。
+  def qian(conn, _params) do
+    conn
+    |> request_movement("qian")
+    |> assign(:prompt, false)
+  end
+
+  def dui(conn, _params) do
+    conn
+    |> request_movement("dui")
+    |> assign(:prompt, false)
+  end
+
+  def kan(conn, _params) do
+    conn
+    |> request_movement("kan")
+    |> assign(:prompt, false)
+  end
+
+  def kun(conn, _params) do
+    conn
+    |> request_movement("kun")
+    |> assign(:prompt, false)
+  end
+
+  def xun(conn, _params) do
+    conn
+    |> request_movement("xun")
+    |> assign(:prompt, false)
+  end
+
+  def li(conn, _params) do
+    conn
+    |> request_movement("li")
+    |> assign(:prompt, false)
+  end
+
+  def gen(conn, _params) do
+    conn
+    |> request_movement("gen")
+    |> assign(:prompt, false)
+  end
+
+  def zhen(conn, _params) do
+    conn
+    |> request_movement("zhen")
+    |> assign(:prompt, false)
+  end
+
+  # ---- 华山石门上的六个人工小山洞 ----
+  #
+  # 原 LPC（/d/huashan/s.c）用 "hole1".."hole6" 当方向名，方向名带数字过不了
+  # elias 的 key 语法（`^[A-Za-z_][A-Za-z_]*$`），转换时这 6 条被跳过。数据侧已
+  # 改名为 hole_a..hole_f（见 scripts/restore_hole_exits.py），这里补上对应命令。
+  def hole_a(conn, _params) do
+    conn
+    |> request_movement("hole_a")
+    |> assign(:prompt, false)
+  end
+
+  def hole_b(conn, _params) do
+    conn
+    |> request_movement("hole_b")
+    |> assign(:prompt, false)
+  end
+
+  def hole_c(conn, _params) do
+    conn
+    |> request_movement("hole_c")
+    |> assign(:prompt, false)
+  end
+
+  def hole_d(conn, _params) do
+    conn
+    |> request_movement("hole_d")
+    |> assign(:prompt, false)
+  end
+
+  def hole_e(conn, _params) do
+    conn
+    |> request_movement("hole_e")
+    |> assign(:prompt, false)
+  end
+
+  def hole_f(conn, _params) do
+    conn
+    |> request_movement("hole_f")
+    |> assign(:prompt, false)
+  end
 end

@@ -1089,13 +1089,13 @@ item_desc = {
   room_exits "s" {
     room_id = rooms.s.id
     out = rooms.shandong.id
+    hole_a = rooms.lockroom1.id
+    hole_b = rooms.lockroom2.id
+    hole_c = rooms.lockroom3.id
+    hole_d = rooms.lockroom4.id
+    hole_e = rooms.lockroom5.id
+    hole_f = rooms.lockroom6.id
     }
-  # skipped exit direction 'hole1': direction contains a digit; elias lexes Digit as a separate token, so the assignment cannot close
-  # skipped exit direction 'hole2': direction contains a digit; elias lexes Digit as a separate token, so the assignment cannot close
-  # skipped exit direction 'hole3': direction contains a digit; elias lexes Digit as a separate token, so the assignment cannot close
-  # skipped exit direction 'hole4': direction contains a digit; elias lexes Digit as a separate token, so the assignment cannot close
-  # skipped exit direction 'hole5': direction contains a digit; elias lexes Digit as a separate token, so the assignment cannot close
-  # skipped exit direction 'hole6': direction contains a digit; elias lexes Digit as a separate token, so the assignment cannot close
 
 # Generated from C:/files/git/mud/d/huashan/sgyhole.c by LPCConverter
 # Zone: huashan
