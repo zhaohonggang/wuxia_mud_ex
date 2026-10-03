@@ -721,47 +721,73 @@ defmodule Kantele.Character.Commands do
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
 
-    # 八卦阵的八个卦名方向（/d/shaolin/bagua*.c）。原 LPC 直接用「乾兑坎坤
-    # 巽离艮震」当方向名，elias 的 key 只收 ASCII，转换时被跳过；这里按拼音
-    # 注册（数据侧见 scripts/restore_bagua_exits.py）。
+    # 八卦阵的八个卦名方向
     #
-    # 注意这些不是东南西北，而是八卦阵的走法，阵法判定在 check_dirs 里。
-    # `li` 与 `list`/`liuxi`、`gen` 与 `general` 前缀相同，靠 lookahead_not
-    # 消歧（与 `n` vs `north` 同一机制）。
+    # 原 LPC（/d/shaolin/bagua*.c）直接用「乾兑坎坤巽离艮震」当出口方向名，
+    # elias 的 key 只收 ASCII，早期转换时这 64 条出口被跳过、数据侧先用拼音
+    # 还原（scripts/restore_bagua_exits.py）。现在出口名已改回**汉字**（LPC 原样），
+    # `look` 显示的就是 `Exits: 乾 坤 震 巽 坎 离 艮 兑`。
+    #
+    # 指令两种写法都认（汉字与拼音各注册一条，都指向同一个 MoveCommand 函数）：
+    #   * 拼音那侧必须带 lookahead_not —— `li` 与 `list`/`liuxi`、`gen` 与
+    #     `general` 前缀相同，靠它消歧（与 `n` vs `north` 同一机制）
+    #   * 汉字是单字，不需要消歧
+    #
+    # 没用 Router 的 `aliases:` 选项：它与自定义 parse_fun 组合时会生成
+    # 非法的引用（invalid quoted expression），所以这里显式写两条。
+    #
+    # 这些不是东南西北，而是八卦阵的走法，阵法判定在 check_dirs 里，
+    # 所以**不**映射成 nw/ne 之类，免得把「阵法走法」误导成「方位」。
+    parse("乾", :qian)
+
     parse("qian", :qian, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
+    parse("兑", :dui)
 
     parse("dui", :dui, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
 
+    parse("坎", :kan)
+
     parse("kan", :kan, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
+    parse("坤", :kun)
 
     parse("kun", :kun, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
 
+    parse("巽", :xun)
+
     parse("xun", :xun, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
+    parse("离", :li)
 
     parse("li", :li, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
 
+    parse("艮", :gen)
+
     parse("gen", :gen, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
+    parse("震", :zhen)
 
     parse("zhen", :zhen, [], fn command ->
       command

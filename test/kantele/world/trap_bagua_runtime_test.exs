@@ -15,6 +15,7 @@ defmodule Kantele.World.TrapBaguaRuntimeTest do
   alias Kalevala.Event.Movement
   alias Kalevala.World.Room.Context
   alias Kantele.World.Loader
+  alias Kantele.World.Trap.Bagua
 
   @handler Kalevala.World.Room.Callbacks.Kantele.World.Room
 
@@ -91,10 +92,10 @@ defmodule Kantele.World.TrapBaguaRuntimeTest do
 
   describe "走对：计数 +1 并吃伤害，仍放行" do
     @tag :world_data
-    test "bagua0 往 kan（count=0）", ctx do
+    test "bagua0 往 坎（count=0）", ctx do
       r = room(ctx.world, "shaolin:bagua0")
 
-      assert {:proceed, _event, _exit} = move(r, player(%{}), "kan")
+      assert {:proceed, _event, _exit} = move(r, player(%{}), "坎")
 
       assert_received %Event{topic: "trap/effect", data: %{effects: effects}}
 
@@ -104,10 +105,10 @@ defmodule Kantele.World.TrapBaguaRuntimeTest do
     end
 
     @tag :world_data
-    test "bagua0 往 zhen（count=2）会昏厥", ctx do
+    test "bagua0 往 震（count=2）会昏厥", ctx do
       r = room(ctx.world, "shaolin:bagua0")
 
-      assert {:proceed, _event, _exit} = move(r, player(%{"bagua/count" => 2}), "zhen")
+      assert {:proceed, _event, _exit} = move(r, player(%{"bagua/count" => 2}), "震")
 
       assert_received %Event{topic: "trap/effect", data: %{effects: effects}}
       assert {:faint} in effects
@@ -116,10 +117,10 @@ defmodule Kantele.World.TrapBaguaRuntimeTest do
 
   describe "走错：只清零、无惩罚，且仍然放行" do
     @tag :world_data
-    test "bagua0 往 kan（count=5，不匹配）", ctx do
+    test "bagua0 往 坎（count=5，不匹配）", ctx do
       r = room(ctx.world, "shaolin:bagua0")
 
-      assert {:proceed, _event, _exit} = move(r, player(%{"bagua/count" => 5}), "kan")
+      assert {:proceed, _event, _exit} = move(r, player(%{"bagua/count" => 5}), "坎")
 
       assert_received %Event{topic: "trap/effect", data: %{effects: effects}}
 
@@ -131,10 +132,10 @@ defmodule Kantele.World.TrapBaguaRuntimeTest do
 
   describe "坤（kun）：清空整棵 bagua 子树" do
     @tag :world_data
-    test "bagua0 往 kun", ctx do
+    test "bagua0 往 坤", ctx do
       r = room(ctx.world, "shaolin:bagua0")
 
-      assert {:proceed, _event, _exit} = move(r, player(%{"bagua/count" => 3}), "kun")
+      assert {:proceed, _event, _exit} = move(r, player(%{"bagua/count" => 3}), "坤")
 
       assert_received %Event{topic: "trap/effect", data: %{effects: effects}}
 
@@ -147,13 +148,13 @@ defmodule Kantele.World.TrapBaguaRuntimeTest do
 
   describe "脱困：同一方向连走 14 次掉进僧监" do
     @tag :world_data
-    test "bagua0 往 kan 第 14 次被拦下并传送", ctx do
+    test "bagua0 往 坎 第 14 次被拦下并传送", ctx do
       r = room(ctx.world, "shaolin:bagua0")
 
       # 前 13 次：正常放行（每次之后清掉事件，避免污染后面的断言）
       for n <- 1..13 do
         temp = %{"bagua/count" => 0, "bagua/坎" => n - 1}
-        assert {:proceed, _event, _exit} = move(r, player(temp), "kan"), "第 #{n} 次应放行"
+        assert {:proceed, _event, _exit} = move(r, player(temp), "坎"), "第 #{n} 次应放行"
         assert_received %Event{topic: "trap/effect", data: %{effects: e}}
         refute Enum.any?(e, &match?({:force_move, _}, &1)), "第 #{n} 次不该脱困"
       end
@@ -162,7 +163,7 @@ defmodule Kantele.World.TrapBaguaRuntimeTest do
 
       # 第 14 次：bagua/坎 已经是 13 -> 14 > 13
       temp = %{"bagua/count" => 0, "bagua/坎" => 13}
-      assert {:abort, _event, {:trapped, msg}} = move(r, player(temp), "kan")
+      assert {:abort, _event, {:trapped, msg}} = move(r, player(temp), "坎")
       assert msg == "你踩动了机关，掉进僧监。"
 
       assert_received %Event{topic: "trap/effect", data: %{effects: effects}}
@@ -221,15 +222,102 @@ defmodule Kantele.World.TrapBaguaRuntimeTest do
 
   describe "每个房间都能触发（规则是共享头文件，八房一致）" do
     @tag :world_data
-    test "八个房间往 kan 都会推进 count", ctx do
+    test "八个房间往 坎 都会推进 count", ctx do
       for r <- ctx.bagua do
-        assert Enum.find(r.exits, &(&1.exit_name == "kan")), "#{r.id} 应有 kan 出口"
+        assert Enum.find(r.exits, &(&1.exit_name == "坎")), "#{r.id} 应有 kan 出口"
 
-        assert {:proceed, _event, _exit} = move(r, player(%{}), "kan")
+        assert {:proceed, _event, _exit} = move(r, player(%{}), "坎")
 
         assert_received %Event{topic: "trap/effect", data: %{effects: effects}}
         assert {:set_temp, "bagua/count", 1} in effects, "#{r.id} 应推进 count"
         assert {:damage, :jing, 50} in effects, "#{r.id} 应受 jing 伤"
+      end
+    end
+  end
+
+  describe "出口名已改回汉字，但拼音仍然能用" do
+    @tag :world_data
+    test "八个房间的出口名都是汉字（LPC 原样）", ctx do
+      for r <- ctx.bagua do
+        han = r.exits |> Enum.map(& &1.exit_name) |> Enum.filter(&String.length(&1) == 1)
+
+        # 每个八卦房至少 8 个单字出口
+        assert length(han) >= 8,
+               "#{r.id} 的出口名应包含八个单字卦名，实际 #{inspect(Enum.map(r.exits, & &1.exit_name))}"
+      end
+    end
+
+    @tag :world_data
+    test "八个卦名的汉字与拼音一一对应，且指令都能解析", ctx do
+      r = room(ctx.world, "shaolin:bagua0")
+      names = Enum.map(r.exits, & &1.exit_name)
+
+      # 数据侧是汉字
+      for han <- ["乾", "兑", "坎", "坤", "巽", "离", "艮", "震"] do
+        assert han in names, "bagua0 应有出口 #{han}"
+      end
+
+      # 指令侧汉字与拼音都注册了，且指向同一个 MoveCommand 函数
+      for {han, pinyin, fn_name} <- [
+            {"乾", "qian", :qian}, {"兑", "dui", :dui},
+            {"坎", "kan", :kan}, {"坤", "kun", :kun},
+            {"巽", "xun", :xun}, {"离", "li", :li},
+            {"艮", "gen", :gen}, {"震", "zhen", :zhen}
+          ] do
+        assert {:ok, p1} = Kantele.Character.Commands.parse(han),
+               "#{han} 应当能作为移动指令"
+
+        assert {:ok, p2} = Kantele.Character.Commands.parse(pinyin),
+               "#{pinyin} 应当仍能作为移动指令"
+
+        assert p1.function == fn_name
+        assert p2.function == fn_name,
+               "#{pinyin} 应当和 #{han} 指向同一个函数（实际 #{p2.function}）"
+      end
+    end
+
+    @tag :world_data
+    test "陷阱对汉字与拼音的行为完全一致", _ctx do
+      assert Bagua.evaluate(%{}, "坎") == Bagua.evaluate(%{}, "kan")
+      assert Bagua.evaluate(%{"bagua/count" => 2}, "震") == Bagua.evaluate(%{"bagua/count" => 2}, "zhen")
+      assert Bagua.evaluate(%{"bagua/count" => 3}, "坤") == Bagua.evaluate(%{"bagua/count" => 3}, "kun")
+    end
+
+    @tag :world_data
+    test "Trap.Bagua 的 han/1 两种写法都返回同一个汉字", _ctx do
+      for {pinyin, han} <- [{"qian", "乾"}, {"dui", "兑"}, {"kan", "坎"},
+                            {"kun", "坤"}, {"xun", "巽"}, {"li", "离"},
+                            {"gen", "艮"}, {"zhen", "震"}] do
+        assert Kantele.World.Trap.Bagua.han(pinyin) == han
+        assert Kantele.World.Trap.Bagua.han(han) == han,
+               "汉字输入也应原样返回 #{han}"
+      end
+    end
+  end
+
+  describe "汉字映射表完整性（这里漏过一个「坎」）" do
+    # 补 坎 之前，@han_to_pinyin 只有 7 条，于是「往坎」既不推进 count 也不下发
+    # 任何 effects —— 表现为「这一卦踩了跟没踩一样」，不报任何错。
+    # 纯逻辑测试当时全绿（它们直接传拼音），所以没能发现。
+    @tag :world_data
+    test "八个卦名的汉字都能归一到拼音，且归一后行为与拼音一致", _ctx do
+      for {han, pinyin} <- [{"乾", "qian"}, {"坤", "kun"}, {"坎", "kan"},
+                            {"离", "li"}, {"艮", "gen"}, {"震", "zhen"},
+                            {"巽", "xun"}, {"兑", "dui"}] do
+        assert Bagua.normalize_dir(han) == pinyin,
+               "#{han} 应当归一到 #{pinyin}（实际 #{inspect(Bagua.normalize_dir(han))}）"
+      end
+    end
+
+    @tag :world_data
+    test "汉字方向名在数据里真的存在（漏了映射就会出现「这一卦没反应」）", ctx do
+      r = room(ctx.world, "shaolin:bagua0")
+      names = Enum.map(r.exits, & &1.exit_name)
+
+      for han <- ["乾", "兑", "坎", "坤", "巽", "离", "艮", "震"] do
+        assert han in names, "bagua0 缺少出口 #{han}"
+        # 每个卦名都必须在映射表里
+        assert Bagua.normalize_dir(han) != han, "#{han} 不在 @han_to_pinyin 里"
       end
     end
   end

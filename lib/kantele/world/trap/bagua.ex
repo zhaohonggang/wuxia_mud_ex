@@ -29,7 +29,12 @@ defmodule Kantele.World.Trap.Bagua do
   `"bagua/" + dir` 用的都是汉字。所以这里要先做拼音 -> 汉字的映射，
   temp 键仍然用汉字（`bagua/坎`），与 LPC 一致。
 
-  **② 汉字容易认错。** 下面表里的汉字都标了码点：艮是 U+826E、巽是 U+5DFD
+  **② 出口名用汉字，指令拼音也认。** 八个 `room_exits` 的方向名已改回汉字
+  （LPC 原样，`look` 显示 `Exits: 乾 坤 震 巽 坎 离 艮 兑`），而指令层面
+  `乾` 和 `qian` 都能走（见 `commands.ex` 的 `parse("乾", :qian, aliases: ["qian"])`），
+  所以 `evaluate/2` 入口要把汉字归一成拼音再查表。
+
+  **③ 汉字容易认错。** 下面表里的汉字都标了码点：艮是 U+826E、巽是 U+5DFD
   —— 两者曾被弄反过（控制台吞字），行为完全不同（艮扣 combat_exp、
   巽受 qi 伤），所以每条都写明码点。
 
@@ -57,6 +62,20 @@ defmodule Kantele.World.Trap.Bagua do
   （`shaolin:jianyu`），并清空所有 `bagua` 计数。
   """
 
+  # 出口方向名改回汉字（LPC 原样）之后，同一个方向就可能以汉字进来；
+  # 但拼音指令仍然保留（commands.ex 里 parse("乾", :qian, aliases: ["qian"])），
+  # 所以这里两种写法都要认。
+  @han_to_pinyin %{
+    "乾" => "qian",
+    "坤" => "kun",
+    "坎" => "kan",
+    "离" => "li",
+    "艮" => "gen",
+    "震" => "zhen",
+    "巽" => "xun",
+    "兑" => "dui"
+  }
+
   # 拼音 -> {汉字, 码点, 允许的 count, 走对时的惩罚}
   @steps %{
     "kan" => {"坎", 0x574E, [0, 13, 17], {:damage, :jing, 50}},
@@ -72,12 +91,18 @@ defmodule Kantele.World.Trap.Bagua do
   @escape_count 13
   @escape_msg "你踩动了机关，掉进僧监。"
 
-  @doc "拼音 -> 汉字（LPC 的 temp 键用汉字）"
-  def han(dir), do: elem(Map.get(@steps, dir, {nil}), 0)
+  @doc "拼音或汉字 -> 汉字（LPC 的 temp 键用汉字）"
+  def han(dir) do
+    dir = normalize_dir(dir)
+    elem(Map.get(@steps, dir, {nil}), 0)
+  end
 
-  @doc "该方向在给定 count 下走是否「踩对」"
+  @doc "汉字/拼音都归一到拼音（内部查表用）"
+  def normalize_dir(dir), do: Map.get(@han_to_pinyin, dir, dir)
+
+  @doc "该方向在给定 count 下走是否「踩对」（汉字与拼音都接受）"
   def correct?(dir, count) do
-    case Map.get(@steps, dir) do
+    case Map.get(@steps, normalize_dir(dir)) do
       # 坤（kun）永远清零，不存在「踩对」
       nil -> false
       {_han, _cp, allowed, _penalty} -> count in allowed
@@ -91,6 +116,9 @@ defmodule Kantele.World.Trap.Bagua do
   对应 LPC 的 `member_array(dir, dirs) != -1`。
   """
   def evaluate(temp, dir) do
+    # 出口名现在是汉字，但拼音写法（历史数据 / 测试 / 外部调用）也要认
+    dir = normalize_dir(dir)
+
     case Map.get(@steps, dir) do
       nil ->
         {:allow, []}

@@ -190,53 +190,57 @@ defmodule Kantele.Character.MoveCommand do
   # 见 scripts/restore_bagua_exits.py）。
   #
   # 这些不是地理方位，而是八卦阵的走法 —— 踩哪一卦决定阵法计数（见 LPC
-  # /d/shaolin/bagua.h 的 check_dirs）。因此这里保留拼音原名，不映射成
-  # nw/ne 之类，免得把「阵法走法」误导成「方位」。
+  # /d/shaolin/bagua.h 的 check_dirs）。因此不映射成 nw/ne 之类，
+  # 免得把「阵法走法」误导成「方位」。
+  #
+  # 出口方向名已改回**汉字**（LPC 原样，`look` 显示「Exits: 乾 坤 震 巽 …」），
+  # 所以这里 request_movement 传汉字；指令层面 `乾` 和 `qian` 都注册了
+  # （见 commands.ex 的 parse("乾", :qian, aliases: ["qian"])），两种写法都能走。
   def qian(conn, _params) do
     conn
-    |> request_movement("qian")
+    |> request_movement("乾")
     |> assign(:prompt, false)
   end
 
   def dui(conn, _params) do
     conn
-    |> request_movement("dui")
+    |> request_movement("兑")
     |> assign(:prompt, false)
   end
 
   def kan(conn, _params) do
     conn
-    |> request_movement("kan")
+    |> request_movement("坎")
     |> assign(:prompt, false)
   end
 
   def kun(conn, _params) do
     conn
-    |> request_movement("kun")
+    |> request_movement("坤")
     |> assign(:prompt, false)
   end
 
   def xun(conn, _params) do
     conn
-    |> request_movement("xun")
+    |> request_movement("巽")
     |> assign(:prompt, false)
   end
 
   def li(conn, _params) do
     conn
-    |> request_movement("li")
+    |> request_movement("离")
     |> assign(:prompt, false)
   end
 
   def gen(conn, _params) do
     conn
-    |> request_movement("gen")
+    |> request_movement("艮")
     |> assign(:prompt, false)
   end
 
   def zhen(conn, _params) do
     conn
-    |> request_movement("zhen")
+    |> request_movement("震")
     |> assign(:prompt, false)
   end
 

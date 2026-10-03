@@ -103,14 +103,14 @@ direction = ~
     }
   room_exits "bagua0" {
     room_id = rooms.bagua0.id
-    qian = rooms.bagua7.id
-    xun = rooms.bagua6.id
-    li = rooms.bagua5.id
-    gen = rooms.bagua4.id
-    dui = rooms.bagua3.id
-    kan = rooms.bagua2.id
-    zhen = rooms.bagua1.id
-    kun = rooms.bagua0.id
+    乾 = rooms.bagua7.id
+    巽 = rooms.bagua6.id
+    离 = rooms.bagua5.id
+    艮 = rooms.bagua4.id
+    兑 = rooms.bagua3.id
+    坎 = rooms.bagua2.id
+    震 = rooms.bagua1.id
+    坤 = rooms.bagua0.id
     }
 
 
@@ -136,14 +136,14 @@ direction = ~
     room_id = rooms.bagua1.id
     down = rooms.zhonglou6.id
     up = rooms.bagua2.id
-    qian = rooms.bagua7.id
-    xun = rooms.bagua6.id
-    li = rooms.bagua5.id
-    gen = rooms.bagua4.id
-    dui = rooms.bagua3.id
-    kan = rooms.bagua2.id
-    zhen = rooms.bagua1.id
-    kun = rooms.bagua0.id
+    乾 = rooms.bagua7.id
+    巽 = rooms.bagua6.id
+    离 = rooms.bagua5.id
+    艮 = rooms.bagua4.id
+    兑 = rooms.bagua3.id
+    坎 = rooms.bagua2.id
+    震 = rooms.bagua1.id
+    坤 = rooms.bagua0.id
     }
 
 
@@ -169,14 +169,14 @@ direction = ~
     room_id = rooms.bagua2.id
     down = rooms.bagua1.id
     up = rooms.bagua3.id
-    qian = rooms.bagua7.id
-    xun = rooms.bagua6.id
-    li = rooms.bagua5.id
-    gen = rooms.bagua4.id
-    dui = rooms.bagua3.id
-    kan = rooms.bagua2.id
-    zhen = rooms.bagua1.id
-    kun = rooms.bagua0.id
+    乾 = rooms.bagua7.id
+    巽 = rooms.bagua6.id
+    离 = rooms.bagua5.id
+    艮 = rooms.bagua4.id
+    兑 = rooms.bagua3.id
+    坎 = rooms.bagua2.id
+    震 = rooms.bagua1.id
+    坤 = rooms.bagua0.id
     }
 
 
@@ -207,14 +207,14 @@ direction = ~
     room_id = rooms.bagua3.id
     down = rooms.bagua2.id
     up = rooms.bagua4.id
-    qian = rooms.bagua7.id
-    xun = rooms.bagua6.id
-    li = rooms.bagua5.id
-    gen = rooms.bagua4.id
-    dui = rooms.bagua3.id
-    kan = rooms.bagua2.id
-    zhen = rooms.bagua1.id
-    kun = rooms.bagua0.id
+    乾 = rooms.bagua7.id
+    巽 = rooms.bagua6.id
+    离 = rooms.bagua5.id
+    艮 = rooms.bagua4.id
+    兑 = rooms.bagua3.id
+    坎 = rooms.bagua2.id
+    震 = rooms.bagua1.id
+    坤 = rooms.bagua0.id
     }
 
 
@@ -240,14 +240,14 @@ direction = ~
     room_id = rooms.bagua4.id
     down = rooms.bagua3.id
     up = rooms.bagua5.id
-    qian = rooms.bagua7.id
-    xun = rooms.bagua6.id
-    li = rooms.bagua5.id
-    gen = rooms.bagua4.id
-    dui = rooms.bagua3.id
-    kan = rooms.bagua2.id
-    zhen = rooms.bagua1.id
-    kun = rooms.bagua0.id
+    乾 = rooms.bagua7.id
+    巽 = rooms.bagua6.id
+    离 = rooms.bagua5.id
+    艮 = rooms.bagua4.id
+    兑 = rooms.bagua3.id
+    坎 = rooms.bagua2.id
+    震 = rooms.bagua1.id
+    坤 = rooms.bagua0.id
     }
 
 
@@ -273,14 +273,14 @@ direction = ~
     room_id = rooms.bagua5.id
     down = rooms.bagua4.id
     up = rooms.bagua6.id
-    qian = rooms.bagua7.id
-    xun = rooms.bagua6.id
-    li = rooms.bagua5.id
-    gen = rooms.bagua4.id
-    dui = rooms.bagua3.id
-    kan = rooms.bagua2.id
-    zhen = rooms.bagua1.id
-    kun = rooms.bagua0.id
+    乾 = rooms.bagua7.id
+    巽 = rooms.bagua6.id
+    离 = rooms.bagua5.id
+    艮 = rooms.bagua4.id
+    兑 = rooms.bagua3.id
+    坎 = rooms.bagua2.id
+    震 = rooms.bagua1.id
+    坤 = rooms.bagua0.id
     }
 
 
@@ -306,14 +306,14 @@ direction = ~
     room_id = rooms.bagua6.id
     down = rooms.bagua5.id
     up = rooms.bagua7.id
-    qian = rooms.bagua7.id
-    xun = rooms.bagua6.id
-    li = rooms.bagua5.id
-    gen = rooms.bagua4.id
-    dui = rooms.bagua3.id
-    kan = rooms.bagua2.id
-    zhen = rooms.bagua1.id
-    kun = rooms.bagua0.id
+    乾 = rooms.bagua7.id
+    巽 = rooms.bagua6.id
+    离 = rooms.bagua5.id
+    艮 = rooms.bagua4.id
+    兑 = rooms.bagua3.id
+    坎 = rooms.bagua2.id
+    震 = rooms.bagua1.id
+    坤 = rooms.bagua0.id
     }
 
 
@@ -339,14 +339,14 @@ direction = ~
     room_id = rooms.bagua7.id
     down = rooms.bagua6.id
     up = rooms.beilin3.id
-    qian = rooms.bagua7.id
-    xun = rooms.bagua6.id
-    li = rooms.bagua5.id
-    gen = rooms.bagua4.id
-    dui = rooms.bagua3.id
-    kan = rooms.bagua2.id
-    zhen = rooms.bagua1.id
-    kun = rooms.bagua0.id
+    乾 = rooms.bagua7.id
+    巽 = rooms.bagua6.id
+    离 = rooms.bagua5.id
+    艮 = rooms.bagua4.id
+    兑 = rooms.bagua3.id
+    坎 = rooms.bagua2.id
+    震 = rooms.bagua1.id
+    坤 = rooms.bagua0.id
     }
 
 
