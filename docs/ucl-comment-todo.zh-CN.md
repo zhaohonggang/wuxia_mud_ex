@@ -1,6 +1,6 @@
 # UCL 注释还原：待做项清单
 
-> 基线：`mix test --seed 12345` → **3064 tests, 0 failures**；可达性 4190/4470 房。
+> 基线：`mix test --seed 12345` → **3072 tests, 0 failures**；可达性 4190/4470 房。
 > 本文档记录「把 `data/world` 里代表缺失功能的注释变成真实实现」这件事**尚未完成**的部分。
 > 已完成的部分见文末「已完成」与 `docs/ucl-comment-implementation-plan.zh-CN.md`。
 
@@ -12,7 +12,7 @@
 
 | # | 待做项 | 规模 | 类型 | 优先级 |
 |---|--------|------|------|--------|
-| A | 补回 42 条条件丢失的外层方向守卫 | 42 条 / 37 房 / 16 区 | 数据还原（机械） | **高** |
+| ~~A~~ | ~~补回 42 条条件丢失的外层方向守卫~~ | **已完成**（`71e5338`/`e5b14b1`） | 数据还原（机械） | — |
 | B | `guarded_exit` 守卫拦截机制 | 16 个房间 | 新功能 | 中 |
 | C | `check_dirs` / `check_out` / `ob->refuse` | 18 条条件 | 新功能（需副作用） | 中 |
 | D | 玩家性别数据缺失 | 11 条条件 | 补数据链路 | 需决策 |
@@ -20,111 +20,55 @@
 | F | `city:mudren` 的 `enter` 传送门 | 1 条 | **建议正式免除** | 低 |
 | G | 更新计划文档（进度已严重滞后） | 1 份文档 | 文档 | 中 |
 
-另有 **1 处已知行为近似**与 **2 处踩坑约束**记在文末第五节。
+另有 **1 处已知行为近似**与 **3 处踩坑约束**记在文末第五节。
+
+剩余待做 **B / C / D / E / F / G**，其中 B、C、D 依赖同一个前置：
+**副作用通道**（见 C）与**性别数据链路**（见 D）。
 
 ---
 
-## 二、A：补回 42 条条件丢失的外层方向守卫（建议先做这个）
+## 二、A：外层方向守卫（✅ 已完成）
 
-### 现状
+### 结果
 
-`valid_leave` 的条件共 **166 条**，当前状态：
+提交：`71e5338`（用 `all_dirs` 区分「故意拦所有方向」与「丢了外层守卫」）、
+`e5b14b1`（合并 24 条条件的外层守卫 + 补齐心法书）、
+`3778496`（通配方向 veto 也能取到提示语）。
 
-| 状态 | 条数 | 说明 |
-|---|---:|---|
-| 会真正执行 | **95** | 已在线上验证 |
-| 被守卫挡下：缺外层方向守卫 | **42** | 本节 |
-| 被守卫挡下：依赖玩家性别 | 11 | 见 D |
-| 被守卫挡下：自定义函数未实现 | 18 | 见 C |
+166 条 `valid_leave` 条件的当前状态（按 `Room.apply_vetoes/5` 的**真实判定顺序**
+统计，见 `scripts/recount_veto_status.exs`）：
 
-这 42 条**条件本身是对的**，问题是转换器处理嵌套 `if` 时只保留了最内层条件，丢掉了外层守卫。典型（`d/beijing/kediandayuan.c`）：
+| 判定 | 条数 |
+|---|---:|
+| **生效** | **133** |
+| 跳过：条件未限定方向（疑似丢外层守卫） | 16 |
+| 跳过：依赖运行时缺失数据（性别） | 9 |
+| 跳过：含未实现的函数 | 8 |
 
-```c
-int valid_leave(object me, string dir) {
-    if (dir != "east") return ::valid_leave(me, dir);      // ← 外层守卫，被丢了
-    room = find_object(query("exits/east"));
-    if (room && present("la ma", room) && present("dubi shenni", room)) {
-        if ((int)me->query_skill("force") < 100)           // ← 只留下这行
-            return notify_fail("……");
+> 这三行「跳过」是**互斥**的：条件在第一道拦不住的门上就被丢弃，
+> 所以 16 条里其实有 10 条同时缺自定义函数、2 条同时缺性别数据。
+> 若按条件内容做交叉统计，则是「18 条调用自定义函数」「11 条引用 gender」
+> —— 见 C、D 两节。
+
+### 关键教训：`all_dirs` 标记
+
+原先 `direction_scoped?/1` 只看条件文本是否提到 `dir`，会把**原 LPC 本来就拦所有方向**
+的条件（如端着汤不许离开厨房、嫖客不许离开妓院）误判成「丢了守卫」而全部跳过。
+现在数据侧用 `all_dirs = true` 显式标注这类房间，判定顺序为：
+
+```
+applies?(方向匹配) → condition 缺失 → all_dirs? → direction_scoped?
+→ supported? → enforceable? → 求值
 ```
 
-于是 UCL 里只剩 `(int)me->query_skill('force') < 100` —— 它对**所有方向**成立。
-若照此执行，技能不足的玩家会被锁在该房**每一个**出口上。
+### 线上抽查
 
-因此 `Kantele.World.LpcCondition.direction_scoped?/1` 会跳过这类条件
-（见 `lib/kantele/world/room.ex` 的 `apply_vetoes/5`）。代价是这 42 条暂时不生效。
+- `goto death:qiao1` 向北：内力 120（force 20 < 500）、未喝孟婆汤、孟婆在场 → **被拦** ✅
+- `goto death:qiao2` 向北：牛头在场 → 被拦 ✅
+- `goto shaolin:dmyuan2`：携带心法书 → 正常进出 ✅
 
-### 影响
-
-- 42 条设计好的门槛/剧情拦截当前**完全不生效**（孟婆桥的「内力不足」、棋苑的「已占座」、
-  少林的「无伏魔刀不得入」、山门的「徐家兄弟把守」等）
-- 属于**失效**而非**误拦**（守卫挡住了），所以现状是安全的
-
-### 怎么查 / 工作清单
-
-```bash
-python scripts/audit_exit_veto_locks.py     # 实时清单（含方向与提示原文）
-```
-
-逐房清单（每条都附了 LPC 源路径，回源核对后再改数据）。共 **42 条 / 37 个房间 / 16 个区**，
-按区分布：city 9、shaolin 7、death 6、kaifeng 3、wudu 3、huashan 2、lingxiao 2、wuguan 2，
-其余 8 个区各 1 条（beijing、emei、heimuya、mingjiao、taishan、xiangyang、xiyu、zhongzhou）。
-
-<details>
-<summary>city（9 条）</summary>
-
-| 房间 | 源 | 当前条件 |
-|---|---|---|
-| `eproom` | `d/city/eproom.c` | `me->query_temp('pigging_seat')` |
-| `lichunyuan2` | `d/city/lichunyuan2.c` | `me->query_condition('prostitute')` |
-| `nproom` / `sproom` / `wproom` | `d/city/n{,s,w}proom.c` | `me->query_temp('pigging_seat')` |
-| `qiyuan1` | `d/city/qiyuan/qiyuan1.c` | `room->query_temp('action') == 1` |
-| `qiyuan2` / `qiyuan3` / `qiyuan4` | `d/city/qiyuan/qiyuan{2,3,4}.c` | `me->query_temp('weiqi_seat')` |
-
-</details>
-
-<details>
-<summary>shaolin（7 条）</summary>
-
-| 房间 | 源 | 当前条件 |
-|---|---|---|
-| `dmyuan2` | `d/shaolin/dmyuan2.c` | `! present('xisui jing',this_object())` |
-| `qyping` | `d/shaolin/qyping.c` | `present('fumo dao',me) \|\| present('jingang zhao',me) \|\| …` |
-| `shang_dating` | `d/shaolin/shang_dating.c` | `(string)me->query('family/family_name') != '商家' && …` |
-| `shanmen` ×4 | `d/shaolin/shanmen.c` | `objectp(present('xu tong'\|'xu ming',environment(me)))` |
-
-</details>
-
-<details>
-<summary>death（6 条）、kaifeng（3）、wudu（3）、huashan（2）、lingxiao（2）、wuguan（2）、其余 8 区各 1</summary>
-
-`death`：`qiao1`（孟婆桥，内力<500 且未喝孟婆汤）、`qiao2`（牛头把守）、`xuechi1`（需麒麟靴）等。
-
-完整清单请跑上面的脚本，不要以本表为准（本文档只是快照）。
-
-</details>
-
-### 做法
-
-1. 逐房回 LPC 源读 `valid_leave`，把**外层守卫**（通常是 `if (dir == "x")` 或
-   `if (dir != "x") return …;`）与内层条件**合并**成一条完整表达式，写进
-   `valid_leave` 的 `condition` 字段，并同步 `direction`
-2. 合并后表达式里的 `dir` 约束必须保留，这样 `direction_scoped?/1` 自然放行
-3. 不要把 `room->query_temp(...)` 这类**房间私有临时变量**当玩家 meta 处理
-   （见第五节踩坑）
-
-### 验收
-
-- `scripts/audit_exit_veto_locks.py` 报告的「方向未限定」条数降到 0
-- 可执行条件数从 95 上升（每条补回的都应真正生效）
-- `mix test --seed 12345` 仍 0 failures
-- 线上抽查：`goto death:qiao1` 向北应被拦（内力<500 时）、`goto city:qiyuan2` 未占座时不可离开
-
-### 风险
-
-- 合并时把方向守卫写反 → 变成「该拦的不拦、不该拦的拦」
-- 部分条件的 `present(...)` 目标在数据里没有对应别名（见第五节），补守卫后仍不会触发；
-  逐条核对，必要时一并补别名
+> `death:qiao1` 曾一度**修好又失效**，根因见第五节新增的第 4 条踩坑
+> （`get_in/2` 读结构体 meta 抛异常）。
 
 ---
 
@@ -239,6 +183,10 @@ me->query('gender') == '女性'   ->  恒假（放行）
 **已用 `LpcCondition.supported?/1` 挡下**（与「方向未限定」同一机制），
 所以线上不会被误拦。
 
+按判定顺序实际拦在 `supported?` 这道门的是 **9 条**；另有 2 条
+（`changan:qunyulou`、`xiyu:xxh6`）因为也没限定方向，先一步被
+`direction_scoped?` 拦下了 —— 补性别数据后它们仍需先补守卫才会生效。
+
 ### 需要决策
 
 - **补数据**：加列 + 建号流程采集 + `meta.env["gender"]` 写入 + 11 条放行。
@@ -339,7 +287,29 @@ set("exits", ([
   - 字符串内「逗号后带空格」或「逗号后紧跟数字」会**提前截断**
   - `\` 转义不要原样保留（`\t` 会变成 `\\t` 而语法错误）
 
-### 3. `player.ex` 的 temp 契约变更
+### 3. 条件求值异常会被静默放行 —— 别再依赖它「保险」
+
+`LpcCondition.evaluate/2` 的 `rescue` 会把求值异常转成「放行」。
+这是防止求值器缺陷**锁死玩家**的刻意设计，但副作用是：
+**任何求值器缺陷都会永久隐身**（条件恒假 = 拦截形同虚设，且没有任何报错）。
+
+线上已因此踩过一次：`ExitVetoContext.skill_level/2` 用了
+`get_in(meta, [:stats, :skills])`，而 `get_in/2` 走 `Access` 协议 ——
+线上的 meta 是**结构体**（`%PlayerMeta{}` / `%NonPlayerMeta{}`），没有实现
+`Access`，于是抛
+`Kalevala.Meta.Trimmed.fetch/2 is undefined`，被 rescue 吞掉。
+后果是**所有含 `me->query_skill()` 的条件恒假**（孟婆桥、阎罗殿等
+「内力不足不许走」的门槛全部失效）。修在 `cc0eead`。
+
+已做的加固：
+
+- `rescue` 分支现在会 `Logger.warning`，异常不再无声消失
+- 根因是**测试用普通 map 模拟 meta**，而线上是结构体 ——
+  已补 3 条用真结构体的回归测试（`cc0eead`）
+
+> 写涉及角色 meta 的代码时：**结构体不支持 `get_in/2`，用 `Map.get` 链。**
+
+### 4. `player.ex` 的 temp 契约变更
 
 `test/kantele/character/player_meta_temp_test.exs` 原本断言「temp 不随 trim 进入房间视图」，
 现改为**保留**（valid_leave 的 `query_temp` 需要它）。原因与代价写在该测试里。
@@ -355,11 +325,18 @@ set("exits", ([
 | P0b 补建缺失物品 + `/clone` 药材入 `clone_lib` | `9e83dea` | 227 个物品 |
 | P0c `/clone` 标准库 + 漏建物品 | `74f41a0` | 108 个物品；`vendor_goods` 注释清零 |
 | P1 `d/` 之外的目标接通 | `f7d3d92` | 17 条出口；含 2 处 `/b` 与 `/d` 重复房间识别 |
-| P2 valid_leave 拦截 + 提示语 | `1cdd66a`、`8558a2f` | 95 条生效 |
+| P2 valid_leave 拦截 + 提示语 | `1cdd66a`、`8558a2f` | 首批 95 条生效 |
 | `Meta.Trim` 保留清单修正 | `f8ea452` | 修掉守卫/护主/条件恒真三处静默失效 |
 | 性别条件守卫 | `e5e243a` | 避免 6 条误拦 |
 | P3a 八卦阵 64 条出口 | `6d157ba` | **顺带修掉 `bagua0` 死锁** |
 | P3b 华山六扇石门 | `6d157ba` | `hole_a..hole_f` |
 | P3d 藏经阁随机书 | `6d157ba` | 7 本书 + 2 条随机候选 |
+| A1 `all_dirs` 标记 | `71e5338` | 12 个「本就拦所有方向」的房间恢复执行 |
+| A2 合并外层方向守卫 | `e5b14b1` | 24 条守卫合并；生效条件 **95 → 133** |
+| A3 通配方向提示语 | `3778496` | `direction = "*"` 也能取到提示原文 |
+| `query_skill` 读结构体抛异常 | `cc0eead` | 孟婆桥等技能门槛全部恢复；rescue 加日志 |
+| 移除临时 `debug_skill/2` | `b6feb5f` | 清理误入提交的探针函数 |
 
 `skipped` 注释：**299 → 7**（剩 F 的 1 条建议免除 + E 的 6 条）。
+
+`vendor_goods` 注释：**清零**；`valid_leave` 生效：**133 / 166**。
