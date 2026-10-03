@@ -105,7 +105,7 @@ zones "shenlong" {
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "wugen daozhang"
-  direction = "south"
+  exempt_directions = ["south"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
@@ -124,7 +124,7 @@ behavior_config = {
   room_characters "dating" {
     room_id = rooms.dating.id
     characters = [
-      { id = characters.yunsumei.id }    ]
+      { id = characters.yunsumei.id }, { id = characters.wugendaozhang.id } ]
   }
 
 
@@ -470,11 +470,17 @@ item_desc = {
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "zhang danyue"
-  direction = "west"
+  exempt_directions = ["west"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
     }
+
+  room_characters "zoulang" {
+    room_id = rooms.zoulang.id
+    characters = [ { id = characters.zhangdanyue.id } ]
+  }
+
 
   room_exits "zoulang" {
     room_id = rooms.zoulang.id
@@ -1160,5 +1166,100 @@ chats = [
       meta = {
         value = 1000
         unit = "包"
+      }
+    }
+
+    characters "wugendaozhang" {
+      name = "无根道长"
+      aliases = ["wugen daozhang", "wugen", "daozhang"]
+      description = "这是个五十来岁的黑须道长，相貌威武，眼中略带杀气。"
+      gender = "男性"
+      age = 55
+      shen_type = -1
+      brain = brains.guarder
+
+      combat = {
+        str = 30
+        int = 25
+        con = 28
+        dex = 26
+        max_qi = 3800
+        max_jing = 1900
+        neili = 4200
+        max_neili = 4200
+        combat_exp = 720000
+        jiali = 60
+        skills = {
+          strike = 160
+          force = 170
+          dodge = 160
+          parry = 170
+          sword = 170
+          staff = 150
+          literate = 80
+          huashan_zhangfa = 160
+          huashan_shenfa = 160
+          huashan_jian = 170
+          zixia_shengong = 170
+          shenlong_xinfa = 170
+          shedao_qigong = 170
+        }
+        map_skill = {
+          force = "zixia-shengong"
+        }
+      }
+
+      meta = {
+        guarder = {
+          family = "神龙教"
+          msgs = {}
+        }
+      }
+    }
+
+    characters "zhangdanyue" {
+      name = "张淡月"
+      aliases = ["zhang danyue", "zhang"]
+      description = "这是一个黑衣大汉，身躯笔挺，容貌威严。"
+      gender = "男性"
+      age = 44
+      shen_type = -1
+      brain = brains.guarder
+
+      combat = {
+        attitude = "peaceful"
+        str = 28
+        int = 28
+        con = 26
+        dex = 24
+        max_qi = 3200
+        max_jing = 1600
+        neili = 3800
+        max_neili = 3800
+        combat_exp = 570000
+        jiali = 60
+        skills = {
+          force = 140
+          huntian_qigong = 145
+          dodge = 130
+          feiyan_zoubi = 130
+          unarmed = 130
+          changquan = 130
+          shedao_qigong = 140
+          shenlong_xinfa = 140
+          parry = 140
+          staff = 140
+          literate = 50
+        }
+        map_skill = {
+          force = "shenlong-xinfa"
+        }
+      }
+
+      meta = {
+        guarder = {
+          family = "神龙教"
+          msgs = {}
+        }
       }
     }

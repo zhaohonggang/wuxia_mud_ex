@@ -1176,11 +1176,17 @@ item_desc = {
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "xingxiu dizi"
-  direction = "north"
+  guard_directions = ["north"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
     }
+
+  room_characters "xxh2" {
+    room_id = rooms.xxh2.id
+    characters = [ { id = characters.xingxiudizi.id }, { id = characters.xingxiudizi.id }, { id = characters.xingxiudizi.id }, { id = characters.xingxiudizi.id } ]
+  }
+
 
   room_exits "xxh2" {
     room_id = rooms.xxh2.id
@@ -1372,11 +1378,17 @@ direction = ~
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "chuchen zi"
-  direction = "in"
+  guard_directions = ["in"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
     }
+
+  room_characters "xxroad5" {
+    room_id = rooms.xxroad5.id
+    characters = [ { id = characters.chuchenzi.id } ]
+  }
+
 
   room_exits "xxroad5" {
     room_id = rooms.xxroad5.id
@@ -2534,5 +2546,104 @@ chats = [
         weight = 1000
         unit = "把"
         material = "iron"
+      }
+    }
+
+    characters "xingxiudizi" {
+      name = "星宿弟子"
+      aliases = ["xingxiu dizi", "dizi"]
+      description = "他是星宿派丁春秋的门下弟子。"
+      gender = "男性"
+      age = 16
+      shen_type = -1
+      brain = brains.guarder
+
+      combat = {
+        attitude = "peaceful"
+        str = 18
+        int = 28
+        con = 20
+        dex = 24
+        max_qi = 300
+        max_jing = 300
+        neili = 500
+        max_neili = 500
+        combat_exp = 45000
+        jiali = 10
+        skills = {
+          force = 60
+          guixi_gong = 60
+          huagong_dafa = 20
+          dodge = 40
+          zhaixing_gong = 40
+          strike = 40
+          chousui_zhang = 40
+          claw = 40
+          sanyin_wugongzhao = 40
+          whip = 80
+          chanhun_suo = 80
+          parry = 40
+          poison = 50
+          staff = 10
+          tianshan_zhang = 10
+        }
+        map_skill = {
+          force = "guixi-gong"
+        }
+      }
+
+      meta = {
+        guarder = {
+          family = "星宿派"
+          msgs = {}
+        }
+      }
+    }
+
+    characters "chuchenzi" {
+      name = "出尘子"
+      aliases = ["chuchen zi", "chuchen"]
+      description = "他就是丁春秋的八弟子出尘子。他身才矮胖，可手中握的钢杖又长又重。"
+      nickname = "星宿派八师兄"
+      gender = "男性"
+      age = 25
+      shen_type = -1
+      brain = brains.guarder
+
+      combat = {
+        attitude = "peaceful"
+        str = 30
+        int = 12
+        con = 28
+        dex = 28
+        max_qi = 1700
+        max_jing = 800
+        neili = 2200
+        max_neili = 2200
+        combat_exp = 180000
+        jiali = 22
+        skills = {
+          force = 120
+          huagong_dafa = 120
+          dodge = 50
+          zhaixing_gong = 50
+          claw = 50
+          sanyin_wugongzhao = 50
+          strike = 50
+          chousui_zhang = 50
+          parry = 120
+          staff = 120
+          tianshan_zhang = 120
+        }
+        map_skill = {
+          force = "huagong-dafa"
+        }
+      }
+
+      meta = {
+        guarder = {
+          family = "星宿派"
+          msgs = {}
+        }
       }
     }

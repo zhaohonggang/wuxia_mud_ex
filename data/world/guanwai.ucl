@@ -1301,11 +1301,17 @@ item_desc = {
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "ping si"
-  direction = "north"
+  guard_directions = ["north"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
     }
+
+  room_characters "xiaoyuan" {
+    room_id = rooms.xiaoyuan.id
+    characters = [ { id = characters.pingsi.id } ]
+  }
+
 
   room_exits "xiaoyuan" {
     room_id = rooms.xiaoyuan.id
@@ -2442,5 +2448,41 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 10
+      }
+    }
+
+    characters "pingsi" {
+      name = "平四"
+      aliases = ["ping si", "ping", "si"]
+      description = "他是胡家忠心耿耿的仆役。"
+      gender = "男性"
+      age = 65
+      brain = brains.guarder
+
+      combat = {
+        attitude = "peaceful"
+        str = 20
+        int = 20
+        con = 24
+        dex = 20
+        max_qi = 4000
+        max_jing = 1000
+        neili = 3000
+        max_neili = 3000
+        combat_exp = 150000
+        skills = {
+          force = 40
+          blade = 40
+          dodge = 40
+          parry = 40
+          unarmed = 40
+        }
+      }
+
+      meta = {
+        guarder = {
+          family = "关外胡家"
+          msgs = {}
+        }
       }
     }

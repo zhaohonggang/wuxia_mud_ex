@@ -41,7 +41,18 @@ defmodule Kantele.World.GuardedExitRuntimeTest do
           {"baituo:ximen", "men wei"},
           {"huashan:buwei1", "lu dayou"},
           {"huashan:laojun", "lao denuo"},
-          {"huashan:square", "gao genming"}
+          {"dali:wangfugate", "chu wanli"},
+          {"guanwai:xiaoyuan", "ping si"},
+          {"hengyang:zhurongdian", "mi weiyi"},
+          {"huashan:xiaowu", "feng buping"},
+          {"shenlong:dating", "wugen daozhang"},
+          {"shenlong:zoulang", "zhang danyue"},
+          {"taohua:dating", "huang yaoshi"},
+          {"xiyu:xxh2", "xingxiu dizi"},
+          {"xiyu:xxroad5", "chuchen zi"},
+          {"xuedao:shandong2", "bao xiang"},
+          {"xuedao:sroad9", "sheng di"},
+          {"huashan:square", "gao genming"},
         ],
         fn {rid, _guard} ->
           room = Enum.find(world.rooms, &(&1.id == rid))
@@ -278,6 +289,129 @@ defmodule Kantele.World.GuardedExitRuntimeTest do
     test "华山派弟子往 southup 放行", ctx do
       %{room: room, occupants: occupants} = ctx.rooms["huashan:laojun"]
       assert {:proceed, _event, _exit} = move(room, occupants, mover("华山派"), "southup")
+    end
+  end
+
+  describe "从 kungfu/class 移植的 11 个守卫" do
+    # 这批守卫原来在 UCL 里连 characters 定义都没有 —— 来源是
+    # CLASS_D("duan") / "/kungfu/class/xingxiu/dizi" 这类门派 NPC 工厂，
+    # 转换器没处理，所以既没有实体、也没有 meta.guardert.family。
+    # 16 个 guarded_exit 房间里它们占 12 个。
+    @portated [
+      {"dali:wangfugate", "段氏皇族", ["in"], []},
+      {"guanwai:xiaoyuan", "关外胡家", ["north"], []},
+      {"hengyang:zhurongdian", "衡山派", ["northdown", "southdown"], []},
+      {"huashan:xiaowu", "华山派", ["east"], []},
+      {"shenlong:dating", "神龙教", [], ["south"]},
+      {"shenlong:zoulang", "神龙教", [], ["west"]},
+      {"taohua:dating", "桃花岛", ["south", "east"], []},
+      {"xiyu:xxh2", "星宿派", ["north"], []},
+      {"xiyu:xxroad5", "星宿派", ["in"], []},
+      {"xuedao:shandong2", "血刀门", [], ["west"]},
+      {"xuedao:sroad9", "血刀门", ["east"], []}
+    ]
+
+    @tag :world_data
+    test "每个房间都有带 family 的守卫实体，方向规则与 LPC 一致", ctx do
+      for {rid, family, guarded, exempt} <- @portated do
+        %{room: room, occupants: occupants} = ctx.rooms[rid]
+
+        cfg = Map.get(room, :behavior_config) || {}
+
+        # 没配的那个键是 nil，统一当成 [] 比较
+        assert (Map.get(cfg, :guard_directions) || []) == guarded,
+               "#{rid} 的 guard_directions 不对，实际 #{inspect(Map.get(cfg, :guard_directions))}"
+
+        assert (Map.get(cfg, :exempt_directions) || []) == exempt,
+               "#{rid} 的 exempt_directions 不对，实际 #{inspect(Map.get(cfg, :exempt_directions))}"
+
+        guards = Enum.filter(occupants, &Map.get(&1.meta, :guarder))
+        assert guards != [], "#{rid} 里没有带 meta.guardert 的 NPC"
+        assert Enum.all?(guards, &(Map.get(&1.meta.guarder, :family) == family)),
+               "#{rid} 的守卫门派应全是 #{family}"
+      end
+    end
+
+    @tag :world_data
+    test "无门派玩家在受盘查方向被拦下，提示语提到对应门派", ctx do
+      for {rid, family, guarded, _exempt} <- @portated, guarded != [] do
+        %{room: room, occupants: occupants} = ctx.rooms[rid]
+
+        for dir <- guarded do
+          assert {:abort, _event, {:guarder_denied, msg}} =
+                   move(room, occupants, mover(nil), dir),
+                 "#{rid} 的 #{dir} 应该拦下"
+
+          assert msg =~ family, "#{rid} 的 #{dir} 提示语应提到 #{family}"
+        end
+      end
+    end
+
+    @tag :world_data
+    test "同门弟子在受盘查方向放行", ctx do
+      for {rid, family, guarded, _exempt} <- @portated, guarded != [] do
+        %{room: room, occupants: occupants} = ctx.rooms[rid]
+
+        for dir <- guarded do
+          assert {:proceed, _event, _exit} = move(room, occupants, mover(family), dir),
+                 "#{rid} 的 #{dir} 对 #{family} 弟子应放行"
+        end
+      end
+    end
+
+    @tag :world_data
+    test "豁免方向永远放行，且该出口必须真实存在（否则玩家被困死）", ctx do
+      for {rid, _family, _guarded, exempt} <- @portated, exempt != [] do
+        %{room: room, occupants: occupants} = ctx.rooms[rid]
+        exits = Enum.map(room.exits, & &1.exit_name)
+
+        for dir <- exempt do
+          assert dir in exits, "#{rid} 声称豁免 #{dir}，但该房间没有这个出口"
+          assert {:proceed, _event, _exit} = move(room, occupants, mover(nil), dir)
+        end
+      end
+    end
+
+    @tag :world_data
+    test "守卫带着 LPC 的技能与数值（技能必须写在 combat 里才生效）", ctx do
+      %{room: room, occupants: occupants} = ctx.rooms["huashan:xiaowu"]
+      [guard | _] = Enum.filter(occupants, &Map.get(&1.meta, :guarder))
+
+      skills = Map.get(guard.meta.stats, :skills) || %{}
+
+      # LPC kungfu/class/huashan/feng-buping.c
+      assert map_size(skills) > 5, "封不平应带多项技能，实际 #{map_size(skills)}"
+      assert Map.get(skills, "force") == 200
+      assert Map.get(skills, "huashan-jian") == 280
+
+      # map_skill 也进来了
+      assert Map.get(guard.meta.stats, :mapped) != %{}
+
+      # combat 数值
+      assert Map.get(guard.meta.stats, :combat_exp) == 3_000_000
+      assert Map.get(guard.meta.vitals, :max_qi) == 6300
+    end
+
+    @tag :world_data
+    test "xiyu:xxh2 按 LPC 放了 4 个星宿弟子", ctx do
+      %{occupants: occupants} = ctx.rooms["xiyu:xxh2"]
+      n = Enum.count(occupants, &Map.get(&1.meta, :guarder))
+      assert n == 4, "LPC 是 dizi : 4，实际 #{n}"
+    end
+
+    @tag :world_data
+    test "守卫倒下时放行（LPC !living(guarder) -> return ::valid_leave）", ctx do
+      %{room: room, occupants: occupants} = ctx.rooms["xuedao:shandong2"]
+
+      dead =
+        Enum.map(occupants, fn c ->
+          if Map.get(c.meta, :guarder), do: put_in(c.meta.combat.dead, true), else: c
+        end)
+
+      guarded_dir =
+        room.exits |> Enum.map(& &1.exit_name) |> Enum.find(&(&1 != "west"))
+
+      assert {:proceed, _event, _exit} = move(room, dead, mover(nil), guarded_dir)
     end
   end
 

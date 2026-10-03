@@ -3612,7 +3612,7 @@ item_desc = {
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "chu wanli"
-  direction = "in"
+  guard_directions = ["in"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
@@ -3629,7 +3629,7 @@ behavior_config = {
     room_id = rooms.wangfugate.id
     characters = [
       { id = characters.weishi1.id },
-      { id = characters.weishi1.id }    ]
+      { id = characters.weishi1.id }, { id = characters.chuwanli.id } ]
   }
 
 
@@ -7616,3 +7616,51 @@ chats = [
       { id = characters.waiter.id }    ]
   }
 
+    characters "chuwanli" {
+      name = "褚万里"
+      aliases = ["chu wanli", "chu"]
+      description = "他是大理国四大护卫之一，英气逼人。"
+      gender = "男性"
+      age = 40
+      shen_type = 1
+      brain = brains.guarder
+
+      combat = {
+        attitude = "friendly"
+        str = 30
+        int = 20
+        con = 25
+        dex = 25
+        max_qi = 1800
+        max_jing = 1000
+        neili = 2200
+        max_neili = 2200
+        combat_exp = 500000
+        jiali = 50
+        skills = {
+          force = 120
+          duanshi_xinfa = 120
+          dodge = 120
+          tiannan_bu = 120
+          cuff = 120
+          jinyu_quan = 120
+          strike = 120
+          wuluo_zhang = 120
+          whip = 140
+          feifeng_bian = 140
+          parry = 120
+          literate = 80
+          martial_cognize = 140
+        }
+        map_skill = {
+          force = "duanshi-xinfa"
+        }
+      }
+
+      meta = {
+        guarder = {
+          family = "段氏皇族"
+          msgs = {}
+        }
+      }
+    }

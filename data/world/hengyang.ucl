@@ -2074,7 +2074,7 @@ item_desc = {
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "mi weiyi"
-  direction = "northdown"
+  guard_directions = ["northdown", "southdown"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
@@ -2098,7 +2098,7 @@ behavior_config = {
       { id = characters.dizi1.id },
       { id = characters.dizi1.id },
       { id = characters.xiangke.id },
-      { id = characters.xiangke.id }    ]
+      { id = characters.xiangke.id }, { id = characters.miweiyi.id } ]
   }
 
 
@@ -3821,3 +3821,51 @@ chats = [
       { id = characters.waiter.id }    ]
   }
 
+    characters "miweiyi" {
+      name = "米为义"
+      aliases = ["mi weiyi", "mi", "weiyi"]
+      description = "他是衡山派的米为义。"
+      gender = "男性"
+      age = 25
+      shen_type = 1
+      brain = brains.guarder
+
+      combat = {
+        attitude = "peaceful"
+        str = 24
+        int = 25
+        con = 22
+        dex = 24
+        max_qi = 3000
+        max_jing = 2000
+        neili = 1400
+        max_neili = 1400
+        combat_exp = 200000
+        jiali = 80
+        skills = {
+          force = 100
+          henshan_xinfa = 100
+          dodge = 80
+          henshan_shenfa = 80
+          cuff = 80
+          henshan_quan = 80
+          strike = 80
+          biluo_zhang = 80
+          sword = 100
+          henshan_jian = 100
+          parry = 80
+          literate = 100
+          martial_cognize = 80
+        }
+        map_skill = {
+          force = "henshan-xinfa"
+        }
+      }
+
+      meta = {
+        guarder = {
+          family = "衡山派"
+          msgs = {}
+        }
+      }
+    }

@@ -143,11 +143,17 @@ item_desc = {
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "huang yaoshi"
-  direction = "south"
+  guard_directions = ["south", "east"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
     }
+
+  room_characters "dating" {
+    room_id = rooms.dating.id
+    characters = [ { id = characters.huangyaoshi.id } ]
+  }
+
 
   room_exits "dating" {
     room_id = rooms.dating.id
@@ -1293,5 +1299,74 @@ item_desc = {
         weight = 300
         unit = "根"
         material = "bamboo"
+      }
+    }
+
+    characters "huangyaoshi" {
+      name = "黄药师"
+      aliases = ["huang yaoshi", "huang", "yaoshi"]
+      description = "他就是桃花岛主。行事好恶全由己心，因此被人称作「东邪」。"
+      gender = "男性"
+      age = 42
+      brain = brains.guarder
+
+      combat = {
+        attitude = "peaceful"
+        str = 40
+        int = 40
+        con = 40
+        dex = 40
+        max_qi = 7000
+        max_jing = 5000
+        neili = 7000
+        max_neili = 7000
+        combat_exp = 4000000
+        jiali = 200
+        skills = {
+          force = 340
+          bibo_shengong = 340
+          luoying_xinfa = 320
+          hand = 320
+          finger = 340
+          canglang_zhi = 320
+          tanzhi_shentong = 340
+          unarmed = 320
+          strike = 320
+          pikong_zhang = 320
+          luoying_shenzhang = 320
+          xuanfeng_tui = 320
+          dodge = 320
+          anying_fuxiang = 320
+          parry = 320
+          sword = 320
+          throwing = 340
+          luoying_shenjian = 320
+          yuxiao_jian = 320
+          lanhua_shou = 320
+          qimen_wuxing = 350
+          count = 350
+          jingluo_xue = 350
+          mathematics = 350
+          literate = 350
+          chuixiao_jifa = 400
+          bihai_chaosheng = 400
+          taohua_yuan = 400
+          drawing = 350
+          chess = 350
+          calligraphy = 350
+          medical = 350
+          taohua_yaoli = 350
+          martial_cognize = 320
+        }
+        map_skill = {
+          force = "bibo-shengong"
+        }
+      }
+
+      meta = {
+        guarder = {
+          family = "桃花岛"
+          msgs = {}
+        }
       }
     }

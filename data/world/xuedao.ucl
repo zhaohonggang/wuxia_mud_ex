@@ -233,11 +233,17 @@ zones "xuedao" {
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "bao xiang"
-  direction = "west"
+  exempt_directions = ["west"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
     }
+
+  room_characters "shandong2" {
+    room_id = rooms.shandong2.id
+    characters = [ { id = characters.baoxiang.id } ]
+  }
+
 
   room_exits "shandong2" {
     room_id = rooms.shandong2.id
@@ -472,11 +478,17 @@ behavior_config = {
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "sheng di"
-  direction = "east"
+  guard_directions = ["east"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
     }
+
+  room_characters "sroad9" {
+    room_id = rooms.sroad9.id
+    characters = [ { id = characters.shengdi.id } ]
+  }
+
 
   room_exits "sroad9" {
     room_id = rooms.sroad9.id
@@ -701,5 +713,109 @@ behavior_config = {
         unit = "领"
         material = "cloth"
         armor = 15
+      }
+    }
+
+    characters "baoxiang" {
+      name = "宝象"
+      aliases = ["bao xiang", "bao", "xiang"]
+      description = "一个极高极瘦的僧人，俩眼凶芒四射。此人在血刀老祖门下，最是心狠手辣。"
+      gender = "男性"
+      age = 35
+      shen_type = -1
+      brain = brains.guarder
+
+      combat = {
+        attitude = "peaceful"
+        str = 22
+        int = 21
+        con = 24
+        dex = 22
+        max_qi = 5000
+        max_jing = 2500
+        neili = 2800
+        max_neili = 2800
+        combat_exp = 250000
+        jiali = 30
+        skills = {
+          force = 160
+          mizong_neigong = 160
+          xuedao_dafa = 80
+          parry = 160
+          blade = 160
+          xueshan_dao = 160
+          honglian_dao = 160
+          dodge = 160
+          shenkong_xing = 160
+          hand = 160
+          dashou_yin = 160
+          cuff = 160
+          yujiamu_quan = 160
+          lamaism = 160
+          literate = 140
+          martial_cognize = 160
+        }
+        map_skill = {
+          force = "mizong-neigong"
+        }
+      }
+
+      meta = {
+        guarder = {
+          family = "血刀门"
+          msgs = {}
+        }
+      }
+    }
+
+    characters "shengdi" {
+      name = "胜谛"
+      aliases = ["sheng di", "sheng", "di"]
+      description = "这是一个身形魁梧的西藏僧人，神色冷漠。武功是同门中最高的一人。"
+      gender = "男性"
+      age = 35
+      shen_type = -1
+      brain = brains.guarder
+
+      combat = {
+        attitude = "peaceful"
+        str = 22
+        int = 21
+        con = 24
+        dex = 22
+        max_qi = 5000
+        max_jing = 2500
+        neili = 2800
+        max_neili = 2800
+        combat_exp = 250000
+        jiali = 30
+        skills = {
+          force = 160
+          mizong_neigong = 160
+          parry = 160
+          blade = 140
+          xueshan_dao = 140
+          sword = 160
+          mingwang_jian = 160
+          dodge = 160
+          shenkong_xing = 160
+          hand = 140
+          dashou_yin = 140
+          cuff = 140
+          yujiamu_quan = 140
+          lamaism = 160
+          literate = 140
+          martial_cognize = 160
+        }
+        map_skill = {
+          force = "mizong-neigong"
+        }
+      }
+
+      meta = {
+        guarder = {
+          family = "血刀门"
+          msgs = {}
+        }
       }
     }

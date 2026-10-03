@@ -1658,11 +1658,17 @@ item_desc = {
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "feng buping"
-  direction = "east"
+  guard_directions = ["east"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
     }
+
+  room_characters "xiaowu" {
+    room_id = rooms.xiaowu.id
+    characters = [ { id = characters.fengbuping.id } ]
+  }
+
 
   room_exits "xiaowu" {
     room_id = rooms.xiaowu.id
@@ -2608,5 +2614,54 @@ item_desc = {
         value = 80
         weight = 50
         unit = "碗"
+      }
+    }
+
+    characters "fengbuping" {
+      name = "封不平"
+      aliases = ["feng buping", "feng"]
+      description = "封不平是华山剑宗第一高手，满脸戾气一张黄焦焦的面皮。"
+      gender = "男性"
+      age = 45
+      shen_type = -1
+      brain = brains.guarder
+
+      combat = {
+        attitude = "peaceful"
+        str = 28
+        int = 32
+        con = 31
+        dex = 29
+        max_qi = 6300
+        max_jing = 2400
+        neili = 6000
+        max_neili = 6000
+        combat_exp = 3000000
+        jiali = 100
+        skills = {
+          unarmed = 240
+          cuff = 240
+          strike = 240
+          huashan_zhang = 240
+          sword = 280
+          force = 200
+          parry = 280
+          dodge = 240
+          literate = 150
+          huashan_jian = 280
+          huashan_xinfa = 200
+          huashan_quan = 200
+          huashan_shenfa = 240
+        }
+        map_skill = {
+          sword = "huashan-jian"
+        }
+      }
+
+      meta = {
+        guarder = {
+          family = "华山派"
+          msgs = {}
+        }
       }
     }
