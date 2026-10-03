@@ -13,6 +13,7 @@ defmodule Kantele.Character.Events do
   alias Kantele.Character.EmoteEvent
   alias Kantele.Character.SayEvent
   alias Kantele.Character.TellEvent
+  alias Kantele.Character.TrapEvent
   alias Kantele.Character.WhisperEvent
 
   scope(Kantele.Character) do
@@ -35,6 +36,11 @@ defmodule Kantele.Character.Events do
 
     module(JingzuoEvent) do
       event("jingzuo/wakeup", :wakeup)
+    end
+
+    module(TrapEvent) do
+      # 出口陷阱副作用（房间进程判定 -> 角色进程执行，见 Kantele.Character.TrapEvent）
+      event("trap/effect", :run)
     end
 
     module(ShopEvent) do
