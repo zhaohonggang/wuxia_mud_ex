@@ -108,23 +108,15 @@ defmodule Kantele.Character.ArenaCommand do
   end
 
   # LPC 是 message("vision", ..., all_interactive())：广播给房间里所有人。
-  # 房间进程本身不认识玩家 pid，所以走 Kalevala 的通信模块按房间频道发。
+  #
+  # 用 `Kantele.Communication.announce/2`（它内部用 system_character() 作
+  # 发起者并按频道 publish），**不要**自己拼 %Event 再调 publish ——
+  # `Kantele.Communication` 只有 initial_channels/0、system_character/0、
+  # announce/2 三个函数，没有 broadcast/2。
+  # announce/2 内部是 try/rescue + catch :exit 包着的，广播失败也不会
+  # 把玩家的命令处理进程带崩。
   defp announce(conn, text) do
-    Kantele.Communication.broadcast(
-      "rooms:#{conn.character.room_id}",
-      %Kalevala.Event{
-        acting_character: nil,
-        from_pid: self(),
-        topic: Kalevala.Event.Message,
-        data: %Kalevala.Event.Message{
-          channel_name: "rooms:#{conn.character.room_id}",
-          character: Kantele.Communication.system_character(),
-          id: Kalevala.Event.Message.generate_id(),
-          text: text <> "\n",
-          type: "announcement"
-        }
-      }
-    )
+    Kantele.Communication.announce("rooms:#{conn.character.room_id}", text <> "\n")
 
     conn
     |> prompt(CommandView, "prompt", %{})
