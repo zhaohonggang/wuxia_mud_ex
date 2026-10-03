@@ -280,6 +280,7 @@ item_desc = {
 valid_leave = [
 {
    condition = "present('soup',me) || present('rice',me)"
+   all_dirs = true
 direction = ~
   message = "小师妹瞪了你一眼: 吃不了要兜着走啊?"
 }

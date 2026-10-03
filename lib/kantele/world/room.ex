@@ -508,6 +508,8 @@ defmodule Kantele.World.Room do
           _ -> false
         end
 
+      all_dirs? = Map.get(veto, :all_dirs) == true
+
       cond do
         not applies? ->
           apply_vetoes(rest, room, context, mover, dir)
@@ -516,16 +518,20 @@ defmodule Kantele.World.Room do
         is_nil(Map.get(veto, :condition)) ->
           apply_vetoes(rest, room, context, mover, dir)
 
-        # 条件不限定方向 -> 暂不执行。转换器处理嵌套 if 时丢了外层守卫
-        # （如 kediandayuan 的 `if (dir != "east") return ...`），照此执行会
-        # 把该房所有方向都拦掉、把人锁死。等守卫补回后再放开。
+        # LPC 里本来就拦所有方向（数据侧标了 all_dirs = true）-> 正常执行。
+        # 例：厨房里端着汤、妓院里嫖客，都不许离开，与方向无关。
+        all_dirs? ->
+          evaluate_veto(veto, room, context, mover, dir, rest)
+
+        # 条件不限定方向、又没有 all_dirs 标记 -> 疑似转换器丢了外层守卫。
+        # 照此执行会把该房所有出口都拦掉、把人锁死，所以跳过。
         # 见 Kantele.World.LpcCondition.direction_scoped?/1 与
         # scripts/audit_exit_veto_locks.py
         not Kantele.World.LpcCondition.direction_scoped?(Map.get(veto, :condition)) ->
           apply_vetoes(rest, room, context, mover, dir)
 
         # 条件依赖运行时不存在的数据（如玩家性别）-> 同样不执行，
-        # 否则 \me->query(\'gender\') != \'\u7537\'\u6027\'\ 恒真会把人永久拦住
+        # 否则 gender 比较恒真会把人永久拦住
         not Kantele.World.LpcCondition.supported?(Map.get(veto, :condition)) ->
           apply_vetoes(rest, room, context, mover, dir)
 
@@ -534,20 +540,25 @@ defmodule Kantele.World.Room do
           apply_vetoes(rest, room, context, mover, dir)
 
         true ->
-          ctx =
-            Kantele.World.ExitVetoContext.build(
-              dir: dir,
-              me: mover,
-              room: room,
-              context: context
-            )
+          evaluate_veto(veto, room, context, mover, dir, rest)
+      end
+    end
 
-          result = Kantele.World.LpcCondition.check(veto, ctx)
+    defp evaluate_veto(veto, room, context, mover, dir, rest) do
+      ctx =
+        Kantele.World.ExitVetoContext.build(
+          dir: dir,
+          me: mover,
+          room: room,
+          context: context
+        )
 
-          case result do
-            {:block, msg} -> {:deny, msg || "过不去。"}
-            :allow -> apply_vetoes(rest, room, context, mover, dir)
-          end
+      case Kantele.World.LpcCondition.check(veto, ctx) do
+        {:block, msg} ->
+          {:deny, msg || "过不去。"}
+
+        :allow ->
+          apply_vetoes(rest, room, context, mover, dir)
       end
     end
 

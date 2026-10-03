@@ -433,6 +433,7 @@ item_desc = {
 valid_leave = [
 {
    condition = "me->query_temp('pigging_seat')"
+   all_dirs = true
 direction = ~
   message = "先离开拱猪桌才能行动。"
 }
@@ -1019,6 +1020,7 @@ direction = "west"
 valid_leave = [
 {
    condition = "me->query_condition('prostitute')"
+   all_dirs = true
 direction = ~
   message = "龟公一把抱住你，喝道：看你往哪里逃！"
 }
@@ -1775,6 +1777,7 @@ item_desc = {
 valid_leave = [
 {
    condition = "me->query_temp('pigging_seat')"
+   all_dirs = true
 direction = ~
   message = "先离开拱猪桌才能行动。"
 }
@@ -1943,6 +1946,7 @@ item_desc = {
 valid_leave = [
 {
    condition = "me->query_temp('pigging_seat')"
+   all_dirs = true
 direction = ~
   message = "先离开拱猪桌才能行动。"
 }
@@ -2023,6 +2027,7 @@ item_desc = {
 valid_leave = [
 {
    condition = "me->query_temp('pigging_seat')"
+   all_dirs = true
 direction = ~
   message = "先离开拱猪桌才能行动。"
 }
@@ -6056,6 +6061,7 @@ direction = ~
 valid_leave = [
 {
    condition = "me->query_temp('weiqi_seat')"
+   all_dirs = true
 direction = ~
   message = "你现在还坐着呢，怎么离开啊？"
 }
@@ -6090,6 +6096,7 @@ direction = ~
 valid_leave = [
 {
    condition = "me->query_temp('weiqi_seat')"
+   all_dirs = true
 direction = ~
   message = "你现在还坐着呢，怎么离开啊？"
 }
@@ -6124,6 +6131,7 @@ direction = ~
 valid_leave = [
 {
    condition = "me->query_temp('weiqi_seat')"
+   all_dirs = true
 direction = ~
   message = "你现在还坐着呢，怎么离开啊？"
 }

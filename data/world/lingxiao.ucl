@@ -1551,6 +1551,7 @@ item_desc = {
 valid_leave = [
 {
    condition = "objectp(present('xuanbing chimang',environment(me)))"
+   all_dirs = true
 direction = ~
   message = "你正欲离开此地，却只见玄冰赤蟒一个盘旋，顿时将去路完全封锁。"
 }

@@ -351,7 +351,8 @@ defmodule Kantele.World.LoaderMetaTest do
              %{
                direction: "in",
                condition: nil,
-               message: "蟒蛇盘在岩洞口，将路封了个严实。"
+               message: "蟒蛇盘在岩洞口，将路封了个严实。",
+               all_dirs: false
              }
            ]
   end

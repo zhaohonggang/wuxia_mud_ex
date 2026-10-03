@@ -61,7 +61,7 @@ defmodule Kantele.World.ExitVetoContext do
   defp scope_is_room?(%{__struct__: _} = scope), do: match?(%{exits: _}, scope)
   defp scope_is_room?(_), do: false
 
-  defp find_in_room(context, room, id) do
+defp find_in_room(context, room, id) do
     # 优先用上下文的角色表（运行时就是该房间在场的人），退回房间自身的 characters
     characters =
       case Map.get(context, :characters) do
@@ -71,9 +71,14 @@ defmodule Kantele.World.ExitVetoContext do
 
     case Enum.find(characters, fn c -> name_matches?(c, id) end) do
       nil ->
-        items = Map.get(context, :item_instances, []) || []
+        # LPC 的 present(id, room) 搜的是房里的一切，**含物品**。
+        # 例：shaolin:dmyuan2 的 `present("xisui jing", this_object())`
+        # 指的是房里那本 心法书（items.xisuijing），房里没人 —— 只搜角色会恒 nil，
+        # 条件 `! present(...)` 就恒真，会把人锁死在房中。
+        instances =
+          Map.get(context, :item_instances) || Map.get(room || %{}, :item_instances) || []
 
-        case Enum.find(items, fn i -> instance_matches?(i, id) end) do
+        case Enum.find(instances, fn i -> instance_matches?(i, id) end) do
           nil -> :error
           instance -> {:ok, instance}
         end

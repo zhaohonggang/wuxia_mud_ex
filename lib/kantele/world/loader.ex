@@ -313,7 +313,11 @@ defmodule Kantele.World.Loader do
         %{
           direction: to_veto_dir(Map.get(veto, :direction)),
           condition: to_string_or_nil(Map.get(veto, :condition)),
-          message: to_string_or_nil(Map.get(veto, :message))
+          message: to_string_or_nil(Map.get(veto, :message)),
+          # `all_dirs = true` 表示这条条件在 LPC 里本来就拦所有方向
+          # （例如厨房里端着汤不许走）。缺这个标记而条件里又没有 dir 时，
+          # 按「转换器丢了外层守卫」处理，运行时跳过 —— 宁可少拦，不能锁死玩家。
+          all_dirs: Map.get(veto, :all_dirs) == true
         }
 
       _ ->
