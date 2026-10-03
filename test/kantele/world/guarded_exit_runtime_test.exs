@@ -38,7 +38,9 @@ defmodule Kantele.World.GuardedExitRuntimeTest do
       Map.new(
         [
           {"baituo:damen", "men wei"},
+          {"baituo:ximen", "men wei"},
           {"huashan:buwei1", "lu dayou"},
+          {"huashan:laojun", "lao denuo"},
           {"huashan:square", "gao genming"}
         ],
         fn {rid, _guard} ->
@@ -91,7 +93,9 @@ defmodule Kantele.World.GuardedExitRuntimeTest do
     test "三个房间的 behavior 与方向规则都进了 Room 结构", ctx do
       for {rid, expected} <- [
             {"baituo:damen", {:guard_directions, ["north"]}},
+            {"baituo:ximen", {:guard_directions, ["east"]}},
             {"huashan:buwei1", {:exempt_directions, ["south"]}},
+            {"huashan:laojun", {:guard_directions, ["southup"]}},
             {"huashan:square", {:guard_directions, ["northeast", "east", "north"]}}
           ] do
         room = ctx.rooms[rid].room
@@ -105,7 +109,9 @@ defmodule Kantele.World.GuardedExitRuntimeTest do
     test "守卫 NPC 带上了 create_family 的门派", ctx do
       for {rid, family} <- [
             {"baituo:damen", "欧阳世家"},
+            {"baituo:ximen", "欧阳世家"},
             {"huashan:buwei1", "华山派"},
+            {"huashan:laojun", "华山派"},
             {"huashan:square", "华山派"}
           ] do
         guarders =
@@ -215,6 +221,63 @@ defmodule Kantele.World.GuardedExitRuntimeTest do
       # PlayerMeta 是结构体且没有 :carrying；之前这里直接 meta.carrying 会 KeyError
       player = %{pid: self(), name: "测试玩家", meta: %Kantele.Character.PlayerMeta{}}
       assert {:abort, _event, {:guarder_denied, msg}} = move(room, occupants, player, "north")
+    end
+  end
+
+  describe "baituo:ximen —— 只守 east（往庄内）" do
+    @tag :world_data
+    test "往东被门卫拦下", ctx do
+      %{room: room, occupants: occupants} = ctx.rooms["baituo:ximen"]
+      assert {:abort, _event, {:guarder_denied, msg}} = move(room, occupants, mover(nil), "east")
+      assert msg =~ "欧阳世家"
+    end
+
+    @tag :world_data
+    test "往西（毒蛇出没方向，不设卡）放行", ctx do
+      %{room: room, occupants: occupants} = ctx.rooms["baituo:ximen"]
+      assert {:proceed, _event, _exit} = move(room, occupants, mover(nil), "west")
+    end
+
+    @tag :world_data
+    test "同门弟子往东放行", ctx do
+      %{room: room, occupants: occupants} = ctx.rooms["baituo:ximen"]
+      assert {:proceed, _event, _exit} = move(room, occupants, mover("欧阳世家"), "east")
+    end
+  end
+
+  describe "huashan:laojun —— 只守 southup" do
+    @tag :world_data
+    test "往 southup 被劳德诺拦下，且 family 是华山派而非华山剑宗", ctx do
+      %{room: room, occupants: occupants} = ctx.rooms["huashan:laojun"]
+
+      guarders = Enum.filter(occupants, &Map.get(&1.meta, :guarder))
+      assert guarders != []
+
+      # LPC lao-denuo.c / kungfu/class/huashan/lao.c 都是
+      # create_family("华山派", 14, "弟子")。数据里原本误写成「华山剑宗」，
+      # 那样真华山派弟子会被自己的二师兄拦下。
+      assert Enum.all?(guarders, &(Map.get(&1.meta.guarder, :family) == "华山派"))
+
+      assert {:abort, _event, {:guarder_denied, msg}} =
+               move(room, occupants, mover(nil), "southup")
+
+      assert msg =~ "华山派"
+    end
+
+    @tag :world_data
+    test "其他方向放行", ctx do
+      %{room: room, occupants: occupants} = ctx.rooms["huashan:laojun"]
+
+      for exit <- room.exits, exit.exit_name != "southup" do
+        assert {:proceed, _event, _exit} = move(room, occupants, mover(nil), exit.exit_name),
+               "#{exit.exit_name} 不该被拦"
+      end
+    end
+
+    @tag :world_data
+    test "华山派弟子往 southup 放行", ctx do
+      %{room: room, occupants: occupants} = ctx.rooms["huashan:laojun"]
+      assert {:proceed, _event, _exit} = move(room, occupants, mover("华山派"), "southup")
     end
   end
 

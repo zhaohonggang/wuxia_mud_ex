@@ -1054,7 +1054,7 @@ item_desc = {
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "men wei"
-  direction = "east"
+  guard_directions = ["east"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }

@@ -702,11 +702,17 @@ item_desc = {
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "lao denuo"
-  direction = "southup"
+  guard_directions = ["southup"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
     }
+
+  room_characters "laojun" {
+    room_id = rooms.laojun.id
+    characters = [ { id = characters.lao_denuo.id } ]
+  }
+
 
   room_exits "laojun" {
     room_id = rooms.laojun.id
@@ -2171,8 +2177,8 @@ item_desc = {
 
   meta = {
     guarder = {
-      family = "华山剑宗"
-      msgs = { refuse_other = "{npc}劝道：家师有交代，剑宗廿五年" }
+      family = "华山派"
+      msgs = {}
     }
   }
     }
