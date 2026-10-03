@@ -85,6 +85,16 @@ defmodule Kantele.World.Trap do
     end
   end
 
-  defp run(:wuxing, mover_meta, dir, _room_id),
-    do: Wuxing.evaluate(Map.get(mover_meta, :temp) || %{}, dir)
+  defp run(:wuxing, mover_meta, dir, room_id),
+    do: Wuxing.evaluate(Map.get(mover_meta, :temp) || %{}, dir, room_key(room_id))
+
+  # 五行迷宫每个房间的规则不同（递增哪个元素、在哪个方向、机关在哪），
+  # 所以必须知道**具体是哪个房间**，不能只拿 dir。
+  # "shaolin:wuxing0" -> "wuxing0"。只取最后一段：五行迷宫的规则表是按
+  # 房间 key 建的。之前写成两个子句（`":" <> _ = room_id` 那条并没有真正匹配上，
+  # 落到了 is_binary 那条把整个 id 原样返回），于是查表全部落空、陷阱静默失效。
+  defp room_key(room_id) when is_binary(room_id),
+    do: room_id |> String.split(":") |> List.last()
+
+  defp room_key(_), do: nil
 end

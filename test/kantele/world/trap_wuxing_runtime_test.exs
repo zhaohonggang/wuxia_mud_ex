@@ -177,4 +177,52 @@ defmodule Kantele.World.TrapWuxingRuntimeTest do
       refute_received %Event{topic: "trap/effect"}
     end
   end
+
+  describe "按房间取规则（room_key 必须真的剥掉区前缀）" do
+    @tag :world_data
+    test "wuxing2 的机关是 north 而不是 west", ctx do
+      room = Enum.find(ctx.world.rooms, &(&1.id == "shaolin:wuxing2"))
+      assert room
+
+      # wuxing2: 往 north 掉机关
+      assert {:abort, _event, {:trapped, msg}} = move(room, player(%{}), "north")
+      assert msg == "你掉进机关，落入僧监。"
+
+      # wuxing2: 往 west 是普通转向（wuxing0 才是往 west 掉机关）
+      assert {:proceed, _event, _exit} = move(room, player(%{}), "west")
+    end
+
+    @tag :world_data
+    test "wuxing1 往 south 累加火（不是水）", ctx do
+      room = Enum.find(ctx.world.rooms, &(&1.id == "shaolin:wuxing1"))
+      assert room
+
+      move(room, player(%{}), "south")
+
+      assert_received %Event{topic: "trap/effect", data: %{effects: effects}}
+      assert effects == [{:set_temp, "wuxing/火", 1}]
+    end
+
+    @tag :world_data
+    test "五个房间的递增方向与元素全部对得上 LPC", ctx do
+      for {id, dir, element} <- [
+            {"shaolin:wuxing0", "north", "水"},
+            {"shaolin:wuxing1", "south", "火"},
+            {"shaolin:wuxing2", "east", "木"},
+            {"shaolin:wuxing3", "north", "土"},
+            {"shaolin:wuxing4", "west", "金"}
+          ] do
+        room = Enum.find(ctx.world.rooms, &(&1.id == id))
+
+        assert Enum.find(room.exits, &(&1.exit_name == dir)),
+               "#{id} 应有 #{dir} 出口（否则递增逻辑走不到）"
+
+        move(room, player(%{}), dir)
+
+        assert_received %Event{topic: "trap/effect", data: %{effects: effects}}
+        assert effects == [{:set_temp, "wuxing/#{element}", 1}],
+               "#{id} 往 #{dir} 应累加 #{element}"
+      end
+    end
+  end
 end
