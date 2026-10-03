@@ -264,10 +264,24 @@ defp find_in_room(context, room, id) do
   defp exp_of(%{meta: %{stats: %{combat_exp: exp}}}), do: exp
   defp exp_of(_), do: nil
 
+  def debug_skill(target, key), do: skill_level(target, key)
+
   defp skill_level(target, key) do
     meta = meta_of(target)
 
-    case get_in(meta, [:stats, :skills]) do
+    # 不能用 get_in/2：它走 Access 协议，而 meta 是**结构体**
+    # （%PlayerMeta{} / %NonPlayerMeta{}），没有实现 Access，会抛
+    # "Kalevala.Meta.Trimmed.fetch/2 is undefined" —— 线上表现为条件恒假、
+    # 阻挡被静默跳过。Map.get 对结构体是安全的。
+    skills =
+      meta
+      |> Map.get(:stats)
+      |> case do
+        nil -> nil
+        stats -> Map.get(stats, :skills)
+      end
+
+    case skills do
       skills when is_map(skills) ->
         case Map.get(skills, key) do
           %{level: level} -> level

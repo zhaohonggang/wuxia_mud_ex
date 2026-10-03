@@ -56,6 +56,100 @@ defmodule Kantele.World.LpcConditionTest do
     end
   end
 
+  describe "对真实结构体 meta 求值（回归）" do
+    # 之前所有用例的 meta 都是**普通 map**，而线上的 meta 是结构体
+    # （%PlayerMeta{} / %NonPlayerMeta{}）。结构体没实现 Access 协议，
+    # 于是 get_in(meta, [:stats, :skills]) 抛
+    # "Kalevala.Meta.Trimmed.fetch/2 is undefined"，异常被 rescue 静默转成放行，
+    # 线上表现为「孟婆桥明明该拦，却能走过去」。这里用真结构体钉住。
+    test "PlayerMeta 结构体上 query_skill / query_temp 正常求值" do
+      meta = %Kantele.Character.PlayerMeta{
+        vitals: %{},
+        stats: %Kantele.Character.Stats{skills: %{"force" => 20}},
+        temp: %{}
+      }
+
+      me = %{pid: self(), name: "测试玩家", meta: meta}
+
+      ctx =
+        Kantele.World.ExitVetoContext.build(
+          dir: "north",
+          me: me,
+          room: %{exits: []},
+          context: %{characters: []}
+        )
+
+      assert {:ok, true} =
+               Kantele.World.LpcCondition.evaluate("(int)me->query_skill('force') < 500", ctx)
+
+      assert {:ok, false} =
+               Kantele.World.LpcCondition.evaluate("(int)me->query_skill('force') > 500", ctx)
+
+      assert {:ok, true} =
+               Kantele.World.LpcCondition.evaluate("!me->query_temp('rent_paid')", ctx)
+    end
+
+    test "NonPlayerMeta 结构体上 query_skill 正常求值；NPC 无 temp 字段故 query_temp 为假" do
+      meta = %Kantele.Character.NonPlayerMeta{
+        vitals: %{},
+        stats: %Kantele.Character.Stats{skills: %{"force" => 700}}
+      }
+
+      ctx =
+        Kantele.World.ExitVetoContext.build(
+          dir: "south",
+          me: %{pid: self(), name: "npc", meta: meta},
+          room: %{exits: []},
+          context: %{characters: []}
+        )
+
+      assert {:ok, false} =
+               Kantele.World.LpcCondition.evaluate("(int)me->query_skill('force') < 500", ctx)
+
+      # NPC 结构体里没有 temp 字段，LPC 侧 query_temp 对 NPC 恒为 0
+      assert {:ok, false} = Kantele.World.LpcCondition.evaluate("me->query_temp('guarded')", ctx)
+    end
+
+    @tag :world_data
+    test "孟婆桥：真实结构体 meta + 真实在场角色 -> 拦下" do
+      world = Kantele.World.Loader.load()
+      room = Enum.find(world.rooms, &(&1.id == "death:qiao1"))
+      veto = Enum.find(room.exit_vetoes, &(&1.condition =~ "mengpo_tang"))
+
+      assert veto, "应有孟婆桥的条件"
+
+      mengpo = %{
+        name: "孟婆",
+        pid: self(),
+        meta: %Kantele.Character.NonPlayerMeta{
+          vitals: %{},
+          aliases: ["meng po", "meng", "po"]
+        }
+      }
+
+      me = %{
+        pid: self(),
+        name: "测试玩家",
+        meta: %Kantele.Character.PlayerMeta{
+          vitals: %{},
+          stats: %Kantele.Character.Stats{skills: %{"force" => 20}},
+          temp: %{}
+        }
+      }
+
+      ctx =
+        Kantele.World.ExitVetoContext.build(
+          dir: "north",
+          me: me,
+          room: room,
+          context: %{characters: [mengpo], item_instances: []}
+        )
+
+      assert {:block, msg} = Kantele.World.LpcCondition.check(veto, ctx)
+      assert msg =~ "孟婆"
+    end
+  end
+
   describe "evaluate/2" do
     setup do
       npc = %{name: "守卫", pid: self(), meta: %{}}

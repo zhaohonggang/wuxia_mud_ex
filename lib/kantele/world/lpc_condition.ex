@@ -1,4 +1,6 @@
 defmodule Kantele.World.LpcCondition do
+  require Logger
+
   @moduledoc """
   受限 LPC 条件表达式求值器（对应 `int valid_leave(object me, string dir)`）
 
@@ -111,14 +113,23 @@ defmodule Kantele.World.LpcCondition do
   def evaluate(expr, ctx) when is_binary(expr) do
     with {:ok, ast} <- parse(expr) do
       try do
-        # LPC 的 `ob = present(...)` 靠副作用给后面的 `living(ob)` / `ob->query()`
-        # 用；而 Elixir 里 ctx 是不可变值，短路求值不会把新绑定带下去。
+        # LPC 的 `ob = present(...)` 靠副作用给后面的 `ob->query()` 用；
+        # 而 ctx 是不可变值，短路求值不会把新绑定带下去。
         # 所以先把所有赋值按出现顺序求值、塞进 ctx.vars，再整体求值。
         ctx = seed_vars(ast, ctx)
 
         {:ok, truthy?(eval(ast, ctx))}
       rescue
-        e -> {:error, {:runtime, Exception.message(e)}}
+        e ->
+          # 静默放行会让这类缺陷永久隐身（线上就出现过：get_in 读结构体抛
+          # Access 未实现 -> 所有含 query_skill 的条件恒假、阻挡形同虚设）。
+          # 这里必须留痕。
+          Logger.warning(
+            "valid_leave 条件求值出错，按放行处理：expr=#{inspect(expr)} " <>
+              "error=#{Exception.message(e)}"
+          )
+
+          {:error, {:runtime, Exception.message(e)}}
       catch
         :throw, reason -> {:error, reason}
       end
