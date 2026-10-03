@@ -10,6 +10,35 @@ defmodule Kantele.Feature.Damage do
   alias Kantele.Character.Combat
   alias Kantele.Scheduler
 
+  # ---- character <-> meta 桥接 --------------------------------------------
+  #
+  # 本模块（LPC feature/damage.c 的移植）所有函数的收发参数都是 **character**，
+  # 而 `Kantele.Character.PlayerMeta` 的接口一律是 **meta 进 / meta 出**
+  # （`update_damage(%PlayerMeta{} = meta, fun)` 等）。
+  #
+  # 原来的代码直接把 `character` 传给 PlayerMeta.*，于是这些地方一执行就抛
+  # "no function clause matching in Kantele.Character.PlayerMeta.update_damage/2"。
+  # 之所以一直没被发现：`receive_damage/4` 只有在 `who` 非nil 时才会走到
+  # `update_last_damage/2`，而现有三个调用方（berserk / hide / jingxiu）
+  # 都传 `who = nil`，正好绕开了这条路径 —— 直到八卦阵的「震」方向要昏厥，
+  # 才第一次真正执行到它。
+  #
+  # feature_attack.ex 有同一类问题，但那个模块目前是死代码（无任何生产调用），
+  # 本次不一并改，另行记录。
+  defp update_damage(character, fun) do
+    %{character | meta: PlayerMeta.update_damage(character.meta, fun)}
+  end
+
+  defp damage_state(character), do: PlayerMeta.damage_state(character.meta)
+
+  defp get_temp(character, key), do: PlayerMeta.get_temp(character.meta, key)
+
+  defp put_temp(character, key, value), do: %{character | meta: PlayerMeta.put_temp(character.meta, key, value)}
+
+  defp delete_temp(character, key), do: %{character | meta: PlayerMeta.delete_temp(character.meta, key)}
+
+  # ---------------------------------------------------------------------------
+
   @doc """
   受直接伤害（对应 LPC receive_damage/3）：气/精扣减，不为负；触发心跳
   """
@@ -108,7 +137,7 @@ defmodule Kantele.Feature.Damage do
   @doc "记录击杀（DPS/胜负追踪）"
   def record_defeat(character, victim) do
     if killing?(character, victim.id) do
-      PlayerMeta.update_damage(character, fn dmg ->
+      update_damage(character, fn dmg ->
         dp = dmg.defeat_player || []
 
         if victim.id in dp do
@@ -123,13 +152,13 @@ defmodule Kantele.Feature.Damage do
   end
 
   def remove_defeat(character, victim_id) do
-    PlayerMeta.update_damage(character, fn dmg ->
+    update_damage(character, fn dmg ->
       Map.put(dmg, :defeat_player, List.delete(dmg.defeat_player || [], victim_id))
     end)
   end
 
   def clear_defeats(character) do
-    PlayerMeta.update_damage(character, fn dmg -> Map.put(dmg, :defeat_player, []) end)
+    update_damage(character, fn dmg -> Map.put(dmg, :defeat_player, []) end)
   end
 
   @doc """
@@ -137,7 +166,7 @@ defmodule Kantele.Feature.Damage do
   `alive?/1` 由宿主提供（`fn victim_state -> boolean`），缺省认为全部存活。
   """
   def dps_count(character, alive? \\ fn _ -> false end) do
-    PlayerMeta.update_damage(character, fn dmg ->
+    update_damage(character, fn dmg ->
       dp = dmg.defeat_player || []
       live = Enum.filter(dp, fn victim -> victim != nil && alive?.(victim) end)
       Map.put(dmg, :defeat_player, live)
@@ -149,12 +178,12 @@ defmodule Kantele.Feature.Damage do
 
   @doc "读狂暴值"
   def query_craze(character) do
-    Map.get(PlayerMeta.damage_state(character), :craze, 0) || 0
+    Map.get(damage_state(character), :craze, 0) || 0
   end
 
   @doc "累计狂暴值（对应 improve_craze/1），返回更新后的 character"
   def improve_craze(character, gain) when is_integer(gain) and gain > 0 do
-    PlayerMeta.update_damage(character, fn dmg ->
+    update_damage(character, fn dmg ->
       Map.put(dmg, :craze, (dmg.craze || 0) + gain)
     end)
   end
@@ -206,7 +235,7 @@ defmodule Kantele.Feature.Damage do
     |> put_damage_block_msg_all(1)
     |> disable_player()
     |> put_vitals(%{character.meta.vitals | qi: 0, jing: 0})
-    |> PlayerMeta.put_temp("block_msg/all", 1)
+    |> put_temp("block_msg/all", 1)
 
     # 自动复活延迟：30 + random(100 - con) 秒
     delay = 30 + :rand.uniform(100 - character.meta.stats.con)
@@ -239,14 +268,14 @@ defmodule Kantele.Feature.Damage do
 
     character =
       character
-      |> PlayerMeta.delete_temp("disable_type")
-      |> PlayerMeta.put_temp("block_msg/all", 0)
+      |> delete_temp("disable_type")
+      |> put_temp("block_msg/all", 0)
       |> enable_player()
       |> write_prompt()
 
     # 清除 DPS
     character
-    |> PlayerMeta.damage_state()
+    |> damage_state()
     |> Map.get(:defeated_by)
     |> (fn defeated_by ->
           if defeated_by do
@@ -336,7 +365,7 @@ defmodule Kantele.Feature.Damage do
     announce(character, "dead")
 
     # 标记击杀者
-    character = PlayerMeta.put_temp(character, "my_killer", killer)
+    character = put_temp(character, "my_killer", killer)
 
     # 击杀者奖励（由 CombatEvent.enemy_died 处理）
     if killer do
@@ -350,7 +379,7 @@ defmodule Kantele.Feature.Damage do
 
     # 清理
     character = clear_die_flags(character)
-    character = PlayerMeta.put_temp(character, "die_reason", nil)
+    character = put_temp(character, "die_reason", nil)
 
     if is_player?(character) do
       character = if busy?(character), do: interrupt_me(character), else: character
@@ -359,7 +388,7 @@ defmodule Kantele.Feature.Damage do
         character
         |> put_vitals(%{character.meta.vitals | qi: 1, jing: 1})
 
-      PlayerMeta.update_damage(character, fn dmg -> Map.put(dmg, :ghost, true) end)
+      update_damage(character, fn dmg -> Map.put(dmg, :ghost, true) end)
     else
       # NPC 直接析构（留钩子给 World）
       destruct_npc(character)
@@ -386,7 +415,7 @@ defmodule Kantele.Feature.Damage do
   @doc "心跳回复（对应 LPC heal_up/1，对应 feature_damage.ex heal_up/2）"
   def heal_up(character) do
     # 清除 nopoison
-    character = PlayerMeta.delete_temp(character, "nopoison")
+    character = delete_temp(character, "nopoison")
 
     # 监狱处理（占位）
     if in_prison?(character) do
@@ -416,7 +445,7 @@ defmodule Kantele.Feature.Damage do
     end
 
     # 守卫职责消耗精力
-    guard = PlayerMeta.get_temp(character, "guardfor")
+    guard = get_temp(character, "guardfor")
 
     if guard && (not is_map(guard) or not is_character(guard)) do
       if div(vitals.jing * 100, vitals.max_jing) < 50 do
@@ -488,9 +517,9 @@ defmodule Kantele.Feature.Damage do
   # ---- 内部辅助 ----
 
   defp update_last_damage(character, who) do
-    if who && who != Map.get(PlayerMeta.damage_state(character), :last_damage_from) do
+    if who && who != Map.get(damage_state(character), :last_damage_from) do
       character
-      |> PlayerMeta.update_damage(fn dmg ->
+      |> update_damage(fn dmg ->
         dmg
         |> Map.put(:last_damage_from, who)
         |> Map.put(:last_damage_name, character.name(who))
@@ -524,19 +553,19 @@ defmodule Kantele.Feature.Damage do
 
   defp clear_enemies(character) do
     # 真实引擎在 CombatEvent 中管理 enemies，此处清空 attack 状态
-    PlayerMeta.update_damage(character, fn dmg ->
+    update_damage(character, fn dmg ->
       %{dmg | defeated_by: nil, defeated_by_who: nil}
     end)
   end
 
   defp disable_player(character) do
     # 标记为不可操作（ghost 等同）
-    PlayerMeta.update_damage(character, fn dmg -> Map.put(dmg, :ghost, true) end)
+    update_damage(character, fn dmg -> Map.put(dmg, :ghost, true) end)
   end
 
   defp enable_player(character) do
     # 解除禁用
-    PlayerMeta.update_damage(character, fn dmg -> Map.put(dmg, :ghost, false) end)
+    update_damage(character, fn dmg -> Map.put(dmg, :ghost, false) end)
   end
 
   defp write_prompt(character), do: character
@@ -570,8 +599,8 @@ defmodule Kantele.Feature.Damage do
 
   defp delete_sleep_flags(character) do
     character
-    |> PlayerMeta.delete_temp("sleeping")
-    |> PlayerMeta.delete_temp("sleep_room")
+    |> delete_temp("sleeping")
+    |> delete_temp("sleep_room")
   end
 
   defp determine_killer(character, killer) do
@@ -608,8 +637,8 @@ defmodule Kantele.Feature.Damage do
 
   defp clear_die_flags(character) do
     character
-    |> PlayerMeta.delete_temp("die_reason")
-    |> PlayerMeta.delete_temp("my_killer")
+    |> delete_temp("die_reason")
+    |> delete_temp("my_killer")
   end
 
   defp destruct_npc(_character) do
@@ -671,11 +700,11 @@ defmodule Kantele.Feature.Damage do
   # ---- Damage State 访问器 ----
 
   defp put_damage_block_msg_all(character, value) do
-    PlayerMeta.update_damage(character, fn dmg -> Map.put(dmg, :block_msg_all, value) end)
+    update_damage(character, fn dmg -> Map.put(dmg, :block_msg_all, value) end)
   end
 
   defp put_damage_defeated_by(character, competitor) do
-    PlayerMeta.update_damage(character, fn dmg ->
+    update_damage(character, fn dmg ->
       dmg
       |> Map.put(:defeated_by, competitor)
       |> Map.put(:defeated_by_who, competitor && competitor.name)
@@ -683,11 +712,11 @@ defmodule Kantele.Feature.Damage do
   end
 
   defp put_damage_ghost(character, ghost) do
-    PlayerMeta.update_damage(character, fn dmg -> Map.put(dmg, :ghost, ghost) end)
+    update_damage(character, fn dmg -> Map.put(dmg, :ghost, ghost) end)
   end
 
   defp put_damage_last_damage(character, from) do
-    PlayerMeta.update_damage(character, fn dmg ->
+    update_damage(character, fn dmg ->
       if from == nil do
         dmg
         |> Map.put(:last_damage_from, nil)

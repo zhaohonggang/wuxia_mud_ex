@@ -29,7 +29,13 @@ defmodule Kantele.Character.TrapEventTest do
           vitals: Kantele.Character.Vitals.new(),
           stats: Kantele.Character.Stats.new(),
           combat: Kantele.Character.Combat.new(),
-          temp: %{}
+          temp: %{},
+          # damage 默认是 nil，但真实角色从 DB 恢复出来一定是 %{}。
+          # 不给的话 Feature.Damage 里的 update_damage/2 会报
+          # "no function clause matching" —— 那是测试夹具的问题，不是生产问题。
+          damage: %{},
+          env: %{},
+          followers: []
         }
       }
     }
@@ -200,4 +206,128 @@ defmodule Kantele.Character.TrapEventTest do
   defp queued_event_topics(conn), do: Enum.map(conn.events, & &1.topic)
 
   defp queued_event_data(conn), do: Enum.map(conn.events, & &1.data)
+
+  describe "伤害类副作用必须真的生效（上一版这里把角色进程搞崩了）" do
+    # 上一版两个错：
+    #   1) 模块名按文件名臆测成 `Kantele.FeatureDamage`，真名是
+    #      `Kantele.Feature.Damage` —— 八卦阵第一次扣血就 UndefinedFunctionError
+    #      把**角色进程**炸掉
+    #   2) 更隐蔽：Damage.receive_damage/4 返回的是 `{:ok, character}`，
+    #      不是裸角色。直接把返回值 put_character 就等于把元组当角色暂存
+    #
+    # 所以这里不走「断言 effects 列表」，而是**真的跑一遍**并检查 vitals 变了。
+
+    # 注意：Elixir 1.11 没有 Kernel.then/1（踩过），这里用普通变量绑定
+    defp conn_with_vitals(qi, jing, max_qi, max_jing) do
+      c = player_conn()
+
+      vitals = %Kantele.Character.Vitals{
+        base_qi: max_qi,
+        qi: qi,
+        max_qi: max_qi,
+        base_jing: max_jing,
+        jing: jing,
+        max_jing: max_jing,
+        neili: 100,
+        max_neili: 100
+      }
+
+      meta = c.character.meta
+
+      %{c | character: %{c.character | meta: %{meta | vitals: vitals}}}
+    end
+
+    test "receive_damage 真的扣精" do
+      conn = conn_with_vitals(150, 120, 150, 120)
+      assert conn.character.meta.vitals.jing == 120
+
+      conn = run(conn, [{:damage, :jing, 50}])
+
+      character = applied(conn)
+      assert character.meta.vitals.jing == 70
+      assert is_map(character.meta), "暂存的必须是角色而不是 {:ok, character} 元组"
+      refute match?({:ok, _}, character)
+    end
+
+    test "receive_damage 扣气" do
+      conn = conn_with_vitals(150, 120, 150, 120)
+      conn = run(conn, [{:damage, :qi, 50}])
+
+      assert applied(conn).meta.vitals.qi == 100
+    end
+
+    test "receive_wound 真的会受伤（Vitals.wound 削减上限并夹住当前值）" do
+      conn = conn_with_vitals(150, 120, 150, 120)
+      conn = run(conn, [{:wound, :qi, 50}])
+
+      character = applied(conn)
+      # 具体扣多少由 Vitals.wound 决定，这里只断言「确实变了」且结构完好
+      assert character.meta.vitals.qi < 150
+      assert is_map(character.meta)
+    end
+
+    test "扣血不会因为返回 {:error} 而崩掉角色进程" do
+      # amount 为负会走 {:error, ...} 分支；不该抛异常，也不该把元组当角色
+      conn = conn_with_vitals(150, 120, 150, 120)
+
+      result =
+        try do
+          conn = run(conn, [{:damage, :jing, -5}])
+          applied(conn)
+        rescue
+          e -> {:raised, e}
+        end
+
+      refute match?({:raised, _}, result), "扣血失败不该把角色进程搞崩"
+      assert is_map(result), "失败时也要保持角色是角色"
+      assert result.meta.vitals.jing == 120, "失败时不该改动数值"
+    end
+
+    test "连续 damage 后角色仍然完好（多次 put_character 不会互相污染）" do
+      conn = conn_with_vitals(150, 120, 150, 120)
+
+      conn =
+        run(conn, [
+          {:damage, :jing, 30},
+          {:damage, :qi, 20},
+          {:damage, :jing, 10}
+        ])
+
+      character = applied(conn)
+      assert is_map(character.meta)
+      assert character.meta.vitals.jing == 80
+      assert character.meta.vitals.qi == 130
+    end
+
+    test "八卦阵走对一步的完整 effects 能安全跑完" do
+      # 上一版就是这条把进程炸了：set_temp + damage + set_temp
+      conn = conn_with_vitals(150, 120, 150, 120)
+
+      conn =
+        run(conn, [
+          {:set_temp, "bagua/count", 1},
+          {:damage, :jing, 50},
+          {:set_temp, "bagua/坎", 1}
+        ])
+
+      character = applied(conn)
+      assert character.meta.temp["bagua/count"] == 1
+      assert character.meta.temp["bagua/坎"] == 1
+      assert character.meta.vitals.jing == 70
+    end
+
+    test "昏厥效果不会崩（震方向会触发）" do
+      conn = conn_with_vitals(150, 120, 150, 120)
+
+      result =
+        try do
+          applied(run(conn, [{:faint}]))
+        rescue
+          e -> {:raised, Exception.message(e)}
+        end
+
+      refute match?({:raised, msg}, result),
+             "unconcious 抛异常了：#{inspect(result)}"
+    end
+  end
 end

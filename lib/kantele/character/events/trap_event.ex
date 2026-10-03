@@ -31,7 +31,11 @@ defmodule Kantele.Character.TrapEvent do
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Records
   alias Kantele.Character.Teleport
-  alias Kantele.FeatureDamage
+
+  # 真正的模块名是 `Kantele.Feature.Damage`（文件 lib/kantele/feature_damage.ex）。
+  # 之前按文件名臆测成 `Kantele.FeatureDamage`，于是八卦阵第一次扣血就把
+  # **角色进程**炸了（UndefinedFunctionError / module not available）。
+  alias Kantele.Feature.Damage
 
   @doc "topic: trap/effect -> run/2"
   def run(conn, %{data: %{effects: effects}}) do
@@ -121,17 +125,37 @@ defmodule Kantele.Character.TrapEvent do
 
   defp apply_effect(conn, {:damage, type, amount}, texts) do
     # LPC me->receive_damage("jing", 50)
-    {stage(conn, FeatureDamage.receive_damage(current(conn), type, amount)), texts}
+    # 注意返回的是 {:ok, character} | {:error, reason}，不是裸角色 ——
+    # 直接把返回值当角色暂存会把元组塞进 put_character/2。
+    {apply_feature(conn, &Damage.receive_damage(&1, type, amount), :receive_damage), texts}
   end
 
   defp apply_effect(conn, {:wound, type, amount}, texts) do
     # LPC me->receive_wound("qi", 50)
-    {stage(conn, FeatureDamage.receive_wound(current(conn), type, amount)), texts}
+    {apply_feature(conn, &Damage.receive_wound(&1, type, amount), :receive_wound), texts}
   end
 
   defp apply_effect(conn, {:faint}, texts) do
     # LPC me->unconcious()
-    {stage(conn, FeatureDamage.unconcious(current(conn))), texts}
+    {apply_feature(conn, &Damage.unconcious/1, :unconcious), texts}
+  end
+
+  # Kantele.Feature.Damage 的函数统一返回 {:ok, character} | {:error, reason}。
+  # 这里解开：成功就暂存新角色，失败就**保持原状并记日志** ——
+  # 陷阱不该因为扣血失败就把玩家进程搞崩。
+  defp apply_feature(conn, fun, name) do
+    case fun.(current(conn)) do
+      {:ok, character} ->
+        stage(conn, character)
+
+      {:error, reason} ->
+        Logger.warning("陷阱副作用 #{name} 失败：#{inspect(reason)}")
+        conn
+
+      other ->
+        Logger.warning("陷阱副作用 #{name} 返回了预期外的值：#{inspect(other)}")
+        conn
+    end
   end
 
   defp apply_effect(conn, {:force_move, room_id}, texts) do
