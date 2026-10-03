@@ -502,9 +502,11 @@ defmodule Kantele.World.Room do
 
         case guarder_result do
           {:deny, msg} ->
-            # 正文由角色侧在 abort 时回查房间数据渲染（见 MoveView.render("fail", ...)）：
-            # 这里 Context.render 只会把文本塞进 context.output，移动链路会丢弃 context。
-            {:abort, event, :guarder_denied}
+            # 守卫的正文**不在房间数据里**（valid_leave / exit_vetoes 里没有它），
+            # 所以角色侧没法像 valid_leave 那样「按房间 id + 方向回查」。
+            # Kalevala 的 Movement.handle_request 把 reason 原样塞进 %Voting{}，
+            # reason 可以是任意项 —— 于是把正文一起带过去。
+            {:abort, event, {:guarder_denied, msg || "看来守门的不是打算让你过去。"}}
 
           :allow ->
             # 阻挡条件（valid_leave）：受 enforce_exit_vetoes 开关灰度，默认关

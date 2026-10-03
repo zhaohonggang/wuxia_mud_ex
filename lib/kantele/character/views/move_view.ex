@@ -32,6 +32,16 @@ defmodule Kantele.Character.MoveView do
     ~i(There is no exit #{exit_name}.\n)
   end
 
+  # 守卫拦下时的正文。守卫的拒绝语来自 Guarder.permit_pass/1（LPC
+  # F_GUARDER 的 message_vision 文案），房间里没有副本，所以由 room.ex
+  # 连同 reason 一起带过来 —— 不能走下面 exit_veto_message 的回查路径。
+  #
+  # 这个子句必须排在 %{reason: reason, from: ..., exit_name: ...} 之前，
+  # 否则会被那条更通用的子句先匹配掉。
+  def render("fail", %{reason: {:guarder_denied, msg}}) when is_binary(msg) do
+    render_guarder_msg(msg)
+  end
+
   # valid_leave 拦下时的正文：房间侧判定成立，但中止事件只能带 reason（原子），
   # 所以正文由这里按「房间 id + 方向」回查房间数据取 LPC notify_fail 原文。
   def render("fail", %{reason: reason, from: room_id, exit_name: exit_name}) do
@@ -44,5 +54,13 @@ defmodule Kantele.Character.MoveView do
   def render("fail", %{reason: reason}) do
     _ = reason
     ~i()
+  end
+
+  # guarder.msgs 里可以写 {npc} / {name} 占位（见 data/world/global.ucl 的
+  # 白驼山庄门卫）。这里做一次朴素替换；未知占位原样保留。
+  defp render_guarder_msg(msg) do
+    Enum.reduce([{"{npc}", "守门人"}, {"{name}", "你"}], msg, fn {k, v}, acc ->
+      String.replace(acc, k, v)
+    end)
   end
 end

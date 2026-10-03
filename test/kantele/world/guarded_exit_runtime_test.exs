@@ -122,8 +122,8 @@ defmodule Kantele.World.GuardedExitRuntimeTest do
     @tag :world_data
     test "无门派的玩家往北被门卫拦下（默认提示语）", ctx do
       %{room: room, occupants: occupants} = ctx.rooms["baituo:damen"]
-      assert {:abort, _event, reason} = move(room, occupants, mover(nil), "north")
-      assert reason == :guarder_denied
+      assert {:abort, _event, {:guarder_denied, msg}} = move(room, occupants, mover(nil), "north")
+      assert msg =~ "欧阳世家"
     end
 
     @tag :world_data
@@ -159,7 +159,7 @@ defmodule Kantele.World.GuardedExitRuntimeTest do
       denied =
         Enum.reject(room.exits, &(&1.exit_name == "south"))
         |> Enum.map(fn e ->
-          match?({:abort, _, :guarder_denied}, move(room, occupants, mover(nil), e.exit_name))
+          match?({:abort, _, {:guarder_denied, _}}, move(room, occupants, mover(nil), e.exit_name))
         end)
 
       assert denied != [], "buwei1 至少应有一个方向被拦"
@@ -179,7 +179,7 @@ defmodule Kantele.World.GuardedExitRuntimeTest do
       %{room: room, occupants: occupants} = ctx.rooms["huashan:square"]
 
       for dir <- ["northeast", "east", "north"] do
-        assert {:abort, _event, :guarder_denied} = move(room, occupants, mover(nil), dir)
+        assert {:abort, _event, {:guarder_denied, msg}} = move(room, occupants, mover(nil), dir)
       end
     end
 
@@ -205,7 +205,7 @@ defmodule Kantele.World.GuardedExitRuntimeTest do
         meta: %{family: %{name: "华山派"}, carrying: [%{family: %{name: "日月神教"}}]}
       }
 
-      assert {:abort, _event, :guarder_denied} = move(room, occupants, player, "north")
+      assert {:abort, _event, {:guarder_denied, msg}} = move(room, occupants, player, "north")
     end
 
     @tag :world_data
@@ -214,7 +214,55 @@ defmodule Kantele.World.GuardedExitRuntimeTest do
 
       # PlayerMeta 是结构体且没有 :carrying；之前这里直接 meta.carrying 会 KeyError
       player = %{pid: self(), name: "测试玩家", meta: %Kantele.Character.PlayerMeta{}}
-      assert {:abort, _event, :guarder_denied} = move(room, occupants, player, "north")
+      assert {:abort, _event, {:guarder_denied, msg}} = move(room, occupants, player, "north")
+    end
+  end
+
+  describe "拦截正文能传到玩家眼前" do
+    @tag :world_data
+    test "abort 的 reason 里带上了 LPC 拒绝语", ctx do
+      %{room: room, occupants: occupants} = ctx.rooms["huashan:square"]
+
+      assert {:abort, _event, {:guarder_denied, msg}} = move(room, occupants, mover(nil), "north")
+
+      # LPC feature/guarder.c 的默认文案（守卫没有自定义 guarder/refuse_*）
+      assert msg =~ "华山派"
+      assert msg =~ "不得入内"
+    end
+
+    @tag :world_data
+    test "baituo:damen 给出欧阳世家的默认文案", ctx do
+      %{room: room, occupants: occupants} = ctx.rooms["baituo:damen"]
+
+      assert {:abort, _event, {:guarder_denied, msg}} = move(room, occupants, mover(nil), "north")
+      assert msg =~ "欧阳世家"
+    end
+
+    @tag :world_data
+    test "同门弟子不会被拦，也就不该产生正文", ctx do
+      %{room: room, occupants: occupants} = ctx.rooms["huashan:square"]
+      assert {:proceed, _event, _exit} = move(room, occupants, mover("华山派"), "north")
+    end
+  end
+
+  describe "MoveView 渲染守卫正文" do
+    test "直接渲染 reason 里的守卫文案" do
+      assert Kantele.Character.MoveView.render(
+               "fail",
+               %{reason: {:guarder_denied, "对不起，不是我们华山派的人不得入内！"}}
+             ) == "对不起，不是我们华山派的人不得入内！"
+    end
+
+    test "{npc} / {name} 占位被替换掉" do
+      rendered =
+        Kantele.Character.MoveView.render(
+          "fail",
+          %{reason: {:guarder_denied, "{npc}拦住{name}，冷笑道：重地不得入内！"}}
+        )
+
+      assert rendered == "守门人拦住你，冷笑道：重地不得入内！"
+      refute rendered =~ "{npc}"
+      refute rendered =~ "{name}"
     end
   end
 
