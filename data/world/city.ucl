@@ -6033,7 +6033,7 @@ chats = [
   z = 0
 valid_leave = [
 {
-   condition = "room->query_temp('action') == 1"
+   condition = "(room->query_temp('action') == 1) && (dir == 'north' || dir == 'south' || dir == 'west')"
 direction = ~
   message = "那间棋室已经有人开始下棋了，请勿打扰"
 }

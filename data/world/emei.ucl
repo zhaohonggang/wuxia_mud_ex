@@ -2060,7 +2060,7 @@ item_desc = {
   z = 2
 valid_leave = [
 {
-   condition = "(string)me->query('family/family_name') != '峨嵋派' & objectp(present('song qingshu',environment(me)))"
+   condition = "((string)me->query('family/family_name') != '峨嵋派' & objectp(present('song qingshu',environment(me)))) && dir == 'north'"
 direction = ~
   message = "宋青书一声冷喝：阁下什么人，在这里鬼头鬼脑的想干什么？"
 }

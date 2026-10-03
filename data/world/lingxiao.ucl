@@ -450,7 +450,7 @@ item_desc = {
 }
 valid_leave = [
 {
-   condition = "objectp(present('wen wanfu',environment(me)))"
+   condition = "(objectp(present('wen wanfu',environment(me)))) && dir == 'north'"
 direction = ~
   message = "闻万夫身形一展，挡住你道：凌霄城历年来的规矩，外人入城不得佩带兵刃。"
 }

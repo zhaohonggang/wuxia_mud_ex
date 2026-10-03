@@ -1134,7 +1134,7 @@ direction = ~
     room_id = rooms.dmyuan2.id
     items = [
       { id = items.xuan_bei.id },
-      { id = items.xisuijing.id }    ]
+      { id = clone_lib.items.xisuijing.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/shaolin/duchuan.c by LPCConverter
@@ -2737,7 +2737,7 @@ direction = "west"
   z = 22
 valid_leave = [
 {
-   condition = "present('fumo dao',me) || present('jingang zhao',me) || present('fumo dao',environment(me)) || present('jingang zhao',environment(me))"
+   condition = "(present('fumo dao',me) || present('jingang zhao',me) || present('fumo dao',environment(me)) || present('jingang zhao',environment(me))) && dir == 'in'"
 direction = ~
   message = "只听里面有人说道: 大侠上回已来过此处，此刻身携重宝，不便进入， 恕老衲等失礼了。"
 }
@@ -2832,7 +2832,7 @@ direction = ~
   z = 16
 valid_leave = [
 {
-   condition = "(string)me->query('family/family_name') != '商家堡' && (string)me->query('born_family') != '山东商家' && objectp(present('shang jianming',environment(me)))"
+   condition = "((string)me->query('family/family_name') != '商家堡' && (string)me->query('born_family') != '山东商家' && objectp(present('shang jianming',environment(me)))) && (dir == 'east' || dir == 'north' || dir == 'west')"
 direction = ~
   message = "商剑鸣对你喝道：什么东西，居然敢在我面前放肆！"
 }
@@ -3242,25 +3242,25 @@ item_desc = {
   z = 18
 valid_leave = [
 {
-   condition = "objectp(present('xu tong',environment(me)))"
+   condition = "(objectp(present('xu tong',environment(me)))) && dir == 'eastup'"
 direction = ~
   message = "虚通伸手拦住你白眼一翻说道：千年以来，少林向不许女流擅入。 请下山去吧，免得自讨没趣。"
 }
 ,
 {
-   condition = "objectp(present('xu ming',environment(me)))"
+   condition = "(objectp(present('xu ming',environment(me)))) && dir == 'eastup'"
 direction = ~
   message = "虚明迈步挡在你身前，双手合什说道：阿弥陀佛，这位请留步， 恕小寺不接待女客。女施主倘若一心向佛，何妨去峨眉山随喜？"
 }
 ,
 {
-   condition = "objectp(present('xu tong',environment(me)))"
+   condition = "(objectp(present('xu tong',environment(me)))) && dir == 'eastup'"
 direction = ~
   message = "虚通拦住你说道：这位请放下兵刃。少林千年的规矩，外客 不得持兵刃上山。"
 }
 ,
 {
-   condition = "objectp(present('xu ming',environment(me)))"
+   condition = "(objectp(present('xu ming',environment(me)))) && dir == 'eastup'"
 direction = ~
   message = "虚明迈步挡在你身前，双手合什说道：阿弥陀佛，这位请收起 兵刃。佛门清静之地，不便随意舞刀弄剑。还请施主鉴谅。"
 }

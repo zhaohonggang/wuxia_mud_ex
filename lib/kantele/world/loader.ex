@@ -317,7 +317,9 @@ defmodule Kantele.World.Loader do
           # `all_dirs = true` 表示这条条件在 LPC 里本来就拦所有方向
           # （例如厨房里端着汤不许走）。缺这个标记而条件里又没有 dir 时，
           # 按「转换器丢了外层守卫」处理，运行时跳过 —— 宁可少拦，不能锁死玩家。
-          all_dirs: Map.get(veto, :all_dirs) == true
+# 注意：Elias 把 UCL 里的 `true` 解析成**字符串** "true"（不是布尔、也不是原子），
+      # 三种形态都接受，避免以后有人手改数据时静默失效。
+      all_dirs: Map.get(veto, :all_dirs) in [true, :true, "true"]
         }
 
       _ ->
@@ -1113,13 +1115,22 @@ defmodule Kantele.World.Loader do
         Map.get(verbs, verb)
       end)
 
+    # LPC 的 id 表写在物品块的**顶层**（与 name 同级，scripts/migrate_aliases.py 的写法），
+    # 而 parse_item_meta 只认 meta.aliases —— 两处都读，否则已有数据的别名会被丢掉
+    # （`present("<拼音id>", room)` 就匹配不到物品）。
+    item_meta = parse_item_meta(Map.get(item_data, :meta))
+
+    item_meta = %{
+      item_meta
+      | aliases: Enum.uniq((item_meta.aliases || []) ++ parse_aliases(Map.get(item_data, :aliases)))
+    }
     item = %Item{
       id: "#{zone.id}:#{key}",
       name: item_data.name,
       description: item_data.description,
       verbs: item_verbs,
       callback_module: Kantele.World.Item,
-      meta: parse_item_meta(Map.get(item_data, :meta))
+      meta: item_meta
     }
 
     {key, item}

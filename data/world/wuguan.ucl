@@ -144,13 +144,13 @@ zones "wuguan" {
   z = 0
 valid_leave = [
 {
-   condition = "present('tea',me)"
+   condition = "(present('tea',me)) && dir == 'east'"
 direction = ~
   message = "厨师拦住你道：你还是先把茶喝完再走吧。"
 }
 ,
 {
-   condition = "present('rice',me)"
+   condition = "(present('rice',me)) && dir == 'east'"
 direction = ~
   message = "厨师拦住你道：你还是先把饭吃完再走吧。"
 }

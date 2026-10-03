@@ -1917,7 +1917,7 @@ valid_leave = [
   z = -11
 valid_leave = [
 {
-   condition = "objectp(present('leng qian',environment(me)))"
+   condition = "(objectp(present('leng qian',environment(me)))) && dir == 'westup'"
 direction = ~
   message = "冷谦拦住你说道：这位请放下兵刃。我教教规严厉，外客不 得持兵刃上山。请见谅。"
 }

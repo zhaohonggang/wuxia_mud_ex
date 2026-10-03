@@ -906,7 +906,7 @@ zones "kaifeng" {
   z = 0
 valid_leave = [
 {
-   condition = "(string)me->query('family/family_name') != '红花会' & objectp(present('wuchen daozhang',environment(me)))"
+   condition = "((string)me->query('family/family_name') != '红花会' & objectp(present('wuchen daozhang',environment(me)))) && dir == 'up'"
 direction = ~
   message = "无尘道长对你喝道：何方妖孽，竟敢闯入我私人练功之地。"
 }
@@ -1795,13 +1795,13 @@ item_desc = {
   z = 2
 valid_leave = [
 {
-   condition = "objectp(ob = present('zhang long',this_object())) && living(ob)"
+   condition = "(objectp(ob = present('zhang long',this_object())) && living(ob)) && dir == 'west'"
 direction = ~
   message = "张龙一把拦住你，喝道：衙门重地，怎由闲杂人等随便进出。"
 }
 ,
 {
-   condition = "objectp(ob = present('zhao hu',this_object())) && living(ob)"
+   condition = "(objectp(ob = present('zhao hu',this_object())) && living(ob)) && dir == 'west'"
 direction = ~
   message = "赵虎一把拦住你，喝道：衙门重地，怎由闲杂人等随便进出。"
 }

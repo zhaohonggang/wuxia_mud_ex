@@ -29,6 +29,13 @@ defmodule Kantele.World.ExitVetoRuntimeTest do
     world = Loader.load()
     room = Enum.find(world.rooms, &(&1.id == @room_id))
 
+    # ZoneCache 真实运行时由 Kickoff 填充；ExitVetoContext 的 present(id, room)
+    # 要靠它取物品别名，测试里得自己播种
+    Enum.each(world.zones, fn
+      %{id: _} = zone -> Kantele.World.ZoneCache.cache(zone)
+      _ -> :skip
+    end)
+
     # ZoneCache 真实运行时由 Kickoff 填充；这里播种，供 exit_veto_message 回查提示语
     Enum.each(world.zones, fn
       %{id: zone_id} = zone -> Kantele.World.ZoneCache.cache(zone)
@@ -139,4 +146,125 @@ defmodule Kantele.World.ExitVetoRuntimeTest do
     refute source =~ "{:abort, event, :guarder_denied,",
            "guarder_denied 中止必须是 3 元组 {:abort, event, reason}"
   end
+
+  # ---- all_dirs：LPC 本来就拦所有方向的条件 ----
+
+  describe "all_dirs（本来就拦所有方向）" do
+    @tag :world_data
+    test "标了 all_dirs 的条件会执行，不再被方向守卫误挡" do
+      world = Kantele.World.Loader.load()
+      room = Enum.find(world.rooms, &(&1.id == "city:eproom"))
+
+      veto = Enum.find(room.exit_vetoes, &(&1.condition =~ "pigging_seat"))
+      assert veto, "city:eproom 应有「玩拱猪时不能走」的条件"
+      assert veto.all_dirs, "该条件应标了 all_dirs（LPC 里确实没有 dir 判断）"
+
+      playing = player_with_temp(%{"pigging_seat" => 1})
+
+      assert {:deny, msg} =
+               @handler.check_exit_vetoes(room, context_with(room, [], playing), playing, "north")
+
+      assert msg =~ "拱猪"
+
+      idle = player_with_temp(%{})
+
+      for dir <- ["north", "west", "up"] do
+        assert :allow = @handler.check_exit_vetoes(room, context_with(room, [], idle), idle, dir)
+      end
+    end
+
+    @tag :world_data
+    test "房间作用域的 present 也能找到房里的物品（LPC present(id, room) 语义）" do
+      world = Kantele.World.Loader.load()
+      room = Enum.find(world.rooms, &(&1.id == "shaolin:dmyuan2"))
+
+      veto = Enum.find(room.exit_vetoes, &(&1.condition =~ "xisui jing"))
+      assert veto, "shaolin:dmyuan2 应有「心法不见了不许走」的条件"
+      assert veto.all_dirs
+
+      items = Map.get(room, :item_instances, []) || []
+      assert Enum.any?(items, fn i -> Map.get(i, :item_id) =~ "xisuijing" end),
+             "房里应有 items.xisuijing（LPC 的 xisui jing 别名）"
+
+      me = player_with_temp(%{})
+
+      # 书在 -> 放行
+      assert :allow = @handler.check_exit_vetoes(room, context_with(room, [], me), me, "south")
+
+      # 书不在 -> 拦（只搜角色会误判成永远拦着，把人锁死）
+      stripped = %{room | item_instances: []}
+
+      assert {:deny, msg} =
+               @handler.check_exit_vetoes(stripped, context_with(stripped, [], me), me, "south")
+
+      assert msg =~ "心法"
+    end
+  end
+
+  # ---- 合并方向守卫后的条件 ----
+
+  describe "外层方向守卫已合并" do
+    @tag :world_data
+    test "death:qiao1 条件里带上了 dir（转换器原本丢了外层守卫）" do
+      world = Kantele.World.Loader.load()
+      room = Enum.find(world.rooms, &(&1.id == "death:qiao1"))
+
+      veto = Enum.find(room.exit_vetoes, &(&1.condition =~ "mengpo_tang"))
+      assert veto, "应有孟婆桥的条件"
+      assert veto.condition =~ "dir"
+      assert Kantele.World.LpcCondition.direction_scoped?(veto.condition)
+      assert Kantele.World.LpcCondition.enforceable?(veto.condition)
+
+      mengpo = %{name: "孟婆", pid: self(), meta: %{aliases: ["meng po", "meng", "po"]}}
+      weak = player_with_skill(100)
+
+      # 内力不足 + 没喝孟婆汤 + 孟婆在场 -> 向北被拦
+      assert {:deny, msg} =
+               @handler.check_exit_vetoes(room, context_with(room, [mengpo], weak), weak, "north")
+
+      assert msg =~ "孟婆"
+
+      # 方向不对 -> 放行（这正是补回守卫的意义：原来这条会拦所有方向）
+      assert :allow = @handler.check_exit_vetoes(room, context_with(room, [mengpo], weak), weak, "south")
+
+      # 内力够 -> 放行
+      strong = player_with_skill(600)
+      assert :allow = @handler.check_exit_vetoes(room, context_with(room, [mengpo], strong), strong, "north")
+    end
+
+    @tag :world_data
+    test "无法合并的只剩 4 条，且都是表达能力不足而非遗漏" do
+      world = Kantele.World.Loader.load()
+
+      unscoped =
+        Enum.flat_map(world.rooms, fn r -> Enum.map(r.exit_vetoes || [], &{r.id, &1}) end)
+        |> Enum.filter(fn {_id, v} -> is_binary(v.condition) end)
+        |> Enum.reject(fn {_id, v} ->
+          Kantele.World.LpcCondition.direction_scoped?(v.condition) or v.all_dirs or
+            not Kantele.World.LpcCondition.supported?(v.condition) or
+            not Kantele.World.LpcCondition.enforceable?(v.condition)
+        end)
+        |> Enum.map(fn {id, _v} -> id end)
+
+      assert length(unscoped) == 4,
+             "预期剩 4 条，实际 #{length(unscoped)}: #{inspect(unscoped)}"
+
+      joined = Enum.join(unscoped, " | ")
+
+      assert joined =~ "kediandayuan"  # 依赖目的地房间内容，无法表达
+      assert joined =~ "bingqifang"    # 需要按 id 统计背包数量（转换残留 j > 1）
+      assert joined =~ "nantian"       # 裸标识符 mengzhu
+      assert joined =~ "xxh6"          # this_player()-> 链式调用
+    end
+  end
+
+  defp player_with_temp(temp) do
+    %{pid: self(), name: "测试玩家", meta: %{temp: temp}}
+  end
+
+  defp player_with_skill(force) do
+    %{pid: self(), name: "测试玩家", meta: %{temp: %{}, stats: %{skills: %{"force" => force}}}}
+  end
+
+
 end

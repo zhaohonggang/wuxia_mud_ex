@@ -1756,3 +1756,23 @@ zones "clone_lib" {
         }
       }
     }
+
+# Source: C:/files/git/mud/clone/book/xisuijing.c
+# Zone: clone_lib
+
+    items "xisuijing" {
+      name = "洗髓经"
+      description = "这本破纸筒就是少林最高武学典籍，是达摩老祖面壁九年与易筋经一起 参悟出来的绝世典籍。"
+      aliases = ["洗髓经", "xisui jing"]
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10
+        weight = 100
+        unit = "卷"
+        material = "paper"
+      }
+    }

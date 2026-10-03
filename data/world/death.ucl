@@ -488,7 +488,7 @@ item_desc = {
   z = 0
 valid_leave = [
 {
-   condition = "! me->query_temp('last_eat/mengpo_tang') && me->query_skill('force') < 500 && objectp(present('meng po',environment(me)))"
+   condition = "(! me->query_temp('last_eat/mengpo_tang') && me->query_skill('force') < 500 && objectp(present('meng po',environment(me)))) && dir == 'north'"
 direction = ~
   message = "孟婆说道：这位，你还是请回吧。"
 }
@@ -524,7 +524,7 @@ item_desc = {
 }
 valid_leave = [
 {
-   condition = "objectp(present('niu tou',environment(me)))"
+   condition = "(objectp(present('niu tou',environment(me)))) && dir == 'north'"
 direction = ~
   message = "牛头看了你一眼，喝道：你还不滚回去还阳，来这里凑什么热闹！"
 }
@@ -693,7 +693,7 @@ valid_leave = [
   z = 0
 valid_leave = [
 {
-   condition = "! present('qilin xue',me) || ! objectp(ob = me->query_temp('armor/boots')) || ob->query('id') != 'qilin xue'"
+   condition = "(! present('qilin xue',me) || ! objectp(ob = me->query_temp('armor/boots')) || ob->query('id') != 'qilin xue') && dir == 'down'"
 direction = ~
   message = "你没有穿麒麟靴无法进入沸腾的血池中！"
 }
@@ -741,7 +741,7 @@ direction = ~
   z = 0
 valid_leave = [
 {
-   condition = "objectp(present('dizang',environment(me))) && ! me->query('hell_quest/锁阳丹') && ! me->query('DiZangPass')"
+   condition = "(objectp(present('dizang',environment(me))) && ! me->query('hell_quest/锁阳丹') && ! me->query('DiZangPass')) && dir == 'south'"
 direction = ~
   message = "地藏王看了你一眼，喝道：你还不滚回去还阳，来这里凑什么热闹！"
 }
@@ -912,7 +912,7 @@ direction = ~
   z = 16
 valid_leave = [
 {
-   condition = "objectp(present('ma mian',environment(me)))"
+   condition = "(objectp(present('ma mian',environment(me)))) && dir == 'up'"
 direction = ~
   message = "马面看了你一眼，喝道：你还不滚回去还阳，来这里凑什么热闹！"
 }
@@ -1099,7 +1099,7 @@ item_desc = {
   z = 0
 valid_leave = [
 {
-   condition = "! me->query('hell_quest/锁阳丹') && ! me->query('HellZhenPass')"
+   condition = "(! me->query('hell_quest/锁阳丹') && ! me->query('HellZhenPass')) && dir == 'north'"
 direction = ~
   message = "十殿阎罗看了你一眼，喝道：你还不滚回去还阳，来这里凑什么热闹！"
 }

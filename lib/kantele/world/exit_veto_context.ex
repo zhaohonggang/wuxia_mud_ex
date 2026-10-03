@@ -76,7 +76,11 @@ defp find_in_room(context, room, id) do
         # 指的是房里那本 心法书（items.xisuijing），房里没人 —— 只搜角色会恒 nil，
         # 条件 `! present(...)` 就恒真，会把人锁死在房中。
         instances =
-          Map.get(context, :item_instances) || Map.get(room || %{}, :item_instances) || []
+          case Map.get(context, :item_instances) do
+            # 注意：`[] || fallback` 在 Elixir 里是 []（空列表为真值），必须显式判空
+            list when is_list(list) and list != [] -> list
+            _ -> Map.get(room || %{}, :item_instances) || []
+          end
 
         case Enum.find(instances, fn i -> instance_matches?(i, id) end) do
           nil -> :error
@@ -142,13 +146,35 @@ defp find_in_room(context, room, id) do
         true
 
       true ->
-        # 物品也可能有 set_name 别名（如 rice / mi fan）
-        case Kantele.World.Items.get!(Map.get(instance, :item_id)) do
-          %{meta: %{aliases: aliases}} -> Enum.any?(aliases || [], &(normalize_id(&1) == keyword))
-          _ -> false
-        end
+        # 物品也可能有 set_name 别名（如 xisuijing 的 LPC id 是 xisui jing）。
+        # 从 ZoneCache 的世界数据取，而不是 Kantele.World.Items —— 后者依赖运行中的
+        # 物件注册表，测试环境下并不存在。
+        Enum.any?(item_aliases(Map.get(instance, :item_id)), &(normalize_id(&1) == keyword))
     end
   end
+
+  defp item_aliases(item_id) when is_binary(item_id) do
+    case String.split(item_id, ":") do
+      [zone_id | _] ->
+        case Kantele.World.ZoneCache.get(zone_id) do
+          {:ok, zone} ->
+            (Map.get(zone, :items) || [])
+            |> Enum.find(&(&1.id == item_id))
+            |> case do
+              nil -> []
+              item -> Map.get(item.meta, :aliases) || []
+            end
+
+          _ ->
+            []
+        end
+
+      _ ->
+        []
+    end
+  end
+
+  defp item_aliases(_), do: []
 
   # ---- 对象判定 ----
 

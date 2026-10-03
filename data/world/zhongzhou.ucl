@@ -680,7 +680,7 @@ item_desc = {
   z = 0
 valid_leave = [
 {
-   condition = "(string)me->query('family/family_name') != '中原苗家' & objectp(present('miao renfeng',environment(me)))"
+   condition = "((string)me->query('family/family_name') != '中原苗家' & objectp(present('miao renfeng',environment(me)))) && (dir == 'north' || dir == 'south')"
 direction = ~
   message = "苗人凤眉头微微一皱，喝道：阁下未免太过放肆，是瞧不起苗某人吗？"
 }

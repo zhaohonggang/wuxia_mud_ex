@@ -236,7 +236,7 @@ direction = "west"
   z = 0
 valid_leave = [
 {
-   condition = "(string)me->query('family/family_name') != '日月神教' & objectp(present('ren woxing',environment(me)))"
+   condition = "((string)me->query('family/family_name') != '日月神教' & objectp(present('ren woxing',environment(me)))) && dir == 'south'"
 direction = ~
   message = "任我行喝道：阁下未免太过放肆，在老夫面前也敢这般横行！"
 }
