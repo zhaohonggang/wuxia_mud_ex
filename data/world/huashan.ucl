@@ -64,7 +64,7 @@ direction = ~
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "lu dayou"
-  direction = "south"
+  exempt_directions = ["south"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
@@ -1476,7 +1476,7 @@ item_desc = {
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "gao genming"
-  direction = "northeast"
+  guard_directions = ["northeast", "east", "north"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
@@ -1940,7 +1940,13 @@ item_desc = {
     { id = items.changjian.id }
   ]
 
+    
+  meta = {
+    guarder = {
+      family = "华山派"
+      msgs = {}
     }
+  }}
 
 # Generated from C:/files/git/mud/d/huashan/npc/doctor.c by LPCConverter
 # Zone: huashan
@@ -2028,7 +2034,13 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
+    
+  meta = {
+    guarder = {
+      family = "华山派"
+      msgs = {}
     }
+  }}
 
 # Generated from C:/files/git/mud/d/huashan/npc/girldizi.c by LPCConverter
 # Zone: huashan

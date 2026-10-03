@@ -287,13 +287,43 @@ defmodule Kantele.World.Loader do
       flags: parse_flags(Map.get(room_data, :flags)),
       features: parse_features(room_data, zone_data),
       item_desc: parse_item_desc(Map.get(room_data, :item_desc)),
-      exit_vetoes: parse_room_vetoes(Map.get(room_data, :valid_leave))
+      exit_vetoes: parse_room_vetoes(Map.get(room_data, :valid_leave)),
+      behavior: Map.get(room_data, :behavior),
+      behavior_config: parse_behavior_config(Map.get(room_data, :behavior_config))
     }
 
     {key, room}
   end
 
   # 房间墙上器物/菜单（LPC set("item_desc", ...)）：keyword -> 文本
+  # 房间级行为配置（LPC set("behavior_config", ...)），目前只有 guarded_exit。
+  #
+  # 只认两种方向表达，因为原 LPC 的 valid_leave 就是这两种写法：
+  #   guard_directions  = ["north"]   这些方向要盘查
+  #   exempt_directions = ["south"]   除这些方向外都盘查
+  #
+  # 转换器统一记成单个 `direction`，但它不可靠：shenlong:dating / zoulang 上
+  # 记的恰好是「豁免的那个方向」（语义相反），hengyang:zhurongdian 与
+  # taohua:dating 又只记了两个盘查方向中的一个。所以不能直接采信，见 B 节。
+  defp parse_behavior_config(nil), do: nil
+
+  defp parse_behavior_config(cfg) when is_map(cfg) do
+    Enum.reduce(cfg, %{}, fn {k, v}, acc ->
+      Map.put(acc, behavior_key(k), normalize_behavior_value(v))
+    end)
+  end
+
+  defp parse_behavior_config(_), do: nil
+
+  defp behavior_key(key) when is_atom(key), do: key
+  defp behavior_key(key) when is_binary(key), do: String.to_atom(key)
+  defp behavior_key(key), do: key
+
+  defp normalize_behavior_value(v) when is_list(v), do: Enum.map(v, &to_string/1)
+  defp normalize_behavior_value(v) when is_binary(v), do: v
+  defp normalize_behavior_value(v) when is_atom(v) and not is_nil(v), do: to_string(v)
+  defp normalize_behavior_value(v), do: v
+
   defp parse_item_desc(nil), do: %{}
 
   defp parse_item_desc(item_desc) when is_map(item_desc) do

@@ -307,7 +307,7 @@ direction = "in"
 behavior = "guarded_exit"
 behavior_config = {
   guard_npc = "men wei"
-  direction = "north"
+  guard_directions = ["north"]
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
@@ -1521,7 +1521,13 @@ chats = [
     { line = "门卫笑吟吟地道：这位{respect}您辛苦了，快请进吧。" },
     { line = "门卫两眼一瞪道：这位{respect}你是来找麻烦的吧？" }
   ]
+    
+  meta = {
+    guarder = {
+      family = "欧阳世家"
+      msgs = {}
     }
+  }}
 
 # Generated from C:/files/git/mud/d/baituo/npc/playboy.c by LPCConverter
 # Zone: baituo

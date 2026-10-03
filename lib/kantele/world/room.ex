@@ -35,7 +35,13 @@ defmodule Kantele.World.Room do
     dynamic_exits: %{},
     timers: %{},
     item_desc: %{},
-    exit_vetoes: []
+    exit_vetoes: [],
+
+    # LPC set("behavior", "guarded_exit") + behavior_config。
+    # 转换器把这两个字段整组丢掉了（loader 之前根本不读），守卫拦截因此 16 个
+    # 房间全部失效 —— 详见 docs/ucl-comment-todo.zh-CN.md 三、B 节。
+    behavior: nil,
+    behavior_config: nil
   ]
 
   @doc """
@@ -391,7 +397,40 @@ defmodule Kantele.World.Room do
     @impl true
     def exits(room), do: room.exits
 
-    defp check_guarders(context, mover, _room_exit) do
+    defp check_guarders(room, context, mover, room_exit) do
+      case guard_direction(room, room_exit) do
+        # 该方向不设卡（LPC 的 valid_leave 对这个方向直接 return 1）
+        :skip ->
+          :allow
+
+        :guard ->
+          check_guarders_for_dir(context, mover)
+      end
+    end
+
+    # LPC 的守卫不是「所有方向都盘查」，而是每个 valid_leave 显式写的：
+    #   baituo/damen.c   if (present("men wei") && dir == "north") return guarder->permit_pass(...)
+    #   huashan/buwei1.c  if (dir == "south" || !present(guard)) return ::valid_leave;  // 除 south 外全守
+    #   huashan/square.c  if (dir == "northeast" || dir == "east" || dir == "north") ...
+    # 所以方向规则必须由数据如实表达，不能一律按「全方向」处理。
+    defp guard_direction(room, room_exit) do
+      dir = Map.get(room_exit, :exit_name)
+      cfg = Map.get(room, :behavior_config) || %{}
+
+      cond do
+        dirs = Map.get(cfg, :guard_directions) ->
+          if dir in dirs, do: :guard, else: :skip
+
+        exempt = Map.get(cfg, :exempt_directions) ->
+          if dir in exempt, do: :skip, else: :guard
+
+        true ->
+          # 没有方向信息的老数据：保守不拦（fail-open）
+          :skip
+      end
+    end
+
+    defp check_guarders_for_dir(context, mover) do
       # 找房间里的守卫 NPC（有 guarder 配置且 is_guarder? 为 true）
       guarders =
         Enum.filter(context.characters, fn c ->
@@ -420,17 +459,27 @@ defmodule Kantele.World.Room do
       guest_family = mover.meta.family && Map.get(mover.meta.family, :name)
       guest_born_family = mover.meta.family && Map.get(mover.meta.family, :born_family)
 
+      # LPC: deep_inventory(ob) 里每个 userp 的 family_name 与本人不同就拒绝
+      # （背着他派的人上门）。必须用 Map.get/3 而不是 meta.carrying ——
+      # PlayerMeta 根本没有 :carrying 字段，直接点取会抛 KeyError，
+      # 房间里一旦有守卫就会让每次移动都崩（与 cc0eead 的 get_in 同一类）。
       carried_families =
-        mover.meta.carrying
-        |> Enum.filter(& &1)
-        |> Enum.map(&Map.get(&1.family, :name))
+        mover.meta
+        |> Map.get(:carrying, [])
+        |> List.wrap()
+        |> Enum.filter(&is_map/1)
+        |> Enum.map(&Map.get(Map.get(&1, :family) || %{}, :name))
         |> Enum.reject(&is_nil/1)
         |> Enum.uniq()
 
       msgs = guarder.meta.guarder.msgs || %{}
 
       %{
-        living?: not guarder.meta.dead,
+        # LPC: if (!living(this_object())) return 1;  守卫倒下就放行。
+        # 死亡标记在 meta.combat.dead 上 —— NonPlayerMeta 根本没有 :dead 字段，
+        # 写 guarder.meta.dead 会抛 KeyError。这已是同一类错误的第三处
+        # （前两处：get_in 读结构体、meta.carrying）。
+        living?: not Map.get(Map.get(guarder.meta, :combat) || %{}, :dead, false),
         my_family: my_family,
         guest_family: guest_family,
         guest_born_family: guest_born_family,
@@ -449,7 +498,7 @@ defmodule Kantele.World.Room do
           Enum.find(context.characters, &(&1.pid == event.from_pid))
 
       if mover do
-        guarder_result = check_guarders(context, mover, room_exit)
+        guarder_result = check_guarders(room, context, mover, room_exit)
 
         case guarder_result do
           {:deny, msg} ->
