@@ -264,8 +264,6 @@ defp find_in_room(context, room, id) do
   defp exp_of(%{meta: %{stats: %{combat_exp: exp}}}), do: exp
   defp exp_of(_), do: nil
 
-  def debug_skill(target, key), do: skill_level(target, key)
-
   defp skill_level(target, key) do
     meta = meta_of(target)
 
