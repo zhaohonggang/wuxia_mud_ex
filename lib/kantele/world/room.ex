@@ -509,18 +509,33 @@ defmodule Kantele.World.Room do
             {:abort, event, {:guarder_denied, msg || "看来守门的不是打算让你过去。"}}
 
           :allow ->
-            # 阻挡条件（valid_leave）：受 enforce_exit_vetoes 开关灰度，默认关
-            case check_exit_vetoes(room, context, mover, event.data.exit_name) do
-              {:deny, msg} ->
-                # 正文由角色侧回查渲染，理由同 guarder 分支注释
-                {:abort, event, :exit_vetoed}
+            # 带副作用的陷阱（LPC 里那几个不是纯谓词的自定义函数）：
+            # 五行迷宫等。判定是纯计算，副作用作为事件下发给角色进程执行。
+            case check_traps(room, mover, event.data.exit_name) do
+              {:block, trap_msg, effects} ->
+                dispatch_trap_effects(mover, effects)
+                {:abort, event, {:trapped, trap_msg}}
 
-              :allow ->
-                BasicRoom.movement_request(context, event, room_exit)
+              {:allow, effects} ->
+                # 放行**也要下发副作用**：五行迷宫往北是正常移动，但计数 +1
+                # 是 LPC valid_leave 的一部分（少下发就会让迷宫永远凑不齐五行）。
+                dispatch_trap_effects(mover, effects)
+                # 阻挡条件（valid_leave）：受 enforce_exit_vetoes 开关灰度，默认关
+                check_vetoes(room, context, mover, room_exit, event)
             end
         end
-      else
-        BasicRoom.movement_request(context, event, room_exit)
+      end
+    end
+
+    # valid_leave 那一段（抽成独立函数，好让陷阱能排在它前面）
+    defp check_vetoes(room, context, mover, room_exit, event) do
+      case check_exit_vetoes(room, context, mover, room_exit.exit_name) do
+        {:deny, _msg} ->
+          # 正文由角色侧回查渲染，理由同 guarder 分支的注释
+          {:abort, event, :exit_vetoed}
+
+        :allow ->
+          BasicRoom.movement_request(context, event, room_exit)
       end
     end
 
@@ -536,6 +551,40 @@ defmodule Kantele.World.Room do
     调用点见 `movement_request/4`。开关 `config :ex_venture, enforce_exit_vetoes`
     （默认关）；条件解析不了/求值失败/方向未限定一律放行。
     """
+    # 陷阱：判定纯函数（只读 mover.meta.temp），返回要执行的副作用。
+    # 必须放在 check_exit_vetoes **之前** —— 五行迷宫的 west 陷阱在 UCL 里
+    # 是一条没有 condition 的 valid_leave（会被 is_nil(condition) 跳过），
+    # 而 north 的计数逻辑转换器整段丢了，只能由这里补。
+    defp check_traps(room, mover, dir) do
+      Kantele.World.Trap.dispatch(
+        Map.get(room, :exit_vetoes) || [],
+        Map.get(mover, :meta),
+        dir,
+        Map.get(room, :id)
+      )
+    end
+
+    # 副作用由角色进程执行 —— meta 只有它能安全地改并落盘
+    # （Kantele.Character.Records.save/1）。房间进程只发事件。
+    defp dispatch_trap_effects(mover, effects) do
+      case {Map.get(mover, :pid), effects} do
+        {pid, []} when is_pid(pid) ->
+          :ok
+
+        {pid, effects} when is_pid(pid) ->
+          send(pid, %Kalevala.Event{
+            from_pid: self(),
+            topic: "trap/effect",
+            data: %{effects: effects}
+          })
+
+        _ ->
+          Logger.warning("陷阱副作用无法下发：mover 没有 pid（effects=#{inspect(effects)}）")
+      end
+
+      :ok
+    end
+
     def check_exit_vetoes(room, context, mover, dir) do
       case Application.get_env(:ex_venture, :enforce_exit_vetoes, false) do
         true ->

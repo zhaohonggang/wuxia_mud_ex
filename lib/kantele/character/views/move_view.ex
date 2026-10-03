@@ -38,6 +38,13 @@ defmodule Kantele.Character.MoveView do
   #
   # 这个子句必须排在 %{reason: reason, from: ..., exit_name: ...} 之前，
   # 否则会被那条更通用的子句先匹配掉。
+  # 陷阱拦下时的正文。同 guarder：正文由房间进程随 reason 带过来
+  #（陷阱的判定结果本来就只在房间里算得出来）。
+  # 同样必须排在 %{reason:, from:, exit_name:} 那条通用子句之前。
+  def render("fail", %{reason: {:trapped, msg}}) when is_binary(msg) do
+    msg
+  end
+
   def render("fail", %{reason: {:guarder_denied, msg}}) when is_binary(msg) do
     render_guarder_msg(msg)
   end
