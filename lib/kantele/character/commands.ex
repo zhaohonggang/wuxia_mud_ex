@@ -1584,6 +1584,43 @@ defmodule Kantele.Character.Commands do
     parse("柳溪", :run)
   end
 
+  # 擂台开关（LPC d/city/leitai.c 的 do_lclose / do_lopen，都要求 wiz_level >= 3）
+  # module 名字由 Router 按 @scope=Kantele.Character 自动补全，不需要 alias。
+  module(ArenaCommand) do
+    # 参数用 optional 而不是 word：LPC 里 `lclose`（不带 here）是被接受的，
+    # 然后由 do_lclose 自己回「如果你要关闭擂台，请输入(lclose here)。」
+    # 而 word/2 要求 min: 1，裸 `lclose` 会直接解析失败 -> 玩家看到的是
+    # 「What?」而不是那句提示。
+    # 参数的取法照抄 detail 命令那套 optional + unwrap_and_tag
+    # （word/2 是靠管道传 parser 的，不能写成 optional(word(:arg))）
+    parse("lclose", :run, fn command ->
+      command
+      |> spaces()
+      |> optional(
+        repeat(utf8_char([{:not, ?\s}]))
+        |> reduce({List, :to_string, []})
+        |> unwrap_and_tag(:arg)
+      )
+    end)
+
+    # 光有 optional 还不够：`spaces()` 本身要求至少一个空白，所以裸 `lclose`
+    # 会在 optional 之前就失败。`detail` 命令也是这么处理的 ——
+    # 另加一条 run_bare 作为兜底（见上面 detail 的两行 parse）。
+    parse("lclose", :run_bare)
+
+    parse("lopen", :lopen, fn command ->
+      command
+      |> spaces()
+      |> optional(
+        repeat(utf8_char([{:not, ?\s}]))
+        |> reduce({List, :to_string, []})
+        |> unwrap_and_tag(:arg)
+      )
+    end)
+
+    parse("lopen", :lopen_bare)
+  end
+
   module(SecularizeCommand) do
     parse("secularize", :run)
     parse("huansu", :run)

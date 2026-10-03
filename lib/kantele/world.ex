@@ -144,6 +144,8 @@ defmodule Kantele.World do
 
     children = [
       {ZoneCache, [id: ZoneCache, name: ZoneCache]},
+      # 擂台关闭状态（room.ex 的 movement_request 要跨房间读它）
+      {Kantele.World.Arena, [id: Kantele.World.Arena, name: Kantele.World.Arena]},
       {Kantele.World.Items, [id: Kantele.World.Items, name: Kantele.World.Items]},
       {Kalevala.World, [name: Kantele.World]},
       {Kantele.World.Kickoff, [name: Kantele.World.Kickoff, start: kickoff]}

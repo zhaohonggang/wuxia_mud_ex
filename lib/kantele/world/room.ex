@@ -556,12 +556,7 @@ defmodule Kantele.World.Room do
     # 是一条没有 condition 的 valid_leave（会被 is_nil(condition) 跳过），
     # 而 north 的计数逻辑转换器整段丢了，只能由这里补。
     defp check_traps(room, mover, dir) do
-      Kantele.World.Trap.dispatch(
-        Map.get(room, :exit_vetoes) || [],
-        Map.get(mover, :meta),
-        dir,
-        Map.get(room, :id)
-      )
+      Kantele.World.Trap.dispatch(room, mover, dir)
     end
 
     # 副作用由角色进程执行 —— meta 只有它能安全地改并落盘

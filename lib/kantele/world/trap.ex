@@ -8,7 +8,7 @@ defmodule Kantele.World.Trap do
 
     - `check_out(me)`    d/shaolin/wuxing*.c 五行迷宫（5 个房间）
     - `check_dirs(me,dir)`  d/shaolin/bagua.h 八卦阵（8 个房间，共享头文件、规则一致）
-    - `ob->refuse(me)`   d/city/underlt.c 擂台（5 个房间）
+    - `ob->refuse(me)`   d/city/underlt.c 擂台（5 个房间，4 个可达）
 
   它们被 `LpcCondition.enforceable?/1` 判为不可执行，条件原文保留、**不拦** ——
   于是一律 fail-open，陷阱完全不生效（见 docs/ucl-comment-todo.zh-CN.md 四、C）。
@@ -46,9 +46,16 @@ defmodule Kantele.World.Trap do
   @doc """
   房间 + 移动者 + 方向 -> `{:allow, effects}` | `{:block, msg, effects}`
 
-  `vetoes` 是该房间的 valid_leave 列表；只挑出「陷阱型」条件来跑。
+  只挑出该房间 valid_leave 里的「陷阱型」条件来跑。
+
+  `mover` 传的是**完整角色**（不只 meta）：`ob->refuse(me)` 要读
+  `attributes["wiz_level"]` 判断巫师，而那个字段不在 meta 上。
   """
-  def dispatch(vetoes, mover_meta, dir, room_id) when is_list(vetoes) do
+  def dispatch(room, mover, dir) do
+    dispatch(Map.get(room, :exit_vetoes) || [], room, mover, dir)
+  end
+
+  defp dispatch(vetoes, room, mover, dir) when is_list(vetoes) do
     Enum.reduce_while(vetoes, {:allow, []}, fn veto, acc ->
       case acc do
         {:block, _, _} ->
@@ -60,7 +67,7 @@ defmodule Kantele.World.Trap do
               {:cont, acc}
 
             kind ->
-              case run(kind, mover_meta, dir, room_id) do
+              case run(kind, room, mover, dir) do
                 {:allow, effects} -> {:cont, {:allow, effects_so_far ++ effects}}
                 {:block, msg, effects} -> {:halt, {:block, msg, effects_so_far ++ effects}}
               end
@@ -77,6 +84,7 @@ defmodule Kantele.World.Trap do
         cond do
           String.contains?(c, "check_out(") -> :wuxing
           String.contains?(c, "check_dirs(") -> :bagua
+          String.contains?(c, "->refuse(") -> :arena
           true -> nil
         end
 
@@ -85,12 +93,36 @@ defmodule Kantele.World.Trap do
     end
   end
 
-  defp run(:wuxing, mover_meta, dir, room_id),
-    do: Wuxing.evaluate(Map.get(mover_meta, :temp) || %{}, dir, room_key(room_id))
+  defp run(:wuxing, room, mover, dir),
+    do: Wuxing.evaluate(temp_of(mover), dir, room_key(Map.get(room, :id)))
 
   # 八卦阵的规则八个房间一致（bagua.h 是共享头文件），所以不需要 room_key。
-  defp run(:bagua, mover_meta, dir, _room_id),
-    do: Kantele.World.Trap.Bagua.evaluate(Map.get(mover_meta, :temp) || %{}, dir)
+  defp run(:bagua, _room, mover, dir),
+    do: Kantele.World.Trap.Bagua.evaluate(temp_of(mover), dir)
+
+  #  ob->refuse(me)：LPC 里 ob 是**目标房间**（find_object(dest)），
+  #  只有它定义了 refuse() 才会拒绝。这里用「目标房间有没有关闭状态」来判定，
+  #  等价且不硬编码房间 id。
+  defp run(:arena, room, mover, dir) do
+    Kantele.World.Arena.refuse(dest_room_id(room, dir), wizard?(mover))
+  end
+
+  defp temp_of(mover), do: Map.get(Map.get(mover, :meta) || %{}, :temp) || %{}
+
+  # wiz_level 存在 character.attributes 上，不在 meta 里 —— 所以这里必须收
+  # 完整的角色。模块是 `Kantele.Admin.Access`，函数名 `wizardp/1`（LPC 的
+  # wizardp()），不是 `Kantele.Access.wizard?`（那个模块/函数不存在，
+  # 但 Elixir 对未知的远程调用只在编译期给警告，很容易漏掉）。
+  defp wizard?(mover) do
+    Kantele.Admin.Access.wizardp(mover)
+  end
+
+  # 这次移动的目标房间 id；没有这个方向就是 nil（放行）
+  defp dest_room_id(room, dir) do
+    room
+    |> Map.get(:exits, [])
+    |> Enum.find_value(fn e -> if Map.get(e, :exit_name) == dir, do: Map.get(e, :end_room_id) end)
+  end
 
   # 五行迷宫每个房间的规则不同（递增哪个元素、在哪个方向、机关在哪），
   # 所以必须知道**具体是哪个房间**，不能只拿 dir。
