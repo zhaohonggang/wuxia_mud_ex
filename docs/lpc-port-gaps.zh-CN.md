@@ -136,7 +136,7 @@ LPC 里没有这个目录（`feature/` 才是）。Kalevala 的 brain 是
 | `feature/vendor.c` | 4 | `vendor.ex` **3** | ❌ 缺 `compelete_trade` |
 | `feature/dealer.c` | 8 | `dealer.ex` **5** | ❌ 缺 3 个 |
 
-### `vendor.ex` 缺 `compelete_trade` —— 买了没货交付
+### `vendor.ex` 缺 `compelete_trade` —— 买了没货交付 ✅ **已补**
 
 ```c
 void compelete_trade(object me, string what) {
@@ -147,23 +147,29 @@ void compelete_trade(object me, string what) {
 }
 ```
 
-`vendor.ex` 只有 `buy_object` / `price_string` / `vendor_list` 三个纯查询，
-没有任何"把货交给买家"的逻辑。接上派发后 vendor 系商店买了也拿不到货。
+`vendor.ex` 之前只有 `buy_object` / `price_string` / `vendor_list` 三个纯查询，
+没有任何"把货交给买家"的逻辑。接上派发层后 vendor 系商店买了也拿不到货。
 
-### `dealer.ex` 缺 3 个
+已补 `Vendor.complete_trade/2`（纯决策，产出 `%{action: :deliver_item, …}`，
+真正 `move` 由派发层落地，与 `Dealer` 的约定一致）。未命中返回
+`{:error, :not_found}` —— 对应 LPC 里 `query()` 非 stringp 时整个 if 块跳过、
+**静默什么都不做**。
+
+### `dealer.ex` 缺 3 个 ✅ **已补**
 
 | LPC | 作用 | Elixir |
 |---|---|---|
-| `destruct_it(ob)` | 0 秒延迟销毁临时造出的物品（防泄漏） | 无 |
-| `enough_rest()` | 1 秒后清 `busy` 标记 | 无 |
-| `reset()` | 库存 ≥100 件或总重 ≥1000000 时清理 | 无 |
+| `destruct_it(ob)` | 0 秒延迟销毁临时造出的物品（防泄漏） | ✅ `destruct_it_plan/1` |
+| `enough_rest()` | 1 秒后清 `busy` 标记 | ✅ `enough_rest_plan/0` |
+| `reset()` | 库存 ≥100 件或总重 ≥1000000 时清理 | ✅ `reset_plan/2` |
 
-`busy` 是 `do_buy` 里"正忙着呢，慢慢来"那 1 秒冷却，
-`dealer.ex` 的 `do_buy/4` 里也没有对应判断，所以冷却机制一并没了。
+`*_plan` 后缀表示**只产出动作描述**，真正的定时/销毁由派发层落地 ——
+和 `Dealer` / `Vendor` 一律保持"纯逻辑"的既有约定。
 
-### `do_buy` 少了 4 道前置检查中的 3 道
+### `do_buy` 少了 4 道前置检查中的 3 道 ✅ **已补**
 
-LPC `do_buy` 在算价前有 4 道检查，`dealer.ex` 只保留了第 4 道：
+LPC `do_buy` 在算价前有 4 道检查，`dealer.ex` 只保留了第 4 道
+（一次最多 100 件）。已补 `check_buy_preconditions/1`：
 
 ```c
 // 1. 跑偏了自动传送回 startroom（同时是防 NPC 走丢的自愈机制）
@@ -176,14 +182,17 @@ if (!query("carried_goods")) {
 // 2. 身上东西太多
 if (sizeof(...) >= MAX_ITEM_CARRIED) { write("你身上的东西太多了…"); return 1; }
 // 3. 对方正忙（busy 冷却）
-// 4. 一次最多买 100 件 —— ✅ 这条有
+// 4. 一次最多 100 件 —— ✅ 原本就有
 ```
 
-第 1 条和 §二 里 `walker` 的 15 分钟自杀是同一类自愈机制。
+第 1 条返回 `{:recover, %{action: :teleport_home | :despawn, …}}`，
+和 §二 里 `walker` 的 15 分钟自杀是同一类自愈机制。
 
-### 一个真 bug：`:amount` 默认值导致两处死代码
+`MAX_ITEM_CARRIED` 原 LPC 是宏，取 **100**（`@max_item_carried`）。
 
-`dealer.ex:57` 与 `dealer.ex:77`：
+### 一个真 bug：`:amount` 默认值导致两处死代码 ✅ **已修**
+
+`dealer.ex:57` 与 `dealer.ex:77` 原来写的是：
 
 ```elixir
 max_count < 1 and amount > 1 -> {:reject, "这种东西不能拆开来卖。"}
@@ -200,7 +209,20 @@ if (amount > 1 && ! ob->query_amount())   // query_amount() 对不可叠加物�
 ```
 
 即"**不可叠加的物品**不能一次买多个"。我们默认 1、LPC 是 0，语义反了。
+
+已抽出 `stackable?/1`：`:amount` 缺失或非正整数 = 不可叠加。
 注意 `:amount` 在别处（bag / instance）也有用到，改语义要连带确认。
+
+顺带修了 `sell_value/3` 的条件：LPC 判的是**库存数量** `max_count > 1`
+而不是本次卖出的 `amount` —— 叠了 4 件卖 1 件，仍走 `base_value * amount`。
+这一点是写测试时才发现的（第一版测试断言写错了）。
+
+### 仍然缺失
+
+- **`compelete_trade` 之外，`vendor` / `guarder` / `banker` 都还没接派发层** ——
+  本节只补齐了纯函数层面的差距，派发本身见 §一之一 的计划。
+- `dealer.ex` 的 `do_list` 少一处：LPC 里若库存与目录同名，
+  `count[short_name] = -1`（覆盖成"大量供应"），我们保留库存数字。
 
 **这一条是本轮最严重的发现，比 §一 影响面大得多。**
 

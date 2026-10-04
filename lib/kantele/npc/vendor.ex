@@ -62,6 +62,58 @@ defmodule Kantele.Npc.Vendor do
     end
   end
 
+  @doc """
+成交并把货交给买家（对应 vendor.c `compelete_trade/2`）。
+
+LPC 原文：
+
+    void compelete_trade(object me, string what) {
+        string ob_file;
+        if( stringp(ob_file = query("vendor_goods/" + what)) ) {
+            ob = new(ob_file);
+            ob->move(me);
+            message_vision("$N从$n那里买下一" + ob->query("unit")
+                            + ob->query("name") + "。\n", me, this_object());
+        }
+    }
+```
+
+之前这个函数**没被移植**，所以 `vendor.ex` 只有三个纯查询
+（`buy_object` / `price_string` / `vendor_list`）—— 即使接上派发层，
+vendor 系商店买了也拿不到货。
+
+和 `Kantele.Npc.Dealer` 一致，这里只做**纯决策**：算出该做什么，
+真正 `move` 物品实例由派发层落地（Dealer 的 docstring 也是这个约定）。
+
+`vendor_goods` 未命中该 key 时返回 `{:error, :not_found}`（LPC 里
+`query()` 返回 0 / 非 stringp，于是整个 if 块跳过，**静默什么都不做**）。
+"""
+  def complete_trade(vendor_goods, what) when is_map(vendor_goods) do
+    case Map.get(vendor_goods, what) do
+      nil ->
+        {:error, :not_found}
+
+      item when is_map(item) ->
+        unit = Map.get(item, :unit, "个")
+        name = item_name(item)
+
+        {:ok,
+         %{
+           action: :deliver_item,
+           item_id: Map.get(item, :id, what),
+           unit: unit,
+           name: name,
+           # LPC message_vision 的原文，供派发层广播
+           message: "从#{Map.get(item, :vendor_name, "商人")}那里买下一#{unit}#{name}。"
+         }}
+
+      _ ->
+        {:error, :not_found}
+    end
+  end
+
+  def complete_trade(_goods, _what), do: {:error, :not_found}
+
   defp is_merchant?(merchant_id, arg) do
     merchant_id != nil && merchant_id != "" && merchant_id == arg
   end
