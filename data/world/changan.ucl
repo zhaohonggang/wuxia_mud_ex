@@ -2027,7 +2027,14 @@ item_desc = {
   z = 0
 valid_leave = [
 {
-   condition = "(string)me->query('gender')=='女性'"
+      # LPC (mud/d/changan/qunyulou.c):
+   #   if (dir == "south" && objectp(ob = present("da shou", this_object())) && living(ob))
+   #   {   if (wizardp(me)) return ::valid_leave(me, dir);
+   #       if ((string)me->query("gender")=="女性") return notify_fail(...); }
+   # 房里有 dashou x4，出口 south/north，守卫方向就是 south。
+   # 同函数里还有一条「不准带武器进入」，那是遍历 all_inventory 的 for 循环，
+   # 条件语言表达不了，仍留在注释里（原样保留）。
+   condition = "dir == 'south' && objectp(ob = present('da shou',this_object())) && living(ob) && (string)me->query('gender')=='女性'"
 direction = ~
   message = "一把抓住了你，说道:“这里不是女人该来的地方，你别进去。”"
 }

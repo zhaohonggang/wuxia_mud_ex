@@ -179,7 +179,7 @@ alias Kantele.World.LpcCondition
   end
 
   @tag :world_data
-  test "总账：166 条里 142 条会拦人、24 条不会", ctx do
+  test "总账：166 条里 143 条会拦人、23 条不会", ctx do
     tally =
       for room <- ctx.world.rooms,
           veto <- room.exit_vetoes,
@@ -194,9 +194,9 @@ alias Kantele.World.LpcCondition
     assert total == 166,
            "条件总数变了：#{total}（tally=#{inspect(tally)}）"
 
-    # 142 = 纯条件 124 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
-    assert tally[:live] == 142, "会拦人的条数变了：#{tally[:live]}"
-    assert tally[:dead] == 24, "不会拦的条数变了：#{tally[:dead]}"
+    # 143 = 纯条件 125 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
+    assert tally[:live] == 143, "会拦人的条数变了：#{tally[:live]}"
+    assert tally[:dead] == 23, "不会拦的条数变了：#{tally[:dead]}"
   end
 
   @tag :world_data

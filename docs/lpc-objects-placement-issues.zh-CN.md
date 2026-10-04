@@ -1,7 +1,7 @@
 # LPC `set("objects", ...)` 落地问题清单
 
 > 基线：`mix test --seed 12345` → **3272 tests, 0 failures**
-> `valid_leave` 门禁：**141/166 会拦人**（`scripts/audit_veto_effectiveness.exs`）
+> `valid_leave` 门禁：**143/166 会拦人**（`scripts/audit_veto_effectiveness.exs`）
 > 本文记录 2026-10 一轮排查中发现的问题。相关：[[ucl-comment-todo.zh-CN]]、
 > [[ucl-conversion-issues.zh-CN]]、[[data-world-info-loss.zh-CN]]
 
@@ -15,10 +15,9 @@
 | `room_characters` 引用了本区没有的定义（跨区） | 2 处 | **已修** |
 | NPC 名字被转换器写倒 | 1 处 | **已修** |
 | `room_items` 引用彻底不存在的 `items.X` | **674 处** | **未修**，见 §5 |
-| 门禁条件外层方向守卫丢失 | 17 条 | 只有 1 条能安全补回，见 六.1 |
+| 门禁条件外层方向守卫丢失 | 16 条 | 只有 2 条能安全补回，见 六.1 |
 | 门禁条件要求不存在的方向 | 7 条 | 未修 |
 | 审计脚本把析取当合判 | 2 条误报 | **已修** |
-| 6 个房间的条件在 LPC 里无出处（转换器编的） | 6 条 | 未修，建议删 |
 
 一个反复出现的教训：**转换器的错误是静默的**。
 loader 对解析不到的引用一律 `if is_nil(...)` 跳过，不报错、不警告。
@@ -224,11 +223,11 @@ LPC `set("objects", ...)` 里**物品**的部分基本没落地。
 
 ---
 
-## 六、剩余 24 条不拦人的门禁
+## 六、剩余 23 条不拦人的门禁
 
 | 原因 | 条数 | 说明 |
 |---|---|---|
-| 未限定方向 | 17 | 见 §6.1，**多数不能直接执行** |
+| 未限定方向 | 16 | 见 §6.1，**多数不能直接执行** |
 | 要求不存在的方向 `west` | 5 | `xiyu:kedian` `lingzhou:biangate` `chengdu:kedian` `fuzhou:rongcheng` `tiezhang:kedian` |
 | 要求不存在的方向 `enter` | 1 | `city:mudren`，旧 todo 的 F 项，建议正式免除 |
 | 要求不存在的方向 `south` | 1 | `foshan:pm_restroom`（条件是 `balance < 5000000 \|\| weiwang < 30`） |
@@ -236,96 +235,89 @@ LPC `set("objects", ...)` 里**物品**的部分基本没落地。
 「未限定方向」那 17 条**不能直接执行** —— 会把该房所有出口变成同一道门禁，
 可能把玩家锁死。`LpcCondition.direction_scoped?/1` 就是在防这个。
 
-### 6.1 逐条分类：只有 1 条能安全补守卫
+### 6.1 逐条分类：只有 2 条能安全补守卫
 
-排查后发现这 17 条**不是同一种病**，之前笼统叫「丢了外层守卫」是不准确的。
+排查后发现这 16 条**不是同一种病**，之前笼统叫「丢了外层守卫」是不准确的。
 
-#### (a) 能安全补回守卫：1 条
+> **教训：不要用正则去切房间块。**
+> `re.search(r'rooms\s+"X"\s*\{(.*?)\n  \}', s, re.S)` 会在房间内部
+> 提前截断（条件块里有 `\n  }` 这种两空格缩进的结尾），把条件算到隔壁房间头上。
+> 我据此一度报出「6 条转换器编造的条件」，还差点删掉 `qunyulou` /
+> `bingqifang` / `dmyuan2` 的**正版**条件 —— 那三个房间其实都有 LPC `valid_leave`。
+> 正确做法是**括号配平**定位房间块，或者直接信 `scripts/audit_veto_effectiveness.exs`
+> 的输出（它走 loader，房间归属是对的）。
+>
+> 同理，删除条件时也必须限定房间范围：同一个条件字符串在别的房间是合法的。
 
-`xiyu:xxh6` 的 gender 那条。LPC 原文：
+#### (a) 能安全补回守卫：2 条（都已做）
+
+**`xiyu:xxh6` 的 gender 那条** → `dir == 'in' && present('caihua zi',environment(me)) && me->query('gender') == '无性'`，与原文逐字对应。「无性」是玩家固有属性，不存在「先做点什么才能解开」，不会锁死。
+
+**`changan:qunyulou`** → LPC：
 
 ```lpc
-if (dir == "in") {
-    if (present("caihua zi", environment(me))) {
-        if (!myfam || myfam["family_name"] != "星宿海") return notify_fail(...);
-        if (me->query("gender") == "无性")         return notify_fail(...);
-        if (!(int)this_player()->query_temp("marks/花")) return notify_fail(...);
-    }
+if (dir == "south" && objectp(ob = present("da shou", this_object())) && living(ob)) {
+    if (wizardp(me)) return ::valid_leave(me, dir);
+    if ((string)me->query("gender")=="女性") return notify_fail(...);
 }
 ```
 
-改成 `dir == 'in' && present('caihua zi',environment(me)) && me->query('gender') == '无性'`
-—— 与原文逐字对应。「无性」是玩家固有属性，不存在「先做点什么才能解开」，
-所以不会造成锁死。已启用（141 → 142）。
+房里有 `dashou` ×4，出口 `south`/`north`，守卫方向就是 `south`。
+补成 `dir == 'south' && objectp(ob = present('da shou',this_object())) && living(ob) && (string)me->query('gender')=='女性'`。
 
-同房另外两条：
-
-- **family 那条**：数据里根本没有 `condition`，转换器只留了注释
-  （`# 阻挡条件（原样保留）：myfam || myfam["family_name"] != "星宿海"`），
-  且 `message` 挂在这个空块上。没补。
-- **marks/花 那条**：**必须保持禁用**。`marks/花` 全库只由
-  `mud/d/xiyu/npc/caihua.c` 的 action 设置，而采花子的 action 没移植 ——
-  没有任何代码写这个标记。加上 `dir == 'in'` 守卫后，
-  `xiyu:xiaoyao` 会对**所有人**封死（不是只封非星宿海）。
-  已在数据里写明原因，并加了回归测试钉住。
+同一函数里还有一条「不准带武器进入」，是遍历 `all_inventory` 的 `for` 循环，
+条件语言表达不了，仍留在注释里。
 
 #### (b) 补了守卫反而更宽（误拦）：1 条 —— 我踩过，已还原
 
-`beijing:kediandayuan`。LPC：
+`beijing:kediandayuan`。LPC 除了方向，还要求**目的地房间**里有拉马和毒匕神尼
+（条件语言只能看自己这个房间）。加 `dir == 'east'` 的结果是**所有**内力<100 的
+玩家都过不去，比 LPC 宽得多。是既有测试
+`exit_veto_runtime_test.exs`（「依赖目的地房间内容，无法表达」）把它挡下来的。
+已还原。
 
-```lpc
-if (dir != "east") return ::valid_leave(me, dir);
-room = find_object(query("exits/east"));
-if (room && present("la ma", room) && present("dubi shenni", room)) {
-    if ((int)me->query_skill("force") < 100) return notify_fail(...);
-    me->receive_damage("qi", 50);
-}
-```
-
-除了方向，LPC 还要求**目的地房间**里有拉马和毒匕神尼。
-数据里保存的只是 `force < 100` 这一半 —— 条件语言只能看**自己**这个房间，
-表达不了「去查另一个房间」。
-
-我一开始加了 `dir == 'east' &&`，结果**所有**内力<100 的玩家都过不去这道门，
-比 LPC 宽得多。是 `exit_veto_runtime_test.exs` 里既有的断言
-（「依赖目的地房间内容，无法表达」）把它挡下来的。已还原。
-
-> 教训：给条件加 `dir ==` 不等于「修好了」。要先确认 LPC 的**全部**前置条件
+> 教训：**给条件加 `dir ==` 不等于「修好了」**。要先确认 LPC 的**全部**前置条件
 > 都已表达出来，否则只是把一条死条件变成一条误拦条件。
 
-#### (c) LPC 里本来就没有 valid_leave（转换器编的）：6 条
+#### (c) 表达能力不足，补不了：3 条
 
-这些房间在 LPC 里**压根没有 `valid_leave` 函数**，数据里的条件是转换器
-从别处误抓或凭空生成的：
-
-| 房间 | 数据里的条件 | 问题 |
+| 房间 | 条件 | 为什么补不了 |
 |---|---|---|
-| `changan:qinglong3` | `me->query('gender')=='女性'` | 无出处 |
-| `city:duchuan` | `me->query_temp('pigging_seat')` | 无出处 |
-| `city:qiyuan1/3/4` | `me->query_temp('weiqi_seat')` | 无出处 |
-| `huashan:baichi` | `j > 1` | **`j` 是未定义变量** |
-| `huashan:chaoyang` | `present('soup',me) \|\| present('rice',me)` | 与 `xiangyang/juyichufang.c` 的条件重复 |
-| `shaolin:dmyuan` | `! present('xisui jing',this_object())` | 无出处 |
+| `beijing:kediandayuan` | `force < 100` | 要看目的地房间内容 |
+| `huashan:bingqifang` | `j > 1` | LPC 是 `for(...) if (inv[i]->query("id")=="zhujian") j++;`，即「背包里竹剑超过 1 把」。`j` 是 LPC 循环变量，条件语言没有「按 id 统计背包」的概念 |
+| `taishan:nantian` | `me->query('id') != mengzhu` | `mengzhu` 是 LPC 局部变量（`find_living("mengzhu")->query("winner")`），裸标识符无法求值 |
 
-其中 `huashan:baichi` 的 `j > 1` 是从 LPC 的循环变量里抓出来的，
-纯垃圾。**建议直接从数据里删掉这 6 条**，而不是留着等「以后补守卫」。
+#### (d) 必须保持禁用（会锁死）：1 条
 
-#### (d) LPC 里真的不限方向（是「在做某事时不能走」）：9 条
+`xiyu:xxh6` 的 `marks/花` 那条。`marks/花` 全库只由
+`mud/d/xiyu/npc/caihua.c` 的 action 设置，而采花子的 action 没移植 ——
+搜遍 `lib/` 和 `data/` 没有任何地方写这个标记。加 `dir == 'in'` 守卫后，
+`xiyu:xiaoyao` 会对**所有人**封死（不是只封非星宿海）。
+已在数据里写明原因，并加了回归测试钉住这条不许被加上。
 
-LPC 原文就没有 `dir` 判断，忠实执行就是「只要满足 X 就哪儿都去不了」：
+#### (e) LPC 里真的不限方向（在做事时不能走）：9 条
 
-| 房间 | 条件 | 说明 |
-|---|---|---|
-| `city:nproom` / `city:sproom` / `city:underlt` | `me->query_temp('pigging_seat')` | 坐在拱猪桌前不许走，需先离桌 |
-| `city:lichunyuan2` | `me->query_condition('prostitute')` | 龟公抱住不许走 |
-| `huashan:bingqifang` | `j > 1` | 需按 id 统计背包，条件语言表达不了 |
-| `lingxiao:wave` | `objectp(present('xuanbing chimang',environment(me)))` | 玄冰驰马封路 |
-| `xiangyang:juyichufang` | `present('soup',me) \|\| present('rice',me)` | 端着饭不许走 |
-| `taishan:nantian` | `present('jiang baisheng',...) && me->query('id') != mengzhu` | `mengzhu` 是 LPC 局部变量（`find_living("mengzhu")->query("winner")`），裸标识符无法求值 |
+LPC 原文就没有 `dir` 判断。**这类必须逐条确认「解开它的动作」在我们这边是否已实现**，
+否则就是死锁：
 
-这些要**逐条确认「解开它的动作」在我们这边是否已实现**，
-否则就是死锁。已实现解锁动作的可以加 `all_dirs` 放行；
-没实现的应保持禁用。建议下一个专门轮次处理。
+| 房间 | 条件 | 解锁动作 | 我们这边有吗 |
+|---|---|---|---|
+| `city:wproom` / `sproom` / `eproom` / `nproom` | `me->query_temp('pigging_seat')` | 离桌 | 待查 |
+| `city:qiyuan2` / `qiyuan3` / `qiyuan4` | `me->query_temp('weiqi_seat')` | `qiyuan2.c` 里 `delete_temp("weiqi_seat")` | **棋苑未移植** |
+| `huashan:chufang` / `xiangyang:juyichufang` | `present('soup',me) \|\| present('rice',me)` | 放下/吃完 | 待查 |
+| `city:lichunyuan2` | `me->query_condition('prostitute')` | 龟公松手 | 待查 |
+| `lingxiao:wave` | `objectp(present('xuanbing chimang',environment(me)))` | 玄冰驰马移开 | 待查 |
+| `shaolin:dmyuan2` | `! present('xisui jing',this_object())` | 拿到洗髓经 | 待查 |
+
+已知 `city:qiyuan2/3/4` 的解锁（`weiqi_seat` 的设置与清除）全在
+`mud/d/city/qiyuan/qiyuan2.c` 里，**棋苑我们没移植**，所以这 3 条
+一旦启用就是死锁。`city:qiyuan1` 相反：它的 `valid_leave` 里
+**没有** `weiqi_seat` 那条（数据里也没有），只有 `action == 1` 那条，
+而那条已经带方向守卫、生效中。
+
+> `shaolin:dmyuan2` 有**两条** veto：`dir == 'down'` 的心法那条已生效，
+> 未限定方向的 `! present('xisui jing', ...)` 那条是同一个 `valid_leave`
+> 里的另一个分支，不是复制品。
 
 ---
 
@@ -381,5 +373,18 @@ Enum.count(Enum.get(world |> Enum.find(&(&1.id == "baituo:cave")), :item_instanc
 5. **优先用括号配对定位块范围**，别用正则 + 下标拼接。
    正则方案我写坏过 `heimuya.ucl` / `lingxiao.ucl` / `mingjiao.ucl` 三个文件。
 
-6. **自检要检查「每行引号配对」**，而不是 `assert '\n' not in blk`
+6. **别用正则切房间块**
+   `rooms "X" { ... }` 要用**括号配平**定位。`.*?` 会在房间内部提前截断
+   （条件块结尾是 `
+}`，若写成 `
+  }` 更会错位），把条件算到隔壁房间头上。
+   我据此误报过「6 条转换器编造的条件」，还差点删掉 `qunyulou` /
+   `bingqifang` / `dmyuan2` 的**正版**条件 —— 那三个房间其实都有 LPC
+   `valid_leave`。要么括号配平，要么直接信 loader 驱动的审计脚本输出。
+
+7. **删条件也要限定房间范围**
+   同一个条件字符串在别的房间可能是合法的：`pigging_seat` 有 4 个房间、
+   `weiqi_seat` 有 3 个、`soup/rice` 有 2 个。按字符串全局删会误伤正版。
+
+8. **自检要检查「每行引号配对」**，而不是 `assert '\n' not in blk`
    —— 块本身就是多行文本，那个断言必然失败。

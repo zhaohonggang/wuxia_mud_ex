@@ -266,8 +266,11 @@ defmodule Kantele.World.ExitVetoRuntimeTest do
       # 其中 xiyu:xxh6 原本有两条未限定，本轮给 gender 那条补上了 LPC 的
       # `dir == "in"` + `present("caihua zi", ...)` 守卫（与原文逐字对应），
       # marks/花 那条仍然不能加 —— 见 veto_effectiveness_test.exs。
-      assert length(unscoped) == 5,
-             "预期剩 5 条，实际 #{length(unscoped)}: #{inspect(unscoped)}"
+      # 4 = kediandayuan / bingqifang / xxh6(marks/花) / nantian
+      # 本轮给 changan:qunyulou 补回了 LPC 的 `dir == "south"` +
+      # `present("da shou", ...)` 守卫（与原文逐字对应，房里 dashou x4）。
+      assert length(unscoped) == 4,
+             "预期剩 4 条，实际 #{length(unscoped)}: #{inspect(unscoped)}"
 
       joined = Enum.join(unscoped, " | ")
 
@@ -275,7 +278,7 @@ defmodule Kantele.World.ExitVetoRuntimeTest do
       assert joined =~ "bingqifang"    # 需要按 id 统计背包数量（转换残留 j > 1）
       assert joined =~ "nantian"       # 裸标识符 mengzhu
       assert joined =~ "xxh6"          # marks/花 那条：无人设置该标记，加守卫会封死 xiaoyao
-      assert joined =~ "qunyulou"      # gender 已可用，但没限定方向
+      refute joined =~ "qunyulou", "已补守卫，不该再出现在未限定清单里"
     end
   end
 
