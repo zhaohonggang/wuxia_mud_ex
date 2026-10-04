@@ -3354,3 +3354,25 @@ direction = "down"
   ]
 
     }
+
+    characters "kid1" {
+      name = "小孩"
+      description = ""
+  gender = "男性"
+  age = 5
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }

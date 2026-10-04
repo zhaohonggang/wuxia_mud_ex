@@ -816,3 +816,16 @@ item_desc = {
         material = "gold"
       }
     }
+
+    characters "guest" {
+      name = "进香客"
+      description = ""
+  gender = "男性"
+  shen_type = 1
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+    }

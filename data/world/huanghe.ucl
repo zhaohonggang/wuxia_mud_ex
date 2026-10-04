@@ -2178,3 +2178,33 @@ item_desc = {
         armor = 10
       }
     }
+
+    characters "wujiang" {
+      name = "武将"
+      description = "他站在那里，的确有说不出的威风。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 75000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.tiejia.id }
+  ]
+
+    }

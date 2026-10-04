@@ -2507,3 +2507,114 @@ chats = [
   ]
 
     }
+
+    characters "liumang" {
+      name = "流氓"
+      description = "他是一个成天游手好闲的流氓，长得倒是白白胖胖的，也许以前有过钱。"
+  gender = "男性"
+  age = 19
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+    characters "wujiang" {
+      name = "武将"
+      description = "他站在那里，的确有说不出的威风。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 75000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+    characters "kid1" {
+      name = "小孩"
+      description = ""
+  gender = "男性"
+  age = 5
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+    characters "xiaoer2" {
+      name = "店小二"
+      description = ""
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  # vendor_goods: "obj/jitui" (file not found)
+  # vendor_goods: "obj/jiudai" (file not found)
+  # vendor_goods: "obj/baozi" (file not found)
+  # vendor_goods: "obj/kaoya" (file not found)
+  # vendor_goods: "/clone/fam/pill/food" (file not found)
+  # vendor_goods: "/clone/fam/pill/water" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }

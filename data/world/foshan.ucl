@@ -1442,3 +1442,26 @@ chats = [
   ]
 
     }
+
+    characters "liumang" {
+      name = "流氓"
+      description = "他是一个成天游手好闲的流氓，长得倒是白白胖胖的，也许以前有过钱。"
+  gender = "男性"
+  age = 19
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }

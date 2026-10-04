@@ -1857,3 +1857,129 @@ direction = "west"
   ]
 
     }
+
+    characters "ducha" {
+      name = "城门督察"
+      description = "一个身材高大、满脸横肉的督察，城门便是由 他负责监守。"
+  gender = "男性"
+  age = 42
+  shen_type = 1
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 50000
+    con = 25
+    dex = 20
+    int = 30
+    max_jing = 500
+    max_neili = 400
+    max_qi = 500
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "sword" level = 80 }
+  ]
+
+
+  carry = [
+    { id = items.sword4.id },
+    { id = items.guanfu5.id }
+  ]
+
+    }
+
+    characters "xunbu" {
+      name = "巡捕"
+      description = "这是一个巡捕，身体强壮，看上去武功不错。"
+  title = "六扇门内巡捕"
+  gender = "男性"
+  age = 43
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 600000
+    con = 26
+    dex = 22
+    int = 19
+    max_jing = 1500
+    max_neili = 3000
+    max_qi = 2200
+    str = 31
+  }
+
+  skills = [
+    { skill = "unarmed" level = 150 },
+    { skill = "sword" level = 150 },
+    { skill = "parry" level = 150 },
+    { skill = "dodge" level = 150 },
+    { skill = "force" level = 150 },
+    { skill = "huashan-xinfa" level = 150 },
+    { skill = "huashan-jian" level = 150 },
+    { skill = "huashan-quanfa" level = 150 },
+    { skill = "feiyan-huixiang" level = 150 },
+    { type = "dodge" skill = "feiyan-huixiang" },
+    { type = "force" skill = "huashan-xinfa" },
+    { type = "sword" skill = "huashan-jian" },
+    { type = "unarmed" skill = "huashan-quanfa" },
+    { type = "parry" skill = "huashan-jian" }
+  ]
+
+
+  carry = [
+    { id = items.sword4.id },
+    { id = items.guanfu5.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["halt"]
+  }
+
+  engage = {
+    fight = { accept = false }
+    hit = { accept = true }
+    kill = { accept = true }
+  }
+    }
+
+    characters "xiaoer2" {
+      name = "店小二"
+      description = ""
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  # vendor_goods: "obj/jitui" (file not found)
+  # vendor_goods: "obj/jiudai" (file not found)
+  # vendor_goods: "obj/baozi" (file not found)
+  # vendor_goods: "obj/kaoya" (file not found)
+  # vendor_goods: "/clone/fam/pill/food" (file not found)
+  # vendor_goods: "/clone/fam/pill/water" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }

@@ -509,8 +509,9 @@ set("objects", ([
 | ~~1~~ | ~~补 `zaohongma` / `huangbiaoma` / `ziliuma` 三个马厩 NPC~~ | ~~87 条~~ | **已完成** |
 | ~~2~~ | ~~补 `baituo` 的 8 种蛇~~ | ~~约 36 条~~ | **已完成** |
 | 1 | ~~补 `walker`（`/clone/npc/walker`，35 个区）~~ | ~~141 条~~ | **已完成**（§五之四） |
-| 2 | 补 `ducha` 23 / `liumang` 22 / `wujiang` 20 / `kid1` 19 | 84 条引用 | 低（做法已验证；注意 `liumang` 有 city 与 beijing 两个源） |
-| 3 | 补 `xunbu` 16 / `xiaoer2` 15 / `guest` 14 / `duke` 11 | 56 条引用 | 低（同上；`guest` 指向 `/d/wudang/npc/guest`） |
+| ~~2~~ | ~~补 `ducha` / `liumang` / `wujiang` / `kid1`~~ | ~~84 条~~ | **已完成**（§五之五） |
+| ~~3~~ | ~~补 `xunbu` / `xiaoer2` / `guest` / `duke`~~ | ~~56 条~~ | **已完成** |
+| 1 | 剩下的平长尾：`xianren` / `dizi` / `chake` / `guanzhong` / `zaopeng` / `yayi` / `tangzi` / `qigai` 等 | 351 条（最大一项仅 6） | 中，要逐条回 LPC 原文核对是哪个 NPC |
 | 4 | 补 `item` 类里引用最多的战利品（`gangdao` / `changjian` / `mudao` / `ganchai` / `corpse`） | 约 30 条引用 | 低（纯物品） |
 | 5 | 逐个查 `ambiguous` 的 87 个 id 属于哪个候选 | 163 条引用 | 中，要看 LPC 原文 |
 | ~~6~~ | ~~给 loader 加「引用解析不到」的 warning~~ | — | **已完成**（§〇 的加载末尾汇总） |
@@ -581,10 +582,72 @@ walker 本身仍要补 —— dali 另有 15 条、foshan 另有 1 条是真的 
 ### 悬空测试的阈值改成上限
 
 `veto_effectiveness_test.exs` 里原来写的是 `assert total_refs > 1000`
-—— 那时总数 1235。补完 walker 变成 955，这条断言就变成「必须还有 1000 个
-悬空」，**补得越多越容易红**。改成上限 `assert total_refs <= 1000`，
-并把还没补的 8 类 id（`ducha` / `liumang` / `wujiang` / `kid1` / `xunbu` /
-`xiaoer2` / `guest` / `duke`）逐条列出，补一个划掉一个。
+—— 那时总数 1235。补完 walker 变成 955，补完剩下 8 类变成 815，
+这条断言就变成「必须还有 1000 个悬空」，**补得越多越容易红**。
+
+改成上限（`<= 1000` → `<= 850`），数字变大才说明数据退化了。
+断言列表也从「跨区共享 NPC」换成了剩下的平长尾 id，补一个划掉一个。
+
+---
+
+## 五之五、已补：剩下 8 类跨区 NPC（−140 条），头部变成平长尾
+
+| NPC | LPC 源 | 区数 | 引用 |
+|---|---|---|---|
+| `ducha` | `/d/beijing/npc/ducha` | 7 | 23 |
+| `wujiang` | `/d/city/npc/wujiang` | 9 | 20 |
+| `kid1` | `/d/beijing/npc/kid1` | 8 | 19 |
+| `xunbu` | `/clone/npc/xunbu` | 8 | 16 |
+| `xiaoer2` | `/d/city/npc/xiaoer2` | 10 | 15 |
+| `guest` | `/d/wudang/npc/guest` | 4 | 14 |
+| `duke` | `/d/beijing/npc/duke` | 2 | 11 |
+| `liumang` | **两个源**，见下 | 8 | 22 |
+
+共 28 个区、56 个新块。
+
+### `liumang` 有两个 LPC 实现，按区区分
+
+```c
+// d/city/npc/liumang.c      combat_exp 1000，无闲聊
+// d/beijing/npc/liumang.c   combat_exp 10000，chat_chance 1 + 「流氓嘿嘿嘿奸笑几声」
+```
+
+所以 jingzhou 用 beijing 那份，其余 7 个区用 city 那份。
+
+**zhonghou 是个例外**：它的两个房间分别指向两个不同的实现 ——
+`wendingnan1` 放 beijing 版、`yanlingdong` 放 city 版，但两者的 UCL id 都是
+`liumang`，一份定义只能服务一个。这里选了 beijing 版（更强、有闲聊）。
+这是**有意的妥协**，不是遗漏。
+
+### `xunbu` 的名字同样是占位符
+
+和 `walker` 一样用 `NPC_D->generate_cn_name()`，转换器填了 `name = "NPC"`。
+它 long 是「这是一个巡捕」、另有 `title = "六扇门内巡捕"`，故取名「巡捕」。
+
+### 转换器把 id 按文件名推错了 4 个
+
+`convert_file` 用路径推 id，带区名前缀的推错了，统一改回：
+
+```
+city_liumang -> liumang      bj_liumang -> liumang
+city_xiaoer2 -> xiaoer2      wudang_guest -> guest
+```
+
+### 数字
+
+- `character` 悬空 **751 → 632 → 491 → 351**（四轮累计 **−400**）
+- `item` 悬空仍 **464**
+- 门禁仍 **166 / 155 / 11**
+- 12 类跨区共享 NPC 全部归零
+
+补完后头部变成一条**平长尾**（最大只有 6 处）：
+`xianren 6 / dizi 5 / chake 5 / guanzhong 5 / zaopeng 4 / yayi 4 / tangzi 4 /
+qigai 4`。这些**不是**跨区共享 NPC，而是各自区的小角色（衙役、弟子、乞盖…），
+只是恰好同名、且只在部分区有定义。
+
+### 悬空测试的阈值
+
+上限从 `<= 1000` 降到 `<= 850`，断言列表换成上面这批长尾 id。
 
 ---
 

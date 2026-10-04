@@ -6856,3 +6856,58 @@ chats = [
   ]
 
     }
+
+    characters "xunbu" {
+      name = "巡捕"
+      description = "这是一个巡捕，身体强壮，看上去武功不错。"
+  title = "六扇门内巡捕"
+  gender = "男性"
+  age = 43
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 600000
+    con = 26
+    dex = 22
+    int = 19
+    max_jing = 1500
+    max_neili = 3000
+    max_qi = 2200
+    str = 31
+  }
+
+  skills = [
+    { skill = "unarmed" level = 150 },
+    { skill = "sword" level = 150 },
+    { skill = "parry" level = 150 },
+    { skill = "dodge" level = 150 },
+    { skill = "force" level = 150 },
+    { skill = "huashan-xinfa" level = 150 },
+    { skill = "huashan-jian" level = 150 },
+    { skill = "huashan-quanfa" level = 150 },
+    { skill = "feiyan-huixiang" level = 150 },
+    { type = "dodge" skill = "feiyan-huixiang" },
+    { type = "force" skill = "huashan-xinfa" },
+    { type = "sword" skill = "huashan-jian" },
+    { type = "unarmed" skill = "huashan-quanfa" },
+    { type = "parry" skill = "huashan-jian" }
+  ]
+
+
+  carry = [
+    { id = items.sword4.id },
+    { id = items.guanfu5.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["halt"]
+  }
+
+  engage = {
+    fight = { accept = false }
+    hit = { accept = true }
+    kill = { accept = true }
+  }
+    }

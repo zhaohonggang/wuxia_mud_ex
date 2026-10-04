@@ -269,16 +269,19 @@ alias Kantele.World.LpcCondition
     assert total_refs > map_size(seen), "计数应累加（同一 ref 被多个房间引用）"
 
     # 别写死阈值。之前写的是 > 1000，那时总数 1235；后来陆续补齐了
-    # mafu(27) / bing(76) / guanbing(16) / walker(141)，总数降到 955，
-    # 断言就变成「必须还有 1000 个悬空」—— 补得越多越容易红。
+    # mafu(27) / bing(76) / guanbing(16) / walker(141)，再补 ducha / liumang /
+    # wujiang / kid1 / xunbu / xiaoer2 / guest / duke（合计 140），
+    # 总数降到 815，断言就变成「必须还有 1000 个悬空」—— 补得越多越容易红。
     #
     # 这里钉的是**上限**：修复只会让这个数变小，所以给一个当前值附近的门槛，
     # 数字变大说明数据退化了（或者又漏了一个区）。
-    assert total_refs <= 1000, "悬空引用不该变多，当前 #{total_refs}（上限 1000）"
+    assert total_refs <= 850, "悬空引用不该变多，当前 #{total_refs}（上限 850）"
 
-    # 还没补完的那几类跨区通用 NPC 仍在列，
-    # 补一个就把这里划掉一条，剩下的补完时把上限一起降下来。
-    for id <- ~w(ducha liumang wujiang kid1 xunbu xiaoer2 guest duke) do
+    # 12 类跨区共享 NPC 补完后，头部已经变成一条平的长尾（最大的只有 6 处）：
+    # xianren 6 / dizi 5 / chake 5 / guanzhong 5 / zaopeng 4 / yayi 4 / tangzi 4 / qigai 4。
+    # 这些**不是**跨区共享 NPC，而是各自区的小角色（衙役、弟子、乞盖等），
+    # 只是恰好同名、且只在部分区有定义。
+    for id <- ~w(xianren dizi chake guanzhong zaopeng yayi tangzi qigai) do
       assert Enum.any?(seen, fn
                {{_z, :character, r}, _} -> String.ends_with?(r, "." <> id <> ".id")
                _ -> false
