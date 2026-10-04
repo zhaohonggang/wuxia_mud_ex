@@ -21,6 +21,7 @@ defmodule Kantele.World.VetoEffectivenessTest do
   use ExUnit.Case, async: false
 
   alias Kantele.World.Loader
+alias Kantele.World.LpcCondition
 
   setup_all do
     world = Loader.load()
@@ -113,7 +114,7 @@ defmodule Kantele.World.VetoEffectivenessTest do
   end
 
   defp check_presents(ctx, room, c) do
-    presents = ctx.cap.(~r/present\('([^']+)'/, c)
+    presents = LpcCondition.present_refs(c)
 
     if presents == [] do
       {:live, nil}
@@ -150,7 +151,25 @@ defmodule Kantele.World.VetoEffectivenessTest do
       undefined_room = Enum.reject(in_room_refs, &MapSet.member?(ctx.definitions, &1))
       not_placed = Enum.reject(in_room_refs, &MapSet.member?(in_room, &1))
 
+      # 按 &&/||/! 的**真实布尔结构**判定，而不是把多个 present() 当合取。
+      # LPC 里大量条件是析取，例如
+      #   (present('fumo dao',me) || present('jingang zhao',me) || ...) && dir == 'in'
+      # 只要有一条分支成立就算「可能生效」。一律当合取会把 shaolin/qyping、
+      # mingjiao/square 这类**其实有效**的门禁误判成 dead。
+      avail =
+        Map.new(presents, fn a ->
+          defined? = MapSet.member?(ctx.definitions, a)
+
+          {a,
+           if room_ref(a, c) do
+             defined? and MapSet.member?(in_room, a)
+           else
+             defined?
+           end}
+        end)
+
       cond do
+        LpcCondition.satisfiable?(c, avail) -> {:live, nil}
         undefined_player != [] -> {:dead, {:undefined_player, undefined_player}}
         undefined_room != [] -> {:dead, {:undefined, undefined_room}}
         not_placed != [] -> {:dead, {:absent, not_placed}}
@@ -160,7 +179,7 @@ defmodule Kantele.World.VetoEffectivenessTest do
   end
 
   @tag :world_data
-  test "总账：166 条里 129 条会拦人、37 条不会", ctx do
+  test "总账：166 条里 131 条会拦人、35 条不会", ctx do
     tally =
       for room <- ctx.world.rooms,
           veto <- room.exit_vetoes,
@@ -175,13 +194,13 @@ defmodule Kantele.World.VetoEffectivenessTest do
     assert total == 166,
            "条件总数变了：#{total}（tally=#{inspect(tally)}）"
 
-    # 129 = 纯条件 111 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
-    assert tally[:live] == 129, "会拦人的条数变了：#{tally[:live]}"
-    assert tally[:dead] == 37, "不会拦的条数变了：#{tally[:dead]}"
+    # 131 = 纯条件 113 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
+    assert tally[:live] == 131, "会拦人的条数变了：#{tally[:live]}"
+    assert tally[:dead] == 35, "不会拦的条数变了：#{tally[:dead]}"
   end
 
   @tag :world_data
-  test "不会拦的 52 条里，没有一条是「求值器不支持」——那类只剩自定义函数", ctx do
+  test "不会拦的那些条里，没有一条是「求值器不支持」——那类只剩自定义函数", ctx do
     reasons =
       for room <- ctx.world.rooms,
           veto <- room.exit_vetoes,
@@ -215,7 +234,7 @@ defmodule Kantele.World.VetoEffectivenessTest do
     missing = missing_uncategorized(ctx)
 
     # 这批 LPC 里有、数据里没有。多数也是 CLASS_D 门派工厂。
-    for known <- ["mang she", "dao ming", "ling tuisi", "peng yinyu"] do
+    for known <- ["mang she", "dao ming", "ling tuisi"] do
       assert MapSet.member?(missing, known),
              "#{known} 应仍在「依赖缺失」清单里"
     end

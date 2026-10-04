@@ -98,7 +98,10 @@ kind_of = fn c ->
 end
 
 dirs_of = fn c -> cap.(~r/dir\s*==\s*'(\w+)'/, c) end
-presents_of = fn c -> cap.(~r/present\('([^']+)'/, c) end
+
+# 别名可以带空格（'liu chuxuan'），而且原文里单双引号混用，
+# 所以走解析器而不是正则 —— 正则会在 `present("x", ...)` 上漏掉。
+presents_of = fn c -> LpcCondition.present_refs(c) end
 
 
 # `present(x, environment(me))` / `present(x, this_object())` 要求目标**在场**；
@@ -173,7 +176,28 @@ results =
           undefined_room = Enum.reject(in_room_refs, &MapSet.member?(definitions, &1))
           not_placed = Enum.reject(in_room_refs, &MapSet.member?(in_room, &1))
 
+          # 每个 present() 别名此刻「找不找得到」：
+          #   * 玩家身上的 -> 有定义即可
+          #   * 房间里的   -> 有定义**且**在 room_characters 里
+          # 然后交给 LpcCondition.satisfiable?/2 按 &&/||/! 的真实布尔结构判定：
+          # LPC 里大量条件是析取（`present('fumo dao',me) || present('jingang zhao',me)`），
+          # 一律当合取会把「其实有效」的门禁误判成 dead。
+          avail =
+            Map.new(presents, fn a ->
+              defined? = MapSet.member?(definitions, a)
+
+              {a,
+               if room_ref?.(a, c) do
+                 defined? and MapSet.member?(in_room, a)
+               else
+                 defined?
+               end}
+            end)
+
           cond do
+            LpcCondition.satisfiable?(c, avail) ->
+              {:live, "纯条件"}
+
             undefined_player != [] ->
               {:dead, "玩家身上要带的物品未定义 #{inspect(undefined_player)}"}
 

@@ -88,6 +88,136 @@ defmodule Kantele.World.LpcCondition do
 
   def enforceable?(_), do: false
 
+  @doc """
+  取出条件里所有 `present()` 的第一个参数（NPC/物品别名），按出现顺序去重。
+
+      iex> LpcCondition.present_refs("objectp(present('shi wei', environment(me)))")
+      ["shi wei"]
+
+  别名可以带空格（`'liu chuxuan'`），所以不能按空白切词，要走解析器。
+  """
+  def present_refs(expr) when is_binary(expr) do
+    case parse(expr) do
+      {:ok, ast} -> ast |> collect_present([]) |> Enum.reverse() |> Enum.uniq()
+      _ -> []
+    end
+  end
+
+  def present_refs(_), do: []
+
+  defp collect_present({:func, "present", [arg | _]}, acc) do
+    case present_alias(arg) do
+      nil -> acc
+      alias_name -> [alias_name | acc]
+    end
+  end
+
+  defp collect_present({:and, l, r}, acc), do: collect_present(r, collect_present(l, acc))
+  defp collect_present({:or, l, r}, acc), do: collect_present(r, collect_present(l, acc))
+  defp collect_present({:not, a}, acc), do: collect_present(a, acc)
+  defp collect_present({:cmp, _, l, r}, acc), do: collect_present(r, collect_present(l, acc))
+  defp collect_present({:cast, _, a}, acc), do: collect_present(a, acc)
+  defp collect_present({:assign, _, a}, acc), do: collect_present(a, acc)
+
+  defp collect_present({:call, target, {_method, args}}, acc) do
+    Enum.reduce(args, collect_present(target, acc), &collect_present/2)
+  end
+
+  defp collect_present({:func, _name, args}, acc),
+    do: Enum.reduce(args, acc, &collect_present/2)
+
+  defp collect_present(list, acc) when is_list(list),
+    do: Enum.reduce(list, acc, &collect_present/2)
+
+  defp collect_present(_, acc), do: acc
+
+  defp present_alias({:str, s}) when is_binary(s), do: s
+  defp present_alias(_), do: nil
+
+  @doc """
+  给定每个 `present()` 别名是否「找得到」，这条条件**有没有可能**为真。
+
+  ## 为什么要按布尔结构算，而不是把所有 present() 当合取
+
+  LPC 门禁条件里 `present()` 经常出现在**析取**里：
+
+      # mud/d/shaolin/qyping.c
+      present("fumo dao", me) || present("jingang zhao", me) ...
+
+  这种条件只要**有一条**分支能成立就算「可能生效」。早期审计脚本一律把
+  多个 `present()` 当成全都要满足，于是 `shaolin/qyping` 被判成 dead ——
+  可 `fumo dao` 在 LPC 里根本没有（只有伏魔杖/伏魔剑/大伏魔拳），
+  而同一条件里的 `jingang zhao` 是有定义的，那条门禁其实一直有效。
+
+  同理 `mingjiao/square` 是五个 NPC 的析取，只要其中一个在场就该算活。
+
+  ## 判定方式
+
+  把每个 `present()` 换成调用方给定的真假，**其余子表达式一律乐观当成真**
+  （只问「有没有可能成立」，不要求一定成立），再按 `&&` / `||` / `!` 求值。
+
+      iex> LpcCondition.satisfiable?("present('a', me) || present('b', me)", %{"a" => false, "b" => true})
+      true
+
+      iex> LpcCondition.satisfiable?("present('a', me) || present('b', me)", %{"a" => false, "b" => false})
+      false
+  """
+  def satisfiable?(expr, avail) when is_binary(expr) and is_map(avail) do
+    case parse(expr) do
+      {:ok, ast} -> opt_eval(ast, avail)
+      _ -> false
+    end
+  end
+
+  def satisfiable?(_expr, _avail), do: false
+
+  # 只关心 present() 的真假，其余一律 true（乐观）
+  defp opt_eval({:and, l, r}, a), do: opt_eval(l, a) and opt_eval(r, a)
+  defp opt_eval({:or, l, r}, a), do: opt_eval(l, a) or opt_eval(r, a)
+
+  # `!` 只能作用在 present() 上才取反。`!wizardp(me)` 这类我们**无法预知**
+  # 的谓词，取反会把乐观值翻成 false —— 那等于凭空断定「这条永远不拦」。
+  defp opt_eval({:not, x}, a) do
+    if has_present?(x), do: not opt_eval(x, a), else: true
+  end
+
+  defp opt_eval({:cmp, _, l, r}, a), do: opt_eval(l, a) or opt_eval(r, a)
+  defp opt_eval({:cast, _, x}, a), do: opt_eval(x, a)
+  defp opt_eval({:assign, _, x}, a), do: opt_eval(x, a)
+  defp opt_eval({:func, "present", [arg | _]}, a), do: truthy(present_alias(arg), a)
+
+  defp opt_eval({:call, target, {_method, args}}, a) do
+    Enum.reduce(args, true, fn arg, acc -> opt_eval(arg, a) and acc end) or
+      opt_eval(target, a)
+  end
+
+  defp opt_eval({:func, _name, args}, a) do
+    Enum.reduce(args, true, fn arg, acc -> opt_eval(arg, a) and acc end)
+  end
+
+  defp opt_eval(list, a) when is_list(list),
+    do: Enum.reduce(list, true, fn x, acc -> opt_eval(x, a) and acc end)
+
+  defp opt_eval(_other, _a), do: true
+
+  defp has_present?({:func, "present", _}), do: true
+  defp has_present?({:and, l, r}), do: has_present?(l) or has_present?(r)
+  defp has_present?({:or, l, r}), do: has_present?(l) or has_present?(r)
+  defp has_present?({:not, a}), do: has_present?(a)
+  defp has_present?({:cmp, _, l, r}), do: has_present?(l) or has_present?(r)
+  defp has_present?({:cast, _, a}), do: has_present?(a)
+  defp has_present?({:assign, _, a}), do: has_present?(a)
+
+  defp has_present?({:call, target, {_method, args}}),
+    do: has_present?(target) or Enum.any?(args, &has_present?/1)
+
+  defp has_present?({:func, _name, args}), do: Enum.any?(args, &has_present?/1)
+  defp has_present?(list) when is_list(list), do: Enum.any?(list, &has_present?/1)
+  defp has_present?(_other), do: false
+
+  defp truthy(nil, _a), do: false
+  defp truthy(alias_name, a), do: Map.get(a, alias_name, false) == true
+
   defp known_ast?({:func, name, args}) do
     name in @known_funcs and Enum.all?(args, &known_ast?/1)
   end

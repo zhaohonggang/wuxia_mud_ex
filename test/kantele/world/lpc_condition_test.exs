@@ -356,6 +356,75 @@ defmodule Kantele.World.LpcConditionTest do
     assert length(unscoped) < length(conds)
   end
 
+  describe "satisfiable?/2 —— 析取不能当合判" do
+    test "present_refs/1 取别名（带空格、单双引号都行）" do
+      assert Cond.present_refs("objectp(present('liu chuxuan', environment(me)))") ==
+               ["liu chuxuan"]
+
+      assert Cond.present_refs(~s|objectp(present("shi wei", environment(me)))|) ==
+               ["shi wei"]
+
+      assert Cond.present_refs("me->query('gender') == '女性'") == []
+    end
+
+    test "析取：有一条分支成立就算可能生效" do
+      # 这是 shaolin/qyping 的真实条件：fumo dao 在 LPC 里根本不存在
+      # （只有伏魔杖/伏魔剑/大伏魔拳），但 jingang zhao 有定义，
+      # 所以这条门禁**一直是有效的**——早先一律当合判把它误报成 dead。
+      expr =
+        "(present('fumo dao',me) || present('jingang zhao',me) || " <>
+          "present('fumo dao',environment(me)) || present('jingang zhao',environment(me))) " <>
+          "&& dir == 'in'"
+
+      refute Cond.satisfiable?(expr, %{"fumo dao" => false, "jingang zhao" => true}) ==
+               false
+
+      refute Cond.satisfiable?(expr, %{"fumo dao" => false, "jingang zhao" => false})
+    end
+
+    test "合取：全都得成立" do
+      expr = "present('a', environment(me)) && present('b', environment(me))"
+
+      assert Cond.satisfiable?(expr, %{"a" => true, "b" => true})
+      refute Cond.satisfiable?(expr, %{"a" => true, "b" => false})
+      refute Cond.satisfiable?(expr, %{"a" => false, "b" => true})
+    end
+
+    test "mingjiao/square：五个 NPC 的析取，有任一个在场就有效" do
+      expr =
+        "me->query('family/family_name') != '明教' && (dir!='south') && " <>
+          "((objectp(present('peng yinyu',environment(me)))) || " <>
+          "(objectp(present('zhang zhong',environment(me)))) || " <>
+          "(objectp(present('shuo bude',environment(me)))) || " <>
+          "(objectp(present('leng qian',environment(me)))) || " <>
+          "(objectp(present('zhou dian',environment(me)))))"
+
+      assert Cond.satisfiable?(expr, %{"shuo bude" => true})
+      assert Cond.satisfiable?(expr, %{"leng qian" => true})
+
+      refute Cond.satisfiable?(expr, %{
+               "peng yinyu" => false,
+               "zhang zhong" => false,
+               "shuo bude" => false,
+               "leng qian" => false,
+               "zhou dian" => false
+             })
+    end
+
+    test "! 只作用在 present() 上才取反，!wizardp(me) 不能被翻成 false" do
+      # `!wizardp(me)` 我们无法预知，乐观取 true；
+      # 若按「先乐观成 true 再取反」会得到 false，等于凭空断言这条永远不拦。
+      expr = "!wizardp(me) && objectp(present('guan jia',environment(me)))"
+
+      assert Cond.satisfiable?(expr, %{"guan jia" => true})
+      refute Cond.satisfiable?(expr, %{"guan jia" => false})
+
+      # 但 !present(...) 是货真价实的取反
+      assert Cond.satisfiable?("!present('a', me)", %{"a" => false})
+      refute Cond.satisfiable?("!present('a', me)", %{"a" => true})
+    end
+  end
+
   # ---- 集成：用真实世界数据复现线上场景 ----
 
   describe "真实数据集成" do
