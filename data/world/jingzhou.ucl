@@ -706,9 +706,9 @@ valid_leave = [
 # Zone: jingzhou
 
     characters "jing" {
-      name = "凌思退"
-      aliases = ["ling situi", "ling"]
-      description = "他就是凌思退，荆州现任知府。"
+      name = "凌退思"
+      aliases = ["ling tuisi", "ling", "tuisi"]
+      description = "他就是凌退思，荆州现任知府。"
   title = "荆州知府"
   gender = "男性"
   age = 35
@@ -3714,3 +3714,28 @@ chats = [
       { id = characters.waiter.id }    ]
   }
 
+    characters "shang2" {
+      name = "家丁"
+      aliases = ["jia ding", "jia", "ding"]
+      description = "一个二十来岁的青年，在商家堡内当差。"
+      gender = "男性"
+      attitude = "peaceful"
+      age = 20
+      shen_type = 1
+
+      combat = {
+        attitude = "peaceful"
+        str = 17
+        int = 22
+        con = 17
+        dex = 20
+        combat_exp = 2000
+        skills = {
+          dodge = 10
+          unarmed = 10
+        }
+      }
+
+      # LPC: d/shaolin/npc/shang2.c
+      #   carry_object("/clone/cloth/cloth")
+    }

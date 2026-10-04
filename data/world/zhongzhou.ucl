@@ -688,6 +688,11 @@ direction = ~
 ]
     }
 
+  room_characters "miaojia_houting" {
+    room_id = rooms.miaojia_houting.id
+    characters = [ { id = characters.miao.id } ]
+  }
+
   room_exits "miaojia_houting" {
     room_id = rooms.miaojia_houting.id
     south = rooms.miaojia_shufang.id
@@ -701,7 +706,7 @@ direction = ~
   room_items "miaojia_houting" {
     room_id = rooms.miaojia_houting.id
     items = [
-      { id = items.miao.id }    ]
+      ]
   }
 
 # Generated from C:/files/git/mud/d/zhongzhou/miaojia_houyuan.c by LPCConverter
@@ -2670,3 +2675,67 @@ chats = [
       { id = characters.waiter.id }    ]
   }
 
+    characters "miao" {
+      name = "苗人凤"
+      aliases = ["miao renfeng", "miao", "renfeng"]
+      description = "他就是号称打遍天下无敌手的「金面佛」苗人 凤。只见他脸色透黄，似乎蒙上了一层淡淡的 金纸。他身材高大魁梧，四肢修长，却是全然 不修篇幅，令人称奇。"
+      nickname = "金面佛"
+      title = "打遍天下无敌手"
+      gender = "男性"
+      attitude = "friendly"
+      age = 48
+      shen_type = 1
+
+      combat = {
+        attitude = "friendly"
+        str = 32
+        int = 31
+        con = 33
+        dex = 31
+        max_qi = 5500
+        max_jing = 4000
+        neili = 6800
+        max_neili = 6800
+        jiali = 200
+        combat_exp = 4500000
+        skills = {
+          force = 260
+          miaojia_neigong = 260
+          dodge = 240
+          chaoyang_fengwu = 240
+          sword = 260
+          suqin_beijian = 260
+          baxian_jian = 260
+          tianlong_jian = 260
+          miaojia_jian = 260
+          blade = 240
+          hujia_daofa = 240
+          strike = 260
+          miaojia_zhang = 260
+          chongtian_zhang = 260
+          claw = 260
+          panlong_zhao = 260
+          da_qinna = 240
+          xiao_qinna = 240
+          unarmed = 240
+          pobei_tui = 240
+          parry = 260
+          literate = 240
+          martial_cognize = 260
+        }
+        map_skill = {
+          force = "miaojia-neigong"
+          dodge = "chaoyang-fengwu"
+          sword = "miaojia-jian"
+          blade = "hujia-daofa"
+          parry = "tianlong-jian"
+          strike = "chongtian-zhang"
+          claw = "panlong-zhao"
+          unarmed = "pobei-tui"
+        }
+      }
+
+      # LPC: kungfu/class/miao/miao.c
+      #   create_family("中原苗家", 6, "传人")
+      #   carry_object("/clone/cloth/cloth")
+    }

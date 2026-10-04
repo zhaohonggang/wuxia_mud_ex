@@ -914,6 +914,11 @@ direction = ~
 ]
     }
 
+  room_characters "hh_jianlou1" {
+    room_id = rooms.hh_jianlou1.id
+    characters = [ { id = characters.wuchen.id } ]
+  }
+
   room_exits "hh_jianlou1" {
     room_id = rooms.hh_jianlou1.id
     up = rooms.hh_jianlou2.id
@@ -926,7 +931,7 @@ direction = ~
   room_items "hh_jianlou1" {
     room_id = rooms.hh_jianlou1.id
     items = [
-      { id = items.wuchen.id }    ]
+      ]
   }
 
 # Generated from C:/files/git/mud/d/kaifeng/hh_jianlou2.c by LPCConverter
@@ -4673,3 +4678,56 @@ chats = [
       { id = characters.waiter.id }    ]
   }
 
+    characters "wuchen" {
+      name = "无尘道长"
+      aliases = ["wuchen daozhang", "wuchen", "daozhang"]
+      description = "无尘道人少年时混迹绿林，劫富济贫，做下了无数巨案，后因一事万念惧恢，出家做了道人。凭自身所创的一套追魂夺命剑威镇江湖，后被红花会老当家于万亭请出来做了副手。"
+      nickname = "追魂夺命剑"
+      title = "红花会二当家"
+      gender = "男性"
+      class = "taoist"
+      attitude = "peaceful"
+      age = 52
+      shen_type = 1
+
+      combat = {
+        attitude = "peaceful"
+        str = 30
+        int = 30
+        con = 30
+        dex = 30
+        max_qi = 5500
+        max_jing = 4200
+        neili = 5500
+        max_neili = 5500
+        jiali = 180
+        combat_exp = 4000000
+        skills = {
+          force = 240
+          honghua_xinfa = 240
+          tianchi_neigong = 240
+          unarmed = 260
+          lianhuan_mizongtui = 260
+          dodge = 260
+          yanzi_chuanyun = 240
+          zhuihun_jian = 260
+          parry = 240
+          sword = 260
+          taoism = 150
+          martial_cognize = 220
+          literate = 200
+        }
+        map_skill = {
+          force = "tianchi-neigong"
+          unarmed = "lianhuan-mizongtui"
+          dodge = "lianhuan-mizongtui"
+          parry = "zhuihun-jian"
+          sword = "zhuihun-jian"
+        }
+      }
+
+      # LPC: kungfu/class/honghua/wuchen.c
+      #   create_family("红花会", 4, "当家")
+      #   carry_object("/clone/weapon/changjian")
+      #   carry_object("/d/wudang/obj/greyrobe")
+    }

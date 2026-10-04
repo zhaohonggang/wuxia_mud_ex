@@ -5146,3 +5146,30 @@ chats = [
       { id = characters.waiter.id }    ]
   }
 
+    characters "guanbing" {
+      name = "官兵"
+      aliases = ["guan bing", "bing"]
+      description = "虽然官兵的武艺不能和武林人士相比，可是他们讲究的是人多力量大。"
+      gender = "男性"
+      attitude = "peaceful"
+      age = 22
+      shen_type = 1
+
+      combat = {
+        attitude = "peaceful"
+        str = 24
+        dex = 16
+        combat_exp = 10000
+        skills = {
+          unarmed = 40
+          dodge = 40
+          parry = 40
+          blade = 40
+          force = 40
+        }
+      }
+
+      # LPC: d/kaifeng/npc/guanbing.c
+      #   carry_object("/clone/weapon/blade")
+      #   carry_object("/clone/cloth/junfu")
+    }

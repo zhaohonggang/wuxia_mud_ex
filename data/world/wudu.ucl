@@ -1969,6 +1969,11 @@ direction = ~
 ]
     }
 
+  room_characters "wandu1" {
+    room_id = rooms.wandu1.id
+    characters = [ { id = characters.hehongyao.id } ]
+  }
+
   room_exits "wandu1" {
     room_id = rooms.wandu1.id
     north = rooms.wdsl3.id
@@ -1981,7 +1986,7 @@ direction = ~
   room_items "wandu1" {
     room_id = rooms.wandu1.id
     items = [
-      { id = items.hehongyao.id }    ]
+      ]
   }
 
 # Generated from C:/files/git/mud/d/wudu/wandu2.c by LPCConverter
@@ -3783,4 +3788,69 @@ chats = [
         material = "bone"
         food = 15
       }
+    }
+
+    characters "hehongyao" {
+      name = "何红药"
+      aliases = ["he hongyao", "he"]
+      description = "她就是五毒教的长老，教主的姑姑何红药。虽然是 教主的长辈，但功夫却是一块跟上代教主学的。据 说她曾经被立为教主继承人，但后来犯下大错，所 以被罚到此处看守圣地，以赎前罪。她穿着一身破 旧的衣衫，满脸疤痕，长得骨瘦如柴，双目中满是 怨毒之色。"
+      nickname = "疤面丐婆"
+      title = "五毒教长老"
+      gender = "女性"
+      attitude = "friendly"
+      age = 45
+      shen_type = -1
+
+      combat = {
+        attitude = "friendly"
+        str = 30
+        int = 40
+        con = 30
+        dex = 30
+        max_qi = 4000
+        max_jing = 4000
+        neili = 4000
+        max_neili = 4000
+        jiali = 100
+        combat_exp = 1500000
+        skills = {
+          force = 180
+          wudu_xinfa = 180
+          xiuluo_yinshagong = 160
+          dodge = 180
+          jinshe_youshenbu = 180
+          strike = 180
+          tianchan_zhang = 180
+          claw = 180
+          wusheng_zhao = 180
+          parry = 180
+          sword = 180
+          jinwu_goufa = 180
+          whip = 140
+          xiewei_bian = 140
+          throwing = 100
+          hansha_sheying = 100
+          literate = 100
+          poison = 120
+          wudu_qishu = 120
+          martial_cognize = 160
+        }
+        map_skill = {
+          force = "xiuluo-yinshagong"
+          dodge = "jinshe-youshenbu"
+          strike = "tianchan-zhang"
+          claw = "wusheng-zhao"
+          throwing = "hansha-sheying"
+          parry = "jinwu-goufa"
+          sword = "jinwu-goufa"
+          whip = "xiewei-bian"
+          poison = "wudu-qishu"
+        }
+      }
+
+      # LPC: kungfu/class/wudu/hehongyao.c
+      #   create_family("五毒教", 11, "长老")
+      #   carry_object("/d/wudu/npc/obj/jiandao")
+      #   carry_object("/d/city/obj/cloth")
+      #   carry_object("/d/wudu/obj/wuxing")
     }

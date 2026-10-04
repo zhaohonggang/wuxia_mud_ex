@@ -254,11 +254,10 @@ direction = ~
 
   room_characters "chengdedian" {
     room_id = rooms.chengdedian.id
-    characters = [
+    characters = [{ id = characters.dizi.id },
       { id = characters.dizi.id },
       { id = characters.dizi.id },
-      { id = characters.dizi.id },
-      { id = characters.dizi.id }    ]
+      { id = characters.dizi.id }, { id = characters.ren.id }]
   }
 
 
@@ -266,7 +265,7 @@ direction = ~
   room_items "chengdedian" {
     room_id = rooms.chengdedian.id
     items = [
-      { id = items.ren.id }    ]
+      ]
   }
 
 # Generated from C:/files/git/mud/d/heimuya/chitang.c by LPCConverter
@@ -2725,4 +2724,79 @@ item_desc = {
       #   create_family("日月神教", 13, "长老(女性)")
       #   set("zhen_count", 3) / no_teach / inquiry 四条 —— 未落地
       #   carry_object("/d/heimuya/npc/obj/jinpao")->wear()
+    }
+
+    characters "ren" {
+      name = "任我行"
+      aliases = ["ren woxing", "ren", "woxing"]
+      description = "这便是日月神教上任教主任我行。只见他一张 长长的脸孔雪白，更无半分血色。他眉目清秀， 身材甚高，一头黑发，穿的是一袭青衫。"
+      nickname = "我行我素"
+      title = "日月神教教主"
+      gender = "男性"
+      class = "scholar"
+      attitude = "friendly"
+      age = 65
+      shen_type = -1
+
+      combat = {
+        attitude = "friendly"
+        str = 40
+        int = 40
+        con = 40
+        dex = 40
+        max_qi = 7000
+        max_jing = 5000
+        neili = 9000
+        max_neili = 9000
+        jiali = 200
+        combat_exp = 4000000
+        skills = {
+          force = 340
+          xixing_dafa = 340
+          tianhuan_shenjue = 320
+          riyue_xinfa = 320
+          dodge = 320
+          feiyan_zoubi = 320
+          juechen_shenfa = 320
+          strike = 340
+          guzhuo_zhang = 340
+          qingmang_zhang = 320
+          hand = 320
+          lansha_shou = 320
+          cuff = 320
+          zhenyu_quan = 320
+          claw = 320
+          poyue_zhao = 320
+          parry = 320
+          sword = 340
+          yuanshi_jian = 340
+          taishan_sword = 300
+          hengshan_jian = 300
+          hengshan_sword = 300
+          huashan_jian = 300
+          songshan_sword = 300
+          blade = 280
+          danding_dao = 280
+          throwing = 280
+          heixue_shenzhen = 280
+          martial_cognize = 320
+          literate = 320
+        }
+        map_skill = {
+          dodge = "juechen-shenfa"
+          force = "xixing-dafa"
+          strike = "guzhuo-zhang"
+          sword = "yuanshi-jian"
+          parry = "guzhuo-zhang"
+          hand = "lansha-shou"
+          cuff = "zhenyu-quan"
+          claw = "poyue-zhao"
+          blade = "danding-dao"
+          throwing = "heixue-shenzhen"
+        }
+      }
+
+      # LPC: kungfu/class/riyue/ren.c
+      #   create_family("日月神教", 13, "教主")
+      #   carry_object("/d/heimuya/npc/obj/zaohong")
     }

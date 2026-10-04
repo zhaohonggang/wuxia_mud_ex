@@ -203,6 +203,11 @@ direction = "south"
 ]
     }
 
+  room_characters "cangjinglou" {
+    room_id = rooms.cangjinglou.id
+    characters = [ { id = characters.daoming.id } ]
+  }
+
   room_exits "cangjinglou" {
     room_id = rooms.cangjinglou.id
     south = rooms.dxdian.id
@@ -214,7 +219,7 @@ direction = "south"
   room_items "cangjinglou" {
     room_id = rooms.cangjinglou.id
     items = [
-      { id = items.daoming.id },
+      
       { id = [items.fojing10.id,items.fojing11.id] },
       { id = [items.fojing20.id,items.fojing21.id] }    ]
   }
@@ -2902,4 +2907,38 @@ direction = ~
         unit = "把"
         material = "bamboo"
       }
+    }
+
+    characters "daoming" {
+      name = "道明小师父"
+      aliases = ["daoming", "xiaoshifu", "dao ming"]
+      description = "他是峨嵋报国寺楼的小和尚。"
+      gender = "男性"
+      class = "bonze"
+      attitude = "peaceful"
+      age = 16
+      shen_type = 1
+
+      combat = {
+        attitude = "peaceful"
+        str = 20
+        int = 20
+        con = 22
+        dex = 25
+        max_qi = 150
+        max_jing = 100
+        neili = 150
+        max_neili = 150
+        combat_exp = 2000
+        skills = {
+          force = 30
+          dodge = 20
+          unarmed = 20
+          parry = 20
+        }
+      }
+
+      # LPC: kungfu/class/emei/daoming.c
+      #   create_family("峨嵋派", 5, "弟子")
+      #   carry_object("/clone/cloth/dao-cloth")
     }

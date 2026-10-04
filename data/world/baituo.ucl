@@ -153,6 +153,11 @@ direction = "in"
 ]
     }
 
+  room_characters "cave" {
+    room_id = rooms.cave.id
+    characters = [ { id = characters.mangshe.id } ]
+  }
+
   room_exits "cave" {
     room_id = rooms.cave.id
     southdown = rooms.zhulin.id
@@ -165,7 +170,7 @@ direction = "in"
   room_items "cave" {
     room_id = rooms.cave.id
     items = [
-      { id = items.mangshe.id }    ]
+      ]
   }
 
 # Generated from C:/files/git/mud/d/baituo/cave1.c by LPCConverter
@@ -2634,4 +2639,24 @@ chats = [
         unit = "个"
         material = "bamboo"
       }
+    }
+
+    characters "mangshe" {
+      name = "蟒蛇"
+      aliases = ["mang she", "mang", "she"]
+      description = "这是一只昂首直立，吐着长舌芯的大蟒蛇。"
+      age = 6
+
+      combat = {
+        str = 50
+        con = 50
+        dex = 20
+        max_qi = 5000
+        max_jing = 5000
+        neili = 3000
+        max_neili = 3000
+        combat_exp = 300000
+      }
+
+      # LPC: clone/beast/mangshe.c
     }

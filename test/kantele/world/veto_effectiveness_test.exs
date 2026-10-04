@@ -179,7 +179,7 @@ alias Kantele.World.LpcCondition
   end
 
   @tag :world_data
-  test "总账：166 条里 131 条会拦人、35 条不会", ctx do
+  test "总账：166 条里 141 条会拦人、25 条不会", ctx do
     tally =
       for room <- ctx.world.rooms,
           veto <- room.exit_vetoes,
@@ -194,9 +194,9 @@ alias Kantele.World.LpcCondition
     assert total == 166,
            "条件总数变了：#{total}（tally=#{inspect(tally)}）"
 
-    # 131 = 纯条件 113 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
-    assert tally[:live] == 131, "会拦人的条数变了：#{tally[:live]}"
-    assert tally[:dead] == 35, "不会拦的条数变了：#{tally[:dead]}"
+    # 141 = 纯条件 123 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
+    assert tally[:live] == 141, "会拦人的条数变了：#{tally[:live]}"
+    assert tally[:dead] == 25, "不会拦的条数变了：#{tally[:dead]}"
   end
 
   @tag :world_data
@@ -230,18 +230,23 @@ alias Kantele.World.LpcCondition
   end
 
   @tag :world_data
-  test "仍未移植的 NPC 保持在缺失清单里（提醒后续补）", ctx do
+  test "上一轮补齐的 9 个 NPC 都不再出现在缺失清单里", ctx do
     missing = missing_uncategorized(ctx)
 
-    # 这批 LPC 里有、数据里没有。多数也是 CLASS_D 门派工厂。
-    for known <- ["mang she", "dao ming", "ling tuisi"] do
-      assert MapSet.member?(missing, known),
-             "#{known} 应仍在「依赖缺失」清单里"
+    # 这批的根因是转换器把 LPC set("objects", ...) 写错了地方：
+    #   * 多数写进了 room_items（当成物品），而它们其实是 characters
+    #   * luoyang/jingzhou 写进了 room_characters，但本区没有该定义
+    #   * jingzhou/npc/jing.c 的名字被写倒成「凌思退」，别名成了 ling situi
+    for fixed <- ["mang she", "guan bing", "jia ding", "miao renfeng",
+                  "ren woxing", "he hongyao", "daoming", "wuchen daozhang",
+                  "ling tuisi"] do
+      refute MapSet.member?(missing, fixed),
+             "#{fixed} 已补进 data/world，不该再报「未定义 / 不在房里」"
     end
   end
 
   @tag :world_data
-  test "玩家身上的物品不算「不在房里」（那是误报来源）", ctx do
+  test "玩家身上的物品不算「不在房里」，且「不在房里」已清零", ctx do
     # `present(x, me)` 只要物品有定义即可 —— 玩家捡到就能用。
     # 审计脚本一度把它们判成 dead（qilin xue / jingang zhao / rice / tea），
     # 白白少算了 4 条。
@@ -258,7 +263,12 @@ alias Kantele.World.LpcCondition
              "#{item} 是玩家携带的物品，不该被判成「不在房里」"
     end
 
-    assert absent != [], "仍应存在「房间 NPC 有定义但没放进去」的条件"
+    # 之前这里断言 `absent != []` 当哨兵，防止「:absent 分支再也没进过」。
+    # 现在 6 条「有定义但没放进去」都补上了（guan bing / jia ding /
+    # miao renfeng / ren woxing / he hongyao / wuchen daozhang），
+    # 该类别已清零 —— 改成钉住「别再涨回来」。
+    assert absent == [],
+           "不该再有「NPC 有定义但没放进房间」的条件：#{inspect(Enum.uniq(absent))}"
   end
 
   @tag :world_data
