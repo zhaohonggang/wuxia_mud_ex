@@ -264,13 +264,19 @@ alias Kantele.World.LpcCondition
     assert :character in kinds, "room_characters 的悬空也应被记录"
     assert :item in kinds, "room_items 的悬空也应被记录"
 
-    # 按 (zone, kind, ref) 去重，所以条目数 << 实际引用数
-    total_refs = seen |> Map.values() |> Enum.sum()
+    # 值的形状是 {次数, 首个房间}，别直接 Enum.sum
+    total_refs = seen |> Map.values() |> Enum.map(fn {c, _room} -> c end) |> Enum.sum()
     assert total_refs > map_size(seen), "计数应累加（同一 ref 被多个房间引用）"
 
-    # 已知的头号两项：walker / bing 被上百个城门道路引用但只有少数区有定义
-    top = seen |> Map.values() |> Enum.sum()
-    assert top > 1000, "悬空引用总数应过千，实际 #{top}"
+    # 已知的头号几项：walker / bing / guanbing / mafu 被上百个城门道路马厩引用，
+    # 但只有少数区有定义。实测合计过千。
+    assert total_refs > 1000, "悬空引用总数应过千，实际 #{total_refs}"
+
+    assert Enum.any?(seen, fn
+         {{_z, :character, r}, _} -> r =~ "mafu" or r =~ "bing" or r =~ "walker"
+         _ -> false
+       end),
+           "应记录到 mafu / bing / walker 这类通用 NPC 的跨区悬空"
 
     Kantele.World.Loader.reset_unresolved_warnings()
   end

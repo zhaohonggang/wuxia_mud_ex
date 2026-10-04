@@ -41,9 +41,15 @@ defmodule Kantele.World.Loader do
         parse_zone_with_context({key, zone_data}, context)
       end)
 
-    zones
-    |> Enum.map(&build_zone(&1, world_data, zones))
-    |> parse_world()
+    world =
+      zones
+      |> Enum.map(&build_zone(&1, world_data, zones))
+      |> parse_world()
+
+    # 悬空引用汇总放在最后打 —— 逐条 warn 会淹掉日志（实测 805 条 = 16000 行）
+    report_unresolved()
+
+    world
   end
 
   # ---- 文件级错误包装：读入/解析/构建出错时把文件路径挂进 LoaderError ----
@@ -1435,19 +1441,20 @@ defmodule Kantele.World.Loader do
   end
 
   @doc """
-  报告一个解析不到的 `room_items` / `room_characters` 引用。
+  记录一个解析不到的 `room_items` / `room_characters` 引用。
 
-  按 (zone, kind, ref) 去重，避免同一个悬空 id 被几十个房间引用时刷屏；
-  之后只在房间数跨过 10 / 50 / 100 / 300 时补打一条进度。
+  **不在这里打印** —— 一条 `IO.warn` 会连着 10 行 stacktrace，
+  而悬空引用实测一次加载就有 805 条（合起来 16000 行日志），
+  那样会把真正的告警淹掉。改为只累计，最后由 `report_unresolved/0`
+  打一份汇总。
 
-  去重计数放在进程字典里：`Loader.load/1` 是在单个进程里同步跑完的
-  （脚本、测试、以及 `Kantele.World.Kickoff` 那个 GenServer 都是），
-  所以不需要 ETS —— 早先试过 ETS，`:ets.new` 的具名表在被 rescue 掉之后
+  按 (zone, kind, ref) 去重计数（`room_id` 留首个出现的用于定位）。
+  计数放在进程字典里：`Loader.load/1` 本来就是在单个进程里同步跑完的
+  （脚本、测试、`Kantele.World.Kickoff` 那个 GenServer 都是），
+  所以不需要 ETS —— 早先试过 ETS，`:ets.new` 的具名表失败被 rescue 之后
   `:ets.insert/3` 会报 "undefined or private"，反而把整个加载搞崩。
   """
   def warn_unresolved(kind, zone_id, room_id, ref) do
-    key = {zone_id, kind, ref}
-
     # 注意：`:erlang.get/1` 缺键时返回 **`:undefined`**，不是 `nil`。
     # 而 `:undefined` 在 Elixir 里是真值，所以 `x || %{}` 兜不住 ——
     # 早先就因为这个直接 `Map.get(:undefined, ...)` 把整个加载搞崩了。
@@ -1457,23 +1464,67 @@ defmodule Kantele.World.Loader do
         _ -> %{}
       end
 
-    count = Map.get(seen, key, 0) + 1
-    :erlang.put(:world_unresolved, Map.put(seen, key, count))
+    key = {zone_id, kind, ref}
 
-    if count == 1 do
-      IO.warn(
-        "[world] #{zone_id} 的 #{room_id} 引用了不存在的 #{kind} " <>
-          "#{inspect(ref)} —— 已跳过，该内容运行时不存在。" <>
-          "（转换器把 LPC set(\"objects\") 写错位置时常见；" <>
-          "详见 docs/dangling-room-items-report.zh-CN.md）"
-      )
-    end
+    entry =
+      case Map.get(seen, key) do
+        {count, _first} -> {count + 1, room_id}
+        nil -> {1, room_id}
+      end
 
-    if count in [10, 50, 100, 300] do
-      IO.warn("[world] #{zone_id} 的 #{inspect(ref)} 已被 #{count} 个房间引用，全部落空")
-    end
-
+    :erlang.put(:world_unresolved, Map.put(seen, key, entry))
     :ok
+  end
+
+  @doc """
+  打印悬空引用汇总。由 `load/1` 在最后调用。
+  """
+  def report_unresolved do
+    seen =
+      case :erlang.get(:world_unresolved) do
+        m when is_map(m) -> m
+        _ -> %{}
+      end
+
+    if map_size(seen) == 0 do
+      :ok
+    else
+      total = seen |> Map.values() |> Enum.map(fn {c, _} -> c end) |> Enum.sum()
+
+      by_kind =
+        Enum.reduce(seen, %{}, fn {{_z, kind, _r}, {c, _room}}, acc ->
+          Map.update(acc, kind, {c, 1}, fn {cc, n} -> {cc + c, n + 1} end)
+        end)
+
+      head = [
+        "[world] 悬空引用汇总：#{total} 条 / #{map_size(seen)} 个 (zone, kind, ref) 组合，全部已跳过"
+      ]
+
+      kinds =
+        Enum.map(by_kind, fn {k, {c, n}} ->
+          "    #{k} #{c} 条 / #{n} 个"
+        end)
+
+      top =
+        seen
+        |> Enum.sort_by(fn {_, {c, _}} -> -c end)
+        |> Enum.take(15)
+        |> Enum.map(fn {{z, k, r}, {c, room}} ->
+          "    #{String.pad_trailing(to_string(c), 5)} " <>
+            "#{String.pad_trailing(z, 14)} #{String.pad_trailing(to_string(k), 10)} " <>
+            "#{inspect(r)}  例 #{room}"
+        end)
+
+      tail = [
+        "  （每条 IO.warn 会带 10 行 stacktrace，所以只打汇总；完整清单见",
+        "   docs/dangling-room-items-report.zh-CN.md）",
+        "  典型成因：转换器把 LPC set(\"objects\") 写错位置 —— 人物被写进了 items，",
+        "  或引用了本区没有定义的 id（characters / items 都只在本区解析）"
+      ]
+
+      IO.puts(Enum.join(head ++ kinds ++ top ++ tail, "\n"))
+      :ok
+    end
   end
 
   @doc false
