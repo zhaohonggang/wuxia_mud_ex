@@ -1,7 +1,8 @@
 # LPC `set("objects", ...)` 落地问题清单
 
 > 基线：`mix test --seed 12345` → **3272 tests, 0 failures**
-> `valid_leave` 门禁：**143/166 会拦人**（`scripts/audit_veto_effectiveness.exs`）
+> `valid_leave` 门禁：**155/166 会拦人**（含 12 条 `all_dirs` 全方向门禁，
+> 其中 10 条因触发状态未移植而永不触发，详见 §6.3）（`scripts/audit_veto_effectiveness.exs`）
 > 本文记录 2026-10 一轮排查中发现的问题。相关：[[ucl-comment-todo.zh-CN]]、
 > [[ucl-conversion-issues.zh-CN]]、[[data-world-info-loss.zh-CN]]
 
@@ -15,7 +16,8 @@
 | `room_characters` 引用了本区没有的定义（跨区） | 2 处 | **已修** |
 | NPC 名字被转换器写倒 | 1 处 | **已修** |
 | `room_items` 引用彻底不存在的 `items.X` | **674 处** | **未修**，见 §5 |
-| 门禁条件外层方向守卫丢失 | 16 条 | 只有 2 条能安全补回，见 六.1 |
+| 门禁条件外层方向守卫丢失 | 4 条 | 见 §6.1 |
+| 审计把 `all_dirs` 全方向门禁误判成「丢了守卫」 | 12 条 | **已修**，见 §6.2 |
 | 门禁条件要求不存在的方向 | 7 条 | 未修 |
 | 审计脚本把析取当合判 | 2 条误报 | **已修** |
 
@@ -223,11 +225,11 @@ LPC `set("objects", ...)` 里**物品**的部分基本没落地。
 
 ---
 
-## 六、剩余 23 条不拦人的门禁
+## 六、剩余 11 条不拦人的门禁
 
 | 原因 | 条数 | 说明 |
 |---|---|---|
-| 未限定方向 | 16 | 见 §6.1，**多数不能直接执行** |
+| 未限定方向 | 4 | 见 §6.1，真·丢了守卫的只剩这 4 条 |
 | 要求不存在的方向 `west` | 5 | `xiyu:kedian` `lingzhou:biangate` `chengdu:kedian` `fuzhou:rongcheng` `tiezhang:kedian` |
 | 要求不存在的方向 `enter` | 1 | `city:mudren`，旧 todo 的 F 项，建议正式免除 |
 | 要求不存在的方向 `south` | 1 | `foshan:pm_restroom`（条件是 `balance < 5000000 \|\| weiwang < 30`） |
@@ -295,29 +297,66 @@ if (dir == "south" && objectp(ob = present("da shou", this_object())) && living(
 `xiyu:xiaoyao` 会对**所有人**封死（不是只封非星宿海）。
 已在数据里写明原因，并加了回归测试钉住这条不许被加上。
 
-#### (e) LPC 里真的不限方向（在做事时不能走）：9 条
+#### 6.2 真正的「未限定方向」只剩 4 条 —— 因为有 12 条其实标了 `all_dirs`
 
-LPC 原文就没有 `dir` 判断。**这类必须逐条确认「解开它的动作」在我们这边是否已实现**，
-否则就是死锁：
+这是本轮最大的一个审计口径错误。
 
-| 房间 | 条件 | 解锁动作 | 我们这边有吗 |
-|---|---|---|---|
-| `city:wproom` / `sproom` / `eproom` / `nproom` | `me->query_temp('pigging_seat')` | 离桌 | 待查 |
-| `city:qiyuan2` / `qiyuan3` / `qiyuan4` | `me->query_temp('weiqi_seat')` | `qiyuan2.c` 里 `delete_temp("weiqi_seat")` | **棋苑未移植** |
-| `huashan:chufang` / `xiangyang:juyichufang` | `present('soup',me) \|\| present('rice',me)` | 放下/吃完 | 待查 |
-| `city:lichunyuan2` | `me->query_condition('prostitute')` | 龟公松手 | 待查 |
-| `lingxiao:wave` | `objectp(present('xuanbing chimang',environment(me)))` | 玄冰驰马移开 | 待查 |
-| `shaolin:dmyuan2` | `! present('xisui jing',this_object())` | 拿到洗髓经 | 待查 |
+数据里有 **12 条** veto 标了 `all_dirs = true`，意思是「这条就拦这个房间的
+**所有**方向」。这是**故意**的 —— 它们的 LPC 原文本来就没有 `dir` 判断：
 
-已知 `city:qiyuan2/3/4` 的解锁（`weiqi_seat` 的设置与清除）全在
-`mud/d/city/qiyuan/qiyuan2.c` 里，**棋苑我们没移植**，所以这 3 条
-一旦启用就是死锁。`city:qiyuan1` 相反：它的 `valid_leave` 里
-**没有** `weiqi_seat` 那条（数据里也没有），只有 `action == 1` 那条，
-而那条已经带方向守卫、生效中。
+| 房间 | LPC 原文的行为 |
+|---|---|
+| `d/lingxiao/wave.c` | `if (objectp(present("xuanbing chimang", environment(me))))` —— 玄冰莽封住冰洞，**只有一个出口也照样拦** |
+| `d/city/nproom.c` / `sproom.c` / `eproom.c` / `wproom.c` | `if (me->query_temp("pigging_seat"))` —— 坐在拱猪桌前哪儿都去不了 |
+| `d/city/qiyuan/qiyuan2..4.c` | `if (me->query_temp("weiqi_seat"))` —— 下棋时不能走 |
+| `d/city/lichunyuan2.c` | `if (me->query_condition("prostitute"))` |
+| `d/huashan/chufang.c` / `d/xiangyang/juyichufang.c` | `if (present("soup", me) \|\| present("rice", me))` —— 端着饭不许走 |
+| `d/shaolin/dmyuan2.c` | `if (! present("xisui jing", this_object()))` —— 心法不见了不许走 |
 
-> `shaolin:dmyuan2` 有**两条** veto：`dir == 'down'` 的心法那条已生效，
-> 未限定方向的 `! present('xisui jing', ...)` 那条是同一个 `valid_leave`
-> 里的另一个分支，不是复制品。
+而审计脚本（和测试里那份同样逻辑的 `do_classify/4`）只看
+`condition` 字符串里有没有 `"dir"` 字样：
+
+```elixir
+not LpcCondition.direction_scoped?(c) -> {:dead, "未限定方向"}
+```
+
+于是这 12 条**全部**被误判成「丢了外层守卫」。
+`LpcCondition.direction_scoped?/1` 的本意是「防止把该房所有出口变成同一道门禁」，
+而 `all_dirs = true` 恰恰是数据里**显式声明**「就是要拦所有方向」——
+两者语义相反，不能混。已修（先判 `all_dirs`），并加了回归测试钉住 12 这个数。
+
+修正后：会拦人 **143 → 155**，未限定方向 16 → **4**（真的只剩
+`beijing:kediandayuan`、`huashan:bingqifang`、`taishan:nantian`、`xiyu:xxh6`）。
+
+### 6.3 那 12 条「会拦人」其实大多永不触发（更正我上一条消息）
+
+我上一条消息说「`city:qiyuan2/3/4` 的 `weiqi_seat` 启用即死锁」。**这个说法是错的。**
+
+逐个查了触发状态的写入点（扫 `lib/` + `data/` 全文）：
+
+| 门禁依赖 | 谁在 LPC 里写它 | 我们这边 |
+|---|---|---|
+| `pigging_seat` | `d/city/{n,s,e,w}proom.c` 的 action | **无任何代码 set** |
+| `weiqi_seat` | `d/city/qiyuan/qiyuan2.c` | **无任何代码 set** |
+| `prostitute` | `kungfu/condition/prostitute.c` | **无任何代码 set** |
+| `marks/花` | `d/xiyu/npc/caihua.c` | **无任何代码 set** |
+| `xuanbing chimang` | `clone/beast/xuanmang.c` | **NPC 未定义** |
+| `xisui jing` | `clone/book/xisuijing.c` | 物品已定义，且**已放在** `shaolin:dmyuan2` |
+
+前四种是**玩家身上的 temp / condition**，没人写就恒为 `nil`，
+条件恒假 —— 所以启用它们**既不会死锁，也永远不会拦人**（是「无效」而不是「危险」）。
+真正缺的是拱猪桌 / 棋苑 / 丽春院 / 采花子这些**玩法本身没移植**。
+
+后两个不同：
+
+- `xisui jing`：**洗髓经已经在房里**，所以 `! present(...)` 当前为假 → 放行。
+  等玩家把经捡走就会变成真 → 拦下**所有**出口。这与 LPC 一致
+  （原文消息：「本寺最高心法不见了，你怎敢就走？」），但会让 `shaolin:dmyuan2`
+  变成一个必须带经才能出的房间。要不要保留请定夺。
+- `xuanbing chimang`：**玄冰莽压根没定义**，而 `lingxiao:wave` 的 `room_items`
+  里还挂着一个悬空的 `items.xuanmang.id`（见 §5）。这是本轮唯一「补了就能真生效」
+  的一条，但要注意 `lingxiao:wave` 有 **up / down / out 三个出口**，
+  全被玄冰莽封住就等于把房间锁死，必须能打死它。**未动，等确认。**
 
 ---
 

@@ -74,11 +74,11 @@ alias Kantele.World.LpcCondition
     if not is_binary(c) or c == "" do
       :skip
     else
-      do_classify(ctx, room, c)
+      do_classify(ctx, room, c, Map.get(veto, :all_dirs, false))
     end
   end
 
-  defp do_classify(ctx, room, c) do
+  defp do_classify(ctx, room, c, all_dirs \\ false) do
     exits = Enum.map(room.exits, & &1.exit_name)
     req = ctx.cap.(~r/dir\s*==\s*'(\w+)'/, c)
     missing_dirs = Enum.reject(req, &(&1 in exits))
@@ -96,6 +96,19 @@ alias Kantele.World.LpcCondition
         {:live, {:trap, :arena}}
 
       # ---- 纯条件 ----
+      # `all_dirs = true` 是数据里**显式声明**「这条就拦所有方向」，
+      # 和「转换器丢了 LPC 外层守卫」是两回事：前者 LPC 原文本来就没有
+      # dir 判断（d/lingxiao/wave.c 玄冰莽封路、d/city/nproom.c 坐着不许走），
+      # 后者要补守卫。
+      #
+      # 之前这里只看 condition 里有没有 "dir" 字样，把 12 条 all_dirs 门禁
+      # 全判成 :unscoped，等于把「故意拦所有方向」和「丢了守卫」混为一谈。
+      all_dirs ->
+        {:live, {:all_dirs, nil}}
+
+      all_dirs ->
+        {:live, {:all_dirs, nil}}
+
       not Kantele.World.LpcCondition.direction_scoped?(c) ->
         {:dead, :unscoped}
 
@@ -179,7 +192,7 @@ alias Kantele.World.LpcCondition
   end
 
   @tag :world_data
-  test "总账：166 条里 143 条会拦人、23 条不会", ctx do
+  test "总账：166 条里 155 条会拦人、11 条不会", ctx do
     tally =
       for room <- ctx.world.rooms,
           veto <- room.exit_vetoes,
@@ -194,9 +207,13 @@ alias Kantele.World.LpcCondition
     assert total == 166,
            "条件总数变了：#{total}（tally=#{inspect(tally)}）"
 
-    # 143 = 纯条件 125 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
-    assert tally[:live] == 143, "会拦人的条数变了：#{tally[:live]}"
-    assert tally[:dead] == 23, "不会拦的条数变了：#{tally[:dead]}"
+    # 155 = 纯条件 137 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
+    # 137 里含 12 条 all_dirs 全方向门禁：pigging_seat 4 + weiqi_seat 3
+    #      + soup/rice 2 + prostitute 1 + xuanbing chimang 1 + xisui jing 1。
+    # 注意「会拦人」= 机制已接好且依赖可满足；其中 11 条的触发状态
+    # （拱猪桌/棋苑/丽春院/采花子）压根没移植，实际永不触发。
+    assert tally[:live] == 155, "会拦人的条数变了：#{tally[:live]}"
+    assert tally[:dead] == 11, "不会拦的条数变了：#{tally[:dead]}"
   end
 
   @tag :world_data
@@ -227,6 +244,44 @@ alias Kantele.World.LpcCondition
       refute MapSet.member?(missing, fixed),
              "#{fixed} 已移植到 data/world，不该再报「未定义」（若报错请检查 room_characters 是否也放了）"
     end
+  end
+
+  @tag :world_data
+  test "all_dirs = true 的门禁算「故意拦所有方向」，不算丢了守卫", ctx do
+    # 数据里有 12 条 veto 标了 all_dirs = true，它们的 LPC 原文本来就没有
+    # dir 判断（玄冰莽封路、坐着不许走、端着饭不许走……）。
+    # 之前审计只看 condition 里有没有 "dir" 字样，把它们全判成
+    # 「未限定方向」，等于把「故意拦所有方向」和「转换器丢了守卫」混为一谈。
+    all_dirs =
+      for room <- ctx.world.rooms,
+          veto <- room.exit_vetoes,
+          Map.get(veto, :all_dirs, false),
+          reduce: [] do
+        acc -> [room.id | acc]
+      end
+
+    assert length(all_dirs) == 12,
+           "预期 12 条 all_dirs 门禁，实际 #{length(all_dirs)}: #{inspect(all_dirs)}"
+
+    # 它们都该被 classify 成 live，且理由是 {:all_dirs, nil}
+    for room <- ctx.world.rooms,
+        veto <- room.exit_vetoes,
+        Map.get(veto, :all_dirs, false) do
+      assert {:live, {:all_dirs, nil}} = classify(ctx, room, veto),
+             "#{room.id} 标了 all_dirs，就不该再被判成 :unscoped"
+    end
+
+    # 真正「丢了守卫」的只剩 4 条
+    unscoped =
+      for room <- ctx.world.rooms,
+          veto <- room.exit_vetoes,
+          {:dead, :unscoped} <- [classify(ctx, room, veto)],
+          reduce: [] do
+        acc -> [room.id | acc]
+      end
+
+    assert length(unscoped) == 4,
+           "真正未限定方向的应为 4 条，实际 #{length(unscoped)}: #{inspect(unscoped)}"
   end
 
   @tag :world_data

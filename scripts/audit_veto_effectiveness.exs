@@ -144,6 +144,17 @@ results =
           end
 
         # ---------- 纯条件 ----------
+        # `all_dirs = true` 是数据里**显式声明**「这条就拦所有方向」。
+        # 它和「转换器丢了 LPC 外层守卫」是两回事 —— 后者要补守卫，
+        # 前者是 LPC 原文本来就没有 dir 判断（如 d/lingxiao/wave.c 的
+        # 玄冰莽封路、d/city/nproom.c 的「坐着不许走」）。
+        #
+        # 之前这里只看 condition 里有没有 "dir" 字样，把 12 条 all_dirs
+        # 门禁全判成「未限定方向」，等于把「故意拦所有方向」和
+        # 「丢了守卫」混为一谈。
+        Map.get(veto, :all_dirs, false) ->
+          {:live, "全方向门禁（all_dirs = true）"}
+
         not LpcCondition.direction_scoped?(c) ->
           {:dead, "未限定方向（执行会把该房所有出口变成同一道门禁）"}
 
