@@ -2869,3 +2869,44 @@ chats = [
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
     }
+
+
+    items "ganchai" {
+      # 本块复制自 wudu.ucl —— items 与 characters 一样只在本区解析，引用它的每个区都要一份
+      name = "Item"
+      aliases = ["gan chai", "gan", "chai"]
+      description = "这是一捆木柴。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10
+        weight = 10000
+        unit = "捆"
+        material = "wood"
+      }
+    }
+
+
+    items "gangzhang" {
+      # 本块复制自 clone_lib.ucl —— items 与 characters 一样只在本区解析，引用它的每个区都要一份
+      name = "钢杖"
+      description = "这是一根粗重的钢杖。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 30
+        skill_type = "staff"
+        value = 200
+        weight = 5000
+        unit = "根"
+        material = "steel"
+      }
+    }

@@ -1879,3 +1879,31 @@ item_desc = {
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
     }
+
+
+    items "shuzhi" {
+      # 本块复制自 city.ucl —— items 与 characters 一样只在本区解析，引用它的每个区都要一份
+      name = "大树枝"
+      aliases = ["shu zhi"]
+      description = "这是一根爬山用的树枝。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一根{name}，握在手中。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+
+      meta = {
+        damage = 5
+        skill_type = "staff"
+        value = 50
+        weight = 1000
+        unit = "根"
+        material = "wood"
+      }
+    }

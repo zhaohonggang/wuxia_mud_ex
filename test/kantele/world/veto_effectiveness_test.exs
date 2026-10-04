@@ -247,6 +247,47 @@ alias Kantele.World.LpcCondition
   end
 
   @tag :world_data
+  test "之前空掉的房间现在有物品了（items 与 characters 一样只在本区解析）", ctx do
+    # `dereference/3` 是 `zone |> flatten_items() |> ...`，所以 items 也只在本区解析。
+    # 钢刀/长剑/竹棒这些**全库本来就有定义**，只是定义在别的区，
+    # 于是引用它们的区全是空房。本轮把这些定义复制到了引用它们的区。
+    for rid <- ~w(city:ma_bingqi kaifeng:hh_bingqi baituo:wuqiku wudang:cangjingge
+                  wudang:nanyan1 shaolin:damodong huanghe:caodi2 xiakedao:wuqiku
+                  suzhou:huqiu shenfeng:shibi) do
+      room = Enum.find(ctx.world.rooms, &(&1.id == rid))
+      assert room, "应有 #{rid}"
+
+      inst = Map.get(room, :item_instances) || []
+      assert inst != [], "#{rid} 应有物品实例（转换器写了 room_items 但定义在本区缺失）"
+    end
+
+    # 全库落地率（改之前是 163 / 4470 = 3.6%）
+    with_items =
+      Enum.count(ctx.world.rooms, fn r -> (Map.get(r, :item_instances) || []) != [] end)
+
+    assert with_items >= 190,
+           "有物品的房间应 >= 190，实际 #{with_items}"
+
+    # 兵械库那几间应该拿到钢刀/长剑/竹棒
+    for rid <- ~w(city:ma_bingqi kaifeng:hh_bingqi xiakedao:wuqiku) do
+      room = Enum.find(ctx.world.rooms, &(&1.id == rid))
+
+      names =
+        room
+        |> Map.get(:item_instances)
+        |> Enum.map(fn i ->
+          case Enum.find(ctx.world.items, &(&1.id == i.item_id)) do
+            nil -> nil
+            it -> it.name
+          end
+        end)
+
+      assert Enum.any?(names, &(&1 in ["钢刀", "长剑", "竹棒", "长鞭", "钢杖"])),
+             "#{rid} 应有兵器，实际 #{inspect(names)}"
+    end
+  end
+
+  @tag :world_data
   test "9 种蛇按 LPC clone/beast/*.c 定义并放进了引用它们的房间", ctx do
     # LPC 里这些都是 inherit SNAKE（mud/inherit/char/snake.c 的 setup()
     # 给的是 attitude="aggressive"），转换器把它们写进了 room_items，

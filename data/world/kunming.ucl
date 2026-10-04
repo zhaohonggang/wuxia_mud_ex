@@ -1724,3 +1724,15 @@ direction = "west"
       #   set("max_qi",300); set("attitude","peaceful"); set("combat_exp",50000);
       # 无 set_skill
     }
+
+  items "huabanzhu" {
+      name = "花斑蛛"
+      aliases = ["huabanzhu", "huaban zhu", "huaban", "zhu"]
+      description = "这是一只全身五彩斑斓的毒蜘蛛。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      # LPC: clone/worm/huabanzhu.c   (inherit WORM)
+    }

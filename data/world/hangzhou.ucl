@@ -5467,3 +5467,15 @@ chats = [
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
     }
+
+  items "changaoxie" {
+      name = "长螯蝎"
+      aliases = ["changaoxie", "changao xie", "changao", "xie"]
+      description = "这是一只双螯巨大的毒蝎。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      # LPC: clone/worm/changaoxie.c   (inherit WORM)
+    }

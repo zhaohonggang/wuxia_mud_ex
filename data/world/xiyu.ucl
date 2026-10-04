@@ -2774,3 +2774,21 @@ chats = [
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
     }
+
+  items "dujing_1" {
+      name = "『星宿毒经〖上册〗』"
+      aliases = ["dujing_1", "du jing1", "book1"]
+      description = "『星宿毒经〖上册〗』"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        unit = "张"
+        material = "paper"
+      }
+
+      # LPC: clone/book/dujing_1.c   (inherit BOOK)
+    }

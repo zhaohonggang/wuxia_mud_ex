@@ -3854,3 +3854,33 @@ chats = [
       #   carry_object("/d/city/obj/cloth")
       #   carry_object("/d/wudu/obj/wuxing")
     }
+
+  items "ganggou" {
+      name = "钢钩"
+      aliases = ["ganggou", "gou"]
+      description = "这是一柄特殊的精钢剑，剑端带着一个倒钩。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "$N「唰」的一声抽出一柄$n握在手中。"
+    unwield = "$N将手中的$n插回鞘中。"
+  }
+
+      meta = {
+        skill_type = "sword"
+        # LPC 的 d/wudu/npc/obj/ganggou.c 未写 set("damage")/set("weight")，
+        # 沿用转换器给同类物品的默认值（对照同区已有同 skill_type 物品）
+        damage = 25
+        weight = 4000
+        value = 100
+        unit = "柄"
+        material = "steel"
+      }
+
+      # LPC: d/wudu/npc/obj/ganggou.c   (inherit SWORD)
+    }

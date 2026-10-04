@@ -1729,3 +1729,51 @@ item_desc = {
         unit = "杯"
       }
     }
+
+  items "chongcao" {
+      name = "东虫夏草"
+      aliases = ["chongcao", "chong cao", "chong", "cao", "herb_chongcao"]
+      description = "东为虫，夏为草。乃是极为名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      # LPC: clone/herb/chongcao.c   (inherit None)
+    }
+
+  items "fuzi" {
+      name = "附子"
+      aliases = ["fuzi", "fu zi", "fu", "zi", "herb_fuzi"]
+      description = "附子是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      # LPC: clone/herb/fuzi.c   (inherit None)
+    }
+
+  items "huangqi" {
+      name = "黄芪"
+      aliases = ["huangqi", "huang qi", "huang", "qi", "herb_huangqi"]
+      description = "黄芪是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      # LPC: clone/herb/huangqi.c   (inherit None)
+    }
+
+  items "mahuang" {
+      name = "麻黄"
+      aliases = ["mahuang", "ma huang", "ma", "huang", "herb_mahuang"]
+      description = "麻黄是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      # LPC: clone/herb/mahuang.c   (inherit None)
+    }

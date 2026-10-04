@@ -2818,3 +2818,45 @@ chats = [
       #                     verbs={"bite"}，故 combat.attitude 取 aggressive。
       #   set("power", ...) 未移植；无 set_skill。
     }
+
+  items "corpse" {
+      name = "无名尸体"
+      aliases = ["corpse"]
+      description = "这是一具无名尸体。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        unit = "具"
+      }
+
+      # LPC: clone/misc/corpse.c   (inherit ITEM)
+    }
+
+
+    items "daodejing" {
+      # 本块复制自 clone_lib.ucl —— items 与 characters 一样只在本区解析，引用它的每个区都要一份
+      name = "道德经"
+      description = "这是一册道德经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "taoism"
+          min_skill = 60
+          max_skill = 119
+          exp_required = 100000
+          jing_cost = 20
+          difficulty = 30
+        }
+      }
+    }

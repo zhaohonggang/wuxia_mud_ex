@@ -1527,3 +1527,99 @@ chats = [
         unit = "粒"
       }
     }
+
+
+    items "book_bamboo" {
+      # 本块复制自 lingxiao.ucl —— items 与 characters 一样只在本区解析，引用它的每个区都要一份
+      name = "旧竹片"
+      aliases = ["bamboo", "shu", "book"]
+      description = "易筋经轻功篇 这是一片两边去皮的旧竹片，正面和背面都画了无数个飞翔纵跃的小图形。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 100
+        unit = "片"
+        material = "bamboo"
+        book = {
+          skill = "dodge"
+          max_skill = 99
+          exp_required = 0
+          jing_cost = 10
+          difficulty = 20
+        }
+      }
+    }
+
+
+    items "book_stone" {
+      # 本块复制自 lingxiao.ucl —— items 与 characters 一样只在本区解析，引用它的每个区都要一份
+      name = "石板"
+      aliases = ["stone", "shu", "book"]
+      description = "易筋经拳法篇 这是一块园园的石板，似乎用手指刻划了数个指印。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 500
+        unit = "块"
+        material = "stone"
+        book = {
+          skill = "skills"
+          max_skill = 49
+          exp_required = 0
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
+    }
+
+
+    items "mudao" {
+      # 本块复制自 clone_lib.ucl —— items 与 characters 一样只在本区解析，引用它的每个区都要一份
+      name = "木刀"
+      description = "这是一柄木制的短刀，胡家弟子用此刀练习刀法。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 3
+        skill_type = "blade"
+        value = 10
+        weight = 2000
+        unit = "把"
+        material = "wood"
+      }
+    }
+
+
+    items "zhubang" {
+      # 本块复制自 city.ucl —— items 与 characters 一样只在本区解析，引用它的每个区都要一份
+      name = "竹棒"
+      description = "这是一根发黄的竹棒，入手沉甸甸的，似乎相当结实。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 10
+        skill_type = "staff"
+        value = 200
+        weight = 3000
+        unit = "根"
+        material = "bamboo"
+      }
+    }

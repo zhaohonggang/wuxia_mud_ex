@@ -1397,3 +1397,19 @@ item_desc = {
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
     }
+
+  items "gold" {
+      name = "黄金"
+      aliases = ["gold", "ingot", "gold_money"]
+      description = "黄澄澄的金子，人见人爱的金子，啊~~~~金子！"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        unit = "些"
+      }
+
+      # LPC: clone/money/gold.c   (inherit MONEY)
+    }

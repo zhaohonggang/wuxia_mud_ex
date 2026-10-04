@@ -10,15 +10,15 @@
 | 指标 | 数量 |
 |---|---|
 | `room_items` 引用总数 | **880** |
-| 能正常解析（本区有 `items` 定义） | 310（35%） |
-| **悬空**（本区无 `items` 定义） | **570（65%）** |
+| 能正常解析（本区有 `items` 定义） | 382（43%） |
+| **悬空**（本区无 `items` 定义） | **498（57%）** |
 
 按 LPC 源的类型再分：
 
 | 分类 | 引用数 | 不同 id 数 | 含义 |
 |---|---|---|---|
-| **char** | 242 | 215 | LPC 里有 `set_name` 且 `inherit NPC/SNAKE/...` —— 是**人物**，被误写进了 `room_items` |
-| **item** | 169 | 96 | LPC 里 `inherit QUARRY/BOOK/WEAPON/ITEM/...` —— 是**真物品**，只是我们没生成定义 |
+| **char** | 241 | 214 | LPC 里有 `set_name` 且 `inherit NPC/SNAKE/...` —— 是**人物**，被误写进了 `room_items` |
+| **item** | 98 | 57 | LPC 里 `inherit QUARRY/BOOK/WEAPON/ITEM/...` —— 是**真物品**，只是我们没生成定义 |
 | **ambiguous** | 159 | 86 | 同一个 id 在 LPC 里**既有像人物的又有像物品的**，需逐个判断 |
 | **unknown** | 0 | 0 | LPC 里完全找不到同名文件 |
 
@@ -26,9 +26,9 @@
 > **三个数字都错了**。
 > 1. 694 是用正则切块数出来的，实际是 **880**（正则会在房间内部提前截断）；
 > 2. 「彻底悬空」这个说法本身不成立 —— LPC 里**没有一个** id 找不到出处（unknown = 0）；
-> 3. 「只有 20 处是 NPC 被当物品」严重低估，真实数量是 **242 条引用 / 215 个 id**。
+> 3. 「只有 20 处是 NPC 被当物品」严重低估，真实数量是 **241 条引用 / 214 个 id**。
 
-## 二、char：被误写成 `room_items` 的人物（242 条 / 215 个 id）
+## 二、char：被误写成 `room_items` 的人物（241 条 / 214 个 id）
 
 这些 LPC 源是 `inherit NPC` / `inherit SNAKE`，转换器把 `set("objects", ...)`
 里的它们写成了 `items.<id>`，而本区没有同名 `items` 定义，于是被 loader 静默跳过。
@@ -70,7 +70,6 @@
 | `duanzm` | 段正明 | NPC | 1 | `dali:qiandian` | `kungfu/class/duan/duanzm.c` |
 | `yideng` | 一灯大师 | NPC | 1 | `dali:qingchi` | `kungfu/class/duan/yideng.c` |
 | `ba` | 巴天石 | NPC | 1 | `dali:sikong` | `kungfu/class/duan/ba.c` |
-| `gu` | 顾炎武 | NPC | 1 | `dali:tingfang` | `d/tiezhang/npc/gu.c` |
 | `daobf` | 刀白凤 | NPC | 1 | `dali:yuxuguan` | `kungfu/class/duan/daobf.c` |
 | `wenhui` | 文晖小师太 | NPC | 1 | `emei:hcaeast` | `kungfu/class/emei/wenhui.c` |
 | `miejue` | 灭绝师太 | NPC | 1 | `emei:hcahoudian` | `kungfu/class/emei/miejue.c` |
@@ -96,6 +95,7 @@
 | `weisiniang` | 卫四娘 | NPC | 1 | `kunlun:guangchange` | `kungfu/class/kunlun/weisiniang.c` |
 | `zhanchun` | 詹春 | NPC | 1 | `kunlun:guangchangw` | `kungfu/class/kunlun/zhanchun.c` |
 | `hezudao` | 何足道 | NPC | 1 | `kunlun:jingshenfeng` | `kungfu/class/kunlun/hezudao.c` |
+| `xihuazi` | 西华子 | NPC | 1 | `kunlun:qianting` | `kungfu/class/kunlun/xihuazi.c` |
 
 ### 引用最多的几个（都是马厩）
 
@@ -110,7 +110,7 @@
 `caihuashe`(菜花蛇) 1、`wangshe`(眼镜王蛇) 1、`fushe`(腹蛇) 1 ——
 全部 `inherit SNAKE`。`baituo/cave` 的蟒蛇已在 §2④ 单独修过。
 
-## 三、item：真物品，只是我们没生成定义（169 条 / 96 个 id）
+## 三、item：真物品，只是我们没生成定义（98 条 / 57 个 id）
 
 这一类是**真的丢了东西**：LPC 有 `clone/quarry/` `clone/book/` `clone/weapon/` 等，
 转换器写了 `room_items` 引用，但对应的 `items` 块从没生成。
@@ -119,28 +119,15 @@
 | id | 名字 | inherit | 引用数 | 房间（前 3 个） | LPC 源 |
 |---|---|---|---|---|---|
 | `tu` | 野兔 | QUARRY | 9 | `dali:road5`, `fuzhou:fzroad1`, `hengyang:xuanyadi` …+6 | `clone/quarry/tu.c` |
-| `daodejing` | 道德经 | BOOK | 8 | `wudang:cangjingge`, `wudang:cangjingge`, `wudang:cangjingge` …+5 | `clone/book/daodejing.c` |
-| `gangdao` | 钢刀 | BLADE | 6 | `city:ma_bingqi`, `gaibang:chucang`, `kaifeng:hh_bingqi` …+3 | `clone/weapon/gangdao.c` |
 | `laohu` | 老虎 | QUARRY | 6 | `dali:gaolishan2`, `fuzhou:fzroad7`, `hangzhou:shanlu6` …+3 | `clone/quarry/laohu.c` |
 | `gou2` | 狼狗 | QUARRY | 6 | `foshan:street4`, `foshan:street5`, `hangzhou:guozhuang` …+3 | `clone/quarry/gou2.c` |
-| `ganchai` | 干柴 | ITEM | 5 | `baituo:chaifang`, `city:ma_chufang`, `fuzhou:mishi` …+2 | `d/wudu/obj/ganchai.c` |
 | `yang2` | 山羊 | QUARRY | 5 | `dali:dalangan1`, `dali:gaolishan1`, `dali:gelucheng` …+2 | `clone/quarry/yang2.c` |
 | `laozi1` | 道德经「第一章」 | BOOK | 4 | `wudang:cangjingge`, `wudang:cangjingge`, `wudang:cangjingge` …+1 | `clone/book/laozi1.c` |
-| `corpse` | 无名尸体 | ITEM | 4 | `wudang:nanyan1`, `wudang:nanyan2`, `wudang:nanyan3` …+1 | `clone/misc/corpse.c` |
-| `changjian` | 长剑 | SWORD | 3 | `city:ma_bingqi`, `kaifeng:hh_bingqi`, `luoyang:bingqiku` | `clone/weapon/changjian.c` |
 | `gou` | 野狗 | QUARRY | 3 | `hengyang:hsroad7`, `huanghe:tiandi4`, `village:sexit` | `clone/quarry/gou.c` |
-| `eluanshi` | 鹅卵石 | THROWING | 3 | `huanghe:caodi2`, `huanghe:shixiazi`, `suzhou:huqiu` | `d/hangzhou/obj/eluanshi.c` |
-| `shuzhi` | 大树枝 | STAFF | 3 | `huanghe:shulin1`, `lingzhou:luorilin2`, `suzhou:huqiu` | `d/city/obj/shuzhi.c` |
-| `zhubang` | 竹棒 | STAFF | 3 | `kaifeng:hh_bingqi`, `xiakedao:wuqiku`, `yanziwu:shijian` | `clone/weapon/zhubang.c` |
 | `he2` | 雪鹤 | QUARRY | 3 | `lingxiao:huajing`, `lingxiao:meiroad2`, `lingxiao:qianyuan` | `clone/quarry/he2.c` |
 | `ouyangke` | 欧阳克 | F_MASTER | 2 | `city:beidajie1`, `guiyun:jinship` | `kungfu/class/ouyang/ouyangke.c` |
-| `changbian` | 长鞭 | WHIP | 2 | `dali:bingqiku`, `xiakedao:wuqiku` | `clone/weapon/changbian.c` |
 | `sword` | 长剑 | SWORD | 2 | `global:dir_macro_test`, `test:dir_macro_test` | `d/beijing/npc/obj/sword.c` |
 | `poison` | ? | SKILL | 2 | `global:duwushi`, `test:duwushi` | `kungfu/skill/poison.c` |
-| `mudao` | 木刀 | BLADE | 2 | `guanwai:jingxiu`, `yanziwu:shijian` | `clone/weapon/mudao.c` |
-| `book_stone` | 石板 | BOOK | 2 | `shaolin:beilin3`, `yanziwu:huanshi` | `clone/book/book-stone.c` |
-| `book_bamboo` | 旧竹片 | BOOK | 2 | `shaolin:damodong`, `yanziwu:huanshi` | `clone/book/book-bamboo.c` |
-| `gold` | 黄金 | MONEY | 2 | `shenfeng:shibi`, `taohua:mushi` | `clone/money/gold.c` |
 | `yijing0` | 「易经序卦篇」 | BOOK | 2 | `taohua:shufang`, `taohua:shufang` | `clone/book/yijing0.c` |
 | `yijing1` | 「易经说卦篇」 | BOOK | 2 | `taohua:shufang`, `taohua:shufang` | `clone/book/yijing1.c` |
 | `yijing2` | 「易经杂卦篇」 | BOOK | 2 | `taohua:shufang`, `taohua:shufang` | `clone/book/yijing2.c` |
@@ -150,58 +137,63 @@
 | `laozi13` | 道德经「第十三章」 | BOOK | 2 | `wudang:cangjingge`, `wudang:cangjingge` | `clone/book/laozi13.c` |
 | `laozi16` | 道德经「第十六章」 | BOOK | 2 | `wudang:cangjingge`, `wudang:cangjingge` | `clone/book/laozi16.c` |
 | `laozi18` | 道德经「第十八章」 | BOOK | 2 | `wudang:cangjingge`, `wudang:cangjingge` | `clone/book/laozi18.c` |
-| `gangzhang` | 钢杖 | STAFF | 1 | `baituo:wuqiku` | `clone/weapon/gangzhang.c` |
-| `fruit` | 果汁 | ITEM | 1 | `city:liaotian` | `clone/game/fruit.c` |
-| `mint` | 薄荷冰 | ITEM | 1 | `city:liaotian` | `clone/game/mint.c` |
-| `idiom_book` | 成语词典 | CORE_HTTP | 1 | `city:shuyuan` | `u/mudren/obj/idiom_book.c` |
-| `dizigui_book` | 弟子规 | ITEM | 1 | `city:shuyuan2` | `u/mudren/obj/dizigui_book.c` |
-| `qianjiashi_book` | 千家诗 | ITEM | 1 | `city:shuyuan2` | `u/mudren/obj/qianjiashi_book.c` |
 | `shijing_book` | 诗经 | ITEM | 1 | `city:shuyuan2` | `u/mudren/obj/shijing_book.c` |
 | `box` | 功德箱 | ITEM | 1 | `city:wumiao` | `d/city/npc/obj/box.c` |
-| `chahua2` | 十八学士 | HEAD | 1 | `dali:chahua10` | `d/dali/obj/chahua2.c` |
-| `chahua3` | 十三太保 | HEAD | 1 | `dali:chahua10` | `d/dali/obj/chahua3.c` |
-| `chahua6` | 风 | HEAD | 1 | `dali:chahua10` | `d/dali/obj/chahua6.c` |
-| `chahua1` | 落第秀才 | HEAD | 1 | `dali:chahua2` | `d/dali/obj/chahua1.c` |
-| `chahua8` | 八宝妆 | HEAD | 1 | `dali:chahua3` | `d/dali/obj/chahua8.c` |
-| `chahua9` | 满月 | HEAD | 1 | `dali:chahua3` | `d/dali/obj/chahua9.c` |
-| `chahua10` | 眼 | HEAD | 1 | `dali:chahua3` | `d/dali/obj/chahua10.c` |
-| `chahua4` | 八仙过海 | HEAD | 1 | `dali:chahua4` | `d/dali/obj/chahua4.c` |
-| `chahua5` | 七仙女 | HEAD | 1 | `dali:chahua6` | `d/dali/obj/chahua5.c` |
-| `chahua7` | 二 | HEAD | 1 | `dali:chahua9` | `d/dali/obj/chahua7.c` |
 | `xiong` | 灰熊 | QUARRY | 1 | `guanwai:heifengkou` | `clone/quarry/xiong.c` |
 | `diao` | 紫貂 | QUARRY | 1 | `guanwai:luming` | `clone/quarry/diao.c` |
 | `laohu2` | 东北虎 | QUARRY | 1 | `guanwai:milin2` | `clone/quarry/laohu2.c` |
 | `niao` | 斑鸠 | QUARRY | 1 | `guiyun:tiandi` | `clone/quarry/niao.c` |
-| `changaoxie` | 长螯蝎 | WORM | 1 | `hangzhou:shiwudong` | `clone/worm/changaoxie.c` |
 | `qianjiewugong` | 千节蜈蚣 | WORM | 1 | `huanghe:bingcao` | `clone/worm/qianjiewugong.c` |
 | `shitou` | 大石头 | HAMMER | 1 | `huanghe:shixiazi` | `d/city/obj/shitou.c` |
 | `zhengqi_book` | 正气吟 | BOOK | 1 | `huashan:shufang` | `clone/book/zhengqi_book.c` |
 | `eyu` | 鳄鱼 | QUARRY | 1 | `jueqing:eyutan2` | `clone/quarry/eyu.c` |
 | `fengmi` | 玉蜂蜜 | ITEM | 1 | `jueqing:house` | `d/gumu/obj/fengmi.c` |
+| `qianjinzi` | 千金子 | ? | 1 | `kunlun:conglinggu` | `clone/herb/qianjinzi.c` |
+| `renshen` | 人参 | ? | 1 | `kunlun:conglinggu` | `clone/herb/renshen.c` |
+| `yang3` | 黄羊 | QUARRY | 1 | `lingzhou:huangyangtan` | `clone/quarry/yang3.c` |
+| `dagger` | 普通匕首 | DAGGER | 1 | `luoyang:bingqiku` | `clone/weapon/dagger.c` |
+| `qunxing_tu` | 群星璀璨图 | BOOK | 1 | `meizhuang:lingmu` | `clone/book/qunxing-tu.c` |
+| `xuejie` | 血竭 | ? | 1 | `quanzhen:fu_mishi` | `clone/herb/xuejie.c` |
+| `wuji1` | shaolin wuji | BOOK | 1 | `shaolin:cjlou1` | `clone/book/wuji1.c` |
+| `wuji2` | shaolin wuji | BOOK | 1 | `shaolin:cjlou1` | `clone/book/wuji2.c` |
+| `wuji3` | shaolin wuji | BOOK | 1 | `shaolin:cjlou1` | `clone/book/wuji3.c` |
+| `wuji4` | shaolin wuji | BOOK | 1 | `shaolin:cjlou1` | `clone/book/wuji4.c` |
+| `xisuijing` | 洗髓经 | BOOK | 1 | `shaolin:dmyuan2` | `clone/book/xisuijing.c` |
+| `jitui` | 烤鸡腿 | HAMMER | 1 | `shenlong:chufang` | `clone/food/jitui.c` |
+| `jiuzhang` | 「九章算术」 | BOOK | 1 | `taohua:shufang` | `clone/book/jiuzhang.c` |
+| `niao3` | 乌鸦 | QUARRY | 1 | `wudang:wuyaling` | `clone/quarry/niao3.c` |
+| `lang2` | 饿狼 | QUARRY | 1 | `wudu:langwo` | `clone/quarry/lang2.c` |
+| `gou3` | 藏獒 | QUARRY | 1 | `wudu:nanyuan` | `clone/quarry/gou3.c` |
+| `mitao` | 水蜜桃 | ITEM | 1 | `xiakedao:chashi` | `d/shenlong/obj/mitao.c` |
+| `xiangcha` | 香茶 | ITEM | 1 | `xiakedao:chashi` | `d/kunlun/obj/xiangcha.c` |
+| `duanjian` | 短剑 | SWORD | 1 | `xiakedao:wuqiku` | `clone/weapon/duanjian.c` |
+| `blade` | 钢刀 | BLADE | 1 | `xiaoyao:bingqif` | `clone/weapon/blade.c` |
+| `muding` | 木鼎 | ITEM | 1 | `xiyu:cangku` | `clone/misc/muding.c` |
+| `xuelian1` | 天山雪莲 | __DIR__ | 1 | `xiyu:tianroad4` | `clone/fam/pill/xuelian1.c` |
+| `xixuezhu` | 吸血蛛 | WORM | 1 | `xuedao:hollow` | `clone/worm/xixuezhu.c` |
+| `book_iron` | 铁手掌 | HANDS | 1 | `yanziwu:huanshi` | `clone/book/book-iron.c` |
+| `book_paper` | 易筋经文学篇 | BOOK | 1 | `yanziwu:huanshi` | `clone/book/book-paper.c` |
+| `book_silk` | 薄绢 | BOOK | 1 | `yanziwu:huanshi` | `clone/book/book-silk.c` |
+| `bian` | 羊鞭 | WHIP | 1 | `yanziwu:shijian` | `clone/weapon/bian.c` |
 
 按 inherit 统计这一类的量级：
 
 | inherit | id 数 |
 |---|---|
-| `BOOK` | 24 |
-| `QUARRY` | 16 |
-| `ITEM` | 13 |
-| `HEAD` | 10 |
-| `?` | 7 |
-| `SWORD` | 4 |
-| `WORM` | 4 |
-| `STAFF` | 3 |
-| `BLADE` | 3 |
-| `WHIP` | 2 |
+| `BOOK` | 20 |
+| `QUARRY` | 15 |
+| `ITEM` | 6 |
+| `?` | 3 |
+| `SWORD` | 2 |
+| `WORM` | 2 |
 | `HAMMER` | 2 |
 | `F_MASTER` | 1 |
-| `CORE_HTTP` | 1 |
 | `SKILL` | 1 |
-| `THROWING` | 1 |
 | `DAGGER` | 1 |
-| `MONEY` | 1 |
+| `BLADE` | 1 |
 | `__DIR__` | 1 |
 | `HANDS` | 1 |
+| `WHIP` | 1 |
 
 ## 四、ambiguous：同 id 既是人物又是物品（159 条 / 86 个 id）
 
