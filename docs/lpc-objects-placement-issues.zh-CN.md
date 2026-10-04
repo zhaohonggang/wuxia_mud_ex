@@ -15,9 +15,10 @@
 | `room_characters` 引用了本区没有的定义（跨区） | 2 处 | **已修** |
 | NPC 名字被转换器写倒 | 1 处 | **已修** |
 | `room_items` 引用彻底不存在的 `items.X` | **674 处** | **未修**，见 §5 |
-| 门禁条件外层方向守卫丢失 | 18 条 | 未修，可机械补回 |
+| 门禁条件外层方向守卫丢失 | 17 条 | 只有 1 条能安全补回，见 六.1 |
 | 门禁条件要求不存在的方向 | 7 条 | 未修 |
 | 审计脚本把析取当合判 | 2 条误报 | **已修** |
+| 6 个房间的条件在 LPC 里无出处（转换器编的） | 6 条 | 未修，建议删 |
 
 一个反复出现的教训：**转换器的错误是静默的**。
 loader 对解析不到的引用一律 `if is_nil(...)` 跳过，不报错、不警告。
@@ -223,17 +224,108 @@ LPC `set("objects", ...)` 里**物品**的部分基本没落地。
 
 ---
 
-## 六、剩余 25 条不拦人的门禁
+## 六、剩余 24 条不拦人的门禁
 
 | 原因 | 条数 | 说明 |
 |---|---|---|
-| 未限定方向 | 18 | 转换器丢了 LPC 外层 `if (dir != "x") return ::valid_leave(me, dir);`。**可按 LPC 机械补回**，之前 A 项已用 `all_dirs` 处理过 42 条 |
+| 未限定方向 | 17 | 见 §6.1，**多数不能直接执行** |
 | 要求不存在的方向 `west` | 5 | `xiyu:kedian` `lingzhou:biangate` `chengdu:kedian` `fuzhou:rongcheng` `tiezhang:kedian` |
 | 要求不存在的方向 `enter` | 1 | `city:mudren`，旧 todo 的 F 项，建议正式免除 |
 | 要求不存在的方向 `south` | 1 | `foshan:pm_restroom`（条件是 `balance < 5000000 \|\| weiwang < 30`） |
 
-「未限定方向」那 18 条**不能直接执行** —— 会把该房所有出口变成同一道门禁，
+「未限定方向」那 17 条**不能直接执行** —— 会把该房所有出口变成同一道门禁，
 可能把玩家锁死。`LpcCondition.direction_scoped?/1` 就是在防这个。
+
+### 6.1 逐条分类：只有 1 条能安全补守卫
+
+排查后发现这 17 条**不是同一种病**，之前笼统叫「丢了外层守卫」是不准确的。
+
+#### (a) 能安全补回守卫：1 条
+
+`xiyu:xxh6` 的 gender 那条。LPC 原文：
+
+```lpc
+if (dir == "in") {
+    if (present("caihua zi", environment(me))) {
+        if (!myfam || myfam["family_name"] != "星宿海") return notify_fail(...);
+        if (me->query("gender") == "无性")         return notify_fail(...);
+        if (!(int)this_player()->query_temp("marks/花")) return notify_fail(...);
+    }
+}
+```
+
+改成 `dir == 'in' && present('caihua zi',environment(me)) && me->query('gender') == '无性'`
+—— 与原文逐字对应。「无性」是玩家固有属性，不存在「先做点什么才能解开」，
+所以不会造成锁死。已启用（141 → 142）。
+
+同房另外两条：
+
+- **family 那条**：数据里根本没有 `condition`，转换器只留了注释
+  （`# 阻挡条件（原样保留）：myfam || myfam["family_name"] != "星宿海"`），
+  且 `message` 挂在这个空块上。没补。
+- **marks/花 那条**：**必须保持禁用**。`marks/花` 全库只由
+  `mud/d/xiyu/npc/caihua.c` 的 action 设置，而采花子的 action 没移植 ——
+  没有任何代码写这个标记。加上 `dir == 'in'` 守卫后，
+  `xiyu:xiaoyao` 会对**所有人**封死（不是只封非星宿海）。
+  已在数据里写明原因，并加了回归测试钉住。
+
+#### (b) 补了守卫反而更宽（误拦）：1 条 —— 我踩过，已还原
+
+`beijing:kediandayuan`。LPC：
+
+```lpc
+if (dir != "east") return ::valid_leave(me, dir);
+room = find_object(query("exits/east"));
+if (room && present("la ma", room) && present("dubi shenni", room)) {
+    if ((int)me->query_skill("force") < 100) return notify_fail(...);
+    me->receive_damage("qi", 50);
+}
+```
+
+除了方向，LPC 还要求**目的地房间**里有拉马和毒匕神尼。
+数据里保存的只是 `force < 100` 这一半 —— 条件语言只能看**自己**这个房间，
+表达不了「去查另一个房间」。
+
+我一开始加了 `dir == 'east' &&`，结果**所有**内力<100 的玩家都过不去这道门，
+比 LPC 宽得多。是 `exit_veto_runtime_test.exs` 里既有的断言
+（「依赖目的地房间内容，无法表达」）把它挡下来的。已还原。
+
+> 教训：给条件加 `dir ==` 不等于「修好了」。要先确认 LPC 的**全部**前置条件
+> 都已表达出来，否则只是把一条死条件变成一条误拦条件。
+
+#### (c) LPC 里本来就没有 valid_leave（转换器编的）：6 条
+
+这些房间在 LPC 里**压根没有 `valid_leave` 函数**，数据里的条件是转换器
+从别处误抓或凭空生成的：
+
+| 房间 | 数据里的条件 | 问题 |
+|---|---|---|
+| `changan:qinglong3` | `me->query('gender')=='女性'` | 无出处 |
+| `city:duchuan` | `me->query_temp('pigging_seat')` | 无出处 |
+| `city:qiyuan1/3/4` | `me->query_temp('weiqi_seat')` | 无出处 |
+| `huashan:baichi` | `j > 1` | **`j` 是未定义变量** |
+| `huashan:chaoyang` | `present('soup',me) \|\| present('rice',me)` | 与 `xiangyang/juyichufang.c` 的条件重复 |
+| `shaolin:dmyuan` | `! present('xisui jing',this_object())` | 无出处 |
+
+其中 `huashan:baichi` 的 `j > 1` 是从 LPC 的循环变量里抓出来的，
+纯垃圾。**建议直接从数据里删掉这 6 条**，而不是留着等「以后补守卫」。
+
+#### (d) LPC 里真的不限方向（是「在做某事时不能走」）：9 条
+
+LPC 原文就没有 `dir` 判断，忠实执行就是「只要满足 X 就哪儿都去不了」：
+
+| 房间 | 条件 | 说明 |
+|---|---|---|
+| `city:nproom` / `city:sproom` / `city:underlt` | `me->query_temp('pigging_seat')` | 坐在拱猪桌前不许走，需先离桌 |
+| `city:lichunyuan2` | `me->query_condition('prostitute')` | 龟公抱住不许走 |
+| `huashan:bingqifang` | `j > 1` | 需按 id 统计背包，条件语言表达不了 |
+| `lingxiao:wave` | `objectp(present('xuanbing chimang',environment(me)))` | 玄冰驰马封路 |
+| `xiangyang:juyichufang` | `present('soup',me) \|\| present('rice',me)` | 端着饭不许走 |
+| `taishan:nantian` | `present('jiang baisheng',...) && me->query('id') != mengzhu` | `mengzhu` 是 LPC 局部变量（`find_living("mengzhu")->query("winner")`），裸标识符无法求值 |
+
+这些要**逐条确认「解开它的动作」在我们这边是否已实现**，
+否则就是死锁。已实现解锁动作的可以加 `all_dirs` 放行；
+没实现的应保持禁用。建议下一个专门轮次处理。
 
 ---
 

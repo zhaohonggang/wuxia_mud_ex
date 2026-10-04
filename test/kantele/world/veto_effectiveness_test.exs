@@ -179,7 +179,7 @@ alias Kantele.World.LpcCondition
   end
 
   @tag :world_data
-  test "总账：166 条里 141 条会拦人、25 条不会", ctx do
+  test "总账：166 条里 142 条会拦人、24 条不会", ctx do
     tally =
       for room <- ctx.world.rooms,
           veto <- room.exit_vetoes,
@@ -194,9 +194,9 @@ alias Kantele.World.LpcCondition
     assert total == 166,
            "条件总数变了：#{total}（tally=#{inspect(tally)}）"
 
-    # 141 = 纯条件 123 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
-    assert tally[:live] == 141, "会拦人的条数变了：#{tally[:live]}"
-    assert tally[:dead] == 25, "不会拦的条数变了：#{tally[:dead]}"
+    # 142 = 纯条件 124 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
+    assert tally[:live] == 142, "会拦人的条数变了：#{tally[:live]}"
+    assert tally[:dead] == 24, "不会拦的条数变了：#{tally[:dead]}"
   end
 
   @tag :world_data
@@ -226,6 +226,37 @@ alias Kantele.World.LpcCondition
     for fixed <- ["sang sanniang", "xu ming", "xu tong"] do
       refute MapSet.member?(missing, fixed),
              "#{fixed} 已移植到 data/world，不该再报「未定义」（若报错请检查 room_characters 是否也放了）"
+    end
+  end
+
+  @tag :world_data
+  test "marks/花 那条门禁必须保持未限定方向（加了会把 xiyu:xiaoyao 封死）", ctx do
+    # mud/d/xiyu/xxh6.c 里第三条拦截是
+    #   if (dir == "in") { if (present("caihua zi", environment(me)))
+    #   { if (!(int)this_player()->query_temp("marks/花")) return notify_fail(...); } }
+    #
+    # marks/花 只由 mud/d/xiyu/npc/caihua.c 的 action 设置，而采花子的 action
+    # 没有移植 —— 全库没有任何地方写这个标记。加上 dir 守卫后，
+    # xiyu:xiaoyao 会对**所有人**封死（不是只封非星宿海）。
+    #
+    # 同房间另一条（gender == 无性）是安全的：那是玩家固有属性，
+    # LPC 本来就这个意思，不存在「需要先做点什么才能解开」。
+    conds =
+      Enum.flat_map(ctx.world.rooms, fn r ->
+        Enum.map(r.exit_vetoes || [], &{r.id, Map.get(&1, :condition)})
+      end)
+
+    marks =
+      for {id, c} <- conds,
+          is_binary(c),
+          String.contains?(c, "marks/花"),
+          do: {id, c}
+
+    assert length(marks) == 1, "预期只有 xiyu:xxh6 这一条涉及 marks/花"
+
+    for {id, c} <- marks do
+      refute LpcCondition.direction_scoped?(c),
+             "#{id} 的 marks/花 门禁不能限定方向：marks/花 无人设置，加守卫会封死 xiyu:xiaoyao"
     end
   end
 

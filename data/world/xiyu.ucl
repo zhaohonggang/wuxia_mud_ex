@@ -1305,12 +1305,17 @@ direction = ~
 }
 ,
 {
-   condition = "me->query('gender') == '无性'"
+   condition = "dir == 'in' && present('caihua zi',environment(me)) && me->query('gender') == '无性'"
 direction = ~
   message = "采花子挡住了你，一脸讥笑：您这小身板还想玩妞？别开玩笑了。"
 }
 ,
 {
+   # 故意不加 dir 守卫：marks/花 只由 mud/d/xiyu/npc/caihua.c 的 action 设置，
+   # 采花子的 action 尚未移植，全库没有任何地方写这个标记。
+   # 一旦加上守卫，xiyu:xiaoyao 会对**所有人**彻底封死（不是只封非星宿海）。
+   # LPC 原文：if (dir == "in") { if (present("caihua zi", environment(me)))
+   #   { if (!(int)this_player()->query_temp("marks/花")) return notify_fail(...); } }
    condition = "!(int)this_player()->query_temp('marks/花')"
 direction = ~
   message = "采花子挡住了你：喂，你总该意思意思吧？"

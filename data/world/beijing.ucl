@@ -2097,6 +2097,15 @@ item_desc = {
 }
 valid_leave = [
 {
+   # 故意不加 dir 守卫。LPC 原文：
+   #   if (dir != "east") return ::valid_leave(me, dir);
+   #   if (room && present("la ma", room) && present("dubi shenni", room))
+   #   { if ((int)me->query_skill("force") < 100) return notify_fail(...); ... }
+   # 也就是说除了方向，还要**目的地房间**里有拉马和毒匕神尼才拦。
+   # 条件语言只能看自己这个房间，表达不了「去查另一个房间」，
+   # 数据里保存的只是 force < 100 这一半。
+   # 加上 dir == 'east' 会让**所有**内力<100 的玩家都过不去这道门 ——
+   # 比 LPC 宽得多，属于误拦。所以保持未限定方向，不执行。
    condition = "(int)me->query_skill('force') < 100"
 direction = ~
   message = "你一步踏进客房，突觉一股力道奇大的劲风激扑出来，将你一撞， 你登时立足不稳，腾腾腾到退三步，摔了一跤。"
