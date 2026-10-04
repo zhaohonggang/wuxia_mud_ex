@@ -98,7 +98,7 @@ case {chance, chats} do
 verbs.ucl 只管**物品动词**（`get`/`drop`/`look`/`wield`…），
 玩家命令走 `Kalevala.Character.Command` 框架，根本不查 verbs.ucl。
 
-### `brains.X` 本身仍然是编造的
+### `brains.X` 是转换器编造的 —— **但先别删**
 
 `data/world` 里 228 处 `brain = brains.dealer` 之类的引用，
 **不是 LPC 数据**。`lpc_converter.ex` 的 `infer_brain/1`：
@@ -118,16 +118,29 @@ LPC 那边根本没有 `brain` 这个概念，只有 `inherit F_XXX` 和 `add_ac
 产物 `data/world/mingjiao.ucl` 里就有了 `brain = brains.guardert`。
 
 `Kantele.Brain.process/2` 找不到就返回 `NullNode{}`，所以这 228 处全是
-空节点。**好在功能不依赖它们**（走的是 `meta.goods` / `meta.guarder`），
-所以这是个**数据整洁度**问题，不是功能缺口。
+空节点。
 
-**仍然别去 mud 找 `brains/` 目录**——LPC 里没有这个目录（是 `feature/`），
-而 Kalevala 的 brain 是 `type=first` + `nodes` 的行为树，
-和 `feature/dealer.c` 那种命令实现不是一个东西。
+### 🚧 给后续维护者：暂时不要清理这些引用
 
-- [ ] 让 `infer_brain/1` 不再编造（或至少在文档里标明这些引用无意义），
-      228 处 UCL 里的 `brain = brains.X` 怎么处理（删掉 / 改名成
-      `feature = "X"` / 就此留着当噪音）需要拍板
+**这些 `brain = brains.X` 现在是有用的线索，不要删。**
+
+- ❌ **不要**因为「`brains.guardert` 不存在」就认定相关功能坏了。
+  守卫实际是靠 `meta.guardert` 生效的（见 §二），与这行无关。
+- ❌ **不要**去 `data/brains/` 找定义、也**不要**去 LPC 找 `brains/` 目录 ——
+  LPC 里没有那个目录（是 `feature/`），Kalevala 的 brain 是
+  `type=first` + `nodes` 的行为树，和 `feature/*.c` 的命令实现不是一个东西。
+- ❌ **不要**把这些引用当成「功能已接上」的证据。看到 `brain = brains.dealer`
+  不代表商店能卖东西；要查 `meta.goods` 是否非空。
+
+它们的价值是**标记**：`brain = brains.X` 精确指出了「这个 NPC 在 LPC 里
+`inherit` 了 `F_X`」，也就是**它该有哪些命令**。§二 的接线排查就是靠这个
+线索找到的（`guardert` 这个拼写错误的 `guarder` 就是这么露出来的）。
+
+**清理条件**：等所有 `F_*` feature 的行为都逐个核实完
+（`dealer` / `vendor` / `guarder` / `banker` / `quester` / `coagent` /
+`horseboss` / `ask_handler`）之后，再一次性决定这 228 处是删掉、
+改名成 `feature = "X"`、还是就此留作噪音。
+
 - [ ] `Kantele.Brain.process/2` 遇到不存在的 brain 名时 warn 一次
 
 ---
@@ -360,7 +373,104 @@ set("vendor_goods", ({ "obj/jitui", "obj/jiudai", "obj/baozi", "obj/kaoya",
 
 ---
 
-## 二、`do_walk`（拾荒者清道夫）完全未实现 🔴
+## 二、`Guarder`：4 个函数里只有 1 个真的接上了
+
+`feature/guarder.c` 与 `lib/kantele/npc/guarder.ex` 函数名**1:1 对应**，
+但**接线**（谁在调）情况完全不同：
+
+| LPC | Elixir | 调用点 | 实际生效 |
+|---|---|---|---|
+| `is_guarder()` | `is_guarder?/1` | `room.ex:437`、`room.ex:2733` | ✅ |
+| `permit_pass(ob, dir)` | `permit_pass/1` | `room.ex:446` | ✅ |
+| `check_enemy(ob, type)` | `check_enemy/1` | **无** | ❌ |
+| `kill_enemy(ob)` | `kill_enemy/1` | **无** | ❌ |
+
+### `permit_pass` 是真通的
+
+`room.ex:433-455` 的 `check_guarders_for_dir/2` 在**每次移动**时执行，
+对应 LPC 里 `baituo/damen.c` 那个模式：
+
+```c
+if (present("men wei") && dir == "north") return guarder->permit_pass(me, dir);
+```
+
+数据侧也确认有料：**20 个守卫 / 9 个区，`guarder.family` 20/20 全部非空**：
+
+```
+xiyu 5 / huashan 4 / baituo 3 / shenlong 2 / xuedao 2
+dali 1 / guanwai 1 / hengyang 1 / taohua 1
+样本：黄药师 @ taohua  ->  %{family: "桃花岛", msgs: %{}}
+```
+
+三条 LPC 规则里前两条（叛门者 / 外门派不得入内）生效。
+
+### ❌ `check_enemy` 与 `kill_enemy` 是死代码
+
+`room.ex:2728` 的注释写着「守卫敌对判定（`Guarder.check_enemy` 接线）」，
+但往下看：
+
+```
+2730  defp guarder_config?/1      ← 只有定义
+2737  defp guarder_decision/3      ← 只有定义（内部调 Guarder.check_enemy）
+2748  defp guarder_deny?/3         ← 只有定义
+2754  defp guarder_kill?/3         ← 只有定义
+2758  defp guarder_refuse_msg/2    ← 只有定义
+```
+
+`guarder_deny?` / `guarder_kill?` 这两个名字在 `lib/` 里**只出现在各自的
+定义处**，没有任何调用点。整条链止步于定义 —— 注释里的「接线」是**未兑现
+的承诺**。
+
+后果：守卫被玩家打时，LPC 里那套反应（`我现在没空` / `你今日是要造反吗`
+/ 直接 `kill_ob`）全都不会发生。
+
+`kill_enemy`（守卫呼唤帮手）同样只有定义。
+注意 `lpc_example/ex/feature_attack/` 里那个 `kill_enemy` 是**同名的无关函数**，
+不要混淆。
+
+### ❌ `permit_pass` 第三条检查恒假（缺 `:carrying` 字段）
+
+LPC 的第三条规则是查**背包里有没有别派的玩家**：
+
+```c
+inv = deep_inventory(ob);
+for (i = 0; i < sizeof(inv); i++) {
+    if (!userp(inv[i])) continue;
+    if (inv[i]->query("family/family_name") != fam_name) { ... return 0; }
+}
+```
+
+我们这边 `room.ex:466`：
+
+```elixir
+carried_families =
+  mover.meta
+  |> Map.get(:carrying, [])     # ← PlayerMeta 没有 :carrying 字段
+```
+
+代码注释自己承认了（463-465 行「PlayerMeta 根本没有 `:carrying` 字段」）。
+用 `Map.get/3` 兜住了不崩，但**结果恒为 `[]`**，于是 `permit_pass` 里
+`Enum.any?(carried, ...)` **永不触发**——「背着他派的人闯门」没有实现，
+也没有任何报错。
+
+修这个要给 `PlayerMeta` 加字段，**涉及持久化格式**，要单独评估。
+
+### ⚠️ 关键：`brain = brains.guardert` 与以上无关
+
+守卫能工作**不是因为**那行。真正生效的是 `meta.guardert`
+（由 `lpc_converter.ex:1310-1312` 的 `extract_guarder` 从 LPC 的
+`permit_pass()` 函数体抽取），`room.ex` 读的是 `c.meta.guardert`。
+
+参见 §一之一 的「🚧 给后续维护者」——那 228 处假引用是**线索**，别删。
+
+- [ ] 把 `check_enemy` 接进 `engage`/`start_combat` 流程
+- [ ] 把 `kill_enemy` 接上（需要先有帮手在场的数据结构）
+- [ ] `PlayerMeta` 加 `:carrying`（或找到既有的「背人」机制复用），
+      让 `permit_pass` 第三条规则生效
+
+---
+
+## 三、`do_walk`（拾荒者清道夫）完全未实现 🔴
 
 LPC 里 `walker` 的**全部**行为，都在 `do_walk()` 里，三个机制一个都没有：
 
@@ -381,7 +491,7 @@ LPC 里 `walker` 的**全部**行为，都在 `do_walk()` 里，三个机制一�
 
 ---
 
-## 三、`random_move` 不存在 🟡
+## 四、`random_move` 不存在 🟡
 
 LPC 里大量 NPC 用它乱走（`walker` 只是其中之一）。
 我们没有等价物，`Kalevala.World.Room` 有 `exits`，但没有"随机选一条能走的"。
@@ -391,7 +501,7 @@ LPC 里大量 NPC 用它乱走（`walker` 只是其中之一）。
 
 ---
 
-## 四、`attitude` 全是哑值 🟡
+## 五、`attitude` 全是哑值 🟡
 
 `grep -rn heroism lib/` **零命中**。
 
@@ -424,7 +534,7 @@ t when t in ["kill", "aggressive", "duel"]
 
 ---
 
-## 五、`carry` 是死数据 🟡
+## 六、`carry` 是死数据 🟡
 
 上一轮（`caea599`）发现的：转换器会输出
 
@@ -447,7 +557,7 @@ greetings / guarder / init / loot / quest / stats / vitals / zone_id …）。
 
 ---
 
-## 六、跨区引用只能在同区解析 🟡
+## 七、跨区引用只能在同区解析 🟡
 
 **这是悬空引用的根因**，也是 §五 的障碍。
 
@@ -470,7 +580,7 @@ carry_object("/clone/weapon/blade")->wield();
 
 ---
 
-## 七、`Items.get!/1` 还有 88 处 🔴
+## 八、`Items.get!/1` 还有 88 处 🔴
 
 `Kalevala.Cache` 的 `get!/1` 在 key 不存在时 `raise`。
 
@@ -487,7 +597,7 @@ carry_object("/clone/weapon/blade")->wield();
 
 ---
 
-## 八、两个编译告警（先前就存在，未动）🟢
+## 九、两个编译告警（先前就存在，未动）🟢
 
 ```
 lib/kantele/character/commands/combine_command.ex:193
@@ -506,7 +616,7 @@ lib/kantele/character/commands/drive_command.ex:59
 
 ---
 
-## 九、已核实为「转换器编造」的清单 🔴
+## 十、已核实为「转换器编造」的清单 🔴
 
 > 这几项**不是** LPC 行为缺失，是转换器凭空造的。修的时候要改转换器，
 > 不能靠补数据文件。
@@ -519,7 +629,7 @@ lib/kantele/character/commands/drive_command.ex:59
 
 `infer_brain/1` 还映射了 `HORSE -> horseboss`，但当前无引用。
 
-## 十、数据层已完成的部分（备查）
+## 十一、数据层已完成的部分（备查）
 
 这些是**数据**层，做完了，但对应行为仍受上面各节限制：
 
