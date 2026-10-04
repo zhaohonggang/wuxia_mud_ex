@@ -53,6 +53,16 @@ defmodule Kantele.World.VetoEffectivenessTest do
     %{world: world, cap: cap, parse_aliases: parse_aliases, definitions: definitions}
   end
 
+
+  # present() 的第二个参数决定判据：environment(me) / this_object() 要在场，me 不要
+  defp room_ref(alias, cond) do
+    re = ~r/present\('#{Regex.escape(alias)}'\s*,\s*([^)]+)\)/
+    case Regex.run(re, cond) do
+      [_, second] -> second =~ "environment" or second =~ "this_object"
+      _ -> false
+    end
+  end
+
   # 判定顺序与 scripts/audit_veto_effectiveness.exs **完全一致** ——
   # 脚本是给人看的清单，这里是给 CI 看的断言，两者必须同口径。
   defp classify(ctx, room, veto) do
@@ -129,19 +139,28 @@ defmodule Kantele.World.VetoEffectivenessTest do
           end
         end)
 
-      undefined = Enum.reject(presents, &MapSet.member?(ctx.definitions, &1))
-      absent = Enum.reject(presents, &MapSet.member?(in_room, &1))
+      # `present(x, environment(me))` / `present(x, this_object())` 要求**在场**；
+      # `present(x, me)` 是「玩家自己身上」，只要物品有定义即可。
+      # 不区分这两者会把 qilin xue / jingang zhao / rice / tea 误判成
+      # 「不在房里」——它们本来就是玩家携带的物品。
+      {in_room_refs, on_player} =
+        Enum.split_with(presents, fn a -> room_ref(a, c) end)
+
+      undefined_player = Enum.reject(on_player, &MapSet.member?(ctx.definitions, &1))
+      undefined_room = Enum.reject(in_room_refs, &MapSet.member?(ctx.definitions, &1))
+      not_placed = Enum.reject(in_room_refs, &MapSet.member?(in_room, &1))
 
       cond do
-        undefined != [] -> {:dead, {:undefined, undefined}}
-        absent != [] -> {:dead, {:absent, absent}}
+        undefined_player != [] -> {:dead, {:undefined_player, undefined_player}}
+        undefined_room != [] -> {:dead, {:undefined, undefined_room}}
+        not_placed != [] -> {:dead, {:absent, not_placed}}
         true -> {:live, nil}
       end
     end
   end
 
   @tag :world_data
-  test "总账：166 条里 114 条会拦人、52 条不会", ctx do
+  test "总账：166 条里 125 条会拦人、41 条不会", ctx do
     tally =
       for room <- ctx.world.rooms,
           veto <- room.exit_vetoes,
@@ -156,9 +175,9 @@ defmodule Kantele.World.VetoEffectivenessTest do
     assert total == 166,
            "条件总数变了：#{total}（tally=#{inspect(tally)}）"
 
-    # 121 = 纯条件 103 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
-    assert tally[:live] == 121, "会拦人的条数变了：#{tally[:live]}"
-    assert tally[:dead] == 45, "不会拦的条数变了：#{tally[:dead]}"
+    # 125 = 纯条件 107 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
+    assert tally[:live] == 125, "会拦人的条数变了：#{tally[:live]}"
+    assert tally[:dead] == 41, "不会拦的条数变了：#{tally[:dead]}"
   end
 
   @tag :world_data
@@ -204,7 +223,10 @@ defmodule Kantele.World.VetoEffectivenessTest do
   end
 
   @tag :world_data
-  test "依赖 NPC 但 NPC 不在房里的条件，也被记为 dead", ctx do
+  test "玩家身上的物品不算「不在房里」（那是误报来源）", ctx do
+    # `present(x, me)` 只要物品有定义即可 —— 玩家捡到就能用。
+    # 审计脚本一度把它们判成 dead（qilin xue / jingang zhao / rice / tea），
+    # 白白少算了 4 条。
     absent =
       for room <- ctx.world.rooms,
           veto <- room.exit_vetoes,
@@ -213,7 +235,12 @@ defmodule Kantele.World.VetoEffectivenessTest do
         acc -> acc ++ names
       end
 
-    assert absent != [], "应存在「NPC 有定义但不在房里」的条件"
+    for item <- ["qilin xue", "jingang zhao", "rice", "tea"] do
+      refute item in absent,
+             "#{item} 是玩家携带的物品，不该被判成「不在房里」"
+    end
+
+    assert absent != [], "仍应存在「房间 NPC 有定义但没放进去」的条件"
   end
 
   @tag :world_data

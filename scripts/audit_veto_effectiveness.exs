@@ -100,6 +100,18 @@ end
 dirs_of = fn c -> cap.(~r/dir\s*==\s*'(\w+)'/, c) end
 presents_of = fn c -> cap.(~r/present\('([^']+)'/, c) end
 
+
+# `present(x, environment(me))` / `present(x, this_object())` 要求目标**在场**；
+# `present(x, me)` 是「玩家自己身上」，只需要物品有定义（玩家捡到就能用）。
+# 脚本里没有模块作用域，defp 用不了，所以写成匿名函数。
+room_ref? = fn alias, cond ->
+  re = ~r/present\('#{Regex.escape(alias)}'\s*,\s*([^)]+)\)/
+  case Regex.run(re, cond) do
+    [_, second] -> second =~ "environment" or second =~ "this_object"
+    _ -> false
+  end
+end
+
 # ---------- 逐条判定 ----------
 
 results =
@@ -146,13 +158,33 @@ results =
 
         true ->
           in_room = room_occupants.(room.id, room.zone_id)
-          undefined = Enum.reject(presents, &MapSet.member?(definitions, &1))
-          absent = Enum.reject(presents, &MapSet.member?(in_room, &1))
+
+          # `present(x, me)` 是「玩家身上有没有」，`present(x, environment(me))`
+          # 才是「房间里有没有」—— 两者判据不同：
+          #   * 玩家身上的（多半是物品）只要**有定义**就够了，玩家捡到就能用，
+          #     不该因为「不在房间里」判成 dead
+          #   * 房间里的必须在 room_characters 里
+          # present() 的第二个参数在原文里是 me / environment(me) / this_object()
+          # 这里按「是否含 environment 或 this_object」判断是否要求在场
+          on_player = Enum.filter(presents, fn a -> not room_ref?.(a, c) end)
+          in_room_refs = Enum.filter(presents, fn a -> room_ref?.(a, c) end)
+
+          undefined_player = Enum.reject(on_player, &MapSet.member?(definitions, &1))
+          undefined_room = Enum.reject(in_room_refs, &MapSet.member?(definitions, &1))
+          not_placed = Enum.reject(in_room_refs, &MapSet.member?(in_room, &1))
 
           cond do
-            undefined != [] -> {:dead, "依赖的 NPC/物品未定义 #{inspect(undefined)}"}
-            absent != [] -> {:dead, "依赖的 NPC 不在房里 #{inspect(absent)}"}
-            true -> {:live, "纯条件"}
+            undefined_player != [] ->
+              {:dead, "玩家身上要带的物品未定义 #{inspect(undefined_player)}"}
+
+            undefined_room != [] ->
+              {:dead, "依赖的 NPC/物品未定义 #{inspect(undefined_room)}"}
+
+            not_placed != [] ->
+              {:dead, "依赖的 NPC 不在房里 #{inspect(not_placed)}"}
+
+            true ->
+              {:live, "纯条件"}
           end
       end
 
