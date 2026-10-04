@@ -353,10 +353,62 @@ not LpcCondition.direction_scoped?(c) -> {:dead, "未限定方向"}
   等玩家把经捡走就会变成真 → 拦下**所有**出口。这与 LPC 一致
   （原文消息：「本寺最高心法不见了，你怎敢就走？」），但会让 `shaolin:dmyuan2`
   变成一个必须带经才能出的房间。要不要保留请定夺。
-- `xuanbing chimang`：**玄冰莽压根没定义**，而 `lingxiao:wave` 的 `room_items`
-  里还挂着一个悬空的 `items.xuanmang.id`（见 §5）。这是本轮唯一「补了就能真生效」
-  的一条，但要注意 `lingxiao:wave` 有 **up / down / out 三个出口**，
-  全被玄冰莽封住就等于把房间锁死，必须能打死它。**未动，等确认。**
+- `xuanbing chimang`：**已修**。见 §2④。
+
+### 2④ 已修：`lingxiao:wave` 的玄冰莽（`all_dirs` 门禁的第一个真生效案例）
+
+这是「悬空 `room_items` 引用其实是人物」的**已知样本**，也是修通它的动机。
+
+```lpc
+// mud/d/lingxiao/wave.c
+set("objects", ([ "/clone/beast/xuanmang" : 1 ]));
+int valid_leave(object me, string dir) {
+    if (objectp(present("xuanbing chimang", environment(me))))
+        return notify_fail("你正欲离开此地，却只见玄冰莽蛇一个盘旋，顿时将去路完全封锁。\n");
+    return ::valid_leave(me);
+}
+```
+
+转换器把 `set("objects")` 写成了 `room_items "wave" { items = [ { id = items.xuanmang.id } ] }`，
+而 `items."xuanmang"` 从未定义 → loader 静默跳过 → 冰洞里一直是空的，
+「玄冰莽封路」这条门禁永远不触发。
+
+已按 `clone/beast/xuanmang.c` 补成 `characters "xuanmang"` + `room_characters`：
+
+| 字段 | 值 | 出处 |
+|---|---|---|
+| name | 玄冰莽蛇 | `NAME = HIW "玄冰" HIR "莽" HIW "蛇" NOR` |
+| aliases | `xuanbing chimang` `xuan` `bing` `xuanbing` `chimang` `mang` `snake` | 同上 |
+| attitude | `aggressive` | `inherit SNAKE` → `mud/inherit/char/snake.c` 的 `setup()` 里 `set("attitude","aggressive")` |
+| str/con/dex | 50 / 100 / 50 | LPC |
+| max_qi / max_jing | 20000 / 20000 | LPC |
+| neili / max_neili | 6000 / 6000 | LPC |
+| combat_exp | 5000000 | LPC |
+| skills | unarmed/dodge/parry/force 各 500 | LPC |
+| apply | attack 500、unarmed_damage 300、defense 500、armor 300 | LPC 的四条 `set_temp("apply/...")` |
+
+未移植（已写在数据注释里）：`snake_poison`（蛇毒 level/perhit/remain/maximum/supply）、
+`power`、掉落 `item1/2/3`（蛇肉 / 蛇胆 / 血丹）。
+
+顺带修了提示语的字：数据里是「玄冰**赤**蟒」，LPC 原文是「玄冰**莽**蛇」——
+转换器把 `莽` 误成 `赤`。
+
+### ⚠ 这个房间的锁死风险（所以钉了测试）
+
+`lingxiao:wave` 只有 **up / down / out** 三个出口，而这条门禁是 `all_dirs = true`
+—— 玄冰莽活着就**一个出口都出不去**。所以必须保证它打得死、且不会刷新后再次封路：
+
+- `no_kill = false` ✓（可打死；LPC 的 `void unconcious() { die(); }` 也是这个意思）
+- `respawn_delay = nil` ✓（不刷新，否则打死后又封死）
+- `attitude = "aggressive"` ✓（进房就扑，房间描述里也是「径直扑了过来」）
+
+回归测试 `test/kantele/world/veto_effectiveness_test.exs`
+「lingxiao:wave 的玄冰莽门禁是**真**生效的」把这几条全钉住了，
+外加「`present('xuanbing chimang', ...)` 在全库只命中它一个」。
+
+> 别名 `mang` 与别处撞车：`流氓`（beijing/quanzhen）、`蟒蛇`（baituo/wudang）、
+> `玄冰莽蛇`（lingxiao）都带 `mang`。这里没问题，因为 `present()` 是**房间作用域**，
+> 三者不在同一房间。真要按短别名查找时得注意。
 
 ---
 

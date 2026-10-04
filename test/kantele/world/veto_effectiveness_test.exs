@@ -247,6 +247,54 @@ alias Kantele.World.LpcCondition
   end
 
   @tag :world_data
+  test "lingxiao:wave 的玄冰莽门禁是**真**生效的（不是空转）", ctx do
+    # mud/d/lingxiao/wave.c:
+    #   set("objects", ([ "/clone/beast/xuanmang" : 1 ]));
+    #   if (objectp(present("xuanbing chimang", environment(me))))
+    #       return notify_fail("...顿时将去路完全封锁。\n");
+    #
+    # wave 只有 up / down / out 三个出口，全部被封 —— 所以这条 all_dirs 门禁
+    # 一旦成立，玩家出不去，**必须能打死玄冰莽**。因此这里钉住：
+    #   * NPC 真的在房里（否则 present() 恒假，门禁空转）
+    #   * 它 aggressive（会主动攻击）
+    #   * no_kill = false 且 respawn_delay = nil（打得死，且不会刷新后再次锁死）
+    room = Enum.find(ctx.world.rooms, &(&1.id == "lingxiao:wave"))
+    assert room, "应有 lingxiao:wave 这个房间"
+
+    exits = Enum.map(room.exits, & &1.exit_name) |> Enum.sort()
+    assert exits == ["down", "out", "up"], "wave 的出口变了: #{inspect(exits)}"
+
+    snake =
+      Enum.filter(ctx.world.characters, fn c ->
+        "xuanbing chimang" in [c.name | (c.meta.aliases || [])]
+      end)
+
+    assert length(snake) == 1,
+           "lingxiao:wave 应恰好有 1 个玄冰莽，实际 #{length(snake)}"
+
+    [snake] = snake
+    assert snake.room_id == "lingxiao:wave"
+
+    cfg = snake.meta.combat_config
+    assert cfg.attitude == "aggressive", "玄冰莽应 aggressive（inherit SNAKE 的设定）"
+    refute cfg.no_kill, "玄冰莽必须打得死，否则 wave 会变成死房间"
+    assert is_nil(cfg.respawn_delay), "不设刷新，否则打死后又会被封路"
+
+    # 属性照 LPC clone/beast/xuanmang.c
+    st = snake.meta.stats
+    assert st.combat_exp == 5_000_000
+    assert st.str == 50 and st.con == 100 and st.dex == 50
+    assert st.skills["unarmed"] == 500 and st.skills["force"] == 500
+    assert snake.meta.vitals.max_qi == 20_000
+    assert cfg.apply.attack == 500 and cfg.apply.armor == 300
+
+    # 门禁本身：all_dirs + 依赖 xuanbing chimang 在场
+    veto = Enum.find(room.exit_vetoes, &(&1.condition =~ "xuanbing chimang"))
+    assert veto, "wave 应有玄冰莽那条 veto"
+    assert Map.get(veto, :all_dirs, false), "玄冰莽封路是 all_dirs（LPC 原文就没有 dir 判断）"
+  end
+
+  @tag :world_data
   test "all_dirs = true 的门禁算「故意拦所有方向」，不算丢了守卫", ctx do
     # 数据里有 12 条 veto 标了 all_dirs = true，它们的 LPC 原文本来就没有
     # dir 判断（玄冰莽封路、坐着不许走、端着饭不许走……）。

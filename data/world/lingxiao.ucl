@@ -1552,11 +1552,16 @@ valid_leave = [
    condition = "objectp(present('xuanbing chimang',environment(me)))"
    all_dirs = true
 direction = ~
-  message = "你正欲离开此地，却只见玄冰赤蟒一个盘旋，顿时将去路完全封锁。"
+  message = "你正欲离开此地，却只见玄冰莽蛇一个盘旋，顿时将去路完全封锁。"
 }
 
 ]
     }
+
+  room_characters "wave" {
+    room_id = rooms.wave.id
+    characters = [ { id = characters.xuanmang.id } ]
+  }
 
   room_exits "wave" {
     room_id = rooms.wave.id
@@ -1570,8 +1575,7 @@ direction = ~
 
   room_items "wave" {
     room_id = rooms.wave.id
-    items = [
-      { id = items.xuanmang.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/lingxiao/wave1.c by LPCConverter
@@ -2751,4 +2755,48 @@ chats = [
       #   create_family("凌霄城", 6, "弟子")
       #   carry_object("/clone/weapon/changjian")
       #   carry_object("/clone/cloth/cloth")
+    }
+
+    characters "xuanmang" {
+      name = "玄冰莽蛇"
+      aliases = ["xuanbing chimang", "xuan", "bing", "xuanbing", "chimang", "mang", "snake"]
+      description = "这是一只雪山怪蛇，只见它通体雪白，眼如烈火。看来这个冰洞是它的巢穴。"
+      age = 15
+
+      combat = {
+        attitude = "aggressive"
+        str = 50
+        con = 100
+        dex = 50
+        max_qi = 20000
+        max_jing = 20000
+        neili = 6000
+        max_neili = 6000
+        combat_exp = 5000000
+        skills = {
+          unarmed = 500
+          dodge = 500
+          parry = 500
+          force = 500
+        }
+        apply = {
+          attack = 500
+          unarmed_damage = 300
+          defense = 500
+          armor = 300
+        }
+      }
+
+      # LPC: clone/beast/xuanmang.c
+      #   inherit SNAKE   ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup() 里 set("attitude","aggressive")、
+      #                     set("race","野兽")、set("verbs",({"bite"}))，故 attitude 取 aggressive。
+      #   set("snake_poison", ([ "level":300, "perhit":200, "remain":300,
+      #                          "maximum":300, "supply":30 ]));   <- 蛇毒机制未移植
+      #   set("power", 300);                                        <- 未移植
+      #   set_temp("apply/attack", 500); ... 已折进上面的 combat.apply
+      #   void unconcious() { this_object()->die(); }                <- 可被打死，与默认行为一致
+      #   set("item1", "/clone/quarry/item/sherou");                <- 掉落未移植
+      #   set("item2", "/clone/herb/shedan");
+      #   set("item3", "/clone/fam/pill/blood");
     }
