@@ -5,6 +5,74 @@
 > 不用正则切块 —— 见 [lpc-objects-placement-issues.zh-CN.md](lpc-objects-placement-issues.zh-CN.md) §八），
 > 再按 `items.<id>` 逐个查本区有没有对应 `items` 定义，最后回 `mud/` 按文件名回溯 LPC 源。
 
+## 〇、总账（含此前漏掉的一类）
+
+> **本节是加 loader warning 之后才发现的。**
+> 前面所有统计只扫了 `room_items`，**从来没扫过 `room_characters`** ——
+> 而它的悬空量比 `room_items` 还大。
+
+| 类别 | 引用总数 | 悬空 | 不同 id |
+|---|---|---|---|
+| `room_items` | 880 | 489 | 142 |
+| `room_characters` | **3040** | **767** | **134** |
+| 合计 | 3920 | **1256** | — |
+
+loader 现在会把这两类都打出来（见 §〇 的说明）：
+
+    [world] kunming 的 kunming:bijifang 引用了不存在的 character
+    "characters.jumin1.id" —— 已跳过，该内容运行时不存在。
+
+实际统计（`mix run -e 'Kantele.World.Loader.load()'` 后读进程字典）：
+
+    按类型: %{character: 767, item: 468}
+
+（item 468 比 §一 的 489 少，是因为那一版跳过了 `global` / `test`
+两个转换器测试夹具区，而 loader 不跳。）
+
+### `room_characters` 悬空 top 25
+
+| id | 引用数 | 房间（例） |
+|---|---|---|
+| `walker` | **142** | `baituo:gebi` `beijing:caishi` `beijing:dianmen` |
+| `bing` | **80** | `chengdu:eastgate` `chengdu:northgate` |
+| `mafu` | 27 | `beijing:majiu` `changan:majiu` `chengdu:majiu` |
+| `ducha` | 23 | `city:beimen` `city:dongmen` `city:ximen` |
+| `liumang` | 22 | `chengdu:eastroad2` `chengdu:westroad1` |
+| `wujiang` | 20 | `chengdu:eastgate` `chengdu:guangchang` |
+| `kid1` | 19 | `heimuya:pingdingzhou` `jingzhou:lydao1` |
+| `xunbu` | 16 | `changan:baihu1` `city:dongdajie1` |
+| `guanbing` | 16 | `zhongzhou:beimen` |
+| `xiaoer2` | 15 | `baituo:jiudian` `huashan:shop` |
+
+几个说明：
+
+- **`walker`（142 处）与 `bing`（80 处）** 是最严重的两项 ——
+  一个「西洋人」和一个「官兵」被几乎所有城门/道路引用，但只有少数区有定义。
+- **`mafu`（27 处）** 就是马夫。这轮补了三匹马（每厩 3 匹），
+  但**马夫本身在 27 个马厩里是悬空的** —— 那些区没定义 `characters "mafu"`。
+  所以「马厩里有马但没马夫」。
+- `guanbing` / `bing` 是同一个角色（官兵）的两种 id，
+  与 `room_items` 那批 `gangdao` / `changjian` 是完全一样的**跨区问题**：
+  定义在某个区，别的区引用不到。修法也一样 —— 每个引用它的区补一份。
+
+### 为什么之前没发现
+
+因为 loader 对解析不到的引用**静默跳过**：
+
+```elixir
+nil ->
+  # NPC 数据缺失（引用不存在）时跳过，避免悬挂引用
+  []
+```
+
+和 `if is_nil(item_id) do zone`。既不报错也不打日志，
+所以 767 条 NPC 悬空可以一直躺着，而门禁条件那边只表现为
+「这个 NPC 不在房里」，很容易被误判成"条件写错了"。
+
+**这就是加 warning 的价值**：不能靠人肉扫 3920 条引用。
+
+---
+
 ## 一、总账
 
 | 指标 | 数量 |

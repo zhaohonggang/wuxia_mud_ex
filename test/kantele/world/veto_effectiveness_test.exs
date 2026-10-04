@@ -247,6 +247,35 @@ alias Kantele.World.LpcCondition
   end
 
   @tag :world_data
+  test "loader 对解析不到的 room_items / room_characters 引用会 warn（不再静默跳过）" do
+    # 这类悬空引用历史上一直静默跳过：
+    #     nil -> # NPC 数据缺失（引用不存在）时跳过，避免悬挂引用
+    #     []
+    # 结果 767 条 room_characters + 468 条 room_items 悬空长期没人发现，
+    # 门禁那边只表现为「这个 NPC 不在房里」，很容易被误判成条件写错了。
+    # 见 docs/dangling-room-items-report.zh-CN.md §〇
+    Kantele.World.Loader.reset_unresolved_warnings()
+    Kantele.World.Loader.load()
+
+    seen = :erlang.get(:world_unresolved) || %{}
+    assert map_size(seen) > 0, "应记录到若干悬空引用"
+
+    kinds = seen |> Map.keys() |> Enum.map(fn {_z, k, _r} -> k end) |> Enum.uniq() |> Enum.sort()
+    assert :character in kinds, "room_characters 的悬空也应被记录"
+    assert :item in kinds, "room_items 的悬空也应被记录"
+
+    # 按 (zone, kind, ref) 去重，所以条目数 << 实际引用数
+    total_refs = seen |> Map.values() |> Enum.sum()
+    assert total_refs > map_size(seen), "计数应累加（同一 ref 被多个房间引用）"
+
+    # 已知的头号两项：walker / bing 被上百个城门道路引用但只有少数区有定义
+    top = seen |> Map.values() |> Enum.sum()
+    assert top > 1000, "悬空引用总数应过千，实际 #{top}"
+
+    Kantele.World.Loader.reset_unresolved_warnings()
+  end
+
+  @tag :world_data
   test "之前空掉的房间现在有物品了（items 与 characters 一样只在本区解析）", ctx do
     # `dereference/3` 是 `zone |> flatten_items() |> ...`，所以 items 也只在本区解析。
     # 钢刀/长剑/竹棒这些**全库本来就有定义**，只是定义在别的区，

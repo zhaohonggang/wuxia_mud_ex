@@ -1350,7 +1350,15 @@ defmodule Kantele.World.Loader do
               ]
 
             nil ->
-              # NPC 数据缺失（引用不存在）时跳过，避免悬挂引用
+              # NPC 数据缺失（引用不存在）时跳过，避免悬挂引用。
+              #
+              # 但**必须 warn** —— 静默跳过会让「数据里写了引用、运行时其实
+              # 不存在」这类问题长期查不出来。转换器把 LPC
+              # `set("objects", ...)` 里的 NPC 错写成 `items.X` 时就是这么
+              # 藏了很久的：房间一直是空的，相关 valid_leave 门禁永不触发，
+              # 而加载日志一个字都没有。见 docs/dangling-room-items-report.zh-CN.md。
+              warn_unresolved(:character, zone.id, room_id, character_data.id)
+
               []
           end
         end)
@@ -1414,14 +1422,64 @@ defmodule Kantele.World.Loader do
 
         item_id = dereference(zones, zone, item_id)
 
-        # 物品数据缺失（引用不存在）时跳过，避免悬挂引用
+        # 物品数据缺失（引用不存在）时跳过，避免悬挂引用。
+        # 同样**必须 warn**，理由见 parse_characters 里的注释。
         if is_nil(item_id) do
+          warn_unresolved(:item, zone.id, room_id, item_data.id)
           zone
         else
           parse_room_item(zone, room_id, item_id)
         end
       end)
     end)
+  end
+
+  @doc """
+  报告一个解析不到的 `room_items` / `room_characters` 引用。
+
+  按 (zone, kind, ref) 去重，避免同一个悬空 id 被几十个房间引用时刷屏；
+  之后只在房间数跨过 10 / 50 / 100 / 300 时补打一条进度。
+
+  去重计数放在进程字典里：`Loader.load/1` 是在单个进程里同步跑完的
+  （脚本、测试、以及 `Kantele.World.Kickoff` 那个 GenServer 都是），
+  所以不需要 ETS —— 早先试过 ETS，`:ets.new` 的具名表在被 rescue 掉之后
+  `:ets.insert/3` 会报 "undefined or private"，反而把整个加载搞崩。
+  """
+  def warn_unresolved(kind, zone_id, room_id, ref) do
+    key = {zone_id, kind, ref}
+
+    # 注意：`:erlang.get/1` 缺键时返回 **`:undefined`**，不是 `nil`。
+    # 而 `:undefined` 在 Elixir 里是真值，所以 `x || %{}` 兜不住 ——
+    # 早先就因为这个直接 `Map.get(:undefined, ...)` 把整个加载搞崩了。
+    seen =
+      case :erlang.get(:world_unresolved) do
+        m when is_map(m) -> m
+        _ -> %{}
+      end
+
+    count = Map.get(seen, key, 0) + 1
+    :erlang.put(:world_unresolved, Map.put(seen, key, count))
+
+    if count == 1 do
+      IO.warn(
+        "[world] #{zone_id} 的 #{room_id} 引用了不存在的 #{kind} " <>
+          "#{inspect(ref)} —— 已跳过，该内容运行时不存在。" <>
+          "（转换器把 LPC set(\"objects\") 写错位置时常见；" <>
+          "详见 docs/dangling-room-items-report.zh-CN.md）"
+      )
+    end
+
+    if count in [10, 50, 100, 300] do
+      IO.warn("[world] #{zone_id} 的 #{inspect(ref)} 已被 #{count} 个房间引用，全部落空")
+    end
+
+    :ok
+  end
+
+  @doc false
+  def reset_unresolved_warnings do
+    :erlang.erase(:world_unresolved)
+    :ok
   end
 
   defp parse_room_item(zone, room_id, item_id) do
