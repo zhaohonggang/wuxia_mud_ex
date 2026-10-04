@@ -2,13 +2,10 @@ defmodule Kantele.Character.InventoryCommand do
   use Kalevala.Character.Command
 
   alias Kantele.Character.InventoryView
-  alias Kantele.World.Items
+  alias Kantele.World.Item, as: WorldItem
 
   def run(conn, _params) do
-    item_instances =
-      Enum.map(conn.character.inventory, fn item_instance ->
-        %{item_instance | item: Items.get!(item_instance.item_id)}
-      end)
+    item_instances = Enum.map(conn.character.inventory, &WorldItem.resolve/1)
 
     conn
     |> assign(:item_instances, item_instances)

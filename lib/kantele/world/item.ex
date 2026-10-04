@@ -12,6 +12,46 @@ defmodule Kantele.World.Item do
   use Kalevala.World.Item
 
   @doc """
+  取物品定义；**缺失时不抛异常**，返回一个占位物品。
+
+  `Kalevala.Cache` 的 `get!/1` 在 key 不存在时 `raise`，而物品实例是**持久化在
+  数据库里**的 —— 只要世界数据里少了一个定义（转换器漏了某个区、某个区被删掉、
+  物品 id 改名），登录时 `inventory/list` 就会把整个 Foreman  GenServer 带走：
+
+      ** (RuntimeError) Could not find key global:potion in cache Elixir.Kantele.World.Items
+          (ex_venture 0.1.0) lib/kantele/character/events/inventory_event.ex:10
+          (kalevala 0.1.0) lib/kalevala/character/foreman.ex:105
+
+  玩家的背包里有一件"查不到定义"的物品，不该导致角色无法登录。
+  占位物品带原 id，界面上显示为「未知物品」，问题依然可见但不再致命。
+  """
+  # 注意必须写全名 `Kantele.World.Items`：本文件里 `Kantele.World.Item` 与
+  # `Kantele.World.Items` 是兄弟模块，写裸 `Items` 在这个模块里被解析成
+  # `Elixir.Items`，运行时报 "module Items is not available"。
+  def fetch(item_id) do
+    case Kantele.World.Items.get(item_id) do
+      {:ok, item} -> item
+      {:error, :not_found} -> missing_item(item_id)
+    end
+  end
+
+  @doc """
+  填好 `item_instance.item`；定义缺失时填占位物品而不是崩掉。
+  """
+  def resolve(%{item_id: item_id} = item_instance) do
+    %{item_instance | item: fetch(item_id)}
+  end
+
+  def missing_item(item_id) do
+    %Kalevala.World.Item{
+      id: item_id,
+      name: "未知物品（#{item_id}）",
+      description: "这件物品的定义不在世界数据里。",
+      meta: %{}
+    }
+  end
+
+  @doc """
   物品名匹配：全名精确或按第一个词前缀匹配
 
   双语名（如 "长剑 Changjian"）允许玩家只输入中文名 "长剑"
