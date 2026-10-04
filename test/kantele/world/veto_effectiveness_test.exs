@@ -247,6 +247,53 @@ alias Kantele.World.LpcCondition
   end
 
   @tag :world_data
+  test "29 个马厩里都有 3 匹马（跨区引用必须在每个区各定义一份）", ctx do
+    # LPC: /clone/horse/{zaohongma,huangbiaoma,ziliuma}: 1
+    # 转换器把这三个 NPC 写进了 room_items，于是被静默丢弃 ——
+    # 修法是每个区各放一份 characters 定义 + room_characters 引用。
+    #
+    # 这里钉住两件事：
+    #   1. 29 个马厩每个都恰好 3 匹
+    #   2. 每匹马的 spawn_room_id 就是那个马厩（证明 room_characters 真的生效，
+    #      而不是只有定义存在）
+    stables = ~w(beijing:majiu beijing:majuan changan:majiu chengdu:majiu
+                 city:majiu dali:majiu emei:majiu1 emei:majiu2 foshan:majiu
+                 fuzhou:majiu guanwai:majiu hangzhou:majiu hengyang:majiu
+                 huanghe:majiu jingzhou:majiu kaifeng:majiu kunming:majiu
+                 lanzhou:majiu lingzhou:majiu lingzhou:malan luoyang:majiu
+                 quanzhen:majiu quanzhou:majiu1 quanzhou:majiu2 shaolin:majiu1
+                 suzhou:majiu xiangyang:majiu xiyu:majiu zhongzhou:majiu)
+
+    horse_names = ["枣红马", "黄骠马", "紫骝马"]
+
+    for rid <- stables do
+      horses =
+        Enum.filter(ctx.world.characters, fn c ->
+          c.room_id == rid and c.name in horse_names
+        end)
+
+      assert length(horses) == 3,
+             "#{rid} 应有 3 匹马，实际 #{length(horses)}（#{inspect(Enum.map(horses, & &1.name))}）"
+
+      for h <- horses do
+        assert h.meta.combat_config.spawn_room_id == rid,
+               "#{h.name}@#{rid} 的 spawn_room_id 应是 #{rid}"
+      end
+    end
+
+    # 属性照 LPC clone/horse/*.c：attitude=peaceful / max_qi=300 / exp=50000 / 0 技能
+    for h <- Enum.filter(ctx.world.characters, &(&1.name in horse_names)) do
+      assert h.meta.combat_config.attitude == "peaceful", "#{h.name} 应 peaceful"
+      assert h.meta.vitals.max_qi == 300, "#{h.name} 的 max_qi 应 300"
+      assert h.meta.stats.combat_exp == 50_000, "#{h.name} 的 combat_exp 应 50000"
+      assert h.meta.stats.skills == %{}, "#{h.name} 不该有技能（LPC 无 set_skill）"
+    end
+
+    assert length(Enum.filter(ctx.world.characters, &(&1.name in horse_names))) == 87,
+           "三匹马各 29 匹，共 87"
+  end
+
+  @tag :world_data
   test "lingxiao:wave 的玄冰莽门禁是**真**生效的（不是空转）", ctx do
     # mud/d/lingxiao/wave.c:
     #   set("objects", ([ "/clone/beast/xuanmang" : 1 ]));

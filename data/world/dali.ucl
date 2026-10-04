@@ -2211,18 +2211,14 @@ direction = "west"
 
   room_characters "majiu" {
     room_id = rooms.majiu.id
-    characters = [
-      { id = characters.mafu.id }    ]
+    characters = [{ id = characters.mafu.id }, { id = characters.zaohongma.id }, { id = characters.huangbiaoma.id }, { id = characters.ziliuma.id }]
   }
 
 
 
   room_items "majiu" {
     room_id = rooms.majiu.id
-    items = [
-      { id = items.zaohongma.id },
-      { id = items.huangbiaoma.id },
-      { id = items.ziliuma.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/dali/milin.c by LPCConverter
@@ -7663,4 +7659,74 @@ chats = [
           msgs = {}
         }
       }
+    }
+
+    characters "zaohongma" {
+      name = "枣红马"
+      # LPC 的 clone/horse/zaohongma.c **没有** set("long")，
+      # 而 characters 块的 description 是必填字段，故此处给一句占位。
+      description = "一匹枣红马。"
+      aliases = ["zaohongma"]
+      age = 5
+
+      combat = {
+        attitude = "peaceful"
+        max_qi = 300
+        combat_exp = 50000
+      }
+
+      # LPC: clone/horse/zaohongma.c
+      #   inherit NPC; set("age",5); set("max_qi",300);
+      #   set("attitude","peaceful"); set("combat_exp",50000);
+      # 无 set_skill；LPC 也没写 set("gender")，故此处不写。
+    }
+
+    characters "huangbiaoma" {
+      name = "黄骠马"
+      # LPC 的 clone/horse/huangbiaoma.c **没有** set("long")，
+      # 而 characters 块的 description 是必填字段，故此处给一句占位。
+      description = "一匹黄骠马。"
+      aliases = ["huangbiaoma"]
+      gender = "雄性"
+      age = 2
+
+      combat = {
+        attitude = "peaceful"
+        max_qi = 300
+        combat_exp = 50000
+      }
+
+      # LPC: clone/horse/huangbiaoma.c
+      #   inherit NPC; set("gender","雄性");
+      #   注意：上面的 gender 会被 loader **静默丢弃** —— NonPlayerMeta 结构体
+      #   根本没有 :gender 字段（顶层 gender / nickname / class 都一样）。
+      #   全库 NPC 都如此，这里保持一致，只作留档。
+      #   set("age", random(3));      <- 随机年龄，数据里取上限 2
+      #   set("max_qi",300); set("attitude","peaceful"); set("combat_exp",50000);
+      # 无 set_skill
+    }
+
+    characters "ziliuma" {
+      name = "紫骝马"
+      # LPC 的 clone/horse/ziliuma.c **没有** set("long")，
+      # 而 characters 块的 description 是必填字段，故此处给一句占位。
+      description = "一匹紫骝马。"
+      aliases = ["ziliuma"]
+      gender = "雄性"
+      age = 4
+
+      combat = {
+        attitude = "peaceful"
+        max_qi = 300
+        combat_exp = 50000
+      }
+
+      # LPC: clone/horse/ziliuma.c
+      #   inherit NPC; set("gender","雄性");
+      #   注意：上面的 gender 会被 loader **静默丢弃** —— NonPlayerMeta 结构体
+      #   根本没有 :gender 字段（顶层 gender / nickname / class 都一样）。
+      #   全库 NPC 都如此，这里保持一致，只作留档。
+      #   set("age", 2+random(3));    <- 随机年龄，数据里取上限 4
+      #   set("max_qi",300); set("attitude","peaceful"); set("combat_exp",50000);
+      # 无 set_skill
     }

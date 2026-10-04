@@ -1,6 +1,7 @@
 # `room_items` 悬空引用扫描报告
 
-> **只读扫描，未改动任何数据。**
+> 初版为只读扫描。随后按报告 §六 的第 1 步修掉了三匹马（87 条引用），
+> 本报告已用同一套逻辑重跑，数字已更新。
 > 生成方式：遍历 `data/world/*.ucl` 的顶层 `room_items` 块（括号配平定位，
 > 不用正则切块 —— 见 [lpc-objects-placement-issues.zh-CN.md](lpc-objects-placement-issues.zh-CN.md) §八），
 > 再按 `items.<id>` 逐个查本区有没有对应 `items` 定义，最后回 `mud/` 按文件名回溯 LPC 源。
@@ -9,26 +10,26 @@
 
 | 指标 | 数量 |
 |---|---|
-| `room_items` 引用总数 | **1003** |
-| 能正常解析（本区有 `items` 定义） | 310（31%） |
-| **悬空**（本区无 `items` 定义） | **693（69%）** |
+| `room_items` 引用总数 | **916** |
+| 能正常解析（本区有 `items` 定义） | 310（34%） |
+| **悬空**（本区无 `items` 定义） | **606（66%）** |
 
 按 LPC 源的类型再分：
 
 | 分类 | 引用数 | 不同 id 数 | 含义 |
 |---|---|---|---|
-| **char** | 361 | 225 | LPC 里有 `set_name` 且 `inherit NPC/SNAKE/...` —— 是**人物**，被误写进了 `room_items` |
+| **char** | 274 | 222 | LPC 里有 `set_name` 且 `inherit NPC/SNAKE/...` —— 是**人物**，被误写进了 `room_items` |
 | **item** | 169 | 96 | LPC 里 `inherit QUARRY/BOOK/WEAPON/ITEM/...` —— 是**真物品**，只是我们没生成定义 |
 | **ambiguous** | 163 | 87 | 同一个 id 在 LPC 里**既有像人物的又有像物品的**，需逐个判断 |
 | **unknown** | 0 | 0 | LPC 里完全找不到同名文件 |
 
 > **更正**：本文早先写的「694 处悬空 / 674 处彻底悬空 / 只有 20 处是 NPC 被当物品」
 > **三个数字都错了**。
-> 1. 694 是用正则切块数出来的，实际是 **1003**（正则会在房间内部提前截断）；
+> 1. 694 是用正则切块数出来的，实际是 **916**（正则会在房间内部提前截断）；
 > 2. 「彻底悬空」这个说法本身不成立 —— LPC 里**没有一个** id 找不到出处（unknown = 0）；
-> 3. 「只有 20 处是 NPC 被当物品」严重低估，真实数量是 **361 条引用 / 225 个 id**。
+> 3. 「只有 20 处是 NPC 被当物品」严重低估，真实数量是 **274 条引用 / 222 个 id**。
 
-## 二、char：被误写成 `room_items` 的人物（361 条 / 225 个 id）
+## 二、char：被误写成 `room_items` 的人物（274 条 / 222 个 id）
 
 这些 LPC 源是 `inherit NPC` / `inherit SNAKE`，转换器把 `set("objects", ...)`
 里的它们写成了 `items.<id>`，而本区没有同名 `items` 定义，于是被 loader 静默跳过。
@@ -36,9 +37,6 @@
 
 | id | 名字 | inherit | 引用数 | 房间（前 3 个） | LPC 源 |
 |---|---|---|---|---|---|
-| `zaohongma` | 枣红马 | NPC | 29 | `beijing:majiu`, `beijing:majuan`, `changan:majiu` …+26 | `clone/horse/zaohongma.c` |
-| `huangbiaoma` | 黄骠马 | NPC | 29 | `beijing:majiu`, `beijing:majuan`, `changan:majiu` …+26 | `clone/horse/huangbiaoma.c` |
-| `ziliuma` | 紫骝马 | NPC | 29 | `beijing:majiu`, `beijing:majuan`, `changan:majiu` …+26 | `clone/horse/ziliuma.c` |
 | `dushe` | 毒蛇 | SNAKE | 17 | `baituo:cao2`, `baituo:sheyuan`, `baituo:zhulin` …+14 | `clone/beast/dushe.c` |
 | `qingshe` | 竹叶青蛇 | SNAKE | 5 | `baituo:cao2`, `baituo:sheyuan`, `baituo:zhulin` …+2 | `clone/beast/qingshe.c` |
 | `yanjingshe` | 眼镜蛇 | SNAKE | 5 | `baituo:cave1`, `hengyang:zigai1`, `hengyang:zigai2` …+2 | `clone/beast/yanjingshe.c` |
@@ -96,6 +94,9 @@
 | `shangguan` | 上官银票 | NPC | 1 | `heimuya:baihutang` | `kungfu/class/misc/shangguan.c` |
 | `mi` | 米为义 | NPC | 1 | `hengyang:zhurongdian` | `kungfu/class/henshan/mi.c` |
 | `yue_wife` | 岳夫人 | NPC | 1 | `huashan:jushi` | `kungfu/class/huashan/yue-wife.c` |
+| `cheng_buyou` | 成不忧 | NPC | 1 | `huashan:jzroad6` | `kungfu/class/huashan/cheng-buyou.c` |
+| `yue_buqun` | 岳不群 | NPC | 1 | `huashan:qunxianguan` | `kungfu/class/huashan/yue-buqun.c` |
+| `linghu` | 令狐冲 | NPC | 1 | `huashan:sgyhole1` | `kungfu/class/huashan/linghu.c` |
 
 ### 引用最多的几个（都是马厩）
 
