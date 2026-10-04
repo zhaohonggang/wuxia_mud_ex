@@ -468,10 +468,9 @@ direction = ~
 
   room_characters "gate" {
     room_id = rooms.gate.id
-    characters = [
+    characters = [{ id = characters.dizi.id },
       { id = characters.dizi.id },
-      { id = characters.dizi.id },
-      { id = characters.dizi.id }    ]
+      { id = characters.dizi.id }, { id = characters.wen_wanfu.id }]
   }
 
 
@@ -2700,4 +2699,56 @@ chats = [
         weight = 50
         unit = "碗"
       }
+    }
+
+    characters "wen_wanfu" {
+      name = "闻万夫"
+      aliases = ["wen wanfu", "wen", "wanfu"]
+      description = "闻万夫是凌宵城雪山剑派中的六代弟子，已经在雪山凌宵城呆了多年，可武技还是平平。"
+      gender = "男性"
+      attitude = "friendly"
+      age = 34
+      shen_type = 1
+
+      combat = {
+        attitude = "friendly"
+        str = 30
+        int = 30
+        con = 30
+        dex = 30
+        max_qi = 1000
+        max_jing = 800
+        neili = 2000
+        max_neili = 2000
+        jiali = 50
+        combat_exp = 500000
+        skills = {
+          force = 100
+          xueshan_neigong = 100
+          dodge = 100
+          taxue_wuhen = 100
+          cuff = 100
+          lingxiao_quan = 100
+          strike = 100
+          piaoxu_zhang = 100
+          sword = 120
+          yunhe_jian = 120
+          parry = 100
+          literate = 100
+          martial_cognize = 80
+        }
+        map_skill = {
+          force = "xueshan-neigong"
+          dodge = "taxue-wuhen"
+          cuff = "lingxiao-quan"
+          strike = "piaoxu-zhang"
+          sword = "yunhe-jian"
+          parry = "yunhe-jian"
+        }
+      }
+
+      # LPC: kungfu/class/lingxiao/wenwanfu.c
+      #   create_family("凌霄城", 6, "弟子")
+      #   carry_object("/clone/weapon/changjian")
+      #   carry_object("/clone/cloth/cloth")
     }

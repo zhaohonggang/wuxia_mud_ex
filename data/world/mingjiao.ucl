@@ -1934,8 +1934,7 @@ direction = ~
 
   room_characters "shanmen" {
     room_id = rooms.shanmen.id
-    characters = [
-      { id = characters.jieyinshi.id }    ]
+    characters = [{ id = characters.jieyinshi.id }, { id = characters.leng_qian.id }]
   }
 
 
@@ -1976,11 +1975,10 @@ direction = ~
 
   room_characters "square" {
     room_id = rooms.square.id
-    characters = [
-      { id = characters.shuobude.id },
+    characters = [{ id = characters.shuobude.id },
       { id = characters.zhangzhong.id },
       { id = characters.pengyingyu.id },
-      { id = characters.zhoudian.id }    ]
+      { id = characters.zhoudian.id }, { id = characters.leng_qian.id }]
   }
 
 # Generated from C:/files/git/mud/d/mingjiao/sushe.c by LPCConverter
@@ -5063,4 +5061,55 @@ chats = [
         unit = "束"
         material = "iron"
       }
+    }
+
+    characters "leng_qian" {
+      name = "冷谦"
+      aliases = ["leng qian", "leng", "qian"]
+      description = "他是一位冷冷的老者，身穿一件白布长袍。他说话极为简捷，便是杀了他的头也不肯多说半句废话。"
+      nickname = "冷面先生"
+      title = "明教"
+      gender = "男性"
+      class = "fighter"
+      attitude = "friendly"
+      age = 54
+      shen_type = 1
+      brain = brains.guardert
+
+      combat = {
+        attitude = "friendly"
+        str = 25
+        int = 25
+        con = 25
+        dex = 25
+        max_qi = 2200
+        max_jing = 1200
+        neili = 3000
+        max_neili = 3000
+        jiali = 75
+        combat_exp = 600000
+        skills = {
+          force = 140
+          shenghuo_xinfa = 140
+          dodge = 120
+          shenghuo_bu = 120
+          cuff = 140
+          pili_quan = 140
+          parry = 140
+          strike = 140
+          sword = 140
+          literate = 120
+          martial_cognize = 100
+        }
+        map_skill = {
+          force = "shenghuo-xinfa"
+          dodge = "shenghuo-bu"
+          cuff = "pili-quan"
+          parry = "pili-quan"
+        }
+      }
+
+      # LPC: kungfu/class/mingjiao/lengqian.c
+      #   create_family("明教", 37, "弟子")
+      #   carry_object("/d/mingjiao/obj/baipao")
     }

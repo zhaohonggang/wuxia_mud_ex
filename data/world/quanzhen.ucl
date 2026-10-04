@@ -1189,6 +1189,11 @@ direction = "east"
 ]
     }
 
+  room_characters "jingxiushi" {
+    room_id = rooms.jingxiushi.id
+    characters = [ { id = characters.liu_chuxuan.id } ]
+  }
+
   room_exits "jingxiushi" {
     room_id = rooms.jingxiushi.id
     west = rooms.houtang3.id
@@ -3948,4 +3953,67 @@ chats = [
         unit = "根"
         material = "wood"
       }
+    }
+
+    characters "liu_chuxuan" {
+      name = "刘处玄"
+      aliases = ["liu chuxuan", "liu", "chuxuan"]
+      description = "他就是全真三徒刘处玄刘真人，虽见他身材瘦 小，但顾盼间自有一种威严气概。"
+      nickname = "长生子"
+      title = "全真七子"
+      gender = "男性"
+      class = "taoist"
+      attitude = "peaceful"
+      age = 44
+      shen_type = 1
+
+      combat = {
+        attitude = "peaceful"
+        str = 30
+        int = 30
+        con = 28
+        dex = 30
+        max_qi = 4500
+        max_jing = 3200
+        neili = 5200
+        max_neili = 5200
+        jiali = 200
+        combat_exp = 2500000
+        skills = {
+          force = 240
+          quanzhen_xinfa = 240
+          xuanmen_neigong = 240
+          sword = 240
+          qixing_jian = 240
+          quanzhen_jian = 240
+          dodge = 220
+          tianshan_feidu = 220
+          jinyan_gong = 220
+          parry = 220
+          strike = 240
+          chongyang_shenzhang = 240
+          haotian_zhang = 240
+          hand = 240
+          qixing_shou = 240
+          finger = 240
+          zhongnan_zhi = 240
+          literate = 220
+          taoism = 220
+          martial_cognize = 240
+        }
+        map_skill = {
+          force = "xuanmen-neigong"
+          sword = "quanzhen-jian"
+          dodge = "jinyan-gong"
+          parry = "quanzhen-jian"
+          finger = "zhongnan-zhi"
+          hand = "qixing-shou"
+          strike = "haotian-zhang"
+        }
+      }
+
+      # LPC: kungfu/class/quanzhen/liu.c
+      #   create_family("全真教", 2, "弟子")
+      #   carry_object("/clone/weapon/changjian")
+      #   carry_object("/d/quanzhen/npc/obj/grayrobe")
     }

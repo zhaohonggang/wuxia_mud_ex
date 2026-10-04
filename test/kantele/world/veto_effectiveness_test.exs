@@ -160,7 +160,7 @@ defmodule Kantele.World.VetoEffectivenessTest do
   end
 
   @tag :world_data
-  test "总账：166 条里 125 条会拦人、41 条不会", ctx do
+  test "总账：166 条里 129 条会拦人、37 条不会", ctx do
     tally =
       for room <- ctx.world.rooms,
           veto <- room.exit_vetoes,
@@ -175,9 +175,9 @@ defmodule Kantele.World.VetoEffectivenessTest do
     assert total == 166,
            "条件总数变了：#{total}（tally=#{inspect(tally)}）"
 
-    # 125 = 纯条件 107 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
-    assert tally[:live] == 125, "会拦人的条数变了：#{tally[:live]}"
-    assert tally[:dead] == 41, "不会拦的条数变了：#{tally[:dead]}"
+    # 129 = 纯条件 111 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
+    assert tally[:live] == 129, "会拦人的条数变了：#{tally[:live]}"
+    assert tally[:dead] == 37, "不会拦的条数变了：#{tally[:dead]}"
   end
 
   @tag :world_data
@@ -215,8 +215,7 @@ defmodule Kantele.World.VetoEffectivenessTest do
     missing = missing_uncategorized(ctx)
 
     # 这批 LPC 里有、数据里没有。多数也是 CLASS_D 门派工厂。
-    for known <- ["mang she", "leng qian", "dao ming", "liu chuxuan",
-                  "ling tuisi", "peng yinyu"] do
+    for known <- ["mang she", "dao ming", "ling tuisi", "peng yinyu"] do
       assert MapSet.member?(missing, known),
              "#{known} 应仍在「依赖缺失」清单里"
     end

@@ -2840,6 +2840,11 @@ direction = ~
 ]
     }
 
+  room_characters "shang_dating" {
+    room_id = rooms.shang_dating.id
+    characters = [ { id = characters.shang_jianming.id } ]
+  }
+
   room_exits "shang_dating" {
     room_id = rooms.shang_dating.id
     west = rooms.shang_tingw.id
@@ -7183,4 +7188,73 @@ chats = [
       # LPC kungfu/class/shaolin/xu-tong.c
       #   create_family("少林派", 41, "弟子")
       #   carry_object("/d/shaolin/obj/xu-cloth") 等未落地
+    }
+
+    characters "shang_jianming" {
+      name = "商剑鸣"
+      aliases = ["shang jianming", "shang", "jianming"]
+      description = "这人身着长衫，身材高大魁梧，留着短须，神 情严肃，模样甚为威严。他就是山东大豪、商 家堡的现任堡主「八卦刀」商剑鸣，相传他刀 掌双绝，武功了得，在江湖上罕逢敌手。"
+      nickname = "八卦刀"
+      title = "商家堡堡主"
+      gender = "男性"
+      class = "fighter"
+      attitude = "peaceful"
+      age = 45
+      shen_type = -1
+
+      combat = {
+        attitude = "peaceful"
+        str = 45
+        int = 30
+        con = 30
+        dex = 30
+        max_qi = 5000
+        max_jing = 3300
+        neili = 6000
+        max_neili = 6000
+        jiali = 180
+        combat_exp = 3800000
+        skills = {
+          force = 240
+          nei_bagua = 240
+          shangjia_neigong = 220
+          parry = 220
+          wai_bagua = 220
+          dodge = 200
+          bagua_bu = 200
+          unarmed = 200
+          tan_tui = 200
+          strike = 240
+          bagua_zhang = 240
+          bazhen_zhang = 220
+          cuff = 200
+          bagua_quan = 200
+          baisheng_quan = 200
+          sword = 200
+          quemen_jian = 200
+          blade = 240
+          bagua_dao = 240
+          shangjia_dao = 220
+          throwing = 200
+          jinbiao_jue = 200
+          literate = 240
+          martial_cognize = 220
+        }
+        map_skill = {
+          unarmed = "tan-tui"
+          dodge = "bagua-bu"
+          force = "nei-bagua"
+          strike = "bagua-zhang"
+          sword = "quemen-jian"
+          blade = "bagua-dao"
+          cuff = "bagua-quan"
+          parry = "wai-bagua"
+          throwing = "jinbiao-jue"
+        }
+      }
+
+      # LPC: kungfu/class/shang/ming.c
+      #   create_family("商家堡", 3, "堡主")
+      #   carry_object("/clone/misc/cloth")
+      #   carry_object("/d/beijing/npc/obj/jinbiao")
     }
