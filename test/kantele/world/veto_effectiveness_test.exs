@@ -46,7 +46,7 @@ defmodule Kantele.World.VetoEffectivenessTest do
         acc ->
           t = File.read!(f)
 
-          cap.(~r/(?:characters|items)\s+"[^"]+"\s*\{(.*?)\n\s{2}\}/s, t)
+          cap.(~r/(?:characters|items)\s+"[^"]+"\s*\{(.*?)\n\s*\}/s, t)
           |> Enum.reduce(acc, fn body, a -> MapSet.union(a, parse_aliases.(body)) end)
       end
 
@@ -112,7 +112,7 @@ defmodule Kantele.World.VetoEffectivenessTest do
       key = String.replace_prefix(room.id, room.zone_id <> ":", "")
 
       body =
-        case ctx.cap.(~r/room_characters\s+"#{Regex.escape(key)}"\s*\{(.*?)\n\s{2}\}/s, t) do
+        case ctx.cap.(~r/room_characters\s+"#{Regex.escape(key)}"\s*\{(.*?)\n\s*\}/s, t) do
           [b | _] -> b
           _ -> ""
         end
@@ -123,7 +123,7 @@ defmodule Kantele.World.VetoEffectivenessTest do
         ids
         |> Enum.uniq()
         |> Enum.reduce(MapSet.new(), fn cid, acc ->
-          case ctx.cap.(~r/characters\s+"#{Regex.escape(cid)}"\s*\{(.*?)\n\s{2}\}/s, t) do
+          case ctx.cap.(~r/characters\s+"#{Regex.escape(cid)}"\s*\{(.*?)\n\s*\}/s, t) do
             [cb | _] -> MapSet.union(acc, ctx.parse_aliases.(cb))
             _ -> acc
           end
@@ -156,8 +156,9 @@ defmodule Kantele.World.VetoEffectivenessTest do
     assert total == 166,
            "条件总数变了：#{total}（tally=#{inspect(tally)}）"
 
-    assert tally[:live] == 114, "会拦人的条数变了：#{tally[:live]}"
-    assert tally[:dead] == 52, "不会拦的条数变了：#{tally[:dead]}"
+    # 121 = 纯条件 103 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
+    assert tally[:live] == 121, "会拦人的条数变了：#{tally[:live]}"
+    assert tally[:dead] == 45, "不会拦的条数变了：#{tally[:dead]}"
   end
 
   @tag :world_data
@@ -179,20 +180,26 @@ defmodule Kantele.World.VetoEffectivenessTest do
   end
 
   @tag :world_data
-  test "依赖缺失的 NPC 清单被钉住（防止新增 unnoticed）", ctx do
-    missing =
-      for room <- ctx.world.rooms,
-          veto <- room.exit_vetoes,
-          {:dead, {:undefined, names}} <- [classify(ctx, room, veto)],
-          reduce: MapSet.new() do
-        acc -> Enum.reduce(names, acc, &MapSet.put(&2, &1))
-      end
+  test "已补上的三个 NPC 不再出现在缺失清单里", ctx do
+    missing = missing_uncategorized(ctx)
 
-    # 这批是 LPC 里有、数据里没有的 NPC（多为 CLASS_D 门派工厂 / 独立 .c 未转换）。
-    # 已知的：山门徐家兄弟、少林伏魔刀/金刚琢、黑木崖桑三娘、死亡沼泽麒麟靴…
-    for known <- ["sang sanniang", "xu ming", "xu tong", "fumo dao", "jingang zhao", "qilin xue"] do
+    # 这三个是从 LPC 的 CLASS_D(...) 门派工厂移植的：山门徐家兄弟（知客僧）
+    # 与黑木崖桑三娘。它们原先让 4 条条件永远不触发。
+    for fixed <- ["sang sanniang", "xu ming", "xu tong"] do
+      refute MapSet.member?(missing, fixed),
+             "#{fixed} 已移植到 data/world，不该再报「未定义」（若报错请检查 room_characters 是否也放了）"
+    end
+  end
+
+  @tag :world_data
+  test "仍未移植的 NPC 保持在缺失清单里（提醒后续补）", ctx do
+    missing = missing_uncategorized(ctx)
+
+    # 这批 LPC 里有、数据里没有。多数也是 CLASS_D 门派工厂。
+    for known <- ["mang she", "leng qian", "dao ming", "liu chuxuan",
+                  "ling tuisi", "peng yinyu"] do
       assert MapSet.member?(missing, known),
-             "#{known} 应在「依赖缺失」清单里"
+             "#{known} 应仍在「依赖缺失」清单里"
     end
   end
 
@@ -210,15 +217,25 @@ defmodule Kantele.World.VetoEffectivenessTest do
   end
 
   @tag :world_data
-  test "山门徐家兄弟、少林伏魔刀这些守卫确实还没落地（提醒后续补）", ctx do
+  test "山门「徐家兄弟把守」的条件现在真的会拦人了", ctx do
     rooms =
       for room <- ctx.world.rooms,
           veto <- room.exit_vetoes,
-          {:dead, {:undefined, names}} <- [classify(ctx, room, veto)],
-          "xu ming" in names or "xu tong" in names,
+          {:live, _} <- [classify(ctx, room, veto)],
+          cond = Map.get(veto, :condition),
+          is_binary(cond) and String.contains?(cond, "xu"),
           do: room.id
 
     assert "shaolin:shanmen" in rooms,
-           "山门的「徐家兄弟把守」应仍在缺失清单里（todo 文档点名的三项之一）"
+           "山门的「徐家兄弟把守」应该已经生效（虚明 / 徐通 已移植并放进房间）"
+  end
+
+  defp missing_uncategorized(ctx) do
+    for room <- ctx.world.rooms,
+        veto <- room.exit_vetoes,
+        {:dead, {:undefined, names}} <- [classify(ctx, room, veto)],
+        reduce: MapSet.new() do
+      acc -> Enum.reduce(names, acc, &MapSet.put(&2, &1))
+    end
   end
 end

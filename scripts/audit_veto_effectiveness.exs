@@ -52,7 +52,7 @@ definitions =
     acc ->
       t = File.read!(f)
 
-      cap.(~r/(?:characters|items)\s+"[^"]+"\s*\{(.*?)\n\s{2}\}/s, t)
+      cap.(~r/(?:characters|items)\s+"[^"]+"\s*\{(.*?)\n\s*\}/s, t)
       |> Enum.reduce(acc, fn body, a -> MapSet.union(a, parse_aliases.(body)) end)
   end
 
@@ -68,7 +68,7 @@ room_occupants = fn room_id, zone_id ->
     t = File.read!(path)
 
     body =
-      case cap.(~r/room_characters\s+"#{Regex.escape(key)}"\s*\{(.*?)\n\s{2}\}/s, t) do
+      case cap.(~r/room_characters\s+"#{Regex.escape(key)}"\s*\{(.*?)\n\s*\}/s, t) do
         [b | _] -> b
         _ -> ""
       end
@@ -78,7 +78,7 @@ room_occupants = fn room_id, zone_id ->
     ids
     |> Enum.uniq()
     |> Enum.reduce(MapSet.new(), fn cid, acc ->
-      case cap.(~r/characters\s+"#{Regex.escape(cid)}"\s*\{(.*?)\n\s{2}\}/s, t) do
+      case cap.(~r/characters\s+"#{Regex.escape(cid)}"\s*\{(.*?)\n\s*\}/s, t) do
         [cb | _] -> MapSet.union(acc, parse_aliases.(cb))
         _ -> acc
       end

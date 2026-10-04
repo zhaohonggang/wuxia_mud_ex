@@ -3268,6 +3268,11 @@ direction = ~
 ]
     }
 
+  room_characters "shanmen" {
+    room_id = rooms.shanmen.id
+    characters = [ { id = characters.xu_ming.id }, { id = characters.xu_tong.id } ]
+  }
+
   room_exits "shanmen" {
     room_id = rooms.shanmen.id
     west = rooms.shijie7.id
@@ -7084,4 +7089,98 @@ chats = [
         unit = "把"
         material = "bamboo"
       }
+    }
+
+    characters "xu_ming" {
+      name = "虚明"
+      aliases = ["xu ming", "xu", "ming"]
+      description = "他是一位身穿黄布袈裟的青年僧人。脸上稚气未脱，身手却已相当矫捷，看来似乎学过一点武功。"
+      nickname = "知客僧"
+      gender = "男性"
+      class = "bonze"
+      age = 20
+      shen_type = 1
+
+      combat = {
+        attitude = "friendly"
+        str = 20
+        int = 20
+        con = 35
+        dex = 20
+        max_qi = 350
+        max_jing = 200
+        neili = 300
+        max_neili = 300
+        jiali = 20
+        combat_exp = 15000
+        skills = {
+          force = 30
+          shaolin_xinfa = 30
+          dodge = 30
+          shaolin_shenfa = 30
+          strike = 30
+          banruo_zhang = 30
+          parry = 30
+          sword = 30
+          damo_jian = 30
+        }
+        map_skill = {
+          force = "hunyuan-yiqi"
+          dodge = "shaolin-shenfa"
+          strike = "banruo-zhang"
+          parry = "damo-jian"
+          sword = "damo-jian"
+        }
+      }
+
+      # LPC kungfu/class/shaolin/xu-ming.c
+      #   create_family("少林派", 41, "弟子")
+      #   carry_object("/d/shaolin/obj/xu-cloth") 等未落地
+    }
+
+    characters "xu_tong" {
+      name = "徐通"
+      aliases = ["xu tong", "xu", "tong"]
+      description = "他是一位身穿黄布袈裟的青年僧人。脸上稚气未脱，身手却已相当矫捷，看来似乎学过一点武功。"
+      nickname = "知客僧"
+      gender = "男性"
+      class = "bonze"
+      age = 22
+      shen_type = 1
+
+      combat = {
+        attitude = "friendly"
+        str = 20
+        int = 20
+        con = 35
+        dex = 20
+        max_qi = 350
+        max_jing = 200
+        neili = 300
+        max_neili = 300
+        jiali = 20
+        combat_exp = 15000
+        skills = {
+          force = 30
+          shaolin_xinfa = 30
+          dodge = 30
+          shaolin_shenfa = 30
+          strike = 30
+          banruo_zhang = 30
+          parry = 30
+          sword = 30
+          damo_jian = 30
+        }
+        map_skill = {
+          force = "hunyuan-yiqi"
+          dodge = "shaolin-shenfa"
+          strike = "banruo-zhang"
+          parry = "damo-jian"
+          sword = "damo-jian"
+        }
+      }
+
+      # LPC kungfu/class/shaolin/xu-tong.c
+      #   create_family("少林派", 41, "弟子")
+      #   carry_object("/d/shaolin/obj/xu-cloth") 等未落地
     }
