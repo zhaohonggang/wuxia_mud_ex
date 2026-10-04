@@ -10,8 +10,8 @@
 | 指标 | 数量 |
 |---|---|
 | `room_items` 引用总数 | **880** |
-| 能正常解析（本区有 `items` 定义） | 382（43%） |
-| **悬空**（本区无 `items` 定义） | **498（57%）** |
+| 能正常解析（本区有 `items` 定义） | 391（44%） |
+| **悬空**（本区无 `items` 定义） | **489（56%）** |
 
 按 LPC 源的类型再分：
 
@@ -19,7 +19,7 @@
 |---|---|---|---|
 | **char** | 241 | 214 | LPC 里有 `set_name` 且 `inherit NPC/SNAKE/...` —— 是**人物**，被误写进了 `room_items` |
 | **item** | 98 | 57 | LPC 里 `inherit QUARRY/BOOK/WEAPON/ITEM/...` —— 是**真物品**，只是我们没生成定义 |
-| **ambiguous** | 159 | 86 | 同一个 id 在 LPC 里**既有像人物的又有像物品的**，需逐个判断 |
+| **ambiguous** | 150 | 85 | 同一个 id 在 LPC 里**既有像人物的又有像物品的**，需逐个判断 |
 | **unknown** | 0 | 0 | LPC 里完全找不到同名文件 |
 
 > **更正**：本文早先写的「694 处悬空 / 674 处彻底悬空 / 只有 20 处是 NPC 被当物品」
@@ -195,7 +195,7 @@
 | `HANDS` | 1 |
 | `WHIP` | 1 |
 
-## 四、ambiguous：同 id 既是人物又是物品（159 条 / 86 个 id）
+## 四、ambiguous：同 id 既是人物又是物品（150 条 / 85 个 id）
 
 这一类**不能自动判定**。LPC 里同一个文件名在 `d/*/npc/`（人物）和
 `clone/quarry/`、`clone/weapon/`（物品）下各有一份，转换器合并成了同一个 id。
@@ -204,7 +204,6 @@
 | id | 引用数 | 候选（人物） | 候选（物品） | 房间（前 3 个） |
 |---|---|---|---|---|
 | `lu` | 9 | 陆菲青 `d/hangzhou/honghua/lu.c`; 鲁开 `d/luoyang/npc/lu.c` | 梅花鹿 `clone/quarry/lu.c`; ? `kungfu/skill/bluesea-force/perform/lu.c` | `city:pomiao`, `guanwai:luming`, `guiyun:shufang` |
-| `zhujian` | 9 | 竹剑 `kungfu/class/lingjiu/zhujian.c` | 竹剑 `clone/weapon/zhujian.c`; 竹剑 `d/emei/obj/zhujian.c` | `dali:bingqiku`, `huashan:bingqifang`, `kunlun:liangong` |
 | `hou` | 9 | 侯通海 `d/huanghe/npc/hou.c`; 侯人英 `d/qingcheng/npc/hou.c` | 猴子 `clone/quarry/hou.c` | `emei:jldongkou`, `fuzhou:gushan`, `gumu:shulin12` |
 | `he` | 5 | 何太冲 `b/yitian/npc/he.c`; 仪和 `d/hengshan/npc/he.c` | 丹顶鹤 `clone/quarry/he.c`; ? `kungfu/skill/riyue-bian/he.c` | `dali:shijing`, `dali:yuhuayuan`, `emei:hcaeast` |
 | `ying` | 5 | 锺兆英 `kungfu/class/miao/ying.c`; 任盈盈 `kungfu/class/riyue/ying.c` | 突鹰 `clone/quarry/ying.c`; ? `kungfu/skill/hanwang-qingdao/ying.c` | `heimuya:shenggu`, `xuedao:nroad3`, `xuedao:nroad5` |
@@ -253,6 +252,48 @@
 | `pi` | 1 | 裨将 `d/xiangyang/npc/pi.c`; 皮清玄 `kungfu/class/quanzhen/pi.c` | ? `kungfu/skill/jiuyang-shengong/perform/pi.c`; ? `kungfu/skill/pixie-jian/pi.c` | `gumu:daxiaochang` |
 | `ji` | 1 | 吉人通 `d/qingcheng/npc/ji.c`; 计老人 `d/shenfeng/npc/ji.c` | 山鸡 `clone/quarry/ji.c`; ? `d/minimal_world_v2/skill/ji.c` | `gumu:juyan` |
 | `tong` | 1 | 童百熊 `kungfu/class/riyue/tong.c` | ? `kungfu/skill/lutou-zhang/tong.c`; ? `kungfu/skill/poxu-daxuefa/tong.c` | `heimuya:fen0` |
+| `qin` | 1 | 秦绢 `d/hengshan/npc/qin.c`; 秦掌柜 `d/luoyang/npc/qin.c` | 琴谱 `clone/book/qin.c`; 檀木琴 `d/meizhuang/obj/qin.c` | `heimuya:pingdingzhou` |
+
+### 判定结果：逐条去 LPC 房间的 `set("objects")` 比对
+
+不能只看 id 猜。做法是：对每一条 ambiguous 引用，找到该房间的 LPC 文件
+（`d/<zone>/<room>.c`），读它的 `set("objects", ([ ... ]))`，看里面写的是
+人物的路径还是物品的路径。匹配时用**完整路径或「目录/基名」**，
+只比基名会误命中（`lu` 会出现在无关文本里）。
+
+83 条引用 / 31 个 id 的判定结果：
+
+| 判定 | 引用 | id | 后续处理 |
+|---|---|---|---|
+| **物品** | 39 | 11 | 补 `items` 定义（多数是 QUARRY，见下） |
+| **人物** | 2 | 2 | 改 `room_characters` |
+| 仍判不出 | 42 | 28 | 需要人工看 LPC 原文 |
+
+判为物品的 11 个 id 里，**10 个是 `clone/quarry/*`**（`hou` 猴子、`lang` 野狼、
+`he` 丹顶鹤、`lu` 梅花鹿、`ying` 鹰、`fu` 蝙蝠、`song` 松鼠、`yang` 羊、
+`zhu`/`zhu2`），只有 `zhujian` 是真武器 —— 已按 `clone/weapon/zhujian.c`
+补进 8 个区（兵械库 / 炼房 / 演武厅等）。
+
+## ⚠ 根本问题：同一个 id 在 LPC 里可能既是动物又是人
+
+这是本轮最重要的发现，**数据模型表达不了**：
+
+| id | 在这些房间是**物品** | 在这些房间是**人物** |
+|---|---|---|
+| `lu` | 梅花鹿（`clone/quarry/lu.c`）<br>`guanwai:luming` `gumu:shulin8` `lingjiu:huayuan` `city:pomiao` | 鹿杖翁（`kungfu/class/xuanming/lu.c`）<br>`xuanminggu:xuanminggu` |
+| `he` | 丹顶鹤（`clone/quarry/he.c`）<br>`dali:shijing` `dali:yuhuayuan` `yanziwu:huizhen` | 鹤笔翁（`kungfu/class/xuanming/he.c`）<br>`xuanminggu:zulin2` |
+| `hou` | 猴子（`clone/quarry/hou.c`） | 侯通海 / 侯人豪（`d/huanghe/npc/hou.c` 等） |
+| `zhujian` | 竹剑（`clone/weapon/zhujian.c`） | 灵剑派弟子（`kungfu/class/lingjiu/zhujian.c`） |
+
+LPC 里这些是**不同目录下**的两个文件，id 碰巧同名；
+而我们的 UCL 是「每区一个命名空间」，转换器把 NPC 也写成了 `items.<id>`。
+结果同一个区里可能既需要一个 `characters "lu"` 又需要一个 `items "lu"` ——
+**这两者可以共存**（`characters` 和 `items` 是不同的表），
+所以真正的修法是**按房间逐条判定**，而不是按 id 统一归类。
+
+这也是「83 条里 42 条判不出」的原因：光看 id 无法决定，必须回到 LPC 原文。
+本轮只处理了能机械判定的部分（`zhujian` 8 条 + 2 条 NPC），
+剩下 42 条建议人工过一遍 `d/<zone>/<room>.c`。
 
 ### 最容易搞错的几个
 

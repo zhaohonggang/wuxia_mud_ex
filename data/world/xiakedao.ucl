@@ -3384,3 +3384,30 @@ chats = [
         material = "bamboo"
       }
     }
+
+  items "zhujian" {
+      name = "竹剑"
+      aliases = ["zhujian", "jian", "sword"]
+      description = "这是一把练习剑法用的竹剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        skill_type = "sword"
+        # LPC 的 clone/weapon/zhujian.c 未写 set("damage")/set("weight")，
+        # 沿用转换器给同类物品的默认值
+        damage = 25
+        weight = 4000
+        value = 100
+        unit = "把"
+        material = "bamboo"
+      }
+
+      # LPC: clone/weapon/zhujian.c   (inherit SWORD)
+      #   注意：kungfu/class/lingjiu/zhujian.c 也叫 zhujian，但那是 NPC；
+      #   兵械库（bingqiku / bingqifang / liangong / wuqiku）引用的是这把剑。
+    }
