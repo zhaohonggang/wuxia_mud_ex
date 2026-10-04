@@ -59,7 +59,148 @@ case {chance, chats} do
 
 ---
 
-## 一之二、`data/brains` 只有 3 个文件，229 处引用落空 🔴🔴
+## 一之一、feature 已移植但**派发层缺失**，商店/门卫/钱庄全是死代码 🔴🔴
+
+### 结论先说
+
+`Kantele.Npc.{Dealer,Vendor,Guarder,Banker,Coagent,AskHandler}` 六个模块
+**零引用** —— `lib/` 和 `test/` 里没有任何地方调用它们。功能写好了，插头没插。
+
+### 数据链断在中间
+
+```
+LPC:   inherit F_DEALER;  add_action("do_buy", "buy");
+         ↓ 转换器搬 add_action
+UCL:   init = { add_actions = ["buy", "list"] }
+         ↓ loader 解析进 meta.init.add_actions   （loader.ex:725-733 有做）
+       ??? 谁读 meta.init.add_actions
+         ↓
+Elixir: Kantele.Npc.Dealer 的纯函数            ← 写好了，没人调
+```
+
+关键证据：`add_actions` 这个词在整个 `lib/` 里只出现在
+`character.ex:297` 的**文档字符串**里，没有任何实际消费点。
+
+所以：店小二身上挂着 `["buy","list"]`，玩家输入 `list` 什么也不会发生
+（`data/verbs.ucl` 里没有 `buy`/`list`/`value` 动词，`lib/` 下也没有
+`BuyCommand`/`ListCommand`）。
+
+### `brains.X` 是转换器编的，别去补 brain 文件
+
+`data/world` 里 228 处 `brain = brains.dealer` 之类的引用，
+**不是 LPC 数据**。`lpc_converter.ex` 的 `infer_brain/1`：
+
+```elixir
+defp infer_brain(inherits) do
+  Enum.any?(inherits, &String.contains?(&1, "VENDOR")) -> "vendor"
+  Enum.any?(inherits, &String.contains?(&1, "DEALER")) -> "dealer"
+  Enum.any?(inherits, &String.contains?(&1, "GUARD"))  -> "guarder"
+  Enum.any?(inherits, &String.contains?(&1, "BANKER")) -> "banker"
+  Enum.any?(inherits, &String.contains?(&1, "QUEST"))  -> "quester"
+end
+```
+
+LPC 那边根本没有 `brain` 这个概念，只有 `inherit F_XXX` 和 `add_action`。
+例：`kungfu/class/mingjiao/lengqian.c` 只有 `inherit F_GUARDER;`，
+产物 `data/world/mingjiao.ucl` 里就有了 `brain = brains.guardert`。
+
+**所以「去 mud 里找 brains/ 目录补定义」这条路是错的** ——
+LPC 里没有这个目录（`feature/` 才是）。Kalevala 的 brain 是
+`type=first` + `nodes` 的行为树，和 `feature/dealer.c` 那种命令实现
+不是一个东西，语义上对不上。
+
+**这些引用的正确归宿**：当作 feature 标记（`feature = "dealer"`），
+由派发层消费，而不是当成 brain 去找定义。
+
+### 计划
+
+1. **派发层**：让 `meta.init.add_actions` 真正生效 ——
+   玩家输入 `buy` 时找到在场 NPC，若其 feature 标记含 `buy`，
+   转给 `Kantele.Npc.Dealer`。NPC 身份从 `brain = brains.X` 改读
+   一个明确的 feature 字段。
+2. **`dealer` 系先跑通**（135 处引用，收益最大）：
+   `buy` / `list` / `value` / `sell`。
+3. `vendor`（43）、`guarder`（37）、`banker`（11）各自接。
+   `guarder` 与门禁系统有交叉（第 155 条门禁那套），要单独设计。
+
+---
+
+## 一之一之二、feature 移植的函数级差距
+
+对着 LPC 原文逐个核了一遍：
+
+| LPC | 函数 | Elixir | 状态 |
+|---|---|---|---|
+| `feature/guarder.c` | 4 | `guarder.ex` 4 | ✅ 齐 |
+| `feature/banker.c` | 5 | `banker.ex` 5（`do_*`→去 `do_`） | ✅ 齐 |
+| `feature/vendor.c` | 4 | `vendor.ex` **3** | ❌ 缺 `compelete_trade` |
+| `feature/dealer.c` | 8 | `dealer.ex` **5** | ❌ 缺 3 个 |
+
+### `vendor.ex` 缺 `compelete_trade` —— 买了没货交付
+
+```c
+void compelete_trade(object me, string what) {
+    if( stringp(ob_file = query("vendor_goods/" + what)) ) {
+        ob = new(ob_file);
+        ob->move(me);          // ← 货真的交到买家手上
+    }
+}
+```
+
+`vendor.ex` 只有 `buy_object` / `price_string` / `vendor_list` 三个纯查询，
+没有任何"把货交给买家"的逻辑。接上派发后 vendor 系商店买了也拿不到货。
+
+### `dealer.ex` 缺 3 个
+
+| LPC | 作用 | Elixir |
+|---|---|---|
+| `destruct_it(ob)` | 0 秒延迟销毁临时造出的物品（防泄漏） | 无 |
+| `enough_rest()` | 1 秒后清 `busy` 标记 | 无 |
+| `reset()` | 库存 ≥100 件或总重 ≥1000000 时清理 | 无 |
+
+`busy` 是 `do_buy` 里"正忙着呢，慢慢来"那 1 秒冷却，
+`dealer.ex` 的 `do_buy/4` 里也没有对应判断，所以冷却机制一并没了。
+
+### `do_buy` 少了 4 道前置检查中的 3 道
+
+LPC `do_buy` 在算价前有 4 道检查，`dealer.ex` 只保留了第 4 道：
+
+```c
+// 1. 跑偏了自动传送回 startroom（同时是防 NPC 走丢的自愈机制）
+if (!query("carried_goods")) {
+    if ((room = find_object(query("startroom"))) != environment()) {
+        message_vision("$N说道：咦？我怎么跑到这儿来了？\n");
+        ... destruct(this_object());
+    }
+}
+// 2. 身上东西太多
+if (sizeof(...) >= MAX_ITEM_CARRIED) { write("你身上的东西太多了…"); return 1; }
+// 3. 对方正忙（busy 冷却）
+// 4. 一次最多买 100 件 —— ✅ 这条有
+```
+
+第 1 条和 §二 里 `walker` 的 15 分钟自杀是同一类自愈机制。
+
+### 一个真 bug：`:amount` 默认值导致两处死代码
+
+`dealer.ex:57` 与 `dealer.ex:77`：
+
+```elixir
+max_count < 1 and amount > 1 -> {:reject, "这种东西不能拆开来卖。"}
+amount > 1 and Map.get(item, :amount, 1) < 1 -> {:reject, "只能一个一个的买。"}
+```
+
+`Map.get(item, :amount, 1)` 默认值是 **1**，所以 `< 1` **永远不成立** ——
+两条分支都是死代码。
+
+LPC 原意（`dealer.c:455`）：
+
+```c
+if (amount > 1 && ! ob->query_amount())   // query_amount() 对不可叠加物品返回 0
+```
+
+即"**不可叠加的物品**不能一次买多个"。我们默认 1、LPC 是 0，语义反了。
+注意 `:amount` 在别处（bag / instance）也有用到，改语义要连带确认。
 
 **这一条是本轮最严重的发现，比 §一 影响面大得多。**
 
@@ -112,6 +253,53 @@ heihu.ucl   town_crier.ucl   villager.ucl
 - [ ] `Kantele.Brain.process/2` 遇到不存在的 brain 名时**至少 warn 一次**，
       别静默返回 `NullNode`；
 - [ ] 转换器生成 `brain = brains.X` 时校验 `data/brains/X.ucl` 存在。
+
+---
+
+## 一之二、`data/brains` 只有 6 个定义，228 处引用落空 🔴
+
+> **更正本节初版的两处错误**：① 初版写「只有 3 个文件、229 处落空」——
+> `data/brains/villager.ucl` 其实定义了**两个** brain（`villager` 和
+> `wandering_villager`），当时只扫了文件名没扫 `brains "X"` 键；
+> ② `wandering_villager` 是有定义的。
+> 实际是 **6 个定义 / 5 种未定义 / 228 处落空**。根因见 §一之一。
+
+实际定义的：
+
+```
+heihu                    <- heihu.ucl
+generic_hello            <- town_crier.ucl
+town_crier               <- town_crier.ucl
+town_crier_conversation  <- town_crier.ucl
+villager                 <- villager.ucl
+wandering_villager       <- villager.ucl
+```
+
+被引用但**未定义**的：
+
+| brain | 引用处数 |
+|---|---|
+| `dealer` | 135 |
+| `vendor` | 43 |
+| `guarder` | 37 |
+| `banker` | 11 |
+| `guardert` | 1 |
+| `quester` | 1 |
+
+合计 **228 处**，`Kantele.Brain.process/2` 全部返回 `NullNode{}`，不报错不警告。
+
+> ⚠️ 这些 `brain = brains.X` 引用本身是 `infer_brain/1` 从 `inherit F_XXX`
+> **编造**的（见 §一之一），所以"去 mud 补 brain 定义"这条路不成立。
+
+`NonPlayerMeta` 里没有 `:brain` 字段 —— brain 是 loader 的 `build_brain/2`
+单独组装挂在 `character.brain` 上的，所以从 meta 看不出问题。
+
+`chat_chance` / `chats` 同理：不在 meta 里，而是被 `build_brain/2` 包成
+`ChatChance` → `ChatAction` 闲聊节点。**这两个是接上了的**，
+和 §一 的 `chat_msg` 表达式元素丢失是两回事 —— 字符串数组能转，
+`(: do_walk :)` 转不了。
+
+- [ ] 按 §一之一 的计划接派发层，让 feature 标记不再冒充 brain
 
 ---
 
@@ -289,7 +477,20 @@ lib/kantele/character/commands/drive_command.ex:59
 
 ---
 
-## 九、数据层已完成的部分（备查）
+## 九、已核实为「转换器编造」的清单 🔴
+
+> 这几项**不是** LPC 行为缺失，是转换器凭空造的。修的时候要改转换器，
+> 不能靠补数据文件。
+
+| 编造的东西 | 数量 | 造它的代码 | 真相 |
+|---|---|---|---|
+| `brain = brains.{dealer,vendor,guarder,banker,quester,guardert}` | 228 处 | `infer_brain/1` | LPC 只有 `inherit F_XXX`，没有 brain 概念 |
+| `name = "NPC"` | walker、xunbu 等 | 转换器遇 `generate_cn_name()` 只能填空 | LPC 运行时随机生成人名 |
+| `characters "city_xiaoer2"` 这类带区名前缀的 id | 4 处 | 按路径推 id | 其余 9 个区的 `jiading.c` 都叫 `jiading` |
+
+`infer_brain/1` 还映射了 `HORSE -> horseboss`，但当前无引用。
+
+## 十、数据层已完成的部分（备查）
 
 这些是**数据**层，做完了，但对应行为仍受上面各节限制：
 
