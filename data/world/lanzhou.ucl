@@ -921,7 +921,7 @@ direction = "west"
   gender = "男性"
   age = 32
   shen_type = 1
-  brain = brains.vendor
+  # brain = brains.vendor  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "peaceful"
@@ -1085,7 +1085,7 @@ chats = [
   gender = "男性"
   age = 34
   shen_type = 1
-  brain = brains.banker
+  # brain = brains.banker  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -1132,7 +1132,7 @@ chats = [
   nickname = "消息灵通"
   gender = "男性"
   age = 22
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -1172,7 +1172,7 @@ chats = [
   nickname = "消息灵通"
   gender = "男性"
   age = 22
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -1211,7 +1211,7 @@ chats = [
   nickname = "消息灵通"
   gender = "男性"
   age = 22
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -1252,7 +1252,7 @@ chats = [
   gender = "男性"
   age = 32
   shen_type = 1
-  brain = brains.vendor
+  # brain = brains.vendor  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "peaceful"

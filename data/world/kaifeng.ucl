@@ -3019,7 +3019,7 @@ direction = ~
   gender = "男性"
   age = 32
   shen_type = 1
-  brain = brains.vendor
+  # brain = brains.vendor  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "peaceful"
@@ -3185,7 +3185,7 @@ chats = [
       description = "这是一位皮货商，他自己也是满身皮裘。"
   gender = "男性"
   age = 25
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -3362,7 +3362,7 @@ chats = [
   title = "雅琪轩老板"
   gender = "男性"
   age = 25
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -3555,7 +3555,7 @@ chats = [
       description = "这是一位皮货商，他自己也是满身皮裘。"
   gender = "男性"
   age = 25
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -4657,7 +4657,7 @@ chats = [
     characters "waiter" {
       name = "伙计"
       description = "一个忙前忙后的店伙计。"
-  brain = brains.vendor
+  # brain = brains.vendor  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   carry = [
     { id = clone_lib.items.cloth.id }
@@ -4917,7 +4917,7 @@ chats = [
   nickname = "消息灵通"
   gender = "男性"
   age = 22
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"

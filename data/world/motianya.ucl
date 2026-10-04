@@ -283,7 +283,7 @@ direction = "east"
   gender = "男性"
   age = 50
   shen_type = 1
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"

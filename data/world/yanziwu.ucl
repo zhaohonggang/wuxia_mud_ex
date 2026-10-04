@@ -1040,7 +1040,7 @@ item_desc = {
       description = "他是慕容家四大家臣之三，生性喜欢饶舌。"
   gender = "男性"
   age = 31
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "peaceful"
@@ -1089,7 +1089,7 @@ item_desc = {
       description = "他是慕容家四大家臣之首，功力最为深厚。"
   gender = "男性"
   age = 42
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "peaceful"
@@ -1138,7 +1138,7 @@ item_desc = {
       description = "他是慕容家四大家臣之四，最喜欢打架，轻易却不服输。"
   gender = "男性"
   age = 28
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "peaceful"
@@ -1191,7 +1191,7 @@ item_desc = {
       description = "他是慕容家四大家臣之二，为人稳重。"
   gender = "男性"
   age = 35
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "peaceful"

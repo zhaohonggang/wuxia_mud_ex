@@ -868,7 +868,7 @@ item_desc = {
   gender = "男性"
   age = 34
   shen_type = 1
-  brain = brains.banker
+  # brain = brains.banker  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -1160,7 +1160,7 @@ chats = [
   age = 23
   shen_type = 1
   score = 20000
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "peaceful"

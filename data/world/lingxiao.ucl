@@ -1897,7 +1897,7 @@ chats = [
       description = "阎大夫是凌宵城中的医生，声得称赞。"
   gender = "男性"
   age = 18
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -2059,7 +2059,7 @@ chats = [
   gender = "男性"
   age = 35
   shen_type = 0
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -2310,7 +2310,7 @@ chats = [
       description = "他是凌霄城第六代弟子燕万鹏。第六代弟子中，为 人数他最为梗直，素有铁面之称，所以在此镇狱。"
   gender = "男性"
   age = 24
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "peaceful"
@@ -2826,7 +2826,7 @@ chats = [
   nickname = "消息灵通"
   gender = "男性"
   age = 22
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"

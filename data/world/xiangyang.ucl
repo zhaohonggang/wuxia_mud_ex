@@ -2652,7 +2652,7 @@ direction = "east"
   gender = "男性"
   age = 45
   shen_type = 1
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -2857,7 +2857,7 @@ chats = [
   gender = "男性"
   age = 59
   shen_type = 1
-  brain = brains.banker
+  # brain = brains.banker  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "peaceful"
@@ -3176,7 +3176,7 @@ chats = [
   gender = "男性"
   age = 55
   shen_type = 0
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -3210,7 +3210,7 @@ chats = [
       description = "他是聚义馆厨房的烧饭师傅。"
   gender = "男性"
   age = 18
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -3233,7 +3233,7 @@ chats = [
       description = "一个让孩子们一见就觉得可亲的老翁。"
   gender = "男性"
   age = 62
-  brain = brains.vendor
+  # brain = brains.vendor  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -3270,7 +3270,7 @@ chats = [
   gender = "男性"
   age = 33
   shen_type = 1
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -3533,7 +3533,7 @@ chats = [
   nickname = "消息灵通"
   gender = "男性"
   age = 22
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -3813,7 +3813,7 @@ chats = [
     characters "waiter" {
       name = "伙计"
       description = "一个忙前忙后的店伙计。"
-  brain = brains.vendor
+  # brain = brains.vendor  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   carry = [
     { id = clone_lib.items.cloth.id }

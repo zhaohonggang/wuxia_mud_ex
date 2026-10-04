@@ -967,7 +967,7 @@ item_desc = {
   nickname = "五路神"
   gender = "男性"
   age = 30
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"

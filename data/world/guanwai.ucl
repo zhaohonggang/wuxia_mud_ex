@@ -1562,7 +1562,7 @@ behavior_config = {
   title = "铁匠"
   gender = "男性"
   age = 28
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -1737,7 +1737,7 @@ chats = [
       description = "这位酒馆老板满身狗肉香，点头哈腰着对你笑着。"
   gender = "男性"
   age = 32
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -1775,7 +1775,7 @@ chats = [
       description = "这是一位皮货商，他自己也是满身皮裘。"
   gender = "男性"
   age = 25
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -2453,7 +2453,7 @@ chats = [
       description = "他是胡家忠心耿耿的仆役。"
       gender = "男性"
       age = 65
-      brain = brains.guarder
+      # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
       combat = {
         attitude = "peaceful"

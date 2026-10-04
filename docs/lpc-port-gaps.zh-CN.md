@@ -120,28 +120,52 @@ LPC 那边根本没有 `brain` 这个概念，只有 `inherit F_XXX` 和 `add_ac
 `Kantele.Brain.process/2` 找不到就返回 `NullNode{}`，所以这 228 处全是
 空节点。
 
-### 🚧 给后续维护者：暂时不要清理这些引用
+### ✅ 已处理：228 处编造引用注释掉（保留线索，不删）
 
-**这些 `brain = brains.X` 现在是有用的线索，不要删。**
+**为什么不删而注释**：这些引用是「这个 NPC 在 LPC 里 `inherit` 了 `F_X`」
+的唯一记录，删了就再也没法回溯某个 NPC 该有哪些命令。
 
-- ❌ **不要**因为「`brains.guardert` 不存在」就认定相关功能坏了。
-  守卫实际是靠 `meta.guardert` 生效的（见 §二），与这行无关。
-- ❌ **不要**去 `data/brains/` 找定义、也**不要**去 LPC 找 `brains/` 目录 ——
-  LPC 里没有那个目录（是 `feature/`），Kalevala 的 brain 是
-  `type=first` + `nodes` 的行为树，和 `feature/*.c` 的命令实现不是一个东西。
-- ❌ **不要**把这些引用当成「功能已接上」的证据。看到 `brain = brains.dealer`
-  不代表商店能卖东西；要查 `meta.goods` 是否非空。
+**注释掉是安全的 —— 已实测证明等价**：
 
-它们的价值是**标记**：`brain = brains.X` 精确指出了「这个 NPC 在 LPC 里
-`inherit` 了 `F_X`」，也就是**它该有哪些命令**。§二 的接线排查就是靠这个
-线索找到的（`guardert` 这个拼写错误的 `guarder` 就是这么露出来的）。
+```
+Kantele.Brain.parse_node("brains." <> key_path, brains) do
+  parse_node(brains[key_path], brains)     # brains["dealer"] -> nil
+end
+defp parse_node(nil, _brains), do: %Kalevala.Brain.NullNode{}
 
-**清理条件**：等所有 `F_*` feature 的行为都逐个核实完
-（`dealer` / `vendor` / `guarder` / `banker` / `quester` / `coagent` /
-`horseboss` / `ask_handler`）之后，再一次性决定这 228 处是删掉、
-改名成 `feature = "X"`、还是就此留作噪音。
+process("brains.dealer") -> NullNode      # 保留
+process(nil)              -> NullNode      # 注释掉之后
+```
 
-- [ ] `Kantele.Brain.process/2` 遇到不存在的 brain 名时 warn 一次
+6 种编造名（`dealer` / `vendor` / `guarder` / `banker` / `quester` /
+`guardert`）全部实测为 `NullNode`，与注释掉后的 `nil` **完全一致**。
+
+**但有 4 处真实定义，一个都没碰**：
+
+| brain | 引用处数 | 处理 |
+|---|---|---|
+| `heihu` | 1 | ✅ 保留（`Sequence`） |
+| `town_crier` | 1 | ✅ 保留（`Sequence`） |
+| `villager` | 1 | ✅ 保留（`FirstSelector`） |
+| `wandering_villager` | 1 | ✅ 保留（`FirstSelector`） |
+
+改动：228 处 / 56 个 `.ucl`，每处改成
+
+```uc
+# brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；
+#   注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
+```
+
+**验证**：改动前后导出全部 2677 个 NPC 的 brain 指纹
+（NullNode 2470 / Sequence 204 / 其它 3），排序后**逐行一致**。
+全量测试 3354 通过、门禁审计 166/155/11、悬空 815 条 —— 均无变化。
+
+- [x] 注释掉 228 处编造引用（已完成）
+- [ ] `infer_brain/1` 不再编造（下次重转时才会用到；
+      本轮**故意没改**，避免覆盖手工补的 NPC）
+- [ ] `Kantele.Brain.process/2` 遇到未定义 brain 名时 warn 一次
+- [ ] 8 个 `F_*` feature 的行为逐个核实完后，再决定这些注释行是彻底删除
+      还是改名成 `feature = "X"`
 
 ---
 

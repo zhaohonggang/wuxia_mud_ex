@@ -2921,7 +2921,7 @@ direction = ~
   age = 30
   shen_type = 1
   score = 100
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -3017,7 +3017,7 @@ direction = ~
   gender = "男性"
   age = 35
   shen_type = 1
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "peaceful"
@@ -3113,7 +3113,7 @@ chats = [
   age = 50
   shen_type = 1
   score = 5000
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -3179,7 +3179,7 @@ chats = [
   age = 50
   shen_type = 1
   score = 5000
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -3276,7 +3276,7 @@ chats = [
   age = 22
   shen_type = 1
   score = 100
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -3667,7 +3667,7 @@ chats = [
   age = 52
   shen_type = 1
   score = 5000
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -3717,7 +3717,7 @@ chats = [
   age = 46
   shen_type = 1
   score = 5000
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -5074,7 +5074,7 @@ chats = [
       attitude = "friendly"
       age = 54
       shen_type = 1
-      brain = brains.guardert
+      # brain = brains.guardert  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
       combat = {
         attitude = "friendly"

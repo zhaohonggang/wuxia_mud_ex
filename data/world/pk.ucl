@@ -282,7 +282,7 @@ direction = "north"
   title = "回疆碧刀门掌门"
   gender = "男性"
   age = 45
-  brain = brains.quester
+  # brain = brains.quester  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "peaceful"

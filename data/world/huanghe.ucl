@@ -1321,7 +1321,7 @@ item_desc = {
       description = "他是这儿的伙计，正在店里忙里忙外。"
   gender = "男性"
   age = 18
-  brain = brains.dealer
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"

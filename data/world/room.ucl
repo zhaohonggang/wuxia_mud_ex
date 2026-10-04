@@ -573,7 +573,7 @@ zones "room" {
       aliases = ["lao pu", "saodi laopu"]
       description = "这是一个扫地的老仆人，不过看上去似乎身怀绝技。"
   gender = "男性"
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -653,7 +653,7 @@ zones "room" {
       aliases = ["id", "shou wei", "guarder"]
       description = "这是看护庄园的守卫，看上去似乎身怀绝技。"
   gender = "男性"
-  brain = brains.guarder
+  # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
