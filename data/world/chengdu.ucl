@@ -2756,3 +2756,105 @@ chats = [
       #   set("max_qi",300); set("attitude","peaceful"); set("combat_exp",50000);
       # 无 set_skill
     }
+
+    characters "mafu" {
+      name = "马夫"
+      description = "这是马厩驯马和小伙计，平时打理照料马匹。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000
+    dex = 16
+    str = 24
+  }
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "马夫点头哈腰地说道：这位客官，您好，打算去哪儿啊？" }
+  ]
+
+  accept = [
+    { kind = "money" accept = true msg = "{npc}对{name}说道：你想去\(goto\)哪儿？先告诉小的再付钱也不迟。" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+    characters "bing" {
+      name = "官兵"
+      description = "虽然官兵的武艺不能和武林人士相比，可是他们讲究的是人多力量大。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    dex = 16
+    str = 24
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "blade" level = 40 },
+    { skill = "force" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.blade.id },
+    { id = items.junfu.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
+  }
+    }
+
+
+    items "blade" {
+      name = "钢刀"
+      description = "这是一寻常的单刀，份量大约六、七斤重。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 25
+        skill_type = "blade"
+        value = 500
+        weight = 4000
+        unit = "柄"
+        material = "iron"
+      }
+    }
+
+
+    items "junfu" {
+      name = "军服"
+      aliases = ["junfu", "cloth"]
+      description = "这是一件有点旧的官兵服。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 10
+      }
+    }

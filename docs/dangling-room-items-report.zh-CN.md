@@ -435,18 +435,88 @@ LPC 里这些是**不同目录下**的两个文件，id 碰巧同名；
 
 现在报告与审计脚本读到的数字**只反映真实世界**。
 
-## 六、建议的处理顺序（供决策，本次未执行）
+## 五之三、已补：`mafu` / `bing` / `guanbing`（−119 条悬空）
+
+### 先把 LPC 原文找回来
+
+转换器把 LPC 的 `set("objects")` 写成了裸 id，**跨区路径被丢掉了**。
+拿 `# Generated from …` 注释把每个 `room_characters` 映射回 LPC 源文件、
+再读原始 `set("objects")`，真相是：
+
+```c
+// d/lanzhou/ximen.c
+set("objects", ([
+    "/d/city/npc/bing"    : 4,      // <- 兰州城门用的是「开封」的官兵
+    "/d/beijing/npc/ducha": 1,
+    "/clone/npc/walker"   : 1,
+]));
+
+// d/zhongzhou/chenglou.c
+    "/d/kaifeng/npc/guanbing" : 4,
+
+// d/beijing/majiu.c
+    "/clone/horse/zaohongma": 1, "/clone/horse/huangbiaoma": 1,
+    "/clone/horse/ziliuma": 1,    "/clone/npc/mafu": 1,
+    "/d/guanwai/npc/shenke" : 1,
+```
+
+所以 `bing` 那 76 条里 **96% 都指向同一个 `/d/city/npc/bing`**，
+不是 10 个不同的士兵；`guanbing` 全部指向 `/d/kaifeng/npc/guanbing`。
+
+### 因此没有「抄一个同名的了事」
+
+6 个 `bing.c` 差异很大，逐个 diff 过 `create()`：
+
+| 区 | create() sha | 说明 |
+|---|---|---|
+| `city` | `152c9bf4` | 官兵，22 岁 |
+| `quanzhen` | `152c9bf4` | 与 city **逐字节相同** |
+| `xiangyang` | `4ee70dc9` | 官兵，微调 |
+| `xiyu` | `db109b14` | 官兵，微调 |
+| `jingzhou` | `ba211461` | 官兵，少一个 alias |
+| `dali` | `20c30ca2` | **完全另一个 NPC**：`set_name("士兵", …)`，大理国禁卫军 |
+
+拿 `dali` 的去填别处就是错的。补的时候统一用
+`LPCConverter.convert_file/2` 直接从 LPC 原文转，不从别的区抄。
+
+### 补了什么
+
+| NPC | LPC 源 | 区数 | 引用 |
+|---|---|---|---|
+| `mafu` | `/clone/npc/mafu` | 25 | 27 |
+| `bing` | `/d/city/npc/bing` | 10 | 76 |
+| `guanbing` | `/d/kaifeng/npc/guanbing` | 1（zhongzhou） | 16 |
+
+外加 `bing`/`guanbing` 的 `carry` 依赖的 `items "blade"` / `items "junfu"`
+也补进那 11 个区（LPC 里 `carry_object("/clone/weapon/blade")` 表示每个官兵
+都带钢刀）。不补的话 NPC 会出现、刀却是悬空的。
+
+`character` 悬空 **751 → 632（−119）**，`item` 仍是 464（那几个区原先整个 bing
+被跳过，carry 引用压根没产生；补齐后人物与物品一起解析）。
+门禁仍是 166 / 155 / 11。
+
+### 顺带发现：`carry` 是死数据
+
+`bing` 的 `carry = [{ id = items.blade.id }, …]` 转换出来了，但 **loader 根本不解析
+`carry`**，`NonPlayerMeta` 也没有这个字段 —— 所以这些官兵运行时是**空着手**的，
+刀和军服不会真的穿上。这是先前就有的缺口（对所有 NPC 都成立），不是本次引入的。
+测试里钉了一条断言（`bing.inventory == []`）让这个缺口显形，等真实现了再改。
 
 按「投入产出比 × 风险」排：
 
 | 优先级 | 做什么 | 覆盖 | 风险 |
 |---|---|---|---|
-| 1 | 补 `zaohongma` / `huangbiaoma` / `ziliuma` 三个马厩 NPC | 87 条引用 / 近 30 个房间 | 低（马匹，不参与门禁） |
-| 2 | 补 `baituo` 的 8 种蛇（`SNAKE` 基类，字段少） | 约 36 条引用 | 低（同 §2④ 的玄冰莽，已有先例） |
-| 3 | 补 `item` 类里引用最多的战利品（`gangdao` / `changjian` / `mudao` / `ganchai` / `corpse`） | 约 30 条引用 | 低（纯物品） |
-| 4 | 补 `item` 类里的书籍（`daodejing` / `laozi1..18` / `yijing0..3`） | 约 30 条引用 | 低（`wudang:cangjingge` / `taohua:shufang` 是藏经阁，本该有书） |
+| ~~1~~ | ~~补 `zaohongma` / `huangbiaoma` / `ziliuma` 三个马厩 NPC~~ | ~~87 条~~ | **已完成** |
+| ~~2~~ | ~~补 `baituo` 的 8 种蛇~~ | ~~约 36 条~~ | **已完成** |
+| 1 | 补 `walker`（`/clone/npc/walker`，35 个区） | 141 条引用 | 低（做法已在 §五之三 验证过） |
+| 2 | 补 `ducha` 23 / `liumang` 22 / `wujiang` 20 / `kid1` 19 | 84 条引用 | 低（同上；注意 `liumang` 有 city 与 beijing 两个源） |
+| 3 | 补 `xunbu` 16 / `xiaoer2` 15 / `guest` 14 / `duke` 11 | 56 条引用 | 低（同上；`guest` 指向 `/d/wudang/npc/guest`） |
+| 4 | 补 `item` 类里引用最多的战利品（`gangdao` / `changjian` / `mudao` / `ganchai` / `corpse`） | 约 30 条引用 | 低（纯物品） |
 | 5 | 逐个查 `ambiguous` 的 87 个 id 属于哪个候选 | 163 条引用 | 中，要看 LPC 原文 |
-| 6 | 给 loader 加「`room_items` 引用解析不到」的 warning | — | 低，但能让这类问题不再静默 |
+| ~~6~~ | ~~给 loader 加「引用解析不到」的 warning~~ | — | **已完成**（§〇 的加载末尾汇总） |
+
+另有一条**独立于数据**的缺口：loader 不解析 `carry`，所有 NPC 的
+`carry_object()` 装备都没生效（见 §五之三 末尾）。
 
 另外：`clone/quarry/` 里那批（野兔/老虎/野狗/山羊/梅花鹿/猴子/雪鹤/丹顶鹤 …）
 在 LPC 里是「猎物」，被玩家杀死后会变成肉/皮。移植它们等于把狩猎玩法带回来，
