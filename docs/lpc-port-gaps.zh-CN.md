@@ -59,33 +59,46 @@ case {chance, chats} do
 
 ---
 
-## 一之一、feature 已移植但**派发层缺失**，商店/门卫/钱庄全是死代码 🔴🔴
+## 一之一、`brains.X` 是转换器编造的假引用 🟡
 
-### 结论先说
+> ⚠️ **本节初版写的是「feature 已移植但派发层缺失，商店/门卫/钱庄全是死代码」——
+> 那是错的，已更正。** 错在两处：
+> 1. 说 `Kantele.Npc.*` 六个模块「零引用」—— 错，它们**全都接好了**
+>    （见下面 §一之一之二）。我当时用 `grep 'Npc\.Dealer'` 找引用，
+>    但代码里是 `alias Kantele.Npc.Dealer` 之后裸调 `Dealer.f()`，grep 漏了。
+> 2. 说「派发层缺失、店小二买不了东西」—— 错，`buy`/`list` 的链路是完整的。
 
-`Kantele.Npc.{Dealer,Vendor,Guarder,Banker,Coagent,AskHandler}` 六个模块
-**零引用** —— `lib/` 和 `test/` 里没有任何地方调用它们。功能写好了，插头没插。
-
-### 数据链断在中间
+### 真实情况：派发层是通的
 
 ```
-LPC:   inherit F_DEALER;  add_action("do_buy", "buy");
-         ↓ 转换器搬 add_action
-UCL:   init = { add_actions = ["buy", "list"] }
-         ↓ loader 解析进 meta.init.add_actions   （loader.ex:725-733 有做）
-       ??? 谁读 meta.init.add_actions
-         ↓
-Elixir: Kantele.Npc.Dealer 的纯函数            ← 写好了，没人调
+玩家输入 "buy 包子"
+  → Kantele.Character.BuyCommand.run/2        （character/commands/shop_commands.ex）
+    → event("shop/buy", %{item_name:, quantity:})
+      → ShopRequestEvent（world/room.ex:723）转发给在场 NPC
+        → events.ex:274 路由到 NpcShopEvent.buy/2
+          → Dealer.do_buy/4（已用）
+            → reply "shop/buy-result" → 玩家
 ```
 
-关键证据：`add_actions` 这个词在整个 `lib/` 里只出现在
-`character.ex:297` 的**文档字符串**里，没有任何实际消费点。
+`list` 同理走 `NpcShopEvent.list/2` → `Dealer.build_list/2`。
+`SellCommand` → `Dealer.do_value/1` + `do_sell/2`。
+`BankCommand` → `Banker` 的 4 个函数。`room.ex:437/446/2733/2738`
+→ `Guarder` 的 3 个函数。
 
-所以：店小二身上挂着 `["buy","list"]`，玩家输入 `list` 什么也不会发生
-（`data/verbs.ucl` 里没有 `buy`/`list`/`value` 动词，`lib/` 下也没有
-`BuyCommand`/`ListCommand`）。
+### 那 `add_actions` 为什么没人读？
 
-### `brains.X` 是转换器编的，别去补 brain 文件
+因为**不需要读**。LPC 的 `add_action("do_buy","buy")` 是**NPC 侧注册**
+（谁提供这个命令）；我们这边 `BuyCommand` 是**玩家侧命令**，无条件广播给
+在场 NPC，谁应答就谁回。这是有意的架构差异，不是缺口。
+
+`meta.init.add_actions` 目前只是**没被消费的数据**，唯一用途是将来做
+「这个 NPC 卖不卖东西」的过滤/校验。真正决定应答的是 `meta.goods` 非空。
+
+顺带更正另一处：`data/verbs.ucl` 里没有 `buy`/`list` —— 这是**正常的**。
+verbs.ucl 只管**物品动词**（`get`/`drop`/`look`/`wield`…），
+玩家命令走 `Kalevala.Character.Command` 框架，根本不查 verbs.ucl。
+
+### `brains.X` 本身仍然是编造的
 
 `data/world` 里 228 处 `brain = brains.dealer` 之类的引用，
 **不是 LPC 数据**。`lpc_converter.ex` 的 `infer_brain/1`：
@@ -104,37 +117,31 @@ LPC 那边根本没有 `brain` 这个概念，只有 `inherit F_XXX` 和 `add_ac
 例：`kungfu/class/mingjiao/lengqian.c` 只有 `inherit F_GUARDER;`，
 产物 `data/world/mingjiao.ucl` 里就有了 `brain = brains.guardert`。
 
-**所以「去 mud 里找 brains/ 目录补定义」这条路是错的** ——
-LPC 里没有这个目录（`feature/` 才是）。Kalevala 的 brain 是
-`type=first` + `nodes` 的行为树，和 `feature/dealer.c` 那种命令实现
-不是一个东西，语义上对不上。
+`Kantele.Brain.process/2` 找不到就返回 `NullNode{}`，所以这 228 处全是
+空节点。**好在功能不依赖它们**（走的是 `meta.goods` / `meta.guarder`），
+所以这是个**数据整洁度**问题，不是功能缺口。
 
-**这些引用的正确归宿**：当作 feature 标记（`feature = "dealer"`），
-由派发层消费，而不是当成 brain 去找定义。
+**仍然别去 mud 找 `brains/` 目录**——LPC 里没有这个目录（是 `feature/`），
+而 Kalevala 的 brain 是 `type=first` + `nodes` 的行为树，
+和 `feature/dealer.c` 那种命令实现不是一个东西。
 
-### 计划
-
-1. **派发层**：让 `meta.init.add_actions` 真正生效 ——
-   玩家输入 `buy` 时找到在场 NPC，若其 feature 标记含 `buy`，
-   转给 `Kantele.Npc.Dealer`。NPC 身份从 `brain = brains.X` 改读
-   一个明确的 feature 字段。
-2. **`dealer` 系先跑通**（135 处引用，收益最大）：
-   `buy` / `list` / `value` / `sell`。
-3. `vendor`（43）、`guarder`（37）、`banker`（11）各自接。
-   `guarder` 与门禁系统有交叉（第 155 条门禁那套），要单独设计。
+- [ ] 让 `infer_brain/1` 不再编造（或至少在文档里标明这些引用无意义），
+      228 处 UCL 里的 `brain = brains.X` 怎么处理（删掉 / 改名成
+      `feature = "X"` / 就此留着当噪音）需要拍板
+- [ ] `Kantele.Brain.process/2` 遇到不存在的 brain 名时 warn 一次
 
 ---
 
-## 一之一之二、feature 移植的函数级差距
+## 一之一之二、feature 移植的函数级差距（这条是准确的）
 
-对着 LPC 原文逐个核了一遍：
+对着 LPC 原文逐个核了一遍 —— **这一节的结论经过复核，没有误报**：
 
 | LPC | 函数 | Elixir | 状态 |
 |---|---|---|---|
-| `feature/guarder.c` | 4 | `guarder.ex` 4 | ✅ 齐 |
-| `feature/banker.c` | 5 | `banker.ex` 5（`do_*`→去 `do_`） | ✅ 齐 |
-| `feature/vendor.c` | 4 | `vendor.ex` **3** | ❌ 缺 `compelete_trade` |
-| `feature/dealer.c` | 8 | `dealer.ex` **5** | ❌ 缺 3 个 |
+| `feature/guarder.c` | 4 | `guarder.ex` 4 | ✅ 齐（`room.ex` 已接） |
+| `feature/banker.c` | 5 | `banker.ex` 5（`do_*`→去 `do_`） | ✅ 齐（`bank_command.ex` 已接） |
+| `feature/vendor.c` | 4 | `vendor.ex` **3** | ❌ 缺 `compelete_trade` ✅已补 |
+| `feature/dealer.c` | 8 | `dealer.ex` **5** | ❌ 缺 3 个 ✅已补 |
 
 ### `vendor.ex` 缺 `compelete_trade` —— 买了没货交付 ✅ **已补**
 
