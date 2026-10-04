@@ -86,21 +86,51 @@ defmodule Kantele.Npc.Guarder do
     end
   end
 
-  @doc "check_enemy：按 fight/kill/hit 判定是否敌对。返回 :ignore 或 {:kill}"
+  @doc """
+`check_enemy`：按 fight/kill/hit 判定守卫是否反击。
+
+对应 LPC `feature/guarder.c:142-191`。返回值：
+
+- `{:refuse, msg}` —— LPC 里 `return 0`，**拒绝交战**并说话
+- `{:kill, enemy_id}` —— LPC 里 `me->kill_ob(ob)`，守卫反击
+- `:ignore` —— 无事发生
+
+LPC 原文有**四种**反应，这里都保留了：
+
+| 条件 | LPC | 返回 |
+|---|---|---|
+| 外门派 + `fight` | 「我现在没空」`return 0` | `{:refuse, "我现在没空"}` |
+| 外门派 + `hit`/`kill` | 「活得不耐烦了！来这里撒野？」`kill_ob` | `{:kill, id}` |
+| 同门 + `hit`/`kill` | 「你今日是要造反吗？」`kill_ob` | `{:kill, id}` |
+| 同门 + `fight` | 「找你师傅比划去」`return 0` | `{:refuse, "找你的师傅比划去"}` |
+"""
   def check_enemy(opts) do
-    %{my_family: my_fam, enemy_family: e_fam, enemy_name: e_name} = opts
+    %{my_family: my_fam, enemy_family: e_fam} = opts
     type = Map.get(opts, :type, "fight")
+    enemy_id = Map.get(opts, :enemy_id)
 
     if e_fam != my_fam do
       case type do
-        "fight" -> {:ignore}
-        _ -> {:kill, Map.get(opts, :enemy_id)}
+        "fight" ->
+          # LPC:152-157 「我现在没空」然后 return 0
+          {:refuse, "我现在没空。"}
+
+        _ ->
+          # LPC:159-165 「活得不耐烦了！来这里撒野？」然后 kill_ob
+          {:kill, enemy_id}
       end
     else
       case type do
-        t when t in ["hit", "kill"] -> {:kill, Map.get(opts, :enemy_id)}
-        "fight" -> {:refuse_fight, e_name}
-        _ -> {:ignore}
+        t when t in ["hit", "kill"] ->
+          # LPC:170-176 「你今日是要造反吗？」然后 kill_ob
+          {:kill, enemy_id}
+
+        "fight" ->
+          # LPC:178-187 找师傅比划去（apprentice 时另有一句）
+          {:refuse, "找你的师傅比划去。"}
+
+        _ ->
+          :ignore
       end
     end
   end

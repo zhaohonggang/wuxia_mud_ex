@@ -72,14 +72,57 @@ defmodule Kantele.Npc.TraitsTest do
       assert msg =~ "背的是谁"
     end
 
-    test "check_enemy: 不同派 fight -> ignore" do
-      assert Guarder.check_enemy(%{
-               my_family: "武当派",
-               enemy_family: "峨嵋派",
-               my_name: "张三丰",
-               enemy_name: "甲",
-               type: "fight"
-             }) == {:ignore}
+    test "check_enemy: 不同派 fight -> 拒绝交战（LPC guarder.c:152 说「我现在没空」后 return 0）" do
+      # 原来这里断言 {:ignore}，但 LPC 的 check_enemy 对外门派的 fight 是
+      #  message_vision("我现在没空") 然后 return 0 —— 即**拒绝交战**，
+      # 不是「不干预」。ignore 会让战斗正常开打，与 LPC 相反。
+      assert {:refuse, msg} =
+               Guarder.check_enemy(%{
+                 my_family: "武当派",
+                 enemy_family: "峨嵋派",
+                 my_name: "张三丰",
+                 enemy_name: "甲",
+                 type: "fight"
+               })
+
+      assert msg =~ "没空"
+    end
+
+    test "check_enemy: 同派 fight -> 拒绝交战（LPC guarder.c:184「找你的师傅比划去」）" do
+      assert {:refuse, msg} =
+               Guarder.check_enemy(%{
+                 my_family: "武当派",
+                 enemy_family: "武当派",
+                 my_name: "张三丰",
+                 enemy_name: "甲",
+                 type: "fight"
+               })
+
+      assert msg =~ "师傅"
+    end
+
+    test "check_enemy: 不同派 hit -> 反击（LPC guarder.c:159 kill_ob）" do
+      assert {:kill, "jia"} =
+               Guarder.check_enemy(%{
+                 my_family: "武当派",
+                 enemy_family: "峨嵋派",
+                 my_name: "张三丰",
+                 enemy_name: "甲",
+                 enemy_id: "jia",
+                 type: "hit"
+               })
+    end
+
+    test "check_enemy: 同派 hit -> 反击（LPC guarder.c:170 kill_ob）" do
+      assert {:kill, "jia"} =
+               Guarder.check_enemy(%{
+                 my_family: "武当派",
+                 enemy_family: "武当派",
+                 my_name: "张三丰",
+                 enemy_name: "甲",
+                 enemy_id: "jia",
+                 type: "hit"
+               })
     end
 
     test "check_enemy: 不同派 kill -> kill" do

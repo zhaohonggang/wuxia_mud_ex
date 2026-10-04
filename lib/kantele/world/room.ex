@@ -2530,6 +2530,17 @@ defmodule Kantele.World.Room.CombatEvent do
         msg = "你正在守护着#{target.name}，不能杀他！\n"
         render(context, attacker.pid, CommandView, "text", %{text: msg})
 
+      guarder_refuse?(target, attacker, event) ->
+        # LPC feature/guarder.c check_enemy：外门派 fight / 同门 fight 都 return 0
+        render(context, attacker.pid, CommandView, "text", %{
+          text: "#{target.name}#{guarder_refuse_msg(target, Map.get(event.data, :type, "fight"))}"
+        })
+
+      guarder_counter_kill?(target, attacker, event) ->
+        # LPC check_enemy 的 kill_ob 分支：守卫直接反击
+        # （外门派 hit/kill、同门 hit/kill）
+        engage(context, target, attacker, "kill")
+
       engage_rule_deny?(target, event) ->
         # NPC 的 accept_fight/hit/kill 拒绝（accept=false）
         {:deny, msg} =
@@ -2745,21 +2756,24 @@ defmodule Kantele.World.Room.CombatEvent do
     })
   end
 
-  defp guarder_deny?(target, attacker, event) do
+  # LPC feature/guarder.c:142-191 check_enemy 的四种反应，拆成三路：
+  # 拒绝交战 / 守卫反击 / 不干预。
+
+  defp guarder_refuse?(target, attacker, event) do
     guarder_config?(target) and
-      guarder_decision(target, attacker, event) ==
-        {:refuse_fight, attacker.name}
+      match?({:refuse, _}, guarder_decision(target, attacker, event))
   end
 
-  defp guarder_kill?(target, attacker, event) do
-    guarder_config?(target) and match?({:kill, _}, guarder_decision(target, attacker, event))
+  defp guarder_counter_kill?(target, attacker, event) do
+    guarder_config?(target) and
+      match?({:kill, _}, guarder_decision(target, attacker, event))
   end
 
+  # LPC:152 / LPC:184 的拒绝语，可被 guarder.msgs 的 refuse_fight 覆盖
   defp guarder_refuse_msg(target, _type) do
     msgs = target.meta.guarder.msgs || %{}
 
-    Map.get(msgs, :refuse_fight) ||
-      "#{target.name}摇头道：同门之间，点到为止，切磋就免了。\n"
+    Map.get(msgs, :refuse_fight) || "我现在没空。\n"
   end
 
   # ---- NPC 开战接受规则（accept_fight/hit/kill → engage，见 EngageRule） ----
