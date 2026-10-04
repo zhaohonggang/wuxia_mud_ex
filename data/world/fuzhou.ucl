@@ -375,6 +375,11 @@ zones "fuzhou" {
   z = 0
     }
 
+  room_characters "fzroad4" {
+    room_id = rooms.fzroad4.id
+    characters = [ { id = characters.wubushe.id } ]
+  }
+
   room_exits "fzroad4" {
     room_id = rooms.fzroad4.id
     northeast = rooms.yanping.id
@@ -386,8 +391,7 @@ zones "fuzhou" {
 
   room_items "fzroad4" {
     room_id = rooms.fzroad4.id
-    items = [
-      { id = items.wubushe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/fuzhou/fzroad5.c by LPCConverter
@@ -2203,4 +2207,27 @@ direction = ~
       #   set("age", 2+random(3));    <- 随机年龄，数据里取上限 4
       #   set("max_qi",300); set("attitude","peaceful"); set("combat_exp",50000);
       # 无 set_skill
+    }
+
+    characters "wubushe" {
+      name = "五步蛇"
+      aliases = ["wubushe", "wubu she", "wubu", "she"]
+      description = "五步蛇是福建地方毒蛇，相传中毒行路五步即行倒毙。"
+      age = 1
+
+      combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup() 里是 aggressive
+        attitude = "aggressive"
+        str = 15
+        dex = 40
+        max_qi = 700
+        combat_exp = 10000
+      }
+
+      # LPC: clone/beast/wubushe.c
+      #   inherit SNAKE  ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup()：set("race","野兽")、set("attitude","aggressive")、
+      #                     set("verbs",({"bite"}))
+      #   无 set_skill
+      #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
     }

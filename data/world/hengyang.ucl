@@ -2166,6 +2166,11 @@ behavior_config = {
   z = 10
     }
 
+  room_characters "zigai1" {
+    room_id = rooms.zigai1.id
+    characters = [ { id = characters.yanjingshe.id } ]
+  }
+
   room_exits "zigai1" {
     room_id = rooms.zigai1.id
     up = rooms.zigai2.id
@@ -2178,8 +2183,7 @@ behavior_config = {
 
   room_items "zigai1" {
     room_id = rooms.zigai1.id
-    items = [
-      { id = items.yanjingshe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/hengyang/zigai2.c by LPCConverter
@@ -2193,6 +2197,11 @@ behavior_config = {
   z = 11
     }
 
+  room_characters "zigai2" {
+    room_id = rooms.zigai2.id
+    characters = [ { id = characters.yanjingshe.id } ]
+  }
+
   room_exits "zigai2" {
     room_id = rooms.zigai2.id
     up = rooms.zigai3.id
@@ -2205,8 +2214,7 @@ behavior_config = {
 
   room_items "zigai2" {
     room_id = rooms.zigai2.id
-    items = [
-      { id = items.yanjingshe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/hengyang/zigai3.c by LPCConverter
@@ -2220,6 +2228,11 @@ behavior_config = {
   z = 12
     }
 
+  room_characters "zigai3" {
+    room_id = rooms.zigai3.id
+    characters = [ { id = characters.yanjingshe.id } ]
+  }
+
   room_exits "zigai3" {
     room_id = rooms.zigai3.id
     up = rooms.zigai4.id
@@ -2232,8 +2245,7 @@ behavior_config = {
 
   room_items "zigai3" {
     room_id = rooms.zigai3.id
-    items = [
-      { id = items.yanjingshe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/hengyang/zigai4.c by LPCConverter
@@ -2247,6 +2259,11 @@ behavior_config = {
   z = 13
     }
 
+  room_characters "zigai4" {
+    room_id = rooms.zigai4.id
+    characters = [ { id = characters.yanjingshe.id } ]
+  }
+
   room_exits "zigai4" {
     room_id = rooms.zigai4.id
     down = rooms.zigai3.id
@@ -2258,8 +2275,7 @@ behavior_config = {
 
   room_items "zigai4" {
     room_id = rooms.zigai4.id
-    items = [
-      { id = items.yanjingshe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/hengyang/zigaihole.c by LPCConverter
@@ -3934,4 +3950,27 @@ chats = [
       #   set("age", 2+random(3));    <- 随机年龄，数据里取上限 4
       #   set("max_qi",300); set("attitude","peaceful"); set("combat_exp",50000);
       # 无 set_skill
+    }
+
+    characters "yanjingshe" {
+      name = "眼镜蛇"
+      aliases = ["yanjingshe", "yanjing she", "yanjing", "she"]
+      description = "这是一条五彩斑斓的眼镜蛇，毒性猛烈之极。"
+      age = 3
+
+      combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup() 里是 aggressive
+        attitude = "aggressive"
+        str = 35
+        dex = 50
+        max_qi = 1800
+        combat_exp = 200000
+      }
+
+      # LPC: clone/beast/yanjingshe.c
+      #   inherit SNAKE  ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup()：set("race","野兽")、set("attitude","aggressive")、
+      #                     set("verbs",({"bite"}))
+      #   无 set_skill
+      #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
     }

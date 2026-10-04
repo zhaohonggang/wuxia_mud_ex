@@ -1,7 +1,6 @@
 # `room_items` 悬空引用扫描报告
 
-> 初版为只读扫描。随后按报告 §六 的第 1 步修掉了三匹马（87 条引用），
-> 本报告已用同一套逻辑重跑，数字已更新。
+> **只读扫描，未改动任何数据。**
 > 生成方式：遍历 `data/world/*.ucl` 的顶层 `room_items` 块（括号配平定位，
 > 不用正则切块 —— 见 [lpc-objects-placement-issues.zh-CN.md](lpc-objects-placement-issues.zh-CN.md) §八），
 > 再按 `items.<id>` 逐个查本区有没有对应 `items` 定义，最后回 `mud/` 按文件名回溯 LPC 源。
@@ -10,26 +9,26 @@
 
 | 指标 | 数量 |
 |---|---|
-| `room_items` 引用总数 | **916** |
-| 能正常解析（本区有 `items` 定义） | 310（34%） |
-| **悬空**（本区无 `items` 定义） | **606（66%）** |
+| `room_items` 引用总数 | **880** |
+| 能正常解析（本区有 `items` 定义） | 310（35%） |
+| **悬空**（本区无 `items` 定义） | **570（65%）** |
 
 按 LPC 源的类型再分：
 
 | 分类 | 引用数 | 不同 id 数 | 含义 |
 |---|---|---|---|
-| **char** | 274 | 222 | LPC 里有 `set_name` 且 `inherit NPC/SNAKE/...` —— 是**人物**，被误写进了 `room_items` |
+| **char** | 242 | 215 | LPC 里有 `set_name` 且 `inherit NPC/SNAKE/...` —— 是**人物**，被误写进了 `room_items` |
 | **item** | 169 | 96 | LPC 里 `inherit QUARRY/BOOK/WEAPON/ITEM/...` —— 是**真物品**，只是我们没生成定义 |
-| **ambiguous** | 163 | 87 | 同一个 id 在 LPC 里**既有像人物的又有像物品的**，需逐个判断 |
+| **ambiguous** | 159 | 86 | 同一个 id 在 LPC 里**既有像人物的又有像物品的**，需逐个判断 |
 | **unknown** | 0 | 0 | LPC 里完全找不到同名文件 |
 
 > **更正**：本文早先写的「694 处悬空 / 674 处彻底悬空 / 只有 20 处是 NPC 被当物品」
 > **三个数字都错了**。
-> 1. 694 是用正则切块数出来的，实际是 **916**（正则会在房间内部提前截断）；
+> 1. 694 是用正则切块数出来的，实际是 **880**（正则会在房间内部提前截断）；
 > 2. 「彻底悬空」这个说法本身不成立 —— LPC 里**没有一个** id 找不到出处（unknown = 0）；
-> 3. 「只有 20 处是 NPC 被当物品」严重低估，真实数量是 **274 条引用 / 222 个 id**。
+> 3. 「只有 20 处是 NPC 被当物品」严重低估，真实数量是 **242 条引用 / 215 个 id**。
 
-## 二、char：被误写成 `room_items` 的人物（274 条 / 222 个 id）
+## 二、char：被误写成 `room_items` 的人物（242 条 / 215 个 id）
 
 这些 LPC 源是 `inherit NPC` / `inherit SNAKE`，转换器把 `set("objects", ...)`
 里的它们写成了 `items.<id>`，而本区没有同名 `items` 定义，于是被 loader 静默跳过。
@@ -37,16 +36,12 @@
 
 | id | 名字 | inherit | 引用数 | 房间（前 3 个） | LPC 源 |
 |---|---|---|---|---|---|
-| `dushe` | 毒蛇 | SNAKE | 17 | `baituo:cao2`, `baituo:sheyuan`, `baituo:zhulin` …+14 | `clone/beast/dushe.c` |
-| `qingshe` | 竹叶青蛇 | SNAKE | 5 | `baituo:cao2`, `baituo:sheyuan`, `baituo:zhulin` …+2 | `clone/beast/qingshe.c` |
-| `yanjingshe` | 眼镜蛇 | SNAKE | 5 | `baituo:cave1`, `hengyang:zigai1`, `hengyang:zigai2` …+2 | `clone/beast/yanjingshe.c` |
 | `li` | 李管家 | NPC | 5 | `emei:huayanding`, `gaibang:inhole`, `gumu:liangong3` …+2 | `d/baituo/npc/li.c` |
 | `chen` | 陈有德 | NPC | 4 | `beijing:qingmu_dating`, `gumu:baoziyan`, `huanghe:shidong` …+1 | `d/city/npc/chen.c` |
 | `ma` | 马青雄 | NPC | 3 | `city:beimen`, `city:ma_zhengting`, `quanzhen:shiweishi` | `d/huanghe/npc/ma.c` |
 | `daotong` | 道童 | NPC | 3 | `wudang:cangjingge`, `wudang:guangchang`, `wudang:xuanyuegate` | `d/quanzhen/npc/daotong.c` |
 | `shouyuan` | 守园道长 | NPC | 3 | `wudang:langmei`, `wudang:langmeiyuan`, `wudang:tyroad13` | `kungfu/class/wudang/shouyuan.c` |
 | `ouyangfeng` | 欧阳锋 | NPC | 2 | `baituo:dating`, `guiyun:jinship` | `kungfu/class/ouyang/ouyangfeng.c` |
-| `wubushe` | 五步蛇 | SNAKE | 2 | `baituo:sheyuan`, `fuzhou:fzroad4` | `clone/beast/wubushe.c` |
 | `ada` | 阿大 | NPC | 2 | `beijing:huiyingup`, `tulong:jiulou` | `b/yitian/npc/ada.c` |
 | `xingzhe` | 行者 | NPC | 2 | `city:kedian2`, `lanzhou:kedian2` | `d/minimal_world_v2/npc/xingzhe.c` |
 | `xu` | 徐子陵 | NPC | 2 | `emei:hcaguangchang`, `shenlong:kongdi` | `d/death/sky/npc/xu.c` |
@@ -60,9 +55,6 @@
 | `lengqian` | 冷谦 | NPC | 2 | `mingjiao:rjqyuan`, `mingjiao:shanmen` | `kungfu/class/mingjiao/lengqian.c` |
 | `duanyq` | 段延庆 | NPC | 2 | `wanjiegu:backyard`, `xiaoyao:qingcaop` | `kungfu/class/duan/duanyq.c` |
 | `rong` | 黄蓉 | NPC | 2 | `wuguan:guofu_huayuan`, `xiangyang:guofuhuayuan` | `kungfu/class/taohua/rong.c` |
-| `caihuashe` | 菜花蛇 | SNAKE | 1 | `baituo:caoping` | `clone/beast/caihuashe.c` |
-| `wangshe` | 眼镜王蛇 | SNAKE | 1 | `baituo:cave1` | `clone/beast/wangshe.c` |
-| `fushe` | 腹蛇 | SNAKE | 1 | `baituo:sheyuan` | `clone/beast/fushe.c` |
 | `daiyongming` | 戴永明 | NPC | 1 | `beijing:front_yard2` | `kungfu/class/zhenyuan/daiyongming.c` |
 | `tongzhaohe` | 童兆和 | NPC | 1 | `beijing:gate` | `kungfu/class/zhenyuan/tongzhaohe.c` |
 | `xuanzhen` | 玄贞道长 | NPC | 1 | `beijing:qingmu_dayuan` | `kungfu/class/yunlong/xuanzhen.c` |
@@ -97,6 +89,13 @@
 | `cheng_buyou` | 成不忧 | NPC | 1 | `huashan:jzroad6` | `kungfu/class/huashan/cheng-buyou.c` |
 | `yue_buqun` | 岳不群 | NPC | 1 | `huashan:qunxianguan` | `kungfu/class/huashan/yue-buqun.c` |
 | `linghu` | 令狐冲 | NPC | 1 | `huashan:sgyhole1` | `kungfu/class/huashan/linghu.c` |
+| `cong_buqi` | 丛不弃 | NPC | 1 | `huashan:shangu` | `kungfu/class/huashan/cong-buqi.c` |
+| `feng_buping` | 封不平 | NPC | 1 | `huashan:xiaowu` | `kungfu/class/huashan/feng-buping.c` |
+| `shiqing` | 石清 | NPC | 1 | `kaifeng:tinyuan` | `kungfu/class/lingxiao/shiqing.c` |
+| `gaozecheng` | 高则成 | NPC | 1 | `kunlun:guangchang` | `kungfu/class/kunlun/gaozecheng.c` |
+| `weisiniang` | 卫四娘 | NPC | 1 | `kunlun:guangchange` | `kungfu/class/kunlun/weisiniang.c` |
+| `zhanchun` | 詹春 | NPC | 1 | `kunlun:guangchangw` | `kungfu/class/kunlun/zhanchun.c` |
+| `hezudao` | 何足道 | NPC | 1 | `kunlun:jingshenfeng` | `kungfu/class/kunlun/hezudao.c` |
 
 ### 引用最多的几个（都是马厩）
 
@@ -204,7 +203,7 @@
 | `__DIR__` | 1 |
 | `HANDS` | 1 |
 
-## 四、ambiguous：同 id 既是人物又是物品（163 条 / 87 个 id）
+## 四、ambiguous：同 id 既是人物又是物品（159 条 / 86 个 id）
 
 这一类**不能自动判定**。LPC 里同一个文件名在 `d/*/npc/`（人物）和
 `clone/quarry/`、`clone/weapon/`（物品）下各有一份，转换器合并成了同一个 id。
@@ -217,7 +216,6 @@
 | `hou` | 9 | 侯通海 `d/huanghe/npc/hou.c`; 侯人英 `d/qingcheng/npc/hou.c` | 猴子 `clone/quarry/hou.c` | `emei:jldongkou`, `fuzhou:gushan`, `gumu:shulin12` |
 | `he` | 5 | 何太冲 `b/yitian/npc/he.c`; 仪和 `d/hengshan/npc/he.c` | 丹顶鹤 `clone/quarry/he.c`; ? `kungfu/skill/riyue-bian/he.c` | `dali:shijing`, `dali:yuhuayuan`, `emei:hcaeast` |
 | `ying` | 5 | 锺兆英 `kungfu/class/miao/ying.c`; 任盈盈 `kungfu/class/riyue/ying.c` | 突鹰 `clone/quarry/ying.c`; ? `kungfu/skill/hanwang-qingdao/ying.c` | `heimuya:shenggu`, `xuedao:nroad3`, `xuedao:nroad5` |
-| `jinshe` | 4 | 金环蛇 `clone/beast/jinshe.c` | 「金蛇秘芨」 `clone/lonely/book/jinshe.c` | `baituo:cao1`, `baituo:cao2`, `baituo:sheyuan` |
 | `feng` | 4 | 凤天南 `adm/npc/feng.c`; 冯锡范 `d/beijing/npc/feng.c` | ? `adm/daemons/story/feng.c`; ? `d/minimal_world_v2/skill/feng.c` | `emei:chuwujian`, `heimuya:up1`, `huashan:luoyan` |
 | `zhao` | 4 | 赵敏 `b/yitian/npc/zhao.c`; 赵半山 `d/hangzhou/honghua/zhao.c` | ? `kungfu/skill/jinzhong-zhao/zhao.c`; ? `kungfu/skill/piaoxue-zhang/zhao.c` | `emei:lingwenge`, `heimuya:shimen`, `kaifeng:hh_houting` |
 | `yang` | 4 | 杨永福 `d/city/npc/yang.c`; 杨永福 `d/city/npc/obj/yang.c` | 绵羊 `clone/quarry/yang.c`; ? `kungfu/skill/poguang-dao/yang.c` | `gumu:houting`, `kaifeng:hh_damen`, `shenfeng:huijiang2` |
@@ -262,6 +260,7 @@
 | `jian` | 1 | 简长老 `kungfu/class/gaibang/jian.c` | 倚天剑 `b/yitian/npc/obj/jian.c`; 倚天剑 `d/tulong/yitian/npc/obj/jian.c` | `gaibang:undertre` |
 | `pi` | 1 | 裨将 `d/xiangyang/npc/pi.c`; 皮清玄 `kungfu/class/quanzhen/pi.c` | ? `kungfu/skill/jiuyang-shengong/perform/pi.c`; ? `kungfu/skill/pixie-jian/pi.c` | `gumu:daxiaochang` |
 | `ji` | 1 | 吉人通 `d/qingcheng/npc/ji.c`; 计老人 `d/shenfeng/npc/ji.c` | 山鸡 `clone/quarry/ji.c`; ? `d/minimal_world_v2/skill/ji.c` | `gumu:juyan` |
+| `tong` | 1 | 童百熊 `kungfu/class/riyue/tong.c` | ? `kungfu/skill/lutou-zhang/tong.c`; ? `kungfu/skill/poxu-daxuefa/tong.c` | `heimuya:fen0` |
 
 ### 最容易搞错的几个
 

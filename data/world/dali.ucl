@@ -2232,6 +2232,11 @@ direction = "west"
   z = -1
     }
 
+  room_characters "milin" {
+    room_id = rooms.milin.id
+    characters = [ { id = characters.qingshe.id } ]
+  }
+
   room_exits "milin" {
     room_id = rooms.milin.id
     southup = rooms.shanjian.id
@@ -2243,8 +2248,7 @@ direction = "west"
 
   room_items "milin" {
     room_id = rooms.milin.id
-    items = [
-      { id = items.qingshe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/dali/minadian.c by LPCConverter
@@ -7729,4 +7733,27 @@ chats = [
       #   set("age", 2+random(3));    <- 随机年龄，数据里取上限 4
       #   set("max_qi",300); set("attitude","peaceful"); set("combat_exp",50000);
       # 无 set_skill
+    }
+
+    characters "qingshe" {
+      name = "竹叶青蛇"
+      aliases = ["qingshe", "qing she", "qing", "she"]
+      description = "这是一只让人看了起鸡皮疙瘩的竹叶青蛇。"
+      age = 1
+
+      combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup() 里是 aggressive
+        attitude = "aggressive"
+        str = 15
+        dex = 40
+        max_qi = 400
+        combat_exp = 6000
+      }
+
+      # LPC: clone/beast/qingshe.c
+      #   inherit SNAKE  ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup()：set("race","野兽")、set("attitude","aggressive")、
+      #                     set("verbs",({"bite"}))
+      #   无 set_skill
+      #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
     }

@@ -78,7 +78,7 @@ alias Kantele.World.LpcCondition
     end
   end
 
-  defp do_classify(ctx, room, c, all_dirs \\ false) do
+  defp do_classify(ctx, room, c, all_dirs) do
     exits = Enum.map(room.exits, & &1.exit_name)
     req = ctx.cap.(~r/dir\s*==\s*'(\w+)'/, c)
     missing_dirs = Enum.reject(req, &(&1 in exits))
@@ -196,7 +196,7 @@ alias Kantele.World.LpcCondition
     tally =
       for room <- ctx.world.rooms,
           veto <- room.exit_vetoes,
-          {kind, _} = cls <- [classify(ctx, room, veto)],
+          {kind, _} <- [classify(ctx, room, veto)],
           kind != :skip,
           reduce: %{} do
         acc -> Map.update(acc, kind, 1, &(&1 + 1))
@@ -243,6 +243,84 @@ alias Kantele.World.LpcCondition
     for fixed <- ["sang sanniang", "xu ming", "xu tong"] do
       refute MapSet.member?(missing, fixed),
              "#{fixed} 已移植到 data/world，不该再报「未定义」（若报错请检查 room_characters 是否也放了）"
+    end
+  end
+
+  @tag :world_data
+  test "9 种蛇按 LPC clone/beast/*.c 定义并放进了引用它们的房间", ctx do
+    # LPC 里这些都是 inherit SNAKE（mud/inherit/char/snake.c 的 setup()
+    # 给的是 attitude="aggressive"），转换器把它们写进了 room_items，
+    # 于是被 loader 静默丢弃。修法是 characters + room_characters。
+    #
+    # 与三匹马不同，这些蛇**没有任何 valid_leave 引用**，
+    # 所以放置它们不会造成新的封路 / 死锁。
+    expect = %{
+      "dushe" => {"毒蛇", 500, 8_000},
+      "qingshe" => {"竹叶青蛇", 400, 6_000},
+      "yanjingshe" => {"眼镜蛇", 1_800, 200_000},
+      "jinshe" => {"金环蛇", 300, 5_000},
+      "wubushe" => {"五步蛇", 700, 10_000},
+      "caihuashe" => {"菜花蛇", nil, nil},
+      "wangshe" => {"眼镜王蛇", nil, nil},
+      "fushe" => {"腹蛇", nil, nil},
+      "mangshe" => {"蟒蛇", 5_000, 300_000}
+    }
+
+    for {cid, {name, max_qi, exp}} <- expect do
+      insts =
+        Enum.filter(ctx.world.characters, fn c ->
+          cid in (c.meta.aliases || [])
+        end)
+
+      assert insts != [],
+             "#{cid}（#{name}）应该有实例 —— 定义和放置是否都做了？"
+
+      for c <- insts do
+        assert c.name == name
+
+        if max_qi do
+          assert c.meta.vitals.max_qi == max_qi,
+                 "#{cid} 的 max_qi 应为 #{max_qi}，实际 #{c.meta.vitals.max_qi}"
+        end
+
+        if exp do
+          assert c.meta.stats.combat_exp == exp,
+                 "#{cid} 的 combat_exp 应为 #{exp}，实际 #{c.meta.stats.combat_exp}"
+        end
+
+        # inherit SNAKE -> aggressive
+        assert c.meta.combat_config.attitude == "aggressive",
+               "#{cid} 应 aggressive（mud/inherit/char/snake.c）"
+
+        # LPC 的 clone/beast/*.c 一个 set_skill 都没有
+        assert c.meta.stats.skills == %{}, "#{cid} 不该有技能"
+
+        # 顶层 gender 会被 loader 丢弃，这里只要求不崩
+        assert is_binary(c.name)
+      end
+    end
+
+    # 别名要同时给带空格与不带空格的两种：
+    #   LPC set_name 给的是 "du she"，而数据 id / room_items 引用是 dushe。
+    #   别名匹配不做空格规范化，两种都得在。
+    for cid <- ["dushe", "qingshe", "jinshe", "wubushe", "fushe", "mangshe"] do
+      c = Enum.find(ctx.world.characters, fn x -> cid in (x.meta.aliases || []) end)
+
+      assert cid in c.meta.aliases, "#{cid} 应含无空格别名"
+
+      # 别名不能只有无空格 id 一个：LPC 的 present() 按**原文**查
+      # （"du she" / "jinhuan she"），所以带空格/带词的形式必须留着。
+      # 注意 jinshe 是个例外 —— LPC 里它的 id 是「jinhuan she」而不是「jin she」，
+      # 所以不能简单地去空格比对。
+      assert length(c.meta.aliases) >= 3,
+             "#{cid} 的别名应至少有 3 个（无空格 id + LPC 原文别名），实际 #{inspect(c.meta.aliases)}"
+    end
+
+    # 抽查放置：白驼山的蛇园 / 草原、洛阳城外等
+    for rid <- ["baituo:cao2", "baituo:sheyuan", "city:jiaowai5",
+                "hengyang:zigai1", "xiyu:btshan"] do
+      snakes = Enum.filter(ctx.world.characters, fn c -> c.room_id == rid end)
+      assert snakes != [], "#{rid} 应有蛇"
     end
   end
 

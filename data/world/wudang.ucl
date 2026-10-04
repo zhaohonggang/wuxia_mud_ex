@@ -2795,11 +2795,13 @@ chats = [
 
     characters "mangshe" {
       name = "蟒蛇"
-      aliases = ["mang she", "mang", "she"]
+      aliases = [ "mangshe", "mang she", "mang", "she" ]
       description = "这是一只昂首直立，吐着长舌芯的大蟒蛇。"
       age = 6
 
       combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup()
+        attitude = "aggressive"
         str = 50
         con = 50
         dex = 20
@@ -2811,4 +2813,8 @@ chats = [
       }
 
       # LPC: clone/beast/mangshe.c
+      #   inherit SNAKE -> mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup() 里 attitude="aggressive"、race="野兽"、
+      #                     verbs={"bite"}，故 combat.attitude 取 aggressive。
+      #   set("power", ...) 未移植；无 set_skill。
     }

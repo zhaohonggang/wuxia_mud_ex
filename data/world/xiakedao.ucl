@@ -621,6 +621,11 @@ item_desc = {
   z = -3
     }
 
+  room_characters "road2" {
+    room_id = rooms.road2.id
+    characters = [ { id = characters.dushe.id } ]
+  }
+
   room_exits "road2" {
     room_id = rooms.road2.id
     northdown = rooms.road1.id
@@ -632,8 +637,7 @@ item_desc = {
 
   room_items "road2" {
     room_id = rooms.road2.id
-    items = [
-      { id = items.dushe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/xiakedao/road3.c by LPCConverter
@@ -3290,4 +3294,27 @@ chats = [
         weight = 700
         unit = "个"
       }
+    }
+
+    characters "dushe" {
+      name = "毒蛇"
+      aliases = ["dushe", "du she", "du", "she"]
+      description = "一支昂首吐信的毒蛇正虎视眈眈地盯著你。"
+      age = 1
+
+      combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup() 里是 aggressive
+        attitude = "aggressive"
+        str = 15
+        dex = 50
+        max_qi = 500
+        combat_exp = 8000
+      }
+
+      # LPC: clone/beast/dushe.c
+      #   inherit SNAKE  ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup()：set("race","野兽")、set("attitude","aggressive")、
+      #                     set("verbs",({"bite"}))
+      #   无 set_skill
+      #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
     }

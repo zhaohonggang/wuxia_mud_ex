@@ -37,6 +37,11 @@ zones "baituo" {
   z = 3
     }
 
+  room_characters "cao1" {
+    room_id = rooms.cao1.id
+    characters = [ { id = characters.jinshe.id } ]
+  }
+
   room_exits "cao1" {
     room_id = rooms.cao1.id
     south = rooms.cao1.id
@@ -50,8 +55,7 @@ zones "baituo" {
 
   room_items "cao1" {
     room_id = rooms.cao1.id
-    items = [
-      { id = items.jinshe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/baituo/cao2.c by LPCConverter
@@ -64,6 +68,11 @@ zones "baituo" {
   y = 6
   z = 3
     }
+
+  room_characters "cao2" {
+    room_id = rooms.cao2.id
+    characters = [ { id = characters.dushe.id }, { id = characters.qingshe.id }, { id = characters.jinshe.id } ]
+  }
 
   room_exits "cao2" {
     room_id = rooms.cao2.id
@@ -78,10 +87,7 @@ zones "baituo" {
 
   room_items "cao2" {
     room_id = rooms.cao2.id
-    items = [
-      { id = items.qingshe.id },
-      { id = items.jinshe.id },
-      { id = items.dushe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/baituo/caomeide.c by LPCConverter
@@ -120,6 +126,11 @@ zones "baituo" {
   z = 1
     }
 
+  room_characters "caoping" {
+    room_id = rooms.caoping.id
+    characters = [ { id = characters.caihuashe.id } ]
+  }
+
   room_exits "caoping" {
     room_id = rooms.caoping.id
     west = rooms.shijie.id
@@ -130,8 +141,7 @@ zones "baituo" {
 
   room_items "caoping" {
     room_id = rooms.caoping.id
-    items = [
-      { id = items.caihuashe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/baituo/cave.c by LPCConverter
@@ -184,6 +194,11 @@ direction = "in"
   z = 4
     }
 
+  room_characters "cave1" {
+    room_id = rooms.cave1.id
+    characters = [ { id = characters.yanjingshe.id }, { id = characters.wangshe.id } ]
+  }
+
   room_exits "cave1" {
     room_id = rooms.cave1.id
     out = rooms.cave.id
@@ -194,9 +209,7 @@ direction = "in"
 
   room_items "cave1" {
     room_id = rooms.cave1.id
-    items = [
-      { id = items.yanjingshe.id },
-      { id = items.wangshe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/baituo/cedong.c by LPCConverter
@@ -813,6 +826,11 @@ item_desc = {
   z = 3
     }
 
+  room_characters "sheyuan" {
+    room_id = rooms.sheyuan.id
+    characters = [ { id = characters.dushe.id }, { id = characters.qingshe.id }, { id = characters.jinshe.id }, { id = characters.wubushe.id }, { id = characters.fushe.id } ]
+  }
+
   room_exits "sheyuan" {
     room_id = rooms.sheyuan.id
     southwest = rooms.zhuyuan.id
@@ -823,12 +841,7 @@ item_desc = {
 
   room_items "sheyuan" {
     room_id = rooms.sheyuan.id
-    items = [
-      { id = items.jinshe.id },
-      { id = items.dushe.id },
-      { id = items.fushe.id },
-      { id = items.qingshe.id },
-      { id = items.wubushe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/baituo/shijie.c by LPCConverter
@@ -1156,6 +1169,11 @@ direction = "west"
   z = 3
     }
 
+  room_characters "zhulin" {
+    room_id = rooms.zhulin.id
+    characters = [ { id = characters.dushe.id }, { id = characters.qingshe.id } ]
+  }
+
   room_exits "zhulin" {
     room_id = rooms.zhulin.id
     south = rooms.cao2.id
@@ -1167,9 +1185,7 @@ direction = "west"
 
   room_items "zhulin" {
     room_id = rooms.zhulin.id
-    items = [
-      { id = items.qingshe.id },
-      { id = items.dushe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/baituo/zhuyuan.c by LPCConverter
@@ -2643,11 +2659,13 @@ chats = [
 
     characters "mangshe" {
       name = "蟒蛇"
-      aliases = ["mang she", "mang", "she"]
+      aliases = [ "mangshe", "mang she", "mang", "she" ]
       description = "这是一只昂首直立，吐着长舌芯的大蟒蛇。"
       age = 6
 
       combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup()
+        attitude = "aggressive"
         str = 50
         con = 50
         dex = 20
@@ -2659,4 +2677,195 @@ chats = [
       }
 
       # LPC: clone/beast/mangshe.c
+      #   inherit SNAKE -> mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup() 里 attitude="aggressive"、race="野兽"、
+      #                     verbs={"bite"}，故 combat.attitude 取 aggressive。
+      #   set("power", ...) 未移植；无 set_skill。
+    }
+
+    characters "caihuashe" {
+      name = "菜花蛇"
+      aliases = ["caihuashe", "caihua she", "caihua", "she"]
+      description = "这是一只青幽幽的菜花蛇，头部呈椭圆形。"
+      age = 1
+
+      combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup() 里是 aggressive
+        attitude = "aggressive"
+        str = 15
+        dex = 16
+        max_qi = 200
+        max_jing = 200
+        combat_exp = 1000
+      }
+
+      # LPC: clone/beast/caihuashe.c
+      #   inherit SNAKE  ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup()：set("race","野兽")、set("attitude","aggressive")、
+      #                     set("verbs",({"bite"}))
+      #   无 set_skill
+      #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+    }
+
+    characters "dushe" {
+      name = "毒蛇"
+      aliases = ["dushe", "du she", "du", "she"]
+      description = "一支昂首吐信的毒蛇正虎视眈眈地盯著你。"
+      age = 1
+
+      combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup() 里是 aggressive
+        attitude = "aggressive"
+        str = 15
+        dex = 50
+        max_qi = 500
+        combat_exp = 8000
+      }
+
+      # LPC: clone/beast/dushe.c
+      #   inherit SNAKE  ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup()：set("race","野兽")、set("attitude","aggressive")、
+      #                     set("verbs",({"bite"}))
+      #   无 set_skill
+      #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+    }
+
+    characters "fushe" {
+      name = "腹蛇"
+      aliases = ["fushe", "fu she", "fu", "she"]
+      description = "只见它全身血红，头呈三角，长蛇吞吐，嗤嗤做响。"
+      age = 3
+
+      combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup() 里是 aggressive
+        attitude = "aggressive"
+        str = 35
+        dex = 50
+        max_qi = 1500
+        combat_exp = 150000
+      }
+
+      # LPC: clone/beast/fushe.c
+      #   inherit SNAKE  ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup()：set("race","野兽")、set("attitude","aggressive")、
+      #                     set("verbs",({"bite"}))
+      #   无 set_skill
+      #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+    }
+
+    characters "jinshe" {
+      name = "金环蛇"
+      aliases = ["jinshe", "jinhuan she", "jinhuan", "she"]
+      description = "这是一只让人看了起毛骨悚然的金环蛇。"
+      age = 1
+
+      combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup() 里是 aggressive
+        attitude = "aggressive"
+        str = 15
+        dex = 40
+        max_qi = 300
+        combat_exp = 5000
+      }
+
+      # LPC: clone/beast/jinshe.c
+      #   注意：LPC 里它的 set_name 是 "jinhuan she"（金环蛇），
+      #   而转换器给的数据 id 是 jinshe —— 两者不一致，故别名里两种都给。
+      #   inherit SNAKE  ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup()：set("race","野兽")、set("attitude","aggressive")、
+      #                     set("verbs",({"bite"}))
+      #   无 set_skill
+      #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+    }
+
+    characters "qingshe" {
+      name = "竹叶青蛇"
+      aliases = ["qingshe", "qing she", "qing", "she"]
+      description = "这是一只让人看了起鸡皮疙瘩的竹叶青蛇。"
+      age = 1
+
+      combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup() 里是 aggressive
+        attitude = "aggressive"
+        str = 15
+        dex = 40
+        max_qi = 400
+        combat_exp = 6000
+      }
+
+      # LPC: clone/beast/qingshe.c
+      #   inherit SNAKE  ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup()：set("race","野兽")、set("attitude","aggressive")、
+      #                     set("verbs",({"bite"}))
+      #   无 set_skill
+      #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+    }
+
+    characters "wangshe" {
+      name = "眼镜王蛇"
+      aliases = ["yanjing wangshe", "yanjing", "wangshe", "she"]
+      description = "这是一条五彩斑斓的眼镜王蛇，毒性为万蛇之最。"
+      age = 3
+
+      combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup() 里是 aggressive
+        attitude = "aggressive"
+        str = 35
+        dex = 50
+        max_qi = 2200
+        combat_exp = 500000
+      }
+
+      # LPC: clone/beast/wangshe.c
+      #   inherit SNAKE  ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup()：set("race","野兽")、set("attitude","aggressive")、
+      #                     set("verbs",({"bite"}))
+      #   无 set_skill
+      #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+    }
+
+    characters "wubushe" {
+      name = "五步蛇"
+      aliases = ["wubushe", "wubu she", "wubu", "she"]
+      description = "五步蛇是福建地方毒蛇，相传中毒行路五步即行倒毙。"
+      age = 1
+
+      combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup() 里是 aggressive
+        attitude = "aggressive"
+        str = 15
+        dex = 40
+        max_qi = 700
+        combat_exp = 10000
+      }
+
+      # LPC: clone/beast/wubushe.c
+      #   inherit SNAKE  ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup()：set("race","野兽")、set("attitude","aggressive")、
+      #                     set("verbs",({"bite"}))
+      #   无 set_skill
+      #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+    }
+
+    characters "yanjingshe" {
+      name = "眼镜蛇"
+      aliases = ["yanjingshe", "yanjing she", "yanjing", "she"]
+      description = "这是一条五彩斑斓的眼镜蛇，毒性猛烈之极。"
+      age = 3
+
+      combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup() 里是 aggressive
+        attitude = "aggressive"
+        str = 35
+        dex = 50
+        max_qi = 1800
+        combat_exp = 200000
+      }
+
+      # LPC: clone/beast/yanjingshe.c
+      #   inherit SNAKE  ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup()：set("race","野兽")、set("attitude","aggressive")、
+      #                     set("verbs",({"bite"}))
+      #   无 set_skill
+      #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
     }

@@ -41,6 +41,11 @@ zones "xiyu" {
   z = 1
     }
 
+  room_characters "btshan" {
+    room_id = rooms.btshan.id
+    characters = [ { id = characters.jinshe.id } ]
+  }
+
   room_exits "btshan" {
     room_id = rooms.btshan.id
     up = rooms.mogaoku.id
@@ -54,8 +59,7 @@ zones "xiyu" {
 
   room_items "btshan" {
     room_id = rooms.btshan.id
-    items = [
-      { id = items.jinshe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/xiyu/btshan1.c by LPCConverter
@@ -69,6 +73,11 @@ zones "xiyu" {
   z = 2
     }
 
+  room_characters "btshan1" {
+    room_id = rooms.btshan1.id
+    characters = [ { id = characters.qingshe.id } ]
+  }
+
   room_exits "btshan1" {
     room_id = rooms.btshan1.id
     eastdown = rooms.btshan.id
@@ -79,8 +88,7 @@ zones "xiyu" {
 
   room_items "btshan1" {
     room_id = rooms.btshan1.id
-    items = [
-      { id = items.qingshe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/xiyu/cangku.c by LPCConverter
@@ -2717,4 +2725,52 @@ chats = [
       #   set("age", 2+random(3));    <- 随机年龄，数据里取上限 4
       #   set("max_qi",300); set("attitude","peaceful"); set("combat_exp",50000);
       # 无 set_skill
+    }
+
+    characters "jinshe" {
+      name = "金环蛇"
+      aliases = ["jinshe", "jinhuan she", "jinhuan", "she"]
+      description = "这是一只让人看了起毛骨悚然的金环蛇。"
+      age = 1
+
+      combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup() 里是 aggressive
+        attitude = "aggressive"
+        str = 15
+        dex = 40
+        max_qi = 300
+        combat_exp = 5000
+      }
+
+      # LPC: clone/beast/jinshe.c
+      #   注意：LPC 里它的 set_name 是 "jinhuan she"（金环蛇），
+      #   而转换器给的数据 id 是 jinshe —— 两者不一致，故别名里两种都给。
+      #   inherit SNAKE  ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup()：set("race","野兽")、set("attitude","aggressive")、
+      #                     set("verbs",({"bite"}))
+      #   无 set_skill
+      #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+    }
+
+    characters "qingshe" {
+      name = "竹叶青蛇"
+      aliases = ["qingshe", "qing she", "qing", "she"]
+      description = "这是一只让人看了起鸡皮疙瘩的竹叶青蛇。"
+      age = 1
+
+      combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup() 里是 aggressive
+        attitude = "aggressive"
+        str = 15
+        dex = 40
+        max_qi = 400
+        combat_exp = 6000
+      }
+
+      # LPC: clone/beast/qingshe.c
+      #   inherit SNAKE  ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup()：set("race","野兽")、set("attitude","aggressive")、
+      #                     set("verbs",({"bite"}))
+      #   无 set_skill
+      #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
     }

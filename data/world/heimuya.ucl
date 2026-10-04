@@ -590,6 +590,11 @@ item_desc = {
   z = 5
     }
 
+  room_characters "didao5" {
+    room_id = rooms.didao5.id
+    characters = [ { id = characters.dushe.id } ]
+  }
+
   room_exits "didao5" {
     room_id = rooms.didao5.id
     south = rooms.didao1.id
@@ -603,8 +608,7 @@ item_desc = {
 
   room_items "didao5" {
     room_id = rooms.didao5.id
-    items = [
-      { id = items.dushe.id }    ]
+    items = []
   }
 
 # Generated from C:/files/git/mud/d/heimuya/didao6.c by LPCConverter
@@ -2799,4 +2803,27 @@ item_desc = {
       # LPC: kungfu/class/riyue/ren.c
       #   create_family("日月神教", 13, "教主")
       #   carry_object("/d/heimuya/npc/obj/zaohong")
+    }
+
+    characters "dushe" {
+      name = "毒蛇"
+      aliases = ["dushe", "du she", "du", "she"]
+      description = "一支昂首吐信的毒蛇正虎视眈眈地盯著你。"
+      age = 1
+
+      combat = {
+        # inherit SNAKE -> mud/inherit/char/snake.c 的 setup() 里是 aggressive
+        attitude = "aggressive"
+        str = 15
+        dex = 50
+        max_qi = 500
+        combat_exp = 8000
+      }
+
+      # LPC: clone/beast/dushe.c
+      #   inherit SNAKE  ->  mud/include/globals.h: #define SNAKE "/inherit/char/snake"
+      #                     该基类 setup()：set("race","野兽")、set("attitude","aggressive")、
+      #                     set("verbs",({"bite"}))
+      #   无 set_skill
+      #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
     }
