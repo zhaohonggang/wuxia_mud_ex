@@ -268,15 +268,23 @@ alias Kantele.World.LpcCondition
     total_refs = seen |> Map.values() |> Enum.map(fn {c, _room} -> c end) |> Enum.sum()
     assert total_refs > map_size(seen), "计数应累加（同一 ref 被多个房间引用）"
 
-    # 已知的头号几项：walker / bing / guanbing / mafu 被上百个城门道路马厩引用，
-    # 但只有少数区有定义。实测合计过千。
-    assert total_refs > 1000, "悬空引用总数应过千，实际 #{total_refs}"
+    # 别写死阈值。之前写的是 > 1000，那时总数 1235；后来陆续补齐了
+    # mafu(27) / bing(76) / guanbing(16) / walker(141)，总数降到 955，
+    # 断言就变成「必须还有 1000 个悬空」—— 补得越多越容易红。
+    #
+    # 这里钉的是**上限**：修复只会让这个数变小，所以给一个当前值附近的门槛，
+    # 数字变大说明数据退化了（或者又漏了一个区）。
+    assert total_refs <= 1000, "悬空引用不该变多，当前 #{total_refs}（上限 1000）"
 
-    assert Enum.any?(seen, fn
-         {{_z, :character, r}, _} -> r =~ "mafu" or r =~ "bing" or r =~ "walker"
-         _ -> false
-       end),
-           "应记录到 mafu / bing / walker 这类通用 NPC 的跨区悬空"
+    # 还没补完的那几类跨区通用 NPC 仍在列，
+    # 补一个就把这里划掉一条，剩下的补完时把上限一起降下来。
+    for id <- ~w(ducha liumang wujiang kid1 xunbu xiaoer2 guest duke) do
+      assert Enum.any?(seen, fn
+               {{_z, :character, r}, _} -> String.ends_with?(r, "." <> id <> ".id")
+               _ -> false
+             end),
+             "#{id} 还应被记录在悬空里（若已补齐，请从这里移除并下调上面的上限）"
+    end
 
     Kantele.World.Loader.reset_unresolved_warnings()
   end

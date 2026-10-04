@@ -570,7 +570,7 @@ direction = "south"
   room_characters "street1" {
     room_id = rooms.street1.id
     characters = [
-      { id = characters.walker.id }    ]
+      { id = characters.jiading.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/foshan/street2.c by LPCConverter
@@ -1422,4 +1422,23 @@ chats = [
     { kind = "money" accept = true msg = "{npc}对{name}说道：你想去\(goto\)哪儿？先告诉小的再付钱也不迟。" },
     { kind = "any" accept = false }
   ]
+    }
+
+    characters "walker" {
+      name = "拾荒者"
+      description = "这是一个拾荒者，看上去老实巴交的。不过听说他和官府有交情，最好别去招惹。"
+  gender = "男性"
+
+  combat = {
+    attitude = "heroism"
+    con = 19
+    dex = 17
+    int = 15
+    str = 35
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
     }

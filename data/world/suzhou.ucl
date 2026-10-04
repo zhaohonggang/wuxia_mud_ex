@@ -2488,3 +2488,22 @@ chats = [
         armor = 10
       }
     }
+
+    characters "walker" {
+      name = "拾荒者"
+      description = "这是一个拾荒者，看上去老实巴交的。不过听说他和官府有交情，最好别去招惹。"
+  gender = "男性"
+
+  combat = {
+    attitude = "heroism"
+    con = 19
+    dex = 17
+    int = 15
+    str = 35
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }

@@ -508,8 +508,8 @@ set("objects", ([
 |---|---|---|---|
 | ~~1~~ | ~~补 `zaohongma` / `huangbiaoma` / `ziliuma` 三个马厩 NPC~~ | ~~87 条~~ | **已完成** |
 | ~~2~~ | ~~补 `baituo` 的 8 种蛇~~ | ~~约 36 条~~ | **已完成** |
-| 1 | 补 `walker`（`/clone/npc/walker`，35 个区） | 141 条引用 | 低（做法已在 §五之三 验证过） |
-| 2 | 补 `ducha` 23 / `liumang` 22 / `wujiang` 20 / `kid1` 19 | 84 条引用 | 低（同上；注意 `liumang` 有 city 与 beijing 两个源） |
+| 1 | ~~补 `walker`（`/clone/npc/walker`，35 个区）~~ | ~~141 条~~ | **已完成**（§五之四） |
+| 2 | 补 `ducha` 23 / `liumang` 22 / `wujiang` 20 / `kid1` 19 | 84 条引用 | 低（做法已验证；注意 `liumang` 有 city 与 beijing 两个源） |
 | 3 | 补 `xunbu` 16 / `xiaoer2` 15 / `guest` 14 / `duke` 11 | 56 条引用 | 低（同上；`guest` 指向 `/d/wudang/npc/guest`） |
 | 4 | 补 `item` 类里引用最多的战利品（`gangdao` / `changjian` / `mudao` / `ganchai` / `corpse`） | 约 30 条引用 | 低（纯物品） |
 | 5 | 逐个查 `ambiguous` 的 87 个 id 属于哪个候选 | 163 条引用 | 中，要看 LPC 原文 |
@@ -521,6 +521,70 @@ set("objects", ([
 另外：`clone/quarry/` 里那批（野兔/老虎/野狗/山羊/梅花鹿/猴子/雪鹤/丹顶鹤 …）
 在 LPC 里是「猎物」，被玩家杀死后会变成肉/皮。移植它们等于把狩猎玩法带回来，
 工作量比单纯生成 `items` 块大 —— 建议归到单独的「狩猎系统」轮次。
+
+---
+
+## 五之四、已补：`walker`（−141 条）+ 修掉 2 处转换器误命名
+
+### 35 个区，139 条，全指向同一个 `/clone/npc/walker`
+
+`character` 悬空 **632 → 491**，正好 −141。
+
+### 名字：LPC 是运行时随机生成的
+
+```c
+// clone/npc/walker.c
+void create()
+{
+    NPC_D->generate_cn_name(this_object());   // <- 名字运行时随机生成
+    set("age", 53 + random(20));
+    set("long", @LONG
+这是一个拾荒者，看上去老实巴交的。……LONG);
+```
+
+转换器遇到 `generate_cn_name` 只能填占位符，产出了 `name = "NPC"`。
+照抄的话 35 个区的拾荒者会全叫「NPC」。这里按 LPC 自己 `long` 里的说法
+取名「拾荒者」。**这是本轮唯一没有 100% 照抄 LPC 的地方** —— LPC 的行为
+（随机人名）静态数据表达不了。
+
+`age = 53 + random(20)` 同理，转换器整个丢掉了 `age`，也没补：运行时随机年龄
+静态表达不了，补一个固定值反而是编造。
+
+### 顺带发现：2 处转换器把 NPC 认错了
+
+补 walker 时逐房间核对 LPC 原文，发现这两个房间放的**根本不是 walker**，
+但 UCL 里 id 被写成了 `characters.walker.id`：
+
+| 房间 | LPC `set("objects")` | 实际是谁 |
+|---|---|---|
+| `dali:buxiongbu` | `npc/bshangfan` | 台夷商贩 |
+| `foshan:street1` | `npc/jiading` | 家丁 |
+
+不修的话，补了 walker 之后这两个房间会变成拾荒者。已按 LPC 原文补上
+`characters "bshangfan"`（dali）/ `characters "jiading"`（foshan），
+并把房间引用改回去。
+
+`jiading` 另有 9 个区也有同名文件，转换器按文件名把 foshan 那份推成了
+`foshan_jiading`，这里统一改回 `jiading`。
+
+walker 本身仍要补 —— dali 另有 15 条、foshan 另有 1 条是真的 walker。
+
+### 数字
+
+- `character` 悬空 **751 → 632 → 491**（三轮累计 −260）
+- `item` 悬空仍 **464**
+- 运行时 NPC 实例 **2277 → 2537**
+- 门禁仍 **166 / 155 / 11**
+- 拾荒者实测 **139 个 / 35 个区**，`str 35 / int 15 / con 19 / dex 17`、
+  `attitude = heroism` 与 LPC 一致
+
+### 悬空测试的阈值改成上限
+
+`veto_effectiveness_test.exs` 里原来写的是 `assert total_refs > 1000`
+—— 那时总数 1235。补完 walker 变成 955，这条断言就变成「必须还有 1000 个
+悬空」，**补得越多越容易红**。改成上限 `assert total_refs <= 1000`，
+并把还没补的 8 类 id（`ducha` / `liumang` / `wujiang` / `kid1` / `xunbu` /
+`xiaoer2` / `guest` / `duke`）逐条列出，补一个划掉一个。
 
 ---
 

@@ -131,6 +131,99 @@ defmodule Kantele.World.SharedNpcTest do
     end
   end
 
+  describe "walker（/clone/npc/walker）" do
+    # LPC 里是 `NPC_D->generate_cn_name(this_object())`，名字运行时随机生成，
+    # 转换器只能填占位符 `name = "NPC"`。这里按 LPC 的 long 描述取「拾荒者」，
+    # 免得 35 个区的拾荒者全叫「NPC」。
+    @walker_zones ~w(baituo beijing changan chengdu city dali foshan fuzhou guanwai gumu
+                     hangzhou huashan jingzhou kaifeng kunming lanzhou lingjiu lingxiao
+                     lingzhou luoyang mingjiao quanzhen quanzhou shaolin songshan suzhou
+                     tulong village wudu xiakedao xiangyang xiyu xuedao xueshan zhongzhou)
+
+    test "35 个引用它的区都有定义", %{world: world} do
+      missing = Enum.reject(@walker_zones, &zone_defined?(world, &1, :characters, "walker"))
+
+      assert missing == [], "这些区缺 characters \"walker\": #{inspect(missing)}"
+    end
+
+    test "生成了 139 个拾荒者", %{world: world} do
+      count = Enum.count(world.characters, &(&1.name == "拾荒者"))
+
+      assert count == 139,
+             "应为 139（LPC 里 141 条引用，但其中 2 条其实是别的 NPC，见下），实际 #{count}"
+    end
+
+    test "属性与 LPC 一致", %{world: world} do
+      w = Enum.find(world.characters, &(&1.meta.zone_id == "beijing" and &1.name == "拾荒者"))
+
+      assert w, "北京应有拾荒者"
+      # clone/npc/walker.c: str 35 / int 15 / con 19 / dex 17, attitude heroism
+      assert w.meta.stats.str == 35
+      assert w.meta.stats.int == 15
+      assert w.meta.stats.con == 19
+      assert w.meta.stats.dex == 17
+      assert w.meta.combat_config.attitude == "heroism"
+    end
+
+    test "walker 定义里没有占位名 \"NPC\"", %{world: world} do
+      # 只看定义块，不看运行时实例 —— 别区里本来就有个叫 "NPC" 的家伙
+      # （名字确实是 "NPC"，跟 walker 无关），按实例筛会误报。
+      for zone <- @walker_zones do
+        z = Enum.find(world.zones, &(&1.id == zone))
+        w = Map.fetch!(z.characters, :walker)
+
+        assert w.name == "拾荒者",
+               "#{zone} 的 walker 名字应是「拾荒者」，实际 #{inspect(w.name)}"
+      end
+    end
+  end
+
+  describe "转换器误命名的 2 处已修正" do
+    # LPC 里这两个房间放的根本不是 walker，但 UCL 把 id 写成了
+    # characters.walker.id —— 不修的话，补了 walker 之后它们会变成拾荒者。
+    #
+    #   d/dali/buxiongbu.c    objects: npc/bshangfan -> 台夷商贩
+    #   d/foshan/street1.c    objects: npc/jiading   -> 家丁
+    test "dali:buxiongbu 放的是台夷商贩", %{world: world} do
+      assert zone_defined?(world, "dali", :characters, "bshangfan")
+
+      shopkeepers =
+        Enum.filter(world.characters, &(&1.meta.zone_id == "dali" and &1.name == "台夷商贩"))
+
+      assert shopkeepers != [], "dali:buxiongbu 的台夷商贩应该存在"
+
+      # LPC 里台夷商贩不止摆在 buxiongbu（还有 hexi 等），所以只要求
+      # buxiongbu 里确实有一个，别把其它房间的也算进来。
+      in_room =
+        Enum.filter(shopkeepers, &(&1.meta.combat_config.spawn_room_id == "dali:buxiongbu"))
+
+      assert in_room != [], "dali:buxiongbu 里应有台夷商贩，实际摆在 " <>
+                             "#{inspect(Enum.map(shopkeepers, & &1.meta.combat_config.spawn_room_id))}"
+    end
+
+    test "foshan:street1 放的是家丁", %{world: world} do
+      assert zone_defined?(world, "foshan", :characters, "jiading")
+
+      servants =
+        Enum.filter(world.characters, &(&1.meta.zone_id == "foshan" and &1.name == "家丁"))
+
+      assert servants != [], "foshan:street1 的家丁应该存在"
+    end
+
+    test "这两个房间的引用已经指回正确的 id", %{world: world} do
+      # 若引用还写着 characters.walker.id，这两个房间会同时出现两个 NPC，
+      # 数量对不上（LPC 各只有 1 个）
+      for {zone, room} <- [{"dali", "buxiongbu"}, {"foshan", "street1"}] do
+        insts =
+          Enum.filter(world.characters, &(&1.meta.combat_config.spawn_room_id == "#{zone}:#{room}"))
+
+        assert length(insts) == 1,
+               "#{zone}:#{room} 应恰好 1 个 NPC，实际 #{length(insts)}: " <>
+                 "#{inspect(Enum.map(insts, & &1.name))}"
+      end
+    end
+  end
+
   describe "carry 目前是死数据（已知缺口，与本次补齐无关）" do
     test "bing 的 carry 引用的 blade / junfu 已补进那些区，但运行时没穿上" do
       # 数据层面补齐了，好让 carry 里的 items.blade.id / items.junfu.id 不悬空；
