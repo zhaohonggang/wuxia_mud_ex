@@ -3,8 +3,14 @@ defmodule Kantele.World.LoaderMetaTest do
 
   @moduletag :world_data
 
+  # 本模块有一批断言针对 `test:` 区的夹具 NPC 与房间（xiaoer / furen /
+  # duke / menwei / shouwei / wudunru / jiang / huangyi，以及 test:cave /
+  # test:kedian / test:bet / test:liandan_lin1），所以必须显式把夹具目录挂上。
+  # 正式加载（应用启动、审计脚本 seeds）不挂夹具，那两个区不参与真实世界统计。
+  defp load_world, do: Kantele.World.Loader.load_fixture_world()
+
   test "食物物品解析 weight/unit/food 等通用字段" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
 
     # 按 id 精确取，避免同名物品（如各区的「包子」）随转换集合变化而遮蔽
     baozi = Enum.find(world.items, &(&1.id == "liuxi:baozi"))
@@ -19,7 +25,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "秘籍物品解析 book 五元组" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
 
     jianpu = Enum.find(world.items, &(&1.id == "liuxi:jianpu"))
     assert jianpu != nil
@@ -37,7 +43,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "无 meta 块的旧字段物品不受影响" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
 
     changjian = Enum.find(world.items, &(&1.id == "liuxi:changjian"))
     assert changjian.meta.damage == 22
@@ -50,7 +56,7 @@ defmodule Kantele.World.LoaderMetaTest do
   # ---- b6/D3 装备多槽位字段 ----
 
   test "armor_type/weapon_prop/armor_prop 解析与归一化" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
 
     changjian = Enum.find(world.items, &(&1.id == "liuxi:changjian"))
     assert changjian.meta.weapon_prop == %{attack: 3}
@@ -122,7 +128,7 @@ defmodule Kantele.World.LoaderMetaTest do
   # ---- init()/greeting()/accept_object()（converter 抽取 → meta 落位） ----
 
   test "xiaoer：init/greetings/accept 三块全量解析" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     test_zone = Enum.find(world.zones, &(&1.id == "test"))
     xiaoer = Map.fetch!(test_zone.characters, :xiaoer).meta
 
@@ -144,7 +150,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "furen：item_id/item_name 规则与 any 并存" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     test_zone = Enum.find(world.zones, &(&1.id == "test"))
     furen = Map.fetch!(test_zone.characters, :furen).meta
 
@@ -154,7 +160,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "worker-liu：仅 init，greetings/accept 缺席" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     test_zone = Enum.find(world.zones, &(&1.id == "test"))
     worker = Map.fetch!(test_zone.characters, :worker_liu).meta
 
@@ -164,7 +170,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "普通 NPC（duke）：三块均缺席" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     test_zone = Enum.find(world.zones, &(&1.id == "test"))
     duke = Map.fetch!(test_zone.characters, :duke).meta
 
@@ -174,7 +180,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "menwei：guarder meta 解析（family + msgs）" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     test_zone = Enum.find(world.zones, &(&1.id == "test"))
     menwei = Map.fetch!(test_zone.characters, :menwei)
 
@@ -185,7 +191,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "非守卫 NPC（xiaoer/furen/duke）guarder 为 nil" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     test_zone = Enum.find(world.zones, &(&1.id == "test"))
 
     assert Map.fetch!(test_zone.characters, :xiaoer).meta.guarder == nil
@@ -194,7 +200,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "xiaoer2：KNOWER+dealer 结构，goods 无果路径转注释不影响加载" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     test_zone = Enum.find(world.zones, &(&1.id == "test"))
     xiaoer2 = Map.fetch!(test_zone.characters, :xiaoer2)
 
@@ -212,12 +218,40 @@ defmodule Kantele.World.LoaderMetaTest do
   # （房间里那份 Character 副本）；world.zones[].characters 里仍是未解引用的
   # 原始 meta。断言解引用结果必须从 world.characters 取。
 
+  # ---- 夹具区不得污染正式世界 ----
+
+  describe "test / global 夹具区不参与真实世界" do
+    test "默认加载不含这两个区" do
+      zone_ids = Kantele.World.Loader.load().zones |> Enum.map(& &1.id)
+
+      refute "test" in zone_ids
+      refute "global" in zone_ids
+    end
+
+    test "挂上夹具后两个区才出现" do
+      zone_ids = load_world().zones |> Enum.map(& &1.id)
+
+      assert "test" in zone_ids
+      assert "global" in zone_ids
+    end
+
+    test "真实区的同名单间不受夹具影响（各区 id 独立命名）" do
+      world = load_world()
+      by_id = world.rooms |> Map.new(&{&1.id, &1})
+
+      # test:cave / test:kedian 是夹具；baituo:cave 是真实区（两者同名不同 id）
+      assert Map.has_key?(by_id, "test:cave")
+      assert Map.has_key?(by_id, "test:kedian")
+      assert Map.has_key?(by_id, "baituo:cave")
+    end
+  end
+
   defp vendor(world, zone_id, name) do
     Enum.find(world.characters, &(&1.meta.zone_id == zone_id and &1.name == name))
   end
 
   test "跨区商品引用解引用成目标区物品 id" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
 
     # 原 LPC changan/npc/liu.c 的 vendor_goods 写的是绝对路径
     # （/d/xiyu/obj/fire、/d/item/obj/chanhs），跨区售卖是原有语义
@@ -232,7 +266,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "同区商品引用解引用成 <区>:<名>" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
 
     # 原 LPC beijing/npc/caifan.c：vendor_goods 为本区 obj/luobo、obj/tudou 等
     caifan = vendor(world, "beijing", "菜贩子")
@@ -250,7 +284,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "goods 不残留未解引用的跨区引用串" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
 
     dangling =
       Enum.flat_map(world.characters, fn ch ->
@@ -269,7 +303,7 @@ defmodule Kantele.World.LoaderMetaTest do
   # ---- engage（accept_fight/hit/kill 抽取 → meta 落位） ----
 
   test "shouwei：engage 三键均拒绝、台词占位、继承回退注入" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     test_zone = Enum.find(world.zones, &(&1.id == "test"))
     shouwei = Map.fetch!(test_zone.characters, :shouwei).meta
 
@@ -281,7 +315,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "wudunru：fight 拒绝、hit/kill 接受并反杀（retaliate）" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     test_zone = Enum.find(world.zones, &(&1.id == "test"))
     wudunru = Map.fetch!(test_zone.characters, :wudunru).meta
 
@@ -294,7 +328,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "jiang：accept_fight 接受，无台词无反杀" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     test_zone = Enum.find(world.zones, &(&1.id == "test"))
     jiang = Map.fetch!(test_zone.characters, :jiang).meta
 
@@ -304,7 +338,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "huangyi：kill 拒绝但召唤保镖 spawn" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     test_zone = Enum.find(world.zones, &(&1.id == "test"))
     huangyi = Map.fetch!(test_zone.characters, :huangyi).meta
 
@@ -315,7 +349,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "无 accept_* 的 NPC（duke）engage 为 nil" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     test_zone = Enum.find(world.zones, &(&1.id == "test"))
     duke = Map.fetch!(test_zone.characters, :duke).meta
 
@@ -323,7 +357,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   defp world_zones() do
-    Kantele.World.Loader.load().zones
+    load_world().zones
   end
 
   # ---- item_desc 墙牌/菜单 + valid_leave 出口阻挡（room 数据化） ----
@@ -333,7 +367,7 @@ defmodule Kantele.World.LoaderMetaTest do
   # test），`Enum.find` 按 key 只会拿到迭代顺序里第一个，未必是想验的那个。
 
   test "bet 房间：item_desc 解析 paizi 规则板" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     bet = Enum.find(world.rooms, &(&1.id == "test:bet"))
 
     assert bet != nil
@@ -343,7 +377,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "cave 房间：valid_leave 阻挡结构化为 exit_vetoes" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     cave = Enum.find(world.rooms, &(&1.id == "test:cave"))
 
     assert cave != nil
@@ -358,7 +392,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "kedian 房间：两条条件阻挡都被保留" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     kedian = Enum.find(world.rooms, &(&1.id == "test:kedian"))
 
     assert kedian != nil
@@ -374,7 +408,7 @@ defmodule Kantele.World.LoaderMetaTest do
   # assert against beijing:liandan_lin1 - a room that legitimately has four exits -
   # while claiming to check test:liandan_lin1's dangling ones.
   test "liandan_lin1 房间：宏继承合并属性生效（名称/描述），悬挂出口被丢弃" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
 
     # beijing owns a room with the same key and it has all four exits wired up, so
     # the ambiguity is real rather than theoretical.
@@ -402,7 +436,7 @@ defmodule Kantele.World.LoaderMetaTest do
   end
 
   test "liandan_lin 房间：父类（inherit ROOM）也正常加载" do
-    world = Kantele.World.Loader.load()
+    world = load_world()
     room = Enum.find(world.rooms, &(&1.id == "test:liandan_lin"))
     assert room != nil
   end

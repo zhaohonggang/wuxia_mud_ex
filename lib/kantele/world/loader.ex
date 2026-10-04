@@ -15,19 +15,41 @@ defmodule Kantele.World.Loader do
     brains_path: "data/brains",
     help_path: "data/help",
     verbs_path: "data/verbs.ucl",
-    world_path: "data/world"
+    world_path: "data/world",
+    extra_world_paths: []
   }
+
+  # 测试夹具区（test.ucl / global.ucl）所在目录。**只有测试会显式挂它。**
+  @fixture_world_path "test/fixtures/world"
 
   @doc """
   Load zone files into Kalevala structs
 
   任一数据文件出错都会抛 `Kantele.World.LoaderError`，并尽量附带出错的
   文件路径，方便上层定位是哪个 .ucl 写坏了。
+
+  ## `extra_world_paths`：只给测试用的夹具区
+
+  `data/world` 里曾经混着 `test.ucl` / `global.ucl` 两个区。它们是当年拿
+  `test_minimal_world_v2_modified/` 挑 `.c` 文件跑转换器测试的产物，跟真实区
+  大量重名（`test` 的 34 个房间有 33 个在别的区也存在，`global` 是 20/27），
+  而且互不连通 —— 没有任何真实区引用 `test:` / `global:` 的房间，玩家走不到。
+
+  留在正式目录里的代价是实打实的：61 个走不到的房间、25 个 NPC、84 个物品
+  混进运行时世界并参与别名统计，悬空引用报告和门禁审计也跟着被污染。
+  所以它们现在搬到 `#{@fixture_world_path}`，**默认不再加载**。
+
+  需要它们的测试显式传：
+
+      Loader.load(%{extra_world_paths: ["test/fixtures/world"]})
+
+  合并顺序是「夹具先、正式区后」：万一将来出现同名 zone key，
+  后写入的正式区会覆盖夹具 —— 重复内容一律以正式区为准。
   """
   def load(paths \\ %{}) do
     paths = Map.merge(@paths, paths)
 
-    world_data = load_folder(paths.world_path, ".ucl", &merge_world_data/1)
+    world_data = load_world_data(paths)
     brain_data = load_brains(paths.brains_path)
     verbs = load_verbs(paths.verbs_path)
 
@@ -53,6 +75,25 @@ defmodule Kantele.World.Loader do
   end
 
   # ---- 文件级错误包装：读入/解析/构建出错时把文件路径挂进 LoaderError ----
+
+  # 附加目录在前、正式目录在后：`Enum.into/2` 后写入的覆盖先写入的，
+  # 所以同名 zone 最终以正式区为准（夹具不参与真实世界的定义）。
+  defp load_world_data(paths) do
+    merge = &merge_world_data/1
+
+    (List.wrap(paths.extra_world_paths) ++ [paths.world_path])
+    |> Enum.flat_map(&load_folder(&1, ".ucl", merge))
+    |> Enum.into(%{})
+  end
+
+  @doc """
+  测试夹具区的路径。只有测试该用它，生产/审计脚本不要挂。
+  """
+  def fixture_world_path, do: @fixture_world_path
+
+  def load_fixture_world(paths \\ %{}) do
+    load(Map.put(paths, :extra_world_paths, [fixture_world_path()]))
+  end
 
   defp load_folder(path, file_extension, merge_fun) do
     ls!(path)

@@ -1,4 +1,4 @@
-content = File.read!("data/world/global.ucl")
+content = File.read!("test/fixtures/world/global.ucl")
 matches = Regex.scan(~r/"\\/, content)
 Enum.each(matches, fn match ->
   full = Enum.at(match, 0)

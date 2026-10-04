@@ -384,9 +384,56 @@ LPC 里这些是**不同目录下**的两个文件，id 碰巧同名；
 - sword -> `global:dir_macro_test`
 - sword -> `test:dir_macro_test`
 
-`data/world/test.ucl` / `global.ucl` 里的房间（`test:cave`、`test:duwushi`、
-`global:dir_macro_test` …）看起来是**测试夹具**，却被 loader 和审计脚本一并加载了。
-值得单独确认它们是否该留在 `data/world`。
+## 五之二、`test` / `global` 已确认是转换器测试产物，已移出 `data/world`
+
+上一节记的「值得单独确认」已经查清并处理完了。
+
+### 它们是什么
+
+`test.ucl`（34 房间 / 13 NPC / 42 物品）与 `global.ucl`（27 房间 / 12 NPC / 42 物品）
+的每个文件头都写着 `Generated from test_minimal_world_v2_modified/…`
+（分别 89 个和 203 个源文件）—— 当年挑 `.c` 文件跑 `lpc_converter.py` 做转换测试的产物。
+
+### 它们没有被接入真实世界
+
+| | `test` | `global` |
+|---|---|---|
+| 房间名与真实区重名 | **33 / 34** | **20 / 27** |
+| `valid_leave` 条件 | 0 | 0 |
+| 被任何真实区引用 | 0 | 0 |
+
+- **重名**：`dating` / `yuanzi` / `liangong` / `cave` 在 `baituo`、`dali` 等真实区都存在。
+- **不连通**：`rooms.<id>.id` 是区级解析，`test:cave` 的出口只能指向 `test:` 内的房间，
+  而没有任何真实区引用 `test:` / `global:`，所以玩家根本走不到这 61 个房间。
+- **不影响门禁**：两个区 `valid_leave` 条件都是 0，155/166 这个数字不受影响。
+
+### 已做的处理
+
+搬到 `test/fixtures/world/`，`Loader.load/1` 新增 `:extra_world_paths`，
+**默认不再加载**；需要它们的测试显式调 `Loader.load_fixture_world/0`。
+
+合并顺序是「夹具先、正式区后」，`Enum.into/2` 后写入的覆盖先写入的 ——
+万一将来出现同名 zone key，**正式区赢**，符合「重复以正式区为准」。
+
+### 影响（实测 `Loader.load()` vs `Loader.load_fixture_world()`）
+
+| | 正式世界（现在） | 含夹具（以前） |
+|---|---|---|
+| zones | 77 | 79 |
+| rooms | 4409 | 4470 |
+| characters | 2277 | 2298 |
+| items | 1119 | 1203 |
+| 有物品的房间 | **163** | 202 |
+| 悬空引用 | 1215 条 / 792 个 | 1235 条 / 809 个 |
+
+两个副产物：
+
+1. `veto_effectiveness_test.exs` 里「有物品的房间 `>= 190`」的阈值**只有靠夹具区
+   那 39 间才够得着**，真实世界本来就只有 163 —— 阈值已下调到 160。
+2. 悬空引用汇总的 `character 767 -> 751`、`item 468 -> 464`，
+   少掉的都是夹具区自己的引用。
+
+现在报告与审计脚本读到的数字**只反映真实世界**。
 
 ## 六、建议的处理顺序（供决策，本次未执行）
 

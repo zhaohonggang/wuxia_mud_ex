@@ -296,12 +296,22 @@ alias Kantele.World.LpcCondition
       assert inst != [], "#{rid} 应有物品实例（转换器写了 room_items 但定义在本区缺失）"
     end
 
-    # 全库落地率（改之前是 163 / 4470 = 3.6%）
+    # 全库落地率。
+    #
+    # 注意口径：`test` / `global` 两个夹具区已经搬去 `test/fixtures/world`，
+    # 默认加载不再包含它们，所以这里的分母是**真实世界**的 4409 间房。
+    #
+    # 实测（`Loader.load()` vs `Loader.load_fixture_world()`）：
+    #   正式世界   4409 间房，其中 163 间有物品实例
+    #   含夹具     4470 间房，其中 202 间有物品实例  <- 夹具区白送 39 间
+    #
+    # 旧的 `>= 190` 阈值只有靠夹具区那 39 间才够得着；真实世界本来就只有 163。
+    # 所以这里下调到 160 留余量，真正的回归防线是上面那 10 个具体房间断言。
     with_items =
       Enum.count(ctx.world.rooms, fn r -> (Map.get(r, :item_instances) || []) != [] end)
 
-    assert with_items >= 190,
-           "有物品的房间应 >= 190，实际 #{with_items}"
+    assert with_items >= 160,
+           "真实世界有物品的房间应 >= 160，实际 #{with_items}（夹具区已不计入）"
 
     # 兵械库那几间应该拿到钢刀/长剑/竹棒
     for rid <- ~w(city:ma_bingqi kaifeng:hh_bingqi xiakedao:wuqiku) do
