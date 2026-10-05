@@ -2710,10 +2710,60 @@ defmodule Kantele.World.Room.CombatEvent do
 
   defp engage(context, initiator, target), do: engage(context, initiator, target, "fight")
 
-  defp engage(context, initiator, target, type) do
-    context
-    |> start_combat(target, initiator, type)
-    |> start_combat(initiator, target, type)
+defp engage(context, initiator, target, type) do
+  context
+  |> start_combat(target, initiator, type)
+  |> start_combat(initiator, target, type)
+  |> maybe_summon_coagents(initiator, target, type)
+end
+
+  # LPC feature/attack.c:104-108 —— 唯一的 kill_enemy 调用点：
+  #
+  #     enemy += ({ ob });
+  #     if (this_object()->is_guarder() && is_killing(ob->query("id")))
+  #         this_object()->kill_enemy(ob);      // guarder will look for help
+  #
+  # 两个要点：① 是**攻击方**（this_object()）为守卫时才调，不是被打方；
+  # ② 只有「杀」才呼唤帮手，fight/hit 不调。
+  defp maybe_summon_coagents(context, initiator, _target, type) do
+    if type == "kill" and guarder_config?(initiator) do
+      initiator
+      |> guarder_coagent_opts(context)
+      |> Guarder.kill_enemy()
+      |> case do
+        {:helpers_notified, helpers} ->
+          Enum.reduce(helpers, context, &notify_coagent(&2, &1, initiator))
+
+        # LPC 里 coagents 为空 / 不在 startroom 时**直接 return，一句话都不说**
+        _ ->
+          context
+      end
+    else
+      context
+    end
+  end
+
+  defp guarder_coagent_opts(guarder, context) do
+    %{
+      coagents: Map.get(guarder.meta, :coagents) || [],
+      startroom: guarder.meta.combat_config && guarder.meta.combat_config.spawn_room_id,
+      current_room: Map.get(context.data, :id) || guarder.room_id,
+      enemy_id: nil,
+      enemy_name: nil,
+      enemy_in_target_room?: true
+    }
+  end
+
+  # 帮手所在处先广播 LPC 的「大家快来帮忙啊」，再交由 Coagent.start_help 决策。
+  defp notify_coagent(context, helper, guarder) do
+    case event(context, self(), self(), "coagent/summon", %{
+             guarder_id: guarder.id,
+             coagent_id: Map.get(helper, :id),
+             startroom: Map.get(helper, :startroom),
+             target_id: Map.get(helper, :target_id)
+           }) do
+      ctx -> ctx
+    end
   end
 
   defp start_combat(context, character, initiator, type) do

@@ -313,12 +313,17 @@ heihu.ucl   town_crier.ucl   villager.ucl
 
 ### 要做的
 
-- [ ] 从 LPC 的 ` brains/` 目录补出这 7 个 brain 定义
-      （`dealer` / `vendor` / `guarder` / `banker` / `guardert` /
-      `quester` / `wandering_villager`）；
-- [ ] `Kantele.Brain.process/2` 遇到不存在的 brain 名时**至少 warn 一次**，
-      别静默返回 `NullNode`；
-- [ ] 转换器生成 `brain = brains.X` 时校验 `data/brains/X.ucl` 存在。
+> ⚠️ **本节初版的建议是错的**（"从 LPC 的 `brains/` 目录补出 7 个 brain 定义"）。
+> LPC 里**没有** `brains/` 目录 —— NPC 行为来自 `feature/*.c` 的 inheritable
+> object，不是 brain 树。正确做法见 §一之一 的核查结论与 §二 的接线。
+
+- [x] 核查清楚：这 228 处引用是 `infer_brain/1` 编造的，功能**不依赖**它们
+      （详见 §一之一 / §一之二）
+- [x] 228 处已注释掉、保留线索（见 §一之一）
+- [ ] `Kantele.Brain.process/2` 遇到未定义 brain 名时**warn 一次**，
+      别静默返回 `NullNode`（`brain.ex:66` 的注释说明这是有意降级，
+      但至少该留个日志）
+- [x] 转换器生成 `brain = brains.X` 时的存在性校验 —— 改为按 §一之一 处理
 
 ---
 
@@ -428,69 +433,92 @@ dali 1 / guanwai 1 / hengyang 1 / taohua 1
 
 三条 LPC 规则里前两条（叛门者 / 外门派不得入内）生效。
 
-### ❌ `check_enemy` 与 `kill_enemy` 是死代码
+### ✅ `check_enemy` 已接进开战流程
 
-`room.ex:2728` 的注释写着「守卫敌对判定（`Guarder.check_enemy` 接线）」，
-但往下看：
+原先 `room.ex:2728` 的注释写着「守卫敌对判定（`Guarder.check_enemy` 接线）」，
+但 `guarder_config?` / `guarder_decision` / `guarder_deny?` / `guarder_kill?` /
+`guarder_refuse_msg` 五个函数全都只出现在自己的定义行，整条链止步于定义。
 
-```
-2730  defp guarder_config?/1      ← 只有定义
-2737  defp guarder_decision/3      ← 只有定义（内部调 Guarder.check_enemy）
-2748  defp guarder_deny?/3         ← 只有定义
-2754  defp guarder_kill?/3         ← 只有定义
-2758  defp guarder_refuse_msg/2    ← 只有定义
-```
+已在 `combat/*` dispatch 的 `cond` 链里（`guarded_deny?` 与 `engage_rule_deny?`
+之间）插入两路：
 
-`guarder_deny?` / `guarder_kill?` 这两个名字在 `lib/` 里**只出现在各自的
-定义处**，没有任何调用点。整条链止步于定义 —— 注释里的「接线」是**未兑现
-的承诺**。
+- `guarder_refuse?/3` → 渲染拒绝语，不开战（LPC `return 0`）
+- `guarder_counter_kill?/3` → `engage(context, target, attacker, "kill")`（LPC 的 `kill_ob`）
 
-后果：守卫被玩家打时，LPC 里那套反应（`我现在没空` / `你今日是要造反吗`
-/ 直接 `kill_ob`）全都不会发生。
+接线时还发现 `check_enemy` 对「外门派 + fight」返回 `{:ignore}`，**与 LPC 相反**
+—— `guarder.c:152-157` 是「我现在没空」后 `return 0`（拒绝交战），
+而 `ignore` 会让战斗正常开打。已修正，LPC 的四种反应现在全覆盖：
 
-`kill_enemy`（守卫呼唤帮手）同样只有定义。
-注意 `lpc_example/ex/feature_attack/` 里那个 `kill_enemy` 是**同名的无关函数**，
-不要混淆。
+| 条件 | LPC | 返回 |
+|---|---|---|
+| 外门派 + fight | 「我现在没空」`return 0` | `{:refuse, ...}` |
+| 外门派 + hit/kill | 「活得不耐烦了！来这里撒野？」`kill_ob` | `{:kill, id}` |
+| 同门 + hit/kill | 「你今日是要造反吗？」`kill_ob` | `{:kill, id}` |
+| 同门 + fight | 「找你的师傅比划去」`return 0` | `{:refuse, ...}` |
 
-### ❌ `permit_pass` 第三条检查恒假（缺 `:carrying` 字段）
+### ✅ `kill_enemy` 已接进 `engage/4`
 
-LPC 的第三条规则是查**背包里有没有别派的玩家**：
+先查清了 LPC 里它**唯一的调用点**（`feature/attack.c:104-108`）：
 
 ```c
-inv = deep_inventory(ob);
-for (i = 0; i < sizeof(inv); i++) {
-    if (!userp(inv[i])) continue;
-    if (inv[i]->query("family/family_name") != fam_name) { ... return 0; }
-}
+enemy += ({ ob });
+if (this_object()->is_guarder() && is_killing(ob->query("id")))
+    this_object()->kill_enemy(ob);      // guarder will look for help
 ```
 
-我们这边 `room.ex:466`：
+两个容易搞错的点：
 
-```elixir
-carried_families =
-  mover.meta
-  |> Map.get(:carrying, [])     # ← PlayerMeta 没有 :carrying 字段
+1. 是**攻击方**（`this_object()`）为守卫时才调，**不是被打方**；
+2. 只有「杀」才呼唤帮手，`fight` / `hit` 不调。
+
+已按此在 `engage/4` 末尾接上 `maybe_summon_coagents/4`。
+
+**当前是 no-op，但这是正确的**：全库 `coagents` 非空的 NPC 定义数是 **0**，
+而 LPC 里 `coagents` 为空时是**直接 return、一句话都不说**：
+
+```c
+if (!pointerp(co = me->query("coagents"))) return;
+if (sizeof(co) < 1) return;
 ```
 
-代码注释自己承认了（463-465 行「PlayerMeta 根本没有 `:carrying` 字段」）。
-用 `Map.get/3` 兜住了不崩，但**结果恒为 `[]`**，于是 `permit_pass` 里
-`Enum.any?(carried, ...)` **永不触发**——「背着他派的人闯门」没有实现，
-也没有任何报错。
+所以行为一致。等有了「雇帮手」的数据来源才会真正生效。
 
-修这个要给 `PlayerMeta` 加字段，**涉及持久化格式**，要单独评估。
+> 注意 `lpc_example/ex/feature_attack/` 里那个 `kill_enemy` 是**同名的无关
+> 函数**，别混淆。
+
+### ❌ 第三条规则（背着他派的人闯门）**不能靠加字段接线**
+
+`permit_pass` 第三条检查恒假，因为 `room.ex:466` 读 `mover.meta[:carrying]`
+而 `PlayerMeta` 没有这个字段。
+
+查完之后结论变了：**这不是「补个字段」能解决的**。
+
+LPC 用 `deep_inventory(ob)` + `userp()` 判断，也就是「玩家被塞进了另一个
+玩家的背包里」—— 这依赖 LPC 的**背人机制**。
+
+而我们**完全没有这个机制**：
+
+- `lib/kantele/character/commands/` 下没有 `carry` / `tuo` / `drag` /
+  `haul` 任何一个命令；
+- `backpack` 是储物袋（存 item instance），不是背人；
+- `give` 只处理物品实例，不能给玩家。
+
+所以给 `PlayerMeta` 加一个 `:carrying` 字段，只会让它**恒为 nil** ——
+把「读一个不存在的字段」换成「读一个永远为 nil 的字段」，死代码照旧，
+还多一次迁移。**没做**。
+
+要实现这条规则，前置条件是先做「背人」这个玩法（LPC 里对应
+`feature/carry*.c` 一类的东西 + 相应命令），属于**新功能**而非移植补漏。
 
 ### ⚠️ 关键：`brain = brains.guardert` 与以上无关
 
-守卫能工作**不是因为**那行。真正生效的是 `meta.guardert`
-（由 `lpc_converter.ex:1310-1312` 的 `extract_guarder` 从 LPC 的
-`permit_pass()` 函数体抽取），`room.ex` 读的是 `c.meta.guardert`。
+守卫能工作**不是因为**那行（它已被注释掉，见 §一之一）。真正生效的是
+`meta.guardert` —— 由 `lpc_converter.ex:1310-1312` 的 `extract_guarder`
+从 LPC 的 `permit_pass()` 函数体抽取，`room.ex` 读的是 `c.meta.guardert`。
 
-参见 §一之一 的「🚧 给后续维护者」——那 228 处假引用是**线索**，别删。
-
-- [ ] 把 `check_enemy` 接进 `engage`/`start_combat` 流程
-- [ ] 把 `kill_enemy` 接上（需要先有帮手在场的数据结构）
-- [ ] `PlayerMeta` 加 `:carrying`（或找到既有的「背人」机制复用），
-      让 `permit_pass` 第三条规则生效
+- [x] `check_enemy` 接进 `engage` 流程
+- [x] `kill_enemy` 接进 `engage` 流程（当前 no-op，与 LPC 一致）
+- [ ] 第三条规则：等「背人」玩法落地后再做，不要单独加 `:carrying` 字段
 
 ---
 
