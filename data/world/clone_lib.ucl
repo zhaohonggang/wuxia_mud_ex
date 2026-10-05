@@ -7046,3 +7046,1537 @@ zones "clone_lib" {
     unwield = "{npc}收起了{name}。"
   }
     }
+
+# LPC d/city/npc/bing 被 11 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "bing" {
+      name = "官兵"
+      description = "虽然官兵的武艺不能和武林人士相比，可是他们讲究的是人多力量大。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    dex = 16
+    str = 24
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "blade" level = 40 },
+    { skill = "force" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.blade.id },
+    { id = items.junfu.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
+  }
+    }
+
+# LPC d/city/npc/xiaoer2 被 11 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "xiaoer2" {
+      name = "店小二"
+      description = ""
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  goods = [
+    { id = items.jitui.id },
+    { id = items.jiudai.id },
+    { id = items.baozi.id },
+    { id = items.kaoya.id }
+  ]
+
+  # vendor_goods: "/clone/fam/pill/food" (file not found)
+  # vendor_goods: "/clone/fam/pill/water" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["buy", "list"]
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+    }
+
+# LPC d/city/npc/wujiang 被 9 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "wujiang" {
+      name = "武将"
+      description = "他站在那里，的确有说不出的威风。"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 75000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "sword" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.gangjian.id },
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/kid1 被 8 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "kid1" {
+      name = "小孩"
+      description = ""
+  gender = "男性"
+  age = 5
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/ducha 被 7 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "ducha" {
+      name = "城门督察"
+      description = "一个身材高大、满脸横肉的督察，城门便是由 他负责监守。"
+  gender = "男性"
+  age = 42
+  shen_type = 1
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 50000
+    con = 25
+    dex = 20
+    int = 30
+    max_jing = 500
+    max_neili = 400
+    max_qi = 500
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "sword" level = 80 }
+  ]
+
+
+  carry = [
+    { id = items.sword4.id },
+    { id = items.guanfu5.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/old2 被 7 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "old2" {
+      name = "老汉"
+      description = ""
+  gender = "男性"
+  age = 63
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/old1 被 6 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "old1" {
+      name = "老妇"
+      description = ""
+  gender = "女性"
+  age = 63
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/city/npc/liumang 被 6 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "liumang" {
+      name = "流氓"
+      description = "他是一个成天游手好闲的流氓，长得倒是白白胖胖的，也许以前有过钱。"
+  gender = "男性"
+  age = 19
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 1000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/taishan/npc/jian-ke 被 6 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "jian_ke" {
+      name = "剑客"
+      description = "这是位中年武人，肩背长剑，长长的剑穗随风飘扬，看来似乎身怀绝艺。"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 20000
+  }
+
+  skills = [
+    { skill = "sword" level = 60 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/dipi 被 5 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "dipi" {
+      name = "地痞"
+      description = "一个京城里的混混。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  chat_chance = 1
+chats = [
+    "地痞无聊的伸了懒腰。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/girl2 被 5 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "girl2" {
+      name = "少妇"
+      description = ""
+  gender = "女性"
+  age = 23
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.nvcloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/haoke1 被 5 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "haoke1" {
+      name = "江湖豪客"
+      description = "一名满脸彪捍之色的江湖豪客。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 2000
+    con = 25
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 300
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "blade" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.blade2.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/shusheng1 被 5 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "shusheng1" {
+      name = "书生"
+      description = "一个在街上闲逛的少年书生。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth1.id }
+  ]
+
+    }
+
+# LPC d/city/npc/liumangtou 被 5 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "liumangtou" {
+      name = "流氓头"
+      description = "他长得奸嘴猴腮的，一看就不像是个好人。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 7000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/boy1 被 4 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "boy1" {
+      name = "男孩"
+      description = ""
+  gender = "男性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/boy2 被 4 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "boy2" {
+      name = "小男孩"
+      description = ""
+  gender = "男性"
+  age = 3
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/boy3 被 4 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "boy3" {
+      name = "男子"
+      description = ""
+  gender = "男性"
+  age = 23
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/hunhun 被 4 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "hunhun" {
+      name = "混混"
+      description = "一个京城里的混混。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  chat_chance = 1
+chats = [
+    "混混不怀好意的打量了你一眼。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/richman1 被 4 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "richman1" {
+      name = "富家弟子"
+      description = "一个白白胖胖的年轻人，一看就知道是娇生惯养惯了的。"
+  gender = "男性"
+  age = 21
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth4.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/tiaofu 被 4 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "tiaofu" {
+      name = "挑夫"
+      description = ""
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/youke 被 4 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "youke" {
+      name = "游客"
+      description = "一个在此地旅游的外地游人。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  chat_chance = 2
+chats = [
+    "游客上下打量了你一眼。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/huashan/npc/haoke 被 4 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "haoke" {
+      name = "江湖豪客"
+      description = "一名满脸彪捍之色的江湖豪客。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 2000
+    con = 25
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 300
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# LPC d/taishan/npc/dao-ke 被 4 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "dao_ke" {
+      name = "刀客"
+      description = "这家伙满脸横肉，一付凶神恶煞的模样，令人望而生畏。"
+  gender = "男性"
+  age = 20
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 15000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 45 },
+    { skill = "blade" level = 45 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/taishan/npc/tangzi 被 4 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "tangzi" {
+      name = "趟子手"
+      description = "这是个镖局趟子手，长得虎背熊腰，一身横练功夫。"
+  gender = "男性"
+  age = 30
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+  }
+
+  chat_chance = 5
+chats = [
+    "趟子手一声大喊: 我~~~~武~~~~维~~~~扬~~~~！"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "sword" level = 20 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.duanjian.id },
+    { id = items.cloth.id },
+    { id = items.jitui.id }
+  ]
+
+    }
+
+# LPC d/wudang/npc/guest 被 4 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "guest" {
+      name = "进香客"
+      description = ""
+  gender = "男性"
+  shen_type = 1
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+    }
+
+# LPC d/beijing/npc/girl1 被 3 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "girl1" {
+      name = "少女"
+      description = ""
+  gender = "女性"
+  age = 17
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.nvcloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/girl4 被 3 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "girl4" {
+      name = "小女孩"
+      description = ""
+  gender = "女性"
+  age = 4
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.nvcloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/maiyi1 被 3 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "maiyi1" {
+      name = "耍猴人"
+      description = "一个沿街耍猴的人。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  chat_chance = 2
+chats = [
+    "耍猴人大声叫道：走过路过不要错过，大家快来瞧瞧。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/maiyi2 被 3 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "maiyi2" {
+      name = "卖艺人"
+      description = "一个沿街卖艺的人。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  chat_chance = 1
+chats = [
+    "卖艺人大声叫道：俺给大家表演俺的绝活。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/shusheng2 被 3 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "shusheng2" {
+      name = "酸秀才"
+      description = "一个邋遢的秀才，没什么学问却自问学士渊博。"
+  gender = "男性"
+  age = 28
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth2.id }
+  ]
+
+    }
+
+# LPC d/city/npc/huoji 被 3 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "huoji" {
+      name = "药铺伙计"
+      description = "他是平神医从乡下招来帮忙的。"
+  gender = "男性"
+  age = 18
+  brain = brains.dealer
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 250
+    str = 20
+  }
+
+  # vendor_goods: "/clone/misc/jinchuang" (file not found)
+  # vendor_goods: "/clone/misc/yangjing" (file not found)
+  # vendor_goods: "/clone/misc/dust" (file not found)
+  # vendor_goods: "/clone/misc/fashao" (file not found)
+  # vendor_goods: "/clone/misc/shanghan" (file not found)
+  # vendor_goods: "/clone/misc/xiaoshu" (file not found)
+  # vendor_goods: "/clone/misc/dongshang" (file not found)
+  # vendor_goods: "/clone/misc/zhike" (file not found)
+  # vendor_goods: "/d/shenlong/obj/xionghuang" (file not found)
+  # vendor_goods: "/clone/fam/pill/food1" (file not found)
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# LPC d/kaifeng/npc/qigai 被 3 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "qigai" {
+      name = "乞丐"
+      description = ""
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 7000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/taishan/npc/tiao-fu 被 3 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "tiao_fu" {
+      name = "挑夫"
+      description = "这是个老实巴交的穷挑夫，长得膀阔腰圆，一身肌肉。"
+  gender = "男性"
+
+  combat = {
+    attitude = "heroism"
+    con = 20
+    dex = 22
+    int = 15
+    str = 25
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/duke 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "duke" {
+      name = "赌客"
+      description = "一个正赌得兴高采烈的赌客。"
+  gender = "男性"
+  age = 40
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  chat_chance = 1
+chats = [
+    "赌客骂道：他奶奶的，今天爷的手气怎么那么不顺？"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/guanzhong 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "guanzhong" {
+      name = "观众"
+      description = "一个在戏院里看戏的观众。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  chat_chance = 1
+chats = [
+    "观众大声鼓掌称好。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/shiren 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "shiren" {
+      name = "诗人"
+      description = ""
+  gender = "男性"
+  age = 43
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/xianren 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "xianren" {
+      name = "闲人"
+      description = "一个在街上闲逛的游人。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  chat_chance = 1
+chats = [
+    "闲人低声嘀咕了一声。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/xizi1 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "xizi1" {
+      name = "戏子"
+      description = "一个在戏院唱戏的戏子。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/xizi2 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "xizi2" {
+      name = "花旦"
+      description = "一个在戏院唱戏的戏子。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/beijing/npc/xizi3 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "xizi3" {
+      name = "老旦"
+      description = "一个在戏院唱戏的戏子。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/hangzhou/npc/seng 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "seng" {
+      name = "老和尚"
+      description = "一个慈眉善目的老和尚。"
+  gender = "男性"
+  age = 67
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "peace"
+    combat_exp = 20000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 100
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "blade" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "shaolin-shenfa" level = 50 },
+    { skill = "cibei-dao" level = 50 },
+    { skill = "hunyuan-yiqi" level = 50 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "blade" skill = "cibei-dao" },
+    { type = "parry" skill = "cibei-dao" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/kaifeng/npc/guanbing 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "guanbing" {
+      name = "官兵"
+      description = "虽然官兵的武艺不能和武林人士相比，可是他们讲究的是人多力量大。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    dex = 16
+    str = 24
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "blade" level = 40 },
+    { skill = "force" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.blade.id },
+    { id = items.junfu.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
+  }
+    }
+
+# LPC d/kaifeng/npc/zhukao3 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "zhukao3" {
+      name = "考官"
+      description = ""
+  gender = "男性"
+  age = 53
+  shen_type = 1
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 30000
+    dex = 20
+    max_neili = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "force" level = 50 },
+    { skill = "sword" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.guanfu4.id }
+  ]
+
+    }
+
+# LPC d/shaolin/npc/shang1 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "shang1" {
+      name = "丫鬟"
+      description = "一个十多岁的小姑娘，在这里当丫鬟。"
+  gender = "女性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  skills = [
+    { skill = "dodge" level = 10 },
+    { skill = "unarmed" level = 10 }
+  ]
+
+
+  carry = [
+    { id = items.nvcloth.id }
+  ]
+
+    }
+
+# LPC d/taishan/npc/seng-ren 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "seng_ren" {
+      name = "游方和尚"
+      description = "他是一位中年游方和尚，骨瘦如柴，身上的袈裟打满了补丁。"
+  gender = "男性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+    con = 25
+    dex = 23
+    int = 30
+    max_jing = 300
+    max_neili = 380
+    max_qi = 380
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "item_name" name = "金刚经" accept = true msg = ["贫僧正需这本金刚经来叁照石坪上的原文啊 ！", "smile"] },
+    { kind = "any" accept = true msg = ["贫僧正需这本金刚经来叁照石坪上的原文啊 ！", "smile"] }
+  ]
+    }
+
+# LPC d/village/npc/poorman 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "poorman" {
+      name = "穷汉"
+      description = "一个骨瘦如柴，满脸菜色的穷汉。"
+  gender = "男性"
+  age = 33
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 250
+    con = 17
+    dex = 18
+    int = 13
+    str = 20
+  }
+
+  chat_chance = 15
+chats = [
+    "穷汉懒洋洋地打了个哈欠。",
+    "穷汉伸手捉住了身上的虱子，骂道：老子身上没几两肉，全叫你们给咬了。"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/village/npc/seller 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "seller" {
+      name = "小贩"
+      description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 32
+  brain = brains.vendor
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  goods = [
+    { id = items.stick.id },
+    { id = items.shoes.id },
+    { id = items.bottle.id },
+    { id = items.egg.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# LPC d/wudang/npc/tufei1 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "tufei1" {
+      name = "土匪"
+      description = "这家伙满脸横肉�一付凶神恶煞的模样，令人望而生畏。"
+  gender = "男性"
+  age = 30
+
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 10000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "sword" level = 20 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.duanjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/wudu/npc/xuetong 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "xuetong" {
+      name = "小学童"
+      description = "这是一个十三四岁的小童，正心不在焉的跟着先生胡乱念着。"
+  gender = "男性"
+  age = 14
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    max_qi = 200
+  }
+
+  chat_chance = 10
+chats = [
+    "小学童断断续续的念道：人之初，性本……呼…呼……",
+    "小学童摇头晃脑的念道：蝈蝈鸠鸠，在河洲洲，窈窕是你，君子高逑。",
+    "小学童自言自语道：生生死死，死死生生，先生先死，先死先生。",
+    "小学童随声附和道：春眠不觉晓，所以睡懒觉。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 5 },
+    { skill = "unarmed" level = 5 },
+    { skill = "parry" level = 5 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC d/zhongzhou/npc/jiading 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+    characters "jiading" {
+      name = "家丁"
+      description = ""
+  gender = "男性"
+  age = 35
+
+  combat = {
+    combat_exp = 4000
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }

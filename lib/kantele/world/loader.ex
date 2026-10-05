@@ -1389,9 +1389,7 @@ alias Kantele.World.LoaderError
         room_character.characters
         |> Enum.with_index()
         |> Enum.flat_map(fn {character_data, index} ->
-          character_id = dereference(zones, zone, character_data.id)
-
-          case Enum.find(zone.characters, &match_character(&1, character_id)) do
+          case find_character_for_room(zones, zone, character_data.id) do
             {_key, character} ->
               meta = character.meta
               combat_config = Map.get(meta, :combat_config)
@@ -1461,6 +1459,38 @@ alias Kantele.World.LoaderError
   end
 
   defp match_character({_key, character}, character_id), do: character.id == character_id
+
+  # 房间摆放的 NPC：**本区优先，找不到才去 clone_lib**。
+  #
+  # 对应 LPC 里作者图省事的跨区引用（`d/baituo/jiudian.c` 写
+  # `"/d/city/npc/xiaoer2"`）。按 clone/ 约定这类共享角色应该在 clone_lib，
+  # 所以那边备了一份；UCL 里**保持 `characters.x.id` 的裸引用**，
+  # 不改成 `clone_lib.characters.x.id` —— 那样虽然也能work，但有两个坏处：
+  #   1. 数据里出现区名前缀，与转换器产物不一致，重转就会漂移；
+  #   2. 同名不同人的情况会被抹平。实测 `bing` 在 clone_lib 是「官兵」，
+  #      而 dali 自己的 bing 是「士兵」、xiangyang 的是「宋兵 exp20000」——
+  #      这些区有本地定义，本就该用自己的。
+  #
+  # `dereference/3` 里已经会对 characters/rooms/items 统一回退到 clone_lib，
+  # 这里补的是**拿到 id 之后按 id 找定义**的那一步 —— 之前只在 `zone.characters`
+  # 里找，clone_lib 的 id 匹配不上，于是共享角色仍被当成悬空丢掉。
+defp find_character_for_room(zones, zone, reference) do
+    character_id = dereference(zones, zone, reference)
+
+    case Enum.find(zone.characters, &match_character(&1, character_id)) do
+      nil ->
+        # 本区没有 -> clone_lib（find_character/3 按 "#{zone.id}:#{name}" 拼 id，
+        # 所以这里要传 clone 自己，否则会拼成本区的 id）
+        clone = Enum.find(zones, fn z -> z.id == @clone_zone_id end)
+
+        if clone && clone.id != zone.id do
+          Enum.find(clone.characters, &match_character(&1, character_id))
+        end
+
+      found ->
+        found
+    end
+  end
 
   @doc """
   Parse items for zones
@@ -1682,11 +1712,18 @@ If a known key is found, use the current zone
   @clone_zone_id "clone_lib"
 
   # LPC 的 `clone/` 目录（1003 个 .c）是全服共享对象，每个只有一份。
-  # 我们这边就是 `data/world/clone_lib.ucl` —— 纯物品区，0 房间 0 NPC。
+  # 我们这边就是 `data/world/clone_lib.ucl`。
   #
   # 解析顺序：**本区优先，找不到才回退 clone_lib**。这跟 LPC 的
   # `carry_object("/clone/weapon/blade")` 一致：NPC 自己区里的东西优先，
   # 没有才用共享的那份。
+  #
+  # clone_lib 现在同时收**物品和 NPC**：
+  #   - 物品：`/clone/**` 语义上的全服共享（530 个）
+  #   - NPC：**被多个区共用的角色**。LPC 作者图省事直接跨区引私有路径
+  #     （`d/baituo/jiudian.c` 写 `"/d/city/npc/xiaoer2"`），实测 53 个 NPC
+  #     被 2~11 个区引用、共 215 处。按 LPC 自己的 clone/ 约定它们本就该是共享的，
+  #     所以补进 clone_lib 而不是让每个区各抄一份。
   #
   # 为什么只回退到 clone_lib、而不是「随便找个有定义的区」：
   # `jitui` 在 7 个区有 **4 个不同变体**（changan=炸鸡腿 / wudu=烤山鸡腿 /
@@ -1694,9 +1731,8 @@ If a known key is found, use the current zone
   # clone_lib 是**唯一权威的共享层**，它内部不可能有同名两份（一个 UCL 文件里
   # 不会有两个同 key 的块），所以回退到它是确定性的。
   #
-  # 注意：这解决的是 `/clone/**` 类型的共享引用。**区间引用**
-  # （`obj/jitui` 这种区特有物品被别的区的 NPC 引用）**不在此列** ——
-  # 那种情况需要显式指定来源区，见 docs/lpc-port-gaps.zh-CN.md §七。
+  # 剩下**区间引用**（`obj/jitui` 这种区特有物品被别的区引用）不在此列 ——
+  # 见 docs/lpc-port-gaps.zh-CN.md §七。
   defp dereference_in_clone(zones, zone, reference) do
     # 本区就是 clone_lib 时不必再回退自己
     if zone.id == @clone_zone_id do

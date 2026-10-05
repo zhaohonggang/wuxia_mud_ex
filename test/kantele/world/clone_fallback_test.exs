@@ -40,7 +40,10 @@ defmodule Kantele.World.CloneFallbackTest do
 
       assert src =~ ~r/zones\s+"clone_lib"/
       refute src =~ ~r/^\s*rooms\s+"/m, "clone_lib.ucl 不该有 rooms 块"
-      refute src =~ ~r/^\s*characters\s+"/m, "clone_lib.ucl 不该有 characters 块"
+
+      # clone_lib 现在**也收 NPC** —— 被多个区共用的角色（LPC 作者图省事直接
+      # 跨区引私有路径的那些），见 scripts/convert_shared_npcs.py。
+      assert src =~ ~r/^\s*characters\s+"/m, "clone_lib.ucl 应含共享 NPC"
     end
 
     test "本区优先：本区有定义时不会被 clone_lib 抢走", %{world: world} do
