@@ -331,7 +331,10 @@ defmodule Kantele.Character.NonPlayerMeta do
     {:aliases, []},
     :accept,
     :guarder,
-    :engage
+    :engage,
+    # LPC `carry_object(...)` 的 item_id 列表（转换器的 `carry = [...]`）。
+    # 装备动作在 SpawnController 出生时做 —— 加载期 Items cache 还没就绪。
+    {:carry, []}
   ]
 
   defimpl Kalevala.Meta.Trim do

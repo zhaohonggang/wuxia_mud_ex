@@ -6,8 +6,8 @@ defmodule Kantele.World.Loader do
   alias Kalevala.Character
   alias Kalevala.World.Item
   alias Kalevala.World.Room.Feature
-  alias Kantele.Character.Stats
-  alias Kantele.World.LoaderError
+alias Kantele.Character.Stats
+alias Kantele.World.LoaderError
   alias Kantele.World.Room
   alias Kantele.World.Zone
 
@@ -501,7 +501,8 @@ defmodule Kantele.World.Loader do
         init: parse_enter_init(Map.get(character_data, :init)),
         accept: parse_accept_rules(Map.get(character_data, :accept)),
         guarder: parse_guarder(Map.get(Map.get(character_data, :meta, %{}), :guarder)),
-        engage: parse_engage(Map.get(character_data, :engage))
+        engage: parse_engage(Map.get(character_data, :engage)),
+        carry: parse_carry(Map.get(character_data, :carry))
       }
     }
 
@@ -510,7 +511,35 @@ defmodule Kantele.World.Loader do
     {key, character}
   end
 
-  # 组装 NPC 大脑：原脑 + 可选闲聊节点（A10/N3 chat_chance/chats）
+  @doc """
+  LPC `carry_object(...)`：NPC 出生时随身带的装备。
+
+  转换器把 LPC 的
+
+      carry_object("/clone/weapon/gangdao")->wield();
+      carry_object("/clone/cloth/cloth")->wear();
+
+  降级成一条不带动作的列表：
+
+      carry = [ { id = items.gangdao.id }, { id = items.cloth.id } ]
+
+  **`wield()` / `wear()` 的动作信息在转换时丢了**，所以这里只把
+  **item_id 列表**存进 `meta.carry`，真正「穿上 / 拿着」由
+  `Kantele.Character.SpawnController` 在 NPC 进程起来时做 ——
+  那时候 Items cache 已经就绪（见 `Kantele.World.Kickoff`：load 完
+  第 138 行才 `cache_item`）。
+
+  ⚠️ 曾经在 loader 里直接装备，结果 `Kantele.World.Items.get/1` 打
+  `:ets.lookup` 时 ETS 表还不存在 -> `argument error`，
+  整个 `kunming.ucl` 解析失败。**加载期不能碰 cache**。
+  """
+  def parse_carry(carry) when is_list(carry) do
+    Enum.map(carry, fn entry -> entry && entry.id end)
+  end
+
+  def parse_carry(_), do: []
+
+
   defp build_brain(character_data, brains) do
     brain = Kantele.Brain.process(Map.get(character_data, :brain), brains)
 
@@ -1384,6 +1413,11 @@ defmodule Kantele.World.Loader do
               # 任务交付物品引用同上（A11/N6）；掉落表同商品解引用
               meta = %{meta | turn_in: resolve_turn_in(Map.get(meta, :turn_in), zone, zones)}
               meta = %{meta | loot: resolve_goods(Map.get(meta, :loot), zone, zones)}
+
+              # 随身装备的物品引用同商品：此时才有 zones 上下文可解。
+              # 之前没解，meta.carry 里存的是原始引用串 `"items.cloth.id"`，
+              # 到 SpawnController 按 item_id 查 Items cache 时全都 not_found。
+              meta = %{meta | carry: resolve_goods(Map.get(meta, :carry), zone, zones)}
               meta = %{meta | quest: Map.get(meta, :quest)}
 
               [

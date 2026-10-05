@@ -586,28 +586,65 @@ t when t in ["kill", "aggressive", "duel"]
 
 ---
 
-## 六、`carry` 是死数据 🟡
+## 六、`carry` 已接线（部分）✅
 
-上一轮（`caea599`）发现的：转换器会输出
+LPC 侧（`feature/*.c` 通用写法）：
 
-```uc
-carry = [ { id = items.blade.id }, { id = items.junfu.id } ]
+```c
+carry_object("/clone/weapon/gangdao")->wield();
+carry_object("/clone/cloth/cloth")->wear();
 ```
 
-但 **loader 根本不解析 `carry`**，`NonPlayerMeta` 也没有这个字段
-（实测字段只有 accept / aliases / apprentice / combat / engage / goods /
-greetings / guarder / init / loot / quest / stats / vitals / zone_id …）。
+转换器把它降级成一条**不带动作**的列表：
 
-**后果**：所有 NPC 的 `carry_object()` 装备一律失效。76 个 `bing` 空着手站在城门口。
+```uc
+carry = [ { id = items.gangdao.id }, { id = items.cloth.id } ]
+```
 
-**已知的连带问题**：`items.cloth` / `items.blade` 这些 carry 专用物品，
-为了数据自洽在各区都抄了一份（`caea599` 补了 11 个区的 blade/junfu）。
-如果 `carry` 一直不实现，这些是纯冗余定义。
+之前 **loader 根本不解析这个字段**，`NonPlayerMeta` 也没有对应字段 ——
+所有 NPC 出生都是空手（`inventory == []`、`combat.equipped == %{}`）。
 
-- [ ] 要么实现 `carry`（顺带解决 §六 的跨区物品解析），
-      要么把 `carry` 从转换器输出里去掉并清理已抄的物品定义。
+### 改成了什么
 
----
+- `NonPlayerMeta` 加 `{:carry, []}` 字段；
+- loader 把 `carry` 走 `resolve_goods/3` **解引用**后存进 `meta.carry`；
+- 真正「穿上 / 拿着」放在 **`SpawnController.init/1`**（NPC 进程起来时），
+  按物品自身类型推断槽位：有 `skill_type` → `:weapon`，有 `armor_type` → 对应衣物槽；
+- 算法直接复用玩家 `wield` / `wear` 命令的那套
+  （`Combat.equip/3` + `Equip.wear_state/3`），保证同一把刀 NPC 拿着和玩家拿着
+  属性一致 —— 不自己重算一遍。
+
+结果：**2278 个 NPC 带 carry**，其中 `clone_lib:cloth` 被 1173 个 NPC 引用
+（`clone_lib` 回退机制接上后这些才解析得到）。
+
+### 踩到的坑：加载期**不能**碰 Items cache
+
+第一版在 loader 里直接装备，结果 `Kantele.World.Items.get/1` 打 `:ets.lookup`
+时 ETS 表还不存在 —— `Kantele.World.Kickoff` 是 **load 完（第 129 行）之后**
+才 `cache_item`（第 138 行）：
+
+```
+** (Kantele.World.LoaderError) 区域数据解析失败（data/world/kunming.ucl）：argument error
+    lib/kantele/world/loader.ex:540: Kantele.World.Loader.equip_carry/2
+```
+
+所以加载期只存 id，装备一律放 spawn 时。**这条约束值得记住**：
+loader 里任何依赖 Items cache 的逻辑都会炸。
+
+### 仍然存在的缺口：147 / 303 个 carry 引用解不出来
+
+carry 引用的 303 个不同物品 id 里，**156 个已解引用、147 个仍是原始引用串**
+（`items.goldring.id` / `items.necklace.id` / `items.flower_shoe.id` …）。
+
+这些是**真缺口**，不是本次能修的：它们大多区特有的衣物 / 饰物，转换时就没解析出来，
+本区和 `clone_lib` 都没有 —— 需要靠 §七 的区间引用能力，或者把这些物品补进
+`clone_lib`。
+
+另有 `items..id` 这种空 id，是转换器对解析失败的引用留下的垃圾，
+`SpawnController` 拿到后 `WorldItem.fetch/1` 返回占位物品，不会崩但也不该存在。
+
+测试 `test/kantele/world/carry_test.exs` 钉住了当前水位（未解引用不得过半），
+防止悄悄退化。
 
 ## 七、跨区引用只能在同区解析 🟡
 
