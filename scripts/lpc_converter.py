@@ -64,6 +64,11 @@ _SET_CALL = re.compile(r'set\s*\(\s*(["\'])([^"\']+)\1\s*,\s*([\s\S]*?)\s*\)\s*;
 _SET_NAME = re.compile(
     r'set_name\s*\(\s*(?:[A-Z_]+)?\s*(["\'])([^"\']+)\1\s*(?:[A-Z_]+)?\s*,\s*\(\s*\{([^}]+)\}\s*\)\s*\)\s*;'
 )
+# 宽松版：名字参数允许 `NOR + WHT "干粮" NOR` 这种 ANSI 常量拼接表达式。
+# 第一组是名字表达式（到第一个顶层逗号），第二组是别名表内容。
+_SET_NAME_LOOSE = re.compile(
+    r'set_name\s*\(\s*((?:[A-Z_]+\s*\+?\s*)*(?:"[^"]*"|\'[^\']*\')(?:\s*\+?\s*(?:[A-Z_]+|"[^"]*"|\'[^\']*\'))*)\s*,\s*\(\s*\{([^}]+)\}\s*\)\s*\)\s*;'
+)
 _DIRECT_ASSIGN = re.compile(r"(\w+)\s*=\s*([^;]+);")
 _FUNC_CALL = re.compile(r"(\w+)\s*\(([^)]*)\)\s*(?:->\s*\w+\s*\(\s*\))?\s*;")
 _OTHER_FN = re.compile(r"(int|string|void|mapping|object)\s+(\w+)\s*\([^)]*\)")
@@ -593,7 +598,30 @@ def _parse_set_calls(body):
 def _parse_set_name(body):
     m = _SET_NAME.search(body)
     if m is None:
-        return {}
+        # ANSI 常量拼表达式：`set_name(NOR + WHT "干粮" NOR, ({...}));`
+        #
+        # `_SET_NAME` 只容许**一个**可选 ANSI 常量（`(?:[A-Z_]+)?`），
+        # 而实际 LPC 里常见三个（`NOR` + `WHT` + `NOR`），正则匹配不上，
+        # 于是这里以前直接退回 `name = "Item"` —— 而 `clone/herb`（53 个）、
+        # `clone/fam/pill`（32 个）、`clone/medicine`（16 个）**全是这种写法**，
+        # 整批都会产出占位名。
+        #
+        # 放宽：允许名字参数是任意「ANSI 常量 + 字符串字面量 + 加号」的组合，
+        # 名字部分用既有的 `_extract_strings_from_macro_wrapped` 提取
+        # （它会把字面量拼起来、丢掉 ANSI 常量）。
+        m2 = _SET_NAME_LOOSE.search(body)
+        if m2 is None:
+            return {}
+        name = _extract_strings_from_macro_wrapped(m2.group(1))
+        aliases_str = m2.group(2)
+        aliases = []
+        for a in aliases_str.split(","):
+            a = a.strip()
+            a = re.sub(r'^["\']|["\']$', "", a)
+            if a != "":
+                aliases.append(a)
+        return {"set_name": {"name": name, "aliases": aliases}}
+
     name = m.group(2)
     aliases_str = m.group(3)
     aliases = []
