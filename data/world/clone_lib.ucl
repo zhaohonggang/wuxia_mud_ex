@@ -7000,3 +7000,49 @@ zones "clone_lib" {
     "drop"
   ]
     }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+# 转换器不认识的基类，原文件写的是 `inherit PIN;`
+# 这里一律按 ITEM 转换 —— PIN 在 LPC 里可能带着我们没移植的逻辑
+#（额外字段 / 初始化 / 装备规则…），所以这是**有损替换**。
+# 以后要补这个基类时，请从 LPC 原文重新转，别直接改这里。
+# 来源: clone/.../pin.c
+
+    items "pin" {
+      name = "钢针"
+      description = "这是一用来缝制衣服的针，颇为粗长。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}手一抖，亮出一根{name}。"
+    unwield = "{npc}收起了{name}。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+# 转换器不认识的基类，原文件写的是 `inherit PIN;`
+# 这里一律按 ITEM 转换 —— PIN 在 LPC 里可能带着我们没移植的逻辑
+#（额外字段 / 初始化 / 装备规则…），所以这是**有损替换**。
+# 以后要补这个基类时，请从 LPC 原文重新转，别直接改这里。
+# 来源: clone/.../spin.c
+
+    items "spin" {
+      name = "银针"
+      description = "这是富贵人家才使用的银针。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}手一抖，亮出一根{name}。"
+    unwield = "{npc}收起了{name}。"
+  }
+    }

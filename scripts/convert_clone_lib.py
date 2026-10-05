@@ -162,14 +162,30 @@ def _with_forced_inherit(src_text):
 #
 # 除了「没有 inherit」，还有「inherit 了冷门基类」这一类空产物：
 #   clone/cloth/qingyi.c   inherit EQUIP;
-# EQUIP 在 LPC 里连 equip.h 都没有，是全 clone/cloth 唯一用它的
-# （其余 33 个 CLOTH / 7 个 BOOTS / 1 个 WAIST），判不出类型就返回空串。
+#   clone/misc/pin.c       inherit PIN;      (钢针，真物品)
+#   clone/misc/spin.c      inherit PIN;      (真物品)
 #
-# ⚠️ **这是有损替换**：基类 EQUIP 在 LPC 里可能带着我们没理解的逻辑
+# EQUIP 在 LPC 里连 equip.h 都没有，是全 clone/cloth 唯一用它的
+# （其余 33 个 CLOTH / 7 个 BOOTS / 1 个 WAIST）。
+#
+# ⚠️ **这些替换都是有损的**：基类在 LPC 里可能带着我们没理解的逻辑
 # （额外字段、初始化行为、装备规则…），一律按 ITEM 转可能丢掉这些。
 # 所以替换时会把原基类名写进 UCL 注释，留给以后补。
+#
+# ⚠️ **但 ROOM / 类的不能这么换** —— `inherit ROOM` 的是世界设施不是物品
+# （clone/misc/temp.c、void.c 就是这样），换 ITEM 会产出「一间屋子」这种
+# 荒谬物品，所以单独判掉。
+_ITEM_BASES = {
+    'EQUIP', 'ARMOR', 'ARMOR_ITEM', 'GENERIC_ITEM',
+    'PIN',                                   # 钢针/飞针
+    'BLADE', 'SWORD', 'WHIP', 'HAMMER', 'STAFF', 'DAGGER',   # 兵器基类
+    'BOOK', 'MEDICAL_BOOK',                  # 秘籍
+}
 _COLD_INHERIT = re.compile(
-    r'^\s*inherit\s+(EQUIP|ARMOR|ARMOR_ITEM|GENERIC_ITEM)\s*;\s*$', re.M)
+    r'^\s*inherit\s+(%s)\s*;\s*$' % '|'.join(sorted(_ITEM_BASES)), re.M)
+
+# 不是物品的基类：命中就整个跳过，别试图转换
+_NON_ITEM_BASES = {'ROOM', 'NPC', 'LIVING', 'SKILL', 'QUEST_ITEM', 'BULLETIN_BOARD'}
 
 
 def _with_known_inherit(src_text):
@@ -245,6 +261,13 @@ def convert_one(conv, path):
         src = io.open(path, encoding='utf-8', errors='replace').read()
     except Exception as e:                      # noqa: BLE001
         return None, '%s / 读源文件失败: %s' % (why, e)
+
+    # 兜底之前先判「这东西根本不是物品」。
+    # clone/misc/temp.c、void.c 是 `inherit ROOM;` —— 世界设施不是道具，
+    # 硬按 ITEM 转会产出「一间屋子」这种荒谬物品。
+    inh = re.findall(r'^\s*inherit\s+([A-Z_]+)\s*;', src, re.M)
+    if inh and all(b in _NON_ITEM_BASES for b in inh):
+        return None, '不是物品（inherit %s）' % ','.join(inh)
 
     patched, changed, cold = _with_forced_inherit(src)
     how = '补 inherit ITEM（原文件没有 inherit，按 ITEM 处理）'
