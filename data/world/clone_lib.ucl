@@ -3724,3 +3724,3279 @@ zones "clone_lib" {
     "drop"
   ]
     }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "18niou" {
+      name = "十八泥偶"
+      description = "这是一个小木盒，盒中垫着棉花，并列着三排泥制玩偶，每排 六个，共是一十八个。玩偶制作得非常精巧，每个都是裸体的 男人，皮肤上涂了白垩，画满了条条红线，更有无数黑点，都 是脉络和穴道的方位。似乎都是和内功心法有关。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "advance_blade" {
+      name = "刀法详解"
+      description = "封面上写著「刀法详解」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "advance_dagger" {
+      name = "短兵详解"
+      description = "封面上写著「短兵详解」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "advance_dodge" {
+      name = "轻功详解"
+      description = "封面上写著「轻功详解」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "advance_force" {
+      name = "内功详解"
+      description = "封面上写著「内功详解」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "advance_parry" {
+      name = "招架详解"
+      description = "封面上写著「招架详解」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "advance_staff" {
+      name = "杖法详解"
+      description = "封面上写著「杖法详解」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "advance_sword" {
+      name = "剑法详解"
+      description = "封面上写著「剑法详解」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "advance_throwing" {
+      name = "暗器详解"
+      description = "封面上写著「暗器详解」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "advance_unarmed" {
+      name = "拳脚详解"
+      description = "封面上写著「拳脚详解」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "advance_whip" {
+      name = "鞭法详解"
+      description = "封面上写著「鞭法详解」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "bagua0" {
+      name = "「河图」"
+      description = "这是一本用薄绢写成的书。上书二字古篆：“河图”。 书皮泛黄，看来已经保存很久了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "bagua1" {
+      name = "「洛书」"
+      description = "这是一本用薄绢写成的书。上书二字古篆：“洛书”。 书皮泛黄，看来已经保存很久了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "basic_blade" {
+      name = "刀法入门"
+      description = "封面上写著「刀法入门」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "basic_dagger" {
+      name = "短兵入门"
+      description = "封面上写著「短兵入门」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "basic_dodge" {
+      name = "轻功入门"
+      description = "封面上写著「轻功入门」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "basic_force" {
+      name = "内功入门"
+      description = "封面上写著「内功入门」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "basic_parry" {
+      name = "招架入门"
+      description = "封面上写著「招架入门」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "basic_staff" {
+      name = "杖法入门"
+      description = "封面上写著「杖法入门」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "basic_sword" {
+      name = "剑法入门"
+      description = "封面上写著「剑法入门」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "basic_throwing" {
+      name = "暗器入门"
+      description = "封面上写著「暗器入门」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "basic_unarmed" {
+      name = "拳脚入门"
+      description = "封面上写著「拳脚入门」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "basic_whip" {
+      name = "鞭法入门"
+      description = "封面上写著「鞭法入门」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "blade_book" {
+      name = "胡家刀谱"
+      description = "这是一本胡家刀谱，记录了刀法微妙之处。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "bojuan" {
+      name = "帛卷"
+      description = "这是一卷帛卷，里面写着 ： 庄子“逍遥游”有云：穷发之北有冥海者，天池也。有鱼焉，其广数千里。。。。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "book_bamboo" {
+      name = "旧竹片"
+      description = "易筋经轻功篇 这是一片两边去皮的旧竹片，正面和背面都画了无数个飞翔纵跃的小图形。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "book_iron" {
+      name = "铁手掌"
+      description = "易筋经攻防篇 这是一块铁手掌，上面凹凹凸凸刻满了人形搏击的场面。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "book_silk" {
+      name = "薄绢"
+      description = "这是小册易筋经修行篇 由一束薄绢钉成，里面密密麻麻的画了不少打坐吐呐的姿势。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "book_stone" {
+      name = "石板"
+      description = "易筋经拳法篇 这是一块圆圆的石板，似乎用手指刻划了数个指印。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "bufa" {
+      name = "意形步法"
+      description = "这是一本意形步步法。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "daodejing_i" {
+      name = "道德经「上卷」"
+      description = "这是一册道德经「上卷」，由体道第一始至去用第四十止。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "daodejing_ii" {
+      name = "道德经「下卷」"
+      description = "这是一册道德经「下卷」，由同异第四十一始至显质第八十一止。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "douzhuan_book" {
+      name = "斗转星移"
+      description = "这是一本记载了慕容家斗转星移的秘籍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "dujing_1" {
+      name = "『星宿毒经〖上册〗』"
+      description = "『星宿毒经〖上册〗』  　　毒经为星宿宝典，凡以此经及经内所载药物私与他人，即视为欺师灭祖、 背叛师门。对叛师之徒，虽上天入地，吾弟子必予诛之。外人持有本经者，吾 弟子见一个杀一个，见十个杀十个，断不容私阅本门宝典者苟存于世。  　　　　　　　　　　　　　　　　　　　　　　　　　　星宿老仙　丁 【蒙汗药】 　用法：将药倒入酒水中诱人喝下（pour yao in <容器>）。 　药性：不致命，可使人昏厥。对内力极强者，药效不显。  【春药】 　用法：将药倒入酒水中诱人喝下（pour yao in <容器>）。 　药性：不论男女，服后欲火如焚，可为我所用。  【断肠散】 　用法：将药倒入酒水中诱人喝下（pour yao in <容器>）。 　药性：服药后肝肠寸断而亡。对内力强者，药效不显。  【清心散】 　用法：吞服（eat san）。 　药性：为本门毒门解药，可解断肠散和星宿毒掌之毒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "dujing_2" {
+      name = "『星宿毒经〖下册〗』"
+      description = "『星宿毒经〖下册〗』"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "expert_blade" {
+      name = "刀法秘要"
+      description = "封面上写著「刀法秘要」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "expert_dagger" {
+      name = "短兵秘要"
+      description = "封面上写著「短兵秘要」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "expert_dodge" {
+      name = "轻功秘要"
+      description = "封面上写著「轻功秘要」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "expert_force" {
+      name = "内功秘要"
+      description = "封面上写著「内功秘要」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "expert_parry" {
+      name = "招架秘要"
+      description = "封面上写著「招架秘要」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "expert_staff" {
+      name = "杖法秘要"
+      description = "封面上写著「杖法秘要」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "expert_sword" {
+      name = "剑法秘要"
+      description = "封面上写著「剑法秘要」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "expert_throwing" {
+      name = "暗器秘要"
+      description = "封面上写著「暗器秘要」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "expert_unarmed" {
+      name = "拳脚秘要"
+      description = "封面上写著「拳脚秘要」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "expert_whip" {
+      name = "鞭法秘要"
+      description = "封面上写著「鞭法秘要」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "force_book" {
+      name = "太极十三式"
+      description = "这是一本线装书，里面密密麻麻的画了不少打坐吐呐的姿势。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "guigu" {
+      name = "鬼谷神算"
+      description = "传说是当年鬼谷子所著的奇书。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "hand_book" {
+      name = "手法总谱"
+      description = "这是一本薄薄的小册，上面密密麻麻的写满了蝇头小楷，手势图形。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "hujia_book" {
+      name = "胡家刀谱总决"
+      description = "这是胡家刀谱总诀，记录了精妙的胡家刀法。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jinshe1" {
+      name = "「金蛇秘芨」上册"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jinshe2" {
+      name = "「金蛇秘芨」中册"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jinshe3" {
+      name = "「金蛇秘芨」下册"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jinyantu" {
+      name = "金雁图谱"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jiuyang_book" {
+      name = "「九阳真经」"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jiuyin1" {
+      name = "「九阴真经」上册"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jiuyin2" {
+      name = "「九阴真经」下册"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jiuyin3" {
+      name = "「九阴真经」残本"
+      description = "这是一本手抄本，上面记录了一些武功秘诀。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jiuzhang" {
+      name = "「九章算术」"
+      description = "这是一本薄薄的小册子，上面写着“九章算术”四个古篆小字。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "kuihua" {
+      name = "「葵花宝典」"
+      description = "这就是武林第一秘籍「葵花宝典」，相传是一位宫中太监所作。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "lbook4" {
+      name = "「论语」"
+      description = "这是一本孔夫子的论语。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "ling1" {
+      name = "圣火令"
+      description = "这是一柄两尺来长的黑牌，非金非铁。质地坚硬无比，似透明 令中隐隐似有火焰飞腾，实则是令质映光，颜色变幻。令上刻 得有不少波斯文，似乎和武学有关，内容深奥，看来要仔细研 读一番才行。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}“唰”的一声，从腰间抽出一片黑黝的铁牌握在手中。"
+    unwield = "{npc}将圣火令插回腰间。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "ling2" {
+      name = "圣火令"
+      description = "这是一柄两尺来长的黑牌，非金非铁。质地坚硬无比，似透明，令 中隐隐似有火焰飞腾，实则是令质映光，颜色变幻。令上刻得有不 少波斯文，似乎和武学有关，内容深奥，看来要仔细研读一番才行。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}“唰”的一声，从腰间抽出一片黑黝的铁牌握在手中。"
+    unwield = "{npc}将圣火令插回腰间。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "ling3" {
+      name = "圣火令"
+      description = "这是一柄两尺来长的黑牌，非金非铁。质地坚硬无比，似透明，令 中隐隐似有火焰飞腾，实则是令质映光，颜色变幻。令上刻得有不 少波斯文，似乎和武学有关，内容深奥，看来要仔细研读一番才行。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}“唰”的一声，从腰间抽出一片黑黝的铁牌握在手中。"
+    unwield = "{npc}将圣火令插回腰间。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "liuyang_book1" {
+      name = "天山六阳掌法图上册"
+      description = "这是六阳掌法上册，上面画着一些纷繁复杂的招式及修练法门。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "liuyang_book2" {
+      name = "天山六阳掌法图下册"
+      description = "这是六阳掌法下册，上面画着一些纷繁复杂的招式及修练法门。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "mbook1" {
+      name = "「本草纲目」"
+      description = "本草纲目乃是民间流传甚广的医书。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "mbook2" {
+      name = "「黄帝内经」"
+      description = "黄帝内经乃是民间流传甚广的医书。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "mbook3" {
+      name = "「华佗内昭图」"
+      description = "神医华佗所著的医书，内含许多医学秘要。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "mbook4" {
+      name = "「千金方」"
+      description = "孙思邈所著的医书，囊括了许多名家学说。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "mbook5" {
+      name = "「千斤翼」"
+      description = "千斤翼乃医学宝典，介绍了各种疑难杂症的治疗方法。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "mbook6" {
+      name = "「外台秘要」"
+      description = "王焘所著的医学宝典，介绍了各种疑难杂症的治疗方法。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "mengzi" {
+      name = "「孟子」"
+      description = "这本书记载了当年孟子许多言行哲论，是儒家经典书籍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "mizong_book" {
+      name = "密宗心经"
+      description = "这是一册密宗心经,记载着佛学的要旨。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "pixie_book" {
+      name = "辟邪剑谱"
+      description = "这是一本林家的辟邪剑谱。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "qiankun_book" {
+      name = "羊皮"
+      description = "这是一张羊皮，一面有毛，一面光滑。第一行是“明教圣 火心法，乾坤大挪移”十一个字。原来这就是武林第一秘 籍《乾坤大挪移》心法，相传来自西域山中老人所作。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "qijianpu" {
+      name = "天羽奇剑剑谱"
+      description = "这是一本天羽奇剑剑谱，上面画着一些纷繁复杂的招式及修练法门。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "qin" {
+      name = "琴谱"
+      description = "这是一本薄薄的琴谱，记载了一些弹琴的方法。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "quanpu" {
+      name = "拳脚总诀"
+      description = "这是一本拳脚总诀。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "qunxing_tu" {
+      name = "群星璀璨图"
+      description = "这是一本描写着天上群星运动的书。 但似乎并没有那么简单。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "shenzhaojing" {
+      name = "神照经"
+      description = "这是一张很普通的纸，上面抄录了一些口诀，似乎是一种叫做神照经 的绝世武功诀窍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "shoufa" {
+      name = "神龙八式手法"
+      description = "这是一本神龙八式手法。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "shunv_book" {
+      name = "淑女剑谱"
+      description = "封面上写著「淑女剑法」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "six_book" {
+      name = "六脉神剑谱"
+      description = "这是一幅图。上面都是纵横交叉的直线、圆圈和弧形。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "skin_hammer" {
+      name = "羊皮卷轴"
+      description = "这是一张羊皮质地的卷轴，上面画着一些古怪的符号。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "skin" {
+      name = "羊皮书"
+      description = "这是一张羊皮，上面画着几个舞剑的小人。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "staff_book" {
+      name = "杖法通解"
+      description = "这是一本破纸片，上面画着舞杖的小人。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "strike_book" {
+      name = "掌法总谱"
+      description = "这是一本薄薄的小册，上面密密麻麻的写满了蝇头小楷，掌法图形。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "sun_book" {
+      name = "一阳指诀"
+      description = "这是一本一阳指密诀。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "sword_book" {
+      name = "华山剑谱"
+      description = "封面上写著「华山剑法 -- 卷一（入门）」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "sword_book2" {
+      name = "华山剑谱"
+      description = "封面上写著「华山剑法 -- 卷二（进阶）」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "taohua" {
+      name = "桃花药术"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "throw_book" {
+      name = "天山器法"
+      description = "这是一本星宿派武功密籍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "tianmo_book" {
+      name = "天魔诀"
+      description = "这是一本薄薄的册页。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xiaopu" {
+      name = "箫谱"
+      description = "这是一本薄薄的箫谱，记载了一些吹箫的方法。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xuanfeng_book" {
+      name = "旋风扫叶腿法"
+      description = "这是两张纸片，上面写的都是练功的口诀要旨，却是黄药师的 亲笔，字迹遒劲挺拔，第一叶上右首写着题目，是“旋风扫叶 腿法”六字。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xuedao_book" {
+      name = "血刀秘籍"
+      description = "这是一本薄薄的小册子，上面写着血刀秘籍四个小字。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xuedao_jing" {
+      name = "血刀经"
+      description = "这是一本薄薄的丝织小册子，上面写着血刀经三个小字。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xx_book" {
+      name = "拓本"
+      description = "这是一张很普通的纸，上面抄录了一些口诀，似乎是一种叫做吸星大法 的内功诀窍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yaowang" {
+      name = "药王神篇"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yijing0" {
+      name = "「易经序卦篇」"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yijing1" {
+      name = "「易经说卦篇」"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yijing2" {
+      name = "「易经杂卦篇」"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yijing3" {
+      name = "「易经系辞篇」"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yijinjing" {
+      name = "易筋经"
+      description = "这是一卷古朴丝织经轴，看来很有年月了，上面文字古怪，不知你识 也不识。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "ylbian" {
+      name = "云龙鞭法"
+      description = "这是一本云龙鞭谱总诀。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yljian" {
+      name = "云龙剑谱"
+      description = "这是一本云龙剑谱总诀，封皮上一条长龙在云中若隐若现。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yljianpu" {
+      name = "云龙剑谱"
+      description = "这是一本云龙剑谱，封皮上一条长龙在云中若隐若现。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yljing" {
+      name = "云龙经"
+      description = "这是一册云龙经,封皮上一条长龙在云中若隐若现。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yljing1" {
+      name = "云龙经「上卷」"
+      description = "这是一册云龙经「上卷」，封皮上一条长龙在云中若隐若现。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yljing2" {
+      name = "云龙经「下卷」"
+      description = "这是一册云龙经「下卷」，封皮上一条长龙在云中若隐若现。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yunu_book" {
+      name = "玉女剑谱"
+      description = "封面上写著「玉女金针十三剑」"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yunvjing1" {
+      name = "玉女心经上册"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yunvjing2" {
+      name = "玉女心经下册"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "zhangfapu" {
+      name = "昊天掌法谱"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "zhanyi" {
+      name = "血棋衣"
+      description = "一件上面绣有血色棋局的衣服。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "zhemei_book1" {
+      name = "天山折梅手法图上卷"
+      description = "这是一幅天山折梅手法图，上面画着一些纷繁复杂的招式。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "zhemei_book2" {
+      name = "天山折梅手法图下卷"
+      description = "这是一幅天山折梅手法图，上面画着一些纷繁复杂的招式。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "zhengpu" {
+      name = "筝谱"
+      description = "这是一本薄薄的筝谱，记载了一些演奏古筝的方法。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "zhengqi_book" {
+      name = "正气吟"
+      description = "这是一本薄薄的册页。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "zihui_book" {
+      name = "紫徽心法"
+      description = "这是一本记载了慕容家紫徽心法的秘籍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "zixia_book" {
+      name = "紫霞密芨"
+      description = "华山派『紫霞神功』秘笈"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "baguadao" {
+      name = "紫金八卦刀"
+      description = "这是一柄厚背薄刃，紫金所铸的八卦刀，刀柄上刻着一个“商”字。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}一声清啸，「唰」地一声抽出紫金八卦刀，刀身光泽流动，煞为称奇。"
+    unwield = "{npc}轻哼一声，将手中紫金八卦刀插回背后。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "bailongjian" {
+      name = "白龙剑"
+      description = "青锋长约三尺，剑脊花纹古朴，锋口隐隐发着银泽。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从背后「唰」的抽出一柄利剑，剑刃在阳光下闪闪生辉。"
+    unwield = "{npc}将手中白龙剑空舞个剑花，插回剑鞘。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "baojia" {
+      name = "真丝宝甲"
+      description = "这是一件黑黝黝的马甲，入手沉重，初看之下毫不起眼。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "bishou" {
+      name = "玄铁匕首"
+      description = "通体漆黑的匕首，匕脊处沁出丝丝寒意。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一柄黑黝黝的匕首拿在手中，顿时一阵寒气扑面而来。"
+    unwield = "{npc}将手中的匕首插回靴中。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "canyang" {
+      name = "残阳宝剑"
+      description = "此剑长五尺，细而长，通体泛出金光。剑柄弯曲，上刻残阳图 纹，剑脊之上还铸有无数密密麻麻的古篆，似乎与武学有关。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}蓦地纵声长啸，霎时寒芒一闪，一道金光破空划过，落于{npc}掌间。"
+    unwield = "{npc}一声轻哼，将手中的残阳宝剑插入剑鞘。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "caojie" {
+      name = "神草结"
+      description = "当年达摩祖师一苇渡江时所穿的草鞋。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "chilongsuo" {
+      name = "赤龙金索"
+      description = "一根由赤金所熔铸的长索，索柄刻有一个小小的「向」字。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「飕」的一声从腰间抽出一卷金索，凌空舞了个圈子。"
+    unwield = "{npc}冷笑一声，将手中赤龙金索盘好，放回腰间。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "dongxiao" {
+      name = "绿玉洞箫"
+      description = "一支绿玉做成的洞箫，看上去晶莹温润。武林中人经常以萧代剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}大袖一挥，手中已多了一支晶莹温润的绿玉洞萧。"
+    unwield = "{npc}手中绿玉洞箫一转，眨眼间已然不见影踪。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "feituo" {
+      name = "飞驼金甲"
+      description = "这是一副用黄金打造而成的护甲，甲上雕刻着背生翅 膀的骆驼。传说中只有高昌国王才可使用飞驼标记。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "godsword" {
+      name = "神聖長劍"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "heijian" {
+      name = "黑剑"
+      description = "这是一柄黑色的宝剑，剑身发出阴寒之气，令人毛骨悚然。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一柄黑色的宝剑，顿觉寒气弥漫于四周。"
+    unwield = "{npc}剑转三周，插剑入鞘，寒气隐于剑鞘之中。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "heilongbian" {
+      name = "黑龙鞭"
+      description = "一支通体漆黑的长鞭，看上去倒是很坚韧。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从腰间取出一卷漆黑的长鞭，凌空挥舞个圈子。"
+    unwield = "{npc}一声轻哼，将手中黑龙鞭盘好，放回腰间。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "heisuo1" {
+      name = "黑索"
+      description = "一支通体漆黑的长鞭，看上去倒是很坚韧。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}一伸手，悄无声息的将黑索握在手中。"
+    unwield = "{npc}将手中的黑索卷起，放回腰间。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "heisuo2" {
+      name = "黑索"
+      description = "一支通体漆黑的长鞭，看上去倒是很坚韧。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}一伸手，悄无声息的将黑索握在手中。"
+    unwield = "{npc}将手中的黑索卷起，放回腰间。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "heisuo3" {
+      name = "黑索"
+      description = "一支通体漆黑的长鞭，看上去倒是很坚韧。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}一伸手，悄无声息的将黑索握在手中。"
+    unwield = "{npc}将手中的黑索卷起，放回腰间。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "hexingbi" {
+      name = "鹤形笔"
+      description = "一支通体红色的毛笔，呈鹤形，看上去是件利器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从腰间取出一支鹤形笔拿在手中。"
+    unwield = "{npc}一声轻哼，将手中鹤形笔放回腰间。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "houbeidao" {
+      name = "厚背紫金刀"
+      description = "这是一柄厚背紫金八卦刀，刀缝浮动着淡紫色的光泽。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}一声清啸，「唰」地一声抽出厚背紫金刀，一股寒气扑面涌来。"
+    unwield = "{npc}轻哼一声，将手中厚背紫金刀插回背后。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "huangjinfu" {
+      name = "黄金斧"
+      description = "这是一柄纯金黄铸造的大斧，斧柄末端似乎有些松动。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}举起一柄纯黄所铸的大斧，随手挥舞了两下。"
+    unwield = "{npc}哈哈一笑，将手中的黄金斧收回背后。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "huanlingjian" {
+      name = "幻灵剑"
+      description = "剑身优美细长，散发着淡青银光。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "银光划过，幻灵剑已落入{npc}手中。"
+    unwield = "天地忽暗，{npc}手中的幻灵剑已悄然隐没 。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "huilongbi" {
+      name = "回龙璧"
+      description = "一支温莹剔透的玉壁，上面雕纹着一条蛟龙。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "hupohuan" {
+      name = "琥珀神环"
+      description = "散发着古朴光泽的指环，这便是燕子邬主人慕容博的信物琥珀神环。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jiansuo" {
+      name = "剑盾珠索"
+      description = "一根通体银白的长索，索头上系有一个钢球。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从腰间取出一卷银白色的长索，“啪”地凌空抽打了一下。"
+    unwield = "{npc}微微一笑，将手中剑盾珠索盘好，放回腰间。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jiasha" {
+      name = "龙象袈裟"
+      description = "这是一件陈旧的袈裟，通体血红，印有龙象纹样。着手处坚韧 无比，想必是由金刚丝混及雪蚕丝编织而成。更有传闻说密宗 神功龙象般若功便是记载于这件袈裟之上。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jinlan" {
+      name = "锦襕袈裟"
+      description = "锦襕袈裟乃少林寺历代相传的圣物，是由冰蚕造练抽丝，巧匠 翻腾为线，仙娥织就，神女机成。方方簇幅绣花缝，片片相帮 堆锦簆。穿上满身红雾绕，脱来一段彩云飞。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jinlun" {
+      name = "日月金轮"
+      description = "金轮法王的随身兵器，乃是由金银铜铁锡五柄法轮组成。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}将日月金轮高举在手中，空气中顿时沁出一股寒气。"
+    unwield = "{npc}一声冷笑，将日月金轮收回怀中。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jinshejian" {
+      name = "金蛇剑"
+      description = "只见那剑形状甚是奇特，整柄剑就如是一条蛇盘 曲而成，蛇尾勾成剑柄，蛇头则是剑尖，蛇舌伸 出分叉，是以剑尖竟有两叉。那剑金光灿烂，握 在手中甚是沉重，看来竟是黄金混和了其他五金 所铸，剑身上一道血痕，发出碧油油的暗光，极 是诡异。。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "破空而响，金蛇剑已出鞘，{npc}全身凉飕飕地只感寒气逼人。"
+    unwield = "{npc}手一扬，金蛇剑回鞘，四周寒气顿消。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jinwugou" {
+      name = "金蜈钩"
+      description = "一柄金光闪闪的钩子，很是锋利，顶端好似一只蛇头。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}冷笑一声，从背后抽出一柄奇形怪状的金钩连挥数下，顿时金芒四射。"
+    unwield = "{npc}一声轻哼，将手中金蜈钩插回背后。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jiuhuan" {
+      name = "九环锡杖"
+      description = "这是一根通体漆黑的锡杖，入手极为沉重，非常坚韧，乃少林 寺历代相传的圣物。有云：铜镶铁造九连环，九节仙藤永驻颜。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}取出九环锡杖握于手中，霎时金波荡漾，有若七佛随身。"
+    unwield = "{npc}微微一笑，将手中的九环锡杖放回包囊。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "juchidao" {
+      name = "黄金锯齿刀"
+      description = "这是一柄背宽刃薄的黄金锯齿刀，刀身发出夺目的金光，刀刃呈锯齿状。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一柄形如锯齿的宝刀，顿时只觉金光夺目。"
+    unwield = "{npc}弹刀清啸，心中感慨，将黄金锯齿刀插回刀鞘。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "jundao" {
+      name = "闯王军刀"
+      description = "这是闯王所使用过的刀，上面刻有几行小字。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}纵声大笑，从腰间抽出一柄颇为古旧的弯刀。"
+    unwield = "{npc}环顾四周，轻叹一声，将闯王军刀插回腰间。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "junzijian" {
+      name = "君子剑"
+      description = "这是一口遍体通黑的剑，剑身上用金丝锩着几个字： 谦谦君子，温润如玉。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}一声清啸，一柄无尖无锋的宝剑已握在手中。"
+    unwield = "{npc}反转剑身， 「唰」”的一声，君子剑已然入鞘。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "lengyuedao" {
+      name = "冷月宝刀"
+      description = "这是一柄形如冷月的宝刀，整个刀身冷气森森，锐利无比。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出柄形如冷月的长刀，顿时只觉寒气逼人，刀光如水，流转不定。"
+    unwield = "{npc}弹刀清啸，心中感慨，将冷月宝刀插回刀鞘。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "liangjijian" {
+      name = "两极剑"
+      description = "一柄锋利的长剑，剑脊中分，一半呈火红色，另一半却白如寒雪。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}一声长叹，抽出一柄红白相间的长剑握在手中。"
+    unwield = "{npc}一声轻哼，将手中的两极剑插回背后。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "lutouzhang" {
+      name = "鹿头杖"
+      description = "一根粗长的木杖，上方呈鹿头状。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}将手中鹿头杖猛地挥舞几圈，然后拿在手中。"
+    unwield = "{npc}大喝一声，将鹿头杖取下矗在地上。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "mojian" {
+      name = "墨剑"
+      description = "一柄通体墨黑的长剑，剑身透着奇异的光泽。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "只见{npc}单袖轻轻一抖，手中已多了一柄通体墨黑的长剑。"
+    unwield = "{npc}微微一笑，将手中的墨黑长剑插回腰间。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "noname" {
+      name = "无名剑"
+      description = "此剑长约四尺，青光闪闪，似是利器。 乃剑魔独孤求败年轻时所持。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出{name}，负手而立，一派宗师风范。"
+    unwield = "{npc}清啸一声，弹指间，将{name}收回。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "poyangfu" {
+      name = "破阳神斧"
+      description = "一柄赤红色的单手斧，非常沉重，锋沿沁出一股寒意。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一柄巨斧提在手中，掂了掂，试试重量。"
+    unwield = "{npc}哈哈一笑，将手中的破阳神斧收回背后。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "qipan" {
+      name = "玄铁棋盘"
+      description = "一个黑黝黝的棋盘，看起来毫不起眼。提在手中感觉非常的沉 重，仔细一看，整个棋盘竟然是用玄铁铸成。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从背后取出一个黑黝黝的棋盘高举在手中，霎时空气中竟沁入一阵寒气。"
+    unwield = "{npc}哈哈一笑，将手中的玄铁棋盘收回。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "ruanwei" {
+      name = "软猬甲"
+      description = "这是一件黑黝黝的软甲，粗看下毫不起眼。这便是桃花岛至宝 软猬甲，只见整个甲身乌黑亮泽，着手柔软，却又是坚硬胜铁， 宝甲外围还生满了倒刺，尖利无比。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "shangfaling" {
+      name = "赏善罚恶令"
+      description = "这是一面用黄铜所铸的铜牌，正面刻着“赏善”，背面刻着“罚恶”。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "shenmu" {
+      name = "南海神木"
+      description = "半截蓉绿半截焦枯的木棍，看似普通，却竟如铁铸一般，坚硬无比。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一根半截蓉绿半截焦枯的木棍握在手中。"
+    unwield = "{npc}将手中的南海神木挥舞个圈子，插回背上。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "shennongjian" {
+      name = "神农锏"
+      description = "一柄看似普通的药锄，柄上刻着“神农”二字。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拔出神农锏握在手里，四周空气中顿时充满浓厚的草药香味。"
+    unwield = "{npc}哈哈一笑，将神农锏收回。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "sheying" {
+      name = "含沙射影"
+      description = "这是五毒教的奇门暗器「含沙射影」，样子象一条腰 带，可以束在腰间。带中间有一个扁扁的小铁盒，只 要在腰间一按(shot)就可以发射出细如牛毛的毒针。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "shunvjian" {
+      name = "淑女剑"
+      description = "这是一口遍体通黑的剑，剑身上用金丝锩着几个字： 窈窕淑女，君子好逑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}一声清啸，一柄无尖无锋的宝剑已握在手中。"
+    unwield = "{npc}反转剑身，「唰」的一声，淑女剑已入鞘。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "tenglongjian" {
+      name = "腾龙剑"
+      description = "一柄锋利的长剑，剑身宛如流水，隐隐漾着青光。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}唰的抽出一柄利剑握在手中，剑身青光荡漾，寒气逼人。"
+    unwield = "{npc}空舞了数个剑花，将腾龙宝剑插回腰间。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "tieqin" {
+      name = "铁琴剑"
+      description = "一具雕有古朴花纹的铁琴，铁琴的一端露出一个剑柄。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}缓缓从怀中铁琴的琴脊处抽出一柄厚脊薄刃的长剑握在手中。"
+    unwield = "{npc}微微一笑，将手中的铁琴剑收回，插入铁琴中去。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "tulongdao" {
+      name = "屠龙刀"
+      description = "这便是号称武林至尊的屠龙宝刀，四尺来长的单刀，竟达一百多斤之重。 相传其中藏有旷世的大秘密。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}一声狂笑，从背后抽出那柄号称「武林至尊」的屠龙宝刀高高举起。"
+    unwield = "{npc}哈哈一笑，将屠龙宝刀插回背后。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xiangludao" {
+      name = "绿波香露刀"
+      description = "一柄碧绿色的鬼头刀，刀身散发出一阵腥臭，让人闻了几欲作呕。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    unwield = "{npc}抹了抹汗，将手中所握的绿波香露刀收回。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xuantiejian" {
+      name = "玄铁重剑"
+      description = "一柄由玄铁铸成的无锋长剑，着手沉重无比，但是却蕴藏着极大的威力。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出{name}，仗剑而立，威风凛凛，令人肃然起敬。"
+    unwield = "{npc}仰天长叹，潜运内力，将{name}收回。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xuedao" {
+      name = "血刀"
+      description = "这是一把缠在腰间的宝刀，刀锋带着淡淡的血影。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}一声阴笑，抽出一柄血红色的单刀高高扬起，空气中顿时弥漫出一股杀气。"
+    unwield = "{npc}一声轻哼，将手中血刀插回背后。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yaoqin" {
+      name = "白玉瑶琴"
+      description = "这是一具通体都用上等白玉雕制而成瑶琴，非常的华丽及名贵。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从背后缓缓取出一具白玉瑶琴，轻轻的合抱在手中。"
+    unwield = "{npc}微微一笑，将手中的白玉瑶琴收了起来，放到背后。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yaowang_book" {
+      name = "药王神篇"
+      description = "一本薄薄的书籍，封面豁然写着“药王神篇”四个字。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yinjiaobian" {
+      name = "银蛟鞭"
+      description = "一根纯银所铸的长鞭，鞭身生满了倒刺，很是坚韧。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从腰间取出一卷银光闪闪的长鞭，凌空挥舞个圈子。"
+    unwield = "{npc}一声轻哼，将手中银蛟鞭盘好，放回腰间。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yinsuo" {
+      name = "银索金铃"
+      description = "一根银色的长索，隐隐流动着金属的光泽，看上去很是坚韧。长索的一端系着两个金铃。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}轻轻的从怀里取出一根银色的长索握在手中。"
+    unwield = "{npc}将手中银索金铃回腰间，天地又渐渐放出光芒。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yitianjian" {
+      name = "倚天剑"
+      description = "这便与天下至尊的屠龙宝刀并称的倚天剑。 相传其中藏有旷世的大秘密。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "只听「嗖」的一声破空声响，号称天下第一神兵的倚天剑已被{npc}握于手中。"
+    unwield = "{npc}将倚天剑插回腰间，天地又渐渐放出光芒。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yuchang" {
+      name = "鱼肠剑"
+      description = "一柄古朴沉重的短匕首，匕脊上刻有「鱼肠」二字。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从兜里掏出一柄匕首，空气中顿时沁出一丝寒气。"
+    unwield = "{npc}手中的鱼肠剑一转，眨眼间已然不见影踪。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yuxiao" {
+      name = "玉箫"
+      description = "一支白玉做成的玉箫，看上去晶莹温润。武林中人经常以箫代剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}大袖一挥，手中已多了一支晶莹温润的玉箫。"
+    unwield = "{npc}手中玉萧一转，眨眼间玉箫已然不见影踪。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yuzhu" {
+      name = "玉竹杖"
+      description = "这是一根绿玉所制的杖，乃是丐帮历代相传的帮主信物。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从背后抽出一根绿玉所制的手杖，凌空舞了个圈子。"
+    unwield = "{npc}微微一笑，将手中的玉竹杖插回背后。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "zhenwu" {
+      name = "真武剑"
+      description = "这是一柄寒光闪闪的宝剑，昔年武当张真人持此剑荡妖除魔，扫尽群丑。 江湖宵小，见此剑无不心荡神摇。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "zhenyue" {
+      name = "镇岳尚方"
+      description = "此剑乃周昭王瑕在位五十一年以二年岁次壬午，铸五剑，各投 五岳，铭曰镇岳尚方，古文篆书，剑长五尺通体流光。剑脊与 剑柄之上还铸有无数密密麻麻的古篆，似乎与武学有关。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}蓦地纵声长啸，霎时寒芒一闪，一道青光破空划过，落于{npc}掌间。"
+    unwield = "{npc}一声轻哼，将手中的镇岳尚方宝剑插入剑鞘。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "zhihuan" {
+      name = "逍遥神仙环"
+      description = "散发着古朴光泽的玉斑指，这便是逍遥掌门人信物逍遥神仙环。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "zhusuo" {
+      name = "软红蛛索"
+      description = "一支通体血红的长索，看上去很是坚韧。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从腰间取出一卷血红色的长索，“啪”地凌空抽打了一下。"
+    unwield = "{npc}一声轻哼，将手中软红蛛索盘好，放回腰间。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "body1" {
+      name = "青龙图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "body10" {
+      name = "玄蛇图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "body2" {
+      name = "白虎图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "body3" {
+      name = "玄武图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "body4" {
+      name = "朱雀图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "body5" {
+      name = "蚩尤图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "body6" {
+      name = "应龙图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "body7" {
+      name = "雷兽图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "body8" {
+      name = "刑天图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "body9" {
+      name = "夸父图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "buttock1" {
+      name = "颛顼图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "buttock2" {
+      name = "天吴图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "buttock3" {
+      name = "句芒图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "buttock4" {
+      name = "鶽鸟图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "buttock5" {
+      name = "烛龙图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "buttock6" {
+      name = "鸀鸟图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "buttock7" {
+      name = "赤蛇图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "buttock8" {
+      name = "窫窳图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "npc_item1" {
+      name = "檀木古盒"
+      description = "这是一个檀木沉香盒，看样子已有很长的年时了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "per1" {
+      name = "燕尾蝶图腾"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spc1" {
+      name = "九宵纹龍图"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spc10" {
+      name = "冥皇炼狱图"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spc11" {
+      name = "神农百草图"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spc12" {
+      name = "怒目金刚图"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spc13" {
+      name = "周天星斗图"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spc2" {
+      name = "凤舞九天图"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spc3" {
+      name = "万佛朝圣图"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spc4" {
+      name = "百鬼夜行图"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spc5" {
+      name = "托塔天王图"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spc6" {
+      name = "千手观音图"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spc7" {
+      name = "锦绣山河图"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spc8" {
+      name = "后羿射日图"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spc9" {
+      name = "九仪天尊图"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spcs1" {
+      name = "羊皮碎片"
+      description = "这是一块羊皮碎片，上面绘有残缺不全的九宵纹龍纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spcs10" {
+      name = "羊皮碎片"
+      description = "这是一块羊皮碎片，上面绘有残缺不全的冥皇炼狱纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spcs2" {
+      name = "羊皮碎片"
+      description = "这是一块羊皮碎片，上面绘有残缺不全的凤舞九天纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spcs3" {
+      name = "羊皮碎片"
+      description = "这是一块羊皮碎片，上面绘有残缺不全的万佛朝圣纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spcs4" {
+      name = "羊皮碎片"
+      description = "这是一块羊皮碎片，上面绘有残缺不全的百鬼夜行纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spcs5" {
+      name = "羊皮碎片"
+      description = "这是一块羊皮碎片，上面绘有残缺不全的托塔天王纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spcs6" {
+      name = "羊皮碎片"
+      description = "这是一块羊皮碎片，上面绘有残缺不全的千手观音纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spcs7" {
+      name = "羊皮碎片"
+      description = "这是一块羊皮碎片，上面绘有残缺不全的锦绣山河纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spcs8" {
+      name = "羊皮碎片"
+      description = "这是一块羊皮碎片，上面绘有残缺不全的后羿射日纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "spcs9" {
+      name = "羊皮碎片"
+      description = "这是一块羊皮碎片，上面绘有残缺不全的九仪天尊纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "tattoo" {
+      name = "刺青图"
+      description = "这是一张古旧的图片，上面绘着些纹样。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "bag" {
+      name = "包裹"
+      description = "这是一个包裹。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "bandage" {
+      name = "布条"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "bone" {
+      name = "人骨"
+      description = "这是一根白森森的人骨头。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一把{name}握在手中。"
+  }
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "cart" {
+      name = "大车"
+      description = "这是一辆普通的货车，驾车(drive)是一个技术活。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "chongdu" {
+      name = "虫毒"
+      description = "这是一粒由毒虫毒液精制而成的毒药，毒性相当猛烈。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "corpse" {
+      name = "无名尸体"
+      description = "这是一具无名尸体。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "dahuan_dan" {
+      name = "大还丹"
+      description = "这是一颗紫红晶亮的大还丹。此丹乃少林珍药，提高功力，灵效无比。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "duwan" {
+      name = "毒丸"
+      description = "这是一粒由毒虫毒液精制而成的毒药，毒性猛烈之极。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "dymo" {
+      name = "丹玉磨"
+      description = "一只用玉磨成的小碗，颇为沉重，由于玉的特殊质地，所以用 来炼药可以获得更好的效果。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "edemote" {
+      name = "表情动词编辑器"
+      description = "这是一架看起来怪怪的仪器，上面贴着说明(help editor)。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "energy" {
+      name = "能量石"
+      description = "一块精光闪闪的能量石。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "giftbox" {
+      name = "礼品盒"
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "gudu" {
+      name = "蛊毒"
+      description = "这是一粒集百毒之精华炼制而成的毒药，毒性猛烈之极。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "hair" {
+      name = "头发"
+      description = "一束头发。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "head" {
+      name = "头颅"
+      description = "这是一颗鲜血淋淋的首级，鲜血正缓缓渗出。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "hedinghong" {
+      name = "鹤顶红"
+      description = "一瓶剧毒的毒药, 如果用来炼暗器有见血封喉之效."
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "kongquedan" {
+      name = "孔雀胆"
+      description = "一瓶剧毒的毒药, 如果用来炼暗器有见血封喉之效."
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "letter" {
+      name = "信件"
+      description = "这是一封信件。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "mashao" {
+      name = "马哨"
+      description = "这是一个竹子制成的马哨，上面有镇远镖局的标志。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "mask" {
+      name = "面具"
+      description = "这似乎是一个由人皮制成的面具。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "muding" {
+      name = "木鼎"
+      description = "一只木制的鼎，里面散发出香料的气味，但是细细感觉下却有一股腥味。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "needfire" {
+      name = "篝火"
+      description = "这是一堆正在燃烧的篝火，看上去可以在上面烤烤东西(kao)。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "newbie" {
+      name = "九转金丹"
+      description = "一颗金色的仙丹，传说是太上老君精心修炼的灵丹妙药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "newbie_book" {
+      name = "武林外传"
+      description = "一本不知道啥材料制成的书，上书【武林外传】四个大字。 这本书是武林生存指南，建议你仔细阅读（read book）。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "part" {
+      name = "残肢"
+      description = ""
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "receipt" {
+      name = "回执"
+      description = "这是一张回执！"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "river_boat" {
+      name = "渡船"
+      description = "这是一叶小舟，最多也就能载七、八个人。小舟上有位六 十多岁的老艄公手持长竹篙，正在船尾吃力地撑着船。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "rumor" {
+      name = "谣言生成器"
+      description = "这是一架看起来怪怪的仪器，涂得五颜六色，专供各类长舌人士造谣使用。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "shang_ling" {
+      name = "商令"
+      description = "这是一张红底金边的通商令，由闯王军颁发。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "shedu" {
+      name = "蛇毒"
+      description = "这是一粒由蛇的毒液精制而成的毒药，可置人于死地。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "trans_cart" {
+      name = "大车"
+      description = "这是一辆普通的马车，行驶在大官道上，你觉得晃晃悠悠的。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "whistle" {
+      name = "马哨"
+      description = "这是一个玉制马哨，需要马时吹(whistle)一下就行了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xiangliao" {
+      name = "特制香料"
+      description = "这是一块特制的香料，点燃后可以发出浓郁的香气。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xiaohuan_dan" {
+      name = "小还丹"
+      description = "这是一颗莹白溜圆的小还丹。此丹乃少林奇药，助长内力，灵效无比。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yinzongxiang" {
+      name = "神魂引踪香"
+      description = "这是一根暗紫色的线香，香体中隐约可见丝丝银光流转，如同星辰碎屑。 香头系着一缕纯白色的丝线，散发着淡淡的、难以名状的清香，既非草木 之香，也非脂粉之气，而是一种直透心脾的奇异味道。  此香蕴含精纯的神魂之力，可用于感应天地间生灵的魂魄波动。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "zhujingchan" {
+      name = "朱睛冰蟾"
+      description = "这是一千年难得一见的朱睛冰蟾，通体透明，惟眼呈赤色，能解百毒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

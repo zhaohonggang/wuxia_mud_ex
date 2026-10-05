@@ -87,6 +87,8 @@ SKIP_DIRS = {
 }
 
 _ITEM_BLOCK = re.compile(r'^\s*items\s+"(\w+)"\s*\{', re.M)
+# 占位名：转换器没解析出名字时会产这个
+_PLACEHOLDER_NAME = re.compile(r'name\s*=\s*"Item"')
 
 
 def existing_items(path):
@@ -340,6 +342,7 @@ def main():
     added = []
     skipped = []
     failed = []
+    placeholders = []
 
     for sd in subdirs:
         if sd in SKIP_DIRS:
@@ -369,23 +372,35 @@ def main():
 
             bad = unhandled_comments(conv, path)
             flag = '  !! %d 条未处理' % len(bad) if bad else ''
+
+            # 占位名闸门：`name = "Item"` 说明转换器没解析出名字
+            # （典型是 set_name 不在 create() 里，书名走文件顶层 titles 数组）。
+            # 这种定义对玩家毫无价值，**不写入**，只报出来。
+            if _PLACEHOLDER_NAME.search(block):
+                placeholders.append((sd, item_id))
+                have.add(item_id)
+                print('   - %-16s 占位名，跳过' % item_id)
+                continue
+
             added.append((sd, item_id, block, bad))
             have.add(item_id)
             print('   + %-16s%s' % (item_id, flag))
 
-    print('\n新增 %d / 跳过已存在 %d / 失败 %d'
-          % (len(added), len(skipped), len(failed)))
+    print('\n新增 %d / 跳过已存在 %d / 失败 %d / 占位名跳过 %d'
+          % (len(added), len(skipped), len(failed), len(placeholders)))
 
     if failed:
         print('\n失败明细:')
         for iid, why in failed[:15]:
             print('   %-16s %s' % (iid, why))
 
-    # 名字质量体检：新加的里有几个还是占位名
-    placeholders = [i for _sd, i, b, _x in added if re.search(r'name\s*=\s*"Item"', b)]
     if placeholders:
-        print('\n!! 新增里有 %d 个 name="Item" 占位名: %s'
-              % (len(placeholders), ', '.join(placeholders[:12])))
+        print('\n占位名（name="Item"）已跳过 %d 个，源文件待人工确认:'
+              % len(placeholders))
+        for sd, iid in placeholders[:15]:
+            print('   %-12s %s' % (sd, iid))
+        if len(placeholders) > 15:
+            print('   ... 另有 %d 个' % (len(placeholders) - 15))
 
     if not args.apply:
         print('\ndry-run（加 --apply 才写入）')
