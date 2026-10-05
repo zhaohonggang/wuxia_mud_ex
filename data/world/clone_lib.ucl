@@ -3145,3 +3145,564 @@ zones "clone_lib" {
     "eat"
   ]
     }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "chaihu" {
+      name = "柴胡"
+      description = "柴胡是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "chenpi" {
+      name = "陈皮"
+      description = "陈皮是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "chongcao" {
+      name = "东虫夏草"
+      description = "东为虫，夏为草。乃是极为名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "chuanwu" {
+      name = "川乌"
+      description = "川乌是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "dahuang" {
+      name = "大黄"
+      description = "大黄是颇为名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "dangui" {
+      name = "当归"
+      description = "当归是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "duhuo" {
+      name = "独活"
+      description = "独活是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "fangfeng" {
+      name = "防风"
+      description = "防风是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "fuzi" {
+      name = "附子"
+      description = "附子是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "gsliu" {
+      name = "干石榴"
+      description = "干石榴是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "guijia" {
+      name = "龟甲"
+      description = "乌龟的壳，上面有各种花纹，可以入药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "guiwei" {
+      name = "归尾"
+      description = "归尾是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "hafen" {
+      name = "蛤粉"
+      description = "蛤粉是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "heshouwu" {
+      name = "何首乌"
+      description = "何首乌是颇为名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "honghua" {
+      name = "红花"
+      description = "红花是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "huangqi" {
+      name = "黄芪"
+      description = "黄芪是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "hugu" {
+      name = "虎骨"
+      description = "成年虎的骨头，药性强烈，是非常名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "juhua" {
+      name = "菊花"
+      description = "菊花是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "lanhua" {
+      name = "兰花"
+      description = "兰花是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "lingxian" {
+      name = "灵仙"
+      description = "灵仙是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "lingzhi" {
+      name = "灵芝"
+      description = "灵芝是颇为名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "lurong" {
+      name = "鹿茸"
+      description = "雄鹿的茸角，可以入药，非常的名贵。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "mahuang" {
+      name = "麻黄"
+      description = "麻黄是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "moyao" {
+      name = "没药"
+      description = "没药是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "niuhuang" {
+      name = "牛黄"
+      description = "牛黄是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "niuxi" {
+      name = "牛膝"
+      description = "牛膝是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "qianjinzi" {
+      name = "千金子"
+      description = "千金子是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "renshen" {
+      name = "人参"
+      description = "人参是颇为名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "ruxiang" {
+      name = "乳香"
+      description = "乳香是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "shancha" {
+      name = "山茶"
+      description = "山茶是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "shanjia" {
+      name = "山甲"
+      description = "山甲是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "shedan" {
+      name = "蛇胆"
+      description = "这是一颗新鲜的蛇胆，颇具药力。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "shengdi" {
+      name = "生地"
+      description = "生地是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "shenglg" {
+      name = "生龙骨"
+      description = "海马的骨络，乃是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "sumu" {
+      name = "苏木"
+      description = "苏木是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "taoxian" {
+      name = "桃仙"
+      description = "桃仙是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "tenghuang" {
+      name = "藤黄"
+      description = "藤黄是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "tianqi" {
+      name = "田七"
+      description = "田七是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "tugou" {
+      name = "土狗"
+      description = "土狗是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "wulingzhi" {
+      name = "五灵脂"
+      description = "五灵脂是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xiefen" {
+      name = "蝎粉"
+      description = "蝎粉是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xijiao" {
+      name = "犀角"
+      description = "犀牛的角，药性强烈，是名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xiongdan" {
+      name = "熊胆"
+      description = "这是一副新鲜的熊胆，颇具药力。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xionghuang" {
+      name = "雄黄"
+      description = "药性极强的中药药材，带在身上可以防止蛇虫及身。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xuejie" {
+      name = "血竭"
+      description = "血竭是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "xuelian" {
+      name = "雪莲"
+      description = "雪莲是颇为名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yanwo" {
+      name = "燕窝"
+      description = "雪燕在峭壁所制的窝巢，乃是极为名贵的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yjhua" {
+      name = "洋金花"
+      description = "洋金花是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "yuanzhi" {
+      name = "远志"
+      description = "远志是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "zihua" {
+      name = "紫花"
+      description = "紫花是常见的中药药材。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+    items "zzfen" {
+      name = "珍珠粉"
+      description = "珍珠磨成的粉末，药性温和，亦有养颜之功。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

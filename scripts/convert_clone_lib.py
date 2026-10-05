@@ -111,22 +111,35 @@ def _unwrap(res):
     return res, []
 
 
-# 转换器靠 `inherit` 判断对象类型。`clone/` 里有一批叶子对象**只 #include
-# 头文件、没有 inherit**（`medicine/*.c` 全部如此，它们 include 了
-# "medicine.h" 但没 inherit 任何东西），于是 `_determine_object_type` 判不出
-# ITEM，`convert_file` 返回**空字符串**。
+# 转换器靠 `inherit` 判断对象类型。`clone/` 里有一批叶子对象**没有任何
+# inherit**（`medicine/*.c` 只 include "medicine.h"、`herb/*.c` 连
+# `#include <ansi.h>` 都没有），于是 `_determine_object_type` 判不出 ITEM，
+# `convert_file` 返回**空字符串**。
 #
 # 对这些文件补一条 inherit 再转 —— ITEM 是它们真实的类型
 # （`base_unit` / `base_value` / `base_weight` / `setup()` 都在 ITEM 的接口上）。
-_INHERIT_ITEM = re.compile(r'^#include\s+<ansi\.h>\s*$', re.M)
-
-
+#
+# 注意插入点：herb/*.c 连 `#include <ansi.h>` 都没有（第一行是
+# `#include "herb.h"`），所以不能拿 `<ansi.h>` 当锚点，改成插在**第一行
+# `#include` 之前**。
 def _with_forced_inherit(src_text):
     """给没有 inherit 的叶子对象补上 `inherit ITEM;`。"""
     if re.search(r'^\s*inherit\s+', src_text, re.M):
         return src_text, False
-    out = src_text.replace('#include <ansi.h>', '#include <ansi.h>\ninherit ITEM;', 1)
-    return out, out != src_text
+
+    lines = src_text.split('\n')
+    idx = next((i for i, l in enumerate(lines)
+                if l.lstrip().startswith('#include')), None)
+
+    if idx is None:
+        # 整个文件没有 #include：插在第一行代码前
+        insert_at = next((i for i, l in enumerate(lines)
+                          if l.strip() and not l.strip().startswith('//')), 0)
+    else:
+        insert_at = idx
+
+    lines.insert(insert_at, 'inherit ITEM;')
+    return '\n'.join(lines), True
 
 
 def convert_one_from_text(conv, src_text, name):
