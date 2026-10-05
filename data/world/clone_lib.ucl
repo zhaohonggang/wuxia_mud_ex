@@ -3706,3 +3706,21 @@ zones "clone_lib" {
     "drop"
   ]
     }
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+
+# 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
+# 转换器不认识的基类，原文件写的是 `inherit EQUIP;`
+# 这里一律按 ITEM 转换 —— EQUIP 在 LPC 里可能带着我们没移植的逻辑
+#（额外字段 / 初始化 / 装备规则…），所以这是**有损替换**。
+# 以后要补这个基类时，请从 LPC 原文重新转，别直接改这里。
+# 来源: clone/.../qingyi.c
+
+    items "qingyi" {
+      name = "青布袍"
+      description = "这是一件质地上佳的青衣。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+    }

@@ -70,7 +70,21 @@ PRIORITY = [
     'quarry',       # 狩猎物，暂缓（见 docs/dangling-room-items-report §六）
 ]
 
-SKIP_DIRS = {'quarry'}
+SKIP_DIRS = {
+    # 狩猎物：移植等于把狩猎玩法带回来，工作量比生成 items 块大
+    # （见 docs/dangling-room-items-report.zh-CN.md §六）
+    'quarry',
+    # 下面这些不是「玩家能拿在手里的物品」，而是世界设施 / 事件道具。
+    # 它们确实有 create() + set_name，转换器也能产出 items 块，但转进来
+    # 会让玩家在背包里见到「聊天室留言板」「盖房蓝图」这类东西。
+    # 实测这批文件的共同特征：注释里明写「not setup now」，
+    # 或 inherit 的是 BULLETIN_BOARD / 地图 / 家园这类设施基类。
+    'board',
+    'questob',
+    'shop',
+    'worm',
+    'gift',
+}
 
 _ITEM_BLOCK = re.compile(r'^\s*items\s+"(\w+)"\s*\{', re.M)
 
@@ -125,7 +139,7 @@ def _unwrap(res):
 def _with_forced_inherit(src_text):
     """给没有 inherit 的叶子对象补上 `inherit ITEM;`。"""
     if re.search(r'^\s*inherit\s+', src_text, re.M):
-        return src_text, False
+        return src_text, False, None
 
     lines = src_text.split('\n')
     idx = next((i for i, l in enumerate(lines)
@@ -139,7 +153,31 @@ def _with_forced_inherit(src_text):
         insert_at = idx
 
     lines.insert(insert_at, 'inherit ITEM;')
-    return '\n'.join(lines), True
+    return '\n'.join(lines), True, None
+
+
+# 转换器不认识的基类 -> 换ITEM。
+#
+# 除了「没有 inherit」，还有「inherit 了冷门基类」这一类空产物：
+#   clone/cloth/qingyi.c   inherit EQUIP;
+# EQUIP 在 LPC 里连 equip.h 都没有，是全 clone/cloth 唯一用它的
+# （其余 33 个 CLOTH / 7 个 BOOTS / 1 个 WAIST），判不出类型就返回空串。
+#
+# ⚠️ **这是有损替换**：基类 EQUIP 在 LPC 里可能带着我们没理解的逻辑
+# （额外字段、初始化行为、装备规则…），一律按 ITEM 转可能丢掉这些。
+# 所以替换时会把原基类名写进 UCL 注释，留给以后补。
+_COLD_INHERIT = re.compile(
+    r'^\s*inherit\s+(EQUIP|ARMOR|ARMOR_ITEM|GENERIC_ITEM)\s*;\s*$', re.M)
+
+
+def _with_known_inherit(src_text):
+    """把转换器不认识的基类换成 ITEM，返回 (源码, 是否改动, 原基类名)。"""
+    m = _COLD_INHERIT.search(src_text)
+    if m is None:
+        return src_text, False, None
+
+    out = _COLD_INHERIT.sub('inherit ITEM;', src_text)
+    return out, True, m.group(1)
 
 
 def convert_one_from_text(conv, src_text, name):
@@ -206,7 +244,26 @@ def convert_one(conv, path):
     except Exception as e:                      # noqa: BLE001
         return None, '%s / 读源文件失败: %s' % (why, e)
 
-    patched, changed = _with_forced_inherit(src)
+    patched, changed, cold = _with_forced_inherit(src)
+    how = '补 inherit ITEM（原文件没有 inherit，按 ITEM 处理）'
+    note = None
+    if not changed:
+        # 第二级：不是「没有 inherit」，而是「inherit 了转换器不认识的基类」。
+        #   clone/cloth/qingyi.c  inherit EQUIP;
+        # EQUIP 在 LPC 里连 equip.h 都没有，是全 clone/cloth 唯一用它的
+        # （其余 33 个 CLOTH / 7 个 BOOTS / 1 个 WAIST）。
+        patched, changed, cold = _with_known_inherit(src)
+        how = '把继承的 %s 换成 ITEM' % cold
+
+        if changed:
+            note = (
+                '# 转换器不认识的基类，原文件写的是 `inherit %s;`\n'
+                '# 这里一律按 ITEM 转换 —— %s 在 LPC 里可能带着我们没移植的逻辑\n'
+                '#（额外字段 / 初始化 / 装备规则…），所以这是**有损替换**。\n'
+                '# 以后要补这个基类时，请从 LPC 原文重新转，别直接改这里。\n'
+                '# 来源: clone/.../%s.c'
+                % (cold, cold, os.path.splitext(os.path.basename(path))[0]))
+
     if not changed:
         return None, why
 
@@ -229,7 +286,10 @@ def convert_one(conv, path):
 
     block2, why2 = _extract_item_block(ucl2)
     if block2 is None:
-        return None, '%s（补 inherit ITEM 后仍失败: %s）' % (why, why2)
+        return None, '%s（%s 后仍失败: %s）' % (why, how, why2)
+
+    if note:
+        block2 = note + '\n' + block2
 
     return _ITEM_BLOCK.search(block2).group(1), block2
 
