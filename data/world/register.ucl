@@ -170,7 +170,7 @@ item_desc = {
     room_id = rooms.yanluodian.id
     characters = [
       { id = characters.dizangwang.id },
-      { id = characters.niutou.id }    ]
+      { id = characters.death_niutou.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/register/npc/diyun.c by LPCConverter

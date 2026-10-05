@@ -189,7 +189,7 @@ zones "huanghe" {
   room_characters "gulang" {
     room_id = rooms.gulang.id
     characters = [
-      { id = characters.dao_ke.id }    ]
+      { id = characters.taishan_dao_ke.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/huanghe/hetao.c by LPCConverter
@@ -543,7 +543,7 @@ direction = "west"
   room_characters "kedian" {
     room_id = rooms.kedian.id
     characters = [
-      { id = characters.xiaoer.id }    ]
+      { id = characters.hangzhou_xiaoer.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/huanghe/kedian2.c by LPCConverter
@@ -878,7 +878,7 @@ item_desc = {
   room_characters "shulin5" {
     room_id = rooms.shulin5.id
     characters = [
-      { id = characters.tangzi.id }    ]
+      { id = characters.taishan_tangzi.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/huanghe/shulin6.c by LPCConverter
@@ -919,7 +919,7 @@ item_desc = {
   room_characters "tiandi1" {
     room_id = rooms.tiandi1.id
     characters = [
-      { id = characters.poorman.id }    ]
+      { id = characters.village_poorman.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/huanghe/tiandi2.c by LPCConverter

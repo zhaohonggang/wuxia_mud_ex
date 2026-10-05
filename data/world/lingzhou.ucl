@@ -481,8 +481,8 @@ valid_leave = [
   room_characters "jiangjunyuan" {
     room_id = rooms.jiangjunyuan.id
     characters = [
-      { id = characters.jiading.id },
-      { id = characters.jiading.id }    ]
+      { id = characters.city_jiading.id },
+      { id = characters.city_jiading.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/lingzhou/jiuguan.c by LPCConverter
@@ -1013,10 +1013,10 @@ valid_leave = [
   room_characters "yamen" {
     room_id = rooms.yamen.id
     characters = [
-      { id = characters.yayi.id },
-      { id = characters.yayi.id },
-      { id = characters.yayi.id },
-      { id = characters.yayi.id }    ]
+      { id = characters.city_yayi.id },
+      { id = characters.city_yayi.id },
+      { id = characters.city_yayi.id },
+      { id = characters.city_yayi.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/lingzhou/yinfang.c by LPCConverter

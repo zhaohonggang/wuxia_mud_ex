@@ -923,7 +923,7 @@ direction = "north"
   room_characters "jiekou1" {
     room_id = rooms.jiekou1.id
     characters = [
-      { id = characters.seller.id }    ]
+      { id = characters.village_seller.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/xiangyang/jiekou2.c by LPCConverter
@@ -950,7 +950,7 @@ direction = "north"
     room_id = rooms.jiekou2.id
     characters = [
       { id = characters.kid.id },
-      { id = characters.seller.id }    ]
+      { id = characters.village_seller.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/xiangyang/juyichufang.c by LPCConverter
@@ -2517,7 +2517,7 @@ direction = "east"
   room_characters "yaopu" {
     room_id = rooms.yaopu.id
     characters = [
-      { id = characters.huoji.id }    ]
+      { id = characters.city_huoji.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/xiangyang/zhonglie.c by LPCConverter

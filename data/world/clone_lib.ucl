@@ -7049,246 +7049,35 @@ zones "clone_lib" {
 
 # LPC d/city/npc/bing 被 11 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "bing" {
-      name = "官兵"
-      description = "虽然官兵的武艺不能和武林人士相比，可是他们讲究的是人多力量大。"
-  gender = "男性"
-  age = 22
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    dex = 16
-    str = 24
-  }
-
-  skills = [
-    { skill = "unarmed" level = 40 },
-    { skill = "dodge" level = 40 },
-    { skill = "parry" level = 40 },
-    { skill = "blade" level = 40 },
-    { skill = "force" level = 40 }
-  ]
-
-
-  carry = [
-    { id = items.blade.id },
-    { id = items.junfu.id }
-  ]
-
-
-  engage = {
-    fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
-  }
-    }
 
 # LPC d/city/npc/xiaoer2 被 11 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "xiaoer2" {
-      name = "店小二"
-      description = ""
-  nickname = "消息灵通"
-  gender = "男性"
-  age = 22
-  brain = brains.dealer
 
-  combat = {
-    attitude = "friendly"
-    combat_exp = 100
-  }
-
-  goods = [
-    { id = items.jitui.id },
-    { id = items.jiudai.id },
-    { id = items.baozi.id },
-    { id = items.kaoya.id }
-  ]
-
-  # vendor_goods: "/clone/fam/pill/food" (file not found)
-  # vendor_goods: "/clone/fam/pill/water" (file not found)
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-
-  init = {
-    greet_delay = 1
-    add_actions = ["buy", "list"]
-  }
-
-  greetings = [
-    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
-    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
-  ]
-    }
 
 # LPC d/city/npc/wujiang 被 9 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "wujiang" {
-      name = "武将"
-      description = "他站在那里，的确有说不出的威风。"
-  gender = "男性"
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 75000
-    dex = 16
-    max_neili = 400
-    str = 25
-  }
-
-  skills = [
-    { skill = "unarmed" level = 60 },
-    { skill = "force" level = 60 },
-    { skill = "sword" level = 60 },
-    { skill = "dodge" level = 60 },
-    { skill = "parry" level = 60 }
-  ]
-
-
-  carry = [
-    { id = items.gangjian.id },
-    { id = items.tiejia.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/kid1 被 8 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "kid1" {
-      name = "小孩"
-      description = ""
-  gender = "男性"
-  age = 5
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 20
-    dex = 20
-    int = 20
-    str = 20
-  }
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/ducha 被 7 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "ducha" {
-      name = "城门督察"
-      description = "一个身材高大、满脸横肉的督察，城门便是由 他负责监守。"
-  gender = "男性"
-  age = 42
-  shen_type = 1
 
-  combat = {
-    attitude = "heroism"
-    combat_exp = 50000
-    con = 25
-    dex = 20
-    int = 30
-    max_jing = 500
-    max_neili = 400
-    max_qi = 500
-    str = 30
-  }
-
-  skills = [
-    { skill = "force" level = 80 },
-    { skill = "dodge" level = 80 },
-    { skill = "unarmed" level = 80 },
-    { skill = "parry" level = 80 },
-    { skill = "sword" level = 80 }
-  ]
-
-
-  carry = [
-    { id = items.sword4.id },
-    { id = items.guanfu5.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/old2 被 7 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "old2" {
-      name = "老汉"
-      description = ""
-  gender = "男性"
-  age = 63
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 20
-    dex = 20
-    int = 20
-    str = 20
-  }
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/old1 被 6 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "old1" {
-      name = "老妇"
-      description = ""
-  gender = "女性"
-  age = 63
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 20
-    dex = 20
-    int = 20
-    str = 20
-  }
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/city/npc/liumang 被 6 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "liumang" {
-      name = "流氓"
-      description = "他是一个成天游手好闲的流氓，长得倒是白白胖胖的，也许以前有过钱。"
-  gender = "男性"
-  age = 19
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 1000
-  }
-
-  skills = [
-    { skill = "unarmed" level = 20 },
-    { skill = "dodge" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/taishan/npc/jian-ke 被 6 个区共用，按 clone/ 约定作为共享 NPC
 
@@ -7320,395 +7109,55 @@ zones "clone_lib" {
 
 # LPC d/beijing/npc/dipi 被 5 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "dipi" {
-      name = "地痞"
-      description = "一个京城里的混混。"
-  gender = "男性"
-  age = 22
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 10
-    dex = 10
-    int = 10
-    str = 10
-  }
-
-  chat_chance = 1
-chats = [
-    "地痞无聊的伸了懒腰。"
-]
-
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/girl2 被 5 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "girl2" {
-      name = "少妇"
-      description = ""
-  gender = "女性"
-  age = 23
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 20
-    dex = 20
-    int = 20
-    str = 20
-  }
-
-  carry = [
-    { id = items.nvcloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/haoke1 被 5 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "haoke1" {
-      name = "江湖豪客"
-      description = "一名满脸彪捍之色的江湖豪客。"
-  gender = "男性"
-  age = 30
-  shen_type = 1
 
-  combat = {
-    attitude = "heroism"
-    combat_exp = 2000
-    con = 25
-    dex = 20
-    int = 20
-    max_jing = 200
-    max_neili = 300
-    max_qi = 300
-    str = 20
-  }
-
-  skills = [
-    { skill = "force" level = 40 },
-    { skill = "dodge" level = 40 },
-    { skill = "unarmed" level = 40 },
-    { skill = "parry" level = 40 },
-    { skill = "blade" level = 40 }
-  ]
-
-
-  carry = [
-    { id = items.blade2.id },
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/shusheng1 被 5 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "shusheng1" {
-      name = "书生"
-      description = "一个在街上闲逛的少年书生。"
-  gender = "男性"
-  age = 22
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 10
-    dex = 10
-    int = 10
-    str = 10
-  }
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth1.id }
-  ]
-
-    }
 
 # LPC d/city/npc/liumangtou 被 5 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "liumangtou" {
-      name = "流氓头"
-      description = "他长得奸嘴猴腮的，一看就不像是个好人。"
-  gender = "男性"
-  age = 25
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 7000
-  }
-
-  skills = [
-    { skill = "unarmed" level = 40 },
-    { skill = "dodge" level = 40 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/boy1 被 4 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "boy1" {
-      name = "男孩"
-      description = ""
-  gender = "男性"
-  age = 12
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 20
-    dex = 20
-    int = 20
-    str = 20
-  }
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/boy2 被 4 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "boy2" {
-      name = "小男孩"
-      description = ""
-  gender = "男性"
-  age = 3
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 20
-    dex = 20
-    int = 20
-    str = 20
-  }
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/boy3 被 4 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "boy3" {
-      name = "男子"
-      description = ""
-  gender = "男性"
-  age = 23
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 20
-    dex = 20
-    int = 20
-    str = 20
-  }
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/hunhun 被 4 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "hunhun" {
-      name = "混混"
-      description = "一个京城里的混混。"
-  gender = "男性"
-  age = 22
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 10
-    dex = 10
-    int = 10
-    str = 10
-  }
-
-  chat_chance = 1
-chats = [
-    "混混不怀好意的打量了你一眼。"
-]
-
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/richman1 被 4 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "richman1" {
-      name = "富家弟子"
-      description = "一个白白胖胖的年轻人，一看就知道是娇生惯养惯了的。"
-  gender = "男性"
-  age = 21
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 10
-    dex = 10
-    int = 10
-    str = 10
-  }
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth4.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/tiaofu 被 4 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "tiaofu" {
-      name = "挑夫"
-      description = ""
-  gender = "男性"
-  age = 25
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 20
-    dex = 20
-    int = 20
-    str = 20
-  }
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/youke 被 4 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "youke" {
-      name = "游客"
-      description = "一个在此地旅游的外地游人。"
-  gender = "男性"
-  age = 32
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 10
-    dex = 10
-    int = 10
-    str = 10
-  }
-
-  chat_chance = 2
-chats = [
-    "游客上下打量了你一眼。"
-]
-
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/huashan/npc/haoke 被 4 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "haoke" {
-      name = "江湖豪客"
-      description = "一名满脸彪捍之色的江湖豪客。"
-  gender = "男性"
-  age = 30
-  shen_type = 1
 
-  combat = {
-    attitude = "heroism"
-    combat_exp = 2000
-    con = 25
-    dex = 20
-    int = 20
-    max_jing = 200
-    max_neili = 300
-    max_qi = 300
-    str = 20
-  }
-
-  skills = [
-    { skill = "force" level = 40 },
-    { skill = "dodge" level = 40 },
-    { skill = "unarmed" level = 40 },
-    { skill = "parry" level = 40 },
-    { skill = "sword" level = 40 }
-  ]
-
-
-  carry = [
-    { id = items.changjian.id }
-  ]
-
-    }
 
 # LPC d/taishan/npc/dao-ke 被 4 个区共用，按 clone/ 约定作为共享 NPC
 
@@ -7740,265 +7189,39 @@ chats = [
 
 # LPC d/taishan/npc/tangzi 被 4 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "tangzi" {
-      name = "趟子手"
-      description = "这是个镖局趟子手，长得虎背熊腰，一身横练功夫。"
-  gender = "男性"
-  age = 30
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-  }
-
-  chat_chance = 5
-chats = [
-    "趟子手一声大喊: 我~~~~武~~~~维~~~~扬~~~~！"
-]
-
-
-  skills = [
-    { skill = "unarmed" level = 40 },
-    { skill = "sword" level = 20 },
-    { skill = "parry" level = 40 },
-    { skill = "dodge" level = 40 }
-  ]
-
-
-  carry = [
-    { id = items.duanjian.id },
-    { id = items.cloth.id },
-    { id = items.jitui.id }
-  ]
-
-    }
 
 # LPC d/wudang/npc/guest 被 4 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "guest" {
-      name = "进香客"
-      description = ""
-  gender = "男性"
-  shen_type = 1
 
-  skills = [
-    { skill = "unarmed" level = 20 },
-    { skill = "dodge" level = 20 }
-  ]
-
-    }
 
 # LPC d/beijing/npc/girl1 被 3 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "girl1" {
-      name = "少女"
-      description = ""
-  gender = "女性"
-  age = 17
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 20
-    dex = 20
-    int = 20
-    str = 20
-  }
-
-  carry = [
-    { id = items.nvcloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/girl4 被 3 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "girl4" {
-      name = "小女孩"
-      description = ""
-  gender = "女性"
-  age = 4
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 20
-    dex = 20
-    int = 20
-    str = 20
-  }
-
-  carry = [
-    { id = items.nvcloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/maiyi1 被 3 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "maiyi1" {
-      name = "耍猴人"
-      description = "一个沿街耍猴的人。"
-  gender = "男性"
-  age = 25
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 20
-    dex = 20
-    int = 20
-    str = 20
-  }
-
-  chat_chance = 2
-chats = [
-    "耍猴人大声叫道：走过路过不要错过，大家快来瞧瞧。"
-]
-
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/maiyi2 被 3 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "maiyi2" {
-      name = "卖艺人"
-      description = "一个沿街卖艺的人。"
-  gender = "男性"
-  age = 25
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 20
-    dex = 20
-    int = 20
-    str = 20
-  }
-
-  chat_chance = 1
-chats = [
-    "卖艺人大声叫道：俺给大家表演俺的绝活。"
-]
-
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/shusheng2 被 3 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "shusheng2" {
-      name = "酸秀才"
-      description = "一个邋遢的秀才，没什么学问却自问学士渊博。"
-  gender = "男性"
-  age = 28
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 10
-    dex = 10
-    int = 10
-    str = 10
-  }
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth2.id }
-  ]
-
-    }
 
 # LPC d/city/npc/huoji 被 3 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "huoji" {
-      name = "药铺伙计"
-      description = "他是平神医从乡下招来帮忙的。"
-  gender = "男性"
-  age = 18
-  brain = brains.dealer
 
-  combat = {
-    attitude = "friendly"
-    combat_exp = 250
-    str = 20
-  }
-
-  # vendor_goods: "/clone/misc/jinchuang" (file not found)
-  # vendor_goods: "/clone/misc/yangjing" (file not found)
-  # vendor_goods: "/clone/misc/dust" (file not found)
-  # vendor_goods: "/clone/misc/fashao" (file not found)
-  # vendor_goods: "/clone/misc/shanghan" (file not found)
-  # vendor_goods: "/clone/misc/xiaoshu" (file not found)
-  # vendor_goods: "/clone/misc/dongshang" (file not found)
-  # vendor_goods: "/clone/misc/zhike" (file not found)
-  # vendor_goods: "/d/shenlong/obj/xionghuang" (file not found)
-  # vendor_goods: "/clone/fam/pill/food1" (file not found)
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-
-  init = {
-    greet_delay = 0
-    add_actions = ["list", "buy"]
-  }
-    }
 
 # LPC d/kaifeng/npc/qigai 被 3 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "qigai" {
-      name = "乞丐"
-      description = ""
-  gender = "男性"
-  age = 25
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 7000
-  }
-
-  skills = [
-    { skill = "unarmed" level = 40 },
-    { skill = "dodge" level = 40 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/taishan/npc/tiao-fu 被 3 个区共用，按 clone/ 约定作为共享 NPC
 
@@ -8023,367 +7246,47 @@ chats = [
 
 # LPC d/beijing/npc/duke 被 2 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "duke" {
-      name = "赌客"
-      description = "一个正赌得兴高采烈的赌客。"
-  gender = "男性"
-  age = 40
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 17
-    dex = 20
-    int = 22
-    str = 17
-  }
-
-  chat_chance = 1
-chats = [
-    "赌客骂道：他奶奶的，今天爷的手气怎么那么不顺？"
-]
-
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/guanzhong 被 2 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "guanzhong" {
-      name = "观众"
-      description = "一个在戏院里看戏的观众。"
-  gender = "男性"
-  age = 32
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 17
-    dex = 20
-    int = 22
-    str = 17
-  }
-
-  chat_chance = 1
-chats = [
-    "观众大声鼓掌称好。"
-]
-
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/shiren 被 2 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "shiren" {
-      name = "诗人"
-      description = ""
-  gender = "男性"
-  age = 43
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 20
-    dex = 20
-    int = 20
-    str = 20
-  }
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/xianren 被 2 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "xianren" {
-      name = "闲人"
-      description = "一个在街上闲逛的游人。"
-  gender = "男性"
-  age = 32
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 17
-    dex = 20
-    int = 22
-    str = 17
-  }
-
-  chat_chance = 1
-chats = [
-    "闲人低声嘀咕了一声。"
-]
-
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/xizi1 被 2 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "xizi1" {
-      name = "戏子"
-      description = "一个在戏院唱戏的戏子。"
-  gender = "男性"
-  age = 32
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 17
-    dex = 20
-    int = 22
-    str = 17
-  }
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/xizi2 被 2 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "xizi2" {
-      name = "花旦"
-      description = "一个在戏院唱戏的戏子。"
-  gender = "男性"
-  age = 32
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 17
-    dex = 20
-    int = 22
-    str = 17
-  }
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/beijing/npc/xizi3 被 2 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "xizi3" {
-      name = "老旦"
-      description = "一个在戏院唱戏的戏子。"
-  gender = "男性"
-  age = 32
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    con = 17
-    dex = 20
-    int = 22
-    str = 17
-  }
-
-  skills = [
-    { skill = "dodge" level = 20 },
-    { skill = "unarmed" level = 20 }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/hangzhou/npc/seng 被 2 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "seng" {
-      name = "老和尚"
-      description = "一个慈眉善目的老和尚。"
-  gender = "男性"
-  age = 67
-  shen_type = 1
-  score = 100
 
-  combat = {
-    attitude = "peace"
-    combat_exp = 20000
-    con = 20
-    dex = 25
-    int = 20
-    max_jing = 100
-    max_neili = 500
-    max_qi = 500
-    str = 25
-  }
-
-  skills = [
-    { skill = "force" level = 50 },
-    { skill = "unarmed" level = 50 },
-    { skill = "blade" level = 50 },
-    { skill = "dodge" level = 50 },
-    { skill = "parry" level = 50 },
-    { skill = "shaolin-shenfa" level = 50 },
-    { skill = "cibei-dao" level = 50 },
-    { skill = "hunyuan-yiqi" level = 50 },
-    { type = "force" skill = "hunyuan-yiqi" },
-    { type = "dodge" skill = "shaolin-shenfa" },
-    { type = "blade" skill = "cibei-dao" },
-    { type = "parry" skill = "cibei-dao" }
-  ]
-
-
-  carry = [
-    { id = items.cloth.id }
-  ]
-
-    }
 
 # LPC d/kaifeng/npc/guanbing 被 2 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "guanbing" {
-      name = "官兵"
-      description = "虽然官兵的武艺不能和武林人士相比，可是他们讲究的是人多力量大。"
-  gender = "男性"
-  age = 22
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 10000
-    dex = 16
-    str = 24
-  }
-
-  skills = [
-    { skill = "unarmed" level = 40 },
-    { skill = "dodge" level = 40 },
-    { skill = "parry" level = 40 },
-    { skill = "blade" level = 40 },
-    { skill = "force" level = 40 }
-  ]
-
-
-  carry = [
-    { id = items.blade.id },
-    { id = items.junfu.id }
-  ]
-
-
-  engage = {
-    fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
-  }
-    }
 
 # LPC d/kaifeng/npc/zhukao3 被 2 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "zhukao3" {
-      name = "考官"
-      description = ""
-  gender = "男性"
-  age = 53
-  shen_type = 1
 
-  combat = {
-    attitude = "heroism"
-    combat_exp = 30000
-    dex = 20
-    max_neili = 500
-    str = 20
-  }
-
-  skills = [
-    { skill = "unarmed" level = 50 },
-    { skill = "force" level = 50 },
-    { skill = "sword" level = 50 },
-    { skill = "dodge" level = 50 },
-    { skill = "parry" level = 50 }
-  ]
-
-
-  carry = [
-    { id = items.guanfu4.id }
-  ]
-
-    }
 
 # LPC d/shaolin/npc/shang1 被 2 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "shang1" {
-      name = "丫鬟"
-      description = "一个十多岁的小姑娘，在这里当丫鬟。"
-  gender = "女性"
-  age = 12
-  shen_type = 1
 
-  combat = {
-    attitude = "peaceful"
-    combat_exp = 2000
-    con = 17
-    dex = 20
-    int = 22
-    str = 17
-  }
-
-  skills = [
-    { skill = "dodge" level = 10 },
-    { skill = "unarmed" level = 10 }
-  ]
-
-
-  carry = [
-    { id = items.nvcloth.id }
-  ]
-
-    }
 
 # LPC d/taishan/npc/seng-ren 被 2 个区共用，按 clone/ 约定作为共享 NPC
 
@@ -8427,8 +7330,3500 @@ chats = [
 
 # LPC d/village/npc/poorman 被 2 个区共用，按 clone/ 约定作为共享 NPC
 
-    characters "poorman" {
+
+
+# LPC d/village/npc/seller 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+
+
+# LPC d/wudang/npc/tufei1 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+
+
+# LPC d/wudu/npc/xuetong 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+
+
+# LPC d/zhongzhou/npc/jiading 被 2 个区共用，按 clone/ 约定作为共享 NPC
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "adm_hongniang" {
+      name = "红娘"
+      description = "她是一个长得很好看的小姑娘，忽闪忽闪的大眼睛透着一丝狡黠。"
+  gender = "女性"
+  age = 18
+
+  combat = {
+    combat_exp = 1000
+  }
+
+  inquiries = [
+    { key = "离婚" value = "结婚找我，离婚我也帮忙，不过可以慎重哦。一日夫妻百日恩嘛！" },
+    { key = "结婚" value = "要结婚？我可以为你们做媒啊，你们人都来齐了么？" }
+  ]
+
+  engage = {
+    kill = { accept = true msg = "呀！你想干什么？" }
+  }
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "adm_jiaoshi" {
+      name = "西洋传教士"
+      description = "他穿着一身的黑色服饰，神色肃穆。"
+  gender = "男性"
+  age = 35
+
+  combat = {
+    combat_exp = 1000
+  }
+
+  inquiries = [
+    { key = "离婚" value = "虽然离婚让人感到痛苦，但是也许凑在一起更让人痛苦！" },
+    { key = "结婚" value = "要结婚是吗？大家都是上帝的子女，我可以为你们证婚。" }
+  ]
+
+  engage = {
+    kill = { accept = true msg = "中国人好野蛮啊！你怎么能这样？" }
+  }
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "adm_referee" {
+      name = "公平子"
+      description = "这是一位仙风道骨的中年道人，早年云游四方，性好任侠，公正无私。"
+  gender = "男性"
+  age = 35
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 60000
+    max_jing = 800
+    max_neili = 800
+    max_qi = 800
+  }
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.changjian.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["bihua", "bi", "hit", "fight", "qiecuo", "halt", "h", "beg", "steal", "quanjia", "persuade", "touxi", "ansuan", "kill"]
+  }
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "baituo_cungu" {
+      name = "村姑"
+      aliases = ["cun gu", "gu", "cun"]
+      description = "一个很清秀的年轻农村姑娘，挎着一只盖着布小篮子。"
+  gender = "女性"
+  age = 20
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 4000
+    con = 15
+    dex = 16
+    int = 17
+    str = 15
+  }
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.caomei.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_boy1" {
+      name = "男孩"
+      aliases = ["boy", "nan hai"]
+      description = ""
+  gender = "男性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_boy2" {
+      name = "小男孩"
+      aliases = ["boy", "nan hai"]
+      description = ""
+  gender = "男性"
+  age = 3
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_boy3" {
+      name = "男子"
+      aliases = ["man", "nan zi"]
+      description = ""
+  gender = "男性"
+  age = 23
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_caifan" {
+      name = "菜贩子"
+      aliases = ["cai fan", "cai", "fan"]
+      description = "一个老实巴交的农民，卖些新鲜的蔬菜。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+  # brain = brains.vendor  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  goods = [
+    { id = items.luobo.id },
+    { id = items.huluobo.id },
+    { id = items.baicai.id },
+    { id = items.dacong.id },
+    { id = items.tudou.id }
+  ]
+
+  chat_chance = 10
+chats = [
+    "菜贩子叫道：卖新鲜的萝卜吆。",
+    "菜贩子叫道：卖新鲜的胡萝卜吆。",
+    "菜贩子叫道：卖新鲜的白菜吆。",
+    "菜贩子叫道：卖新鲜的大葱吆。",
+    "菜贩子叫道：卖新鲜的土豆吆。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_chaboshi" {
+      name = "茶博士"
+      aliases = ["cha boshi", "cha", "boshi"]
+      description = "一个在茶馆里以说书为生的老头。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  chat_chance = 1
+chats = [
+    "茶博士摇头晃脑的说着书。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_chake" {
+      name = "茶客"
+      aliases = ["cha ke", "cha", "ke"]
+      description = "一个在茶铺喝茶的人。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  chat_chance = 1
+chats = [
+    "茶客低着头喝了口茶。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_dipi" {
+      name = "地痞"
+      aliases = ["di pi", "di", "pi"]
+      description = "一个京城里的混混。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  chat_chance = 1
+chats = [
+    "地痞无聊的伸了懒腰。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_girl1" {
+      name = "少女"
+      aliases = ["shao nv", "nv"]
+      description = ""
+  gender = "女性"
+  age = 17
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.nvcloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_girl2" {
+      name = "少妇"
+      aliases = ["shao fu", "fu"]
+      description = ""
+  gender = "女性"
+  age = 23
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.nvcloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_girl3" {
+      name = "女孩"
+      aliases = ["girl", "nv hai"]
+      description = ""
+  gender = "女性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.nvcloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_girl4" {
+      name = "小女孩"
+      aliases = ["girl", "nv hai"]
+      description = ""
+  gender = "女性"
+  age = 4
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.nvcloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_guanzhong" {
+      name = "观众"
+      aliases = ["guan zhong", "guan", "zhong"]
+      description = "一个在戏院里看戏的观众。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  chat_chance = 1
+chats = [
+    "观众大声鼓掌称好。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_haoke1" {
+      name = "江湖豪客"
+      aliases = ["jianghu haoke", "haoke"]
+      description = "一名满脸彪捍之色的江湖豪客。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 2000
+    con = 25
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 300
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "blade" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.blade2.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_hunhun" {
+      name = "混混"
+      aliases = ["hun hun", "hun"]
+      description = "一个京城里的混混。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  chat_chance = 1
+chats = [
+    "混混不怀好意的打量了你一眼。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_jinv" {
+      name = "妓女"
+      aliases = ["ji nv", "ji", "nv"]
+      description = "一个千姿百媚的妓女。"
+  gender = "女性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  chat_chance = 1
+chats = [
+    "妓女朝着你抛了个媚眼。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.jinvcloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_jumin1" {
+      name = "居民"
+      aliases = ["ju min", "ju", "min"]
+      description = "居住在京城的居民。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_maiyi1" {
+      name = "耍猴人"
+      aliases = ["shuahou ren", "ren"]
+      description = "一个沿街耍猴的人。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  chat_chance = 2
+chats = [
+    "耍猴人大声叫道：走过路过不要错过，大家快来瞧瞧。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_maiyi2" {
+      name = "卖艺人"
+      aliases = ["maiyi ren", "ren"]
+      description = "一个沿街卖艺的人。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  chat_chance = 1
+chats = [
+    "卖艺人大声叫道：俺给大家表演俺的绝活。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_old1" {
+      name = "老妇"
+      aliases = ["old woman", "old", "woman"]
+      description = ""
+  gender = "女性"
+  age = 63
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_old2" {
+      name = "老汉"
+      aliases = ["old man", "old", "man"]
+      description = ""
+  gender = "男性"
+  age = 63
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_piaoke" {
+      name = "嫖客"
+      aliases = ["piao ke", "piao", "ke"]
+      description = "一个上半身赤裸的男子。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_richman1" {
+      name = "富家弟子"
+      aliases = ["fujia dizi", "dizi", "fujia"]
+      description = "一个白白胖胖的年轻人，一看就知道是娇生惯养惯了的。"
+  gender = "男性"
+  age = 21
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth4.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_shiren" {
+      name = "诗人"
+      aliases = ["shi ren", "shi", "ren"]
+      description = ""
+  gender = "男性"
+  age = 43
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_shusheng1" {
+      name = "书生"
+      aliases = ["shu sheng", "shu", "sheng"]
+      description = "一个在街上闲逛的少年书生。"
+  gender = "男性"
+  age = 22
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth1.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_shusheng2" {
+      name = "酸秀才"
+      aliases = ["xiu cai", "xiu", "cai"]
+      description = "一个邋遢的秀才，没什么学问却自问学士渊博。"
+  gender = "男性"
+  age = 28
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth2.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_tangzi" {
+      name = "趟子手"
+      aliases = ["tang zi", "zi", "tang"]
+      description = ""
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_teahuoji" {
+      name = "茶铺伙计"
+      aliases = ["chapu huoji", "chapu", "huoji"]
+      description = "一个在茶馆里跑堂的伙计。"
+  gender = "男性"
+  age = 18
+  shen_type = 1
+  # brain = brains.vendor  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  goods = [
+    { id = items.tea1.id },
+    { id = items.tea2.id },
+    { id = items.tea3.id },
+    { id = items.tea4.id }
+  ]
+
+  chat_chance = 2
+chats = [
+    "茶铺伙计对着你说道：这位客官，喝茶吗？"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_tiaofu" {
+      name = "挑夫"
+      aliases = ["tiao fu", "tiao", "fu"]
+      description = ""
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 20
+    dex = 20
+    int = 20
+    str = 20
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_xiangke" {
+      name = "进香客"
+      aliases = ["jinxiang ke", "jinxiang", "ke"]
+      description = ""
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  chat_chance = 2
+chats = [
+    "进香客轻轻咳嗽了一声。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_xianren" {
+      name = "闲人"
+      aliases = ["xian ren", "xian", "ren"]
+      description = "一个在街上闲逛的游人。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  chat_chance = 1
+chats = [
+    "闲人低声嘀咕了一声。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_xizi1" {
+      name = "戏子"
+      aliases = ["xi zi", "xi", "zi"]
+      description = "一个在戏院唱戏的戏子。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_xizi2" {
+      name = "花旦"
+      aliases = ["hua dan", "hua", "dan"]
+      description = "一个在戏院唱戏的戏子。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_xizi3" {
+      name = "老旦"
+      aliases = ["lao dan", "lao", "dan"]
+      description = "一个在戏院唱戏的戏子。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_youke" {
+      name = "游客"
+      aliases = ["you ke", "you", "ke"]
+      description = "一个在此地旅游的外地游人。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  chat_chance = 2
+chats = [
+    "游客上下打量了你一眼。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "beijing_youren" {
+      name = "游人"
+      aliases = ["you ren", "you", "ren"]
+      description = "一个在街上四处游荡的游人。"
+  gender = "男性"
+  age = 32
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+    con = 10
+    dex = 10
+    int = 10
+    str = 10
+  }
+
+  chat_chance = 1
+chats = [
+    "游人上下打量了你一眼。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "changan_zhuangjia" {
+      name = "庄家"
+      aliases = ["zhuang jia", "zhuang"]
+      description = "这是赌场的职业赌徒，骰子上的功夫出神入化。"
+  title = "骰子圣手"
+  gender = "男性"
+  age = 47
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300000
+    str = 40
+  }
+
+  skills = [
+    { skill = "parry" level = 170 },
+    { skill = "unarmed" level = 170 },
+    { skill = "force" level = 170 },
+    { skill = "dodge" level = 170 }
+  ]
+
+
+  carry = [
+    { id = items.choupao.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "庄家笑咪咪地说道：这位{respect}，过来赌两手，看看运气如何？" },
+    { line = "庄家晃了晃手中的骰子，叫道：这位{respect}，别犹豫了。来下一注吧！" },
+    { line = "庄家说道：这位{respect}，来！来！来！ 先押一把！" }
+  ]
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "city_huoji" {
+      name = "药铺伙计"
+      aliases = ["yaopu huoji", "huoji"]
+      description = "他是平神医从乡下招来帮忙的。"
+  gender = "男性"
+  age = 18
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 250
+    str = 20
+  }
+
+  goods = [
+    { id = shenlong.items.xionghuang.id },
+    { id = clone_lib.items.jinchuang.id },
+    { id = clone_lib.items.yangjing.id },
+    { id = clone_lib.items.dust.id },
+    { id = clone_lib.items.fashao.id },
+    { id = clone_lib.items.shanghan.id },
+    { id = clone_lib.items.xiaoshu.id },
+    { id = clone_lib.items.dongshang.id },
+    { id = clone_lib.items.zhike.id },
+    { id = clone_lib.items.food1.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "city_jiading" {
+      name = "家丁"
+      aliases = ["jia ding", "jia"]
+      description = ""
+  gender = "男性"
+  age = 35
+
+  combat = {
+    combat_exp = 4000
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "unarmed" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "city_liumangtou" {
+      name = "流氓头"
+      aliases = ["liumang tou", "liumang", "liu"]
+      description = "他长得奸嘴猴腮的，一看就不像是个好人。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 7000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "city_ping" {
+      name = "平一指"
+      aliases = ["ping yizhi", "ping", "yizhi"]
+      description = "他就是医术高超的「杀人神医」平一指。可是他性格古 怪，不是什么人都医的。"
+  title = "日月神教前辈"
+  nickname = "杀人神医"
+  gender = "男性"
+  age = 65
+  shen_type = 1
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 500000
+    int = 38
+    max_jing = 1000
+    max_qi = 1000
+  }
+
+  goods = [
+    { id = clone_lib.items.chaihu.id },
+    { id = clone_lib.items.chenpi.id },
+    { id = clone_lib.items.chongcao.id },
+    { id = clone_lib.items.chuanwu.id },
+    { id = clone_lib.items.dahuang.id },
+    { id = clone_lib.items.dangui.id },
+    { id = clone_lib.items.duhuo.id },
+    { id = clone_lib.items.fangfeng.id },
+    { id = clone_lib.items.fuzi.id },
+    { id = clone_lib.items.gsliu.id },
+    { id = clone_lib.items.guiwei.id },
+    { id = clone_lib.items.hafen.id },
+    { id = clone_lib.items.heshouwu.id },
+    { id = clone_lib.items.honghua.id },
+    { id = clone_lib.items.huangqi.id },
+    { id = clone_lib.items.hugu.id },
+    { id = clone_lib.items.juhua.id },
+    { id = clone_lib.items.lanhua.id },
+    { id = clone_lib.items.lingxian.id },
+    { id = clone_lib.items.lingzhi.id },
+    { id = clone_lib.items.lurong.id },
+    { id = clone_lib.items.mahuang.id },
+    { id = clone_lib.items.moyao.id },
+    { id = clone_lib.items.niuhuang.id },
+    { id = clone_lib.items.niuxi.id },
+    { id = clone_lib.items.qianjinzi.id },
+    { id = clone_lib.items.renshen.id },
+    { id = clone_lib.items.ruxiang.id },
+    { id = clone_lib.items.shadan.id },
+    { id = clone_lib.items.shancha.id },
+    { id = clone_lib.items.shanjia.id },
+    { id = clone_lib.items.shengdi.id },
+    { id = clone_lib.items.shenglg.id },
+    { id = clone_lib.items.sumu.id },
+    { id = clone_lib.items.taoxian.id },
+    { id = clone_lib.items.tenghuang.id },
+    { id = clone_lib.items.tianqi.id },
+    { id = clone_lib.items.tugou.id },
+    { id = clone_lib.items.wulingzhi.id },
+    { id = clone_lib.items.xiefen.id },
+    { id = clone_lib.items.xijiao.id },
+    { id = clone_lib.items.xiongdan.id },
+    { id = clone_lib.items.xionghuang.id },
+    { id = clone_lib.items.xuejie.id },
+    { id = clone_lib.items.xuelian.id },
+    { id = clone_lib.items.yanwo.id },
+    { id = clone_lib.items.yjhua.id },
+    { id = clone_lib.items.yuanzhi.id },
+    { id = clone_lib.items.zihua.id },
+    { id = clone_lib.items.zzfen.id },
+    { id = shenlong.items.hua4.id },
+    { id = clone_lib.items.yanbo.id }
+  ]
+
+
+  inquiries = [
+    { key = "job" value = "(: ask_job :)" },
+    { key = "工作" value = "(: ask_job :)" },
+    { key = "配药" value = "(: ask_job :)" }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["peiyao", "list", "buy"]
+  }
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "city_smith" {
+      name = "铁匠"
+      aliases = ["tie jiang", "tie", "smith", "tiejiang"]
+      description = "铁匠正用铁钳夹住一块红热的铁块放进炉中。"
+  title = "铁匠铺老板"
+  gender = "男性"
+  age = 33
+  shen_type = 1
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 400
+  }
+
+  goods = [
+    { id = item.items.jingtie.id },
+    { id = clone_lib.items.changjian.id },
+    { id = clone_lib.items.gangzhang.id },
+    { id = clone_lib.items.changbian.id },
+    { id = clone_lib.items.gangdao.id },
+    { id = clone_lib.items.hammer.id },
+    { id = clone_lib.items.dagger.id },
+    { id = clone_lib.items.tiegun.id },
+    { id = clone_lib.items.arrow.id },
+    { id = clone_lib.items.bow.id },
+    { id = clone_lib.items.longbow.id },
+    { id = clone_lib.items.wolfarrow.id },
+    { id = clone_lib.items.tiejia.id }
+  ]
+
+  inquiries = [
+    { key = "job" value = "(: ask_me :)" },
+    { key = "工作" value = "(: ask_me :)" },
+    { key = "血海无边" value = "(: ask_back :)" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "city_yayi" {
+      name = "衙役"
+      aliases = ["ya yi", "ya"]
+      description = "一个高大威猛的汉子，因为久在官府做事，脸上已经磨炼得毫无表情。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    combat_exp = 7500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "dodge" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.yayifu.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "death_niutou" {
+      name = "牛头"
+      aliases = ["niu tou", "niu", "tou"]
+      description = "一个高达丈许，牛头人身的怪物，看起来很不好惹。"
+  title = "冥府地藏王殿前"
+  nickname = "金盔银甲"
+  gender = "男性"
+  age = 623
+
+  combat = {
+    combat_exp = 8000000
+    con = 35
+    dex = 35
+    int = 35
+    max_jing = 6000
+    max_neili = 9000
+    max_qi = 7000
+    str = 35
+  }
+
+  skills = [
+    { skill = "unarmed" level = 400 },
+    { skill = "sword" level = 400 },
+    { skill = "blade" level = 400 },
+    { skill = "staff" level = 400 },
+    { skill = "hammer" level = 400 },
+    { skill = "club" level = 400 },
+    { skill = "whip" level = 400 },
+    { skill = "dagger" level = 400 },
+    { skill = "throwing" level = 400 },
+    { skill = "parry" level = 400 },
+    { skill = "dodge" level = 400 },
+    { skill = "force" level = 400 },
+    { skill = "count" level = 400 },
+    { skill = "never-defeated" level = 400 },
+    { skill = "martial-cognize" level = 400 },
+    { type = "sword" skill = "never-defeated" },
+    { type = "blade" skill = "never-defeated" },
+    { type = "staff" skill = "never-defeated" },
+    { type = "hammer" skill = "never-defeated" },
+    { type = "club" skill = "never-defeated" },
+    { type = "whip" skill = "never-defeated" },
+    { type = "dagger" skill = "never-defeated" },
+    { type = "parry" skill = "never-defeated" },
+    { type = "dodge" skill = "never-defeated" },
+    { type = "force" skill = "never-defeated" }
+  ]
+
+
+  carry = [
+    { id = items.armor1.id },
+    { id = items.armor2.id },
+    { id = items.blade1.id }
+  ]
+
+
+  engage = {
+    fight = { accept = true }
+    hit = { accept = true }
+    kill = { accept = true }
+  }
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "gaibang_1dai" {
+      name = "NPC"
+      description = "这是位丐帮一袋弟子，身着破破烂烂，满身油腻。"
+  title = "丐帮一袋弟子"
+  gender = "男性"
+  age = 18
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 25000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 300
+    max_neili = 800
+    max_qi = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "jiaohua-neigong" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "feiyan-zoubi" level = 50 },
+    { skill = "staff" level = 50 },
+    { skill = "jiaohua-bangfa" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "changquan" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "begging" level = 80 },
+    { skill = "checking" level = 80 },
+    { skill = "literate" level = 30 },
+    { skill = "martial-cognize" level = 30 },
+    { type = "force" skill = "jiaohua-neigong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "staff" skill = "jiaohua-bangfa" },
+    { type = "unarmed" skill = "changquan" },
+    { type = "parry" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.staff.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "gaibang_2dai" {
+      name = "NPC"
+      description = "这是位丐帮二袋弟子，身着破破烂烂，满身油腻。"
+  title = "丐帮二袋弟子"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 50000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 400
+    max_neili = 1000
+    max_qi = 650
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "jiaohua-neigong" level = 80 },
+    { skill = "dodge" level = 60 },
+    { skill = "feiyan-zoubi" level = 60 },
+    { skill = "staff" level = 60 },
+    { skill = "jiaohua-bangfa" level = 60 },
+    { skill = "unarmed" level = 60 },
+    { skill = "changquan" level = 60 },
+    { skill = "parry" level = 60 },
+    { skill = "begging" level = 100 },
+    { skill = "checking" level = 100 },
+    { skill = "literate" level = 50 },
+    { skill = "martial-cognize" level = 50 },
+    { type = "force" skill = "jiaohua-neigong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "staff" skill = "jiaohua-bangfa" },
+    { type = "unarmed" skill = "changquan" },
+    { type = "parry" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.staff.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "gaibang_3dai" {
+      name = "NPC"
+      description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
+  title = "丐帮三袋弟子"
+  gender = "男性"
+  age = 26
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 80000
+    con = 22
+    dex = 22
+    int = 22
+    max_jing = 600
+    max_neili = 1200
+    max_qi = 900
+    str = 22
+  }
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "jiaohua-neigong" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "feiyan-zoubi" level = 80 },
+    { skill = "staff" level = 80 },
+    { skill = "jiaohua-bangfa" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "changquan" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "begging" level = 120 },
+    { skill = "checking" level = 120 },
+    { skill = "literate" level = 60 },
+    { skill = "martial-cognize" level = 60 },
+    { type = "force" skill = "jiaohua-neigong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "staff" skill = "jiaohua-bangfa" },
+    { type = "unarmed" skill = "changquan" },
+    { type = "parry" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.staff.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "gaibang_4dai" {
+      name = "NPC"
+      description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
+  title = "丐帮四袋弟子"
+  gender = "男性"
+  age = 30
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 200000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 800
+    max_neili = 1300
+    max_qi = 1200
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 120 },
+    { skill = "jiaohua-neigong" level = 120 },
+    { skill = "dodge" level = 100 },
+    { skill = "feiyan-zoubi" level = 100 },
+    { skill = "staff" level = 100 },
+    { skill = "jiaohua-bangfa" level = 100 },
+    { skill = "unarmed" level = 120 },
+    { skill = "jueming-tui" level = 120 },
+    { skill = "strike" level = 120 },
+    { skill = "tongchui-zhang" level = 120 },
+    { skill = "parry" level = 100 },
+    { skill = "begging" level = 140 },
+    { skill = "checking" level = 140 },
+    { skill = "literate" level = 80 },
+    { skill = "martial-cognize" level = 80 },
+    { type = "force" skill = "jiaohua-neigong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "staff" skill = "jiaohua-bangfa" },
+    { type = "strike" skill = "tongchui-zhang" },
+    { type = "unarmed" skill = "jueming-tui" },
+    { type = "parry" skill = "tongchui-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "gaibang_5dai" {
+      name = "NPC"
+      description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
+  title = "丐帮五袋弟子"
+  gender = "男性"
+  age = 36
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 350000
+    con = 28
+    dex = 28
+    int = 28
+    max_jing = 1000
+    max_neili = 1500
+    max_qi = 1500
+    str = 28
+  }
+
+  skills = [
+    { skill = "force" level = 140 },
+    { skill = "jiaohua-neigong" level = 140 },
+    { skill = "dodge" level = 120 },
+    { skill = "feiyan-zoubi" level = 120 },
+    { skill = "staff" level = 120 },
+    { skill = "jiaohua-bangfa" level = 120 },
+    { skill = "unarmed" level = 140 },
+    { skill = "jueming-tui" level = 140 },
+    { skill = "strike" level = 140 },
+    { skill = "tongchui-zhang" level = 140 },
+    { skill = "parry" level = 120 },
+    { skill = "begging" level = 160 },
+    { skill = "checking" level = 160 },
+    { skill = "literate" level = 120 },
+    { skill = "martial-cognize" level = 120 },
+    { type = "force" skill = "jiaohua-neigong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "staff" skill = "jiaohua-bangfa" },
+    { type = "strike" skill = "tongchui-zhang" },
+    { type = "unarmed" skill = "jueming-tui" },
+    { type = "parry" skill = "tongchui-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "gaibang_6dai" {
+      name = "NPC"
+      description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
+  title = "丐帮六袋弟子"
+  gender = "男性"
+  age = 38
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 500000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1200
+    max_neili = 1600
+    max_qi = 1800
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 150 },
+    { skill = "jiaohua-neigong" level = 150 },
+    { skill = "dodge" level = 150 },
+    { skill = "feiyan-zoubi" level = 150 },
+    { skill = "staff" level = 150 },
+    { skill = "fengmo-zhang" level = 150 },
+    { skill = "unarmed" level = 150 },
+    { skill = "jueming-tui" level = 150 },
+    { skill = "strike" level = 150 },
+    { skill = "tongchui-zhang" level = 150 },
+    { skill = "parry" level = 150 },
+    { skill = "begging" level = 180 },
+    { skill = "checking" level = 180 },
+    { skill = "literate" level = 130 },
+    { skill = "martial-cognize" level = 130 },
+    { type = "force" skill = "jiaohua-neigong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "staff" skill = "fengmo-zhang" },
+    { type = "strike" skill = "tongchui-zhang" },
+    { type = "unarmed" skill = "jueming-tui" },
+    { type = "parry" skill = "fengmo-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.staff.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "gaibang_7dai" {
+      name = "NPC"
+      description = "这是位丐帮七袋弟子，只见他身材魁梧，双目精光四射。"
+  title = "丐帮七袋弟子"
+  gender = "男性"
+  age = 38
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 800000
+    con = 30
+    dex = 30
+    int = 30
+    max_jing = 1500
+    max_neili = 1800
+    max_qi = 2000
+    str = 30
+  }
+
+  skills = [
+    { skill = "force" level = 160 },
+    { skill = "huntian-qigong" level = 160 },
+    { skill = "dodge" level = 160 },
+    { skill = "feiyan-zoubi" level = 160 },
+    { skill = "staff" level = 160 },
+    { skill = "fengmo-zhang" level = 160 },
+    { skill = "unarmed" level = 160 },
+    { skill = "jueming-tui" level = 160 },
+    { skill = "strike" level = 160 },
+    { skill = "tongchui-zhang" level = 160 },
+    { skill = "parry" level = 160 },
+    { skill = "begging" level = 200 },
+    { skill = "checking" level = 200 },
+    { skill = "literate" level = 150 },
+    { skill = "martial-cognize" level = 150 },
+    { type = "force" skill = "huntian-qigong" },
+    { type = "dodge" skill = "feiyan-zoubi" },
+    { type = "staff" skill = "fengmo-zhang" },
+    { type = "strike" skill = "tongchui-zhang" },
+    { type = "unarmed" skill = "jueming-tui" },
+    { type = "parry" skill = "fengmo-zhang" }
+  ]
+
+
+  carry = [
+    { id = items.staff.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "gaibang_staff" {
+      name = "NPC"
+      aliases = ["zhu bang", "zhu", "bang"]
+      description = "这是一根颇为破旧的竹棒，可以作为手杖使用。"
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "gaochang_liwenxiu" {
+      name = "李文秀"
+      aliases = ["li wenxiu", "li", "wenxiu"]
+      description = "她长得清纯脱秀，嫣然一笑，不禁让人怦然心动。"
+  gender = "女性"
+  age = 18
+  shen_type = 1
+
+  combat = {
+    combat_exp = 300000
+    max_neili = 1000
+    max_qi = 1500
+  }
+
+  inquiries = [
+    { key = "父母" value = "(: ask_parent :)" },
+    { key = "父母之仇" value = "(: ask_parent :)" },
+    { key = "白马李三" value = "他是我父亲，可是在我懂事之前，父母便都已去世了。" },
+    { key = "苏普" value = "(: ask_supu :)" },
+    { key = "高昌地图" value = "(: ask_gaochang:)" },
+    { key = "高昌迷宫" value = "(: ask_gaochang:)" }
+  ]
+
+  chat_chance = 3
+chats = [
+    "李文秀忧郁地看着远方，轻叹道：也不知何时才能再见到苏普……",
+    "李文秀恨恨地道：父母之仇，我一定要血债血还。"
+]
+
+
+  skills = [
+    { skill = "force" level = 150 },
+    { skill = "whip" level = 150 },
+    { skill = "unarmed" level = 150 },
+    { skill = "dodge" level = 150 },
+    { skill = "parry" level = 150 },
+    { skill = "liuxing-chui" level = 150 },
+    { skill = "yan-fly" level = 150 },
+    { type = "whip" skill = "liuxing-chui" },
+    { type = "parry" skill = "liuxing-chui" },
+    { type = "dodge" skill = "yan-fly" }
+  ]
+
+
+  carry = [
+    { id = items.liuxingchui.id },
+    { id = items.hat.id },
+    { id = items.boots.id },
+    { id = items.xian_cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "guanwai_shenke" {
+      name = "参客"
+      aliases = ["shen ke", "shen", "ke"]
+      description = "他是一个参客，常年在关外经营，颇为富有。"
+  age = 65
+  startroom = "/d/beijing/majiu"
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    con = 30
+    dex = 30
+    int = 30
+    str = 30
+  }
+
+  inquiries = [
+    { key = "入关" value = "(: ask_me :)" },
+    { key = "回去" value = "(: ask_me :)" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "hangzhou_jiuping" {
+      name = "酒瓶"
+      aliases = ["jiuping", "bottle"]
+      description = "一个晶莹碧绿的的大酒瓶，装了熏熏醉人的竹叶青。"
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "hangzhou_seng" {
+      name = "老和尚"
+      aliases = ["lao heshang", "lao", "heshang", "seng"]
+      description = "一个慈眉善目的老和尚。"
+  gender = "男性"
+  age = 67
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "peace"
+    combat_exp = 20000
+    con = 20
+    dex = 25
+    int = 20
+    max_jing = 100
+    max_neili = 500
+    max_qi = 500
+    str = 25
+  }
+
+  skills = [
+    { skill = "force" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "blade" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "shaolin-shenfa" level = 50 },
+    { skill = "cibei-dao" level = 50 },
+    { skill = "hunyuan-yiqi" level = 50 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "blade" skill = "cibei-dao" },
+    { type = "parry" skill = "cibei-dao" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "hangzhou_xiaoer" {
+      name = "店小二"
+      aliases = ["xiao er", "xiao", "waiter"]
+      description = "这位店小二正笑咪咪地忙著，还不时拿起挂在脖子上的抹布擦脸。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 100
+  }
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
+    { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+
+  accept = [
+    { kind = "money" min = 500 accept = true msg = "小二一哈腰，说道：多谢您老，客官请上楼歇息。" },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "hangzhou_yuenv" {
+      name = "越女"
+      aliases = ["yue nv", "yuenv"]
+      description = "她是一位年轻的牧羊女，脸上挂着一丝与年龄不相称的哀思。"
+  gender = "女性"
+  age = 18
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 2500000
+    con = 32
+    dex = 35
+    int = 35
+    max_jing = 2500
+    max_neili = 5000
+    max_qi = 5000
+    str = 19
+  }
+
+  inquiries = [
+    { key = "越女剑术" value = "(: teach_me : )" }
+  ]
+
+  skills = [
+    { skill = "force" level = 250 },
+    { skill = "dodge" level = 270 },
+    { skill = "parry" level = 270 },
+    { skill = "sword" level = 270 },
+    { skill = "yunv-xinfa" level = 250 },
+    { skill = "yuenv-jian" level = 270 },
+    { skill = "feiyan-huixiang" level = 250 },
+    { type = "dodge" skill = "feiyan-huixiang" },
+    { type = "force" skill = "yunv-xinfa" },
+    { type = "sword" skill = "yuenv-jian" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.zhujian.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "huanghe_hou" {
+      name = "侯通海"
+      aliases = ["hou tonghai", "hou", "tonghai"]
+      description = "侯通海是个青脸瘦子，面颊极长，额角上肿起了三个大肉瘤，非 常难看。"
+  nickname = "三头蛟"
+  gender = "男性"
+  age = 43
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "club" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.fork.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "huanghe_liang" {
+      name = "梁子翁"
+      aliases = ["liang ziwen", "liang", "ziwen"]
+      description = "梁子翁身材中等，满头白发如银，但脸色光润，神采弈弈，穿一 件葛布长袍，打扮非道非俗。他是长白山武学的一派宗师。"
+  nickname = "参仙老怪"
+  gender = "男性"
+  age = 43
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 200000
+    dex = 16
+    max_neili = 800
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.changpao.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "huanghe_ma" {
+      name = "马青雄"
+      aliases = ["ma qingxiong", "ma", "qingxiong"]
+      description = "马青雄是黄河四鬼的老三，是鬼门龙王沙通天的三弟子，擅 于鞭法。"
+  title = "黄河四鬼老三"
+  nickname = "夺魄鞭"
+  gender = "男性"
+  age = 32
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "force" level = 30 },
+    { skill = "whip" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.changbian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "huanghe_peng" {
+      name = "彭连虎"
+      aliases = ["peng lianhu", "peng", "lianhu"]
+      description = "彭连虎五短身材，满眼红丝，目光如电，上唇短须翘起。他生性 残暴，和沙通天有深厚的交情。"
+  nickname = "千手人屠"
+  gender = "男性"
+  age = 43
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 200000
+    dex = 16
+    max_neili = 800
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "dagger" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.bi.id },
+    { id = items.beixin.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "huanghe_qian" {
+      name = "钱青健"
+      aliases = ["qian qingjian", "qian", "qingjian"]
+      description = "钱青健是黄河四鬼的老四，是鬼门龙王沙通天的四弟子，擅 于斧法。"
+  title = "黄河四鬼老四"
+  nickname = "丧门斧"
+  gender = "男性"
+  age = 32
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "force" level = 30 },
+    { skill = "axe" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.axe.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "huanghe_sha" {
+      name = "沙通天"
+      aliases = ["sha tongtian", "sha", "tongtian"]
+      description = "沙通天是个秃子，头上油光光地没半根头发，双目布满红丝，眼 珠突出，生就一副异相。性子暴躁，武功却是出奇地高，江湖上 无人不晓。"
+  title = "黄河帮帮主"
+  nickname = "鬼门龙王"
+  gender = "男性"
+  age = 43
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 200000
+    dex = 16
+    max_neili = 800
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 60 },
+    { skill = "force" level = 60 },
+    { skill = "club" level = 60 },
+    { skill = "dodge" level = 60 },
+    { skill = "parry" level = 60 }
+  ]
+
+
+  carry = [
+    { id = items.tiejiang.id },
+    { id = items.tiejia.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "huanghe_shen" {
+      name = "沈青刚"
+      aliases = ["shen qinggang", "shen", "qinggang"]
+      description = "沈青刚是黄河四鬼的老大，是鬼门龙王沙通天的大弟子，擅 使单刀。"
+  title = "黄河四鬼老大"
+  nickname = "断魂刀"
+  gender = "男性"
+  age = 32
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "force" level = 30 },
+    { skill = "blade" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "huanghe_wu" {
+      name = "吴青烈"
+      aliases = ["wu qinglie", "wu", "qinglie"]
+      description = "吴青烈是黄河四鬼的老二，是鬼门龙王沙通天的二弟子，擅 使长枪。"
+  title = "黄河四鬼老二"
+  nickname = "追命枪"
+  gender = "男性"
+  age = 32
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 20000
+    dex = 16
+    max_neili = 400
+    str = 25
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "force" level = 30 },
+    { skill = "club" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.changqiang.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "huashan_haoke" {
+      name = "江湖豪客"
+      aliases = ["jianghu haoke", "haoke"]
+      description = "一名满脸彪捍之色的江湖豪客。"
+  gender = "男性"
+  age = 30
+  shen_type = 1
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 2000
+    con = 25
+    dex = 20
+    int = 20
+    max_jing = 200
+    max_neili = 300
+    max_qi = 300
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "kaifeng_huizhang" {
+      name = "皮货商"
+      aliases = ["pihuo shang", "pihuo", "shang"]
+      description = "这是一位皮货商，他自己也是满身皮裘。"
+  gender = "男性"
+  age = 25
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 5000
+  }
+
+  goods = [
+    { id = guanwai.items.piqiu.id }
+  ]
+
+  carry = [
+    { id = items.piqiu.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["buy", "list"]
+  }
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "kaifeng_oldwomen" {
+      name = "烧香老太"
+      aliases = ["lao taitai", "lao", "taitai"]
+      description = "见佛烧香的老太太。"
+  gender = "女性"
+  age = 64
+
+  combat = {
+    combat_exp = 5000
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "force" level = 20 },
+    { skill = "parry" level = 20 },
+    { skill = "unarmed" level = 20 },
+    { skill = "sword" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "{npc}恭敬地向{name}跪倒，嘴里念念有词。 {expr}" }
+  ]
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "kaifeng_qigai" {
+      name = "乞丐"
+      aliases = ["qi gai", "qi", "gai"]
+      description = ""
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 7000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "kaifeng_shike" {
+      name = "食客"
+      aliases = ["shi ke", "shi", "ke"]
+      description = ""
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 3000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "kaifeng_woman" {
+      name = "踏青妇人"
+      aliases = ["woman"]
+      description = "春天出来游览的妇人。"
+  gender = "女性"
+  age = 34
+
+  combat = {
+    combat_exp = 5000
+  }
+
+  skills = [
+    { skill = "dodge" level = 20 },
+    { skill = "force" level = 20 },
+    { skill = "parry" level = 20 },
+    { skill = "unarmed" level = 20 },
+    { skill = "sword" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "kaifeng_zaopeng" {
+      name = "木澡盆"
+      aliases = ["zaopen"]
+      description = "木头的澡盆,已经很陈旧。"
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "kaifeng_zhike" {
+      name = "知客僧"
+      aliases = ["zhike seng", "seng"]
+      description = "一个精壮僧人。"
+  gender = "男性"
+  age = 34
+
+  combat = {
+    attitude = "peaceful"
+    con = 20
+    int = 16
+    str = 15
+  }
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "{npc}对着{name}连连挥袖：去，去去，一边去！{expr}" }
+  ]
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "kaifeng_zhukao3" {
+      name = "考官"
+      aliases = ["kao guan", "kao", "guan"]
+      description = ""
+  gender = "男性"
+  age = 53
+  shen_type = 1
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 30000
+    dex = 20
+    max_neili = 500
+    str = 20
+  }
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "force" level = 50 },
+    { skill = "sword" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.guanfu4.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "kunlun_seller" {
+      name = "小贩"
+      aliases = ["xiao fan", "xiao", "fan"]
+      description = "这是个小贩，别看他长的老老实实，可你别 想从他那儿掏便宜。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 32
+  # brain = brains.vendor  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  goods = [
+    { id = xiyu.items.fire.id },
+    { id = quanzhen.items.stick.id },
+    { id = quanzhen.items.bottle.id },
+    { id = quanzhen.items.egg.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "luoyang_smith" {
+      name = "铁匠"
+      aliases = ["tiejiang", "smith"]
+      description = "铁匠正用铁钳夹住一块红热的铁块放进炉中。"
+  title = "打铁铺老板"
+  gender = "男性"
+  age = 33
+  shen_type = 1
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 400
+  }
+
+  goods = [
+    { id = item.items.jingtie.id },
+    { id = clone_lib.items.changjian.id },
+    { id = clone_lib.items.hammer.id },
+    { id = clone_lib.items.tudao.id },
+    { id = clone_lib.items.dagger.id },
+    { id = clone_lib.items.tiegun.id },
+    { id = clone_lib.items.gangdao.id },
+    { id = clone_lib.items.tiejia.id },
+    { id = clone_lib.items.arrow.id },
+    { id = clone_lib.items.wolfarrow.id },
+    { id = clone_lib.items.bow.id },
+    { id = clone_lib.items.longbow.id }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "mingjiao_chengchaofeng" {
+      name = "程嘲风"
+      aliases = ["cheng chaofeng", "cheng", "chaofeng"]
+      description = "他是一位身宽体胖的老者，身穿一件白布长袍。 他正笑嘻嘻地看着你，好象对你颇有好感。"
+  title = "明教青龙坛坛主"
+  gender = "男性"
+  age = 51
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 300
+    max_neili = 600
+    max_qi = 450
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "hunyuan-yiqi" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "shaolin-shenfa" level = 70 },
+    { skill = "finger" level = 68 },
+    { skill = "nianhua-zhi" level = 68 },
+    { skill = "parry" level = 70 },
+    { skill = "sword" level = 80 },
+    { skill = "damo-jian" level = 80 },
+    { skill = "buddhism" level = 70 },
+    { skill = "literate" level = 70 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "finger" skill = "nianhua-zhi" },
+    { type = "parry" skill = "damo-jian" },
+    { type = "sword" skill = "damo-jian" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "mingjiao_fenggongying" {
+      name = "封弓影"
+      aliases = ["feng gongying", "feng", "gongying"]
+      description = "他是一个阴郁的瘦子，身穿一件白布长袍。 他脸上阴沉沉的，看来心胸必不开阔。"
+  title = "明教神蛇坛坛主"
+  gender = "男性"
+  age = 47
+  shen_type = 1
+  score = 100
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50000
+    con = 20
+    dex = 20
+    int = 20
+    max_jing = 300
+    max_neili = 600
+    max_qi = 450
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 70 },
+    { skill = "hunyuan-yiqi" level = 70 },
+    { skill = "dodge" level = 70 },
+    { skill = "shaolin-shenfa" level = 70 },
+    { skill = "finger" level = 68 },
+    { skill = "nianhua-zhi" level = 68 },
+    { skill = "parry" level = 70 },
+    { skill = "sword" level = 80 },
+    { skill = "damo-jian" level = 80 },
+    { skill = "buddhism" level = 70 },
+    { skill = "literate" level = 70 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "shaolin-shenfa" },
+    { type = "finger" skill = "nianhua-zhi" },
+    { type = "parry" skill = "damo-jian" },
+    { type = "sword" skill = "damo-jian" }
+  ]
+
+
+  carry = [
+    { id = items.baipao.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "motianya_qiaofu" {
+      name = "樵夫"
+      aliases = ["qiao fu", "qiao", "fu"]
+      description = "这是一个一辈子以砍材为生的老樵夫，由于饱 受风霜，显出与年龄不相称的衰老。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 50
+  shen_type = 1
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+    con = 18
+    dex = 18
+    int = 18
+    str = 17
+  }
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.knife.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "mudren_lisouci" {
+      name = "李瘦辞"
+      description = "这是一位喜爱诗词和灯迷的姑娘，因才貌双绝惊艳于世， 她清丽绝俗，风姿动人，有沉鱼落雁之容，避月羞花之貌！"
+  title = "如梦令"
+  gender = "女性"
+  age = 21
+
+  carry = [
+    { id = items.qunzi.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+    add_actions = ["puzzle"]
+  }
+
+  greetings = [
+    { line = "李瘦辞巧笑倩兮的说道：这位{respect}，来挑战一下猜迷(指令：puzzle)吧，猜对有奖。" },
+    { line = "李瘦辞甜甜的说道：这位{respect}，要来猜灯迷(指令：puzzle)吗？猜对有奖哦。" }
+  ]
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "qingcheng_fang" {
+      name = "方人智"
+      aliases = ["fang renzhi", "fang", "renzhi"]
+      description = "他就是「青城派」年轻一代弟子，以智计为师尊喜爱。"
+  gender = "男性"
+  age = 20
+
+  combat = {
+    combat_exp = 50000
+  }
+
+  skills = [
+    { skill = "sword" level = 50 },
+    { skill = "pixie-sword" level = 50 },
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 },
+    { skill = "parry" level = 50 },
+    { type = "parry" skill = "pixie-sword" },
+    { type = "sword" skill = "pixie-sword" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.bluecloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "qingcheng_jia" {
+      name = "贾人达"
+      aliases = ["jia renda", "jia", "renda"]
+      description = "他就是「青城派」中最为同门不齿、最下达的家伙。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    combat_exp = 30000
+  }
+
+  skills = [
+    { skill = "sword" level = 30 },
+    { skill = "pixie-sword" level = 30 },
+    { skill = "unarmed" level = 30 },
+    { skill = "dodge" level = 30 },
+    { skill = "parry" level = 30 },
+    { type = "parry" skill = "pixie-sword" },
+    { type = "sword" skill = "pixie-sword" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.bluecloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "贾人达嬉皮笑脸道：这位花姑娘身材硬是要得。一张脸蛋嘛， 却是钉鞋踏烂泥，翻转石榴皮，格老子好一张大麻皮！" },
+    { line = "贾人达白了白眼：格老子的，你这兔儿爷骂谁？" }
+  ]
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "qingcheng_yu" {
+      name = "于人豪"
+      aliases = ["yu renhao", "yu", "renhao"]
+      description = "他就是「英雄豪杰，青城四秀」之一，武功也远高同门。"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    combat_exp = 80000
+  }
+
+  skills = [
+    { skill = "sword" level = 80 },
+    { skill = "pixie-sword" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "parry" level = 80 },
+    { type = "parry" skill = "pixie-sword" },
+    { type = "sword" skill = "pixie-sword" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.bluecloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 1
+  }
+
+  greetings = [
+    { line = "于人豪大喊一声：老子就是于人豪！" }
+  ]
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "qingcheng_yuyan" {
+      name = "余人彦"
+      aliases = ["yu renyan", "yu", "renyan"]
+      description = "他就是「青城派」掌门人余沧海的独生爱子。可是他实在很不争气。"
+  gender = "男性"
+  age = 20
+
+  combat = {
+    combat_exp = 40000
+  }
+
+  skills = [
+    { skill = "sword" level = 40 },
+    { skill = "pixie-sword" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 },
+    { type = "parry" skill = "pixie-sword" },
+    { type = "sword" skill = "pixie-sword" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.bluecloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "quanzhen_seller" {
+      name = "小贩"
+      aliases = ["xiao fan", "xiao", "fan"]
+      description = "这是个小贩，别看他长的老老实实，可你别 想从他那儿掏便宜。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 32
+  # brain = brains.vendor  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 300
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  goods = [
+    { id = items.stick.id },
+    { id = items.bottle.id },
+    { id = items.egg.id },
+    { id = xiyu.items.fire.id }
+  ]
+
+
+  inquiries = [
+    { key = "何首乌" value = "(: ask_me :)" },
+    { key = "药材" value = "(: ask_me :)" },
+    { key = "首乌" value = "(: ask_me :)" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+
+  accept = [
+    { kind = "money" accept = true msg = "小贩诧异地说道：你给我这个干什么？" },
+    { kind = "any" accept = true msg = ["小贩诧异地说道：你给我这个干什么？", "小贩抱歉地说道：实在对不住，现在我手里也没货了？", "小贩疑惑地说道：我又不是乞丐，你没事给我钱干嘛？", "小贩阴笑着说道：嘿嘿，给我这么多钱哪。", "小贩说道：既然您出得起价钱，这味药可就归您了。"] }
+  ]
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "shaolin_shang1" {
+      name = "丫鬟"
+      aliases = ["ya huan", "ya", "huan"]
+      description = "一个十多岁的小姑娘，在这里当丫鬟。"
+  gender = "女性"
+  age = 12
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 2000
+    con = 17
+    dex = 20
+    int = 22
+    str = 17
+  }
+
+  skills = [
+    { skill = "dodge" level = 10 },
+    { skill = "unarmed" level = 10 }
+  ]
+
+
+  carry = [
+    { id = items.nvcloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "shenlong_chuanfu" {
+      name = "老船夫"
+      aliases = ["lao chuanfu", "chuanfu", "lao"]
+      description = "这是一个老船夫。饱经风霜的脸上透出一丝狡猾。他经常出海，以前 曾经去过神龙岛。现在他拥有一艘大船可以出海。"
+  nickname = "消息灵通"
+  gender = "男性"
+  age = 56
+  shen_type = 1
+
+  combat = {
+    combat_exp = 1000000
+    max_neili = 1000
+  }
+
+  inquiries = [
+    { key = "出海" value = "(: chu_hai :)" },
+    { key = "灵蛇岛" value = "灵蛇岛上有一帮大恶人，千万不能去！" },
+    { key = "神龙岛" value = "神龙岛上有一帮大恶人，千万不能去！" }
+  ]
+
+  skills = [
+    { skill = "force" level = 200 },
+    { skill = "unarmed" level = 400 },
+    { skill = "dodge" level = 200 },
+    { skill = "parry" level = 200 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "money" min = 10000 accept = true msg = "你在海上航行了很久很久......." },
+    { kind = "any" accept = false }
+  ]
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "shenlong_dizi" {
+      name = "弟子"
+      aliases = ["dizi"]
+      description = "这是一个神龙教弟子，混身透着一股邪气。"
+  title = "神龙教"
+  gender = "男性"
+
+  combat = {
+    attitude = "peaceful"
+    max_jing = 150
+    max_neili = 200
+    max_qi = 200
+  }
+
+  chat_chance = 3
+chats = [
+    "年轻弟子忽然高声叫道：教主宝训，时刻在心，建功克敌，无事不成！",
+    "年轻弟子忽然齐声叫道：众志齐心可成城，威震天下无比伦！",
+    "年轻弟子忽然齐声叫道：神龙飞天齐仰望，教主声威盖八方！",
+    "年轻弟子忽然齐声叫道：乘风破浪逞英豪，教主如同日月光！",
+    "年轻弟子齐声叫道：教主永享仙福，寿与天齐！"
+]
+
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "parry" level = 40 },
+    { skill = "sword" level = 50 },
+    { skill = "blade" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.xionghuang.id },
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "songshan_sha" {
+      name = "沙天江"
+      aliases = ["sha tianjiang", "tianjiang", "sha"]
+      description = ""
+  nickname = "秃鹰"
+  gender = "男性"
+  age = 53
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 80000
+    con = 30
+    dex = 30
+    int = 28
+    max_jing = 1200
+    max_neili = 2000
+    max_qi = 2000
+    str = 26
+  }
+
+  skills = [
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "force" level = 80 },
+    { skill = "parry" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "songshan-jian" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { skill = "songshan-xinfa" level = 80 },
+    { type = "force" skill = "songshan-xinfa" },
+    { type = "sword" skill = "songshan-sword" },
+    { type = "parry" skill = "songshan-sword" },
+    { type = "dodge" skill = "lingxu-bu" }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "taishan_dao_ke" {
+      name = "刀客"
+      aliases = ["dao ke", "ke"]
+      description = "这家伙满脸横肉，一付凶神恶煞的模样，令人望而生畏。"
+  gender = "男性"
+  age = 20
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 15000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 45 },
+    { skill = "blade" level = 45 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.gangdao.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "taishan_jian_ke" {
+      name = "剑客"
+      aliases = ["jian ke", "ke"]
+      description = "这是位中年武人，肩背长剑，长长的剑穗随风飘扬，看来似乎身怀绝艺。"
+  gender = "男性"
+  age = 45
+
+  combat = {
+    attitude = "heroism"
+    combat_exp = 20000
+  }
+
+  skills = [
+    { skill = "sword" level = 60 },
+    { skill = "unarmed" level = 50 },
+    { skill = "parry" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.changjian.id },
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "taishan_seng_ren" {
+      name = "游方和尚"
+      aliases = ["seng ren", "seng"]
+      description = "他是一位中年游方和尚，骨瘦如柴，身上的袈裟打满了补丁。"
+  gender = "男性"
+  age = 45
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 10000
+    con = 25
+    dex = 23
+    int = 30
+    max_jing = 300
+    max_neili = 380
+    max_qi = 380
+    str = 20
+  }
+
+  skills = [
+    { skill = "force" level = 40 },
+    { skill = "unarmed" level = 40 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  accept = [
+    { kind = "item_name" name = "金刚经" accept = true msg = ["贫僧正需这本金刚经来叁照石坪上的原文啊 ！", "smile"] },
+    { kind = "any" accept = true msg = ["贫僧正需这本金刚经来叁照石坪上的原文啊 ！", "smile"] }
+  ]
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "taishan_shu_sheng" {
+      name = "书生"
+      aliases = ["shu sheng", "sheng"]
+      description = "这是个饱读诗书，却手无搏鸡之力的年轻书生。"
+  gender = "男性"
+  age = 22
+
+  combat = {
+    attitude = "peaceful"
+    int = 28
+  }
+
+  skills = [
+    { skill = "literate" level = 40 }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "taishan_tangzi" {
+      name = "趟子手"
+      aliases = ["tangzi shou", "shou"]
+      description = "这是个镖局趟子手，长得虎背熊腰，一身横练功夫。"
+  gender = "男性"
+  age = 30
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 10000
+  }
+
+  chat_chance = 5
+chats = [
+    "趟子手一声大喊: 我~~~~武~~~~维~~~~扬~~~~！"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 40 },
+    { skill = "sword" level = 20 },
+    { skill = "parry" level = 40 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.duanjian.id },
+    { id = items.cloth.id },
+    { id = items.jitui.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "taishan_tiao_fu" {
+      name = "挑夫"
+      aliases = ["tiao fu", "porter"]
+      description = "这是个老实巴交的穷挑夫，长得膀阔腰圆，一身肌肉。"
+  gender = "男性"
+
+  combat = {
+    attitude = "heroism"
+    con = 20
+    dex = 22
+    int = 15
+    str = 25
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "village_boy" {
+      name = "男孩"
+      aliases = ["boy"]
+      description = "这是个农家少年，大概因从小物农，虽然年纪不大，可已长的很粗壮了。"
+  gender = "男性"
+  age = 13
+  shen_type = 1
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 100
+    con = 15
+    dex = 16
+    int = 17
+    str = 17
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "village_kid" {
+      name = "小孩"
+      aliases = ["kid"]
+      description = "这是个农家小孩子"
+  gender = "男性"
+  age = 7
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 50
+    con = 11
+    dex = 11
+    int = 11
+    str = 11
+  }
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "village_oldwoman" {
+      name = "老大娘"
+      aliases = ["old woman", "woman"]
+      description = "一个满脸风霜之色的老婆婆。"
+  gender = "女性"
+  age = 63
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 150
+    con = 14
+    dex = 12
+    int = 13
+    str = 13
+  }
+
+  inquiries = [
+    { key = "流氓" value = "那几个小流氓正天不务正业，就在小胡同里喝酒赌钱。" },
+    { key = "鸡" value = "我那老母鸡啊...一定是那几个不务正业的小流氓干的。" }
+  ]
+
+  chat_chance = 10
+chats = [
+    "老大娘伤心的说道：那个天杀的，偷了我的老母鸡。",
+    "老大娘叹了口气，说道：这是个什麽世道啊。",
+    "老大娘呆呆的望着鸡笼，发起愣来了。"
+]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "village_poorman" {
       name = "穷汉"
+      aliases = ["poor man", "man"]
       description = "一个骨瘦如柴，满脸菜色的穷汉。"
   gender = "男性"
   age = 33
@@ -8456,15 +10851,15 @@ chats = [
 
     }
 
-# LPC d/village/npc/seller 被 2 个区共用，按 clone/ 约定作为共享 NPC
-
-    characters "seller" {
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "village_seller" {
       name = "小贩"
+      aliases = ["seller"]
       description = "这是个小贩，别看他长的老老实实，可你别想从他那儿掏便宜。"
   nickname = "消息灵通"
   gender = "男性"
   age = 32
-  brain = brains.vendor
+  # brain = brains.vendor  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
     attitude = "friendly"
@@ -8493,10 +10888,10 @@ chats = [
   }
     }
 
-# LPC d/wudang/npc/tufei1 被 2 个区共用，按 clone/ 约定作为共享 NPC
-
-    characters "tufei1" {
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "wudang_tufei1" {
       name = "土匪"
+      aliases = ["tufei", "bandit", "fei"]
       description = "这家伙满脸横肉�一付凶神恶煞的模样，令人望而生畏。"
   gender = "男性"
   age = 30
@@ -8521,10 +10916,72 @@ chats = [
 
     }
 
-# LPC d/wudu/npc/xuetong 被 2 个区共用，按 clone/ 约定作为共享 NPC
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "wudang_tufei2" {
+      name = "土匪"
+      aliases = ["tufei", "bandit", "fei"]
+      description = "这家伙满脸横肉�一付凶神恶煞的模样，令人望而生畏。"
+  gender = "男性"
+  age = 20
 
-    characters "xuetong" {
+  combat = {
+    attitude = "aggressive"
+    combat_exp = 5000
+  }
+
+  skills = [
+    { skill = "unarmed" level = 25 },
+    { skill = "parry" level = 20 },
+    { skill = "dodge" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "wudu_xiansheng" {
+      name = "教书先生"
+      aliases = ["xian sheng", "xian"]
+      description = "一位白面无须的中年文士，正摇头晃脑的在教学生念书。"
+  gender = "男性"
+  age = 40
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 1000
+    max_qi = 400
+  }
+
+  chat_chance = 10
+chats = [
+    "教书先生念道：人之初，性本善。",
+    "教书先生摇头晃脑的吟道：关关雎鸠，在河之洲，窈窕淑女，君子好逑。",
+    "教书先生自言自语道：挠挠痒痒，痒痒挠挠，不挠不痒，不痒不挠。",
+    "教书先生朗声念道：春眠不觉晓，处处闻啼鸟。"
+]
+
+
+  skills = [
+    { skill = "dodge" level = 15 },
+    { skill = "unarmed" level = 10 },
+    { skill = "parry" level = 15 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "wudu_xuetong" {
       name = "小学童"
+      aliases = ["xue tong", "tong"]
       description = "这是一个十三四岁的小童，正心不在焉的跟着先生胡乱念着。"
   gender = "男性"
   age = 14
@@ -8557,10 +11014,295 @@ chats = [
 
     }
 
-# LPC d/zhongzhou/npc/jiading 被 2 个区共用，按 clone/ 约定作为共享 NPC
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "wudu_youngboy" {
+      name = "苗族少年"
+      aliases = ["young boy", "boy"]
+      description = "一个身穿苗族服饰的英俊少年。"
+  gender = "男性"
+  age = 20
+  shen_type = 1
 
-    characters "jiading" {
+  combat = {
+    combat_exp = 8000
+    max_qi = 400
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "dodge" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "xiangyang_gaoli" {
+      name = "高丽商"
+      aliases = ["gaoli shang", "shang"]
+      description = "这是个高丽商人，长得和中国人没啥区别。连卖的东西也差不多。"
+  title = "新罗坊老板"
+  gender = "男性"
+  age = 45
+  shen_type = 1
+  # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 40000
+  }
+
+  goods = [
+    { id = xiyu.items.fire.id },
+    { id = city.items.mabudai.id },
+    { id = city.items.beixin.id },
+    { id = city.items.toukui.id },
+    { id = city.items.cycle.id },
+    { id = city.items.surcoat.id },
+    { id = city.items.shield.id },
+    { id = city.items.huwan.id },
+    { id = city.items.zhitao.id },
+    { id = city.items.huyao.id },
+    { id = city.items.caoxie.id },
+    { id = city.items.pixue.id },
+    { id = city.items.shoutao.id },
+    { id = city.items.tieshou.id },
+    { id = city.items.jinsijia.id }
+  ]
+
+  skills = [
+    { skill = "unarmed" level = 50 },
+    { skill = "dodge" level = 50 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+
+  init = {
+    greet_delay = 0
+    add_actions = ["list", "buy"]
+  }
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "xiyu_trader" {
+      name = "波斯商人"
+      aliases = ["bosi shangren", "shangren", "bosi"]
+      description = "一个高鼻蓝眼的波斯商人。他看着你脸上露出狡猾的笑容。"
+  nickname = "消息灵通"
+  gender = "男性"
+  shen_type = 1
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 6000
+  }
+
+  chat_chance = 15
+chats = [
+    "波斯商人对你挤了一下眼睛。",
+    "波斯商人对你说：阿拉阿可巴，穆罕默德瑞素阿拉。",
+    "波斯商人呵呵笑了笑，神秘兮兮的看着你：。"
+]
+
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "blade" level = 40 },
+    { skill = "parry" level = 30 },
+    { skill = "dodge" level = 40 }
+  ]
+
+
+  carry = [
+    { id = items.wandao.id },
+    { id = items.changpao.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "yitian_qian2" {
+      name = "钱二败"
+      description = ""
+  title = "绍敏郡主座下"
+  nickname = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 250000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 800
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 120 },
+    { skill = "unarmed" level = 120 },
+    { skill = "throwing" level = 120 },
+    { skill = "xuanyuan-arrow" level = 120 },
+    { skill = "changquan" level = 120 },
+    { skill = "lingxu-bu" level = 120 },
+    { skill = "force" level = 120 },
+    { skill = "hunyuan-yiqi" level = 120 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.ciguarrow.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "yitian_zhao1" {
+      name = "赵一伤"
+      description = ""
+  title = "绍敏郡主座下"
+  nickname = "神箭八雄"
+  gender = "男性"
+  age = 25
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 250000
+    con = 25
+    dex = 25
+    int = 25
+    max_jing = 1000
+    max_neili = 800
+    max_qi = 1000
+    str = 25
+  }
+
+  skills = [
+    { skill = "dodge" level = 120 },
+    { skill = "unarmed" level = 120 },
+    { skill = "throwing" level = 120 },
+    { skill = "xuanyuan-arrow" level = 120 },
+    { skill = "changquan" level = 120 },
+    { skill = "lingxu-bu" level = 120 },
+    { skill = "force" level = 120 },
+    { skill = "hunyuan-yiqi" level = 120 },
+    { type = "force" skill = "hunyuan-yiqi" },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "changquan" },
+    { type = "throwing" skill = "xuanyuan-arrow" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id },
+    { id = items.fengweiarrow.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "yitian_zhaomin2" {
+      name = "赵敏"
+      description = "她脸泛红霞，容色丽都。十分美丽之中，更带 着三分英气，三分豪态，同时雍容华贵，自有 一副端严之致，令人肃然起敬，不敢逼视。"
+  title = "大元绍敏郡主"
+  gender = "女性"
+  age = 19
+  shen_type = 1
+  score = 20000
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 60000
+    con = 25
+    dex = 30
+    int = 25
+    max_jing = 200
+    max_neili = 500
+    max_qi = 500
+    str = 15
+  }
+
+  inquiries = [
+    { key = "倚天剑" value = "倚天为天下神兵，怎么，你想要？" },
+    { key = "张无忌" value = "张公子远在昆仑，不知他近来可好？秋冷春寒，可有寒衣？" }
+  ]
+
+  skills = [
+    { skill = "force" level = 80 },
+    { skill = "dodge" level = 80 },
+    { skill = "unarmed" level = 80 },
+    { skill = "sword" level = 80 },
+    { skill = "liangyi-jian" level = 80 },
+    { skill = "huifeng-jian" level = 80 },
+    { skill = "taiji-shengong" level = 90 },
+    { skill = "changquan" level = 80 },
+    { skill = "lingxu-bu" level = 80 },
+    { type = "dodge" skill = "lingxu-bu" },
+    { type = "parry" skill = "liangyi-jian" },
+    { type = "sword" skill = "liangyi-jian" },
+    { type = "unarmed" skill = "changquan" }
+  ]
+
+
+  carry = [
+    { id = items.moon_dress.id }
+  ]
+
+
+  engage = {
+    fight = { accept = false msg = "没兴趣。" }
+    hit = { accept = true }
+    kill = { accept = true }
+  }
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "zhongzhou_fushang" {
+      name = "富商"
+      aliases = ["fu shang", "fu", "shang"]
+      description = "中州本地的暴发户。"
+  gender = "男性"
+  age = 35
+
+  combat = {
+    combat_exp = 3600
+  }
+
+  skills = [
+    { skill = "unarmed" level = 20 },
+    { skill = "dodge" level = 40 },
+    { skill = "parry" level = 20 }
+  ]
+
+
+  carry = [
+    { id = items.cloth.id }
+  ]
+
+    }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "zhongzhou_jiading" {
       name = "家丁"
+      aliases = ["jia ding", "jia"]
       description = ""
   gender = "男性"
   age = 35
@@ -8580,3 +11322,29 @@ chats = [
   ]
 
     }
+
+# LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
+    characters "zhongzhou_yayi" {
+      name = "衙役"
+      aliases = ["ya yi", "ya"]
+      description = "一个高大威猛的汉子，因为久在官府做事，脸 上已经磨炼得毫无表情。"
+  gender = "男性"
+  age = 25
+  shen_type = 1
+
+  combat = {
+    combat_exp = 7500
+  }
+
+  skills = [
+    { skill = "unarmed" level = 30 },
+    { skill = "dodge" level = 30 }
+  ]
+
+
+  carry = [
+    { id = items.yayifu.id }
+  ]
+
+    }
+

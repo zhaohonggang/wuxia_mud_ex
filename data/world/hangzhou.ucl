@@ -1281,7 +1281,7 @@ valid_leave = [
   room_characters "marryroom" {
     room_id = rooms.marryroom.id
     characters = [
-      { id = characters.hongniang.id }    ]
+      { id = characters.adm_hongniang.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/hangzhou/pinghuqiuyue.c by LPCConverter
@@ -2467,7 +2467,7 @@ item_desc = {
   room_characters "yuelang" {
     room_id = rooms.yuelang.id
     characters = [
-      { id = characters.chengchaofeng.id },
+      { id = characters.mingjiao_chengchaofeng.id },
       { id = characters.honghua2.id },
       { id = characters.honghua2.id }    ]
   }

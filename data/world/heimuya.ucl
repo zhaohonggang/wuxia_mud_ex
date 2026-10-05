@@ -500,7 +500,7 @@ item_desc = {
   room_characters "dating4" {
     room_id = rooms.dating4.id
     characters = [
-      { id = characters.shang1.id }    ]
+      { id = characters.shaolin_shang1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/heimuya/didao1.c by LPCConverter
@@ -1066,7 +1066,7 @@ direction = "south"
   room_characters "pingdingzhou" {
     room_id = rooms.pingdingzhou.id
     characters = [
-      { id = characters.girl2.id },
+      { id = characters.beijing_girl2.id },
       { id = characters.kid1.id },
       { id = characters.dizi7.id },
       { id = characters.dizi7.id },
@@ -1228,7 +1228,7 @@ direction = "south"
   room_characters "road2" {
     room_id = rooms.road2.id
     characters = [
-      { id = characters.tiaofu.id }    ]
+      { id = characters.beijing_tiaofu.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/heimuya/road3.c by LPCConverter

@@ -885,7 +885,7 @@ item_desc = {
   room_characters "xiaodao1" {
     room_id = rooms.xiaodao1.id
     characters = [
-      { id = characters.cungu.id }    ]
+      { id = characters.baituo_cungu.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/lingjiu/xiaodao2.c by LPCConverter
@@ -909,7 +909,7 @@ item_desc = {
   room_characters "xiaodao2" {
     room_id = rooms.xiaodao2.id
     characters = [
-      { id = characters.old2.id },
+      { id = characters.beijing_old2.id },
       { id = characters.kid1.id }    ]
   }
 

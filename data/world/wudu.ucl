@@ -1631,8 +1631,8 @@ direction = ~
   room_characters "road2" {
     room_id = rooms.road2.id
     characters = [
-      { id = characters.tiao_fu.id },
-      { id = characters.tiao_fu.id }    ]
+      { id = characters.taishan_tiao_fu.id },
+      { id = characters.taishan_tiao_fu.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/wudu/road3.c by LPCConverter

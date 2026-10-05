@@ -24,7 +24,7 @@ zones "lanzhou" {
   room_characters "beidajie1" {
     room_id = rooms.beidajie1.id
     characters = [
-      { id = characters.liwenxiu.id }    ]
+      { id = characters.gaochang_liwenxiu.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/lanzhou/beidajie2.c by LPCConverter
@@ -51,7 +51,7 @@ zones "lanzhou" {
     room_id = rooms.beidajie2.id
     characters = [
       { id = characters.kid1.id },
-      { id = characters.old1.id }    ]
+      { id = characters.beijing_old1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/lanzhou/beimen.c by LPCConverter
@@ -132,7 +132,7 @@ zones "lanzhou" {
   room_characters "caroad1" {
     room_id = rooms.caroad1.id
     characters = [
-      { id = characters.tiaofu.id }    ]
+      { id = characters.beijing_tiaofu.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/lanzhou/caroad2.c by LPCConverter
@@ -156,7 +156,7 @@ zones "lanzhou" {
   room_characters "caroad2" {
     room_id = rooms.caroad2.id
     characters = [
-      { id = characters.shusheng1.id }    ]
+      { id = characters.beijing_shusheng1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/lanzhou/caroad3.c by LPCConverter
@@ -283,7 +283,7 @@ zones "lanzhou" {
   room_characters "dongdajie1" {
     room_id = rooms.dongdajie1.id
     characters = [
-      { id = characters.girl1.id }    ]
+      { id = characters.beijing_girl1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/lanzhou/dongmen.c by LPCConverter
@@ -355,9 +355,9 @@ zones "lanzhou" {
   room_characters "guangchang" {
     room_id = rooms.guangchang.id
     characters = [
-      { id = characters.maiyi2.id },
-      { id = characters.haoke1.id },
-      { id = characters.haoke1.id },
+      { id = characters.beijing_maiyi2.id },
+      { id = characters.beijing_haoke1.id },
+      { id = characters.beijing_haoke1.id },
       { id = characters.liumangtou.id },
       { id = characters.xiaofan.id },
       { id = characters.walker.id }    ]
@@ -543,7 +543,7 @@ direction = "west"
   room_characters "nandajie1" {
     room_id = rooms.nandajie1.id
     characters = [
-      { id = characters.richman1.id }    ]
+      { id = characters.beijing_richman1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/lanzhou/nandajie2.c by LPCConverter
@@ -567,7 +567,7 @@ direction = "west"
   room_characters "nandajie2" {
     room_id = rooms.nandajie2.id
     characters = [
-      { id = characters.girl4.id }    ]
+      { id = characters.beijing_girl4.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/lanzhou/nanmen.c by LPCConverter
@@ -621,7 +621,7 @@ direction = "west"
   room_characters "nroad1" {
     room_id = rooms.nroad1.id
     characters = [
-      { id = characters.trader.id },
+      { id = characters.xiyu_trader.id },
       { id = characters.walker.id }    ]
   }
 
@@ -646,8 +646,8 @@ direction = "west"
   room_characters "nroad2" {
     room_id = rooms.nroad2.id
     characters = [
-      { id = characters.youke.id },
-      { id = characters.youke.id }    ]
+      { id = characters.beijing_youke.id },
+      { id = characters.beijing_youke.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/lanzhou/nroad3.c by LPCConverter
@@ -688,7 +688,7 @@ direction = "west"
   room_characters "nroad4" {
     room_id = rooms.nroad4.id
     characters = [
-      { id = characters.haoke1.id }    ]
+      { id = characters.beijing_haoke1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/lanzhou/qianzhuang.c by LPCConverter
@@ -834,8 +834,8 @@ direction = "west"
   room_characters "xiaojisi" {
     room_id = rooms.xiaojisi.id
     characters = [
-      { id = characters.dipi.id },
-      { id = characters.hunhun.id }    ]
+      { id = characters.beijing_dipi.id },
+      { id = characters.beijing_hunhun.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/lanzhou/xidajie1.c by LPCConverter

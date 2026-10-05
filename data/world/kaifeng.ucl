@@ -2564,7 +2564,7 @@ direction = ~
   room_characters "yaopu" {
     room_id = rooms.yaopu.id
     characters = [
-      { id = characters.ping.id }    ]
+      { id = characters.city_ping.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/kaifeng/yezhulin.c by LPCConverter

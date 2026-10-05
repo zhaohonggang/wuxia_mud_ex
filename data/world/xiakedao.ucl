@@ -1908,8 +1908,8 @@ item_desc = {
   room_characters "yongdao2" {
     room_id = rooms.yongdao2.id
     characters = [
-      { id = characters.haoke.id },
-      { id = characters.haoke.id }    ]
+      { id = characters.huashan_haoke.id },
+      { id = characters.huashan_haoke.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/xiakedao/yongdao3.c by LPCConverter

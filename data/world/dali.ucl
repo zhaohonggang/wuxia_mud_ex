@@ -3076,9 +3076,9 @@ item_desc = {
   room_characters "shilin2" {
     room_id = rooms.shilin2.id
     characters = [
-      { id = characters.tufei1.id },
-      { id = characters.tufei1.id },
-      { id = characters.tufei2.id }    ]
+      { id = characters.wudang_tufei1.id },
+      { id = characters.wudang_tufei1.id },
+      { id = characters.wudang_tufei2.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/dali/shizilukou.c by LPCConverter

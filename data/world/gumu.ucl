@@ -979,7 +979,7 @@ valid_leave = [
   room_characters "shenheyuan" {
     room_id = rooms.shenheyuan.id
     characters = [
-      { id = characters.seller.id },
+      { id = characters.quanzhen_seller.id },
       { id = characters.walker.id }    ]
   }
 

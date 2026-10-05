@@ -1460,6 +1460,12 @@ alias Kantele.World.LoaderError
 
   defp match_character({_key, character}, character_id), do: character.id == character_id
 
+  # clone_lib 的区名。**必须定义在所有使用者之前**：Elixir 的模块属性按文件
+  # 顺序展开，先用后设会展开成 nil，于是 `Enum.find(zones, &(&1.id == nil))`
+  # 恒为 nil —— 症状是 dereference 能拿到 `clone_lib:xxx`，紧接着的回退查找
+  # 却说 clone_lib 不存在，共享 NPC 全被当成悬空丢掉。
+  @clone_zone_id "clone_lib"
+
   # 房间摆放的 NPC：**本区优先，找不到才去 clone_lib**。
   #
   # 对应 LPC 里作者图省事的跨区引用（`d/baituo/jiudian.c` 写
@@ -1708,8 +1714,6 @@ If a known key is found, use the current zone
   end
 
   # ---- clone_lib 回退：对应 LPC 的 /clone/** 共享对象层 ----
-
-  @clone_zone_id "clone_lib"
 
   # LPC 的 `clone/` 目录（1003 个 .c）是全服共享对象，每个只有一份。
   # 我们这边就是 `data/world/clone_lib.ucl`。

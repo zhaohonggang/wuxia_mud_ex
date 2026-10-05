@@ -140,7 +140,7 @@ zones "mingjiao" {
   room_characters "fangtang" {
     room_id = rooms.fangtang.id
     characters = [
-      { id = characters.jiuping.id }    ]
+      { id = characters.hangzhou_jiuping.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/mingjiao/foshe.c by LPCConverter
@@ -1805,7 +1805,7 @@ item_desc = {
   room_characters "shanjiao" {
     room_id = rooms.shanjiao.id
     characters = [
-      { id = characters.seller.id }    ]
+      { id = characters.kunlun_seller.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/mingjiao/shanlu1.c by LPCConverter
@@ -1829,11 +1829,11 @@ item_desc = {
   room_characters "shanlu1" {
     room_id = rooms.shanlu1.id
     characters = [
-      { id = characters.jian_ke.id },
-      { id = characters.jian_ke.id },
-      { id = characters.jian_ke.id },
-      { id = characters.dao_ke.id },
-      { id = characters.dao_ke.id }    ]
+      { id = characters.taishan_jian_ke.id },
+      { id = characters.taishan_jian_ke.id },
+      { id = characters.taishan_jian_ke.id },
+      { id = characters.taishan_dao_ke.id },
+      { id = characters.taishan_dao_ke.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/mingjiao/shanlu2.c by LPCConverter

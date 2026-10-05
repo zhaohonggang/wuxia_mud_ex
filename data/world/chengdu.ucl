@@ -23,9 +23,9 @@ zones "chengdu" {
   room_characters "baidicheng" {
     room_id = rooms.baidicheng.id
     characters = [
-      { id = characters.shiren.id },
-      { id = characters.shusheng1.id },
-      { id = characters.shusheng1.id }    ]
+      { id = characters.beijing_shiren.id },
+      { id = characters.beijing_shusheng1.id },
+      { id = characters.beijing_shusheng1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/chengdu/bingqidian.c by LPCConverter
@@ -164,7 +164,7 @@ zones "chengdu" {
   room_characters "eastroad2" {
     room_id = rooms.eastroad2.id
     characters = [
-      { id = characters.liumangtou.id },
+      { id = characters.city_liumangtou.id },
       { id = characters.liumang.id },
       { id = characters.liumang.id }    ]
   }
@@ -550,9 +550,9 @@ direction = "south"
   room_characters "northroad3" {
     room_id = rooms.northroad3.id
     characters = [
-      { id = characters.haoke.id },
-      { id = characters.haoke.id },
-      { id = characters.jian_ke.id }    ]
+      { id = characters.huashan_haoke.id },
+      { id = characters.huashan_haoke.id },
+      { id = characters.taishan_jian_ke.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/chengdu/path1.c by LPCConverter
@@ -725,7 +725,7 @@ direction = "south"
   room_characters "sanxia3" {
     room_id = rooms.sanxia3.id
     characters = [
-      { id = characters.youke.id }    ]
+      { id = characters.beijing_youke.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/chengdu/shudao1.c by LPCConverter
@@ -766,7 +766,7 @@ direction = "south"
   room_characters "shudao10" {
     room_id = rooms.shudao10.id
     characters = [
-      { id = characters.old2.id }    ]
+      { id = characters.beijing_old2.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/chengdu/shudao11.c by LPCConverter
@@ -824,7 +824,7 @@ direction = "south"
   room_characters "shudao13" {
     room_id = rooms.shudao13.id
     characters = [
-      { id = characters.haoke1.id }    ]
+      { id = characters.beijing_haoke1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/chengdu/shudao14.c by LPCConverter
@@ -933,7 +933,7 @@ direction = "south"
   room_characters "shudao19" {
     room_id = rooms.shudao19.id
     characters = [
-      { id = characters.shusheng2.id }    ]
+      { id = characters.beijing_shusheng2.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/chengdu/shudao2.c by LPCConverter
@@ -957,7 +957,7 @@ direction = "south"
   room_characters "shudao2" {
     room_id = rooms.shudao2.id
     characters = [
-      { id = characters.girl2.id }    ]
+      { id = characters.beijing_girl2.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/chengdu/shudao3.c by LPCConverter
@@ -981,8 +981,8 @@ direction = "south"
   room_characters "shudao3" {
     room_id = rooms.shudao3.id
     characters = [
-      { id = characters.boy2.id },
-      { id = characters.girl4.id }    ]
+      { id = characters.beijing_boy2.id },
+      { id = characters.beijing_girl4.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/chengdu/shudao4.c by LPCConverter
@@ -1023,7 +1023,7 @@ direction = "south"
   room_characters "shudao5" {
     room_id = rooms.shudao5.id
     characters = [
-      { id = characters.tiaofu.id }    ]
+      { id = characters.beijing_tiaofu.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/chengdu/shudao6.c by LPCConverter
@@ -1064,7 +1064,7 @@ direction = "south"
   room_characters "shudao7" {
     room_id = rooms.shudao7.id
     characters = [
-      { id = characters.tangzi.id }    ]
+      { id = characters.beijing_tangzi.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/chengdu/shudao8.c by LPCConverter
@@ -1243,9 +1243,9 @@ direction = "south"
   room_characters "southroad3" {
     room_id = rooms.southroad3.id
     characters = [
-      { id = characters.jian_ke.id },
-      { id = characters.jian_ke.id },
-      { id = characters.dao_ke.id }    ]
+      { id = characters.taishan_jian_ke.id },
+      { id = characters.taishan_jian_ke.id },
+      { id = characters.taishan_dao_ke.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/chengdu/tanggate.c by LPCConverter
@@ -1424,7 +1424,7 @@ valid_leave = [
   room_characters "westroad1" {
     room_id = rooms.westroad1.id
     characters = [
-      { id = characters.seller.id },
+      { id = characters.village_seller.id },
       { id = characters.liumang.id }    ]
   }
 
@@ -1451,7 +1451,7 @@ valid_leave = [
   room_characters "westroad2" {
     room_id = rooms.westroad2.id
     characters = [
-      { id = characters.tangzi.id }    ]
+      { id = characters.taishan_tangzi.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/chengdu/westroad3.c by LPCConverter
@@ -1476,7 +1476,7 @@ valid_leave = [
   room_characters "westroad3" {
     room_id = rooms.westroad3.id
     characters = [
-      { id = characters.haoke.id }    ]
+      { id = characters.huashan_haoke.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/chengdu/wuguan.c by LPCConverter

@@ -203,14 +203,14 @@ direction = "east"
   room_characters "jinship" {
     room_id = rooms.jinship.id
     characters = [
-      { id = characters.peng.id },
-      { id = characters.sha.id },
-      { id = characters.liang.id },
-      { id = characters.hou.id },
-      { id = characters.ma.id },
-      { id = characters.qian.id },
-      { id = characters.shen.id },
-      { id = characters.wu.id },
+      { id = characters.huanghe_peng.id },
+      { id = characters.huanghe_sha.id },
+      { id = characters.huanghe_liang.id },
+      { id = characters.huanghe_hou.id },
+      { id = characters.huanghe_ma.id },
+      { id = characters.huanghe_qian.id },
+      { id = characters.huanghe_shen.id },
+      { id = characters.huanghe_wu.id },
       { id = characters.duantiande.id },
       { id = characters.wanyankang.id },
       { id = characters.wanyanhonglie.id },
@@ -352,7 +352,7 @@ item_desc = {
   room_characters "shanlu1" {
     room_id = rooms.shanlu1.id
     characters = [
-      { id = characters.poorman.id }    ]
+      { id = characters.village_poorman.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/guiyun/shanlu2.c by LPCConverter

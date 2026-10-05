@@ -700,7 +700,7 @@ item_desc = {
   room_characters "yanyu2" {
     room_id = rooms.yanyu2.id
     characters = [
-      { id = characters.yuenv.id }    ]
+      { id = characters.hangzhou_yuenv.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/quanzhou/zahuopu.c by LPCConverter

@@ -1655,7 +1655,7 @@ direction = ~
   room_characters "wuqi" {
     room_id = rooms.wuqi.id
     characters = [
-      { id = characters.smith.id }    ]
+      { id = characters.luoyang_smith.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/lingxiao/yaodian.c by LPCConverter

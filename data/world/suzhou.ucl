@@ -47,7 +47,7 @@ zones "suzhou" {
     room_id = rooms.baodaiqiao.id
     characters = [
       { id = characters.seller.id },
-      { id = characters.jiaoshi.id }    ]
+      { id = characters.adm_jiaoshi.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/suzhou/beidajie1.c by LPCConverter
@@ -162,7 +162,7 @@ zones "suzhou" {
   room_characters "canlangting" {
     room_id = rooms.canlangting.id
     characters = [
-      { id = characters.hongniang.id }    ]
+      { id = characters.adm_hongniang.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/suzhou/chaguan.c by LPCConverter
@@ -257,7 +257,7 @@ item_desc = {
   room_characters "datiepu" {
     room_id = rooms.datiepu.id
     characters = [
-      { id = characters.smith.id }    ]
+      { id = characters.city_smith.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/suzhou/dongdajie1.c by LPCConverter
@@ -537,7 +537,7 @@ item_desc = {
   room_characters "hutong2" {
     room_id = rooms.hutong2.id
     characters = [
-      { id = characters.liumangtou.id },
+      { id = characters.city_liumangtou.id },
       { id = characters.liumang.id },
       { id = characters.liumang.id }    ]
   }
@@ -1001,7 +1001,7 @@ direction = "west"
   room_characters "shijianshi" {
     room_id = rooms.shijianshi.id
     characters = [
-      { id = characters.jian_ke.id }    ]
+      { id = characters.taishan_jian_ke.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/suzhou/shizilin.c by LPCConverter
@@ -1168,7 +1168,7 @@ direction = "west"
   room_characters "toumenshan" {
     room_id = rooms.toumenshan.id
     characters = [
-      { id = characters.jian_ke.id }    ]
+      { id = characters.taishan_jian_ke.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/suzhou/wanjing.c by LPCConverter
@@ -1193,7 +1193,7 @@ direction = "west"
   room_characters "wanjing" {
     room_id = rooms.wanjing.id
     characters = [
-      { id = characters.dao_ke.id }    ]
+      { id = characters.taishan_dao_ke.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/suzhou/wenmeige.c by LPCConverter
@@ -1503,7 +1503,7 @@ direction = "west"
   room_characters "zhenshi" {
     room_id = rooms.zhenshi.id
     characters = [
-      { id = characters.seng_ren.id }    ]
+      { id = characters.taishan_seng_ren.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/suzhou/zhipoxuan.c by LPCConverter
@@ -1570,8 +1570,8 @@ direction = "west"
   room_characters "zhongxin" {
     room_id = rooms.zhongxin.id
     characters = [
-      { id = characters.maiyi2.id },
-      { id = characters.old1.id },
+      { id = characters.beijing_maiyi2.id },
+      { id = characters.beijing_old1.id },
       { id = characters.kid1.id }    ]
   }
 

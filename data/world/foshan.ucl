@@ -621,7 +621,7 @@ direction = "south"
   room_characters "street3" {
     room_id = rooms.street3.id
     characters = [
-      { id = characters.liumangtou.id }    ]
+      { id = characters.city_liumangtou.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/foshan/street4.c by LPCConverter

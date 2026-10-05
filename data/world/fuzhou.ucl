@@ -182,7 +182,7 @@ zones "fuzhou" {
   room_characters "dongjiekou" {
     room_id = rooms.dongjiekou.id
     characters = [
-      { id = characters.liumangtou.id },
+      { id = characters.city_liumangtou.id },
       { id = characters.liumang.id },
       { id = characters.liumang.id },
       { id = characters.liumang.id }    ]
@@ -251,8 +251,8 @@ zones "fuzhou" {
   room_characters "erbapu" {
     room_id = rooms.erbapu.id
     characters = [
-      { id = characters.haoke.id },
-      { id = characters.haoke.id }    ]
+      { id = characters.huashan_haoke.id },
+      { id = characters.huashan_haoke.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/fuzhou/fzroad1.c by LPCConverter
@@ -301,7 +301,7 @@ zones "fuzhou" {
   room_characters "fzroad10" {
     room_id = rooms.fzroad10.id
     characters = [
-      { id = characters.yuyan.id }    ]
+      { id = characters.qingcheng_yuyan.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/fuzhou/fzroad11.c by LPCConverter
@@ -360,8 +360,8 @@ zones "fuzhou" {
   room_characters "fzroad3" {
     room_id = rooms.fzroad3.id
     characters = [
-      { id = characters.tiao_fu.id },
-      { id = characters.tiao_fu.id }    ]
+      { id = characters.taishan_tiao_fu.id },
+      { id = characters.taishan_tiao_fu.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/fuzhou/fzroad4.c by LPCConverter
@@ -415,7 +415,7 @@ zones "fuzhou" {
   room_characters "fzroad5" {
     room_id = rooms.fzroad5.id
     characters = [
-      { id = characters.fang.id }    ]
+      { id = characters.qingcheng_fang.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/fuzhou/fzroad6.c by LPCConverter
@@ -439,7 +439,7 @@ zones "fuzhou" {
   room_characters "fzroad6" {
     room_id = rooms.fzroad6.id
     characters = [
-      { id = characters.yu.id }    ]
+      { id = characters.qingcheng_yu.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/fuzhou/fzroad7.c by LPCConverter
@@ -507,7 +507,7 @@ zones "fuzhou" {
   room_characters "fzroad9" {
     room_id = rooms.fzroad9.id
     characters = [
-      { id = characters.jia.id }    ]
+      { id = characters.qingcheng_jia.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/fuzhou/gushan.c by LPCConverter
@@ -862,7 +862,7 @@ direction = "west"
   room_characters "shiqiao" {
     room_id = rooms.shiqiao.id
     characters = [
-      { id = characters.sha.id }    ]
+      { id = characters.songshan_sha.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/fuzhou/shulin.c by LPCConverter
@@ -1273,7 +1273,7 @@ direction = ~
   room_characters "yongquan" {
     room_id = rooms.yongquan.id
     characters = [
-      { id = characters.seng.id }    ]
+      { id = characters.hangzhou_seng.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/fuzhou/yushan.c by LPCConverter

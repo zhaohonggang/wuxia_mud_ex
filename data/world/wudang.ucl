@@ -394,8 +394,8 @@ item_desc = {
   room_characters "house" {
     room_id = rooms.house.id
     characters = [
-      { id = characters.oldwoman.id },
-      { id = characters.kid.id }    ]
+      { id = characters.village_oldwoman.id },
+      { id = characters.village_kid.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/wudang/houyuan.c by LPCConverter

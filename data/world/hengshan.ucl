@@ -254,7 +254,7 @@ zones "hengshan" {
     room_id = rooms.jinlongxia.id
     characters = [
       { id = characters.jing.id },
-      { id = characters.qiaofu.id }    ]
+      { id = characters.motianya_qiaofu.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/hengshan/kutianjing.c by LPCConverter

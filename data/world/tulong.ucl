@@ -336,7 +336,7 @@ item_desc = {
   room_characters "haigang" {
     room_id = rooms.haigang.id
     characters = [
-      { id = characters.chuanfu.id }    ]
+      { id = characters.shenlong_chuanfu.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/huichang-back.c by LPCConverter
@@ -1116,8 +1116,8 @@ item_desc = {
   room_characters "move1" {
     room_id = rooms.move1.id
     characters = [
-      { id = characters.maiyi1.id },
-      { id = characters.old2.id },
+      { id = characters.beijing_maiyi1.id },
+      { id = characters.beijing_old2.id },
       { id = characters.kid1.id }    ]
   }
 

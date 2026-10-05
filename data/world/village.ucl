@@ -274,10 +274,10 @@ zones "village" {
   room_characters "hsroad3" {
     room_id = rooms.hsroad3.id
     characters = [
-      { id = characters.tangzi.id },
-      { id = characters.tangzi.id },
-      { id = characters.tangzi.id },
-      { id = characters.tangzi.id }    ]
+      { id = characters.taishan_tangzi.id },
+      { id = characters.taishan_tangzi.id },
+      { id = characters.taishan_tangzi.id },
+      { id = characters.taishan_tangzi.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/village/nwhouse.c by LPCConverter

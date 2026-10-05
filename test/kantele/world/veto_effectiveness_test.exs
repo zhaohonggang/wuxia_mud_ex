@@ -273,15 +273,20 @@ alias Kantele.World.LpcCondition
     # wujiang / kid1 / xunbu / xiaoer2 / guest / duke（合计 140），
     # 总数降到 815，断言就变成「必须还有 1000 个悬空」—— 补得越多越容易红。
     #
+    # 之后又把**跨区借用的 NPC 统一 namespacing**（`<来源区>_<id>`）并放进
+    # clone_lib，房间引用改成 `characters.beijing_xianren.id` 这种形式，
+    # room_characters 的悬空从 351 掉到 **7**。剩下的 443 条全是 room_items
+    # （区特有物品被别的区引用），跟本条断言无关。
+    #
     # 这里钉的是**上限**：修复只会让这个数变小，所以给一个当前值附近的门槛，
     # 数字变大说明数据退化了（或者又漏了一个区）。
-    assert total_refs <= 850, "悬空引用不该变多，当前 #{total_refs}（上限 850）"
+    assert total_refs <= 500, "悬空引用不该变多，当前 #{total_refs}（上限 500）"
 
-    # 12 类跨区共享 NPC 补完后，头部已经变成一条平的长尾（最大的只有 6 处）：
-    # xianren 6 / dizi 5 / chake 5 / guanzhong 5 / zaopeng 4 / yayi 4 / tangzi 4 / qigai 4。
-    # 这些**不是**跨区共享 NPC，而是各自区的小角色（衙役、弟子、乞盖等），
-    # 只是恰好同名、且只在部分区有定义。
-    for id <- ~w(xianren dizi chake guanzhong zaopeng yayi tangzi qigai) do
+    # 头部现在只剩**本区自己缺定义**的角色：不是跨区共享的问题，是这几个名字
+    # 在本区 UCL 里压根没有 `characters "x"` 块（如 lingxiao 的 cheng/liang/
+    # liao/qi 是武功招式名当文件名，chengdu:tong_ren、xiangyang:mujiang 同理）。
+    # 它们仍然必须被记录下来 —— 这正是本条测试要守的行为。
+    for id <- ~w(tong_ren zixu cheng liang liao qi mujiang) do
       assert Enum.any?(seen, fn
                {{_z, :character, r}, _} -> String.ends_with?(r, "." <> id <> ".id")
                _ -> false

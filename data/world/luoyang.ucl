@@ -197,10 +197,10 @@ direction = "north"
   room_characters "center" {
     room_id = rooms.center.id
     characters = [
-      { id = characters.jian_ke.id },
-      { id = characters.maiyi2.id },
-      { id = characters.girl4.id },
-      { id = characters.old1.id },
+      { id = characters.taishan_jian_ke.id },
+      { id = characters.beijing_maiyi2.id },
+      { id = characters.beijing_girl4.id },
+      { id = characters.beijing_old1.id },
       { id = characters.walker.id }    ]
   }
 
@@ -226,7 +226,7 @@ direction = "north"
   room_characters "chalou" {
     room_id = rooms.chalou.id
     characters = [
-      { id = characters.teahuoji.id }    ]
+      { id = characters.beijing_teahuoji.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/chalou2.c by LPCConverter
@@ -250,7 +250,7 @@ direction = "north"
   room_characters "chalou2" {
     room_id = rooms.chalou2.id
     characters = [
-      { id = characters.chake.id }    ]
+      { id = characters.beijing_chake.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/chenyu.c by LPCConverter
@@ -411,7 +411,7 @@ item_desc = {
   room_characters "dongtou" {
     room_id = rooms.dongtou.id
     characters = [
-      { id = characters.dipi.id }    ]
+      { id = characters.beijing_dipi.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/duchang.c by LPCConverter
@@ -437,8 +437,8 @@ item_desc = {
       { id = characters.guanbing.id },
       { id = characters.liumang.id },
       { id = characters.liumang.id },
-      { id = characters.haoke1.id },
-      { id = characters.haoke1.id },
+      { id = characters.beijing_haoke1.id },
+      { id = characters.beijing_haoke1.id },
       { id = characters.duke.id },
       { id = characters.duke.id },
       { id = characters.duke.id }    ]
@@ -484,7 +484,7 @@ item_desc = {
   room_characters "eroad1" {
     room_id = rooms.eroad1.id
     characters = [
-      { id = characters.maiyi1.id },
+      { id = characters.beijing_maiyi1.id },
       { id = characters.kid1.id },
       { id = characters.kid1.id }    ]
   }
@@ -512,8 +512,8 @@ item_desc = {
   room_characters "eroad2" {
     room_id = rooms.eroad2.id
     characters = [
-      { id = characters.boy1.id },
-      { id = characters.old2.id }    ]
+      { id = characters.beijing_boy1.id },
+      { id = characters.beijing_old2.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/eroad3.c by LPCConverter
@@ -539,7 +539,7 @@ item_desc = {
   room_characters "eroad3" {
     room_id = rooms.eroad3.id
     characters = [
-      { id = characters.xianren.id }    ]
+      { id = characters.beijing_xianren.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/eroad4.c by LPCConverter
@@ -565,7 +565,7 @@ item_desc = {
   room_characters "eroad4" {
     room_id = rooms.eroad4.id
     characters = [
-      { id = characters.girl1.id },
+      { id = characters.beijing_girl1.id },
       { id = characters.xiaofan.id }    ]
   }
 
@@ -592,8 +592,8 @@ item_desc = {
   room_characters "eroad5" {
     room_id = rooms.eroad5.id
     characters = [
-      { id = characters.jian_ke.id },
-      { id = characters.jian_ke.id }    ]
+      { id = characters.taishan_jian_ke.id },
+      { id = characters.taishan_jian_ke.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/fengwei.c by LPCConverter
@@ -970,8 +970,8 @@ item_desc = {
   room_characters "houtai" {
     room_id = rooms.houtai.id
     characters = [
-      { id = characters.xizi1.id },
-      { id = characters.xizi1.id }    ]
+      { id = characters.beijing_xizi1.id },
+      { id = characters.beijing_xizi1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/huqing.c by LPCConverter
@@ -1054,7 +1054,7 @@ item_desc = {
   room_characters "hutong3" {
     room_id = rooms.hutong3.id
     characters = [
-      { id = characters.qigai.id }    ]
+      { id = characters.kaifeng_qigai.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/jiaochang.c by LPCConverter
@@ -1128,7 +1128,7 @@ item_desc = {
     room_id = rooms.jiyuan.id
     characters = [
       { id = characters.laobao.id },
-      { id = characters.jinv.id }    ]
+      { id = characters.beijing_jinv.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/jiyuan2.c by LPCConverter
@@ -1155,8 +1155,8 @@ item_desc = {
   room_characters "jiyuan2" {
     room_id = rooms.jiyuan2.id
     characters = [
-      { id = characters.piaoke.id },
-      { id = characters.jinv.id }    ]
+      { id = characters.beijing_piaoke.id },
+      { id = characters.beijing_jinv.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/juyi.c by LPCConverter
@@ -1179,8 +1179,8 @@ item_desc = {
   room_characters "juyi" {
     room_id = rooms.juyi.id
     characters = [
-      { id = characters.oldwomen.id },
-      { id = characters.zhike.id },
+      { id = characters.kaifeng_oldwomen.id },
+      { id = characters.kaifeng_zhike.id },
       { id = characters.walker.id }    ]
   }
 
@@ -1204,9 +1204,9 @@ item_desc = {
   room_characters "kaoshi" {
     room_id = rooms.kaoshi.id
     characters = [
-      { id = characters.zhukao3.id },
-      { id = characters.shusheng1.id },
-      { id = characters.shusheng1.id }    ]
+      { id = characters.kaifeng_zhukao3.id },
+      { id = characters.beijing_shusheng1.id },
+      { id = characters.beijing_shusheng1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/kefang1.c by LPCConverter
@@ -1338,7 +1338,7 @@ item_desc = {
   room_characters "kongmiao" {
     room_id = rooms.kongmiao.id
     characters = [
-      { id = characters.shusheng2.id }    ]
+      { id = characters.beijing_shusheng2.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/laofang.c by LPCConverter
@@ -1453,7 +1453,7 @@ item_desc = {
   room_characters "mianbi" {
     room_id = rooms.mianbi.id
     characters = [
-      { id = characters.xuetong.id }    ]
+      { id = characters.wudu_xuetong.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/miaohui.c by LPCConverter
@@ -1477,8 +1477,8 @@ item_desc = {
   room_characters "miaohui" {
     room_id = rooms.miaohui.id
     characters = [
-      { id = characters.xianren.id },
-      { id = characters.xianren.id }    ]
+      { id = characters.beijing_xianren.id },
+      { id = characters.beijing_xianren.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/miaopu.c by LPCConverter
@@ -1620,7 +1620,7 @@ item_desc = {
   room_characters "nantou2" {
     room_id = rooms.nantou2.id
     characters = [
-      { id = characters.qigai.id },
+      { id = characters.kaifeng_qigai.id },
       { id = characters.walker.id }    ]
   }
 
@@ -1644,8 +1644,8 @@ item_desc = {
   room_characters "nanyuchi" {
     room_id = rooms.nanyuchi.id
     characters = [
-      { id = characters.zaopeng.id },
-      { id = characters.zaopeng.id }    ]
+      { id = characters.kaifeng_zaopeng.id },
+      { id = characters.kaifeng_zaopeng.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/nbridge.c by LPCConverter
@@ -1704,7 +1704,7 @@ item_desc = {
   room_characters "nroad1" {
     room_id = rooms.nroad1.id
     characters = [
-      { id = characters.girl2.id }    ]
+      { id = characters.beijing_girl2.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/nroad2.c by LPCConverter
@@ -1730,8 +1730,8 @@ item_desc = {
   room_characters "nroad2" {
     room_id = rooms.nroad2.id
     characters = [
-      { id = characters.boy1.id },
-      { id = characters.old2.id }    ]
+      { id = characters.beijing_boy1.id },
+      { id = characters.beijing_old2.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/nroad3.c by LPCConverter
@@ -1757,7 +1757,7 @@ item_desc = {
   room_characters "nroad3" {
     room_id = rooms.nroad3.id
     characters = [
-      { id = characters.shusheng2.id }    ]
+      { id = characters.beijing_shusheng2.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/nroad4.c by LPCConverter
@@ -1783,7 +1783,7 @@ item_desc = {
   room_characters "nroad4" {
     room_id = rooms.nroad4.id
     characters = [
-      { id = characters.xianren.id }    ]
+      { id = characters.beijing_xianren.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/nvyuchi.c by LPCConverter
@@ -1806,8 +1806,8 @@ item_desc = {
   room_characters "nvyuchi" {
     room_id = rooms.nvyuchi.id
     characters = [
-      { id = characters.zaopeng.id },
-      { id = characters.zaopeng.id }    ]
+      { id = characters.kaifeng_zaopeng.id },
+      { id = characters.kaifeng_zaopeng.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/pimao.c by LPCConverter
@@ -1830,7 +1830,7 @@ item_desc = {
   room_characters "pimao" {
     room_id = rooms.pimao.id
     characters = [
-      { id = characters.huizhang.id }    ]
+      { id = characters.kaifeng_huizhang.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/rest.c by LPCConverter
@@ -1854,7 +1854,7 @@ item_desc = {
     room_id = rooms.rest.id
     characters = [
       { id = characters.kid1.id },
-      { id = characters.old2.id }    ]
+      { id = characters.beijing_old2.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/rest1.c by LPCConverter
@@ -1998,7 +1998,7 @@ item_desc = {
   room_characters "roudian" {
     room_id = rooms.roudian.id
     characters = [
-      { id = characters.old1.id }    ]
+      { id = characters.beijing_old1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/shoushi.c by LPCConverter
@@ -2090,12 +2090,12 @@ item_desc = {
   room_characters "shuoshu" {
     room_id = rooms.shuoshu.id
     characters = [
-      { id = characters.chaboshi.id },
-      { id = characters.teahuoji.id },
-      { id = characters.chake.id },
-      { id = characters.chake.id },
-      { id = characters.chake.id },
-      { id = characters.chake.id }    ]
+      { id = characters.beijing_chaboshi.id },
+      { id = characters.beijing_teahuoji.id },
+      { id = characters.beijing_chake.id },
+      { id = characters.beijing_chake.id },
+      { id = characters.beijing_chake.id },
+      { id = characters.beijing_chake.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/sishu.c by LPCConverter
@@ -2119,9 +2119,9 @@ item_desc = {
   room_characters "sishu" {
     room_id = rooms.sishu.id
     characters = [
-      { id = characters.xuetong.id },
-      { id = characters.xuetong.id },
-      { id = characters.xiansheng.id }    ]
+      { id = characters.wudu_xuetong.id },
+      { id = characters.wudu_xuetong.id },
+      { id = characters.wudu_xiansheng.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/sroad1.c by LPCConverter
@@ -2147,7 +2147,7 @@ item_desc = {
   room_characters "sroad1" {
     room_id = rooms.sroad1.id
     characters = [
-      { id = characters.youren.id },
+      { id = characters.beijing_youren.id },
       { id = characters.lang.id }    ]
   }
 
@@ -2174,8 +2174,8 @@ item_desc = {
   room_characters "sroad2" {
     room_id = rooms.sroad2.id
     characters = [
-      { id = characters.old1.id },
-      { id = characters.girl4.id }    ]
+      { id = characters.beijing_old1.id },
+      { id = characters.beijing_girl4.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/sroad3.c by LPCConverter
@@ -2201,7 +2201,7 @@ item_desc = {
   room_characters "sroad3" {
     room_id = rooms.sroad3.id
     characters = [
-      { id = characters.haoke1.id }    ]
+      { id = characters.beijing_haoke1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/sroad4.c by LPCConverter
@@ -2246,7 +2246,7 @@ item_desc = {
   room_characters "sroad5" {
     room_id = rooms.sroad5.id
     characters = [
-      { id = characters.piaoke.id }    ]
+      { id = characters.beijing_piaoke.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/sroad6.c by LPCConverter
@@ -2576,8 +2576,8 @@ item_desc = {
   room_characters "wang" {
     room_id = rooms.wang.id
     characters = [
-      { id = characters.jiading.id },
-      { id = characters.jiading.id }    ]
+      { id = characters.zhongzhou_jiading.id },
+      { id = characters.zhongzhou_jiading.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/wanju.c by LPCConverter
@@ -2666,7 +2666,7 @@ item_desc = {
   room_characters "wenmiao" {
     room_id = rooms.wenmiao.id
     characters = [
-      { id = characters.shusheng1.id }    ]
+      { id = characters.beijing_shusheng1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/wroad1.c by LPCConverter
@@ -2718,7 +2718,7 @@ item_desc = {
   room_characters "wroad2" {
     room_id = rooms.wroad2.id
     characters = [
-      { id = characters.boy3.id }    ]
+      { id = characters.beijing_boy3.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/wroad3.c by LPCConverter
@@ -2746,7 +2746,7 @@ item_desc = {
     characters = [
       { id = characters.liumang.id },
       { id = characters.liumang.id },
-      { id = characters.liumangtou.id }    ]
+      { id = characters.city_liumangtou.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/wroad4.c by LPCConverter
@@ -2871,7 +2871,7 @@ item_desc = {
   room_characters "xiaoxiang" {
     room_id = rooms.xiaoxiang.id
     characters = [
-      { id = characters.woman.id }    ]
+      { id = characters.kaifeng_woman.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/xiaoxiang2.c by LPCConverter
@@ -2981,7 +2981,7 @@ item_desc = {
   room_characters "xinluofang" {
     room_id = rooms.xinluofang.id
     characters = [
-      { id = characters.gaoli.id }    ]
+      { id = characters.xiangyang_gaoli.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/xitou.c by LPCConverter
@@ -3006,7 +3006,7 @@ item_desc = {
     room_id = rooms.xitou.id
     characters = [
       { id = characters.liumang.id },
-      { id = characters.hunhun.id }    ]
+      { id = characters.beijing_hunhun.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/xiuhua.c by LPCConverter
@@ -3046,12 +3046,12 @@ item_desc = {
   room_characters "xiyuan" {
     room_id = rooms.xiyuan.id
     characters = [
-      { id = characters.guanzhong.id },
-      { id = characters.guanzhong.id },
-      { id = characters.guanzhong.id },
-      { id = characters.guanzhong.id },
-      { id = characters.xizi2.id },
-      { id = characters.xizi3.id }    ]
+      { id = characters.beijing_guanzhong.id },
+      { id = characters.beijing_guanzhong.id },
+      { id = characters.beijing_guanzhong.id },
+      { id = characters.beijing_guanzhong.id },
+      { id = characters.beijing_xizi2.id },
+      { id = characters.beijing_xizi3.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/xunbu.c by LPCConverter
@@ -3119,10 +3119,10 @@ item_desc = {
   room_characters "yamendoor" {
     room_id = rooms.yamendoor.id
     characters = [
-      { id = characters.yayi.id },
-      { id = characters.yayi.id },
-      { id = characters.yayi.id },
-      { id = characters.yayi.id }    ]
+      { id = characters.zhongzhou_yayi.id },
+      { id = characters.zhongzhou_yayi.id },
+      { id = characters.zhongzhou_yayi.id },
+      { id = characters.zhongzhou_yayi.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/yaodian.c by LPCConverter
@@ -3145,7 +3145,7 @@ item_desc = {
   room_characters "yaodian" {
     room_id = rooms.yaodian.id
     characters = [
-      { id = characters.huoji.id }    ]
+      { id = characters.city_huoji.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/yuchi.c by LPCConverter
@@ -3207,7 +3207,7 @@ direction = "up"
   room_characters "yuelao" {
     room_id = rooms.yuelao.id
     characters = [
-      { id = characters.hongniang.id }    ]
+      { id = characters.adm_hongniang.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/yuying.c by LPCConverter
@@ -3230,10 +3230,10 @@ direction = "up"
   room_characters "yuying" {
     room_id = rooms.yuying.id
     characters = [
-      { id = characters.girl2.id },
+      { id = characters.beijing_girl2.id },
       { id = characters.kid1.id },
-      { id = characters.girl4.id },
-      { id = characters.boy2.id }    ]
+      { id = characters.beijing_girl4.id },
+      { id = characters.beijing_boy2.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/zahuopu.c by LPCConverter
@@ -3280,11 +3280,11 @@ direction = "up"
   room_characters "zashua" {
     room_id = rooms.zashua.id
     characters = [
-      { id = characters.maiyi2.id },
-      { id = characters.maiyi1.id },
-      { id = characters.xianren.id },
-      { id = characters.xianren.id },
-      { id = characters.boy2.id }    ]
+      { id = characters.beijing_maiyi2.id },
+      { id = characters.beijing_maiyi1.id },
+      { id = characters.beijing_xianren.id },
+      { id = characters.beijing_xianren.id },
+      { id = characters.beijing_boy2.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/zhulin1.c by LPCConverter
@@ -3383,8 +3383,8 @@ direction = "up"
   room_characters "zuixianlou2" {
     room_id = rooms.zuixianlou2.id
     characters = [
-      { id = characters.shike.id },
-      { id = characters.shike.id }    ]
+      { id = characters.kaifeng_shike.id },
+      { id = characters.kaifeng_shike.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/zuixianlou3.c by LPCConverter
@@ -3408,8 +3408,8 @@ direction = "up"
   room_characters "zuixianlou3" {
     room_id = rooms.zuixianlou3.id
     characters = [
-      { id = characters.fushang.id },
-      { id = characters.fushang.id }    ]
+      { id = characters.zhongzhou_fushang.id },
+      { id = characters.zhongzhou_fushang.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/luoyang/zuixianlou4.c by LPCConverter
@@ -3432,8 +3432,8 @@ direction = "up"
   room_characters "zuixianlou4" {
     room_id = rooms.zuixianlou4.id
     characters = [
-      { id = characters.richman1.id },
-      { id = characters.richman1.id }    ]
+      { id = characters.beijing_richman1.id },
+      { id = characters.beijing_richman1.id }    ]
   }
 
 
