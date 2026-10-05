@@ -2473,8 +2473,9 @@ defmodule Kantele.World.Room.CombatEvent do
   alias Kantele.Character.CharacterView
   alias Kantele.Character.Combat.StatusTracker
   alias Kantele.Character.CommandView
-  alias Kantele.Npc.EngageRule
-  alias Kantele.Npc.Guarder
+alias Kantele.Npc.Attitude
+alias Kantele.Npc.EngageRule
+alias Kantele.Npc.Guarder
 
   def call(context, event) do
     attacker = Enum.find(context.characters, &(&1.pid == event.from_pid))
@@ -2542,18 +2543,82 @@ defmodule Kantele.World.Room.CombatEvent do
         engage(context, target, attacker, "kill")
 
       engage_rule_deny?(target, event) ->
-        # NPC 的 accept_fight/hit/kill 拒绝（accept=false）
+        # NPC 自己写了 accept_fight/hit/kill 且 accept=false
+        # —— LPC 里这是**最优先**的：npc.c 的 accept_* 一开始就
+        # `if (is_guarder()) …`，守卫走 check_enemy；非守卫且 NPC 没自己
+        # 写 accept_* 时才轮到 query("attitude")。
         {:deny, msg} =
           EngageRule.decide(target.meta, Map.get(event.data, :type, "fight"), target.name)
 
         render(context, attacker.pid, CommandView, "text", %{text: msg})
 
       true ->
-        # 触发被守护者的守护者（若是 kill 类型）
-        trigger_guarded_allies(context, attacker, target, Map.get(event.data, :type, "fight"))
-        engage(context, attacker, target, Map.get(event.data, :type, "fight"))
+        case attitude_decision(target, attacker, Map.get(event.data, :type, "fight")) do
+          {:refuse, msg} ->
+            # LPC accept_fight 的拒战分支（气血不足 / friendly / 已在打且非 heroism）
+            render(context, attacker.pid, CommandView, "text", %{
+              text: "#{target.name}#{msg}"
+            })
+
+          {:kill, msg} ->
+            # LPC accept_hit 的翻脸分支：说完直接反杀
+            render(context, attacker.pid, CommandView, "text", %{text: msg})
+
+            engage(context, target, attacker, "kill")
+
+          {:engage, msg} ->
+            # 正常接战；attitude 决定他说什么
+            if String.trim(msg) != "" do
+              render(context, attacker.pid, CommandView, "text", %{text: msg})
+            end
+
+            trigger_guarded_allies(context, attacker, target, Map.get(event.data, :type, "fight"))
+            engage(context, attacker, target, Map.get(event.data, :type, "fight"))
+        end
     end
   end
+
+  # ---- LPC `inherit/char/npc.c` 的 attitude 分支 ----
+  #
+  # attitude 决定的是「被挑战/攻击/杀时接不接、说什么」，**不决定主动攻击**
+  #（后者来自 attack() / 心跳 / chat_msg）。
+  #
+  # LPC 的优先顺序（npc.c 的 accept_* 开头）：
+  #   1. 守卫      -> check_enemy（已由上面的 guarder_* 分支处理）
+  #   2. NPC 自写   -> accept_fight/hit/kill（已由 engage_rule_deny? 处理）
+  #   3. 否则       -> switch (query("attitude"))  <- 这里
+  #
+  # 所以只有「不是守卫、且 NPC 没自己写 accept_*、且没被 engage_rule 拒绝」
+  # 才会落到 attitude 上。
+  defp attitude_decision(target, _attacker, type) do
+    att = attitude_of(target)
+
+    case type do
+      "kill" ->
+        Attitude.decide_kill(att)
+
+      "hit" ->
+        Attitude.decide_hit(att, vitals_pct(target, :qi), vitals_pct(target, :jing))
+
+      _ ->
+        Attitude.decide_fight(att, vitals_pct(target, :qi), vitals_pct(target, :jing))
+    end
+  end
+
+  defp attitude_of(%{meta: %{combat_config: %Kantele.Character.NPCConfig{attitude: att}}})
+       when is_binary(att),
+       do: att
+
+  defp attitude_of(_), do: nil
+
+  # LPC: `perqi = (int)query("qi") * 100 / query("max_qi")`
+  defp vitals_pct(%{meta: %{vitals: vitals}}, key) do
+    cur = Map.get(vitals || %{}, key) || 0
+    max = Map.get(vitals || %{}, String.to_atom("max_" <> to_string(key))) || 0
+    Attitude.pct(cur, max)
+  end
+
+  defp vitals_pct(_character, _key), do: 100
 
   # ---- 偷袭请求 ----
 
