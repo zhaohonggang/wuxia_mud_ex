@@ -553,38 +553,62 @@ LPC 里大量 NPC 用它乱走（`walker` 只是其中之一）。
 
 ---
 
-## 五、`attitude` 全是哑值 🟡
+## 五、`attitude` 已实现（原「全是哑值」）✅
 
-`grep -rn heroism lib/` **零命中**。
+### ⚠️ 先纠正一个此前的错误理解
 
-`attitude` 只在 `npc.ex:91` 被当成字符串读出来：
+之前这一节写的是「`attitude` 不影响行为，包括 76 个官兵的『不主动攻击』没有代码保证」，
+并把它归类成「是否主动攻击」。**这个理解是错的**，读 LPC 源码才发现：
 
-```elixir
-def attitude(npc), do: Map.get(npc, :meta, %{})["attitude"] || "neutral"
+```c
+// inherit/char/npc.c 的 accept_fight / accept_hit / accept_kill
+att = query("attitude");
+switch (att) { ... }
 ```
 
-战斗里真正认的是 `combat_event.ex:861` 的
+`attitude` **完全不决定主动攻击**（那来自 `attack()` / 心跳 / `chat_msg`）。
+它决定的是：**被人挑战 / 攻击 / 杀你的时候，接不接、说什么话。**
 
-```elixir
-t when t in ["kill", "aggressive", "duel"]
-```
+所以之前那句「76 个官兵的 peaceful 没有代码保证」虽然结论（没实现）对，
+但**理由是错的** —— peaceful 在 LPC 里本来就是「被动奉陪」，
+不是「不主动攻击」；它真正管的是「被挑战时说不说『只好奉陪』」。
 
-—— 但那是**战斗类型**（谁发起的），不是 NPC 的 attitude。
+### LPC 里的实际语义
 
-**后果**：`heroism` / `peaceful` / `friendly` / `aggressive` 目前**都不影响行为**。
-包括已补的 76 个 `bing`（`attitude = "peaceful"`）——
-"官兵不该主动攻击"这条现在**没有任何代码在保证**。
+| attitude | accept_fight | accept_hit | accept_kill |
+|---|---|---|---|
+| `friendly` | **拒战**「怎么可能是你的对手？」 | 「且慢！」不还手 | 接受，「莫怪在下不留情」 |
+| `aggressive` | 接受「哼！出招吧！」 | 常翻脸**直接杀人** | 接受，「明年的今天就是你的忌日」 |
+| `killer` | 接受 | 阈值低，**更易翻脸杀人** | 同 aggressive |
+| `heroism` | 已在打时**应战**「出招吧！」；气血>=75% 走默认 | 「且慢！」 | 走默认 |
+| `peaceful` / 默认 | 气血>=75% **接受**「只好奉陪」 | 小概率翻脸，否则「且慢」 | 接受，「一决生死」 |
+| （无） | 气血<75% 一律「今天有些疲惫」**拒战** | 气血<50% **无条件反杀** | 接受 |
 
-> 文档里凡是标注"语义保留"的地方，指的是**数据写对了**，
-> 不是运行时生效。这个区别容易被误读成"已经支持了"。
+另有两个气血门槛：fight 要 >=75%，hit 要 >=50%；低于就直接拒战 / 反杀。
 
-- [ ] 决定 `attitude` 要不要接，接的话语义是什么
-      （LPC 里 `peaceful` 是"不主动攻击但不被动挨打"，
-      和我们的战斗模型对不对得上要单独确认）；
-- [ ] 未接之前，`docs/lpc-objects-placement-issues.zh-CN.md` 里
-      相关表述统一加一句"仅数据保留，运行时未接"。
+### 落地
 
----
+新增 `lib/kantele/npc/attitude.ex`（纯函数，`Kantele.Npc.Attitude`）：
+
+    decide_fight(att, qi_pct, jing_pct, already_fighting?) :: {:engage | :refuse, msg}
+    decide_hit(att, qi_pct, jing_pct, attempt \ 1, who)   :: {:engage | :kill, msg}
+    decide_kill(att)                                       :: {:engage, msg}
+    pct(cur, max)                                          :: 0..100
+    proactive?(att)                                        :: boolean
+
+LPC 的 `random(t) > N`（t = 累计被打次数）用**确定性伪随机**代替，
+既可测又保持语义；`attempt` 由宿主传入，缺省 1。
+
+**还没接进运行时** —— `room.ex` 的 combat 事件目前只调
+`EngageRule`（LPC 里 NPC 自己写的 `accept_*` 函数体抽取物），
+没有调 `Attitude`。两者是 LPC 里 `if (is_guarder()) … else switch(attitude)`
+的并列分支，接线时要按那个顺序：守卫走 `check_enemy`，普通 NPC 走 attitude，
+NPC 自己写了 `accept_*` 的以自己的为准。
+
+测试 `test/kantele/npc/attitude_test.exs`（18 个）逐条钉住上面表格的每个分支。
+
+写测试时踩了个坑：我以为「第一次挨打就杀人」是 LPC 常态，其实
+`random(1) = 1`，`1 > 8` 不成立 —— 第一次通常是接招。注释和断言都改正了。
 
 ## 六、`carry` 已接线（部分）✅
 
