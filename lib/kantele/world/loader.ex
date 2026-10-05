@@ -1603,11 +1603,11 @@ defmodule Kantele.World.Loader do
     |> Map.put(:rooms, [])
   end
 
-  @doc """
-  Dereference a variable to it's value
+@doc """
+Dereference a variable to it's value
 
-  If a known key is found, use the current zone
-  """
+If a known key is found, use the current zone
+"""
   def dereference(zones, zone, reference) do
     [key | reference] = String.split(reference, ".")
 
@@ -1618,6 +1618,10 @@ defmodule Kantele.World.Loader do
         |> flatten_items()
         |> flatten_rooms()
         |> dereference([key | reference])
+        |> case do
+          nil -> dereference_in_clone(zones, zone, [key | reference])
+          found -> found
+        end
 
       false ->
         zone =
@@ -1636,6 +1640,47 @@ defmodule Kantele.World.Loader do
             |> flatten_rooms()
             |> dereference(reference)
         end
+    end
+  end
+
+  # ---- clone_lib 回退：对应 LPC 的 /clone/** 共享对象层 ----
+
+  @clone_zone_id "clone_lib"
+
+  # LPC 的 `clone/` 目录（1003 个 .c）是全服共享对象，每个只有一份。
+  # 我们这边就是 `data/world/clone_lib.ucl` —— 纯物品区，0 房间 0 NPC。
+  #
+  # 解析顺序：**本区优先，找不到才回退 clone_lib**。这跟 LPC 的
+  # `carry_object("/clone/weapon/blade")` 一致：NPC 自己区里的东西优先，
+  # 没有才用共享的那份。
+  #
+  # 为什么只回退到 clone_lib、而不是「随便找个有定义的区」：
+  # `jitui` 在 7 个区有 **4 个不同变体**（changan=炸鸡腿 / wudu=烤山鸡腿 /
+  # 其余=烤鸡腿），按短 id 猜会静默拿错东西。
+  # clone_lib 是**唯一权威的共享层**，它内部不可能有同名两份（一个 UCL 文件里
+  # 不会有两个同 key 的块），所以回退到它是确定性的。
+  #
+  # 注意：这解决的是 `/clone/**` 类型的共享引用。**区间引用**
+  # （`obj/jitui` 这种区特有物品被别的区的 NPC 引用）**不在此列** ——
+  # 那种情况需要显式指定来源区，见 docs/lpc-port-gaps.zh-CN.md §七。
+  defp dereference_in_clone(zones, zone, reference) do
+    # 本区就是 clone_lib 时不必再回退自己
+    if zone.id == @clone_zone_id do
+      nil
+    else
+      case Enum.find(zones, fn z -> z.id == @clone_zone_id end) do
+        nil ->
+          nil
+
+        clone ->
+          # find_item/3 是按 "#{zone.id}:#{name}" 拼 id 的，
+          # 所以这里必须传 clone 自己，否则会拼成 "<本区>:<name>" 匹配不上。
+          clone
+          |> flatten_characters()
+          |> flatten_items()
+          |> flatten_rooms()
+          |> dereference(reference)
+      end
     end
   end
 
