@@ -764,7 +764,7 @@ item_desc = {
   room_items "shixiazi" {
     room_id = rooms.shixiazi.id
     items = [
-      { id = items.shitou.id },
+      { id = items.city_shitou.id },
       { id = items.eluanshi.id }    ]
   }
 

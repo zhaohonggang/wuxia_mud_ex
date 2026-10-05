@@ -753,10 +753,74 @@ lib/kantele/character/commands/drive_command.ex:59
 | `mafu` / `bing` / `guanbing` 跨区补齐 | `caea599` | −119 条悬空 |
 | `walker` 跨区补齐 + 2 处误命名修正 | `c31af50` | −141 条悬空 |
 | `ducha`/`liumang`/`wujiang`/`kid1`/`xunbu`/`xiaoer2`/`guest`/`duke` | 本轮 | −140 条悬空 |
+| 跨区借用 NPC 统一 namespacing + `clone_lib` | `59c8700` | character 悬空 351 → **7** |
+| 10 条真物品悬空补齐 | 本轮 | item 悬空 443 → **437** |
 
-`character` 悬空合计 **751 → 351**（−400），`item` 仍是 464。
+`character` 悬空合计 **751 → 7**（−744），`item` **443 → 437**（−6）。
 
 **数据补齐 ≠ 功能可用**：这些 NPC 里接上了的是走通用路径的部分 ——
 `bing` 的 engage、`mafu` 的 accept / greetings、`xunbu` 的 engage、
 `duke` 的 chat（ChatChance 闲聊）、`xiaoer2` 的 buy/list 命令注册。
 没接上的是自定义行为（`do_walk` 之类）、`carry` 装备、`brain` AI（§一之二）。
+
+---
+
+## 十二、437 条 `room_items` 悬空里431 条是 NPC 错位 🟡
+
+`scripts/classify_dangling_items.py` 按 LPC 原文逐条分类的结果
+（`scripts/lpc_paths.py` 负责展开 `CLASS_D()` / `__DIR__` / 注释 / 多段
+`set("objects")`）。**修正过一个重要误解**：这批不是「区特有物品被别的区
+引用」，绝大多数是**活物被转换器写进了 `room_items`**：
+
+| LPC 来源 | 条数 | `inherit` |
+|---|---|---|
+| `/kungfu/class/<门派>/` | 355 | `NPC`（33 个门派目录 418 个 `.c` 无一例外） |
+| `/clone/quarry/` | 72 | `QUARRY` → `NPC` |
+| `/clone/worm/` | 2 | `WORM` → `NPC` |
+| `/clone/beast/` | 1 | `SNAKE` → `NPC` |
+| `/d/hangzhou/honghua/huo` | 1 | `NPC` |
+| **真物品** | **10** | 见下 |
+
+真物品那10 条已补齐：4 条 `/clone/book`、3 条跨区（namespacing 后进
+`clone_lib`）、`city` 本地的 `box`、以及 `/u/mudren/obj/shijing_book`
+（`/u/<用户名>/` 是 LPC 玩家私有路径，按普通全局物品处理，与同源的
+`dizigui_book` / `qianjiashi_book` 一致）。
+
+剩下的 431 条修法跟已完成的 NPC 修复同构：`characters` 定义 +
+`room_characters` 引用，**不能**补进 `clone_lib` 当物品——补了只会得到
+431 个不会动的「物品」。
+
+- [ ] 把 431 条从 `room_items` 迁到 `room_characters`
+
+### 十二之一、`wuji1`–`wuji4` 需要运行时随机技能 🟡
+
+`clone/book/wuji{1,2,3,4}.c` 每本在 `create()` 里随机取一个：
+
+```c
+int i = random(sizeof(titles));
+set_name(titles[i], ({ "shaolin wuji", "wuji" }));
+set("skill", ([ "name": skills[i], ... ]));
+```
+
+6 / 6 / 6 / 5 个标题对应 23 个技能（`fengyun-shou`、`longzhua-gong`…）。
+被`shaolin/cjlou1` 引用，转换器写成 `room_items`，于是静默丢弃 ——
+所以这 4 条仍悬空（`data/world/clone_lib.ucl` 缺定义）。
+
+**为什么不能随便取一个**：全库 47 处 `book` 块的 `skill` 都是单个字符串
+（`Item.Meta.Book.skill`，`lib/kantele/world/item.ex:123`），没有列表形态；
+`lbook5.c` 有同样的随机标题结构但压根没被转换，所以**无先例可循**。
+取第一个会永久丢掉 19 个技能的可研习性，且把「随机」悄悄变成「固定」。
+
+**要做需要动的地方**（不是纯数据改动）：
+
+1. 数据层给 `book` 增加候选列表（如 `book.skills = [...]`）；
+2. 在**实例创建**时随机定一个 —— `parse_room_item/3`
+   （`lib/kantele/world/loader.ex:1647`）目前只填 `item_id`；
+3. `Item.Instance` 已有可选的 `item` 字段可挂每实例副本
+   （见 `clone_command.ex:30`），但要确认 `item_command` 的拾取路径
+   会把它带进 `character.inventory`，否则 `study_command.ex:85` 读的
+   `book_item.meta.book` 仍是共享定义；
+4. NPC 的 `carry` 物品走 `SpawnController`，是另一条创建路径；
+5. 丢弃 / 再拾取 / 存库（`inventory` 是 `jsonb[]`）的持久化语义要定。
+
+- [ ] 运行时随机技能（先定数据形态，再改创建/拾取/持久化路径）

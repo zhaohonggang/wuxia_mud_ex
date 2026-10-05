@@ -11348,3 +11348,96 @@ chats = [
 
     }
 
+# LPC 跨区借用：id 前缀是来源区，避免同名物品互相覆盖
+# 借用方 huanghe/shixiazi 写的是 "/d/city/obj/shitou"；
+# 但 city/obj 下的 shitou 不是 /clone/** 共享物，本区没有同名定义，
+# 所以按 NPC 借用同一套办法放进 clone_lib 并加来源区前缀。
+# Source: C:/files/git/mud/d/city/obj/shitou.c
+
+    items "city_shitou" {
+      name = "大石头"
+      aliases = ["city_shitou", "shi tou", "shitou"]
+      description = "这是一平平常常的大石头。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 1
+        skill_type = "hammer"
+        value = 0
+        weight = 5000
+        unit = "块"
+        material = "stone"
+      }
+      # LPC: inherit HAMMER，init_hammer(1) 即 weapon_prop/damage = 1
+    }
+
+# 借用方 jueqing/house 写的是 "/d/gumu/obj/fengmi"
+# Source: C:/files/git/mud/d/gumu/obj/fengmi.c
+
+    items "gumu_fengmi" {
+      name = "玉蜂蜜"
+      aliases = ["gumu_fengmi", "yufeng mi", "yufeng", "mi"]
+      description = "这是一罐玉蜂酿成的蜜，可解玉蜂毒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 750
+        unit = "罐"
+        no_sell = 1
+      }
+      # LPC: inherit ITEM + inherit F_LIQUID
+      # 未落地：mi_count(5)、only_do_effect(1) —— Meta 无对应字段
+    }
+
+# 借用方 xiakedao/chashi 写的是 "/d/wudang/obj/mitao"
+# Source: C:/files/git/mud/d/wudang/obj/mitao.c
+
+    items "wudang_mitao" {
+      name = "水蜜桃"
+      aliases = ["wudang_mitao", "shuimi tao", "shuimi", "tao"]
+      description = "一碟水灵新鲜的水蜜桃，跟脸蛋儿一样红艳可人。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 80
+        weight = 40
+        unit = "碟"
+        food = 30
+      }
+      # LPC: inherit ITEM + inherit F_FOOD，food 对应 set("food_supply", 30)
+      # 未落地：food_remaining(4) —— Meta 无对应字段
+    }
+
+# 借用方 xiakedao/chashi 写的是 "/d/wudang/obj/xiangcha"
+# Source: C:/files/git/mud/d/wudang/obj/xiangcha.c
+
+    items "wudang_xiangcha" {
+      name = "香茶"
+      aliases = ["wudang_xiangcha", "tea", "cha", "xiang cha"]
+      description = "一杯热茶，悠悠地冒着香气~~~~~~"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 50
+        unit = "杯"
+      }
+      # LPC: inherit ITEM
+      # 未落地：drink_supply(25)、remaining(2)、only_do_effect(1)、can_drink(1)
+      #        —— Meta 无对应字段，饮用效果（补 water）走不了
+    }

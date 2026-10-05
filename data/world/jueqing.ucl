@@ -295,7 +295,7 @@ item_desc = {
   room_items "house" {
     room_id = rooms.house.id
     items = [
-      { id = items.fengmi.id }    ]
+      { id = items.gumu_fengmi.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/jueqing/houshan.c by LPCConverter

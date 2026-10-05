@@ -43,8 +43,8 @@ valid_leave = [
   room_items "chashi" {
     room_id = rooms.chashi.id
     items = [
-      { id = items.mitao.id },
-      { id = items.xiangcha.id }    ]
+      { id = items.wudang_mitao.id },
+      { id = items.wudang_xiangcha.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/xiakedao/dahai.c by LPCConverter

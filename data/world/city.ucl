@@ -7739,6 +7739,52 @@ direction = ~
       # LPC: u/mudren/obj/qianjiashi_book.c   (inherit ITEM)
     }
 
+  items "shijing_book" {
+      name = "诗经"
+      aliases = ["shijing_book", "shi jing", "book", "shi", "jing"]
+      description = "《诗经》，是中国古代诗歌的开端，最早的一部诗歌总集，收集了西周 初年至春秋中叶（前11世纪至前6世纪）的诗歌，共311篇，有兴趣可以读读 (指令：read shi jing)。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        unit = "本"
+        material = "paper"
+      }
+
+      # LPC: u/mudren/obj/shijing_book.c   (inherit ITEM)
+      # /u/<用户名>/ 是 LPC 的玩家私有物品路径，mudren 是作者自己的号；
+      # 本作没有对应概念，按普通全局物品处理（与同源的 dizigui_book、
+      # qianjiashi_book 一致，那两个也在本区）。
+      # 未落地：set("no_get", "这是公共图书，你还是别拿走的好。\n")
+      #        —— parse_item_meta/1 是白名单，Meta 没有 no_get 字段
+    }
+
+  items "box" {
+      name = "功德箱"
+      aliases = ["box", "gongde xiang", "xiang"]
+      description = "这是一个小庙里常见的功德箱，专门用来接受善男信女们的捐款。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 3000
+        unit = "个"
+        material = "wood"
+      }
+
+      # LPC: d/city/obj/box.c   (inherit ITEM)
+      # 本区引用（c/wumiao 写的是 __DIR__"obj/box"），所以定义留在 city.ucl，
+      # 不进 clone_lib —— suzhou / tianlongsi 各自也有一个 items "box"，
+      # 靠 loader 的本区优先解析互不干扰。
+      # 未落地：no_get(1)、no_drop(1)、is_container()、amount(30)、
+      #        max_encumbrance(100000)、以及捐款的 do_put —— Meta 无对应字段
+    }
+
     characters "mafu" {
       name = "马夫"
       description = "这是马厩驯马和小伙计，平时打理照料马匹。"

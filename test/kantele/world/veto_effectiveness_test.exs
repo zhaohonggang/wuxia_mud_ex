@@ -275,12 +275,18 @@ alias Kantele.World.LpcCondition
     #
     # 之后又把**跨区借用的 NPC 统一 namespacing**（`<来源区>_<id>`）并放进
     # clone_lib，房间引用改成 `characters.beijing_xianren.id` 这种形式，
-    # room_characters 的悬空从 351 掉到 **7**。剩下的 443 条全是 room_items
-    # （区特有物品被别的区引用），跟本条断言无关。
+    # room_characters 的悬空从 351 掉到 **7**。
+    #
+    # 再后来按 LPC 原文逐条分类剩下的 room_items 悬空，发现 443 条里
+    # **431 条根本不是物品**（355 条 /kungfu/class/<门派>/ + 75 条
+    # /clone/{quarry,worm,beast}/ + 1 条 /d/hangzhou/honghua/huo，全是
+    # `inherit NPC`），是转换器把 set("objects") 里的活物写进了 room_items。
+    # 真物品只有 10 条，已全部补齐（4 条 /clone/book + 3 条跨区 namespacing
+    # + city 本地的 box 和 shijing_book），悬空降到 **437**。
     #
     # 这里钉的是**上限**：修复只会让这个数变小，所以给一个当前值附近的门槛，
     # 数字变大说明数据退化了（或者又漏了一个区）。
-    assert total_refs <= 500, "悬空引用不该变多，当前 #{total_refs}（上限 500）"
+    assert total_refs <= 444, "悬空引用不该变多，当前 #{total_refs}（上限 444）"
 
     # 头部现在只剩**本区自己缺定义**的角色：不是跨区共享的问题，是这几个名字
     # 在本区 UCL 里压根没有 `characters "x"` 块（如 lingxiao 的 cheng/liang/
@@ -644,6 +650,69 @@ alias Kantele.World.LpcCondition
 
     assert "shaolin:shanmen" in rooms,
            "山门的「徐家兄弟把守」应该已经生效（虚明 / 徐通 已移植并放进房间）"
+  end
+
+  @tag :world_data
+  test "10 条真物品悬空已补齐（其余 431 条是 NPC 错位，另案处理）", ctx do
+    # scripts/classify_dangling_items.py 按 LPC 原文把 443 条 room_items 悬空
+    # 分类后，只有这 10 条是真物品，其余全是 `inherit NPC` 被转换器写错位置。
+    #
+    # 这里逐个钉住：定义存在，且真的被放进 LPC 指定的那间房。
+    expect = [
+      # {房间,           物品 id,          名字,   来源}
+      {"huanghe:shixiazi", "city_shitou", "大石头", "d/city/obj/shitou.c"},
+      {"jueqing:house", "gumu_fengmi", "玉蜂蜜", "d/gumu/obj/fengmi.c"},
+      {"xiakedao:chashi", "wudang_mitao", "水蜜桃", "d/wudang/obj/mitao.c"},
+      {"xiakedao:chashi", "wudang_xiangcha", "香茶", "d/wudang/obj/xiangcha.c"},
+      {"city:wumiao", "box", "功德箱", "d/city/obj/box.c"},
+      {"city:shuyuan2", "shijing_book", "诗经", "u/mudren/obj/shijing_book.c"}
+    ]
+
+    for {rid, iid, name, origin} <- expect do
+      room = Enum.find(ctx.world.rooms, &(&1.id == rid))
+      assert room, "应有 #{rid}"
+
+      placed =
+        room.item_instances
+        |> Enum.map(& &1.item_id)
+        |> Enum.map(fn iid_full ->
+          case Enum.find(ctx.world.items, &(&1.id == iid_full)) do
+            nil -> nil
+            # 本区没有同名物品时 id 是 "clone_lib:<来源区>_<id>"，只比末段
+            it -> {it.id |> String.split(":") |> List.last(), it.name}
+          end
+        end)
+
+      # 本区没有同名物品时，房间引用的是 clone_lib 里的 `<来源区>_<id>`
+      assert Enum.any?(placed, fn
+               {^iid, ^name} -> true
+               _ -> false
+             end),
+             "#{rid} 应有 #{name}（#{iid}，来自 #{origin}），实际 #{inspect(placed)}"
+    end
+
+    # 属性抽查：跨区借用的三样都走 clone_lib 回退，meta 必须真的解析出来，
+    # 不能只是「有个空壳定义」—— 之前 room_items 悬空时就是这样被静默跳过的。
+    shitou = Enum.find(ctx.world.items, &(&1.id == "clone_lib:city_shitou"))
+    assert shitou, "city_shitou 应在 clone_lib 里"
+    assert shitou.meta.skill_type == "hammer", "shitou 是 inherit HAMMER"
+    assert shitou.meta.damage == 1, "init_hammer(1) 即 damage 1"
+
+    tao = Enum.find(ctx.world.items, &(&1.id == "clone_lib:wudang_mitao"))
+    assert tao.meta.food == 30, "mitao 的 food 应来自 set(\"food_supply\", 30)"
+
+    gongde = Enum.find(ctx.world.items, &(&1.id == "city:box"))
+    assert gongde, "city:wumiao 的 box 应解析到 city:box"
+    assert gongde.meta.value == 1000 and gongde.meta.material == "wood"
+  end
+
+  @tag :world_data
+  test "city:wumiao 的 box 不会被别区的同名 box 顶掉（本区优先）", ctx do
+    # suzhou.ucl / tianlongsi.ucl 各自也有 items "box"，loader 是本区优先、
+    # 找不到才回退 clone_lib，所以三个区的功德箱互不干扰。
+    gongde = Enum.find(ctx.world.items, &(&1.id == "city:box"))
+    assert gongde, "city:box 应存在"
+    assert gongde.name == "功德箱", "应是 city 自己那份，不该是别区的 box"
   end
 
   defp missing_uncategorized(ctx) do
