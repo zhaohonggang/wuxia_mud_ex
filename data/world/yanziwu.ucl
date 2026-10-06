@@ -63,11 +63,12 @@ zones "yanziwu" {
 
 
 
-  room_items "canheju" {
+  room_characters "canheju" {
     room_id = rooms.canheju.id
-    items = [
-      { id = items.murongbo.id }    ]
+    characters = [
+      { id = characters.murong_murongbo.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/yanziwu/changlang.c by LPCConverter
 # Zone: yanziwu
@@ -268,11 +269,12 @@ item_desc = {
 
 
 
-  room_items "huizhen" {
+  room_characters "huizhen" {
     room_id = rooms.huizhen.id
-    items = [
-      { id = items.he.id }    ]
+    characters = [
+      { id = characters.quarry_he.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/yanziwu/hupan.c by LPCConverter
 # Zone: yanziwu
@@ -644,11 +646,12 @@ item_desc = {
 
 
 
-  room_items "shuiyun" {
+  room_characters "shuiyun" {
     room_id = rooms.shuiyun.id
-    items = [
-      { id = items.murongfu.id }    ]
+    characters = [
+      { id = characters.murong_murongfu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/yanziwu/shuwu.c by LPCConverter
 # Zone: yanziwu

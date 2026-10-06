@@ -21,11 +21,12 @@ zones "lingjiu" {
 
 
 
-  room_items "biguan" {
+  room_characters "biguan" {
     room_id = rooms.biguan.id
-    items = [
-      { id = items.jujian.id }    ]
+    characters = [
+      { id = characters.lingjiu_jujian.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingjiu/caifeng.c by LPCConverter
 # Zone: lingjiu
@@ -46,11 +47,12 @@ zones "lingjiu" {
 
 
 
-  room_items "caifeng" {
+  room_characters "caifeng" {
     room_id = rooms.caifeng.id
-    items = [
-      { id = items.fumingyi.id }    ]
+    characters = [
+      { id = characters.lingjiu_fumingyi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingjiu/changl1.c by LPCConverter
 # Zone: lingjiu
@@ -142,11 +144,12 @@ zones "lingjiu" {
 
 
 
-  room_items "changl13" {
+  room_characters "changl13" {
     room_id = rooms.changl13.id
-    items = [
-      { id = items.cheng.id }    ]
+    characters = [
+      { id = characters.lingjiu_cheng.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingjiu/changl14.c by LPCConverter
 # Zone: lingjiu
@@ -395,11 +398,12 @@ zones "lingjiu" {
 
 
 
-  room_items "dadao1" {
+  room_characters "dadao1" {
     room_id = rooms.dadao1.id
-    items = [
-      { id = items.song.id }    ]
+    characters = [
+      { id = characters.quarry_song.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingjiu/dadao2.c by LPCConverter
 # Zone: lingjiu
@@ -421,11 +425,12 @@ zones "lingjiu" {
 
 
 
-  room_items "dadao2" {
+  room_characters "dadao2" {
     room_id = rooms.dadao2.id
-    items = [
-      { id = items.song.id }    ]
+    characters = [
+      { id = characters.quarry_song.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingjiu/damen.c by LPCConverter
 # Zone: lingjiu
@@ -447,12 +452,13 @@ zones "lingjiu" {
 
 
 
-  room_items "damen" {
+  room_characters "damen" {
     room_id = rooms.damen.id
-    items = [
-      { id = items.meijian.id },
-      { id = items.lanjian.id }    ]
+    characters = [
+      { id = characters.lingjiu_meijian.id },
+      { id = characters.lingjiu_lanjian.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingjiu/dating.c by LPCConverter
 # Zone: lingjiu
@@ -474,11 +480,12 @@ zones "lingjiu" {
 
 
 
-  room_items "dating" {
+  room_characters "dating" {
     room_id = rooms.dating.id
-    items = [
-      { id = items.xuzhu.id }    ]
+    characters = [
+      { id = characters.lingjiu_xuzhu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingjiu/huayuan.c by LPCConverter
 # Zone: lingjiu
@@ -502,11 +509,12 @@ zones "lingjiu" {
 
 
 
-  room_items "huayuan" {
+  room_characters "huayuan" {
     room_id = rooms.huayuan.id
-    items = [
-      { id = items.lu.id }    ]
+    characters = [
+      { id = characters.quarry_lu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingjiu/jian.c by LPCConverter
 # Zone: lingjiu
@@ -530,11 +538,12 @@ item_desc = {
 
 
 
-  room_items "jian" {
+  room_characters "jian" {
     room_id = rooms.jian.id
-    items = [
-      { id = items.yupopo.id }    ]
+    characters = [
+      { id = characters.lingjiu_yupopo.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingjiu/liangong.c by LPCConverter
 # Zone: lingjiu
@@ -623,11 +632,12 @@ item_desc = {
 
 
 
-  room_items "men2" {
+  room_characters "men2" {
     room_id = rooms.men2.id
-    items = [
-      { id = items.zhujian.id }    ]
+    characters = [
+      { id = characters.lingjiu_zhujian.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingjiu/men3.c by LPCConverter
 # Zone: lingjiu
@@ -649,11 +659,12 @@ item_desc = {
 
 
 
-  room_items "men3" {
+  room_characters "men3" {
     room_id = rooms.men3.id
-    items = [
-      { id = items.shisao.id }    ]
+    characters = [
+      { id = characters.lingjiu_shisao.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingjiu/pingtai.c by LPCConverter
 # Zone: lingjiu
@@ -674,12 +685,13 @@ item_desc = {
 
 
 
-  room_items "pingtai" {
+  room_characters "pingtai" {
     room_id = rooms.pingtai.id
-    items = [
-      { id = items.li.id },
-      { id = items.sang.id }    ]
+    characters = [
+      { id = characters.lingjiu_li.id },
+      { id = characters.lingjiu_sang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingjiu/pingtai3.c by LPCConverter
 # Zone: lingjiu
@@ -751,11 +763,12 @@ item_desc = {
 
 
 
-  room_items "shandao" {
+  room_characters "shandao" {
     room_id = rooms.shandao.id
-    items = [
-      { id = items.duanmu.id }    ]
+    characters = [
+      { id = characters.lingjiu_duanmu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingjiu/shandao2.c by LPCConverter
 # Zone: lingjiu
@@ -776,11 +789,12 @@ item_desc = {
 
 
 
-  room_items "shandao2" {
+  room_characters "shandao2" {
     room_id = rooms.shandao2.id
-    items = [
-      { id = items.zuo.id }    ]
+    characters = [
+      { id = characters.lingjiu_zuo.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingjiu/shanjiao.c by LPCConverter
 # Zone: lingjiu
@@ -971,16 +985,12 @@ item_desc = {
   room_characters "yan" {
     room_id = rooms.yan.id
     characters = [
-      { id = characters.walker.id }    ]
+      { id = characters.walker.id },
+      { id = characters.lingjiu_zhuo.id }    ]
   }
 
 
 
-  room_items "yan" {
-    room_id = rooms.yan.id
-    items = [
-      { id = items.zhuo.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/lingjiu/npc/jiuyi.c by LPCConverter
 # Zone: lingjiu

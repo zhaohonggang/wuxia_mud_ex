@@ -38,11 +38,12 @@ zones "gumu" {
 
 
 
-  room_items "baoziyan" {
+  room_characters "baoziyan" {
     room_id = rooms.baoziyan.id
-    items = [
-      { id = items.chen.id }    ]
+    characters = [
+      { id = characters.quanzhen_chen.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/gumu/caodi.c by LPCConverter
 # Zone: gumu
@@ -135,11 +136,12 @@ zones "gumu" {
 
 
 
-  room_items "daxiaochang" {
+  room_characters "daxiaochang" {
     room_id = rooms.daxiaochang.id
-    items = [
-      { id = items.pi.id }    ]
+    characters = [
+      { id = characters.quanzhen_pi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/gumu/foyezhang.c by LPCConverter
 # Zone: gumu
@@ -216,12 +218,13 @@ item_desc = {
 
 
 
-  room_items "houting" {
+  room_characters "houting" {
     room_id = rooms.houting.id
-    items = [
-      { id = items.longnv.id },
-      { id = items.yang.id }    ]
+    characters = [
+      { id = characters.gumu_longnv.id },
+      { id = characters.gumu_yang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/gumu/huangshalin.c by LPCConverter
 # Zone: gumu
@@ -279,11 +282,12 @@ item_desc = {
 
 
 
-  room_items "juyan" {
+  room_characters "juyan" {
     room_id = rooms.juyan.id
-    items = [
-      { id = items.ji.id }    ]
+    characters = [
+      { id = characters.quanzhen_ji.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/gumu/kongdi.c by LPCConverter
 # Zone: gumu
@@ -356,11 +360,12 @@ item_desc = {
 
 
 
-  room_items "liangong3" {
+  room_characters "liangong3" {
     room_id = rooms.liangong3.id
-    items = [
-      { id = items.li.id }    ]
+    characters = [
+      { id = characters.gumu_li.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/gumu/mishi1.c by LPCConverter
 # Zone: gumu
@@ -519,11 +524,12 @@ item_desc = {
 
 
 
-  room_items "mishi8" {
+  room_characters "mishi8" {
     room_id = rooms.mishi8.id
-    items = [
-      { id = items.lin.id }    ]
+    characters = [
+      { id = characters.gumu_lin.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/gumu/mumen.c by LPCConverter
 # Zone: gumu
@@ -1076,11 +1082,12 @@ item_desc = {
 
 
 
-  room_items "shulin12" {
+  room_characters "shulin12" {
     room_id = rooms.shulin12.id
-    items = [
-      { id = items.hou.id }    ]
+    characters = [
+      { id = characters.quarry_hou.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/gumu/shulin2.c by LPCConverter
 # Zone: gumu
@@ -1211,11 +1218,12 @@ item_desc = {
 
 
 
-  room_items "shulin8" {
+  room_characters "shulin8" {
     room_id = rooms.shulin8.id
-    items = [
-      { id = items.lu.id }    ]
+    characters = [
+      { id = characters.quarry_lu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/gumu/shulin9.c by LPCConverter
 # Zone: gumu
@@ -1431,11 +1439,12 @@ item_desc = {
 
 
 
-  room_items "zhengting" {
+  room_characters "zhengting" {
     room_id = rooms.zhengting.id
-    items = [
-      { id = items.longnv.id }    ]
+    characters = [
+      { id = characters.gumu_longnv.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/gumu/zhufeng.c by LPCConverter
 # Zone: gumu

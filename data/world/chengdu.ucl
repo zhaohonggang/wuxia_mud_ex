@@ -1267,11 +1267,12 @@ direction = "south"
 
 
 
-  room_items "tanggate" {
+  room_characters "tanggate" {
     room_id = rooms.tanggate.id
-    items = [
-      { id = items.tangrou.id }    ]
+    characters = [
+      { id = characters.tangmen_tangrou.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/chengdu/tidufu.c by LPCConverter
 # Zone: chengdu

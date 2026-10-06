@@ -23,17 +23,18 @@ zones "mingjiao" {
 
 
 
-  room_items "dadian" {
+  room_characters "dadian" {
     room_id = rooms.dadian.id
-    items = [
-      { id = items.zhangwuji.id },
-      { id = items.yangxiao.id },
-      { id = items.fanyao.id },
-      { id = items.yintianzheng.id },
-      { id = items.xiexun.id },
-      { id = items.weiyixiao.id },
-      { id = items.daijisi.id }    ]
+    characters = [
+      { id = characters.mingjiao_zhangwuji.id },
+      { id = characters.mingjiao_yangxiao.id },
+      { id = characters.mingjiao_fanyao.id },
+      { id = characters.mingjiao_yintianzheng.id },
+      { id = characters.mingjiao_xiexun.id },
+      { id = characters.mingjiao_weiyixiao.id },
+      { id = characters.mingjiao_daijisi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/mingjiao/daoshe.c by LPCConverter
 # Zone: mingjiao
@@ -340,11 +341,12 @@ item_desc = {
 
 
 
-  room_items "gudi3" {
+  room_characters "gudi3" {
     room_id = rooms.gudi3.id
-    items = [
-      { id = items.yang2.id }    ]
+    characters = [
+      { id = characters.quarry_yang2.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/mingjiao/gudi4.c by LPCConverter
 # Zone: mingjiao
@@ -366,16 +368,12 @@ item_desc = {
   room_characters "gudi4" {
     room_id = rooms.gudi4.id
     characters = [
-      { id = characters.bigmonkey.id }    ]
+      { id = characters.bigmonkey.id },
+      { id = characters.quarry_hou.id }    ]
   }
 
 
 
-  room_items "gudi4" {
-    room_id = rooms.gudi4.id
-    items = [
-      { id = items.hou.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/mingjiao/gudi5.c by LPCConverter
 # Zone: mingjiao
@@ -1531,11 +1529,12 @@ direction = "in"
 
 
 
-  room_items "neishi" {
+  room_characters "neishi" {
     room_id = rooms.neishi.id
-    items = [
-      { id = items.xiaozhao.id }    ]
+    characters = [
+      { id = characters.mingjiao_xiaozhao.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/mingjiao/nushe.c by LPCConverter
 # Zone: mingjiao
@@ -1752,16 +1751,17 @@ direction = "in"
 
 
 
-  room_items "rjqyuan" {
+  room_characters "rjqyuan" {
     room_id = rooms.rjqyuan.id
-    items = [
-      { id = items.lengqian.id },
-      { id = items.shuobude.id },
-      { id = items.zhangzhong.id },
-      { id = items.pengyingyu.id },
-      { id = items.zhoudian.id },
-      { id = items.yinyewang.id }    ]
+    characters = [
+      { id = characters.mingjiao_lengqian.id },
+      { id = characters.shuobude.id },
+      { id = characters.zhangzhong.id },
+      { id = characters.pengyingyu.id },
+      { id = characters.zhoudian.id },
+      { id = characters.yinyewang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/mingjiao/shandong.c by LPCConverter
 # Zone: mingjiao
@@ -1934,16 +1934,12 @@ direction = ~
 
   room_characters "shanmen" {
     room_id = rooms.shanmen.id
-    characters = [{ id = characters.jieyinshi.id }, { id = characters.leng_qian.id }]
+    characters = [{ id = characters.jieyinshi.id }, { id = characters.leng_qian.id },
+      { id = characters.mingjiao_lengqian.id }]
   }
 
 
 
-  room_items "shanmen" {
-    room_id = rooms.shanmen.id
-    items = [
-      { id = items.lengqian.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/mingjiao/square.c by LPCConverter
 # Zone: mingjiao

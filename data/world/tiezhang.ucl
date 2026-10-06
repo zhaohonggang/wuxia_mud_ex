@@ -130,11 +130,12 @@ direction = "in"
 
 
 
-  room_items "guajia" {
+  room_characters "guajia" {
     room_id = rooms.guajia.id
-    items = [
-      { id = items.qiuqianzhang.id }    ]
+    characters = [
+      { id = characters.tiezhang_qiuqianzhang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/tiezhang/guangchang.c by LPCConverter
 # Zone: tiezhang
@@ -170,16 +171,12 @@ direction = ~
     characters = [
       { id = characters.huiyi.id },
       { id = characters.heiyi.id },
-      { id = characters.heiyi.id }    ]
+      { id = characters.heiyi.id },
+      { id = characters.tiezhang_fen.id }    ]
   }
 
 
 
-  room_items "guangchang" {
-    room_id = rooms.guangchang.id
-    items = [
-      { id = items.fen.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/tiezhang/hclu-2.c by LPCConverter
 # Zone: tiezhang
@@ -1186,16 +1183,12 @@ item_desc = {
     room_id = rooms.wztang.id
     characters = [
       { id = characters.xiaotong.id },
-      { id = characters.xiaotong.id }    ]
+      { id = characters.xiaotong.id },
+      { id = characters.tiezhang_qiuqianren.id }    ]
   }
 
 
 
-  room_items "wztang" {
-    room_id = rooms.wztang.id
-    items = [
-      { id = items.qiuqianren.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/tiezhang/xxs.c by LPCConverter
 # Zone: tiezhang

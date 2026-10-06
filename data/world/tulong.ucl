@@ -1086,16 +1086,12 @@ item_desc = {
     characters = [
       { id = characters.zhaomin2.id },
       { id = characters.zhao1.id },
-      { id = characters.qian2.id }    ]
+      { id = characters.qian2.id },
+      { id = characters.ada.id }    ]
   }
 
 
 
-  room_items "jiulou" {
-    room_id = rooms.jiulou.id
-    items = [
-      { id = items.ada.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/move1.c by LPCConverter
 # Zone: tulong

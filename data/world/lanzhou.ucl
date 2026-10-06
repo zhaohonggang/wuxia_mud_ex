@@ -470,11 +470,12 @@ direction = "west"
 
 
 
-  room_items "kedian2" {
+  room_characters "kedian2" {
     room_id = rooms.kedian2.id
-    items = [
-      { id = items.xingzhe.id }    ]
+    characters = [
+      { id = characters.shaolin_xingzhe.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lanzhou/kedian3.c by LPCConverter
 # Zone: lanzhou

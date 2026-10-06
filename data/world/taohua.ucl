@@ -151,7 +151,8 @@ behavior_config = {
 
   room_characters "dating" {
     room_id = rooms.dating.id
-    characters = [ { id = characters.huangyaoshi.id } ]
+    characters = [ { id = characters.huangyaoshi.id },
+      { id = characters.taohua_huang.id } ]
   }
 
 
@@ -167,11 +168,6 @@ behavior_config = {
 
 
 
-  room_items "dating" {
-    room_id = rooms.dating.id
-    items = [
-      { id = items.huang.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/taohua/dong.c by LPCConverter
 # Zone: taohua
@@ -453,13 +449,18 @@ item_desc = {
 
 
 
+  room_characters "shufang" {
+    room_id = rooms.shufang.id
+    characters = [
+      { id = characters.taohua_qu.id }    ]
+  }
+
   room_items "shufang" {
     room_id = rooms.shufang.id
     items = [
       { id = [items.yijing0.id,items.yijing1.id,items.yijing2.id,items.yijing3.id] },
       { id = [items.yijing0.id,items.yijing1.id,items.yijing2.id,items.yijing3.id] },
-      { id = items.jiuzhang.id },
-      { id = items.qu.id }    ]
+      { id = items.jiuzhang.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/taohua/siguoshi.c by LPCConverter
@@ -518,11 +519,12 @@ item_desc = {
 
 
 
-  room_items "tao_in" {
+  room_characters "tao_in" {
     room_id = rooms.tao_in.id
-    items = [
-      { id = items.feng.id }    ]
+    characters = [
+      { id = characters.taohua_feng.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/taohua/tao_out.c by LPCConverter
 # Zone: taohua

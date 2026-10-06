@@ -214,17 +214,13 @@ direction = "east"
       { id = characters.duantiande.id },
       { id = characters.wanyankang.id },
       { id = characters.wanyanhonglie.id },
-      { id = characters.jinbing.id }    ]
+      { id = characters.jinbing.id },
+      { id = characters.ouyang_ouyangfeng.id },
+      { id = characters.ouyang_ouyangke.id }    ]
   }
 
 
 
-  room_items "jinship" {
-    room_id = rooms.jinship.id
-    items = [
-      { id = items.ouyangfeng.id },
-      { id = items.ouyangke.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/guiyun/liangong.c by LPCConverter
 # Zone: guiyun
@@ -415,16 +411,12 @@ item_desc = {
   room_characters "shufang" {
     room_id = rooms.shufang.id
     characters = [
-      { id = characters.shutong.id }    ]
+      { id = characters.shutong.id },
+      { id = characters.taohua_lu.id }    ]
   }
 
 
 
-  room_items "shufang" {
-    room_id = rooms.shufang.id
-    items = [
-      { id = items.lu.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/guiyun/shulin1.c by LPCConverter
 # Zone: guiyun
@@ -579,11 +571,12 @@ item_desc = {
 
 
 
-  room_items "tiandi" {
+  room_characters "tiandi" {
     room_id = rooms.tiandi.id
-    items = [
-      { id = items.niao.id }    ]
+    characters = [
+      { id = characters.quarry_niao.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/guiyun/yixing.c by LPCConverter
 # Zone: guiyun

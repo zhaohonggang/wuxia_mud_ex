@@ -242,11 +242,12 @@ item_desc = {
 
 
 
-  room_items "houting" {
+  room_characters "houting" {
     room_id = rooms.houting.id
-    items = [
-      { id = items.heibai.id }    ]
+    characters = [
+      { id = characters.meizhuang_heibai.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/meizhuang/huashi.c by LPCConverter
 # Zone: meizhuang
@@ -267,11 +268,12 @@ item_desc = {
 
 
 
-  room_items "huashi" {
+  room_characters "huashi" {
     room_id = rooms.huashi.id
-    items = [
-      { id = items.danqing.id }    ]
+    characters = [
+      { id = characters.meizhuang_danqing.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/meizhuang/hupan.c by LPCConverter
 # Zone: meizhuang
@@ -311,11 +313,12 @@ item_desc = {
 
 
 
-  room_items "keting" {
+  room_characters "keting" {
     room_id = rooms.keting.id
-    items = [
-      { id = items.ding.id }    ]
+    characters = [
+      { id = characters.meizhuang_ding.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/meizhuang/laofang.c by LPCConverter
 # Zone: meizhuang
@@ -580,12 +583,17 @@ item_desc = {
 
 
 
+  room_characters "shushi" {
+    room_id = rooms.shushi.id
+    characters = [
+      { id = characters.meizhuang_tubi.id }    ]
+  }
+
   room_items "shushi" {
     room_id = rooms.shushi.id
     items = [
-      { id = items.tubi.id },
       { id = items.maobi.id },
-      { id = items.panguanbi.id }    ]
+      { id = items.panguanbi.id }        ]
   }
 
 # Generated from C:/files/git/mud/d/meizhuang/tianjing.c by LPCConverter
@@ -664,11 +672,16 @@ item_desc = {
 
 
 
+  room_characters "xiaowu" {
+    room_id = rooms.xiaowu.id
+    characters = [
+      { id = characters.meizhuang_huang.id }    ]
+  }
+
   room_items "xiaowu" {
     room_id = rooms.xiaowu.id
     items = [
-      { id = items.huang.id },
-      { id = items.qin.id }    ]
+      { id = items.qin.id }        ]
   }
 
 # Generated from C:/files/git/mud/d/meizhuang/xiaoyuan.c by LPCConverter

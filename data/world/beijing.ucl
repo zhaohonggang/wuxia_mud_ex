@@ -1295,11 +1295,12 @@ item_desc = {
 
 
 
-  room_items "front_yard2" {
+  room_characters "front_yard2" {
     room_id = rooms.front_yard2.id
-    items = [
-      { id = items.daiyongming.id }    ]
+    characters = [
+      { id = characters.zhenyuan_daiyongming.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/beijing/fu_1.c by LPCConverter
 # Zone: beijing
@@ -1416,11 +1417,12 @@ item_desc = {
 
 
 
-  room_items "gate" {
+  room_characters "gate" {
     room_id = rooms.gate.id
-    items = [
-      { id = items.tongzhaohe.id }    ]
+    characters = [
+      { id = characters.zhenyuan_tongzhaohe.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/beijing/guandao_1.c by LPCConverter
 # Zone: beijing
@@ -1849,16 +1851,12 @@ direction = "north"
     characters = [
       { id = characters.yitian_zhaomin2.id },
       { id = characters.yitian_zhao1.id },
-      { id = characters.yitian_qian2.id }    ]
+      { id = characters.yitian_qian2.id },
+      { id = characters.gaibang_ada.id }    ]
   }
 
 
 
-  room_items "huiyingup" {
-    room_id = rooms.huiyingup.id
-    items = [
-      { id = items.ada.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/beijing/kangfu_dating.c by LPCConverter
 # Zone: beijing
@@ -2670,11 +2668,12 @@ item_desc = {
 
 
 
-  room_items "qingmu_dating" {
+  room_characters "qingmu_dating" {
     room_id = rooms.qingmu_dating.id
-    items = [
-      { id = items.chen.id }    ]
+    characters = [
+      { id = characters.yunlong_chen.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/beijing/qingmu_dayuan.c by LPCConverter
 # Zone: beijing
@@ -2698,11 +2697,12 @@ item_desc = {
 
 
 
-  room_items "qingmu_dayuan" {
+  room_characters "qingmu_dayuan" {
     room_id = rooms.qingmu_dayuan.id
-    items = [
-      { id = items.xuanzhen.id }    ]
+    characters = [
+      { id = characters.yunlong_xuanzhen.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/beijing/qingmu_fang1.c by LPCConverter
 # Zone: beijing
@@ -3247,11 +3247,12 @@ item_desc = {
 
 
 
-  room_items "shufang" {
+  room_characters "shufang" {
     room_id = rooms.shufang.id
-    items = [
-      { id = items.wangweiyang.id }    ]
+    characters = [
+      { id = characters.zhenyuan_wangweiyang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/beijing/shulou.c by LPCConverter
 # Zone: beijing
@@ -3288,11 +3289,12 @@ item_desc = {
 
 
 
-  room_items "son_cabinet1" {
+  room_characters "son_cabinet1" {
     room_id = rooms.son_cabinet1.id
-    items = [
-      { id = items.wangjianying.id }    ]
+    characters = [
+      { id = characters.zhenyuan_wangjianying.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/beijing/son_cabinet2.c by LPCConverter
 # Zone: beijing
@@ -4608,11 +4610,12 @@ item_desc = {
 
 
 
-  room_items "zhengting" {
+  room_characters "zhengting" {
     room_id = rooms.zhengting.id
-    items = [
-      { id = items.wangjianjie.id }    ]
+    characters = [
+      { id = characters.zhenyuan_wangjianjie.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/beijing/zhuang1.c by LPCConverter
 # Zone: beijing

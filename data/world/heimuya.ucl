@@ -101,16 +101,12 @@ direction = "west"
       { id = characters.dizi4.id },
       { id = characters.dizi4.id },
       { id = characters.dizi4.id },
-      { id = characters.dizi4.id }    ]
+      { id = characters.dizi4.id },
+      { id = characters.riyue_shangguan.id }    ]
   }
 
 
 
-  room_items "baihutang" {
-    room_id = rooms.baihutang.id
-    items = [
-      { id = items.shangguan.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/heimuya/baistep1.c by LPCConverter
 # Zone: heimuya
@@ -725,16 +721,12 @@ item_desc = {
       { id = characters.dizi3.id },
       { id = characters.dizi3.id },
       { id = characters.dizi3.id },
-      { id = characters.dizi3.id }    ]
+      { id = characters.dizi3.id },
+      { id = characters.riyue_tong.id }    ]
   }
 
 
 
-  room_items "fen0" {
-    room_id = rooms.fen0.id
-    items = [
-      { id = items.tong.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/heimuya/fenggate.c by LPCConverter
 # Zone: heimuya
@@ -1004,11 +996,12 @@ direction = "south"
 
 
 
-  room_items "linjxd4" {
+  room_characters "linjxd4" {
     room_id = rooms.linjxd4.id
-    items = [
-      { id = items.lang.id }    ]
+    characters = [
+      { id = characters.quarry_lang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/heimuya/linjxd5.c by LPCConverter
 # Zone: heimuya
@@ -1071,16 +1064,12 @@ direction = "south"
       { id = characters.dizi7.id },
       { id = characters.dizi7.id },
       { id = characters.dizi7.id },
-      { id = characters.dizi7.id }    ]
+      { id = characters.dizi7.id },
+      { id = characters.riyue_qin.id }    ]
   }
 
 
 
-  room_items "pingdingzhou" {
-    room_id = rooms.pingdingzhou.id
-    items = [
-      { id = items.qin.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/heimuya/qing.c by LPCConverter
 # Zone: heimuya
@@ -1105,16 +1094,12 @@ direction = "south"
       { id = characters.dizi5.id },
       { id = characters.dizi5.id },
       { id = characters.dizi5.id },
-      { id = characters.dizi5.id }    ]
+      { id = characters.dizi5.id },
+      { id = characters.riyue_jia.id }    ]
   }
 
 
 
-  room_items "qing" {
-    room_id = rooms.qing.id
-    items = [
-      { id = items.jia.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/heimuya/qinggate.c by LPCConverter
 # Zone: heimuya
@@ -1364,16 +1349,12 @@ direction = "south"
     room_id = rooms.shanya1.id
     characters = [
       { id = characters.dizi.id },
-      { id = characters.dizi.id }    ]
+      { id = characters.dizi.id },
+      { id = characters.riyue_wang.id }    ]
   }
 
 
 
-  room_items "shanya1" {
-    room_id = rooms.shanya1.id
-    items = [
-      { id = items.wang.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/heimuya/shanya2.c by LPCConverter
 # Zone: heimuya
@@ -1450,11 +1431,12 @@ item_desc = {
 
 
 
-  room_items "shenggu" {
+  room_characters "shenggu" {
     room_id = rooms.shenggu.id
-    items = [
-      { id = items.ying.id }    ]
+    characters = [
+      { id = characters.riyue_ying.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/heimuya/shidao1.c by LPCConverter
 # Zone: heimuya
@@ -1518,11 +1500,12 @@ item_desc = {
 
 
 
-  room_items "shijie1" {
+  room_characters "shijie1" {
     room_id = rooms.shijie1.id
-    items = [
-      { id = items.yun.id }    ]
+    characters = [
+      { id = characters.riyue_yun.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/heimuya/shijie2.c by LPCConverter
 # Zone: heimuya
@@ -1544,11 +1527,12 @@ item_desc = {
 
 
 
-  room_items "shijie2" {
+  room_characters "shijie2" {
     room_id = rooms.shijie2.id
-    items = [
-      { id = items.fan.id }    ]
+    characters = [
+      { id = characters.riyue_fan.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/heimuya/shimen.c by LPCConverter
 # Zone: heimuya
@@ -1570,11 +1554,12 @@ item_desc = {
 
 
 
-  room_items "shimen" {
+  room_characters "shimen" {
     room_id = rooms.shimen.id
-    items = [
-      { id = items.zhao.id }    ]
+    characters = [
+      { id = characters.riyue_zhao.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/heimuya/tian1.c by LPCConverter
 # Zone: heimuya
@@ -1617,16 +1602,12 @@ direction = "south"
       { id = characters.dizi6.id },
       { id = characters.dizi6.id },
       { id = characters.dizi6.id },
-      { id = characters.sang_sanniang.id }    ]
+      { id = characters.sang_sanniang.id },
+      { id = characters.riyue_sang.id }    ]
   }
 
 
 
-  room_items "tian1" {
-    room_id = rooms.tian1.id
-    items = [
-      { id = items.sang.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/heimuya/tiangate.c by LPCConverter
 # Zone: heimuya
@@ -1753,11 +1734,12 @@ direction = "south"
 
 
 
-  room_items "up1" {
+  room_characters "up1" {
     room_id = rooms.up1.id
-    items = [
-      { id = items.feng.id }    ]
+    characters = [
+      { id = characters.riyue_feng.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/heimuya/up2.c by LPCConverter
 # Zone: heimuya

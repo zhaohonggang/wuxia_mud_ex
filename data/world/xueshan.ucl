@@ -66,11 +66,12 @@ zones "xueshan" {
 
 
 
-  room_items "cangjingge" {
+  room_characters "cangjingge" {
     room_id = rooms.cangjingge.id
-    items = [
-      { id = items.daerba.id }    ]
+    characters = [
+      { id = characters.xueshan_daerba.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xueshan/caoyuan.c by LPCConverter
 # Zone: xueshan
@@ -94,11 +95,12 @@ zones "xueshan" {
 
 
 
-  room_items "caoyuan" {
+  room_characters "caoyuan" {
     room_id = rooms.caoyuan.id
-    items = [
-      { id = items.tu.id }    ]
+    characters = [
+      { id = characters.quarry_tu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xueshan/cedian1.c by LPCConverter
 # Zone: xueshan
@@ -131,16 +133,12 @@ direction = "northup"
     characters = [
       { id = characters.xiang_ke.id },
       { id = characters.xiang_ke.id },
-      { id = characters.xiang_ke.id }    ]
+      { id = characters.xiang_ke.id },
+      { id = characters.xueshan_jiamu.id }    ]
   }
 
 
 
-  room_items "cedian1" {
-    room_id = rooms.cedian1.id
-    items = [
-      { id = items.jiamu.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/xueshan/cedian2.c by LPCConverter
 # Zone: xueshan
@@ -173,16 +171,12 @@ direction = "northup"
     characters = [
       { id = characters.xiang_ke.id },
       { id = characters.xiang_ke.id },
-      { id = characters.xiang_ke.id }    ]
+      { id = characters.xiang_ke.id },
+      { id = characters.xueshan_samu.id }    ]
   }
 
 
 
-  room_items "cedian2" {
-    room_id = rooms.cedian2.id
-    items = [
-      { id = items.samu.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/xueshan/chang.c by LPCConverter
 # Zone: xueshan
@@ -320,16 +314,12 @@ item_desc = {
     room_id = rooms.dadian.id
     characters = [
       { id = characters.xiang_ke.id },
-      { id = characters.xiang_ke.id }    ]
+      { id = characters.xiang_ke.id },
+      { id = characters.xueshan_lazhang.id }    ]
   }
 
 
 
-  room_items "dadian" {
-    room_id = rooms.dadian.id
-    items = [
-      { id = items.lazhang.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/xueshan/dating.c by LPCConverter
 # Zone: xueshan
@@ -638,11 +628,12 @@ item_desc = {
 
 
 
-  room_items "neidian" {
+  room_characters "neidian" {
     room_id = rooms.neidian.id
-    items = [
-      { id = items.fawang.id }    ]
+    characters = [
+      { id = characters.xueshan_fawang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xueshan/shanjiao.c by LPCConverter
 # Zone: xueshan
@@ -683,16 +674,12 @@ item_desc = {
     room_id = rooms.shanmen.id
     characters = [
       { id = characters.guest.id },
-      { id = characters.guest.id }    ]
+      { id = characters.guest.id },
+      { id = characters.xueshan_gelunbu.id }    ]
   }
 
 
 
-  room_items "shanmen" {
-    room_id = rooms.shanmen.id
-    items = [
-      { id = items.gelunbu.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/xueshan/shenghu.c by LPCConverter
 # Zone: xueshan
@@ -739,11 +726,12 @@ item_desc = {
 
 
 
-  room_items "tiantai" {
+  room_characters "tiantai" {
     room_id = rooms.tiantai.id
-    items = [
-      { id = items.huodu.id }    ]
+    characters = [
+      { id = characters.xueshan_huodu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xueshan/tulu1.c by LPCConverter
 # Zone: xueshan

@@ -158,11 +158,12 @@ item_desc = {
 
 
 
-  room_items "cetang" {
+  room_characters "cetang" {
     room_id = rooms.cetang.id
-    items = [
-      { id = items.li.id }    ]
+    characters = [
+      { id = characters.quanzhen_li.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/chanfang1.c by LPCConverter
 # Zone: quanzhen
@@ -503,11 +504,12 @@ item_desc = {
 
 
 
-  room_items "datang3" {
+  room_characters "datang3" {
     room_id = rooms.datang3.id
-    items = [
-      { id = items.fang.id }    ]
+    characters = [
+      { id = characters.quanzhen_fang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/diziju.c by LPCConverter
 # Zone: quanzhen
@@ -618,11 +620,12 @@ item_desc = {
 
 
 
-  room_items "fu_cemen" {
+  room_characters "fu_cemen" {
     room_id = rooms.fu_cemen.id
-    items = [
-      { id = items.gou2.id }    ]
+    characters = [
+      { id = characters.quarry_gou2.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/fu-ceting.c by LPCConverter
 # Zone: quanzhen
@@ -897,11 +900,12 @@ item_desc = {
 
 
 
-  room_items "guangning" {
+  room_characters "guangning" {
     room_id = rooms.guangning.id
-    items = [
-      { id = items.hao.id }    ]
+    characters = [
+      { id = characters.quanzhen_hao.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/guanjinglou.c by LPCConverter
 # Zone: quanzhen
@@ -1029,11 +1033,12 @@ item_desc = {
 
 
 
-  room_items "houhuayuan1" {
+  room_characters "houhuayuan1" {
     room_id = rooms.houhuayuan1.id
-    items = [
-      { id = items.gui.id }    ]
+    characters = [
+      { id = characters.quarry_gui.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/houshan.c by LPCConverter
 # Zone: quanzhen
@@ -1109,11 +1114,12 @@ item_desc = {
 
 
 
-  room_items "houtang3" {
+  room_characters "houtang3" {
     room_id = rooms.houtang3.id
-    items = [
-      { id = items.wangzhi.id }    ]
+    characters = [
+      { id = characters.quanzhen_wangzhi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/huizhentang.c by LPCConverter
 # Zone: quanzhen
@@ -1136,11 +1142,12 @@ item_desc = {
 
 
 
-  room_items "huizhentang" {
+  room_characters "huizhentang" {
     room_id = rooms.huizhentang.id
-    items = [
-      { id = items.cui.id }    ]
+    characters = [
+      { id = characters.quanzhen_cui.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/jiaobei.c by LPCConverter
 # Zone: quanzhen
@@ -1163,12 +1170,13 @@ item_desc = {
 
 
 
-  room_items "jiaobei" {
+  room_characters "jiaobei" {
     room_id = rooms.jiaobei.id
-    items = [
-      { id = items.zhao.id },
-      { id = items.zhou.id }    ]
+    characters = [
+      { id = characters.quanzhen_zhao.id },
+      { id = characters.quanzhen_zhou.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/jingxiushi.c by LPCConverter
 # Zone: quanzhen
@@ -1191,7 +1199,8 @@ direction = "east"
 
   room_characters "jingxiushi" {
     room_id = rooms.jingxiushi.id
-    characters = [ { id = characters.liu_chuxuan.id } ]
+    characters = [ { id = characters.liu_chuxuan.id },
+      { id = characters.quanzhen_liu.id } ]
   }
 
   room_exits "jingxiushi" {
@@ -1204,11 +1213,6 @@ direction = "east"
 
 
 
-  room_items "jingxiushi" {
-    room_id = rooms.jingxiushi.id
-    items = [
-      { id = items.liu.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/quanzhen/jiulou1.c by LPCConverter
 # Zone: quanzhen
@@ -1337,11 +1341,12 @@ direction = "south"
 
 
 
-  room_items "laojundian" {
+  room_characters "laojundian" {
     room_id = rooms.laojundian.id
-    items = [
-      { id = items.qiu.id }    ]
+    characters = [
+      { id = characters.quanzhen_qiu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/liangong.c by LPCConverter
 # Zone: quanzhen
@@ -1503,11 +1508,12 @@ item_desc = {
 
 
 
-  room_items "nairongdian" {
+  room_characters "nairongdian" {
     room_id = rooms.nairongdian.id
-    items = [
-      { id = items.cheng.id }    ]
+    characters = [
+      { id = characters.quanzhen_cheng.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/nanjie.c by LPCConverter
 # Zone: quanzhen
@@ -1555,11 +1561,12 @@ item_desc = {
 
 
 
-  room_items "piandian" {
+  room_characters "piandian" {
     room_id = rooms.piandian.id
-    items = [
-      { id = items.shen.id }    ]
+    characters = [
+      { id = characters.quanzhen_shen.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/qingjing.c by LPCConverter
 # Zone: quanzhen
@@ -1580,11 +1587,12 @@ item_desc = {
 
 
 
-  room_items "qingjing" {
+  room_characters "qingjing" {
     room_id = rooms.qingjing.id
-    items = [
-      { id = items.sun.id }    ]
+    characters = [
+      { id = characters.quanzhen_sun.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/rongwutang.c by LPCConverter
 # Zone: quanzhen
@@ -1605,11 +1613,12 @@ item_desc = {
 
 
 
-  room_items "rongwutang" {
+  room_characters "rongwutang" {
     room_id = rooms.rongwutang.id
-    items = [
-      { id = items.tan.id }    ]
+    characters = [
+      { id = characters.quanzhen_tan.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/shandong.c by LPCConverter
 # Zone: quanzhen
@@ -1633,11 +1642,12 @@ item_desc = {
 
 
 
-  room_items "shandong" {
+  room_characters "shandong" {
     room_id = rooms.shandong.id
-    items = [
-      { id = items.wang.id }    ]
+    characters = [
+      { id = characters.quanzhen_wang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/shanjiao.c by LPCConverter
 # Zone: quanzhen
@@ -1790,16 +1800,12 @@ item_desc = {
     room_id = rooms.shijianyan.id
     characters = [
       { id = characters.daotong.id },
-      { id = characters.daotong.id }    ]
+      { id = characters.daotong.id },
+      { id = characters.quanzhen_yin.id }    ]
   }
 
 
 
-  room_items "shijianyan" {
-    room_id = rooms.shijianyan.id
-    items = [
-      { id = items.yin.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/quanzhen/shijie1.c by LPCConverter
 # Zone: quanzhen
@@ -2023,11 +2029,12 @@ item_desc = {
 
 
 
-  room_items "shiweishi" {
+  room_characters "shiweishi" {
     room_id = rooms.shiweishi.id
-    items = [
-      { id = items.ma.id }    ]
+    characters = [
+      { id = characters.quanzhen_ma.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/tongtiandian.c by LPCConverter
 # Zone: quanzhen
@@ -2064,11 +2071,12 @@ item_desc = {
 
 
 
-  room_items "wanwutang" {
+  room_characters "wanwutang" {
     room_id = rooms.wanwutang.id
-    items = [
-      { id = items.wangchuyi.id }    ]
+    characters = [
+      { id = characters.quanzhen_wangchuyi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/wuchang1.c by LPCConverter
 # Zone: quanzhen
@@ -2145,11 +2153,12 @@ item_desc = {
 
 
 
-  room_items "xianzhentang" {
+  room_characters "xianzhentang" {
     room_id = rooms.xianzhentang.id
-    items = [
-      { id = items.zhang.id }    ]
+    characters = [
+      { id = characters.quanzhen_zhang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/xiaocun.c by LPCConverter
 # Zone: quanzhen
@@ -2428,11 +2437,12 @@ item_desc = {
 
 
 
-  room_items "yuanshidian" {
+  room_characters "yuanshidian" {
     room_id = rooms.yuanshidian.id
-    items = [
-      { id = items.qi.id }    ]
+    characters = [
+      { id = characters.quanzhen_qi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhen/yuzhengong.c by LPCConverter
 # Zone: quanzhen

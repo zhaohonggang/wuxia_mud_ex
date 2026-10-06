@@ -270,11 +270,12 @@ zones "guanwai" {
 
 
 
-  room_items "heifengkou" {
+  room_characters "heifengkou" {
     room_id = rooms.heifengkou.id
-    items = [
-      { id = items.xiong.id }    ]
+    characters = [
+      { id = characters.quarry_xiong.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/guanwai/houyuan.c by LPCConverter
 # Zone: guanwai
@@ -331,11 +332,12 @@ zones "guanwai" {
 
 
 
-  room_items "huandi1" {
+  room_characters "huandi1" {
     room_id = rooms.huandi1.id
-    items = [
-      { id = items.longcheng.id }    ]
+    characters = [
+      { id = characters.murong_longcheng.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/guanwai/huandi2.c by LPCConverter
 # Zone: guanwai
@@ -573,12 +575,13 @@ direction = "west"
 
 
 
-  room_items "luming" {
+  room_characters "luming" {
     room_id = rooms.luming.id
-    items = [
-      { id = items.lu.id },
-      { id = items.diao.id }    ]
+    characters = [
+      { id = characters.quarry_lu.id },
+      { id = characters.quarry_diao.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/guanwai/majiu.c by LPCConverter
 # Zone: guanwai
@@ -663,11 +666,12 @@ direction = "west"
 
 
 
-  room_items "milin2" {
+  room_characters "milin2" {
     room_id = rooms.milin2.id
-    items = [
-      { id = items.laohu2.id }    ]
+    characters = [
+      { id = characters.quarry_laohu2.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/guanwai/milin3.c by LPCConverter
 # Zone: guanwai
@@ -1262,11 +1266,12 @@ item_desc = {
 
 
 
-  room_items "xiaowu" {
+  room_characters "xiaowu" {
     room_id = rooms.xiaowu.id
-    items = [
-      { id = items.hufei.id }    ]
+    characters = [
+      { id = characters.hu_hufei.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/guanwai/xiaoxiang.c by LPCConverter
 # Zone: guanwai
@@ -1318,11 +1323,6 @@ behavior_config = {
 
 
 
-  room_items "xiaoyuan" {
-    room_id = rooms.xiaoyuan.id
-    items = [
-      { id = items.pingsi.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/guanwai/xiuxishi.c by LPCConverter
 # Zone: guanwai

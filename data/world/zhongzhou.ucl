@@ -743,11 +743,12 @@ item_desc = {
 
 
 
-  room_items "miaojia_jushi" {
+  room_characters "miaojia_jushi" {
     room_id = rooms.miaojia_jushi.id
-    items = [
-      { id = items.lan.id }    ]
+    characters = [
+      { id = characters.miao_lan.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/zhongzhou/miaojia_men.c by LPCConverter
 # Zone: zhongzhou
@@ -769,11 +770,12 @@ item_desc = {
 
 
 
-  room_items "miaojia_men" {
+  room_characters "miaojia_men" {
     room_id = rooms.miaojia_men.id
-    items = [
-      { id = items.wen.id }    ]
+    characters = [
+      { id = characters.miao_wen.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/zhongzhou/miaojia_shufang.c by LPCConverter
 # Zone: zhongzhou
@@ -848,12 +850,13 @@ item_desc = {
 
 
 
-  room_items "miaojia_zhengting" {
+  room_characters "miaojia_zhengting" {
     room_id = rooms.miaojia_zhengting.id
-    items = [
-      { id = items.ying.id },
-      { id = items.neng.id }    ]
+    characters = [
+      { id = characters.miao_ying.id },
+      { id = characters.miao_neng.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/zhongzhou/miaojia_zoulang1.c by LPCConverter
 # Zone: zhongzhou
@@ -1606,11 +1609,12 @@ item_desc = {
 
 
 
-  room_items "yangzhoudu" {
+  room_characters "yangzhoudu" {
     room_id = rooms.yangzhoudu.id
-    items = [
-      { id = items.shipopo.id }    ]
+    characters = [
+      { id = characters.lingxiao_shipopo.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/zhongzhou/yanling.c by LPCConverter
 # Zone: zhongzhou
@@ -1901,16 +1905,12 @@ item_desc = {
     characters = [
       { id = characters.guanjia.id },
       { id = characters.jiading.id },
-      { id = characters.jiading.id }    ]
+      { id = characters.jiading.id },
+      { id = characters.quarry_gou2.id }    ]
   }
 
 
 
-  room_items "yuanwan" {
-    room_id = rooms.yuanwan.id
-    items = [
-      { id = items.gou2.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/zhongzhou/zahuopu.c by LPCConverter
 # Zone: zhongzhou

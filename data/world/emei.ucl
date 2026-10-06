@@ -176,12 +176,17 @@ zones "emei" {
 
 
 
+  room_characters "cangjingge" {
+    room_id = rooms.cangjingge.id
+    characters = [
+      { id = characters.emei_dao.id }    ]
+  }
+
   room_items "cangjingge" {
     room_id = rooms.cangjingge.id
     items = [
-      { id = items.dao.id },
       { id = [items.fojing10.id,items.fojing11.id] },
-      { id = [items.fojing20.id,items.fojing21.id] }    ]
+      { id = [items.fojing20.id,items.fojing21.id] }        ]
   }
 
 # Generated from C:/files/git/mud/d/emei/cangjinglou.c by LPCConverter
@@ -285,13 +290,18 @@ direction = "south"
 
 
 
+  room_characters "chuwujian" {
+    room_id = rooms.chuwujian.id
+    characters = [
+      { id = characters.emei_feng.id }    ]
+  }
+
   room_items "chuwujian" {
     room_id = rooms.chuwujian.id
     items = [
-      { id = items.feng.id },
       { id = items.fuchen.id },
       { id = items.zhujian.id },
-      { id = items.yaodai.id }    ]
+      { id = items.yaodai.id }        ]
   }
 
 # Generated from C:/files/git/mud/d/emei/dgtsheshenya.c by LPCConverter
@@ -331,11 +341,12 @@ direction = "south"
 
 
 
-  room_items "duguangtai" {
+  room_characters "duguangtai" {
     room_id = rooms.duguangtai.id
-    items = [
-      { id = items.bei.id }    ]
+    characters = [
+      { id = characters.emei_bei.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/dxdian.c by LPCConverter
 # Zone: emei
@@ -458,16 +469,12 @@ direction = "south"
   room_characters "fushouan" {
     room_id = rooms.fushouan.id
     characters = [
-      { id = characters.girldizi.id }    ]
+      { id = characters.girldizi.id },
+      { id = characters.emei_zhen.id }    ]
   }
 
 
 
-  room_items "fushouan" {
-    room_id = rooms.fushouan.id
-    items = [
-      { id = items.zhen.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/emei/guanyintang.c by LPCConverter
 # Zone: emei
@@ -615,12 +622,13 @@ direction = "south"
 
 
 
-  room_items "hcaeast" {
+  room_characters "hcaeast" {
     room_id = rooms.hcaeast.id
-    items = [
-      { id = items.he.id },
-      { id = items.wenhui.id }    ]
+    characters = [
+      { id = characters.emei_he.id },
+      { id = characters.emei_wenhui.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/hcaeast1.c by LPCConverter
 # Zone: emei
@@ -679,11 +687,12 @@ direction = "south"
 
 
 
-  room_items "hcaguangchang" {
+  room_characters "hcaguangchang" {
     room_id = rooms.hcaguangchang.id
-    items = [
-      { id = items.xu.id }    ]
+    characters = [
+      { id = characters.emei_xu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/hcahoudian.c by LPCConverter
 # Zone: emei
@@ -704,11 +713,12 @@ direction = "south"
 
 
 
-  room_items "hcahoudian" {
+  room_characters "hcahoudian" {
     room_id = rooms.hcahoudian.id
-    items = [
-      { id = items.miejue.id }    ]
+    characters = [
+      { id = characters.emei_miejue.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/hcawest.c by LPCConverter
 # Zone: emei
@@ -732,11 +742,12 @@ item_desc = {
 
 
 
-  room_items "hcawest" {
+  room_characters "hcawest" {
     room_id = rooms.hcawest.id
-    items = [
-      { id = items.wenqing.id }    ]
+    characters = [
+      { id = characters.emei_wenqing.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/hcawest1.c by LPCConverter
 # Zone: emei
@@ -837,16 +848,12 @@ item_desc = {
   room_characters "hcazhengdian" {
     room_id = rooms.hcazhengdian.id
     characters = [
-      { id = characters.guest.id }    ]
+      { id = characters.guest.id },
+      { id = characters.emei_xin.id }    ]
   }
 
 
 
-  room_items "hcazhengdian" {
-    room_id = rooms.hcazhengdian.id
-    items = [
-      { id = items.xin.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/emei/heilong1.c by LPCConverter
 # Zone: emei
@@ -922,16 +929,12 @@ item_desc = {
   room_characters "huayanding" {
     room_id = rooms.huayanding.id
     characters = [
-      { id = characters.girldizi.id }    ]
+      { id = characters.girldizi.id },
+      { id = characters.emei_li.id }    ]
   }
 
 
 
-  room_items "huayanding" {
-    room_id = rooms.huayanding.id
-    items = [
-      { id = items.li.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/emei/jietuopo.c by LPCConverter
 # Zone: emei
@@ -988,11 +991,12 @@ item_desc = {
 
 
 
-  room_items "jinding" {
+  room_characters "jinding" {
     room_id = rooms.jinding.id
-    items = [
-      { id = items.fengling.id }    ]
+    characters = [
+      { id = characters.emei_fengling.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/jiulaodong.c by LPCConverter
 # Zone: emei
@@ -1014,11 +1018,12 @@ item_desc = {
 
 
 
-  room_items "jiulaodong" {
+  room_characters "jiulaodong" {
     room_id = rooms.jiulaodong.id
-    items = [
-      { id = items.fu.id }    ]
+    characters = [
+      { id = characters.quarry_fu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/jldongkou.c by LPCConverter
 # Zone: emei
@@ -1041,11 +1046,12 @@ item_desc = {
 
 
 
-  room_items "jldongkou" {
+  room_characters "jldongkou" {
     room_id = rooms.jldongkou.id
-    items = [
-      { id = items.hou.id }    ]
+    characters = [
+      { id = characters.quarry_hou.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/jldongnei.c by LPCConverter
 # Zone: emei
@@ -1066,11 +1072,12 @@ item_desc = {
 
 
 
-  room_items "jldongnei" {
+  room_characters "jldongnei" {
     room_id = rooms.jldongnei.id
-    items = [
-      { id = items.fu.id }    ]
+    characters = [
+      { id = characters.quarry_fu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/jsjdg1.c by LPCConverter
 # Zone: emei
@@ -1233,11 +1240,12 @@ item_desc = {
 
 
 
-  room_items "lengsl4" {
+  room_characters "lengsl4" {
     room_id = rooms.lengsl4.id
-    items = [
-      { id = items.houwang.id }    ]
+    characters = [
+      { id = characters.misc_houwang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/lianhuashi.c by LPCConverter
 # Zone: emei
@@ -1260,12 +1268,13 @@ item_desc = {
 
 
 
-  room_items "lianhuashi" {
+  room_characters "lianhuashi" {
     room_id = rooms.lianhuashi.id
-    items = [
-      { id = items.su.id },
-      { id = items.ling.id }    ]
+    characters = [
+      { id = characters.emei_su.id },
+      { id = characters.emei_ling.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/lingwenge.c by LPCConverter
 # Zone: emei
@@ -1288,11 +1297,12 @@ item_desc = {
 
 
 
-  room_items "lingwenge" {
+  room_characters "lingwenge" {
     room_id = rooms.lingwenge.id
-    items = [
-      { id = items.zhao.id }    ]
+    characters = [
+      { id = characters.emei_zhao.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/lingyunti.c by LPCConverter
 # Zone: emei
@@ -1525,12 +1535,13 @@ item_desc = {
 
 
 
-  room_items "qfadadian" {
+  room_characters "qfadadian" {
     room_id = rooms.qfadadian.id
-    items = [
-      { id = items.hui.id },
-      { id = items.wenyin.id }    ]
+    characters = [
+      { id = characters.emei_hui.id },
+      { id = characters.emei_wenyin.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/qianfoan.c by LPCConverter
 # Zone: emei
@@ -1571,11 +1582,12 @@ item_desc = {
 
 
 
-  room_items "qinggong" {
+  room_characters "qinggong" {
     room_id = rooms.qinggong.id
-    items = [
-      { id = items.zhou.id }    ]
+    characters = [
+      { id = characters.emei_zhou.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/qingyinge.c by LPCConverter
 # Zone: emei
@@ -1599,16 +1611,12 @@ item_desc = {
   room_characters "qingyinge" {
     room_id = rooms.qingyinge.id
     characters = [
-      { id = characters.girldizi.id }    ]
+      { id = characters.girldizi.id },
+      { id = characters.emei_xian.id }    ]
   }
 
 
 
-  room_items "qingyinge" {
-    room_id = rooms.qingyinge.id
-    items = [
-      { id = items.xian.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/emei/qsjie1.c by LPCConverter
 # Zone: emei
@@ -1870,11 +1878,12 @@ item_desc = {
 
 
 
-  room_items "wanxingan" {
+  room_characters "wanxingan" {
     room_id = rooms.wanxingan.id
-    items = [
-      { id = items.jia.id }    ]
+    characters = [
+      { id = characters.emei_jia.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/wdroad.c by LPCConverter
 # Zone: emei
@@ -1929,12 +1938,13 @@ item_desc = {
 
 
 
-  room_items "wnadian" {
+  room_characters "wnadian" {
     room_id = rooms.wnadian.id
-    items = [
-      { id = items.kong.id },
-      { id = items.wenfang.id }    ]
+    characters = [
+      { id = characters.emei_kong.id },
+      { id = characters.emei_wenfang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/woyunan.c by LPCConverter
 # Zone: emei
@@ -1956,11 +1966,12 @@ item_desc = {
 
 
 
-  room_items "woyunan" {
+  room_characters "woyunan" {
     room_id = rooms.woyunan.id
-    items = [
-      { id = items.xuan.id }    ]
+    characters = [
+      { id = characters.emei_xuan.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/xiaolu1.c by LPCConverter
 # Zone: emei
@@ -2114,11 +2125,12 @@ direction = ~
 
 
 
-  room_items "yunufeng" {
+  room_characters "yunufeng" {
     room_id = rooms.yunufeng.id
-    items = [
-      { id = items.fang.id }    ]
+    characters = [
+      { id = characters.emei_fang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/emei/zhongfengsi.c by LPCConverter
 # Zone: emei

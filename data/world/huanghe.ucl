@@ -22,11 +22,12 @@ zones "huanghe" {
 
 
 
-  room_items "bingcao" {
+  room_characters "bingcao" {
     room_id = rooms.bingcao.id
-    items = [
-      { id = items.qianjiewugong.id }    ]
+    characters = [
+      { id = characters.worm_qianjiewugong.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/huanghe/caodi1.c by LPCConverter
 # Zone: huanghe
@@ -707,12 +708,13 @@ item_desc = {
 
 
 
-  room_items "shidong" {
+  room_characters "shidong" {
     room_id = rooms.shidong.id
-    items = [
-      { id = items.mei.id },
-      { id = items.chen.id }    ]
+    characters = [
+      { id = characters.taohua_mei.id },
+      { id = characters.taohua_chen.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/huanghe/shimen.c by LPCConverter
 # Zone: huanghe
@@ -976,11 +978,12 @@ item_desc = {
 
 
 
-  room_items "tiandi4" {
+  room_characters "tiandi4" {
     room_id = rooms.tiandi4.id
-    items = [
-      { id = items.gou.id }    ]
+    characters = [
+      { id = characters.quarry_gou.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/huanghe/tumenzi.c by LPCConverter
 # Zone: huanghe

@@ -775,17 +775,13 @@ zones "kaifeng" {
       { id = characters.honghua2.id },
       { id = characters.honghua2.id },
       { id = characters.honghua2.id },
-      { id = characters.honghua2.id }    ]
+      { id = characters.honghua2.id },
+      { id = characters.honghua_yang.id },
+      { id = characters.honghua_jiang.id }    ]
   }
 
 
 
-  room_items "hh_damen" {
-    room_id = rooms.hh_damen.id
-    items = [
-      { id = items.yang.id },
-      { id = items.jiang.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/kaifeng/hh_guangchang.c by LPCConverter
 # Zone: kaifeng
@@ -865,16 +861,12 @@ zones "kaifeng" {
     room_id = rooms.hh_houting.id
     characters = [
       { id = characters.honghua2.id },
-      { id = characters.honghua2.id }    ]
+      { id = characters.honghua2.id },
+      { id = characters.honghua_zhao.id }    ]
   }
 
 
 
-  room_items "hh_houting" {
-    room_id = rooms.hh_houting.id
-    items = [
-      { id = items.zhao.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/kaifeng/hh_huayuan.c by LPCConverter
 # Zone: kaifeng
@@ -1038,16 +1030,12 @@ item_desc = {
     room_id = rooms.hh_lianwu2.id
     characters = [
       { id = characters.honghua2.id },
-      { id = characters.honghua2.id }    ]
+      { id = characters.honghua2.id },
+      { id = characters.honghua_chang1.id }    ]
   }
 
 
 
-  room_items "hh_lianwu2" {
-    room_id = rooms.hh_lianwu2.id
-    items = [
-      { id = items.chang1.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/kaifeng/hh_lianwu3.c by LPCConverter
 # Zone: kaifeng
@@ -1070,16 +1058,12 @@ item_desc = {
     room_id = rooms.hh_lianwu3.id
     characters = [
       { id = characters.honghua2.id },
-      { id = characters.honghua2.id }    ]
+      { id = characters.honghua2.id },
+      { id = characters.honghua_chang2.id }    ]
   }
 
 
 
-  room_items "hh_lianwu3" {
-    room_id = rooms.hh_lianwu3.id
-    items = [
-      { id = items.chang2.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/kaifeng/hh_mishi.c by LPCConverter
 # Zone: kaifeng
@@ -1241,16 +1225,12 @@ item_desc = {
   room_characters "hh_woshi" {
     room_id = rooms.hh_woshi.id
     characters = [
-      { id = characters.xinyan.id }    ]
+      { id = characters.xinyan.id },
+      { id = characters.honghua_chen.id }    ]
   }
 
 
 
-  room_items "hh_woshi" {
-    room_id = rooms.hh_woshi.id
-    items = [
-      { id = items.chen.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/kaifeng/hh_xiangfang1.c by LPCConverter
 # Zone: kaifeng
@@ -1340,11 +1320,12 @@ item_desc = {
 
 
 
-  room_items "hh_xiaozhu" {
+  room_characters "hh_xiaozhu" {
     room_id = rooms.hh_xiaozhu.id
-    items = [
-      { id = items.yu.id }    ]
+    characters = [
+      { id = characters.honghua_yu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/kaifeng/hh_xingtang.c by LPCConverter
 # Zone: kaifeng
@@ -1365,11 +1346,12 @@ item_desc = {
 
 
 
-  room_items "hh_xingtang" {
+  room_characters "hh_xingtang" {
     room_id = rooms.hh_xingtang.id
-    items = [
-      { id = items.shi.id }    ]
+    characters = [
+      { id = characters.honghua_shi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/kaifeng/hh_yanting1.c by LPCConverter
 # Zone: kaifeng
@@ -1446,16 +1428,12 @@ item_desc = {
       { id = characters.honghua1.id },
       { id = characters.honghua1.id },
       { id = characters.honghua1.id },
-      { id = characters.honghua1.id }    ]
+      { id = characters.honghua1.id },
+      { id = characters.honghua_wen.id }    ]
   }
 
 
 
-  room_items "hh_zhengting" {
-    room_id = rooms.hh_zhengting.id
-    items = [
-      { id = items.wen.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/kaifeng/hh_zoulang1.c by LPCConverter
 # Zone: kaifeng
@@ -2090,16 +2068,12 @@ direction = ~
   room_characters "road4" {
     room_id = rooms.road4.id
     characters = [
-      { id = characters.walker.id }    ]
+      { id = characters.walker.id },
+      { id = characters.honghua_lu.id }    ]
   }
 
 
 
-  room_items "road4" {
-    room_id = rooms.road4.id
-    items = [
-      { id = items.lu.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/kaifeng/road5.c by LPCConverter
 # Zone: kaifeng
@@ -2281,11 +2255,12 @@ direction = ~
 
 
 
-  room_items "tieta" {
+  room_characters "tieta" {
     room_id = rooms.tieta.id
-    items = [
-      { id = items.luo.id }    ]
+    characters = [
+      { id = characters.honghua_luo.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/kaifeng/tinyuan.c by LPCConverter
 # Zone: kaifeng
@@ -2307,11 +2282,12 @@ direction = ~
 
 
 
-  room_items "tinyuan" {
+  room_characters "tinyuan" {
     room_id = rooms.tinyuan.id
-    items = [
-      { id = items.shiqing.id }    ]
+    characters = [
+      { id = characters.lingxiao_shiqing.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/kaifeng/tokaifeng.c by LPCConverter
 # Zone: kaifeng
@@ -2587,12 +2563,13 @@ direction = ~
 
 
 
-  room_items "yezhulin" {
+  room_characters "yezhulin" {
     room_id = rooms.yezhulin.id
-    items = [
-      { id = items.zhu.id },
-      { id = items.zhu2.id }    ]
+    characters = [
+      { id = characters.quarry_zhu.id },
+      { id = characters.quarry_zhu2.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/kaifeng/yuhuang.c by LPCConverter
 # Zone: kaifeng

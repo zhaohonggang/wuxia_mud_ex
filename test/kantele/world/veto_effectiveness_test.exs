@@ -264,9 +264,25 @@ alias Kantele.World.LpcCondition
     assert :character in kinds, "room_characters 的悬空也应被记录"
     assert :item in kinds, "room_items 的悬空也应被记录"
 
-    # 值的形状是 {次数, 首个房间}，别直接 Enum.sum
+    # 值的形状是 {次数, 最后一个房间}，别直接 Enum.sum
     total_refs = seen |> Map.values() |> Enum.map(fn {c, _room} -> c end) |> Enum.sum()
-    assert total_refs > map_size(seen), "计数应累加（同一 ref 被多个房间引用）"
+    assert total_refs >= map_size(seen), "每个 ref 至少要被数一次"
+
+    # 「同一个 ref 被多个房间引用时次数会累加」这条守卫以前靠真实数据顺带
+    # 验证（当时有 4 条 ref 各被引用 2~4 次）。把 room_items 里的活物搬进
+    # room_characters 之后剩下的 13 条悬空恰好一条都不重复，真实数据再也
+    # 触发不了这个分支，所以直接打一次 warn_unresolved 来守。
+    Kantele.World.Loader.reset_unresolved_warnings()
+    Kantele.World.Loader.warn_unresolved(:item, "z", "room-a", "items.probe.id")
+    Kantele.World.Loader.warn_unresolved(:item, "z", "room-b", "items.probe.id")
+
+    probe = :erlang.get(:world_unresolved)
+
+    # 只守「次数累加」：重复命中时 loader 记的是最后一个房间（见 loader.ex
+    # 的 `{count + 1, room_id}`），这里不断言房间是哪个。
+    assert {2, _room} = probe[{"z", :item, "items.probe.id"}],
+           "同一 ref 被两个房间引用时，次数应累加"
+    Kantele.World.Loader.reset_unresolved_warnings()
 
     # 别写死阈值。之前写的是 > 1000，那时总数 1235；后来陆续补齐了
     # mafu(27) / bing(76) / guanbing(16) / walker(141)，再补 ducha / liumang /
@@ -284,9 +300,19 @@ alias Kantele.World.LpcCondition
     # 真物品只有 10 条，已全部补齐（4 条 /clone/book + 3 条跨区 namespacing
     # + city 本地的 box 和 shijing_book），悬空降到 **437**。
     #
+    # 然后按 LPC 的 inherit 链把 room_items 里的活物**外科式**搬进
+    # room_characters（scripts/fix_npc_in_items.py）：439 条引用、386 个房间、
+    # 53 个区，缺的 366 个定义按 `<来源>_<id>` 命名落进 clone_lib。
+    # 悬空从 **437 掉到 13**，剩 13 条全是真待办：
+    #   - 7 条 character：本区压根没有 `characters "x"` 块（见下面的断言）
+    #   - 4 条 shaolin:cjlou1 的 wuji1~4 秘籍（随机技能缺口，见
+    #     docs/lpc-port-gaps.zh-CN.md）
+    #   - 2 条 sammatti:town_square 引 `global.items.*`，而 global 已搬去
+    #     test/fixtures/world，默认加载不含它
+    #
     # 这里钉的是**上限**：修复只会让这个数变小，所以给一个当前值附近的门槛，
     # 数字变大说明数据退化了（或者又漏了一个区）。
-    assert total_refs <= 444, "悬空引用不该变多，当前 #{total_refs}（上限 444）"
+    assert total_refs <= 20, "悬空引用不该变多，当前 #{total_refs}（上限 20）"
 
     # 头部现在只剩**本区自己缺定义**的角色：不是跨区共享的问题，是这几个名字
     # 在本区 UCL 里压根没有 `characters "x"` 块（如 lingxiao 的 cheng/liang/

@@ -649,16 +649,12 @@ direction = "south"
     room_id = rooms.street4.id
     characters = [
       { id = characters.zhongxiaoer.id },
-      { id = characters.zhongsisao.id }    ]
+      { id = characters.zhongsisao.id },
+      { id = characters.quarry_gou2.id }    ]
   }
 
 
 
-  room_items "street4" {
-    room_id = rooms.street4.id
-    items = [
-      { id = items.gou2.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/foshan/street5.c by LPCConverter
 # Zone: foshan
@@ -683,16 +679,12 @@ direction = "south"
     room_id = rooms.street5.id
     characters = [
       { id = characters.jiading.id },
-      { id = characters.jiading.id }    ]
+      { id = characters.jiading.id },
+      { id = characters.quarry_gou2.id }    ]
   }
 
 
 
-  room_items "street5" {
-    room_id = rooms.street5.id
-    items = [
-      { id = items.gou2.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/foshan/westgate.c by LPCConverter
 # Zone: foshan

@@ -239,15 +239,16 @@ item_desc = {
 
 
 
-  room_items "munitang" {
+  room_characters "munitang" {
     room_id = rooms.munitang.id
-    items = [
-      { id = items.kurong.id },
-      { id = items.benguan.id },
-      { id = items.benxiang.id },
-      { id = items.bencan.id },
-      { id = items.benyin.id }    ]
+    characters = [
+      { id = characters.tianlongsi_kurong.id },
+      { id = characters.tianlongsi_benguan.id },
+      { id = characters.tianlongsi_benxiang.id },
+      { id = characters.tianlongsi_bencan.id },
+      { id = characters.tianlongsi_benyin.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/tianlongsi/qingxinge.c by LPCConverter
 # Zone: tianlongsi

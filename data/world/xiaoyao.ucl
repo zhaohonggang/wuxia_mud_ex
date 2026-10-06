@@ -46,11 +46,12 @@ zones "xiaoyao" {
 
 
 
-  room_items "liangong" {
+  room_characters "liangong" {
     room_id = rooms.liangong.id
-    items = [
-      { id = items.wulingj.id }    ]
+    characters = [
+      { id = characters.xiaoyao_wulingj.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiaoyao/midao.c by LPCConverter
 # Zone: xiaoyao
@@ -106,11 +107,12 @@ zones "xiaoyao" {
 
 
 
-  room_items "muwu1" {
+  room_characters "muwu1" {
     room_id = rooms.muwu1.id
-    items = [
-      { id = items.kanggl.id }    ]
+    characters = [
+      { id = characters.xiaoyao_kanggl.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiaoyao/muwu2.c by LPCConverter
 # Zone: xiaoyao
@@ -131,11 +133,12 @@ zones "xiaoyao" {
 
 
 
-  room_items "muwu2" {
+  room_characters "muwu2" {
     room_id = rooms.muwu2.id
-    items = [
-      { id = items.xuemuh.id }    ]
+    characters = [
+      { id = characters.xiaoyao_xuemuh.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiaoyao/muwu3.c by LPCConverter
 # Zone: xiaoyao
@@ -156,11 +159,12 @@ zones "xiaoyao" {
 
 
 
-  room_items "muwu3" {
+  room_characters "muwu3" {
     room_id = rooms.muwu3.id
-    items = [
-      { id = items.fengas.id }    ]
+    characters = [
+      { id = characters.xiaoyao_fengas.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiaoyao/qingcaop.c by LPCConverter
 # Zone: xiaoyao
@@ -188,18 +192,14 @@ zones "xiaoyao" {
   room_characters "qingcaop" {
     room_id = rooms.qingcaop.id
     characters = [
-      { id = characters.wangyuyan.id }    ]
+      { id = characters.wangyuyan.id },
+      { id = characters.xiaoyao_suxingh.id },
+      { id = characters.duan_duanyq.id },
+      { id = characters.duan_duanyu.id }    ]
   }
 
 
 
-  room_items "qingcaop" {
-    room_id = rooms.qingcaop.id
-    items = [
-      { id = items.suxingh.id },
-      { id = items.duanyq.id },
-      { id = items.duanyu.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/xiaoyao/shantang.c by LPCConverter
 # Zone: xiaoyao
@@ -220,11 +220,12 @@ zones "xiaoyao" {
 
 
 
-  room_items "shantang" {
+  room_characters "shantang" {
     room_id = rooms.shantang.id
-    items = [
-      { id = items.shiqingl.id }    ]
+    characters = [
+      { id = characters.xiaoyao_shiqingl.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiaoyao/shishi.c by LPCConverter
 # Zone: xiaoyao
@@ -246,11 +247,12 @@ zones "xiaoyao" {
 
 
 
-  room_items "shishi" {
+  room_characters "shishi" {
     room_id = rooms.shishi.id
-    items = [
-      { id = items.wuyazi.id }    ]
+    characters = [
+      { id = characters.xiaoyao_wuyazi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiaoyao/shulin1.c by LPCConverter
 # Zone: xiaoyao
@@ -380,11 +382,12 @@ zones "xiaoyao" {
 
 
 
-  room_items "xiaodao1" {
+  room_characters "xiaodao1" {
     room_id = rooms.xiaodao1.id
-    items = [
-      { id = items.fanbail.id }    ]
+    characters = [
+      { id = characters.xiaoyao_fanbail.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiaoyao/xiaodao2.c by LPCConverter
 # Zone: xiaoyao
@@ -444,11 +447,12 @@ zones "xiaoyao" {
 
 
 
-  room_items "xiaodao4" {
+  room_characters "xiaodao4" {
     room_id = rooms.xiaodao4.id
-    items = [
-      { id = items.goudu.id }    ]
+    characters = [
+      { id = characters.xiaoyao_goudu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiaoyao/xiaodao5.c by LPCConverter
 # Zone: xiaoyao

@@ -256,11 +256,12 @@ zones "xiangyang" {
 
 
 
-  room_items "caodi4" {
+  room_characters "caodi4" {
     room_id = rooms.caodi4.id
-    items = [
-      { id = items.cheng.id }    ]
+    characters = [
+      { id = characters.hu_cheng.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiangyang/caodi5.c by LPCConverter
 # Zone: xiangyang
@@ -654,11 +655,12 @@ item_desc = {
 
 
 
-  room_items "guofuhuayuan" {
+  room_characters "guofuhuayuan" {
     room_id = rooms.guofuhuayuan.id
-    items = [
-      { id = items.rong.id }    ]
+    characters = [
+      { id = characters.taohua_rong.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiangyang/guofukefang.c by LPCConverter
 # Zone: xiangyang

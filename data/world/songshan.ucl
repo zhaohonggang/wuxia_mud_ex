@@ -64,11 +64,12 @@ zones "songshan" {
 
 
 
-  room_items "chaotian" {
+  room_characters "chaotian" {
     room_id = rooms.chaotian.id
-    items = [
-      { id = items.fei.id }    ]
+    characters = [
+      { id = characters.fei.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/songshan/chongsheng.c by LPCConverter
 # Zone: songshan
@@ -107,11 +108,12 @@ zones "songshan" {
 
 
 
-  room_items "dadian" {
+  room_characters "dadian" {
     room_id = rooms.dadian.id
-    items = [
-      { id = items.di.id }    ]
+    characters = [
+      { id = characters.di.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/songshan/fawangsi.c by LPCConverter
 # Zone: songshan
@@ -160,11 +162,12 @@ zones "songshan" {
 
 
 
-  room_items "fengchantai" {
+  room_characters "fengchantai" {
     room_id = rooms.fengchantai.id
-    items = [
-      { id = items.zuo.id }    ]
+    characters = [
+      { id = characters.zuo.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/songshan/junjigate.c by LPCConverter
 # Zone: songshan
@@ -237,11 +240,12 @@ valid_leave = [
 
 
 
-  room_items "luyanpubu" {
+  room_characters "luyanpubu" {
     room_id = rooms.luyanpubu.id
-    items = [
-      { id = items.yue.id }    ]
+    characters = [
+      { id = characters.songshan_yue.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/songshan/qimuque.c by LPCConverter
 # Zone: songshan

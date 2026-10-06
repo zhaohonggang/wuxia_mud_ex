@@ -390,16 +390,12 @@ behavior_config = {
     room_id = rooms.dating.id
     characters = [
       { id = characters.yahuan.id },
-      { id = characters.yahuan.id }    ]
+      { id = characters.yahuan.id },
+      { id = characters.ouyang_ouyangfeng.id }    ]
   }
 
 
 
-  room_items "dating" {
-    room_id = rooms.dating.id
-    items = [
-      { id = items.ouyangfeng.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/baituo/dongjie.c by LPCConverter
 # Zone: baituo

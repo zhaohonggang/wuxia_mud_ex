@@ -163,11 +163,12 @@ direction = "east"
 
 
 
-  room_items "mtroad5" {
+  room_characters "mtroad5" {
     room_id = rooms.mtroad5.id
-    items = [
-      { id = items.zhu2.id }    ]
+    characters = [
+      { id = characters.quarry_zhu2.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/motianya/mtroad6.c by LPCConverter
 # Zone: motianya

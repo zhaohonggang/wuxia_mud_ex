@@ -21,11 +21,12 @@ zones "xuedao" {
 
 
 
-  room_items "hollow" {
+  room_characters "hollow" {
     room_id = rooms.hollow.id
-    items = [
-      { id = items.xixuezhu.id }    ]
+    characters = [
+      { id = characters.worm_xixuezhu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xuedao/nroad0.c by LPCConverter
 # Zone: xuedao
@@ -106,11 +107,12 @@ zones "xuedao" {
 
 
 
-  room_items "nroad3" {
+  room_characters "nroad3" {
     room_id = rooms.nroad3.id
-    items = [
-      { id = items.ying.id }    ]
+    characters = [
+      { id = characters.quarry_ying.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xuedao/nroad4.c by LPCConverter
 # Zone: xuedao
@@ -149,11 +151,12 @@ zones "xuedao" {
 
 
 
-  room_items "nroad5" {
+  room_characters "nroad5" {
     room_id = rooms.nroad5.id
-    items = [
-      { id = items.ying.id }    ]
+    characters = [
+      { id = characters.quarry_ying.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xuedao/nroad6.c by LPCConverter
 # Zone: xuedao
@@ -254,11 +257,6 @@ behavior_config = {
 
 
 
-  room_items "shandong2" {
-    room_id = rooms.shandong2.id
-    items = [
-      { id = items.baoxiang.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/xuedao/shandong3.c by LPCConverter
 # Zone: xuedao
@@ -282,16 +280,12 @@ behavior_config = {
     room_id = rooms.shandong3.id
     characters = [
       { id = characters.x_lama.id },
-      { id = characters.x_lama.id }    ]
+      { id = characters.x_lama.id },
+      { id = characters.xuedao_laozu.id }    ]
   }
 
 
 
-  room_items "shandong3" {
-    room_id = rooms.shandong3.id
-    items = [
-      { id = items.laozu.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/xuedao/sroad0.c by LPCConverter
 # Zone: xuedao
@@ -384,11 +378,12 @@ behavior_config = {
 
 
 
-  room_items "sroad4" {
+  room_characters "sroad4" {
     room_id = rooms.sroad4.id
-    items = [
-      { id = items.ying.id }    ]
+    characters = [
+      { id = characters.quarry_ying.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xuedao/sroad5.c by LPCConverter
 # Zone: xuedao
@@ -499,11 +494,6 @@ behavior_config = {
 
 
 
-  room_items "sroad9" {
-    room_id = rooms.sroad9.id
-    items = [
-      { id = items.shengdi.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/xuedao/wangyougu.c by LPCConverter
 # Zone: xuedao
@@ -527,16 +517,12 @@ behavior_config = {
     room_id = rooms.wangyougu.id
     characters = [
       { id = characters.zhuoma.id },
-      { id = characters.yangzong.id }    ]
+      { id = characters.yangzong.id },
+      { id = characters.xuedao_shanyong.id }    ]
   }
 
 
 
-  room_items "wangyougu" {
-    room_id = rooms.wangyougu.id
-    items = [
-      { id = items.shanyong.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/xuedao/xiuxishi.c by LPCConverter
 # Zone: xuedao

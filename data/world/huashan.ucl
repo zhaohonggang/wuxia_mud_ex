@@ -82,16 +82,12 @@ behavior_config = {
   room_characters "buwei1" {
     room_id = rooms.buwei1.id
     characters = [
-      { id = characters.dayou.id }    ]
+      { id = characters.dayou.id },
+      { id = characters.quarry_hou.id }    ]
   }
 
 
 
-  room_items "buwei1" {
-    room_id = rooms.buwei1.id
-    items = [
-      { id = items.hou.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/huashan/buwei2.c by LPCConverter
 # Zone: huashan
@@ -400,11 +396,12 @@ direction = ~
 
 
 
-  room_items "husun" {
+  room_characters "husun" {
     room_id = rooms.husun.id
-    items = [
-      { id = items.hou.id }    ]
+    characters = [
+      { id = characters.quarry_hou.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/huashan/jianzhong.c by LPCConverter
 # Zone: huashan
@@ -507,11 +504,12 @@ item_desc = {
 
 
 
-  room_items "jushi" {
+  room_characters "jushi" {
     room_id = rooms.jushi.id
-    items = [
-      { id = items.yue_wife.id }    ]
+    characters = [
+      { id = characters.huashan_yue_wife.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/huashan/jzroad1.c by LPCConverter
 # Zone: huashan
@@ -535,11 +533,12 @@ item_desc = {
 
 
 
-  room_items "jzroad1" {
+  room_characters "jzroad1" {
     room_id = rooms.jzroad1.id
-    items = [
-      { id = items.tu.id }    ]
+    characters = [
+      { id = characters.quarry_tu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/huashan/jzroad2.c by LPCConverter
 # Zone: huashan
@@ -633,11 +632,12 @@ item_desc = {
 
 
 
-  room_items "jzroad6" {
+  room_characters "jzroad6" {
     room_id = rooms.jzroad6.id
-    items = [
-      { id = items.cheng_buyou.id }    ]
+    characters = [
+      { id = characters.huashan_cheng_buyou.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/huashan/jzroad7.c by LPCConverter
 # Zone: huashan
@@ -710,7 +710,8 @@ behavior_config = {
 
   room_characters "laojun" {
     room_id = rooms.laojun.id
-    characters = [ { id = characters.lao_denuo.id } ]
+    characters = [ { id = characters.lao_denuo.id },
+      { id = characters.huashan_lao.id } ]
   }
 
 
@@ -723,11 +724,6 @@ behavior_config = {
 
 
 
-  room_items "laojun" {
-    room_id = rooms.laojun.id
-    items = [
-      { id = items.lao.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/huashan/lianhua.c by LPCConverter
 # Zone: huashan
@@ -929,11 +925,12 @@ item_desc = {
 
 
 
-  room_items "luoyan" {
+  room_characters "luoyan" {
     room_id = rooms.luoyan.id
-    items = [
-      { id = items.feng.id }    ]
+    characters = [
+      { id = characters.huashan_feng.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/huashan/neishi.c by LPCConverter
 # Zone: huashan
@@ -1073,11 +1070,12 @@ item_desc = {
 
 
 
-  room_items "qunxianguan" {
+  room_characters "qunxianguan" {
     room_id = rooms.qunxianguan.id
-    items = [
-      { id = items.yue_buqun.id }    ]
+    characters = [
+      { id = characters.huashan_yue_buqun.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/huashan/s.c by LPCConverter
 # Zone: huashan
@@ -1144,11 +1142,12 @@ item_desc = {
 
 
 
-  room_items "sgyhole1" {
+  room_characters "sgyhole1" {
     room_id = rooms.sgyhole1.id
-    items = [
-      { id = items.linghu.id }    ]
+    characters = [
+      { id = characters.huashan_linghu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/huashan/sgyhole2.c by LPCConverter
 # Zone: huashan
@@ -1281,11 +1280,12 @@ item_desc = {
 
 
 
-  room_items "shangu" {
+  room_characters "shangu" {
     room_id = rooms.shangu.id
-    items = [
-      { id = items.cong_buqi.id }    ]
+    characters = [
+      { id = characters.huashan_cong_buqi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/huashan/shanhongpb.c by LPCConverter
 # Zone: huashan
@@ -1666,7 +1666,8 @@ behavior_config = {
 
   room_characters "xiaowu" {
     room_id = rooms.xiaowu.id
-    characters = [ { id = characters.fengbuping.id } ]
+    characters = [ { id = characters.fengbuping.id },
+      { id = characters.huashan_feng_buping.id } ]
   }
 
 
@@ -1679,11 +1680,6 @@ behavior_config = {
 
 
 
-  room_items "xiaowu" {
-    room_id = rooms.xiaowu.id
-    items = [
-      { id = items.feng_buping.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/huashan/xiuxishi.c by LPCConverter
 # Zone: huashan

@@ -304,11 +304,12 @@ direction = "north"
 
 
 
-  room_items "guofu_huayuan" {
+  room_characters "guofu_huayuan" {
     room_id = rooms.guofu_huayuan.id
-    items = [
-      { id = items.rong.id }    ]
+    characters = [
+      { id = characters.taohua_rong.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wuguan/guofu_kefang.c by LPCConverter
 # Zone: wuguan

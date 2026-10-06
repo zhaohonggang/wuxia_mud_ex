@@ -124,17 +124,13 @@ behavior_config = {
   room_characters "dating" {
     room_id = rooms.dating.id
     characters = [
-      { id = characters.yunsumei.id }, { id = characters.wugendaozhang.id } ]
+      { id = characters.yunsumei.id }, { id = characters.wugendaozhang.id },
+      { id = characters.shenlong_hong.id },
+      { id = characters.shenlong_wugen.id } ]
   }
 
 
 
-  room_items "dating" {
-    room_id = rooms.dating.id
-    items = [
-      { id = items.hong.id },
-      { id = items.wugen.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shenlong/haitan.c by LPCConverter
 # Zone: shenlong
@@ -174,11 +170,12 @@ item_desc = {
 
 
 
-  room_items "houting" {
+  room_characters "houting" {
     room_id = rooms.houting.id
-    items = [
-      { id = items.yin.id }    ]
+    characters = [
+      { id = characters.shenlong_yin.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shenlong/jushi.c by LPCConverter
 # Zone: shenlong
@@ -201,16 +198,12 @@ item_desc = {
     room_id = rooms.jushi.id
     characters = [
       { id = characters.mujianping.id },
-      { id = characters.fangyi.id }    ]
+      { id = characters.fangyi.id },
+      { id = characters.shenlong_su.id }    ]
   }
 
 
 
-  room_items "jushi" {
-    room_id = rooms.jushi.id
-    items = [
-      { id = items.su.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shenlong/kongdi.c by LPCConverter
 # Zone: shenlong
@@ -235,16 +228,12 @@ item_desc = {
   room_characters "kongdi" {
     room_id = rooms.kongdi.id
     characters = [
-      { id = characters.dizi.id }    ]
+      { id = characters.dizi.id },
+      { id = characters.shenlong_xu.id }    ]
   }
 
 
 
-  room_items "kongdi" {
-    room_id = rooms.kongdi.id
-    items = [
-      { id = items.xu.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shenlong/lin1.c by LPCConverter
 # Zone: shenlong
@@ -427,11 +416,12 @@ item_desc = {
 
 
 
-  room_items "xiaowu" {
+  room_characters "xiaowu" {
     room_id = rooms.xiaowu.id
-    items = [
-      { id = items.lu.id }    ]
+    characters = [
+      { id = characters.shenlong_lu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shenlong/xiuxishi.c by LPCConverter
 # Zone: shenlong
@@ -486,7 +476,8 @@ behavior_config = {
 
   room_characters "zoulang" {
     room_id = rooms.zoulang.id
-    characters = [ { id = characters.zhangdanyue.id } ]
+    characters = [ { id = characters.zhangdanyue.id },
+      { id = characters.shenlong_zhang.id } ]
   }
 
 
@@ -501,11 +492,6 @@ behavior_config = {
 
 
 
-  room_items "zoulang" {
-    room_id = rooms.zoulang.id
-    items = [
-      { id = items.zhang.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shenlong/npc/boy.c by LPCConverter
 # Zone: shenlong

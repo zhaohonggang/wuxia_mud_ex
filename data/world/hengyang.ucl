@@ -301,12 +301,13 @@ item_desc = {
 
 
 
-  room_items "furongfeng" {
+  room_characters "furongfeng" {
     room_id = rooms.furongfeng.id
-    items = [
-      { id = items.liu.id },
-      { id = items.qu.id }    ]
+    characters = [
+      { id = characters.henshan_liu.id },
+      { id = characters.riyue_qu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/hengyang/fuyansi.c by LPCConverter
 # Zone: hengyang
@@ -611,11 +612,12 @@ valid_leave = [
 
 
 
-  room_items "hsroad7" {
+  room_characters "hsroad7" {
     room_id = rooms.hsroad7.id
-    items = [
-      { id = items.gou.id }    ]
+    characters = [
+      { id = characters.quarry_gou.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/hengyang/hsroad8.c by LPCConverter
 # Zone: hengyang
@@ -1827,11 +1829,12 @@ item_desc = {
 
 
 
-  room_items "tianzhu" {
+  room_characters "tianzhu" {
     room_id = rooms.tianzhu.id
-    items = [
-      { id = items.lu.id }    ]
+    characters = [
+      { id = characters.henshan_lu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/hengyang/wangritai.c by LPCConverter
 # Zone: hengyang
@@ -1959,11 +1962,12 @@ item_desc = {
 
 
 
-  room_items "xuanyadi" {
+  room_characters "xuanyadi" {
     room_id = rooms.xuanyadi.id
-    items = [
-      { id = items.tu.id }    ]
+    characters = [
+      { id = characters.quarry_tu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/hengyang/yubeiting.c by LPCConverter
 # Zone: hengyang
@@ -2094,16 +2098,12 @@ behavior_config = {
       { id = characters.dizi1.id },
       { id = characters.dizi1.id },
       { id = characters.xiangke.id },
-      { id = characters.xiangke.id }, { id = characters.miweiyi.id } ]
+      { id = characters.xiangke.id }, { id = characters.miweiyi.id },
+      { id = characters.henshan_mi.id } ]
   }
 
 
 
-  room_items "zhurongdian" {
-    room_id = rooms.zhurongdian.id
-    items = [
-      { id = items.mi.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/hengyang/zhurongfeng.c by LPCConverter
 # Zone: hengyang
@@ -2124,11 +2124,12 @@ behavior_config = {
 
 
 
-  room_items "zhurongfeng" {
+  room_characters "zhurongfeng" {
     room_id = rooms.zhurongfeng.id
-    items = [
-      { id = items.mo.id }    ]
+    characters = [
+      { id = characters.henshan_mo.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/hengyang/zigai.c by LPCConverter
 # Zone: hengyang
@@ -2149,11 +2150,12 @@ behavior_config = {
 
 
 
-  room_items "zigai" {
+  room_characters "zigai" {
     room_id = rooms.zigai.id
-    items = [
-      { id = items.xiang.id }    ]
+    characters = [
+      { id = characters.henshan_xiang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/hengyang/zigai1.c by LPCConverter
 # Zone: hengyang

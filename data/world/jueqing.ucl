@@ -213,11 +213,12 @@ item_desc = {
 
 
 
-  room_items "eyutan2" {
+  room_characters "eyutan2" {
     room_id = rooms.eyutan2.id
-    items = [
-      { id = items.eyu.id }    ]
+    characters = [
+      { id = characters.quarry_eyu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/jueqing/eyutan3.c by LPCConverter
 # Zone: jueqing
@@ -737,16 +738,12 @@ item_desc = {
       { id = characters.dizi2.id },
       { id = characters.dizi2.id },
       { id = characters.dizi2.id },
-      { id = characters.dizi2.id }    ]
+      { id = characters.dizi2.id },
+      { id = characters.jueqing_fan.id }    ]
   }
 
 
 
-  room_items "shanzhuang" {
-    room_id = rooms.shanzhuang.id
-    items = [
-      { id = items.fan.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/jueqing/shiban.c by LPCConverter
 # Zone: jueqing
@@ -873,11 +870,12 @@ item_desc = {
 
 
 
-  room_items "undertan" {
+  room_characters "undertan" {
     room_id = rooms.undertan.id
-    items = [
-      { id = items.chi.id }    ]
+    characters = [
+      { id = characters.jueqing_chi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/jueqing/underya.c by LPCConverter
 # Zone: jueqing
@@ -1081,11 +1079,12 @@ item_desc = {
 
 
 
-  room_items "zizhuxuan" {
+  room_characters "zizhuxuan" {
     room_id = rooms.zizhuxuan.id
-    items = [
-      { id = items.zhi.id }    ]
+    characters = [
+      { id = characters.jueqing_zhi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/jueqing/npc/chushi.c by LPCConverter
 # Zone: jueqing

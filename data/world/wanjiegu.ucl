@@ -25,16 +25,12 @@ item_desc = {
   room_characters "backyard" {
     room_id = rooms.backyard.id
     characters = [
-      { id = characters.monk.id }    ]
+      { id = characters.monk.id },
+      { id = characters.duan_duanyq.id }    ]
   }
 
 
 
-  room_items "backyard" {
-    room_id = rooms.backyard.id
-    items = [
-      { id = items.duanyq.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/wanjiegu/bed_room.c by LPCConverter
 # Zone: wanjiegu

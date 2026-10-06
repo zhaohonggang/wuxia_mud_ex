@@ -173,16 +173,12 @@ item_desc = {
     room_id = rooms.guangchang.id
     characters = [
       { id = characters.kl_dizi2.id },
-      { id = characters.kl_dizi2.id }    ]
+      { id = characters.kl_dizi2.id },
+      { id = characters.kunlun_gaozecheng.id }    ]
   }
 
 
 
-  room_items "guangchang" {
-    room_id = rooms.guangchang.id
-    items = [
-      { id = items.gaozecheng.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/kunlun/guangchange.c by LPCConverter
 # Zone: kunlun
@@ -206,16 +202,12 @@ item_desc = {
     room_id = rooms.guangchange.id
     characters = [
       { id = characters.kl_dizi3.id },
-      { id = characters.kl_dizi3.id }    ]
+      { id = characters.kl_dizi3.id },
+      { id = characters.kunlun_weisiniang.id }    ]
   }
 
 
 
-  room_items "guangchange" {
-    room_id = rooms.guangchange.id
-    items = [
-      { id = items.weisiniang.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/kunlun/guangchangw.c by LPCConverter
 # Zone: kunlun
@@ -238,16 +230,12 @@ item_desc = {
   room_characters "guangchangw" {
     room_id = rooms.guangchangw.id
     characters = [
-      { id = characters.kl_dizi3.id }    ]
+      { id = characters.kl_dizi3.id },
+      { id = characters.kunlun_zhanchun.id }    ]
   }
 
 
 
-  room_items "guangchangw" {
-    room_id = rooms.guangchangw.id
-    items = [
-      { id = items.zhanchun.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/kunlun/houyuan.c by LPCConverter
 # Zone: kunlun
@@ -304,11 +292,12 @@ item_desc = {
 
 
 
-  room_items "jingshenfeng" {
+  room_characters "jingshenfeng" {
     room_id = rooms.jingshenfeng.id
-    items = [
-      { id = items.hezudao.id }    ]
+    characters = [
+      { id = characters.kunlun_hezudao.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/kunlun/jingxiushi.c by LPCConverter
 # Zone: kunlun
@@ -576,11 +565,12 @@ item_desc = {
 
 
 
-  room_items "qianting" {
+  room_characters "qianting" {
     room_id = rooms.qianting.id
-    items = [
-      { id = items.xihuazi.id }    ]
+    characters = [
+      { id = characters.kunlun_xihuazi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/kunlun/sanshengao.c by LPCConverter
 # Zone: kunlun
@@ -621,11 +611,12 @@ item_desc = {
 
 
 
-  room_items "sanshengtang" {
+  room_characters "sanshengtang" {
     room_id = rooms.sanshengtang.id
-    items = [
-      { id = items.banshuxian.id }    ]
+    characters = [
+      { id = characters.kunlun_banshuxian.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/kunlun/shankou.c by LPCConverter
 # Zone: kunlun
@@ -908,16 +899,12 @@ item_desc = {
     room_id = rooms.shanmen.id
     characters = [
       { id = characters.kl_dizi1.id },
-      { id = characters.kl_dizi2.id }    ]
+      { id = characters.kl_dizi2.id },
+      { id = characters.kunlun_jiangtao.id }    ]
   }
 
 
 
-  room_items "shanmen" {
-    room_id = rooms.shanmen.id
-    items = [
-      { id = items.jiangtao.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/kunlun/shilu1.c by LPCConverter
 # Zone: kunlun
@@ -992,16 +979,12 @@ item_desc = {
     room_id = rooms.tieqinju.id
     characters = [
       { id = characters.kl_dizi2.id },
-      { id = characters.kl_dizi4.id }    ]
+      { id = characters.kl_dizi4.id },
+      { id = characters.kunlun_hetaichong.id }    ]
   }
 
 
 
-  room_items "tieqinju" {
-    room_id = rooms.tieqinju.id
-    items = [
-      { id = items.hetaichong.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/kunlun/wlang01.c by LPCConverter
 # Zone: kunlun

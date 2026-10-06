@@ -236,11 +236,12 @@ direction = ~
 
 
 
-  room_items "caodi" {
+  room_characters "caodi" {
     room_id = rooms.caodi.id
-    items = [
-      { id = items.jinshewang.id }    ]
+    characters = [
+      { id = characters.beast_jinshewang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudu/caoping.c by LPCConverter
 # Zone: wudu
@@ -496,16 +497,12 @@ valid_leave = [
       { id = characters.jiaotu.id },
       { id = characters.jiaotu.id },
       { id = characters.jiaotu.id },
-      { id = characters.jiaotu.id }    ]
+      { id = characters.jiaotu.id },
+      { id = characters.wudu_jiaotou.id }    ]
   }
 
 
 
-  room_items "damen" {
-    room_id = rooms.damen.id
-    items = [
-      { id = items.jiaotou.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/wudu/dating.c by LPCConverter
 # Zone: wudu
@@ -529,13 +526,14 @@ valid_leave = [
 
 
 
-  room_items "dating" {
+  room_characters "dating" {
     room_id = rooms.dating.id
-    items = [
-      { id = items.qiyunao.id },
-      { id = items.panxiuda.id },
-      { id = items.cenqisi.id }    ]
+    characters = [
+      { id = characters.wudu_qiyunao.id },
+      { id = characters.wudu_panxiuda.id },
+      { id = characters.wudu_cenqisi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudu/dijiao.c by LPCConverter
 # Zone: wudu
@@ -627,11 +625,12 @@ item_desc = {
 
 
 
-  room_items "huating1" {
+  room_characters "huating1" {
     room_id = rooms.huating1.id
-    items = [
-      { id = items.hetieshou.id }    ]
+    characters = [
+      { id = characters.wudu_hetieshou.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudu/huating2.c by LPCConverter
 # Zone: wudu
@@ -757,11 +756,12 @@ item_desc = {
 
 
 
-  room_items "huxue1" {
+  room_characters "huxue1" {
     room_id = rooms.huxue1.id
-    items = [
-      { id = items.laohu.id }    ]
+    characters = [
+      { id = characters.quarry_laohu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudu/huxue2.c by LPCConverter
 # Zone: wudu
@@ -785,11 +785,12 @@ item_desc = {
 
 
 
-  room_items "huxue2" {
+  room_characters "huxue2" {
     room_id = rooms.huxue2.id
-    items = [
-      { id = items.laohu.id }    ]
+    characters = [
+      { id = characters.quarry_laohu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudu/jiang1.c by LPCConverter
 # Zone: wudu
@@ -874,12 +875,13 @@ item_desc = {
 
 
 
-  room_items "langwo" {
+  room_characters "langwo" {
     room_id = rooms.langwo.id
-    items = [
-      { id = items.lang.id },
-      { id = items.lang2.id }    ]
+    characters = [
+      { id = characters.quarry_lang.id },
+      { id = characters.quarry_lang2.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudu/liandu.c by LPCConverter
 # Zone: wudu
@@ -1460,11 +1462,12 @@ item_desc = {
 
 
 
-  room_items "nanyuan" {
+  room_characters "nanyuan" {
     room_id = rooms.nanyuan.id
-    items = [
-      { id = items.gou3.id }    ]
+    characters = [
+      { id = characters.quarry_gou3.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudu/neijin.c by LPCConverter
 # Zone: wudu
@@ -1485,11 +1488,12 @@ item_desc = {
 
 
 
-  room_items "neijin" {
+  room_characters "neijin" {
     room_id = rooms.neijin.id
-    items = [
-      { id = items.daoshi.id }    ]
+    characters = [
+      { id = characters.wudu_daoshi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudu/qiandu1.c by LPCConverter
 # Zone: wudu
@@ -2285,11 +2289,12 @@ item_desc = {
 
 
 
-  room_items "xiaolu" {
+  room_characters "xiaolu" {
     room_id = rooms.xiaolu.id
-    items = [
-      { id = items.tu.id }    ]
+    characters = [
+      { id = characters.quarry_tu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudu/yaoshi.c by LPCConverter
 # Zone: wudu

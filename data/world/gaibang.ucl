@@ -58,16 +58,12 @@ zones "gaibang" {
     room_id = rooms.inhole.id
     characters = [
       { id = characters.2dai.id },
-      { id = characters.1dai.id }    ]
+      { id = characters.1dai.id },
+      { id = characters.gaibang_li.id }    ]
   }
 
 
 
-  room_items "inhole" {
-    room_id = rooms.inhole.id
-    items = [
-      { id = items.li.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/gaibang/midao.c by LPCConverter
 # Zone: gaibang
@@ -131,17 +127,13 @@ item_desc = {
     characters = [
       { id = characters.5dai.id },
       { id = characters.6dai.id },
-      { id = characters.7dai.id }    ]
+      { id = characters.7dai.id },
+      { id = characters.gaibang_liang.id },
+      { id = characters.gaibang_jian.id }    ]
   }
 
 
 
-  room_items "undertre" {
-    room_id = rooms.undertre.id
-    items = [
-      { id = items.liang.id },
-      { id = items.jian.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/gaibang/npc/1dai.c by LPCConverter
 # Zone: gaibang

@@ -405,11 +405,12 @@ item_desc = {
 
 
 
-  room_items "huijiang1" {
+  room_characters "huijiang1" {
     room_id = rooms.huijiang1.id
-    items = [
-      { id = items.lang.id }    ]
+    characters = [
+      { id = characters.quarry_lang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shenfeng/huijiang2.c by LPCConverter
 # Zone: shenfeng
@@ -432,16 +433,12 @@ item_desc = {
   room_characters "huijiang2" {
     room_id = rooms.huijiang2.id
     characters = [
-      { id = characters.hasake.id }    ]
+      { id = characters.hasake.id },
+      { id = characters.quarry_yang.id }    ]
   }
 
 
 
-  room_items "huijiang2" {
-    room_id = rooms.huijiang2.id
-    items = [
-      { id = items.yang.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shenfeng/huijiang3.c by LPCConverter
 # Zone: shenfeng
@@ -507,16 +504,12 @@ item_desc = {
   room_characters "huijiang5" {
     room_id = rooms.huijiang5.id
     characters = [
-      { id = characters.su.id }    ]
+      { id = characters.su.id },
+      { id = characters.quarry_yang.id }    ]
   }
 
 
 
-  room_items "huijiang5" {
-    room_id = rooms.huijiang5.id
-    items = [
-      { id = items.yang.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shenfeng/huijiang6.c by LPCConverter
 # Zone: shenfeng

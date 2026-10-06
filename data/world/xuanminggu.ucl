@@ -174,11 +174,12 @@ zones "xuanminggu" {
 
 
 
-  room_items "xuanmingfeng" {
+  room_characters "xuanmingfeng" {
     room_id = rooms.xuanmingfeng.id
-    items = [
-      { id = items.bai.id }    ]
+    characters = [
+      { id = characters.xuanming_bai.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xuanminggu/xuanminggu.c by LPCConverter
 # Zone: xuanminggu
@@ -205,11 +206,12 @@ item_desc = {
 
 
 
-  room_items "xuanminggu" {
+  room_characters "xuanminggu" {
     room_id = rooms.xuanminggu.id
-    items = [
-      { id = items.lu.id }    ]
+    characters = [
+      { id = characters.xuanming_lu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xuanminggu/zulin1.c by LPCConverter
 # Zone: xuanminggu
@@ -232,11 +234,12 @@ item_desc = {
 
 
 
-  room_items "zulin1" {
+  room_characters "zulin1" {
     room_id = rooms.zulin1.id
-    items = [
-      { id = items.wuwang.id }    ]
+    characters = [
+      { id = characters.xuanming_wuwang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xuanminggu/zulin2.c by LPCConverter
 # Zone: xuanminggu
@@ -257,8 +260,10 @@ item_desc = {
 
 
 
-  room_items "zulin2" {
+  room_characters "zulin2" {
     room_id = rooms.zulin2.id
-    items = [
-      { id = items.he.id }    ]
+    characters = [
+      { id = characters.xuanming_he.id }    ]
   }
+
+

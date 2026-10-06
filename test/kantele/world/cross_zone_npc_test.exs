@@ -46,9 +46,12 @@ defmodule Kantele.World.CrossZoneNpcTest do
   end
 
   test "跨区借来的 NPC 真的落在房间里，而且用的是来源区那一份（不是同名替身）", ctx do
-    # beijing/huiyingup 引 yitian 的赵敏 / 赵一伤 / 钱二败
+    # beijing/huiyingup 引 yitian 的赵敏 / 赵一伤 / 钱二败，外加 gaibang 的阿大
+    # （LPC d/beijing/huiyingup.c: `CLASS_D("gaibang") + "/ada"`）。
+    # 阿大原先被转换器写进了 room_items，一直悬空没生成；搬进 room_characters
+    # 之后才真的站在这儿，所以期望值从 3 个变成 4 个。
     assert room_names(ctx.world, "beijing", "huiyingup") ==
-             ["赵一伤", "赵敏", "钱二败"]
+             ["赵一伤", "赵敏", "钱二败", "阿大"]
   end
 
   test "同一个 NPC 被两个房间引用时两份都在（引用计数来自 LPC 的 \": N\"）", ctx do

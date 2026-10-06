@@ -21,10 +21,15 @@ zones "wudang" {
 
 
 
+  room_characters "cangjingge" {
+    room_id = rooms.cangjingge.id
+    characters = [
+      { id = characters.wudang_daotong.id }    ]
+  }
+
   room_items "cangjingge" {
     room_id = rooms.cangjingge.id
     items = [
-      { id = items.daotong.id },
       { id = [clone_lib.items.laozi1.id,clone_lib.items.daodejing.id,clone_lib.items.laozi2.id,clone_lib.items.daodejing.id,clone_lib.items.laozi8.id,clone_lib.items.daodejing.id,clone_lib.items.laozi13.id,clone_lib.items.laozi1.id,clone_lib.items.laozi16.id,clone_lib.items.daodejing.id,clone_lib.items.laozi18.id] },
       { id = [clone_lib.items.laozi1.id,clone_lib.items.daodejing.id,clone_lib.items.laozi2.id,clone_lib.items.daodejing.id,clone_lib.items.laozi8.id,clone_lib.items.daodejing.id,clone_lib.items.laozi13.id,clone_lib.items.laozi1.id,clone_lib.items.laozi16.id,clone_lib.items.daodejing.id,clone_lib.items.laozi18.id] }
     ]
@@ -101,11 +106,12 @@ zones "wudang" {
 
 
 
-  room_items "caolianfang" {
+  room_characters "caolianfang" {
     room_id = rooms.caolianfang.id
-    items = [
-      { id = items.yin.id }    ]
+    characters = [
+      { id = characters.wudang_yin.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/chaotiangong.c by LPCConverter
 # Zone: wudang
@@ -127,11 +133,12 @@ zones "wudang" {
 
 
 
-  room_items "chaotiangong" {
+  room_characters "chaotiangong" {
     room_id = rooms.chaotiangong.id
-    items = [
-      { id = items.qingxu.id }    ]
+    characters = [
+      { id = characters.wudang_qingxu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/chashi.c by LPCConverter
 # Zone: wudang
@@ -185,11 +192,12 @@ zones "wudang" {
 
 
 
-  room_items "donglang1" {
+  room_characters "donglang1" {
     room_id = rooms.donglang1.id
-    items = [
-      { id = items.xi.id }    ]
+    characters = [
+      { id = characters.wudang_xi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/donglang2.c by LPCConverter
 # Zone: wudang
@@ -262,13 +270,14 @@ zones "wudang" {
 
 
 
-  room_items "gaotai" {
+  room_characters "gaotai" {
     room_id = rooms.gaotai.id
-    items = [
-      { id = items.wuxing.id },
-      { id = items.bagua.id },
-      { id = items.yan.id }    ]
+    characters = [
+      { id = characters.wudang_wuxing.id },
+      { id = characters.wudang_bagua.id },
+      { id = characters.wudang_yan.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/guangchang.c by LPCConverter
 # Zone: wudang
@@ -293,11 +302,12 @@ zones "wudang" {
 
 
 
-  room_items "guangchang" {
+  room_characters "guangchang" {
     room_id = rooms.guangchang.id
-    items = [
-      { id = items.daotong.id }    ]
+    characters = [
+      { id = characters.wudang_daotong.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/gyroad1.c by LPCConverter
 # Zone: wudang
@@ -418,11 +428,12 @@ item_desc = {
 
 
 
-  room_items "houyuan" {
+  room_characters "houyuan" {
     room_id = rooms.houyuan.id
-    items = [
-      { id = items.yu.id }    ]
+    characters = [
+      { id = characters.wudang_yu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/huixianqiao.c by LPCConverter
 # Zone: wudang
@@ -461,11 +472,12 @@ item_desc = {
 
 
 
-  room_items "hutouyan" {
+  room_characters "hutouyan" {
     room_id = rooms.hutouyan.id
-    items = [
-      { id = items.laohu.id }    ]
+    characters = [
+      { id = characters.quarry_laohu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/jiejianyan.c by LPCConverter
 # Zone: wudang
@@ -494,11 +506,12 @@ valid_leave = [
 
 
 
-  room_items "jiejianyan" {
+  room_characters "jiejianyan" {
     room_id = rooms.jiejianyan.id
-    items = [
-      { id = items.shan.id }    ]
+    characters = [
+      { id = characters.wudang_shan.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/jindian.c by LPCConverter
 # Zone: wudang
@@ -555,11 +568,12 @@ valid_leave = [
 
 
 
-  room_items "langmei" {
+  room_characters "langmei" {
     room_id = rooms.langmei.id
-    items = [
-      { id = items.shouyuan.id }    ]
+    characters = [
+      { id = characters.wudang_shouyuan.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/langmeiyuan.c by LPCConverter
 # Zone: wudang
@@ -582,11 +596,12 @@ valid_leave = [
 
 
 
-  room_items "langmeiyuan" {
+  room_characters "langmeiyuan" {
     room_id = rooms.langmeiyuan.id
-    items = [
-      { id = items.shouyuan.id }    ]
+    characters = [
+      { id = characters.wudang_shouyuan.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/liangongfang.c by LPCConverter
 # Zone: wudang
@@ -664,11 +679,12 @@ direction = ~
 
 
 
-  room_items "nanyan0" {
+  room_characters "nanyan0" {
     room_id = rooms.nanyan0.id
-    items = [
-      { id = items.xiaosong.id }    ]
+    characters = [
+      { id = characters.wudang_xiaosong.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/nanyan1.c by LPCConverter
 # Zone: wudang
@@ -831,11 +847,12 @@ direction = "southdown"
 
 
 
-  room_items "nanyanfeng" {
+  room_characters "nanyanfeng" {
     room_id = rooms.nanyanfeng.id
-    items = [
-      { id = items.mo.id }    ]
+    characters = [
+      { id = characters.wudang_mo.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/nanyangong.c by LPCConverter
 # Zone: wudang
@@ -925,12 +942,13 @@ direction = "southup"
 
 
 
-  room_items "sanqingdian" {
+  room_characters "sanqingdian" {
     room_id = rooms.sanqingdian.id
-    items = [
-      { id = items.guxu.id },
-      { id = items.song.id }    ]
+    characters = [
+      { id = characters.wudang_guxu.id },
+      { id = characters.wudang_song.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/santiangate.c by LPCConverter
 # Zone: wudang
@@ -1247,11 +1265,12 @@ direction = "southup"
 
 
 
-  room_items "songlin1" {
+  room_characters "songlin1" {
     room_id = rooms.songlin1.id
-    items = [
-      { id = items.famu.id }    ]
+    characters = [
+      { id = characters.wudang_famu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/songlin2.c by LPCConverter
 # Zone: wudang
@@ -1289,11 +1308,12 @@ direction = "southup"
 
 
 
-  room_items "songlin3" {
+  room_characters "songlin3" {
     room_id = rooms.songlin3.id
-    items = [
-      { id = items.hou.id }    ]
+    characters = [
+      { id = characters.quarry_hou.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/songlin4.c by LPCConverter
 # Zone: wudang
@@ -1504,11 +1524,12 @@ item_desc = {
 
 
 
-  room_items "tynroad" {
+  room_characters "tynroad" {
     room_id = rooms.tynroad.id
-    items = [
-      { id = items.hou.id }    ]
+    characters = [
+      { id = characters.quarry_hou.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/tyroad1.c by LPCConverter
 # Zone: wudang
@@ -1583,11 +1604,12 @@ item_desc = {
 
 
 
-  room_items "tyroad12" {
+  room_characters "tyroad12" {
     room_id = rooms.tyroad12.id
-    items = [
-      { id = items.hou.id }    ]
+    characters = [
+      { id = characters.quarry_hou.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/tyroad13.c by LPCConverter
 # Zone: wudang
@@ -1609,11 +1631,12 @@ item_desc = {
 
 
 
-  room_items "tyroad13" {
+  room_characters "tyroad13" {
     room_id = rooms.tyroad13.id
-    items = [
-      { id = items.shouyuan.id }    ]
+    characters = [
+      { id = characters.wudang_shouyuan.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/tyroad2.c by LPCConverter
 # Zone: wudang
@@ -1796,11 +1819,12 @@ item_desc = {
 
 
 
-  room_items "wdbl" {
+  room_characters "wdbl" {
     room_id = rooms.wdbl.id
-    items = [
-      { id = items.tu.id }    ]
+    characters = [
+      { id = characters.quarry_tu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/wdroad1.c by LPCConverter
 # Zone: wudang
@@ -2033,11 +2057,12 @@ item_desc = {
 
 
 
-  room_items "wuyaling" {
+  room_characters "wuyaling" {
     room_id = rooms.wuyaling.id
-    items = [
-      { id = items.niao3.id }    ]
+    characters = [
+      { id = characters.quarry_niao3.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/xiaolu1.c by LPCConverter
 # Zone: wudang
@@ -2076,12 +2101,13 @@ item_desc = {
 
 
 
-  room_items "xiaolu2" {
+  room_characters "xiaolu2" {
     room_id = rooms.xiaolu2.id
-    items = [
-      { id = items.qingfeng.id },
-      { id = items.mingyue.id }    ]
+    characters = [
+      { id = characters.wudang_qingfeng.id },
+      { id = characters.wudang_mingyue.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/xiaoyuan.c by LPCConverter
 # Zone: wudang
@@ -2102,11 +2128,12 @@ item_desc = {
 
 
 
-  room_items "xiaoyuan" {
+  room_characters "xiaoyuan" {
     room_id = rooms.xiaoyuan.id
-    items = [
-      { id = items.zhang.id }    ]
+    characters = [
+      { id = characters.wudang_zhang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/xilang.c by LPCConverter
 # Zone: wudang
@@ -2162,12 +2189,13 @@ item_desc = {
 
 
 
-  room_items "xuanyuegate" {
+  room_characters "xuanyuegate" {
     room_id = rooms.xuanyuegate.id
-    items = [
-      { id = items.zhike.id },
-      { id = items.daotong.id }    ]
+    characters = [
+      { id = characters.wudang_zhike.id },
+      { id = characters.wudang_daotong.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/yuzhengong.c by LPCConverter
 # Zone: wudang
@@ -2189,11 +2217,12 @@ item_desc = {
 
 
 
-  room_items "yuzhengong" {
+  room_characters "yuzhengong" {
     room_id = rooms.yuzhengong.id
-    items = [
-      { id = items.zhixiang.id }    ]
+    characters = [
+      { id = characters.wudang_zhixiang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/wudang/zijincheng.c by LPCConverter
 # Zone: wudang

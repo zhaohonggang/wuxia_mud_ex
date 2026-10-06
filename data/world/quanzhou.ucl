@@ -59,11 +59,12 @@ zones "quanzhou" {
 
 
 
-  room_items "chating" {
+  room_characters "chating" {
     room_id = rooms.chating.id
-    items = [
-      { id = items.xiang.id }    ]
+    characters = [
+      { id = characters.riyue_xiang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhou/chiqian.c by LPCConverter
 # Zone: quanzhou
@@ -552,11 +553,12 @@ item_desc = {
 
 
 
-  room_items "qzroad5" {
+  room_characters "qzroad5" {
     room_id = rooms.qzroad5.id
-    items = [
-      { id = items.tu.id }    ]
+    characters = [
+      { id = characters.quarry_tu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/quanzhou/riyuetang.c by LPCConverter
 # Zone: quanzhou

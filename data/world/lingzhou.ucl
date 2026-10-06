@@ -421,11 +421,12 @@ direction = "north"
 
 
 
-  room_items "huangyangtan" {
+  room_characters "huangyangtan" {
     room_id = rooms.huangyangtan.id
-    items = [
-      { id = items.yang3.id }    ]
+    characters = [
+      { id = characters.quarry_yang3.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingzhou/jiangjungate.c by LPCConverter
 # Zone: lingzhou
@@ -530,16 +531,12 @@ valid_leave = [
   room_characters "kongdi" {
     room_id = rooms.kongdi.id
     characters = [
-      { id = characters.nan.id }    ]
+      { id = characters.nan.id },
+      { id = characters.quarry_gou2.id }    ]
   }
 
 
 
-  room_items "kongdi" {
-    room_id = rooms.kongdi.id
-    items = [
-      { id = items.gou2.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/lingzhou/luorilin1.c by LPCConverter
 # Zone: lingzhou
@@ -848,11 +845,12 @@ valid_leave = [
 
 
 
-  room_items "xiaolu1" {
+  room_characters "xiaolu1" {
     room_id = rooms.xiaolu1.id
-    items = [
-      { id = items.tu.id }    ]
+    characters = [
+      { id = characters.quarry_tu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingzhou/xiaolu2.c by LPCConverter
 # Zone: lingzhou

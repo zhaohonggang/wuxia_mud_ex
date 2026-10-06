@@ -366,11 +366,12 @@ zones "hangzhou" {
 
 
 
-  room_items "guozhuang" {
+  room_characters "guozhuang" {
     room_id = rooms.guozhuang.id
-    items = [
-      { id = items.gou2.id }    ]
+    characters = [
+      { id = characters.quarry_gou2.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/hangzhou/gushan.c by LPCConverter
 # Zone: hangzhou
@@ -1980,11 +1981,12 @@ item_desc = {
 
 
 
-  room_items "shanlu6" {
+  room_characters "shanlu6" {
     room_id = rooms.shanlu6.id
-    items = [
-      { id = items.laohu.id }    ]
+    characters = [
+      { id = characters.quarry_laohu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/hangzhou/shanlu7.c by LPCConverter
 # Zone: hangzhou
@@ -2063,11 +2065,12 @@ item_desc = {
 
 
 
-  room_items "shiwudong" {
+  room_characters "shiwudong" {
     room_id = rooms.shiwudong.id
-    items = [
-      { id = items.changaoxie.id }    ]
+    characters = [
+      { id = characters.worm_changaoxie.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/hangzhou/shuiledong.c by LPCConverter
 # Zone: hangzhou

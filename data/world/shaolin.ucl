@@ -637,11 +637,12 @@ direction = ~
 
 
 
-  room_items "banruo1" {
+  room_characters "banruo1" {
     room_id = rooms.banruo1.id
-    items = [
-      { id = items.cheng_xin.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_xin.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/banruo2.c by LPCConverter
 # Zone: shaolin
@@ -663,11 +664,12 @@ direction = ~
 
 
 
-  room_items "banruo2" {
+  room_characters "banruo2" {
     room_id = rooms.banruo2.id
-    items = [
-      { id = items.cheng_yi.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_yi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/banruo3.c by LPCConverter
 # Zone: shaolin
@@ -689,11 +691,12 @@ direction = ~
 
 
 
-  room_items "banruo3" {
+  room_characters "banruo3" {
     room_id = rooms.banruo3.id
-    items = [
-      { id = items.cheng_si.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_si.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/banruo4.c by LPCConverter
 # Zone: shaolin
@@ -715,11 +718,12 @@ direction = ~
 
 
 
-  room_items "banruo4" {
+  room_characters "banruo4" {
     room_id = rooms.banruo4.id
-    items = [
-      { id = items.cheng_shi.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_shi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/banruo5.c by LPCConverter
 # Zone: shaolin
@@ -743,17 +747,13 @@ direction = ~
   room_characters "banruo5" {
     room_id = rooms.banruo5.id
     characters = [
-      { id = characters.xiao_nan.id }    ]
+      { id = characters.xiao_nan.id },
+      { id = characters.shaolin_xuan_nan.id },
+      { id = characters.shaolin_cheng_zhi2.id }    ]
   }
 
 
 
-  room_items "banruo5" {
-    room_id = rooms.banruo5.id
-    items = [
-      { id = items.xuan_nan.id },
-      { id = items.cheng_zhi2.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shaolin/banruo6.c by LPCConverter
 # Zone: shaolin
@@ -775,11 +775,12 @@ direction = ~
 
 
 
-  room_items "banruo6" {
+  room_characters "banruo6" {
     room_id = rooms.banruo6.id
-    items = [
-      { id = items.cheng_xin2.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_xin2.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/banruo7.c by LPCConverter
 # Zone: shaolin
@@ -801,11 +802,12 @@ direction = ~
 
 
 
-  room_items "banruo7" {
+  room_characters "banruo7" {
     room_id = rooms.banruo7.id
-    items = [
-      { id = items.cheng_ling.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_ling.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/banruo8.c by LPCConverter
 # Zone: shaolin
@@ -827,11 +829,12 @@ direction = ~
 
 
 
-  room_items "banruo8" {
+  room_characters "banruo8" {
     room_id = rooms.banruo8.id
-    items = [
-      { id = items.cheng_yu.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_yu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/banruo9.c by LPCConverter
 # Zone: shaolin
@@ -853,11 +856,12 @@ direction = ~
 
 
 
-  room_items "banruo9" {
+  room_characters "banruo9" {
     room_id = rooms.banruo9.id
-    items = [
-      { id = items.cheng_shang.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_shang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/beilin1.c by LPCConverter
 # Zone: shaolin
@@ -1006,13 +1010,18 @@ valid_leave = [
 
 
 
+  room_characters "cjlou" {
+    room_id = rooms.cjlou.id
+    characters = [
+      { id = characters.shaolin_dao_yi.id },
+      { id = characters.shaolin_wuming.id }    ]
+  }
+
   room_items "cjlou" {
     room_id = rooms.cjlou.id
     items = [
-      { id = items.dao_yi.id },
-      { id = items.wuming.id },
       { id = [items.fojing10.id,items.fojing11.id] },
-      { id = [items.fojing20.id,items.fojing21.id] }    ]
+      { id = [items.fojing20.id,items.fojing21.id] }        ]
   }
 
 # Generated from C:/files/git/mud/d/shaolin/cjlou1.c by LPCConverter
@@ -1042,14 +1051,19 @@ direction = ~
 
 
 
+  room_characters "cjlou1" {
+    room_id = rooms.cjlou1.id
+    characters = [
+      { id = characters.shaolin_hui_zhen.id }    ]
+  }
+
   room_items "cjlou1" {
     room_id = rooms.cjlou1.id
     items = [
-      { id = items.hui_zhen.id },
       { id = items.wuji1.id },
       { id = items.wuji2.id },
       { id = items.wuji3.id },
-      { id = items.wuji4.id }    ]
+      { id = items.wuji4.id }        ]
   }
 
 # Generated from C:/files/git/mud/d/shaolin/damodong.c by LPCConverter
@@ -1071,11 +1085,16 @@ direction = ~
 
 
 
+  room_characters "damodong" {
+    room_id = rooms.damodong.id
+    characters = [
+      { id = characters.shaolin_da_mo.id }    ]
+  }
+
   room_items "damodong" {
     room_id = rooms.damodong.id
     items = [
-      { id = items.book_bamboo.id },
-      { id = items.da_mo.id }    ]
+      { id = items.book_bamboo.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/shaolin/dmyuan.c by LPCConverter
@@ -1125,7 +1144,8 @@ direction = ~
   room_characters "dmyuan2" {
     room_id = rooms.dmyuan2.id
     characters = [
-      { id = characters.xiao_bei.id }    ]
+      { id = characters.xiao_bei.id },
+      { id = characters.shaolin_xuan_bei.id }    ]
   }
 
 
@@ -1133,8 +1153,7 @@ direction = ~
   room_items "dmyuan2" {
     room_id = rooms.dmyuan2.id
     items = [
-      { id = items.xuan_bei.id },
-      { id = clone_lib.items.xisuijing.id }    ]
+      { id = clone_lib.items.xisuijing.id }        ]
   }
 
 # Generated from C:/files/git/mud/d/shaolin/duchuan.c by LPCConverter
@@ -1173,16 +1192,12 @@ direction = ~
   room_characters "dxbdian" {
     room_id = rooms.dxbdian.id
     characters = [
-      { id = characters.xiang_ke.id }    ]
+      { id = characters.xiang_ke.id },
+      { id = characters.shaolin_dao_zheng.id }    ]
   }
 
 
 
-  room_items "dxbdian" {
-    room_id = rooms.dxbdian.id
-    items = [
-      { id = items.dao_zheng.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shaolin/dzdian.c by LPCConverter
 # Zone: shaolin
@@ -1220,11 +1235,12 @@ direction = ~
 
 
 
-  room_items "fangjuku" {
+  room_characters "fangjuku" {
     room_id = rooms.fangjuku.id
-    items = [
-      { id = items.dao_xiang.id }    ]
+    characters = [
+      { id = characters.shaolin_dao_xiang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/fanting.c by LPCConverter
 # Zone: shaolin
@@ -1297,13 +1313,14 @@ direction = ~
 
 
 
-  room_items "fumoquan" {
+  room_characters "fumoquan" {
     room_id = rooms.fumoquan.id
-    items = [
-      { id = items.du_nan.id },
-      { id = items.du_e.id },
-      { id = items.du_jie.id }    ]
+    characters = [
+      { id = characters.shaolin_du_nan.id },
+      { id = characters.shaolin_du_e.id },
+      { id = characters.shaolin_du_jie.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/fzlou.c by LPCConverter
 # Zone: shaolin
@@ -1352,11 +1369,12 @@ valid_leave = [
 
 
 
-  room_items "fzlou1" {
+  room_characters "fzlou1" {
     room_id = rooms.fzlou1.id
-    items = [
-      { id = items.qing_le.id }    ]
+    characters = [
+      { id = characters.shaolin_qing_le.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/fzlou2.c by LPCConverter
 # Zone: shaolin
@@ -1377,11 +1395,12 @@ valid_leave = [
 
 
 
-  room_items "fzlou2" {
+  room_characters "fzlou2" {
     room_id = rooms.fzlou2.id
-    items = [
-      { id = items.xuan_ci.id }    ]
+    characters = [
+      { id = characters.shaolin_xuan_ci.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/guangchang1.c by LPCConverter
 # Zone: shaolin
@@ -1426,11 +1445,12 @@ valid_leave = [
 
 
 
-  room_items "guangchang1" {
+  room_characters "guangchang1" {
     room_id = rooms.guangchang1.id
-    items = [
-      { id = items.qing_fa.id }    ]
+    characters = [
+      { id = characters.shaolin_qing_fa.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/guangchang1e.c by LPCConverter
 # Zone: shaolin
@@ -1464,11 +1484,12 @@ direction = "east"
 
 
 
-  room_items "guangchang1e" {
+  room_characters "guangchang1e" {
     room_id = rooms.guangchang1e.id
-    items = [
-      { id = items.qing_wu.id }    ]
+    characters = [
+      { id = characters.shaolin_qing_wu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/guangchang1w.c by LPCConverter
 # Zone: shaolin
@@ -1502,11 +1523,12 @@ direction = "west"
 
 
 
-  room_items "guangchang1w" {
+  room_characters "guangchang1w" {
     room_id = rooms.guangchang1w.id
-    items = [
-      { id = items.qing_wei.id }    ]
+    characters = [
+      { id = characters.shaolin_qing_wei.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/guangchang2.c by LPCConverter
 # Zone: shaolin
@@ -1535,16 +1557,12 @@ direction = "west"
     characters = [
       { id = characters.xiang_ke.id },
       { id = characters.seng_bing3.id },
-      { id = characters.seng_bing3.id }    ]
+      { id = characters.seng_bing3.id },
+      { id = characters.shaolin_qing_shan.id }    ]
   }
 
 
 
-  room_items "guangchang2" {
-    room_id = rooms.guangchang2.id
-    items = [
-      { id = items.qing_shan.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shaolin/guangchang3.c by LPCConverter
 # Zone: shaolin
@@ -1603,16 +1621,12 @@ direction = "northup"
     room_id = rooms.guangchang4.id
     characters = [
       { id = characters.seng_bing3.id },
-      { id = characters.seng_bing3.id }    ]
+      { id = characters.seng_bing3.id },
+      { id = characters.shaolin_hui_kong.id }    ]
   }
 
 
 
-  room_items "guangchang4" {
-    room_id = rooms.guangchang4.id
-    items = [
-      { id = items.hui_kong.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shaolin/guangchang5.c by LPCConverter
 # Zone: shaolin
@@ -1795,11 +1809,12 @@ valid_leave = [
 
 
 
-  room_items "gulou7" {
+  room_characters "gulou7" {
     room_id = rooms.gulou7.id
-    items = [
-      { id = items.qing_wen.id }    ]
+    characters = [
+      { id = characters.shaolin_qing_wen.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/hanshui1.c by LPCConverter
 # Zone: shaolin
@@ -1947,17 +1962,13 @@ valid_leave = [
     room_id = rooms.houdian.id
     characters = [
       { id = characters.seng_bing3.id },
-      { id = characters.seng_bing3.id }    ]
+      { id = characters.seng_bing3.id },
+      { id = characters.shaolin_hui_ru.id },
+      { id = characters.shaolin_kong_jian.id }    ]
   }
 
 
 
-  room_items "houdian" {
-    room_id = rooms.houdian.id
-    items = [
-      { id = items.hui_ru.id },
-      { id = items.kong_jian.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shaolin/houshan.c by LPCConverter
 # Zone: shaolin
@@ -2000,11 +2011,12 @@ valid_leave = [
 
 
 
-  room_items "hsyuan1" {
+  room_characters "hsyuan1" {
     room_id = rooms.hsyuan1.id
-    items = [
-      { id = items.hui_he.id }    ]
+    characters = [
+      { id = characters.shaolin_hui_he.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/hsyuan2.c by LPCConverter
 # Zone: shaolin
@@ -2027,11 +2039,12 @@ valid_leave = [
 
 
 
-  room_items "hsyuan2" {
+  room_characters "hsyuan2" {
     room_id = rooms.hsyuan2.id
-    items = [
-      { id = items.hui_xiu.id }    ]
+    characters = [
+      { id = characters.shaolin_hui_xiu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/hsyuan3.c by LPCConverter
 # Zone: shaolin
@@ -2053,11 +2066,12 @@ valid_leave = [
 
 
 
-  room_items "hsyuan3" {
+  room_characters "hsyuan3" {
     room_id = rooms.hsyuan3.id
-    items = [
-      { id = items.hui_se.id }    ]
+    characters = [
+      { id = characters.shaolin_hui_se.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/hsyuan4.c by LPCConverter
 # Zone: shaolin
@@ -2081,11 +2095,12 @@ valid_leave = [
 
 
 
-  room_items "hsyuan4" {
+  room_characters "hsyuan4" {
     room_id = rooms.hsyuan4.id
-    items = [
-      { id = items.hui_xu.id }    ]
+    characters = [
+      { id = characters.shaolin_hui_xu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/hsyuan5.c by LPCConverter
 # Zone: shaolin
@@ -2108,11 +2123,12 @@ valid_leave = [
 
 
 
-  room_items "hsyuan5" {
+  room_characters "hsyuan5" {
     room_id = rooms.hsyuan5.id
-    items = [
-      { id = items.hui_ming.id }    ]
+    characters = [
+      { id = characters.shaolin_hui_ming.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/hsyuan6.c by LPCConverter
 # Zone: shaolin
@@ -2134,11 +2150,12 @@ valid_leave = [
 
 
 
-  room_items "hsyuan6" {
+  room_characters "hsyuan6" {
     room_id = rooms.hsyuan6.id
-    items = [
-      { id = items.hui_jie.id }    ]
+    characters = [
+      { id = characters.shaolin_hui_jie.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/jianyu.c by LPCConverter
 # Zone: shaolin
@@ -2159,11 +2176,16 @@ valid_leave = [
 
 
 
+  room_characters "jianyu" {
+    room_id = rooms.jianyu.id
+    characters = [
+      { id = characters.shaolin_qing_yuan.id }    ]
+  }
+
   room_items "jianyu" {
     room_id = rooms.jianyu.id
     items = [
-      { id = items.qing_yuan.id },
-      { id = [items.fojing10.id,items.fojing11.id] }    ]
+      { id = [items.fojing10.id,items.fojing11.id] }        ]
   }
 
 # Generated from C:/files/git/mud/d/shaolin/jianyu1.c by LPCConverter
@@ -2281,16 +2303,12 @@ valid_leave = [
       { id = characters.seng_bing2.id },
       { id = characters.seng_bing2.id },
       { id = characters.seng_bing2.id },
-      { id = characters.xiao_tong.id }    ]
+      { id = characters.xiao_tong.id },
+      { id = characters.shaolin_xuan_tong.id }    ]
   }
 
 
 
-  room_items "jlyuan" {
-    room_id = rooms.jlyuan.id
-    items = [
-      { id = items.xuan_tong.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shaolin/kedian1.c by LPCConverter
 # Zone: shaolin
@@ -2331,16 +2349,12 @@ direction = "west"
   room_characters "kedian1" {
     room_id = rooms.kedian1.id
     characters = [
-      { id = characters.xiao_er.id }    ]
+      { id = characters.xiao_er.id },
+      { id = characters.misc_xuxiake.id }    ]
   }
 
 
 
-  room_items "kedian1" {
-    room_id = rooms.kedian1.id
-    items = [
-      { id = items.xuxiake.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shaolin/kedian2.c by LPCConverter
 # Zone: shaolin
@@ -2378,11 +2392,12 @@ direction = "west"
 
 
 
-  room_items "luohan1" {
+  room_characters "luohan1" {
     room_id = rooms.luohan1.id
-    items = [
-      { id = items.cheng_guan.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_guan.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/luohan2.c by LPCConverter
 # Zone: shaolin
@@ -2404,11 +2419,12 @@ direction = "west"
 
 
 
-  room_items "luohan2" {
+  room_characters "luohan2" {
     room_id = rooms.luohan2.id
-    items = [
-      { id = items.cheng_zhi.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_zhi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/luohan3.c by LPCConverter
 # Zone: shaolin
@@ -2430,11 +2446,12 @@ direction = "west"
 
 
 
-  room_items "luohan3" {
+  room_characters "luohan3" {
     room_id = rooms.luohan3.id
-    items = [
-      { id = items.cheng_ming.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_ming.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/luohan4.c by LPCConverter
 # Zone: shaolin
@@ -2456,11 +2473,12 @@ direction = "west"
 
 
 
-  room_items "luohan4" {
+  room_characters "luohan4" {
     room_id = rooms.luohan4.id
-    items = [
-      { id = items.cheng_jing.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_jing.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/luohan5.c by LPCConverter
 # Zone: shaolin
@@ -2484,17 +2502,13 @@ direction = "west"
   room_characters "luohan5" {
     room_id = rooms.luohan5.id
     characters = [
-      { id = characters.xiao_ku.id }    ]
+      { id = characters.xiao_ku.id },
+      { id = characters.shaolin_xuan_ku.id },
+      { id = characters.shaolin_cheng_jian.id }    ]
   }
 
 
 
-  room_items "luohan5" {
-    room_id = rooms.luohan5.id
-    items = [
-      { id = items.xuan_ku.id },
-      { id = items.cheng_jian.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shaolin/luohan6.c by LPCConverter
 # Zone: shaolin
@@ -2516,11 +2530,12 @@ direction = "west"
 
 
 
-  room_items "luohan6" {
+  room_characters "luohan6" {
     room_id = rooms.luohan6.id
-    items = [
-      { id = items.cheng_xing.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_xing.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/luohan7.c by LPCConverter
 # Zone: shaolin
@@ -2542,11 +2557,12 @@ direction = "west"
 
 
 
-  room_items "luohan7" {
+  room_characters "luohan7" {
     room_id = rooms.luohan7.id
-    items = [
-      { id = items.cheng_ji.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_ji.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/luohan8.c by LPCConverter
 # Zone: shaolin
@@ -2568,11 +2584,12 @@ direction = "west"
 
 
 
-  room_items "luohan8" {
+  room_characters "luohan8" {
     room_id = rooms.luohan8.id
-    items = [
-      { id = items.cheng_mie.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_mie.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/luohan9.c by LPCConverter
 # Zone: shaolin
@@ -2594,11 +2611,12 @@ direction = "west"
 
 
 
-  room_items "luohan9" {
+  room_characters "luohan9" {
     room_id = rooms.luohan9.id
-    items = [
-      { id = items.cheng_he.id }    ]
+    characters = [
+      { id = characters.shaolin_cheng_he.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/majiu1.c by LPCConverter
 # Zone: shaolin
@@ -2690,11 +2708,12 @@ direction = "west"
 
 
 
-  room_items "putiyuan" {
+  room_characters "putiyuan" {
     room_id = rooms.putiyuan.id
-    items = [
-      { id = items.xuan_ji.id }    ]
+    characters = [
+      { id = characters.shaolin_xuan_ji.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/qfdian.c by LPCConverter
 # Zone: shaolin
@@ -2716,11 +2735,12 @@ direction = "west"
 
 
 
-  room_items "qfdian" {
+  room_characters "qfdian" {
     room_id = rooms.qfdian.id
-    items = [
-      { id = items.qing_guan.id }    ]
+    characters = [
+      { id = characters.shaolin_qing_guan.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/qyping.c by LPCConverter
 # Zone: shaolin
@@ -2838,7 +2858,8 @@ direction = ~
 
   room_characters "shang_dating" {
     room_id = rooms.shang_dating.id
-    characters = [ { id = characters.shang_jianming.id } ]
+    characters = [ { id = characters.shang_jianming.id },
+      { id = characters.shang_ming.id } ]
   }
 
   room_exits "shang_dating" {
@@ -2852,11 +2873,6 @@ direction = ~
 
 
 
-  room_items "shang_dating" {
-    room_id = rooms.shang_dating.id
-    items = [
-      { id = items.ming.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shaolin/shang_houting.c by LPCConverter
 # Zone: shaolin
@@ -2899,11 +2915,12 @@ direction = ~
 
 
 
-  room_items "shang_houyuan" {
+  room_characters "shang_houyuan" {
     room_id = rooms.shang_houyuan.id
-    items = [
-      { id = items.tai.id }    ]
+    characters = [
+      { id = characters.shang_tai.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/shang_huating.c by LPCConverter
 # Zone: shaolin
@@ -2998,16 +3015,12 @@ item_desc = {
     room_id = rooms.shang_men.id
     characters = [
       { id = characters.shang2.id },
-      { id = characters.shang2.id }    ]
+      { id = characters.shang2.id },
+      { id = characters.shang_zhen.id }    ]
   }
 
 
 
-  room_items "shang_men" {
-    room_id = rooms.shang_men.id
-    items = [
-      { id = items.zhen.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shaolin/shang_qgc.c by LPCConverter
 # Zone: shaolin
@@ -3271,7 +3284,8 @@ direction = ~
 
   room_characters "shanmen" {
     room_id = rooms.shanmen.id
-    characters = [ { id = characters.xu_ming.id }, { id = characters.xu_tong.id } ]
+    characters = [ { id = characters.xu_ming.id }, { id = characters.xu_tong.id },
+      { id = characters.xu_tong.id } ]
   }
 
   room_exits "shanmen" {
@@ -3283,12 +3297,6 @@ direction = ~
 
 
 
-  room_items "shanmen" {
-    room_id = rooms.shanmen.id
-    items = [
-      { id = items.xu_tong.id },
-      { id = items.xu_ming.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shaolin/shijie1.c by LPCConverter
 # Zone: shaolin
@@ -3447,11 +3455,12 @@ direction = ~
 
 
 
-  room_items "shijie6" {
+  room_characters "shijie6" {
     room_id = rooms.shijie6.id
-    items = [
-      { id = items.jue_yuan.id }    ]
+    characters = [
+      { id = characters.shaolin_jue_yuan.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/shijie7.c by LPCConverter
 # Zone: shaolin
@@ -3931,16 +3940,12 @@ direction = ~
   room_characters "twdian" {
     room_id = rooms.twdian.id
     characters = [
-      { id = characters.xiang_ke.id }    ]
+      { id = characters.xiang_ke.id },
+      { id = characters.shaolin_dao_guo.id }    ]
   }
 
 
 
-  room_items "twdian" {
-    room_id = rooms.twdian.id
-    items = [
-      { id = items.dao_guo.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/shaolin/twdian1.c by LPCConverter
 # Zone: shaolin
@@ -4012,11 +4017,12 @@ direction = ~
 
 
 
-  room_items "wuchang" {
+  room_characters "wuchang" {
     room_id = rooms.wuchang.id
-    items = [
-      { id = items.dao_jue.id }    ]
+    characters = [
+      { id = characters.shaolin_dao_jue.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/wuchang1.c by LPCConverter
 # Zone: shaolin
@@ -4086,11 +4092,12 @@ valid_leave = [
 
 
 
-  room_items "wuchang3" {
+  room_characters "wuchang3" {
     room_id = rooms.wuchang3.id
-    items = [
-      { id = items.dao_cheng.id }    ]
+    characters = [
+      { id = characters.shaolin_dao_cheng.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/wuqiku.c by LPCConverter
 # Zone: shaolin
@@ -4113,7 +4120,8 @@ valid_leave = [
   room_characters "wuqiku" {
     room_id = rooms.wuqiku.id
     characters = [
-      { id = characters.datie_seng.id }    ]
+      { id = characters.datie_seng.id },
+      { id = characters.shaolin_dao_chen.id }    ]
   }
 
 
@@ -4121,9 +4129,8 @@ valid_leave = [
   room_items "wuqiku" {
     room_id = rooms.wuqiku.id
     items = [
-      { id = items.dao_chen.id },
       { id = items.zhujian.id },
-      { id = items.mudao.id }    ]
+      { id = items.mudao.id }        ]
   }
 
 # Generated from C:/files/git/mud/d/shaolin/wuxing0.c by LPCConverter
@@ -4358,11 +4365,12 @@ direction = ~
 
 
 
-  room_items "yaopinku" {
+  room_characters "yaopinku" {
     room_id = rooms.yaopinku.id
-    items = [
-      { id = items.dao_xiang2.id }    ]
+    characters = [
+      { id = characters.shaolin_dao_xiang2.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/yidao.c by LPCConverter
 # Zone: shaolin
@@ -4588,11 +4596,12 @@ direction = ~
 
 
 
-  room_items "zhonglou7" {
+  room_characters "zhonglou7" {
     room_id = rooms.zhonglou7.id
-    items = [
-      { id = items.qing_xiao.id }    ]
+    characters = [
+      { id = characters.shaolin_qing_xiao.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/zhulin1.c by LPCConverter
 # Zone: shaolin
@@ -4774,11 +4783,12 @@ direction = ~
 
 
 
-  room_items "zoulang3" {
+  room_characters "zoulang3" {
     room_id = rooms.zoulang3.id
-    items = [
-      { id = items.dao_pin.id }    ]
+    characters = [
+      { id = characters.shaolin_dao_pin.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/shaolin/zoulang4.c by LPCConverter
 # Zone: shaolin

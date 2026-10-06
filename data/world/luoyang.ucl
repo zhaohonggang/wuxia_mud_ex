@@ -2527,11 +2527,12 @@ item_desc = {
 
 
 
-  room_items "suishi9" {
+  room_characters "suishi9" {
     room_id = rooms.suishi9.id
-    items = [
-      { id = items.du_yuan.id }    ]
+    characters = [
+      { id = characters.shaolin_du_yuan.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/luoyang/tangsancai.c by LPCConverter
 # Zone: luoyang
@@ -3433,16 +3434,12 @@ direction = "up"
     room_id = rooms.zuixianlou4.id
     characters = [
       { id = characters.beijing_richman1.id },
-      { id = characters.beijing_richman1.id }    ]
+      { id = characters.beijing_richman1.id },
+      { id = characters.libai.id }    ]
   }
 
 
 
-  room_items "zuixianlou4" {
-    room_id = rooms.zuixianlou4.id
-    items = [
-      { id = items.libai.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/luoyang/npc/han.c by LPCConverter
 # Zone: luoyang

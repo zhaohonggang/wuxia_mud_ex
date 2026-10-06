@@ -275,11 +275,12 @@ zones "fuzhou" {
 
 
 
-  room_items "fzroad1" {
+  room_characters "fzroad1" {
     room_id = rooms.fzroad1.id
-    items = [
-      { id = items.tu.id }    ]
+    characters = [
+      { id = characters.quarry_tu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/fuzhou/fzroad10.c by LPCConverter
 # Zone: fuzhou
@@ -462,11 +463,12 @@ zones "fuzhou" {
 
 
 
-  room_items "fzroad7" {
+  room_characters "fzroad7" {
     room_id = rooms.fzroad7.id
-    items = [
-      { id = items.laohu.id }    ]
+    characters = [
+      { id = characters.quarry_laohu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/fuzhou/fzroad8.c by LPCConverter
 # Zone: fuzhou
@@ -530,11 +532,12 @@ zones "fuzhou" {
 
 
 
-  room_items "gushan" {
+  room_characters "gushan" {
     room_id = rooms.gushan.id
-    items = [
-      { id = items.hou.id }    ]
+    characters = [
+      { id = characters.quarry_hou.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/fuzhou/houyuan.c by LPCConverter
 # Zone: fuzhou

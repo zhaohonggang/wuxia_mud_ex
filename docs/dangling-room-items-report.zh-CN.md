@@ -5,6 +5,33 @@
 > 不用正则切块 —— 见 [lpc-objects-placement-issues.zh-CN.md](lpc-objects-placement-issues.zh-CN.md) §八），
 > 再按 `items.<id>` 逐个查本区有没有对应 `items` 定义，最后回 `mud/` 按文件名回溯 LPC 源。
 
+## 当前状态（2026-10：room_items 里的活物已搬走）
+
+下面各节是**历史扫描记录**，数字停在动手修之前。现在的实际口径：
+
+| 指标 | 修之前 | 现在 |
+|---|---|---|
+| 悬空引用合计（loader 计数） | **444** | **13** |
+| ├ `room_items` | 437 | 6 |
+| └ `room_characters` | 7 | 7 |
+| 其中「char 被误写成 item」 | 431 | **0** |
+| clone_lib 里的 NPC 定义 | 121 | **487** |
+
+做法是新增 `scripts/fix_npc_in_items.py`：按 LPC 目标的 `inherit` 链
+（`NPC` / `QUARRY` / `WORM` / `SNAKE` …）判定一个 `room_items` 引用到底是
+人物还是物品，把判定为人物的**外科式**搬到 `room_characters`，缺的定义按
+`<来源>_<id>` 命名落进 `clone_lib.ucl`。439 条引用 / 386 个房间 / 53 个区。
+
+`scripts/classify_dangling_items.py` 现在报 `room_items` 悬空 **4 条、NPC-in-items 0 条**。
+
+剩下的 13 条是真待办：
+
+| 类别 | 条数 | 说明 |
+|---|---|---|
+| 本区没有 `characters` 块 | 7 | `lingxiao` 的 `cheng`/`liang`/`liao`/`qi` 是武功招式名当文件名；`chengdu:tong_ren`、`city:zixu`、`xiangyang:mujiang` 同理 |
+| `shaolin:cjlou1` 的 `wuji1`~`wuji4` | 4 | 秘籍随机技能缺口，见 [lpc-port-gaps.zh-CN.md](lpc-port-gaps.zh-CN.md) |
+| `sammatti:town_square` 引 `global.items.*` | 2 | `global` 已搬去 `test/fixtures/world`，默认加载不含它 |
+
 ## 〇、总账（含此前漏掉的一类）
 
 > **本节是加 loader warning 之后才发现的。**
@@ -97,6 +124,10 @@ nil ->
 > 3. 「只有 20 处是 NPC 被当物品」严重低估，真实数量是 **241 条引用 / 214 个 id**。
 
 ## 二、char：被误写成 `room_items` 的人物（241 条 / 214 个 id）
+
+> **本节已修完。** 439 条引用已由 `scripts/fix_npc_in_items.py` 搬进
+> `room_characters`，缺的 366 个定义进了 `clone_lib.ucl`（`<来源>_<id>` 命名）。
+> 下面的表格保留，作为「哪些 id 其实是活物」的依据。
 
 这些 LPC 源是 `inherit NPC` / `inherit SNAKE`，转换器把 `set("objects", ...)`
 里的它们写成了 `items.<id>`，而本区没有同名 `items` 定义，于是被 loader 静默跳过。

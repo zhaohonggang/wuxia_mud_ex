@@ -482,11 +482,12 @@ item_desc = {
 
 
 
-  room_items "riyuedong" {
+  room_characters "riyuedong" {
     room_id = rooms.riyuedong.id
-    items = [
-      { id = items.ding.id }    ]
+    characters = [
+      { id = characters.xingxiu_ding.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiyu/riyuedong1.c by LPCConverter
 # Zone: xiyu
@@ -865,11 +866,12 @@ item_desc = {
 
 
 
-  room_items "silk3" {
+  room_characters "silk3" {
     room_id = rooms.silk3.id
-    items = [
-      { id = items.huo.id }    ]
+    characters = [
+      { id = characters.hangzhou_huo.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiyu/silk4.c by LPCConverter
 # Zone: xiyu
@@ -962,16 +964,12 @@ item_desc = {
       { id = characters.gushou.id },
       { id = characters.haoshou.id },
       { id = characters.boshou.id },
-      { id = characters.walker.id }    ]
+      { id = characters.walker.id },
+      { id = characters.xingxiu_shihou.id }    ]
   }
 
 
 
-  room_items "tianroad2" {
-    room_id = rooms.tianroad2.id
-    items = [
-      { id = items.shihou.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/xiyu/tianroad3.c by LPCConverter
 # Zone: xiyu
@@ -996,11 +994,12 @@ item_desc = {
 
 
 
-  room_items "tianroad3" {
+  room_characters "tianroad3" {
     room_id = rooms.tianroad3.id
-    items = [
-      { id = items.azi.id }    ]
+    characters = [
+      { id = characters.xingxiu_azi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiyu/tianroad4.c by LPCConverter
 # Zone: xiyu
@@ -1157,16 +1156,12 @@ item_desc = {
     characters = [
       { id = characters.gushou.id },
       { id = characters.haoshou.id },
-      { id = characters.boshou.id }    ]
+      { id = characters.boshou.id },
+      { id = characters.xingxiu_zhaixing.id }    ]
   }
 
 
 
-  room_items "xxh1" {
-    room_id = rooms.xxh1.id
-    items = [
-      { id = items.zhaixing.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/xiyu/xxh2.c by LPCConverter
 # Zone: xiyu
@@ -1188,7 +1183,8 @@ behavior_config = {
 
   room_characters "xxh2" {
     room_id = rooms.xxh2.id
-    characters = [ { id = characters.xingxiudizi.id }, { id = characters.xingxiudizi.id }, { id = characters.xingxiudizi.id }, { id = characters.xingxiudizi.id } ]
+    characters = [ { id = characters.xingxiudizi.id }, { id = characters.xingxiudizi.id }, { id = characters.xingxiudizi.id }, { id = characters.xingxiudizi.id },
+      { id = characters.xingxiu_dizi.id } ]
   }
 
 
@@ -1203,11 +1199,6 @@ behavior_config = {
 
 
 
-  room_items "xxh2" {
-    room_id = rooms.xxh2.id
-    items = [
-      { id = items.dizi.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/xiyu/xxh3.c by LPCConverter
 # Zone: xiyu
@@ -1229,11 +1220,12 @@ behavior_config = {
 
 
 
-  room_items "xxh3" {
+  room_characters "xxh3" {
     room_id = rooms.xxh3.id
-    items = [
-      { id = items.tianlang.id }    ]
+    characters = [
+      { id = characters.xingxiu_tianlang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiyu/xxh4.c by LPCConverter
 # Zone: xiyu
@@ -1395,7 +1387,8 @@ behavior_config = {
 
   room_characters "xxroad5" {
     room_id = rooms.xxroad5.id
-    characters = [ { id = characters.chuchenzi.id } ]
+    characters = [ { id = characters.chuchenzi.id },
+      { id = characters.xingxiu_chuchen.id } ]
   }
 
 
@@ -1409,11 +1402,6 @@ behavior_config = {
 
 
 
-  room_items "xxroad5" {
-    room_id = rooms.xxroad5.id
-    items = [
-      { id = items.chuchen.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/xiyu/xxroad6.c by LPCConverter
 # Zone: xiyu

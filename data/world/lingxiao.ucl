@@ -184,11 +184,12 @@ item_desc = {
 
 
 
-  room_items "cityout" {
+  room_characters "cityout" {
     room_id = rooms.cityout.id
-    items = [
-      { id = items.lang.id }    ]
+    characters = [
+      { id = characters.quarry_lang.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingxiao/cityout1.c by LPCConverter
 # Zone: lingxiao
@@ -256,16 +257,12 @@ item_desc = {
       { id = characters.dizi.id },
       { id = characters.dizi.id },
       { id = characters.dizi.id },
-      { id = characters.dizi.id }    ]
+      { id = characters.dizi.id },
+      { id = characters.lingxiao_luwantong.id }    ]
   }
 
 
 
-  room_items "dadian" {
-    room_id = rooms.dadian.id
-    items = [
-      { id = items.luwantong.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/lingxiao/didi.c by LPCConverter
 # Zone: lingxiao
@@ -314,11 +311,12 @@ item_desc = {
 
 
 
-  room_items "dilao" {
+  room_characters "dilao" {
     room_id = rooms.dilao.id
-    items = [
-      { id = items.baizizai.id }    ]
+    characters = [
+      { id = characters.lingxiao_baizizai.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingxiao/feihua.c by LPCConverter
 # Zone: lingxiao
@@ -339,11 +337,12 @@ item_desc = {
 
 
 
-  room_items "feihua" {
+  room_characters "feihua" {
     room_id = rooms.feihua.id
-    items = [
-      { id = items.huawanzi.id }    ]
+    characters = [
+      { id = characters.lingxiao_huawanzi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingxiao/fenghuo.c by LPCConverter
 # Zone: lingxiao
@@ -470,16 +469,12 @@ direction = ~
     room_id = rooms.gate.id
     characters = [{ id = characters.dizi.id },
       { id = characters.dizi.id },
-      { id = characters.dizi.id }, { id = characters.wen_wanfu.id }]
+      { id = characters.dizi.id }, { id = characters.wen_wanfu.id },
+      { id = characters.lingxiao_wenwanfu.id }]
   }
 
 
 
-  room_items "gate" {
-    room_id = rooms.gate.id
-    items = [
-      { id = items.wenwanfu.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/lingxiao/hotel.c by LPCConverter
 # Zone: lingxiao
@@ -573,11 +568,16 @@ direction = ~
 
 
 
+  room_characters "huajing" {
+    room_id = rooms.huajing.id
+    characters = [
+      { id = characters.quarry_he2.id }    ]
+  }
+
   room_items "huajing" {
     room_id = rooms.huajing.id
     items = [
-      { id = items.he2.id },
-      { id = items.mei.id }    ]
+      { id = items.mei.id }        ]
   }
 
 # Generated from C:/files/git/mud/d/lingxiao/iceroad1.c by LPCConverter
@@ -893,11 +893,16 @@ direction = ~
 
 
 
+  room_characters "meiroad2" {
+    room_id = rooms.meiroad2.id
+    characters = [
+      { id = characters.quarry_he2.id }    ]
+  }
+
   room_items "meiroad2" {
     room_id = rooms.meiroad2.id
     items = [
-      { id = items.he2.id },
-      { id = items.ban.id }    ]
+      { id = items.ban.id }        ]
   }
 
 # Generated from C:/files/git/mud/d/lingxiao/meiroad3.c by LPCConverter
@@ -945,11 +950,12 @@ direction = ~
 
 
 
-  room_items "muwu" {
+  room_characters "muwu" {
     room_id = rooms.muwu.id
-    items = [
-      { id = items.wangwanren.id }    ]
+    characters = [
+      { id = characters.lingxiao_wangwanren.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingxiao/qi.c by LPCConverter
 # Zone: lingxiao
@@ -995,11 +1001,16 @@ direction = ~
 
 
 
+  room_characters "qianyuan" {
+    room_id = rooms.qianyuan.id
+    characters = [
+      { id = characters.quarry_he2.id }    ]
+  }
+
   room_items "qianyuan" {
     room_id = rooms.qianyuan.id
     items = [
-      { id = items.he2.id },
-      { id = items.ban.id }    ]
+      { id = items.ban.id }        ]
   }
 
 # Generated from C:/files/git/mud/d/lingxiao/qihan.c by LPCConverter
@@ -1021,11 +1032,12 @@ direction = ~
 
 
 
-  room_items "qihan" {
+  room_characters "qihan" {
     room_id = rooms.qihan.id
-    items = [
-      { id = items.baiwanjian.id }    ]
+    characters = [
+      { id = characters.lingxiao_baiwanjian.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingxiao/roomgeng.c by LPCConverter
 # Zone: lingxiao
@@ -1046,11 +1058,12 @@ direction = ~
 
 
 
-  room_items "roomgeng" {
+  room_characters "roomgeng" {
     room_id = rooms.roomgeng.id
-    items = [
-      { id = items.gengwanzhong.id }    ]
+    characters = [
+      { id = characters.lingxiao_gengwanzhong.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingxiao/roomke.c by LPCConverter
 # Zone: lingxiao
@@ -1071,11 +1084,12 @@ direction = ~
 
 
 
-  room_items "roomke" {
+  room_characters "roomke" {
     room_id = rooms.roomke.id
-    items = [
-      { id = items.kewanjun.id }    ]
+    characters = [
+      { id = characters.lingxiao_kewanjun.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingxiao/roomwang.c by LPCConverter
 # Zone: lingxiao
@@ -1119,11 +1133,12 @@ direction = ~
 
 
 
-  room_items "roomzhang" {
+  room_characters "roomzhang" {
     room_id = rooms.roomzhang.id
-    items = [
-      { id = items.zhangwanfeng.id }    ]
+    characters = [
+      { id = characters.lingxiao_zhangwanfeng.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingxiao/sell.c by LPCConverter
 # Zone: lingxiao
@@ -1260,11 +1275,12 @@ item_desc = {
 
 
 
-  room_items "sroad3" {
+  room_characters "sroad3" {
     room_id = rooms.sroad3.id
-    items = [
-      { id = items.huyanwanshan.id }    ]
+    characters = [
+      { id = characters.lingxiao_huyanwanshan.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/lingxiao/sroad4.c by LPCConverter
 # Zone: lingxiao

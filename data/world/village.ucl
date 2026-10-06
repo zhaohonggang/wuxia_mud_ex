@@ -359,11 +359,12 @@ zones "village" {
 
 
 
-  room_items "sexit" {
+  room_characters "sexit" {
     room_id = rooms.sexit.id
-    items = [
-      { id = items.gou.id }    ]
+    characters = [
+      { id = characters.quarry_gou.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/village/shack.c by LPCConverter
 # Zone: village

@@ -1177,11 +1177,12 @@ direction = "west"
 
 
 
-  room_items "yunnan2" {
+  room_characters "yunnan2" {
     room_id = rooms.yunnan2.id
-    items = [
-      { id = items.huabanzhu.id }    ]
+    characters = [
+      { id = characters.worm_huabanzhu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/kunming/yunnan3.c by LPCConverter
 # Zone: kunming

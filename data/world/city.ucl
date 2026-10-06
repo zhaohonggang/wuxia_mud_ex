@@ -24,11 +24,12 @@ zones "city" {
 
 
 
-  room_items "beidajie1" {
+  room_characters "beidajie1" {
     room_id = rooms.beidajie1.id
-    items = [
-      { id = items.ouyangke.id }    ]
+    characters = [
+      { id = characters.ouyang_ouyangke.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/city/beidajie2.c by LPCConverter
 # Zone: city
@@ -76,16 +77,12 @@ zones "city" {
       { id = characters.bing.id },
       { id = characters.bing.id },
       { id = characters.bing.id },
-      { id = characters.walker.id }    ]
+      { id = characters.walker.id },
+      { id = characters.yunlong_ma.id }    ]
   }
 
 
 
-  room_items "beimen" {
-    room_id = rooms.beimen.id
-    items = [
-      { id = items.ma.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/city/bet.c by LPCConverter
 # Zone: city
@@ -362,16 +359,12 @@ item_desc = {
       { id = characters.duke.id },
       { id = characters.duke.id },
       { id = characters.beijing_haoke1.id },
-      { id = characters.beijing_haoke1.id }    ]
+      { id = characters.beijing_haoke1.id },
+      { id = characters.shenlong_pang.id }    ]
   }
 
 
 
-  room_items "duchang" {
-    room_id = rooms.duchang.id
-    items = [
-      { id = items.pang.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/city/duchang2.c by LPCConverter
 # Zone: city
@@ -514,11 +507,12 @@ valid_leave = [
 
 
 
-  room_items "gbxiaowu" {
+  room_characters "gbxiaowu" {
     room_id = rooms.gbxiaowu.id
-    items = [
-      { id = items.hong.id }    ]
+    characters = [
+      { id = characters.gaibang_hong.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/city/guangchang.c by LPCConverter
 # Zone: city
@@ -915,11 +909,12 @@ direction = "west"
 
 
 
-  room_items "kedian2" {
+  room_characters "kedian2" {
     room_id = rooms.kedian2.id
-    items = [
-      { id = items.xingzhe.id }    ]
+    characters = [
+      { id = characters.shaolin_xingzhe.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/city/kedian3.c by LPCConverter
 # Zone: city
@@ -1189,16 +1184,12 @@ direction = ~
     room_id = rooms.ma_houyuan.id
     characters = [
       { id = characters.gaibang_6dai.id },
-      { id = characters.gaibang_7dai.id }    ]
+      { id = characters.gaibang_7dai.id },
+      { id = characters.gaibang_quan.id }    ]
   }
 
 
 
-  room_items "ma_houyuan" {
-    room_id = rooms.ma_houyuan.id
-    items = [
-      { id = items.quan.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/city/ma_huayuan.c by LPCConverter
 # Zone: city
@@ -1219,11 +1210,12 @@ direction = ~
 
 
 
-  room_items "ma_huayuan" {
+  room_characters "ma_huayuan" {
     room_id = rooms.ma_huayuan.id
-    items = [
-      { id = items.bai.id }    ]
+    characters = [
+      { id = characters.gaibang_bai.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/city/ma_lianwu1.c by LPCConverter
 # Zone: city
@@ -1344,18 +1336,14 @@ direction = ~
     room_id = rooms.ma_zhengting.id
     characters = [
       { id = characters.gaibang_6dai.id },
-      { id = characters.gaibang_7dai.id }    ]
+      { id = characters.gaibang_7dai.id },
+      { id = characters.gaibang_ma.id },
+      { id = characters.gaibang_xi.id },
+      { id = characters.gaibang_wu.id }    ]
   }
 
 
 
-  room_items "ma_zhengting" {
-    room_id = rooms.ma_zhengting.id
-    items = [
-      { id = items.ma.id },
-      { id = items.xi.id },
-      { id = items.wu.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/city/ma_zoulang1.c by LPCConverter
 # Zone: city
@@ -1712,11 +1700,12 @@ direction = "enter"
 
 
 
-  room_items "nandajie2" {
+  room_characters "nandajie2" {
     room_id = rooms.nandajie2.id
-    items = [
-      { id = items.tuoboseng.id }    ]
+    characters = [
+      { id = characters.shaolin_tuoboseng.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/city/nanmen.c by LPCConverter
 # Zone: city
@@ -1822,12 +1811,13 @@ direction = ~
 
 
 
-  room_items "pomiao" {
+  room_characters "pomiao" {
     room_id = rooms.pomiao.id
-    items = [
-      { id = items.lu.id },
-      { id = items.peng.id }    ]
+    characters = [
+      { id = characters.gaibang_lu.id },
+      { id = characters.gaibang_peng.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/city/qianzhuang.c by LPCConverter
 # Zone: city
@@ -1994,11 +1984,12 @@ item_desc = {
 
 
 
-  room_items "tree" {
+  room_characters "tree" {
     room_id = rooms.tree.id
-    items = [
-      { id = items.shi.id }    ]
+    characters = [
+      { id = characters.xiakedao_shi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/city/underlt.c by LPCConverter
 # Zone: city

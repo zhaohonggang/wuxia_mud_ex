@@ -1544,12 +1544,13 @@ item_desc = {
 
 
 
-  room_items "shiroom24" {
+  room_characters "shiroom24" {
     room_id = rooms.shiroom24.id
-    items = [
-      { id = items.long.id },
-      { id = items.mu.id }    ]
+    characters = [
+      { id = characters.xiakedao_long.id },
+      { id = characters.xiakedao_mu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiakedao/shufang.c by LPCConverter
 # Zone: xiakedao
@@ -1828,11 +1829,12 @@ item_desc = {
 
 
 
-  room_items "xkroad6" {
+  room_characters "xkroad6" {
     room_id = rooms.xkroad6.id
-    items = [
-      { id = items.zhangsan2.id }    ]
+    characters = [
+      { id = characters.xiakedao_zhangsan2.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/xiakedao/yadi.c by LPCConverter
 # Zone: xiakedao

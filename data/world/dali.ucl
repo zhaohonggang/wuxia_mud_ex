@@ -930,11 +930,12 @@ zones "dali" {
 
 
 
-  room_items "dalangan1" {
+  room_characters "dalangan1" {
     room_id = rooms.dalangan1.id
-    items = [
-      { id = items.yang2.id }    ]
+    characters = [
+      { id = characters.quarry_yang2.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/dalangan2.c by LPCConverter
 # Zone: dali
@@ -1151,11 +1152,12 @@ zones "dali" {
 
 
 
-  room_items "gaolishan1" {
+  room_characters "gaolishan1" {
     room_id = rooms.gaolishan1.id
-    items = [
-      { id = items.yang2.id }    ]
+    characters = [
+      { id = characters.quarry_yang2.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/gaolishan2.c by LPCConverter
 # Zone: dali
@@ -1176,11 +1178,12 @@ zones "dali" {
 
 
 
-  room_items "gaolishan2" {
+  room_characters "gaolishan2" {
     room_id = rooms.gaolishan2.id
-    items = [
-      { id = items.laohu.id }    ]
+    characters = [
+      { id = characters.quarry_laohu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/garments.c by LPCConverter
 # Zone: dali
@@ -1227,16 +1230,12 @@ zones "dali" {
   room_characters "gelucheng" {
     room_id = rooms.gelucheng.id
     characters = [
-      { id = characters.muyangren.id }    ]
+      { id = characters.muyangren.id },
+      { id = characters.quarry_yang2.id }    ]
   }
 
 
 
-  room_items "gelucheng" {
-    room_id = rooms.gelucheng.id
-    items = [
-      { id = items.yang2.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/dali/gongmen.c by LPCConverter
 # Zone: dali
@@ -1910,11 +1909,12 @@ direction = "west"
 
 
 
-  room_items "langan1" {
+  room_characters "langan1" {
     room_id = rooms.langan1.id
-    items = [
-      { id = items.yang2.id }    ]
+    characters = [
+      { id = characters.quarry_yang2.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/langan2.c by LPCConverter
 # Zone: dali
@@ -2088,11 +2088,12 @@ direction = "west"
 
 
 
-  room_items "louti" {
+  room_characters "louti" {
     room_id = rooms.louti.id
-    items = [
-      { id = items.gao.id }    ]
+    characters = [
+      { id = characters.duan_gao.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/luojiadian.c by LPCConverter
 # Zone: dali
@@ -2294,11 +2295,12 @@ direction = "west"
 
 
 
-  room_items "neitang" {
+  room_characters "neitang" {
     room_id = rooms.neitang.id
-    items = [
-      { id = items.duanzc.id }    ]
+    characters = [
+      { id = characters.duan_duanzc.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/nianhua1.c by LPCConverter
 # Zone: dali
@@ -2515,11 +2517,12 @@ direction = "west"
 
 
 
-  room_items "paifang" {
+  room_characters "paifang" {
     room_id = rooms.paifang.id
-    items = [
-      { id = items.huyizhi.id }    ]
+    characters = [
+      { id = characters.hu_huyizhi.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/piandian.c by LPCConverter
 # Zone: dali
@@ -2557,11 +2560,12 @@ direction = "west"
 
 
 
-  room_items "qiandian" {
+  room_characters "qiandian" {
     room_id = rooms.qiandian.id
-    items = [
-      { id = items.duanzm.id }    ]
+    characters = [
+      { id = characters.duan_duanzm.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/qingchi.c by LPCConverter
 # Zone: dali
@@ -2582,11 +2586,12 @@ direction = "west"
 
 
 
-  room_items "qingchi" {
+  room_characters "qingchi" {
     room_id = rooms.qingchi.id
-    items = [
-      { id = items.yideng.id }    ]
+    characters = [
+      { id = characters.duan_yideng.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/qingxi.c by LPCConverter
 # Zone: dali
@@ -2737,11 +2742,12 @@ item_desc = {
 
 
 
-  room_items "road5" {
+  room_characters "road5" {
     room_id = rooms.road5.id
-    items = [
-      { id = items.tu.id }    ]
+    characters = [
+      { id = characters.quarry_tu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/sanglin.c by LPCConverter
 # Zone: dali
@@ -3017,11 +3023,12 @@ item_desc = {
 
 
 
-  room_items "shijing" {
+  room_characters "shijing" {
     room_id = rooms.shijing.id
-    items = [
-      { id = items.he.id }    ]
+    characters = [
+      { id = characters.quarry_he.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/shilin.c by LPCConverter
 # Zone: dali
@@ -3138,11 +3145,12 @@ item_desc = {
 
 
 
-  room_items "shufang" {
+  room_characters "shufang" {
     room_id = rooms.shufang.id
-    items = [
-      { id = items.zhu.id }    ]
+    characters = [
+      { id = characters.duan_zhu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/shuitian.c by LPCConverter
 # Zone: dali
@@ -3202,11 +3210,12 @@ item_desc = {
 
 
 
-  room_items "sikong" {
+  room_characters "sikong" {
     room_id = rooms.sikong.id
-    items = [
-      { id = items.ba.id }    ]
+    characters = [
+      { id = characters.duan_ba.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/sima.c by LPCConverter
 # Zone: dali
@@ -3227,11 +3236,12 @@ item_desc = {
 
 
 
-  room_items "sima" {
+  room_characters "sima" {
     room_id = rooms.sima.id
-    items = [
-      { id = items.fan.id }    ]
+    characters = [
+      { id = characters.duan_fan.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/situ.c by LPCConverter
 # Zone: dali
@@ -3252,11 +3262,12 @@ item_desc = {
 
 
 
-  room_items "situ" {
+  room_characters "situ" {
     room_id = rooms.situ.id
-    items = [
-      { id = items.hua.id }    ]
+    characters = [
+      { id = characters.duan_hua.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/southgate.c by LPCConverter
 # Zone: dali
@@ -3468,11 +3479,12 @@ item_desc = {
 
 
 
-  room_items "tingfang" {
+  room_characters "tingfang" {
     room_id = rooms.tingfang.id
-    items = [
-      { id = items.gu.id }    ]
+    characters = [
+      { id = characters.duan_gu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/tingyuan.c by LPCConverter
 # Zone: dali
@@ -3629,16 +3641,12 @@ behavior_config = {
     room_id = rooms.wangfugate.id
     characters = [
       { id = characters.weishi1.id },
-      { id = characters.weishi1.id }, { id = characters.chuwanli.id } ]
+      { id = characters.weishi1.id }, { id = characters.chuwanli.id },
+      { id = characters.duan_chu.id } ]
   }
 
 
 
-  room_items "wangfugate" {
-    room_id = rooms.wangfugate.id
-    items = [
-      { id = items.chu.id }    ]
-  }
 
 # Generated from C:/files/git/mud/d/dali/wangfulu.c by LPCConverter
 # Zone: dali
@@ -3660,11 +3668,12 @@ behavior_config = {
 
 
 
-  room_items "wangfulu" {
+  room_characters "wangfulu" {
     room_id = rooms.wangfulu.id
-    items = [
-      { id = items.fu.id }    ]
+    characters = [
+      { id = characters.duan_fu.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/wfdating.c by LPCConverter
 # Zone: dali
@@ -4250,11 +4259,12 @@ behavior_config = {
 
 
 
-  room_items "yuhuayuan" {
+  room_characters "yuhuayuan" {
     room_id = rooms.yuhuayuan.id
-    items = [
-      { id = items.he.id }    ]
+    characters = [
+      { id = characters.quarry_he.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/yujia.c by LPCConverter
 # Zone: dali
@@ -4391,11 +4401,12 @@ behavior_config = {
 
 
 
-  room_items "yuxuguan" {
+  room_characters "yuxuguan" {
     room_id = rooms.yuxuguan.id
-    items = [
-      { id = items.daobf.id }    ]
+    characters = [
+      { id = characters.duan_daobf.id }    ]
   }
+
 
 # Generated from C:/files/git/mud/d/dali/yuxuguanqian.c by LPCConverter
 # Zone: dali
