@@ -824,3 +824,38 @@ set("skill", ([ "name": skills[i], ... ]));
 5. 丢弃 / 再拾取 / 存库（`inventory` 是 `jsonb[]`）的持久化语义要定。
 
 - [ ] 运行时随机技能（先定数据形态，再改创建/拾取/持久化路径）
+
+---
+
+## 十四、`set("objects", ...)` 分支在加载时随机选一支（新增 `room_object_sets`） 🟢
+
+**背景**：LPC 里 `create()` 里可多次 `set("objects", ...)`，后写覆盖先写，且可用 `if (random(...))` 守卫。
+转换器过去只保留最后一条，导致 `taohua/mushi`、`taohua/daojufang`、`wudu/dongxue`
+等房间的稀有掉落/分支内容永远不出现。
+
+**实现**：
+1. 转换器（`scripts/lpc_converter.py`）新增 `_parse_object_branches`，
+   识别「最后一次 `set("objects")` 受 `if` 守卫」的分支，生成
+   `room_object_sets "room" { room_id = ...; sets = [ { refs = [...] }, ... ] }`。
+2. 加载器（`lib/kantele/world/loader.ex`）新增 `parse_object_sets/3`，
+   在 `build_zone` 管线中 `parse_exits` 之后、`parse_characters` 之前调用，
+   `Enum.random/1` 等概率抽取一支整组安装（`install_object_set/4`）。
+3. 数据形态：`sets` 是对象列表，每个对象单键 `refs = [ {id=...}, ... ]`
+   （elias 0.2.8 不支持列表套列表、也不支持多键匿名对象）。
+
+**概率说明**：加载时等概率抽取，**不保留 LPC 原始概率**。
+如 `mushi` 的 `0.2% / 1% / 2% / 96.8%` 变为各 `25%`。
+
+**修复的两个转换器 Bug**：
+- `object_file/1` 只接受带引号字面量，导致 `_object_is_npc` 对普通路径
+  一直回退到 `"npc" in path`。修为同时接受裸路径与带引号路径（含 `/`、`-`）。
+- `_room_object_links` 统计物品数量时只取最后一个键值，忽略了 LPC mapping
+  的重复键表示数量。修为按值重复引用。
+
+**受影响房间**：
+- `taohua/mushi`（需补 4 个 `clone/fam/*` 物品定义）
+- `taohua/daojufang` ✅ 已入库
+- `wudu/dongxue` ✅ 已入库
+- `jueqing/house`、`heimuya/house1`（分支含 `/kungfu/class/*` 无定义，暂不入库）
+
+- [ ] 为 `mushi` 补全 4 个物品定义并入库

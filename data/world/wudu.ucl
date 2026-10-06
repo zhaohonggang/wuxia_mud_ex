@@ -567,9 +567,10 @@ item_desc = {
 # Generated from C:/files/git/mud/d/wudu/dongxue.c by LPCConverter
 # Zone: wudu
 
-    rooms "dongxue" {
+rooms "dongxue" {
       name = "洞穴"
-      description = "这是一个狭窄的洞穴，四周石壁湿漉漉的，长满了青苔。你仔细 观察一下四周的情况，发现洞内深处有一块石壁非常平整，象是有人 力的痕迹，正中间有一个扁扁的小孔，好象可以插入(insert)什么东 西试试。"
+      description = "..."
+      room_id = rooms.dongxue.id
   x = 0
   y = 0
   z = 3
@@ -582,18 +583,33 @@ item_desc = {
 
 
 
-  room_items "dongxue" {
+  # LPC: d/wudu/dongxue.c create() sets obj/duanchang unconditionally and then
+  # overwrites it with /d/wudu/obj/tongpai 40% of the time.  The old data kept
+  # only the second set, so duanchang -- present the other 60% of the time in the
+  # MUD -- was missing entirely.  See docs/lpc-port-gaps.zh-CN.md 二十.
+  room_object_sets "dongxue" {
     room_id = rooms.dongxue.id
-    items = [
-      { id = items.tongpai.id }    ]
+    sets = [
+      {
+        refs = [
+          { id = items.duanchang.id }
+        ]
+      },
+      {
+        refs = [
+          { id = items.tongpai.id }
+        ]
+      }
+    ]
   }
 
 # Generated from C:/files/git/mud/d/wudu/duchuan.c by LPCConverter
 # Zone: wudu
 
-    rooms "duchuan" {
-      name = "渡船"
-      description = "一叶小舟，最多也就能载七、八个人。一名六十多岁的老艄公手 持长竹篙，正在船尾吃力地撑着船。"
+rooms "duchuan" {
+      name = "�ɴ�"
+      description = "һҶС�ۣ����Ҳ�������ߡ��˸��ˡ�һ����ʮ������������� �ֳ���ݣ����ڴ�β�����س��Ŵ���"
+      room_id = rooms.duchuan.id
   x = 0
   y = 0
   z = 4

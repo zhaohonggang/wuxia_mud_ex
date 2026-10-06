@@ -212,3 +212,21 @@ git diff --no-index --stat world_bak2 data\world
 本文的数据由 `.ucl_loss_scan.json` 渲染，该 JSON 记录了每一项丢失的
 zone / 房间 / 方向 / 原值 / 原因，可自行过滤。
 
+---
+
+## 6. `set("objects")` 分支随机化修复（2026-10-06）
+
+`taohua/mushi`、`taohua/daojufang`、`wudu/dongxue` 等房间的 LPC `create()` 里
+多次 `set("objects", ...)` 且后写覆盖前写、且带 `if (random(...))` 守卫。
+旧转换器只保留最后一条，导致稀有掉落/分支内容永远不出现。
+
+**已修复**：
+- 转换器新增 `_parse_object_branches`，识别受守卫的最后一次 `set("objects")`，
+  生成 `room_object_sets` 数据块（每支整组 `refs = [...]`）。
+- 加载器新增 `parse_object_sets`，启动时 `Enum.random/1` 等概率抽取一支整组安装。
+- `daojufang`、`dongxue` 已入库；`mushi` 待补 4 个 `clone/fam/*` 物品定义。
+
+**修复的转换器 Bug**：
+- `object_file` 只接受带引号字面量 → 同时接受裸路径与带引号路径（含 `/`、`-`）。
+- 物品数量统计忽略 LPC mapping 重复键 → 按值重复引用。
+

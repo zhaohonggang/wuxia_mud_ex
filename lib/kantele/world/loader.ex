@@ -172,6 +172,7 @@ alias Kantele.World.LoaderError
   defp build_zone(zone, world_data, zones) do
     zone
     |> parse_exits(world_data, zones)
+    |> parse_object_sets(world_data, zones)
     |> parse_characters(world_data, zones)
     |> parse_items(world_data, zones)
     |> zone_items_to_list()
@@ -1386,63 +1387,76 @@ alias Kantele.World.LoaderError
       Enum.flat_map(room_characters, fn {_key, room_character} ->
         room_id = dereference(zones, zone, room_character.room_id)
 
-        room_character.characters
-        |> Enum.with_index()
-        |> Enum.flat_map(fn {character_data, index} ->
-          case find_character_for_room(zones, zone, character_data.id) do
-            {_key, character} ->
-              meta = character.meta
-              combat_config = Map.get(meta, :combat_config)
-
-              combat_config =
-                case combat_config do
-                  %Kantele.Character.NPCConfig{} ->
-                    %{combat_config | spawn_room_id: room_id}
-
-                  _ ->
-                    combat_config
-                end
-
-              meta = %{meta | combat_config: combat_config}
-
-              # 商品引用此时才有 zones 上下文可解（A10/N2）
-              meta = %{meta | goods: resolve_goods(Map.get(meta, :goods), zone, zones)}
-
-              # 任务交付物品引用同上（A11/N6）；掉落表同商品解引用
-              meta = %{meta | turn_in: resolve_turn_in(Map.get(meta, :turn_in), zone, zones)}
-              meta = %{meta | loot: resolve_goods(Map.get(meta, :loot), zone, zones)}
-
-              # 随身装备的物品引用同商品：此时才有 zones 上下文可解。
-              # 之前没解，meta.carry 里存的是原始引用串 `"items.cloth.id"`，
-              # 到 SpawnController 按 item_id 查 Items cache 时全都 not_found。
-              meta = %{meta | carry: resolve_goods(Map.get(meta, :carry), zone, zones)}
-              meta = %{meta | quest: Map.get(meta, :quest)}
-
-              [
-                %Character{
-                  character
-                  | id: "#{room_id}:#{character.id}:#{index}",
-                    name: Map.get(character_data, :name, character.name),
-                    room_id: room_id,
-                    meta: meta
-                }
-              ]
-
-            nil ->
-              # NPC 数据缺失（引用不存在）时跳过，避免悬挂引用。
-              #
-              # 但**必须 warn** —— 静默跳过会让「数据里写了引用、运行时其实
-              # 不存在」这类问题长期查不出来。转换器把 LPC
-              # `set("objects", ...)` 里的 NPC 错写成 `items.X` 时就是这么
-              # 藏了很久的：房间一直是空的，相关 valid_leave 门禁永不触发，
-              # 而加载日志一个字都没有。见 docs/dangling-room-items-report.zh-CN.md。
-              warn_unresolved(:character, zone.id, room_id, character_data.id)
-
-              []
-          end
-        end)
+        build_room_characters(zones, zone, room_character.characters, room_id)
       end)
 
+    attach_room_characters(zone, characters)
+  end
+
+  # 按引用建出房间里的 NPC 实体（此时还没挂进房间）。
+  #
+  # `parse_characters` 和 `parse_object_sets` 都要走这一步：后者的一个候选组
+  # 里 NPC 和物品是混装的 —— taohua/daojufang 的每个分支都是 `npc/yapu` 加
+  # 几样道具，所以「一条 room_characters 通道」装不下，必须两类一起处理。
+  defp build_room_characters(zones, zone, refs, room_id) do
+    refs
+    |> Enum.with_index()
+    |> Enum.flat_map(fn {character_data, index} ->
+      case find_character_for_room(zones, zone, character_data.id) do
+        {_key, character} ->
+          meta = character.meta
+          combat_config = Map.get(meta, :combat_config)
+
+          combat_config =
+            case combat_config do
+              %Kantele.Character.NPCConfig{} ->
+                %{combat_config | spawn_room_id: room_id}
+
+              _ ->
+                combat_config
+            end
+
+          meta = %{meta | combat_config: combat_config}
+
+          # 商品引用此时才有 zones 上下文可解（A10/N2）
+          meta = %{meta | goods: resolve_goods(Map.get(meta, :goods), zone, zones)}
+
+          # 任务交付物品引用同上（A11/N6）；掉落表同商品解引用
+          meta = %{meta | turn_in: resolve_turn_in(Map.get(meta, :turn_in), zone, zones)}
+          meta = %{meta | loot: resolve_goods(Map.get(meta, :loot), zone, zones)}
+
+          # 随身装备的物品引用同商品：此时才有 zones 上下文可解。
+          # 之前没解，meta.carry 里存的是原始引用串 `"items.cloth.id"`，
+          # 到 SpawnController 按 item_id 查 Items cache 时全都 not_found。
+          meta = %{meta | carry: resolve_goods(Map.get(meta, :carry), zone, zones)}
+          meta = %{meta | quest: Map.get(meta, :quest)}
+
+          [
+            %Character{
+              character
+              | id: "#{room_id}:#{character.id}:#{index}",
+                name: Map.get(character_data, :name, character.name),
+                room_id: room_id,
+                meta: meta
+            }
+          ]
+
+        nil ->
+          # NPC 数据缺失（引用不存在）时跳过，避免悬挂引用。
+          #
+          # 但**必须 warn** —— 静默跳过会让「数据里写了引用、运行时其实
+          # 不存在」这类问题长期查不出来。转换器把 LPC
+          # `set("objects", ...)` 里的 NPC 错写成 `items.X` 时就是这么
+          # 藏了很久的：房间一直是空的，相关 valid_leave 门禁永不触发，
+          # 而加载日志一个字都没有。见 docs/dangling-room-items-report.zh-CN.md。
+          warn_unresolved(:character, zone.id, room_id, character_data.id)
+
+          []
+      end
+    end)
+  end
+
+  defp attach_room_characters(zone, characters) do
     Enum.reduce(characters, zone, fn character, zone ->
       {room_key, room} =
         Enum.find(zone.rooms, fn {_key, room} ->
@@ -1550,6 +1564,88 @@ defp find_character_for_room(zones, zone, reference) do
       end)
     end)
   end
+
+  @doc """
+  Parse `room_object_sets` -- rooms whose LPC `create()` picks one of several
+  whole object layouts at random.
+
+  LPC lets a room do
+
+      if (random(1000) > 998)
+              set("objects", ([ "/clone/money/gold" : 10, ... ]));
+      else if (random(100) > 98)
+              set("objects", ([ ... ]));
+
+  Because `set("objects", ...)` **replaces** the property, exactly one of those
+  branches is what the room actually holds.  The converter used to keep only the
+  last one, which for `taohua/mushi` meant the ~10% branch won 100% of the time
+  and the three rare drops could never appear.  It now emits every branch here
+  and we draw one.
+
+  **Why a load-time draw is faithful**: LPC runs a room's `create()` once, when
+  the object is created at driver start, so the branch is drawn once per boot as
+  well.  Rooms whose randomness is per-*instance* rather than per-`create()` are
+  a different problem -- `wuji1`-`wuji4` draw a random skill per book, which has
+  to happen in the instance-creation path.  See docs/lpc-port-gaps.zh-CN.md.
+
+  **Probabilities are not preserved.**  `Enum.random/1` gives every branch equal
+  odds, so mushi's 0.2% / 1% / 2% / 96.8% split becomes 25% each.  That matches
+  how the per-object `{ id = [a, b] }` alternative lists already behave.
+  """
+  def parse_object_sets(zone, data, zones) do
+    zone_data = Map.get(data, zone.id)
+
+    room_object_sets = Map.get(zone_data, :room_object_sets, [])
+
+    Enum.reduce(room_object_sets, zone, fn {_key, block}, zone ->
+      room_id = dereference(zones, zone, block.room_id)
+
+      # elias cannot parse a list of lists, so each group is a single-key object
+      # (`{ refs = [...] }`) inside `sets`.  List order is the branch order.
+      # Enum.random([]) is nil, so an empty `sets` list just installs nothing.
+      case block |> Map.get(:sets, []) |> Enum.random() do
+        nil ->
+          zone
+
+        group ->
+          install_object_set(zone, zones, room_id, Map.get(group, :refs, []))
+      end
+    end)
+  end
+
+  # One group holds both people and things -- taohua/daojufang's every branch is
+  # `npc/yapu` plus a few items -- so the kind comes from the reference prefix
+  # (`characters.` / `items.`) rather than a separate `kind` field.  That also
+  # puts cross-zone refs like `clone_lib.items.x.id` on the items side for free.
+  defp install_object_set(zone, zones, room_id, refs) do
+    {char_ids, item_ids} =
+      refs
+      |> Enum.map(&object_set_ref_id/1)
+      |> Enum.split_with(&String.starts_with?(&1, "characters."))
+
+    zone =
+      Enum.reduce(item_ids, zone, fn item_ref, zone ->
+        case dereference(zones, zone, item_ref) do
+          nil ->
+            warn_unresolved(:item, zone.id, room_id, item_ref)
+            zone
+
+          item_id ->
+            parse_room_item(zone, room_id, item_id)
+        end
+      end)
+
+    attach_room_characters(
+      zone,
+      build_room_characters(zones, zone, Enum.map(char_ids, &%{id: &1}), room_id)
+    )
+  end
+
+  # room_characters entries are `%{id: ...}`; room_object_sets also accepts a
+  # bare reference string.
+  defp object_set_ref_id(%{id: id}) when is_binary(id), do: id
+  defp object_set_ref_id(id) when is_binary(id), do: id
+  defp object_set_ref_id(_ref), do: ""
 
   @doc """
   记录一个解析不到的 `room_items` / `room_characters` 引用。

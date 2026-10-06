@@ -116,19 +116,39 @@ item_desc = {
     }
 
 
-  room_characters "daojufang" {
+  # LPC: d/taohua/daojufang.c create() draws one of three layouts with
+  # random(5) > 3 / random(4) > 2 / else, and each set("objects") REPLACES the
+  # property -- so the room has either 2 of the three items or all three, never a
+  # mixture.  The old data kept only the final else branch, which silently threw
+  # away bagua and xiang.  See docs/lpc-port-gaps.zh-CN.md 二十.
+  room_object_sets "daojufang" {
     room_id = rooms.daojufang.id
-    characters = [
-      { id = characters.yapu.id },
-      { id = characters.yapu.id }    ]
-  }
-
-
-
-  room_items "daojufang" {
-    room_id = rooms.daojufang.id
-    items = [
-      { id = items.zhuxiao.id }    ]
+    sets = [
+      {
+        refs = [
+          { id = characters.yapu.id },
+          { id = characters.yapu.id },
+          { id = items.bagua.id },
+          { id = items.xiang.id },
+          { id = items.zhuxiao.id }
+        ]
+      },
+      {
+        refs = [
+          { id = characters.yapu.id },
+          { id = characters.yapu.id },
+          { id = items.xiang.id },
+          { id = items.zhuxiao.id }
+        ]
+      },
+      {
+        refs = [
+          { id = characters.yapu.id },
+          { id = characters.yapu.id },
+          { id = items.zhuxiao.id }
+        ]
+      }
+    ]
   }
 
 # Generated from C:/files/git/mud/d/taohua/dating.c by LPCConverter

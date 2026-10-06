@@ -215,15 +215,30 @@ def object_file(expr, src_dir):
     if m:
         return os.path.normpath(os.path.join(src_dir, _with_c(m.group(1))))
 
-    m = re.match(r'^"([^"]+)"$', e)
-    if m:
-        p = m.group(1)
-        if p.startswith('/'):
-            return os.path.normpath(os.path.join(
-                LPC_ROOT, _with_c(p.lstrip('/'))))
-        return os.path.normpath(os.path.join(src_dir, _with_c(p)))
+    # A bare path, quoted or not.
+    #
+    # The unquoted form is the one that actually reaches us in practice:
+    # lpc_converter._extract_key_path/1 returns the *contents* of the string
+    # literal, so `"npc/x" : 1` arrives as `npc/x`.  Only the quoted spelling used
+    # to be accepted, which meant object_file/2 returned None for every entry and
+    # _object_is_npc/3 fell through to its `"npc" in path` guess for all of them
+    # -- so the inherit-chain verdict never ran outside of `__DIR__"..."` files.
+    p = e
+    if len(p) >= 2 and p[0] == p[-1] and p[0] in "\"'":
+        p = p[1:-1]
 
-    return None
+    # Anything with an operator or bracket in it is an expression we cannot pin
+    # to one file; returning a bogus path here would be worse than None.
+    # `/` and `-` are legitimate in LPC paths (shaolin/dao-yi, npc/li), so they
+    # are deliberately not in this set.
+    if not p or re.search(r'[\s()\[\]{}+<>=!&|?,;]', p):
+        return None
+
+    if p.startswith('/'):
+        return os.path.normpath(os.path.join(
+            LPC_ROOT, _with_c(p.lstrip('/'))))
+
+    return os.path.normpath(os.path.join(src_dir, _with_c(p)))
 
 
 def resolve_type(path, depth=0):

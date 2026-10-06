@@ -603,6 +603,111 @@ def _parse_set_calls(body):
     return {"sets": sets}
 
 
+def _word_before(text, i):
+    """The bare identifier ending at index i (exclusive)."""
+    j = i
+    while j > 0 and (text[j - 1].isalnum() or text[j - 1] == "_"):
+        j -= 1
+    return text[j:i]
+
+
+def _keyword_before_paren(text, close_paren):
+    """Resolve the `)` at close_paren back to its `(` and report the keyword."""
+    depth = 0
+    j = close_paren
+    while j >= 0:
+        if text[j] == ")":
+            depth += 1
+        elif text[j] == "(":
+            depth -= 1
+            if depth == 0:
+                break
+        j -= 1
+    if j < 0:
+        return None
+    k = j
+    while k > 0 and text[k - 1] in " \t\r\n":
+        k -= 1
+    return _word_before(text, k)
+
+
+def _governing_branch(body, pos):
+    """What governs the statement at pos: 'branch', 'top', or 'unknown'.
+
+    LPC allows a braceless body, so `if (random(1000) > 998)\n\tset(...)` is
+    perfectly normal and brace depth cannot see it -- we look at the token in
+    front of the statement instead.
+    """
+    i = pos
+    while i > 0 and body[i - 1] in " \t\r\n":
+        i -= 1
+    if i == 0:
+        return "unknown"
+
+    ch = body[i - 1]
+    if ch == ")":
+        kw = _keyword_before_paren(body, i - 1)
+        return "branch" if kw in ("if", "while", "for", "switch") else "top"
+
+    if ch == "{":
+        # Directly inside a braced block.  Work out what opened it: `else {`,
+        # `if (...) {`, or the function body's own brace (which governs nothing).
+        k = i - 1
+        while k > 0 and body[k - 1] in " \t\r\n":
+            k -= 1
+        if k > 0 and body[k - 1] == ")":
+            kw = _keyword_before_paren(body, k - 1)
+            return "branch" if kw in ("if", "while", "for", "switch") else "top"
+        if _word_before(body, k) == "else":
+            return "branch"
+        return "unknown"
+
+    if _word_before(body, i) == "else":
+        # A braceless `else` body: the character in front of the statement is the
+        # `e` of `else`, not a delimiter.
+        return "branch"
+
+    if ch in ";}":
+        # Preceded by the end of the previous statement, or by the closing brace
+        # of a sibling branch with no `else` between -- either way unconditional.
+        return "top"
+
+    return "unknown"
+
+
+def _parse_object_branches(body):
+    """Every branch of a guarded ``set("objects")`` chain, or None.
+
+    ``set("objects", ...)`` REPLACES the property, so a room that does
+
+        set("objects", ([ "npc/yapu" : 2 ]));
+        if (random(10) > 5)
+                set("objects", ([ "/d/wudu/obj/tongpai" : 1 ]));
+
+    ends up holding *either* yapu *or* tongpai -- never both.  ``_parse_set_calls``
+    keeps the last mapping, which for ``taohua/mushi`` meant the ~10% branch won
+    every boot and the three rare drops were unreachable.
+
+    Returns one parsed mapping per branch, or None to mean "this is a plain
+    sequential overwrite, last-wins is already right" -- callers must fall back
+    rather than guess.  The test is deliberately narrow: only when the FINAL
+    ``set("objects")`` is itself guarded.  If the last one is unconditional it
+    overwrites whatever the branches did, so the branches are unreachable and
+    keeping just the last mapping is the faithful answer.
+    """
+    hits = [m for m in _SET_CALL.finditer(body) if m.group(2) == "objects"]
+    if len(hits) < 2:
+        return None
+
+    guards = [_governing_branch(body, m.start()) for m in hits]
+    if any(g == "unknown" for g in guards):
+        return None
+    if guards[-1] != "branch":
+        return None
+
+    return [_parse_lpc_value(m.group(3).strip()) for m in hits]
+
+
 def _parse_set_name(body):
     m = _SET_NAME.search(body)
     if m is None:
@@ -1571,7 +1676,13 @@ def _merge_inherit_level(ast, visited):
 
 def _finalize_merged(ast, vals):
     ast.inherits = vals["inherits"]
-    ast.create_fn = {"sets": vals["sets"], "set_name": vals["set_name"]}
+    create_fn = {"sets": vals["sets"], "set_name": vals["set_name"]}
+    # Branches are a property of one file's own create(), not of the merged
+    # `sets` (whose "objects" entry is just the last branch), so carry the
+    # child's across untouched.
+    if ast.create_fn.get("object_branches") is not None:
+        create_fn["object_branches"] = ast.create_fn["object_branches"]
+    ast.create_fn = create_fn
     ast.heredocs = {"heredocs": vals["heredocs"]}
     ast.exit_vetoes = vals["exit_vetoes"]
     ast.valid_leave = vals["valid_leave"]
@@ -2221,9 +2332,14 @@ def _generate_room_ucl(ast, zone_id):
                     "  }\n"
                 )
 
-    objects_block = _generate_room_objects(
-        room_id, sets.get("objects"),
-        src_dir=os.path.dirname(ast.source_path) if ast.source_path else None)
+    src_dir = os.path.dirname(ast.source_path) if ast.source_path else None
+    branches = create.get("object_branches")
+
+    if branches:
+        objects_block = _generate_room_object_sets(room_id, branches, src_dir=src_dir)
+    else:
+        objects_block = _generate_room_objects(
+            room_id, sets.get("objects"), src_dir=src_dir)
 
     return "\n\n".join([x for x in [room_block, exits_block, objects_block] if x != ""])
 
@@ -2395,14 +2511,13 @@ def _is_dynamic_expr(path):
 
 
 
-def _generate_room_objects(room_id, value, src_dir=None):
-    if value is None:
-        return ""
-    if not (isinstance(value, tuple) and value[0] == "mapping"):
-        return ""
+def _room_object_links(value, src_dir=None):
+    """Turn one parsed set("objects") mapping into character / item UCL lines."""
     char_links = []
     item_links = []
     skipped_dynamic = []
+    if not (isinstance(value, tuple) and value[0] == "mapping"):
+        return char_links, item_links, skipped_dynamic
     for key, count in value[1]:
         path = _extract_key_path(key)
         if path is None or not _looks_like_path(path):
@@ -2441,13 +2556,86 @@ def _generate_room_objects(room_id, value, src_dir=None):
         if not _SAFE_ID_RE.match(id_):
             # Defensive: never emit an id that is not a bare UCL identifier.
             continue
+        n = _count_or_one(count)
         if _object_is_npc(path, literal, src_dir):
-            n = _count_or_one(count)
             char_links.extend(
                 [f"      {{ id = characters.{id_}.id }}" for _ in range(n)])
         else:
-            item_links.append(f"      {{ id = items.{id_}.id }}")
+            # The count means the same thing for things as for people: LPC's
+            # `"/clone/money/gold" : 10` puts ten gold in the room.  Only the
+            # character branch used to honour it, so 131 entries across the
+            # corpus were written as a single reference -- including taohua/mushi's
+            # gold, which is 10 in the top branch.
+            item_links.extend(
+                [f"      {{ id = items.{id_}.id }}" for _ in range(n)])
 
+    return char_links, item_links, skipped_dynamic
+
+
+def _generate_room_object_sets(room_id, branches, src_dir=None):
+    """Emit `room_object_sets` for a room that picks a whole layout at random.
+
+    See `_parse_object_branches` for why the branches exist.  Each branch may mix
+    people and things (taohua/daojufang's are `npc/yapu` plus a few items), so a
+    group is a flat list of references whose kind is read off the prefix --
+    `characters.` or `items.`.
+
+    Branches that resolve to nothing are dropped rather than emitted as an empty
+    group: heimuya/house1's 1-in-6 branch holds only `/kungfu/class/...`, which
+    is a kungfu definition rather than something a room can contain.  Dropping
+    it also leaves a single group, in which case we emit the ordinary
+    `room_items` / `room_characters` blocks instead -- no new data shape needed
+    for a room that never actually branches.
+    """
+    resolved = []
+    for branch in branches:
+        char_links, item_links, skipped = _room_object_links(branch, src_dir)
+        if char_links or item_links:
+            resolved.append((char_links, item_links))
+        else:
+            for p in skipped:
+                print("  # note: branch dropped, no determinate object id: %r" % p)
+
+    if not resolved:
+        return ""
+
+    # Branches that all come out identical are not a random room.  jueqing/house's
+    # two branches differ only by a /kungfu/class/... entry that no room can hold,
+    # so without this it would ship two identical groups.
+    first = resolved[0]
+    if all(r == first for r in resolved[1:]):
+        char_links, item_links = first
+        return _emit_room_object_blocks(room_id, char_links, item_links, [])
+
+    groups = []
+    for char_links, item_links in resolved:
+        # Strip the per-link indent the flat form uses; a group is indented once.
+        refs = [re.sub(r"^\s+", "", link)
+                for link in (char_links + item_links)]
+        # elias 0.2.8 parses neither a list of lists nor a multi-key anonymous
+        # object, so a group is a single-key object and list order is branch order.
+        groups.append("      {\n        refs = [\n"
+                      + ",\n".join("          " + ref for ref in refs)
+                      + "\n        ]\n      }")
+
+    return (
+        f'\n\n  room_object_sets "{room_id}" {{\n'
+        f"    room_id = rooms.{room_id}.id\n"
+        "    sets = [\n"
+        + ",\n".join(groups)
+        + "\n    ]\n  }\n"
+    )
+
+
+def _generate_room_objects(room_id, value, src_dir=None):
+    if value is None:
+        return ""
+    char_links, item_links, skipped_dynamic = _room_object_links(value, src_dir)
+    return _emit_room_object_blocks(room_id, char_links, item_links,
+                                    skipped_dynamic)
+
+
+def _emit_room_object_blocks(room_id, char_links, item_links, skipped_dynamic):
     char_block = ""
     if char_links:
         char_block = (
@@ -3133,6 +3321,9 @@ def _parse_lpc(content: bytes, source_path: str, base_path: str):
         cleaned = _preprocess(utf8_content)
 
         create_fn = _parse_create_function(cleaned, create_body)
+        # Kept apart from `sets`: the whole point is that `sets["objects"]` has
+        # already collapsed the chain to its last branch.
+        create_fn["object_branches"] = _parse_object_branches(create_body)
         create_fn = _backfill_exits_outside_create(cleaned, create_fn)
         # Elixir: create_body || find_create_body(content) — "" is truthy, so
         # create_body (always a string) wins; find_create_body only for nil.
