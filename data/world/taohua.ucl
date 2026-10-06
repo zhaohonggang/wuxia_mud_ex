@@ -326,11 +326,60 @@ item_desc = {
 
 
 
-  room_items "mushi" {
+  # LPC: d/taohua/mushi.c create() draws one of four layouts with
+# random(1000)>998 / random(100)>98 / random(100)>97 / else, and each set("objects")
+# REPLACES the property -- so the room has either 10 gold+haoyue+lv5b, or
+# 5 gold+lv5a, or 5 gold+lv5d, or 1 gold, never a mixture.  The old data kept
+# only the final else branch, which silently threw away haoyue/lv5a/lv5b/lv5d.
+# See docs/lpc-port-gaps.zh-CN.md 十四.
+  room_object_sets "mushi" {
     room_id = rooms.mushi.id
-    items = [
-      { id = items.gold.id }    ]
+    sets = [
+      {
+        refs = [
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.haoyue.id },
+          { id = items.lv5b.id }
+        ]
+      },
+      {
+        refs = [
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.lv5a.id }
+        ]
+      },
+      {
+        refs = [
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.gold.id },
+          { id = items.lv5d.id }
+        ]
+      },
+      {
+        refs = [
+          { id = items.gold.id }
+        ]
+      }
+    ]
   }
+
+
 
 # Generated from C:/files/git/mud/d/taohua/qianyuan.c by LPCConverter
 # Zone: taohua

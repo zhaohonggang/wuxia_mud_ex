@@ -31860,3 +31860,162 @@ chats = [
     fight = { accept = false }
   }
     }
+
+# Source: C:/files/git/mud/clone/fam/item/haoyue.c
+# Zone: clone_lib
+
+    items "haoyue" {
+      name = "皓月金砂"
+      description = "这是一把极其珍贵的皓月金砂，色泽温润，极难寻觅。"
+      aliases = ["haoyue jinsha", "haoyue", "jinsha", "sha"]
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        weight = 100
+        unit = "颗"
+        material_attrib = "stone"
+        material_name = "皓月金砂"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/etc/lv5a.c
+# Zone: clone_lib
+
+    items "lv5a" {
+      name = "天蚕玉"
+      description = "这是一块天蚕玉，晶莹剔透，极难寻觅。"
+      aliases = ["tiancan yu", "tiancan", "yu"]
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 15000
+        weight = 100
+        unit = "颗"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/etc/lv5b.c
+# Zone: clone_lib
+
+    items "lv5b" {
+      name = "青玉芽"
+      description = "这是一颗小小的青玉芽，解毒疗伤，功效极佳。"
+      aliases = ["qingyu ya", "qingyu", "ya"]
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 15000
+        weight = 100
+        unit = "粒"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/etc/lv5d.c
+# Zone: clone_lib
+
+    items "lv5d" {
+      name = "幻帝神珠"
+      description = "这是一颗幻帝神珠，光芒璀璨，护体生暖。"
+      aliases = ["huandi shenzhu", "huandi", "shenzhu", "zhu"]
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 15000
+        weight = 100
+        unit = "颗"
+      }
+    
+
+# Source: C:/files/git/mud/clone/fam/item/haoyue.c
+# Zone: clone_lib
+
+    items "haoyue" {
+      name = "皓月金砂"
+      description = "这是一把极其珍贵的皓月金砂，色泽温润，极难寻觅。"
+      aliases = ["haoyue jinsha", "haoyue", "jinsha", "sha"]
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        weight = 100
+        unit = "颗"
+        material_attrib = "stone"
+        material_name = "皓月金砂"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/etc/lv5a.c
+# Zone: clone_lib
+
+    items "lv5a" {
+      name = "天蚕玉"
+      description = "这是一块天蚕玉，晶莹剔透，极难寻觅。"
+      aliases = ["tiancan yu", "tiancan", "yu"]
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 15000
+        weight = 100
+        unit = "颗"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/etc/lv5b.c
+# Zone: clone_lib
+
+    items "lv5b" {
+      name = "青玉芽"
+      description = "这是一颗小小的青玉芽，解毒疗伤，功效极佳。"
+      aliases = ["qingyu ya", "qingyu", "ya"]
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 15000
+        weight = 100
+        unit = "粒"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/etc/lv5d.c
+# Zone: clone_lib
+
+    items "lv5d" {
+      name = "幻帝神珠"
+      description = "这是一颗幻帝神珠，光芒璀璨，护体生暖。"
+      aliases = ["huandi shenzhu", "huandi", "shenzhu", "zhu"]
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 15000
+        weight = 100
+        unit = "颗"
+      }
+    }
+
+}
+
