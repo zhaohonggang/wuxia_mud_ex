@@ -416,6 +416,111 @@ check("no '/*' survives into the parsed path",
       False)
 
 
+# ---------------------------------------------------------------- H
+# "Is this set("objects") entry a person?" used to be answered by
+# `"npc" in path`.  That sees the /d/<zone>/npc/*.c spelling and nothing else,
+# so 431 references to real people were emitted as `items.<id>` and then dropped
+# by the loader -- those rooms were empty at runtime and every valid_leave gate
+# hanging off them never fired.  The verdict now comes from the LPC inherit
+# chain, one hop up into mud/inherit/char/ where every base class says
+# `inherit NPC;`.
+print("\nH  person-vs-thing resolved by the inherit chain, not the path")
+
+import tempfile  # noqa: E402
+
+import lpc_paths as LP  # noqa: E402
+
+
+def _tmp_lpc(body):
+    fd, path = tempfile.mkstemp(suffix='.c')
+    with os.fdopen(fd, 'wb') as f:
+        f.write(body.encode('utf-8'))
+    LP._type_cache.clear()
+    return path
+
+
+# A bare marker names no type of its own; the type is in the base class.
+_QUARRY_ITEM = _tmp_lpc("""
+inherit ITEM;
+void create() { set("short", "石块"); }
+""")
+try:
+    check("inherit ITEM stays an item", LP.resolve_type(_QUARRY_ITEM), 'item')
+finally:
+    os.unlink(_QUARRY_ITEM)
+
+# The real base classes are the ground truth for the walk.
+for name, want in [('quarry', 'npc'), ('worm', 'npc'), ('snake', 'npc'),
+                   ('npc', 'npc')]:
+    base = LP.find_inherit_file(name)
+    if base is None:
+        print("  skip  mud/inherit/char/%s.c (LPC corpus not present)" % name)
+        continue
+    check("base class %s" % name, LP.resolve_type(base), want)
+
+# object_file/2 has to understand all three spellings, including the .c that
+# every one of them omits.
+check("object_file CLASS_D",
+      os.path.basename(LP.object_file('CLASS_D("hu") + "/pingsi"', '/x')),
+      'pingsi.c')
+check("object_file __DIR__",
+      os.path.basename(LP.object_file('__DIR__"npc/yahuan"', '/x')),
+      'yahuan.c')
+check("object_file absolute",
+      os.path.basename(LP.object_file('"/d/city/npc/li"', '/x')),
+      'li.c')
+check("object_file keeps .c if written",
+      os.path.basename(LP.object_file('"/d/city/npc/li.c"', '/x')),
+      'li.c')
+check("object_file rejects an expression",
+      LP.object_file('CLASS_D("shaolin") + books[1]', '/x'), None)
+
+# _object_is_npc/3 must not trust the spelling: both directions have to move.
+_tmp = tempfile.mkdtemp()
+try:
+    for label, body, entry, want in [
+        # an NPC whose path never says "npc" -- the case the old code missed,
+        # and 431 of them: /kungfu/class/<sect>/*.c and /clone/{quarry,worm,
+        # beast}/*.c are the bulk, /d/hangzhou/honghua/huo is the odd one out
+        ('person without "npc" in the path', 'inherit NPC;\n',
+         'obj/_person', True),
+        # and the other direction: nothing may turn into a person by accident
+        ('item without "npc" in the path', 'inherit ITEM;\n',
+         'obj/_thing', False),
+    ]:
+        obj = os.path.join(_tmp, entry + '.c')
+        os.makedirs(os.path.dirname(obj), exist_ok=True)
+        with open(obj, 'w') as f:
+            f.write(body)
+        check(label,
+              C._object_is_npc('__DIR__"%s"' % entry, entry, _tmp), want)
+
+    # A file under an npc/ directory is taken as a person by _npc_subdir/1,
+    # which predates this change.  Over the corpus that never lies: all 1155
+    # files under d/<zone>/npc/ classify as npc, so the heuristic is kept and
+    # only the checks above are new.
+    npc_dir = os.path.join(_tmp, 'npc')
+    os.makedirs(npc_dir)
+    with open(os.path.join(npc_dir, 'y'), 'w') as f:
+        f.write('void create() { set("short", "x"); }\n')
+    check("npc/ directory still wins", LP.resolve_type(
+        os.path.join(npc_dir, 'y')), 'npc')
+finally:
+    for dirpath, dirs, names in os.walk(_tmp, topdown=False):
+        for n in names:
+            os.unlink(os.path.join(dirpath, n))
+        for d in dirs:
+            os.rmdir(os.path.join(dirpath, d))
+    os.rmdir(_tmp)
+
+# With no source directory to resolve against, the old spelling guess stands in
+# rather than silently dropping the reference to the floor.
+check("fallback without src_dir",
+      C._object_is_npc('__DIR__"npc/yahuan"', 'npc/yahuan', None), True)
+check("fallback says no for a non-npc path",
+      C._object_is_npc('__DIR__"obj/sword"', 'obj/sword', None), False)
+
+
 print("")
 if FAILURES:
     print("FAILED: %d" % len(FAILURES))

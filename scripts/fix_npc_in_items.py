@@ -59,9 +59,10 @@ from collections import defaultdict
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import lpc_converter as C          # noqa: E402
+import lpc_paths as LP              # noqa: E402
 from lpc_paths import entries_of, expand       # noqa: E402
 
-LPC_ROOT = r'C:\files\git\mud'
+LPC_ROOT = LP.LPC_ROOT
 WORLD = 'data/world'
 CLONE_LIB = os.path.join(WORLD, 'clone_lib.ucl')
 
@@ -106,63 +107,14 @@ _inherit_index = None
 _type_cache = {}
 
 
-def build_inherit_index():
-    """Base class name (lowercased, no .c) -> file under mud/inherit/."""
-    global _inherit_index
-    if _inherit_index is None:
-        _inherit_index = {}
-        for dirpath, _dirs, names in os.walk(os.path.join(LPC_ROOT, 'inherit')):
-            for n in names:
-                if n.endswith('.c'):
-                    _inherit_index.setdefault(n[:-2].lower(),
-                                              os.path.join(dirpath, n))
-    return _inherit_index
-
-
-def parse_lpc(path):
-    with open(path, 'rb') as f:
-        return C._parse_lpc(f.read(), path, os.path.dirname(path))
-
-
-def find_inherit_file(name):
-    key = name.strip().lower()
-    return build_inherit_index().get(key[:-2] if key.endswith('.c') else key)
-
-
 def resolve_lpc_type(path, depth=0):
-    """'npc' | 'item' | 'room' | 'skill' | 'generic' for one LPC file.
+    """Deprecated shim -- the authoritative resolver now lives in lpc_paths.
 
-    Same answer as lpc_converter._determine_object_type, except that a
-    "generic" verdict now falls through to the file's own inherit list, which
-    is what makes `inherit QUARRY;` (mud/inherit/char/quarry.c, itself
-    `inherit NPC;`) resolve to npc.
+    lpc_converter shares it, so the migration and the converter can never drift
+    apart on what counts as a person.  Kept as a thin alias because the
+    migration's own docstring refers to it by this name.
     """
-    if path in _type_cache:
-        return _type_cache[path]
-    if depth > 8 or not os.path.exists(path):
-        return 'generic'
-
-    _type_cache[path] = 'generic'                     # cycle guard
-    try:
-        ast = parse_lpc(path)
-    except Exception:
-        return 'generic'
-    if ast is None:
-        return 'generic'
-
-    verdict = C._determine_object_type(C._merge_inherit_chain(ast))
-    if verdict != 'generic':
-        _type_cache[path] = verdict
-        return verdict
-
-    for inh in ast.inherits:
-        base = find_inherit_file(inh)
-        if base and base != path:
-            got = resolve_lpc_type(base, depth + 1)
-            if got != 'generic':
-                _type_cache[path] = got
-                return got
-    return 'generic'
+    return LP.resolve_type(path)
 
 
 def lpc_path_for(expr):

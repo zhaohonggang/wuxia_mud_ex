@@ -17,6 +17,14 @@ import re
 import sys
 from pathlib import Path
 
+# lpc_paths holds the LPC ground-truth helpers (path expansion, and the
+# authoritative npc-vs-item verdict).  It imports this module lazily inside
+# resolve_type, so the dependency only ever runs one way at call time.  The
+# sys.path line keeps that working when this file is loaded by absolute path
+# from another script rather than run from scripts/.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import lpc_paths as LP  # noqa: E402
+
 # ---------------------------------------------------------------------------
 # ASCII semantics: Elixir PCRE (no /u) treats \w \s \d as ASCII-only.  Python
 # re treats them as Unicode by default.  All patterns in this module use the
@@ -2213,13 +2221,37 @@ def _generate_room_ucl(ast, zone_id):
                     "  }\n"
                 )
 
-    objects_block = _generate_room_objects(room_id, sets.get("objects"))
+    objects_block = _generate_room_objects(
+        room_id, sets.get("objects"),
+        src_dir=os.path.dirname(ast.source_path) if ast.source_path else None)
 
     return "\n\n".join([x for x in [room_block, exits_block, objects_block] if x != ""])
 
 
 def _contains_npc(path):
+    """Last-resort guess for a set("objects") path that names no readable file.
+
+    Kept only as the fallback of _object_is_npc/3 -- "npc" in the path catches
+    the /d/<zone>/npc/*.c spelling and nothing else.  It cannot see
+    /kungfu/class/<sect>/*.c, /clone/{quarry,worm,beast}/*.c, or
+    /d/hangzhou/honghua/huo, which is 431 of the 437 refs it used to misfile.
+    """
     return "npc" in path
+
+
+def _object_is_npc(path, literal, src_dir):
+    """Is this one set("objects") entry a person?
+
+    The entry is resolved to its LPC file and classified by the inherit chain,
+    which is the same verdict the definition side now uses.  `path` is the raw
+    entry and `literal` its path-with-the-runtime-suffix-stripped form; only
+    `path` still names the CLASS_D()/__DIR__ part that says which file it is.
+    """
+    if src_dir is not None:
+        f = LP.object_file(path, src_dir)
+        if f and os.path.exists(f):
+            return LP.resolve_type(f) == "npc"
+    return _contains_npc(literal)
 
 
 def _count_or_one(value):
@@ -2363,7 +2395,7 @@ def _is_dynamic_expr(path):
 
 
 
-def _generate_room_objects(room_id, value):
+def _generate_room_objects(room_id, value, src_dir=None):
     if value is None:
         return ""
     if not (isinstance(value, tuple) and value[0] == "mapping"):
@@ -2409,7 +2441,7 @@ def _generate_room_objects(room_id, value):
         if not _SAFE_ID_RE.match(id_):
             # Defensive: never emit an id that is not a bare UCL identifier.
             continue
-        if _contains_npc(literal):
+        if _object_is_npc(path, literal, src_dir):
             n = _count_or_one(count)
             char_links.extend(
                 [f"      {{ id = characters.{id_}.id }}" for _ in range(n)])
@@ -3197,7 +3229,13 @@ def _generate_ucl(ast, zone_id, include_comments, include_header=True):
     header = f"# Generated from {ast.source_path} by LPCConverter\n# Zone: {zone_id}\n\n"
 
     merged = _merge_inherit_chain(ast)
-    obj_type = _determine_object_type(merged)
+    # _determine_object_type/1 only sees the inherits it could resolve, and a
+    # bare marker names no type: `inherit QUARRY;` says nothing about being a
+    # person.  LP.resolve_type/1 repeats that verdict and then, on "generic",
+    # walks the base classes under mud/inherit/ -- where char/quarry.c is
+    # `inherit NPC;`.  Without it every /clone/{quarry,worm,beast}/*.c and
+    # /kungfu/class/<sect>/*.c came out "generic" and got no characters block.
+    obj_type = LP.resolve_type(ast.source_path)
 
     if obj_type == "room":
         new_sections = [_generate_room_ucl(merged, zone_id)]

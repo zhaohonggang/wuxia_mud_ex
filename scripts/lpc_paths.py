@@ -154,3 +154,125 @@ def lpc_objects(path, room_zone):
             continue
         out.append(classify(p))
     return out
+
+
+# ---------------------------------------------------------------------------
+# Type resolution: is this LPC file a person, an item, a room or a skill?
+#
+# This is the authoritative answer, shared by lpc_converter (so a future
+# conversion files NPCs correctly) and by the migration scripts.  It lives here
+# rather than in either one because both need it and neither should own it.
+#
+# lpc_converter._determine_object_type/1 works on an AST and answers "generic"
+# for `inherit QUARRY;` because the marker itself names no type -- the type
+# lives one hop up, in mud/inherit/char/quarry.c (`inherit NPC;`).  So a
+# "generic" verdict falls through to a walk over the base classes.
+LPC_ROOT = os.environ.get('MUD_LPC_ROOT', r'C:\files\git\mud')
+
+_inherit_index = None
+_type_cache = {}
+
+
+def inherit_index():
+    """Base class name (lowercased, no .c) -> file under mud/inherit/."""
+    global _inherit_index
+    if _inherit_index is None:
+        _inherit_index = {}
+        for dirpath, _dirs, names in os.walk(os.path.join(LPC_ROOT, 'inherit')):
+            for n in names:
+                if n.endswith('.c'):
+                    _inherit_index.setdefault(n[:-2].lower(),
+                                              os.path.join(dirpath, n))
+    return _inherit_index
+
+
+def find_inherit_file(name):
+    key = name.strip().lower()
+    return inherit_index().get(key[:-2] if key.endswith('.c') else key)
+
+
+def _with_c(p):
+    return p if p.endswith('.c') else p + '.c'
+
+
+def object_file(expr, src_dir):
+    """Absolute LPC file for one set("objects") entry, or None.
+
+    `src_dir` is the directory of the file that wrote the entry, which is what
+    __DIR__ means.  All three spellings from `expand()` are handled, plus the
+    .c suffix each of them usually omits.
+    """
+    if not expr:
+        return None
+    e = expr.strip()
+
+    m = re.match(r'^CLASS_D\("([^"]+)"\)\s*\+\s*"([^"]+)"$', e)
+    if m:
+        return os.path.normpath(os.path.join(
+            LPC_ROOT, 'kungfu', 'class', m.group(1), _with_c(m.group(2))))
+
+    m = re.match(r'^__DIR__\s*"([^"]+)"$', e)
+    if m:
+        return os.path.normpath(os.path.join(src_dir, _with_c(m.group(1))))
+
+    m = re.match(r'^"([^"]+)"$', e)
+    if m:
+        p = m.group(1)
+        if p.startswith('/'):
+            return os.path.normpath(os.path.join(
+                LPC_ROOT, _with_c(p.lstrip('/'))))
+        return os.path.normpath(os.path.join(src_dir, _with_c(p)))
+
+    return None
+
+
+def resolve_type(path, depth=0):
+    """'npc' | 'item' | 'room' | 'skill' | 'generic' for one LPC file.
+
+    Same verdict as lpc_converter._determine_object_type/1 except that
+    "generic" now falls through to the file's own base classes, which is what
+    makes `inherit QUARRY;` (mud/inherit/char/quarry.c, itself `inherit NPC;`)
+    come out as npc instead of an object nothing can be spawned from.
+    """
+    # Imported here, not at module level: lpc_converter imports this module, so
+    # a top-level import would be circular.
+    import lpc_converter as C
+
+    if path in _type_cache:
+        return _type_cache[path]
+    if depth > 8 or not path or not os.path.exists(path):
+        return 'generic'
+
+    _type_cache[path] = 'generic'                     # cycle guard
+    try:
+        with open(path, 'rb') as f:
+            ast = C._parse_lpc(f.read(), path, os.path.dirname(path))
+    except Exception:
+        return 'generic'
+    if ast is None:
+        return 'generic'
+
+    verdict = C._determine_object_type(C._merge_inherit_chain(ast))
+    if verdict != 'generic':
+        _type_cache[path] = verdict
+        return verdict
+
+    for inh in ast.inherits or []:
+        base = find_inherit_file(inh)
+        if base and os.path.normcase(base) != os.path.normcase(path):
+            got = resolve_type(base, depth + 1)
+            if got != 'generic':
+                _type_cache[path] = got
+                return got
+
+    # mud/inherit/char/npc.c is `inherit CHARACTER;`, and CHARACTER is neither
+    # a type marker nor a file under mud/inherit/, so the walk above reaches
+    # nothing from it.  Nothing in the corpus inherits that file directly, so
+    # this is latent rather than live -- but the directory is unambiguous, so
+    # answer from it.
+    if os.path.normcase(os.path.dirname(path)) == os.path.normcase(
+            os.path.join(LPC_ROOT, 'inherit', 'char')):
+        _type_cache[path] = 'npc'
+        return 'npc'
+
+    return 'generic'
