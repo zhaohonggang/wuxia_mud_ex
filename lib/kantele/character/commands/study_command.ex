@@ -15,6 +15,7 @@ defmodule Kantele.Character.StudyCommand do
   alias Kantele.Character.LearnGate
   alias Kantele.Character.Records
   alias Kantele.Character.Stats
+  alias Kantele.World.Item, as: WorldItem
   alias Kantele.World.Items
 
   @max_times 100
@@ -97,15 +98,15 @@ defmodule Kantele.Character.StudyCommand do
     skill_id = book_meta.skill
 
     cond do
-      stats.combat_exp < book_meta.exp_required ->
+      stats.combat_exp < (book_meta.exp_required || 0) ->
         fail(conn, "你的实战经验不足，再怎么读也没用。\n")
 
-      # LPC：query_skill(sname, 1) > max_skill
-      Stats.skill(stats, skill_id) > book_meta.max_skill ->
+      # LPC：query_skill(sname, 1) > max_skill（max_skill 缺省视为无上限）
+      book_meta.max_skill && Stats.skill(stats, skill_id) > book_meta.max_skill ->
         fail(conn, "你研读了一会儿，但是发现上面所说的对你而言都太浅了，没有学到任何东西。\n")
 
-      # LPC：query_skill(sname, 1) < min_skill
-      Stats.skill(stats, skill_id) < book_meta.min_skill ->
+      # LPC：query_skill(sname, 1) < min_skill（min_skill 缺省视为无下限）
+      book_meta.min_skill && Stats.skill(stats, skill_id) < book_meta.min_skill ->
         fail(conn, "你研读了一会儿，但是却发现你对这门技能的理解还太浅，结果毫无收获。\n")
 
       # LPC：can_improve_skill 检查
@@ -175,16 +176,16 @@ defmodule Kantele.Character.StudyCommand do
   end
 
   defp find_book(inventory, book_name) do
+    # 名字取实例自带的定义（wuji 书册的随机标题在此），匹配规则与
+    # `Kantele.World.Item.matches?/2` 一致 —— 标题、别名（"shaolin wuji"/"wuji"）都认。
     Enum.find(inventory, fn instance ->
-      item = Items.get!(instance.item_id)
-      item_name = String.downcase(item.name)
-      keyword = String.downcase(String.trim(book_name))
-      item_name == keyword or String.starts_with?(item_name, "#{keyword} ")
+      item = WorldItem.instance_item(instance)
+      WorldItem.matches?(item, book_name)
     end)
   end
 
   defp study_jing_cost(book_meta, int) do
-    cost = div(book_meta.jing_cost * 20 + book_meta.difficulty - int, 20)
+    cost = div((book_meta.jing_cost || 0) * 20 + (book_meta.difficulty || 0) - int, 20)
     max(cost, 10)
   end
 
@@ -210,6 +211,30 @@ defmodule Kantele.Character.StudyCommand do
     %{
       "liuxin-jian" => "柳心剑法",
       "liuxi-neigong" => "柳溪内功",
+      # clone/book/wuji{1..4}.c 的 23 门技能（随机标题即技能名，见 §十二之一）
+      "fengyun-shou" => "风云手",
+      "qianye-shou" => "千叶手",
+      "jingang-quan" => "大金刚拳",
+      "luohan-quan" => "罗汉拳",
+      "banruo-zhang" => "般若掌",
+      "sanhua-zhang" => "散花掌",
+      "longzhua-gong" => "龙爪功",
+      "yingzhua-gong" => "鹰爪功",
+      "nianhua-zhi" => "拈花指",
+      "yizhi-chan" => "一指禅",
+      "cibei-dao" => "慈悲刀法",
+      "xiuluo-dao" => "修罗刀法",
+      "weituo-gun" => "韦陀棍法",
+      "zui-gun" => "醉棍",
+      "wuchang-zhang" => "无常杖法",
+      "pudu-zhang" => "普渡杖法",
+      "fumo-jian" => "伏魔剑法",
+      "damo-jian" => "达摩剑法",
+      "xiuluo-zhi" => "修罗指法",
+      "shenzhang-bada" => "神掌八打",
+      "wuxiang-zhi" => "无相指法",
+      "duoluoye-zhi" => "多罗叶指",
+      "yipai-liangsan" => "一拍两散",
       "force" => "基本内功",
       "sword" => "基本剑法",
       "dodge" => "轻功",

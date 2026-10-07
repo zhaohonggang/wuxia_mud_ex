@@ -31937,85 +31937,148 @@ chats = [
         weight = 100
         unit = "颗"
       }
-    
+    }
 
-# Source: C:/files/git/mud/clone/fam/item/haoyue.c
+# Source: C:/files/git/mud/clone/book/wuji1.c
 # Zone: clone_lib
 
-    items "haoyue" {
-      name = "皓月金砂"
-      description = "这是一把极其珍贵的皓月金砂，色泽温润，极难寻觅。"
-      aliases = ["haoyue jinsha", "haoyue", "jinsha", "sha"]
+    items "wuji1" {
+      name = "无名秘籍"
+      description = "这是一册不知名目的武学秘籍。"
+      aliases = ["shaolin wuji", "wuji"]
   verbs = [
     "get",
     "drop"
   ]
 
       meta = {
-        value = 10000
-        weight = 100
-        unit = "颗"
-        material_attrib = "stone"
-        material_name = "皓月金砂"
+        value = 500
+        weight = 200
+        unit = "册"
+        material = "paper"
+        book = {
+          # create() 随机取一个标题+技能（random(sizeof(titles))，6 选 1），
+          # 端口在实例创建时掷一次骰，见 docs/lpc-port-gaps.zh-CN.md §十二之一
+          skills = [
+            { name = "风云手手法" skill = "fengyun-shou" },
+            { name = "如来千叶手手法" skill = "qianye-shou" },
+            { name = "大金刚拳法" skill = "jingang-quan" },
+            { name = "罗汉拳法" skill = "luohan-quan" },
+            { name = "般若掌法" skill = "banruo-zhang" },
+            { name = "散花掌法" skill = "sanhua-zhang" }
+          ]
+          # jing_cost 原文 15+random(30)，按均值 30 折叠（随机的是技能与标题）
+          exp_required = 10000
+          max_skill = 99
+          jing_cost = 30
+          difficulty = 25
+        }
       }
     }
 
-# Source: C:/files/git/mud/clone/fam/etc/lv5a.c
+# Source: C:/files/git/mud/clone/book/wuji2.c
 # Zone: clone_lib
 
-    items "lv5a" {
-      name = "天蚕玉"
-      description = "这是一块天蚕玉，晶莹剔透，极难寻觅。"
-      aliases = ["tiancan yu", "tiancan", "yu"]
+    items "wuji2" {
+      name = "无名秘籍"
+      description = "这是一册不知名目的武学秘籍。"
+      aliases = ["shaolin wuji", "wuji"]
   verbs = [
     "get",
     "drop"
   ]
 
       meta = {
-        value = 15000
-        weight = 100
-        unit = "颗"
+        value = 500
+        weight = 200
+        unit = "册"
+        material = "paper"
+        book = {
+          # create() 随机取一个标题+技能（random(sizeof(titles))，6 选 1）
+          skills = [
+            { name = "龙爪功法" skill = "longzhua-gong" },
+            { name = "鹰爪功法" skill = "yingzhua-gong" },
+            { name = "拈花指法" skill = "nianhua-zhi" },
+            { name = "一指禅功" skill = "yizhi-chan" },
+            { name = "慈悲刀法" skill = "cibei-dao" },
+            { name = "修罗刀法" skill = "xiuluo-dao" }
+          ]
+          # jing_cost 原文 15+random(30)，按均值 30 折叠
+          exp_required = 10000
+          max_skill = 99
+          jing_cost = 30
+          difficulty = 25
+        }
       }
     }
 
-# Source: C:/files/git/mud/clone/fam/etc/lv5b.c
+# Source: C:/files/git/mud/clone/book/wuji3.c
 # Zone: clone_lib
 
-    items "lv5b" {
-      name = "青玉芽"
-      description = "这是一颗小小的青玉芽，解毒疗伤，功效极佳。"
-      aliases = ["qingyu ya", "qingyu", "ya"]
+    items "wuji3" {
+      name = "无名秘籍"
+      description = "这是一册不知名目的武学秘籍。"
+      aliases = ["shaolin wuji", "wuji"]
   verbs = [
     "get",
     "drop"
   ]
 
       meta = {
-        value = 15000
-        weight = 100
-        unit = "粒"
+        value = 500
+        weight = 200
+        unit = "册"
+        material = "paper"
+        book = {
+          # create() 随机取一个标题+技能（random(sizeof(titles))，6 选 1）
+          skills = [
+            { name = "韦陀棍法" skill = "weituo-gun" },
+            { name = "醉棍棍法" skill = "zui-gun" },
+            { name = "无常杖法" skill = "wuchang-zhang" },
+            { name = "普渡杖法" skill = "pudu-zhang" },
+            { name = "伏魔剑法" skill = "fumo-jian" },
+            { name = "达摩剑法" skill = "damo-jian" }
+          ]
+          # jing_cost 原文 15+random(30)，按均值 30 折叠
+          exp_required = 10000
+          max_skill = 99
+          jing_cost = 30
+          difficulty = 25
+        }
       }
     }
 
-# Source: C:/files/git/mud/clone/fam/etc/lv5d.c
+# Source: C:/files/git/mud/clone/book/wuji4.c
 # Zone: clone_lib
 
-    items "lv5d" {
-      name = "幻帝神珠"
-      description = "这是一颗幻帝神珠，光芒璀璨，护体生暖。"
-      aliases = ["huandi shenzhu", "huandi", "shenzhu", "zhu"]
+    items "wuji4" {
+      name = "无名秘籍"
+      description = "这是一册不知名目的武学秘籍。"
+      aliases = ["shaolin wuji", "wuji"]
   verbs = [
     "get",
     "drop"
   ]
 
       meta = {
-        value = 15000
-        weight = 100
-        unit = "颗"
+        value = 500
+        weight = 200
+        unit = "册"
+        material = "paper"
+        book = {
+          # create() 随机取一个标题+技能（random(sizeof(titles))，5 选 1）
+          skills = [
+            { name = "修罗指法" skill = "xiuluo-zhi" },
+            { name = "神掌八打" skill = "shenzhang-bada" },
+            { name = "无相指法" skill = "wuxiang-zhi" },
+            { name = "多罗叶指" skill = "duoluoye-zhi" },
+            { name = "一拍两散" skill = "yipai-liangsan" }
+          ]
+          # jing_cost 原文 35+random(30)，按均值 50 折叠
+          exp_required = 10000
+          max_skill = 99
+          jing_cost = 50
+          difficulty = 30
+        }
       }
     }
-
-}
-

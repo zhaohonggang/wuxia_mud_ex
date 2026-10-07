@@ -37,9 +37,79 @@ defmodule Kantele.World.Item do
 
   @doc """
   填好 `item_instance.item`；定义缺失时填占位物品而不是崩掉。
+
+  实例已经挂了真实定义（wuji 类书册在 `materialize_book/1` 里挂的随机标题副本）
+  时不覆盖 —— 否则拾取/查看后随机标题就被抹回共享定义了。
   """
+  def resolve(%{item: %Kalevala.World.Item{} = item} = item_instance) when not is_nil(item.id) do
+    item_instance
+  end
+
   def resolve(%{item_id: item_id} = item_instance) do
     %{item_instance | item: fetch(item_id)}
+  end
+
+  @doc """
+  取实例的展示/匹配用物品定义：实例已挂真实定义则用它，否则退回世界定义。
+
+  拾取时 `pickup_commit` 会填 `instance.item`；wuji 类书册在 `materialize_book/1`
+  把随机标题/描述挂在这里。这样 `get` / `study` / `detail` / 房间 look 按标题
+  匹配与展示都一致（LPC present/get 同时认书名与 id 别名，见 `matches?/2`）。
+  """
+  def instance_item(%{item: %Kalevala.World.Item{} = item} = _instance) when not is_nil(item.id) do
+    item
+  end
+
+  def instance_item(%{item_id: item_id}), do: fetch(item_id)
+
+  @doc """
+  让物品实例带上可研习的书本信息（对应 LPC 秘籍 `create()` 里的掷骰）。
+
+  `clone/book/wuji{1..4}.c` 每本在 `create()` 随机取一个标题+技能
+  （`int i = random(sizeof(titles))`），对象随驱动启动创建一次、掷一次骰。
+  接口按**每个实例**掷一次（房间启动、背包恢复各掷一次 = LPC 重启即重掷）：
+
+  - 定义带 `book.skills` 候选列表（wuji 新形态）→ 随机定一支，把选中的技能挂到
+    `instance.meta.book`，把标题/描述挂到 `instance.item`（覆盖共享定义的名字）；
+  - 定义只有 `book`（普通秘籍）→ 把共享 book 元数据拷进 `instance.meta` ——
+    这是研习命令（`study_command.ex:85` 读 `book_item.meta.book`）能读到的唯一去处，
+    此前从未填充，**所有书都读不了**；
+  - 其余物品（或定义缺失）→ 原样返回，不抛异常。
+  """
+  def materialize_book(%Kalevala.World.Item.Instance{} = instance) do
+    materialize_book(instance, fetch(instance.item_id))
+  end
+
+  def materialize_book(%Kalevala.World.Item.Instance{} = instance, %Kalevala.World.Item{} = item) do
+    # 注意：Meta.Book 是本文件后半部的顶层模块，这里只能用运行期 struct 判断，
+    # 不能写 `%Kantele.World.Item.Meta.Book{}` 编译期展开。
+    case Map.get(item.meta || %{}, :book) do
+      %{__struct__: Kantele.World.Item.Meta.Book, skills: [_ | _] = skills} = book ->
+        pick = Enum.random(skills)
+        title = Map.get(pick, :name) || Map.get(pick, :skill)
+
+        rolled =
+          struct(Kantele.World.Item.Meta.Book,
+            skill: Map.get(pick, :skill),
+            min_skill: book.min_skill,
+            max_skill: book.max_skill,
+            exp_required: book.exp_required,
+            jing_cost: book.jing_cost,
+            difficulty: book.difficulty
+          )
+
+        %{
+          instance
+          | item: %{item | name: title, description: "这是一册" <> title <> "。"},
+            meta: %{book: rolled}
+        }
+
+      %{__struct__: Kantele.World.Item.Meta.Book} = book ->
+        %{instance | meta: %{book: book}}
+
+      _ ->
+        instance
+    end
   end
 
   def missing_item(item_id) do
@@ -54,13 +124,21 @@ defmodule Kantele.World.Item do
   @doc """
   物品名匹配：全名精确或按第一个词前缀匹配
 
-  双语名（如 "长剑 Changjian"）允许玩家只输入中文名 "长剑"
+  双语名（如 "长剑 Changjian"）允许玩家只输入中文名 "长剑"。`meta.aliases`
+  （LPC `set_name(<名>, ({ "id1", "id2" }))` 的 id 表）也计入 —— 对应 LPC
+  `present()` 同时认别名，`get wuji` / `study wuji` 这类拼音 id 才找得到
+  （wuji 书册每实例的名字是随机标题，别名 `shaolin wuji`/`wuji` 反而是稳定标识）。
   """
   def matches?(item, keyword) do
     keyword = String.downcase(String.trim(keyword))
     name = String.downcase(item.name)
 
-    name == keyword or String.starts_with?(name, "#{keyword} ")
+    aliases =
+      Map.get(item, :meta, %{})
+      |> Map.get(:aliases, [])
+      |> Enum.map(&String.downcase/1)
+
+    keyword in aliases or name == keyword or String.starts_with?(name, "#{keyword} ")
   end
 
   @doc """
@@ -111,7 +189,11 @@ defmodule Kantele.World.Item.Meta.Book do
   @moduledoc """
   秘籍类物品的可研习信息（对应 LPC 秘籍的 skill mapping，裁剪自 study 流程）
 
-  - `skill` 可研习的技能 id（如 "literate"）
+  - `skill` 可研习的技能 id（如 "literate"）；为 nil 时若 `skills` 非空，
+    则由实例化掷骰决定（见下）
+  - `skills` 候选列表（`clone/book/wuji{1..4}.c` 的 `random(sizeof(titles))`，
+    每本 `create()` 随机取一个标题+技能），形如 `[%{name: "罗汉拳法", skill: "luohan-quan"}]`；
+    接口在实例创建时按每个实例掷一次，见 docs/lpc-port-gaps.zh-CN.md §十二之一
   - `min_skill` / `max_skill` 有效研习区间，低于/超出均无收获（study.c）
   - `exp_required` 实战经验门槛（combat_exp）
   - `jing_cost` 每次研习的精力消耗
@@ -120,7 +202,7 @@ defmodule Kantele.World.Item.Meta.Book do
   本期只解析存储；消费端（研习命令/耗精公式）由 b 期 learn 重构接入。
   """
 
-  defstruct [:skill, :min_skill, :max_skill, :exp_required, :jing_cost, :difficulty]
+  defstruct [:skill, :min_skill, :max_skill, :exp_required, :jing_cost, :difficulty, :skills]
 end
 
 defmodule Kantele.World.Item.Meta do

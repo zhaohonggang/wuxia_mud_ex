@@ -68,7 +68,14 @@ defmodule Kantele.World.Room do
   Load an item based on room information
 
   Used in the `Callbacks` protocol.
+
+  实例已挂真实定义（wuji 书册的随机标题副本）时直接用它，否则回退世界定义。
   """
+  def load_item(%{item: %Kalevala.World.Item{} = item} = _item_instance)
+      when not is_nil(item.id) do
+    item
+  end
+
   def load_item(item_instance), do: Items.get!(item_instance.item_id)
 
   # ---- 房间广播原语（对应 LPC tell_room/message_vision/broadcast） ----
@@ -2301,7 +2308,7 @@ defmodule Kantele.World.Room.LookEvent do
 
     item_instances =
       Enum.map(context.item_instances, fn item_instance ->
-        %{item_instance | item: Items.get!(item_instance.item_id)}
+        %{item_instance | item: Kantele.World.Item.instance_item(item_instance)}
       end)
 
     context

@@ -792,7 +792,7 @@ lib/kantele/character/commands/drive_command.ex:59
 
 - [ ] 把 431 条从 `room_items` 迁到 `room_characters`
 
-### 十二之一、`wuji1`–`wuji4` 需要运行时随机技能 🟡
+### 十二之一、`wuji1`–`wuji4` 运行时随机技能 🟢（已实现）
 
 `clone/book/wuji{1,2,3,4}.c` 每本在 `create()` 里随机取一个：
 
@@ -803,27 +803,39 @@ set("skill", ([ "name": skills[i], ... ]));
 ```
 
 6 / 6 / 6 / 5 个标题对应 23 个技能（`fengyun-shou`、`longzhua-gong`…）。
-被`shaolin/cjlou1` 引用，转换器写成 `room_items`，于是静默丢弃 ——
-所以这 4 条仍悬空（`data/world/clone_lib.ucl` 缺定义）。
+被 `shaolin/cjlou1` 引用，转换器写成 `room_items`。
 
-**为什么不能随便取一个**：全库 47 处 `book` 块的 `skill` 都是单个字符串
-（`Item.Meta.Book.skill`，`lib/kantele/world/item.ex:123`），没有列表形态；
-`lbook5.c` 有同样的随机标题结构但压根没被转换，所以**无先例可循**。
-取第一个会永久丢掉 19 个技能的可研习性，且把「随机」悄悄变成「固定」。
+**实现**（数据形态 + 创建/拾取/持久化全链路）：
 
-**要做需要动的地方**（不是纯数据改动）：
+1. **数据层**：`data/world/clone_lib.ucl` 给 `wuji{1..4}` 的 `book` 增加
+   `skills = [ { name = "罗汉拳法" skill = "luohan-quan" }, ... ]` 候选列表
+   （源文件 `clone/book/wuji{1..4}.c` 的 `titles[]`/`skills[]`，24 个标题
+   脚注说 `random(sizeof(titles))` 里实际 23 个唯一技能——`wuji4` 是 5 个）。
+   四个 `items "wuji{1..4}"` 顶层块**同时修复**了首套 `lv5d` 缺右花括号
+   造成的孤儿块：此前 lv5d 未闭合，把其后所有内容（含后补的 wuji 块）
+   吞成嵌套，`clone_lib` 顶层 items 只有 528 个、wuji 全部不可达；
+   修复后 532 个、四个 wuji 全解析。
+2. **实例创建时掷骰**：`Kantele.World.Item.materialize_book/2`
+   （`lib/kantele/world/item.ex`）——
+   - 有 `book.skills` 的（wuji 新形态）→ `Enum.random/1` 定一支，
+     把选中技能挂进`instance.meta.book`（LPC `set("skill", ...)`），
+     随机标题/描述挂到每实例副本 `instance.item`（LPC `set_name`）；
+   - 只有 `book` 的普通秘籍 → 把共享 book 元数据拷进 `instance.meta.book`
+     —— 这是研习命令唯一能读到的地方，此前从未填充，**所有书都读不了**
+     （本次顺带修掉）；
+   - 其余物品 / 定义缺失 → 原样返回，不抛异常。
+   调用点在房间启动 `Kickoff.start_room` 与背包恢复 `records.restore_inventory`
+   —— 对应 LPC 驱动重启后所有对象重跑 `create()`，reload/重登即重掷（持久化只存 `item_id`）。
+3. **拾取/匹配**：`ItemEvent.pickup_commit`、`item_command`、`room.ex` 的
+   `look` 都改用 `instance_item/1`（实例已挂真实定义就不覆盖回共享定义），
+   `matches?/2` 现在把 `meta.aliases`（LPC `set_name` 的 id 表，含
+   `shaolin wuji`/`wuji`）计入匹配 —— 标题是随机的，别名才是稳定标识。
+4. **研习**：`study_command.find_book` 用 `matches?` 按标题/别名找，
+   `Meta.Book` 新增 `:skills` 字段，`loader.parse_book/3` 解析之；
+   `jing_cost`/`difficulty`/`min`/`max` 空值防御（wuji 折叠值在数据里已写死）。
 
-1. 数据层给 `book` 增加候选列表（如 `book.skills = [...]`）；
-2. 在**实例创建**时随机定一个 —— `parse_room_item/3`
-   （`lib/kantele/world/loader.ex:1647`）目前只填 `item_id`；
-3. `Item.Instance` 已有可选的 `item` 字段可挂每实例副本
-   （见 `clone_command.ex:30`），但要确认 `item_command` 的拾取路径
-   会把它带进 `character.inventory`，否则 `study_command.ex:85` 读的
-   `book_item.meta.book` 仍是共享定义；
-4. NPC 的 `carry` 物品走 `SpawnController`，是另一条创建路径；
-5. 丢弃 / 再拾取 / 存库（`inventory` 是 `jsonb[]`）的持久化语义要定。
-
-- [ ] 运行时随机技能（先定数据形态，再改创建/拾取/持久化路径）
+**结果**：`shaolin:cjlou1` 的 4 条悬空参考经 `clone_lib` 回退全部解析
+（悬空 13 → 9），`wuji{1..4}` 可拾取且按随机标题/别名研习。
 
 ---
 

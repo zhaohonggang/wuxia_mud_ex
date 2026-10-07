@@ -11,8 +11,8 @@
 
 | 指标 | 修之前 | 现在 |
 |---|---|---|
-| 悬空引用合计（loader 计数） | **444** | **13** |
-| ├ `room_items` | 437 | 6 |
+| 悬空引用合计（loader 计数） | **444** | **9** |
+| ├ `room_items` | 437 | 2 |
 | └ `room_characters` | 7 | 7 |
 | 其中「char 被误写成 item」 | 431 | **0** |
 | clone_lib 里的 NPC 定义 | 121 | **487** |
@@ -22,15 +22,19 @@
 人物还是物品，把判定为人物的**外科式**搬到 `room_characters`，缺的定义按
 `<来源>_<id>` 命名落进 `clone_lib.ucl`。439 条引用 / 386 个房间 / 53 个区。
 
-`scripts/classify_dangling_items.py` 现在报 `room_items` 悬空 **4 条、NPC-in-items 0 条**。
+`scripts/classify_dangling_items.py` 现在报 `room_items` 悬空 **0 条、NPC-in-items 0 条**。
 
-剩下的 13 条是真待办：
+剩下的 9 条是真待办：
 
 | 类别 | 条数 | 说明 |
 |---|---|---|
 | 本区没有 `characters` 块 | 7 | `lingxiao` 的 `cheng`/`liang`/`liao`/`qi` 是武功招式名当文件名；`chengdu:tong_ren`、`city:zixu`、`xiangyang:mujiang` 同理 |
-| `shaolin:cjlou1` 的 `wuji1`~`wuji4` | 4 | 秘籍随机技能缺口，见 [lpc-port-gaps.zh-CN.md](lpc-port-gaps.zh-CN.md) |
 | `sammatti:town_square` 引 `global.items.*` | 2 | `global` 已搬去 `test/fixtures/world`，默认加载不含它 |
+
+> `shaolin:cjlou1` 的 `wuji1`~`wuji4`（4 条）已随随机技能方案落地解析：
+> `clone_lib.ucl` 顶层补上四个 `items "wuji{1..4}"` 定义（并修复首套 `lv5d`
+> 缺右花括号的孤儿块），经 loader 的 clone_lib 回退参考全部命中，见
+> [lpc-port-gaps.zh-CN.md](lpc-port-gaps.zh-CN.md) §十二之一。
 
 ## 〇、总账（含此前漏掉的一类）
 

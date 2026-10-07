@@ -389,13 +389,19 @@ defmodule Kantele.Character.Records do
   defp restore_inventory(default_inventory, saved) when is_list(saved) do
     now = DateTime.utc_now()
 
+    # 存档只存 item_id；wuji 类书册重建成实例后按对象创建重掷一次骰
+    # （与 LPC 驱动重启后所有对象重跑 create() 一致，见
+    #  docs/lpc-port-gaps.zh-CN.md §十二之一 的持久化语义）——普通秘籍则把
+    #  共享 book 元数据拷进 instance.meta，否则研习命令读不到。
     Enum.map(saved, fn entry ->
-      %Kalevala.World.Item.Instance{
+      instance = %Kalevala.World.Item.Instance{
         id: Kalevala.World.Item.Instance.generate_id(),
         item_id: entry["item_id"],
         created_at: now,
         meta: %{}
       }
+
+      Kantele.World.Item.materialize_book(instance)
     end)
   end
 

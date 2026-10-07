@@ -325,7 +325,14 @@ defmodule Kantele.World.Kickoff do
       callback_module: Kantele.World.Room
     }
 
-    item_instances = Map.get(room, :item_instances, [])
+    # wuji 类书册在实例进入房间前按对象创建掷一次骰（对应 LPC 房间 create() 时
+    # clone/book/wuji*.c 的 `random(sizeof(titles))`；`Items` 缓存此时已就绪）。
+    # reload 会重掷 —— LPC 驱动重启后所有对象重跑 create()，语义一致。
+    item_instances =
+      room
+      |> Map.get(:item_instances, [])
+      |> Enum.map(&Kantele.World.Item.materialize_book/1)
+
     room = Map.delete(room, :item_instances)
 
     case GenServer.whereis(Kalevala.World.Room.global_name(room)) do

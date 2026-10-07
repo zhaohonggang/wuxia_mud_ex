@@ -32,8 +32,8 @@ defmodule Kantele.Character.ItemEvent do
         event.item_instance.id == item_instance.id
       end)
 
-    item = Items.get!(event.item_instance.item_id)
-    item_instance = %{event.item_instance | item: item}
+    item_instance = with_item(event.item_instance)
+    item = item_instance.item
 
     conn
     |> put_character(%{conn.character | inventory: inventory})
@@ -63,8 +63,8 @@ defmodule Kantele.Character.ItemEvent do
   def pickup_commit(conn, %{data: event}) do
     inventory = [event.item_instance | conn.character.inventory]
 
-    item = Items.get!(event.item_instance.item_id)
-    item_instance = %{event.item_instance | item: item}
+    item_instance = with_item(event.item_instance)
+    item = item_instance.item
 
     conn
     |> put_character(%{conn.character | inventory: inventory})
@@ -79,14 +79,24 @@ defmodule Kantele.Character.ItemEvent do
         event.item_instance.id == item_instance.id
       end)
 
-    item = Items.get!(event.item_instance.item_id)
-    item_instance = %{event.item_instance | item: item}
+    item_instance = with_item(event.item_instance)
+    item = item_instance.item
 
     conn
     |> put_character(%{conn.character | inventory: inventory})
     |> render(ItemView, "hide-commit", %{item: item, item_instance: item_instance})
     |> prompt(CommandView, "prompt")
     |> tap_save()
+  end
+
+  # 实例已挂真实定义（wuji 书册的随机标题副本）时保留，否则回填世界定义
+  defp with_item(%{item: %Kalevala.World.Item{} = item} = item_instance)
+       when not is_nil(item.id) do
+    item_instance
+  end
+
+  defp with_item(item_instance) do
+    %{item_instance | item: Items.get!(item_instance.item_id)}
   end
 
   defp tap_save(conn) do

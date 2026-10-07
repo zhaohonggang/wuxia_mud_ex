@@ -10,6 +10,7 @@ defmodule Kantele.Character.ItemCommand do
   alias Kalevala.Verb
   alias Kantele.Character.CommandView
   alias Kantele.Character.ItemView
+  alias Kantele.World.Item, as: WorldItem
   alias Kantele.World.Items
 
   @max_item_carried 80
@@ -266,7 +267,7 @@ defmodule Kantele.Character.ItemCommand do
 
   defp find_item_instance(inventory, item_name) do
     Enum.find(inventory, fn item_instance ->
-      item = Items.get!(item_instance.item_id)
+      item = WorldItem.instance_item(item_instance)
       item_instance.id == item_name || item.callback_module.matches?(item, item_name)
     end)
   rescue
@@ -275,7 +276,7 @@ defmodule Kantele.Character.ItemCommand do
 
   defp find_item_in_room(room, item_name) do
     Enum.find_value(Map.get(room, :items, []), fn item_instance ->
-      item = Items.get!(item_instance.item_id)
+      item = WorldItem.instance_item(item_instance)
 
       if item_instance.id == item_name || item.callback_module.matches?(item, item_name) do
         {item_instance, item}
@@ -292,7 +293,7 @@ defmodule Kantele.Character.ItemCommand do
     items = Map.get(container.meta || %{}, :items, [])
 
     Enum.find_value(items, fn item_instance ->
-      item = Items.get!(item_instance.item_id)
+      item = WorldItem.instance_item(item_instance)
 
       if item_instance.id == item_name || item.callback_module.matches?(item, item_name) do
         {item_instance, item}
@@ -308,7 +309,7 @@ defmodule Kantele.Character.ItemCommand do
     room = get_room(conn)
 
     Enum.find(character.inventory ++ Map.get(room, :items, []), fn item_instance ->
-      item = Items.get!(item_instance.item_id)
+      item = WorldItem.instance_item(item_instance)
       item_instance.id == target_name || item.callback_module.matches?(item, target_name)
     end)
   rescue

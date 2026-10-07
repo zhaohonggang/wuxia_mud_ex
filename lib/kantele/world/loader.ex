@@ -1287,11 +1287,22 @@ alias Kantele.World.LoaderError
       max_skill: Map.get(book, :max_skill),
       exp_required: Map.get(book, :exp_required),
       jing_cost: Map.get(book, :jing_cost),
-      difficulty: Map.get(book, :difficulty)
+      difficulty: Map.get(book, :difficulty),
+      skills: parse_book_skills(Map.get(book, :skills))
     }
   end
 
   defp parse_book(_), do: nil
+
+  # wuji 类书籍的候选列表（`clone/book/wuji*.c` 的 titles[]/skills[]）：
+  # `[ { name = "罗汉拳法" skill = "luohan-quan" }, ... ]`，实例化时掷一次骰。
+  defp parse_book_skills(nil), do: nil
+  defp parse_book_skills(skills) when is_list(skills) do
+    Enum.map(skills, fn skill ->
+      %{name: Map.get(skill, :name), skill: Map.get(skill, :skill)}
+    end)
+  end
+  defp parse_book_skills(_), do: nil
 
   @doc """
   Collapse a runtime-picked exit target to a single room reference.
