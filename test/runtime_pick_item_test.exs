@@ -64,4 +64,17 @@ defmodule RuntimePickItemTest do
 
     assert unresolved == [], "rooms with unresolvable item instances: #{inspect(unresolved)}"
   end
+
+  @tag :world_data
+  test "shaolin:cjlou1 产生 4 个 wuji 书实例，item_id 为 wuji1~4" do
+    items = room_items(Loader.load(), "shaolin", "shaolin:cjlou1")
+    wuji = Enum.filter(items, &String.contains?(&1.item_id, "wuji"))
+
+    assert length(wuji) == 4,
+           "expected 4 wuji instances, got #{inspect(wuji)}"
+
+    ids = Enum.map(wuji, & &1.item_id) |> Enum.sort()
+    assert ids == ["clone_lib:wuji1", "clone_lib:wuji2", "clone_lib:wuji3", "clone_lib:wuji4"],
+           "item_ids should be the 4 wuji variants, got #{inspect(ids)}"
+  end
 end

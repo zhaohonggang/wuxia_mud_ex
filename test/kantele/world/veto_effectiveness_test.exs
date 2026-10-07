@@ -303,10 +303,11 @@ alias Kantele.World.LpcCondition
     # 然后按 LPC 的 inherit 链把 room_items 里的活物**外科式**搬进
     # room_characters（scripts/fix_npc_in_items.py）：439 条引用、386 个房间、
     # 53 个区，缺的 366 个定义按 `<来源>_<id>` 命名落进 clone_lib。
-    # 悬空从 **437 掉到 13**，剩 13 条全是真待办：
+    # 悬空从 **437 掉到 13**。之后补齐 shaolin:cjlou1 的 wuji1~4 秘籍
+    # （顶层 `items "wuji{1..4}"` 落进 clone_lib + 实例掷骰随机技能，
+    # 见 docs/lpc-port-gaps.zh-CN.md §十二之一；顺带修了首套 lv5d 缺右花括号
+    # 的孤儿块），掉到 **9**。剩 9 条全是真待办：
     #   - 7 条 character：本区压根没有 `characters "x"` 块（见下面的断言）
-    #   - 4 条 shaolin:cjlou1 的 wuji1~4 秘籍（随机技能缺口，见
-    #     docs/lpc-port-gaps.zh-CN.md）
     #   - 2 条 sammatti:town_square 引 `global.items.*`，而 global 已搬去
     #     test/fixtures/world，默认加载不含它
     #
