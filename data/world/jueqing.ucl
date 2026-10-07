@@ -296,6 +296,7 @@ item_desc = {
   room_items "house" {
     room_id = rooms.house.id
     items = [
+      { id = items.gumu_fengmi.id },
       { id = items.gumu_fengmi.id }    ]
   }
 

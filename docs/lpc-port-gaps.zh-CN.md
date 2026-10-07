@@ -851,11 +851,18 @@ set("skill", ([ "name": skills[i], ... ]));
   一直回退到 `"npc" in path`。修为同时接受裸路径与带引号路径（含 `/`、`-`）。
 - `_room_object_links` 统计物品数量时只取最后一个键值，忽略了 LPC mapping
   的重复键表示数量。修为按值重复引用。
+- mapping 内的 C++ 行注释未剔除：`//…:) by …` 这种注释里的 `:` 会污染
+  `pair.split(":", 1)`，把整行注释拆成伪 (key, value) 对。`_parse_mapping_pairs` /
+  `_parse_array_elements` 现在先 `_strip_cpp_comments` 再切分。
 
-**受影响房间**：
-- `taohua/mushi`（需补 4 个 `clone/fam/*` 物品定义）
+**受影响房间**（全部入库）：
+- `taohua/mushi` ✅ 已入库（`clone/fam/*` 的 4 个物品定义：`haoyue`、`lv5a`、
+  `lv5b`、`lv5d` 已加入 `clone_lib.ucl`）
 - `taohua/daojufang` ✅ 已入库
 - `wudu/dongxue` ✅ 已入库
-- `jueqing/house`、`heimuya/house1`（分支含 `/kungfu/class/*` 无定义，暂不入库）
-
-- [ ] 为 `mushi` 补全 4 个物品定义并入库
+- `heimuya/house1` ✅ 已入库：`if (random(6)==1)` → 东方不败，否则 → 侍女；
+  `characters "dongfang"`（`/kungfu/class/riyue/dongfang/dongfang.c`）定义随
+  `heimuya.ucl` 一并入库。
+- `jueqing/house`：两分支内容完全相同（均为 2× `/d/gumu/obj/fengmi`，原
+  `/kungfu/class/gumu/yang` 行是注释），转换器折叠回单一 `room_items` ——
+  随机选一支等于选那一支，无行为差异，属无损表示。

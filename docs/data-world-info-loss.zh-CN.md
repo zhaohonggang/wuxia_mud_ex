@@ -224,9 +224,16 @@ zone / 房间 / 方向 / 原值 / 原因，可自行过滤。
 - 转换器新增 `_parse_object_branches`，识别受守卫的最后一次 `set("objects")`，
   生成 `room_object_sets` 数据块（每支整组 `refs = [...]`）。
 - 加载器新增 `parse_object_sets`，启动时 `Enum.random/1` 等概率抽取一支整组安装。
-- `daojufang`、`dongxue` 已入库；`mushi` 待补 4 个 `clone/fam/*` 物品定义。
+- `daojufang`、`dongxue`、`mushi`、`heimuya/house1` 已入库（`mushi` 补了 4 个
+  `clone/fam/*` 物品定义：`haoyue`、`lv5a`、`lv5b`、`lv5d`）。
+- `jueqing/house` 两分支内容相同（均为 2× fengmi），折叠回单一 `room_items`；
+  顺带把该房间 fengmi 数量从 1 修正为 2（照 LPC `"/d/gumu/obj/fengmi" : 2`，
+  此前首版数据漏了数量）。
 
 **修复的转换器 Bug**：
 - `object_file` 只接受带引号字面量 → 同时接受裸路径与带引号路径（含 `/`、`-`）。
 - 物品数量统计忽略 LPC mapping 重复键 → 按值重复引用。
+- mapping 内 C++ 行注释未剔除：`//…:) …` 的 `:` 污染 `pair.split(":", 1)`，
+  把注释拆成伪 (key, value) 对。`_parse_mapping_pairs` / `_parse_array_elements`
+  先 `_strip_cpp_comments` 再切分。
 

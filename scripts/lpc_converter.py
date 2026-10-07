@@ -522,6 +522,7 @@ def _process_literal_string(s):
 
 
 def _parse_array_elements(inner):
+    inner = _strip_cpp_comments(inner)
     out = []
     for part in _split_top_level(inner):
         out.append(_parse_lpc_value(part))
@@ -529,6 +530,12 @@ def _parse_array_elements(inner):
 
 
 def _parse_mapping_pairs(inner):
+    # C++ line comments inside a mapping (e.g. `d/jueqing/house.c`'s `//`) hang
+    # around in the raw branch text and, because a comment can contain ":" --
+    # `//...:) by xxx` -- they poisoned pair.split(":", 1) into bogus (var, var)
+    # keys before the no-colon guard at the bottom got a chance to drop them.
+    # Strip every line tail at the source so a comment never becomes a pair.
+    inner = _strip_cpp_comments(inner)
     pairs = []
     for pair in _split_top_level(inner):
         parts = pair.split(":", 1)

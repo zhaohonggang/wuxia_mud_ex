@@ -870,10 +870,20 @@ direction = "south"
     }
 
 
-  room_characters "house1" {
+  room_object_sets "house1" {
     room_id = rooms.house1.id
-    characters = [
-      { id = characters.shinu.id }    ]
+    sets = [
+      {
+        refs = [
+          { id = characters.dongfang.id }
+        ]
+      },
+      {
+        refs = [
+          { id = characters.shinu.id }
+        ]
+      }
+    ]
   }
 
 # Generated from C:/files/git/mud/d/heimuya/hua1.c by LPCConverter
@@ -2828,6 +2838,61 @@ item_desc = {
 
   carry = [
     { id = items.cloth.id }
+  ]
+
+    }
+
+    characters "dongfang" {
+      name = "东方不败"
+      aliases = ["dongfang bubai", "dongfang", "bubai"]
+      description = "她就是东方不败，看起来不男不女，样子却甚为妖媚。"
+  gender = "无性"
+  age = 30
+  score = 1200000
+
+  combat = {
+    combat_exp = 5000000
+    con = 50
+    dex = 62
+    int = 39
+    max_jing = 10000
+    max_neili = 12000
+    max_qi = 10000
+    str = 51
+  }
+
+  inquiries = [
+    { key = "任我行" value = "哼 ……，我当初真该杀了他。" },
+    { key = "无双无对" value = "(: ask_skill5 :)" },
+    { key = "无声无息" value = "(: ask_skill1 :)" },
+    { key = "无法无天" value = "(: ask_skill4 :)" },
+    { key = "无穷无尽" value = "(: ask_skill2 :)" },
+    { key = "无边无际" value = "(: ask_skill3 :)" },
+    { key = "杨莲亭" value = "莲弟 ……" },
+    { key = "葵花魔功" value = "(: ask_kuihua :)" }
+  ]
+
+  skills = [
+    { skill = "force" level = 450 },
+    { skill = "parry" level = 450 },
+    { skill = "dodge" level = 450 },
+    { skill = "sword" level = 450 },
+    { skill = "unarmed" level = 450 },
+    { skill = "literate" level = 350 },
+    { skill = "martial-cognize" level = 400 },
+    { skill = "kuihua-mogong" level = 450 },
+    { skill = "pixie-jian" level = 450 },
+    { type = "force" skill = "kuihua-mogong" },
+    { type = "dodge" skill = "kuihua-mogong" },
+    { type = "unarmed" skill = "kuihua-mogong" },
+    { type = "sword" skill = "kuihua-mogong" },
+    { type = "parry" skill = "kuihua-mogong" }
+  ]
+
+
+  carry = [
+    { id = items.zhen.id },
+    { id = items.changpao.id }
   ]
 
     }
