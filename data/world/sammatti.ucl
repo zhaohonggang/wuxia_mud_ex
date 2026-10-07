@@ -54,10 +54,10 @@ room_items "town_square" {
 
   items = [
     {
-      id = global.items.longsword.id
+      id = items.global_longsword.id
     },
     {
-      id = global.items.potion.id
+      id = items.global_potion.id
     }
   ]
 }

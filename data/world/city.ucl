@@ -2219,7 +2219,7 @@ direction = ~
   room_characters "wumiao2" {
     room_id = rooms.wumiao2.id
     characters = [
-      { id = characters.zixu.id }    ]
+      { id = characters.adm_zixu.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/city/xdmidao1.c by LPCConverter

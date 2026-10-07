@@ -3970,4 +3970,37 @@ chats = [
     { id = items.cloth.id }
   ]
 
+    
+# d/xiangyang/npc/mujiang.c 木匠（本区商人 NPC）
+  characters "mujiang" {
+    name = "木匠"
+    description = "这位木匠正在埋头工作，因为发现你在注视着他，就抬起头来微笑了一下。"
+    aliases = ["mu jiang", "mu", "jiang"]
+    gender = "男性"
+    age = 32
+    combat = {
+      attitude = "friendly"
+      combat_exp = 300
     }
+    skills = {
+      str = 17
+      dex = 20
+      con = 17
+      int = 22
+      unarmed = 20
+      dodge = 20
+      parry = 20
+    }
+    vendor = {
+      goods = [
+        { id = "xiangyang:mujian" },
+        { id = "xiangyang:mudao" },
+        { id = "xiangyang:mugun" }
+      ]
+    }
+    carry = [
+      { id = "clone_lib:cloth" }
+    ]
+    money = { coin = 100 }
+  }
+}

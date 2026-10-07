@@ -2870,4 +2870,200 @@ chats = [
     { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
     { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
   ]
+    
+# 成自学（居室 cheng）
+  characters "cheng" {
+    name = "成自学"
+    description = "成自学是雪山派掌门人威德先生白自在的师弟。"
+    nickname = ""
+    gender = "男性"
+    age = 65
+    combat = {
+      attitude = "friendly"
+      combat_exp = 1000000
     }
+    skills = {
+      force = 220
+      xueshan_neigong = 220
+      dodge = 220
+      taxue_wuhen = 220
+      cuff = 200
+      lingxiao_quan = 200
+      strike = 200
+      piaoxu_zhang = 200
+      sword = 240
+      hanmei_jian = 240
+      yunhe_jian = 240
+      xueshan_jian = 240
+      parry = 220
+      literate = 220
+      martial_cognize = 180
+    }
+    skill_map = {
+      force = "xueshan-neigong"
+      dodge = "taxue-wuhen"
+      cuff = "lingxiao-quan"
+      strike = "piaoxu-zhang"
+      sword = "xueshan-jian"
+      parry = "yunhe-jian"
+    }
+    prepare = {
+      strike = "piaoxu-zhang"
+      cuff = "lingxiao-quan"
+    }
+    family = "凌霄派"
+    generation = 5
+    title = "前辈"
+    carry = [
+      { id = clone_lib.items.changjian.id },
+      { id = clone_lib.items.cloth.id }
+    ]
+  }
+
+# 梁自进（居室 liang）
+  characters "liang" {
+    name = "梁自进"
+    description = "梁自进是雪山派掌门人威德先生白自在的师弟。"
+    nickname = ""
+    gender = "男性"
+    age = 65
+    combat = {
+      attitude = "friendly"
+      combat_exp = 1000000
+    }
+    skills = {
+      force = 220
+      xueshan_neigong = 220
+      dodge = 220
+      taxue_wuhen = 220
+      cuff = 200
+      lingxiao_quan = 200
+      strike = 200
+      piaoxu_zhang = 200
+      sword = 240
+      hanmei_jian = 240
+      yunhe_jian = 240
+      xueshan_jian = 240
+      parry = 220
+      literate = 220
+      martial_cognize = 180
+    }
+    skill_map = {
+      force = "xueshan-neigong"
+      dodge = "taxue-wuhen"
+      cuff = "lingxiao-quan"
+      strike = "piaoxu-zhang"
+      sword = "xueshan-jian"
+      parry = "yunhe-jian"
+    }
+    prepare = {
+      strike = "piaoxu-zhang"
+      cuff = "lingxiao-quan"
+    }
+    family = "凌霄派"
+    generation = 5
+    title = "前辈"
+    carry = [
+      { id = clone_lib.items.changjian.id },
+      { id = clone_lib.items.cloth.id }
+    ]
+  }
+
+# 廖自励（居室 liao）
+  characters "liao" {
+    name = "廖自砺"
+    description = "廖自砺是雪山派掌门人威德先生白自在的师弟。"
+    nickname = ""
+    gender = "男性"
+    age = 65
+    combat = {
+      attitude = "friendly"
+      combat_exp = 1000000
+    }
+    skills = {
+      force = 220
+      xueshan_neigong = 220
+      dodge = 220
+      taxue_wuhen = 220
+      cuff = 200
+      lingxiao_quan = 200
+      strike = 200
+      piaoxu_zhang = 200
+      sword = 240
+      hanmei_jian = 240
+      yunhe_jian = 240
+      xueshan_jian = 240
+      parry = 220
+      literate = 220
+      martial_cognize = 180
+    }
+    skill_map = {
+      force = "xueshan-neigong"
+      dodge = "taxue-wuhen"
+      cuff = "lingxiao-quan"
+      strike = "piaoxu-zhang"
+      sword = "xueshan-jian"
+      parry = "yunhe-jian"
+    }
+    prepare = {
+      strike = "piaoxu-zhang"
+      cuff = "lingxiao-quan"
+    }
+    family = "凌霄派"
+    generation = 5
+    title = "前辈"
+    carry = [
+      { id = clone_lib.items.changjian.id },
+      { id = clone_lib.items.cloth.id }
+    ]
+  }
+
+# 齐自勉（居室 qi）
+  characters "qi" {
+    name = "齐自勉"
+    description = "齐自勉是雪山派掌门人威德先生白自在的师弟。"
+    nickname = ""
+    gender = "男性"
+    age = 65
+    combat = {
+      attitude = "friendly"
+      combat_exp = 1000000
+    }
+    skills = {
+      force = 220
+      xueshan_neigong = 220
+      dodge = 220
+      taxue_wuhen = 220
+      cuff = 200
+      lingxiao_quan = 200
+      strike = 200
+      piaoxu_zhang = 200
+      sword = 240
+      hanmei_jian = 240
+      yunhe_jian = 240
+      xueshan_jian = 240
+      parry = 220
+      literate = 220
+      martial_cognize = 180
+    }
+    skill_map = {
+      force = "xueshan-neigong"
+      dodge = "taxue-wuhen"
+      cuff = "lingxiao-quan"
+      strike = "piaoxu-zhang"
+      sword = "xueshan-jian"
+      parry = "yunhe-jian"
+    }
+    prepare = {
+      strike = "piaoxu-zhang"
+      cuff = "lingxiao-quan"
+    }
+    family = "凌霄派"
+    generation = 5
+    title = "前辈"
+    carry = [
+      { id = clone_lib.items.changjian.id },
+      { id = clone_lib.items.cloth.id }
+    ]
+  }
+}

@@ -307,24 +307,24 @@ alias Kantele.World.LpcCondition
     # （顶层 `items "wuji{1..4}"` 落进 clone_lib + 实例掷骰随机技能，
     # 见 docs/lpc-port-gaps.zh-CN.md §十二之一；顺带修了首套 lv5d 缺右花括号
     # 的孤儿块），掉到 **9**。剩 9 条全是真待办：
-    #   - 7 条 character：本区压根没有 `characters "x"` 块（见下面的断言）
     #   - 2 条 sammatti:town_square 引 `global.items.*`，而 global 已搬去
     #     test/fixtures/world，默认加载不含它
+    #
+    # tong_ren/zixu 两个跨区引用经 clone_lib 回退解析，静态仍显示悬空（不跨区解析）。
+    # cheng/liang/liao/qi/mujiang 已补齐本区定义，不再悬空。
     #
     # 这里钉的是**上限**：修复只会让这个数变小，所以给一个当前值附近的门槛，
     # 数字变大说明数据退化了（或者又漏了一个区）。
     assert total_refs <= 20, "悬空引用不该变多，当前 #{total_refs}（上限 20）"
 
-    # 头部现在只剩**本区自己缺定义**的角色：不是跨区共享的问题，是这几个名字
-    # 在本区 UCL 里压根没有 `characters "x"` 块（如 lingxiao 的 cheng/liang/
-    # liao/qi 是武功招式名当文件名，chengdu:tong_ren、xiangyang:mujiang 同理）。
-    # 它们仍然必须被记录下来 —— 这正是本条测试要守的行为。
-    for id <- ~w(tong_ren zixu cheng liang liao qi mujiang) do
+# 头部现在只剩 clone_tong_ren/adm_zixu 两个跨区引用（静态分析不跨区，仍显示悬空；
+    # 运行时经 clone_lib 回退可解析）。其余 cheng/liang/liao/qi/mujiang 已补齐本区定义。
+    for id <- ~w(clone_tong_ren adm_zixu) do
       assert Enum.any?(seen, fn
-               {{_z, :character, r}, _} -> String.ends_with?(r, "." <> id <> ".id")
-               _ -> false
-             end),
-             "#{id} 还应被记录在悬空里（若已补齐，请从这里移除并下调上面的上限）"
+                   {{_z, :character, r}, _} -> String.ends_with?(r, "." <> id <> ".id")
+                   _ -> false
+                 end),
+              "#{id} 还应被记录在悬空里（若已补齐，请从这里移除并下调上面的上限）"
     end
 
     Kantele.World.Loader.reset_unresolved_warnings()

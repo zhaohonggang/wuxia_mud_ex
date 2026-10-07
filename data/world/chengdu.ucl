@@ -609,7 +609,7 @@ direction = "south"
   room_characters "practice" {
     room_id = rooms.practice.id
     characters = [
-      { id = characters.tong_ren.id }    ]
+      { id = characters.clone_tong_ren.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/chengdu/qingyanggong.c by LPCConverter
