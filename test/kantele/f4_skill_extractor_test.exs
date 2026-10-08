@@ -127,4 +127,68 @@ defmodule Kantele.F4SkillExtractorTest do
       assert TranslateSkill.run(@fixtures, out).written == []
     end
   end
+
+  describe "D7: 提取器覆盖保护" do
+    @all_fixtures [
+      "huashan-jian",
+      "chousui-zhang"
+    ]
+
+    test "所有 fixture 技能文件均可被提取且不崩溃" do
+      Enum.each(@all_fixtures, fn skill ->
+        data = TranslateSkill.extract(c(skill))
+
+        # 基本结构检查
+        assert data.skill == skill
+        assert is_list(data.actions)
+        assert is_integer(data.dynamic_actions) and data.dynamic_actions >= 0
+        assert is_list(data.valid_enable)
+        assert (data.practice_cost == nil) or (is_map(data.practice_cost) and map_size(data.practice_cost) > 0)
+        assert is_list(data.flags)
+
+        # 每个静态招式必须包含必要字段
+        Enum.each(data.actions, fn action ->
+          assert Map.has_key?(action, "action")
+          assert Map.has_key?(action, "force")
+          assert Map.has_key?(action, "attack")
+          assert Map.has_key?(action, "parry")
+          assert Map.has_key?(action, "dodge")
+          assert Map.has_key?(action, "damage")
+          assert Map.has_key?(action, "lvl")
+          assert Map.has_key?(action, "damage_type")
+          # skill_name 可选
+        end)
+
+        # 验证 valid_enable 非空
+        refute data.valid_enable == []
+      end)
+    end
+
+    test "render_skeleton 对所有 fixture 均生成合法 Elixir 代码" do
+      Enum.each(@all_fixtures, fn skill ->
+        data = TranslateSkill.extract(c(skill))
+        skel = TranslateSkill.render_skeleton(data)
+
+        assert String.valid?(skel)
+        refute skel =~ <<0xEF, 0xBF, 0xBD>> # 无替换字符
+        assert skel =~ "defmodule Kantele.Combat.Skills.Generated."
+        assert skel =~ ~s{def id(), do: "#{skill}"}
+        assert skel =~ "def valid_enable"
+        assert skel =~ "def query_action"
+      end)
+    end
+
+    test "run 输出文件数与 fixture 数一致" do
+      out = Path.join(System.tmp_dir!(), "f4_cov_out_#{System.unique_integer([:positive])}")
+      on_exit(fn -> File.rm_rf(out) end)
+
+      stats = TranslateSkill.run(@fixtures, out)
+
+      assert stats.count == length(@all_fixtures)
+      Enum.each(@all_fixtures, fn skill ->
+        snake = String.replace(skill, "-", "_")
+        assert "#{snake}.ex" in stats.written
+      end)
+    end
+  end
 end
