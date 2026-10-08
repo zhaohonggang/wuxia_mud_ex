@@ -65,7 +65,7 @@ defmodule Kantele.Character.PerformCommand do
         %{}
       end
 
-    gates = spec.gates || []
+    gates = Map.get(spec, :gates, [])
 
     case Enum.find(gates, fn gate -> elem(gate, 0) == :prepared end) do
       nil ->
