@@ -148,4 +148,19 @@ defmodule Kantele.Combat.Skills.Performs.FeixingShu.Hua do
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "feixing-shu/hua",
+      kind: :perform,
+      gates: [
+        {:prepared, "throwing", "你尚未预备feixing_shu的hua，无法施展。\n"}
+      ],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
+
+
 end

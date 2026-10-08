@@ -36,4 +36,19 @@ defmodule Kantele.Combat.Skills.Performs.LongxingJian.Xian do
   defp fighting?(ctx), do: Combat.fighting?(ctx.combat)
 
   defp xian_not_saturated?(ctx), do: Map.get(ctx.combat.temp, :xian, 0) < 50
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "longxing_jian/xian",
+      kind: :perform,
+      gates: [
+        {:prepared, "sword", "你尚未预备longxing_jian的xian，无法施展。\n"}
+      ],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
+
+
 end

@@ -49,4 +49,19 @@ defmodule Kantele.Combat.Skills.Performs.RouyunSteps.Zong do
 
     %{state | character: character}
   end
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "rouyun_steps/zong",
+      kind: :perform,
+      gates: [
+        {:prepared, "dodge", "你尚未预备rouyun_steps的zong，无法施展。\n"}
+      ],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
+
+
 end

@@ -175,4 +175,19 @@ defmodule Kantele.Combat.Skills.Performs.GuyueChan.Jing do
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "guyue-chan/jing",
+      kind: :perform,
+      gates: [
+        {:prepared, "unarmed", "你尚未预备guyue_chan的jing，无法施展。\n"}
+      ],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
+
+
 end

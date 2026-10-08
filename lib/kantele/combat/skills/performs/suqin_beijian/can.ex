@@ -159,4 +159,19 @@ defmodule Kantele.Combat.Skills.Performs.SuqinBeijian.Can do
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "suqin-beijian/can",
+      kind: :perform,
+      gates: [
+        {:prepared, "sword", "你尚未预备suqin_beijian的can，无法施展。\n"}
+      ],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
+
+
 end

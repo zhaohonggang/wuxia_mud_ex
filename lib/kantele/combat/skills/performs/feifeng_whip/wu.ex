@@ -175,4 +175,19 @@ defmodule Kantele.Combat.Skills.Performs.FeifengWhip.Wu do
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "feifeng-whip/wu",
+      kind: :perform,
+      gates: [
+        {:prepared, "whip", "你尚未预备feifeng_whip的wu，无法施展。\n"}
+      ],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
+
+
 end

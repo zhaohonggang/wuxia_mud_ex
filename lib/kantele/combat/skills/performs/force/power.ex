@@ -135,4 +135,19 @@ defmodule Kantele.Combat.Skills.Performs.Force.Power do
 
     %{character | meta: meta}
   end
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "force/power",
+      kind: :perform,
+      gates: [
+        {:prepared, "force", "你尚未预备force的power，无法施展。\n"}
+      ],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
+
+
 end

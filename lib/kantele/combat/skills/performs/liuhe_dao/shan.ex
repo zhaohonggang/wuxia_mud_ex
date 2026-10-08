@@ -159,4 +159,19 @@ defmodule Kantele.Combat.Skills.Performs.LiuheDao.Shan do
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "liuhe-dao/shan",
+      kind: :perform,
+      gates: [
+        {:prepared, "blade", "你尚未预备liuhe_dao的shan，无法施展。\n"}
+      ],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
+
+
 end

@@ -173,4 +173,19 @@ defmodule Kantele.Combat.Skills.Performs.FengleiPanfa.Fenglei do
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "fenglei-panfa/fenglei",
+      kind: :perform,
+      gates: [
+        {:prepared, "hammer", "你尚未预备fenglei_panfa的fenglei，无法施展。\n"}
+      ],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
+
+
 end

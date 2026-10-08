@@ -39,4 +39,19 @@ defmodule Kantele.Combat.Skills.Performs.LingboWeibu.Ling do
       "$N施展出「洛神凌波」，步履轻移，身形飘忽不定，如行云流水般流动。\n"
     end
   end
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "lingbo_weibu/ling",
+      kind: :perform,
+      gates: [
+        {:prepared, "dodge", "你尚未预备lingbo_weibu的ling，无法施展。\n"}
+      ],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
+
+
 end

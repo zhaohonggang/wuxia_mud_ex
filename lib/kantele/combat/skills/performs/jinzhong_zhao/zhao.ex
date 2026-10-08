@@ -35,4 +35,19 @@ defmodule Kantele.Combat.Skills.Performs.JinzhongZhao.Zhao do
     }
 
   defp total(), do: {:add, {:skill, "force"}, {:div, {:skill, "jinzhong-zhao"}, 2}}
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "jinzhong_zhao/zhao",
+      kind: :perform,
+      gates: [
+        {:prepared, "force", "你尚未预备jinzhong_zhao的zhao，无法施展。\n"}
+      ],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
+
+
 end

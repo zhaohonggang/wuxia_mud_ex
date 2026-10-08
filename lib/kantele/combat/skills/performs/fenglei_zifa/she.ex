@@ -151,4 +151,19 @@ defmodule Kantele.Combat.Skills.Performs.FengleiZifa.She do
   defp ref(character) do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "fenglei_zifa/she",
+      kind: :perform,
+      gates: [
+        {:prepared, "unarmed", "你尚未预备fenglei_zifa的she，无法施展。\n"}
+      ],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
+
+
 end

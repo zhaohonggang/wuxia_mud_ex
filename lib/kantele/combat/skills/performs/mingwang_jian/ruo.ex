@@ -159,4 +159,19 @@ defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "mingwang-jian/ruo",
+      kind: :perform,
+      gates: [
+        {:prepared, "sword", "你尚未预备mingwang_jian的ruo，无法施展。\n"}
+      ],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
+
+
 end

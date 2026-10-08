@@ -34,4 +34,19 @@ defmodule Kantele.Combat.Skills.Performs.BanruoZhang.Feng do
       expire_message: "你的般若掌「封魔」运行完毕，将内力收回丹田。\n",
       message: "$N使出般若掌「封魔」式，双掌翻飞将周身护住。\n"
     }
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "banruo_zhang/feng",
+      kind: :perform,
+      gates: [
+        {:prepared, "strike", "你尚未预备banruo_zhang的feng，无法施展。\n"}
+      ],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
+
+
 end

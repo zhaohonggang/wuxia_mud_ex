@@ -59,4 +59,19 @@ defmodule Kantele.Combat.Skills.Performs.DagouBang.Feng do
 
     "$N使出打狗棒法「封」字诀，手中#{wp}疾速舞动，幻出许许棒影护住周身。\n"
   end
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "dagou_bang/feng",
+      kind: :perform,
+      gates: [
+        {:prepared, "staff", "你尚未预备dagou_bang的feng，无法施展。\n"}
+      ],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
+
+
 end
