@@ -65,7 +65,6 @@ defmodule Kantele.Combat.Skills.Performs.DagouBang.Feng do
       id: "dagou_bang/feng",
       kind: :perform,
       gates: [
-        {:prepared, "staff", "你尚未预备dagou_bang的feng，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

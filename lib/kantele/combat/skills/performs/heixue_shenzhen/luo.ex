@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.HeixueShenzhen.Luo do
       id: "heixue-shenzhen/luo",
       kind: :perform,
       gates: [
-        {:prepared, "throwing", "你尚未预备heixue_shenzhen的luo，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

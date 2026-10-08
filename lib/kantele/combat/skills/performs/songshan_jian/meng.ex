@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.SongshanJian.Meng do
       id: "songshan-jian/meng",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备songshan_jian的meng，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.KuimangDao.Pan do
       id: "kuimang-dao/pan",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备kuimang_dao的pan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

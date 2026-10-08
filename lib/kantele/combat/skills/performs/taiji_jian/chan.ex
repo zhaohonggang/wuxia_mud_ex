@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Chan do
       id: "taiji-jian/chan",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备taiji_jian的chan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

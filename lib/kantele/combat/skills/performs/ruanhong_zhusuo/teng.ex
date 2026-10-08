@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Teng do
       id: "ruanhong-zhusuo/teng",
       kind: :perform,
       gates: [
-        {:prepared, "whip", "你尚未预备ruanhong_zhusuo的teng，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

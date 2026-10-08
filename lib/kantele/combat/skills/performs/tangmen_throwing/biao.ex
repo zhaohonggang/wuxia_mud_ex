@@ -138,7 +138,6 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Biao do
       id: "tangmen-throwing/biao",
       kind: :perform,
       gates: [
-        {:prepared, "throwing", "你尚未预备tangmen_throwing的biao，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

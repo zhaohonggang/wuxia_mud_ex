@@ -41,7 +41,6 @@ defmodule Kantele.Combat.Skills.Performs.JinzhongZhao.Zhao do
       id: "jinzhong_zhao/zhao",
       kind: :perform,
       gates: [
-        {:prepared, "force", "你尚未预备jinzhong_zhao的zhao，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

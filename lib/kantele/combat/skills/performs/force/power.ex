@@ -141,7 +141,6 @@ defmodule Kantele.Combat.Skills.Performs.Force.Power do
       id: "force/power",
       kind: :perform,
       gates: [
-        {:prepared, "force", "你尚未预备force的power，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

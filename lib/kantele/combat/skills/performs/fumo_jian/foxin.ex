@@ -181,7 +181,6 @@ defmodule Kantele.Combat.Skills.Performs.FumoJian.Foxin do
       id: "fumo-jian/foxin",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备fumo_jian的foxin，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

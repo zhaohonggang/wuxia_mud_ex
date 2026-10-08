@@ -181,7 +181,6 @@ defmodule Kantele.Combat.Skills.Performs.FumoZhang.Lun do
       id: "fumo-zhang/lun",
       kind: :perform,
       gates: [
-        {:prepared, "staff", "你尚未预备fumo_zhang的lun，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

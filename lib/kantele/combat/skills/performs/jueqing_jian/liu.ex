@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.JueqingJian.Liu do
       id: "jueqing-jian/liu",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备jueqing_jian的liu，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

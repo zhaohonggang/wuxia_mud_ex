@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.HexingBifa.Dian do
       id: "hexing-bifa/dian",
       kind: :perform,
       gates: [
-        {:prepared, "dagger", "你尚未预备hexing_bifa的dian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

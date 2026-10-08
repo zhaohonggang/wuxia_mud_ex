@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.MizongHouquan.Zhou do
       id: "mizong-houquan/zhou",
       kind: :perform,
       gates: [
-        {:prepared, "cuff", "你尚未预备mizong_houquan的zhou，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

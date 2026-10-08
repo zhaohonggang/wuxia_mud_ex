@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.QingliangJian.Ming do
       id: "qingliang-jian/ming",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备qingliang_jian的ming，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

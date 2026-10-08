@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.ShunvJian.Ning do
       id: "shunv-jian/ning",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备shunv_jian的ning，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

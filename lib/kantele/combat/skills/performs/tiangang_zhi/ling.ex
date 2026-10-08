@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.TiangangZhi.Ling do
       id: "tiangang-zhi/ling",
       kind: :perform,
       gates: [
-        {:prepared, "finger", "你尚未预备tiangang_zhi的ling，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

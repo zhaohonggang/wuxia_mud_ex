@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.QishiJi.Juan do
       id: "qishi-ji/juan",
       kind: :perform,
       gates: [
-        {:prepared, "club", "你尚未预备qishi_ji的juan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

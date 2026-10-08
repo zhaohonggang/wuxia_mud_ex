@@ -178,7 +178,6 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Qi do
       id: "dugu-jiujian/qi",
       kind: :perform,
       gates: [
-        {:prepared, "unarmed", "你尚未预备独孤九剑的qi，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

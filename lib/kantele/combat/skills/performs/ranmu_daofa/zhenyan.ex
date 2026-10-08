@@ -55,7 +55,6 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Zhenyan do
       id: "ranmu_daofa/zhenyan",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备ranmu_daofa的zhenyan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -193,7 +193,6 @@ defmodule Kantele.Combat.Skills.Performs.FurongJinzhen.Xian do
       id: "furong_jinzhen/xian",
       kind: :perform,
       gates: [
-        {:prepared, "throwing", "你尚未预备furong_jinzhen的xian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

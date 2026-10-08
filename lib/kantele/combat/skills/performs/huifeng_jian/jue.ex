@@ -182,7 +182,6 @@ defmodule Kantele.Combat.Skills.Performs.HuifengJian.Jue do
       id: "huifeng-jian/jue",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备huifeng_jian的jue，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

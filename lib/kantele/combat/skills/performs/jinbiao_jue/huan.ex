@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.JinbiaoJue.Huan do
       id: "jinbiao-jue/huan",
       kind: :perform,
       gates: [
-        {:prepared, "throwing", "你尚未预备jinbiao_jue的huan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.SanhuaZhang.San do
       id: "sanhua-zhang/san",
       kind: :perform,
       gates: [
-        {:prepared, "strike", "你尚未预备sanhua_zhang的san，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

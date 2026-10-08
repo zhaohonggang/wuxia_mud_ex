@@ -55,7 +55,6 @@ defmodule Kantele.Combat.Skills.Performs.RouyunSteps.Zong do
       id: "rouyun_steps/zong",
       kind: :perform,
       gates: [
-        {:prepared, "dodge", "你尚未预备rouyun_steps的zong，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

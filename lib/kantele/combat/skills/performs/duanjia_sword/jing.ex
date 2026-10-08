@@ -178,7 +178,6 @@ defmodule Kantele.Combat.Skills.Performs.DuanjiaSword.Jing do
       id: "duanjia-sword/jing",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备duanjia_sword的jing，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

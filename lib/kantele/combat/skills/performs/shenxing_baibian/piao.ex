@@ -36,7 +36,6 @@ defmodule Kantele.Combat.Skills.Performs.ShenxingBaibian.Piao do
       id: "shenxing_baibian/piao",
       kind: :perform,
       gates: [
-        {:prepared, "dodge", "你尚未预备shenxing_baibian的piao，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

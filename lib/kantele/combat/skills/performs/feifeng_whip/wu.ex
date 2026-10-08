@@ -181,7 +181,6 @@ defmodule Kantele.Combat.Skills.Performs.FeifengWhip.Wu do
       id: "feifeng-whip/wu",
       kind: :perform,
       gates: [
-        {:prepared, "whip", "你尚未预备feifeng_whip的wu，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

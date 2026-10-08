@@ -177,7 +177,6 @@ defmodule Kantele.Combat.Skills.Performs.DagouBang.Ban do
       id: "dagou-bang/ban",
       kind: :perform,
       gates: [
-        {:prepared, "staff", "你尚未预备dagou_bang的ban，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

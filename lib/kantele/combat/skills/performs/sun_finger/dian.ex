@@ -142,7 +142,6 @@ defmodule Kantele.Combat.Skills.Performs.SunFinger.Dian do
       id: "sun-finger/dian",
       kind: :perform,
       gates: [
-        {:prepared, "finger", "你尚未预备sun_finger的dian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

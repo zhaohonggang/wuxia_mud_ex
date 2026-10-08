@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.QianyeShou.Qianye do
       id: "qianye-shou/qianye",
       kind: :perform,
       gates: [
-        {:prepared, "strike", "你尚未预备qianye_shou的qianye，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

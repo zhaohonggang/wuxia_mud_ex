@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.LongchengShendao.Feng do
       id: "longcheng-shendao/feng",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备longcheng_shendao的feng，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

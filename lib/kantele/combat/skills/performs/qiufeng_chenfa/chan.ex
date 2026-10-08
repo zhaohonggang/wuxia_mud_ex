@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.QiufengChenfa.Chan do
       id: "qiufeng-chenfa/chan",
       kind: :perform,
       gates: [
-        {:prepared, "whip", "你尚未预备qiufeng_chenfa的chan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

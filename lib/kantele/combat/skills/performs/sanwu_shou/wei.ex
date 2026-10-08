@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Wei do
       id: "sanwu-shou/wei",
       kind: :perform,
       gates: [
-        {:prepared, "whip", "你尚未预备sanwu_shou的wei，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

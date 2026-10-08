@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.LiuheDao.Shan do
       id: "liuhe-dao/shan",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备liuhe_dao的shan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

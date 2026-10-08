@@ -181,7 +181,6 @@ defmodule Kantele.Combat.Skills.Performs.FurongJian.Luan do
       id: "furong-jian/luan",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备furong_jian的luan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.NingxueZhang.Xue do
       id: "ningxue-zhang/xue",
       kind: :perform,
       gates: [
-        {:prepared, "staff", "你尚未预备ningxue_zhang的xue，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

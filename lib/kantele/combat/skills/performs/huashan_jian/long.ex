@@ -182,7 +182,6 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Long do
       id: "huashan-jian/long",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备华山剑法的long，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -176,7 +176,6 @@ defmodule Kantele.Combat.Skills.Performs.CanghongBifa.Jing do
       id: "canghong-bifa/jing",
       kind: :perform,
       gates: [
-        {:prepared, "dagger", "你尚未预备canghong_bifa的jing，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

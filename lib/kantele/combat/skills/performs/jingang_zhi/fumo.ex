@@ -192,7 +192,6 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.Fumo do
       id: "jingang-zhi/fumo",
       kind: :perform,
       gates: [
-        {:prepared, "finger", "你尚未预备jingang_zhi的fumo，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

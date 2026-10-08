@@ -179,7 +179,6 @@ defmodule Kantele.Combat.Skills.Performs.FengleiPanfa.Fenglei do
       id: "fenglei-panfa/fenglei",
       kind: :perform,
       gates: [
-        {:prepared, "hammer", "你尚未预备fenglei_panfa的fenglei，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Chan do
       id: "lingshe-zhangfa/chan",
       kind: :perform,
       gates: [
-        {:prepared, "staff", "你尚未预备lingshe_zhangfa的chan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

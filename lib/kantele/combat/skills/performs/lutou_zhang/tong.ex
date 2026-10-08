@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.LutouZhang.Tong do
       id: "lutou-zhang/tong",
       kind: :perform,
       gates: [
-        {:prepared, "staff", "你尚未预备lutou_zhang的tong，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

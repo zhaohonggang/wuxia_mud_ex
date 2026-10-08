@@ -177,7 +177,6 @@ defmodule Kantele.Combat.Skills.Performs.BaxianJian.Dian do
       id: "baxian-jian/dian",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备baxian_jian的dian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

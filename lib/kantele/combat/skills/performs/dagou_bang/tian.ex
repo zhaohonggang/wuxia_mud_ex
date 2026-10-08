@@ -163,7 +163,6 @@ defmodule Kantele.Combat.Skills.Performs.DagouBang.Tian do
       id: "dagou_bang/tian",
       kind: :perform,
       gates: [
-        {:prepared, "staff", "你尚未预备dagou_bang的tian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -161,7 +161,6 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengJian.Sao do
       id: "kuangfeng_jian/sao",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备kuangfeng_jian的sao，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

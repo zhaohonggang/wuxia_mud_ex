@@ -178,7 +178,6 @@ defmodule Kantele.Combat.Skills.Performs.DongyangDao.Zhan do
       id: "dongyang-dao/zhan",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备dongyang_dao的zhan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

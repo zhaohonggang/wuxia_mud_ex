@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.XiyangJian.Ci do
       id: "xiyang-jian/ci",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备xiyang_jian的ci，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

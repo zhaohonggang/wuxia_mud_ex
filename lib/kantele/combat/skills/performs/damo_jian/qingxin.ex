@@ -174,7 +174,6 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Qingxin do
       id: "damo_jian/qingxin",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备damo_jian的qingxin，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

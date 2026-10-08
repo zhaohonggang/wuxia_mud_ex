@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.JingangQuan.Jingang do
       id: "jingang-quan/jingang",
       kind: :perform,
       gates: [
-        {:prepared, "cuff", "你尚未预备jingang_quan的jingang，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

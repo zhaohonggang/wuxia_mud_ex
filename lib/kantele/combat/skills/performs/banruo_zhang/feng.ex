@@ -40,7 +40,6 @@ defmodule Kantele.Combat.Skills.Performs.BanruoZhang.Feng do
       id: "banruo_zhang/feng",
       kind: :perform,
       gates: [
-        {:prepared, "strike", "你尚未预备banruo_zhang的feng，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

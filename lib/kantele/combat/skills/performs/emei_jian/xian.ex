@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.EmeiJian.Xian do
       id: "emei-jian/xian",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备emei_jian的xian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

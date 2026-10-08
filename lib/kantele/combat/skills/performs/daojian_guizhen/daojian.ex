@@ -182,7 +182,6 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Daojian do
       id: "daojian-guizhen/daojian",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备daojian_guizhen的daojian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

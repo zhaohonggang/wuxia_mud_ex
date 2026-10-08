@@ -45,7 +45,6 @@ defmodule Kantele.Combat.Skills.Performs.LingboWeibu.Ling do
       id: "lingbo_weibu/ling",
       kind: :perform,
       gates: [
-        {:prepared, "dodge", "你尚未预备lingbo_weibu的ling，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

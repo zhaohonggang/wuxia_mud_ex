@@ -178,7 +178,6 @@ defmodule Kantele.Combat.Skills.Performs.BaguaDao.Sha do
       id: "bagua-dao/sha",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备bagua_dao的sha，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -173,7 +173,6 @@ defmodule Kantele.Combat.Skills.Performs.JidianJian.Dian do
       id: "jidian-jian/dian",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备jidian_jian的dian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

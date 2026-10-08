@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.MingwangJian.Xiang do
       id: "mingwang-jian/xiang",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备mingwang_jian的xiang，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

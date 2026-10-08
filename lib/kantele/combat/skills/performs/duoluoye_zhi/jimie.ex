@@ -182,7 +182,6 @@ defmodule Kantele.Combat.Skills.Performs.DuoluoyeZhi.Jimie do
       id: "duoluoye-zhi/jimie",
       kind: :perform,
       gates: [
-        {:prepared, "finger", "你尚未预备duoluoye_zhi的jimie，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

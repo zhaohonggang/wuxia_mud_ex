@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.JinguanYusuo.Suo do
       id: "jinguan-yusuo/suo",
       kind: :perform,
       gates: [
-        {:prepared, "whip", "你尚未预备jinguan_yusuo的suo，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

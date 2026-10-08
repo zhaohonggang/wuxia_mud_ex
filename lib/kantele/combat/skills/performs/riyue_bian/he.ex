@@ -156,7 +156,6 @@ defmodule Kantele.Combat.Skills.Performs.RiyueBian.He do
       id: "riyue_bian/he",
       kind: :perform,
       gates: [
-        {:prepared, "whip", "你尚未预备riyue_bian的he，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.DuanyunFu.Tiaoyan do
       id: "duanyun-fu/tiaoyan",
       kind: :perform,
       gates: [
-        {:prepared, "club", "你尚未预备duanyun_fu的tiaoyan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

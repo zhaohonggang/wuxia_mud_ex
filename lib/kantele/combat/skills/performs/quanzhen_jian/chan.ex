@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Chan do
       id: "quanzhen-jian/chan",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备quanzhen_jian的chan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -181,7 +181,6 @@ defmodule Kantele.Combat.Skills.Performs.GuyueChan.Jing do
       id: "guyue-chan/jing",
       kind: :perform,
       gates: [
-        {:prepared, "unarmed", "你尚未预备guyue_chan的jing，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

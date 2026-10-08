@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.HenshanJian.Huan do
       id: "henshan-jian/huan",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备henshan_jian的huan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.PichenJian.Ao do
       id: "pichen-jian/ao",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备pichen_jian的ao，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

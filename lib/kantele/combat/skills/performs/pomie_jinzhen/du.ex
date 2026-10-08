@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.PomieJinzhen.Du do
       id: "pomie-jinzhen/du",
       kind: :perform,
       gates: [
-        {:prepared, "throwing", "你尚未预备pomie_jinzhen的du，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

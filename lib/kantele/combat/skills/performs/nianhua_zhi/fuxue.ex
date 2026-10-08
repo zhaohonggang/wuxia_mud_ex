@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.NianhuaZhi.Fuxue do
       id: "nianhua-zhi/fuxue",
       kind: :perform,
       gates: [
-        {:prepared, "finger", "你尚未预备nianhua_zhi的fuxue，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

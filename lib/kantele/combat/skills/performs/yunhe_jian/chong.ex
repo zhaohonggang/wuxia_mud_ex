@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.YunheJian.Chong do
       id: "yunhe-jian/chong",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备yunhe_jian的chong，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

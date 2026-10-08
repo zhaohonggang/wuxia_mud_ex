@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.RaozhiRoujian.Chuan do
       id: "raozhi-roujian/chuan",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备raozhi_roujian的chuan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

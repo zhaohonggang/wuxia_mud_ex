@@ -176,7 +176,6 @@ defmodule Kantele.Combat.Skills.Performs.CaiyanGong.Huan do
       id: "caiyan-gong/huan",
       kind: :perform,
       gates: [
-        {:prepared, "force", "你尚未预备caiyan_gong的huan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

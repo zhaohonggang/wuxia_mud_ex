@@ -182,7 +182,6 @@ defmodule Kantele.Combat.Skills.Performs.FireiceStrike.Binghuo do
       id: "fireice-strike/binghuo",
       kind: :perform,
       gates: [
-        {:prepared, "strike", "你尚未预备fireice_strike的binghuo，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

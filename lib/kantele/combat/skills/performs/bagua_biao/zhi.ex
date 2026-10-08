@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Zhi do
       id: "bagua-biao/zhi",
       kind: :perform,
       gates: [
-        {:prepared, "throwing", "你尚未预备bagua_biao的zhi，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

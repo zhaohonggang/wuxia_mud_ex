@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Fu do
       id: "jiandun-zhusuo/fu",
       kind: :perform,
       gates: [
-        {:prepared, "staff", "你尚未预备jiandun_zhusuo的fu，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

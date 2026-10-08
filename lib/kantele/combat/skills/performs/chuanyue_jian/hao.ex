@@ -176,7 +176,6 @@ defmodule Kantele.Combat.Skills.Performs.ChuanyueJian.Hao do
       id: "chuanyue-jian/hao",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备chuanyue_jian的hao，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

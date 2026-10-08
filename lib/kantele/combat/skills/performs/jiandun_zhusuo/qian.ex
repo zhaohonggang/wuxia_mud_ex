@@ -181,7 +181,6 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Qian do
       id: "jiandun-zhusuo/qian",
       kind: :perform,
       gates: [
-        {:prepared, "staff", "你尚未预备jiandun_zhusuo的qian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -171,7 +171,6 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Jie do
       id: "huashan-jian/jie",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备华山剑法的jie，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

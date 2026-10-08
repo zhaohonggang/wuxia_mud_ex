@@ -155,7 +155,6 @@ defmodule Kantele.Combat.Skills.Performs.LuohanQuan.Xiangmo do
       id: "luohan-quan/xiangmo",
       kind: :perform,
       gates: [
-        {:prepared, "cuff", "你尚未预备luohan_quan的xiangmo，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

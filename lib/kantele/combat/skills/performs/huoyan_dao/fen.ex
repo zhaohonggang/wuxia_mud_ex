@@ -161,7 +161,6 @@ defmodule Kantele.Combat.Skills.Performs.HuoyanDao.Fen do
       id: "huoyan-dao/fen",
       kind: :perform,
       gates: [
-        {:prepared, "strike", "你尚未预备huoyan_dao的fen，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

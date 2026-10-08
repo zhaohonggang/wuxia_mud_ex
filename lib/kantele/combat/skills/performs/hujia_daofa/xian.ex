@@ -182,7 +182,6 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Xian do
       id: "hujia-daofa/xian",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备hujia_daofa的xian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

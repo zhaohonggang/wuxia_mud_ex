@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.QiankunJian.Riyue do
       id: "qiankun-jian/riyue",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备qiankun_jian的riyue，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

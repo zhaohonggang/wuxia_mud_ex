@@ -46,7 +46,6 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Sui do
       id: "taiji_jian/sui",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备taiji_jian的sui，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

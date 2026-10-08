@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Xiangmo do
       id: "luohan-gun/xiangmo",
       kind: :perform,
       gates: [
-        {:prepared, "club", "你尚未预备luohan_gun的xiangmo，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

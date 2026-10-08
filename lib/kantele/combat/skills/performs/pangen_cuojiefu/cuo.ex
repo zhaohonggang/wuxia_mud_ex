@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.PangenCuojiefu.Cuo do
       id: "pangen-cuojiefu/cuo",
       kind: :perform,
       gates: [
-        {:prepared, "hammer", "你尚未预备pangen_cuojiefu的cuo，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

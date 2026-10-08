@@ -48,7 +48,6 @@ defmodule Kantele.Combat.Skills.Performs.CibeiDao.Sheshen do
       id: "cibei_dao/sheshen",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备cibei_dao的sheshen，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

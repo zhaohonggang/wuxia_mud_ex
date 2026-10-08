@@ -166,7 +166,6 @@ defmodule Kantele.Combat.Skills.Performs.ChuangwangDao.Xiong do
       id: "chuangwang-dao/xiong",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备chuangwang_dao的xiong，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

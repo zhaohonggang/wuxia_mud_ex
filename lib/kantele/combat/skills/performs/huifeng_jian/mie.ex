@@ -183,7 +183,6 @@ defmodule Kantele.Combat.Skills.Performs.HuifengJian.Mie do
       id: "huifeng-jian/mie",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备huifeng_jian的mie，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

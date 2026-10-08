@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.BaibianDaxue.Dian do
       id: "baibian-daxue/dian",
       kind: :perform,
       gates: [
-        {:prepared, "staff", "你尚未预备baibian_daxue的dian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.PoguangDao.Bing do
       id: "poguang-dao/bing",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备poguang_dao的bing，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -179,7 +179,6 @@ defmodule Kantele.Combat.Skills.Performs.FanliangyiDao.San do
       id: "fanliangyi-dao/san",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备fanliangyi_dao的san，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

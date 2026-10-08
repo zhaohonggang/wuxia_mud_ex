@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.QixingJian.Xing do
       id: "qixing-jian/xing",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备qixing_jian的xing，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -174,7 +174,6 @@ defmodule Kantele.Combat.Skills.Performs.DuanjiaJian.Lian do
       id: "duanjia_jian/lian",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备duanjia_jian的lian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

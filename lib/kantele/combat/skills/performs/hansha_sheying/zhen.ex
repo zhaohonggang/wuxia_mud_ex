@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.HanshaSheying.Zhen do
       id: "hansha-sheying/zhen",
       kind: :perform,
       gates: [
-        {:prepared, "throwing", "你尚未预备hansha_sheying的zhen，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.MingwangJian.Ruo do
       id: "mingwang-jian/ruo",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备mingwang_jian的ruo，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

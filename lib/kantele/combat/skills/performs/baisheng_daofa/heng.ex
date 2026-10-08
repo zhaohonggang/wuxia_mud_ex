@@ -178,7 +178,6 @@ defmodule Kantele.Combat.Skills.Performs.BaishengDaofa.Heng do
       id: "baisheng-daofa/heng",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备baisheng_daofa的heng，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

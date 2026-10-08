@@ -138,7 +138,6 @@ defmodule Kantele.Combat.Skills.Performs.QiulinShiye.Wu do
       id: "qiulin-shiye/wu",
       kind: :perform,
       gates: [
-        {:prepared, "unarmed", "你尚未预备qiulin_shiye的wu，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

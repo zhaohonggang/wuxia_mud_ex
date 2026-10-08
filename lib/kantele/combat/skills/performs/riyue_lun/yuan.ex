@@ -44,7 +44,6 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Yuan do
       id: "riyue_lun/yuan",
       kind: :perform,
       gates: [
-        {:prepared, "throwing", "你尚未预备riyue_lun的yuan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

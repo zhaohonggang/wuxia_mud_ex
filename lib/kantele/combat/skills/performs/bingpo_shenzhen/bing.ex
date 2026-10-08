@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.BingpoShenzhen.Bing do
       id: "bingpo-shenzhen/bing",
       kind: :perform,
       gates: [
-        {:prepared, "throwing", "你尚未预备bingpo_shenzhen的bing，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

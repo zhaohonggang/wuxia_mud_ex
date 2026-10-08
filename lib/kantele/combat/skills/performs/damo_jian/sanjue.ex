@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Sanjue do
       id: "damo-jian/sanjue",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备damo_jian的sanjue，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

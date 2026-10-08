@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.WudangJian.Sheng do
       id: "wudang-jian/sheng",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备wudang_jian的sheng，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

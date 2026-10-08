@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Qian do
       id: "miaojia-jian/qian",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备miaojia_jian的qian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

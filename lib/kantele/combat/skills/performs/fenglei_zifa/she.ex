@@ -157,7 +157,6 @@ defmodule Kantele.Combat.Skills.Performs.FengleiZifa.She do
       id: "fenglei_zifa/she",
       kind: :perform,
       gates: [
-        {:prepared, "unarmed", "你尚未预备fenglei_zifa的she，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

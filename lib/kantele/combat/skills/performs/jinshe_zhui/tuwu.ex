@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Tuwu do
       id: "jinshe-zhui/tuwu",
       kind: :perform,
       gates: [
-        {:prepared, "throwing", "你尚未预备jinshe_zhui的tuwu，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.LuoyingShenjian.Sui do
       id: "luoying-shenjian/sui",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备luoying_shenjian的sui，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

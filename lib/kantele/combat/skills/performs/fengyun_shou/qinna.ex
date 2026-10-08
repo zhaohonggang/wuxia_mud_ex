@@ -182,7 +182,6 @@ defmodule Kantele.Combat.Skills.Performs.FengyunShou.Qinna do
       id: "fengyun-shou/qinna",
       kind: :perform,
       gates: [
-        {:prepared, "whip", "你尚未预备fengyun_shou的qinna，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

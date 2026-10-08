@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.JingyueBifa.Ci do
       id: "jingyue-bifa/ci",
       kind: :perform,
       gates: [
-        {:prepared, "dagger", "你尚未预备jingyue_bifa的ci，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

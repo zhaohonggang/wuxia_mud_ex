@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.SuqinBeijian.Can do
       id: "suqin-beijian/can",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备suqin_beijian的can，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

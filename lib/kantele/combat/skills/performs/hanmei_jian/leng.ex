@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.HanmeiJian.Leng do
       id: "hanmei-jian/leng",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备hanmei_jian的leng，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -182,7 +182,6 @@ defmodule Kantele.Combat.Skills.Performs.FeilongZhang.Fei do
       id: "feilong-zhang/fei",
       kind: :perform,
       gates: [
-        {:prepared, "staff", "你尚未预备feilong_zhang的fei，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

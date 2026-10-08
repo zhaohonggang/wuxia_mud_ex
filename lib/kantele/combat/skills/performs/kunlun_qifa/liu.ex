@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.KunlunQifa.Liu do
       id: "kunlun-qifa/liu",
       kind: :perform,
       gates: [
-        {:prepared, "force", "你尚未预备kunlun_qifa的liu，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

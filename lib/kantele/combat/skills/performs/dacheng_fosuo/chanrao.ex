@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.DachengFosuo.Chanrao do
       id: "dacheng-fosuo/chanrao",
       kind: :perform,
       gates: [
-        {:prepared, "whip", "你尚未预备dacheng_fosuo的chanrao，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

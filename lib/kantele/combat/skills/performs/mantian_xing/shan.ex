@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Shan do
       id: "mantian-xing/shan",
       kind: :perform,
       gates: [
-        {:prepared, "throwing", "你尚未预备mantian_xing的shan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

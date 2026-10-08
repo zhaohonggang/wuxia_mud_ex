@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.ShangjiaDao.Juan do
       id: "shangjia-dao/juan",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备shangjia_dao的juan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

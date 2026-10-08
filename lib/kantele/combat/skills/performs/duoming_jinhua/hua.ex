@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.DuomingJinhua.Hua do
       id: "duoming-jinhua/hua",
       kind: :perform,
       gates: [
-        {:prepared, "throwing", "你尚未预备duoming_jinhua的hua，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

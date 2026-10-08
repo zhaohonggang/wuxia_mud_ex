@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.FeixingShu.Hua do
       id: "feixing-shu/hua",
       kind: :perform,
       gates: [
-        {:prepared, "throwing", "你尚未预备feixing_shu的hua，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

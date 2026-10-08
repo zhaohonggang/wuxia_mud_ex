@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.MantianhuayuZhen.Zheng do
       id: "mantianhuayu-zhen/zheng",
       kind: :perform,
       gates: [
-        {:prepared, "force", "你尚未预备mantianhuayu_zhen的zheng，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

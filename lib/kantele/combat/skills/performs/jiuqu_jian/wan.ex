@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.JiuquJian.Wan do
       id: "jiuqu-jian/wan",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备jiuqu_jian的wan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -42,7 +42,6 @@ defmodule Kantele.Combat.Skills.Performs.JingangBuhuaiti.Jingang do
       id: "jingang_buhuaiti/jingang",
       kind: :perform,
       gates: [
-        {:prepared, "force", "你尚未预备jingang_buhuaiti的jingang，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

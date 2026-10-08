@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.LuoyunDao.Tian do
       id: "luoyun-dao/tian",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备luoyun_dao的tian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

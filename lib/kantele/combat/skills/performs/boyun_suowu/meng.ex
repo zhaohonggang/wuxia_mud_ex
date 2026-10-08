@@ -152,7 +152,6 @@ defmodule Kantele.Combat.Skills.Performs.BoyunSuowu.Meng do
       id: "boyun_suowu/meng",
       kind: :perform,
       gates: [
-        {:prepared, "whip", "你尚未预备boyun_suowu的meng，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

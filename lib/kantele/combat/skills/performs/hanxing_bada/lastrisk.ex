@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.HanxingBada.Lastrisk do
       id: "hanxing-bada/lastrisk",
       kind: :perform,
       gates: [
-        {:prepared, "strike", "你尚未预备hanxing_bada的lastrisk，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

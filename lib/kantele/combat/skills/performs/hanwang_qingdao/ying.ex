@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.HanwangQingdao.Ying do
       id: "hanwang-qingdao/ying",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备hanwang_qingdao的ying，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -176,7 +176,6 @@ defmodule Kantele.Combat.Skills.Performs.DandingDao.Kou do
       id: "danding-dao/kou",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备danding_dao的kou，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

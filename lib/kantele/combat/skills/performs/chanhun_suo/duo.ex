@@ -176,7 +176,6 @@ defmodule Kantele.Combat.Skills.Performs.ChanhunSuo.Duo do
       id: "chanhun-suo/duo",
       kind: :perform,
       gates: [
-        {:prepared, "whip", "你尚未预备chanhun_suo的duo，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

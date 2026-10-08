@@ -177,7 +177,6 @@ defmodule Kantele.Combat.Skills.Performs.ChuanxinZhang.Zhui do
       id: "chuanxin-zhang/zhui",
       kind: :perform,
       gates: [
-        {:prepared, "strike", "你尚未预备chuanxin_zhang的zhui，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

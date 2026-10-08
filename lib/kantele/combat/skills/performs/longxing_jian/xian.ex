@@ -42,7 +42,6 @@ defmodule Kantele.Combat.Skills.Performs.LongxingJian.Xian do
       id: "longxing_jian/xian",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备longxing_jian的xian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

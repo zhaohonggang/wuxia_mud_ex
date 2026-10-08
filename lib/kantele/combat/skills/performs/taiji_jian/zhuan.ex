@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Zhuan do
       id: "taiji-jian/zhuan",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备taiji_jian的zhuan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

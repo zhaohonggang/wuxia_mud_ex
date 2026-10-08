@@ -173,7 +173,6 @@ defmodule Kantele.Combat.Skills.Performs.HuilongBifa.Cang do
       id: "huilong-bifa/cang",
       kind: :perform,
       gates: [
-        {:prepared, "throwing", "你尚未预备huilong_bifa的cang，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

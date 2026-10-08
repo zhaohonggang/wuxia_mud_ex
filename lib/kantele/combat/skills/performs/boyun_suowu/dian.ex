@@ -140,7 +140,6 @@ defmodule Kantele.Combat.Skills.Performs.BoyunSuowu.Dian do
       id: "boyun_suowu/dian",
       kind: :perform,
       gates: [
-        {:prepared, "whip", "你尚未预备boyun_suowu的dian，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

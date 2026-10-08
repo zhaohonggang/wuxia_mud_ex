@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.PanlongSuo.Chan do
       id: "panlong-suo/chan",
       kind: :perform,
       gates: [
-        {:prepared, "whip", "你尚未预备panlong_suo的chan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

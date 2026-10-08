@@ -155,7 +155,6 @@ defmodule Kantele.Combat.Skills.Performs.Houquan.Zhen do
       id: "houquan/zhen",
       kind: :perform,
       gates: [
-        {:prepared, "cuff", "你尚未预备houquan的zhen，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

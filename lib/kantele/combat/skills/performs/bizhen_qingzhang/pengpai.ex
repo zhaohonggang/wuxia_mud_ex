@@ -176,7 +176,6 @@ defmodule Kantele.Combat.Skills.Performs.BizhenQingzhang.Pengpai do
       id: "bizhen-qingzhang/pengpai",
       kind: :perform,
       gates: [
-        {:prepared, "strike", "你尚未预备bizhen_qingzhang的pengpai，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

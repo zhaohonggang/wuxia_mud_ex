@@ -156,7 +156,6 @@ defmodule Kantele.Combat.Skills.Performs.FanliangyiDao.Makearray do
       id: "fanliangyi_dao/makearray",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备fanliangyi_dao的makearray，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

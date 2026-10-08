@@ -176,7 +176,6 @@ defmodule Kantele.Combat.Skills.Performs.DagouBang.Chuo do
       id: "dagou-bang/chuo",
       kind: :perform,
       gates: [
-        {:prepared, "staff", "你尚未预备dagou_bang的chuo，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Ding do
       id: "quanzhen-jian/ding",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备quanzhen_jian的ding，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

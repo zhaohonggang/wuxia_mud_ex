@@ -176,7 +176,6 @@ defmodule Kantele.Combat.Skills.Performs.DaliChu.Hong do
       id: "dali-chu/hong",
       kind: :perform,
       gates: [
-        {:prepared, "force", "你尚未预备dali_chu的hong，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

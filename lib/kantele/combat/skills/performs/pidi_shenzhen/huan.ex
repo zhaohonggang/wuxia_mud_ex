@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.PidiShenzhen.Huan do
       id: "pidi-shenzhen/huan",
       kind: :perform,
       gates: [
-        {:prepared, "throwing", "你尚未预备pidi_shenzhen的huan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

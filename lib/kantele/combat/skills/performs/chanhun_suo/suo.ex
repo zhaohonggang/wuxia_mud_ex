@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.ChanhunSuo.Suo do
       id: "chanhun-suo/suo",
       kind: :perform,
       gates: [
-        {:prepared, "whip", "你尚未预备chanhun_suo的suo，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

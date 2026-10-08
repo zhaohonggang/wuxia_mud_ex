@@ -182,7 +182,6 @@ defmodule Kantele.Combat.Skills.Performs.HongyeDaofa.Leiting do
       id: "hongye-daofa/leiting",
       kind: :perform,
       gates: [
-        {:prepared, "blade", "你尚未预备hongye_daofa的leiting，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

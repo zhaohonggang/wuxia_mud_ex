@@ -352,7 +352,6 @@ defp check_handing(character) do
       id: "chousui-zhang/dan",
       kind: :perform,
       gates: [
-        {:prepared, "strike", "你尚未预备抽髓掌的dan，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

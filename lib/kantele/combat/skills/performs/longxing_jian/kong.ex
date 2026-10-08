@@ -165,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.LongxingJian.Kong do
       id: "longxing-jian/kong",
       kind: :perform,
       gates: [
-        {:prepared, "sword", "你尚未预备longxing_jian的kong，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

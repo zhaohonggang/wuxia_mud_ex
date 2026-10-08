@@ -154,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.Sougu.Muyeyingyang do
       id: "sougu/muyeyingyang",
       kind: :perform,
       gates: [
-        {:prepared, "finger", "你尚未预备sougu的muyeyingyang，无法施展。\n"}
       ],
       costs: %{},
       effects: [],

@@ -171,7 +171,6 @@ defmodule Kantele.Combat.Skills.Performs.JimieZhua.Wuwo do
       id: "jimie-zhua/wuwo",
       kind: :perform,
       gates: [
-        {:prepared, "claw", "你尚未预备jimie_zhua的wuwo，无法施展。\n"}
       ],
       costs: %{},
       effects: [],
