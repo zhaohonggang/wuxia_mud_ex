@@ -23,6 +23,16 @@ defmodule Kantele.Character.PrepareCommandTest do
     }
   end
 
+  defp prepared_player() do
+    learned = Stats.learn_perform(Stats.new(), "liuxin-jian/liu")
+    {:ok, stats} = Stats.prepare_perform(learned, "sword", "liuxin-jian/liu")
+    %{player() | meta: %{player().meta | stats: stats}}
+  end
+
+  defp learned_player() do
+    %{player() | meta: %{player().meta | stats: Stats.learn_perform(player().meta.stats, "liuxin-jian/liu")}}
+  end
+
   defp output_text(conn) do
     conn.output
     |> Enum.flat_map(fn
@@ -88,6 +98,44 @@ defmodule Kantele.Character.PrepareCommandTest do
       conn = PrepareCommand.run(build_conn(player()), %{"action" => "finger strike"})
       text = output_text(conn)
       assert text =~ "暂未实装组合逻辑"
+    end
+
+    test "D4: 预备已学的绝招成功" do
+      conn = PrepareCommand.run(build_conn(learned_player()), %{"action" => "liuxin-jian liu"})
+      text = output_text(conn)
+      assert text =~ "预备成功"
+      assert conn.private.update_character.meta.stats.prepared["sword"] == "liuxin-jian/liu"
+    end
+
+    test "D4: 预备未学的绝招报错" do
+      conn = PrepareCommand.run(build_conn(player()), %{"action" => "liuxin-jian liu"})
+      text = output_text(conn)
+      assert text =~ "你尚未学会 liuxin-jian/liu"
+    end
+
+    test "D4: 预备未知技能报错" do
+      conn = PrepareCommand.run(build_conn(player()), %{"action" => "bogus-x lian"})
+      text = output_text(conn)
+      assert text =~ "未知的技能"
+    end
+
+    test "D4: 查看技能预备状态" do
+      conn = PrepareCommand.run(build_conn(prepared_player()), %{"action" => "liuxin-jian"})
+      text = output_text(conn)
+      assert text =~ "sword: liuxin-jian/liu"
+    end
+
+    test "D4: 未预备时查看技能状态" do
+      conn = PrepareCommand.run(build_conn(learned_player()), %{"action" => "liuxin-jian"})
+      text = output_text(conn)
+      assert text =~ "没有预备任何绝招"
+    end
+
+    test "D4: 取消指定技能预备" do
+      conn = PrepareCommand.run(build_conn(prepared_player()), %{"action" => "liuxin-jian none"})
+      text = output_text(conn)
+      assert text =~ "已取消 liuxin-jian 的预备"
+      assert conn.private.update_character.meta.stats.prepared == %{}
     end
   end
 end

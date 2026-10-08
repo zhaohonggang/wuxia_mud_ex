@@ -61,6 +61,7 @@ defmodule Kantele.Combat.Performs.Spec do
   @typedoc "门槛项：`{类型, 参数..., 失败文案}`"
   @type gate ::
           {:perform_known, perform_id :: String.t(), String.t()}
+          | {:prepared, usage :: String.t(), String.t()}
           | {:skill_min, skill_id :: String.t(), non_neg_integer(), String.t()}
           | {:mapped, usage :: String.t(), skill_id :: String.t(), String.t()}
           | {:neili_min, non_neg_integer(), String.t()}

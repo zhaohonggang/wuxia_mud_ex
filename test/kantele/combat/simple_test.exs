@@ -84,6 +84,16 @@ defmodule Kantele.Combat.SimpleTest.LocalSpecExert do
   end
 end
 
+defmodule Kantele.Combat.SimpleTest.PreparedExert do
+  use Kantele.Combat.Performs.Simple,
+    spec: %Kantele.Combat.Performs.Spec{
+      id: "test/prepared",
+      gates: [{:prepared, "sword", "你尚未预备任何剑术绝招。\n"}],
+      effects: [{:add, :qi, 5}],
+      message: "$N祭出预备绝招。\n"
+    }
+end
+
 defmodule Kantele.Combat.SimpleTest do
   use ExUnit.Case, async: true
 
@@ -97,6 +107,7 @@ defmodule Kantele.Combat.SimpleTest do
   alias Kantele.Combat.SimpleTest.CustomEffectExert
   alias Kantele.Combat.SimpleTest.CustomGateExert
   alias Kantele.Combat.SimpleTest.LocalSpecExert
+  alias Kantele.Combat.SimpleTest.PreparedExert
   alias Kantele.Combat.SimpleTest.ScaledExert
   alias Kantele.Combat.SimpleTest.SetNeiliExert
 
@@ -252,6 +263,28 @@ defmodule Kantele.Combat.SimpleTest do
       assert output_text(fail) =~ "内力不足五千"
       assert is_nil(fail.private.update_character)
     end
+
+    test "prepared 门槛：未预备拒绝，预备通过" do
+      conn = PreparedExert.run(build_conn(player([])))
+      assert output_text(conn) =~ "你尚未预备任何剑术绝招"
+      assert is_nil(conn.private.update_character)
+
+stats =
+        Kantele.Character.Stats.new()
+        |> Kantele.Character.Stats.learn_perform("liuxin-jian/liu")
+        |> prepare_sword_liu()
+
+      character = %{
+        player([])
+        | meta: %{
+            player([]).meta
+            | stats: stats
+          }
+      }
+
+      conn = PreparedExert.run(build_conn(character))
+      assert conn.private.update_character.meta.vitals.qi == Vitals.new().qi + 5
+    end
   end
 
   describe "自定义效果与目标" do
@@ -289,5 +322,10 @@ defmodule Kantele.Combat.SimpleTest do
       conn = Simple.run(build_conn(player([])), spec, fn _ -> 1 end, target)
       assert published_text(conn) =~ "目标=李四"
     end
+  end
+
+  defp prepare_sword_liu(stats) do
+    {:ok, stats} = Kantele.Character.Stats.prepare_perform(stats, "sword", "liuxin-jian/liu")
+    stats
   end
 end

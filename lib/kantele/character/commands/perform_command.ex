@@ -47,7 +47,57 @@ defmodule Kantele.Character.PerformCommand do
             render_error(conn, "这项武功中没有这一招。\n")
 
           perform_module ->
-            perform_module.run(conn)
+            # D4: T5 需要 prepare_skill 预备，检查 prepared 状态
+            case check_prepared(conn, perform_module) do
+              {:ok, _} -> perform_module.run(conn)
+              {:error, reason} -> render_error(conn, reason)
+            end
+        end
+    end
+  end
+
+  defp check_prepared(conn, perform_module) do
+    # 检查该绝招是否需要 prepare_skill 预备（查看 spec 的 gates）
+    spec =
+      if Code.ensure_loaded?(perform_module) and function_exported?(perform_module, :spec, 0) do
+        perform_module.spec()
+      else
+        %{}
+      end
+
+    gates = spec.gates || []
+
+    case Enum.find(gates, fn gate -> elem(gate, 0) == :prepared end) do
+      nil ->
+        # 不需要 prepare，直接通过
+        {:ok, :no_prepare_required}
+
+      {_, usage, _message} ->
+        # 需要该用法的预备
+        perform_id = perform_id_of(perform_module)
+
+        case Stats.prepared_perform(conn.character.meta.stats, usage) do
+          nil ->
+            {:error, "你尚未预备该招式用法（#{usage}），请先使用 prepare 命令预备。\n"}
+
+          ^perform_id ->
+            {:ok, :prepared}
+
+          _ ->
+            {:error, "预备的绝招与当前招式不符。\n"}
+        end
+    end
+  end
+
+  defp perform_id_of(perform_module) do
+    case perform_module.__info__(:attributes)[:perform_id] do
+      [id] when is_binary(id) ->
+        id
+
+      _ ->
+        if Code.ensure_loaded?(perform_module) and function_exported?(perform_module, :spec, 0) do
+          s = perform_module.spec()
+          s.id
         end
     end
   end

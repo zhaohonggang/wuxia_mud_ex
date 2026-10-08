@@ -146,6 +146,14 @@ defmodule Kantele.Combat.Performs.Simple do
   defp check_gate({:perform_known, perform_id, message}, ctx),
     do: gate(Stats.perform_known?(ctx.stats, perform_id), message)
 
+  defp check_gate({:prepared, usage, message}, ctx) do
+    # D4: prepare_skill 预备的绝招才可施放；是否为本招由 perform 命令精确校验
+    case Stats.prepared_perform(ctx.stats, usage) do
+      nil -> {:error, message}
+      _ -> :ok
+    end
+  end
+
   defp check_gate({:skill_min, skill_id, needed, message}, ctx),
     do: gate(Stats.skill(ctx.stats, skill_id) >= needed, message)
 

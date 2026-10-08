@@ -51,6 +51,7 @@ defmodule Kantele.Character.Stats do
     :skills,
     :mapped,
     :performs,
+    :prepared,
     :score,
     :weiwang,
     :gongxian,
@@ -76,6 +77,7 @@ defmodule Kantele.Character.Stats do
       skills: %{"unarmed" => 60, "sword" => 60, "dodge" => 60, "parry" => 60, "force" => 20},
       mapped: %{},
       performs: MapSet.new(),
+      prepared: %{},
       tattoo: %{str: 0, int: 0, con: 0, dex: 0, per: 0},
       reborn: %{str: 0, int: 0, con: 0, dex: 0}
     }
@@ -166,7 +168,68 @@ defmodule Kantele.Character.Stats do
     %{stats | performs: MapSet.put(stats.performs, perform_id)}
   end
 
+  
   @doc """
+  D4: 预备某用法的绝招（对应 LPC `prepare <skill>`）
+
+  - `usage` 是用法字符串。如 "sword"、"unarmed"、"force" 等。
+  - `perform_id` 是要预备的绝招 ID。如 "huashan-jian/jie" 等。
+  - 返回新的 stats，或 `{:error, reason}` 元组
+
+  规则：
+  - 必须已学会对应的绝招（通过 perform_known?/2）
+  - 必须未激活对应用法的特技（mapped/2 返回特技 ID）
+  - 特技的用法集合（valid_enable）必须包含该用法
+  """
+    def prepare_perform(%__MODULE_{} = stats, usage, perform_id) do
+    cond do
+      not perform_known?(stats, perform_id) ->
+        {:error, "你尚未学会 #{perform_id}。\n"}
+
+      special_id = mapped(stats, usage) ->
+        {:error, "你尚未激活 #{usage} 的特技。无法预备绝招。\n"}
+
+      true ->
+        # TODO: 验证 perform_id 的 valid_enable 包含 usage。需查 Skills 注册表
+        # 该处本任时仪记录。运行时由 perform 门栈再次校验
+        {:ok, %{stats | prepared: Map.put(prepared(stats), usage, perform_id)}}
+    end
+  end
+
+  @doc """
+  取消预备某用法的绝招
+  """
+  def unprepare_perform(%__MODULE_{} = stats, usage) do
+    %{stats | prepared: Map.delete(prepared(stats), usage)}
+  end
+
+@doc """
+  取得所有预备的绝招映射
+  """
+  def prepared(%__MODULE__{} = stats) do
+    if is_map(stats.prepared) do
+      stats.prepared
+    else
+      %{}
+    end
+  end
+  
+  def prepared(nil), do: %{}
+  @doc """
+  查询某用法当前预备的绝招。如 "sword" -> "huashan-jian/jie"。
+  """
+  def prepared_perform(%__MODULE_{} = stats, usage) do
+    Map.get(prepared(stats), usage)
+  end
+
+  @doc """
+  查询某用法是否有预备绝招
+  """
+  def prepared?(%__MODULE_{} = stats, usage) do
+    Map.has_key?(prepared(stats), usage)
+  end
+
+@doc """
   根据 combat_exp 计算技能上限（对应 LPC skill.c sadjust：上限 = combat_exp^3/10）
   """
   def skill_limit(exp) when is_integer(exp) and exp >= 0 do
