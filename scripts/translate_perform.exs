@@ -100,9 +100,7 @@ defmodule Scripts.TranslatePerform do
   end
 
   defp reduce_skill_dir(skill_dir, acc, out_root) do
-    skill_dir
-    |> Path.join("*.c")
-    |> Path.wildcard()
+    Path.wildcard(skill_dir <> "/**/*.c")
     |> Enum.sort()
     |> Enum.reduce(acc, &reduce_c_file(&1, &2, out_root))
   end
