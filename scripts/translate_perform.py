@@ -70,6 +70,17 @@ class TranslatePerform:
         self.ahinfo_re = re.compile(r'COMBAT_D->(clear_ahinfo|query_ahinfo)\(')
         self.neili_query_re = re.compile(r'query\("(neili|max_neili|qi|max_qi|jing|max_jing)"')
         self.query_amount_gate_re = re.compile(r'query_amount\(\)\s*<\s*(\d+)')
+
+        # Patterns for misc gates/formulas lost by the first gap pass (audit)
+        self.skill_type_eq_re = re.compile(r'query\("skill_type"\)\s*==\s*"(\w+)"')
+        self.combat_exp_formula_re = re.compile(
+            r'\b(\w+)\s*=\s*(to_int\(pow\([^;]*?query\("combat_exp"[^;]*?\));')
+        self.combat_exp_inline_re = re.compile(
+            r'random\((\w+)\)\s*>\s*[^;]*query\("combat_exp"\)')
+        self.reset_action_re = re.compile(r'->reset_action\(')
+        self.wield_re = re.compile(r'->(wield|unwield|equip|unequip)\(')
+        self.improve_skill_re = re.compile(r'improve_skill\(')
+        self.misc_gate_re = re.compile(r'query\("(gender|age|family|class)"')
         
     def classify(self, src: Path) -> Tuple[str, Optional[str]]:
         text = src.read_text(encoding='utf-8')
@@ -156,6 +167,14 @@ class TranslatePerform:
             'ahinfo': self.extract_ahinfo(text),
             'resource_queries': self.dedup(self.neili_query_re.findall(text)),
             'amount_gates': self.dedup(self.query_amount_gate_re.findall(text)),
+            # Audit additions: misc gates / formulas
+            'weapon_forbidden': self.dedup(self.skill_type_eq_re.findall(text)),
+            'combat_exp_formulas': self.pairs(self.dedup(self.combat_exp_formula_re.findall(text))),
+            'combat_exp_inline': self.dedup(self.combat_exp_inline_re.findall(text)),
+            'reset_actions': self.reset_action_re.search(text) is not None,
+            'wield_actions': self.dedup(self.wield_re.findall(text)),
+            'improve_skills': self.dedup(self.improve_skill_re.findall(text)),
+            'misc_gates': self.dedup(self.misc_gate_re.findall(text)),
         }
 
     def extract_weapon_type(self, text: str) -> Optional[str]:
@@ -562,6 +581,21 @@ class TranslatePerform:
             enhanced['resource_queries'] = data['resource_queries']
         if data.get('amount_gates'):
             enhanced['amount_gates'] = data['amount_gates']
+        # Audit additions
+        if data.get('weapon_forbidden'):
+            enhanced['weapon_forbidden'] = data['weapon_forbidden']
+        if data.get('combat_exp_formulas'):
+            enhanced['combat_exp_formulas'] = data['combat_exp_formulas']
+        if data.get('combat_exp_inline'):
+            enhanced['combat_exp_inline'] = data['combat_exp_inline']
+        if data.get('reset_actions'):
+            enhanced['reset_action'] = True
+        if data.get('wield_actions'):
+            enhanced['wield_actions'] = data['wield_actions']
+        if data.get('improve_skills'):
+            enhanced['improve_skill'] = data['improve_skills']
+        if data.get('misc_gates'):
+            enhanced['misc_gates'] = data['misc_gates']
 
         enhanced_str = self.comment_block(elixir_fmt(enhanced)) if enhanced else ''
 
