@@ -42,18 +42,4 @@ defmodule Kantele.Combat.Skills.Performs.CibeiDao.Sheshen do
   defp weapon_blade?(ctx) do
     match?(%{skill_type: "blade"}, Combat.weapon(ctx.combat))
   end
-  @doc "声明式规格（用于 prepare_skill 门槛校验）"
-  def spec() do
-    %Kantele.Combat.Performs.Spec{
-      id: "cibei_dao/sheshen",
-      kind: :perform,
-      gates: [
-      ],
-      costs: %{},
-      effects: [],
-      busy: 0
-    }
-  end
-
-
 end

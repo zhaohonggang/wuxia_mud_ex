@@ -150,18 +150,4 @@ defmodule Kantele.Combat.Skills.Performs.FanliangyiDao.Makearray do
   defp ref(character) do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
-  @doc "声明式规格（用于 prepare_skill 门槛校验）"
-  def spec() do
-    %Kantele.Combat.Performs.Spec{
-      id: "fanliangyi_dao/makearray",
-      kind: :perform,
-      gates: [
-      ],
-      costs: %{},
-      effects: [],
-      busy: 0
-    }
-  end
-
-
 end

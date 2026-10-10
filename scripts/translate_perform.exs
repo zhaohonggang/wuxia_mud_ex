@@ -99,10 +99,21 @@ defmodule Scripts.TranslatePerform do
     %{written: Enum.sort(written), skipped: Enum.sort(skipped)}
   end
 
-  defp reduce_skill_dir(skill_dir, acc, out_root) do
-    Path.wildcard(skill_dir <> "/**/*.c")
-    |> Enum.sort()
-    |> Enum.reduce(acc, &reduce_c_file(&1, &2, out_root))
+defp reduce_skill_dir(skill_dir, acc, out_root) do
+    # Path.wildcard doesn't support ** for recursive glob
+    # Use shell find command to recursively find all .c files
+    case System.cmd("find", [skill_dir, "-name", "*.c", "-type", "f"], stderr_to_stdout: true) do
+      {files_out, 0} ->
+        files_out
+        |> String.trim()
+        |> String.split("\n", trim: true)
+        |> Enum.sort()
+        |> Enum.reduce(acc, &reduce_c_file(&1, &2, out_root))
+
+      {error_out, _code} ->
+        IO.puts("find failed for #{skill_dir}: #{error_out}")
+        acc
+    end
   end
 
   defp reduce_c_file(c_file, {written, skipped}, out_root) do

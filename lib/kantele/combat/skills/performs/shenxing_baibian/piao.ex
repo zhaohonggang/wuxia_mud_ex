@@ -30,18 +30,4 @@ defmodule Kantele.Combat.Skills.Performs.ShenxingBaibian.Piao do
       message:
         "$N将全身的内力旋转震动，身形东一溜，西一晃，忽又左右摇摆作势欲发，虚虚实实，飘渺不定。\n"
     }
-  @doc "声明式规格（用于 prepare_skill 门槛校验）"
-  def spec() do
-    %Kantele.Combat.Performs.Spec{
-      id: "shenxing_baibian/piao",
-      kind: :perform,
-      gates: [
-      ],
-      costs: %{},
-      effects: [],
-      busy: 0
-    }
-  end
-
-
 end

@@ -40,18 +40,4 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Sui do
   alias Kantele.Character.Combat
 
   defp weapon_sword?(ctx), do: match?(%{skill_type: "sword"}, Combat.weapon(ctx.combat))
-  @doc "声明式规格（用于 prepare_skill 门槛校验）"
-  def spec() do
-    %Kantele.Combat.Performs.Spec{
-      id: "taiji_jian/sui",
-      kind: :perform,
-      gates: [
-      ],
-      costs: %{},
-      effects: [],
-      busy: 0
-    }
-  end
-
-
 end

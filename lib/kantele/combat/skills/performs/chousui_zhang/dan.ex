@@ -346,18 +346,4 @@ defp check_handing(character) do
         end
     end
   end
-  @doc "声明式规格（用于 prepare_skill 门槛校验）"
-  def spec() do
-    %Kantele.Combat.Performs.Spec{
-      id: "chousui-zhang/dan",
-      kind: :perform,
-      gates: [
-      ],
-      costs: %{},
-      effects: [],
-      busy: 0
-    }
-  end
-
-
  end

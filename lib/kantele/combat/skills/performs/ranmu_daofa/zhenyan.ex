@@ -49,18 +49,4 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Zhenyan do
 
   defp shaolin_force?(ctx),
     do: Stats.mapped(ctx.stats, "force") in ["hunyuan-yiqi", "yijinjing", "luohan-fumogong"]
-  @doc "声明式规格（用于 prepare_skill 门槛校验）"
-  def spec() do
-    %Kantele.Combat.Performs.Spec{
-      id: "ranmu_daofa/zhenyan",
-      kind: :perform,
-      gates: [
-      ],
-      costs: %{},
-      effects: [],
-      busy: 0
-    }
-  end
-
-
 end

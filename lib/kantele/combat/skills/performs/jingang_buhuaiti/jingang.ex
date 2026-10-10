@@ -36,18 +36,4 @@ defmodule Kantele.Combat.Skills.Performs.JingangBuhuaiti.Jingang do
     }
 
   defp total(), do: {:add, {:skill, "force"}, {:div, {:skill, "jingang-buhuaiti"}, 2}}
-  @doc "声明式规格（用于 prepare_skill 门槛校验）"
-  def spec() do
-    %Kantele.Combat.Performs.Spec{
-      id: "jingang_buhuaiti/jingang",
-      kind: :perform,
-      gates: [
-      ],
-      costs: %{},
-      effects: [],
-      busy: 0
-    }
-  end
-
-
 end

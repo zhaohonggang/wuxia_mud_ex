@@ -38,18 +38,4 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Yuan do
   alias Kantele.Character.Combat
 
   defp weapon_hammer?(ctx), do: match?(%{skill_type: "hammer"}, Combat.weapon(ctx.combat))
-  @doc "声明式规格（用于 prepare_skill 门槛校验）"
-  def spec() do
-    %Kantele.Combat.Performs.Spec{
-      id: "riyue_lun/yuan",
-      kind: :perform,
-      gates: [
-      ],
-      costs: %{},
-      effects: [],
-      busy: 0
-    }
-  end
-
-
 end
