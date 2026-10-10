@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Da do
   @moduledoc """
-  perform「da」（source shedu-qiqiao/da.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「da」（source shedu-qiqiao/da.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,27 +26,22 @@ defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Da do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"lvl", "force"}, {"lvl", "shedu-qiqiao"}],
-      #     level_gates: [{"force", "30"}, {"shedu-qiqiao", "20"}],
-      #     map_gates: [],
-      #     prepared_gates: [],
-      #     resource_gates: [{"neili", "100"}],
-      #     var_gates: []
-      #   }
+      #   %{"assign_refs": [{"lvl", "force"}, {"lvl", "shedu-qiqiao"}], "level_gates": [{"force", "30"}, {"shedu-qiqiao", "20"}], "map_gates": [], "prepared_gates": [], "resource_gates": [{"neili", "100"}], "var_gates": []}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你要打哪条蛇？\n", "看清楚些，那不是蛇，你瞎打什么？\n", "那条蛇暂时不会动弹了，你不必再打了。\n", "你的蛇毒奇巧还不够娴熟，不能打蛇。\n", "你的内功的修为不够，不能打蛇。\n", "你现在的内力不够了。\n"], "color_codes": ["HIC", "HIM", "HIR", "HIY", "NOR", "WHT"], "combat_exp_inline": ["lvl"], "combat_messages": %{"fail": [], "other": ["HIC "\n$N" HIC "舞动手中的" + weapon->name() +
+      #                         HIC "，朝着" + target->name() + HIC "的七寸打"
+      #                         "了过去。\n" NOR", "HIC "\n$N" HIC "伸出双指，出指如风，迅疾无比的"
+      #                         "朝着" + target->name() + HIC "的七寸点了过去"
+      #                         "。\n" NOR", "= HIY "结果只听“啪”的一声，正打在" + target->name() +
+      #                          HIY "的七寸上。\n" NOR", "= HIM "只见" + target->name() + HIM
+      #                                  "身子轻轻晃动几下，就不再动弹了。\n" NOR", "= WHT "然而" + target->name() + WHT "身子一闪，躲了过去。\n\n" NOR"], "success": ["= HIR + "哪里想到" + target->name() +
+      #                                  HIR "挨了这一击，竟然若无其事，顿时一个翻"
+      #                                  "身，直扑向$N" HIR "！\n\n" NOR"]}, "resource_adds": [{"neili", "-50"}], "resource_queries": ["neili"], "target_logic": %{"requires_fighting": false, "requires_living": true, "uses_offensive_target": false}}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-50"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(2);"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-50"}], "affect_by": [], "apply_adds": [], "busy_lines": ["me->start_busy(2);"], "remote_damage": false, "set_flags": [], "temp_set": []}
       #   - me->start_busy(2);
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)

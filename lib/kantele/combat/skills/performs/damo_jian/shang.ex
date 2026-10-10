@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.DamoJian.Shang do
   @moduledoc """
-  perform「达摩伤神剑」（source damo-jian/shang.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「达摩伤神剑」（source damo-jian/shang.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,27 +26,23 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Shang do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"ap", "sword"}, {"dp", "force"}, {"lvl", "damo-jian"}],
-      #     level_gates: [{"damo-jian", "200"}],
-      #     map_gates: [{"sword", "damo-jian"}],
-      #     prepared_gates: [],
-      #     resource_gates: [{"max_neili", "2000"}, {"neili", "300"}],
-      #     var_gates: []
-      #   }
+      #   %{"assign_refs": [{"ap", "sword"}, {"dp", "force"}, {"lvl", "damo-jian"}], "level_gates": [{"damo-jian", "200"}], "map_gates": [{"sword", "damo-jian"}], "prepared_gates": [], "resource_gates": [{"max_neili", "2000"}, {"neili", "300"}], "var_gates": []}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"affect_by_callbacks": [%{"buff_name": "damo_shangshen", "duration_formula": "5 + random(lvl / 20)", "id_formula": "me->query("id")", "level_formula": "lvl + random(lvl)"}], "all_fail_messages": ["你所使用的外功中没有这种功能。\n", "你所使用的武器不对，难以施展", "你达摩剑法不够娴熟，难以施展", "你没有激发达摩剑法，难以施展", "你的内力修为不够，难以施展", "你现在的真气不足，难以施展", "对方都已经这样了，用不着这么费力吧？\n"], "ap_dp_formulas": %{"ap_formula": "me->query_skill("sword") + me->query_skill("force")", "dp_formula": "target->query_skill("force") * 2"}, "callback_functions": [%{"body": "int lvl = me->query_skill("damo-jian", 1);
+      #   
+      #           target->affect_by("damo_shangshen",
+      #                   ([ "level"    : lvl + random(lvl),
+      #                      "id"       : me->query("id"),
+      #               ", "name": "final", "params": "object me, object target, int damage", "return_type": "string"}], "color_codes": ["CYN", "HIG", "HIR", "NOR"], "combat_messages": %{"fail": ["= CYN "可是$n" CYN "内力深厚，使得$P"
+      #                          CYN "这一招没有起到任何作用。\n" NOR"], "other": ["HIG "$N" HIG "将手中" + weapon->name() +
+      #                 HIG "轻轻一振，剑脊叮叮作响，无形剑气直指$n"
+      #                 HIG "气海要穴。\n" NOR", "= COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 30,
+      #                                              (: final, me, target, damage :))"], "success": []}, "damage_formula": %{"formula": "ap / 3 + random(ap /3)"}, "do_damage_calls": [%{"attack_type": "WEAPON_ATTACK", "callback": "final", "damage_factor": 30, "damage_var": "damage"}], "hit_formula": %{"left_side": "ap / 2 + random(ap)", "operator": ">", "right_side": "dp"}, "receive_damage_calls": [%{"formula": "damage / 2", "kind": "damage", "part": "jing", "source": "me"}, %{"formula": "damage / 4", "kind": "wound", "part": "jing", "source": "me"}], "resource_adds": [{"neili", "-100"}, {"neili", "-200"}], "resource_queries": ["max_neili", "neili"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": true}, "weapon_type": "sword"}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-100"}, {"neili", "-200"}],
-      #     affect_by: ["damo_shangshen"],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(2);", "me->start_busy(4);"],
-      #     remote_damage: true,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-100"}, {"neili", "-200"}], "affect_by": ["damo_shangshen"], "apply_adds": [], "busy_lines": ["me->start_busy(2);", "me->start_busy(4);"], "remote_damage": true, "set_flags": [], "temp_set": []}
       #   - me->start_busy(2);
       #   - me->start_busy(4);
     conn

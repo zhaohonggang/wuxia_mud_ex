@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
   @moduledoc """
-  perform「凌空指穴」（source qufannao-zhi/lingkong.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「凌空指穴」（source qufannao-zhi/lingkong.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,28 +26,16 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"ap", "force"}, {"damage", "qufannao-zhi"}, {"dp", "force"}],
-      #     level_gates: [{"hunyuan-yiqi", "100"}, {"qufannao-zhi", "100"}],
-      #     map_gates: [],
-      #     prepared_gates: [],
-      #     resource_gates: [{"neili", "300"}],
-      #     var_gates: [{"damage", "100"}, {"damage", "300"}, {"damage", "500"}]
-      #   }
+      #   %{"assign_refs": [{"ap", "force"}, {"damage", "qufannao-zhi"}, {"dp", "force"}], "level_gates": [{"hunyuan-yiqi", "100"}, {"qufannao-zhi", "100"}], "map_gates": [], "prepared_gates": [], "resource_gates": [{"neili", "300"}], "var_gates": [{"damage", "100"}, {"damage", "300"}, {"damage", "500"}]}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你所使用的外功中没有这种功能。\n", "你必须空手才能使用", "你的去烦恼指不够娴熟，不会使用", "你的心意气混元功不够高，不能用内力催动指力伤敌。\n", "你现在内力太弱，不能使用"], "ap_dp_formulas": %{"ap_formula": "me->query_skill("force", 1) + me->query_skill("finger", 1) + 
+      #                me->query_skill("qufannao-zhi", 1) + me->query("neili", 1) / 50", "dp_formula": "target->query_skill("force", 1) + target->query_skill("dodge", 1) +
+      #                target->query_skill("parry", 1)"}, "color_codes": ["CYN", "HIR", "HIW", "HIY", "NOR", "RED"], "combat_messages": %{"fail": [], "other": ["CYN "$N默念佛经，只见手指微动，几道指气急射向$n，意欲以指力击晕$n。\n"NOR", "= HIY "$n受到$N的指力透击，闷哼一声，看上去很是疲惫。\n" NOR", "= HIY "$n被$N的指力反击，只觉得胸中烦闷，只想好好休息休息。\n" NOR", "= RED "$n被$N以指力一震，脑中嗡嗡作响，意识开始模糊起来！\n" NOR", "= CYN "可是$p看破了$P的企图，并没有上当。\n" NOR"], "success": ["= HIR "$n被$N的指力一震，眼前一黑，向后便倒，眼看就要不醒人事了！\n" NOR"]}, "damage_formula": %{"formula": "(int)me->query_skill("qufannao-zhi", 1)"}, "hit_formula": %{"left_side": "random(ap) + random(ap / 3)", "operator": ">", "right_side": "dp"}, "receive_damage_calls": [%{"formula": "damage", "kind": "damage", "part": "qi", "source": None}, %{"formula": "damage / 6", "kind": "wound", "part": "qi", "source": None}], "resource_adds": [{"neili", "-damage / 6"}], "resource_queries": ["neili"], "target_logic": %{"requires_fighting": true, "requires_living": false, "uses_offensive_target": true}}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(3);", "target->start_busy(random(3));",
-      #      "me->start_busy(4);"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [], "affect_by": [], "apply_adds": [], "busy_lines": ["me->start_busy(3);", "target->start_busy(random(3));", "me->start_busy(4);"], "remote_damage": false, "set_flags": [], "temp_set": []}
       #   - me->start_busy(3);
       #   - target->start_busy(random(3));
       #   - me->start_busy(4);

@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.Force.Regenerate do
   @moduledoc """
-  exert「regenerate」（source force/regenerate.c，由 translate_perform.exs 骨架生成，inherit ?）
+  exert「regenerate」（source force/regenerate.c，由 translate_perform.py 骨架生成，inherit ?）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,27 +26,14 @@ defmodule Kantele.Combat.Skills.Performs.Force.Regenerate do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"lvl", "force"}],
-      #     level_gates: [],
-      #     map_gates: [],
-      #     prepared_gates: [],
-      #     resource_gates: [],
-      #     var_gates: [{"heal", "10"}, {"neili_cost", "20"}, {"neili_cost", "20"}]
-      #   }
+      #   %{"assign_refs": [{"lvl", "force"}], "level_gates": [], "map_gates": [], "prepared_gates": [], "resource_gates": [], "var_gates": [{"heal", "10"}, {"neili_cost", "20"}]}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你只能用内功恢复自己的精力。\n", "你现在精气旺盛。\n", "你的内力不够。\n"], "combat_messages": %{"fail": [], "other": [], "success": []}, "receive_damage_calls": [%{"formula": "heal", "kind": "heal", "part": "jing", "source": None}], "resource_adds": [{"neili", "-neili_cost"}], "resource_queries": ["jing", "neili"], "target_logic": %{"requires_fighting": true, "requires_living": false, "uses_offensive_target": false}}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["if (me->is_fighting()) me->start_busy(1);"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [], "affect_by": [], "apply_adds": [], "busy_lines": ["if (me->is_fighting()) me->start_busy(1);"], "remote_damage": false, "set_flags": [], "temp_set": []}
       #   - if (me->is_fighting()) me->start_busy(1);
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)

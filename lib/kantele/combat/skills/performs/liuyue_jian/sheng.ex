@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.LiuyueJian.Sheng do
   @moduledoc """
-  perform「天升剑诀」（source liuyue-jian/sheng.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「天升剑诀」（source liuyue-jian/sheng.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,27 +26,16 @@ defmodule Kantele.Combat.Skills.Performs.LiuyueJian.Sheng do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [],
-      #     level_gates: [{"force", "200"}, {"liuyue-jian", "140"}],
-      #     map_gates: [{"sword", "liuyue-jian"}],
-      #     prepared_gates: [],
-      #     resource_gates: [{"neili", "300"}],
-      #     var_gates: [{"i", "6"}]
-      #   }
+      #   %{"assign_refs": [], "level_gates": [{"force", "200"}, {"liuyue-jian", "140"}], "map_gates": [{"sword", "liuyue-jian"}], "prepared_gates": [], "resource_gates": [{"neili", "300"}], "var_gates": [{"i", "6"}]}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你所使用的外功中没有这种功能。\n", "你使用的武器不对，难以施展", "你的内功的修为不够，难以施展", "你的流月剑舞修为不够，难以施展", "你的真气不够，难以施展", "你没有激发流月剑舞，难以施展", "对方都已经这样了，用不着这么费力吧？\n"], "color_codes": ["HIW", "NOR"], "combat_messages": %{"fail": [], "other": ["HIW "$N" HIW "手腕一阵疾抖，剑身微颤，剑作龙吟。刹那间剑芒陡涨，"
+      #                 "如天河倒泻一般洒向$n"
+      #                 HIW "。\n" NOR"], "success": []}, "resource_adds": [{"neili", "-100"}], "resource_queries": ["neili"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": true}, "weapon_type": "sword"}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-100"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(1 + random(6));"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-100"}], "affect_by": [], "apply_adds": [], "busy_lines": ["me->start_busy(1 + random(6));"], "remote_damage": false, "set_flags": [], "temp_set": []}
       #   - me->start_busy(1 + random(6));
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)

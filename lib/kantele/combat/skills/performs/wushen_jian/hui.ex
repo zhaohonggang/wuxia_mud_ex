@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
   @moduledoc """
-  perform「回峰蜿蜒势」（source wushen-jian/hui.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「回峰蜿蜒势」（source wushen-jian/hui.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,28 +26,18 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"level", "wushen-jian"}],
-      #     level_gates: [{"force", "250"}],
-      #     map_gates: [{"sword", "wushen-jian"}],
-      #     prepared_gates: [],
-      #     resource_gates: [{"neili", "160"}],
-      #     var_gates: [{"level", "180"}]
-      #   }
+      #   %{"assign_refs": [{"level", "wushen-jian"}], "level_gates": [{"force", "250"}], "map_gates": [{"sword", "wushen-jian"}], "prepared_gates": [], "resource_gates": [{"neili", "160"}], "var_gates": [{"level", "180"}]}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你所使用的外功中没有这种功能。\n", "你使用的武器不对，难以施展", "你衡山五神剑不够娴熟，难以施展", "你没有激发衡山五神剑，难以施展", "你的内功火候不足，难以施展", "你现在的真气不够，难以施展", "对方都已经这样了，用不着这么费力吧？\n"], "color_codes": ["CYN", "HIC", "HIG", "HIR", "NOR"], "combat_messages": %{"fail": [], "other": ["HIG "\n$N" HIG "使出衡山五神剑「" HIC "回峰蜿蜒势" HIG "」，"
+      #                 "手中" + weapon->name() + HIG "猛然反转，剑势迂回诡异，连"
+      #                 "连袭向$n" HIG "。" NOR", "CYN "可是$n" CYN "看破了$N"
+      #                         CYN "的企图，镇定解招，一丝不乱。\n" NOR"], "success": ["HIR "剑势迂回间$N" HIR "招式陡然变快，$n已被$N"
+      #                         HIR "攻的目不暇接，手忙脚乱！\n" NOR"]}, "resource_adds": [{"neili", "-100"}], "resource_queries": ["neili"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": true}, "weapon_type": "sword"}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-100"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["if (target->is_busy())", "target->start_busy(level / 18 + 2);",
-      #      "me->start_busy(1);", "me->start_busy(2);"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-100"}], "affect_by": [], "apply_adds": [], "busy_lines": ["if (target->is_busy())", "target->start_busy(level / 18 + 2);", "me->start_busy(1);", "me->start_busy(2);"], "remote_damage": false, "set_flags": [], "temp_set": []}
       #   - if (target->is_busy())
       #   - target->start_busy(level / 18 + 2);
       #   - me->start_busy(1);

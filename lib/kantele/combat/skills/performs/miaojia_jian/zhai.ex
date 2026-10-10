@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Zhai do
   @moduledoc """
-  perform「云边摘月」（source miaojia-jian/zhai.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「云边摘月」（source miaojia-jian/zhai.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,28 +26,17 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Zhai do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"level", "miaojia-jian"}],
-      #     level_gates: [{"force", "120"}, {"miaojia-jian", "100"}],
-      #     map_gates: [{"sword", "miaojia-jian"}],
-      #     prepared_gates: [],
-      #     resource_gates: [{"max_neili", "800"}, {"neili", "100"}],
-      #     var_gates: []
-      #   }
+      #   %{"assign_refs": [{"level", "miaojia-jian"}], "level_gates": [{"force", "120"}, {"miaojia-jian", "100"}], "map_gates": [{"sword", "miaojia-jian"}], "prepared_gates": [], "resource_gates": [{"max_neili", "800"}, {"neili", "100"}], "var_gates": []}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你所使用的外功中没有这种功能。\n", "你使用的武器不对，难以施展", "你苗家剑法不够娴熟，难以施展", "你的内功火候不够，难以施展", "你的内力修为不够，难以施展", "你现在真气不够，难以施展", "你没有激发苗家剑法，难以施展", "对方都已经这样了，用不着这么费力吧？\n"], "color_codes": ["CYN", "HIR", "HIW", "NOR"], "combat_messages": %{"fail": [], "other": ["HIW "$N" HIW "一声清哮，剑势舒张，吞吐不定，瞬间向$n" HIW "连刺"
+      #                 "数剑，企图扰乱$n" HIW "的攻势。\n" NOR", "= CYN "可是$p" CYN "看破了$P" CYN "剑势的来路，"
+      #                          "径自出招，丝毫不为所动。\n" NOR"], "success": ["= HIR "结果$p" HIR "只见$P" HIR "剑招精妙，全然"
+      #                          "辨不清招中虚实，攻势登时一紧！\n" NOR"]}, "resource_adds": [{"neili", "-30"}], "resource_queries": ["max_neili", "neili"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": true}, "weapon_type": "sword"}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-30"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["if (target->is_busy())", "target->start_busy(level / 18 + 2);",
-      #      "me->start_busy(2);"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-30"}], "affect_by": [], "apply_adds": [], "busy_lines": ["if (target->is_busy())", "target->start_busy(level / 18 + 2);", "me->start_busy(2);"], "remote_damage": false, "set_flags": [], "temp_set": []}
       #   - if (target->is_busy())
       #   - target->start_busy(level / 18 + 2);
       #   - me->start_busy(2);

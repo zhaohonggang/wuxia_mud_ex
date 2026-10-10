@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
   @moduledoc """
-  perform「风神诀」（source yinsuo-jinling/feng.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「风神诀」（source yinsuo-jinling/feng.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,35 +26,39 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [
-      #       {"ap", "whip"},
-      #       {"ap", "whip"},
-      #       {"ap", "whip"},
-      #       {"damage", "whip"},
-      #       {"dp", "dodge"},
-      #       {"dp", "force"},
-      #       {"dp", "parry"}
-      #     ],
-      #     level_gates: [{"force", "200"}, {"yinsuo-jinling", "140"}],
-      #     map_gates: [{"whip", "yinsuo-jinling"}],
-      #     prepared_gates: [],
-      #     resource_gates: [{"neili", "400"}],
-      #     var_gates: []
-      #   }
+      #   %{"assign_refs": [{"ap", "whip"}, {"damage", "whip"}, {"dp", "dodge"}, {"dp", "force"}, {"dp", "parry"}], "level_gates": [{"force", "200"}, {"yinsuo-jinling", "140"}], "map_gates": [{"whip", "yinsuo-jinling"}], "prepared_gates": [], "resource_gates": [{"neili", "400"}], "var_gates": []}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你所使用的外功中没有这种功能。\n", "你的武器不对，无法使用", "你没有激发回银索金铃，不能使用", "你的银索金铃不够娴熟，还使不出", "你的内功火候不够，难以施展", "你现在真气不够，难以施展", "对方都已经这样了，用不着这么费力吧？\n"], "ap_dp_formulas": %{"ap_formula": "me->query_skill("whip")", "dp_formula": "target->query_skill("force")"}, "color_codes": ["CYN", "HIR", "HIW", "NOR"], "combat_exp_formulas": [{"lvls", "to_int(pow(to_float(me->query("combat_exp") * 10), 1.0 / 3))"}], "combat_messages": %{"fail": ["= CYN "可是$p" CYN "镇定自如，"
+      #                          "丝毫不为这变幻莫测的招式所动"
+      #                          "，凝神抵挡，化解开来！\n" NOR"], "other": [""\n" HIW "只见$N" HIW "手中" + w1
+      #                 + HIW "暮地一抖，幻出无数鞭影，霎"
+      #                 "时破风声骤起，" + w1 + HIW "携着"
+      #                 "风雷之势扫向$n" HIW "！\n" NOR", "= "\n" HIW "紧接着$N" HIW "一声"
+      #                  "娇喝，" + w1 + HIW "猛地向后"
+      #                  "一撤，" + w1 + HIW "顿时化作"
+      #                  "一道长虹，已从$n" HIW "背后"
+      #                  "袭出！\n" NOR", "= CYN "$p" CYN "一声冷哼，早预料$N"
+      #                          CYN "有此一着，凝神聚气，将这招轻"
+      #                          "轻格开！\n" NOR", "= "\n" HIW "$N" HIW "眉头微皱，手"
+      #                          "腕轻轻一振，只听“飕”的一声，"
+      #                          "又攻出一招，" + w1 + HIW "如流"
+      #                          "星般弹向$n" HIW "腕部！\n" NOR", "= CYN "可是$p" CYN "看破了$P" CYN
+      #                                  "的企图，急忙斜跳躲开！\n" NOR"], "success": ["= COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 35,
+      #                                              HIR "$n" HIR "只觉鞭影重重，眼花缭乱"
+      #                                              "，根本无法作出抵挡，一声惨嚎，鲜血飞"
+      #                                              "溅而出！\n" NOR)", "= COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 42,
+      #                                              HIR "$n" HIR "稍一迟疑，突然感到后背"
+      #                                              "一阵" HIR "刮骨之痛，已被这招打得血"
+      #                                              "肉模糊！\n" NOR)", "= HIR "只听“当”的一声，" + w1 +
+      #                                  HIR "正打在$p" + w2 + HIR "上，"
+      #                                  "$p" HIR "手腕一麻，" + w2 + HIR
+      #                                  "再也拿持不住，脱手掉在地上。\n"
+      #                                  NOR"]}, "damage_formula": %{"formula": "(int)me->query_skill("whip") / 2"}, "hit_formula": %{"left_side": "ap / 2 + random(ap)", "operator": ">", "right_side": "dp"}, "resource_adds": [{"neili", "-30"}, {"neili", "-300"}, {"neili", "-50"}], "resource_queries": ["neili"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": true}, "weapon_type": "whip"}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-30"}, {"neili", "-300"}, {"neili", "-50"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(2 + random(4));"],
-      #     remote_damage: true,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-30"}, {"neili", "-300"}, {"neili", "-50"}], "affect_by": [], "apply_adds": [], "busy_lines": ["me->start_busy(2 + random(4));"], "remote_damage": true, "set_flags": [], "temp_set": []}
       #   - me->start_busy(2 + random(4));
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)

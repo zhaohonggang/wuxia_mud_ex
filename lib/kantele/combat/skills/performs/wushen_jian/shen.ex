@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
   @moduledoc """
-  perform「五神朝元势」（source wushen-jian/shen.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「五神朝元势」（source wushen-jian/shen.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,32 +26,32 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [
-      #       {"ap", "wushen-jian"},
-      #       {"damage", "wushen-jian"},
-      #       {"dp", "dodge"}
-      #     ],
-      #     level_gates: [{"dodge", "200"}, {"force", "220"}, {"wushen-jian", "240"}],
-      #     map_gates: [{"sword", "wushen-jian"}],
-      #     prepared_gates: [],
-      #     resource_gates: [{"max_neili", "5500"}, {"neili", "500"}],
-      #     var_gates: []
-      #   }
+      #   %{"assign_refs": [{"ap", "wushen-jian"}, {"damage", "wushen-jian"}, {"dp", "dodge"}], "level_gates": [{"dodge", "200"}, {"force", "220"}, {"wushen-jian", "240"}], "map_gates": [{"sword", "wushen-jian"}], "prepared_gates": [], "resource_gates": [{"max_neili", "5500"}, {"neili", "500"}], "var_gates": []}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你所使用的外功中没有这种功能。\n", "你使用的武器不对，难以施展", "你衡山五神剑不够娴熟，难以施展", "你没有激发衡山五神剑，难以施展", "你的内功火候不够，难以施展", "你的轻功火候不够，难以施展", "你的内力修为不足，难以施展", "你现在的真气不够，难以施展", "对方都已经这样了，用不着这么费力吧？\n"], "ap_dp_formulas": %{"ap_formula": "me->query_skill("wushen-jian", 1) +
+      #            me->query_skill("martial-cognize", 1)", "dp_formula": "target->query_skill("dodge", 1) +
+      #            target->query_skill("martial-cognize", 1)"}, "color_codes": ["CYN", "HIG", "HIM", "HIR", "HIW", "HIY", "NOR", "WHT"], "combat_messages": %{"fail": [], "other": ["COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 80,
+      #                                         HIG "\n$n" HIG "见$N" HIG "五道剑光剑势"
+      #                                             "惊人，急忙收敛心神奋力招架。哪知$P这"
+      #                                             "招力道非凡，$p一声闷哼，连退几步，喷"
+      #                                             "出一口鲜血。\n" NOR)", "CYN "\n然而$n" CYN "以快对快，飞身一跳"
+      #                     "已然躲过$N" CYN "这一招。\n" NOR"], "success": ["HIM "\n$N" HIM "一声怒喝，内劲暴涨，手中" + wn +
+      #             HIM "变幻万千，霎那间化作红黄蓝绿白五道剑光，纵"
+      #                 "横飞扬。$P身法蓦地变快，随着剑光同时将『" HIR
+      #                 "祝融" HIM "』、『" HIY "紫盖" HIM "』、『" NOR
+      #                 WHT "石廪" HIM "』、『" HIG "芙蓉" HIM "』、『" HIW "天柱" HIM "』五套剑法交替使出，电光火石间"
+      #                 "已袭向$n" HIM "全身。\n" NOR", "COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 100 + random(10),
+      #                                         HIR "\n$n" HIR "见$N" HIR "五道剑光缤纷"
+      #                                             "洒落，交错纵横，呼啸着向自己袭来。心"
+      #                                             "底不由大惊，登时听得“噗嗤”一声，剑"
+      #                                             "气透体而过。\n" NOR)"]}, "damage_formula": %{"formula": "me->query_skill("wushen-jian", 1) +
+      #                    me->query_skill("force", 1) +
+      #                    me->query_skill("martial-cognize", 1)"}, "hit_formula": %{"left_side": "ap * 2 / 3 + random(ap)", "operator": ">", "right_side": "random(dp)"}, "resource_adds": [{"neili", "-150"}, {"neili", "-200"}, {"neili", "-300"}], "resource_queries": ["max_neili", "neili"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": true}, "weapon_type": "sword"}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-150"}, {"neili", "-200"}, {"neili", "-300"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(3 + random(2));",
-      #      "me->start_busy(3 + random(3));", "me->start_busy(3);"],
-      #     remote_damage: true,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-150"}, {"neili", "-200"}, {"neili", "-300"}], "affect_by": [], "apply_adds": [], "busy_lines": ["me->start_busy(3 + random(2));", "me->start_busy(3 + random(3));", "me->start_busy(3);"], "remote_damage": true, "set_flags": [], "temp_set": []}
       #   - me->start_busy(3 + random(2));
       #   - me->start_busy(3 + random(3));
       #   - me->start_busy(3);

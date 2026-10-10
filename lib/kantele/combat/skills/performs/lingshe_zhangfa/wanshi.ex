@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wanshi do
   @moduledoc """
-  perform「wanshi」（source lingshe-zhangfa/wanshi.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「wanshi」（source lingshe-zhangfa/wanshi.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,27 +26,19 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wanshi do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"ap", "staff"}, {"dp", "parry"}],
-      #     level_gates: [{"lingshe-zhangfa", "160"}],
-      #     map_gates: [{"staff", "lingshe-zhangfa"}],
-      #     prepared_gates: [],
-      #     resource_gates: [{"neili", "400"}],
-      #     var_gates: []
-      #   }
+      #   %{"assign_refs": [{"ap", "staff"}, {"dp", "parry"}], "level_gates": [{"lingshe-zhangfa", "160"}], "map_gates": [{"staff", "lingshe-zhangfa"}], "prepared_gates": [], "resource_gates": [{"neili", "400"}], "var_gates": []}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你还不会使用「千蛇万噬」这一绝技。\n", "「千蛇万噬」只能对战斗中的对手使用。\n", "你使用的武器不对。\n", "你的灵蛇杖法不够娴熟，不会使用「千蛇万噬」。\n", "你现在真气不够，无法使用「千蛇万噬」。\n", "你没有激发灵蛇杖法，无法使用「千蛇万噬」！\n", "对方都已经这样了，用不着这么费力吧？\n"], "ap_dp_formulas": %{"ap_formula": "me->query_skill("staff")", "dp_formula": "target->query_skill("parry")"}, "callback_functions": [%{"body": "target->receive_damage("jing", damage / 4, me);
+      #           target->receive_wound("jing", damage / 8, me);
+      #           return HIW "哪知" HIW + weapon->name() + HIW "突然拐弯，绕到$p" HIW "背后，"
+      #                   "重重地击在了$", "name": "final", "params": "object me, object target, int damage, object weapon", "return_type": "string"}], "color_codes": ["HIB", "HIG", "HIW", "NOR"], "combat_messages": %{"fail": [], "other": ["HIB "$N" HIB "手持" + weapon->name() + HIB "，直捣$n中宫" HIB "。\n" NOR", "= COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 50,
+      #                                              (: final, me, target, damage, weapon :))", "= HIG "可是$p" HIG "看破了$P" HIG "的企图，一"
+      #                          "缩胸，急退三步，避开了这一招。\n" NOR"], "success": []}, "damage_formula": %{"formula": "ap + random(ap / 4)"}, "do_damage_calls": [%{"attack_type": "WEAPON_ATTACK", "callback": "final", "damage_factor": 50, "damage_var": "damage"}], "hit_formula": %{"left_side": "ap / 3 + random(ap)", "operator": ">", "right_side": "dp"}, "receive_damage_calls": [%{"formula": "damage / 4", "kind": "damage", "part": "jing", "source": "me"}, %{"formula": "damage / 8", "kind": "wound", "part": "jing", "source": "me"}], "resource_adds": [{"neili", "-100"}, {"neili", "-350"}], "resource_queries": ["neili"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": true}, "weapon_type": "staff"}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-100"}, {"neili", "-350"}, {"poison_applied", "-1"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(2 + random(4));"],
-      #     remote_damage: true,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-100"}, {"neili", "-350"}, {"poison_applied", "-1"}], "affect_by": [], "apply_adds": [], "busy_lines": ["me->start_busy(2 + random(4));"], "remote_damage": true, "set_flags": [], "temp_set": []}
       #   - me->start_busy(2 + random(4));
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)

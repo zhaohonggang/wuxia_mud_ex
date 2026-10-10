@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
   @moduledoc """
-  perform「天地情长」（source yuxiao-jian/qing.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「天地情长」（source yuxiao-jian/qing.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,28 +26,17 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"ap", "sword"}, {"dp", "force"}, {"skill", "yuxiao-jian"}],
-      #     level_gates: [],
-      #     map_gates: [{"sword", "yuxiao-jian"}],
-      #     prepared_gates: [],
-      #     resource_gates: [{"neili", "1000"}, {"neili", "300"}],
-      #     var_gates: [{"skill", "150"}]
-      #   }
+      #   %{"assign_refs": [{"ap", "sword"}, {"dp", "force"}, {"skill", "yuxiao-jian"}], "level_gates": [], "map_gates": [{"sword", "yuxiao-jian"}], "prepared_gates": [], "resource_gates": [{"neili", "1000"}, {"neili", "300"}], "var_gates": [{"skill", "150"}]}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你所使用的外功中没有这种功能。\n", "你所使用的武器不对，难以施展", "你没有激发玉箫剑法，难以施展", "你玉箫剑法等级不够，难以施展", "看样子对方真气并不充沛，无需运用", "你现在的真气不足，难以施展", "对方都已经这样了，用不着这么费力吧？\n"], "ap_dp_formulas": %{"ap_formula": "me->query_skill("sword") + me->query_skill("force") +
+      #                me->query_skill("chuixiao-jiafa", 1)", "dp_formula": "target->query_skill("force") * 2"}, "color_codes": ["HIC", "HIG", "HIM", "NOR"], "combat_messages": %{"fail": [], "other": ["HIG "$N" HIG "手中的" + weapon->name() + HIG "倏的刺出，卷起一阵"
+      #                 "阵气旋，不住的往里收缩。\n" NOR", "= HIM "$p" HIM "顿觉$P" HIM "的内力隐藏在一个个气旋中，难"
+      #                          "以捉摸去处，只能强运内力抵消。\n" NOR", "= HIC "可是$p" HIC "心神安定，丝毫没有受到困惑。\n"NOR"], "success": []}, "resource_adds": [{"neili", "-120"}, {"neili", "-500"}, {"neili", "-cost"}], "resource_queries": ["neili"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": false}, "weapon_type": "sword"}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-120"}, {"neili", "-500"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["//me->start_busy(1 + random(3));", "me->start_busy(1);",
-      #      "me->start_busy(2);"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-120"}, {"neili", "-500"}], "affect_by": [], "apply_adds": [], "busy_lines": ["//me->start_busy(1 + random(3));", "me->start_busy(1);", "me->start_busy(2);"], "remote_damage": false, "set_flags": [], "temp_set": []}
       #   - //me->start_busy(1 + random(3));
       #   - me->start_busy(1);
       #   - me->start_busy(2);

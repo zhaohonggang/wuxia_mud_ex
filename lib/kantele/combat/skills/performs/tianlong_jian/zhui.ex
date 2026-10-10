@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.TianlongJian.Zhui do
   @moduledoc """
-  perform「毒龙双锥」（source tianlong-jian/zhui.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「毒龙双锥」（source tianlong-jian/zhui.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,27 +26,24 @@ defmodule Kantele.Combat.Skills.Performs.TianlongJian.Zhui do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"ap", "sword"}, {"dp", "parry"}],
-      #     level_gates: [{"force", "150"}, {"tianlong-jian", "120"}],
-      #     map_gates: [{"sword", "tianlong-jian"}],
-      #     prepared_gates: [],
-      #     resource_gates: [{"max_neili", "1500"}, {"neili", "500"}],
-      #     var_gates: []
-      #   }
+      #   %{"assign_refs": [{"ap", "sword"}, {"dp", "parry"}], "level_gates": [{"force", "150"}, {"tianlong-jian", "120"}], "map_gates": [{"sword", "tianlong-jian"}], "prepared_gates": [], "resource_gates": [{"max_neili", "1500"}, {"neili", "500"}], "var_gates": []}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你所使用的外功中没有这种功能。\n", "你使用的武器不对，难以施展", "你的天龙剑法火候太浅，难以施展", "你的内功修为太浅，难以施展", "你的内力修为太浅，难以施展", "你没有激发天龙剑法，难以施展", "你现在的真气不足，，难以施展", "对方都已经这样了，用不着这么费力吧？\n"], "ap_dp_formulas": %{"ap_formula": "me->query_skill("sword")", "dp_formula": "target->query_skill("parry")"}, "color_codes": ["CYN", "HIM", "HIR", "NOR"], "combat_messages": %{"fail": [], "other": ["HIM "$N" HIM "一声清啸，手中" + weapon->name() + HIM "急速旋转，剑尖"
+      #                 "作锥，剑身顿时腾起一股旋风，向$n" HIM "钻去。\n" NOR", "= CYN "可是$n" CYN "奋力格挡，终于架开了$N"
+      #                          CYN "的这一剑。\n" NOR", "= HIM "\n$N" HIM "随即抽剑回转，撩下劈上，手中" + weapon->name() + HIM
+      #                  "剑尖一颤，又激荡出一股旋涡劲钻向$n" HIM "。\n" NOR", "= CYN "可是$n" CYN "凝神聚气，飞身一跃而起，避开了$N"
+      #                          CYN "的杀着。\n" NOR"], "success": ["= COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 30,
+      #                                              HIR "$n" HIR "招架不住，哧地一声，$N"
+      #                                              HIR "手中的" + weapon->name() + HIR
+      #                                              "顿时破体钻入，鲜血四溅！\n" NOR)", "= COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 40,
+      #                                              HIR "$n" HIR "急忙抽身后退，可只见$N"
+      #                                              HIR + weapon->name() + HIR "剑芒一漾"
+      #                                              "，胸口便喷出一股血柱！\n" NOR)"]}, "damage_formula": %{"formula": "ap / 3 + random(ap / 2)"}, "hit_formula": %{"left_side": "ap / 2 + random(ap)", "operator": ">", "right_side": "dp"}, "resource_adds": [{"neili", "-350"}], "resource_queries": ["max_neili", "neili"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": false}, "weapon_type": "sword"}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-350"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(2 + random(3));"],
-      #     remote_damage: true,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-350"}], "affect_by": [], "apply_adds": [], "busy_lines": ["me->start_busy(2 + random(3));"], "remote_damage": true, "set_flags": [], "temp_set": []}
       #   - me->start_busy(2 + random(3));
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)

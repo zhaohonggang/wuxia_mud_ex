@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo do
   @moduledoc """
-  perform「夺命连环爪」（source jiuyin-baiguzhao/duo.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「夺命连环爪」（source jiuyin-baiguzhao/duo.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,32 +26,26 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [
-      #       {"ap", "claw"},
-      #       {"damage", "force"},
-      #       {"dp", "dodge"},
-      #       {"dp", "parry"}
-      #     ],
-      #     level_gates: [{"jiuyin-baiguzhao", "140"}],
-      #     map_gates: [],
-      #     prepared_gates: [{"claw", "jiuyin-baiguzhao"}],
-      #     resource_gates: [{"neili", "300"}],
-      #     var_gates: []
-      #   }
+      #   %{"assign_refs": [{"ap", "claw"}, {"damage", "force"}, {"dp", "dodge"}, {"dp", "parry"}], "level_gates": [{"jiuyin-baiguzhao", "140"}], "map_gates": [], "prepared_gates": [{"claw", "jiuyin-baiguzhao"}], "resource_gates": [{"neili", "300"}], "var_gates": []}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你所使用的外功中没有这种功能。\n", "你必须空手才能使用", "你的九阴白骨爪还不够娴熟，不能使用", "你没有准备九阴白骨爪，无法使用", "你现在内力太弱，不能使用夺命连环爪。\n", "对方都已经这样了，用不着这么费力吧？\n"], "ap_dp_formulas": %{"ap_formula": "me->query_skill("claw") + me->query_str() * 5", "dp_formula": "target->query_skill("dodge") + target->query_dex() * 5"}, "color_codes": ["CYN", "HIC", "HIR", "HIW", "NOR"], "combat_messages": %{"fail": [], "other": ["= HIC "$p" HIC "暗叫不好，急忙闪头，可是$N"
+      #                          HIC "手臂咔咔作响，忽然暴长，迅论无比的抓向$p。\n" NOR", "= CYN "$n" CYN "不及多想，急切间飘然而退，让$P"
+      #                                  CYN "这一招无功而返。\n" NOR"], "success": ["HIR "$N" HIR "桀桀怪笑，手指微微弯曲，倏的冲$n"
+      #                         HIR "头顶抓下。\n" NOR", "HIR "$N" HIR "冷笑数声，手指微微弯曲成爪，飞向$n"
+      #                         HIR "头顶抓下。\n" NOR", "HIR "$N" HIR "扬声吐气，手指微微弯曲成爪，奋力向$n"
+      #                         HIR "头顶抓下。\n" NOR", "HIR "$N" HIR "手指微微弯曲成爪，浑不经意的向$n"
+      #                         HIR "头顶抓下。\n" NOR", "= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 55,
+      #                                              HIR "$p" HIR "急忙闪头，然而$N" HIR
+      #                                              "这招来得好快，正插中$p" HIR "肩头，"
+      #                                              "登时鲜血淋漓。\n" NOR)", "= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 65,
+      #                                                      HIR "$n" HIR "哪里料到$N" HIR
+      #                                                      "竟有如此变招，不及躲闪，肩头被$P"
+      #                                                      HIR "抓了个鲜血淋漓。\n" NOR)"]}, "damage_formula": %{"formula": "ap + me->query_skill("force")"}, "hit_formula": %{"left_side": "ap / 2 + random(ap)", "operator": ">", "right_side": "dp"}, "resource_adds": [{"neili", "-100"}, {"neili", "-150"}], "resource_queries": ["neili"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": true}}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-100"}, {"neili", "-150"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(2);", "me->start_busy(3);"],
-      #     remote_damage: true,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-100"}, {"neili", "-150"}], "affect_by": [], "apply_adds": [], "busy_lines": ["me->start_busy(2);", "me->start_busy(3);"], "remote_damage": true, "set_flags": [], "temp_set": []}
       #   - me->start_busy(2);
       #   - me->start_busy(3);
     conn

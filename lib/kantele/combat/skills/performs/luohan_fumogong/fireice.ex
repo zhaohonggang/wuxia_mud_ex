@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.LuohanFumogong.Fireice do
   @moduledoc """
-  exert「冰」（source luohan-fumogong/fireice.c，由 translate_perform.exs 骨架生成，inherit F_CLEAN_UP）
+  exert「冰」（source luohan-fumogong/fireice.c，由 translate_perform.py 骨架生成，inherit F_CLEAN_UP）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,27 +26,18 @@ defmodule Kantele.Combat.Skills.Performs.LuohanFumogong.Fireice do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"skill", "luohan-fumogong"}],
-      #     level_gates: [{"luohan-fumogong", "180"}],
-      #     map_gates: [],
-      #     prepared_gates: [],
-      #     resource_gates: [{"max_neili", "4000"}, {"neili", "500"}],
-      #     var_gates: []
-      #   }
+      #   %{"assign_refs": [{"skill", "luohan-fumogong"}], "level_gates": [{"luohan-fumogong", "180"}], "map_gates": [], "prepared_gates": [], "resource_gates": [{"max_neili", "4000"}, {"neili", "500"}], "var_gates": []}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你所学的内功中没有这种功能。\n", "你只能用", "你现在正在施展", "你罗汉伏魔功火候不足，难以施展", "你的内力修为不足，难以施展", "你现在的内力不足，难以施展"], "buff_delete": ["fireice"], "call_outs": [%{"args": "me, skill / 5", "delay": "skill", "fn": "remove_effect"}], "callback_functions": [%{"body": "if (me->query_temp("fireice"))
+      #           {
+      #                   me->add_temp("apply/unarmed_damage", -amount);
+      #                   me->add_temp("apply/damage", -amount);
+      #                   me->add_temp("apply/armor", "name": "remove_effect", "params": "object me, int amount", "return_type": "void"}], "color_codes": ["HIC", "HIR", "HIW", "NOR"], "combat_messages": %{"fail": [], "other": [], "success": []}, "receive_damage_calls": [%{"formula": "0", "kind": "damage", "part": "qi", "source": None}], "resource_adds": [{"neili", "-300"}], "resource_queries": ["max_neili", "neili"], "target_logic": %{"requires_fighting": true, "requires_living": false, "uses_offensive_target": false}}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-300"}],
-      #     affect_by: [],
-      #     apply_adds: ["armor", "damage", "unarmed_damage"],
-      #     busy_lines: ["me->start_busy(3);"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: ["fireice"]
-      #   }
+      #   %{"add_costs": [{"neili", "-300"}], "affect_by": [], "apply_adds": ["armor", "damage", "unarmed_damage"], "busy_lines": ["me->start_busy(3);"], "remote_damage": false, "set_flags": [], "temp_set": ["fireice"]}
       #   - me->start_busy(3);
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)

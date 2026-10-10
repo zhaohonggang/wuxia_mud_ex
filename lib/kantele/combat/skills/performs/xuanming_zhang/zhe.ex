@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
   @moduledoc """
-  perform「只手遮天」（source xuanming-zhang/zhe.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「只手遮天」（source xuanming-zhang/zhe.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,27 +26,20 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"ap", "strike"}, {"dp", "dodge"}, {"lvl", "xuanming-zhang"}],
-      #     level_gates: [{"xuanming-shengong", "150"}, {"xuanming-zhang", "150"}],
-      #     map_gates: [{"force", "xuanming-shengong"}],
-      #     prepared_gates: [{"strike", "xuanming-zhang"}],
-      #     resource_gates: [{"max_neili", "2000"}, {"neili", "500"}],
-      #     var_gates: []
-      #   }
+      #   %{"assign_refs": [{"ap", "strike"}, {"dp", "dodge"}, {"lvl", "xuanming-zhang"}], "level_gates": [{"xuanming-shengong", "150"}, {"xuanming-zhang", "150"}], "map_gates": [{"force", "xuanming-shengong"}], "prepared_gates": [{"strike", "xuanming-zhang"}], "resource_gates": [{"max_neili", "2000"}, {"neili", "500"}], "var_gates": []}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"affect_by_callbacks": [%{"buff_name": "xuanming_poison", "duration_formula": "lvl / 40 + random(lvl / 20)", "id_formula": "me->query("id")", "level_formula": "me->query("jiali") + random(me->query("jiali"))"}, %{"buff_name": "xuanming_poison", "duration_formula": "lvl / 40 + random(lvl / 20)", "id_formula": "me->query("id")", "level_formula": "me->query("jiali") * 3"}], "all_fail_messages": ["你所使用的外功中没有这种功能。\n", "你的玄冥神功火候不够，无法施展", "你的玄冥神掌不够熟练，无法施展", "你没有激发玄冥神功为内功，无法施展", "你没有准备玄冥神掌，无法施展", "你的内力修为不足，无法施展", "你的真气不够，无法施展", "对方都已经这样了，用不着这么费力吧？\n"], "ap_dp_formulas": %{"ap_formula": "me->query_skill("strike") + me->query_skill("force")", "dp_formula": "target->query_skill("dodge") + target->query_skill("force")"}, "callback_functions": [%{"body": "target->affect_by("xuanming_poison",
+      #                            ([ "level" : me->query("jiali") * 3,
+      #                               "id"    : me->query("id"),
+      #                               "duration" : lvl /", "name": "final", "params": "object me, object target, int lvl", "return_type": "string"}], "color_codes": ["HIG", "HIM", "HIR", "HIW", "HIY", "NOR"], "combat_messages": %{"fail": [], "other": ["HIW "\n$N" HIW "运起玄冥神功，全身浮现出一层紫气，猛然间双掌翻腾不息，施"
+      #                     "展出绝招「" HIG "只手遮天" HIW "」，携带着万古至毒至寒之气的掌劲"
+      #                     "攻向$n" HIW "！\n"NOR", ""( $N" + eff_status_msg(p) + " )\n\n"", "= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 70,
+      #                                             (: final, me, target, lvl :))", "= HIY "$n" HIY "看见$N" HIY "来势汹涌，急忙提气跃开。\n" NOR"], "success": []}, "damage_formula": %{"formula": "ap + random(ap / 2)"}, "do_damage_calls": [%{"attack_type": "UNARMED_ATTACK", "callback": "final", "damage_factor": 70, "damage_var": "damage"}], "hit_formula": %{"left_side": "ap / 2 + random(ap)", "operator": ">", "right_side": "dp"}, "receive_damage_calls": [%{"formula": "me->query("jiali") + random(me->query("jiali") / 2", "kind": "wound", "part": "qi", "source": None}], "resource_adds": [{"neili", "-180"}, {"neili", "-300"}], "resource_queries": ["max_neili", "max_qi", "neili", "qi"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": true}}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-180"}, {"neili", "-300"}],
-      #     affect_by: ["xuanming_poison"],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(4);"],
-      #     remote_damage: true,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-180"}, {"neili", "-300"}], "affect_by": ["xuanming_poison"], "apply_adds": [], "busy_lines": ["me->start_busy(4);"], "remote_damage": true, "set_flags": [], "temp_set": []}
       #   - me->start_busy(4);
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)

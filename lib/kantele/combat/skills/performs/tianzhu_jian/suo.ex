@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
   @moduledoc """
-  perform「烟云锁身」（source tianzhu-jian/suo.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「烟云锁身」（source tianzhu-jian/suo.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,29 +26,22 @@ defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"ap", "tianzhu-jian"}, {"dp", "parry"}],
-      #     level_gates: [{"dodge", "150"}, {"tianzhu-jian", "120"}],
-      #     map_gates: [{"sword", "tianzhu-jian"}],
-      #     prepared_gates: [],
-      #     resource_gates: [{"neili", "200"}],
-      #     var_gates: []
-      #   }
+      #   %{"assign_refs": [{"ap", "tianzhu-jian"}, {"dp", "parry"}], "level_gates": [{"dodge", "150"}, {"tianzhu-jian", "120"}], "map_gates": [{"sword", "tianzhu-jian"}], "prepared_gates": [], "resource_gates": [{"neili", "200"}], "var_gates": []}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你所使用的外功中没有这种功能。\n", "你使用的武器不对，难以施展", "你天柱剑法不够娴熟，难以施展", "你没有激发天柱剑法，难以施展", "你的轻功修为不够，难以施展", "你现在的真气不够，难以施展", "对方都已经这样了，用不着这么费力吧？\n"], "ap_dp_formulas": %{"ap_formula": "me->query_skill("tianzhu-jian", 1)", "dp_formula": "target->query_skill("parry", 1)"}, "color_codes": ["CYN", "HIC", "HIR", "HIW", "NOR"], "combat_messages": %{"fail": [], "other": ["HIW "\n$N" HIW "剑法陡然变快，施展出「烟云锁身剑」，手中" +
+      #                         wp + HIW "幻作一道白芒，撩向$n" HIW "所持的" + wp2 + HIW
+      #                         "。" NOR", "= CYN "可是$n" CYN "看破$N" CYN "剑法中的虚招，镇"
+      #                                  "定自如，从容应对。\n" NOR", "HIC "\n$N" HIC "剑法陡然变快，施展出「" HIW "烟云锁身剑"
+      #                         HIC "」，手中" + wp + HIC "剑光夺目，欲将$n" HIC "笼罩在"
+      #                         "剑光之中。" NOR", "= CYN "\n可是$n" CYN "看破$N" CYN "剑法中的虚招，镇"
+      #                                  "定自如，从容应对。" NOR"], "success": ["HIR "$n" HIR "只见眼前白芒暴涨，登时右手一轻，"
+      #                                 + wp2 + HIR "竟脱手飞出。\n" NOR", "= HIR "\n$n" HIR "惊慌不定，顿时乱了阵脚，竟被困于$N"
+      #                                  HIR "的剑光当中。" NOR"]}, "resource_adds": [{"neili", "-100"}, {"neili", "-200"}], "resource_queries": ["max_neili", "neili"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": true}, "weapon_type": "sword"}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-100"}, {"neili", "-200"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["if (target->is_busy())", "me->start_busy(2);",
-      #      "target->start_busy(3);", "me->start_busy(1);",
-      #      "target->start_busy(ap / 25 + 1);"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-100"}, {"neili", "-200"}], "affect_by": [], "apply_adds": [], "busy_lines": ["if (target->is_busy())", "me->start_busy(2);", "target->start_busy(3);", "me->start_busy(1);", "target->start_busy(ap / 25 + 1);"], "remote_damage": false, "set_flags": [], "temp_set": []}
       #   - if (target->is_busy())
       #   - me->start_busy(2);
       #   - target->start_busy(3);

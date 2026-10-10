@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
   @moduledoc """
-  perform「拖泥带水」（source sad-strike/tuo.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「拖泥带水」（source sad-strike/tuo.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,27 +26,22 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"ap", "unarmed"}, {"dp", "parry"}],
-      #     level_gates: [{"force", "360"}, {"sad-strike", "180"}],
-      #     map_gates: [],
-      #     prepared_gates: [{"unarmed", "sad-strike"}],
-      #     resource_gates: [{"neili", "500"}],
-      #     var_gates: []
-      #   }
+      #   %{"assign_refs": [{"ap", "unarmed"}, {"dp", "parry"}], "level_gates": [{"force", "360"}, {"sad-strike", "180"}], "map_gates": [], "prepared_gates": [{"unarmed", "sad-strike"}], "resource_gates": [{"neili", "500"}], "var_gates": []}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你所使用的外功中没有这种功能。\n", "你感情早已不纯，哪里还能领略到那种黯然销魂的感觉？\n", "你的内功火候不够，使不出", "你的黯然销魂掌不够熟练，不会使用", "你的真气不够，无法使用", "你没有准备黯然销魂掌，无法使用", "你没有妻子，体会不到这种万念俱灰的感觉。\n", "你刚刚施展完", "对方都已经这样了，用不着这么费力吧？\n"], "ap_dp_formulas": %{"ap_formula": "me->query_skill("unarmed") + me->query_skill("force")", "dp_formula": "target->query_skill("parry") + target->query_skill("force")"}, "color_codes": ["HIC", "HIM", "HIR", "HIW", "NOR"], "combat_messages": %{"fail": [], "other": ["HIM "\n只见$N" HIM "没精打采的挥袖卷出，面无表情，随意拍出一掌，正是"
+      #                         "黯然销魂掌中的「拖泥带水」。\n"NOR", "= HIC "可是$p" HIC "小心应付、奋力招架，挡开了这一招。\n"
+      #                          NOR"], "success": ["HIR "\n$N" HIR "心下万念俱灰，凄然间回想到自己的妻子" HIW
+      #                         + me->query("couple/name") + HIR "，" HIR "心中暗道：“别了！"
+      #                         "你自己保重。”当下失魂落魄，随手一招，恰好使出了黯"
+      #                         "然销魂掌中的「拖泥带水」。\n" NOR", "= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 120,
+      #                                              HIR "只听$n" HIR "一声闷哼，“噗”的一"
+      #                                              "声，这一掌正好击在$p" HIR "肩头。 "
+      #                                              NOR)"]}, "damage_formula": %{"formula": "ap + random(ap / 2)"}, "hit_formula": %{"left_side": "ap * 3 / 5 + random(ap)", "operator": ">", "right_side": "dp"}, "resource_adds": [{"neili", "-200"}, {"neili", "-400"}], "resource_queries": ["max_neili", "max_qi", "neili"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": true}}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-200"}, {"neili", "-400"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(2 + random(2));"],
-      #     remote_damage: true,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-200"}, {"neili", "-400"}], "affect_by": [], "apply_adds": [], "busy_lines": ["me->start_busy(2 + random(2));"], "remote_damage": true, "set_flags": [], "temp_set": []}
       #   - me->start_busy(2 + random(2));
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)

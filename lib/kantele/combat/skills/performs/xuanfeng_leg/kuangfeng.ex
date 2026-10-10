@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.XuanfengLeg.Kuangfeng do
   @moduledoc """
-  perform「kuangfeng」（source xuanfeng-leg/kuangfeng.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「kuangfeng」（source xuanfeng-leg/kuangfeng.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,32 +26,15 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengLeg.Kuangfeng do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [],
-      #     level_gates: [
-      #       {"force", "150"},
-      #       {"luoying-shenzhang", "100"},
-      #       {"xuanfeng-leg", "100"}
-      #     ],
-      #     map_gates: [],
-      #     prepared_gates: [{"unarmed", "xuanfeng-leg"}],
-      #     resource_gates: [{"neili", "150"}],
-      #     var_gates: [{"i", "6"}]
-      #   }
+      #   %{"assign_refs": [], "level_gates": [{"force", "150"}, {"luoying-shenzhang", "100"}, {"xuanfeng-leg", "100"}], "map_gates": [], "prepared_gates": [{"unarmed", "xuanfeng-leg"}], "resource_gates": [{"neili", "150"}], "var_gates": [{"i", "6"}]}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["「狂风绝技」只能在战斗中对对手使用。\n", "「狂风绝技」开始时不能拿着兵器！\n", "你的真气不够！\n", "你的内功水平不够！\n", "你的腿掌功夫还不到家，无法使用狂风绝技！\n", "你没有准备旋风腿法，无法施展狂风绝技。\n", "对方都已经这样了，用不着这么费力吧？\n"], "color_codes": ["HIY", "NOR"], "combat_messages": %{"fail": [], "other": ["HIY "$N" HIY "使出桃花岛绝技「狂风绝技」，身法飘忽"
+      #                 "不定，有若天仙！\n" NOR"], "success": []}, "resource_adds": [{"neili", "-100"}], "resource_queries": ["neili"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": false}}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-100"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["if (random(3) == 0 && ! target->is_busy())",
-      #      "target->start_busy(1);", "me->start_busy(1 + random(6));"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-100"}], "affect_by": [], "apply_adds": [], "busy_lines": ["if (random(3) == 0 && ! target->is_busy())", "target->start_busy(1);", "me->start_busy(1 + random(6));"], "remote_damage": false, "set_flags": [], "temp_set": []}
       #   - if (random(3) == 0 && ! target->is_busy())
       #   - target->start_busy(1);
       #   - me->start_busy(1 + random(6));

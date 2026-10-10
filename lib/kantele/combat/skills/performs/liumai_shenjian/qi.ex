@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Qi do
   @moduledoc """
-  perform「无形剑气」（source liumai-shenjian/qi.c，由 translate_perform.exs 骨架生成，inherit F_SSERVER）
+  perform「无形剑气」（source liumai-shenjian/qi.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,27 +26,23 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Qi do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"ap", "finger"}, {"dp", "force"}],
-      #     level_gates: [{"force", "420"}, {"liumai-shenjian", "200"}],
-      #     map_gates: [],
-      #     prepared_gates: [{"finger", "liumai-shenjian"}],
-      #     resource_gates: [{"max_neili", "5000"}, {"neili", "500"}],
-      #     var_gates: []
-      #   }
+      #   %{"assign_refs": [{"ap", "finger"}, {"dp", "force"}], "level_gates": [{"force", "420"}, {"liumai-shenjian", "200"}], "map_gates": [], "prepared_gates": [{"finger", "liumai-shenjian"}], "resource_gates": [{"max_neili", "5000"}, {"neili", "500"}], "var_gates": []}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你所使用的外功中没有这种功能。\n", "你的内功火候不够，使不出", "你的内力修为还不足以使出如此犀利的", "你的真气不够，无法使用", "你的六脉神剑修为有限，无法使用", "你没有准备六脉神剑，无法使用", "对方都已经这样了，用不着这么费力吧？\n"], "ap_dp_formulas": %{"ap_formula": "me->query_skill("finger")", "dp_formula": "target->query_skill("force")"}, "color_codes": ["CYN", "HIG", "HIR", "NOR"], "combat_messages": %{"fail": ["= CYN "可是$p" CYN "内功颇为深厚，轻轻将这道剑气化解于无形。\n" NOR"], "other": ["HIG "$N" HIG "中指一按，一股凌厉无伦的无形剑气直奔$n" HIG "胸前射去。\n" NOR"], "success": ["= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 86,
+      #                                                      HIR "$n" HIR "只觉得胸前一阵剧痛，鲜血"
+      #                                                      "自创口激射而出，眼前顿时一黑！\n" NOR)", "= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 74,
+      #                                                      HIR "$n" HIR "横" + weapon->name() + HIR "试图招架，"
+      #                                                      HIR "怎奈这股剑气如此犀利，透过" + weapon->name() +
+      #                                                      HIR "直震得$n" HIR "狂吐鲜血，五脏六腑都要翻转过来！\n" NOR)", "= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 55,
+      #                                                      HIR "$n" HIR "横转" + weapon->name() + HIR "，挡在胸"
+      #                                                      "前，只听啪啦一声，" + weapon->name() +
+      #                                                      HIR "碎成数截，激飞上天！\n$n" HIR "连退"
+      #                                                      "几步，“哇”的吐了一口鲜血，脸色变的惨白。\n" NOR)"]}, "damage_formula": %{"formula": "ap + random(ap / 2)"}, "hit_formula": %{"left_side": "ap * 2 / 3 + random(ap)", "operator": ">", "right_side": "dp"}, "resource_adds": [{"neili", "-400"}], "resource_queries": ["max_neili", "neili"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": true}, "weapon_forbidden": ["hammer", "pin"]}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-400"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(3);"],
-      #     remote_damage: true,
-      #     set_flags: [{"value", "0"}],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [{"neili", "-400"}], "affect_by": [], "apply_adds": [], "busy_lines": ["me->start_busy(3);"], "remote_damage": true, "set_flags": [{"value", "0"}], "temp_set": []}
       #   - me->start_busy(3);
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)

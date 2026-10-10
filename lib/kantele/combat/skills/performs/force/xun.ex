@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.Force.Xun do
   @moduledoc """
-  exert「xun」（source force/xun.c，由 translate_perform.exs 骨架生成，inherit ?）
+  exert「xun」（source force/xun.c，由 translate_perform.py 骨架生成，inherit ?）
 
   TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
   以上注释行（TODO(migrate)）校对完成后删除。
@@ -26,27 +26,14 @@ defmodule Kantele.Combat.Skills.Performs.Force.Xun do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [],
-      #     level_gates: [],
-      #     map_gates: [],
-      #     prepared_gates: [],
-      #     resource_gates: [],
-      #     var_gates: []
-      #   }
+      #   %{"assign_refs": [], "level_gates": [], "map_gates": [], "prepared_gates": [], "resource_gates": [], "var_gates": []}
+  # TODO(migrate) 增强提取逻辑：
+      #   %{"all_fail_messages": ["你所学的内功中没有这种功能。\n", "你所学的内功中没有这种功能。\n", "没有找到这个人物。\n", "这个人不知道在那里耶。\n"], "combat_messages": %{"fail": [], "other": [], "success": []}, "target_logic": %{"requires_fighting": false, "requires_living": false, "uses_offensive_target": false}}
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: [],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
+      #   %{"add_costs": [], "affect_by": [], "apply_adds": [], "busy_lines": [], "remote_damage": false, "set_flags": [], "temp_set": []}
 
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
