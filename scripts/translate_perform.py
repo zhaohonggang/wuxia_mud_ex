@@ -20,6 +20,11 @@ class TranslatePerform:
         # commit-488139fb baseline), so the extractor only generates them if
         # missing; existing content is preserved verbatim.
         self.protected: Set[str] = self.load_protected()
+        # Embed the full raw LPC source as a comment block so nothing is
+        # silently dropped when the structured extractor can't parse a
+        # construct (malformed quotes, unsupported calls, parser gaps, ...).
+        # Set KUNGFU_EMBED_SOURCE=0 to disable (smaller skeletons).
+        self.embed_source = os.getenv('KUNGFU_EMBED_SOURCE', '1') not in ('0', 'false', 'False', 'no')
         # Regex patterns ported from Elixir version
         self.perform_re = re.compile(r'^\s*int\s+perform\s*\(', re.MULTILINE)
         self.exert_re = re.compile(r'^\s*int\s+exert\s*\(', re.MULTILINE)
@@ -175,6 +180,9 @@ class TranslatePerform:
             'wield_actions': self.dedup(self.wield_re.findall(text)),
             'improve_skills': self.dedup(self.improve_skill_re.findall(text)),
             'misc_gates': self.dedup(self.misc_gate_re.findall(text)),
+            # Safety net: keep the raw LPC source so nothing is silently dropped
+            # (malformed quotes, unsupported calls, brace/parser gaps, ...).
+            'raw_source': text.rstrip('\n') if self.embed_source else '',
         }
 
     def extract_weapon_type(self, text: str) -> Optional[str]:
@@ -601,6 +609,14 @@ class TranslatePerform:
 
         stanzas = '\n'.join(f"      #   - {line}" for line in data['busy_lines'])
 
+        raw_str = ''
+        if data.get('raw_source'):
+            raw_str = (
+                '\n  # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====\n'
+                + self.comment_block(data['raw_source'], indent="      # ")
+                + '\n'
+            )
+
         return f'''defmodule {mod} do
   @moduledoc """
   {data['kind']}「{data['title']}」（source {data['skill']}/{data['move']}.c，由 translate_perform.py 骨架生成，inherit {data['inherit'] or "?"}）
@@ -643,7 +659,7 @@ class TranslatePerform:
     |> put_character(character)
     |> assign(:prompt, false)
   end
-end
+{raw_str}end
 '''
 
     def load_protected(self) -> Set[str]:
@@ -694,25 +710,39 @@ end
         file_path.write_text(rendered, encoding='utf-8')
         return str(file_path.relative_to(out_root))
 
+    @staticmethod
+    def source_rank(c_file: Path) -> int:
+        """Priority of a source file when several map to the same output path.
+
+        Files living under a `perform/` or `exert/` subdirectory are the
+        canonical location and win over files placed directly in the skill
+        directory (e.g. `taixuan-gong/perform/xuan.c` beats
+        `taixuan-gong/xuan.c`). Both still render to the same flat target
+        `performs/<skill>/<move>.ex`.
+        """
+        return 1 if c_file.parent.name in ('perform', 'exert') else 0
+
     def run(self, src_root: Path, out_root: Path) -> Dict[str, List[str]]:
         written = []
         skipped = []
         protected_hits = []
+        collisions = []
 
         for skill_dir in sorted(src_root.iterdir()):
             if not skill_dir.is_dir():
                 continue
 
-            # Use Python's rglob for cross-platform .c file discovery
-            c_files = sorted(skill_dir.rglob('*.c'))
+            # Group every extracted file by its flat output path so that
+            # duplicate (skill, move) sources can be de-duplicated instead of
+            # silently overwriting each other.
+            by_output: Dict[str, List[Tuple[int, Path, Dict[str, Any]]]] = {}
 
-            for c_file in c_files:
-                src_path = c_file
-                data = self.extract(src_path)
+            # Use Python's rglob for cross-platform .c file discovery
+            for c_file in sorted(skill_dir.rglob('*.c')):
+                data = self.extract(c_file)
 
                 if data is None:
-                    rel = src_path.relative_to(src_root)
-                    skipped.append(str(rel))
+                    skipped.append(str(c_file.relative_to(src_root)))
                     continue
 
                 rel_path = f"{self.skill_dir(data['skill'])}/{data['move']}.ex"
@@ -720,14 +750,30 @@ end
                     protected_hits.append(rel_path)
                     continue
 
-                written_path = self.write_skeleton(out_root, skill_from_path(src_path), data)
+                by_output.setdefault(rel_path, []).append((self.source_rank(c_file), c_file, data))
+
+            for rel_path, candidates in sorted(by_output.items()):
+                # Stable sort keeps input order for equal rank; highest rank
+                # (subdirectory source) wins.
+                candidates.sort(key=lambda c: -c[0])
+                _, c_file, data = candidates[0]
+
+                if len(candidates) > 1:
+                    collisions.append({
+                        'output': rel_path,
+                        'chosen': str(c_file.relative_to(src_root)),
+                        'dropped': [str(c[1].relative_to(src_root)) for c in candidates[1:]],
+                    })
+
+                written_path = self.write_skeleton(out_root, skill_from_path(c_file), data)
                 if written_path:
                     written.append(written_path)
 
         return {
             'written': sorted(written),
             'skipped': sorted(skipped),
-            'protected_skipped': sorted(protected_hits)
+            'protected_skipped': sorted(protected_hits),
+            'collisions': sorted(collisions, key=lambda c: c['output'])
         }
 
 
