@@ -51,6 +51,25 @@ class TranslatePerform:
         self.affect_by_detail_re = re.compile(r'affect_by\("([^"]+)",\s*\(\[\s*"level"\s*:\s*([^,]+),\s*"id"\s*:\s*([^,]+),\s*"duration"\s*:\s*([^\]]+)\s*\]\)')
         self.msg_construction_re = re.compile(r'msg\s*[+=]\s*([^;]+);')
         self.color_codes_re = re.compile(r'(HIM|HIR|HIC|HIY|HIG|HIB|HIW|NOR|CYN|RED|GRN|YEL|BLU|MAG|WHT)')
+
+        # New patterns for resource / damage / buff / throwing logic (gap analysis)
+        self.receive_damage_re = re.compile(
+            r'->receive_(damage|wound|heal)\("(\w+)",\s*((?:[^(),\n]|\([^)]*\))+)\s*,\s*(\w+)\)')
+        self.receive_damage_2arg_re = re.compile(
+            r'->receive_(damage|wound|heal)\("(\w+)",\s*((?:[^(),\n]|\([^)]*\))+)\)')
+        self.resource_add_re = re.compile(
+            r'\badd\("(neili|qi|jing|max_neili|max_qi|max_jing|combat_exp|shen|food|water|potential|ep|score|gongxian|weiwang|seniority|tianmo|lingtong|liangong)",\s*((?:[^()\n]|\([^)]*\))+)\)')
+        self.resource_set_re = re.compile(
+            r'\bset\("(neili|qi|jing|max_neili|max_qi|max_jing|combat_exp|shen|food|water|potential|ep|score|gongxian|weiwang|seniority|tianmo|lingtong|liangong)",\s*((?:[^()\n]|\([^)]*\))+)\)')
+        self.delete_temp_re = re.compile(r'\bdelete_temp\("([a-z_/]+)"')
+        self.start_call_out_re = re.compile(
+            r'->start_call_out\(\(:\s*call_other,\s*__FILE__,\s*"(\w+)",\s*((?:[^)]|\n)*?)\s*:\),\s*((?:[^()\n]|\([^)]*\))+)\)')
+        self.hit_ob_re = re.compile(r'->hit_ob\((\w+),\s*(\w+),\s*((?:[^(),\n]|\([^)]*\))+)\)')
+        self.amount_re = re.compile(r'->(query_amount|set_amount)\(([^)]*)\)')
+        self.exp_gate_re = re.compile(r'if\s*\(\s*random\((\w+)\)\s*>\s*(\w+)\)')
+        self.ahinfo_re = re.compile(r'COMBAT_D->(clear_ahinfo|query_ahinfo)\(')
+        self.neili_query_re = re.compile(r'query\("(neili|max_neili|qi|max_qi|jing|max_jing)"')
+        self.query_amount_gate_re = re.compile(r'query_amount\(\)\s*<\s*(\d+)')
         
     def classify(self, src: Path) -> Tuple[str, Optional[str]]:
         text = src.read_text(encoding='utf-8')
@@ -125,6 +144,18 @@ class TranslatePerform:
             'messages': messages,
             'color_codes': color_codes,
             'callbacks': callbacks,
+            # Gap-analysis additions: resource / damage / buff / throwing
+            'receive_damages': self.extract_receive_damages(text),
+            'resource_adds': self.extract_resource_calls(text, 'add'),
+            'resource_sets': self.extract_resource_calls(text, 'set'),
+            'buff_delete': self.dedup(self.delete_temp_re.findall(text)),
+            'call_outs': self.extract_call_outs(text),
+            'hit_obs': self.pairs(self.dedup(self.hit_ob_re.findall(text))),
+            'amounts': self.dedup(self.amount_re.findall(text)),
+            'exp_gates': self.pairs(self.dedup(self.exp_gate_re.findall(text))),
+            'ahinfo': self.extract_ahinfo(text),
+            'resource_queries': self.dedup(self.neili_query_re.findall(text)),
+            'amount_gates': self.dedup(self.query_amount_gate_re.findall(text)),
         }
 
     def extract_weapon_type(self, text: str) -> Optional[str]:
@@ -288,6 +319,122 @@ class TranslatePerform:
                 })
         return callbacks
 
+    def _scan_balanced(self, text: str, start: int, end_char: str = ')') -> int:
+        """Return index just past the matching close paren, starting after an
+        opening '(' at position `start` (text[start-1] == '('). Handles nesting.
+        """
+        depth = 1
+        i = start
+        n = len(text)
+        while i < n:
+            c = text[i]
+            if c == '(':
+                depth += 1
+            elif c == end_char:
+                depth -= 1
+                if depth == 0:
+                    return i + 1
+            i += 1
+        return -1
+
+    def _call_args(self, text: str, callee: str) -> List[List[str]]:
+        """Extract argument lists of every `->callee(...)` call, splitting on
+        top-level commas (parens/strings preserved). Returns list of arg lists.
+        """
+        results = []
+        rx = re.compile(re.escape(callee) + r'\s*\(')
+        for m in rx.finditer(text):
+            end = self._scan_balanced(text, m.end(), ')')
+            if end < 0:
+                continue
+            inner = text[m.end():end - 1]
+            args = []
+            depth = 0
+            cur = []
+            in_str = False
+            for ch in inner:
+                if ch == '"':
+                    in_str = not in_str
+                    cur.append(ch)
+                elif ch == '(' and not in_str:
+                    depth += 1
+                    cur.append(ch)
+                elif ch == ')' and not in_str:
+                    depth -= 1
+                    cur.append(ch)
+                elif ch == ',' and depth == 0 and not in_str:
+                    args.append(''.join(cur).strip())
+                    cur = []
+                else:
+                    cur.append(ch)
+            if cur:
+                args.append(''.join(cur).strip())
+            results.append(args)
+        return results
+
+    def extract_resource_calls(self, text: str, verb: str) -> List[Tuple[str, str]]:
+        """Extract add("neili", V) / set("neili", V) with V possibly a nested
+        expression like -(300 + random(200)). Balanced-paren aware.
+        """
+        RESOURCES = (
+            'neili', 'qi', 'jing', 'max_neili', 'max_qi', 'max_jing',
+            'combat_exp', 'shen', 'food', 'water', 'potential', 'ep', 'score',
+            'gongxian', 'weiwang', 'seniority', 'tianmo', 'lingtong', 'liangong',
+        )
+        out = []
+        for args in self._call_args(text, f'->{verb}'):
+            if len(args) >= 2:
+                name = args[0].strip('"').strip()
+                if name in RESOURCES:
+                    out.append((name, args[1]))
+        return self.pairs(self.dedup(out))
+
+    def extract_receive_damages(self, text: str) -> List[Dict[str, Any]]:
+        """Extract direct damage/wound/heal calls:
+        me->receive_damage("qi", skill * 3 / 2 + random(skill * 3 / 2), me)   (3-arg)
+        me->receive_damage("qi", 0)                                          (2-arg, source=None)
+        """
+        details = []
+        for m in self.receive_damage_re.finditer(text):
+            kind, part, formula, source = m.groups()
+            details.append({
+                'kind': kind,
+                'part': part,
+                'formula': formula.strip(),
+                'source': source,
+            })
+        # 2-arg variant: source is implicit (environment / caller)
+        for m in self.receive_damage_2arg_re.finditer(text):
+            kind, part, formula = m.groups()
+            details.append({
+                'kind': kind,
+                'part': part,
+                'formula': formula.strip(),
+                'source': None,
+            })
+        return details
+
+    def extract_call_outs(self, text: str) -> List[Dict[str, Any]]:
+        """Extract delayed callbacks:
+        me->start_call_out((: call_other, __FILE__, "remove_effect", me, skill :), skill)
+        """
+        details = []
+        for m in self.start_call_out_re.finditer(text):
+            fn, args, delay = m.groups()
+            details.append({
+                'fn': fn,
+                'args': args.strip(),
+                'delay': delay.strip(),
+            })
+        return details
+
+    def extract_ahinfo(self, text: str) -> Dict[str, bool]:
+        """COMBAT_D aggregate hit info usage."""
+        return {
+            'clear': 'clear_ahinfo' in text,
+            'query': 'query_ahinfo' in text,
+        }
+
     def title_of(self, text: str, move: str) -> str:
         match = self.sense_re.search(text)
         if match:
@@ -392,6 +539,29 @@ class TranslatePerform:
             enhanced['color_codes'] = data['color_codes']
         if data.get('callbacks'):
             enhanced['callback_functions'] = data['callbacks']
+        # Gap-analysis additions
+        if data.get('receive_damages'):
+            enhanced['receive_damage_calls'] = data['receive_damages']
+        if data.get('resource_adds'):
+            enhanced['resource_adds'] = data['resource_adds']
+        if data.get('resource_sets'):
+            enhanced['resource_sets'] = data['resource_sets']
+        if data.get('buff_delete'):
+            enhanced['buff_delete'] = data['buff_delete']
+        if data.get('call_outs'):
+            enhanced['call_outs'] = data['call_outs']
+        if data.get('hit_obs'):
+            enhanced['hit_ob_calls'] = data['hit_obs']
+        if data.get('amounts'):
+            enhanced['amount_calls'] = data['amounts']
+        if data.get('exp_gates'):
+            enhanced['exp_compare'] = data['exp_gates']
+        if data.get('ahinfo') and (data['ahinfo']['clear'] or data['ahinfo']['query']):
+            enhanced['combat_d_ahinfo'] = data['ahinfo']
+        if data.get('resource_queries'):
+            enhanced['resource_queries'] = data['resource_queries']
+        if data.get('amount_gates'):
+            enhanced['amount_gates'] = data['amount_gates']
 
         enhanced_str = self.comment_block(elixir_fmt(enhanced)) if enhanced else ''
 
