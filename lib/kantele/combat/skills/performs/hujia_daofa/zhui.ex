@@ -2,14 +2,17 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Zhui do
   @moduledoc """
   卸甲锥心势「zhui」（对照 `kungfu/skill/hujia-daofa/zhui.c`）
 
-  胡家刀法单体攻击：消耗 150 内力，发出无形刀气，发起
-  `combat/perform-incoming` 事件，由目标侧 `resolve_incoming` 判定命中并施加伤害。
+  胡家刀法单体攻击：发出无形刀气，发起 `combat/perform-incoming` 事件，
+  由目标侧 `resolve_incoming` 判定命中并施加伤害。
 
-  差异（TODO(migrate)）：
-  - LPC 另要求 force>=200；本版仅以 hujia-daofa>=140 与 mapped 把关；
-  - LPC 命中/落空分别消耗 150/50，本版统一 150；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
-  - 伤害计算：`damage = level * 2`（简化），LPC 为 `ap/3+rand(ap/2)`。
+  已按原始 LPC 对齐：
+  - 门槛：perform_known / 战斗中目标 / 手中持刀 / hujia-daofa>=140 /
+    激发胡家刀法 / neili>=200。（LPC 另有 force>=200 内功门槛）
+  - ap = blade + force；dp = 目标 force；
+    命中判定 `ap/4 + rand(ap/2) > dp`。
+  - 伤害 `ap/3 + rand(ap/2)`（目标侧结算）。
+  - 内力消耗与忙乱按命中/落空分别回执攻击方：命中 -150 / busy 2；
+    落空 -50 / busy 3。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -20,6 +23,7 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Zhui do
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
   alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
@@ -37,6 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Zhui do
          {:ok, target} <- check_target(combat),
          :ok <- check_weapon(combat),
          {:ok, level} <- check_skill_level(stats),
+         :ok <- check_force(stats),
          :ok <- check_mapped(stats),
          :ok <- check_neili(character) do
       apply_perform(conn, character, target, level)
@@ -91,6 +96,14 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Zhui do
     end
   end
 
+  defp check_force(stats) do
+    if Stats.skill(stats, "force") < 200 do
+      {:error, "你的内功火候不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
+    end
+  end
+
   defp check_neili(character) do
     if character.meta.vitals.neili < 200 do
       {:error, "你的真气不够，难以施展#{@move_name}。\n"}
@@ -99,14 +112,19 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Zhui do
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 150}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp apply_perform(conn, character, target, _level) do
+    stats = character.meta.stats
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = (weapon && Map.get(weapon, :name)) || "刀"
 
+    # LPC: ap = me->query_skill("blade") + me->query_skill("force")
+    ap = Stats.skill(stats, "blade") + Stats.skill(stats, "force")
+
+    # 消耗在 resolve_incoming 中按命中/落空分别结算（150/50），此处不预先扣除。
     conn =
       Broadcast.publish(
         conn,
-        "$N手中的$w一振，施出#{@move_name}，顿时一股凌厉无比的无形刀气破空袭向$n！\n",
+        "$N手中的#{weapon_name}一振，施出#{@move_name}，顿时一股凌厉无比的无形刀气破空袭向$n！\n",
         n1: character.name,
         n2: target.name
       )
@@ -117,9 +135,9 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Zhui do
       data: %{
         attacker: ref(character),
         perform_id: @perform_id,
-        level: level,
-        ap: level * 2,
-        dp: 0
+        level: ap,
+        ap: ap,
+        rng: &:rand.uniform/1
       }
     })
 
@@ -131,40 +149,41 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Zhui do
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
     level = Map.get(data, :level, 0)
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     combat = character.meta.combat
     weapon = Combat.weapon(combat)
     weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
+
+    # LPC: ap = me->query_skill("blade") + me->query_skill("force")
+    #      dp = target->query_skill("force")
+    # The attacker sends the summed ap; recompute dp from the victim's force.
+    ap = Map.get(data, :ap, level * 2)
+    dp = Stats.skill(character.meta.stats, "force")
 
     bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "刀"]
 
-    hit = Engine.rand(rng, level) > div(parry, 2)
+    # LPC: if (ap / 4 + random(ap / 2) > dp) → hit
+    hit = div(ap, 4) + Engine.rand(rng, max(div(ap, 2), 1)) > dp
 
     if hit do
-      damage = level * 2
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
+      # LPC: damage = ap / 3 + random(ap / 2); me->add("neili", -150); busy 2
+      damage = div(ap, 3) + Engine.rand(rng, max(div(ap, 2), 1))
       combat = Combat.apply_damage(combat, damage)
+      Performs.feedback(attacker, 150, 2)
 
       conn
       |> Broadcast.publish(
         Messages.interpolate(
-          "结果$n一声惨叫，整个人如遭电击，刀气穿心，口中鲜血狂喷而出，受到#{damage}点伤害！\n",
+          "结果$n一声惨叫，整个人如遭电击，刀气穿心，口中鲜血狂喷而出！\n",
           bindings
         )
       )
       |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "可是$p默运内力，硬是抵挡了$N的这记无形刀气。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
+      # LPC: me->add("neili", -50); busy 3
+      Performs.feedback(attacker, 50, 3)
+
+      text = Messages.interpolate("可是$p默运内力，硬是抵挡了$P的这记无形刀气。\n", bindings)
 
       Broadcast.publish(conn, text)
     end
