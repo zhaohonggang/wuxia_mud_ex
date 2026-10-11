@@ -129,8 +129,12 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
     result = Messages.interpolate("$N大喝一声，变掌为爪，双爪化出漫天爪影，如狂风骤雨一般向$n的要害抓去！

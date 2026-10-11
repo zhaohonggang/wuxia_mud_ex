@@ -127,6 +127,9 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Tian do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
+  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
+  #   target->receive_damage("qi", qi_wound)  # UNSUPPORTED: unknown ident qi_wound
+
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats

@@ -29,6 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Bian do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "kuihua-mogong")
+    ap = (Stats.skill(stats, "kuihua-mogong") + Stats.skill(stats, "dodge"))
+    damage = (ap + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,6 +41,8 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Bian do
         data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
+          damage: damage,
           rng: rng
         }
       })
@@ -128,11 +132,20 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Bian do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    result = Messages.interpolate("$N一声尖啸，身体猛然旋转不定，顿时化成无数气流，犹如千万根银针，齐齐卷向$n！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$N一声尖啸，身体猛然旋转不定，顿时化成无数气流，犹如千万根银针，齐齐卷向$n！", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

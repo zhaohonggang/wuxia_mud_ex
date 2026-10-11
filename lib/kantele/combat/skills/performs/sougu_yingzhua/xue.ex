@@ -133,13 +133,20 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Xue do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 4)
-    result = Messages.interpolate("$N运转真气，双手忽成爪形，施出绝招「赤血爪」，迅猛无比地抓向$n。
-但见$N双爪划过，$n已闪避不及，胸口被$N抓出十条血痕。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$N运转真气，双手忽成爪形，施出绝招「赤血爪」，迅猛无比地抓向$n。
+但见$N双爪划过，$n已闪避不及，胸口被$N抓出十条血痕。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n奋力招架，竟将$N这招化解。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -130,8 +130,12 @@ defmodule Kantele.Combat.Skills.Performs.QiantianZhi.Zhi do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
     result = Messages.interpolate("$N陡然使出一招「乾阳神指」，双指齐施，同时朝$n面门及胸口处点去。

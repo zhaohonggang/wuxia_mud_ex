@@ -135,17 +135,30 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = Messages.interpolate("霎时间$n只觉得手腕一麻，手中再也拿持不住，脱手掉在地上。
+    result = if hit, do: Messages.interpolate("霎时间$n只觉得手腕一麻，手中再也拿持不住，脱手掉在地上。
 
 紧接着$N凝气于指，一式「阳关三叠」点出，顿时一股纯阳的内力直袭$n胸口！
 结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。
 结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。
-结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。", n1: attacker.name, n2: character.name)
+结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n将手中转动如轮，终于化解了这一招。
+
+紧接着可是$p镇定自如，全力化解了$P这精妙的一指。
+可是$p镇定自如，全力化解了$P这精妙的一指。
+可是$p镇定自如，全力化解了$P这精妙的一指。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

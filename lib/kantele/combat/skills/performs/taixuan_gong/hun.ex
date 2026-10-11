@@ -127,6 +127,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Hun do
   # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
   #   target->receive_damage("jing", damage / 2)  # UNSUPPORTED: unknown ident damage
   #   target->receive_wound("jing", damage / 3)  # UNSUPPORTED: unknown ident damage
+  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do

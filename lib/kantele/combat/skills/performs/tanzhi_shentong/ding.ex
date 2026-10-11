@@ -137,12 +137,19 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Ding do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 2)
-    result = Messages.interpolate("$n只觉胁下一麻，已被$P指气射中，全身酸软无力，呆立当场。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n只觉胁下一麻，已被$P指气射中，全身酸软无力，呆立当场。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

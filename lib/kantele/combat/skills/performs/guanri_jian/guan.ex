@@ -134,13 +134,20 @@ defmodule Kantele.Combat.Skills.Performs.GuanriJian.Guan do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 600, 3)
-    result = Messages.interpolate("$N施出观日剑法之「天洪地炉观日神诀」，将内力尽数注入剑身直奔
-$n而去。霎时间炽炎暴涨，热浪扑面卷来，四周空气便似沸腾一般。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$N施出观日剑法之「天洪地炉观日神诀」，将内力尽数注入剑身直奔
+$n而去。霎时间炽炎暴涨，热浪扑面卷来，四周空气便似沸腾一般。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -133,8 +133,12 @@ defmodule Kantele.Combat.Skills.Performs.TongchuiZhang.Kai do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
     result = Messages.interpolate("$N右掌暗聚力道，十指分张，蓦地一招「五丁开山」向$n背心拍去。

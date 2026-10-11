@@ -137,12 +137,19 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 8)
-    result = Messages.interpolate("可是$n一声冷哼，飞身闪开来招，又顺势转身一掌拍向$N面门。
+    result = if hit, do: Messages.interpolate("可是$n一声冷哼，飞身闪开来招，又顺势转身一掌拍向$N面门。
 只听“喀嚓”一声，$n那掌正好打在$N头顶，$N哀嚎一声，软软的瘫倒。
 $n眼见$N来势如此凶悍，这一招决计无法抵挡，骇怖达于极点，竟致僵立，束手待毙。
 只听“噗嗤”一声，已然透过$n前胸而入，喷出一股血雨。
@@ -150,7 +157,7 @@ $n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，骇怖达于�
 向$N面门，竟也是同归于尽的招数。只听“噗嗤”一声，已然透过$n前胸，喷出一股血雨。
 同时$n那一掌也正好打在$N头顶，听得“喀嚓”一声，$N头盖骨完全碎裂，软软的瘫倒。
 $n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，急忙飞身闪避，然而只听“嗤啦”一声，那
-柄已然刺穿，喷出一股血雨。", n1: attacker.name, n2: character.name)
+柄已然刺穿，喷出一股血雨。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -130,8 +130,12 @@ defmodule Kantele.Combat.Skills.Performs.ZhenyuQuan.Tong do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
     result = Messages.interpolate("$N随手挥出一拳，飘忽不定的击向$n，看似竟不着半点力道。

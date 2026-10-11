@@ -129,8 +129,14 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
+        vitals = Vitals.damage(vitals, :qi, damage)
+        vitals = Vitals.damage(vitals, :qi, damage)
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
     result = Messages.interpolate("$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被这招击个正中。

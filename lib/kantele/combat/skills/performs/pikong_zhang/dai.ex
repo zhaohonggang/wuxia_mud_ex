@@ -130,8 +130,12 @@ defmodule Kantele.Combat.Skills.Performs.PikongZhang.Dai do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
     result = Messages.interpolate("$n一惊，被$N掌劲击在胸前，经脉受震，登时呕出一口鲜血！", n1: attacker.name, n2: character.name)

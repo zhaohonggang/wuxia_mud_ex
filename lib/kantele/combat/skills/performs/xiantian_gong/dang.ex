@@ -29,7 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xiantian-gong")
-    damage = (-1)
+    ap = (Stats.skill(stats, "unarmed") + Stats.skill(stats, "force"))
+    damage = (div(ap, 2) + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -40,6 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
         data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           damage: damage,
           rng: rng
         }
@@ -138,13 +140,22 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 4)
-    result = Messages.interpolate("便在$n微微一愣间，$N罡风已然及体，$p一声哀嚎，全身骼络尽数断裂。
+    result = if hit, do: Messages.interpolate("便在$n微微一愣间，$N罡风已然及体，$p一声哀嚎，全身骼络尽数断裂。
 ( $n受伤过重，已经有如风中残烛，随时都可能断气。)
-$N的罡劲登时瓦解了$n的护体真气，$p真元受损，接连喷出数口鲜血。", n1: attacker.name, n2: character.name)
+$N的罡劲登时瓦解了$n的护体真气，$p真元受损，接连喷出数口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

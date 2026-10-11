@@ -28,9 +28,13 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
     combat = character.meta.combat
     stats = character.meta.stats
     rng = &:rand.uniform/1
+    skill = ((Stats.skill(stats, "force") + Stats.skill(stats, "liuhe-bian")) + Stats.skill(stats, "dodge"))
     lvl = Stats.skill(stats, "liuhe-bian")
+    ap = (skill + Engine.rand(rng, skill))
     i = 1
     tm = (5 + Engine.rand(rng, 5))
+    hurt = div(skill, 3)
+    damage = div(hurt, i)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -41,6 +45,8 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
         data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
+          damage: damage,
           rng: rng
         }
       })
@@ -121,14 +127,28 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 2)
-    result = Messages.interpolate("$N大喝一声，口中轻轻念诵佛经，手中霍霍，招招连环，快如电闪！
+    result = if hit, do: Messages.interpolate("$N大喝一声，口中轻轻念诵佛经，手中霍霍，招招连环，快如电闪！
 
 
-【人合】，$N与合为一体急射向$n，$n措手不急被打的吐血不止！", n1: attacker.name, n2: character.name)
+【人合】，$N与合为一体急射向$n，$n措手不急被打的吐血不止！", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -125,12 +125,19 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Shang do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 260, 3)
-    result = Messages.interpolate("只见$P这一拳把$p飞了出去，重重的摔在地上，吐血不止！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("只见$P这一拳把$p飞了出去，重重的摔在地上，吐血不止！", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -124,13 +124,22 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("$n不料$N会使出如此诡异招式，慌忙伸掌抵挡，结果$N蛤蟆功内劲不断袭入，$n全身顿时感到一阵撕裂般的痛苦。
+    result = if hit, do: Messages.interpolate("$n不料$N会使出如此诡异招式，慌忙伸掌抵挡，结果$N蛤蟆功内劲不断袭入，$n全身顿时感到一阵撕裂般的痛苦。
 $n只觉此招，阴柔无比，诡异莫测，心中一惊，却猛然间觉得一股阴风透骨而过。
-$n全然无力阻挡，竟被$N双掌击得飞起，重重的跌落在地上。", n1: attacker.name, n2: character.name)
+$n全然无力阻挡，竟被$N双掌击得飞起，重重的跌落在地上。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

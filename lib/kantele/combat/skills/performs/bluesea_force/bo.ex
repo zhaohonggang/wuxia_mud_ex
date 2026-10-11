@@ -29,6 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "bluesea-force")
+    ap = (div((Stats.skill(stats, "bluesea-force") * 3), 2) + Stats.skill(stats, "martial-cognize"))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,6 +40,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
         data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
@@ -98,6 +100,8 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

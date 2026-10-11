@@ -141,12 +141,20 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Xing do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 4)
-    result = Messages.interpolate("$N默运玄冥神功，展出绝招「玄冥双行」，猛然间欺身向前，双掌齐出，掌风阴寒无比，掌未到，风先至，瞬息间双掌已拍向$n！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$N默运玄冥神功，展出绝招「玄冥双行」，猛然间欺身向前，双掌齐出，掌风阴寒无比，掌未到，风先至，瞬息间双掌已拍向$n！", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

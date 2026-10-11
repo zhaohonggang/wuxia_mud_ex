@@ -32,7 +32,8 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
     improve = 0
     n = 0
     m = 0
-    damage = (-1)
+    ap = (Stats.skill(stats, "unarmed") + Stats.skill(stats, "force"))
+    damage = (div((ap * 2), 3) + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -43,6 +44,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
         data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           damage: damage,
           rng: rng
         }
@@ -142,13 +144,22 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 5)
-    result = Messages.interpolate("只见$N一拳轰至，便将$n震得心脉俱碎，仰天喷出一口鲜血，软软瘫倒。
+    result = if hit, do: Messages.interpolate("只见$N一拳轰至，便将$n震得心脉俱碎，仰天喷出一口鲜血，软软瘫倒。
 ( $n受伤过重，已经有如风中残烛，随时都可能断气。)
-结果$p闪避不及，$P的拳力掌劲顿时透体而入，口中鲜血狂喷，连退数步。", n1: attacker.name, n2: character.name)
+结果$p闪避不及，$P的拳力掌劲顿时透体而入，口中鲜血狂喷，连退数步。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

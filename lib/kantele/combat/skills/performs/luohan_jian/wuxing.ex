@@ -117,8 +117,13 @@ defmodule Kantele.Combat.Skills.Performs.LuohanJian.Wuxing do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    level = Map.get(data, :level, 0)
+    skill = Map.get(data, :skill, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
+        vitals = Vitals.damage(vitals, :qi, skill)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
     result = Messages.interpolate("", n1: attacker.name, n2: character.name)

@@ -124,14 +124,21 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 40, 3)
-    result = Messages.interpolate("$N目睚俱裂，一声爆喝，全身骨骼劈啪作响，拳头如闪电般击向$n的要害！
+    result = if hit, do: Messages.interpolate("$N目睚俱裂，一声爆喝，全身骨骼劈啪作响，拳头如闪电般击向$n的要害！
 $N大喝一声，面色赤红，全身骨骼劈啪作响，拳头如闪电般击向$n的要害！
-结果$p无法抵挡$P这雷霆一击，登时被打退数步，摇晃不定。", n1: attacker.name, n2: character.name)
+结果$p无法抵挡$P这雷霆一击，登时被打退数步，摇晃不定。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

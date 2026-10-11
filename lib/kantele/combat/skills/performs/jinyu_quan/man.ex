@@ -129,8 +129,12 @@ defmodule Kantele.Combat.Skills.Performs.JinyuQuan.Man do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
     result = Messages.interpolate("结果只听“砰砰砰砰”几声闷响，$p前胸被$P轰中数拳，登时呕出一口鲜血！", n1: attacker.name, n2: character.name)

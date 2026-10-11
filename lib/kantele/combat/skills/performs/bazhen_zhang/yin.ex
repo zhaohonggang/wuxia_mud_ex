@@ -130,8 +130,12 @@ defmodule Kantele.Combat.Skills.Performs.BazhenZhang.Yin do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 3)
     result = Messages.interpolate("$N凝神沉履，积聚全身功力于一掌，携着雷霆之势奋力向$n胸前拍落。

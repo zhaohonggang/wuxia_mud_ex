@@ -118,13 +118,20 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-    result = Messages.interpolate("$N心下万念俱灰，凄然间回想到自己的妻子couple/name，心中暗道：“别了！你自己保重。”当下失魂落魄，随手一招，恰好使出了黯然销魂掌中的「拖泥带水」。
-只听$n一声闷哼，“噗”的一声，这一掌正好击在$p肩头。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$N心下万念俱灰，凄然间回想到自己的妻子couple/name，心中暗道：“别了！你自己保重。”当下失魂落魄，随手一招，恰好使出了黯然销魂掌中的「拖泥带水」。
+只听$n一声闷哼，“噗”的一声，这一掌正好击在$p肩头。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -141,13 +141,20 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    result = Messages.interpolate("拆得数招，$N左剑平刺，右掌正击，同时左腿横扫而出，正是全真派中的绝招。
-只见$n躲闪不及，已经被$N一腿扫中，惨叫声中，向后跌出丈许。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("拆得数招，$N左剑平刺，右掌正击，同时左腿横扫而出，正是全真派中的绝招。
+只见$n躲闪不及，已经被$N一腿扫中，惨叫声中，向后跌出丈许。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -130,8 +130,12 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Ding do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
     result = Messages.interpolate("结果$p闪避不及，被$P这招插中，掌劲顿时透胸而过，口喷鲜血，几乎摔倒！", n1: attacker.name, n2: character.name)

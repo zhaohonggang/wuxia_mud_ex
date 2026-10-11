@@ -123,12 +123,19 @@ defmodule Kantele.Combat.Skills.Performs.LongzhuaGong.Zhua do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    result = Messages.interpolate("$p见来势凶猛，难以躲避，只好勉强化解，谁知$P的手好像长了眼睛一般，扑哧一下正抓中$p的要害，登时鲜血飞溅！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$p见来势凶猛，难以躲避，只好勉强化解，谁知$P的手好像长了眼睛一般，扑哧一下正抓中$p的要害，登时鲜血飞溅！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p的看破了$P的招式，连消带打，全然化解了$P的攻势。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

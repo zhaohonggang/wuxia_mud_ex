@@ -133,13 +133,20 @@ defmodule Kantele.Combat.Skills.Performs.WuliangJian.Qian do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = Messages.interpolate("只见$N手中“唰唰唰唰”连攻四剑，剑招去势极快，全然笼罩$n！
-结果$n阻挡不及，顿时被$N斩中数剑，伤口见骨，苦不堪言。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("只见$N手中“唰唰唰唰”连攻四剑，剑招去势极快，全然笼罩$n！
+结果$n阻挡不及，顿时被$N斩中数剑，伤口见骨，苦不堪言。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

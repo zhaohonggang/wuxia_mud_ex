@@ -130,8 +130,12 @@ defmodule Kantele.Combat.Skills.Performs.PuduZhang.Zhao do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
     result = Messages.interpolate("只见$p闷哼一声，连叫都叫不出来，身子飞跌出去，重重的摔倒在地上！", n1: attacker.name, n2: character.name)

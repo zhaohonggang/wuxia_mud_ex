@@ -110,12 +110,19 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 4)
-    result = Messages.interpolate("$n只觉万道金芒铺天盖地席卷而来，完全无法阻挡。顿时只感全身几处刺痛，鲜血飞溅而出！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n只觉万道金芒铺天盖地席卷而来，完全无法阻挡。顿时只感全身几处刺痛，鲜血飞溅而出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

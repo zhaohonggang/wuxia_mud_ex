@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 Enhanced Python port of scripts/translate_perform.exs
 
@@ -472,10 +472,31 @@ class TranslatePerform:
         """Direct damage/wound/heal calls whose receiver is the opponent
         (target/victim), i.e. the perform's own offensive payload. Used only to
         seed the target-side resolve_incoming/4 skeleton comment."""
-        return [
-            {'kind': m.group(1), 'part': m.group(2), 'formula': m.group(3).strip()}
-            for m in self.target_damage_re.finditer(text)
-        ]
+        results = []
+        for m in self.target_damage_re.finditer(text):
+            results.append({'kind': m.group(1), 'part': m.group(2), 'formula': m.group(3).strip()})
+        # Also cover do_damage(COMBAT_D->do_damage) to target/victim/ob
+        for m in re.finditer(r'do_damage\(([^)]+)\)', text):
+            g = m.group(1)
+            # split respecting parens
+            args = []
+            depth = 0; cur = ''
+            for ch in g:
+                if ch == "(" or ch == "[": depth += 1
+                if ch == ")" or ch == "]": depth -= 1
+                if ch == "," and depth == 0:
+                    args.append(cur.strip()); cur = ''
+                else:
+                    cur += ch
+            args.append(cur.strip())
+            if len(args) > 3:
+                tgt = args[1] if len(args) > 1 else '';
+                if tgt in ('target', 'victim', 'ob'):
+                    # damage var is typically args[3]
+                    dmg_expr = args[3] if len(args) > 3 else '';
+                    if dmg_expr:
+                        results.append({'kind': 'damage', 'part': 'qi', 'formula': dmg_expr})
+        return results
 
     def extract_call_outs(self, text: str) -> List[Dict[str, Any]]:
         """Extract delayed callbacks:
@@ -645,7 +666,7 @@ class TranslatePerform:
         (no target-> references), in textual order. Returns dict
         var_name -> {'expr': translated_elixir, 'raw': raw_expr}."""
         # Find all assignments: name = expr;
-        assign_re = re.compile(r'\b(\w+)\s*=\s*([^;\n]+);')
+        assign_re = re.compile(r'\b(\w+)\s*=\s*([^;]+?);', re.DOTALL)
         vars_result = {}
         scope = {}
         for m in assign_re.finditer(text):

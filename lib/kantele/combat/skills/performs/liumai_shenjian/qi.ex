@@ -122,15 +122,24 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Qi do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 3)
-    result = Messages.interpolate("$n只觉得胸前一阵剧痛，鲜血自创口激射而出，眼前顿时一黑！
+    result = if hit, do: Messages.interpolate("$n只觉得胸前一阵剧痛，鲜血自创口激射而出，眼前顿时一黑！
 $n横试图招架，怎奈这股剑气如此犀利，透过直震得$n狂吐鲜血，五脏六腑都要翻转过来！
 $n横转，挡在胸前，只听啪啦一声，碎成数截，激飞上天！
-$n连退几步，“哇”的吐了一口鲜血，脸色变的惨白。", n1: attacker.name, n2: character.name)
+$n连退几步，“哇”的吐了一口鲜血，脸色变的惨白。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p内功颇为深厚，轻轻将这道剑气化解于无形。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

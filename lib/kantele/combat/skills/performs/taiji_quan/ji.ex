@@ -132,6 +132,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Ji do
     if hit do
           vitals = Vitals.damage(vitals, :jing, damage)
           vitals = Vitals.wound(vitals, :jing, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}

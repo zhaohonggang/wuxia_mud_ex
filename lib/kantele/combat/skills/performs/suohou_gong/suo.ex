@@ -135,15 +135,22 @@ defmodule Kantele.Combat.Skills.Performs.SuohouGong.Suo do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 4)
-    result = Messages.interpolate("$N一声冷笑，蓦地拔地而起，右手一招「铁爪锁喉」直取$n颈部。
+    result = if hit, do: Messages.interpolate("$N一声冷笑，蓦地拔地而起，右手一招「铁爪锁喉」直取$n颈部。
 霎时只听「喀嚓」一声脆响，$N五指竟将$n的喉结捏个粉碎。
 ( $n受伤过重，已经有如风中残烛，随时都可能断气。)
-$n慌忙躲闪，却听「喀嚓」一声，$N五指正拿中$n的。", n1: attacker.name, n2: character.name)
+$n慌忙躲闪，却听「喀嚓」一声，$N五指正拿中$n的。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

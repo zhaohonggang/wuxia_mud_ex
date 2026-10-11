@@ -135,6 +135,7 @@ defmodule Kantele.Combat.Skills.Performs.JieshouJiushi.Jie do
           vitals = Vitals.wound(vitals, :jing, damage)
           vitals = Vitals.damage(vitals, :qi, div((damage * 3), 2))
           vitals = Vitals.wound(vitals, :qi, div((damage * 3), 2))
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}

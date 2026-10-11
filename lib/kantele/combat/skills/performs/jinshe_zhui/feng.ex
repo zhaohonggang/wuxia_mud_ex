@@ -30,7 +30,6 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "jinshe-zhui")
     skill = Stats.skill(stats, "jinshe-zhui")
-    count = 0
     ap = Stats.skill(stats, "throwing")
 
     with :ok <- check_perform_known(character),

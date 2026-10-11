@@ -133,6 +133,7 @@ defmodule Kantele.Combat.Skills.Performs.SanyinShou.Sun do
     if hit do
           vitals = Vitals.damage(vitals, :jing, damage)
           vitals = Vitals.wound(vitals, :jing, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}

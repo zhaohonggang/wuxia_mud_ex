@@ -29,6 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "yuxiao-jian")
     skill = Stats.skill(stats, "yuxiao-jian")
+    ap = ((Stats.skill(stats, "yuxiao-jian") + Stats.skill(stats, "bibo-shengong")) + Stats.skill(stats, "chuixiao-jifa"))
     damage = 0
 
     with :ok <- check_perform_known(character),
@@ -40,6 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
         data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           damage: damage,
           rng: rng
         }
@@ -125,19 +127,24 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-        vitals = Vitals.damage(vitals, :jing, damage)
-        vitals = Vitals.wound(vitals, :jing, div((damage * 2), 3))
+    if hit do
+          vitals = Vitals.damage(vitals, :jing, damage)
+          vitals = Vitals.wound(vitals, :jing, div((damage * 2), 3))
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 1)
-    result = Messages.interpolate("$n只感心头一震，脸上情不自禁的露出了一丝微笑。
+    result = if hit, do: Messages.interpolate("$n只感心头一震，脸上情不自禁的露出了一丝微笑。
 $n只感全身热血沸腾，就只想手舞足蹈的乱动一番。
 霎时间$n只感心头滚热，喉干舌燥，说不出的难受。
-此时$n已身陷绝境，全身气血逆流，再也无法脱身。", n1: attacker.name, n2: character.name)
+此时$n已身陷绝境，全身气血逆流，再也无法脱身。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

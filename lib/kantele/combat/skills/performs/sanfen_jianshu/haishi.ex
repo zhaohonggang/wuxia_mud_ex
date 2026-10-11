@@ -118,14 +118,22 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 1)
-    result = Messages.interpolate("$n完全无法辨清虚实，只感一阵触心的刺痛，一声惨叫，已被$N凌厉的剑招刺中。
+    result = if hit, do: Messages.interpolate("$n完全无法辨清虚实，只感一阵触心的刺痛，一声惨叫，已被$N凌厉的剑招刺中。
 
-$N见$n重创之下不禁破绽迭出，冷笑一声，手中挥洒，又攻出一剑，正中$p胸口。", n1: attacker.name, n2: character.name)
+$N见$n重创之下不禁破绽迭出，冷笑一声，手中挥洒，又攻出一剑，正中$p胸口。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

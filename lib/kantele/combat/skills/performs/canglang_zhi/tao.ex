@@ -130,8 +130,12 @@ defmodule Kantele.Combat.Skills.Performs.CanglangZhi.Tao do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
     result = Messages.interpolate("结果$n躲闪不及，被$N一指命中，全身气血翻腾不已。", n1: attacker.name, n2: character.name)

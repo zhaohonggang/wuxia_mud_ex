@@ -133,13 +133,20 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    result = Messages.interpolate("$n平日作恶不少，见了此情此景，心中不禁颤然！
-结果只听$p一声惨叫，被$P一下子打中要害，七窍一起生烟，耳鼻都渗出血来！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n平日作恶不少，见了此情此景，心中不禁颤然！
+结果只听$p一声惨叫，被$P一下子打中要害，七窍一起生烟，耳鼻都渗出血来！", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

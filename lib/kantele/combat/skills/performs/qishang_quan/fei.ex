@@ -124,13 +124,20 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Fei do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 320, 3)
-    result = Messages.interpolate("$N深吸一口起，将真气运于双拳之上，施出绝招「魂魄飞扬」，右拳平平一拳直出，但见普通一拳之中蕴涵了无穷的力量，拳未到风先至，猛然间袭向$n。
-只听“砰”地一声，$N一拳正好打中$n胸口，$n怪叫一声，吐出一口淤血！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$N深吸一口起，将真气运于双拳之上，施出绝招「魂魄飞扬」，右拳平平一拳直出，但见普通一拳之中蕴涵了无穷的力量，拳未到风先至，猛然间袭向$n。
+只听“砰”地一声，$N一拳正好打中$n胸口，$n怪叫一声，吐出一口淤血！", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

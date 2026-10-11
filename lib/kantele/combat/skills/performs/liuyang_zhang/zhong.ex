@@ -134,6 +134,7 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
@@ -141,6 +142,7 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
     vitals = character.meta.vitals
     if hit do
           vitals = Vitals.wound(vitals, :jing, (10 + Engine.rand(rng, 5)))
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}

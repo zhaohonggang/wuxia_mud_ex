@@ -130,8 +130,12 @@ defmodule Kantele.Combat.Skills.Performs.BaishengQuan.Kai do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
     result = Messages.interpolate("$N身子蓦的横移，两臂向后反钩，呼的一声朝$n攻去，正是「混沌初开」绝技。

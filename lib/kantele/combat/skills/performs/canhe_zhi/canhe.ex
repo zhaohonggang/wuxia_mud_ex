@@ -122,12 +122,21 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 6)
-    result = Messages.interpolate("但见$n斜斜一指点出，指出如风，剑气纵横，嗤然作响，竟将$N的剑气全部折回，反向自己射去！
+    result = if hit, do: Messages.interpolate("但见$n斜斜一指点出，指出如风，剑气纵横，嗤然作响，竟将$N的剑气全部折回，反向自己射去！
 你听到「嗤啦」一声轻响，脸上竟溅到一些血滴！
 
 顿时只听“嗤啦”的一声，$n躲闪不及，剑气顿时穿胸而过，带出一蓬血雨。
@@ -140,7 +149,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
 可电光火石之间，$n猛然翻掌，右手陡然探出，中指「中冲剑」向$N一竖，登将参合剑气化于无形！
 你听到「嗤啦」一声轻响，脸上竟溅到一些血滴！
 
-$n奋力招架，仍是不敌，$N的无形剑气已透体而入，鲜血飞射，无力再战。", n1: attacker.name, n2: character.name)
+$n奋力招架，仍是不敌，$N的无形剑气已透体而入，鲜血飞射，无力再战。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

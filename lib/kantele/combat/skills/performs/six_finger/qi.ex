@@ -118,10 +118,16 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
+  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
+  #   target->receive_damage("qi", random(damage)  # UNSUPPORTED: unexpected end
+  #   target->receive_damage("qi", random(damage)  # UNSUPPORTED: unexpected end
+  #   target->receive_damage("qi", random(damage)  # UNSUPPORTED: unexpected end
+
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals

@@ -132,16 +132,23 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Po do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 380, 1)
-    result = Messages.interpolate("$N将八荒六合唯我独尊功提运至极限，全身真气迸发，呼的一掌向$n头顶猛然贯落。
+    result = if hit, do: Messages.interpolate("$N将八荒六合唯我独尊功提运至极限，全身真气迸发，呼的一掌向$n头顶猛然贯落。
 顿时只听“噗”的一声，$N一掌将$n头骨拍得粉碎，脑浆四溅，当即瘫了下去。
 ( $n受伤过重，已经有如风中残烛，随时都可能断气。)
 $n慌忙抵挡，可已然不及，$N掌劲如洪水般涌入体内，接连震断数根肋骨。
-:内伤@?", n1: attacker.name, n2: character.name)
+:内伤@?", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

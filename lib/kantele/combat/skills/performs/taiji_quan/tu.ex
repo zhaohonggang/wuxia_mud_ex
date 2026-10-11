@@ -32,6 +32,8 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     improve = 0
     n = 0
     m = 0
+    ap = ((Stats.skill(stats, "taoism") + Stats.skill(stats, "taiji-quan")) + Stats.skill(stats, "taiji-shengong"))
+    damage = (div(ap, 3) + Engine.rand(rng, div(ap, 3)))
     flag = 1
 
     with :ok <- check_perform_known(character),
@@ -43,6 +45,8 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
         data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
+          damage: damage,
           rng: rng
         }
       })
@@ -138,6 +142,8 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

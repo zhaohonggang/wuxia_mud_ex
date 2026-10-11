@@ -132,12 +132,19 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hai do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = Messages.interpolate("霎时漫天掌影化为一抓，$p闪避不及，被$N五指插入胸膛，鲜血四处飞溅！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("霎时漫天掌影化为一抓，$p闪避不及，被$N五指插入胸膛，鲜血四处飞溅！", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

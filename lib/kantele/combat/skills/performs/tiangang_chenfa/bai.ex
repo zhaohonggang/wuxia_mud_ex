@@ -132,12 +132,19 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 3)
-    result = Messages.interpolate("$n急忙躲闪，却发现$N的已然拂中胸前要穴，顿感气血上涌，难受之极。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n急忙躲闪，却发现$N的已然拂中胸前要穴，顿感气血上涌，难受之极。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

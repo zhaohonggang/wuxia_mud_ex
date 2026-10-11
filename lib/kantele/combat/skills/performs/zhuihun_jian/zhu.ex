@@ -29,6 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhu do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "zhuihun-jian")
+    ap = (Stats.skill(stats, "zhuihun-jian") + Stats.skill(stats, "sword"))
     damage = (-1)
 
     with :ok <- check_perform_known(character),
@@ -40,6 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhu do
         data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           damage: damage,
           rng: rng
         }
@@ -129,14 +131,23 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhu do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = Messages.interpolate("只见$N这一剑来势好快，便听“嗤啦”一声，剑尖已没入$n咽喉半尺，$n咯咯叫了两声，软绵绵的瘫了下去。
+    result = if hit, do: Messages.interpolate("只见$N这一剑来势好快，便听“嗤啦”一声，剑尖已没入$n咽喉半尺，$n咯咯叫了两声，软绵绵的瘫了下去。
 ( $n受伤过重，已经有如风中残烛，随时都可能断气。)
 只听“嗤啦”一声，$n腕部已被$N对穿而过，手中再也捉拿不住，脱手而飞！
-$n飞身躲闪，然而只听“嗤啦”一声，$N已没入$n半寸，鲜血狂溅而出。", n1: attacker.name, n2: character.name)
+$n飞身躲闪，然而只听“嗤啦”一声，$N已没入$n半寸，鲜血狂溅而出。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -142,6 +142,7 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Zhe do
     if hit do
           vitals = Vitals.damage(vitals, :jing, div(damage, 3))
           vitals = Vitals.wound(vitals, :jing, div(damage, 6))
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}

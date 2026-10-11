@@ -124,13 +124,20 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 260, 3)
-    result = Messages.interpolate("$N聚气于掌，仰天一声狂啸，刹那间双掌交错，一招「夺命催心」带着阴毒内劲直贯$n！
-只听$n惨叫一声，只感两耳轰鸣，目不视物，软软瘫倒。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$N聚气于掌，仰天一声狂啸，刹那间双掌交错，一招「夺命催心」带着阴毒内劲直贯$n！
+只听$n惨叫一声，只感两耳轰鸣，目不视物，软软瘫倒。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
