@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.HeishaZhang.Cui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "heisha-zhang") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内力修为不足，难以施展\n"}
+      Stats.skill(stats, "heisha-zhang") < 100 -> {:error, "你的黑砂掌不够熟练，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.HeishaZhang.Cui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "heisha-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "heisha-zhang" -> {:error, "你没有激发黑砂掌，难以施展\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.HeishaZhang.Cui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展\n"}
       true -> :ok
     end
   end

@@ -80,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "strike") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "strike") < 200 -> {:error, "你的掌法不够娴熟，无法施展\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "hamagong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "hamagong" -> {:error, "你必须先将蛤蟆功运用于掌法之中，才能运用\n"}
       true -> :ok
     end
   end
@@ -98,8 +98,8 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 4000 -> {:error, "你的内力修为不够深厚，无法施展\n"}
+      vitals.neili < 800 -> {:error, "你的真气不够，无法运用\n"}
       true -> :ok
     end
   end
@@ -142,10 +142,16 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
 
     result =
       if hit,
-        do: Messages.interpolate("$n不料$N会使出如此诡异招式，慌忙伸掌抵挡，结果$N蛤蟆功内劲不断袭入，$n全身顿时感到一阵撕裂般的痛苦。
-$n只觉此招，阴柔无比，诡异莫测，心中一惊，却猛然间觉得一股阴风透骨而过。
-$n全然无力阻挡，竟被$N双掌击得飞起，重重的跌落在地上。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("$n不料$N会使出如此诡异招式，慌忙伸掌抵挡，结果$N蛤蟆功内劲不断袭入，$n全身顿时感到一阵撕裂般的痛苦。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("可是$n发觉一股微风扑面而来，却已被逼得呼吸不畅，情知不妙，连忙跃开数尺。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

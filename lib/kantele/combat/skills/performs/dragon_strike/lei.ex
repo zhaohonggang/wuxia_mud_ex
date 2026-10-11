@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Lei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dragon-strike") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 250 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dragon-strike") < 180 -> {:error, "你内功修为不够，难以施展\n"}
+      Stats.skill(stats, "force") < 250 -> {:error, "你降龙十八掌火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Lei do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "dragon-strike" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "dragon-strike" -> {:error, "你没有激发降龙十八掌，难以施展\n"}
       true -> :ok
     end
   end
@@ -94,8 +94,8 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Lei do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 600 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2500 -> {:error, "你内力修为不够，难以施展\n"}
+      vitals.neili < 600 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end

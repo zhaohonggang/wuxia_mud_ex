@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaQuan.Gua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "bagua-quan") < 70 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "bagua-quan") < 70 -> {:error, "你的八卦拳法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaQuan.Gua do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "bagua-quan" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "cuff") != "bagua-quan" -> {:error, "你没有激发八卦拳法，难以施展\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaQuan.Gua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -155,7 +155,8 @@ defmodule Kantele.Combat.Skills.Performs.BaguaQuan.Gua do
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$p看破了$P的这一招，镇定解招，一丝不乱。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

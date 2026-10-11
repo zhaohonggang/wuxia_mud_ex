@@ -82,9 +82,9 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "wushen-jian") < 240 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dodge") < 200 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的轻功火候不够，难以施展\n"}
+      Stats.skill(stats, "wushen-jian") < 240 -> {:error, "你衡山五神剑不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -93,7 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "wushen-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "wushen-jian" -> {:error, "你没有激发衡山五神剑，难以施展\n"}
       true -> :ok
     end
   end
@@ -102,8 +102,8 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 5500 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 500 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -164,14 +164,12 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     result =
       if hit,
         do:
-          Messages.interpolate(
-            "$N一声怒喝，内劲暴涨，手中变幻万千，霎那间化作红黄蓝绿白五道剑光，纵横飞扬。$P身法蓦地变快，随着剑光同时将『祝融』、『紫盖』、『石廪』、『芙蓉』、『天柱』五套剑法交替使出，电光火石间已袭向$n全身。
-
-$n见$N五道剑光缤纷洒落，交错纵横，呼啸着向自己袭来。心底不由大惊，登时听得“噗嗤”一声，剑气透体而过。",
+          Messages.interpolate("$n见$N五道剑光剑势惊人，急忙收敛心神奋力招架。哪知$P这招力道非凡，$p一声闷哼，连退几步，喷出一口鲜血。",
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("然而$n以快对快，飞身一跳已然躲过$N这一招。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

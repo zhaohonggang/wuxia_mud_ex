@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Fugu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tianshan-zhang") < 60 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "tianshan-zhang") < 60 -> {:error, "你的天山杖法不够娴熟，不会使用\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Fugu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "staff") != "tianshan-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "staff") != "tianshan-zhang" -> {:error, "你没有激发天山杖法，使不了\n"}
       true -> :ok
     end
   end
@@ -122,8 +122,9 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Fugu do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 1)
-    result = Messages.interpolate("结果$n被$N吓得惊慌失措，一时间手忙脚乱，难以应对！
-可是$n看破了$N的企图，轻轻一退，闪去了$N的追击。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("结果$n被$N吓得惊慌失措，一时间手忙脚乱，难以应对！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

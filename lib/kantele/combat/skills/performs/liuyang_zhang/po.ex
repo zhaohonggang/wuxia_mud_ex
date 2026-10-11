@@ -81,8 +81,8 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "bahuang-gong") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "liuyang-zhang") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "bahuang-gong") < 220 -> {:error, "你八荒六合唯我独尊功火候不够，难以施展\n"}
+      Stats.skill(stats, "liuyang-zhang") < 220 -> {:error, "你的天山六阳掌不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -91,8 +91,8 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "bahuang-gong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      Stats.mapped(stats, "strike") != "liuyang-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "force") != "bahuang-gong" -> {:error, "你没有激发八荒六合唯我独尊功，难以施展\n"}
+      Stats.mapped(stats, "strike") != "liuyang-zhang" -> {:error, "你没有激发天山六阳掌，难以施展\n"}
       true -> :ok
     end
   end
@@ -101,8 +101,8 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3500 -> {:error, "你现在真气不足，难以施展\n"}
+      vitals.neili < 800 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -150,12 +150,13 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Po do
 
     result =
       if hit,
-        do: Messages.interpolate("$N将八荒六合唯我独尊功提运至极限，全身真气迸发，呼的一掌向$n头顶猛然贯落。
-顿时只听“噗”的一声，$N一掌将$n头骨拍得粉碎，脑浆四溅，当即瘫了下去。
-( $n受伤过重，已经有如风中残烛，随时都可能断气。)
-$n慌忙抵挡，可已然不及，$N掌劲如洪水般涌入体内，接连震断数根肋骨。
-:内伤@?", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do: Messages.interpolate("顿时只听“噗”的一声，$N一掌将$n头骨拍得粉碎，脑浆四溅，当即瘫了下去。
+( $n受伤过重，已经有如风中残烛，随时都可能断气。)", n1: attacker.name, n2: character.name),
+        else:
+          Messages.interpolate("$p见$P掌劲澎湃，决计抵挡不住，当即身子向后横丈许，躲闪开来。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

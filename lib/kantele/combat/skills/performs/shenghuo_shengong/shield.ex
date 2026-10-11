@@ -41,7 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoShengong.Shield do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shenghuo-shengong") < 40 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "shenghuo-shengong") < 40 -> {:error, "你的圣火神功等级不够。\n"}
       true -> :ok
     end
   end
@@ -50,7 +50,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoShengong.Shield do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你的真气不够。\n"}
       true -> :ok
     end
   end

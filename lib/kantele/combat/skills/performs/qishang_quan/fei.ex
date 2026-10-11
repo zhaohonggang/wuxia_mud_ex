@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Fei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "qishang-quan") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 160 -> {:error, "你的七伤拳不够娴熟，无法施展\n"}
+      Stats.skill(stats, "qishang-quan") < 160 -> {:error, "你的内功修为还不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -88,8 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Fei do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 350 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2200 -> {:error, "你内力修为不足，无法施展\n"}
+      vitals.neili < 350 -> {:error, "你现在真气不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -149,13 +149,12 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Fei do
     result =
       if hit,
         do:
-          Messages.interpolate(
-            "$N深吸一口起，将真气运于双拳之上，施出绝招「魂魄飞扬」，右拳平平一拳直出，但见普通一拳之中蕴涵了无穷的力量，拳未到风先至，猛然间袭向$n。
-只听“砰”地一声，$N一拳正好打中$n胸口，$n怪叫一声，吐出一口淤血！",
+          Messages.interpolate("只听“砰”地一声，$N一拳正好打中$n胸口，$n怪叫一声，吐出一口淤血！",
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$p奋力招架，硬生生的挡开了$P这一招。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

@@ -80,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 250 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 250 -> {:error, "你的内功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,11 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "qixian-wuxingjian" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "sword") != "qixian-wuxingjian" -> {:error, "你没有准备七弦无形剑，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -101,8 +98,8 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 10 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 600 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 10 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 600 -> {:error, "TODO(migrate) neili 不足。\n"}
       true -> :ok
     end
   end

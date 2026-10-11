@@ -72,8 +72,8 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "weituo-chu") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功修为火候未到，施展只会伤及自身！\n"}
+      Stats.skill(stats, "weituo-chu") < 120 -> {:error, "你韦陀杵修为还不够，还未能使用「即世即空」！\n"}
       true -> :ok
     end
   end
@@ -110,7 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

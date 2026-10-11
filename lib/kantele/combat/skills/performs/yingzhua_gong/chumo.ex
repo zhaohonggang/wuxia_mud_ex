@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.YingzhuaGong.Chumo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "claw") != "yingzhua-gong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "claw") != "yingzhua-gong" -> {:error, "你没有激发鹰爪功，无法使用「荡妖除魔」！\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.YingzhuaGong.Chumo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 250 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 250 -> {:error, "你的真气不够，无法运用「荡妖除魔」！\n"}
       true -> :ok
     end
   end
@@ -146,7 +146,11 @@ defmodule Kantele.Combat.Skills.Performs.YingzhuaGong.Chumo do
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$p没有轻视$P这一抓，连忙招架，顺势跃开，没有被$P得手。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

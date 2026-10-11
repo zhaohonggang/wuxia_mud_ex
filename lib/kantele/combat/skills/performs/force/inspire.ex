@@ -35,8 +35,8 @@ defmodule Kantele.Combat.Skills.Performs.Force.Inspire do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你的真气不够。\n"}
+      vitals.neili < 200 -> {:error, "你的精损伤太重，现在难以振奋自己。\n"}
       true -> :ok
     end
   end

@@ -36,7 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.LingyuanXinfa.Break do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "lingyuan-xinfa") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "lingyuan-xinfa") < 150 -> {:error, "你的灵元心法火候不够，还不会使用「以柔破钢」。\n"}
       true -> :ok
     end
   end

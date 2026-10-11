@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "yintuoluo-zhua") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你因陀罗爪不够娴熟，难以施展\n"}
+      Stats.skill(stats, "yintuoluo-zhua") < 200 -> {:error, "你的内功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,16 +87,16 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
 
     cond do
       Stats.mapped(stats, "claw") != "yintuoluo-zhua" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你没有激发因陀罗爪，难以施展\n"}
 
       Stats.mapped(stats, "force") != "hunyuan-yiqi" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你现在没有激发少林内功为内功，难以施展\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你没有准备因陀罗爪，难以施展\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
 
       true ->
         :ok
@@ -107,7 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -151,9 +151,9 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 4)
-    result = Messages.interpolate("$N运转少林真气，双手忽成爪行，施出绝招「赤血连环爪」，迅猛无比地抓向$n。
-$n全身一颤，立足不稳，被$N这一爪抓得跌落在地上。
-但见$N双爪划过，$n已闪避不及，胸口被$N抓出十条血痕。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n全身一颤，立足不稳，被$N这一爪抓得跌落在地上。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

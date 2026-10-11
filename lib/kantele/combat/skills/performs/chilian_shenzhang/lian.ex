@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.ChilianShenzhang.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "chilian-shenzhang") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "chilian-shenzhang") < 100 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你赤练神掌不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.ChilianShenzhang.Lian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end

@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.LingsheQuan.Rou do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "lingshe-quan") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "lingshe-quan") < 100 -> {:error, "你的灵蛇拳法不够娴熟，现在还无法使用「柔字诀」。\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.LingsheQuan.Rou do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，无法运用「柔字诀」。\n"}
       true -> :ok
     end
   end

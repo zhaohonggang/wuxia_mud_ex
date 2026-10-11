@@ -79,9 +79,9 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Qian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "jingluo-xue") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "yiyang-zhi") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你一阳指诀不够娴熟，难以施展\n"}
+      Stats.skill(stats, "jingluo-xue") < 160 -> {:error, "你对经络学了解不够，难以施展\n"}
+      Stats.skill(stats, "yiyang-zhi") < 160 -> {:error, "你的内功火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -90,7 +90,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Qian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "yiyang-zhi" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "finger") != "yiyang-zhi" -> {:error, "你没有激发一阳指诀，难以施展\n"}
       true -> :ok
     end
   end
@@ -99,8 +99,8 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Qian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2400 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 500 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -153,9 +153,13 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Qian do
 
     result =
       if hit,
-        do: Messages.interpolate("$N陡然使出「一指乾坤」绝技，单指劲点$n檀中要穴，招式变化精奇之极！
-$n只觉胸口一麻，已被$N一指点中，顿时气血上涌，喷出数口鲜血。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("$n只觉胸口一麻，已被$N一指点中，顿时气血上涌，喷出数口鲜血。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("可是$n看破了$N的招数，连消带打挡开了这一指。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

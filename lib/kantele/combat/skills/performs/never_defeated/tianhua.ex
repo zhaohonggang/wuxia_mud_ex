@@ -71,7 +71,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Tianhua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "never-defeated") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "never-defeated") < 100 -> {:error, "你的不败神功不够深厚，不会使用天花乱坠。\n"}
       true -> :ok
     end
   end

@@ -77,9 +77,9 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "sanfen-jianshu") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "sword") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的三分剑术的修为不够，不能使用这一绝技！\n"}
+      Stats.skill(stats, "sanfen-jianshu") < 150 -> {:error, "你的剑术修为不够，目前不能使用「海市蜃楼」！\n"}
+      Stats.skill(stats, "sword") < 150 -> {:error, "你的轻功修为不够，无法使用「海市蜃楼」！\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够！\n"}
       true -> :ok
     end
   end
@@ -138,10 +138,12 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
 
     result =
       if hit,
-        do: Messages.interpolate("$n完全无法辨清虚实，只感一阵触心的刺痛，一声惨叫，已被$N凌厉的剑招刺中。
-
-$N见$n重创之下不禁破绽迭出，冷笑一声，手中挥洒，又攻出一剑，正中$p胸口。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("$n完全无法辨清虚实，只感一阵触心的刺痛，一声惨叫，已被$N凌厉的剑招刺中。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else: Messages.interpolate("$n见状身形急退，避开了$N凌厉的攻击！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

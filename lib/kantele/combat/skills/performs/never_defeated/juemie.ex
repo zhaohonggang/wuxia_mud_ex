@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "never-defeated") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "never-defeated") < 120 -> {:error, "你的不败神功还不够娴熟，不能使用天地绝灭！\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你的内力不够，不能使用天地绝灭！\n"}
       true -> :ok
     end
   end

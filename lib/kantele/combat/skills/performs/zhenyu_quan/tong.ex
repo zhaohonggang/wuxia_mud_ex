@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhenyuQuan.Tong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "zhenyu-quan") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "zhenyu-quan") < 80 -> {:error, "你镇狱拳法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhenyuQuan.Tong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "zhenyu-quan" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "cuff") != "zhenyu-quan" -> {:error, "你没有激发镇狱拳法，难以施展\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhenyuQuan.Tong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 150 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -140,9 +140,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhenyuQuan.Tong do
     vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = Messages.interpolate("$N随手挥出一拳，飘忽不定的击向$n，看似竟不着半点力道。
-$n只是随手一挡，哪知$N这拳后势无穷，霎时拳劲吞吐，穿
-胸而过。$n顿时呕出几大口鲜血，几欲晕厥！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$N随手挥出一拳，飘忽不定的击向$n，看似竟不着半点力道。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

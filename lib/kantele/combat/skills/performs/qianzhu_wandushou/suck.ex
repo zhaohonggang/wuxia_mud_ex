@@ -69,9 +69,9 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.qi < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.qi < 50 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你快不行了，再练会送命的！\n"}
+      vitals.qi < 200 -> {:error, "你的内力不够，不足以对抗毒气，别把小命送掉。\n"}
+      vitals.qi < 50 -> {:error, "你看清楚点，那东西像是毒虫吗？\n"}
       true -> :ok
     end
   end
@@ -102,7 +102,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
     vitals = character.meta.vitals
     vitals = Vitals.wound(vitals, :qi, 5)
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

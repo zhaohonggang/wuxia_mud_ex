@@ -41,7 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.BeimingShengong.Suck do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "beiming-shengong") < 90 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "beiming-shengong") < 90 -> {:error, "你的北冥神功功力不够，不能吸取对方的丹元！�n\n"}
       true -> :ok
     end
   end
@@ -50,9 +50,9 @@ defmodule Kantele.Combat.Skills.Performs.BeimingShengong.Suck do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.max_neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 20 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1 -> {:error, "你的内力不够，不能使用北冥神功。\n"}
+      vitals.max_neili < 100 -> {:error, "TODO(migrate) max_neili 不足。\n"}
+      vitals.neili < 20 -> {:error, "TODO(migrate) neili 不足。\n"}
       true -> :ok
     end
   end

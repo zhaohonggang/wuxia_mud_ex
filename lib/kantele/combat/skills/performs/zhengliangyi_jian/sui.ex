@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 250 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "zhengliangyi-jian") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 250 -> {:error, "你的内功火候不足，难以施展\n"}
+      Stats.skill(stats, "zhengliangyi-jian") < 180 -> {:error, "你的正两仪剑法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,11 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "zhengliangyi-jian" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "sword") != "zhengliangyi-jian" -> {:error, "你没有激发正两仪剑法，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -101,8 +98,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3000 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -158,15 +155,12 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
     result =
       if hit,
         do: Messages.interpolate("可是$n一声冷哼，飞身闪开来招，又顺势转身一掌拍向$N面门。
-只听“喀嚓”一声，$n那掌正好打在$N头顶，$N哀嚎一声，软软的瘫倒。
-$n眼见$N来势如此凶悍，这一招决计无法抵挡，骇怖达于极点，竟致僵立，束手待毙。
-只听“噗嗤”一声，已然透过$n前胸而入，喷出一股血雨。
-$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，骇怖达于极点，慌乱之中一掌猛拍而出，击
-向$N面门，竟也是同归于尽的招数。只听“噗嗤”一声，已然透过$n前胸，喷出一股血雨。
-同时$n那一掌也正好打在$N头顶，听得“喀嚓”一声，$N头盖骨完全碎裂，软软的瘫倒。
-$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，急忙飞身闪避，然而只听“嗤啦”一声，那
-柄已然刺穿，喷出一股血雨。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+只听“喀嚓”一声，$n那掌正好打在$N头顶，$N哀嚎一声，软软的瘫倒。", n1: attacker.name, n2: character.name),
+        else:
+          Messages.interpolate("可是$n早已料到$N有此一着，身形急动，躲开了这一杀着。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

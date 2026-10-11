@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xue-dao") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你内功火候不够，难以施展「祭血神刀」。\n"}
+      Stats.skill(stats, "xue-dao") < 100 -> {:error, "你血刀刀法不够娴熟，使不出「祭血神刀」。\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "xue-dao" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "blade") != "xue-dao" -> {:error, "你没有激发血刀刀法，不能使用「祭血神刀」。\n"}
       true -> :ok
     end
   end
@@ -96,9 +96,9 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.qi < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1200 -> {:error, "你现在真气不够，无法将「祭血神刀」使完！\n"}
+      vitals.neili < 400 -> {:error, "你的内力修为不足，无法运足内力。\n"}
+      vitals.qi < 100 -> {:error, "你还敢使这招？找死啊！\n"}
       true -> :ok
     end
   end
@@ -143,8 +143,12 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
     vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 350, 2)
-    result = Messages.interpolate("$N右手持刀向左肩一勒，一阵血珠溅满刀面，紧接着右臂抡出，一片血光裹住刀影向$n当头劈落，
-$n疾忙侧身避让，但血刀疾闪，只觉眼前一阵血红，刀刃劈面而下，鲜血飞溅，不禁惨声大嚎！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$N右手持刀向左肩一勒，一阵血珠溅满刀面，紧接着右臂抡出，一片血光裹住刀影向$n当头劈落，",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

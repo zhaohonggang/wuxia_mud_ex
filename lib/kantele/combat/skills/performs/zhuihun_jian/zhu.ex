@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhuihun-jian") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "zhuihun-jian") < 160 -> {:error, "你的追魂夺命剑还不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "zhuihun-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "zhuihun-jian" -> {:error, "你没有激发追魂夺命剑，难以施展\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在内力太弱，难以施展\n"}
       true -> :ok
     end
   end
@@ -151,10 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhu do
     result =
       if hit,
         do: Messages.interpolate("只见$N这一剑来势好快，便听“嗤啦”一声，剑尖已没入$n咽喉半尺，$n咯咯叫了两声，软绵绵的瘫了下去。
-( $n受伤过重，已经有如风中残烛，随时都可能断气。)
-只听“嗤啦”一声，$n腕部已被$N对穿而过，手中再也捉拿不住，脱手而飞！
-$n飞身躲闪，然而只听“嗤啦”一声，$N已没入$n半寸，鲜血狂溅而出。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+( $n受伤过重，已经有如风中残烛，随时都可能断气。)", n1: attacker.name, n2: character.name),
+        else: Messages.interpolate("可是$p看破了$P的企图，避开了这一招。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

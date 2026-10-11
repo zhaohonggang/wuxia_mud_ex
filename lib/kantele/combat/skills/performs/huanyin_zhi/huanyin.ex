@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.HuanyinZhi.Huanyin do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "huanyin-zhi") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功火候不足以施展幻阴神指。\n"}
+      Stats.skill(stats, "huanyin-zhi") < 150 -> {:error, "你的幻阴指法修为不够，现在还无法施展幻阴神指。\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.HuanyinZhi.Huanyin do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "huanyin-zhi" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "finger") != "huanyin-zhi" -> {:error, "你没有激发幻阴指法，无法施展幻阴神指。\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.HuanyinZhi.Huanyin do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 400 -> {:error, "你的真气不够，现在无法施展幻阴神指。\n"}
       true -> :ok
     end
   end
@@ -137,7 +137,7 @@ defmodule Kantele.Combat.Skills.Performs.HuanyinZhi.Huanyin do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 4)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.PanlongSuo.Sha do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "panlong-suo") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "panlong-suo") < 180 -> {:error, "你的霹雳盘龙索还不到家，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.PanlongSuo.Sha do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "panlong-suo" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "whip") != "panlong-suo" -> {:error, "你没有激发霹雳盘龙索，难以施展\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.PanlongSuo.Sha do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -130,8 +130,12 @@ defmodule Kantele.Combat.Skills.Performs.PanlongSuo.Sha do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 1)
-    result = Messages.interpolate("突然间$N猛的猱身扑上，手中急转，便似不要命般地向$n猛攻过去。
-$n卒不及防，登时手忙脚乱，招架疏散，慌忙中难以抵挡。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("突然间$N猛的猱身扑上，手中急转，便似不要命般地向$n猛攻过去。",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

@@ -82,8 +82,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Xing do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xuanming-shengong") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xuanming-zhang") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "xuanming-shengong") < 220 -> {:error, "你的玄冥神功火候不够，无法施展\n"}
+      Stats.skill(stats, "xuanming-zhang") < 220 -> {:error, "你的玄冥神掌不够熟练，无法施展\n"}
       true -> :ok
     end
   end
@@ -92,11 +92,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Xing do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "xuanming-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "xuanming-shengong" -> {:error, "你没有激发玄冥神功为内功，无法施展\n"}
+      true -> :ok
     end
   end
 
@@ -104,8 +101,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Xing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 4000 -> {:error, "你的内力修为不足，无法施展\n"}
+      vitals.neili < 800 -> {:error, "你的真气不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -165,11 +162,12 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Xing do
     result =
       if hit,
         do:
-          Messages.interpolate("$N默运玄冥神功，展出绝招「玄冥双行」，猛然间欺身向前，双掌齐出，掌风阴寒无比，掌未到，风先至，瞬息间双掌已拍向$n！",
+          Messages.interpolate("= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 60,
+                                          (: final1, me, target, lvl :))",
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else: Messages.interpolate("$n看见$N来势汹涌，急忙提气跃开。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

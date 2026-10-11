@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "tianshan-zhang") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你的基本内功火候不够！\n"}
+      Stats.skill(stats, "tianshan-zhang") < 100 -> {:error, "你的天山杖法还不到家，无法使用\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "staff") != "tianshan-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "staff") != "tianshan-zhang" -> {:error, "你没有激发天山杖法，使不了\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Xue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你的真气不够！\n"}
       true -> :ok
     end
   end
@@ -129,7 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Xue do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 120, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

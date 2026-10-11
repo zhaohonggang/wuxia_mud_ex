@@ -80,8 +80,8 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Zhugu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "qianzhu-wandushou") < 130 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功火候不足以施展蛛蛊决。\n"}
+      Stats.skill(stats, "qianzhu-wandushou") < 130 -> {:error, "你的千蛛万毒手修为不够，现在还无法施展蛛蛊决。\n"}
       true -> :ok
     end
   end
@@ -90,11 +90,8 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Zhugu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "qianzhu-wandushou" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "hand") != "qianzhu-wandushou" -> {:error, "你没有激发千蛛万毒手，无法施展蛛蛊决。\n"}
+      true -> :ok
     end
   end
 
@@ -102,7 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Zhugu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 400 -> {:error, "你的真气不够，现在无法施展蛛蛊决。\n"}
       true -> :ok
     end
   end

@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 250 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "ranmu-daofa") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 250 -> {:error, "你的内功火候不够，不能使用火麒蚀月。\n"}
+      Stats.skill(stats, "ranmu-daofa") < 180 -> {:error, "你的燃木刀法不够娴熟，不能使用火麒蚀月。\n"}
       true -> :ok
     end
   end
@@ -89,16 +89,16 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
 
     cond do
       Stats.mapped(stats, "blade") != "ranmu-daofa" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你没有激发燃木刀法，不能施展火麒蚀月。\n"}
 
       Stats.mapped(stats, "force") != "hunyuan-yiqi" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你现在没有激发少林内功为内功，难以施展「火麒蚀月」。\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 luohan-fumogong。\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
 
       true ->
         :ok
@@ -109,8 +109,8 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 600 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3000 -> {:error, "你现在内力太弱，不能使用火麒蚀月。\n"}
+      vitals.neili < 600 -> {:error, "你的内力修为太弱，不能使用火麒蚀月。\n"}
       true -> :ok
     end
   end
@@ -160,11 +160,12 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
     result =
       if hit,
         do:
-          Messages.interpolate("只见$N手中一抖，刀身登时腾起滔天烈焰，如浴火麒麟一般席卷$n全身！",
+          Messages.interpolate("只闻一股焦臭从$n处传来，$n已被$P这精深奥妙的一刀击中，鲜血飞溅而出！",
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("$p见$P来势汹汹，不敢抵挡，急忙斜跃避开。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

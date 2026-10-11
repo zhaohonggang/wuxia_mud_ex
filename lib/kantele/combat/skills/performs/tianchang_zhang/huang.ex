@@ -80,11 +80,8 @@ defmodule Kantele.Combat.Skills.Performs.TianchangZhang.Huang do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "tianchang-zhang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "strike") != "tianchang-zhang" -> {:error, "你没有激发天长掌法，无法施展「地老天荒」。\n"}
+      true -> :ok
     end
   end
 
@@ -92,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchangZhang.Huang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 150 -> {:error, "你的真气不够，无法运用「地老天荒」！\n"}
       true -> :ok
     end
   end
@@ -149,9 +146,13 @@ defmodule Kantele.Combat.Skills.Performs.TianchangZhang.Huang do
 
     result =
       if hit,
-        do: Messages.interpolate("$N“嚯”的一声震喝，提起掌来，只见掌心一片血红，倏的凌空拍出，一股热风登时袭向$n的胸前大穴。
-$n一时间只觉得气血上涌，浑身如遭火焚，气息大乱，不由得吐了一口鲜血。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("$n一时间只觉得气血上涌，浑身如遭火焚，气息大乱，不由得吐了一口鲜血。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("然而$n内功深湛，丝毫不为$N的掌风所动，若无其事", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

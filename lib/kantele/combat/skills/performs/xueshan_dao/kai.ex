@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.XueshanDao.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xueshan-dao") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "xueshan-dao") < 80 -> {:error, "你的雪山刀法还不到家，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanDao.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "xueshan-dao" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "blade") != "xueshan-dao" -> {:error, "你没有激发雪山刀法，难以施展\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanDao.Kai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 150 -> {:error, "你的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -156,7 +156,11 @@ defmodule Kantele.Combat.Skills.Performs.XueshanDao.Kai do
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$p凝神聚气，护住门户，$P刀芒虽然凌厉，始终奈何不得。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.PoxuDaxuefa.Tong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "dagger") != "poxu-daxuefa" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "dagger") != "poxu-daxuefa" -> {:error, "你没有激发破虚打穴法，无法施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.PoxuDaxuefa.Tong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -142,11 +142,16 @@ defmodule Kantele.Combat.Skills.Performs.PoxuDaxuefa.Tong do
     result =
       if hit,
         do:
-          Messages.interpolate("$N翻转，接连变化数种打穴手法，一式「破元通虚」直捣$n胸前要穴。",
+          Messages.interpolate("= COMBAT_D->do_damage(me, target, REMOTE_ATTACK, damage, 50,
+                                           (: final, me, target, damage :))",
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$n早已看破$N招中虚实，单手一挥，登将这招化于无形。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.MurongJian.Xing do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "murong-jian") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dodge") < 120 -> {:error, "你的慕容剑法不够娴熟，难以施展\n"}
+      Stats.skill(stats, "murong-jian") < 80 -> {:error, "你的轻功修为不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.MurongJian.Xing do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "murong-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "murong-jian" -> {:error, "你没有激发慕容剑法，难以施展\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.MurongJian.Xing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你目前的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -129,7 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.MurongJian.Xing do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 210, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

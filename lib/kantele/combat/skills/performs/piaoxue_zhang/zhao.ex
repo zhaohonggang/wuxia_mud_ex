@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "piaoxue-zhang") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功的修为不够，无法施展\n"}
+      Stats.skill(stats, "piaoxue-zhang") < 180 -> {:error, "你的飘雪穿云掌修为不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -86,19 +86,19 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
 
     cond do
       Stats.mapped(stats, "force") != "emei-jiuyang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你没有激发内功为九阳神功，无法施展\n"}
 
       Stats.mapped(stats, "force") != "jiuyang-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你没有激发飘雪穿云掌，无法施展\n"}
 
       Stats.mapped(stats, "force") != "shaolin-jiuyang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你没有准备飘雪穿云掌，无法施展\n"}
 
       Stats.mapped(stats, "force") != "wudang-jiuyang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 wudang-jiuyang。\n"}
 
       Stats.mapped(stats, "strike") != "piaoxue-zhang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 piaoxue-zhang。\n"}
 
       true ->
         :ok
@@ -109,8 +109,8 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3500 -> {:error, "你的真气不够，无法施展\n"}
+      vitals.neili < 1000 -> {:error, "TODO(migrate) neili 不足。\n"}
       true -> :ok
     end
   end

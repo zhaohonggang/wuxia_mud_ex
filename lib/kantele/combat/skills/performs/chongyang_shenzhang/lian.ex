@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.ChongyangShenzhang.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "chongyang-shenzhang") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "chongyang-shenzhang") < 100 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你重阳神掌不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,11 +85,8 @@ defmodule Kantele.Combat.Skills.Performs.ChongyangShenzhang.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "chongyang-shenzhang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "strike") != "chongyang-shenzhang" -> {:error, "你没有激发重阳神掌，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -97,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.ChongyangShenzhang.Lian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你目前的真气不足，难以施展\n"}
       true -> :ok
     end
   end

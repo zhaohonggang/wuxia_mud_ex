@@ -42,8 +42,8 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "poison") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "throwing") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "poison") < 100 -> {:error, "你的基本暗器火候不够。\n"}
+      Stats.skill(stats, "throwing") < 100 -> {:error, "你的基本毒技火候不够。\n"}
       true -> :ok
     end
   end
@@ -53,19 +53,19 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
 
     cond do
       Stats.mapped(stats, "force") != "hamagong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你所学的内功中没有这种功能。\n"}
 
       Stats.mapped(stats, "force") != "huagong-dafa" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 huagong-dafa。\n"}
 
       Stats.mapped(stats, "force") != "huaxue-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 huaxue-shengong。\n"}
 
       Stats.mapped(stats, "force") != "shennong-xinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 shennong-xinjing。\n"}
 
       Stats.mapped(stats, "force") != "xiuluo-yinshagong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 xiuluo-yinshagong。\n"}
 
       true ->
         :ok
@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够。\n"}
       true -> :ok
     end
   end

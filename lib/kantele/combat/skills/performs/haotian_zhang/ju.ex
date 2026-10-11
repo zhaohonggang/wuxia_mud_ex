@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.HaotianZhang.Ju do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "haotian-zhang") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "haotian-zhang") < 120 -> {:error, "你的昊天掌不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.HaotianZhang.Ju do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "haotian-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "haotian-zhang" -> {:error, "你没有激发昊天掌法，难以施展\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.HaotianZhang.Ju do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展\n"}
       true -> :ok
     end
   end

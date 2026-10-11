@@ -122,7 +122,7 @@ defmodule Kantele.Combat.PromoterEnvTest do
 
     conn = Xian.run(build_conn(character))
 
-    assert output_text(conn) =~ "门槛不足"
+    assert output_text(conn) =~ "你的八卦掌不够娴熟"
   end
 
   test "exert hamagong.hui：无门槛时把内力清空" do

@@ -41,7 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Reserve do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "hamagong") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "hamagong") < 120 -> {:error, "你的蛤蟆功不够娴熟，不会经脉倒转。\n"}
       true -> :ok
     end
   end
@@ -50,7 +50,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Reserve do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够。\n"}
       true -> :ok
     end
   end

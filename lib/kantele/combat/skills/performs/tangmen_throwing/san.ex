@@ -110,9 +110,9 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.San do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 3)
-    result = Messages.interpolate("结果$p一声惨嚎，连中了$P发出的十base_unit。
-忽然那无数的光影一闪而没，$n身行一顿，喷出一口鲜血，仰天而倒。
-$n双臂急舞，衣袖带起破风之声。只听当的一声轻响，竟将那无数枚暗器磕飞开去。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("结果$p一声惨嚎，连中了$P发出的十base_unit。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

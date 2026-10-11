@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.YunuSword.Wushuang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "yunu-sword") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功不够娴熟，不会使用「无双无对」。\n"}
+      Stats.skill(stats, "yunu-sword") < 80 -> {:error, "你的玉女金针十三剑不够娴熟，不会使用「无双无对」。\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.YunuSword.Wushuang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你的内力不够。\n"}
       true -> :ok
     end
   end

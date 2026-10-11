@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.PiliQuan.Jin do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "pili-quan") < 40 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "pili-quan") < 40 -> {:error, "你的霹雳神拳不够娴熟，无法施展\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.PiliQuan.Jin do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -145,7 +145,8 @@ defmodule Kantele.Combat.Skills.Performs.PiliQuan.Jin do
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$p奋力招架，硬生生的挡开了$P这一招。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

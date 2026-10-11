@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "sougu-yingzhua") < 60 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 80 -> {:error, "你搜骨鹰爪功不够娴熟，难以施展\n"}
+      Stats.skill(stats, "sougu-yingzhua") < 60 -> {:error, "你的内功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "claw") != "sougu-yingzhua" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "claw") != "sougu-yingzhua" -> {:error, "你没有激发搜骨鹰爪功，难以施展\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Xue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 220 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 220 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -151,8 +151,11 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Xue do
 
     result =
       if hit,
-        do: Messages.interpolate("$N运转真气，双手忽成爪形，施出绝招「赤血爪」，迅猛无比地抓向$n。
-但见$N双爪划过，$n已闪避不及，胸口被$N抓出十条血痕。", n1: attacker.name, n2: character.name),
+        do:
+          Messages.interpolate("但见$N双爪划过，$n已闪避不及，胸口被$N抓出十条血痕。",
+            n1: attacker.name,
+            n2: character.name
+          ),
         else: Messages.interpolate("$n奋力招架，竟将$N这招化解。", n1: attacker.name, n2: character.name)
 
     conn

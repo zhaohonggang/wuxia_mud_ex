@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.HenshanQuan.Lan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "henshan-quan") < 60 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 80 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "henshan-quan") < 60 -> {:error, "你衡山拳法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.HenshanQuan.Lan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "henshan-quan" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "cuff") != "henshan-quan" -> {:error, "你没有激发衡山拳法，难以施展\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.HenshanQuan.Lan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end

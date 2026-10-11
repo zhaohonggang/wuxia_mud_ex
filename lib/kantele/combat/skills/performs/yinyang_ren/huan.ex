@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Huan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "yinyang-ren") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dodge") < 220 -> {:error, "你的阴阳刃法修为不够，难以施展\n"}
+      Stats.skill(stats, "yinyang-ren") < 180 -> {:error, "TODO(migrate) yinyang-ren 等级不足。\n"}
       true -> :ok
     end
   end
@@ -89,9 +89,14 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Huan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "yinyang-ren" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      Stats.mapped(stats, "sword") != "yinyang-ren" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      true -> :ok
+      Stats.mapped(stats, "blade") != "yinyang-ren" ->
+        {:error, "你没有激发阴阳刃法，难以施展\n"}
+
+      Stats.mapped(stats, "sword") != "yinyang-ren" ->
+        {:error, "TODO(migrate) 未激发/未准备 yinyang-ren。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -99,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Huan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 270 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 270 -> {:error, "你的真气不够，难以施展\n"}
       true -> :ok
     end
   end

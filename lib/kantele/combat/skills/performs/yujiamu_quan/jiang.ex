@@ -80,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "yujiamu-quan" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "cuff") != "yujiamu-quan" -> {:error, "你没有激发金刚瑜迦母拳，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 180 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 180 -> {:error, "你目前的真气不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -142,10 +142,16 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
 
     result =
       if hit,
-        do: Messages.interpolate("$N目睚俱裂，一声爆喝，全身骨骼劈啪作响，拳头如闪电般击向$n的要害！
-$N大喝一声，面色赤红，全身骨骼劈啪作响，拳头如闪电般击向$n的要害！
-结果$p无法抵挡$P这雷霆一击，登时被打退数步，摇晃不定。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("结果$p无法抵挡$P这雷霆一击，登时被打退数步，摇晃不定。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("可是$p并未被这气势所慑，轻移脚步，躲开了$P的攻击。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

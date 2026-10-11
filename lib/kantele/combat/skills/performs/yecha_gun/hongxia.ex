@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.YechaGun.Hongxia do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "club") != "yecha-gun" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "club") != "yecha-gun" -> {:error, "你没有激发夜叉棍法，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.YechaGun.Hongxia do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -142,8 +142,11 @@ defmodule Kantele.Combat.Skills.Performs.YechaGun.Hongxia do
 
     result =
       if hit,
-        do: Messages.interpolate("$N身形曼妙，手中铁棍虚虚实实，舞出无数的棍影宛若满天的红霞，将$n重重包围。
-$n只觉$N棍影重重，无所不在，自己无处躲闪，顿时身上连中数棍，被攻了个措手不及。", n1: attacker.name, n2: character.name),
+        do:
+          Messages.interpolate("$n只觉$N棍影重重，无所不在，自己无处躲闪，顿时身上连中数棍，被攻了个措手不及。",
+            n1: attacker.name,
+            n2: character.name
+          ),
         else:
           Messages.interpolate("$n只见$N看破了棍法中的虚实，凝神化解开来。", n1: attacker.name, n2: character.name)
 

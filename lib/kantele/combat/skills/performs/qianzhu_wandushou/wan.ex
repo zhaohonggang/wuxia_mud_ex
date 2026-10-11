@@ -77,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Wan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功火候不够，难以施展万蛊噬天。\n"}
       true -> :ok
     end
   end
@@ -86,8 +86,8 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Wan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3500 -> {:error, "你的内力修为没有达到那个境界，无法运转内力施展万蛊噬天。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，现在无法施展万蛊噬天。\n"}
       true -> :ok
     end
   end
@@ -123,7 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Wan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

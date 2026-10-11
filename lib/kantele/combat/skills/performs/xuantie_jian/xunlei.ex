@@ -77,9 +77,9 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "surge-force") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xuantie-jian") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功等级不够，使不出「迅雷击」。\n"}
+      Stats.skill(stats, "surge-force") < 160 -> {:error, "你的怒海狂涛修为不够，使不出「迅雷击」。\n"}
+      Stats.skill(stats, "xuantie-jian") < 160 -> {:error, "你的玄铁剑法还不够娴熟，使不出「迅雷击」。\n"}
       true -> :ok
     end
   end
@@ -88,8 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "parry") != "xuantie-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      Stats.mapped(stats, "sword") != "xuantie-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "parry") != "xuantie-jian" -> {:error, "你必须激发玄铁剑法才能使出「迅雷击」！\n"}
+      Stats.mapped(stats, "sword") != "xuantie-jian" -> {:error, "你的基本招架必须是玄铁剑法时才能使出「迅雷击」！\n"}
       true -> :ok
     end
   end
@@ -98,8 +98,8 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 900 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2000 -> {:error, "你现在内力太弱，使不出「迅雷击」。\n"}
+      vitals.neili < 900 -> {:error, "你现在真气太弱，使不出「迅雷击」。\n"}
       true -> :ok
     end
   end
@@ -137,7 +137,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 350, 3)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

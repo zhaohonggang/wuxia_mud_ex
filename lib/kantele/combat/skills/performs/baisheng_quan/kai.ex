@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.BaishengQuan.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "baisheng-quan") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 140 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "baisheng-quan") < 100 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "force") < 140 -> {:error, "你的百胜神拳不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.BaishengQuan.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "baisheng-quan" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "cuff") != "baisheng-quan" -> {:error, "你没有激发百胜神拳，难以施展\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.BaishengQuan.Kai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -140,8 +140,12 @@ defmodule Kantele.Combat.Skills.Performs.BaishengQuan.Kai do
     vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    result = Messages.interpolate("$N身子蓦的横移，两臂向后反钩，呼的一声朝$n攻去，正是「混沌初开」绝技。
-结果$n闪避不及，$N双拳正中$p头部两侧，顿时口喷鲜血，几欲昏厥。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$N身子蓦的横移，两臂向后反钩，呼的一声朝$n攻去，正是「混沌初开」绝技。",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

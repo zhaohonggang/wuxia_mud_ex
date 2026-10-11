@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Xuan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yuanshi-jian") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "yuanshi-jian") < 180 -> {:error, "你的原始剑法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Xuan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "yuanshi-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "yuanshi-jian" -> {:error, "你没有激发原始剑法，难以施展\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Xuan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 400 -> {:error, "你的真气不够，难以施展\n"}
       true -> :ok
     end
   end

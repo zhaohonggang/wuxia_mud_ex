@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "quanzhen-jian") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "quanzhen-jian") < 180 -> {:error, "你全真剑法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,13 +89,13 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
 
     cond do
       Stats.mapped(stats, "strike") != "chongyang-shenzhang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你没有激发全真剑法，难以施展\n"}
 
       Stats.mapped(stats, "strike") != "haotian-zhang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你没有激发全真的掌法，难以施展\n"}
 
       Stats.mapped(stats, "sword") != "quanzhen-jian" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 quanzhen-jian。\n"}
 
       true ->
         :ok
@@ -106,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 400 -> {:error, "你现在的真气不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -159,9 +159,12 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
 
     result =
       if hit,
-        do: Messages.interpolate("拆得数招，$N左剑平刺，右掌正击，同时左腿横扫而出，正是全真派中的绝招。
-只见$n躲闪不及，已经被$N一腿扫中，惨叫声中，向后跌出丈许。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("拆得数招，$N左剑平刺，右掌正击，同时左腿横扫而出，正是全真派中的绝招。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

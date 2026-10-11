@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "zhongping-qiang") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你中平枪法不够娴熟，难以施展\n"}
+      Stats.skill(stats, "zhongping-qiang") < 120 -> {:error, "你的内功火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "club") != "zhongping-qiang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "club") != "zhongping-qiang" -> {:error, "你没有激发中平枪法，难以施展\n"}
       true -> :ok
     end
   end
@@ -96,8 +96,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2000 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的内力修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -127,8 +127,12 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("$N身形一转，施出中平枪法绝技「定岳七方」，手中接连七刺，枪枪不离$n要害！
-$n见$N攻势凶猛异常，实非寻常，不由心生寒意，招架登时散乱。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n见$N攻势凶猛异常，实非寻常，不由心生寒意，招架登时散乱。",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

@@ -69,7 +69,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang2 do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shedao-qigong") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "shedao-qigong") < 80 -> {:error, "你的蛇岛奇功不够娴熟，不会使用唱仙法。\n"}
       true -> :ok
     end
   end
@@ -105,7 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang2 do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

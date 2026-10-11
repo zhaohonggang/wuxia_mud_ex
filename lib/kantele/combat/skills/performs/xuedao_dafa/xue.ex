@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xuedao-dafa") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "xuedao-dafa") < 160 -> {:error, "你的血刀大法还不到家，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,8 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "xuedao-dafa" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      Stats.mapped(stats, "force") != "xuedao-dafa" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "blade") != "xuedao-dafa" -> {:error, "你没有激发血刀大法为内功，难以施展\n"}
+      Stats.mapped(stats, "force") != "xuedao-dafa" -> {:error, "你没有激发血刀大法为刀法，难以施展\n"}
       true -> :ok
     end
   end
@@ -99,8 +99,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Xue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.qi < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你目前气血翻滚，难以施展\n"}
+      vitals.qi < 100 -> {:error, "你目前真气不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -152,9 +152,13 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Xue do
 
     result =
       if hit,
-        do: Messages.interpolate("$N挥刀向左肩一勒，血珠顿时溅满刀面，紧接着右臂抡出一片血光向$n当头劈落。
-$n只见血刀疾闪，眼前一阵血红，刀刃劈面而下，鲜血飞溅，不禁惨声大嚎！", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("$n只见血刀疾闪，眼前一阵血红，刀刃劈面而下，鲜血飞溅，不禁惨声大嚎！",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("可是$n侧身避让，不慌不忙，躲过了$N的必杀一刀。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

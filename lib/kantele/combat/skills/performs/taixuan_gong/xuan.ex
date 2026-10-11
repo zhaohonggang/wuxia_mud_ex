@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "taixuan-gong") < 240 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "taixuan-gong") < 240 -> {:error, "你的太玄功还不够熟练，无法使用\n"}
       true -> :ok
     end
   end
@@ -88,10 +88,17 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "taixuan-gong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      Stats.mapped(stats, "sword") != "taixuan-gong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      Stats.mapped(stats, "unarmed") != "taixuan-gong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      true -> :ok
+      Stats.mapped(stats, "blade") != "taixuan-gong" ->
+        {:error, "你还没有激发太玄功，无法施展\n"}
+
+      Stats.mapped(stats, "sword") != "taixuan-gong" ->
+        {:error, "你没有准备太玄功，无法使用\n"}
+
+      Stats.mapped(stats, "unarmed") != "taixuan-gong" ->
+        {:error, "TODO(migrate) 未激发/未准备 taixuan-gong。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -99,8 +106,8 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为还不足以使出\n"}
+      vitals.neili < 800 -> {:error, "你的真气不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -143,7 +150,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 600, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

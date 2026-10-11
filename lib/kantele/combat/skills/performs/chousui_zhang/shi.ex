@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Shi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "throwing") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "throwing") < 180 -> {:error, "你暗器手法火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Shi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "chousui-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "chousui-zhang" -> {:error, "你没有激发抽髓掌，难以施展\n"}
       true -> :ok
     end
   end
@@ -94,8 +94,8 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Shi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1200 -> {:error, "你现在的内息不足，难以施展\n"}
+      vitals.neili < 500 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -142,7 +142,11 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Shi do
     Performs.feedback(attacker, 300, 4)
 
     result =
-      Messages.interpolate("$N随手抓起，将「腐尸毒」毒质运于其上，朝$n猛掷而去。", n1: attacker.name, n2: character.name)
+      Messages.interpolate("= COMBAT_D->do_damage(me, target, REMOTE_ATTACK, damage, 75,
+                                          (: final, me, target, damage :))",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hun do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiantian-gong") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "xiantian-gong") < 200 -> {:error, "你的先天功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,14 +85,9 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hun do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "xiantian-gong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      Stats.mapped(stats, "unarmed") != "xiantian-gong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "xiantian-gong" -> {:error, "你没有激发先天功为内功，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "xiantian-gong" -> {:error, "你没有激发先天功为拳脚，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -100,8 +95,8 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hun do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 4000 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 500 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end

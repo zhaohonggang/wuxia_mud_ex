@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Xueyu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xue-dao") < 70 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功修为不够高。\n"}
+      Stats.skill(stats, "xue-dao") < 70 -> {:error, "你的血刀刀法不够娴熟，不会使用「血雨」。\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Xueyu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "xue-dao" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "blade") != "xue-dao" -> {:error, "你没有激发血刀刀法，不能使用「血雨」。\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Xueyu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你现在真气不够，不能使用「血雨」。\n"}
       true -> :ok
     end
   end

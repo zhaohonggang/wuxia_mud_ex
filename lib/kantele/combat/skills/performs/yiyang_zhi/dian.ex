@@ -79,9 +79,9 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Dian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "jingluo-xue") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "yiyang-zhi") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 160 -> {:error, "你一阳指诀不够娴熟，难以施展\n"}
+      Stats.skill(stats, "jingluo-xue") < 120 -> {:error, "你对经络学了解不够，难以施展\n"}
+      Stats.skill(stats, "yiyang-zhi") < 120 -> {:error, "你的内功火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -90,7 +90,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Dian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "yiyang-zhi" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "finger") != "yiyang-zhi" -> {:error, "你没有激发一阳指诀，难以施展\n"}
       true -> :ok
     end
   end
@@ -99,8 +99,8 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Dian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1800 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -153,9 +153,12 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Dian do
 
     result =
       if hit,
-        do: Messages.interpolate("$N凝聚一阳指诀功力，陡然点出一指，变化多端，巧逼$n诸处大穴。
-结果$p被$P逼得招架不迭，一时无法反击！", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do: Messages.interpolate("结果$p被$P逼得招架不迭，一时无法反击！", n1: attacker.name, n2: character.name),
+        else:
+          Messages.interpolate("可是$p看破了$P的变化，小心招架，挡住了$P的进击。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengJian.Yong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 140 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "kuangfeng-jian") < 140 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dodge") < 140 -> {:error, "你的基本轻功的修为不够，难以施展\n"}
+      Stats.skill(stats, "kuangfeng-jian") < 140 -> {:error, "你的狂风快剑修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengJian.Yong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "kuangfeng-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "kuangfeng-jian" -> {:error, "你没有激发狂风快剑，难以施展\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengJian.Yong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 250 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 250 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -151,7 +151,7 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengJian.Yong do
       if hit,
         do:
           Messages.interpolate("$n看得目瞪口呆，只觉一阵狂风吹过，却已透胸而过。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else: Messages.interpolate("可是$n微微一笑，轻轻格躲开了$N的剑招。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

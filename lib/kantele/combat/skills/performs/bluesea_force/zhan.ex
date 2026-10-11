@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Zhan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "bluesea-force") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "bluesea-force") < 120 -> {:error, "你的南海玄功还不够娴熟，不能使用斩仙决！\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Zhan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你的内力不够，不能使用斩仙决！\n"}
       true -> :ok
     end
   end

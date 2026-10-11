@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "hunyuan-yiqi") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "qufannao-zhi") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "hunyuan-yiqi") < 100 -> {:error, "你的去烦恼指不够娴熟，不会使用\n"}
+      Stats.skill(stats, "qufannao-zhi") < 100 -> {:error, "你的心意气混元功不够高，不能用内力催动指力伤敌。\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在内力太弱，不能使用\n"}
       true -> :ok
     end
   end
@@ -126,10 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
     Performs.feedback(attacker, 0, 4)
 
     result =
-      Messages.interpolate("$n被$N的指力一震，眼前一黑，向后便倒，眼看就要不醒人事了！",
-        n1: attacker.name,
-        n2: character.name
-      )
+      Messages.interpolate("$n受到$N的指力透击，闷哼一声，看上去很是疲惫。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

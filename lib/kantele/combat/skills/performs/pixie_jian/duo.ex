@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Duo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "pixie-jian") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "pixie-jian") < 80 -> {:error, "你的辟邪剑法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Duo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "pixie-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "pixie-jian" -> {:error, "你没有准备使用辟邪剑法，难以施展\n"}
       true -> :ok
     end
   end
@@ -97,8 +97,8 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Duo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 800 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 100 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -151,9 +151,17 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Duo do
 
     result =
       if hit,
-        do: Messages.interpolate("$N一声阴笑，揉身而上，左手两指并拢，手臂暴长，迅捷异常分刺$n的双目！
-$N一声阴笑，揉身而上，手中一振，剑尖一点暴长，分刺$n左右双目！", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("= COMBAT_D->do_damage(me, target, REMOTE_ATTACK, damage, 30,
+                                          (: final, me, target, damage :))",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("$n情急智生，抬手也向$N的右眼刺去，迫得$P回剑跃开。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

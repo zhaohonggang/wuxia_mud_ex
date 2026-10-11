@@ -85,10 +85,10 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 270 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "liuhe-bian") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "whip") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dodge") < 180 -> {:error, "你六合鞭法修为不足，还不能使用连环诀！\n"}
+      Stats.skill(stats, "force") < 270 -> {:error, "你的内功火候未到，无法配合鞭法施展连环诀！\n"}
+      Stats.skill(stats, "liuhe-bian") < 180 -> {:error, "你轻功修为不足，无法快速攻击！\n"}
+      Stats.skill(stats, "whip") < 180 -> {:error, "你鞭法修为不足，还不能使用连环诀！\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "liuhe-bian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "whip") != "liuhe-bian" -> {:error, "你手中无鞭，如何能够施展连环诀？\n"}
       true -> :ok
     end
   end
@@ -154,11 +154,13 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
 
     result =
       if hit,
-        do: Messages.interpolate("$N大喝一声，口中轻轻念诵佛经，手中霍霍，招招连环，快如电闪！
-
-
-【人合】，$N与合为一体急射向$n，$n措手不急被打的吐血不止！", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("【天合】，$N舞动手中瞬息击向$n的额头，啪的一声轻响，顿时一条血印。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("$n不慌不忙，以快打快，将$N的招式完全化去。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

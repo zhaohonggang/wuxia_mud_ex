@@ -73,8 +73,8 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 400 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "sword") < 400 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 400 -> {:error, "你的内功火候尚达不到「御剑飞升」的境界。\n"}
+      Stats.skill(stats, "sword") < 400 -> {:error, "你的剑法尚达不到「御剑飞升」的境界。\n"}
       true -> :ok
     end
   end
@@ -83,9 +83,9 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 150 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 1500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 5000 -> {:error, "你现在内力不够。\n"}
+      vitals.neili < 150 -> {:error, "你的内力修为太弱，无法灵活的御驾内力。\n"}
+      vitals.neili < 1500 -> {:error, "TODO(migrate) neili 不足。\n"}
       true -> :ok
     end
   end
@@ -126,8 +126,9 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 1000, 1)
-    result = Messages.interpolate("$n看到$N这气拔千钧的一击，竟不知如何招架，登时受了重创！
-只听「嗤啦」一声，无形剑气竟在$n上身刺出一个血洞，数股血柱疾射而出！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n看到$N这气拔千钧的一击，竟不知如何招架，登时受了重创！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "zhemei-shou") < 130 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "zhemei-shou") < 130 -> {:error, "你的逍遥折梅手等级不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "zhemei-shou" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "hand") != "zhemei-shou" -> {:error, "你没有激发逍遥折梅手，难以施展\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在真气不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -155,7 +155,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hai do
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$p身手敏捷，身形急转，巧妙的躲过了$P的攻击。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.YuezhaoGong.Shi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "yuezhao-gong") < 130 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "yuezhao-gong") < 130 -> {:error, "你越爪功等级不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.YuezhaoGong.Shi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "claw") != "yuezhao-gong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "claw") != "yuezhao-gong" -> {:error, "你没有激发越爪功，难以施展\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.YuezhaoGong.Shi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -151,9 +151,13 @@ defmodule Kantele.Combat.Skills.Performs.YuezhaoGong.Shi do
 
     result =
       if hit,
-        do: Messages.interpolate("$N施出越爪功「弑元诀」绝技，右手一横，直直抓向$n破绽所在。
-只听$n一声惨嚎，竟被$N的五指抓破气门，鲜血登时四处飞溅！", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("只听$n一声惨嚎，竟被$N的五指抓破气门，鲜血登时四处飞溅！",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("可是$p身手敏捷，身形急转，巧妙的躲过了$P的攻击。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

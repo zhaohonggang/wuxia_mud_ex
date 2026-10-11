@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.PuduZhang.Zhao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "pudu-zhang") < 135 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功的修为不够，不能使用这一绝技！\n"}
+      Stats.skill(stats, "pudu-zhang") < 135 -> {:error, "你的普渡杖法修为不够，目前不能使用佛光普照！\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.PuduZhang.Zhao do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "staff") != "pudu-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "staff") != "pudu-zhang" -> {:error, "你没有激发普渡杖法，不能使用佛光普照！\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.PuduZhang.Zhao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 1000 -> {:error, "你的真气不够，不能使用佛光普照！\n"}
       true -> :ok
     end
   end

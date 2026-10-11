@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Hui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dragon-strike") < 240 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 360 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dragon-strike") < 240 -> {:error, "你内功修为不够，难以施展\n"}
+      Stats.skill(stats, "force") < 360 -> {:error, "你降龙十八掌火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Hui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "dragon-strike" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "dragon-strike" -> {:error, "你没有激发降龙十八掌，难以施展\n"}
       true -> :ok
     end
   end
@@ -93,8 +93,8 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Hui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 5000 -> {:error, "你内力修为不够，难以施展\n"}
+      vitals.neili < 1000 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -128,8 +128,6 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Hui do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     result = Messages.interpolate("$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被击个正中。
-:内伤@?只听$p一声惨嚎，被$P一掌击中胸前，“喀嚓喀嚓”断了几根肋骨。
-:内伤@?结果$p躲闪不及，$P的掌劲顿时穿胸而过，“哇”的喷出一大口鲜血。
 :内伤@?", n1: attacker.name, n2: character.name)
 
     conn

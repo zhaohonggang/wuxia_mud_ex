@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.TiexueDao.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "tiexue-dao") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "tiexue-dao") < 100 -> {:error, "你铁血刀法等级不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.TiexueDao.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "tiexue-dao" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "blade") != "tiexue-dao" -> {:error, "你没有激发铁血刀法，难以施展\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.TiexueDao.Xue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你目前的真气不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -151,9 +151,13 @@ defmodule Kantele.Combat.Skills.Performs.TiexueDao.Xue do
 
     result =
       if hit,
-        do: Messages.interpolate("$N杀气大盛，手中一振，顿时一道血光从刀锋闪过，将$n团团裹住。
-只听$n一声惨嚎，嗤啦一声，一股血柱自血色刀影中激射而出。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("只听$n一声惨嚎，嗤啦一声，一股血柱自血色刀影中激射而出。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("可是$n眼明手快，奋力招架，将$N的招式全部挡开。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

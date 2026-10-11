@@ -82,7 +82,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Zhenwu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "taiji-jian") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "taiji-jian") < 180 -> {:error, "你的太极剑法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -91,7 +91,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Zhenwu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "taiji-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "taiji-jian" -> {:error, "你没有激发太极剑法，难以施展\n"}
       true -> :ok
     end
   end
@@ -100,7 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Zhenwu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -153,8 +153,17 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Zhenwu do
 
     result =
       if hit,
-        do: Messages.interpolate("", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("= COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 85,
+                                           (: final, me, target, damage :))",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("可是$n看透$P招后更有杀着，镇定逾恒，全神应对自如。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

@@ -76,9 +76,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhuangziWu.Hua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "zhuangzi-wu") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的庄子舞等级不够，难以施展\n"}
+      Stats.skill(stats, "zhuangzi-wu") < 150 -> {:error, "你的轻功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,8 +87,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhuangziWu.Hua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 250 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1000 -> {:error, "你此时的内力不足，难以施展\n"}
+      vitals.neili < 250 -> {:error, "你的内力修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -126,7 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuangziWu.Hua do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 2)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

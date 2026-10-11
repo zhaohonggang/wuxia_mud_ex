@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Cui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shedao-qigong") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "shedao-qigong") < 120 -> {:error, "你的蛇岛奇功修为有限，不能使用「摧心断肠」！\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Cui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 250 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 250 -> {:error, "你的真气不够，无法运用「摧心断肠」！\n"}
       true -> :ok
     end
   end

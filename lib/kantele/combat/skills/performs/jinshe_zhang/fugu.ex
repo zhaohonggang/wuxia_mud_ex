@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhang.Fugu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jinshe-zhang") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "jinshe-zhang") < 100 -> {:error, "你的金蛇掌不够娴熟，不会使用附骨缠身。\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhang.Fugu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在内力太弱，不能使用附骨缠身。\n"}
       true -> :ok
     end
   end

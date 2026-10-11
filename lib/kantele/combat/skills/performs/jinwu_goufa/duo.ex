@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.JinwuGoufa.Duo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jinwu-goufa") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "jinwu-goufa") < 160 -> {:error, "你的金蜈钩法还不够娴熟，无法施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.JinwuGoufa.Duo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "jinwu-goufa" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "jinwu-goufa" -> {:error, "你没有激发金蜈钩法，无法施展\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.JinwuGoufa.Duo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在真气不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -150,10 +150,8 @@ defmodule Kantele.Combat.Skills.Performs.JinwuGoufa.Duo do
     result =
       if hit,
         do: Messages.interpolate("只见$N这一击来势好快，寒光一闪，正钩中$n的咽喉，$n一声惨叫，软绵绵的瘫了下去。
-( $n受伤过重，已经有如风中残烛，随时都可能断气。)
-只听“嗤啦”一声，$n手腕被钩个正中，手中再也捉拿不住，脱手而飞！
-$n飞身躲闪，然而只听“嗤啦”一声，$N的正钩在$n上，顿时鲜血狂溅而出。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+( $n受伤过重，已经有如风中残烛，随时都可能断气。)", n1: attacker.name, n2: character.name),
+        else: Messages.interpolate("可是$p看破了$P的企图，避开了这一招。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

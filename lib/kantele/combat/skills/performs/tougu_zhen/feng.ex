@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 260 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "tougu-zhen") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 260 -> {:error, "你内功火候不够，难以施展\n"}
+      Stats.skill(stats, "tougu-zhen") < 100 -> {:error, "你的透骨针还不够娴熟，无法施展\n"}
       true -> :ok
     end
   end
@@ -88,8 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 350 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2400 -> {:error, "你的真气不够，无法施展\n"}
+      vitals.neili < 350 -> {:error, "TODO(migrate) neili 不足。\n"}
       true -> :ok
     end
   end
@@ -145,11 +145,12 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
     result =
       if hit,
         do:
-          Messages.interpolate("$N使出透骨针「封 杀」绝技，手指挥舞，幻出漫天寒星，携带着阴寒之劲直封$n各处要穴！",
+          Messages.interpolate("= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 65,
+                                           (: final, me, target, lvl :))",
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else: Messages.interpolate("可是$n急忙退闪，连消带打躲开了这一击。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

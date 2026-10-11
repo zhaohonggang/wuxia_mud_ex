@@ -73,7 +73,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 150 -> {:error, "你现在真气不够！\n"}
       true -> :ok
     end
   end
@@ -110,7 +110,12 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Po do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n见来招即巧又拙，不同于人间任何招式，不禁大为慌乱，一时破绽迭出，$N见状连出招！",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

@@ -82,9 +82,9 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Shi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 240 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 240 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "jinshe-jian") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dodge") < 240 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "force") < 240 -> {:error, "你的轻功火候不够，难以施展\n"}
+      Stats.skill(stats, "jinshe-jian") < 200 -> {:error, "你金蛇剑法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -93,7 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Shi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "jinshe-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "jinshe-jian" -> {:error, "你没有激发金蛇剑法，难以施展\n"}
       true -> :ok
     end
   end
@@ -102,8 +102,8 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Shi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 4500 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 400 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -158,11 +158,12 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Shi do
     result =
       if hit,
         do:
-          Messages.interpolate("$n见$N金光划过，心底不由大惊，登时听得“噗嗤”一声，剑气透体而过。",
+          Messages.interpolate("$n见$N一道金光闪过，急忙收敛心神奋力招架。哪知$P这招力道非凡，$p一声闷哼，连退几步，喷出一口鲜血。",
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("然而$n以快对快，飞身一跳已然躲过$N这一招。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Ying do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "sougu-yingzhua") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "sougu-yingzhua") < 150 -> {:error, "你的搜骨鹰爪功修为不够,目前还不能使用牧野鹰扬！\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Ying do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 800 -> {:error, "你内力现在不够, 不能使用牧野鹰扬！\n"}
       true -> :ok
     end
   end

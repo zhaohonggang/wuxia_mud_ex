@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "weituo-gun") < 140 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功的修为不够，难以使用这一绝技！\n"}
+      Stats.skill(stats, "weituo-gun") < 140 -> {:error, "你的韦陀棍法修为不够，目前不能使用韦陀伏魔！\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "club") != "weituo-gun" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "club") != "weituo-gun" -> {:error, "你没有激发韦陀棍法，不能使用韦陀伏魔！\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 800 -> {:error, "你正气不足，难以理解韦陀伏魔的精髓。\n"}
       true -> :ok
     end
   end
@@ -152,9 +152,16 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
 
     result =
       if hit,
-        do: Messages.interpolate("$n平日作恶不少，见了此情此景，心中不禁颤然！
-结果只听$p一声惨叫，被$P一下子打中要害，七窍一起生烟，耳鼻都渗出血来！", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("结果只听$p一声惨叫，被$P一下子打中要害，七窍一起生烟，耳鼻都渗出血来！",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("可是$p强摄心神，没有被$P所迷惑，硬生生的架住了$P这一招！",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

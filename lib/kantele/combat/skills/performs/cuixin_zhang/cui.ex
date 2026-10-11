@@ -80,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功火候太低，无法使出\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你的内力不够，无法使出\n"}
       true -> :ok
     end
   end
@@ -144,9 +144,10 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
 
     result =
       if hit,
-        do: Messages.interpolate("$N聚气于掌，仰天一声狂啸，刹那间双掌交错，一招「夺命催心」带着阴毒内劲直贯$n！
-只听$n惨叫一声，只感两耳轰鸣，目不视物，软软瘫倒。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("只听$n惨叫一声，只感两耳轰鸣，目不视物，软软瘫倒。", n1: attacker.name, n2: character.name),
+        else:
+          Messages.interpolate("$p见$P来势汹涌，踉踉跄跄的躲开了这致命的一击！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

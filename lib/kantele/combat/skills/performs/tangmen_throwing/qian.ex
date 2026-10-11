@@ -104,10 +104,9 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Qian do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 3)
-    result = Messages.interpolate("$N突然身行一止，从怀中摸出一条，有无数个结，一扬手向$n 掷去。
-只见$n的周身飞舞着无数的光影，一条天网从空罩下。
-忽然那无数的光影一闪而没，$n身行一顿，给这缠上，仰天而倒。
-$n急忙向旁边一纵，躲开着致命的，但已显得狼狈不堪。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("忽然那无数的光影一闪而没，$n身行一顿，给这缠上，仰天而倒。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

@@ -82,8 +82,8 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "baihua-cuoquan") < 250 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "zhanshen-xinjing") < 250 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "baihua-cuoquan") < 250 -> {:error, "你的战神心经修为不够，难以施展\n"}
+      Stats.skill(stats, "zhanshen-xinjing") < 250 -> {:error, "你的百花错拳不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -92,14 +92,9 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "zhanshen-xinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      Stats.mapped(stats, "unarmed") != "baihua-cuoquan" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "zhanshen-xinjing" -> {:error, "你没有激发战神心经，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "baihua-cuoquan" -> {:error, "你没有激发百花错拳，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -107,8 +102,8 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，难以施展\n"}
+      vitals.neili < 800 -> {:error, "你的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -164,9 +159,8 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
     result =
       if hit,
         do: Messages.interpolate("只见$N一拳轰至，便将$n震得心脉俱碎，仰天喷出一口鲜血，软软瘫倒。
-( $n受伤过重，已经有如风中残烛，随时都可能断气。)
-结果$p闪避不及，$P的拳力掌劲顿时透体而入，口中鲜血狂喷，连退数步。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+( $n受伤过重，已经有如风中残烛，随时都可能断气。)", n1: attacker.name, n2: character.name),
+        else: Messages.interpolate("可是$p识破了$P这一招，斜斜一跃避开。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanQuan.Song do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "huashan-quan") < 40 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "huashan-quan") < 40 -> {:error, "你的华山拳法不够娴熟，无法施展\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanQuan.Song do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你现在真气不够，无法施展\n"}
       true -> :ok
     end
   end

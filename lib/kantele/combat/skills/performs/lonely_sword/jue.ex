@@ -70,7 +70,7 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 50 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 50 -> {:error, "你现在太累了，无法集中精神演练「总诀式」！\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

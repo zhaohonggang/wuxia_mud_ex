@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 280 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "rulai-zhang") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 280 -> {:error, "你千手如来掌火候不够，难以施展\n"}
+      Stats.skill(stats, "rulai-zhang") < 150 -> {:error, "你的内功火候不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发心意气内功为内功，难以施展\n"}
       true -> :ok
     end
   end
@@ -96,8 +96,8 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3000 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 500 -> {:error, "你的内力修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -147,9 +147,7 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
       Messages.interpolate(
         "随即又听$N高声喝道：「我佛如来」顷刻间，但见$N八掌又变为十六掌，进而再幻化为三十二掌，掌势层层叠叠，波澜壮阔，气势磅礴，荡气回肠。如海潮般向$n涌去。
 
-$n面对这无穷无尽的掌势，竟然放弃了抵抗，面如死灰坐以待毙。
-
-$n见掌势层层叠叠，有如海潮，一时只觉头晕目眩，难作抵挡。",
+$n面对这无穷无尽的掌势，竟然放弃了抵抗，面如死灰坐以待毙。",
         n1: attacker.name,
         n2: character.name
       )

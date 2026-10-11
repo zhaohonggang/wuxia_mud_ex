@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候太低，，难以施展\n"}
       true -> :ok
     end
   end
@@ -84,11 +84,8 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "tianchan-zhang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "strike") != "tianchan-zhang" -> {:error, "你没有激发天蟾掌法，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -96,7 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你的内力不够，，难以施展\n"}
       true -> :ok
     end
   end
@@ -139,8 +136,12 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 3)
-    result = Messages.interpolate("$N一声冷笑，聚气于掌，飞身一跃而起，一招携满剧毒的「毒蟾掌」对着$n凌空拍下！
-只听$n惨叫一声，被$N这一掌拍个正着，顿时毒气攻心，“哇”地喷出一大口鲜血。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("只听$n惨叫一声，被$N这一掌拍个正着，顿时毒气攻心，“哇”地喷出一大口鲜血。",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

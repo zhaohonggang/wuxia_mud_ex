@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "mantian-xing") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功修为不足，难以施展\n"}
+      Stats.skill(stats, "mantian-xing") < 80 -> {:error, "你的满天星不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,8 +85,8 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 150 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1200 -> {:error, "你现在真气不足，难以施展\n"}
+      vitals.neili < 150 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -134,9 +134,7 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 3)
     result = Messages.interpolate("$N蓦地飞身跃起，十指箕张，施出「穹外飞星」将手中尽数凌空射出。
-霎时破空声骤响，便如同陨星飞坠一般，笼罩$n各处大穴！
-结果$n一声惨叫，同时中了$Pbase_unit，直感两耳轰鸣，目不视物。
-$n集中生智，双手画圈回旋挥舞，拨弄开了要害处的杀着，可还是受了点轻伤。", n1: attacker.name, n2: character.name)
+霎时破空声骤响，便如同陨星飞坠一般，笼罩$n各处大穴！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

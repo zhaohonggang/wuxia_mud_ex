@@ -79,9 +79,9 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Gan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 280 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "miaojia-jian") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "miaojia-jian") < 260 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 280 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "miaojia-jian") < 200 -> {:error, "你苗家剑法不够娴熟，难以施展\n"}
+      Stats.skill(stats, "miaojia-jian") < 260 -> {:error, "TODO(migrate) miaojia-jian 等级不足。\n"}
       true -> :ok
     end
   end
@@ -90,7 +90,7 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Gan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "miaojia-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "miaojia-jian" -> {:error, "你没有激发苗家剑法，难以施展\n"}
       true -> :ok
     end
   end
@@ -99,8 +99,8 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Gan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 600 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3000 -> {:error, "你现在真气不够，难以施展\n"}
+      vitals.neili < 600 -> {:error, "你的内力修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -157,7 +157,11 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Gan do
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("$n见来势汹涌，心知绝不可挡，当即向后横移数尺，终于躲闪开来。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

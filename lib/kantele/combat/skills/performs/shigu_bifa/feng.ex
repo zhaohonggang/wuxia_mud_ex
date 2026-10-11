@@ -80,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功的修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "dagger") != "shigu-bifa" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "dagger") != "shigu-bifa" -> {:error, "你没有激发石鼓打穴笔法，难以施展\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -153,9 +153,16 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
 
     result =
       if hit,
-        do: Messages.interpolate("$N飞身一跃而起，贴至$n跟前，手中大起大落，气势恢弘，幻出一道闪电直射$n要穴！
-$p微微一楞，只觉胸口一麻，已被$N点中要穴，整个上半身顿时瘫软无力，缓缓瘫倒。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("$p微微一楞，只觉胸口一麻，已被$N点中要穴，整个上半身顿时瘫软无力，缓缓瘫倒。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

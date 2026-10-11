@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Fen do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiantian-gong") < 240 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "xiantian-gong") < 240 -> {:error, "你的先天功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,14 +88,9 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Fen do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "xiantian-gong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      Stats.mapped(stats, "unarmed") != "xiantian-gong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "xiantian-gong" -> {:error, "你没有激发先天功为内功，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "xiantian-gong" -> {:error, "你没有激发先天功为拳脚，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -103,8 +98,8 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Fen do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 600 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 4000 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 600 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -159,9 +154,9 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Fen do
     result =
       if hit,
         do: Messages.interpolate("$n正直诧异间，$N一掌已正中$p脑门，先天真气登时贯脑而入。
-( $n受伤过重，已经有如风中残烛，随时都可能断气。)
-结果$N这掌正中$n胸口，先天真气登时透体而入，接连喷出数口鲜血。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+( $n受伤过重，已经有如风中残烛，随时都可能断气。)", n1: attacker.name, n2: character.name),
+        else:
+          Messages.interpolate("可是$p识破了$P这一招，斜斜一跃躲避开来。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

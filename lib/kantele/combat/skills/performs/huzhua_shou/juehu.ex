@@ -77,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "huzhua-shou") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "huzhua-shou") < 120 -> {:error, "你的虎爪绝户手不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "claw") != "huzhua-shou" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "claw") != "huzhua-shou" -> {:error, "你没有激发虎爪绝户手，难以施展\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -139,8 +139,12 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
     vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    result = Messages.interpolate("$N大喝一声，变掌为爪，双爪化出漫天爪影，如狂风骤雨一般向$n的要害抓去！
-结果$p一声惨嚎，没能招架住$P凌厉的攻势，被抓得皮肉分离，鲜血飞溅！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$N大喝一声，变掌为爪，双爪化出漫天爪影，如狂风骤雨一般向$n的要害抓去！",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.JingzhongBafa.Bafa do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "jingzhong-bafa") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的井中八法还不到家，无法施展绝招。\n"}
+      Stats.skill(stats, "jingzhong-bafa") < 200 -> {:error, "你的内功火候不够！\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.JingzhongBafa.Bafa do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "jingzhong-bafa" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "blade") != "jingzhong-bafa" -> {:error, "你没有激发井中八法，无法施展绝招。\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.JingzhongBafa.Bafa do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够！\n"}
       true -> :ok
     end
   end

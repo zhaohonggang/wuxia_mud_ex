@@ -68,6 +68,14 @@ class TranslatePerform:
         self.msg_construction_re = re.compile(r'msg\s*[+=]\s*([^;]+);')
         self.msg_initial_re = re.compile(r'msg\s*=\s*([^;]+);')
         self.color_codes_re = re.compile(r'(HIM|HIR|HIC|HIY|HIG|HIB|HIW|NOR|CYN|RED|GRN|YEL|BLU|MAG|WHT)')
+        
+        # New patterns for message extraction
+        self.notify_fail_re = re.compile(r'notify_fail\s*\(\s*"([^"]+)"', re.MULTILINE)
+        # Match if/else blocks with msg assignments inside
+        self.hit_check_block_re = re.compile(
+            r'if\s*\([^)]+ap[^)]+>\s*dp[^)]*\)\s*\{([^}]+)\}(?:\s*else\s*\{([^}]+)\})?',
+            re.DOTALL
+        )
 
         # New patterns for resource / damage / buff / throwing logic (gap analysis)
         self.receive_damage_re = re.compile(
@@ -146,6 +154,8 @@ class TranslatePerform:
         do_damage_details = self.extract_do_damage_details(text)
         affect_by_details = self.extract_affect_by_details(text)
         messages = self.extract_messages(text)
+        gate_messages = self.extract_gate_messages(text)
+        hit_miss_messages = self.extract_hit_miss_messages(text)
         color_codes = self.extract_color_codes(text)
         callbacks = self.extract_callbacks(text)
         attacker_vars = self._extract_attacker_vars(text)
@@ -185,6 +195,8 @@ class TranslatePerform:
             'do_damage_details': do_damage_details,
             'affect_by_details': affect_by_details,
             'messages': messages,
+            'gate_messages': gate_messages,
+            'hit_miss_messages': hit_miss_messages,
             'color_codes': color_codes,
             'callbacks': callbacks,
             'initial_message': initial_msg,
@@ -360,6 +372,118 @@ class TranslatePerform:
             return match.group(1).strip()
         return None
 
+    def extract_gate_messages(self, text: str) -> Dict[str, List[str]]:
+        """Extract notify_fail messages and associate with gate types by context.
+        
+        Scans text linearly, tracking the most recent gate condition before each notify_fail.
+        Returns dict: gate_type -> list of cleaned messages.
+        """
+        gate_msgs = {
+            'level': [],
+            'mapped': [],
+            'prepared': [],
+            'resource': [],
+            'weapon': [],
+            'other': [],
+        }
+        
+        # Current context gate type
+        current_gate = 'other'
+        lines = text.split('\n')
+        
+        for line in lines:
+            stripped = line.strip()
+            
+            # Detect gate conditions
+            if 'query_skill(' in stripped and '<' in stripped and 'notify_fail' not in stripped:
+                current_gate = 'level'
+            elif 'query_skill_mapped(' in stripped and '!=' in stripped and 'notify_fail' not in stripped:
+                current_gate = 'mapped'
+            elif 'query_skill_prepared(' in stripped and '!=' in stripped and 'notify_fail' not in stripped:
+                current_gate = 'prepared'
+            elif 'query("' in stripped and '<' in stripped and 'notify_fail' not in stripped:
+                # resource gate: neili, qi, etc.
+                current_gate = 'resource'
+            elif 'query("skill_type")' in stripped and '!=' in stripped and 'notify_fail' not in stripped:
+                current_gate = 'weapon'
+            elif 'query_temp("weapon")' in stripped and 'notify_fail' not in stripped:
+                current_gate = 'weapon'
+            
+            # Extract notify_fail
+            for m in self.notify_fail_re.finditer(stripped):
+                msg = m.group(1)
+                clean = self._clean_message_fragment(msg)
+                if clean:
+                    gate_msgs[current_gate].append(clean)
+                current_gate = 'other'  # Reset after consume
+        
+        # Deduplicate
+        for k in gate_msgs:
+            gate_msgs[k] = self.dedup(gate_msgs[k])
+        
+        return gate_msgs
+
+    def extract_hit_miss_messages(self, text: str) -> Dict[str, List[str]]:
+        """Extract hit/miss messages from msg construction in hit check block.
+        
+        Looks for the main combat if (ap > dp) block and extracts msg += in each branch.
+        Uses balanced brace/paren matching to handle nested structures.
+        """
+        messages = {'hit': [], 'miss': []}
+        
+        # Find the hit check if statement (ap > dp) - search for 'if' followed by condition with ap and dp
+        if_pos = text.find('if (')
+        while if_pos != -1:
+            # Check if this if statement contains ap and dp with >
+            paren_start, paren_end = self._find_balanced_parens(text, if_pos + 3)  # after 'if '
+            if paren_start != -1:
+                condition = text[paren_start:paren_end+1]
+                if 'ap' in condition and 'dp' in condition and '>' in condition:
+                    # Found the hit check!
+                    # Find opening brace after the condition
+                    brace_pos = text.find('{', paren_end)
+                    if brace_pos != -1:
+                        hit_start, hit_end = self._find_balanced_braces(text, brace_pos)
+                        if hit_start != -1:
+                            hit_block = text[hit_start + 1:hit_end]
+                            
+                            # Look for else after hit block
+                            else_pos = text.find('else', hit_end)
+                            miss_block = ''
+                            if else_pos != -1 and else_pos < hit_end + 100:
+                                else_brace = text.find('{', else_pos)
+                                if else_brace != -1:
+                                    miss_start, miss_end = self._find_balanced_braces(text, else_brace)
+                                    if miss_start != -1:
+                                        miss_block = text[miss_start + 1:miss_end]
+                            
+                            # Extract msg += from hit branch
+                            for m in re.finditer(r'msg\s*[+=]\s*([^;]+);', hit_block):
+                                clean = self._clean_message_fragment(m.group(1))
+                                if clean:
+                                    messages['hit'].append(clean)
+                            
+                            # Extract msg += from miss branch
+                            if miss_block:
+                                for m in re.finditer(r'msg\s*[+=]\s*([^;]+);', miss_block):
+                                    clean = self._clean_message_fragment(m.group(1))
+                                    if clean:
+                                        messages['miss'].append(clean)
+                            
+                            # Also check for message_combatd in hit branch (final message)
+                            for m in re.finditer(r'message_combatd\s*\(([^)]+)\)', hit_block):
+                                msg_arg = m.group(1).split(',')[0].strip()
+                                clean = self._clean_message_fragment(msg_arg)
+                                if clean and clean not in messages['hit']:
+                                    messages['hit'].append(clean)
+                            
+                            return messages
+            
+            # Try next 'if ('
+            if_pos = text.find('if (', if_pos + 1)
+        
+        return messages
+
     def extract_color_codes(self, text: str) -> List[str]:
         """Extract ANSI color codes used."""
         return self.dedup(self.color_codes_re.findall(text))
@@ -400,6 +524,48 @@ class TranslatePerform:
                     return i + 1
             i += 1
         return -1
+
+    def _find_balanced_braces(self, text: str, start: int) -> Tuple[int, int]:
+        """Find matching { ... } pair starting from `start` (which should be at '{').
+        Returns (brace_start, brace_end) where brace_end is index of matching '}'.
+        Returns (-1, -1) if not found.
+        """
+        if start >= len(text) or text[start] != '{':
+            return -1, -1
+        depth = 1
+        i = start + 1
+        n = len(text)
+        while i < n:
+            c = text[i]
+            if c == '{':
+                depth += 1
+            elif c == '}':
+                depth -= 1
+                if depth == 0:
+                    return start, i
+            i += 1
+        return -1, -1
+
+    def _find_balanced_parens(self, text: str, start: int) -> Tuple[int, int]:
+        """Find matching ( ... ) pair starting from `start` (which should be at '(').
+        Returns (paren_start, paren_end) where paren_end is index of matching ')'.
+        Returns (-1, -1) if not found.
+        """
+        if start >= len(text) or text[start] != '(':
+            return -1, -1
+        depth = 1
+        i = start + 1
+        n = len(text)
+        while i < n:
+            c = text[i]
+            if c == '(':
+                depth += 1
+            elif c == ')':
+                depth -= 1
+                if depth == 0:
+                    return start, i
+            i += 1
+        return -1, -1
 
     def _call_args(self, text: str, callee: str) -> List[List[str]]:
         """Extract argument lists of every `->callee(...)` call, splitting on
@@ -782,6 +948,7 @@ class TranslatePerform:
         """Extract readable text from LPC message fragment.
         Input like: 'HIY "突然只听$N" HIY "喝道："'
         Output: '突然只听$N喝道：' (color codes stripped, $N/$n/$p preserved)
+        Also handles plain text (already extracted from quotes).
         """
         if not frag:
             return ''
@@ -789,7 +956,11 @@ class TranslatePerform:
         parts = []
         for m in re.finditer(r'"([^"]*)"', frag):
             parts.append(m.group(1))
-        joined = ''.join(parts)
+        if parts:
+            joined = ''.join(parts)
+        else:
+            # No quoted strings found - treat as plain text
+            joined = frag
         # Strip color codes (HIR, HIC, HIY, HIG, HIB, HIW, NOR, CYN, RED, GRN, YEL, BLU, MAG, WHT)
         joined = re.sub(r'\b(HIM|HIR|HIC|HIY|HIG|HIB|HIW|NOR|CYN|RED|GRN|YEL|BLU|MAG|WHT)\b', '', joined)
         # Normalize escaped newlines
@@ -810,8 +981,12 @@ class TranslatePerform:
         pairs = [(s, n) for (s, n) in data.get('level_gates', []) if s and n]
         if not pairs:
             return None
-        clauses = [(f'Stats.skill(stats, "{s}") < {n}', '{:error, "TODO(migrate) 门槛不足。\\n"}')
-                   for s, n in pairs]
+        gate_msgs = data.get('gate_messages', {}).get('level', [])
+        # Use first gate message for each skill, or fallback
+        clauses = []
+        for i, (s, n) in enumerate(pairs):
+            msg = gate_msgs[i] if i < len(gate_msgs) else f'TODO(migrate) {s} 等级不足。'
+            clauses.append((f'Stats.skill(stats, "{s}") < {n}', f'{{:error, "{msg}\\n"}}'))
         clauses.append(('true', ':ok'))
         body = (
             "    stats = character.meta.stats\n\n"
@@ -825,9 +1000,11 @@ class TranslatePerform:
         pairs = [(u, s) for (u, s) in data.get('map_gates', []) if u and s]
         if not pairs:
             return None
-        clauses = [(f'Stats.mapped(stats, "{u}") != "{s}"',
-                    '{:error, "TODO(migrate) 未激发/未准备相应武功。\\n"}')
-                   for u, s in pairs]
+        gate_msgs = data.get('gate_messages', {}).get('mapped', []) + data.get('gate_messages', {}).get('prepared', [])
+        clauses = []
+        for i, (u, s) in enumerate(pairs):
+            msg = gate_msgs[i] if i < len(gate_msgs) else f'TODO(migrate) 未激发/未准备 {s}。'
+            clauses.append((f'Stats.mapped(stats, "{u}") != "{s}"', f'{{:error, "{msg}\\n"}}'))
         clauses.append(('true', ':ok'))
         body = (
             "    stats = character.meta.stats\n\n"
@@ -842,8 +1019,11 @@ class TranslatePerform:
                  if r in self.VITALS_FIELDS and n]
         if not pairs:
             return None
-        clauses = [(f'vitals.{r} < {n}', '{:error, "TODO(migrate) 气血/内力/精神不足。\\n"}')
-                   for r, n in pairs]
+        gate_msgs = data.get('gate_messages', {}).get('resource', [])
+        clauses = []
+        for i, (r, n) in enumerate(pairs):
+            msg = gate_msgs[i] if i < len(gate_msgs) else f'TODO(migrate) {r} 不足。'
+            clauses.append((f'vitals.{r} < {n}', f'{{:error, "{msg}\\n"}}'))
         clauses.append(('true', ':ok'))
         body = (
             "    vitals = character.meta.vitals\n\n"
@@ -1062,21 +1242,22 @@ class TranslatePerform:
             indent = '    '
             close = ''
         
-        # Messages: properly extract string contents from LPC fragments
-        success_frags = messages.get('success', ['$n被$N击中！\n'])
-        fail_frags = messages.get('fail', ['$n躲过了$N的攻击！\n'])
-        def clean_frags(frags):
-            # Each frag is like '"$N" "体内..."' - extract content from quoted parts
-            parts = []
-            for frag in frags:
-                # Find all double-quoted strings and extract their content
-                for m in re.finditer(r'"([^"]*)"', frag):
-                    parts.append(m.group(1))
-            joined = ''.join(parts)
-            # Strip color codes (HIR, HIC, etc.) but keep $N $n $p
-            return re.sub(r'[A-Z]{2,4}', '', joined).replace('\\n', '\n').strip()
-        success_clean = clean_frags(success_frags)
-        fail_clean = clean_frags(fail_frags)
+        # Messages: use extracted hit/miss messages from LPC
+        hit_miss_msgs = data.get('hit_miss_messages', {})
+        hit_msgs = hit_miss_msgs.get('hit', [])
+        miss_msgs = hit_miss_msgs.get('miss', [])
+        
+        # Fallback to old messages extraction if new ones empty
+        if not hit_msgs:
+            success_frags = messages.get('success', ['$n被$N击中！\n'])
+            hit_msgs = [self._clean_message_fragment(f) for f in success_frags if self._clean_message_fragment(f)]
+        if not miss_msgs:
+            fail_frags = messages.get('fail', ['$n躲过了$N的攻击！\n'])
+            miss_msgs = [self._clean_message_fragment(f) for f in fail_frags if self._clean_message_fragment(f)]
+        
+        # Take first message of each type (can be extended to random selection later)
+        hit_clean = hit_msgs[0] if hit_msgs else '$n被$N击中！'
+        miss_clean = miss_msgs[0] if miss_msgs else '$n躲过了$N的攻击！'
         
         lines = [
             "",
@@ -1145,9 +1326,9 @@ class TranslatePerform:
         
         # Messages with $N/$n placeholders
         if has_ap and needs_dp:
-            lines.append(f'    result = if hit, do: Messages.interpolate("{success_clean}", n1: attacker.name, n2: character.name), else: Messages.interpolate("{fail_clean}", n1: attacker.name, n2: character.name)')
+            lines.append(f'    result = if hit, do: Messages.interpolate("{hit_clean}", n1: attacker.name, n2: character.name), else: Messages.interpolate("{miss_clean}", n1: attacker.name, n2: character.name)')
         else:
-            lines.append(f'    result = Messages.interpolate("{success_clean}", n1: attacker.name, n2: character.name)')
+            lines.append(f'    result = Messages.interpolate("{hit_clean}", n1: attacker.name, n2: character.name)')
         
         lines.append('    conn')
         lines.append('    |> Broadcast.publish(result)')

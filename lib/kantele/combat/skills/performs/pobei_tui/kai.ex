@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.PobeiTui.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "pobei-tui") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候太浅，难以施展\n"}
+      Stats.skill(stats, "pobei-tui") < 100 -> {:error, "你的破碑腿不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.PobeiTui.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "pobei-tui" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "unarmed") != "pobei-tui" -> {:error, "你现在没有激发破碑腿，难以施展\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.PobeiTui.Kai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 150 -> {:error, "你现在真气太弱，难以施展\n"}
       true -> :ok
     end
   end

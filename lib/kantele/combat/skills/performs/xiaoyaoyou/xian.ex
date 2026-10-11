@@ -77,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.Xiaoyaoyou.Xian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiaoyaoyou") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "xiaoyaoyou") < 100 -> {:error, "你的逍遥游拳法不够熟练，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.Xiaoyaoyou.Xian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "dodge") != "xiaoyaoyou" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "dodge") != "xiaoyaoyou" -> {:error, "你没有激发逍遥游为轻功，难以施展\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.Xiaoyaoyou.Xian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你现在的真气不足，难以施展\n"}
       true -> :ok
     end
   end

@@ -76,9 +76,9 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 250 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "longxiang-gong") < 90 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "riyue-lun") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 250 -> {:error, "你日月轮法火候不足，难以施展\n"}
+      Stats.skill(stats, "longxiang-gong") < 90 -> {:error, "你的内功火候不足，难以施展\n"}
+      Stats.skill(stats, "riyue-lun") < 150 -> {:error, "TODO(migrate) riyue-lun 等级不足。\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hammer") != "riyue-lun" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "hammer") != "riyue-lun" -> {:error, "你没有激发日月轮法，难以施展\n"}
       true -> :ok
     end
   end
@@ -96,8 +96,8 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Lian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3000 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 500 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end

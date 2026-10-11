@@ -77,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zongheng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "six-finger") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "six-finger") < 120 -> {:error, "你的六脉神剑火候不够，不会使用「纵横」。\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zongheng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "six-finger" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "finger") != "six-finger" -> {:error, "你没有激发六脉神剑，无法施展「纵横」。\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zongheng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你的真气不够，无法施展「纵横」。\n"}
       true -> :ok
     end
   end

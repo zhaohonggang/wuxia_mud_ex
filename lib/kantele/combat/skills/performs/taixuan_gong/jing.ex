@@ -75,10 +75,10 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "blade") < 340 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 340 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "martial-cognize") < 260 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "sword") < 340 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "blade") < 340 -> {:error, "你内功修为不够，难以施展\n"}
+      Stats.skill(stats, "force") < 340 -> {:error, "你武学修养不足，难以施展\n"}
+      Stats.skill(stats, "martial-cognize") < 260 -> {:error, "你的基本刀法火候不足，难以施展\n"}
+      Stats.skill(stats, "sword") < 340 -> {:error, "你的基本剑法火候不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,9 +87,14 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "taixuan-gong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      Stats.mapped(stats, "sword") != "taixuan-gong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      true -> :ok
+      Stats.mapped(stats, "blade") != "taixuan-gong" ->
+        {:error, "你没有激发太玄功为刀或剑，难以施展\n"}
+
+      Stats.mapped(stats, "sword") != "taixuan-gong" ->
+        {:error, "TODO(migrate) 未激发/未准备 taixuan-gong。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -97,8 +102,8 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 10000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 850 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 10000 -> {:error, "你内力修为不够，难以施展\n"}
+      vitals.neili < 850 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -134,7 +139,14 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate(
+        "COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 80 + random(10),
+                                         (: final1, me, target, damage, weapon, lvl :))",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

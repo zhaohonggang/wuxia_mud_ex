@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.BiyanDao.Luo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "biyan-dao") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "biyan-dao") < 80 -> {:error, "你碧烟刀法不够娴熟，难以施展\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "TODO(migrate) force 等级不足。\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.BiyanDao.Luo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "biyan-dao" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "blade") != "biyan-dao" -> {:error, "你没有激发碧烟刀法，难以施展\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.BiyanDao.Luo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 80 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 80 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -129,7 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.BiyanDao.Luo do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

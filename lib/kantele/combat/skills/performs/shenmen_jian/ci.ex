@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenmenJian.Ci do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "shenmen-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "shenmen-jian" -> {:error, "你现在没有激发神门十三剑，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenmenJian.Ci do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -128,8 +128,9 @@ defmodule Kantele.Combat.Skills.Performs.ShenmenJian.Ci do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 40, 3)
-    result = Messages.interpolate("突然$N一声冷哼，手中中攻直进，直刺$n拿着的的手腕。
-$n只觉手腕一阵刺痛，手中再也拿捏不住，脱手而飞。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n只觉手腕一阵刺痛，手中再也拿捏不住，脱手而飞。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.YunlongBian.Chan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yunlong-bian") < 50 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "yunlong-bian") < 50 -> {:error, "你云龙鞭法火候太浅，难以施展\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.YunlongBian.Chan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "yunlong-bian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "whip") != "yunlong-bian" -> {:error, "你没有激发云龙鞭法，难以施展\n"}
       true -> :ok
     end
   end
@@ -93,7 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.YunlongBian.Chan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 50 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 50 -> {:error, "你现在的真气不足，难以施展\n"}
       true -> :ok
     end
   end

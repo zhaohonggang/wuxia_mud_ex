@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "tongbi-zhang") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 80 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "tongbi-zhang") < 80 -> {:error, "你通臂六合掌不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 120 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 120 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end

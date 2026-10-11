@@ -78,9 +78,9 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 240 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "jiuyang-shengong") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "sword") < 240 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 240 -> {:error, "你的九阳神功不够娴熟，难以施展\n"}
+      Stats.skill(stats, "jiuyang-shengong") < 220 -> {:error, "你的内功根基不够，难以施展\n"}
+      Stats.skill(stats, "sword") < 240 -> {:error, "你的基本剑法火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,11 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "jiuyang-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "sword") != "jiuyang-shengong" -> {:error, "你没有激发九阳神功为剑法，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -101,8 +98,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 5500 -> {:error, "你现在真气不够，难以施展\n"}
+      vitals.neili < 400 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -153,8 +150,18 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Po do
 
     result =
       if hit,
-        do: Messages.interpolate("", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate(
+            "= COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 85 + random(5),
+                                           (: final, me, target, damage :))",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("可是$n看透$P此招之中的破绽，镇定逾恒，全神应对自如。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

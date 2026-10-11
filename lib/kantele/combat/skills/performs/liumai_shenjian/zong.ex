@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 480 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 480 -> {:error, "你的内功火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,8 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 8500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 8500 -> {:error, "你的内力修为不够,无法施展\n"}
+      vitals.neili < 1000 -> {:error, "你的真气不够，现在无法施展\n"}
       true -> :ok
     end
   end
@@ -153,15 +153,13 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
 
     result =
       if hit,
-        do: Messages.interpolate("只听$n一声惨叫，万道剑气已透体而过，伤口处鲜血顿时狂涌，痛苦难当！
-$n奋力抵挡，却哪里招架得住，被$N这一指戳得鲜血迸流！
-接着$N拇指一屈，食指随即点出，嗤嗤两声急响，「商阳剑」激射刺出。
-$n试图抵挡，只听哧的一声，无形剑气已破体而入，透体而出！
-$n一愣，只听哧啦的一声，已被剑气划得鲜血飞溅！
-$n躲闪不及，被戳了碗口大个血窟窿，鲜血喷涌而出！
-$n运气抵挡，只觉得一股透体凉意袭了上来，一个激凌，丹田立刻变得空空荡荡！
-$n已然放弃抵抗，任凭气流摧袭只盼望一切早点结束....", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("只听$n一声惨叫，万道剑气已透体而过，伤口处鲜血顿时狂涌，痛苦难当！",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("$n见$N来势汹涌，不敢轻易招架，急忙提气跃开。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

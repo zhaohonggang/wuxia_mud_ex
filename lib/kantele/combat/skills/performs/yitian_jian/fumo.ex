@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.YitianJian.Fumo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yitian-jian") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "yitian-jian") < 120 -> {:error, "你的倚天剑法不够娴熟，无法施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.YitianJian.Fumo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "yitian-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "yitian-jian" -> {:error, "你没有激发倚天剑法，无法施展\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.YitianJian.Fumo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -148,8 +148,14 @@ defmodule Kantele.Combat.Skills.Performs.YitianJian.Fumo do
 
     result =
       if hit,
-        do: Messages.interpolate("", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("= COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 40,
+                                           (: final, me, target, damage :))",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("可$n却是镇定逾恒，一丝不乱，全神将此招化解开来。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

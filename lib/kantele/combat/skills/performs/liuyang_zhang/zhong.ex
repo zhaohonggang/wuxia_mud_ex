@@ -82,8 +82,8 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "liuyang-zhang") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功不够火候，难以施展\n"}
+      Stats.skill(stats, "liuyang-zhang") < 150 -> {:error, "你的天山六阳掌不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -92,14 +92,9 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "liuyang-zhang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      Stats.mapped(stats, "throwing") != "liuyang-zhang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "strike") != "liuyang-zhang" -> {:error, "你没有激发掌法天山六阳掌，难以施展\n"}
+      Stats.mapped(stats, "throwing") != "liuyang-zhang" -> {:error, "你没有激发暗器天山六阳掌，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -107,7 +102,7 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -161,7 +156,8 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$p内力激荡，将$P那枚生死符硬生生震出体外。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

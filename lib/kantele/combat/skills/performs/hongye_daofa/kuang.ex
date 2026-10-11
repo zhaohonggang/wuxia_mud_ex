@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.HongyeDaofa.Kuang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "hongye-daofa") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "hongye-daofa") < 150 -> {:error, "你目前功力还使不出\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.HongyeDaofa.Kuang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 800 -> {:error, "你的内力不够。\n"}
       true -> :ok
     end
   end
@@ -120,7 +120,7 @@ $n只觉得心跳都停止了！", n1: character.name)
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

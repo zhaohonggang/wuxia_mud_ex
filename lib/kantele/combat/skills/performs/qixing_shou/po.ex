@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "qixing-shou") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你七星分天手不够娴熟，难以施展\n"}
+      Stats.skill(stats, "qixing-shou") < 150 -> {:error, "你的内功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "qixing-shou" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "hand") != "qixing-shou" -> {:error, "你没有激发七星分天手，难以施展\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -137,9 +137,12 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 1)
-    result = Messages.interpolate("但见$P这道气劲来势迅猛之极，$n如何避得，顿时被紫劲震开了数尺！
-$p只觉后颈一麻，已被$N这招击个正中，顿时全身瘫软，呕出一口鲜血！
-$p在$N的猛攻之下，已再无余力招架，竟被这一掌震得飞起，摔了出去！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("但见$P这道气劲来势迅猛之极，$n如何避得，顿时被紫劲震开了数尺！",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

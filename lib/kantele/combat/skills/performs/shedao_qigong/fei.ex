@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Fei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "shedao-qigong") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不够！\n"}
+      Stats.skill(stats, "shedao-qigong") < 100 -> {:error, "你的蛇岛奇功的修为法还不到家，无法使用飞仙术！\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Fei do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 150 -> {:error, "你的真气不够！\n"}
       true -> :ok
     end
   end
@@ -120,7 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Fei do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

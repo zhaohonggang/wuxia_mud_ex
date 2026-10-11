@@ -79,9 +79,9 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "bagua-biao") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "bagua-zhang") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "bagua-biao") < 120 -> {:error, "你的八卦掌不够娴熟，难以施展\n"}
+      Stats.skill(stats, "bagua-zhang") < 120 -> {:error, "你的八卦镖诀不够娴熟，难以施展\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -90,8 +90,8 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "bagua-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      Stats.mapped(stats, "throwing") != "bagua-biao" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "bagua-zhang" -> {:error, "你没有激发八卦掌，难以施展\n"}
+      Stats.mapped(stats, "throwing") != "bagua-biao" -> {:error, "你没有激发八卦镖诀，难以施展\n"}
       true -> :ok
     end
   end
@@ -100,7 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 150 -> {:error, "你现在真气不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -156,7 +156,11 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
       if hit,
         do: Messages.interpolate("可只见$n哈哈一笑，身子一矮，躲了过去。
 哪知方才的暗器竟是虚招，等$p反应时$N已至跟前，双掌齐施，重重的印在$n胸前。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$p看破了$P的企图，没有受到迷惑，招手将暗器全部揽了下来。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

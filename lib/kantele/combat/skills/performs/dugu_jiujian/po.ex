@@ -71,7 +71,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "dugu-jiujian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "dugu-jiujian" -> {:error, "你没有激发独孤九剑，无法施展\n"}
       true -> :ok
     end
   end
@@ -106,7 +106,9 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Po do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$N随意挥洒手中的，招招从出其不意的方位直指$n中的破绽。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

@@ -77,10 +77,17 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Xin do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 280 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "jiuyin-shengong") < 280 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "martial-cognize") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      true -> :ok
+      Stats.skill(stats, "force") < 280 ->
+        {:error, "你九阴神功不够娴熟，难以施展\n"}
+
+      Stats.skill(stats, "jiuyin-shengong") < 280 ->
+        {:error, "你内功根基不够，难以施展\n"}
+
+      Stats.skill(stats, "martial-cognize") < 200 ->
+        {:error, "TODO(migrate) martial-cognize 等级不足。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -88,11 +95,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Xin do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "jiuyin-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "jiuyin-shengong" -> {:error, "你没有激发九阴神功为内功，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -100,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Xin do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -154,11 +158,15 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Xin do
     result =
       if hit,
         do:
-          Messages.interpolate("$N猛然间尖啸一声，施展出九阴神功中的「摄心大法」。只见$N各种招式千奇百怪、变化多端，脸上喜怒哀乐，怪状百出。",
+          Messages.interpolate("$n登时觉得胸口苦闷之极，心神难以自制，喜怒哀乐竟全随着$N而变。顷刻之间，$n顿觉精力不济，头晕目眩。",
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("$n怒喝道：“尔等妖法，休想迷惑我！”。猛然间，招式陡快，竟将$N这招破去。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

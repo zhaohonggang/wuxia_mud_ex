@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 360 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "sad-strike") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 360 -> {:error, "你的内功火候不够，使不出\n"}
+      Stats.skill(stats, "sad-strike") < 180 -> {:error, "你的黯然销魂掌不够熟练，不会使用\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法使用\n"}
       true -> :ok
     end
   end
@@ -143,13 +143,11 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     result =
       if hit,
         do:
-          Messages.interpolate(
-            "$N心下万念俱灰，凄然间回想到自己的妻子couple/name，心中暗道：“别了！你自己保重。”当下失魂落魄，随手一招，恰好使出了黯然销魂掌中的「拖泥带水」。
-只听$n一声闷哼，“噗”的一声，这一掌正好击在$p肩头。",
+          Messages.interpolate("只听$n一声闷哼，“噗”的一声，这一掌正好击在$p肩头。",
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else: Messages.interpolate("可是$p小心应付、奋力招架，挡开了这一招。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

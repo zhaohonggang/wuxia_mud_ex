@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.QiantianZhi.Zhi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "qiantian-zhi") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你乾天指法不够娴熟，难以施展\n"}
+      Stats.skill(stats, "qiantian-zhi") < 80 -> {:error, "你内功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.QiantianZhi.Zhi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "qiantian-zhi" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "finger") != "qiantian-zhi" -> {:error, "你没有激发乾天指法，难以施展\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.QiantianZhi.Zhi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -140,8 +140,12 @@ defmodule Kantele.Combat.Skills.Performs.QiantianZhi.Zhi do
     vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    result = Messages.interpolate("$N陡然使出一招「乾阳神指」，双指齐施，同时朝$n面门及胸口处点去。
-结果$p躲闪不及，登时被$P一指点中，内息不由得一滞，难受之极。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$N陡然使出一招「乾阳神指」，双指齐施，同时朝$n面门及胸口处点去。",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

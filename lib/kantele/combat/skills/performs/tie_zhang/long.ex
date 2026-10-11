@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "tie-zhang") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "tie-zhang") < 100 -> {:error, "你铁掌掌法火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "tie-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "tie-zhang" -> {:error, "你没有激发铁掌掌法，难以施展\n"}
       true -> :ok
     end
   end
@@ -94,8 +94,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1500 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的内力修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -134,8 +134,9 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 2)
-    result = Messages.interpolate("$N双掌交错，施出铁掌绝技「龙影掌」，旋起层层残影，笼罩$n四方。
-残影晃动间$n招式陡然一紧，竟被$N的掌招牵引得手忙脚乱！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("残影晃动间$n招式陡然一紧，竟被$N的掌招牵引得手忙脚乱！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

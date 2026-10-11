@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.PanyangZhang.Pan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "panyang-zhang") < 60 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "panyang-zhang") < 60 -> {:error, "你的攀阳掌不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.PanyangZhang.Pan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "panyang-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "panyang-zhang" -> {:error, "你没有激发攀阳掌，难以施展\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.PanyangZhang.Pan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -140,8 +140,12 @@ defmodule Kantele.Combat.Skills.Performs.PanyangZhang.Pan do
     vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = Messages.interpolate("只听$N一声断喝，双掌纷飞，一式「攀阳邀月」接二连三向$n攻去。
-结果$p闪避不及，被$P接连击中数掌，顿时口喷鲜血，几乎昏厥！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("只听$N一声断喝，双掌纷飞，一式「攀阳邀月」接二连三向$n攻去。",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

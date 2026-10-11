@@ -84,9 +84,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "beiming-shengong") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xiaowuxiang") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "zhemei-shou") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "beiming-shengong") < 220 -> {:error, "你的逍遥内功火候不够，难以施展\n"}
+      Stats.skill(stats, "xiaowuxiang") < 220 -> {:error, "你逍遥折梅手等级不够，难以施展\n"}
+      Stats.skill(stats, "zhemei-shou") < 220 -> {:error, "TODO(migrate) zhemei-shou 等级不足。\n"}
       true -> :ok
     end
   end
@@ -95,17 +95,10 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hua do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "beiming-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      Stats.mapped(stats, "force") != "xiaowuxiang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      Stats.mapped(stats, "hand") != "zhemei-shou" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "beiming-shengong" -> {:error, "你没有激发逍遥内功，难以施展\n"}
+      Stats.mapped(stats, "force") != "xiaowuxiang" -> {:error, "你没有激发逍遥折梅手，难以施展\n"}
+      Stats.mapped(stats, "hand") != "zhemei-shou" -> {:error, "你没有准备逍遥折梅手，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -113,8 +106,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 4000 -> {:error, "你现在真气不足，难以施展\n"}
+      vitals.neili < 800 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -170,8 +163,13 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hua do
 
     result =
       if hit,
-        do: Messages.interpolate("", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do: Messages.interpolate("只听$n一声尖啸，$N的七色掌劲已尽数注入$p体内，顿时将$p化为一滩血水。
+( $n受伤过重，已经有如风中残烛，随时都可能断气。)", n1: attacker.name, n2: character.name),
+        else:
+          Messages.interpolate("$p见状大惊失色，完全勘破不透$P招中奥秘，当即飞身跃起丈许，躲闪开来。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

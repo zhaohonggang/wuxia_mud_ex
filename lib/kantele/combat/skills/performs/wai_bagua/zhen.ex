@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "wai-bagua") < 60 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不足，难以施展\n"}
+      Stats.skill(stats, "wai-bagua") < 60 -> {:error, "你的外八卦不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你现在真气不足，难以施展\n"}
       true -> :ok
     end
   end

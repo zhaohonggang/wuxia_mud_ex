@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "sanyin-wugongzhao") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "sanyin-wugongzhao") < 80 -> {:error, "你的三阴蜈蚣爪不够娴熟，无法使用\n"}
       true -> :ok
     end
   end
@@ -88,11 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "claw") != "sanyin-wugongzhao" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "claw") != "sanyin-wugongzhao" -> {:error, "你没有激发三阴蜈蚣爪，无法使用\n"}
+      true -> :ok
     end
   end
 
@@ -100,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 150 -> {:error, "你真气不足，无法施展\n"}
       true -> :ok
     end
   end
@@ -148,9 +145,17 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
 
     result =
       if hit,
-        do: Messages.interpolate("$N突然一声怪叫，蓦的面赤如血，随即手腕一抖，抓向$n的要害。
-不过$p看破了$P的招式，凝神招架，挡住了$P的毒招。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 45,
+                                           (: final, me, target :))",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("不过$p看破了$P的招式，凝神招架，挡住了$P的毒招。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

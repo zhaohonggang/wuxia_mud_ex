@@ -78,9 +78,9 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "sword") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "yuenv-jian") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的剑术修为不够，不能施展\n"}
+      Stats.skill(stats, "sword") < 200 -> {:error, "你的越女剑术的修为不够，不能施展\n"}
+      Stats.skill(stats, "yuenv-jian") < 150 -> {:error, "你的轻功修为不够，不能施展\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够！\n"}
       true -> :ok
     end
   end
@@ -133,9 +133,7 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 1)
     result = Messages.interpolate("$n大吃一惊，慌忙躲避，然而剑气来的好快，哪里躲得开？
-只听$p一声惨叫，胸口已经被剑气所伤！
-$n重创之下不禁破绽迭出，$P见状随手刺出，又是一剑！
-就听$p又是一声惨叫，痛苦不堪。", n1: attacker.name, n2: character.name)
+只听$p一声惨叫，胸口已经被剑气所伤！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

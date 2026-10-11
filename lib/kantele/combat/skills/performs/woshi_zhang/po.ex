@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.WoshiZhang.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 140 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "woshi-zhang") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 140 -> {:error, "你的内功的修为不够，不能使用这一绝技！\n"}
+      Stats.skill(stats, "woshi-zhang") < 120 -> {:error, "你的握石掌修为不够，目前不能使用「碎石破玉」！\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.WoshiZhang.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "woshi-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "woshi-zhang" -> {:error, "你没有激发握石掌，难以施展「碎石破玉」。\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.WoshiZhang.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 400 -> {:error, "你现在真气不够，难以施展「碎石破玉」。\n"}
       true -> :ok
     end
   end

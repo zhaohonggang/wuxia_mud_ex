@@ -81,7 +81,7 @@ defmodule Kantele.Combat.Skills.Performs.GuanriJian.Guan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "guanri-jian") < 280 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "guanri-jian") < 280 -> {:error, "你观日剑法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -90,7 +90,7 @@ defmodule Kantele.Combat.Skills.Performs.GuanriJian.Guan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "guanri-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "guanri-jian" -> {:error, "你没有激发观日剑法，难以施展\n"}
       true -> :ok
     end
   end
@@ -99,8 +99,8 @@ defmodule Kantele.Combat.Skills.Performs.GuanriJian.Guan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 5000 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 800 -> {:error, "你的内力修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -153,9 +153,13 @@ $n而去。霎时间炽炎暴涨，热浪扑面卷来，四周空气便似沸腾
 
     result =
       if hit,
-        do: Messages.interpolate("$N施出观日剑法之「天洪地炉观日神诀」，将内力尽数注入剑身直奔
-$n而去。霎时间炽炎暴涨，热浪扑面卷来，四周空气便似沸腾一般。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("= COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 150,
+                                           (: final, me, target, damage :))",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else: Messages.interpolate("可是$n看破了$N的企图，斜跃避开。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

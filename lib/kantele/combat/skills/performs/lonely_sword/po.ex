@@ -96,7 +96,9 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Po do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$N随意挥洒手中的，招招从出其不意的方位直指$n中的破绽。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

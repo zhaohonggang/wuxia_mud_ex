@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.YinfengDao.Jue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 260 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "yinfeng-dao") < 140 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 260 -> {:error, "你内功火候不够，难以施展\n"}
+      Stats.skill(stats, "yinfeng-dao") < 140 -> {:error, "你的阴风刀还不够娴熟，无法施展\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.YinfengDao.Jue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "yinfeng-dao" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "yinfeng-dao" -> {:error, "你没有激发阴风刀，无法使用\n"}
       true -> :ok
     end
   end
@@ -98,8 +98,8 @@ defmodule Kantele.Combat.Skills.Performs.YinfengDao.Jue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2400 -> {:error, "你的真气不够，无法施展\n"}
+      vitals.neili < 400 -> {:error, "TODO(migrate) neili 不足。\n"}
       true -> :ok
     end
   end
@@ -153,11 +153,12 @@ defmodule Kantele.Combat.Skills.Performs.YinfengDao.Jue do
     result =
       if hit,
         do:
-          Messages.interpolate("$N使出阴风刀「绝 杀」绝技，掌劲幻出一片片切骨寒气如飓风般裹向$n全身！",
+          Messages.interpolate("= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 70,
+                                           (: final, me, target, lvl :))",
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else: Messages.interpolate("可是$n急忙退闪，连消带打躲开了这一击。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

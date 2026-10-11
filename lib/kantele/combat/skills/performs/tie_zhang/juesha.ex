@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "tie-zhang") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功修为不够，无法使用「九穹绝刹掌」！\n"}
+      Stats.skill(stats, "tie-zhang") < 200 -> {:error, "你的铁掌火候不够，无法使用「九穹绝刹掌」！\n"}
       true -> :ok
     end
   end
@@ -86,14 +86,9 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "tianlei-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      Stats.mapped(stats, "strike") != "tie-zhang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "tianlei-shengong" -> {:error, "你必须激发天雷神功才能施展出「九穹绝刹掌」！\n"}
+      Stats.mapped(stats, "strike") != "tie-zhang" -> {:error, "你没有激发铁掌掌法，难以施展「九穹绝刹掌」。\n"}
+      true -> :ok
     end
   end
 
@@ -101,8 +96,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2200 -> {:error, "你的内力修为还不够，无法施展「九穹绝刹掌」。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够！\n"}
       true -> :ok
     end
   end
@@ -139,8 +134,9 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("$N一声怒喝，猛然施出铁掌掌法绝技「九穹绝刹掌」！体内天雷真气急速运转，双臂陡然
-暴长数尺。只听破空之声骤响，双掌幻出漫天掌影，铺天盖地向$n连环拍出！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n面对$P这排山倒海攻势，完全无法抵挡，唯有退后。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

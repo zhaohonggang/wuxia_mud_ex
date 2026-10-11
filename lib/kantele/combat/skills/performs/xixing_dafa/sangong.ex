@@ -36,7 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Sangong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1 -> {:error, "你已经将内力散尽，没什么必要再散功了。\n"}
       true -> :ok
     end
   end

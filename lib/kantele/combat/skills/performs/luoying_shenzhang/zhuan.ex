@@ -75,9 +75,9 @@ defmodule Kantele.Combat.Skills.Performs.LuoyingShenzhang.Zhuan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "luoying-shenzhang") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "qimen-wuxing") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你对奇门五行的研究不够，难以施展\n"}
+      Stats.skill(stats, "luoying-shenzhang") < 120 -> {:error, "你的内功火候不足，难以施展\n"}
+      Stats.skill(stats, "qimen-wuxing") < 120 -> {:error, "你的落英神剑掌不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,11 +86,8 @@ defmodule Kantele.Combat.Skills.Performs.LuoyingShenzhang.Zhuan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "luoying-shenzhang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "strike") != "luoying-shenzhang" -> {:error, "你没有激发落英神剑掌，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -98,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.LuoyingShenzhang.Zhuan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在的内力不够，难以施展\n"}
       true -> :ok
     end
   end

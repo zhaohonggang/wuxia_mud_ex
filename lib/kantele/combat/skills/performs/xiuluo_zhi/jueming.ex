@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoZhi.Jueming do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xiuluo-zhi") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的修罗指修为不够，目前不能使用「修罗绝命指」！\n"}
+      Stats.skill(stats, "xiuluo-zhi") < 100 -> {:error, "你的内功的修为不够，不能使用「修罗绝命指」！\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoZhi.Jueming do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "xiuluo-zhi" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "finger") != "xiuluo-zhi" -> {:error, "你没有激发修罗指，不能使用「修罗绝命指」！\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoZhi.Jueming do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法使用「修罗绝命指」！\n"}
       true -> :ok
     end
   end
@@ -155,7 +155,8 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoZhi.Jueming do
       if hit,
         do: Messages.interpolate("只见$n一声惨叫，已被$N击中要害部位，只觉眼前一片
 漆黑，身体摇摇欲坠！", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else: Messages.interpolate("可是$n看破了$N的企图，轻轻向后飘出数丈，躲过了这
+一致命的一击！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

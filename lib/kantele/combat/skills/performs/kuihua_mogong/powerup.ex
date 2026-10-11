@@ -36,7 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Powerup do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 110 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 110 -> {:error, "你的真气不够！\n"}
       true -> :ok
     end
   end

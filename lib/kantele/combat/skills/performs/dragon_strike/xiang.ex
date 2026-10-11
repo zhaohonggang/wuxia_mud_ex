@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Xiang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dragon-strike") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 300 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dragon-strike") < 150 -> {:error, "你的内功修为不够，无法使用「龙翔九天」！\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的降龙十八掌火候不够，无法使用「龙翔九天」！\n"}
       true -> :ok
     end
   end
@@ -85,9 +85,9 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Xiang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.qi < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2000 -> {:error, "你的体力现在不够！\n"}
+      vitals.neili < 500 -> {:error, "你的内力修为还不够，无法施展「龙翔九天」。\n"}
+      vitals.qi < 800 -> {:error, "你的真气不够！\n"}
       true -> :ok
     end
   end

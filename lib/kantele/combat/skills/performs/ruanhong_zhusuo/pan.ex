@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Pan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "ruanhong-zhusuo") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "ruanhong-zhusuo") < 80 -> {:error, "你的软红蛛索不够娴熟，无法施展\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Pan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "ruanhong-zhusuo" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "whip") != "ruanhong-zhusuo" -> {:error, "你没有激发软红蛛索，无法施展\n"}
       true -> :ok
     end
   end
@@ -93,7 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Pan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你的真气不够，无法施展\n"}
       true -> :ok
     end
   end

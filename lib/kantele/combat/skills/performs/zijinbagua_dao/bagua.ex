@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.ZijinbaguaDao.Bagua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "zijinbagua-dao") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够！\n"}
+      Stats.skill(stats, "zijinbagua-dao") < 200 -> {:error, "你的紫金八卦刀还不到家，无法使用「八卦阵芒」！\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.ZijinbaguaDao.Bagua do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "zijinbagua-dao" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "blade") != "zijinbagua-dao" -> {:error, "你没有激发紫金八卦刀，无法使用「八卦阵芒」！\n"}
       true -> :ok
     end
   end
@@ -95,8 +95,8 @@ defmodule Kantele.Combat.Skills.Performs.ZijinbaguaDao.Bagua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2000 -> {:error, "你的内力修为不够。\n"}
+      vitals.neili < 400 -> {:error, "你的真气不够！\n"}
       true -> :ok
     end
   end

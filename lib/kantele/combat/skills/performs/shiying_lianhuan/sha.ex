@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "shiying-lianhuan") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你弑鹰九连环修为不够，难以施展\n"}
+      Stats.skill(stats, "shiying-lianhuan") < 150 -> {:error, "你的内功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,11 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "shiying-lianhuan" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "blade") != "shiying-lianhuan" -> {:error, "你没有激发弑鹰九连环，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -101,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -154,9 +151,13 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
 
     result =
       if hit,
-        do: Messages.interpolate("$N回转手中施出「无痕杀」绝技，刀身顿时漾起一道血色刀芒，直斩$n而去！
-只听“嗤啦”一声，$n被$N的刀芒划中气门，登时痛声长呼，几欲晕倒。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("只听“嗤啦”一声，$n被$N的刀芒划中气门，登时痛声长呼，几欲晕倒。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("$n见$P来势汹涌，连忙飞身向后挪移数尺，躲闪开来。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

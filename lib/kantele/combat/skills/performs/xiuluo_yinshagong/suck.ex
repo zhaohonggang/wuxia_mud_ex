@@ -40,8 +40,8 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoYinshagong.Suck do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "wudu-qishu") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xiuluo-yinshagong") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "wudu-qishu") < 100 -> {:error, "你修罗阴煞功修为不够，不能炼制毒药。\n"}
+      Stats.skill(stats, "xiuluo-yinshagong") < 100 -> {:error, "你的五毒奇术不够娴熟，不能炼制毒药。\n"}
       true -> :ok
     end
   end
@@ -50,7 +50,7 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoYinshagong.Suck do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在内力不足，难以炼制毒药。\n"}
       true -> :ok
     end
   end

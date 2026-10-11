@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyang-shengong") < 250 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "jiuyang-shengong") < 250 -> {:error, "你的九阳神功还不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,14 +85,9 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "jiuyang-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      Stats.mapped(stats, "unarmed") != "jiuyang-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "jiuyang-shengong" -> {:error, "你现在没有激发九阳神功为内功，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "jiuyang-shengong" -> {:error, "你现在没有激发九阳神功为拳脚，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -100,9 +95,9 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 8000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 0 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 2000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 8000 -> {:error, "你的内力的修为不够，现在无法使用\n"}
+      vitals.neili < 0 -> {:error, "你的真气不够，无法运用\n"}
+      vitals.neili < 2000 -> {:error, "TODO(migrate) neili 不足。\n"}
       true -> :ok
     end
   end
@@ -144,11 +139,9 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 5)
-    result = Messages.interpolate("只听一声惨嚎，接连退了数步，“哇”的呕出一大口鲜血。
-只见向后飞出丈远，重重的跌落在地上，衣衫烧焦，再也没力气站起。
-只见跌跌撞撞向后连退数步，伏倒在地。须眉、衣衫都发出一股焦臭。
-光芒闪过，却是呆立当场，动也不动，七窍流血，神情扭曲，煞是恐怖。
-急忙抽身后退，可只见眼前光芒暴涨，一闪而过。全身已多了数个伤口，鲜血飞溅。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("只听一声惨嚎，接连退了数步，“哇”的呕出一大口鲜血。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

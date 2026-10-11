@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.SanyinShou.Sun do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "sanyin-shou" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "hand") != "sanyin-shou" -> {:error, "你没有激发三阴手，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,8 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.SanyinShou.Sun do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1600 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1600 -> {:error, "你的内力不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -146,9 +146,16 @@ defmodule Kantele.Combat.Skills.Performs.SanyinShou.Sun do
 
     result =
       if hit,
-        do: Messages.interpolate("$N悄然游走至$n跟前，陡然使出三阴手绝技「损筋诀」，单掌轻轻拂过$n太阳穴，不着半点力道。
-$n稍不留神，已被$N单掌拂中，只觉眼前一黑，几欲晕倒。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("$n稍不留神，已被$N单掌拂中，只觉眼前一黑，几欲晕倒。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("$n见状大吃一惊，急忙向后猛退数步，终于避开了$N这一击。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

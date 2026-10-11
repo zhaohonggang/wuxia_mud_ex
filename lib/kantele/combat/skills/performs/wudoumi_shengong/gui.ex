@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "wudoumi-shengong") < 140 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的五斗米神功不够娴熟，难以施展\n"}
+      Stats.skill(stats, "wudoumi-shengong") < 140 -> {:error, "你的内功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -84,14 +84,9 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "wudoumi-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      Stats.mapped(stats, "unarmed") != "wudoumi-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "wudoumi-shengong" -> {:error, "你没有激发五斗米神功为内功，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "wudoumi-shengong" -> {:error, "你没有激发五斗米神功为拳脚，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -99,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 800 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -138,11 +133,12 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 1)
-    result = Messages.interpolate("$N一声断喝，双掌施出五斗米神功「归去来兮」绝技，顿时掌劲澎湃，涌向$n。
-$p急忙奋力格挡，可只一瞬间，$P的掌劲已透体而入，接连震断数根肋骨！
 
-紧接着只见$N双手陡然回圈，竟使已袭出的掌劲倒回，从$n身后再度席卷而归。
-$p大惊之下，竟然僵直而立，$P澎湃的掌劲顿时穿透胸膛，尽伤五脏六腑！", n1: attacker.name, n2: character.name)
+    result =
+      Messages.interpolate("$p急忙奋力格挡，可只一瞬间，$P的掌劲已透体而入，接连震断数根肋骨！",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

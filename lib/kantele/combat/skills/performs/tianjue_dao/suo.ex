@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.TianjueDao.Suo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tianjue-dao") < 50 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "tianjue-dao") < 50 -> {:error, "你天绝刀法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.TianjueDao.Suo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "tianjue-dao" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "blade") != "tianjue-dao" -> {:error, "你没有天绝刀法，难以施展\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.TianjueDao.Suo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 120 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 120 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -136,7 +136,7 @@ defmodule Kantele.Combat.Skills.Performs.TianjueDao.Suo do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 120, 2)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

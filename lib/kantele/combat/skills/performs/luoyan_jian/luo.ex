@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.LuoyanJian.Luo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "luoyan-jian") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "luoyan-jian") < 150 -> {:error, "你的回风落雁剑不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.LuoyanJian.Luo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "luoyan-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "luoyan-jian" -> {:error, "你没有激发回风落雁剑法，难以施展\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.LuoyanJian.Luo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 400 -> {:error, "你目前的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -139,10 +139,7 @@ defmodule Kantele.Combat.Skills.Performs.LuoyanJian.Luo do
     Performs.feedback(attacker, 200, 1)
 
     result =
-      Messages.interpolate("$N蓦的一声清啸，施出衡山派绝学「一剑落九雁」，手中青光荡漾。霎时间回风落雁剑剑招连绵涌出，有如神助，剑气笼罩$n四方。",
-        n1: attacker.name,
-        n2: character.name
-      )
+      Messages.interpolate("$n见$P剑势汹涌，寒意顿生，竟被逼得连连后退，狼狈不已。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

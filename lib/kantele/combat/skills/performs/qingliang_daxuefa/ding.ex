@@ -80,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,11 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "dagger") != "qingliang-daxuefa" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "dagger") != "qingliang-daxuefa" -> {:error, "你没有激发清凉打穴法，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -101,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -154,9 +151,16 @@ defmodule Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding do
 
     result =
       if hit,
-        do: Messages.interpolate("$N侧身将手中斜刺而出，一式「透骨钉」卷带着呼呼风声，将$n包围紧裹。
-顿时只听得“噗嗤”一声，$n胸口被$N这一招刺中，溅出一柱鲜血。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("顿时只听得“噗嗤”一声，$n胸口被$N这一招刺中，溅出一柱鲜血。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.San do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 250 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "lingxiao-quan") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 250 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "lingxiao-quan") < 180 -> {:error, "你的凌霄拳法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.San do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "lingxiao-quan" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "cuff") != "lingxiao-quan" -> {:error, "你没有激发凌霄拳法，难以施展\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.San do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -137,14 +137,12 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.San do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 1)
-    result = Messages.interpolate("$N微微一笑，施出「神倒鬼跌三连环」，右手探出，直揪$n后颈。
-$P出手既快，方位又奇，$p如何避得，当即被$N揪住，重重的摔在地上！
 
-紧接着$N“噫”的一声，左手猛然探出，如闪电般抓向$n的前胸。
-$p只觉胸口一麻，已被$P抓住胸口，用力顺势一甩，顿时平平飞了出去！
-
-又见$N身子一矮，将力道聚于腿部，右脚猛扫$n下盘，左脚随着绊去。
-结果$p稍不留神，顿时给$P绊倒在地，呕出一大口鲜血！", n1: attacker.name, n2: character.name)
+    result =
+      Messages.interpolate("$P出手既快，方位又奇，$p如何避得，当即被$N揪住，重重的摔在地上！",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

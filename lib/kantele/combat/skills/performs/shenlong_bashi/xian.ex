@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenlongBashi.Xian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "shenlong-bashi") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 80 -> {:error, "你的内功火候不够，不能使用神龙初现。\n"}
+      Stats.skill(stats, "shenlong-bashi") < 100 -> {:error, "你的神龙八式手法还不够娴熟，不能使用神龙初现。\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenlongBashi.Xian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "shenlong-bashi" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "hand") != "shenlong-bashi" -> {:error, "你没有激发神龙八式手法，不能使用神龙初现。\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenlongBashi.Xian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 150 -> {:error, "你现在真气不够，不能使用神龙初现。\n"}
       true -> :ok
     end
   end

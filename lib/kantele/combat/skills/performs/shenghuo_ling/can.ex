@@ -80,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 350 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 350 -> {:error, "你的内功火候不够，不能使用圣火令法之\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "shenghuo-ling" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "shenghuo-ling" -> {:error, "你没有激发圣火令法，无法使用\n"}
       true -> :ok
     end
   end
@@ -98,8 +98,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力不够，不能使用圣火令法之\n"}
+      vitals.neili < 400 -> {:error, "你的内力修为不足，不能使用圣火令法之\n"}
       true -> :ok
     end
   end
@@ -134,8 +134,12 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("$N一声长啸，手中一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！
-$n完全无法看透$N招中虚实，不由得心生惧意，招式一滞，登时破绽百出。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$N一声长啸，手中一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

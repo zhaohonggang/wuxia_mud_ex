@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.XumishanZhang.Ying do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xumishan-zhang") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "xumishan-zhang") < 150 -> {:error, "你的须弥山掌掌不够娴熟，不会使用「群山叠影」。\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.XumishanZhang.Ying do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你现在真气太弱，不能使用「群山叠影」。\n"}
       true -> :ok
     end
   end

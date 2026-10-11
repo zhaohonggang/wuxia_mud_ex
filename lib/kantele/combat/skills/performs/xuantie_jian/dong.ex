@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 400 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xuantie-jian") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 400 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "xuantie-jian") < 200 -> {:error, "你的玄铁剑法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "xuantie-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "xuantie-jian" -> {:error, "你没有激发玄铁剑法，难以施展\n"}
       true -> :ok
     end
   end
@@ -93,7 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 1000 -> {:error, "你现在的内力不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -134,8 +134,9 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-    result = Messages.interpolate("$n只觉得一股大力传来，手中再也拿持不住，脱手而出！
-结果$n奋力招架，却被$N这一剑震的飞起，口中鲜血狂吐不止！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("结果$n奋力招架，却被$N这一剑震的飞起，口中鲜血狂吐不止！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

@@ -40,7 +40,7 @@ defmodule Kantele.Combat.Skills.Performs.HuagongDafa.Hua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "huagong-dafa") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "huagong-dafa") < 100 -> {:error, "你的化功大法功力不够，不能施展！\n"}
       true -> :ok
     end
   end
@@ -49,10 +49,10 @@ defmodule Kantele.Combat.Skills.Performs.HuagongDafa.Hua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.max_neili < 10 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 10 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 120 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1 -> {:error, "你的内力不够，不能施展化功大法。\n"}
+      vitals.max_neili < 10 -> {:error, "TODO(migrate) max_neili 不足。\n"}
+      vitals.neili < 10 -> {:error, "TODO(migrate) neili 不足。\n"}
+      vitals.neili < 120 -> {:error, "TODO(migrate) neili 不足。\n"}
       true -> :ok
     end
   end

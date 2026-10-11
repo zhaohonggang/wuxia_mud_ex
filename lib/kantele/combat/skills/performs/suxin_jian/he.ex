@@ -75,9 +75,9 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "quanzhen-jian") < 50 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "suxin-jian") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的全真剑法不够娴熟，不能使用双剑合璧。\n"}
+      Stats.skill(stats, "quanzhen-jian") < 50 -> {:error, "你的内功不够娴熟，不能使用双剑合璧。\n"}
+      Stats.skill(stats, "suxin-jian") < 80 -> {:error, "你的玉女素心剑不够娴熟，不能使用双剑合璧。\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "suxin-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "suxin-jian" -> {:error, "你没有激发玉女素心剑，不能使用双剑合璧。\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 400 -> {:error, "你现在内力太弱，不能使用双剑合璧。\n"}
       true -> :ok
     end
   end

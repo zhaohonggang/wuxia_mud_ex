@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.KongmingQuan.Ruo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "kongming-quan") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "kongming-quan") < 100 -> {:error, "你的空明拳不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -84,11 +84,8 @@ defmodule Kantele.Combat.Skills.Performs.KongmingQuan.Ruo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "kongming-quan" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "unarmed") != "kongming-quan" -> {:error, "你没有激发空明拳，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -96,7 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.KongmingQuan.Ruo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你现在的真气太弱，难以施展\n"}
       true -> :ok
     end
   end

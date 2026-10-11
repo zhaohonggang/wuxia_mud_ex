@@ -41,7 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Resurrect do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xuedao-dafa") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "xuedao-dafa") < 120 -> {:error, "你的血刀大法不够深厚，难以施展\n"}
       true -> :ok
     end
   end
@@ -50,8 +50,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Resurrect do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1000 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end

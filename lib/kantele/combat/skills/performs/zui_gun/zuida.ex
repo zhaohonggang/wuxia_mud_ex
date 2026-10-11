@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.ZuiGun.Zuida do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "club") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "club") < 100 -> {:error, "你的内功火候不够，难以施展「八仙醉打」！\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的棍法修为不够，不会使用「八仙醉打」！\n"}
       true -> :ok
     end
   end
@@ -87,13 +87,13 @@ defmodule Kantele.Combat.Skills.Performs.ZuiGun.Zuida do
 
     cond do
       Stats.mapped(stats, "force") != "hunyuan-yiqi" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你现在没有激发少林内功为内功，难以施展「八仙醉打」。\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 luohan-fumogong。\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
 
       true ->
         :ok
@@ -104,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.ZuiGun.Zuida do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不足！\n"}
       true -> :ok
     end
   end
@@ -142,7 +142,7 @@ defmodule Kantele.Combat.Skills.Performs.ZuiGun.Zuida do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 2)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

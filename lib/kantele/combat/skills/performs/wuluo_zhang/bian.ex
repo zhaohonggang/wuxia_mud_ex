@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.WuluoZhang.Bian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "wuluo-zhang") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "wuluo-zhang") < 100 -> {:error, "你五罗轻烟掌不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.WuluoZhang.Bian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "wuluo-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "wuluo-zhang" -> {:error, "你没有激发五罗轻烟掌，难以施展\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.WuluoZhang.Bian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你现在真气不足，难以施展\n"}
       true -> :ok
     end
   end

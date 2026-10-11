@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Fei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xianglong-zhang") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "xianglong-zhang") < 150 -> {:error, "你降龙十八掌火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,11 +86,8 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Fei do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "xianglong-zhang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "strike") != "xianglong-zhang" -> {:error, "你没有激发降龙十八掌，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -98,8 +95,8 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Fei do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3000 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 500 -> {:error, "你的内力修为不够，难以施展\n"}
       true -> :ok
     end
   end

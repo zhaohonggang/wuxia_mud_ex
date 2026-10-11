@@ -75,9 +75,9 @@ defmodule Kantele.Combat.Skills.Performs.LianhuanMizongtui.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "lianhuan-mizongtui") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的轻功火候不够，难以施展\n"}
+      Stats.skill(stats, "lianhuan-mizongtui") < 120 -> {:error, "你的连环迷踪腿不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,8 +86,8 @@ defmodule Kantele.Combat.Skills.Performs.LianhuanMizongtui.Lian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1800 -> {:error, "你现在真气太弱，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的内力的修为不够，现在无法使用\n"}
       true -> :ok
     end
   end

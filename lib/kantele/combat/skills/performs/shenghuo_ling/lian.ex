@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "shenghuo-ling" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "shenghuo-ling" -> {:error, "你没有激发圣火令法，不能使用圣火令法之\n"}
       true -> :ok
     end
   end
@@ -88,8 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1600 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 350 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1600 -> {:error, "你的内力不够，不能使用圣火令法之\n"}
+      vitals.neili < 350 -> {:error, "你的内力修为不足，不能使用圣火令法之\n"}
       true -> :ok
     end
   end
@@ -146,8 +146,17 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
 
     result =
       if hit,
-        do: Messages.interpolate("", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("= COMBAT_D->do_damage(me, target, REMOTE_ATTACK,                
+                       damage, 0, (: final, me, target, damage :))",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("$n见眼前寒光颤动，连忙振作精神勉强抵挡，向后疾退数步，好不容易闪在了$N攻击范围之外。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

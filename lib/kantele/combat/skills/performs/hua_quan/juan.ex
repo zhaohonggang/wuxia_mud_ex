@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.HuaQuan.Juan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "hua-quan") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "hua-quan") < 120 -> {:error, "你的西岳华拳不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.HuaQuan.Juan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "hua-quan" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "cuff") != "hua-quan" -> {:error, "你没有激发西岳华拳，难以施展\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.HuaQuan.Juan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 400 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end

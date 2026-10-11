@@ -41,7 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.BingxinJue.Freeze do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "bingxin-jue") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "bingxin-jue") < 150 -> {:error, "你的冰心决火候不够，无法运用寒气。\n"}
       true -> :ok
     end
   end
@@ -50,7 +50,7 @@ defmodule Kantele.Combat.Skills.Performs.BingxinJue.Freeze do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 1000 -> {:error, "你的内力不够!\n"}
       true -> :ok
     end
   end

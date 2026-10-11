@@ -51,8 +51,8 @@ defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Liandu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "hamagong") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "shedu-qiqiao") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "hamagong") < 80 -> {:error, "你的蛇毒奇巧还不够娴熟，不能炼制毒药。\n"}
+      Stats.skill(stats, "shedu-qiqiao") < 80 -> {:error, "你的蛤蟆功的修为不够，不能炼制毒药。\n"}
       true -> :ok
     end
   end
@@ -61,7 +61,7 @@ defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Liandu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在的内力不够！\n"}
       true -> :ok
     end
   end

@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "yinsuo-jinling") < 140 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "yinsuo-jinling") < 140 -> {:error, "你的银索金铃不够娴熟，还使不出\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "yinsuo-jinling" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "whip") != "yinsuo-jinling" -> {:error, "你没有激发回银索金铃，不能使用\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 400 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -141,9 +141,12 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 1)
-    result = Messages.interpolate("$n只觉鞭影重重，眼花缭乱，根本无法作出抵挡，一声惨嚎，鲜血飞溅而出！
-$n稍一迟疑，突然感到后背一阵刮骨之痛，已被这招打得血肉模糊！
-只听“当”的一声，正打在$p上，$p手腕一麻，再也拿持不住，脱手掉在地上。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n只觉鞭影重重，眼花缭乱，根本无法作出抵挡，一声惨嚎，鲜血飞溅而出！",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

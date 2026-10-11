@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyuQuan.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "poyu-quan") < 60 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "poyu-quan") < 60 -> {:error, "你的劈石破玉拳不够娴熟，不会使用\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyuQuan.Feng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 80 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 80 -> {:error, "你现在真气不够，无法施展\n"}
       true -> :ok
     end
   end

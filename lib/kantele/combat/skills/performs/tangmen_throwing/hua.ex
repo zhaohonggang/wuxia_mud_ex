@@ -108,12 +108,9 @@ $N向$n一笑，一扬手向$n抛去。
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 3)
-    result = Messages.interpolate("$N手中突然多了一支花，美得妖艳，$n觉得有点痴了，
-$N向$n一笑，一扬手向$n抛去。
-只见那花开了，五瓣齐舒，中央花心吐蕊，煞是好看。
-结果$p一声惨嚎，连中了$P发出的一base_unit。
-那花越开越艳，$n不知不觉中已痴迷了，身形一慢,微笑着倒下了，那花也谢了。
-$n 身形飘忽，那花划空而过。只听当的一声轻响，那花谢了，轻轻地砸在地面上。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("结果$p一声惨嚎，连中了$P发出的一base_unit。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

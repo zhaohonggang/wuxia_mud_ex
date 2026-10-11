@@ -81,8 +81,8 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "canhe-zhi") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 320 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "canhe-zhi") < 220 -> {:error, "你的内功修为太差，难以施展\n"}
+      Stats.skill(stats, "force") < 320 -> {:error, "你的参合指修为有限，难以施展\n"}
       true -> :ok
     end
   end
@@ -91,8 +91,8 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 6000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 900 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 6000 -> {:error, "你的内力修为不足，难以施展\n"}
+      vitals.neili < 900 -> {:error, "你的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -142,21 +142,13 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
 
     result =
       if hit,
-        do: Messages.interpolate("但见$n斜斜一指点出，指出如风，剑气纵横，嗤然作响，竟将$N的剑气全部折回，反向自己射去！
-你听到「嗤啦」一声轻响，脸上竟溅到一些血滴！
-
-顿时只听“嗤啦”的一声，$n躲闪不及，剑气顿时穿胸而过，带出一蓬血雨。
-
-忽见$n左手小指一伸，一招「少泽剑」至指尖透出，真气鼓荡，轻灵迅速，顿将$N剑气逼回！
-你听到「嗤啦」一声轻响，脸上竟溅到一些血滴！
-
-只听$n一声惨嚎，被$N的剑气刺中了要害，血肉模糊，鲜血迸流不止。
-
-可电光火石之间，$n猛然翻掌，右手陡然探出，中指「中冲剑」向$N一竖，登将参合剑气化于无形！
-你听到「嗤啦」一声轻响，脸上竟溅到一些血滴！
-
-$n奋力招架，仍是不敌，$N的无形剑气已透体而入，鲜血飞射，无力再战。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("顿时只听“嗤啦”的一声，$n躲闪不及，剑气顿时穿胸而过，带出一蓬血雨。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("$n见$N来势汹涌，急忙飞身一跃而起，避开了这一击。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

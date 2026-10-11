@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.LongzhuaGong.Zhua do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "claw") != "longzhua-gong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "claw") != "longzhua-gong" -> {:error, "你没有激发龙爪功，无法使用「神龙抓」！\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.LongzhuaGong.Zhua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，无法运用「神龙抓」！\n"}
       true -> :ok
     end
   end

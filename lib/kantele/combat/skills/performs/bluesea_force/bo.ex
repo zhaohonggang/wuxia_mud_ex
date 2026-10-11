@@ -71,7 +71,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "bluesea-force") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "bluesea-force") < 100 -> {:error, "你的南海玄功不够深厚，不会使用碧海清波。\n"}
       true -> :ok
     end
   end

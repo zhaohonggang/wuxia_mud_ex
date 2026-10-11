@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.NingxueShenzhao.Ji do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 350 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 350 -> {:error, "你的内功火候不够，难以施展「疾电」！\n"}
       true -> :ok
     end
   end
@@ -84,8 +84,8 @@ defmodule Kantele.Combat.Skills.Performs.NingxueShenzhao.Ji do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为没有达到那个境界，无法运转内力形成「疾电」！\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，现在无法施展「疾电」！\n"}
       true -> :ok
     end
   end

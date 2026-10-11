@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaofengQuan.Juan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "piaofeng-quan") < 30 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "piaofeng-quan") < 30 -> {:error, "你的飘风拳法不够娴熟，不会使用\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaofengQuan.Juan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 80 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 80 -> {:error, "你现在真气不够，无法施展\n"}
       true -> :ok
     end
   end

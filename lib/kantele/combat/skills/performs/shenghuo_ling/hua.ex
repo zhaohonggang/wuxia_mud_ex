@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 340 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1500 -> {:error, "你的内力不够，不能使用圣火令法之\n"}
+      vitals.neili < 340 -> {:error, "你的内力修为不足，不能使用圣火令法之\n"}
       true -> :ok
     end
   end
@@ -135,7 +135,11 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$n看准$N的破绽，猛地向前一跃，跳出了$N的攻击范围。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

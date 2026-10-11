@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Hun do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "taixuan-gong") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "taixuan-gong") < 200 -> {:error, "你的太玄功还不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -84,8 +84,8 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Hun do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "taixuan-gong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      Stats.mapped(stats, "unarmed") != "taixuan-gong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "force") != "taixuan-gong" -> {:error, "你现在没有激发太玄功为内功，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "taixuan-gong" -> {:error, "你现在没有激发太玄功为拳脚，难以施展\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Hun do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 600 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 600 -> {:error, "你的内力不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -142,7 +142,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Hun do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

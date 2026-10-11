@@ -70,7 +70,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Jue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 85 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 85 -> {:error, "你现在真气不足，难以演练\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Jue do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

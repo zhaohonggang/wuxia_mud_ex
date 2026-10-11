@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.SunFinger.Qiankun do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "sun-finger") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 160 -> {:error, "你内功火候不够，难以施展一指乾坤！\n"}
+      Stats.skill(stats, "sun-finger") < 100 -> {:error, "你的一阳指修为不够，目前还不能施展一指乾坤绝技！\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.SunFinger.Qiankun do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "sun-finger" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "finger") != "sun-finger" -> {:error, "你没有激发一阳指法，无法使用「一指乾坤」！\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.SunFinger.Qiankun do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法施展「一指乾坤」！\n"}
       true -> :ok
     end
   end
@@ -156,7 +156,8 @@ defmodule Kantele.Combat.Skills.Performs.SunFinger.Qiankun do
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$p看破了$P急忙退闪，连消带打躲开了这一击。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

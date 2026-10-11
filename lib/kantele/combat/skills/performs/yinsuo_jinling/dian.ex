@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "yinsuo-jinling") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你的内功修为不够，无法施展\n"}
+      Stats.skill(stats, "yinsuo-jinling") < 80 -> {:error, "你的银索金铃级别不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "yinsuo-jinling" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "whip") != "yinsuo-jinling" -> {:error, "你没有激发银索金铃，无法施展\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 150 -> {:error, "你现在真气不够，无法施展\n"}
       true -> :ok
     end
   end

@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.JieshouJiushi.Jie do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "jieshou-jiushi" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "hand") != "jieshou-jiushi" -> {:error, "你没有激发截手九式，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,8 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.JieshouJiushi.Jie do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 800 -> {:error, "你的内力不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -148,9 +148,16 @@ defmodule Kantele.Combat.Skills.Performs.JieshouJiushi.Jie do
 
     result =
       if hit,
-        do: Messages.interpolate("$N身形一展，陡然跃至$n跟前，十指箕张，直锁$n要穴，正是截手九式绝技「截筋断脉」。
-$n奋力格挡，可还是被$N截住腕部要穴，只觉眼前一黑，几欲晕倒。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("$n奋力格挡，可还是被$N截住腕部要穴，只觉眼前一黑，几欲晕倒。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("$n见状大吃一惊，急忙向后猛退数步，终于避开了$N这一击。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

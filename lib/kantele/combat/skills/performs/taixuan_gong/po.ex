@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "taixuan-gong") < 260 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "taixuan-gong") < 260 -> {:error, "你的太玄功还不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "taixuan-gong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "force") != "taixuan-gong" -> {:error, "你现在没有激发太玄功为内功，难以施展\n"}
       true -> :ok
     end
   end
@@ -94,8 +94,8 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 8500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 0 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 8500 -> {:error, "你的内力的修为不够，现在无法使用\n"}
+      vitals.neili < 0 -> {:error, "你的真气不够，无法运用\n"}
       true -> :ok
     end
   end
@@ -140,11 +140,9 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 5)
-    result = Messages.interpolate("只听一声惨嚎，接连退了数步，“哇”的呕出一大口鲜血。
-只见向后飞出丈远，重重的跌落在地上，衣衫破烂，再也无法站起来。
-只见歪歪斜斜倒退几步，伏倒在地，痛苦不堪。。
-狂风卷过，只见，飞沙狂舞，却动也动不了忽然间，却瘫软在地。
-急忙飞身而起，却猛然坠地，伤痕遍体，鲜血不止。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("只听一声惨嚎，接连退了数步，“哇”的呕出一大口鲜血。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

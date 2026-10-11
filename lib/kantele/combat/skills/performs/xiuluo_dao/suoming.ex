@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoDao.Suoming do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xiuluo-dao") < 135 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的修罗刀法修为不够，目前不能使用修罗索命！\n"}
+      Stats.skill(stats, "xiuluo-dao") < 135 -> {:error, "你的内功的修为不够，不能使用这一绝技！\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoDao.Suoming do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "xiuluo-dao" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "blade") != "xiuluo-dao" -> {:error, "你没有激发修罗刀法，不能使用修罗索命！\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoDao.Suoming do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 250 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 250 -> {:error, "你的真气不够，不能使用修罗索命！\n"}
       true -> :ok
     end
   end
@@ -153,7 +153,11 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoDao.Suoming do
       if hit,
         do:
           Messages.interpolate("就听见$p惨叫连连，一阵阵血雨自亮白的刀光中溅出！", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$p眼明手快，只听叮叮当当响起了一串刀鸣，$p将$P的招式全部挡开！",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

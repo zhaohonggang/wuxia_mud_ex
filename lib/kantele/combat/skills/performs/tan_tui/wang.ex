@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "tan-tui") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "tan-tui") < 120 -> {:error, "你的十二路潭腿不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "tan-tui" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "unarmed") != "tan-tui" -> {:error, "你没有激发十二路潭腿，难以施展\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -156,7 +156,11 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$p奋力招架，终于将$P的双腿架开，没有受到任何伤害。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

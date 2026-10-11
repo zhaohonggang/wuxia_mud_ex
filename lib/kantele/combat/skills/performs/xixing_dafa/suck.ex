@@ -41,7 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Suck do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xixing-dafa") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "xixing-dafa") < 200 -> {:error, "你的吸星大法尚未大成，还\n"}
       true -> :ok
     end
   end
@@ -50,9 +50,9 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Suck do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.max_neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1 -> {:error, "你的内力不够，不能使用吸星大法。\n"}
+      vitals.max_neili < 100 -> {:error, "TODO(migrate) max_neili 不足。\n"}
+      vitals.neili < 100 -> {:error, "TODO(migrate) neili 不足。\n"}
       true -> :ok
     end
   end

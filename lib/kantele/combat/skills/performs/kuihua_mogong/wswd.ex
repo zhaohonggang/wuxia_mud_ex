@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Wswd do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "kuihua-mogong") < 400 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "kuihua-mogong") < 400 -> {:error, "以你目前的修为来看，还不足以运用\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Wswd do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "kuihua-mogong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "kuihua-mogong" -> {:error, "你现在无法使用绝技。\n"}
       true -> :ok
     end
   end
@@ -93,8 +93,8 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Wswd do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 7000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 7000 -> {:error, "你待要再出\n"}
+      vitals.neili < 1000 -> {:error, "你的内力不够运用\n"}
       true -> :ok
     end
   end
@@ -137,7 +137,7 @@ $N手中化做无双剑影攻向$n。", n1: character.name)
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 600, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

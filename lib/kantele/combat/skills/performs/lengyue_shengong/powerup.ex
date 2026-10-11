@@ -35,7 +35,7 @@ defmodule Kantele.Combat.Skills.Performs.LengyueShengong.Powerup do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够！\n"}
       true -> :ok
     end
   end

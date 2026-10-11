@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenzhangBada.Bafang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "shenzhang-bada") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功的修为不够，不能使用这一绝技！\n"}
+      Stats.skill(stats, "shenzhang-bada") < 200 -> {:error, "你的神掌八打修为不够，目前不能使用「威镇八方」！\n"}
       true -> :ok
     end
   end
@@ -89,11 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenzhangBada.Bafang do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "shenzhang-bada" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "strike") != "shenzhang-bada" -> {:error, "你没有激发神掌八打，不能使用「威镇八方」！\n"}
+      true -> :ok
     end
   end
 
@@ -101,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenzhangBada.Bafang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 700 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 700 -> {:error, "你的真气不够，无法使用「威镇八方」！\n"}
       true -> :ok
     end
   end
@@ -158,8 +155,16 @@ defmodule Kantele.Combat.Skills.Performs.ShenzhangBada.Bafang do
 
     result =
       if hit,
-        do: Messages.interpolate("", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("= COMBAT_D->do_damage(me, target, REMOTE_ATTACK, damage, 70)",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("可是$p看破了$N的企图，轻轻向后飘出数丈，躲过了这一致命的一击！",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shenzhaojing") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "unarmed") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "shenzhaojing") < 200 -> {:error, "你的基本拳脚火候不够，无法施展\n"}
+      Stats.skill(stats, "unarmed") < 200 -> {:error, "你的神照经神功火候不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "shenzhaojing" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "unarmed") != "shenzhaojing" -> {:error, "你没有激发神照经神功为拳脚，无法施展\n"}
       true -> :ok
     end
   end
@@ -95,8 +95,8 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，无法施展\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -131,8 +131,9 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 1)
-    result = Messages.interpolate("$N一声暴喝，将神照功功力聚之于拳，携着雷霆万钧之势向$n连环攻出。
-$n面对$N这排山倒海的攻势，不禁心生惧意，慌乱中破绽迭出。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n面对$N这排山倒海的攻势，不禁心生惧意，慌乱中破绽迭出。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhenshanZhang.Da do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhenshan-zhang") < 40 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "zhenshan-zhang") < 40 -> {:error, "你的震山掌不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -84,11 +84,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhenshanZhang.Da do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "zhenshan-zhang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "strike") != "zhenshan-zhang" -> {:error, "你没有激发震山掌，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -96,8 +93,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhenshanZhang.Da do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 50 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 200 -> {:error, "你现在真气太弱，难以施展\n"}
+      vitals.neili < 50 -> {:error, "你的内功修为不足，难以施展\n"}
       true -> :ok
     end
   end

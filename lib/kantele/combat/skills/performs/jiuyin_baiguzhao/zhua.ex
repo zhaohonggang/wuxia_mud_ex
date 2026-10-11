@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Zhua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyin-baiguzhao") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "jiuyin-baiguzhao") < 120 -> {:error, "你的九阴白骨爪还不够娴熟，不能使用\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Zhua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 240 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 240 -> {:error, "你现在内力太弱，不能使用九阴神抓。\n"}
       true -> :ok
     end
   end
@@ -140,11 +140,12 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Zhua do
     result =
       if hit,
         do:
-          Messages.interpolate("$N冷笑一声，眼露凶光，右手成爪，三盘两旋虚虚实实的向$n的头顶抓了下来。",
+          Messages.interpolate("“啪”的一声$N正抓在$n的天灵盖上，结果震得“哇哇”怪叫了两声！",
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$p看破了$P的企图，身形急动，躲开了这一抓。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

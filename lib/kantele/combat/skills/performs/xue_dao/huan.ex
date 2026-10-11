@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xue-dao") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "xue-dao") < 80 -> {:error, "你的血刀刀法不够娴熟，不会使用「幻影」。\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "xue-dao" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "blade") != "xue-dao" -> {:error, "你没有激发血刀刀法，不能使用「幻影」。\n"}
       true -> :ok
     end
   end
@@ -93,7 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 60 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 60 -> {:error, "你现在真气不够，无法使用「幻影」。\n"}
       true -> :ok
     end
   end
@@ -131,9 +131,12 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 1)
-    result = Messages.interpolate("$N使出血刀刀法绝技，把手中的舞得飞快，幻起层层刀影逼向$n！
-结果$p被$P闹个手忙脚乱，只能紧守门户，不敢擅动！
-可是$p看破了$P的企图，并不慌张，应对自如。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$N使出血刀刀法绝技，把手中的舞得飞快，幻起层层刀影逼向$n！",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

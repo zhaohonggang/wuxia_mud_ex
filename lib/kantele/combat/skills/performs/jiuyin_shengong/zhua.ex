@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyin-shengong") < 280 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "jiuyin-shengong") < 280 -> {:error, "你的九阴神功还不够娴熟，不能使用\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在内力太弱，不能使用\n"}
       true -> :ok
     end
   end
@@ -139,9 +139,13 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhua do
 
     result =
       if hit,
-        do: Messages.interpolate("$N这一爪来势好快，正抓中$n的檀中大穴，$n一声惨叫，软绵绵的瘫了下去。
-$n连忙腾挪躲闪，然而“扑哧”一声，$N五指正插入$n的，$n一声惨叫，血溅五步。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("$N这一爪来势好快，正抓中$n的檀中大穴，$n一声惨叫，软绵绵的瘫了下去。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("可是$p看破了$P的来势，应对得法，避开了这一抓。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

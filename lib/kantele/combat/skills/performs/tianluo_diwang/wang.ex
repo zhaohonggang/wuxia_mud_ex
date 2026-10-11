@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 40 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "tianluo-diwang") < 60 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dodge") < 40 -> {:error, "你的天罗地网掌还不够娴熟，无法施展\n"}
+      Stats.skill(stats, "tianluo-diwang") < 60 -> {:error, "你的轻功修为不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 70 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 70 -> {:error, "你现在真气不够，无法使用\n"}
       true -> :ok
     end
   end

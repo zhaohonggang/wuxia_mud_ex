@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.BiluoZhang.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "biluo-zhang") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "biluo-zhang") < 100 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你碧罗掌法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.BiluoZhang.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "biluo-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "biluo-zhang" -> {:error, "你没有激发碧罗掌法，难以施展\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.BiluoZhang.Lian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end

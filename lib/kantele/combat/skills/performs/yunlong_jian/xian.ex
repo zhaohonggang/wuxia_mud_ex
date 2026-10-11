@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.YunlongJian.Xian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "yunlong-jian") < 50 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的云龙剑法不够娴熟，不会使用「云龙三现」！\n"}
+      Stats.skill(stats, "yunlong-jian") < 50 -> {:error, "你的内功火候不够，不能使用「云龙三现」。\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.YunlongJian.Xian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "yunlong-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "yunlong-jian" -> {:error, "你没有激发云龙剑法，不能使用「云龙三现」！\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.YunlongJian.Xian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在真气不够，不能使用「云龙三现」！\n"}
       true -> :ok
     end
   end

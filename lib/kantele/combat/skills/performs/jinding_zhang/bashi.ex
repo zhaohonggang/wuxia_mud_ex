@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.JindingZhang.Bashi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "jinding-zhang") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你的内功的修为不够，难以施展\n"}
+      Stats.skill(stats, "jinding-zhang") < 100 -> {:error, "你的金顶绵掌的修习不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.JindingZhang.Bashi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "jinding-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "jinding-zhang" -> {:error, "你没有激发金顶绵掌，难以施展\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.JindingZhang.Bashi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你的内力还不够，难以施展\n"}
       true -> :ok
     end
   end

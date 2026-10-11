@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.LanhuaShou.Fu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jingluo-xue") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "lanhua-shou") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "jingluo-xue") < 120 -> {:error, "你兰花拂穴手不够娴熟，难以施展\n"}
+      Stats.skill(stats, "lanhua-shou") < 120 -> {:error, "你对经络学的了解不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.LanhuaShou.Fu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "lanhua-shou" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "hand") != "lanhua-shou" -> {:error, "你没有激发兰花拂穴手，难以施展\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.LanhuaShou.Fu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你现在真气不足，难以施展\n"}
       true -> :ok
     end
   end

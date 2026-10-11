@@ -36,8 +36,8 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Tui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 4000 -> {:error, "你的内力修为不够深厚，无法施展「推天式」！\n"}
+      vitals.neili < 1000 -> {:error, "你的真气不够，无法运用「推天式」！\n"}
       true -> :ok
     end
   end

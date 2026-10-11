@@ -41,7 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.Yijinjing.Tong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yijinjing") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "yijinjing") < 100 -> {:error, "你的易筋经等级不够。\n"}
       true -> :ok
     end
   end
@@ -50,8 +50,8 @@ defmodule Kantele.Combat.Skills.Performs.Yijinjing.Tong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.max_qi < 10 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 500 -> {:error, "你内伤太重，无法激励易筋经至高绝学。\n"}
+      vitals.max_qi < 10 -> {:error, "你的真气不够。\n"}
       true -> :ok
     end
   end

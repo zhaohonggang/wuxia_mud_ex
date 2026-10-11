@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Shou do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyin-shengong") < 260 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "jiuyin-shengong") < 260 -> {:error, "你的九阴神功还不够娴熟，不能使用\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Shou do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够！\n"}
       true -> :ok
     end
   end
@@ -137,9 +137,16 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Shou do
 
     result =
       if hit,
-        do: Messages.interpolate("$n只觉此招，阴柔无比，诡异莫测，心中一惊，却猛然间觉得一股阴风透骨而过。
-这一招完全超出了$n的想象，被$N结结实实的打中了檀中大穴，浑身真气登时涣散！", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("$n只觉此招，阴柔无比，诡异莫测，心中一惊，却猛然间觉得一股阴风透骨而过。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("这一招完全超出了$n的想象，被$N结结实实的打中了檀中大穴，浑身真气登时涣散！",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

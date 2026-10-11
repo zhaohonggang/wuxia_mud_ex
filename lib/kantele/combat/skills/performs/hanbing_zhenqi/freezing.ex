@@ -36,8 +36,8 @@ defmodule Kantele.Combat.Skills.Performs.HanbingZhenqi.Freezing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2200 -> {:error, "你的先天根骨不足，无法施展\n"}
+      vitals.neili < 1000 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end

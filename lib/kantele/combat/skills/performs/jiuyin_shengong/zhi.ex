@@ -72,7 +72,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 250 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 250 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -109,7 +109,12 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhi do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n见来指玄幻无比，全然无法抵挡，慌乱之下破绽迭出，$N随手连出指！",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Yi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "lonely-sword") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "lonely-sword") < 120 -> {:error, "你的独孤九剑还不到家，无法使用剑意！\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Yi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "lonely-sword" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "lonely-sword" -> {:error, "你没有激发独孤九剑，无法使用剑意！\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Yi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，无法使用剑意！\n"}
       true -> :ok
     end
   end
@@ -155,7 +155,11 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Yi do
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("$n淡然处之，并没有将$P此招放在心上，随手架开，不漏半点破绽。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

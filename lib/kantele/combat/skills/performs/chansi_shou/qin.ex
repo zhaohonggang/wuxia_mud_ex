@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.ChansiShou.Qin do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "chansi-shou" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "hand") != "chansi-shou" -> {:error, "你没有激发缠丝擒拿手，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.ChansiShou.Qin do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 100 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -142,11 +142,16 @@ defmodule Kantele.Combat.Skills.Performs.ChansiShou.Qin do
     result =
       if hit,
         do:
-          Messages.interpolate("却见$n奋力抵抗，可终究无法摆脱$N的攻势，连中数掌，",
+          Messages.interpolate("= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 35,
+                                           (: final, me, target, damage :))",
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$n的看破了$N的招式，巧妙的招架拆解，没露半点破绽。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

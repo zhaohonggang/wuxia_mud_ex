@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.FiveAvoid.Break do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功火候不够，难以施展「五遁绝杀」！\n"}
       true -> :ok
     end
   end
@@ -84,9 +84,9 @@ defmodule Kantele.Combat.Skills.Performs.FiveAvoid.Break do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 20 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.qi < 20 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.qi < 70 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 20 -> {:error, "你的气不够，无法施展「五遁绝杀」！\n"}
+      vitals.qi < 20 -> {:error, "你的真气不够，无法施展「五遁绝杀」！\n"}
+      vitals.qi < 70 -> {:error, "TODO(migrate) qi 不足。\n"}
       true -> :ok
     end
   end
@@ -124,7 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.FiveAvoid.Break do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 10, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

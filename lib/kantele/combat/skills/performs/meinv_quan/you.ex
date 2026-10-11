@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "meinv-quan") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功还未娴熟，不能使用\n"}
+      Stats.skill(stats, "meinv-quan") < 80 -> {:error, "你的美女拳法别不够，不会使用\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "meinv-quan" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "unarmed") != "meinv-quan" -> {:error, "你没有激发美女拳法，不能施展\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 180 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 180 -> {:error, "你现在真气不够，不能使用\n"}
       true -> :ok
     end
   end

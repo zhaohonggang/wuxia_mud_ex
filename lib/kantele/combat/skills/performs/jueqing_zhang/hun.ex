@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.JueqingZhang.Hun do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "jueqing-zhang") < 140 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "jueqing-zhang") < 140 -> {:error, "你绝情掌不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.JueqingZhang.Hun do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "jueqing-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "jueqing-zhang" -> {:error, "你没有激发绝情掌，难以施展\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.JueqingZhang.Hun do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end

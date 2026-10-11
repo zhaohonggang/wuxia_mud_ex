@@ -41,7 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Shield do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiantian-gong") < 50 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "xiantian-gong") < 50 -> {:error, "你的先天功还不够深厚。\n"}
       true -> :ok
     end
   end
@@ -50,7 +50,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Shield do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够。\n"}
       true -> :ok
     end
   end

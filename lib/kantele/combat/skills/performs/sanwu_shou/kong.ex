@@ -80,8 +80,8 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "sanwu-shou") < 140 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你三无三不手够娴熟，难以施展\n"}
+      Stats.skill(stats, "sanwu-shou") < 140 -> {:error, "你的内功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -90,7 +90,7 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "sanwu-shou" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "whip") != "sanwu-shou" -> {:error, "你没有激发三无三不手，难以施展\n"}
       true -> :ok
     end
   end
@@ -99,7 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -160,7 +160,11 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("$n见$N这招袭来，内力充盈，只得向后一纵，才躲过这一鞭。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

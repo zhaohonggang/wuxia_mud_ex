@@ -35,7 +35,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Heal do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 50 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 50 -> {:error, "你已经受伤过重，只怕一运真气便有生命危险！\n"}
       true -> :ok
     end
   end

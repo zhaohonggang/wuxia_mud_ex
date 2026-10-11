@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Suo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "ruanhong-zhusuo") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "ruanhong-zhusuo") < 150 -> {:error, "你的软红蛛索不够娴熟，无法施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Suo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "ruanhong-zhusuo" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "whip") != "ruanhong-zhusuo" -> {:error, "你没有激发软红蛛索，无法施展\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Suo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 350 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 350 -> {:error, "你的真气不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -127,7 +127,9 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Suo do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("结果$p被$P攻了个措手不及，目接不暇，疲于奔命！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

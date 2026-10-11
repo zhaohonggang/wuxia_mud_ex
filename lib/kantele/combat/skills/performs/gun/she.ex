@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.Gun.She do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "gun") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "gun") < 80 -> {:error, "你的枪械技术不够熟练，难以施展\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.Gun.She do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hammer") != "gun" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "hammer") != "gun" -> {:error, "你并没有运用枪械技术，难以施展\n"}
       true -> :ok
     end
   end

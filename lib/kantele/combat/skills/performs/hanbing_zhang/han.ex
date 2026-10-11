@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.HanbingZhang.Han do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "hanbing-zhang") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你寒冰掌不够娴熟，难以施展\n"}
+      Stats.skill(stats, "hanbing-zhang") < 160 -> {:error, "你的内功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.HanbingZhang.Han do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end

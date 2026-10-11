@@ -80,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "yuxiao-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "yuxiao-jian" -> {:error, "你没有激发玉箫剑法，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,8 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 1000 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 300 -> {:error, "看样子对方真气并不充沛，无需运用\n"}
       true -> :ok
     end
   end
@@ -132,7 +132,12 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 2)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$p顿觉$P的内力隐藏在一个个气旋中，难以捉摸去处，只能强运内力抵消。",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

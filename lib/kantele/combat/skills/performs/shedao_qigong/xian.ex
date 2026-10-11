@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shedao-qigong") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "shedao-qigong") < 120 -> {:error, "你的蛇岛奇功修为有限，不能使用「神龙再现」！\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，无法运用「神龙再现」！\n"}
       true -> :ok
     end
   end
@@ -128,8 +128,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 3)
-    result = Messages.interpolate("$n欲架不能，欲躲不得，一个闪失，被$P打了个正中，鲜血迸流。
-$n见$P这招极为精妙，不敢抵挡，慌忙后退跃开，却见$P招式一变，竟然料敌在先，
+    result = Messages.interpolate("$n见$P这招极为精妙，不敢抵挡，慌忙后退跃开，却见$P招式一变，竟然料敌在先，
 一招正中$p，直打了个鲜血四下飞溅。", n1: attacker.name, n2: character.name)
 
     conn

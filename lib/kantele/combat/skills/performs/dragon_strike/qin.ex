@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Qin do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dragon-strike") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 260 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dragon-strike") < 180 -> {:error, "你内功修为不够，难以施展\n"}
+      Stats.skill(stats, "force") < 260 -> {:error, "你降龙十八掌火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Qin do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "dragon-strike" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "dragon-strike" -> {:error, "你没有激发降龙十八掌，难以施展\n"}
       true -> :ok
     end
   end
@@ -94,8 +94,8 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Qin do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3000 -> {:error, "你内力修为不够，难以施展\n"}
+      vitals.neili < 400 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -135,8 +135,9 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Qin do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    result = Messages.interpolate("$N暴喝一声，全身内劲迸发，气贯右臂奋力外扯，企图将$n的吸入掌中。
-$n只觉周围气流涌动，手中竟然拿捏不住，向$N掌心脱手飞去。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n只觉周围气流涌动，手中竟然拿捏不住，向$N掌心脱手飞去。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

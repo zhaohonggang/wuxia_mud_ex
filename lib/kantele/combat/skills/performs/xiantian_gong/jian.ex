@@ -82,9 +82,9 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Jian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jingluo-xue") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xiantian-gong") < 280 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "yiyang-zhi") < 280 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "jingluo-xue") < 200 -> {:error, "你一阳指诀不够娴熟，难以施展\n"}
+      Stats.skill(stats, "xiantian-gong") < 280 -> {:error, "你对经络学了解不够，难以施展\n"}
+      Stats.skill(stats, "yiyang-zhi") < 280 -> {:error, "你的先天功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -93,17 +93,10 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Jian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "yiyang-zhi" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      Stats.mapped(stats, "force") != "xiantian-gong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      Stats.mapped(stats, "unarmed") != "xiantian-gong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "finger") != "yiyang-zhi" -> {:error, "你没有激发一阳指为指法，难以施展\n"}
+      Stats.mapped(stats, "force") != "xiantian-gong" -> {:error, "你没有激发先天功为内功，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "xiantian-gong" -> {:error, "你没有激发先天功为拳脚，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -111,8 +104,8 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Jian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 5000 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 1000 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -162,10 +155,16 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Jian do
 
     result =
       if hit,
-        do: Messages.interpolate("霎时只见$N逆运先天真气，化为纯阳内劲聚于指尖，以一阳指诀手法疾点$n全身诸多要穴。
-$n只觉全身一热，$P「先天功乾阳剑气」顿时破体而入，便似身置洪炉，喷出一口鲜血。
-紧接着$N十指纷飞，接连弹出数道无形剑气，$n四面八方皆被剑气所笼罩。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("$n只觉全身一热，$P「先天功乾阳剑气」顿时破体而入，便似身置洪炉，喷出一口鲜血。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("$n见$N这指来势汹涌，不敢轻易招架，当即飞身纵跃闪开。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

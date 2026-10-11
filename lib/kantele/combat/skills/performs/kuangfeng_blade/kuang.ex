@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengBlade.Kuang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "kuangfeng-blade") < 70 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "kuangfeng-blade") < 70 -> {:error, "你目前功力还使不出「狂风二十一式」。\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengBlade.Kuang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你的内力不够。\n"}
       true -> :ok
     end
   end

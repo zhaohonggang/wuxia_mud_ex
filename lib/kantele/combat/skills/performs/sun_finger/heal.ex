@@ -69,10 +69,10 @@ defmodule Kantele.Combat.Skills.Performs.SunFinger.Heal do
     vitals = character.meta.vitals
 
     cond do
-      vitals.jing < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.max_neili < 1500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.jing < 100 -> {:error, "你的内力还浅，不是运功疗伤。\n"}
+      vitals.max_neili < 1500 -> {:error, "你的气现在不够，不要贸然行功。\n"}
+      vitals.neili < 1000 -> {:error, "你的真气现在不够，不能贸然行功。\n"}
+      vitals.neili < 200 -> {:error, "你的精现在不够，不要贸然行功。\n"}
       true -> :ok
     end
   end
@@ -111,7 +111,7 @@ defmodule Kantele.Combat.Skills.Performs.SunFinger.Heal do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 1000, 10)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.HunyuanZhang.Wuji do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你内功修为不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -88,8 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.HunyuanZhang.Wuji do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 240 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1400 -> {:error, "你内力修为不足，无法施展\n"}
+      vitals.neili < 240 -> {:error, "你的内力不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -143,7 +143,8 @@ defmodule Kantele.Combat.Skills.Performs.HunyuanZhang.Wuji do
       if hit,
         do:
           Messages.interpolate("$n只觉得胸前一阵剧痛，“哇”的一声喷出一口鲜血！", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("只见$n不慌不忙，轻轻一闪，躲过了$N的必杀一击！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

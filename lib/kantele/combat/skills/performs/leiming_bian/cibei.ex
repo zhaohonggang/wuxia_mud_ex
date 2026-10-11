@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 1500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 1500 -> {:error, "你的内力修为不够辅助慈悲字诀。\n"}
       true -> :ok
     end
   end
@@ -115,7 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
     vitals = Vitals.wound(vitals, :qi, div(damage, 3))
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

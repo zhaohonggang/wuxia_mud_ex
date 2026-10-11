@@ -77,9 +77,9 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "yiwei-dujiang") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的一苇渡江等级不够，难以施展此项绝技！\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展此项绝技！\n"}
+      Stats.skill(stats, "yiwei-dujiang") < 150 -> {:error, "你的轻功修为不够，不会使用此项绝技！\n"}
       true -> :ok
     end
   end
@@ -89,13 +89,13 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
 
     cond do
       Stats.mapped(stats, "force") != "hunyuan-yiqi" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你现在没有激发少林内功为内功，难以施展\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 luohan-fumogong。\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
 
       true ->
         :ok
@@ -106,8 +106,8 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 250 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1000 -> {:error, "你此时的内力不足！\n"}
+      vitals.neili < 250 -> {:error, "你的内力修为不够使用「一苇渡江」！\n"}
       true -> :ok
     end
   end
@@ -147,7 +147,7 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 2)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

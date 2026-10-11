@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.SuohouGong.Suo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "suohou-gong") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "suohou-gong") < 150 -> {:error, "你琐喉功火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.SuohouGong.Suo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "claw") != "suohou-gong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "claw") != "suohou-gong" -> {:error, "你没有激发琐喉功，难以施展\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.SuohouGong.Suo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -153,11 +153,10 @@ defmodule Kantele.Combat.Skills.Performs.SuohouGong.Suo do
 
     result =
       if hit,
-        do: Messages.interpolate("$N一声冷笑，蓦地拔地而起，右手一招「铁爪锁喉」直取$n颈部。
-霎时只听「喀嚓」一声脆响，$N五指竟将$n的喉结捏个粉碎。
-( $n受伤过重，已经有如风中残烛，随时都可能断气。)
-$n慌忙躲闪，却听「喀嚓」一声，$N五指正拿中$n的。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do: Messages.interpolate("霎时只听「喀嚓」一声脆响，$N五指竟将$n的喉结捏个粉碎。
+( $n受伤过重，已经有如风中残烛，随时都可能断气。)", n1: attacker.name, n2: character.name),
+        else:
+          Messages.interpolate("可是$n看破了$P的企图，身形急动，躲开了这一抓。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

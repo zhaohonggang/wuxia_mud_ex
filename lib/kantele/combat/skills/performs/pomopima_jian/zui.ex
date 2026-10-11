@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.PomopimaJian.Zui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "pomopima-jian") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功的修为不够，无法施展\n"}
+      Stats.skill(stats, "pomopima-jian") < 120 -> {:error, "你的泼墨披麻剑修为不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.PomopimaJian.Zui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "pomopima-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "pomopima-jian" -> {:error, "你没有激发泼墨披麻剑，无法使用\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.PomopimaJian.Zui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 250 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 250 -> {:error, "你的真气不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -153,9 +153,16 @@ defmodule Kantele.Combat.Skills.Performs.PomopimaJian.Zui do
 
     result =
       if hit,
-        do: Messages.interpolate("$N一声长吟，手中连划三个圆圈，幻作三个光圈，便如是有形之物，缓缓向$n身前移去！
-$n只觉剑气满室，寒风袭体，微微一楞，已连中三剑，鲜血飞溅！", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("$n只觉剑气满室，寒风袭体，微微一楞，已连中三剑，鲜血飞溅！",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("可是$p见来势迅猛，飞身一跃，闪开了$P这凌厉的几剑。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.YinhuZhang.Lao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 140 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "yinhu-zhang") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 140 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "yinhu-zhang") < 100 -> {:error, "你银瑚杖法火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.YinhuZhang.Lao do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "staff") != "yinhu-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "staff") != "yinhu-zhang" -> {:error, "你没有激发银瑚杖法，难以施展\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.YinhuZhang.Lao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -158,7 +158,11 @@ defmodule Kantele.Combat.Skills.Performs.YinhuZhang.Lao do
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$n奋力招架，左闪右避，好不容易抵挡住了$N的攻击。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "shangqing-jian") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的上清剑法修为不够，难以施展\n"}
+      Stats.skill(stats, "shangqing-jian") < 160 -> {:error, "你的内功的修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "shangqing-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "shangqing-jian" -> {:error, "你没有激发上清剑法，难以施展\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 400 -> {:error, "你的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -137,9 +137,12 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("$p奋力抵挡，却哪里招架得住，被$P这一剑刺中要脉，鲜血四处飞溅！
-$p只觉眼花缭乱，一时难以勘透其中奥妙，连中数剑，被削得血肉模糊！
-$p运气抵挡，可只觉一股无形剑气透体而过，难受之极，喷出数口鲜血！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$p奋力抵挡，却哪里招架得住，被$P这一剑刺中要脉，鲜血四处飞溅！",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

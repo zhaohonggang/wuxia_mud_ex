@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 420 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "liumai-shenjian") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 420 -> {:error, "你的六脉神剑修为有限，无法使用\n"}
+      Stats.skill(stats, "liumai-shenjian") < 200 -> {:error, "你的内功火候不够，使不出\n"}
       true -> :ok
     end
   end
@@ -88,8 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为还不足以使出如此犀利的\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法使用\n"}
       true -> :ok
     end
   end
@@ -135,10 +135,9 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 3)
-    result = Messages.interpolate("$n只觉得胸前一阵剧痛，鲜血自创口激射而出，眼前顿时一黑！
-$n横试图招架，怎奈这股剑气如此犀利，透过直震得$n狂吐鲜血，五脏六腑都要翻转过来！
-$n横转，挡在胸前，只听啪啦一声，碎成数截，激飞上天！
-$n连退几步，“哇”的吐了一口鲜血，脸色变的惨白。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n只觉得胸前一阵剧痛，鲜血自创口激射而出，眼前顿时一黑！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

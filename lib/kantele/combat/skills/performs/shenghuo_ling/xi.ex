@@ -72,8 +72,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 1500 -> {:error, "你的内力修为不足，不能使用圣火令法之\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，不能使用圣火令法之\n"}
       true -> :ok
     end
   end
@@ -115,7 +115,12 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 240, 4)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n只见眼前无数寒光颤跃闪动，顿时只感头晕目眩，手腕一麻，手中已被$N纳入怀中！",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

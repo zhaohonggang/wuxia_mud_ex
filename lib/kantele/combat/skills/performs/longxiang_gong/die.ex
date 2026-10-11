@@ -77,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Die do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "longxiang-gong") < 240 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "longxiang-gong") < 240 -> {:error, "你的龙象般若功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,14 +86,9 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Die do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "longxiang-gong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      Stats.mapped(stats, "unarmed") != "longxiang-gong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "longxiang-gong" -> {:error, "你没有激发龙象般若功为内功，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "longxiang-gong" -> {:error, "你没有激发龙象般若功为拳脚，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -101,8 +96,8 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Die do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 4000 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 500 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -141,8 +136,9 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Die do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 1)
-    result = Messages.interpolate("$n全然无力阻挡，竟被$N一拳击得飞起，重重的跌落在地上。
-$n见$P来势迅猛之极，一时不知该如何作出抵挡，竟呆立当场。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n见$P来势迅猛之极，一时不知该如何作出抵挡，竟呆立当场。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

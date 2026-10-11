@@ -87,9 +87,9 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "taiji-quan") < 250 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "taiji-shengong") < 300 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "taoism") < 300 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "taiji-quan") < 250 -> {:error, "你的太极拳不够娴熟，难以施展\n"}
+      Stats.skill(stats, "taiji-shengong") < 300 -> {:error, "你的太极神功修为还不够高，难以施展\n"}
+      Stats.skill(stats, "taoism") < 300 -> {:error, "你的道学心法修为还不够高，难以施展\n"}
       true -> :ok
     end
   end
@@ -98,8 +98,8 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "taiji-shengong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      Stats.mapped(stats, "unarmed") != "taiji-quan" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "force") != "taiji-shengong" -> {:error, "你现在没有激发太极拳，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "taiji-quan" -> {:error, "你现在没有激发太极神功，难以施展\n"}
       true -> :ok
     end
   end
@@ -108,9 +108,9 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.jingli < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 0 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.jingli < 1000 -> {:error, "你所使用的外功中没有这种功能。\n"}
+      vitals.neili < 0 -> {:error, "你现在真气不够，难以施展\n"}
+      vitals.neili < 1000 -> {:error, "你现在精力不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -154,9 +154,9 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 4)
-    result = Messages.interpolate("只见手舞足蹈，忘乎所以，忽然大叫一声，吐血不止！
-却见容貌哀戚，似乎想起了什么伤心之事，身子一晃，呕出数口鲜血！
-呆立当场，一动不动，有如中邪，七窍都迸出鲜血来。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("只见手舞足蹈，忘乎所以，忽然大叫一声，吐血不止！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

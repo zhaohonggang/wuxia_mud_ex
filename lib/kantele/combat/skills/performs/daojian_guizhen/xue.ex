@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "daojian-guizhen") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "daojian-guizhen") < 250 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "daojian-guizhen") < 200 -> {:error, "你所使用的外功中没有这种功能。\n"}
+      Stats.skill(stats, "daojian-guizhen") < 250 -> {:error, "你的\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -125,8 +125,12 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("$N手中蓦地一抖，将「胡家刀法」并「苗家剑法」连环施出。霎时寒
-光点点，犹如夜陨划空，铺天盖地罩向$n，正是一招「天下有血」。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n只见无数刀光剑影向自己逼来，顿感眼花缭乱，心底寒意油然而生。",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

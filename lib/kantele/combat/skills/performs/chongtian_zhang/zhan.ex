@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.ChongtianZhang.Zhan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "chongtian-zhang") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "chongtian-zhang") < 120 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的白鹤冲天掌不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,11 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.ChongtianZhang.Zhan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "chongtian-zhang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "strike") != "chongtian-zhang" -> {:error, "你没有激发白鹤冲天掌，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -101,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.ChongtianZhang.Zhan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -160,7 +157,11 @@ defmodule Kantele.Combat.Skills.Performs.ChongtianZhang.Zhan do
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$p奋力招架，终于将$P这双掌架开，没有受到任何伤害。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

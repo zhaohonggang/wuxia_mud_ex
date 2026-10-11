@@ -87,8 +87,8 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "qimen-wuxing") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "tanzhi-shentong") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "qimen-wuxing") < 200 -> {:error, "你的奇门五行修为不够，难以施展\n"}
+      Stats.skill(stats, "tanzhi-shentong") < 220 -> {:error, "你的弹指神通不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -97,11 +97,8 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "tanzhi-shentong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "finger") != "tanzhi-shentong" -> {:error, "你没有激发弹指神通，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -109,8 +106,8 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3500 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 800 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -162,13 +159,14 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
 
     result =
       if hit,
-        do: Messages.interpolate("$N将全身功力聚于一指，指劲按照二十八宿方位云贯而出，正是桃花岛「转乾坤」绝技。
-霎那间$n只见寒芒一闪，$N食指已钻入$p印堂半尺，指劲顿时破脑而入。
+        do: Messages.interpolate("霎那间$n只见寒芒一闪，$N食指已钻入$p印堂半尺，指劲顿时破脑而入。
 你听到“噗”的一声，身上竟然溅到几滴脑浆！
-( $n受伤过重，已经有如风中残烛，随时都可能断气。)
-霎那间$n只见寒芒一闪，$N食指已钻入$p胸堂半尺，指劲顿时破体而入。
-你听到“嗤”的一声，身上竟然溅到几滴鲜血！", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+( $n受伤过重，已经有如风中残烛，随时都可能断气。)", n1: attacker.name, n2: character.name),
+        else:
+          Messages.interpolate("$p见$P招式奇特，不感大意，顿时向后跃数丈，躲闪开来。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

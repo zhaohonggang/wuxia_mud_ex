@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "hammer") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功火候不够，难以施展「三板斧」！\n"}
+      Stats.skill(stats, "hammer") < 180 -> {:error, "你的棍法修为不够，不会使用「三板斧」！\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hammer") != "leiting-fu" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "hammer") != "leiting-fu" -> {:error, "你没有激发雷霆斧法，不能使用「三板斧」。\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不足！\n"}
       true -> :ok
     end
   end
@@ -141,9 +141,12 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
     vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = Messages.interpolate("$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被这招击个正中。
-$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被这招击个正中。
-$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被这招击个正中。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被这招击个正中。",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

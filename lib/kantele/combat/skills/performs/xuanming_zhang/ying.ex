@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xuanming-zhang") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "dodge") < 180 -> {:error, "你玄冥神掌不够娴熟，难以施展\n"}
+      Stats.skill(stats, "xuanming-zhang") < 100 -> {:error, "你的轻功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -87,11 +87,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "xuanming-zhang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "strike") != "xuanming-zhang" -> {:error, "你没有激发玄冥神掌，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -99,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
   end

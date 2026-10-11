@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "wuxiang-zhi") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功的修为不够，不能使用这一绝技！\n"}
+      Stats.skill(stats, "wuxiang-zhi") < 150 -> {:error, "你的无相指修为不够，目前不能使用「无色无相」！\n"}
       true -> :ok
     end
   end
@@ -90,16 +90,16 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
 
     cond do
       Stats.mapped(stats, "finger") != "wuxiang-zhi" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你没有激发无相指，不能使用「无色无相」！\n"}
 
       Stats.mapped(stats, "force") != "hunyuan-yiqi" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你现在没有激发少林内功为内功，难以施展「无色无相」。\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 luohan-fumogong。\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
 
       true ->
         :ok
@@ -110,7 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 400 -> {:error, "你的真气不够，无法使用「无色无相」！\n"}
       true -> :ok
     end
   end
@@ -170,7 +170,11 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
             n1: attacker.name,
             n2: character.name
           ),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        else:
+          Messages.interpolate("可是$p看破了$N的企图，轻轻向后飘出数丈，躲过了这一致命的一击！",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

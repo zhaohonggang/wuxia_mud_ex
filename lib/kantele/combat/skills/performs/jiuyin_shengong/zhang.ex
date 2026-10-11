@@ -72,8 +72,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyin-shengong") < 260 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "strike") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "jiuyin-shengong") < 260 -> {:error, "你的九阴神功不够深厚，不会使用\n"}
+      Stats.skill(stats, "strike") < 220 -> {:error, "你的基本掌法修为不够，不会使用\n"}
       true -> :ok
     end
   end
@@ -110,7 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhang do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 320, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "ruying-suixingtui") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 160 -> {:error, "你的内功等级不够，不能使用「如影随形」。\n"}
+      Stats.skill(stats, "ruying-suixingtui") < 160 -> {:error, "你的如影随形腿不够娴熟，不会使用「如影随形」。\n"}
       true -> :ok
     end
   end
@@ -85,11 +85,8 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "ruying-suixingtui" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "unarmed") != "ruying-suixingtui" -> {:error, "你现在无法使用「如影随形」进行攻击。\n"}
+      true -> :ok
     end
   end
 
@@ -97,8 +94,8 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 700 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2000 -> {:error, "你现在内力太少，不能使用「如影随形」。\n"}
+      vitals.neili < 700 -> {:error, "你的内力修为太弱，不能使用「如影随形」！\n"}
       true -> :ok
     end
   end

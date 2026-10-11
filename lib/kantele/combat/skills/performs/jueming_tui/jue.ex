@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jueming-tui") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "jueming-tui") < 80 -> {:error, "你绝命腿法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "jueming-tui" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "unarmed") != "jueming-tui" -> {:error, "你没有激发绝命腿法，难以施展\n"}
       true -> :ok
     end
   end
@@ -93,7 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你目前的内力不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -136,10 +136,9 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 3)
-    result = Messages.interpolate("只听$N一声冷哼，侧身飞踢，右腿横扫向$n，当真是力不可挡。
-$N蓦地大喝一声，单腿猛踢而出，直踹$n腰际，招式极为迅猛。
-突然只见$N双腿连环踢出，挟着嚯嚯风声，以千钧之势扫向$n。
-$n连忙格挡，却只觉得力道大得出奇，登时被一脚踢得飞起。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("只听$N一声冷哼，侧身飞踢，右腿横扫向$n，当真是力不可挡。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.QujingGunfa.Zhen do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 350 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "qujing-gunfa") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 350 -> {:error, "你取经棍法不够娴熟，难以施展\n"}
+      Stats.skill(stats, "qujing-gunfa") < 200 -> {:error, "你的内功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -89,16 +89,16 @@ defmodule Kantele.Combat.Skills.Performs.QujingGunfa.Zhen do
 
     cond do
       Stats.mapped(stats, "club") != "qujing-gunfa" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你没有激发取经棍法，难以施展\n"}
 
       Stats.mapped(stats, "force") != "hunyuan-yiqi" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你现在没有激发少林内功为内功，难以施展\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 luohan-fumogong。\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
 
       true ->
         :ok
@@ -109,9 +109,9 @@ defmodule Kantele.Combat.Skills.Performs.QujingGunfa.Zhen do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.max_neili < 4500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 4000 -> {:error, "你现在的真气太弱，难以施展\n"}
+      vitals.max_neili < 4500 -> {:error, "你的内力修为太弱，难以施展\n"}
+      vitals.neili < 300 -> {:error, "TODO(migrate) neili 不足。\n"}
       true -> :ok
     end
   end
@@ -149,9 +149,9 @@ defmodule Kantele.Combat.Skills.Performs.QujingGunfa.Zhen do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 1)
-    result = Messages.interpolate("$N将手中缓缓压向$n，棍体隐隐带着风雷之劲，正是取经棍法杀着「震雷乾坤」！
-电光火石间，棍端竟全被紫电所笼罩，幻作千百根相似，奔雷掣电般向$n席卷而去。
-$n被$N气势所撼，完全不知该如何招架，竟而呆立当场！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n被$N气势所撼，完全不知该如何招架，竟而呆立当场！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

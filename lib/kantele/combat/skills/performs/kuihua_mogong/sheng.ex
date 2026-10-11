@@ -77,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "kuihua-mogong") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "kuihua-mogong") < 200 -> {:error, "你的葵花魔功不够深厚，不会使用\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "dodge") != "kuihua-mogong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "dodge") != "kuihua-mogong" -> {:error, "你还没有激发葵花魔功为轻功，无法施展\n"}
       true -> :ok
     end
   end
@@ -95,8 +95,8 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内力修为不足，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -137,8 +137,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = Messages.interpolate("$N身子忽进忽退，身形诡秘异常，在$n身边飘忽不定。
-结果$p只能紧守门户，不敢妄自出击！", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("结果$p只能紧守门户，不敢妄自出击！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

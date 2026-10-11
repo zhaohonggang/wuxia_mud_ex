@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.QiankunDanuoyi.Nuoyi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "qiankun-danuoyi") < 50 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "qiankun-danuoyi") < 50 -> {:error, "你的乾坤大挪移还没有修炼到第二层，无法施展大挪移。\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.QiankunDanuoyi.Nuoyi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 400 -> {:error, "你现在真气不够，无法使用「大挪移」。\n"}
       true -> :ok
     end
   end

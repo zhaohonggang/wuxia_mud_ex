@@ -41,7 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiShengong.Dian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "taiji-shengong") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "taiji-shengong") < 100 -> {:error, "你的太极神功不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -50,9 +50,9 @@ defmodule Kantele.Combat.Skills.Performs.TaijiShengong.Dian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.jing < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.max_neili < 1500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.jing < 100 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.max_neili < 1500 -> {:error, "你现在精神状态不佳，难以施展\n"}
+      vitals.neili < 1000 -> {:error, "你的内力修为太浅，难以施展\n"}
       true -> :ok
     end
   end

@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "kuihua-mogong") < 250 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "kuihua-mogong") < 250 -> {:error, "你的葵花魔功还不够娴熟，不能使用\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "kuihua-mogong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "kuihua-mogong" -> {:error, "你没有准备使用葵花魔功，难以施展\n"}
       true -> :ok
     end
   end
@@ -97,8 +97,8 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3800 -> {:error, "你的内力修为不足，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -150,10 +150,12 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
 
     result =
       if hit,
-        do: Messages.interpolate("$N尖啸一声，猛然进步欺前，一招竟直袭$n要害，速度之快，令人见所未见，闻所未闻。
-这一招速度之快完全超出了$n的想象，$n慌忙回缩招架，但是此招之快，已无从躲闪，$n尖叫一声，已然中招。
-这一招速度之快完全超出了$n的想象，被$N这一招正好击中了丹田要害，浑身真气登时涣散！", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("这一招速度之快完全超出了$n的想象，$n慌忙回缩招架，但是此招之快，已无从躲闪，$n尖叫一声，已然中招。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else: Messages.interpolate("$n知道来招不善，急忙闪避，没出一点差错。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

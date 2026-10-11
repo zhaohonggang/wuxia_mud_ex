@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.DouzhuanXingyi.Yi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "douzhuan-xingyi") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "zihui-xinfa") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "douzhuan-xingyi") < 100 -> {:error, "你的斗转星移不够娴熟，不会使用绝招。\n"}
+      Stats.skill(stats, "zihui-xinfa") < 100 -> {:error, "你的紫徽心法修为还不到家，\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.DouzhuanXingyi.Yi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 60 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 60 -> {:error, "你现在真气不够，无法使用「斗转星移」。\n"}
       true -> :ok
     end
   end

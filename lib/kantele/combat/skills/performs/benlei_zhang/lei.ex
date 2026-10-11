@@ -77,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "benlei-zhang") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "benlei-zhang") < 120 -> {:error, "你的霹雳奔雷掌还不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "benlei-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "benlei-zhang" -> {:error, "你没有激发霹雳奔雷掌，难以施展\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 400 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end

@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhougongJian.Mang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "zhougong-jian") < 140 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功修为太浅，难以施展\n"}
+      Stats.skill(stats, "zhougong-jian") < 140 -> {:error, "你的周公剑火候太浅，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhougongJian.Mang do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "zhougong-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "zhougong-jian" -> {:error, "你没有激发周公剑，难以施展\n"}
       true -> :ok
     end
   end
@@ -97,8 +97,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhougongJian.Mang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2200 -> {:error, "你现在的真气不足，，难以施展\n"}
+      vitals.neili < 500 -> {:error, "你的内力修为太浅，难以施展\n"}
       true -> :ok
     end
   end
@@ -149,9 +149,12 @@ defmodule Kantele.Combat.Skills.Performs.ZhougongJian.Mang do
 
     result =
       if hit,
-        do: Messages.interpolate("$n一声惨叫，凌厉的剑气已划过气门，在身上刺出数个血洞，鲜血如泉水般涌出！
-只听“噗嗤”一声，剑气正中$n胸口，留下一个碗口大的血洞！$n哀嚎一声，再也无法站起。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("$n一声惨叫，凌厉的剑气已划过气门，在身上刺出数个血洞，鲜血如泉水般涌出！",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else: Messages.interpolate("可是$n看破了$N的企图，斜跃避开。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

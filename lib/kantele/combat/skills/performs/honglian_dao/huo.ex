@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.HonglianDao.Huo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "honglian-dao") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "honglian-dao") < 80 -> {:error, "你红莲刀法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.HonglianDao.Huo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "honglian-dao" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "blade") != "honglian-dao" -> {:error, "你没有激发红莲刀法，难以施展\n"}
       true -> :ok
     end
   end
@@ -94,8 +94,8 @@ defmodule Kantele.Combat.Skills.Performs.HonglianDao.Huo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 800 -> {:error, "你现在真气不够，难以施展\n"}
+      vitals.neili < 100 -> {:error, "你的内力修为不够，难以施展\n"}
       true -> :ok
     end
   end

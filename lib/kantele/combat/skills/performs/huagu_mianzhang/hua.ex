@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.HuaguMianzhang.Hua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "huagu-mianzhang") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，无法施展化骨掌。\n"}
+      Stats.skill(stats, "huagu-mianzhang") < 100 -> {:error, "你的化骨绵掌还不够娴熟，不会化骨掌。\n"}
       true -> :ok
     end
   end
@@ -89,11 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.HuaguMianzhang.Hua do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "huagu-mianzhang" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "strike") != "huagu-mianzhang" -> {:error, "你没有激发化骨绵掌，无法施展化骨掌。\n"}
+      true -> :ok
     end
   end
 
@@ -101,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.HuaguMianzhang.Hua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，不能化骨。\n"}
       true -> :ok
     end
   end
@@ -153,8 +150,13 @@ defmodule Kantele.Combat.Skills.Performs.HuaguMianzhang.Hua do
 
     result =
       if hit,
-        do: Messages.interpolate("", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 40,
+                                          (: final, me, target, damage :))",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else: Messages.interpolate("可是$p急忙闪在一旁，躲了开去。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

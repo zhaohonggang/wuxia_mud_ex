@@ -81,9 +81,9 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "jingluo-xue") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "yiyang-zhi") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你一阳指诀不够娴熟，难以施展\n"}
+      Stats.skill(stats, "jingluo-xue") < 200 -> {:error, "你对经络学了解不够，难以施展\n"}
+      Stats.skill(stats, "yiyang-zhi") < 200 -> {:error, "你的内功火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -92,7 +92,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "yiyang-zhi" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "finger") != "yiyang-zhi" -> {:error, "你没有激发一阳指诀，难以施展\n"}
       true -> :ok
     end
   end
@@ -101,8 +101,8 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 5000 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 1000 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -157,15 +157,10 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
       if hit,
         do: Messages.interpolate("霎时间$n只觉得手腕一麻，手中再也拿持不住，脱手掉在地上。
 
-紧接着$N凝气于指，一式「阳关三叠」点出，顿时一股纯阳的内力直袭$n胸口！
-结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。
-结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。
-结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。", n1: attacker.name, n2: character.name),
+紧接着", n1: attacker.name, n2: character.name),
         else: Messages.interpolate("可是$n将手中转动如轮，终于化解了这一招。
 
-紧接着可是$p镇定自如，全力化解了$P这精妙的一指。
-可是$p镇定自如，全力化解了$P这精妙的一指。
-可是$p镇定自如，全力化解了$P这精妙的一指。", n1: attacker.name, n2: character.name)
+紧接着", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhuihun-jian") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "zhuihun-jian") < 100 -> {:error, "你的追魂夺命剑还不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "zhuihun-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "zhuihun-jian" -> {:error, "你没有激发追魂夺命剑，难以施展\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -149,7 +149,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
     result =
       if hit,
         do:
-          Messages.interpolate("$N一声冷哼，手中一式「追魂夺命」，剑身顿时漾起一道血光，直射$n！",
+          Messages.interpolate("= COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 60,
+                                           (: final, me, target, damage :))",
             n1: attacker.name,
             n2: character.name
           ),

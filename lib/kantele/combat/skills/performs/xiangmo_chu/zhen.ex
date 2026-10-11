@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.XiangmoChu.Zhen do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xiangmo-chu") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不足，难以施展\n"}
+      Stats.skill(stats, "xiangmo-chu") < 100 -> {:error, "你金刚降魔杵火候不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.XiangmoChu.Zhen do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hammer") != "xiangmo-chu" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "hammer") != "xiangmo-chu" -> {:error, "你没有激发金刚降魔杵，难以施展\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.XiangmoChu.Zhen do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展\n"}
       true -> :ok
     end
   end

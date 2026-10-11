@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Jiu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyang-shengong") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "jiuyang-shengong") < 200 -> {:error, "你的九阳神功还不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,14 +85,9 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Jiu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "jiuyang-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      Stats.mapped(stats, "unarmed") != "jiuyang-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "jiuyang-shengong" -> {:error, "你现在没有激发九阳神功为内功，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "jiuyang-shengong" -> {:error, "你现在没有激发九阳神功为拳脚，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -100,8 +95,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Jiu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 4000 -> {:error, "你的内力的修为不够，现在无法使用\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法运用\n"}
       true -> :ok
     end
   end
@@ -136,8 +131,12 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Jiu do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("$N大喝一声，顿时一股浩荡无比的真气至体内迸发，双掌猛然翻滚，朝$n闪电般拍去。
-$n只觉周围空气炽热无比，又见无数气团向自己袭来，顿感头晕目眩，不知该如何抵挡。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n只觉周围空气炽热无比，又见无数气团向自己袭来，顿感头晕目眩，不知该如何抵挡。",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

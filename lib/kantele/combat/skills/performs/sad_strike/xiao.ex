@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 320 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "sad-strike") < 150 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 320 -> {:error, "你的内功修为不够，无法施展\n"}
+      Stats.skill(stats, "sad-strike") < 150 -> {:error, "你的黯然销魂掌火候不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够！\n"}
       true -> :ok
     end
   end
@@ -120,7 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
     character = %{character | meta: %{character.meta | vitals: vitals}}
 
     result =
-      Messages.interpolate("$N一声长吟：“黯然销魂者，唯别而已矣！”，顿时心如止水，黯然神伤，于不经意中随手使出了『黯然销魂』！",
+      Messages.interpolate("$n见$P这一招变化莫测，奇幻无方，不由大吃一惊，慌乱中破绽迭出。",
         n1: attacker.name,
         n2: character.name
       )

@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyin-baiguzhao") < 140 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "jiuyin-baiguzhao") < 140 -> {:error, "你的九阴白骨爪还不够娴熟，不能使用\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在内力太弱，不能使用夺命连环爪。\n"}
       true -> :ok
     end
   end
@@ -127,12 +127,12 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 3)
-    result = Messages.interpolate("$N桀桀怪笑，手指微微弯曲，倏的冲$n头顶抓下。
-$N冷笑数声，手指微微弯曲成爪，飞向$n头顶抓下。
-$N扬声吐气，手指微微弯曲成爪，奋力向$n头顶抓下。
-$N手指微微弯曲成爪，浑不经意的向$n头顶抓下。
-$p急忙闪头，然而$N这招来得好快，正插中$p肩头，登时鲜血淋漓。
-$n哪里料到$N竟有如此变招，不及躲闪，肩头被$P抓了个鲜血淋漓。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$p急忙闪头，然而$N这招来得好快，正插中$p肩头，登时鲜血淋漓。",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

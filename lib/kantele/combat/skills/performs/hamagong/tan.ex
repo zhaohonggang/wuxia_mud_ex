@@ -40,8 +40,8 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Tan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "hamagong") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "poison") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "hamagong") < 100 -> {:error, "你的内功火候不够。\n"}
+      Stats.skill(stats, "poison") < 80 -> {:error, "你的基本毒技火候不够。\n"}
       true -> :ok
     end
   end
@@ -50,7 +50,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Tan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 500 -> {:error, "你现在内力不足，不能弹射毒药。\n"}
       true -> :ok
     end
   end

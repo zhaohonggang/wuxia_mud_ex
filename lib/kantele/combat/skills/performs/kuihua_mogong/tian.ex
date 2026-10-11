@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "kuihua-mogong") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "kuihua-mogong") < 220 -> {:error, "你的葵花魔功火候不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -85,8 +85,8 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "kuihua-mogong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      Stats.mapped(stats, "sword") != "kuihua-mogong" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "force") != "kuihua-mogong" -> {:error, "你没有准备使用葵花魔功，难以施展\n"}
+      Stats.mapped(stats, "sword") != "kuihua-mogong" -> {:error, "你还没有激发葵花魔功为内功，无法施展\n"}
       true -> :ok
     end
   end
@@ -95,8 +95,8 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 340 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3400 -> {:error, "你的内力修为不足，难以施展\n"}
+      vitals.neili < 340 -> {:error, "你的真气不够，无法施展\n"}
       true -> :ok
     end
   end
@@ -124,8 +124,12 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("$N默运葵花魔功，身形变得奇快无比，接连从不同的方位向$n攻出数招！
-$n只觉得眼前一花，发现四周都是$N的身影，不由暗生惧意，接连后退。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$N默运葵花魔功，身形变得奇快无比，接连从不同的方位向$n攻出数招！",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

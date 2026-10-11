@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "xuedao-dafa") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "xuedao-dafa") < 160 -> {:error, "你的血刀大法还不到家，难以施展\n"}
       true -> :ok
     end
   end
@@ -86,8 +86,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "xuedao-dafa" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      Stats.mapped(stats, "force") != "xuedao-dafa" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "blade") != "xuedao-dafa" -> {:error, "你没有激发血刀大法为内功，难以施展\n"}
+      Stats.mapped(stats, "force") != "xuedao-dafa" -> {:error, "你没有激发血刀大法为刀法，难以施展\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -131,8 +131,12 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 1)
-    result = Messages.interpolate("$N嗔目大喝，手中一势「赤炼神刀」迸出漫天血光，铺天盖地洒向$n。
-霎时间$n只觉周围四处杀气弥漫，全身气血翻滚，甚难招架。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$N嗔目大喝，手中一势「赤炼神刀」迸出漫天血光，铺天盖地洒向$n。",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

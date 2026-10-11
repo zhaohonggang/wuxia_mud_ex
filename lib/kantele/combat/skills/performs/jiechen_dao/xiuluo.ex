@@ -76,9 +76,9 @@ defmodule Kantele.Combat.Skills.Performs.JiechenDao.Xiuluo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "blade") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "hunyuan-yiqi") < 140 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "jiechen-dao") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "blade") < 180 -> {:error, "你的基本刀法还不够娴熟，使不出「修罗焰」绝技。\n"}
+      Stats.skill(stats, "hunyuan-yiqi") < 140 -> {:error, "你的心意气混元功等级不够，使不出「修罗焰」绝技。\n"}
+      Stats.skill(stats, "jiechen-dao") < 180 -> {:error, "你的戒尘刀火候还嫌不够，这「修罗焰」绝技不用也罢。\n"}
       true -> :ok
     end
   end
@@ -87,8 +87,8 @@ defmodule Kantele.Combat.Skills.Performs.JiechenDao.Xiuluo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "jiechen-dao" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "blade") != "jiechen-dao" -> {:error, "你必须使用戒尘刀来施展「修罗焰」。\n"}
+      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在这内功平平无奇，如何使得出「修罗焰」绝技来！？\n"}
       true -> :ok
     end
   end
@@ -97,8 +97,8 @@ defmodule Kantele.Combat.Skills.Performs.JiechenDao.Xiuluo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3000 -> {:error, "以你目前的内力来看，这「修罗焰」绝技不用也罢。\n"}
+      vitals.neili < 1000 -> {:error, "你的内力修为不够，这「修罗焰」绝技不用也罢。\n"}
       true -> :ok
     end
   end
@@ -132,7 +132,7 @@ defmodule Kantele.Combat.Skills.Performs.JiechenDao.Xiuluo do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

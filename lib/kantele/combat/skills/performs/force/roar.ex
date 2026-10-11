@@ -42,34 +42,34 @@ defmodule Kantele.Combat.Skills.Performs.Force.Roar do
 
     cond do
       Stats.mapped(stats, "force") != "huntian-qigong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你所学的内功中没有这种功能。\n"}
 
       Stats.mapped(stats, "force") != "hunyuan-gong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 hunyuan-gong。\n"}
 
       Stats.mapped(stats, "force") != "jiuyang-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 jiuyang-shengong。\n"}
 
       Stats.mapped(stats, "force") != "jiuyin-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 jiuyin-shengong。\n"}
 
       Stats.mapped(stats, "force") != "kuihua-mogong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 kuihua-mogong。\n"}
 
       Stats.mapped(stats, "force") != "longxiang-gong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 longxiang-gong。\n"}
 
       Stats.mapped(stats, "force") != "tianhuan-shenjue" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 tianhuan-shenjue。\n"}
 
       Stats.mapped(stats, "force") != "xixing-dafa" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 xixing-dafa。\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
 
       Stats.mapped(stats, "force") != "zhanshen-xinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 zhanshen-xinjing。\n"}
 
       true ->
         :ok
@@ -80,8 +80,8 @@ defmodule Kantele.Combat.Skills.Performs.Force.Roar do
     vitals = character.meta.vitals
 
     cond do
-      vitals.jing < 1 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 800 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.jing < 1 -> {:error, "你的真气不够。\n"}
+      vitals.neili < 800 -> {:error, "TODO(migrate) neili 不足。\n"}
       true -> :ok
     end
   end

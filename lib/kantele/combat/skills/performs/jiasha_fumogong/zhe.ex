@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.JiashaFumogong.Zhe do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiasha-fumogong") < 140 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "jiasha-fumogong") < 140 -> {:error, "你的袈裟伏魔功还不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,11 +85,8 @@ defmodule Kantele.Combat.Skills.Performs.JiashaFumogong.Zhe do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "jiasha-fumogong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "unarmed") != "jiasha-fumogong" -> {:error, "你现在没有激发袈裟伏魔功为拳脚，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -97,8 +94,8 @@ defmodule Kantele.Combat.Skills.Performs.JiashaFumogong.Zhe do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 400 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2000 -> {:error, "你的内力的修为不够，现在无法使用\n"}
+      vitals.neili < 400 -> {:error, "你的真气不够，无法运用\n"}
       true -> :ok
     end
   end
@@ -139,8 +136,12 @@ defmodule Kantele.Combat.Skills.Performs.JiashaFumogong.Zhe do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 3)
-    result = Messages.interpolate("$N大喝一声，施出绝招「避云遮日」，顿时真气迸发，衣衫鼓动，双手猛然如闪电般地拍向$n。
-$n全身一颤，立足不稳，被$N这招击得飞起，重重的跌落在地上。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n全身一颤，立足不稳，被$N这招击得飞起，重重的跌落在地上。",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

@@ -76,9 +76,9 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.San do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "jingang-zhi") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "jingluo-xue") < 200 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你大力金刚指不够娴熟，难以施展\n"}
+      Stats.skill(stats, "jingang-zhi") < 200 -> {:error, "你对经络学了解不够，难以施展\n"}
+      Stats.skill(stats, "jingluo-xue") < 200 -> {:error, "你的内功火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,16 +88,16 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.San do
 
     cond do
       Stats.mapped(stats, "finger") != "jingang-zhi" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你没有激发大力金刚指，难以施展\n"}
 
       Stats.mapped(stats, "force") != "hunyuan-yiqi" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你现在没有激发少林内功为内功，难以施展\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "你没有准备大力金刚指，难以施展\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+        {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
 
       true ->
         :ok
@@ -108,8 +108,8 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.San do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 1000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 5000 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 1000 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -149,8 +149,12 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.San do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 800, 1)
-    result = Messages.interpolate("$N凝气于指，「一指点三脉」点出，顿时一股纯阳的内力直袭$n胸口！
-结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。",
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
     |> Broadcast.publish(result)

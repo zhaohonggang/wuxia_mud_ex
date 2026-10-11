@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "pixie-jian") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "pixie-jian") < 180 -> {:error, "你的辟邪剑法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "pixie-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "pixie-jian" -> {:error, "你没有准备使用辟邪剑法，难以施展\n"}
       true -> :ok
     end
   end
@@ -97,8 +97,8 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2600 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2600 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 300 -> {:error, "你的内力修为不足，难以施展\n"}
       true -> :ok
     end
   end
@@ -151,8 +151,18 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Po do
 
     result =
       if hit,
-        do: Messages.interpolate("", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate(
+            "= COMBAT_D->do_damage(me, target, REMOTE_ATTACK, damage, random(15) + 80,
+                                          (: final, me, target, damage :))",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else:
+          Messages.interpolate("$n大惊之下全然无法招架，急忙抽身急退数尺，躲开了这一招。",
+            n1: attacker.name,
+            n2: character.name
+          )
 
     conn
     |> Broadcast.publish(result)

@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Yuce do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "never-defeated") < 100 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "never-defeated") < 100 -> {:error, "你的不败神功火候不够，不会施展御策诀。\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Yuce do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 150 -> {:error, "你内力不够了。\n"}
       true -> :ok
     end
   end

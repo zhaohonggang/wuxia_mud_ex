@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "tie-zhang") < 160 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "tie-zhang") < 160 -> {:error, "你铁掌掌法火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "tie-zhang" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "strike") != "tie-zhang" -> {:error, "你没有激发铁掌掌法，难以施展\n"}
       true -> :ok
     end
   end
@@ -94,8 +94,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 2200 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 300 -> {:error, "你的内力修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -138,8 +138,9 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 4)
-    result = Messages.interpolate("$N运转真气施出「掌心雷」绝技，双掌翻红，有如火烧，朝$n猛然拍出。
-结果只听$n一声闷哼，被$N一掌劈个正着，口中鲜血狂喷而出。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("结果只听$n一声闷哼，被$N一掌劈个正着，口中鲜血狂喷而出。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

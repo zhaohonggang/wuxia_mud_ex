@@ -77,9 +77,9 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "chousui-zhang") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "huagong-dafa") < 220 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "poison") < 250 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "chousui-zhang") < 220 -> {:error, "你的化功大法火候不够。\n"}
+      Stats.skill(stats, "huagong-dafa") < 220 -> {:error, "你的基本毒技火候不够。\n"}
+      Stats.skill(stats, "poison") < 250 -> {:error, "你的抽髓掌火候不够。\n"}
       true -> :ok
     end
   end
@@ -88,8 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
-      vitals.neili < 3000 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.max_neili < 3000 -> {:error, "你现在内息不足，无法用内力施展\n"}
+      vitals.neili < 3000 -> {:error, "你的内力修为不足，无法用内力施展\n"}
       true -> :ok
     end
   end
@@ -146,11 +146,8 @@ $N把心一横，在自己舌尖狠命一咬，将毕生功力尽数喷出，顿
 
 $N把心一横，在自己舌尖狠命一咬，将毕生功力尽数喷出，顿时只见空气中血雾弥漫，腥臭无比，随即又
 听$N骨骼“噼里啪啦”一阵爆响，双臂顺着喷出的血柱一推，刹那间一座丈来高的奇毒火墙拔地而起，带
-着排山倒海之势向$n涌去！
-$N一声惨笑，长叹一声，眼前一黑，倒在了地上。
-
-$n见滔天热浪扑面涌来，只觉眼前一片通红，已被卷入火浪，毒焰席卷全身，连骨头都要烤焦一般。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+着排山倒海之势向$n涌去！", n1: attacker.name, n2: character.name),
+        else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)

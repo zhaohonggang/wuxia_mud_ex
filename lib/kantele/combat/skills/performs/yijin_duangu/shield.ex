@@ -41,10 +41,17 @@ defmodule Kantele.Combat.Skills.Performs.YijinDuangu.Shield do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "dodge") != "shexing-lifan" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      Stats.mapped(stats, "unarmed") != "dafumo-quan" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      Stats.mapped(stats, "whip") != "yinlong-bian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
-      true -> :ok
+      Stats.mapped(stats, "dodge") != "shexing-lifan" ->
+        {:error, "你还没有准备好小九阴神功，无法提升自己的防御力。\n"}
+
+      Stats.mapped(stats, "unarmed") != "dafumo-quan" ->
+        {:error, "TODO(migrate) 未激发/未准备 dafumo-quan。\n"}
+
+      Stats.mapped(stats, "whip") != "yinlong-bian" ->
+        {:error, "TODO(migrate) 未激发/未准备 yinlong-bian。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -52,7 +59,7 @@ defmodule Kantele.Combat.Skills.Performs.YijinDuangu.Shield do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 200 -> {:error, "你的内力不够。\n"}
       true -> :ok
     end
   end

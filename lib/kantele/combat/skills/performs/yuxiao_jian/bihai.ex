@@ -83,8 +83,8 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "bibo-shengong") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
-      Stats.skill(stats, "bihai-chaosheng") < 180 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      Stats.skill(stats, "bibo-shengong") < 180 -> {:error, "你的碧海潮生曲太低，难以施展\n"}
+      Stats.skill(stats, "bihai-chaosheng") < 180 -> {:error, "你碧波神功修为不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -93,7 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "yuxiao-jian" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      Stats.mapped(stats, "sword") != "yuxiao-jian" -> {:error, "你没有激发玉箫剑法，难以施展\n"}
       true -> :ok
     end
   end
@@ -102,7 +102,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      vitals.neili < 300 -> {:error, "你现在的内力不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -157,11 +157,10 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
 
     result =
       if hit,
-        do: Messages.interpolate("$n只感心头一震，脸上情不自禁的露出了一丝微笑。
-$n只感全身热血沸腾，就只想手舞足蹈的乱动一番。
-霎时间$n只感心头滚热，喉干舌燥，说不出的难受。
-此时$n已身陷绝境，全身气血逆流，再也无法脱身。", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+        do:
+          Messages.interpolate("$n只感心头一震，脸上情不自禁的露出了一丝微笑。", n1: attacker.name, n2: character.name),
+        else:
+          Messages.interpolate("$n只感全身热血沸腾，就只想手舞足蹈的乱动一番。", n1: attacker.name, n2: character.name)
 
     conn
     |> Broadcast.publish(result)
