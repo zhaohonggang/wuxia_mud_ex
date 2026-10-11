@@ -12,6 +12,8 @@ import sys
 from pathlib import Path
 from typing import Optional, List, Tuple, Dict, Any, Set
 
+CJK_RE = __import__('re').compile(r'[\u4e00-\u9fff]')
+
 
 class TranslatePerform:
     def __init__(self):
@@ -174,6 +176,8 @@ class TranslatePerform:
             'map_gates': self.pairs(self.map_gate_re.findall(text)),
             'prepared_gates': self.pairs(self.prepared_gate_re.findall(text)),
             'resource_gates': self.pairs(self.resource_gate_re.findall(text)),
+            # Position-aware gates + paired notify_fail (see pair_gates_with_messages)
+            'gates_paired': self.pair_gates_with_messages(text, gate_messages),
             # Original effects
             'add_costs': self.pairs(self.dedup(self.add_re.findall(text))),
             'set_flags': self.pairs(self.dedup(self.set_re.findall(text))),
@@ -404,12 +408,19 @@ class TranslatePerform:
             i += 1
         return text[start:].strip()
 
-    def extract_gate_messages(self, text: str) -> Dict[str, List[str]]:
+    def extract_gate_messages(self, text: str) -> Dict[str, Any]:
         """Extract notify_fail messages and associate with gate types by context.
-        
-        Scans text linearly, tracking the most recent gate condition before each notify_fail.
-        Multiple notify_fail for the same gate are all collected.
-        Returns dict: gate_type -> list of cleaned messages.
+
+        Returns a dict with the per-type message lists PLUS `ordered`: a list of
+        ``(gate_type, message)`` pairs **in source order**.
+
+        Why both: the per-type lists lose source order, so an emitter that zips
+        ``level_gates[i]`` with ``gate_msgs['level'][i]`` mis-pairs whenever the
+        two regexes collect their gates in different orders (e.g. yiyang-zhi/die
+        has `yiyang-zhi < 200 -> "你一阳指诀不够"` *before* `force < 300 ->
+        "你的内功火候不够"`, but level_gate_re returns force first).  Consumers
+        should prefer `ordered` and match each gate condition to the FIRST
+        unmatched notify_fail of the same type that appears *after* it.
         """
         gate_msgs = {
             'level': [],
@@ -418,49 +429,113 @@ class TranslatePerform:
             'resource': [],
             'weapon': [],
             'other': [],
+            'living': [],
         }
-        
+        ordered: List[Tuple[str, int, int]] = []  # (gate_type, pos, msg_id)
+        order_store: List[Tuple[str, str]] = []   # ordered (gate_type, clean)
+
         # Current context gate type - only changes when a NEW gate condition is seen
         current_gate = 'other'
         lines = text.split('\n')
-        
+
         for line in lines:
             stripped = line.strip()
-            
+
             # Detect gate conditions - these SET the current gate for subsequent notify_fail
-            if 'query_skill(' in stripped and '<' in stripped and 'notify_fail' not in stripped:
-                current_gate = 'level'
-            elif 'query_skill_mapped(' in stripped and '!=' in stripped and 'notify_fail' not in stripped:
-                current_gate = 'mapped'
+            if 'living(target)' in stripped and 'notify_fail' not in stripped:
+                current_gate = 'living'
+            elif 'is_fighting' in stripped and 'notify_fail' not in stripped:
+                current_gate = 'other'
             elif 'query_skill_prepared(' in stripped and '!=' in stripped and 'notify_fail' not in stripped:
                 current_gate = 'prepared'
-            elif 'query("' in stripped and '<' in stripped and 'notify_fail' not in stripped:
-                # resource gate: neili, qi, etc.
-                current_gate = 'resource'
+            elif 'query_skill_mapped(' in stripped and '!=' in stripped and 'notify_fail' not in stripped:
+                current_gate = 'mapped'
+            elif 'query_skill(' in stripped and '<' in stripped and 'notify_fail' not in stripped:
+                current_gate = 'level'
             elif 'query("skill_type")' in stripped and '!=' in stripped and 'notify_fail' not in stripped:
                 current_gate = 'weapon'
             elif 'query_temp("weapon")' in stripped and 'notify_fail' not in stripped:
                 current_gate = 'weapon'
-            # Living target check
-            elif 'living(target)' in stripped and 'notify_fail' not in stripped:
-                current_gate = 'other'
-            # Fighting check
-            elif 'is_fighting' in stripped and 'notify_fail' not in stripped:
-                current_gate = 'other'
-            
-            # Extract notify_fail - associate with current gate, DON'T reset gate after - associate with current gate, DON'T reset gate after
+            elif 'query("' in stripped and '<' in stripped and 'notify_fail' not in stripped:
+                # resource gate: neili, qi, etc.
+                current_gate = 'resource'
+
+            # Extract notify_fail - associate with current gate
             for m in self.notify_fail_re.finditer(stripped):
                 msg = m.group(1)
                 clean = self._clean_message_fragment(msg)
                 if clean:
                     gate_msgs[current_gate].append(clean)
-                # NOTE: current_gate is NOT reset here - multiple notify_fail for same gate are kept
-        
-        # Deduplicate
+                    order_store.append((current_gate, clean))
+
+        # Deduplicate the per-type lists
         for k in gate_msgs:
             gate_msgs[k] = self.dedup(gate_msgs[k])
-        
+
+        gate_msgs['ordered'] = order_store
         return gate_msgs
+
+    def gate_msgs_in_order(self, data: Dict[str, Any], gate_type: str) -> List[str]:
+        """Return that type's notify_fail messages in SOURCE order (undeduped).
+
+        The `ordered` stream preserves the true sequence; filter it by type so
+        emitters can consume messages positionally in the same order the
+        conditions were parsed.
+        """
+        gate = data.get('gate_messages', {}) or {}
+        ordered = gate.get('ordered')
+        if ordered:
+            return [msg for (t, msg) in ordered if t == gate_type]
+        return list(gate.get(gate_type, []))
+
+    def pair_gates_with_messages(self, text: str, gate_messages: Dict[str, Any]) -> List[Dict[str, str]]:
+        """Pair each notifiable gate condition with the notify_fail that follows it.
+
+        Walks the source once, recording every gate *condition* with its offset,
+        then each notify_fail with its offset, and binds each condition to the
+        first still-unconsumed notify_fail appearing after it (the LPC idiom is
+        always ``if (cond) return notify_fail("msg");``).  This fixes the
+        positional zip bug where ``level_gates`` order differs from
+        ``gate_messages`` order.
+
+        Returns a list of dicts: {kind, skill/field, value, msg, pos}.
+        `kind` is one of level|mapped|prepared|resource|weapon.
+        """
+        kinds = [
+            ('level', re.compile(r'query_skill\("([a-z0-9-]+)"[^)]*\)+\s*<\s*(\d+)')),
+            ('mapped', re.compile(r'query_skill_mapped\("(\w+)"\)\s*!=\s*"([a-z0-9-]+)"')),
+            ('prepared', re.compile(r'query_skill_prepared\("(\w+)"\)\s*!=\s*"([a-z0-9-]+)"')),
+            ('resource', re.compile(r'query\("(\w+)"[^)]*\)+\s*<\s*(\d+)')),
+            ('weapon', re.compile(r'query_temp\("weapon"\)[^)]*\)\s*(?:\|\||&&|>)')),
+        ]
+        conds = []  # (pos, kind, arg1, arg2)
+        for kind, rx in kinds:
+            for m in rx.finditer(text):
+                g = m.groups()
+                a1 = g[0] if g else ''
+                a2 = g[1] if len(g) > 1 else ''
+                conds.append((m.start(), kind, a1 or '', a2 or ''))
+        fails = [(m.start(), self._clean_message_fragment(m.group(1)))
+                 for m in self.notify_fail_re.finditer(text)]
+        fails = [(p, c) for (p, c) in fails if c]
+        conds.sort(key=lambda x: x[0])
+        fails.sort(key=lambda x: x[0])
+
+        used = set()
+        out = []
+        for (pos, kind, a1, a2) in conds:
+            msg = ''
+            for i, (fp, fmsg) in enumerate(fails):
+                if i in used:
+                    continue
+                if fp > pos:
+                    msg = fmsg
+                    used.add(i)
+                    break
+            # Only keep gates whose message is CJK (avoid pairing to code noise)
+            if msg and CJK_RE.search(msg):
+                out.append({'kind': kind, 'arg1': a1, 'arg2': a2, 'msg': msg, 'pos': pos})
+        return out
 
     def extract_hit_miss_messages(self, text: str) -> Dict[str, List[str]]:
         """Extract hit/miss messages from msg construction in hit check block.
@@ -1237,14 +1312,24 @@ class TranslatePerform:
         return '\n\n'.join(blocks)
 
     def _emit_level_checks(self, data: Dict[str, Any]) -> Optional[Tuple[str, str]]:
-        pairs = [(s, n) for (s, n) in data.get('level_gates', []) if s and n]
+        # Derive conditions from `gates_paired`, which preserves LPC source
+        # order.  `level_gates` cannot be used: `pairs()` applies
+        # `sorted(set(...))`, which reorders the checks alphabetically and
+        # makes the emitter's `cond` short-circuit in the wrong order (e.g.
+        # bagua-biao evaluates before bagua-zhang, so a character low in both
+        # sees the wrong rejection message first).
+        paired = [g for g in data.get('gates_paired', []) if g['kind'] == 'level']
+        if paired:
+            pairs = [(g['arg1'], g['arg2']) for g in paired]
+            msgs_for = [g['msg'] for g in paired]
+        else:
+            pairs = [(s, n) for (s, n) in data.get('level_gates', []) if s and n]
+            msgs_for = data.get('gate_messages', {}).get('level', [])
         if not pairs:
             return None
-        gate_msgs = data.get('gate_messages', {}).get('level', [])
-        # Use first gate message for each skill, or fallback
         clauses = []
         for i, (s, n) in enumerate(pairs):
-            msg = gate_msgs[i] if i < len(gate_msgs) else f'TODO(migrate) {s} 等级不足。'
+            msg = msgs_for[i] if i < len(msgs_for) else f'TODO(migrate) {s} 等级不足。'
             clauses.append((f'Stats.skill(stats, "{s}") < {n}', f'{{:error, "{msg}\\n"}}'))
         clauses.append(('true', ':ok'))
         body = (
@@ -1256,12 +1341,23 @@ class TranslatePerform:
         return ("check_levels", body)
 
     def _emit_map_checks(self, data: Dict[str, Any]) -> Optional[Tuple[str, str]]:
-        pairs = [(u, s) for (u, s) in data.get('map_gates', []) if u and s]
-        prep_pairs = [(u, s) for (u, s) in data.get('prepared_gates', []) if u and s]
+        # Prefer source-ordered gates from `gates_paired` (see _emit_level_checks).
+        paired_mapped = [g for g in data.get('gates_paired', []) if g['kind'] == 'mapped']
+        paired_prep = [g for g in data.get('gates_paired', []) if g['kind'] == 'prepared']
+        if paired_mapped:
+            pairs = [(g['arg1'], g['arg2']) for g in paired_mapped]
+            mapped_msgs = [g['msg'] for g in paired_mapped]
+        else:
+            pairs = [(u, s) for (u, s) in data.get('map_gates', []) if u and s]
+            mapped_msgs = data.get('gate_messages', {}).get('mapped', [])
+        if paired_prep:
+            prep_pairs = [(g['arg1'], g['arg2']) for g in paired_prep]
+            prepared_msgs = [g['msg'] for g in paired_prep]
+        else:
+            prep_pairs = [(u, s) for (u, s) in data.get('prepared_gates', []) if u and s]
+            prepared_msgs = data.get('gate_messages', {}).get('prepared', [])
         if not pairs and not prep_pairs:
             return None
-        mapped_msgs = data.get('gate_messages', {}).get('mapped', [])
-        prepared_msgs = data.get('gate_messages', {}).get('prepared', [])
         clauses = []
         for i, (u, s) in enumerate(pairs):
             msg = mapped_msgs[i] if i < len(mapped_msgs) else f'TODO(migrate) 未激发 {s}。'
@@ -1293,11 +1389,19 @@ class TranslatePerform:
         return ("check_mapped", body)
 
     def _emit_resource_checks(self, data: Dict[str, Any]) -> Optional[Tuple[str, str]]:
-        pairs = [(r, n) for (r, n) in data.get('resource_gates', [])
-                 if r in self.VITALS_FIELDS and n]
+        # Prefer source-ordered gates from `gates_paired` (see _emit_level_checks).
+        paired_res = [g for g in data.get('gates_paired', []) if g['kind'] == 'resource']
+        if paired_res:
+            pairs = [(g['arg1'], g['arg2']) for g in paired_res
+                     if g['arg1'] in self.VITALS_FIELDS and g['arg2']]
+            gate_msgs = [g['msg'] for g in paired_res
+                         if g['arg1'] in self.VITALS_FIELDS and g['arg2']]
+        else:
+            pairs = [(r, n) for (r, n) in data.get('resource_gates', [])
+                     if r in self.VITALS_FIELDS and n]
+            gate_msgs = data.get('gate_messages', {}).get('resource', [])
         if not pairs:
             return None
-        gate_msgs = data.get('gate_messages', {}).get('resource', [])
         clauses = []
         for i, (r, n) in enumerate(pairs):
             msg = gate_msgs[i] if i < len(gate_msgs) else f'TODO(migrate) {r} 不足。'
@@ -1396,22 +1500,43 @@ class TranslatePerform:
         )
         return ("check_weapon", body)
 
+    def _emit_living_check(self, data: Dict[str, Any]) -> Optional[Tuple[str, str]]:
+        """Return the `! living(target)` guard message for the target side.
+
+        LPC guards the perform with `if (! living(target)) return
+        notify_fail("对方都已经这样了，用不着这么费力吧？\\n");`.  The
+        attacker only holds a lightweight enemy *ref* (`%{id, pid, name,
+        room_id}`) with no `status`, so the check cannot run attacker-side —
+        it must run in `resolve_incoming/4` on the victim process, which has the
+        full character (including `meta.combat.dead`).  This helper just
+        surfaces the message; `_emit_resolve_incoming` inlines the guard.
+        """
+        msgs = data.get('gate_messages', {}).get('living', [])
+        return msgs[0] if msgs else None
+
     def _emit_other_checks(self, data: Dict[str, Any]) -> Optional[Tuple[str, str]]:
         """Emit checks for notify_fail messages that couldn't be categorized.
 
         These gates (can_perform / is_fighting / living / busy / temp-state /
         item checks) are already covered by dedicated helpers where they are
         mechanically decidable (`check_perform_known`, `target/1`, target-side
-        death check).  Associating an `other` message with a concrete
+        living check).  Associating an `other` message with a concrete
         condition by position is unreliable, so keep the texts as a TODO
         comment instead of emitting a never-firing `false ->` placeholder or a
         mis-bound check.  Function always returns :ok.
+
+        The `can_perform` text ("你所使用的外功中没有这种功能") is already
+        emitted verbatim by `check_perform_known/1`, so it is filtered out here
+        to avoid a duplicate that would otherwise look like a missing gate.
         """
-        gate_msgs = data.get('gate_messages', {}).get('other', [])
+        gate_msgs = [
+            m for m in data.get('gate_messages', {}).get('other', [])
+            if '你所使用的外功中没有这种功能' not in m
+        ]
         if not gate_msgs:
             return None
         body = (
-            "    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：\n"
+            "    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：\n"
             + ''.join('    #   {:error, "' + msg + '\\n"}\n' for msg in gate_msgs)
             + "    :ok\n"
         )
@@ -1649,8 +1774,25 @@ class TranslatePerform:
             "",
             "  @impl true",
             "  def resolve_incoming(conn, character, attacker, data) do",
-            "    _stats = character.meta.stats",  # prefix unused
         ]
+        # Target-side `! living(target)` guard: LPC refuses the perform when the
+        # victim is already a corpse.  The victim process has the full
+        # character here, so `meta.combat.dead` is authoritative.  The callback
+        # must return a conn (it is not a with-chain), so broadcast the LPC
+        # message and skip the damage instead of returning a tuple.
+        living_msg = self._emit_living_check(data)
+        if living_msg:
+            lines.extend([
+                "    if character.meta.combat.dead do",
+                f'      Broadcast.publish(conn, "{living_msg}", n1: attacker.name, n2: character.name)',
+                "    else",
+                "      do_resolve_incoming(conn, character, attacker, data)",
+                "    end",
+                "  end",
+                "",
+                "  defp do_resolve_incoming(conn, character, attacker, data) do",
+            ])
+        lines.append("    _stats = character.meta.stats")  # prefix unused
         # Add data bindings - only for vars actually used
         used_in_damage = set()
         for d in target_damages:

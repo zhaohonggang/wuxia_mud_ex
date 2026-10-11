@@ -73,9 +73,8 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你快不行了，再练会送命的！\n"}
-      vitals.qi < 200 -> {:error, "你的内力不够，不足以对抗毒气，别把小命送掉。\n"}
-      vitals.qi < 50 -> {:error, "你的千蛛万毒手火候太浅，不能用来吸取毒素！\n"}
+      vitals.neili < 200 -> {:error, "你的内力不够，不足以对抗毒气，别把小命送掉。\n"}
+      vitals.qi < 50 -> {:error, "你快不行了，再练会送命的！\n"}
       true -> :ok
     end
   end
@@ -90,8 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
-    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你正在修炼中！\n"}
     #   {:error, "你正忙着呢！\n"}
     #   {:error, "你的实战经验不够，无法继续修炼千蛛万毒手！\n"}

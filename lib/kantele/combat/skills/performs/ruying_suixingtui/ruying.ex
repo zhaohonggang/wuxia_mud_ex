@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 160 -> {:error, "你的内功等级不够，不能使用「如影随形」。\n"}
       Stats.skill(stats, "ruying-suixingtui") < 160 -> {:error, "你的如影随形腿不够娴熟，不会使用「如影随形」。\n"}
+      Stats.skill(stats, "force") < 160 -> {:error, "你的内功等级不够，不能使用「如影随形」。\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "ruying-suixingtui" -> {:error, "你现在无法使用「如影随形」进行攻击。\n"}
+      Stats.mapped(stats, "unarmed") != "ruying-suixingtui" -> {:error, "你的内力修为太弱，不能使用「如影随形」！\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,6 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
 
     cond do
       vitals.max_neili < 2000 -> {:error, "你现在内力太少，不能使用「如影随形」。\n"}
-      vitals.neili < 700 -> {:error, "你的内力修为太弱，不能使用「如影随形」！\n"}
       true -> :ok
     end
   end
@@ -110,7 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「如影随形」只能在战斗中对对手使用。\n"}
     #   {:error, "你所使用的外功中没有这样的功能。\n"}
     :ok

@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.ShouYin.Jie do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "你的内功修为不够，无法使用天劫！\n"}
       Stats.skill(stats, "shou-yin") < 150 -> {:error, "你的手印火候不够，无法使用天劫！\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功修为不够，无法使用天劫！\n"}
       true -> :ok
     end
   end
@@ -94,9 +94,9 @@ defmodule Kantele.Combat.Skills.Performs.ShouYin.Jie do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "你的体力现在不够！\n"}
-      vitals.neili < 500 -> {:error, "你的内力修为还不够，无法施展天劫。\n"}
-      vitals.qi < 800 -> {:error, "你的真气不够！\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内力修为还不够，无法施展天劫。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够！\n"}
+      vitals.qi < 800 -> {:error, "你的体力现在不够！\n"}
       true -> :ok
     end
   end
@@ -111,7 +111,7 @@ defmodule Kantele.Combat.Skills.Performs.ShouYin.Jie do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「天劫」只能在战斗中对对手使用。\n"}
     :ok
 

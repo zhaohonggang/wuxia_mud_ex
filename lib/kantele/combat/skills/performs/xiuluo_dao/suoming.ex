@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoDao.Suoming do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的修罗刀法修为不够，目前不能使用修罗索命！\n"}
-      Stats.skill(stats, "xiuluo-dao") < 135 -> {:error, "你的内功的修为不够，不能使用这一绝技！\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功的修为不够，不能使用这一绝技！\n"}
+      Stats.skill(stats, "xiuluo-dao") < 135 -> {:error, "你的修罗刀法修为不够，目前不能使用修罗索命！\n"}
       true -> :ok
     end
   end
@@ -113,9 +113,8 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoDao.Suoming do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「修罗索命」只能在战斗中对对手使用。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     :ok
 
   end
@@ -150,6 +149,14 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoDao.Suoming do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)

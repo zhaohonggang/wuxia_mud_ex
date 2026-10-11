@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.ChuncanZhang.Jian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "chuncan-zhang") < 80 -> {:error, "你的内功火候不够，难以施展\n"}
-      Stats.skill(stats, "force") < 120 -> {:error, "你的春蚕掌法不够娴熟，难以施展\n"}
+      Stats.skill(stats, "chuncan-zhang") < 80 -> {:error, "你的春蚕掌法不够娴熟，难以施展\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -101,9 +101,8 @@ defmodule Kantele.Combat.Skills.Performs.ChuncanZhang.Jian do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你已经运起\n"}
-    #   {:error, "你所使用的外功中没有这种功能。\n"}
     :ok
 
   end

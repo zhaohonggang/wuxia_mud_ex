@@ -63,8 +63,7 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -86,14 +85,6 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
       vitals.neili < 100 -> {:error, "你现在真气不足，难以施展\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
-    #   {:error, "你所使用的外功中没有这种功能。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do
@@ -124,6 +115,14 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)

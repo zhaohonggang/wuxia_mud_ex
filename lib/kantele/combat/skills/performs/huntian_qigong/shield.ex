@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.HuntianQigong.Shield do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "huntian-qigong") < 200 -> {:error, "你已经在运功中了。\n"}
+      Stats.skill(stats, "huntian-qigong") < 200 -> {:error, "你的混天气功修为不够。\n"}
       true -> :ok
     end
   end
@@ -57,7 +57,7 @@ defmodule Kantele.Combat.Skills.Performs.HuntianQigong.Shield do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你只能用混天气功来提升自己的防御力。\n"}
     :ok
 

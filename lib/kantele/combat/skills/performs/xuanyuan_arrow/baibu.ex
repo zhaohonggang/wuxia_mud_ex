@@ -88,9 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanyuanArrow.Baibu do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你现在手中并没有拿着箭，怎么施展百步穿杨？\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     #   {:error, "百步穿杨只能在战斗中对对手使用。\n"}
     #   {:error, "至少要有一支箭你才能施展百步穿杨。\n"}
     :ok
@@ -128,6 +127,14 @@ defmodule Kantele.Combat.Skills.Performs.XuanyuanArrow.Baibu do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     level = Map.get(data, :level, 0)
     skill = Map.get(data, :skill, 0)

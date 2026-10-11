@@ -72,8 +72,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -82,8 +81,8 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "canhe-zhi") < 220 -> {:error, "你的内功修为太差，难以施展\n"}
-      Stats.skill(stats, "force") < 320 -> {:error, "你的参合指修为有限，难以施展\n"}
+      Stats.skill(stats, "canhe-zhi") < 220 -> {:error, "你的参合指修为有限，难以施展\n"}
+      Stats.skill(stats, "force") < 320 -> {:error, "你的内功修为太差，难以施展\n"}
       true -> :ok
     end
   end
@@ -115,14 +114,6 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
     end
   end
 
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
-    #   {:error, "你所使用的外功中没有这种功能。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-    :ok
-
-  end
-
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     combat = character.meta.combat
@@ -148,6 +139,14 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)

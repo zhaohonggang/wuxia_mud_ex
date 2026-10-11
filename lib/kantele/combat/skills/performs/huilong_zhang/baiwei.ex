@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.HuilongZhang.Baiwei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "huilong-zhang") < 80 -> {:error, "你的内功等级不够，不能使用「神龙摆尾」。\n"}
-      Stats.skill(stats, "shaolin-xinfa") < 80 -> {:error, "你的回龙杖不够娴熟，不会使用「神龙摆尾」。\n"}
+      Stats.skill(stats, "huilong-zhang") < 80 -> {:error, "你的回龙杖不够娴熟，不会使用「神龙摆尾」。\n"}
+      Stats.skill(stats, "shaolin-xinfa") < 80 -> {:error, "你的内功等级不够，不能使用「神龙摆尾」。\n"}
       true -> :ok
     end
   end
@@ -99,7 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.HuilongZhang.Baiwei do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「神龙摆尾」只能在战斗中对对手使用。\n"}
     :ok
 

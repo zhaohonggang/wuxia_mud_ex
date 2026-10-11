@@ -51,15 +51,13 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Suck do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1 -> {:error, "你的内力不够，不能使用吸星大法。\n"}
-      vitals.max_neili < 100 -> {:error, "你的内功水平有限，再吸取也是徒劳。\n"}
-      vitals.neili < 100 -> {:error, "TODO(migrate) neili 不足。\n"}
+      vitals.neili < 100 -> {:error, "你的内力不够，不能使用吸星大法。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你刚刚吸取过丹元！\n"}
     #   {:error, "你只能吸取战斗中的对手的丹元！\n"}
     #   {:error, "在这里不能攻击他人。\n"}

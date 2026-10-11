@@ -65,8 +65,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -94,16 +93,8 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
 
     cond do
       vitals.max_neili < 8500 -> {:error, "你的内力的修为不够，现在无法使用\n"}
-      vitals.neili < 0 -> {:error, "你的真气不够，无法运用\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
-    #   {:error, "你所使用的外功中没有这种功能。\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

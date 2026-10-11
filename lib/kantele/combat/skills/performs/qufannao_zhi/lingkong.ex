@@ -64,8 +64,7 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -74,8 +73,8 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "hunyuan-yiqi") < 100 -> {:error, "你的去烦恼指不够娴熟，不会使用\n"}
-      Stats.skill(stats, "qufannao-zhi") < 100 -> {:error, "你的心意气混元功不够高，不能用内力催动指力伤敌。\n"}
+      Stats.skill(stats, "qufannao-zhi") < 100 -> {:error, "你的去烦恼指不够娴熟，不会使用\n"}
+      Stats.skill(stats, "hunyuan-yiqi") < 100 -> {:error, "你的心意气混元功不够高，不能用内力催动指力伤敌。\n"}
       true -> :ok
     end
   end
@@ -96,13 +95,6 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
       combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
-    #   {:error, "你所使用的外功中没有这种功能。\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

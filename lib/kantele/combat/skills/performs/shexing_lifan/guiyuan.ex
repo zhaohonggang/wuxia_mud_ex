@@ -75,9 +75,9 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 150 -> {:error, "你的内功火候不够，难以施展此项绝技！\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的蛇行狸翻等级不够，难以施展此项绝技！\n"}
-      Stats.skill(stats, "shexing-lifan") < 150 -> {:error, "你的身法不够使用「九阴归元」绝技！\n"}
+      Stats.skill(stats, "shexing-lifan") < 150 -> {:error, "你的蛇行狸翻等级不够，难以施展此项绝技！\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展此项绝技！\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，不会使用此项绝技！\n"}
       true -> :ok
     end
   end
@@ -86,14 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1000 -> {:error, "你此时的内力不足！\n"}
-      vitals.neili < 250 -> {:error, "你的内力修为不够使用「九阴归元」！\n"}
+      vitals.max_neili < 1000 -> {:error, "你的内力修为不够使用「九阴归元」！\n"}
+      vitals.neili < 250 -> {:error, "你此时的内力不足！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你已经运起「九阴归元」了。\n"}
     :ok
 

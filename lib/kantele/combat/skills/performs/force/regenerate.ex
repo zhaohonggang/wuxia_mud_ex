@@ -32,7 +32,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Regenerate do
   defp check_gates(character), do: check_other(character)
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你只能用内功恢复自己的精力。\n"}
     #   {:error, "你现在精气旺盛。\n"}
     :ok

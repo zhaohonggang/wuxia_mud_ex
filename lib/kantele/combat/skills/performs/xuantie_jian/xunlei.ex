@@ -77,9 +77,9 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功等级不够，使不出「迅雷击」。\n"}
-      Stats.skill(stats, "surge-force") < 160 -> {:error, "你的怒海狂涛修为不够，使不出「迅雷击」。\n"}
       Stats.skill(stats, "xuantie-jian") < 160 -> {:error, "你的玄铁剑法还不够娴熟，使不出「迅雷击」。\n"}
+      Stats.skill(stats, "surge-force") < 160 -> {:error, "你的怒海狂涛修为不够，使不出「迅雷击」。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功等级不够，使不出「迅雷击」。\n"}
       true -> :ok
     end
   end
@@ -88,8 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "parry") != "xuantie-jian" -> {:error, "你必须激发玄铁剑法才能使出「迅雷击」！\n"}
-      Stats.mapped(stats, "sword") != "xuantie-jian" -> {:error, "你的基本招架必须是玄铁剑法时才能使出「迅雷击」！\n"}
+      Stats.mapped(stats, "parry") != "xuantie-jian" -> {:error, "你的基本招架必须是玄铁剑法时才能使出「迅雷击」！\n"}
+      Stats.mapped(stats, "sword") != "xuantie-jian" -> {:error, "你必须激发玄铁剑法才能使出「迅雷击」！\n"}
       true -> :ok
     end
   end
@@ -112,7 +112,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「迅雷击」只能在战斗中对对手使用。\n"}
     #   {:error, "你未得高人指点，不知该如何施展「迅雷击」。\n"}
     :ok

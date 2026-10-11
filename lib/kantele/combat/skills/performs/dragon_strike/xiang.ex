@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Xiang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dragon-strike") < 150 -> {:error, "你的内功修为不够，无法使用「龙翔九天」！\n"}
-      Stats.skill(stats, "force") < 300 -> {:error, "你的降龙十八掌火候不够，无法使用「龙翔九天」！\n"}
+      Stats.skill(stats, "dragon-strike") < 150 -> {:error, "你的降龙十八掌火候不够，无法使用「龙翔九天」！\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功修为不够，无法使用「龙翔九天」！\n"}
       true -> :ok
     end
   end
@@ -94,9 +94,9 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Xiang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2000 -> {:error, "你的体力现在不够！\n"}
-      vitals.neili < 500 -> {:error, "你的内力修为还不够，无法施展「龙翔九天」。\n"}
-      vitals.qi < 800 -> {:error, "你的真气不够！\n"}
+      vitals.max_neili < 2000 -> {:error, "你的内力修为还不够，无法施展「龙翔九天」。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够！\n"}
+      vitals.qi < 800 -> {:error, "你的体力现在不够！\n"}
       true -> :ok
     end
   end
@@ -111,9 +111,8 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Xiang do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「龙翔九天」只能在战斗中对对手使用。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     :ok
 
   end
@@ -144,6 +143,14 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Xiang do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)

@@ -40,13 +40,13 @@ defmodule Kantele.Combat.Skills.Performs.Force.Recover do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 20 -> {:error, "你现在气力充沛。\n"}
+      vitals.neili < 20 -> {:error, "你的内力不够。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你只能用内功调匀自己的气息。\n"}
     :ok
 

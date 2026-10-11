@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "hamagong" -> {:error, "你必须先将蛤蟆功运用于掌法之中，才能运用\n"}
+      Stats.mapped(stats, "strike") != "hamagong" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -114,9 +114,8 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你的蛤蟆功修为不够精深，不能使用\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     #   {:error, "蛤蟆功\n"}
     :ok
 
@@ -141,6 +140,14 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)

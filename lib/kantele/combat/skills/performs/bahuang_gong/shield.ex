@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.BahuangGong.Shield do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "bahuang-gong") < 50 -> {:error, "你已经在运功中了。\n"}
+      Stats.skill(stats, "bahuang-gong") < 50 -> {:error, "你的八荒六合唯我独尊功修为不够。\n"}
       true -> :ok
     end
   end
@@ -57,7 +57,7 @@ defmodule Kantele.Combat.Skills.Performs.BahuangGong.Shield do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你只能用八荒六合唯我独尊功来提升自己的防御力。\n"}
     :ok
 

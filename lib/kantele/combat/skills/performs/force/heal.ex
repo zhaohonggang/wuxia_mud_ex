@@ -40,13 +40,13 @@ defmodule Kantele.Combat.Skills.Performs.Force.Heal do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 50 -> {:error, "你已经受伤过重，只怕一运真气便有生命危险！\n"}
+      vitals.neili < 50 -> {:error, "你的真气不够。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你现在气血充盈，不需要疗伤。\n"}
     #   {:error, "先激发你的特殊内功。\n"}
     #   {:error, "天魔解体状态不能运功疗伤！\n"}

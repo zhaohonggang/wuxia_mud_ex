@@ -77,9 +77,9 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "chousui-zhang") < 220 -> {:error, "你的化功大法火候不够。\n"}
-      Stats.skill(stats, "huagong-dafa") < 220 -> {:error, "你的基本毒技火候不够。\n"}
-      Stats.skill(stats, "poison") < 250 -> {:error, "你的抽髓掌火候不够。\n"}
+      Stats.skill(stats, "chousui-zhang") < 220 -> {:error, "你的抽髓掌火候不够。\n"}
+      Stats.skill(stats, "poison") < 250 -> {:error, "你的基本毒技火候不够。\n"}
+      Stats.skill(stats, "huagong-dafa") < 220 -> {:error, "你的化功大法火候不够。\n"}
       true -> :ok
     end
   end
@@ -96,17 +96,15 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "你现在内息不足，无法用内力施展\n"}
-      vitals.neili < 3000 -> {:error, "你的内力修为不足，无法用内力施展\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内力修为不足，无法用内力施展\n"}
+      vitals.neili < 3000 -> {:error, "你现在内息不足，无法用内力施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你只能对战斗中的对手施展\n"}
-    #   {:error, "你所使用的外功中没有这种功能。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     :ok
 
   end
@@ -141,6 +139,14 @@ $N把心一横，在自己舌尖狠命一咬，将毕生功力尽数喷出，顿
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)

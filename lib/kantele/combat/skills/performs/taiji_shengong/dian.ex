@@ -51,15 +51,15 @@ defmodule Kantele.Combat.Skills.Performs.TaijiShengong.Dian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.jing < 100 -> {:error, "你现在的真气不足，难以施展\n"}
-      vitals.max_neili < 1500 -> {:error, "你现在精神状态不佳，难以施展\n"}
-      vitals.neili < 1000 -> {:error, "你的内力修为太浅，难以施展\n"}
+      vitals.max_neili < 1500 -> {:error, "你的内力修为太浅，难以施展\n"}
+      vitals.neili < 1000 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.jing < 100 -> {:error, "你现在精神状态不佳，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你所学的内功中没有这种功能。\n"}
     #   {:error, "你无法给\n"}
     #   {:error, "你要用真气为谁疗伤？\n"}

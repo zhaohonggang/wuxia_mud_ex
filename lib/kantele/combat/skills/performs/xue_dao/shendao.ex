@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 100 -> {:error, "你内功火候不够，难以施展「祭血神刀」。\n"}
       Stats.skill(stats, "xue-dao") < 100 -> {:error, "你血刀刀法不够娴熟，使不出「祭血神刀」。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你内功火候不够，难以施展「祭血神刀」。\n"}
       true -> :ok
     end
   end
@@ -96,9 +96,9 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1200 -> {:error, "你为人不够凶残，还无法领会「祭血神刀」的奥妙。\n"}
+      vitals.max_neili < 1200 -> {:error, "你的内力修为不足，无法运足内力。\n"}
       vitals.neili < 400 -> {:error, "你现在真气不够，无法将「祭血神刀」使完！\n"}
-      vitals.qi < 100 -> {:error, "你的内力修为不足，无法运足内力。\n"}
+      vitals.qi < 100 -> {:error, "你还敢使这招？找死啊！\n"}
       true -> :ok
     end
   end
@@ -111,10 +111,9 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「祭血神刀」只能对战斗中的对手使用。\n"}
     #   {:error, "你还不会使用「祭血神刀」！\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     :ok
 
   end
@@ -148,6 +147,14 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)

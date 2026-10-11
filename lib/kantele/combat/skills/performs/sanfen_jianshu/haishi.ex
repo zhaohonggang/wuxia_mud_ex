@@ -77,9 +77,9 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 150 -> {:error, "你的三分剑术的修为不够，不能使用这一绝技！\n"}
-      Stats.skill(stats, "sanfen-jianshu") < 150 -> {:error, "你的剑术修为不够，目前不能使用「海市蜃楼」！\n"}
-      Stats.skill(stats, "sword") < 150 -> {:error, "你的轻功修为不够，无法使用「海市蜃楼」！\n"}
+      Stats.skill(stats, "sword") < 150 -> {:error, "你的剑术修为不够，目前不能使用「海市蜃楼」！\n"}
+      Stats.skill(stats, "sanfen-jianshu") < 150 -> {:error, "你的三分剑术的修为不够，不能使用这一绝技！\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，无法使用「海市蜃楼」！\n"}
       true -> :ok
     end
   end
@@ -103,10 +103,9 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「海市蜃楼」只能在战斗中对对手使用。\n"}
     #   {:error, "你不会使用「海市蜃楼」这一绝技！\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     :ok
 
   end
@@ -137,6 +136,14 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)

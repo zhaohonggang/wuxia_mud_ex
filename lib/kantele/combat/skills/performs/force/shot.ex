@@ -33,8 +33,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -43,8 +42,8 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "poison") < 100 -> {:error, "你的基本暗器火候不够。\n"}
-      Stats.skill(stats, "throwing") < 100 -> {:error, "你的基本毒技火候不够。\n"}
+      Stats.skill(stats, "poison") < 100 -> {:error, "在这里不能攻击他人。\n"}
+      Stats.skill(stats, "throwing") < 100 -> {:error, "你的真气不够。\n"}
       true -> :ok
     end
   end
@@ -53,23 +52,12 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "hamagong" ->
-        {:error, "你所学的内功中没有这种功能。\n"}
-
-      Stats.mapped(stats, "force") != "huagong-dafa" ->
-        {:error, "你的内功修为不够。\n"}
-
-      Stats.mapped(stats, "force") != "huaxue-shengong" ->
-        {:error, "TODO(migrate) 未激发 huaxue-shengong。\n"}
-
-      Stats.mapped(stats, "force") != "shennong-xinjing" ->
-        {:error, "TODO(migrate) 未激发 shennong-xinjing。\n"}
-
-      Stats.mapped(stats, "force") != "xiuluo-yinshagong" ->
-        {:error, "TODO(migrate) 未激发 xiuluo-yinshagong。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "xiuluo-yinshagong" -> {:error, "你所学的内功中没有这种功能。\n"}
+      Stats.mapped(stats, "force") != "huagong-dafa" -> {:error, "你的内功修为不够。\n"}
+      Stats.mapped(stats, "force") != "hamagong" -> {:error, "你的基本毒技火候不够。\n"}
+      Stats.mapped(stats, "force") != "shennong-xinjing" -> {:error, "你的基本暗器火候不够。\n"}
+      Stats.mapped(stats, "force") != "huaxue-shengong" -> {:error, "在这里不能攻击他人。\n"}
+      true -> :ok
     end
   end
 
@@ -80,13 +68,6 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
       vitals.neili < 300 -> {:error, "你得先准备(hand)好毒药再说。\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

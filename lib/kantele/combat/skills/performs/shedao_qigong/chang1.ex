@@ -83,13 +83,13 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang1 do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你已经唱得太久了，不能再唱了。\n"}
+      vitals.neili < 300 -> {:error, "你已经唱得精疲力竭，内力不够了。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "唱仙法只能在战斗中使用。\n"}
     :ok
 

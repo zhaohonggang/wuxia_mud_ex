@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.YizhiChan.Jingmo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 180 -> {:error, "你的一指禅还不够娴熟，现在还无法使用「惊魔一指」。\n"}
-      Stats.skill(stats, "yizhi-chan") < 120 -> {:error, "你的内功火候不够，难以施展「惊魔一指」。\n"}
+      Stats.skill(stats, "yizhi-chan") < 120 -> {:error, "你的一指禅还不够娴熟，现在还无法使用「惊魔一指」。\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你的内功火候不够，难以施展「惊魔一指」。\n"}
       true -> :ok
     end
   end
@@ -103,9 +103,8 @@ defmodule Kantele.Combat.Skills.Performs.YizhiChan.Jingmo do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「惊魔一指」只能对战斗中的对手使用。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     :ok
 
   end
@@ -140,6 +139,14 @@ defmodule Kantele.Combat.Skills.Performs.YizhiChan.Jingmo do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)

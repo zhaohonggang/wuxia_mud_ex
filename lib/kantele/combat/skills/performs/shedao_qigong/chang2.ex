@@ -72,13 +72,13 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang2 do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shedao-qigong") < 80 -> {:error, "你已经唱得太久了，不能再唱了。\n"}
+      Stats.skill(stats, "shedao-qigong") < 80 -> {:error, "你的蛇岛奇功不够娴熟，不会使用唱仙法。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "唱仙法只能在战斗中使用。\n"}
     :ok
 

@@ -41,38 +41,12 @@ defmodule Kantele.Combat.Skills.Performs.Force.Roar do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "huntian-qigong" ->
-        {:error, "你所学的内功中没有这种功能。\n"}
-
-      Stats.mapped(stats, "force") != "hunyuan-gong" ->
-        {:error, "你的内功修为不够。\n"}
-
-      Stats.mapped(stats, "force") != "jiuyang-shengong" ->
-        {:error, "在这里不能攻击他人。\n"}
-
-      Stats.mapped(stats, "force") != "jiuyin-shengong" ->
-        {:error, "TODO(migrate) 未激发 jiuyin-shengong。\n"}
-
-      Stats.mapped(stats, "force") != "kuihua-mogong" ->
-        {:error, "TODO(migrate) 未激发 kuihua-mogong。\n"}
-
-      Stats.mapped(stats, "force") != "longxiang-gong" ->
-        {:error, "TODO(migrate) 未激发 longxiang-gong。\n"}
-
-      Stats.mapped(stats, "force") != "tianhuan-shenjue" ->
-        {:error, "TODO(migrate) 未激发 tianhuan-shenjue。\n"}
-
-      Stats.mapped(stats, "force") != "xixing-dafa" ->
-        {:error, "TODO(migrate) 未激发 xixing-dafa。\n"}
-
-      Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发 yijinjing。\n"}
-
-      Stats.mapped(stats, "force") != "zhanshen-xinjing" ->
-        {:error, "TODO(migrate) 未激发 zhanshen-xinjing。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "longxiang-gong" -> {:error, "你所学的内功中没有这种功能。\n"}
+      Stats.mapped(stats, "force") != "tianhuan-shenjue" -> {:error, "你的内功修为不够。\n"}
+      Stats.mapped(stats, "force") != "huntian-qigong" -> {:error, "在这里不能攻击他人。\n"}
+      Stats.mapped(stats, "force") != "jiuyang-shengong" -> {:error, "在这里不能攻击他人。\n"}
+      Stats.mapped(stats, "force") != "jiuyin-shengong" -> {:error, "你的真气不够。\n"}
+      true -> :ok
     end
   end
 

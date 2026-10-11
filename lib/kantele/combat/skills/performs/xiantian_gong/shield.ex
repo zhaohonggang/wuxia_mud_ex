@@ -50,7 +50,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Shield do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你已经在运功中了。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够。\n"}
       true -> :ok
     end
   end

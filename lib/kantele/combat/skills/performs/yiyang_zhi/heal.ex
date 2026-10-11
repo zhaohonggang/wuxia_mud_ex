@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jingluo-xue") < 100 -> {:error, "你对经络学的了解不够，难以施展\n"}
       Stats.skill(stats, "yiyang-zhi") < 100 -> {:error, "你的一阳指诀不够娴熟，难以施展\n"}
+      Stats.skill(stats, "jingluo-xue") < 100 -> {:error, "你对经络学的了解不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -93,15 +93,15 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
     vitals = character.meta.vitals
 
     cond do
+      vitals.max_neili < 1500 -> {:error, "你的内力修为太浅，难以施展\n"}
+      vitals.neili < 1000 -> {:error, "你现在的真气不足，难以施展\n"}
       vitals.jing < 100 -> {:error, "你现在的状态不佳，难以施展\n"}
-      vitals.max_neili < 1500 -> {:error, "你现在的真气不足，难以施展\n"}
-      vitals.neili < 1000 -> {:error, "你的内力修为太浅，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你所学的外功中没有这种功能。\n"}
     #   {:error, "你无法给\n"}
     #   {:error, "你要用真气为谁疗伤？\n"}

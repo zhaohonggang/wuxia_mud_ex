@@ -56,7 +56,7 @@ defmodule Kantele.Combat.Skills.Performs.HuntianBaojian.Sword do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "呵气成剑只能对自己使用。\n"}
     :ok
 

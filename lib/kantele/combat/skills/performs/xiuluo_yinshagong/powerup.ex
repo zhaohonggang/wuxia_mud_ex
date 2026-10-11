@@ -40,13 +40,13 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoYinshagong.Powerup do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你已经在运功中了。\n"}
+      vitals.neili < 100 -> {:error, "你的内力不够。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你只能用修罗阴煞功提升自己的战斗力。\n"}
     :ok
 

@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.DongyangDao.Luan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dongyang-dao") < 80 -> {:error, "你的东洋刀法还不到家，无法使用乱刀诀！\n"}
       Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不够，难以施展「乱刀诀」！\n"}
+      Stats.skill(stats, "dongyang-dao") < 80 -> {:error, "你的东洋刀法还不到家，无法使用乱刀诀！\n"}
       true -> :ok
     end
   end
@@ -97,9 +97,8 @@ defmodule Kantele.Combat.Skills.Performs.DongyangDao.Luan do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「乱刀诀」只能对战斗中的对手使用。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     :ok
 
   end
@@ -129,6 +128,14 @@ defmodule Kantele.Combat.Skills.Performs.DongyangDao.Luan do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)

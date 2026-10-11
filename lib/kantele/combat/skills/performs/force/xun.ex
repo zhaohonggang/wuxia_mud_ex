@@ -31,7 +31,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Xun do
   defp check_gates(character), do: check_other(character)
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你所学的内功中没有这种功能。\n"}
     #   {:error, "没有找到这个人物。\n"}
     #   {:error, "这个人不知道在那里耶。\n"}

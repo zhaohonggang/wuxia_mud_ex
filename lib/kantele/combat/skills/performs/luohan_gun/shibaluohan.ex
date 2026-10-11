@@ -94,8 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.jingli < 200 -> {:error, "TODO(migrate) jingli 不足。\n"}
-      vitals.neili < 1500 -> {:error, "TODO(migrate) neili 不足。\n"}
+      vitals.jingli < 200 -> {:error, "你已经在和对方打架，使用\n"}
       true -> :ok
     end
   end

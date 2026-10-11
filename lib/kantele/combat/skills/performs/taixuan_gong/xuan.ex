@@ -68,8 +68,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -88,17 +87,11 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "taixuan-gong" ->
-        {:error, "你还没有激发太玄功，无法施展\n"}
-
-      Stats.mapped(stats, "sword") != "taixuan-gong" ->
-        {:error, "TODO(migrate) 未激发 taixuan-gong。\n"}
-
-      Stats.mapped(stats, "unarmed") != "taixuan-gong" ->
-        {:error, "TODO(migrate) 未激发 taixuan-gong。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "unarmed") != "taixuan-gong" -> {:error, "你没有准备太玄功，无法使用\n"}
+      Stats.mapped(stats, "unarmed") != "taixuan-gong" -> {:error, "你没有准备太玄功，无法使用\n"}
+      Stats.mapped(stats, "sword") != "taixuan-gong" -> {:error, "你还没有激发太玄功，无法施展\n"}
+      Stats.mapped(stats, "blade") != "taixuan-gong" -> {:error, "你还没有激发太玄功，无法施展\n"}
+      true -> :ok
     end
   end
 
@@ -106,8 +99,8 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "你的内力修为还不足以使出\n"}
       vitals.neili < 800 -> {:error, "你的真气不够，无法施展\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为还不足以使出\n"}
       true -> :ok
     end
   end
@@ -116,14 +109,6 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
     #   {:error, "你使用的武器不对，无法施展\n"}
     #   {:error, "你还没有学会如何利用太玄功驾御兵器，这招只能空手施展！\n"}
-    :ok
-
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
-    #   {:error, "你所使用的外功中没有这种功能。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     :ok
 
   end
@@ -153,6 +138,14 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)

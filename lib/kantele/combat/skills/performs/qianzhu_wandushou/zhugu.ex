@@ -104,8 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Zhugu do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
-    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你要对谁施展蛛蛊决？\n"}
     #   {:error, "看清楚，那不是活人。\n"}
     #   {:error, "这里不能攻击别人！\n"}

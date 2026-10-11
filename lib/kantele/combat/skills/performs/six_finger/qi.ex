@@ -68,8 +68,7 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -78,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 420 -> {:error, "你的六脉神剑修为有限，无法使用\n"}
-      Stats.skill(stats, "liumai-shenjian") < 200 -> {:error, "你的内功火候不够，使不出\n"}
+      Stats.skill(stats, "force") < 420 -> {:error, "你的内功火候不够，使不出\n"}
+      Stats.skill(stats, "liumai-shenjian") < 200 -> {:error, "你的六脉神剑修为有限，无法使用\n"}
       true -> :ok
     end
   end
@@ -100,14 +99,6 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
       vitals.neili < 500 -> {:error, "你的真气不够，无法使用\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
-    #   {:error, "你所使用的外功中没有这种功能。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do
@@ -141,6 +132,14 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)

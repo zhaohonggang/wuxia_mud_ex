@@ -72,16 +72,16 @@ defmodule Kantele.Combat.Skills.Performs.SunFinger.Heal do
     vitals = character.meta.vitals
 
     cond do
-      vitals.jing < 100 -> {:error, "你的内力还浅，不是运功疗伤。\n"}
-      vitals.max_neili < 1500 -> {:error, "你的气现在不够，不要贸然行功。\n"}
+      vitals.max_neili < 1500 -> {:error, "你的内力还浅，不是运功疗伤。\n"}
       vitals.neili < 1000 -> {:error, "你的真气现在不够，不能贸然行功。\n"}
-      vitals.neili < 200 -> {:error, "你的精现在不够，不要贸然行功。\n"}
+      vitals.neili < 200 -> {:error, "你的气现在不够，不要贸然行功。\n"}
+      vitals.jing < 100 -> {:error, "你的精现在不够，不要贸然行功。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你不能给\n"}
     #   {:error, "你只能替别人疗伤。\n"}
     #   {:error, "你必须激发一种内功才能运功疗伤。\n"}

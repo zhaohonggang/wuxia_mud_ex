@@ -51,10 +51,7 @@ defmodule Kantele.Combat.Skills.Performs.HuagongDafa.Hua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1 -> {:error, "你的内力不够，不能施展化功大法。\n"}
-      vitals.max_neili < 10 -> {:error, "TODO(migrate) max_neili 不足。\n"}
-      vitals.neili < 10 -> {:error, "TODO(migrate) neili 不足。\n"}
-      vitals.neili < 120 -> {:error, "TODO(migrate) neili 不足。\n"}
+      vitals.neili < 120 -> {:error, "你的内力不够，不能施展化功大法。\n"}
       true -> :ok
     end
   end
@@ -69,7 +66,7 @@ defmodule Kantele.Combat.Skills.Performs.HuagongDafa.Hua do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你现在正忙，无法化他人内力。\n"}
     #   {:error, "你要化谁的内力？\n"}
     #   {:error, "在这里不能攻击他人。\n"}

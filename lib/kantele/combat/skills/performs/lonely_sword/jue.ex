@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 50 -> {:error, "你现在太累了，无法集中精神演练「总诀式」！\n"}
+      vitals.neili < 50 -> {:error, "你的内力不够，没有力气演练「总诀式」！\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「总诀式」不能在战斗中演练。\n"}
     #   {:error, "这里太嘈杂，你不能静下心来演练。\n"}
     :ok

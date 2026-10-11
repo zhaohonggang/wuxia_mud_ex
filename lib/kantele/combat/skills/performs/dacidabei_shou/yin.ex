@@ -64,8 +64,7 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -75,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
 
     cond do
       Stats.skill(stats, "buddhism") < 200 -> {:error, "你的佛法修为不足，无法施展该绝招！\n"}
-      Stats.skill(stats, "dacidabei-shou") < 180 -> {:error, "你的基本手法不够娴熟，不会使用「大手印」！\n"}
-      Stats.skill(stats, "hand") < 180 -> {:error, "你的大慈大悲手不够娴熟，不会使用「大手印」！\n"}
+      Stats.skill(stats, "dacidabei-shou") < 180 -> {:error, "你的大慈大悲手不够娴熟，不会使用「大手印」！\n"}
+      Stats.skill(stats, "hand") < 180 -> {:error, "你的基本手法不够娴熟，不会使用「大手印」！\n"}
       true -> :ok
     end
   end
@@ -93,8 +92,8 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2000 -> {:error, "你的内力太少了，无法使用出「大手印」！\n"}
-      vitals.neili < 800 -> {:error, "你的内力太弱，不能使用「大手印」！\n"}
+      vitals.max_neili < 2000 -> {:error, "你的内力太弱，不能使用「大手印」！\n"}
+      vitals.neili < 800 -> {:error, "你的内力太少了，无法使用出「大手印」！\n"}
       true -> :ok
     end
   end
@@ -106,13 +105,6 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
       combat.weapon != nil -> {:error, "你必须空手使用「大手印」！\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
-    #   {:error, "「大手印」只能在战斗中对对手使用。\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do
@@ -140,6 +132,14 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "「大手印」只能在战斗中对对手使用。", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)

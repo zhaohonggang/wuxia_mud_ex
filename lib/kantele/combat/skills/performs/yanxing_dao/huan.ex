@@ -65,8 +65,7 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -75,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "你雁行刀法不够娴熟，难以施展\n"}
-      Stats.skill(stats, "yanxing-dao") < 60 -> {:error, "TODO(migrate) yanxing-dao 等级不足。\n"}
+      Stats.skill(stats, "yanxing-dao") < 60 -> {:error, "你雁行刀法不够娴熟，难以施展\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你没有激发雁行刀法，难以施展\n"}
       true -> :ok
     end
   end
@@ -85,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "yanxing-dao" -> {:error, "你没有激发雁行刀法，难以施展\n"}
+      Stats.mapped(stats, "blade") != "yanxing-dao" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -106,14 +105,6 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
       combat.weapon == nil -> {:error, "你的武器不对，难以施展\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
-    #   {:error, "你所使用的外功中没有这种功能。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do
@@ -141,6 +132,14 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)

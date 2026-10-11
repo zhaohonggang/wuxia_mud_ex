@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.ZuiGun.Zuida do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "club") < 100 -> {:error, "你的内功火候不够，难以施展「八仙醉打」！\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的棍法修为不够，不会使用「八仙醉打」！\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展「八仙醉打」！\n"}
+      Stats.skill(stats, "club") < 100 -> {:error, "你的棍法修为不够，不会使用「八仙醉打」！\n"}
       true -> :ok
     end
   end
@@ -86,17 +86,10 @@ defmodule Kantele.Combat.Skills.Performs.ZuiGun.Zuida do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "hunyuan-yiqi" ->
-        {:error, "你现在没有激发少林内功为内功，难以施展「八仙醉打」。\n"}
-
-      Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发 luohan-fumogong。\n"}
-
-      Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发 yijinjing。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发少林内功为内功，难以施展「八仙醉打」。\n"}
+      Stats.mapped(stats, "force") != "yijinjing" -> {:error, "你使用的武器不对。\n"}
+      Stats.mapped(stats, "force") != "luohan-fumogong" -> {:error, "你已经在运功中了。\n"}
+      true -> :ok
     end
   end
 
@@ -119,7 +112,7 @@ defmodule Kantele.Combat.Skills.Performs.ZuiGun.Zuida do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「八仙醉打」只能在战斗中使用。\n"}
     :ok
 

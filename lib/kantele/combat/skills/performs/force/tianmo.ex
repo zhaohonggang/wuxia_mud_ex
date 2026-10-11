@@ -42,14 +42,8 @@ defmodule Kantele.Combat.Skills.Performs.Force.Tianmo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 ->
-        {:error, "你的修行还不够,无法使用\n"}
-
-      Stats.skill(stats, "martial-cognize") < 300 ->
-        {:error, "TODO(migrate) martial-cognize 等级不足。\n"}
-
-      true ->
-        :ok
+      Stats.skill(stats, "martial-cognize") < 300 -> {:error, "你的修行还不够,无法使用\n"}
+      true -> :ok
     end
   end
 
@@ -57,13 +51,13 @@ defmodule Kantele.Combat.Skills.Performs.Force.Tianmo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 8000 -> {:error, "你的内力不够!\n"}
+      vitals.neili < 8000 -> {:error, "你还没有入魔，无法使用\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你已经在运功中了。\n"}
     :ok
 

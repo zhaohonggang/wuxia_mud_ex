@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.JingzhongBafa.Bafa do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "你的井中八法还不到家，无法施展绝招。\n"}
-      Stats.skill(stats, "jingzhong-bafa") < 200 -> {:error, "你的内功火候不够！\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功火候不够！\n"}
+      Stats.skill(stats, "jingzhong-bafa") < 200 -> {:error, "你的井中八法还不到家，无法施展绝招。\n"}
       true -> :ok
     end
   end
@@ -110,7 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.JingzhongBafa.Bafa do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "井中八法只能对战斗中的对手使用。\n"}
     :ok
 

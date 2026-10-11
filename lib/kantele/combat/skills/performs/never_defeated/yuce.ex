@@ -96,8 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Yuce do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "御策诀只能在战斗中对对手使用。\n"}
     :ok
 
@@ -133,6 +132,14 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Yuce do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     level = Map.get(data, :level, 0)
     skill = Map.get(data, :skill, 0)

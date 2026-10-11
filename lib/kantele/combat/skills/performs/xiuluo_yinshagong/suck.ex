@@ -41,8 +41,8 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoYinshagong.Suck do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "wudu-qishu") < 100 -> {:error, "你修罗阴煞功修为不够，不能炼制毒药。\n"}
-      Stats.skill(stats, "xiuluo-yinshagong") < 100 -> {:error, "你的五毒奇术不够娴熟，不能炼制毒药。\n"}
+      Stats.skill(stats, "wudu-qishu") < 100 -> {:error, "你的五毒奇术不够娴熟，不能炼制毒药。\n"}
+      Stats.skill(stats, "xiuluo-yinshagong") < 100 -> {:error, "你修罗阴煞功修为不够，不能炼制毒药。\n"}
       true -> :ok
     end
   end
@@ -57,10 +57,9 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoYinshagong.Suck do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你要取哪只虫的毒液练药？\n"}
     #   {:error, "看清楚些，那可不是毒虫。\n"}
-    #   {:error, "那只虫还精神着呢，你找死啊。\n"}
     :ok
 
   end

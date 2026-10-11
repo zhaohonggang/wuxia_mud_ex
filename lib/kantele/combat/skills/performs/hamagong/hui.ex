@@ -32,7 +32,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Hui do
   defp check_gates(character), do: check_other(character)
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你并没有倒转经脉啊。\n"}
     :ok
 

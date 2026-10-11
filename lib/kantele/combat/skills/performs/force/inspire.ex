@@ -40,14 +40,13 @@ defmodule Kantele.Combat.Skills.Performs.Force.Inspire do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你的真气不够。\n"}
-      vitals.neili < 200 -> {:error, "你的精损伤太重，现在难以振奋自己。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你所学的内功中没有这种功能。\n"}
     #   {:error, "先激发你的特殊内功。\n"}
     #   {:error, "现在你正在战斗中？还是等打完了再说吧！\n"}

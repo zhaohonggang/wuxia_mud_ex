@@ -65,8 +65,7 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -75,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "你因陀罗爪不够娴熟，难以施展\n"}
-      Stats.skill(stats, "yintuoluo-zhua") < 200 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "yintuoluo-zhua") < 200 -> {:error, "你没有准备因陀罗爪，难以施展\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -85,20 +84,11 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "claw") != "yintuoluo-zhua" ->
-        {:error, "你没有激发因陀罗爪，难以施展\n"}
-
-      Stats.mapped(stats, "force") != "hunyuan-yiqi" ->
-        {:error, "你现在没有激发少林内功为内功，难以施展\n"}
-
-      Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发 luohan-fumogong。\n"}
-
-      Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发 yijinjing。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发少林内功为内功，难以施展\n"}
+      Stats.mapped(stats, "force") != "yijinjing" -> {:error, "你因陀罗爪不够娴熟，难以施展\n"}
+      Stats.mapped(stats, "force") != "luohan-fumogong" -> {:error, "你没有激发因陀罗爪，难以施展\n"}
+      Stats.mapped(stats, "claw") != "yintuoluo-zhua" -> {:error, "你的内功修为不够，难以施展\n"}
+      true -> :ok
     end
   end
 
@@ -109,14 +99,6 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
       vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
-    #   {:error, "你所使用的外功中没有这种功能。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do
@@ -150,6 +132,14 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)

@@ -41,8 +41,8 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Tan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "hamagong") < 100 -> {:error, "你的内功火候不够。\n"}
       Stats.skill(stats, "poison") < 80 -> {:error, "你的基本毒技火候不够。\n"}
+      Stats.skill(stats, "hamagong") < 100 -> {:error, "你的内功火候不够。\n"}
       true -> :ok
     end
   end
@@ -51,15 +51,14 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Tan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "你得先准备(hand)好毒药再说。\n"}
+      vitals.neili < 500 -> {:error, "你现在内力不足，不能弹射毒药。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你想攻击谁？\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     #   {:error, "比武的时候最好是正大光明的较量。\n"}
     #   {:error, "这里不能战斗，你不可以使用毒技伤人。\n"}
     :ok

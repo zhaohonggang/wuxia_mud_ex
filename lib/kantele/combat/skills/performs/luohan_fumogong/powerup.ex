@@ -41,13 +41,13 @@ defmodule Kantele.Combat.Skills.Performs.LuohanFumogong.Powerup do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "你已经在运功中了。\n"}
+      vitals.neili < 150 -> {:error, "你的内力不够。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你只能用罗汉伏魔神功来提升自己的战斗力。\n"}
     #   {:error, "你所学的内功中没有这种功能。\n"}
     :ok

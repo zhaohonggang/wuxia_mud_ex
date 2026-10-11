@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "你的内功修为火候未到，施展只会伤及自身！\n"}
       Stats.skill(stats, "weituo-chu") < 120 -> {:error, "你韦陀杵修为还不够，还未能使用「即世即空」！\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功修为火候未到，施展只会伤及自身！\n"}
       true -> :ok
     end
   end
@@ -91,7 +91,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「即世即空」只能对战斗中的对手使用。\n"}
     #   {:error, "你还不会使用「即世即空」!\n"}
     :ok

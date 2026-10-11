@@ -65,7 +65,7 @@ defmodule Kantele.Combat.Skills.Performs.WuzhanMei.Liu do
   defp check_gates(character), do: check_other(character)
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "『流花掠影』只能对战斗中的对手使用。\n"}
     #   {:error, "你必须在使用剑时才能使出『流花掠影』。\n"}
     #   {:error, "你目前的内力不足，无法施展『流花掠影』。\n"}

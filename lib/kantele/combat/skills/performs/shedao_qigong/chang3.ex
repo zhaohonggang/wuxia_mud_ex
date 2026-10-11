@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang3 do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "唱仙法吼字决只能在战斗中对对手使用。\n"}
     :ok
 

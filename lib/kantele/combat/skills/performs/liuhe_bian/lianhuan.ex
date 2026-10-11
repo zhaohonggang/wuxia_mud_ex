@@ -81,10 +81,10 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 180 -> {:error, "你六合鞭法修为不足，还不能使用连环诀！\n"}
-      Stats.skill(stats, "force") < 270 -> {:error, "你的内功火候未到，无法配合鞭法施展连环诀！\n"}
-      Stats.skill(stats, "liuhe-bian") < 180 -> {:error, "你轻功修为不足，无法快速攻击！\n"}
-      Stats.skill(stats, "whip") < 180 -> {:error, "你鞭法修为不足，还不能使用连环诀！\n"}
+      Stats.skill(stats, "force") < 270 -> {:error, "你鞭法修为不足，还不能使用连环诀！\n"}
+      Stats.skill(stats, "whip") < 180 -> {:error, "你六合鞭法修为不足，还不能使用连环诀！\n"}
+      Stats.skill(stats, "liuhe-bian") < 180 -> {:error, "你的内力不够，无法施展！\n"}
+      Stats.skill(stats, "dodge") < 180 -> {:error, "你轻功修为不足，无法快速攻击！\n"}
       true -> :ok
     end
   end
@@ -93,17 +93,16 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "liuhe-bian" -> {:error, "你手中无鞭，如何能够施展连环诀？\n"}
+      Stats.mapped(stats, "whip") != "liuhe-bian" -> {:error, "你的内功火候未到，无法配合鞭法施展连环诀！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你刚刚使用过六合连环诀，内力还未平复！\n"}
     #   {:error, "你所用的外功中没有这个功能!\n"}
     #   {:error, "六合连环诀只能对战斗中的对手使用。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     :ok
 
   end
@@ -137,6 +136,14 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)

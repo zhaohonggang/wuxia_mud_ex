@@ -77,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengLeg.Kuangfeng do
     cond do
       Stats.skill(stats, "force") < 150 -> {:error, "你的内功水平不够！\n"}
       Stats.skill(stats, "luoying-shenzhang") < 100 -> {:error, "你的腿掌功夫还不到家，无法使用狂风绝技！\n"}
-      Stats.skill(stats, "xuanfeng-leg") < 100 -> {:error, "TODO(migrate) xuanfeng-leg 等级不足。\n"}
+      Stats.skill(stats, "xuanfeng-leg") < 100 -> {:error, "你没有准备旋风腿法，无法施展狂风绝技。\n"}
       true -> :ok
     end
   end
@@ -107,9 +107,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengLeg.Kuangfeng do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「狂风绝技」只能在战斗中对对手使用。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     :ok
 
   end
@@ -139,6 +138,14 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengLeg.Kuangfeng do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)

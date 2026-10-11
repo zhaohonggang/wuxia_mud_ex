@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.HongyeDaofa.Kuang do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你只能对战斗中的对手使用\n"}
     :ok
 

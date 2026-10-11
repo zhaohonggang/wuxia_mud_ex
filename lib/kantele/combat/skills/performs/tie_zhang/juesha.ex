@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "你的内功修为不够，无法使用「九穹绝刹掌」！\n"}
       Stats.skill(stats, "tie-zhang") < 200 -> {:error, "你的铁掌火候不够，无法使用「九穹绝刹掌」！\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功修为不够，无法使用「九穹绝刹掌」！\n"}
       true -> :ok
     end
   end
@@ -86,8 +86,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "tianlei-shengong" -> {:error, "你必须激发天雷神功才能施展出「九穹绝刹掌」！\n"}
       Stats.mapped(stats, "strike") != "tie-zhang" -> {:error, "你没有激发铁掌掌法，难以施展「九穹绝刹掌」。\n"}
+      Stats.mapped(stats, "force") != "tianlei-shengong" -> {:error, "你必须激发天雷神功才能施展出「九穹绝刹掌」！\n"}
       true -> :ok
     end
   end
@@ -112,10 +112,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「九穹绝刹掌」只能在战斗中对对手使用。\n"}
-    #   {:error, "你所使用的外功中没有这种功能。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     :ok
 
   end
@@ -147,6 +145,14 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)

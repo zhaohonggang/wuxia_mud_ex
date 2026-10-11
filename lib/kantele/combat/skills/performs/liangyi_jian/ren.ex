@@ -69,8 +69,7 @@ defmodule Kantele.Combat.Skills.Performs.LiangyiJian.Ren do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -97,8 +96,8 @@ defmodule Kantele.Combat.Skills.Performs.LiangyiJian.Ren do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1500 -> {:error, "你现在真气不够，难以施展\n"}
-      vitals.neili < 200 -> {:error, "你的内力修为不足，难以施展\n"}
+      vitals.max_neili < 1500 -> {:error, "你的内力修为不足，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -110,14 +109,6 @@ defmodule Kantele.Combat.Skills.Performs.LiangyiJian.Ren do
       combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
-    #   {:error, "你所使用的外功中没有这种功能。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do
@@ -151,6 +142,14 @@ defmodule Kantele.Combat.Skills.Performs.LiangyiJian.Ren do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)

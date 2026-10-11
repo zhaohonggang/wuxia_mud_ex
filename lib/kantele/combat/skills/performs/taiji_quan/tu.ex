@@ -92,8 +92,8 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "taiji-shengong" -> {:error, "你现在没有激发太极拳，难以施展\n"}
-      Stats.mapped(stats, "unarmed") != "taiji-quan" -> {:error, "你现在没有激发太极神功，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "taiji-quan" -> {:error, "你现在没有激发太极拳，难以施展\n"}
+      Stats.mapped(stats, "force") != "taiji-shengong" -> {:error, "你现在没有激发太极神功，难以施展\n"}
       true -> :ok
     end
   end
@@ -102,9 +102,8 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.jingli < 1000 -> {:error, "你所使用的外功中没有这种功能。\n"}
-      vitals.neili < 0 -> {:error, "你现在真气不够，难以施展\n"}
-      vitals.neili < 1000 -> {:error, "你现在精力不够，难以施展\n"}
+      vitals.jingli < 1000 -> {:error, "你现在精力不够，难以施展\n"}
+      vitals.neili < 1000 -> {:error, "你现在真气不够，难以施展\n"}
       true -> :ok
     end
   end

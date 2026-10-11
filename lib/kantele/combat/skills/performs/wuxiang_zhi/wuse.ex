@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功的修为不够，不能使用这一绝技！\n"}
-      Stats.skill(stats, "wuxiang-zhi") < 150 -> {:error, "你的无相指修为不够，目前不能使用「无色无相」！\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的真气不够，无法使用「无色无相」！\n"}
+      Stats.skill(stats, "wuxiang-zhi") < 150 -> {:error, "你没有激发无相指，不能使用「无色无相」！\n"}
       true -> :ok
     end
   end
@@ -89,20 +89,10 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "wuxiang-zhi" ->
-        {:error, "你没有激发无相指，不能使用「无色无相」！\n"}
-
-      Stats.mapped(stats, "force") != "hunyuan-yiqi" ->
-        {:error, "你现在没有激发少林内功为内功，难以施展「无色无相」。\n"}
-
-      Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发 luohan-fumogong。\n"}
-
-      Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发 yijinjing。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发少林内功为内功，难以施展「无色无相」。\n"}
+      Stats.mapped(stats, "force") != "yijinjing" -> {:error, "你的内功的修为不够，不能使用这一绝技！\n"}
+      Stats.mapped(stats, "force") != "luohan-fumogong" -> {:error, "你的无相指修为不够，目前不能使用「无色无相」！\n"}
+      true -> :ok
     end
   end
 
@@ -110,7 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "你的真气不够，无法使用「无色无相」！\n"}
+      vitals.neili < 400 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -125,10 +115,9 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "「无色无相」只能在战斗中对对手使用。\n"}
     #   {:error, "你还没有受过高人指点，无法施展「无色无相」。\n"}
-    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     :ok
 
   end
@@ -163,6 +152,14 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)

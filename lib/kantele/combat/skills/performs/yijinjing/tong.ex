@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.Yijinjing.Tong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yijinjing") < 100 -> {:error, "你伤势很轻，不用激励易筋经至高绝学。\n"}
+      Stats.skill(stats, "yijinjing") < 100 -> {:error, "你的易筋经等级不够。\n"}
       true -> :ok
     end
   end
@@ -51,14 +51,14 @@ defmodule Kantele.Combat.Skills.Performs.Yijinjing.Tong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 500 -> {:error, "你内伤太重，无法激励易筋经至高绝学。\n"}
-      vitals.max_qi < 10 -> {:error, "你的真气不够。\n"}
+      vitals.max_qi < 10 -> {:error, "你内伤太重，无法激励易筋经至高绝学。\n"}
+      vitals.max_neili < 500 -> {:error, "你的真气不够。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你不是少林弟子，无法使用“易筋通脉”。\n"}
     #   {:error, "你只能用易筋经来为自己易筋通脉。\n"}
     #   {:error, "你所学的内功中没有这种功能。\n"}

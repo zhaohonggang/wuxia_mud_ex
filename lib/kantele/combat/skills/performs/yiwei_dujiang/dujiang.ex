@@ -76,9 +76,9 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 150 -> {:error, "你的一苇渡江等级不够，难以施展此项绝技！\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展此项绝技！\n"}
-      Stats.skill(stats, "yiwei-dujiang") < 150 -> {:error, "你的轻功修为不够，不会使用此项绝技！\n"}
+      Stats.skill(stats, "yiwei-dujiang") < 150 -> {:error, "你的一苇渡江等级不够，难以施展此项绝技！\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的轻功修为不够，不会使用此项绝技！\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的内力修为不够使用「一苇渡江」！\n"}
       true -> :ok
     end
   end
@@ -88,8 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
 
     cond do
       Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发少林内功为内功，难以施展\n"}
-      Stats.mapped(stats, "force") != "luohan-fumogong" -> {:error, "你的身法不够使用「一苇渡江」绝技！\n"}
-      Stats.mapped(stats, "force") != "yijinjing" -> {:error, "TODO(migrate) 未激发 yijinjing。\n"}
+      Stats.mapped(stats, "force") != "yijinjing" -> {:error, "你的身法不够使用「一苇渡江」绝技！\n"}
+      Stats.mapped(stats, "force") != "luohan-fumogong" -> {:error, "你的内功火候不够，难以施展此项绝技！\n"}
       true -> :ok
     end
   end
@@ -99,13 +99,12 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
 
     cond do
       vitals.max_neili < 1000 -> {:error, "你此时的内力不足！\n"}
-      vitals.neili < 250 -> {:error, "你的内力修为不够使用「一苇渡江」！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你已经运起「一苇渡江」了。\n"}
     :ok
 
