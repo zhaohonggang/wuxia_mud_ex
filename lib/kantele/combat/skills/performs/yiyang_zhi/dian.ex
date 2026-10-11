@@ -155,7 +155,8 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Dian do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 2)
-    result = if hit, do: Messages.interpolate("结果$p被$P逼得招架不迭，一时无法反击！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的变化，小心招架，挡住了$P的进击。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$p被$P逼得招架不迭，一时无法反击！", else: "可是$p看破了$P的变化，小心招架，挡住了$P的进击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

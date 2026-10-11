@@ -152,8 +152,9 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Po do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 380, 1)
-    result = if hit, do: Messages.interpolate("$n慌忙抵挡，可已然不及，$N掌劲如洪水般涌入体内，接连震断数根肋骨。
-:内伤@?", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p见$P掌劲澎湃，决计抵挡不住，当即身子向后横丈许，躲闪开来。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n慌忙抵挡，可已然不及，$N掌劲如洪水般涌入体内，接连震断数根肋骨。
+:内伤@?", else: "$p见$P掌劲澎湃，决计抵挡不住，当即身子向后横丈许，躲闪开来。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

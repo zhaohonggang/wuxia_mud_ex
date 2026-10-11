@@ -164,7 +164,8 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 800, 4)
-    result = if hit, do: Messages.interpolate("$n一愣，只听哧啦的一声，已被剑气划得鲜血飞溅！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n使出浑身解数，终于将$N这一指架开，丝毫无损。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["只听$n一声惨叫，万道剑气已透体而过，伤口处鲜血顿时狂涌，痛苦难当！", "$n奋力抵挡，却哪里招架得住，被$N这一指戳得鲜血迸流！", "$n试图抵挡，只听哧的一声，无形剑气已破体而入，透体而出！", "$n一愣，只听哧啦的一声，已被剑气划得鲜血飞溅！", "$n躲闪不及，被戳了碗口大个血窟窿，鲜血喷涌而出！", "$n运气抵挡，只觉得一股透体凉意袭了上来，一个激凌，丹田立刻变得空空荡荡！", "$n已然放弃抵抗，任凭气流摧袭只盼望一切早点结束...."]), else: Enum.random(["$n使出浑身解数，终于将$N这一指架开，丝毫无损。", "$n左闪右跳，终于将$N这一指避开，丝毫无损。", "$n见$N来势汹涌，不敢轻易招架，急忙提气跃开。", "$n运气抵挡，硬生生接下了$N这一指。", "$n运气抵挡，终于接下了$N这一指，已是狼狈不堪。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

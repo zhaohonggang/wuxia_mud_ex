@@ -141,7 +141,8 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("$n只见无数刀光剑影向自己逼来，顿感眼花缭乱，心底寒意油然而生。", n1: attacker.name, n2: character.name)
+    msg = "$n只见无数刀光剑影向自己逼来，顿感眼花缭乱，心底寒意油然而生。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

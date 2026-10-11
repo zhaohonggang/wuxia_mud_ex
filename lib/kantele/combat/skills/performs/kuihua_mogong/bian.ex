@@ -161,7 +161,8 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Bian do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    result = if hit, do: Messages.interpolate("$N一声尖啸，身体猛然旋转不定，某物顿时化成无数气流，犹如千万根银针，齐齐卷向$n！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n大惊之下全然无法招架，急忙抽身急退数尺，躲开了这一招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$N一声尖啸，身体猛然旋转不定，某物顿时化成无数气流，犹如千万根银针，齐齐卷向$n！", else: "$n大惊之下全然无法招架，急忙抽身急退数尺，躲开了这一招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

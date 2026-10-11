@@ -148,7 +148,8 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 3)
-    result = if hit, do: Messages.interpolate("只听$N一声冷哼，侧身飞踢，右腿横扫向$n，当真是力不可挡。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n连忙格挡，却只觉得力道大得出奇，登时被一脚踢得飞起。", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

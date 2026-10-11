@@ -143,7 +143,8 @@ defmodule Kantele.Combat.Skills.Performs.LanhuaShou.Fu do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 2)
-    result = Messages.interpolate("$p只觉胁下一麻，已被$P点个正着，顿时全身酸软，呆立当场。", n1: attacker.name, n2: character.name)
+    msg = "$p只觉胁下一麻，已被$P点个正着，顿时全身酸软，呆立当场。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

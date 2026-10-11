@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.San do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 1)
-    result = if hit, do: Messages.interpolate("$P出手既快，方位又奇，$p如何避得，当即被$N揪住，重重的摔在地上！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p见势不妙，急忙凝力稳住，右臂挥出，格开$P手臂。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$P出手既快，方位又奇，$p如何避得，当即被$N揪住，重重的摔在地上！", "$p只觉胸口一麻，已被$P抓住胸口，用力顺势一甩，顿时平平飞了出去！", "结果$p稍不留神，顿时给$P绊倒在地，呕出一大口鲜血！"]), else: Enum.random(["$p见势不妙，急忙凝力稳住，右臂挥出，格开$P手臂。", "可是$p丝毫不为$P所动，奋力格挡，稳稳将这一招架开。", "然而$p沉身聚气，稳住下盘，身子一幌，没给$P绊倒。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

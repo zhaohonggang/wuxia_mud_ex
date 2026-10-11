@@ -173,7 +173,8 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    result = if hit, do: Messages.interpolate("结果只听$p一声惨叫，被$P一下子打中要害，七窍一起生烟，耳鼻都渗出血来！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p强摄心神，没有被$P所迷惑，硬生生的架住了$P这一招！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果只听$p一声惨叫，被$P一下子打中要害，七窍一起生烟，耳鼻都渗出血来！", else: "可是$p强摄心神，没有被$P所迷惑，硬生生的架住了$P这一招！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

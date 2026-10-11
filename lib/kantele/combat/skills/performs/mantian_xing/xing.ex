@@ -153,8 +153,9 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 3)
-    result = if hit, do: Messages.interpolate("$N蓦地飞身跃起，十指箕张，施出「穹外飞星」将手中某物尽数凌空射出。
-霎时破空声骤响，某物便如同陨星飞坠一般，笼罩$n各处大穴！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$N蓦地飞身跃起，十指箕张，施出「穹外飞星」将手中某物尽数凌空射出。
+霎时破空声骤响，某物便如同陨星飞坠一般，笼罩$n各处大穴！", "结果$n一声惨叫，同时中了$P某物，直感两耳轰鸣，目不视物。", "$n集中生智，双手画圈回旋挥舞，拨弄开了要害处的杀着，可还是受了点轻伤。"]), else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

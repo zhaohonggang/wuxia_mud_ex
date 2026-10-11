@@ -158,7 +158,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Shou do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 1)
-    result = if hit, do: Messages.interpolate("$n只觉此招，阴柔无比，诡异莫测，心中一惊，却猛然间觉得一股阴风透骨而过。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n大吃一惊，连忙胡乱抵挡，居然没有一点伤害，侥幸得脱！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只觉此招，阴柔无比，诡异莫测，心中一惊，却猛然间觉得一股阴风透骨而过。", else: Enum.random(["$n大吃一惊，连忙胡乱抵挡，居然没有一点伤害，侥幸得脱！", "这一招完全超出了$n的想象，被$N结结实实的打中了檀中大穴，浑身真气登时涣散！"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

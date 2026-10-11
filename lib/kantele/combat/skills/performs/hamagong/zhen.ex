@@ -161,7 +161,8 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = if hit, do: Messages.interpolate("$n不料$N会使出如此诡异招式，慌忙伸掌抵挡，结果$N蛤蟆功内劲不断袭入，$n全身顿时感到一阵撕裂般的痛苦。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n喘息未定，又觉一股劲风扑面而来，连忙跃开数尺，狼狈地避开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n不料$N会使出如此诡异招式，慌忙伸掌抵挡，结果$N蛤蟆功内劲不断袭入，$n全身顿时感到一阵撕裂般的痛苦。", "$n只觉此招，阴柔无比，诡异莫测，心中一惊，却猛然间觉得一股阴风透骨而过。", "$n全然无力阻挡，竟被$N双掌击得飞起，重重的跌落在地上。"]), else: Enum.random(["$n喘息未定，又觉一股劲风扑面而来，连忙跃开数尺，狼狈地避开。", "$n用尽全身力量向右一纵一滚，摇摇欲倒地站了起来，但总算躲开了这致命的一击！", "可是$n发觉一股微风扑面而来，却已被逼得呼吸不畅，情知不妙，连忙跃开数尺。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

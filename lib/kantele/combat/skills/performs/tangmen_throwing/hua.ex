@@ -114,7 +114,8 @@ $N向$n一笑，一扬手向$n抛去。
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 3)
-    result = Messages.interpolate("( $n )", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["( $n )", "= pmsg", "结果$p一声惨嚎，连中了$P发出的一某物。", "那花越开越艳，$n不知不觉中已痴迷了，身形一慢,微笑着倒下了，那花也谢了。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

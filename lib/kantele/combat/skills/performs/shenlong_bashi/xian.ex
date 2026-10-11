@@ -156,7 +156,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenlongBashi.Xian do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 2)
-    result = if hit, do: Messages.interpolate("$p左遮右挡，却没能挡住$P这看似无赖的招数，结果被$P重重的击中，哇的吐了一口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$p左遮右挡，却没能挡住$P这看似无赖的招数，结果被$P重重的击中，哇的吐了一口鲜血。", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -162,7 +162,8 @@ defmodule Kantele.Combat.Skills.Performs.XieweiBian.Teng do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 3)
-    result = if hit, do: Messages.interpolate("然而$n未能看破企图，一声惨嚎，鞭端已没入体内半寸，登时连退数步！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p运足内力，奋力挡住了$P这神鬼莫测的一击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "然而$n未能看破企图，一声惨嚎，某物鞭端已没入体内半寸，登时连退数步！", else: "可是$p运足内力，奋力挡住了$P这神鬼莫测的一击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

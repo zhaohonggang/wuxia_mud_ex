@@ -157,7 +157,8 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 4)
-    result = if hit, do: Messages.interpolate("$N的罡劲登时瓦解了$n的护体真气，$p真元受损，接连喷出数口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("只听“轰”的一声闷响，$n身着的某物在$N内力激荡下应声而碎，化成一块块碎片。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$N的罡劲登时瓦解了$n的护体真气，$p真元受损，接连喷出数口鲜血。", else: Enum.random(["只听“轰”的一声闷响，$n身着的某物在$N内力激荡下应声而碎，化成一块块碎片。", "只听“轰”的一声闷响，$n身着的某物在$N内力激荡下应声而裂，化成一块块碎片。", "可是$p知道$P这招的厉害，不敢硬接，当即斜跃躲避开来。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

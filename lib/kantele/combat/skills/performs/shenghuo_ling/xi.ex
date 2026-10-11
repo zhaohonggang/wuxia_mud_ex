@@ -135,7 +135,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 240, 4)
-    result = Messages.interpolate("$n只见眼前无数寒光颤跃闪动，顿时只感头晕目眩，手腕一麻，手中某物已被$N纳入怀中！", n1: attacker.name, n2: character.name)
+    msg = "$n只见眼前无数寒光颤跃闪动，顿时只感头晕目眩，手腕一麻，手中某物已被$N纳入怀中！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

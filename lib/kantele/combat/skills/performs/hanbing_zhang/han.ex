@@ -150,7 +150,8 @@ defmodule Kantele.Combat.Skills.Performs.HanbingZhang.Han do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 220, 4)
-    result = if hit, do: Messages.interpolate("但见$N双掌拍来，掌风作响，寒气逼人。$n顿觉心惊胆战，毫无招架之力，微迟疑间$N这掌已正中$n胸口，顿将$p震退数步。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见$N这掌拍来，内力充盈，气势凌人，只得奋力向后一纵，才躲过这一掌。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "但见$N双掌拍来，掌风作响，寒气逼人。$n顿觉心惊胆战，毫无招架之力，微迟疑间$N这掌已正中$n胸口，顿将$p震退数步。", else: "$n见$N这掌拍来，内力充盈，气势凌人，只得奋力向后一纵，才躲过这一掌。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

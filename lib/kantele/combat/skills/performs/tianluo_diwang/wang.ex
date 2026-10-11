@@ -149,7 +149,8 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 1)
-    result = Messages.interpolate("结果$p被$P压制的难以反击，只能竭力抵挡！", n1: attacker.name, n2: character.name)
+    msg = "结果$p被$P压制的难以反击，只能竭力抵挡！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

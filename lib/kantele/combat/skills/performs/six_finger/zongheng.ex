@@ -156,7 +156,8 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zongheng do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 2)
-    result = Messages.interpolate("结果$p被这纵横交错的剑气逼得手忙脚乱，应接不暇！", n1: attacker.name, n2: character.name)
+    msg = "结果$p被这纵横交错的剑气逼得手忙脚乱，应接不暇！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

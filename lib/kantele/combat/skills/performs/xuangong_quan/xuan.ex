@@ -145,8 +145,9 @@ defmodule Kantele.Combat.Skills.Performs.XuangongQuan.Xuan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 3)
-    result = if hit, do: Messages.interpolate("$n急忙抽身躲避，可已然不及，被$N双拳捶个正中。
-:内伤@?", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n急忙抽身躲避，可已然不及，被$N双拳捶个正中。
+:内伤@?", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

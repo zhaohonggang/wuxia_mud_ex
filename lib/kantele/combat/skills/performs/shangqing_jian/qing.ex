@@ -155,7 +155,8 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = if hit, do: Messages.interpolate("$p只觉眼花缭乱，一时难以勘透其中奥妙，连中数剑，被削得血肉模糊！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p一口气自丹田运了上来，$P附体剑芒虽然厉害，却未能伤$p分毫。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$p奋力抵挡，却哪里招架得住，被$P这一剑刺中要脉，鲜血四处飞溅！", "$p只觉眼花缭乱，一时难以勘透其中奥妙，连中数剑，被削得血肉模糊！", "$p运气抵挡，可只觉一股无形剑气透体而过，难受之极，喷出数口鲜血！"]), else: Enum.random(["$p一口气自丹田运了上来，$P附体剑芒虽然厉害，却未能伤$p分毫。", "$p凝神聚气，硬声声将$P这一剑架开，丝毫无损。", "可是$p丝毫不为$P华丽的剑光所动，稳稳将这一剑架开。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

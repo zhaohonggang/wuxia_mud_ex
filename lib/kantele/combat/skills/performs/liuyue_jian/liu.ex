@@ -163,7 +163,8 @@ defmodule Kantele.Combat.Skills.Performs.LiuyueJian.Liu do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    result = if hit, do: Messages.interpolate("$n顿时目瞪口呆，一个不慎，被$N精妙的剑招刺中，鲜血飞溅！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p并不慌乱，收敛心神，轻轻格挡开了$P的剑招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n顿时目瞪口呆，一个不慎，被$N精妙的剑招刺中，鲜血飞溅！", else: "可是$p并不慌乱，收敛心神，轻轻格挡开了$P的剑招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

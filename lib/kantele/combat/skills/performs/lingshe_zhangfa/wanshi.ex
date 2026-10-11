@@ -168,7 +168,8 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wanshi do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 350, 1)
-    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的企图，一缩胸，急退三步，避开了这一招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n被$N击中！", else: "可是$p看破了$P的企图，一缩胸，急退三步，避开了这一招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

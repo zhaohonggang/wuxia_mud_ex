@@ -154,7 +154,8 @@ defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 2)
-    result = Messages.interpolate("$n只见眼前白芒暴涨，登时右手一轻，某物竟脱手飞出。", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["$n只见眼前白芒暴涨，登时右手一轻，某物竟脱手飞出。", "$n惊慌不定，顿时乱了阵脚，竟被困于$N的剑光当中。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

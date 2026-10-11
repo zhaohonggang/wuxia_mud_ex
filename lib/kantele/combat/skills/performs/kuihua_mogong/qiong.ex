@@ -158,7 +158,8 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = if hit, do: Messages.interpolate("这一招速度之快完全超出了$n的想象，$n慌忙回缩招架，但是此招之快，已无从躲闪，$n尖叫一声，已然中招。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n大吃一惊，连忙退后，居然侥幸躲开着这一招！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "这一招速度之快完全超出了$n的想象，$n慌忙回缩招架，但是此招之快，已无从躲闪，$n尖叫一声，已然中招。", else: Enum.random(["$n大吃一惊，连忙退后，居然侥幸躲开着这一招！", "$n知道来招不善，急忙闪避，没出一点差错。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

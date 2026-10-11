@@ -162,7 +162,8 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 3)
-    result = if hit, do: Messages.interpolate("$n急忙躲闪，却发现$N的已然拂中胸前要穴，顿感气血上涌，难受之极。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P招中虚实，当即纵身而起，躲避开来。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n急忙躲闪，却发现$N的某物已然拂中胸前要穴，顿感气血上涌，难受之极。", else: "可是$p看破了$P招中虚实，当即纵身而起，躲避开来。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

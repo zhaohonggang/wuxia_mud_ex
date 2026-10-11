@@ -163,7 +163,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanxuDao.Huan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    result = if hit, do: Messages.interpolate("就听见“喀喀喀”几声脆响，$p一声惨叫，全身各处骨头被刀环一一绞断，像滩软泥般塌了下去！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p奋力格挡，$P只觉得精力略有衰竭，手中刀光渐缓。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "就听见“喀喀喀”几声脆响，$p一声惨叫，全身各处骨头被刀环一一绞断，像滩软泥般塌了下去！", else: "可是$p奋力格挡，$P只觉得精力略有衰竭，手中刀光渐缓。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

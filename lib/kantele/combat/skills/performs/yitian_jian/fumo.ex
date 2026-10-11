@@ -160,7 +160,8 @@ defmodule Kantele.Combat.Skills.Performs.YitianJian.Fumo do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 3)
-    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可$n却是镇定逾恒，一丝不乱，全神将此招化解开来。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n被$N击中！", else: "可$n却是镇定逾恒，一丝不乱，全神将此招化解开来。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

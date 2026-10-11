@@ -150,7 +150,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhua do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 20, 2)
-    result = if hit, do: Messages.interpolate("$N这一爪来势好快，正抓中$n的檀中大穴，$n一声惨叫，软绵绵的瘫了下去。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的来势，应对得法，避开了这一抓。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n连忙腾挪躲闪，然而“扑哧”一声，$N五指正插入$n的某物，$n一声惨叫，血溅五步。", else: "可是$p看破了$P的来势，应对得法，避开了这一抓。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

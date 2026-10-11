@@ -156,7 +156,8 @@ defmodule Kantele.Combat.Skills.Performs.LingsheQuan.Rou do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("只见$n大吃一惊，仓皇之下不及闪躲，被$N一拳打了个正中，闷哼一声，连退数步！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p见机的快，连忙施展身法，避开了拳。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只见$n大吃一惊，仓皇之下不及闪躲，被$N一拳打了个正中，闷哼一声，连退数步！", else: "可是$p见机的快，连忙施展身法，避开了拳。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

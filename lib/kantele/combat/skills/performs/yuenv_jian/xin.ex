@@ -153,8 +153,10 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 1)
-    result = if hit, do: Messages.interpolate("$n大吃一惊，慌忙躲避，然而剑气来的好快，哪里躲得开？
-只听$p一声惨叫，胸口已经被剑气所伤！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见状身形急退，避开了$N的无形剑气的凌厉一击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n大吃一惊，慌忙躲避，然而剑气来的好快，哪里躲得开？
+只听$p一声惨叫，胸口已经被剑气所伤！", "$n重创之下不禁破绽迭出，$P见状随手刺出某物，又是一剑！
+就听$p又是一声惨叫，痛苦不堪。"]), else: "$n见状身形急退，避开了$N的无形剑气的凌厉一击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

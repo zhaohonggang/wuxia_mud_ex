@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.YuezhaoGong.Shi do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("只听$n一声惨嚎，竟被$N的五指抓破气门，鲜血登时四处飞溅！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p身手敏捷，身形急转，巧妙的躲过了$P的攻击。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只听$n一声惨嚎，竟被$N的五指抓破气门，鲜血登时四处飞溅！", else: "可是$p身手敏捷，身形急转，巧妙的躲过了$P的攻击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

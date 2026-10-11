@@ -163,7 +163,8 @@ defmodule Kantele.Combat.Skills.Performs.TiexueDao.Xue do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    result = if hit, do: Messages.interpolate("只听$n一声惨嚎，嗤啦一声，一股血柱自血色刀影中激射而出。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n眼明手快，奋力招架，将$N的招式全部挡开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只听$n一声惨嚎，嗤啦一声，一股血柱自血色刀影中激射而出。", else: "可是$n眼明手快，奋力招架，将$N的招式全部挡开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

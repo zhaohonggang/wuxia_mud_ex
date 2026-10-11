@@ -161,7 +161,8 @@ defmodule Kantele.Combat.Skills.Performs.YizhiChan.Jingmo do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    result = if hit, do: Messages.interpolate("只见$p躲闪不及，被$P这一指正戳在胸前，不由得连声惨叫，胸口鲜血直流！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p急忙跃开，躲开了$P这一指。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只见$p躲闪不及，被$P这一指正戳在胸前，不由得连声惨叫，胸口鲜血直流！", else: "可是$p急忙跃开，躲开了$P这一指。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

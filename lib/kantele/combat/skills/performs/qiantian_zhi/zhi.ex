@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.QiantianZhi.Zhi do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    result = if hit, do: Messages.interpolate("$N陡然使出一招「乾阳神指」，双指齐施，同时朝$n面门及胸口处点去。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$p躲闪不及，登时被$P一指点中，内息不由得一滞，难受之极。", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

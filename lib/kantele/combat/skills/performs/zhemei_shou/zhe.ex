@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Zhe do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = Messages.interpolate("$n心头一颤，想不出破解之法，急忙后退数步，一时间无法反击。", n1: attacker.name, n2: character.name)
+    msg = "$n心头一颤，想不出破解之法，急忙后退数步，一时间无法反击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

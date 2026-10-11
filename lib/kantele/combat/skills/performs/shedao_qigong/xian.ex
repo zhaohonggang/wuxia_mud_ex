@@ -156,8 +156,9 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 3)
-    result = if hit, do: Messages.interpolate("$n见$P这招极为精妙，不敢抵挡，慌忙后退跃开，却见$P招式一变，竟然料敌在先，
-一招正中$p，直打了个鲜血四下飞溅。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n不敢怠慢，见招拆招，接连破去$P后续三十六道变化，不漏半点破绽。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n欲架不能，欲躲不得，一个闪失，被$P打了个正中，鲜血迸流。", "$n见$P这招极为精妙，不敢抵挡，慌忙后退跃开，却见$P招式一变，竟然料敌在先，
+一招正中$p，直打了个鲜血四下飞溅。"]), else: "$n不敢怠慢，见招拆招，接连破去$P后续三十六道变化，不漏半点破绽。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

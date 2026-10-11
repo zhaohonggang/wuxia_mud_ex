@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.LanshaShou.Po do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 3)
-    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见$N来势汹涌，奋力格挡，终于化解开来。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n被$N击中！", else: "$n见$N来势汹涌，奋力格挡，终于化解开来。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

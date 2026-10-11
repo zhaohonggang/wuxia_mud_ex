@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 4)
-    result = if hit, do: Messages.interpolate("( $N )", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n看见$N来势汹涌，急忙提气跃开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "( $N )", else: "$n看见$N来势汹涌，急忙提气跃开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

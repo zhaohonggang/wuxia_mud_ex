@@ -145,7 +145,8 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Zhu do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 75, 2)
-    result = if hit, do: Messages.interpolate("$n正在思虑这一掌的后势，掌力已至胸前，只听“噗”的一声，$n吐血三尺！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n正在思虑这一掌的后势，掌力已至胸前，只听“噗”的一声，$n吐血三尺！", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

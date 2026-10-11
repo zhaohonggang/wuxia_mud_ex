@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhongnanZhi.Zhi do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    result = if hit, do: Messages.interpolate("结果$p招架失误，被$P这一指点了个正着，内息登时一滞，气血倒流。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$p招架失误，被$P这一指点了个正着，内息登时一滞，气血倒流。", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

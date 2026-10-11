@@ -135,9 +135,10 @@ defmodule Kantele.Combat.Skills.Performs.XiaoliFeidao.Fei do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 1)
-    result = Messages.interpolate("忽然间只见$N手中寒光一闪，正是小李飞刀，例无虚发！
+    msg = "忽然间只见$N手中寒光一闪，正是小李飞刀，例无虚发！
 
-一股鲜血从$n咽喉中喷出……", n1: attacker.name, n2: character.name)
+一股鲜血从$n咽喉中喷出……"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

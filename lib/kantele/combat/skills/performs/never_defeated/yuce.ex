@@ -155,7 +155,8 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Yuce do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 120, 1)
-    result = if hit, do: Messages.interpolate("= HIR只见那某物去势恰如神光闪电！$n不及闪避，被打了个正中，惨叫一声，退了几步。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "= HIR只见那某物去势恰如神光闪电！$n不及闪避，被打了个正中，惨叫一声，退了几步。", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

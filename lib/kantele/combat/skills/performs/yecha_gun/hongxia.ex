@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.YechaGun.Hongxia do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    result = if hit, do: Messages.interpolate("$n只见$N看破了棍法中的虚实，凝神化解开来。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n只见$N看破了棍法中的虚实，凝神化解开来。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只觉$N棍影重重，无所不在，自己无处躲闪，顿时身上连中数棍，被攻了个措手不及。", else: "$n只见$N看破了棍法中的虚实，凝神化解开来。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

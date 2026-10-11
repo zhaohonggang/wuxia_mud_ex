@@ -137,8 +137,11 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Hui do
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = if hit, do: Messages.interpolate("$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被击个正中。
-:内伤@?", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p气贯双臂，凝神应对，游刃有余，$P掌力如泥牛入海，尽数卸去。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被击个正中。
+:内伤@?", "只听$p一声惨嚎，被$P一掌击中胸前，“喀嚓喀嚓”断了几根肋骨。
+:内伤@?", "结果$p躲闪不及，$P的掌劲顿时穿胸而过，“哇”的喷出一大口鲜血。
+:内伤@?"]), else: Enum.random(["$p气贯双臂，凝神应对，游刃有余，$P掌力如泥牛入海，尽数卸去。", "$p见这招来势凶猛，身形疾退，瞬间飘出三丈，脱出$P掌力之外。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

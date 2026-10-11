@@ -159,7 +159,8 @@ defmodule Kantele.Combat.Skills.Performs.PanguQishi.Kai do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 4)
-    result = if hit, do: Messages.interpolate("$n躲避不及，被$N这锤正中胸口，顿时一声闷响，稻草般向后横飞出去。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n真气鼓荡，$N雷霆般的劲力竟如中败絮，登时被解于无形。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n躲避不及，被$N这锤正中胸口，顿时一声闷响，稻草般向后横飞出去。", else: "可是$n真气鼓荡，$N雷霆般的劲力竟如中败絮，登时被解于无形。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

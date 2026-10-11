@@ -161,7 +161,8 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    result = if hit, do: Messages.interpolate("$n手腕一麻，手中某物不由脱手而出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p早料得$P有此一着，急忙飞身跃起，躲闪开来。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n手腕一麻，手中某物不由脱手而出！", "( $n )", "= pmsg", "只见那某物来势迅猛之极，$n根本无暇闪避，被这招击个正中！"]), else: "可是$p早料得$P有此一着，急忙飞身跃起，躲闪开来。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

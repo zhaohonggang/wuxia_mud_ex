@@ -160,7 +160,8 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 1)
-    result = if hit, do: Messages.interpolate("$n只觉鞭影重重，眼花缭乱，根本无法作出抵挡，一声惨嚎，鲜血飞溅而出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p一声冷哼，早预料$N有此一着，凝神聚气，将这招轻轻格开！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n只觉鞭影重重，眼花缭乱，根本无法作出抵挡，一声惨嚎，鲜血飞溅而出！", "$n稍一迟疑，突然感到后背一阵刮骨之痛，已被这招打得血肉模糊！"]), else: Enum.random(["$p一声冷哼，早预料$N有此一着，凝神聚气，将这招轻轻格开！", "可是$p看破了$P的企图，急忙斜跳躲开！", "可是$p镇定自如，丝毫不为这变幻莫测的招式所动，凝神抵挡，化解开来！"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

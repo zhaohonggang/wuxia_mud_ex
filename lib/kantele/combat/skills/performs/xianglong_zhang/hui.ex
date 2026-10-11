@@ -138,7 +138,8 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = if hit, do: Messages.interpolate("$P身形一闪，竟已晃至$p跟前，$p躲闪不及，顿被击个正中。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p眼见来势凶猛，身形疾退，瞬间飘出三丈，脱出掌力之外。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$P身形一闪，竟已晃至$p跟前，$p躲闪不及，顿被击个正中。", "$p一声惨嚎，被$P这一掌击中胸前，喀嚓喀嚓断了几根肋骨。", "结果$p躲闪不及，$P掌劲顿时穿胸而过，顿时口中鲜血狂喷。"]), else: Enum.random(["$p眼见来势凶猛，身形疾退，瞬间飘出三丈，脱出掌力之外。", "却见$p气贯双臂，凝神应对，$P掌力如泥牛入海，尽数卸去。", "可是$p全力抵挡招架，竟似游刃有余，将$P的掌力卸于无形。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -169,7 +169,8 @@ defmodule Kantele.Combat.Skills.Performs.PuduZhang.Zhao do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    result = if hit, do: Messages.interpolate("只见$p闷哼一声，连叫都叫不出来，身子飞跌出去，重重的摔倒在地上！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p运足内力，奋力挡住了$P这惊天动地的一击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只见$p闷哼一声，连叫都叫不出来，身子飞跌出去，重重的摔倒在地上！", else: "可是$p运足内力，奋力挡住了$P这惊天动地的一击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

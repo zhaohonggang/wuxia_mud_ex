@@ -139,7 +139,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Dao do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 1)
-    result = Messages.interpolate("$n面对$N这排山倒海般的攻势，完全无法抵挡，招架散乱，连连退后。", n1: attacker.name, n2: character.name)
+    msg = "$n面对$N这排山倒海般的攻势，完全无法抵挡，招架散乱，连连退后。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

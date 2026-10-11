@@ -144,7 +144,10 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 3)
-    result = Messages.interpolate("$n见掌势层层叠叠，有如海潮，一时只觉头晕目眩，难作抵挡。", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["$n见掌势层层叠叠，有如海潮，一时只觉头晕目眩，难作抵挡。", "随即又听$N高声喝道：「我佛如来」顷刻间，但见$N八掌又变为十六掌，进而再幻化为三十二掌，掌势层层叠叠，波澜壮阔，气势磅礴，荡气回肠。如海潮般向$n涌去。
+
+$n面对这无穷无尽的掌势，竟然放弃了抵抗，面如死灰坐以待毙。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

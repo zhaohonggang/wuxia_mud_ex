@@ -150,7 +150,8 @@ defmodule Kantele.Combat.Skills.Performs.TianleiDao.Shan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 1)
-    result = Messages.interpolate("$n见$P这招来势汹涌，势不可挡，被$N攻得连连后退。", n1: attacker.name, n2: character.name)
+    msg = "$n见$P这招来势汹涌，势不可挡，被$N攻得连连后退。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

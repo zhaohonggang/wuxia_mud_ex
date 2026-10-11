@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Shi do
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = if hit, do: Messages.interpolate("$n只觉眼前一蓬血雨喷洒而出，已被$N这一刀劈了个正中。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p只见$P来势汹涌，难以抵挡，当即飞身朝后跃出数尺。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只觉眼前一蓬血雨喷洒而出，已被$N这一刀劈了个正中。", else: "$p只见$P来势汹涌，难以抵挡，当即飞身朝后跃出数尺。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

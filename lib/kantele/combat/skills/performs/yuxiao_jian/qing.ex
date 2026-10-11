@@ -145,7 +145,8 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 2)
-    result = Messages.interpolate("$p顿觉$P的内力隐藏在一个个气旋中，难以捉摸去处，只能强运内力抵消。", n1: attacker.name, n2: character.name)
+    msg = "$p顿觉$P的内力隐藏在一个个气旋中，难以捉摸去处，只能强运内力抵消。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

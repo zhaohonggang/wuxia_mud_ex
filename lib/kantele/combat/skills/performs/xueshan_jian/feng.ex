@@ -163,7 +163,8 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Feng do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$n只感寒风袭体，全身一阵冰凉，已被$N剑气所伤。顿时喉咙一甜，喷出一大口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破$N的招数，飞身跃开丈许，终于将这阴寒剑气驱于无形。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只感寒风袭体，全身一阵冰凉，已被$N剑气所伤。顿时喉咙一甜，喷出一大口鲜血。", else: "可是$n看破$N的招数，飞身跃开丈许，终于将这阴寒剑气驱于无形。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

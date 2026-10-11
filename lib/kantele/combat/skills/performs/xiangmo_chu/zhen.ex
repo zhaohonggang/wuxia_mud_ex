@@ -147,7 +147,8 @@ defmodule Kantele.Combat.Skills.Performs.XiangmoChu.Zhen do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 1)
-    result = Messages.interpolate("$N一声断喝，施出「镇魂舞」绝技，宝相庄严，气度万千。手中某物朝$n连续砸下。", n1: attacker.name, n2: character.name)
+    msg = "$N一声断喝，施出「镇魂舞」绝技，宝相庄严，气度万千。手中某物朝$n连续砸下。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

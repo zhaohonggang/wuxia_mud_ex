@@ -162,7 +162,8 @@ defmodule Kantele.Combat.Skills.Performs.TianchangZhang.Huang do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$n一时间只觉得气血上涌，浑身如遭火焚，气息大乱，不由得吐了一口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("然而$n内功深湛，丝毫不为$N的掌风所动，若无其事", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n一时间只觉得气血上涌，浑身如遭火焚，气息大乱，不由得吐了一口鲜血。", else: "然而$n内功深湛，丝毫不为$N的掌风所动，若无其事"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

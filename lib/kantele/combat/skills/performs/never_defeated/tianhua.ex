@@ -136,7 +136,8 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Tianhua do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 1)
-    result = Messages.interpolate("结果$p被$P逼得施展不开半点招式！", n1: attacker.name, n2: character.name)
+    msg = "结果$p被$P逼得施展不开半点招式！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

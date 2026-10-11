@@ -147,7 +147,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Xin do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-    result = if hit, do: Messages.interpolate("$n登时觉得胸口苦闷之极，心神难以自制，喜怒哀乐竟全随着$N而变。顷刻之间，$n顿觉精力不济，头晕目眩。", n1: attacker.name, n2: character.name), else: Messages.interpolate("= $n怒喝道：“尔等妖法，休想迷惑我！”。猛然间，招式陡快，竟将$N这招破去。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n登时觉得胸口苦闷之极，心神难以自制，喜怒哀乐竟全随着$N而变。顷刻之间，$n顿觉精力不济，头晕目眩。", else: "= $n怒喝道：“尔等妖法，休想迷惑我！”。猛然间，招式陡快，竟将$N这招破去。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

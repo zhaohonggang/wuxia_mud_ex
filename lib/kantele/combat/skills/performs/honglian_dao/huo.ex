@@ -148,7 +148,8 @@ defmodule Kantele.Combat.Skills.Performs.HonglianDao.Huo do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = Messages.interpolate("$N施出红莲刀法绝技，手中某物运转如飞，激起层层热浪席卷$n周身！", n1: attacker.name, n2: character.name)
+    msg = "$N施出红莲刀法绝技，手中某物运转如飞，激起层层热浪席卷$n周身！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

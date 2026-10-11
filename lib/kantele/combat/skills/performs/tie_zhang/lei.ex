@@ -150,7 +150,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 4)
-    result = if hit, do: Messages.interpolate("结果只听$n一声闷哼，被$N一掌劈个正着，口中鲜血狂喷而出。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n眼见$N来势汹涌，丝毫不敢小觑，急忙闪在了一旁。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果只听$n一声闷哼，被$N一掌劈个正着，口中鲜血狂喷而出。", else: "$n眼见$N来势汹涌，丝毫不敢小觑，急忙闪在了一旁。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

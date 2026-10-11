@@ -148,7 +148,8 @@ defmodule Kantele.Combat.Skills.Performs.PobeiTui.Kai do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 1)
-    result = Messages.interpolate("$n见无数腿影向自己袭来，全然分辨不清真伪，只得拼命运动抵挡。", n1: attacker.name, n2: character.name)
+    msg = "$n见无数腿影向自己袭来，全然分辨不清真伪，只得拼命运动抵挡。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

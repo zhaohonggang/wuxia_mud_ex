@@ -151,7 +151,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhenyuQuan.Tong do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$N随手挥出一拳，飘忽不定的击向$n，看似竟不着半点力道。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只是随手一挡，哪知$N这拳后势无穷，霎时拳劲吞吐，穿
+胸而过。$n顿时呕出几大口鲜血，几欲晕厥！", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

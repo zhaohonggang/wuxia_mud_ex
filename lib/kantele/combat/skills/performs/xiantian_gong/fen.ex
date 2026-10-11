@@ -155,8 +155,8 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Fen do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 4)
-    result = if hit, do: Messages.interpolate("$n正直诧异间，$N一掌已正中$p脑门，先天真气登时贯脑而入。
-( $n受伤过重，已经有如风中残烛，随时都可能断气。)", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p识破了$P这一招，斜斜一跃躲避开来。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$N这掌正中$n胸口，先天真气登时透体而入，接连喷出数口鲜血。", else: "可是$p识破了$P这一招，斜斜一跃躲避开来。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

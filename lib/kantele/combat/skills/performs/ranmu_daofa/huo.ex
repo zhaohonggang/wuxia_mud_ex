@@ -169,7 +169,8 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-    result = if hit, do: Messages.interpolate("只闻一股焦臭从$n处传来，$n已被$P这精深奥妙的一刀击中，鲜血飞溅而出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p见$P来势汹汹，不敢抵挡，急忙斜跃避开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只闻一股焦臭从$n处传来，$n已被$P这精深奥妙的一刀击中，鲜血飞溅而出！", else: "$p见$P来势汹汹，不敢抵挡，急忙斜跃避开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

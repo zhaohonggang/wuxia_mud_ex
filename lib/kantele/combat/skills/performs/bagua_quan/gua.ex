@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.BaguaQuan.Gua do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("只因这招实在太过巧妙，$p被$P攻了个措手不及，大叫一声，吐出一口鲜血！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的这一招，镇定解招，一丝不乱。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只因这招实在太过巧妙，$p被$P攻了个措手不及，大叫一声，吐出一口鲜血！", else: "可是$p看破了$P的这一招，镇定解招，一丝不乱。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

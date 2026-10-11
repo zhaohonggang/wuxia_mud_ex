@@ -164,7 +164,8 @@ defmodule Kantele.Combat.Skills.Performs.LiangyiJian.Ren do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 3)
-    result = if hit, do: Messages.interpolate("$n疾忙左转，却发现$N的疾往左转，登时穿胸而过，血如泉涌。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p轻轻一笑，侧身右转，躲开了$P左转的剑式，毫发未伤。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n疾忙左转，却发现$N的某物疾往左转，登时穿胸而过，血如泉涌。", else: "可是$p轻轻一笑，侧身右转，躲开了$P左转的剑式，毫发未伤。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -139,7 +139,8 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Yi do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("$n只见$N运拳如奔，快拳缤纷递出，顿感头晕目眩，不知该如何抵挡。", n1: attacker.name, n2: character.name)
+    msg = "$n只见$N运拳如奔，快拳缤纷递出，顿感头晕目眩，不知该如何抵挡。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

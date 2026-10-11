@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 2)
-    result = Messages.interpolate("剑势迂回间$N招式陡然变快，$n已被$N攻的目不暇接，手忙脚乱！", n1: attacker.name, n2: character.name)
+    msg = "剑势迂回间$N招式陡然变快，$n已被$N攻的目不暇接，手忙脚乱！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

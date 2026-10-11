@@ -155,9 +155,10 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = if hit, do: Messages.interpolate("结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n将手中某物转动如轮，终于化解了这一招。
+    msg = if hit, do: "结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。", else: Enum.random(["可是$n将手中某物转动如轮，终于化解了这一招。
 
-紧接着", n1: attacker.name, n2: character.name)
+紧接着", "可是$p镇定自如，全力化解了$P这精妙的一指。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -148,7 +148,8 @@ defmodule Kantele.Combat.Skills.Performs.QuemenJian.Can do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = Messages.interpolate("$N施出缺门剑法天残剑诀，手中某物唰唰唰唰连续四剑，笼罩$n周身！", n1: attacker.name, n2: character.name)
+    msg = "$N施出缺门剑法天残剑诀，手中某物唰唰唰唰连续四剑，笼罩$n周身！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

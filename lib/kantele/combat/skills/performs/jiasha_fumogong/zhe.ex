@@ -142,7 +142,8 @@ defmodule Kantele.Combat.Skills.Performs.JiashaFumogong.Zhe do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 3)
-    result = Messages.interpolate("$n全身一颤，立足不稳，被$N这招击得飞起，重重的跌落在地上。", n1: attacker.name, n2: character.name)
+    msg = "$n全身一颤，立足不稳，被$N这招击得飞起，重重的跌落在地上。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -149,7 +149,8 @@ defmodule Kantele.Combat.Skills.Performs.LuoyingShenzhang.Zhuan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 3)
-    result = if hit, do: Messages.interpolate("$n大吃一惊，登时接连中掌，狂喷出一口鲜血，身子急转个不停。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的企图，连消带打，避开了$P这一击。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n大吃一惊，登时接连中掌，狂喷出一口鲜血，身子急转个不停。", else: "可是$p看破了$P的企图，连消带打，避开了$P这一击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

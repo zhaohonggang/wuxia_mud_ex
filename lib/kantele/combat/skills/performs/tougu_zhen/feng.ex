@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$N使出透骨针「封 杀」绝技，手指挥舞，幻出漫天寒星，携带着阴寒之劲直封$n各处要穴！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n急忙退闪，连消带打躲开了这一击。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$N使出透骨针「封 杀」绝技，手指挥舞，幻出漫天寒星，携带着阴寒之劲直封$n各处要穴！", else: "可是$n急忙退闪，连消带打躲开了这一击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

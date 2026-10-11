@@ -143,7 +143,8 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Zhi do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("结果$n被$N攻了个措手不及，$n慌忙招架，心中叫苦。", n1: attacker.name, n2: character.name)
+    msg = "结果$n被$N攻了个措手不及，$n慌忙招架，心中叫苦。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

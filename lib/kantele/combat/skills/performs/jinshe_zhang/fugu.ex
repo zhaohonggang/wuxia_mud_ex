@@ -156,7 +156,8 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhang.Fugu do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 2)
-    result = Messages.interpolate("结果$n被$N的左手所制，在「附骨缠身」下，一时竟然无法还手！", n1: attacker.name, n2: character.name)
+    msg = "结果$n被$N的左手所制，在「附骨缠身」下，一时竟然无法还手！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

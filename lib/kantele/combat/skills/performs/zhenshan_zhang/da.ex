@@ -157,8 +157,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhenshanZhang.Da do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 3)
-    result = if hit, do: Messages.interpolate("$n见势连忙向后一纵，但却只觉胸口一震，顿时两耳轰鸣，已被$N掌劲所伤！
-:内伤@?", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n见势连忙向后一纵，但却只觉胸口一震，顿时两耳轰鸣，已被$N掌劲所伤！
+:内伤@?", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

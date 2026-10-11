@@ -173,9 +173,10 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoZhi.Jueming do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 350, 3)
-    result = if hit, do: Messages.interpolate("只见$n一声惨叫，已被$N击中要害部位，只觉眼前一片
-漆黑，身体摇摇欲坠！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破了$N的企图，轻轻向后飘出数丈，躲过了这
-一致命的一击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只见$n一声惨叫，已被$N击中要害部位，只觉眼前一片
+漆黑，身体摇摇欲坠！", else: "可是$n看破了$N的企图，轻轻向后飘出数丈，躲过了这
+一致命的一击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

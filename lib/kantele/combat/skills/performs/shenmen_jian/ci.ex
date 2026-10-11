@@ -144,7 +144,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenmenJian.Ci do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 40, 3)
-    result = Messages.interpolate("$n只觉手腕一阵刺痛，手中某物再也拿捏不住，脱手而飞。", n1: attacker.name, n2: character.name)
+    msg = "$n只觉手腕一阵刺痛，手中某物再也拿捏不住，脱手而飞。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

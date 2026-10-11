@@ -162,7 +162,8 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 260, 3)
-    result = if hit, do: Messages.interpolate("只听$n惨叫一声，只感两耳轰鸣，目不视物，软软瘫倒。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p见$P来势汹涌，踉踉跄跄的躲开了这致命的一击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只听$n惨叫一声，只感两耳轰鸣，目不视物，软软瘫倒。", else: "$p见$P来势汹涌，踉踉跄跄的躲开了这致命的一击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

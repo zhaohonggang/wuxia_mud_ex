@@ -155,7 +155,8 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Jia do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$n不禁大惊失色，急忙跃开数步，方才摆脱$N的力道。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n不禁大惊失色，急忙跃开数步，方才摆脱$N的力道。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "却见$n手中某物被某物缠住后不断增加重量，招数顿见涩滞，真力不由狂泻而出。", else: "$n不禁大惊失色，急忙跃开数步，方才摆脱$N的力道。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

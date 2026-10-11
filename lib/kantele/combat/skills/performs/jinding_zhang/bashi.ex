@@ -148,7 +148,8 @@ defmodule Kantele.Combat.Skills.Performs.JindingZhang.Bashi do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 3)
-    result = if hit, do: Messages.interpolate("只见漫天掌影飘忽不定的罩向$n全身各个部位，$n顿时接连中了数掌！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只见漫天掌影飘忽不定的罩向$n全身各个部位，$n顿时接连中了数掌！", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

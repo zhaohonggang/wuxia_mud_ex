@@ -163,7 +163,8 @@ defmodule Kantele.Combat.Skills.Performs.XueshanDao.Kai do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$n招架不及，顿时被$N凌厉的刀芒划中要害，鲜血狂溅而出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p凝神聚气，护住门户，$P刀芒虽然凌厉，始终奈何不得。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n招架不及，顿时被$N凌厉的刀芒划中要害，鲜血狂溅而出！", else: "可是$p凝神聚气，护住门户，$P刀芒虽然凌厉，始终奈何不得。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

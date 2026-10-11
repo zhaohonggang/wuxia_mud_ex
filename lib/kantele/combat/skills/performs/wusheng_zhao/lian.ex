@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$p奋力抵抗，结果还是连中$P数抓，登时鲜血飞溅，无法反击！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$p奋力抵抗，结果还是连中$P数抓，登时鲜血飞溅，无法反击！", else: "可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

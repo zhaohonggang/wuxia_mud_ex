@@ -163,7 +163,8 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 2)
-    result = if hit, do: Messages.interpolate("$n只觉得$N内力激荡，琴音犹如一柄利剑穿透鼓膜，“哇”的喷出一口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n急忙凝神聚气，努力使自己不受琴音的干扰，终于化解了这一招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只觉得$N内力激荡，琴音犹如一柄利剑穿透鼓膜，“哇”的喷出一口鲜血。", else: "可是$n急忙凝神聚气，努力使自己不受琴音的干扰，终于化解了这一招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

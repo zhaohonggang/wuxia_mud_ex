@@ -157,7 +157,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 3)
-    result = if hit, do: Messages.interpolate("$n哪里料到$N竟有如此变招，不及躲闪，肩头被$P抓了个鲜血淋漓。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n不及多想，急切间飘然而退，让$P这一招无功而返。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$p急忙闪头，然而$N这招来得好快，正插中$p肩头，登时鲜血淋漓。", "$n哪里料到$N竟有如此变招，不及躲闪，肩头被$P抓了个鲜血淋漓。"]), else: Enum.random(["$n不及多想，急切间飘然而退，让$P这一招无功而返。", "$n哪里料到$N竟有如此变招，不及躲闪，肩头被$P抓了个鲜血淋漓。", "$p暗叫不好，急忙闪头，可是$N手臂咔咔作响，忽然暴长，迅论无比的抓向$p。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

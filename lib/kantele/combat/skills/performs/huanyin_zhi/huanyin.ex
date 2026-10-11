@@ -159,7 +159,8 @@ defmodule Kantele.Combat.Skills.Performs.HuanyinZhi.Huanyin do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 4)
-    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p运足内力，以深厚的内功化解了这一指的阴寒内力。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$p急忙后退，然而这指何等玄妙，正好点中$p胸前，$p不禁打了一个冷战。", else: "可是$p运足内力，以深厚的内功化解了这一指的阴寒内力。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

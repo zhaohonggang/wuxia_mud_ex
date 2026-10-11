@@ -164,7 +164,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhurongJian.Wan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 4)
-    result = if hit, do: Messages.interpolate("$N剑招突变，将真气注入剑身，剑体顿时变得通红，一式「万剑焚云」使出，霎时呼啸声大作，手中某物化做千万柄利刃，笼罩$n周身。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n眼剑某物已至，强自镇定，侧身躲过，但对$N这招仍是心有余悸。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$N剑招突变，将真气注入剑身，剑体顿时变得通红，一式「万剑焚云」使出，霎时呼啸声大作，手中某物化做千万柄利刃，笼罩$n周身。", else: "$n眼剑某物已至，强自镇定，侧身躲过，但对$N这招仍是心有余悸。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

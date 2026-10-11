@@ -154,7 +154,8 @@ defmodule Kantele.Combat.Skills.Performs.ChongtianZhang.Zhan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 4)
-    result = if hit, do: Messages.interpolate("$n躲闪不得，只能硬挡下双掌，顿时被$P双掌砍中双肩两侧，吐血不止！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p奋力招架，终于将$P这双掌架开，没有受到任何伤害。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n躲闪不得，只能硬挡下双掌，顿时被$P双掌砍中双肩两侧，吐血不止！", else: "可是$p奋力招架，终于将$P这双掌架开，没有受到任何伤害。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

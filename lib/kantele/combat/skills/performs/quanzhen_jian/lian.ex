@@ -162,7 +162,8 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    result = if hit, do: Messages.interpolate("拆得数招，$N左剑平刺，右掌正击，同时左腿横扫而出，正是全真派中的绝招。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只见$n躲闪不及，已经被$N一腿扫中，惨叫声中，向后跌出丈许。", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

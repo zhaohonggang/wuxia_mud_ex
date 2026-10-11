@@ -136,7 +136,8 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Po do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 1)
-    result = Messages.interpolate("$N随意挥洒手中的某物，招招从出其不意的方位直指$n中的破绽。", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["$N随意挥洒手中的某物，招招从出其不意的方位直指$n中的破绽。", "$n大吃一惊，慌乱之下破绽迭出，$N唰唰唰唰连攻剑！", "$n略得空隙喘息，一时间却也无力反击。", "$n觉得眼前眼花缭乱，手中的某物一时竟然拿捏不住，脱手而出！", "$n连忙抵挡，一时间不禁手忙脚乱，无暇反击。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

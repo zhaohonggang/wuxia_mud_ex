@@ -171,7 +171,8 @@ defmodule Kantele.Combat.Skills.Performs.YinlongBian.Zhu do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    result = if hit, do: Messages.interpolate("结果$n一声惨叫，未能看破$N的企图，被这一鞭硬击在胸口，鲜血飞溅，皮肉绽开！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p飞身一跃而起，躲避开了$P的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$n一声惨叫，未能看破$N的企图，被这一鞭硬击在胸口，鲜血飞溅，皮肉绽开！", else: "可是$p飞身一跃而起，躲避开了$P的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

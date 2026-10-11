@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.PiliQuan.Jin do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    result = if hit, do: Messages.interpolate("只见$P这一拳把$p飞了出去，重重的摔在地上，吐血不止！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p奋力招架，硬生生的挡开了$P这一招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只见$P这一拳把$p飞了出去，重重的摔在地上，吐血不止！", else: "可是$p奋力招架，硬生生的挡开了$P这一招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

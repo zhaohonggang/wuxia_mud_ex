@@ -154,7 +154,8 @@ defmodule Kantele.Combat.Skills.Performs.YinfengDao.Jue do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 350, 3)
-    result = if hit, do: Messages.interpolate("$N使出阴风刀「绝 杀」绝技，掌劲幻出一片片切骨寒气如飓风般裹向$n全身！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n急忙退闪，连消带打躲开了这一击。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$N使出阴风刀「绝 杀」绝技，掌劲幻出一片片切骨寒气如飓风般裹向$n全身！", else: "可是$n急忙退闪，连消带打躲开了这一击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

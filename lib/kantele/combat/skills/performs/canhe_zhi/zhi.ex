@@ -141,7 +141,8 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Zhi do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 120, 2)
-    result = Messages.interpolate("结果只听“噗噗噗”数声，$p竟被$P以指力封住穴道，动弹不得。", n1: attacker.name, n2: character.name)
+    msg = "结果只听“噗噗噗”数声，$p竟被$P以指力封住穴道，动弹不得。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -160,7 +160,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("$n面对$P这排山倒海攻势，完全无法抵挡，唯有退后。", n1: attacker.name, n2: character.name)
+    msg = "$n面对$P这排山倒海攻势，完全无法抵挡，唯有退后。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

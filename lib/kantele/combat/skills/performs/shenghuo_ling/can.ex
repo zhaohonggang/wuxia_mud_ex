@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("$N一声长啸，手中某物一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["$N一声长啸，手中某物一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！", "$n完全无法看透$N招中虚实，不由得心生惧意，招式一滞，登时破绽百出。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -157,9 +157,9 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    result = if hit, do: Messages.interpolate("霎那间$n只见寒芒一闪，$N食指已钻入$p印堂半尺，指劲顿时破脑而入。
-你听到“噗”的一声，身上竟然溅到几滴脑浆！
-( $n受伤过重，已经有如风中残烛，随时都可能断气。)", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p见$P招式奇特，不感大意，顿时向后跃数丈，躲闪开来。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "霎那间$n只见寒芒一闪，$N食指已钻入$p胸堂半尺，指劲顿时破体而入。
+你听到“嗤”的一声，身上竟然溅到几滴鲜血！", else: "$p见$P招式奇特，不感大意，顿时向后跃数丈，躲闪开来。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

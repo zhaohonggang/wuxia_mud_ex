@@ -117,7 +117,8 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.San do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 3)
-    result = Messages.interpolate("( $n )", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["( $n )", "= pmsg", "忽然那无数的光影一闪而没，$n身行一顿，喷出一口鲜血，仰天而倒。", "结果$p一声惨嚎，连中了$P发出的十某物。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

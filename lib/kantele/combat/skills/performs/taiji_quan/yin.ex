@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$n微微一楞，登时被这力道带得在原地急转七八下，如转陀螺，如旋纺锤。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见状连忙使出“千斤坠”之力定住身形，摆脱了$N的力道。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n微微一楞，登时被这力道带得在原地急转七八下，如转陀螺，如旋纺锤。", else: "$n见状连忙使出“千斤坠”之力定住身形，摆脱了$N的力道。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

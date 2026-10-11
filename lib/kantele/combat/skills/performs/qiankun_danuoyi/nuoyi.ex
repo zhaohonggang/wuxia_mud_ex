@@ -147,7 +147,8 @@ defmodule Kantele.Combat.Skills.Performs.QiankunDanuoyi.Nuoyi do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 350, 2)
-    result = if hit, do: Messages.interpolate("结果$p一招击出，正好打在自己的要害上，不禁一声惨叫，摔跌开去。", n1: attacker.name, n2: character.name), else: Messages.interpolate("然而$p内功深厚，并没有被$P这巧妙的劲力所带动。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$p一招击出，正好打在自己的要害上，不禁一声惨叫，摔跌开去。", else: "然而$p内功深厚，并没有被$P这巧妙的劲力所带动。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

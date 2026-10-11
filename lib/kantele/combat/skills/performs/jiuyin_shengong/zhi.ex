@@ -136,7 +136,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhi do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 1)
-    result = Messages.interpolate("$n不及多想，连忙抵挡，全然无法反击。", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["$n不及多想，连忙抵挡，全然无法反击。", "$n勉力抵挡，一时间再也无力反击。", "$n见来指玄幻无比，全然无法抵挡，慌乱之下破绽迭出，$N随手连出指！", "$n觉得眼前眼花缭乱，手中的某物一时竟然拿捏不住，脱手而出！"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -157,7 +157,8 @@ defmodule Kantele.Combat.Skills.Performs.ZijinbaguaDao.Bagua do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("$n见来招实在是变幻莫测，不由得心生惧意，招式登时出了破绽！", n1: attacker.name, n2: character.name)
+    msg = "$n见来招实在是变幻莫测，不由得心生惧意，招式登时出了破绽！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

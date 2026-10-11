@@ -150,7 +150,8 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Zhen do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 4)
-    result = if hit, do: Messages.interpolate("$n只觉一股罡风涌至，根本不及躲避，$N双掌正中前胸，鲜血如箭般喷出。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n眼见$N来势汹涌，丝毫不敢小觑，急忙闪在了一旁。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只觉一股罡风涌至，根本不及躲避，$N双掌正中前胸，鲜血如箭般喷出。", else: "$n眼见$N来势汹涌，丝毫不敢小觑，急忙闪在了一旁。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -160,8 +160,8 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 5)
-    result = if hit, do: Messages.interpolate("只见$N一拳轰至，便将$n震得心脉俱碎，仰天喷出一口鲜血，软软瘫倒。
-( $n受伤过重，已经有如风中残烛，随时都可能断气。)", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p识破了$P这一招，斜斜一跃避开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$p闪避不及，$P的拳力掌劲顿时透体而入，口中鲜血狂喷，连退数步。", else: "可是$p识破了$P这一招，斜斜一跃避开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Zhai do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 2)
-    result = Messages.interpolate("结果$p只见$P剑招精妙，全然辨不清招中虚实，攻势登时一紧！", n1: attacker.name, n2: character.name)
+    msg = "结果$p只见$P剑招精妙，全然辨不清招中虚实，攻势登时一紧！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

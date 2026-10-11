@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Juan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 2)
-    result = Messages.interpolate("$p连忙竭力招架，一时无暇反击。", n1: attacker.name, n2: character.name)
+    msg = "$p连忙竭力招架，一时无暇反击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

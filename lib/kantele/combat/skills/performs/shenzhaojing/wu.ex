@@ -149,7 +149,8 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 1)
-    result = Messages.interpolate("$n面对$N这排山倒海的攻势，不禁心生惧意，慌乱中破绽迭出。", n1: attacker.name, n2: character.name)
+    msg = "$n面对$N这排山倒海的攻势，不禁心生惧意，慌乱中破绽迭出。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

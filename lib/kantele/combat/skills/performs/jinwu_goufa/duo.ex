@@ -161,7 +161,8 @@ defmodule Kantele.Combat.Skills.Performs.JinwuGoufa.Duo do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 4)
-    result = if hit, do: Messages.interpolate("$n飞身躲闪，然而只听“嗤啦”一声，$N的某物正钩在$n某物上，顿时鲜血狂溅而出。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的企图，避开了这一招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n飞身躲闪，然而只听“嗤啦”一声，$N的某物正钩在$n某物上，顿时鲜血狂溅而出。", else: "可是$p看破了$P的企图，避开了这一招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

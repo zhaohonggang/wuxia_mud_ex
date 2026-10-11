@@ -163,7 +163,8 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Zhuo do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$n只感剑光夺目，顿时眼花缭乱，被$N一剑刺中，鲜血飞溅。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破$N的招数，飞身一纵，避开了这一剑。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只感剑光夺目，顿时眼花缭乱，被$N一剑刺中，鲜血飞溅。", else: "可是$n看破$N的招数，飞身一纵，避开了这一剑。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -137,8 +137,9 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("结果$n微微一楞，没有看破招中奥妙，$N双掌正好拍在胸前。
-:内伤@?", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$n微微一楞，没有看破招中奥妙，$N双掌正好拍在胸前。
+:内伤@?", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

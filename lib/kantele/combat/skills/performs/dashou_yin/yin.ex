@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.DashouYin.Yin do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 40, 3)
-    result = if hit, do: Messages.interpolate("结果$p招架不及，被$P这一下打得七窍生烟，吐血连连。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p不慌不忙，巧妙的架开了$P的金刚印。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$p招架不及，被$P这一下打得七窍生烟，吐血连连。", else: "可是$p不慌不忙，巧妙的架开了$P的金刚印。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

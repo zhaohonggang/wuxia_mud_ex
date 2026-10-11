@@ -149,7 +149,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 1)
-    result = Messages.interpolate("$N嗔目大喝，手中某物一势「赤炼神刀」迸出漫天血光，铺天盖地洒向$n。", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["$N嗔目大喝，手中某物一势「赤炼神刀」迸出漫天血光，铺天盖地洒向$n。", "霎时间$n只觉周围四处杀气弥漫，全身气血翻滚，甚难招架。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

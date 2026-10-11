@@ -164,7 +164,8 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Zhu do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$n见状连忙格挡，可哪里来得及，登时只觉全身一麻，剑气已透胸而过。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n一声冷笑，飞身一跃而起，避开了$N发出的剑气。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n见状连忙格挡，可哪里来得及，登时只觉全身一麻，剑气已透胸而过。", else: "可是$n一声冷笑，飞身一跃而起，避开了$N发出的剑气。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

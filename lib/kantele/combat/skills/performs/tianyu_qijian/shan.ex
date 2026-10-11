@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.TianyuQijian.Shan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = Messages.interpolate("$n大吃一惊，慌忙招架，这一下便失了先机。", n1: attacker.name, n2: character.name)
+    msg = "$n大吃一惊，慌忙招架，这一下便失了先机。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

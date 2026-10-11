@@ -167,8 +167,9 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 350, 3)
-    result = if hit, do: Messages.interpolate("$n看到$N双剑飞舞，招式中所有破绽都为另一剑补去，竟不知如何是好！
-一呆之下，$N的剑招已经破身而入！$n一声惨叫之下，登时受了重创！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n看到$N双剑飞舞，招式中所有破绽都为另一剑补去，竟不知如何是好！
+一呆之下，$N的剑招已经破身而入！$n一声惨叫之下，登时受了重创！", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

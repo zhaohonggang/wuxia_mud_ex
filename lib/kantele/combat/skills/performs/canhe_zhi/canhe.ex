@@ -161,7 +161,8 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 6)
-    result = if hit, do: Messages.interpolate("$n奋力招架，仍是不敌，$N的无形剑气已透体而入，鲜血飞射，无力再战。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见$N来势汹涌，急忙飞身一跃而起，避开了这一击。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["顿时只听“嗤啦”的一声，$n躲闪不及，剑气顿时穿胸而过，带出一蓬血雨。", "只听$n一声惨嚎，被$N的剑气刺中了要害，血肉模糊，鲜血迸流不止。", "$n奋力招架，仍是不敌，$N的无形剑气已透体而入，鲜血飞射，无力再战。"]), else: "$n见$N来势汹涌，急忙飞身一跃而起，避开了这一击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

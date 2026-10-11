@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 4)
-    result = if hit, do: Messages.interpolate("却听$n一声惨嚎，已被$P单腿正中前胸，顿时心脉受震，喷出一大口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p奋力招架，终于将$P的双腿架开，没有受到任何伤害。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "却听$n一声惨嚎，已被$P单腿正中前胸，顿时心脉受震，喷出一大口鲜血。", else: "可是$p奋力招架，终于将$P的双腿架开，没有受到任何伤害。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

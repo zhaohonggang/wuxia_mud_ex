@@ -161,7 +161,8 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Po do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n大惊之下全然无法招架，急忙抽身急退数尺，躲开了这一招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n被$N击中！", else: "$n大惊之下全然无法招架，急忙抽身急退数尺，躲开了这一招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

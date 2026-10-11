@@ -168,7 +168,8 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Yi do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    result = if hit, do: Messages.interpolate("$n全然无法领会$P这莫名其妙的招数，一个疏神，登时受创！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n淡然处之，并没有将$P此招放在心上，随手架开，不漏半点破绽。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n全然无法领会$P这莫名其妙的招数，一个疏神，登时受创！", else: "$n淡然处之，并没有将$P此招放在心上，随手架开，不漏半点破绽。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

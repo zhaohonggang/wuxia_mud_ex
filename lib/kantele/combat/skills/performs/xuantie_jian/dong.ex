@@ -156,7 +156,8 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-    result = if hit, do: Messages.interpolate("结果$n奋力招架，却被$N这一剑震的飞起，口中鲜血狂吐不止！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破了$N的企图，急忙斜跃避开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$n奋力招架，却被$N这一剑震的飞起，口中鲜血狂吐不止！", else: "可是$n看破了$N的企图，急忙斜跃避开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -158,7 +158,8 @@ defmodule Kantele.Combat.Skills.Performs.XuantianZhi.Bing do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 4)
-    result = if hit, do: Messages.interpolate("$n稍不留神，已被$P一指点中，阴寒之劲顿时侵入三焦六脉。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见$N来势汹涌，急忙提气跃开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n稍不留神，已被$P一指点中，阴寒之劲顿时侵入三焦六脉。", else: "$n见$N来势汹涌，急忙提气跃开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

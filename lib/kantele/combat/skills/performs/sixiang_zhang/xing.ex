@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.SixiangZhang.Xing do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    result = if hit, do: Messages.interpolate("$n一时无法勘破这玄奇的掌法，接连中了数招，身陷其中，无法自拔。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p的看破了$P的掌法，巧妙的拆招，没露半点破绽。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n一时无法勘破这玄奇的掌法，接连中了数招，身陷其中，无法自拔。", else: "可是$p的看破了$P的掌法，巧妙的拆招，没露半点破绽。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

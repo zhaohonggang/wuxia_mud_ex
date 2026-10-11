@@ -159,7 +159,8 @@ defmodule Kantele.Combat.Skills.Performs.BaishengQuan.Kai do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    result = if hit, do: Messages.interpolate("$N身子蓦的横移，两臂向后反钩，呼的一声朝$n攻去，正是「混沌初开」绝技。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$n闪避不及，$N双拳正中$p头部两侧，顿时口喷鲜血，几欲昏厥。", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

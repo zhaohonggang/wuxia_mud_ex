@@ -163,8 +163,9 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 3)
-    result = if hit, do: Messages.interpolate("可只见$n哈哈一笑，身子一矮，躲了过去。
-哪知方才的暗器竟是虚招，等$p反应时$N已至跟前，双掌齐施，重重的印在$n胸前。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的企图，没有受到迷惑，招手将暗器全部揽了下来。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "可只见$n哈哈一笑，身子一矮，躲了过去。
+哪知方才的暗器竟是虚招，等$p反应时$N已至跟前，双掌齐施，重重的印在$n胸前。", else: "可是$p看破了$P的企图，没有受到迷惑，招手将暗器全部揽了下来。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

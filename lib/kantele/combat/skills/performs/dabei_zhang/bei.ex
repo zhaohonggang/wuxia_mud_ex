@@ -145,7 +145,8 @@ defmodule Kantele.Combat.Skills.Performs.DabeiZhang.Bei do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = if hit, do: Messages.interpolate("$n勘破不透掌中虚实，$N双掌正中$p前胸，“喀嚓喀嚓”接连断了数根肋骨。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见$N这掌来势非凡，不敢轻易招架，当即飞身纵跃闪开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n勘破不透掌中虚实，$N双掌正中$p前胸，“喀嚓喀嚓”接连断了数根肋骨。", else: "$n见$N这掌来势非凡，不敢轻易招架，当即飞身纵跃闪开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

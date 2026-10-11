@@ -166,7 +166,8 @@ defmodule Kantele.Combat.Skills.Performs.QiankunJian.Ni do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 4)
-    result = if hit, do: Messages.interpolate("$n完全无法看清招中虚实，微微一楞间，发现竟已没入自己胸口数寸。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破$N的招数，飞身一跃，闪开了这神鬼莫测的一击。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n完全无法看清招中虚实，微微一楞间，发现某物竟已没入自己胸口数寸。", else: "可是$n看破$N的招数，飞身一跃，闪开了这神鬼莫测的一击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

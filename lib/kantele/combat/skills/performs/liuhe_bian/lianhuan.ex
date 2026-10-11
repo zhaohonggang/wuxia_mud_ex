@@ -158,7 +158,8 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 2)
-    result = if hit, do: Messages.interpolate("【人合】，$N与合为一体急射向$n，$n措手不急被打的吐血不止！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n不慌不忙，以快打快，将$N的招式完全化去。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["【天合】，$N舞动手中某物瞬息击向$n的额头，啪的一声轻响，顿时一条血印。", "【地合】，$N一个横扫打向$n的下盘，$n未能看破企图，一声惨嚎，某物鞭端已没入小腿半寸，登时连退数步！", "【人合】，$N与某物合为一体急射向$n，$n措手不急被打的吐血不止！", "【神合】，$N手中某物似有灵性一般死追着$n而去。", "【鬼合】，$N突然面如死灰，动作僵硬，然后杀气却更胜一筹，某物发出灵异的光芒，$n几乎看到了死亡的颜色。", "【六合】，$N口中高唱佛号，手中某物连环击出，鞭影重重，$n再也支持不住，身上被拉出一条条豁口。"]), else: "$n不慌不忙，以快打快，将$N的招式完全化去。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

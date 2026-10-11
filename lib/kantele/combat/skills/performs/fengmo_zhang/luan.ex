@@ -147,7 +147,8 @@ defmodule Kantele.Combat.Skills.Performs.FengmoZhang.Luan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 1)
-    result = Messages.interpolate("$N眼中杀气大盛，施出疯魔杖「群魔乱舞」绝技，手中某物接二连三朝$n挥去。", n1: attacker.name, n2: character.name)
+    msg = "$N眼中杀气大盛，施出疯魔杖「群魔乱舞」绝技，手中某物接二连三朝$n挥去。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

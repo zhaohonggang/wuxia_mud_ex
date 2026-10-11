@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Tun do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 4)
-    result = if hit, do: Messages.interpolate("$n一声哀嚎，被$N的罡气划中气门，真气在体内四处乱窜，惨不堪言。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n见$N此招来势非凡，急忙向后横移数尺，终于躲避开来。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n一声哀嚎，被$N的罡气划中气门，真气在体内四处乱窜，惨不堪言。", else: "可是$n见$N此招来势非凡，急忙向后横移数尺，终于躲避开来。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

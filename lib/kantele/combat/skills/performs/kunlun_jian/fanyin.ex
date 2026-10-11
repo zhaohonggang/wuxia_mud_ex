@@ -161,7 +161,8 @@ defmodule Kantele.Combat.Skills.Performs.KunlunJian.Fanyin do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = Messages.interpolate("$n顿时只觉琴音犹如两柄利剑一般刺进双耳，刹那间头晕目眩，全身刺痛！", n1: attacker.name, n2: character.name)
+    msg = "$n顿时只觉琴音犹如两柄利剑一般刺进双耳，刹那间头晕目眩，全身刺痛！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

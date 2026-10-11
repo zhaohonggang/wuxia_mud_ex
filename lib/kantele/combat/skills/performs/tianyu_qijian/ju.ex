@@ -161,7 +161,8 @@ defmodule Kantele.Combat.Skills.Performs.TianyuQijian.Ju do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 4)
-    result = if hit, do: Messages.interpolate("只见$N剑花聚为一线，穿向$n，$p只觉一股热流穿心而过，喉头一甜，鲜血狂喷而出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p猛地向前一跃,跳出了$P的攻击范围。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只见$N剑花聚为一线，穿向$n，$p只觉一股热流穿心而过，喉头一甜，鲜血狂喷而出！", else: "可是$p猛地向前一跃,跳出了$P的攻击范围。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

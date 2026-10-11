@@ -138,7 +138,8 @@ defmodule Kantele.Combat.Skills.Performs.HuashanZhang.Piao do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 1)
-    result = Messages.interpolate("结果$p一时无法辨别其中虚实，竟无法施招。", n1: attacker.name, n2: character.name)
+    msg = "结果$p一时无法辨别其中虚实，竟无法施招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

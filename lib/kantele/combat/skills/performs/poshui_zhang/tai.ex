@@ -163,7 +163,8 @@ defmodule Kantele.Combat.Skills.Performs.PoshuiZhang.Tai do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 4)
-    result = if hit, do: Messages.interpolate("$n完全无法看清招中虚实，只听「砰砰砰」几声，已被$N击中数杖。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n奋力招架，左闪右避，好不容易抵挡住了$N的攻击。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n完全无法看清招中虚实，只听「砰砰砰」几声，已被$N击中数杖。", else: "可是$n奋力招架，左闪右避，好不容易抵挡住了$N的攻击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

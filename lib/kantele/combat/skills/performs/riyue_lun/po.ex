@@ -172,7 +172,8 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Po do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    result = if hit, do: Messages.interpolate("$n被$N这强悍无比的内劲冲击得左摇右晃，接连中招，狂喷鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("却见$p浑不在意，轻轻一闪就躲过了$P的凶悍招数。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n被$N这强悍无比的内劲冲击得左摇右晃，接连中招，狂喷鲜血。", else: "却见$p浑不在意，轻轻一闪就躲过了$P的凶悍招数。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

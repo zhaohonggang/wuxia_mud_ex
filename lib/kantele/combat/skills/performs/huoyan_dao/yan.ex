@@ -147,7 +147,8 @@ defmodule Kantele.Combat.Skills.Performs.HuoyanDao.Yan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 1)
-    result = Messages.interpolate("$N一声怒嚎，狂催真气注入单掌，掌缘顿时腾起一道烈炎，接二连三朝$n劈去。", n1: attacker.name, n2: character.name)
+    msg = "$N一声怒嚎，狂催真气注入单掌，掌缘顿时腾起一道烈炎，接二连三朝$n劈去。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -158,7 +158,8 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 3)
-    result = if hit, do: Messages.interpolate("只听$n惨叫一声，被$N这一掌拍个正着，顿时毒气攻心，“哇”地喷出一大口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p见$P来势汹涌，急忙纵身一跃而起，躲开了这一击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只听$n惨叫一声，被$N这一掌拍个正着，顿时毒气攻心，“哇”地喷出一大口鲜血。", else: "$p见$P来势汹涌，急忙纵身一跃而起，躲开了这一击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

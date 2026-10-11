@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 1)
-    result = if hit, do: Messages.interpolate("$p大惊之下，竟然僵直而立，$P澎湃的掌劲顿时穿透胸膛，尽伤五脏六腑！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p大惊之下急忙飞身跃起，终于躲开了这神鬼莫测的一击。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$p急忙奋力格挡，可只一瞬间，$P的掌劲已透体而入，接连震断数根肋骨！", "$p大惊之下，竟然僵直而立，$P澎湃的掌劲顿时穿透胸膛，尽伤五脏六腑！"]), else: Enum.random(["$p大惊之下急忙飞身跃起，终于躲开了这神鬼莫测的一击。", "$p见$P来势汹涌，不敢硬接，只得小巧腾挪，躲闪开来。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

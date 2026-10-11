@@ -162,7 +162,8 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 3)
-    result = if hit, do: Messages.interpolate("只见$N剑芒暴长，$p霎时只觉一股热流穿心而过，呕出一口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n猛地向前一跃，跳出了$N的攻击范围。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只见$N某物剑芒暴长，$p霎时只觉一股热流穿心而过，呕出一口鲜血。", else: "可是$n猛地向前一跃，跳出了$N的攻击范围。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -145,7 +145,8 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengBlade.Kuang do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 2)
-    result = if hit, do: Messages.interpolate("只见$n已被$N切得体无完肤，血如箭般由全身喷射而出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只见$n已被$N切得体无完肤，血如箭般由全身喷射而出！", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

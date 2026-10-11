@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Ying do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = Messages.interpolate("$N一声狞笑，将手中的某物舞动如轮，刀锋激起层层血浪紧逼$n而去。", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["$N一声狞笑，将手中的某物舞动如轮，刀锋激起层层血浪紧逼$n而去。", "结果$p被$P逼得手忙脚乱，只能紧守门户，不敢擅动。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

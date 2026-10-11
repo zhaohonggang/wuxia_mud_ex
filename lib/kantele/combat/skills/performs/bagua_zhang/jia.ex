@@ -162,7 +162,8 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 2)
-    result = if hit, do: Messages.interpolate("$n果真始料不及，$N那某物正好打在$p要穴上，顿时血气上涌，连退数步！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p早料得$P有此一着，哈哈一笑，斜跳闪开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n果真始料不及，$N那某物正好打在$p要穴上，顿时血气上涌，连退数步！", "( $n )", "= pmsg"]), else: "可是$p早料得$P有此一着，哈哈一笑，斜跳闪开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

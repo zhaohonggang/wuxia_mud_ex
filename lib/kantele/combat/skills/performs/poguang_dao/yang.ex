@@ -162,7 +162,8 @@ defmodule Kantele.Combat.Skills.Performs.PoguangDao.Yang do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 2)
-    result = if hit, do: Messages.interpolate("$n见$N来势凶猛，刀光闪烁，惊骇间肩膀已中一刀，一股鲜血喷涌而出。", n1: attacker.name, n2: character.name), else: Messages.interpolate("然而$n以快制快，侧身一跳，躲过这招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n见$N来势凶猛，刀光闪烁，惊骇间肩膀已中一刀，一股鲜血喷涌而出。", else: "然而$n以快制快，侧身一跳，躲过这招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

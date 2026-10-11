@@ -165,7 +165,8 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    result = if hit, do: Messages.interpolate("$n见$N五道剑光剑势惊人，急忙收敛心神奋力招架。哪知$P这招力道非凡，$p一声闷哼，连退几步，喷出一口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("然而$n以快对快，飞身一跳已然躲过$N这一招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n见$N五道剑光剑势惊人，急忙收敛心神奋力招架。哪知$P这招力道非凡，$p一声闷哼，连退几步，喷出一口鲜血。", "$n见$N五道剑光缤纷洒落，交错纵横，呼啸着向自己袭来。心底不由大惊，登时听得“噗嗤”一声，剑气透体而过。"]), else: "然而$n以快对快，飞身一跳已然躲过$N这一招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

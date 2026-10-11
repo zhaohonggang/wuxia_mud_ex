@@ -156,7 +156,8 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Xueyu do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 1)
-    result = Messages.interpolate("$N嗔目大喝，手腕一抖，某物如闪电一般砍向$n！", n1: attacker.name, n2: character.name)
+    msg = "$N嗔目大喝，手腕一抖，某物如闪电一般砍向$n！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

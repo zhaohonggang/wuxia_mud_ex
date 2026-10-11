@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.YingzhuaGong.Chumo do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 40, 3)
-    result = if hit, do: Messages.interpolate("不知怎么的，$p却偏偏躲不开$P这一抓，结果被抓了个正中，不由得闷哼一声，退了几步。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p没有轻视$P这一抓，连忙招架，顺势跃开，没有被$P得手。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "不知怎么的，$p却偏偏躲不开$P这一抓，结果被抓了个正中，不由得闷哼一声，退了几步。", else: "可是$p没有轻视$P这一抓，连忙招架，顺势跃开，没有被$P得手。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

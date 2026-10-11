@@ -145,7 +145,8 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Lei do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 1)
-    result = Messages.interpolate("$n平生何曾见过这样的招数，全然无法化解，顿时被击中数处要害，颓然倒地！", n1: attacker.name, n2: character.name)
+    msg = "$n平生何曾见过这样的招数，全然无法化解，顿时被击中数处要害，颓然倒地！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

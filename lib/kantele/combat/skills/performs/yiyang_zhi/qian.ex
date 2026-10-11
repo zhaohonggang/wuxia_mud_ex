@@ -155,7 +155,8 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Qian do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 4)
-    result = if hit, do: Messages.interpolate("$n只觉胸口一麻，已被$N一指点中，顿时气血上涌，喷出数口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破了$N的招数，连消带打挡开了这一指。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只觉胸口一麻，已被$N一指点中，顿时气血上涌，喷出数口鲜血。", else: "可是$n看破了$N的招数，连消带打挡开了这一指。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

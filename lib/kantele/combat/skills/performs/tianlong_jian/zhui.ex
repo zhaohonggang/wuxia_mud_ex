@@ -158,7 +158,8 @@ defmodule Kantele.Combat.Skills.Performs.TianlongJian.Zhui do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 350, 1)
-    result = if hit, do: Messages.interpolate("$n急忙抽身后退，可只见$N剑芒一漾，胸口便喷出一股血柱！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n凝神聚气，飞身一跃而起，避开了$N的杀着。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n招架不住，哧地一声，$N手中的某物顿时破体钻入，鲜血四溅！", "$n急忙抽身后退，可只见$N某物剑芒一漾，胸口便喷出一股血柱！"]), else: Enum.random(["可是$n凝神聚气，飞身一跃而起，避开了$N的杀着。", "可是$n奋力格挡，终于架开了$N的这一剑。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

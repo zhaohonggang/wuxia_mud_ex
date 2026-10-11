@@ -133,7 +133,8 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 5)
-    result = Messages.interpolate("(  )", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["(  )", "只听一声惨嚎，接连退了数步，“哇”的呕出一大口鲜血。", "只见向后飞出丈远，重重的跌落在地上，衣衫破烂，再也无法站起来。", "只见歪歪斜斜倒退几步，伏倒在地，痛苦不堪。。", "急忙飞身而起，却猛然坠地，伤痕遍体，鲜血不止。", "狂风卷过，只见，飞沙狂舞，却动也动不了忽然间，却瘫软在地。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

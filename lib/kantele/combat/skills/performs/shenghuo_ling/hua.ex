@@ -144,7 +144,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 4)
-    result = if hit, do: Messages.interpolate("$n只觉万道金芒铺天盖地席卷而来，完全无法阻挡。顿时只感全身几处刺痛，鲜血飞溅而出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看准$N的破绽，猛地向前一跃，跳出了$N的攻击范围。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只觉万道金芒铺天盖地席卷而来，完全无法阻挡。顿时只感全身几处刺痛，鲜血飞溅而出！", else: "可是$n看准$N的破绽，猛地向前一跃，跳出了$N的攻击范围。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

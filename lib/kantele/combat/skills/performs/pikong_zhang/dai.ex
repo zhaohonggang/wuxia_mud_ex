@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.PikongZhang.Dai do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$n一惊，被$N掌劲击在胸前，经脉受震，登时呕出一口鲜血！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n一惊，被$N掌劲击在胸前，经脉受震，登时呕出一口鲜血！", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

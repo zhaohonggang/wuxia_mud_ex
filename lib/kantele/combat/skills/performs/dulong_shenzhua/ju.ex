@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.DulongShenzhua.Ju do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 220, 4)
-    result = if hit, do: Messages.interpolate("但见$N双爪划过，$n已闪避不及，胸口被$N抓出十条血痕。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n奋力招架，竟将$N这招化解。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "但见$N双爪划过，$n已闪避不及，胸口被$N抓出十条血痕。", else: "$n奋力招架，竟将$N这招化解。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

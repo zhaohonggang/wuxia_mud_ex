@@ -144,7 +144,8 @@ defmodule Kantele.Combat.Skills.Performs.GuzhuoZhang.Zhuo do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 2)
-    result = Messages.interpolate("$n见$N掌风凌厉，慌忙招架，顿时便失了先机。", n1: attacker.name, n2: character.name)
+    msg = "$n见$N掌风凌厉，慌忙招架，顿时便失了先机。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

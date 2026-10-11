@@ -150,7 +150,8 @@ defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    result = if hit, do: Messages.interpolate("结果只听$n一声闷哼，$N掌劲穿胸而过，“哇”的喷出一大口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果只听$n一声闷哼，$N掌劲穿胸而过，“哇”的喷出一大口鲜血。", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

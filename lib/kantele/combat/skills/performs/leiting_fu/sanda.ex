@@ -168,7 +168,8 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = if hit, do: Messages.interpolate("$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被这招击个正中。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p冷静非凡，丝毫不为这奇幻的招数所动，凝神抵挡，不漏半点破绽！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被这招击个正中。", else: "$p冷静非凡，丝毫不为这奇幻的招数所动，凝神抵挡，不漏半点破绽！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

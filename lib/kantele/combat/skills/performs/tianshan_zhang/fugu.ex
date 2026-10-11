@@ -138,7 +138,8 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Fugu do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 1)
-    result = Messages.interpolate("结果$n被$N吓得惊慌失措，一时间手忙脚乱，难以应对！", n1: attacker.name, n2: character.name)
+    msg = "结果$n被$N吓得惊慌失措，一时间手忙脚乱，难以应对！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -138,7 +138,8 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Po do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 1)
-    result = Messages.interpolate("$n只办了个勉力遮挡，全然无法反击。", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["$n只办了个勉力遮挡，全然无法反击。", "$n竭力抵挡，一时间再也无力反击。", "$n见来招即巧又拙，不同于人间任何招式，不禁大为慌乱，一时破绽迭出，$N见状连出招！", "$n觉得眼前眼花缭乱，手中的某物一时竟然拿捏不住，脱手而出！"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

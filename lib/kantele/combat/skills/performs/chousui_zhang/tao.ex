@@ -161,11 +161,12 @@ $N把心一横，在自己舌尖狠命一咬，将毕生功力尽数喷出，顿
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = if hit, do: Messages.interpolate("只见$N双目血红，头发散乱，猛地仰天发出一声悲啸。
+    msg = if hit, do: Enum.random(["只见$N双目血红，头发散乱，猛地仰天发出一声悲啸。
 
 $N把心一横，在自己舌尖狠命一咬，将毕生功力尽数喷出，顿时只见空气中血雾弥漫，腥臭无比，随即又
 听$N骨骼“噼里啪啦”一阵爆响，双臂顺着喷出的血柱一推，刹那间一座丈来高的奇毒火墙拔地而起，带
-着排山倒海之势向$n涌去！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+着排山倒海之势向$n涌去！", "$N一声惨笑，长叹一声，眼前一黑，倒在了地上。", "$n见滔天热浪扑面涌来，只觉眼前一片通红，已被卷入火浪，毒焰席卷全身，连骨头都要烤焦一般。"]), else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

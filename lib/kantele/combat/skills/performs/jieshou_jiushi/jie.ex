@@ -156,7 +156,8 @@ defmodule Kantele.Combat.Skills.Performs.JieshouJiushi.Jie do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 4)
-    result = if hit, do: Messages.interpolate("$n奋力格挡，可还是被$N截住腕部要穴，只觉眼前一黑，几欲晕倒。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见状大吃一惊，急忙向后猛退数步，终于避开了$N这一击。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n奋力格挡，可还是被$N截住腕部要穴，只觉眼前一黑，几欲晕倒。", else: "$n见状大吃一惊，急忙向后猛退数步，终于避开了$N这一击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

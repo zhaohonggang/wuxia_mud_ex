@@ -139,7 +139,8 @@ defmodule Kantele.Combat.Skills.Performs.KongmingQuan.Ruo do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 2)
-    result = Messages.interpolate("结果$n被$N的拳招所牵制，招架不迭，全然无法反击！", n1: attacker.name, n2: character.name)
+    msg = "结果$n被$N的拳招所牵制，招架不迭，全然无法反击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

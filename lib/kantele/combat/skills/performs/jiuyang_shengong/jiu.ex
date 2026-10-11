@@ -139,7 +139,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Jiu do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("$n只觉周围空气炽热无比，又见无数气团向自己袭来，顿感头晕目眩，不知该如何抵挡。", n1: attacker.name, n2: character.name)
+    msg = "$n只觉周围空气炽热无比，又见无数气团向自己袭来，顿感头晕目眩，不知该如何抵挡。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

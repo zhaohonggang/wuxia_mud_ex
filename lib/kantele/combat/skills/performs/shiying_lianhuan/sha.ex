@@ -163,7 +163,8 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 4)
-    result = if hit, do: Messages.interpolate("只听“嗤啦”一声，$n被$N的刀芒划中气门，登时痛声长呼，几欲晕倒。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见$P来势汹涌，连忙飞身向后挪移数尺，躲闪开来。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只听“嗤啦”一声，$n被$N的刀芒划中气门，登时痛声长呼，几欲晕倒。", else: "$n见$P来势汹涌，连忙飞身向后挪移数尺，躲闪开来。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

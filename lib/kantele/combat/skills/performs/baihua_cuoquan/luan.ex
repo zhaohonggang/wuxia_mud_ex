@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Luan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    result = if hit, do: Messages.interpolate("$n只见$N拳势汹涌，不敢轻视，急忙凝神聚气，奋力化解开来。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n只见$N拳势汹涌，不敢轻视，急忙凝神聚气，奋力化解开来。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只觉$N拳影重重，顿时眼花缭乱，连中数拳，被攻了个措手不及。", else: "$n只见$N拳势汹涌，不敢轻视，急忙凝神聚气，奋力化解开来。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

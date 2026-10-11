@@ -164,7 +164,8 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Jin do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 4)
-    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见$N来势汹涌，不敢轻易招架，急忙提气跃开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n被$N击中！", else: "$n见$N来势汹涌，不敢轻易招架，急忙提气跃开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

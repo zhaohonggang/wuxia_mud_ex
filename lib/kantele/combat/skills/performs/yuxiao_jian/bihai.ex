@@ -158,7 +158,8 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 1)
-    result = if hit, do: Messages.interpolate("$n只感全身热血沸腾，就只想手舞足蹈的乱动一番。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n只感全身热血沸腾，就只想手舞足蹈的乱动一番。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n只感全身热血沸腾，就只想手舞足蹈的乱动一番。", "$n只感心头一震，脸上情不自禁的露出了一丝微笑。", "此时$n已身陷绝境，全身气血逆流，再也无法脱身。", "霎时间$n只感心头滚热，喉干舌燥，说不出的难受。"]), else: Enum.random(["$n只感全身热血沸腾，就只想手舞足蹈的乱动一番。", "此时$n已身陷绝境，全身气血逆流，再也无法脱身。", "霎时间$n只感心头滚热，喉干舌燥，说不出的难受。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

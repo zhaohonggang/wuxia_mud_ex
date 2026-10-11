@@ -140,7 +140,8 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("$N默运葵花魔功，身形变得奇快无比，接连从不同的方位向$n攻出数招！", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["$N默运葵花魔功，身形变得奇快无比，接连从不同的方位向$n攻出数招！", "$n只觉得眼前一花，发现四周都是$N的身影，不由暗生惧意，接连后退。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

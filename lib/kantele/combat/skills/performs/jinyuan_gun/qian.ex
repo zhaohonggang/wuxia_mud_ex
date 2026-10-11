@@ -164,7 +164,8 @@ defmodule Kantele.Combat.Skills.Performs.JinyuanGun.Qian do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 3)
-    result = if hit, do: Messages.interpolate("$n浑身被劲风笼罩，登感窒息，“哇”的吐出一口鲜血，仰面便倒！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n不敢有丝毫大意，急忙纵身后跃，躲开这足以断金裂石的一击。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n浑身被劲风笼罩，登感窒息，“哇”的吐出一口鲜血，仰面便倒！", else: "$n不敢有丝毫大意，急忙纵身后跃，躲开这足以断金裂石的一击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

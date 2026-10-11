@@ -143,7 +143,8 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Xuan do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("$n顿时只觉得头晕目眩，天旋地转，一时难以招架。", n1: attacker.name, n2: character.name)
+    msg = "$n顿时只觉得头晕目眩，天旋地转，一时难以招架。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

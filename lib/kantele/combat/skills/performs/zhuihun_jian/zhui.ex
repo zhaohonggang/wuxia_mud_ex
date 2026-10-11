@@ -160,7 +160,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 3)
-    result = if hit, do: Messages.interpolate("$N一声冷哼，手中某物一式「追魂夺命」，剑身顿时漾起一道血光，直射$n！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可$n却是镇定逾恒，一丝不乱，全神将此招化解开来。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$N一声冷哼，手中某物一式「追魂夺命」，剑身顿时漾起一道血光，直射$n！", else: "可$n却是镇定逾恒，一丝不乱，全神将此招化解开来。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

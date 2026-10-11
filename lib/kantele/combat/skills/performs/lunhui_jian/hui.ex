@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.LunhuiJian.Hui do
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = if hit, do: Messages.interpolate("$n只觉心头一阵凄苦，竟忍不住要落下泪来，喉咙一甜，呕出一口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n收敛心神，奋力招架，将剑招卸于无形。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n只觉心头一阵凄苦，竟忍不住要落下泪来，喉咙一甜，呕出一口鲜血。", "忽然间$n感到胸口处一阵火热，剑气袭体，带出一蓬血雨。", "剑锋过处，卷起漫天血浪，$n只感头晕目眩，四肢乏力，难以再战。", "$n顿时大惊失色，瞬间已被$N连中数剑，直削得血肉模糊。", "只见$n全身一阵抽搐，被剑锋所携的极寒气流包裹其中，刺痛难当。", "$N剑势迅猛之极，令$n毫无招架余地，竟镇怯当场，素手待毙。", "忽然间$n感到胸口一阵火热，剑气已从身体穿过，直飞空中。"]), else: Enum.random(["可是$n收敛心神，奋力招架，将剑招卸于无形。", "可是$n收敛心神，奋力招架，将剑气卸于无形。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

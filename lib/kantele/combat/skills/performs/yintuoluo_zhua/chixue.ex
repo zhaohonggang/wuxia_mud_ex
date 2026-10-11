@@ -154,7 +154,8 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 4)
-    result = if hit, do: Messages.interpolate("$n全身一颤，立足不稳，被$N这一爪抓得跌落在地上。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n奋力招架，竟将$N这招化解。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "但见$N双爪划过，$n已闪避不及，胸口被$N抓出十条血痕。", else: "$n奋力招架，竟将$N这招化解。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

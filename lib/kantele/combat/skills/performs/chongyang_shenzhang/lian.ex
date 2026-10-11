@@ -137,7 +137,8 @@ defmodule Kantele.Combat.Skills.Performs.ChongyangShenzhang.Lian do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = Messages.interpolate("$N大喝一声，施出「重阳连环掌」，顿时双掌纷飞，向$n猛攻而去。", n1: attacker.name, n2: character.name)
+    msg = "$N大喝一声，施出「重阳连环掌」，顿时双掌纷飞，向$n猛攻而去。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

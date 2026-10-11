@@ -138,7 +138,8 @@ defmodule Kantele.Combat.Skills.Performs.YoushenZhang.Fan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 1)
-    result = Messages.interpolate("$n顿时觉得呼吸不畅，全然被$N这股奇怪的力道所制，只得拼命运动抵挡。", n1: attacker.name, n2: character.name)
+    msg = "$n顿时觉得呼吸不畅，全然被$N这股奇怪的力道所制，只得拼命运动抵挡。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

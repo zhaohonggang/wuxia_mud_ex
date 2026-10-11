@@ -142,7 +142,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 2)
-    result = Messages.interpolate("残影晃动间$n招式陡然一紧，竟被$N的掌招牵引得手忙脚乱！", n1: attacker.name, n2: character.name)
+    msg = "残影晃动间$n招式陡然一紧，竟被$N的掌招牵引得手忙脚乱！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

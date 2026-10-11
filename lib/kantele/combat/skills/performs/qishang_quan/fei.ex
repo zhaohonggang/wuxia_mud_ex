@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Fei do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 320, 3)
-    result = if hit, do: Messages.interpolate("只听“砰”地一声，$N一拳正好打中$n胸口，$n怪叫一声，吐出一口淤血！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p奋力招架，硬生生的挡开了$P这一招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只听“砰”地一声，$N一拳正好打中$n胸口，$n怪叫一声，吐出一口淤血！", else: "可是$p奋力招架，硬生生的挡开了$P这一招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

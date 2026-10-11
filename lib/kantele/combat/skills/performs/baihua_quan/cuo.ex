@@ -155,8 +155,9 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaQuan.Cuo do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("$n只感到头晕目眩，只见$N或掌、或爪、或拳、或指铺天盖地的向自己各个部位袭来！
-只一瞬间，全身竟已多了数十出伤痕，鲜血狂泻不止！", n1: attacker.name, n2: character.name)
+    msg = "$n只感到头晕目眩，只见$N或掌、或爪、或拳、或指铺天盖地的向自己各个部位袭来！
+只一瞬间，全身竟已多了数十出伤痕，鲜血狂泻不止！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

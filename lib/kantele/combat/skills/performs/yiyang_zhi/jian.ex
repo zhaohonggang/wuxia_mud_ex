@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Jian do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 600, 1)
-    result = if hit, do: Messages.interpolate("$n只觉全身一热，$P「先天功乾阳剑气」顿时破体而入，便似身置洪炉，喷出一口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见$N这指来势汹涌，不敢轻易招架，当即飞身纵跃闪开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只觉全身一热，$P「先天功乾阳剑气」顿时破体而入，便似身置洪炉，喷出一口鲜血。", else: "$n见$N这指来势汹涌，不敢轻易招架，当即飞身纵跃闪开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

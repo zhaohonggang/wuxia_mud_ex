@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 40, 3)
-    result = if hit, do: Messages.interpolate("结果$p无法抵挡$P这雷霆一击，登时被打退数步，摇晃不定。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p并未被这气势所慑，轻移脚步，躲开了$P的攻击。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$p无法抵挡$P这雷霆一击，登时被打退数步，摇晃不定。", else: "可是$p并未被这气势所慑，轻移脚步，躲开了$P的攻击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

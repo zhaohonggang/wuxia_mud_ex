@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.PanyangZhang.Pan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("只听$N一声断喝，双掌纷飞，一式「攀阳邀月」接二连三向$n攻去。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$p闪避不及，被$P接连击中数掌，顿时口喷鲜血，几乎昏厥！", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -149,7 +149,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Hun do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$N跨前一步，双手回圈，颇得太极之意。掌心顿时闪出一个气团，向$n电射而去。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n急忙抽身后退，可是气团射得更快，只听$p一声惨叫，鲜血飞溅！", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

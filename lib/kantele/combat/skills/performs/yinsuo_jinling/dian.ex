@@ -147,8 +147,9 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 120, 1)
-    result = Messages.interpolate("$n只听$N某物发出玎玎声响，声虽不大，却是十分怪异，入耳荡心摇魄，一不
-留神，被这招点个正着，全身瘫软无力，动弹不得！", n1: attacker.name, n2: character.name)
+    msg = "$n只听$N某物发出玎玎声响，声虽不大，却是十分怪异，入耳荡心摇魄，一不
+留神，被这招点个正着，全身瘫软无力，动弹不得！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

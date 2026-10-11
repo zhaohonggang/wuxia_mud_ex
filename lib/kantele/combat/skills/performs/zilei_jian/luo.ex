@@ -162,7 +162,8 @@ defmodule Kantele.Combat.Skills.Performs.ZileiJian.Luo do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 2)
-    result = if hit, do: Messages.interpolate("$n只见一道电光从半空袭来，心中惊骇不已，但鲜血已从$n胸口喷出。", n1: attacker.name, n2: character.name), else: Messages.interpolate("然而$n眼明手快，侧身一跳躲过$N这一剑。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只见一道电光从半空袭来，心中惊骇不已，但鲜血已从$n胸口喷出。", else: "然而$n眼明手快，侧身一跳躲过$N这一剑。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -158,8 +158,9 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 3)
-    result = if hit, do: Messages.interpolate("$n见拳势变换莫测，只是微微一愣，已被$N一拳正中胸口，神照经内劲顿
-时便如山洪爆发一般，透体而入。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见$N来势汹涌，急忙提气跃开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n见拳势变换莫测，只是微微一愣，已被$N一拳正中胸口，神照经内劲顿
+时便如山洪爆发一般，透体而入。", else: "$n见$N来势汹涌，急忙提气跃开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

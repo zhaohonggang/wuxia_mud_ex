@@ -150,7 +150,8 @@ defmodule Kantele.Combat.Skills.Performs.JinyuQuan.Man do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("结果只听“砰砰砰砰”几声闷响，$p前胸被$P轰中数拳，登时呕出一口鲜血！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果只听“砰砰砰砰”几声闷响，$p前胸被$P轰中数拳，登时呕出一口鲜血！", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

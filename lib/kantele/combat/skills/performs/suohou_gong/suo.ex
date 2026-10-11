@@ -155,7 +155,8 @@ defmodule Kantele.Combat.Skills.Performs.SuohouGong.Suo do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 4)
-    result = if hit, do: Messages.interpolate("$n慌忙躲闪，却听「喀嚓」一声，$N五指正拿中$n的。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破了$P的企图，身形急动，躲开了这一抓。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n慌忙躲闪，却听「喀嚓」一声，$N五指正拿中$n的某物。", else: "可是$n看破了$P的企图，身形急动，躲开了这一抓。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

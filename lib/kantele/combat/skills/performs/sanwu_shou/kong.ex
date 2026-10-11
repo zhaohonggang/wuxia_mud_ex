@@ -163,7 +163,8 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 220, 4)
-    result = if hit, do: Messages.interpolate("但见$N攻势如洪，气势磅礴，$n心中略微一惊，惨叫一声，顿时鲜血淋淋。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见$N这招袭来，内力充盈，只得向后一纵，才躲过这一鞭。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "但见$N攻势如洪，气势磅礴，$n心中略微一惊，惨叫一声，顿时鲜血淋淋。", else: "$n见$N这招袭来，内力充盈，只得向后一纵，才躲过这一鞭。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

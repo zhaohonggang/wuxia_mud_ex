@@ -163,7 +163,8 @@ defmodule Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "顿时只听得“噗嗤”一声，$n胸口被$N这一招刺中，溅出一柱鲜血。", else: "可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

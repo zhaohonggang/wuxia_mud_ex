@@ -169,7 +169,8 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Hua do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    result = if hit, do: Messages.interpolate("$N见$n在这一击之下破绽迭出，顿时身形前跃，唰唰唰又是三剑。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破了$N的企图，斜跃避开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "顿时只听$n一声惨叫，剑气及身，身上接连射出数道血柱。", else: "可是$n看破了$N的企图，斜跃避开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

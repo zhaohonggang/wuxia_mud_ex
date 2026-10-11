@@ -138,7 +138,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 5)
-    result = Messages.interpolate("(  )", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["(  )", "光芒闪过，却是呆立当场，动也不动，七窍流血，神情扭曲，煞是恐怖。", "只听一声惨嚎，接连退了数步，“哇”的呕出一大口鲜血。", "只见向后飞出丈远，重重的跌落在地上，衣衫烧焦，再也没力气站起。", "只见跌跌撞撞向后连退数步，伏倒在地。须眉、衣衫都发出一股焦臭。", "急忙抽身后退，可只见眼前光芒暴涨，一闪而过。全身已多了数个伤口，鲜血飞溅。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -159,7 +159,8 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.Jue do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("结果$p闪避不及，被$P一拳正中面门，顿时口喷鲜血，几乎昏厥！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$p闪避不及，被$P一拳正中面门，顿时口喷鲜血，几乎昏厥！", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

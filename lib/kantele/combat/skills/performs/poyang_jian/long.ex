@@ -166,7 +166,8 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Long do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 1)
-    result = if hit, do: Messages.interpolate("$n见此招来势凶猛， 阻挡不及， 顿时被所伤，苦不堪言。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可却见$n猛的拔地而起，避开了$N来势凶猛的一招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n见此招来势凶猛， 阻挡不及， 顿时被某物所伤，苦不堪言。", else: "可却见$n猛的拔地而起，避开了$N来势凶猛的一招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

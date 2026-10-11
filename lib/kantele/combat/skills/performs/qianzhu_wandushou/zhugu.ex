@@ -156,7 +156,8 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Zhugu do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 4)
-    result = if hit, do: Messages.interpolate("$p只觉得一股如山的劲力顺指尖猛攻过来，只觉得全身毒气狂窜，“哇”的一声吐出一口黑血！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p运足内力，以深厚的内功化解了这一指的毒劲。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$p只觉得一股如山的劲力顺指尖猛攻过来，只觉得全身毒气狂窜，“哇”的一声吐出一口黑血！", else: "可是$p运足内力，以深厚的内功化解了这一指的毒劲。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -133,7 +133,8 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("$n见$P这一招变化莫测，奇幻无方，不由大吃一惊，慌乱中破绽迭出。", n1: attacker.name, n2: character.name)
+    msg = "$n见$P这一招变化莫测，奇幻无方，不由大吃一惊，慌乱中破绽迭出。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

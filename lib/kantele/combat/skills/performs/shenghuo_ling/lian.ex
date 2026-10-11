@@ -156,7 +156,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 4)
-    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见眼前寒光颤动，连忙振作精神勉强抵挡，向后疾退数步，好不容易闪在了$N攻击范围之外。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n被$N击中！", else: "$n见眼前寒光颤动，连忙振作精神勉强抵挡，向后疾退数步，好不容易闪在了$N攻击范围之外。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

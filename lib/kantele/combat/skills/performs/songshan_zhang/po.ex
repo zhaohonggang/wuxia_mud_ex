@@ -146,7 +146,8 @@ defmodule Kantele.Combat.Skills.Performs.SongshanZhang.Po do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 1)
-    result = if hit, do: Messages.interpolate("$N出手既快，方位又奇，$n闪避不及，却已中掌。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n不慌不忙，以快打快，将$N这招化去。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$N出手既快，方位又奇，$n闪避不及，却已中掌。", else: "$n不慌不忙，以快打快，将$N这招化去。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

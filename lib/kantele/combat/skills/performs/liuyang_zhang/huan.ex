@@ -150,7 +150,8 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Huan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$n见躲闪不得，只能硬挡下一招，顿时被$P震得连退数步，吐血不止！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p强运内力，硬生生的挡住$P这一掌，没有受到任何伤害。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n见躲闪不得，只能硬挡下一招，顿时被$P震得连退数步，吐血不止！", else: "可是$p强运内力，硬生生的挡住$P这一掌，没有受到任何伤害。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

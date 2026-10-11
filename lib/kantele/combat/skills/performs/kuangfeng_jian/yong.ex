@@ -161,7 +161,8 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengJian.Yong do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 120, 2)
-    result = if hit, do: Messages.interpolate("$n看得目瞪口呆，只觉一阵狂风吹过，却已透胸而过。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n微微一笑，轻轻格躲开了$N的剑招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n看得目瞪口呆，只觉一阵狂风吹过，某物却已透胸而过。", else: "可是$n微微一笑，轻轻格躲开了$N的剑招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

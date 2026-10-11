@@ -146,7 +146,8 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 1000, 1)
-    result = if hit, do: Messages.interpolate("$n看到$N这气拔千钧的一击，竟不知如何招架，登时受了重创！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n看到$N这气拔千钧的一击，竟不知如何招架，登时受了重创！", "只听「嗤啦」一声，无形剑气竟在$n上身刺出一个血洞，数股血柱疾射而出！"]), else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

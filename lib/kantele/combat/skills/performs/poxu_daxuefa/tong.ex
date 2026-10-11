@@ -159,7 +159,8 @@ defmodule Kantele.Combat.Skills.Performs.PoxuDaxuefa.Tong do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 4)
-    result = if hit, do: Messages.interpolate("$N翻转某物，接连变化数种打穴手法，一式「破元通虚」直捣$n胸前要穴。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n早已看破$N招中虚实，单手一挥，登将这招化于无形。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$N翻转某物，接连变化数种打穴手法，一式「破元通虚」直捣$n胸前要穴。", else: "可是$n早已看破$N招中虚实，单手一挥，登将这招化于无形。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

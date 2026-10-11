@@ -157,7 +157,8 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Tian do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 2)
-    result = Messages.interpolate("$n顿时觉得眼前金光乱闪动，双耳嗡嗡内鸣，全身便如针扎一般！", n1: attacker.name, n2: character.name)
+    msg = "$n顿时觉得眼前金光乱闪动，双耳嗡嗡内鸣，全身便如针扎一般！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

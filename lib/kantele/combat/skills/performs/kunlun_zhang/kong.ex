@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.KunlunZhang.Kong do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    result = if hit, do: Messages.interpolate("$n只见$P的无数掌影向自己压来，一时不知该如何抵挡，顿时连中数招，无暇反击。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p的看破了$P的企图，巧妙的拆招，没露半点破绽。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只见$P的无数掌影向自己压来，一时不知该如何抵挡，顿时连中数招，无暇反击。", else: "可是$p的看破了$P的企图，巧妙的拆招，没露半点破绽。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

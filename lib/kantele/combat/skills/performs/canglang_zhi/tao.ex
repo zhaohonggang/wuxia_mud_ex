@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.CanglangZhi.Tao do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    result = if hit, do: Messages.interpolate("结果$n躲闪不及，被$N一指命中，全身气血翻腾不已。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$n躲闪不及，被$N一指命中，全身气血翻腾不已。", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

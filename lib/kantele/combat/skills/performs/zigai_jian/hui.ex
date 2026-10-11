@@ -165,7 +165,8 @@ defmodule Kantele.Combat.Skills.Performs.ZigaiJian.Hui do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$n心中一惊，虽知中计，但突如其来迅捷无比，已然闪避不及。", n1: attacker.name, n2: character.name), else: Messages.interpolate("然而$n眼见某物已至，但$n身法迅速无比，提气向后一纵，$N扑了个空。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n心中一惊，虽知中计，但某物突如其来迅捷无比，已然闪避不及。", else: "然而$n眼见某物已至，但$n身法迅速无比，提气向后一纵，$N扑了个空。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

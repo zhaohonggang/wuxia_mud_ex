@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Zhen do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 600, 1)
-    result = if hit, do: Messages.interpolate("$n不及闪避，顿被$N一下击中，尽伤三焦六脉。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见$N来势迅猛之极，甚难防备，连忙振作精神，小心抵挡。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n不及闪避，顿被$N一下击中，尽伤三焦六脉。", else: "$n见$N来势迅猛之极，甚难防备，连忙振作精神，小心抵挡。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

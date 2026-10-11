@@ -165,8 +165,9 @@ $n而去。霎时间炽炎暴涨，热浪扑面卷来，四周空气便似沸腾
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 600, 3)
-    result = if hit, do: Messages.interpolate("$N施出观日剑法之「天洪地炉观日神诀」，将内力尽数注入某物剑身直奔
-$n而去。霎时间炽炎暴涨，热浪扑面卷来，四周空气便似沸腾一般。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破了$N的企图，斜跃避开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$N施出观日剑法之「天洪地炉观日神诀」，将内力尽数注入某物剑身直奔
+$n而去。霎时间炽炎暴涨，热浪扑面卷来，四周空气便似沸腾一般。", else: "可是$n看破了$N的企图，斜跃避开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

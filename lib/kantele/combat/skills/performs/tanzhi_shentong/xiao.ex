@@ -154,7 +154,8 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Xiao do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 4)
-    result = if hit, do: Messages.interpolate("$n只觉$N指风袭体，随即上体一阵冰凉，顿感真气涣散几欲晕厥。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p防守严密，紧守门户，顿时令$P的攻势化为乌有。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只觉$N指风袭体，随即上体一阵冰凉，顿感真气涣散几欲晕厥。", else: "可是$p防守严密，紧守门户，顿时令$P的攻势化为乌有。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

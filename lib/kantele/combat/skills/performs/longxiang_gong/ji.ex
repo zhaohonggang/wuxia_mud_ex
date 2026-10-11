@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 600, 4)
-    result = if hit, do: Messages.interpolate("$N罡气涌至，竟然激起层层气浪，顿时将$n的护体真气摧毁得荡然无存！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p识破了$P这一招，斜斜一跃避开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n不及闪避，顿被$N双拳击个正中，般若罡劲破体而入，尽伤三焦六脉。", else: "可是$p识破了$P这一招，斜斜一跃避开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

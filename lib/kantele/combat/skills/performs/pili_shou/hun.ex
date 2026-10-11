@@ -160,7 +160,8 @@ defmodule Kantele.Combat.Skills.Performs.PiliShou.Hun do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    result = if hit, do: Messages.interpolate("$n只觉得胸前一阵剧痛，“哇”的一声喷出一口鲜血！", n1: attacker.name, n2: character.name), else: Messages.interpolate("只见$n不慌不忙，轻轻一闪，躲过了$N的必杀一击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只觉得胸前一阵剧痛，“哇”的一声喷出一口鲜血！", else: "只见$n不慌不忙，轻轻一闪，躲过了$N的必杀一击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

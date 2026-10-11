@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.ChansiShou.Qin do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    result = if hit, do: Messages.interpolate("却见$n奋力抵抗，可终究无法摆脱$N的攻势，连中数掌，", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n的看破了$N的招式，巧妙的招架拆解，没露半点破绽。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "却见$n奋力抵抗，可终究无法摆脱$N的攻势，连中数掌，", else: "可是$n的看破了$N的招式，巧妙的招架拆解，没露半点破绽。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

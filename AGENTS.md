@@ -27,7 +27,9 @@ MIX_ENV=test mix test --seed 731933
 docker-compose -f docker-compose.dev.yml run --rm app sh
 
 # In container: run tests against mounted code
-docker exec wuxia_mud_dev-app-1 sh -c 'cd /app && MIX_ENV=test mix test'
+# NOTE: 若 app 容器正在跑 phx.server（PID1），直接 docker exec 会因 4646/4000
+# 端口占用报 eaddrinuse。改用一次性容器（复用镜像/挂载/db，不发布端口）：
+docker compose -f docker-compose.dev.yml run --rm -e MIX_ENV=test app mix test
 ```
 
 ## Test Conventions

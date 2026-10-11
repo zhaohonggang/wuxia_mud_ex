@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hai do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("霎时漫天掌影化为一抓，$p闪避不及，被$N五指插入胸膛，鲜血四处飞溅！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p身手敏捷，身形急转，巧妙的躲过了$P的攻击。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "霎时漫天掌影化为一抓，$p闪避不及，被$N五指插入胸膛，鲜血四处飞溅！", else: "可是$p身手敏捷，身形急转，巧妙的躲过了$P的攻击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -154,7 +154,8 @@ defmodule Kantele.Combat.Skills.Performs.QujingGunfa.Zhen do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 1)
-    result = Messages.interpolate("$n被$N气势所撼，完全不知该如何招架，竟而呆立当场！", n1: attacker.name, n2: character.name)
+    msg = "$n被$N气势所撼，完全不知该如何招架，竟而呆立当场！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

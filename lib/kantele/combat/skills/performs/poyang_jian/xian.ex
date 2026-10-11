@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Xian do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 120, 2)
-    result = Messages.interpolate("$n被耀眼的光芒所惑，心中惊疑不定，一时间不知如何应对！", n1: attacker.name, n2: character.name)
+    msg = "$n被耀眼的光芒所惑，心中惊疑不定，一时间不知如何应对！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

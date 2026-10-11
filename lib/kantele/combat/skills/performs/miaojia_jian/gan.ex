@@ -163,7 +163,8 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Gan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 4)
-    result = if hit, do: Messages.interpolate("$n顿时大惊失色，只觉胸口处一凉，那柄竟然已经穿胸透过，带出一蓬血雨！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见某物来势汹涌，心知绝不可挡，当即向后横移数尺，终于躲闪开来。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n顿时大惊失色，只觉胸口处一凉，那柄某物竟然已经穿胸透过，带出一蓬血雨！", else: "$n见某物来势汹涌，心知绝不可挡，当即向后横移数尺，终于躲闪开来。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

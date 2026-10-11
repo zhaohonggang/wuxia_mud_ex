@@ -154,6 +154,7 @@ class TranslatePerform:
         hit_logic = self.extract_hit_logic(text)
         damage_logic = self.extract_damage_logic(text)
         do_damage_details = self.extract_do_damage_details(text)
+        damage_descriptions = self.extract_damage_descriptions(text)
         affect_by_details = self.extract_affect_by_details(text)
         messages = self.extract_messages(text)
         gate_messages = self.extract_gate_messages(text)
@@ -197,6 +198,7 @@ class TranslatePerform:
             'hit_logic': hit_logic,
             'damage_logic': damage_logic,
             'do_damage_details': do_damage_details,
+            'damage_descriptions': damage_descriptions,
             'affect_by_details': affect_by_details,
             'messages': messages,
             'gate_messages': gate_messages,
@@ -334,6 +336,106 @@ class TranslatePerform:
                 'callback': m.group(4)
             })
         return details
+
+    # A `do_damage` call's 6th argument is either:
+    #   - absent           -> no description text
+    #   - a closure `(: ... :)` -> no description text (it's a death callback)
+    #   - a quoted string  -> the literal damage description
+    #   - a bare variable  -> e.g. `pmsg`, resolved from a nearby assignment
+    # The description often spans several concatenated literals, so it must be
+    # scanned paren/quote-aware rather than matched with a single regex.
+    def extract_damage_descriptions(self, text: str) -> List[Dict[str, str]]:
+        """Extract the description text of each `do_damage(...)` call.
+
+        Returns a list of {'desc': <cleaned text>} in source order.  Calls with
+        no description (absent arg, closure, or unresolvable variable) are
+        omitted.  `$N`/`$n`/`$p`/`$P` placeholders and the surrounding `\\n` are
+        preserved; colour macros are stripped by `_clean_message_fragment`.
+        """
+        out = []
+        for m in re.finditer(r'do_damage\s*\(', text):
+            end = self._scan_balanced(text, m.end())  # m.end()-1 == '('
+            if end == -1:
+                continue
+            call = text[m.end():end - 1]
+            # Split the call into top-level args (comma at depth 0, outside
+            # strings/closure).
+            args = self._split_top_level_args(call)
+            if len(args) < 6:
+                continue
+            arg6 = args[5].strip()
+            # Unwrap a leading colour macro / whitespace; bail on closures.
+            if arg6.startswith('(:'):
+                continue
+            desc = None
+            if '"' in arg6:
+                desc = arg6
+            elif re.fullmatch(r'[A-Za-z_]\w*', arg6):
+                # bare variable: resolve to its most recent assignment
+                assign = None
+                for am in re.finditer(
+                        r'\b' + re.escape(arg6) + r'\s*=\s*', text[:m.start()]):
+                    assign = am
+                if assign:
+                    vstart = assign.end()
+                    v_is_str = False
+                    depth = 0
+                    i = vstart
+                    while i < len(text):
+                        ch = text[i]
+                        if ch == '"':
+                            v_is_str = True
+                        elif ch == ';' and depth == 0:
+                            break
+                        elif ch == '(':
+                            depth += 1
+                        elif ch == ')':
+                            depth = max(0, depth - 1)
+                        i += 1
+                    if v_is_str:
+                        desc = text[vstart:i]
+            if not desc:
+                continue
+            clean = self._clean_message_fragment(desc)
+            if clean and CJK_RE.search(clean):
+                out.append({'desc': clean})
+        return out
+
+    def _split_top_level_args(self, s: str) -> List[str]:
+        """Split a call's argument list on commas at paren/string depth 0."""
+        args, buf, depth, in_str = [], [], 0, False
+        i = 0
+        while i < len(s):
+            ch = s[i]
+            if in_str:
+                buf.append(ch)
+                if ch == '\\' and i + 1 < len(s):
+                    buf.append(s[i + 1])
+                    i += 2
+                    continue
+                if ch == '"':
+                    in_str = False
+                i += 1
+                continue
+            if ch == '"':
+                in_str = True
+                buf.append(ch)
+            elif ch in '([':
+                depth += 1
+                buf.append(ch)
+            elif ch in ')]':
+                depth = max(0, depth - 1)
+                buf.append(ch)
+            elif ch == ',' and depth == 0:
+                args.append(''.join(buf))
+                buf = []
+            else:
+                buf.append(ch)
+            i += 1
+        if buf:
+            args.append(''.join(buf))
+        return args
+
 
     def extract_affect_by_details(self, text: str) -> List[Dict[str, Any]]:
         """Extract affect_by callback details: buff name, level formula, id, duration formula."""
@@ -1757,19 +1859,22 @@ class TranslatePerform:
         hit_miss_msgs = data.get('hit_miss_messages', {})
         hit_msgs = hit_miss_msgs.get('hit', [])
         miss_msgs = hit_miss_msgs.get('miss', [])
-        
+
         # Fallback to old messages extraction if new ones empty
-        if not hit_msgs:
-            success_frags = messages.get('success', ['$n被$N击中！\n'])
-            hit_msgs = [self._clean_message_fragment(f) for f in success_frags if self._clean_message_fragment(f)]
         if not miss_msgs:
             fail_frags = messages.get('fail', ['$n躲过了$N的攻击！\n'])
             miss_msgs = [self._clean_message_fragment(f) for f in fail_frags if self._clean_message_fragment(f)]
-        
-        # Take first message of each type (can be extended to random selection later)
-        hit_clean = hit_msgs[0] if hit_msgs else '$n被$N击中！'
-        miss_clean = miss_msgs[0] if miss_msgs else '$n躲过了$N的攻击！'
-        
+
+        # `do_damage(...)` 的第 6 参数是原始 LPC 的伤害描述文案（例如
+        # “结果$p闪避不及，被$P这招插中…”）。它比 hit_miss_messages 里
+        # 泛化的“$n被$N击中！”更贴近原文，因此优先采用。
+        dmg_descs = [d['desc'] for d in data.get('damage_descriptions', []) if d.get('desc')]
+        if dmg_descs:
+            hit_msgs = dmg_descs
+        elif not hit_msgs:
+            success_frags = messages.get('success', ['$n被$N击中！\n'])
+            hit_msgs = [self._clean_message_fragment(f) for f in success_frags if self._clean_message_fragment(f)]
+
         lines = [
             "",
             "  @impl true",
@@ -1852,11 +1957,30 @@ class TranslatePerform:
         if neili_cost > 0 or busy_rounds > 0:
             lines.append(f"    Performs.feedback(attacker, {neili_cost}, {busy_rounds or 1})")
         
-        # Messages with $N/$n placeholders
+        # Messages with $N/$n placeholders.  When LPC has several variants
+        # (multiple `do_damage` branches / `msg +=` alternatives inside the hit
+        # or miss branch) pick one at random, matching the original
+        # `random(...)`-driven branch selection.  Otherwise emit the literal.
+        def _msg_expr(msgs: List[str], fallback: str) -> str:
+            seen = []
+            for s in msgs:
+                if s and s not in seen:
+                    seen.append(s)
+            if not seen:
+                seen = [fallback]
+            if len(seen) == 1:
+                return f'"{seen[0]}"'
+            inner = ', '.join(f'"{s}"' for s in seen)
+            return f'Enum.random([{inner}])'
+
+        hit_expr = _msg_expr(hit_msgs, '$n被$N击中！')
+        miss_expr = _msg_expr(miss_msgs, '$n躲过了$N的攻击！')
+
         if has_ap and needs_dp:
-            lines.append(f'    result = if hit, do: Messages.interpolate("{hit_clean}", n1: attacker.name, n2: character.name), else: Messages.interpolate("{miss_clean}", n1: attacker.name, n2: character.name)')
+            lines.append(f'    msg = if hit, do: {hit_expr}, else: {miss_expr}')
         else:
-            lines.append(f'    result = Messages.interpolate("{hit_clean}", n1: attacker.name, n2: character.name)')
+            lines.append(f'    msg = {hit_expr}')
+        lines.append('    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)')
         
         lines.append('    conn')
         lines.append('    |> Broadcast.publish(result)')

@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$p面对$P这电光火石般的双抓，更本无从招架，登时被抓得血肉飞溅！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p的看破了$P的招式，巧妙的招架开来，没露半点破绽！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$p面对$P这电光火石般的双抓，更本无从招架，登时被抓得血肉飞溅！", else: "可是$p的看破了$P的招式，巧妙的招架开来，没露半点破绽！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

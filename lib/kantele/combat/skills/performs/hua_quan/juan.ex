@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.HuaQuan.Juan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    result = if hit, do: Messages.interpolate("结果$n闪避不及，被$P双拳贯中，凄然一声惨嚎，口喷鲜血，身子向后飞出丈许。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$n闪避不及，被$P双拳贯中，凄然一声惨嚎，口喷鲜血，身子向后飞出丈许。", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

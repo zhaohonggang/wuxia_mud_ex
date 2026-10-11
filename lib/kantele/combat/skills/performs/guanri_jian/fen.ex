@@ -163,7 +163,8 @@ defmodule Kantele.Combat.Skills.Performs.GuanriJian.Fen do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 4)
-    result = if hit, do: Messages.interpolate("$N运转内力，陡然一势「焚阳剑」划出，手中某物携着一股热流卷向$n全身。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破了$N的企图，斜跃避开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$N运转内力，陡然一势「焚阳剑」划出，手中某物携着一股热流卷向$n全身。", else: "可是$n看破了$N的企图，斜跃避开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

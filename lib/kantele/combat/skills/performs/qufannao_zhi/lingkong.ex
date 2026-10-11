@@ -138,7 +138,8 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 4)
-    result = if hit, do: Messages.interpolate("$n受到$N的指力透击，闷哼一声，看上去很是疲惫。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的企图，并没有上当。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n受到$N的指力透击，闷哼一声，看上去很是疲惫。", "$n被$N以指力一震，脑中嗡嗡作响，意识开始模糊起来！", "$n被$N的指力一震，眼前一黑，向后便倒，眼看就要不醒人事了！", "$n被$N的指力反击，只觉得胸中烦闷，只想好好休息休息。"]), else: "可是$p看破了$P的企图，并没有上当。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

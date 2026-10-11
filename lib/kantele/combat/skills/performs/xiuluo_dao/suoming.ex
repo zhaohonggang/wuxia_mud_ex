@@ -171,7 +171,8 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoDao.Suoming do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    result = if hit, do: Messages.interpolate("就听见$p惨叫连连，一阵阵血雨自亮白的刀光中溅出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p眼明手快，只听叮叮当当响起了一串刀鸣，$p将$P的招式全部挡开！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "就听见$p惨叫连连，一阵阵血雨自亮白的刀光中溅出！", else: "可是$p眼明手快，只听叮叮当当响起了一串刀鸣，$p将$P的招式全部挡开！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

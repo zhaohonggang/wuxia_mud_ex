@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.TongchuiZhang.Kai do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    result = if hit, do: Messages.interpolate("$N右掌暗聚力道，十指分张，蓦地一招「五丁开山」向$n背心拍去。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$n闪避不及，顿被$N这掌击个正中，五脏六腑翻腾不已。", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -146,7 +146,8 @@ defmodule Kantele.Combat.Skills.Performs.HenshanQuan.Lan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 1)
-    result = if hit, do: Messages.interpolate("$N出手既快，方位又奇，$n闪避不及，闷哼一声，已然中拳。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n不慌不忙，以快打快，将$N这招化去。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$N出手既快，方位又奇，$n闪避不及，闷哼一声，已然中拳。", else: "$n不慌不忙，以快打快，将$N这招化去。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

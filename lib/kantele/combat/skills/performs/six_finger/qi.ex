@@ -148,7 +148,9 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 3)
-    result = Messages.interpolate("$n只觉得胸前一阵剧痛，鲜血自创口激射而出，眼前顿时一黑！", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["$n只觉得胸前一阵剧痛，鲜血自创口激射而出，眼前顿时一黑！", "$n横某物试图招架，怎奈这股剑气如此犀利，透过某物直震得$n狂吐鲜血，五脏六腑都要翻转过来！", "$n横转某物，挡在胸前，只听啪啦一声，某物碎成数截，激飞上天！
+$n连退几步，“哇”的吐了一口鲜血，脸色变的惨白。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

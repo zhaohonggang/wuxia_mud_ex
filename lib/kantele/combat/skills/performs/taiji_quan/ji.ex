@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Ji do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 4)
-    result = if hit, do: Messages.interpolate("$n稍不留神，让$N这么一挤，只觉全身力气犹似流入汪洋大海，无影无踪。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见状大吃一惊，急忙向后猛退数步，终于避开了$N这一击。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n稍不留神，让$N这么一挤，只觉全身力气犹似流入汪洋大海，无影无踪。", else: "$n见状大吃一惊，急忙向后猛退数步，终于避开了$N这一击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

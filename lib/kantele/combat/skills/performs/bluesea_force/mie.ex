@@ -135,7 +135,8 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Mie do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 1)
-    result = Messages.interpolate("这一招完全超出了$n的想象，被$N结结实实的抓中了气海穴，浑身真气登时涣散！", n1: attacker.name, n2: character.name)
+    msg = "这一招完全超出了$n的想象，被$N结结实实的抓中了气海穴，浑身真气登时涣散！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

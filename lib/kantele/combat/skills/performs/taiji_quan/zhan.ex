@@ -153,7 +153,8 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Zhan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 3)
-    result = if hit, do: Messages.interpolate("$n登时便被套得跌跌撞撞，身不由主的立足不稳，犹如中酒昏迷。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p的看破了$P的企图，巧妙的拆招，没露半点破绽。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n登时便被套得跌跌撞撞，身不由主的立足不稳，犹如中酒昏迷。", else: "可是$p的看破了$P的企图，巧妙的拆招，没露半点破绽。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

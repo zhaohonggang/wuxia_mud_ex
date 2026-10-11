@@ -141,7 +141,8 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Gui do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 2)
-    result = Messages.interpolate("$p霎时只觉眼花缭乱，只能紧守门户，不敢妄自出击！", n1: attacker.name, n2: character.name)
+    msg = "$p霎时只觉眼花缭乱，只能紧守门户，不敢妄自出击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

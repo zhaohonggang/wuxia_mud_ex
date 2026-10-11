@@ -150,7 +150,8 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Lian do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 1)
-    result = Messages.interpolate("突然间铁轮从日月金轮中分离开来，化作一道红芒朝$n砸去。", n1: attacker.name, n2: character.name)
+    msg = "突然间铁轮从日月金轮中分离开来，化作一道红芒朝$n砸去。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

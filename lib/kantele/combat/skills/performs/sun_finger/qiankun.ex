@@ -161,7 +161,8 @@ defmodule Kantele.Combat.Skills.Performs.SunFinger.Qiankun do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("结果$p没能避开$P这一指，正被点中檀中大穴，浑身气血登时倒流，哇哇连吐几口鲜血！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P急忙退闪，连消带打躲开了这一击。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$p没能避开$P这一指，正被点中檀中大穴，浑身气血登时倒流，哇哇连吐几口鲜血！", else: "可是$p看破了$P急忙退闪，连消带打躲开了这一击。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

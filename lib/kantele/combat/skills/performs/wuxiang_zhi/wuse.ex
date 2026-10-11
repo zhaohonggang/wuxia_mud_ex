@@ -174,7 +174,8 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    result = if hit, do: Messages.interpolate("只见$p一声惨叫，已被点中胸口要穴，$p只觉得胸口气血汹涌，全身气血倒流，哇的一声吐出一口鲜血，苦不堪言！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$N的企图，轻轻向后飘出数丈，躲过了这一致命的一击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只见$p一声惨叫，已被点中胸口要穴，$p只觉得胸口气血汹涌，全身气血倒流，哇的一声吐出一口鲜血，苦不堪言！", else: "可是$p看破了$N的企图，轻轻向后飘出数丈，躲过了这一致命的一击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

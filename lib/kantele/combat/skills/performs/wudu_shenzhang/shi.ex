@@ -149,7 +149,8 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Shi do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 2)
-    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p眼明手快，侧身一跳$P已躲过$N这招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n被$N击中！", else: "可是$p眼明手快，侧身一跳$P已躲过$N这招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

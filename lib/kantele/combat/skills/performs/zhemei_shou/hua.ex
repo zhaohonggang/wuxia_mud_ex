@@ -164,7 +164,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hua do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    result = if hit, do: Messages.interpolate("$n只是微微一愣，$N的七色掌劲已破体而入，$p便犹如身置洪炉一般，连呕数口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p见状大惊失色，完全勘破不透$P招中奥秘，当即飞身跃起丈许，躲闪开来。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n只是微微一愣，$N的七色掌劲已破体而入，$p便犹如身置洪炉一般，连呕数口鲜血。", "( $n )", "只听$n一声尖啸，$N的七色掌劲已尽数注入$p体内，顿时将$p化为一滩血水。
+( $n受伤过重，已经有如风中残烛，随时都可能断气。)"]), else: "$p见状大惊失色，完全勘破不透$P招中奥秘，当即飞身跃起丈许，躲闪开来。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

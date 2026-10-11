@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.XunleiJian.Xun do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    result = if hit, do: Messages.interpolate("$n躲避不及，剑光顿时透体而入，一声惨叫，鲜血狂泻不止。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p奋力格挡，终于架开了$P凌厉的剑招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n躲避不及，剑光顿时透体而入，一声惨叫，鲜血狂泻不止。", else: "可是$p奋力格挡，终于架开了$P凌厉的剑招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

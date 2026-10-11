@@ -158,7 +158,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhougongJian.Mang do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-    result = if hit, do: Messages.interpolate("$n一声惨叫，凌厉的剑气已划过气门，在身上刺出数个血洞，鲜血如泉水般涌出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n强忍全身的痛楚，飞身一跃，避开了$N这强大的杀着。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n一声惨叫，凌厉的剑气已划过气门，在身上刺出数个血洞，鲜血如泉水般涌出！", "只听“噗嗤”一声，剑气正中$n胸口，留下一个碗口大的血洞！$n哀嚎一声，再也无法站起。"]), else: Enum.random(["$n强忍全身的痛楚，飞身一跃，避开了$N这强大的杀着。", "可是$n看破了$N的企图，斜跃避开。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

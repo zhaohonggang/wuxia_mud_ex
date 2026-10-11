@@ -137,7 +137,8 @@ defmodule Kantele.Combat.Skills.Performs.Gun.She do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 1)
-    result = Messages.interpolate("$N施出秘奥义「拔枪狼牙射击」，手中某物连续数枪，同时喷出数十条火龙罩向$n四周！", n1: attacker.name, n2: character.name)
+    msg = "$N施出秘奥义「拔枪狼牙射击」，手中某物连续数枪，同时喷出数十条火龙罩向$n四周！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

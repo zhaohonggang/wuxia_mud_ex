@@ -157,7 +157,8 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 1)
-    result = Messages.interpolate("$N使出血刀刀法绝技，把手中的某物舞得飞快，幻起层层刀影逼向$n！", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["$N使出血刀刀法绝技，把手中的某物舞得飞快，幻起层层刀影逼向$n！", "结果$p被$P闹个手忙脚乱，只能紧守门户，不敢擅动！", "可是$p看破了$P的企图，并不慌张，应对自如。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -149,8 +149,9 @@ defmodule Kantele.Combat.Skills.Performs.KongmingQuan.Kong do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    result = if hit, do: Messages.interpolate("$n无法窥测$N拳中奥秘，被这一拳击中要害，登时呕出一大口鲜血！
-:内伤@?", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p识破了$P的拳招中的变化，精心应对，并没有吃亏。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n无法窥测$N拳中奥秘，被这一拳击中要害，登时呕出一大口鲜血！
+:内伤@?", else: "可是$p识破了$P的拳招中的变化，精心应对，并没有吃亏。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

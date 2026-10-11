@@ -145,8 +145,9 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Zhen do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("只见$N这一拳变化无方，气劲封了$n所有的退路，一拳正好命中。
-:内伤@?", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只见$N这一拳变化无方，气劲封了$n所有的退路，一拳正好命中。
+:内伤@?", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

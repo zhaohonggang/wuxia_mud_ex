@@ -161,7 +161,8 @@ defmodule Kantele.Combat.Skills.Performs.PomopimaJian.Zui do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    result = if hit, do: Messages.interpolate("$n只觉剑气满室，寒风袭体，微微一楞，已连中三剑，鲜血飞溅！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p见来势迅猛，飞身一跃，闪开了$P这凌厉的几剑。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n只觉剑气满室，寒风袭体，微微一楞，已连中三剑，鲜血飞溅！", else: "可是$p见来势迅猛，飞身一跃，闪开了$P这凌厉的几剑。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

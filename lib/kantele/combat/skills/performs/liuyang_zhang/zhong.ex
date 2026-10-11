@@ -150,7 +150,8 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 3)
-    result = if hit, do: Messages.interpolate("只见$n被$N一掌拍中，紧接着身子一颤，$P那枚生死符已种入$p体内！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p内力激荡，将$P那枚生死符硬生生震出体外。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只见$n被$N一掌拍中，紧接着身子一颤，$P那枚生死符已种入$p体内！", else: "可是$p内力激荡，将$P那枚生死符硬生生震出体外。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

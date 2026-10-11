@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = if hit, do: Messages.interpolate("$n冷笑一声，觉得$N此招肤浅之极，于是随意招架，猛然间，「噗嗤」！一声，已穿透$n的胸膛，鲜血不断涌出。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n会心一笑，看出$N这招中的破绽，随意施招竟将这招化去。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n冷笑一声，觉得$N此招肤浅之极，于是随意招架，猛然间，「噗嗤」！一声，某物已穿透$n的胸膛，鲜血不断涌出。", else: Enum.random(["$n会心一笑，看出$N这招中的破绽，随意施招竟将这招化去。", "$n气贯双臂，凝神以对，竟将$N之力卸去。", "$n见这招来势凶猛，身形疾退，瞬间飘出三丈，方才躲过$N这招。", "$n默运内功，内劲贯于全身，奋力抵挡住$N这招。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

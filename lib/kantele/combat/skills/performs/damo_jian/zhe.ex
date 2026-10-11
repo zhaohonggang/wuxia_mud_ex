@@ -165,7 +165,8 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Zhe do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 4)
-    result = if hit, do: Messages.interpolate("$N蓦地将某物往前一送，顿时一道光华自剑上亮起，直逼$n丹田而去。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n内力深厚，使得$P这一招没有起到任何作用。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$N蓦地将某物往前一送，顿时一道光华自剑上亮起，直逼$n丹田而去。", else: "可是$n内力深厚，使得$P这一招没有起到任何作用。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

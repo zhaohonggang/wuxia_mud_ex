@@ -140,7 +140,8 @@ defmodule Kantele.Combat.Skills.Performs.HujiaQuan.Kuai do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 40, 2)
-    result = Messages.interpolate("结果$n无法分清$N招式中的虚实，不由手忙脚乱。", n1: attacker.name, n2: character.name)
+    msg = "结果$n无法分清$N招式中的虚实，不由手忙脚乱。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

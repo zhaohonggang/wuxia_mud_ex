@@ -143,7 +143,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("$n见$N攻势凶猛异常，实非寻常，不由心生寒意，招架登时散乱。", n1: attacker.name, n2: character.name)
+    msg = "$n见$N攻势凶猛异常，实非寻常，不由心生寒意，招架登时散乱。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

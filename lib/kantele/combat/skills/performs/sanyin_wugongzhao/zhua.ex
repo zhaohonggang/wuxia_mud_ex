@@ -147,7 +147,8 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 2)
-    result = if hit, do: Messages.interpolate("$N突然一声怪叫，蓦的面赤如血，随即手腕一抖，抓向$n的要害。", n1: attacker.name, n2: character.name), else: Messages.interpolate("不过$p看破了$P的招式，凝神招架，挡住了$P的毒招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$N突然一声怪叫，蓦的面赤如血，随即手腕一抖，抓向$n的要害。", "不过$p看破了$P的招式，凝神招架，挡住了$P的毒招。"]), else: "不过$p看破了$P的招式，凝神招架，挡住了$P的毒招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

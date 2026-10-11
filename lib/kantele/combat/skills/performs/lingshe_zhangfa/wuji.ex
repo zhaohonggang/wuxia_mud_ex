@@ -170,7 +170,8 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wuji do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 4)
-    result = if hit, do: Messages.interpolate("$n实在无法捕捉到$P的实招，接连挡空，连中数招，登时吐了一口鲜血！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n奋力招架，总算抵挡住了$P的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n实在无法捕捉到$P的实招，接连挡空，连中数招，登时吐了一口鲜血！", else: "$n奋力招架，总算抵挡住了$P的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -147,7 +147,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Yin do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-    result = if hit, do: Messages.interpolate("$N施出铁掌绝技「阴阳磨」，左掌不着半点力道，携着阴寒劲向$n拂去。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见$N掌出如风，心知此招后着极是凌厉，当即斜跳闪开。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$N施出铁掌绝技「阴阳磨」，左掌不着半点力道，携着阴寒劲向$n拂去。", "紧接着$N右掌一振，掌风过处，竟席卷起一股热浪，向$n胸前猛然拍落。"]), else: "$n见$N掌出如风，心知此招后着极是凌厉，当即斜跳闪开。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

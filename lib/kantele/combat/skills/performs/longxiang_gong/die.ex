@@ -144,7 +144,8 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Die do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 1)
-    result = Messages.interpolate("$n见$P来势迅猛之极，一时不知该如何作出抵挡，竟呆立当场。", n1: attacker.name, n2: character.name)
+    msg = "$n见$P来势迅猛之极，一时不知该如何作出抵挡，竟呆立当场。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -157,7 +157,8 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 20, 2)
-    result = if hit, do: Messages.interpolate("$n连忙腾挪躲闪，然而“扑哧”一声，某物正好击中$p的某物，$p一声惨叫，连退数步。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的变化，见招拆招，没有受到任何伤害。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n连忙腾挪躲闪，然而“扑哧”一声，某物正好击中$p的某物，$p一声惨叫，连退数步。", else: "可是$p看破了$P的变化，见招拆招，没有受到任何伤害。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -148,7 +148,8 @@ defmodule Kantele.Combat.Skills.Performs.PanlongSuo.Sha do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 1)
-    result = Messages.interpolate("突然间$N猛的猱身扑上，手中某物急转，便似不要命般地向$n猛攻过去。", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["突然间$N猛的猱身扑上，手中某物急转，便似不要命般地向$n猛攻过去。", "$n卒不及防，登时手忙脚乱，招架疏散，慌忙中难以抵挡。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

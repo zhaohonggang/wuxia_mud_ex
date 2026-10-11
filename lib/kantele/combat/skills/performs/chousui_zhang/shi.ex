@@ -161,7 +161,8 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Shi do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 4)
-    result = if hit, do: Messages.interpolate("$N随手抓起某物，将「腐尸毒」毒质运于其上，朝$n猛掷而去。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n见势不妙，急忙腾挪身形，终于避开了$N掷来的尸体。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$N随手抓起某物，将「腐尸毒」毒质运于其上，朝$n猛掷而去。", else: "可是$n见势不妙，急忙腾挪身形，终于避开了$N掷来的尸体。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

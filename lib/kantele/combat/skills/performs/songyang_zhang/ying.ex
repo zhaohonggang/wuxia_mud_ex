@@ -143,7 +143,8 @@ defmodule Kantele.Combat.Skills.Performs.SongyangZhang.Ying do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 2)
-    result = Messages.interpolate("$n心神惧裂，一时间竟无从应对，竟被困在$N的掌风之中。", n1: attacker.name, n2: character.name)
+    msg = "$n心神惧裂，一时间竟无从应对，竟被困在$N的掌风之中。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

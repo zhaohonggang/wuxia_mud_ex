@@ -155,7 +155,8 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-    result = if hit, do: Messages.interpolate("只听$n一声闷哼，“噗”的一声，这一掌正好击在$p肩头。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p小心应付、奋力招架，挡开了这一招。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只听$n一声闷哼，“噗”的一声，这一掌正好击在$p肩头。", else: "可是$p小心应付、奋力招架，挡开了这一招。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

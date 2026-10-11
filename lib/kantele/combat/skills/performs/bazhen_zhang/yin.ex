@@ -151,7 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.BazhenZhang.Yin do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 3)
-    result = if hit, do: Messages.interpolate("$N凝神沉履，积聚全身功力于一掌，携着雷霆之势奋力向$n胸前拍落。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "结果$p招架不及，被$P一掌印在胸口，接连断了数根肋骨，喷出一大口鲜血！", else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

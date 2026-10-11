@@ -147,7 +147,8 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 4)
-    result = Messages.interpolate("(  )", n1: attacker.name, n2: character.name)
+    msg = Enum.random(["(  )", "却见容貌哀戚，似乎想起了什么伤心之事，身子一晃，呕出数口鲜血！", "只见手舞足蹈，忘乎所以，忽然大叫一声，吐血不止！", "呆立当场，一动不动，有如中邪，七窍都迸出鲜血来。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

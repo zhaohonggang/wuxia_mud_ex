@@ -146,7 +146,8 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Pan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 1)
-    result = Messages.interpolate("$n微作诧异，一时勘破不透$N招中奥妙，顿被攻了个措手不及！", n1: attacker.name, n2: character.name)
+    msg = "$n微作诧异，一时勘破不透$N招中奥妙，顿被攻了个措手不及！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

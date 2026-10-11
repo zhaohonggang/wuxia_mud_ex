@@ -164,9 +164,13 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 8)
-    result = if hit, do: Messages.interpolate("$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，急忙飞身闪避，然而只听“嗤啦”一声，那
-柄某物已然刺穿某物，喷出一股血雨。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，急忙飞身闪避，然而只听“嗤啦”一声，那
-柄某物已然刺穿某物，喷出一股血雨。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，急忙飞身闪避，然而只听“嗤啦”一声，那
+柄某物已然刺穿某物，喷出一股血雨。", else: Enum.random(["$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，急忙飞身闪避，然而只听“嗤啦”一声，那
+柄某物已然刺穿某物，喷出一股血雨。", "$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，骇怖达于极点，慌乱之中一掌猛拍而出，击
+向$N面门，竟也是同归于尽的招数。只听“噗嗤”一声，某物已然透过$n前胸，喷出一股血雨。
+同时$n那一掌也正好打在$N头顶，听得“喀嚓”一声，$N头盖骨完全碎裂，软软的瘫倒。", "$n眼见$N来势如此凶悍，这一招决计无法抵挡，骇怖达于极点，竟致僵立，束手待毙。
+只听“噗嗤”一声，某物已然透过$n前胸而入，喷出一股血雨。", "可是$n早已料到$N有此一着，身形急动，躲开了这一杀着。"])
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

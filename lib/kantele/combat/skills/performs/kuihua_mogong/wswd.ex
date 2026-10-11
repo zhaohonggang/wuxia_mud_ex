@@ -149,7 +149,8 @@ $N手中某物化做无双剑影攻向$n。", n1: character.name)
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 600, 1)
-    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n只觉得已经跌入了万劫魔域之中，$N手中某物如同地狱中的鬼火般，从各个方位刺了过来，避无可避！", "$n只觉身上如同万剑穿心一般，$N如同死神一般，势必要取$n性命！"]), else: "$n躲过了$N的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

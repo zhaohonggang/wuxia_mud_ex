@@ -158,7 +158,8 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 1)
-    result = if hit, do: Messages.interpolate("$N见$n重创之下不禁破绽迭出，冷笑一声，手中挥洒，又攻出一剑，正中$p胸口。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见状身形急退，避开了$N凌厉的攻击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: Enum.random(["$n完全无法辨清虚实，只感一阵触心的刺痛，一声惨叫，已被$N凌厉的剑招刺中。", "$N见$n重创之下不禁破绽迭出，冷笑一声，手中某物挥洒，又攻出一剑，正中$p胸口。"]), else: "$n见状身形急退，避开了$N凌厉的攻击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

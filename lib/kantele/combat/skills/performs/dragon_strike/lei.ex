@@ -149,8 +149,9 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Lei do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 3)
-    result = if hit, do: Messages.interpolate("$p只见一阵旋风影中陡然现出$P的双拳，根本来不及躲避，被重重击中，
-五脏六腑翻腾不休，口中鲜血如箭般喷出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的企图，没有受到迷惑，闪在了一边。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$p只见一阵旋风影中陡然现出$P的双拳，根本来不及躲避，被重重击中，
+五脏六腑翻腾不休，口中鲜血如箭般喷出！", else: "可是$p看破了$P的企图，没有受到迷惑，闪在了一边。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

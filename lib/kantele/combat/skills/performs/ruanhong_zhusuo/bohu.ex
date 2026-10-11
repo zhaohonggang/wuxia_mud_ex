@@ -165,7 +165,8 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Bohu do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    result = if hit, do: Messages.interpolate("只听$n一声惨叫，已在$p身上划出数道深可见骨的伤口，皮肉分离，鲜血飞溅，苦不堪言！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p运足内力，奋力挡住了$P这神鬼莫测的一击！", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "只听$n一声惨叫，某物已在$p身上划出数道深可见骨的伤口，皮肉分离，鲜血飞溅，苦不堪言！", else: "可是$p运足内力，奋力挡住了$P这神鬼莫测的一击！"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

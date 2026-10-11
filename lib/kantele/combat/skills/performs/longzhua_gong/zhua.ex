@@ -152,7 +152,8 @@ defmodule Kantele.Combat.Skills.Performs.LongzhuaGong.Zhua do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    result = if hit, do: Messages.interpolate("$p见来势凶猛，难以躲避，只好勉强化解，谁知$P的手好像长了眼睛一般，扑哧一下正抓中$p的要害，登时鲜血飞溅！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p的看破了$P的招式，连消带打，全然化解了$P的攻势。", n1: attacker.name, n2: character.name)
+    msg = if hit, do: "$p见来势凶猛，难以躲避，只好勉强化解，谁知$P的手好像长了眼睛一般，扑哧一下正抓中$p的要害，登时鲜血飞溅！", else: "可是$p的看破了$P的招式，连消带打，全然化解了$P的攻势。"
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
