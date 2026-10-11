@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 Enhanced Python port of scripts/translate_perform.exs
 
@@ -409,8 +409,14 @@ class TranslatePerform:
                 current_gate = 'weapon'
             elif 'query_temp("weapon")' in stripped and 'notify_fail' not in stripped:
                 current_gate = 'weapon'
+            # Living target check
+            elif 'living(target)' in stripped and 'notify_fail' not in stripped:
+                current_gate = 'other'
+            # Fighting check
+            elif 'is_fighting' in stripped and 'notify_fail' not in stripped:
+                current_gate = 'other'
             
-            # Extract notify_fail - associate with current gate, DON'T reset gate after
+            # Extract notify_fail - associate with current gate, DON'T reset gate after - associate with current gate, DON'T reset gate after
             for m in self.notify_fail_re.finditer(stripped):
                 msg = m.group(1)
                 clean = self._clean_message_fragment(msg)
@@ -544,6 +550,15 @@ class TranslatePerform:
             'message_vision',
             'tell_object',
             'tell_room',
+            'tell_user',
+            'write',
+            'sprintf',
+            'sprintf(',
+            '->',
+            'allocate',
+            'map(',
+            'filter(',
+            'sort_array',
         ]
         for pattern in func_patterns:
             if pattern in text:
